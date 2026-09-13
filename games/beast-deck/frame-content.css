@@ -1,0 +1,29 @@
+/* Game content only. Shared core owns all header/settings/guide presentation. */
+.beast-frame-play > .battlefield {
+  background: #0b222b;
+}
+.beast-frame-play .enemy-container {
+  background: linear-gradient(rgb(5 20 25 / 30%), rgb(5 20 25 / 55%)), url('../../assets/beast-deck-redrawn/mist-battlefield-v1.png') center bottom / cover no-repeat;
+  border-radius: 12px;
+}
+.beast-frame-play { display:grid; grid-template-rows:42px minmax(0,1fr) 238px; min-width:0; min-height:0; gap:6px; }
+#main #gamePanel .beast-frame-play > .hud-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr))!important; grid-template-rows:1fr!important; padding:0!important; min-height:0; height:auto; }
+.beast-frame-play > .hud-row > div { display:flex; flex-direction:row; align-items:center; justify-content:center; gap:6px; min-width:0; }
+.beast-frame-play > .hud-row > [hidden] { display:none!important; }
+.beast-frame-play > .hud-row span { font-size:12px!important; }
+.beast-frame-play > .hud-row b { font-size:16px!important; }
+#gamePanel.result-open > .beast-frame-play { visibility:hidden; pointer-events:none; }
+@media(min-width:561px) and (min-height:561px) {
+  .beast-frame-play { grid-template-rows:42px minmax(0,1fr) 280px; }
+}
+@media(orientation:landscape) and (max-height:560px) {
+  #main #gamePanel .beast-frame-play #enemyAvatar { max-height:76px; align-self:center; }
+  .beast-frame-play { grid-template-columns:minmax(180px,.8fr) minmax(0,1.8fr); grid-template-rows:36px minmax(0,1fr); gap:8px; }
+  .beast-frame-play > .hud-row { grid-column:1/-1!important; grid-row:1!important; }
+  .beast-frame-play > .battlefield { grid-column:1!important; grid-row:2!important; }
+  .beast-frame-play > .action-area { grid-column:2!important; grid-row:2!important; }
+  #main #gamePanel .beast-frame-play .hand-row .card { grid-template-rows:40px 20px minmax(32px,1fr); gap:3px; padding:6px; }
+  #main #gamePanel .beast-frame-play .hand-row .card-icon { height:40px; }
+  #main #gamePanel .beast-frame-play .hand-row .card-name { font-size:13px; line-height:18px; }
+  #main #gamePanel .beast-frame-play .hand-row .card-desc { font-size:14px; line-height:18px; }
+}

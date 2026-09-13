@@ -53,6 +53,9 @@
     const info=battleHeader.querySelector('.resource-pill');
     const energy=document.createElement('span');
     energy.append(info.querySelector('.sun-icon'),document.getElementById('energyText'));
+    const recovery=document.createElement('small'); recovery.id='energyRecovery';
+    const energyValue=document.createElement('div'); energyValue.className='yard-energy-value';
+    energyValue.append(energy.querySelector('#energyText'),recovery); energy.append(energyValue);
     info.prepend(energy); battleContent.prepend(info);
     battle.prepend(battleHeader);
     frame=window.WeightPlayScreenFrame.mount({root,localeSelect,scenes:{

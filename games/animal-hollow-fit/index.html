@@ -23,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-hollow-fit">
-  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-game-version" content="v5">
   <meta name="weightplay-interface-version" content="6">
   <title>Burrow Shape Match | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-hollow-fit-art-v2" data-wp-game-guide>
@@ -32,13 +32,13 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
 </head>
-<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v4">
+<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v5" data-wp-battle-settings="visible" data-wp-battle-layout="native">
   <div class="app-shell">
     <main id="mainScreen" class="screen main-screen" data-view="main" data-screen="main">
       <header class="topbar wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" data-copy-aria="mainBack" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></a>
         <strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Burrow Shape Match</strong>
-        <button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings data-copy-aria="settings" type="button" aria-label="Settings">⚙</button>
+        <button id="main-settings" class="utility-button wp-shell-legacy-control" data-wp-settings data-copy-aria="settings" type="button" aria-label="Settings">⚙</button>
       </header>
       <div class="main-content">
         <img class="main-poster" src="assets/animal-hollow-fit-cover.png" data-copy-alt="coverAlt" alt="Moonlit woodland burrow with a friendly hedgehog and rabbit" width="1254" height="1254" fetchpriority="high" draggable="false">
@@ -53,9 +53,11 @@
     <section id="gameGuide" class="game-page-info guide-card" data-view="main" data-wp-game-guide aria-label="Hollow Fit game guide">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay Original Game Guide</span><h2 data-copy="guideTitle">Read the opening, fit the shelter</h2><p data-copy="guideIntro">Every short set has one shape match and no timer.</p></div></div>
       <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-copy="guide1Title">1. Read the opening</h3><p data-copy="guide1">Study the filled cells in the burrow opening.</p></article>
-        <article class="game-info-section"><h3 data-copy="guide2Title">2. Compare pieces</h3><p data-copy="guide2">Choose the shelter piece with the same outline and orientation.</p></article>
-        <article class="game-info-section"><h3 data-copy="guide3Title">3. Check gently</h3><p data-copy="guide3">A miss stays safe to try again; three fits complete the set.</p></article>
+        <article class="game-info-section"><h3 data-copy="guide1Title">1. Read the opening</h3><p data-copy="guide1">Study the filled cells in the burrow opening. Read from the top row to the bottom row, notice the empty spaces around the shape, and treat the outline as one complete little shelter. There is no timer, so pause whenever you need to compare a corner, a short edge, or the direction of a notch.</p></article>
+        <article class="game-info-section"><h3 data-copy="guide2Title">2. Compare pieces</h3><p data-copy="guide2">Choose the shelter piece with the same outline and orientation. Compare every occupied cell rather than guessing from the overall size. A piece can look close while one turn, missing corner, or extra cell makes it wrong. Move your attention around the full perimeter, then check the centre and the narrow edges before committing to a choice.</p></article>
+        <article class="game-info-section"><h3 data-copy="guide3Title">3. Check gently</h3><p data-copy="guide3">A miss stays safe to try again; three fits complete the set. Select one piece, check it, and use the feedback as a calm reading cue. A wrong answer never removes progress or adds a penalty. Reset the choice when you want a clean comparison, then return to the opening and inspect the cells that made the two shapes different.</p></article>
+        <article class="game-info-section"><h3 data-copy="guide4Title">4. Make a clean match</h3><p data-copy="guide4">The best way to solve a round is to build a small visual checklist. First count the filled cells. Next compare the longest edge, the widest row, and the most distinctive corner. Finally confirm that the empty cells line up too; matching filled cells alone is not enough when two pieces share a similar outline. The three rounds use different shelter shapes, so let each opening speak for itself instead of carrying a guess from the previous round. If you change your mind, choose another piece before checking. The interface keeps the decision reversible and the board readable at every step.</p></article>
+        <article class="game-info-section"><h3 data-copy="guide5Title">5. Finish the set</h3><p data-copy="guide5">Hollow Fit is a short, quiet session of three authored openings. After a correct match, the next opening appears automatically and the round counter shows where you are in the set. Your check count records the confirmations you made, including a safe retry, so it is a gentle measure of careful reading rather than a race. When all three openings fit, the Result screen summarizes the session and offers Fit again or Back to menu. Fit again starts at the first opening with a fresh selection, while Back to menu returns to the Main Guide and shared Settings.</p></article>
       </div>
       <div class="game-info-sections guide-faq"><article class="game-info-section"><h3 data-copy="faqTitle">FAQ</h3><p data-copy="faqText">Solved sets and best checks stay only in this browser.</p></article></div>
     </section>
@@ -65,7 +67,7 @@
       <header class="topbar wp-stage-shell-header">
         <button id="battle-home" class="return-link wp-shell-return" type="button" data-wp-return="battle" data-copy-aria="battleBack" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button>
         <strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Burrow Shape Match</strong>
-        <button id="battle-sound" class="utility-button wp-shell-settings-button" type="button" data-wp-battle-utility data-sound-toggle data-copy-aria="sound" aria-pressed="false" aria-label="Sound">♪</button>
+        <button id="battle-sound" class="utility-button" type="button" data-wp-battle-utility data-sound-toggle data-copy-aria="sound" aria-pressed="false" aria-label="Sound">♪</button>
       </header>
       <div class="battle-content battle-canvas">
         <div class="battle-heading"><div><p class="eyebrow" data-copy="kicker">SHELTER SHAPE LOGIC</p><h1 id="round-title">Fern hollow</h1></div><div class="round-badge"><span data-copy="round">Fit</span> <strong id="round-count">1/3</strong></div></div>
@@ -86,7 +88,7 @@
   </div>
 
   <dialog id="settings-dialog" class="modal-dialog" role="dialog"><form method="dialog" class="dialog-card"><div class="dialog-head"><h2 data-copy="settings">Settings</h2><button id="close-settings" class="close-button" value="close" data-copy-aria="close" aria-label="Close">×</button></div><label for="locale-select" data-copy="language">Language</label><select id="locale-select" data-copy-aria="language" aria-label="Language"></select><button id="sound-toggle" class="secondary-button" type="button" data-sound-toggle data-copy-aria="sound" aria-pressed="false">Sound: Off</button></form></dialog>
-  <script src="locales.js?v=20260908-hollow-fit-responsive-v2"></script>
-  <script src="game.js?v=20260908-hollow-fit-responsive-v2"></script>
+  <script src="locales.js?v=20260913-hollow-fit-v5-interface-contract"></script>
+  <script src="game.js?v=20260913-hollow-fit-v5-interface-contract"></script>
 </body>
 </html>

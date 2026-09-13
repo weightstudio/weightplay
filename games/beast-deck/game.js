@@ -10,7 +10,7 @@
   resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock");
 
   const GAME_ID = "beast-deck";
-  document.body.dataset.gameVersion = 'v17';
+  document.body.dataset.gameVersion = 'v20';
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();
@@ -217,6 +217,7 @@
   const asset = (name) => `../../assets/${name}`;
 
   function dockMainUtilities() {
+    if (screenFrame) return;
     const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
     const sound = document.querySelector("button[data-sound-toggle]");
     const version = document.querySelector(".weightplay-version-badge");
@@ -265,6 +266,7 @@
     });
   }
 
+  let screenFrame;
   function syncScene(next) {
     const owners = { main: nodes.menuPanel, stage: nodes.stagePanel, battle: nodes.gamePanel };
     for (const [name, owner] of Object.entries(owners)) {
@@ -276,6 +278,7 @@
       document.body.classList.toggle(`wp-shell-${name}-active`, active);
     }
     document.body.dataset.screen = next;
+    screenFrame?.activate(next);
     document.body.classList.toggle("wp-standard-stage-page", next === "stage");
     document.body.classList.toggle("wp-stage-select-active", next === "stage");
     document.documentElement.classList.toggle("wp-stage-select-active", next === "stage");
@@ -1233,27 +1236,27 @@
   };
 
   const gearDb = {
-    "mist-cloak": { nameKey: "gear_mist_cloak", descKey: "gear_mist_cloak_desc", statKey: "gearStatHp", image: "animal-relic-hunters-skill-shield-heart.webp", hp: 6 },
-    "hunter-charm": { nameKey: "gear_hunter_charm", descKey: "gear_hunter_charm_desc", statKey: "gearStatEnergy", image: "animal-crystal-survivor-upgrade-cooldown.png", energy: 1 },
-    "forest-banner": { nameKey: "gear_forest_banner", descKey: "gear_forest_banner_desc", statKey: "gearStatBlock", image: "animal-crystal-survivor-upgrade-attack.png", block: 4 },
+    "mist-cloak": { nameKey: "gear_mist_cloak", descKey: "gear_mist_cloak_desc", statKey: "gearStatHp", image: "beast-deck-redrawn/mist-cloak-v1.png", hp: 6 },
+    "hunter-charm": { nameKey: "gear_hunter_charm", descKey: "gear_hunter_charm_desc", statKey: "gearStatEnergy", image: "beast-deck-redrawn/hunter-charm-v1.png", energy: 1 },
+    "forest-banner": { nameKey: "gear_forest_banner", descKey: "gear_forest_banner_desc", statKey: "gearStatBlock", image: "beast-deck-redrawn/forest-banner-v1.png", block: 4 },
   };
 
   const enemyCatalog = {
-    boar: { name: "Shadow Boar", nameZh: "暗影野豬", image: "wonder-beast-boar.png", hp: 24, intents: [{ type: "attack", val: 6 }, { type: "defend", val: 5 }, { type: "attack", val: 9 }] },
-    viper: { name: "Corrupted Viper", nameZh: "腐化毒蛇", image: "wonder-beast-crocodile.png", hp: 34, intents: [{ type: "poison", val: 2 }, { type: "defend", val: 8 }, { type: "attack", val: 8 }] },
+    boar: { name: "Shadow Boar", nameZh: "暗影野豬", image: "beast-deck-redrawn/shadow-boar-v1.png", hp: 24, intents: [{ type: "attack", val: 6 }, { type: "defend", val: 5 }, { type: "attack", val: 9 }] },
+    viper: { name: "Corrupted Viper", nameZh: "腐化毒蛇", image: "beast-deck-redrawn/corrupted-viper-v1.png", hp: 34, intents: [{ type: "poison", val: 2 }, { type: "defend", val: 8 }, { type: "attack", val: 8 }] },
     behemoth: { name: "Mist Behemoth", nameZh: "迷霧巨獸", image: "wonder-beast-buffalo.png", hp: 58, intents: [{ type: "attack", val: 10 }, { type: "defend", val: 10 }, { type: "attack", val: 15 }, { type: "buff", val: 0 }] },
-    rhino: { name: "Ironhide Rhino", nameZh: "鐵皮犀牛", image: "wonder-beast-rhino.png", hp: 42, intents: [{ type: "defend", val: 11 }, { type: "attack", val: 11 }, { type: "attack", val: 8 }] },
+    rhino: { name: "Ironhide Rhino", nameZh: "鐵皮犀牛", image: "beast-deck-redrawn/ironhide-rhino-v1.png", hp: 42, intents: [{ type: "defend", val: 11 }, { type: "attack", val: 11 }, { type: "attack", val: 8 }] },
     tiger: { name: "Amber Tiger", nameZh: "琥珀猛虎", image: "wonder-beast-tiger.png", hp: 46, intents: [{ type: "attack", val: 12 }, { type: "attack", val: 7 }, { type: "buff", val: 0 }] },
-    bear: { name: "Ancient Bear", nameZh: "古林巨熊", image: "wonder-beast-bear.png", hp: 52, intents: [{ type: "defend", val: 12 }, { type: "attack", val: 13 }, { type: "poison", val: 2 }] },
-    thornStag: { name: "Thornplate Stag", nameZh: "棘甲雄鹿", image: "animal-rune-tactics-boss-stag.webp", hp: 38, armor: 2, intents: [{ type: "attack", val: 8 }, { type: "armor", val: 1 }, { type: "attack", val: 11 }] },
-    ironJackal: { name: "Ironroot Jackal", nameZh: "鐵根胡狼", image: "wonder-beast-hyena.png", hp: 43, intents: [{ type: "riposte", val: 4 }, { type: "attack", val: 10 }, { type: "exhaust", val: 1 }] },
-    amberLynx: { name: "Amber Lynx", nameZh: "琥珀山貓", image: "wonder-beast-tiger.png", hp: 44, haste: true, intents: [{ type: "attack", val: 7 }, { type: "mark", val: 5 }, { type: "attack", val: 12 }, { type: "defend", val: 7 }] },
-    mireToad: { name: "Mirecoil Toad", nameZh: "泥沼蟾蜍", image: "wonder-beast-crocodile.png", hp: 48, regen: 3, intents: [{ type: "poison", val: 2 }, { type: "regen", val: 5 }, { type: "weak", val: 4 }, { type: "attack", val: 10 }] },
-    archiveOwl: { name: "Archive Owl", nameZh: "典藏夜梟", image: "animal-guard-owl.png", hp: 46, intents: [{ type: "seal", val: 0, seal: "attack" }, { type: "attack", val: 9 }, { type: "seal", val: 0, seal: "utility" }, { type: "defend", val: 9 }] },
-    crownWolf: { name: "Crownmist Wolf", nameZh: "冠霧狼", image: "wonder-beast-hyena.png", hp: 50, fog: true, intents: [{ type: "curse", val: 1 }, { type: "attack", val: 12 }, { type: "fog", val: 0 }, { type: "attack", val: 8 }] },
+    bear: { name: "Ancient Bear", nameZh: "古林巨熊", image: "beast-deck-redrawn/ancient-bear-v1.png", hp: 52, intents: [{ type: "defend", val: 12 }, { type: "attack", val: 13 }, { type: "poison", val: 2 }] },
+    thornStag: { name: "Thornplate Stag", nameZh: "棘甲雄鹿", image: "beast-deck-redrawn/thornplate-stag-v1.png", hp: 38, armor: 2, intents: [{ type: "attack", val: 8 }, { type: "armor", val: 1 }, { type: "attack", val: 11 }] },
+    ironJackal: { name: "Ironroot Jackal", nameZh: "鐵根胡狼", image: "beast-deck-redrawn/ironroot-jackal-v1.png", hp: 43, intents: [{ type: "riposte", val: 4 }, { type: "attack", val: 10 }, { type: "exhaust", val: 1 }] },
+    amberLynx: { name: "Amber Lynx", nameZh: "琥珀山貓", image: "beast-deck-redrawn/amber-lynx-v1.png", hp: 44, haste: true, intents: [{ type: "attack", val: 7 }, { type: "mark", val: 5 }, { type: "attack", val: 12 }, { type: "defend", val: 7 }] },
+    mireToad: { name: "Mirecoil Toad", nameZh: "泥沼蟾蜍", image: "beast-deck-redrawn/mirecoil-toad-v1.png", hp: 48, regen: 3, intents: [{ type: "poison", val: 2 }, { type: "regen", val: 5 }, { type: "weak", val: 4 }, { type: "attack", val: 10 }] },
+    archiveOwl: { name: "Archive Owl", nameZh: "典藏夜梟", image: "beast-deck-redrawn/archive-owl-v1.png", hp: 46, intents: [{ type: "seal", val: 0, seal: "attack" }, { type: "attack", val: 9 }, { type: "seal", val: 0, seal: "utility" }, { type: "defend", val: 9 }] },
+    crownWolf: { name: "Crownmist Wolf", nameZh: "冠霧狼", image: "beast-deck-redrawn/crownmist-wolf-v1.png", hp: 50, fog: true, intents: [{ type: "curse", val: 1 }, { type: "attack", val: 12 }, { type: "fog", val: 0 }, { type: "attack", val: 8 }] },
     stonebackBoss: { name: "Stoneback Behemoth", nameZh: "磐背巨獸", image: "beast-deck-boss-stoneback.webp", hp: 72, armor: 3, isBoss: true, bossId: "stoneback", phaseMechanic: "armor", intents: [{ type: "armor", val: 2 }, { type: "attack", val: 12 }, { type: "defend", val: 10 }, { type: "attack", val: 16 }] },
-    ironrootBoss: { name: "Ironroot Warden", nameZh: "鐵根守衛", image: "beast-deck-boss-ironroot.webp", hp: 76, isBoss: true, bossId: "ironroot", phaseMechanic: "riposte", intents: [{ type: "riposte", val: 5 }, { type: "attack", val: 13 }, { type: "exhaust", val: 1 }, { type: "attack", val: 17 }] },
-    amberBoss: { name: "Amber Huntmaster", nameZh: "琥珀獵主", image: "beast-deck-boss-amber-huntmaster.webp", hp: 78, haste: true, isBoss: true, bossId: "amber", phaseMechanic: "haste", intents: [{ type: "mark", val: 7 }, { type: "attack", val: 9 }, { type: "weak", val: 4 }, { type: "attack", val: 15 }, { type: "defend", val: 8 }] },
+    ironrootBoss: { name: "Ironroot Warden", nameZh: "鐵根守衛", image: "beast-deck-redrawn/ironroot-boss-v1.png", hp: 76, isBoss: true, bossId: "ironroot", phaseMechanic: "riposte", intents: [{ type: "riposte", val: 5 }, { type: "attack", val: 13 }, { type: "exhaust", val: 1 }, { type: "attack", val: 17 }] },
+    amberBoss: { name: "Amber Huntmaster", nameZh: "琥珀獵主", image: "beast-deck-redrawn/amber-huntmaster-v1.png", hp: 78, haste: true, isBoss: true, bossId: "amber", phaseMechanic: "haste", intents: [{ type: "mark", val: 7 }, { type: "attack", val: 9 }, { type: "weak", val: 4 }, { type: "attack", val: 15 }, { type: "defend", val: 8 }] },
     mirecoilBoss: { name: "Mirecoil Hydra", nameZh: "泥沼盤蛇", image: "beast-deck-boss-mirecoil-hydra.webp", hp: 84, regen: 4, isBoss: true, bossId: "mirecoil", phaseMechanic: "regen", intents: [{ type: "poison", val: 3 }, { type: "regen", val: 7 }, { type: "attack", val: 13 }, { type: "cleanse", val: 0 }, { type: "attack", val: 17 }] },
     moonBoss: { name: "Moon Archive Keeper", nameZh: "月典守藏者", image: "beast-deck-boss-moon-archive.webp", hp: 82, isBoss: true, bossId: "moon", phaseMechanic: "seal", intents: [{ type: "seal", val: 0, seal: "attack" }, { type: "attack", val: 12 }, { type: "seal", val: 0, seal: "defense" }, { type: "defend", val: 12 }, { type: "seal", val: 0, seal: "utility" }] },
     mistCrownBoss: { name: "Mist Crown Monarch", nameZh: "霧冠獸王", image: "beast-deck-boss-mist-crown.webp", hp: 92, ward: 3, isBoss: true, bossId: "mist-crown", phaseMechanic: "ward", intents: [{ type: "curse", val: 2 }, { type: "attack", val: 14 }, { type: "fog", val: 0 }, { type: "attack", val: 19 }, { type: "seal", val: 0, seal: "utility" }] },
@@ -1816,6 +1819,7 @@
     window.setTimeout(() => syncPublicMetadata(locale), 1200);
     document.querySelector("meta[property='og:title']")?.setAttribute("content", pageTitle);
     document.querySelectorAll("[data-ui]").forEach((el) => {
+      if (el.hasAttribute("data-beast-authored-summary")) return;
       el.textContent = t(el.dataset.ui);
     });
     document.querySelectorAll("[data-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.aria)));
@@ -3070,6 +3074,7 @@
 
   function setDraftModalActive(active, focusPrimary = true) {
     nodes.draftPanel.classList.toggle("hidden", !active);
+    if (screenFrame && document.body.dataset.screen === 'battle') screenFrame.activate('battle', { covered: active });
     draftCoveredLayers().forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
@@ -3282,6 +3287,7 @@
     clearCombatFeedback();
     nodes.gamePanel.classList.add("result-open");
     nodes.resultPanel.classList.remove("hidden");
+    screenFrame?.activate('battle', { covered: true });
     nodes.resultPanel.scrollTop = 0;
     [nodes.gamePanel.querySelector(".hud-row"), nodes.gamePanel.querySelector(".battlefield"), nodes.gamePanel.querySelector(".action-area")].forEach((node) => {
       node?.setAttribute("inert", "");
@@ -3376,6 +3382,7 @@
   }
 
   function positionBattleSoundControl() {
+    if (screenFrame) return;
     const returnButton = nodes.menuBtn;
     if (returnButton) {
       ["width", "min-width", "height", "min-height"].forEach((property) => {
@@ -3850,6 +3857,7 @@
 
   function init() {
     installStandardStageFlow();
+    if (window.mountBeastDeckFrame) screenFrame = window.mountBeastDeckFrame();
     buildStageCardPool();
     installVirtualStageDrag();
     syncScene("main");

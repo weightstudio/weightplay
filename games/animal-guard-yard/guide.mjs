@@ -1,3 +1,4 @@
+import './talents.js?v=35';
 // Authored gameplay guidance, shared by static routes and the live Main screen.
 const copy = {
  en: ['Defend the garden','Stop the approaching enemies before they reach your home.','How to play','Choose a guard, then an empty grass tile. Place a guard before sending the wave.','Watch the incoming lanes. Use ranged guards behind blockers and collect energy to reinforce weak lanes.','Between waves, recall and reposition your guards before starting again.','Tactics','Keep energy in reserve. Use Rally on a threatened lane; stone tiles cannot hold guards.'],
@@ -41,8 +42,10 @@ const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<'
 export function guardYardGuide(locale) {
  const row=copy[locale];
  if (!row) throw new Error(`Missing Guard Yard guide locale: ${locale}`);
- const [title,summary,how,a,b,c,tactics,tip]=row;
+ const [title,summary,how,a,,c,tactics,tip]=row;
+ const talent = key => globalThis.GuardYardTalents.text(locale,key);
+ const b=talent('income');
  const entries = faq[locale] || faq.en;
  const faqSection = `<div class="game-info-section"><h3>${escape(locale === 'ar' ? 'الأسئلة الشائعة' : 'FAQ')}</h3><dl>${entries.map(([question, answer]) => `<div><dt>${escape(question)}</dt><dd>${escape(answer)}</dd></div>`).join('')}</dl></div>`;
- return `<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>${escape(title)}</h2><p>${escape(summary)}</p><div class="game-info-sections"><div class="game-info-section"><h3>${escape(how)}</h3><ol>${[a,b,c].map(s=>`<li>${escape(s)}</li>`).join('')}</ol></div><div class="game-info-section"><h3>${escape(tactics)}</h3><p>${escape(tip)}</p></div>${faqSection}</div></section>`;
+ return `<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>${escape(title)}</h2><p>${escape(summary)}</p><div class="game-info-sections"><div class="game-info-section"><h3>${escape(how)}</h3><ol>${[a,b,c].map(s=>`<li>${escape(s)}</li>`).join('')}</ol></div><div class="game-info-section"><h3>${escape(tactics)}</h3><p>${escape(tip)}</p></div><div class="game-info-section"><h3>${escape(talent("talents"))}</h3><p>${escape(talent("hint"))}</p></div>${faqSection}</div></section>`;
 }

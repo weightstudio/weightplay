@@ -172,7 +172,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 
 (() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v34";
+  const GAME_VERSION = "v35";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -611,19 +611,19 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     },
   };
   const defeatRecapCopy = {
-    en: "Last breach: Lane {lane} — {threat} (beast {encounter}/{total}); {sun} sun remained after {guards} guards. On Retry, cover this lane earlier and collect sun drops.",
-    "zh-Hant": "最後突破：第 {lane} 路線 — {threat}（第 {encounter}/{total} 隻野獸）；放置 {guards} 隻守衛後還剩 {sun} 點陽光。再試一次時，提早守住這條路線並收集陽光。",
-    "zh-Hans": "最后突破：第 {lane} 路线 — {threat}（第 {encounter}/{total} 只野兽）；放置 {guards} 只守卫后还剩 {sun} 点阳光。再试一次时，提早守住这条路线并收集阳光。",
-    ja: "最後の突破：{lane}レーンの{threat}（{encounter}/{total}体目）。守衛{guards}体を置いた時点で、太陽が{sun}残っていました。再挑戦では、このレーンを早めに守り、太陽を集めましょう。",
-    ko: "마지막 돌파: {lane}번 라인의 {threat} (전체 {total}마리 중 {encounter}번째)입니다. 수호대 {guards}마리를 배치한 뒤 태양 {sun}이 남아 있었습니다. 다시 도전할 때 이 라인을 먼저 지키고 태양을 모아 보세요.",
-    es: "Última brecha: {threat} en el carril {lane} (bestia {encounter}/{total}); quedaban {sun} de sol tras colocar {guards} guardianes. En el siguiente intento, protege antes ese carril y recoge el sol.",
-    "pt-BR": "Última brecha: {threat} na faixa {lane} (fera {encounter}/{total}); restavam {sun} de sol após posicionar {guards} guardiões. Na próxima tentativa, proteja essa faixa antes e recolha o sol.",
-    fr: "Dernière brèche : {threat} sur la voie {lane} ({encounter}/{total}); il restait {sun} de soleil après la pose de {guards} gardiens. À la prochaine tentative, protégez cette voie plus tôt et récupérez le soleil.",
-    de: "Letzter Durchbruch: {threat} auf Bahn {lane} (Bestie {encounter}/{total}); nach {guards} platzierten Wächtern blieben {sun} Sonnen übrig. Schütze diese Bahn beim nächsten Versuch früher und sammle die Sonne.",
-    it: "Ultima breccia: {threat} sulla corsia {lane} (bestia {encounter}/{total}); dopo {guards} guardie piazzate restavano {sun} unità di sole. Al prossimo tentativo, proteggi prima questa corsia e raccogli il sole.",
-    ru: "Последний прорыв: {threat} на линии {lane} (зверь {encounter}/{total}); после размещения {guards} защитников оставалось солнца: {sun}. В следующей попытке защитите эту линию раньше и собирайте солнце.",
-    hi: "आखिरी घुसपैठ: लेन {lane} में {threat} ({encounter}/{total}वाँ जानवर); {guards} गार्ड लगाने के बाद {sun} सूरज बचा था। अगली कोशिश में इस लेन को पहले बचाएँ और सूरज इकट्ठा करें।",
-    ar: "آخر اختراق: {threat} في الممر {lane} (الوحش {encounter} من {total})؛ بقيت {sun} من طاقة الشمس بعد وضع {guards} من الحراس. في المحاولة التالية، احمِ هذا الممر مبكرًا واجمع الشمس.",
+    en: "Last breach: Lane {lane} — {threat} (beast {encounter}/{total}); {sun} sun remained after {guards} guards.",
+    "zh-Hant": "最後突破：第 {lane} 路線 — {threat}（第 {encounter}/{total} 隻野獸）；放置 {guards} 隻守衛後還剩 {sun} 點陽光。",
+    "zh-Hans": "最后突破：第 {lane} 路线 — {threat}（第 {encounter}/{total} 只野兽）；放置 {guards} 只守卫后还剩 {sun} 点阳光。",
+    ja: "最後の突破：{lane}レーンの{threat}（{encounter}/{total}体目）。守衛{guards}体を置いた時点で、太陽が{sun}残っていました。",
+    ko: "마지막 돌파: {lane}번 라인의 {threat} (전체 {total}마리 중 {encounter}번째)입니다. 수호대 {guards}마리를 배치한 뒤 태양 {sun}이 남아 있었습니다. ",
+    es: "Última brecha: {threat} en el carril {lane} (bestia {encounter}/{total}); quedaban {sun} de sol tras colocar {guards} guardianes.",
+    "pt-BR": "Última brecha: {threat} na faixa {lane} (fera {encounter}/{total}); restavam {sun} de sol após posicionar {guards} guardiões.",
+    fr: "Dernière brèche : {threat} sur la voie {lane} ({encounter}/{total}); il restait {sun} de soleil après la pose de {guards} gardiens.",
+    de: "Letzter Durchbruch: {threat} auf Bahn {lane} (Bestie {encounter}/{total}); nach {guards} platzierten Wächtern blieben {sun} Sonnen übrig.",
+    it: "Ultima breccia: {threat} sulla corsia {lane} (bestia {encounter}/{total}); dopo {guards} guardie piazzate restavano {sun} unità di sole.",
+    ru: "Последний прорыв: {threat} на линии {lane} (зверь {encounter}/{total}); после размещения {guards} защитников оставалось солнца: {sun}.",
+    hi: "आखिरी घुसपैठ: लेन {lane} में {threat} ({encounter}/{total}वाँ जानवर); {guards} गार्ड लगाने के बाद {sun} सूरज बचा था।",
+    ar: "آخر اختراق: {threat} في الممر {lane} (الوحش {encounter} من {total})؛ بقيت {sun} من طاقة الشمس بعد وضع {guards} من الحراس.",
   };
   const defeatRecapThreatLabels = {
     en: { normal: "Normal", fast: "Fast", shield: "Shield", healer: "Healer", burrow: "Burrower", thief: "Sun thief", boss: "Boss" },
@@ -1081,7 +1081,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     ["Underleaf Ambush", "\u8449\u5e95\u5947\u8972", "Read the warning icon; a burrower may leave its starting lane.", "\u770b\u6e05\u9810\u8b66\u5716\u793a\uff0c\u947d\u5730\u7378\u4e0d\u4e00\u5b9a\u7559\u5728\u539f\u8def\u3002", ["burrow", "healer", "fast"]],
     ["Badger Tunnel Hall", "\u737e\738b\u5730\u9053", "The chief changes lanes twice; keep the middle three lanes ready.", "\u737e\738b\u6703\u5169\u6b21\u63db\u7dda\uff0c\u4e2d\u9593\u4e09\u8def\u90fd\u8981\u4fdd\u7559\u9632\u5b88\u3002", ["burrow", "shield"]],
     ["Empty Sun Pouch", "\u7a7a\u967d\u5149\u888b", "Stop sun thieves before their pouch glows and removes 12 sun.", "\u967d\u5149\u76dc\u7684\u888b\u5b50\u767c\u4eae\u524d\u64cb\u4f4f\u5b83\uff0c\u5426\u5247\u6703\u5931\u53bb 12 \u9ede\u967d\u5149\u3002", ["normal", "thief"]],
-    ["Guard the Harvest", "\u5b88\u4f4f\u6536\u6210", "Collect drops promptly and spend before a thief can take them.", "\u53ca\u6642\u6536\u967d\u5149\u4e26\u5148\u82b1\u5728\u95dc\u9375\u5b88\u885b\u4e0a\u3002", ["thief", "fast"]],
+    ["Guard the Harvest", "\u5b88\u4f4f\u6536\u6210", "Spend regenerating energy before a thief can take it.", "\u53ca\u6642\u6536\u967d\u5149\u4e26\u5148\u82b1\u5728\u95dc\u9375\u5b88\u885b\u4e0a\u3002", ["thief", "fast"]],
     ["Hot Footprints", "\u71b1\u6c23\u8173\u5370", "Block thieves while Owl slows the fast escort.", "\u72d7\u6230\u58eb\u64cb\u76dc\u7378\uff0c\u8c93\u982d\u9df9\u62d6\u6162\u5feb\u901f\u8b77\u885b\u3002", ["thief", "fast", "shield"]],
     ["Ember Crossing", "\u9918\u71fc\u4ea4\u53c9\u53e3", "Keep a spare blocker for the lane marked by the rush warning.", "\u70ba\u885d\u523a\u9810\u8b66\u7684\u8def\u7dda\u4fdd\u7559\u4e00\u96bb\u64cb\u8def\u5b88\u885b\u3002", ["thief", "burrow", "fast"]],
     ["Ember Mane Arena", "\u71fc\u9b03\u7af6\u6280\u5834", "The boar announces a rush; a Dog absorbs it while ranged guards fire.", "\u71fc\u9b03\u91ce\u8c6c\u6703\u9810\u544a\u885d\u523a\uff0c\u7528\u72d7\u6230\u58eb\u627f\u53d7\uff0c\u5f8c\u6392\u96c6\u706b\u3002", ["thief", "fast"]],
@@ -1328,7 +1328,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   let selectedUnit = units[0].id;
   let activeMenuTab = "stages";
   let running = false;
-  let combatPhase='prepare', waveIndex=0, waveLimit=0, recallMode=false, rallyMode=false, rallyCooldown=0, speedFactor=1, incomeBank=0, renderer3d=null;
+  let combatPhase='prepare', waveIndex=0, waveLimit=0, recallMode=false, rallyMode=false, rallyCooldown=0, speedFactor=1, renderer3d=null;
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function disposeYard(){renderer3d?.dispose();renderer3d=null;}
   function startYardRenderer(){disposeYard();if(activeScene!=='battle'||!window.GuardYard3D)return;try{renderer3d=new window.GuardYard3D(nodes.yardBoard);}catch{nodes.yardBoard.dataset.renderer='fallback';}}
@@ -1343,7 +1343,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   let baseHp = 3;
   let spawned = 0;
   let nextSpawnAt = 0;
-  let nextSunAt = 0;
+  let battleTalents = {}, waveElapsed = 0, renewalElapsed = 0;
+  let talentProcs = {renewal:0, frost:0, chain:0, safeguard:0};
   let lastTick = 0;
   let entities = [];
   let projectiles = [];
@@ -1511,6 +1512,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       .replace(/\b(?:Dog|Dogs|Perro|Perros|Chien|Chiens|Hund|Hunde|Cane|Cani|Cão|Cães)\b|狗戰士|狗战士|الكلب|الكلاب|강아지|कुत्ता/giu,copy.unitDog);
   }
   function t(key, data) {
+    if (key === 'incomeHint' || key === 'resultLose') return talentText('income');
     const parts = key.split(".");
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const lookup = (catalog) => {
@@ -1634,6 +1636,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function stageCopy(stage, field) {
+    if (field === 'plan' && stage?.title?.en === 'Guard the Harvest') return talentText('income');
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const value = stage?.[field]?.[sourceLocale] || stage?.[field]?.en || "";
     const override = stageCopyOverrides[value]?.[locale];
@@ -1653,6 +1656,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       coins: 0,
       owned: { cat: true, dog: true, owl: true, fox: false },
       levels: { cat: 1, dog: 1, owl: 1, fox: 1 },
+      talents: window.GuardYardTalents.normalize(null, unlocked - 1),
     };
     try {
       const saved = JSON.parse(readStorage(profileKey) || "{}");
@@ -1660,6 +1664,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
         coins: Math.max(0, Number(saved.coins) || 0),
         owned: { ...defaults.owned, ...(saved.owned || {}) },
         levels: { ...defaults.levels, ...(saved.levels || {}) },
+        talents: window.GuardYardTalents.normalize(saved.talents, unlocked - 1),
       };
     } catch {
       return defaults;
@@ -1873,7 +1878,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function localizeStatic() {
-    import('/games/animal-guard-yard/guide.mjs?v=32').then(({guardYardGuide}) => {
+    import('/games/animal-guard-yard/guide.mjs?v=35').then(({guardYardGuide}) => {
       const guide=document.querySelector('.game-page-info');
       if (guide) guide.outerHTML=guardYardGuide(locale);
     }).catch(error => console.error('Guard Yard guide could not initialize',error));
@@ -2400,7 +2405,85 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     return `<span class="cost-token diamond-token" aria-label="${t("diamondToken")} ${amount}"><img class="cost-icon" src="${diamondIcon}" alt="" draggable="false" /><span>${amount}</span></span>`;
   }
 
+  function talentText(key, data) { return window.GuardYardTalents.text(locale, key, data); }
+
+  function renderTalents() {
+    const panel = $('animalTabPanel');
+    if (!panel) return;
+    if (!$('yardRosterNav')) {
+      const nav = document.createElement('nav');
+      nav.id = 'yardRosterNav';
+      const view = document.createElement('section');
+      view.id = 'yardTalents';
+      view.hidden = true;
+      panel.prepend(nav);
+      panel.append(view);
+      for (const id of ['training', 'talents']) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.rosterView = id;
+        button.onclick = () => {
+          panel.querySelector('.kennel-panel').hidden = id !== 'training';
+          view.hidden = id !== 'talents';
+          renderTalents();
+        };
+        nav.append(button);
+      }
+    }
+    const view = $('yardTalents');
+    $('yardRosterNav').setAttribute('aria-label', talentText('talents'));
+    $('yardRosterNav').querySelectorAll('button').forEach(button => {
+      button.textContent = talentText(button.dataset.rosterView);
+      button.setAttribute('aria-pressed', String(button.dataset.rosterView === (view.hidden ? 'training' : 'talents')));
+    });
+    const focused = document.activeElement?.dataset.talent;
+    const choices = window.GuardYardTalents.normalize(profile.talents, unlocked - 1);
+    view.replaceChildren();
+    const intro = document.createElement('p');
+    intro.textContent = talentText('hint');
+    view.append(intro);
+    for (const group of window.GuardYardTalents.groups) {
+      const section = document.createElement('fieldset');
+      const legend = document.createElement('legend');
+      legend.textContent = talentText(group.id);
+      section.append(legend);
+      const locked = unlocked - 1 < group.clear;
+      if (locked) {
+        const lock = document.createElement('p');
+        lock.textContent = talentText('locked', {n: group.clear});
+        section.append(lock);
+      }
+      for (const id of group.choices) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.talent = id;
+        button.disabled = locked || activeScene === 'battle';
+        button.setAttribute('aria-pressed', String(choices[group.id] === id));
+        const icon = document.createElement('img');
+        icon.src = `assets/${window.GuardYardTalents.icons[id]}-block-v32.png`;
+        icon.alt = '';
+        const name = document.createElement('strong');
+        name.textContent = talentText(id);
+        const description = document.createElement('span');
+        description.textContent = talentText(`${id}Desc`);
+        const state = document.createElement('small');
+        state.textContent = locked ? talentText('locked', {n: group.clear}) : talentText(choices[group.id] === id ? 'selected' : 'choose');
+        button.append(icon, name, description, state);
+        button.onclick = () => {
+          if (activeScene === 'battle' || unlocked - 1 < group.clear) return;
+          profile.talents = {...choices, [group.id]: id};
+          saveProfile();
+          renderTalents();
+        };
+        section.append(button);
+      }
+      view.append(section);
+    }
+    if (focused) view.querySelector(`[data-talent="${focused}"]`)?.focus({preventScroll:true});
+  }
+
   function renderKennel() {
+    renderTalents();
     if (!nodes.kennelGrid) return;
     nodes.kennelGrid.innerHTML = "";
     units.forEach((unit) => {
@@ -2538,11 +2621,13 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     energy = stage.energy;
     baseHp = stage.hp;
     spawned = 0;
-    combatPhase='prepare';waveIndex=0;waveLimit=0;recallMode=false;rallyMode=false;rallyCooldown=0;speedFactor=1;incomeBank=0;
+    combatPhase='prepare';waveIndex=0;waveLimit=0;recallMode=false;rallyMode=false;rallyCooldown=0;speedFactor=1;
     nextSpawnAt = 1800;
     currentSpawnDelay = nextSpawnAt;
     nextSpawnPlan = makeSpawnPlan();
-    nextSunAt = 1400;
+    battleTalents = window.GuardYardTalents.normalize(profile.talents, unlocked-1);
+    waveElapsed = 0; renewalElapsed = 0;
+    talentProcs = {renewal:0, frost:0, chain:0, safeguard:0};
     lastTick = performance.now();
     entities = [];
     projectiles = [];
@@ -2636,6 +2721,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     if (!running || paused) return;
     running = false;
     paused = true;
+    updateHud();
     cancelAnimationFrame(raf);
     nodes.gameShell.inert = true;
     nodes.gameShell.setAttribute("aria-hidden", "true");
@@ -2875,28 +2961,25 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     entities.push(zombie);
   }
 
-  function spawnSun() {
-    const stage = stages[currentStage];
-    const drop = document.createElement("button");
-    drop.className = "energy-drop";
-    drop.type = "button";
-    drop.innerHTML='<img src="assets/sun-block-v32.png" alt="">';
-    drop.setAttribute('aria-label',`${t('sunToken')} +35`);
-    drop.style.left = `${12 + Math.random() * 72}%`;
-    drop.style.top = `${10 + Math.random() * 58}%`;
-    const sunLife = 6000, generation=sceneGeneration;
-    drop.style.setProperty("--sun-life", `${sunLife}ms`);
-    drop.addEventListener("click", () => {
-      if(!running||paused||generation!==sceneGeneration)return;
-      energy = Math.min(400,energy+35);
-      drop.remove();
-      updateHud();
-      renderUnits();
-      playSound("coin");
-    }, { once: true });
-    nodes.yardBoard.appendChild(drop);
-    window.setTimeout(() => {if(drop.isConnected&&running&&generation===sceneGeneration){energy=Math.min(400,energy+20);updateHud();renderUnits();}drop.remove();}, sunLife);
-    if (stage.total - spawned < 3) energy += 5;
+  function updateTalents(dt) {
+    const previousEnergy = energy;
+    energy = Math.min(400, energy + window.GuardYardTalents.recovered(battleTalents, waveElapsed, dt));
+    waveElapsed += dt;
+    if (units.some(unit => {const cost=trainedUnit(unit).cost;return previousEnergy<cost && energy>=cost;})) renderUnits();
+    if (battleTalents.tactics !== 'renewal') return;
+    renewalElapsed += dt;
+    if (renewalElapsed < 6000) return;
+    renewalElapsed %= 6000;
+    const guards = entities.filter(e => e.kind === 'guard' && !e.dead && e.hp > 0);
+    for (const guard of guards) {
+      if (guard.hp >= guard.maxHp || !guards.some(other => other !== guard && Math.abs(other.row-guard.row)+Math.abs(other.col-guard.col) === 1)) continue;
+      const heal = Math.min(guard.maxHp-guard.hp, Math.max(1, Math.round(guard.maxHp*.08)));
+      guard.hp += heal;
+      talentProcs.renewal++;
+      pulseClass(guard.el, 'talent-heal', 550);
+      showBoardText(`+${heal}`, cellCenterX(guard.col), laneProjectileY(guard.row)-.1, 'talent-heal');
+      updateEntityElement(guard);
+    }
   }
 
   function tick(now) {
@@ -2907,19 +2990,13 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     entities.forEach(e=>e.hitMs=Math.max(0,(e.hitMs||0)-dt));
     if(combatPhase==='prepare'){renderYard();updateHud();raf=requestAnimationFrame(tick);return;}
     rallyCooldown=Math.max(0,rallyCooldown-dt);
-    incomeBank+=dt;
-    if(incomeBank>=1000){energy=Math.min(400,energy+2);incomeBank-=1000;renderUnits();}
+    updateTalents(dt);
     nextSpawnAt -= dt;
-    nextSunAt -= dt;
     if (nextSpawnAt <= 0 && spawned<waveLimit) {
       spawnZombie();
       currentSpawnDelay = stages[currentStage].interval * (0.82 + Math.random() * 0.36);
       nextSpawnAt = currentSpawnDelay;
       nextSpawnPlan = makeSpawnPlan();
-    }
-    if (nextSunAt <= 0) {
-      spawnSun();
-      nextSunAt = 2500 + Math.random() * 1500;
     }
     updateGuards(dt);
     updateProjectiles(dt);
@@ -3003,6 +3080,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function applyDamage(target, damage, impactType, impactY, attacker = null) {
+    if (target.dead || target.hp <= 0) return;
     if (target.shellClosed) damage = Math.max(1, Math.round(damage * 0.22));
     target.hp -= damage;
     target.hitMs=180;
@@ -3023,6 +3101,25 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       showBoardText(`+${coinGain}`, target.x, impactY + 0.02, "coin-pop");
       showBoardText(`+${energyGain} ${t("sunToken")}`, target.x, Math.min(0.94, impactY + 0.1), "energy-pop");
       updateHud();
+    }
+    if (attacker) {
+      attacker.talentHits = (attacker.talentHits || 0) + 1;
+      if (attacker.talentHits % 4 === 0) {
+        if (battleTalents.tactics === 'frost' && target.hp > 0) {
+          applySlow(target, .4, 2000);
+          talentProcs.frost++;
+          showBoardText(talentText('frost'), target.x, impactY-.12, 'talent-frost');
+        }
+        if (battleTalents.advanced === 'chain') {
+          const next = entities.filter(e => e.kind === 'zombie' && e !== target && !e.dead && e.hp > 0 && Math.abs(e.row-target.row) <= 1 && Math.abs(e.x-target.x) <= .25)
+            .sort((a,b) => Math.abs(a.x-target.x)+Math.abs(a.row-target.row)*.2-Math.abs(b.x-target.x)-Math.abs(b.row-target.row)*.2)[0];
+          if (next) {
+            talentProcs.chain++;
+            applyDamage(next, Math.max(1, Math.round(damage*.5)), 'owl', laneProjectileY(next.row));
+            showBoardText(talentText('chain'), next.x, laneProjectileY(next.row)-.12, 'talent-chain');
+          }
+        }
+      }
     }
     playSound("hit");
   }
@@ -3124,7 +3221,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function updateZombies(dt) {
-    entities.filter((item) => item.kind === "zombie").forEach((zombie) => {
+    entities.filter((item) => item.kind === "zombie" && !item.dead && item.hp > 0).forEach((zombie) => {
       zombie.slowMs = Math.max(0, (Number(zombie.slowMs) || 0) - dt);
       if (zombie.slowMs <= 0) zombie.slowFactor = 1;
       zombie.el.classList.toggle("is-slowed", zombie.slowMs > 0);
@@ -3170,6 +3267,16 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       }
       if (zombie.x < -0.04) {
         zombie.dead = true;
+        if (battleTalents.advanced === 'safeguard' && talentProcs.safeguard === 0) {
+          talentProcs.safeguard++;
+          energy = Math.min(400, energy+40);
+          showBoardText(talentText('safeguard'), .22, laneProjectileY(zombie.row), 'talent-heal');
+          spawnImpact(.06, laneProjectileY(zombie.row), 'owl');
+          nodes.hintText.textContent = talentText('safeguard');
+          playSound('coin');
+          renderUnits();
+          return;
+        }
         lastBreachSnapshot = {
           row: zombie.row,
           type: zombie.type,
@@ -3381,6 +3488,13 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     energy=clamp(energy,0,400);
     const left = Math.max(0, stages[currentStage].total - spawned + entities.filter((item) => item.kind === "zombie").length);
     nodes.energyText.textContent = Math.floor(energy);
+    const recovery = $('energyRecovery');
+    if (recovery) {
+      const rate = running && !paused && combatPhase === 'combat' ? window.GuardYardTalents.rate(battleTalents, waveElapsed) : 0;
+      recovery.textContent = `+${rate}/s`;
+      recovery.title = talentText('income');
+      recovery.setAttribute('aria-label', `${talentText('energy')} +${rate}/s. ${talentText('income')}`);
+    }
     $('squadCount').textContent=`${entities.filter(e=>e.kind==='guard').length}/12`;
     $('squadCount').parentElement.setAttribute('aria-label',t('capacity'));
     nodes.baseText.textContent = Math.max(0, baseHp);
@@ -3745,6 +3859,19 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       finish,
       startStage,
       fundForTest: ()=>{energy=400;updateHud();},
+      talentFixture: (action) => {
+        const guards = entities.filter(e=>e.kind==='guard');
+        const enemies = entities.filter(e=>e.kind==='zombie'&&!e.dead);
+        if(action==='wound') guards.forEach(g=>{g.hp=g.maxHp/2;updateEntityElement(g);});
+        if(action==='heal') updateTalents(6000);
+        if(action==='hit') {
+          enemies.forEach((e,i)=>{e.hp=10000;e.x=.7+i*.02;e.row=0;});
+          for(let i=0;i<4;i++) applyDamage(enemies[0],10,'cat',laneProjectileY(0),guards[0]);
+        }
+        if(action==='breach') {enemies[0].x=-.05;updateZombies(0);cleanupDead();}
+        updateHud();
+        return {guards:guards.map(g=>({hp:g.hp,maxHp:g.maxHp})),enemies:enemies.map(e=>({hp:e.hp,slowMs:e.slowMs,slowFactor:e.slowFactor}))};
+      },
       setLastBreachForTest: (snapshot = {}) => {
         lastBreachSnapshot = {
           row: snapshot.row ?? 0,
@@ -3797,11 +3924,11 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     else resumeBattleLifecycle();
   });
 
-  $('launchWave').onclick=()=>{if(!running||combatPhase!=='prepare'||!entities.some(e=>e.kind==='guard'))return;waveIndex++;waveLimit=Math.ceil(stages[currentStage].total*waveIndex/stages[currentStage].waveCount);combatPhase='combat';nextSpawnAt=1800;currentSpawnDelay=1800;nextSpawnPlan=makeSpawnPlan();nodes.hintText.textContent=t('incomeHint');playSound('start');updateHud();};
+  $('launchWave').onclick=()=>{if(!running||combatPhase!=='prepare'||!entities.some(e=>e.kind==='guard'))return;waveIndex++;waveLimit=Math.ceil(stages[currentStage].total*waveIndex/stages[currentStage].waveCount);combatPhase='combat';waveElapsed=0;nextSpawnAt=1800;currentSpawnDelay=1800;nextSpawnPlan=makeSpawnPlan();nodes.hintText.textContent=t('incomeHint');playSound('start');updateHud();};
   $('recallGuard').onclick=()=>{recallMode=!recallMode;rallyMode=false;nodes.hintText.textContent=t('incomeHint');updateHud();};
   $('rallyLane').onclick=()=>{if(rallyCooldown>0||combatPhase!=='combat')return;rallyMode=!rallyMode;recallMode=false;nodes.hintText.textContent=t('rallyHint');updateHud();};
   $('yardSpeed').onclick=()=>{speedFactor=speedFactor===1?2:1;updateHud();};
-  window.__guardYardUpgrade={snapshot:()=>({phase:combatPhase,waveIndex,waveLimit,energy,spawned,baseHp,stage:currentStage+1,guards:entities.filter(e=>e.kind==='guard').map(e=>({id:e.id,row:e.row,col:e.col,hp:e.hp})),enemies:entities.filter(e=>e.kind==='zombie').map(e=>({type:e.type,row:e.row,x:e.x,hp:e.hp})),rallyCooldown}),stages};
+  window.__guardYardUpgrade={snapshot:()=>({talents:{...battleTalents},talentProcs:{...talentProcs},waveElapsed,energyRate:window.GuardYardTalents.rate(battleTalents,waveElapsed),phase:combatPhase,waveIndex,waveLimit,energy,spawned,baseHp,stage:currentStage+1,guards:entities.filter(e=>e.kind==='guard').map(e=>({id:e.id,row:e.row,col:e.col,hp:e.hp})),enemies:entities.filter(e=>e.kind==='zombie').map(e=>({type:e.type,row:e.row,x:e.x,hp:e.hp})),rallyCooldown}),stages};
   localizeStatic();
   sharedFrame = window.mountGuardYardFrame();
   showMenuTab(activeMenuTab);

@@ -10110,6 +10110,13 @@
       // local to the generated Guide without changing Battle controls.
       section.style.setProperty("--wp-ui-radius", "16px", "important");
     }
+    if (id === "animal-twin-switchyard") {
+      // Twin Switchyard keeps the shared generated Guide, but Interface 7's
+      // compact block radius would otherwise flatten its public reading frame
+      // and every structured section to 3px. Scope the framed radius to this
+      // Guide only; controls and play surfaces retain the shared contract.
+      section.style.setProperty("border-radius", "16px", "important");
+    }
     if (id === "animal-nest-weigh") {
       // Nest Weigh retains the shared light Guide surface. Scope readable
       // light-theme tokens to that Guide so Interface 7's dark text defaults
@@ -10280,6 +10287,11 @@
         </div>` : ""}
       </div>
     `;
+    if (id === "animal-twin-switchyard") {
+      section.querySelectorAll(".game-info-section").forEach((node) => {
+        node.style.setProperty("border-radius", "16px", "important");
+      });
+    }
     main.insertAdjacentElement("afterend", section);
     repairRelatedImages(section);
 

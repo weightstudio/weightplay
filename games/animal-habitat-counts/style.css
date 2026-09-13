@@ -169,6 +169,24 @@ body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
     border-radius:16px !important;
     background:#fff !important;
   }
+
+  /* Interface 7's pale shared text tokens are unreadable on this Guide's
+     light authored surface. Keep the game-owned copy dark and explicit. */
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] #guideSection {
+    --wp-ui-text:#172033 !important;
+    --wp-ui-muted:#48556b !important;
+    color:#172033 !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] #guideSection .game-info-fact {
+    background:#fff !important;
+    border-color:#d8e0ee !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] #guideSection :is(h2,h3,strong,.game-info-kicker,.game-info-fact > span,dt) {
+    color:#172033 !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] #guideSection :is(p,li,dd) {
+    color:#48556b !important;
+  }
 }
 
 /* Keep the settlement controls in the first visible mobile Battle frame. */
@@ -222,4 +240,198 @@ body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
 
 @media (min-width:701px) and (min-height:501px) {
   .feedback { height:56px; min-height:56px; display:flex; align-items:center; justify-content:center; }
+}
+
+/* v9 shell contract: the shared Settings surface is the sole Main utility,
+   Stage owns a title-free track plus its persistent tab bar, and Battle keeps
+   its result actions inside the same compact play envelope. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .wp-main-shell-header #mainSettingsBtn,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .wp-stage-shell-header :is(#stageInfoBtn, h2, .wp-generated-main-title),
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas .panel-head :is(#battleHeading, .wp-generated-main-title) {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] [data-wp-logical-stage-canvas] {
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] [data-wp-logical-stage-canvas] > .panel-head {
+  grid-row: 1 !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 4px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace {
+  grid-row: 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  gap: 8px !important;
+  padding: 8px 0 0 !important;
+  overflow: hidden !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace > .panel-intro {
+  margin: 0 !important;
+  padding: 0 10px !important;
+  color: #f8fafc !important;
+  text-align: center !important;
+  line-height: 1.35 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace > .stage-rail {
+  align-self: start !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 198px !important;
+  min-height: 198px !important;
+  max-height: 198px !important;
+  margin-top: clamp(48px, 12%, 112px) !important;
+  padding-inline: max(24px, calc((100% - 264px) / 2)) !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-tabs {
+  grid-row: 3 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: 8px !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  padding: 6px !important;
+  background: #17243a !important;
+  border-top: 1px solid rgb(255 255 255 / 12%) !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-tab-slot {
+  display: block !important;
+  min-width: 0 !important;
+  height: 44px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-tab {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 10px !important;
+  border: 2px solid #66e6bd !important;
+  border-radius: 10px !important;
+  background: #10233c !important;
+  color: #f8fafc !important;
+  font: 700 14px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas {
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) !important;
+  gap: 0 !important;
+  height: calc(100vh - 56px) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas > .panel-head {
+  grid-row: 1 !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 4px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas > .battle-content,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas > .result-panel {
+  grid-row: 2 !important;
+  min-height: 0 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas > .battle-content {
+  width: min(600px, 100%) !important;
+  overflow: auto !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .result-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .result-actions > button {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  line-height: 1.1 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .result-panel #resultNextBtn:disabled {
+  opacity: .5 !important;
+  cursor: not-allowed !important;
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas .feedback {
+    height: 32px !important;
+    min-height: 32px !important;
+    line-height: 1.2 !important;
+    overflow: visible !important;
+  }
+
+  /* Keep the compact grid card in normal flow. The two-column micro-layout
+     can make the action stack overlap the rightmost cells at 844x390. */
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    align-items: start !important;
+    column-gap: 8px !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .section-heading {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .habitat-grid {
+    grid-column: 1 !important;
+    grid-row: 2 / span 3 !important;
+    width: min(120px, 100%) !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .keyboard-hint {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .feedback {
+    grid-column: 2 !important;
+    grid-row: 3 !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .battle-actions {
+    grid-column: 2 !important;
+    grid-row: 4 !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .habitat-grid {
+    align-self: center !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .battle-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
 }

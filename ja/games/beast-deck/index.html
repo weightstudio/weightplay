@@ -36,7 +36,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/beast-deck/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/beast-deck/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/beast-deck/" />
-    <link rel="stylesheet" href="style.css?v=20260909-beast-deck-result-v17" />
+    <link rel="stylesheet" href="style.css?v=20260909-beast-deck-forest-v18" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -81,8 +81,8 @@
     <meta name="twitter:description" content="ビーストデッキは、カードの効果と報酬を組み合わせ、部屋ごとの戦いを乗り越えるデッキ戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/beast-deck.webp" />
   </head>
-  <body data-screen="main" data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="beast-deck" data-audience="general" class="wp-shell-main-active">
-    <main id="main" class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
+  <body data-screen="main" data-wp-game-owned-guide="true" data-wp-frame-tutorial="true" data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="beast-deck" data-audience="general" class="wp-shell-main-active">
+    <main id="main" data-wp-frame-root class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
       <header class="topbar">
         <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
@@ -113,7 +113,7 @@
         <img class="cover" src="../../assets/beast-deck-cover.webp" alt="ビーストデッキのゲーム画像" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Enter the Mist Forest.</strong>
-          <span class="main-summary" data-ui="menuHint">Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.</span>
+          <span class="main-summary" data-ui="menuHint" data-beast-authored-summary="true" data-runtime-localize="off">敵の意図を見て、エネルギーとカードの順番を考えよう。</span>
           <button id="mainStartBtn" class="standard-main-start" data-wp-main-start="true" data-ui="startGame" type="button">Start Game</button>
 
           <div class="prototype-goals" data-aria="progressTitle" aria-label="Local progress">
@@ -308,18 +308,23 @@
         </div>
       </div>
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260709-beast-loadout1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "beast-deck", release_state: "release_candidate" });</script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-beast-economy1"></script>
-    <script src="game.js?v=20260909-beast-deck-result-v17"></script>
+    <link rel="stylesheet" href="../../src/game-ui-theme.css" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css" />
+    <link rel="stylesheet" href="frame-content.css?v=20260913-frame-v19" />
+    <script src="../../src/game-screen-frame.js"></script>
+    <script src="frame.js?v=20260913-frame-v19"></script>
+    <script src="game.js?v=20260913-guide-v20"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -343,30 +348,7 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="ビーストデッキ ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ビーストデッキ</h2><p>ビーストデッキは、カードの効果と報酬を組み合わせ、部屋ごとの戦いを乗り越えるデッキ戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Card Roguelike</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Card · Roguelike · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>ふつう</strong></div><div class="game-info-fact"><span>目安時間</span><strong>8-15 分 per mission</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>この冒険では、プレイヤーが動物の仲間を助ける案内役になります。目的を達成するには、目の前の状況を観察し、急がずに選択の結果を確かめることが大切です。</p>
-<p>各ステージや場面には新しい条件が加わります。成功はただ先へ進むことではなく、仲間の世界を安全に整え、次の挑戦へつながる記録を残すことを意味します。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>1回のプレイでは、カードの効果と報酬を組み合わせ、部屋ごとの戦いを乗り越えるデッキ戦略。表示される目標、残りの機会、相手や障害物の動きを確認してから操作してください。</p>
-<p>進行すると新しい組み合わせ、道具、敵、またはルールが現れます。結果画面では達成内容を確認して、次へ進むか同じ課題をもう一度試せます。</p>
-<p>保存される進行はこのブラウザ内だけに残ります。ログインは必要ありません。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>メイン画面でスタートを選びます。</li><li>ステージがある作品では、開放済みのカードから挑戦を選びます。</li><li>画面のヒントと目標を読んで、タップ、ドラッグ、またはキーボードで操作します。</li><li>結果を確認し、次の挑戦またはリトライを選びます。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>最初に目標と失敗条件を確認してから動きましょう。</li><li>一度に多くを急がず、手がかりが変わった場面で次の選択を考えましょう。</li><li>うまくいかなかった時は、直前の選択を見直して別の順番や位置を試しましょう。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>序盤は基本操作と読みやすい目標を紹介します。中盤からは複数の条件を組み合わせ、後半ではこれまで覚えた選択を続けて使う場面が増えます。</p>
-<p>数字だけを大きくするのではなく、観察、位置、順番、タイミングを使い分けるほど安定して進める構成です。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>短いセッションでも、プレイヤー自身の判断が結果につながるよう設計しました。タッチ、マウス、キーボードで同じ目的に取り組め、画面の読みやすさと再挑戦のしやすさを大切にしています。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>このゲームはブラウザで遊べ、基本プレイにログインは必要ありません。進行やスコアはこの端末のブラウザに保存されます。表示される記録はゲーム内の振り返りであり、能力、医療、学習の正式な評価ではありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>無料で遊べますか？</dt><dd>はい。ブラウザで基本プレイを始められ、ログインは必要ありません。</dd></div><div><dt>進行は保存されますか？</dt><dd>対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タップとドラッグを使える画面に対応しています。</dd></div><div><dt>うまく進めない時は？</dt><dd>目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。</dd></div><div><dt>ゲームの記録は正式な能力テストですか？</dt><dd>いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。</dd></div><div><dt>アカウントは必要ですか？</dt><dd>いいえ。通常のプレイにアカウントは必要ありません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ルーン戦術</strong><span>どうぶつルーン戦術は、仲間の位置と行動順を決め、ルーン連鎖で敵を倒すターン制戦術を楽しめるWeightPlayオリジナル作品です。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>オート分隊</strong><span>どうぶつオート分隊は、役割の異なる仲間を前後に置き、波ごとに編成を磨く自走チーム戦略を楽しめるWeightPlayオリジナル作品です。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>レリックハンター</strong><span>どうぶつレリックハンターは、遺跡の部屋を進み、装備と遺物の組み合わせを選ぶアクション遠征を楽しめるWeightPlayオリジナル作品です。</span></span></a></div></div>
-    </div>
-  </section>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>ビーストデッキ</h2><p>敵の意図を見て、エネルギーとカードの順番を考えよう。</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>遊び方</h3><ol><li>解放済みの任務を選び、敵の次の行動を確認します。</li><li>エネルギーに応じて攻撃、防御、補助カードを使います。出す順番も重要です。</li><li>ターンを終了すると敵が行動します。戦闘の間にカードを選び、任務を達成しましょう。</li></ol></div><div class="game-info-section"><h3>カードと装備</h3><p>戦闘中に選ぶカードはその任務限定です。コインのパックで永久カードや装備を獲得し、出発前に設定できます。呪いはエネルギーで除去でき、ターン終了時に手札にあるとダメージを受けます。</p></div><div class="game-info-section"><h3>保存</h3><p>進行とコレクションは端末に保存されます。サイトデータの削除で失われる場合があります。ダイヤは任意の霧のお守り専用で、任務には不要です。</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>進行状況とコレクションは保存されますか？</dt><dd>はい。この端末に保存されますが、サイトデータを削除すると失われる場合があります。</dd></div><div><dt>ミッションの解放にダイヤは必要ですか？</dt><dd>いいえ。ダイヤは任意の霧のお守りにのみ使い、ミッションの解放には必要ありません。</dd></div></dl></div></div></section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ビーストデッキ";document.title="ビーストデッキ | WeightPlay";},{once:true});</script>
 </body>
 </html>

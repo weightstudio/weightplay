@@ -136,7 +136,6 @@ WeightPlay covers these game and content clusters:
 - Animal Coloring Studio: https://weightplay.com/games/animal-coloring-studio/
 - Animal Parking Patrol: https://weightplay.com/games/animal-parking-patrol/
 - Animal Screw Workshop: https://weightplay.com/games/animal-screw-workshop/
-- Animal Screw Workshop: https://weightplay.com/games/animal-screw-workshop/
 - Animal Habitat Mahjong: https://weightplay.com/games/animal-habitat-mahjong/
 - Animal Color Springs: https://weightplay.com/games/animal-color-springs/
 - Animal Word Trails: https://weightplay.com/games/animal-word-trails/
@@ -159,6 +158,39 @@ WeightPlay covers these game and content clusters:
 - Weather Watch: https://weightplay.com/games/animal-weather-watch/
 - Signal Scout: https://weightplay.com/games/animal-signal-scout/
 - Orchard Sound Memory: https://weightplay.com/en/games/animal-echo-orchard/
+- Star Map Position Logic: https://weightplay.com/en/games/animal-constellation-keeper/
+- Folded Field: https://weightplay.com/en/games/animal-folded-field/
+- Dawn Shutters: https://weightplay.com/en/games/animal-dawn-shutters/
+- Nest Weigh-In: https://weightplay.com/en/games/animal-nest-weigh/
+- Linked Dew Valves: https://weightplay.com/en/games/animal-dewline/
+- Wind-Sown Garden: https://weightplay.com/en/games/animal-gust-garden/
+- Carnival Claw: https://weightplay.com/en/games/animal-carnival-claw/
+- Honey Shield: https://weightplay.com/en/games/animal-honey-shield/
+- Unblock Trail: https://weightplay.com/en/games/animal-unblock/
+- Zhao Yun & A Dou: Inkline Defense: https://weightplay.com/en/games/zhao-yun-a-dou/
+- Panko's Bus Jam: https://weightplay.com/en/games/animal-bus-jam/
+- Klondike Solitaire: https://weightplay.com/en/games/klondike-solitaire/
+- Pyramid Solitaire: https://weightplay.com/en/games/pyramid-solitaire/
+- Golf Solitaire: https://weightplay.com/en/games/golf-solitaire/
+- Yukon Solitaire: https://weightplay.com/en/games/yukon-solitaire/
+- Panko's Tangram Trail: https://weightplay.com/en/games/animal-tangram/
+- Color Link Garden: https://weightplay.com/en/games/animal-color-link/
+- Panko's Bamboo Waterway: https://weightplay.com/en/games/animal-bamboo-pipes/
+- Triple Match: https://weightplay.com/en/games/animal-triple-match/
+- Skyspire Drop: https://weightplay.com/en/games/animal-skyspire-drop/
+- Penalty Cup: https://weightplay.com/en/games/animal-penalty-cup/
+- Checkers: https://weightplay.com/en/games/checkers/
+- Hearts: https://weightplay.com/en/games/hearts/
+- Spades: https://weightplay.com/en/games/spades/
+- Speed Solitaire: https://weightplay.com/en/games/speed/
+- Tower of Hanoi: https://weightplay.com/en/games/tower-of-hanoi/
+- Tetris: https://weightplay.com/en/games/tetris/
+- Frost Maze Rescue: https://weightplay.com/en/games/animal-frost-maze/
+- Moonlight Workshop Escape: https://weightplay.com/en/games/animal-moonlight-workshop/
+- Chameleon Blend Trials: https://weightplay.com/en/games/animal-chameleon-blend/
+- Habitat Builder: https://weightplay.com/en/games/animal-habitat-builder/
+- Animal Putt Trails: https://weightplay.com/en/games/animal-putt-trails/
+- Snake: https://weightplay.com/en/games/snake/
 ## Age And Skill Positioning
 
 WeightPlay uses age-aware and skill-aware game discovery.

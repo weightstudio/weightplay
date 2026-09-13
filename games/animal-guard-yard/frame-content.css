@@ -1,4 +1,29 @@
 /* Game-owned content only. Shared frame styles own all header/preferences skin. */
+#animalTabPanel #yardRosterNav{display:flex;gap:8px;flex:none;margin-bottom:8px}
+#yardRosterNav button{flex:1;min-height:44px;border:1px solid #7ca19c;background:#183b40;color:#fff3c9;border-radius:6px;font:700 15px/1.3 system-ui}
+#yardRosterNav button[aria-pressed="true"]{border:2px solid #f0d277;background:#316a58}
+html body.guard-yard-stage [data-wp-frame="2"] #animalTabPanel{display:flex!important;flex-direction:column!important;min-height:0!important;overflow:hidden!important}
+html body.guard-yard-stage [data-wp-frame="2"] #animalTabPanel.hidden{display:none!important}
+#animalTabPanel .kennel-panel,#yardTalents{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
+#animalTabPanel [hidden]{display:none!important}
+#yardTalents{padding:4px 8px 20px;color:#fff3d2;scrollbar-gutter:stable;background:rgba(14,38,40,.88);border-radius:8px;touch-action:pan-y}
+#yardTalents>p,#yardTalents fieldset>p{font:500 13px/1.5 system-ui;margin:6px 2px 12px}
+#yardTalents fieldset{min-width:0;margin:8px 0 14px;padding:8px;border:1px solid #819989;border-radius:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#yardTalents legend{font:800 16px/1.4 system-ui;padding-inline:6px;color:#f6d783}
+#yardTalents fieldset>p{grid-column:1/-1;margin:0}
+#yardTalents button{display:grid;grid-template-columns:36px minmax(0,1fr);align-content:start;align-items:center;gap:6px;padding:10px;min-width:0;min-height:142px;text-align:start;white-space:normal;overflow-wrap:anywhere;border:1px solid #648a84;border-radius:6px;background:#173b40;color:#fff2ce;touch-action:pan-y}
+#yardTalents button[aria-pressed="true"]{border:2px solid #f8d373;background:#27564a}
+#yardTalents button:disabled{opacity:.65}
+#yardTalents button img{width:36px;height:36px;object-fit:contain;pointer-events:none}
+#yardTalents button strong{font:800 14px/1.4 system-ui}
+#yardTalents button span{grid-column:1/-1;font:500 13px/1.5 system-ui}
+#yardTalents button small{grid-column:1/-1;font:700 12px/1.4 system-ui;color:#f8d373}
+#yardTalents button:focus-visible,#yardRosterNav button:focus-visible{outline:3px solid #b5f6ef;outline-offset:2px}
+#energyRecovery{font:700 10px/1.2 system-ui;color:#b6f0ba;white-space:nowrap;direction:ltr}
+.yard-energy-value{display:flex;align-items:baseline;gap:4px;direction:ltr;max-width:100%}
+.talent-heal{color:#b4ffad!important;filter:drop-shadow(0 0 5px #7fff8b)}
+.talent-frost{color:#adfaff!important}.talent-chain{color:#ffe39b!important}
+@media(max-width:440px){#yardTalents fieldset{grid-template-columns:minmax(0,1fr)}#yardTalents button{min-height:110px}}
 .yard-bolt{position:absolute;left:0;top:50%;width:22px;height:3px;background:#f5d58a;transform:translateY(-50%)}
 .yard-bolt::before{content:'';position:absolute;right:-2px;top:-3px;width:8px;height:8px;background:#fff0c6;clip-path:polygon(0 0,100% 50%,0 100%)}
 .yard-bolt::after{content:'';position:absolute;left:1px;top:-2px;width:5px;height:7px;background:#69b6a8}
