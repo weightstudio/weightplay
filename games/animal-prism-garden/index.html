@@ -23,8 +23,8 @@
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <title>Prism Route Garden | WeightPlay</title>
-  <meta name="description" content="Connect matching prism flowers across 30 very-hard garden boards, obey color gates, and illuminate every open tile.">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Prism Route Garden","description":"Connect matching prism flowers across 30 very-hard garden boards, obey color gates, and illuminate every open tile.","url":"https://weightplay.com/en/games/animal-prism-garden/","image":"https://weightplay.com/assets/animal-prism-garden/cover.webp","genre":["Puzzle","Strategy"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"en","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"}}</script>
+  <meta name="description" content="Connect matching crystal flowers, obey color gates, and fill every tile in a moonlit garden.">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Prism Route Garden","description":"Connect matching crystal flowers, obey color gates, and fill every tile in a moonlit garden.","url":"https://weightplay.com/en/games/animal-prism-garden/","image":"https://weightplay.com/assets/interface7-redrawn/animal-prism-garden.webp","genre":["Puzzle","Strategy"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"en","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"}}</script>
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/tutorial.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
@@ -32,13 +32,14 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <link rel="stylesheet" href="style.css?v=20260819-chapter-mission-v14-141e1a2f03ac">
+  <link rel="stylesheet" href="frame-content.css?v=20260913-prism-v15"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css">
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-prism-garden" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-t="title">Prism Route Garden</strong><span data-t="loading">Calibrating prism routes…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
-  <div id="mainGroup" class="main-group">
+  <div id="gameFrame" data-wp-frame-root><div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -46,35 +47,26 @@
         <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="coverAlt" alt="An owl architect studying luminous routes in a moonlit conservatory">
+        <img src="/assets/interface7-redrawn/animal-prism-garden.webp" data-t-alt="coverAlt" alt="A block-shaped rabbit connects crystal flowers in a moonlit garden.">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">OWL ARCHITECT'S NIGHT GARDEN</p>
           <h1 data-t="title">Prism Route Garden</h1>
-          <p class="main-summary" data-t="summary">Plan long routes across an expanded garden. Every prism must connect and every open tile must glow.</p>
-          <div class="main-meta"><span id="mainProgress"></span><span data-t="difficulty">Difficulty: Advanced</span><span data-t="session">Session: 4–10 min</span></div>
+          <p class="main-summary" data-t="summary">Connect matching crystal flowers and fill every tile.</p>
+          <div class="main-meta"><span id="mainProgress"></span></div>
           <button id="start" class="primary" type="button" data-t="start">Start Game</button>
         </div>
       </section>
     </main>
     <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="How to Play">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">WeightPlay Original Game Guide</span><h2 data-t="guideTitle">How to Play</h2><p data-t="guideLead">Connect every matching prism without crossing paths. Prism gates accept only their own color, and every open tile must be filled.</p></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-t="guideTitle">How to Play</h2><p data-t="summary">Connect matching crystal flowers and fill every tile.</p></div></div>
       <div class="game-info-sections">
-        <div class="game-info-section"><h3 data-t="guideRulesTitle">Core rules</h3><ol><li data-t="guideRule1">Drag from one prism to its matching partner.</li><li data-t="guideRule2">Routes move only up, down, left, or right and cannot share tiles.</li><li data-t="guideRule3">A marked prism gate can only be crossed by the matching color.</li><li data-t="guideRule4">Connect every pair and illuminate every open tile to finish.</li></ol><p data-t="guideRulesDetail"></p></div>
-        <div class="game-info-section game-info-strategy"><h3 data-t="guideTipsTitle">Planning tips</h3><ul><li data-t="guideTip1">Reserve narrow edges and gated corridors before filling the center.</li><li data-t="guideTip2">Trace longer pairs first when they divide the board.</li><li data-t="guideTip3">Use Undo or Hint without losing campaign progress.</li></ul><p data-t="guideTipsDetail"></p></div>
-        <div class="game-info-section"><h3 data-t="guideCampaignTitle">Advanced campaign</h3><p data-t="guideCampaign">Thirty authored layouts expand from 7×7 to 10×10, introduce more color pairs and add prism gates in six chapters.</p><p data-t="guideCampaignDetail"></p></div>
-        <div class="game-info-section"><h3 data-t="relatedTitle">Related Games</h3><p data-t="relatedIntro">If you enjoy planning routes through tight spaces, continue with these WeightPlay games:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-bamboo-pipes" href="../../games/animal-bamboo-pipes/"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedBambooTitle">Panko's Bamboo Waterway</strong><span data-t="relatedBambooDescription">Rotate complete bamboo pipes to carry water from carved springs to flowering pools without a broken route.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-cratebound" href="../../games/animal-cratebound/"><img src="../../assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedCrateTitle">Animal Cratebound</strong><span data-t="relatedCrateDescription">Push and pull rune cargo through sky-ark warehouses while preserving room for every turn.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-rift-salvage" href="../../games/animal-rift-salvage/"><img src="../../assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedRiftTitle">Animal Rift Salvage</strong><span data-t="relatedRiftDescription">Guide a growing recovery ring through hazards, rivals, and objective-based astral routes.</span></span></a>
-        </div></div>
-        <div class="game-info-section"><h3 data-t="guideControlsTitle"></h3><p data-t="guideControlsDetail"></p></div>
-        <div class="game-info-section"><h3 data-t="guideSaveTitle">Save and access</h3><p data-t="guideSave">Progress stays in this browser. The internal release trial has no account, purchases, or active advertising.</p><p data-t="guideSaveDetail"></p></div>
-        <div class="game-info-section"><h3 data-t="guideFaqTitle"></h3><p data-t="guideFaqDetail"></p></div>
+        <div class="game-info-section"><h3 data-t="guideRulesTitle">How to play</h3><ol><li data-t="guideRule1">Drag from a crystal flower to its matching color.</li><li data-t="guideRule2">Move up, down, left or right. Routes cannot cross or share tiles.</li><li data-t="guideRule3">A crystal gate accepts only the color shown by its border.</li><li data-t="guideRule4">Connect all pairs and fill every tile to unlock the next garden.</li></ol></div>
+        <div class="game-info-section"><h3 data-t="guideTipsTitle">Planning tips</h3><p data-t="guideRecovery">Reserve narrow passages first. Undo restores the previous board; Reset clears your routes. Hint completes one unfinished route. Progress is saved in this browser.</p></div>
       </div>
     </section>
   </div>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-prism-garden.webp')" hidden>
     <header class="scene-header stage-header">
       <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
       <h2 data-t="title">Prism Route Garden</h2>
@@ -107,7 +99,7 @@
       <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">GARDEN CALIBRATED</p><h2 id="resultTitle" data-t="resultTitle">Every prism route is stable.</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">Stages</button><button id="next" class="primary" type="button" data-t="next">Next garden</button><button id="retry" type="button" data-t="retry">Replay</button></div></div>
     </section>
   </main>
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  </div><div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
@@ -119,11 +111,11 @@
   <script src="../../src/tutorial.js?v=20260729-prism-garden1"></script>
   <script src="levels.js?v=20260819-chapter-mission-v14-3f61780b8339"></script>
   <script src="locales.js?v=20260819-chapter-mission-v14-f72386435c43"></script>
+  <script src="guide-locales.js?v=20260913-prism-v15"></script>
   <script src="game.js?v=20260819-chapter-mission-v14-1e2228958a78"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="/src/game-screen-frame.js"></script><script src="frame.js?v=20260913-prism-v15"></script>
 </body>
 </html>

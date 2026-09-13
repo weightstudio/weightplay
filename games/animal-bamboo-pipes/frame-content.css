@@ -1,0 +1,16 @@
+/* Only game content. Header/settings/guide presentation stays shared. */
+#gameFrame [hidden]{display:none!important}
+#main[data-wp-frame-scene]{padding:0;min-height:0}
+.bamboo-main-content>img{object-fit:contain}
+#battle .battle-panel{min-width:0;min-height:0}
+#battle .battle-panel,#stage #rail{background:linear-gradient(#06192166,#06192155),url('../../assets/animal-bamboo-pipes-scenery-block-v20.webp') center/cover no-repeat}
+#battle .pipe{background:#23463d;border:1px solid #496756}
+#battle .pipe::before{inset:0;background-position:center;background-size:contain;background-repeat:no-repeat}
+#battle .pipe[data-shape="s"]::before{background-image:url('../../assets/animal-bamboo-pipes-straight-block-v20.webp')}
+#battle .pipe[data-shape="e"]::before{background-image:url('../../assets/animal-bamboo-pipes-elbow-block-v20.webp')}
+#battle .pipe[data-shape="t"]::before{background-image:url('../../assets/animal-bamboo-pipes-tee-block-v20.webp')}
+#battle .pipe[data-shape="x"]::before{background-image:url('../../assets/animal-bamboo-pipes-cross-block-v20.webp')}
+#battle .pipe[data-shape="source"]::before{background-image:url('../../assets/animal-bamboo-pipes-source-block-v20.webp')}
+#battle .pipe.target::before{background-image:url('../../assets/animal-bamboo-pipes-goal-block-v20.webp');transform:none}
+#battle #result{background:var(--wp-ui-surface);color:var(--wp-ui-text)}
+#battle #result img{object-fit:contain;max-width:100%;margin:auto}

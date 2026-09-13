@@ -18,14 +18,13 @@ export function solid(s,x,y) { return y >= s.board.length || (x >= 0 && x < WIDT
 export function powerOf(s, e) {
   return e.power + s.enemies.filter(f => f.alive && f.buff?.targets.includes(e.id)).reduce((n,f) => n+f.buff.amount, 0);
 }
-export const heroPower = s => (s.hero.power + (s.hero.weapon || 0)) * (s.hero.fury ? 2 : 1);
-export const damageOf = (s,e) => Math.max(1, Math.ceil(powerOf(s,e) * (e.boss ? .6 : .4)) - (s.hero.armor || 0));
+export const heroPower = s => s.hero.power;
 export function encounter(s,e,from=s.hero.x) {
-  const damage=damageOf(s,e), power=heroPower(s), enemy=powerOf(s,e);
+  const power=heroPower(s), enemy=powerOf(s,e);
   const code=e.shield?'shield':e.requires?.some(id=>!s.killed.includes(id))?'deputies':
     e.direction&&((e.direction==='left'&&from>=e.x)||(e.direction==='right'&&from<=e.x))?'direction':
-    e.ordered&&s.seals.length!==s.sealOrder.length?'sealOrder':power<=enemy?'power':s.hero.hp<=damage?'health':null;
-  return {code,damage,hero:power,enemy,target:e.id,direction:e.direction};
+    e.ordered&&s.seals.length!==s.sealOrder.length?'sealOrder':power<=enemy?'power':null;
+  return {code,hero:power,enemy,target:e.id,direction:e.direction};
 }
 export function reachable(s, a, b) {
   if(a.y !== b.y) return false;
@@ -33,7 +32,7 @@ export function reachable(s, a, b) {
   return true;
 }
 export function newState(level) {
-  return { level:level.id, board:level.board.map(r=>r.split('')), hero:{hp:40,maxHp:40,weapon:0,armor:0,fury:false,...level.hero}, enemies:level.enemies.map(e=>({...clone(e),alive:true})), items:level.items.map(i=>({...clone(i),alive:true})), required:level.required||[], seals:[], sealOrder:level.sealOrder||[], collected:[], killed:[], moves:0, status:'playing', reason:null };
+  return { level:level.id, board:level.board.map(r=>r.split('')), hero:{x:level.hero.x,y:level.hero.y,power:level.hero.power,armed:false}, calculation:null, enemies:level.enemies.map(e=>({...clone(e),alive:true})), items:level.items.map(i=>({...clone(i),alive:true})), required:level.required||[], seals:[], sealOrder:level.sealOrder||[], collected:[], killed:[], moves:0, status:'playing', reason:null };
 }
 function snapshot(s) {return clone(s);}
 export function step(input,x,y,{trace=true}={}) {
@@ -71,36 +70,37 @@ export function step(input,x,y,{trace=true}={}) {
         item.alive=false;s.status='won';emit('win');break;
       }
       item.alive=false;s.collected.push(item.id);
-      const hpBefore=s.hero.hp;
-      if(item.kind==='sword')s.hero.weapon=Math.max(s.hero.weapon,item.amount||12);
-      if(item.kind==='armor')s.hero.armor=Math.max(s.hero.armor,item.amount||8);
-      if(item.kind==='heart'){s.hero.hp+=item.amount||60;s.hero.maxHp+=item.amount||60;}
-      if(item.kind==='elixir'){s.hero.hp*=2;s.hero.maxHp=Math.max(s.hero.maxHp,s.hero.hp);}
-      if(item.kind==='fury')s.hero.fury=true;
+      const before=s.hero.power;
+      if(item.kind==='sword'||item.kind==='power')s.hero.power+=item.amount;
+      if(item.kind==='multiply')s.hero.power*=item.amount;
+      if(item.kind==='sword')s.hero.armed=true;
+      const calculation=['sword','power','multiply'].includes(item.kind)
+        ? {before,operator:item.kind==='multiply'?'×':'+',amount:item.amount,after:s.hero.power}:null;
+      if(calculation)s.calculation=calculation;
       if(item.kind==='key')for(const row of s.board)for(let i=0;i<row.length;i++)if(row[i]===item.link)row[i]='.';
       if(item.kind==='rune')s.enemies.filter(e=>e.shield===item.link).forEach(e=>e.shield=null);
       if(item.kind==='seal') {
         if(s.sealOrder[s.seals.length]!==item.link){fail('sealOrder');break;}
         s.seals.push(item.link);
       }
-      emit('pickup',{kind:item.kind,id:item.id,gain:s.hero.hp-hpBefore,amount:item.amount});continue;
+      emit('pickup',{kind:item.kind,id:item.id,amount:item.amount,calculation});continue;
     }
     if(enemies.length) {
       const enemy=enemies[0], from=s.hero.x, enemyPower=powerOf(s,enemy);
       // Record approach to adjacent contact before applying the result.
       const outcome=encounter(s,enemy,from);
       emit('approach',{target:enemy.id,from,to:enemy.x,...outcome});
-      if(outcome.code){if(['power','health'].includes(outcome.code))s.hero.hp=0;fail(outcome.code,outcome);break;}
-      s.hero.hp-=outcome.damage;s.hero.power+=enemyPower;s.hero.fury=false;
+      if(outcome.code){fail(outcome.code,outcome);break;}
+      s.calculation={before:s.hero.power,operator:'+',amount:enemyPower,after:s.hero.power+enemyPower};s.hero.power+=enemyPower;
       if(enemy.next) {
         // Defeat and relocation are separate events: neither model teleports.
         const next=enemy.next;delete enemy.next;
-        emit('hit',{target:enemy.id,power:enemyPower,damage:outcome.damage,boss:true,phase:true});
+        emit('hit',{target:enemy.id,power:enemyPower,calculation:s.calculation,boss:true,phase:true});
         s.hero.x=enemy.x;emit('walk',{target:enemy.id});
         Object.assign(enemy,next);
         if(enemy.open)for(const row of s.board)for(let i=0;i<row.length;i++)if(row[i]===enemy.open)row[i]='.';
         emit('phase',{target:enemy.id,power:enemyPower});
-      } else {enemy.alive=false;s.killed.push(enemy.id);emit('hit',{target:enemy.id,power:enemyPower,damage:outcome.damage,boss:!!enemy.boss});s.hero.x=enemy.x;emit('walk',{target:enemy.id});}
+      } else {enemy.alive=false;s.killed.push(enemy.id);emit('hit',{target:enemy.id,power:enemyPower,calculation:s.calculation,boss:!!enemy.boss});s.hero.x=enemy.x;emit('walk',{target:enemy.id});}
       continue;
     }
     break;
@@ -114,7 +114,7 @@ export function actions(s) {
   }
   return result;
 }
-export function stateKey(s) {const v=clone(s);delete v.moves;delete v.reason;return JSON.stringify(v);}
+export function stateKey(s) {const v=clone(s);delete v.moves;delete v.reason;delete v.calculation;return JSON.stringify(v);}
 export function solve(start,{limit=60000}={}) {
   if(start.status==='won')return {status:'solved',moves:[],visited:0};
   if(start.status!=='playing')return {status:'dead',moves:[],visited:0};

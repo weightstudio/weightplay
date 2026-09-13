@@ -32,7 +32,7 @@
   "name": "Jardim de Rotas Prisma",
   "description": "Crie rotas luminosas em 30 jardins maiores, respeite portões de cor e ilumine todas as casas.",
   "url": "https://weightplay.com/pt-br/games/animal-prism-garden/",
-  "image": "https://weightplay.com/assets/animal-prism-garden/cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-prism-garden.webp",
   "genre": [
     "Animal Games",
     "Puzzle",
@@ -62,7 +62,8 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260819-chapter-mission-v14-141e1a2f03ac">
+  <link rel="stylesheet" href="frame-content.css?v=20260913-prism-v15"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Jardim de Rotas Prisma | WeightPlay" />
@@ -79,7 +80,7 @@
     <div class="loading-card"><strong data-t="title">Jardim de Rotas Prisma</strong><span data-t="loading">Calibrando rotas prismáticas…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
-  <div id="mainGroup" class="main-group">
+  <div id="gameFrame" data-wp-frame-root><div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Voltar ao WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -87,35 +88,26 @@
         <label class="locale"><span data-t="language">Idioma</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="Uma coruja arquiteta estuda rotas luminosas em uma estufa ao luar" alt="Imagem do jogo Jardim de Rotas Prisma">
+        <img src="/assets/interface7-redrawn/animal-prism-garden.webp" data-t-alt="Um coelho de blocos liga flores de cristal num jardim ao luar." alt="Imagem do jogo Jardim de Rotas Prisma">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">JARDIM NOTURNO DA CORUJA</p>
           <h1 data-t="title">Jardim de Rotas Prisma</h1>
-          <p class="main-summary" data-t="summary">Planeje rotas longas em um jardim maior. Ligue cada prisma e ilumine todas as casas.</p>
-          <div class="main-meta"><span id="mainProgress"></span><span data-t="difficulty">Dificuldade: muito difícil</span><span data-t="session">Sessão: 4–10 min</span></div>
+          <p class="main-summary" data-t="summary">Ligue flores de cristal da mesma cor e preencha todas as casas.</p>
+          <div class="main-meta"><span id="mainProgress"></span></div>
           <button id="start" class="primary" type="button" data-t="start">Iniciar jogo</button>
         </div>
       </section>
     </main>
     <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="Como jogar">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">Guia original WeightPlay</span><h2 data-t="guideTitle">Como jogar</h2><p data-t="guideLead">Ligue prismas iguais sem cruzar. Portões aceitam só sua cor e todas as casas devem ser preenchidas.</p></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-t="guideTitle">Como jogar</h2><p data-t="summary">Ligue flores de cristal da mesma cor e preencha todas as casas.</p></div></div>
       <div class="game-info-sections">
-        <div class="game-info-section"><h3 data-t="guideRulesTitle">Regras principais</h3><ol><li data-t="guideRule1">Arraste de um prisma até seu par.</li><li data-t="guideRule2">Rotas só andam nas quatro direções e não dividem casas.</li><li data-t="guideRule3">Um portão marcado só aceita a rota da mesma cor.</li><li data-t="guideRule4">Ligue todos os pares e ilumine todas as casas abertas.</li></ol><p data-t="guideRulesDetail">A rota pode começar em qualquer ponta. Redesenhar uma cor remove a rota anterior e voltar à casa anterior reduz um passo. Complete as ligações e todas as casas.</p></div>
-        <div class="game-info-section game-info-strategy"><h3 data-t="guideTipsTitle">Dicas</h3><ul><li data-t="guideTip1">Reserve bordas estreitas e corredores com portões primeiro.</li><li data-t="guideTip2">Trace antes os pares longos que dividem o tabuleiro.</li><li data-t="guideTip3">Desfazer e Dica não apagam o progresso.</li></ul><p data-t="guideTipsDetail">Não ligue primeiro apenas o par mais próximo. Leia portões, bordas e rotas longas que dividem o tabuleiro. Depois de cada rota, confira as entradas restantes e evite bolsões vazios.</p></div>
-        <div class="game-info-section"><h3 data-t="guideCampaignTitle">Campanha avançada</h3><p data-t="guideCampaign">Trinta layouts crescem de 7×7 a 10×10 e adicionam cores e portões em seis capítulos.</p><p data-t="guideCampaignDetail">Os 30 tabuleiros usam rotas fixas e bem entrelaçadas. Pontas da mesma cor costumam ficar distantes, exigindo planejar primeiro rotas longas e áreas estreitas. Os portões aparecem a partir do Jardim 5, apenas um a três por tabuleiro, como restrições e não como um mapa da solução.</p></div>
-        <div class="game-info-section"><h3 data-t="relatedTitle">Jogos relacionados</h3><p data-t="relatedIntro">Se gosta de planejar rotas em espaços apertados, continue com estes jogos do WeightPlay:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-bamboo-pipes" href="../../games/animal-bamboo-pipes/"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedBambooTitle">Canal de Bambu do Panko</strong><span data-t="relatedBambooDescription">Gire tubos de bambu completos para levar água da fonte esculpida ao lago florido sem interromper a rota.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-cratebound" href="../../games/animal-cratebound/"><img src="../../assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedCrateTitle">Arca de Carga Animal</strong><span data-t="relatedCrateDescription">Empurre e puxe cargas rúnicas nos armazéns da arca celeste, preservando espaço para cada curva.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-rift-salvage" href="../../games/animal-rift-salvage/"><img src="../../assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedRiftTitle">Resgate na Fenda Animal</strong><span data-t="relatedRiftDescription">Guie um anel de recuperação crescente por rotas astrais com perigos, rivais e objetivos.</span></span></a>
-        </div></div>
-        <div class="game-info-section"><h3 data-t="guideControlsTitle">Controles e retorno</h3><p data-t="guideControlsDetail">No toque, segure e deslize por casas vizinhas; com mouse, segure o botão principal. Um pulso vermelho indica ocupação, outra ponta ou portão de cor errada. Use Desfazer, Reiniciar ou Dica.</p></div>
-        <div class="game-info-section"><h3 data-t="guideSaveTitle">Salvamento e acesso</h3><p data-t="guideSave">O progresso fica salvo neste navegador. Não é preciso ter conta nem fazer compras, e a publicidade não está ativa no momento.</p><p data-t="guideSaveDetail">Só o desbloqueio é salvo; rotas incompletas não passam para outra visita. A faixa independente de 56 px sob Stage e Battle não contém anúncio ativo.</p></div>
-        <div class="game-info-section"><h3 data-t="guideFaqTitle">Perguntas e recuperação</h3><p data-t="guideFaqDetail">Não é permitido cruzar, compartilhar ou mover na diagonal. O portão reserva uma cor, não é outra ponta. Se todos os pares estiverem ligados, procure uma casa escura ou use Desfazer e Reiniciar.</p></div>
+        <div class="game-info-section"><h3 data-t="guideRulesTitle">Como jogar</h3><ol><li data-t="guideRule1">Arraste de uma flor até outra da mesma cor.</li><li data-t="guideRule2">Mova para cima, baixo, esquerda ou direita. Caminhos não podem cruzar nem compartilhar casas.</li><li data-t="guideRule3">Um portal de cristal só aceita a cor da sua borda.</li><li data-t="guideRule4">Ligue todos os pares e preencha o tabuleiro para abrir o próximo jardim.</li></ol></div>
+        <div class="game-info-section"><h3 data-t="guideTipsTitle">Dicas</h3><p data-t="guideRecovery">Reserve primeiro as passagens estreitas. Desfazer restaura o tabuleiro anterior; Reiniciar apaga os caminhos. Dica completa um caminho pendente. O progresso fica salvo neste navegador.</p></div>
       </div>
     <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas fases estão incluídas?</dt><dd>Existem 30 estágios de autoria em seis capítulos de regras. O estágio 30 permanece reproduzível após a conclusão.</dd></div><div><dt>O progresso é salvo?</dt><dd>Sim, somente neste navegador.</dd></div></dl></div></section>
   </div>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-prism-garden.webp')" hidden>
     <header class="scene-header stage-header">
       <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Voltar">←</button>
       <h2 data-t="title">Jardim de Rotas Prisma</h2>
@@ -148,11 +140,11 @@
       <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">JARDIM CALIBRADO</p><h2 id="resultTitle" data-t="resultTitle">Todas as rotas estão estáveis.</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">Fases</button><button id="next" class="primary" type="button" data-t="next">Próximo jardim</button><button id="retry" type="button" data-t="retry">Repetir</button></div></div>
     </section>
   </main>
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  </div><div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
@@ -161,11 +153,11 @@
   <script src="../../src/tutorial.js?v=20260729-prism-garden1"></script>
   <script src="levels.js?v=20260819-chapter-mission-v14-3f61780b8339"></script>
   <script src="locales.js?v=20260819-chapter-mission-v14-f72386435c43"></script>
+  <script src="guide-locales.js?v=20260913-prism-v15"></script>
   <script src="game.js?v=20260819-chapter-mission-v14-1e2228958a78"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="/src/game-screen-frame.js"></script><script src="frame.js?v=20260913-prism-v15"></script>
 </body>
 </html>

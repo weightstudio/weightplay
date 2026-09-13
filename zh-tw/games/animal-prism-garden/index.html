@@ -32,7 +32,7 @@
   "name": "幻彩連線庭園",
   "description": "在 30 座大型庭園規劃幻彩路線，遵守限定顏色的閘門規則，並點亮每一個開放格。",
   "url": "https://weightplay.com/zh-tw/games/animal-prism-garden/",
-  "image": "https://weightplay.com/assets/animal-prism-garden/cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-prism-garden.webp",
   "genre": [
     "Animal Games",
     "Puzzle",
@@ -62,7 +62,8 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260819-chapter-mission-v14-141e1a2f03ac">
+  <link rel="stylesheet" href="frame-content.css?v=20260913-prism-v15"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="幻彩連線庭園 | WeightPlay" />
@@ -79,7 +80,7 @@
     <div class="loading-card"><strong data-t="title">幻彩連線庭園</strong><span data-t="loading">正在校準幻彩路線…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
-  <div id="mainGroup" class="main-group">
+  <div id="gameFrame" data-wp-frame-root><div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -87,35 +88,26 @@
         <label class="locale"><span data-t="language">語言</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="貓頭鷹建築師在月光溫室研究發光路線" alt="《幻彩連線庭園》遊戲圖片">
+        <img src="/assets/interface7-redrawn/animal-prism-garden.webp" data-t-alt="方塊兔子在月夜庭園中連接晶花。" alt="《幻彩連線庭園》遊戲圖片">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">貓頭鷹建築師的夜光庭園</p>
           <h1 data-t="title">幻彩連線庭園</h1>
-          <p class="main-summary" data-t="summary">在擴大的庭園規劃長路線。連接所有幻彩晶花，並讓每個開放格發光。</p>
-          <div class="main-meta"><span id="mainProgress"></span><span data-t="difficulty">難度：極難</span><span data-t="session">單局：4–10 分鐘</span></div>
+          <p class="main-summary" data-t="summary">連接同色晶花，讓路線填滿所有格子。</p>
+          <div class="main-meta"><span id="mainProgress"></span></div>
           <button id="start" class="primary" type="button" data-t="start">開始遊戲</button>
         </div>
       </section>
     </main>
     <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="遊戲指南">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">WeightPlay 原創遊戲指南</span><h2 data-t="guideTitle">遊戲指南</h2><p data-t="guideLead">連接每組同色晶花，路線不能互相佔格。幻彩閘門只接受對應顏色，且所有開放格都必須填滿。</p></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-t="guideTitle">遊戲指南</h2><p data-t="summary">連接同色晶花，讓路線填滿所有格子。</p></div></div>
       <div class="game-info-sections">
-        <div class="game-info-section"><h3 data-t="guideRulesTitle">核心規則</h3><ol><li data-t="guideRule1">從一顆晶花拖曳到相同顏色的另一顆。</li><li data-t="guideRule2">路線只能上下左右移動，而且不能共用格子。</li><li data-t="guideRule3">有標記的幻彩閘門只能讓同色路線通過。</li><li data-t="guideRule4">連完所有配對並點亮全部開放格即可完成。</li></ol><p data-t="guideRulesDetail">路線可從任一端點開始。重新畫同色路線時，舊路線會先清除；拖回上一格可縮短一步，不必重設整盤。其他顏色的端點不能進入。即使所有配對都連上，只要還有一個普通格沒有發光，關卡就不算完成，因此要同時查看「連線」與「填滿」計數。</p></div>
-        <div class="game-info-section game-info-strategy"><h3 data-t="guideTipsTitle">規劃技巧</h3><ul><li data-t="guideTip1">先保留狹窄邊線與閘門走廊，再處理中央。</li><li data-t="guideTip2">若長路線會切開棋盤，優先規劃它。</li><li data-t="guideTip3">復原與提示不會清除關卡進度。</li></ul><p data-t="guideTipsDetail">不要急著連最近的一組，先觀察整張棋盤。閘門代表必經區域，邊緣端點出口較少，長路線也可能把剩餘空間切成兩塊。每完成一條路線後，確認尚未處理的端點仍有入口，而且空白格沒有形成無法進入的小口袋；若封死空間，先復原最近的一條再改線。</p></div>
-        <div class="game-info-section"><h3 data-t="guideCampaignTitle">進階戰役</h3><p data-t="guideCampaign">30 組關卡由 7×7 擴展至 10×10，六個章節會增加顏色配對與幻彩閘門。</p><p data-t="guideCampaignDetail">30 關改用固定但高度交錯的路線配置；同色端點通常相距很遠，必須先規劃長路線與狹窄區域。閘門從第 5 關出現，每關只放 1 至 3 個，作為限制而不是完整答案提示。</p></div>
-        <div class="game-info-section"><h3 data-t="relatedTitle">相關遊戲</h3><p data-t="relatedIntro">如果你喜歡在狹窄空間規劃路線，可以接著挑戰這些 WeightPlay 遊戲：</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-bamboo-pipes" href="../../games/animal-bamboo-pipes/"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedBambooTitle">胖達竹水道</strong><span data-t="relatedBambooDescription">旋轉完整竹管，讓水從雕刻泉眼流向開花水池，不留下斷裂路線。</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-cratebound" href="../../games/animal-cratebound/"><img src="../../assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedCrateTitle">動物方舟搬運隊</strong><span data-t="relatedCrateDescription">在天空方舟倉庫推拉符文貨物，為每一次轉向保留足夠空間。</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-rift-salvage" href="../../games/animal-rift-salvage/"><img src="../../assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedRiftTitle">動物裂隙回收隊</strong><span data-t="relatedRiftDescription">帶領不斷成長的回收環穿過危險、對手與目標導向的星界路線。</span></span></a>
-        </div></div>
-        <div class="game-info-section"><h3 data-t="guideControlsTitle">操作與回饋</h3><p data-t="guideControlsDetail">手機按住晶花後沿相鄰格滑動；滑鼠則按住主要按鍵畫線。發亮格顯示路線歸屬，圓形晶花是端點，外框符號是限定顏色的閘門。紅色閃動代表下一格被占用、是其他端點或閘門顏色不符。復原會回到上一個棋盤快照，重設清空本次嘗試，提示會顯示一條已驗證的安全路線。</p></div>
-        <div class="game-info-section"><h3 data-t="guideSaveTitle">存檔與使用</h3><p data-t="guideSave">進度只儲存在此瀏覽器。不需要帳號或購買，目前也沒有啟用廣告。</p><p data-t="guideSaveDetail">只會保存關卡解鎖進度，未完成路線不會跨次保留，避免下次進入時出現過期的半成品。音效可切換，重要狀態也都有文字或形狀提示。一般版 Stage 與 Battle 下方保留獨立 56px 未來橫幅區，但目前沒有啟用廣告，也不會覆蓋任何遊戲控制。</p></div>
-        <div class="game-info-section"><h3 data-t="guideFaqTitle">常見問題與路線復原</h3><p data-t="guideFaqDetail">路線不能交叉、共用普通格或斜向移動。閘門不是額外端點，而是指定顏色必須保留的格子。提示不限次數，也不花費金幣、鑽石或其他貨幣。若所有配對已連上卻沒有結算，請查看填滿計數並尋找暗格；卡住時可往回拖一格、使用復原，或重設後重新規劃。</p></div>
+        <div class="game-info-section"><h3 data-t="guideRulesTitle">玩法</h3><ol><li data-t="guideRule1">按住晶花，拖曳到另一朵同色晶花。</li><li data-t="guideRule2">只能上下左右移動；路線不能交叉或共用格子。</li><li data-t="guideRule3">晶體門只允許與外框同色的路線通過。</li><li data-t="guideRule4">連好所有配對並填滿棋盤，即可解鎖下一座庭園。</li></ol></div>
+        <div class="game-info-section"><h3 data-t="guideTipsTitle">規劃技巧</h3><p data-t="guideRecovery">先預留狹窄通道。復原可還原上一步棋盤；重設清空路線。提示會完成一條尚未接好的路線。進度儲存在此瀏覽器。</p></div>
       </div>
     <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有幾關？</dt><dd>六個規則章節有 30 個編寫階段。第 30 關在完成後仍然可以重玩。</dd></div><div><dt>進度會保存嗎？</dt><dd>是，僅保存在此瀏覽器。</dd></div></dl></div></section>
   </div>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-prism-garden.webp')" hidden>
     <header class="scene-header stage-header">
       <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="返回">←</button>
       <h2 data-t="title">幻彩連線庭園</h2>
@@ -148,11 +140,11 @@
       <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">庭園校準完成</p><h2 id="resultTitle" data-t="resultTitle">所有幻彩路線都已穩定。</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">關卡</button><button id="next" class="primary" type="button" data-t="next">下一個庭園</button><button id="retry" type="button" data-t="retry">再玩一次</button></div></div>
     </section>
   </main>
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  </div><div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
@@ -161,11 +153,11 @@
   <script src="../../src/tutorial.js?v=20260729-prism-garden1"></script>
   <script src="levels.js?v=20260819-chapter-mission-v14-3f61780b8339"></script>
   <script src="locales.js?v=20260819-chapter-mission-v14-f72386435c43"></script>
+  <script src="guide-locales.js?v=20260913-prism-v15"></script>
   <script src="game.js?v=20260819-chapter-mission-v14-1e2228958a78"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="/src/game-screen-frame.js"></script><script src="frame.js?v=20260913-prism-v15"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
   const localeLang={en:"en","zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const localeByRoute={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
-  const GAME_VERSION="v14";
+  const GAME_VERSION="v15";
   const STAGE_CARD_POOL_SIZE=9;
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
@@ -29,6 +29,7 @@
   function setCovered(covered,owner){
     $$("#battle > *").forEach(node=>{if(node!==owner)node.inert=covered});
     document.body.classList.toggle("modal-open",covered);
+    window.dispatchEvent(new Event("weightplay:prism-covered"));
   }
   function openModal(panel,focus){
     panel.hidden=false;setCovered(true,panel);requestAnimationFrame(()=>focus?.focus?.({preventScroll:true}));
@@ -39,7 +40,7 @@
   function syncBattleHelp(screen){
     const button=$(".wp-tutorial-button");
     if(!button)return;
-    const header=$("#battle .battle-header");
+    const header=$("#battle .battle-content");
     if(button.parentElement!==header)header.append(button);
     button.classList.add("prism-battle-help");
     button.hidden=screen!=="battle";
@@ -188,9 +189,10 @@
     if(!level)return;
     const linked=Array.from({length:level.count},(_,color)=>connected(color)).filter(Boolean).length;
     const occupied=new Set(Object.values(paths).flat()).size;
-    $("#moves").textContent=t("moves",{n:moves});
-    $("#linkStatus").textContent=t("links",{done:linked,total:level.count});
-    $("#fillStatus").textContent=t("filled",{done:occupied,total:level.size*level.size});
+    for(const [id,key,value] of [["moves","hudMoves",String(moves)],["linkStatus","hudPairs",`${linked}/${level.count}`],["fillStatus","hudFilled",`${occupied}/${level.size*level.size}`]]){
+      const node=$("#"+id);node.textContent=value;node.setAttribute("aria-label",`${t(key)} ${value}`);
+      const label=node.parentElement.querySelector("[data-t]");if(label)label.textContent=t(key);
+    }
   }
   function renderBoard(){
     if(!level)return;

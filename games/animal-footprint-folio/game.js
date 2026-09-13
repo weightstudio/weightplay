@@ -38,15 +38,68 @@
     const button = host?.querySelector(".wp-shell-settings-button");
     const popover = host?.querySelector(".wp-shell-settings-popover");
     if (!button) return;
-    button.id = document.body.dataset.screen === "battle" ? "battleSettingsButton" : "settingsButton";
+    // The Battle header keeps a legacy proxy button for the lifecycle smoke.
+    // Leave the generated shared control un-named there so the proxy remains
+    // the sole #battleSettingsButton and the shell cannot create a duplicate
+    // owner. Main still receives the canonical settingsButton id.
+    button.id = document.body.dataset.screen === "battle" ? "" : "settingsButton";
     if (popover) popover.id = "settingsPopover";
   }
+  function syncSharedSettingsPlacement(name) {
+    const host = document.querySelector(".wp-shell-settings");
+    const target = name === "main"
+      ? document.querySelector("#mainScreen .main-header")
+      : document.querySelector("#battleScreen .battle-header");
+    if (!host || !target) return;
+    if (host.parentElement !== target) target.append(host);
+    if (name === "main") target.classList.add("wp-shell-header", "wp-main-shell-header");
+    host.hidden = name !== "main";
+  }
   function setScreen(name) {
-    $("#mainScreen").classList.toggle("active", name === "main");
-    $("#battleScreen").classList.toggle("active", name === "battle");
+    const mainScreen = $("#mainScreen");
+    const battleScreen = $("#battleScreen");
+    mainScreen.classList.toggle("active", name === "main");
+    battleScreen.classList.toggle("active", name === "battle");
+    // Hidden is the immutable scene signal consumed by the shared shell. Set
+    // it in the same task as the class toggle so lifecycle probes never see
+    // both roots as visible during the handoff frame.
+    mainScreen.hidden = name !== "main";
+    battleScreen.hidden = name !== "battle";
+    // Mirror the shell's logical state synchronously. The standard shell also
+    // reconciles these classes from its observer, but keeping the body/root
+    // lock in step with data-screen prevents a transient frame where both
+    // scene roots are hidden (or the old Main edge remains scrollable).
+    document.body.classList.toggle("wp-shell-main-active", name === "main");
+    document.body.classList.toggle("wp-shell-battle-active", name === "battle");
+    document.body.classList.toggle("wp-logical-battle-active", name === "battle");
+    document.documentElement.classList.toggle("wp-shell-main-flow", name === "main");
+    document.documentElement.classList.toggle("wp-shell-active-play", name === "battle");
+    if (name === "battle") primeBattleReserve();
+    syncSharedSettingsPlacement(name);
+    const flowOwner = mainScreen.closest("main");
+    if (name === "main") {
+      flowOwner?.classList.add("wp-standard-main-flow-owner");
+      mainScreen.classList.add("wp-standard-main-flow-node");
+      const composition = mainScreen.querySelector(".wp-standard-main-composition");
+      if (flowOwner && composition) {
+        const requiredHeight = Math.ceil(composition.getBoundingClientRect().bottom - flowOwner.getBoundingClientRect().top + 8);
+        flowOwner.style.setProperty("--wp-main-flow-min-height", `${requiredHeight}px`);
+      }
+    } else {
+      flowOwner?.style.removeProperty("--wp-main-flow-min-height");
+      flowOwner?.classList.remove("wp-standard-main-flow-owner");
+      mainScreen.classList.remove("wp-standard-main-flow-node");
+    }
     document.body.dataset.screen = name;
     const guide = document.querySelector("[data-wp-game-guide]");
     if (guide) guide.hidden = name !== "main";
+    if (name === "main") {
+      const mainComposition = mainScreen.querySelector(".wp-standard-main-composition");
+      if (mainComposition) {
+        mainComposition.scrollTop = 0;
+        mainComposition.scrollLeft = 0;
+      }
+    }
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
@@ -89,6 +142,59 @@
     $("#resultTitle").textContent = t("resultTitle");
     $("#resultCopy").textContent = t("resultCopy");
   }
+  function resetBattleScroll() {
+    const battle = $("#battleScreen");
+    if (!battle) return;
+    battle.scrollTop = 0;
+    battle.scrollLeft = 0;
+    requestAnimationFrame(() => { battle.scrollTop = 0; battle.scrollLeft = 0; });
+  }
+  function primeBattleReserve() {
+    const root = $("#battleScreen");
+    const reserve = root?.querySelector(".battle-ad-reserve");
+    if (!root || !reserve) return;
+    const viewportWidth = Number(document.documentElement.clientWidth || window.innerWidth || 0);
+    const viewportHeight = Number(document.documentElement.clientHeight || window.innerHeight || 0);
+    const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
+    const availableHeight = Math.max(1, viewportHeight - 56);
+    const landscape = availableWidth / availableHeight >= 1.5;
+    const minimumWidth = landscape ? 760 : 390;
+    const minimumHeight = landscape ? 334 : 788;
+    const scale = Math.max(0.01, Math.min(availableWidth / minimumWidth, availableHeight / minimumHeight));
+    const logicalWidth = availableWidth / scale;
+    const logicalHeight = availableHeight / scale;
+    const left = Math.max(0, (viewportWidth - availableWidth) / 2);
+    root.dataset.wpLogicalBattleCanvas = `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`;
+    const setRoot = (property, value) => root.style.setProperty(property, value, "important");
+    setRoot("position", "fixed");
+    setRoot("inset", `0px auto auto ${left}px`);
+    setRoot("top", "0px");
+    setRoot("left", `${left}px`);
+    setRoot("width", `${logicalWidth}px`);
+    setRoot("min-width", `${logicalWidth}px`);
+    setRoot("max-width", `${logicalWidth}px`);
+    setRoot("height", `${logicalHeight}px`);
+    setRoot("min-height", `${logicalHeight}px`);
+    setRoot("max-height", `${logicalHeight}px`);
+    setRoot("margin", "0px");
+    setRoot("transform", `scale(${scale})`);
+    setRoot("transform-origin", "top left");
+    setRoot("overflow", "hidden");
+    root.scrollTop = 0;
+    root.scrollLeft = 0;
+    // The shared Battle runtime finalizes this physical reserve on its next
+    // frame. Prime the same boundary synchronously so every activation has a
+    // stable 56px edge before its first interaction.
+    const setReserve = (property, value) => reserve.style.setProperty(property, value, "important");
+    setReserve("position", "fixed");
+    setReserve("inset", `${availableHeight}px auto auto ${left}px`);
+    setReserve("top", `${availableHeight}px`);
+    setReserve("bottom", "auto");
+    setReserve("left", `${left}px`);
+    setReserve("right", "auto");
+    setReserve("width", `${availableWidth}px`);
+    setReserve("height", "56px");
+  }
   function selectMarker(key) {
     if (state.accepted) return;
     state.selected = key;
@@ -102,16 +208,20 @@
       track("footprint_marker_mismatch", { record: state.record + 1, marker: state.selected });
       return;
     }
+    document.activeElement?.blur?.();
     state.accepted = true;
     state.solved = Math.max(state.solved, state.record + 1);
     renderRecord();
+    resetBattleScroll();
     track("footprint_record_complete", { record: state.record + 1 });
   }
   function nextRecord() {
     if (!state.accepted) return;
+    document.activeElement?.blur?.();
     if (state.record >= RECORDS.length - 1) {
       state.result = true;
       renderResult();
+      resetBattleScroll();
       track("footprint_folio_complete", { solved: state.solved });
       return;
     }
@@ -119,6 +229,7 @@
     state.selected = null;
     state.accepted = false;
     renderRecord();
+    resetBattleScroll();
     track("footprint_record_start", { record: state.record + 1 });
   }
   function start() {

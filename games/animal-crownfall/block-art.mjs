@@ -110,8 +110,7 @@ export function makeActor(box, enemy = null, gear = null) {
   }
   g.userData.arms=arms;
   g.userData.legs=legs;
-  if(!enemy&&gear?.weapon){const sword=new THREE.Group();arms[1].add(sword);sword.position.set(.07,-.22,.2);box(sword,0,.24,0,.085,.6,.07,C.pale,true);box(sword,0,.04,0,.3,.075,.1,C.gold,true);box(sword,0,.57,0,.05,.08,.07,C.blueLight,true);}
-  if(!enemy&&gear?.armor){const plate=new THREE.Group();arms[0].add(plate);plate.position.set(0,-.14,.22);box(plate,0,0,0,.36,.47,.12,C.blue,true);box(plate,0,0,.08,.27,.35,.05,C.gold,true);box(plate,0,0,.12,.12,.22,.04,C.tealLight,true);}
+  if(!enemy&&gear?.armed){const sword=new THREE.Group();arms[1].add(sword);sword.position.set(.07,-.22,.2);box(sword,0,.24,0,.085,.6,.07,C.pale,true);box(sword,0,.04,0,.3,.075,.1,C.gold,true);box(sword,0,.57,0,.05,.08,.07,C.blueLight,true);}
   g.scale.setScalar(boss?.81:.75);
   return g;
 }
@@ -130,14 +129,8 @@ export function makeProp(box, item) {
     }
   } else if(item.kind==='sword') {
     add(0,-.22,0,.08,.22,.1,C.ink);add(0,-.08,0,.42,.09,.15,C.gold,true);add(0,.2,0,.12,.5,.09,C.pale,true);add(0,.48,0,.06,.1,.08,C.blueLight,true);
-  } else if(item.kind==='armor') {
-    add(0,0,0,.55,.61,.18,C.blue,true);add(0,-.32,0,.3,.1,.15,C.blue,true);add(0,0,.11,.41,.47,.08,C.gold,true);add(0,0,.17,.17,.26,.04,C.tealLight,true);
-  } else if(item.kind==='heart') {
-    add(-.13,.08,0,.24,.28,.22,0xf46688);add(.13,.08,0,.24,.28,.22,0xf46688);add(0,-.14,0,.32,.18,.22,0xde3862);add(0,-.27,0,.13,.1,.16,0xde3862);add(-.17,.14,.13,.09,.1,.025,0xffc7d7);add(0,.32,0,.065,.13,.065,0x785134);add(.12,.34,0,.18,.07,.09,C.tealLight);
-  } else if(item.kind==='elixir') {
-    add(0,-.06,0,.4,.47,.28,0x42e4bb,true);add(0,.23,0,.16,.18,.14,0xb5fff2,true);add(0,.35,0,.23,.08,.2,C.gold,true);add(0,-.03,.16,.25,.18,.025,0xe9fff4);add(0,-.03,.18,.035,.13,.025,C.teal);add(0,-.03,.18,.13,.035,.025,C.teal);
-  } else if(item.kind==='fury') {
-    const gem=add(0,0,0,.35,.5,.25,0xe7a7ff,true);gem.rotation.z=.35;add(0,0,.17,.08,.33,.04,0xffffff);add(0,0,.2,.2,.06,.03,C.goldLight);
+  } else if(item.kind==='power'||item.kind==='multiply') {
+    const times=item.kind==='multiply';const gem=add(0,0,0,.35,.5,.25,times?0xb883ed:C.tealLight,true);gem.rotation.z=.35;const mark=new THREE.Group();g.add(mark);mark.rotation.z=times?Math.PI/4:0;box(mark,0,0,.2,.07,.3,.04,0xffffff,true);box(mark,0,0,.21,.3,.07,.04,0xffffff,true);
   } else if(item.kind==='key') {
     // Hollow square bow and two teeth retain a clear key silhouette.
     for(const x of [-.14,.14])add(x,.2,0,.08,.28,.12,C.gold,true);

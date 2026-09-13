@@ -9945,7 +9945,27 @@
     const scoreBands = scoreBandsFor(baseGame);
     const section = document.createElement("section");
     section.className = "game-page-info";
-    if (id === "animal-footprint-folio") section.setAttribute("data-wp-game-guide", "");
+    if (["animal-footprint-folio", "animal-meadow-difference"].includes(id)) section.setAttribute("data-wp-game-guide", "");
+    if (id === "animal-meadow-difference") {
+      // Interface 7 exposes a compact 3px block radius by default. The
+      // General Guide is a framed reading surface, so keep its larger radius
+      // local to the generated Guide without changing Battle controls.
+      section.style.setProperty("--wp-ui-radius", "16px", "important");
+    }
+    if (id === "animal-nest-weigh") {
+      // Nest Weigh retains the shared light Guide surface. Scope readable
+      // light-theme tokens to that Guide so Interface 7's dark text defaults
+      // cannot become pale-on-light after the shared frame is installed.
+      section.style.setProperty("--wp-ui-text", "#172033", "important");
+      section.style.setProperty("--wp-ui-muted", "#48556b", "important");
+      section.style.setProperty("--wp-ui-surface", "#ffffff", "important");
+      section.style.setProperty("--wp-ui-background", "#f4f7fb", "important");
+      section.style.setProperty("--wp-ui-line", "#d8e0ee", "important");
+      section.style.setProperty("--wp-ui-shadow", "rgba(23,32,51,.22)", "important");
+      section.style.setProperty("--wp-ui-tag-background", "#e9f2ff", "important");
+      section.style.setProperty("--wp-ui-tag-text", "#1f5d99", "important");
+      section.style.setProperty("--wp-ui-tag-border", "#b8d1ea", "important");
+    }
     if (activeLocale !== "en" || id === "snake") section.dataset.runtimeLocalize = "off";
     section.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
     if (isFreeCell) {
@@ -20878,6 +20898,117 @@
   Object.assign(games["animal-guard-yard"],guardYardV31Guides.en);
   // End Guard Yard v31 guide.
 
+  // Meadow Find owns a compact game shell, but its General Guide still needs
+  // the full authored depth used by the shared Interface 7 renderer. Keep the
+  // observation loop concrete: the three records are short, while the guide
+  // explains the evidence, recovery, and replay choices around them.
+  games["animal-meadow-difference"] = {
+    title: "Meadow Find",
+    age: "",
+    difficulty: "Easy to Challenging",
+    time: "2-6 minutes per round",
+    gameplay: "Visible difference observation",
+    genre: ["Puzzle", "Observation", "Visual Reasoning", "Family", "Animal"],
+    skills: ["Observation", "Comparison", "Pattern reading"],
+    hideSkillsFact: true,
+    showRelatedSkill: false,
+    hideScoreBands: true,
+    relatedIds: [],
+    noteTitle: "Player and Save Information",
+    intro: "Meadow Find is a calm three-round observation puzzle about comparing two visible meadow panels. Each round keeps the evidence on screen: read the rows, notice the one changed tile on the right, and choose it without racing a timer. The small format is deliberate, but the complete loop still gives players a clear way to inspect, predict, test, recover from a wrong tap, and replay a familiar visual challenge.",
+    story: [
+      "Orla keeps a field notebook for a meadow that changes in small, friendly ways. A leaf may turn into a flower, a pebble may move, or a patch of color may take a different shape. The left panel is the earlier note and the right panel is the current note, so every answer can be explained by pointing to a visible row and tile rather than remembering a hidden state.",
+      "The three rounds use the same readable comparison language while changing the arrangement of the objects. This lets a first-time player learn the task once and then apply it again with a fresh pattern. Wrong taps do not erase the round or punish curiosity; they simply invite another look at the two panels.",
+    ],
+    systems: [
+      "Both meadow panels remain visible in Battle. The left panel is a reference and the right panel is the answer surface. Each grid keeps the same row and column rhythm, while the changed tile is authored so one candidate is supported by the complete pair of panels.",
+      "Select a tile on the right with touch, mouse, or keyboard. The selected tile receives a clear focus state, the feedback line announces whether the comparison is correct, and the check count records the number of observations used. The game never requires a fast reaction or a blind guess.",
+      "A wrong tap leaves the current round open. Read the feedback, compare the neighboring shapes and colors again, and choose another tile. A correct tap locks that round and prepares the next one without hiding the evidence that made the answer fair.",
+      "After the third correct tile, Result summarizes the careful search and keeps Replay and Home together. Replay starts the same authored three-round folio from a clean state; Home returns to Main, where the Guide and Settings remain available. The best check count and sound preference are stored only in this browser.",
+    ],
+    how: [
+      "Start from Main and read the short summary before entering the Battle Canvas.",
+      "Compare the two visible panels row by row, scanning the same position on the left and right.",
+      "On the right panel, tap or focus the tile whose shape, color, or object differs from the reference.",
+      "If the feedback asks for another look, keep the same round open and compare the surrounding tiles before trying again.",
+      "When the tile is correct, continue to the next round. Finish all three rounds, then choose Replay or Home from Result.",
+    ],
+    strategyTips: [
+      "Use a consistent scan: start at the top-left, move across one row, then continue downward. A steady path prevents a changed corner tile from being skipped.",
+      "Compare object identity and placement separately. First ask whether the same kind of meadow object appears, then check its color, orientation, and neighboring space.",
+      "The changed tile is supported by both panels. If one candidate seems plausible, confirm it against the row before and after it instead of tapping immediately.",
+      "A wrong check is useful information, not a reset. Keep the current row in view, name what you already ruled out, and change only the part of your comparison that the feedback challenges.",
+      "On a phone, let the two panels settle before scanning. The responsive Battle Canvas keeps the grids and the answer controls visible together, so a careful method works at every supported viewport.",
+    ],
+    progression: [
+      "Round 1 introduces the comparison habit with a clear single-tile change and generous visual spacing. It teaches that the right panel is the answer surface while the left panel remains evidence.",
+      "Round 2 keeps the same rules but changes the meadow vocabulary and the location of the difference. Players must use the row rhythm instead of memorizing a button position from the first round.",
+      "Round 3 completes the observation loop with a new arrangement and a slightly less obvious neighboring pattern. The authored endpoint is still fair: the changed tile can be verified by comparing the full panels.",
+      "The campaign is intentionally three rounds long. There are no hidden stages, lives, timers, purchases, or score multipliers behind the Guide. Replay is the way to practice a different scan order or improve the saved check count, while the Result screen makes the next choice explicit.",
+    ],
+    designNote: "Meadow Find is designed as a readable visual reasoning exercise rather than a speed test. Fixed rows make every answer explainable, the highlighted answer panel keeps attention on the active decision, and wrong-answer feedback preserves the evidence instead of sending the player to an unrelated puzzle. The responsive logical Canvas uses one uniform comparison layout across phone, short landscape, and desktop views, with touch, mouse, and keyboard activation sharing the same round state.",
+    parent: "Meadow Find is free to play in the browser and requires no account, purchase, chat, or network service. The best check count and sound preference stay in this browser only; clearing site data or changing browsers may remove the local record. Its observations are playful practice, not a standardized ability, medical, or school assessment.",
+    faq: [
+      ["What am I looking for?", "Compare the left reference panel with the right answer panel and find the one tile whose object, color, or shape changed."],
+      ["Can I tap more than once?", "Yes. A wrong tap leaves the round open and gives you another chance to compare; only the correct tile advances the round."],
+      ["Is there a timer?", "No. The panels stay visible while you scan, and the game rewards a careful comparison rather than speed."],
+      ["Can I play on a phone?", "Yes. The same visible right-panel tiles work with touch, mouse, and keyboard focus across the responsive Battle Canvas."],
+      ["How many rounds are included?", "There are three authored observation rounds. The third correct tile opens Result, where Replay and Home are available."],
+      ["Is progress saved?", "The best check count and sound preference are stored only in this browser. No account or cloud save is required."],
+    ],
+  };
+  localizedGames["ar"] ||= {};
+  localizedGames["ar"]["animal-meadow-difference"] = {
+    ...games["animal-meadow-difference"],
+    title: "اكتشف الفرق في المرج",
+    difficulty: "سهل ثم يزداد تحدياً",
+    time: "2–6 دقائق لكل جولة",
+    gameplay: "ملاحظة الفروق الظاهرة",
+    genre: ["لغز", "ملاحظة", "تمييز بصري", "عائلية", "حيوانات"],
+    noteTitle: "معلومات اللاعب والحفظ",
+    intro: "اكتشف الفرق في المرج لغز ملاحظة هادئ من ثلاث جولات. قارن لوحتي المرج الظاهرتين، راقب الصفوف، ثم اختر الخلية الوحيدة التي تغيّرت في اللوحة اليمنى دون مؤقت.",
+    story: [
+      "تحتفظ أورلا بدفتر ملاحظات لمرج يتغير بطرق صغيرة ولطيفة. قد تتحول ورقة إلى زهرة، أو يتحرك حجر، أو يتبدل شكل رقعة لونية. اللوحة اليسرى هي الملاحظة السابقة واليمنى هي الملاحظة الحالية، لذلك يمكن تفسير كل إجابة بالرجوع إلى صف وخلية ظاهرين.",
+      "تستخدم الجولات الثلاث لغة مقارنة واحدة مع ترتيب جديد في كل مرة. يتعلم اللاعب المهمة مرة ثم يطبقها على نمط مختلف، بينما تبقى المحاولة الخاطئة دعوة لإعادة النظر ولا تمسح الجولة.",
+    ],
+    systems: [
+      "تبقى اللوحتان ظاهرتين في المعركة. اليسرى مرجع واليمنى مساحة الإجابة، وتحافظ الشبكتان على الصفوف والأعمدة نفسها حتى يكون الفرق قابلاً للتحقق.",
+      "اختر خلية باللمس أو الفأرة أو لوحة المفاتيح. تُظهر الخلية المحددة حالة تركيز واضحة، ويعلن سطر الملاحظات النتيجة دون مطالبة بسرعة أو تخمين أعمى.",
+      "لا تنقل الإجابة الخاطئة الجولة إلى مكان آخر. اقرأ الملاحظة، قارن الخلايا المجاورة، ثم اختر مرة أخرى. الإجابة الصحيحة تثبت الجولة وتفتح التالية مع إبقاء الدليل مرئياً.",
+      "بعد الخلية الصحيحة الثالثة تعرض النتيجة البحث الهادئ وتجمع زري الإعادة والعودة. يُحفظ أفضل عدد من الفحوص وتفضيل الصوت في هذا المتصفح فقط.",
+    ],
+    how: [
+      "ابدأ من الصفحة الرئيسية واقرأ الملخص قبل دخول لوحة المعركة.",
+      "قارن اللوحتين صفاً بعد صف، وافحص الموضع نفسه في اليسار واليمين.",
+      "اضغط الخلية في اللوحة اليمنى التي يختلف شكلها أو لونها أو الكائن فيها.",
+      "إذا طلبت الملاحظة نظرة أخرى، أبقِ الجولة مفتوحة وقارن الخلايا المحيطة قبل المحاولة التالية.",
+      "بعد الإجابة الصحيحة انتقل إلى الجولة التالية، ثم اختر الإعادة أو العودة من النتيجة.",
+    ],
+    strategyTips: [
+      "استخدم مسحاً ثابتاً من أعلى اليسار عبر الصف ثم إلى الأسفل حتى لا تفوت خلية في الزاوية.",
+      "افصل بين هوية الكائن ومكانه؛ افحص النوع أولاً ثم اللون والاتجاه والمساحة المحيطة.",
+      "تدعم اللوحتان كل إجابة. تحقق من الصف السابق واللاحق قبل الضغط السريع.",
+      "الخطأ معلومة مفيدة وليس إعادة ضبط. احتفظ بما استبعدته وغيّر جزء المقارنة الذي تشير إليه الملاحظة.",
+      "على الهاتف انتظر استقرار اللوحتين؛ يحافظ إطار المعركة المتجاوب على الشبكات وأزرار الإجابة معاً.",
+    ],
+    progression: [
+      "تعرّف الجولة الأولى عادة المقارنة بفرق واضح ومسافات مريحة.",
+      "تغيّر الجولة الثانية مفردات المرج ومكان الفرق، لذلك يجب استخدام إيقاع الصف لا حفظ موضع زر.",
+      "تكمل الجولة الثالثة الحلقة بنمط جديد أقل وضوحاً قليلاً مع بقاء الخلية المختلفة قابلة للتحقق من اللوحتين.",
+      "الحملة ثلاث جولات عمداً؛ لا توجد مراحل مخفية أو أرواح أو مؤقت أو مشتريات. الإعادة هي طريقة التدريب وتحسين أفضل عدد فحوص.",
+    ],
+    designNote: "صُممت اللعبة كتدريب واضح على التمييز البصري لا كاختبار سرعة. الصفوف الثابتة تجعل كل إجابة قابلة للشرح، وتحافظ لوحة الإجابة على التركيز، بينما تبقي ملاحظات الخطأ الدليل ظاهراً.",
+    parent: "اللعبة مجانية ولا تحتاج حساباً أو شراءً أو شبكة. يُحفظ أفضل عدد فحوص وتفضيل الصوت في هذا المتصفح فقط، وهذه الملاحظات للترفيه وليست تقييماً رسمياً للقدرات.",
+    faq: [
+      ["ما الذي أبحث عنه؟", "قارن اللوحة اليسرى باليمنى وابحث عن الخلية الوحيدة التي تغيّر فيها الكائن أو اللون أو الشكل."],
+      ["هل يمكنني المحاولة أكثر من مرة؟", "نعم. تبقي الإجابة الخاطئة الجولة مفتوحة وتمنحك فرصة للمقارنة مجدداً."],
+      ["هل يوجد مؤقت؟", "لا. تبقى اللوحتان ظاهرتين، والمطلوب مقارنة هادئة لا سرعة."],
+      ["هل تعمل على الهاتف؟", "نعم. تعمل الخلايا نفسها باللمس والفأرة ولوحة المفاتيح."],
+      ["كم عدد الجولات؟", "ثلاث جولات أصلية، وتفتح الخلية الصحيحة الثالثة شاشة النتيجة."],
+      ["هل يُحفظ التقدم؟", "يُحفظ أفضل عدد فحوص وتفضيل الصوت في هذا المتصفح فقط."],
+    ],
+  };
+
   // Footprint Folio owns a static shell, but the shared Guide renderer still
   // needs a complete General-audience Guide so Interface 7 can enforce the
   // framed, multi-section contract. Keep the long English authoring here and
@@ -20941,6 +21072,19 @@
   games["animal-footprint-folio"] = footprintFolioGuide;
   const footprintLocaleCopy = window.FOOTPRINT_FOLIO_LOCALES || {};
   for (const [localeCode, copy] of Object.entries(footprintLocaleCopy)) {
+    if (localeCode === "en") {
+      // Keep the authored General guide intact for the canonical route. The
+      // short runtime strings are excellent labels for the game shell, but
+      // replacing the full English Guide with them would violate the public
+      // depth contract and hide the authored systems/progression detail.
+      localizedGames.en ||= {};
+      localizedGames.en["animal-footprint-folio"] = {
+        ...footprintFolioGuide,
+        title: copy.title || footprintFolioGuide.title,
+        intro: footprintFolioGuide.intro,
+      };
+      continue;
+    }
     const localized = {
       ...footprintFolioGuide,
       title: copy.title || footprintFolioGuide.title,

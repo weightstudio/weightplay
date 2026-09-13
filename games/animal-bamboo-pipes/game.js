@@ -29,6 +29,7 @@
   document.querySelector('main#main [data-bamboo-t="summary"]')?.classList.add("main-summary");
   const text = (key, data = {}) => String((window.BAMBOO_LOCALES[locale] || BASE)[key] || BASE[key] || key).replace(/\{(\w+)\}/g, (_, name) => data[name] ?? "");
   const screens = { main: $("main"), stage: $("stage"), battle: $("battle") };
+  let sharedFrame = null;
   $("battle").append($("leaveDialogTemplate").content.cloneNode(true));
   const battleBack = () => [...$("battle").querySelectorAll('[data-wp-return="battle"]')]
     .find(node => !node.closest("[inert]") && node.getClientRects().length);
@@ -55,6 +56,7 @@
       setResultOpen(false);
       setLeaveOpen(false, false);
     }
+    sharedFrame?.sync();
   }
   function persist() { try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
   function stageData(index) {
@@ -366,6 +368,7 @@
       battle.scrollTop = 0;
       result.scrollTop = 0;
     }
+    sharedFrame?.sync();
   }
   function setLeaveOpen(open, restoreFocus = true) {
     if (!$("result").hidden && open) return;
@@ -387,6 +390,7 @@
       dialog.hidden = true;
       if (run?.completed && $("result").hidden) scheduleCompletionReveal($("next").disabled ? $("resultStages") : $("next"));
     }
+    sharedFrame?.sync();
   }
   function updateMainProgress() {
     $("mainProgress").textContent = `${text("waterway", { n: Math.min(save.unlocked, 30) })} / 30`;
@@ -401,7 +405,7 @@
     $("battleLanguageLabel").textContent = text("language");
     $("battleUtilityBtn").setAttribute("aria-label", text("settings"));
     $("battleSettingsPanel").setAttribute("aria-label", text("settings"));
-    const mainReturn = document.querySelector(".return");
+    const mainReturn = screens.main.querySelector('[data-wp-return="main"]');
     if (mainReturn) {
       mainReturn.setAttribute("aria-label", text("returnLobby"));
       mainReturn.href = `/${LOCALE_ROUTES[locale] || "en"}/`;
@@ -409,7 +413,7 @@
     document.querySelectorAll("[data-back]").forEach(node => node.setAttribute("aria-label", text("back")));
     $("rail").setAttribute("aria-label", text("stageSelector"));
     $("board").setAttribute("aria-label", text("boardLabel"));
-    document.querySelector(".hero img")?.setAttribute("alt", text("coverAlt"));
+    screens.main.querySelector('[data-wp-frame-poster],.hero img')?.setAttribute("alt", text("coverAlt"));
     $("publicGuide")?.setAttribute("aria-label", text("guideTitle"));
     updateMainProgress();
     if (run) {
@@ -447,6 +451,7 @@
     battleUtility.setAttribute("aria-expanded", String(open));
     if (open) battleSettings.querySelector("select")?.focus();
   };
+  if (!window.mountBambooFrame) {
   battleUtility.onclick = () => setBattleSettingsOpen(battleSettings.hidden);
   document.addEventListener("pointerdown", event => {
     if (!battleSettings.hidden && !battleSettings.contains(event.target) && event.target !== battleUtility) setBattleSettingsOpen(false);
@@ -458,6 +463,7 @@
       battleUtility.focus();
     }
   });
+  }
   window.addEventListener("wonder:locale-change", event => {
     const nextLocale = event.detail?.locale;
     if (!CODES.includes(nextLocale)) return;
@@ -556,4 +562,5 @@
   $("next").onclick = () => { if (selected >= 29 || !claimResultAction()) return; track("next_waterway_clicked", { from_waterway: selected + 1, to_waterway: selected + 2 }); setResultOpen(false); selected += 1; startStage("next"); };
   $("resultStages").onclick = () => { if (!claimResultAction()) return; track("return_to_waterways", { from: "result" }); setResultOpen(false); show("stage"); renderStages(); };
   applyLocale();
+  if ($("gameFrame") && window.mountBambooFrame) sharedFrame = window.mountBambooFrame();
 })();

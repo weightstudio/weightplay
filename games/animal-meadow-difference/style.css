@@ -134,6 +134,13 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 [dir="rtl"] .field-row { flex-direction: row-reverse; }
 [dir="rtl"] .topbar { direction: ltr; }
 
+/* Interface 7's block skin defaults to a 3px radius. Meadow Find's public
+   Guide is a content frame, so scope the larger radius to the Guide only;
+   Battle and the shared shell keep their compact control geometry. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] .game-page-info-static {
+  --wp-ui-radius: 16px;
+}
+
 /* Interface 6 lifecycle repair: the direct compare game keeps both authored
    panels visible in a bounded Battle Canvas at compact viewports. The panels
    share two columns, the arrow floats between them, and a five-column tile

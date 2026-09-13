@@ -1,0 +1,16 @@
+/* Game content geometry only; never style shared header, guide or settings. */
+#gameFrame [hidden]{display:none!important}
+#main[data-wp-frame-scene]{padding:0;min-height:0}
+.prism-main-content>img{object-fit:contain}
+#battle .battle-content{grid-template-rows:auto minmax(0,1fr) auto auto;min-height:0;min-width:0}
+#battle .battle-content,#stage .stage-workspace{background:linear-gradient(#06192166,#06192155),url('../../assets/animal-prism-garden-scenery-block-v15.webp') center/cover no-repeat}
+#battle .battle-objective,#battle .status{background:#081e28e8;padding:6px 9px;border-radius:3px}
+#battle .grid{min-width:0;max-width:100%;max-height:100%;box-sizing:border-box}
+#battle .cell{border-radius:3px;background:url('../../assets/animal-prism-garden-tile-block-v15.webp') center/cover no-repeat}
+#battle .prism-battle-help{position:absolute;inset-inline-end:8px;inset-block-start:8px}
+#battle .cell.seed::after{inset:8%;background:url('../../assets/animal-prism-garden-flower-block-v15.webp') center/contain no-repeat;border-radius:0;box-shadow:none;filter:drop-shadow(0 0 3px var(--seed))}
+#battle .cell.seed{border:3px solid var(--seed);box-shadow:inset 0 0 8px var(--seed)}
+#battle .cell.gate{background:url('../../assets/animal-prism-garden-tile-block-v15.webp') center/cover no-repeat;border:3px solid var(--gate);box-shadow:inset 0 0 8px var(--gate)}
+#battle .cell.gate .gate-mark{inset:7%;aspect-ratio:auto;border:0;border-radius:0;background:url('../../assets/animal-prism-garden-gate-block-v15.webp') center/contain no-repeat;box-shadow:none;transform:none;filter:drop-shadow(0 0 2px var(--gate))}
+#battle .cell.gate .gate-mark::before,#battle .cell.gate .gate-mark::after{content:none}
+#battle .modal-card{background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius)}

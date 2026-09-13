@@ -32,7 +32,7 @@
   "name": "Giardino dei Percorsi Prisma",
   "description": "Progetta percorsi luminosi in 30 grandi giardini, rispetta i portali colorati e illumina ogni casella.",
   "url": "https://weightplay.com/it/games/animal-prism-garden/",
-  "image": "https://weightplay.com/assets/animal-prism-garden/cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-prism-garden.webp",
   "genre": [
     "Animal Games",
     "Puzzle",
@@ -62,7 +62,8 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260819-chapter-mission-v14-141e1a2f03ac">
+  <link rel="stylesheet" href="frame-content.css?v=20260913-prism-v15"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Giardino dei Percorsi Prisma | WeightPlay" />
@@ -79,7 +80,7 @@
     <div class="loading-card"><strong data-t="title">Giardino dei Percorsi Prisma</strong><span data-t="loading">Calibrazione dei percorsi…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
-  <div id="mainGroup" class="main-group">
+  <div id="gameFrame" data-wp-frame-root><div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Torna a WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -87,35 +88,26 @@
         <label class="locale"><span data-t="language">Lingua</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="Una civetta architetta studia percorsi luminosi in una serra al chiaro di luna" alt="Immagine del gioco Giardino dei Percorsi Prisma">
+        <img src="/assets/interface7-redrawn/animal-prism-garden.webp" data-t-alt="Un coniglio a blocchi collega fiori di cristallo in un giardino al chiaro di luna." alt="Immagine del gioco Giardino dei Percorsi Prisma">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">GIARDINO NOTTURNO DELLA CIVETTA</p>
           <h1 data-t="title">Giardino dei Percorsi Prisma</h1>
-          <p class="main-summary" data-t="summary">Pianifica lunghi percorsi in un giardino più grande. Collega ogni prisma e illumina tutte le caselle.</p>
-          <div class="main-meta"><span id="mainProgress"></span><span data-t="difficulty">Difficoltà: molto alta</span><span data-t="session">Partita: 4–10 min</span></div>
+          <p class="main-summary" data-t="summary">Collega i fiori di cristallo dello stesso colore e riempi tutte le caselle.</p>
+          <div class="main-meta"><span id="mainProgress"></span></div>
           <button id="start" class="primary" type="button" data-t="start">Inizia gioco</button>
         </div>
       </section>
     </main>
     <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="Come giocare">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">Guida originale WeightPlay</span><h2 data-t="guideTitle">Come giocare</h2><p data-t="guideLead">Collega i prismi uguali senza incroci. I portali accettano solo il proprio colore e ogni casella va riempita.</p></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-t="guideTitle">Come giocare</h2><p data-t="summary">Collega i fiori di cristallo dello stesso colore e riempi tutte le caselle.</p></div></div>
       <div class="game-info-sections">
-        <div class="game-info-section"><h3 data-t="guideRulesTitle">Regole base</h3><ol><li data-t="guideRule1">Trascina da un prisma fino alla sua coppia.</li><li data-t="guideRule2">I percorsi vanno in quattro direzioni e non condividono caselle.</li><li data-t="guideRule3">Un portale segnato accetta solo il percorso dello stesso colore.</li><li data-t="guideRule4">Collega tutte le coppie e illumina ogni casella libera.</li></ol><p data-t="guideRulesDetail">Un percorso può iniziare da entrambi gli estremi. Ridisegnare un colore elimina il vecchio tracciato e tornare alla casella precedente lo accorcia. Completa sia i collegamenti sia tutte le caselle.</p></div>
-        <div class="game-info-section game-info-strategy"><h3 data-t="guideTipsTitle">Consigli</h3><ul><li data-t="guideTip1">Riserva prima bordi stretti e corridoi con portali.</li><li data-t="guideTip2">Traccia prima le coppie lunghe che dividono la griglia.</li><li data-t="guideTip3">Annulla e Suggerimento non cancellano i progressi.</li></ul><p data-t="guideTipsDetail">Non collegare subito la coppia più vicina. Studia portali, bordi e percorsi lunghi che dividono la griglia. Dopo ogni percorso controlla gli ingressi rimasti ed evita sacche vuote chiuse.</p></div>
-        <div class="game-info-section"><h3 data-t="guideCampaignTitle">Campagna avanzata</h3><p data-t="guideCampaign">Trenta griglie crescono da 7×7 a 10×10 e aggiungono colori e portali in sei capitoli.</p><p data-t="guideCampaignDetail">Tutte le 30 griglie usano percorsi fissi e molto intrecciati. Gli estremi dello stesso colore sono spesso lontani, quindi vanno pianificati prima i tragitti lunghi e le zone strette. I portali compaiono dal Giardino 5, solo da uno a tre per griglia, come vincoli e non come mappa della soluzione.</p></div>
-        <div class="game-info-section"><h3 data-t="relatedTitle">Giochi correlati</h3><p data-t="relatedIntro">Se ti piace pianificare percorsi in spazi stretti, continua con questi giochi di WeightPlay:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-bamboo-pipes" href="../../games/animal-bamboo-pipes/"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedBambooTitle">Canale di bambù di Panko</strong><span data-t="relatedBambooDescription">Ruota tubi di bambù completi per portare l’acqua dalla sorgente scolpita alla vasca fiorita senza interrompere il percorso.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-cratebound" href="../../games/animal-cratebound/"><img src="../../assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedCrateTitle">Carico Animale</strong><span data-t="relatedCrateDescription">Spingi e tira carichi runici nei magazzini dell’arca celeste, lasciando spazio a ogni svolta.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="animal-rift-salvage" href="../../games/animal-rift-salvage/"><img src="../../assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedRiftTitle">Recupero nella Faglia Animale</strong><span data-t="relatedRiftDescription">Guida un anello di recupero in crescita tra pericoli, rivali e percorsi astrali a obiettivi.</span></span></a>
-        </div></div>
-        <div class="game-info-section"><h3 data-t="guideControlsTitle">Controlli e feedback</h3><p data-t="guideControlsDetail">Su touch tieni premuto e scorri sulle caselle vicine; con il mouse tieni il pulsante principale. Un impulso rosso indica occupazione, un altro estremo o un portale del colore errato. Usa Annulla, Ripristina o Suggerimento.</p></div>
-        <div class="game-info-section"><h3 data-t="guideSaveTitle">Salvataggio e accesso</h3><p data-t="guideSave">I progressi restano in questo browser. Non servono account o acquisti e al momento la pubblicità non è attiva.</p><p data-t="guideSaveDetail">Viene salvato solo lo sblocco dei livelli; i percorsi incompleti non restano. La fascia indipendente di 56 px sotto Stage e Battle non contiene pubblicità attiva.</p></div>
-        <div class="game-info-section"><h3 data-t="guideFaqTitle">Domande e recupero</h3><p data-t="guideFaqDetail">Non puoi incrociare, condividere o muovere in diagonale. Un portale riserva un colore, non è un estremo. Se manca il risultato cerca una casella scura o usa Annulla e Ripristina.</p></div>
+        <div class="game-info-section"><h3 data-t="guideRulesTitle">Come giocare</h3><ol><li data-t="guideRule1">Trascina da un fiore al suo compagno dello stesso colore.</li><li data-t="guideRule2">Muoviti su, giù, a sinistra o a destra. I percorsi non possono incrociarsi né condividere caselle.</li><li data-t="guideRule3">Un portale di cristallo accetta solo il colore del suo bordo.</li><li data-t="guideRule4">Collega tutte le coppie e riempi la griglia per aprire il giardino successivo.</li></ol></div>
+        <div class="game-info-section"><h3 data-t="guideTipsTitle">Consigli</h3><p data-t="guideRecovery">Riserva prima i passaggi stretti. Annulla ripristina la griglia precedente; Ripristina cancella i percorsi. Suggerimento completa un percorso incompleto. I progressi restano in questo browser.</p></div>
       </div>
     <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quanti livelli sono inclusi?</dt><dd>Ci sono 30 fasi create in sei capitoli di regole. La fase 30 rimane rigiocabile dopo il completamento.</dd></div><div><dt>I progressi vengono salvati?</dt><dd>Sì, solo in questo browser.</dd></div></dl></div></section>
   </div>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-prism-garden.webp')" hidden>
     <header class="scene-header stage-header">
       <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Indietro">←</button>
       <h2 data-t="title">Giardino dei Percorsi Prisma</h2>
@@ -148,11 +140,11 @@
       <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">GIARDINO CALIBRATO</p><h2 id="resultTitle" data-t="resultTitle">Tutti i percorsi sono stabili.</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">Livelli</button><button id="next" class="primary" type="button" data-t="next">Giardino successivo</button><button id="retry" type="button" data-t="retry">Rigioca</button></div></div>
     </section>
   </main>
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  </div><div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
@@ -161,11 +153,11 @@
   <script src="../../src/tutorial.js?v=20260729-prism-garden1"></script>
   <script src="levels.js?v=20260819-chapter-mission-v14-3f61780b8339"></script>
   <script src="locales.js?v=20260819-chapter-mission-v14-f72386435c43"></script>
+  <script src="guide-locales.js?v=20260913-prism-v15"></script>
   <script src="game.js?v=20260819-chapter-mission-v14-1e2228958a78"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="/src/game-screen-frame.js"></script><script src="frame.js?v=20260913-prism-v15"></script>
 </body>
 </html>

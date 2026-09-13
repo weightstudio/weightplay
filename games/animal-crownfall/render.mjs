@@ -61,7 +61,7 @@ export class CrownScene {
     }
     const alive=new Set();
     const add=(a,kind)=>{
-      const id=a.id||'hero',signature=JSON.stringify(kind==='hero'?[a.weapon,a.armor]:[a.kind,a.shield,a.boss,a.buff]);alive.add(id);
+      const id=a.id||'hero',signature=JSON.stringify(kind==='hero'?[a.armed]:[a.kind,a.shield,a.boss,a.buff]);alive.add(id);
       let node=this.actorNodes.get(id);const oldPosition=node?.position.clone();
       if(!node||node.userData.signature!==signature){if(node)this.world.remove(node);node=kind==='hero'?this.actor(null,a):kind==='enemy'?this.actor(a):this.prop(a);node.userData.signature=signature;
       // The platform below a logical actor cell tops out at cellY - .525.
@@ -75,7 +75,7 @@ export class CrownScene {
       node.userData.labelLift=kind==='item'?(occupied?.45:0)+Math.max(0,rank)*.42:0;
       const at=this.point(a.x,a.y);if(!preserve||!oldPosition)node.position.set(at.x+node.userData.cellOffset,at.y+node.userData.groundOffset,.65);
       if(!preserve){node.rotation.set(0,0,0);node.visible=true;node.scale.setScalar(a.boss?.81:kind==='item'?1:.75);}
-      const label=document.createElement('span');label.className=`actor-tag ${kind}`;const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',armor:'▣',heart:'♥',elixir:'♥',fury:'ϟ'}[a.kind];label.textContent=kind==='item'&&symbol?`${symbol} ${a.kind==='elixir'||a.kind==='fury'?'×2':`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',fullLabel);this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
+      const label=document.createElement('span');label.className=`actor-tag ${kind}`;const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',fullLabel);this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
     };
     add(state.hero,'hero');state.enemies.filter(e=>e.alive).forEach(e=>add(e,'enemy'));state.items.filter(i=>i.alive).forEach(i=>add(i,'item'));
     for(const [id,node] of this.actorNodes)if(!alive.has(id)){this.world.remove(node);this.actorNodes.delete(id);}
@@ -83,7 +83,21 @@ export class CrownScene {
     this.resize();this.paint();
   }
   resize(){if(this.disposed||this.activeAnimation)return;const w=this.host.clientWidth,h=this.host.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);const folded=w/h>1.7&&(this.rows||8)>6;if(this.state&&folded!==this.folded){this.show(this.state);return;}const aspect=w/h,visibleRows=this.folded?Math.ceil(this.rows/2):(this.rows||8),worldHeight=Math.max(visibleRows+1.5,(this.folded?16.6:8.4)/aspect),worldWidth=worldHeight*aspect;this.camera.left=-worldWidth/2;this.camera.right=worldWidth/2;this.camera.top=worldHeight/2;this.camera.bottom=-worldHeight/2;this.camera.position.set(this.folded?7.1:3,-(this.center||3.5)+3.0,20);this.camera.lookAt(this.folded?7.1:3,-(this.center||3.5)+.25,0);this.camera.updateProjectionMatrix();this.paint();}
-  paint(){if(this.disposed)return;this.renderer.render(this.scene,this.camera);for(const l of this.labelNodes||[]){const p=l.node.position.clone();p.y+=.77+(l.node.userData.labelLift||0);p.project(this.camera);l.element.style.left=`${(p.x+1)*50}%`;l.element.style.top=`${(1-p.y)*50}%`;l.element.hidden=!l.node.visible;}}
+  paint(){
+    if(this.disposed)return;this.renderer.render(this.scene,this.camera);
+    const width=this.host.clientWidth,height=this.host.clientHeight,placed=[];
+    const labels=(this.labelNodes||[]).map(l=>{const p=l.node.position.clone();p.y+=.77+(l.node.userData.labelLift||0);p.project(this.camera);l.element.hidden=!l.node.visible;return {...l,x:(p.x+1)*width/2,y:(1-p.y)*height/2};}).sort((a,b)=>a.y-b.y);
+    for(const l of labels){
+      if(!l.node.visible)continue;
+      const w=l.element.offsetWidth,h=l.element.offsetHeight;
+      const left=Math.max(2,Math.min(width-w-2,l.x-w/2));
+      let top=Math.max(this.folded?24:2,Math.min(height-h-2,l.y-h));
+      // Preserve readable operators even on stacked pickups at the folded top edge.
+      for(let pass=0;pass<=placed.length;pass++){const collision=placed.find(r=>left<r.right+2&&left+w>r.left-2&&top<r.bottom+2&&top+h>r.top-2);if(!collision)break;top=collision.bottom+2;}
+      top=Math.min(height-h-2,top);placed.push({left,right:left+w,top,bottom:top+h});
+      l.element.style.left=`${left+w/2}px`;l.element.style.top=`${top+h}px`;
+    }
+  }
   async animate(event,previous,isPaused=()=>false) {
     if(this.disposed)return;
     const hero=this.actorNodes.get('hero'),target=this.actorNodes.get(event.target||event.id),origin=hero?.position.clone();
@@ -122,7 +136,7 @@ export class CrownScene {
       if(['hit','fail'].includes(type)){
         const swing=p<.25?-smooth(p/.25)*.12:p<.42?-.12+smooth((p-.25)/.17)*.38:p<.53?.26:.26*(1-smooth((p-.53)/.47));
         hero.position.x=origin.x+(reduced?0:direction*swing);hero.rotation.y=direction*.22;
-        const arm=hero.userData.arms?.[previous.hero.weapon?1:direction>0?1:0];if(arm){arm.rotation.z=-direction*swing*(previous.hero.weapon?4.4:2.7);arm.rotation.x=-swing*2;}
+        const arm=hero.userData.arms?.[previous.hero.armed?1:direction>0?1:0];if(arm){arm.rotation.z=-direction*swing*(previous.hero.armed?4.4:2.7);arm.rotation.x=-swing*2;}
         if(target&&p>=.42){const q=clamp((p-.42)/.58);target.rotation.z=reduced?0:-direction*Math.sin(q*Math.PI)*.23;target.position.x=origins.get(event.target).position.x+(reduced?0:direction*Math.sin(q*Math.PI)*.13);if(type==='hit'&&!event.phase){target.scale.copy(origins.get(event.target).scale).multiplyScalar(1-smooth(clamp((p-.72)/.28)));target.visible=p<1;}}
         if(type==='fail'&&p>.52&&!reduced){hero.rotation.z=direction*Math.sin((p-.52)/.48*Math.PI)*.24;}
       }
@@ -134,7 +148,7 @@ export class CrownScene {
         if(['hit','fail','pickup','phase'].includes(type)){
           const pos=(type==='pickup'?hero:target||hero).position.clone();pos.y+=1.2;pos.project(this.camera);
           this.effect.style.left=`${(pos.x+1)*50}%`;this.effect.style.top=`${(1-pos.y)*50}%`;this.effect.dataset.kind=type;this.effect.hidden=false;
-          this.effect.textContent=type==='hit'?`+${event.power}  /  ♥ −${event.damage}`:type==='pickup'?event.gain?`♥ +${event.gain}`:this.label(event.state.items.find(i=>i.id===event.id),'item',event.state):type==='phase'?'Ⅱ':event.code==='health'||event.code==='power'?'♥ 0':'▣';
+          this.effect.textContent=type==='hit'?`⚔ +${event.power}`:type==='pickup'?event.calculation?`${event.calculation.before} ${event.calculation.operator} ${event.amount} = ${event.calculation.after}`:this.label(event.state.items.find(i=>i.id===event.id),'item',event.state):type==='phase'?'Ⅱ':event.code==='power'?'⚔ ≤':'▣';
         }
       }
       this.paint();if(p>=1){
