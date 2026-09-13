@@ -951,17 +951,17 @@
 
   const shadowAssetPaths = {
     bg: "../../assets/shadow-wolf-redrawn/moon-ruins-v1.png",
-    bgCrystal: "../../assets/shadow-wolf-bg-crystal-cavern.webp",
+    bgCrystal: "../../assets/shadow-wolf-redrawn/crystal-fortress-v1.png",
     bgJungle: "../../assets/shadow-wolf-bg-vine-jungle.webp",
     bgRift: "../../assets/shadow-wolf-bg-shadow-rift.webp",
     bgVolcanic: "../../assets/shadow-wolf-bg-volcanic-altar.webp",
-    wolf: "../../assets/shadow-wolf-hero.webp",
-    enemyWolf: "../../assets/shadow-wolf-enemy-hunter.webp",
-    bat: "../../assets/shadow-wolf-enemy-bat-cutout.png",
-    boar: "../../assets/shadow-wolf-enemy-boar-cutout.png",
+    wolf: "../../assets/shadow-wolf-redrawn/hero-blue-scarf-v1.png",
+    enemyWolf: "../../assets/shadow-wolf-redrawn/hunter-source-v1.png",
+    bat: "../../assets/shadow-wolf-redrawn/bat-violet-v1.png",
+    boar: "../../assets/shadow-wolf-redrawn/boar-stone-v1.png",
     boss: "../../assets/shadow-wolf-boss-behemoth-cutout.png",
     bossBasilisk: "../../assets/shadow-wolf-boss-basilisk.webp",
-    bossGuardian: "../../assets/shadow-wolf-boss-guardian.webp",
+    bossGuardian: "../../assets/shadow-wolf-redrawn/guardian-stone-v1.png",
     bossColossus: "../../assets/shadow-wolf-boss-thorn-colossus.webp",
     bossWyvern: "../../assets/shadow-wolf-boss-cinder-wyvern.webp",
     bossStag: "../../assets/shadow-wolf-boss-eclipse-stag.webp",
@@ -1473,6 +1473,7 @@
     });
     document.body.dataset.shadowWolfScreen = screen;
     document.documentElement.dataset.shadowWolfScreen = screen;
+    window.mountShadowWolfFrame?.().activate(screen);
     syncResponsiveBattleOwner();
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("weightplay:stage-sync"));
@@ -1701,6 +1702,7 @@
 
   function setDraftModalOpen(open) {
     nodes.draftPanel.classList[open ? "remove" : "add"]("hidden");
+    syncCoveredFrame();
     draftCoveredRegions().forEach((region) => {
       region.inert = open;
       if (open) region.setAttribute("aria-hidden", "true");
@@ -1754,7 +1756,7 @@
   // Calculated from each transparent PNG's alpha bounds: these align visible feet
   // with the collision-box bottom rather than assuming every sprite shares a canvas crop.
   const spriteAnchors = Object.freeze({
-    heroY: -55.4,
+    heroY: -52.6,
     hunterY: -39.2,
     boarY: -27.1,
     behemothY: -11.6,
@@ -2274,6 +2276,13 @@
     resumePendingSettlement();
   }
 
+  function syncCoveredFrame() {
+    if (document.body.dataset.shadowWolfScreen !== "battle") return;
+    const covered = [nodes.pausePanel, nodes.draftPanel, nodes.resultPanel]
+      .some(panel => panel && !panel.classList.contains("hidden"));
+    window.mountShadowWolfFrame?.().activate("battle", { covered });
+  }
+
   function openPause() {
     if (!state.gameActive || settlementPending || battlePaused || !nodes.draftPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
     battlePaused = true;
@@ -2281,6 +2290,7 @@
     clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);
     nodes.pausePanel.classList.remove("hidden");
+    syncCoveredFrame();
     nodes.pauseBtn.setAttribute("aria-expanded", "true");
     pauseCoveredRegions().forEach((region) => {
       region.inert = true;
@@ -2293,6 +2303,7 @@
     if (!battlePaused && nodes.pausePanel?.classList.contains("hidden")) return;
     battlePaused = false;
     nodes.pausePanel.classList.add("hidden");
+    syncCoveredFrame();
     nodes.pauseBtn.setAttribute("aria-expanded", "false");
     pauseCoveredRegions().forEach((region) => {
       region.inert = false;
@@ -2327,6 +2338,7 @@
     const focusToken = ++resultFocusToken;
     if (open) resultActionClaimed = false;
     nodes.resultPanel.classList[open ? "remove" : "add"]("hidden");
+    syncCoveredFrame();
     resultCoveredRegions().forEach((region) => {
       region.inert = open;
       if (open) region.setAttribute("aria-hidden", "true");
@@ -3118,7 +3130,9 @@
       if (enemy.type === "boss") {
         const bossSprites = { basilisk: assets.bossBasilisk, guardian: assets.bossGuardian, colossus: assets.bossColossus, wyvern: assets.bossWyvern, stag: assets.bossStag, behemoth: assets.boss };
         const bossSprite = bossSprites[enemy.variant] || assets.boss;
-        const bossY = enemy.variant === "basilisk" ? spriteAnchors.basiliskY : enemy.variant === "guardian" ? spriteAnchors.guardianY : enemy.variant === "behemoth" ? spriteAnchors.behemothY : -18;
+        const guardianDrawH = Math.min(enemy.height + 62, (enemy.width + 24) * 1199 / 1312);
+        const guardianY = enemy.height - (enemy.height + 62 - guardianDrawH) / 2 - guardianDrawH * 1120 / 1199;
+        const bossY = enemy.variant === "basilisk" ? spriteAnchors.basiliskY : enemy.variant === "guardian" ? guardianY : enemy.variant === "behemoth" ? spriteAnchors.behemothY : -18;
         const drewBoss = drawImageContain(ctx, bossSprite, -12, bossY, enemy.width + 24, enemy.height + 62);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
@@ -3127,7 +3141,12 @@
         if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
         const sprite = enemy.baseType === "boar" ? assets.boar : enemy.baseType === "wolf" ? assets.enemyWolf : assets.bat;
-        const visualY = enemy.baseType === "wolf" ? spriteAnchors.hunterY : enemy.baseType === "boar" ? spriteAnchors.boarY : -10;
+        // The new 1536x1024 hunter has its solid paw baseline at source y=862.
+        // Account for contain letterboxing at every enemy size, including elites.
+        const hunterDrawH = Math.min(enemy.height + 60, (enemy.width + 44) * 1024 / 1536);
+        const hunterY = enemy.height - (enemy.height + 60 - hunterDrawH) / 2 - hunterDrawH * 862 / 1024;
+        const boarY = enemy.height - (enemy.height + 60 - hunterDrawH) / 2 - hunterDrawH * 978 / 1024;
+        const visualY = enemy.baseType === "wolf" ? hunterY : enemy.baseType === "boar" ? boarY : -10;
         const drewEnemy = drawImageContain(ctx, sprite, -22, visualY, enemy.width + 44, enemy.height + 60);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
@@ -3441,24 +3460,27 @@
       const viewport = window.visualViewport;
       const width = Math.max(1, document.documentElement.clientWidth || innerWidth, viewport?.width || 0);
       const height = Math.max(1, document.documentElement.clientHeight || innerHeight, viewport?.height || 0);
-      const availableWidth = Math.min(width, 920);
-      const availableHeight = Math.max(1, height - 56);
+      const content = root.closest('[data-wp-frame-content="battle"]');
+      const bounds = content?.getBoundingClientRect();
+      const availableWidth = Math.min(bounds?.width || width, 920);
+      const contentTop = bounds?.top || 0;
+      const availableHeight = Math.max(1, (bounds?.height || height) - 56);
       const landscape = availableWidth / availableHeight >= 1.25;
       const minimumWidth = landscape ? 760 : 390;
       const minimumHeight = landscape ? 334 : 788;
       const scale = Math.max(0.01, Math.min(availableWidth / minimumWidth, availableHeight / minimumHeight));
       const logicalWidth = availableWidth / scale;
       const logicalHeight = availableHeight / scale;
-      const left = Math.max(0, (width - availableWidth) / 2);
+      const left = bounds ? bounds.left + (bounds.width - availableWidth) / 2 : Math.max(0, (width - availableWidth) / 2);
       root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
       Object.entries({
-        position: "fixed", inset: "auto", top: "0px", left: `${left}px`, width: `${logicalWidth}px`,
+        position: "fixed", inset: "auto", top: `${contentTop}px`, left: `${left}px`, width: `${logicalWidth}px`,
         "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`, height: `${logicalHeight}px`,
         "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", transform: `scale(${scale})`,
         "transform-origin": "top left", overflow: "hidden",
       }).forEach(([property, value]) => root.style.setProperty(property, value, "important"));
       if (reserve) Object.entries({
-        position: "fixed", inset: "auto", top: `${availableHeight}px`, left: "0px", width: `${width}px`, height: "56px",
+        position: "fixed", inset: "auto", top: `${contentTop + availableHeight}px`, left: `${left}px`, width: `${availableWidth}px`, height: "56px",
         margin: "0", transform: "none",
       }).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
       metrics.battleApplied = (metrics.battleApplied || 0) + 1;

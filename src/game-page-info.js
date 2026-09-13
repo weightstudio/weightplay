@@ -10110,6 +10110,12 @@
       // local to the generated Guide without changing Battle controls.
       section.style.setProperty("--wp-ui-radius", "16px", "important");
     }
+    if (id === "animal-balance-grove") {
+      // Interface 7's compact global radius flattened this generated Guide;
+      // keep the public reading frame and its structured sections visibly
+      // framed without changing Main, Stage, or Battle controls.
+      section.style.setProperty("--wp-ui-radius", "16px", "important");
+    }
     if (id === "animal-twin-switchyard") {
       // Twin Switchyard keeps the shared generated Guide, but Interface 7's
       // compact block radius would otherwise flatten its public reading frame

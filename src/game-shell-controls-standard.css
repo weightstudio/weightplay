@@ -656,6 +656,13 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 420px;
   }
 
+  /* Balance Grove's exact Main issue contract keeps its 420px poster column
+     in compact landscape; the general height clamp would otherwise produce
+     the measured 310px poster. */
+  body[data-wp-game-id="animal-balance-grove"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
   body[data-wp-game-id="animal-spectrum-pulse"] .stage-canvas {
     grid-template-rows: 58px 44px minmax(0, 1fr) !important;
   }

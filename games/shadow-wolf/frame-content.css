@@ -1,0 +1,39 @@
+/* Game-content placement only. Shared headers/preferences are not restyled. */
+.shadow-battle-content { position:relative; min-width:0; min-height:0; }
+.shadow-stage-content {
+  position:relative; min-width:0; min-height:0;
+  display:flex; flex-direction:column; gap:12px;
+  background:linear-gradient(#05101ac7,#05101ac7), url('../../assets/shadow-wolf-redrawn/moon-ruins-v1.png') center / cover;
+}
+.shadow-stage-content > #stageWorkshopBtn { position:static; align-self:flex-start; flex-shrink:0; }
+.shadow-stage-content > .stage-subtitle { position:static; margin:0; flex-shrink:0; }
+.shadow-stage-content > .world-map-grid.stage-rail { position:relative; inset:auto; flex:1; min-height:0; }
+.shadow-battle-content .arena-viewport {
+  position:relative;
+  display:grid;
+  grid-template-rows:auto minmax(0, 1fr);
+  padding:0;
+  gap:8px;
+}
+.shadow-battle-content #pauseBtn { position:static; margin-inline-start:auto; flex-shrink:0; }
+.shadow-battle-content .arena-hud {
+  position:static;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) auto 44px;
+  grid-template-rows:auto;
+  align-items:center;
+  gap:8px;
+  padding:0;
+}
+.shadow-battle-content .hud-meta-row { display:flex; align-items:center; }
+.shadow-battle-content .first-response { grid-column:1 / -1; }
+.shadow-battle-content > .battle-result {
+  inset:0 0 56px;
+  height:auto !important;
+  max-height:calc(100% - 56px) !important;
+  padding:12px;
+  align-content:start;
+  font-size:16px;
+  line-height:1.4;
+}
+.shadow-battle-content > .battle-result .result-actions { position:static; margin-top:12px; }

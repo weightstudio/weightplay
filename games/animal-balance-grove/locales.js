@@ -6,7 +6,7 @@
       intro: "Place the right stones on the grove scale and help Taro steady the bridge.",
       summary: "Balance named stones to steady three peaceful forest bridges.",
       progress: "Progress: 3 groves · 3 bridges · no timer",
-      start: "Start a round",
+      start: "Start Game",
       stages: "Choose a grove",
       guideTitle: "How to play",
       guideOneTitle: "1. Read the goal",

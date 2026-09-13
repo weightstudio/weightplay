@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/shadow-wolf/" />
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
@@ -39,7 +38,7 @@
   "name": "शैडो वुल्फ लीजेंड",
   "alternateName": "影狼傳說",
   "url": "https://weightplay.com/hi/games/shadow-wolf/",
-  "image": "https://weightplay.com/assets/shadow-wolf-cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/shadow-wolf.webp",
   "description": "शैडो वुल्फ लीजेंड 30 चरणों वाला साइड-स्क्रॉलिंग एक्शन प्लेटफ़ॉर्म अभियान है। खोजी भेड़िये को टूटे हुए किनारों के पार ले जाएँ, दिखाई देने वाली खतरे की...",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
@@ -67,7 +66,7 @@
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260712-shadow-wolf-public1" />
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+    <link rel="stylesheet" href="style.css?v=20260809-first-response-v8-88e1bb92bd44" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260718-full-canvas1" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:title" content="शैडो वुल्फ लीजेंड | WeightPlay" />
@@ -95,7 +94,7 @@
       </div>
     </header>
 
-    <main class="relic-app" data-internal-shadow-wolf-test="true">
+    <main class="relic-app" data-wp-frame-root data-internal-shadow-wolf-test="true">
       <section id="loadingPanel" class="loading-panel" aria-live="polite">
         <div class="loading-content">
           <h2 data-ui="title">Shadow Wolf</h2>
@@ -108,7 +107,7 @@
         <div class="menu-layout">
           <div class="menu-main">
             <div class="menu-cover-box">
-              <img class="cover" src="../../assets/shadow-wolf-cover.webp" alt="शैडो वुल्फ लीजेंड game artwork" data-ui-alt="coverAlt" />
+              <img class="cover" src="../../assets/interface7-redrawn/shadow-wolf.webp" alt="शैडो वुल्फ लीजेंड game artwork" data-ui-alt="coverAlt" />
             </div>
             <h2 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h2>
             <p class="menu-hint" data-ui="menuHint"></p>
@@ -119,7 +118,7 @@
         </div>
       </section>
 
-      <section id="mapPanel" class="panel world-map-panel wp-stage-art-shell hidden" data-screen="stage" data-wp-stage-art="../../assets/shadow-wolf-cover.webp" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art: url('../../assets/shadow-wolf-cover.webp')" aria-label="Stage selection" data-ui-aria="stageSelection">
+      <section id="mapPanel" class="panel world-map-panel wp-stage-art-shell hidden" data-screen="stage" data-wp-stage-art="../../assets/interface7-redrawn/shadow-wolf.webp" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art: url('../../assets/interface7-redrawn/shadow-wolf.webp')" aria-label="Stage selection" data-ui-aria="stageSelection">
         <div class="stage-header"><button id="mapBackBtn" type="button" class="play-return" data-wp-return="stage" aria-label="Back to main" data-ui-aria="backToMain">&larr;</button><h2 data-ui="stageTitle">Choose an expedition</h2><button id="stageWorkshopBtn" class="stage-workshop-btn wp-stage-header-action" type="button" aria-controls="stageManagementPanel" aria-expanded="false" aria-label="Permanent Upgrade" data-ui="diamondShopTitle" data-ui-aria="diamondShopTitle">Permanent Upgrade</button></div>
         <p class="stage-subtitle" data-ui="stageHint">Pick an unlocked region to begin.</p>
         <div class="world-map-grid stage-rail" aria-label="Stage rail" data-ui-aria="stageRail">
@@ -254,16 +253,21 @@
       </section>
 
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260708-shadow-wolf-internal-route1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "shadow-wolf", release_state: "playable" });</script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <link rel="stylesheet" href="../../src/game-ui-theme.css" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css" />
+    <link rel="stylesheet" href="frame-content.css" />
+    <script src="../../src/game-screen-frame.js"></script>
+    <script src="frame.js"></script>
     <script src="game.js?v=20260825-arabic-runtime-v10"></script>
     <section class="game-page-info game-page-info-static" aria-label="शैडो वुल्फ लीजेंड गेम की जानकारी">
 
@@ -294,8 +298,7 @@
       <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>प्रिज़्म ब्रेकर</strong><span>लौटती रोशनी की हर गेंद के नीचे पैडल चलाएं, संपर्क स्थान से कोण नियंत्रित करें और तीनों गेंद खोने से पहले टूटने वाले सभी क्रिस्टल तोड़ दें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-sketchwheel-rally/"><img src="/assets/interface7-redrawn/animal-sketchwheel-rally.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>स्केचव्हील रैली</strong><span>हर भूभाग से पहले पहिए का आकार बनाएं, उसके चलने का असर देखें और अगला पहिया बदलें ताकि पशु रेसर प्रतिद्वंद्वी से पहले फिनिश तक पहुंचे।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>पैंको की बाँस नहर</strong><span>पैंको के बाँस पाइप घुमाएँ, हर हिस्से में पानी पहुँचाएँ और उपवन खिलाएँ।</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20260827-shadow-wolf-ja-guide-v1"></script>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

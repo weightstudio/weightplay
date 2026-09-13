@@ -1,5 +1,8 @@
-/* Interface V6 contract overrides for the original compact prototype. */
+/* Interface V7 contract overrides for the original compact prototype. */
 .settings-panel[hidden]{display:none!important}
+/* The shared Settings owner renders the only visible Main utility. Keep the
+   legacy controller in the DOM so its locale control can be adopted. */
+#mainScreen #settingsBtn{display:none!important}
 /* Keep the settings popover inside the phone viewport when the game is RTL. */
 html[dir="rtl"] .settings-panel{right:auto;left:0}
 #mainScreen{position:relative}
