@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-09-15T19:28:52.045Z",
+  "updatedAt": "2026-09-16T19:21:51.329Z",
   "source": "ga4",
   "metric": "game_page_view",
   "windowDays": 7,
   "totals": {
-    "plays7d": 341,
-    "playsTotal": 34061,
-    "users7d": 125,
-    "lobbyVisits7d": 245,
-    "lobbyVisitsTotal": 4290,
-    "lobbyUsers7d": 12
+    "plays7d": 291,
+    "playsTotal": 34068,
+    "users7d": 108,
+    "lobbyVisits7d": 195,
+    "lobbyVisitsTotal": 4294,
+    "lobbyUsers7d": 10
   },
   "games": {
     "animal-peach-oath": {
@@ -23,14 +23,14 @@
       "plays7d": 4,
       "playsTotal": 562,
       "users7d": 2,
-      "rank7d": 16,
+      "rank7d": 14,
       "rankTotal": 20
     },
     "animal-honey-shield": {
       "plays7d": 5,
       "playsTotal": 447,
       "users7d": 2,
-      "rank7d": 11,
+      "rank7d": 10,
       "rankTotal": 31
     },
     "animal-dice-bastion": {
@@ -55,52 +55,52 @@
       "rankTotal": 90
     },
     "zhao-yun-a-dou": {
-      "plays7d": 5,
+      "plays7d": 4,
       "playsTotal": 117,
       "users7d": 1,
-      "rank7d": 13,
+      "rank7d": 15,
       "rankTotal": 68
     },
     "animal-bus-jam": {
       "plays7d": 5,
       "playsTotal": 427,
       "users7d": 2,
-      "rank7d": 12,
+      "rank7d": 11,
       "rankTotal": 34
     },
     "arrow-escape": {
       "plays7d": 1,
       "playsTotal": 426,
       "users7d": 1,
-      "rank7d": 27,
+      "rank7d": 24,
       "rankTotal": 35
     },
     "block-blast": {
       "plays7d": 2,
       "playsTotal": 303,
       "users7d": 1,
-      "rank7d": 22,
+      "rank7d": 21,
       "rankTotal": 51
     },
     "hexa-sort": {
       "plays7d": 2,
       "playsTotal": 609,
       "users7d": 1,
-      "rank7d": 21,
+      "rank7d": 20,
       "rankTotal": 16
     },
     "klondike-solitaire": {
-      "plays7d": 1,
+      "plays7d": 0,
       "playsTotal": 629,
-      "users7d": 1,
-      "rank7d": 25,
+      "users7d": 0,
+      "rank7d": null,
       "rankTotal": 15
     },
     "spider-solitaire": {
-      "plays7d": 4,
+      "plays7d": 0,
       "playsTotal": 646,
-      "users7d": 1,
-      "rank7d": 15,
+      "users7d": 0,
+      "rank7d": null,
       "rankTotal": 14
     },
     "freecell-solitaire": {
@@ -184,14 +184,14 @@
       "plays7d": 2,
       "playsTotal": 275,
       "users7d": 1,
-      "rank7d": 23,
+      "rank7d": 22,
       "rankTotal": 58
     },
     "wonder-crash": {
-      "plays7d": 16,
+      "plays7d": 10,
       "playsTotal": 496,
       "users7d": 2,
-      "rank7d": 6,
+      "rank7d": 7,
       "rankTotal": 26
     },
     "color-lunchbox": {
@@ -251,10 +251,10 @@
       "rankTotal": 70
     },
     "animal-2048": {
-      "plays7d": 2,
-      "playsTotal": 1295,
+      "plays7d": 3,
+      "playsTotal": 1296,
       "users7d": 1,
-      "rank7d": 20,
+      "rank7d": 16,
       "rankTotal": 2
     },
     "garden-tiles": {
@@ -286,9 +286,9 @@
       "rankTotal": 8
     },
     "animal-crystal-survivor": {
-      "plays7d": 141,
-      "playsTotal": 946,
-      "users7d": 81,
+      "plays7d": 103,
+      "playsTotal": 951,
+      "users7d": 66,
       "rank7d": 1,
       "rankTotal": 4
     },
@@ -324,21 +324,21 @@
       "plays7d": 1,
       "playsTotal": 222,
       "users7d": 1,
-      "rank7d": 31,
+      "rank7d": 29,
       "rankTotal": 62
     },
     "animal-relic-hunters": {
       "plays7d": 4,
       "playsTotal": 672,
       "users7d": 1,
-      "rank7d": 14,
+      "rank7d": 13,
       "rankTotal": 12
     },
     "animal-rune-tactics": {
-      "plays7d": 5,
+      "plays7d": 4,
       "playsTotal": 812,
       "users7d": 2,
-      "rank7d": 10,
+      "rank7d": 12,
       "rankTotal": 6
     },
     "animal-orb-fortress": {
@@ -366,7 +366,7 @@
       "plays7d": 1,
       "playsTotal": 319,
       "users7d": 1,
-      "rank7d": 29,
+      "rank7d": 26,
       "rankTotal": 48
     },
     "animal-block-grove": {
@@ -387,7 +387,7 @@
       "plays7d": 11,
       "playsTotal": 1338,
       "users7d": 2,
-      "rank7d": 7,
+      "rank7d": 6,
       "rankTotal": 1
     },
     "animal-spectrum-pulse": {
@@ -408,7 +408,7 @@
       "plays7d": 1,
       "playsTotal": 271,
       "users7d": 1,
-      "rank7d": 30,
+      "rank7d": 28,
       "rankTotal": 59
     },
     "animal-sanctuary-loop": {
@@ -573,10 +573,10 @@
       "rankTotal": 84
     },
     "animal-hero-trials": {
-      "plays7d": 0,
-      "playsTotal": 300,
-      "users7d": 0,
-      "rank7d": null,
+      "plays7d": 1,
+      "playsTotal": 301,
+      "users7d": 1,
+      "rank7d": 27,
       "rankTotal": 52
     },
     "animal-gearpack-expedition": {
@@ -657,10 +657,10 @@
       "rankTotal": 42
     },
     "casino": {
-      "plays7d": 1,
+      "plays7d": 0,
       "playsTotal": 790,
-      "users7d": 1,
-      "rank7d": 24,
+      "users7d": 0,
+      "rank7d": null,
       "rankTotal": 7
     },
     "cat-color-sudoku": {
@@ -695,7 +695,7 @@
       "plays7d": 1,
       "playsTotal": 475,
       "users7d": 1,
-      "rank7d": 26,
+      "rank7d": 23,
       "rankTotal": 28
     },
     "code-breaker": {
@@ -835,7 +835,7 @@
       "plays7d": 1,
       "playsTotal": 333,
       "users7d": 1,
-      "rank7d": 28,
+      "rank7d": 25,
       "rankTotal": 46
     },
     "animal-flip-foundry": {
@@ -905,7 +905,7 @@
       "plays7d": 1,
       "playsTotal": 45,
       "users7d": 1,
-      "rank7d": 32,
+      "rank7d": 30,
       "rankTotal": 83
     },
     "animal-signal-scout": {
