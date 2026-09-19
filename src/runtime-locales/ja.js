@@ -883,6 +883,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Aprender": "Aprender",
   "Apunta a burbujas iguales para formar un grupo": "グループ全体でのブルブジャス イグアレスの実行",
   "Apunta cerca de otro {name} para fusionarlos.": "融合の瞬間、{name} です。",
+  "Arc {value} · {value}": "Arc {value} · {value}",
   "Arc bondissant": "Arc bondissant",
   "Arc Jump": "Arc Jump",
   "Archive Entrance": "アーカイブ入口",

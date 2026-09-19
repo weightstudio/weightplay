@@ -883,6 +883,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Aprender": "Aprender",
   "Apunta a burbujas iguales para formar un grupo": "अपुंटा ए बुरबुजस इगुआलेस पैरा फॉर्मर अन ग्रुपो",
   "Apunta cerca de otro {name} para fusionarlos.": "ऑट्रो {name} पैरा फ्यूज़नार्लो से संबंधित।",
+  "Arc {value} · {value}": "Arc {value} · {value}",
   "Arc bondissant": "Arc bondissant",
   "Arc Jump": "Arc Jump",
   "Archive Entrance": "पुरालेख प्रवेश",

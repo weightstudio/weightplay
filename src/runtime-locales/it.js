@@ -883,6 +883,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Aprender": "Aprender",
   "Apunta a burbujas iguales para formar un grupo": "Punta le burbujas iguales per formare un gruppo",
   "Apunta cerca de otro {name} para fusionarlos.": "Apunta cerca de otro {name} para fusionarlos.",
+  "Arc {value} · {value}": "Arc {value} · {value}",
   "Arc bondissant": "Arc bondissant",
   "Arc Jump": "Arc Jump",
   "Archive Entrance": "Ingresso dell'Archivio",
