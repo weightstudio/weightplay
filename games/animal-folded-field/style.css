@@ -532,3 +532,12 @@ body[data-screen="main"] #gameGuide { display: block; }
     }
   }
 }
+
+/* Honor the shared 720px Guide breakpoint; no Main/Stage/Battle geometry change. */
+@layer wp-frame-contract {
+  @media (max-width:720px) {
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-info-sections {
+      grid-template-columns:minmax(0, 1fr) !important;
+    }
+  }
+}
