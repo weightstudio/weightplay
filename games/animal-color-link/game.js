@@ -38,6 +38,21 @@
     hi:["स्तर","पिछले बगीचे","अगले बगीचे","इस बगीचे को रोकें?","जारी रखने पर हर रास्ता वैसा ही रहेगा। स्तरों पर लौटने से यह प्रयास समाप्त होगा।","जारी रखें","स्तरों पर लौटें","अगला बगीचा","फिर खेलें"],
     ar:["المراحل","الحدائق السابقة","الحدائق التالية","إيقاف هذه الحديقة مؤقتًا؟","المتابعة تُبقي كل مسار في مكانه. الرجوع إلى المراحل ينهي هذه المحاولة.","متابعة","العودة إلى المراحل","الحديقة التالية","العب مجددًا"]
   };
+  const marketComparisonCopy={
+    en:{heading:"Similar gameplay references",body:"Flow Free and Color Link Garden both ask you to connect matching colors without crossing paths and fill the whole board. Flow Free offers more than 2,000 puzzles plus Free Play and Time Trial modes. Color Link Garden instead uses 30 authored gardens that grow from 5×5 with four colors to 7×7 with six colors, with no timer and with Hint, Undo and Reset for recovery. Choose this game for a short stage-by-stage garden campaign with browser-local unlocks, not as a reproduction of Flow Free's puzzle library or timed modes.",disclaimer:"These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",sourceLabel:"Official Flow Free reference"},
+    "zh-Hant":{heading:"相似玩法參考",body:"Flow Free 與《彩色連線花園》都要把相同顏色連起來、避免路線交叉，並填滿整個盤面。Flow Free 提供超過 2,000 個謎題，以及自由遊玩與計時模式；《彩色連線花園》則是 30 座固定設計的花園，從四種顏色的 5×5 逐步成長到六種顏色的 7×7，沒有計時限制，並提供提示、復原與重設協助修正路線。適合想玩短篇逐關花園流程與瀏覽器本機解鎖進度的玩家，而不是尋找 Flow Free 題庫或計時模式的重製版。",disclaimer:"這是不同作品之間的玩法比較，不表示本站提供官方版本、獲得背書或與其合作。",sourceLabel:"Flow Free 官方說明"},
+    "zh-Hans":{heading:"相似玩法参考",body:"Flow Free 与《彩色连线花园》都要求连接相同颜色、避免路线交叉，并填满整个棋盘。Flow Free 提供超过 2,000 个谜题，以及自由游玩和计时模式；《彩色连线花园》则是 30 座固定设计的花园，从四种颜色的 5×5 逐步增加到六种颜色的 7×7，不设倒计时，并提供提示、撤销和重置来修正路线。适合想玩短篇逐关花园流程与浏览器本地解锁进度的玩家，而不是寻找 Flow Free 题库或计时模式的重制版。",disclaimer:"这是不同作品之间的玩法比较，不表示本站提供官方版本、获得背书或与其合作。",sourceLabel:"Flow Free 官方说明"},
+    ja:{heading:"似た遊び方の参考",body:"Flow Free と Color Link Garden は、同じ色をつなぎ、経路を交差させず、盤面全体を埋める点が共通しています。Flow Free は2,000以上のパズルに加え、Free Play と Time Trial を提供します。一方 Color Link Garden は、4色の5×5から6色の7×7へ進む30個の固定ガーデンで構成され、制限時間はなく、ヒント、元に戻す、リセットで経路を修正できます。Flow Free の大量の問題集やタイム制モードの再現ではなく、短いステージ制のガーデンキャンペーンとブラウザ内の解放進行を楽しみたい人向けです。",disclaimer:"これは別作品同士のゲーム性比較であり、公式版、推奨、提携を示すものではありません。",sourceLabel:"Flow Free 公式情報"},
+    ko:{heading:"비슷한 플레이 참고",body:"Flow Free와 Color Link Garden은 같은 색을 연결하고 길이 서로 교차하지 않게 하며 보드 전체를 채운다는 핵심을 공유합니다. Flow Free는 2,000개가 넘는 퍼즐과 Free Play, Time Trial 모드를 제공합니다. Color Link Garden은 대신 4색 5×5에서 6색 7×7까지 커지는 30개의 고정 정원으로 구성되며 시간 제한이 없고 힌트, 실행 취소, 초기화로 길을 고칠 수 있습니다. Flow Free의 대규모 퍼즐 모음이나 시간제 모드를 재현한 것이 아니라 짧은 스테이지형 정원 캠페인과 브라우저 로컬 해금을 원하는 플레이어를 위한 게임입니다.",disclaimer:"서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식판·추천·제휴를 의미하지 않습니다.",sourceLabel:"Flow Free 공식 정보"},
+    es:{heading:"Referencias de jugabilidad similar",body:"Flow Free y Color Link Garden comparten la idea de unir colores iguales sin cruzar caminos y llenar todo el tablero. Flow Free ofrece más de 2.000 puzles, además de Free Play y Time Trial. Color Link Garden usa 30 jardines diseñados de antemano que avanzan de 5×5 con cuatro colores a 7×7 con seis, sin temporizador y con Pista, Deshacer y Reiniciar para corregir rutas. Elige este juego si prefieres una campaña corta por etapas con desbloqueos guardados en el navegador, no una reproducción de la biblioteca de puzles ni de los modos contrarreloj de Flow Free.",disclaimer:"Son obras independientes. Esta comparación no indica una edición oficial, una recomendación ni una colaboración.",sourceLabel:"Referencia oficial de Flow Free"},
+    "pt-BR":{heading:"Referências de jogabilidade semelhante",body:"Flow Free e Color Link Garden compartilham a ideia de ligar cores iguais sem cruzar caminhos e preencher todo o tabuleiro. Flow Free oferece mais de 2.000 quebra-cabeças, além dos modos Free Play e Time Trial. Color Link Garden usa 30 jardins planejados que evoluem de 5×5 com quatro cores para 7×7 com seis, sem cronômetro e com Dica, Desfazer e Reiniciar para corrigir rotas. Escolha este jogo se preferir uma campanha curta por fases com desbloqueios salvos no navegador, não uma reprodução da biblioteca de desafios ou dos modos cronometrados de Flow Free.",disclaimer:"São obras independentes. Esta comparação não indica edição oficial, endosso ou parceria.",sourceLabel:"Referência oficial de Flow Free"},
+    fr:{heading:"Références de gameplay similaire",body:"Flow Free et Color Link Garden partagent le principe de relier les couleurs identiques sans croiser les chemins et de remplir tout le plateau. Flow Free propose plus de 2 000 puzzles ainsi que les modes Free Play et Time Trial. Color Link Garden comprend plutôt 30 jardins conçus à l'avance, allant d'une grille 5×5 à quatre couleurs à une grille 7×7 à six couleurs, sans chronomètre, avec Indice, Annuler et Réinitialiser pour corriger un tracé. Choisissez ce jeu pour une courte campagne par étapes avec progression locale dans le navigateur, et non comme reproduction de la bibliothèque de puzzles ou des modes chronométrés de Flow Free.",disclaimer:"Il s'agit d'œuvres distinctes. Cette comparaison n'indique aucune édition officielle, approbation ou collaboration.",sourceLabel:"Référence officielle de Flow Free"},
+    de:{heading:"Ähnliche Spielmechanik als Referenz",body:"Flow Free und Color Link Garden teilen das Ziel, gleiche Farben ohne sich kreuzende Wege zu verbinden und das gesamte Spielfeld zu füllen. Flow Free bietet mehr als 2.000 Rätsel sowie Free Play und Time Trial. Color Link Garden besteht stattdessen aus 30 gestalteten Gärten, die von 5×5 mit vier Farben bis 7×7 mit sechs Farben wachsen, ohne Zeitlimit und mit Hinweis, Rückgängig und Zurücksetzen zur Korrektur von Wegen. Dieses Spiel richtet sich an Spieler, die eine kurze stufenbasierte Gartenkampagne mit lokal im Browser gespeicherten Freischaltungen möchten, nicht an eine Nachbildung der Rätselbibliothek oder Zeitmodi von Flow Free.",disclaimer:"Es handelt sich um getrennte Werke. Dieser Vergleich bedeutet keine offizielle Ausgabe, Empfehlung oder Partnerschaft.",sourceLabel:"Offizielle Flow-Free-Referenz"},
+    it:{heading:"Riferimenti con gameplay simile",body:"Flow Free e Color Link Garden condividono l'obiettivo di collegare colori uguali senza incrociare i percorsi e riempire l'intera griglia. Flow Free offre più di 2.000 rompicapi, oltre alle modalità Free Play e Time Trial. Color Link Garden propone invece 30 giardini progettati che crescono da 5×5 con quattro colori a 7×7 con sei, senza timer e con Suggerimento, Annulla e Ripristina per correggere i percorsi. Scegli questo gioco se preferisci una breve campagna a livelli con sblocchi salvati nel browser, non una riproduzione della raccolta di puzzle o delle modalità a tempo di Flow Free.",disclaimer:"Sono opere separate. Questo confronto non indica un'edizione ufficiale, un'approvazione o una collaborazione.",sourceLabel:"Riferimento ufficiale di Flow Free"},
+    ru:{heading:"Похожие игровые механики",body:"Flow Free и Color Link Garden объединяет задача соединять одинаковые цвета без пересечения линий и заполнять всё поле. Flow Free предлагает более 2 000 головоломок, а также режимы Free Play и Time Trial. Color Link Garden вместо этого содержит 30 заранее созданных садов: от поля 5×5 с четырьмя цветами до 7×7 с шестью, без таймера и с Подсказкой, Отменой и Сбросом для исправления маршрута. Эта игра подходит тем, кто хочет короткую поэтапную садовую кампанию с локальными разблокировками в браузере, а не копию библиотеки уровней или режимов на время из Flow Free.",disclaimer:"Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",sourceLabel:"Официальная информация Flow Free"},
+    hi:{heading:"मिलते-जुलते गेमप्ले का संदर्भ",body:"Flow Free और Color Link Garden दोनों में समान रंगों को बिना रास्ते काटे जोड़ना और पूरा बोर्ड भरना मुख्य लक्ष्य है। Flow Free में 2,000 से अधिक पहेलियाँ तथा Free Play और Time Trial मोड हैं। Color Link Garden में इसके बजाय 30 तय बगीचे हैं, जो चार रंगों वाले 5×5 से छह रंगों वाले 7×7 तक बढ़ते हैं; समय सीमा नहीं है और संकेत, पूर्ववत तथा रीसेट से रास्ता सुधारा जा सकता है। यह उन खिलाड़ियों के लिए है जो ब्राउज़र में स्थानीय अनलॉक के साथ छोटा चरण-दर-चरण बगीचा अभियान चाहते हैं, Flow Free की बड़ी पहेली लाइब्रेरी या समयबद्ध मोड की नकल नहीं।",disclaimer:"ये अलग-अलग कृतियाँ हैं। यह तुलना किसी आधिकारिक संस्करण, समर्थन या साझेदारी का संकेत नहीं देती।",sourceLabel:"Flow Free का आधिकारिक संदर्भ"},
+    ar:{heading:"مراجع لألعاب بآليات مشابهة",body:"تشترك Flow Free وColor Link Garden في وصل الألوان المتطابقة من دون تقاطع المسارات وملء اللوحة كاملة. تقدم Flow Free أكثر من 2000 لغز إلى جانب وضعي Free Play وTime Trial. أما Color Link Garden فتقدم 30 حديقة مصممة مسبقاً تتدرج من 5×5 بأربعة ألوان إلى 7×7 بستة ألوان، من دون مؤقت، مع التلميح والتراجع وإعادة الضبط لتصحيح المسارات. اختر هذه اللعبة إذا أردت حملة حدائق قصيرة على مراحل مع فتح التقدم محلياً في المتصفح، لا نسخة من مكتبة ألغاز Flow Free أو أوضاعها المحددة بالوقت.",disclaimer:"هذان عملان منفصلان. لا تعني هذه المقارنة وجود إصدار رسمي أو تأييد أو شراكة.",sourceLabel:"مرجع Flow Free الرسمي"}
+  };
   document.body.setAttribute("data-runtime-localize","off");
   let locale=readStore("wp-locale")||"en";
   if(!localeOrder.includes(locale))locale="en";
@@ -52,6 +67,25 @@
     return typeof value==="string"?value.replace(/\{(\w+)\}/g,(_,name)=>vars[name]??""):value;
   }
   function ui(index){return(interfaceCopy[locale]||interfaceCopy.en)[index]}
+  function renderMarketComparison(){
+    const sections=document.querySelector("#main .game-info-sections");
+    if(!sections)return;
+    const copy=marketComparisonCopy[locale]||marketComparisonCopy.en;
+    let article=sections.querySelector("[data-wp-market-comparison]");
+    if(!article){
+      article=document.createElement("article");
+      article.className="game-info-section";
+      article.dataset.wpMarketComparison="1.3.0";
+      article.setAttribute("data-runtime-localize","off");
+      article.innerHTML='<h3></h3><div class="game-info-tags"><span><bdi>Flow Free</bdi></span></div><p data-wp-market-body></p><p data-wp-market-disclaimer></p><p><a data-wp-market-source href="https://www.bigduckgames.com/flowfree" rel="noopener noreferrer"></a></p>';
+      sections.append(article);
+    }
+    article.dataset.comparisonLocale=locale;
+    article.querySelector("h3").textContent=copy.heading;
+    article.querySelector("[data-wp-market-body]").textContent=copy.body;
+    article.querySelector("[data-wp-market-disclaimer]").textContent=copy.disclaimer;
+    article.querySelector("[data-wp-market-source]").textContent=copy.sourceLabel;
+  }
   function setBattleCovered(covered,owner){
     [...$("#battle").children].forEach(node=>{if(node!==owner)node.inert=covered});
   }
@@ -224,6 +258,7 @@
     $("#resultStages").textContent=ui(0);
     $("#next").textContent=ui(7);
     $("#retry").textContent=ui(8);
+    renderMarketComparison();
     if(!$("#stage").hidden)renderStages();
     if(!$("#battle").hidden){$("#stageName").textContent=text("garden",{n:selected+1});$("#status").textContent=text("draw");renderBoard()}
   }
@@ -297,5 +332,5 @@
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   },true);
   applyLocale();show("main");
-  window.__COLOR_LINK_TEST__={levels,buildLevel,interfaceCopy};
+  window.__COLOR_LINK_TEST__={levels,buildLevel,interfaceCopy,marketComparisonCopy};
 })();
