@@ -12542,6 +12542,90 @@
   }
 
   let marketComparisonObserver = null;
+  // Pyramid Solitaire Text Growth 1.3.0 comparison; comparison copy is not SEO identity.
+  const pyramidMarketComparisonCopy = {
+  "en": {
+    "heading": "Similar gameplay references",
+    "body": "Microsoft Solitaire Collection — Pyramid and WeightPlay Pyramid Solitaire share the core goal of clearing a pyramid by combining available cards whose values total 13. Microsoft places Pyramid inside a larger collection with Daily Challenges, Events, rewards, achievements and Xbox/cloud features. WeightPlay focuses on one browser deal: 28 cards form a seven-row pyramid, only uncovered cards are selectable, Kings clear alone, the top Waste card can complete a pair, and Stock, Hint, Undo, Restart and New Game support recovery. Choose this version for the direct pair-to-13 puzzle without the collection meta layer.",
+    "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+    "sourceLabel": "Official reference"
+  },
+  "zh-Hant": {
+    "heading": "相似玩法參考",
+    "body": "Microsoft Solitaire Collection — Pyramid 與 WeightPlay 金字塔接龍的核心都在清除金字塔，利用目前可選的牌組成點數合計 13 的配對。Microsoft 將 Pyramid 收在更大的接龍合集內，另有每日挑戰、活動、獎勵、成就及 Xbox／雲端功能；WeightPlay 則專注單一瀏覽器牌局：28 張牌排成七層金字塔，只能選沒有被壓住的牌，K 可單獨移除，棄牌堆最上方可參與配對，並提供牌庫、提示、還原、重新開始與新遊戲。想直接玩「配成 13」的金字塔解題、不需要合集進度層時，可選這一版。",
+    "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+    "sourceLabel": "官方參考資料"
+  },
+  "zh-Hans": {
+    "heading": "相似玩法参考",
+    "body": "Microsoft Solitaire Collection — Pyramid 与 WeightPlay 金字塔接龙的核心都是清除金字塔，利用当前可选的牌组成点数合计 13 的配对。Microsoft 将 Pyramid 收在更大的接龙合集内，另有每日挑战、活动、奖励、成就及 Xbox／云端功能；WeightPlay 则专注单一浏览器牌局：28 张牌排成七层金字塔，只能选择没有被压住的牌，K 可单独移除，弃牌堆最上方可参与配对，并提供牌库、提示、撤销、重新开始与新游戏。想直接玩“配成 13”的金字塔解题、不需要合集进度层时，可选择这一版。",
+    "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+    "sourceLabel": "官方参考资料"
+  },
+  "ja": {
+    "heading": "似た遊び方の参考",
+    "body": "Microsoft Solitaire Collection — Pyramid と WeightPlay Pyramid Solitaire は、選べるカードを合計13にしてピラミッドを消すという中心ルールを共有します。Microsoft版はデイリーチャレンジ、イベント、報酬、実績、Xbox／クラウド機能を含む大きなソリティアコレクションの一部です。WeightPlay版はブラウザーの1ディールに集中し、28枚のカードで7段のピラミッドを作り、覆われていないカードだけを選択します。Kは1枚で消去でき、捨て札の一番上もペアに使え、山札、ヒント、元に戻す、リスタート、新しいゲームを利用できます。コレクション全体の進行要素なしで合計13のピラミッドパズルを直接遊びたい場合に向く構成です。",
+    "disclaimer": "これは別作品同士のゲーム性比較であり、公式版、推奨、提携を示すものではありません。",
+    "sourceLabel": "公式参考情報"
+  },
+  "ko": {
+    "heading": "비슷한 플레이 참고",
+    "body": "Microsoft Solitaire Collection — Pyramid와 WeightPlay Pyramid Solitaire는 선택 가능한 카드의 합을 13으로 만들어 피라미드를 비운다는 핵심 규칙을 공유합니다. Microsoft 버전은 일일 도전, 이벤트, 보상, 업적, Xbox 및 클라우드 기능이 포함된 더 큰 솔리테어 컬렉션의 일부입니다. WeightPlay 버전은 브라우저의 한 번의 딜에 집중하며 28장의 카드로 7단 피라미드를 만들고 다른 카드에 덮이지 않은 카드만 선택합니다. K는 혼자 제거할 수 있고 버린 더미의 맨 위 카드도 짝에 사용할 수 있으며 덱, 힌트, 실행 취소, 다시 시작, 새 게임을 제공합니다. 컬렉션 진행 요소 없이 합계 13 피라미드 퍼즐 자체에 집중하고 싶을 때 맞는 구성입니다.",
+    "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식판·추천·제휴를 의미하지 않습니다.",
+    "sourceLabel": "공식 참고 자료"
+  },
+  "es": {
+    "heading": "Referencias de jugabilidad similar",
+    "body": "Microsoft Solitaire Collection — Pyramid y WeightPlay Pyramid Solitaire comparten el objetivo central de vaciar una pirámide combinando cartas disponibles que sumen 13. Microsoft incluye Pyramid dentro de una colección mayor con Desafíos diarios, Eventos, recompensas, logros y funciones de Xbox y nube. WeightPlay se centra en un solo reparto del navegador: 28 cartas forman una pirámide de siete filas, solo se pueden elegir cartas descubiertas, los Reyes se retiran solos, la carta superior del descarte puede completar una pareja y hay Mazo, Pista, Deshacer, Reiniciar y Nueva partida. Esta versión está pensada para jugar directamente al rompecabezas de sumar 13 sin la capa de progreso de una colección.",
+    "disclaimer": "Son obras independientes. Esta comparación no indica que sea una edición oficial, una recomendación ni una colaboración.",
+    "sourceLabel": "Referencia oficial"
+  },
+  "pt-BR": {
+    "heading": "Referências de jogabilidade semelhante",
+    "body": "Microsoft Solitaire Collection — Pyramid e WeightPlay Pyramid Solitaire compartilham o objetivo central de limpar uma pirâmide combinando cartas disponíveis cuja soma seja 13. A Microsoft inclui Pyramid em uma coleção maior com Desafios Diários, Eventos, recompensas, conquistas e recursos de Xbox e nuvem. O WeightPlay se concentra em uma única distribuição no navegador: 28 cartas formam uma pirâmide de sete fileiras, apenas cartas descobertas podem ser escolhidas, Reis saem sozinhos, a carta superior do descarte pode completar um par e há Monte, Dica, Desfazer, Reiniciar e Novo jogo. Esta versão é para quem quer jogar diretamente o quebra-cabeça de soma 13 sem a camada de progresso de uma coleção.",
+    "disclaimer": "São obras independentes. Esta comparação não indica edição oficial, endosso ou parceria.",
+    "sourceLabel": "Referência oficial"
+  },
+  "fr": {
+    "heading": "Références de gameplay similaire",
+    "body": "Microsoft Solitaire Collection — Pyramid et WeightPlay Pyramid Solitaire partagent le même objectif central : vider une pyramide en associant des cartes disponibles dont la somme vaut 13. Microsoft intègre Pyramid à une collection plus large avec Défis quotidiens, Événements, récompenses, succès et fonctions Xbox/cloud. WeightPlay reste centré sur une seule donne dans le navigateur : 28 cartes forment une pyramide de sept rangées, seules les cartes découvertes sont sélectionnables, les Rois se retirent seuls, le dessus de la défausse peut compléter une paire, et la Pioche, l’Indice, Annuler, Recommencer et Nouvelle partie servent à gérer la donne. Cette version convient si vous voulez directement le puzzle de somme 13 sans la progression d’une collection.",
+    "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison n’indique aucune édition officielle, approbation ou collaboration.",
+    "sourceLabel": "Référence officielle"
+  },
+  "de": {
+    "heading": "Ähnliche Spielmechanik als Referenz",
+    "body": "Microsoft Solitaire Collection — Pyramid und WeightPlay Pyramid Solitaire teilen das Kernziel, eine Pyramide durch verfügbare Kartenpaare mit der Summe 13 abzuräumen. Microsoft bindet Pyramid in eine größere Sammlung mit täglichen Herausforderungen, Events, Belohnungen, Erfolgen sowie Xbox- und Cloud-Funktionen ein. WeightPlay konzentriert sich auf eine einzelne Browser-Verteilung: 28 Karten bilden eine Pyramide aus sieben Reihen, nur freie Karten sind wählbar, Könige werden allein entfernt, die oberste Ablagekarte kann ein Paar vervollständigen, und Stapel, Hinweis, Rückgängig, Neustart und Neues Spiel unterstützen die Runde. Diese Variante ist für das direkte Summe-13-Pyramidenrätsel ohne Sammlungs-Fortschritt gedacht.",
+    "disclaimer": "Es handelt sich um getrennte Werke. Dieser Vergleich bedeutet keine offizielle Ausgabe, Empfehlung oder Partnerschaft.",
+    "sourceLabel": "Offizielle Referenz"
+  },
+  "it": {
+    "heading": "Riferimenti con gameplay simile",
+    "body": "Microsoft Solitaire Collection — Pyramid e WeightPlay Pyramid Solitaire condividono l’obiettivo centrale di svuotare una piramide abbinando carte disponibili la cui somma è 13. Microsoft inserisce Pyramid in una raccolta più ampia con Sfide giornaliere, Eventi, ricompense, obiettivi e funzioni Xbox/cloud. WeightPlay si concentra su una sola distribuzione nel browser: 28 carte formano una piramide di sette righe, si possono scegliere solo le carte scoperte, i Re si eliminano da soli, la prima carta degli scarti può completare una coppia e sono disponibili Mazzo, Suggerimento, Annulla, Ricomincia e Nuova partita. Questa versione è pensata per giocare direttamente al rompicapo della somma 13 senza il livello di progressione di una raccolta.",
+    "disclaimer": "Sono opere separate. Questo confronto non indica un’edizione ufficiale, un’approvazione o una collaborazione.",
+    "sourceLabel": "Riferimento ufficiale"
+  },
+  "ru": {
+    "heading": "Похожие игровые механики",
+    "body": "Microsoft Solitaire Collection — Pyramid и WeightPlay Pyramid Solitaire используют одну основную цель: убрать пирамиду, составляя из доступных карт пары с суммой 13. В версии Microsoft Pyramid входит в большую коллекцию с ежедневными заданиями, событиями, наградами, достижениями и функциями Xbox/облака. WeightPlay сосредоточен на одной браузерной раздаче: 28 карт образуют пирамиду из семи рядов, выбирать можно только открытые карты, король убирается один, верхняя карта сброса может дополнить пару, а колода, подсказка, отмена, перезапуск и новая игра помогают управлять раздачей. Этот вариант подходит для прямой головоломки на сумму 13 без мета-прогрессии коллекции.",
+    "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+    "sourceLabel": "Официальный источник"
+  },
+  "hi": {
+    "heading": "मिलते-जुलते गेमप्ले का संदर्भ",
+    "body": "Microsoft Solitaire Collection — Pyramid और WeightPlay Pyramid Solitaire दोनों में मुख्य लक्ष्य उपलब्ध पत्तों की ऐसी जोड़ियाँ बनाकर पिरामिड साफ करना है जिनका योग 13 हो। Microsoft में Pyramid एक बड़े संग्रह का हिस्सा है, जिसमें Daily Challenges, Events, rewards, achievements और Xbox/cloud सुविधाएँ हैं। WeightPlay एक ब्राउज़र डील पर केंद्रित है: 28 पत्ते सात पंक्तियों का पिरामिड बनाते हैं, केवल खुले पत्ते चुने जा सकते हैं, K अकेला हटता है, खुले ढेर का सबसे ऊपर वाला पत्ता जोड़ी पूरी कर सकता है, और Stock, संकेत, वापस करें, फिर शुरू करें तथा नया खेल उपलब्ध हैं। संग्रह की अतिरिक्त प्रगति के बिना सीधे योग-13 पिरामिड पहेली खेलनी हो तो यह संस्करण उपयुक्त है।",
+    "disclaimer": "ये अलग-अलग कृतियाँ हैं। यह तुलना किसी आधिकारिक संस्करण, समर्थन या साझेदारी का संकेत नहीं देती।",
+    "sourceLabel": "आधिकारिक संदर्भ"
+  },
+  "ar": {
+    "heading": "مراجع لألعاب بآليات مشابهة",
+    "body": "تشترك Microsoft Solitaire Collection — Pyramid وWeightPlay Pyramid Solitaire في الهدف الأساسي: إزالة الهرم بتكوين أزواج من البطاقات المتاحة مجموعها 13. تضع Microsoft لعبة Pyramid ضمن مجموعة أكبر تضم تحديات يومية وفعاليات ومكافآت وإنجازات وميزات Xbox والسحابة. أما WeightPlay فيركز على توزيعة واحدة داخل المتصفح: 28 بطاقة تكوّن هرمًا من سبعة صفوف، ولا يمكن اختيار إلا البطاقات غير المغطاة، ويُزال الملك وحده، ويمكن للبطاقة العليا من كومة المكشوف إكمال زوج، مع الرزمة والتلميح والتراجع وإعادة البدء ولعبة جديدة لإدارة الجولة. يناسب هذا الإصدار من يريد لغز جمع 13 مباشرة من دون طبقة تقدم خاصة بمجموعة ألعاب.",
+    "disclaimer": "هذان عملان منفصلان. لا تعني هذه المقارنة وجود إصدار رسمي أو تأييد أو شراكة.",
+    "sourceLabel": "مرجع رسمي"
+  }
+};
+  gameplayProfiles["pyramid-solitaire"] ||= {};
+  gameplayProfiles["pyramid-solitaire"].marketComparison = { name: "Microsoft Solitaire Collection — Pyramid", source: "https://www.xbox.com/en-us/games/store/microsoft-solitaire-collection/9wzdncrfhwd2", locales: pyramidMarketComparisonCopy };
+
   function installMarketComparisonSync() {
     if (marketComparisonObserver || !gameplayProfiles[currentGameId()]?.marketComparison ||
         !document.body || typeof MutationObserver === "undefined") return;
