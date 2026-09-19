@@ -2,12 +2,49 @@
   "use strict";
   const localeMap = window.MAGNET_MEADOW_LOCALES || {};
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  // Authored v8 campaign: six arcs, five boards per arc, and real mechanic
+  // changes.  These are intentionally explicit fixtures rather than a copied
+  // permutation loop so the campaign can be audited without a browser.
   const rounds = [
-    { title: "First pull", hint: "Learn one pull response.", relation: "pull", initial: { a: 0, b: 4 }, target: { a: 1, b: 5 } },
-    { title: "Quiet push", hint: "Use a push response.", relation: "push", initial: { a: 4, b: 2 }, target: { a: 5, b: 1 } },
-    { title: "Double settle", hint: "Plan two pull moves.", relation: "pull", initial: { a: 0, b: 3 }, target: { a: 2, b: 5 } },
+    { arc: 1, checkpoint: false, title: "First pull", hint: "Pull one linked pair into place.", mechanic: "basic pull", relation: "pull", boardSize: 6, stones: ["a", "b"], initial: { a: 0, b: 4 }, target: { a: 1, b: 5 } },
+    { arc: 1, checkpoint: false, title: "Quiet push", hint: "Push the partner away from the moving stone.", mechanic: "basic push", relation: "push", boardSize: 6, stones: ["a", "b"], initial: { a: 4, b: 2 }, target: { a: 5, b: 1 } },
+    { arc: 1, checkpoint: false, title: "Two-step pull", hint: "Plan two pulls before checking the pair.", mechanic: "two-step pull", relation: "pull", boardSize: 6, stones: ["a", "b"], initial: { a: 0, b: 3 }, target: { a: 2, b: 5 } },
+    { arc: 1, checkpoint: false, title: "Long meadow", hint: "A longer board gives the pair more room to settle.", mechanic: "long board", relation: "pull", boardSize: 7, stones: ["a", "b"], initial: { a: 1, b: 4 }, target: { a: 3, b: 6 } },
+    { arc: 1, checkpoint: true, title: "First checkpoint", hint: "Use one push to land both stones cleanly.", mechanic: "checkpoint push", relation: "push", boardSize: 7, stones: ["a", "b"], initial: { a: 5, b: 2 }, target: { a: 6, b: 1 } },
+
+    { arc: 2, checkpoint: false, title: "Polarity dawn", hint: "The first move pulls; the next move will push.", mechanic: "polarity flip", relation: "flip", boardSize: 7, stones: ["a", "b"], initial: { a: 0, b: 5 }, target: { a: 1, b: 6 } },
+    { arc: 2, checkpoint: false, title: "Read the phase", hint: "The phase is pull on the first move.", mechanic: "polarity phase", relation: "flip", boardSize: 7, stones: ["a", "b"], initial: { a: 4, b: 2 }, target: { a: 5, b: 3 } },
+    { arc: 2, checkpoint: false, title: "Return phase", hint: "Two moves make the link change direction.", mechanic: "phase reversal", relation: "flip", boardSize: 8, stones: ["a", "b"], initial: { a: 0, b: 6 }, target: { a: 2, b: 6 } },
+    { arc: 2, checkpoint: false, title: "Edge reversal", hint: "A pull toward the left edge can still be useful.", mechanic: "edge reversal", relation: "flip", boardSize: 8, stones: ["a", "b"], initial: { a: 5, b: 1 }, target: { a: 4, b: 0 } },
+    { arc: 2, checkpoint: true, title: "Phase checkpoint", hint: "Use the phase change to finish the long move.", mechanic: "checkpoint flip", relation: "flip", boardSize: 8, stones: ["a", "b"], initial: { a: 1, b: 5 }, target: { a: 4, b: 5 } },
+
+    { arc: 3, checkpoint: false, title: "Anchored partner", hint: "The anchored moonstone never moves.", mechanic: "fixed anchor", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["b"], initial: { a: 0, b: 5 }, target: { a: 2, b: 5 } },
+    { arc: 3, checkpoint: false, title: "Anchored lead", hint: "Move the free stone around the fixed lead.", mechanic: "fixed anchor", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["a"], initial: { a: 1, b: 5 }, target: { a: 1, b: 3 } },
+    { arc: 3, checkpoint: false, title: "Anchor turn", hint: "Two pulls bring the free stone back beside its anchor.", mechanic: "anchor turn", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["b"], initial: { a: 4, b: 2 }, target: { a: 2, b: 2 } },
+    { arc: 3, checkpoint: false, title: "Wide anchor", hint: "Use the wider board without disturbing the anchor.", mechanic: "wide anchor", relation: "pull", boardSize: 8, stones: ["a", "b"], anchors: ["a"], initial: { a: 6, b: 1 }, target: { a: 6, b: 4 } },
+    { arc: 3, checkpoint: true, title: "Anchor checkpoint", hint: "Keep the anchor safe through three careful pulls.", mechanic: "checkpoint anchor", relation: "pull", boardSize: 8, stones: ["a", "b"], anchors: ["b"], initial: { a: 0, b: 3 }, target: { a: 3, b: 3 } },
+
+    { arc: 4, checkpoint: false, title: "Quiet obstacle", hint: "The blocked dock cannot receive a moonstone.", mechanic: "blocked dock", relation: "pull", boardSize: 7, stones: ["a", "b"], blocked: [2], initial: { a: 0, b: 4 }, target: { a: 1, b: 5 } },
+    { arc: 4, checkpoint: false, title: "Twin barriers", hint: "Read the open route before making a push.", mechanic: "twin barriers", relation: "push", boardSize: 8, stones: ["a", "b"], blocked: [3, 4], initial: { a: 6, b: 1 }, target: { a: 7, b: 0 } },
+    { arc: 4, checkpoint: false, title: "Crossing gap", hint: "The middle gap is blocked; the next dock remains open.", mechanic: "crossing gap", relation: "pull", boardSize: 8, stones: ["a", "b"], blocked: [1, 4], initial: { a: 2, b: 6 }, target: { a: 3, b: 7 } },
+    { arc: 4, checkpoint: false, title: "Edge shelter", hint: "Avoid the shelter dock while pulling toward the edge.", mechanic: "edge shelter", relation: "pull", boardSize: 7, stones: ["a", "b"], blocked: [5], initial: { a: 0, b: 3 }, target: { a: 1, b: 4 } },
+    { arc: 4, checkpoint: true, title: "Obstacle checkpoint", hint: "A clean push completes the barrier arc.", mechanic: "checkpoint obstacle", relation: "push", boardSize: 8, stones: ["a", "b"], blocked: [2, 5], initial: { a: 6, b: 1 }, target: { a: 7, b: 0 } },
+
+    { arc: 5, checkpoint: false, title: "Three-stone pull", hint: "The second and third stones follow at different distances.", mechanic: "chain pull", relation: "pull", boardSize: 6, stones: ["a", "b", "c"], initial: { a: 0, b: 2, c: 4 }, target: { a: 1, b: 3, c: 5 } },
+    { arc: 5, checkpoint: false, title: "Three-stone push", hint: "A push sends the chain in the opposite direction.", mechanic: "chain push", relation: "push", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 5, b: 3, c: 1 }, target: { a: 6, b: 2, c: 0 } },
+    { arc: 5, checkpoint: false, title: "Short chain", hint: "Keep the three stones separated while pulling.", mechanic: "short chain", relation: "pull", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 0, b: 1, c: 2 }, target: { a: 1, b: 2, c: 4 } },
+    { arc: 5, checkpoint: false, title: "Long chain", hint: "A push moves the far stone two docks at once.", mechanic: "long chain", relation: "push", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 5, b: 4, c: 2 }, target: { a: 6, b: 3, c: 0 } },
+    { arc: 5, checkpoint: true, title: "Chain checkpoint", hint: "One careful pull aligns the full three-stone chain.", mechanic: "checkpoint chain", relation: "pull", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 1, b: 3, c: 5 }, target: { a: 2, b: 4, c: 6 } },
+
+    { arc: 6, checkpoint: false, title: "Blocked phase", hint: "The polarity changes while the blocked dock stays closed.", mechanic: "flip plus obstacle", relation: "flip", boardSize: 8, stones: ["a", "b"], blocked: [3], initial: { a: 0, b: 5 }, target: { a: 1, b: 6 } },
+    { arc: 6, checkpoint: false, title: "Anchored chain", hint: "Only the free stones respond; the anchor stays fixed.", mechanic: "flip plus anchor", relation: "flip", boardSize: 8, stones: ["a", "b", "c"], anchors: ["c"], initial: { a: 0, b: 2, c: 6 }, target: { a: 1, b: 3, c: 6 } },
+    { arc: 6, checkpoint: false, title: "Chain barrier", hint: "Move the chain without landing on either barrier.", mechanic: "push plus barriers", relation: "push", boardSize: 8, stones: ["a", "b", "c"], blocked: [1, 7], initial: { a: 5, b: 4, c: 2 }, target: { a: 6, b: 3, c: 0 } },
+    { arc: 6, checkpoint: false, title: "Anchored phase", hint: "The free stone follows the current polarity around its anchor.", mechanic: "flip plus anchor", relation: "flip", boardSize: 8, stones: ["a", "b"], anchors: ["b"], initial: { a: 1, b: 5 }, target: { a: 2, b: 5 } },
+    { arc: 6, checkpoint: true, title: "Meadow finale", hint: "One final pull settles the three-stone meadow pattern.", mechanic: "final chain", relation: "flip", boardSize: 9, stones: ["a", "b", "c"], blocked: [3, 6], initial: { a: 0, b: 1, c: 2 }, target: { a: 1, b: 2, c: 4 } },
   ];
-  const state = { locale: "en", screen: "main", round: 0, positions: { a: 0, b: 5 }, moves: 0, completed: [], selected: "a", statusKey: "ready", statusStone: null, sound: true, drag: null };
+  const firstRound = rounds[0];
+  const state = { locale: "en", screen: "main", round: 0, positions: { ...firstRound.initial }, moves: 0, completed: [], selected: "a", statusKey: "ready", statusStone: null, sound: true, drag: null };
+  const bestKey = "weightplay-animal-magnet-meadow-best-v8";
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
