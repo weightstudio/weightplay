@@ -9157,6 +9157,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "What is the difference between the care actions?": "ما الفرق بين إجراءات الرعاية؟",
   "What is the difference between the two care actions?": "ما الفرق بين إجراءي الرعاية؟",
   "What makes a landing good?": "ما الذي يجعل الهبوط جيدًا؟",
+  "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test.": "يتحدد النجاح عند إفلات السحب: يجب أن تقع قوة الإطلاق ضمن النطاق المسموح للسطح الحالي. عدّل طول السحب بعد الخطأ؛ فالدوران الظاهر ليس اختباراً مستقلاً لزاوية الاستقامة.",
   "What makes a tile free?": "ما الذي يجعل البلاط مجانيًا؟",
   "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.": "عندما يتم ربط السمكة بالصنارة، اسحب إلى داخل شريط الشد واحتفظ بالعلامة الحمراء داخل الشريط الآمن.",
   "When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.": "عندما تكون البوابة مرئية، حدد موقع مفتاحها أولاً وتأكد من عدم قطع الطريق من المفتاح إلى البوابة بالمياه.",

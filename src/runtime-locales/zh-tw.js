@@ -9157,6 +9157,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "What is the difference between the care actions?": "護理動作有何不同？",
   "What is the difference between the two care actions?": "這兩種護理動作有什麼不同？",
   "What makes a landing good?": "是什麼讓著陸變得順利？",
+  "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test.": "成功取決於放開滑動時的判定：你的發射力度必須落在目前表面的允許範圍內。失誤後調整滑動長度；畫面中的旋轉不是另一個獨立的直立角度測試。",
   "What makes a tile free?": "是什麼讓磁磚成為免費的？",
   "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.": "當魚上鉤時，將其拖入張力線並將紅色標記保持在安全帶內。",
   "When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.": "當門可見時，請先找到門的鑰匙，並確保從鑰匙到門的路線沒有被水切斷。",

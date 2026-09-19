@@ -9157,6 +9157,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "What is the difference between the care actions?": "देखभाल क्रियाओं में क्या अंतर है?",
   "What is the difference between the two care actions?": "दोनों देखभाल क्रियाओं के बीच क्या अंतर है?",
   "What makes a landing good?": "लैंडिंग को क्या अच्छा बनाता है?",
+  "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test.": "सफलता तब तय होती है जब आप स्वाइप छोड़ते हैं: लॉन्च की ताकत वर्तमान सतह की अनुमत सीमा के भीतर होनी चाहिए। चूक के बाद स्वाइप की लंबाई समायोजित करें; दिखाई देने वाला घुमाव सीधा कोण जाँचने का अलग परीक्षण नहीं है।",
   "What makes a tile free?": "क्या चीज़ एक टाइल को मुफ़्त बनाती है?",
   "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.": "जब कोई मछली फंस जाए, तो उसे टेंशन लेन में खींचें और लाल मार्कर को सुरक्षित बैंड के अंदर रखें।",
   "When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.": "जब कोई गेट दिखाई दे, तो पहले उसकी चाबी का पता लगाएं और सुनिश्चित करें कि चाबी से गेट तक का मार्ग पानी से कटा न हो।",

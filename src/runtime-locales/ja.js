@@ -9157,6 +9157,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "What is the difference between the care actions?": "ケアアクションの違いは何ですか？",
   "What is the difference between the two care actions?": "2 つのケア アクションの違いは何ですか?",
   "What makes a landing good?": "着陸がうまくいく理由は何ですか？",
+  "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test.": "成功はスワイプを離した時に決まります。発射の強さが現在の台の許容範囲に入っていなければなりません。失敗したらスワイプの長さを調整してください。見えている回転は、別個の直立角度テストではありません。",
   "What makes a tile free?": "タイルが無料になるのはなぜですか?",
   "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.": "魚が掛かったら、テンションレーンを引きずり、赤いマーカーを安全帯の内側に保ちます。",
   "When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.": "ゲートが見えたら、まずその鍵を見つけて、鍵からゲートまでのルートが水によって遮断されていないことを確認します。",

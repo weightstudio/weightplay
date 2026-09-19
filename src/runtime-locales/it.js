@@ -9157,6 +9157,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "What is the difference between the care actions?": "Qual è la differenza tra le azioni di cura?",
   "What is the difference between the two care actions?": "Qual è la differenza tra le due azioni di cura?",
   "What makes a landing good?": "Cosa rende buono un atterraggio?",
+  "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test.": "Il successo si decide quando rilasci lo scorrimento: la forza del lancio deve rientrare nell'intervallo consentito dalla superficie attuale. Dopo un errore, regola la lunghezza dello scorrimento; la rotazione visibile non è un test separato dell'angolo verticale.",
   "What makes a tile free?": "Cosa rende una tessera libera?",
   "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.": "Quando un pesce viene allamato, trascinalo nella corsia di tensione e mantieni il contrassegno rosso all'interno della fascia di sicurezza.",
   "When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.": "Quando un cancello è visibile, individua prima la sua chiave e assicurati che il percorso dalla chiave al cancello non sia interrotto dall'acqua.",

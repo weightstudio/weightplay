@@ -9157,6 +9157,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "What is the difference between the care actions?": "케어 액션의 차이점은 무엇인가요?",
   "What is the difference between the two care actions?": "두 가지 케어 조치의 차이점은 무엇입니까?",
   "What makes a landing good?": "착륙이 좋은 이유는 무엇입니까?",
+  "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test.": "성공 여부는 스와이프를 놓는 순간 결정됩니다. 발사 강도가 현재 표면의 허용 범위 안에 있어야 합니다. 실패하면 스와이프 길이를 조절하세요. 보이는 회전은 별도의 직립 각도 테스트가 아닙니다.",
   "What makes a tile free?": "타일을 무료로 만드는 이유는 무엇입니까?",
   "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.": "물고기가 걸리면 텐션 레인을 드래그하고 빨간색 마커를 안전 밴드 안에 유지하세요.",
   "When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.": "게이트가 보이면 먼저 열쇠를 찾고 열쇠에서 게이트까지의 경로가 물에 의해 차단되지 않는지 확인하십시오.",

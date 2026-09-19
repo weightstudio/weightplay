@@ -9157,6 +9157,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "What is the difference between the care actions?": "В чем разница между действиями по уходу?",
   "What is the difference between the two care actions?": "В чем разница между двумя действиями по уходу?",
   "What makes a landing good?": "Чем хороша посадка?",
+  "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test.": "Успех определяется в момент отпускания свайпа: сила запуска должна попасть в допустимый диапазон текущей поверхности. После промаха измените длину свайпа; видимое вращение не является отдельной проверкой угла вертикального приземления.",
   "What makes a tile free?": "Что делает плитку бесплатной?",
   "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.": "Когда рыба попалась на крючок, перетащите натяжную полосу и держите красный маркер внутри безопасной полосы.",
   "When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.": "Когда ворота видны, сначала найдите их ключ и убедитесь, что путь от ключа к воротам не перекрыт водой.",
