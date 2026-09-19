@@ -113,13 +113,19 @@
   });
 
   const guardianTypes = [
-    {id:"grove", image:"../../assets/animal-dice-bastion/guardian-grove.webp", power:1.12, rate:1.0, color:"#65e3a5"},
-    {id:"spark", image:"../../assets/animal-dice-bastion/guardian-spark.webp", power:.62, rate:1.75, color:"#c084fc"},
-    {id:"moon", image:"../../assets/animal-dice-bastion/guardian-moon.webp", power:.86, rate:.78, slow:.28, color:"#67e8f9"},
-    {id:"forge", image:"../../assets/animal-dice-bastion/guardian-forge.webp", power:1.02, rate:.86, armorBreak:.45, color:"#f59e0b"},
-    {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide.webp", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
+    {id:"grove", image:"../../assets/animal-dice-bastion/guardian-grove-block-v31.png", power:1.12, rate:1.0, color:"#65e3a5"},
+    {id:"spark", image:"../../assets/animal-dice-bastion/guardian-spark-block-v31.png", power:.62, rate:1.75, color:"#c084fc"},
+    {id:"moon", image:"../../assets/animal-dice-bastion/guardian-moon-block-v31.png", power:.86, rate:.78, slow:.28, color:"#67e8f9"},
+    {id:"forge", image:"../../assets/animal-dice-bastion/guardian-forge-block-v31.png", power:1.02, rate:.86, armorBreak:.45, color:"#f59e0b"},
+    {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide-block-v31.png", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
   ];
   const guardianMap = Object.fromEntries(guardianTypes.map((item) => [item.id, item]));
+  // Tutorial, roster and Battle share the same guardian artwork in every locale.
+  for (const article of document.querySelectorAll('.guardian-guide article')) {
+    const type = guardianMap[article.querySelector('b[data-i18n]')?.dataset.i18n];
+    const image = article.querySelector('img');
+    if (type && image) image.src = type.image;
+  }
   function selectOpeningGuardian(id, focus = false) {
     if(!guardianMap[id])return;
     save.openingGuardian=id;persist();renderGuardianRoster();
@@ -159,13 +165,13 @@
   ];
   const projectileColors = {grove:"#78f0a9",spark:"#d8a7ff",moon:"#8cecff",forge:"#ffc15e",tide:"#69a9ff",burst:"#ffe36e"};
   const enemyImages = {
-    normal:"../../assets/animal-dice-bastion/enemy-wisp.webp",
-    fast:"../../assets/animal-dice-bastion/enemy-wisp.webp",
-    armor:"../../assets/animal-dice-bastion/enemy-beetle.webp",
-    healer:"../../assets/animal-dice-bastion/enemy-healer.webp",
-    boss0:"../../assets/animal-dice-bastion/boss-briarhorn-ram.webp",
-    boss1:"../../assets/animal-dice-bastion/boss-moonwing-owl.webp",
-    boss2:"../../assets/animal-dice-bastion/boss-deeptide-crocodile.webp",
+    normal:"../../assets/animal-dice-bastion/enemy-wisp-block-v31.png",
+    fast:"../../assets/animal-dice-bastion/enemy-wisp-block-v31.png",
+    armor:"../../assets/animal-dice-bastion/enemy-beetle-block-v31.png",
+    healer:"../../assets/animal-dice-bastion/enemy-healer-block-v31.png",
+    boss0:"../../assets/animal-dice-bastion/boss-briarhorn-ram-block-v31.png",
+    boss1:"../../assets/animal-dice-bastion/boss-moonwing-owl-block-v31.png",
+    boss2:"../../assets/animal-dice-bastion/boss-deeptide-crocodile-block-v31.png",
     boss3:"../../assets/animal-dice-bastion/boss-forge-colossus.webp",
     boss4:"../../assets/animal-dice-bastion/boss-astral-lion.webp",
     boss5:"../../assets/animal-dice-bastion/boss-rift-stag.webp"
@@ -909,7 +915,11 @@
       const geometry=enemyRoadRect(enemy,w,h,d);
       if (!geometry) continue;
       const {x,y}=geometry;
-      if(image?.complete)ctx.drawImage(image,x-size/2,y-size*.8,size,size);
+      if(image?.complete&&image.naturalWidth&&image.naturalHeight){
+        const scale=size/Math.max(image.naturalWidth,image.naturalHeight);
+        const width=image.naturalWidth*scale,height=image.naturalHeight*scale;
+        ctx.drawImage(image,x-width/2,y-height*.8,width,height);
+      }
       else{ctx.fillStyle=enemy.boss?"#8b5cf6":"#3b1b55";ctx.beginPath();ctx.arc(x,y,size*.35,0,Math.PI*2);ctx.fill()}
       ctx.fillStyle="#210d1a";ctx.fillRect(x-size*.42,y+size*.1,size*.84,5*d);ctx.fillStyle=enemy.boss?"#ff718d":"#65e3a5";ctx.fillRect(x-size*.42,y+size*.1,size*.84*Math.max(0,enemy.hp/enemy.maxHp),5*d);
     }

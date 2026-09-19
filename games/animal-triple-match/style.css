@@ -30,7 +30,7 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:4px solid #fff
 @media(orientation:landscape) and (max-height:500px){
   body.wp-logical-battle-active .battle-live{grid-template-columns:minmax(0,1fr) 200px 236px;grid-template-rows:64px 30px minmax(0,1fr) 76px}
   body.wp-logical-battle-active .objective{grid-column:1 / -1;grid-row:2}
-  body.wp-logical-battle-active .board{grid-column:1;grid-row:3 / 5;width:calc(100% - 16px);height:calc(100% - 8px);align-self:center;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;touch-action:pan-y}
+  body.wp-logical-battle-active .board{grid-column:1;grid-row:3 / 5;width:calc(100% - 16px);height:calc(100% - 8px);align-self:center;overflow:hidden;overscroll-behavior:contain;touch-action:none}
   body.wp-logical-battle-active .feedback{grid-column:2 / -1;grid-row:3;align-self:center}
   body.wp-logical-battle-active .tray-wrap{grid-column:2;grid-row:4;width:auto;grid-template-rows:16px 52px;gap:2px;align-self:center;font-size:11px}
   body.wp-logical-battle-active .tray{width:100%;height:52px;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;padding:5px}
@@ -41,6 +41,8 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:4px solid #fff
   body.wp-logical-battle-active .result-card{width:min(520px,calc(100% - 8px));max-height:calc(100% - 8px);padding:16px;gap:10px}
   body.wp-logical-battle-active .result-actions{gap:8px}
   body.wp-logical-battle-active .result-actions button{min-height:54px}
+  body[data-wp-game-id="animal-triple-match"] .piece{width:54px;height:54px}
+  body[data-wp-game-id="animal-triple-match"] .piece.vine::after,body[data-wp-game-id="animal-triple-match"] .piece.crystal::after{font-size:23px}
 }
 
 /* The standard Stage root owns the fixed Canvas directly, so its children
@@ -59,6 +61,7 @@ body.wp-stage-select-active #stageScreen .stage-rail{width:100%!important;min-wi
 .piece.crystal::after{content:"";inset:-3px;border:0;border-radius:0;background:transparent url("../../assets/animal-triple-match-crystal-shell-block-v22.webp") center/contain no-repeat;pointer-events:none}
 .piece.mystery::after{content:"";inset:-3px;border:0;border-radius:var(--wp-ui-radius);background:#3a205f url("../../assets/animal-triple-match-mystery-block-v22.webp") center/contain no-repeat;pointer-events:none}
 [data-wp-frame="2"] .battle-live{height:100%;min-height:0;min-width:0;grid-template-columns:minmax(0,1fr);grid-template-rows:48px 34px minmax(0,1fr) 30px 96px 82px}
+[data-wp-frame="2"] [data-wp-frame-progress]{min-height:40px!important;height:40px!important}
 [data-wp-frame="2"] .triple-battle-context{display:grid;grid-template-columns:minmax(0,1fr) 48px;grid-template-rows:20px 28px;align-items:center;padding-inline:12px;min-width:0}
 .triple-battle-context #stageLabel,.triple-battle-context #stageName{grid-column:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .triple-battle-context #helpBtn{grid-column:2;grid-row:1 / 3}

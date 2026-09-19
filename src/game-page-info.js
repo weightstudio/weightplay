@@ -10482,6 +10482,12 @@
       // local to the generated Guide without changing Battle controls.
       section.style.setProperty("--wp-ui-radius", "16px", "important");
     }
+    if (id === "animal-mosaic-clues") {
+      // Mosaic Clues keeps its Guide as a framed reading surface under the
+      // shared Interface 7 skin. Scope the readable radius to this generated
+      // Guide so the shared 3px control token does not flatten its sections.
+      section.style.setProperty("--wp-ui-radius", "18px", "important");
+    }
     if (id === "animal-nest-weigh") {
       // Nest Weigh retains the shared light Guide surface. Scope readable
       // light-theme tokens to that Guide so Interface 7's dark text defaults

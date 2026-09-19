@@ -186,7 +186,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 23;
+  const GAME_VERSION = 24;
   const INTERFACE_VERSION = 7;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -971,12 +971,17 @@
     return pendingMatch?.runRef === run ? new Set((pendingMatch.groups || []).flat()) : new Set();
   }
   function pieceBounds(piece) {
-    // A short viewport scrolls the board instead of compressing separate rows
-    // into overlapping hit targets. Hit testing and rendering share this space.
-    const w = els.board.clientWidth || 390, h = Math.max(350, els.board.clientHeight), size = 78;
-    const trackX = Math.max(0, w - size - 24), trackY = Math.max(0, h - size - 24);
-    const left = 12 + Math.max(0, Math.min(1, piece.x)) * trackX;
-    const top = 12 + Math.max(0, Math.min(1, piece.y)) * trackY;
+    // Compact landscape has a shallow Battle board. Use one shared compact
+    // coordinate system for rendering and hit testing so the lower row stays
+    // inside the owning Canvas instead of relying on a clipped board scroll.
+    const compactLandscape = window.matchMedia?.("(orientation: landscape) and (max-height: 500px)").matches;
+    const size = compactLandscape ? 54 : 78;
+    const padding = compactLandscape ? 8 : 12;
+    const w = els.board.clientWidth || (compactLandscape ? 320 : 390);
+    const h = els.board.clientHeight || (compactLandscape ? 180 : 350);
+    const trackX = Math.max(0, w - size - padding * 2), trackY = Math.max(0, h - size - padding * 2);
+    const left = padding + Math.max(0, Math.min(1, piece.x)) * trackX;
+    const top = padding + Math.max(0, Math.min(1, piece.y)) * trackY;
     return { left, top, right: left + size, bottom: top + size };
   }
   function isBlocked(piece) {

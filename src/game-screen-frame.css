@@ -64,6 +64,13 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-worksh
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-mosaic-clues"] .game-page-info,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-mosaic-clues"] .game-info-section {border-radius:18px!important}
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-mosaic-clues"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+/* Layer Grove v11/I6 keeps its game-owned Guide as a framed reading surface
+   after the shared Interface 7 compatibility skin is applied. The custom
+   token is local to this Guide so shared Battle controls retain their compact
+   radius. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-layer-grove"] .game-page-info {--wp-ui-radius:18px!important;border-radius:18px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-layer-grove"] .game-info-section {border-radius:18px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-layer-grove"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
 /* One protected frame. Game CSS may style content, never these shared slots. */
 html body:has([data-wp-frame="2"]) { background:var(--wp-ui-background-image) center top/1440px 960px repeat var(--wp-ui-background)!important; color:var(--wp-ui-text); }
 html body [data-wp-frame="2"] .wp-frame-header {
