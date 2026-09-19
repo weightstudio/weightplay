@@ -21,12 +21,12 @@ html[lang="de"] .hero-copy h1{overflow-wrap:anywhere}
 .main-progress strong{color:var(--gold)}
 .main-progress span{color:var(--muted);font-size:.92rem;line-height:1.35}
 .game-page-info{margin-top:10px}
-.stage-canvas,.battle-canvas{position:relative;width:min(100vw,920px);height:calc(100vh - 56px);margin:0 auto;box-sizing:border-box;padding:clamp(18px,4vw,42px)}
+.stage-canvas,.battle-canvas{position:relative;width:min(100vw,920px);height:calc(100vh - var(--wp-ad-reserve-height, 0px));margin:0 auto;box-sizing:border-box;padding:clamp(18px,4vw,42px)}
 .stage-canvas{isolation:isolate;overflow:hidden;background:linear-gradient(180deg,#081426ad,#0b1729ed),var(--wp-stage-art) center/cover no-repeat}
 .stage-canvas::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#08142650,#0b1729b8);pointer-events:none}
 #stageScreen,#battleScreen{width:100%;max-width:none;margin:0;padding:0;border-radius:0}
 #stageScreen>.stage-canvas>.panel-head,#stageScreen>.stage-canvas>.stage-list,#battleScreen>.battle-canvas>.panel-head,#battleScreen>.battle-canvas>.battle-content{position:relative;z-index:1}
-.stage-ad-reserve,.battle-ad-reserve{width:min(100vw,920px);height:56px;margin:0 auto;background:#070d18}
+.stage-ad-reserve,.battle-ad-reserve{width:min(100vw,920px);height:var(--wp-ad-reserve-height, 0px);margin:0 auto;background:#070d18}
 .battle-canvas{background:transparent}
 .battle-header-tools{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:104px}
 .battle-header-tools .utility-button{flex:0 0 48px}
@@ -50,7 +50,7 @@ html[lang="de"] .hero-copy h1{overflow-wrap:anywhere}
 .chain-light{display:inline-flex;align-items:center;gap:6px}
 .chain-icon{width:30px;height:30px}
 .lantern-choice .lantern-icon{width:58px;height:58px}
-@media(max-width:720px){.orla-guide{width:88px;max-height:88px;margin:-10px 0 -34px auto}.result-orla{width:min(52vw,220px);max-height:220px}.panel-head{grid-template-columns:64px 1fr auto}.battle-header-tools{gap:4px}.stage-canvas,.battle-canvas{padding:18px}.stage-ad-reserve,.battle-ad-reserve{height:56px}}
+@media(max-width:720px){.orla-guide{width:88px;max-height:88px;margin:-10px 0 -34px auto}.result-orla{width:min(52vw,220px);max-height:220px}.panel-head{grid-template-columns:64px 1fr auto}.battle-header-tools{gap:4px}.stage-canvas,.battle-canvas{padding:18px}.stage-ad-reserve,.battle-ad-reserve{height:var(--wp-ad-reserve-height, 0px)}}
 @media(max-width:699px){.hero-grid{grid-template-columns:1fr}#mainScreen .cover-wrap{width:100%;max-width:none}}
 @media(max-width:420px){#mainScreen .hero-grid{gap:10px;padding:12px 0 18px}.main-progress{margin:10px 0;padding:8px 12px}.main-progress span{font-size:.85rem}}
 @media(min-width:700px){#mainScreen .cover-wrap{width:420px}}
@@ -60,8 +60,8 @@ html[lang="de"] .hero-copy h1{overflow-wrap:anywhere}
    same safe viewport envelope at compact landscape. */
 @media(min-width:700px) and (max-height:560px){.hero-grid{grid-template-columns:420px minmax(0,1fr)}#mainScreen .cover-wrap{width:420px}}
 
-#battleScreen[data-screen="battle"]{position:fixed;top:0;left:50%;z-index:10;width:min(100vw,920px);max-width:920px;height:calc(100vh - 56px);min-height:0;margin:0;padding:0;transform:translateX(-50%);overflow:hidden;border-radius:0}
-#battleScreen[data-screen="battle"]>.battle-canvas{position:fixed;top:0;left:50%;z-index:10;width:min(100vw,920px);max-width:920px;height:calc(100vh - 56px);min-height:0;margin:0;padding:10px 14px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;overflow:hidden}
+#battleScreen[data-screen="battle"]{position:fixed;top:0;left:50%;z-index:10;width:min(100vw,920px);max-width:920px;height:calc(100vh - var(--wp-ad-reserve-height, 0px));min-height:0;margin:0;padding:0;transform:translateX(-50%);overflow:hidden;border-radius:0}
+#battleScreen[data-screen="battle"]>.battle-canvas{position:fixed;top:0;left:50%;z-index:10;width:min(100vw,920px);max-width:920px;height:calc(100vh - var(--wp-ad-reserve-height, 0px));min-height:0;margin:0;padding:10px 14px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;overflow:hidden}
 #battleScreen[data-screen="battle"]>.battle-canvas>.panel-head{flex:0 0 48px;height:48px;min-height:48px;margin:0;grid-template-columns:48px minmax(0,1fr) auto}
 #battleScreen[data-screen="battle"]>.battle-canvas>.panel-head h2{font-size:clamp(1.05rem,2.6vw,1.45rem);line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #battleScreen[data-screen="battle"] .battle-header-tools{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:104px}
@@ -79,7 +79,7 @@ html[lang="de"] .hero-copy h1{overflow-wrap:anywhere}
 #battleScreen[data-screen="battle"] .battle-status{height:25px;min-height:25px;margin:0;overflow:hidden}
 #battleScreen[data-screen="battle"] .battle-actions{width:100%;height:52px;min-height:52px;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 #battleScreen[data-screen="battle"] .battle-actions button{height:52px;min-height:52px}
-.battle-ad-reserve[data-wp-battle-physical-reserve]{position:fixed;top:calc(100vh - 56px);bottom:auto;left:50%;z-index:11;width:min(100vw,920px);height:56px;min-height:56px;margin:0;transform:translateX(-50%);pointer-events:none}
+.battle-ad-reserve[data-wp-battle-physical-reserve]{position:fixed;top:calc(100vh - var(--wp-ad-reserve-height, 0px));bottom:auto;left:50%;z-index:11;width:min(100vw,920px);height:var(--wp-ad-reserve-height, 0px);min-height:var(--wp-ad-reserve-height, 0px);margin:0;transform:translateX(-50%);pointer-events:none}
 
 @media(max-width:720px){#battleScreen[data-screen="battle"] .battle-content{grid-template-rows:128px 36px 24px 90px 205px 25px 52px}#battleScreen[data-screen="battle"] .lantern-grid{height:205px;min-height:205px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,65px);gap:5px}#battleScreen[data-screen="battle"] .lantern-choice{height:65px;min-height:65px;padding:6px}}
 

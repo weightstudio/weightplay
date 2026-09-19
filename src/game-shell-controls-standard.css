@@ -916,10 +916,10 @@ body.has-game-page-info.wp-shell-battle-active {
    reserve. Prevent a flex parent from shrinking that reserve by a fractional
    pixel when a game-specific Battle surface also has a border. */
 body.wp-shell-battle-active .play-reserve {
-  flex: 0 0 56px !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
+  flex: 0 0 var(--wp-ad-reserve-height, 0px) !important;
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
 }
 
 body:is(.wp-shell-stage-active, .wp-shell-battle-active)

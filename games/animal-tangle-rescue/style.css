@@ -92,12 +92,12 @@ select { min-height: 44px; max-width: 62%; padding: 8px 10px; border: 1px solid 
 .step-dot { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: white; background: var(--berry); font-weight: 900; }
 
 .stage-canvas, .battle-canvas, .result-canvas { padding-top: 10px; }
-.stage-canvas, .battle-canvas { height: calc(100svh - 56px); min-height: calc(100svh - 56px); overflow-y: auto; overflow-x: hidden; }
+.stage-canvas, .battle-canvas { height: calc(100svh - var(--wp-ad-reserve-height, 0px)); min-height: calc(100svh - var(--wp-ad-reserve-height, 0px)); overflow-y: auto; overflow-x: hidden; }
 #stageScreen, #battleScreen { padding: 0; }
 #stageScreen .stage-canvas, #battleScreen .battle-canvas { padding: 0 clamp(16px, 4vw, 56px) 16px; }
 #stageScreen .stage-canvas { background: linear-gradient(160deg, rgb(216 240 223 / 72%), rgb(255 253 247 / 94%)); }
 #battleScreen .battle-canvas { background-image: linear-gradient(160deg, rgb(238 248 239 / 82%), rgb(255 253 247 / 94%)), url("assets/animal-tangle-rescue-background.png"); background-position: center; background-size: cover; background-repeat: no-repeat; }
-.stage-ad-reserve, .battle-ad-reserve { width: min(100%, 920px); height: 56px; min-height: 56px; margin: 0 auto; }
+.stage-ad-reserve, .battle-ad-reserve { width: min(100%, 920px); height: var(--wp-ad-reserve-height, 0px); min-height: var(--wp-ad-reserve-height, 0px); margin: 0 auto; }
 .panel-intro { margin: 14px 0; }
 .stage-list { display: grid; gap: 12px; margin-top: 22px; }
 .stage-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; width: 100%; min-height: 76px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 18px; color: var(--ink); text-align: left; background: var(--paper); box-shadow: 0 8px 18px rgb(38 82 71 / 5%); }

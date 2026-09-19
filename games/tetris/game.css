@@ -30,7 +30,7 @@ body[data-game-id="tetris"] .round-label { font-size: 13px; font-variant-numeric
 body[data-game-id="tetris"] .tetris-dialog { width: min(88vw,400px); max-height: calc(100dvh - 90px); padding: 20px; overflow: auto; border: 1px solid #91aec9; border-radius: 18px; background: #122137; color: #f1f5fb; }
 body[data-game-id="tetris"] .tetris-dialog::backdrop { background: #030a14b8; }
 body[data-game-id="tetris"] .tetris-dialog button { width: 100%; min-height: 48px; margin: 6px 0; }
-body[data-game-id="tetris"][data-screen="result"] .popular-arcade { width: min(100%,920px) !important; height: calc(100dvh - 56px) !important; padding: 0 !important; }
+body[data-game-id="tetris"][data-screen="result"] .popular-arcade { width: min(100%,920px) !important; height: calc(100dvh - var(--wp-ad-reserve-height, 0px)) !important; padding: 0 !important; }
 body[data-game-id="tetris"][data-screen="result"] #resultScreen { height: 100% !important; overflow: auto; }
 body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel { display: flex; flex-direction: column; justify-content: center; min-height: min-content; }
 @media (max-width: 460px) {

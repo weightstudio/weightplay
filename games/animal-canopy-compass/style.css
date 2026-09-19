@@ -144,7 +144,7 @@ body[data-screen="main"] .game-page-info-static { display: block; }
 .stage-canvas, .battle-canvas {
   position: relative;
   width: min(100%, 920px);
-  height: calc(100svh - 56px);
+  height: calc(100svh - var(--wp-ad-reserve-height, 0px));
   margin: 0 auto;
   padding: 14px 16px 24px;
   overflow-x: hidden;
@@ -159,7 +159,7 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   --wp-stage-canvas-scale: 1;
   --wp-battle-canvas-scale: 1;
 }
-.stage-ad-reserve, .battle-ad-reserve { width: min(100%, 920px); height: 56px; margin: 0 auto; background: transparent; }
+.stage-ad-reserve, .battle-ad-reserve { width: min(100%, 920px); height: var(--wp-ad-reserve-height, 0px); margin: 0 auto; background: transparent; }
 .panel-head {
   display: grid;
   grid-template-columns: minmax(58px, auto) 1fr minmax(48px, auto);

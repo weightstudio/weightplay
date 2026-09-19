@@ -200,7 +200,7 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(
 
 .wp-standard-stage-panel {
   position: fixed;
-  inset: 0 0 56px;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px);
   z-index: 40;
   width: 100%;
   height: auto;
@@ -377,7 +377,7 @@ body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card span 
   left: 0;
   right: 0;
   bottom: 0;
-  height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
   pointer-events: none;
   background: #17243a;
 }
@@ -450,14 +450,14 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] #album.wp-stage-botto
 .wp-stage-physical-reserve[data-wp-stage-reserve-active] {
   position: fixed !important;
   z-index: 39;
-  inset: var(--wp-stage-reserve-top, calc(100dvh - 56px)) auto auto 0 !important;
+  inset: var(--wp-stage-reserve-top, calc(100dvh - var(--wp-ad-reserve-height, 0px))) auto auto 0 !important;
   display: block !important;
   width: 100vw !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
   transform: none !important;
   pointer-events: none;
   background: #17243a;
@@ -816,7 +816,7 @@ body.wonder-stage-select #battleAdReserve {
   bottom: 0 !important;
   display: block !important;
   width: calc(390px * var(--wonder-shell-scale, 1)) !important;
-  height: 56px !important;
+  height: var(--wp-ad-reserve-height, 0px) !important;
   transform: translateX(-50%);
   pointer-events: none !important;
 }

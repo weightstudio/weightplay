@@ -751,7 +751,7 @@
   function fitCanvas() {
     const active = document.querySelector(".active-screen:not([hidden])");
     if (!active) return;
-    const canvasWidth = Math.min(window.innerWidth, 920), height = Math.max(320, window.innerHeight - 56);
+    const canvasWidth = Math.min(window.innerWidth, 920), height = Math.max(320, window.innerHeight - (window.WeightPlayLayout?.reserveHeight ?? 0));
     const scale = Math.min(canvasWidth / 390, height / 788);
     document.documentElement.style.setProperty("--canvas-w", `${canvasWidth}px`);
     document.documentElement.style.setProperty("--canvas-h", `${height}px`);

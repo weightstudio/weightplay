@@ -1370,8 +1370,8 @@ body.is-rune-playing .battle-ad-reserve {
   left: var(--rune-battle-left, 4px);
   display: block;
   width: var(--rune-battle-width, 382px);
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   background: rgba(4, 22, 17, 0.72);
   border-top: 1px solid rgba(248, 214, 106, 0.3);
   pointer-events: none;
@@ -1387,7 +1387,7 @@ body.is-rune-playing .battle-shell { width:min(100%,calc((100cqh - 250px) * 4 / 
 body.is-rune-playing .battle-info { min-height:0; overflow:hidden; }
 body.is-rune-playing .turn-roster { max-height:112px; overflow-y:auto; }
 body.is-rune-playing .battle-log { min-height:42px; max-height:58px; overflow-y:auto; }
-body.is-rune-playing .battle-ad-reserve { position:fixed; top:auto; bottom:4px; left:50%; display:block; width:min(calc(var(--rune-vw,100vw) - 8px),612px); height:56px; min-height:56px; transform:translateX(-50%); }
+body.is-rune-playing .battle-ad-reserve { position:fixed; top:auto; bottom:4px; left:50%; display:block; width:min(calc(var(--rune-vw,100vw) - 8px),612px); height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); transform:translateX(-50%); }
 
 /* The logical Battle Canvas excludes the separate physical ad reserve. */
 body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
@@ -2265,7 +2265,7 @@ body.wp-standard-stage-page .rune-app > .topbar { display: none !important; }
 
 body.wp-standard-stage-page #stagePanel.wp-standard-stage-panel {
   position: fixed;
-  inset: 0 0 56px;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px);
   display: grid;
   grid-template-rows: 58px minmax(0, 1fr) 58px;
   width: min(100%, 920px);
@@ -2452,8 +2452,8 @@ html body.wp-logical-battle-active.is-rune-playing .battle-ad-reserve {
   position: fixed !important;
   inset: auto 0 0 !important;
   width: 100vw !important;
-  height: 56px !important;
-  min-height: 56px !important;
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
   transform: none !important;
 }
 
@@ -2647,10 +2647,10 @@ html body.wp-logical-battle-active.is-rune-playing .turn-roster > div {
    it installs the final logical Canvas geometry. */
 body.wp-shell-battle-active.is-rune-playing .rune-app:not([data-wp-logical-battle-canvas]) {
   position: fixed !important;
-  inset: 0 0 56px !important;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px) !important;
   display: block !important;
   width: 100vw !important;
-  height: calc(100dvh - 56px) !important;
+  height: calc(100dvh - var(--wp-ad-reserve-height, 0px)) !important;
   min-height: 1px !important;
 }
 

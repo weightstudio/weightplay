@@ -103,7 +103,7 @@ body.guardian-playing .battle-ad-reserve {
   top: calc(var(--guardian-top, 0px) + var(--guardian-content-height, 0px));
   display: block;
   width: var(--guardian-width, 100vw);
-  height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
   pointer-events: none;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(4, 10, 16, 0.72);
@@ -1400,7 +1400,7 @@ body.guardian-stage .guardian-app {
 body.guardian-stage .stage-panel {
   width: 382px;
   max-width: calc(100% - 8px);
-  min-height: min(732px, calc(100dvh - 56px));
+  min-height: min(732px, calc(100dvh - var(--wp-ad-reserve-height, 0px)));
   margin: 4px auto 0;
   padding: 14px;
 }
@@ -1483,13 +1483,13 @@ body.guardian-stage {
 body.guardian-stage .guardian-app {
   width: 100%;
   max-width: none;
-  min-height: calc(100dvh - 56px);
+  min-height: calc(100dvh - var(--wp-ad-reserve-height, 0px));
   margin: 0;
 }
 
 body.guardian-stage .stage-panel {
   position: fixed;
-  inset: 0 0 56px;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px);
   display: grid;
   grid-template-rows: 62px minmax(0, 1fr);
   width: min(100%, 920px);
@@ -1875,12 +1875,12 @@ body:not(.guardian-playing):not(.guardian-stage) #startBtn {
 body.guardian-stage .guardian-app {
   width: 100%;
   max-width: none;
-  min-height: calc(100dvh - 56px);
+  min-height: calc(100dvh - var(--wp-ad-reserve-height, 0px));
 }
 
 body.guardian-stage .stage-panel {
   position: fixed;
-  inset: 0 0 56px;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px);
   width: min(100%, 920px);
   max-width: 920px;
   height: auto;

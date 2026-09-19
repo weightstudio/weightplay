@@ -35,7 +35,7 @@ body[data-screen="battle"] > .game-page-info-static, body[data-screen="result"] 
 .main-screen > .main-header { margin-bottom: 10px; }
 .main-progress { display: flex; min-height: 40px; align-items: center; margin: 10px 0 0; padding: 8px 12px; border: 1px solid rgba(113, 155, 104, .25); border-radius: 12px; color: var(--deep-leaf); background: rgba(229, 240, 213, .64); font-size: .82rem; font-weight: 800; }
 .view { min-height: calc(100vh - 22px); padding-bottom: 18px; }
-.view#battleView { width: min(100%, 920px); height: calc(100vh - 56px); min-height: 0; margin-inline: auto; padding: 18px; border-radius: 24px; overflow: auto; background: linear-gradient(rgba(245, 240, 223, .72), rgba(229, 240, 213, .82)), url("assets/animal-meadow-difference-background.png") center / cover; }
+.view#battleView { width: min(100%, 920px); height: calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height: 0; margin-inline: auto; padding: 18px; border-radius: 24px; overflow: auto; background: linear-gradient(rgba(245, 240, 223, .72), rgba(229, 240, 213, .82)), url("assets/animal-meadow-difference-background.png") center / cover; }
 .view#battleView.is-result > :not(#resultView) { display: none !important; }
 .view#battleView.is-result { overflow: auto; }
 .view[hidden] { display: none; }
@@ -95,7 +95,7 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 .best-line { margin: 22px 0; color: var(--deep-leaf); }
 .result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
 .general-reserve { height: 56px; }
-.battle-ad-reserve, #battleAdReserve { width: min(100%, 920px); height: 56px; margin-inline: auto; background: rgba(229, 240, 213, .82); }
+.battle-ad-reserve, #battleAdReserve { width: min(100%, 920px); height: var(--wp-ad-reserve-height, 0px); margin-inline: auto; background: rgba(229, 240, 213, .82); }
 #battleView[hidden] + .battle-ad-reserve, #battleView[hidden] + #battleAdReserve { display: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @keyframes nudge { 0%, 100% { transform: translateX(0); } 35% { transform: translateX(-3px); } 70% { transform: translateX(3px); } }

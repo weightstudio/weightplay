@@ -268,14 +268,14 @@ body[data-wp-game-id="animal-weather-watch"].wp-stage-select-active [data-wp-sta
 .status.good { color: var(--good); }
 .status.try { color: var(--try); }
 
-.battle-ad-reserve { display: none; height: 56px; }
+.battle-ad-reserve { display: none; height: var(--wp-ad-reserve-height, 0px); }
 body[data-screen="battle"] .battle-ad-reserve {
   display: block;
   position: fixed;
   inset: auto 0 0;
   width: 100%;
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   pointer-events: none;
 }
 

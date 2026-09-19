@@ -28,7 +28,7 @@ body[data-screen="stage"], body[data-screen="battle"] { overflow:hidden; }
 .guide-card p { margin:0; color:#496672; line-height:1.5; }
 body[data-screen="stage"] #mainGuide, body[data-screen="battle"] #mainGuide, body[data-screen="result"] #mainGuide { display:none; }
 #stageScreen, #battleScreen, #resultScreen { width:100%; max-width:none; margin:0; padding:0; }
-.stage-canvas, .battle-canvas, .result-canvas { position:relative; isolation:isolate; width:min(100vw,920px); height:calc(100vh - 56px); margin:0 auto; padding:18px max(18px,calc((100% - 920px)/2 + 18px)); overflow:auto; background:linear-gradient(145deg,#e7f1e3,#cbdde7); }
+.stage-canvas, .battle-canvas, .result-canvas { position:relative; isolation:isolate; width:min(100vw,920px); height:calc(100vh - var(--wp-ad-reserve-height, 0px)); margin:0 auto; padding:18px max(18px,calc((100% - 920px)/2 + 18px)); overflow:auto; background:linear-gradient(145deg,#e7f1e3,#cbdde7); }
 .stage-canvas { background-image:linear-gradient(145deg,#e7f1e3cc,#cbdde7cc),url("assets/animal-pocket-post-background.png"); background-size:cover; background-position:center; }
 .stage-canvas::before, .battle-canvas::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(circle at 50% 8%,#fff4c566,transparent 32%); }
 .panel-head { min-height:48px; display:grid; grid-template-columns:58px 1fr auto; align-items:center; gap:12px; }
@@ -42,7 +42,7 @@ body[data-screen="stage"] #mainGuide, body[data-screen="battle"] #mainGuide, bod
 .stage-card[role="tab"] { text-align:left; }
 .stage-card strong, .stage-card small { display:block; }
 .stage-card small { margin-top:5px; color:#59716f; }
-.stage-ad-reserve, .battle-ad-reserve, .result-ad-reserve { width:min(100vw,920px); height:56px; margin:0 auto; background:#d6e4dd; }
+.stage-ad-reserve, .battle-ad-reserve, .result-ad-reserve { width:min(100vw,920px); height:var(--wp-ad-reserve-height, 0px); margin:0 auto; background:#d6e4dd; }
 .battle-canvas { padding-top:18px; }
 .battle-header-tools { display:flex; align-items:center; justify-content:flex-end; gap:6px; }
 .battle-header-tools .pill { min-height:34px; display:inline-flex; align-items:center; }

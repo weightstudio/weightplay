@@ -307,7 +307,7 @@ button.mini-btn {
   --card-step: clamp(14px, 3.6vw, 29px);
   --tableau-gap: 0.65rem;
   width: 100%;
-  height: calc(100vh - 56px);
+  height: calc(100vh - var(--wp-ad-reserve-height, 0px));
   max-width: min(100%, 920px);
   margin: 0 auto;
   position: relative;

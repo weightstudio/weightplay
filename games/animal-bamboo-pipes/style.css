@@ -10,8 +10,8 @@
 .main .wp-shell-language-row>.locale{display:grid;align-items:center;height:44px}
 .hero details{margin-top:16px;border-top:1px solid #8ec6ae;padding-top:10px}
 .hero summary{font-weight:900;cursor:pointer}
-.stage,.battle{height:calc(100svh - 56px);min-height:0}
-.ad-reserve{width:min(100%,920px);height:56px;margin:auto;background:#052e2d}
+.stage,.battle{height:calc(100svh - var(--wp-ad-reserve-height, 0px));min-height:0}
+.ad-reserve{width:min(100%,920px);height:var(--wp-ad-reserve-height, 0px);margin:auto;background:#052e2d}
 @media(max-width:620px){
   .main-header{grid-template-columns:70px minmax(0,1fr) 105px}
   .hero{padding-top:0}
@@ -74,7 +74,7 @@
 .public-guide{margin:0 12px 36px;padding:clamp(18px,4vw,34px);border:1px solid #75bd9c;border-radius:24px;background:#063831e8;line-height:1.6}
 .public-guide h2{font-size:clamp(1.45rem,4vw,2rem)}
 
-.stage,.battle{box-sizing:border-box;height:calc(100svh - 56px);min-height:0!important;max-width:920px;padding:12px;align-content:stretch;overflow:hidden}
+.stage,.battle{box-sizing:border-box;height:calc(100svh - var(--wp-ad-reserve-height, 0px));min-height:0!important;max-width:920px;padding:12px;align-content:stretch;overflow:hidden}
 .stage{grid-template-rows:64px minmax(198px,1fr) 56px;gap:10px}
 .stage header,.battle header{min-width:0}
 .stage header>div,.battle header>div{min-width:0}
@@ -82,7 +82,7 @@
 .stage .rail{width:100%;height:100%;padding-block:4px!important}
 .stage-card{padding:18px;border:3px solid transparent}
 .stage-card.selected,.stage-card[aria-current="true"]{border-color:#f9c44d!important;box-shadow:0 0 0 4px #f9c44d55,0 0 26px #f9c44daa!important}
-.ad-reserve{width:min(100%,920px);max-width:920px;height:56px;margin:0 auto;background:#052e2d;pointer-events:none}
+.ad-reserve{width:min(100%,920px);max-width:920px;height:var(--wp-ad-reserve-height, 0px);margin:0 auto;background:#052e2d;pointer-events:none}
 .stage-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:56px;padding:5px 12px;border-top:1px solid #8ec59c66;background:#173f31e8;backdrop-filter:blur(10px)}
 .stage-tabs>*{min-width:0}
 .stage-tab{grid-column:2;min-height:44px;padding:8px 12px;border:1px solid #f8dc72;border-radius:13px;background:linear-gradient(180deg,#f9dc72,#e7ad36);color:#23422f;font-weight:950;box-shadow:0 5px 14px #102b2166}

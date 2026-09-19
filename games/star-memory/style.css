@@ -1144,7 +1144,7 @@ body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .star-memo
 
 body.memory-stage.memory-expanded-canvas .stage-ad-reserve {
   left: var(--memory-frame-left, 4px);
-  top: calc(var(--memory-frame-top, 4px) + var(--memory-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)));
+  top: calc(var(--memory-frame-top, 4px) + var(--memory-frame-height, calc(100svh - var(--wp-ad-reserve-height, var(--wp-ad-reserve-height, 0px)) - 8px)));
   width: var(--memory-frame-width, calc(100vw - 8px));
 }
 

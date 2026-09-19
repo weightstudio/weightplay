@@ -62,7 +62,7 @@ body { overflow-x:hidden; }
 body[data-screen="battle"] .game-page-info,
 body[data-screen="result"] .game-page-info { display:none; }
 #battleScreen { width:100%; max-width:none; margin:0; padding:0; }
-.battle-canvas { position:relative; isolation:isolate; box-sizing:border-box !important; width:min(100%,920px); height:calc(100vh - 56px); margin:0 auto; padding:18px; overflow:auto; background:linear-gradient(145deg,#f5f0e5,#e8f1ee 58%,#eef6f1); }
+.battle-canvas { position:relative; isolation:isolate; box-sizing:border-box !important; width:min(100%,920px); height:calc(100vh - var(--wp-ad-reserve-height, 0px)); margin:0 auto; padding:18px; overflow:auto; background:linear-gradient(145deg,#f5f0e5,#e8f1ee 58%,#eef6f1); }
 .battle-canvas::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(circle at 50% 8%,rgba(255,232,166,.5),transparent 32%),linear-gradient(160deg,rgba(38,54,84,.12),transparent 55%); }
 .battle-canvas > .panel-head,.battle-canvas > .coop-card { position:relative; z-index:1; }
 .panel-head { min-height:48px; display:grid; grid-template-columns:58px 1fr auto; align-items:center; gap:12px; }
@@ -76,9 +76,9 @@ body[data-screen="result"] .game-page-info { display:none; }
 .scene-head .scene-hint { margin-bottom:10px; }
 .handoff-prompt { max-width:680px; margin:0 auto 24px; padding:12px 16px; border:2px solid rgba(228,163,78,.48); border-radius:14px; background:#fff8e9; color:#7a5526; line-height:1.35; font-weight:900; }
 .turn-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:0 0 12px;padding:0;list-style:none}.turn-steps li{display:flex;align-items:center;justify-content:center;min-height:44px;padding:7px 9px;border:1px solid var(--line);border-radius:12px;background:#f3f5f2;color:var(--muted);font-size:12px;font-weight:900;text-align:center}.turn-steps li.is-current{border:2px solid var(--gold);background:#fff4d6;color:#704815;box-shadow:0 0 0 3px rgba(228,163,78,.16)}.turn-steps li.is-done{border-color:#91ccb4;background:#e8f5ed;color:#335f51}.role-card{transition:opacity .18s,border-color .18s,box-shadow .18s}.role-card:not(.is-active){opacity:.62}.role-card.is-active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(228,163,78,.16)}
-.battle-ad-reserve { box-sizing:border-box; width:min(100%,920px); height:56px; margin:0 auto; background:#dfe9e3; pointer-events:none; }
+.battle-ad-reserve { box-sizing:border-box; width:min(100%,920px); height:var(--wp-ad-reserve-height, 0px); margin:0 auto; background:#dfe9e3; pointer-events:none; }
 .text-button { min-height:44px; }
-.stage-screen { --wp-stage-art:url("/assets/interface7-redrawn/animal-lantern-guides.webp"); position:relative; width:min(100%,920px); height:calc(100vh - 56px); margin:0 auto; padding:14px; overflow:hidden; background:linear-gradient(rgba(245,240,229,.9),rgba(232,241,238,.94)),var(--wp-stage-art) center/cover; }
+.stage-screen { --wp-stage-art:url("/assets/interface7-redrawn/animal-lantern-guides.webp"); position:relative; width:min(100%,920px); height:calc(100vh - var(--wp-ad-reserve-height, 0px)); margin:0 auto; padding:14px; overflow:hidden; background:linear-gradient(rgba(245,240,229,.9),rgba(232,241,238,.94)),var(--wp-stage-art) center/cover; }
 .stage-head { min-height:48px; display:grid; grid-template-columns:110px 1fr 48px; align-items:center; gap:12px; }
 .stage-head h2 { margin:0; text-align:center; font-size:clamp(24px,4vw,36px); }
 .stage-head .eyebrow { text-align:center; }
@@ -98,7 +98,7 @@ body[data-screen="result"] .game-page-info { display:none; }
 .stage-button span { font-size:10px; font-weight:800; }
 .stage-button:not(:disabled):hover,.stage-button:not(:disabled):focus-visible { border-color:var(--gold); outline:3px solid rgba(228,163,78,.18); }
 .stage-button:disabled { cursor:not-allowed; opacity:.43; background:#edf0ed; }
-.stage-ad-reserve { display:none; box-sizing:border-box; width:min(100%,920px); height:56px; margin:0 auto; background:#dfe9e3; pointer-events:none; }
+.stage-ad-reserve { display:none; box-sizing:border-box; width:min(100%,920px); height:var(--wp-ad-reserve-height, 0px); margin:0 auto; background:#dfe9e3; pointer-events:none; }
 body[data-screen="stage"] .stage-ad-reserve { display:block; }
 .guide-rule { min-height:54px; margin:10px 0 0 !important; padding:9px 11px; border-radius:12px; background:#e8f5ed; color:#335f51 !important; font-size:13px; font-weight:900; }
 .pass-button { width:100%; margin-top:9px; }
@@ -287,7 +287,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"]
   bottom:0 !important;
   left:max(0px, calc((100vw - min(100vw, 920px)) / 2)) !important;
   width:min(100vw, 920px) !important;
-  height:56px !important;
+  height:var(--wp-ad-reserve-height, 0px) !important;
   transform:none !important;
   z-index:5 !important;
 }

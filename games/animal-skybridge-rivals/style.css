@@ -221,7 +221,7 @@ button {
 }
 .ad-reserve {
   width: min(100%, 920px);
-  height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
   margin: auto;
   background: #020a18;
   border-top: 1px solid #274a63;

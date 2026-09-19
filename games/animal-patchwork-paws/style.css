@@ -21,14 +21,14 @@
 .patchwork-guide h2{margin-top:0;text-align:left}
 .patchwork-guide p,.patchwork-guide li{color:var(--muted);line-height:1.55}
 .patchwork-guide ol{margin:12px 0 0;padding-left:1.4rem}
-.screen[data-screen="stage"],.screen[data-screen="battle"]{position:fixed;top:0;left:50%;z-index:2;width:min(100vw,920px);height:calc(100svh - 56px);margin:0;transform:translateX(-50%);overflow:auto;padding-top:76px}
+.screen[data-screen="stage"],.screen[data-screen="battle"]{position:fixed;top:0;left:50%;z-index:2;width:min(100vw,920px);height:calc(100svh - var(--wp-ad-reserve-height, 0px));margin:0;transform:translateX(-50%);overflow:auto;padding-top:76px}
 .stage-screen{background:#ffffffed}
 .screen.stage-screen{overflow:visible}
 .battle-screen{background:#ffffffed}
 .screen.battle-screen{overflow:visible;padding-top:60px}
 .stage-tabs{display:flex;justify-content:center;margin-top:20px}
 .stage-tabs button{min-height:48px;padding:0 20px;border:1px solid var(--line);border-radius:14px;background:#eef5ee;color:var(--teal-dark);font:inherit;font-weight:750}
-.battle-ad-reserve{position:fixed;top:calc(100svh - 56px);left:50%;z-index:1;width:min(100vw,920px);height:56px;transform:translateX(-50%);background:#dbe8df}
+.battle-ad-reserve{position:fixed;top:calc(100svh - var(--wp-ad-reserve-height, 0px));left:50%;z-index:1;width:min(100vw,920px);height:var(--wp-ad-reserve-height, 0px);transform:translateX(-50%);background:#dbe8df}
 @media (max-width:560px){.patchwork-guide{padding:20px 16px}.screen[data-screen="stage"],.screen[data-screen="battle"]{padding-inline:16px}.topbar{padding-inline:6px}}
 @media (max-height:500px) and (min-aspect-ratio:3/2){.main-screen .cover-wrap{display:block;width:min(100%,140px);margin-bottom:6px}.main-screen .intro{margin-bottom:10px}.screen.battle-screen{padding-top:48px;padding-bottom:4px}.screen.battle-screen .battle-head{align-items:center}.screen.battle-screen .prompt{margin:2px 0 4px}.screen.battle-screen .weave-card{padding:4px}.screen.battle-screen .board{max-width:160px;gap:8px}.screen.battle-screen .rule{margin-top:4px}.screen.battle-screen .status{margin:4px 0 0}.screen.battle-screen .battle-actions{margin-top:4px}}
 @media(max-width:699px){.main-screen .cover-wrap{width:100%;max-width:none}}
@@ -162,8 +162,8 @@
   left:50%!important;
   z-index:22!important;
   width:min(100vw,920px)!important;
-  height:calc(100svh - 56px)!important;
-  max-height:calc(100svh - 56px)!important;
+  height:calc(100svh - var(--wp-ad-reserve-height, 0px))!important;
+  max-height:calc(100svh - var(--wp-ad-reserve-height, 0px))!important;
   margin:0!important;
   transform:translateX(-50%)!important;
   overflow-y:auto!important;

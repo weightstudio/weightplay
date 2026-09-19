@@ -2,6 +2,7 @@
 <html lang="en" data-wp-official-name>
   <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-guard-yard/"+location.search+location.hash)}catch{location.replace("/en/games/animal-guard-yard/"+location.search+location.hash)}})();</script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
@@ -37,7 +38,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-guard-yard/" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260729-guard-general2" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260729-guard-general2" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260918-ui-fix1" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260919-guard-yard-v36-main-battle-talent-locale" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Shared General Stage selector owns pointer drag, settle, and the physical reserve. */</script>
     <script data-wp-battle-standard>/* Shared General Battle Canvas owns capped scaling and the physical reserve. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -48,7 +49,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
 <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260918-ui-fix1">
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-<link rel="stylesheet" href="block-v31.css?v=20260918-ui-fix1" />
+<link rel="stylesheet" href="block-v31.css?v=20260919-guard-yard-v36-main-battle-talent-locale" />
 </head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
     <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
@@ -80,7 +81,7 @@
 
       <section id="mainPanel" class="main-entry-panel main-screen" data-screen="main" data-wp-standard-main-screen>
         <img class="main-cover" src="../../assets/interface7-redrawn/animal-guard-yard.webp" data-fallback-src="../../assets/interface7-redrawn/animal-guard-yard.webp" alt="" />
-        <div class="main-entry-copy"><strong data-ui="gameTitle" data-wp-game-title data-runtime-localize="off">Guard Yard</strong><span data-ui="menuHint">Place animal guards and stop the wild beasts.</span></div>
+        <div class="main-entry-copy"><strong data-ui="gameTitle" data-wp-game-title data-runtime-localize="off">Guard Yard</strong><span data-ui="menuHint">Place animal guards and stop the wild beasts.</span><span id="mainProgress" class="main-progress" data-ui="mainProgress" role="status" aria-live="polite">30 stages · local progress</span></div>
         <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Choose Stage</button>
       </section>
 
@@ -205,7 +206,7 @@
         try {
           window.WonderAnalytics?.track("game_view", {
             game_id: "animal-guard-yard",
-            game_version: "v14",
+            game_version: "v36",
             interface_version: 6,
             locale: document.documentElement.lang || "en",
             viewport_bucket: viewportBucket,
@@ -223,11 +224,11 @@
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=32-owner-mesh2"></script>
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260918-ui-fix1">
-    <link rel="stylesheet" href="frame-content.css?v=20260918-ui-fix1">
+    <link rel="stylesheet" href="frame-content.css?v=20260919-guard-yard-v36-main-battle-talent-locale-landscape-rail">
     <script src="../../src/game-screen-frame.js?v=20260918-ui-fix1"></script>
-    <script src="frame.js?v=20260918-ui-fix1"></script>
-    <script src="talents.js?v=35"></script>
-    <script src="game.js?v=20260918-ui-fix1"></script>
+    <script src="frame.js?v=20260919-guard-yard-v36-main-battle-talent-locale"></script>
+    <script src="talents.js?v=36"></script>
+    <script src="game.js?v=20260919-guard-yard-v36-main-battle-talent-locale"></script>
     <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>

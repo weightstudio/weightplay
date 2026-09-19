@@ -27,7 +27,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .primary { height: 52px; }
 .secondary { color: #fff; background: #33445e; }
 
-.battle-scene { position: fixed; inset: 0 auto 56px 50%; transform: translateX(-50%); height: calc(100dvh - 56px); max-width: 920px; overflow: hidden; background: #132236; }
+.battle-scene { position: fixed; inset: 0 auto 56px 50%; transform: translateX(-50%); height: calc(100dvh - var(--wp-ad-reserve-height, 0px)); max-width: 920px; overflow: hidden; background: #132236; }
 #battleContent { overflow: hidden; }
 #battleContent > .auto-chip { position: absolute; z-index: 22; top: 4px; inset-inline-end: 8px; }
 .player-chip, .stage-chip { min-width: 0; display: grid; text-align: center; }
@@ -110,7 +110,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .bottom-nav .nav-art > img { display: block; width: 28px; height: 28px; object-fit: contain; }
 .bottom-nav .nav-art > .equipment-art { flex: none; width: 28px; height: 28px; }
 .bottom-nav .dot { top: 8px; right: calc(50% - 24px); }
-.ad-reserve { position: fixed; z-index: 2; left: max(0px,calc((100vw - 920px)/2)); bottom: 0; width: min(100vw,920px); height: 56px; background: #0a121d; }
+.ad-reserve { position: fixed; z-index: 2; left: max(0px,calc((100vw - 920px)/2)); bottom: 0; width: min(100vw,920px); height: var(--wp-ad-reserve-height, 0px); background: #0a121d; }
 .app[data-scene="main"] > .ad-reserve { display: none; }
 
 .management { position: absolute; z-index: 40; inset: 0; display: grid; grid-template-rows: 58px minmax(0,1fr); background: var(--wp-ui-surface); color: var(--wp-ui-text); }

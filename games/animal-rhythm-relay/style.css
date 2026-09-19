@@ -45,7 +45,7 @@ body[data-screen="battle"] .guide-card { display:none; }
 body[data-screen="battle"] .wp-main-shell-header { display:none; }
 /* Battle owns its complete header and Canvas. The Main shell is removed from
    layout while play or Result is active, then restored by the Main state. */
-.battle-screen { position:fixed; z-index:5; top:0; bottom:56px; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); width:auto; height:calc(100vh - 56px); overflow:auto; padding:18px 18px 24px; background:linear-gradient(155deg,rgba(231,246,240,.88),rgba(255,249,237,.72) 58%,rgba(248,223,180,.78)),url("assets/animal-rhythm-relay-background.webp") center/cover no-repeat; }
+.battle-screen { position:fixed; z-index:5; top:0; bottom:var(--wp-ad-reserve-height, 0px); left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); width:auto; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); overflow:auto; padding:18px 18px 24px; background:linear-gradient(155deg,rgba(231,246,240,.88),rgba(255,249,237,.72) 58%,rgba(248,223,180,.78)),url("assets/animal-rhythm-relay-background.webp") center/cover no-repeat; }
 .battle-card { width:min(100%,920px); min-height:100%; margin:0 auto; padding:clamp(12px,3vw,26px); border-radius:28px; background:#173b4a; color:#fff7d0; box-shadow:0 18px 48px rgba(24,55,70,.24); }
 .battle-head { display:grid; grid-template-columns:48px 1fr 110px; align-items:center; gap:12px; }
 .battle-head h2 { margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; font-size:clamp(1.3rem,3vw,2rem); }
@@ -70,7 +70,7 @@ body[data-screen="battle"] .wp-main-shell-header { display:none; }
 .timing-track { position:relative; height:12px; margin:0 auto 12px; max-width:580px; overflow:hidden; border-radius:99px; background:rgba(255,255,255,.18); }
 .timing-track i { position:absolute; top:0; bottom:0; left:36%; width:28%; border-radius:99px; background:var(--gold); }
 .battle-tip { min-height:25px; margin:0; color:#ccebe1; text-align:center; }
-.battle-ad-reserve { position:fixed; z-index:6; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); bottom:0; width:auto; height:56px; min-height:56px; pointer-events:none; }
+.battle-ad-reserve { position:fixed; z-index:6; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); bottom:0; width:auto; height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); pointer-events:none; }
 .result-card { position:absolute; z-index:3; inset:8%; display:grid; place-items:center; padding:24px; color:var(--ink); text-align:center; }
 .result-card[hidden] { display:none; }
 .result-card p { color:var(--muted); line-height:1.5; }

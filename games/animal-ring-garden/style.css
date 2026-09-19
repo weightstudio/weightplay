@@ -8,7 +8,7 @@ button,a{color:inherit}
 button{cursor:pointer}
 .app-shell{width:min(100%,920px);min-height:100dvh;margin:0 auto}
 .screen{min-height:100dvh;padding:env(safe-area-inset-top) 18px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
-.stage-screen,.battle-screen{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+.stage-screen,.battle-screen{padding-bottom:calc(var(--wp-ad-reserve-height, 0px) + env(safe-area-inset-bottom))}
 .battle-screen{background-image:linear-gradient(180deg,#101a2dcc 0%,#101a2d9c 55%,#101a2df0 100%),url('assets/animal-ring-garden-background.png');background-size:cover;background-position:center;color:var(--text)}
 .loading-screen{align-items:center;justify-content:center;gap:12px;text-align:center;color:var(--muted)}
 .loading-mark{width:68px;height:68px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-size:2rem;box-shadow:0 0 34px #ffd66e44}
@@ -52,7 +52,7 @@ h1{margin:0;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.0
 dialog.settings-dialog:not([open]){display:none!important}
 #result-panel[hidden]{display:none!important}
 @media (max-width:640px){.screen{padding-inline:14px}.ring-board{gap:7px}.ring-unit{padding-inline:5px}.ring-visual{width:min(100%,140px)}.ring-label{font-size:.68rem}.ring-button{font-size:1.15rem;padding-inline:4px}.battle-heading{align-items:center}.target-card{font-size:.76rem}}
-@media (orientation:landscape) and (max-height:560px){.screen{min-height:100dvh}.main-content{padding-block:10px}.concept-cover{width:180px;margin-bottom:8px}.main-content .lede{margin-top:8px}.fact-row{margin:10px 0}.primary-button{min-height:48px}.stage-screen,.battle-screen{padding-bottom:calc(56px + env(safe-area-inset-bottom))}.battle-content{display:grid;grid-template-columns:minmax(0,1fr) 240px;grid-template-rows:auto auto minmax(0,1fr) auto;align-items:center;column-gap:14px}.battle-heading{grid-column:1/-1}.clue-card{grid-column:2;grid-row:2}.target-card{grid-column:2;grid-row:3}.ring-atlas-art{display:none}.ring-board{grid-column:1;grid-row:2/5}.status{grid-column:2;grid-row:4}.battle-actions{grid-column:2;grid-row:5}.ring-visual{width:min(100%,180px)}}
+@media (orientation:landscape) and (max-height:560px){.screen{min-height:100dvh}.main-content{padding-block:10px}.concept-cover{width:180px;margin-bottom:8px}.main-content .lede{margin-top:8px}.fact-row{margin:10px 0}.primary-button{min-height:48px}.stage-screen,.battle-screen{padding-bottom:calc(var(--wp-ad-reserve-height, 0px) + env(safe-area-inset-bottom))}.battle-content{display:grid;grid-template-columns:minmax(0,1fr) 240px;grid-template-rows:auto auto minmax(0,1fr) auto;align-items:center;column-gap:14px}.battle-heading{grid-column:1/-1}.clue-card{grid-column:2;grid-row:2}.target-card{grid-column:2;grid-row:3}.ring-atlas-art{display:none}.ring-board{grid-column:1;grid-row:2/5}.status{grid-column:2;grid-row:4}.battle-actions{grid-column:2;grid-row:5}.ring-visual{width:min(100%,180px)}}
 
 /* Interface 6 shell contract: compact phone-first Main, fixed Stage/Battle canvas, and ad-safe footer. */
 .main-header{display:grid;grid-template-columns:58px minmax(0,1fr) 48px;align-items:center;min-height:58px;gap:8px}
@@ -78,7 +78,7 @@ dialog.settings-dialog:not([open]){display:none!important}
 .guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .guide-grid p{margin:0;padding:8px 10px;border:1px solid #49668c;border-radius:12px;font-size:.82rem;line-height:1.35;text-align:center}
 
-#stageScreen,#battleScreen{position:fixed;inset:0 0 56px;width:min(100vw,920px);height:calc(100dvh - 56px);min-height:0;margin:0 auto;padding:env(safe-area-inset-top) 18px 14px;overflow:auto;z-index:10;background-color:var(--bg)}
+#stageScreen,#battleScreen{position:fixed;inset:0 0 var(--wp-ad-reserve-height, 0px);width:min(100vw,920px);height:calc(100dvh - var(--wp-ad-reserve-height, 0px));min-height:0;margin:0 auto;padding:env(safe-area-inset-top) 18px 14px;overflow:auto;z-index:10;background-color:var(--bg)}
 #stageScreen{background-image:linear-gradient(180deg,#1b3150ee,#101a2df2),var(--wp-stage-art);background-size:cover;background-position:center}
 #battleScreen{background-image:linear-gradient(180deg,#101a2dcc 0%,#101a2d9c 55%,#101a2df0 100%),url('assets/animal-ring-garden-background.png');background-size:cover;background-position:center}
 #stageScreen .topbar,#battleScreen .topbar{display:grid;grid-template-columns:58px minmax(0,1fr) 48px;align-items:center;min-height:58px;gap:8px}
@@ -94,7 +94,7 @@ dialog.settings-dialog:not([open]){display:none!important}
 #battleScreen .battle-content{padding:12px 14px 14px;gap:10px}
 #battleScreen .battle-header .topbar-actions{justify-content:flex-end}
 #battleScreen .battle-settings,#battleScreen [data-wp-battle-utility]{width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
-.battle-ad-reserve{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100vw,920px);height:56px;z-index:9;background:#0b1424ee;border-top:1px solid #49668c;pointer-events:none}
+.battle-ad-reserve{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100vw,920px);height:var(--wp-ad-reserve-height, 0px);z-index:9;background:#0b1424ee;border-top:1px solid #49668c;pointer-events:none}
 .battle-ad-reserve[hidden]{display:none!important}
 
 @media (max-width:640px){

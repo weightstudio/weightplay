@@ -519,7 +519,7 @@ body {
 .stage-config-mount { display: grid; min-height: 0; overflow: auto; }
 .stage-config-mount .menu-shop { min-width: 0; padding: 14px; }
 .stage-config-mount .start-btn { width: min(100%, 360px); justify-self: center; margin-top: 12px; }
-body > .battle-ad-reserve { display: none; height: 56px; min-height: 56px; border-top: 1px solid rgba(212, 175, 55, 0.24); background: rgba(0, 0, 0, 0.24); pointer-events: none; }
+body > .battle-ad-reserve { display: none; height: var(--wp-ad-reserve-height, 0px); min-height: var(--wp-ad-reserve-height, 0px); border-top: 1px solid rgba(212, 175, 55, 0.24); background: rgba(0, 0, 0, 0.24); pointer-events: none; }
 
 .menu-main {
   flex: 2;
@@ -2145,8 +2145,8 @@ body.relic-playing .battle-ad-reserve {
   bottom: 0;
   left: 0;
   width: auto;
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   margin: 0;
   box-sizing: border-box;
 }
@@ -2212,7 +2212,7 @@ body.relic-playing .backpack-list { min-height:0; max-height:none; overflow-y:au
 body.relic-playing .inventory-sidebar { overflow-y:auto; overscroll-behavior:contain; }
 body.relic-playing .backpack-panel { display:block; overflow:visible; }
 body.relic-playing .backpack-list { max-height:none; overflow:visible; }
-body.relic-playing .battle-ad-reserve { position:relative; inset:auto; grid-row:2; width:100%; height:56px; min-height:56px; transform:none; }
+body.relic-playing .battle-ad-reserve { position:relative; inset:auto; grid-row:2; width:100%; height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); transform:none; }
 body.relic-playing .draft-overlay,
 body.relic-playing .loot-overlay { top:0; bottom:60px; height:auto; }
 
@@ -2336,8 +2336,8 @@ body.relic-result .result-score-box strong {
 
 .result-ad-reserve {
   width: 100%;
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   pointer-events: none;
   background: #101827;
   border-top: 1px solid rgb(212 175 55 / 24%);
@@ -2648,12 +2648,12 @@ body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-ca
 
 body.wp-logical-battle-active.relic-playing > .battle-ad-reserve[data-wp-battle-physical-reserve] {
   position: fixed !important;
-  inset: var(--wp-battle-canvas-rendered-height, calc(100dvh - 56px)) auto auto 0 !important;
+  inset: var(--wp-battle-canvas-rendered-height, calc(100dvh - var(--wp-ad-reserve-height, 0px))) auto auto 0 !important;
   grid-row: auto !important;
   width: var(--wp-battle-canvas-rendered-width, 100vw) !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
   transform: none !important;
 }
 

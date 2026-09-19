@@ -12,7 +12,7 @@ button:focus-visible,a:focus-visible,.game-board:focus-visible{outline:3px solid
 .stage-rail::-webkit-scrollbar{display:none}
 .stage-card{flex:0 0 248px;height:218px;min-width:0;padding:18px;display:grid;grid-template-rows:30px minmax(0,1fr) 30px;gap:10px;scroll-snap-align:center;background:linear-gradient(#133d39eb,#112f30f5);color:#effff3;border:2px solid #557c68;border-radius:4px;box-shadow:0 8px 0 #09221f;text-align:start}
 .stage-card small{display:flex;justify-content:space-between;gap:6px;color:#ecdda2;font-size:12px}.stage-card strong{font-size:27px;line-height:1.2;align-self:center;overflow-wrap:anywhere}.stage-card>span{font-size:14px;color:#d3e5d8}.stage-card.locked{opacity:.6}.stage-card.selected{opacity:1;border-color:#65ffd0;box-shadow:0 0 0 3px #65ffd033,0 0 24px #65ffd044,0 8px 0 #09221f}
-.stage-ad-reserve,.battle-ad-reserve{height:56px;min-height:56px;background:#071a2b;border-top:1px solid #264b55;pointer-events:none}
+.stage-ad-reserve,.battle-ad-reserve{height:var(--wp-ad-reserve-height, 0px);min-height:var(--wp-ad-reserve-height, 0px);background:#071a2b;border-top:1px solid #264b55;pointer-events:none}
 .battle-live{display:grid;grid-template-rows:48px minmax(0,1fr) 56px 56px;gap:10px;min-height:0;overflow:hidden}
 .objective-row{display:flex;align-items:center;justify-content:center;padding:4px 10px;font-size:13px;line-height:1.35;color:#dceee2;text-align:center;background:#0e3030d9;border:1px solid #456b59;border-radius:3px;overflow:hidden}
 .board-zone{position:relative;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 54px;gap:8px;justify-items:center;align-items:center;container-type:size;background:linear-gradient(#123b3d88,#103235cc),url('../../assets/animal-2048/background-block-v1.webp') center/cover}

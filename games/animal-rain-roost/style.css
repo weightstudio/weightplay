@@ -123,8 +123,8 @@ body[data-screen="result"] .wp-main-shell-header { display: none; }
   position: relative;
   width: calc(100% + 36px);
   max-width: none;
-  height: calc(100vh - 56px);
-  min-height: calc(100vh - 56px);
+  height: calc(100vh - var(--wp-ad-reserve-height, 0px));
+  min-height: calc(100vh - var(--wp-ad-reserve-height, 0px));
   margin-top: -14px;
   margin-left: -18px;
   padding: 18px;
@@ -135,7 +135,7 @@ body[data-screen="result"] .wp-main-shell-header { display: none; }
   top: 100%;
   left: 0;
   width: 100%;
-  height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
 }
 @media (max-width: 720px) {
   .battle-screen.battle-canvas { width: calc(100% + 28px); margin-left: -14px; }

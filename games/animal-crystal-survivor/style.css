@@ -90,8 +90,8 @@ body.crystal-playing #battleAdReserve {
   top: calc(var(--crystal-battle-top, 4px) + var(--crystal-battle-content-height, 788px));
   display: block;
   width: var(--crystal-battle-width, 390px);
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   margin: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(7, 34, 31, 0.7);
@@ -163,8 +163,8 @@ body.crystal-playing #battleAdReserve {
   grid-row: 2;
   display: block;
   width: min(100%, 612px);
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   margin: 0;
   transform: none;
 }
@@ -405,7 +405,7 @@ html:has(body.crystal-stage-select) { width:100%; height:var(--crystal-vh,100dvh
 body.crystal-stage-select .crystal-app { position:fixed; inset:0; display:grid; grid-template-rows:minmax(0,1fr) 56px; place-items:center; width:var(--crystal-vw,100vw); max-width:none; height:var(--crystal-vh,100dvh); padding:4px; overflow:hidden; }
 body.crystal-stage-select .game-page-info,body.crystal-stage-select .wp-tutorial-button { display:none !important; }
 body.crystal-stage-select #stagePanel { grid-row:1; width:min(100%,612px); height:min(100%,788px); margin:0; }
-body.crystal-stage-select #stageAdReserve { grid-row:2; display:block; width:min(100%,612px); height:56px; min-height:56px; border-top:1px solid rgba(255,255,255,.18); background:rgba(7,34,31,.7); }
+body.crystal-stage-select #stageAdReserve { grid-row:2; display:block; width:min(100%,612px); height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); border-top:1px solid rgba(255,255,255,.18); background:rgba(7,34,31,.7); }
 body:not(.crystal-stage-select) #stageAdReserve { display:none; }
 .upgrade-card-wrap strong,
 .result-card strong {
@@ -713,7 +713,7 @@ canvas {
 }
 
 .battle-ad-reserve {
-  min-height: 56px;
+  min-height: var(--wp-ad-reserve-height, 0px);
   pointer-events: none;
 }
 
@@ -1135,7 +1135,7 @@ canvas {
   }
 
   body.crystal-playing .battle-ad-reserve {
-    min-height: 56px;
+    min-height: var(--wp-ad-reserve-height, 0px);
     border-top: 1px solid rgba(255, 255, 255, 0.18);
     background: rgba(7, 34, 31, 0.38);
   }
@@ -1212,8 +1212,8 @@ body.crystal-playing #battleAdReserve {
   left: var(--crystal-battle-left, 4px);
   top: calc(var(--crystal-battle-top, 4px) + var(--crystal-battle-content-height, 788px));
   width: var(--crystal-battle-width, 390px);
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   margin: 0;
   transform: none;
 }
@@ -1234,7 +1234,7 @@ body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap
   align-self: center !important;
   aspect-ratio: 32 / 55 !important;
 }
-body.crystal-playing #battleAdReserve { position: static; inset: auto; grid-row: 2; display: block; width: min(100%, 612px); height: 56px; min-height: 56px; margin: 0; transform: none; }
+body.crystal-playing #battleAdReserve { position: static; inset: auto; grid-row: 2; display: block; width: min(100%, 612px); height: var(--wp-ad-reserve-height, 0px); min-height: var(--wp-ad-reserve-height, 0px); margin: 0; transform: none; }
 body.crystal-playing #upgradePanel.upgrade-panel { position: fixed; z-index: 100; inset: 4px 4px 60px; width: auto; height: auto; padding: 10px; overflow: hidden; pointer-events: auto; }
 body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
 

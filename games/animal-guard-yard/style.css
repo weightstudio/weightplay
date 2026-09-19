@@ -2718,8 +2718,8 @@ body.guard-yard-playing .result-panel .result-card > button:disabled {
 
 .battle-ad-reserve {
   display: none;
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   background: #071a2b;
   border-top: 1px solid rgba(121, 250, 210, 0.28);
   pointer-events: none;

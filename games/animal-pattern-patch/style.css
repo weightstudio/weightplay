@@ -49,7 +49,7 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .guide-layout p { margin:0; color:var(--muted); line-height:1.5; }
 .guide-card:not([open]) .guide-layout { display:none; }
 .guide-pose { width:100%; max-height:180px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 8px 10px rgba(49,91,73,.18)); }
-.battle-screen { width:100%; height:calc(100vh - 56px); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:linear-gradient(rgba(255,253,247,.78),rgba(245,240,223,.84)),url("assets/animal-pattern-patch-background.png") center / cover; }
+.battle-screen { width:100%; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:linear-gradient(rgba(255,253,247,.78),rgba(245,240,223,.84)),url("assets/animal-pattern-patch-background.png") center / cover; }
 .battle-screen .main-header, .battle-screen .battle-header { position:sticky; top:0; z-index:10; width:min(892px,100%); margin:0 auto; background:rgba(255,253,247,.96); }
 .battle-content { width:min(640px,100%); margin:0 auto; padding-top:14px; text-align:center; }
 .status-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 auto 14px; color:var(--deep-leaf); font-size:.9rem; font-weight:900; }

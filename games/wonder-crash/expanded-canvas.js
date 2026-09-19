@@ -183,7 +183,7 @@
     const playing = document.body.classList.contains("wonder-playing");
     const selectingStage = document.body.classList.contains("wonder-stage-select") && !playing;
     const reserveHeight = (playing || selectingStage)
-      ? Math.max(0, Number(window.WeightPlayAudience?.reserveHeight) || 0)
+      ? Math.max(0, Number(window.WeightPlayLayout?.reserveHeight) || 0)
       : 0;
     const height = Math.max(1, viewportHeight - reserveHeight);
     document.documentElement.style.setProperty("--wonder-vw", `${width}px`);

@@ -1937,7 +1937,7 @@ body.beast-deck-playing .action-area { width:100%; min-width:100%; max-width:100
 body.beast-deck-playing .hand-row { width:100%; min-width:100%; max-width:100%; height:184px; min-height:184px; max-height:184px; flex:0 0 184px; align-self:stretch; }
 body.beast-deck-playing .battle-log { max-height:58px; overflow-y:auto; }
 body.beast-deck-playing .hand-row .card:hover { transform:none; }
-body.beast-deck-playing .battle-ad-reserve { position:fixed; inset:auto 0 0 0; display:block; width:var(--beast-vw,100vw); height:56px; min-height:56px; transform:none !important; }
+body.beast-deck-playing .battle-ad-reserve { position:fixed; inset:auto 0 0 0; display:block; width:var(--beast-vw,100vw); height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); transform:none !important; }
 body.beast-deck-playing .draft-panel { position:absolute; z-index:80; inset:0; }
 body.beast-deck-playing #gamePanel.result-open { isolation:isolate; }
 body.beast-deck-playing #gamePanel.result-open > .hud-row,

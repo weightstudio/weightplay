@@ -3,7 +3,7 @@
 #gameFrame { width: min(100%, 920px); margin-inline: auto; }
 body:is([data-screen="stage"], [data-screen="battle"]) { height: 100dvh; overflow: hidden; }
 html:has(body:is([data-screen="stage"], [data-screen="battle"])) { overflow: hidden; }
-body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc(100dvh - 56px); }
+body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc(100dvh - var(--wp-ad-reserve-height, 0px)); }
 #gameFrame > .canvas { height: 100%; min-height: 0; max-height: 100%; }
 /* Modal content uses the same theme tokens as the shared frame. */
 #gameFrame .game-dialog {

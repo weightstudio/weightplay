@@ -1,5 +1,5 @@
 (function () {
-  const RESERVE_HEIGHT = window.WeightPlayAudience?.reserveHeight ?? 56;
+  const RESERVE_HEIGHT = window.WeightPlayLayout?.reserveHeight ?? 0;
   const GUTTER = 0;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
@@ -335,7 +335,7 @@
     const layoutHeight = Number(document.documentElement.clientHeight) || 0;
     const width = Math.max(1, layoutWidth || Number(viewport?.width) || Number(innerWidth) || 0);
     const height = Math.max(1, layoutHeight || Number(viewport?.height) || Number(innerHeight) || 0);
-    const reserve = findReserve(root);
+    const reserve = RESERVE_HEIGHT ? findReserve(root) : null;
     if (nestedPhysicalReserveGames.has(gameId)
       && reserve?.parentElement === root
       && root.parentElement) {
@@ -428,9 +428,9 @@
         width: `${reserveWidth}px`,
         "min-width": "0",
         "max-width": `${DESKTOP_CANVAS_MAX_WIDTH}px`,
-        height: "56px",
-        "min-height": "56px",
-        "max-height": "56px",
+        height: `${RESERVE_HEIGHT}px`,
+        "min-height": `${RESERVE_HEIGHT}px`,
+        "max-height": `${RESERVE_HEIGHT}px`,
         margin: "0",
         transform: "none",
         "pointer-events": "none",

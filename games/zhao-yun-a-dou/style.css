@@ -68,7 +68,7 @@ body[data-wp-game-id="zhao-yun-a-dou"] .screen {
 .stage-canvas,
 .battle {
   width: min(100%, 920px);
-  min-height: calc(100svh - 56px);
+  min-height: calc(100svh - var(--wp-ad-reserve-height, 0px));
   margin: 0 auto;
 }
 

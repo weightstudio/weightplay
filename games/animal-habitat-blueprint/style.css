@@ -48,7 +48,7 @@ body{overflow-x:hidden}
 .game-info-section h3{margin:0 0 8px;font-size:1rem}
 .game-info-section p,.game-info-section ol{margin:0;color:#557275;line-height:1.5}
 .game-info-section ol{padding-left:20px}
-.stage-canvas,.battle-canvas{width:min(100%,920px);height:calc(100vh - 56px);margin:0 auto;padding:12px 18px 10px;border:0;border-radius:0;box-shadow:none;overflow:hidden}
+.stage-canvas,.battle-canvas{width:min(100%,920px);height:calc(100vh - var(--wp-ad-reserve-height, 0px));margin:0 auto;padding:12px 18px 10px;border:0;border-radius:0;box-shadow:none;overflow:hidden}
 .stage-canvas{display:flex;flex-direction:column;gap:8px;background:linear-gradient(145deg,#f7fcf2,#e4f0ed);background-image:linear-gradient(#ffffffcc,#ffffffcc),var(--wp-stage-art),linear-gradient(145deg,#f7fcf2,#e4f0ed);background-size:cover;background-position:center}
 .stage-canvas .topbar,.battle-canvas .topbar{flex:0 0 64px;margin:-12px -18px 0}
 .stage-canvas .eyebrow,.stage-canvas h2{margin:0}
@@ -56,7 +56,7 @@ body{overflow-x:hidden}
 .stage-canvas .stage-card{min-height:58px;padding:10px 13px}
 .stage-tabs{display:flex;justify-content:center;min-height:48px;padding-top:2px}
 .stage-tab{min-height:44px;padding:8px 16px;border:2px solid #294a55;border-radius:13px;background:#fffdf5;color:#294a55;font:inherit;font-weight:800}
-.stage-ad-reserve,.battle-ad-reserve{width:min(100%,920px);height:56px;min-height:56px;margin:0 auto;background:#dbe9e7}
+.stage-ad-reserve,.battle-ad-reserve{width:min(100%,920px);height:var(--wp-ad-reserve-height, 0px);min-height:var(--wp-ad-reserve-height, 0px);margin:0 auto;background:#dbe9e7}
 .battle-canvas{display:flex;flex-direction:column;gap:8px;background:linear-gradient(#ffffffd9,#ffffffd9),url("assets/animal-habitat-blueprint-background.png") center/cover,linear-gradient(145deg,#e7f0e5,#c8dfe1)}
 .battle-canvas .battle-head{flex:0 0 auto}
 .battle-canvas .battle-head h2{margin:0}

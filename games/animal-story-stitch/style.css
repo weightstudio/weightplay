@@ -29,7 +29,7 @@ body[data-screen="stage"],body[data-screen="battle"]{overflow:hidden;}
 .guide-card p{margin:0;color:#3c5a5c;line-height:1.5;}
 body[data-screen="stage"] #mainGuide,body[data-screen="battle"] #mainGuide,body[data-screen="result"] #mainGuide{display:none;}
 #stageScreen,#battleScreen,#resultScreen{width:100%;max-width:none;margin:0;padding:0;}
-.stage-canvas,.battle-canvas,.result-canvas{position:relative;isolation:isolate;width:min(100vw,920px);height:calc(100vh - 56px);margin:0 auto;padding:18px max(18px,calc((100% - 920px)/2 + 18px));overflow:auto;background:linear-gradient(145deg,#edf6f1,#d9eee9);}
+.stage-canvas,.battle-canvas,.result-canvas{position:relative;isolation:isolate;width:min(100vw,920px);height:calc(100vh - var(--wp-ad-reserve-height, 0px));margin:0 auto;padding:18px max(18px,calc((100% - 920px)/2 + 18px));overflow:auto;background:linear-gradient(145deg,#edf6f1,#d9eee9);}
 .stage-canvas{background-image:linear-gradient(145deg,#edf6f1dd,#d9eee9dd),url("assets/animal-story-stitch-background.png");background-size:cover;background-position:center;}
 .battle-canvas{background-image:linear-gradient(145deg,#edf6f1dd,#d9eee9dd),url("assets/animal-story-stitch-background.png");background-size:cover;background-position:center;}
 .stage-canvas::before,.battle-canvas::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 50% 8%,#fff8df88,transparent 34%);}
@@ -44,7 +44,7 @@ body[data-screen="stage"] #mainGuide,body[data-screen="battle"] #mainGuide,body[
 .stage-card[role="tab"]{text-align:left;}
 .stage-card strong,.stage-card small{display:block;}
 .stage-card small{margin-top:5px;color:#557b72;}
-.stage-ad-reserve,.battle-ad-reserve,.result-ad-reserve{width:min(100vw,920px);height:56px;margin:0 auto;background:#d6e8de;}
+.stage-ad-reserve,.battle-ad-reserve,.result-ad-reserve{width:min(100vw,920px);height:var(--wp-ad-reserve-height, 0px);margin:0 auto;background:#d6e8de;}
 .battle-canvas{padding-top:18px;}
 .battle-header-tools{display:flex;align-items:center;justify-content:flex-end;gap:6px;}
 .battle-header-tools .pill{min-height:34px;display:inline-flex;align-items:center;}

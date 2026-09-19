@@ -9,6 +9,9 @@
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .game-info-section {
     border-radius: 18px !important;
   }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .game-page-info {
+    --wp-ui-radius: 18px !important;
+  }
 }
 
 /* This file is loaded only by Orbit Orchard. Keep these selectors independent

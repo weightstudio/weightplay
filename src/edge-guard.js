@@ -6,7 +6,7 @@
   window.WeightPlayAudience = Object.freeze({
     mode: audience,
     isKids: isKidsAudience,
-    reserveHeight: isKidsAudience ? 0 : 56,
+    get reserveHeight() { return isKidsAudience ? 0 : (window.WeightPlayLayout?.reserveHeight ?? 0); },
   });
 
   if (isKidsAudience) {

@@ -113,7 +113,7 @@ footer { margin-top:22px; color:#728072; font-size:12px; text-align:center; }
 .main-screen .primary { width:100%; height:52px; min-height:52px; white-space:nowrap; }
 .game-page-info { display:block; }
 .game-page-info:not([open]) .guide-layout { display:none; }
-.battle-screen { width:100%; height:calc(100vh - 56px); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:linear-gradient(145deg,#f4f1e7 0%,#e9f2e5 55%,#eef6f0 100%); }
+.battle-screen { width:100%; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:linear-gradient(145deg,#f4f1e7 0%,#e9f2e5 55%,#eef6f0 100%); }
 .battle-screen .lab-header { position:sticky; top:0; z-index:10; margin:0 auto; width:min(892px,100%); background:rgba(244,241,231,.96); }
 .battle-screen .lab-card { width:min(892px,100%); margin:20px auto 0; }
 .battle-screen .status-row { width:min(892px,100%); margin:14px auto 0; }
@@ -121,7 +121,7 @@ footer { margin-top:22px; color:#728072; font-size:12px; text-align:center; }
 .leave-dialog h2 { margin:0 0 10px; font-size:clamp(24px,4vw,34px); }
 .leave-dialog p { color:var(--muted); line-height:1.5; }
 .leave-dialog .result-actions { margin-top:18px; }
-.battle-ad-reserve { width:min(920px,100%); height:56px; margin:0 auto; pointer-events:none; }
+.battle-ad-reserve { width:min(920px,100%); height:var(--wp-ad-reserve-height, 0px); margin:0 auto; pointer-events:none; }
 body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
 body[data-screen="battle"] .lab-shell { width:min(920px,100%); margin:0 auto; padding:0; }
 body[data-screen="battle"] footer { display:none; }

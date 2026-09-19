@@ -14,14 +14,14 @@ html,body{overflow-x:hidden}
 .cover{width:100%;height:100%;object-fit:cover}
 .main-progress{min-height:42px;height:42px;display:grid;place-items:center;width:min(620px,100%);margin:0 auto 16px;padding:8px 12px;border:2px solid #c7dfe1;border-radius:14px;background:#e8f5f2;color:#245b6a;font-size:.9rem;font-weight:800}
 .game-page-info{padding:18px;border-radius:22px;background:#fff;border:2px solid #c7dfe1;box-shadow:0 8px 24px #3c738016}
-.stage-screen,.battle-screen{position:fixed;z-index:2;top:0;left:50%;transform:translateX(-50%);height:calc(100vh - 56px);overflow:auto;padding:78px 16px 24px}
+.stage-screen,.battle-screen{position:fixed;z-index:2;top:0;left:50%;transform:translateX(-50%);height:calc(100vh - var(--wp-ad-reserve-height, 0px));overflow:auto;padding:78px 16px 24px}
 .stage-screen{background:linear-gradient(180deg,#dceff0ee,#edf6f4 52%),url("assets/animal-kite-keeper-background.webp") center/cover no-repeat;background-blend-mode:screen}
 .stage-screen .stage-list{max-width:620px;margin-inline:auto}
 .battle-screen{background:linear-gradient(180deg,#edf6f4f2,#dcecf0f2),url("assets/animal-kite-keeper-background.webp") center/cover no-repeat;background-blend-mode:screen}
 .battle-screen .battle-heading{max-width:920px;margin-inline:auto}
 .battle-screen .prompt,.battle-screen .flight-card,.battle-screen .choice-card,.battle-screen .battle-actions,.battle-screen .status{width:min(620px,100%)}
 .battle-screen .prompt,.battle-screen .flight-card,.battle-screen .choice-card,.battle-screen .battle-actions{margin-inline:auto}
-.battle-ad-reserve{position:fixed;z-index:3;left:50%;bottom:0;transform:translateX(-50%);width:min(920px,100vw);height:56px;background:#17324a;border-top:2px solid #b9d4dc;box-shadow:0 -4px 14px #17324a22}
+.battle-ad-reserve{position:fixed;z-index:3;left:50%;bottom:0;transform:translateX(-50%);width:min(920px,100vw);height:var(--wp-ad-reserve-height, 0px);background:#17324a;border-top:2px solid #b9d4dc;box-shadow:0 -4px 14px #17324a22}
 .battle-screen .wind-card[data-wp-primary-action]{min-height:58px}
 @media (min-width:700px){.main-screen .cover-wrap{width:420px}.main-screen .main-actions{max-width:620px}}
 @media (min-width:700px) and (orientation:landscape) and (max-height:700px){.main-screen .cover-wrap{width:300px}.main-screen{padding-top:4px}.main-screen .cover-wrap{margin-bottom:8px}.main-screen .subtitle{margin-bottom:8px}.main-screen .main-progress{margin-bottom:8px}}

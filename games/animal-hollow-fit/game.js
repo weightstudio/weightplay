@@ -15,7 +15,7 @@
   })();
   const state = { view:"main", locale:"en", round:0, selected:null, totalChecks:0, sound:false };
   const t = (key, vars = {}) => { const copy = locales[state.locale] || locales.en || {}; let value = copy[key] ?? (locales.en || {})[key] ?? key; if (Array.isArray(value)) return value; return String(value).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`); };
-  const fitBattleCanvas = () => { const frame = $("battleFrame"); if (!frame) return; const shortLandscape = innerWidth > innerHeight && innerHeight <= 560; const availableHeight = Math.max(180, innerHeight - 56); const scale = shortLandscape ? Math.min(1, availableHeight / 564) : 1; frame.style.setProperty("--hollow-battle-scale", scale.toFixed(4)); };
+  const fitBattleCanvas = () => { const frame = $("battleFrame"); if (!frame) return; const shortLandscape = innerWidth > innerHeight && innerHeight <= 560; const availableHeight = Math.max(180, innerHeight - (window.WeightPlayLayout?.reserveHeight ?? 0)); const scale = shortLandscape ? Math.min(1, availableHeight / 564) : 1; frame.style.setProperty("--hollow-battle-scale", scale.toFixed(4)); };
   const track = (name, detail = {}) => window.WonderAnalytics?.track?.(`hollow_fit_${name}`, detail);
   const tone = (frequency) => { if (!state.sound) return; try { const context = new AudioContext(); const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.frequency.value = frequency; gain.gain.value = .035; oscillator.connect(gain).connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + .08); } catch (_) {} };
   const readBest = () => { try { return Number(localStorage.getItem("weightplay-animal-hollow-fit-best")) || 0; } catch (_) { return 0; } };

@@ -1,5 +1,9 @@
 /* Game-content placement only. Shared headers/preferences are not restyled. */
 .shadow-battle-content { position:relative; min-width:0; min-height:0; }
+.shadow-battle-content > .shadow-game-layout {height:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);}
+.shadow-battle-content .arena-viewport {height:100%;box-sizing:border-box;}
+.shadow-battle-content .canvas-container {height:100%;min-height:0;aspect-ratio:auto;overflow:hidden;}
+.shadow-battle-content .mobile-controls-row {display:flex;}
 .shadow-stage-content {
   position:relative; min-width:0; min-height:0;
   display:flex; flex-direction:column; gap:12px;
@@ -15,7 +19,7 @@
   padding:0;
   gap:8px;
 }
-.shadow-battle-content #pauseBtn { position:static; margin-inline-start:auto; flex-shrink:0; }
+.shadow-battle-content #pauseBtn { position:static; margin-inline-start:auto; flex-shrink:0; grid-column:4;grid-row:1; }
 .shadow-battle-content .arena-hud {
   position:static;
   display:grid;
@@ -26,9 +30,9 @@
   padding:0;
 }
 .shadow-battle-content .hud-meta-row { display:flex; align-items:center; }
-.shadow-battle-content .first-response { grid-column:1 / -1; }
+.shadow-battle-content .first-response {position:absolute;top:48px;left:8px;right:8px;z-index:4;pointer-events:none;}
 .shadow-battle-content > .battle-result {
-  inset:0 0 56px;
+  inset:0 0 var(--wp-ad-reserve-height, 0px);
   height:auto !important;
   max-height:calc(100% - 56px) !important;
   padding:12px;

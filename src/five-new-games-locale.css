@@ -22,7 +22,7 @@ body[data-wp-five-game] .battle-header span{min-width:0;overflow:hidden;text-ove
 body[data-wp-five-game] .stage-header .back,body[data-wp-five-game] .battle-header .back{width:48px;height:48px;min-width:48px;padding:0;display:grid;place-items:center;border-radius:12px;font-size:24px}
 body[data-wp-five-game] .battle-screen{position:relative;padding:12px;display:flex;flex-direction:column;gap:8px;align-items:stretch}
 body[data-wp-five-game] .battle-screen canvas{max-height:none;flex:1 1 auto;min-height:0}
-body[data-wp-five-game] .battle-ad-reserve{height:56px;min-height:56px;background:transparent}
+body[data-wp-five-game] .battle-ad-reserve{height:var(--wp-ad-reserve-height, 0px);min-height:var(--wp-ad-reserve-height, 0px);background:transparent}
 body[data-wp-five-game] .battle-screen>.result{position:absolute;inset:12px;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;background:rgba(7,25,43,.94);border:1px solid rgba(140,220,255,.45);border-radius:14px;text-align:center}
 body[data-wp-five-game] .battle-screen>.result[hidden]{display:none!important}
 body[data-wp-five-game] .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,560px);gap:10px}

@@ -117,7 +117,7 @@ h2 { font-size: clamp(1.45rem, 5vw, 2.3rem); }
 .primary { width: 100%; }
 .main-copy > .primary { min-height: 52px; }
 
-.battle-screen { min-height: calc(100svh - 56px); }
+.battle-screen { min-height: calc(100svh - var(--wp-ad-reserve-height, 0px)); }
 .battle-panel { padding: 12px; }
 .battle-top { display: grid; gap: 10px; }
 .battle-topline, .control-row, .hud { display: flex; align-items: center; gap: 8px; }
@@ -207,7 +207,7 @@ body.is-game-playing .classic-arcade {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 56px;
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 0px);
   overflow: hidden;
 }
 

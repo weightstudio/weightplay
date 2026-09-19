@@ -122,14 +122,14 @@ button { cursor: pointer; }
 .guide ol { margin: 12px 0 0; padding-left: 1.35rem; display: grid; gap: 5px; }
 
 .canvas {
-  height: calc(100svh - 56px);
+  height: calc(100svh - var(--wp-ad-reserve-height, 0px));
   min-height: 430px;
   overflow: hidden;
   background: #08131f;
 }
 .ad-reserve {
   width: min(100%, 920px);
-  height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
   margin: 0 auto;
   background: #030912;
 }
@@ -637,7 +637,7 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .tools { grid-column: 1 / -1; }
   .tools button.utility-button { min-width: 48px; min-height: 48px; padding: 3px 8px; }
   .status { grid-column: 1 / -1; position: static; margin: 0; font-size: .65rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  dialog[open] { top: calc((100svh - 56px) / 2); bottom: auto; margin: 0 auto; transform: translateY(-50%); max-height: calc(100svh - 72px); padding: 12px 20px; overflow: auto; }
+  dialog[open] { top: calc((100svh - var(--wp-ad-reserve-height, 0px)) / 2); bottom: auto; margin: 0 auto; transform: translateY(-50%); max-height: calc(100svh - 72px); padding: 12px 20px; overflow: auto; }
   .result-mark { width: 42px; height: 42px; font-size: 1.2rem; }
   .result-art { height: 76px; margin-bottom: 5px; border-radius: 12px; }
   .result-panko { bottom: -42%; height: 154%; }

@@ -5,7 +5,7 @@ body { min-height:100vh; overflow-x:hidden; }
 button, select { font:inherit; }
 button { color:inherit; cursor:pointer; }
 button:focus-visible, select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
-.screen { min-height:calc(100vh - 56px); }
+.screen { min-height:calc(100vh - var(--wp-ad-reserve-height, 0px)); }
 .main-canvas { width:min(100% - 32px, 920px); margin:0 auto; padding:24px 0 52px; }
 .topbar, .panel-head, .settings-head, .mission-row { display:flex; align-items:center; gap:14px; }
 .topbar { justify-content:space-between; }
@@ -36,7 +36,7 @@ h2 { margin-bottom:8px; }
 .setting-row { display:flex; justify-content:space-between; align-items:center; gap:18px; padding:11px 0; color:var(--muted); }
 select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); border-radius:10px; padding:9px; }
 .setting-sound { width:100%; margin-top:10px; }
-.stage-canvas, .battle-canvas { width:min(100%, 920px); min-height:calc(100vh - 56px); margin:0 auto; padding:20px 20px 30px; background:radial-gradient(circle at 50% 0,rgba(35,74,99,.9),rgba(17,39,63,.94) 50%,rgba(11,27,45,.97)),url("assets/animal-magnet-meadow-battle-background.png") center/cover no-repeat; }
+.stage-canvas, .battle-canvas { width:min(100%, 920px); min-height:calc(100vh - var(--wp-ad-reserve-height, 0px)); margin:0 auto; padding:20px 20px 30px; background:radial-gradient(circle at 50% 0,rgba(35,74,99,.9),rgba(17,39,63,.94) 50%,rgba(11,27,45,.97)),url("assets/animal-magnet-meadow-battle-background.png") center/cover no-repeat; }
 .panel-head { justify-content:space-between; min-height:48px; }
 .panel-head h2 { flex:1; margin:0; text-align:center; font-size:1.15rem; }
 .panel-utility { min-width:44px; }
@@ -80,7 +80,7 @@ select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); bor
 .result-panel p:not(.eyebrow) { color:var(--muted); line-height:1.55; }
 .result-stats { display:inline-block; padding:10px 14px; color:var(--gold); border-radius:999px; background:rgba(255,212,119,.1); }
 .result-actions { justify-content:center; }
-.game-ad-reserve { width:min(100%,920px); height:56px; margin:0 auto; }
+.game-ad-reserve { width:min(100%,920px); height:var(--wp-ad-reserve-height, 0px); margin:0 auto; }
 .toast { position:fixed; left:50%; bottom:76px; z-index:5; transform:translate(-50%,16px); max-width:min(90vw,520px); padding:12px 16px; border:1px solid var(--line); border-radius:999px; background:#102d49; opacity:0; transition:opacity .2s, transform .2s; pointer-events:none; text-align:center; }
 .toast.visible { opacity:1; transform:translate(-50%,0); }
 
@@ -101,8 +101,8 @@ select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); bor
 .main-progress { display:flex; align-items:center; min-height:40px; margin-bottom:0; }
 .primary-btn { min-height:52px; }
 .game-page-info { width:min(100% - 32px,920px); margin:28px auto 52px; }
-.stage-canvas, .battle-canvas { height:calc(100svh - 56px); min-height:calc(100svh - 56px); overflow-x:hidden; overflow-y:auto; }
-.stage-ad-reserve, .battle-ad-reserve { width:min(100%,920px); height:56px; min-height:56px; margin:0 auto; }
+.stage-canvas, .battle-canvas { height:calc(100svh - var(--wp-ad-reserve-height, 0px)); min-height:calc(100svh - var(--wp-ad-reserve-height, 0px)); overflow-x:hidden; overflow-y:auto; }
+.stage-ad-reserve, .battle-ad-reserve { width:min(100%,920px); height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); margin:0 auto; }
 .stage-rail { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x proximity; }
 .stage-rail .stage-card { flex:0 0 min(264px,calc(100vw - 48px)); min-height:190px; scroll-snap-align:start; }
 .stage-tabs button { min-height:44px; }

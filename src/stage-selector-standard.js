@@ -1,7 +1,6 @@
 (function () {
   const STAGE_LOGICAL_WIDTH = 390;
   const STAGE_LOGICAL_HEIGHT = 788;
-  const STAGE_RESERVE_HEIGHT = 56;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const railSelector = "[data-wp-stage-rail],.stage-grid,.stage-rail,.page-rail,.mission-grid,.mission-rail,.region-rail,.level-grid,.route-rail,.day-rail,.zone-row,.expedition-rail,.world-map-grid";
   const cardSelector = ".stage-card,.page-card,.mission-card,.region-card,.route-card,.day-card,.zone-card,.expedition-card,.zone-node,button";
@@ -187,7 +186,7 @@
   }
 
   function sharedReserve() {
-    if (isKidsAudience()) return null;
+    if (!window.WeightPlayLayout?.reserveHeight || isKidsAudience()) return null;
     let reserve = document.querySelector(".wp-stage-physical-reserve");
     if (!reserve) {
       reserve = document.createElement("div");
@@ -226,7 +225,7 @@
   }
 
   function updateStageCanvas() {
-    const reserveHeight = isKidsAudience() ? 0 : STAGE_RESERVE_HEIGHT;
+    const reserveHeight = isKidsAudience() ? 0 : (window.WeightPlayLayout?.reserveHeight ?? 0);
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
       .filter(stageOwnerActive);
     document.querySelectorAll("[data-wp-logical-stage-canvas]").forEach((root) => {

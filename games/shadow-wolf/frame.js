@@ -17,7 +17,7 @@
     header.append(title);
     const localeSelect = document.getElementById('localeSelect');
     const localeCarrier = header.querySelector('.locale-picker');
-    if (localeCarrier) { localeCarrier.hidden = true; root.append(localeCarrier); }
+    if (localeCarrier) { localeCarrier.className = ''; localeCarrier.hidden = true; localeCarrier.inert = true; root.append(localeCarrier); }
     const mainContent = main.querySelector('.menu-layout');
     mainContent.querySelector('.menu-title').hidden = true;
     main.prepend(header);
@@ -25,6 +25,24 @@
     mainContent.querySelector('.menu-hint').setAttribute('data-wp-frame-summary', '');
     mainContent.querySelector('.campaign-summary').setAttribute('data-wp-frame-progress', '');
     document.getElementById('startBtn').setAttribute('data-wp-frame-action', 'primary');
+    // Flatten legacy wrappers into the shared poster/copy slots. Keeping the
+    // old menu-main grid would constrain the shared frame inside a second grid.
+    const poster = mainContent.querySelector('[data-wp-frame-poster]');
+    const summary = mainContent.querySelector('[data-wp-frame-summary]');
+    const progress = mainContent.querySelector('[data-wp-frame-progress]');
+    const progressValue = document.getElementById('campaignSummary');
+    progressValue.classList.remove('wp-standard-main-progress');
+    const progressLine = document.createElement('span');
+    progressLine.append(...progress.childNodes, progressValue);
+    progress.replaceChildren(progressLine);
+    progress.style.height = '40px';
+    const copy = document.createElement('div');
+    copy.setAttribute('data-wp-frame-copy', '');
+    copy.append(summary, progress, document.getElementById('startBtn'));
+    const controls = mainContent.querySelector('.desktop-controls');
+    if (controls) copy.append(controls);
+    mainContent.replaceChildren(poster, copy);
+    mainContent.className = '';
     const stageContent = document.createElement('div');
     stageHeader.querySelector('h2').setAttribute('data-wp-frame-title', '');
     stageHeader.querySelector('h2').hidden = true;
@@ -33,8 +51,23 @@
     const workshop = document.getElementById('stageWorkshopBtn');
     workshop.classList.remove('wp-stage-header-action');
     workshop.setAttribute('data-wp-frame-action', 'secondary');
-    stageContent.prepend(workshop);
     stage.append(stageContent);
+    const stageNav = document.createElement('nav');
+    stageNav.setAttribute('data-wp-frame-stage-nav', '');
+    stageNav.className = 'stage-tabs';
+    const stagesTab = document.createElement('button');
+    stagesTab.type = 'button';
+    stagesTab.setAttribute('role', 'tab');
+    stagesTab.setAttribute('aria-selected', 'true');
+    stagesTab.setAttribute('aria-controls', 'mapPanel');
+    stagesTab.setAttribute('data-wp-frame-stage-slot', 'stages');
+    stagesTab.setAttribute('data-wp-frame-action', 'secondary');
+    stagesTab.setAttribute('data-ui', 'roomLabel');
+    stagesTab.textContent = document.querySelector('[data-ui="roomLabel"]').textContent;
+    stagesTab.addEventListener('click', () => document.getElementById('stageManagementCloseBtn').click());
+    workshop.setAttribute('data-wp-frame-stage-slot', 'equipment');
+    stageNav.append(stagesTab, workshop);
+    stage.append(stageNav);
     const battleHeader = document.createElement('header');
     battleHeader.append(document.getElementById('menuBtn'));
     const battleTitle = document.createElement('span');
@@ -43,7 +76,19 @@
     const battleContent = document.createElement('div');
     battleContent.className = 'shadow-battle-content';
     battleContent.append(...battle.childNodes);
+    const innerCanvas = battleContent.querySelector('.shadow-game-layout');
+    innerCanvas.removeAttribute('data-wp-logical-battle-canvas');
+    innerCanvas.classList.remove('game-layout');
+    battle.classList.add('game-layout');
+    battle.setAttribute('data-wp-battle-canvas-root', '');
+    battle.setAttribute('data-wp-logical-battle-canvas', 'responsive');
+    battle.setAttribute('data-wp-battle-landscape-width', '760');
+    battle.setAttribute('data-wp-battle-landscape-height', '334');
+    const reserve = battleContent.querySelector('.battle-ad-reserve');
+    root.append(reserve);
+    battleContent.querySelector('#btnJump').setAttribute('data-wp-primary-action', '');
     battleContent.append(battleContent.querySelector('#resultPanel'));
+    battleContent.querySelector('#resultPanel').setAttribute('data-wp-frame-logical-actions', 'battle');
     for (const button of battleContent.querySelectorAll('#resultPanel .result-actions button')) {
       button.setAttribute('data-wp-frame-action', 'secondary');
     }

@@ -6,7 +6,7 @@ body { overflow-x: hidden; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 .app-shell { width: 100%; min-height: 100dvh; background: radial-gradient(circle at 50% -10%, #1b6077 0, #0a304d 38%, #061d34 80%); }
-.screen { position: relative; width: min(100%, 920px); height: calc(100dvh - 56px); min-height: 0; margin: 0 auto; padding: 10px 20px 16px; overflow: hidden; }
+.screen { position: relative; width: min(100%, 920px); height: calc(100dvh - var(--wp-ad-reserve-height, 0px)); min-height: 0; margin: 0 auto; padding: 10px 20px 16px; overflow: hidden; }
 .battle-screen { background: linear-gradient(rgba(6, 29, 52, .64), rgba(6, 29, 52, .82)), url("assets/animal-tideglass-background.png") center / cover; }
 .main-header, .battle-header { position: relative; z-index: 4; display: grid; grid-template-columns: 58px 1fr 48px; align-items: center; gap: 12px; height: 58px; }
 .header-title { min-width: 0; text-align: center; font-size: clamp(1rem, 2.2vw, 1.18rem); letter-spacing: .01em; }

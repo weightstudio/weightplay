@@ -159,7 +159,7 @@
     const viewportWidth = Number(document.documentElement.clientWidth || window.innerWidth || 0);
     const viewportHeight = Number(document.documentElement.clientHeight || window.innerHeight || 0);
     const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
-    const availableHeight = Math.max(1, viewportHeight - 56);
+    const availableHeight = Math.max(1, viewportHeight - (window.WeightPlayLayout?.reserveHeight ?? 0));
     const landscape = availableWidth / availableHeight >= 1.5;
     const minimumWidth = landscape ? 760 : 390;
     const minimumHeight = landscape ? 334 : 788;

@@ -41,9 +41,9 @@ h2 { margin-bottom:12px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .guide-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
 .guide-grid article { color:var(--deep-leaf); }
 .guide-grid p { margin:6px 0 0; color:var(--muted); line-height:1.5; }
-.panel { width:100%; min-height:calc(100vh - 56px); }
+.panel { width:100%; min-height:calc(100vh - var(--wp-ad-reserve-height, 0px)); }
 .panel[data-screen="battle"] { min-height:100vh; }
-.battle-canvas { width:min(920px,100%); height:calc(100vh - 56px); min-height:0; margin:0 auto; overflow-x:hidden; overflow-y:auto; padding:8px 14px 18px; border-radius:0; background-color:#d8e5df; background-image:linear-gradient(rgba(246,250,241,.86),rgba(246,250,241,.93)),var(--wp-battle-art); background-position:center; background-repeat:no-repeat; background-size:cover; }
+.battle-canvas { width:min(920px,100%); height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin:0 auto; overflow-x:hidden; overflow-y:auto; padding:8px 14px 18px; border-radius:0; background-color:#d8e5df; background-image:linear-gradient(rgba(246,250,241,.86),rgba(246,250,241,.93)),var(--wp-battle-art); background-position:center; background-repeat:no-repeat; background-size:cover; }
 .panel[data-screen="battle"] { display:block; }
 .logical-shell { width:min(760px,100%); margin:0 auto; padding:8px 14px 18px; }
 .panel-head { margin:0 auto 10px; }
@@ -90,7 +90,7 @@ h2 { margin-bottom:12px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .battle-status { min-height:32px; margin:13px auto 0; color:var(--deep-leaf); font-size:.92rem; font-weight:800; }
 .battle-status.is-wrong { color:#b45b4c; }
 .text-btn { padding:8px 14px; margin-top:8px; background:transparent; color:var(--muted); text-decoration:underline; }
-.game-ad-reserve { width:min(920px,100%); height:56px; min-height:56px; margin:0 auto; pointer-events:none; }
+.game-ad-reserve { width:min(920px,100%); height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); margin:0 auto; pointer-events:none; }
 .result-screen { display:grid; place-items:center; padding:22px 14px; }
 .result-card { width:min(620px,100%); padding:42px 24px; text-align:center; }
 .result-badge { display:grid; place-items:center; width:76px; height:76px; margin:0 auto 18px; border-radius:50%; background:var(--sun); color:#fff; font-size:2.4rem; }
@@ -332,4 +332,4 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"]
 #battleView [data-layout="wide"] #resultView .result-fia{grid-column:1;grid-row:1/6;justify-self:center;}
 #battleView [data-layout="wide"] #resultView .result-card>:not(.result-fia){grid-column:2;}
 #battleView [data-layout="wide"] #resultView .result-actions{margin:0;}
-#battleView .game-ad-reserve,#stageView [data-wp-stage-physical-reserve]{width:min(100%,920px);height:56px;min-height:56px;margin:0 auto;background:#17243a;pointer-events:none;}
+#battleView .game-ad-reserve,#stageView [data-wp-stage-physical-reserve]{width:min(100%,920px);height:var(--wp-ad-reserve-height, 0px);min-height:var(--wp-ad-reserve-height, 0px);margin:0 auto;background:#17243a;pointer-events:none;}

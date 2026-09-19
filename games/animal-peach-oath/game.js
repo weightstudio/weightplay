@@ -1466,6 +1466,7 @@
 
   function mountSharedFrame() {
     $('#coachNext').setAttribute('data-wp-frame-action', 'primary');
+    $('#coachNext').setAttribute('data-wp-tutorial-next', '');
     const leaveDialog = document.createElement('section');
     leaveDialog.id = 'leaveConfirm';
     leaveDialog.className = 'leave-confirm is-hidden';

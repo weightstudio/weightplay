@@ -61,7 +61,7 @@
 #stageScreen,
 #battleScreen { display:flex; flex-direction:column; width:100%; max-width:none; height:100vh; min-height:0; margin:0; padding:0; }
 #stageScreen .stage-canvas,
-#battleScreen .battle-canvas { width:min(100%,920px); height:calc(100vh - 56px); min-height:0; margin:0 auto; padding:14px 18px; overflow:auto; }
+#battleScreen .battle-canvas { width:min(100%,920px); height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin:0 auto; padding:14px 18px; overflow:auto; }
 #stageScreen .stage-canvas { background:linear-gradient(145deg,#dff4f0e8,#fff5dfe8),url('assets/animal-tide-tally-background.png') center/cover; }
 #battleScreen .battle-canvas { background:linear-gradient(145deg,#dff4f0e8,#fff5dfe8),url('assets/animal-tide-tally-background.png') center/cover; }
 #stageScreen .panel-head,
@@ -84,7 +84,7 @@
 #battleScreen .answer-grid { margin-top:12px; }
 #battleScreen .battle-actions { margin-top:10px; }
 .stage-ad-reserve,
-.battle-ad-reserve { flex:0 0 56px; width:min(100%,920px); height:56px; min-height:56px; margin:0 auto; background:#143f47; }
+.battle-ad-reserve { flex:0 0 var(--wp-ad-reserve-height, 0px); width:min(100%,920px); height:var(--wp-ad-reserve-height, 0px); min-height:var(--wp-ad-reserve-height, 0px); margin:0 auto; background:#143f47; }
 @media (min-width:700px) and (max-height:600px) {
   #mainScreen { padding-bottom:12px; }
   #mainScreen .hero-card { grid-template-columns:420px minmax(0,1fr); gap:10px 18px; padding-top:4px; }
@@ -93,7 +93,7 @@
   #mainScreen .guide-art { height:116px; }
   #stageScreen .stage-tabs { margin-top:0; }
   #stageScreen .stage-choices { display:none; }
-  #battleScreen .battle-canvas { position:relative; display:flex; flex-direction:column; height:calc(100dvh - 56px); box-sizing:border-box; overflow:hidden; }
+  #battleScreen .battle-canvas { position:relative; display:flex; flex-direction:column; height:calc(100dvh - var(--wp-ad-reserve-height, 0px)); box-sizing:border-box; overflow:hidden; }
   #battleScreen .battle-body { display:flex; flex:1 1 auto; flex-direction:column; min-height:0; overflow:hidden; padding-bottom:4px; }
   #battleScreen .battle-head:not(.panel-head) { min-height:30px; margin-top:0; flex:0 0 auto; }
   #battleScreen .battle-head:not(.panel-head) .eyebrow { margin:0 0 2px; line-height:1; }

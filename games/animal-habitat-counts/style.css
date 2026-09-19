@@ -40,7 +40,7 @@ h2 { color:var(--deep-leaf); line-height:1.1; }
 .setting-row { min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:10px; color:var(--ink); font-weight:800; }
 .setting-row select { width:160px; min-height:40px; border:1px solid var(--line); border-radius:10px; padding:0 8px; background:#fff; color:var(--ink); }
 .sound-btn { width:100%; margin-top:8px; }
-.stage-canvas { min-height:calc(100vh - 56px); margin-top:0; padding:0 18px 22px; }
+.stage-canvas { min-height:calc(100vh - var(--wp-ad-reserve-height, 0px)); margin-top:0; padding:0 18px 22px; }
 .stage-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
 .stage-card { display:flex; flex-direction:column; align-items:flex-start; gap:9px; padding:18px; border:1px solid var(--line); border-radius:18px; background:#fff; color:var(--ink); text-align:start; }
 .stage-card strong { color:var(--deep-leaf); font-size:1.1rem; }
@@ -48,7 +48,7 @@ h2 { color:var(--deep-leaf); line-height:1.1; }
 .stage-card b { margin-top:auto; color:var(--coral); }
 .stage-card.complete { background:var(--moss); border-color:var(--leaf); }
 .stage-card:disabled { cursor:not-allowed; opacity:.55; }
-.battle-canvas { position:relative; height:calc(100vh - 56px); min-height:0; overflow:auto; padding:0 0 10px; }
+.battle-canvas { position:relative; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; overflow:auto; padding:0 0 10px; }
 .battle-content { width:min(600px,100%); margin:0 auto; padding:8px 10px 18px; }
 .mission-row { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:10px; }
 .mission-row .panel-intro { margin:0; }
@@ -270,7 +270,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
   display: grid !important;
   grid-template-rows: 48px minmax(0, 1fr) !important;
   gap: 0 !important;
-  height: calc(100vh - 56px) !important;
+  height: calc(100vh - var(--wp-ad-reserve-height, 0px)) !important;
   min-height: 0 !important;
   overflow: hidden !important;
   padding: 0 !important;

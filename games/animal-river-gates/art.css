@@ -181,8 +181,8 @@ body.wp-shell-battle-active .topbar {
 }
 
 #battleScreen:not([hidden]) + .battle-ad-reserve {
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
 }
 
 @media (min-width: 700px) and (max-height: 560px) {

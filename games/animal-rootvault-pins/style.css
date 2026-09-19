@@ -827,7 +827,7 @@ a:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
   background: #020f0d;
   pointer-events: none;
 }

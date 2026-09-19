@@ -106,7 +106,7 @@ body.squad-active::before {
   content: "";
   position: fixed;
   z-index: -1;
-  inset: 0 0 56px;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px);
   background:
     linear-gradient(rgba(3, 16, 12, .72), rgba(3, 16, 12, .9)),
     url("../../assets/animal-auto-squad-arena-block-v1.webp") center / cover;
@@ -190,7 +190,7 @@ body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolati
 /* General-audience reserve is a separate physical sibling. */
 .battle-ad-reserve,
 .wp-stage-physical-reserve[data-wp-stage-reserve-active],
-.wp-stage-physical-reserve[data-auto-squad-training-reserve] { position: fixed; left: var(--squad-canvas-left, 0px); right: auto; bottom: 0; width: min(100%, 920px); height: 56px; min-height: 56px; border: 0; background: #071a14; pointer-events: none; }
+.wp-stage-physical-reserve[data-auto-squad-training-reserve] { position: fixed; left: var(--squad-canvas-left, 0px); right: auto; bottom: 0; width: min(100%, 920px); height: var(--wp-ad-reserve-height, 0px); min-height: var(--wp-ad-reserve-height, 0px); border: 0; background: #071a14; pointer-events: none; }
 .wp-stage-physical-reserve[data-auto-squad-training-reserve] { display: block !important; }
 body:not(.squad-active) .battle-ad-reserve { display: none; }
 

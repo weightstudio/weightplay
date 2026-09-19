@@ -40,9 +40,9 @@ body.wp-logical-battle-active :is(
   width: var(--wp-battle-canvas-rendered-width, 100vw) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
   margin: 0 !important;
   transform: none !important;
   pointer-events: none !important;
@@ -77,7 +77,7 @@ body.wp-logical-battle-active [data-wp-logical-battle-canvas] :is(
  */
 body.wp-logical-battle-active[data-wp-card-game] [data-wp-logical-battle-canvas] {
   --wp-card-canvas-width: min(100vw, 920px);
-  --wp-card-canvas-height: calc(100dvh - 56px);
+  --wp-card-canvas-height: calc(100dvh - var(--wp-ad-reserve-height, 0px));
   --wp-card-canvas-scale: min(
     calc(var(--wp-card-canvas-width) / 390px),
     calc(var(--wp-card-canvas-height) / 788px)

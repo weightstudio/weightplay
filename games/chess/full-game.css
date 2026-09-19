@@ -65,7 +65,7 @@ html:has(#main:not([hidden])),body:has(#main:not([hidden])){overflow-y:auto;touc
 /* Settlement stays inside the mounted Battle and its single physical reserve. */
 #battle.is-result{display:block}
 #battle.is-result>.reserve{position:absolute;inset:auto 0 0;height:56px}
-#battle #result{position:absolute;inset:0 0 56px;max-width:none;margin:0;padding:0;display:grid;grid-template-rows:minmax(0,1fr) auto;text-align:start;background:radial-gradient(ellipse at 50% 0,#354b4b,#0c252e 65%);overflow:hidden}
+#battle #result{position:absolute;inset:0 0 var(--wp-ad-reserve-height, 0px);max-width:none;margin:0;padding:0;display:grid;grid-template-rows:minmax(0,1fr) auto;text-align:start;background:radial-gradient(ellipse at 50% 0,#354b4b,#0c252e 65%);overflow:hidden}
 #result .result-content{overflow:auto;min-height:0;padding:20px;overscroll-behavior:contain}
 #result .result-heading{border-top:3px solid #c4a765;padding-top:16px;margin-bottom:16px}
 #result #outcome{font-size:clamp(24px,3vw,34px);line-height:1.2;margin:0 0 10px;color:#ffe4a4;outline:none}

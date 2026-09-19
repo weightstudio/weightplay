@@ -10,8 +10,8 @@ body.wonder-playing {
 
 #battleAdReserve {
   display: none;
-  height: 56px;
-  min-height: 56px;
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
   pointer-events: none;
   background: #071a2b;
   border-top: 1px solid rgba(104, 181, 211, 0.24);

@@ -985,6 +985,7 @@
     bossStag: "../../assets/shadow-wolf-redrawn/stag-eclipse-v1.png",
     tiles: "../../assets/shadow-wolf-platform-tiles.webp",
     platformStone: "../../assets/shadow-wolf-redrawn/platform-masonry-v1.png",
+    spikeRuby: "../../assets/shadow-wolf-redrawn/spike-ruby-v1.png",
     projectileFx: "../../assets/shadow-wolf-redrawn/projectile-violet-v1.png",
     portal: "../../assets/shadow-wolf-redrawn/portal-cyan-v1.png",
     chestFx: "../../assets/shadow-wolf-fx-chest-sparkle.webp",
@@ -3098,6 +3099,16 @@
       const count = Math.ceil(spike.w / step);
       for (let i = 0; i < count; i++) {
         const x = spike.x + i * step;
+        if (assets.spikeRuby.complete && assets.spikeRuby.naturalWidth) {
+          // Art-only replacement: retain the authored trap bounds and spacing.
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(spike.x, spike.y, spike.w, spike.h);
+          ctx.clip();
+          drawImageContain(ctx, assets.spikeRuby, x, spike.y, step, spike.h);
+          ctx.restore();
+          continue;
+        }
         const gradient = ctx.createLinearGradient(x, spike.y, x, spike.y + spike.h);
         gradient.addColorStop(0, "#fef3c7");
         gradient.addColorStop(0.3, "#fb7185");
@@ -3481,11 +3492,9 @@
   function installResponsiveBattleOwner() {
     const root = document.querySelector("#gamePanel .shadow-game-layout");
     if (!root) return;
-    root.classList.add("game-layout");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("battle-result"));
     const reserve = document.querySelector("#gamePanel .battle-ad-reserve");
     const container = root.querySelector(".canvas-container");
-    const metrics = window.__weightPlayLayoutMetrics ||= {};
     let scheduled = 0;
 
     const syncCanvasViewport = () => {
@@ -3502,51 +3511,27 @@
     const update = () => {
       scheduled = 0;
       const active = document.body.dataset.shadowWolfScreen === "battle" && !nodes.gamePanel.classList.contains("hidden");
-      document.body.classList.toggle("wp-logical-battle-active", active);
-      if (!active) {
-        ["position", "inset", "top", "left", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "transform", "transform-origin", "overflow"]
-          .forEach((property) => root.style.removeProperty(property));
-        ["position", "inset", "top", "left", "width", "height", "margin", "transform"]
-          .forEach((property) => reserve?.style.removeProperty(property));
-        root.setAttribute("data-wp-logical-battle-canvas", "responsive");
-        return;
-      }
-      const viewport = window.visualViewport;
-      const width = Math.max(1, document.documentElement.clientWidth || innerWidth, viewport?.width || 0);
-      const height = Math.max(1, document.documentElement.clientHeight || innerHeight, viewport?.height || 0);
-      const content = root.closest('[data-wp-frame-content="battle"]');
-      const bounds = content?.getBoundingClientRect();
-      const availableWidth = Math.min(bounds?.width || width, 920);
-      const contentTop = bounds?.top || 0;
-      const availableHeight = Math.max(1, (bounds?.height || height) - 56);
-      const landscape = availableWidth / availableHeight >= 1.25;
-      const minimumWidth = landscape ? 760 : 390;
-      const minimumHeight = landscape ? 334 : 788;
-      const scale = Math.max(0.01, Math.min(availableWidth / minimumWidth, availableHeight / minimumHeight));
-      const logicalWidth = availableWidth / scale;
-      const logicalHeight = availableHeight / scale;
-      const left = bounds ? bounds.left + (bounds.width - availableWidth) / 2 : Math.max(0, (width - availableWidth) / 2);
-      root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
-      Object.entries({
-        position: "fixed", inset: "auto", top: `${contentTop}px`, left: `${left}px`, width: `${logicalWidth}px`,
-        "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`, height: `${logicalHeight}px`,
-        "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", transform: `scale(${scale})`,
-        "transform-origin": "top left", overflow: "hidden",
-      }).forEach(([property, value]) => root.style.setProperty(property, value, "important"));
-      if (reserve) Object.entries({
-        position: "fixed", inset: "auto", top: `${contentTop + availableHeight}px`, left: `${left}px`, width: `${availableWidth}px`, height: "56px",
-        margin: "0", transform: "none",
-      }).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
-      metrics.battleApplied = (metrics.battleApplied || 0) + 1;
-      syncCanvasViewport();
+      if (reserve) reserve.hidden = !active;
+      // Shared battle-canvas-standard owns the outer envelope and reserve.
+      // This game owns only its camera's backing-store dimensions.
+      if (active) syncCanvasViewport();
+      window.dispatchEvent(new Event('weightplay:battle-sync'));
     };
     syncResponsiveBattleOwner = update;
     const schedule = () => {
       if (!scheduled) scheduled = requestAnimationFrame(update);
     };
-    new ResizeObserver(syncCanvasViewport).observe(container);
+    const observer = new ResizeObserver(syncCanvasViewport);
+    observer.observe(container);
     addEventListener("resize", schedule, { passive: true });
     window.visualViewport?.addEventListener("resize", schedule, { passive: true });
+    addEventListener('pagehide', event => {
+      if (event.persisted) return;
+      observer.disconnect();
+      cancelAnimationFrame(scheduled);
+      removeEventListener('resize', schedule);
+      window.visualViewport?.removeEventListener('resize', schedule);
+    }, {once:true});
     schedule();
   }
 

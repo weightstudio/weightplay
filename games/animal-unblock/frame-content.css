@@ -3,7 +3,7 @@
 #gameFrame {width:min(100%,920px);margin:auto}
 body[data-unblock-screen="stage"],body[data-unblock-screen="battle"] {height:100dvh;overflow:hidden;overscroll-behavior:none}
 html:has(body[data-unblock-screen="stage"]),html:has(body[data-unblock-screen="battle"]) {overflow:hidden;overscroll-behavior:none}
-#gameFrame:has(#main[hidden]) {height:calc(100dvh - 56px);overflow:hidden}
+#gameFrame:has(#main[hidden]) {height:calc(100dvh - var(--wp-ad-reserve-height, 0px));overflow:hidden}
 #gameFrame .canvas {height:100%;max-height:100%;position:relative;direction:ltr}
 #stageGrid {height:100%;min-height:0;padding-block:16px;direction:ltr}
 #stage .stage-card {border-radius:4px;max-height:100%!important;min-height:0!important}

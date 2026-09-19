@@ -77,8 +77,8 @@ body[data-wp-game-id="tripeaks-solitaire"] .stats-panel,
 body[data-wp-game-id="pyramid-solitaire"] .feature-list,
 body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !important; }
 
-.battle-screen { min-height: calc(100vh - 56px); background: transparent; }
-.battle-canvas { width: 100%; max-width: 920px; height: calc(100vh - 56px); min-height: 0; margin: 0 auto; padding: 10px 12px 8px; overflow: hidden; }
+.battle-screen { min-height: calc(100vh - var(--wp-ad-reserve-height, 0px)); background: transparent; }
+.battle-canvas { width: 100%; max-width: 920px; height: calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height: 0; margin: 0 auto; padding: 10px 12px 8px; overflow: hidden; }
 body[data-wp-game-id="tripeaks-solitaire"] .battle-canvas { display: flex; flex-direction: column; }
 .battle-header { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: 6px; min-height: 50px; }
 body[data-wp-game-id="tripeaks-solitaire"] .battle-header { grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto; }
@@ -258,7 +258,7 @@ body[data-wp-game-id="yukon-solitaire"] .classic-pile .classic-card { top: calc(
 .result-card p { color: var(--classic-muted); }
 .golf-result-boundary { margin: 12px 0 0; padding: 10px 12px; border: 1px solid rgba(78,205,196,.42); border-left-width: 3px; border-radius: 10px; color: var(--classic-text) !important; background: rgba(78,205,196,.09); font-size: 13px; font-weight: 800; line-height: 1.45; }
 .result-actions { justify-content: center; }
-.battle-ad-reserve { width: min(100%, 920px); height: 56px; margin: 0 auto; flex: 0 0 56px; }
+.battle-ad-reserve { width: min(100%, 920px); height: var(--wp-ad-reserve-height, 0px); margin: 0 auto; flex: 0 0 var(--wp-ad-reserve-height, 0px); }
 
 @media (max-width: 699px) {
   .main-header { min-height: 80px; padding: 8px 12px; }

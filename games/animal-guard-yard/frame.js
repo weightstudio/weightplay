@@ -28,6 +28,9 @@
     copy.setAttribute('data-wp-frame-copy','');
     copy.querySelector('strong').hidden=true;
     copy.querySelector('[data-ui="menuHint"]').setAttribute('data-wp-frame-summary','');
+    const progress = copy.querySelector('[data-ui="mainProgress"]');
+    progress?.setAttribute('data-wp-frame-progress','');
+    progress?.style.setProperty('min-height','40px','important');
     mainContent.querySelector('img').setAttribute('data-wp-frame-poster','');
     const start=document.getElementById('startGameBtn'); start.setAttribute('data-wp-frame-action','primary'); copy.append(start);
     const stageContent = stage.querySelector('.menu-shell');
@@ -58,6 +61,8 @@
     const recovery=document.createElement('small'); recovery.id='energyRecovery';
     const energyValue=document.createElement('div'); energyValue.className='yard-energy-value';
     energyValue.append(energy.querySelector('#energyText'),recovery); energy.append(energyValue);
+    info.style.setProperty('overflow','visible','important');
+    energyValue.style.transform='translateY(-4px)';
     info.prepend(energy); battleContent.prepend(info);
     battle.prepend(battleHeader);
     frame=window.WeightPlayScreenFrame.mount({root,localeSelect,scenes:{
