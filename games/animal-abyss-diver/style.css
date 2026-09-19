@@ -6,6 +6,15 @@
 /* Result uses the owning Battle scale. Oversized content starts at its
    reachable scroll origin instead of centering above the Canvas. */
 #result.result{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 48px;align-content:stretch;padding:20px;overflow:hidden}
+
+/* Interface 7 contract repair: keep the authored guide panels structured and
+   visibly framed even when the shared theme supplies its compact defaults. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-abyss-diver"] .game-page-info.game-page-info,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-abyss-diver"] .game-page-info .game-info-section {
+    border-radius: 18px !important;
+  }
+}
 #resultSummary{min-height:0;display:grid;align-content:safe center;gap:10px;overflow-x:hidden;overflow-y:auto}
 #resultSummary>*{margin:0}
 #result .result-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}

@@ -57,7 +57,14 @@ body[data-wp-market-game="animal-hoop-league"] .m5-battle-header{grid-template-c
 body[data-wp-market-game="animal-hoop-league"][data-screen="main"] .battle-ad-reserve{display:none}
 body[data-wp-market-game="animal-moonlight-workshop"][data-screen="main"] .battle-ad-reserve{display:none}
 body[data-wp-market-game="animal-habitat-builder"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) auto 48px}
-body[data-wp-market-game="animal-moonlight-workshop"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) auto 48px}
+body[data-wp-market-game="animal-moonlight-workshop"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) 92px 48px}
+body[data-wp-market-game="animal-moonlight-workshop"] .m5-battle-header #score-label{box-sizing:border-box;width:92px;min-width:92px;overflow:hidden;text-align:end;text-overflow:ellipsis;white-space:nowrap}
 body[data-wp-market-game="animal-chameleon-blend"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) auto 48px}
+/* Moonlight Workshop v7/I6: the Guide is an authored reading surface even
+   though the shared shell supplies compact block tokens. Keep its framed
+   sections scoped to this game; Battle controls remain shared. */
+html body[data-wp-market-game="animal-moonlight-workshop"] .game-page-info{border-radius:18px!important}
+html body[data-wp-market-game="animal-moonlight-workshop"] .game-info-sections{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+html body[data-wp-market-game="animal-moonlight-workshop"] .game-info-section{min-width:0!important;padding:16px!important;border-radius:18px!important}
 .m5-main+.m5-guide{width:min(920px,calc(100% - 24px));margin:16px auto 24px}
 body:not(.wp-shell-main-active) .m5-main+.m5-guide{display:none!important}

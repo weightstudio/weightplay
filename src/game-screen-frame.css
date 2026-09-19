@@ -54,6 +54,16 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-balance-grove"] 
    exact current acceptance issue while remaining scoped to that game. */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .game-page-info,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .game-info-section {border-radius:18px!important}
+/* Moonlight Workshop v7/I6 restores the framed Guide and its structured
+   single-column sections after the shared Interface 7 contract is applied. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-page-info,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-info-section {border-radius:18px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+/* Mosaic Clues v21/I6 keeps the generated Guide as a framed reading surface
+   after the shared Interface 7 compact-radius contract is applied. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-mosaic-clues"] .game-page-info,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-mosaic-clues"] .game-info-section {border-radius:18px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-mosaic-clues"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
 /* One protected frame. Game CSS may style content, never these shared slots. */
 html body:has([data-wp-frame="2"]) { background:var(--wp-ui-background-image) center top/1440px 960px repeat var(--wp-ui-background)!important; color:var(--wp-ui-text); }
 html body [data-wp-frame="2"] .wp-frame-header {
@@ -121,6 +131,15 @@ html body [data-wp-frame="2"] [data-wp-frame-summary] {font:600 16px/1.5 system-
 html body [data-wp-frame="2"] [data-wp-frame-progress] {display:grid;place-items:center;min-height:36px!important;margin:0!important;padding:4px!important;border:1px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;font:600 14px/1.2 system-ui!important;color:var(--wp-ui-muted)!important;background:var(--wp-ui-background)!important}
 html body [data-wp-frame="2"] [data-wp-frame-action] {display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box;min-height:44px!important;height:44px!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-button-image)!important;color:var(--wp-ui-text)!important;font:700 14px/1.2 system-ui!important;padding:0 10px!important;box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;cursor:pointer}
 html body [data-wp-frame="2"] [data-wp-frame-action="primary"] {width:100%!important;height:52px!important;min-height:52px!important;background:var(--wp-ui-gold)!important;color:#302717!important;font-size:16px!important}
+/* Explicit logical-Canvas content opt-in; preserve physical action readability.
+   The canonical Battle scaler owns the factor. Unmarked consumers are unchanged. */
+html body [data-wp-frame="2"] [data-wp-frame-logical-actions="battle"] [data-wp-frame-action] {
+  height:calc(44px / var(--wp-battle-canvas-scale, 1))!important;
+  min-height:calc(44px / var(--wp-battle-canvas-scale, 1))!important;
+  max-height:none!important;
+  font-size:calc(14px / var(--wp-battle-canvas-scale, 1))!important;
+  padding-inline:calc(10px / var(--wp-battle-canvas-scale, 1))!important;
+}
 html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-pressed="true"] {background:var(--wp-ui-active)!important}
 html body [data-wp-frame="2"] [data-wp-frame-scene="stage"],html body [data-wp-frame="2"] [data-wp-frame-scene="battle"] {--wp-frame-header-height:var(--wp-frame-play-header-height);--wp-frame-header-padding:0px;--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr);display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:var(--wp-frame-rows)!important;gap:8px!important;padding:8px!important}
 html body [data-wp-frame="2"] [data-wp-frame-scene="stage"] {--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr) 56px}

@@ -9504,5 +9504,14 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.": "계정을 만들지 않고 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 기기 간 데이터베이스가 아니라 현재 브라우저 프로필의 로컬 저장소에 저장됩니다. 사이트 데이터를 지우거나, 시크릿 브라우징을 사용하거나, 브라우저를 바꾸거나, 다른 기기로 옮기면 별도의 저장이 만들어지거나 기존 저장이 사라질 수 있습니다. 브라우저가 저장을 허용하면 언어, 사운드, 동작 줄이기 설정은 WeightPlay 공용 컨트롤을 따릅니다. 가이드의 어떤 결과도 의료, 학교 또는 전문 평가가 아닙니다.",
   "Panko's Bus Jam - Game Guide": "판코의 버스 정리 - 게임 가이드",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "보이는 타이밍 창 안에서 색상과 엠블럼이 모두 맞아야 펄스가 성공합니다.",
-  "The nearest marker did not match both required properties inside the window.": "가장 가까운 마커는 창 안에서 필요한 두 속성을 모두 충족하지 못했습니다."
+  "The nearest marker did not match both required properties inside the window.": "가장 가까운 마커는 창 안에서 필요한 두 속성을 모두 충족하지 못했습니다.",
+  "Choose an expedition on Stage. After a defeat, retry or return to preparation; after a victory, follow the unlocked route. Health and temporary relic choices start fresh on a new expedition.": "스테이지에서 원정을 선택하세요. 패배하면 재도전하거나 준비 화면으로 돌아가고, 승리하면 열린 경로를 진행하세요. 새 원정에서는 체력과 임시 유물 효과가 새로 시작됩니다.",
+  "Explore and equip": "탐험과 장비",
+  "Explore ruins, dodge enemies and build a relic loadout.": "유적을 탐험하고 적을 피하며 장비와 유물을 조합하세요.",
+  "Follow the room objective, collect keys and open chests. Compare dropped equipment before choosing to equip it or keep your current gear. Relic choices strengthen the current expedition; training and equipment prepare you for the next one.": "방의 목표를 따라 열쇠를 모으고 상자를 여세요. 새 장비를 비교한 뒤 장착하거나 기존 장비를 유지하세요. 유물 선택은 이번 원정을 강화하고 훈련과 장비는 다음 원정을 준비합니다.",
+  "Move and survive": "이동과 생존",
+  "Retry the expedition or return to preparation; a new expedition starts with fresh health and temporary relic effects.": "원정을 다시 시도하거나 준비 화면으로 돌아갈 수 있습니다. 새 원정은 체력과 임시 유물 효과가 새로 시작됩니다.",
+  "Tap a destination or drag to steer; on desktop use WASD or the arrow keys. Your weapon attacks automatically. Move out of enemy attacks rather than standing still to trade damage.": "목적지를 누르거나 드래그해 이동하세요. PC에서는 WASD 또는 방향키를 사용합니다. 무기는 자동 공격하므로 적의 공격 범위를 피하며 싸우세요.",
+  "Unlocks, gold, training and equipment are stored in this browser. Clearing site data can remove them; do not expect progress to transfer to another device.": "해금 진행, 금화, 훈련, 장비는 현재 브라우저에 저장됩니다. 사이트 데이터를 지우면 사라질 수 있으며 다른 기기와의 동기화는 보장되지 않습니다.",
+  "RELIC_FRAME_INPUTS_REQUIRED": "RELIC_FRAME_INPUTS_REQUIRED"
 };

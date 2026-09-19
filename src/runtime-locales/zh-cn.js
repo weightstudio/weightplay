@@ -9504,5 +9504,14 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.": "你可以不创建账号直接游玩。进度会保存在当前浏览器配置文件的本地存储中，而不是在线账号或跨设备数据库。清除网站数据、使用无痕浏览、更换浏览器或换到另一台设备，都可能创建独立存档或移除现有存档。只要浏览器允许存储，语言、音效和减少动态效果偏好就会沿用 WeightPlay 的共享控件。任何指南结果都不是医疗、学校或专业评估。",
   "Panko's Bus Jam - Game Guide": "胖达巴士疏导 - 游戏指南",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只有颜色和徽章在可见时机窗口内对齐，脉冲才会成功。",
-  "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。"
+  "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。",
+  "Choose an expedition on Stage. After a defeat, retry or return to preparation; after a victory, follow the unlocked route. Health and temporary relic choices start fresh on a new expedition.": "在 Stage 选择远征。失败后可重试或返回整备；胜利后沿解锁路线前进。新的远征会重新开始生命值和临时遗物效果。",
+  "Explore and equip": "探索与装备",
+  "Explore ruins, dodge enemies and build a relic loadout.": "探索遗迹、闪避敌人，搭配装备与遗物闯过房间。",
+  "Follow the room objective, collect keys and open chests. Compare dropped equipment before choosing to equip it or keep your current gear. Relic choices strengthen the current expedition; training and equipment prepare you for the next one.": "按房间目标前进、收集钥匙并开启宝箱。获得装备后先比较，再选择装上或保留现有装备。遗物选择强化本次远征；训练与装备则用来准备下一趟。",
+  "Move and survive": "移动与生存",
+  "Retry the expedition or return to preparation; a new expedition starts with fresh health and temporary relic effects.": "重试远征或返回整备；新的远征会以全新的生命值和临时遗物效果开始。",
+  "Tap a destination or drag to steer; on desktop use WASD or the arrow keys. Your weapon attacks automatically. Move out of enemy attacks rather than standing still to trade damage.": "点击目的地或拖动移动；电脑可用 WASD 或方向键。武器会自动攻击。看准敌人的攻击范围，边走位边输出。",
+  "Unlocks, gold, training and equipment are stored in this browser. Clearing site data can remove them; do not expect progress to transfer to another device.": "解锁进度、金币、训练与装备保存在当前浏览器。清除网站数据可能使存档消失，不保证跨设备同步。",
+  "RELIC_FRAME_INPUTS_REQUIRED": "RELIC_FRAME_INPUTS_REQUIRED"
 };

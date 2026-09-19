@@ -9506,5 +9506,14 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Panko's Bus Jam - Game Guide": "Panko's Bus Jam - Guide du jeu",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Une impulsion réussit uniquement lorsque la couleur et l'emblème s'alignent dans la fenêtre de synchronisation visible.",
   "The nearest marker did not match both required properties inside the window.": "Le marqueur le plus proche ne correspondait pas aux deux propriétés requises dans la fenêtre.",
+  "Choose an expedition on Stage. After a defeat, retry or return to preparation; after a victory, follow the unlocked route. Health and temporary relic choices start fresh on a new expedition.": "Choisissez une expédition dans l’écran des étapes. Après une défaite, réessayez ou préparez-vous ; après une victoire, suivez la route débloquée. La santé et les effets temporaires des reliques repartent à zéro lors d’une nouvelle expédition.",
+  "Explore and equip": "Exploration et équipement",
+  "Explore ruins, dodge enemies and build a relic loadout.": "Explorez les ruines, esquivez les ennemis et combinez équipement et reliques.",
+  "Follow the room objective, collect keys and open chests. Compare dropped equipment before choosing to equip it or keep your current gear. Relic choices strengthen the current expedition; training and equipment prepare you for the next one.": "Suivez l’objectif de la salle, ramassez les clés et ouvrez les coffres. Comparez le butin avant de l’équiper ou de garder votre équipement actuel. Les reliques renforcent cette expédition ; l’entraînement et l’équipement préparent la suivante.",
+  "Move and survive": "Déplacement et survie",
+  "Retry the expedition or return to preparation; a new expedition starts with fresh health and temporary relic effects.": "Vous pouvez réessayer l’expédition ou revenir à la préparation ; une nouvelle expédition commence avec une santé et des effets temporaires de reliques réinitialisés.",
+  "Tap a destination or drag to steer; on desktop use WASD or the arrow keys. Your weapon attacks automatically. Move out of enemy attacks rather than standing still to trade damage.": "Touchez une destination ou faites glisser pour vous déplacer ; sur ordinateur, utilisez WASD ou les flèches. Votre arme attaque automatiquement. Évitez les zones d’attaque des ennemis en vous déplaçant.",
+  "Unlocks, gold, training and equipment are stored in this browser. Clearing site data can remove them; do not expect progress to transfer to another device.": "Les déblocages, l’or, l’entraînement et l’équipement sont conservés dans ce navigateur. Effacer les données du site peut les supprimer ; la synchronisation entre appareils n’est pas garantie.",
+  "RELIC_FRAME_INPUTS_REQUIRED": "RELIC_FRAME_INPUTS_REQUIRED",
   "Nouvelle partie": "Nouvelle partie"
 };

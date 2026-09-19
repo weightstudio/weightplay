@@ -9504,5 +9504,14 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.": "アカウントを作成せずに遊べます。進行状況はオンラインアカウントや端末間データベースではなく、現在のブラウザプロファイルのローカルストレージに保存されます。サイトデータの消去、プライベートブラウジング、ブラウザの変更、別の端末への移行によって、別のセーブが作られたり既存のセーブが削除されたりすることがあります。ブラウザが保存を許可している場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果はいかなる医療、学校、専門的な評価でもありません。",
   "Panko's Bus Jam - Game Guide": "パン子のバスジャム - ゲームガイド",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "見えるタイミングウィンドウ内で色とエンブレムが揃うと、パルスが成功します。",
-  "The nearest marker did not match both required properties inside the window.": "最も近いマーカーはウィンドウ内で必要な2つの属性に一致しませんでした。"
+  "The nearest marker did not match both required properties inside the window.": "最も近いマーカーはウィンドウ内で必要な2つの属性に一致しませんでした。",
+  "Choose an expedition on Stage. After a defeat, retry or return to preparation; after a victory, follow the unlocked route. Health and temporary relic choices start fresh on a new expedition.": "ステージで遠征を選びます。敗北後は再挑戦するか準備画面へ戻り、勝利後は解放された道を進みます。新しい遠征では体力と一時的な遺物効果が新しく始まります。",
+  "Explore and equip": "探索と装備",
+  "Explore ruins, dodge enemies and build a relic loadout.": "遺跡を探索し、敵をかわしながら装備と遺物を組み合わせよう。",
+  "Follow the room objective, collect keys and open chests. Compare dropped equipment before choosing to equip it or keep your current gear. Relic choices strengthen the current expedition; training and equipment prepare you for the next one.": "部屋の目標に従い、鍵を集めて宝箱を開けます。拾った装備を比較し、装備するか現在の装備を残すか選びます。遺物は今回の遠征を強化し、訓練と装備は次の遠征にも役立ちます。",
+  "Move and survive": "移動と生存",
+  "Retry the expedition or return to preparation; a new expedition starts with fresh health and temporary relic effects.": "遠征を再挑戦するか準備画面へ戻れます。新しい遠征では体力と一時的な遺物効果が新しく始まります。",
+  "Tap a destination or drag to steer; on desktop use WASD or the arrow keys. Your weapon attacks automatically. Move out of enemy attacks rather than standing still to trade damage.": "目的地をタップするかドラッグして移動。PCではWASDまたは矢印キーを使えます。武器は自動攻撃します。敵の攻撃範囲から逃れながら戦いましょう。",
+  "Unlocks, gold, training and equipment are stored in this browser. Clearing site data can remove them; do not expect progress to transfer to another device.": "解放状況、金貨、訓練、装備はこのブラウザーに保存されます。サイトデータを削除すると失われる場合があります。別の端末との同期は保証されません。",
+  "RELIC_FRAME_INPUTS_REQUIRED": "RELIC_FRAME_INPUTS_REQUIRED"
 };

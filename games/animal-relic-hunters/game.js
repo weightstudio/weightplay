@@ -1036,6 +1036,9 @@
     boar: new Image(),
     orb: new Image(),
     key: new Image(),
+    chest: new Image(),
+    portal: new Image(),
+    gold: new Image(),
     bossMoss: new Image(),
     bossEcho: new Image(),
     bossCrystal: new Image(),
@@ -1049,12 +1052,15 @@
   assets.boar.src = "../../assets/animal-relic-hunters-redrawn/stone-boar-v1.png";
   assets.orb.src = "../../assets/animal-relic-hunters-redrawn/experience-cube-v1.png";
   assets.key.src = "../../assets/animal-relic-hunters-redrawn/golden-key-v1.png";
+  assets.chest.src = "../../assets/animal-relic-hunters-redrawn/relic-chest-v1.png";
+  assets.portal.src = "../../assets/animal-relic-hunters-redrawn/portal-pad-v1.png";
+  assets.gold.src = "../../assets/animal-relic-hunters-redrawn/gold-token-v1.png";
   assets.bossMoss.src = "../../assets/animal-relic-hunters-redrawn/boss-moss-v1.png";
   assets.bossEcho.src = "../../assets/animal-relic-hunters-redrawn/boss-echo-v1.png";
-  assets.bossCrystal.src = "../../assets/animal-relic-hunters-boss-crystal.webp";
-  assets.bossMire.src = "../../assets/animal-relic-hunters-boss-mire.webp";
-  assets.bossMoon.src = "../../assets/animal-relic-hunters-boss-moon.webp";
-  assets.bossCrown.src = "../../assets/animal-relic-hunters-boss-crown.webp";
+  assets.bossCrystal.src = "../../assets/animal-relic-hunters-redrawn/boss-crystal-v1.png";
+  assets.bossMire.src = "../../assets/animal-relic-hunters-redrawn/boss-mire-v1.png";
+  assets.bossMoon.src = "../../assets/animal-relic-hunters-redrawn/boss-moon-v1.png";
+  assets.bossCrown.src = "../../assets/animal-relic-hunters-redrawn/boss-crown-v1.png";
 
   const uiAssets = {
     attack: "../../assets/animal-relic-hunters-redrawn/attack-crystal-v1.png",
@@ -1837,7 +1843,14 @@
     });
   }
 
+  const frameCovers = new Set();
+  function syncFrameCover(name, active) {
+    if (active) frameCovers.add(name); else frameCovers.delete(name);
+    if (document.body.dataset.screen === 'battle') window.mountRelicHuntersFrame().activate('battle', {covered: frameCovers.size > 0});
+  }
+
   function setResultModalActive(active) {
+    syncFrameCover('result', active);
     document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
@@ -1854,6 +1867,7 @@
   }
 
   function setDraftModalActive(active, restoreBattleFocus = true) {
+    syncFrameCover('draft', active);
     if (!active) clearDraftRerollConfirmation(false);
     document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
@@ -1865,6 +1879,7 @@
   }
 
   function setLootModalActive(active, restoreBattleFocus = true) {
+    syncFrameCover('loot', active);
     document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
@@ -1901,6 +1916,7 @@
       if (wasPaused) resumeBackgroundBattle();
       pauseDialogMode = "pause";
     }
+    syncFrameCover('pause', active);
     document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
@@ -2016,7 +2032,9 @@
   }
 
   function setScreenOwner(screen) {
+    window.mountRelicHuntersFrame().activate(screen);
     document.body.dataset.screen = screen;
+    if (screen !== 'battle') frameCovers.clear();
     for (const candidate of ["main", "stage", "battle"]) {
       document.body.classList.toggle(`wp-shell-${candidate}-active`, candidate === screen);
     }
@@ -2266,6 +2284,7 @@
     document.querySelector("meta[property='og:description']")?.setAttribute("content", metaText[locale]?.ogDescription || metaText.en.ogDescription);
     nodes.menuCover?.setAttribute("alt", locale === "zh-Hant" ? "\u52d5\u7269\u907a\u8de1\u7375\u4eba\u5c01\u9762" : locale === "es" ? "Portada de Cazadores Animales de Reliquias" : "Animal Relic Hunters cover");
     for (const el of document.querySelectorAll("[data-ui]")) {
+      if (el.dataset.relicAuthoredSummary === "true") continue;
       const key = el.dataset.ui;
       el.textContent = t(key);
     }
@@ -3847,6 +3866,9 @@
           }
       } else if (pickup.type === "gold") {
         ctx.save();
+        if (assets.gold.complete && assets.gold.naturalWidth > 0) {
+          ctx.drawImage(assets.gold, pickup.x - 12, pickup.y - 12, 24, 24);
+        } else {
         ctx.fillStyle = "#facc15";
         ctx.strokeStyle = "#92400e";
         ctx.lineWidth = 2;
@@ -3858,10 +3880,14 @@
         ctx.font = "bold 9px Outfit";
         ctx.textAlign = "center";
         ctx.fillText("$", pickup.x, pickup.y + 3);
+        }
         ctx.restore();
       } else if (pickup.type === "chest") {
         ctx.save();
         ctx.translate(pickup.x, pickup.y);
+        if (assets.chest.complete && assets.chest.naturalWidth > 0) {
+          ctx.drawImage(assets.chest, -30, -30, 60, 60);
+        } else {
         ctx.shadowColor = "#fbbf24";
         ctx.shadowBlur = 10;
         ctx.fillStyle = "#78350f";
@@ -3884,12 +3910,16 @@
         ctx.arc(0, -2, 2, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillRect(-1, -1, 2, 6);
+        }
         ctx.restore();
       } else if (pickup.type === "portal") {
         const pulse = 1 + Math.sin(performance.now() / 180) * 0.08;
         ctx.save();
         ctx.translate(pickup.x, pickup.y);
         ctx.scale(pulse, pulse);
+        if (assets.portal.complete && assets.portal.naturalWidth > 0) {
+          ctx.drawImage(assets.portal, -32, -32, 64, 64);
+        } else {
         ctx.shadowColor = "#22d3ee";
         ctx.shadowBlur = 14;
         ctx.strokeStyle = "#22d3ee";
@@ -3912,6 +3942,7 @@
         ctx.lineTo(5, 0);
         ctx.lineTo(-5, 8);
         ctx.stroke();
+        }
         ctx.restore();
       }
     });
@@ -4410,7 +4441,7 @@
         event.preventDefault();
         return;
       }
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && !event.defaultPrevented) {
         event.preventDefault();
         event.stopPropagation();
         nodes.resumeBtn.click();
@@ -4651,7 +4682,9 @@
           return this.snapshot();
         },
         previewObjectivePickups(phase = "chest") {
-          state.pickups = phase === "key"
+          state.pickups = phase === "gold"
+            ? [{ x: 300, y: ARENA_HEIGHT / 2, type: "gold", value: 1 }]
+            : phase === "key"
             ? [{ x: 300, y: ARENA_HEIGHT / 2, type: "key" }]
             : phase === "portal"
               ? [{ x: 500, y: ARENA_HEIGHT / 2, type: "portal" }]

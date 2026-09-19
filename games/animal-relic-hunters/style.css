@@ -2368,7 +2368,7 @@ body.relic-stage-select .stage-panel {
   padding: 8px 8px 0;
   overflow: hidden;
   background-color: #17243a;
-  background-image: linear-gradient(rgb(5 11 19 / 78%), rgb(10 18 31 / 92%)), url("../../assets/animal-relic-hunters-cover.png");
+  background-image: none; /* The shared frame owns the Stage background. */
   background-position: center;
   background-size: cover;
 }

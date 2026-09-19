@@ -1,5 +1,16 @@
 (function () {
   "use strict";
+  if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+  const resetInitialScroll = () => {
+    if (document.body?.dataset.screen !== "main") return;
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+  };
+  window.addEventListener("pageshow", resetInitialScroll, { once: true });
+  window.addEventListener("weightplay:shell-sync", () => {
+    resetInitialScroll();
+    window.requestAnimationFrame(resetInitialScroll);
+  }, { once: true });
+  window.addEventListener("load", () => window.setTimeout(resetInitialScroll, 320), { once: true });
   const locales = window.ORBIT_ORCHARD_LOCALES;
   const rounds = [{ angle: 42 }, { angle: 188 }, { angle: 306 }];
   const roundNames = {
@@ -39,6 +50,6 @@
   function openMap() { show("stageScreen"); renderStage(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
   state.locale = queryLocale();
-  document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); window.setTimeout(() => { $("loadingPanel").hidden = true; $("app").hidden = false; }, 260); $("startBtn").addEventListener("click", start); $("resultMapBtn").addEventListener("click", openMap); $("resultNextBtn").addEventListener("click", () => { if (!$("resultNextBtn").disabled && state.round < rounds.length - 1) startRound(); }); $("resultReplayBtn").addEventListener("click", start); $("homeBtn")?.addEventListener("click", goHome); $("stageBackBtn").addEventListener("click", goHome); $("battleBackBtn").addEventListener("click", openMap); $("mapBtn").addEventListener("click", openMap); $("releaseBtn").addEventListener("click", release); $("clearBtn").addEventListener("click", () => { state.angle = 0; resetBattleStatus(); renderBattle(); }); $("angleInput").addEventListener("input", (event) => { state.angle = Number(event.target.value); renderBattle(); }); $("settingsBtn").addEventListener("click", toggleSettings); $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("settingsBtn").setAttribute("aria-expanded", "false"); }); $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); }); });
+  document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); window.setTimeout(() => { $("loadingPanel").hidden = true; $("app").hidden = false; resetInitialScroll(); window.requestAnimationFrame(() => { resetInitialScroll(); window.requestAnimationFrame(resetInitialScroll); }); }, 260); $("startBtn").addEventListener("click", start); $("resultMapBtn").addEventListener("click", openMap); $("resultNextBtn").addEventListener("click", () => { if (!$("resultNextBtn").disabled && state.round < rounds.length - 1) startRound(); }); $("resultReplayBtn").addEventListener("click", start); $("homeBtn")?.addEventListener("click", goHome); $("stageBackBtn").addEventListener("click", goHome); $("battleBackBtn").addEventListener("click", openMap); $("mapBtn").addEventListener("click", openMap); $("releaseBtn").addEventListener("click", release); $("clearBtn").addEventListener("click", () => { state.angle = 0; resetBattleStatus(); renderBattle(); }); $("angleInput").addEventListener("input", (event) => { state.angle = Number(event.target.value); renderBattle(); }); $("settingsBtn").addEventListener("click", toggleSettings); $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("settingsBtn").setAttribute("aria-expanded", "false"); }); $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); }); });
   window.ORBIT_ORCHARD_TEST = { rounds, start, release, renderBattle };
 })();

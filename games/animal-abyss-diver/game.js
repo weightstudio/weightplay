@@ -18,7 +18,7 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "animal-abyss-diver";
-  const GAME_VERSION = 21;
+  const GAME_VERSION = 22;
   const INTERFACE_VERSION = "7";
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);

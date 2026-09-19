@@ -1,0 +1,16 @@
+/* Game-owned content only; frame geometry and controls remain shared. */
+.relic-stage-content { position:relative; min-width:0; min-height:0; display:flex; flex-direction:column; gap:8px; }
+.relic-stage-content > .stage-workspace { flex:1; min-height:0; }
+.relic-stage-content > .stage-bottom-tabs { position:static; flex-shrink:0; }
+.relic-battle-content { position:relative; min-width:0; min-height:0; }
+.relic-battle-content > #pauseBtn { top:8px; right:8px; }
+/* These content dialogs use physical-readable card layouts inside the logical
+   Battle plane. The canonical scaler remains the only source of the factor. */
+body.relic-playing .relic-battle-content > :is(#draftPanel,#lootPanel) { inset:0; height:auto; }
+.relic-battle-content :is(.draft-card-box,.loot-box) {
+  zoom:calc(1 / var(--wp-battle-canvas-scale, 1));
+  max-height:calc(100dvh - 128px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+.relic-battle-content .draft-card-box { width:min(680px, calc(100vw - 32px)); }
