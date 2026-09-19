@@ -26,6 +26,21 @@
     poster.replaceWith(image);
     const guide = document.querySelector('.game-page-info-static');
     root.after(guide);
+    let comparison = guide.querySelector('[data-wp-market-comparison]');
+    if (!comparison) {
+      comparison = document.createElement('article');
+      comparison.className = 'game-info-section';
+      comparison.dataset.wpMarketComparison = '1.3.0';
+      comparison.dataset.runtimeLocalize = 'off';
+      comparison.innerHTML = '<h3 data-i18n="compareTitle"></h3>' +
+        '<div class="game-info-tags"><span><bdi>Microsoft Solitaire Collection — FreeCell</bdi></span></div>' +
+        '<p data-i18n="compareBody"></p>' +
+        '<p data-i18n="compareDisclaimer"></p>' +
+        '<p><a data-wp-comparison-microsoft href="https://www.xbox.com/en-us/games/store/microsoft-solitaire-collection/9wzdncrfhwd2" rel="noopener noreferrer" data-i18n="compareMicrosoft"></a> · ' +
+        '<a data-wp-comparison-rules href="https://www.mobilityware.com/how-to-play-the-card-game-freecell/" rel="noopener noreferrer" data-i18n="compareRules"></a></p>';
+      const sections = guide.querySelector('.game-info-sections') || guide;
+      sections.append(comparison);
+    }
     const copy = hero.querySelector('.main-copy');
     copy.className = 'freecell-main-copy';
     copy.dataset.wpFrameCopy = '';
@@ -41,6 +56,7 @@
     const refreshCopy = () => {
       const code = ({'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'}[view.locale] || view.locale || 'en');
       const strings = window.FREECELL_GUIDE_LOCALES[code] || window.FREECELL_GUIDE_LOCALES.en;
+      comparison.dataset.comparisonLocale = code;
       for (const node of document.querySelectorAll('[data-i18n]')) {
         const text = strings[node.dataset.i18n];
         if (text) node.textContent = text;
