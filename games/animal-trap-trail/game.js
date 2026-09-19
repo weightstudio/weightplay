@@ -1,5 +1,18 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    keyboardKeys: ["ArrowLeft", "ArrowRight", "ArrowUp", "a", "A", "d", "D", "w", "W", "e", "E", " "],
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = (id) => document.getElementById(id);
   const GAME_VERSION = 15;
   const loadingPanel = $("loadingPanel");
@@ -291,9 +304,14 @@
       el.hidden = !on;
       el.classList.toggle("active", on);
     });
-    if (name === "battle") result?.setAttribute("hidden", "");
+    if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", ""));
     if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function syncStageCardVisibility() {
     const rail = $("stage-list");
     if (!rail || state.screen !== "stage") return;
@@ -333,7 +351,9 @@
     const stage = stageFor(stageId);
     if (stage.id > maxUnlockedStage()) return;
     state.stage = stage.id; state.chapter = stage.arc; state.room = stage.room; state.statusKey = ""; resetRoom(); show("battle");
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function trapData() {
     const stage = stageFor();
     return { ...stage, index: stage.id - 1 };
@@ -372,7 +392,9 @@
     state.resultKind = stageFor().checkpoint || state.stage === campaignStages.length ? "chapter" : "room";
     renderResult();
     show("result");
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function update(dt) {
     const p = state.player; const t = trapData(); const reversed = t.reverse;
     const right = reversed ? (state.keys.has("ArrowLeft") || state.keys.has("KeyA")) : (state.keys.has("ArrowRight") || state.keys.has("KeyD"));
@@ -490,5 +512,7 @@
   document.querySelectorAll("[data-key]").forEach((button) => { const key = button.dataset.key; if (key === "Pulse") { button.addEventListener("pointerdown", (e) => { e.preventDefault(); pulse(); }); return; } const start = (e) => { e.preventDefault(); if (e.pointerId !== undefined && button.setPointerCapture) { try { button.setPointerCapture(e.pointerId); } catch (_) {} } pressKey(key,true); }; const stop = () => pressKey(key,false); button.addEventListener("pointerdown", start); button.addEventListener("touchstart", start, { passive: false }); ["pointerup","pointercancel","pointerleave","lostpointercapture","touchend","touchcancel"].forEach((event) => button.addEventListener(event, stop)); button.addEventListener("click", () => { state.tap = key; }); });
   $("battle-pulse")?.addEventListener("click", pulse);
   $("stage-list").addEventListener("scroll", syncStageCardVisibility, { passive: true });
-  $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle"); }); $("next").addEventListener("click", () => startStage(state.stage >= campaignStages.length ? campaignStages.length : state.stage + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");
+  $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle");
+      __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}); $("next").addEventListener("click", () => startStage(state.stage >= campaignStages.length ? campaignStages.length : state.stage + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");
 })();

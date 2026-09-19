@@ -1,5 +1,17 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const copy = window.BALANCE_LOCALES || {};
   const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const guideInfoCopy = {
@@ -70,13 +82,18 @@
     document.documentElement.classList.toggle("wp-active-play", activePlay);
     document.body.classList.toggle("wp-active-play", activePlay);
     if (activePlay) window.scrollTo(0, 0);
-  };
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","stages":"stage"})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+};
   const applyLocale = () => {
     const guideCopy = guideInfoCopy[state.locale] || guideInfoCopy.en;
     syncSoundState();
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    document.querySelectorAll("[data-copy]").forEach((node) => { const text = t(node.dataset.copy); if (node.hasAttribute("data-wp-return")) node.setAttribute("aria-label", text); else node.textContent = text; });
     $("localeSelect").value = state.locale;
     $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
     $("settingsBtn").setAttribute("aria-label", t("settings"));
@@ -158,9 +175,11 @@
     $("tokenTray").innerHTML = stage.pieces.map((piece, index) => `<button class="token-btn" type="button" data-token="${index}" aria-pressed="${state.selected.includes(index)}"><span class="token-icon token-icon-${index}" aria-hidden="true"></span><span><span class="token-name">${t(piece[0])}</span><br><span class="token-value">${piece[1]}</span></span></button>`).join("");
     $("tokenTray").querySelectorAll("[data-token]").forEach((button) => button.addEventListener("click", () => toggleToken(Number(button.dataset.token))));
   };
-  const renderResult = () => { const final = state.stage >= stages.length - 1 && state.selected.length === 0; $("resultHeading").textContent = final ? t("finishTitle") : t("balanced"); $("resultText").textContent = final ? t("finishText", { n: state.sessionChecks }) : t("balanced"); $("resultPrimaryBtn").textContent = final ? t("stageMap") : t("next"); $("resultMapBtn").hidden = final; $("resultPrimaryBtn").onclick = final ? () => { show("stages"); renderStages(); } : () => startStage(state.stage + 1); }; 
+  const renderResult = () => { const final = state.stage >= stages.length - 1 && state.selected.length === 0; $("resultHeading").textContent = final ? t("finishTitle") : t("balanced"); $("resultText").textContent = final ? t("finishText", { n: state.sessionChecks }) : t("balanced"); $("resultPrimaryBtn").textContent = final ? t("stageMap") : t("next"); (__wpNotifyMeasurement(), $("resultMapBtn").hidden = final); $("resultPrimaryBtn").onclick = final ? () => { show("stages"); renderStages(); } : () => startStage(state.stage + 1); };
   const startSession = () => { state.sessionChecks = 0; track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
-  const startStage = (index) => { state.stage = Math.max(0, Math.min(stages.length - 1, index)); state.selected = []; state.checks = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("stage_start", { stage: state.stage + 1 }); };
+  const startStage = (index) => { state.stage = Math.max(0, Math.min(stages.length - 1, index)); state.selected = []; state.checks = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("stage_start", { stage: state.stage + 1 });
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+};
   const toggleToken = (index) => { state.selected = state.selected.includes(index) ? state.selected.filter((item) => item !== index) : state.selected.concat(index); beep(420); renderBattle(); track("stone_select", { stage: state.stage + 1, value: stages[state.stage].pieces[index][1] }); };
   const clearTokens = () => { state.selected = []; $("battleStatus").textContent = ""; renderBattle(); track("stone_clear", { stage: state.stage + 1 }); };
   const checkBalance = () => { const stage = stages[state.stage]; const values = state.selected.map((index) => stage.pieces[index][1]).sort((a, b) => a - b); const correct = stage.solutions.some((solution) => solution.length === values.length && solution.every((value, index) => value === values[index])); state.checks += 1; state.sessionChecks += 1; track("balance_check", { stage: state.stage + 1, checks: state.checks, correct }); if (correct) { $("battleStatus").textContent = t("balanced"); beep(680); state.selected = []; if (state.stage >= stages.length - 1) { writeBest(state.sessionChecks); track("session_complete", { checks: state.sessionChecks }); show("result"); renderResult(); } else { show("result"); renderResult(); } } else { $("battleStatus").textContent = t("notBalanced"); beep(220); state.selected = []; renderBattle(); } };

@@ -341,8 +341,9 @@
   align-items: center !important;
   gap: 8px !important;
   width: 100% !important;
-  min-height: 56px !important;
-  padding: 4px !important;
+  height: var(--wp-frame-play-header-height, 48px) !important;
+  min-height: var(--wp-frame-play-header-height, 48px) !important;
+  padding: 0 4px !important;
   overflow: visible !important;
 }
 
@@ -605,7 +606,7 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
 
 @media (min-width: 700px) and (max-height: 560px) {
   .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: clamp(240px, calc(100dvh - 80px), 420px);
+    --wp-main-landscape-poster-size: var(--wp-main-poster-size, 420px);
     grid-template-columns:
       var(--wp-main-landscape-poster-size)
       minmax(0, 1fr) !important;
@@ -740,11 +741,11 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
-  /* Road Crosser v18 uses the canonical 300px wide-layout poster column at
+  /* Road Crosser v20/I7 uses the canonical 420px wide-layout poster column at
      the governed compact-landscape viewport without changing its desktop or
      phone composition. */
   body[data-wp-game-id="road-crosser"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 
   .wp-standard-main-poster,
@@ -1165,3 +1166,21 @@ html[data-wp-shared-interface="7"] body .wp-shell-combined-sound-toggle::after {
 html[data-wp-shared-interface="7"] body.wp-shell-main-active [data-weightplay-version] {
   display: none !important;
 }
+
+/* Native compatibility headers share one control track. HUD content remains game-owned. */
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row) {
+  box-sizing:border-box!important; display:flex!important; align-items:center!important;
+  gap:8px!important; width:100%!important; height:var(--wp-frame-play-header-height)!important;
+  min-height:var(--wp-frame-play-header-height)!important; margin:0!important; padding:0 4px!important;
+  background:var(--wp-ui-header-image)!important; color:var(--wp-ui-text)!important;
+  border:0!important; border-radius:var(--wp-ui-radius)!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header > [data-wp-return="battle"] {
+  flex:0 0 var(--wp-frame-control-size)!important; width:var(--wp-frame-control-size)!important;
+  min-width:var(--wp-frame-control-size)!important; max-width:var(--wp-frame-control-size)!important;
+  height:var(--wp-frame-control-size)!important; min-height:var(--wp-frame-control-size)!important;
+  max-height:var(--wp-frame-control-size)!important; margin:0!important; padding:0!important;
+}
+
+/* Play names are Main-owned; explicitly declared live HUD fields remain visible. */
+html[data-wp-shared-interface="7"] body :is(.wp-stage-shell-header,.wp-battle-shell-header) :is([data-wp-game-title],.wp-shell-main-title,.wp-generated-main-title):not([data-wp-frame-info]):not([data-wp-frame-stat]) {display:none!important}

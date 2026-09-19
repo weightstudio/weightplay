@@ -1,5 +1,33 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(app?.paused || app?.suspended), node: app?.battle || document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpReopenMeasurement() {
+    if (!__wpMeasurement.ended || !app?.battle || app.battle.hidden || !app.result.hidden) return;
+    __wpMeasurement.ended = false;
+    __wpMeasurement.started = true;
+    __wpMeasurement.screen = "battle";
+    __wpMeasurement.reopenKey = {};
+    __wpMeasurement.resumed = true;
+    __wpMeasurement.restart = false;
+    __wpNotifyMeasurement();
+  }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -736,7 +764,7 @@
     const saved = localStorageSafe("weightPlayLocale") || localStorageSafe("weightplayLocale") || "en";
     // Localized Lights Out routes must own their locale instead of inheriting
     // a previously selected language from another route in this shared lab.
-    if (["four-in-a-row", "sliding-15", "sudoku", "lights-out", "code-breaker", "minefield-logic", "tower-of-hanoi", "reversi"].includes(id)) {
+    if (["four-in-a-row", "sliding-15", "sudoku", "lights-out", "code-breaker", "minefield-logic", "tower-of-hanoi", "reversi", "peg-solitaire"].includes(id)) {
       const selectedPath = localStorageSafe(LOCALE_SELECTION_PATH_KEY);
       const selectedValue = localStorageSafe(LOCALE_SELECTION_VALUE_KEY);
       if (selectedPath === window.location.pathname && LOCALES.includes(selectedValue)) return selectedValue;
@@ -833,7 +861,7 @@
     app.stageSound?.addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });
     picker.addEventListener("change", () => {
       localStorageSafe("weightPlayLocale", picker.value);
-      if (["four-in-a-row", "sliding-15", "sudoku", "tower-of-hanoi", "reversi"].includes(id)) {
+      if (["four-in-a-row", "sliding-15", "sudoku", "tower-of-hanoi", "reversi", "lights-out", "code-breaker", "peg-solitaire"].includes(id)) {
         const nextPath = localizedGamePath(picker.value);
         if (nextPath && nextPath !== window.location.pathname) {
           localStorageSafe(LOCALE_SELECTION_PATH_KEY, "");
@@ -852,20 +880,20 @@
     app.root.querySelector("#battleBack").addEventListener("click", () => (id === "code-breaker" || id === "sliding-15") ? openLeaveDialog() : showMain());
     app.root.querySelector("#logicHint").addEventListener("click", () => activeGame?.hint?.());
     app.root.querySelector("#logicUndo").addEventListener("click", () => activeGame?.undo?.());
-    app.root.querySelector("#logicReset").addEventListener("click", () => activeGame?.reset?.());
-    app.root.querySelector("#leaveContinue").addEventListener("click", () => { app.root.querySelector("#logicLeave").hidden = true; });
-    app.root.querySelector("#leaveStages").addEventListener("click", () => { app.root.querySelector("#logicLeave").hidden = true; showStage(); });
-    app.root.querySelector("#resultStages").addEventListener("click", () => { app.result.hidden = true; showStage(); });
-    app.root.querySelector("#resultNext").addEventListener("click", () => { app.result.hidden = true; const total = id === "sliding-15" ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; startGame(Math.min(total, (app.currentStage || 1) + 1)); });
-    app.root.querySelector("#resultReplay").addEventListener("click", () => { app.result.hidden = true; activeGame?.reset?.(); });
+    app.root.querySelector("#logicReset").addEventListener("click", () => __wpReplayStart(() => activeGame?.reset?.()));
+    app.root.querySelector("#leaveContinue").addEventListener("click", () => { (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = true); });
+    app.root.querySelector("#leaveStages").addEventListener("click", () => { (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = true); showStage(); });
+    app.root.querySelector("#resultStages").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); showStage(); });
+    app.root.querySelector("#resultNext").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); const total = id === "sliding-15" ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; startGame(Math.min(total, (app.currentStage || 1) + 1)); });
+    app.root.querySelector("#resultReplay").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); __wpReplayStart(() => activeGame?.reset?.()); });
     app.root.querySelector("#resultMenu").addEventListener("click", showMain);
-    app.root.querySelector("#resultClose").addEventListener("click", () => { app.result.hidden = true; });
+    app.root.querySelector("#resultClose").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); });
     app.showMain = showMain;
     app.startGame = startGame;
     return app;
 
     function resetScroll() { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; }
-    function configureStageResult() { const staged = id === "code-breaker" || id === "sliding-15"; app.root.querySelector("#resultStages").hidden = !staged; app.root.querySelector("#resultNext").hidden = true; app.root.querySelector("#resultMenu").hidden = staged; app.root.querySelector("#resultClose").hidden = staged; app.root.querySelector("#resultReplay").textContent = staged ? text(codeCampaignCopy.replay) : t("replay"); }
+    function configureStageResult() { const staged = id === "code-breaker" || id === "sliding-15"; (__wpNotifyMeasurement(), app.root.querySelector("#resultStages").hidden = !staged); (__wpNotifyMeasurement(), app.root.querySelector("#resultNext").hidden = true); (__wpNotifyMeasurement(), app.root.querySelector("#resultMenu").hidden = staged); (__wpNotifyMeasurement(), app.root.querySelector("#resultClose").hidden = staged); app.root.querySelector("#resultReplay").textContent = staged ? text(codeCampaignCopy.replay) : t("replay"); }
     function renderStageRail() {
       if (!(id === "code-breaker" || id === "sliding-15")) return;
       const sliding = id === "sliding-15";
@@ -890,10 +918,25 @@
       app.stageStatus.textContent = text(copy.saved);
       window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
     }
-    function showStage() { if (!(id === "code-breaker" || id === "sliding-15")) return showMain(); resetScroll(); activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.main.hidden = true; app.battle.hidden = true; app.stage.hidden = false; app.result.hidden = true; document.body.classList.remove("logic-playing"); renderStageRail(); resetScroll(); }
-    function openLeaveDialog() { app.root.querySelector("#logicLeave").hidden = false; }
-    function startGame(stage = null) { resetScroll(); const staged = id === "code-breaker" || id === "sliding-15"; const total = id === "sliding-15" ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; app.currentStage = staged ? Math.max(1, Math.min(total, Number(stage) || 1)) : null; app.main.hidden = true; app.stage.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); const data = id === "sliding-15" ? slidingStageData(app.currentStage) : id === "code-breaker" ? codeStageData(app.currentStage) : null; app.tutorial.textContent = app.currentStage ? `${text(data.arc.title)} · ${text(data.arc.rule)}` : text(cfg.blurb); app.result.hidden = true; configureStageResult(); activeGame?.stop?.(); activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); resetScroll(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale, stage: app.currentStage || undefined }); }
-    function showMain() { activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.result.hidden = true; app.root.querySelector("#logicLeave").hidden = true; app.stage.hidden = true; app.battle.hidden = true; app.main.hidden = false; if (id === "sliding-15") { const progress = readSlidingProgress(); app.root.querySelector("[data-wp-main-progress]").textContent = fillTemplate(text(slidingCampaignCopy.progress), { stage: Math.min(progress.highestUnlocked, SLIDING_TOTAL_STAGES), cleared: progress.cleared.length }); } document.body.classList.remove("logic-playing"); resetScroll(); }
+    function showStage() { if (!(id === "code-breaker" || id === "sliding-15")) return showMain(); resetScroll(); activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.main.hidden = true; app.battle.hidden = true; app.stage.hidden = false; (__wpNotifyMeasurement(), app.result.hidden = true); document.body.classList.remove("logic-playing"); renderStageRail(); resetScroll();
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
+    function openLeaveDialog() { (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = false); }
+    function startGame(stage = null) { resetScroll(); const staged = id === "code-breaker" || id === "sliding-15"; const total = id === "sliding-15" ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; app.currentStage = staged ? Math.max(1, Math.min(total, Number(stage) || 1)) : null; app.main.hidden = true; app.stage.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); const data = id === "sliding-15" ? slidingStageData(app.currentStage) : id === "code-breaker" ? codeStageData(app.currentStage) : null; app.tutorial.textContent = app.currentStage ? `${text(data.arc.title)} · ${text(data.arc.rule)}` : text(cfg.blurb); (__wpNotifyMeasurement(), app.result.hidden = true); configureStageResult(); activeGame?.stop?.(); activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); resetScroll(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale, stage: app.currentStage || undefined });
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
+      if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
+    function showMain() { activeGame?.stop?.(); activeGame = null; app.currentStage = null; (__wpNotifyMeasurement(), app.result.hidden = true); (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = true); app.stage.hidden = true; app.battle.hidden = true; app.main.hidden = false; if (id === "sliding-15") { const progress = readSlidingProgress(); app.root.querySelector("[data-wp-main-progress]").textContent = fillTemplate(text(slidingCampaignCopy.progress), { stage: Math.min(progress.highestUnlocked, SLIDING_TOTAL_STAGES), cleared: progress.cleared.length }); } document.body.classList.remove("logic-playing"); resetScroll();
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   }
 
   function finish(won, detail = "") {
@@ -904,16 +947,18 @@
       const stage = Number(app.currentStage); const sliding = app.id === "sliding-15"; const total = sliding ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; const campaignCopy = sliding ? slidingCampaignCopy : codeCampaignCopy; const progress = won ? (sliding ? markSlidingStageCleared(stage) : markCodeStageCleared(stage)) : (sliding ? readSlidingProgress() : readCodeProgress());
       app.resultTitle.textContent = won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : t("lose");
       app.resultText.textContent = detail || (won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : fillTemplate(text(campaignCopy.stageLoss), { stage }));
-      app.root.querySelector("#resultStages").hidden = false;
-      app.root.querySelector("#resultNext").hidden = !(won && stage < total && stage + 1 <= progress.highestUnlocked);
-      app.root.querySelector("#resultReplay").hidden = false;
-      app.root.querySelector("#resultMenu").hidden = true;
-      app.root.querySelector("#resultClose").hidden = true;
+      (__wpNotifyMeasurement(), app.root.querySelector("#resultStages").hidden = false);
+      (__wpNotifyMeasurement(), app.root.querySelector("#resultNext").hidden = !(won && stage < total && stage + 1 <= progress.highestUnlocked));
+      (__wpNotifyMeasurement(), app.root.querySelector("#resultReplay").hidden = false);
+      (__wpNotifyMeasurement(), app.root.querySelector("#resultMenu").hidden = true);
+      (__wpNotifyMeasurement(), app.root.querySelector("#resultClose").hidden = true);
     } else {
       app.resultTitle.textContent = won ? t("win") : t("lose"); app.resultText.textContent = detail || (won ? t("solved") : t("failed"));
     }
-    app.result.hidden = false; app.battleChip.textContent = won ? t("solved") : t("lose");
-  }
+    (__wpNotifyMeasurement(), app.result.hidden = false); app.battleChip.textContent = won ? t("solved") : t("lose");
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function setChip(value) { if (app) app.battleChip.textContent = value; }
   function cell(textValue, className, label, handler) { const b = document.createElement("button"); b.type = "button"; b.className = `logic-cell ${className || ""}`; b.textContent = textValue || ""; if (label) b.setAttribute("aria-label", label); b.addEventListener("click", handler); return b; }
   function historyApi(getState, setState) { const past = []; return { save() { past.push(JSON.stringify(getState())); if (past.length > 80) past.shift(); }, undo() { const value = past.pop(); if (!value) { announce(t("ready")); return; } setState(JSON.parse(value)); } }; }
@@ -930,7 +975,7 @@
     function reveal(i) { if (revealed.has(i) || flags.has(i)) return; const previous = snapshot(); if (first) { while (mines.has(i)) { generate(); } previous.mines = [...mines]; first = false; startTimer(); } history.push(previous); if (mines.has(i)) { revealed.add(i); clearInterval(timerId); render(); finish(false, resultDetail(false)); return; } const queue = [i]; while (queue.length) { const current = queue.shift(); if (revealed.has(current) || flags.has(current)) continue; revealed.add(current); const count = neighbours(current, rows, cols).filter((n) => mines.has(n)).length; if (!count) neighbours(current, rows, cols).forEach((n) => { if (!revealed.has(n)) queue.push(n); }); } hintIndex = -1; render(); if (revealed.size >= rows * cols - mineCount) { clearInterval(timerId); finish(true, resultDetail(true)); } else announce(t("turn")); }
     function toggleFlag(i) { if (revealed.has(i) || (!flags.has(i) && flags.size >= mineCount)) return; history.push(snapshot()); if (flags.has(i)) flags.delete(i); else flags.add(i); hintIndex = -1; render(); announce(t("turn")); }
     function clickCell(i) { if (flagMode) toggleFlag(i); else reveal(i); }
-    function reset() { clearInterval(timerId); configure(); mines = new Set(); revealed = new Set(); flags = new Set(); first = true; flagMode = false; timer = 0; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); generate(); mode.textContent = t("revealMode"); flag.textContent = t("flagMode"); announce(t("turn")); render(); }
+    function reset() { clearInterval(timerId); configure(); mines = new Set(); revealed = new Set(); flags = new Set(); first = true; flagMode = false; timer = 0; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); generate(); mode.textContent = t("revealMode"); flag.textContent = t("flagMode"); announce(t("turn")); render(); }
     function hintEvidence(index) {
       return neighbours(index, rows, cols).map((clue) => {
         if (!revealed.has(clue) || mines.has(clue)) return null;
@@ -964,7 +1009,7 @@
       else announce(text(mineCopy.hintGuide));
     }
     select.addEventListener("change", reset); mode.addEventListener("click", () => { flagMode = false; mode.classList.add("is-selected"); flag.classList.remove("is-selected"); }); flag.addEventListener("click", () => { flagMode = true; flag.classList.add("is-selected"); mode.classList.remove("is-selected"); });
-    function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } clearInterval(timerId); mines = new Set(previous.mines); revealed = new Set(previous.revealed); flags = new Set(previous.flags); first = previous.first; flagMode = previous.flagMode; timer = previous.timer; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); mode.classList.toggle("is-selected", !flagMode); flag.classList.toggle("is-selected", flagMode); if (!first) startTimer(); render(); announce(`${t("undo")} · ${t("turn")}`); }
+    function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } clearInterval(timerId); mines = new Set(previous.mines); revealed = new Set(previous.revealed); flags = new Set(previous.flags); first = previous.first; flagMode = previous.flagMode; timer = previous.timer; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); mode.classList.toggle("is-selected", !flagMode); flag.classList.toggle("is-selected", flagMode); if (!first) startTimer(); render(); announce(`${t("undo")} · ${t("turn")}`); if (previous) __wpReopenMeasurement(); }
     return { reset, hint, undo, stop() { clearInterval(timerId); } };
   }
 
@@ -990,9 +1035,11 @@
     function resultGoal() { const target = Math.max(1, history.length - 1); return difficulty === "hard" ? feedback("hardGoal", { level: t(difficulty), target }) : feedback("goal", { level: t(difficulty), target, next: t(difficulty === "easy" ? "medium" : "hard") }); }
     function render() { cellButtons.forEach((b, i) => { const value = values[i] || ""; const state = given.has(i) ? fillTemplate(text(sudokuCopy.given), { value }) : value ? fillTemplate(text(sudokuCopy.filled), { value }) : text(sudokuCopy.empty); const labelState = i === hintIndex ? fillTemplate(text(sudokuCopy.hinted), { state }) : state; const label = fillTemplate(text(sudokuCopy.cell), { row: Math.floor(i / 9) + 1, col: (i % 9) + 1, state: labelState }); b.className = `logic-cell ${given.has(i) ? "given" : ""} ${i === selected ? "is-selected" : ""} ${i === hintIndex ? "is-hint" : ""}`; b.textContent = value; b.setAttribute("aria-label", label); }); clearButton.textContent = t("clear"); }
     function enter(value) { if (selected < 0 || given.has(selected)) return; const previous = values[selected]; if (previous === (value || 0)) { announce(feedback("ready")); return; } values[selected] = 0; if (value && !sudokuCanPlace(values, selected, value)) { values[selected] = previous; hintIndex = -1; render(); announce(feedback("invalid"), "is-error"); beep("wrong"); return; } history.push({ index: selected, value: previous }); values[selected] = value || 0; hintIndex = -1; render(); const remaining = remainingCells(); if (sudokuComplete(values)) { finish(true, `${t("solved")} · ${resultGoal()}`); announce(`${t("solved")} · ${t("win")}`, "is-good"); } else { announce(feedback(value ? "correct" : "cleared", { remaining }), "is-good"); beep(value ? "success" : "click"); } }
-    function reset() { difficulty = select.value; const baseSolution = solution.slice(0, 81); values = baseSolution.map((v, i) => masks[difficulty].includes(i) ? 0 : v); given = new Set(baseSolution.map((_, i) => i).filter((i) => !masks[difficulty].includes(i))); selected = -1; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(feedback("ready")); }
+    function reset() { difficulty = select.value; const baseSolution = solution.slice(0, 81); values = baseSolution.map((v, i) => masks[difficulty].includes(i) ? 0 : v); given = new Set(baseSolution.map((_, i) => i).filter((i) => !masks[difficulty].includes(i))); selected = -1; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(feedback("ready"));
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() { hintIndex = values.findIndex((v, i) => !given.has(i) && v !== solution[i]); if (hintIndex >= 0) { selected = hintIndex; render(); announce(feedback("hint"), "is-good"); } }
-    function undo() { const previous = history.pop(); if (!previous) { announce(feedback("ready")); return; } values[previous.index] = previous.value; selected = previous.index; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(feedback("undo", { remaining: remainingCells() }), "is-good"); }
+    function undo() { const previous = history.pop(); if (!previous) { announce(feedback("ready")); return; } values[previous.index] = previous.value; selected = previous.index; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(feedback("undo", { remaining: remainingCells() }), "is-good"); if (previous) __wpReopenMeasurement(); }
     select.addEventListener("change", reset); return { reset, hint, undo };
   }
 
@@ -1003,10 +1050,12 @@
     function copy(key, replacements = {}) { return Object.entries(replacements).reduce((value, [token, replacement]) => value.replace(`{${token}}`, String(replacement)), text(lightsCopy[key])); }
     function toggle(i) { history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (boardState.every((v) => !v)) { const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); announce(t("solved")); } else announce(t("turn")); }
     function render() { board.replaceChildren(); boardState.forEach((on, i) => { const row = Math.floor(i / 5) + 1; const col = (i % 5) + 1; const state = copy(on ? "cellOn" : "cellOff"); const label = i === hintIndex ? copy("hintedCell", { row, col, state }) : copy("cellLabel", { row, col, state }); const b = cell(on ? "●" : "", on ? "on" : "", label, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
-    function reset() { boardState = Array(25).fill(false); initialMoves.forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(t("ready")); }
+    function reset() { boardState = Array(25).fill(false); initialMoves.forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(t("ready"));
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); const hinted = hintIndex >= 0 ? copy("hintedCell", { row: Math.floor(hintIndex / 5) + 1, col: (hintIndex % 5) + 1, state: copy(boardState[hintIndex] ? "cellOn" : "cellOff") }) : ""; announce(hinted ? `${text(lightsCopy.hintExplanation)} ${hinted}` : text(lightsCopy.hintExplanation)); }
     function solveLights(start) { for (let mask = 0; mask < 32; mask += 1) { const state = start.slice(); const movesFound = []; for (let c = 0; c < 5; c += 1) if (mask & (1 << c)) { movesFound.push(c); apply(c); } for (let r = 1; r < 5; r += 1) for (let c = 0; c < 5; c += 1) if (state[(r - 1) * 5 + c]) { const index = r * 5 + c; movesFound.push(index); apply(index); } if (state.every((v) => !v)) return movesFound; function apply(i) { [i, ...neighbours(i, 5, 5)].forEach((n) => { state[n] = !state[n]; }); } } return []; }
-    function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } boardState = previous.boardState.slice(); moves = previous.moves; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves}`); }
+    function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } boardState = previous.boardState.slice(); moves = previous.moves; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves}`); if (previous) __wpReopenMeasurement(); }
     return { reset, hint, undo };
   }
 
@@ -1015,9 +1064,11 @@
     function legalMoves() { const found = []; for (let i = 0; i < 49; i += 1) if (pegs[i]) for (const n of neighbours(i, 7, 7)) { const beyond = n + (n - i); if (beyond >= 0 && beyond < 49 && Math.abs(Math.floor(beyond / 7) - Math.floor(i / 7)) + Math.abs(beyond % 7 - i % 7) === 2 && valid[beyond] && pegs[n] && !pegs[beyond]) found.push([i, n, beyond]); } return found; }
     function render() { board.replaceChildren(); for (let i = 0; i < 49; i += 1) { if (!valid[i]) { board.append(cell("", "void", "", () => {})); continue; } const b = cell(pegs[i] ? "●" : "", `${pegs[i] ? "peg" : "empty"} ${i === selected ? "is-selected" : ""} ${hintPair.includes(i) ? "is-hint" : ""}`, pegs[i] ? `Peg ${i + 1}` : `Empty hole ${i + 1}`, () => choose(i)); board.append(b); } }
     function choose(i) { if (!valid[i]) return; if (selected < 0) { if (pegs[i]) { selected = i; announce(t("selectTarget")); } } else if (pegs[i]) { selected = i; announce(t("selectTarget")); } else { const move = legalMoves().find(([from, , to]) => from === selected && to === i); if (move) { history.push({ pegs: pegs.slice(), moves }); pegs[move[0]] = false; pegs[move[1]] = false; pegs[move[2]] = true; moves += 1; selected = -1; if (pegs.filter(Boolean).length === 1) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (!legalMoves().length) finish(false, t("noMoves")); else announce(`${t("turn")} · ${t("moves")}: ${moves}`); } else announce(t("selectTarget")); } hintPair = []; render(); }
-    function reset() { pegs = valid.map((v, i) => v && i !== 24); selected = -1; hintPair = []; moves = 0; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(t("selectSource")); }
+    function reset() { pegs = valid.map((v, i) => v && i !== 24); selected = -1; hintPair = []; moves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(t("selectSource"));
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() { const move = legalMoves()[0]; hintPair = move ? [move[0], move[2]] : []; render(); announce(t("hint")); }
-    function undo() { const previous = history.pop(); if (!previous) { selected = -1; hintPair = []; render(); announce(t("selectSource")); return; } pegs = previous.pegs; moves = previous.moves; selected = -1; hintPair = []; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves} · ${t("selectSource")}`); }
+    function undo() { const previous = history.pop(); if (!previous) { selected = -1; hintPair = []; render(); announce(t("selectSource")); return; } pegs = previous.pegs; moves = previous.moves; selected = -1; hintPair = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves} · ${t("selectSource")}`); if (previous) __wpReopenMeasurement(); }
     return { reset, hint, undo };
   }
 
@@ -1059,13 +1110,15 @@
     function reset() {
       tiles = stage ? stage.start.slice() : [...Array(15).keys()].map((n) => n + 1).concat(0); blank = tiles.indexOf(0); lastBlank = -1; history = [];
       if (!stage) { const random = rng(0x1571); for (let n = 0; n < 35; n += 1) { const options = neighbours(blank, 4, 4); const next = options[Math.floor(random() * options.length)]; [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]]; blank = next; } }
-      hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(stage ? fillTemplate(text(slidingCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
-    }
+      hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(stage ? fillTemplate(text(slidingCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
+
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() {
       const target = neighbours(blank, 4, 4).find((i) => tiles[i] !== stage?.goal?.[i] && !(stage?.anchorIndex !== null && stage?.anchorIndex !== undefined && i === stage.anchorIndex) && !(stage?.noBacktrack && i === lastBlank));
       hintIndex = target ?? -1; render(); announce(stage ? `${t("hint")} · ${text(stage.modeLabel)}` : t("hint"));
     }
-    return { reset, hint, undo() { const previous = history.pop(); if (!previous) { hintIndex = -1; render(); announce(t("ready")); return; } tiles = previous.tiles; blank = previous.blank; lastBlank = previous.lastBlank; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${history.length}`); } };
+    return { reset, hint, undo() { const previous = history.pop(); if (!previous) { hintIndex = -1; render(); announce(t("ready")); return; } tiles = previous.tiles; blank = previous.blank; lastBlank = previous.lastBlank; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${history.length}`); } };
   }
 
   function buildCode() {
@@ -1115,7 +1168,9 @@
       else if (turn >= (stage?.maxTurns || 10)) { render(); announce(t("lose")); finish(false, `${t("failed")} ${t("correct")}: ${secret.map((value) => value + 1).join(" · ")}`); }
       else { guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); announce(`${t("correct")}: ${exact} · ${t("near")}: ${near} · ${t("turn")}`); }
     }
-    function reset() { secret = makeSecret(); guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; history = []; turn = 0; hintsUsed = 0; app.result.hidden = true; setChip(t("turn")); render(); announce(stage ? fillTemplate(text(codeCampaignCopy.ready), { stage: stage.stage }) : t("ready")); }
+    function reset() { secret = makeSecret(); guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; history = []; turn = 0; hintsUsed = 0; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(stage ? fillTemplate(text(codeCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() {
       if (!stage) { const index = nextOpenSlot(); if (index !== undefined) guess[index] = secret[index]; render(); announce(t("hint")); return; }
       if (hintsUsed >= stage.hintLimit) { announce(stage.hintLimit ? text(codeCampaignCopy.hints).replace("{hints}", "0") : text(codeCampaignCopy.noHints)); return; }
@@ -1131,9 +1186,11 @@
     function legalDestination(index) { if (selected < 0 || selected === index) return false; const from = towers[selected]; const disk = from?.[from.length - 1]; const to = towers[index]; return Boolean(disk) && (!to.length || to[to.length - 1] > disk); }
     function render(status = `${t("moves")}: ${moves}`) { target.textContent = fillTemplate(text(hanoiCopy.minimumMoves), { moves, minimum: minimumMoves() }); board.replaceChildren(); towers.forEach((tower, index) => { const peg = document.createElement("button"); peg.type = "button"; peg.className = `logic-tower ${selected === index ? "is-selected" : ""} ${legalDestination(index) ? "is-legal-destination" : ""}`; peg.setAttribute("aria-label", fillTemplate(text(hanoiCopy.pegLabel), { peg: index + 1 })); tower.forEach((disk) => { const diskEl = document.createElement("span"); diskEl.className = "logic-disk"; diskEl.style.width = `${30 + disk * (56 / count)}%`; diskEl.textContent = disk; peg.append(diskEl); }); peg.addEventListener("click", () => clickPeg(index)); board.append(peg); }); announce(status); }
     function clickPeg(index) { if (selected < 0) { if (towers[index].length) { selected = index; render(t("selectTarget")); } else render(t("selectSource")); return; } if (selected === index) { selected = -1; render(t("selectSource")); return; } const from = towers[selected], to = towers[index]; const disk = from[from.length - 1]; if (disk && (!to.length || to[to.length - 1] > disk)) { history.push({ towers: towers.map((tower) => tower.slice()), moves }); from.pop(); to.push(disk); moves += 1; selected = -1; beep(); if (to.length === count && index === 2) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (to.length === count) render(fillTemplate(text(hanoiCopy.goalPeg), { peg: index + 1 })); else render(); } else { selected = -1; render(t("failed")); } }
-    function reset() { count = select.value === "easy" ? 3 : select.value === "medium" ? 4 : 5; towers = [Array.from({ length: count }, (_, i) => count - i), [], []]; selected = -1; moves = 0; history = []; app.result.hidden = true; setChip(t("turn")); render(); }
+    function reset() { count = select.value === "easy" ? 3 : select.value === "medium" ? 4 : 5; towers = [Array.from({ length: count }, (_, i) => count - i), [], []]; selected = -1; moves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render();
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() { const index = towers.findIndex((tower) => tower.length); selected = index; render(t("hint")); }
-    function undo() { const previous = history.pop(); if (!previous) { selected = -1; render(t("ready")); return; } towers = previous.towers.map((tower) => tower.slice()); moves = previous.moves; selected = -1; app.result.hidden = true; setChip(t("turn")); render(`${t("undo")} · ${t("moves")}: ${moves}`); }
+    function undo() { const previous = history.pop(); if (!previous) { selected = -1; render(t("ready")); return; } towers = previous.towers.map((tower) => tower.slice()); moves = previous.moves; selected = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(`${t("undo")} · ${t("moves")}: ${moves}`); if (previous) __wpReopenMeasurement(); }
     select.addEventListener("change", reset); return { reset, hint, undo };
   }
 
@@ -1168,7 +1225,9 @@
     function formatReply(choice) { const square = `${String.fromCharCode(65 + choice.index % 8)}${Math.floor(choice.index / 8) + 1}`; return text(reversiReply).replace("{level}", t(difficulty)).replace("{square}", square).replace("{count}", String(choice.captures)); }
     function aiTurn() { const moves = legal(2); if (!moves.length) { if (!legal(1).length) end(); else { reply.textContent = formatPayoff(playerPayoff); playerPayoff = null; delete reply.dataset.aiChoice; delete reply.dataset.aiCaptures; locked = false; render(); } return; } const choice = chooseAiMove(moves); boardState[choice.index] = 2; flips(choice.index, 2).forEach((n) => { boardState[n] = 2; }); reply.textContent = [formatReply(choice), formatPayoff(playerPayoff)].filter(Boolean).join(" "); playerPayoff = null; reply.dataset.aiChoice = String(choice.index); reply.dataset.aiCaptures = String(choice.captures); const playerMoves = legal(1), nextAiMoves = legal(2); if (!playerMoves.length) { render(); if (!nextAiMoves.length) end(); else { locked = true; scheduleAi(); } } else { locked = false; render(); } }
     function end() { render(); const p = boardState.filter((v) => v === 1).length, a = boardState.filter((v) => v === 2).length; finish(p > a, `${t("score")}: ${p} – ${a}`); }
-    function reset() { cancelAi(); difficulty = select.value; boardState = Array(64).fill(0); boardState[27] = 2; boardState[28] = 1; boardState[35] = 1; boardState[36] = 2; playerPayoff = null; locked = false; policy.textContent = text(reversiDifficultyPolicy[difficulty]); reply.textContent = ""; delete reply.dataset.aiChoice; delete reply.dataset.aiCaptures; render(); announce(t("turn")); }
+    function reset() { cancelAi(); difficulty = select.value; boardState = Array(64).fill(0); boardState[27] = 2; boardState[28] = 1; boardState[35] = 1; boardState[36] = 2; playerPayoff = null; locked = false; policy.textContent = text(reversiDifficultyPolicy[difficulty]); reply.textContent = ""; delete reply.dataset.aiChoice; delete reply.dataset.aiCaptures; render(); announce(t("turn"));
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() { const move = legal(1)[0]; if (move !== undefined) { const target = board.children[move]; target?.classList.add("is-hint"); announce(t("hint")); } }
     select.addEventListener("change", reset); return { reset, hint, stop() { cancelAi(); locked = true; }, undo() { announce(t("undo")); } };
   }
@@ -1182,9 +1241,11 @@
     function hasFour(color) { for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) for (const [dr, dc] of [[0,1],[1,0],[1,1],[1,-1]]) { let n = 0; for (let k = 0; k < 4; k += 1) { const rr = r + dr * k, cc = c + dc * k; if (rr >= 0 && rr < 6 && cc >= 0 && cc < 7 && grid[rr * 7 + cc] === color) n += 1; } if (n === 4) return true; } return false; }
     function ai() { const available = [...new Set([...Array(7).keys()].filter((c) => grid[c] === 0))]; let column = available[Math.floor(Math.random() * available.length)]; const winning = available.find((c) => simulateWin(c, 2)); const block = available.find((c) => simulateWin(c, 1)); if (difficulty !== "easy") column = winning ?? block ?? (difficulty === "hard" ? available.sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b))[0] : column); const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); grid[row * 7 + column] = 2; locked = false; render(); if (hasFour(2) || grid.every(Boolean)) finish(false, resultGoal(false)); else announce(t("turn")); }
     function simulateWin(column, color) { const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return false; grid[row * 7 + column] = color; const result = hasFour(color); grid[row * 7 + column] = 0; return result; }
-    function reset() { clearAiTimer(); difficulty = select.value; grid = Array(42).fill(0); locked = false; hintColumn = -1; playerMoves = 0; history = []; app.result.hidden = true; render(); announce(t("turn")); }
+    function reset() { clearAiTimer(); difficulty = select.value; grid = Array(42).fill(0); locked = false; hintColumn = -1; playerMoves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); render(); announce(t("turn"));
+    if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
     function hint() { if (locked) return announce(text(connectHint.wait)); const available = [...Array(7).keys()].filter((c) => grid[c] === 0); if (!available.length) return announce(t("failed")); const winning = available.find((c) => simulateWin(c, 1)); const block = winning === undefined ? available.find((c) => simulateWin(c, 2)) : undefined; const column = winning ?? block ?? available.slice().sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b) || a - b)[0]; const message = winning !== undefined ? connectHint.win : block !== undefined ? connectHint.block : connectHint.center; hintColumn = column; render(); announce(fillTemplate(text(message), { column: column + 1 })); }
-    function undo() { clearAiTimer(); const previous = history.pop(); hintColumn = -1; app.result.hidden = true; locked = false; if (previous) { grid = previous.grid.slice(); playerMoves = previous.playerMoves; } render(); announce(previous ? `${t("undo")} · ${t("turn")}` : t("ready")); }
+    function undo() { clearAiTimer(); const previous = history.pop(); hintColumn = -1; (__wpNotifyMeasurement(), app.result.hidden = true); locked = false; if (previous) { grid = previous.grid.slice(); playerMoves = previous.playerMoves; } render(); announce(previous ? `${t("undo")} · ${t("turn")}` : t("ready")); if (previous) __wpReopenMeasurement(); }
     select.addEventListener("change", reset); return { reset, hint, undo, stop: clearAiTimer };
   }
 
@@ -1211,4 +1272,6 @@
     },
     progress: () => readSlidingProgress(),
   });
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 }());

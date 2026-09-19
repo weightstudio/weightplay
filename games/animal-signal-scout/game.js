@@ -1,5 +1,17 @@
 (() => {
   'use strict';
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const locales=window.ANIMAL_SIGNAL_SCOUT_LOCALES, copy=window.SIGNAL_UPGRADE_COPY, patrols=window.SIGNAL_CAMPAIGN;
   const animals=['fox','owl','rabbit'], colours=['amber','teal','violet'], hex=['#ffbd55','#58ddce','#b993ff'];
   const portraits=['spark-paw-fox','moon-cap-owl','rainbow-hop-rabbit'].map(id=>`/assets/weightplay-character-${id}-block-v1.webp`);
@@ -11,7 +23,12 @@
   const art=(i,cls='animal-icon')=>`<img class="${cls}" src="${portraits[i]}" alt="" draggable="false">`;
   const sound=(good=false)=>{try{if(window.WonderSound?.play) window.WonderSound.play(good?'success':'click');}catch{}};
   const scene=()=>window.dispatchEvent(new CustomEvent('wp:block-scene',{detail:{active:state.screen==='battle',colours:hex,lit:state.code.length,labels:animals.map(a=>t(a))}}));
-  function show(screen){state.screen=screen;document.querySelectorAll('[data-screen]').forEach(n=>n.hidden=n.dataset.screen!==screen);document.body.dataset.screen=screen;window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));scene();}
+  function show(screen){state.screen=screen;document.querySelectorAll('[data-screen]').forEach(n=>n.hidden=n.dataset.screen!==screen);document.body.dataset.screen=screen;window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));scene();
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function persist(){try{localStorage.setItem(saveKey,JSON.stringify(progress));}catch{}}
   function renderMain(){ $('mainProgress').textContent=t('saved',{n:Object.keys(progress.stars).length});$('bestValue').textContent=`${Object.values(progress.stars).reduce((a,b)=>a+(Number(b)||0),0)} / 90`; }
   function rules(p){const keys=[];if(p.rule.includes('skip')||p.rule==='finale')keys.push('skip');if(p.rule.includes('reverse')||p.rule==='finale')keys.push('reverse');else if(p.rule.includes('rotate'))keys.push('rotate');else keys.push('forward');if(p.memory)keys.push('memory');return keys.map(k=>t(k)).join(' ');}
@@ -29,8 +46,10 @@
     $('code').replaceChildren(...p.order.map((_,i)=>{const b=document.createElement('button');b.type='button';b.className='code-chip';b.disabled=i>=next;b.setAttribute('aria-label',`${i+1}. ${i<next?t(animals[state.code[i]]):'—'}`);b.innerHTML=`<b>${i+1}</b>${i<next?art(state.code[i]):'<span>—</span>'}`;b.onclick=()=>{state.code.splice(i,1);state.feedback='';renderBattle();};return b;}));
     $('checkBtn').disabled=studying||next!==p.order.length;$('battleStatus').textContent=state.feedback||t('waiting');scene();
   }
-  function renderResult(){const p=patrols[state.patrol];$('resultTitle').textContent=t('resultTitle');$('resultText').textContent=`${'★'.repeat(progress.stars[p.number]||1)} · ${t('saved',{n:Object.keys(progress.stars).length})}`;$('resultPrimaryBtn').textContent=t(p.number===30?'map':'next');$('resultPrimaryBtn').onclick=p.number===30?openPatrolMap:()=>startPatrol(state.patrol+1);$('resultMapBtn').hidden=false;}
-  function startPatrol(index){if(!Number.isInteger(index)||index<0||index>=30||index+1>progress.unlocked)return;Object.assign(state,{patrol:index,code:[],checks:0,hints:0,clue:true,feedback:''});show('battle');renderBattle();}
+  function renderResult(){const p=patrols[state.patrol];$('resultTitle').textContent=t('resultTitle');$('resultText').textContent=`${'★'.repeat(progress.stars[p.number]||1)} · ${t('saved',{n:Object.keys(progress.stars).length})}`;$('resultPrimaryBtn').textContent=t(p.number===30?'map':'next');$('resultPrimaryBtn').onclick=p.number===30?openPatrolMap:()=>startPatrol(state.patrol+1);(__wpNotifyMeasurement(), $('resultMapBtn').hidden=false);}
+  function startPatrol(index){if(!Number.isInteger(index)||index<0||index>=30||index+1>progress.unlocked)return;Object.assign(state,{patrol:index,code:[],checks:0,hints:0,clue:true,feedback:''});show('battle');renderBattle();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function chooseSignal(animal){const p=patrols[state.patrol],id=animals.indexOf(animal);if(state.screen!=='battle'||id<0||state.code.length>=p.order.length||(p.memory&&state.clue))return;state.code.push(id);state.feedback='';sound();renderBattle();}
   function clearCode(){state.code=[];state.feedback='';renderBattle();}
   function checkCode(){const p=patrols[state.patrol];if(state.screen!=='battle'||state.code.length!==p.order.length||(p.memory&&state.clue))return;state.checks++;state.sessionChecks++;const wrong=state.code.findIndex((v,i)=>v!==p.order[i]);if(wrong>=0){state.feedback=t('wrongAt',{n:wrong+1});$('battleScreen').dataset.feedback='wrong';renderBattle();return;}const stars=state.checks===1&&!state.hints?3:state.checks<=3?2:1;progress.stars[p.number]=Math.max(Number(progress.stars[p.number])||0,stars);progress.unlocked=Math.max(progress.unlocked,Math.min(30,p.number+1));persist();sound(true);show('result');renderResult();renderMain();}
@@ -39,17 +58,17 @@
     if(state.screen!=='battle')return openPatrolMap();
     const modal=$('leaveModal');
     if(!modal)return openPatrolMap();
-    modal.hidden=false;
+    (__wpNotifyMeasurement(), modal.hidden=false);
     $('leaveContinue')?.focus();
   }
   function continueBattle(){
     const modal=$('leaveModal');
-    if(modal)modal.hidden=true;
+    if(modal)(__wpNotifyMeasurement(), modal.hidden=true);
     renderBattle();
   }
   function confirmBattleLeave(){
     const modal=$('leaveModal');
-    if(modal)modal.hidden=true;
+    if(modal)(__wpNotifyMeasurement(), modal.hidden=true);
     Object.assign(state,{code:[],checks:0,hints:0,clue:true,feedback:''});
     openPatrolMap();
   }

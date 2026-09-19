@@ -1,5 +1,23 @@
 (()=>{
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const palette=["#ec6868","#489ee9","#9b72d5","#efb935","#67b66a","#35b8ad"];
   const localeOrder=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const storeKey="wp-animal-color-link-v1";
@@ -48,8 +66,8 @@
     requestAnimationFrame(()=>focusTarget?.focus?.({preventScroll:true}));
   }
   function show(id){
-    $("#leavePanel").hidden=true;
-    $("#result").hidden=true;
+    (__wpNotifyMeasurement(), $("#leavePanel").hidden=true);
+    (__wpNotifyMeasurement(), $("#result").hidden=true);
     setBattleCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
     document.body.dataset.screen=id;
@@ -62,7 +80,12 @@
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     if(id==="stage")renderStages();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[id] ?? null;
+      if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   const {levels,buildLevel}=window.COLOR_LINK_LEVELS;
   function renderStages(){
     $("#progressBadge").textContent=text("progress",{done:Math.min(unlocked-1,30)});
@@ -89,7 +112,9 @@
     $("#stageName").textContent=text("garden",{n:index+1});
     $("#status").textContent=text("draw");
     show("battle");renderBoard();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function endpointAt(cell){
     for(const[color,pair]of Object.entries(level.ends))if(pair.includes(cell))return Number(color);
     return null;
@@ -159,9 +184,11 @@
     resultClaimed=false;
     $("#next").disabled=selected===29;
     [$("#resultStages"),$("#next"),$("#retry")].forEach(button=>button.classList.remove("primary"));
-    (selected===29?$("#resultStages"):$("#next")).classList.add("primary");
+    (__wpNotifyMeasurement(), (selected===29?$("#resultStages"):$("#next")).classList.add("primary"));
     setTimeout(()=>openBattleModal($("#result"),selected===29?$("#resultStages"):$("#next")),220);
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function playTone(frequency,duration){
     const volume=Math.max(0,Math.min(100,Number(localStorage.getItem("weightPlayEffectsVolume")??80)))/100;
     if(volume<=0)return;
@@ -239,7 +266,7 @@
     action();
   }
   $("#resultStages").onclick=()=>claimResult(()=>show("stage"));
-  $("#retry").onclick=()=>claimResult(()=>startLevel(selected));
+  $("#retry").onclick=()=>claimResult(()=>__wpReplayStart(() => startLevel(selected)));
   $("#next").onclick=()=>{if(!$("#next").disabled)claimResult(()=>startLevel(selected+1))};
   $("#grid").addEventListener("pointerdown",event=>{const cell=event.target.closest(".cell");if(!cell)return;event.preventDefault();$("#grid").setPointerCapture?.(event.pointerId);begin(Number(cell.dataset.cell),event.pointerId)});
   $("#grid").addEventListener("pointermove",event=>{if(!active)return;const cell=document.elementFromPoint(event.clientX,event.clientY)?.closest(".cell");if(cell)extend(Number(cell.dataset.cell))});

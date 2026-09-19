@@ -39,53 +39,12 @@ button { -webkit-tap-highlight-color: transparent; }
   padding: max(10px, env(safe-area-inset-top)) 12px 18px;
 }
 
-.topbar {
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) minmax(108px, 142px);
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
 /* Main's modal owns input above the shared navigation/settings layer. */
 .wp-tutorial-backdrop { z-index: 1000; }
 
 /* RTL Stage settings undo Canvas scale around the inward-facing left edge. */
-html:dir(rtl) body.squad-stage-select #stagePanel .wp-stage-shell-header
-  > .wp-shell-settings > .wp-shell-settings-popover {
-  right: auto !important;
-  left: 0 !important;
-  transform-origin: top left !important;
-}
 
 /* This permanent return is inside the scaled Battle, unlike a fixed overlay. */
-body.squad-active #gamePanel .wp-generated-battle-header > #quitRunBtn {
-  width: var(--squad-battle-return-logical-size, 48px) !important;
-  min-width: var(--squad-battle-return-logical-size, 48px) !important;
-  max-width: var(--squad-battle-return-logical-size, 48px) !important;
-  height: var(--squad-battle-return-logical-size, 48px) !important;
-  min-height: var(--squad-battle-return-logical-size, 48px) !important;
-  max-height: var(--squad-battle-return-logical-size, 48px) !important;
-}
-
-.back-btn {
-  width: 58px;
-  min-height: 48px;
-  display: grid;
-  grid-template-columns: 16px 28px;
-  place-content: center;
-  gap: 4px;
-  padding: 4px;
-  border: 0;
-  border-radius: 13px;
-  color: #102019;
-  background: linear-gradient(#fff4bd, #f8b937);
-  box-shadow: 0 5px 0 #8b5c10;
-  text-decoration: none;
-  font-size: 1.35rem;
-  font-weight: 900;
-}
-.back-btn img { width: 28px; height: 28px; object-fit: contain; }
 .brand { min-width: 0; }
 .brand span, .locale span { display: block; color: var(--muted); font-size: .68rem; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
 .brand h1 { margin: 2px 0 0; overflow: hidden; color: #fff; font-size: clamp(1.05rem, 4vw, 1.55rem); line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
@@ -120,8 +79,8 @@ body.squad-active #gamePanel .wp-generated-battle-header > #quitRunBtn {
 
 /* Stage/Battle logical Canvas, uniformly fitted as one unit. */
 body.squad-stage-select, body.squad-active { width: 100%; height: var(--squad-vh, 100dvh); overflow: hidden; overscroll-behavior: none; }
-body.squad-stage-select .topbar, body.squad-stage-select .game-page-info, body.squad-stage-select .wp-tutorial-button,
-body.squad-active .topbar, body.squad-active .game-page-info, body.squad-active .wp-tutorial-button { display: none !important; }
+body.squad-stage-select .topbar, body.squad-stage-select .game-page-info, body.squad-active .topbar, body.squad-active .game-page-info { display: none !important; }
+body.squad-stage-select .wp-tutorial-button, body.squad-active .wp-tutorial-button { display: none !important; }
 body.squad-stage-select .sound-toggle, body.squad-active .sound-toggle { display:none !important; }
 body.squad-stage-select .squad-app, body.squad-active .squad-app { position: fixed; inset: 0; width: 100%; height: var(--squad-vh, 100dvh); max-width: none; padding: 0; }
 
@@ -181,16 +140,16 @@ body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolati
 .stage-pane:not(.is-active), .stage-pane[hidden] { display: none !important; }
 #stageSelectPane { display: grid; grid-template-rows: 58px minmax(0,1fr) 36px; gap: 8px; }
 .stage-setup-text { margin: 0; padding: 9px 12px; border-radius: 12px; color: #d8eee4; background: rgba(3,15,12,.83); font-size: .79rem; font-weight: 700; line-height: 1.3; }
-.stage-rail { display: grid; grid-auto-flow: column; grid-auto-columns: 264px; align-items: center; gap: 14px; height: 100%; overflow-x: auto; padding: 0 max(51px, calc((100% - 264px) / 2)); scroll-snap-type: x mandatory; scrollbar-width: none; touch-action: pan-x; overscroll-behavior-inline: contain; }
+.stage-rail { display: grid; grid-auto-flow: column; grid-auto-columns: 264px; align-items: center; height: 100%; overflow-x: auto; scrollbar-width: none; overscroll-behavior-inline: contain; }
 .stage-rail::-webkit-scrollbar { display: none; }
-.stage-card { position: relative; width: 264px; height: 190px; display: grid; align-content: end; gap: 3px; padding: 14px 18px; overflow: hidden; scroll-snap-align: center; scroll-snap-stop: always; border: 2px solid rgba(255,255,255,.22); border-radius: 18px; color: #fff; background: linear-gradient(0deg, rgba(4,20,34,.88), var(--stage-overlay,rgba(4,20,34,.18))), url("../../assets/animal-auto-squad-arena-block-v1.webp") center/cover; text-align: left; box-shadow: 0 12px 30px rgba(0,0,0,.4); }
+.stage-card { position: relative; display: grid; align-content: end; gap: 3px; padding: 14px 18px; overflow: hidden; border: 2px solid rgba(255,255,255,.22); border-radius: 18px; color: #fff; background: linear-gradient(0deg, rgba(4,20,34,.88), var(--stage-overlay,rgba(4,20,34,.18))), url("../../assets/animal-auto-squad-arena-block-v1.webp") center/cover; text-align: left; box-shadow: 0 12px 30px rgba(0,0,0,.4); }
 .stage-card em { color:#b9ffe2; font-size:.66rem; font-style:normal; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
 .stage-card strong { font-size: 1.5rem; }
 .stage-card span, .stage-card small { color: #def5ea; font-size: .82rem; font-weight: 800; }
 .stage-card.is-boss-stage { border-color:rgba(255,214,102,.68); box-shadow:inset 0 0 0 1px rgba(255,214,102,.2),0 12px 30px rgba(0,0,0,.4); }
 .stage-card.is-boss-stage em { color:var(--gold); }
 .stage-card.is-browsed { border-color: #b9ffe2; box-shadow: 0 0 0 3px rgba(97,237,179,.52), 0 0 24px rgba(97,237,179,.88), inset 0 0 18px rgba(97,237,179,.2), 0 15px 34px rgba(0,0,0,.5); }
-.stage-card.is-cleared::after { content: "★"; position: absolute; top: 12px; right: 14px; color: var(--gold); font-size: 1.55rem; }
+.stage-card.is-cleared::after { content: "★"; position: absolute; color: var(--gold); font-size: 1.55rem; }
 .stage-card[aria-disabled="true"] { filter: grayscale(.78) brightness(.56); }
 .stage-card.is-browsed[aria-disabled="true"] { filter: none; background: linear-gradient(0deg, rgba(4,20,34,.98), rgba(17,58,76,.62)), url("../../assets/animal-auto-squad-arena-block-v1.webp") center/cover; }
 .stage-legend { display: flex; justify-content: space-between; align-items: center; padding: 0 10px; border-radius: 10px; color: var(--muted); background: rgba(3,15,12,.78); font-size: .72rem; font-weight: 800; }
@@ -380,7 +339,6 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
 
 @media (max-width: 640px) {
   .squad-app { padding-inline: 8px; }
-  .topbar { grid-template-columns:58px minmax(0,1fr) 108px; gap:7px; }
   .menu-panel { grid-template-columns:1fr; gap:12px; padding:10px; }
   .cover { aspect-ratio:16/10; object-position:center 38%; }
   .menu-copy { gap:10px; }
@@ -651,11 +609,10 @@ body {
   background: linear-gradient(155deg, rgba(25, 77, 101, .98), rgba(7, 27, 47, .98));
   box-shadow: 0 10px 0 rgba(3, 19, 34, .82), 0 24px 58px rgba(0, 0, 0, .38);
 }
-.back-btn, .primary-btn, .secondary-btn, .shop-action-btn, .store-btn {
+.primary-btn, .secondary-btn, .shop-action-btn, .store-btn {
   border-radius: 12px;
   box-shadow: 0 4px 0 rgba(3, 24, 40, .62);
 }
-.back-btn { color: #07243c; background: linear-gradient(#fff4b4, #f2b734); }
 .primary-btn { color: #17220d; background: linear-gradient(180deg, #ffe47d, #f4a61e); }
 .secondary-btn, .shop-action-btn { color: #effaff; border-color: rgba(125, 235, 255, .48); background: linear-gradient(180deg, rgba(39, 116, 141, .82), rgba(12, 49, 72, .94)); }
 .cover {
@@ -733,8 +690,7 @@ body.squad-active::before {
     aspect-ratio: auto;
     object-position: center 38%;
   }
-  body:not(.squad-stage-select):not(.squad-active) .menu-copy,
-  body:not(.squad-stage-select):not(.squad-active) #menuPanel .wp-standard-main-copy {
+  body:not(.squad-stage-select):not(.squad-active) .menu-copy {
     gap: 4px !important;
   }
   body:not(.squad-stage-select):not(.squad-active) .menu-copy > strong {
@@ -764,9 +720,6 @@ body.squad-active::before {
 /* The shared Battle header intentionally has no hit surface beyond its
    return control. Keep the native control targetable for the validator and
    keyboard/pointer users while preserving the header's compact footprint. */
-body.squad-active .wp-generated-battle-header {
-  pointer-events: auto !important;
-}
 
 /* The logical Battle Canvas is the containing panel, while its controls are
    distributed across native preparation and modal subtrees. Let the panel
@@ -797,22 +750,6 @@ body.squad-active button.battle-external-return {
      enlarges its native return button for short-landscape readability, so
      keep the overlay containing block equally wide in RTL; otherwise the
      oversized block aligns its right edge to the 48px box and clips left. */
-  body[data-wp-game-id="animal-auto-squad"].squad-active .wp-generated-battle-header {
-    width: 104px !important;
-    min-width: 104px !important;
-    max-width: 104px !important;
-    height: 104px !important;
-    min-height: 104px !important;
-    max-height: 104px !important;
-  }
-  body[data-wp-game-id="animal-auto-squad"].squad-active .wp-generated-battle-header > [data-wp-return="battle"] {
-    width: 104px !important;
-    min-width: 104px !important;
-    max-width: 104px !important;
-    height: 104px !important;
-    min-height: 104px !important;
-    max-height: 104px !important;
-  }
   #gamePanel .modal-panel {
     width: min(820px,calc(100% - 80px));
     max-height: calc(100% - 80px);
@@ -1080,9 +1017,6 @@ body.squad-active button.battle-external-return {
   /* Keep the Main poster at the shared 420px wide-layout contract even when
      the compact landscape grid's stretch rules are loaded after this file's
      general Main styles. */
-  .squad-app .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 420px;
-  }
   body:not(.squad-stage-select):not(.squad-active) .menu-panel {
     grid-template-columns: 420px minmax(0, 1fr) !important;
   }
@@ -1126,20 +1060,6 @@ body {
   background-position: center top;
   background-repeat: repeat-y, no-repeat;
   background-size: 1440px 960px, 100% 1200px;
-}
-
-.topbar {
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #3c6368;
-}
-
-.back-btn {
-  border: 2px solid #5d8688;
-  border-radius: 3px;
-  color: #f5e9c4;
-  background: #163440;
-  box-shadow: inset 0 2px 0 #30535d, 0 4px 0 #061820;
 }
 
 .locale select {
@@ -1255,12 +1175,6 @@ body.squad-stage-select .stage-panel {
   border-radius: 3px;
   background: #14323d;
   box-shadow: 0 5px 0 #061820, 0 14px 28px rgba(1, 14, 23, .36);
-}
-
-body.squad-stage-select .wp-stage-shell-header {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
 }
 
 .stage-panel-head {

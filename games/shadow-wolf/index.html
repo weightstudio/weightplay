@@ -59,11 +59,11 @@
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260712-shadow-wolf-public1" />
-    <link rel="stylesheet" href="style.css?v=20260809-first-response-v8-88e1bb92bd44" />
+    <link rel="stylesheet" href="style.css?v=20260919-block-v11" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260718-full-canvas1" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-  <body>
+  <body data-wp-game-owned-guide="true">
     <header class="top-nav">
       <div class="top-nav-left">
         <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby" data-ui-aria="backToLobby">
@@ -100,7 +100,7 @@
               <img class="cover" src="../../assets/interface7-redrawn/shadow-wolf.webp" alt="Shadow Wolf Legend cover" data-ui-alt="coverAlt" />
             </div>
             <h2 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h2>
-            <p class="menu-hint" data-ui="menuHint"></p>
+            <p class="menu-hint" data-ui="menuHint" data-shadow-authored-summary="true" data-runtime-localize="off">Cross ruined platforms, dodge hazards and defeat every enemy to open the next route.</p>
             <p class="campaign-summary"><span data-ui="regionsCleared">Stage progress</span>: <strong id="campaignSummary">0 / 30</strong></p>
             <button id="startBtn" class="primary-btn start-btn" type="button" data-ui="startRun">Start Game</button>
             <div class="desktop-controls" aria-label="Desktop controls" data-ui="controlLegend" data-ui-aria="desktopControlsLabel">A/D Move · W/Space Jump · J Attack · K/Shift Dash</div>
@@ -244,84 +244,7 @@
 
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Shadow Wolf game guide">
-      <div class="game-info-hero">
-        <div class="game-info-title">
-          <span class="game-info-kicker">WeightPlay Original Game Guide</span>
-          <h2>Shadow Wolf Legend Game Guide</h2>
-          <p>Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings, fight shadow creatures, collect EXP, and spend two exact attribute points whenever a level is gained. Every fifth stage ends with a regional Boss whose defense or attack pattern requires a different response.</p>
-        </div>
-      </div>
-      <div class="game-info-sections">
-        <div class="game-info-section">
-          <h3>World and Mission</h3>
-          <p>Six seals once kept the route open between the forest frontier and Behemoth Crown. Their fracture changed each region: crystals fall through caverns, roots close the Rootwild, furnace vents ignite the Ember Vault, rift winds distort Eclipse Bridge, and Crown Road combines earlier threats.</p>
-          <p>You play the Shadow Wolf explorer, a mobile rune-marked guardian able to run, double-jump, dash through danger for a brief protected moment, and strike with a forward claw sweep. The goal is not simply to reach the right edge. Every creature assigned to the selected stage must be defeated. A clear restores that section of the trail, saves the stage, and unlocks the next card. Clearing Stage 30 defeats the Behemoth at the crown and completes the six-region campaign, while every cleared stage remains available for replay.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>How the Systems Work</h3>
-          <ul>
-            <li><strong>Movement and combat:</strong> run left or right, jump once from the ground and once again in the air, slash in the direction the wolf faces, and dash when a projectile, charge, or hazard leaves no safe walking route.</li>
-            <li><strong>Health and failure:</strong> enemy contact, projectiles, spikes, and active terrain reduce Wolf HP. Falling off the route returns the wolf to stable ground with a five-HP penalty. Reaching zero HP ends that attempt without removing previously saved clears.</li>
-            <li><strong>EXP and growth:</strong> defeated ordinary and special enemies release EXP orbs. A level pauses the same Battle screen and grants two mandatory points. Strength raises claw Damage, Agility raises Speed, Constitution raises Max HP and heals part of the increase, and Luck raises Critical chance. Every button shows the exact current and next value.</li>
-            <li><strong>Special enemies:</strong> Crystal Bats fire three-shot spreads, Armored Boars resist frontal damage until a missed patrol turn opens their guard, Charger Boars burst across a lane, Ember Wolves leave temporary fire, Dive Bats pursue vertically, Rift Bats blink between perches, and Mirror Wolves split once into two fragile echoes.</li>
-            <li><strong>Terrain warnings:</strong> crystal fall, venom, roots, fire, shockwaves, and rift gusts use a warning state before their dangerous window. Moving ledges change the available jump route, while static spikes remain dangerous whenever touched.</li>
-            <li><strong>Permanent option:</strong> the Mist Amulet costs 15 optional Diamonds and permanently changes the starting maximum from 30 HP to 40 HP. The first activation only shows the exact before-and-after balance; a second activation confirms the spend. Normal stage unlocks never require it.</li>
-          </ul>
-        </div>
-        <div class="game-info-section">
-          <h3>How to Play</h3>
-          <ol>
-            <li>Choose an unlocked card from the horizontal Stage rail. Locked cards remain visible so the length of the 30-stage route and each fifth-stage Boss checkpoint are clear.</li>
-            <li>Use A/D or Left/Right Arrow to move. Press W, Up Arrow, or Space to jump; press it once more before landing to use the second jump.</li>
-            <li>Press J to slash. Press K or Shift to dash. On touch screens, use the two direction buttons plus the visible Jump, Attack, and Dash buttons.</li>
-            <li>Watch the ground and the enemies together. Dashed hazard outlines are warnings; filled bright lanes are active. A Boss shield ring means ordinary slashes are strongly reduced until its counter window opens.</li>
-            <li>Collect EXP orbs after a safe defeat. When growth pauses the battle, spend both points before play resumes; leaving one point unspent is not allowed.</li>
-            <li>Defeat the complete encounter. Victory saves the clear, unlocks the next stage, and offers Next Stage. Defeat offers a direct retry. Both results can return to Stage selection.</li>
-          </ol>
-        </div>
-        <div class="game-info-section game-info-strategy">
-          <h3>Strategy Tips</h3>
-          <ul>
-            <li>Do not spend the second jump immediately. Keep it available until a moving ledge, spread shot, or active ground lane confirms where the safe landing will be.</li>
-            <li>Dash is both movement and defense. Use it through a projectile fan or across the last part of a charge, then turn and slash during the enemy recovery instead of dashing only for speed.</li>
-            <li>Against Armored Boars, small guarded hits are evidence that the counter window is closed. Let the patrol hit a bound, then attack while the armor ring is open.</li>
-            <li>Remove ranged enemies before committing to a slow ground duel. A Crystal or Rift Bat can make an otherwise safe boar punish window dangerous.</li>
-            <li>Strength shortens encounters, Constitution forgives hazard mistakes, Agility improves positioning, and Luck creates less predictable burst. The best choice depends on the stage rule, not a universal upgrade order.</li>
-          </ul>
-        </div>
-        <div class="game-info-section">
-          <h3>Campaign and Difficulty Growth</h3>
-          <p><strong>Stages 1-5: Moonshade Frontier.</strong> The first arc teaches the relationship between patrol timing, upper ledges, aimed Bat shots, moving platforms, and permanent spikes. Basilisk Hollow then changes the question: venom removes sections of the ground while the serpent fires a widening fan. Repositioning early is safer than reacting after the pool becomes active.</p>
-          <p><strong>Stages 6-10: Crystal Cavern.</strong> Falling-crystal warnings and three-shot Crystal Bats make standing still risky. Glass Causeway places that pressure under moving platforms, and Shard Ambush introduces the Armored Boar counter. Stone Guardian blocks frontal claws, then drops its guard after a ground slam that sends jumpable shockwaves in both directions.</p>
-          <p><strong>Stages 11-15: Rootwild.</strong> Bramble and root lanes limit where the wolf can wait. Charging and armored ground enemies appear beside ranged threats, so target order matters. Thorn Colossus normally protects its glowing core; a missed root smash opens a short damage window while new root lanes warn where not to stand.</p>
-          <p><strong>Stages 16-20: Ember Vault.</strong> Fire lanes cycle, Ember Wolves redraw safe ground with trails, and Dive Bats force attention above the player. Cinder Wyvern is protected while airborne and releases a fire fan. Its landing creates a shockwave but also exposes the body, turning survival during flight into a planned counterattack.</p>
-          <p><strong>Stages 21-25: Eclipse Rift.</strong> Gusts shift horizontal position, Rift Bats blink between perches, and Mirror Wolves split into echoes. Eclipse Stag reflects most damage behind its antler shield. Baiting its dash into an arena edge breaks the shield and creates the only efficient attack window.</p>
-          <p><strong>Stages 26-30: Crown Road.</strong> Earlier rules return in mixed but readable combinations rather than becoming simple HP inflation. Sixfold Trial staggers six enemy roles, Broken Altar cycles multiple terrain warnings, and Last Seal presents three elite counter checks. Behemoth Crown changes at two health thresholds: first crystal fall, then root lanes and a denser projectile pattern, finishing the campaign with a synthesis that still has visible warnings.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Developer Design Note</h3>
-          <p>The 30 stages are arranged as six five-stage teaching arcs because action-platform difficulty should grow through recognition and counterplay, not only faster enemies and larger health bars. The first four stages of each region introduce or combine a rule; the fifth asks the player to apply that rule against a Boss with a visible defense state and a punishable opening. The warning-to-active terrain rhythm gives touch players enough time to make a deliberate swipe or button decision without removing pressure.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Player and Save Information</h3>
-          <p>The current browser stores the highest unlocked stage, selected stage, completed-stage list, attempt count, best cleared stage, final Crown clears, and Mist Amulet ownership. A legacy eight-room save is migrated forward without relocking earned progress; an old full clear opens all 30 stages. No login is required for basic play. Clearing site storage or using a different browser may remove this local record. Diamonds are optional support currency, and the four attribute choices describe only the current run&#39;s game statistics.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Frequently Asked Questions</h3>
-          <dl>
-            <div><dt>Is Shadow Wolf Legend free to play?</dt><dd>Yes. The 30-stage campaign runs in the browser without a required purchase or login.</dd></div>
-            <div><dt>How do stages unlock?</dt><dd>A new save begins with Stage 1. Clearing the complete encounter saves that stage and unlocks the next one. Cleared stages remain replayable.</dd></div>
-            <div><dt>What happens if the wolf falls?</dt><dd>The wolf returns to stable ground and loses five HP. The stage ends only if that penalty reduces HP to zero.</dd></div>
-            <div><dt>Why does an Armored Boar or Boss take very little damage?</dt><dd>Its visible armor or shield state is active. Trigger the specific counter—such as a missed charge, ground slam, root smash, landing, or wall impact—then attack during the open window.</dd></div>
-            <div><dt>Do I have to spend both attribute points?</dt><dd>Yes. Every level grants two points, and Battle resumes only after both have been assigned to Strength, Agility, Constitution, or Luck.</dd></div>
-            <div><dt>Are Diamonds required to finish all 30 stages?</dt><dd>No. Diamonds only provide the optional permanent Mist Amulet and normal campaign progress does not require it.</dd></div>
-            <div><dt>What progress is saved?</dt><dd>Stage unlocks and clears, selected stage, attempts, best clear, Crown clears, and Mist Amulet ownership are saved locally in this browser.</dd></div>
-            <div><dt>What is different about the six Bosses?</dt><dd>Basilisk controls ground with venom, Stone Guardian drops its guard after slams, Thorn Colossus exposes a core, Cinder Wyvern alternates flight and landing, Eclipse Stag breaks its shield on a failed dash, and Behemoth combines phase-based crystal and root pressure.</dd></div>
-          </dl>
-        </div>
-      </div>
-    </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>Shadow Wolf Legend Game Guide</h2><p>Cross ruined platforms, dodge hazards and defeat every enemy to open the next route.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Controls</h3><p>Move with A/D or arrows; jump with W, Up or Space and jump again in midair. J attacks; K or Shift dashes. On mobile, use the visible buttons.</p></div><div class="game-info-section"><h3>Growth and tactics</h3><p>Collect experience and spend both upgrade points to resume combat. Save your second jump for a safe landing; bait guarded enemies into attacking, then strike during recovery. Later routes combine moving platforms, projectiles and timed hazards. Zero health ends the attempt; cleared routes stay unlocked.</p></div><div class="game-info-section"><h3>Saving</h3><p>Progress is saved in this browser; clearing site data may erase it. Diamonds buy only the optional Mist Amulet, never access to the campaign.</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes. Cleared routes and upgrades stay in this browser; clearing site data may erase them.</dd></div><div><dt>Are Diamonds required for the campaign?</dt><dd>No. Diamonds buy only the optional Mist Amulet and never unlock campaign access.</dd></div></dl></div></div></section>
     <!-- adsense-static-guide:end -->
 
     <script src="../../src/site-config.js?v=20260708-shadow-wolf-internal-route1"></script>
@@ -335,10 +258,10 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <link rel="stylesheet" href="../../src/game-ui-theme.css" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css" />
-    <link rel="stylesheet" href="frame-content.css" />
+    <link rel="stylesheet" href="frame-content.css?v=20260919-block-v11" />
     <script src="../../src/game-screen-frame.js"></script>
-    <script src="frame.js"></script>
-    <script src="game.js?v=20260825-arabic-runtime-v10"></script>
+    <script src="frame.js?v=20260919-block-v11"></script>
+    <script src="game.js?v=20260919-block-v11"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>

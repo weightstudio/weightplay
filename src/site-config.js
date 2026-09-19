@@ -1,11 +1,15 @@
 window.WONDER_SITE = {
-  version: "v0.34.44",
+  version: "v0.34.45",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
     phaseOneLocales: ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"],
     plannedLocales: [],
     useLocaleRoutes: true,
+  },
+  gameIdFromPath(pathname = location.pathname) {
+    const match = String(pathname).match(/(?:^|\/)games\/([^/]+)/i);
+    return match?.[1] || "";
   },
   analytics: {
     gaMeasurementId: "G-PP4XJGHCD3",
@@ -33,7 +37,25 @@ if (typeof document !== "undefined" && /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(loca
   window.__weightPlaySharedInterfaceRequested = true;
   const currentScript = document.currentScript;
   const bootstrap = document.createElement("script");
-  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20260911-authored-posters-complete", currentScript?.src || document.baseURI).href;
+  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20260918-ui-fix1", currentScript?.src || document.baseURI).href;
   bootstrap.dataset.wpSharedInterface = "7";
   document.head.append(bootstrap);
+}
+
+// Game entries share the same collector, including routes without a legacy
+// analytics script tag. Wait for parsing so existing ordered tags retain ownership.
+if (typeof document !== "undefined" && /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(location.pathname)) {
+  const ensureGameAnalytics = () => {
+    if (!/^https?:$/.test(location.protocol)) return;
+    if (window.WonderAnalytics || window.__weightPlayAnalyticsRequested
+      || document.querySelector('script[data-wp-analytics-loader]')) return;
+    window.__weightPlayAnalyticsRequested = true;
+    const script = document.createElement("script");
+    script.src = new URL("/src/analytics.js", location.origin).href;
+    script.async = true;
+    script.dataset.wpAnalyticsLoader = "true";
+    document.head.append(script);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ensureGameAnalytics, { once: true });
+  else ensureGameAnalytics();
 }

@@ -1,4 +1,16 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: nodes.gamePanel,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "animal-zoo-idle";
   const localeKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
@@ -609,7 +621,7 @@
   if (resultCard && !resultCard.querySelector(".result-scroll-region")) {
     const resultScrollRegion = document.createElement("div");
     resultScrollRegion.className = "result-scroll-region";
-    resultScrollRegion.setAttribute("tabindex", "0");
+    (__wpNotifyMeasurement(), resultScrollRegion.setAttribute("tabindex", "0"));
     resultScrollRegion.append(nodes.tourReport, nodes.animalAlbum);
     resultCard.insertBefore(resultScrollRegion, nodes.closeReportBtn);
   }
@@ -1843,7 +1855,7 @@
     nodes.gamePanel.classList.add("report-open");
     nodes.habitatGrid.inert = true;
     nodes.gamePanel.querySelector(".resource-row").inert = true;
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     requestAnimationFrame(() => {
       if (resultScrollRegion) resultScrollRegion.scrollTop = 0;
       nodes.closeReportBtn.focus({ preventScroll: true });
@@ -1853,7 +1865,7 @@
   }
 
   function closeReport(restoreFocus = true) {
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.gamePanel.classList.remove("report-open");
     nodes.habitatGrid.inert = false;
     nodes.gamePanel.querySelector(".resource-row").inert = false;
@@ -1903,7 +1915,7 @@
   function setParkLeaveOpen(open, restoreFocus = true) {
     if (open && !nodes.resultPanel.classList.contains("hidden")) return;
     parkLeaveOpen = Boolean(open);
-    nodes.parkLeavePanel.classList.toggle("hidden", !parkLeaveOpen);
+    (__wpNotifyMeasurement(), nodes.parkLeavePanel.classList.toggle("hidden", !parkLeaveOpen));
     nodes.habitatGrid.inert = parkLeaveOpen;
     nodes.gamePanel.querySelector(".resource-row").inert = parkLeaveOpen;
     if (parkLeaveOpen) {
@@ -1933,7 +1945,9 @@
     });
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, mode: "continuous_park" });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function startGame() {
     startPark();
@@ -1959,7 +1973,13 @@
     requestAnimationFrame(() => {
       requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
     });
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+    if (__wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; } __wpNotifyMeasurement();
+}
 
   function updateZooViewportScales() {
     updateZooBattleScale();
@@ -2093,4 +2113,6 @@
   loadAssets();
   window.setInterval(tickUi, 1000);
   window.setInterval(tickPark, 10000);
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 })();

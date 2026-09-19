@@ -21,8 +21,20 @@
 
   root.dataset.wpSharedInterface = "7";
   root.dataset.wpSharedInterfaceBootstrapped = "7";
+  window.__weightPlaySharedInterfaceRequested = true;
+  // A few authored entries load this bootstrap directly, without site-config.
+  // Reuse the canonical config/collector rather than defining a second GA4 tag.
+  if (/^https?:$/.test(location.protocol) && !window.WONDER_SITE && !document.querySelector('script[src*="site-config.js"]')
+    && !window.__weightPlaySiteConfigRequested) {
+    window.__weightPlaySiteConfigRequested = true;
+    const configScript = document.createElement("script");
+    configScript.src = new URL("/src/site-config.js", location.origin).href;
+    configScript.async = true;
+    document.head.append(configScript);
+  }
 
-  const version = "20260911-interface7-universal";
+
+  const version = "20260918-ui-fix1";
   const assetUrl = (name) => new URL(name, `${location.origin}/src/`).href;
 
   const addStylesheet = (name) => {
@@ -54,10 +66,9 @@
   };
   addInterfaceMeta();
 
-  const gameIdFromPath = () => {
-    const match = location.pathname.match(/(?:^|\/)games\/([^/]+)/i);
-    return match?.[1] || "";
-  };
+  // Reuse canonical identity; retain the prior resolver for older cached site-config.
+  const gameIdFromPath = () => window.WONDER_SITE?.gameIdFromPath?.()
+    || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";
 
   const findMainPoster = () => {
     const explicit = document.querySelector(

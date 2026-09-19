@@ -39,10 +39,12 @@
     stage.prepend(stageHeader);
     const wallet=stageContent.querySelector('.wallet-row');
     wallet.setAttribute('data-wp-frame-info','');
+    wallet.style.setProperty('--wp-frame-stat-count', String(wallet.children.length));
     wallet.querySelectorAll(':scope > span').forEach(node=>node.setAttribute('data-wp-frame-stat',''));
     stageHeader.append(wallet);
     const nav=document.getElementById('menuTabs'); nav.setAttribute('data-wp-frame-nav','');
     nav.querySelectorAll('button').forEach(n=>n.setAttribute('data-wp-frame-action','tab'));
+    stage.append(nav);
     const battleContent=battle.querySelector('.fixed-game-shell');
     const battleHeader=battleContent.querySelector('.play-head');
     battleHeader.querySelector('[data-wp-return] .sr-only')?.remove();

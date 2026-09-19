@@ -23,6 +23,8 @@ jobs:
           GA4_PRIVATE_KEY: ${{ secrets.GA4_PRIVATE_KEY }}
           GA4_SITE_PATH_PREFIX: ""
           GA4_LOOKBACK_DAYS: 7
+          GA4_BEHAVIOR_REPORT_PATH: ${{ runner.temp }}/weightplay-game-behavior.json
+          GA4_BEHAVIOR_DAYS: 30
         run: node scripts/update-game-stats.mjs
       - name: Commit updated stats
         run: |
@@ -37,3 +39,11 @@ jobs:
             git pull --rebase --autostash
             git push
           fi
+      - name: Save private game behavior report
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: weightplay-game-behavior
+          path: ${{ runner.temp }}/weightplay-game-behavior.json
+          if-no-files-found: ignore
+          retention-days: 14

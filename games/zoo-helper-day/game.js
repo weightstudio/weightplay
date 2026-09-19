@@ -1,4 +1,22 @@
 ﻿(() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "zoo-helper-day";
   const assetVersion = "20260708-zoo-helper-day-clear-icons1";
   const localeKey = "weightPlayLocale";
@@ -422,16 +440,16 @@
     loadingFill: $("loadingFill"),
     gameShell: document.querySelector(".zoo-game"),
   };
-  nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove();
+  (__wpNotifyMeasurement(), nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove());
   const resultActions = document.createElement("div");
   resultActions.className = "result-actions";
   resultActions.append(nodes.resultStagesBtn, nodes.nextStageBtn, nodes.retryBtn);
   nodes.resultPanel?.querySelector(".result-card")?.append(resultActions);
   const leavePanel = document.createElement("section");
   leavePanel.className = "zoo-leave-panel hidden";
-  leavePanel.setAttribute("role", "dialog");
-  leavePanel.setAttribute("aria-modal", "true");
-  leavePanel.setAttribute("aria-labelledby", "zooLeaveTitle");
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("role", "dialog"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-modal", "true"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-labelledby", "zooLeaveTitle"));
   leavePanel.innerHTML = `<div class="zoo-leave-card"><h2 id="zooLeaveTitle"></h2><p id="zooLeaveText"></p><div><button id="keepHelpingBtn" type="button"></button><button id="leaveShiftBtn" type="button"></button></div></div>`;
   nodes.playPanel.insertAdjacentElement("afterend", leavePanel);
   nodes.leaveTitle = leavePanel.querySelector("#zooLeaveTitle");
@@ -812,7 +830,7 @@
   function setLeaveConfirmOpen(open, restoreFocus = true) {
     if (open === leaveConfirmOpen) return;
     leaveConfirmOpen = open;
-    leavePanel.classList.toggle("hidden", !open);
+    (__wpNotifyMeasurement(), leavePanel.classList.toggle("hidden", !open));
     setResultOwnership(open);
     if (open) nodes.keepHelpingBtn.focus({ preventScroll:true });
     else if (restoreFocus) nodes.backToStagesBtn.focus({ preventScroll:true });
@@ -883,7 +901,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     document.body.classList.add("wp-standard-stage-page");
     setBattleViewport(false);
     restoreStageShell();
@@ -895,7 +913,12 @@
     });
     if (focusStage) focusStageSelection(preferCurrent);
     setTimeout(restoreStageShell, 180);
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showMain({ focusStart = false } = {}) {
     setLeaveConfirmOpen(false, false);
@@ -913,7 +936,12 @@
       requestAnimationFrame(() => requestAnimationFrame(restoreStartFocus));
       setTimeout(restoreStartFocus, 240);
     }
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function startStage(index) {
     setLeaveConfirmOpen(false, false);
@@ -931,12 +959,14 @@
     nodes.stagePanel.classList.add("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     nodes.playPanel.classList.remove("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleViewport(true);
     track("game_start", { level: index + 1 });
     playSound("start");
     renderTask();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function renderTask() {
     if (wrongFeedbackTimer) clearTimeout(wrongFeedbackTimer);
@@ -1138,12 +1168,14 @@
     lastResult = { earned, previousBest, tickets, mood, taskCount: stage.tasks.length, firstTryTasks, mistakes };
     renderResult();
     setResultOwnership(true);
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     updateResultControlSize();
     requestAnimationFrame(focusResultAction);
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function showFloatingText(message) {
     const toast = document.createElement("div");
@@ -1187,6 +1219,7 @@
       if (loaded >= assets.length) {
         setTimeout(() => {
           nodes.loadingPanel.classList.add("hidden");
+          if (!__wpMeasurement.started && __wpMeasurement.screen === null) { __wpMeasurement.screen = "main"; } __wpNotifyMeasurement();
           track("game_ready");
         }, 180);
       }
@@ -1221,7 +1254,7 @@
     nodes.nextStageBtn.disabled = !hasNextStage;
     nodes.nextStageBtn.setAttribute("aria-disabled", String(!hasNextStage));
     nodes.nextStageBtn.classList.toggle("primary-action", hasNextStage);
-    nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage);
+    (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage));
     nodes.retryBtn.classList.remove("primary-action");
   }
 
@@ -1269,7 +1302,7 @@
     nodes.resultStagesBtn.addEventListener("click", () => settleResult(() => showMenu({ focusStage:true })));
     nodes.retryBtn.addEventListener("click", () => settleResult(() => {
       track("game_restart", { level: currentStage + 1, mistakes });
-      startStage(currentStage);
+      __wpReplayStart(() => startStage(currentStage));
     }));
     nodes.nextStageBtn.addEventListener("click", () => {
       if (nodes.nextStageBtn.disabled) return;

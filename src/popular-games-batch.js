@@ -1105,6 +1105,27 @@
   };
 
   function mount(gameId) {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    started: __wpMeasurement.started && (game.type !== "snake" || state.started === true),
+    keyboardKeys: ["snake", "tetris", "breakout", "pong"].includes(game.type)
+      ? ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","a","A","d","D","w","W","s","S"," ","Enter"] : [],
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended || state?.done)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended || state?.done), outcome: state?.done ? (state.outcome || (state.success ? "win" : "lose")) : __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || game?.paused || game?.suspended), node: els.battle,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
     const game = CATALOG[gameId];
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
     document.body.dataset.gameId = gameId;
@@ -1237,6 +1258,7 @@
     let tetrisGrid = null;
     let tetrisDialog = null;
     let tetrisDialogReturnFocus = null;
+    let tetrisGuideLocale = null;
     const stopTetrisTimer = () => { window.clearTimeout(tetrisTimer); tetrisTimer = null; };
     const scheduleTetris = () => {
       stopTetrisTimer();
@@ -1248,20 +1270,20 @@
       }, window.WPTetrisEngine.interval(state));
     };
     const closeTetrisDialog = () => {
-      tetrisDialog?.close();
+      (__wpNotifyMeasurement(), tetrisDialog?.close());
       els.battle.querySelector(".battle-panel").inert = false;
-      state.paused = false;
+      (__wpNotifyMeasurement(), state.paused = false);
       tetrisDialogReturnFocus?.focus({ preventScroll: true });
       scheduleTetris();
     };
     const openTetrisDialog = (reason = "pause") => {
       if (game.type !== "tetris" || state.done || document.body.dataset.screen !== "battle" || tetrisDialog?.open) return;
-      state.paused = true;
+      (__wpNotifyMeasurement(), state.paused = true);
       stopTetrisTimer();
       if (!tetrisDialog) {
         tetrisDialog = document.createElement("dialog");
         tetrisDialog.className = "tetris-dialog";
-        tetrisDialog.setAttribute("aria-labelledby", "tetrisPauseTitle");
+        (__wpNotifyMeasurement(), tetrisDialog.setAttribute("aria-labelledby", "tetrisPauseTitle"));
         els.battle.querySelector(".battle-canvas").append(tetrisDialog);
         tetrisDialog.addEventListener("cancel", (event) => { event.preventDefault(); closeTetrisDialog(); });
       }
@@ -1276,11 +1298,11 @@
       leave.textContent = copy(locale, reason === "restart" ? "restart" : "home");
       leave.addEventListener("click", () => {
         closeTetrisDialog(); stopTetrisTimer();
-        if (reason === "restart") start("restart");
+        if (reason === "restart") __wpReplayStart(() => start("restart"));
         else { show("main"); state = makeState(game.type); render(); }
       });
       els.battle.querySelector(".battle-panel").inert = true;
-      tetrisDialog.showModal();
+      (__wpNotifyMeasurement(), tetrisDialog.showModal());
       resume.focus();
     };
     const renderTetrisResult = () => {
@@ -1291,7 +1313,7 @@
       els.resultTitle.textContent = copy(locale, "failure");
       els.resultCopy.textContent = tetrisText().failure;
       els.resultGoal.textContent = tetrisText().saved;
-      els.resultGoal.hidden = false;
+      (__wpNotifyMeasurement(), els.resultGoal.hidden = false);
       els.resultStats.innerHTML = [[copy(locale,"score"),state.score],[tetrisText().lines,state.lines],[copy(locale,"best"),best]]
         .map(([label,value]) => `<span class="stat tetris-result-stat"><span class="stat-label">${label}</span><strong>${value}</strong></span>`).join("");
     };
@@ -1311,12 +1333,58 @@
       const tetrisHasPublicGuide = document.body.dataset.wpPublicRelease === "true"
         || document.querySelector('meta[name="robots"]')?.content === "index,follow";
       if (tetrisHasPublicGuide) {
-        // Public routes own their authored static Guide. Keep the reviewed
-        // public copy intact, while replacing the old staging intro on any
-        // locale whose static route still carries the pre-release snapshot.
-        if (guideIntro) {
-          const publicDescription = document.querySelector('meta[name="description"]')?.content?.trim();
-          if (publicDescription) guideIntro.textContent = publicDescription;
+        // Keep the indexed first paint. In-place language changes must use the
+        // same locale-owned copy as the generator, without changing metadata.
+        if (guideRoot && tetrisGuideLocale !== locale) {
+          if (tetrisGuideLocale === null) {
+            const publicDescription = document.querySelector('meta[name="description"]')?.content?.trim();
+            if (guideIntro && publicDescription) guideIntro.textContent = publicDescription;
+          } else {
+            guideRoot.setAttribute("aria-label", ui.aria);
+            if (guideKicker) guideKicker.textContent = ui.kicker;
+            if (guideTitle) guideTitle.textContent = els.title.textContent;
+            if (guideIntro) guideIntro.textContent = ui.intro;
+            const facts = [...guideRoot.querySelectorAll(".game-info-fact")];
+            [[ui.gameplay, ui.gameplayValue], [ui.genre, ui.genreValue]].forEach(([label, value], index) => {
+              const fact = facts[index];
+              if (fact?.querySelector("span")) fact.querySelector("span").textContent = label;
+              if (fact?.querySelector("strong")) fact.querySelector("strong").textContent = value;
+            });
+            const sections = [...guideRoot.querySelectorAll(".game-info-sections > .game-info-section")];
+            [[ui.how, `${ui.objective} ${ui.instructions}`], [ui.progressTitle, ui.progressText],
+              [ui.playerTitle || ui.saveQuestion, ui.playerText || ui.saved], [ui.designTitle, ui.designText]
+            ].forEach(([heading, text], index) => {
+              const section = sections[index];
+              if (section?.querySelector("h3")) section.querySelector("h3").textContent = heading;
+              if (section?.querySelector("p")) section.querySelector("p").textContent = text;
+            });
+            const faqSection = sections.find(section => section.querySelector("dl"));
+            if (faqSection) {
+              faqSection.querySelector("h3").textContent = ui.faq;
+              const entries = [[ui.roundEndQuestion, ui.roundEndAnswer], [ui.lineQuestion, ui.lineAnswer],
+                [ui.saveQuestion, ui.saved], [ui.controlsQuestion, ui.controlsAnswer],
+                [ui.previewQuestion, ui.previewAnswer], ...(ui.extraFaq || [])];
+              faqSection.querySelector("dl").replaceChildren(...entries.map(([question, answer]) => {
+                const item = document.createElement("div"), dt = document.createElement("dt"), dd = document.createElement("dd");
+                dt.textContent = question; dd.textContent = answer; item.append(dt, dd); return item;
+              }));
+            }
+            const relatedSection = sections.find(section => section.querySelector(".game-info-related"));
+            if (relatedSection) {
+              relatedSection.querySelector("h3").textContent = ui.relatedTitle;
+              relatedSection.querySelector("p").textContent = ui.relatedIntro;
+              const segment = ({ "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", "pt-BR": "pt-br" })[locale] || locale;
+              [...relatedSection.querySelectorAll(".game-info-related-card")].forEach((card, index) => {
+                const related = ui.related?.[index];
+                if (!related) return;
+                card.setAttribute("href", `/${segment}/games/${related[0]}/`);
+                card.querySelector(".game-info-related-copy strong").textContent = related[1];
+                card.querySelector(".game-info-related-copy > span").textContent = related[2];
+              });
+            }
+          }
+          // Never rebuild the Guide on each falling-block render.
+          tetrisGuideLocale = locale;
         }
       } else {
         if (guideRoot) guideRoot.setAttribute("aria-label", ui.aria);
@@ -1678,7 +1746,12 @@
     };
     els.locale.addEventListener("change", persistLocale);
     const announce = (message, tone = "", messageKey = "") => { state.message = message; state.tone = tone; state.messageKey = messageKey; els.message.textContent = message; els.message.dataset.tone = tone; };
-    const show = (screen) => { els.main.hidden = screen !== "main"; if (els.stage) els.stage.hidden = screen !== "stage"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; }); document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main"); document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
+    const show = (screen) => { els.main.hidden = screen !== "main"; if (els.stage) els.stage.hidden = screen !== "stage"; els.battle.hidden = screen !== "battle"; (__wpNotifyMeasurement(), els.result.hidden = screen !== "result"); document.body.dataset.screen = screen; if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; }); document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main"); document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+};
     let snakeTimer = null;
     let ticResultTimer = null;
     let ticReplyTimer = null;
@@ -1750,9 +1823,13 @@
       renderStage();
       render();
     };
-    const start = (entry = "start") => { stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); const previousHangman = game.type === "hangman" ? { target: state.target, theme: state.theme } : null; const previousMahjongKey = game.type === "mahjong" ? state.layoutKey : ""; const previousMahjongDepth = game.type === "mahjong" ? state.depth : "standard"; const previousWordle = game.type === "wordle" ? { target: state.target, wordKey: state.wordKey } : null; state = makeState(game.type); if (game.type === "hangman") { const round = entry === "restart" && previousHangman ? previousHangman : HANGMAN_WORDS[hangmanRoundIndex++ % HANGMAN_WORDS.length]; Object.assign(state, round); } if (game.type === "mahjong") { const mastery = entry === "mastery" || (entry === "restart" && previousMahjongDepth === "mastery"); const layout = mastery ? MAHJONG_MASTERY_LAYOUT : entry === "restart" && previousMahjongKey ? MAHJONG_LAYOUTS.find((candidate) => candidate.key === previousMahjongKey) || MAHJONG_LAYOUTS[0] : MAHJONG_LAYOUTS[mahjongRoundIndex++ % MAHJONG_LAYOUTS.length]; state.tiles = [...layout.tiles]; state.layoutKey = layout.key; state.depth = mastery ? "mastery" : "standard"; state.targetPairs = mastery ? 12 : 6; Object.assign(state, window.WPMahjong.create(state.layoutKey, state.depth)); } if (game.type === "wordle") { const word = entry === "restart" && previousWordle ? previousWordle : WORDLE_WORDS[wordleRoundIndex++ % WORDLE_WORDS.length]; Object.assign(state, word); } if (game.type === "snake") { state.runNumber = nextSnakeRunNumber(); state.goalFood = snakeGoalForRun(state.runNumber); state.modeKey = snakeModeForRun(state.runNumber); state.obstacles = snakeObstaclesForMode(state.modeKey); state.foodCell = chooseSnakeFood(state.trail, state.obstacles); } show("battle"); trackCheckers("game_start", { entry }); const snakeModeCue = game.type === "snake" ? snakeModePreview(locale, state.modeKey) : ""; const breakoutReadyCue = game.type === "breakout" ? breakoutStateCopy(locale, state) : ""; const tetrisReadyCue = game.type === "tetris" ? tetrisProgressCopy(locale, state.lines) : ""; announce(game.type === "snake" ? snakeModeCue : game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "breakout" ? breakoutReadyCue : game.type === "tetris" ? tetrisReadyCue : game.type === "mahjong" ? window.WPMahjong.copy(locale).step : copy(locale, "ready"), "", game.type === "snake" ? "snakeModePreview" : game.type === "breakout" ? "breakoutAim" : game.type === "tetris" ? "tetrisProgress" : game.type === "mahjong" ? "mj:step" : "ready"); render(); };
-    const renderResult = () => { if (game.type === "tetris") { renderTetrisResult(); return; } const best = Number(localStorage.getItem(key(gameId)) || 0); const ticOutcome = TIC_OUTCOME_COPY[locale] || TIC_OUTCOME_COPY.en; const masteryCopy = MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en; const checkersOutcome = game.type === "checkers" ? state.outcome || (state.success ? "win" : "loss") : ""; els.resultTitle.textContent = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Title`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Title`] : state.success ? copy(locale, "success") : copy(locale, "failure"); const baseCopy = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Copy`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Copy`] : state.success ? copy(locale, "successCopy") : copy(locale, "failureCopy"); els.resultCopy.textContent = game.type === "wordle" ? `${baseCopy} ${(WORDLE_RESULT_COPY[locale] || WORDLE_RESULT_COPY.en)(state.target)}` : game.type === "hangman" ? `${baseCopy} ${(HANGMAN_RESULT_COPY[locale] || HANGMAN_RESULT_COPY.en)(state.target)}` : game.type === "mahjong" ? `${baseCopy} ${state.depth === "mastery" ? masteryCopy.result : `${MAHJONG_RESULT_COPY[locale] || MAHJONG_RESULT_COPY.en} ${masteryCopy.button}.`}` : baseCopy; els.result.dataset.outcome = game.type === "checkers" ? checkersOutcome : game.type === "tic" ? state.outcome : state.success ? "win" : "loss"; els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; if (els.resultGoal) { els.resultGoal.hidden = !["breakout", "tetris"].includes(game.type); if (game.type === "breakout") els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.shots, state.stage || 1); if (game.type === "tetris") els.resultGoal.textContent = tetrisResultTargetCopy(locale, state.moves); } if (els.mastery) { els.mastery.hidden = game.type !== "mahjong" || !state.success || state.depth === "mastery"; els.mastery.textContent = masteryCopy.button; } };
-    const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = window.setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result"); };
+    const start = (entry = "start") => { stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); const previousHangman = game.type === "hangman" ? { target: state.target, theme: state.theme } : null; const previousMahjongKey = game.type === "mahjong" ? state.layoutKey : ""; const previousMahjongDepth = game.type === "mahjong" ? state.depth : "standard"; const previousWordle = game.type === "wordle" ? { target: state.target, wordKey: state.wordKey } : null; state = makeState(game.type); if (game.type === "hangman") { const round = entry === "restart" && previousHangman ? previousHangman : HANGMAN_WORDS[hangmanRoundIndex++ % HANGMAN_WORDS.length]; Object.assign(state, round); } if (game.type === "mahjong") { const mastery = entry === "mastery" || (entry === "restart" && previousMahjongDepth === "mastery"); const layout = mastery ? MAHJONG_MASTERY_LAYOUT : entry === "restart" && previousMahjongKey ? MAHJONG_LAYOUTS.find((candidate) => candidate.key === previousMahjongKey) || MAHJONG_LAYOUTS[0] : MAHJONG_LAYOUTS[mahjongRoundIndex++ % MAHJONG_LAYOUTS.length]; state.tiles = [...layout.tiles]; state.layoutKey = layout.key; state.depth = mastery ? "mastery" : "standard"; state.targetPairs = mastery ? 12 : 6; Object.assign(state, window.WPMahjong.create(state.layoutKey, state.depth)); } if (game.type === "wordle") { const word = entry === "restart" && previousWordle ? previousWordle : WORDLE_WORDS[wordleRoundIndex++ % WORDLE_WORDS.length]; Object.assign(state, word); } if (game.type === "snake") { state.runNumber = nextSnakeRunNumber(); state.goalFood = snakeGoalForRun(state.runNumber); state.modeKey = snakeModeForRun(state.runNumber); state.obstacles = snakeObstaclesForMode(state.modeKey); state.foodCell = chooseSnakeFood(state.trail, state.obstacles); } show("battle"); trackCheckers("game_start", { entry }); const snakeModeCue = game.type === "snake" ? snakeModePreview(locale, state.modeKey) : ""; const breakoutReadyCue = game.type === "breakout" ? breakoutStateCopy(locale, state) : ""; const tetrisReadyCue = game.type === "tetris" ? tetrisProgressCopy(locale, state.lines) : ""; announce(game.type === "snake" ? snakeModeCue : game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "breakout" ? breakoutReadyCue : game.type === "tetris" ? tetrisReadyCue : game.type === "mahjong" ? window.WPMahjong.copy(locale).step : copy(locale, "ready"), "", game.type === "snake" ? "snakeModePreview" : game.type === "breakout" ? "breakoutAim" : game.type === "tetris" ? "tetrisProgress" : game.type === "mahjong" ? "mj:step" : "ready"); render();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+};
+    const renderResult = () => { if (game.type === "tetris") { renderTetrisResult(); return; } const best = Number(localStorage.getItem(key(gameId)) || 0); const ticOutcome = TIC_OUTCOME_COPY[locale] || TIC_OUTCOME_COPY.en; const masteryCopy = MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en; const checkersOutcome = game.type === "checkers" ? state.outcome || (state.success ? "win" : "loss") : ""; els.resultTitle.textContent = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Title`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Title`] : state.success ? copy(locale, "success") : copy(locale, "failure"); const baseCopy = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Copy`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Copy`] : state.success ? copy(locale, "successCopy") : copy(locale, "failureCopy"); els.resultCopy.textContent = game.type === "wordle" ? `${baseCopy} ${(WORDLE_RESULT_COPY[locale] || WORDLE_RESULT_COPY.en)(state.target)}` : game.type === "hangman" ? `${baseCopy} ${(HANGMAN_RESULT_COPY[locale] || HANGMAN_RESULT_COPY.en)(state.target)}` : game.type === "mahjong" ? `${baseCopy} ${state.depth === "mastery" ? masteryCopy.result : `${MAHJONG_RESULT_COPY[locale] || MAHJONG_RESULT_COPY.en} ${masteryCopy.button}.`}` : baseCopy; els.result.dataset.outcome = game.type === "checkers" ? checkersOutcome : game.type === "tic" ? state.outcome : state.success ? "win" : "loss"; els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; if (els.resultGoal) { (__wpNotifyMeasurement(), els.resultGoal.hidden = !["breakout", "tetris"].includes(game.type)); if (game.type === "breakout") els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.shots, state.stage || 1); if (game.type === "tetris") els.resultGoal.textContent = tetrisResultTargetCopy(locale, state.moves); } if (els.mastery) { els.mastery.hidden = game.type !== "mahjong" || !state.success || state.depth === "mastery"; els.mastery.textContent = masteryCopy.button; } };
+    const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = window.setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result");
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (success ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+};
     const moveSnake = () => {
       if (game.type !== "snake" || state.done || !state.started) return;
       const [dx, dy] = SNAKE_DELTAS[state.direction];
@@ -1826,6 +1903,7 @@
       announce(snakeInstruction(locale), "", "snakeRunning");
       render();
       scheduleSnakeTick();
+      __wpNotifyMeasurement();
     };
     const settleCheckers = (nextPlayer) => {
       const engine = window.WPCheckersEngine;
@@ -2135,12 +2213,12 @@
       if (els.leaveMain) els.leaveMain.textContent = c.leave;
     };
     const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
-    els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else start("retry"); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : start("restart"));
-    els.leaveContinue?.addEventListener("click", () => { els.leaveModal.hidden = true; render(); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); });
-    els.leaveMain?.addEventListener("click", () => { els.leaveModal.hidden = true; show("main"); state = makeState(game.type); render(); els.start?.focus({ preventScroll: true }); });
-    document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle") return; if (game.type === "wordle" && els.leaveModal && !els.leaveModal.hidden && event.key === "Escape") { event.preventDefault(); els.leaveModal.hidden = true; document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); return; } if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
+    els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else __wpReplayStart(() => start("retry")); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : __wpReplayStart(() => start("restart")));
+    els.leaveContinue?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); render(); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); });
+    els.leaveMain?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); show("main"); state = makeState(game.type); render(); els.start?.focus({ preventScroll: true }); });
+    document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle") return; if (game.type === "wordle" && els.leaveModal && !els.leaveModal.hidden && event.key === "Escape") { event.preventDefault(); (__wpNotifyMeasurement(), els.leaveModal.hidden = true); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); return; } if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
-    battleBack?.addEventListener("click", (event) => { if (game.type === "wordle" && !state.done && els.leaveModal) { event.preventDefault(); event.stopImmediatePropagation(); els.leaveModal.hidden = false; syncWordleLeaveDialog(); els.leaveContinue?.focus({ preventScroll: true }); return; } trackCheckers("main_return", { from: "battle" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } });
+    battleBack?.addEventListener("click", (event) => { if (game.type === "wordle" && !state.done && els.leaveModal) { event.preventDefault(); event.stopImmediatePropagation(); (__wpNotifyMeasurement(), els.leaveModal.hidden = false); syncWordleLeaveDialog(); els.leaveContinue?.focus({ preventScroll: true }); return; } trackCheckers("main_return", { from: "battle" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } });
     els.stageBack?.addEventListener("click", () => { if (game.type !== "breakout") return; stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); show("main"); state = makeState(game.type); render(); });
     if (game.type === "tetris") {
       window.addEventListener("weightplay:shell-sync", scheduleTetris);
@@ -2169,7 +2247,9 @@
       });
     }
     renderShell(); show("main"); render();
-  }
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
+}
 
   window.WPPopularArcade = { mount, catalog: CATALOG, locales: LOCALES };
 })();

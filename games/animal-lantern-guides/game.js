@@ -1,5 +1,23 @@
 (() => {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const COPY = window.ANIMAL_LANTERN_GUIDES_COPY;
   const SUPPORTED_LOCALES = window.ANIMAL_LANTERN_GUIDES_LOCALES;
@@ -67,7 +85,12 @@
     [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.setAttribute("aria-expanded", "false"));
     document.body.dataset.screen = name;
     window.scrollTo(0, 0);
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function toggleSettings() {
     const panel = $("settingsPanel");
@@ -183,7 +206,9 @@
     if(!Number.isInteger(index)||index<0||index>=30||index+1>unlocked)return;
     clearTimeout(pendingTimer);stageIndex=index;bridgeStep=0;light=3;phase='scout';feedbackKey='';lastWrong='';clueVisible=false;resultSuccess=null;
     show('battle');renderBattle();focusNoScroll($('scoutChoices').querySelector('button'));
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function revealSignal(){if(phase!=='scout'||clueVisible)return;clueVisible=true;lastWrong='';feedbackKey='scoutSuccess';cue();renderBattle();focusNoScroll($('passBtn'));}
   function passToGuide(){if(phase!=='scout'||!clueVisible)return;phase='guide';clueVisible=false;feedbackKey='';renderBattle();focusNoScroll($('guideChoices').querySelector('button'));}
   function guideChoice(id){
@@ -200,12 +225,14 @@
       saveNumber("animalLanternGuidesBest", best); saveNumber("animalLanternGuidesUnlocked", unlocked);
     }
     show("result"); renderResult(); focusNoScroll(success && stageIndex < STAGES.length - 1 ? $("nextBtn") : $("replayBtn"));
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (success ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   $("startBtn").addEventListener("click", () => best === 0 && unlocked === 1 ? startStage(0) : showStage());
   $("stageBackBtn").addEventListener("click", () => { show("main"); focusNoScroll($("startBtn")); });
   $("battleBackBtn").addEventListener("click", showStage); $("leaveBtn").addEventListener("click", showStage); $("homeBtn").addEventListener("click", showStage);
-  $("replayBtn").addEventListener("click", () => startStage(stageIndex)); $("nextBtn").addEventListener("click", () => startStage(Math.min(stageIndex + 1, STAGES.length - 1))); $("passBtn").addEventListener("click", passToGuide);
+  $("replayBtn").addEventListener("click", () => __wpReplayStart(() => startStage(stageIndex))); $("nextBtn").addEventListener("click", () => startStage(Math.min(stageIndex + 1, STAGES.length - 1))); $("passBtn").addEventListener("click", passToGuide);
   [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.addEventListener("click", toggleSettings));
   $("soundBtn").addEventListener("click", () => { soundEnabled = !soundEnabled; applyCopy(); });
   $("localeSelect").addEventListener("change", event => {

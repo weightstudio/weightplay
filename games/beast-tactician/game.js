@@ -67,6 +67,24 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
 };
 
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "beast-tactician";
   const isPublicRelease = !location.pathname.endsWith("/internal-test.html");
   const saveKey = "weightplay_beast_guardian_defense_v1";
@@ -241,13 +259,18 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   const battleFrameHeader = document.querySelector("#wp-shared-battle-header");
   const battleFrameTitle = battleFrameHeader?.querySelector("[data-wp-frame-title]");
   if (battleFrameHeader && battleFrameTitle) {
-    battleFrameTitle.hidden = true;
     const battleHeaderContext = document.createElement("span");
     battleHeaderContext.id = "battleHeaderContext";
-    battleHeaderContext.className = "wp-frame-battle-context";
+    const battleInfo = document.createElement("div");
+    battleInfo.setAttribute("data-wp-frame-info", "");
+    battleInfo.style.setProperty("--wp-frame-stat-count", "1");
+    const battleStat = document.createElement("div");
+    battleStat.setAttribute("data-wp-frame-stat", "");
+    battleStat.append(battleHeaderContext);
+    battleInfo.append(battleStat);
     battleHeaderContext.setAttribute("aria-live", "polite");
     battleHeaderContext.setAttribute("aria-atomic", "true");
-    battleFrameHeader.append(battleHeaderContext);
+    battleFrameHeader.append(battleInfo);
     nodes.battleHeaderContext = battleHeaderContext;
   }
   // Stage follows the same current shared-frame rule as Battle: the public
@@ -257,24 +280,20 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   const stageFrameHeader = document.querySelector("#wp-shared-stage-header");
   const stageFrameTitle = stageFrameHeader?.querySelector("[data-wp-frame-title]");
   if (stageFrameHeader && stageFrameTitle) {
-    stageFrameTitle.hidden = true;
     const stageHeaderContext = document.createElement("span");
     stageHeaderContext.id = "stageHeaderContext";
-    stageHeaderContext.className = "wp-frame-stage-context";
+    const stageInfo = document.createElement("div");
+    stageInfo.setAttribute("data-wp-frame-info", "");
+    stageInfo.style.setProperty("--wp-frame-stat-count", "1");
+    const stageStat = document.createElement("div");
+    stageStat.setAttribute("data-wp-frame-stat", "");
+    stageStat.append(stageHeaderContext);
+    stageInfo.append(stageStat);
     stageHeaderContext.setAttribute("aria-live", "polite");
     stageHeaderContext.setAttribute("aria-atomic", "true");
-    stageFrameHeader.append(stageHeaderContext);
+    stageFrameHeader.append(stageInfo);
     nodes.stageHeaderContext = stageHeaderContext;
   }
-  // Keep the game-local adapter discoverable to the governed interface probe.
-  // The shared frame still owns the popover, locale select, and sound state.
-  document.querySelectorAll(".wp-frame-popover").forEach((panel) => {
-    panel.classList.add("wp-shell-settings-popover");
-    panel.querySelectorAll(":scope > div").forEach((row) => row.classList.add("wp-shell-sound-row"));
-  });
-  document.querySelectorAll(".wp-frame-back-icon").forEach((icon) => {
-    icon.textContent = "←";
-  });
 
   const text = {
     en: {
@@ -2320,7 +2339,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     if (screen === "game") nodes.gamePanel.classList.remove("is-hidden");
     if (resultActive) {
       nodes.gamePanel.classList.remove("is-hidden");
-      nodes.resultPanel.classList.remove("is-hidden");
+      (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("is-hidden"));
       window.requestAnimationFrame(() => {
         syncResultActionHierarchy()?.focus({ preventScroll: true });
       });
@@ -2331,7 +2350,12 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     window.dispatchEvent(new Event("weightplay:battle-sync"));
     updateBattleShell();
     syncBattleLoop();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","menu":"main","game":"battle","stages":"stage","tech":"stage"})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function updateBattleShell() {
     if (!document.body.classList.contains("guardian-playing")) return;
@@ -3047,7 +3071,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     state.coreHp = stage.coreHp;
     state.wave = 0;
     state.runningWave = false;
-    state.paused = false;
+    (__wpNotifyMeasurement(), state.paused = false);
     state.waveSpawned = 0;
     state.waveToSpawn = 0;
     state.spawnTimer = 0;
@@ -3077,7 +3101,9 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
       nodes.canvas.focus({ preventScroll: true });
     });
     track("game_start", { stage: id });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function updateHud() {
     if (!nodes.stageHudText) return;
@@ -3801,14 +3827,14 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
 
   function cycleSpeedControl() {
     if (state.paused) {
-      state.paused = false;
+      (__wpNotifyMeasurement(), state.paused = false);
       state.speed = 1;
     } else if (state.speed === 1) {
       state.speed = 2;
     } else if (state.speed === 2) {
       state.speed = 3;
     } else {
-      state.paused = true;
+      (__wpNotifyMeasurement(), state.paused = true);
     }
     track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: state.paused });
     updateHud();
@@ -3817,7 +3843,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   function suspendUnattendedBattle(reason) {
     cancelCanvasPress();
     if (state.screen === "game" && !state.gameOver && !state.paused) {
-      state.paused = true;
+      (__wpNotifyMeasurement(), state.paused = true);
       track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason });
       updateHud();
     }
@@ -3884,10 +3910,10 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   function clearLeaveBattleConfirmation(restoreBattle = true) {
     if (!leaveBattleConfirmPending) return;
     leaveBattleConfirmPending = false;
-    nodes.pauseDecisionPanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.pauseDecisionPanel.classList.add("is-hidden"));
     setBattleDecisionCoverage(false);
     if (restoreBattle && state.screen === "game" && !state.gameOver) {
-      state.paused = leaveBattleWasPaused;
+      (__wpNotifyMeasurement(), state.paused = leaveBattleWasPaused);
       updateHud();
       window.requestAnimationFrame(() => nodes.menuBtn.focus({ preventScroll: true }));
     }
@@ -3897,11 +3923,11 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   function requestLeaveBattle() {
     if (leaveBattleConfirmPending || state.screen !== "game" || state.gameOver) return;
     leaveBattleWasPaused = state.paused;
-    state.paused = true;
+    (__wpNotifyMeasurement(), state.paused = true);
     leaveBattleConfirmPending = true;
     renderPauseDecision();
     setBattleDecisionCoverage(true);
-    nodes.pauseDecisionPanel.classList.remove("is-hidden");
+    (__wpNotifyMeasurement(), nodes.pauseDecisionPanel.classList.remove("is-hidden"));
     updateHud();
     syncBattleLoop();
     window.requestAnimationFrame(() => nodes.pauseContinueBtn.focus({ preventScroll: true }));
@@ -5444,7 +5470,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     nodes.retryBtn.addEventListener("click", () => {
       commitResultDecision(() => {
         track("game_restart", { stage: state.currentStage });
-        startStage(state.currentStage);
+        __wpReplayStart(() => startStage(state.currentStage));
       });
     });
     nodes.resultMenuBtn.addEventListener("click", () => {
@@ -6178,10 +6204,10 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     startWave();
     while (state.waveSpawned < state.waveToSpawn) spawnEnemy();
     const bossSpawn = impactFeedbackSnapshot();
-    state.paused = true;
+    (__wpNotifyMeasurement(), state.paused = true);
     update(0.5);
     const paused = impactFeedbackSnapshot();
-    state.paused = false;
+    (__wpNotifyMeasurement(), state.paused = false);
     update(0.12);
     const decayed = impactFeedbackSnapshot();
 

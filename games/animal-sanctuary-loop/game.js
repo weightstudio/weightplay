@@ -1,5 +1,23 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(run?.paused || run?.suspended || lifecycleSuspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
@@ -282,7 +300,12 @@
       renderMainProgress();
       if (restoreFocus) restoreMainStartFocus();
     }
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function stageWindowLimit() {
     return Math.max(0, stages.length - STAGE_CARD_POOL_SIZE);
@@ -806,7 +829,7 @@
 
   function startBattle(index, event) {
     reclaimVisibleForeground(event);
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     const stageIndex = Math.max(0, Math.min(29, Math.trunc(index)));
     const stage = stages[stageIndex];
     const blocked = makeBlocked(stage.field);
@@ -844,9 +867,9 @@
       shrinkClock: 0,
       rivalMarks: [],
     };
-    $("leave").hidden = true;
-    $("tutorial").hidden = true;
-    $("result").hidden = true;
+    (__wpNotifyMeasurement(), $("leave").hidden = true);
+    (__wpNotifyMeasurement(), $("tutorial").hidden = true);
+    (__wpNotifyMeasurement(), $("result").hidden = true);
     $("battleLive").hidden = false;
     $("battleLive").inert = false;
     showScreen("battle");
@@ -856,13 +879,15 @@
     track("mission_start", { mission: stage.n, entry: "stage" });
     lastTime = performance.now();
     stopLoop();
-    lifecycleSuspended = document.hidden;
-    run.paused = lifecycleSuspended;
+    (__wpNotifyMeasurement(), lifecycleSuspended = document.hidden);
+    (__wpNotifyMeasurement(), run.paused = lifecycleSuspended);
     ensureVisibleTick();
     if (!lifecycleSuspended) raf = requestAnimationFrame(frame);
     window.WonderSound?.play?.("start");
     if (!save.tutorialSeen && !interfaceValidator) requestAnimationFrame(() => openTutorial(false));
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function stopLoop() {
     if (raf) cancelAnimationFrame(raf);
@@ -896,8 +921,8 @@
 
   function suspendForLifecycle() {
     if (currentScreen !== "battle" || !run || run.finished) return;
-    lifecycleSuspended = true;
-    run.paused = true;
+    (__wpNotifyMeasurement(), lifecycleSuspended = true);
+    (__wpNotifyMeasurement(), run.paused = true);
     run.player.dx = 0;
     run.player.dy = 0;
     stopLoop();
@@ -905,9 +930,9 @@
 
   function resumeFromLifecycle() {
     if (!lifecycleSuspended || document.hidden) return;
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     if (currentScreen !== "battle" || !run || run.finished || activeModal()) return;
-    run.paused = false;
+    (__wpNotifyMeasurement(), run.paused = false);
     ensureVisibleTick();
     resumeLoop();
   }
@@ -1392,18 +1417,18 @@
 
   function openModal(modal, focusTarget) {
     modalReturnFocus = document.activeElement;
-    if (run) run.paused = true;
+    if (run) (__wpNotifyMeasurement(), run.paused = true);
     stopLoop();
-    modal.hidden = false;
+    (__wpNotifyMeasurement(), modal.hidden = false);
     $("battleLive").inert = true;
     requestAnimationFrame(() => (focusTarget || modalButtons(modal)[0])?.focus());
   }
 
   function closeModal(modal, restoreFocus = true) {
-    modal.hidden = true;
+    (__wpNotifyMeasurement(), modal.hidden = true);
     $("battleLive").inert = false;
     if (run && !run.finished && !lifecycleSuspended) {
-      run.paused = false;
+      (__wpNotifyMeasurement(), run.paused = false);
       ensureVisibleTick();
       resumeLoop();
     }
@@ -1453,7 +1478,7 @@
   function finish(won) {
     if (!run || run.finished) return;
     run.finished = true;
-    run.paused = true;
+    (__wpNotifyMeasurement(), run.paused = true);
     resultDecisionCommitted = false;
     for (const action of [$("retry"), $("resultStage"), $("nextMission")]) action.disabled = false;
     stopLoop();
@@ -1480,12 +1505,14 @@
     $("nextMission").disabled = !won || run.stage.n >= 30;
     const primaryAction = $("nextMission").disabled ? $("resultStage") : $("nextMission");
     for (const action of [$("retry"), $("resultStage"), $("nextMission")]) action.classList.toggle("primary", action === primaryAction);
-    $("result").hidden = false;
+    (__wpNotifyMeasurement(), $("result").hidden = false);
     $("battleLive").hidden = true;
     $("battleLive").inert = true;
     requestAnimationFrame(() => primaryAction.focus());
     window.WonderSound?.play?.(won ? "success" : "wrong");
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function commitResultDecision(action) {
     if (resultDecisionCommitted || $("result").hidden) return false;
@@ -1501,18 +1528,18 @@
   $("continueBattle").addEventListener("click", () => closeModal($("leave")));
   $("leaveStage").addEventListener("click", () => {
     track("stage_return", { mission: run?.stage?.n, reason: "leave" });
-    $("leave").hidden = true;
+    (__wpNotifyMeasurement(), $("leave").hidden = true);
     $("battleLive").inert = false;
     run = null;
     showScreen("stage");
   });
   $("retry").addEventListener("click", () => commitResultDecision(() => {
     track("retry", { mission: run?.stage?.n });
-    startBattle(run.stageIndex);
+    __wpReplayStart(() => startBattle(run.stageIndex));
   }));
   $("resultStage").addEventListener("click", () => commitResultDecision(() => {
     track("stage_return", { mission: run?.stage?.n, reason: "result" });
-    $("result").hidden = true;
+    (__wpNotifyMeasurement(), $("result").hidden = true);
     $("battleLive").inert = false;
     run = null;
     showScreen("stage");

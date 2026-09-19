@@ -19,6 +19,7 @@
     const localeCarrier = header.querySelector('.locale-picker');
     if (localeCarrier) { localeCarrier.hidden = true; root.append(localeCarrier); }
     const mainContent = main.querySelector('.menu-layout');
+    mainContent.querySelector('.menu-title').hidden = true;
     main.prepend(header);
     mainContent.querySelector('.cover').setAttribute('data-wp-frame-poster', '');
     mainContent.querySelector('.menu-hint').setAttribute('data-wp-frame-summary', '');

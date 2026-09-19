@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || lifecycleSuspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "animal-rune-tactics";
   const saveKey = "weightplay_animal_rune_tactics_v1";
   const localeKey = "weightPlayLocale";
@@ -20,7 +38,7 @@
   if (resultCard && !resultCard.querySelector(".result-squad-art")) {
     const resultSquadArt = document.createElement("div");
     resultSquadArt.className = "result-squad-art";
-    resultSquadArt.setAttribute("aria-hidden", "true");
+    (__wpNotifyMeasurement(), resultSquadArt.setAttribute("aria-hidden", "true"));
     [
       ["result-clear-fx", "animal-rune-tactics-fx-mission-clear.webp"],
       ["result-hero result-hero-lion", "animal-rune-tactics-hero-lion-block-v1.webp"],
@@ -2066,7 +2084,7 @@
 
   function setPauseActionAvailable(available) {
     nodes.pauseBtn.disabled = !available;
-    nodes.pauseBtn.classList.toggle("is-hidden", !available);
+    (__wpNotifyMeasurement(), nodes.pauseBtn.classList.toggle("is-hidden", !available));
   }
 
   function focusBattleGrid() {
@@ -2094,8 +2112,8 @@
     if (!battlePaused) return;
     const focusOwner = pauseFocusOwner?.isConnected ? pauseFocusOwner : nodes.pauseBtn;
     battlePaused = false;
-    nodes.pausePanel.classList.add("is-hidden");
-    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("is-hidden"));
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-expanded", "false"));
     nodes.battleBackBtn.setAttribute("aria-expanded", "false");
     setPauseActionAvailable(true);
     setBattleCovered(false);
@@ -2110,8 +2128,8 @@
     battlePaused = true;
     suspendTurnTransition();
     setBattleCovered(true);
-    nodes.pausePanel.classList.remove("is-hidden");
-    nodes.pauseBtn.setAttribute("aria-expanded", "true");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.remove("is-hidden"));
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-expanded", "true"));
     nodes.battleBackBtn.setAttribute("aria-expanded", "true");
     setPauseActionAvailable(false);
     requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
@@ -2213,7 +2231,7 @@
     });
     nodes.localeSelect.value = locale;
     nodes.localeSelect.setAttribute("aria-label", t("language"));
-    nodes.pauseBtn.setAttribute("aria-label", t("pause"));
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-label", t("pause")));
     nodes.grid.setAttribute("aria-label", t("boardLabel"));
     document.querySelector(".battle-secondary")?.setAttribute("aria-label", t("battleDetails"));
     if (nodes.mainStartBtn) nodes.mainStartBtn.textContent = t("startGame");
@@ -2272,7 +2290,7 @@
   }
 
   function suspendAppLifecycle() {
-    lifecycleSuspended = true;
+    (__wpNotifyMeasurement(), lifecycleSuspended = true);
     suspendTurnTransition();
     suspendRewardSettlement();
     suspendTrainingIntent();
@@ -2280,7 +2298,7 @@
 
   function resumeAppLifecycle() {
     if (document.hidden || !document.hasFocus()) return;
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     resumeTurnTransition();
     resumeRewardSettlement();
     resumeTrainingIntent();
@@ -2288,7 +2306,7 @@
 
   function resumeAppLifecycleFromTrustedInput(event) {
     if (!event.isTrusted || document.hidden || !lifecycleSuspended) return;
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     resumeTurnTransition();
     resumeRewardSettlement();
     resumeTrainingIntent();
@@ -2800,7 +2818,12 @@
       document.body.dataset.screen = scene;
       document.body.dataset.gameView = scene;
     }));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showStage() {
     resetTrainingIntent();
@@ -2870,10 +2893,10 @@
       enemies: makeEnemies(mission),
     };
     setScene("battle");
-    nodes.resultPanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
     nodes.rewardPanel.classList.add("is-hidden");
-    nodes.pausePanel.classList.add("is-hidden");
-    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("is-hidden"));
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-expanded", "false"));
     battlePaused = false;
     setPauseActionAvailable(true);
     setBattleCovered(false);
@@ -2881,7 +2904,9 @@
     render();
     focusPanel(nodes.gamePanel);
     focusBattleGrid();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function makeEnemies(mission) {
     const missionDef = missionDefs.find((item) => item.id === mission) || missionDefs[0];
@@ -3799,10 +3824,12 @@
       button.classList.toggle("primary-btn", button === primaryResultAction);
       button.classList.toggle("secondary-btn", button !== primaryResultAction);
     });
-    nodes.resultPanel.classList.remove("is-hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("is-hidden"));
     renderMenu();
     requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function playCue(name) {
     window.WonderSound?.play?.(name);
@@ -3858,9 +3885,9 @@
     state = null;
     setScene("stage");
     nodes.rewardPanel.classList.add("is-hidden");
-    nodes.resultPanel.classList.add("is-hidden");
-    nodes.pausePanel.classList.add("is-hidden");
-    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("is-hidden"));
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-expanded", "false"));
     battlePaused = false;
     setPauseActionAvailable(false);
     setBattleCovered(false);
@@ -4104,7 +4131,7 @@
       selectedMission = Math.min(missionDefs.length, state.mission + 1);
       startMission(selectedMission);
     }));
-    nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => startMission(state?.mission || selectedMission)));
+    nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => __wpReplayStart(() => startMission(state?.mission || selectedMission))));
     nodes.menuBtn.addEventListener("click", () => commitResultDecision(showMenu));
   }
 

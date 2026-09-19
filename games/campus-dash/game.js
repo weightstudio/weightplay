@@ -1,4 +1,22 @@
 (function () {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || lifecycleSuspended || leaveOpen), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
   const storageFallback = new Map();
@@ -97,9 +115,9 @@
   dashGame?.setAttribute("data-wp-canvas-max-width", "920");
   const leavePanel = document.createElement("section");
   leavePanel.className = "leave-panel hidden";
-  leavePanel.setAttribute("role", "dialog");
-  leavePanel.setAttribute("aria-modal", "true");
-  leavePanel.setAttribute("aria-labelledby", "leaveTitle");
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("role", "dialog"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-modal", "true"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-labelledby", "leaveTitle"));
   leavePanel.innerHTML = `<div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveText"></p><div><button id="keepRunningBtn" type="button"></button><button id="leaveRouteBtn" type="button"></button></div></div>`;
   dashGame.append(leavePanel);
   const leaveTitle = leavePanel.querySelector("#leaveTitle");
@@ -415,20 +433,20 @@
   }
 
   function suspendLifecycle() {
-    lifecycleSuspended = true;
+    (__wpNotifyMeasurement(), lifecycleSuspended = true);
     clearPointerInput();
   }
 
   function resumeLifecycle() {
-    lifecycleSuspended = document.hidden || !document.hasFocus();
+    (__wpNotifyMeasurement(), lifecycleSuspended = document.hidden || !document.hasFocus());
     if (!lifecycleSuspended && state.running) lastTime = performance.now();
   }
 
   function setLeaveOpen(open, restoreFocus = true) {
     if (open === leaveOpen) return;
-    leaveOpen = open;
+    (__wpNotifyMeasurement(), leaveOpen = open);
     clearPointerInput();
-    leavePanel.classList.toggle("hidden", !open);
+    (__wpNotifyMeasurement(), leavePanel.classList.toggle("hidden", !open));
     canvasWrap.inert = open;
     hud.inert = open;
     if (open) {
@@ -606,7 +624,12 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showMain() {
     setLeaveOpen(false, false);
@@ -619,7 +642,7 @@
     stagePanel.classList.add("hidden");
     canvasWrap.classList.add("hidden");
     hud.classList.add("hidden");
-    resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     canvasWrap.inert = false;
     canvasWrap.removeAttribute("aria-hidden");
     syncSharedScene("main");
@@ -742,7 +765,7 @@
     mainPanel.classList.add("hidden");
     canvasWrap.classList.add("hidden");
     hud.classList.add("hidden");
-    resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     stagePanel.classList.remove("hidden");
     renderStageSelector(true);
     exitSharedPlayViewport();
@@ -759,7 +782,7 @@
   function startRun() {
     setLeaveOpen(false, false);
     clearPointerInput();
-    lifecycleSuspended = document.hidden;
+    (__wpNotifyMeasurement(), lifecycleSuspended = document.hidden);
     state = makeState();
     state.running = true;
     document.body.classList.remove("dash-stage-select");
@@ -771,7 +794,7 @@
     canvasWrap.classList.remove("hidden");
     canvasWrap.inert = false;
     canvasWrap.removeAttribute("aria-hidden");
-    resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     hud.classList.remove("hidden");
     lastTime = performance.now();
     window.WonderSound?.play("click");
@@ -785,7 +808,9 @@
       updateDashFrame();
       canvas.focus({ preventScroll: true });
     });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function loop(now) {
     if (lifecycleSuspended || document.hidden || leaveOpen) {
@@ -961,7 +986,7 @@
     });
     canvasWrap.inert = true;
     canvasWrap.setAttribute("aria-hidden", "true");
-    resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
     window.WonderSound?.play("win");
     window.WonderAnalytics?.track("game_complete", {
@@ -971,7 +996,9 @@
       cleared,
       locale: locale(),
     });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function routeSucceeded() {
     const [type, target] = state.route.objective;
@@ -1512,7 +1539,7 @@
   });
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", { game_id: GAME_ID, score: state.score, locale: locale() });
-    startRun();
+    __wpReplayStart(() => startRun());
   });
   nextRouteBtn.addEventListener("click", () => {
     const nextStage = state.stage + 1;

@@ -1,5 +1,23 @@
 (()=>{
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID="animal-number-match",GAME_VERSION=15,INTERFACE_VERSION=7;
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
@@ -20,7 +38,7 @@
   function show(id){
     if(id!=="stage"&&activeScene==="stage")cancelStageMotion();
     if(id!==activeScene){activeScene=id;sceneGeneration++}
-    if(id!=="battle"&&$("#leaveDialog").open)$("#leaveDialog").close();
+    if(id!=="battle"&&$("#leaveDialog").open)(__wpNotifyMeasurement(), $("#leaveDialog").close());
     if(id!=="battle")document.querySelectorAll("#battle .match-echo").forEach(node=>node.remove());
     screens.forEach(screen=>{const inactive=screen.id!==id;screen.hidden=inactive;screen.classList.toggle("hidden",inactive)});
     $("#generalReserve").hidden=id!=="battle";
@@ -31,7 +49,12 @@
     dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:id,generation:sceneGeneration}}));
     dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:id,generation:sceneGeneration}}));
     if(id==="stage")renderStages()
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[id] ?? null;
+      if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function cancelStageMotion(){cancelAnimationFrame(stageSettleRaf);stageSettleRaf=0;restoreStageRailBehavior()}
   function stageWindowLimit(){return Math.max(0,levels.length-STAGE_CARD_POOL_SIZE)}
   function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL_SIZE/2),0,stageWindowLimit())}
@@ -71,7 +94,9 @@
     $("#board").style.setProperty("--cols",level.cols);$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("grove",{n:index+1});$("#status").textContent=t("selectFirst");show("battle");renderBoard();
     if(returnedToMain){track("return_session",{source:"main",grove:index+1,entry_action:entryAction});returnedToMain=false}
     track("game_start",{grove:index+1,entry_action:entryAction,unlocked_groves:Math.min(unlocked,30),input_type:lastInputType});
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   const matches=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&a+b===10;
   function visiblePair(a,b){
     if(a===b)return false;
@@ -171,11 +196,13 @@
     if(selected+2>unlocked){unlocked=Math.min(31,selected+2);write(storageKey,String(unlocked))}
     resultActionClaimed=false;["#resultStages","#retry","#next"].forEach(selector=>$(selector).disabled=false);$("#next").disabled=selected===29;
     track("result",{grove:selected+1,moves,outcome:"complete"});track("game_complete",{grove:selected+1,moves,outcome:"complete"});
-    $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});$("#next").textContent=t("next");const generation=sceneGeneration;setTimeout(()=>{if(activeScene==="battle"&&generation===sceneGeneration)$("#result").showModal()},180);
-  }
+    $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});$("#next").textContent=t("next");const generation=sceneGeneration;setTimeout(()=>{if(activeScene==="battle"&&generation===sceneGeneration)(__wpNotifyMeasurement(), $("#result").showModal())},180);
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function claimResultAction(actionName,actionInputType,action){
     if(resultActionClaimed)return;
-    const sourceGrove=selected+1;resultActionClaimed=true;["#resultStages","#retry","#next"].forEach(selector=>$(selector).disabled=true);$("#result").close();track(actionName,{from:"result",grove:sourceGrove,input_type:actionInputType});action();
+    const sourceGrove=selected+1;resultActionClaimed=true;["#resultStages","#retry","#next"].forEach(selector=>$(selector).disabled=true);(__wpNotifyMeasurement(), $("#result").close());track(actionName,{from:"result",grove:sourceGrove,input_type:actionInputType});action();
   }
   function applyLocale(){
     document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;
@@ -191,12 +218,12 @@
     locale=next;write("weightPlayLocale",locale);write("wp-locale",locale);applyLocale();
     const generation=sceneGeneration;window.setTimeout(()=>{if(locale===next&&generation===sceneGeneration)applyLocale()},0);
   });
-  $("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>$("#tutorialPanel").showModal();$("#tutorialStart").onclick=()=>{$("#tutorialPanel").close();show("stage")};$("#tutorialPanel").addEventListener("cancel",()=>$("#tutorialPanel").close());$("#stageGrid").addEventListener("wonder:stage-snap",event=>{if(activeScene!=="stage")return;const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=event=>{track("main_return",{from:"stage",grove:selected+1,input_type:eventInputType(event)});returnedToMain=true;show("main")};
+  $("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>(__wpNotifyMeasurement(), $("#tutorialPanel").showModal());$("#tutorialStart").onclick=()=>{(__wpNotifyMeasurement(), $("#tutorialPanel").close());show("stage")};$("#tutorialPanel").addEventListener("cancel",()=>(__wpNotifyMeasurement(), $("#tutorialPanel").close()));$("#stageGrid").addEventListener("wonder:stage-snap",event=>{if(activeScene!=="stage")return;const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=event=>{track("main_return",{from:"stage",grove:selected+1,input_type:eventInputType(event)});returnedToMain=true;show("main")};
   $("#battle [data-back]").onclick=()=>{
     if(picked===null&&!history.length&&!moves){show("stage");return}
-    inputLocked=true;$("#leaveDialog").showModal();$("#continueBattle").focus();
+    inputLocked=true;(__wpNotifyMeasurement(), $("#leaveDialog").showModal());$("#continueBattle").focus();
   };
-  const continueBattle=()=>{inputLocked=false;$("#leaveDialog").close();$("#battle [data-back]").focus()};
+  const continueBattle=()=>{inputLocked=false;(__wpNotifyMeasurement(), $("#leaveDialog").close());$("#battle [data-back]").focus()};
   $("#continueBattle").onclick=continueBattle;
   $("#leaveBattle").onclick=()=>{inputLocked=false;picked=null;show("stage")};
   $("#leaveDialog").addEventListener("cancel",event=>{event.preventDefault();continueBattle()});
@@ -206,7 +233,7 @@
     event.preventDefault();moveTileFocus(event.key,Number(tile.dataset.index));
   });
   $("#undo").onclick=event=>{lastInputType=eventInputType(event);const last=history.pop();if(!last){track("undo",{grove:selected+1,outcome:"unavailable"});return}values[last.a]=last.va;values[last.b]=last.vb;picked=null;hintPair=[];moves=Math.max(0,moves-1);track("undo",{grove:selected+1,outcome:"applied",move:moves});$("#status").textContent=t("undone");renderBoard()};
-  $("#hint").onclick=event=>hint(eventInputType(event));$("#shuffle").onclick=event=>reorder(eventInputType(event));$("#restart").onclick=event=>{lastInputType=eventInputType(event);track("restart",{from:"battle",grove:selected+1,input_type:lastInputType});startLevel(selected,lastInputType,"restart")};
-  $("#resultStages").onclick=event=>claimResultAction("stages",eventInputType(event),()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=event=>claimResultAction("next_grove",eventInputType(event),()=>startLevel(selected+1,eventInputType(event),"next_grove"));$("#retry").onclick=event=>claimResultAction("replay",eventInputType(event),()=>startLevel(selected,eventInputType(event),"replay"));
+  $("#hint").onclick=event=>hint(eventInputType(event));$("#shuffle").onclick=event=>reorder(eventInputType(event));$("#restart").onclick=event=>{lastInputType=eventInputType(event);track("restart",{from:"battle",grove:selected+1,input_type:lastInputType});__wpReplayStart(() => startLevel(selected,lastInputType,"restart"))};
+  $("#resultStages").onclick=event=>claimResultAction("stages",eventInputType(event),()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=event=>claimResultAction("next_grove",eventInputType(event),()=>startLevel(selected+1,eventInputType(event),"next_grove"));$("#retry").onclick=event=>claimResultAction("replay",eventInputType(event),()=>__wpReplayStart(() => startLevel(selected,eventInputType(event),"replay")));
   applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
 })();

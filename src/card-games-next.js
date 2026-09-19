@@ -1973,6 +1973,24 @@
   }
 
   function mountCardGame({ id, requestReturn }) {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(Boolean(__wpMeasurement.paused)), node: battle,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
     const rootElement = document.body;
     const main = document.querySelector("#mainScreen");
     const battle = document.querySelector("#battleScreen");
@@ -2198,7 +2216,7 @@
       window.setTimeout(syncSpeedShell, 0);
       window.setTimeout(syncSpeedShell, 400);
     }
-    if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy" || id === "cribbage") resultText?.setAttribute("data-runtime-localize", "off");
+    if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy" || id === "cribbage") (__wpNotifyMeasurement(), resultText?.setAttribute("data-runtime-localize", "off"));
     if (id === "gin-rummy") {
       ensureGinRummyBattleUtility();
       battleUtility = document.querySelector("[data-wp-battle-utility]");
@@ -2313,7 +2331,7 @@
     const resultCloseButton = document.querySelector("#resultClose");
     if (id === "old-maid" && resultCloseButton) {
       resultCloseButton.textContent = t("back");
-      resultCloseButton.setAttribute("aria-label", t("back"));
+      (__wpNotifyMeasurement(), resultCloseButton.setAttribute("aria-label", t("back")));
       resultCloseButton.dataset.cardResultReturn = "main";
     }
     if (loading) { loading.hidden = true; loading.remove(); }
@@ -2361,22 +2379,34 @@
     const controller = {
       id,
       isBattleActive() { return !battle.hidden && rootElement.dataset.screen === "battle"; },
-      openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); },
-      openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; result.hidden = true; window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync")); },
+      openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync"));
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
+      if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (false && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen; if (__wpNextScreen === "battle" && __wpMeasurement.roundKey && !__wpMeasurement.ended) __wpMeasurement.started = true; __wpNotifyMeasurement(); }
+},
+      openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; (__wpNotifyMeasurement(), result.hidden = true); window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync"));
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (false && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen; if (__wpNextScreen === "battle" && __wpMeasurement.roundKey && !__wpMeasurement.ended) __wpMeasurement.started = true; __wpNotifyMeasurement(); }
+},
       result(won, message = "") {
         if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); }
         if (id === "old-maid") oldMaidTrack("result", { outcome: won ? "win" : "loss" });
         const drawTitles = { en: "Draw", "zh-Hant": "平手", "zh-Hans": "平局", ja: "引き分け", ko: "무승부", es: "Empate", "pt-BR": "Empate", fr: "Égalité", de: "Unentschieden", it: "Pareggio", ru: "Ничья", hi: "बराबरी", ar: "تعادل" };
         resultTitle.textContent = won === null ? (drawTitles[currentLocale()] || drawTitles.en) : id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser"));
-        if (won === null) resultTitle.setAttribute('data-runtime-localize', 'off');
+        if (won === null) (__wpNotifyMeasurement(), resultTitle.setAttribute('data-runtime-localize', 'off'));
         resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver"));
         if (id === "cribbage") {
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";
         }
-        result.hidden = false;
+        (__wpNotifyMeasurement(), result.hidden = false);
         sound?.[won === null ? "place" : won ? "win" : "reject"]?.();
-      },
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = won === null ? "draw" : won ? "win" : "lose"; __wpNotifyMeasurement();
+},
       beep(name = "place") { sound?.[name]?.(); },
     };
     const render = () => {
@@ -2419,13 +2449,13 @@
       if (id === "old-maid") oldMaidTrack("back", { source: "battle" });
       controller.openMain();
     });
-    document.querySelector("#resultNewGame")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "result" }); result.hidden = true; game.reset(); controller.openBattle(); });
-    document.querySelector("#resultRestart")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "result" }); resultRecorded = false; result.hidden = true; game.reset(); render(); });
-    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); } else { result.hidden = true; render(); } });
+    document.querySelector("#resultNewGame")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "result" }); (__wpNotifyMeasurement(), result.hidden = true); game.reset(); controller.openBattle(); });
+    document.querySelector("#resultRestart")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "result" }); resultRecorded = false; (__wpNotifyMeasurement(), result.hidden = true); __wpReplayStart(() => game.reset()); render(); });
+    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); } else { (__wpNotifyMeasurement(), result.hidden = true); render(); } });
     document.querySelector("#startBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("old_maid_start", { source: "main" }); game.reset(); controller.openBattle(); });
-    document.querySelector("#restartBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "main" }); game.reset(); controller.openBattle(); });
+    document.querySelector("#restartBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "main" }); __wpReplayStart(() => game.reset()); controller.openBattle(); });
     document.querySelector("#newGameBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "main" }); game.reset(); controller.openBattle(); });
-    document.querySelector("#battleRestartBtn")?.addEventListener("click", () => { game.reset(); render(); });
+    document.querySelector("#battleRestartBtn")?.addEventListener("click", () => { __wpReplayStart(() => game.reset()); render(); });
     document.querySelector("#battleNewBtn")?.addEventListener("click", () => { game.reset(); render(); });
     audioButton?.addEventListener("click", () => {
       const next = !sound?.enabled;
@@ -2458,7 +2488,7 @@
       restart.type = "button";
       restart.className = "secondary-btn";
       restart.textContent = t("restart");
-      restart.addEventListener("click", () => { game.reset(); controller.openBattle(); });
+      restart.addEventListener("click", () => { __wpReplayStart(() => game.reset()); controller.openBattle(); });
       const newGame = document.createElement("button");
       newGame.type = "button";
       newGame.className = "secondary-btn";
@@ -2468,6 +2498,25 @@
       copy.append(row);
     };
     game = GAME_BUILDERS[id]?.(controller) || makeFallback(controller, id);
+    // WP-GAME-ANALYTICS: model reset is a new deal; opening Main is not.
+    // The wrapper runs only after the authored method succeeds and preserves this/return.
+    const resetModel = game.reset;
+    game.reset = function (...args) {
+      const value = resetModel.apply(this, args);
+      __wpMeasurement.roundKey = {}; __wpMeasurement.started = __wpMeasurement.screen === "battle"; __wpMeasurement.restart = false;
+      __wpMeasurement.ended = false; __wpMeasurement.paused = false; __wpMeasurement.outcome = "complete";
+      __wpNotifyMeasurement(); return value;
+    };
+    for (const method of ["pause", "resume", "stop"]) {
+      if (typeof game[method] !== "function") continue;
+      const original = game[method];
+      game[method] = function (...args) {
+        const value = original.apply(this, args);
+        if (method === "stop") { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+        else __wpMeasurement.paused = method === "pause";
+        __wpNotifyMeasurement(); return value;
+      };
+    }
     game.reset();
     render();
     // War resolves every player action synchronously. Re-rendering its action
@@ -2482,7 +2531,9 @@
     }, { once: true });
     let mainControlAttempts = 0;
     const mainControlTimer = window.setInterval(() => { ensureMainControls(); mainControlAttempts += 1; if (document.querySelector("[data-card-main-controls]") || mainControlAttempts > 40) window.clearInterval(mainControlTimer); }, 50);
-  }
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
+}
 
   function gameSummary(id) {
     if (id === "gin-rummy") return (GIN_MAIN_COPY[currentLocale()] || GIN_MAIN_COPY.en).summary;

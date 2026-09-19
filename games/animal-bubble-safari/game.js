@@ -1,5 +1,23 @@
 (() => {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(game?.paused || game?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const LOGICAL_WIDTH = 390;
   const LOGICAL_HEIGHT = 788;
@@ -298,10 +316,15 @@
     dom.battleLive.inert = result;
     if (result) dom.battleLive.setAttribute("aria-hidden", "true");
     else dom.battleLive.removeAttribute("aria-hidden");
-    dom.resultScreen.classList.toggle("is-active", result);
+    (__wpNotifyMeasurement(), dom.resultScreen.classList.toggle("is-active", result));
     fitCanvas();
     track("screen_view", { screen: name });
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function updateMainProgress() {
     const complete = Object.keys(save.bestStars).filter(id => save.bestStars[id] > 0).length;
@@ -509,7 +532,7 @@
   function startStage(id) {
     clearTimeout(resultTimer);
     isPaused = false;
-    dom.pauseOverlay.hidden = true;
+    (__wpNotifyMeasurement(), dom.pauseOverlay.hidden = true);
     dom.pauseButton.disabled = false;
     selectedStage = id;
     const def = stageDefs[id - 1];
@@ -526,7 +549,9 @@
     loop(performance.now());
     track("level_start", { level: id });
     requestAnimationFrame(() => dom.playCanvas.focus({ preventScroll:true }));
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function launcherPoint() { return { x: 180, y: 500 }; }
 
@@ -794,7 +819,9 @@
     resultTimer = setTimeout(() => {
       if (game === completedGame && currentScreen === "battle") showResult(won);
     }, 520);
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function showResult(won) {
     const starLimits = game.def.stars;
@@ -811,7 +838,7 @@
     dom.rewardCoins.textContent = `+${won ? 20 + game.score/60|0 : 0}`;
     dom.rewardAlbum.textContent = `+${game.rescued}`;
     dom.skillText.textContent = t(game.def.report);
-    dom.resultProgress.hidden = bestScore <= 0;
+    (__wpNotifyMeasurement(), dom.resultProgress.hidden = bestScore <= 0);
     dom.resultProgress.textContent = bestScore > 0
       ? `${improvedBest ? `${t("improvedBest")} ` : ""}${formatText(t("bestScoreValue"), { score: bestScore })}`
       : "";
@@ -954,8 +981,8 @@
 
   function toggleSound() { audioEnabled=!audioEnabled; persist(); document.querySelectorAll("#soundMain,#soundStage").forEach(button => button.textContent=audioEnabled?"♪":"×"); tone(520,.06); }
   function track(event, details={}) { try { window.WonderAnalytics?.track?.(event,{ game:"animal-bubble-safari",...details }); } catch (_) {} }
-  function openGuide() { dom.guideModal.hidden=false; writeStorage(FIRST_PLAY_KEY,"seen"); }
-  function closeGuide() { dom.guideModal.hidden=true; }
+  function openGuide() { (__wpNotifyMeasurement(), dom.guideModal.hidden=false); writeStorage(FIRST_PLAY_KEY,"seen"); }
+  function closeGuide() { (__wpNotifyMeasurement(), dom.guideModal.hidden=true); }
 
   function pauseGame() {
     if (!game || currentScreen !== "battle" || game.state !== "playing" || isPaused) return;
@@ -964,7 +991,7 @@
     cancelAnimationFrame(animationFrame);
     dom.battleLive.inert = true;
     dom.battleLive.setAttribute("aria-hidden", "true");
-    dom.pauseOverlay.hidden = false;
+    (__wpNotifyMeasurement(), dom.pauseOverlay.hidden = false);
     requestAnimationFrame(() => dom.pauseResume.focus({ preventScroll: true }));
     track("game_pause", { level: game.def.id });
   }
@@ -972,7 +999,7 @@
   function resumeGame() {
     if (!game || currentScreen !== "battle" || !isPaused) return;
     isPaused = false;
-    dom.pauseOverlay.hidden = true;
+    (__wpNotifyMeasurement(), dom.pauseOverlay.hidden = true);
     dom.battleLive.inert = false;
     dom.battleLive.removeAttribute("aria-hidden");
     game.elapsed = performance.now();
@@ -984,7 +1011,7 @@
   function returnToStage() {
     clearTimeout(resultTimer);
     isPaused = false;
-    dom.pauseOverlay.hidden = true;
+    (__wpNotifyMeasurement(), dom.pauseOverlay.hidden = true);
     game = null;
     cancelAnimationFrame(animationFrame);
     renderStageRail();
@@ -1109,7 +1136,7 @@
   }, true);
   document.getElementById("retryStage").addEventListener("click", () => {
     if (!claimResultAction()) return;
-    startStage(game.def.id);
+    __wpReplayStart(() => startStage(game.def.id));
   });
   document.getElementById("nextStage").addEventListener("click", () => {
     if (!claimResultAction()) return;

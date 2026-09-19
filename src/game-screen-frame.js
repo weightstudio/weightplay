@@ -15,15 +15,21 @@
   };
   function createSettings({localeSelect, showLanguage = true, id = 'lobby', onOpen = () => {}}) {
     const abort = new AbortController();
+    const notifyInteraction = () => {
+      try { window.dispatchEvent(new Event('weightplay:interaction-state')); } catch { /* Optional measurement. */ }
+    };
     const listen = (node, event, fn) => node.addEventListener(event, fn, {signal:abort.signal});
     const utility = document.createElement('div'); utility.className = 'wp-frame-utility'; utility.dataset.wpPreferences = '';
     utility.innerHTML = '<button type="button" class="wp-frame-settings wp-shell-settings-button" data-wp-settings aria-expanded="false"><span class="wp-frame-settings-icon" aria-hidden="true"></span></button><div class="wp-frame-popover wp-shell-settings-popover" role="dialog" hidden><label><span></span><select></select></label><div class="wp-shell-combined-sound-row"><span></span><button type="button" role="switch" class="wp-frame-sound"><span class="wp-frame-sound-icon" aria-hidden="true"></span><span class="wp-frame-sound-state"></span></button></div></div>';
     const button=utility.querySelector('button'), panel=utility.querySelector('.wp-frame-popover'), select=utility.querySelector('select');
     const languageText=panel.querySelector('label > span'), soundText=panel.querySelector('div > span'), sound=panel.querySelector('.wp-frame-sound'), soundState=sound.querySelector('.wp-frame-sound-state');
     panel.id=`wp-frame-${id}-settings`;button.setAttribute('aria-controls',panel.id);
+    // The canonical locale normalizer identifies the shared select by stable ID.
+    select.id=`wp-frame-${id}-locale`;
+    utility.setAttribute('data-runtime-localize','off');
     for(const option of localeSelect?.options||[])select.add(option.cloneNode(true));
     panel.querySelector('label').hidden=!showLanguage||!localeSelect;
-    const close=(focus=false)=>{panel.hidden=true;button.setAttribute('aria-expanded','false');if(focus)button.focus({preventScroll:true});};
+    const close=(focus=false)=>{const wasOpen=!panel.hidden;panel.hidden=true;button.setAttribute('aria-expanded','false');if(wasOpen)notifyInteraction();if(focus)button.focus({preventScroll:true});};
     const refresh=()=>{
       const locale=window.WonderI18n?.locale?.()||document.documentElement.lang;
       const labels=copy[locale]||copy.en;
@@ -33,7 +39,7 @@
       soundText.textContent=labels[2];soundState.textContent=muted?labels[4]:labels[3];sound.setAttribute('aria-label',`${labels[2]}：${muted?labels[4]:labels[3]}`);sound.setAttribute('aria-checked',String(!muted));
       sound.disabled=!window.WonderSound?.setMuted;
     };
-    listen(button,'click',()=>{const open=panel.hidden;if(open)onOpen();panel.hidden=!open;button.setAttribute('aria-expanded',String(open));});
+    listen(button,'click',()=>{refresh();const open=panel.hidden;if(open)onOpen();panel.hidden=!open;button.setAttribute('aria-expanded',String(open));notifyInteraction();});
     listen(select,'change',()=>{localeSelect.value=select.value;localeSelect.dispatchEvent(new Event('change',{bubbles:true}));refresh();});
     listen(sound,'click',()=>{window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());refresh();});
     // Inside interactions belong to this component, not legacy game dismissal handlers.
@@ -42,7 +48,7 @@
     listen(document,'keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();close(true);}});
     listen(window,'wonder:locale-change',refresh);listen(window,'wonder:audio-volume-change',refresh);
     refresh();
-    return {utility,button,panel,select,sound,close,refresh,destroy(){abort.abort();utility.remove();}};
+    return {utility,button,panel,select,sound,close,refresh,destroy(){const wasOpen=!panel.hidden;abort.abort();utility.remove();if(wasOpen)notifyInteraction();}};
   }
   function mount({ root, scenes, localeSelect }) {
     if (mounts.has(root)) return mounts.get(root);
@@ -88,8 +94,9 @@
       }
       const title = header.querySelector('[data-wp-frame-title]');
       if (!title) throw new Error(`FRAME_TITLE_REQUIRED:${name}`);
+      title.hidden = name !== 'main';
       if (scene.headerInfo) {
-        if (name !== 'battle' || !scene.content.contains(scene.headerInfo)) throw new Error('FRAME_BATTLE_INFO_SLOT_REQUIRED');
+        if (!['stage','battle'].includes(name) || !scene.content.contains(scene.headerInfo)) throw new Error('FRAME_BATTLE_INFO_SLOT_REQUIRED');
         if (!scene.headerInfo.children.length || scene.headerInfo.children.length>3) throw new Error('FRAME_BATTLE_INFO_REQUIRES_ONE_TO_THREE_STATS');
         title.hidden = true;
         scene.headerInfo.setAttribute('data-wp-frame-info','');
@@ -107,6 +114,26 @@
         entry.refresh();
       }
     }
+    // Defer until the game's synchronous scene visibility changes finish.
+    // This publishes scene identity only, never a game_start or pause decision.
+    let analyticsNoticeQueued = false;
+    const notifyAnalytics = () => {
+      if (analyticsNoticeQueued || abort.signal.aborted) return;
+      analyticsNoticeQueued = true;
+      queueMicrotask(() => {
+        analyticsNoticeQueued = false;
+        if (abort.signal.aborted || !active) return;
+        try {
+          const node = entries[active].root;
+          const shown = node.isConnected && !node.hidden && node.getClientRects().length > 0
+            && getComputedStyle(node).visibility !== 'hidden';
+          window.dispatchEvent(new CustomEvent('weightplay:screen-change', {
+            detail: { screen: shown ? active : null, node, owner: root },
+          }));
+        } catch { /* Measurement must not affect the frame. */ }
+      });
+    };
+    listen(window, 'weightplay:analytics-ready', notifyAnalytics);
     const close = () => Object.values(entries).forEach(entry => entry.close());
     listen(window, 'wonder:locale-change', () => queueMicrotask(refresh));
     listen(window, 'wonder:audio-volume-change', refresh);
@@ -123,11 +150,15 @@
           entry.root.setAttribute('aria-hidden', String(!enabled));
         }
         refresh();
+        notifyAnalytics();
       },
       close,
       refresh,
       get active() { return active; },
-      destroy() { close(); abort.abort(); Object.values(entries).forEach(entry => entry.destroy()); mounts.delete(root); },
+      destroy() {
+        try { window.dispatchEvent(new CustomEvent('weightplay:screen-change', {detail:{owner:root,release:true}})); } catch { /* Optional analytics. */ }
+        close(); abort.abort(); Object.values(entries).forEach(entry => entry.destroy()); mounts.delete(root);
+      },
     });
     mounts.set(root, api); refresh(); return api;
   }
@@ -214,7 +245,7 @@
       // The legacy slot is only a source wrapper. Once its permanent return
       // button and optional info group have been moved into the generated
       // header, remove the empty wrapper so it cannot reserve a second HUD
-      // row or intercept pointer events over the play surface.
+      // row or intercept events over the play surface.
       if (oldHeader && oldHeader !== headerInfo && !oldHeader.children.length) oldHeader.remove();
     }
     const frame=mount({root,scenes,localeSelect});

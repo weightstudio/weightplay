@@ -1,5 +1,23 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const localeMap = window.ANIMAL_NEST_WEIGH_LOCALES || {};
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -182,7 +200,12 @@
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
     window.scrollTo(0, 0);
-  };
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+};
   const stageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
   const renderStages = () => {
     $("stageList").innerHTML = rounds.map((round, index) => {
@@ -237,7 +260,7 @@
     if (state.resultVisible) {
       renderResult();
     } else {
-      $("resultPanel").hidden = true;
+      (__wpNotifyMeasurement(), $("resultPanel").hidden = true);
       $("battlePanel").hidden = false;
     }
   };
@@ -254,7 +277,7 @@
     const total = state.comparisons;
     const previousBest = bestTotal();
     $("battlePanel").hidden = true;
-    $("resultPanel").hidden = false;
+    (__wpNotifyMeasurement(), $("resultPanel").hidden = false);
     $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle");
     $("resultText").textContent = copy(final ? "finishText" : "resultText");
     const best = final ? Math.min(total, previousBest || total) : bestTotal();
@@ -263,7 +286,9 @@
     $("resultPrimaryBtn").onclick = () => final ? startRound(0) : startRound(state.round + 1);
     $("mainProgress").textContent = copy("progress", { count: state.completed.length });
   };
-  const resetRound = () => { state.selectedPair = []; state.selectedTarget = null; state.comparison = null; state.comparisons = 0; state.wrong = false; state.resultVisible = false; renderBattle(); };
+  const resetRound = () => { state.selectedPair = []; state.selectedTarget = null; state.comparison = null; state.comparisons = 0; state.wrong = false; state.resultVisible = false; renderBattle();
+    if (state.screen === "battle") { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+};
   const showResult = () => {
     const final = state.round === rounds.length - 1;
     const total = state.comparisons;
@@ -273,7 +298,9 @@
     saveCompleted();
     state.resultVisible = true;
     renderResult();
-  };
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+};
   const checkRound = () => {
     if (!state.comparison) { $("battleStatus").textContent = copy("needComparison"); return; }
     if (state.comparisons < rounds[state.round].minimumComparisons) { $("battleStatus").textContent = copy("needMoreComparisons", { count: rounds[state.round].minimumComparisons }); return; }
@@ -281,7 +308,9 @@
     if (state.selectedTarget === targetIndex(rounds[state.round])) { state.wrong = false; showResult(); }
     else { state.wrong = true; renderBattle(); }
   };
-  const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); resetRound(); setScreen("battle"); };
+  const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); resetRound(); setScreen("battle");
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+};
   const applyLocale = (locale) => {
     state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en";
     safeSet("weightplay-locale", state.locale);
@@ -301,7 +330,7 @@
     $("compareBtn").addEventListener("click", compareSelected);
     $("clearPairBtn").addEventListener("click", clearPair);
     $("checkBtn").addEventListener("click", checkRound);
-    $("resetBtn").addEventListener("click", resetRound);
+    $("resetBtn").addEventListener("click", function (...args) { return __wpReplayStart(() => resetRound.apply(this, args)); });
     $("resultMapBtn").addEventListener("click", () => setScreen("stage"));
     $("resultHomeBtn").addEventListener("click", () => setScreen("main"));
     [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-nest-weigh-sound", state.sound ? "on" : "off"); applyText(); }));

@@ -4,7 +4,7 @@ import {createCampaignBattleView} from './campaign-battle-view.mjs';
 
 // Mount once from the replacement entry. The existing Main/guide renderer
 // supplies its real elements; do not attach beside the retired arcade mount.
-export function mountMahjongCampaign({main,guide,startButton,locale,storage,mainSettings,stageSettings,onMain,sound,onEvent}) {
+export function mountMahjongCampaign({main,guide,startButton,locale,storage,mainSettings,stageSettings,onMain,sound,onEvent,onState}) {
  if(!main||!guide||!startButton||typeof locale!=='function')throw new Error('Campaign Main/guide binding required');
  const session=createMahjongSession(storage,{onEvent}),lifetime=new AbortController(),doc=main.ownerDocument,win=doc.defaultView;
  const root=doc.documentElement,body=doc.body;
@@ -29,6 +29,7 @@ export function mountMahjongCampaign({main,guide,startButton,locale,storage,main
   // Always notify Battle so leaving cancels the previous board's effects.
   battleView.render();
   if(state.screen==='main'){onMain?.();mainSettings?.refresh();startButton.focus({preventScroll:true});}
+  try { onState?.(); } catch { /* Analytics never changes scene ownership. */ }
  }
  const openStages=()=>{session.stages();show();};startButton.addEventListener('click',openStages,{signal:lifetime.signal});
  function dispose(){if(disposed)return;disposed=true;win.cancelAnimationFrame(frame);lifetime.abort();stageView.dispose();battleView.dispose();mainSettings?.dispose();restore();main.hidden=original.mainHidden;guide.hidden=original.guideHidden;if(original.screen===undefined)delete body.dataset.screen;else body.dataset.screen=original.screen;}

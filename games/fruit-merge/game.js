@@ -1,4 +1,22 @@
 ﻿(() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(leaveConfirmOpen || lifecycleSuspended || !running), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "fruit-merge";
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
@@ -620,7 +638,7 @@
   function suspendRunLifecycle() {
     clearAimPointer();
     if (lifecycleSuspended) return;
-    lifecycleSuspended = true;
+    (__wpNotifyMeasurement(), lifecycleSuspended = true);
     lifecycleSuspendedAt = performance.now();
     window.clearTimeout(comboHudTimer);
     comboHudTimer = null;
@@ -637,7 +655,7 @@
     if (comboUntil > 0) comboUntil += pausedFor;
     if (toastUntil > 0) toastUntil += pausedFor;
     for (const fruit of fruitsOnBoard) fruit.bornAt += pausedFor;
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     lifecycleSuspendedAt = 0;
     lastTime = now;
     scheduleComboHudExpiry();
@@ -745,7 +763,7 @@
     document.querySelector(".home-link")?.setAttribute("aria-label", t("ariaLobby"));
     document.querySelector(".fixed-game-shell")?.setAttribute("aria-label", t("ariaBattle"));
     backToMenuBtn.setAttribute("aria-label", t("ariaBattleBack"));
-    pauseBtn.setAttribute("aria-label", t("ariaPause"));
+    (__wpNotifyMeasurement(), pauseBtn.setAttribute("aria-label", t("ariaPause")));
     document.querySelector(".scorebar")?.setAttribute("aria-label", t("ariaScore"));
     document.querySelector(".merge-goal")?.setAttribute("aria-label", t("ariaProgress"));
     canvas.setAttribute("aria-label", t("ariaBoard"));
@@ -822,14 +840,19 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showStage() {
     running = false;
     gameOver = true;
     stopAnimationLoop();
-    resultPanel.classList.add("hidden");
-    leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     leaveConfirmOpen = false;
     decisionMode = null;
     menuPanel.classList.add("hidden");
@@ -865,8 +888,8 @@
     document.body.classList.toggle("fruit-main", showMenu);
     document.body.classList.remove("fruit-stage");
     stagePanel.classList.add("hidden");
-    resultPanel.classList.add("hidden");
-    leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     leaveConfirmOpen = false;
     decisionMode = null;
     playPanel.inert = false;
@@ -914,7 +937,9 @@
         requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
       });
     }
-  }
+
+    if (!showMenu) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
 
   function updateFruitBattleScale() {
     if (!document.body.classList.contains("fruit-playing") && !document.body.classList.contains("fruit-stage")) return;
@@ -1418,13 +1443,15 @@
       action.classList.toggle("result-primary", action === primaryResultAction);
       action.classList.toggle("result-secondary", action !== primaryResultAction);
     });
-    resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     setBattleContentInert(true);
     requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, challenge: challenge?.id || null, cleared: challenge ? cleared : false });
     window.WonderAnalytics?.track?.("score_game_over", { game_id: GAME_ID, score, best_score: bestScore });
     updateHud();
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (cleared ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function readProgress() {
     try {
@@ -1839,7 +1866,7 @@
     decisionMode = mode;
     suspendRunLifecycle();
     applyDecisionText();
-    leaveConfirmPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.remove("hidden"));
     setBattleContentInert(true);
     requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
   }
@@ -1849,7 +1876,7 @@
     const mode = decisionMode;
     leaveConfirmOpen = false;
     decisionMode = null;
-    leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     setBattleContentInert(false);
     resumeRunLifecycle();
     if (restoreFocus) requestAnimationFrame(() => (mode === "pause" ? pauseBtn : canvas).focus({ preventScroll: true }));
@@ -1933,7 +1960,7 @@
 
   restartBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
-    resetGame(false, "restart");
+    __wpReplayStart(() => resetGame(false, "restart"));
   });
   backToMenuBtn.addEventListener("click", () => openBattleDecision("leave"));
   pauseBtn.addEventListener("click", () => openBattleDecision("pause"));
@@ -1976,7 +2003,7 @@
   stageBackBtn.addEventListener("click", () => resetGame(true, "stage-return"));
   playAgainBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "result" });
-    resetGame(false, "result-replay");
+    __wpReplayStart(() => resetGame(false, "result-replay"));
   });
   nextChallengeBtn.addEventListener("click", () => {
     const challenge = activeChallenge();

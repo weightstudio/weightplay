@@ -1,4 +1,22 @@
 ﻿(() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || run?.paused || run?.suspended || backgroundSuspended), node: nodes.gamePanel,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const stagePanel = document.getElementById("stagePanel");
   stagePanel?.setAttribute("data-wp-canvas-max-width", "920");
   stagePanel?.setAttribute("data-wp-stage-landscape-width", "760");
@@ -1476,7 +1494,7 @@
     nodes.mainPanel.classList.toggle("is-hidden", which !== "main");
     nodes.stagePanel.classList.toggle("is-hidden", which !== "stage");
     nodes.gamePanel.classList.toggle("is-hidden", which !== "game" && which !== "result");
-    nodes.resultPanel.classList.toggle("is-hidden", which !== "result");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.toggle("is-hidden", which !== "result"));
     const resultOpen = which === "result";
     [...nodes.gamePanel.querySelectorAll(":scope > .battle-shell > .hud-row, :scope > .battle-shell > .play-frame, :scope > .battle-shell > .catch-hud, :scope > .battle-shell > .tension-panel")].forEach((node) => {
       node.toggleAttribute("inert", resultOpen);
@@ -1494,7 +1512,12 @@
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail: sceneDetail }));
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: sceneDetail }));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: sceneDetail }));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","game":"battle"})[which] ?? null;
+      if (["result"].includes(which) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function battleDecisionLayers() {
     return [...nodes.gamePanel.querySelectorAll(":scope > .battle-shell > .hud-row, :scope > .battle-shell > .play-frame, :scope > .battle-shell > .catch-hud, :scope > .battle-shell > .tension-panel")];
@@ -1519,7 +1542,7 @@
         goal: run.zone.goal,
         time: Math.max(0, Math.ceil(run.time)),
       });
-      nodes.leavePanel.classList.remove("is-hidden");
+      (__wpNotifyMeasurement(), nodes.leavePanel.classList.remove("is-hidden"));
       battleDecisionLayers().forEach((node) => {
         node.inert = true;
         node.setAttribute("aria-hidden", "true");
@@ -1529,7 +1552,7 @@
     }
     const wasOpen = leaveDecisionOpen;
     leaveDecisionOpen = false;
-    nodes.leavePanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.leavePanel.classList.add("is-hidden"));
     battleDecisionLayers().forEach((node) => {
       node.inert = false;
       node.setAttribute("aria-hidden", "false");
@@ -1628,7 +1651,9 @@
     playSound("start");
     canvas.focus({ preventScroll: true });
     restartFishingLoop();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = entryAction === "retry"; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function syncResultActions(won) {
     const zoneIndex = run ? zones.indexOf(run.zone) : -1;
@@ -1716,10 +1741,10 @@
         span.textContent = line;
         nodes.resultMissionPreview.append(span);
       });
-      nodes.resultMissionPreview.classList.remove("is-hidden");
+      (__wpNotifyMeasurement(), nodes.resultMissionPreview.classList.remove("is-hidden"));
     } else {
       nodes.resultMissionPreview.replaceChildren();
-      nodes.resultMissionPreview.classList.add("is-hidden");
+      (__wpNotifyMeasurement(), nodes.resultMissionPreview.classList.add("is-hidden"));
     }
     resultDecisionCommitted = false;
     for (const button of [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn]) button.disabled = false;
@@ -1733,7 +1758,9 @@
     playSound(won ? "win" : "wrong");
     track("result", { zone: run.zone.id, stage: run.zone.stage, outcome: won ? "win" : "loss", catches: run.catches, newFish: run.newFish, notes: run.notes, input_type: run.lastInputType });
     track("game_complete", { zone: run.zone.id, stage: run.zone.stage, outcome: won ? "win" : "loss", won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore, input_type: run.lastInputType });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function pickHookFish() {
     if (run.zone.boss && run.catches >= run.zone.goal - 1) return bossFishForZone(run.zone);
@@ -2789,7 +2816,7 @@
   });
   nodes.retryBtn.addEventListener("click", (event) => commitResultDecision(async () => {
     track("retry", { from: "result", zone: run?.zone?.id, stage: run?.zone?.stage, input_type: eventInputType(event) });
-    await startRun(eventInputType(event), "retry");
+    await __wpReplayStart(() => startRun(eventInputType(event), "retry"));
   }));
   nodes.nextZoneBtn.addEventListener("click", (event) => commitResultDecision(async () => {
     const zoneIndex = run ? zones.indexOf(run.zone) : -1;
@@ -2898,7 +2925,7 @@
     cancelFishingInput();
     suspendDiamondPurchaseConfirmation();
     if (backgroundSuspended) return;
-    backgroundSuspended = true;
+    (__wpNotifyMeasurement(), backgroundSuspended = true);
     cancelAnimationFrame(raf);
     raf = 0;
   }
@@ -2906,7 +2933,7 @@
     if (document.hidden) return;
     resumeDiamondPurchaseConfirmation();
     if (!backgroundSuspended) return;
-    backgroundSuspended = false;
+    (__wpNotifyMeasurement(), backgroundSuspended = false);
     restartFishingLoop();
   }
   function reclaimVisiblePlayerInteraction(evt) {

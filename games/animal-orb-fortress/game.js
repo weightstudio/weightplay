@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || backgroundSuspended), node: nodes.gamePanel,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "animal-orb-fortress";
   const GAME_VERSION = "v45";
   const saveKey = "weightplay_animal_orb_fortress_v1";
@@ -83,7 +101,7 @@
     gameId: GAME_ID,
     root: document.querySelector("[data-wp-game-shell-root]"),
     main: nodes.menuPanel,
-    stage: nodes.stagePanel,
+    stage: { root: nodes.stagePanel, headerInfo: nodes.stagePanel.querySelector(".profile-grid") },
     battle: { root: nodes.gamePanel, headerInfo: battleHeaderInfo },
   });
   // The legacy row is only a source wrapper for the shared Battle header. Once
@@ -1329,28 +1347,14 @@
     }
   }
 
-  // The shared frame deliberately protects its compact radius with a layered
-  // contract. Keep this game's public guide at the larger, readable radius
-  // required by its Guide acceptance envelope using an inline, game-owned
-  // normalization that also survives locale copy replacement.
-  function normalizeGameLocalFrameContract() {
-    const guide = document.querySelector(".game-page-info");
-    if (!guide) return;
-    guide.style.setProperty("border-radius", "16px", "important");
-    const sections = guide.querySelector(".game-info-sections");
-    sections?.style.setProperty("display", "grid", "important");
-    guide.querySelectorAll(".game-info-section").forEach((section) => {
-      section.style.setProperty("padding", "16px", "important");
-      section.style.setProperty("border-radius", "16px", "important");
-    });
-  }
+
 
   function scheduleGameLocalLocalization() {
     [0, 80, 320, 1400, 2200].forEach((delay) => window.setTimeout(() => {
       nodes.startBtn.textContent = t("openRaidMap");
       localizeGameSoundToggle();
       normalizeGameLocalGuideCopy();
-      normalizeGameLocalFrameContract();
+
       updatePageMeta();
     }, delay));
   }
@@ -1536,7 +1540,12 @@
     } else if (panel === nodes.menuPanel) {
       settleMainStartFocus();
     }
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : panel === nodes.gamePanel ? "battle" : null] ?? null;
+      if (["result"].includes(panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : panel === nodes.gamePanel ? "battle" : null) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function updateOrbBattleScale() {
     if (!document.body.classList.contains("orb-fortress-playing")) return;
@@ -1714,8 +1723,8 @@
     // Keep the shared fragment translator from changing physical-key tokens
     // such as Enter into a misleading partial translation (for example `恩ter`).
     nodes.hintText?.setAttribute("data-runtime-localize", "off");
-    if (requested === "hi") nodes.pausePanel?.setAttribute("data-runtime-localize", "off");
-    else nodes.pausePanel?.removeAttribute("data-runtime-localize");
+    if (requested === "hi") (__wpNotifyMeasurement(), nodes.pausePanel?.setAttribute("data-runtime-localize", "off"));
+    else (__wpNotifyMeasurement(), nodes.pausePanel?.removeAttribute("data-runtime-localize"));
     writeStorage(localeKey, requested);
     document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
@@ -1729,7 +1738,7 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("returnMain"));
     updateArenaControlLabel(true);
     nodes.mapBtn.setAttribute("aria-label", t("battleReturnDecision"));
-    nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap"));
+    (__wpNotifyMeasurement(), nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap")));
     updatePageMeta();
     nodes.localeSelect.value = requested;
     renderMenu();
@@ -1894,15 +1903,7 @@
     card.setAttribute("aria-keyshortcuts", STAGE_KEYBOARD_SHORTCUTS);
     card.setAttribute("aria-posinset", String(raid.tier));
     card.setAttribute("aria-setsize", String(MAX_RAID_TIER));
-    applyCompactLandscapeCardEnvelope(card);
     card.innerHTML = `<span class="raid-number">${raid.tier}</span><strong>${localized(raid.name)}</strong><span>${localized(raid.desc)}</span><em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked ? `<span>${t("tierLocked")}</span>` : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${wavesForTier(raid.tier)}</span> <span>${t("waves")}</span>`}</em>`;
-  }
-  function applyCompactLandscapeCardEnvelope(card) {
-    const compactLandscape = window.innerWidth <= 900 && window.innerWidth > window.innerHeight;
-    ["height", "min-height", "max-height"].forEach((property) => {
-      if (compactLandscape) card.style.setProperty(property, "110px", "important");
-      else card.style.removeProperty(property);
-    });
   }
   function createStageCard(poolIndex) {
     const card = document.createElement("button");
@@ -1990,7 +1991,6 @@
     if (centeredStageFrame) return;
     centeredStageFrame = window.requestAnimationFrame(() => {
       centeredStageFrame = 0;
-      nodes.stageRail.querySelectorAll(".raid-card").forEach(applyCompactLandscapeCardEnvelope);
       updateCenteredStage();
     });
   }
@@ -2046,7 +2046,7 @@
   function startRaid(tier = selectedTier) {
     cancelPointerAim();
     cancelAnimationFrame(raf);
-    backgroundSuspended = false;
+    (__wpNotifyMeasurement(), backgroundSuspended = false);
     selectedTier = Math.max(1, Math.min(MAX_RAID_TIER, Number(tier) || 1));
     configureArena();
     state = makeState();
@@ -2068,7 +2068,9 @@
     track("raid_start", { tier: state.raidTier, wave: state.wave, wave_total: state.waveTotal });
     trackGrowth("raid_start", { tier: state.raidTier, wave: state.wave, wave_total: state.waveTotal });
     loop(lastFrame);
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function raidProfile(tier) {
     const zone = Math.ceil(tier / 5);
@@ -2556,7 +2558,7 @@
       cancelPointerAim();
       cancelAnimationFrame(raf);
       state.mode = "paused";
-      nodes.pausePanel.classList.remove("is-hidden");
+      (__wpNotifyMeasurement(), nodes.pausePanel.classList.remove("is-hidden"));
       setSceneOwnership(nodes.pausePanel, true);
       $("battleLive").inert = true;
       $("battleLive").setAttribute("aria-hidden", "true");
@@ -2565,7 +2567,7 @@
       return;
     }
     if (state.mode !== "paused") return;
-    nodes.pausePanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("is-hidden"));
     setSceneOwnership(nodes.pausePanel, false);
     $("battleLive").inert = false;
     $("battleLive").setAttribute("aria-hidden", "false");
@@ -3133,7 +3135,7 @@
     spawnWave();
     state.mode = "running";
     nodes.hintText.textContent = activeEncounterCue() || t("aimHint");
-    backgroundSuspended = false;
+    (__wpNotifyMeasurement(), backgroundSuspended = false);
     show(nodes.gamePanel);
     window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     playSound("success", 0.2);
@@ -3176,7 +3178,7 @@
     if (state.mode === "result") return;
     state.mode = "result";
     resultDecisionCommitted = false;
-    backgroundSuspended = false;
+    (__wpNotifyMeasurement(), backgroundSuspended = false);
     cancelAnimationFrame(raf);
     const waveStones = state.stonesEarned;
     const settlementStones = win ? 5 : 1;
@@ -3223,19 +3225,19 @@
     nodes.nextStageBtn.classList.toggle("primary-btn", hasNextStage);
     nodes.nextStageBtn.classList.toggle("secondary-btn", !hasNextStage);
     const menuIsPrimary = win && !hasNextStage;
-    nodes.resultMenuBtn.classList.toggle("primary-btn", menuIsPrimary);
-    nodes.resultMenuBtn.classList.toggle("secondary-btn", !menuIsPrimary);
+    (__wpNotifyMeasurement(), nodes.resultMenuBtn.classList.toggle("primary-btn", menuIsPrimary));
+    (__wpNotifyMeasurement(), nodes.resultMenuBtn.classList.toggle("secondary-btn", !menuIsPrimary));
     nodes.retryBtn.classList.toggle("primary-btn", !win);
     nodes.retryBtn.classList.toggle("secondary-btn", win);
     state.resultReadyAt = performance.now() + 760;
-    nodes.resultPanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
     setSceneOwnership(nodes.resultPanel, false);
     window.setTimeout(() => {
       if (state.mode !== "result") return;
       show(nodes.resultPanel);
-      nodes.resultPanel.classList.add("is-revealing");
+      (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-revealing"));
       window.setTimeout(() => {
-        nodes.resultPanel.classList.remove("is-revealing");
+        (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("is-revealing"));
         (hasNextStage ? nodes.nextStageBtn : win ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true });
       }, 760);
     }, 760);
@@ -3243,7 +3245,9 @@
     playSound(win ? "success" : "wrong", 0.2);
     track("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(state.waveTotal, state.wave), wave_total: state.waveTotal, stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
     trackGrowth("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(state.waveTotal, state.wave), wave_total: state.waveTotal, stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function commitResultDecision(action) {
     if (resultDecisionCommitted || state.mode !== "result" || nodes.resultPanel.classList.contains("is-hidden")) return;
@@ -3770,7 +3774,7 @@
   nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => {
     track("retry", { tier: state.raidTier, wave: state.wave });
     trackGrowth("retry", { tier: state.raidTier, wave: state.wave });
-    startRaid(state.raidTier);
+    __wpReplayStart(() => startRaid(state.raidTier));
   }));
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!nodes.nextStageBtn.disabled && state.raidTier < MAX_RAID_TIER) {
@@ -3800,7 +3804,7 @@
     pauseFocusOwner = null;
     track("map_return", { from: "pause", tier: state.raidTier, wave: state.wave });
     state.mode = "stage";
-    nodes.pausePanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("is-hidden"));
     setSceneOwnership(nodes.pausePanel, false);
     setStageView("raid");
     show(nodes.stagePanel);
@@ -3906,14 +3910,14 @@
     cancelPointerAim();
     suspendRerollConfirmation();
     if (state.mode !== "running" || backgroundSuspended) return;
-    backgroundSuspended = true;
+    (__wpNotifyMeasurement(), backgroundSuspended = true);
     cancelAnimationFrame(raf);
   }
   function resumeBackgroundRaid() {
     if (document.hidden || !windowFocused) return;
     resumeRerollConfirmation();
     if (!backgroundSuspended) return;
-    backgroundSuspended = false;
+    (__wpNotifyMeasurement(), backgroundSuspended = false);
     if (state.mode !== "running") return;
     lastFrame = performance.now();
     raf = requestAnimationFrame(loop);

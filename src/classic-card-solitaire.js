@@ -845,8 +845,22 @@
       this.pyramidCoachRetired = false;
       this.pyramidCoachMoves = null;
       this.nodes = {};
+      // WP-GAME-ANALYTICS-ADAPTER: no timers, storage or transport in the view.
+      this.measurement = { roundKey: {}, started: false, restart: false };
+      this.readMeasurement = () => ({ ...this.measurement,
+        screen: this.active ? (this.game.won || this.game.lost ? null : "battle") : "main",
+        ended: Boolean(this.game.won || this.game.lost), outcome: this.game.won ? "win" : "lose",
+        paused: !this.active, node: this.nodes.battleScreen, locale: this.locale,
+        activityMode: "input", idleSeconds: 300
+      });
+      this.onAnalyticsReady = () => this.notifyMeasurement();
     }
 
+    notifyMeasurement() { try { root.WonderAnalytics?.game?.observeState(this.readMeasurement); } catch { /* Optional telemetry. */ } }
+    measurementNewDeal(replay) {
+      this.measurement = { roundKey: {}, started: this.active, restart: replay };
+      this.notifyMeasurement();
+    }
     t(key, params) { const copy = COMMON[this.locale] || COMMON.en; return text(copy[key] || COMMON.en[key] || key, params); }
     variantCopy() { const copy = VARIANTS[this.config.variant] || VARIANTS.freecell; return { title: copy.titles[this.locale] || copy.titles.en, target: copy.target[this.locale] || copy.target.en }; }
     resetYukonCoach() { this.yukonCoachRetired = false; this.yukonCoachMove = null; }
@@ -930,21 +944,23 @@
       this.setupNodes();
       if (!this.nodes.mainScreen || !this.nodes.board) return;
       this.locale = safeLocale();
+      root.addEventListener("weightplay:analytics-ready", this.onAnalyticsReady);
       this.bind(); this.refreshCopy(); this.renderMain();
       this.nodes.loadingPanel?.classList.add("hidden");
       if (this.nodes.loadingPanel) this.nodes.loadingPanel.hidden = true;
+      this.notifyMeasurement();
     }
     bind() {
       this.nodes.startBtn?.addEventListener("click", () => this.showBattle());
-      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.showBattle(); });
-      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.showBattle(); });
+      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.measurementNewDeal(true); this.showBattle(); });
+      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.measurementNewDeal(false); this.showBattle(); });
       this.nodes.battleBackBtn?.addEventListener("click", () => this.showMain());
-      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.render(); });
-      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.render(); });
+      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.measurementNewDeal(false); this.render(); });
+      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.measurementNewDeal(true); this.render(); });
       this.nodes.undoBtn?.addEventListener("click", () => { this.resetYukonRecovery(); if (this.game.undo()) { this.feedback(this.t("undo")); this.render(); } else this.feedback(this.t("noMoves")); });
       this.nodes.hintBtn?.addEventListener("click", () => this.hint());
-      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
-      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
+      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.measurementNewDeal(false); this.hideResult(); this.render(); });
+      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.measurementNewDeal(true); this.hideResult(); this.render(); });
       this.nodes.resultClose?.addEventListener("click", () => this.showMain());
       this.nodes.localeSelect?.addEventListener("change", (event) => { this.locale = event.target.value; try { localStorage.setItem("weightPlayLocale", this.locale); } catch (_error) {} this.refreshCopy(); this.render(); });
       this.nodes.soundBtn?.addEventListener("click", () => { this.audio.setEnabled(!this.audio.enabled); this.refreshSound(); });
@@ -973,8 +989,8 @@
       this.nodes.battleBackBtn?.setAttribute("aria-label", this.t("back"));
       this.refreshSound();
     }
-    showMain() { this.active = false; this.resetYukonRecovery(); this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
-    showBattle() { this.active = true; this.nodes.mainScreen.hidden = true; this.nodes.battleScreen.hidden = false; document.body.dataset.screen = "battle"; this.render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); this.nodes.battleBackBtn?.focus({ preventScroll: true }); }
+    showMain() { this.active = false; this.notifyMeasurement(); this.resetYukonRecovery(); this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
+    showBattle() { this.active = true; this.measurement.started = true; this.notifyMeasurement(); this.nodes.mainScreen.hidden = true; this.nodes.battleScreen.hidden = false; document.body.dataset.screen = "battle"; this.render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); this.nodes.battleBackBtn?.focus({ preventScroll: true }); }
     renderMain() { this.setText("#statistics", ""); }
     captureMoveRects() {
       return new Map([...this.nodes.board.querySelectorAll("[data-card-id]")].map((node) => [node.dataset.cardId, node.getBoundingClientRect()]));
@@ -1349,7 +1365,7 @@
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
     feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.setAttribute("role", "alert"); this.nodes.toast.setAttribute("aria-live", "assertive"); this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = message; clearTimeout(this.toastTimer); clearTimeout(this.statusTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); this.statusTimer = setTimeout(() => { if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = ""; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
-    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const progress = this.config.variant === "yukon" ? this.yukonProgressSnapshot() : null; const recap = this.config.variant === "yukon" ? ` ${this.t("yukonResultRecap", { moves: this.game.moves, foundations: progress.foundations })}` : this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : this.config.variant === "freecell" ? ` ${this.t("freecellResultRecap", { seed: this.game.seed })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
+    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.notifyMeasurement(); this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const progress = this.config.variant === "yukon" ? this.yukonProgressSnapshot() : null; const recap = this.config.variant === "yukon" ? ` ${this.t("yukonResultRecap", { moves: this.game.moves, foundations: progress.foundations })}` : this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : this.config.variant === "freecell" ? ` ${this.t("freecellResultRecap", { seed: this.game.seed })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
     render() {
       // A Yukon deal can settle into a deadlock between the last successful
       // move and the next visible interaction. Re-evaluate its no-move

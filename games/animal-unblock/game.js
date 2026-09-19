@@ -1,5 +1,23 @@
 (() => {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
@@ -214,7 +232,12 @@ const GAME_VERSION = "v24";
       renderStage();
     }
     window.scrollTo(0, 0);
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[nextScreen] ?? null;
+      if (["result"].includes(nextScreen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function selectStage(levelIndex, center = false, focus = false) {
     selected = Math.max(0, Math.min(29, levelIndex));
@@ -323,7 +346,9 @@ const GAME_VERSION = "v24";
       stage: levelIndex + 1,
       start_source: startSource,
     });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function occupied(skip, x, y, width, height) {
     return blocks.some(
@@ -446,7 +471,7 @@ const GAME_VERSION = "v24";
       $("resultStages").disabled = false;
       $("retry").disabled = false;
       $("next").disabled = index >= levels.length - 1;
-      $("result").showModal();
+      (__wpNotifyMeasurement(), $("result").showModal());
       document.body.dataset.unblockCovered = "true";
       $("battleLive").inert = true;
       frame?.activate("battle", {covered: true});
@@ -468,7 +493,9 @@ const GAME_VERSION = "v24";
           ?.focus({ preventScroll: true }),
       );
     }
-  }
+
+    if (block.hero && block.x >= 4) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement(); }
+}
 
   function claimResultAction(action) {
     if (!$("result").open || resultActionClaimed) return;
@@ -730,15 +757,15 @@ const GAME_VERSION = "v24";
         drag.element.classList.remove("dragging");
         clearDrag();
       }
-      $("leaveDialog").showModal();
+      (__wpNotifyMeasurement(), $("leaveDialog").showModal());
       document.body.dataset.unblockCovered = "true";
       $("battleLive").inert = true;
       frame?.activate("battle", {covered: true});
       $("continuePlay").focus();
     };
   });
-  $("continuePlay").onclick = () => $("leaveDialog").close();
-  $("confirmLeave").onclick = () => { $("leaveDialog").close(); show("stage"); };
+  $("continuePlay").onclick = () => (__wpNotifyMeasurement(), $("leaveDialog").close());
+  $("confirmLeave").onclick = () => { (__wpNotifyMeasurement(), $("leaveDialog").close()); show("stage"); };
   $("leaveDialog").addEventListener("close", () => {
     // close is asynchronous: confirming leave has already activated Stage.
     // Only cancellation should restore Battle and its keyboard focus.
@@ -757,16 +784,16 @@ const GAME_VERSION = "v24";
   });
   $("undo").onclick = undo;
   $("hint").onclick = hint;
-  $("restart").onclick = () => start(index, "battle_restart");
+  $("restart").onclick = () => __wpReplayStart(() => start(index, "battle_restart"));
   $("resultStages").onclick = () => claimResultAction(() => {
-    $("result").close();
+    (__wpNotifyMeasurement(), $("result").close());
     selected = Math.min(29, index + 1);
     show("stage");
     renderStage();
   });
   $("next").onclick = () => claimResultAction(() => {
     if (index >= levels.length - 1) return;
-    $("result").close();
+    (__wpNotifyMeasurement(), $("result").close());
     selected = index + 1;
     trackFunnelEvent("next_stage_start", {
       from_stage: index + 1,
@@ -775,8 +802,8 @@ const GAME_VERSION = "v24";
     start(selected, "result_next");
   });
   $("retry").onclick = () => claimResultAction(() => {
-    $("result").close();
-    start(index, "result_retry");
+    (__wpNotifyMeasurement(), $("result").close());
+    __wpReplayStart(() => start(index, "result_retry"));
   });
   $("locale").innerHTML = codes
     .map((code) => `<option value="${code}">${dict[code].label}</option>`)

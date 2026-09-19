@@ -31,35 +31,6 @@ body {
 /* Short landscape keeps the complete first-session poster and Start action in
    the initial viewport. This is a compact form of the same two-track Main
    composition, not an independently reflowed or cropped child layout. */
-@media (max-height: 480px) and (orientation: landscape) {
-  body #menuPanel.wp-standard-main-composition {
-    grid-template-columns: 300px minmax(0, 1fr) !important;
-    gap: 14px !important;
-    padding: 4px 10px !important;
-  }
-
-  body #menuPanel .wp-standard-main-poster,
-  body #menuPanel .wp-standard-main-poster-media,
-  body #menuPanel .wp-standard-main-poster-media > img,
-  body #menuPanel .wp-standard-main-poster > img {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    height: 300px !important;
-    min-height: 300px !important;
-    max-height: 300px !important;
-  }
-
-  body #menuPanel .wp-standard-main-poster {
-    position: relative !important;
-    top: -4px !important;
-  }
-
-  body #menuPanel .wp-standard-main-copy {
-    height: 300px !important;
-    gap: 10px !important;
-  }
-}
 
 button,
 select {
@@ -91,13 +62,15 @@ body.guardian-playing {
   overscroll-behavior: none;
 }
 
-body.guardian-playing .guardian-topbar,
-body.guardian-playing .game-page-info {
+body.guardian-playing .guardian-topbar, body.guardian-playing .game-page-info {
   display: none !important;
 }
 
-body.guardian-stage .locale-box,
 body.guardian-stage .game-page-info {
+  display: none !important;
+}
+
+body.guardian-stage .locale-box {
   display: none !important;
 }
 
@@ -148,24 +121,6 @@ body.guardian-playing #menuBtn {
 /* The shared shell adopts the Battle return into a generated header. Keep that
    header inside the logical canvas at the HUD's top-left instead of allowing it
    to become an extra grid row below the command bar. */
-body.guardian-playing #gamePanel > .wp-generated-battle-header {
-  position: absolute !important;
-  z-index: 90;
-  top: 3px;
-  left: 6px;
-  width: 48px;
-  height: 48px;
-  margin: 0;
-  padding: 0;
-  pointer-events: none;
-}
-
-body.guardian-playing #gamePanel > .wp-generated-battle-header #menuBtn {
-  width: 48px !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  pointer-events: auto;
-}
 
 body.guardian-playing .hud-row {
   display: grid;
@@ -294,54 +249,21 @@ body.guardian-playing .command-row button {
   white-space: normal;
 }
 
-.guardian-topbar,
-.hud-row,
-.boss-panel,
-.stage-header,
-.command-row {
+.hud-row, .boss-panel, .command-row {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.guardian-topbar {
-  justify-content: space-between;
-  padding: 14px clamp(14px, 3vw, 34px);
-  background: rgba(5, 13, 22, 0.88);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-}
-
-.back-btn,
-.locale-box,
-.secondary-btn,
-.primary-btn {
+.locale-box, .secondary-btn, .primary-btn {
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 10px;
   font-weight: 900;
 }
 
-.back-btn,
 .secondary-btn {
   color: var(--text);
   background: rgba(255, 255, 255, 0.09);
-}
-
-.back-btn {
-  display: grid;
-  grid-template-columns: 16px 28px;
-  align-items: center;
-  justify-content: center;
-  width: 58px;
-  height: 48px;
-  gap: 4px;
-  text-decoration: none;
-}
-
-.back-btn img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
 }
 
 .brand-lockup span,
@@ -469,11 +391,13 @@ body.guardian-playing .command-row button {
   margin: 20px 0;
 }
 
-.profile-grid div,
-.tech-card,
-.stage-card,
-.build-card,
-.selected-info {
+.profile-grid div, .tech-card, .build-card, .selected-info {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stage-card {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
@@ -519,11 +443,6 @@ body.guardian-playing .command-row button {
   background: var(--panel);
 }
 
-.stage-header {
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-
 .stage-header h2 {
   margin: 0;
 }
@@ -532,26 +451,24 @@ body.guardian-playing .command-row button {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(270px, 30%);
-  gap: 12px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
   scroll-padding-inline: 8px;
-  padding: 4px 4px 12px;
   scrollbar-width: thin;
 }
 
-.stage-card,
-.tech-card,
-.build-card {
+.tech-card, .build-card {
+  padding: 12px;
+  text-align: left;
+}
+
+.stage-card {
   padding: 12px;
   text-align: left;
 }
 
 .stage-card {
   cursor: pointer;
-  min-height: 184px;
-  scroll-snap-align: center;
   scroll-margin-inline: 8px;
 }
 
@@ -1103,10 +1020,6 @@ body.guardian-result .game-panel > .command-row {
 }
 
 @media (max-width: 780px) {
-  .guardian-topbar {
-    gap: 8px;
-    padding: 10px;
-  }
 
   .brand-lockup span {
     display: none;
@@ -1156,10 +1069,6 @@ body.guardian-result .game-panel > .command-row {
 
   .stage-rail {
     grid-auto-columns: minmax(258px, 82%);
-  }
-
-  .stage-card {
-    min-height: 192px;
   }
 
   .game-panel {
@@ -1278,15 +1187,6 @@ body:not(.guardian-playing) .guardian-app {
   margin-inline: auto;
 }
 
-body:not(.guardian-playing) .guardian-topbar {
-  width: 390px;
-  max-width: 100%;
-  min-height: 72px;
-  margin-inline: auto;
-  padding: 10px;
-  gap: 8px;
-}
-
 body:not(.guardian-playing) .brand-lockup h1 {
   font-size: 1.35rem;
 }
@@ -1305,11 +1205,6 @@ body:not(.guardian-playing) .locale-box {
 
 body:not(.guardian-playing) .sound-btn {
   display: none;
-}
-
-body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) 112px 112px;
 }
 
 body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
@@ -1333,13 +1228,6 @@ body:not(.guardian-playing):not(.guardian-stage) .sound-btn {
 }
 
 @media (max-width: 599px) {
-  body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
-    grid-template-columns: 58px minmax(0, 1fr) 112px;
-  }
-
-  body:not(.guardian-playing):not(.guardian-stage) .back-btn {
-    grid-row: 1 / 3;
-  }
 
   body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
     grid-column: 2 / 4;
@@ -1411,11 +1299,6 @@ body:not(.guardian-playing):not(.guardian-stage) .guardian-app {
   max-width: none;
   margin-inline: auto;
   min-height: 0;
-}
-
-body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
-  width: 100%;
-  max-width: none;
 }
 
 body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
@@ -1522,13 +1405,6 @@ body.guardian-stage .stage-panel {
   padding: 14px;
 }
 
-body.guardian-stage .stage-header {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  height: 48px;
-  margin-bottom: 14px;
-}
-
 body.guardian-stage .stage-header h2 {
   grid-column: 2;
   grid-row: 1;
@@ -1546,11 +1422,8 @@ body.guardian-stage .stage-rail {
   width: 354px;
   max-width: 100%;
   grid-auto-columns: 264px;
-  padding: 18px 45px 26px;
-  gap: 14px;
   cursor: grab;
   scrollbar-width: none;
-  touch-action: pan-x;
 }
 
 body.guardian-stage .stage-rail::-webkit-scrollbar {
@@ -1559,16 +1432,9 @@ body.guardian-stage .stage-rail::-webkit-scrollbar {
 
 body.guardian-stage .stage-rail.is-mouse-dragging {
   cursor: grabbing;
-  scroll-snap-type: none;
 }
 
 body.guardian-stage .stage-card {
-  width: 264px;
-  min-width: 264px;
-  max-width: 264px;
-  height: 190px;
-  min-height: 190px;
-  max-height: 190px;
   overflow: hidden;
 }
 
@@ -1636,29 +1502,14 @@ body.guardian-stage .stage-panel {
   overflow: hidden;
 }
 
-body.guardian-stage .stage-header {
-  width: 100%;
-  margin: 0;
-}
-
 body.guardian-stage .stage-rail {
   width: 100%;
   min-width: 0;
   height: 100%;
   grid-auto-columns: minmax(280px, 38%);
   align-content: center;
-  padding: 18px max(18px, calc((100% - 360px) / 2));
   overflow-x: auto;
   overflow-y: hidden;
-}
-
-body.guardian-stage .stage-card {
-  width: auto;
-  min-width: 0;
-  max-width: none;
-  height: 220px;
-  min-height: 220px;
-  max-height: 220px;
 }
 
 /* Desktop build cards form a deliberate horizontal rail.  The inset selected
@@ -1709,30 +1560,11 @@ body.guardian-playing .build-card.is-selected {
 
   body.guardian-stage .stage-rail {
     grid-auto-columns: 272px;
-    padding-inline: max(14px, calc((100% - 272px) / 2));
-  }
-
-  body.guardian-stage .stage-card {
-    width: 272px;
-    min-width: 272px;
-    max-width: 272px;
-    height: 202px;
-    min-height: 202px;
-    max-height: 202px;
   }
 }
 
 /* 2026-07-26 canonical Main / Stage component kit. */
 :root {
-  --wp-ui-shell: #17243a;
-  --wp-ui-surface: rgba(15, 29, 49, 0.92);
-  --wp-ui-control: #f8fafc;
-  --wp-ui-control-text: #176a9d;
-  --wp-ui-text: #f8fafc;
-  --wp-ui-muted: #cbd5e1;
-  --wp-ui-primary: #f5c84c;
-  --wp-ui-primary-text: #1f2937;
-  --wp-ui-border: rgba(255, 255, 255, 0.16);
   --wp-ui-accent: #ffd166;
 }
 
@@ -1754,24 +1586,6 @@ body:not(.guardian-playing) .guardian-app {
   margin-inline: auto;
 }
 
-body:not(.guardian-playing) .guardian-topbar {
-  position: relative;
-  z-index: 70;
-  width: 100%;
-  height: 64px;
-  min-height: 64px;
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) auto;
-  grid-template-rows: 48px;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 0;
-  border-bottom: 1px solid var(--wp-ui-border);
-  background: var(--wp-ui-surface);
-}
-
-body:not(.guardian-playing):not(.guardian-stage) .back-btn,
 body:not(.guardian-playing):not(.guardian-stage) .stage-return {
   grid-column: 1;
   grid-row: 1;
@@ -1952,14 +1766,6 @@ body.guardian-stage .guardian-app:not(.is-playing) .locale-box {
   display: none !important;
 }
 
-body.guardian-stage .guardian-topbar {
-  height: 64px;
-  min-height: 64px;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
-  grid-template-rows: 48px;
-  padding: 8px 12px;
-}
-
 body.guardian-stage .brand-lockup {
   grid-column: 2;
   grid-row: 1;
@@ -1976,8 +1782,7 @@ body:not(.guardian-playing) .primary-btn {
   background: var(--wp-ui-primary);
 }
 
-body:not(.guardian-playing) button:active,
-body:not(.guardian-playing) .back-btn:active {
+body:not(.guardian-playing) button:active {
   transform: translateY(2px);
   filter: brightness(.92);
 }
@@ -2055,11 +1860,6 @@ body:not(.guardian-playing):not(.guardian-stage) .menu-actions {
   margin: 0;
 }
 
-body:not(.guardian-playing):not(.guardian-stage) .back-btn {
-  grid-column: auto !important;
-  grid-row: auto !important;
-}
-
 body:not(.guardian-playing):not(.guardian-stage) #startBtn {
   width: 100%;
   height: 52px;
@@ -2070,28 +1870,7 @@ body:not(.guardian-playing):not(.guardian-stage) #startBtn {
   font-weight: 900;
 }
 
-body:not(.guardian-playing):not(.guardian-stage) .game-page-info {
-  width: calc(100% - 32px);
-  max-width: 888px;
-  margin: 16px auto 32px;
-  padding: 24px;
-}
-
-body:not(.guardian-playing):not(.guardian-stage) .game-page-info p,
-body:not(.guardian-playing):not(.guardian-stage) .game-page-info li,
-body:not(.guardian-playing):not(.guardian-stage) .game-page-info dd {
-  max-width: 72ch;
-}
-
 /* Stage: shared header, bounded workspace, fixed [empty][Stages][Equipment]. */
-body.guardian-stage .guardian-topbar {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  z-index: 70;
-  width: min(100%, 920px);
-  transform: translateX(-50%);
-}
 
 body.guardian-stage .guardian-app {
   width: 100%;
@@ -2118,13 +1897,6 @@ body.guardian-stage .stage-panel {
     linear-gradient(rgba(9, 20, 35, .76), rgba(9, 20, 35, .88)),
     url("../../assets/beast-tactician-cover.webp") center / cover no-repeat,
     var(--wp-ui-shell);
-}
-
-body.guardian-stage #stagePanel:has(> .wp-generated-stage-header) {
-  display: grid !important;
-  grid-template-rows: 64px minmax(0, 1fr) 56px !important;
-  gap: 8px !important;
-  padding: 0 12px !important;
 }
 
 .stage-workspace {
@@ -2179,21 +1951,12 @@ body.guardian-stage .stage-rail {
   grid-auto-flow: column;
   grid-auto-columns: 264px;
   align-content: center;
-  gap: 14px;
-  padding: 12px max(14px, calc((100% - 264px) / 2));
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
-  scroll-snap-type: x mandatory;
 }
 
 body.guardian-stage .stage-card {
-  width: 264px;
-  min-width: 264px;
-  max-width: 264px;
-  height: 190px;
-  min-height: 190px;
-  max-height: 190px;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto auto;
   align-content: start;
@@ -2368,12 +2131,6 @@ body.guardian-stage .battle-ad-reserve {
 }
 
 @media (max-width: 699px) and (min-height: 501px) {
-  body:not(.guardian-playing) .guardian-topbar {
-    height: 96px;
-    grid-template-columns: 58px minmax(0, 1fr);
-    grid-template-rows: 48px 32px;
-    padding: 8px 12px;
-  }
 
   body:not(.guardian-playing) .brand-lockup {
     grid-column: 1 / -1;
@@ -2412,12 +2169,6 @@ body.guardian-stage .battle-ad-reserve {
     line-height: 1.35;
   }
 
-  body:not(.guardian-playing):not(.guardian-stage) .game-page-info {
-    width: calc(100% - 24px);
-    margin-top: 16px;
-    padding: 16px;
-  }
-
   body.guardian-stage .stage-panel {
     padding: 68px 12px 0;
   }
@@ -2428,9 +2179,6 @@ body.guardian-stage .battle-ad-reserve {
 }
 
 @media (max-height: 500px) and (orientation: landscape) {
-  body:not(.guardian-playing) .guardian-topbar {
-    height: 64px;
-  }
 
   body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
     grid-template-columns: 360px minmax(0, 1fr);
@@ -2455,13 +2203,6 @@ body.guardian-stage .battle-ad-reserve {
 }
 
 @media (max-width: 699px) and (min-height: 501px) {
-  body.guardian-stage .guardian-topbar {
-    height: 64px;
-    min-height: 64px;
-    grid-template-columns: 48px minmax(0, 1fr) auto;
-    grid-template-rows: 48px;
-    padding: 8px 12px;
-  }
 
   body.guardian-stage .brand-lockup {
     grid-column: 2;
@@ -2479,11 +2220,7 @@ body.guardian-stage .battle-ad-reserve {
 }
 
 /* Header edge ownership: return stays left, utilities stay right at every width. */
-body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
-  position: relative;
-}
 
-body:not(.guardian-playing):not(.guardian-stage) .back-btn,
 body:not(.guardian-playing):not(.guardian-stage) .stage-return {
   position: absolute;
   z-index: 2;
@@ -2516,16 +2253,7 @@ body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
   pointer-events: none;
 }
 
-body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
-  height: 72px;
-  min-height: 72px;
-}
-
 @media (max-width: 699px) and (min-height: 501px) {
-  body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
-    height: 96px;
-    min-height: 96px;
-  }
 
   body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
     top: 64px;
@@ -2862,20 +2590,6 @@ html body[data-game-id="beast-tactician"] [data-wp-battle-no-title] .wp-frame-he
   display: none !important;
 }
 
-html body[data-game-id="beast-tactician"] [data-wp-battle-no-title] .wp-frame-battle-context {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
-  align-self: center !important;
-  min-width: 0 !important;
-  width: 100% !important;
-  overflow: hidden !important;
-  color: var(--wp-ui-text) !important;
-  font: 800 14px/1.2 system-ui, sans-serif !important;
-  text-align: center !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
 html body[data-game-id="beast-tactician"] body.guardian-playing .canvas-shell,
 html body[data-game-id="beast-tactician"].guardian-playing .canvas-shell {
   display: flex !important;
@@ -3036,20 +2750,6 @@ html body[data-game-id="beast-tactician"].guardian-playing #gameCanvas {
 @media (orientation: landscape) and (max-height: 560px) {
   /* Reclaim the short-landscape header band for the direct-play surface. The
      shared frame still owns the header; these are its declared compact tokens. */
-  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel {
-    --wp-frame-header-height: 56px !important;
-    --wp-frame-rows: 56px minmax(0, 1fr) !important;
-  }
-
-  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel > .wp-frame-header {
-    height: 56px !important;
-    min-height: 56px !important;
-    padding: 4px 8px !important;
-  }
-
-  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .wp-frame-battle-context {
-    font-size: 12px !important;
-  }
 
   html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .hud-row {
     min-height: 54px !important;
@@ -3154,27 +2854,6 @@ html body[data-game-id="beast-tactician"] #mainProgress[data-wp-main-progress] {
   box-sizing: border-box !important;
 }
 
-html body[data-game-id="beast-tactician"] section.game-page-info {
-  position: relative !important;
-  clear: both !important;
-  border-radius: 18px !important;
-}
-
-html body[data-game-id="beast-tactician"] section.game-page-info > .game-info-sections {
-  display: grid !important;
-  gap: 14px !important;
-}
-
-html body[data-game-id="beast-tactician"] section.game-page-info .game-info-section {
-  padding: 16px !important;
-  border-radius: 14px !important;
-}
-
-html body[data-game-id="beast-tactician"] .wp-frame-back-icon {
-  font-size: 0 !important;
-  color: transparent !important;
-}
-
 html body[data-game-id="beast-tactician"] #gamePanel .build-cards {
   display: grid !important;
   grid-auto-flow: row !important;
@@ -3257,18 +2936,6 @@ html body[data-game-id="beast-tactician"] #gamePanel .build-card {
   html body[data-game-id="beast-tactician"].guardian-stage .stage-rail {
     box-sizing: border-box !important;
   }
-
-  html body[data-game-id="beast-tactician"].guardian-stage .stage-card {
-    height: 160px !important;
-    min-height: 160px !important;
-    max-height: 160px !important;
-  }
-}
-
-html body[data-game-id="beast-tactician"].guardian-stage .stage-card {
-  height: min(190px, calc(100vh - 230px)) !important;
-  min-height: min(190px, calc(100vh - 230px)) !important;
-  max-height: min(190px, calc(100vh - 230px)) !important;
 }
 
 /* Final v17 Battle cascade: these rules intentionally come after the
@@ -3396,16 +3063,6 @@ html body[data-game-id="beast-tactician"].guardian-stage .stage-card {
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
-  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel {
-    --wp-frame-header-height: 56px !important;
-    --wp-frame-rows: 56px minmax(0, 1fr) !important;
-  }
-
-  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel > .wp-frame-header {
-    height: 56px !important;
-    min-height: 56px !important;
-    padding: 4px 8px !important;
-  }
 
   html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .hud-row {
     min-height: 54px !important;
@@ -3643,55 +3300,9 @@ html body[data-game-id="beast-tactician"].guardian-stage .stage-card {
 /* The guide is public Main content, not a legacy white document block. Keep
    the frame contract explicit on the canonical source route even when the
    runtime guide replaces the static preview after load. */
-html body[data-game-id="beast-tactician"] .game-page-info {
-  --wp-ui-radius: 18px !important;
-  box-sizing: border-box !important;
-  width: min(920px, calc(100% - 24px)) !important;
-  max-width: 920px !important;
-  margin-inline: auto !important;
-  padding: 16px !important;
-  border: 2px solid var(--line) !important;
-  border-radius: 18px !important;
-  background: var(--panel) !important;
-  color: var(--text) !important;
-  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.32) !important;
-}
-
-html body[data-game-id="beast-tactician"] .game-page-info .game-info-sections {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 14px !important;
-  margin-top: 14px !important;
-}
-
-html body[data-game-id="beast-tactician"] .game-page-info .game-info-section {
-  min-width: 0 !important;
-  padding: 16px !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 14px !important;
-  background: var(--panel-2) !important;
-  color: var(--text) !important;
-}
 
 /* v17 follow-up: Stage and Battle use the shared V6 frame, but active-play
    headers carry local context rather than repeating the public game name. */
-html body[data-game-id="beast-tactician"].guardian-stage #wp-shared-stage-header .wp-frame-stage-context {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
-  align-self: center !important;
-  min-width: 0 !important;
-  width: 100% !important;
-  overflow: hidden !important;
-  color: var(--wp-ui-text) !important;
-  font: 800 14px/1.2 system-ui, sans-serif !important;
-  text-align: center !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-html body[data-game-id="beast-tactician"].guardian-stage .stage-workspace > .wp-frame-stage-context {
-  display: none !important;
-}
 
 /* The current card is the selection target. Put it in a predictable top
    reading zone instead of vertically centring it in a mostly empty rail. */
@@ -3700,8 +3311,6 @@ html body[data-game-id="beast-tactician"].guardian-stage .stage-workspace > .wp-
     align-content: start !important;
     align-items: start !important;
     grid-auto-rows: max-content !important;
-    padding-top: 48px !important;
-    padding-bottom: 12px !important;
     background: linear-gradient(180deg, rgba(8, 22, 35, .5), rgba(8, 22, 35, .16)) !important;
     border: 1px solid rgba(255, 255, 255, .1) !important;
     border-radius: 16px !important;
@@ -3730,9 +3339,6 @@ html body[data-game-id="beast-tactician"].guardian-stage .stage-workspace > .wp-
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
-  html body[data-game-id="beast-tactician"].guardian-stage #wp-shared-stage-header .wp-frame-stage-context {
-    font-size: 12px !important;
-  }
 }
 
 /* Give the 612px portrait envelope the same balanced top/bottom anchors as

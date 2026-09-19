@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "shadow-wolf";
   const saveKey = "weightplay_shadow_wolf_v1";
   const localeKey = "weightPlayLocale";
@@ -232,8 +250,8 @@
     if (shop) managementCard?.append(shop);
 
     // General games report the run itself, never a player ability score.
-    nodes.resultPanel?.querySelector("[data-ui='skillReportTitle']")?.remove();
-    nodes.resultPanel?.querySelector(".report-grid")?.remove();
+    (__wpNotifyMeasurement(), nodes.resultPanel?.querySelector("[data-ui='skillReportTitle']")?.remove());
+    (__wpNotifyMeasurement(), nodes.resultPanel?.querySelector(".report-grid")?.remove());
 
     const removeRelatedSkillClaim = () => {
       const related = document.querySelector(".game-page-info .game-info-related");
@@ -950,29 +968,27 @@
   }
 
   const shadowAssetPaths = {
-    bg: "../../assets/shadow-wolf-redrawn/moon-ruins-v1.png",
-    bgCrystal: "../../assets/shadow-wolf-redrawn/crystal-fortress-v1.png",
-    bgJungle: "../../assets/shadow-wolf-bg-vine-jungle.webp",
-    bgRift: "../../assets/shadow-wolf-bg-shadow-rift.webp",
-    bgVolcanic: "../../assets/shadow-wolf-bg-volcanic-altar.webp",
+    bg: "../../assets/shadow-wolf-redrawn/moon-ruins-v1.webp",
+    bgCrystal: "../../assets/shadow-wolf-redrawn/crystal-fortress-v1.webp",
+    bgJungle: "../../assets/shadow-wolf-redrawn/jungle-ruins-v1.webp",
+    bgRift: "../../assets/shadow-wolf-redrawn/shadow-rift-v1.webp",
+    bgVolcanic: "../../assets/shadow-wolf-redrawn/volcanic-altar-v1.webp",
     wolf: "../../assets/shadow-wolf-redrawn/hero-blue-scarf-v1.png",
     enemyWolf: "../../assets/shadow-wolf-redrawn/hunter-source-v1.png",
     bat: "../../assets/shadow-wolf-redrawn/bat-violet-v1.png",
     boar: "../../assets/shadow-wolf-redrawn/boar-stone-v1.png",
-    boss: "../../assets/shadow-wolf-boss-behemoth-cutout.png",
-    bossBasilisk: "../../assets/shadow-wolf-boss-basilisk.webp",
+    boss: "../../assets/shadow-wolf-redrawn/behemoth-crystal-v1.png",
+    bossBasilisk: "../../assets/shadow-wolf-redrawn/basilisk-alpha-v2.png",
     bossGuardian: "../../assets/shadow-wolf-redrawn/guardian-stone-v1.png",
-    bossColossus: "../../assets/shadow-wolf-boss-thorn-colossus.webp",
-    bossWyvern: "../../assets/shadow-wolf-boss-cinder-wyvern.webp",
-    bossStag: "../../assets/shadow-wolf-boss-eclipse-stag.webp",
+    bossColossus: "../../assets/shadow-wolf-redrawn/colossus-thorn-v1.png",
+    bossWyvern: "../../assets/shadow-wolf-redrawn/wyvern-cinder-v1.png",
+    bossStag: "../../assets/shadow-wolf-redrawn/stag-eclipse-v1.png",
     tiles: "../../assets/shadow-wolf-platform-tiles.webp",
-    clawFx: "../../assets/shadow-wolf-fx-claw-slash.webp",
-    dashFx: "../../assets/shadow-wolf-fx-dash-trail.webp",
-    hitFx: "../../assets/shadow-wolf-fx-hit-spark.webp",
-    projectileFx: "../../assets/shadow-wolf-fx-shadow-projectile.webp",
+    platformStone: "../../assets/shadow-wolf-redrawn/platform-masonry-v1.png",
+    projectileFx: "../../assets/shadow-wolf-redrawn/projectile-violet-v1.png",
+    portal: "../../assets/shadow-wolf-redrawn/portal-cyan-v1.png",
     chestFx: "../../assets/shadow-wolf-fx-chest-sparkle.webp",
-    portalFx: "../../assets/shadow-wolf-fx-portal-glow.webp",
-    relicSpark: "../../assets/shadow-wolf-relic-mist-amulet.webp",
+    relicSpark: "../../assets/shadow-wolf-redrawn/experience-crystal-v1.png",
   };
 
   const assets = Object.fromEntries(
@@ -986,10 +1002,10 @@
   };
 
   const attributeChoiceIcons = {
-    strength: "../../assets/shadow-wolf-relic-sharp-fang.webp",
-    agility: "../../assets/shadow-wolf-relic-wind-boots.webp",
-    constitution: "../../assets/shadow-wolf-relic-thick-fur.webp",
-    luck: "../../assets/shadow-wolf-relic-shadow-lantern.webp",
+    strength: "../../assets/shadow-wolf-redrawn/fang-strength-v1.png",
+    agility: "../../assets/shadow-wolf-redrawn/boots-agility-v1.png",
+    constitution: "../../assets/shadow-wolf-redrawn/fur-constitution-v1.png",
+    luck: "../../assets/shadow-wolf-redrawn/lantern-luck-v1.png",
   };
 
   const gearDb = {
@@ -1199,6 +1215,7 @@
     const locale = getLocale();
     document.documentElement.lang = locale;
     for (const el of document.querySelectorAll("[data-ui]")) {
+      if (el.hasAttribute('data-shadow-authored-summary')) continue;
       const key = el.dataset.ui;
       el.textContent = t(key);
     }
@@ -1477,7 +1494,12 @@
     syncResponsiveBattleOwner();
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("weightplay:stage-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function stageManagementCoveredRegions() {
     return Array.from(nodes.stageManagementPanel?.parentElement?.children || [])
@@ -1539,7 +1561,7 @@
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
     setResultModalOpen(false, false);
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     stageBrowseIndex = Math.max(0, state.selectedStage - 1);
     stageWindowStart = Math.max(0, Math.min(STAGE_COUNT - STAGE_CARD_POOL_SIZE, stageBrowseIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
     setScreen("stage");
@@ -1556,7 +1578,7 @@
     setResultModalOpen(false, false);
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setScreen("main");
     updateDiamondShopUI();
     renderAdventureRecord();
@@ -1759,8 +1781,6 @@
     heroY: -52.6,
     hunterY: -39.2,
     boarY: -27.1,
-    behemothY: -11.6,
-    basiliskY: -19.1,
     guardianY: -20.9,
   });
 
@@ -1987,7 +2007,7 @@
 
     buildRoomGeometry();
 
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setScreen("battle");
 
     renderStatsPanel();
@@ -2001,7 +2021,9 @@
     cancelAnimationFrame(state.gameLoopId);
     resetSimulationClock();
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function updateHUDText() {
     nodes.roomText.textContent = `${state.room}/${STAGE_COUNT}`;
@@ -2289,9 +2311,9 @@
     state.gameActive = false;
     clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);
-    nodes.pausePanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.remove("hidden"));
     syncCoveredFrame();
-    nodes.pauseBtn.setAttribute("aria-expanded", "true");
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-expanded", "true"));
     pauseCoveredRegions().forEach((region) => {
       region.inert = true;
       region.setAttribute("aria-hidden", "true");
@@ -2302,9 +2324,9 @@
   function closePause(resume = true) {
     if (!battlePaused && nodes.pausePanel?.classList.contains("hidden")) return;
     battlePaused = false;
-    nodes.pausePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     syncCoveredFrame();
-    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-expanded", "false"));
     pauseCoveredRegions().forEach((region) => {
       region.inert = false;
       region.removeAttribute("aria-hidden");
@@ -2491,7 +2513,9 @@
     renderAdventureRecord();
     syncResultActionHierarchy(won && clearedStage < STAGE_COUNT);
     setResultModalOpen(true);
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function fireBossFan(enemy, count = 3, speed = 3.8) {
     const bossCenter = enemy.x + enemy.width / 2;
@@ -2987,6 +3011,25 @@
   }
 
   function drawMossPlatform(ctx, plat) {
+    // Visible geometry follows collision geometry, not scenery painted behind it.
+    if (assets.platformStone.complete && assets.platformStone.naturalWidth) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(plat.x, plat.y, plat.w, plat.h);
+      ctx.clip();
+      const tileSize = 128;
+      for (let y = 0; y < plat.h; y += tileSize) {
+        for (let x = 0; x < plat.w; x += tileSize) {
+          ctx.drawImage(assets.platformStone, plat.x + x, plat.y + y, tileSize, tileSize);
+        }
+      }
+      ctx.fillStyle = "#acc9b8";
+      ctx.fillRect(plat.x, plat.y, plat.w, 2);
+      ctx.fillStyle = "rgba(5, 18, 24, .55)";
+      ctx.fillRect(plat.x, plat.y + plat.h - 3, plat.w, 3);
+      ctx.restore();
+      return;
+    }
     if (plat.kind === "generated") {
       ctx.save();
       const stone = ctx.createLinearGradient(plat.x, plat.y, plat.x, plat.y + plat.h);
@@ -3008,10 +3051,10 @@
       ctx.restore();
       return;
     }
-    // The illustrated ruins already contain the production platform art. This
-    // restrained edge is only a collision cue, preventing a second mismatched
-    // tile layer from covering the scene or suggesting a false floor.
+    // Loading fallback must still expose the full collision surface.
     ctx.save();
+    ctx.fillStyle = "#294349";
+    ctx.fillRect(plat.x, plat.y, plat.w, plat.h);
     ctx.strokeStyle = plat.kind === "ground" ? "rgba(225, 255, 184, 0.28)" : "rgba(231, 255, 196, 0.44)";
     ctx.shadowColor = "rgba(9, 36, 23, 0.7)";
     ctx.shadowBlur = 4;
@@ -3094,14 +3137,13 @@
       } else if (pickup.type === "chest") {
         drawTileCell(ctx, 4, pickup.x - 24, pickup.y - 24, 48, 48);
       } else if (pickup.type === "portal") {
-        drawTileCell(ctx, 3, pickup.x - 28, pickup.y - 28, 56, 56);
         drawPortal(ctx, pickup.x, pickup.y);
       }
     });
 
     // 5. Draw experience crystals
     state.orbs.forEach((orb) => {
-      if (assets.relicSpark.complete) {
+      if (assets.relicSpark.complete && assets.relicSpark.naturalWidth) {
         drawImageContain(ctx, assets.relicSpark, orb.x - 12, orb.y - 12, 24, 24);
       } else {
         ctx.fillStyle = "#10b981";
@@ -3132,7 +3174,15 @@
         const bossSprite = bossSprites[enemy.variant] || assets.boss;
         const guardianDrawH = Math.min(enemy.height + 62, (enemy.width + 24) * 1199 / 1312);
         const guardianY = enemy.height - (enemy.height + 62 - guardianDrawH) / 2 - guardianDrawH * 1120 / 1199;
-        const bossY = enemy.variant === "basilisk" ? spriteAnchors.basiliskY : enemy.variant === "guardian" ? guardianY : enemy.variant === "behemoth" ? spriteAnchors.behemothY : -18;
+        // Ground the new full-body sprite by its solid foot baseline, including contain padding.
+        const basiliskDrawH = Math.min(enemy.height + 62, (enemy.width + 24) * 1024 / 1536);
+        const basiliskY = enemy.height - (enemy.height + 62 - basiliskDrawH) / 2 - basiliskDrawH * 970 / 1024;
+        const colossusDrawH = Math.min(enemy.height + 62, enemy.width + 24);
+        const colossusY = enemy.height - (enemy.height + 62 - colossusDrawH) / 2 - colossusDrawH * 1225 / 1254;
+        const wyvernY = enemy.height - (enemy.height + 62 - colossusDrawH) / 2 - colossusDrawH * 1215 / 1254;
+        const stagY = enemy.height - (enemy.height + 62 - colossusDrawH) / 2 - colossusDrawH * 1224 / 1254;
+        const behemothY = enemy.height - (enemy.height + 62 - colossusDrawH) / 2 - colossusDrawH * 1124 / 1254;
+        const bossY = enemy.variant === "basilisk" ? basiliskY : enemy.variant === "guardian" ? guardianY : enemy.variant === "colossus" ? colossusY : enemy.variant === "wyvern" ? wyvernY : enemy.variant === "stag" ? stagY : enemy.variant === "behemoth" ? behemothY : -18;
         const drewBoss = drawImageContain(ctx, bossSprite, -12, bossY, enemy.width + 24, enemy.height + 62);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
@@ -3250,6 +3300,10 @@
 
   // Visual effects
   function drawPortal(context, x, y) {
+    if (assets.portal.complete && assets.portal.naturalWidth) {
+      drawImageContain(context, assets.portal, x - 28, y - 28, 56, 56);
+      return;
+    }
     context.save();
     context.translate(x, y);
     for (let ring = 0; ring < 3; ring += 1) {
@@ -3428,7 +3482,7 @@
     const root = document.querySelector("#gamePanel .shadow-game-layout");
     if (!root) return;
     root.classList.add("game-layout");
-    nodes.resultPanel.classList.add("battle-result");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("battle-result"));
     const reserve = document.querySelector("#gamePanel .battle-ad-reserve");
     const container = root.querySelector(".canvas-container");
     const metrics = window.__weightPlayLayoutMetrics ||= {};
@@ -3549,7 +3603,7 @@
     nodes.retryBtn.addEventListener("click", () => {
       if (!claimResultAction()) return;
       window.WonderSound?.play("click");
-      startRun(Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage);
+      __wpReplayStart(() => startRun(Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage));
     });
 
     nodes.nextStageBtn.addEventListener("click", () => {
@@ -3853,6 +3907,22 @@
       forceLevelUp() {
         handleLevelUp();
         return this.readState();
+      },
+      renderExperienceDrop() {
+        cancelAnimationFrame(state.gameLoopId);
+        const enemy = state.enemies[0];
+        if (!enemy) throw new Error("Experience art fixture requires a live enemy");
+        handleEnemyDefeated(enemy);
+        state.enemies = state.enemies.filter(candidate => candidate !== enemy);
+        drawCanvasFrame();
+        return { count: state.orbs.length, asset: this.readAssets().relicSpark };
+      },
+      renderPortalProjectileArt() {
+        cancelAnimationFrame(state.gameLoopId);
+        state.pickups = [{x:740,y:184,type:'portal'}];
+        state.bullets = [{x:420,y:270,vx:0,vy:0,size:5}];
+        drawCanvasFrame();
+        return {portal:this.readAssets().portal, projectile:this.readAssets().projectileFx};
       },
       forceDamageEffect() {
         const enemy = state.enemies[0];

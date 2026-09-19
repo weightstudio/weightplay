@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || paused), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = (s) => document.querySelector(s);
   const GAME_VERSION = 28, INTERFACE_VERSION = 6;
   const viewportBucket = () => {
@@ -377,7 +395,7 @@
   leaveCopy.ru={title:"Покинуть задание?",text:"Текущий маршрут приостановлен. Продолжите игру или вернитесь к заданиям и завершите эту попытку.",continue:"Продолжить задание",leave:"Вернуться к заданиям"};
   leaveCopy.ar={title:"مغادرة هذه المهمة؟",text:"مسارك الحالي متوقف مؤقتًا. واصل اللعب للحفاظ على الجولة، أو ارجع إلى المهام لمغادرة هذه الجولة.",continue:"مواصلة المهمة",leave:"العودة إلى المهام"};
   let leaveWasPaused=false;
-  function createLeaveModal(){const modal=document.createElement("div");modal.id="battleLeaveModal";modal.className="modal";modal.hidden=true;modal.setAttribute("role","dialog");modal.setAttribute("aria-modal","true");modal.setAttribute("aria-labelledby","battleLeaveTitle");modal.setAttribute("aria-describedby","battleLeaveText");modal.innerHTML='<section class="modal-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="modal-actions leave-actions"><button id="battleContinueBtn" class="primary" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></section>';nodes.modal.after(modal);nodes.leaveModal=modal}
+  function createLeaveModal(){const modal=document.createElement("div");modal.id="battleLeaveModal";modal.className="modal";(__wpNotifyMeasurement(), modal.hidden=true);(__wpNotifyMeasurement(), modal.setAttribute("role","dialog"));(__wpNotifyMeasurement(), modal.setAttribute("aria-modal","true"));(__wpNotifyMeasurement(), modal.setAttribute("aria-labelledby","battleLeaveTitle"));(__wpNotifyMeasurement(), modal.setAttribute("aria-describedby","battleLeaveText"));modal.innerHTML='<section class="modal-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="modal-actions leave-actions"><button id="battleContinueBtn" class="primary" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></section>';nodes.modal.after(modal);nodes.leaveModal=modal}
   createLeaveModal();
   function progressInteger(value,fallback,minimum,maximum){
     const parsed=Number(value);
@@ -484,8 +502,13 @@
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:name}}));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:name}}));
     if(name==="battle")window.dispatchEvent(new CustomEvent("weightplay:battle-open",{detail:{screen:name}}));
-    if(name!=="battle"){playing=false;paused=false;stopBattleLoop();cancelPendingMovement();updatePauseControl()}
-  }
+    if(name!=="battle"){playing=false;(__wpNotifyMeasurement(), paused=false);stopBattleLoop();cancelPendingMovement();updatePauseControl()}
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function renderSummary(){$("#safehouseSummary").textContent=`${Object.keys(state.cleared).length}/${campaign.length}`}
   function medalProgress(index){
     const medals=Math.max(0,Math.min(3,Number(state.cleared[index])||0));
@@ -574,7 +597,7 @@
   function startMission(index,inputType="stage-card"){
     stopBattleLoop();
     selectedMission=Math.max(0,Math.min(campaign.length-1,index));
-    objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;firstMoveTracked=false;alert=0;paused=false;freezeUntil=0;smokeUntil=0;pickupCoverUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
+    objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;firstMoveTracked=false;alert=0;(__wpNotifyMeasurement(), paused=false);freezeUntil=0;smokeUntil=0;pickupCoverUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
     const m=campaign[selectedMission];
     track("mission_start",{mission:selectedMission+1,input_type:inputType,unlocked:state.unlocked});
     $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})}: ${campaignText(m.name)}`;
@@ -587,7 +610,9 @@
     if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=campaignText(m.guardian.name);patrols.push(guardian)}
     nodes.feedback.textContent=t("holdRoute");updateAlertMeter();$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();playSound("start");startBattleLoop();
     requestAnimationFrame(()=>nodes.field.focus({preventScroll:true}));
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function createPatrol(path,src,progress=0,guardian=null){
     const sight=document.createElement("span");sight.className=`patrol-sight${guardian?" guardian-sight":""}`;sight.setAttribute("aria-hidden","true");
     const img=document.createElement("img");img.className=`patrol${guardian?" guardian-patrol":""}`;img.src=src;img.alt="";nodes.patrolLayer.append(sight,img);
@@ -601,7 +626,7 @@
   function freezePatrols(){const field=nodes.field.getBoundingClientRect();if(!field.width||!field.height)return;patrols.forEach(p=>{const box=p.img.getBoundingClientRect(),position=[(box.left+box.width/2-field.left)/field.width*100,(box.top+box.height/2-field.top)/field.height*100];p.img.style.transitionDuration="0ms";place(p.img,position);place(p.sight,position)})}
   function cancelRoutePreview(){nodes.route.hidden=true;preview=null;if(routePointerId!==null&&nodes.field.hasPointerCapture?.(routePointerId))nodes.field.releasePointerCapture(routePointerId);routePointerId=null}
   function cancelPendingMovement(){if(arrivalTimer)clearTimeout(arrivalTimer);arrivalTimer=0;cancelRoutePreview()}
-  function setPaused(next){if(!playing)return;paused=Boolean(next);if(paused){freezeFia();freezePatrols();cancelPendingMovement();stopBattleLoop();nodes.feedback.textContent=t("paused")}else{patrols.forEach(p=>p.img.style.transitionDuration="");nodes.feedback.textContent=t("holdRoute");startBattleLoop()}updatePauseControl();if(!paused)nodes.field.focus({preventScroll:true})}
+  function setPaused(next){if(!playing)return;(__wpNotifyMeasurement(), paused=Boolean(next));if(paused){freezeFia();freezePatrols();cancelPendingMovement();stopBattleLoop();nodes.feedback.textContent=t("paused")}else{patrols.forEach(p=>p.img.style.transitionDuration="");nodes.feedback.textContent=t("holdRoute");startBattleLoop()}updatePauseControl();if(!paused)nodes.field.focus({preventScroll:true})}
   function scheduleArrival(delay){if(arrivalTimer)clearTimeout(arrivalTimer);arrivalTimer=setTimeout(()=>{arrivalTimer=0;if(playing&&!paused)resolveArrival()},delay)}
   function distance(a,b){return Math.hypot(a[0]-b[0],a[1]-b[1])}
   function updatePatrol(p){const [x1,y1,x2,y2]=p.path;const q=p.direction>0?p.progress:1-p.progress;const position=[x1+(x2-x1)*q,y1+(y2-y1)*q];place(p.img,position);place(p.sight,position)}
@@ -681,7 +706,7 @@
     stagesBtn.classList.toggle("primary",!canContinue);
     nextBtn.classList.toggle("primary",canContinue);
     [...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=true;node.setAttribute("aria-hidden","true")});
-    nodes.modal.hidden=false;
+    (__wpNotifyMeasurement(), nodes.modal.hidden=false);
     (canContinue?nextBtn:stagesBtn).focus({preventScroll:true});
   }
   function claimResultAction(){
@@ -690,7 +715,7 @@
     [$("#retryBtn"),$("#stagesBtn"),$("#nextBtn")].forEach(button=>button.disabled=true);
     return true;
   }
-  function closeResult(){nodes.modal.hidden=true;[...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=false;node.removeAttribute("aria-hidden")});nodes.fia.classList.remove("caught")}
+  function closeResult(){(__wpNotifyMeasurement(), nodes.modal.hidden=true);[...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=false;node.removeAttribute("aria-hidden")});nodes.fia.classList.remove("caught")}
   function trapResultFocus(event){
     if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}
     if(event.key!=="Tab"||nodes.modal.hidden)return;
@@ -701,8 +726,8 @@
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   }
   function setBattleModalInert(modal,open){[...modal.parentElement.children].filter(node=>node!==modal).forEach(node=>{node.inert=open;open?node.setAttribute("aria-hidden","true"):node.removeAttribute("aria-hidden")})}
-  function openBattleLeave(){if(!playing||!nodes.modal.hidden||!nodes.leaveModal.hidden)return;leaveWasPaused=paused;if(!paused)setPaused(true);const source=leaveCopy[locale]||leaveCopy.en,words=Object.fromEntries(Object.entries(source).map(([key,value])=>[key,runtimeText(value)]));$("#battleLeaveTitle").textContent=words.title;$("#battleLeaveText").textContent=words.text;$("#battleContinueBtn").textContent=words.continue;$("#battleLeaveBtn").textContent=words.leave;setBattleModalInert(nodes.leaveModal,true);nodes.leaveModal.hidden=false;$("#battleContinueBtn").focus({preventScroll:true})}
-  function closeBattleLeave(resume=true){if(nodes.leaveModal.hidden)return;nodes.leaveModal.hidden=true;setBattleModalInert(nodes.leaveModal,false);if(resume&&!leaveWasPaused)setPaused(false);if(resume)$("#battleBackBtn").focus({preventScroll:true})}
+  function openBattleLeave(){if(!playing||!nodes.modal.hidden||!nodes.leaveModal.hidden)return;leaveWasPaused=paused;if(!paused)setPaused(true);const source=leaveCopy[locale]||leaveCopy.en,words=Object.fromEntries(Object.entries(source).map(([key,value])=>[key,runtimeText(value)]));$("#battleLeaveTitle").textContent=words.title;$("#battleLeaveText").textContent=words.text;$("#battleContinueBtn").textContent=words.continue;$("#battleLeaveBtn").textContent=words.leave;setBattleModalInert(nodes.leaveModal,true);(__wpNotifyMeasurement(), nodes.leaveModal.hidden=false);$("#battleContinueBtn").focus({preventScroll:true})}
+  function closeBattleLeave(resume=true){if(nodes.leaveModal.hidden)return;(__wpNotifyMeasurement(), nodes.leaveModal.hidden=true);setBattleModalInert(nodes.leaveModal,false);if(resume&&!leaveWasPaused)setPaused(false);if(resume)$("#battleBackBtn").focus({preventScroll:true})}
   function trapBattleLeaveFocus(event){if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}if(event.key==="Escape"){event.preventDefault();closeBattleLeave();return}if(event.key!=="Tab"||nodes.leaveModal.hidden)return;const actions=[...nodes.leaveModal.querySelectorAll("button:not(:disabled)")],first=actions[0],last=actions.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}}
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   function bind(){
@@ -740,7 +765,7 @@
     nodes.modal.addEventListener("keydown",trapResultFocus);nodes.leaveModal.addEventListener("keydown",trapBattleLeaveFocus);$("#gadgetBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});$("#gadgetBtn").addEventListener("click",useGadget);
     $("#battleContinueBtn").addEventListener("click",()=>closeBattleLeave());
     $("#battleLeaveBtn").addEventListener("click",()=>{track("map_return",{source:"battle_leave",mission:selectedMission+1});closeBattleLeave(false);centeredMission=selectedMission;stageBrowseLogical=selectedMission;show("stage");renderStage();focusMission(selectedMission,true)});
-    $("#retryBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("retry",{mission:selectedMission+1});closeResult();startMission(selectedMission,"retry")});
+    $("#retryBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("retry",{mission:selectedMission+1});closeResult();__wpReplayStart(() => startMission(selectedMission,"retry"))});
     $("#stagesBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("map_return",{source:"result",mission:selectedMission+1});closeResult();centeredMission=selectedMission;stageBrowseLogical=selectedMission;show("stage");renderStage();focusMission(selectedMission,true)});
     $("#nextBtn").addEventListener("click",()=>{if(!claimResultAction())return;const nextMission=Math.min(campaign.length-1,selectedMission+1);track("next_mission",{from_mission:selectedMission+1,to_mission:nextMission+1});closeResult();startMission(nextMission,"next")});
   }
@@ -826,7 +851,9 @@
       placeFia:position=>{place(nodes.fia,position);resolveArrival();return{objectFound,treasureFound,exit:point(nodes.exit)}},
       tickRules:seconds=>{missionStartedAt=performance.now()-Number(seconds)*1000;const factor=updateMissionRules(performance.now());return{factor,alert,object:point(nodes.objective),treasure:point(nodes.treasure),warning:Boolean(guardianPatrol()?.img.classList.contains("is-warning"))}},
       translate:(code,key)=>{const previous=locale;locale=normalizeLocale(code);const value=t(key);locale=previous;return value},
-      showResult:(ok,medals=0,reward=0)=>{openResult(Boolean(ok),Number(medals)||0,Number(reward)||0);return{preview:document.querySelector("#nextMissionPreview")?.textContent||"",hidden:document.querySelector("#nextMissionPreview")?.hidden===true}},
+      showResult:(ok,medals=0,reward=0)=>{openResult(Boolean(ok),Number(medals)||0,Number(reward)||0);const __wpReturn = ({preview:document.querySelector("#nextMissionPreview")?.textContent||"",hidden:document.querySelector("#nextMissionPreview")?.hidden===true});
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+return __wpReturn;},
       snapshot:()=>({stage:selectedMission+1,unlocked:state.unlocked,screen:document.body.dataset.screen,objectFound,treasureFound,guardianPhase,patrols:patrols.length,guardian:guardianPatrol()?.guardian?.id||null,safeZones:document.querySelectorAll(".safe-zone").length,resultOpen:!nodes.modal.hidden,freezeRemaining:Math.max(0,freezeUntil-performance.now())})
     };
   }

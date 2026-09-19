@@ -1,3 +1,22 @@
+
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    keyboardKeys: ["ArrowLeft", "ArrowRight", "a", "A", "d", "D"],
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(!state.running || state.awaitingUpgrade || pauseReturnIntent), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src);
@@ -1089,7 +1108,11 @@ function setLoadingProgress(progress) {
 }
 
 function restart() {
-  startLevel(state.levelIndex);
+    const __wpPreviousRound = __wpMeasurement.roundKey;
+
+  __wpReplayStart(() => startLevel(state.levelIndex));
+
+    if (__wpMeasurement.roundKey !== __wpPreviousRound) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
 }
 
 const BATTLE_PORTRAIT_WIDTH = 390;
@@ -1197,6 +1220,8 @@ function startLevel(levelIndex) {
   syncPassiveAccessibility();
   requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
   window.WonderSound?.play("start");
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 
 window.addEventListener("keydown", (event) => {
@@ -1756,11 +1781,13 @@ function loseLevel() {
   profilePanel.classList.remove("hidden");
   profilePanel.innerHTML = renderDefeatActions();
   focusSettlementPrimary();
-  pausePanel.classList.add("hidden");
+  (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   menuTabs.classList.add("hidden");
   overlay.classList.remove("hidden");
   updateHud();
   window.WonderSound?.play("wrong");
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "lose"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 
 function winLevel() {
@@ -1790,12 +1817,14 @@ function winLevel() {
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
   profilePanel.classList.remove("hidden");
-  pausePanel.classList.add("hidden");
+  (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   profilePanel.innerHTML = renderSettlement(drops, wasChallenge, diamondReward);
   focusSettlementPrimary();
   overlay.classList.remove("hidden");
   updateHud();
   window.WonderSound?.play("win");
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 
 function awardBossFirstClearDiamonds(wasChallenge) {
@@ -2616,7 +2645,7 @@ function updateHud() {
 }
 
 function showMainMenu(tab = activeMenuTab) {
-  talentDialog?.close();
+  (__wpNotifyMeasurement(), talentDialog?.close());
   disposeDefense();
   clearFloatingMessage();
   pauseReturnIntent = false;
@@ -2644,11 +2673,16 @@ function showMainMenu(tab = activeMenuTab) {
   profilePanel.classList.remove("hidden");
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
-  pausePanel.classList.add("hidden");
+  (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   renderMenuTabs();
   renderMenuContent();
   overlay.classList.remove("hidden");
   updateHud();
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 
 function showWonderMain() {
@@ -2666,6 +2700,11 @@ function showWonderMain() {
   settingsBtn.classList.add("hidden");
   backToMenuBtn.classList.add("hidden");
   syncPassiveAccessibility();
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 
 function getMenuTitle(tab) {
@@ -2994,7 +3033,7 @@ function showUpgradeChoices() {
   profilePanel.classList.add("hidden");
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.remove("hidden");
-  pausePanel.classList.add("hidden");
+  (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   renderUpgradeChoices();
   overlay.classList.remove("hidden");
 }
@@ -3051,7 +3090,7 @@ function showPauseMenu(returnIntent = false) {
   profilePanel.classList.add("hidden");
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
-  pausePanel.classList.remove("hidden");
+  (__wpNotifyMeasurement(), pausePanel.classList.remove("hidden"));
   overlay.classList.remove("hidden");
   setPauseBattleAccessibility(true);
   requestAnimationFrame(() => {
@@ -3063,7 +3102,7 @@ function resumeBattle() {
   if (!prepareDefense()) return;
   pauseReturnIntent = false;
   setPauseBattleAccessibility(false);
-  pausePanel.classList.add("hidden");
+  (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   overlay.classList.add("hidden");
   document.body.classList.add("wonder-tutorial-hidden");
   setBattleShellActive(true);
@@ -3079,7 +3118,7 @@ function leaveBattle() {
   pauseReturnIntent = false;
   setPauseBattleAccessibility(false);
   bankRunCoins();
-  pausePanel.classList.add("hidden");
+  (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   overlay.classList.add("hidden");
   battleHud.classList.add("hidden");
   showMainMenu("battle");
@@ -3134,11 +3173,11 @@ function inspectTalent(id) {
   if (!getTalent(id) || state.running) return;
   selectedTalent=id;
   if (!talentDialog) {
-    talentDialog=document.createElement('dialog');talentDialog.className='lion-talent-dialog';talentDialog.dataset.runtimeLocalize='off';talentDialog.setAttribute('aria-labelledby','lionTalentTitle');overlay.append(talentDialog);
-    talentDialog.addEventListener('click',e=>{if(e.target===talentDialog||e.target.closest('[data-talent-close]'))talentDialog.close();else if(e.target.closest('[data-talent-buy]'))buyTalent(selectedTalent);});
+    talentDialog=document.createElement('dialog');talentDialog.className='lion-talent-dialog';talentDialog.dataset.runtimeLocalize='off';(__wpNotifyMeasurement(), talentDialog.setAttribute('aria-labelledby','lionTalentTitle'));overlay.append(talentDialog);
+    talentDialog.addEventListener('click',e=>{if(e.target===talentDialog||e.target.closest('[data-talent-close]'))(__wpNotifyMeasurement(), talentDialog.close());else if(e.target.closest('[data-talent-buy]'))buyTalent(selectedTalent);});
     talentDialog.addEventListener('close',()=>profilePanel.querySelector(`[data-talent="${selectedTalent}"]`)?.focus({preventScroll:true}));
   }
-  renderTalentDialog();talentDialog.showModal();talentDialog.querySelector('[data-talent-close]').focus();
+  renderTalentDialog();(__wpNotifyMeasurement(), talentDialog.showModal());talentDialog.querySelector('[data-talent-close]').focus();
 }
 function renderTalentDialog() {
   if(!talentDialog||!selectedTalent)return;
@@ -3420,11 +3459,11 @@ function openWeaponModal() {
   const item = getSelectedWeaponItem();
   if (!item) return;
   weaponModalContent.innerHTML = renderSelectedWeaponInfo();
-  weaponModal.classList.remove("hidden");
+  (__wpNotifyMeasurement(), weaponModal.classList.remove("hidden"));
 }
 
 function closeWeaponModal() {
-  weaponModal.classList.add("hidden");
+  (__wpNotifyMeasurement(), weaponModal.classList.add("hidden"));
 }
 
 function buyProfileUpgrade(type) {

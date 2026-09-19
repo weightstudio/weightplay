@@ -1,5 +1,23 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(Boolean(battle.pausedAt) || !$("#management").classList.contains("is-hidden")), node: $("#battleScene"),
+    activityMode: "state", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const C = window.PEACH_OATH_CONFIG;
   const sprites = window.PEACH_OATH_SPRITES;
@@ -511,7 +529,12 @@
       closeModal();
     }
     syncFrameCoverage();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (false && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function suspendCombat() {
     if (battle.pausedAt) return;
@@ -519,7 +542,9 @@
     battle.pendingWaveMs = battle.nextWaveHandle ? Math.max(0, battle.nextWaveDue - performance.now()) : null;
     clearInterval(battle.tickHandle); battle.tickHandle = 0;
     clearTimeout(battle.nextWaveHandle); battle.nextWaveHandle = 0;
-  }
+
+    __wpNotifyMeasurement();
+}
 
   function resumeCombat() {
     if (!$('#coach').classList.contains('is-hidden')) return;
@@ -537,7 +562,9 @@
     } else if (battle.running && !battle.resultOpen && !battle.tickHandle) {
       battle.tickHandle = window.setInterval(battleTick, 260);
     }
-  }
+
+    __wpNotifyMeasurement();
+}
 
   function scheduleNextWave(delay) {
     clearTimeout(battle.nextWaveHandle);
@@ -555,13 +582,13 @@
     $('#leaveCopy').textContent = interactionText(1).replace('{stage}', stageCode()).replace('{wave}', state.wave);
     $('#leaveContinue').textContent = interactionText(2);
     $('#leaveMain').textContent = interactionText(3);
-    $('#leaveConfirm').classList.remove('is-hidden');
+    (__wpNotifyMeasurement(), $('#leaveConfirm').classList.remove('is-hidden'));
     syncFrameCoverage();
     $('#leaveContinue').focus({preventScroll: true});
   }
 
   function closeBattleReturn(leave = false) {
-    $('#leaveConfirm').classList.add('is-hidden');
+    (__wpNotifyMeasurement(), $('#leaveConfirm').classList.add('is-hidden'));
     if (leave) { save(); showScene('main'); $('#startBtn').focus({preventScroll: true}); }
     else { syncFrameCoverage(); resumeCombat(); $('#battleBack').focus({preventScroll: true}); }
   }
@@ -593,14 +620,16 @@
     battle.running = true;
     battle.heroes = state.team.filter((id) => state.heroes[id]?.owned).map((id, i) => makeUnit(heroData(id), "hero", i));
     battle.enemies = enemyPack();
-    $("#resultPanel").classList.add("is-hidden");
+    (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden"));
     syncFrameCoverage();
     $("#battleStatus").textContent = state.wave === 5 ? copy("bossIncoming") : copy("enemyIncoming");
     renderCampaignMilestone();
     renderUnits();
     updateHud();
     battle.tickHandle = window.setInterval(battleTick, 260);
-  }
+
+    if (!__wpMeasurement.started || __wpMeasurement.ended) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
 
   function renderUnits() {
     $("#heroLane").innerHTML = battle.heroes.map(unitMarkup).join("");
@@ -745,7 +774,7 @@
   function openResult(win, reward) {
     battle.resultOpen = true;
     clearInterval(battle.tickHandle);
-    $("#resultPanel").classList.remove("is-hidden");
+    (__wpNotifyMeasurement(), $("#resultPanel").classList.remove("is-hidden"));
     syncFrameCoverage();
     $("#resultKicker").textContent = win ? copy("victoryKicker", { chapter: localizedValue(C.chapters[chapterIndex()]), stage: stageCode() }) : copy("defeatKicker");
     $("#resultTitle").textContent = win ? copy("victoryTitle") : copy("defeatTitle");
@@ -758,7 +787,9 @@
     updateHud();
     save();
     tone(win ? 720 : 180, .12);
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function collectLoot(silent) {
     const loot = battle.pendingLoot;
@@ -790,7 +821,9 @@
     if (tab === "tavern") renderTavern();
     if (tab === "law") renderLaw();
     if (tab === "campaign") renderCampaign();
-  }
+
+    __wpNotifyMeasurement();
+}
 
   function closeManagement() {
     $("#management").classList.add("is-hidden");
@@ -798,10 +831,12 @@
     if (battle.manageFromResult) {
       battle.manageFromResult = false;
       battle.resultOpen = true;
-      $("#resultPanel").classList.remove("is-hidden");
+      (__wpNotifyMeasurement(), $("#resultPanel").classList.remove("is-hidden"));
     }
     syncFrameCoverage();
-  }
+
+    __wpNotifyMeasurement();
+}
 
   const loadoutCopy = {
     'zh-Hant': ['空欄位','使用中','背包內','卸下','轉交','先選武將，再選裝備欄。同一件裝備只能由一人持有；換下的裝備會留在背包。','選擇武將','尚未解鎖', 'Boss 與裝備戰役會掉落這類裝備。'],
@@ -1082,7 +1117,7 @@
 
   function closeModal() {
     if ($('#modalLayer').classList.contains('is-hidden')) return;
-    $('#modalLayer').classList.add('is-hidden');
+    (__wpNotifyMeasurement(), $('#modalLayer').classList.add('is-hidden'));
     syncFrameCoverage();
     if (modalOwnsPause && $('#app').dataset.scene === 'battle' && !battle.resultOpen && $('#leaveConfirm').classList.contains('is-hidden')) resumeCombat();
     modalOwnsPause = false;
@@ -1400,9 +1435,9 @@
     $("#modalBody").addEventListener("change", (event) => {
       if (event.target.dataset.setting === "quality") { state.settings.quality = event.target.value; document.body.dataset.quality = event.target.value; save(); }
     });
-    $("#resultManage").addEventListener("click", () => { $("#resultPanel").classList.add("is-hidden"); battle.manageFromResult = true; openManagement("heroes"); });
-    $("#resultNext").addEventListener("click", () => { if ($("#resultNext").disabled) return; state.stage += 1; state.wave = 1; $("#resultPanel").classList.add("is-hidden"); startWave(); save(); });
-    $("#resultRetry").addEventListener("click", () => { $("#resultPanel").classList.add("is-hidden"); state.wave = 1; startWave(); });
+    $("#resultManage").addEventListener("click", () => { (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); battle.manageFromResult = true; openManagement("heroes"); });
+    $("#resultNext").addEventListener("click", () => { if ($("#resultNext").disabled) return; state.stage += 1; state.wave = 1; (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); startWave(); save(); });
+    $("#resultRetry").addEventListener("click", () => { (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); state.wave = 1; __wpReplayStart(() => startWave()); });
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape" || event.defaultPrevented) return;
       if (!$("#modalLayer").classList.contains("is-hidden")) closeModal();
@@ -1425,17 +1460,19 @@
     $("#battleContent").inert = covered;
     $('#mainScene').inert = scene !== 'main' || modalOpen;
     document.querySelectorAll('.game-page-info').forEach(n => { n.inert = scene !== 'main' || modalOpen; });
-  }
+
+    __wpNotifyMeasurement();
+}
 
   function mountSharedFrame() {
     $('#coachNext').setAttribute('data-wp-frame-action', 'primary');
     const leaveDialog = document.createElement('section');
     leaveDialog.id = 'leaveConfirm';
     leaveDialog.className = 'leave-confirm is-hidden';
-    leaveDialog.setAttribute('role', 'dialog');
-    leaveDialog.setAttribute('aria-modal', 'true');
-    leaveDialog.setAttribute('aria-labelledby', 'leaveTitle');
-    leaveDialog.setAttribute('aria-describedby', 'leaveCopy');
+    (__wpNotifyMeasurement(), leaveDialog.setAttribute('role', 'dialog'));
+    (__wpNotifyMeasurement(), leaveDialog.setAttribute('aria-modal', 'true'));
+    (__wpNotifyMeasurement(), leaveDialog.setAttribute('aria-labelledby', 'leaveTitle'));
+    (__wpNotifyMeasurement(), leaveDialog.setAttribute('aria-describedby', 'leaveCopy'));
     leaveDialog.innerHTML = '<div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><div class="leave-actions"><button id="leaveContinue" type="button" data-wp-frame-action="primary"></button><button id="leaveMain" type="button" data-wp-frame-action="secondary"></button></div></div>';
     $('#battleScene').append(leaveDialog);
     // The hidden select is a locale data/action adapter, never a second panel.
@@ -1468,4 +1505,6 @@
   updateHud();
   document.body.dataset.quality = state.settings.quality;
   calculateOffline();
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 })();

@@ -14,7 +14,24 @@ export function mountMahjongEntry({container,locale,storage,titles}) {
  const sound=createCampaignAudio({storage}),lifetime=new AbortController();let currentLocale=locale,app,main,disposed=false,inputType='unknown';
  document.addEventListener('pointerdown',event=>{inputType=event.pointerType==='touch'?'touch':event.pointerType==='mouse'?'mouse':'pointer'},{capture:true,signal:lifetime.signal});
  document.addEventListener('keydown',()=>{inputType='keyboard'},{capture:true,signal:lifetime.signal});
+ // WP-GAME-ANALYTICS-ADAPTER: reflect the existing session; never infer starts from UI.
+ let measurementRound = null, measurementEnded = false, measurementReplay = false, measurementOutcome = "complete";
+ const readMeasurement = () => {
+  const state = app?.session.snapshot();
+  if (!state) return null;
+  return { screen: state.screen === 'battle' && measurementEnded ? null : state.screen,
+   roundKey: measurementRound, started: measurementRound !== null, ended: measurementEnded,
+   outcome: measurementOutcome, restart: measurementReplay, node: container.ownerDocument.body,
+   locale: currentLocale, activityMode: 'input', idleSeconds: 300 };
+ };
+ const notifyMeasurement = () => { try { window.WonderAnalytics?.game?.observeState(readMeasurement); } catch { /* Optional telemetry. */ } };
+ window.addEventListener('weightplay:analytics-ready',notifyMeasurement,{signal:lifetime.signal});
  const onEvent=(name,details)=>{
+  if(name==='game_restart')measurementReplay=true;
+  if(name==='game_start'){measurementRound={};measurementEnded=false;measurementOutcome='complete';measurementReplay=details.from==='replay';}
+  if(name==='game_complete'){measurementEnded=true;measurementOutcome='win';}
+  if(name==='stage_return'&&!details.completed&&measurementRound){measurementEnded=true;measurementOutcome='abandon';}
+  notifyMeasurement();
   const width=innerWidth,height=innerHeight,viewport=height<=430?'short-landscape':width<=480?'phone':width<=900?(height>width?'tablet-portrait':'tablet-landscape'):(height>width?'desktop-portrait':'desktop-landscape');
   window.WonderAnalytics?.track?.(name,{...details,game_id:'mahjong-solitaire',game_version:'v15',interface_version:'6',locale:currentLocale,viewport_bucket:viewport,input_type:inputType});
  };
@@ -34,8 +51,8 @@ export function mountMahjongEntry({container,locale,storage,titles}) {
  const mainSettings=createCampaignSettings({locale:()=>currentLocale,setLocale,sound}),stageSettings=createCampaignSettings({locale:()=>currentLocale,sound,allowLanguage:false});
  main=createCampaignMainView({locale:()=>currentLocale,title:l=>titles[l],lobbyHref:l=>`/${segments[CAMPAIGN_LOCALES.indexOf(l)]}/`,progress:()=>app?.session.snapshot().progress||{unlocked:1},settings:mainSettings.root});
  container.append(main.root,main.guide);
- app=mountMahjongCampaign({main:main.root,guide:main.guide,startButton:main.startButton,locale:()=>currentLocale,storage,mainSettings,stageSettings,onMain:()=>main.refresh(),sound,onEvent});
- setLocale(currentLocale);main.refresh();
+ app=mountMahjongCampaign({main:main.root,guide:main.guide,startButton:main.startButton,locale:()=>currentLocale,storage,mainSettings,stageSettings,onMain:()=>main.refresh(),sound,onEvent,onState:notifyMeasurement});
+ setLocale(currentLocale);main.refresh();notifyMeasurement();
  document.addEventListener('visibilitychange',()=>{if(document.hidden)sound.stop()},{signal:lifetime.signal});
  async function dispose(){if(disposed)return;disposed=true;lifetime.abort();app.dispose();main.dispose();await sound.dispose();}
  // A cached document is frozen, not destroyed. Close transient audio without

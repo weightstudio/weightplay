@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(leaveOpen), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "tiny-weather-rescue";
   const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const localeLabels = {
@@ -414,9 +432,9 @@
   const leavePanel = document.createElement("section");
   leavePanel.id = "leavePanel";
   leavePanel.className = "helper-leave-panel hidden";
-  leavePanel.setAttribute("role", "dialog");
-  leavePanel.setAttribute("aria-modal", "true");
-  leavePanel.setAttribute("aria-labelledby", "leaveTitle");
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("role", "dialog"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-modal", "true"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-labelledby", "leaveTitle"));
   leavePanel.innerHTML = '<div class="helper-leave-card"><strong id="leaveTitle"></strong><p id="leaveText"></p><button id="keepHelpingBtn" type="button"></button><button id="leaveMissionBtn" type="button"></button></div>';
   nodes.playPanel.append(leavePanel);
   nodes.leavePanel = leavePanel;
@@ -716,7 +734,12 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   window.addEventListener("resize", updateWeatherFrame);
   window.addEventListener("orientationchange", updateWeatherFrame);
@@ -742,7 +765,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     document.body.classList.remove("wp-standard-stage-page");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.playPanel.classList.remove("result-active");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("helper-playing");
@@ -761,7 +784,9 @@
       exitSharedPlayViewport();
       updateWeatherFrame();
     }, 160);
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function progressPercent(stage) {
     return Math.round((roundIndex / stage.rounds.length) * 100);
@@ -1087,7 +1112,7 @@
     if (cleared && stage.id < stages.length) unlocked = Math.max(unlocked, stage.id + 1);
     saveRecords();
     nodes.playPanel.classList.add("result-active");
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     nodes.resultTitle.textContent = cleared ? t("clear") : t("failed");
     nodes.starText.textContent = `${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}`;
     nodes.resultText.textContent = cleared
@@ -1100,25 +1125,27 @@
     nodes.nextStageBtn.setAttribute("aria-disabled", String(nodes.nextStageBtn.disabled));
     nodes.nextStageBtn.classList.toggle("result-primary", cleared && !isFinalClear);
     nodes.retryBtn.classList.toggle("result-primary", !cleared);
-    nodes.resultStagesBtn.classList.toggle("result-primary", isFinalClear);
+    (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("result-primary", isFinalClear));
     (isFinalClear ? nodes.resultStagesBtn : cleared ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderStageGrid();
     playSound(cleared ? "success" : "wrong");
     track("game_complete", { stage: stage.id, score, stars, cleared, mistakes });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function showMenu(focusIndex = Math.max(0, unlocked - 1)) {
     invalidateCareTransition();
     running = false;
     busy = false;
     cleanupDrag();
-    leaveOpen = false;
-    nodes.leavePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), leaveOpen = false);
+    (__wpNotifyMeasurement(), nodes.leavePanel.classList.add("hidden"));
     [...nodes.playPanel.children].forEach((child) => { if (child !== nodes.leavePanel) { child.inert = false; child.removeAttribute("aria-hidden"); } });
     resumeCareTransitions();
     nodes.playPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("result-active");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     document.body.classList.remove("helper-playing");
@@ -1199,9 +1226,9 @@
   nodes.stageBackBtn.addEventListener("click", () => showMain(true));
   function setLeaveOpen(open, restoreFocus = true) {
     if (open === leaveOpen) return;
-    leaveOpen = open;
+    (__wpNotifyMeasurement(), leaveOpen = open);
     cleanupDrag();
-    nodes.leavePanel.classList.toggle("hidden", !open);
+    (__wpNotifyMeasurement(), nodes.leavePanel.classList.toggle("hidden", !open));
     [...nodes.playPanel.children].forEach((child) => {
       if (child === nodes.leavePanel) return;
       child.inert = open;
@@ -1239,7 +1266,7 @@
   nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));
   nodes.retryBtn.addEventListener("click", () => {
     track("game_restart", { stage: currentStage + 1 });
-    startStage(currentStage);
+    __wpReplayStart(() => startStage(currentStage));
   });
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
   nodes.resultPanel.addEventListener("keydown", (event) => {

@@ -1,5 +1,17 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const rounds = [
     { title: "stageTitle1", hint: "stageHint1", initial: [0, 0, 0], target: [1, 0, 1] },
@@ -165,7 +177,7 @@
     const resultScreen = $("resultScreen");
     if (battleHud) battleHud.hidden = screen !== "battle";
     if (battleContent) battleContent.hidden = screen !== "battle";
-    if (resultScreen) resultScreen.hidden = screen !== "result";
+    if (resultScreen) (__wpNotifyMeasurement(), resultScreen.hidden = screen !== "result");
     const battleActions = document.querySelector("#battleScreen .battle-canvas > .battle-actions");
     if (battleActions) battleActions.hidden = screen !== "battle";
     document.body.dataset.screen = screen === "result" ? "battle" : screen;
@@ -181,7 +193,12 @@
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
     if (screen === "main") ensureSharedSettingsButton();
     window.scrollTo(0, 0);
-  };
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+};
   const renderMain = () => {
     setText($("mainProgress"), "progress", { count: rounds.length });
     setText($("bestValue"), getBest() ? String(getBest()) : "noBest");
@@ -251,7 +268,9 @@
     state.flips = 0;
     if ($("battleStatus")) $("battleStatus").textContent = "";
     show("battle");
-  };
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+};
   const clearRound = () => {
     if (!samePattern()) {
       announce("incorrect");
@@ -295,13 +314,17 @@
     $("mapBtn").addEventListener("click", () => show("stage"));
     $("stageBackBtn").addEventListener("click", () => show("main"));
     $("battleBackBtn").addEventListener("click", () => show("stage"));
-    $("resetBtn").addEventListener("click", () => { state.pattern = rounds[state.round].initial.slice(); state.flips = 0; announce("moveHint"); renderBattle(); });
+    $("resetBtn").addEventListener("click", () => { state.pattern = rounds[state.round].initial.slice(); state.flips = 0; announce("moveHint"); renderBattle();
+      __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+});
     $("checkBtn").addEventListener("click", clearRound);
     $("resultMapBtn").addEventListener("click", () => {
       if (state.cleared.length) state.round = Math.max(...state.cleared);
       show("stage");
     });
-    $("resultHomeBtn").addEventListener("click", () => startRound(state.round));
+    $("resultHomeBtn").addEventListener("click", () => { const value = (startRound(state.round));
+      __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+ return value; });
     $("resultPrimaryBtn").addEventListener("click", () => {
       if ($("resultPrimaryBtn").dataset.action === "next") startRound(state.round + 1);
     });

@@ -1,4 +1,22 @@
 (function () {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "snack-blocks";
   let columns = 7;
   let rows = 10;
@@ -725,7 +743,7 @@
     nodes.stageTabs.setAttribute("aria-label", t("stageSelectAria"));
     nodes.stagesTabBtn.textContent = t("menu");
     nodes.battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
-    nodes.pauseBtn.setAttribute("aria-label", t("pauseAria"));
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-label", t("pauseAria")));
     nodes.board.setAttribute("aria-label", t("boardAria"));
     applyDecisionText();
     renderStageGrid();
@@ -923,8 +941,8 @@
     state.busy = false;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.resultPanel.classList.add("hidden");
-    nodes.leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.add("hidden"));
     state.leaveConfirmOpen = false;
     state.decisionMode = null;
     setBattleCovered(false);
@@ -937,7 +955,12 @@
     updateSnackFrame();
     requestAnimationFrame(updateSnackFrame);
     refreshSharedScreenGeometry();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showMain() {
     invalidateBoardSession();
@@ -960,7 +983,12 @@
         nodes.startBtn.focus({ preventScroll: true });
       });
     });
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function renderBoard(dropMap = new Map()) {
     nodes.board.innerHTML = "";
@@ -1370,8 +1398,8 @@
     buildCleanBoard();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
-    nodes.leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.add("hidden"));
     state.leaveConfirmOpen = false;
     state.decisionMode = null;
     setBattleCovered(false);
@@ -1395,7 +1423,9 @@
       exitSharedPlayViewport();
       updateSnackFrame();
     });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function checkEnd() {
     if (!state.running || state.busy) return;
@@ -1432,7 +1462,7 @@
     });
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
     window.WonderSound?.play(cleared ? "win" : "wrong");
     window.WonderAnalytics?.track("game_complete", {
@@ -1442,7 +1472,9 @@
       goal: stage.goal,
       cleared,
     });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (cleared ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function ratingStars() {
     const stage = activeStage();
@@ -1483,7 +1515,7 @@
     state.decisionMode = mode;
     suspendBoardTasks();
     applyDecisionText();
-    nodes.leaveConfirmPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.remove("hidden"));
     setBattleCovered(true);
     requestAnimationFrame(() => nodes.keepPlayingBtn.focus({ preventScroll: true }));
   }
@@ -1493,7 +1525,7 @@
     const mode = state.decisionMode;
     state.leaveConfirmOpen = false;
     state.decisionMode = null;
-    nodes.leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.add("hidden"));
     setBattleCovered(false);
     resumeBoardTasks();
     if (restoreFocus) requestAnimationFrame(() => mode === "pause" ? nodes.pauseBtn.focus({ preventScroll: true }) : focusBoardTile());
@@ -1515,6 +1547,7 @@
         window.clearInterval(id);
         window.setTimeout(() => {
           nodes.loadingPanel.classList.add("hidden");
+          if (!__wpMeasurement.started && __wpMeasurement.screen === null) { __wpMeasurement.screen = "main"; } __wpNotifyMeasurement();
           window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
         }, 120);
       }
@@ -1561,7 +1594,7 @@
         game_id: GAME_ID,
         stage: activeStage().id,
       });
-      startStage(state.currentStageIndex);
+      __wpReplayStart(() => startStage(state.currentStageIndex));
     });
   });
   nodes.menuBtn.addEventListener("click", () => commitResultAction(showMenu));

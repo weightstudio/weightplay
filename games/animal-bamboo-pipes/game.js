@@ -1,5 +1,23 @@
 (() => {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(run?.paused || run?.suspended || leaveOpen), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = id => document.getElementById(id);
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -57,7 +75,12 @@
       setLeaveOpen(false, false);
     }
     sharedFrame?.sync();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function persist() { try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
   function stageData(index) {
     const level = LEVELS[index], target = targetIndex(level);
@@ -304,7 +327,9 @@
     track("game_start", { stage: selected + 1, entry });
     track("waterway_started", { entry });
     requestAnimationFrame(() => $("board").children[boardFocusIndex]?.focus({ preventScroll: true }));
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function complete() {
     if(run.completed)return;
     run.completed = true;
@@ -362,19 +387,21 @@
       if (open) node.setAttribute("aria-hidden", "true");
       else node.removeAttribute("aria-hidden");
     });
-    result.hidden = !open;
+    (__wpNotifyMeasurement(), result.hidden = !open);
     if (open) {
       resultActionClaimed = false;
       battle.scrollTop = 0;
       result.scrollTop = 0;
     }
     sharedFrame?.sync();
-  }
+
+    if (open) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement(); }
+}
   function setLeaveOpen(open, restoreFocus = true) {
     if (!$("result").hidden && open) return;
     const battle = $("battle"), dialog = $("leaveDialog");
     const owned = [...battle.querySelectorAll(":scope > header"), battle.querySelector(".battle-panel")];
-    leaveOpen = open;
+    (__wpNotifyMeasurement(), leaveOpen = open);
     battle.classList.toggle("leave-open", open);
     owned.forEach(node => {
       if (!node) return;
@@ -383,11 +410,11 @@
       else if ($("result").hidden) node.removeAttribute("aria-hidden");
     });
     if (open) {
-      dialog.hidden = false;
+      (__wpNotifyMeasurement(), dialog.hidden = false);
       $("continueBattle").focus();
     } else {
       if (restoreFocus && !battle.hidden) battleBack()?.focus();
-      dialog.hidden = true;
+      (__wpNotifyMeasurement(), dialog.hidden = true);
       if (run?.completed && $("result").hidden) scheduleCompletionReveal($("next").disabled ? $("resultStages") : $("next"));
     }
     sharedFrame?.sync();
@@ -544,7 +571,7 @@
     $("board").children[next].focus({ preventScroll: true });
   });
   $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.undoUsed = true; track("undo_used", { turns_before: run.moves }); run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
-  $("restart").onclick = () => { if (run && !run.completed) track("restart_used", { turns_before: run.moves }); startStage("restart"); };
+  $("restart").onclick = () => { if (run && !run.completed) track("restart_used", { turns_before: run.moves }); __wpReplayStart(() => startStage("restart")); };
   $("hint").onclick = () => {
     if (run?.completed) return;
     hintedPipeIndex = run.tiles.findIndex(item => item.required && ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(","));
@@ -558,7 +585,7 @@
     const index = Number(event.detail?.index);
     if (Number.isInteger(index) && index >= 0) selectStage(index, false);
   });
-  $("retry").onclick = () => { if (!claimResultAction()) return; track("result_replay", { from: "result" }); setResultOpen(false); startStage("replay"); };
+  $("retry").onclick = () => { if (!claimResultAction()) return; track("result_replay", { from: "result" }); setResultOpen(false); __wpReplayStart(() => startStage("replay")); };
   $("next").onclick = () => { if (selected >= 29 || !claimResultAction()) return; track("next_waterway_clicked", { from_waterway: selected + 1, to_waterway: selected + 2 }); setResultOpen(false); selected += 1; startStage("next"); };
   $("resultStages").onclick = () => { if (!claimResultAction()) return; track("return_to_waterways", { from: "result" }); setResultOpen(false); show("stage"); renderStages(); };
   applyLocale();

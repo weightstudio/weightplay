@@ -32,6 +32,9 @@ window.WPClassicLogic?.mount("code-breaker");
   const syncGuidePanel = () => {
     const panel = document.querySelector(".game-page-info-static");
     if (!panel) return;
+    // The generated full guide already belongs to this locale. Keep the
+    // legacy short-copy fallback only for the minimal redirect shell.
+    if (panel.querySelector(".game-info-related-section")) return;
     const copy = GUIDE_COPY[locale()] || GUIDE_COPY.en;
     const setText = (selector, value) => {
       const node = panel.querySelector(selector);

@@ -1,5 +1,23 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(!state.active), node: ui.battleScreen,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const {
     Card,
@@ -2223,7 +2241,7 @@ const KL_I18N = {
   }
 
   function forceCloseResultOverlay() {
-    if (ui.resultOverlay) ui.resultOverlay.hidden = true;
+    if (ui.resultOverlay) (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
     window.KlondikeFrame?.sync();
   }
 
@@ -2487,7 +2505,9 @@ const KL_I18N = {
     stats.losses += 1;
     statsStorage.save();
     renderStatistics();
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "lose"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function hasAnyLegalMoves() {
     return game.allLegalMoves().length > 0;
@@ -3107,9 +3127,9 @@ const KL_I18N = {
       })}<br>${records}<br>${t("ui.result.trail", { done: trail.done })}<br><span class="result-deal-id">${t("ui.result.deal_identity", { id: dealId })}</span>`;
     }
     if (ui.resultOverlay) {
-      ui.resultOverlay.classList.remove("result-enter");
-      ui.resultOverlay.classList.add("result-enter");
-      ui.resultOverlay.hidden = false;
+      (__wpNotifyMeasurement(), ui.resultOverlay.classList.remove("result-enter"));
+      (__wpNotifyMeasurement(), ui.resultOverlay.classList.add("result-enter"));
+      (__wpNotifyMeasurement(), ui.resultOverlay.hidden = false);
       window.KlondikeFrame?.sync();
     }
     emitAnalytics("result", analyticsBoardDetails({
@@ -3117,7 +3137,9 @@ const KL_I18N = {
       outcome: "complete",
       inputType: state.interactionInputType,
     }));
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function maybeShowNoMoves() {
     if (!state.active) return;
@@ -3285,11 +3307,13 @@ const KL_I18N = {
     markLossIfAbandoned();
     createNewGame(inputType, "result");
     openBattle(inputType, "result");
-    if (ui.resultOverlay) ui.resultOverlay.hidden = true;
+    if (ui.resultOverlay) (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
     window.KlondikeFrame?.sync();
   }
 
   function performResultRestart(inputType = state.interactionInputType, from = "result") {
+    const __wpPreviousRound = __wpMeasurement.roundKey;
+
     markLossIfAbandoned();
     state.deadlockHintShown = false;
     state.lossRecordedForCurrentBoard = false;
@@ -3309,10 +3333,13 @@ const KL_I18N = {
     renderHeader();
     pauseClock();
     if (state.active) restartClock();
-    if (ui.resultOverlay) ui.resultOverlay.hidden = true;
+    if (ui.resultOverlay) (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
     window.KlondikeFrame?.sync();
     emitAnalytics("restart", analyticsBoardDetails({ from, outcome: "restart", inputType }));
-  }
+
+    if (state.active) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+    if (__wpMeasurement.roundKey !== __wpPreviousRound) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+}
 
   function createNewGame(inputType = state.interactionInputType, from = "main") {
     markLossIfAbandoned();
@@ -3329,7 +3356,9 @@ const KL_I18N = {
     renderStatistics();
     renderBoard();
     emitAnalytics("new_game", analyticsBoardDetails({ from, outcome: "new_game", inputType }));
-  }
+
+    if (state.active) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+}
 
   function setDrawModeFromStorage() {
     const rawMode = localStorage.getItem(STORAGE_LAYOUT);
@@ -3423,7 +3452,13 @@ const KL_I18N = {
     emitAnalytics("game_start", analyticsBoardDetails({ from, outcome: "started", inputType }));
     window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
+      if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function closeBattle(inputType = state.interactionInputType, from = "battle") {
     emitAnalytics("main_return", analyticsBoardDetails({ from, outcome: "returned", inputType }));
@@ -3444,7 +3479,12 @@ const KL_I18N = {
     window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync"));
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function bindEvents() {
     ui.enterBtn?.addEventListener("click", (event) => {
@@ -3460,8 +3500,8 @@ const KL_I18N = {
     });
     ui.restartBtn?.addEventListener("click", (event) => {
       const inputType = inputTypeFromEvent(event);
-      performResultRestart(inputType, "battle");
-      openBattle(inputType, "battle");
+      __wpReplayStart(() => performResultRestart(inputType, "battle"));
+      __wpReplayStart(() => openBattle(inputType, "battle"));
     });
     ui.battleBackBtn?.addEventListener("click", (event) => closeBattle(inputTypeFromEvent(event), "battle"));
     ui.soundToggle?.addEventListener("click", toggleSound);
@@ -3481,7 +3521,7 @@ const KL_I18N = {
       state.interactionInputType = inputTypeFromEvent(event);
       performResultNewGame();
     });
-    ui.resultRestart?.addEventListener("click", (event) => performResultRestart(inputTypeFromEvent(event), "result"));
+    ui.resultRestart?.addEventListener("click", (event) => __wpReplayStart(() => performResultRestart(inputTypeFromEvent(event), "result")));
     ui.resultClose?.addEventListener("click", (event) => closeBattle(inputTypeFromEvent(event), "result"));
     ui.hintOverlay?.addEventListener("click", () => {
       ui.hintOverlay.hidden = true;
@@ -3899,4 +3939,6 @@ const KL_I18N = {
 
   bootstrap();
   window.KlondikeFrame?.sync();
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 })();

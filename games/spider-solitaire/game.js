@@ -1,5 +1,23 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(!ui.confirmOverlay.hidden || !ui.tutorialOverlay.hidden), node: ui.battleScreen,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   document.body.dataset.gameVersion = 'v39';
   document.body.dataset.cardDeck = 'klondike';
 
@@ -767,7 +785,7 @@
     state.completionFlyouts.forEach((node) => node.remove());
     state.completionFlyouts.clear();
     ui.boardShell?.classList.remove("completion-burst");
-    ui.resultOverlay?.classList.remove("eight-set-result");
+    (__wpNotifyMeasurement(), ui.resultOverlay?.classList.remove("eight-set-result"));
   }
 
   function emitAnalyticsEvent(name, details = {}) {
@@ -1264,7 +1282,12 @@
     // pixels. Without this checkpoint the first move is the first time the
     // two coordinate systems agree and the whole table visibly jumps.
     window.WeightPlayBattleCanvas?.sync?.();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
+      if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showStage({ focusStart = false } = {}) {
     stopClock();
@@ -1274,9 +1297,9 @@
     ui.stageScreen.hidden = false;
     ui.battleScreen.hidden = true;
     document.body.dataset.screen = "stage";
-    ui.resultOverlay.hidden = true;
-    ui.tutorialOverlay.hidden = true;
-    ui.confirmOverlay.hidden = true;
+    (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+    (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+    (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
     setBattleViewportLock(false);
     window.SpiderFrame?.sync();
     state.active = false;
@@ -1287,7 +1310,12 @@
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("resize"));
     if (focusStart) requestAnimationFrame(() => ui.stageStartBtn?.focus({ preventScroll: true }));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showMain({ focusStart = false } = {}) {
     stopClock();
@@ -1297,9 +1325,9 @@
     ui.stageScreen.hidden = true;
     ui.battleScreen.hidden = true;
     document.body.dataset.screen = "main";
-    ui.resultOverlay.hidden = true;
-    ui.tutorialOverlay.hidden = true;
-    ui.confirmOverlay.hidden = true;
+    (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+    (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+    (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
     setBattleViewportLock(false);
     window.SpiderFrame?.sync();
     state.active = false;
@@ -1310,7 +1338,12 @@
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("resize"));
     if (focusStart) requestAnimationFrame(() => ui.startBtn?.focus({ preventScroll: true }));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function beginNewGame() {
     clearCompletionFlyouts();
@@ -1330,18 +1363,20 @@
     game.tableau.columns.forEach((cards, columnIndex) => cards.forEach((card, row) => {
       state.pendingDealDelays.set(card.id, Math.min(CARD_DEAL_MAX_DELAY, row * 10 + columnIndex) * DEAL_STEP_MS);
     }));
-    ui.resultOverlay.hidden = true;
+    (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
     showBattle();
     renderBoard();
     startClock();
     syncDifficultyCoach();
-    if (safeGet(STORAGE.tutorial, "0") !== "1") window.setTimeout(() => { ui.tutorialOverlay.hidden = false; window.SpiderFrame?.sync(); }, 420);
-  }
+    if (safeGet(STORAGE.tutorial, "0") !== "1") window.setTimeout(() => { (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = false); window.SpiderFrame?.sync(); }, 420);
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function requestNewGame() {
     if (state.active && game.moveCount > 0 && !game.hasWon()) {
       state.pendingAction = beginNewGame;
-      ui.confirmOverlay.hidden = false;
+      (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = false);
       window.SpiderFrame?.sync();
       return;
     }
@@ -1349,8 +1384,10 @@
   }
 
   function restartGame() {
+    const __wpPreviousRound = __wpMeasurement.roundKey;
+
     if (!state.hasStarted) {
-      beginNewGame();
+      __wpReplayStart(() => beginNewGame());
       return;
     }
     clearCompletionFlyouts();
@@ -1363,11 +1400,14 @@
     game.tableau.columns.forEach((cards, columnIndex) => cards.forEach((card, row) => {
       state.pendingDealDelays.set(card.id, Math.min(CARD_DEAL_MAX_DELAY, row * 10 + columnIndex) * DEAL_STEP_MS);
     }));
-    ui.resultOverlay.hidden = true;
+    (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
     showBattle();
     renderBoard();
     startClock();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    if (__wpMeasurement.roundKey !== __wpPreviousRound) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+}
 
   function showVictory() {
     if (!state.active || !game.hasWon()) return;
@@ -1381,11 +1421,13 @@
       saveStats();
     }
     audio.win();
-    ui.resultOverlay.classList.add("eight-set-result");
+    (__wpNotifyMeasurement(), ui.resultOverlay.classList.add("eight-set-result"));
     ui.resultText.textContent = t("result_summary", { sets: game.completed.total, moves: game.moveCount, time: formatTime(state.elapsed), score: game.score });
-    ui.resultOverlay.hidden = false;
+    (__wpNotifyMeasurement(), ui.resultOverlay.hidden = false);
     window.SpiderFrame?.sync();
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function requestBack() {
     if (!state.active || game.hasWon() || game.moveCount === 0) {
@@ -1393,15 +1435,15 @@
       return;
     }
     state.pendingAction = showStage;
-    ui.confirmOverlay.hidden = false;
+    (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = false);
     window.SpiderFrame?.sync();
   }
 
-  function closeConfirm() { ui.confirmOverlay.hidden = true; state.pendingAction = null; window.SpiderFrame?.sync(); }
+  function closeConfirm() { (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true); state.pendingAction = null; window.SpiderFrame?.sync(); }
 
   function finishTutorial() {
     safeSet(STORAGE.tutorial, "1");
-    ui.tutorialOverlay.hidden = true;
+    (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
     window.SpiderFrame?.sync();
   }
 
@@ -1438,9 +1480,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1477,9 +1519,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1507,9 +1549,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1544,9 +1586,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1581,9 +1623,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1619,9 +1661,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1656,9 +1698,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1707,9 +1749,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         showBattle();
         renderBoard();
         startClock();
@@ -1739,9 +1781,9 @@
         state.cardPool = new Map();
         state.pendingDealDelays = null;
         clearCompletionFlyouts();
-        ui.resultOverlay.hidden = true;
-        ui.tutorialOverlay.hidden = true;
-        ui.confirmOverlay.hidden = true;
+        (__wpNotifyMeasurement(), ui.resultOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = true);
+        (__wpNotifyMeasurement(), ui.confirmOverlay.hidden = true);
         renderBoard();
       },
       snapshot() {
@@ -1819,7 +1861,7 @@
     ui.startBtn.addEventListener("click", () => showStage({ focusStart: true }));
     ui.stageStartBtn.addEventListener("click", beginNewGame);
     ui.stageBackBtn.addEventListener("click", () => showMain({ focusStart: true }));
-    ui.restartBtn.addEventListener("click", restartGame);
+    ui.restartBtn.addEventListener("click", function (...args) { return __wpReplayStart(() => restartGame.apply(this, args)); });
     ui.newGameBtn.addEventListener("click", requestNewGame);
     ui.battleBackBtn.addEventListener("click", requestBack);
     ui.battleSoundBtn?.addEventListener("click", () => { setCardSoundEnabled(!audio.enabled); setSoundButton(); });
@@ -1827,7 +1869,7 @@
     ui.undoBtn.addEventListener("click", requestUndo);
     ui.hintBtn.addEventListener("click", requestHint);
     ui.copyReplayLinkBtn.addEventListener("click", copyReplayLink);
-    ui.helpBtn.addEventListener("click", () => { ui.tutorialOverlay.hidden = false; window.SpiderFrame?.sync(); });
+    ui.helpBtn.addEventListener("click", () => { (__wpNotifyMeasurement(), ui.tutorialOverlay.hidden = false); window.SpiderFrame?.sync(); });
     ui.audioMenuBtn.addEventListener("click", () => { ui.audioPopover.classList.toggle("is-hidden"); ui.audioMenuBtn.setAttribute("aria-expanded", String(!ui.audioPopover.classList.contains("is-hidden"))); });
     ui.soundBtn.addEventListener("click", () => { setCardSoundEnabled(!audio.enabled); setSoundButton(); });
     ui.localeSelect.addEventListener("change", () => window.WonderI18n?.setLocale?.(ui.localeSelect.value));
@@ -1836,7 +1878,7 @@
     ui.confirmNo.addEventListener("click", closeConfirm);
     ui.confirmYes.addEventListener("click", () => { const action = state.pendingAction; closeConfirm(); action?.(); });
     ui.resultNewGame.addEventListener("click", beginNewGame);
-    ui.resultRestart.addEventListener("click", restartGame);
+    ui.resultRestart.addEventListener("click", function (...args) { return __wpReplayStart(() => restartGame.apply(this, args)); });
     ui.resultClose.addEventListener("click", showStage);
     window.addEventListener("pointermove", (event) => { if (!state.dragging) return; const dx = event.clientX - state.dragging.startX; const dy = event.clientY - state.dragging.startY; if (!state.dragging.moved && Math.hypot(dx, dy) > 8) { state.dragging.moved = true; buildGhost(event); } if (state.dragging.moved) { event.preventDefault(); moveGhost(event); } }, { passive: false });
     window.addEventListener("pointerup", finishDrag);

@@ -2390,6 +2390,370 @@
       "four-in-a-row": { title: "أربع في صف", intro: "أربع في صف لعبة كلاسيكية ذات جاذبية على لوحة 7×6: أسقط الأقراص ووصل أربعة أفقيًا أو رأسيًا أو قطريًا.", gameplay: "استراتيجية الجاذبية", genre: ["كلاسيكية", "ألغاز", "استراتيجية", "عائلية"], difficulty: "من السهل إلى الصعب", time: "3–10 دقائق", parent: "أربع في صف لعبة استراتيجية عامة في المتصفح. لا يلزم حساب أو شراء؛ تبقى الإعدادات وأفضل نتيجة متاحة في هذا المتصفح.", faq: [["كيف تتحرك القطعة؟", "اختر عمودًا مفتوحًا؛ تهبط القطعة إلى أخفض خلية فارغة."], ["كيف أفوز؟", "صل أربع قطع لك أفقيًا أو رأسيًا أو قطريًا."], ["هل يتم حفظ التقدم؟", "تبقى الإعدادات وأفضل نتيجة متاحة في هذا المتصفح فقط."]] },
     },
   };
+  // Lights Out 1.2.0: append verified search-intent answers; preserve existing copy.
+  const lightsOutSearchFaq = {
+  "en": [
+    [
+      "How can I plan this online light-switch puzzle?",
+      "Read the whole cross before pressing: a corner changes three cells, an edge four, and an interior cell five. One method is to work down the board, pressing directly below a lit cell to clear the row above. If lights remain in the bottom row, reconsider the first-row presses; this method does not guarantee that every starting choice works."
+    ],
+    [
+      "Is pressing the same cell twice the same as Undo?",
+      "Two presses on the same cell restore the original light pattern but add two moves. Undo instead restores the previous board and its move count. Use Undo to compare a choice without adding a cancelling pair of presses."
+    ],
+    [
+      "Why does New Puzzle show the same opening?",
+      "This version resets the same fixed 5×5 puzzle rather than generating a random board or unlocking a new level. Replay it to test a different set of presses and compare your move count."
+    ]
+  ],
+  "zh-Hant": [
+    [
+      "這款線上開關益智遊戲要怎麼規劃解法？",
+      "按下前先看完整十字範圍：角落影響三格、邊緣四格、內部五格。可以從上往下，按在亮格正下方，逐列清掉上一列的燈。若最後一列仍亮，需重新考慮第一列的按法；不是任何起手都能直接解完。"
+    ],
+    [
+      "同一格按兩次，等於復原嗎？",
+      "同一格按兩次會讓燈光回到原狀，但步數仍增加兩步。復原則同時還原上一個棋盤狀態與步數；想比較不同選擇時，用復原就不必多按一組互相抵銷的動作。"
+    ],
+    [
+      "為什麼「新謎題」還是相同開局？",
+      "目前版本會重設同一個固定的 5×5 棋盤，不是隨機產生新題目，也不會解鎖下一關。可以重玩同一題，測試不同按法並比較步數。"
+    ]
+  ],
+  "zh-Hans": [
+    [
+      "这款在线开关益智游戏该怎么规划解法？",
+      "点击前先看整个十字范围：角落影响三格、边缘四格、内部五格。可以从上往下，点击亮格正下方的格子，逐行清除上一行的灯。如果最后一行仍亮，需要重新考虑第一行的按法；并非任意开局选择都能直接解完。"
+    ],
+    [
+      "同一格按两次，等于撤销吗？",
+      "同一格按两次会让灯光回到原状，但步数仍增加两步。撤销会同时恢复上一个棋盘状态和步数；比较不同选择时，用撤销就不必多按一组相互抵消的操作。"
+    ],
+    [
+      "为什么「新谜题」还是相同开局？",
+      "当前版本会重置同一个固定的 5×5 棋盘，不会随机生成新题目，也不会解锁下一关。可以重复挑战同一题，测试不同按法并比较步数。"
+    ]
+  ],
+  "ja": [
+    [
+      "オンラインのスイッチパズルはどう考えればよいですか？",
+      "押す前に十字全体を見ましょう。角では3マス、辺では4マス、内側では5マスが変わります。上の列に残った灯りの真下を押し、上から順に消していく方法があります。最下段に灯りが残る場合は、最上段で押す場所を考え直します。どんな最初の選択でも解けるわけではありません。"
+    ],
+    [
+      "同じマスを2回押すと「元に戻す」と同じですか？",
+      "灯りの配置は元に戻りますが、手数は2増えます。「元に戻す」は直前の盤面と手数の両方を復元します。別の手を比べたいときは、打ち消し合う2手を使うより、元に戻して試しましょう。"
+    ],
+    [
+      "新しいパズルを選んでも同じ配置なのはなぜですか？",
+      "この版では固定の5×5盤面をリセットします。ランダムな問題の生成や次のステージの解放ではありません。同じ問題で押す場所を変え、手数を比べて練習できます。"
+    ]
+  ],
+  "ko": [
+    [
+      "온라인 스위치 퍼즐의 풀이를 어떻게 계획하나요?",
+      "누르기 전에 십자 모양 전체를 보세요. 모서리는 세 칸, 가장자리는 네 칸, 안쪽은 다섯 칸이 바뀝니다. 위쪽 줄에 켜진 칸의 바로 아래를 눌러 한 줄씩 내려가며 끌 수 있습니다. 마지막 줄에 불이 남으면 첫 줄에서 누른 위치를 다시 생각해야 합니다. 어떤 첫 선택이든 그대로 해결되는 것은 아닙니다."
+    ],
+    [
+      "같은 칸을 두 번 누르면 되돌리기와 같나요?",
+      "불의 배치는 원래대로 돌아오지만 이동 횟수는 두 번 늘어납니다. 되돌리기는 직전 보드와 이동 횟수를 함께 복원합니다. 다른 선택을 비교할 때는 서로 취소되는 두 번의 누르기 대신 되돌리기를 사용하세요."
+    ],
+    [
+      "새 퍼즐을 골라도 시작 배치가 같은 이유는 무엇인가요?",
+      "현재 버전은 고정된 5×5 퍼즐을 초기화합니다. 무작위 문제를 만들거나 다음 레벨을 여는 기능은 아닙니다. 같은 문제에서 누를 칸을 달리해 보고 이동 횟수를 비교할 수 있습니다."
+    ]
+  ],
+  "es": [
+    [
+      "¿Cómo planifico este puzle de interruptores online?",
+      "Observa toda la cruz: una esquina cambia tres casillas, un borde cuatro y el interior cinco. Puedes avanzar de arriba abajo, pulsando justo debajo de una luz encendida para apagar la fila superior. Si quedan luces en la última fila, revisa las pulsaciones de la primera; no toda elección inicial conduce directamente a la solución."
+    ],
+    [
+      "¿Pulsar dos veces una casilla equivale a deshacer?",
+      "Dos pulsaciones en la misma casilla restauran las luces, pero suman dos movimientos. Deshacer recupera tanto el tablero anterior como su contador. Úsalo para comparar decisiones sin añadir dos pulsaciones que se cancelan."
+    ],
+    [
+      "¿Por qué Nuevo puzle muestra el mismo inicio?",
+      "Esta versión reinicia el mismo puzle fijo de 5×5; no genera uno aleatorio ni desbloquea otro nivel. Repítelo para probar otras casillas y comparar el número de movimientos."
+    ]
+  ],
+  "pt-BR": [
+    [
+      "Como planejar este quebra-cabeça de interruptores online?",
+      "Observe a cruz inteira: um canto altera três casas, uma borda quatro e o interior cinco. Você pode seguir de cima para baixo, pressionando logo abaixo de uma luz acesa para apagar a linha de cima. Se sobrarem luzes na última linha, reveja as escolhas da primeira; nem toda escolha inicial leva diretamente à solução."
+    ],
+    [
+      "Pressionar a mesma casa duas vezes equivale a desfazer?",
+      "Duas pressões na mesma casa restauram as luzes, mas somam dois movimentos. Desfazer restaura tanto o tabuleiro anterior quanto a contagem. Use essa opção para comparar decisões sem acrescentar duas pressões que se anulam."
+    ],
+    [
+      "Por que Novo quebra-cabeça mostra o mesmo início?",
+      "Esta versão reinicia o mesmo tabuleiro fixo de 5×5, sem gerar um problema aleatório nem liberar outra fase. Jogue novamente para testar outras casas e comparar a contagem de movimentos."
+    ]
+  ],
+  "fr": [
+    [
+      "Comment aborder ce puzzle de boutons en ligne ?",
+      "Observez toute la croix : un coin modifie trois cases, un bord quatre et une case intérieure cinq. Vous pouvez descendre ligne par ligne en appuyant juste sous une lumière allumée pour éteindre la ligne du dessus. Si la dernière ligne reste allumée, revoyez les choix de la première : tout choix initial ne mène pas directement à la solution."
+    ],
+    [
+      "Appuyer deux fois sur une case revient-il à annuler ?",
+      "Deux pressions sur la même case rétablissent les lumières, mais ajoutent deux coups. Annuler restaure à la fois le plateau précédent et son compteur. Utilisez cette fonction pour comparer des choix sans ajouter deux pressions qui se compensent."
+    ],
+    [
+      "Pourquoi un nouveau puzzle reprend-il la même disposition ?",
+      "Cette version réinitialise le même puzzle fixe de 5×5. Elle ne génère pas de grille aléatoire et ne débloque pas de niveau suivant. Rejouez pour essayer une autre série de cases et comparer le nombre de coups."
+    ]
+  ],
+  "de": [
+    [
+      "Wie plane ich Züge in diesem Online-Schalterrätsel?",
+      "Betrachte das ganze Kreuz: Eine Ecke verändert drei Felder, ein Rand vier und ein inneres Feld fünf. Du kannst von oben nach unten jeweils direkt unter einem leuchtenden Feld drücken, um die Zeile darüber zu löschen. Bleiben unten Lichter übrig, überdenke die Klicks in der ersten Zeile; nicht jede Anfangswahl führt direkt zur Lösung."
+    ],
+    [
+      "Ist zweimaliges Drücken dasselbe wie Rückgängig?",
+      "Zwei Klicks auf dasselbe Feld stellen das Lichtmuster wieder her, zählen aber als zwei Züge. Rückgängig stellt sowohl das vorige Brett als auch den Zugzähler wieder her. So kannst du Entscheidungen vergleichen, ohne zwei sich aufhebende Klicks hinzuzufügen."
+    ],
+    [
+      "Warum zeigt Neues Rätsel dieselbe Ausgangslage?",
+      "Diese Version setzt dasselbe feste 5×5-Rätsel zurück. Sie erzeugt kein Zufallsbrett und schaltet kein weiteres Level frei. Probiere beim Wiederholen andere Felder aus und vergleiche die Zugzahl."
+    ]
+  ],
+  "it": [
+    [
+      "Come pianificare questo puzzle di interruttori online?",
+      "Osserva tutta la croce: un angolo cambia tre caselle, un bordo quattro e una casella interna cinque. Puoi procedere dall’alto in basso, premendo sotto una luce accesa per spegnere la riga superiore. Se restano luci nell’ultima riga, ripensa alle pressioni nella prima: non ogni scelta iniziale porta direttamente alla soluzione."
+    ],
+    [
+      "Premere due volte una casella equivale ad annullare?",
+      "Due pressioni sulla stessa casella ripristinano le luci, ma aggiungono due mosse. Annulla ripristina sia il tabellone precedente sia il contatore. Usalo per confrontare scelte senza aggiungere due pressioni che si cancellano."
+    ],
+    [
+      "Perché Nuovo puzzle mostra lo stesso inizio?",
+      "Questa versione ripristina lo stesso puzzle fisso di 5×5. Non genera uno schema casuale e non sblocca un livello successivo. Riprova scegliendo altre caselle e confronta il numero di mosse."
+    ]
+  ],
+  "ru": [
+    [
+      "Как планировать ходы в этой онлайн-головоломке с переключателями?",
+      "Смотрите на весь крест: угол меняет три клетки, край — четыре, внутренняя клетка — пять. Можно идти сверху вниз, нажимая прямо под горящей клеткой, чтобы погасить ряд над ней. Если в нижнем ряду остался свет, пересмотрите нажатия в первом: не любой начальный выбор сразу приводит к решению."
+    ],
+    [
+      "Два нажатия на одну клетку — это то же самое, что отмена?",
+      "Рисунок огней восстановится, но счётчик прибавит два хода. Отмена восстанавливает и предыдущее поле, и число ходов. Используйте её для сравнения решений вместо двух взаимно отменяющих нажатий."
+    ],
+    [
+      "Почему новая головоломка начинается с того же поля?",
+      "Эта версия сбрасывает одно и то же фиксированное поле 5×5, а не создаёт случайную задачу и не открывает следующий уровень. Повторяйте её, меняйте набор нажатий и сравнивайте число ходов."
+    ]
+  ],
+  "hi": [
+    [
+      "इस ऑनलाइन स्विच पहेली में चालों की योजना कैसे बनाएँ?",
+      "दबाने से पहले पूरा क्रॉस देखें: कोने पर तीन खाने, किनारे पर चार और अंदर पाँच खाने बदलते हैं। ऊपर से नीचे बढ़ते हुए जलते खाने के ठीक नीचे दबाकर ऊपर की पंक्ति बुझा सकते हैं। आखिरी पंक्ति में लाइट बचें तो पहली पंक्ति के चुनाव बदलकर देखें; हर शुरुआती चुनाव से सीधे हल नहीं मिलता।"
+    ],
+    [
+      "क्या एक खाना दो बार दबाना चाल वापस लेने जैसा है?",
+      "एक ही खाना दो बार दबाने से लाइट का पैटर्न लौट आता है, लेकिन दो चालें जुड़ जाती हैं। चाल वापस लेने पर पिछला बोर्ड और चालों की गिनती दोनों लौटते हैं। अलग चुनावों की तुलना के लिए एक-दूसरे को रद्द करने वाली दो चालों के बजाय वापस लेने का विकल्प इस्तेमाल करें।"
+    ],
+    [
+      "नई पहेली में भी वही शुरुआत क्यों आती है?",
+      "इस संस्करण में वही तय 5×5 पहेली रीसेट होती है। यह यादृच्छिक नया बोर्ड नहीं बनाता और अगला स्तर नहीं खोलता। उसी पहेली में अलग खाने चुनकर खेलें और चालों की गिनती की तुलना करें।"
+    ]
+  ],
+  "ar": [
+    [
+      "كيف أخطط للحركات في لغز المفاتيح عبر المتصفح؟",
+      "انظر إلى شكل الصليب كله: الزاوية تبدّل ثلاث خلايا، والحافة أربعاً، والخلية الداخلية خمساً. يمكنك التقدم من الأعلى إلى الأسفل والضغط تحت الخلية المضيئة مباشرة لإطفاء الصف الذي فوقها. إذا بقي ضوء في الصف الأخير، فأعد النظر في ضغطات الصف الأول؛ لا يؤدي كل اختيار أولي مباشرة إلى الحل."
+    ],
+    [
+      "هل الضغط مرتين على الخلية نفسها يساوي التراجع؟",
+      "يعيد الضغط مرتين نمط الأضواء السابق، لكنه يضيف حركتين إلى العداد. أما التراجع فيعيد اللوحة السابقة وعدد حركاتها معاً. استخدمه لمقارنة الاختيارات بدلاً من إضافة ضغطتين تلغي إحداهما الأخرى."
+    ],
+    [
+      "لماذا يبدأ اللغز الجديد بالترتيب نفسه؟",
+      "يعيد هذا الإصدار ضبط لغز ثابت بحجم 5×5، ولا يولّد لوحة عشوائية أو يفتح مستوى تالياً. أعد المحاولة باختيار خلايا مختلفة وقارن عدد الحركات."
+    ]
+  ]
+};
+  for (const [localeKey, faq] of Object.entries(lightsOutSearchFaq)) {
+    classicGeneralLocaleCopy[localeKey]["lights-out"].faq.push(...faq);
+  }
+
+  // Text Growth 1.2.0: concrete legal-threat and opponent-policy answers.
+  const fourInARowSearchFaq = {
+  "en": [
+    [
+      "How do I spot a playable threat in online four-in-a-row?",
+      "Count the landing height, not just three matching discs. A gap higher in a column cannot be filled until the cells below it are occupied. Before dropping, check whether your disc would support an opponent-winning cell directly above it. A diagonal gap is an immediate threat only when a disc can actually land there."
+    ],
+    [
+      "What makes a double threat useful?",
+      "Aim for two different playable winning cells, preferably in different columns. If the opponent cannot win immediately and one reply cannot block both, one threat remains for your next turn. Two unfinished lines sharing the same gap are only one threat, and an unsupported gap is not yet playable."
+    ],
+    [
+      "What do Easy, Medium and Hard change in this version?",
+      "Easy chooses a random open column. Medium takes an immediate win, otherwise blocks your immediate win, otherwise chooses randomly. Hard uses the same win-and-block checks, then prefers an open column nearest the center. Hard does not search the entire game tree and is not guaranteed unbeatable. Changing difficulty resets the current round."
+    ]
+  ],
+  "zh-Hant": [
+    [
+      "線上四子棋要怎麼判斷真正能落子的威脅？",
+      "不要只數三枚同色棋子，還要看棋子會落在哪一層。高處的缺口必須先填滿下方空格才能落入。落子前也要確認：這一步會不會剛好替對手上方的致勝空格墊底？斜線缺口只有在棋子確實能落到那裡時，才是下一手的直接威脅。"
+    ],
+    [
+      "什麼樣的雙重威脅才有用？",
+      "規劃兩個不同、而且已經能落子的致勝空格，最好分布在不同欄。如果對手不能立刻獲勝，也無法用一手同時封住兩處，你下一手就仍有一個機會。兩條線共用同一缺口，只算一個威脅；下方仍空著的缺口，也還不能直接使用。"
+    ],
+    [
+      "目前版本的簡單、中等與困難差在哪裡？",
+      "簡單會隨機選擇未滿的欄位；中等會先找能立即獲勝的落點，再阻擋你的立即致勝落點，否則隨機選擇；困難採用相同的獲勝與防守檢查，沒有直接機會時優先選靠近中央的空欄。困難不會搜尋整盤所有後續走法，也不保證無法擊敗。切換難度會重設目前這一局。"
+    ]
+  ],
+  "zh-Hans": [
+    [
+      "在线四子棋怎样判断真正能落子的威胁？",
+      "不要只数三枚同色棋子，还要看棋子会落在哪一层。高处的缺口必须先填满下方空格才能落入。落子前还要确认：这一步会不会恰好给对手上方的获胜空格垫底？只有棋子确实能落进去，斜线缺口才是下一步的直接威胁。"
+    ],
+    [
+      "什么样的双重威胁才有效？",
+      "争取两个不同且已能落子的获胜空格，最好位于不同列。如果对手无法立即获胜，也不能用一步同时封住两处，你下一步就仍有机会。两条线共用同一缺口，只算一个威胁；下方仍空着的缺口也还不能直接利用。"
+    ],
+    [
+      "当前版本的简单、中等和困难有什么区别？",
+      "简单随机选择未满的列。中等先寻找立即获胜的位置，再阻挡你的立即获胜位置，否则随机选择。困难采用相同的获胜和防守检查，没有直接机会时优先选择靠近中央的可用列。困难不会搜索整盘所有后续走法，也不保证不可战胜。切换难度会重置当前对局。"
+    ]
+  ],
+  "ja": [
+    [
+      "オンライン四目並べで、今すぐ使える脅威はどう見分けますか？",
+      "同じ色が3つあるかだけでなく、コマが落ちる高さを見ます。上の空きマスには、その下が埋まるまで置けません。自分の一手が、すぐ上にある相手の勝ちマスへの足場にならないかも確認しましょう。斜めの空きマスも、実際にそこへ落とせて初めて次の一手の脅威になります。"
+    ],
+    [
+      "有効な二重の脅威とは何ですか？",
+      "できれば別々の列に、すぐ置けば勝てる異なるマスを2つ作ります。相手に即勝ちがなく、一手で両方を防げなければ、次の手にも勝ち筋が残ります。同じ空きマスを共有する2本の線は脅威1つです。下が空いていて置けないマスは、まだ直接の脅威ではありません。"
+    ],
+    [
+      "この版の「簡単・普通・難しい」はどう違いますか？",
+      "簡単は空きのある列をランダムに選びます。普通は即勝ちを優先し、なければあなたの即勝ちを防ぎ、それもなければランダムに選びます。難しいも同じ勝ちと防御の確認を行い、それ以外では中央に近い空き列を優先します。全ての先の手を読むわけではなく、無敵ではありません。難易度を変えると現在の対局はリセットされます。"
+    ]
+  ],
+  "ko": [
+    [
+      "온라인 사목에서 바로 실행할 수 있는 위협은 어떻게 찾나요?",
+      "같은 색 말 세 개뿐 아니라 말이 떨어질 높이를 확인하세요. 위쪽 빈칸은 그 아래가 채워져야 사용할 수 있습니다. 내 말이 바로 위에 있는 상대의 승리 칸을 받쳐 주지는 않는지도 살펴보세요. 대각선의 빈칸도 실제로 말이 그곳에 떨어질 수 있어야 다음 수의 직접적인 위협입니다."
+    ],
+    [
+      "효과적인 이중 위협은 무엇인가요?",
+      "가능하면 서로 다른 열에, 지금 말을 놓으면 이기는 칸 두 곳을 만드세요. 상대가 즉시 이길 수 없고 한 수로 두 곳을 모두 막을 수 없다면 다음 차례에도 기회가 남습니다. 두 줄이 같은 빈칸을 공유하면 위협은 하나입니다. 아래가 비어 있어 놓을 수 없는 칸은 아직 직접적인 위협이 아닙니다."
+    ],
+    [
+      "이 버전의 쉬움, 보통, 어려움은 무엇이 다른가요?",
+      "쉬움은 빈자리가 있는 열을 무작위로 고릅니다. 보통은 즉시 이기는 수, 내 즉시 승리를 막는 수 순으로 찾고, 둘 다 없으면 무작위로 고릅니다. 어려움도 같은 확인을 하며 그 외에는 중앙에 가까운 빈 열을 우선합니다. 모든 후속 수를 탐색하지 않으므로 무적은 아닙니다. 난이도를 바꾸면 현재 대국이 초기화됩니다."
+    ]
+  ],
+  "es": [
+    [
+      "¿Cómo reconozco una amenaza jugable en cuatro en raya online?",
+      "Mira la altura de caída, no solo tres fichas del mismo color. Un hueco elevado no se puede ocupar hasta llenar las casillas inferiores. Antes de jugar, comprueba si tu ficha dejará accesible una casilla ganadora del rival justo encima. Un hueco diagonal solo es una amenaza inmediata si una ficha puede caer allí."
+    ],
+    [
+      "¿Qué hace efectiva una amenaza doble?",
+      "Busca dos casillas ganadoras distintas y ya accesibles, preferiblemente en columnas diferentes. Si el rival no puede ganar de inmediato ni bloquear ambas con una jugada, queda una oportunidad para tu siguiente turno. Dos líneas que comparten el mismo hueco son una sola amenaza; un hueco sin apoyo debajo aún no es jugable."
+    ],
+    [
+      "¿Qué cambia entre Fácil, Medio y Difícil en esta versión?",
+      "Fácil elige al azar una columna disponible. Medio busca una victoria inmediata, después bloquea tu victoria inmediata y, si no hay ninguna, elige al azar. Difícil hace las mismas comprobaciones y luego prefiere una columna disponible cercana al centro. No explora todo el árbol de la partida ni es invencible. Cambiar la dificultad reinicia la ronda actual."
+    ]
+  ],
+  "pt-BR": [
+    [
+      "Como reconhecer uma ameaça jogável em quatro em linha online?",
+      "Observe a altura da queda, não apenas três peças da mesma cor. Um espaço alto só fica acessível quando as casas abaixo estão ocupadas. Antes de jogar, veja se sua peça dará apoio a uma casa vencedora do adversário logo acima. Um espaço na diagonal só é uma ameaça imediata quando a peça pode realmente cair nele."
+    ],
+    [
+      "O que torna uma ameaça dupla eficaz?",
+      "Procure duas casas vencedoras diferentes e já acessíveis, de preferência em colunas distintas. Se o adversário não puder vencer imediatamente nem bloquear as duas com uma jogada, sobra uma chance para seu próximo turno. Duas linhas com o mesmo espaço vazio são uma só ameaça; um espaço sem apoio abaixo ainda não pode ser usado."
+    ],
+    [
+      "Qual é a diferença entre Fácil, Médio e Difícil nesta versão?",
+      "Fácil escolhe uma coluna disponível ao acaso. Médio procura uma vitória imediata, depois bloqueia sua vitória imediata e, sem essas opções, joga ao acaso. Difícil faz as mesmas verificações e depois prefere uma coluna disponível perto do centro. Não analisa toda a árvore de jogadas e não é invencível. Mudar a dificuldade reinicia a rodada atual."
+    ]
+  ],
+  "fr": [
+    [
+      "Comment repérer une menace jouable dans ce jeu de quatre en ligne ?",
+      "Regardez la hauteur de chute, pas seulement trois pions identiques. Une case en hauteur reste inaccessible tant que celles du dessous sont vides. Avant de jouer, vérifiez si votre pion rendra accessible une case gagnante adverse juste au-dessus. Un trou dans une diagonale ne menace de gagner au prochain coup que si un pion peut y tomber."
+    ],
+    [
+      "Quand une double menace est-elle efficace ?",
+      "Cherchez deux cases gagnantes distinctes et déjà accessibles, de préférence dans deux colonnes. Si le rival ne peut ni gagner immédiatement ni bloquer les deux en un coup, une occasion reste pour votre prochain tour. Deux lignes partageant le même trou ne forment qu’une menace. Une case sans appui dessous n’est pas encore jouable."
+    ],
+    [
+      "Que changent Facile, Moyen et Difficile dans cette version ?",
+      "Facile choisit une colonne disponible au hasard. Moyen cherche un gain immédiat, sinon bloque le vôtre, sinon joue au hasard. Difficile effectue les mêmes vérifications puis privilégie une colonne disponible proche du centre. Il n’explore pas tout l’arbre de jeu et n’est pas invincible. Changer la difficulté réinitialise la manche en cours."
+    ]
+  ],
+  "de": [
+    [
+      "Wie erkenne ich in diesem Online-Vier-gewinnt eine spielbare Drohung?",
+      "Achte auf die Fallhöhe, nicht nur auf drei gleichfarbige Steine. Eine höher liegende Lücke ist erst erreichbar, wenn die Felder darunter besetzt sind. Prüfe vor dem Zug, ob dein Stein ein gegnerisches Gewinnfeld direkt darüber spielbar macht. Auch eine diagonale Lücke droht erst sofort zu gewinnen, wenn ein Stein dort landen kann."
+    ],
+    [
+      "Wann ist eine Doppeldrohung wirksam?",
+      "Plane zwei verschiedene, bereits erreichbare Gewinnfelder, möglichst in unterschiedlichen Spalten. Kann der Gegner weder sofort gewinnen noch beide mit einem Zug blockieren, bleibt dir eine Chance für den nächsten Zug. Zwei Linien mit derselben Lücke bilden nur eine Drohung. Eine Lücke ohne Unterbau ist noch nicht spielbar."
+    ],
+    [
+      "Was ändern Leicht, Mittel und Schwer in dieser Version?",
+      "Leicht wählt zufällig eine freie Spalte. Mittel nimmt einen sofortigen Gewinn, blockiert sonst deinen sofortigen Gewinn und wählt andernfalls zufällig. Schwer prüft dasselbe und bevorzugt danach eine freie Spalte nahe der Mitte. Es durchsucht nicht den ganzen Spielbaum und ist nicht unbesiegbar. Ein Wechsel der Schwierigkeit setzt die laufende Runde zurück."
+    ]
+  ],
+  "it": [
+    [
+      "Come riconosco una minaccia giocabile in questo quattro in linea online?",
+      "Guarda l’altezza di caduta, non solo tre pedine dello stesso colore. Uno spazio in alto è accessibile soltanto quando le caselle inferiori sono occupate. Prima di giocare, controlla se la tua pedina sosterrà una casella vincente avversaria subito sopra. Un vuoto diagonale è una minaccia immediata solo se una pedina può davvero cadervi."
+    ],
+    [
+      "Quando è efficace una doppia minaccia?",
+      "Cerca due caselle vincenti diverse e già accessibili, preferibilmente in colonne distinte. Se l’avversario non può vincere subito né bloccarle entrambe con una mossa, rimane una possibilità al tuo prossimo turno. Due linee che condividono lo stesso vuoto sono una sola minaccia; una casella senza sostegno sotto non è ancora giocabile."
+    ],
+    [
+      "Che cosa cambia tra Facile, Medio e Difficile in questa versione?",
+      "Facile sceglie a caso una colonna disponibile. Medio cerca una vittoria immediata, poi blocca la tua vittoria immediata e altrimenti sceglie a caso. Difficile fa gli stessi controlli e poi preferisce una colonna disponibile vicina al centro. Non esplora tutto l’albero delle mosse e non è imbattibile. Cambiare difficoltà azzera la partita in corso."
+    ]
+  ],
+  "ru": [
+    [
+      "Как распознать доступную угрозу в онлайн-игре «четыре в ряд»?",
+      "Смотрите не только на три одинаковые фишки, но и на высоту падения. Верхнюю пустую клетку нельзя занять, пока клетки под ней не заполнены. Перед ходом проверьте, не откроет ли ваша фишка сопернику выигрышную клетку прямо над ней. Пробел в диагонали становится немедленной угрозой лишь тогда, когда фишка действительно может туда упасть."
+    ],
+    [
+      "Когда двойная угроза эффективна?",
+      "Создавайте две разные, уже доступные выигрышные клетки, желательно в разных столбцах. Если соперник не может выиграть сразу или закрыть обе одним ходом, на следующий ход остаётся шанс. Две линии с одним общим пробелом — это одна угроза. Клетка без опоры снизу пока недоступна."
+    ],
+    [
+      "Чем отличаются уровни сложности в этой версии?",
+      "Лёгкий выбирает случайный свободный столбец. Средний сначала ищет немедленную победу, затем блокирует вашу немедленную победу, иначе ходит случайно. Сложный делает те же проверки, а затем предпочитает доступный столбец ближе к центру. Он не перебирает всё дерево игры и не является непобедимым. Смена сложности сбрасывает текущий раунд."
+    ]
+  ],
+  "hi": [
+    [
+      "ऑनलाइन चार-की-पंक्ति खेल में असली खतरा कैसे पहचानें?",
+      "केवल एक रंग की तीन गोटियाँ न गिनें; गोटी कहाँ गिरेगी, यह भी देखें। ऊपर का खाली खाना तभी उपलब्ध होगा जब उसके नीचे के खाने भर जाएँ। चाल से पहले जाँचें कि आपकी गोटी ठीक ऊपर वाले खाने में विरोधी की जीत का रास्ता तो नहीं खोल रही। तिरछी पंक्ति का खाली खाना तभी तुरंत खतरा है जब गोटी वहाँ पहुँच सके।"
+    ],
+    [
+      "दोहरा खतरा कब असरदार होता है?",
+      "दो अलग जीतने वाले खाने बनाएँ जिनमें अभी गोटी गिर सकती हो, बेहतर है कि वे अलग कॉलम में हों। यदि विरोधी तुरंत जीत नहीं सकता और एक चाल में दोनों नहीं रोक सकता, तो अगली बारी के लिए एक मौका बचता है। एक ही खाली खाने पर निर्भर दो पंक्तियाँ एक ही खतरा हैं। नीचे सहारा न होने वाला खाना अभी उपलब्ध नहीं है।"
+    ],
+    [
+      "इस संस्करण में आसान, मध्यम और कठिन में क्या अंतर है?",
+      "आसान स्तर खाली जगह वाले कॉलम को यादृच्छिक ढंग से चुनता है। मध्यम पहले तुरंत जीत खोजता है, फिर आपकी तुरंत जीत रोकता है, नहीं तो यादृच्छिक चाल चलता है। कठिन भी यही जाँच करता है और फिर केंद्र के पास उपलब्ध कॉलम चुनता है। वह पूरी खेल-वृक्ष खोज नहीं करता और अजेय नहीं है। कठिनाई बदलने पर मौजूदा दौर रीसेट होता है।"
+    ]
+  ]
+};
+  for (const [localeKey, faq] of Object.entries(fourInARowSearchFaq)) {
+    classicGeneralLocaleCopy[localeKey]["four-in-a-row"].faq.push(...faq);
+  }
+
   for (const [localeKey, copies] of Object.entries(classicGeneralLocaleCopy)) {
     localizedGames[localeKey] ||= {};
     for (const [gameId, copy] of Object.entries(copies)) localizedGames[localeKey][gameId] = { ...(localizedGames[localeKey][gameId] || {}), ...copy };
@@ -10045,7 +10409,15 @@
   }
 
   function render() {
-    if (document.body?.hasAttribute("data-wp-game-owned-guide")) return;
+    if (document.body?.hasAttribute("data-wp-game-owned-guide")) {
+      // Retain Signal's existing Guide shell registration during native screen
+      // changes without rehydrating obsolete text or rewriting its metadata.
+      if (currentGameId() === "animal-signal-scout") {
+        document.documentElement.classList.add("has-game-page-info");
+        document.body.classList.add("has-game-page-info");
+      }
+      return;
+    }
     const activeLocale = locale();
     if (activeLocale !== "en" && !window.WeightPlayGameRuntimeLocales?.[activeLocale] && !runtimeGuideResourceFailures.has(activeLocale)) {
       ensureRuntimeGuideResource(activeLocale).then(render);
@@ -10109,19 +10481,6 @@
       // General Guide is a framed reading surface, so keep its larger radius
       // local to the generated Guide without changing Battle controls.
       section.style.setProperty("--wp-ui-radius", "16px", "important");
-    }
-    if (id === "animal-balance-grove") {
-      // Interface 7's compact global radius flattened this generated Guide;
-      // keep the public reading frame and its structured sections visibly
-      // framed without changing Main, Stage, or Battle controls.
-      section.style.setProperty("--wp-ui-radius", "16px", "important");
-    }
-    if (id === "animal-twin-switchyard") {
-      // Twin Switchyard keeps the shared generated Guide, but Interface 7's
-      // compact block radius would otherwise flatten its public reading frame
-      // and every structured section to 3px. Scope the framed radius to this
-      // Guide only; controls and play surfaces retain the shared contract.
-      section.style.setProperty("border-radius", "16px", "important");
     }
     if (id === "animal-nest-weigh") {
       // Nest Weigh retains the shared light Guide surface. Scope readable
@@ -10293,11 +10652,6 @@
         </div>` : ""}
       </div>
     `;
-    if (id === "animal-twin-switchyard") {
-      section.querySelectorAll(".game-info-section").forEach((node) => {
-        node.style.setProperty("border-radius", "16px", "important");
-      });
-    }
     main.insertAdjacentElement("afterend", section);
     repairRelatedImages(section);
 
@@ -12147,7 +12501,76 @@
     localizedGames[locale]["space-rocks"] = { ...games["space-rocks"], ...guide };
   }
 
+
+  // Optional editorial comparison in the existing Guide. No metadata or game-state writes.
+  function marketComparisonHtml(gameId, localeCode) {
+    const reference = gameplayProfiles[gameId]?.marketComparison;
+    const copy = reference?.locales?.[localeCode];
+    if (!copy) return "";
+    if (!reference.name || !/^https:\/\//.test(reference.source || "") ||
+        ![copy.heading, copy.body, copy.disclaimer, copy.sourceLabel].every(value => typeof value === "string" && value.trim())) {
+      throw new Error(`Incomplete market comparison: ${gameId}/${localeCode}`);
+    }
+    return `<article class="game-info-section" data-wp-market-comparison="1.3.0" data-comparison-locale="${escapeHtml(localeCode)}" data-runtime-localize="off"><h3>${escapeHtml(copy.heading)}</h3><div class="game-info-tags"><span><bdi>${escapeHtml(reference.name)}</bdi></span></div><p>${escapeHtml(copy.body)}</p><p>${escapeHtml(copy.disclaimer)}</p><p><a href="${escapeHtml(reference.source)}" rel="noopener noreferrer">${escapeHtml(copy.sourceLabel)}</a></p></article>`;
+  }
+
+  function syncMarketComparison() {
+    const id = currentGameId();
+    if (!gameplayProfiles[id]?.marketComparison || !document.body) return;
+    const localeCode = document.documentElement.lang || locale();
+    const html = marketComparisonHtml(id, localeCode);
+    if (!html) return;
+    // Prefer the canonical full Guide; never duplicate content in ancestor/native sections.
+    const candidates = [...document.querySelectorAll('section.game-page-info, section[data-wp-game-guide]')]
+      .filter(node => !node.closest('dialog, [role="dialog"]'));
+    const guide = candidates.find(node => node.matches('section.game-page-info')) || candidates[0];
+    if (!guide) return;
+    const template = document.createElement("template");
+    template.innerHTML = html;
+    const article = template.content.firstElementChild;
+    const existing = [...guide.querySelectorAll('[data-wp-market-comparison]')];
+    if (existing.length === 1 && existing[0].isEqualNode(article)) return;
+    existing.forEach(node => node.remove());
+    guide.append(article);
+    marketComparisonObserver?.takeRecords();
+  }
+
+  let marketComparisonObserver = null;
+  function installMarketComparisonSync() {
+    if (marketComparisonObserver || !gameplayProfiles[currentGameId()]?.marketComparison ||
+        !document.body || typeof MutationObserver === "undefined") return;
+    let frame = 0;
+    const schedule = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => { frame = 0; syncMarketComparison(); });
+    };
+    const guideSelector = 'section.game-page-info, section[data-wp-game-guide]';
+    const structuralNode = node => node?.nodeType === 1 &&
+      (node.matches(guideSelector) || node.matches('[data-wp-market-comparison]') || node.querySelector(guideSelector));
+    marketComparisonObserver = new MutationObserver(records => {
+      // Only Guide replacement/removal or locale changes. Do not fight a legacy text converter
+      // or schedule work from every HUD/text update; that can starve navigation in a microtask loop.
+      if (records.some(record => record.type === "attributes" ||
+          [...record.addedNodes, ...record.removedNodes].some(structuralNode))) schedule();
+    });
+    const observe = () => {
+      marketComparisonObserver.observe(document.body, { childList: true, subtree: true });
+      marketComparisonObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+    };
+    observe();
+    window.addEventListener("wonder:locale-change", schedule);
+    window.addEventListener("pagehide", () => {
+      marketComparisonObserver.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+    });
+    window.addEventListener("pageshow", () => { observe(); schedule(); });
+    syncMarketComparison();
+  }
+
   window.WeightPlayGameInfo = {
+    marketComparisonHtml,
+    syncMarketComparison,
     render,
     get(gameId) {
       const game = games[gameId];
@@ -12180,7 +12603,19 @@
   window.addEventListener("wonder:locale-change", render);
   document.addEventListener("change", (event) => {
     if (event.target?.id === "localeSelect") {
-      window.WonderI18n?.setLocale?.(event.target.value);
+      // Putt normalizes its legacy option value in its native target handler.
+      // Read that canonical language before the shared compatibility observer restores the old one.
+      const selectedLocale = currentGameId() === "animal-putt-trails" ? document.documentElement.lang : event.target.value;
+      const api = window.WonderI18n;
+      if (["animal-echo-orchard", "animal-sketchwheel-rally", "animal-signal-scout", "animal-trap-trail"].includes(currentGameId()) && api?.supportedLocales?.includes(selectedLocale)) {
+        // Commit the selected language before old-locale text observers can race navigation.
+        const currentPath = location.pathname + location.search + location.hash;
+        const nextPath = api.localizedPath(selectedLocale, currentPath);
+        api.setLocale(selectedLocale, { navigate: false });
+        if (window.WONDER_SITE?.localization?.useLocaleRoutes !== false && /^https?:$/.test(location.protocol) && nextPath !== currentPath) location.assign(nextPath);
+        return;
+      }
+      api?.setLocale?.(selectedLocale);
     }
   });
 
@@ -21280,6 +21715,854 @@
     };
     localizedGames[localeCode] ||= {};
     localizedGames[localeCode]["animal-footprint-folio"] = localized;
+  }
+
+  // Text Growth 1.3.0: branch-ready comparison copy; not publication or rights approval.
+  gameplayProfiles["animal-cratebound"] ||= {};
+  gameplayProfiles["animal-cratebound"].marketComparison = {
+  "name": "Sokoban",
+  "source": "https://www.sokoban.jp/rule.html",
+  "locales": {
+    "en": {
+      "heading": "Similar gameplay references",
+      "sourceLabel": "Official reference",
+      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+      "body": "Looking for box-pushing puzzles like Sokoban? Both games ask you to plan access routes and move crates onto goals without blocking your own path. The referenced Sokoban rules allow pushing one crate, but not pulling it. Cratebound adds ice rails, conveyors, linked crates and limited magnetic pulls, so a route that works with ordinary pushing may need a different order here."
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考",
+      "sourceLabel": "參考作品官方說明",
+      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+      "body": "在找像 Sokoban（倉庫番）的推箱解謎嗎？兩者都要先規劃站位與通路，把箱子送到目標，避免堵住自己的路。參考作品的基本規則只能推動一個箱子，不能拉箱。方舟搬運隊另外加入冰軌、輸送帶、連結貨箱與有限磁力拉動，因此不能直接照搬一般推箱的移動順序。"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考",
+      "sourceLabel": "参考作品官方说明",
+      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+      "body": "在找像 Sokoban的推箱解谜吗？两者都要先规划站位与通路，把箱子送到目标，避免堵住自己的路。参考作品的基本规则只能推动一个箱子，不能拉箱。本站另外加入冰轨、传送带、连结货箱与有限磁力拉动，因此不能直接照搬普通推箱的移动顺序。"
+    },
+    "ja": {
+      "heading": "似た遊び方の作品",
+      "sourceLabel": "参照作品の公式情報",
+      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+      "body": "Sokoban（倉庫番）のような箱押しパズルを探していますか。どちらも自分の通り道を塞がず、箱を目標へ運ぶために位置と順序を考えます。参照作品の基本ルールは箱を一つずつ押すもので、引くことはできません。本作には氷のレール、ベルトコンベア、連結した箱、回数制限のある磁力での引き寄せがあり、別の手順が必要になります。"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 방식의 게임",
+      "sourceLabel": "참고 게임의 공식 정보",
+      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+      "body": "Sokoban처럼 상자를 미는 퍼즐을 찾고 있나요? 두 게임 모두 이동 통로를 막지 않으면서 상자를 목표 지점으로 옮길 순서를 계획합니다. 참고 게임의 기본 규칙에서는 상자 하나를 밀 수 있지만 당길 수는 없습니다. 이 게임에는 얼음 레일, 컨베이어, 연결된 상자와 횟수가 제한된 자석 당기기가 있어 이동 순서를 다르게 생각해야 합니다."
+    },
+    "es": {
+      "heading": "Juegos con mecánicas similares",
+      "sourceLabel": "Información oficial del juego citado",
+      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+      "body": "¿Buscas puzles de empujar cajas como Sokoban? Ambos exigen planear por dónde pasar y llevar las cajas a sus objetivos sin cerrarte el camino. Las reglas básicas del juego citado permiten empujar una caja, pero no tirar de ella. Aquí hay raíles de hielo, cintas transportadoras, cajas enlazadas y tirones magnéticos limitados, por lo que cambia el orden de los movimientos."
+    },
+    "pt-BR": {
+      "heading": "Jogos com mecânicas semelhantes",
+      "sourceLabel": "Informações oficiais do jogo citado",
+      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+      "body": "Procura quebra-cabeças de empurrar caixas como Sokoban? Nos dois jogos, você planeja caminhos para levar as caixas aos alvos sem bloquear a própria passagem. As regras básicas do jogo citado permitem empurrar uma caixa, mas não puxá-la. Aqui há trilhos de gelo, esteiras, caixas conectadas e puxões magnéticos limitados, que exigem outra ordem de movimentos."
+    },
+    "fr": {
+      "heading": "Jeux aux mécaniques proches",
+      "sourceLabel": "Informations officielles du jeu cité",
+      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+      "body": "Vous cherchez des puzzles de caisses comme Sokoban ? Dans les deux jeux, il faut prévoir ses déplacements pour amener les caisses aux objectifs sans bloquer son passage. Les règles de base du jeu cité permettent de pousser une caisse, mais pas de la tirer. Ici, rails de glace, tapis roulants, caisses liées et attractions magnétiques limitées modifient l’ordre des déplacements."
+    },
+    "de": {
+      "heading": "Spiele mit ähnlicher Spielweise",
+      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+      "body": "Du suchst Kistenschieberätsel wie Sokoban? In beiden Spielen planst du Zugangswege und schiebst Kisten auf Ziele, ohne deinen eigenen Weg zu versperren. Die Grundregeln des Vergleichsspiels erlauben das Schieben einer Kiste, aber kein Ziehen. Hier kommen Eisschienen, Förderbänder, verbundene Kisten und begrenzte magnetische Züge hinzu; deshalb kann eine andere Zugfolge nötig sein."
+    },
+    "it": {
+      "heading": "Giochi con meccaniche simili",
+      "sourceLabel": "Informazioni ufficiali sul gioco citato",
+      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+      "body": "Cerchi rompicapi con casse da spingere come Sokoban? Entrambi richiedono di pianificare i passaggi e portare le casse sui bersagli senza bloccarsi la strada. Le regole base del gioco citato permettono di spingere una cassa, ma non di tirarla. Qui binari di ghiaccio, nastri trasportatori, casse collegate e attrazioni magnetiche limitate cambiano l’ordine delle mosse."
+    },
+    "ru": {
+      "heading": "Игры с похожей механикой",
+      "sourceLabel": "Официальная информация об упомянутой игре",
+      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+      "body": "Ищете головоломки с ящиками, похожие на Sokoban? В обеих играх нужно продумать проходы и доставить ящики к целям, не перекрыв себе путь. По базовым правилам упомянутой игры можно толкать один ящик, но нельзя тянуть его. Здесь есть ледяные рельсы, конвейеры, связанные ящики и ограниченное магнитное притягивание, поэтому порядок ходов может отличаться."
+    },
+    "hi": {
+      "heading": "मिलते-जुलते खेलों की तुलना",
+      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+      "body": "Sokoban जैसे बक्से धकेलने वाले खेल खोज रहे हैं? दोनों में रास्ता खुला रखते हुए बक्सों को लक्ष्य तक पहुँचाने की योजना बनानी होती है। संदर्भित खेल के मूल नियम एक बक्सा धकेलने देते हैं, खींचने नहीं। यहाँ बर्फीली पटरियाँ, कन्वेयर, जुड़े बक्से और सीमित चुंबकीय खिंचाव भी हैं, इसलिए चालों का क्रम अलग हो सकता है।"
+    },
+    "ar": {
+      "heading": "ألعاب ذات أسلوب لعب مشابه",
+      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+      "body": "هل تبحث عن ألغاز دفع الصناديق المشابهة لـ Sokoban؟ في اللعبتين تخطط للممرات لنقل الصناديق إلى أهدافها دون إغلاق طريقك. تسمح القواعد الأساسية للعبة المرجعية بدفع صندوق واحد، لا بسحبه. هنا توجد مسارات جليدية وسيور وصناديق مرتبطة وسحب مغناطيسي محدود، ولذلك قد تحتاج إلى ترتيب مختلف للحركات."
+    }
+  }
+};
+  gameplayProfiles["lights-out"] ||= {};
+  gameplayProfiles["lights-out"].marketComparison = {
+  "name": "GNOME Lights Off",
+  "source": "https://help.gnome.org/lightsoff/index.html",
+  "locales": {
+    "en": {
+      "heading": "Similar gameplay references",
+      "sourceLabel": "Official reference",
+      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+      "body": "If you enjoy the light-switching puzzle in GNOME Lights Off, the same local cause-and-effect rule is useful here: a press changes its tile and the neighbors above, below, left and right, not the diagonals. Both aim to turn every light off on a 5 × 5 board. This browser game offers Hint and Undo; New Puzzle resets its fixed starting board rather than promising a fresh random challenge."
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考",
+      "sourceLabel": "參考作品官方說明",
+      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+      "body": "喜歡 GNOME Lights Off 的熄燈解謎，可以用相同的局部影響思路理解本站：按一格會切換該格及上下左右，不包含斜角，目標同樣是熄滅 5 × 5 棋盤的全部燈。本站版本提供提示與還原；「新謎題」會重設固定的起始棋盤，不代表會產生新的隨機題目。"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考",
+      "sourceLabel": "参考作品官方说明",
+      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+      "body": "喜欢 GNOME Lights Off 的熄灯解谜，可以用相同的局部影响思路理解本站：按一格会切换该格及上下左右，不包含斜角，目标同样是熄灭 5 × 5 棋盘的全部灯。本站版本提供提示与还原；“新谜题”会重设固定的起始棋盘，不代表会生成新的随机题目。"
+    },
+    "ja": {
+      "heading": "似た遊び方の作品",
+      "sourceLabel": "参照作品の公式情報",
+      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+      "body": "GNOME Lights Off の消灯パズルが好きなら、同じ局所的な影響を考えられます。押したマスと上下左右が切り替わり、斜めのマスは変わりません。どちらも 5 × 5 の全消灯が目標です。本作はブラウザーでヒントと取り消しを使えます。「新しいパズル」は固定の初期盤面に戻す操作で、ランダムな新問題を保証するものではありません。"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 방식의 게임",
+      "sourceLabel": "참고 게임의 공식 정보",
+      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+      "body": "GNOME Lights Off의 불 끄기 퍼즐을 좋아한다면 같은 국소적 변화 규칙을 활용할 수 있습니다. 누른 칸과 상하좌우만 바뀌며 대각선은 바뀌지 않습니다. 두 게임 모두 5 × 5 보드의 불을 전부 끄는 것이 목표입니다. 이 브라우저 게임은 힌트와 되돌리기를 제공합니다. 새 퍼즐은 고정된 시작 보드를 초기화하며 새 무작위 문제를 뜻하지 않습니다."
+    },
+    "es": {
+      "heading": "Juegos con mecánicas similares",
+      "sourceLabel": "Información oficial del juego citado",
+      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+      "body": "Si te gustan los puzles de luces de GNOME Lights Off, aquí sirve la misma lógica local: cada pulsación cambia su casilla y las vecinas verticales y horizontales, no las diagonales. Ambos buscan apagar un tablero de 5 × 5. Este juego de navegador ofrece pista y deshacer; Nuevo puzle restaura su tablero inicial fijo, no promete un nuevo reto aleatorio."
+    },
+    "pt-BR": {
+      "heading": "Jogos com mecânicas semelhantes",
+      "sourceLabel": "Informações oficiais do jogo citado",
+      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+      "body": "Quem gosta do desafio de apagar luzes de GNOME Lights Off pode usar a mesma lógica local aqui: cada toque muda a casa e as vizinhas acima, abaixo e aos lados, sem diagonais. O objetivo dos dois é apagar um tabuleiro de 5 × 5. Este jogo de navegador oferece dica e desfazer; Novo quebra-cabeça restaura o tabuleiro inicial fixo, não um desafio aleatório novo."
+    },
+    "fr": {
+      "heading": "Jeux aux mécaniques proches",
+      "sourceLabel": "Informations officielles du jeu cité",
+      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+      "body": "Si vous aimez les puzzles de lumières de GNOME Lights Off, le même raisonnement local s’applique : un clic inverse sa case et les voisines horizontales et verticales, pas les diagonales. Les deux jeux visent à éteindre une grille de 5 × 5. Cette version pour navigateur propose indice et annulation ; Nouveau puzzle rétablit sa grille initiale fixe, sans promettre un nouveau défi aléatoire."
+    },
+    "de": {
+      "heading": "Spiele mit ähnlicher Spielweise",
+      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+      "body": "Wenn dir das Lichträtsel von GNOME Lights Off gefällt, hilft hier dieselbe lokale Regel: Ein Druck schaltet die eigene Zelle und ihre waagerechten und senkrechten Nachbarn um, nicht die diagonalen. Beide Spiele verlangen eine dunkle 5 × 5-Tafel. Dieses Browserspiel bietet Hinweis und Rückgängig; Neues Rätsel setzt seine feste Ausgangstafel zurück, statt ein neues Zufallsrätsel zu versprechen."
+    },
+    "it": {
+      "heading": "Giochi con meccaniche simili",
+      "sourceLabel": "Informazioni ufficiali sul gioco citato",
+      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+      "body": "Se ti piacciono i rompicapi luminosi di GNOME Lights Off, qui vale lo stesso ragionamento locale: una pressione cambia la casella e le vicine orizzontali e verticali, non le diagonali. Entrambi chiedono di spegnere una griglia 5 × 5. Questo gioco per browser offre suggerimento e annullamento; Nuovo rompicapo ripristina il suo schema iniziale fisso, non una nuova sfida casuale."
+    },
+    "ru": {
+      "heading": "Игры с похожей механикой",
+      "sourceLabel": "Официальная информация об упомянутой игре",
+      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+      "body": "Если вам нравятся головоломки GNOME Lights Off, здесь пригодится тот же принцип: нажатие переключает выбранную клетку и соседние по вертикали и горизонтали, но не по диагонали. В обеих играх нужно погасить поле 5 × 5. Здесь доступны подсказка и отмена. Новая головоломка возвращает фиксированное исходное поле, а не обещает новую случайную задачу."
+    },
+    "hi": {
+      "heading": "मिलते-जुलते खेलों की तुलना",
+      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+      "body": "GNOME Lights Off में बत्तियाँ बुझाने की पहेली पसंद है तो यहाँ भी वही स्थानीय नियम काम आता है: दबाया गया खाना और उसके ऊपर, नीचे, बाएँ और दाएँ के खाने बदलते हैं, तिरछे वाले नहीं। दोनों का लक्ष्य 5 × 5 बोर्ड की सभी बत्तियाँ बुझाना है। यहाँ संकेत और चाल वापस लेने की सुविधा है। नया पहेली बटन निश्चित शुरुआती बोर्ड लौटाता है, नया यादृच्छिक बोर्ड नहीं।"
+    },
+    "ar": {
+      "heading": "ألعاب ذات أسلوب لعب مشابه",
+      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+      "body": "إن كنت تحب ألغاز إطفاء الأنوار في GNOME Lights Off، فستفيدك القاعدة المحلية نفسها: تتبدل الخانة المضغوطة وجاراتها الأفقية والعمودية، لا القطرية. تهدف اللعبتان إلى إطفاء لوحة 5 × 5 بالكامل. توفر لعبة المتصفح هذه تلميحًا وتراجعًا؛ ويعيد خيار اللغز الجديد لوحة البداية الثابتة، ولا يعد بلغز عشوائي جديد."
+    }
+  }
+};
+  gameplayProfiles["four-in-a-row"] ||= {};
+  gameplayProfiles["four-in-a-row"].marketComparison = {
+  "name": "Connect 4",
+  "source": "https://instructions.hasbro.com/en-us/instruction/Connect-4-Game",
+  "locales": {
+    "en": {
+      "heading": "Similar gameplay references",
+      "sourceLabel": "Official reference",
+      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+      "body": "Looking for a game with the drop-and-connect decisions of Connect 4? Both ask you to form a line of four while blocking the opponent, so the height where a disc can actually land matters. Hasbro’s referenced game is a physical two-player board game. This WeightPlay game is a browser match against a computer with three difficulty choices, Hint and Undo, rather than a local two-person board or online multiplayer room."
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考",
+      "sourceLabel": "參考作品官方說明",
+      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+      "body": "在找像 Connect 4 的落子連線遊戲嗎？兩者都要把四枚棋子連成一線，同時阻擋對手，因此要判斷棋子真正能落到的高度。Hasbro 的參考作品是實體雙人桌遊；本站四子棋則是在瀏覽器與電腦對戰，提供三種難度、提示與還原，不是同機雙人棋盤或線上多人房間。"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考",
+      "sourceLabel": "参考作品官方说明",
+      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+      "body": "在找像 Connect 4 的落子连线游戏吗？两者都要把四枚棋子连成一线，同时阻挡对手，因此要判断棋子真正能落到的高度。Hasbro 的参考作品是实体双人桌游；本站四子棋则是在浏览器与电脑对战，提供三种难度、提示与还原，不是同机双人棋盘或在线多人房间。"
+    },
+    "ja": {
+      "heading": "似た遊び方の作品",
+      "sourceLabel": "参照作品の公式情報",
+      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+      "body": "Connect 4 のようにコマを落として並べるゲームを探していますか。どちらも相手を防ぎながら四つを一列に並べるため、実際にコマが落ちる高さが重要です。Hasbro の参照作品は二人用の実物のボードゲームです。本作はブラウザーでコンピューターと対戦し、三段階の難度、ヒント、取り消しを使えます。同じ端末での二人対戦やオンライン対戦ルームではありません。"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 방식의 게임",
+      "sourceLabel": "참고 게임의 공식 정보",
+      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+      "body": "Connect 4처럼 말을 떨어뜨려 연결하는 게임을 찾고 있나요? 두 게임 모두 상대를 막으면서 네 개를 한 줄로 만들어야 하므로 말이 실제로 놓일 높이가 중요합니다. Hasbro의 참고 작품은 실물 2인용 보드게임입니다. 이 게임은 브라우저에서 컴퓨터와 대전하며 세 난도, 힌트, 되돌리기를 제공합니다. 같은 기기에서 두 사람이 겨루거나 온라인 방에 들어가는 방식은 아닙니다."
+    },
+    "es": {
+      "heading": "Juegos con mecánicas similares",
+      "sourceLabel": "Información oficial del juego citado",
+      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+      "body": "¿Buscas decisiones de caída y conexión como en Connect 4? En ambos debes alinear cuatro fichas y bloquear al rival, teniendo en cuenta dónde puede caer cada ficha. El producto citado de Hasbro es un juego de mesa físico para dos personas. Aquí juegas en el navegador contra el ordenador, con tres dificultades, pista y deshacer; no es una partida local para dos ni una sala multijugador online."
+    },
+    "pt-BR": {
+      "heading": "Jogos com mecânicas semelhantes",
+      "sourceLabel": "Informações oficiais do jogo citado",
+      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+      "body": "Procura um jogo de soltar e alinhar peças como Connect 4? Nos dois, é preciso formar uma linha de quatro e bloquear o adversário, considerando onde cada peça realmente vai cair. O produto citado da Hasbro é um jogo de tabuleiro físico para duas pessoas. Aqui você enfrenta o computador no navegador, com três dificuldades, dica e desfazer; não há partida local para dois nem sala multijogador online."
+    },
+    "fr": {
+      "heading": "Jeux aux mécaniques proches",
+      "sourceLabel": "Informations officielles du jeu cité",
+      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+      "body": "Vous cherchez des décisions de placement proches de Connect 4 ? Dans les deux jeux, il faut aligner quatre pions tout en bloquant l’adversaire, donc anticiper leur hauteur d’arrivée. Le produit Hasbro cité est un jeu de plateau physique pour deux personnes. Ici, vous affrontez l’ordinateur dans le navigateur, avec trois difficultés, un indice et l’annulation ; ce n’est ni un duel local à deux ni un salon multijoueur en ligne."
+    },
+    "de": {
+      "heading": "Spiele mit ähnlicher Spielweise",
+      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+      "body": "Du suchst die Fall- und Verbindungsentscheidungen von Connect 4? In beiden Spielen verbindest du vier Steine und blockierst den Gegner; entscheidend ist, auf welcher Höhe ein Stein tatsächlich landet. Das genannte Hasbro-Produkt ist ein physisches Brettspiel für zwei Personen. Hier spielst du im Browser gegen den Computer mit drei Schwierigkeitsstufen, Hinweis und Rückgängig, nicht zu zweit am selben Gerät oder in einem Online-Spielraum."
+    },
+    "it": {
+      "heading": "Giochi con meccaniche simili",
+      "sourceLabel": "Informazioni ufficiali sul gioco citato",
+      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+      "body": "Cerchi decisioni di caduta e collegamento come in Connect 4? In entrambi devi allineare quattro pedine e bloccare l’avversario, valutando l’altezza a cui cadrà davvero ogni pedina. Il prodotto Hasbro citato è un gioco da tavolo fisico per due persone. Qui affronti il computer nel browser con tre difficoltà, suggerimento e annullamento, senza sfida locale a due o stanza multigiocatore online."
+    },
+    "ru": {
+      "heading": "Игры с похожей механикой",
+      "sourceLabel": "Официальная информация об упомянутой игре",
+      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+      "body": "Ищете игру с падением и соединением фишек, похожую на Connect 4? В обеих нужно выстроить четыре фишки и помешать сопернику, учитывая реальную высоту падения. Упомянутый продукт Hasbro — физическая настольная игра для двоих. Здесь вы играете в браузере против компьютера с тремя уровнями сложности, подсказкой и отменой, а не вдвоём за одним устройством или в сетевой комнате."
+    },
+    "hi": {
+      "heading": "मिलते-जुलते खेलों की तुलना",
+      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+      "body": "Connect 4 जैसी गोटियाँ गिराकर जोड़ने वाली खेल-शैली खोज रहे हैं? दोनों में चार गोटियाँ एक सीध में लगानी हैं और प्रतिद्वंद्वी को रोकना है, इसलिए गोटी जिस ऊँचाई पर गिरेगी वह महत्वपूर्ण है। संदर्भित Hasbro खेल दो लोगों का भौतिक बोर्ड गेम है। यहाँ ब्राउज़र में कंप्यूटर के विरुद्ध तीन कठिनाइयों, संकेत और चाल वापस लेने की सुविधा के साथ खेलते हैं; यह एक ही उपकरण पर दो खिलाड़ियों या ऑनलाइन कमरे वाला खेल नहीं है।"
+    },
+    "ar": {
+      "heading": "ألعاب ذات أسلوب لعب مشابه",
+      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+      "body": "هل تبحث عن قرارات إسقاط القطع وربطها كما في Connect 4؟ في اللعبتين تصنع خطًا من أربع قطع وتمنع المنافس، لذا يهم الارتفاع الذي ستستقر عنده القطعة. منتج Hasbro المرجعي لعبة لوحية مادية لشخصين. هنا تواجه الكمبيوتر في المتصفح مع ثلاث صعوبات وتلميح وتراجع، وليس شخصًا آخر على الجهاز نفسه أو داخل غرفة جماعية عبر الإنترنت."
+    }
+  }
+};
+  gameplayProfiles["code-breaker"] ||= {};
+  gameplayProfiles["code-breaker"].marketComparison = {
+  "name": "Mastermind",
+  "source": "https://instructions.hasbro.com/en-gb/instruction/mastermind",
+  "locales": {
+    "en": {
+      "heading": "Similar gameplay references",
+      "sourceLabel": "Official reference",
+      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+      "body": "Looking for code deduction like Mastermind? The shared challenge is using feedback from guesses to uncover a hidden code rather than trying unrelated combinations. The referenced Hasbro board-game edition supports two to five players. This game instead offers a solo browser campaign of 30 fixed four-slot color-code stages, with stage-specific repeated colors, sealed colors, anchored slots and limited hints; it is not a multiplayer adaptation of that edition."
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考",
+      "sourceLabel": "參考作品官方說明",
+      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+      "body": "在找像 Mastermind 的密碼推理遊戲嗎？共同挑戰是從猜測回饋縮小範圍，找出隱藏密碼，而不是毫無依據地換一組答案。這裡參考的 Hasbro 桌遊版本可供二至五人遊玩；本站則是單人瀏覽器戰役，包含 30 個固定四格色碼關卡，逐關加入重複色、封存色、固定格與有限提示，不是該桌遊的多人改編版本。"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考",
+      "sourceLabel": "参考作品官方说明",
+      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+      "body": "在找像 Mastermind 的密码推理游戏吗？共同挑战是从猜测反馈缩小范围，找出隐藏密码，而不是毫无依据地换一组答案。这里参考的 Hasbro 桌游版本可供二至五人游玩；本站则是单人浏览器战役，包含 30 个固定四格色码关卡，逐关加入重复色、封存色、固定格与有限提示，不是该桌游的多人改编版本。"
+    },
+    "ja": {
+      "heading": "似た遊び方の作品",
+      "sourceLabel": "参照作品の公式情報",
+      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+      "body": "Mastermind のような暗号推理を探していますか。共通するのは、むやみに組み合わせを変えず、推測への反応から隠れた暗号を絞り込むことです。参照した Hasbro のボードゲーム版は二〜五人用です。本作は一人用のブラウザーゲームで、四枠の色暗号を解く固定の30ステージがあります。重複色、使用不可の色、固定枠、限られたヒントが段階的に加わり、その版の多人用移植ではありません。"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 방식의 게임",
+      "sourceLabel": "참고 게임의 공식 정보",
+      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+      "body": "Mastermind 같은 암호 추리를 찾고 있나요? 공통된 도전은 무작정 조합을 바꾸는 대신 추측에 대한 피드백으로 숨은 암호의 범위를 좁히는 것입니다. 참고한 Hasbro 보드게임 버전은 2~5인용입니다. 이 게임은 혼자 즐기는 브라우저 캠페인으로 고정된 네 칸 색상 암호 30스테이지를 제공합니다. 스테이지별 중복 색상, 봉인 색상, 고정 칸, 제한된 힌트가 있으며 해당 버전의 다인용 이식작은 아닙니다."
+    },
+    "es": {
+      "heading": "Juegos con mecánicas similares",
+      "sourceLabel": "Información oficial del juego citado",
+      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+      "body": "¿Buscas deducción de códigos como en Mastermind? El reto común es usar la respuesta a cada intento para descubrir un código oculto, en vez de probar combinaciones sin relación. La edición de mesa de Hasbro citada admite de dos a cinco jugadores. Aquí hay una campaña individual de navegador con 30 etapas fijas de cuatro posiciones, repeticiones, colores bloqueados, posiciones ancladas y pistas limitadas según la etapa; no es una adaptación multijugador de esa edición."
+    },
+    "pt-BR": {
+      "heading": "Jogos com mecânicas semelhantes",
+      "sourceLabel": "Informações oficiais do jogo citado",
+      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+      "body": "Procura dedução de códigos como em Mastermind? O desafio comum é usar o retorno de cada tentativa para descobrir um código oculto, em vez de trocar combinações sem critério. A edição de tabuleiro da Hasbro citada aceita de dois a cinco jogadores. Aqui há uma campanha solo no navegador com 30 fases fixas de códigos de quatro posições, cores repetidas ou bloqueadas, posições fixas e dicas limitadas conforme a fase; não é uma adaptação multijogador dessa edição."
+    },
+    "fr": {
+      "heading": "Jeux aux mécaniques proches",
+      "sourceLabel": "Informations officielles du jeu cité",
+      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+      "body": "Vous cherchez de la déduction de codes comme dans Mastermind ? Le défi commun consiste à exploiter les réponses aux essais pour découvrir un code caché, plutôt qu’à changer de combinaison au hasard. L’édition de plateau Hasbro citée accueille deux à cinq joueurs. Ici, la campagne solo pour navigateur compte 30 étapes fixes à quatre emplacements, avec répétitions de couleurs, couleurs interdites, positions fixées et indices limités selon l’étape ; ce n’est pas une adaptation multijoueur de cette édition."
+    },
+    "de": {
+      "heading": "Spiele mit ähnlicher Spielweise",
+      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+      "body": "Du suchst Code-Rätsel wie Mastermind? Gemeinsam ist beiden, aus den Rückmeldungen zu Versuchen einen geheimen Code abzuleiten, statt wahllos Kombinationen zu wechseln. Die genannte Hasbro-Brettspielausgabe ist für zwei bis fünf Personen. Hier gibt es eine Solo-Browserkampagne mit 30 festen Vier-Felder-Farbcodes, je nach Stufe mit wiederholten oder gesperrten Farben, festgelegten Positionen und begrenzten Hinweisen; keine Mehrspielerumsetzung dieser Ausgabe."
+    },
+    "it": {
+      "heading": "Giochi con meccaniche simili",
+      "sourceLabel": "Informazioni ufficiali sul gioco citato",
+      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+      "body": "Cerchi la deduzione di codici di Mastermind? La sfida comune è usare i riscontri dei tentativi per scoprire un codice nascosto, invece di cambiare combinazioni senza criterio. L’edizione da tavolo Hasbro citata supporta da due a cinque giocatori. Qui trovi una campagna per browser in solitaria con 30 livelli fissi a quattro posizioni, colori ripetuti o bloccati, posizioni ancorate e suggerimenti limitati secondo il livello; non è un adattamento multigiocatore di quell’edizione."
+    },
+    "ru": {
+      "heading": "Игры с похожей механикой",
+      "sourceLabel": "Официальная информация об упомянутой игре",
+      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+      "body": "Ищете разгадывание кодов, похожее на Mastermind? Общая задача — использовать результаты попыток для поиска скрытого кода, а не менять комбинации без причины. Упомянутая настольная версия Hasbro рассчитана на двух–пятерых. Здесь же одиночная браузерная кампания из 30 фиксированных четырёхпозиционных цветовых кодов с повторяющимися и запрещёнными цветами, закреплёнными позициями и ограниченными подсказками; это не многопользовательская адаптация той версии."
+    },
+    "hi": {
+      "heading": "मिलते-जुलते खेलों की तुलना",
+      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+      "body": "Mastermind जैसा कोड अनुमान खेल खोज रहे हैं? साझा चुनौती बिना कारण संयोजन बदलने के बजाय हर अनुमान की प्रतिक्रिया से छिपे कोड को खोजना है। संदर्भित Hasbro बोर्ड गेम संस्करण दो से पाँच खिलाड़ियों के लिए है। यहाँ अकेले खेलने की ब्राउज़र मुहिम है, जिसमें चार स्थानों वाले रंग-कोड के 30 निश्चित चरण हैं। चरण के अनुसार दोहराए या बंद रंग, तय स्थान और सीमित संकेत मिलते हैं; यह उस संस्करण का बहुखिलाड़ी रूपांतरण नहीं है।"
+    },
+    "ar": {
+      "heading": "ألعاب ذات أسلوب لعب مشابه",
+      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+      "body": "هل تبحث عن استنتاج الشفرات كما في Mastermind؟ التحدي المشترك هو استخدام نتائج التخمينات لكشف شفرة مخفية بدل تبديل التركيبات بلا دليل. نسخة Hasbro اللوحية المرجعية تدعم شخصين إلى خمسة. أما هنا فحملة فردية في المتصفح من 30 مرحلة ثابتة لشفرة ألوان بأربع خانات، مع ألوان مكررة أو محظورة وخانات ثابتة وتلميحات محدودة بحسب المرحلة؛ وليست تحويلًا جماعيًا لتلك النسخة."
+    }
+  }
+};
+  gameplayProfiles["pong"] ||= {};
+  gameplayProfiles["pong"].marketComparison = {
+  "name": "Atari Pong",
+  "source": "https://atari.com/pages/videoolympics",
+  "locales": {
+    "en": {
+      "heading": "Similar gameplay references",
+      "sourceLabel": "Official reference",
+      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+      "body": "The Atari Pong game described in Video Olympics and this game both center on positioning a paddle to return a moving ball and make the opponent miss. In that reference, paddles move vertically and the collection includes several player-count variants. Here you move a bottom paddle horizontally against the computer, choose one of three difficulties and race to seven points; there are no multiplayer rooms or the reference collection’s special action modes."
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考",
+      "sourceLabel": "參考作品官方說明",
+      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+      "body": "Atari 在 Video Olympics 中介紹的 Pong，與本站共同核心都是移動球拍接回球，讓對手漏接。參考版本的球拍垂直移動，合集中有不同人數的玩法；本站則是左右移動下方球拍與電腦對戰，可選三種難度、先得七分獲勝，沒有多人房間或參考合集的特殊動作模式。"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考",
+      "sourceLabel": "参考作品官方说明",
+      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+      "body": "Atari 在 Video Olympics 中介绍的 Pong，与本站共同核心都是移动球拍接回球，让对手漏接。参考版本的球拍垂直移动，合集中有不同人数的玩法；本站则是左右移动下方球拍与电脑对战，可选三种难度、先得七分获胜，没有多人房间或参考合集的特殊动作模式。"
+    },
+    "ja": {
+      "heading": "似た遊び方の作品",
+      "sourceLabel": "参照作品の公式情報",
+      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+      "body": "Atari が Video Olympics で紹介する Pong と本作は、ラケットを動かして返球し、相手に取り逃させるのが共通の中心です。参照版はラケットが縦に動き、人数の異なるモードを含みます。本作では下側のラケットを横に動かしてコンピューターと対戦し、三段階の難度から選び、先に七点を目指します。対戦ルームや参照コレクションの特殊アクションモードはありません。"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 방식의 게임",
+      "sourceLabel": "참고 게임의 공식 정보",
+      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+      "body": "Atari가 Video Olympics에서 소개하는 Pong과 이 게임은 패들을 움직여 공을 되돌리고 상대가 놓치게 하는 것이 핵심입니다. 참고 버전은 패들이 세로로 움직이며 컬렉션에 여러 인원수의 모드가 있습니다. 여기서는 아래 패들을 가로로 움직여 컴퓨터를 상대하고 세 난도 중 하나를 골라 먼저 7점을 얻습니다. 다인용 방이나 참고 컬렉션의 특수 동작 모드는 없습니다."
+    },
+    "es": {
+      "heading": "Juegos con mecánicas similares",
+      "sourceLabel": "Información oficial del juego citado",
+      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+      "body": "El Pong de Atari descrito en Video Olympics y este juego comparten la colocación de una pala para devolver la pelota y hacer fallar al rival. En la referencia, las palas se mueven verticalmente y hay variantes con distintos números de jugadores. Aquí mueves la pala inferior horizontalmente contra el ordenador, eliges entre tres dificultades y compites hasta siete puntos, sin salas multijugador ni los modos de acciones especiales de aquella colección."
+    },
+    "pt-BR": {
+      "heading": "Jogos com mecânicas semelhantes",
+      "sourceLabel": "Informações oficiais do jogo citado",
+      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+      "body": "O Pong da Atari descrito em Video Olympics e este jogo têm como base posicionar a raquete para devolver a bola e fazer o adversário errar. Na referência, as raquetes se movem verticalmente e há variantes com diferentes números de jogadores. Aqui a raquete inferior se move na horizontal contra o computador, com três dificuldades e vitória aos sete pontos, sem salas multijogador ou os modos de ações especiais daquela coleção."
+    },
+    "fr": {
+      "heading": "Jeux aux mécaniques proches",
+      "sourceLabel": "Informations officielles du jeu cité",
+      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+      "body": "Le Pong d’Atari décrit dans Video Olympics et ce jeu reposent sur le placement d’une raquette pour renvoyer la balle et faire manquer l’adversaire. Dans la référence, les raquettes bougent verticalement et plusieurs nombres de joueurs sont proposés. Ici, vous déplacez la raquette du bas horizontalement contre l’ordinateur, choisissez parmi trois difficultés et visez sept points, sans salons multijoueurs ni modes d’actions spéciales de cette collection."
+    },
+    "de": {
+      "heading": "Spiele mit ähnlicher Spielweise",
+      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+      "body": "Ataris Pong aus Video Olympics und dieses Spiel drehen sich darum, den Schläger richtig zu platzieren und den Gegner den Ball verfehlen zu lassen. Im Vergleichsspiel bewegen sich Schläger senkrecht; die Sammlung bietet verschiedene Spielerzahlen. Hier bewegst du den unteren Schläger waagerecht gegen den Computer, wählst eine von drei Schwierigkeitsstufen und spielst bis sieben Punkte. Mehrspielerräume und die Spezialaktionsmodi jener Sammlung gibt es hier nicht."
+    },
+    "it": {
+      "heading": "Giochi con meccaniche simili",
+      "sourceLabel": "Informazioni ufficiali sul gioco citato",
+      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+      "body": "Il Pong di Atari descritto in Video Olympics e questo gioco si basano sul posizionare una racchetta per rimandare la palla e far sbagliare l’avversario. Nel riferimento le racchette si muovono in verticale e ci sono varianti per diversi numeri di giocatori. Qui muovi la racchetta inferiore in orizzontale contro il computer, scegli tra tre difficoltà e punti a sette, senza stanze multigiocatore o modalità con azioni speciali di quella raccolta."
+    },
+    "ru": {
+      "heading": "Игры с похожей механикой",
+      "sourceLabel": "Официальная информация об упомянутой игре",
+      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+      "body": "Pong от Atari, описанный в Video Olympics, и эта игра строятся на перемещении ракетки, возврате мяча и промахах соперника. В упомянутой версии ракетки движутся вертикально, а сборник предлагает варианты с разным числом игроков. Здесь нижняя ракетка движется горизонтально против компьютера; доступны три сложности и матч до семи очков, без сетевых комнат и специальных режимов действий того сборника."
+    },
+    "hi": {
+      "heading": "मिलते-जुलते खेलों की तुलना",
+      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+      "body": "Video Olympics में वर्णित Atari Pong और इस खेल का साझा आधार पैडल की सही जगह से गेंद लौटाना और प्रतिद्वंद्वी से चूक करवाना है। संदर्भित संस्करण में पैडल ऊपर-नीचे चलते हैं और अलग-अलग खिलाड़ी-संख्या के रूप हैं। यहाँ नीचे का पैडल दाएँ-बाएँ चलाकर कंप्यूटर का सामना करते हैं, तीन कठिनाइयों में चुनते हैं और पहले सात अंक बनाते हैं। बहुखिलाड़ी कमरे या उस संग्रह के विशेष क्रिया-मोड यहाँ नहीं हैं।"
+    },
+    "ar": {
+      "heading": "ألعاب ذات أسلوب لعب مشابه",
+      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+      "body": "تشترك لعبة Atari Pong الموصوفة في Video Olympics مع هذه اللعبة في وضع المضرب لرد الكرة وجعل المنافس يخطئ. تتحرك المضارب عموديًا في المرجع، وتضم المجموعة أوضاعًا بأعداد لاعبين مختلفة. هنا تحرك المضرب السفلي أفقيًا أمام الكمبيوتر وتختار إحدى ثلاث صعوبات وتتنافس حتى سبع نقاط، دون غرف جماعية أو أوضاع الحركات الخاصة بتلك المجموعة."
+    }
+  }
+};
+  gameplayProfiles["tetris"] ||= {};
+  gameplayProfiles["tetris"].marketComparison = {
+  "name": "Tetris Effect: Connected",
+  "source": "https://tetriseffect.game/",
+  "locales": {
+    "en": {
+      "heading": "Similar gameplay references",
+      "sourceLabel": "Official reference",
+      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+      "body": "Looking for the falling-block decisions found in Tetris Effect: Connected? Both involve fitting falling pieces, keeping space open and completing horizontal lines. That title also offers an audiovisual Journey, the time-stopping Zone mechanic and multiplayer modes. This WeightPlay game is instead a continuous solo browser run, with a level increase every ten cleared lines and a locally saved best score; it has no Zone, Journey campaign or multiplayer."
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考",
+      "sourceLabel": "參考作品官方說明",
+      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+      "body": "在找像 Tetris Effect: Connected 的落下方塊玩法嗎？兩者都要安排方塊落點、保留空間並填滿橫列。參考作品另有影音旅程、暫停時間的 Zone 機制及多人模式；本站則是持續進行的單人瀏覽器挑戰，每消除十行升級，最高分保存在本機，沒有 Zone、旅程戰役或多人對戰。"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考",
+      "sourceLabel": "参考作品官方说明",
+      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+      "body": "在找像 Tetris Effect: Connected 的下落方块玩法吗？两者都要安排方块落点、保留空间并填满横行。参考作品另有影音旅程、暂停时间的 Zone 机制及多人模式；本站则是持续进行的单人浏览器挑战，每消除十行升级，最高分保存在本设备，没有 Zone、旅程战役或多人对战。"
+    },
+    "ja": {
+      "heading": "似た遊び方の作品",
+      "sourceLabel": "参照作品の公式情報",
+      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+      "body": "Tetris Effect: Connected のような落ちものパズルを探していますか。どちらも落ちるピースを組み合わせ、空間を残し、横一列を埋めます。参照作品には映像と音楽の Journey、時間を止める Zone、マルチプレイもあります。本作は一人用の連続したブラウザー挑戦で、十ラインごとにレベルが上がり、最高点を端末に保存します。Zone、Journey、対人戦はありません。"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 방식의 게임",
+      "sourceLabel": "참고 게임의 공식 정보",
+      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+      "body": "Tetris Effect: Connected와 같은 낙하 블록의 배치 결정을 찾고 있나요? 두 게임 모두 떨어지는 조각을 맞추고 공간을 남기며 가로줄을 완성합니다. 참고 작품에는 시청각 Journey, 시간을 멈추는 Zone, 다인용 모드도 있습니다. 이 게임은 혼자 이어 가는 브라우저 도전으로 열 줄마다 레벨이 오르고 최고 점수를 기기에 저장합니다. Zone, Journey 캠페인, 다인용 대전은 없습니다."
+    },
+    "es": {
+      "heading": "Juegos con mecánicas similares",
+      "sourceLabel": "Información oficial del juego citado",
+      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+      "body": "¿Buscas decisiones de bloques en caída como las de Tetris Effect: Connected? Ambos consisten en encajar piezas, dejar espacio y completar líneas horizontales. Ese título también ofrece un viaje audiovisual Journey, la mecánica Zone que detiene el tiempo y modos multijugador. Aquí hay una partida individual continua en el navegador, con un nivel nuevo cada diez líneas y récord local, sin Zone, campaña Journey ni multijugador."
+    },
+    "pt-BR": {
+      "heading": "Jogos com mecânicas semelhantes",
+      "sourceLabel": "Informações oficiais do jogo citado",
+      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+      "body": "Procura decisões de blocos em queda como em Tetris Effect: Connected? Os dois envolvem encaixar peças, manter espaço e completar linhas horizontais. O título citado também oferece a jornada audiovisual Journey, a mecânica Zone que para o tempo e modos multijogador. Aqui há uma partida solo contínua no navegador, com avanço de nível a cada dez linhas e recorde local, sem Zone, campanha Journey ou multijogador."
+    },
+    "fr": {
+      "heading": "Jeux aux mécaniques proches",
+      "sourceLabel": "Informations officielles du jeu cité",
+      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+      "body": "Vous cherchez les décisions de blocs en chute de Tetris Effect: Connected ? Les deux jeux demandent d’emboîter les pièces, de garder de l’espace et de compléter des lignes horizontales. Le titre cité propose aussi le parcours audiovisuel Journey, la mécanique Zone qui arrête le temps et des modes multijoueurs. Ici, la partie solo dans le navigateur continue avec un niveau toutes les dix lignes et un record local, sans Zone, campagne Journey ni multijoueur."
+    },
+    "de": {
+      "heading": "Spiele mit ähnlicher Spielweise",
+      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+      "body": "Du suchst Fallblock-Entscheidungen wie in Tetris Effect: Connected? Beide Spiele verlangen passende Platzierungen, freien Raum und vollständige waagerechte Reihen. Der genannte Titel bietet zusätzlich die audiovisuelle Journey, die zeitstoppende Zone-Mechanik und Mehrspielermodi. Hier spielst du allein und fortlaufend im Browser, steigst alle zehn Reihen eine Stufe auf und speicherst den Bestwert lokal; Zone, Journey-Kampagne und Mehrspieler fehlen."
+    },
+    "it": {
+      "heading": "Giochi con meccaniche simili",
+      "sourceLabel": "Informazioni ufficiali sul gioco citato",
+      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+      "body": "Cerchi le decisioni sui blocchi in caduta di Tetris Effect: Connected? Entrambi richiedono di incastrare i pezzi, lasciare spazio e completare righe orizzontali. Il titolo citato offre anche il percorso audiovisivo Journey, la meccanica Zone che ferma il tempo e modalità multigiocatore. Qui la partita in solitaria nel browser è continua, con un livello ogni dieci righe e record locale, senza Zone, campagna Journey o multigiocatore."
+    },
+    "ru": {
+      "heading": "Игры с похожей механикой",
+      "sourceLabel": "Официальная информация об упомянутой игре",
+      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+      "body": "Ищете решения о размещении падающих блоков, как в Tetris Effect: Connected? В обеих играх нужно укладывать фигуры, сохранять свободное место и заполнять горизонтальные ряды. Упомянутая игра также предлагает аудиовизуальную Journey, останавливающую время механику Zone и многопользовательские режимы. Здесь непрерывная одиночная партия в браузере с повышением уровня каждые десять линий и локальным рекордом, без Zone, кампании Journey и сетевой игры."
+    },
+    "hi": {
+      "heading": "मिलते-जुलते खेलों की तुलना",
+      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+      "body": "Tetris Effect: Connected जैसे गिरते ब्लॉकों के फैसले खोज रहे हैं? दोनों में टुकड़े फिट करना, जगह खुली रखना और क्षैतिज पंक्तियाँ भरना होता है। संदर्भित खेल में दृश्य-संगीत वाली Journey, समय रोकने वाली Zone और बहुखिलाड़ी मोड भी हैं। यहाँ ब्राउज़र में लगातार अकेले खेलते हैं, हर दस साफ पंक्तियों पर स्तर बढ़ता है और सर्वश्रेष्ठ स्कोर स्थानीय रूप से सहेजता है। Zone, Journey मुहिम और बहुखिलाड़ी मोड नहीं हैं।"
+    },
+    "ar": {
+      "heading": "ألعاب ذات أسلوب لعب مشابه",
+      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+      "body": "هل تبحث عن قرارات ترتيب الكتل المتساقطة الموجودة في Tetris Effect: Connected؟ تتطلب اللعبتان ملاءمة القطع وترك مساحة وإكمال الصفوف الأفقية. يقدم العنوان المرجعي أيضًا رحلة Journey السمعية البصرية وآلية Zone التي توقف الزمن وأوضاعًا جماعية. هنا جولة فردية مستمرة في المتصفح مع ارتفاع المستوى كل عشرة صفوف وحفظ أفضل نتيجة محليًا، دون Zone أو حملة Journey أو لعب جماعي."
+    }
+  }
+};
+  // SEO 1.3.0: comparison-layer branch draft, not a third-party game identity.
+  gameplayProfiles["peg-solitaire"] ||= {};
+  gameplayProfiles["peg-solitaire"].marketComparison = {
+  "name": "Cracker Barrel Peg Game",
+  "source": "https://blog.crackerbarrel.com/how-to-beat-the-cracker-barrel-peg-game/",
+  "locales": {
+    "en": {
+      "heading": "Similar gameplay references",
+      "sourceLabel": "Official reference",
+      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+      "body": "Looking for a puzzle like the Cracker Barrel Peg Game? Both involve jumping over a neighboring peg into an empty hole, removing the jumped peg and aiming to leave one. The reference uses a triangular board; this game uses a fixed 33-hole cross with 32 starting pegs and an empty center. Jumps here are horizontal or vertical, never diagonal. Select a peg, then its landing hole; Hint and Undo are available. The triangular board’s solution sequence does not transfer to this different layout."
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考",
+      "sourceLabel": "參考作品官方說明",
+      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+      "body": "在找像 Cracker Barrel Peg Game 的單人跳棋消除遊戲嗎？兩者都要跳過相鄰棋子，落在空洞，移除被跳過的棋子，最後以剩下一顆為目標。參考作品使用三角形棋盤；本站孔明棋則是固定的 33 孔十字棋盤，開局有 32 顆棋子、中央留空，只能水平或垂直跳，不能斜跳。點選棋子後再選落點，並可使用提示與還原。三角棋盤的解法順序不能直接套用到這個不同布局。"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考",
+      "sourceLabel": "参考作品官方说明",
+      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+      "body": "在找像 Cracker Barrel Peg Game 的单人跳棋消除游戏吗？两者都要跳过相邻棋子，落在空洞，移除被跳过的棋子，最后以剩下一颗为目标。参考作品使用三角形棋盘；本站孔明棋则是固定的 33 孔十字棋盘，开局有 32 颗棋子、中央留空，只能水平或垂直跳，不能斜跳。点选棋子后再选落点，并可使用提示与还原。三角棋盘的解法顺序不能直接套用到这个不同布局。"
+    },
+    "ja": {
+      "heading": "似た遊び方の作品",
+      "sourceLabel": "参照作品の公式情報",
+      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+      "body": "Cracker Barrel Peg Game のような一人用のペグパズルを探していますか。どちらも隣の駒を飛び越えて空き穴に着地し、飛び越えた駒を取り除いて最後の一個を目指します。参照作品は三角形の盤面ですが、本作は33穴の固定された十字形で、中央を空けて32個の駒から始めます。ジャンプは縦か横だけで、斜めには跳べません。駒、着地点の順に選択し、ヒントと取り消しも使えます。盤面が異なるため、三角形用の解法はそのまま使えません。"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 방식의 게임",
+      "sourceLabel": "참고 게임의 공식 정보",
+      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+      "body": "Cracker Barrel Peg Game 같은 1인용 페그 퍼즐을 찾고 있나요? 두 게임 모두 이웃한 말 하나를 넘어 빈 구멍에 착지하고, 넘은 말을 없애 마지막 하나를 남기는 것이 목표입니다. 참고 게임은 삼각형 보드를 쓰지만, 이 게임은 33개 구멍의 고정된 십자형 보드에서 중앙을 비우고 말 32개로 시작합니다. 가로나 세로로만 뛰며 대각선 점프는 안 됩니다. 말과 착지 구멍을 차례로 선택하고 힌트와 되돌리기를 사용할 수 있습니다. 삼각형 보드의 풀이 순서를 그대로 적용할 수는 없습니다."
+    },
+    "es": {
+      "heading": "Juegos con mecánicas similares",
+      "sourceLabel": "Información oficial del juego citado",
+      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+      "body": "¿Buscas un puzle como Cracker Barrel Peg Game? En ambos saltas sobre una ficha vecina hasta un hueco vacío, retiras la ficha saltada e intentas dejar solo una. El juego citado usa un tablero triangular; este usa una cruz fija de 33 huecos, con 32 fichas y el centro vacío al empezar. Aquí los saltos son horizontales o verticales, nunca diagonales. Selecciona una ficha y después su destino; también hay pista y deshacer. La solución del triángulo no se puede trasladar a esta distribución distinta."
+    },
+    "pt-BR": {
+      "heading": "Jogos com mecânicas semelhantes",
+      "sourceLabel": "Informações oficiais do jogo citado",
+      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+      "body": "Procura um quebra-cabeça como Cracker Barrel Peg Game? Nos dois, você salta sobre um pino vizinho até um buraco vazio, retira o pino saltado e tenta deixar apenas um. O jogo citado usa um tabuleiro triangular; este usa uma cruz fixa de 33 buracos, com 32 pinos e o centro vazio no início. Aqui, os saltos são horizontais ou verticais, nunca diagonais. Selecione um pino e depois o destino; há dica e desfazer. A solução do triângulo não pode ser transferida para esta disposição diferente."
+    },
+    "fr": {
+      "heading": "Jeux aux mécaniques proches",
+      "sourceLabel": "Informations officielles du jeu cité",
+      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+      "body": "Vous cherchez un puzzle comme Cracker Barrel Peg Game ? Dans les deux jeux, sautez par-dessus un pion voisin vers un trou vide, retirez le pion franchi et essayez de n’en garder qu’un. Le jeu cité utilise un plateau triangulaire ; ici, le plateau fixe forme une croix de 33 trous, avec 32 pions et le centre vide au départ. Les sauts sont horizontaux ou verticaux, jamais diagonaux. Sélectionnez le pion, puis sa destination ; indice et annulation sont disponibles. La solution du triangle ne se transpose pas à cette disposition."
+    },
+    "de": {
+      "heading": "Spiele mit ähnlicher Spielweise",
+      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+      "body": "Du suchst ein Rätsel wie Cracker Barrel Peg Game? In beiden Spielen springst du über einen benachbarten Stein in ein leeres Loch, entfernst den übersprungenen Stein und versuchst, nur einen übrig zu lassen. Das Vergleichsspiel hat ein dreieckiges Brett; hier spielst du auf einem festen Kreuz mit 33 Löchern, anfangs 32 Steinen und freier Mitte. Sprünge sind nur waagerecht oder senkrecht erlaubt, nie diagonal. Wähle erst den Stein, dann das Ziel; Hinweis und Rückgängig helfen dabei. Eine Lösung des Dreiecks passt nicht auf dieses andere Brett."
+    },
+    "it": {
+      "heading": "Giochi con meccaniche simili",
+      "sourceLabel": "Informazioni ufficiali sul gioco citato",
+      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+      "body": "Cerchi un rompicapo come Cracker Barrel Peg Game? In entrambi salti un piolo vicino per raggiungere un foro vuoto, rimuovi il piolo saltato e cerchi di lasciarne uno solo. Il gioco citato usa un tabellone triangolare; questo usa una croce fissa di 33 fori, con 32 pioli e il centro vuoto all’inizio. Qui si salta solo in orizzontale o verticale, mai in diagonale. Seleziona il piolo e poi la destinazione; sono disponibili suggerimento e annullamento. La soluzione del triangolo non si può copiare su questa diversa disposizione."
+    },
+    "ru": {
+      "heading": "Игры с похожей механикой",
+      "sourceLabel": "Официальная информация об упомянутой игре",
+      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+      "body": "Ищете головоломку, похожую на Cracker Barrel Peg Game? В обеих играх нужно перепрыгивать через соседнюю фишку в пустую лунку, убирать перепрыгнутую фишку и стремиться оставить одну. У игры для сравнения треугольное поле; здесь — фиксированный крест с 33 лунками, 32 фишками и пустым центром в начале. Прыгать можно только по горизонтали или вертикали, не по диагонали. Выберите фишку, затем место приземления; доступны подсказка и отмена. Решение для треугольника нельзя перенести на эту другую форму поля."
+    },
+    "hi": {
+      "heading": "मिलते-जुलते खेलों की तुलना",
+      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+      "body": "Cracker Barrel Peg Game जैसी एक खिलाड़ी वाली गोटी पहेली खोज रहे हैं? दोनों में पास की गोटी के ऊपर से खाली खाने में कूदकर बीच वाली गोटी हटाते हैं और अंत में एक गोटी बचाने की कोशिश करते हैं। संदर्भित खेल का बोर्ड त्रिकोण है; यहाँ 33 खानों का तय क्रॉस आकार है, जिसमें शुरुआत में 32 गोटियाँ और बीच का खाना खाली रहता है। यहाँ छलांग केवल सीधी आड़ी या खड़ी दिशा में लगती है, तिरछी नहीं। पहले गोटी और फिर उतरने का खाना चुनें; संकेत और चाल वापस लेने की सुविधा भी है। त्रिकोण के हल का क्रम इस अलग बोर्ड पर नहीं चलेगा।"
+    },
+    "ar": {
+      "heading": "ألعاب ذات أسلوب لعب مشابه",
+      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+      "body": "هل تبحث عن لغز فردي يشبه Cracker Barrel Peg Game؟ في اللعبتين تقفز فوق حجر مجاور إلى حفرة فارغة، وتزيل الحجر الذي قفزت فوقه، وتهدف إلى إبقاء حجر واحد. تستخدم اللعبة المرجعية لوحًا مثلثًا؛ أما هنا فاللوح ثابت على شكل صليب من 33 حفرة، يبدأ بـ32 حجرًا وحفرة وسطى فارغة. القفز أفقي أو عمودي فقط، وليس قطريًا. اختر الحجر ثم حفرة الهبوط، مع إمكانية التلميح والتراجع. لا يمكن نقل تسلسل حل اللوح المثلث إلى هذا الترتيب المختلف."
+    }
+  }
+};
+
+  // Spider comparison: original-name reference, not game identity or publication approval.
+  gameplayProfiles["spider-solitaire"] ||= {};
+  gameplayProfiles["spider-solitaire"].marketComparison = {
+    name: "Microsoft Solitaire Collection — Spider",
+    source: "https://www.microsoftcasualgames.com/solitaire",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Looking for a browser card game like Spider in Microsoft Solitaire Collection? Both offer one-, two- and four-suit play and reward planning the order in which cards are cleared. Here, build eight same-suit K-to-A runs across ten columns, with Hint, Undo and replay links for the same starting deal. This independent game stores difficulty preferences and statistics in this browser; it does not provide Microsoft's Daily Challenges, Xbox achievements or cloud-synced progress.",
+  "zh-Hant": "在找像 Microsoft Solitaire Collection 裡 Spider 的瀏覽器蜘蛛接龍嗎？兩者都提供一、二、四種花色，重點是規劃整理與清除牌組的順序。本站要在十欄中完成八組同花色 K 到 A，並提供提示、還原與相同起始牌局的重玩連結。這款獨立遊戲只在此瀏覽器保存難度偏好與統計，不提供 Microsoft 的每日挑戰、Xbox 成就或雲端進度同步。",
+  "zh-Hans": "在找像 Microsoft Solitaire Collection 中 Spider 的浏览器蜘蛛纸牌吗？两者都提供一、二、四种花色，重点是规划整理与清除牌组的顺序。本站要在十列中完成八组同花色 K 到 A，并提供提示、撤销与相同起始牌局的重玩链接。这款独立游戏只在此浏览器保存难度偏好与统计，不提供 Microsoft 的每日挑战、Xbox 成就或云端进度同步。",
+  "ja": "Microsoft Solitaire Collection の Spider に似た、ブラウザーで遊べるスパイダーソリティアを探していますか。どちらも1・2・4種類のスートを選び、カードを整理して取り除く順序を考えます。本作では10列で同じスートのKからAまでを8組そろえ、ヒント、取り消し、同じ初期配置のリプレイリンクを使えます。この独立したゲームがブラウザーに保存するのは難度の設定と統計です。Microsoftのデイリーチャレンジ、Xbox実績、クラウドでの進行同期はありません。",
+  "ko": "Microsoft Solitaire Collection의 Spider와 비슷한 브라우저 카드 게임을 찾고 있나요? 두 게임 모두 1·2·4가지 무늬를 선택하며 카드를 정리하고 없애는 순서가 중요합니다. 여기서는 10개 열에서 같은 무늬의 K부터 A까지 8세트를 완성하고, 힌트와 되돌리기, 같은 시작 배치를 다시 여는 링크를 이용합니다. 이 독립 게임은 난도 설정과 통계를 현재 브라우저에 저장하며, Microsoft의 일일 도전, Xbox 도전 과제나 클라우드 진행 동기화는 제공하지 않습니다.",
+  "es": "¿Buscas un juego de cartas para navegador parecido a Spider de Microsoft Solitaire Collection? Ambos ofrecen una, dos o cuatro clases de palos y requieren planear el orden de las cartas que vas a retirar. Aquí completas ocho secuencias del mismo palo de K a A en diez columnas, con pistas, deshacer y enlaces para repetir el reparto inicial. Este juego independiente guarda la dificultad elegida y las estadísticas en este navegador; no ofrece los desafíos diarios de Microsoft, logros de Xbox ni progreso sincronizado en la nube.",
+  "pt-BR": "Procura um jogo de cartas no navegador parecido com o Spider de Microsoft Solitaire Collection? Ambos oferecem um, dois ou quatro naipes e exigem planejar a ordem de organizar e retirar as cartas. Aqui você completa oito sequências do mesmo naipe de K a A em dez colunas, com dica, desfazer e links para repetir a distribuição inicial. Este jogo independente salva a dificuldade escolhida e as estatísticas neste navegador; não oferece os desafios diários da Microsoft, conquistas do Xbox ou progresso sincronizado na nuvem.",
+  "fr": "Vous cherchez un jeu de cartes pour navigateur proche de Spider dans Microsoft Solitaire Collection ? Les deux proposent une, deux ou quatre enseignes et demandent de prévoir l'ordre de retrait des cartes. Ici, formez huit suites de même enseigne de K à A sur dix colonnes, avec indice, annulation et liens pour rejouer la distribution initiale. Ce jeu indépendant conserve la difficulté choisie et les statistiques dans ce navigateur ; il ne propose ni les défis quotidiens de Microsoft, ni les succès Xbox, ni la synchronisation de progression dans le cloud.",
+  "de": "Du suchst ein Browserspiel ähnlich wie Spider aus Microsoft Solitaire Collection? Beide bieten eine, zwei oder vier Kartenfarben und verlangen Planung beim Ordnen und Abräumen der Karten. Hier bildest du in zehn Spalten acht Folgen derselben Kartenfarbe von K bis A; Hinweis, Rückgängig und Links zur gleichen Anfangsverteilung helfen beim Üben. Dieses eigenständige Spiel speichert die gewählte Schwierigkeit und Statistiken in diesem Browser. Microsofts tägliche Herausforderungen, Xbox-Erfolge und synchronisierten Cloud-Fortschritt bietet es nicht.",
+  "it": "Cerchi un gioco di carte per browser simile a Spider di Microsoft Solitaire Collection? Entrambi offrono uno, due o quattro semi e richiedono di pianificare l'ordine in cui organizzare e rimuovere le carte. Qui completi otto sequenze dello stesso seme da K ad A su dieci colonne, con suggerimenti, annullamento e link per ripetere la distribuzione iniziale. Questo gioco indipendente salva la difficoltà scelta e le statistiche nel browser; non offre le sfide giornaliere di Microsoft, obiettivi Xbox o progressi sincronizzati nel cloud.",
+  "ru": "Ищете браузерный пасьянс, похожий на Spider из Microsoft Solitaire Collection? В обеих играх можно выбрать одну, две или четыре масти и важно продумать порядок освобождения карт. Здесь нужно собрать восемь последовательностей одной масти от K до A в десяти столбцах; доступны подсказка, отмена и ссылки для повтора начальной раздачи. Эта самостоятельная игра сохраняет выбранную сложность и статистику в текущем браузере. Ежедневных испытаний Microsoft, достижений Xbox и облачной синхронизации прогресса здесь нет.",
+  "hi": "Microsoft Solitaire Collection के Spider जैसा ब्राउज़र कार्ड गेम खोज रहे हैं? दोनों में एक, दो या चार सूट चुने जा सकते हैं और कार्ड हटाने का क्रम सोचकर तय करना होता है। यहाँ दस कॉलम में एक ही सूट की K से A तक की आठ श्रृंखलाएँ पूरी करें; संकेत, चाल वापस लेने और शुरुआती बाँट को फिर खेलने के लिंक उपलब्ध हैं। यह स्वतंत्र गेम कठिनाई की पसंद और आँकड़े इसी ब्राउज़र में रखता है; इसमें Microsoft की दैनिक चुनौतियाँ, Xbox उपलब्धियाँ या क्लाउड पर प्रगति का तालमेल नहीं है।",
+  "ar": "هل تبحث عن لعبة ورق في المتصفح تشبه Spider ضمن Microsoft Solitaire Collection؟ تتيح اللعبتان اختيار نوع واحد أو نوعين أو أربعة أنواع من الورق، مع التخطيط لترتيب إزالة البطاقات. هنا تكمل ثماني سلاسل من النوع نفسه من K إلى A عبر عشرة أعمدة، مع تلميح وتراجع وروابط لإعادة التوزيع الأول نفسه. تحفظ هذه اللعبة المستقلة اختيار الصعوبة والإحصاءات في هذا المتصفح؛ ولا تقدم تحديات Microsoft اليومية أو إنجازات Xbox أو مزامنة التقدم سحابيًا."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+
+  // Wordle comparison: separate works; no identity, gameplay or publication changes.
+  gameplayProfiles["wordle"] ||= {};
+  gameplayProfiles["wordle"].marketComparison = {
+    name: "Wordle — The New York Times",
+    source: "https://apps.apple.com/us/app/nyt-games-wordle-crossword/id307569751",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Looking for a browser word puzzle similar to Wordle from The New York Times? Both center on finding a five-letter word within six guesses. Here, use letter-position feedback and optional hints to work through a fixed set of six English puzzles; Play again advances through that set rather than fetching the NYT puzzle. Changing the interface language does not translate the English answers. Best results and preferences stay in this browser, with no NYT account or Wordle Bot connection.",
+  "zh-Hant": "在找像 The New York Times 的 Wordle 這類瀏覽器猜字遊戲嗎？兩者的核心都是在六次機會內猜出五個字母的單字。本站以字母位置回饋與可選提示，讓你遊玩固定的六個英文謎題；「再玩一次」會前進到題組中的下一題，不是取得紐約時報的題目。切換介面語言不會把英文答案翻譯成其他語言。最佳成績與偏好只保存在此瀏覽器，不連結 NYT 帳號或 Wordle Bot。",
+  "zh-Hans": "在找像 The New York Times 的 Wordle 这类浏览器猜词游戏吗？两者的核心都是在六次机会内猜出五个字母的单词。本站通过字母位置反馈与可选提示，让你游玩固定的六个英文谜题；“再玩一次”会前进到题组中的下一题，不是获取纽约时报的题目。切换界面语言不会把英文答案翻译成其他语言。最佳成绩与偏好只保存在此浏览器，不连接 NYT 账号或 Wordle Bot。",
+  "ja": "The New York Times の Wordle に似た、ブラウザーで遊べる単語パズルを探していますか。どちらも6回以内に5文字の単語を当てるのが基本です。本作では文字の位置の手がかりと任意のヒントを使い、固定の英単語パズル6問を遊びます。「もう一度」でその問題集の次の問題に進み、NYTの問題を取得するわけではありません。表示言語を変えても英語の答えは翻訳されません。最高成績と設定はこのブラウザーだけに保存され、NYTアカウントやWordle Botとは連携しません。",
+  "ko": "The New York Times의 Wordle와 비슷한 브라우저 단어 퍼즐을 찾고 있나요? 두 게임 모두 여섯 번 안에 다섯 글자 단어를 맞히는 것이 핵심입니다. 여기서는 글자 위치에 대한 피드백과 선택형 힌트를 활용해 고정된 영어 퍼즐 여섯 개를 풉니다. 다시 플레이하면 이 묶음의 다음 문제로 넘어가며 NYT의 문제를 불러오지 않습니다. 화면 언어를 바꿔도 영어 정답은 번역되지 않습니다. 최고 기록과 설정은 현재 브라우저에만 저장되며 NYT 계정이나 Wordle Bot과 연결되지 않습니다.",
+  "es": "¿Buscas un puzle de palabras para navegador parecido a Wordle de The New York Times? Ambos consisten en encontrar una palabra de cinco letras en seis intentos. Aquí utilizas la información sobre la posición de las letras y pistas opcionales para resolver una serie fija de seis puzles en inglés. Jugar otra vez avanza por esa serie, sin cargar el puzle de NYT. Cambiar el idioma de la interfaz no traduce las respuestas inglesas. Las mejores marcas y preferencias se guardan solo en este navegador, sin conexión con una cuenta de NYT ni con Wordle Bot.",
+  "pt-BR": "Procura um jogo de palavras no navegador parecido com Wordle, do The New York Times? Nos dois, o objetivo é descobrir uma palavra de cinco letras em seis tentativas. Aqui você usa as indicações de posição das letras e dicas opcionais para resolver um conjunto fixo de seis desafios em inglês. Jogar novamente avança nesse conjunto, sem buscar o desafio do NYT. Mudar o idioma da interface não traduz as respostas em inglês. Os melhores resultados e as preferências ficam apenas neste navegador, sem conexão com uma conta do NYT ou com o Wordle Bot.",
+  "fr": "Vous cherchez un jeu de mots pour navigateur proche de Wordle du The New York Times ? Dans les deux, il faut trouver un mot de cinq lettres en six essais. Ici, les indications sur la position des lettres et les indices facultatifs vous aident à résoudre une série fixe de six énigmes en anglais. Rejouer passe à la suivante dans cette série, sans charger l'énigme du NYT. Changer la langue de l'interface ne traduit pas les réponses anglaises. Les meilleurs résultats et préférences restent dans ce navigateur, sans lien avec un compte NYT ni avec Wordle Bot.",
+  "de": "Du suchst ein Wortspiel im Browser ähnlich wie Wordle von The New York Times? In beiden geht es darum, ein Wort mit fünf Buchstaben in sechs Versuchen zu finden. Hier löst du mithilfe der Rückmeldungen zu Buchstabenpositionen und optionaler Hinweise eine feste Reihe aus sechs englischen Rätseln. Erneutes Spielen führt zum nächsten Rätsel dieser Reihe, nicht zum Rätsel der NYT. Ein Wechsel der Oberflächensprache übersetzt die englischen Lösungen nicht. Bestleistungen und Einstellungen bleiben in diesem Browser; eine Verbindung zu einem NYT-Konto oder Wordle Bot gibt es nicht.",
+  "it": "Cerchi un gioco di parole per browser simile a Wordle di The New York Times? In entrambi devi trovare una parola di cinque lettere in sei tentativi. Qui usi le indicazioni sulla posizione delle lettere e i suggerimenti facoltativi per risolvere una serie fissa di sei enigmi in inglese. Giocare ancora porta al successivo della serie, senza caricare l'enigma del NYT. Cambiare la lingua dell'interfaccia non traduce le risposte inglesi. I risultati migliori e le preferenze restano in questo browser, senza collegamenti a un account NYT o a Wordle Bot.",
+  "ru": "Ищете браузерную словесную головоломку, похожую на Wordle от The New York Times? В обеих играх нужно найти слово из пяти букв за шесть попыток. Здесь сведения о позициях букв и необязательные подсказки помогают пройти фиксированный набор из шести английских загадок. Повторная игра открывает следующую загадку набора, а не загружает задание NYT. Смена языка интерфейса не переводит английские ответы. Лучшие результаты и настройки хранятся только в этом браузере; связи с учётной записью NYT или Wordle Bot нет.",
+  "hi": "The New York Times के Wordle जैसा ब्राउज़र शब्द-पज़ल खोज रहे हैं? दोनों में छह कोशिशों के भीतर पाँच अक्षरों का शब्द पहचानना होता है। यहाँ अक्षरों की स्थिति से मिलने वाले संकेत और वैकल्पिक मदद लेकर अंग्रेज़ी की छह तय पहेलियाँ खेलते हैं। दोबारा खेलने पर इसी सेट की अगली पहेली आती है, NYT की पहेली नहीं। इंटरफ़ेस की भाषा बदलने से अंग्रेज़ी उत्तरों का अनुवाद नहीं होता। सर्वश्रेष्ठ नतीजे और पसंद केवल इसी ब्राउज़र में सेव होते हैं; NYT खाते या Wordle Bot से कोई जुड़ाव नहीं है।",
+  "ar": "هل تبحث عن لغز كلمات في المتصفح يشبه Wordle من The New York Times؟ تقوم اللعبتان على اكتشاف كلمة من خمسة أحرف خلال ست محاولات. هنا تستخدم ملاحظات مواضع الأحرف والتلميحات الاختيارية لحل مجموعة ثابتة من ستة ألغاز باللغة الإنجليزية. ينتقل اللعب مجدداً إلى اللغز التالي في هذه المجموعة، ولا يجلب لغز NYT. تغيير لغة الواجهة لا يترجم الإجابات الإنجليزية. تبقى أفضل النتائج والتفضيلات في هذا المتصفح فقط، من دون ارتباط بحساب NYT أو Wordle Bot."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+
+  // Hangman comparison: separate works, not game identity or publication approval.
+  gameplayProfiles["hangman"] ||= {};
+  gameplayProfiles["hangman"].marketComparison = {
+    name: "Hangman — Coolmath Games",
+    source: "https://www.coolmathgames.com/0-hangman",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Looking for a letter-guessing game like Hangman on Coolmath Games? Both use revealed letters to help you decide what to guess next. Coolmath's game uses balloons; this separate WeightPlay game is single-player, with six fixed English words and a six-miss limit. Hint shows the word length and theme: it adds one move, not a miss, and does not fill in letters. Play again advances through that small set, not an endless or daily word feed. Changing the interface language does not translate the English answers. Best scores stay in this browser; there is no connection to Coolmath accounts, multiplayer rooms or scores.",
+  "zh-Hant": "在找像 Coolmath Games 的 Hangman 那樣逐個猜字母的遊戲嗎？兩者都利用已揭開的字母，幫助你判斷下一個要猜什麼。Coolmath 的作品使用氣球；本站則是獨立的單人遊戲，採用六個固定英文單字，每回合最多六次失誤。提示會顯示單字長度與主題，增加一步，但不增加失誤，也不會代填字母。再玩一次會輪換這組小題庫，不是無限出題或每日更新。切換介面語言不會翻譯英文答案。最佳分數只保存在此瀏覽器，不連動 Coolmath 帳號、多人房間或成績。",
+  "zh-Hans": "在找像 Coolmath Games 的 Hangman 那样逐个猜字母的游戏吗？两者都利用已揭开的字母，帮助你判断下一个要猜什么。Coolmath 的作品使用气球；本站则是独立的单人游戏，采用六个固定英文单词，每回合最多六次失误。提示会显示单词长度与主题，增加一步，但不增加失误，也不会代填字母。再玩一次会轮换这组小题库，不是无限出题或每日更新。切换界面语言不会翻译英文答案。最佳分数只保存在此浏览器，不关联 Coolmath 账号、多人房间或成绩。",
+  "ja": "Coolmath Games の Hangman のように、文字を一つずつ当てるゲームを探していますか。どちらも、判明した文字を手がかりに次の文字を選びます。Coolmath の作品では風船を使いますが、こちらは固定の英単語6語を使う独立した1人用ゲームで、1問につきミスは6回までです。ヒントは単語の長さとテーマを示し、手数が1増えますが、ミスは増えず、文字も自動では埋まりません。「もう一度」でこの小さな単語セットを順に遊びます。無限出題や日替わり問題ではありません。表示言語を変えても英語の答えは変わりません。最高得点はこのブラウザーに保存され、Coolmath のアカウント、対戦ルーム、得点とは連携しません。",
+  "ko": "Coolmath Games의 Hangman처럼 글자를 하나씩 맞히는 게임을 찾고 있나요? 두 게임 모두 드러난 글자를 바탕으로 다음 글자를 고릅니다. Coolmath의 게임은 풍선을 사용하지만, 이 WeightPlay 게임은 정해진 영어 단어 6개로 즐기는 별개의 1인용 게임이며 한 문제당 6번 틀리면 끝납니다. 힌트는 단어 길이와 주제를 알려 주고 이동 횟수를 1 늘리지만, 오답 횟수를 늘리거나 글자를 대신 채우지는 않습니다. 다시 플레이하면 이 작은 단어 모음을 차례로 풀며, 무제한 문제나 매일 새 문제는 제공하지 않습니다. 화면 언어를 바꿔도 정답은 영어입니다. 최고 점수는 이 브라우저에만 저장되며 Coolmath 계정, 멀티플레이 방이나 점수와 연동되지 않습니다.",
+  "es": "¿Buscas un juego de adivinar letras parecido a Hangman de Coolmath Games? En ambos, las letras reveladas ayudan a elegir la siguiente. El juego de Coolmath usa globos; este juego independiente de WeightPlay es para una persona y tiene seis palabras inglesas fijas, con un límite de seis fallos por palabra. La pista muestra la longitud y el tema: suma un movimiento, no un fallo, y no rellena letras. Jugar de nuevo recorre ese pequeño conjunto; no ofrece palabras infinitas ni diarias. Cambiar el idioma de la interfaz no traduce las respuestas inglesas. La mejor puntuación queda en este navegador, sin conexión con cuentas, salas multijugador ni puntuaciones de Coolmath.",
+  "pt-BR": "Procura um jogo de adivinhar letras parecido com Hangman de Coolmath Games? Nos dois, as letras reveladas ajudam a escolher a próxima. O jogo da Coolmath usa balões; este jogo independente da WeightPlay é individual e tem seis palavras inglesas fixas, com limite de seis erros por palavra. A dica mostra o tamanho e o tema: acrescenta uma jogada, não um erro, e não preenche letras. Jogar novamente percorre esse pequeno conjunto; não há palavras infinitas nem novas palavras diárias. Mudar o idioma da interface não traduz as respostas em inglês. A melhor pontuação fica neste navegador, sem conexão com contas, salas multijogador ou pontuações da Coolmath.",
+  "fr": "Vous cherchez un jeu de lettres proche de Hangman de Coolmath Games ? Dans les deux jeux, les lettres révélées guident le choix de la suivante. Le jeu de Coolmath utilise des ballons ; ce jeu indépendant de WeightPlay se joue en solo avec six mots anglais fixes et une limite de six erreurs par mot. L'indice indique la longueur et le thème : il ajoute un coup, pas une erreur, et ne remplit aucune lettre. Rejouer fait parcourir ce petit ensemble, sans mots infinis ni nouveautés quotidiennes. Changer la langue de l'interface ne traduit pas les réponses anglaises. Le meilleur score reste dans ce navigateur, sans lien avec les comptes, salons multijoueurs ou scores de Coolmath.",
+  "de": "Du suchst ein Buchstaben-Ratespiel ähnlich wie Hangman von Coolmath Games? In beiden helfen aufgedeckte Buchstaben bei der nächsten Wahl. Coolmaths Spiel verwendet Ballons; dieses eigenständige WeightPlay-Spiel ist für eine Person und enthält sechs feste englische Wörter mit höchstens sechs Fehlversuchen pro Wort. Der Hinweis zeigt Wortlänge und Thema: Er zählt als ein Zug, nicht als Fehlversuch, und füllt keine Buchstaben aus. Erneutes Spielen führt durch diesen kleinen Wortvorrat, nicht durch unbegrenzt viele oder täglich neue Wörter. Ein Wechsel der Oberflächensprache übersetzt die englischen Antworten nicht. Der Bestwert bleibt in diesem Browser; Coolmath-Konten, Mehrspieler-Räume und Punktestände werden nicht verbunden.",
+  "it": "Cerchi un gioco di lettere simile a Hangman di Coolmath Games? In entrambi, le lettere rivelate aiutano a scegliere la successiva. Il gioco di Coolmath usa palloncini; questo gioco indipendente di WeightPlay è per una persona e contiene sei parole inglesi fisse, con un limite di sei errori per parola. Il suggerimento mostra lunghezza e tema: aggiunge una mossa, non un errore, e non inserisce lettere. Giocare ancora fa scorrere questo piccolo insieme, non parole infinite o nuove ogni giorno. Cambiare la lingua dell'interfaccia non traduce le risposte inglesi. Il punteggio migliore resta in questo browser, senza collegamenti ad account, stanze multigiocatore o punteggi di Coolmath.",
+  "ru": "Ищете игру с угадыванием букв, похожую на Hangman от Coolmath Games? В обеих играх открытые буквы помогают выбрать следующую. В игре Coolmath используются воздушные шары; эта отдельная игра WeightPlay рассчитана на одного игрока и содержит шесть фиксированных английских слов с пределом в шесть ошибок на слово. Подсказка показывает длину и тему: добавляет один ход, но не ошибку, и не открывает буквы. Повторная игра перебирает этот небольшой набор, а не бесконечные или ежедневные новые слова. Смена языка интерфейса не переводит английские ответы. Лучший счёт хранится в этом браузере; связи с аккаунтами, многопользовательскими комнатами или результатами Coolmath нет.",
+  "hi": "Coolmath Games के Hangman जैसा अक्षर अनुमान लगाने वाला खेल खोज रहे हैं? दोनों में खुले हुए अक्षर अगला अक्षर चुनने में मदद करते हैं। Coolmath का खेल गुब्बारों का इस्तेमाल करता है; WeightPlay का यह अलग खेल एक खिलाड़ी के लिए है, जिसमें छह तय अंग्रेज़ी शब्द और हर शब्द पर छह गलतियों की सीमा है। संकेत शब्द की लंबाई और विषय बताता है: चालों की गिनती में एक जोड़ता है, गलतियों में नहीं, और कोई अक्षर नहीं भरता। फिर खेलने पर इसी छोटे शब्द-समूह में आगे बढ़ते हैं; अनगिनत या रोज़ नए शब्द नहीं मिलते। इंटरफ़ेस की भाषा बदलने से अंग्रेज़ी उत्तरों का अनुवाद नहीं होता। सर्वोत्तम स्कोर इसी ब्राउज़र में रहता है; Coolmath के खाते, मल्टीप्लेयर कमरे या स्कोर इससे जुड़े नहीं हैं।",
+  "ar": "هل تبحث عن لعبة تخمين أحرف تشبه Hangman من Coolmath Games؟ في اللعبتين تساعد الأحرف المكشوفة على اختيار الحرف التالي. تستخدم لعبة Coolmath البالونات؛ أما لعبة WeightPlay المستقلة هذه فهي فردية، وتضم ست كلمات إنجليزية ثابتة مع حد أقصى قدره ستة أخطاء لكل كلمة. يعرض التلميح طول الكلمة وموضوعها: يضيف حركة واحدة، لا خطأ، ولا يملأ أي حرف. ينقلك اللعب مجددًا عبر هذه المجموعة الصغيرة، وليس إلى كلمات غير محدودة أو متجددة يوميًا. تغيير لغة الواجهة لا يترجم الإجابات الإنجليزية. تبقى أفضل نتيجة في هذا المتصفح؛ ولا يوجد اتصال بحسابات Coolmath أو غرف اللعب الجماعي أو نتائجها."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+
+  // Maze Chase: scoped factual Guide repair and separate-work comparison.
+  function applyMazeChaseGuideCorrections() {
+    const clearAnswers = {
+  "en": "Visit every collectible cell in the fixed maze, including the Beacon cells. The remaining collectible count must reach zero to clear the stage; chasing Wisps for bonus points is optional.",
+  "zh-Hant": "走遍固定迷宮中所有有收集物的格子，包含信標所在格。剩餘收集物數量歸零才能過關；追擊光靈取得額外分數則不是必要條件。",
+  "zh-Hans": "走遍固定迷宫中所有有收集物的格子，包含信标所在格。剩余收集物数量归零才能过关；追击光灵获得额外分数则不是必要条件。",
+  "ja": "ビーコンのあるマスも含め、固定迷路の収集物がある全マスを通ります。残りの収集物がゼロになるとステージクリアです。追加得点のためにウィスプを追う必要はありません。",
+  "ko": "봉화가 있는 칸을 포함해 고정 미로에서 수집물이 있는 모든 칸을 지나가세요. 남은 수집물 수가 0이 되어야 단계를 완료합니다. 위스프를 쫓아 추가 점수를 얻는 것은 선택 사항입니다.",
+  "es": "Recorre todas las casillas con objetos del laberinto fijo, incluidas las de las balizas. El número de objetos pendientes debe llegar a cero para superar la etapa; perseguir espectros por puntos extra es opcional.",
+  "pt-BR": "Passe por todas as casas com itens no labirinto fixo, inclusive as dos faróis. A quantidade de itens restantes deve chegar a zero para concluir a etapa; perseguir espíritos por pontos extras é opcional.",
+  "fr": "Parcourez toutes les cases contenant un objet dans le labyrinthe fixe, y compris celles des balises. Le nombre d'objets restants doit atteindre zéro pour terminer l'étape ; poursuivre les esprits pour des points bonus est facultatif.",
+  "de": "Besuche alle Felder mit Sammelobjekten im festen Labyrinth, auch die Leuchtfeuer-Felder. Zum Abschluss der Stufe müssen null Sammelobjekte übrig sein; Wisps für Bonuspunkte zu verfolgen ist freiwillig.",
+  "it": "Visita tutte le caselle con oggetti nel labirinto fisso, comprese quelle dei fari. Il numero di oggetti rimanenti deve arrivare a zero per completare la fase; inseguire gli spiriti per punti extra è facoltativo.",
+  "ru": "Пройдите все клетки фиксированного лабиринта с предметами, включая клетки с маяками. Чтобы завершить этап, нужно собрать все предметы; преследовать духов ради дополнительных очков необязательно.",
+  "hi": "तय भूलभुलैया में बीकन वाली जगहों समेत हर उस खाने से गुज़रें जहाँ कोई संग्रहणीय वस्तु है। चरण पूरा करने के लिए बची हुई वस्तुओं की संख्या शून्य होनी चाहिए; अतिरिक्त अंकों के लिए आत्माओं का पीछा करना वैकल्पिक है।",
+  "ar": "مرّ بكل خلية تحتوي على عنصر قابل للجمع في المتاهة الثابتة، بما فيها خلايا المنارات. يجب ألا تبقى أي عناصر لإنهاء المرحلة؛ أما مطاردة الأرواح للحصول على نقاط إضافية فهي اختيارية."
+};
+    games["maze-chase"].faq[0][1] = clearAnswers.en;
+    games["maze-chase"].relatedIds = ["snake", "lights-out"];
+    for (const [key, answer] of Object.entries(clearAnswers)) {
+      const guide = localizedGames[key]?.["maze-chase"];
+      if (!guide) { if (key === "en") continue; throw new Error(`Missing Maze Chase Guide: ${key}`); }
+      if (!Array.isArray(guide.faq) || guide.faq.length !== 6) throw new Error(`Unexpected Maze Chase FAQ: ${key}`);
+      guide.faq = guide.faq.map(([question, value], index) => [question, index === 0 ? answer : value]);
+      guide.relatedIds = ["snake", "lights-out"];
+    }
+  }
+  applyMazeChaseGuideCorrections();
+  window.WeightPlayGameInfo.applyMazeChaseGuideCorrections = applyMazeChaseGuideCorrections;
+  gameplayProfiles["maze-chase"] ||= {};
+  gameplayProfiles["maze-chase"].marketComparison = {
+    name: "PAC-MAN",
+    source: "https://pacman.com/en/character/",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Looking for a browser maze-chase game with route choices and temporary chase reversals like PAC-MAN? Both ask you to collect items, avoid pursuers and choose when to take a power item. Here, guide Orla through three stages of one fixed maze, collect star motes and use Beacons against four Wisp pursuit styles. This independent game uses its own layout, movement and scoring rules, not the original arcade maze or its ghost routines. Best score and sound preferences stay in this browser; this is not an official PAC-MAN edition.",
+  "zh-Hant": "在找像 PAC-MAN 一樣，需要規劃路線、並把握短暫反擊時機的瀏覽器迷宮遊戲嗎？兩者都要收集物品、避開追兵，並選擇取得強化道具的時機。本站讓你引導 Orla 在同一座固定迷宮挑戰三個階段，收集星點，利用信標對抗四種不同追逐方式的光靈。這款獨立遊戲使用自己的地圖、移動與計分規則，不是原版街機的迷宮或鬼魂行動模式。最高分與音效偏好只保存在此瀏覽器；本站不是 PAC-MAN 官方版本。",
+  "zh-Hans": "在找像 PAC-MAN 一样，需要规划路线、并把握短暂反击时机的浏览器迷宫游戏吗？两者都要收集物品、避开追兵，并选择获得强化道具的时机。本站让你引导 Orla 在同一座固定迷宫挑战三个阶段，收集星点，利用信标对抗四种不同追逐方式的光灵。这款独立游戏使用自己的地图、移动与计分规则，不是原版街机的迷宫或幽灵行动模式。最高分与音效偏好只保存在此浏览器；本站不是 PAC-MAN 官方版本。",
+  "ja": "PAC-MAN のように進路を考え、一時的に追う側へ逆転できるブラウザーの迷路ゲームを探していますか。どちらもアイテムを集め、追手を避け、パワーアイテムを取るタイミングを選びます。本作では Orla を同じ固定迷路の3ステージへ導き、星の光を集め、ビーコンで4種類の追跡パターンを持つウィスプに対抗します。独立した本作の地形、移動、得点ルールは独自のもので、元のアーケード版の迷路やゴーストの行動を再現するものではありません。最高得点と音の設定はこのブラウザーに保存されます。PAC-MAN の公式版ではありません。",
+  "ko": "PAC-MAN처럼 경로를 선택하고 잠시 추격을 뒤집는 브라우저 미로 게임을 찾고 있나요? 두 게임 모두 아이템을 모으고 추격자를 피하며 강화 아이템을 얻을 때를 고릅니다. 여기서는 Orla를 같은 고정 미로의 세 단계로 이끌고 별빛을 모으며 봉화로 네 가지 추격 방식을 지닌 위스프에 맞섭니다. 이 독립 게임은 자체 지도, 이동 및 점수 규칙을 사용하며 원작 아케이드의 미로나 유령 행동을 재현하지 않습니다. 최고 점수와 소리 설정은 이 브라우저에만 저장되며 PAC-MAN 공식 버전이 아닙니다.",
+  "es": "¿Buscas un juego de laberintos para navegador con decisiones de ruta y cambios temporales de perseguidor a perseguido como en PAC-MAN? Ambos te piden recoger objetos, esquivar perseguidores y decidir cuándo tomar un potenciador. Aquí guías a Orla por tres etapas del mismo laberinto fijo, recoges motas estelares y usas balizas contra cuatro formas de persecución de los espectros. Este juego independiente tiene su propio mapa, movimiento y puntuación, no el laberinto ni las rutinas de fantasmas del arcade original. La mejor puntuación y el sonido se guardan en este navegador; no es una edición oficial de PAC-MAN.",
+  "pt-BR": "Procura um jogo de labirinto no navegador com escolhas de rota e momentos de virar a perseguição, como em PAC-MAN? Nos dois, você coleta itens, evita perseguidores e escolhe quando pegar um poder. Aqui você guia Orla por três etapas do mesmo labirinto fixo, coleta pontos de luz estelar e usa faróis contra quatro estilos de perseguição dos espíritos. Este jogo independente tem mapa, movimento e pontuação próprios, não o labirinto nem as rotinas dos fantasmas do arcade original. O recorde e a preferência de som ficam neste navegador; não é uma edição oficial de PAC-MAN.",
+  "fr": "Vous cherchez un jeu de labyrinthe sur navigateur où choisir son trajet et inverser temporairement la poursuite, comme dans PAC-MAN ? Les deux demandent de ramasser des objets, d'éviter des poursuivants et de choisir quand prendre un bonus de puissance. Ici, guidez Orla à travers trois étapes du même labyrinthe fixe, ramassez les lueurs d'étoiles et utilisez les balises contre quatre modes de poursuite des esprits. Ce jeu indépendant possède sa propre carte et ses propres règles de déplacement et de score, et non le labyrinthe ou les routines des fantômes de l'arcade original. Record et réglage sonore restent dans ce navigateur ; ce n'est pas une édition officielle de PAC-MAN.",
+  "de": "Suchst du ein Browser-Labyrinthspiel mit Routenplanung und kurzen Rollenwechseln bei der Verfolgung wie in PAC-MAN? In beiden sammelst du Gegenstände, weichst Verfolgern aus und entscheidest, wann du ein Kraftobjekt aufnimmst. Hier führst du Orla durch drei Stufen desselben festen Labyrinths, sammelst Sternenpunkte und setzt Leuchtfeuer gegen vier Wisp-Verfolgungsmuster ein. Dieses eigenständige Spiel hat eigene Karten-, Bewegungs- und Punkteregeln, nicht das Labyrinth oder die Geisterroutinen des ursprünglichen Arcade-Spiels. Bestwert und Toneinstellung bleiben in diesem Browser; es ist keine offizielle PAC-MAN-Ausgabe.",
+  "it": "Cerchi un gioco di labirinti per browser in cui scegliere il percorso e ribaltare brevemente l'inseguimento, come in PAC-MAN? Entrambi richiedono di raccogliere oggetti, evitare inseguitori e decidere quando prendere un potenziamento. Qui guidi Orla attraverso tre fasi dello stesso labirinto fisso, raccogli scintille stellari e usi i fari contro quattro modalità di inseguimento degli spiriti. Questo gioco indipendente usa una mappa e regole di movimento e punteggio proprie, non il labirinto o le routine dei fantasmi dell'arcade originale. Record e preferenze audio restano in questo browser; non è un'edizione ufficiale di PAC-MAN.",
+  "ru": "Ищете браузерную погоню в лабиринте с выбором маршрута и временной сменой ролей, как в PAC-MAN? В обеих играх нужно собирать предметы, избегать преследователей и выбирать момент для усиления. Здесь вы проводите Orla через три этапа одного фиксированного лабиринта, собираете звёздные искры и используете маяки против четырёх типов преследования духов. Эта самостоятельная игра использует собственную карту, движение и подсчёт очков, а не лабиринт и алгоритмы призраков оригинального аркадного автомата. Рекорд и настройка звука остаются в этом браузере; это не официальная версия PAC-MAN.",
+  "hi": "PAC-MAN जैसा ब्राउज़र भूलभुलैया खेल खोज रहे हैं, जिसमें रास्ता चुनना और कुछ समय के लिए पीछा करने वाले पर पलटवार करना अहम हो? दोनों में चीज़ें इकट्ठा करते हुए पीछा करने वालों से बचना और शक्ति देने वाली वस्तु लेने का समय चुनना होता है। यहाँ Orla को एक ही तय भूलभुलैया के तीन चरणों से ले जाएँ, तारों के कण जुटाएँ और चार तरह से पीछा करने वाली आत्माओं के विरुद्ध बीकन इस्तेमाल करें। इस स्वतंत्र खेल का नक्शा, चाल और स्कोर के नियम अपने हैं; यह मूल आर्केड की भूलभुलैया या भूतों की चाल का पुनरुत्पादन नहीं है। सर्वश्रेष्ठ स्कोर और ध्वनि की पसंद इसी ब्राउज़र में रहती है; यह PAC-MAN का आधिकारिक संस्करण नहीं है।",
+  "ar": "هل تبحث عن لعبة مطاردة في المتاهة عبر المتصفح تختار فيها مسارك وتقلب المطاردة مؤقتًا كما في PAC-MAN؟ تتطلب اللعبتان جمع العناصر وتجنب المطاردين واختيار وقت التقاط عنصر القوة. هنا تقود Orla خلال ثلاث مراحل في المتاهة الثابتة نفسها، وتجمع نقاط النجوم وتستخدم المنارات ضد أربعة أنماط لمطاردة الأرواح. لهذه اللعبة المستقلة خريطتها وقواعد حركتها وتسجيل نقاطها، وليست متاهة جهاز الأركيد الأصلي أو أنماط أشباحه. تُحفظ أفضل نتيجة وتفضيلات الصوت في هذا المتصفح؛ وليست هذه نسخة رسمية من PAC-MAN."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+
+  // Hoop League: comparison only, separate from identity and publication approval.
+  gameplayProfiles["animal-hoop-league"] ||= {};
+  gameplayProfiles["animal-hoop-league"].marketComparison = {
+    name: "Basketball FRVR",
+    source: "https://frvr.com/tutorials/frvr-basketball-how-to-play-and-faq/",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Looking for a basketball shooting game like Basketball FRVR? Both reward adjusting aim and power. Basketball FRVR uses swipe or drag shooting for a continuing high-score run. Here, move the aim left or right, hold Shoot and release inside the power window across six authored courts with fixed shot allowances. Finish ahead of the preset rival score to unlock the next court; cleared-court progress stays in this browser. This independent single-player game is not an FRVR edition and does not connect to its tournaments.",
+  "zh-Hant": "在找像 Basketball FRVR 的籃球投籃遊戲嗎？兩者都需要調整瞄準與力道。Basketball FRVR 以滑動或拖曳投籃，持續挑戰高分。本站則在六座設計好的球場中，左右移動瞄準，按住「投籃」蓄力，再於力道區間內放開；每座球場都有固定出手次數。最後得分超過預設對手分數才能解鎖下一座球場，已通關球場的進度保存在此瀏覽器。這是獨立的單人遊戲，不是 FRVR 版本，也不連接其錦標賽。",
+  "zh-Hans": "在找像 Basketball FRVR 的篮球投篮游戏吗？两者都需要调整瞄准与力度。Basketball FRVR 通过滑动或拖动投篮，持续挑战高分。本站则在六座设计好的球场中，左右移动瞄准，按住“投篮”蓄力，再于力度区间内松开；每座球场都有固定出手次数。最终得分超过预设对手分数才能解锁下一座球场，已通关球场的进度保存在此浏览器。这是独立的单人游戏，不是 FRVR 版本，也不连接其锦标赛。",
+  "ja": "Basketball FRVR のようなバスケットボールのシュートゲームを探していますか。どちらも狙いと強さの調整が大切です。Basketball FRVR はスワイプやドラッグでシュートし、ハイスコアに挑み続けます。本作では、シュート回数が決まった6つのコートで狙いを左右に動かし、シュートボタンを長押しして適切なパワーの範囲で離します。最後に相手の設定スコアを上回ると次のコートが開き、クリアしたコートの進捗はこのブラウザーに保存されます。独立した1人用ゲームであり、FRVR版でも、その大会に接続するゲームでもありません。",
+  "ko": "Basketball FRVR와 비슷한 농구 슛 게임을 찾고 있나요? 두 게임 모두 조준과 힘 조절이 중요합니다. Basketball FRVR는 스와이프나 드래그로 슛을 던지며 계속 높은 점수에 도전합니다. 여기서는 슛 횟수가 정해진 여섯 코트에서 조준을 좌우로 움직이고, 슛 버튼을 길게 눌렀다가 적절한 힘 구간에서 놓습니다. 마지막 점수가 미리 정해진 상대 점수보다 높으면 다음 코트가 열리며, 완료한 코트 진행도는 이 브라우저에 저장됩니다. 이 독립적인 1인용 게임은 FRVR 버전이 아니며 해당 대회에 연결되지 않습니다.",
+  "es": "¿Buscas un juego de tiros de baloncesto parecido a Basketball FRVR? Ambos premian ajustar la puntería y la fuerza. Basketball FRVR usa deslizamientos o arrastres para seguir buscando una puntuación alta. Aquí mueves la mira a izquierda o derecha, mantienes pulsado Tiro y sueltas dentro del intervalo de potencia en seis canchas diseñadas con un número fijo de lanzamientos. Termina por encima del marcador rival predefinido para desbloquear la siguiente cancha; las canchas superadas se guardan en este navegador. Este juego independiente para un jugador no es una edición de FRVR ni conecta con sus torneos.",
+  "pt-BR": "Procura um jogo de arremessos de basquete parecido com Basketball FRVR? Ambos valorizam o ajuste da mira e da força. Basketball FRVR usa deslizes ou movimentos de arrastar para buscar pontuações cada vez maiores. Aqui você move a mira para os lados, segura Arremessar e solta dentro da faixa de potência em seis quadras planejadas, cada uma com um número fixo de arremessos. Termine acima do placar rival predefinido para liberar a próxima quadra; as quadras concluídas ficam salvas neste navegador. Este jogo independente para uma pessoa não é uma edição da FRVR nem se conecta aos seus torneios.",
+  "fr": "Vous cherchez un jeu de tirs de basket proche de Basketball FRVR ? Les deux récompensent le réglage de la visée et de la puissance. Basketball FRVR utilise le balayage ou le glisser-déposer pour poursuivre un meilleur score. Ici, déplacez la visée à gauche ou à droite, maintenez Tirer puis relâchez dans la zone de puissance sur six terrains conçus avec un nombre fixe de tirs. Terminez au-dessus du score adverse prédéfini pour débloquer le terrain suivant ; les terrains terminés sont mémorisés dans ce navigateur. Ce jeu solo indépendant n'est pas une édition FRVR et ne se connecte pas à ses tournois.",
+  "de": "Du suchst ein Basketball-Wurfspiel ähnlich wie Basketball FRVR? In beiden kommt es auf Zielrichtung und Kraft an. Basketball FRVR nutzt Wisch- oder Ziehbewegungen für einen fortlaufenden Highscore-Versuch. Hier bewegst du das Ziel nach links oder rechts, hältst Werfen gedrückt und lässt im passenden Kraftbereich los. Sechs gestaltete Plätze haben jeweils eine feste Wurfzahl. Übertriff am Ende den vorgegebenen Gegnerstand, um den nächsten Platz freizuschalten; abgeschlossene Plätze werden in diesem Browser gespeichert. Dieses unabhängige Einzelspiel ist keine FRVR-Ausgabe und verbindet sich nicht mit deren Turnieren.",
+  "it": "Cerchi un gioco di tiri a canestro simile a Basketball FRVR? Entrambi premiano la regolazione di mira e potenza. Basketball FRVR usa scorrimenti o trascinamenti per continuare a cercare un punteggio più alto. Qui sposti la mira a destra o sinistra, tieni premuto Tiro e rilasci nella fascia di potenza su sei campi progettati con un numero fisso di tiri. Supera il punteggio avversario prestabilito per sbloccare il campo successivo; i campi completati restano salvati in questo browser. Questo gioco indipendente per una persona non è un'edizione FRVR e non si collega ai suoi tornei.",
+  "ru": "Ищете игру с баскетбольными бросками, похожую на Basketball FRVR? В обеих важны направление и сила броска. В Basketball FRVR бросают свайпом или перетаскиванием, продолжая набирать высокий счёт. Здесь нужно двигать прицел влево или вправо, удерживать кнопку броска и отпускать её в нужном диапазоне силы. На шести подготовленных площадках число бросков ограничено. Превысьте заданный счёт соперника, чтобы открыть следующую площадку; пройденные площадки сохраняются в этом браузере. Эта независимая одиночная игра не является версией FRVR и не подключается к её турнирам.",
+  "hi": "Basketball FRVR जैसा बास्केटबॉल शूटिंग गेम खोज रहे हैं? दोनों में निशाना और ताकत सही रखना ज़रूरी है। Basketball FRVR में स्वाइप या ड्रैग से शॉट लगाकर ऊँचे स्कोर का प्रयास जारी रहता है। यहाँ छह तैयार कोर्ट में निशाना बाएँ या दाएँ करें, शूट दबाकर ताकत बढ़ाएँ और सही ताकत वाले हिस्से में छोड़ें। हर कोर्ट में शॉट की संख्या तय है। अगला कोर्ट खोलने के लिए अंत में प्रतिद्वंद्वी के तय स्कोर से आगे रहें; पूरे किए गए कोर्ट की प्रगति इसी ब्राउज़र में रहती है। यह स्वतंत्र एकल-खिलाड़ी गेम FRVR का संस्करण नहीं है और उसके टूर्नामेंट से नहीं जुड़ता।",
+  "ar": "هل تبحث عن لعبة تسديد كرة سلة تشبه Basketball FRVR؟ تعتمد اللعبتان على ضبط التصويب والقوة. تستخدم Basketball FRVR السحب أو التمرير للتسديد ومواصلة محاولة تحقيق نتيجة أعلى. هنا تحرّك التصويب يميناً أو يساراً، وتضغط مطولاً على التسديد ثم تفلت داخل نطاق القوة المناسب، عبر ستة ملاعب مصممة بعدد محدد من التسديدات لكل ملعب. تجاوز في النهاية نتيجة الخصم المحددة مسبقاً لفتح الملعب التالي؛ ويُحفظ تقدم الملاعب المكتملة في هذا المتصفح. هذه لعبة مستقلة للاعب واحد، وليست إصداراً من FRVR ولا تتصل ببطولاتها."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+
+  // Optional Putt comparison; separate work, never a game alias or release approval.
+  gameplayProfiles["animal-putt-trails"] ||= {};
+  gameplayProfiles["animal-putt-trails"].marketComparison = {
+    name: "Golf With Your Friends",
+    source: "https://store.steampowered.com/app/431240/Golf_With_Your_Friends/",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Both games involve choosing a putting line and controlling shot power to reach the hole around obstacles. Golf With Your Friends offers simultaneous online mini golf for up to 12 players and a course editor. Here you play alone through 30 trails, unlock the next trail by completing the current one, and revisit unlocked holes to improve your stroke count. Progress and best strokes are stored in this browser. These are separate games: this page does not join Team17 multiplayer sessions or load community courses.",
+  "zh-Hant": "兩款遊戲都需要規劃推桿路線、控制出手力道，繞過障礙把球送進洞。Golf With Your Friends 提供最多 12 人同時進行的線上迷你高爾夫，以及球場編輯器。本站則是單人遊玩 30 條小徑，完成目前的小徑後解鎖下一條，也能重玩已解鎖的球洞，挑戰更少的桿數。進度與最佳桿數保存在這個瀏覽器中。兩者是不同作品；本頁不會加入 Team17 的多人連線，也不會載入社群製作的球場。",
+  "zh-Hans": "两款游戏都需要规划推杆路线、控制出手力度，绕过障碍把球送进洞。Golf With Your Friends 提供最多 12 人同时进行的在线迷你高尔夫，以及球场编辑器。本站则是单人游玩 30 条小径，完成当前小径后解锁下一条，也能重玩已解锁的球洞，挑战更少的杆数。进度与最佳杆数保存在此浏览器中。两者是不同作品；本页不会加入 Team17 的多人联机，也不会加载社区制作的球场。",
+  "ja": "どちらも障害物を避けてカップに入れるために、パットの方向と強さを考えるゲームです。Golf With Your Friends は最大12人が同時に遊べるオンラインミニゴルフとコースエディターを備えています。こちらは30のコースを一人で進め、クリアすると次のコースが解放されます。解放済みのホールを再挑戦して、より少ない打数を目指すこともできます。進行状況とベスト打数はこのブラウザに保存されます。両者は別の作品であり、このページからTeam17のマルチプレイに参加したり、コミュニティ製のコースを読み込んだりすることはありません。",
+  "ko": "두 게임 모두 장애물을 피해 공을 홀에 넣기 위해 퍼팅 방향과 힘을 조절합니다. Golf With Your Friends는 최대 12명이 동시에 즐기는 온라인 미니골프와 코스 편집기를 제공합니다. 이 게임에서는 혼자 30개 트레일을 진행하며, 현재 트레일을 완료하면 다음 트레일이 열립니다. 열린 홀을 다시 플레이해 타수를 줄일 수도 있습니다. 진행 상황과 최고 타수는 이 브라우저에 저장됩니다. 두 게임은 서로 다른 작품이며, 이 페이지에서 Team17 멀티플레이에 참가하거나 커뮤니티 코스를 불러올 수는 없습니다.",
+  "es": "En ambos juegos eliges la dirección y la fuerza del golpe para llevar la bola al hoyo evitando obstáculos. Golf With Your Friends ofrece minigolf en línea simultáneo para hasta 12 jugadores y un editor de campos. Aquí juegas en solitario por 30 senderos: completar el actual desbloquea el siguiente, y puedes repetir los hoyos disponibles para reducir tus golpes. El progreso y tus mejores marcas se guardan en este navegador. Son juegos distintos: esta página no conecta con partidas multijugador de Team17 ni carga campos de la comunidad.",
+  "pt-BR": "Nos dois jogos, você escolhe a direção e a força da tacada para chegar ao buraco contornando obstáculos. Golf With Your Friends oferece minigolfe on-line simultâneo para até 12 jogadores e um editor de campos. Aqui você joga sozinho por 30 trilhas: concluir a atual libera a próxima, e é possível repetir os buracos liberados para usar menos tacadas. O progresso e as melhores marcas ficam salvos neste navegador. São jogos diferentes: esta página não entra em partidas multijogador da Team17 nem carrega campos da comunidade.",
+  "fr": "Dans les deux jeux, vous choisissez la direction et la puissance du putt pour atteindre le trou en évitant les obstacles. Golf With Your Friends propose du minigolf en ligne simultané jusqu’à 12 joueurs et un éditeur de parcours. Ici, vous jouez seul sur 30 sentiers : terminer le sentier actuel débloque le suivant, et vous pouvez rejouer les trous accessibles pour réduire votre nombre de coups. La progression et vos meilleurs résultats sont enregistrés dans ce navigateur. Ce sont deux jeux distincts : cette page ne rejoint pas les parties multijoueurs de Team17 et ne charge pas les parcours de la communauté.",
+  "de": "In beiden Spielen wählst du die Putt-Richtung und Schlagstärke, um den Ball an Hindernissen vorbei ins Loch zu bringen. Golf With Your Friends bietet gleichzeitiges Online-Minigolf für bis zu 12 Personen und einen Streckeneditor. Hier spielst du allein auf 30 Pfaden: Nach dem Abschluss wird der nächste freigeschaltet. Bereits zugängliche Löcher kannst du wiederholen, um weniger Schläge zu benötigen. Fortschritt und Bestwerte werden in diesem Browser gespeichert. Es sind unterschiedliche Spiele; diese Seite verbindet sich weder mit Team17-Mehrspielerpartien noch lädt sie Community-Kurse.",
+  "it": "In entrambi i giochi scegli la direzione e la potenza del putt per raggiungere la buca evitando gli ostacoli. Golf With Your Friends offre minigolf online simultaneo fino a 12 giocatori e un editor di campi. Qui giochi da solo lungo 30 sentieri: completare quello attuale sblocca il successivo, e puoi ripetere le buche disponibili per migliorare il numero di colpi. Progressi e migliori risultati vengono salvati in questo browser. Sono giochi distinti: questa pagina non si collega alle partite multigiocatore di Team17 e non carica campi della community.",
+  "ru": "В обеих играх нужно выбирать направление и силу удара, чтобы обойти препятствия и отправить мяч в лунку. Golf With Your Friends предлагает одновременный сетевой мини-гольф для 12 игроков и редактор полей. Здесь вы играете в одиночку на 30 тропах: прохождение текущей открывает следующую, а доступные лунки можно повторять, стараясь сократить число ударов. Прогресс и лучшие результаты сохраняются в этом браузере. Это разные игры: данная страница не подключается к сетевым матчам Team17 и не загружает поля сообщества.",
+  "hi": "दोनों खेलों में बाधाओं से बचते हुए गेंद को होल तक पहुँचाने के लिए पुट की दिशा और ताकत चुननी होती है। Golf With Your Friends में अधिकतम 12 खिलाड़ी एक साथ ऑनलाइन मिनीगोल्फ खेल सकते हैं और कोर्स एडिटर भी उपलब्ध है। यहाँ आप अकेले 30 ट्रेल खेलते हैं। मौजूदा ट्रेल पूरा करने पर अगला खुलता है; खुले हुए होल दोबारा खेलकर कम स्ट्रोक में पूरा करने की कोशिश कर सकते हैं। प्रगति और सर्वश्रेष्ठ स्ट्रोक इसी ब्राउज़र में सहेजे जाते हैं। ये अलग खेल हैं: यह पेज Team17 के मल्टीप्लेयर मैच से नहीं जुड़ता और समुदाय के बनाए कोर्स लोड नहीं करता।",
+  "ar": "تختار في اللعبتين اتجاه الضربة وقوتها لإيصال الكرة إلى الحفرة مع تجنب العوائق. تقدم Golf With Your Friends غولفًا مصغرًا عبر الإنترنت لما يصل إلى 12 لاعبًا في الوقت نفسه، إضافة إلى محرر للملاعب. هنا تلعب منفردًا عبر 30 مسارًا؛ يفتح إكمال المسار الحالي المسار التالي، ويمكنك إعادة الحفر المتاحة لمحاولة تقليل عدد الضربات. يُحفظ التقدم وأفضل عدد للضربات في هذا المتصفح. اللعبتان منفصلتان؛ لا تنضم هذه الصفحة إلى مباريات Team17 الجماعية ولا تحمّل ملاعب المجتمع."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+
+  // Optional Orchard comparison: separate original work, not an alias or publication approval.
+  gameplayProfiles["animal-echo-orchard"] ||= {};
+  gameplayProfiles["animal-echo-orchard"].marketComparison = {
+    name: "Simon — Hasbro",
+    source: "https://instructions.hasbro.com/en-us/instruction/simon-game",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Both games ask you to watch a sequence and press the matching controls in the same order. Simon uses an electronic unit with lights and sounds and random patterns that grow longer. Here, four glowing fruits form 30 fixed stages across six arcs. You can replay the light pattern; a wrong tap restarts the answer and shows the pattern again without taking away unlocked stages. This is single-player browser practice with locally saved progress, not an official Simon edition or a connection to a Hasbro device.",
+  "zh-Hant": "兩款遊戲都要先觀察序列，再依相同順序按下對應按鈕。Simon 使用帶有燈光與聲音的電子裝置，隨機序列會逐漸加長。本站則以四種發光果實組成 30 個固定關卡，分成六個篇章。你可以重播光序；按錯後會清除本次答案並再次播放，不會失去已解鎖的關卡。這是單人瀏覽器練習，進度保存在本機，不是 Simon 官方版本，也不會連接 Hasbro 裝置。",
+  "zh-Hans": "两款游戏都要先观察序列，再按相同顺序按下对应按钮。Simon 使用带有灯光与声音的电子设备，随机序列会逐渐加长。本站则以四种发光果实组成 30 个固定关卡，分成六个篇章。你可以重播光序；按错后会清除本次答案并再次播放，不会失去已解锁的关卡。这是单人浏览器练习，进度保存在当前浏览器，不是 Simon 官方版本，也不会连接 Hasbro 设备。",
+  "ja": "どちらも順番を見て覚え、対応するボタンを同じ順番で押すゲームです。Simon は光と音を出す電子機器で、ランダムなパターンが次第に長くなります。こちらは光る4種類の果実を使う、6章・全30ステージの固定パターンです。光の順番は再生でき、押し間違えても回答がリセットされて再び表示されるだけで、解放済みステージは失われません。一人で遊ぶブラウザー用ゲームで、進行状況はこのブラウザーに保存されます。Simonの公式版ではなく、Hasbroの機器にも接続しません。",
+  "ko": "두 게임 모두 순서를 관찰한 뒤 해당 버튼을 같은 순서로 누릅니다. Simon은 빛과 소리를 내는 전자 기기에서 점점 길어지는 무작위 패턴을 보여 줍니다. 이 게임은 빛나는 네 종류의 과일로 구성된 고정 패턴 30개를 여섯 장에 나누어 제공합니다. 빛의 순서를 다시 볼 수 있으며, 잘못 누르면 현재 입력을 지우고 패턴을 다시 보여 줄 뿐 열린 스테이지는 잃지 않습니다. 진행 상황을 이 브라우저에 저장하는 싱글 플레이 게임이며, Simon 공식 버전이나 Hasbro 기기 연결 서비스가 아닙니다.",
+  "es": "En ambos juegos observas una secuencia y pulsas los controles correspondientes en el mismo orden. Simon usa un dispositivo electrónico con luces y sonidos y patrones aleatorios cada vez más largos. Aquí, cuatro frutas luminosas forman 30 etapas fijas en seis arcos. Puedes volver a ver el patrón; un toque incorrecto borra la respuesta y reproduce la secuencia sin quitarte las etapas desbloqueadas. Es una práctica individual para navegador con progreso local, no una edición oficial de Simon ni una conexión con dispositivos de Hasbro.",
+  "pt-BR": "Nos dois jogos, você observa uma sequência e aperta os controles correspondentes na mesma ordem. Simon usa um aparelho eletrônico com luzes e sons e padrões aleatórios cada vez mais longos. Aqui, quatro frutas luminosas formam 30 fases fixas em seis arcos. Você pode rever o padrão; um toque errado apaga a resposta e reproduz a sequência sem tirar as fases desbloqueadas. É um treino individual no navegador com progresso salvo localmente, não uma edição oficial de Simon nem uma conexão com aparelhos da Hasbro.",
+  "fr": "Dans les deux jeux, vous observez une séquence puis appuyez sur les commandes correspondantes dans le même ordre. Simon utilise un appareil électronique avec lumières et sons, dont les séquences aléatoires s’allongent. Ici, quatre fruits lumineux composent 30 étapes fixes réparties en six arcs. Vous pouvez revoir le motif ; une erreur efface la réponse et relance la séquence sans retirer les étapes débloquées. C’est un jeu solo pour navigateur avec sauvegarde locale, et non une édition officielle de Simon ou une connexion à un appareil Hasbro.",
+  "de": "In beiden Spielen beobachtest du eine Folge und drückst die passenden Tasten in derselben Reihenfolge. Simon nutzt ein elektronisches Gerät mit Licht und Ton und immer längeren Zufallsfolgen. Hier bilden vier leuchtende Früchte 30 feste Stufen in sechs Abschnitten. Du kannst die Lichtfolge erneut ansehen; ein falscher Tipp setzt die Eingabe zurück und spielt das Muster erneut ab, ohne freigeschaltete Stufen zu entfernen. Dies ist ein Einzelspieler-Browserspiel mit lokalem Fortschritt, keine offizielle Simon-Ausgabe und keine Verbindung zu Hasbro-Geräten.",
+  "it": "In entrambi i giochi osservi una sequenza e premi i comandi corrispondenti nello stesso ordine. Simon usa un dispositivo elettronico con luci e suoni e sequenze casuali sempre più lunghe. Qui, quattro frutti luminosi compongono 30 fasi fisse divise in sei archi. Puoi rivedere il motivo; un tocco sbagliato azzera la risposta e riproduce la sequenza senza togliere le fasi sbloccate. È un gioco per browser a giocatore singolo con progressi locali, non un’edizione ufficiale di Simon né un collegamento a dispositivi Hasbro.",
+  "ru": "В обеих играх нужно запомнить последовательность и нажать соответствующие кнопки в том же порядке. Simon использует электронное устройство со светом и звуком и случайными последовательностями, которые становятся длиннее. Здесь четыре светящихся фрукта образуют 30 фиксированных этапов в шести главах. Световой рисунок можно повторить; ошибка сбрасывает текущий ответ и запускает показ заново, не закрывая открытые этапы. Это одиночная браузерная игра с локальным сохранением, а не официальная версия Simon или подключение к устройству Hasbro.",
+  "hi": "दोनों खेलों में क्रम देखकर याद रखना और उसी क्रम में संबंधित बटन दबाना होता है। Simon में रोशनी और आवाज़ वाला इलेक्ट्रॉनिक उपकरण होता है, जिसकी यादृच्छिक श्रृंखलाएँ लंबी होती जाती हैं। यहाँ चार चमकते फलों के 30 तय चरण छह अध्यायों में हैं। आप रोशनी का क्रम दोबारा देख सकते हैं; गलत टैप से मौजूदा उत्तर मिटता है और क्रम फिर दिखता है, लेकिन खुले चरण बंद नहीं होते। यह ब्राउज़र में अकेले खेलने का अभ्यास है और प्रगति इसी ब्राउज़र में रहती है। यह Simon का आधिकारिक संस्करण या Hasbro उपकरण से जुड़ने की सेवा नहीं है।",
+  "ar": "في اللعبتين تراقب تسلسلاً ثم تضغط الأزرار المطابقة بالترتيب نفسه. تستخدم Simon جهازاً إلكترونياً بأضواء وأصوات وتسلسلات عشوائية تزداد طولاً. هنا تكوّن أربع فواكه مضيئة 30 مرحلة ثابتة ضمن ستة فصول. يمكنك إعادة عرض النمط الضوئي؛ والنقرة الخاطئة تمسح الإجابة الحالية وتعرض التسلسل مجدداً من دون إلغاء المراحل المفتوحة. إنها تجربة فردية في المتصفح مع تقدم محفوظ محلياً، وليست إصداراً رسمياً من Simon ولا اتصالاً بجهاز Hasbro."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+  // Optional drawing-race comparison; not identity, a tag, or publication approval.
+  gameplayProfiles["animal-sketchwheel-rally"] ||= {};
+  gameplayProfiles["animal-sketchwheel-rally"].marketComparison = {
+    name: "Scribble Rider",
+    source: "https://apps.apple.com/us/app/scribble-rider/id1518267642",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Scribble Rider puts drawn wheels at the centre of an all-terrain vehicle challenge. The shared decision is adapting the wheel shape to the ground ahead. Here you draw on the pad or choose one of four blueprints, then redraw during a race against a computer-controlled rival. Thirty authored courses across six chapters combine flat road, stairs, mud, tunnels, gaps, ice and wind. Height, width, roundness and grip matter under this game's own terrain rules; it does not reproduce Scribble Rider's courses or vehicle simulation. Cleared races, upgrades and best times stay in this browser. This page does not connect to Voodoo accounts or multiplayer races.",
+  "zh-Hant": "Scribble Rider 以畫出的輪子應付不同地形，兩款遊戲共同的決策是依前方路面調整輪型。本站可以在畫板上畫輪子，或選擇四種藍圖，並在與電腦對手競速時隨時重畫。六個篇章、30 條設計好的賽道結合平路、階梯、泥地、隧道、缺口、冰面與風區。高度、寬度、圓度及抓地力依本站自己的地形規則發揮作用，不是重現 Scribble Rider 的賽道或車輛模擬。通關、升級及最佳時間保存在此瀏覽器，不會連接 Voodoo 帳號或多人賽事。",
+  "zh-Hans": "Scribble Rider 用画出的轮子应对不同地形，两款游戏共同的决策是根据前方路面调整轮型。本站可以在画板上画轮子，或选择四种蓝图，并在与电脑对手竞速时随时重画。六个篇章、30 条设计好的赛道结合平路、阶梯、泥地、隧道、缺口、冰面与风区。高度、宽度、圆度及抓地力按本站自己的地形规则发挥作用，并非重现 Scribble Rider 的赛道或车辆模拟。通关、升级及最佳时间保存在当前浏览器，不会连接 Voodoo 账号或多人赛事。",
+  "ja": "Scribble Rider は、描いた車輪でさまざまな地形に挑むゲームです。共通する判断は、前方の路面に合わせて車輪の形を変えること。こちらではパッドに描くか4種類の設計図を選び、コンピューターのライバルとのレース中にも描き直せます。6章・全30コースには平地、階段、泥、トンネル、隙間、氷、風が組み合わされています。高さ、幅、丸さ、グリップは本作独自の地形ルールに従い、Scribble Rider のコースや車両シミュレーションを再現するものではありません。クリア記録、強化、ベストタイムはこのブラウザーに保存されます。Voodoo のアカウントやマルチプレイのレースには接続しません。",
+  "ko": "Scribble Rider는 직접 그린 바퀴로 다양한 지형을 달리는 게임입니다. 두 게임의 공통된 판단은 앞에 있는 지형에 맞춰 바퀴 모양을 바꾸는 것입니다. 이 게임에서는 패드에 그리거나 네 가지 설계도 중 하나를 고르고, 컴퓨터 상대와 경주하는 도중에도 다시 그릴 수 있습니다. 여섯 장의 30개 설계된 코스에 평지, 계단, 진흙, 터널, 틈, 얼음과 바람이 조합됩니다. 높이, 너비, 둥근 정도와 접지력은 이 게임 고유의 지형 규칙을 따르며 Scribble Rider의 코스나 차량 시뮬레이션을 재현하지 않습니다. 완료한 경주, 업그레이드와 최고 기록은 이 브라우저에 저장됩니다. Voodoo 계정이나 멀티플레이 경주에 연결되지 않습니다.",
+  "es": "Scribble Rider propone superar distintos terrenos con ruedas dibujadas. La decisión común es adaptar su forma al suelo que viene. Aquí dibujas en el panel o eliges uno de cuatro planos, y puedes redibujar durante la carrera contra un rival controlado por el ordenador. Treinta circuitos diseñados en seis capítulos combinan suelo llano, escaleras, barro, túneles, huecos, hielo y viento. La altura, anchura, redondez y agarre responden a las reglas propias de este juego; no reproducen los circuitos ni la simulación de vehículos de Scribble Rider. Las carreras superadas, mejoras y mejores tiempos quedan en este navegador. Esta página no conecta con cuentas de Voodoo ni carreras multijugador.",
+  "pt-BR": "Scribble Rider desafia você a enfrentar diferentes terrenos com rodas desenhadas. A decisão em comum é adaptar o formato ao caminho à frente. Aqui você desenha no painel ou escolhe um de quatro projetos e pode redesenhar durante a corrida contra um rival controlado pelo computador. Trinta pistas criadas em seis capítulos combinam chão plano, escadas, lama, túneis, vãos, gelo e vento. Altura, largura, formato arredondado e aderência seguem as regras próprias deste jogo; não reproduzem as pistas ou a simulação de veículos de Scribble Rider. Corridas concluídas, melhorias e melhores tempos ficam neste navegador. A página não se conecta a contas da Voodoo nem a corridas multijogador.",
+  "fr": "Scribble Rider met les roues dessinées au cœur d’un défi sur différents terrains. Le choix commun consiste à adapter leur forme au sol à venir. Ici, vous dessinez dans le panneau ou choisissez l’un des quatre modèles, puis pouvez redessiner pendant la course contre un rival contrôlé par l’ordinateur. Trente parcours conçus en six chapitres combinent route plate, escaliers, boue, tunnels, fossés, glace et vent. Hauteur, largeur, rondeur et adhérence suivent les règles propres à ce jeu, sans reproduire les circuits ni la simulation de véhicules de Scribble Rider. Courses terminées, améliorations et meilleurs temps restent dans ce navigateur. Cette page ne se connecte ni aux comptes Voodoo ni à des courses multijoueurs.",
+  "de": "Bei Scribble Rider stehen gezeichnete Räder für unterschiedliche Gelände im Mittelpunkt. Die gemeinsame Entscheidung ist, die Radform an den kommenden Untergrund anzupassen. Hier zeichnest du auf dem Feld oder wählst eine von vier Vorlagen und kannst im Rennen gegen einen computergesteuerten Rivalen neu zeichnen. Dreißig gestaltete Strecken in sechs Kapiteln verbinden ebene Wege, Treppen, Schlamm, Tunnel, Lücken, Eis und Wind. Höhe, Breite, Rundheit und Bodenhaftung folgen den eigenen Geländeregeln dieses Spiels; Strecken und Fahrzeugsimulation von Scribble Rider werden nicht nachgebildet. Gewonnene Rennen, Verbesserungen und Bestzeiten bleiben in diesem Browser. Es gibt keine Verbindung zu Voodoo-Konten oder Mehrspielerrennen.",
+  "it": "Scribble Rider mette le ruote disegnate al centro di una sfida su terreni diversi. La scelta comune è adattarne la forma al suolo che si avvicina. Qui disegni nel pannello o scegli uno dei quattro modelli e puoi ridisegnare durante la gara contro un rivale controllato dal computer. Trenta percorsi progettati in sei capitoli combinano pianura, scale, fango, tunnel, vuoti, ghiaccio e vento. Altezza, larghezza, rotondità e aderenza seguono le regole del terreno proprie di questo gioco, senza riprodurre i circuiti o la simulazione dei veicoli di Scribble Rider. Gare completate, potenziamenti e migliori tempi restano in questo browser. La pagina non si collega ad account Voodoo o gare multigiocatore.",
+  "ru": "В Scribble Rider нарисованные колёса помогают преодолевать разные виды местности. Общее решение — менять форму колеса под участок впереди. Здесь можно рисовать на панели или выбирать один из четырёх шаблонов и перерисовывать колёса прямо в гонке против компьютерного соперника. Тридцать созданных трасс в шести главах сочетают ровную дорогу, ступени, грязь, туннели, разрывы, лёд и ветер. Высота, ширина, округлость и сцепление работают по собственным правилам этой игры; трассы и симуляция машин Scribble Rider не воспроизводятся. Пройденные гонки, улучшения и лучшие времена хранятся в этом браузере. Страница не подключается к аккаунтам Voodoo или многопользовательским гонкам.",
+  "hi": "Scribble Rider में खींचे हुए पहियों से अलग-अलग तरह के रास्ते पार किए जाते हैं। दोनों खेलों का साझा निर्णय है आगे के रास्ते के अनुसार पहिए का आकार बदलना। यहाँ आप पैड पर पहिया बना सकते हैं या चार नमूनों में से चुन सकते हैं, और कंप्यूटर प्रतिद्वंद्वी के खिलाफ दौड़ते समय दोबारा बना सकते हैं। छह अध्यायों के 30 बनाए गए ट्रैक में समतल सड़क, सीढ़ियाँ, कीचड़, सुरंगें, खाली जगहें, बर्फ और हवा शामिल हैं। ऊँचाई, चौड़ाई, गोलाई और पकड़ इस खेल के अपने नियमों से काम करती हैं; यह Scribble Rider के ट्रैक या वाहन सिमुलेशन की नकल नहीं है। पूरी की गई दौड़, अपग्रेड और सर्वश्रेष्ठ समय इसी ब्राउज़र में रहते हैं। यह पेज Voodoo खातों या मल्टीप्लेयर दौड़ से नहीं जुड़ता।",
+  "ar": "تجعل Scribble Rider العجلات المرسومة أساس تحدي القيادة على تضاريس متنوعة. والقرار المشترك هو تكييف شكل العجلة مع الأرض المقبلة. هنا ترسم على اللوحة أو تختار واحدًا من أربعة نماذج، ويمكنك إعادة الرسم أثناء السباق ضد منافس يتحكم فيه الكمبيوتر. تجمع ثلاثون حلبة مصممة ضمن ستة فصول بين الطريق المستوي والسلالم والوحل والأنفاق والفجوات والجليد والرياح. يعمل الارتفاع والعرض والاستدارة والتماسك وفق قواعد التضاريس الخاصة بهذه اللعبة؛ ولا تعيد إنتاج حلبات Scribble Rider أو محاكاة مركباتها. تبقى السباقات المكتملة والترقيات وأفضل الأزمنة في هذا المتصفح. لا تتصل الصفحة بحسابات Voodoo أو بسباقات متعددة اللاعبين."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+  // Sequence-memory comparison: distinct from identity and generic gameplay tags.
+  gameplayProfiles["animal-signal-scout"] ||= {};
+  gameplayProfiles["animal-signal-scout"].marketComparison = {
+    name: "Simon \u2014 Hasbro",
+    source: "https://instructions.hasbro.com/en-us/instruction/simon-game",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Simon asks players to repeat random light sequences that grow longer. Remembering an order is the shared challenge, especially in our memory patrols, but Patrol Signal Match also asks you to interpret written rules. Choose fox, owl and rabbit signals across 30 fixed patrols: follow, reverse or rotate the order, skip sleeping posts, and study then hide the clue in memory rounds. Check identifies the first incorrect position; remove an entry or clear the code to try again. Unlocks and best stars stay in this browser. This is a single-player puzzle, not an official Simon edition or a connection to a Hasbro device.",
+  "zh-Hant": "Simon 要玩家依序重現隨機亮起、逐漸加長的燈光序列。記住順序是兩者的共同挑戰，尤其接近本站的記憶巡邏；但巡邏訊號配對還需要讀懂文字規則。30 個固定巡邏關卡使用狐狸、貓頭鷹與兔子訊號，要求照順序、倒序、輪移或略過休眠哨點；記憶關卡則先看提示，再將提示隱藏後作答。檢查會指出第一個錯誤位置，可以刪除一格或清空重試。解鎖進度與最佳星數保存在這個瀏覽器。本作是單人解謎，不是 Simon 官方版本，也不會連接 Hasbro 裝置。",
+  "zh-Hans": "Simon 要玩家依序重现随机亮起、逐渐加长的灯光序列。记住顺序是两者的共同挑战，尤其接近本站的记忆巡逻；但巡逻讯号配对还需要读懂文字规则。30 个固定巡逻关卡使用狐狸、猫头鹰与兔子讯号，要求照顺序、倒序、轮移或略过休眠哨点；记忆关卡则先看提示，再将提示隐藏后作答。检查会指出第一个错误位置，可以删除一格或清空重试。解锁进度与最佳星数保存在这个浏览器。本作是单人解谜，不是 Simon 官方版本，也不会连接 Hasbro 设备。",
+  "ja": "Simon は、ランダムに光る順番を覚え、少しずつ長くなる列を再現するゲームです。順番を記憶する点は本作の記憶ステージと共通しますが、巡回信号合わせでは文章のルールも読み解きます。全30の固定ステージでキツネ、フクロウ、ウサギの信号を選び、順方向、逆順、先頭を末尾へ送る並べ替え、休眠地点のスキップを使い分けます。記憶ステージでは手掛かりを見てから隠して回答します。確認すると最初の間違いが分かり、一つ削除するか全消去して再挑戦できます。解放状況と最高の星数はこのブラウザー内に保存されます。1人用のパズルであり、Simon の公式版でも Hasbro 製品と接続するゲームでもありません。",
+  "ko": "Simon은 무작위로 켜지는 불빛의 순서를 기억해 점점 길어지는 패턴을 따라 하는 게임입니다. 순서를 기억한다는 점은 이 게임의 기억 순찰과 비슷하지만, 순찰 신호 맞추기에서는 글로 된 규칙도 해석해야 합니다. 고정된 30개 순찰에서 여우, 부엉이, 토끼 신호를 골라 정순, 역순, 첫 항목을 끝으로 보내기, 잠든 초소 건너뛰기를 적용합니다. 기억 순찰은 단서를 본 뒤 숨기고 답합니다. 확인하면 첫 번째 잘못된 위치를 알려 주며, 한 항목을 지우거나 전체 코드를 비워 다시 도전할 수 있습니다. 해제 진행도와 최고 별 기록은 이 브라우저에 저장됩니다. 혼자 즐기는 퍼즐이며 Simon 공식판이나 Hasbro 기기 연동 게임이 아닙니다.",
+  "es": "Simon propone repetir secuencias aleatorias de luces cada vez más largas. Recordar el orden es el reto común, sobre todo en nuestras patrullas de memoria, pero Señales de Patrulla también exige interpretar reglas escritas. En 30 patrullas fijas eliges señales de zorro, búho y conejo: sigue o invierte el orden, pasa el primer elemento al final u omite puestos dormidos. En las rondas de memoria estudias la pista y después la ocultas. La comprobación señala la primera posición incorrecta; puedes borrar una entrada o todo el código y reintentar. Los desbloqueos y las mejores estrellas se guardan en este navegador. Es un puzle individual, no una edición oficial de Simon ni una conexión con un dispositivo de Hasbro.",
+  "pt-BR": "Simon pede que você repita sequências aleatórias de luzes que ficam cada vez mais longas. Memorizar a ordem é o desafio em comum, especialmente nas nossas patrulhas de memória, mas Sinais da Patrulha também exige interpretar regras escritas. Nas 30 patrulhas fixas, escolha sinais de raposa, coruja e coelho: siga ou inverta a ordem, mova o primeiro item para o fim ou pule postos adormecidos. Nas rodadas de memória, observe a pista e depois a esconda. A verificação indica a primeira posição incorreta; remova uma entrada ou limpe o código para tentar novamente. Os desbloqueios e as melhores estrelas ficam neste navegador. É um quebra-cabeça individual, não uma edição oficial de Simon nem uma conexão com um aparelho da Hasbro.",
+  "fr": "Simon demande de reproduire des séquences lumineuses aléatoires de plus en plus longues. Mémoriser un ordre est le défi commun, surtout dans nos patrouilles de mémoire, mais Signaux de patrouille ajoute des règles écrites à interpréter. Dans 30 patrouilles fixes, choisissez les signaux du renard, du hibou et du lapin : suivez ou inversez l’ordre, déplacez le premier élément à la fin ou ignorez les postes endormis. Les manches de mémoire permettent d’étudier puis de masquer l’indice. La vérification indique la première position incorrecte ; supprimez une entrée ou effacez le code pour réessayer. Les déblocages et les meilleurs nombres d’étoiles restent dans ce navigateur. Ce jeu solo n’est ni une édition officielle de Simon ni une connexion à un appareil Hasbro.",
+  "de": "Bei Simon wiederholt man zufällige Lichtfolgen, die immer länger werden. Das Merken einer Reihenfolge ist die Gemeinsamkeit, besonders bei unseren Gedächtnispatrouillen. In Patrouillensignale zuordnen deutest du zusätzlich schriftliche Regeln. Wähle in 30 festen Patrouillen Fuchs-, Eulen- und Hasensignale: Folge der Reihenfolge, kehre sie um, verschiebe das erste Zeichen ans Ende oder überspringe schlafende Posten. Bei Gedächtnisaufgaben schaust du dir den Hinweis an und blendest ihn dann aus. Die Prüfung nennt die erste falsche Position; du kannst einen Eintrag löschen oder den Code leeren und neu versuchen. Freischaltungen und beste Sterne bleiben in diesem Browser. Es ist ein Einzelspieler-Rätsel, keine offizielle Simon-Ausgabe und keine Verbindung zu einem Hasbro-Gerät.",
+  "it": "Simon chiede di ripetere sequenze casuali di luci sempre più lunghe. Ricordare l’ordine è la sfida comune, soprattutto nelle nostre pattuglie di memoria, ma Segnali di Pattuglia richiede anche di interpretare regole scritte. Nelle 30 pattuglie fisse scegli segnali di volpe, gufo e coniglio: segui o inverti l’ordine, sposta il primo elemento in fondo oppure salta le postazioni addormentate. Nelle prove di memoria osservi l’indizio e poi lo nascondi. Il controllo indica la prima posizione errata; puoi eliminare una voce o cancellare il codice per riprovare. Sblocchi e migliori stelle restano in questo browser. È un rompicapo per un giocatore, non un’edizione ufficiale di Simon né un collegamento a un dispositivo Hasbro.",
+  "ru": "В Simon нужно повторять случайные световые последовательности, которые постепенно удлиняются. Запоминание порядка — общая задача, особенно в наших патрулях на память, но «Сигналы патруля» также требует понимать письменные правила. В 30 фиксированных патрулях выбирайте сигналы лисы, совы и кролика: следуйте порядку, разворачивайте его, переносите первый элемент в конец или пропускайте спящие посты. В заданиях на память сначала изучите подсказку, затем скройте её. Проверка указывает первую неверную позицию; можно удалить один элемент или очистить код и попробовать снова. Открытые патрули и лучшие звёзды сохраняются в этом браузере. Это одиночная головоломка, а не официальная версия Simon и не подключение к устройству Hasbro.",
+  "hi": "Simon में बेतरतीब जलने वाली रोशनी का क्रम दोहराना होता है, और क्रम धीरे-धीरे लंबा होता जाता है। क्रम याद रखना दोनों खेलों की साझा चुनौती है, खासकर हमारी याददाश्त वाली गश्तों में। लेकिन गश्त के संकेत मिलाएँ में लिखे नियम भी समझने होते हैं। 30 तय गश्तों में लोमड़ी, उल्लू और खरगोश के संकेत चुनें: सीधा या उलटा क्रम बनाएँ, पहला संकेत अंत में भेजें या सोई चौकियाँ छोड़ें। याददाश्त वाली गश्त में संकेत पहले देखें और फिर छिपाकर उत्तर दें। जाँच पहली गलत जगह बताती है; एक संकेत हटाएँ या पूरा क्रम साफ करके दोबारा कोशिश करें। खुली गश्तें और सबसे अच्छे सितारे इसी ब्राउज़र में सहेजे जाते हैं। यह अकेले खेलने की पहेली है, Simon का आधिकारिक संस्करण या Hasbro उपकरण से जुड़ने वाला खेल नहीं।",
+  "ar": "تطلب Simon تكرار تسلسلات ضوئية عشوائية تزداد طولاً. تذكّر الترتيب هو التحدي المشترك، خصوصاً في دوريات الذاكرة لدينا، لكن مطابقة إشارات الدورية تتطلب أيضاً فهم قواعد مكتوبة. اختر إشارات الثعلب والبومة والأرنب عبر 30 دورية ثابتة: اتبع الترتيب أو اعكسه، انقل العنصر الأول إلى النهاية، أو تجاوز المواقع النائمة. في دوريات الذاكرة تدرس الدليل ثم تخفيه قبل الإجابة. يوضح الفحص أول موضع خاطئ؛ يمكنك حذف عنصر أو مسح الرمز والمحاولة مجدداً. تُحفظ الدوريات المفتوحة وأفضل النجوم في هذا المتصفح. هذه لعبة ألغاز فردية، وليست نسخة رسمية من Simon ولا تتصل بجهاز من Hasbro."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+  // Trap-platform comparison: not an alternate name or a gameplay tag.
+  gameplayProfiles["animal-trap-trail"] ||= {};
+  gameplayProfiles["animal-trap-trail"].marketComparison = {
+    name: "Level Devil",
+    source: "https://store.steampowered.com/app/3242750/Level_Devil/",
+    locales: Object.fromEntries(Object.entries({
+  "en": "Like Level Devil, this game asks you to read deceptive terrain, time movement and jumps, and learn from failed attempts. Level Devil's Steam edition also offers local two-player races; here you play alone through 30 authored stages in six five-stage arcs. Pulse briefly highlights gap and spike cues, and a mistake restarts only the current stage. Your highest cleared stage and unlock progress stay in this browser. These layouts and timings are WeightPlay's own, not Level Devil levels or an official edition, and progress does not connect to Unept's game.",
+  "zh-Hant": "和 Level Devil 一樣，本作需要判讀看似安全的地形、掌握移動與跳躍時機，並從失敗中學習。Level Devil 的 Steam 版另有本機雙人競速；本站則是單人挑戰六個篇章、每章五關，共 30 個固定設計關卡。Pulse 會短暫標示缺口與尖刺的線索，失誤只重置目前關卡。最高通關與解鎖進度保存在此瀏覽器。地圖與陷阱時機均為 WeightPlay 自行設計，不是 Level Devil 的關卡或官方版本，也不與 Unept 的遊戲連動存檔。",
+  "zh-Hans": "和 Level Devil 一样，本作需要判断看似安全的地形、掌握移动与跳跃时机，并从失败中学习。Level Devil 的 Steam 版另有本地双人竞速；本站则是单人挑战六个篇章、每章五关，共 30 个固定设计关卡。Pulse 会短暂标示缺口与尖刺的线索，失误只重置当前关卡。最高通关与解锁进度保存在此浏览器。地图与陷阱时机均为 WeightPlay 自行设计，不是 Level Devil 的关卡或官方版本，也不与 Unept 的游戏同步存档。",
+  "ja": "Level Devil と同じく、一見安全な地形を見極め、移動とジャンプのタイミングを考え、失敗から学ぶゲームです。Level Devil の Steam 版にはローカル2人対戦もありますが、こちらは1人用で、5ステージずつの6章、全30ステージに挑みます。Pulse は穴とトゲの手がかりを短時間強調し、失敗しても現在のステージだけがやり直しになります。到達した最高ステージと解放状況は、このブラウザーに保存されます。地形と罠のタイミングは WeightPlay 独自の設計で、Level Devil のステージや公式版ではなく、Unept のゲームとセーブデータを共有しません。",
+  "ko": "Level Devil처럼 안전해 보이는 지형을 살피고 이동과 점프 타이밍을 맞추며 실패에서 배우는 게임입니다. Level Devil의 Steam 버전에는 로컬 2인 경주도 있지만, 이 게임은 혼자서 5개 스테이지씩 구성된 6개 챕터, 총 30개 고정 스테이지에 도전합니다. Pulse는 구덩이와 가시의 단서를 잠시 강조하며, 실수하면 현재 스테이지만 다시 시작합니다. 가장 높은 클리어 단계와 잠금 해제 진행은 이 브라우저에 저장됩니다. 지형과 함정 타이밍은 WeightPlay가 직접 설계했으며, Level Devil의 스테이지나 공식 버전이 아닙니다. Unept 게임과 저장 데이터를 연동하지 않습니다.",
+  "es": "Como en Level Devil, debes interpretar un terreno engañoso, calcular cuándo moverte y saltar, y aprender de los intentos fallidos. La edición de Steam de Level Devil también ofrece carreras locales para dos jugadores; aquí juegas solo en 30 fases diseñadas, repartidas en seis capítulos de cinco. Pulse resalta brevemente las pistas de huecos y púas, y un error reinicia únicamente la fase actual. La fase más alta superada y los desbloqueos se guardan en este navegador. Los recorridos y los tiempos de las trampas son propios de WeightPlay: no son niveles de Level Devil ni una edición oficial, y el progreso no se conecta al juego de Unept.",
+  "pt-BR": "Assim como em Level Devil, você precisa interpretar terrenos enganosos, acertar o momento de andar e pular e aprender com as tentativas que dão errado. A versão de Level Devil no Steam também tem corridas locais para dois jogadores; aqui você joga sozinho em 30 fases planejadas, divididas em seis capítulos de cinco. Pulse destaca por um instante as pistas de buracos e espinhos, e um erro reinicia apenas a fase atual. A fase mais avançada concluída e os desbloqueios ficam salvos neste navegador. Os percursos e os tempos das armadilhas são próprios da WeightPlay, não são fases de Level Devil nem uma edição oficial, e o progresso não se conecta ao jogo da Unept.",
+  "fr": "Comme dans Level Devil, il faut lire un terrain trompeur, choisir le bon moment pour avancer et sauter, puis apprendre de ses échecs. L'édition Steam de Level Devil propose aussi des courses locales à deux ; ici, vous jouez seul dans 30 niveaux conçus à l'avance, répartis en six chapitres de cinq. Pulse souligne brièvement les indices des trous et des piques, et une erreur ne relance que le niveau en cours. Le niveau le plus avancé terminé et les déblocages sont conservés dans ce navigateur. Les parcours et le rythme des pièges sont propres à WeightPlay : ce ne sont ni des niveaux de Level Devil ni une édition officielle, et la progression n'est pas liée au jeu d'Unept.",
+  "de": "Wie in Level Devil musst du trügerisches Gelände lesen, Bewegungen und Sprünge richtig timen und aus Fehlversuchen lernen. Die Steam-Version von Level Devil bietet auch lokale Rennen für zwei Personen; hier spielst du allein durch 30 fest gestaltete Abschnitte in sechs Kapiteln mit je fünf Abschnitten. Pulse hebt kurz Hinweise auf Lücken und Spitzen hervor. Ein Fehler startet nur den aktuellen Abschnitt neu. Der höchste abgeschlossene Abschnitt und die Freischaltungen bleiben in diesem Browser gespeichert. Strecken und Fallentiming stammen von WeightPlay; dies sind weder Level-Devil-Level noch eine offizielle Ausgabe, und dein Fortschritt wird nicht mit Unepts Spiel verbunden.",
+  "it": "Come in Level Devil, devi interpretare un terreno ingannevole, scegliere quando muoverti e saltare e imparare dai tentativi falliti. L'edizione Steam di Level Devil offre anche gare locali per due giocatori; qui giochi da solo in 30 livelli progettati, suddivisi in sei capitoli da cinque. Pulse evidenzia per un momento gli indizi di buche e spuntoni, mentre un errore riavvia soltanto il livello attuale. Il livello più avanzato completato e gli sblocchi restano salvati in questo browser. Percorsi e tempi delle trappole sono originali di WeightPlay: non sono livelli di Level Devil né un'edizione ufficiale, e i progressi non si collegano al gioco di Unept.",
+  "ru": "Как и в Level Devil, здесь нужно распознавать обманчивый рельеф, вовремя двигаться и прыгать, учась на неудачных попытках. В Steam-версии Level Devil есть и локальные гонки для двоих; здесь вы играете в одиночку на 30 заранее созданных этапах, разделённых на шесть глав по пять. Pulse ненадолго выделяет подсказки у провалов и шипов, а ошибка перезапускает только текущий этап. Самый высокий пройденный этап и открытия сохраняются в этом браузере. Маршруты и время срабатывания ловушек разработаны WeightPlay: это не уровни Level Devil и не официальная версия. Прогресс не связан с игрой Unept.",
+  "hi": "Level Devil की तरह इस खेल में भी धोखा देने वाले रास्ते को समझना, सही समय पर चलना और कूदना तथा असफल कोशिशों से सीखना ज़रूरी है। Level Devil के Steam संस्करण में एक ही जगह दो लोगों की दौड़ भी है; यहाँ आप अकेले छह अध्यायों में खेलते हैं, जिनमें पाँच-पाँच करके कुल 30 तय चरण हैं। Pulse कुछ समय के लिए गड्ढों और काँटों के संकेत उभारता है। गलती होने पर केवल मौजूदा चरण फिर शुरू होता है। सबसे आगे पूरा किया गया चरण और खुले चरण इसी ब्राउज़र में सहेजे जाते हैं। रास्ते और जालों का समय WeightPlay ने स्वयं बनाया है। यह Level Devil के चरण या उसका आधिकारिक संस्करण नहीं है और प्रगति Unept के खेल से नहीं जुड़ती।",
+  "ar": "كما في Level Devil، تحتاج هنا إلى قراءة أرض خادعة، واختيار توقيت الحركة والقفز، والتعلّم من المحاولات الفاشلة. يوفّر إصدار Level Devil على Steam سباقات محلية للاعبين أيضاً؛ أما هنا فتلعب وحدك عبر 30 مرحلة مصممة مسبقاً في ستة فصول، كل منها خمس مراحل. يبرز Pulse لفترة وجيزة إشارات الحفر والأشواك، ولا يعيد الخطأ إلا المرحلة الحالية. تُحفظ أعلى مرحلة أنهيتها والمراحل المفتوحة في هذا المتصفح. المسارات وتوقيت الفخاخ من تصميم WeightPlay، وليست مراحل Level Devil أو إصداراً رسمياً منه، ولا يرتبط التقدم بلعبة Unept."
+}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installMarketComparisonSync, { once: true });
+  } else {
+    installMarketComparisonSync();
   }
   render();
 })();

@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || leaveOpen), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const LOGICAL_W = 390, LOGICAL_H = 788, saveKey = "weightplay_habitat_mahjong_v1";
   const canonicalLocaleKey = "weightPlayLocale", legacyLocaleKey = "weightplayLocale";
   const sessionStorageFallback = new Map();
@@ -106,7 +124,12 @@
   function loadSave() { try { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...JSON.parse(readStorage(saveKey) || "{}") }; } catch { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{} }; } }
   const persist = () => writeStorage(saveKey, JSON.stringify(save));
   function applyLocale() { locale = actualLocale(); document.documentElement.lang = locale; document.title = `${t("title")} - WeightPlay`; document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); }); document.querySelectorAll("[data-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.aria)); }); nodes.localeSelect.value = locale; renderMain(); renderStage(); if (state) renderBattle(); window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail:{ locale } })); }
-  function setScreen(name) { const result = name === "result"; nodes.mainScreen.classList.toggle("hidden", name !== "main"); nodes.stageScreen.classList.toggle("hidden", name !== "stage"); nodes.battleScreen.classList.toggle("hidden", name !== "battle" && !result); nodes.resultScreen.classList.toggle("hidden", !result); nodes.battleLive.classList.toggle("hidden", result); nodes.battleLive.inert = result; if (result) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); document.body.classList.toggle("playing", name !== "main"); document.body.classList.toggle("habitat-result", result); if (name === "battle" || result) { window.dispatchEvent(new Event("weightplay:stage-sync")); window.dispatchEvent(new Event("weightplay:battle-sync")); } else { window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:stage-sync")); } window.dispatchEvent(new Event("weightplay:shell-sync")); if (name !== "main") scheduleFitCanvases(); }
+  function setScreen(name) { const result = name === "result"; nodes.mainScreen.classList.toggle("hidden", name !== "main"); nodes.stageScreen.classList.toggle("hidden", name !== "stage"); nodes.battleScreen.classList.toggle("hidden", name !== "battle" && !result); (__wpNotifyMeasurement(), nodes.resultScreen.classList.toggle("hidden", !result)); nodes.battleLive.classList.toggle("hidden", result); nodes.battleLive.inert = result; if (result) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); document.body.classList.toggle("playing", name !== "main"); document.body.classList.toggle("habitat-result", result); if (name === "battle" || result) { window.dispatchEvent(new Event("weightplay:stage-sync")); window.dispatchEvent(new Event("weightplay:battle-sync")); } else { window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:stage-sync")); } window.dispatchEvent(new Event("weightplay:shell-sync")); if (name !== "main") scheduleFitCanvases();
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function fitCanvases() { const viewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth); const viewportHeight = Math.max(1, document.documentElement.clientHeight || innerHeight); const canvasWidth = Math.min(viewportWidth, 920); const scale = Math.min(canvasWidth / LOGICAL_W, viewportHeight / LOGICAL_H); const logicalWidth = canvasWidth / scale; const logicalHeight = viewportHeight / scale; document.documentElement.style.setProperty("--scale", scale); document.documentElement.style.setProperty("--slot-w", `${canvasWidth}px`); document.documentElement.style.setProperty("--slot-h", `${viewportHeight}px`); document.documentElement.style.setProperty("--logical-w", `${logicalWidth}px`); document.documentElement.style.setProperty("--logical-h", `${logicalHeight}px`); }
   let fitFrame = 0, fitTimer = 0;
   function scheduleFitCanvases() { fitCanvases(); cancelAnimationFrame(fitFrame); clearTimeout(fitTimer); fitFrame = requestAnimationFrame(fitCanvases); fitTimer = setTimeout(fitCanvases, 60); }
@@ -147,29 +170,31 @@
       return { id:id++, pairIndex, value, x, y, layer, sealed:usesSeal(habitat) && (habitat.sealedPairs || []).includes(pairIndex), rescue:usesRescue(habitat) && rescueValues.has(value), key:usesSeal(habitat) && pairIndex === 0, removed:false };
     }));
   }
-  function startStage(index = stageIndex) { stageIndex = index; const habitat = habitats[index], tiles = makeTiles(habitat, index); state = { tiles, totalPairs:tiles.length / 2, moves:0, removedPairs:0, history:[], hinted:[], selected:null, keyUnlocked:!usesSeal(habitat), rescuedPairs:0, rescueTotal:(habitat.rescuePairs || []).length, trailPhase:0, initialTrailPhase:0, startedAt:Date.now(), pausedAt:document.hidden || !windowFocused ? Date.now() : null }; syncTrailPhase(); state.initialTrailPhase=state.trailPhase; save.playCount += 1; persist(); setScreen("battle"); const firstFree=state.tiles.find(isFree)?.id; renderBattle(availablePairs().length ? "" : t("noMoves"), firstFree); }
+  function startStage(index = stageIndex) { stageIndex = index; const habitat = habitats[index], tiles = makeTiles(habitat, index); state = { tiles, totalPairs:tiles.length / 2, moves:0, removedPairs:0, history:[], hinted:[], selected:null, keyUnlocked:!usesSeal(habitat), rescuedPairs:0, rescueTotal:(habitat.rescuePairs || []).length, trailPhase:0, initialTrailPhase:0, startedAt:Date.now(), pausedAt:document.hidden || !windowFocused ? Date.now() : null }; syncTrailPhase(); state.initialTrailPhase=state.trailPhase; save.playCount += 1; persist(); setScreen("battle"); const firstFree=state.tiles.find(isFree)?.id; renderBattle(availablePairs().length ? "" : t("noMoves"), firstFree);
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function suspendBattleClock() { if (!state || nodes.battleScreen.classList.contains("hidden") || !nodes.resultScreen.classList.contains("hidden") || state.pausedAt !== null) return; state.pausedAt = Date.now(); }
   function resumeBattleClock() { if (!state || state.pausedAt === null || leaveOpen || document.hidden || !windowFocused) return; state.startedAt += Math.max(0, Date.now() - state.pausedAt); state.pausedAt = null; }
   function setBattleLiveCovered(covered) { nodes.battleLive.inert = covered; if (covered) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); }
   function openLeaveDecision() {
     if (leaveOpen || !state || !nodes.resultScreen.classList.contains("hidden")) return;
-    leaveOpen = true;
+    (__wpNotifyMeasurement(), leaveOpen = true);
     suspendBattleClock();
     setBattleLiveCovered(true);
-    nodes.leavePanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.leavePanel.classList.remove("hidden"));
     requestAnimationFrame(() => nodes.continueBoardBtn.focus({ preventScroll:true }));
   }
   function closeLeaveDecision(restoreFocus = true) {
     if (!leaveOpen) return;
-    leaveOpen = false;
-    nodes.leavePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), leaveOpen = false);
+    (__wpNotifyMeasurement(), nodes.leavePanel.classList.add("hidden"));
     setBattleLiveCovered(false);
     if (!document.hidden) resumeBattleClock();
     if (restoreFocus) requestAnimationFrame(() => document.querySelector('[data-wp-return="battle"]')?.focus({ preventScroll:true }));
   }
   function leaveBoard() {
-    leaveOpen = false;
-    nodes.leavePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), leaveOpen = false);
+    (__wpNotifyMeasurement(), nodes.leavePanel.classList.add("hidden"));
     renderStage();
     setScreen("stage");
     focusCurrentStage();
@@ -262,7 +287,7 @@
     nodes.resultTitle.textContent = stageLabel(habitats[stageIndex]);
     nodes.resultStats.textContent = t("resultStats", { score, moves:state.moves, time:formatTime(seconds) });
     nodes.resultBest.textContent = t(improved ? "newBest" : "personalBest", { score:record.score, moves:record.moves, time:formatTime(record.seconds) });
-    nodes.resultBest.classList.toggle("new-best", improved);
+    (__wpNotifyMeasurement(), nodes.resultBest.classList.toggle("new-best", improved));
     nodes.resultReport.textContent = t("result", { pairs:state.removedPairs, moves:state.moves });
     const terminal = stageIndex >= habitats.length - 1;
     nodes.nextBtn.hidden = false;
@@ -273,7 +298,9 @@
     nodes.retryBtn.classList.remove("primary");
     setScreen("result");
     requestAnimationFrame(() => (terminal ? nodes.stagesBtn : nodes.nextBtn).focus({ preventScroll:true }));
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function openStageFromMain() {
     nodes.loadingScreen.classList.remove("hidden");
     nodes.startBtn.disabled = true;
@@ -308,7 +335,7 @@
   nodes.stageRail.addEventListener("scroll", () => { updateCenteredStageCard(); scheduleCenteredStageCard(); }, { passive:true });
   nodes.stageRail.addEventListener("wonder:stage-snap", (event) => { syncStageSelection(Number(event.detail?.index)); updateCenteredStageCard(); scheduleCenteredStageCard(); });
   nodes.stageRail.addEventListener("click", (event) => { const card = event.target.closest?.(".stage-card") || stageCardAtPoint(event.clientX, event.clientY); if (!card) return; const index = Number(card.dataset.index); if (index < save.unlocked) startStage(index); else rejectLockedStage(index); });
-  nodes.board.addEventListener("click", (event) => { const tile = event.target.closest(".tile"); if (tile) chooseTile(Number(tile.dataset.tile)); }); nodes.hintBtn.addEventListener("click", hint); nodes.undoBtn.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); if (!undoKeyHeld) undo(); undoKeyHeld = true; }); nodes.undoBtn.addEventListener("keyup", (event) => { if (event.key === "Enter" || event.key === " ") undoKeyHeld = false; }); nodes.undoBtn.addEventListener("blur", () => { undoKeyHeld = false; }); nodes.undoBtn.addEventListener("click", undo); nodes.shuffleBtn.addEventListener("click", shuffle); nodes.continueBoardBtn.addEventListener("click", () => closeLeaveDecision(true)); nodes.leaveBoardBtn.addEventListener("click", leaveBoard); nodes.leavePanel.addEventListener("keydown", keepLeaveFocus, true); nodes.retryBtn.addEventListener("click", () => startStage(stageIndex)); nodes.nextBtn.addEventListener("click", () => startStage(Math.min(habitats.length - 1, stageIndex + 1))); nodes.stagesBtn.addEventListener("click", () => { stageIndex = Math.max(0, Math.min(habitats.length, save.unlocked) - 1); setScreen("stage"); renderStage(); focusCurrentStage(); });
+  nodes.board.addEventListener("click", (event) => { const tile = event.target.closest(".tile"); if (tile) chooseTile(Number(tile.dataset.tile)); }); nodes.hintBtn.addEventListener("click", hint); nodes.undoBtn.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); if (!undoKeyHeld) undo(); undoKeyHeld = true; }); nodes.undoBtn.addEventListener("keyup", (event) => { if (event.key === "Enter" || event.key === " ") undoKeyHeld = false; }); nodes.undoBtn.addEventListener("blur", () => { undoKeyHeld = false; }); nodes.undoBtn.addEventListener("click", undo); nodes.shuffleBtn.addEventListener("click", shuffle); nodes.continueBoardBtn.addEventListener("click", () => closeLeaveDecision(true)); nodes.leaveBoardBtn.addEventListener("click", leaveBoard); nodes.leavePanel.addEventListener("keydown", keepLeaveFocus, true); nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => startStage(stageIndex))); nodes.nextBtn.addEventListener("click", () => startStage(Math.min(habitats.length - 1, stageIndex + 1))); nodes.stagesBtn.addEventListener("click", () => { stageIndex = Math.max(0, Math.min(habitats.length, save.unlocked) - 1); setScreen("stage"); renderStage(); focusCurrentStage(); });
   window.addEventListener("pagehide", suspendBattleClock);
   window.addEventListener("pageshow", resumeBattleClock);
   window.addEventListener("blur", () => { windowFocused = false; suspendBattleClock(); });

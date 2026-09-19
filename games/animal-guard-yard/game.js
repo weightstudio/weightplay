@@ -171,6 +171,24 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 };
 
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(paused || lifecycleSuspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "animal-guard-yard";
   const GAME_VERSION = "v35";
   const INTERFACE_VERSION = 6;
@@ -1441,7 +1459,12 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       mainHeader.setAttribute("aria-hidden", String(scene !== "main"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-    return sceneGeneration;
+    const __wpReturn = (sceneGeneration);
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+return __wpReturn;
   }
 
   if (typeof MutationObserver === "function" && nodes.menuPanel) {
@@ -2558,9 +2581,9 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 
   function showMenu() {
     clearFloatingText();
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     running = false;
-    paused = false;
+    (__wpNotifyMeasurement(), paused = false);
     cancelAnimationFrame(raf);
     window.WeightPlayGame?.exitMobileGameMode?.();
     activateScene("stage");
@@ -2578,8 +2601,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
     nodes.gameShell.removeAttribute("aria-hidden");
-    nodes.resultPanel.classList.add("hidden");
-    nodes.pausePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     showMenuTab(activeMenuTab);
     ensureStageArtwork();
     window.requestAnimationFrame(() => {
@@ -2591,9 +2614,9 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 
   function showMain() {
     clearFloatingText();
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     running = false;
-    paused = false;
+    (__wpNotifyMeasurement(), paused = false);
     cancelAnimationFrame(raf);
     window.WeightPlayGame?.exitMobileGameMode?.();
     activateScene("main");
@@ -2601,8 +2624,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
     nodes.gameShell.removeAttribute("aria-hidden");
-    nodes.resultPanel.classList.add("hidden");
-    nodes.pausePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     window.requestAnimationFrame(() => {
       nodes.startGameBtn?.focus({ preventScroll: true });
     });
@@ -2611,13 +2634,13 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   function startStage(index) {
     disposeYard();
     clearFloatingText();
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     foregroundPlacementBlocked = false;
     updateGuardYardViewport();
     currentStage = index;
     const stage = stages[currentStage];
     running = true;
-    paused = false;
+    (__wpNotifyMeasurement(), paused = false);
     energy = stage.energy;
     baseHp = stage.hp;
     spawned = 0;
@@ -2644,8 +2667,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
     nodes.gameShell.removeAttribute("aria-hidden");
-    nodes.resultPanel.classList.add("hidden");
-    nodes.pausePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     updateGuardYardViewport();
     buildBoard(stage);
     nodes.hintText.textContent = t("buildHint");
@@ -2658,11 +2681,13 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     playSound("start");
     window.WeightPlayGame?.exitMobileGameMode?.();
     raf = requestAnimationFrame(tick);
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function suspendBattleLifecycle() {
     if (lifecycleSuspended || !running || paused) return;
-    lifecycleSuspended = true;
+    (__wpNotifyMeasurement(), lifecycleSuspended = true);
     running = false;
     cancelAnimationFrame(raf);
     disposeYard();
@@ -2670,7 +2695,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 
   function resumeBattleLifecycle() {
     if (!lifecycleSuspended || !windowFocused || !pageActive || document.hidden) return;
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     if (paused || nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
     running = true;
     lastTick = performance.now();
@@ -2720,20 +2745,20 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   function showPause() {
     if (!running || paused) return;
     running = false;
-    paused = true;
+    (__wpNotifyMeasurement(), paused = true);
     updateHud();
     cancelAnimationFrame(raf);
     nodes.gameShell.inert = true;
     nodes.gameShell.setAttribute("aria-hidden", "true");
-    nodes.pausePanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.remove("hidden"));
     sharedFrame?.activate('battle', {covered:true});
     window.requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
   }
 
   function resumeBattle() {
     if (!paused) return;
-    paused = false;
-    nodes.pausePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), paused = false);
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     nodes.gameShell.inert = false;
     sharedFrame?.activate('battle');
     nodes.gameShell.removeAttribute("aria-hidden");
@@ -3580,7 +3605,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 
   function finish(won) {
     disposeYard();
-    lifecycleSuspended = false;
+    (__wpNotifyMeasurement(), lifecycleSuspended = false);
     running = false;
     cancelAnimationFrame(raf);
     let resultMessage = "";
@@ -3650,12 +3675,14 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     nodes.playPanel.classList.remove("hidden");
     nodes.gameShell.classList.add("hidden");
     nodes.gameShell.inert = true;
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     sharedFrame?.activate('battle', {covered:true});
     primaryResultAction.focus({ preventScroll: true });
     renderWallet();
     renderKennel();
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function claimResultAction() {
     if (nodes.resultPanel.classList.contains("hidden") || resultActionClaimed) return false;
@@ -3847,7 +3874,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   nodes.retryBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
     trackResultAction("retry");
-    startStage(currentStage);
+    __wpReplayStart(() => startStage(currentStage));
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;

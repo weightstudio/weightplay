@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "garden-tiles";
   const UNLOCK_KEY = "gardenTilesUnlocked";
   const STARS_KEY = "gardenTilesStars";
@@ -680,14 +698,19 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showMain() {
     invalidateRoundTasks();
     document.body.classList.remove("garden-stage", "garden-playing");
     document.body.classList.add("garden-main");
-    resultPanel.classList.add("hidden");
-    leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     leaveConfirmOpen = false;
     setBattleCovered(false);
     mainPanel.classList.remove("hidden");
@@ -848,8 +871,8 @@
     exitSharedPlayViewport();
     document.body.classList.remove("garden-main", "garden-playing");
     document.body.classList.add("garden-stage");
-    resultPanel.classList.add("hidden");
-    leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     leaveConfirmOpen = false;
     setBattleCovered(false);
     mainPanel.classList.add("hidden");
@@ -901,7 +924,7 @@
     statusbar.classList.remove("hidden");
     levelSelect.classList.add("hidden");
     boardPanel.classList.remove("hidden");
-    resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     setBattleCovered(false);
     syncSharedScene("battle");
     renderBoard();
@@ -928,7 +951,9 @@
     }
     window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, level: index + 1 });
     window.WonderAnalytics?.track?.("level_start", { game_id: GAME_ID, level: index + 1 });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function chooseBattleColumns(totalCards) {
     const shortLandscape = matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
@@ -1128,11 +1153,13 @@
     resultActionCommitted = false;
     renderResult(starCount, previousBest);
     setBattleCovered(true);
-    resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     requestAnimationFrame(() => (nextBtn.disabled ? levelsBtn : nextBtn).focus({ preventScroll: true }));
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount, cleared: true });
     window.WonderAnalytics?.track?.("level_clear", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function renderResult(starCount, previousBest) {
     resultTitle.textContent = t("clear");
@@ -1192,7 +1219,7 @@
     if (leaveConfirmOpen || !document.body.classList.contains("garden-playing") || !resultPanel.classList.contains("hidden")) return;
     leaveConfirmOpen = true;
     suspendRoundTasks();
-    leaveConfirmPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.remove("hidden"));
     setBattleCovered(true);
     requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
   }
@@ -1200,7 +1227,7 @@
   function closeLeaveConfirm(restoreFocus = true) {
     if (!leaveConfirmOpen) return;
     leaveConfirmOpen = false;
-    leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     setBattleCovered(false);
     resumeRoundTasks();
     if (restoreFocus) requestAnimationFrame(focusCurrentTile);
@@ -1267,7 +1294,7 @@
   againBtn.addEventListener("click", () => {
     commitResultAction(() => {
       window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, level: currentLevelIndex + 1 });
-      startLevel(currentLevelIndex);
+      __wpReplayStart(() => startLevel(currentLevelIndex));
     });
   });
   levelsBtn.addEventListener("click", () => commitResultAction(showLevelSelect));

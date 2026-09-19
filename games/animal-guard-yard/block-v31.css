@@ -1,17 +1,12 @@
 /* Guard Yard v31: one dark jade/brass language; game-owned workspaces only. */
-body{--wp-ui-text:#edf4e8;--wp-ui-muted:#a9c1ba;--wp-scene-return-arrow-color:#f7e4ac;background:#102a2b;color:#edf4e8}
+body{--wp-scene-return-arrow-color:#f7e4ac;background:#102a2b;color:#edf4e8}
 .yard-game{background:#102a2b;color:#edf4e8}
 .main-entry-panel{background:linear-gradient(145deg,#193e3c,#0a1d28)!important;color:#edf4e8!important;border-color:#638782!important;border-radius:8px!important}
 .main-entry-copy{color:#edf4e8!important}.main-entry-copy span{color:#bbcec2!important}
 body.guard-yard-stage #menuPanel{background:#102a2b!important;border-radius:5px!important;border:2px solid #61817c!important}
 body.guard-yard-stage #menuPanel::before{opacity:.3!important}
 body.guard-yard-stage .menu-shell{grid-template-rows:48px minmax(0,1fr)!important;padding:6px!important;gap:8px!important}
-body.guard-yard-stage .stage-screen-head{background:#1a3e40!important;border:1px solid #75928b!important;border-radius:3px!important;padding:2px!important;grid-template-columns:44px minmax(0,1fr) 44px!important}
 body.guard-yard-stage .stage-screen-head>strong,body.guard-yard-stage .menu-heading{display:none!important}
-body.guard-yard-stage .wallet-row{position:absolute;top:8px;left:66px;right:66px;height:44px;z-index:25;display:flex!important;justify-content:center;align-items:center;gap:22px;pointer-events:none}
-body.guard-yard-stage .wallet-row>span{background:none!important;border:0!important;box-shadow:none!important;width:auto!important;min-height:0!important;height:38px!important;color:#f2ddb0!important;padding:0!important;gap:4px}
-body.guard-yard-stage .wallet-row img{width:28px!important;height:28px!important;object-fit:contain}
-body.guard-yard-stage .wallet-row b{color:#f2ddb0!important;font:800 18px system-ui!important}
 body.guard-yard-stage .menu-content{min-height:0!important;grid-row:2!important}
 body.guard-yard-stage #stageTabPanel{grid-template-rows:48px 32px minmax(0,1fr)!important;gap:6px!important}
 body.guard-yard-stage .mastery-summary{background:#193c3ae8!important;color:#e6d499!important;border:1px solid #7c8a64!important;border-radius:4px!important;min-height:0!important;padding:6px 10px!important;display:flex!important;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px!important;box-shadow:none!important}
@@ -19,7 +14,7 @@ body.guard-yard-stage .mastery-summary>*{font-size:12px!important;color:inherit!
 body.guard-yard-stage .training-bridge-cue{background:#142e32e8!important;color:#b5d1bd!important;border:0!important;border-radius:3px!important;padding:6px 10px!important;font-size:11px!important;line-height:16px!important;max-height:32px;overflow:hidden;margin:0!important}
 body.guard-yard-stage .beast-guide{display:none!important}
 body.guard-yard-stage .stage-grid{min-height:0!important;grid-row:3!important;align-items:center!important}
-body.guard-yard-stage .stage-card{background:linear-gradient(140deg,#294c48,#132c32)!important;color:#e9edd9!important;border:2px solid #657e73!important;border-radius:6px!important;box-shadow:0 5px 0 #071b20!important;height:286px!important;min-height:286px!important;max-height:286px!important;padding:16px!important;overflow:hidden}
+body.guard-yard-stage .stage-card{background:linear-gradient(140deg,#294c48,#132c32)!important;color:#e9edd9!important;border:2px solid #657e73!important;border-radius:6px!important;box-shadow:0 5px 0 #071b20!important;padding:16px!important;overflow:hidden}
 body.guard-yard-stage .stage-card.active,body.guard-yard-stage .stage-card[aria-current=true]{border-color:#e6c473!important;box-shadow:0 5px 0 #796842,0 0 0 3px #dfbc6844!important}
 body.guard-yard-stage .stage-card :is(strong,span,small,b,em){color:inherit!important}
 body.guard-yard-stage .stage-card>img{width:62px!important;height:62px!important;object-fit:contain}
@@ -35,7 +30,6 @@ body.guard-yard-stage :is(.kennel-card,.shop-card) button{background:#d8b75f!imp
 body.guard-yard-stage :is(.kennel-card,.shop-card) button:disabled{opacity:.55}
 /* The logical envelope scales once; the board consumes the flexible track. */
 body.guard-yard-playing .fixed-game-shell{grid-template-rows:48px 30px 80px minmax(0,1fr) 52px 44px!important;gap:5px!important;padding:6px!important;border:2px solid #66837a!important;border-radius:4px!important;background:#102b30!important;color:#e6eee0!important}
-body.guard-yard-playing .play-head{height:48px!important;background:#214447!important;border-radius:3px!important;box-shadow:none!important;border-bottom:1px solid #83917a}
 body.guard-yard-playing .resource-pill{background:none!important;border:0!important;color:#f1d28a!important;box-shadow:none!important}
 body.guard-yard-playing .sun-icon{background:url('assets/sun-block-v32.png') center/contain no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;width:32px!important;height:32px!important}
 body.guard-yard-playing .sun-icon::before,body.guard-yard-playing .sun-icon::after{display:none!important}
@@ -77,38 +71,27 @@ body.guard-yard-playing :is(.result-card,.pause-card){background:#17393d!importa
 body.guard-yard-playing :is(.result-card,.pause-card) button{background:#d5b86d!important;color:#1c3334!important;border-radius:4px!important;border:1px solid #e7d39c!important;min-height:44px!important}
 @media(orientation:landscape) and (max-height:520px){
  body.guard-yard-playing .fixed-game-shell{grid-template-columns:130px minmax(0,1fr)!important;grid-template-rows:48px 28px minmax(0,1fr) 52px!important;gap:4px!important}
- body.guard-yard-playing .play-head{grid-column:1/-1;grid-row:1!important}
  body.guard-yard-playing .wave-status{grid-column:1/-1;grid-row:2!important}
  body.guard-yard-playing .unit-bar{grid-column:1;grid-row:3!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,80px)!important;align-content:center}
  body.guard-yard-playing .yard-board{grid-column:2;grid-row:3!important}
  .yard-command-dock{grid-column:2;grid-row:4!important}.yard-command-dock button{height:48px}
  body.guard-yard-playing .hint-text{grid-column:1;grid-row:4!important;font-size:9px!important;line-height:13px!important;height:48px!important;max-height:48px!important}
- body.guard-yard-stage .stage-card{height:190px!important;min-height:190px!important;max-height:190px!important;padding:8px!important}
+ body.guard-yard-stage .stage-card{padding:8px!important}
  body.guard-yard-stage .stage-card>img{height:35px!important;width:35px!important}
  body.guard-yard-stage #stageTabPanel{grid-template-rows:30px minmax(0,1fr)!important}
  body.guard-yard-stage .training-bridge-cue{display:none!important}body.guard-yard-stage .stage-grid{grid-row:2!important}
 }
 @media(prefers-reduced-motion:reduce){.yard-board *{animation:none!important;transition:none!important}}
 /* Override the older shared art-shell skin and remove additive rail offsets. */
-body.guard-yard-stage #menuPanel .stage-screen-head{background:#1a3e40!important}
-body.guard-yard-stage #menuPanel .wallet-row{width:auto!important}
-body.guard-yard-stage #menuPanel .wallet-row b{color:#f2ddb0!important}
-body.guard-yard-stage #stageTabPanel .stage-card{top:0!important;align-self:center!important}
-body.guard-yard-stage #stageTabPanel .stage-grid{padding-block:12px!important}
+body.guard-yard-stage #stageTabPanel .stage-card{align-self:center!important}
 body.guard-yard-stage .stage-card .mini-animal{width:76px!important;height:76px!important}
 body.guard-yard-stage .stage-card .mini-animal img{width:100%;height:100%;object-fit:contain}
 .yard-board[data-renderer="3d"] .cell::before,.yard-board[data-renderer="3d"] .cell::after{display:none!important}
 .yard-board[data-renderer="3d"] .cell{box-shadow:none!important;border-radius:0!important}
-body.guard-yard-stage #menuPanel .stage-screen-head{height:48px!important;min-height:48px!important;padding:2px!important;box-shadow:none!important}
-body.guard-yard-stage #menuPanel .stage-screen-head :is(.wp-shell-return,.wp-shell-settings,.wp-shell-settings-button){width:44px!important;height:44px!important;min-height:44px!important;border-radius:3px!important}
-body.guard-yard-stage #menuPanel .wp-shell-settings-button svg{display:block!important;width:25px!important;height:25px!important;fill:none!important;stroke:#e3e9cc!important;stroke-width:1.8!important}
-body.guard-yard-stage #menuPanel .wallet-row{z-index:1100!important}
-body.guard-yard-stage #menuPanel .stage-card{height:286px!important;min-height:286px!important;max-height:286px!important;padding:16px!important}
+body.guard-yard-stage #menuPanel .stage-card{padding:16px!important}
 body.guard-yard-stage #menuPanel .stage-animal,body.guard-yard-stage #menuPanel .stage-animal .animal-sprite{width:70px!important;height:70px!important}
 body.guard-yard-stage #menuPanel .stage-animal img{width:100%!important;height:100%!important;object-fit:contain}
-@media(orientation:landscape) and (max-height:520px){body.guard-yard-stage #menuPanel .stage-card{height:190px!important;min-height:190px!important;max-height:190px!important;padding:8px!important}body.guard-yard-stage #menuPanel .stage-animal,body.guard-yard-stage #menuPanel .stage-animal .animal-sprite{width:36px!important;height:36px!important}}
-body.guard-yard-stage #menuPanel .wp-shell-settings-button{position:relative!important}
-body.guard-yard-stage #menuPanel .wp-shell-settings-button svg{position:absolute!important;inset:50% auto auto 50%!important;transform:translate(-50%,-50%)!important}
+@media(orientation:landscape) and (max-height:520px){body.guard-yard-stage #menuPanel .stage-card{padding:8px!important}body.guard-yard-stage #menuPanel .stage-animal,body.guard-yard-stage #menuPanel .stage-animal .animal-sprite{width:36px!important;height:36px!important}}
 body.guard-yard-playing .fixed-game-shell{grid-template-rows:48px 30px 80px 32px minmax(0,1fr) 52px 54px!important}
 body.guard-yard-playing #yardBoard{grid-row:5!important}
 body.guard-yard-playing .yard-command-dock{grid-row:6!important}

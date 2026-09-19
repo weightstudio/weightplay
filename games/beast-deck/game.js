@@ -1,16 +1,34 @@
 ﻿(() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended || backgroundSuspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   document.querySelector(".beast-deck-app")?.setAttribute("data-wp-canvas-max-width", "920");
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
   document.getElementById("gamePanel")?.setAttribute("data-wp-battle-landscape-width", "780");
   document.getElementById("gamePanel")?.setAttribute("data-wp-battle-landscape-height", "334");
   const resultDialog = document.getElementById("resultPanel");
-  resultDialog?.setAttribute("role", "dialog");
-  resultDialog?.setAttribute("aria-modal", "true");
-  resultDialog?.setAttribute("aria-labelledby", "resultTitle");
-  resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock");
+  (__wpNotifyMeasurement(), resultDialog?.setAttribute("role", "dialog"));
+  (__wpNotifyMeasurement(), resultDialog?.setAttribute("aria-modal", "true"));
+  (__wpNotifyMeasurement(), resultDialog?.setAttribute("aria-labelledby", "resultTitle"));
+  (__wpNotifyMeasurement(), resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock"));
 
   const GAME_ID = "beast-deck";
-  document.body.dataset.gameVersion = 'v20';
+  document.body.dataset.gameVersion = 'v21';
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();
@@ -98,7 +116,7 @@
 
   function suspendBackgroundBattle() {
     if (backgroundSuspended) return;
-    backgroundSuspended = true;
+    (__wpNotifyMeasurement(), backgroundSuspended = true);
     const now = performance.now();
     if (amuletConfirmTimer) {
       window.clearTimeout(amuletConfirmTimer);
@@ -115,7 +133,7 @@
 
   function resumeBackgroundBattle() {
     if (!backgroundSuspended || document.hidden || !document.hasFocus() || leaveDecisionOpen) return;
-    backgroundSuspended = false;
+    (__wpNotifyMeasurement(), backgroundSuspended = false);
     armAmuletConfirmation();
     battleTransitions.forEach(armBattleTransition);
   }
@@ -123,7 +141,7 @@
   function reclaimVisibleBattleInteraction(event) {
     if (!backgroundSuspended) return true;
     if (!event?.isTrusted || document.hidden || leaveDecisionOpen) return false;
-    backgroundSuspended = false;
+    (__wpNotifyMeasurement(), backgroundSuspended = false);
     armAmuletConfirmation();
     battleTransitions.forEach(armBattleTransition);
     return true;
@@ -286,7 +304,12 @@
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: { screen: next } }));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: { screen: next } }));
     if (next === "battle") window.dispatchEvent(new CustomEvent("weightplay:battle-open", { detail: { screen: next } }));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[next] ?? null;
+      if (["result"].includes(next) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function selectStageTab(tabName) {
     cancelStageSettlement();
@@ -1244,9 +1267,9 @@
   const enemyCatalog = {
     boar: { name: "Shadow Boar", nameZh: "暗影野豬", image: "beast-deck-redrawn/shadow-boar-v1.png", hp: 24, intents: [{ type: "attack", val: 6 }, { type: "defend", val: 5 }, { type: "attack", val: 9 }] },
     viper: { name: "Corrupted Viper", nameZh: "腐化毒蛇", image: "beast-deck-redrawn/corrupted-viper-v1.png", hp: 34, intents: [{ type: "poison", val: 2 }, { type: "defend", val: 8 }, { type: "attack", val: 8 }] },
-    behemoth: { name: "Mist Behemoth", nameZh: "迷霧巨獸", image: "wonder-beast-buffalo.png", hp: 58, intents: [{ type: "attack", val: 10 }, { type: "defend", val: 10 }, { type: "attack", val: 15 }, { type: "buff", val: 0 }] },
+    behemoth: { name: "Mist Behemoth", nameZh: "迷霧巨獸", image: "beast-deck-redrawn/mist-behemoth-alpha-v2.png", hp: 58, intents: [{ type: "attack", val: 10 }, { type: "defend", val: 10 }, { type: "attack", val: 15 }, { type: "buff", val: 0 }] },
     rhino: { name: "Ironhide Rhino", nameZh: "鐵皮犀牛", image: "beast-deck-redrawn/ironhide-rhino-v1.png", hp: 42, intents: [{ type: "defend", val: 11 }, { type: "attack", val: 11 }, { type: "attack", val: 8 }] },
-    tiger: { name: "Amber Tiger", nameZh: "琥珀猛虎", image: "wonder-beast-tiger.png", hp: 46, intents: [{ type: "attack", val: 12 }, { type: "attack", val: 7 }, { type: "buff", val: 0 }] },
+    tiger: { name: "Amber Tiger", nameZh: "琥珀猛虎", image: "beast-deck-redrawn/amber-tiger-alpha-v2.png", hp: 46, intents: [{ type: "attack", val: 12 }, { type: "attack", val: 7 }, { type: "buff", val: 0 }] },
     bear: { name: "Ancient Bear", nameZh: "古林巨熊", image: "beast-deck-redrawn/ancient-bear-v1.png", hp: 52, intents: [{ type: "defend", val: 12 }, { type: "attack", val: 13 }, { type: "poison", val: 2 }] },
     thornStag: { name: "Thornplate Stag", nameZh: "棘甲雄鹿", image: "beast-deck-redrawn/thornplate-stag-v1.png", hp: 38, armor: 2, intents: [{ type: "attack", val: 8 }, { type: "armor", val: 1 }, { type: "attack", val: 11 }] },
     ironJackal: { name: "Ironroot Jackal", nameZh: "鐵根胡狼", image: "beast-deck-redrawn/ironroot-jackal-v1.png", hp: 43, intents: [{ type: "riposte", val: 4 }, { type: "attack", val: 10 }, { type: "exhaust", val: 1 }] },
@@ -1692,15 +1715,15 @@
       leaveDecisionOpen = true;
       suspendBackgroundBattle();
       updateLeaveDecisionCopy();
-      nodes.leavePanel.classList.remove("hidden");
+      (__wpNotifyMeasurement(), nodes.leavePanel.classList.remove("hidden"));
     } else {
       const wasOpen = leaveDecisionOpen;
       leaveDecisionOpen = false;
-      nodes.leavePanel.classList.add("hidden");
+      (__wpNotifyMeasurement(), nodes.leavePanel.classList.add("hidden"));
       if (wasOpen && resume) resumeBackgroundBattle();
       if (wasOpen && !resume) {
         cancelBattleTransitions();
-        backgroundSuspended = document.hidden;
+        (__wpNotifyMeasurement(), backgroundSuspended = document.hidden);
       }
     }
     leaveCoveredLayers().forEach((layer) => {
@@ -3286,7 +3309,7 @@
     resultTransactionLocked = false;
     clearCombatFeedback();
     nodes.gamePanel.classList.add("result-open");
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     screenFrame?.activate('battle', { covered: true });
     nodes.resultPanel.scrollTop = 0;
     [nodes.gamePanel.querySelector(".hud-row"), nodes.gamePanel.querySelector(".battlefield"), nodes.gamePanel.querySelector(".action-area")].forEach((node) => {
@@ -3329,7 +3352,9 @@
     renderProgressUI();
     updateDiamondShopUI();
     syncResultPrimaryAction(won, canContinue)?.focus({ preventScroll: true });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function resetRunState() {
     const gear = gearBonus(profile.equippedGear);
@@ -3456,7 +3481,7 @@
     resetRunState();
     setDraftModalActive(false, false);
     leaveStageCanvas();
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.gamePanel.classList.remove("result-open");
     [nodes.gamePanel.querySelector(".hud-row"), nodes.gamePanel.querySelector(".battlefield"), nodes.gamePanel.querySelector(".action-area")].forEach((node) => {
       node?.removeAttribute("inert");
@@ -3469,7 +3494,9 @@
     requestAnimationFrame(() => nodes.handRow.querySelector("button:not(:disabled)")?.focus({ preventScroll: true }));
     window.WonderSound?.play("start");
     nodes.gamePanel.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function exposeSmokeHooks() {
     if (!new URLSearchParams(window.location.search).has("smoke")) return;
@@ -3954,7 +3981,7 @@
         profile.selectedMission = profile.unlockedMission;
         saveLocalState();
         document.body.classList.remove("beast-deck-playing");
-        nodes.resultPanel.classList.add("hidden");
+        (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
         nodes.gamePanel.classList.add("hidden");
         nodes.gamePanel.classList.remove("result-open");
         showStage();
@@ -3969,7 +3996,7 @@
       saveLocalState();
       startRun();
     };
-    nodes.retryBtn.addEventListener("click", () => commitResultAction("replay"));
+    nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => commitResultAction("replay")));
     nodes.nextMissionBtn?.addEventListener("click", () => commitResultAction("next"));
     nodes.resultMenuBtn.addEventListener("click", () => commitResultAction("stages"));
     nodes.resultPanel.addEventListener("keydown", (event) => {

@@ -47,28 +47,6 @@ button {
   padding: max(10px, env(safe-area-inset-top)) clamp(10px, 2vw, 22px) 22px;
 }
 
-.topbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 10px;
-}
-
-.back-btn {
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
-  color: #2d2514;
-  text-decoration: none;
-  font-size: 32px;
-  font-weight: 900;
-  background: linear-gradient(180deg, #fff4a6, #ffb335);
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5), 0 8px 0 #8b5a1d, var(--shadow);
-}
-
 .brand span {
   display: block;
   color: rgba(255, 255, 255, 0.82);
@@ -125,12 +103,9 @@ button {
   outline-offset: -4px;
 }
 
-body.reef-fisher-playing .game-page-info,
-body[data-reef-state="game"] .game-page-info,
-html[data-reef-state="game"] .game-page-info {
+body.reef-fisher-playing .game-page-info, body[data-reef-state="game"] .game-page-info, html[data-reef-state="game"] .game-page-info {
   display: none !important;
   visibility: hidden !important;
-  pointer-events: none !important;
 }
 
 .loading-panel {
@@ -268,11 +243,8 @@ html[data-reef-state="game"] .game-page-info {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(160px, 34%);
-  gap: 12px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   scroll-padding-inline: 0;
-  padding-bottom: 4px;
   scrollbar-width: none;
 }
 
@@ -287,13 +259,10 @@ html[data-reef-state="game"] .game-page-info {
 }
 
 .zone-card {
-  min-height: 132px;
   padding: 8px;
   overflow: hidden;
   border: 2px solid transparent;
   border-radius: 18px;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
   text-align: left;
   color: var(--ink);
   background: rgba(255, 255, 255, 0.68);
@@ -381,11 +350,6 @@ html[data-reef-state="game"] .game-page-info {
     grid-auto-columns: unset;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     overflow: visible;
-    padding-bottom: 0;
-  }
-
-  .zone-card {
-    scroll-snap-align: none;
   }
 
   .gear-grid {
@@ -963,10 +927,6 @@ canvas {
     padding-inline: 10px;
   }
 
-  .topbar {
-    grid-template-columns: auto 1fr;
-  }
-
   .locale {
     grid-column: 1 / -1;
     justify-content: space-between;
@@ -1050,10 +1010,6 @@ canvas {
     grid-auto-columns: 100%;
   }
 
-  .zone-card {
-    min-height: 150px;
-  }
-
   .zone-card img {
     width: min(100%, 220px);
     margin-inline: auto;
@@ -1101,14 +1057,6 @@ canvas {
 
   body.reef-fisher-playing .topbar {
     display: none;
-  }
-
-  body.reef-fisher-playing .back-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    font-size: 25px;
-    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.44), 0 4px 0 #8b5a1d, var(--shadow);
   }
 
   body.reef-fisher-playing .brand {
@@ -1385,15 +1333,6 @@ canvas {
     padding: 6px;
   }
 
-  body.reef-fisher-playing .topbar {
-    grid-template-columns: 38px minmax(0, 1fr) 104px;
-  }
-
-  body.reef-fisher-playing .back-btn {
-    width: 38px;
-    height: 38px;
-  }
-
   body.reef-fisher-playing .hud-row {
     grid-template-columns: 64px repeat(3, minmax(0, 1fr));
   }
@@ -1448,8 +1387,7 @@ body.reef-fisher-playing .reef-app {
   overflow: hidden;
 }
 
-body.reef-fisher-playing .topbar,
-body.reef-fisher-playing .game-page-info {
+body.reef-fisher-playing .topbar, body.reef-fisher-playing .game-page-info {
   display: none !important;
 }
 
@@ -1611,23 +1549,6 @@ body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-ac
 }
 
 /* Main -> Stage -> Battle production shell. */
-.back-btn {
-  grid-template-columns: 16px 28px;
-  gap: 4px;
-  width: 58px;
-  min-width: 58px;
-  max-width: 58px;
-  height: 48px;
-  min-height: 48px;
-  max-height: 48px;
-  padding: 4px;
-}
-
-.back-btn img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
 
 #mainPanel.menu-panel {
   display: grid;
@@ -1772,9 +1693,7 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
   height: 190px;
   min-height: 190px;
   max-height: 190px;
-  margin: 0;
   overflow-x: auto;
-  touch-action: pan-y;
 }
 
 #stagePanel .zone-row.wp-stage-dragging {
@@ -2279,51 +2198,6 @@ body.reef-fisher-playing .hint {
    block flow. Reef Fisher owns a real poster-plus-copy composition, so restore
    that composition after the shared normalization while retaining its shell
    ownership and transitions. */
-body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel {
-  display: grid !important;
-  grid-template-columns: 1fr !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 12px !important;
-  padding: clamp(10px, 1.8vw, 16px) !important;
-}
-
-body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .cover {
-  justify-self: center;
-}
-
-body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .menu-copy {
-  width: min(100%, 390px);
-  justify-self: center;
-}
-
-@media (min-width: 701px) {
-  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel {
-    grid-template-columns: minmax(280px, 520px) minmax(280px, 420px) !important;
-    gap: 18px !important;
-  }
-
-  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .menu-copy {
-    width: auto;
-  }
-}
-
-@media (min-width: 701px) and (max-height: 560px) and (min-aspect-ratio: 3 / 2) {
-  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel {
-    grid-template-columns: 420px minmax(0, 1fr) !important;
-  }
-
-  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .cover {
-    box-sizing: border-box !important;
-    width: 420px !important;
-    min-width: 0 !important;
-    height: 420px !important;
-    min-height: 0 !important;
-    max-width: 420px !important;
-    max-height: 420px !important;
-    aspect-ratio: 1 / 1 !important;
-  }
-}
 
 @media (max-height: 560px) {
   body.reef-fisher-playing .battle-shell {

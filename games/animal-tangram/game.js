@@ -1,5 +1,23 @@
 (()=>{
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(leaveOpen), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],levels=window.TANGRAM_LEVELS.levels,pieceDefs=window.TANGRAM_LEVELS.pieces,parts=pieceDefs.map(piece=>piece.id);
   const $=s=>document.querySelector(s),screens=[...document.querySelectorAll(".screen")],key="wp-animal-tangram-v1";
   document.body.setAttribute("data-runtime-localize","off");
@@ -71,36 +89,45 @@
   legacyResultActions.replaceChildren(resultStages,$("#next"),$("#retry"));
   [...result.children].forEach(node=>resultCard.append(node));
   result.append(resultCard);
-  result.classList.add("result-overlay");
+  (__wpNotifyMeasurement(), result.classList.add("result-overlay"));
   $("#battle").setAttribute("data-play-viewport","");
   $("#battle").append(result);
-  result.setAttribute("aria-modal","true");
-  result.setAttribute("aria-labelledby","resultTitle");
+  (__wpNotifyMeasurement(), result.setAttribute("aria-modal","true"));
+  (__wpNotifyMeasurement(), result.setAttribute("aria-labelledby","resultTitle"));
   const leavePanel=document.createElement("section");
   leavePanel.className="tangram-leave-confirm hidden";
-  leavePanel.setAttribute("role","dialog");
-  leavePanel.setAttribute("aria-modal","true");
-  leavePanel.setAttribute("aria-labelledby","tangramLeaveTitle");
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("role","dialog"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-modal","true"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-labelledby","tangramLeaveTitle"));
   leavePanel.innerHTML='<div class="tangram-leave-card"><h2 id="tangramLeaveTitle"></h2><p id="tangramLeaveBody"></p><div class="tangram-leave-actions"><button id="tangramKeepPlaying" class="primary" type="button"></button><button id="tangramLeaveStage" type="button"></button></div></div>';
   document.body.append(leavePanel);
   function setBattleOwnership(active){[$("#battle .scene-header"),$("#battle .battle-content")].forEach(node=>{if(!node)return;node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden")})}
-  function closeResult(){result.removeAttribute("open");document.body.classList.remove("tangram-result-active");setBattleOwnership(false)}
-  function openResult(){result.setAttribute("open","");document.body.classList.add("tangram-result-active");setBattleOwnership(true);requestAnimationFrame(()=>(result.querySelector(".primary")||resultStages).focus({preventScroll:true}))}
-  function closeLeave(restore=true){if(!leaveOpen)return;leaveOpen=false;leavePanel.classList.add("hidden");document.body.classList.remove("tangram-leave-active");setBattleOwnership(false);const target=leaveTrigger;leaveTrigger=null;if(restore&&target?.isConnected)requestAnimationFrame(()=>target.focus({preventScroll:true}))}
-  function openLeave(){if(leaveOpen||result.hasAttribute("open"))return;leaveTrigger=document.activeElement instanceof HTMLElement?document.activeElement:null;leaveOpen=true;setBattleOwnership(true);document.body.classList.add("tangram-leave-active");leavePanel.classList.remove("hidden");requestAnimationFrame(()=>$("#tangramKeepPlaying").focus({preventScroll:true}))}
-  function show(id,focus=true){clearTimeout(resultTimer);resultTimer=0;closeResult();closeLeave(false);screens.forEach(screen=>screen.hidden=screen.id!==id);document.body.dataset.screen=id;if(id==="battle"){window.dispatchEvent(new Event("weightplay:stage-sync"));window.dispatchEvent(new Event("weightplay:battle-sync"))}else{window.dispatchEvent(new Event("weightplay:battle-sync"));window.dispatchEvent(new Event("weightplay:stage-sync"))}window.dispatchEvent(new Event("weightplay:shell-sync"));if(id==="stage")renderStages();if(focus)requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=id==="main"?$("#start"):id==="stage"?$("#stageGrid .stage-card.selected:not(:disabled)"):null;target?.focus({preventScroll:true})}))}
+  function closeResult(){(__wpNotifyMeasurement(), result.removeAttribute("open"));document.body.classList.remove("tangram-result-active");setBattleOwnership(false)}
+  function openResult(){(__wpNotifyMeasurement(), result.setAttribute("open",""));document.body.classList.add("tangram-result-active");setBattleOwnership(true);requestAnimationFrame(()=>(result.querySelector(".primary")||resultStages).focus({preventScroll:true}))
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
+  function closeLeave(restore=true){if(!leaveOpen)return;(__wpNotifyMeasurement(), leaveOpen=false);(__wpNotifyMeasurement(), leavePanel.classList.add("hidden"));document.body.classList.remove("tangram-leave-active");setBattleOwnership(false);const target=leaveTrigger;leaveTrigger=null;if(restore&&target?.isConnected)requestAnimationFrame(()=>target.focus({preventScroll:true}))}
+  function openLeave(){if(leaveOpen||result.hasAttribute("open"))return;leaveTrigger=document.activeElement instanceof HTMLElement?document.activeElement:null;(__wpNotifyMeasurement(), leaveOpen=true);setBattleOwnership(true);document.body.classList.add("tangram-leave-active");(__wpNotifyMeasurement(), leavePanel.classList.remove("hidden"));requestAnimationFrame(()=>$("#tangramKeepPlaying").focus({preventScroll:true}))}
+  function show(id,focus=true){clearTimeout(resultTimer);resultTimer=0;closeResult();closeLeave(false);screens.forEach(screen=>screen.hidden=screen.id!==id);document.body.dataset.screen=id;if(id==="battle"){window.dispatchEvent(new Event("weightplay:stage-sync"));window.dispatchEvent(new Event("weightplay:battle-sync"))}else{window.dispatchEvent(new Event("weightplay:battle-sync"));window.dispatchEvent(new Event("weightplay:stage-sync"))}window.dispatchEvent(new Event("weightplay:shell-sync"));if(id==="stage")renderStages();if(focus)requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=id==="main"?$("#start"):id==="stage"?$("#stageGrid .stage-card.selected:not(:disabled)"):null;target?.focus({preventScroll:true})}))
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[id] ?? null;
+      if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function animalName(index){return (animalNames[locale]||animalNames.en)[index%6]}
   function createShape(className,index,target,preview=false){const shape=document.createElement(preview?"span":"div");shape.className=className+" "+parts[index];shape.dataset.shape=parts[index];pos(shape,target.x,target.y,target.r);return shape}
   function createPreview(item){const preview=document.createElement("span");preview.className="stage-preview";preview.setAttribute("aria-hidden","true");item.targets.forEach((target,index)=>preview.append(createShape("preview-piece",index,target,true)));return preview}
   function renderStages(){$("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});$("#stageGrid").innerHTML="";levels.forEach((item,index)=>{const b=document.createElement("button"),locked=index+1>unlocked;b.className="stage-card"+(index===selected?" selected":"");b.disabled=locked;b.dataset.stage=String(index+1);b.append(createPreview(item));const copy=document.createElement("span");copy.className="stage-copy";copy.innerHTML="<strong>"+animalName(index)+"</strong><span>"+t("shape",{n:index+1})+(locked?" · "+t("locked"):"")+"</span>";b.append(copy);b.onclick=()=>startLevel(index);$("#stageGrid").append(b)});requestAnimationFrame(()=>$("#stageGrid .selected")?.scrollIntoView({block:"nearest",inline:"center"}))}
   function pos(el,x,y,r){el.style.left=x*100+"%";el.style.top=y*100+"%";el.style.transform="translate(-50%,-50%) rotate("+r+"deg)"}
-  function startLevel(index){selected=index;level=levels[index];const tray=[[.14,.82],[.42,.82],[.72,.82],[.12,.94],[.31,.94],[.53,.94],[.78,.94]];states=parts.map((_,i)=>({x:tray[i][0],y:tray[i][1],r:0,placed:false}));moves=0;resultSettled=false;$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("shape",{n:index+1});$("#animalGoal").textContent=animalName(index);$("#status").textContent=coach();show("battle",false);renderBoard();requestAnimationFrame(()=>$(".piece:not(.placed)")?.focus({preventScroll:true}))}
+  function startLevel(index){selected=index;level=levels[index];const tray=[[.14,.82],[.42,.82],[.72,.82],[.12,.94],[.31,.94],[.53,.94],[.78,.94]];states=parts.map((_,i)=>({x:tray[i][0],y:tray[i][1],r:0,placed:false}));moves=0;resultSettled=false;$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("shape",{n:index+1});$("#animalGoal").textContent=animalName(index);$("#status").textContent=coach();show("battle",false);renderBoard();requestAnimationFrame(()=>$(".piece:not(.placed)")?.focus({preventScroll:true}))
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function renderBoard(focusIndex=null){const targets=$("#targets"),piecesLayer=$("#pieces");targets.innerHTML="";piecesLayer.innerHTML="";level.targets.forEach((target,index)=>targets.append(createShape("target-piece",index,target)));states.forEach((state,index)=>{const piece=document.createElement("button");piece.className="piece "+parts[index]+(state.placed?" placed":"");piece.dataset.shape=parts[index];piece.dataset.index=index;piece.setAttribute("aria-label",t("pieceLabel",{n:index+1}));pos(piece,state.x,state.y,state.r);piece.onpointerdown=event=>begin(index,event);piece.onpointermove=event=>move(event);piece.onpointerup=finish;piece.onpointercancel=finish;piece.onclick=event=>{if(event.detail===0)rotatePiece(index)};piecesLayer.append(piece)});$("#placedCount").textContent=t("placed",{done:states.filter(state=>state.placed).length});if(focusIndex!==null)requestAnimationFrame(()=>document.querySelector('[data-index="'+focusIndex+'"]')?.focus({preventScroll:true}))}
   function begin(index,event){const state=states[index];state.placed=false;drag={index,pointer:event.pointerId,x:event.clientX,y:event.clientY,startX:state.x,startY:state.y,moved:false};event.currentTarget.setPointerCapture?.(event.pointerId);event.currentTarget.classList.remove("placed");document.querySelector('.target-piece[data-shape="'+parts[index]+'"]')?.classList.add("active-target")}
   function move(event){if(!drag)return;const rect=$("#board").getBoundingClientRect(),state=states[drag.index];state.x=Math.max(.07,Math.min(.93,drag.startX+(event.clientX-drag.x)/rect.width));state.y=Math.max(.07,Math.min(.93,drag.startY+(event.clientY-drag.y)/rect.height));drag.moved=true;const piece=document.querySelector('[data-index="'+drag.index+'"]');if(piece)pos(piece,state.x,state.y,state.r)}
   function rotatePiece(index){if(states[index].placed)return;states[index].r=(states[index].r+45)%360;$("#status").textContent=coach();renderBoard(index)}
   function finish(){if(!drag)return;const index=drag.index,state=states[index],target=level.targets[index],angle=Math.abs(((state.r-target.r+540)%360)-180),distance=Math.hypot(state.x-target.x,state.y-target.y),moved=drag.moved;drag=null;if(!moved){rotatePiece(index)}else if(distance<.075&&angle<=1){state.x=target.x;state.y=target.y;state.r=target.r;state.placed=true;moves++;$("#status").textContent=t("snap");renderBoard();checkComplete()}else{$("#status").textContent=t("wrong");renderBoard(index)}}
-  function checkComplete(){if(states.every(state=>state.placed)){if(selected+2>unlocked){unlocked=Math.min(31,selected+2);write(key,String(unlocked))}$("#resultBody").textContent=t("resultBody",{n:selected+1,moves});const terminal=selected===29;$("#next").textContent=terminal?t("allDone"):t("next");$("#next").disabled=terminal;$("#next").setAttribute("aria-disabled",String(terminal));$("#next").classList.toggle("primary",!terminal);resultStages.classList.toggle("primary",terminal);$("#retry").classList.remove("primary");resultTimer=setTimeout(openResult,180)}}
+  function checkComplete(){if(states.every(state=>state.placed)){if(selected+2>unlocked){unlocked=Math.min(31,selected+2);write(key,String(unlocked))}$("#resultBody").textContent=t("resultBody",{n:selected+1,moves});const terminal=selected===29;$("#next").textContent=terminal?t("allDone"):t("next");$("#next").disabled=terminal;$("#next").setAttribute("aria-disabled",String(terminal));$("#next").classList.toggle("primary",!terminal);(__wpNotifyMeasurement(), resultStages.classList.toggle("primary",terminal));$("#retry").classList.remove("primary");resultTimer=setTimeout(openResult,180)}}
   function hint(){const index=states.findIndex(state=>!state.placed);if(index<0)return;const target=level.targets[index];states[index]={x:target.x,y:target.y,r:target.r,placed:true};moves++;$("#status").textContent=t("snap");renderBoard();checkComplete()}
   function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=t("title")+" | WeightPlay";document.querySelectorAll("[data-t]").forEach(node=>node.textContent=t(node.dataset.t));document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));$("#locale").value=locale;resultStages.textContent=nav("stages");$(".stage-tabs").setAttribute("aria-label",nav("stages"));$("#stageTab").textContent=nav("stages");$("#stageTab").setAttribute("aria-label",nav("stages"));$("#tangramLeaveTitle").textContent=nav("leaveTitle");$("#tangramLeaveBody").textContent=nav("leaveBody");$("#tangramKeepPlaying").textContent=nav("keepPlaying");$("#tangramLeaveStage").textContent=nav("leaveStage");if(!$("#stage").hidden)renderStages();if(!$("#battle").hidden)renderBoard()}
   codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.TANGRAM_LOCALES[code].label;$("#locale").append(option)});$("#locale").onchange=e=>{locale=e.target.value;write("wp-locale",locale);applyLocale()};
@@ -110,9 +137,9 @@
   $("#stage [data-back]").onclick=()=>show("main");
   document.addEventListener("click",event=>{if(document.body.dataset.screen!=="battle"||!event.target.closest("[data-back]"))return;event.preventDefault();event.stopImmediatePropagation();openLeave()},true);
   $("#hint").onclick=hint;
-  $("#reset").onclick=()=>startLevel(selected);
+  $("#reset").onclick=()=>__wpReplayStart(() => startLevel(selected));
   resultStages.onclick=()=>settleResult(()=>{selected=Math.min(unlocked,30)-1;show("stage")});
-  $("#retry").onclick=()=>settleResult(()=>startLevel(selected));
+  $("#retry").onclick=()=>settleResult(()=>__wpReplayStart(() => startLevel(selected)));
   $("#next").onclick=()=>{if($("#next").disabled)return;settleResult(()=>startLevel(selected+1))};
   $("#tangramKeepPlaying").onclick=()=>closeLeave(true);
   $("#tangramLeaveStage").onclick=()=>{closeLeave(false);show("stage")};

@@ -80,7 +80,27 @@
       this.bindEvents();
       this.setScreen('main');
       this.els.loading.hidden = true;
+      this.syncAnalytics();
       this.focusLocale();
+    }
+
+    analytics(method, ...args) {
+      try { return window.WonderAnalytics?.game?.[method]?.(...args); }
+      catch { return undefined; } // Measurement must never change gameplay.
+    }
+
+    syncAnalytics() {
+      if (this.els.loading && !this.els.loading.hidden) return;
+      this.analytics('configure', {
+        locale:this.locale, activityMode:this.config.analyticsActivityMode || 'input',
+        idleSeconds:this.config.analyticsIdleSeconds || 300,
+      });
+      const node = {main:this.els.mainGroup,stage:this.els.stageScreen,battle:this.els.battleScreen}[this.screen];
+      this.analytics('screen', this.screen, {node,locale:this.locale});
+      if (this.screen === 'battle' && this.run && !this.run.end && !this.pendingAnalyticsStart) {
+        this.analytics('start', {roundKey:this.run});
+        if (this.els.leaveModal?.hidden === false) this.analytics('pause', 'leave_dialog');
+      }
     }
 
     get key() { return `weightplay_${this.config.gameId}_save_v2`; }
@@ -147,6 +167,7 @@
       this.renderStages();
       this.renderBoard();
       if (this.run) this.updateStatus();
+      this.syncAnalytics();
     }
 
     buildMain() {
@@ -162,6 +183,7 @@
     }
 
     setScreen(next) {
+      if (this.screen === 'battle' && next !== 'battle') this.analytics('end', 'abandon');
       this.screen = next;
       document.body.dataset.screen = next;
       this.els.mainGroup.hidden = next !== 'main';
@@ -174,6 +196,8 @@
         this.renderBattle();
         requestAnimationFrame(() => this.renderBoard());
       }
+      const node = {main:this.els.mainGroup,stage:this.els.stageScreen,battle:this.els.battleScreen}[next];
+      if (!this.els.loading || this.els.loading.hidden) this.analytics('screen', next, {node,locale:this.locale});
     }
 
     bindEvents() {
@@ -187,12 +211,14 @@
         if (!this.run || this.run.end) return this.setScreen('stage');
         if (this.els.leaveModal) {
           this.els.leaveModal.hidden = false;
+          this.analytics('pause', 'leave_dialog');
           return;
         }
         this.setScreen('stage');
       });
       leaveContinue?.addEventListener('click', () => {
         if (this.els.leaveModal) this.els.leaveModal.hidden = true;
+        this.analytics('resume', 'leave_dialog');
       });
       leaveStage?.addEventListener('click', () => {
         if (this.els.leaveModal) this.els.leaveModal.hidden = true;
@@ -346,7 +372,9 @@
     }
 
     startBattle(index) {
-      this.stopRun();
+      const isReplay = this.pendingAnalyticsStart ? this.pendingAnalyticsStart.isReplay
+        : Boolean(this.run) && this.stage === clamp(index, 0, this.stageCount - 1);
+      this.stopRun(isReplay ? 'restart' : 'replaced');
       this.stage = clamp(index, 0, this.stageCount - 1);
       this.run = this.config.createRun(this.stage);
       this.run.stage = this.stage;
@@ -358,16 +386,32 @@
       this.els.resultModal && (this.els.resultModal.hidden = true);
       if (this.config.onStart) this.config.onStart(this);
       this.updateStatus(t(this.locale, this.config.copy, 'ready'));
+      // Count only the run surviving synchronous legacy click handlers.
+      const startedRun = this.run;
+      const notice = {isReplay};
+      this.pendingAnalyticsStart = notice;
+      queueMicrotask(() => {
+        if (this.pendingAnalyticsStart !== notice) return;
+        this.pendingAnalyticsStart = null;
+        if (this.run !== startedRun || !startedRun || startedRun.end || this.screen !== 'battle') return;
+        this.analytics('configure', {
+          locale:this.locale, activityMode:this.config.analyticsActivityMode || 'input',
+          idleSeconds:this.config.analyticsIdleSeconds || 300,
+        });
+        this.analytics(isReplay ? 'restart' : 'start', {roundKey:startedRun});
+      });
     }
 
-    stopRun() {
+    stopRun(outcome = 'abandon') {
       if (!this.run) return;
+      this.analytics('end', outcome);
       this.run.end = true;
       this.run = null;
     }
 
     finish(win) {
       if (!this.run) return;
+      this.analytics('end', win ? 'win' : 'lose');
       const score = Number(this.run.score || 0) + (win ? 20 : 0) + (this.run.moves ? Math.floor((1 / Math.max(1, this.run.moves)) * 5) : 0);
       const reason = win ? t(this.locale, this.config.copy, 'winReason', { n: this.stage + 1 }) : t(this.locale, this.config.copy, 'loseReason', { n: this.stage + 1 });
       this.run.end = true;
@@ -409,6 +453,10 @@
       requestAnimationFrame(() => localeSelect.focus({ preventScroll: true }));
     }
   }
+
+  window.addEventListener('weightplay:analytics-ready', () => {
+    window.__activeMiniPuzzleGame?.syncAnalytics();
+  });
 
   window.createMiniPuzzleGame = function (config) {
     if (!config || !config.gameId || !config.copy) {

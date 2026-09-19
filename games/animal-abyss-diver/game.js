@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "animal-abyss-diver";
   const GAME_VERSION = 21;
   const INTERFACE_VERSION = "7";
@@ -630,7 +648,7 @@
   const estimateMarkup = outcome => `<span class="metric">${icon("salvage")}<em>${t("shortLoot")}</em>${pips(outcome.intel.loot)}</span><span class="metric">${icon("danger")}<em>${t("shortDanger")}</em>${pips(outcome.intel.danger)}</span><span class="metric metric-oxygen">${icon("oxygen")}<em>${t("shortOxygen")}</em><b>${outcome.intel.cost}</b></span>`;
   const combatDiver=document.createElement("div");combatDiver.className="combat-diver";combatDiver.innerHTML='<img src="../../assets/animal-abyss-diver-nori.png" alt="Nori">';$("fishEncounter").prepend(combatDiver);
   const upgradePanel=document.createElement("section");upgradePanel.id="upgradePanel";upgradePanel.className="upgrade-panel hidden";upgradePanel.setAttribute("role","dialog");upgradePanel.setAttribute("aria-modal","true");upgradePanel.setAttribute("aria-labelledby","upgradeTitle");upgradePanel.setAttribute("aria-describedby","upgradeSummary");upgradePanel.innerHTML='<h2 id="upgradeTitle"></h2><strong id="upgradePoints"></strong><output id="upgradeSummary" aria-live="polite" aria-atomic="true"></output><div><button id="upgradeHp" type="button"></button><button id="upgradeAttack" type="button"></button><button id="upgradeOxygen" type="button"></button></div><button id="upgradeDone" class="primary" type="button"></button>';$("diveField").append(upgradePanel);
-  const quitPanel=document.createElement("section");quitPanel.id="quitPanel";quitPanel.className="quit-panel hidden";quitPanel.setAttribute("role","dialog");quitPanel.setAttribute("aria-modal","true");quitPanel.setAttribute("aria-labelledby","quitTitle");quitPanel.setAttribute("aria-describedby","quitCopy");quitPanel.innerHTML='<div class="quit-card"><h2 id="quitTitle"></h2><p id="quitCopy"></p><div><button id="quitKeep" class="primary" type="button"></button><button id="quitLeave" class="secondary" type="button"></button></div></div>';document.querySelector(".battle-canvas").append(quitPanel);
+  const quitPanel=document.createElement("section");quitPanel.id="quitPanel";quitPanel.className="quit-panel hidden";(__wpNotifyMeasurement(), quitPanel.setAttribute("role","dialog"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-modal","true"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-labelledby","quitTitle"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-describedby","quitCopy"));quitPanel.innerHTML='<div class="quit-card"><h2 id="quitTitle"></h2><p id="quitCopy"></p><div><button id="quitKeep" class="primary" type="button"></button><button id="quitLeave" class="secondary" type="button"></button></div></div>';document.querySelector(".battle-canvas").append(quitPanel);
   const quitStylesheet=document.createElement("link");quitStylesheet.rel="stylesheet";quitStylesheet.href="quit-confirmation.css";document.head.append(quitStylesheet);
   // Permanent Battle utility and coach share the Battle owner, not the short
   // play-field row. Moving once keeps identity/focus stable on every return.
@@ -682,7 +700,12 @@
   function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)sceneFrame("battle",()=>{if(!$('result').classList.contains('hidden'))resultPrimaryAction?.focus({preventScroll:true});});}
   function syncSoundToggle(activeViewport){const toggle=document.querySelector("button[data-sound-toggle]");if(toggle)toggle.style.setProperty("display",activeViewport?"none":"grid","important");}
   function syncSceneNode(id,visible){const node=$(id);if(!node)return;node.classList.toggle("hidden",!visible);node.hidden=!visible;if(visible)node.removeAttribute("aria-hidden");else node.setAttribute("aria-hidden","true");}
-  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));window.WeightPlayBattleCanvas?.sync?.();}
+  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));window.WeightPlayBattleCanvas?.sync?.();
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","mainScreen":"main","stageScreen":"stage","battleShell":"battle"})[id] ?? null;
+      if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function focusMain(){sceneFrame("main",()=>$('startBtn').focus({preventScroll:true}));}
   function focusCurrentDiveDecision(){
     const candidates=state.fishActive?[$("dodgeLeftBtn"),$("pulseBtn")]:[$("leftGate"),$("rightGate"),$("surfaceBtn")];
@@ -714,7 +737,7 @@
       renderQuit();
       suspendDiveAsync();
     }
-    $("quitPanel").classList.toggle("hidden",!open);
+    (__wpNotifyMeasurement(), $("quitPanel").classList.toggle("hidden",!open));
     quitBackgroundNodes().forEach(node=>{node.inert=open;if(open)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});
     if(open){sceneFrame("battle",()=>{if(!$("quitPanel").classList.contains("hidden"))$("quitKeep").focus({preventScroll:true});});return;}
     if(resume)resumeDiveAsync();
@@ -816,7 +839,9 @@
       target?.focus({preventScroll:true});
     });
   }
-  function start(route,startReason="stage_select"){cancelDiveAsync();const config=routes[route-1];state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:!!config.openingScan,battery:config.startBattery??4,shieldArmed:!!config.openingShield,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[],safeStreak:0};track("route_start",{route,route_name:routeText(config,"name"),zones:config.zones,target:config.target,risk:config.risk,start_reason:startReason,unlocked_route:save.unlocked});show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon(config.openingScan?"sonar":config.openingShield?"shield":"sonar")}<b>${config.openingScan||config.openingShield?"✓":"?"}</b>`,routeText(config,"rule"));playSound("start");setCoach(!save.tutorialDone);}
+  function start(route,startReason="stage_select"){cancelDiveAsync();const config=routes[route-1];state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:!!config.openingScan,battery:config.startBattery??4,shieldArmed:!!config.openingShield,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[],safeStreak:0};track("route_start",{route,route_name:routeText(config,"name"),zones:config.zones,target:config.target,risk:config.risk,start_reason:startReason,unlocked_route:save.unlocked});show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon(config.openingScan?"sonar":config.openingShield?"shield":"sonar")}<b>${config.openingScan||config.openingShield?"✓":"?"}</b>`,routeText(config,"rule"));playSound("start");setCoach(!save.tutorialDone);
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function finish(mode){
     cancelDiveAsync();
     const config=routeConfig(),clear=mode==="clear",finalClear=clear&&state.route>=routes.length;
@@ -838,7 +863,7 @@
     const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
     const remainingZones=Math.max(0,config.zones-state.zone),targetReachedEarly=state.salvage>=config.target&&remainingZones>0,resultCompletionHint=$("resultCompletionHint");
-    if(resultCompletionHint){resultCompletionHint.textContent=targetReachedEarly?t("completionRemaining",{remaining:remainingZones}):"";resultCompletionHint.classList.toggle("hidden",!targetReachedEarly);}
+    if(resultCompletionHint){resultCompletionHint.textContent=targetReachedEarly?t("completionRemaining",{remaining:remainingZones}):"";(__wpNotifyMeasurement(), resultCompletionHint.classList.toggle("hidden",!targetReachedEarly));}
     let routeEvidence=t("routeRetry",{target:config.target,zones:config.zones});
     if(finalClear)routeEvidence=t("routeComplete");
     else if(clear){const nextRoute=Math.min(routes.length,state.route+1),key=save.unlocked>unlockedBefore?"routeUnlocked":"routeReady";routeEvidence=t(key,{n:nextRoute,name:routeText(routes[nextRoute-1],"name")});}
@@ -846,7 +871,9 @@
     $("menuBtn").textContent=t("routeSelect");$("nextBtn").textContent=t("next");replayBtn.textContent=t("retry");
     [$("menuBtn"),$("nextBtn"),replayBtn].forEach(button=>{button.classList.remove("hidden");button.classList.toggle("primary",button===resultPrimaryAction);button.classList.toggle("secondary",button!==resultPrimaryAction);});
     $("nextBtn").disabled=!canAdvance;$("menuBtn").disabled=false;replayBtn.disabled=false;
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (typeof mode === "boolean" ? (mode ? "win" : "lose") : typeof mode === "string" ? mode : "complete"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function resetDiveField(){const field=$("diveField");field.classList.remove("is-swimming","is-resolving","is-advancing");delete field.dataset.lane;delete state.resolvingDirection;$("impactText").classList.add("hidden");}
   function applyMove(direction){
     const config=routeConfig(),outcome=encounter(direction);
@@ -997,7 +1024,7 @@
   ensureResultActions();
   $("menuBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_result_menu",resultAnalyticsPayload());track("routes_return",{...routeEventPayload(),from_result:state.resultOutcome,return_target:"route_map"});leaveDive();});
   $("nextBtn").onclick=()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextRoute=Math.min(routes.length,state.route+1);window.WonderAnalytics?.track?.("game_next_stage",{...payload,next_stage:nextRoute});track("next_route",{...routeEventPayload(),from_route:state.route,next_route:nextRoute,trigger:"result_next"});start(nextRoute,"next_route");});
-  $("replayBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_restart",{...resultAnalyticsPayload(),source:"result"});start(state.route,"replay");});
+  $("replayBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_restart",{...resultAnalyticsPayload(),source:"result"});__wpReplayStart(() => start(state.route,"replay"));});
   window.addEventListener("blur",()=>{windowFocused=false;suspendDiveAsync();});
   window.addEventListener("focus",()=>{windowFocused=true;resumeDiveAsync();});
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else if(windowFocused)resumeDiveAsync();});
@@ -1032,7 +1059,7 @@
   document.addEventListener("pointerup",finishRouteDrag,true);document.addEventListener("pointercancel",finishRouteDrag,true);
   routeRail.addEventListener("click",event=>{const card=event.target.closest(".route-card");if(!card)return;if(suppressRouteClick){suppressRouteClick=false;event.preventDefault();event.stopImmediatePropagation();return;}const n=Number(card.dataset.route);if(n<=save.unlocked){event.preventDefault();event.stopImmediatePropagation();start(n);}},true);
   for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
-  $("result")?.setAttribute("aria-describedby","resultCopy resultCompletionHint");
+  (__wpNotifyMeasurement(), $("result")?.setAttribute("aria-describedby","resultCopy resultCompletionHint"));
   if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();},beaconState(){return{pending:!!state?.beaconPending,remaining:beaconConfirmRemaining,wallet:wallet()};},seedProgress(patch={}){if(!patch||typeof patch!=="object")return;save=normalizeSave({...save,...patch,stats:{...save.stats,...(patch.stats||{})}});persist();renderMainProgress();}};
   localize();
   if(window.__AbyssDiverSmoke)Object.assign(window.__AbyssDiverSmoke,{

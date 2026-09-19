@@ -1,5 +1,17 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const COPY = window.GUST_GARDEN_LOCALES || {};
   const LOCALE_NAMES = window.GUST_GARDEN_LOCALE_NAMES || {};
   const DIRECTIONS = { up: { x: 0, y: -1 }, right: { x: 1, y: 0 }, down: { x: 0, y: 1 }, left: { x: -1, y: 0 } };
@@ -77,7 +89,12 @@
   const directionCopy = (direction) => ((COPY[locale] || COPY.en).directions || COPY.en.directions)[direction];
   function announce(name, data = {}) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `gust_garden_${name}`, game_id: "animal-gust-garden", game_version: "v13", interface_version: 6, stage: stageIndex + 1, ...data }); }
   function best() { const value = Number(localStorage.getItem("weightplay-animal-gust-garden-best-v1") || 0); return value > 0 ? value : null; }
-  function show(screen) { document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); const guide = document.querySelector("[data-wp-game-guide], .game-page-info.game-page-info-static"); if (guide) guide.hidden = screen !== "main"; $("settingsPanel").hidden = true; document.body.dataset.wpActiveScreen = screen; window.dispatchEvent(new CustomEvent("weightplay:shell-sync")); window.scrollTo(0, 0); }
+  function show(screen) { document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); const guide = document.querySelector("[data-wp-game-guide], .game-page-info.game-page-info-static"); if (guide) guide.hidden = screen !== "main"; $("settingsPanel").hidden = true; document.body.dataset.wpActiveScreen = screen; window.dispatchEvent(new CustomEvent("weightplay:shell-sync")); window.scrollTo(0, 0);
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   // Interface 7 supplies one shared Settings owner. Keep the authored local
   // buttons only as inert compatibility bindings so Main, Stage, and Battle
   // never expose duplicate controls or let a hidden title intercept input.
@@ -166,7 +183,9 @@
     const focus = root.querySelector(`[data-stage-index="${unlocked + 1}"]`); if (focus) window.setTimeout(() => focus.scrollIntoView({ block: "center", inline: "nearest" }), 0);
   }
   function cloneStage(index) { const source = STAGES[index]; return { ...source, seeds: source.seeds.map((seed) => ({ ...seed, locked: false })), drafts: (source.drafts || []).map((item) => ({ ...item })), gates: (source.gates || []).map((item) => ({ ...item })), portals: (source.portals || []).map((item) => ({ ...item })) }; }
-  function startStage(index) { if (index > highestUnlocked()) { announce("locked", { requestedStage: index + 1 }); return; } stageIndex = index; stageState = cloneStage(index); selectedSeed = 0; selectedDirection = null; lastChecks = 0; show("battle"); announce("start"); renderBattle(); }
+  function startStage(index) { if (index > highestUnlocked()) { announce("locked", { requestedStage: index + 1 }); return; } stageIndex = index; stageState = cloneStage(index); selectedSeed = 0; selectedDirection = null; lastChecks = 0; show("battle"); announce("start"); renderBattle();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function cellKey(x, y) { return `${x}:${y}`; }
   function findAt(list, x, y) { return list.find((item) => item.x === x && item.y === y); }
   function renderBattle() {
@@ -200,7 +219,9 @@
   }
   function renderResult() { const resultText = $("resultText"); if (resultText) resultText.textContent = copy("resultText", { name: stageName(stageIndex), checks: lastChecks }); const nextButton = $("nextButton"); if (nextButton) { const hasNextUnlocked = stageIndex < highestUnlocked(); nextButton.disabled = !hasNextUnlocked; nextButton.hidden = !hasNextUnlocked; } }
   function openStage() { show("stage"); renderStages(); }
-  function bind() { $("startButton").addEventListener("click", openStage); $("chooseButton").addEventListener("click", openStage); $("mapButton").addEventListener("click", openStage); $("nextButton").addEventListener("click", () => startStage(stageIndex + 1)); $("gustButton").addEventListener("click", sendGust); $("resetButton").addEventListener("click", () => { stageState = cloneStage(stageIndex); selectedSeed = 0; selectedDirection = null; lastChecks = 0; announce("reset"); renderBattle(); }); $("stageBackButton").addEventListener("click", () => { show("main"); renderMain(); }); $("battleBackButton").addEventListener("click", openStage); $("settingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("stageSettingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("battleSettingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundButton").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-animal-gust-garden-sound", sound ? "on" : "off"); applyCopy(); }); $("localeSelect").addEventListener("change", (event) => { locale = COPY[event.target.value] ? event.target.value : "en"; localStorage.setItem("weightplay-animal-gust-garden-locale", locale); applyCopy(); }); }
+  function bind() { $("startButton").addEventListener("click", openStage); $("chooseButton").addEventListener("click", openStage); $("mapButton").addEventListener("click", openStage); $("nextButton").addEventListener("click", () => startStage(stageIndex + 1)); $("gustButton").addEventListener("click", sendGust); $("resetButton").addEventListener("click", () => { stageState = cloneStage(stageIndex); selectedSeed = 0; selectedDirection = null; lastChecks = 0; announce("reset"); renderBattle();
+      __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}); $("stageBackButton").addEventListener("click", () => { show("main"); renderMain(); }); $("battleBackButton").addEventListener("click", openStage); $("settingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("stageSettingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("battleSettingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundButton").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-animal-gust-garden-sound", sound ? "on" : "off"); applyCopy(); }); $("localeSelect").addEventListener("change", (event) => { locale = COPY[event.target.value] ? event.target.value : "en"; localStorage.setItem("weightplay-animal-gust-garden-locale", locale); applyCopy(); }); }
   function boot() { bind(); installInterfaceCompatibility(); $("loading").hidden = true; $("app").hidden = false; show("main"); applyCopy(); ensureSharedSettingsButton(); announce("loaded"); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

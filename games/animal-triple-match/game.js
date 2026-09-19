@@ -1,5 +1,23 @@
 (() => {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(run?.paused || run?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const LOCALES = [
     ["en", "English"], ["zh-Hant", "繁體中文"], ["zh-Hans", "简体中文"], ["ja", "日本語"],
@@ -259,7 +277,7 @@
     if (!run || run.ended || save.firstPlanSeen || !els.firstPlanModal) return;
     save.firstPlanSeen = true;
     persist();
-    run.paused = true;
+    (__wpNotifyMeasurement(), run.paused = true);
     openModal(els.firstPlanModal, els.firstPlanClose);
     track("first_plan_hint_shown", { stage: stageIndex + 1 });
   }
@@ -758,7 +776,12 @@
       track("stage_open", { stage: save.unlocked, unlocked_count: save.unlocked, cleared_count: Object.keys(save.stars).filter(k => save.stars[k] > 0).length, input_type: previous === "main" ? "start" : "return" });
     }
     if (next === "main" && previous !== "main") track("return_session", { from_screen: previous });
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[next] ?? null;
+      if (["result"].includes(next) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function renderMainProgress() {
     const cleared = Object.keys(save.stars).filter(k => save.stars[k] > 0).length;
     els.mainProgress.textContent = `${t("cleared")} ${cleared} / 30`;
@@ -892,9 +915,9 @@
     stageIndex = Math.max(0, Math.min(29, index));
     const config = stageConfig(stageIndex);
     run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, peakTray: 0, lastTrayId: null, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
-    [els.tutorialModal, els.firstPlanModal, els.leaveModal, els.resultModal].forEach(modal => modal.hidden = true);
+    [els.tutorialModal, els.firstPlanModal, els.leaveModal, els.resultModal].forEach(modal => (__wpNotifyMeasurement(), modal.hidden = true));
     els.feedback.textContent = "";
-    els.resultReward.hidden = true;
+    (__wpNotifyMeasurement(), els.resultReward.hidden = true);
     els.resultReward.textContent = "";
     isolateBattle(false); setScreen("battle"); renderRun();
     const battleRun = run;
@@ -908,10 +931,12 @@
     // The Help button still exposes the same tutorial for an explicit player
     // request; normal starts keep the existing first-run onboarding flow.
     const suppressOnboarding = skipTutorial || isInterfaceValidation;
-    if (!save.tutorial && !suppressOnboarding) { run.paused = true; openModal(els.tutorialModal, els.tutorialClose); }
+    if (!save.tutorial && !suppressOnboarding) { (__wpNotifyMeasurement(), run.paused = true); openModal(els.tutorialModal, els.tutorialClose); }
     else if (!suppressOnboarding) showFirstPlan();
     track("game_start", { stage: stageIndex + 1 });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function spriteStyle(type) {
     // Keep the saved type IDs identical for both the pile and the tray.
     const sprites = ["acorn", "moon-cup", "shell-compass", "berry-brooch",
@@ -1058,7 +1083,7 @@
     const same = run.tray.filter(p => p.type === type && !pendingIds.has(p.id));
     if (same.length >= 3) {
       schedulePendingMatch(same.slice(0, 3).map(piece => piece.id));
-      run.paused = false;
+      (__wpNotifyMeasurement(), run.paused = false);
       renderRun();
       return;
     }
@@ -1086,7 +1111,7 @@
     if (run.ended) return;
     cancelPendingMatch();
     clearRewardBeat();
-    run.ended = true; run.paused = true; run.resultWin = win;
+    run.ended = true; (__wpNotifyMeasurement(), run.paused = true); run.resultWin = win;
     const free = run.config.trayCap - run.tray.length, stars = win ? (free >= 5 ? 3 : free >= 3 ? 2 : 1) : 0;
     if (win) {
       save.stars[stageIndex] = Math.max(save.stars[stageIndex] || 0, stars);
@@ -1096,7 +1121,7 @@
     els.resultKicker.textContent = t(win ? "winKicker" : "failKicker");
     els.resultTitle.textContent = t(win ? "winTitle" : "failTitle");
     els.resultReward.textContent = win ? rewardBeatText("shelfClear") : "";
-    els.resultReward.hidden = !win;
+    (__wpNotifyMeasurement(), els.resultReward.hidden = !win);
     els.resultStars.textContent = win ? "★".repeat(stars) : "◇◇◇";
     els.resultText.textContent = win ? t("winText", { n: stageIndex + 1, stars }) : t("failText");
     els.planText.textContent = t(win ? "planWin" : "planRetry");
@@ -1111,10 +1136,12 @@
     [els.retryBtn, els.nextBtn, els.resultStages].forEach(button => { button.disabled = false; });
     els.nextBtn.disabled = !canAdvance;
     els.nextBtn.classList.toggle("primary", canAdvance);
-    els.resultStages.classList.toggle("primary", !canAdvance);
+    (__wpNotifyMeasurement(), els.resultStages.classList.toggle("primary", !canAdvance));
     openModal(els.resultModal, canAdvance ? els.nextBtn : els.resultStages);
     sound(win ? "win" : "fail"); track(win ? "game_complete" : "game_fail", { stage: stageIndex + 1, stars });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function undo() {
     if (!run.history.length || run.tools.undo <= 0 || run.paused) { els.feedback.textContent = t("noUndo"); return; }
     run.tools.undo--; restore(run.history.pop()); sound("undo");
@@ -1144,11 +1171,11 @@
     value ? els.battleLive.setAttribute("aria-hidden", "true") : els.battleLive.removeAttribute("aria-hidden");
     if (screen === "battle") sharedFrame?.activate("battle", { covered: value });
   }
-  function openModal(modal, focus) { modal.hidden = false; suspendPendingMatch(); isolateBattle(true); requestAnimationFrame(() => focus?.focus()); }
+  function openModal(modal, focus) { (__wpNotifyMeasurement(), modal.hidden = false); suspendPendingMatch(); isolateBattle(true); requestAnimationFrame(() => focus?.focus()); }
   function closeModal(modal, focus) {
-    modal.hidden = true;
+    (__wpNotifyMeasurement(), modal.hidden = true);
     isolateBattle(false);
-    run.paused = false;
+    (__wpNotifyMeasurement(), run.paused = false);
     armPendingMatch();
     requestAnimationFrame(() => focus?.focus());
   }
@@ -1216,16 +1243,16 @@
   });
   els.startBtn.addEventListener("click", () => setScreen("stage"));
   els.stageBack.addEventListener("click", () => setScreen("main"));
-  els.battleBack.addEventListener("click", () => { if (!run || run.ended) return setScreen("stage"); run.paused = true; openModal(els.leaveModal, els.leaveContinue); });
+  els.battleBack.addEventListener("click", () => { if (!run || run.ended) return setScreen("stage"); (__wpNotifyMeasurement(), run.paused = true); openModal(els.leaveModal, els.leaveContinue); });
   els.leaveContinue.addEventListener("click", () => closeModal(els.leaveModal, els.battleBack));
-  els.leaveStage.addEventListener("click", () => { track("return_stages", { stage: stageIndex + 1, outcome: "leave_battle" }); clearRewardBeat(); cancelPendingMatch(); els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
-  els.helpBtn.addEventListener("click", () => { if (!run) return; run.paused = true; openModal(els.tutorialModal, els.tutorialClose); });
+  els.leaveStage.addEventListener("click", () => { track("return_stages", { stage: stageIndex + 1, outcome: "leave_battle" }); clearRewardBeat(); cancelPendingMatch(); (__wpNotifyMeasurement(), els.leaveModal.hidden = true); isolateBattle(false); run = null; setScreen("stage"); });
+  els.helpBtn.addEventListener("click", () => { if (!run) return; (__wpNotifyMeasurement(), run.paused = true); openModal(els.tutorialModal, els.tutorialClose); });
   els.tutorialClose.addEventListener("click", () => { save.tutorial = true; persist(); closeModal(els.tutorialModal, els.helpBtn); showFirstPlan(); });
   els.firstPlanClose.addEventListener("click", dismissFirstPlan);
   els.undoBtn.addEventListener("click", undo); els.magnetBtn.addEventListener("click", magnet); els.shuffleBtn.addEventListener("click", shuffleTool);
-  els.retryBtn.addEventListener("click", () => commitResultDecision(() => { track("retry", { stage: stageIndex + 1, outcome: "result_retry" }); startBattle(stageIndex, true); }));
+  els.retryBtn.addEventListener("click", () => commitResultDecision(() => { track("retry", { stage: stageIndex + 1, outcome: "result_retry" }); __wpReplayStart(() => startBattle(stageIndex, true)); }));
   els.nextBtn.addEventListener("click", () => commitResultDecision(() => { track("next_stage", { stage: stageIndex + 2, from_stage: stageIndex + 1, outcome: "result_next" }); startBattle(Math.min(29, stageIndex + 1), true); }));
-  els.resultStages.addEventListener("click", () => commitResultDecision(() => { track("return_stages", { stage: stageIndex + 1, outcome: "result_stages" }); cancelPendingMatch(); els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); }));
+  els.resultStages.addEventListener("click", () => commitResultDecision(() => { track("return_stages", { stage: stageIndex + 1, outcome: "result_stages" }); cancelPendingMatch(); (__wpNotifyMeasurement(), els.resultModal.hidden = true); isolateBattle(false); run = null; setScreen("stage"); }));
   els.soundBtn.addEventListener("click", () => { save.sound = !save.sound; persist(); renderRun(); if (save.sound) sound("pick"); });
   els.tutorialModal.addEventListener("keydown", e => trap(e, () => closeModal(els.tutorialModal, els.helpBtn)));
   els.firstPlanModal.addEventListener("keydown", e => trap(e, dismissFirstPlan));

@@ -66,14 +66,14 @@
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260712-shadow-wolf-public1" />
-    <link rel="stylesheet" href="style.css?v=20260809-first-response-v8-88e1bb92bd44" />
+    <link rel="stylesheet" href="style.css?v=20260919-block-v11" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260718-full-canvas1" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:title" content="影狼传说 | WeightPlay" />
     <meta name="twitter:description" content="《影狼传说》是一款 30 关横向动作平台战役。玩家带领探险影狼穿越遗迹岩台、判读地形警示、迎战影兽、收集经验，并在升级时精确分配两点属性。每五关会遇到一名区域首领；它们的防御状态与攻击规则各不相同。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/shadow-wolf.webp" />
   </head>
-  <body>
+  <body data-wp-game-owned-guide="true">
     <header class="top-nav">
       <div class="top-nav-left">
         <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby" data-ui-aria="backToLobby">
@@ -110,7 +110,7 @@
               <img class="cover" src="../../assets/interface7-redrawn/shadow-wolf.webp" alt="《影狼传说》游戏图片" data-ui-alt="coverAlt" />
             </div>
             <h2 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h2>
-            <p class="menu-hint" data-ui="menuHint"></p>
+            <p class="menu-hint" data-ui="menuHint" data-shadow-authored-summary="true" data-runtime-localize="off">穿越遗迹平台、闪避危险，击败所有敌人以开启下一段路线。</p>
             <p class="campaign-summary"><span data-ui="regionsCleared">Stage progress</span>: <strong id="campaignSummary">0 / 30</strong></p>
             <button id="startBtn" class="primary-btn start-btn" type="button" data-ui="startRun">Start Game</button>
             <div class="desktop-controls" aria-label="Desktop controls" data-ui="controlLegend" data-ui-aria="desktopControlsLabel">A/D Move · W/Space Jump · J Attack · K/Shift Dash</div>
@@ -265,39 +265,11 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <link rel="stylesheet" href="../../src/game-ui-theme.css" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css" />
-    <link rel="stylesheet" href="frame-content.css" />
-    <script src="../../src/game-screen-frame.js"></script>
-    <script src="frame.js"></script>
-    <script src="game.js?v=20260825-arabic-runtime-v10"></script>
-    <section class="game-page-info game-page-info-static" aria-label="影狼传说 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>影狼传说</h2><p>《影狼传说》是一款 30 关横向动作平台战役。玩家带领探险影狼穿越遗迹岩台、判读地形警示、迎战影兽、收集经验，并在升级时精确分配两点属性。每五关会遇到一名区域首领；它们的防御状态与攻击规则各不相同。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>横向动作平台 RPG</strong></div><div class="game-info-fact"><span>类型</span><strong>动作 · 平台 · 动物 · RPG</strong></div><div class="game-info-fact"><span>难度</span><strong>困难</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关 3–8 分钟</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>六道封印原本维持月影边境到巨兽王冠之间的道路。封印破裂后，水晶洞窟会落下碎晶，根野会长出封路荆棘，烬火宝库周期燃烧，蚀月裂隙会吹动角色，而王冠之路会重新组合前五区学过的威胁。</p>
-<p>玩家扮演刻有月光符文的探险影狼。必须击败目前关卡安排的全部敌人，才算修复这一段道路。胜利会保存通关并解锁下一张卡；第 30 关代表解除最后的巨兽封印，所有已完成关卡仍可重玩。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>移动与战斗：左右奔跑、地面跳跃后再二段跳、朝面向方向挥爪，并用冲刺短暂穿越危险。接触敌人、投射物、尖刺与启动地形会扣除影狼生命；掉落路线会回到稳定地面并损失 5 点生命。</p>
-<p>经验与属性：普通与特殊敌人会掉落经验光珠。升级会暂停同一个战斗画面并给予两点必须分配的属性。力量提高伤害、敏捷提高速度、体质提高生命上限、幸运提高爆击率，每个按钮都显示目前值与下一个值。</p>
-<p>特殊敌人：水晶蝙蝠使用三向散射，装甲野猪在巡逻撞墙后开放防御，冲锋野猪快速穿越路线，烬狼留下火径，俯冲蝙蝠追踪高度，裂隙蝙蝠在栖台间闪现，镜狼倒下后只会分裂一次并产生两个脆弱残影。</p>
-<p>地形：落晶、毒池、根刺、火焰、震波与裂风都先出现警示再进入危险期。移动岩台会改变跳跃路线，固定尖刺则在任何时候都不能碰触。</p>
-<p>可选永久支持：雾影护符需要 15 颗钻石，会把每次挑战的初始生命上限从 30 提高到 40。第一次点击只显示扣除前后余额，第二次才确认；正常关卡解锁不需要钻石。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向 30 关卡列选择已解锁关卡；每第五张卡是首领检查点。</li><li>用 A/D 或左右方向键移动，W、上方向键或空白键跳跃；落地前再按一次即可二段跳。</li><li>按 J 挥爪、K 或 Shift 冲刺。手机使用可见的左右、跳跃与攻击按钮。</li><li>看到虚线地形时先决定退路；看到敌人外围的护甲或护盾圈时，先触发它的反制空档再攻击。</li><li>收集经验并在升级画面分配完两点属性，战斗才会继续。</li><li>击败完整敌人组合即可通关。胜利会保存进度并解锁下一关；失败可直接重试，不会删除旧通关。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先保留第二段跳，等移动岩台、散射弹或地形循环确认安全落点后再使用。</li><li>冲刺适合穿过投射物扇形或冲锋尾端，之后立即转身利用敌人的恢复时间挥爪。</li><li>准备处理装甲野猪前，先清除会干扰反击空档的远程敌人。</li><li>力量缩短战斗、体质容许更多失误、敏捷改善走位、幸运提供不固定爆发；依关卡规则选择，不存在唯一升级顺序。</li><li>击败镜狼前先离开分裂点，避免两个残影同时在角色身旁出现。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–5 关教学巡逻、上下岩台、蝙蝠瞄准、移动平台与尖刺；蛇王幽谷加入毒池与逐渐扩大的投射扇形。</p>
-<p>第 6–10 关加入落晶警示、水晶蝙蝠散射与装甲野猪；石卫会挡住正面挥爪，地震后放出两道可跳过的震波并暂时解除防御。</p>
-<p>第 11–15 关混合荆棘路线、冲锋、装甲与远程优先顺序；棘根巨像平时保护核心，根拳重击落空后才出现短暂伤害窗口。</p>
-<p>第 16–20 关循环火焰地带，加入烬狼火径与俯冲蝙蝠；烬翼飞龙在空中受到保护并发射火扇，落地震波之后才可有效反击。</p>
-<p>第 21–25 关加入裂风、闪现蝙蝠与分裂镜狼；蚀月灵鹿会反射大部分伤害，必须诱导冲锋撞上竞技场边缘才能破盾。</p>
-<p>第 26–30 关把前面的反制规则组成清楚的混合挑战；巨兽王冠在两个生命门槛加入落晶、根刺与更密集射击，但完成后不会产生不存在的第 31 关。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>战役采六组五关教学弧线，因为动作平台游戏应透过辨识与反制增加难度，而不是只提高生命与速度。每区前四关介绍或组合一条规则，第五关则用有清楚防御状态与攻击空档的首领验收。地形先警示再启动，让触控玩家能作出有意识的按键选择，同时保留压力。手机与桌面共用固定逻辑画布，因此岩台、HUD、操作、升级与结果的相对位置一致。与 WeightPlay 自走战斗不同，本作的闪避、跳跃、目标优先与攻击时机都由玩家直接控制。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>目前浏览器会在本设备保存最高解锁关卡、选定关卡、通关清单、挑战次数、最佳通关、王冠通关次数与雾影护符。旧八区存档会向前迁移，不会重新锁住已获得进度。基本游玩不需要登录；清除网站数据或更换浏览器可能移除记录。钻石只是可选支持资源。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>《影狼传说》可以免费玩吗？</dt><dd>可以。完整 30 关战役可直接在浏览器游玩，不需要购买或登录。</dd></div><div><dt>关卡如何解锁？</dt><dd>新存档从第 1 关开始。击败完整敌人组合后会保存该关并解锁下一张卡；已通关关卡仍可重玩。</dd></div><div><dt>影狼掉下去会怎样？</dt><dd>影狼会回到稳定地面并损失 5 点生命；只有这次损失让生命归零时才会结束挑战。</dd></div><div><dt>为什么装甲敌人只受到很少伤害？</dt><dd>目前防御状态仍在。要利用冲锋落空、地震、根拳、落地或撞墙等可见事件打开反击窗口。</dd></div><div><dt>一定要分配完两点属性吗？</dt><dd>是。两点都分配到力量、敏捷、体质或幸运之后，战斗才会继续。</dd></div><div><dt>完成 30 关需要钻石吗？</dt><dd>不需要。钻石只用于可选雾影护符，正常战役进度不需要它。</dd></div><div><dt>哪些进度会保存？</dt><dd>关卡解锁与通关、选定关卡、挑战次数、最佳通关、王冠通关与护符会保存在目前浏览器。</dd></div><div><dt>六名首领有什么不同？</dt><dd>蛇王控制毒池、石卫震地后开盾、巨像暴露核心、飞龙交替飞行与落地、灵鹿撞墙破盾、巨兽则依生命阶段加入落晶与根刺。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>棱光破砖队</strong><span>在每颗回弹的光球下方移动球板，用接触位置控制反弹角度，并在三颗光球全部耗尽前击碎所有可破坏水晶。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-sketchwheel-rally/"><img src="/assets/interface7-redrawn/animal-sketchwheel-rally.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>绘轮竞速</strong><span>在每段地形前画出车轮轮廓，观察实际形状的表现，再调整下一个车轮，让动物赛车在对手之前抵达终点。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>胖达竹水道</strong><span>转动胖达的竹管，让水流过每一段管路，唤醒开花竹园。</span></span></a></div></div>
-    </div>
-  </section>
+    <link rel="stylesheet" href="frame-content.css?v=20260919-block-v11" />
+    <script src="../../src/game-screen-frame.js?v=20260919-block-v11"></script>
+    <script src="frame.js?v=20260919-block-v11"></script>
+    <script src="game.js?v=20260919-block-v11"></script>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>影狼传说</h2><p>穿越遗迹平台、闪避危险，击败所有敌人以开启下一段路线。</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>操作</h3><p>A/D 或方向键移动；W、上键或空格键跳跃，空中可再跳一次。J 攻击，K 或 Shift 冲刺。手机使用画面按钮。</p></div><div class="game-info-section"><h3>成长与攻略</h3><p>拾取经验，升级后分配两点属性才能继续。保留第二跳寻找安全落点，引诱有护盾的敌人出招后再反击。后续路线会组合移动平台、飞弹与周期陷阱。生命归零结束本次挑战，已解锁路线仍保留。</p></div><div class="game-info-section"><h3>存档</h3><p>进度存在当前浏览器，清除网站数据可能丢失。钻石只用于可选的迷雾护符，闯关不需要购买。</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>进度会保存吗？</dt><dd>会，已完成路线与升级会保存在此浏览器；清除网站数据可能会丢失。</dd></div><div><dt>闯关需要钻石吗？</dt><dd>不需要。钻石只用于可选的迷雾护符，不会解锁战役进度。</dd></div></dl></div></div></section>
 <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>

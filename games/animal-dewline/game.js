@@ -1,5 +1,23 @@
 (() => {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const copy = window.ANIMAL_DEWLINE_LOCALES || {};
   const meadows = [
     { titleKey: "meadow1", targets: [2, 3, 1] },
@@ -32,8 +50,14 @@
       refreshMainBest();
       requestAnimationFrame(() => { if (state.screen === "main") refreshMainBest(); });
     }
-  };
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+};
   const applyLocale = () => {
+    window.WonderI18n?.setLocale?.(state.locale, { navigate: false });
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
@@ -83,13 +107,17 @@
     $("resultHeading").textContent = complete ? t("finishTitle") : t("correct");
     $("resultText").textContent = complete ? t("finishText", { n: state.sessionTries, best: readBest() || state.sessionTries }) : t("correct");
     $("resultPrimaryBtn").textContent = complete ? t("map") : t("next");
-    $("resultMapBtn").hidden = !complete;
+    (__wpNotifyMeasurement(), $("resultMapBtn").hidden = !complete);
     $("resultPrimaryBtn").onclick = complete ? () => { show("stage"); renderStages(); } : () => startMeadow(state.meadow + 1);
   };
   const startSession = () => { state.sessionTries = 0; show("stage"); renderStages(); track("session_start"); };
-  const startMeadow = (index) => { state.meadow = Math.max(0, Math.min(meadows.length - 1, index)); state.values = [0, 0, 0]; state.tries = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 }); };
+  const startMeadow = (index) => { state.meadow = Math.max(0, Math.min(meadows.length - 1, index)); state.values = [0, 0, 0]; state.tries = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 });
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+};
   const changeValve = (index, delta) => { state.values[index] = Math.max(0, Math.min(6, state.values[index] + delta)); renderBattle(); track("valve_adjust", { meadow: state.meadow + 1, valve: index + 1, value: state.values[index] }); };
-  const resetValves = () => { state.values = [0, 0, 0]; renderBattle(); $("battleStatus").textContent = t("ready"); track("reset", { meadow: state.meadow + 1 }); };
+  const resetValves = () => { state.values = [0, 0, 0]; renderBattle(); $("battleStatus").textContent = t("ready"); track("reset", { meadow: state.meadow + 1 });
+    if (state.screen === "battle") { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+};
   const checkFlow = () => {
     const meadow = meadows[state.meadow]; state.tries += 1; state.sessionTries += 1;
     const firstMismatch = meadow.targets.findIndex((target, index) => target !== state.values[index]);
@@ -105,7 +133,7 @@
   $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); });
   $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
   $("resultHomeBtn").addEventListener("click", () => show("main"));
-  $("checkBtn").addEventListener("click", checkFlow); $("resetBtn").addEventListener("click", resetValves);
+  $("checkBtn").addEventListener("click", checkFlow); $("resetBtn").addEventListener("click", function (...args) { return __wpReplayStart(() => resetValves.apply(this, args)); });
   const toggleSettings = () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.setAttribute("aria-expanded", String(!panel.hidden))); };
   [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.addEventListener("click", toggleSettings));
   $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); });

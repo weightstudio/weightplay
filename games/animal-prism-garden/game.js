@@ -1,5 +1,23 @@
 (()=>{
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $=selector=>document.querySelector(selector);
   const $$=selector=>[...document.querySelectorAll(selector)];
   const localeOrder=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
@@ -48,7 +66,7 @@
   }
   function show(id){
     if(id!=="stage")cancelStageRailInteraction();
-    $("#leavePanel").hidden=true;$("#result").hidden=true;setCovered(false,null);
+    (__wpNotifyMeasurement(), $("#leavePanel").hidden=true);(__wpNotifyMeasurement(), $("#result").hidden=true);setCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
     $("#mainGroup").hidden=id!=="main";
     document.body.dataset.screen=id;
@@ -62,7 +80,12 @@
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.dispatchEvent(new Event("weightplay:battle-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[id] ?? null;
+      if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function setLocale(next){
     locale=localeOrder.includes(next)?next:"en";
     write("wp-locale",locale);
@@ -173,7 +196,9 @@
     $("#status").textContent=`${mission} ${t("ready")}`;
     show("battle");renderBoard();tone(520,.05);
     window.WonderAnalytics?.track?.("game_start",{game_id:"animal-prism-garden",game_version:GAME_VERSION,stage:index+1});
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function seedColorAt(index){
     for(let color=0;color<level.count;color++)if(level.ends[color].includes(index))return color;
     return -1;
@@ -264,7 +289,9 @@
     $("#next").disabled=selected>=29;
     setTimeout(()=>{openModal($("#result"),$("#next").disabled?$("#retry"):$("#next"));successTone()},280);
     window.WonderAnalytics?.track?.("game_complete",{game_id:"animal-prism-garden",game_version:GAME_VERSION,stage:selected+1,moves});
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function hint(){
     if(!level)return;
     const color=Array.from({length:level.count},(_,i)=>i).find(i=>!connected(i));
@@ -319,7 +346,7 @@
   $("#leaveStages").addEventListener("click",()=>show("stage"));
   $("#undo").addEventListener("click",undo);$("#hint").addEventListener("click",hint);$("#reset").addEventListener("click",reset);
   $("#resultStages").addEventListener("click",()=>show("stage"));
-  $("#retry").addEventListener("click",()=>startLevel(selected));
+  $("#retry").addEventListener("click",()=>__wpReplayStart(() => startLevel(selected)));
   $("#next").addEventListener("click",()=>startLevel(Math.min(29,selected+1)));
   $("#stageGrid").addEventListener("click",event=>{const card=event.target.closest(".stage-card");if(!card)return;const index=Number(card.dataset.index);selectStage(index);if(index<unlocked)startLevel(index)});
   $("#stageGrid").addEventListener("keydown",event=>{const card=event.target.closest(".stage-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();event.stopImmediatePropagation();const current=Number(card.dataset.index),rtl=document.documentElement.dir==="rtl",step=event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1),next=event.key==="Home"?0:event.key==="End"?levels.length-1:Math.max(0,Math.min(levels.length-1,current+step));selectStage(next,true)},true);

@@ -1,5 +1,23 @@
 (function(){
 "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(run?.paused || run?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
@@ -107,6 +125,11 @@ function show(next){
   if(next==="stage")centerSelected(false);
   window.scrollTo(0,0);
   if(next==="battle"&&run)resumeLoop();
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[next] ?? null;
+      if (["result"].includes(next) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 function renderMain(){
   const cleared=save.medals.filter(Boolean).length,charms=save.cabinet.filter(Boolean).length;
@@ -306,11 +329,13 @@ function startMission(index,entry="stage_select"){
     index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,lockValue:.08,lockDirection:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,aimCorrection:null,lastSpatialCorrection:"",
     prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,lockGrace:0,result:null,feedback:index===0&&!save.medals[0]?["phaseAim","landingCue"]:"phaseAim",lastCorrection:"phaseAim"
   };
-  settledDecision=false;resolvedWallAnchor=0;$("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;
+  settledDecision=false;resolvedWallAnchor=0;(__wpNotifyMeasurement(), $("resultPanel").hidden=true);(__wpNotifyMeasurement(), $("leavePanel").hidden=true);(__wpNotifyMeasurement(), $("pausePanel").hidden=true);$("battleLive").hidden=false;$("battleLive").inert=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;
   track("mission_start",{mission:boundedMetric(index+1,30),entry:missionEntry});
   show("battle");resizeCanvas();renderHud();draw();
   if(!save.tutorial&&!interfaceValidatorRun){openModal("tutorialPanel",$("tutorialStartBtn"))}
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 function remainingTargets(){const deliveredKinds=new Set(run.delivered.filter(entry=>entry.target).map(entry=>entry.kind));return run.targets.filter(kind=>!deliveredKinds.has(kind))}
 function renderHud(){
@@ -434,7 +459,7 @@ function finish(won){
   }
   run.result={won,medal,newBest};settledDecision=false;cancelAnimationFrame(raf);raf=0;
   track(won?"mission_clear":"mission_fail",{mission:boundedMetric(run.index+1,30),drops_remaining:boundedMetric(run.drops,3),misses:boundedMetric(run.misses,30),medal:boundedMetric(medal,3),new_best:Boolean(newBest)});
-  $("battleLive").hidden=true;$("battleLive").inert=true;$("resultPanel").hidden=false;
+  $("battleLive").hidden=true;$("battleLive").inert=true;(__wpNotifyMeasurement(), $("resultPanel").hidden=false);
   frame?.activate("battle",{covered:true});
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;
   $("resultTitle").textContent=t(won?"winTitle":"failTitle");$("resultMedal").textContent=medalText(medal);
@@ -444,6 +469,8 @@ function finish(won){
   $("bestText").textContent=won?(newBest?t("newBest"):t("best",{medal:medalText(previous)})):"";
   $("nextBtn").disabled=!won||run.index>=29;$("nextBtn").classList.toggle("primary-action",won&&run.index<29);
   requestAnimationFrame(()=>(won&&run.index<29?$("nextBtn"):$("retryBtn")).focus({preventScroll:true}));
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 function commitResult(action){if(settledDecision||$("resultPanel").hidden)return;settledDecision=true;[$("resultStagesBtn"),$("nextBtn"),$("retryBtn")].forEach(button=>button.disabled=true);action()}
 
@@ -581,10 +608,10 @@ function bind(){
   $("resumeBtn").addEventListener("click",()=>closeModal("pausePanel"));
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorial=true;persist();closeModal("tutorialPanel")});
   $("dropBtn").addEventListener("click",()=>{if(run?.phase==="aim")beginDrop();else if(run?.phase==="secure")attemptLock()});
-  $("restartBtn").addEventListener("click",()=>startMission(run.index,"battle_restart"));
+  $("restartBtn").addEventListener("click",()=>__wpReplayStart(() => startMission(run.index,"battle_restart")));
   $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"stages",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});track("battle_return",{from:"result",destination:"stages",mission:boundedMetric((run?.index??0)+1,30)});stageEntry="battle_return";show("stage")}));
   $("nextBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"next",mission:boundedMetric((run?.index??0)+1,30),outcome:"clear"});startMission(Math.min(29,run.index+1),"next_mission")}));
-  $("retryBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"replay",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});startMission(run.index,"replay")}));
+  $("retryBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"replay",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});__wpReplayStart(() => startMission(run.index,"replay"))}));
   canvas.addEventListener("pointerdown",event=>{if(pointerId!==null||run?.phase!=="aim")return;pointerId=event.pointerId;canvas.setPointerCapture(event.pointerId);handlePointerAim(event);event.preventDefault()});
   canvas.addEventListener("pointermove",event=>{if(pointerId===event.pointerId)handlePointerAim(event)});
   canvas.addEventListener("pointerup",event=>{if(pointerId!==event.pointerId)return;handlePointerAim(event,run?.phase==="aim");pointerId=null;event.preventDefault()});

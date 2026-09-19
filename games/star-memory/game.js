@@ -1,4 +1,22 @@
 (function () {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
   const sessionStorageFallback = new Map();
@@ -81,9 +99,9 @@
   const leaveConfirmPanel = document.createElement("section");
   leaveConfirmPanel.id = "leaveConfirmPanel";
   leaveConfirmPanel.className = "leave-confirm-panel hidden";
-  leaveConfirmPanel.setAttribute("role", "dialog");
-  leaveConfirmPanel.setAttribute("aria-modal", "true");
-  leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle");
+  (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("role", "dialog"));
+  (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-modal", "true"));
+  (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle"));
   leaveConfirmPanel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
   memoryGame.append(leaveConfirmPanel);
   const leaveConfirmTitle = leaveConfirmPanel.querySelector("#leaveConfirmTitle");
@@ -662,7 +680,7 @@
     const setText = (node, value) => {
       if (node && node.textContent !== value) node.textContent = value;
     };
-    document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", germanTutorial.helpAria);
+    (__wpNotifyMeasurement(), document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", germanTutorial.helpAria));
     const backdrop = document.querySelector('.wp-tutorial-backdrop[data-game-id="star-memory"]');
     if (!backdrop) return;
     backdrop.setAttribute("data-runtime-localize", "off");
@@ -870,7 +888,12 @@
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     if (scene === "main") resetMemoryFrame();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   const MEMORY_CARD_LOGICAL_SIZE = 112;
   const MEMORY_BOARD_MAX_SCALE = 2.25;
@@ -911,7 +934,7 @@
     cancelRoundTasks();
     document.body.classList.remove("memory-stage", "memory-playing", "memory-result");
     document.body.classList.add("memory-main");
-    resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     mainPanel.classList.remove("hidden");
     stageSelectPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
@@ -933,7 +956,7 @@
     document.body.classList.remove("memory-playing");
     document.body.classList.remove("memory-result");
     document.body.classList.add("memory-stage");
-    resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     mainPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
@@ -1042,7 +1065,7 @@
       locale: locale()
     });
 
-    resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     stageSelectPanel.classList.add("hidden");
     gameHud.classList.remove("hidden");
     gameBoardPanel.classList.remove("hidden");
@@ -1057,7 +1080,9 @@
     generateGameBoard(stage);
     beginStagePreview(stage);
     requestAnimationFrame(updateMemoryFrame);
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function updateHUD() {
     const stage = stages[state.stageIndex];
@@ -1321,7 +1346,7 @@
     });
     document.body.classList.add("memory-result");
     resultActionCommitted = false;
-    resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     primaryAction.focus({ preventScroll: true });
     
     window.WonderSound?.play("win");
@@ -1335,7 +1360,9 @@
       stars: starsEarned,
       locale: locale()
     });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   // Game Over Handling
   function gameOver() {
@@ -1359,11 +1386,13 @@
     });
     document.body.classList.add("memory-result");
     resultActionCommitted = false;
-    resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     againBtn.focus({ preventScroll: true });
     
     window.WonderSound?.play("wrong");
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "lose"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function renderSkillReport(stage, completed, previousBest) {
     skillReportTitle.textContent = t("skillReport");
@@ -1393,14 +1422,14 @@
     if (leaveConfirmOpen || !document.body.classList.contains("memory-playing") || !resultPanel.classList.contains("hidden")) return;
     leaveConfirmOpen = true;
     suspendRoundTasks();
-    leaveConfirmPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.remove("hidden"));
     setBattleCovered(true);
     requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
   }
   function closeLeaveConfirm(restoreFocus = true) {
     if (!leaveConfirmOpen) return;
     leaveConfirmOpen = false;
-    leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     setBattleCovered(false);
     resumeRoundTasks();
     if (restoreFocus) requestAnimationFrame(focusMemoryCard);
@@ -1463,7 +1492,7 @@
       stage: stages[state.stageIndex].id,
       locale: locale()
     });
-    startStage(state.stageIndex);
+    __wpReplayStart(() => startStage(state.stageIndex));
   }));
 
   nextLevelBtn.addEventListener("click", () => {

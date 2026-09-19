@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(pauseOpen), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "animal-hidden-safari";
   const localeKey = "weightplayLocale";
   const canonicalLocaleKey = "weightPlayLocale";
@@ -374,7 +392,7 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
-  nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove();
+  (__wpNotifyMeasurement(), nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove());
   nodes.hintStatus.setAttribute("role", "status");
   nodes.hintStatus.setAttribute("aria-live", "polite");
   nodes.hintStatus.setAttribute("aria-atomic", "true");
@@ -563,7 +581,7 @@
       node.setAttribute("aria-label", t(node.dataset.aria));
     });
     nodes.pauseBtn.textContent = t("pause");
-    nodes.pauseBtn.setAttribute("aria-label", t("pauseAria"));
+    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-label", t("pauseAria")));
     nodes.pauseTitle.textContent = t("pauseTitle");
     nodes.pauseText.textContent = t("pauseText");
     nodes.resumeBtn.textContent = t("resume");
@@ -679,7 +697,12 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function resetSafariFrame() {
     const root = document.documentElement.style;
@@ -712,7 +735,7 @@
     stopTimer();
     hiddenStartedAt = 0;
     acceptingInput = false;
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
     nodes.playPanel.classList.add("hidden");
@@ -737,7 +760,7 @@
     nodes.mainPanel.classList.remove("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     document.documentElement.classList.remove("safari-stage");
     document.body.classList.remove("safari-stage", "safari-playing", "safari-result");
     syncSharedScene("main");
@@ -762,7 +785,7 @@
     startTime = Date.now();
     hiddenStartedAt = 0;
     acceptingInput = true;
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
     document.body.classList.remove("safari-result");
@@ -788,7 +811,9 @@
     requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target[data-index]:not(:disabled)")?.focus({ preventScroll: true }));
     track("game_start", { level: index + 1 });
     playSound("start");
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function updateSafariFrame() {
     const isStage = document.body.classList.contains("safari-stage");
@@ -1008,22 +1033,22 @@
 
   function openPause(returnFocus = nodes.pauseBtn) {
     if (pauseOpen || !acceptingInput || !document.body.classList.contains("safari-playing")) return;
-    pauseOpen = true;
+    (__wpNotifyMeasurement(), pauseOpen = true);
     pauseReturnFocus = returnFocus;
     pauseSearchTimer();
     pauseTransientFeedback();
     nodes.playPanel.inert = true;
     nodes.playPanel.setAttribute("aria-hidden", "true");
-    nodes.pausePanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.remove("hidden"));
     requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
   }
 
   function closePause(restoreFocus = true) {
     if (!pauseOpen) return;
     const returnFocus = pauseReturnFocus;
-    pauseOpen = false;
+    (__wpNotifyMeasurement(), pauseOpen = false);
     pauseReturnFocus = null;
-    nodes.pausePanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
     resumeSearchTimer();
@@ -1074,8 +1099,8 @@
     nodes.nextStageBtn.disabled = isFinalStage;
     nodes.nextStageBtn.setAttribute("aria-disabled", String(isFinalStage));
     nodes.nextStageBtn.classList.toggle("result-primary-action", !isFinalStage);
-    nodes.resultStagesBtn.classList.toggle("result-primary-action", isFinalStage);
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("result-primary-action", isFinalStage));
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     nodes.playPanel.inert = true;
     nodes.playPanel.setAttribute("aria-hidden", "true");
     document.body.classList.add("safari-result");
@@ -1085,7 +1110,9 @@
     });
     track("game_complete", { level: stageNo, score: starCount * 100 - mistakes * 5, time_seconds: seconds });
     playSound("success");
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function renderResult() {
     if (!lastResult) return;
@@ -1257,7 +1284,7 @@
     nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
     nodes.stageBackMainBtn.addEventListener("click", showMain);
     nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));
-    nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
+    nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => startStage(currentStage)));
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(stages.length - 1, currentStage + 1)));
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {

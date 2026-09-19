@@ -72,31 +72,15 @@ body[data-wp-game-id="zhao-yun-a-dou"] .screen {
   margin: 0 auto;
 }
 
-body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info {
-  box-sizing: border-box;
-  width: min(100%, 920px);
-  margin-inline: auto;
-}
-
 /* Interface 7's shared frame uses a deliberately crisp 3px radius for the
    shell.  The public Guide is a content surface with its own readability
    contract, so keep its panel and structured cards visibly rounded even when
    the shared theme is injected after this stylesheet. */
-@layer wp-frame-contract {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info {
-    border-radius: 18px !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info .game-info-section {
-    border-radius: 16px !important;
-  }
-}
 
 .main-screen {
   padding: 20px 16px 56px;
 }
 
-.main-header,
 .scene-header {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) auto;
@@ -154,7 +138,6 @@ body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info {
   display: none;
 }
 
-.return .wp-shell-return-arrow,
 .scene-header button span {
   font-family: Arial, sans-serif;
   font-size: 26px;
@@ -419,14 +402,11 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
 .stage-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
   align-content: start;
-  padding: 10px 0 72px;
 }
 
 .stage-card {
   position: relative;
-  min-height: 112px;
   border: 1px solid rgba(238, 228, 204, .24);
   border-radius: 16px;
   padding: 12px;
@@ -1134,11 +1114,9 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
 
   .stage-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
   }
 
   .stage-card {
-    min-height: 104px;
     padding: 10px;
   }
 
@@ -1247,7 +1225,6 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
 }
 
 @media (max-width: 390px) {
-  .main-header,
   .scene-header {
     gap: 6px;
   }
@@ -1281,9 +1258,6 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
 
   /* Keep the game-local composition aligned with the shared wide-layout
      Main contract at compact-landscape heights. */
-  body[data-wp-game-id="zhao-yun-a-dou"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 420px;
-  }
 
   .ink-poster {
     box-sizing: border-box;
@@ -1317,20 +1291,6 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
 /* Player-facing review repairs: keep the generated shell poster inside its
    pane, make the selected mission unmistakable, and give combat events a
    readable visual vocabulary. */
-body[data-wp-game-id="zhao-yun-a-dou"] .wp-standard-main-poster {
-  position: relative !important;
-}
-
-body[data-wp-game-id="zhao-yun-a-dou"] .wp-standard-main-poster .poster-art {
-  position: static !important;
-  inset: auto !important;
-  display: block !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
 
 body[data-wp-game-id="zhao-yun-a-dou"] .stage-card.is-selected,
 body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"] {
@@ -1340,7 +1300,6 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
   outline-offset: 3px;
   background: rgba(65, 87, 69, .96) !important;
   box-shadow: 0 8px 18px rgba(0, 0, 0, .22) !important;
-  transform: none;
 }
 
 .battle-guide {

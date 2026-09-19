@@ -25,6 +25,8 @@
   --wp-ui-sound-on-image:url('../assets/ui/frame-sound-on.svg');
   --wp-ui-sound-off-image:url('../assets/ui/frame-sound-off.svg');
   --wp-frame-header-height:64px;
+  --wp-frame-play-header-height:48px;
+  --wp-main-poster-size:420px;
   --wp-frame-control-size:48px;
   --wp-frame-lobby-return-width:58px;
   --wp-frame-header-inset:12px;

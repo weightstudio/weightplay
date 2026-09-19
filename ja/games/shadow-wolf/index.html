@@ -66,14 +66,14 @@
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260712-shadow-wolf-public1" />
-    <link rel="stylesheet" href="style.css?v=20260809-first-response-v8-88e1bb92bd44" />
+    <link rel="stylesheet" href="style.css?v=20260919-block-v11" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260718-full-canvas1" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:title" content="シャドウウルフ伝説 | WeightPlay" />
     <meta name="twitter:description" content="シャドウウルフ伝説は、オオカミを直接動かし、ボスの予兆を読んで反撃するアクション冒険を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/shadow-wolf.webp" />
   </head>
-  <body>
+  <body data-wp-game-owned-guide="true">
     <header class="top-nav">
       <div class="top-nav-left">
         <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby" data-ui-aria="backToLobby">
@@ -110,7 +110,7 @@
               <img class="cover" src="../../assets/interface7-redrawn/shadow-wolf.webp" alt="シャドウウルフ伝説のゲーム画像" data-ui-alt="coverAlt" />
             </div>
             <h2 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h2>
-            <p class="menu-hint" data-ui="menuHint"></p>
+            <p class="menu-hint" data-ui="menuHint" data-shadow-authored-summary="true" data-runtime-localize="off">遺跡の足場を渡り、危険を避けて全ての敵を倒すと次の道が開きます。</p>
             <p class="campaign-summary"><span data-ui="regionsCleared">Stage progress</span>: <strong id="campaignSummary">0 / 30</strong></p>
             <button id="startBtn" class="primary-btn start-btn" type="button" data-ui="startRun">Start Game</button>
             <div class="desktop-controls" aria-label="Desktop controls" data-ui="controlLegend" data-ui-aria="desktopControlsLabel">A/D Move · W/Space Jump · J Attack · K/Shift Dash</div>
@@ -266,33 +266,11 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <link rel="stylesheet" href="../../src/game-ui-theme.css" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css" />
-    <link rel="stylesheet" href="frame-content.css" />
-    <script src="../../src/game-screen-frame.js"></script>
-    <script src="frame.js"></script>
-    <script src="game.js?v=20260825-arabic-runtime-v10"></script>
-    <section class="game-page-info game-page-info-static" aria-label="シャドウウルフ伝説 ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>シャドウウルフ伝説</h2><p>シャドウウルフ伝説は、オオカミを直接動かし、ボスの予兆を読んで反撃するアクション冒険を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>横スクロール型アクション・プラットフォームRPG</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アクション · プラットフォーム · 動物 · RPG</strong></div><div class="game-info-fact"><span>難易度</span><strong>難しい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージ3〜8分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>この冒険では、プレイヤーが動物の仲間を助ける案内役になります。目的を達成するには、目の前の状況を観察し、急がずに選択の結果を確かめることが大切です。</p>
-<p>各ステージや場面には新しい条件が加わります。成功はただ先へ進むことではなく、仲間の世界を安全に整え、次の挑戦へつながる記録を残すことを意味します。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>1回のプレイでは、オオカミを直接動かし、ボスの予兆を読んで反撃するアクション冒険。表示される目標、残りの機会、相手や障害物の動きを確認してから操作してください。</p>
-<p>進行すると新しい組み合わせ、道具、敵、またはルールが現れます。結果画面では達成内容を確認して、次へ進むか同じ課題をもう一度試せます。</p>
-<p>保存される進行はこのブラウザ内だけに残ります。ログインは必要ありません。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>メイン画面でスタートを選びます。</li><li>ステージがある作品では、開放済みのカードから挑戦を選びます。</li><li>画面のヒントと目標を読んで、タップ、ドラッグ、またはキーボードで操作します。</li><li>結果を確認し、次の挑戦またはリトライを選びます。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>最初に目標と失敗条件を確認してから動きましょう。</li><li>一度に多くを急がず、手がかりが変わった場面で次の選択を考えましょう。</li><li>うまくいかなかった時は、直前の選択を見直して別の順番や位置を試しましょう。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>序盤は基本操作と読みやすい目標を紹介します。中盤からは複数の条件を組み合わせ、後半ではこれまで覚えた選択を続けて使う場面が増えます。</p>
-<p>数字だけを大きくするのではなく、観察、位置、順番、タイミングを使い分けるほど安定して進める構成です。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>短いセッションでも、プレイヤー自身の判断が結果につながるよう設計しました。タッチ、マウス、キーボードで同じ目的に取り組め、画面の読みやすさと再挑戦のしやすさを大切にしています。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>このゲームはブラウザで遊べ、基本プレイにログインは必要ありません。進行やスコアはこの端末のブラウザに保存されます。表示される記録はゲーム内の振り返りであり、能力、医療、学習の正式な評価ではありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>無料で遊べますか？</dt><dd>はい。ブラウザで基本プレイを始められ、ログインは必要ありません。</dd></div><div><dt>進行は保存されますか？</dt><dd>対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タップとドラッグを使える画面に対応しています。</dd></div><div><dt>うまく進めない時は？</dt><dd>目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。</dd></div><div><dt>ゲームの記録は正式な能力テストですか？</dt><dd>いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。</dd></div><div><dt>アカウントは必要ですか？</dt><dd>いいえ。通常のプレイにアカウントは必要ありません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>プリズムブレイカーズ</strong><span>跳ね返る光球の下でパドルを動かし、接触位置で反射角を調整して、3個の光球を失う前に壊せるクリスタルをすべて壊します。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-sketchwheel-rally/"><img src="/assets/interface7-redrawn/animal-sketchwheel-rally.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スケッチホイール・ラリー</strong><span>地形ごとにホイールの輪郭を描き、実際の形の働きを見て次のホイールを調整し、動物レーサーをライバルより先にゴールへ導きます。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>パンコの竹管を回し、すべての水路に水を通して森に花を咲かせよう。</span></span></a></div></div>
-    </div>
-  </section>
+    <link rel="stylesheet" href="frame-content.css?v=20260919-block-v11" />
+    <script src="../../src/game-screen-frame.js?v=20260919-block-v11"></script>
+    <script src="frame.js?v=20260919-block-v11"></script>
+    <script src="game.js?v=20260919-block-v11"></script>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>シャドウウルフ伝説</h2><p>遺跡の足場を渡り、危険を避けて全ての敵を倒すと次の道が開きます。</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>操作</h3><p>A/Dまたは矢印で移動。W・上矢印・スペースでジャンプし、空中でもう一度跳べます。Jで攻撃、KまたはShiftでダッシュ。スマホでは画面のボタンを使います。</p></div><div class="game-info-section"><h3>成長と攻略</h3><p>経験値を集め、レベルアップ時の2ポイントを割り振ると戦闘が再開します。二段ジャンプは安全な着地のために残し、守りの固い敵は攻撃後の隙を狙いましょう。後半は動く足場、弾、周期的な罠が組み合わさります。体力がなくなると挑戦終了ですが、解放済みの道は残ります。</p></div><div class="game-info-section"><h3>保存</h3><p>進行はこのブラウザに保存されます。サイトデータを消すと失われる場合があります。ダイヤは任意の霧のお守り専用で、進行には不要です。</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい。クリアした道とアップグレードはこのブラウザに保存されますが、サイトデータを消すと失われる場合があります。</dd></div><div><dt>キャンペーンにダイヤは必要ですか？</dt><dd>いいえ。ダイヤは任意の霧のお守りにのみ使い、キャンペーンの解放には必要ありません。</dd></div></dl></div></div></section>
 <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="シャドウウルフ伝説";document.title="シャドウウルフ伝説 | WeightPlay";},{once:true});</script>

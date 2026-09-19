@@ -7,33 +7,16 @@
   .touch-controls { margin: 6px auto; }
   .control-hint { margin: 3px 0; font-size: .76rem; }
   .restart { min-height: 36px; }
-  .battle-head { padding-right: 0; }
 }
 
 @media (max-height: 520px) and (orientation: landscape) {
   /* Keep Main inside the landscape viewport; the portrait-sized poster used
      to force the whole shell past the bottom edge before Battle started. */
   .main-screen { min-height: 0; }
-  .main-screen .topbar { padding-bottom: 8px; }
   .main-screen .main-grid { align-items: center; gap: 14px; padding: 12px; }
   .main-screen .poster { width: min(50vw, 420px); margin-inline: auto; }
   .main-screen .guide,
   .main-screen .main-howto { display: none; }
-  body.wp-shell-main-active .wp-standard-main-composition {
-  --wp-main-landscape-poster-size: 420px !important;
-  }
-  body.wp-shell-main-active .wp-standard-main-poster,
-  body.wp-shell-main-active .wp-standard-main-poster-media,
-  body.wp-shell-main-active .wp-standard-main-poster-media > img,
-  body.wp-shell-main-active .wp-standard-main-poster > img {
-    width: var(--wp-main-landscape-poster-size) !important;
-    min-width: var(--wp-main-landscape-poster-size) !important;
-    max-width: var(--wp-main-landscape-poster-size) !important;
-    height: var(--wp-main-landscape-poster-size) !important;
-    min-height: var(--wp-main-landscape-poster-size) !important;
-    max-height: var(--wp-main-landscape-poster-size) !important;
-  }
-  body.wp-shell-main-active .wp-standard-main-copy { height: var(--wp-main-landscape-poster-size) !important; }
 }
 
 .twin-landscape-controls {

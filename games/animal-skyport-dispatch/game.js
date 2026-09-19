@@ -1,4 +1,22 @@
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = (id) => document.getElementById(id);
   document.body.dataset.wpCombinedSound = 'true';
   // General Stage and Battle own the complete safe physical width. These
@@ -457,7 +475,12 @@
         target?.focus({preventScroll:true});
       });
     });
-  };
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","mainScreen":"main","stageScreen":"stage","battleShell":"battle"})[id] ?? null;
+      if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+};
   function localize() {
     const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
     document.documentElement.lang = activeLocale;
@@ -821,7 +844,9 @@
     nextFlight();
     renderHud();
     focusCurrentBattleAction();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function nextFlight() {
     const [kind, dock] = flights[state.flightIndex++ % flights.length];
     state.kind = kind;
@@ -887,7 +912,9 @@
     primary.focus({ preventScroll: true });
     insuranceActive = false;
     if (save.insuranceReady) { delete save.insuranceReady; persist(); }
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function claimResultAction() {
     if ($('result').classList.contains('hidden') || resultActionClaimed) return false;
     resultActionClaimed = true;
@@ -912,7 +939,7 @@
     }
   }
   function closeLeaveConfirm({restoreFocus=true} = {}) {
-    $('leaveConfirm').classList.add('hidden');
+    (__wpNotifyMeasurement(), $('leaveConfirm').classList.add('hidden'));
     $('battleLive').inert = false;
     $('battleLive').setAttribute('aria-hidden', 'false');
     if (restoreFocus) requestAnimationFrame(() => $('flight').focus({preventScroll:true}));
@@ -927,7 +954,7 @@
     $('leaveConfirmBtn').textContent = t('leaveShift');
     $('battleLive').inert = true;
     $('battleLive').setAttribute('aria-hidden', 'true');
-    $('leaveConfirm').classList.remove('hidden');
+    (__wpNotifyMeasurement(), $('leaveConfirm').classList.remove('hidden'));
     requestAnimationFrame(() => $('leaveCancel').focus({preventScroll:true}));
   }
   function trapLeaveFocus(event) {
@@ -1175,7 +1202,7 @@
   };
   $('retryBtn').onclick = () => {
     if (!claimResultAction()) return;
-    startBattle();
+    __wpReplayStart(() => startBattle());
   };
   $('result').addEventListener('keydown', trapResultFocus);
   $('flight').addEventListener('pointerdown', routePointer);

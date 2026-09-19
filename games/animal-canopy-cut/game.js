@@ -1,5 +1,23 @@
 /* Internal prototype only. Target art is temporary until the art gate. */
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = (id) => document.getElementById(id);
   const emitAnalytics = (event, detail = {}) => {
     try {
@@ -175,7 +193,12 @@
       spawnGap: definition.rhythm ? 24 + Math.sin(state.elapsed * 3.2) * 5 : Math.max(22, 38 - definition.count * 2),
     };
   };
-  function show(name) { state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") result?.setAttribute("hidden", ""); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); } }
+  function show(name) { state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function stageCards() {
     const copy = stageLabel();
     const unlocked = Math.max(1, Math.min(TOTAL_STAGES, progress.unlocked));
@@ -217,7 +240,9 @@
     $("next").hidden = false;
     $("next").disabled = false;
     show("battle"); renderLocalized();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function startWave(chapter = 1, wave = 1, from = "stage") { startStage(stageNumber(chapter, wave), from); }
   function addTarget() {
     const c = config();
@@ -264,7 +289,9 @@
     emitAnalytics("wave_result", { from: "battle", outcome, stage: state.stage });
     if (state.wave === 5) emitAnalytics("chapter_final_wave", { chapter: state.chapter, from: "battle", outcome, stage: state.stage });
     show("result"); renderLocalized();
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function renderResult() {
     if (state.resultWin === null) return;
     const stageUi = stageLabel();
@@ -311,5 +338,5 @@
   canvas.addEventListener("pointerdown",(e)=>{if(state.screen!=="battle"||state.ready>0)return;canvas.setPointerCapture(e.pointerId);state.active=true;state.strokeInputType=e.pointerType||"unknown";state.stroke=[point(e)];hitAt(state.stroke[0])});
   canvas.addEventListener("pointermove",(e)=>{if(!state.active)return;const p=point(e);state.stroke.push(p);hitAt(p);if(state.stroke.length>24)state.stroke.shift()});
   ["pointerup","pointercancel","lostpointercapture"].forEach((event)=>canvas.addEventListener(event,()=>{if(state.active&&state.stroke.length)emitAnalytics("pointer_stroke",{inputType:state.strokeInputType,from:"battle",outcome:event==="pointerup"?"completed":"cancelled"});state.active=false;state.stroke=[];state.strokeInputType="unknown"}));
-  $("start-game").addEventListener("click",()=>{show("stage");renderLocalized()}); document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(b.dataset.back==="stage")emitAnalytics("stage_return",{from:state.screen==="result"?"result":"battle",outcome:"returned"});show(b.dataset.back);renderLocalized()})); $("retry").addEventListener("click",()=>{emitAnalytics("retry",{from:"result",outcome:"retry",stage:state.stage});startStage(state.stage,"result")}); $("next").addEventListener("click",()=>{if(!state.resultWin||state.stage>=TOTAL_STAGES)return;emitAnalytics("next_wave",{from:"result",outcome:"next_stage",stage:state.stage+1});startStage(state.stage+1,"result")}); $("to-stages").addEventListener("click",()=>{emitAnalytics("stage_return",{from:"result",outcome:"returned",stage:state.stage});show("stage");renderLocalized()}); $("localeSelect")?.addEventListener("change",()=>setTimeout(renderLocalized,0)); stageCards(); renderLocalized();
+  $("start-game").addEventListener("click",()=>{show("stage");renderLocalized()}); document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(b.dataset.back==="stage")emitAnalytics("stage_return",{from:state.screen==="result"?"result":"battle",outcome:"returned"});show(b.dataset.back);renderLocalized()})); $("retry").addEventListener("click",()=>{emitAnalytics("retry",{from:"result",outcome:"retry",stage:state.stage});__wpReplayStart(() => startStage(state.stage,"result"))}); $("next").addEventListener("click",()=>{if(!state.resultWin||state.stage>=TOTAL_STAGES)return;emitAnalytics("next_wave",{from:"result",outcome:"next_stage",stage:state.stage+1});startStage(state.stage+1,"result")}); $("to-stages").addEventListener("click",()=>{emitAnalytics("stage_return",{from:"result",outcome:"returned",stage:state.stage});show("stage");renderLocalized()}); $("localeSelect")?.addEventListener("change",()=>setTimeout(renderLocalized,0)); stageCards(); renderLocalized();
 })();

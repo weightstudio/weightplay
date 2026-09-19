@@ -5,7 +5,7 @@
 
     <base href="/games/road-crosser/" />
 
-    <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
@@ -28,9 +28,10 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/road-crosser/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/road-crosser/" />
     <title>Traversée de la route et de la rivière | WeightPlay</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260814-new-games-shell2" data-wp-shell-standard />
-  <meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="style.css?v=20260919-road-crosser-v20-guide-landscape" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260918-ui-fix1" data-wp-shell-standard />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260919-road-crosser-v20-guide-landscape" /><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Traversée de la route et de la rivière | WeightPlay" />
     <meta property="og:description" content="Traversée de la route et de la rivière est un arcade de timing original de WeightPlay. Lis le trafic, la rivière mobile et trois traversées dont les fenêtres sûres se resserrent." />
@@ -40,8 +41,7 @@
     <meta name="twitter:title" content="Traversée de la route et de la rivière | WeightPlay" />
     <meta name="twitter:description" content="Traversée de la route et de la rivière est un arcade de timing original de WeightPlay. Lis le trafic, la rivière mobile et trois traversées dont les fenêtres sûres se resserrent." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/road-crosser.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Traversée de la route et de la rivière","url":"https://weightplay.com/fr/games/road-crosser/","image":"https://weightplay.com/assets/road-crosser-cover.webp","description":"Traversée de la route et de la rivière est un arcade de timing original de WeightPlay. Lis le trafic, la rivière mobile et trois traversées dont les fenêtres sûres se resserrent.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Classique","Arcade","Action","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Traffic and River Crossing"}</script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260906-road-crosser-guide-v18" /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Traversée de la route et de la rivière","url":"https://weightplay.com/fr/games/road-crosser/","image":"https://weightplay.com/assets/interface7-redrawn/road-crosser.webp","description":"Traversée de la route et de la rivière est un arcade de timing original de WeightPlay. Lis le trafic, la rivière mobile et trois traversées dont les fenêtres sûres se resserrent.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Classique","Arcade","Action","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Traffic and River Crossing"}</script><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
@@ -54,49 +54,8 @@
     </header>
 
     <section id="mainScreen" class="screen main-screen">
-      <div class="hero-card"><img class="main-poster" src="../../assets/road-crosser-cover.webp" alt="Illustration du jeu Traversée de la route et de la rivière" /><div class="main-copy"><p class="status-pill" data-copy="comingSoon">Bientôt disponible</p><p class="lead main-summary" data-copy="guideIntro">Guide le petit Coureur Stellaire entre les voitures, les courants et les troncs mobiles. Trois traversées passent d&#39;un rythme lisible à un défi de timing.</p><button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start">Commencer la traversée</button></div></div>
-      <section class="public-guide" aria-labelledby="guideHeading"><p class="guide-kicker" data-copy="guideLabel">Comment jouer</p><h2 id="guideHeading" data-copy="guideTitle">Un pas sûr à la fois.</h2><div class="guide-grid"><article><h3 data-copy="controlsTitle">Commandes</h3><ol><li data-copy="how1">Utilise les flèches ou WASD pour avancer d&#39;une case.</li><li data-copy="how2">Sur mobile, glisse ou touche les boutons de direction.</li><li data-copy="how3">Observe les voies et monte sur un tronc dans la rivière.</li></ol></article><article><h3 data-copy="growthTitle">Rythme de traversée</h3><p data-copy="growth">Les étapes 2 et 3 ajoutent du trafic, une eau plus rapide, des rochers et des fenêtres sûres plus étroites.</p><p class="guide-note" data-copy="comingNote">Cette préversion restera Bientôt disponible jusqu&#39;à la fin des Gate Tester, Gameplay Reviewer et Director.</p></article></div></section>
-    </section>
-
-    <section id="battleScreen" class="screen battle-screen" hidden aria-label="Terrain de jeu Passage Stellaire">
-      <div class="battle-stage"><div class="battle-hud"><button id="battleBackBtn" class="icon-button" type="button" data-copy-aria="back" aria-label="Retour à l&#39;accueil">←</button><div><span class="hud-label" data-copy="stage">Étape</span><strong id="stageValue">1 / 3</strong></div><div><span class="hud-label" data-copy="score">Score</span><strong id="scoreValue">0</strong></div><div><span class="hud-label" data-copy="best">Meilleur</span><strong id="bestValue">0</strong></div><button id="soundBtn" class="icon-button" type="button" data-copy-aria="soundOn" aria-label="Activer le son">◒</button><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="Recommencer">↻</button></div><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="Terrain de jeu Passage Stellaire"></canvas><div class="touch-pad" aria-label="Commandes de déplacement"><button data-move="up" data-copy-aria="up" aria-label="Haut">↑</button><button data-move="left" data-copy-aria="left" aria-label="Gauche">←</button><button data-move="down" data-copy-aria="down" aria-label="Bas">↓</button><button data-move="right" data-copy-aria="right" aria-label="Droite">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">Lis la route.</p></div><div class="play-reserve" data-copy="reserve">Réserve d&#39;espace de jeu</div>
-    </section>
-
-    <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="result-kicker" data-copy="resultKicker">Rapport de traversée</p><h2 id="resultTitle">Route terminée</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">Score</b><strong id="resultScore">0</strong></span><span><b data-copy="best">Meilleur</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">Réessayer</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">Retour à l&#39;accueil</button></div></div></section>
-    <footer class="site-footer" data-copy="footer">Préversion WeightPlay・arcade de timing originale</footer>
-  </main>
-  <script src="game.js?v=20260905-art-v18"></script>
-  <script>
-    (() => {
-      const publicCopy = {
-        en: { status: "Owner preview", note: "Playable preview only; Tester and the new three-pass Gameplay Reviewer gate are still pending." },
-        "zh-Hant": { status: "擁有者預覽", note: "目前僅供試玩；Tester 與新版三次連續 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
-        "zh-Hans": { status: "拥有者预览", note: "目前仅供试玩；Tester 与新版三次连续 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
-        ja: { status: "所有者プレビュー", note: "現在は試遊用です。Tester と新しい3回連続 PASS の Gameplay Reviewer Gate は未完了です。" },
-        ko: { status: "소유자 미리보기", note: "현재는 플레이 미리보기입니다. Tester와 새 3회 연속 PASS Gameplay Reviewer Gate가 아직 완료되지 않았습니다." },
-        es: { status: "Vista previa del propietario", note: "Esta es una vista previa jugable; Tester y la nueva puerta de Gameplay Reviewer de 3 PASS consecutivos siguen pendientes." },
-        "pt-BR": { status: "Prévia do proprietário", note: "Esta é uma prévia jogável; o Tester e o novo Gate de 3 PASS consecutivos do Gameplay Reviewer ainda estão pendentes." },
-        fr: { status: "Aperçu propriétaire", note: "Ceci est un aperçu jouable ; le Tester et le nouveau Gate de 3 PASS consécutifs du Gameplay Reviewer sont encore en attente." },
-        de: { status: "Besitzer-Vorschau", note: "Dies ist eine spielbare Vorschau; Tester und das neue Gameplay-Reviewer-Gate mit 3 aufeinanderfolgenden PASS stehen noch aus." },
-        it: { status: "Anteprima del proprietario", note: "Questa è un'anteprima giocabile; Tester e il nuovo Gate del Gameplay Reviewer con 3 PASS consecutivi sono ancora in sospeso." },
-        ru: { status: "Предпросмотр владельца", note: "Это игровое превью; Tester и новый Gate Gameplay Reviewer с 3 последовательными PASS ещё не завершены." },
-        hi: { status: "मालिक का पूर्वावलोकन", note: "यह खेलने योग्य पूर्वावलोकन है; Tester और 3 लगातार PASS वाला नया Gameplay Reviewer Gate अभी लंबित है।" },
-        ar: { status: "معاينة المالك", note: "هذه معاينة قابلة للعب؛ ما زالت بوابة Tester وبوابة Gameplay Reviewer الجديدة ذات 3 PASS متتالية معلّقة." },
-      };
-      const apply = () => {
-        const locale = document.getElementById("localeSelect")?.value || "en";
-        const copy = publicCopy[locale] || publicCopy.en;
-        const status = document.querySelector('[data-copy="comingSoon"]');
-        const note = document.querySelector('[data-copy="comingNote"]');
-        if (status) status.textContent = copy.status;
-        if (note) note.textContent = copy.note;
-      };
-      apply();
-      document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
-    })();
-  </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informations sur Traversée de la route et de la rivière">
+      <div class="hero-card"><img class="main-poster" src="../../assets/road-crosser-cover-v2.webp" alt="Illustration du jeu Traversée de la route et de la rivière" /><div class="main-copy"><p class="status-pill" data-copy="comingSoon">Bientôt disponible</p><p class="lead main-summary" data-copy="guideIntro">Guide le petit Coureur Stellaire entre les voitures, les courants et les troncs mobiles. Trois traversées passent d&#39;un rythme lisible à un défi de timing.</p><button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start">Commencer la traversée</button></div></div>
+      <section class="game-page-info game-page-info-static" aria-label="Informations sur Traversée de la route et de la rivière">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Traversée de la route et de la rivière</h2><p>Passage Stellaire est un arcade de timing original de WeightPlay. Lis le trafic, la rivière mobile et trois traversées dont les fenêtres sûres se resserrent.</p></div>
@@ -115,5 +74,50 @@
       <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><p>Pour continuer à exercer Timing, essayez aussi :</p><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/animal-skybridge-rivals/"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rivaux des Ponts Célestes</strong><span>Guidez Fia dans 30 courses, ramassez les dalles cyan et construisez un pont avant trois rivaux.</span></span></a><a class="game-info-related-card" href="/fr/games/alien-defender/"><img src="/assets/interface7-redrawn/alien-defender.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Défenseur Alien</strong><span>Défenseur Alien est un shooter original à écran fixe de 30 niveaux.</span></span></a><a class="game-info-related-card" href="/fr/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Récupération dans la Faille</strong><span>Guidez l&#39;anneau lunaire d&#39;Orla dans trente zones, récupérez de petits débris, sauvez les noyaux et dépassez vos rivaux.</span></span></a></div></div>
     </div>
   </section>
+    </section>
+
+    <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-label="Terrain de jeu Passage Stellaire">
+      <div class="battle-stage"><div class="battle-hud"><button id="battleBackBtn" class="icon-button" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="Retour à l&#39;accueil">←</button><div><span class="hud-label" data-copy="stage">Étape</span><strong id="stageValue">1 / 3</strong></div><div><span class="hud-label" data-copy="score">Score</span><strong id="scoreValue">0</strong></div><div><span class="hud-label" data-copy="best">Meilleur</span><strong id="bestValue">0</strong></div><button id="soundBtn" class="icon-button" type="button" data-wp-battle-utility data-copy-aria="soundOn" aria-label="Activer le son">◒</button><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="Recommencer">↻</button></div><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="Terrain de jeu Passage Stellaire"></canvas><div class="touch-pad" aria-label="Commandes de déplacement"><button data-move="up" data-copy-aria="up" aria-label="Haut">↑</button><button data-move="left" data-copy-aria="left" aria-label="Gauche">←</button><button data-move="down" data-copy-aria="down" aria-label="Bas">↓</button><button data-move="right" data-copy-aria="right" aria-label="Droite">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">Lis la route.</p></div><div class="play-reserve" data-wp-ad-reserve data-copy="reserve">Réserve d&#39;espace de jeu</div>
+    </section>
+
+    <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="result-kicker" data-copy="resultKicker">Rapport de traversée</p><h2 id="resultTitle">Route terminée</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">Score</b><strong id="resultScore">0</strong></span><span><b data-copy="best">Meilleur</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">Réessayer</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">Retour à l&#39;accueil</button></div></div></section>
+    <footer class="site-footer" data-copy="footer">Préversion WeightPlay・arcade de timing originale</footer>
+  </main>
+  <script src="game.js?v=20260919-road-crosser-v20-guide-landscape"></script>
+  <script>
+    (() => {
+      const publicCopy = {
+        en: { status: "Owner preview", note: "Playable preview only; Tester and the new three-pass Gameplay Reviewer gate are still pending." },
+        "zh-Hant": { status: "擁有者預覽", note: "目前僅供試玩；Tester 與新版三次連續 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
+        "zh-Hans": { status: "拥有者预览", note: "目前仅供试玩；Tester 与新版三次连续 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
+        ja: { status: "所有者プレビュー", note: "現在は試遊用です。Tester と新しい3回連続 PASS の Gameplay Reviewer Gate は未完了です。" },
+        ko: { status: "소유자 미리보기", note: "현재는 플레이 미리보기입니다. Tester와 새 3회 연속 PASS Gameplay Reviewer Gate가 아직 완료되지 않았습니다." },
+        es: { status: "Vista previa del propietario", note: "Esta es una vista previa jugable; Tester y la nueva puerta de Gameplay Reviewer de 3 PASS consecutivos siguen pendientes." },
+        "pt-BR": { status: "Prévia do proprietário", note: "Esta é uma prévia jogável; o Tester e o novo Gate de 3 PASS consecutivos do Gameplay Reviewer ainda estão pendentes." },
+        fr: { status: "Aperçu propriétaire", note: "Ceci est un aperçu jouable ; le Tester et le nouveau Gate de 3 PASS consécutifs du Gameplay Reviewer sont encore en attente." },
+        de: { status: "Besitzer-Vorschau", note: "Dies ist eine spielbare Vorschau; Tester und das neue Gameplay-Reviewer-Gate mit 3 aufeinanderfolgenden PASS stehen noch aus." },
+        it: { status: "Anteprima del proprietario", note: "Questa è un'anteprima giocabile; Tester e il nuovo Gate del Gameplay Reviewer con 3 PASS consecutivi sono ancora in sospeso." },
+        ru: { status: "Предпросмотр владельца", note: "Это игровое превью; Tester и новый Gate Gameplay Reviewer с 3 последовательными PASS ещё не завершены." },
+        hi: { status: "मालिक का पूर्वावलोकन", note: "यह खेलने योग्य पूर्वावलोकन है; Tester और 3 लगातार PASS वाला नया Gameplay Reviewer Gate अभी लंबित है।" },
+        ar: { status: "معاينة المالك", note: "هذه معاينة قابلة للعب؛ ما زالت بوابة Tester وبوابة Gameplay Reviewer الجديدة ذات 3 PASS متتالية معلّقة." },
+      };
+      const battleReserve = document.querySelector(".play-reserve");
+      battleReserve?.classList.add("general-reserve", "battle-ad-reserve");
+      if (battleReserve) document.querySelector("#battleScreen")?.after(battleReserve);
+      document.querySelectorAll(".touch-pad button").forEach((button) => button.setAttribute("data-wp-primary-action", ""));
+      const apply = () => {
+        const locale = document.getElementById("localeSelect")?.value || "en";
+        const copy = publicCopy[locale] || publicCopy.en;
+        const status = document.querySelector('[data-copy="comingSoon"]');
+        const note = document.querySelector('[data-copy="comingNote"]');
+        if (status) status.textContent = copy.status;
+        if (note) note.textContent = copy.note;
+      };
+      apply();
+      document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
+    })();
+  </script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

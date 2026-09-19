@@ -263,6 +263,20 @@ async function main() {
     stats.totals.lobbyUsers7d = lobby7d.users;
     await fs.writeFile(statsPath, `${JSON.stringify(stats, null, 2)}\n`, "utf8");
     await writeReport(stats, games);
+    // Reuse the authenticated token. Detailed reports never enter public assets.
+    if (process.env.GA4_BEHAVIOR_REPORT_PATH) {
+      try {
+        const { exportGameBehaviorReport } = await import("./lib/game-behavior-report.mjs");
+        await exportGameBehaviorReport({
+          retentionInputPath: process.env.GA4_RETENTION_INPUT_PATH || "",
+          propertyId, accessToken, games, root,
+          outputPath: process.env.GA4_BEHAVIOR_REPORT_PATH,
+          days: Number(process.env.GA4_BEHAVIOR_DAYS || 30),
+        });
+      } catch (error) {
+        console.warn(`Detailed game analytics not updated: ${error.message}. Previous detail report retained.`);
+      }
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const note = [

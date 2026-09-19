@@ -1,5 +1,23 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(isSimulationPaused()), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const $ = (selector) => document.querySelector(selector);
   let sharedFrame=null;
@@ -557,7 +575,7 @@
     [nodes.pause,nodes.inventory,nodes.leave,nodes.result].forEach(item => item.hidden=item!==panel);
     nodes.overlay.hidden=!panel;
     sharedFrame?.activate(document.body.dataset.screen==='battle'?'battle':'main',Boolean(panel));
-    paused=Boolean(panel);
+    (__wpNotifyMeasurement(), paused=Boolean(panel));
     if (panel) setTimeout(()=>panel.querySelector("button:not([disabled])")?.focus(),0);
     else canvas.focus({preventScroll:true});
   }
@@ -581,18 +599,18 @@
       }else if(state.chapter3Started){
         lineKey="chapter3Reminder";
       }
-      currentDialogue=`story-${lineKey}`;paused=true;
+      currentDialogue=`story-${lineKey}`;(__wpNotifyMeasurement(), paused=true);
       nodes.speaker.textContent=(copy.npcNames||en.npcNames)[0] || en.npcNames[0];
       nodes.dialogueText.textContent=t(lineKey);
-      nodes.dialogue.hidden=false;nodes.dialogueNext.focus();
+      (__wpNotifyMeasurement(), nodes.dialogue.hidden=false);nodes.dialogueNext.focus();
       saveGame();updateObjective();updateHud();
       return;
     }
     if(index===0&&state.talked.size>=10&&!state.witnessReport){
-      state.witnessReport=true;currentDialogue="story-witness-report";paused=true;
+      state.witnessReport=true;currentDialogue="story-witness-report";(__wpNotifyMeasurement(), paused=true);
       nodes.speaker.textContent=(copy.npcNames||en.npcNames)[0] || en.npcNames[0];
       nodes.dialogueText.textContent=t("witnessDebrief");
-      nodes.dialogue.hidden=false;nodes.dialogueNext.focus();
+      (__wpNotifyMeasurement(), nodes.dialogue.hidden=false);nodes.dialogueNext.focus();
       showToast(t("forestRouteUnlocked"),2200);saveGame();updateObjective();updateHud();
       return;
     }
@@ -601,15 +619,15 @@
     if (index===0 && !state.visionUnlocked) {
       state.visionUnlocked=true; showToast(t("visionUnlocked"),2800);
     }
-    currentDialogue=index; paused=true;
+    currentDialogue=index; (__wpNotifyMeasurement(), paused=true);
     nodes.speaker.textContent=(copy.npcNames||en.npcNames)[index] || en.npcNames[index];
     nodes.dialogueText.textContent=(copy.npcLines||en.npcLines)[index] || en.npcLines[index];
-    nodes.dialogue.hidden=false; nodes.dialogueNext.focus();
+    (__wpNotifyMeasurement(), nodes.dialogue.hidden=false); nodes.dialogueNext.focus();
     if (wasNew) { saveGame(); updateObjective(); updateHud(); }
   }
   function closeDialogue(completed=true) {
     const dialogue=currentDialogue;
-    nodes.dialogue.hidden=true;nodes.dialogueChoices.hidden=true;nodes.dialogueNext.hidden=false;currentDialogue=null;paused=false;canvas.focus({preventScroll:true});
+    (__wpNotifyMeasurement(), nodes.dialogue.hidden=true);(__wpNotifyMeasurement(), nodes.dialogueChoices.hidden=true);(__wpNotifyMeasurement(), nodes.dialogueNext.hidden=false);currentDialogue=null;(__wpNotifyMeasurement(), paused=false);canvas.focus({preventScroll:true});
     if(completed&&dialogue!==null&&!firstDialogueTracked){
       firstDialogueTracked=true;
       track("first_dialogue_complete",{dialogue_type:typeof dialogue==="number"?"witness":"story"});
@@ -965,20 +983,20 @@
     if(expected&&relay.id!==expected.id){showToast(t("relaySequenceLocked",{record:t(expected.name)}),2400);return}
     state.relays.add(relay.id);gainXp(24);playTone(660,.2);
     showToast(t("relayActivated",{n:state.relays.size}),2200);
-    currentDialogue=`relay-${relay.id}`;paused=true;
+    currentDialogue=`relay-${relay.id}`;(__wpNotifyMeasurement(), paused=true);
     nodes.speaker.textContent=t(relay.name);
     nodes.dialogueText.textContent=t(`relayMessage${relay.relayIndex+1}`);
-    nodes.dialogue.hidden=false;nodes.dialogueNext.focus();
+    (__wpNotifyMeasurement(), nodes.dialogue.hidden=false);nodes.dialogueNext.focus();
     saveGame();updateObjective();updateHud();
   }
   function activateAshfallNode(node) {
     state.ashfallFindings.add(node.id);gainXp(node.id==="core"?36:20);playTone(node.id==="core"?760:610,.2);
-    currentDialogue=`ashfall-${node.id}`;paused=true;
+    currentDialogue=`ashfall-${node.id}`;(__wpNotifyMeasurement(), paused=true);
     nodes.speaker.textContent=t(node.name);
     nodes.dialogueText.textContent=t(node.message);
-    nodes.dialogue.hidden=false;
+    (__wpNotifyMeasurement(), nodes.dialogue.hidden=false);
     if(node.id==="core"){
-      nodes.dialogueNext.hidden=true;nodes.dialogueChoices.hidden=false;nodes.broadcastChoice.focus();
+      (__wpNotifyMeasurement(), nodes.dialogueNext.hidden=true);(__wpNotifyMeasurement(), nodes.dialogueChoices.hidden=false);nodes.broadcastChoice.focus();
       nodes.broadcastChoice.textContent=t("ashfallBroadcast");
       nodes.protectChoice.textContent=t("ashfallProtect");
     }else nodes.dialogueNext.focus();
@@ -998,12 +1016,12 @@
     if(!choosing){
       state.lunarFindings.add(node.id);gainXp(node.id==="core"?42:24);playTone(node.id==="core"?820:680,.22);
     }
-    currentDialogue=choosing?"lunar-choice":`lunar-${node.id}`;paused=true;
+    currentDialogue=choosing?"lunar-choice":`lunar-${node.id}`;(__wpNotifyMeasurement(), paused=true);
     nodes.speaker.textContent=t(node.name);
     nodes.dialogueText.textContent=t(choosing?"lunarChoiceMessage":node.message);
-    nodes.dialogue.hidden=false;
+    (__wpNotifyMeasurement(), nodes.dialogue.hidden=false);
     if(choosing){
-      nodes.dialogueNext.hidden=true;nodes.dialogueChoices.hidden=false;
+      (__wpNotifyMeasurement(), nodes.dialogueNext.hidden=true);(__wpNotifyMeasurement(), nodes.dialogueChoices.hidden=false);
       nodes.broadcastChoice.textContent=t("lunarAnswer");
       nodes.protectChoice.textContent=t("lunarShield");
       nodes.broadcastChoice.focus();
@@ -1173,30 +1191,43 @@
     dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen}}));
     dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen}}));
     if(screen==="battle")dispatchEvent(new CustomEvent("weightplay:battle-open",{detail:{screen}}));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function playTone(frequency,duration) {
     if(window.WonderSound?.isMuted?.())return;
     try{const audio=playTone.audio||(playTone.audio=new (window.AudioContext||window.webkitAudioContext)()),osc=audio.createOscillator(),gain=audio.createGain();osc.frequency.value=frequency;osc.type="square";gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+duration)}catch{}
   }
   function showBattle(entry="main") {
-    nodes.main.hidden=true;nodes.battle.hidden=false;setScreenOwner("battle");playing=true;paused=false;lastTime=performance.now();resizeCanvas();updateHud();updateObjective();renderInventory();canvas.focus({preventScroll:true});
+    nodes.main.hidden=true;nodes.battle.hidden=false;setScreenOwner("battle");playing=true;(__wpNotifyMeasurement(), paused=false);lastTime=performance.now();resizeCanvas();updateHud();updateObjective();renderInventory();canvas.focus({preventScroll:true});
     track("game_start",{entry,quests_completed:completedQuestCount()});
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function showMain() {
     const wasPlaying=playing;
     clearTimeout(resultRevealTimer);resultRevealTimer=0;
-    saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setScreenOwner("main");setPanel(null);closeDialogue(false);scrollTo({top:0,behavior:"instant"});updateMainProgress();
+    saveGame();playing=false;(__wpNotifyMeasurement(), paused=false);nodes.battle.hidden=true;nodes.main.hidden=false;setScreenOwner("main");setPanel(null);closeDialogue(false);scrollTo({top:0,behavior:"instant"});updateMainProgress();
     if(wasPlaying)track("return_session",{from_screen:"battle",quests_completed:completedQuestCount()});
     requestAnimationFrame(()=>requestAnimationFrame(()=>$("#startGame").focus({preventScroll:true})));
-  }
+
+    if (__wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; } __wpNotifyMeasurement();
+}
   function restartGame() {
+    const __wpPreviousRound = __wpMeasurement.roundKey;
+
     const keepAnchor=Boolean(state.signalAnchor);clearSave();
     state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),relays:new Set(),ashfallFindings:new Set(),lunarFindings:new Set(),equipment:{...fresh.equipment},equipped:{...fresh.equipped},enemyHp:{},discoveries:{...fresh.discoveries},checkpoint:{...fresh.checkpoint}};
     trueVision=false;enemies=makeEnemies();
     firstDialogueTracked=false;firstCombatActionTracked=false;firstCombatHitTracked=false;lastTrackedQuestCount=0;
     boss={x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:false,sprite:12,stun:0,charge:0};bossIntroduced=false;
-    projectiles.length=0;enemyProjectiles.length=0;setPanel(null);showBattle("new_investigation");saveGame();
-  }
+    projectiles.length=0;enemyProjectiles.length=0;setPanel(null);__wpReplayStart(() => showBattle("new_investigation"));saveGame();
+
+    if (__wpMeasurement.roundKey !== __wpPreviousRound) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+}
 
   addEventListener("keydown",event=>{
     const key=event.key.toLowerCase();

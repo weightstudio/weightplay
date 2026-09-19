@@ -5,8 +5,8 @@
 
     <base href="/games/road-crosser/" />
 
-    <script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
@@ -29,9 +29,10 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/road-crosser/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/road-crosser/" />
     <title>車道と川わたり | WeightPlay</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260814-new-games-shell2" data-wp-shell-standard />
-  <meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="style.css?v=20260919-road-crosser-v20-guide-landscape" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260918-ui-fix1" data-wp-shell-standard />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260919-road-crosser-v20-guide-landscape" /><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="車道と川わたり | WeightPlay" />
     <meta property="og:description" content="車道と川わたりはWeightPlayオリジナルのタイミングアーケードです。車道、動く川、少しずつ安全幅が狭くなる3つの横断を読みます。" />
@@ -41,8 +42,7 @@
     <meta name="twitter:title" content="車道と川わたり | WeightPlay" />
     <meta name="twitter:description" content="車道と川わたりはWeightPlayオリジナルのタイミングアーケードです。車道、動く川、少しずつ安全幅が狭くなる3つの横断を読みます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/road-crosser.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"車道と川わたり","url":"https://weightplay.com/ja/games/road-crosser/","image":"https://weightplay.com/assets/road-crosser-cover.webp","description":"車道と川わたりはWeightPlayオリジナルのタイミングアーケードです。車道、動く川、少しずつ安全幅が狭くなる3つの横断を読みます。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["クラシック","アーケード","アクション","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Traffic and River Crossing"}</script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260906-road-crosser-guide-v18" /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"車道と川わたり","url":"https://weightplay.com/ja/games/road-crosser/","image":"https://weightplay.com/assets/interface7-redrawn/road-crosser.webp","description":"車道と川わたりはWeightPlayオリジナルのタイミングアーケードです。車道、動く川、少しずつ安全幅が狭くなる3つの横断を読みます。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["クラシック","アーケード","アクション","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Traffic and River Crossing"}</script><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
@@ -55,49 +55,8 @@
     </header>
 
     <section id="mainScreen" class="screen main-screen">
-      <div class="hero-card"><img class="main-poster" src="../../assets/road-crosser-cover.webp" alt="車道と川わたりのゲーム画像" /><div class="main-copy"><p class="status-pill" data-copy="comingSoon">近日公開</p><p class="lead main-summary" data-copy="guideIntro">小さなスターランナーを車道、川の流れ、動く丸太へ導きます。3つの横断で、読みやすいリズムから緊張感のあるタイミングへ進みます。</p><button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start">横断を始める</button></div></div>
-      <section class="public-guide" aria-labelledby="guideHeading"><p class="guide-kicker" data-copy="guideLabel">遊び方</p><h2 id="guideHeading" data-copy="guideTitle">安全な一歩を重ねよう。</h2><div class="guide-grid"><article><h3 data-copy="controlsTitle">操作</h3><ol><li data-copy="how1">矢印キーまたは WASD で一マス進みます。</li><li data-copy="how2">モバイルではスワイプか方向ボタンを使います。</li><li data-copy="how3">車線を観察し、川では動く丸太に乗ります。</li></ol></article><article><h3 data-copy="growthTitle">横断のリズム</h3><p data-copy="growth">ステージ2と3では車が増え、水流が速くなり、岩と狭い安全時間が加わります。</p><p class="guide-note" data-copy="comingNote">すべての Tester、Gameplay Reviewer、Director Gate が完了するまで近日公開です。</p></article></div></section>
-    </section>
-
-    <section id="battleScreen" class="screen battle-screen" hidden aria-label="スター・クロッサーのプレイフィールド">
-      <div class="battle-stage"><div class="battle-hud"><button id="battleBackBtn" class="icon-button" type="button" data-copy-aria="back" aria-label="メインへ">←</button><div><span class="hud-label" data-copy="stage">ステージ</span><strong id="stageValue">1 / 3</strong></div><div><span class="hud-label" data-copy="score">スコア</span><strong id="scoreValue">0</strong></div><div><span class="hud-label" data-copy="best">ベスト</span><strong id="bestValue">0</strong></div><button id="soundBtn" class="icon-button" type="button" data-copy-aria="soundOn" aria-label="サウンド オン">◒</button><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="リスタート">↻</button></div><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="スター・クロッサーのプレイフィールド"></canvas><div class="touch-pad" aria-label="方向操作"><button data-move="up" data-copy-aria="up" aria-label="上">↑</button><button data-move="left" data-copy-aria="left" aria-label="左">←</button><button data-move="down" data-copy-aria="down" aria-label="下">↓</button><button data-move="right" data-copy-aria="right" aria-label="右">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">道のリズムを読もう。</p></div><div class="play-reserve" data-copy="reserve">プレイ空間の予備</div>
-    </section>
-
-    <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="result-kicker" data-copy="resultKicker">横断レポート</p><h2 id="resultTitle">ルート完了</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">スコア</b><strong id="resultScore">0</strong></span><span><b data-copy="best">ベスト</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">もう一度</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">メインへ戻る</button></div></div></section>
-    <footer class="site-footer" data-copy="footer">WeightPlay オーナープレビュー・オリジナルタイミングアーケード</footer>
-  </main>
-  <script src="game.js?v=20260905-art-v18"></script>
-  <script>
-    (() => {
-      const publicCopy = {
-        en: { status: "Owner preview", note: "Playable preview only; Tester and the new three-pass Gameplay Reviewer gate are still pending." },
-        "zh-Hant": { status: "擁有者預覽", note: "目前僅供試玩；Tester 與新版三次連續 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
-        "zh-Hans": { status: "拥有者预览", note: "目前仅供试玩；Tester 与新版三次连续 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
-        ja: { status: "所有者プレビュー", note: "現在は試遊用です。Tester と新しい3回連続 PASS の Gameplay Reviewer Gate は未完了です。" },
-        ko: { status: "소유자 미리보기", note: "현재는 플레이 미리보기입니다. Tester와 새 3회 연속 PASS Gameplay Reviewer Gate가 아직 완료되지 않았습니다." },
-        es: { status: "Vista previa del propietario", note: "Esta es una vista previa jugable; Tester y la nueva puerta de Gameplay Reviewer de 3 PASS consecutivos siguen pendientes." },
-        "pt-BR": { status: "Prévia do proprietário", note: "Esta é uma prévia jogável; o Tester e o novo Gate de 3 PASS consecutivos do Gameplay Reviewer ainda estão pendentes." },
-        fr: { status: "Aperçu propriétaire", note: "Ceci est un aperçu jouable ; le Tester et le nouveau Gate de 3 PASS consécutifs du Gameplay Reviewer sont encore en attente." },
-        de: { status: "Besitzer-Vorschau", note: "Dies ist eine spielbare Vorschau; Tester und das neue Gameplay-Reviewer-Gate mit 3 aufeinanderfolgenden PASS stehen noch aus." },
-        it: { status: "Anteprima del proprietario", note: "Questa è un'anteprima giocabile; Tester e il nuovo Gate del Gameplay Reviewer con 3 PASS consecutivi sono ancora in sospeso." },
-        ru: { status: "Предпросмотр владельца", note: "Это игровое превью; Tester и новый Gate Gameplay Reviewer с 3 последовательными PASS ещё не завершены." },
-        hi: { status: "मालिक का पूर्वावलोकन", note: "यह खेलने योग्य पूर्वावलोकन है; Tester और 3 लगातार PASS वाला नया Gameplay Reviewer Gate अभी लंबित है।" },
-        ar: { status: "معاينة المالك", note: "هذه معاينة قابلة للعب؛ ما زالت بوابة Tester وبوابة Gameplay Reviewer الجديدة ذات 3 PASS متتالية معلّقة." },
-      };
-      const apply = () => {
-        const locale = document.getElementById("localeSelect")?.value || "en";
-        const copy = publicCopy[locale] || publicCopy.en;
-        const status = document.querySelector('[data-copy="comingSoon"]');
-        const note = document.querySelector('[data-copy="comingNote"]');
-        if (status) status.textContent = copy.status;
-        if (note) note.textContent = copy.note;
-      };
-      apply();
-      document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
-    })();
-  </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="車道と川わたり ゲーム情報">
+      <div class="hero-card"><img class="main-poster" src="../../assets/road-crosser-cover-v2.webp" alt="車道と川わたりのゲーム画像" /><div class="main-copy"><p class="status-pill" data-copy="comingSoon">近日公開</p><p class="lead main-summary" data-copy="guideIntro">小さなスターランナーを車道、川の流れ、動く丸太へ導きます。3つの横断で、読みやすいリズムから緊張感のあるタイミングへ進みます。</p><button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start">横断を始める</button></div></div>
+      <section class="game-page-info game-page-info-static" aria-label="車道と川わたり ゲーム情報">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">車道と川わたり</h2><p>スター・クロッサーはWeightPlayオリジナルのタイミングアーケードです。車道、動く川、少しずつ安全幅が狭くなる3つの横断を読みます。</p></div>
@@ -116,6 +75,51 @@
       <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>このゲームではタイミングを練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-skybridge-rivals/"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スカイブリッジ</strong><span>フィアを導き、30の雲上レースでシアンのタイルを集め、3人のライバルより先に橋を完成させよう。</span></span></a><a class="game-info-related-card" href="/ja/games/alien-defender/"><img src="/assets/interface7-redrawn/alien-defender.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>エイリアン・ディフェンダー</strong><span>エイリアン・ディフェンダーはWeightPlayオリジナルの全30ステージ固定画面シューティングです。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>リフトサルベージ</strong><span>オーラの月輪を導き、30の星界区域で小さな残骸から成長し、救助コアを回収してライバルを追い越そう。</span></span></a></div></div>
     </div>
   </section>
+    </section>
+
+    <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-label="スター・クロッサーのプレイフィールド">
+      <div class="battle-stage"><div class="battle-hud"><button id="battleBackBtn" class="icon-button" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="メインへ">←</button><div><span class="hud-label" data-copy="stage">ステージ</span><strong id="stageValue">1 / 3</strong></div><div><span class="hud-label" data-copy="score">スコア</span><strong id="scoreValue">0</strong></div><div><span class="hud-label" data-copy="best">ベスト</span><strong id="bestValue">0</strong></div><button id="soundBtn" class="icon-button" type="button" data-wp-battle-utility data-copy-aria="soundOn" aria-label="サウンド オン">◒</button><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="リスタート">↻</button></div><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="スター・クロッサーのプレイフィールド"></canvas><div class="touch-pad" aria-label="方向操作"><button data-move="up" data-copy-aria="up" aria-label="上">↑</button><button data-move="left" data-copy-aria="left" aria-label="左">←</button><button data-move="down" data-copy-aria="down" aria-label="下">↓</button><button data-move="right" data-copy-aria="right" aria-label="右">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">道のリズムを読もう。</p></div><div class="play-reserve" data-wp-ad-reserve data-copy="reserve">プレイ空間の予備</div>
+    </section>
+
+    <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="result-kicker" data-copy="resultKicker">横断レポート</p><h2 id="resultTitle">ルート完了</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">スコア</b><strong id="resultScore">0</strong></span><span><b data-copy="best">ベスト</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">もう一度</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">メインへ戻る</button></div></div></section>
+    <footer class="site-footer" data-copy="footer">WeightPlay オーナープレビュー・オリジナルタイミングアーケード</footer>
+  </main>
+  <script src="game.js?v=20260919-road-crosser-v20-guide-landscape"></script>
+  <script>
+    (() => {
+      const publicCopy = {
+        en: { status: "Owner preview", note: "Playable preview only; Tester and the new three-pass Gameplay Reviewer gate are still pending." },
+        "zh-Hant": { status: "擁有者預覽", note: "目前僅供試玩；Tester 與新版三次連續 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
+        "zh-Hans": { status: "拥有者预览", note: "目前仅供试玩；Tester 与新版三次连续 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
+        ja: { status: "所有者プレビュー", note: "現在は試遊用です。Tester と新しい3回連続 PASS の Gameplay Reviewer Gate は未完了です。" },
+        ko: { status: "소유자 미리보기", note: "현재는 플레이 미리보기입니다. Tester와 새 3회 연속 PASS Gameplay Reviewer Gate가 아직 완료되지 않았습니다." },
+        es: { status: "Vista previa del propietario", note: "Esta es una vista previa jugable; Tester y la nueva puerta de Gameplay Reviewer de 3 PASS consecutivos siguen pendientes." },
+        "pt-BR": { status: "Prévia do proprietário", note: "Esta é uma prévia jogável; o Tester e o novo Gate de 3 PASS consecutivos do Gameplay Reviewer ainda estão pendentes." },
+        fr: { status: "Aperçu propriétaire", note: "Ceci est un aperçu jouable ; le Tester et le nouveau Gate de 3 PASS consécutifs du Gameplay Reviewer sont encore en attente." },
+        de: { status: "Besitzer-Vorschau", note: "Dies ist eine spielbare Vorschau; Tester und das neue Gameplay-Reviewer-Gate mit 3 aufeinanderfolgenden PASS stehen noch aus." },
+        it: { status: "Anteprima del proprietario", note: "Questa è un'anteprima giocabile; Tester e il nuovo Gate del Gameplay Reviewer con 3 PASS consecutivi sono ancora in sospeso." },
+        ru: { status: "Предпросмотр владельца", note: "Это игровое превью; Tester и новый Gate Gameplay Reviewer с 3 последовательными PASS ещё не завершены." },
+        hi: { status: "मालिक का पूर्वावलोकन", note: "यह खेलने योग्य पूर्वावलोकन है; Tester और 3 लगातार PASS वाला नया Gameplay Reviewer Gate अभी लंबित है।" },
+        ar: { status: "معاينة المالك", note: "هذه معاينة قابلة للعب؛ ما زالت بوابة Tester وبوابة Gameplay Reviewer الجديدة ذات 3 PASS متتالية معلّقة." },
+      };
+      const battleReserve = document.querySelector(".play-reserve");
+      battleReserve?.classList.add("general-reserve", "battle-ad-reserve");
+      if (battleReserve) document.querySelector("#battleScreen")?.after(battleReserve);
+      document.querySelectorAll(".touch-pad button").forEach((button) => button.setAttribute("data-wp-primary-action", ""));
+      const apply = () => {
+        const locale = document.getElementById("localeSelect")?.value || "en";
+        const copy = publicCopy[locale] || publicCopy.en;
+        const status = document.querySelector('[data-copy="comingSoon"]');
+        const note = document.querySelector('[data-copy="comingNote"]');
+        if (status) status.textContent = copy.status;
+        if (note) note.textContent = copy.note;
+      };
+      apply();
+      document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
+    })();
+  </script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="車道と川わたり";document.title="車道と川わたり | WeightPlay";},{once:true});</script>
 </body>
 </html>

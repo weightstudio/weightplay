@@ -1,4 +1,22 @@
 (function () {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(combatSuspendedForBackground || !state.combat.animating), node: nodes.gamePanel,
+    activityMode: "state", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   document.body.dataset.wpCombinedSound = "true";
   ["stagePanel", "gamePanel"].forEach((id) => {
     document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "920");
@@ -1479,7 +1497,7 @@ const GAME_VERSION = "v36";
     nodes.stagePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-result");
-    nodes.resultPanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
     nodes.combatStallPanel.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
     nodes.prepPhaseArea?.classList.remove("is-hidden");
@@ -1488,7 +1506,12 @@ const GAME_VERSION = "v36";
     syncTeamPreparationSurface();
     syncSceneOwners();
     requestAnimationFrame(focusPreparationOwner);
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showBattlePreparationView() {
     mountPreparationToBattle();
@@ -1502,7 +1525,12 @@ const GAME_VERSION = "v36";
     nodes.combatArea?.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
     syncSceneOwners();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
+      if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   // The opening expedition needs a real formation response, not only two
   // versions of temporary stat growth. Owl adds back-row targeting to Fox
@@ -2261,7 +2289,7 @@ const GAME_VERSION = "v36";
         state.combat.enemySquad = [enemy];
         state.combat.step = 0;
         state.combat.log = [];
-        state.combat.animating = true;
+        (__wpNotifyMeasurement(), state.combat.animating = true);
         state.combat.ending = false;
         state.combat.resolved = false;
         state.combat.runId = ++combatRunSequence;
@@ -2298,13 +2326,13 @@ const GAME_VERSION = "v36";
         lossRecap: nodes.prepNotice?.textContent?.trim() || ""
       }),
       pauseCombatPreview: () => {
-        state.combat.animating = false;
+        (__wpNotifyMeasurement(), state.combat.animating = false);
         cancelAnimationFrame(animationId);
         return state.combat.layout || [];
       },
       prepareSixUnitBattle: () => {
         clearScheduledCombatTimers();
-        state.combat.animating = false;
+        (__wpNotifyMeasurement(), state.combat.animating = false);
         state.combat.resolved = true;
         cancelAnimationFrame(animationId);
         state.stage = 29;
@@ -2320,7 +2348,7 @@ const GAME_VERSION = "v36";
       },
       prepareBossBattle: (stageValue = 30) => {
         clearScheduledCombatTimers();
-        state.combat.animating = false;
+        (__wpNotifyMeasurement(), state.combat.animating = false);
         state.combat.resolved = true;
         cancelAnimationFrame(animationId);
         state.stage = Math.max(1, Math.min(STAGE_COUNT, Number(stageValue) || 30));
@@ -2932,15 +2960,6 @@ const GAME_VERSION = "v36";
   }
 
   // Render Functions
-  function pinMainSoundToggle() {
-    if (document.body.classList.contains("squad-stage-select") || document.body.classList.contains("squad-active")) return;
-    const soundToggle = document.querySelector(".sound-toggle");
-    if (soundToggle) {
-      const viewportWidth = window.visualViewport?.width || window.innerWidth;
-      const mainLeft = Math.max(28, (viewportWidth - 920) / 2 + 32);
-      soundToggle.style.setProperty("inset", `108px auto auto ${mainLeft}px`, "important");
-    }
-  }
 
   function syncSceneOwners() {
     // Commit shared geometry in the same navigation transaction, before paint.
@@ -2966,7 +2985,7 @@ const GAME_VERSION = "v36";
     nodes.stagePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-result");
-    nodes.resultPanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
     nodes.combatSummary?.classList.add("is-hidden");
     nodes.combatStallPanel.classList.add("is-hidden");
     setStageTab("stages");
@@ -2978,14 +2997,17 @@ const GAME_VERSION = "v36";
     if (nodes.teamBonusText) {
       nodes.teamBonusText.innerHTML = formatTeamBonusNote();
     }
-    pinMainSoundToggle();
-    window.setTimeout(pinMainSoundToggle, 120);
     updateWalletUI();
     renderStageSelector();
     renderTrainingRoster();
     updatePageMeta();
     syncSceneOwners();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showStageSelection() {
     closeQuitDecision(false);
@@ -2999,7 +3021,7 @@ const GAME_VERSION = "v36";
     nodes.stagePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-result");
-    nodes.resultPanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
     nodes.combatStallPanel.classList.add("is-hidden");
     save = loadSave();
     setStageTab("stages");
@@ -3008,7 +3030,12 @@ const GAME_VERSION = "v36";
     requestAnimationFrame(() => {
       nodes.stageRail.querySelector(".stage-card.is-browsed")?.focus({ preventScroll: true });
     });
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   const TRAINING_STAGE_STYLE_PROPERTIES = [
     "position", "inset", "top", "right", "bottom", "left", "box-sizing",
@@ -3845,12 +3872,12 @@ const GAME_VERSION = "v36";
     nodes.gameCanvas.dataset.runtimeLocalize = "off";
     nodes.gameCanvas.setAttribute("aria-label", t("battleArena"));
     // The shared frame owns the return glyph; localization only owns its label.
-    nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));
+    (__wpNotifyMeasurement(), nodes.quitRunBtn.setAttribute("aria-label", t("quitRun")));
     $("quitRunTitle").textContent = t("quitRunTitle");
     $("quitRunText").textContent = t("quitConfirm", { stage: state.stage, round: state.round, hearts: state.hearts, supplies: state.gold });
     nodes.keepPlayingBtn.textContent = t("keepPlaying");
     nodes.confirmQuitBtn.textContent = t("confirmQuit");
-    
+
     // Menu elements
     $("menuHeadingText").textContent = t("menuTitle");
     $("menuSubText").textContent = t("menuHint");
@@ -3941,7 +3968,9 @@ const GAME_VERSION = "v36";
     showTeamPreparationView();
     startRoundPrep();
     window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID, stage: state.stage });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = false; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpNotifyMeasurement();
+}
 
   // Round Setup and Shop Drafting
   function startRoundPrep() {
@@ -4167,7 +4196,7 @@ const GAME_VERSION = "v36";
 
     // Inside details
     const isAnimal = card.atk !== undefined;
-    
+
     // Thumbnail graphic
     const graphic = document.createElement("div");
     graphic.className = "card-graphic";
@@ -4271,7 +4300,7 @@ const GAME_VERSION = "v36";
       renderPrepScreen({ area, index });
     } else {
       const source = selectedSlot;
-      
+
       // If tapping the exact same slot, deselect it
       if (source.area === area && source.index === index) {
         selectedSlot = null;
@@ -4600,7 +4629,7 @@ const GAME_VERSION = "v36";
     state.gold -= rerollCost;
     state.freeRerollThisRound = false;
     state.rerollsUsedThisRound++;
-    
+
     playSynth("sell");
     generateShop();
     updateHUD();
@@ -4972,7 +5001,7 @@ const GAME_VERSION = "v36";
     // Reset combat state
     state.combat.step = 0;
     state.combat.log = [];
-    state.combat.animating = true;
+    (__wpNotifyMeasurement(), state.combat.animating = true);
     state.combat.ending = false;
     state.combat.resolved = false;
     state.combat.runId = runId;
@@ -4999,16 +5028,18 @@ const GAME_VERSION = "v36";
     state.combat.impactPulse = 0;
     combatSummarySignature = "";
     renderCombatTactic();
-    
+
     canvasCtx = nodes.gameCanvas.getContext("2d");
     combatLog(openingBoss ? `${t("bossWarning")} · ${t("bossIncoming", { boss: combatUnitName(openingBoss) })}` : t("combatIntro"));
     updateCombatSummary();
-    
+
     // Start animation loop
     ensureCombatProgressTimer();
     runCombatAnimation();
     window.WonderAnalytics?.track("battle_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = Boolean(__wpMeasurement.restart && !__wpMeasurement.started); __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function enemyWaveStats(stage, wave) {
     const safeStage = Math.max(1, Math.min(STAGE_COUNT, Number(stage) || 1));
@@ -5165,12 +5196,12 @@ const GAME_VERSION = "v36";
     }
     combatLastProgressAt = 0;
     cancelAnimationFrame(animationId);
-    combatSuspendedForBackground = false;
+    (__wpNotifyMeasurement(), combatSuspendedForBackground = false);
     quitDecisionOpen = false;
     combatRunSequence++;
     if (!state?.combat) return;
     state.combat.runId = combatRunSequence;
-    state.combat.animating = false;
+    (__wpNotifyMeasurement(), state.combat.animating = false);
     state.combat.ending = false;
     state.combat.resolved = true;
   }
@@ -5260,10 +5291,10 @@ const GAME_VERSION = "v36";
     if (!state.combat.animating) return;
     if (quitDecisionOpen) return;
     if (document.hidden) {
-      combatSuspendedForBackground = true;
+      (__wpNotifyMeasurement(), combatSuspendedForBackground = true);
       return;
     }
-    combatSuspendedForBackground = false;
+    (__wpNotifyMeasurement(), combatSuspendedForBackground = false);
     animationId = requestAnimationFrame(runCombatAnimation);
     advanceCombatClock();
 
@@ -5423,22 +5454,22 @@ const GAME_VERSION = "v36";
   function drawSquadLine(squad, team) {
     const isPlayer = team === "player";
     const metrics = combatLayoutMetrics(team);
-    
+
     squad.forEach((unit, idx) => {
       const formation = formationPosition(team, unit.formationSlot ?? idx);
-      
+
       // Draw card frame
       canvasCtx.save();
       canvasCtx.shadowColor = "black";
       canvasCtx.shadowBlur = 7;
-      
+
       // Apply shake frame offsets if shaking
       let shakeX = 0;
       if (state.combat.shakeFrames > 0 && state.combat.shakeTarget === team && idx === 0) {
         shakeX = Math.sin(state.combat.shakeFrames) * 8;
         state.combat.shakeFrames--;
       }
-      
+
       const w = metrics.width;
       const h = metrics.height;
       const actor = (state.combat.activeActors || []).find((item) => item.team === team && item.index === idx && item.life > 0);
@@ -5480,7 +5511,7 @@ const GAME_VERSION = "v36";
         canvasCtx.stroke();
         canvasCtx.globalAlpha = 1;
       }
-      
+
       // Draw character sprite
       if (isPlayer) {
         const portrait = imageCache[unit.imageKey] || imageCache.boomLion;
@@ -5654,7 +5685,7 @@ const GAME_VERSION = "v36";
       canvasCtx.globalAlpha = alpha;
       drawEffectSprite(fx, progress, radius);
       drawImpactShape(fx, progress, alpha, radius);
-      
+
       // Floating text overlays (e.g. Damage numbers)
       if (fx.text) {
         const maxX = Math.max(16, (nodes.gameCanvas.width || 720) - 16);
@@ -6076,13 +6107,13 @@ const GAME_VERSION = "v36";
 
   function startNextWaveBattle() {
     clearScheduledCombatTimers();
-    combatSuspendedForBackground = false;
+    (__wpNotifyMeasurement(), combatSuspendedForBackground = false);
     const runId = ++combatRunSequence;
     state.combat.enemySquad = generateEnemySquad(state.stage, state.round);
     state.combat.step = 0;
     state.combat.log = [];
     state.combat.status = "";
-    state.combat.animating = true;
+    (__wpNotifyMeasurement(), state.combat.animating = true);
     state.combat.ending = false;
     state.combat.resolved = false;
     state.combat.runId = runId;
@@ -6124,7 +6155,7 @@ const GAME_VERSION = "v36";
     const settledRound = state.round;
     state.combat.resolved = true;
     state.combat.ending = false;
-    state.combat.animating = false;
+    (__wpNotifyMeasurement(), state.combat.animating = false);
     cancelAnimationFrame(animationId);
     clearScheduledCombatTimers();
 
@@ -6194,7 +6225,7 @@ const GAME_VERSION = "v36";
       nodes.defeatRevivePanel.classList.add("is-hidden");
       state.hearts = 2;
       playSynth("revive");
-      
+
       // Return to shop prep
       showTeamPreparationView();
       startRoundPrep();
@@ -6220,10 +6251,10 @@ const GAME_VERSION = "v36";
     }
     cancelAnimationFrame(animationId);
     combatLastProgressAt = 0;
-    combatSuspendedForBackground = false;
+    (__wpNotifyMeasurement(), combatSuspendedForBackground = false);
     combatRunSequence++;
     state.combat.runId = combatRunSequence;
-    state.combat.animating = false;
+    (__wpNotifyMeasurement(), state.combat.animating = false);
     state.combat.ending = false;
     state.combat.resolved = true;
   }
@@ -6394,7 +6425,7 @@ const GAME_VERSION = "v36";
     ensureResultActions();
     nodes.gamePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-result");
-    nodes.resultPanel.classList.remove("is-hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("is-hidden"));
 
     nodes.resultTitle.textContent = isWin ? t("expeditionClear") : t("expeditionFail");
     if (nodes.resultDecisionText) {
@@ -6433,10 +6464,12 @@ const GAME_VERSION = "v36";
     if (resultCopy) resultCopy.scrollTop = 0;
     setResultOwnership(true);
     requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
-    
+
     playSynth(isWin ? "win" : "fail");
     window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function openQuitDecision() {
     if (quitDecisionOpen || nodes.gamePanel.classList.contains("is-result")) return;
@@ -6444,7 +6477,7 @@ const GAME_VERSION = "v36";
     cancelAnimationFrame(animationId);
     suspendCombatEndTimer();
     $("quitRunText").textContent = t("quitConfirm", { stage: state.stage, round: state.round, hearts: state.hearts, supplies: state.gold });
-    nodes.quitRunPanel.classList.remove("is-hidden");
+    (__wpNotifyMeasurement(), nodes.quitRunPanel.classList.remove("is-hidden"));
     setBattleDecisionOwnership(nodes.quitRunPanel, true);
     nodes.keepPlayingBtn.focus({ preventScroll: true });
   }
@@ -6453,7 +6486,7 @@ const GAME_VERSION = "v36";
     if (!quitDecisionOpen) return;
     quitDecisionOpen = false;
     setBattleDecisionOwnership(nodes.quitRunPanel, false);
-    nodes.quitRunPanel.classList.add("is-hidden");
+    (__wpNotifyMeasurement(), nodes.quitRunPanel.classList.add("is-hidden"));
     if (resume) resumeCombatEndTimer();
     if (resume && state.combat.animating && !document.hidden) {
       cancelAnimationFrame(animationId);
@@ -6474,7 +6507,7 @@ const GAME_VERSION = "v36";
     suspendSkinPurchaseDecision();
     suspendCombatEndTimer();
     if (!state.combat.animating) return;
-    combatSuspendedForBackground = true;
+    (__wpNotifyMeasurement(), combatSuspendedForBackground = true);
     combatLastProgressAt = 0;
     cancelAnimationFrame(animationId);
   }
@@ -6484,7 +6517,7 @@ const GAME_VERSION = "v36";
     resumeSkinPurchaseDecision();
     resumeCombatEndTimer();
     if (!combatSuspendedForBackground || !state.combat.animating || quitDecisionOpen) return;
-    combatSuspendedForBackground = false;
+    (__wpNotifyMeasurement(), combatSuspendedForBackground = false);
     combatLastProgressAt = performance.now();
     ensureCombatProgressTimer();
     animationId = requestAnimationFrame(runCombatAnimation);
@@ -6534,7 +6567,7 @@ const GAME_VERSION = "v36";
     nodes.quitRunBtn.addEventListener("click", openQuitDecision);
     nodes.keepPlayingBtn.addEventListener("click", () => closeQuitDecision(true));
     nodes.confirmQuitBtn.addEventListener("click", confirmQuitRun);
-    
+
     nodes.buySkinBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
@@ -6543,24 +6576,23 @@ const GAME_VERSION = "v36";
     }, true);
     nodes.buySkinBtn.addEventListener("click", handleBuySkin);
     nodes.equipSkinBtn.addEventListener("click", handleEquipSkin);
-    
+
     nodes.reviveBtn.addEventListener("click", handleRevive);
     nodes.giveUpBtn.addEventListener("click", handleGiveUp);
     nodes.reconfigureStallBtn.addEventListener("click", reconfigureAfterStall);
     nodes.endStallBtn.addEventListener("click", endStalledRun);
-    
-    nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => {
-      nodes.resultPanel.classList.add("is-hidden");
+    nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => commitResultDecision(() => {
+      (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
       save = normalizeSave(save);
       save.selectedStage = state.stage;
       saveSave();
-      startExpedition();
-    }));
+      __wpReplayStart(() => startExpedition());
+    })));
     nodes.nextStageBtn.addEventListener("click", () => commitResultDecision(() => {
       save = normalizeSave(save);
       save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
       saveSave();
-      nodes.resultPanel.classList.add("is-hidden");
+      (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
       startExpedition();
     }));
     nodes.resultMenuBtn.addEventListener("click", () => commitResultDecision(showStageSelection));
@@ -6645,10 +6677,7 @@ const GAME_VERSION = "v36";
     document.documentElement.style.setProperty("--squad-battle-height", `${battleLogicalHeight}px`);
     document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
     // The external return needs both a physical target floor and the enlarged Canvas size.
-    document.documentElement.style.setProperty("--squad-battle-return-size", `${48 * Math.max(1, battleScale)}px`);
-    document.documentElement.style.setProperty("--squad-battle-return-logical-size", `${Math.max(48, Math.ceil(44 / battleScale))}px`);
     updateTrainingStageCanvas();
-    pinMainSoundToggle();
   }
 
   updateBattleViewport();
@@ -6658,4 +6687,6 @@ const GAME_VERSION = "v36";
   // Initialization
   startApp();
 
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 })();

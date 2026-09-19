@@ -1,4 +1,22 @@
 ﻿(() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "shape-train";
   const localeKey = "weightplayLocale";
   const canonicalLocaleKey = "weightPlayLocale";
@@ -313,8 +331,8 @@
   resultActions.className = "result-actions";
   resultActions.append(nodes.resultStagesBtn, nodes.nextStageBtn, nodes.retryBtn);
   nodes.resultLobby?.before(resultActions);
-  nodes.resultLobby?.classList.add("hidden");
-  nodes.resultLobby?.setAttribute("aria-hidden", "true");
+  (__wpNotifyMeasurement(), nodes.resultLobby?.classList.add("hidden"));
+  (__wpNotifyMeasurement(), nodes.resultLobby?.setAttribute("aria-hidden", "true"));
 
   const ruleBadge = document.createElement("span");
   ruleBadge.id = "ruleBadge";
@@ -335,10 +353,10 @@
   const leaveConfirmPanel = document.createElement("div");
   leaveConfirmPanel.id = "leaveConfirmPanel";
   leaveConfirmPanel.className = "shape-leave-confirm hidden";
-  leaveConfirmPanel.setAttribute("role", "dialog");
-  leaveConfirmPanel.setAttribute("aria-modal", "true");
-  leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle");
-  leaveConfirmPanel.setAttribute("aria-describedby", "leaveConfirmMessage");
+  (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("role", "dialog"));
+  (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-modal", "true"));
+  (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle"));
+  (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-describedby", "leaveConfirmMessage"));
   leaveConfirmPanel.innerHTML = `
     <div class="leave-confirm-card">
       <strong id="leaveConfirmTitle"></strong>
@@ -758,7 +776,7 @@
   function closeLeaveConfirm(restoreFocus = true) {
     if (!leaveConfirmOpen) return;
     leaveConfirmOpen = false;
-    nodes.leaveConfirmPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.add("hidden"));
     setLeaveConfirmOwnership(false);
     resumeTaskTransitions();
     const trigger = leaveConfirmTrigger;
@@ -772,7 +790,7 @@
     leaveConfirmTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : nodes.backToStagesBtn;
     suspendTaskTransitions();
     setLeaveConfirmOwnership(true);
-    nodes.leaveConfirmPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.remove("hidden"));
     requestAnimationFrame(() => nodes.keepPlayingBtn.focus({ preventScroll: true }));
   }
 
@@ -797,7 +815,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.playPanel.classList.remove("is-result");
     document.body.classList.remove("shape-result-active");
     setResultOwnership(false);
@@ -809,7 +827,12 @@
     updateStageFrame();
     scheduleCurrentStageCenter();
     if (focusStage) requestAnimationFrame(focusCurrentStage);
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
+      if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showMain(focusStart = false) {
     clearFloatingText();
@@ -820,7 +843,12 @@
     document.body.classList.remove("wp-standard-stage-page");
     requestAnimationFrame(positionMainSoundToggle);
     if (focusStart) restoreMainStartFocus();
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function restoreMainStartFocus() {
     requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -853,7 +881,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.playPanel.classList.remove("is-result");
     document.body.classList.remove("shape-result-active");
     setResultOwnership(false);
@@ -873,7 +901,9 @@
       exitSharedPlayViewport();
       updateShapeFrame();
     });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function renderCars() {
     const stage = stages[currentStage];
@@ -1000,7 +1030,7 @@
     resultSettled = false;
     renderResult(lastResult);
     nodes.playPanel.classList.add("is-result");
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     document.body.classList.add("shape-result-active");
     updateResultControlSize();
     setResultOwnership(true);
@@ -1013,7 +1043,9 @@
     });
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function renderResult(result) {
     nodes.resultTitle.textContent = result.earned === 3 ? t("perfect") : result.earned === 2 ? t("good") : t("keep");
@@ -1025,7 +1057,7 @@
     nodes.nextStageBtn.disabled = !hasNextStage;
     nodes.nextStageBtn.setAttribute("aria-disabled", String(!hasNextStage));
     nodes.nextStageBtn.classList.toggle("primary-action", hasNextStage);
-    nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage);
+    (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage));
     nodes.retryBtn.classList.remove("primary-action");
   }
 
@@ -1163,6 +1195,7 @@
         clearInterval(timer);
         setTimeout(() => {
           nodes.loadingPanel.classList.add("hidden");
+          if (!__wpMeasurement.started && __wpMeasurement.screen === null) { __wpMeasurement.screen = "main"; } __wpNotifyMeasurement();
           track("game_ready");
         }, 180);
       }
@@ -1219,7 +1252,7 @@
     nodes.retryBtn.addEventListener("click", () => {
       settleResult(() => {
         track("game_restart", { level: currentStage + 1, mistakes });
-        startStage(currentStage);
+        __wpReplayStart(() => startStage(currentStage));
       });
     });
     nodes.nextStageBtn.addEventListener("click", () => settleResult(() => startStage(Math.min(currentStage + 1, stages.length - 1))));

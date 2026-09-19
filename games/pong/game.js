@@ -1,6 +1,26 @@
 /* Independent real-time Pong. The legacy target-alignment batch is not mounted. */
 (async () => {
   'use strict';
+  // Keep the authored, locale-owned public Guide when mounting the native court.
+  const initialGuide = document.querySelector('.game-page-info-static');
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    keyboardKeys: ["ArrowLeft", "ArrowRight", "a", "A", "d", "D", " "],
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(match.phase !== "playing"), node: $("battleScreen"),
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
   const base = new URL('.', document.currentScript.src);
   const [{ Match, WIDTH, HEIGHT }, { COPY, ROUTES }] = await Promise.all([import(new URL('engine.mjs',base)),import(new URL('locale.mjs',base))]);
   const asset = name => new URL('../../assets/'+name,base).href;
@@ -31,6 +51,11 @@
   </section>
   <dialog id="settings" role="dialog" aria-modal="true"><h2></h2><label id="difficultyLabel" for="difficulty"></label><select id="difficulty"></select><label id="localeLabel" for="localeSelect"></label><select id="localeSelect"></select><button id="soundBtn" data-sound-toggle></button><button id="helpInSettings"></button><button id="closeSettings" class="pw-primary"></button></dialog>
   <dialog id="help" role="dialog" aria-modal="true"><h2></h2><div id="helpCopy"></div><button id="closeHelp" class="pw-primary"></button></dialog></main>`;
+  if (initialGuide) {
+    initialGuide.id = 'publicGuide';
+    initialGuide.classList.add('pw-main');
+    document.getElementById('publicGuide').replaceWith(initialGuide);
+  }
   const $=id=>document.getElementById(id), canvas=$('court'), ctx=canvas.getContext('2d'), set=(id,text)=>{$(id).textContent=text;};
   const languages={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中文',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'};
   function localize(){
@@ -43,7 +68,7 @@
     set('soundBtn',`${t.sound}: ${sound?t.on:t.off}`);
     for(const [id,label] of [['settingsBtn',t.settings],['battleSettingsBtn',t.settings],['battleBackBtn',t.home],['leftBtn',t.left],['rightBtn',t.right],['court',t.how]])$(id).setAttribute('aria-label',label);
     const back=document.querySelector('[data-wp-return="main"]');back.href=`/${ROUTES[locale]}/`;back.setAttribute('aria-label','WeightPlay');
-    for(const id of ['helpCopy','publicGuide']){ $(id).replaceChildren();for(const text of [t.how,t.tip,t.save]){const p=document.createElement('p');p.textContent=text;$(id).append(p);} }
+    for(const id of ['helpCopy','publicGuide']){ if(id==='publicGuide' && initialGuide) continue; $(id).replaceChildren();for(const text of [t.how,t.tip,t.save]){const p=document.createElement('p');p.textContent=text;$(id).append(p);} }
     $('publicGuide').setAttribute('aria-label',t.guide);hud();draw();
   }
   function unlockSound(){if(!sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){audio ||= new AC();audio.resume().catch(()=>{});}}catch{}}
@@ -53,7 +78,9 @@
     gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.07);oscillator.connect(gain).connect(audio.destination);oscillator.start();oscillator.stop(audio.currentTime+.08);oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};
   }
   function stop(){cancelAnimationFrame(frame);frame=0;previous=0;held.clear();}
-  function pause(){match.pause();stop();hud();draw();}
+  function pause(){match.pause();stop();hud();draw();
+    __wpNotifyMeasurement();
+}
   function hud(){
     $('score').replaceChildren();for(const [name,value,color] of [[t.you,match.you,'you'],[t.cpu,match.them,'cpu']]){const span=document.createElement('span');span.className=color;span.textContent=`${name} ${value}`;$('score').append(span);}
     set('serveBtn',match.phase==='playing'?t.pause:match.phase==='paused'?t.resume:t.serve);
@@ -71,19 +98,35 @@
   }
   function finish(){
     stop();if(match.you===7){wins[difficulty]=Math.min(1000000,wins[difficulty]+1);persist();}
-    $('livePanel').hidden=true;$('livePanel').inert=true;$('resultPanel').hidden=false;document.body.dataset.screen='result';set('resultTitle',match.you===7?t.won:t.lost);set('resultScore',`${match.you} : ${match.them}`);set('resultCopy',`${t.rally}: ${match.bestRally} · ${t.wins}: ${wins[difficulty]}`);$('retryBtn').focus();
-  }
+    $('livePanel').hidden=true;$('livePanel').inert=true;(__wpNotifyMeasurement(), $('resultPanel').hidden=false);document.body.dataset.screen='result';set('resultTitle',match.you===7?t.won:t.lost);set('resultScore',`${match.you} : ${match.them}`);set('resultCopy',`${t.rally}: ${match.bestRally} · ${t.wins}: ${wins[difficulty]}`);$('retryBtn').focus();
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function tick(now){
     frame=0;if(screen!=='battle'||match.phase!=='playing')return;const dt=previous?Math.min((now-previous)/1000,.035):0;previous=now;
     const direction=(held.has('right')?1:0)-(held.has('left')?1:0);if(direction)match.move(match.aim+direction*760*dt);
     const events=match.step(dt);if(events.includes('hit'))beep();if(events.includes('point')){beep(true);hud();}draw();if(match.phase==='finished')finish();else if(match.phase==='playing')frame=requestAnimationFrame(tick);
   }
-  function launch(){if(screen!=='battle'||$('settings').open||$('help').open||match.phase==='finished')return;unlockSound();if(match.phase==='playing'){pause();return;}if(match.phase==='paused')match.resume();else match.serve();previous=0;hud();draw();if(!frame)frame=requestAnimationFrame(tick);}
-  function start(){stop();match=new Match(difficulty);screen='battle';document.body.dataset.screen='battle';document.documentElement.classList.add('pw-active');$('mainScreen').hidden=true;$('publicGuide').hidden=true;$('battleScreen').hidden=false;$('livePanel').hidden=false;$('livePanel').inert=false;$('resultPanel').hidden=true;window.scrollTo(0,0);hud();draw();$('serveBtn').focus();}
-  function home(){pause();screen='main';document.body.dataset.screen='main';document.documentElement.classList.remove('pw-active');$('mainScreen').hidden=false;$('publicGuide').hidden=false;$('battleScreen').hidden=true;localize();$('startBtn').focus();}
-  $('startBtn').onclick=start;$('retryBtn').onclick=start;$('homeBtn').onclick=home;$('battleBackBtn').onclick=home;$('serveBtn').onclick=launch;
-  const openSettings=()=>{pause();$('settings').showModal();};$('settingsBtn').onclick=openSettings;$('battleSettingsBtn').onclick=openSettings;$('closeSettings').onclick=()=>$('settings').close();
-  const openHelp=()=>{pause();if($('settings').open)$('settings').close();$('help').showModal();};$('guideBtn').onclick=openHelp;$('helpInSettings').onclick=openHelp;$('closeHelp').onclick=()=>$('help').close();
+  function launch(){if(screen!=='battle'||$('settings').open||$('help').open||match.phase==='finished')return;unlockSound();if(match.phase==='playing'){pause();return;}if(match.phase==='paused')match.resume();else match.serve();previous=0;hud();draw();if(!frame)frame=requestAnimationFrame(tick);
+    if (!__wpMeasurement.started || __wpMeasurement.ended) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = Boolean(__wpMeasurement.restart && !__wpMeasurement.started); __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+    __wpNotifyMeasurement();
+}
+  function start(){stop();match=new Match(difficulty);screen='battle';document.body.dataset.screen='battle';document.documentElement.classList.add('pw-active');$('mainScreen').hidden=true;$('publicGuide').hidden=true;$('battleScreen').hidden=false;$('livePanel').hidden=false;$('livePanel').inert=false;(__wpNotifyMeasurement(), $('resultPanel').hidden=true);window.scrollTo(0,0);hud();draw();$('serveBtn').focus();
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
+      if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = false; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpNotifyMeasurement();
+}
+  function home(){pause();screen='main';document.body.dataset.screen='main';document.documentElement.classList.remove('pw-active');$('mainScreen').hidden=false;$('publicGuide').hidden=false;$('battleScreen').hidden=true;localize();$('startBtn').focus();
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
+  $('startBtn').onclick=start;$('retryBtn').onclick=function (...args) { return __wpReplayStart(() => start.apply(this, args)); };$('homeBtn').onclick=home;$('battleBackBtn').onclick=home;$('serveBtn').onclick=launch;
+  const openSettings=()=>{pause();(__wpNotifyMeasurement(), $('settings').showModal());};$('settingsBtn').onclick=openSettings;$('battleSettingsBtn').onclick=openSettings;$('closeSettings').onclick=()=>$('settings').close();
+  const openHelp=()=>{pause();if($('settings').open)$('settings').close();(__wpNotifyMeasurement(), $('help').showModal());};$('guideBtn').onclick=openHelp;$('helpInSettings').onclick=openHelp;$('closeHelp').onclick=()=>$('help').close();
   $('soundBtn').onclick=()=>{sound=!sound;persist();if(sound)unlockSound();else audio?.suspend().catch(()=>{});localize();};
   $('difficulty').onchange=()=>{if(screen!=='main')return;difficulty=Number($('difficulty').value);persist();localize();};$('localeSelect').onchange=()=>{locale=$('localeSelect').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();};
   for(const [id,key] of [['leftBtn','left'],['rightBtn','right']]){$(id).onpointerdown=e=>{e.preventDefault();$(id).setPointerCapture(e.pointerId);held.add(key);};for(const event of ['pointerup','pointercancel','lostpointercapture'])$(id).addEventListener(event,()=>held.delete(key));}
@@ -92,4 +135,6 @@
   window.addEventListener('keyup',e=>{if(['ArrowLeft','a','A'].includes(e.key))held.delete('left');if(['ArrowRight','d','D'].includes(e.key))held.delete('right');});
   window.addEventListener('blur',pause);document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});window.addEventListener('pagehide',()=>{stop();audio?.close().catch(()=>{});audio=null;});window.addEventListener('resize',()=>{if(screen==='battle')pause();});
   localize();
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 })().catch(error=>console.error('Pong startup failed',error));

@@ -1,5 +1,24 @@
 /* Internal prototype only. Grid art is temporary until the art gate. */
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    keyboardKeys: ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "W", "a", "A", "s", "S", "d", "D", " ", "f", "F"],
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = (id) => document.getElementById(id);
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) {
@@ -241,11 +260,18 @@
   frostStatusObserver.observe($("battle-status"), { childList: true, characterData: true, subtree: true });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyFrostLocale, { once: true }); else applyFrostLocale();
   function syncFrostStageAvailability(){const rail=$("stage-list");if(!rail)return;const railRect=rail.getBoundingClientRect();const canvasRect=rail.closest("[data-wp-logical-stage-canvas]")?.getBoundingClientRect()||railRect;const cards=[...rail.querySelectorAll("[data-wp-stage-card]")];cards.forEach((card)=>{const rect=card.getBoundingClientRect();const centerX=rect.left+rect.width/2;const centerY=rect.top+rect.height/2;const inRail=rect.width>1&&rect.height>1&&centerX>railRect.left+2&&centerX<railRect.right-2&&centerY>railRect.top+2&&centerY<railRect.bottom-2&&centerX>canvasRect.left+2&&centerX<canvasRect.right-2&&centerY>canvasRect.top+2&&centerY<canvasRect.bottom-2;card.setAttribute("aria-disabled",String(!inRail));card.tabIndex=inRail?0:-1;});}
-  function show(name){state.screen=name;document.body.dataset.screen=name==="result"?"battle":name;cancelAnimationFrame(state.raf);const result=document.querySelector("#result-screen");document.querySelectorAll(".screen").forEach((el)=>{const isResult=el===result&&name==="result";const keepBattle=name==="result"&&el.id==="battle-screen";const on=isResult||keepBattle||el.dataset.screen===name;el.hidden=!on;el.classList.toggle("active",on)});for(const child of $("battle-screen").children)if(child!==result)child.inert=name==="result";if(name==="battle")result?.setAttribute("hidden","");if(name==="stage")window.requestAnimationFrame(syncFrostStageAvailability);if(name==="battle")state.raf=requestAnimationFrame(frame);}
+  function show(name){state.screen=name;document.body.dataset.screen=name==="result"?"battle":name;cancelAnimationFrame(state.raf);const result=document.querySelector("#result-screen");document.querySelectorAll(".screen").forEach((el)=>{const isResult=el===result&&name==="result";const keepBattle=name==="result"&&el.id==="battle-screen";const on=isResult||keepBattle||el.dataset.screen===name;el.hidden=!on;el.classList.toggle("active",on)});for(const child of $("battle-screen").children)if(child!==result)child.inert=name==="result";if(name==="battle")(__wpNotifyMeasurement(), result?.setAttribute("hidden",""));if(name==="stage")window.requestAnimationFrame(syncFrostStageAvailability);if(name==="battle")state.raf=requestAnimationFrame(frame);
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function stageCards(){const copy=frostStageText();const stageLabel=frostStageLabel();const roomLabel=frostRoomLabel();const cards=Array.from({length:TOTAL_STAGES},(_,index)=>{const stage=index+1;const chapter=Math.floor(index/ROOMS_PER_CHAPTER)+1;const room=index%ROOMS_PER_CHAPTER+1;const chapterName=frostChapterName(chapter,copy);const label=`${stageLabel} ${stage}: ${copy.chapter} ${chapter}${copy.chapterSuffix || ""}, ${roomLabel} ${room}`;return `<button type="button" class="stage-card" data-wp-stage-card data-wp-enter-battle data-stage-index="${stage}" data-chapter="${chapter}" data-room="${room}" aria-label="${label}"><strong>${stageLabel} ${stage}</strong><span>${chapterName} · ${roomLabel} ${room}</span><small>${copy.chapter} ${chapter}${copy.chapterSuffix || ""}</small></button>`;}).join("");$("stage-list").innerHTML=cards;$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),Number(b.dataset.room))));syncFrostStageAvailability();syncMastery();}
   function layoutFor(chapter, room) { const variant=(chapter-1)*ROOMS_PER_CHAPTER+room-1; const walls=new Set([key(3,1),key(3,2),key(3,3),key(5,3),key(6,3),key(8,2),key(8,3),key(8,4),key(4,5),key(5,5),key(7,5)]); const variants=[[2,2],[4,1],[6,4],[9,5],[2,5],[7,1],[9,2],[5,1]]; const extra=variants[variant%variants.length]; walls.add(key(extra[0],extra[1])); if(chapter>=2)walls.add(key(6,1)); if(chapter>=3)walls.add(key(9,4)); if(chapter>=4)walls.add(key(1,2)); const candidates=[[2,1],[5,1],[7,2],[10,4],[2,4],[6,6],[9,6],[10,1],[1,1]]; const fruits=new Set(); candidates.forEach(([x,y],i)=>{if(!walls.has(key(x,y))&&i<5+(variant%3))fruits.add(key(x,y));}); return {walls,fruits,enemy:{x:10-(variant%3),y:1+(variant%2)}}; }
   function buildRoom(){window.clearTimeout(state.finishTimer);state.finishTimer=0;const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.edits=0;state.resolving=false;state.won=false;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`${frostStageText().chapter} ${state.chapter} · ${frostRoomLabel()} ${state.room} / ${ROOMS_PER_CHAPTER}`;setBattleStatus("controls");updateLabels();syncMastery();}
-  function startRoom(chapter=1,room=1){state.chapter=chapter;state.room=room;buildRoom();show("battle");}
+  function startRoom(chapter=1,room=1){state.chapter=chapter;state.room=room;buildRoom();show("battle");
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function updateLabels(){$("fruit-label").textContent=`Berries ${state.fruits.size}`;}
   function updateProgress(){const value=`Best rooms: ${state.best}`;$("main-progress").textContent=window.wpFiveText?window.wpFiveText(value):value;}
   function canMove(x,y){return x>=0&&x<cols&&y>=0&&y<rows&&!state.walls.has(key(x,y));}
@@ -293,7 +319,9 @@
       updateProgress();
     }
     draw();renderResult(win);show("result");
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function frame(){if(state.screen!=="battle")return;state.ticks++;draw();state.raf=requestAnimationFrame(frame);}
   const actions={up:()=>move(0,-1),down:()=>move(0,1),left:()=>move(-1,0),right:()=>move(1,0),break:breakIce,build:buildIce};
   // The local runtime translates live state; route navigation also refreshes
@@ -304,5 +332,5 @@
     if(mastery.copy[locale])location.assign(`/${locale}/games/animal-frost-maze/${location.search}`);
   });
   window.addEventListener("keydown",(e)=>{const k=e.code;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD","Space","KeyF"].includes(k)){e.preventDefault();if(k==="Space")breakIce();else if(k==="KeyF")buildIce();else if(k==="ArrowUp"||k==="KeyW")move(0,-1);else if(k==="ArrowDown"||k==="KeyS")move(0,1);else if(k==="ArrowLeft"||k==="KeyA")move(-1,0);else move(1,0)}});document.querySelectorAll("[data-action]").forEach((b)=>b.addEventListener("pointerdown",()=>actions[b.dataset.action]()));
-  $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>startRoom(state.chapter,state.room));$("next").addEventListener("click",()=>{const currentStage=(state.chapter-1)*ROOMS_PER_CHAPTER+state.room;if(!state.won||currentStage>=TOTAL_STAGES)return;const nextStage=currentStage+1;startRoom(Math.floor((nextStage-1)/ROOMS_PER_CHAPTER)+1,((nextStage-1)%ROOMS_PER_CHAPTER)+1);});$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});$("stage-list").addEventListener("scroll",()=>window.requestAnimationFrame(syncFrostStageAvailability),{passive:true});window.addEventListener("resize",()=>window.requestAnimationFrame(syncFrostStageAvailability));updateProgress();stageCards();buildRoom();draw();
+  $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>__wpReplayStart(() => startRoom(state.chapter,state.room)));$("next").addEventListener("click",()=>{const currentStage=(state.chapter-1)*ROOMS_PER_CHAPTER+state.room;if(!state.won||currentStage>=TOTAL_STAGES)return;const nextStage=currentStage+1;startRoom(Math.floor((nextStage-1)/ROOMS_PER_CHAPTER)+1,((nextStage-1)%ROOMS_PER_CHAPTER)+1);});$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});$("stage-list").addEventListener("scroll",()=>window.requestAnimationFrame(syncFrostStageAvailability),{passive:true});window.addEventListener("resize",()=>window.requestAnimationFrame(syncFrostStageAvailability));updateProgress();stageCards();buildRoom();draw();
 })();

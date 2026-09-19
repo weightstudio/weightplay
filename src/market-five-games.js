@@ -1,13 +1,32 @@
 /* Shared V6 campaign runtime; each listed game owns a distinct playable loop. */
 (() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    keyboardKeys: gameId === "animal-moonlight-workshop" ? ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "W", "a", "A", "s", "S", "d", "D"] : [],
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = (id) => document.getElementById(id);
   const gameId = document.body.dataset.wpMarketGame;
   if (gameId === "animal-chameleon-blend") {
     $("battle-status")?.setAttribute("role", "status");
     $("battle-status")?.setAttribute("aria-live", "polite");
     $("battle-status")?.setAttribute("aria-atomic", "true");
-    $("result-screen")?.setAttribute("aria-labelledby", "result-title");
-    $("result-screen")?.setAttribute("aria-describedby", "result-copy");
+    (__wpNotifyMeasurement(), $("result-screen")?.setAttribute("aria-labelledby", "result-title"));
+    (__wpNotifyMeasurement(), $("result-screen")?.setAttribute("aria-describedby", "result-copy"));
   }
   const slug = gameId.replace(/^animal-/, "");
   const canvas = $("arena");
@@ -192,10 +211,15 @@
       const on = node.id === "battle-screen" ? (name === "battle" || name === "result") : node.dataset.screen === name;
       node.hidden = !on; node.classList.toggle("active", on);
     });
-    result.hidden = name !== "result";
+    (__wpNotifyMeasurement(), result.hidden = name !== "result");
     if (name === "battle") { state.last = performance.now(); requestAnimationFrame(syncCanvasFit); state.raf = requestAnimationFrame(frame); }
     window.dispatchEvent(new CustomEvent(name === "battle" ? "weightplay:battle-open" : "weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function stageCards() {
     const unlocked = Math.min(cfg.stages, Math.max(1, state.best + 1));
     const localizedBlend = gameId === "animal-chameleon-blend" ? (window.WeightPlayMarketFiveLocale?.game?.() || {}) : null;
@@ -210,7 +234,9 @@
   function start(stage) {
     state.stage = stage; state.resultWin = null; $("stage-label").textContent = `${common(9)} ${stage} / ${cfg.stages}${gameId==="animal-hoop-league"?` · ${window.WeightPlayMarketFiveLocale.game().courts[stage-1]}`:""}`;
     initGame(); if(gameId==="animal-hoop-league")setHoopBrief();else if(gameId==="animal-habitat-atlas")setAtlasBrief();else if(gameId==="animal-moonlight-workshop")setWorkshopBrief();else if(gameId==="animal-chameleon-blend")setBlendBrief();else if(gameId==="animal-habitat-builder")setBuilderBrief();else setStatus(window.WeightPlayMarketFiveLocale.game().guide); show("battle");
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function finish(win, detail) {
     state.resultWin = win;
     if (win) { state.best = Math.max(state.best, state.stage); localStorage.setItem(storageKey, String(state.best)); }
@@ -219,7 +245,9 @@
     $("next").disabled = !win || state.stage >= cfg.stages;
     $("next").setAttribute("aria-disabled", String($("next").disabled));
     updateProgress(); show("result");
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function initGame() {
     if (gameId === "animal-hoop-league") state.game = { aim: .42, power: 0, charging: false, shots: 0, score: 0, rival: 0, madeShots: 0, perfectShots: 0, lastTip: "", ball: null };
     if (gameId === "animal-habitat-atlas") state.game = { question: 0, stars: 0, clues: 1, target: atlasProfiles[state.stage-1].targets[0], feedback: 0 };
@@ -434,7 +462,7 @@
     }
   }, { capture: true });
   $("to-stages").addEventListener("click",()=>{stageCards();show("stage");});
-  $("retry").addEventListener("click",()=>start(state.stage));
+  $("retry").addEventListener("click",()=>__wpReplayStart(() => start(state.stage)));
   $("next").addEventListener("click",()=>{if(state.resultWin&&state.stage<cfg.stages)start(state.stage+1);});
   window.addEventListener("weightplay:market-locale-change",()=>{updateProgress();stageCards();if(state.screen==="battle"){if(gameId==="animal-hoop-league"){buildControls();setHoopBrief();}else if(gameId==="animal-habitat-atlas"){buildControls();setAtlasBrief();}else if(gameId==="animal-moonlight-workshop"){buildControls();setWorkshopBrief();}else if(gameId==="animal-chameleon-blend"){buildControls();setBlendBrief();}else if(gameId==="animal-habitat-builder"){buildControls();setBuilderBrief();}else setStatus(window.WeightPlayMarketFiveLocale.game().guide);}});
   [background,atlas,hero].forEach(image=>image.addEventListener("load",draw));

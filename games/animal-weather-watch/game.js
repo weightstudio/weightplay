@@ -1,5 +1,17 @@
 (function () {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((({main:"main",stage:"stage",battle:"battle",})[currentScreen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[currentScreen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const $ = (id) => document.getElementById(id);
   const locales = window.WEATHER_WATCH_LOCALES || {};
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -26,7 +38,7 @@
     currentScreen = screen;
     const scene = screen === "result" ? "battle" : screen;
     document.querySelectorAll("#app > [data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== scene; });
-    if ($("resultScreen")) $("resultScreen").hidden = screen !== "result";
+    if ($("resultScreen")) (__wpNotifyMeasurement(), $("resultScreen").hidden = screen !== "result");
     setChallengeHidden(screen === "result");
     document.body.dataset.screen = scene;
     document.body.dataset.weatherState = screen;
@@ -34,7 +46,12 @@
     document.body.dir = locale === "ar" ? "rtl" : "ltr";
     $("gameGuide").hidden = screen !== "main";
     $("settingsPanel").hidden = true;
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
+      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
   function renderStatic() {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
@@ -66,7 +83,9 @@
     });
     root.scrollLeft = 0;
   }
-  function startPlan(index, fromStage = false) { planIndex = index; selected = ""; checks = 0; feedback = ""; if (index === 0 || fromStage) sessionChecks = 0; show("battle"); renderBattle(); announce("start"); }
+  function startPlan(index, fromStage = false) { planIndex = index; selected = ""; checks = 0; feedback = ""; if (index === 0 || fromStage) sessionChecks = 0; show("battle"); renderBattle(); announce("start");
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
   function renderBattle() {
     if (!$("choiceGrid") || currentScreen !== "battle") return;
     const plan = plans[planIndex]; $("planTitle").textContent = copy(plan.name); $("progressPill").textContent = `${planIndex + 1} / ${plans.length}`; $("prompt").textContent = copy("prompt"); $("rule").textContent = copy(plan.rule);
@@ -79,7 +98,7 @@
     $("checkBtn").disabled = !selected; $("status").textContent = feedback ? copy(feedback) : ""; $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status";
   }
   function checkForecast() { if (!selected) return; checks += 1; sessionChecks += 1; const correct = selected === plans[planIndex].answer; feedback = correct ? "correct" : "wrong"; announce("check", { selected, correct }); if (correct) { solved.add(planIndex); renderBattle(); setTimeout(() => { show("result"); renderResult(); }, 280); } else renderBattle(); }
-  function renderResult() { if (!$("resultText")) return; const complete = solved.size === plans.length; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel"); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: bestValue() }); $("nextBtn").hidden = complete; $("resultMapBtn").hidden = !complete; if (complete) { const old = Number(localStorage.getItem("weightplay-animal-weather-watch-best-v1") || 0); if (!old || sessionChecks < old) localStorage.setItem("weightplay-animal-weather-watch-best-v1", String(sessionChecks)); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: Math.min(old || sessionChecks, sessionChecks) }); } }
+  function renderResult() { if (!$("resultText")) return; const complete = solved.size === plans.length; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel"); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: bestValue() }); $("nextBtn").hidden = complete; (__wpNotifyMeasurement(), $("resultMapBtn").hidden = !complete); if (complete) { const old = Number(localStorage.getItem("weightplay-animal-weather-watch-best-v1") || 0); if (!old || sessionChecks < old) localStorage.setItem("weightplay-animal-weather-watch-best-v1", String(sessionChecks)); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: Math.min(old || sessionChecks, sessionChecks) }); } }
   function nextPlan() { const nextIndex = planIndex + 1; if (nextIndex < plans.length) startPlan(nextIndex); else { show("stage"); renderStages(); } }
   function goBack() {
     if (currentScreen === "battle" || currentScreen === "result") {
@@ -92,7 +111,9 @@
   }
   function openSettings() { $("settingsPanel").hidden = false; $("localeSelect").focus(); }
   function bind() {
-    $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); announce("start"); }); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextPlan); $("checkBtn").addEventListener("click", checkForecast); $("resetBtn").addEventListener("click", () => { selected = ""; checks = 0; feedback = ""; renderBattle(); announce("reset"); });
+    $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); announce("start"); }); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextPlan); $("checkBtn").addEventListener("click", checkForecast); $("resetBtn").addEventListener("click", () => { selected = ""; checks = 0; feedback = ""; renderBattle(); announce("reset");
+      __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+});
     $("backBtn").addEventListener("click", goBack); $("stageBackBtn").addEventListener("click", goBack); $("settingsBtn").addEventListener("click", openSettings); $("stageUtilityBtn").addEventListener("click", openSettings); $("battleUtilityBtn").addEventListener("click", openSettings); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundBtn").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-animal-weather-watch-sound", sound ? "on" : "off"); renderStatic(); }); $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-animal-weather-watch-locale", locale); renderStatic(); });
   }
   function boot() { bind(); $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }

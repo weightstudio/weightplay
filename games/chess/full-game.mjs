@@ -1,3 +1,21 @@
+
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(!active), node: $("battle"),
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
 import {ChessSession} from './full-rules.mjs';
 import {ChessAI} from './ai-client.mjs';
 import {ChessBoard3D} from './board-3d.mjs?v=20260909-knight-v17';
@@ -48,11 +66,16 @@ function showScene(name){
   const root=$(id);root.hidden=type!==scene;root.inert=type!==scene;
  }
  for(const node of [$('arena'),$('controls'),$('saved'),$('battle').querySelector('.topbar')]){node.hidden=result;node.inert=result;}
- $('result').hidden=!result;$('result').inert=!result;$('battle').classList.toggle('is-result',result);
- if(!result){$('resultBoard').removeAttribute('src');$('resultBoard').hidden=true;}
+ (__wpNotifyMeasurement(), $('result').hidden=!result);$('result').inert=!result;$('battle').classList.toggle('is-result',result);
+ if(!result){(__wpNotifyMeasurement(), $('resultBoard').removeAttribute('src'));(__wpNotifyMeasurement(), $('resultBoard').hidden=true);}
  $('main').hidden=scene!=='main';document.body.dataset.screen=scene;
  if(scene==='battle')fitBattle();
  window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 const sound=name=>{if(!document.hidden)window.WonderSound?.play(name);};
 function saved(){try{const data=localStorage.getItem(saveKey);return data?ChessSession.restore(JSON.parse(data)):null;}catch{return null;}}
@@ -128,10 +151,12 @@ function finishResult(key,move=null){
   if(epoch!==fence)return;
   let image;try{image=view?.snapshot();}catch{image=null;}
   stop();outcomeKey=key;showScene('result');
-  if(image){$('resultBoard').src=image;$('resultBoard').hidden=false;}
+  if(image){$('resultBoard').src=image;(__wpNotifyMeasurement(), $('resultBoard').hidden=false);}
   updateResult();sound(['cleared','win'].includes(key)?'win':'wrong');$('outcome').focus({preventScroll:true});
  };
  if(view){view.setPosition(session.game.board(),[],session.game.isCheck()?session.turn:null);view.setFocus(null,null);view.animateMove(move,finish);}else finish();
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 function updateResult(){
  const copy=resultLocales[locale],history=session.game.history({verbose:true}),white=history.filter(m=>m.color==='w');
@@ -151,17 +176,23 @@ function fail(reason='RENDERER_UNAVAILABLE'){
  // Invalidate pending replies/animations before disposing their renderer.
  active=false;epoch++;ai.cancel();busy=false;promotion=null;
  view?.dispose();view=null;
- for(const dialog of document.querySelectorAll('dialog[open]'))if(dialog!==$('error'))dialog.close();
+ for(const dialog of document.querySelectorAll('dialog[open]'))if(dialog!==$('error'))(__wpNotifyMeasurement(), dialog.close());
  $('error').dataset.reason=typeof reason==='string'?reason:'RENDERER_UNAVAILABLE';
- if(!$('error').open)$('error').showModal();
+ if(!$('error').open)(__wpNotifyMeasurement(), $('error').showModal());
+
+    __wpNotifyMeasurement();
 }
 function recover(){
  $('error').close();epoch++;ai.cancel();busy=false;selected=null;promotion=null;
  // Keep session, challenge, move history and focus. Retry is not Restart.
  active=true;
  try{view=new ChessBoard3D($('arena'),{onSquare:select,onUnavailable:fail});render();if(active){persist();reply();$('arena').focus();}}catch{fail();}
+
+    __wpNotifyMeasurement();
 }
-function begin(resume=false,challengeId=null){stop();currentChallenge=challenges.find(c=>c.id===challengeId)||null;focused='e2';nextButton.hidden=true;session=resume?saved()||new ChessSession():new ChessSession();if(currentChallenge)session.game.load(currentChallenge.fen);active=true;showScene('battle');try{view=new ChessBoard3D($('arena'),{onSquare:select,onUnavailable:fail});render();persist();reply();}catch{fail();}}
+function begin(resume=false,challengeId=null){stop();currentChallenge=challenges.find(c=>c.id===challengeId)||null;focused='e2';nextButton.hidden=true;const __wpSavedSession = resume ? saved() : null;session=__wpSavedSession||new ChessSession();if(currentChallenge)session.game.load(currentChallenge.fen);active=true;showScene('battle');try{view=new ChessBoard3D($('arena'),{onSquare:select,onUnavailable:fail});render();persist();reply();}catch{fail();}
+    __wpMeasurement.resumed = Boolean(__wpSavedSession) && !currentChallenge; __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 function render(){if(!active)return;const state=session.status();if(state.ended){finishResult(state.winner==='w'?'win':state.winner==='b'?'lose':'draw');return;}
 view?.setPosition(session.game.board(),selected?session.moves(selected).map(m=>m.to):[],session.game.isCheck()?session.turn:null);$('status').textContent=currentChallenge?`${currentChallenge.id}. ${text(currentChallenge.kind)}${currentChallenge.computer?' · '+session.game.history({verbose:true}).filter(m=>m.color==='w').length+'/'+currentChallenge.maxMoves+(busy?' · '+text('thinking'):''):''}`:busy?(session.turn==='b'?text('thinking'):text('hint')+'…'):text(state.reason==='CHECK'?'check':'turn');$('hint').disabled=busy||session.turn!=='w';$('undo').disabled=session.game.history().length===0;
  $('arena').dataset.fen=session.fen;$('arena').dataset.turn=session.turn;describeFocus();
@@ -169,7 +200,7 @@ view?.setPosition(session.game.board(),selected?session.moves(selected).map(m=>m
 function finishMatch(move){const state=session.status();if(!state.ended)return false;persist();finishResult(state.winner==='w'?'win':state.winner==='b'?'lose':'draw',move);return true;}
 async function reply(){if((currentChallenge&&!currentChallenge.computer)||!active||session.turn!=='b'||session.status().ended)return;busy=true;render();const fence=epoch,fen=session.fen;const answer=await ai.request(fen,{maxDepth:3,timeMs:180,maxNodes:6000});if(fence!==epoch||!active||session.fen!==fen)return;busy=false;if(answer.cancelled)return;if(answer.error||!answer.move){fail(answer.error||'EMPTY_SEARCH_RESULT');return;}const result=session.move(answer.move.from,answer.move.to,answer.move.promotion);if(!result.ok){fail();return;}if(currentChallenge&&settleChallenge(result.move))return;if(!currentChallenge&&finishMatch(result.move))return;persist();render();view?.animateMove(result.move);}
 function commit(from,to,piece){const result=session.move(from,to,piece);if(!result.ok)return result;sound(result.move.captured?'hit':'click');selected=null;if(currentChallenge&&settleChallenge(result.move))return result;if(!currentChallenge&&finishMatch(result.move))return result;persist();render();reply();view?.animateMove(result.move);return result;}
-function select(square){if(!active||busy||session.turn!=='w'||$('promotion').open)return;focused=square;const piece=session.game.get(square);if(piece?.color==='w'){selected=square;render();return;}if(!selected){describeFocus();return;}const result=commit(selected,square);if(result?.reason==='ILLEGAL_MOVE')describeFocus(boardLocales[locale].invalid);if(result?.reason==='PROMOTION_REQUIRED'){promotion={from:selected,to:square};$('promoteChoices').replaceChildren();for(const type of result.choices){const button=document.createElement('button');button.dataset.piece=type;button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[type]);button.onclick=()=>{const move=promotion;promotion=null;$('promotion').close();if(move)commit(move.from,move.to,type);};$('promoteChoices').append(button);}$('promotion').showModal();}}
+function select(square){if(!active||busy||session.turn!=='w'||$('promotion').open)return;focused=square;const piece=session.game.get(square);if(piece?.color==='w'){selected=square;render();return;}if(!selected){describeFocus();return;}const result=commit(selected,square);if(result?.reason==='ILLEGAL_MOVE')describeFocus(boardLocales[locale].invalid);if(result?.reason==='PROMOTION_REQUIRED'){promotion={from:selected,to:square};$('promoteChoices').replaceChildren();for(const type of result.choices){const button=document.createElement('button');button.dataset.piece=type;button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[type]);button.onclick=()=>{const move=promotion;promotion=null;$('promotion').close();if(move)commit(move.from,move.to,type);};$('promoteChoices').append(button);}(__wpNotifyMeasurement(), $('promotion').showModal());}}
 function describeFocus(message=''){
  const t=boardLocales[locale],parts=[squareDescription(session.game,focused,locale)];
  if(selected)parts.push(t.selected+': '+squareDescription(session.game,selected,locale));
@@ -188,21 +219,21 @@ function askConfirmation(action){
  $('confirmText').textContent=action==='restart'?text('confirm'):currentChallenge?`${currentChallenge.id}. ${text(currentChallenge.kind)} — ${copy[2]}`:saved()?.fen===session.fen?copy[3]:copy[4];
  $('confirmYes').textContent=action==='restart'?text('restart'):copy[1];
  $('confirmNo').textContent=copy[0];
- $('confirmation').showModal();$('confirmNo').focus();
+ (__wpNotifyMeasurement(), $('confirmation').showModal());$('confirmNo').focus();
 }
 function cancelConfirmation(){
  if(!confirmationAction)return;
  const target=confirmationAction==='leave'?'back':'restart';
- confirmationAction=null;$('confirmation').close();active=true;render();reply();$(target).focus();
+ confirmationAction=null;(__wpNotifyMeasurement(), $('confirmation').close());active=true;render();reply();$(target).focus();
 }
 $('confirmation').addEventListener('keydown',event=>{
  if(event.key!=='Tab')return;
  event.preventDefault();
  (document.activeElement===$('confirmNo')?$('confirmYes'):$('confirmNo')).focus();
 });
-$('start').onclick=()=>begin();$('resume').onclick=()=>begin(true);$('back').onclick=()=>active?askConfirmation('leave'):stages();$('resultBack').onclick=stages;$('again').onclick=()=>begin(false,currentChallenge?.id);
+$('start').onclick=()=>begin();$('resume').onclick=()=>begin(true);$('back').onclick=()=>active?askConfirmation('leave'):stages();$('resultBack').onclick=stages;$('again').onclick=()=>__wpReplayStart(() => begin(false,currentChallenge?.id));
 $('undo').onclick=()=>{epoch++;ai.cancel();busy=false;selected=null;session.undoTurn();persist();render();};
-$('restart').onclick=()=>askConfirmation('restart');$('confirmNo').onclick=cancelConfirmation;$('confirmation').addEventListener('cancel',event=>{event.preventDefault();cancelConfirmation();});$('confirmYes').onclick=()=>{const action=confirmationAction;if(!action)return;confirmationAction=null;$('confirmation').close();if(action==='leave')stages();else begin(false,currentChallenge?.id);};
+$('restart').onclick=()=>askConfirmation('restart');$('confirmNo').onclick=cancelConfirmation;$('confirmation').addEventListener('cancel',event=>{event.preventDefault();cancelConfirmation();});$('confirmYes').onclick=()=>{const action=confirmationAction;if(!action)return;confirmationAction=null;(__wpNotifyMeasurement(), $('confirmation').close());if(action==='leave')stages();else begin(false,currentChallenge?.id);};
 $('hint').onclick=async()=>{
  if(busy||session.turn!=='w')return;
  if(currentChallenge&&!currentChallenge.computer){

@@ -1,26 +1,9 @@
 /* v6 repairs: preserve the game's required landscape composition and guide card
    geometry after the shared Interface 7 normalization is loaded. */
-@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 420px !important;
-  }
-}
 
 /* This file is loaded only by Orbit Orchard. Keep these selectors independent
    of the bootstrap's dynamically-added document attribute so the repair also
    applies during the first frame of route startup. */
-.game-page-info {
-  border-radius: 18px !important;
-}
-
-.game-info-sections {
-  display: grid !important;
-}
-
-.game-info-section {
-  border-radius: 16px !important;
-  background: #fff !important;
-}
 
 /* v7 shell contract: Stage and Battle use the shared title-free control track,
    while the Stage rail and Result actions keep the standard navigation shape. */
@@ -36,38 +19,12 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] 
   box-shadow: none !important;
 }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .panel-head,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .panel-head {
-  min-height: 48px !important;
-  height: 48px !important;
-  padding: 0 4px !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .panel-head h2,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-utility,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .panel-head h2,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .wp-generated-main-title,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .wp-generated-main-title {
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .wp-generated-main-title, html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .wp-generated-main-title {
   display: none !important;
 }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .back-btn,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .back-btn {
-  width: 48px !important;
-  min-width: 48px !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  justify-content: center !important;
-  padding: 0 !important;
-  gap: 0 !important;
-  font-size: 0 !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .back-btn span,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .back-btn span {
-  display: block !important;
-  font-size: 24px !important;
-  line-height: 1 !important;
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .panel-head h2, html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-utility, html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .panel-head h2 {
+  display: none !important;
 }
 
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-workspace {
@@ -81,25 +38,13 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] 
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .orbit-list {
   display: flex !important;
   align-items: stretch !important;
-  gap: 12px !important;
   width: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
   height: 100% !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
-  padding: 24px max(24px, calc((100% - 840px) / 2)) !important;
-  scroll-snap-type: x proximity;
   overscroll-behavior-x: contain;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .orbit-card {
-  flex: 1 0 min(264px, calc(100vw - 48px)) !important;
-  width: min(264px, calc(100vw - 48px)) !important;
-  min-width: min(264px, calc(100vw - 48px)) !important;
-  min-height: 198px !important;
-  max-height: 240px !important;
-  scroll-snap-align: center;
 }
 
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-tabs {

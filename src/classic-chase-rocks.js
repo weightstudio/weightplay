@@ -1,5 +1,24 @@
 (() => {
   "use strict";
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    keyboardKeys: gameId === "maze" ? ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "W", "a", "A", "s", "S", "d", "D"] : ["ArrowLeft","ArrowRight","ArrowUp","a","A","d","D","w","W"," ","Shift"],
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(!state.running || state.confirming), node: ui.battle,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
 
   const root = document.getElementById("classicArcade");
   if (!root) return;
@@ -397,15 +416,24 @@
   function buildControls() { ui.controls.replaceChildren(); if (gameId === "maze") { createControlButton("▲", "up"); createControlButton("◀", "left"); createControlButton("▼", "down"); createControlButton("▶", "right"); } else { createControlButton("↺", "left", "hold"); createControlButton("↻", "right", "hold"); createControlButton("▲", "thrust", "hold"); createControlButton("✦", "fire", "hold"); createControlButton("◇", "shield"); } }
 
   function syncBattleGeometry() { window.WeightPlayBattleCanvas?.sync?.(); }
-  function showMain() { state.running = false; state.confirming = false; setPlayMode(false); ui.main.hidden = false; ui.battle.hidden = true; ui.result.hidden = true; ui.battle.classList.remove("has-result"); ui.confirm.hidden = true; window.dispatchEvent(new Event("weightplay:shell-sync")); syncBattleGeometry(); setLocale(locale); ui.start.focus({ preventScroll: true }); }
-  function startGame() { ensureAudio(); setPlayMode(true); state.running = true; state.confirming = false; state.score = 0; state.level = 1; state.result = null; ui.main.hidden = true; ui.battle.hidden = false; ui.result.hidden = true; ui.battle.classList.remove("has-result"); ui.confirm.hidden = true; window.dispatchEvent(new Event("weightplay:shell-sync")); window.dispatchEvent(new Event("weightplay:battle-open")); syncBattleGeometry(); if (gameId === "maze") mazeResetStage(); else resetSpace(); ui.canvas.focus(); setMessage(gameId === "space" ? spaceHint("driftCue") : tr("ready")); state.lastTime = performance.now(); requestAnimationFrame(loop); }
-  function finish(won, details) { if (!state.running) return; state.running = false; state.result = { won, details }; if (state.score > state.best) { state.best = state.score; localStorage.setItem(`weightplay-${gameId}-best`, String(state.best)); } tone(won ? 880 : 110, won ? 0.25 : 0.3, won ? "triangle" : "sawtooth", 0.05); renderResult(); ui.result.hidden = false; ui.battle.classList.add("has-result"); }
+  function showMain() { state.running = false; state.confirming = false; setPlayMode(false); ui.main.hidden = false; ui.battle.hidden = true; (__wpNotifyMeasurement(), ui.result.hidden = true); ui.battle.classList.remove("has-result"); (__wpNotifyMeasurement(), ui.confirm.hidden = true); window.dispatchEvent(new Event("weightplay:shell-sync")); syncBattleGeometry(); setLocale(locale); ui.start.focus({ preventScroll: true });
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
+      if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
+  function startGame() { ensureAudio(); setPlayMode(true); state.running = true; state.confirming = false; state.score = 0; state.level = 1; state.result = null; ui.main.hidden = true; ui.battle.hidden = false; (__wpNotifyMeasurement(), ui.result.hidden = true); ui.battle.classList.remove("has-result"); (__wpNotifyMeasurement(), ui.confirm.hidden = true); window.dispatchEvent(new Event("weightplay:shell-sync")); window.dispatchEvent(new Event("weightplay:battle-open")); syncBattleGeometry(); if (gameId === "maze") mazeResetStage(); else resetSpace(); ui.canvas.focus(); setMessage(gameId === "space" ? spaceHint("driftCue") : tr("ready")); state.lastTime = performance.now(); requestAnimationFrame(loop);
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
+  function finish(won, details) { if (!state.running) return; state.running = false; state.result = { won, details }; if (state.score > state.best) { state.best = state.score; localStorage.setItem(`weightplay-${gameId}-best`, String(state.best)); } tone(won ? 880 : 110, won ? 0.25 : 0.3, won ? "triangle" : "sawtooth", 0.05); renderResult(); (__wpNotifyMeasurement(), ui.result.hidden = false); ui.battle.classList.add("has-result");
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function renderResult() { if (!state.result) return; const won = state.result.won; ui.resultTitle.textContent = won ? resultText("win") : resultText("lose"); ui.resultCopy.textContent = won ? resultText("winCopy") : resultText("loseCopy"); const d = state.result.details || {}; const rows = gameId === "maze" ? [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("stageStat"), d.stage || state.level], [tr("livesStat"), state.maze?.lives ?? 0]] : [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("waveStat"), d.wave || state.level], [tr("shotsStat"), d.shots || state.space?.shots || 0], [tr("fragmentsStat"), d.fragments || state.space?.fragments || 0]]; ui.stats.replaceChildren(); rows.forEach(([name, value]) => { const item = document.createElement("div"); item.className = "stat"; item.innerHTML = `<span>${name}</span><strong>${value}</strong>`; ui.stats.append(item); }); }
   function loop(now) { if (!state.running) return; if (state.confirming) { requestAnimationFrame(loop); return; } const dt = Math.min(0.05, Math.max(0, (now - state.lastTime) / 1000)); state.lastTime = now; if (gameId === "maze") updateMaze(dt); else updateSpace(dt); if (state.running) requestAnimationFrame(loop); }
 
-  ui.start.addEventListener("click", startGame); ui.retry.addEventListener("click", startGame); ui.home.addEventListener("click", showMain); ui.restart.addEventListener("click", startGame); ui.back.addEventListener("click", () => { if (!state.running) return showMain(); state.confirming = true; state.input = {}; ui.confirm.hidden = false; ui.stay.focus({ preventScroll: true }); }); ui.stay.addEventListener("click", () => { state.confirming = false; state.lastTime = performance.now(); ui.confirm.hidden = true; ui.canvas.focus(); }); ui.leave.addEventListener("click", showMain); ui.sound.addEventListener("click", () => { setSoundMuted(!muted); if (!muted) tone(720, 0.07); });
+  ui.start.addEventListener("click", startGame); ui.retry.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.home.addEventListener("click", showMain); ui.restart.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.back.addEventListener("click", () => { if (!state.running) return showMain(); state.confirming = true; state.input = {}; (__wpNotifyMeasurement(), ui.confirm.hidden = false); ui.stay.focus({ preventScroll: true }); }); ui.stay.addEventListener("click", () => { state.confirming = false; state.lastTime = performance.now(); (__wpNotifyMeasurement(), ui.confirm.hidden = true); ui.canvas.focus(); }); ui.leave.addEventListener("click", showMain); ui.sound.addEventListener("click", () => { setSoundMuted(!muted); if (!muted) tone(720, 0.07); });
   window.addEventListener("wonder:audio-volume-change", () => { const sharedMuted = sharedSoundMuted(); if (sharedMuted === null || sharedMuted === muted) return; muted = sharedMuted; setLocale(locale); });
-  window.addEventListener("keydown", (event) => { if (state.confirming) { if (event.key === "Escape") { state.confirming = false; ui.confirm.hidden = true; ui.canvas.focus(); } return; } const key = event.key.toLowerCase(); if (gameId === "maze") { const direction = key === "arrowup" || key === "w" ? "up" : key === "arrowdown" || key === "s" ? "down" : key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : null; if (direction) { event.preventDefault(); mazeSetDirection(direction); } } else { const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : key === "shift" ? "shield" : null; if (action) { event.preventDefault(); if (action === "shield") spaceShield(); else state.input[action] = true; } } });
+  window.addEventListener("keydown", (event) => { if (state.confirming) { if (event.key === "Escape") { state.confirming = false; (__wpNotifyMeasurement(), ui.confirm.hidden = true); ui.canvas.focus(); } return; } const key = event.key.toLowerCase(); if (gameId === "maze") { const direction = key === "arrowup" || key === "w" ? "up" : key === "arrowdown" || key === "s" ? "down" : key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : null; if (direction) { event.preventDefault(); mazeSetDirection(direction); } } else { const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : key === "shift" ? "shield" : null; if (action) { event.preventDefault(); if (action === "shield") spaceShield(); else state.input[action] = true; } } });
   window.addEventListener("keyup", (event) => { if (gameId !== "space") return; const key = event.key.toLowerCase(); const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : null; if (action) state.input[action] = false; });
   ui.canvas.addEventListener("pointerdown", (event) => { swipeStart = { x: event.clientX, y: event.clientY }; ui.canvas.setPointerCapture?.(event.pointerId); }); ui.canvas.addEventListener("pointerup", (event) => { if (!swipeStart || gameId !== "maze") return; const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y; swipeStart = null; if (Math.max(Math.abs(dx), Math.abs(dy)) < 12) return; mazeSetDirection(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up")); });
   window.addEventListener("resize", () => { if (state.running || state.result) syncPlayViewport(); });
@@ -465,4 +493,6 @@
     };
     drawSpace();
   }
+
+  if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 })();

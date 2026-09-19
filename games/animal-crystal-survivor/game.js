@@ -1,4 +1,22 @@
 ﻿(() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(state?.paused || state?.suspended), node: nodes.gamePanel,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const stageReserve = document.getElementById("stageAdReserve");
   document.querySelectorAll(".wp-stage-physical-reserve").forEach((reserve) => {
     if (reserve !== stageReserve) reserve.remove();
@@ -45,7 +63,7 @@
     rendererRequest += 1;
     crystal3D?.dispose();
     crystal3D = null;
-    rendererDialog?.remove();
+    (__wpNotifyMeasurement(), rendererDialog?.remove());
     rendererDialog = null;
     nodes.loadingPanel.classList.add("hidden");
   }
@@ -78,11 +96,11 @@
     const description = document.createElement("p");
     description.id = "crystalLeaveDescription";
     description.textContent = `${t("stage")} ${state.stage} · ${explanation}`;
-    dialog.setAttribute("aria-labelledby", description.id);
+    (__wpNotifyMeasurement(), dialog.setAttribute("aria-labelledby", description.id));
     dialog.append(description);
     const resume = () => {
       if (state.mode !== "paused") return;
-      dialog.remove(); rendererDialog = null;
+      (__wpNotifyMeasurement(), dialog.remove()); rendererDialog = null;
       state.mode = "running";
       clearInput(); resetFrameClock(); scheduleLoop();
       nodes.menuBtn.focus({ preventScroll: true });
@@ -94,20 +112,20 @@
       dialog.append(button);
     }
     dialog.addEventListener("cancel", event => { event.preventDefault(); resume(); });
-    nodes.gamePanel.append(dialog); rendererDialog = dialog; dialog.showModal();
+    nodes.gamePanel.append(dialog); rendererDialog = dialog; (__wpNotifyMeasurement(), dialog.showModal());
   }
 
   function showRendererFailure() {
     clearInput();
     state.mode = "render-error";
     runToken += 1;
-    rendererDialog?.remove();
+    (__wpNotifyMeasurement(), rendererDialog?.remove());
     const dialog = document.createElement("dialog");
     dialog.className = "crystal-render-error";
     const message = document.createElement("p");
     message.id = "crystalRendererFailure";
     message.textContent = rendererFailureText[locale] || rendererFailureText.en;
-    dialog.setAttribute("aria-labelledby", message.id);
+    (__wpNotifyMeasurement(), dialog.setAttribute("aria-labelledby", message.id));
     dialog.dataset.runtimeLocalize = "off";
     dialog.append(message);
     for (const [label, action] of [["tryAgain", () => startRun("renderer_retry")], ["backToStages", () => showStageSelection(true)]]) {
@@ -120,7 +138,7 @@
     dialog.addEventListener("cancel", event => { event.preventDefault(); showStageSelection(true); });
     (nodes.gamePanel.classList.contains("hidden") ? nodes.stagePanel : nodes.gamePanel).append(dialog);
     rendererDialog = dialog;
-    dialog.showModal();
+    (__wpNotifyMeasurement(), dialog.showModal());
   }
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
@@ -164,7 +182,7 @@
     resultRangerArt.className = "result-ranger-art";
     resultRangerArt.src = "/assets/animal-crystal-survivor-ranger.webp";
     resultRangerArt.alt = "";
-    resultRangerArt.setAttribute("aria-hidden", "true");
+    (__wpNotifyMeasurement(), resultRangerArt.setAttribute("aria-hidden", "true"));
     resultRangerArt.decoding = "async";
     resultCard.prepend(resultRangerArt);
   }
@@ -1226,7 +1244,7 @@
 
   const talentIcon=id=>({fire:"alchemy",storm:"echo",petFire:"pet",petIce:"pet",petStorm:"pet"}[id]||id);
   let talentDialog;
-  function closeTalentDialog(){talentDialog?.close();}
+  function closeTalentDialog(){(__wpNotifyMeasurement(), talentDialog?.close());}
   function talentLocked(id,talents){
     const parent=talentParents[id],chosen=talentBranches.filter(branch=>branch.some(node=>talents?.[node]>0));
     const own=talentBranches[branchOf(id)].some(node=>talents?.[node]>0),allowed=1+Math.floor((adventureProgress().level-1)/10);
@@ -1240,7 +1258,7 @@
   function inspectTalent(id){
     selectedTalent=id;
     if(!talentDialog){
-      talentDialog=document.createElement('dialog');talentDialog.className='talent-info-dialog';talentDialog.setAttribute('aria-labelledby','talentDialogTitle');talentDialog.dataset.runtimeLocalize='off';nodes.stagePanel.append(talentDialog);
+      talentDialog=document.createElement('dialog');talentDialog.className='talent-info-dialog';(__wpNotifyMeasurement(), talentDialog.setAttribute('aria-labelledby','talentDialogTitle'));talentDialog.dataset.runtimeLocalize='off';nodes.stagePanel.append(talentDialog);
       talentDialog.addEventListener('click',event=>{const button=event.target.closest('button');if(event.target===talentDialog||button?.hasAttribute('data-tree-close'))closeTalentDialog();else if(button?.dataset.talentBuy)changeTalent('buy',button.dataset.talentBuy);else if(button?.dataset.treePet)changeTalent('pet',button.dataset.treePet);});
       talentDialog.addEventListener('close',()=>document.querySelector(`[data-talent-inspect="${selectedTalent}"]`)?.focus({preventScroll:true}));
       talentDialog.addEventListener('keydown',event=>{
@@ -1249,7 +1267,7 @@
         if(!items.includes(document.activeElement)||(event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){event.preventDefault();(event.shiftKey?last:first)?.focus();}
       });
     }
-    talentDialog.innerHTML=talentDetail();talentDialog.showModal();talentDialog.querySelector('[data-tree-close]').focus({preventScroll:true});
+    talentDialog.innerHTML=talentDetail();(__wpNotifyMeasurement(), talentDialog.showModal());talentDialog.querySelector('[data-tree-close]').focus({preventScroll:true});
   }
   function renderTalents(message=""){
     const host=document.getElementById('talentWorkshop');if(!host)return;host.dataset.runtimeLocalize='off';
@@ -1532,7 +1550,7 @@
     });
     playfieldLabelSignature = "";
     nodes.menuBtn.setAttribute("aria-label", t("menu"));
-    nodes.resultMenuBtn.setAttribute("aria-label", t("backToStages"));
+    (__wpNotifyMeasurement(), nodes.resultMenuBtn.setAttribute("aria-label", t("backToStages")));
     nodes.stageBackBtn?.setAttribute("aria-label", t("backToMenu"));
     nodes.settingsBtn?.setAttribute("aria-label", t("audioSettings"));
     nodes.settingsPopover?.setAttribute("aria-label", t("audioSettings"));
@@ -1672,7 +1690,12 @@
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     updateCrystalBattleViewport();
     if (resultOpen) requestAnimationFrame(updateCrystalBattleViewport);
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : panel === nodes.gamePanel ? "battle" : null] ?? null;
+      if (["result"].includes(panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : panel === nodes.gamePanel ? "battle" : null) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function updateCrystalBattleViewport() {
     const battleOpen = document.body?.classList.contains("crystal-playing");
@@ -1693,7 +1716,7 @@
     if (!resultOpen) {
       battlePanelMetrics = measureBattlePanel();
     } else if (battlePanelMetrics) {
-      nodes.resultPanel.classList.toggle("transformed-host", battlePanelMetrics.transformed);
+      (__wpNotifyMeasurement(), nodes.resultPanel.classList.toggle("transformed-host", battlePanelMetrics.transformed));
       nodes.resultPanel.style.width = `${battlePanelMetrics.width}px`;
       nodes.resultPanel.style.height = `${battlePanelMetrics.height}px`;
       nodes.resultPanel.style.minHeight = `${battlePanelMetrics.height}px`;
@@ -2047,7 +2070,9 @@
     track("stage_start", { entry, mode: state.stageConfig.mode, boss_stage: Boolean(state.stageConfig.bossImage) });
     track("game_start", { entry, prototype: true });
     scheduleLoop();
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = entry === "retry"; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function maybeAutostartSmokeRun() {
     const search = window.location?.search || "";
@@ -2915,7 +2940,9 @@
     renderHud(true);
     const win=reason!=="fail"&&state.player.hp>0&&objectiveComplete();
     presentBattle(win?"victory":"defeat",t(win?"stageClear":"runFailed"),runeCopy().settling,2,reason);
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
   function settleRun(reason) {
     if (state.mode === "result") return;
     setUpgradeModalOpen(false, false);
@@ -3706,7 +3733,7 @@
   nodes.retryBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
     track("result_action", { action: "retry", outcome: resultStageCleared ? "complete" : "fail" });
-    startRun("retry");
+    __wpReplayStart(() => startRun("retry"));
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;

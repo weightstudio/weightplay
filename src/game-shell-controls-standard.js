@@ -1041,6 +1041,7 @@
     if (!header) return;
     if (type === "battle") {
       header.hidden = false;
+      header.classList.add("wp-battle-shell-header");
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
       currentHeader = header;
       if (header.classList.contains("wp-generated-battle-header") && !first(RETURN_SELECTORS, header)) {

@@ -1,4 +1,22 @@
 ﻿(() => {
+  /* WP-GAME-ANALYTICS-ADAPTER */
+  // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
+    paused: Boolean(false), node: document.body,
+    activityMode: "input", idleSeconds: 300
+  });
+  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Explicit authored replay actions count only when a new round was actually created.
+  function __wpReplayStart(action) {
+    const previous = __wpMeasurement.roundKey, value = action();
+    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    return value;
+  }
+  window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
+  __wpNotifyMeasurement();
+
   const GAME_ID = "bubble-bakery";
   const canvasRoot = document.querySelector(".bakery-game");
   if (canvasRoot) {
@@ -546,9 +564,9 @@
   gameRoot?.setAttribute("data-wp-stage-landscape-height", "360");
   const leavePanel = document.createElement("section");
   leavePanel.className = "bakery-leave-panel hidden";
-  leavePanel.setAttribute("role", "dialog");
-  leavePanel.setAttribute("aria-modal", "true");
-  leavePanel.setAttribute("aria-labelledby", "bakeryLeaveTitle");
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("role", "dialog"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-modal", "true"));
+  (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-labelledby", "bakeryLeaveTitle"));
   leavePanel.innerHTML = `<div class="bakery-leave-card"><h2 id="bakeryLeaveTitle"></h2><p id="bakeryLeaveText"></p><div><button id="keepBakingBtn" type="button"></button><button id="leaveOrderBtn" type="button"></button></div></div>`;
   nodes.playPanel.insertAdjacentElement("afterend", leavePanel);
   nodes.leaveTitle = leavePanel.querySelector("#bakeryLeaveTitle");
@@ -933,7 +951,7 @@
   function setLeaveConfirmOpen(open, restoreFocus = true) {
     if (open === leaveConfirmOpen) return;
     leaveConfirmOpen = open;
-    leavePanel.classList.toggle("hidden", !open);
+    (__wpNotifyMeasurement(), leavePanel.classList.toggle("hidden", !open));
     setBattleCovered(open);
     if (open) nodes.keepBakingBtn.focus({ preventScroll: true });
     else if (restoreFocus) nodes.backToStagesBtn.focus({ preventScroll: true });
@@ -948,7 +966,12 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-  }
+
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
+      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
+}
 
   function showMain(restoreStartFocus = false) {
     setLeaveConfirmOpen(false, false);
@@ -959,7 +982,7 @@
     nodes.mainPanel.classList.remove("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleCovered(false);
     busy = false;
     updateBakeryFrame();
@@ -1014,7 +1037,7 @@
     nodes.mainPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleCovered(false);
     updateBakeryFrame();
     syncSharedScene("stage");
@@ -1055,7 +1078,7 @@
     nodes.mainPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleCovered(false);
     window.WeightPlayGame?.exitMobileGameMode?.();
     nodes.playPanel.classList.remove("weightplay-active-viewport");
@@ -1071,7 +1094,9 @@
     });
     playSound("start");
     track("game_start", { level: index + 1 });
-  }
+
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+}
 
   function makeBoard(palette, requiredGroup = 2) {
     const next = Array.from({ length: rows }, () => Array.from({ length: cols }, () => randomFrom(palette)));
@@ -1456,10 +1481,12 @@
     renderResult(lastResult);
     playSound(won ? "success" : "error");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
-  }
+
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+}
 
   function renderResult(result) {
-    nodes.resultPanel.classList.remove("hidden");
+    (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     nodes.resultTitle.textContent = result.won ? t("orderDone") : t("failed");
     nodes.resultText.textContent = result.won ? t("resultWin", { moves: result.moves }) : t("resultLose");
     nodes.starText.textContent = result.won ? starIcons(result.earned, 3) : t("failed");
@@ -1469,7 +1496,7 @@
     nodes.nextStageBtn.classList.toggle("hidden", !result.won || isFinalWin);
     nodes.nextStageBtn.classList.toggle("result-primary", result.won && !isFinalWin);
     nodes.retryBtn.classList.toggle("result-primary", !result.won);
-    nodes.resultStagesBtn.classList.toggle("result-primary", isFinalWin);
+    (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("result-primary", isFinalWin));
     (isFinalWin ? nodes.resultStagesBtn : result.won ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
   }
 
@@ -1654,7 +1681,7 @@
     else if (!event.shiftKey && document.activeElement === nodes.leaveOrderBtn) { event.preventDefault(); nodes.keepBakingBtn.focus({ preventScroll:true }); }
   }, true);
   nodes.resultStagesBtn.addEventListener("click", () => showStageSelect(currentStage));
-  nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
+  nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => startStage(currentStage)));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {

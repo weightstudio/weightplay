@@ -3,7 +3,7 @@
 .shadow-stage-content {
   position:relative; min-width:0; min-height:0;
   display:flex; flex-direction:column; gap:12px;
-  background:linear-gradient(#05101ac7,#05101ac7), url('../../assets/shadow-wolf-redrawn/moon-ruins-v1.png') center / cover;
+  background:linear-gradient(#05101ac7,#05101ac7), url('../../assets/shadow-wolf-redrawn/moon-ruins-v1.webp') center / cover;
 }
 .shadow-stage-content > #stageWorkshopBtn { position:static; align-self:flex-start; flex-shrink:0; }
 .shadow-stage-content > .stage-subtitle { position:static; margin:0; flex-shrink:0; }
