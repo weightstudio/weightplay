@@ -1043,25 +1043,25 @@
     bossMoon: new Image(),
     bossCrown: new Image(),
   };
-  assets.bg.src = "../../assets/animal-relic-hunters-ruin-room.png";
-  assets.hero.src = "../../assets/weightplay-boom-mane-lion.png";
-  assets.jaguar.src = "../../assets/animal-relic-hunters-shadow-jaguar.png";
-  assets.boar.src = "../../assets/animal-relic-hunters-stone-boar.png";
-  assets.orb.src = "../../assets/animal-relic-hunters-relic-orb.png";
-  assets.key.src = "../../assets/animal-relic-hunters-golden-relic-key.png";
-  assets.bossMoss.src = "../../assets/animal-relic-hunters-boss-moss.webp";
-  assets.bossEcho.src = "../../assets/animal-relic-hunters-boss-echo.webp";
+  assets.bg.src = "../../assets/animal-relic-hunters-redrawn/ruin-floor-v1.png";
+  assets.hero.src = "../../assets/animal-relic-hunters-redrawn/hero-lion-v1.png";
+  assets.jaguar.src = "../../assets/animal-relic-hunters-redrawn/shadow-jaguar-v1.png";
+  assets.boar.src = "../../assets/animal-relic-hunters-redrawn/stone-boar-v1.png";
+  assets.orb.src = "../../assets/animal-relic-hunters-redrawn/experience-cube-v1.png";
+  assets.key.src = "../../assets/animal-relic-hunters-redrawn/golden-key-v1.png";
+  assets.bossMoss.src = "../../assets/animal-relic-hunters-redrawn/boss-moss-v1.png";
+  assets.bossEcho.src = "../../assets/animal-relic-hunters-redrawn/boss-echo-v1.png";
   assets.bossCrystal.src = "../../assets/animal-relic-hunters-boss-crystal.webp";
   assets.bossMire.src = "../../assets/animal-relic-hunters-boss-mire.webp";
   assets.bossMoon.src = "../../assets/animal-relic-hunters-boss-moon.webp";
   assets.bossCrown.src = "../../assets/animal-relic-hunters-boss-crown.webp";
 
   const uiAssets = {
-    attack: "../../assets/animal-relic-hunters-skill-attack-crystal.webp",
-    rate: "../../assets/animal-relic-hunters-skill-lantern-burst.webp",
-    shield: "../../assets/animal-relic-hunters-skill-shield-heart.webp",
-    boots: "../../assets/animal-relic-hunters-skill-movement-boots.webp",
-    magnet: "../../assets/animal-relic-hunters-skill-relic-magnet.webp",
+    attack: "../../assets/animal-relic-hunters-redrawn/attack-crystal-v1.png",
+    rate: "../../assets/animal-relic-hunters-redrawn/lantern-rate-v1.png",
+    shield: "../../assets/animal-relic-hunters-redrawn/shield-heart-v1.png",
+    boots: "../../assets/animal-relic-hunters-redrawn/boots-speed-v1.png",
+    magnet: "../../assets/animal-relic-hunters-redrawn/magnet-relic-v1.png",
   };
 
   const gearDb = {
@@ -3791,7 +3791,7 @@
     ctx.clearRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
 
     // 1. Ruin Room background
-    if (assets.bg.complete) {
+    if (assets.bg.complete && assets.bg.naturalWidth > 0) {
       drawImageCover(ctx, assets.bg, ARENA_WIDTH, ARENA_HEIGHT);
     } else {
       ctx.fillStyle = "#111827";
@@ -3918,7 +3918,7 @@
 
     // 3. Draw Relic EXP Orbs
     state.orbs.forEach((orb) => {
-      if (assets.orb.complete) {
+      if (assets.orb.complete && assets.orb.naturalWidth > 0) {
         ctx.drawImage(assets.orb, orb.x - 10, orb.y - 10, 20, 20);
       } else {
         ctx.fillStyle = "#10b981";
@@ -4024,7 +4024,7 @@
       }
 
       const guardianSprite = guardianSpriteForBehavior(enemy.behavior);
-      const sprite = enemy.isBoss && guardianSprite?.complete
+      const sprite = enemy.isBoss && guardianSprite?.complete && guardianSprite.naturalWidth > 0
         ? guardianSprite
         : enemy.type === "boar" || enemy.type === "boss" ? assets.boar : assets.jaguar;
       if (enemy.type === "boss") {
@@ -4036,7 +4036,7 @@
         ctx.ellipse(0, 8, enemy.size * 1.25, enemy.size * 0.9, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
-        if (sprite.complete) {
+        if (sprite.complete && sprite.naturalWidth > 0) {
           ctx.drawImage(sprite, -enemy.size * 1.25, -enemy.size * 1.2, enemy.size * 2.5, enemy.size * 2.5);
         } else {
           ctx.fillStyle = "#4b5563";
@@ -4047,7 +4047,7 @@
         ctx.textAlign = "center";
         ctx.fillText(enemy.label || "GUARDIAN", 0, -enemy.size - 14);
         ctx.textAlign = "left";
-      } else if (sprite.complete) {
+      } else if (sprite.complete && sprite.naturalWidth > 0) {
         ctx.drawImage(sprite, -enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
       } else {
         ctx.fillStyle = enemy.type === "boar" ? "#4b5563" : "#7c3aed";
@@ -4106,7 +4106,7 @@
       ctx.stroke();
       ctx.globalAlpha = 1;
     }
-    if (assets.hero.complete) {
+    if (assets.hero.complete && assets.hero.naturalWidth > 0) {
       ctx.drawImage(assets.hero, -22, -22, 44, 44);
     } else {
       ctx.fillStyle = "#fbbf24";

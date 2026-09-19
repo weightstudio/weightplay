@@ -1,6 +1,16 @@
 /* v6 repairs: preserve the game's required landscape composition and guide card
    geometry after the shared Interface 7 normalization is loaded. */
 
+/* v9 Guide contract: Interface 7 uses a compact 3px token by default, but this
+   game-owned public Guide must remain visibly framed and sectioned. Keep the
+   repair scoped to Orbit Orchard so the shared standard is unchanged. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .game-page-info,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .game-info-section {
+    border-radius: 18px !important;
+  }
+}
+
 /* This file is loaded only by Orbit Orchard. Keep these selectors independent
    of the bootstrap's dynamically-added document attribute so the repair also
    applies during the first frame of route startup. */
