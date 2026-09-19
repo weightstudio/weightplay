@@ -30,7 +30,7 @@
     content.className = 'tripeaks-main-content';
     const wrapper = content.querySelector('.poster-frame');
     const image = wrapper.querySelector('img');
-    image.className = '';
+    image.className = 'cover main-poster';
     image.dataset.wpFramePoster = '';
     image.src = '/assets/interface7-redrawn/tripeaks-solitaire.webp';
     wrapper.replaceWith(image);
@@ -73,6 +73,9 @@
       main:{root:main,header,content},
       battle:{root:battle,header:battleHeader,content:board,headerInfo:info},
     }});
+    document.getElementById('wp-frame-main-locale')?.addEventListener('change', event => {
+      window.WonderI18n?.setLocale?.(event.target.value, {navigate:false});
+    });
     const abort = new AbortController();
     const syncSound = () => {
       view.audio.setEnabled(!window.WonderSound.isMuted());
@@ -82,8 +85,24 @@
     const sync = () => {
       const code = ({'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'}[view.locale] || view.locale || 'en');
       const strings = window.TRIPEAKS_GUIDE_LOCALES?.[code] || window.TRIPEAKS_GUIDE_LOCALES?.en || {};
+      const documentLocale = ({'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'}[code] || code);
+      document.documentElement.lang = documentLocale;
+      document.documentElement.dir = documentLocale === 'ar' ? 'rtl' : 'ltr';
       for (const node of guide.querySelectorAll('[data-i18n]')) {
         if (strings[node.dataset.i18n]) node.textContent = strings[node.dataset.i18n];
+      }
+      // The localized route generator appends this authored FAQ to the Guide.
+      // It has no data-i18n attributes because its route copy is already
+      // localized at build time, so refresh the complete question/answer set
+      // here when Settings changes locale in the same session.
+      const faq = [...guide.querySelectorAll('.game-info-section')].find(section => section.querySelector('dl'));
+      if (faq) {
+        const faqKeys = ['faqTitle','faqQ1','faqA1','faqQ2','faqA2','faqQ3','faqA3','faqQ4','faqA4'];
+        const faqNodes = [faq.querySelector('h3'), ...faq.querySelectorAll('dt,dd')];
+        faqNodes.forEach((node, index) => {
+          const value = strings[faqKeys[index]];
+          if (node && value) node.textContent = value;
+        });
       }
       const scene = document.body.dataset.screen === 'battle' ? 'battle' : 'main';
       const covered = scene === 'battle' && !$('resultOverlay').hidden;

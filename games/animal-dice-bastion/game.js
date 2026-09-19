@@ -120,6 +120,11 @@
     {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide-block-v31.png", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
   ];
   const guardianMap = Object.fromEntries(guardianTypes.map((item) => [item.id, item]));
+  // Decorative team/result portraits use the same approved fortress guardian.
+  // Keep localized shells synchronized without changing shared mascot assets.
+  for (const image of document.querySelectorAll('.guardian-team-header > img, #resultPanel .result-card > img')) {
+    image.src = guardianMap.grove.image;
+  }
   // Tutorial, roster and Battle share the same guardian artwork in every locale.
   for (const article of document.querySelectorAll('.guardian-guide article')) {
     const type = guardianMap[article.querySelector('b[data-i18n]')?.dataset.i18n];
@@ -172,12 +177,29 @@
     boss0:"../../assets/animal-dice-bastion/boss-briarhorn-ram-block-v31.png",
     boss1:"../../assets/animal-dice-bastion/boss-moonwing-owl-block-v31.png",
     boss2:"../../assets/animal-dice-bastion/boss-deeptide-crocodile-block-v31.png",
-    boss3:"../../assets/animal-dice-bastion/boss-forge-colossus.webp",
-    boss4:"../../assets/animal-dice-bastion/boss-astral-lion.webp",
-    boss5:"../../assets/animal-dice-bastion/boss-rift-stag.webp"
+    boss3:"../../assets/animal-dice-bastion/boss-forge-colossus-block-v31.png",
+    boss4:"../../assets/animal-dice-bastion/boss-astral-lion-block-v31.png",
+    boss5:"../../assets/animal-dice-bastion/boss-rift-stag-block-v31.png"
   };
   const loadedImages = {};
-  Object.entries(enemyImages).forEach(([key, src]) => { const image = new Image(); image.src = src; loadedImages[key] = image; });
+  // Retain only the selected stage's enemy artwork; normal/fast share one image.
+  const enemyImagesBySource = new Map();
+  function loadEnemyImage(kind) {
+    const src = enemyImages[kind];
+    if (!src) return null;
+    if (!enemyImagesBySource.has(src)) {
+      const image = new Image(); image.src = src;
+      enemyImagesBySource.set(src, image);
+    }
+    return (loadedImages[kind] = enemyImagesBySource.get(src));
+  }
+  function prepareEnemyImages(plan) {
+    const kinds = new Set(plan.flat().map(enemy => enemy.kind));
+    const sources = new Set([...kinds].map(kind => enemyImages[kind]));
+    for (const kind of Object.keys(loadedImages)) if (!kinds.has(kind)) delete loadedImages[kind];
+    for (const src of enemyImagesBySource.keys()) if (!sources.has(src)) enemyImagesBySource.delete(src);
+    kinds.forEach(loadEnemyImage);
+  }
 
   let screen = "loading", run = null, raf = 0, lastTime = 0, currentStageIndex = 0;
   const STAGE_POOL_SIZE = 9;
@@ -533,6 +555,11 @@
       for (let i = 0; i < count; i += 1) {
         const roll = random();
         let kind = stage.chapter >= 2 && roll < .12 ? "healer" : stage.chapter >= 1 && roll < .3 ? "armor" : stage.chapter >= 1 && roll < .48 ? "fast" : "normal";
+        // Authored threat beats give the advertised preparation a real purpose.
+        // Keep the remaining seeded mix, unit stats and total wave count intact.
+        if (stage.threat === "threatArmor" && (i === 1 || i === count - 2)) kind = "armor";
+        if (stage.threat === "threatHaste" && (i === 1 || i === 2)) kind = "fast";
+        if (stage.threat === "threatHeal" && i === Math.floor(count / 2)) kind = "healer";
         const hp = stage.enemyHp * (1 + wave * .11) * (kind === "armor" ? 1.65 : kind === "fast" ? .72 : kind === "healer" ? .9 : 1);
         enemies.push({
           kind, hp, maxHp:hp, armor:kind === "armor" ? .42 : 0,
@@ -560,6 +587,7 @@
       projectiles:[], impacts:[], shotsFired:0, hits:0, burstFx:0, rerollFx:0, rerollIndex:-1,
       damage:0, openingGuardian:save.openingGuardian, openingUsed:false, finished:false, paused:false, time:0
     };
+    prepareEnemyImages(run.plan);
     resultCommitted = false;
     (__wpNotifyMeasurement(), $("tutorialPanel").hidden = true); (__wpNotifyMeasurement(), $("leavePanel").hidden = true); (__wpNotifyMeasurement(), $("pausePanel").hidden = true); (__wpNotifyMeasurement(), $("resultPanel").hidden = true);
     $("battleLive").hidden = false; $("battleLive").inert = false; $("battleLive").classList.remove('is-settled');
@@ -911,7 +939,7 @@
     drawPath(ctx,w,h,d);
     run.projectiles.forEach((projectile)=>drawProjectile(ctx,projectile,w,h,d));
     for (const enemy of run.enemies) {
-      const image=loadedImages[enemy.kind],size=(enemy.boss?72:42)*d;
+      const image=loadedImages[enemy.kind]||loadEnemyImage(enemy.kind),size=(enemy.boss?72:42)*d;
       const geometry=enemyRoadRect(enemy,w,h,d);
       if (!geometry) continue;
       const {x,y}=geometry;
