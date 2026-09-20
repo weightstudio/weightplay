@@ -1403,6 +1403,7 @@ const GAME_VERSION = "v36";
     stageProgressText: $("stageProgressText"),
     stageRail: $("stageRail"),
     gamePanel: $("gamePanel"),
+    hudRow: document.querySelector("#gamePanel > .hud-row"),
     stageHudLabel: $("stageHudLabel"),
     stageText: $("stageText"),
     roundText: $("roundText"),
@@ -1455,7 +1456,7 @@ const GAME_VERSION = "v36";
     root: document.querySelector("[data-wp-game-shell-root]"),
     main: nodes.menuPanel,
     stage: nodes.stagePanel,
-    battle: nodes.gamePanel,
+    battle: { root: nodes.gamePanel, headerInfo: nodes.hudRow },
   });
 
   // Team setup belongs to the shared Stage screen. Keep one preparation DOM

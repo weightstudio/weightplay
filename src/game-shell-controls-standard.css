@@ -333,6 +333,7 @@
 }
 
 .wp-stage-shell-header {
+  --wp-frame-play-header-height: 56px;
   box-sizing: border-box !important;
   position: relative !important;
   z-index: 80 !important;
@@ -1169,6 +1170,7 @@ html[data-wp-shared-interface="7"] body.wp-shell-main-active [data-weightplay-ve
 
 /* Native compatibility headers share one control track. HUD content remains game-owned. */
 html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row) {
+  --wp-frame-play-header-height:56px;
   box-sizing:border-box!important; display:flex!important; align-items:center!important;
   gap:8px!important; width:100%!important; height:var(--wp-frame-play-header-height)!important;
   min-height:var(--wp-frame-play-header-height)!important; margin:0!important; padding:0 4px!important;
@@ -1181,6 +1183,35 @@ html[data-wp-shared-interface="7"] body .wp-battle-shell-header > [data-wp-retur
   height:var(--wp-frame-control-size)!important; min-height:var(--wp-frame-control-size)!important;
   max-height:var(--wp-frame-control-size)!important; margin:0!important; padding:0!important;
 }
+
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) {
+  display:grid!important;
+  grid-template-columns:var(--wp-frame-control-size) minmax(0,1fr) var(--wp-frame-control-size)!important;
+  align-items:center!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) > [data-wp-return="battle"] {
+  grid-column:1!important;grid-row:1!important;justify-self:start!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) > [data-wp-battle-utility] {
+  grid-column:3!important;grid-row:1!important;justify-self:end!important;
+  box-sizing:border-box!important;width:var(--wp-frame-control-size)!important;min-width:var(--wp-frame-control-size)!important;max-width:var(--wp-frame-control-size)!important;
+  height:var(--wp-frame-control-size)!important;min-height:var(--wp-frame-control-size)!important;max-height:var(--wp-frame-control-size)!important;
+  margin:0!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) > :not([data-wp-return="battle"]):not([data-wp-battle-utility]) {
+  grid-column:2!important;grid-row:1!important;min-width:0!important;width:100%!important;margin:0!important;text-align:center!important;
+}
+
+.wp-stage-shell-header > [data-wp-shell-info] {
+  grid-column:2!important;grid-row:1!important;
+  box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:none!important;
+  height:var(--wp-frame-control-size,48px)!important;min-height:var(--wp-frame-control-size,48px)!important;
+  margin:0!important;padding:0 8px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;
+  overflow:hidden!important;
+}
+.wp-stage-shell-header > [data-wp-shell-info] > * {min-width:0!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 
 /* Play names are Main-owned; explicitly declared live HUD fields remain visible. */
 html[data-wp-shared-interface="7"] body :is(.wp-stage-shell-header,.wp-battle-shell-header) :is([data-wp-game-title],.wp-shell-main-title,.wp-generated-main-title):not([data-wp-frame-info]):not([data-wp-frame-stat]) {display:none!important}

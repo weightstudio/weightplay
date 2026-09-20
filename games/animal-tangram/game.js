@@ -23,7 +23,7 @@
   document.body.setAttribute("data-runtime-localize","off");
   const artStyle=document.createElement("style");
   artStyle.textContent=`
-    .canvas{background:linear-gradient(155deg,#fbfff4e8,#d5ecd8e8),url("../../assets/animal-tangram-cover-kids-v2.webp") center/cover}
+    .canvas{background:linear-gradient(155deg,#06192188,#06192166),url("../../assets/animal-tangram-garden-voxel-v1.png") center/cover}
     .result-mark{width:132px;height:96px;border-radius:22px;margin:0 auto 12px;background:url("../../assets/animal-tangram-cover-kids-v2.webp") 50% 24%/cover no-repeat;color:transparent;box-shadow:0 10px 24px #173f3838}
     #result,.tangram-leave-confirm{position:fixed;z-index:80;inset:0 auto auto 50%;width:min(100vw,920px);max-width:none;height:100dvh;max-height:none;margin:0;padding:16px;transform:translateX(-50%);border:0;border-radius:0;background:#0b2e29aa;display:grid;place-items:center;overflow:hidden;backdrop-filter:blur(4px)}
     #result:not([open]),.tangram-leave-confirm.hidden{display:none!important}

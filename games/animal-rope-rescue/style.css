@@ -379,7 +379,7 @@ body.is-vine-stage-select .wp-stage-shell-header > .wp-shell-settings[data-wp-po
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 28px;
-  background-image: linear-gradient(rgba(255, 249, 218, .58), rgba(71, 138, 56, .5)), url("../../assets/animal-vine-rescue-game-bg.webp");
+  background-image: linear-gradient(rgba(8, 28, 32, .28), rgba(8, 28, 32, .62)), url("../../assets/animal-rope-rescue-forest-voxel-v1.png");
   background-size: cover;
   background-position: center;
   box-shadow: inset 0 0 0 5px rgba(255, 244, 180, .65), 0 18px 36px rgba(41, 78, 28, .26);

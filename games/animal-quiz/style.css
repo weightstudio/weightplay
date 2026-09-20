@@ -141,6 +141,7 @@ a {
   height: min(100dvh, 940px);
   padding: max(12px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom));
   overflow: hidden;
+  background: linear-gradient(160deg, rgba(8,28,32,.35), rgba(8,28,32,.68)), url("../../assets/animal-quiz-classroom-voxel-v1.png") center/cover;
 }
 
 .topbar {

@@ -97,7 +97,7 @@
       title.hidden = name !== 'main';
       if (scene.headerInfo) {
         if (!['stage','battle'].includes(name) || !scene.content.contains(scene.headerInfo)) throw new Error('FRAME_BATTLE_INFO_SLOT_REQUIRED');
-        if (!scene.headerInfo.children.length || scene.headerInfo.children.length>3) throw new Error('FRAME_BATTLE_INFO_REQUIRES_ONE_TO_THREE_STATS');
+        if (!scene.headerInfo.children.length || scene.headerInfo.children.length>4) throw new Error('FRAME_BATTLE_INFO_REQUIRES_ONE_TO_FOUR_STATS');
         title.hidden = true;
         scene.headerInfo.setAttribute('data-wp-frame-info','');
         scene.headerInfo.style.setProperty('--wp-frame-stat-count',scene.headerInfo.children.length);
@@ -187,6 +187,7 @@
       if (!spec?.root) continue;
       const screen = spec.root;
       const headerInfo = spec.headerInfo || null;
+      headerInfo?.querySelectorAll(':scope > .hud-return-slot').forEach((node) => node.remove());
       const oldHeader = root.querySelector(`[data-wp-shell-header="${name}"]`);
       const back = root.querySelector(`[data-wp-return="${name}"]`);
       if (!back) throw Error(`FRAME_RETURN_REQUIRED:${name}`);

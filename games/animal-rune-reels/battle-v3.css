@@ -1144,3 +1144,30 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   .ultimate-sigil{width:44px!important;height:44px!important}
   .support-aura,.support-aura.ultimate-aura{width:112px!important;height:58px!important}
 }
+
+
+/* Shared Interface 7 header integration: keep scene controls on the canonical
+   header track and reclaim the former Stage progress row for game content. */
+.v3-stage{
+  --rune-stage-edge:12px;
+  --rune-stage-bottom:10px;
+  padding:0 var(--rune-stage-edge) var(--rune-stage-bottom)!important;
+}
+.v3-stage>.screen-head.wp-stage-shell-header{
+  width:calc(100% + var(--rune-stage-edge) + var(--rune-stage-edge))!important;
+  margin-inline:calc(0px - var(--rune-stage-edge))!important;
+}
+.v3-stage .stage-workspace>#stagesPanel{
+  grid-template-rows:44px minmax(0,1fr) 52px;
+}
+.v3-stage #stagesPanel>.stage-rail{grid-row:2}
+.v3-stage #stagesPanel>#enterBattle{grid-row:3}
+@media(max-width:560px){
+  .v3-stage{--rune-stage-edge:8px;--rune-stage-bottom:7px}
+}
+@media(min-height:521px){
+  .v3-stage{grid-template-rows:56px minmax(0,1fr) 64px!important}
+}
+@media(max-height:520px) and (orientation:landscape){
+  .v3-stage{--rune-stage-edge:10px;--rune-stage-bottom:6px}
+}

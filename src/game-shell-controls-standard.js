@@ -1108,7 +1108,7 @@
       generatedTitle.setAttribute("aria-label", generatedTitle.textContent);
       if (generatedTitle.parentElement !== header) header.append(generatedTitle);
     }
-    if (!firstVisible(["h1", "h2", "strong"], header)) {
+    if (![...header.querySelectorAll("h1,h2,strong")].some((node) => visible(node) && !node.closest("[data-wp-shell-info],.wp-shell-settings,.wp-shell-return"))) {
       const sourceTitle = [...screen.querySelectorAll("h1,h2")].find((node) => visible(node) && !header.contains(node));
       if (!generatedTitle) {
         generatedTitle = document.createElement("strong");
@@ -1118,7 +1118,7 @@
       generatedTitle.setAttribute("aria-label", generatedTitle.textContent);
       header.append(generatedTitle);
     }
-    const canonicalTitle = firstVisible([".wp-generated-main-title", "h1", "h2", "strong"], header);
+    const canonicalTitle = [...header.querySelectorAll(".wp-generated-main-title,h1,h2,strong")].find((node) => visible(node) && !node.closest("[data-wp-shell-info],.wp-shell-settings,.wp-shell-return"));
     if (canonicalTitle && !canonicalTitle.closest(".wp-shell-settings,.wp-shell-return")) {
       const legacyTitleContainer = canonicalTitle.parentElement;
       canonicalTitle.classList.toggle("wp-shell-main-title", type === "main");

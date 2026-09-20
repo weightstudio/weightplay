@@ -1284,7 +1284,7 @@ body.lunch-playing.weightplay-active-viewport .lunch-game {
   overflow: hidden !important;
   background:
     linear-gradient(rgba(76, 47, 12, 0.58), rgba(76, 47, 12, 0.68)),
-    url("../../assets/lunchbox-cover.webp") center / cover no-repeat;
+    url("../../assets/color-lunchbox-picnic-voxel-v1.png") center / cover no-repeat;
 }
 
 body.lunch-stage .topbar {
