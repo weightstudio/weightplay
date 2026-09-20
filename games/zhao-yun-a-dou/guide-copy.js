@@ -64,3 +64,27 @@
     d.v27Progression=[d.rule_shield,d.rule_charge,d.rule_flank,d.rule_medic,d.rule_mud,d.rule_fog,d.rule_summon,d.rule_finale].join(' · ');
   }
 })();
+
+// Compact battle formation drawer. Opening it pauses the run for tactical edits.
+(() => {
+  const copy = {
+    en: ['Formation', 'Paused · arrange your troops, then close to resume.'],
+    'zh-Hant': ['編隊', '已暫停 · 調整部隊後，收起編隊繼續戰鬥。'],
+    'zh-Hans': ['编队', '已暂停 · 调整部队后，收起编队继续战斗。'],
+    ja: ['編成', '一時停止中 · 部隊を配置して閉じると再開します。'],
+    ko: ['편성', '일시 정지 · 부대 배치를 마친 후 닫으면 재개됩니다.'],
+    es: ['Formación', 'En pausa · organiza las tropas y cierra para continuar.'],
+    'pt-BR': ['Formação', 'Pausado · organize as tropas e feche para continuar.'],
+    fr: ['Formation', 'En pause · placez vos troupes, puis fermez pour reprendre.'],
+    de: ['Aufstellung', 'Pausiert · Truppen aufstellen und zum Fortsetzen schließen.'],
+    it: ['Formazione', 'In pausa · disponi le truppe e chiudi per riprendere.'],
+    ru: ['Построение', 'Пауза · расставьте войска и закройте панель для продолжения.'],
+    hi: ['दस्ता', 'रुका हुआ · सैनिक सजाएँ, फिर जारी रखने के लिए बंद करें।'],
+    ar: ['التشكيل', 'متوقف مؤقتًا · رتّب قواتك ثم أغلق اللوحة للمتابعة.'],
+  };
+  for (const [locale, [formationTitle, formationPause]] of Object.entries(copy)) {
+    Object.assign(window.ZHAO_YUN_ADOU_LOCALES[locale], {formationTitle, formationPause});
+    const dictionary = window.ZHAO_YUN_ADOU_LOCALES[locale];
+    dictionary.tutorialMerge = formationTitle + ': ' + dictionary.tutorialMerge;
+  }
+})();

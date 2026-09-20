@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260918-ui-fix1">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260918-ui-fix1">
-  <link rel="stylesheet" href="frame-content.css?v=20260920-zhao-v27">
+  <link rel="stylesheet" href="frame-content.css?v=20260920-zhao-v28-ui">
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
   <div id="gameFrame" data-wp-frame-root>
@@ -97,8 +97,9 @@
         <div id="playerLanes" class="player-lanes" aria-label="Player lanes"></div>
         <div class="camp-label camp-ally"><span data-t="adou">A Dou</span><span id="baseHp"></span></div>
       </div>
-      <div class="formation-panel">
-        <div class="formation-head"><strong data-t="general">Formation</strong><span id="formationHint" data-t="mergeHint">Select two matching characters to merge.</span></div>
+      <div id="formationPanel" class="formation-panel" hidden>
+        <div class="formation-head"><strong data-t="formationTitle">Formation</strong><span data-t="formationPause">Paused · arrange your troops, then close to resume.</span></div>
+        <span id="formationHint" class="formation-instructions" data-t="mergeHint">Select two matching characters to merge.</span>
         <div id="formation" class="formation-grid" role="grid" aria-label="Formation slots"></div>
       </div>
       <div class="battle-actions">
@@ -106,6 +107,7 @@
         <span id="recruitHint" class="action-hint" data-t="recruitHint">Spend 3 buns to call a new soldier.</span>
         <div id="skills" class="skills" aria-label="General skills"></div>
         <button id="hint" class="ghost-action" data-t="hint">Hint</button>
+        <button id="formationToggle" class="ghost-action" aria-expanded="false" aria-controls="formationPanel"><span data-t="formationTitle">Formation</span> <span aria-hidden="true">▴</span></button>
       </div>
       <p id="status" class="status-line" aria-live="polite"></p>
     </section>
@@ -147,17 +149,17 @@
   <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260826-game-funnel"></script>
-  <script src="levels.js?v=20260920-zhao-v27"></script>
-  <script src="locales.js?v=20260920-zhao-v27"></script>
-  <script src="guide-copy.js?v=20260920-zhao-v27"></script>
+  <script src="levels.js?v=20260920-zhao-v28-ui"></script>
+  <script src="locales.js?v=20260920-zhao-v28-ui"></script>
+  <script src="guide-copy.js?v=20260920-zhao-v28-ui"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260918-ui-fix1"></script>
   <script src="frame.js?v=20260918-ui-fix1"></script>
-  <script src="game.js?v=20260920-zhao-v27"></script>
-  <script src="analytics-ownership.js?v=20260920-zhao-v27"></script>
+  <script src="game.js?v=20260920-zhao-v28-ui"></script>
+  <script src="analytics-ownership.js?v=20260920-zhao-v28-ui"></script>
 
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title"></script>
-  <script src="public-guide.js?v=20260920-zhao-v27"></script>
+  <script src="public-guide.js?v=20260920-zhao-v28-ui"></script>
 </body>
 </html>

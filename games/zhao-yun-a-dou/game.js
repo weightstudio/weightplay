@@ -48,12 +48,12 @@
   let world = null, worldGeneration = 0, worldPending = false, worldFailed = false;
   let recruitType = "spear";
   let audioContext = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v27", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v28-ui", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
   }
-  function paused() { return document.hidden || worldPending || worldFailed || Boolean(el.tutorial?.open || el.leaveBattle?.open || document.querySelector('#battle .wp-frame-popover:not([hidden])')); }
+  function paused() { return document.hidden || worldPending || worldFailed || Boolean(el.tutorial?.open || el.leaveBattle?.open || document.querySelector('#battle .wp-frame-popover:not([hidden])') || document.querySelector('#formationToggle[aria-expanded="true"]')); }
   function stopWorld() { worldGeneration++; world?.dispose(); world=null; worldPending=false; worldFailed=false; document.querySelector('.zhao-render-error')?.remove(); }
   function startWorld() {
     stopWorld(); const generation=worldGeneration; worldPending=true;
@@ -1034,6 +1034,7 @@
   }
 
   function closeDialogs() {
+    setFormationOpen(false);
     [el.tutorial, el.leaveBattle, el.result].forEach(function (dialog) {
       if (dialog && dialog.open) (__wpNotifyMeasurement(), dialog.close());
     });
@@ -1084,6 +1085,16 @@
     if (nextLocale && nextLocale !== locale) applyLocale(nextLocale);
   });
   el.recruit.addEventListener("click", recruit);
+  function setFormationOpen(open) {
+    const panel = document.getElementById('formationPanel');
+    const toggle = document.getElementById('formationToggle');
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.lastElementChild.textContent = open ? '▾' : '▴';
+  }
+  document.getElementById('formationToggle').addEventListener('click', () => {
+    setFormationOpen(document.getElementById('formationPanel').hidden);
+  });
   el.battleUtility?.addEventListener("click", function () {
     if (!battle || battle.result || !el.tutorial) return;
     if (el.tutorial.open) (__wpNotifyMeasurement(), el.tutorial.close());
@@ -1114,6 +1125,11 @@
   document.addEventListener("keydown", function (event) {
     if ([el.tutorial, el.leaveBattle, el.result].some(function (dialog) { return dialog.open; })) {
       if (event.key === "Escape" && el.tutorial.open) (__wpNotifyMeasurement(), el.tutorial.close());
+      return;
+    }
+    if (event.key === 'Escape' && !document.getElementById('formationPanel').hidden) {
+      setFormationOpen(false);
+      document.getElementById('formationToggle').focus();
       return;
     }
     if (document.activeElement && ["INPUT", "SELECT", "TEXTAREA"].indexOf(document.activeElement.tagName) >= 0) return;

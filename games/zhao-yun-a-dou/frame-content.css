@@ -129,3 +129,44 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
   #result .result-stats strong {font-size:16px;}
   #result .result-actions {grid-template-columns:repeat(3,minmax(0,1fr));}
 }
+/* v28: battlefield first. Formation is a paused overlay, never a layout row. */
+#battle .battle-content {position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:28px 24px minmax(0,1fr) 140px 18px;gap:4px;}
+#battle .battle-hud {grid-column:1;grid-row:1;gap:4px;}
+#battle .hud-card {min-height:28px;padding:3px 5px;border-radius:4px;font-size:10px;background:transparent;}
+#battle .hud-card strong {font-size:13px;white-space:nowrap;}
+#battle .pressure-cue {grid-column:1;grid-row:2;height:24px;padding:2px 6px;font-size:10px;line-height:11px;border-radius:4px;}
+#battle .battle-field {grid-column:1;grid-row:3;min-height:0;border-radius:8px;}
+#battle .battle-actions {grid-column:1;grid-row:4;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(64px,.7fr) 44px;grid-template-rows:44px 92px;height:140px;gap:4px;}
+#battle .battle-actions :is(.action-recruit,.ghost-action) {min-width:0;padding:4px;font-size:13px;}
+#battle #formationToggle {grid-column:3;grid-row:1;}
+#battle #formationToggle[aria-expanded="true"] {border-color:#f5c84c;background:#48635b;}
+#battle #battleUtilityBtn {grid-column:4;}
+#battle .battle-actions .skills {grid-column:1 / -1;grid-row:2;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:44px 44px;gap:4px;height:92px;min-height:92px;}
+#battle :is(.draft-unit,.skill-button) {height:44px;min-height:44px;}
+#battle .status-line {grid-column:1;grid-row:5;height:18px;min-height:0;font-size:10px;line-height:18px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+#battle .formation-panel {position:absolute;z-index:5;inset-inline:0;bottom:166px;display:grid;grid-template-rows:34px 164px;gap:6px;padding:10px;background:#17363af5;border:1px solid #cfaf61;border-radius:12px;box-shadow:0 -8px 30px #061b2380;}
+#battle .formation-panel[hidden] {display:none;}
+#battle .formation-head {display:flex;height:34px;gap:8px;font-size:11px;}
+#battle .formation-head span {white-space:normal;line-height:16px;}
+#battle .formation-grid {grid-template-rows:repeat(3,52px);}
+#battle .unit-slot {height:52px;min-height:52px;}
+@media (orientation:landscape) {
+  #battle .battle-content {grid-template-columns:minmax(0,1fr) 228px;grid-template-rows:28px 24px minmax(0,1fr) 18px;}
+  #battle .battle-field {grid-column:1;grid-row:2 / 5;}
+  #battle .battle-hud {grid-column:1 / -1;}
+  #battle .pressure-cue {grid-column:2;grid-row:2;}
+  #battle .battle-actions {grid-column:2;grid-row:3;align-self:end;grid-template-columns:repeat(3,minmax(0,1fr)) 44px;}
+  #battle .status-line {grid-column:2;grid-row:4;}
+  #battle .formation-panel {inset-inline:auto 236px;bottom:0;width:calc(100% - 236px);box-sizing:border-box;}
+}
+#battle .formation-panel {grid-column:1 / -1;grid-row:1 / -1;grid-template-rows:34px 32px 164px;}
+#battle .formation-instructions {font:11px/16px system-ui;color:#cae4d5;overflow:hidden;}
+#battle .formation-head > span {display:block;}
+@media (orientation:landscape) {
+  #battle .battle-actions {height:188px;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;grid-template-rows:44px 44px 92px;}
+  #battle .battle-actions .action-recruit {grid-column:1 / -1;grid-row:1;}
+  #battle .battle-actions #hint {grid-column:1;grid-row:2;}
+  #battle #formationToggle {grid-column:2;grid-row:2;font-size:11px;overflow-wrap:anywhere;}
+  #battle #battleUtilityBtn {grid-column:3;grid-row:2;}
+  #battle .battle-actions .skills {grid-row:3;}
+}

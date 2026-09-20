@@ -13,7 +13,7 @@ export class ZhaoBattle3D {
     this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.2;
     this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0x172e32);
     this.camera=new THREE.OrthographicCamera(-7,7,8,-8,.1,100);
-    this.camera.position.set(7,16,19);this.camera.lookAt(0,0,0);
+    this.camera.position.set(3,18,20);this.camera.lookAt(0,0,0);
     this.scene.add(new THREE.HemisphereLight(0xc2e9ed,0x4a3425,2.2));
     const sun=new THREE.DirectionalLight(0xffdd9f,3.1);sun.position.set(-5,12,5);this.scene.add(sun);
     const rim=new THREE.DirectionalLight(0x75d8dc,1.5);rim.position.set(6,6,-8);this.scene.add(rim);
@@ -109,7 +109,18 @@ export class ZhaoBattle3D {
   }
   resize(){if(this.disposed)return;const w=this.host.clientWidth,h=this.host.clientHeight;if(!w||!h)return;
     if(this.width===w&&this.height===h)return;this.width=w;this.height=h;this.renderer.setSize(w,h,false);
-    const aspect=w/h, half=Math.max(6.4,6.8/aspect);this.camera.left=-half*aspect;this.camera.right=half*aspect;this.camera.top=half;this.camera.bottom=-half;this.camera.updateProjectionMatrix();if(this.lastBattle)this.render(this.lastBattle,performance.now(),true);
+    // Fit the playable board and character headroom, not the decorative mountains.
+    this.camera.updateMatrixWorld();
+    const bounds=new THREE.Box2();
+    for(const x of [-4.8,4.8])for(const y of [-.8,3.3])for(const z of [-6.5,6.8]){
+      const p=new THREE.Vector3(x,y,z).applyMatrix4(this.camera.matrixWorldInverse);
+      bounds.expandByPoint(new THREE.Vector2(p.x,p.y));
+    }
+    const center=bounds.getCenter(new THREE.Vector2()),size=bounds.getSize(new THREE.Vector2());
+    const aspect=w/h,half=Math.max(size.y/2,size.x/(2*aspect))*1.025;
+    this.camera.left=center.x-half*aspect;this.camera.right=center.x+half*aspect;
+    this.camera.top=center.y+half;this.camera.bottom=center.y-half;
+    this.camera.updateProjectionMatrix();if(this.lastBattle)this.render(this.lastBattle,performance.now(),true);
   }
   actor(key,type,general,enemy){let obj=this.actors.get(key);const signature=type+general+enemy;
     if(obj&&obj.userData.signature!==signature){this.scene.remove(obj);this.actors.delete(key);obj=null;}
