@@ -10,50 +10,55 @@
     ["蜀漢曙光", "Shu Dawn", "6"],
   ];
 
-  const lanePatterns = [
-    [0, 1, 2, 1, 0, 2],
-    [2, 1, 0, 1, 2, 0],
-    [0, 2, 0, 1, 2, 1],
-    [1, 0, 2, 2, 1, 0],
+  // Authored encounters: rule, ordered enemy vocabulary, lane route, boss,
+  // starting supply. Primary axes change alongside the resource/composition axis.
+  const missions = [
+    ["coverage", "soldier soldier raider", [0,1,2,0,2,1], null, 9],
+    ["merge", "soldier shield soldier", [1,1,0,2,1,2], null, 10],
+    ["reach", "raider soldier raider", [2,0,2,1,0,1], null, 8],
+    ["reserve", "soldier raider shield", [0,2,0,2,1,1], null, 7],
+    ["shield", "soldier shield soldier", [1,0,2,1,0,2], "bulwark", 10],
+    ["shield", "shield soldier shield", [0,0,1,2,2,1], null, 9],
+    ["reach", "shield raider soldier", [2,1,2,0,1,0], null, 8],
+    ["rally", "shield soldier raider", [1,1,2,0,1,2], null, 7],
+    ["reserve", "shield raider shield", [0,2,1,2,0,1], null, 8],
+    ["charge", "raider shield raider", [2,0,1,2,1,0], "charger", 10],
+    ["charge", "raider raider soldier", [0,1,0,2,1,2], null, 8],
+    ["flank", "flanker soldier raider", [2,0,1,0,2,1], null, 9],
+    ["mud", "raider shield flanker", [1,2,1,0,2,0], null, 8],
+    ["rally", "flanker raider shield", [0,2,2,1,0,1], null, 7],
+    ["flank", "flanker raider soldier", [1,0,2,0,1,2], "weaver", 10],
+    ["medic", "soldier medic shield", [0,0,2,1,2,1], null, 9],
+    ["reach", "shield medic raider", [1,2,1,0,2,0], null, 8],
+    ["flank", "medic flanker soldier", [2,0,2,1,0,1], null, 8],
+    ["reserve", "medic shield raider", [0,1,2,0,1,2], null, 7],
+    ["medic", "shield medic flanker", [1,0,1,2,0,2], "healer", 10],
+    ["mud", "raider medic shield", [2,2,0,1,0,1], null, 8],
+    ["rally", "flanker shield medic", [1,2,0,1,0,2], null, 7],
+    ["fog", "shield raider flanker", [0,1,0,2,2,1], null, 9],
+    ["reserve", "medic raider flanker", [2,0,1,2,0,1], null, 6],
+    ["summon", "shield flanker medic", [0,2,1,1,2,0], "summoner", 11],
+    ["fog", "medic shield flanker raider", [2,1,0,2,0,1], null, 8],
+    ["mud", "flanker raider medic shield", [0,2,1,0,1,2], null, 8],
+    ["rally", "shield medic raider flanker", [1,0,2,2,0,1], null, 7],
+    ["reserve", "raider flanker medic shield", [2,0,2,1,0,1], null, 7],
+    ["finale", "shield raider medic flanker", [0,1,2,2,1,0], "warlord", 12],
   ];
-
-  const levels = Array.from({ length: 30 }, function (_, index) {
-    const chapter = Math.floor(index / 5);
-    const within = index % 5;
-    const pattern = lanePatterns[(chapter + within) % lanePatterns.length];
-    const isOpening = index === 0;
+  const levels = missions.map(function (row, index) {
+    const chapter = Math.floor(index / 5), checkpoint = index % 5 === 4;
     return {
-      id: index + 1,
-      chapter: chapter + 1,
-      chapterName: chapterNames[chapter][0],
-      chapterEnglish: chapterNames[chapter][1],
-      name: "第 " + (index + 1) + " 關",
-      nameEnglish: "Mission " + (index + 1),
-      objective: within === 4 ? "守住阿斗，擊破敵將" : "合成部隊，守住三路",
-      objectiveEnglish: within === 4 ? "Protect A Dou and defeat the commander" : "Merge your force and hold all three lanes",
-      waveCount: 3 + chapter + (within === 4 ? 1 : 0),
-      enemyCount: (isOpening ? 9 : 7) + chapter * 2 + within,
-      enemyHp: isOpening ? 11 : 5 + chapter * 3 + within,
-      enemySpeed: (isOpening ? 0.012 : 0.006) + chapter * 0.001 + within * 0.00035,
-      enemyDamage: (isOpening ? 2 : 1) + Math.floor(chapter / 2),
-      commandHp: (isOpening ? 8 : 14) + chapter * 4 + within * 2,
-      adouHp: (isOpening ? 6 : 12) - Math.floor(chapter / 3),
-      spawnGap: Math.max(12, (isOpening ? 18 : 54) - chapter * 4 - within * 2),
-      startingBuns: 7 + Math.floor(within / 2),
-      startingUnits: [
-        { type: "spear", level: 1, slot: 0 },
-        { type: within % 2 ? "blade" : "bow", level: 1, slot: 1 },
-        { type: "horse", level: 1, slot: 2 },
-      ],
-      lanePattern: pattern,
-      boss: within === 4 || chapter === 5,
-      objectiveKey: within === 4 ? "commander" : "lanes",
-      starTime: 62 - chapter * 4 - within * 2,
-      hint: chapter === 0
-        ? "先徵召，再把相同文字合成；不要讓任何一路空著。"
-        : chapter === 1
-          ? "槍守中路、弓守後排，合成前先看下一波從哪一路來。"
-          : "保留一個低階兵補洞，再用高階兵處理壓力最大的路線。",
+      id:index+1, chapter:chapter+1, chapterName:chapterNames[chapter][0], chapterEnglish:chapterNames[chapter][1],
+      name:"第 "+(index+1)+" 關", nameEnglish:"Mission "+(index+1),
+      rule:row[0], roster:row[1].split(" "), lanePattern:row[2], bossKind:row[3],
+      boss:checkpoint, objectiveKey:checkpoint?"commander":"lanes",
+      objective:row[0], objectiveEnglish:row[0],
+      waveCount:3, enemyCount:12+chapter*3+(checkpoint?1:0),
+      enemyHp:18+chapter*3, enemySpeed:.0057+chapter*.0001,
+      enemyDamage:2, commandHp:16+chapter*5, adouHp:chapter>=3?14:10,
+      spawnGap:16, startingBuns:row[4], starTime:80+chapter*8,
+      startingUnits:[{type:"spear",level:index===29?4:chapter>0?2:1,slot:0},{type:"bow",level:chapter>0?2:1,slot:1},{type:"horse",level:chapter>0?2:1,slot:2}],
+      terrainLane:(index+1)%3,
+      hint:row[0],
     };
   });
 

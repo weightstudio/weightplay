@@ -424,34 +424,34 @@ const localizedPageSupport = {
 const assetBase = "../../assets/";
 
 const animalAssets = {
-  lion: { src: "weightplay-boom-mane-lion.png", fallback: "Boom Mane Leo" },
-  panda: { src: "tiny-weather-animal-panda.png", fallback: "Panda" },
-  elephant: { src: "animal-zoo-elephant.png", fallback: "Elephant" },
-  turtle: { src: "animal-merge-token-1.png", fallback: "Turtle" },
-  rabbit: { src: "tiny-weather-animal-rabbit.png", fallback: "Rabbit" },
-  penguin: { src: "tiny-weather-animal-penguin.png", fallback: "Penguin" },
-  fox: { src: "tiny-weather-animal-fox.png", fallback: "Fox" },
-  monkey: { src: "animal-merge-token-4.png", fallback: "Monkey" },
-  koala: { src: "tiny-weather-animal-koala.png", fallback: "Koala" },
-  giraffe: { src: "animal-zoo-idle-giraffe.png", fallback: "Giraffe" },
-  dolphin: { src: "bubble-bakery-whale.png", fallback: "Dolphin" },
-  cow: { src: "animal-merge-token-5.png", fallback: "Cow" },
+  lion: { src: "assets/lion-voxel-v1.png", local: true, fallback: "Lion" },
+  panda: { src: "assets/panda-voxel-v1.png", local: true, fallback: "Panda" },
+  elephant: { src: "assets/elephant-voxel-v1.png", local: true, fallback: "Elephant" },
+  turtle: { src: "assets/turtle-voxel-v1.png", local: true, fallback: "Turtle" },
+  rabbit: { src: "assets/rabbit-voxel-v1.png", local: true, fallback: "Rabbit" },
+  penguin: { src: "assets/penguin-voxel-v1.png", local: true, fallback: "Penguin" },
+  fox: { src: "assets/fox-voxel-v1.png", local: true, fallback: "Fox" },
+  monkey: { src: "assets/monkey-voxel-v1.png", local: true, fallback: "Monkey" },
+  koala: { src: "assets/koala-voxel-v1.png", local: true, fallback: "Koala" },
+  giraffe: { src: "assets/giraffe-voxel-v1.png", local: true, fallback: "Giraffe" },
+  dolphin: { src: "assets/dolphin-voxel-v1.png", local: true, fallback: "Dolphin" },
+  cow: { src: "assets/cow-voxel-v1.png", local: true, fallback: "Cow" },
 };
 
 const fruitAssets = [
-  { src: "animal-vine-fruit-apple.png", fallback: "Apple" },
-  { src: "animal-vine-fruit-banana.png", fallback: "Banana" },
-  { src: "animal-vine-fruit-berry.png", fallback: "Berry" },
-  { src: "tiny-weather-tool-apple.svg", fallback: "Fruit" },
-  { src: "animal-vine-fruit-berry.png", fallback: "Fruit" },
+  { src: "assets/apple-voxel-v1.png", local: true, fallback: "Apple" },
+  { src: "assets/banana-voxel-v1.png", local: true, fallback: "Banana" },
+  { src: "assets/berry-voxel-v1.png", local: true, fallback: "Berry" },
+  { src: "assets/apple-voxel-v1.png", local: true, fallback: "Fruit" },
+  { src: "assets/berry-voxel-v1.png", local: true, fallback: "Fruit" },
 ];
 
 const tileAssets = {
-  home: { src: "tiny-weather-tool-house.svg", fallback: "Home" },
-  rock: { src: "shape-token-diamond.svg", fallback: "Rock" },
-  water: { src: "safari-mask-water.svg", fallback: "Water" },
-  key: { src: "animal-crystal-survivor-golden-key.png", fallback: "Key" },
-  gate: { src: "animal-hero-trials-icon-trial-gate.png", fallback: "Gate" },
+  home: { src: "assets/home-voxel-v1.png", local: true, fallback: "Home" },
+  rock: { src: "assets/rock-voxel-v1.png", local: true, fallback: "Rock" },
+  water: { src: "assets/water-voxel-v1.png", local: true, fallback: "Water" },
+  key: { src: "assets/key-voxel-v1.png", local: true, fallback: "Key" },
+  gate: { src: "assets/gate-voxel-v1.png", local: true, fallback: "Gate" },
 };
 
 const baseLevels = [
@@ -933,12 +933,13 @@ function tileIcon(pos, key, blockSet, waterSet, gateSet) {
 
 function assetMarkup(asset, alt) {
   if (!asset) return "";
-  return `<img src="${assetBase}${asset.src}" alt="${escapeHtml(alt || asset.fallback || "")}" loading="eager" decoding="async" draggable="false" />`;
+  const src = asset.local ? asset.src : `${assetBase}${asset.src}`;
+  return `<img src="${src}" alt="${escapeHtml(alt || asset.fallback || "")}" loading="eager" decoding="async" draggable="false" />`;
 }
 
 function makeAssetImage(asset, alt) {
   const image = document.createElement("img");
-  image.src = `${assetBase}${asset.src}`;
+  image.src = asset.local ? asset.src : `${assetBase}${asset.src}`;
   image.alt = alt || asset.fallback || "";
   image.decoding = "async";
   image.draggable = false;

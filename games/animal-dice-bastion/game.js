@@ -113,11 +113,11 @@
   });
 
   const guardianTypes = [
-    {id:"grove", image:"../../assets/animal-dice-bastion/guardian-grove-block-v31.png", power:1.12, rate:1.0, color:"#65e3a5"},
-    {id:"spark", image:"../../assets/animal-dice-bastion/guardian-spark-block-v31.png", power:.62, rate:1.75, color:"#c084fc"},
-    {id:"moon", image:"../../assets/animal-dice-bastion/guardian-moon-block-v31.png", power:.86, rate:.78, slow:.28, color:"#67e8f9"},
-    {id:"forge", image:"../../assets/animal-dice-bastion/guardian-forge-block-v31.png", power:1.02, rate:.86, armorBreak:.45, color:"#f59e0b"},
-    {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide-block-v31.png", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
+    {id:"grove", image:"../../assets/animal-dice-bastion/guardian-grove-block-v32-alpha8.png", power:1.12, rate:1.0, color:"#65e3a5"},
+    {id:"spark", image:"../../assets/animal-dice-bastion/guardian-spark-block-v32-alpha8.png", power:.62, rate:1.75, color:"#c084fc"},
+    {id:"moon", image:"../../assets/animal-dice-bastion/guardian-moon-block-v32-alpha8.png", power:.86, rate:.78, slow:.28, color:"#67e8f9"},
+    {id:"forge", image:"../../assets/animal-dice-bastion/guardian-forge-block-v32-alpha8.png", power:1.02, rate:.86, armorBreak:.45, color:"#f59e0b"},
+    {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide-block-v32-alpha8.png", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
   ];
   const guardianMap = Object.fromEntries(guardianTypes.map((item) => [item.id, item]));
   // Decorative team/result portraits use the same approved fortress guardian.
@@ -170,16 +170,16 @@
   ];
   const projectileColors = {grove:"#78f0a9",spark:"#d8a7ff",moon:"#8cecff",forge:"#ffc15e",tide:"#69a9ff",burst:"#ffe36e"};
   const enemyImages = {
-    normal:"../../assets/animal-dice-bastion/enemy-wisp-block-v31.png",
-    fast:"../../assets/animal-dice-bastion/enemy-wisp-block-v31.png",
-    armor:"../../assets/animal-dice-bastion/enemy-beetle-block-v31.png",
-    healer:"../../assets/animal-dice-bastion/enemy-healer-block-v31.png",
-    boss0:"../../assets/animal-dice-bastion/boss-briarhorn-ram-block-v31.png",
-    boss1:"../../assets/animal-dice-bastion/boss-moonwing-owl-block-v31.png",
-    boss2:"../../assets/animal-dice-bastion/boss-deeptide-crocodile-block-v31.png",
-    boss3:"../../assets/animal-dice-bastion/boss-forge-colossus-block-v31.png",
-    boss4:"../../assets/animal-dice-bastion/boss-astral-lion-block-v31.png",
-    boss5:"../../assets/animal-dice-bastion/boss-rift-stag-block-v31.png"
+    normal:"../../assets/animal-dice-bastion/enemy-wisp-block-v32-alpha8.png",
+    fast:"../../assets/animal-dice-bastion/enemy-wisp-block-v32-alpha8.png",
+    armor:"../../assets/animal-dice-bastion/enemy-beetle-block-v32-alpha8.png",
+    healer:"../../assets/animal-dice-bastion/enemy-healer-block-v32-alpha8.png",
+    boss0:"../../assets/animal-dice-bastion/boss-briarhorn-ram-block-v32-alpha8.png",
+    boss1:"../../assets/animal-dice-bastion/boss-moonwing-owl-block-v32-alpha8.png",
+    boss2:"../../assets/animal-dice-bastion/boss-deeptide-crocodile-block-v32-alpha8.png",
+    boss3:"../../assets/animal-dice-bastion/boss-forge-colossus-block-v32-alpha8.png",
+    boss4:"../../assets/animal-dice-bastion/boss-astral-lion-block-v32-alpha8.png",
+    boss5:"../../assets/animal-dice-bastion/boss-rift-stag-block-v32-alpha8.png"
   };
   const loadedImages = {};
   // Retain only the selected stage's enemy artwork; normal/fast share one image.

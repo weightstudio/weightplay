@@ -8589,12 +8589,22 @@ select,
 }
 
 .kids-lobby-page .game-card-art.image-art {
+  position: relative;
+  background: #ffffff;
   border-bottom: 1px solid rgba(91, 133, 146, 0.2);
   border-radius: 15px 15px 0 0;
 }
 
 .kids-lobby-page .game-card-art.image-art .game-card-fg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
   object-position: center;
+  object-fit: cover;
 }
 
 .kids-lobby-page .game-card-body {

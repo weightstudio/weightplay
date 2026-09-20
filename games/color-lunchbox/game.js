@@ -128,30 +128,30 @@
   }
 
   const foodsDB = {
-    strawberry: { nameKey: "food_strawberry", color: "red", image: "assets/food-strawberry.svg" },
-    tomato: { nameKey: "food_tomato", color: "red", image: "assets/food-tomato.svg" },
-    banana: { nameKey: "food_banana", color: "yellow", image: "assets/food-banana.svg" },
-    cheese: { nameKey: "food_cheese", color: "yellow", image: "assets/food-cheese.svg" },
-    blueberry: { nameKey: "food_blueberry", color: "blue", image: "assets/food-blueberry.svg" },
-    milk: { nameKey: "food_milk", color: "blue", image: "assets/food-milk.svg" },
-    broccoli: { nameKey: "food_broccoli", color: "green", image: "assets/food-broccoli.svg" },
-    apple: { nameKey: "food_apple", color: "green", image: "assets/food-apple.svg" },
-    carrot: { nameKey: "food_carrot", color: "orange", image: "assets/food-carrot.svg" },
-    orange: { nameKey: "food_orange", color: "orange", image: "assets/food-orange.svg" },
-    eggplant: { nameKey: "food_eggplant", color: "purple", image: "assets/food-eggplant.svg" },
-    grapes: { nameKey: "food_grapes", color: "purple", image: "assets/food-grapes.svg" },
-    rice: { nameKey: "food_rice", color: "white", image: "assets/food-rice.svg" },
-    yogurt: { nameKey: "food_yogurt", color: "white", image: "assets/food-yogurt.svg" },
-    bread: { nameKey: "food_bread", color: "brown", image: "assets/food-bread.svg" },
-    chocolate: { nameKey: "food_chocolate", color: "brown", image: "assets/food-chocolate.svg" },
-    watermelon: { nameKey: "food_watermelon", color: "red", image: "assets/food-watermelon.svg" },
-    corn: { nameKey: "food_corn", color: "yellow", image: "assets/food-corn.svg" },
-    cucumber: { nameKey: "food_cucumber", color: "green", image: "assets/food-cucumber.svg" },
-    fish: { nameKey: "food_fish", color: "gray", image: "assets/food-fish.svg" },
-    peach: { nameKey: "food_peach", color: "pink", image: "assets/food-peach.svg" },
-    blackSesame: { nameKey: "food_black_sesame", color: "black", image: "assets/food-black-sesame.svg" },
-    soda: { nameKey: "food_soda", color: "cyan", image: "assets/food-soda.svg" },
-    purplePotato: { nameKey: "food_purple_potato", color: "purple", image: "assets/food-purple-potato.svg" },
+    strawberry: { nameKey: "food_strawberry", color: "red", image: "assets/strawberry-voxel-v1.png" },
+    tomato: { nameKey: "food_tomato", color: "red", image: "assets/tomato-voxel-v1.png" },
+    banana: { nameKey: "food_banana", color: "yellow", image: "assets/banana-voxel-v1.png" },
+    cheese: { nameKey: "food_cheese", color: "yellow", image: "assets/cheese-voxel-v1.png" },
+    blueberry: { nameKey: "food_blueberry", color: "blue", image: "assets/blueberry-voxel-v1.png" },
+    milk: { nameKey: "food_milk", color: "blue", image: "assets/milk-voxel-v1.png" },
+    broccoli: { nameKey: "food_broccoli", color: "green", image: "assets/broccoli-voxel-v1.png" },
+    apple: { nameKey: "food_apple", color: "green", image: "assets/apple-voxel-v1.png" },
+    carrot: { nameKey: "food_carrot", color: "orange", image: "assets/carrot-voxel-v1.png" },
+    orange: { nameKey: "food_orange", color: "orange", image: "assets/orange-voxel-v1.png" },
+    eggplant: { nameKey: "food_eggplant", color: "purple", image: "assets/eggplant-voxel-v1.png" },
+    grapes: { nameKey: "food_grapes", color: "purple", image: "assets/grapes-voxel-v1.png" },
+    rice: { nameKey: "food_rice", color: "white", image: "assets/rice-voxel-v1.png" },
+    yogurt: { nameKey: "food_yogurt", color: "white", image: "assets/yogurt-voxel-v1.png" },
+    bread: { nameKey: "food_bread", color: "brown", image: "assets/bread-voxel-v1.png" },
+    chocolate: { nameKey: "food_chocolate", color: "brown", image: "assets/chocolate-voxel-v1.png" },
+    watermelon: { nameKey: "food_watermelon", color: "red", image: "assets/watermelon-voxel-v1.png" },
+    corn: { nameKey: "food_corn", color: "yellow", image: "assets/corn-voxel-v1.png" },
+    cucumber: { nameKey: "food_cucumber", color: "green", image: "assets/cucumber-voxel-v1.png" },
+    fish: { nameKey: "food_fish", color: "gray", image: "assets/fish-voxel-v1.png" },
+    peach: { nameKey: "food_peach", color: "pink", image: "assets/peach-voxel-v1.png" },
+    blackSesame: { nameKey: "food_black_sesame", color: "black", image: "assets/black-sesame-voxel-v1.png" },
+    soda: { nameKey: "food_soda", color: "cyan", image: "assets/soda-voxel-v1.png" },
+    purplePotato: { nameKey: "food_purple_potato", color: "purple", image: "assets/purple-potato-voxel-v1.png" },
   };
 
   const colorDB = {
@@ -483,12 +483,12 @@
   };
 
   const guardians = Object.freeze({
-    mimi: { nameEn: "Rainbow Hop Mimi", nameZh: "彩虹跳跳咪咪", nameEs: "Mimi Salto Arcoíris", image: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
-    orla: { nameEn: "Moon Cap Orla", nameZh: "月帽歐拉", nameEs: "Orla Gorro Lunar", image: "../../assets/weightplay-character-moon-cap-owl-cutout.webp" },
-    nori: { nameEn: "Bubble Fin Nori", nameZh: "泡泡鰭諾里", nameEs: "Nori Aleta Burbuja", image: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp" },
-    pogo: { nameEn: "Drum Belly Pogo", nameZh: "鼓肚波哥", nameEs: "Pogo Barriga Tambor", image: "../../assets/weightplay-character-drum-belly-panda-clean-cutout.webp" },
-    taro: { nameEn: "Moss Shell Taro", nameZh: "苔殼塔羅", nameEs: "Taro Caparazón de Musgo", image: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp" },
-    fia: { nameEn: "Spark Paw Fia", nameZh: "星爪菲亞", nameEs: "Fia Pata Chispa", image: "../../assets/weightplay-character-spark-paw-fox-cutout.webp" },
+    mimi: { nameEn: "Rainbow Hop Mimi", nameZh: "彩虹跳跳咪咪", nameEs: "Mimi Salto Arcoíris", image: "assets/mimi-guardian-voxel-v1.png" },
+    orla: { nameEn: "Moon Cap Orla", nameZh: "月帽歐拉", nameEs: "Orla Gorro Lunar", image: "assets/orla-guardian-voxel-v1.png" },
+    nori: { nameEn: "Bubble Fin Nori", nameZh: "泡泡鰭諾里", nameEs: "Nori Aleta Burbuja", image: "assets/nori-guardian-voxel-v1.png" },
+    pogo: { nameEn: "Drum Belly Pogo", nameZh: "鼓肚波哥", nameEs: "Pogo Barriga Tambor", image: "assets/pogo-guardian-voxel-v1.png" },
+    taro: { nameEn: "Moss Shell Taro", nameZh: "苔殼塔羅", nameEs: "Taro Caparazón de Musgo", image: "assets/taro-guardian-voxel-v1.png" },
+    fia: { nameEn: "Spark Paw Fia", nameZh: "星爪菲亞", nameEs: "Fia Pata Chispa", image: "assets/fia-guardian-voxel-v1.png" },
   });
 
   Object.assign(guardians.mimi, { namePt: "Mimi Salto Arco-Íris" });

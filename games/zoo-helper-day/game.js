@@ -348,12 +348,12 @@
   }
 
   const animalAssets = {
-    lion: "../../assets/weightplay-boom-mane-lion.png",
-    panda: "../../assets/animal-zoo-panda.png",
-    elephant: "../../assets/animal-zoo-elephant.png",
-    penguin: "../../assets/animal-zoo-penguin.png",
-    giraffe: "../../assets/animal-zoo-idle-giraffe.png",
-    koala: "../../assets/tiny-weather-animal-koala.png",
+    lion: "assets/lion-voxel-v1.png",
+    panda: "assets/panda-voxel-v1.png",
+    elephant: "assets/elephant-voxel-v1.png",
+    penguin: "assets/penguin-voxel-v1.png",
+    giraffe: "assets/giraffe-voxel-v1.png",
+    koala: "assets/koala-voxel-v1.png",
   };
 
   const categoryTask = (need, items) => ({ need, items });

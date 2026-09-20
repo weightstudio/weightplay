@@ -390,11 +390,11 @@
   });
 
   const colors = [
-    { id: "berry", labelKey: "bunny", asset: "../../assets/bubble-bakery-bunny.png" },
-    { id: "sky", labelKey: "whale", asset: "../../assets/bubble-bakery-whale.png" },
-    { id: "lemon", labelKey: "chick", asset: "../../assets/bubble-bakery-chick.png" },
-    { id: "mint", labelKey: "frog", asset: "../../assets/bubble-bakery-frog.png" },
-    { id: "grape", labelKey: "fox", asset: "../../assets/bubble-bakery-fox.png" },
+    { id: "berry", labelKey: "bunny", asset: "assets/bubble-bunny-voxel-v1.png" },
+    { id: "sky", labelKey: "whale", asset: "assets/bubble-whale-voxel-v1.png" },
+    { id: "lemon", labelKey: "chick", asset: "assets/bubble-chick-voxel-v1.png" },
+    { id: "mint", labelKey: "frog", asset: "assets/bubble-frog-voxel-v1.png" },
+    { id: "grape", labelKey: "fox", asset: "assets/bubble-fox-voxel-v1.png" },
   ];
 
   const bakeryStage = (titleEn, titleZh, ruleEn, ruleZh, moves, palette, orders, rules = {}) => ({

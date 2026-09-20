@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -86,11 +86,11 @@
       apple: "Apple",
       banana: "Banana",
       berry: "Berry",
-      lion: "Lion",
-      rabbit: "Rabbit",
-      panda: "Panda",
-      fox: "Fox",
-      koala: "Koala",
+      lion: "assets/lion-voxel-v1.png",
+      rabbit: "assets/rabbit-voxel-v1.png",
+      panda: "assets/panda-voxel-v1.png",
+      fox: "assets/fox-voxel-v1.png",
+      koala: "assets/koala-voxel-v1.png",
     },
     "zh-Hant": {
       title: "動物藤蔓救援",
@@ -198,18 +198,18 @@
   const assets = {
     cover: "../../assets/animal-vine-rescue-cover.png",
     background: "../../assets/animal-vine-rescue-game-bg.webp",
-    vine: "../../assets/animal-vine-rope.png",
-    leaf: "../../assets/animal-vine-leaf-paddle.png",
-    basket: "../../assets/animal-vine-basket.png",
-    apple: "../../assets/animal-vine-fruit-apple.png",
-    banana: "../../assets/animal-vine-fruit-banana.png",
-    berry: "../../assets/animal-vine-fruit-berry.png",
-    lion: "../../assets/weightplay-boom-mane-lion.png",
-    rabbit: "../../assets/tiny-weather-animal-rabbit.png",
-    panda: "../../assets/tiny-weather-animal-panda.png",
-    fox: "../../assets/tiny-weather-animal-fox.png",
-    koala: "../../assets/tiny-weather-animal-koala.png",
-    panko: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
+    vine: "assets/vine-voxel-v1.png",
+    leaf: "assets/leaf-voxel-v1.png",
+    basket: "assets/basket-voxel-v1.png",
+    apple: "assets/apple-voxel-v1.png",
+    banana: "assets/banana-voxel-v1.png",
+    berry: "assets/berry-voxel-v1.png",
+    lion: "assets/lion-voxel-v1.png",
+    rabbit: "assets/rabbit-voxel-v1.png",
+    panda: "assets/panda-voxel-v1.png",
+    fox: "assets/fox-voxel-v1.png",
+    koala: "assets/koala-voxel-v1.png",
+    panko: "assets/panko-voxel-v1.png",
   };
   const seo = {
     en: {

@@ -46,7 +46,15 @@
     if (screen !== "result" && $("resultScreen")) $("resultScreen").hidden = true;
     if ($("settingsPanel")) $("settingsPanel").hidden = true;
   }
-  function shapeGlyph(item, extra = "") { const el = document.createElement("span"); el.className = `glyph ${item.shape} ${item.color} ${extra}`; el.setAttribute("aria-hidden", "true"); return el; }
+  const glyphAssets = {
+    circle: "assets/glyph-circle-voxel-v1.png",
+    square: "assets/glyph-square-voxel-v1.png",
+    triangle: "assets/glyph-triangle-voxel-v1.png",
+    star: "assets/glyph-star-voxel-v1.png",
+    diamond: "assets/glyph-diamond-voxel-v1.png",
+    heart: "assets/glyph-heart-voxel-v1.png"
+  };
+  function shapeGlyph(item, extra = "") { const el = document.createElement("span"); el.className = `glyph ${item.shape} ${item.color} ${extra}`; el.setAttribute("aria-hidden", "true"); const image = document.createElement("img"); image.src = glyphAssets[item.shape]; image.alt = ""; image.draggable = false; el.append(image); return el; }
   function renderStages() {
     const root = $("stageRail"); if (!root) return; root.replaceChildren();
     plots.forEach((plot, index) => { const button = document.createElement("button"); button.className = "stage-card"; button.type = "button"; button.setAttribute("role", "listitem"); button.dataset.wpStageCard = ""; button.dataset.wpEnterBattle = ""; button.dataset.index = String(index); button.innerHTML = `<span><strong>${copy(`plot${index + 1}`)}</strong><small>${copy(`hint${index + 1}`)}</small></span><span class="arrow" aria-hidden="true">${solved.has(index) ? "✓" : "→"}</span>`; button.addEventListener("click", () => startPlot(index)); root.appendChild(button); });
@@ -55,6 +63,7 @@
   function renderBattle() {
     const plot = plots[plotIndex]; if (!plot || !$("optionGrid")) return;
     $("battleTitle").textContent = copy(`plot${plotIndex + 1}`); $("progressPill").textContent = `${plotIndex + 1} / ${plots.length}`; $("prompt").textContent = `${copy(`hint${plotIndex + 1}`)} — ${copy("prompt")}`;
+    const requestCard = document.querySelector(".request-card"); if (requestCard && !requestCard.querySelector(".taro-guide")) { const taro = document.createElement("img"); taro.className = "taro-guide"; taro.src = "assets/taro-voxel-v1.png"; taro.alt = ""; taro.draggable = false; taro.style.cssText = "width:72px;height:72px;object-fit:contain;display:block;margin:0 auto 8px"; requestCard.prepend(taro); }
     const target = $("targetGlyph"); target.replaceChildren(shapeGlyph(plot.target)); target.setAttribute("aria-label", label(plot.target)); $("targetText").textContent = label(plot.target);
     const root = $("optionGrid"); root.replaceChildren(); plot.options.forEach((item, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "option-card"; button.setAttribute("role", "listitem"); button.setAttribute("aria-selected", String(index === selected)); button.append(shapeGlyph(item)); const text = document.createElement("span"); text.textContent = label(item); button.append(text); button.addEventListener("click", () => { selected = index; renderBattle(); announce("select", { option: index + 1 }); }); root.appendChild(button); });
     $("selection").textContent = selected === null ? "" : copy("selected", { name: label(plot.options[selected]) }); $("status").textContent = ""; $("status").className = "status";

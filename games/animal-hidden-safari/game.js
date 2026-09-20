@@ -267,10 +267,10 @@
   };
 
   const targetAssets = {
-    lion: "../../assets/weightplay-boom-mane-lion.png",
-    elephant: "../../assets/animal-zoo-elephant.png",
-    giraffe: "../../assets/animal-zoo-idle-giraffe.png",
-    panda: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
+    lion: "assets/lion-voxel-v1.png",
+    elephant: "assets/elephant-voxel-v1.png",
+    giraffe: "assets/giraffe-voxel-v1.png",
+    panda: "assets/panda-voxel-v1.png",
     penguin: "../../assets/animal-zoo-penguin.png",
     koala: "../../assets/tiny-weather-animal-koala.png",
     rabbit: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
@@ -280,10 +280,10 @@
   };
 
   const coverAssets = {
-    grass: "../../assets/safari-mask-grass.svg",
-    leaf: "../../assets/safari-mask-leaf.svg",
-    water: "../../assets/safari-mask-water.svg",
-    dust: "../../assets/safari-mask-dust.svg",
+    grass: "assets/grass-voxel-v1.png",
+    leaf: "assets/leaf-voxel-v1.png",
+    water: "assets/water-voxel-v1.png",
+    dust: "assets/dust-voxel-v1.png",
   };
 
   const feedbackAssets = {

@@ -5,7 +5,7 @@
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
-    paused: Boolean(battle?.paused || Boolean(el.leave?.open)), node: document.body,
+    paused: Boolean(battle && paused()), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
   function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
@@ -31,6 +31,11 @@
   const unitTypes = Object.keys(data.unitTypes);
   let locale = getInitialLocale();
   let progress = loadProgress();
+  // Local-only acceptance entry: normal Stage controls, real rules, no save writes.
+  const qaStage = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)
+    && new URLSearchParams(location.search).get('qa')==='zhao-v27'
+    ? Number(new URLSearchParams(location.search).get('stage')) : 0;
+  if(Number.isInteger(qaStage)&&qaStage>=1&&qaStage<=30)progress.unlocked=Math.max(progress.unlocked,qaStage);
   let stageIndex = 0;
   let selectedSlot = null;
   let battle = null;
@@ -40,6 +45,41 @@
   let dragSlot = null;
   let formationRenderKey = null;
   let frame = null;
+  let world = null, worldGeneration = 0, worldPending = false, worldFailed = false;
+  let recruitType = "spear";
+  let audioContext = null, lastSound = 0;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v27", document.currentScript.src).href;
+  let worldModule = null, worldImportAttempts = 0;
+  function loadWorldModule() {
+    return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
+  }
+  function paused() { return document.hidden || worldPending || worldFailed || Boolean(el.tutorial?.open || el.leaveBattle?.open || document.querySelector('#battle .wp-frame-popover:not([hidden])')); }
+  function stopWorld() { worldGeneration++; world?.dispose(); world=null; worldPending=false; worldFailed=false; document.querySelector('.zhao-render-error')?.remove(); }
+  function startWorld() {
+    stopWorld(); const generation=worldGeneration; worldPending=true;
+    loadWorldModule().then(module => {
+      if (generation!==worldGeneration || !battle) return;
+      const fail=()=>{worldPending=false;worldFailed=true;const host=document.querySelector('.battle-field');
+        let panel=host.querySelector('.zhao-render-error');if(panel)return;
+        panel=document.createElement('div');panel.className='zhao-render-error';
+        const message=document.createElement('p');message.textContent=t('renderError');
+        const retry=document.createElement('button');retry.textContent=t('replay');retry.addEventListener('click',startWorld);panel.append(message,retry);host.append(panel);
+      };
+      try { if(!module)throw Error('Renderer unavailable');world=new module.ZhaoBattle3D(document.querySelector('.battle-field'),fail);worldPending=false;world.render(battle,performance.now(),paused()||Boolean(battle.result)); }
+      catch (_) {fail();}
+    });
+  }
+  function sound(kind) {
+    if(window.WonderSound?.isMuted?.() || document.hidden)return;
+    const now=performance.now();if(kind==='hit'&&now-lastSound<90)return;lastSound=now;
+    try {audioContext ||= new (window.AudioContext||window.webkitAudioContext)();if(audioContext.state!=='running')return;
+      const osc=audioContext.createOscillator(), gain=audioContext.createGain();
+      const frequency={hit:260,block:140,defeat:520,charge:90,merge:650,hurt:100}[kind]||300;
+      osc.type=kind==='charge'?'sawtooth':'triangle';osc.frequency.setValueAtTime(frequency,audioContext.currentTime);osc.frequency.exponentialRampToValueAtTime(frequency*.45,audioContext.currentTime+.13);
+      gain.gain.setValueAtTime(Math.max(.0001,.025*(window.WonderSound?.getEffectsVolume?.()??70)/100),audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.16);osc.connect(gain);gain.connect(audioContext.destination);osc.start();osc.stop(audioContext.currentTime+.17);osc.onended=()=>{osc.disconnect();gain.disconnect();};
+    } catch (_) {}
+  }
+  document.addEventListener('pointerdown',()=>{try{audioContext ||= new (window.AudioContext||window.webkitAudioContext)();audioContext.resume().catch(()=>{});}catch(_){}});
 
   const el = {
     main: document.getElementById("main"),
@@ -113,13 +153,14 @@
   }
 
   function loadProgress() {
-    const fallback = { unlocked: 1, stars: Array(30).fill(0), tutorialSeen: false };
+    const fallback = { unlocked: 1, stars: Array(30).fill(0), bestTimes: Array(30).fill(null), tutorialSeen: false };
     try {
       const parsed = JSON.parse(safeGet(saveKey) || "null");
       if (!parsed) return fallback;
       return {
-        unlocked: Math.max(1, Math.min(30, Number(parsed.unlocked) || 1)),
-        stars: Array.from({ length: 30 }, function (_, index) { return Math.max(0, Math.min(3, Number(parsed.stars && parsed.stars[index]) || 0)); }),
+        unlocked: Math.max(1, Math.min(30, Math.floor(Number(parsed.unlocked)) || 1)),
+        stars: Array.from({ length: 30 }, function (_, index) { return Math.max(0, Math.min(3, Math.floor(Number(parsed.stars && parsed.stars[index])) || 0)); }),
+        bestTimes: Array.from({length:30},(_,i)=>Number.isFinite(parsed.bestTimes?.[i]) && parsed.bestTimes[i]>0 ? parsed.bestTimes[i] : null),
         tutorialSeen: Boolean(parsed.tutorialSeen),
       };
     } catch (_) {
@@ -128,6 +169,7 @@
   }
 
   function saveProgress() {
+    if(qaStage>=1&&qaStage<=30)return;
     safeSet(saveKey, JSON.stringify(progress));
   }
 
@@ -230,6 +272,7 @@
 
   function showMain() {
     stopLoop();
+    stopWorld();
     closeDialogs();
     battle = null;
     selectedSlot = null;
@@ -239,6 +282,7 @@
 
   function showStage() {
     stopLoop();
+    stopWorld();
     closeDialogs();
     battle = null;
     selectedSlot = null;
@@ -258,7 +302,7 @@
   }
 
   function stageObjective(level) {
-    return t(level.objectiveKey === "commander" ? "stageObjectiveCommander" : "stageObjectiveLanes");
+    return t("rule_" + level.rule);
   }
 
   function renderStages() {
@@ -289,12 +333,14 @@
   }
 
   function startBattle(index, options) {
+    closeDialogs();
     stageIndex = Math.max(0, Math.min(data.levels.length - 1, index));
     const level = data.levels[stageIndex];
     battle = createBattle(level, options || {});
     selectedSlot = null;
     formationRenderKey = null;
     showScreen("battle");
+    startWorld();
     renderBattle();
     emitMeasurementEvent("battle-start", {
       stage: stageIndex + 1,
@@ -305,7 +351,8 @@
       progress.tutorialSeen = true;
       saveProgress();
       if (!interfaceValidatorRun) {
-        window.setTimeout(function () { if (battle && el.tutorial && !el.tutorial.open) (__wpNotifyMeasurement(), el.tutorial.show()); }, 80);
+        const tutorialBattle=battle;
+        window.setTimeout(function () { if (battle === tutorialBattle && el.tutorial && !el.tutorial.open) (__wpNotifyMeasurement(), el.tutorial.show()); }, 80);
       }
     }
     startLoop();
@@ -329,7 +376,7 @@
       units.fill(null);
     } else {
       level.startingUnits.forEach(function (item) {
-        units[item.slot] = makeUnit(item.type, item.level);
+        units[item.slot] = makeUnit(item.type, item.level, item.level>=4);
       });
     }
     return {
@@ -344,6 +391,7 @@
       adouHp: fixture === "loss" ? 1 : level.adouHp,
       maxAdouHp: fixture === "loss" ? 1 : level.adouHp,
        result: null,
+       wave: 1, waveRest: 35, waveKills: 0, commandLane: 1, chargeTicks: 0, campFlash: 0, nextEnemyId: 1, strikes: [],
        status: "",
        effects: [],
        nextEffectId: 1,
@@ -368,7 +416,7 @@
   function startLoop() {
     stopLoop();
     loopTimer = window.setInterval(function () {
-      if (!battle || battle.result || (el.tutorial && el.tutorial.open) || (el.leaveBattle && el.leaveBattle.open)) return;
+      if (!battle || battle.result || paused()) return;
       advanceBattle(1);
     }, 100);
     motionFrame = window.requestAnimationFrame(renderEnemyMotion);
@@ -388,7 +436,9 @@
 
   function renderEnemyMotion(timestamp) {
     motionFrame = null;
-    if (!battle || battle.result) return;
+    if (!battle) return;
+    if(battle.result){world?.render(battle,timestamp,true);return;}
+    world?.render(battle, timestamp, paused());
     battle.enemies.forEach(function (enemy) {
       const token = el.enemyLanes.querySelector(".enemy-token[data-enemy-id=\"" + enemy.id + "\"]");
       if (!token) return;
@@ -411,7 +461,18 @@
   }
 
   function tickBattle() {
+    if(battle.result)return;
     battle.ticks += 1;
+    if(battle.chargeTicks>0)battle.chargeTicks--;
+    if(battle.campFlash>0)battle.campFlash--;
+    battle.strikes = battle.strikes.filter(strike => {
+      strike.delay--; if(strike.delay>0)return true;
+      const target=battle.enemies.find(e=>e.id===strike.target);
+      if(target && target.hp>0){damageEnemy(target,strike.damage,strike.type);
+        if(strike.type==='blade')battle.enemies.filter(e=>e.id!==target.id&&e.lane===target.lane&&Math.abs(e.position-target.position)<.14).forEach(e=>damageEnemy(e,Math.ceil(strike.damage*.55),'blade'));
+        if(strike.type==='spear')target.stun=Math.max(target.stun,2);
+      } return false;
+    });
     battle.enemies.forEach(function (enemy) {
       enemy.motionStartPosition = enemy.position;
     });
@@ -422,10 +483,14 @@
     battle.units.forEach(function (unit) {
       if (unit && unit.attackFlash > 0) unit.attackFlash -= 1;
     });
-    if (battle.ticks % 10 === 0 && battle.buns < 15) battle.buns += 1;
+    if (battle.ticks % (battle.level.rule === "reserve" ? 22 : 16) === 0 && battle.buns < 24) battle.buns += 1;
     const level = battle.level;
-    if (battle.spawned < level.enemyCount && battle.ticks % level.spawnGap === 0) {
-      spawnEnemy();
+    const waveEnd=Math.ceil(level.enemyCount*battle.wave/level.waveCount);
+    if(battle.waveRest>0)battle.waveRest--;
+    else if (battle.spawned < waveEnd && battle.ticks % level.spawnGap === 0) spawnEnemy();
+    if(battle.spawned>=waveEnd && battle.wave<level.waveCount && !battle.enemies.some(e=>e.hp>0)){
+      battle.wave++;battle.waveRest=35;battle.buns=Math.min(24,battle.buns+4);
+      setStatus(t('waveReward'));sound('merge');
     }
     battle.enemies.slice().forEach(function (enemy) {
       if (enemy.hitFlash > 0) enemy.hitFlash -= 1;
@@ -437,11 +502,28 @@
         enemy.stun -= 1;
         return;
       }
-      enemy.position += enemy.speed;
+      enemy.age++;
+      if(enemy.telegraph>0)enemy.telegraph--;
+      if((enemy.kind==='raider'||enemy.bossKind==='charger'||enemy.bossKind==='warlord')&&enemy.age%65===35)enemy.telegraph=12;
+      let movement=enemy.speed;
+      if((enemy.kind==='raider'||enemy.bossKind==='charger'||enemy.bossKind==='warlord')&&enemy.age%65>=47)movement*=2.7;
+      if(level.rule==='mud' && enemy.lane===level.terrainLane)movement*=.55;
+      if((enemy.kind==='flanker'||enemy.bossKind==='weaver')&&!enemy.switched&&enemy.position>.4){
+        if(!enemy.switchAt){enemy.switchAt=enemy.age+12;enemy.telegraph=12;}
+        if(enemy.age>=enemy.switchAt){enemy.lane=(enemy.lane+1)%3;enemy.switched=true;}
+      }
+      if((enemy.kind==='medic'||enemy.bossKind==='healer')&&enemy.age%40===30)enemy.telegraph=10;
+      if((enemy.bossKind==='summoner'||enemy.bossKind==='warlord')&&enemy.age%75===63)enemy.telegraph=12;
+      if(enemy.bossKind==='bulwark'&&enemy.age%35===25)enemy.telegraph=10;
+      if((enemy.kind==='medic'||enemy.bossKind==='healer')&&enemy.age%40===0){battle.enemies.filter(e=>e.lane===enemy.lane&&e.hp>0).forEach(e=>{const healed=Math.min(4,e.maxHp-e.hp);e.hp+=healed;if(healed)battle.effects.push({id:battle.nextEffectId++,kind:'heal',lane:e.lane,position:e.position,text:'+'+healed,ttl:6});});}
+      if((enemy.bossKind==='summoner'||enemy.bossKind==='warlord')&&enemy.age%75===0&&battle.enemies.length<36)spawnReinforcement(enemy);
+      if(enemy.bossKind==='bulwark')enemy.shield=Math.floor(enemy.age/35)%2===0;
+      enemy.position += movement;
       if (enemy.position >= 0.94) {
-        battle.adouHp = Math.max(0, battle.adouHp - enemy.damage);
-        battle.enemies = battle.enemies.filter(function (candidate) { return candidate.id !== enemy.id; });
-        setStatus(t("statusBoss") + " " + t("hp") + " " + battle.adouHp + "/" + battle.maxAdouHp);
+        battle.adouHp = Math.max(0, battle.adouHp - enemy.damage);battle.campFlash=5;sound("hurt");
+        if(enemy.boss){enemy.position=.78;enemy.motionStartPosition=.78;enemy.stun=12;enemy.telegraph=12;}
+        else battle.enemies = battle.enemies.filter(function (candidate) { return candidate.id !== enemy.id; });
+        setStatus(t("adou") + " " + t("hp") + " " + battle.adouHp + "/" + battle.maxAdouHp);
       }
     });
     battle.units.forEach(function (unit, slot) {
@@ -453,8 +535,8 @@
       }
       unit.attackCooldown = unit.general ? 5 : Math.max(4, Math.round(8 / (data.unitTypes[unit.type].speed || 1)));
       const lane = slot % 3;
-       const target = battle.enemies.filter(function (enemy) { return enemy.lane === lane && enemy.hp > 0 && !enemy.defeatedTicks; }).sort(function (a, b) { return b.position - a.position; })[0];
-       const damage = unitDamage(unit);
+       const target = battle.enemies.filter(function (enemy) { return enemy.lane === lane && enemy.hp > 0 && !enemy.defeatedTicks && enemy.position >= (battle.level.rule==="fog" ? .48 : 1-(unit.general?.95:data.unitTypes[unit.type].range)); }).sort(function (a, b) { return (unit.type==="bow"?Number(b.kind==="medic")-Number(a.kind==="medic"):0) || b.position - a.position; })[0];
+       const damage = unitDamage(unit) + (level.rule==="rally" && lane===level.terrainLane ? 2 : 0);
        if (target) {
          unit.attackFlash = 4;
          battle.effects.push({
@@ -465,7 +547,7 @@
            text: t("attackCue") + ": " + unitLabel(unit) + " → " + (target.boss ? t("boss") : t("enemySoldier")),
            ttl: 5,
          });
-         damageEnemy(target, damage);
+         battle.strikes.push({target:target.id,damage:damage,type:unit.type,delay:2});
        } else if (battle.spawned >= level.enemyCount && !battle.enemies.some(function (enemy) { return enemy.hp > 0 && !enemy.defeatedTicks; }) && battle.commandHp > 0) {
         unit.attackFlash = 4;
         battle.effects.push({
@@ -487,41 +569,34 @@
     if (battle.commandHp <= 0) finishBattle("win");
   }
 
+  function spawnReinforcement(parent) {
+    battle.enemies.push({id:battle.nextEnemyId++,lane:(parent.lane+1)%3,position:.05,motionStartPosition:.05,hp:10,maxHp:10,speed:battle.level.enemySpeed,damage:1,kind:'soldier',boss:false,bossKind:null,shield:false,age:0,stun:0,hitFlash:0,defeatedTicks:0,telegraph:0});
+  }
   function spawnEnemy() {
-    const level = battle.level;
-    const lane = level.lanePattern[battle.spawned % level.lanePattern.length];
-    const boss = level.boss && battle.spawned === level.enemyCount - 1;
-    const maxHp = level.enemyHp + (boss ? 9 : 0);
-    battle.enemies.push({
-      id: battle.spawned + 1,
-      lane: lane,
-      position: 0.04,
-      hp: maxHp,
-      maxHp: maxHp,
-      speed: level.enemySpeed * (boss ? .75 : 1),
-       damage: level.enemyDamage + (boss ? 1 : 0),
-      boss: boss,
-      motionStartPosition: 0.04,
-      stun: 0,
-       hitFlash: 0,
-       defeatedTicks: 0,
-     });
-    battle.spawned += 1;
-    if (boss) setStatus(t("statusBoss"));
+    const level=battle.level, boss=Boolean(level.bossKind)&&battle.spawned===level.enemyCount-1;
+    const kind=boss?'boss':level.roster[battle.spawned%level.roster.length];
+    const maxHp=boss?level.enemyHp*4:level.enemyHp*(kind==='shield'?1.5:kind==='raider'?.8:1);
+    battle.enemies.push({id:battle.nextEnemyId++,lane:level.lanePattern[battle.spawned%level.lanePattern.length],
+      position:.04,motionStartPosition:.04,hp:Math.round(maxHp),maxHp:Math.round(maxHp),
+      speed:level.enemySpeed*(boss?.65:kind==='raider'?1.1:1),damage:boss?4:level.enemyDamage,
+      kind,boss,label:boss?t("boss_"+level.bossKind):t("enemy_"+kind),bossKind:boss?level.bossKind:null,shield:kind==='shield',age:0,stun:0,hitFlash:0,defeatedTicks:0,telegraph:0});
+    battle.spawned++;if(boss)setStatus(t('boss_'+level.bossKind));
   }
 
   function unitDamage(unit) {
-    if (unit.general) return data.generals[unit.type].damage + unit.level;
-    return data.unitTypes[unit.type].damage * unit.level;
+    if (unit.general) return data.generals[unit.type].damage * 2;
+    return data.unitTypes[unit.type].damage * Math.pow(2,unit.level-1);
   }
 
-  function damageEnemy(enemy, amount) {
+  function damageEnemy(enemy, amount, type) {
     if (!enemy || enemy.hp <= 0) return;
-    enemy.hp = Math.max(0, enemy.hp - amount);
+    const blocked=enemy.shield && type!=='blade' && type!=='charge';
+    amount=Math.min(enemy.hp,Math.max(1,Math.round(amount*(blocked?.35:1))));
+    enemy.hp = Math.max(0, enemy.hp - amount);sound(blocked?'block':'hit');
     enemy.hitFlash = 3;
     battle.effects.push({
       id: battle.nextEffectId++,
-      kind: "hit",
+      kind: blocked ? "block" : "hit",
       lane: enemy.lane,
       position: enemy.position,
       text: "-" + amount,
@@ -529,6 +604,7 @@
     });
     if (enemy.hp <= 0) {
       enemy.defeatedTicks = 5;
+      battle.waveKills++; if(battle.waveKills%3===0)battle.buns=Math.min(24,battle.buns+1);sound("defeat");
       battle.effects.push({
         id: battle.nextEffectId++,
         kind: "defeat",
@@ -541,7 +617,7 @@
   }
 
   function recruit() {
-    if (!battle || battle.result) return;
+    if (!battle || battle.result || document.hidden || el.leaveBattle?.open || el.tutorial?.open) return;
     const slot = battle.units.findIndex(function (unit) { return !unit; });
     if (slot < 0) {
       setStatus(t("noSpace"));
@@ -552,7 +628,7 @@
       return;
     }
     battle.buns -= 3;
-    const type = unitTypes[battle.recruitIndex % unitTypes.length];
+    const type = recruitType;
     battle.recruitIndex += 1;
     battle.units[slot] = makeUnit(type, 1);
     setStatus(t("statusRecruit"));
@@ -566,6 +642,7 @@
     if (selectedSlot === null) {
       if (!unit) return;
       selectedSlot = slot;
+      battle.commandLane=slot%3;
       setStatus(t("selected") + ": " + unitName(unit));
       renderFormation();
       return;
@@ -601,12 +678,14 @@
       setStatus(mergedUnit.general
         ? t("statusGeneralPayoff")
         : t("statusMergePayoff", { level: mergedUnit.level }), payoffKind);
+      sound("merge");
       renderBattle();
       emitMeasurementEvent("merge", { result: mergedUnit.general ? "promotion" : "level_up", stage: stageIndex + 1 });
       return;
     }
-    selectedSlot = slot;
-    setStatus(t("cannotMerge"));
+    // Unlike units swap: redistribution is always possible on a full board.
+    battle.units[slot]=source;battle.units[selectedSlot]=unit;selectedSlot=null;
+    battle.commandLane=slot%3;setStatus(t("statusMove"));
     renderFormation();
   }
 
@@ -615,31 +694,30 @@
   }
 
   function useSkill(type) {
-    if (!battle || battle.result) return;
+    if (!battle || battle.result || el.leaveBattle?.open || el.tutorial?.open) return;
     const unit = battle.units.find(function (candidate) { return candidate && candidate.general && candidate.type === type; });
-    if (!unit) return;
+    if (!unit && type!=="horse") return;
     const cooldown = battle.skillsUsed[type] || 0;
     if (cooldown > 0) {
       setStatus(t("cooldown"));
       return;
     }
-    const victims = battle.enemies.slice().sort(function (a, b) { return b.position - a.position; });
+    const victims = battle.enemies.filter(e=>e.hp>0).sort(function (a, b) { return b.position - a.position; });
+    if(!victims.length || (type==="horse"&&!victims.some(e=>e.lane===battle.commandLane))){setStatus(t('noTarget'));return;}
     if (type === "blade") {
-       victims.slice(0, 3).forEach(function (enemy) { damageEnemy(enemy, 9); });
+       victims.slice(0, 3).forEach(function (enemy) { damageEnemy(enemy, 9, 'blade'); });
     } else if (type === "spear") {
        victims.forEach(function (enemy) { enemy.stun = 35; damageEnemy(enemy, 5); });
     } else if (type === "horse") {
-       const target = victims[0];
-       if (target) {
-         damageEnemy(target, 18);
-         target.motionStartPosition = target.position;
-         target.position = Math.max(0, target.position - .25);
-         battle.motionTimestamp = window.performance?.now?.() || Date.now();
-       }
+       victims.filter(e=>e.lane===battle.commandLane).forEach(target=>{
+         damageEnemy(target,16,'charge');battle.effects.push({id:battle.nextEffectId++,kind:'charge',lane:target.lane,position:target.position,text:'',ttl:5});target.motionStartPosition=target.position;target.position=Math.max(.02,target.position-.2);target.stun=8;
+       });
+       battle.chargeTicks=10;sound('charge');
+       battle.effects.push({id:battle.nextEffectId++,kind:'charge',lane:battle.commandLane,position:.55,text:skillName(makeUnit("horse",4,true)),ttl:9});
     } else {
        victims.forEach(function (enemy) { damageEnemy(enemy, 8); });
     }
-    battle.skillsUsed[type] = 80;
+    battle.skillsUsed[type] = type==="horse"?100:80;
     setStatus(t("statusSkill"));
     renderBattle();
     emitMeasurementEvent("skill", { skill: type, stage: stageIndex + 1 });
@@ -673,6 +751,7 @@
     if (result === "win") {
       progress.stars[stageIndex] = Math.max(progress.stars[stageIndex], stars);
       progress.unlocked = Math.max(progress.unlocked, Math.min(data.levels.length, stageIndex + 2));
+      progress.bestTimes[stageIndex]=Math.min(progress.bestTimes[stageIndex]||Infinity,seconds);
       saveProgress();
     }
     renderBattle();
@@ -685,7 +764,7 @@
     const replayGoal = ensureResultReplayGoal();
     if (replayGoal) replayGoal.textContent = t(replayGoalKey, { seconds: seconds });
     el.resultStars.textContent = stars + " / 3";
-    el.resultTime.textContent = seconds + "s";
+    el.resultTime.textContent = seconds + "s" + (progress.bestTimes[stageIndex] ? " · " + t("best") + " " + progress.bestTimes[stageIndex]+"s" : "");
     el.next.disabled = result !== "win" || stageIndex >= data.levels.length - 1 || stageIndex + 1 >= progress.unlocked;
     (__wpNotifyMeasurement(), el.result.showModal());
     emitMeasurementEvent("result", {
@@ -706,20 +785,23 @@
     const level = battle.level;
     el.chapter.textContent = stageChapterName(level) + " · " + stageName(level);
     el.stageName.textContent = stageName(level);
-    el.remaining.textContent = t("wave") + " " + Math.min(level.waveCount, battle.spawned + 1) + " / " + level.waveCount;
+    el.remaining.textContent = t("wave") + " " + battle.wave + " / " + level.waveCount;
     el.enemyHp.textContent = battle.commandHp + " / " + battle.maxCommandHp;
     el.commandPostHp.textContent = battle.commandHp + " / " + battle.maxCommandHp;
     el.buns.textContent = String(battle.buns);
     el.adouHp.textContent = battle.adouHp + " / " + battle.maxAdouHp;
     el.baseHp.textContent = battle.adouHp + " / " + battle.maxAdouHp;
-    el.recruit.disabled = Boolean(battle.result);
+    el.recruit.disabled = Boolean(battle.result) || battle.buns<3 || battle.units.every(Boolean);
+    el.recruit.textContent=t("recruit")+" · 3";
+    el.hint.textContent=t("chargeLane",{lane:battle.commandLane+1});
+    el.hint.title=t("commandHelp");
     el.status.textContent = battle.status || t("mergeHint");
     renderPressureCue();
     renderLanes();
     renderFormation();
     renderSkills();
     el.battle.scrollTop = 0;
-    window.setTimeout(function () { if (el.battle) el.battle.scrollTop = 0; }, 0);
+
   }
 
   function renderPressureCue() {
@@ -758,6 +840,8 @@
         : !focus.hasDefender ? "pressureOpen" : "pressureEnemy";
       message = t(key, { lane: focus.lane + 1 });
     }
+    const boss=battle.enemies.find(e=>e.boss&&e.hp>0);
+    message=(boss?t("boss_"+boss.bossKind)+" · ":"")+t("rule_"+battle.level.rule)+" · "+message;
     if (el.pressureCue.textContent !== message) el.pressureCue.textContent = message;
   }
 
@@ -822,7 +906,7 @@
   }
 
   function updateEnemyToken(token, enemy) {
-    const enemyLabel = enemy.boss ? t("boss") : t("enemySoldier");
+    const enemyLabel = enemy.boss ? t("boss_"+enemy.bossKind) : t("enemy_"+enemy.kind);
     const hpPercent = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
       token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
       token.setAttribute("data-enemy-id", String(enemy.id));
@@ -874,71 +958,26 @@
   }
 
   function renderSkills() {
-    const hasGeneral = battle.units.some(function (unit) { return unit && unit.general; });
-    const types = [...new Set(battle.units.filter(function (unit) { return unit && unit.general; }).map(function (unit) { return unit.type; }))];
-    const structureKey = locale + ":" + types.join(",");
-    // Preserve pointer/focus targets between simulation ticks. Only roster or
-    // locale changes rebuild the controls; cooldown changes update in place.
-    if (el.skills.dataset.renderKey === structureKey) {
-      el.skills.querySelectorAll("[data-skill]").forEach(function (button) {
-        const cooldown = battle.skillsUsed[button.dataset.skill] || 0;
-        button.disabled = Boolean(cooldown) || Boolean(battle.result);
-        button.classList.toggle("ready", !cooldown);
-        const label = cooldown ? Math.ceil(cooldown / 10) + "s" : t("readySkill");
-        const node = button.querySelector(".skill-cooldown");
-        if (node.textContent !== label) node.textContent = label;
+    const key=locale+':v27';
+    if(el.skills.dataset.renderKey!==key){
+      el.skills.dataset.renderKey=key;el.skills.innerHTML='';el.skills.classList.remove('is-preview');el.battleActions?.classList.remove('has-skill-preview');
+      unitTypes.forEach(type=>{
+        const button=document.createElement('button');button.type='button';button.className='draft-unit unit-type-'+type;button.dataset.recruitType=type;
+        button.innerHTML='<span>'+escapeHtml(unitLabel(makeUnit(type,1)))+'</span>';
+        button.title=t('counter_'+type);button.setAttribute('aria-label',unitLabel(makeUnit(type,1))+': '+t('counter_'+type));
+        button.addEventListener('click',()=>{recruitType=type;setStatus(t('counter_'+type));renderSkills();});el.skills.append(button);
       });
-      return;
-    }
-    el.skills.dataset.renderKey = structureKey;
-    el.skills.innerHTML = "";
-    el.skills.classList.toggle("is-preview", !hasGeneral);
-    el.battleActions?.classList.toggle("has-skill-preview", !hasGeneral);
-    if (!hasGeneral) {
-      const preview = document.createElement("div");
-      preview.className = "skill-preview";
-      preview.setAttribute("role", "group");
-      preview.setAttribute("aria-label", t("skillPreviewTitle"));
-      const title = document.createElement("strong");
-      title.className = "skill-preview-title";
-      title.textContent = t("skillPreviewTitle");
-      const body = document.createElement("span");
-      body.className = "skill-preview-body";
-      body.textContent = t("skillPreviewBody");
-      const list = document.createElement("div");
-      list.className = "skill-preview-list";
-      const effects = (dictionaries[locale] || dictionaries.en).skillPreviewEffects || {};
-      unitTypes.forEach(function (type) {
-        const previewUnit = makeUnit(type, 4, true);
-        const item = document.createElement("div");
-        item.className = "skill-preview-item";
-        item.setAttribute("role", "listitem");
-        const effect = effects[type] || (dictionaries.en.skillPreviewEffects && dictionaries.en.skillPreviewEffects[type]) || "";
-        item.setAttribute("aria-label", generalName(previewUnit) + " — " + skillName(previewUnit) + ": " + effect);
-        const skill = document.createElement("b");
-        skill.textContent = skillName(previewUnit);
-        const detail = document.createElement("small");
-        detail.textContent = effect;
-        item.append(skill, detail);
-        list.appendChild(item);
+      unitTypes.forEach(type=>{
+        const button=document.createElement('button');button.type='button';button.className='skill-button skill-'+type;button.dataset.skill=type;
+        button.innerHTML='<span class="skill-cooldown"></span>';button.addEventListener('click',()=>useSkill(type));el.skills.append(button);
       });
-      preview.append(title, body, list);
-      el.skills.appendChild(preview);
-      return;
     }
-    battle.units.forEach(function (unit) {
-      if (!unit || !unit.general || el.skills.querySelector("[data-skill=\"" + unit.type + "\"]")) return;
-      const general = data.generals[unit.type];
-      const button = document.createElement("button");
-      const cooldown = battle.skillsUsed[unit.type] || 0;
-      button.type = "button";
-      button.className = "skill-button skill-" + unit.type + (!cooldown ? " ready" : "");
-      button.setAttribute("data-skill", unit.type);
-      button.disabled = Boolean(cooldown) || Boolean(battle.result);
-      button.setAttribute("aria-label", generalName(unit) + " " + skillName(unit));
-      button.innerHTML = "<span class=\"skill-glyph\">" + general.glyph + "</span><span class=\"skill-cooldown\">" + (cooldown ? Math.ceil(cooldown / 10) + "s" : t("readySkill")) + "</span>";
-      button.addEventListener("click", function () { useSkill(unit.type); });
-      el.skills.appendChild(button);
+    el.skills.querySelectorAll('[data-recruit-type]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.recruitType===recruitType)));
+    el.skills.querySelectorAll('[data-skill]').forEach(button=>{
+      const type=button.dataset.skill,cooldown=battle.skillsUsed[type]||0,unlocked=type==='horse'||battle.units.some(u=>u?.general&&u.type===type);
+      button.disabled=!unlocked||cooldown>0||Boolean(battle.result);button.classList.toggle('ready',unlocked&&!cooldown);
+      button.querySelector('span').textContent=!unlocked?t('level')+' 4':cooldown?Math.ceil(cooldown/10)+'s':t('readySkill');
+      button.setAttribute('aria-label',skillName(makeUnit(type,4,true))+': '+(!unlocked?t('level')+' 4':type==='horse'?t('chargeLane',{lane:battle.commandLane+1}):t('readySkill')));
     });
   }
 
@@ -1056,7 +1095,7 @@
     if (!button || !el.formation.contains(button)) return;
     handleSlot(Number(button.getAttribute("data-slot")));
   });
-  el.hint.addEventListener("click", showHint);
+  el.hint.addEventListener("click", ()=>{if(!battle||battle.result)return;battle.commandLane=(battle.commandLane+1)%3;renderBattle();});
   el.battleBack.addEventListener("click", showLeaveDialog);
   document.querySelector("#stage [data-back]").addEventListener("click", showMain);
   el.tutorialClose.addEventListener("click", function () { (__wpNotifyMeasurement(), el.tutorial.close()); });
@@ -1089,7 +1128,10 @@
   showScreen("main");
   window.setTimeout(updateStaticLocale, 900);
 
+  window.addEventListener("pagehide",()=>{stopLoop();stopWorld();audioContext?.close().catch(()=>{});audioContext=null;});
+  window.addEventListener('pageshow',event=>{if(event.persisted&&battle&&document.body.dataset.screen==='battle'){startWorld();if(!battle.result)startLoop();}});
   window.__zhaoYunADouSmoke = {
+    renderer:()=>world?{...world.info,pending:worldPending,failed:worldFailed}:null,
     snapshot: function () {
       return {
         screen: document.body.getAttribute("data-screen"),
@@ -1099,6 +1141,8 @@
         commandHp: battle && battle.commandHp,
         adouHp: battle && battle.adouHp,
         buns: battle && battle.buns,
+        wave:battle?.wave, rule:battle?.level.rule, commandLane:battle?.commandLane, cooldown:battle?.skillsUsed.horse||0, ticks:battle?.ticks, bestTimes:progress.bestTimes,
+        enemyStates:battle?.enemies.map(e=>({id:e.id,kind:e.kind,bossKind:e.bossKind,hp:e.hp,lane:e.lane,position:e.position,age:e.age,shield:e.shield,telegraph:e.telegraph})),
         enemies: battle ? battle.enemies.length : 0,
         units: battle ? battle.units.map(function (unit) { return unit && { type: unit.type, level: unit.level, general: unit.general }; }) : [],
       };
@@ -1106,6 +1150,9 @@
     enterStage: showStage,
     enterBattle: function (index, options) { startBattle(Number(index) || 0, Object.assign({ skipTutorial: true }, options || {})); },
     recruit: recruit,
+    chooseRecruit:type=>{if(unitTypes.includes(type))recruitType=type;},
+    skill:useSkill,
+    aim:lane=>{if(battle&&[0,1,2].includes(lane))battle.commandLane=lane;},
     selectSlot: handleSlot,
     mergePair: function (first, second) { selectedSlot = Number(first); handleSlot(Number(second)); },
     advance: advanceBattle,

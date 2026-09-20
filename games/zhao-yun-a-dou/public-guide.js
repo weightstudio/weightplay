@@ -37,8 +37,10 @@
     if (!guide || !runtime) throw new Error('ZHAO_PUBLIC_GUIDE_LOCALE_MISSING:' + locale);
     guide.intro = runtime.summary;
     guide.story = [mission];
-    guide.systems[1] = runtime.guideBody;
-    guide.progression[0] = progression;
+    guide.systems = [runtime.commandHelp, runtime.mergeHint, runtime.guideBody, runtime.waveReward];
+    guide.progression = [runtime.v27Progression || progression];
+    guide.strategyTips = [runtime.commandHelp, runtime.mergeHint, runtime.waveReward];
+    guide.how = [runtime.commandHelp,runtime.mergeHint,runtime.guideBody,runtime.rule_coverage];
     guide.designNote = designNote;
     // The obsolete character-symbol quiz is not part of the illustrated game.
     if (locale !== 'en') guide.faq = guide.faq.slice(1);
@@ -84,7 +86,7 @@
     root.replaceChildren();
     root.lang = locale; root.dir = locale === 'ar' ? 'rtl' : 'ltr';
     root.append(node('h2', window.ZHAO_YUN_ADOU_LOCALES[locale].guideTitle));
-    const sections = [guide.story, [...guide.systems, guide.how[2], guide.how.at(-1)], guide.progression, guide.strategyTips, [guide.designNote], [guide.parent]];
+    const sections = [guide.story, guide.systems, guide.progression, guide.strategyTips, [guide.designNote], [guide.parent]];
     const grid = node('div', '', 'game-info-sections');
     sections.forEach((lines, i) => {
       const article = node('article', '', 'game-info-section');
