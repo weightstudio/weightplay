@@ -170,3 +170,41 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
   #battle #battleUtilityBtn {grid-column:3;grid-row:2;}
   #battle .battle-actions .skills {grid-row:3;}
 }
+/* v29: two clear combat actions; the strategy lives in the optional tree. */
+#battle .battle-content {grid-template-rows:28px 24px minmax(0,1fr) 100px 18px;}
+#battle .battle-actions {height:100px;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;grid-template-rows:52px 44px;gap:4px;}
+#battle .battle-actions .action-recruit {grid-column:1;grid-row:1;width:100%;height:52px;}
+#battle .battle-actions .skills {grid-column:2 / -1;grid-row:1;display:block;height:52px;min-height:52px;}
+#battle .skills .skill-button {height:52px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:4px 8px 4px 44px;background-position:left center;background-size:48px auto;font:600 12px/17px system-ui;}
+#battle .skills .skill-cooldown {position:static;background:transparent;font-size:10px;white-space:normal;color:#d9e7de;}
+#battle #formationToggle {grid-column:1;grid-row:2;}
+#battle .battle-actions #hint {grid-column:2;grid-row:2;}
+#battle #battleUtilityBtn {grid-column:3;grid-row:2;}
+#battle .formation-panel {bottom:126px;}
+#talentsOpen {min-height:44px;border:1px solid #cfaf61;border-radius:10px;background:#25474a;color:#f5d792;cursor:pointer;font:600 14px system-ui;}
+#gameFrame .talent-dialog, .talent-dialog {width:min(720px,calc(100vw - 24px));box-sizing:border-box;max-height:calc(100dvh - 24px);padding:16px;background:#17363a;color:#e4eadb;border:1px solid #cfaf61;border-radius:14px;overflow:auto;}
+.talent-dialog::backdrop {background:#061a25bb;}
+.talent-dialog h2 {margin:0 0 8px;font-size:22px;}
+#talentSummary,#recruitOdds {font:12px/1.5 system-ui;}
+#talentTree {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.talent-branch {min-width:0;}
+.talent-branch h3 {font:700 13px/18px system-ui;margin:8px 0;text-align:center;color:#f5d792;}
+.talent-node {position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;min-height:116px;margin:0 0 16px;padding:5px;border:1px solid #658e88;border-radius:9px;background:#23474a;color:#ecf1e4;cursor:pointer;font:11px/15px system-ui;}
+.talent-node:not(:last-child)::after {content:'';position:absolute;top:100%;height:16px;width:2px;background:#73988a;}
+.talent-node[aria-pressed="true"] {border:2px solid #f5c84c;background:#375c51;}
+.talent-node:disabled {cursor:default;opacity:.58;}
+.talent-node[aria-pressed="true"]:disabled {opacity:1;}
+.talent-art {display:block;width:52px;height:46px;flex-shrink:0;background:var(--zhao-unit-art) center/contain no-repeat;}
+.talent-node small {margin-top:auto;color:#efd18e;}
+.talent-footer {position:sticky;bottom:-16px;display:flex;gap:8px;padding:8px 0;background:#17363a;}
+.talent-footer button {flex:1;min-height:44px;padding:6px;border-radius:8px;background:#cfaa59;color:#102d33;border:1px solid #e0c17c;cursor:pointer;}
+.talent-footer button:disabled {opacity:.45;}
+@media (orientation:landscape) {
+ #battle .battle-content {grid-template-rows:28px 24px minmax(0,1fr) 18px;}
+ #battle .battle-actions {height:156px;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;grid-template-rows:52px 52px 44px;}
+ #battle .battle-actions .action-recruit {grid-column:1 / -1;grid-row:1;}
+ #battle .battle-actions .skills {grid-column:1 / -1;grid-row:2;}
+ #battle #formationToggle,#battle .battle-actions #hint,#battle #battleUtilityBtn {grid-row:3;}
+ #battle .formation-panel {bottom:0;}
+ .talent-node {min-height:105px;}
+}

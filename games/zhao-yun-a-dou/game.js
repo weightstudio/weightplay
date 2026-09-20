@@ -50,7 +50,7 @@
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const recruitCost = () => hasTalent("supply3") && (battle.recruitIndex+1)%4===0 ? 0 : 3;
   let audioContext = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v28-ui", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v29", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
