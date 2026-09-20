@@ -3348,6 +3348,8 @@ const KL_I18N = {
     state.resultShown = false;
     state.hintVisitedBoards.clear();
     clearDealAnimationTimers();
+    pauseClock();
+    state.elapsed = 0;
     resetRenderCaches();
     game.newGame(createDealSeed());
     resetDealTrail();
@@ -3355,6 +3357,7 @@ const KL_I18N = {
     state.dealSequence = buildDealSequence();
     renderStatistics();
     renderBoard();
+    if (state.active) restartClock();
     emitAnalytics("new_game", analyticsBoardDetails({ from, outcome: "new_game", inputType }));
 
     if (state.active) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }

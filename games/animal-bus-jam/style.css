@@ -608,7 +608,7 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
-  .stage-card { top: -3%; }
+  .stage-card { top: 0; }
 
   .canvas { min-height: 0; }
   .scene-header { height: 60px; padding: 6px 12px; }
