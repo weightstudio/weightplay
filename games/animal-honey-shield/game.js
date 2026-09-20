@@ -22,7 +22,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v55";
+  const GAME_VERSION="v56";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -413,12 +413,14 @@
     $("clearBtn").disabled=true;updateAnchorCoach();announce("waveStarted");
   }
   canvas.addEventListener("pointerdown",event=>{
-    if(!canDraw())return;canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);const point=pointerPoint(event);
+    // A barrier belongs to the finger/pen that started it. Extra contacts must
+    // not replace paid points or release the wave before that pointer ends.
+    if(!canDraw()||state.drawing||event.isPrimary===false||event.button!==0)return;canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);const point=pointerPoint(event);
     clearRepairCue();trackEvent("stroke_start",{input:"pointer",first_stroke:state.strokes.length===0});
-    state.drawing={points:[point],flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;$("anchorCoach").hidden=true;event.preventDefault();
+    state.drawing={pointerId:event.pointerId,points:[point],flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;$("anchorCoach").hidden=true;event.preventDefault();
   });
   canvas.addEventListener("pointermove",event=>{
-    if(!state.drawing||!canDraw())return;
+    if(!state.drawing||event.pointerId!==state.drawing.pointerId||!canDraw())return;
     const coalesced=event.getCoalescedEvents?.(),samples=coalesced?.length?coalesced:[event];
     for(const sample of samples){
       const point=pointerPoint(sample),last=state.drawing.points.at(-1),distance=Math.hypot(point.x-last.x,point.y-last.y);
@@ -443,8 +445,8 @@
     if(!best)return points;
     const loop=points.slice(best.start,best.end+1);loop[loop.length-1]={...loop[0]};return loop;
   }
-  function finishStroke(){
-    if(!state.drawing)return;
+  function finishStroke(event){
+    if(!state.drawing||event.pointerId!==state.drawing.pointerId)return;
     if(state.drawing.points.length>1){
       state.drawing.points=trimClosedLoopTail(state.drawing.points,level(stageIndex).dog);
       refreshStrokeMobility(state.drawing,level(stageIndex));

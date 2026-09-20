@@ -2,7 +2,7 @@
   "use strict";
   window.AnimalDiceBastionLocaleData = {
   "zh-Hant": {
-    "title": "動物骰靈堡壘",
+    "title": "骰靈堡壘",
     "loading": "正在喚醒守護符文…",
     "language": "語言",
     "backLobby": "返回 WeightPlay",
@@ -172,7 +172,7 @@
     "starsWord": "星"
   },
   "zh-Hans": {
-    "title": "动物骰灵堡垒",
+    "title": "骰灵堡垒",
     "loading": "正在唤醒守护符文…",
     "language": "语言",
     "backLobby": "返回 WeightPlay",
@@ -342,7 +342,7 @@
     "starsWord": "星"
   },
   "ja": {
-    "title": "アニマルダイス砦",
+    "title": "ダイス砦",
     "loading": "守護ルーンを起こしています…",
     "language": "言語",
     "backLobby": "WeightPlay に戻る",
@@ -512,7 +512,7 @@
     "starsWord": "星"
   },
   "ko": {
-    "title": "애니멀 다이스 요새",
+    "title": "다이스 요새",
     "loading": "수호 룬을 깨우는 중…",
     "language": "언어",
     "backLobby": "WeightPlay로 돌아가기",
@@ -682,7 +682,7 @@
     "starsWord": "별"
   },
   "es": {
-    "title": "Bastión de Dados Animal",
+    "title": "Bastión de Dados",
     "loading": "Despertando las runas guardianas…",
     "language": "Idioma",
     "backLobby": "Volver a WeightPlay",
@@ -852,7 +852,7 @@
     "starsWord": "estrellas"
   },
   "pt-BR": {
-    "title": "Bastião dos Dados Animais",
+    "title": "Bastião dos Dados",
     "loading": "Despertando as runas guardiãs…",
     "language": "Idioma",
     "backLobby": "Voltar para WeightPlay",
@@ -1022,7 +1022,7 @@
     "starsWord": "estrelas"
   },
   "fr": {
-    "title": "Bastion des Dés Animaux",
+    "title": "Bastion des Dés",
     "loading": "Éveil des runes gardiennes…",
     "language": "Langue",
     "backLobby": "Retour à WeightPlay",
@@ -1362,7 +1362,7 @@
     "starsWord": "Sterne"
   },
   "it": {
-    "title": "Bastione dei Dadi Animali",
+    "title": "Bastione dei Dadi",
     "loading": "Risveglio delle rune guardiane…",
     "language": "Lingua",
     "backLobby": "Torna a WeightPlay",
@@ -1702,7 +1702,7 @@
     "starsWord": "звёзд"
   },
   "hi": {
-    "title": "पशु पासा दुर्ग",
+    "title": "पासा दुर्ग",
     "loading": "रक्षक रून्स जाग रहे हैं…",
     "language": "भाषा",
     "backLobby": "WeightPlay पर वापस जाएं",
@@ -1872,7 +1872,7 @@
     "starsWord": "सितारे"
   },
   "ar": {
-    "title": "حصن نرد الحيوانات",
+    "title": "حصن نرد",
     "loading": "إيقاظ رُقى الحراس…",
     "language": "اللغة",
     "backLobby": "العودة إلى WeightPlay",
