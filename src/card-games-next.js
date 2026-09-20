@@ -1582,6 +1582,21 @@
     hi: { label: "राउंड की प्रगति", copy: "दोनों केंद्रीय पत्तों पर नज़र रखें और सही रैंक जल्दी चलें।" },
     ar: { label: "تقدّم الجولة", copy: "راقب البطاقتين المركزيتين والعب الرتب المناسبة بسرعة." },
   };
+  const SPEED_MAIN_COPY = {
+    en: { summary: "Play one rank above or below the center cards in a race against the AI.", guideLabel: "Speed game information" },
+    "zh-Hant": { summary: "出任一張中央牌高一點或低一點的牌，和 AI 展開即時競速。", guideLabel: "快手接龍遊戲資訊" },
+    "zh-Hans": { summary: "出任一张中央牌高一点或低一点的牌，与 AI 展开即时竞速。", guideLabel: "快手接龙游戏信息" },
+    ja: { summary: "中央カードより1ランク上か下のカードを出し、AIとスピード勝負をします。", guideLabel: "スピードのゲーム情報" },
+    ko: { summary: "중앙 카드보다 한 랭크 높거나 낮은 카드를 내며 AI와 속도 경쟁을 펼치세요.", guideLabel: "스피드 게임 정보" },
+    es: { summary: "Juega una carta un rango por encima o por debajo de las cartas centrales y compite con la IA.", guideLabel: "Información del juego Speed" },
+    "pt-BR": { summary: "Jogue uma carta um valor acima ou abaixo das cartas centrais e corra contra a IA.", guideLabel: "Informações do jogo Speed" },
+    fr: { summary: "Jouez une carte d’un rang au-dessus ou au-dessous des cartes centrales et affrontez l’IA.", guideLabel: "Informations sur le jeu Speed" },
+    de: { summary: "Spiele einen Rang über oder unter den mittleren Karten und tritt gegen die KI an.", guideLabel: "Informationen zum Spiel Speed" },
+    it: { summary: "Gioca una carta di un valore sopra o sotto le carte centrali e sfida l’IA in una corsa.", guideLabel: "Informazioni sul gioco Speed" },
+    ru: { summary: "Играйте карту на один ранг выше или ниже центральных карт и соревнуйтесь с ИИ.", guideLabel: "Информация об игре «Скорость»" },
+    hi: { summary: "केंद्रीय पत्तों से एक रैंक ऊपर या नीचे का पत्ता चलाकर AI से तेज़ दौड़ लगाएँ।", guideLabel: "स्पीड गेम की जानकारी" },
+    ar: { summary: "العب بطاقة أعلى أو أدنى بدرجة من البطاقات المركزية وتسابق مع الذكاء الاصطناعي.", guideLabel: "معلومات لعبة السرعة" },
+  };
   const SPEED_BATTLE_COPY = {
     en: { heading: "How to play", paragraph: "Play one rank above or below either center card. Both players act at once, so refill your hand and keep scanning." },
     "zh-Hant": { heading: "玩法說明", paragraph: "出任一張中央牌高一點或低一點的牌。雙方同時行動，補牌後持續掃描手牌。" },
@@ -2195,7 +2210,14 @@
     };
     const syncSpeedShell = () => {
       const labels = TEXT[currentLocale()] || TEXT.en;
+      const mainCopy = SPEED_MAIN_COPY[currentLocale()] || SPEED_MAIN_COPY.en;
       const progressCopy = SPEED_PROGRESS_COPY[currentLocale()] || SPEED_PROGRESS_COPY.en;
+      document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, mainCopy.summary));
+      const guideRoot = document.querySelector(".game-page-info");
+      if (guideRoot) {
+        guideRoot.setAttribute("aria-label", mainCopy.guideLabel);
+        guideRoot.setAttribute("data-runtime-localize", "off");
+      }
       ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
       const utility = document.querySelector("[data-wp-battle-utility]");
@@ -2537,6 +2559,7 @@
 
   function gameSummary(id) {
     if (id === "gin-rummy") return (GIN_MAIN_COPY[currentLocale()] || GIN_MAIN_COPY.en).summary;
+    if (id === "speed") return (SPEED_MAIN_COPY[currentLocale()] || SPEED_MAIN_COPY.en).summary;
     const summaries = {
       hearts: "Avoid penalty cards, follow suit, and decide whether to risk Shooting the Moon.",
       spades: "Bid your tricks, use spades as trump, and coordinate with an AI teammate.",
@@ -2545,7 +2568,6 @@
       cribbage: "Choose a crib, score pairs/runs/fifteens, and peg your way toward 121.",
       "go-fish": "Ask for ranks, collect four-of-a-kind books, and read the table.",
       war: "Reveal cards together; tied ranks trigger a dramatic War.",
-      speed: "Play one rank above or below the center cards in a race against the AI.",
       "old-maid": "Pair ranks, draw from the next hand, and avoid being left with the Old Maid.",
       casino: (CASINO_MAIN_COPY[currentLocale()] || CASINO_MAIN_COPY.en).summary,
     };

@@ -52,6 +52,17 @@ body.speed-royal-table #cardGameActions .card-help {background:#062a24;border:1p
 body.speed-royal-table .card-game-player-header {gap:10px;}
 body.speed-royal-table .card-game-player-header strong {flex-shrink:0;}
 body.speed-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#254d42,#071e22);border-color:#d7b96f;}
+/* Speed v18/I6 keeps the governed 420px Main poster column in compact
+   landscape; the generic card-game fallback otherwise shrinks it to 300px. */
+@media (min-width:700px) and (max-height:560px) and (orientation:landscape){
+ body[data-wp-card-game="speed"] .wp-standard-main-composition {--wp-main-landscape-poster-size:420px;}
+ body[data-wp-card-game="speed"] .wp-standard-main-poster,
+ body[data-wp-card-game="speed"] .wp-standard-main-poster-media,
+ body[data-wp-card-game="speed"] .wp-standard-main-poster-media > img,
+ body[data-wp-card-game="speed"] .wp-standard-main-poster > img {width:420px;min-width:420px;max-width:420px;height:420px;min-height:420px;max-height:420px;}
+ body[data-wp-card-game="speed"] .main-hero {grid-template-columns:420px minmax(0,1fr);}
+ body[data-wp-card-game="speed"] .poster-frame img {width:420px;max-width:420px;}
+}
 @media(orientation:landscape) and (max-height:560px){
  body.speed-royal-table .card-game-board {grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:40px minmax(0,1fr);grid-template-areas:'opponents opponents' 'table player';gap:5px;}
  body.speed-royal-table #cardGameOpponents {grid-area:opponents;min-height:0;}

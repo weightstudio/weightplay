@@ -1,7 +1,15 @@
 (function () {
   "use strict";
 
+  const detachGuideFromMain = () => {
+    const main = document.querySelector("#mainScreen");
+    const guide = main?.querySelector(".game-page-info");
+    if (guide?.parentElement === main) main.after(guide);
+  };
+
+  detachGuideFromMain();
   window.WPCardGamesNext?.mount({ id: "speed" });
+  window.setTimeout(detachGuideFromMain, 0);
 
   const shellCopy = {
     en: { start: "Start Game", restart: "Restart", newGame: "New Game", close: "Close", howTo: "How to play" },

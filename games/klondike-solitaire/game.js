@@ -3455,6 +3455,11 @@ const KL_I18N = {
     emitAnalytics("game_start", analyticsBoardDetails({ from, outcome: "started", inputType }));
     window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync"));
+    // The shared logical Canvas scaler normally settles on its next frame.
+    // Apply the completed scene transaction now so the first Battle action
+    // cannot be the event that changes the persistent control geometry.
+    window.WeightPlayBattleCanvas?.sync?.();
+    window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
       if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -3482,6 +3487,8 @@ const KL_I18N = {
     window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync"));
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+    window.WeightPlayBattleCanvas?.sync?.();
+    window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
       if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
