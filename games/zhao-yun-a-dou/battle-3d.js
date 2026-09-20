@@ -27,6 +27,11 @@ export class ZhaoBattle3D {
   }
   mat(color,metal=false){const key=color+':'+metal;if(!this.materials.has(key))this.materials.set(key,new THREE.MeshStandardMaterial({color,roughness:metal?.38:.82,metalness:metal?.45:0}));return this.materials.get(key);}
   box(parent,x,y,z,w,h,d,color,metal=false){const mesh=new THREE.Mesh(this.geometry,this.mat(color,metal));mesh.position.set(x,y,z);mesh.scale.set(w,h,d);parent.add(mesh);return mesh;}
+  flatBox(parent,x,y,z,w,h,d,color){
+    const key='hud:'+color;
+    if(!this.materials.has(key))this.materials.set(key,new THREE.MeshBasicMaterial({color,depthTest:false,depthWrite:false,toneMapped:false}));
+    const mesh=new THREE.Mesh(this.geometry,this.materials.get(key));mesh.position.set(x,y,z);mesh.scale.set(w,h,d);mesh.renderOrder=10;parent.add(mesh);return mesh;
+  }
   buildWorld(){
     const g=this.environment;
     // A single road, with paired fortresses. X is the combat axis; Y is up.
@@ -95,14 +100,21 @@ export class ZhaoBattle3D {
       for(const x of [-.17,.17]){const leg=this.box(rig,x,.25+lift,0,.23,.48,.27,0x3c4c50);(g.userData.legs ||= []).push(leg);this.box(rig,x,.07+lift,-.07,.27,.15,.38,0x25353b);}
       this.box(rig,0,.66+lift,0,.63,.52,.37,tint);this.box(rig,0,.72+lift,-.22,.46,.32,.1,steel,true);
       this.box(rig,0,.44+lift,-.04,.67,.09,.42,0xb49a5c,true);
-      for(const x of [-.35,.35]){this.box(rig,x,.86+lift,0,.25,.22,.46,steel,true);this.box(rig,x,.63+lift,0,.18,.28,.2,tint);this.box(rig,x,.44+lift,-.01,.17,.14,.2,skin);}
+      // Shoulder pivots carry both the hand and weapon, so a strike reads as
+      // a whole arm movement rather than a detached weapon wobble.
+      for(const x of [-.35,.35]){
+        const arm=new THREE.Group();arm.position.set(x,.86+lift,0);rig.add(arm);
+        this.box(arm,0,0,0,.25,.22,.46,steel,true);this.box(arm,0,-.23,0,.18,.28,.2,tint);this.box(arm,0,-.42,-.01,.17,.14,.2,skin);
+        if(x>0)g.userData.attackArm=arm;else g.userData.offArm=arm;
+      }
       for(const x of [-.15,0,.15])this.box(rig,x,.65+lift,-.28,.08,.23,.025,0x667b83,true);
       this.box(rig,0,1.19+lift,0,.59,.55,.49,skin);
       this.box(rig,0,1.47+lift,.015,.64,.12,.53,enemy?0x4e535c:0x314345);
       this.box(rig,0,1.58+lift,.06,.2,.18,.2,general?0x192f34:tint);
       if(general){this.box(rig,0,.85+lift,.27,.62,.68,.09,tint);this.box(rig,0,.49+lift,.33,.7,.18,.1,tint);if(type!=='horse')this.box(rig,0,1.01+lift,-.26,.3,.25,.1,type==='bow'?0xe8e0c6:0x27353a);}
       else {this.box(rig,-.29,1.22+lift,.02,.08,.42,.48,steel,true);this.box(rig,.29,1.22+lift,.02,.08,.42,.48,steel,true);}
-      const weapon=new THREE.Group();weapon.position.set(.44,.58+lift,-.1);rig.add(weapon);g.userData.weapon=weapon;
+      const weapon=new THREE.Group();weapon.position.set(.09,-.28,-.1);g.userData.attackArm.add(weapon);g.userData.weapon=weapon;
+      g.userData.attackStyle=['bow','medic','healer','flanker'].includes(type)?'bow':['spear','horse','charger'].includes(type)?'thrust':'slash';
       if(type==='bow'||type==='medic'||type==='healer'){
         for(const z of [-.23,.23])this.box(weapon,0,.12,z,.08,.65,.09,0xb88e57);
         this.box(weapon,0,.43,0,.08,.08,.54,0xc7a15b);this.box(weapon,0,-.18,0,.08,.08,.54,0x8a653e);
@@ -111,6 +123,8 @@ export class ZhaoBattle3D {
         const blade=this.box(weapon,0,type==='blade'?.64:1.07,0,type==='blade'?.19:.12,.5,.065,0xdce9e5,true);blade.rotation.z=-.13;
         this.box(weapon,0,.42,0,.29,.08,.12,0xd3ae5e,true);
       }
+      const trail=new THREE.Group();weapon.add(trail);trail.visible=false;g.userData.strikeTrail=trail;
+      for(let i=0;i<3;i++)this.box(trail,0,.48+i*.18,.11+i*.10,.08,.28,.045,enemy?0xffbd86:0xffedb3,true);
       if(type==='shield'||type==='bulwark'||(type==='blade'&&!general)){
         g.userData.shields=[this.box(rig,-.46,.65+lift,-.27,.4,.7,.1,0x54727a,true),this.box(rig,-.46,.65+lift,-.34,.32,.055,.04,0xd7b365,true)];
       }
@@ -145,7 +159,10 @@ export class ZhaoBattle3D {
   actor(key,type,general,enemy){let obj=this.actors.get(key);const signature=type+general+enemy;
     if(obj&&obj.userData.signature!==signature){this.scene.remove(obj);this.actors.delete(key);obj=null;}
     if(!obj){obj=this.character(type,general,enemy);obj.userData.signature=signature;
-      {const bg=this.box(obj,0,2.1,0,.72,.065,.065,0x293e40);const health=this.box(obj,0,2.1,-.015,.7,.07,.07,enemy?0xe88b6a:0x6ae3be);obj.userData.health=health;}
+      const bar=new THREE.Group();bar.position.y=type==='horse'||type==='charger'?2.48:2.12;obj.add(bar);
+      this.flatBox(bar,0,0,0,.84,.105,.008,0x203b3d);
+      obj.userData.health=this.flatBox(bar,0,0,.012,.78,.055,.008,enemy?0xef987a:0x6ae3be);
+      obj.userData.healthBar=bar;
       this.actors.set(key,obj);this.scene.add(obj);}
     return obj;
   }
@@ -165,12 +182,36 @@ export class ZhaoBattle3D {
       obj.rotation.y=a.enemy?Math.PI/2-.22:-Math.PI/2+.22;
       obj.scale.setScalar((a.boss?1.22:1.05)*(a.hp<=0?Math.max(.05,a.defeatedTicks/5):1));
       const rig=obj.userData.rig;
-      rig.position.y=this.reduced||paused?0:a.hitFlash?.06:a.moving?Math.abs(Math.sin(time*10+a.id))*.04:0;
-      rig.rotation.z=this.reduced||paused?0:a.hitFlash?.13:0;
-      if(obj.userData.weapon)obj.userData.weapon.rotation.x=a.windup?-.6:a.attackFlash>0?.5:0;
+      const data=obj.userData, attacking=a.hp>0&&(Boolean(a.windup)||a.attackFlash>0);
+      // The engine commits contact after three ticks. Preparation occupies the
+      // first two, travel the third, then a held contact pose and recovery.
+      const phase=attacking?5-a.attackFlash+mix:5;
+      const ease=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
+      const prepare=ease(phase/2),swing=ease(phase-2),recover=ease((phase-3.4)/1.6);
+      const strike=attacking?swing*(1-recover):0;
+      const recoil=a.hp>0?Math.max(0,(a.hitFlash-mix)/3):0;
+      rig.position.y=this.reduced?0:a.moving?Math.abs(Math.sin(time*10+a.id))*.04:0;
+      rig.position.z=this.reduced?0:-strike*.22+recoil*.16;
+      rig.rotation.set(this.reduced?0:strike*.12-recoil*.22,0,0);
+      if(data.attackArm){
+        const thrust=data.attackStyle==='thrust',bow=data.attackStyle==='bow';
+        const rest=thrust?1.12:bow?.85:0;
+        // Local forward is -Z: positive shoulder X lifts the lowered hand,
+        // while the weapon's negative X rotation aims its tip forward.
+        data.attackArm.rotation.x=rest+(attacking?(thrust?-.25*prepare+.55*strike:bow?.28*prepare-.42*strike:-.9*prepare*(1-swing)+1.35*strike)*(1-recover):0);
+        data.weapon.rotation.x=thrust?-2.5:bow?-.85:attacking?-2.9*strike:0;
+        data.weapon.position.z=-.1+(thrust&&attacking?.24*prepare*(1-swing)-.5*strike:0);
+        data.offArm.rotation.x=bow?(attacking?.8+.5*prepare*(1-swing):.8):strike*.45;
+        data.strikeTrail.visible=!this.reduced&&attacking&&phase>=2.55&&phase<3.65&&data.attackStyle!=='bow';
+      }
       if(obj.userData.legs)for(const [i,leg] of obj.userData.legs.entries())leg.rotation.x=this.reduced||paused||!a.moving?0:Math.sin(time*10+i*Math.PI)*.25;
       if(a.bossKind==='bulwark')for(const shield of obj.userData.shields||[])shield.visible=a.shield;
-      obj.userData.health.scale.x=.7*Math.max(0,a.hp/a.maxHp);obj.userData.health.visible=a.hp>0&&a.hp<a.maxHp;
+      // Cancel the parent's yaw before matching the camera. Both the track
+      // and fill stay screen-horizontal even while the soldier faces left.
+      data.healthBar.quaternion.copy(obj.quaternion).invert().multiply(this.camera.quaternion);
+      const healthRatio=Math.max(0,Math.min(1,a.hp/a.maxHp));
+      data.health.scale.x=.78*healthRatio;data.health.position.x=-.39*(1-healthRatio);
+      data.healthBar.visible=a.hp>0;
       if(a.boss&&a.hp>0){const label='boss'+a.id;labelKeys.add(label);this.label(label,battle.bossLabel||'',worldX(x),2.5,0,'boss');}
     }
     for(const [key,obj] of this.actors)if(!active.has(key)){this.scene.remove(obj);this.actors.delete(key);}
