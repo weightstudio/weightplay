@@ -149,6 +149,7 @@ select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); bor
 /* The canonical Guide and screen shells are stateful; keep their hidden
    contract stronger than the shared Guide presentation rules. */
 [hidden] { display:none !important; }
+body.wp-logical-battle-active #resultPanel[hidden] { display:none !important; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
 /* Result scrolls inside the remaining Battle rectangle, never its header. */

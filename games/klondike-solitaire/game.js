@@ -1694,6 +1694,7 @@ const KL_I18N = {
     lossRecordedForCurrentBoard: false,
     resultShown: false,
     tableauFitTimer: null,
+    battleCanvasSyncCleanup: null,
     hintVisitedBoards: new Map(),
     interactionInputType: "unknown",
     dealTrail: {
@@ -3435,6 +3436,25 @@ const KL_I18N = {
     }, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS);
   }
 
+  function syncBattleCanvasAfterSceneCommit() {
+    state.battleCanvasSyncCleanup?.();
+    const sync = () => window.WeightPlayBattleCanvas?.sync?.();
+    sync();
+    const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+    if (!canvas) return;
+    const cleanup = () => {
+      canvas.removeEventListener("animationend", onAnimationEnd);
+      if (state.battleCanvasSyncCleanup === cleanup) state.battleCanvasSyncCleanup = null;
+    };
+    const onAnimationEnd = (event) => {
+      if (event.target !== canvas || event.animationName !== "kl-board-enter") return;
+      cleanup();
+      sync();
+    };
+    canvas.addEventListener("animationend", onAnimationEnd);
+    state.battleCanvasSyncCleanup = cleanup;
+  }
+
   function openBattle(inputType = "unknown", from = "main") {
     if (state.active) return;
     state.active = true;
@@ -3458,8 +3478,7 @@ const KL_I18N = {
     // The shared logical Canvas scaler normally settles on its next frame.
     // Apply the completed scene transaction now so the first Battle action
     // cannot be the event that changes the persistent control geometry.
-    window.WeightPlayBattleCanvas?.sync?.();
-    window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0);
+    syncBattleCanvasAfterSceneCommit();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
       if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -3487,8 +3506,9 @@ const KL_I18N = {
     window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync"));
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+    state.battleCanvasSyncCleanup?.();
+    state.battleCanvasSyncCleanup = null;
     window.WeightPlayBattleCanvas?.sync?.();
-    window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
       if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }

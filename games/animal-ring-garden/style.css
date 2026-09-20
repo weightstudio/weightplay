@@ -73,7 +73,7 @@ dialog.settings-dialog:not([open]){display:none!important}
 .main-progress{display:grid;place-items:center;min-height:40px;margin:4px 0;color:var(--mint);font-size:.86rem;font-weight:850}
 .main-content .fact-row{margin:7px 0 10px}
 #startBtn{height:52px;min-height:52px}
-.guide-card{width:min(calc(100% - 36px),860px);margin:0 auto 18px;padding:16px 18px;border:1px solid #ffffff26;border-radius:18px;background:#172943cc;color:var(--muted)}
+.guide-card{width:min(calc(100% - 36px),860px);margin:0 auto 18px;padding:16px 18px;border:1px solid #ffffff26;border-radius:var(--wp-ui-radius);background:#172943cc;color:var(--muted)}
 .guide-card h2{margin:0 0 10px;color:var(--text);font-size:1rem;text-align:center}
 .guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .guide-grid p{margin:0;padding:8px 10px;border:1px solid #49668c;border-radius:12px;font-size:.82rem;line-height:1.35;text-align:center}
