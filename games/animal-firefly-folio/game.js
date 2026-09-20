@@ -19,21 +19,21 @@
     { name: "name13", note: "note13", solution: ["east", "south", "west", "north"], mechanic: "no-backtrack" },
     { name: "name14", note: "note14", solution: ["south", "west", "north", "east"], mechanic: "no-backtrack" },
     { name: "name15", note: "note15", solution: ["west", "north", "east", "south"], mechanic: "no-backtrack", checkpoint: true },
-    { name: "name16", note: "note16", solution: ["north", "east", "south", "east", "north"], mechanic: "current", current: "east" },
-    { name: "name17", note: "note17", solution: ["east", "south", "west", "south", "east"], mechanic: "current", current: "south" },
-    { name: "name18", note: "note18", solution: ["south", "west", "north", "west", "south"], mechanic: "current", current: "west" },
-    { name: "name19", note: "note19", solution: ["west", "north", "east", "north", "west"], mechanic: "current", current: "north" },
-    { name: "name20", note: "note20", solution: ["north", "east", "south", "west", "east"], mechanic: "current", current: "east", checkpoint: true },
-    { name: "name21", note: "note21", solution: ["east", "north", "west", "south", "east"], mechanic: "beacon-order", beaconA: "east", beaconB: "west" },
-    { name: "name22", note: "note22", solution: ["north", "east", "south", "west", "north"], mechanic: "beacon-order", beaconA: "north", beaconB: "west" },
-    { name: "name23", note: "note23", solution: ["west", "south", "east", "north", "west"], mechanic: "beacon-order", beaconA: "west", beaconB: "east" },
-    { name: "name24", note: "note24", solution: ["south", "east", "north", "west", "south"], mechanic: "beacon-order", beaconA: "south", beaconB: "north" },
-    { name: "name25", note: "note25", solution: ["east", "south", "west", "north", "east"], mechanic: "beacon-order", beaconA: "east", beaconB: "north", checkpoint: true },
-    { name: "name26", note: "note26", solution: ["north", "east", "south", "west", "north", "east"], mechanic: "echo-signal", signal: "north" },
-    { name: "name27", note: "note27", solution: ["east", "south", "west", "north", "east", "south"], mechanic: "echo-signal", signal: "east" },
-    { name: "name28", note: "note28", solution: ["south", "west", "north", "east", "south", "west"], mechanic: "echo-signal", signal: "south" },
-    { name: "name29", note: "note29", solution: ["west", "north", "east", "south", "west", "north"], mechanic: "echo-signal", signal: "west" },
-    { name: "name30", note: "note30", solution: ["north", "east", "south", "west", "north", "east"], mechanic: "echo-signal", signal: "north", checkpoint: true },
+    { name: "name16", title: "Current Window 16", solution: ["north", "east", "south", "west", "north"], mechanic: "current-window", current: "east", currentAt: 1 },
+    { name: "name17", title: "Current Window 17", solution: ["east", "west", "south", "north", "east"], mechanic: "current-window", current: "south", currentAt: 2 },
+    { name: "name18", title: "Current Window 18", solution: ["west", "north", "east", "south", "north"], mechanic: "current-window", current: "west", currentAt: 0 },
+    { name: "name19", title: "Current Window 19", solution: ["west", "east", "south", "north", "west"], mechanic: "current-window", current: "north", currentAt: 3 },
+    { name: "name20", title: "Current Window 20", solution: ["north", "south", "west", "north", "east"], mechanic: "current-window", current: "east", currentAt: 4, checkpoint: true },
+    { name: "name21", title: "Beacon Gap 21", solution: ["east", "north", "west", "south", "east"], mechanic: "beacon-gap", beaconA: "east", beaconB: "west" },
+    { name: "name22", title: "Beacon Gap 22", solution: ["north", "east", "west", "south", "north"], mechanic: "beacon-gap", beaconA: "north", beaconB: "west" },
+    { name: "name23", title: "Beacon Gap 23", solution: ["west", "south", "east", "north", "west"], mechanic: "beacon-gap", beaconA: "west", beaconB: "east" },
+    { name: "name24", title: "Beacon Gap 24", solution: ["south", "east", "north", "west", "south"], mechanic: "beacon-gap", beaconA: "south", beaconB: "north" },
+    { name: "name25", title: "Beacon Gap 25", solution: ["east", "west", "north", "south", "east"], mechanic: "beacon-gap", beaconA: "east", beaconB: "north", checkpoint: true },
+    { name: "name26", title: "Echo Lantern 26", solution: ["north", "west", "east", "west", "east", "north"], mechanic: "echo-lantern", signal: "north", echo: "east" },
+    { name: "name27", title: "Echo Lantern 27", solution: ["east", "north", "south", "north", "south", "east"], mechanic: "echo-lantern", signal: "east", echo: "south" },
+    { name: "name28", title: "Echo Lantern 28", solution: ["south", "east", "west", "east", "west", "south"], mechanic: "echo-lantern", signal: "south", echo: "west" },
+    { name: "name29", title: "Echo Lantern 29", solution: ["west", "south", "north", "south", "north", "west"], mechanic: "echo-lantern", signal: "west", echo: "north" },
+    { name: "name30", title: "Echo Lantern 30", solution: ["north", "east", "west", "east", "west", "north"], mechanic: "echo-lantern", signal: "north", echo: "west", checkpoint: true },
   ];
   const canonicalLocale = (value) => {
     const raw = String(value || "").trim();
@@ -98,6 +98,31 @@
     $("mainProgress").textContent = `${t("stages")}: ${Math.min(state.unlocked, pages.length)} / ${pages.length}`;
     $("bestValue").textContent = readBest() || t("noBest");
   };
+  const localizedOr = (key, fallback) => {
+    const value = t(key);
+    return value === key ? fallback : value;
+  };
+  const directionList = (route) => route.map((direction) => t(direction)).join(" → ");
+  const pageTitle = (page, index) => localizedOr(page.name, page.title || `Folio arc ${Math.floor(index / 5) + 1} · page ${index + 1}`);
+  const pageNote = (page, index) => {
+    const localized = localizedOr(page.note, "");
+    if (localized) return localized;
+    const route = directionList(page.solution);
+    if (page.mechanic === "current-window") {
+      return `Current rule: place ${t(page.current)} on turn ${page.currentAt + 1}, exactly once; fill the other turns without ${t(page.current)}.`;
+    }
+    if (page.mechanic === "beacon-gap") {
+      return `Beacon rule: touch ${t(page.beaconA)}, leave one turn, then touch ${t(page.beaconB)}; fill the remaining turns freely.`;
+    }
+    if (page.mechanic === "echo-lantern") {
+      return `Echo rule: begin and end on ${t(page.signal)}; place ${t(page.echo)} then ${t(opposites[page.echo])} in the middle, with different second and fifth turns.`;
+    }
+    if (page.mechanic === "limited-compass") {
+      return `Compass rule: use only ${page.allowedDirections.map((direction) => t(direction)).join(", ")}. Route: ${route}.`;
+    }
+    if (page.mechanic === "no-backtrack") return `Trail rule: never reverse the last turn. Route: ${route}.`;
+    return `Trace the lantern route: ${route}.`;
+  };
   const show = (screen) => {
     state.screen = screen;
     document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
@@ -126,7 +151,7 @@
       button.className = `stage-card${isLocked ? " is-locked" : ""}${page.checkpoint ? " is-checkpoint" : ""}`;
       button.setAttribute("role", "listitem");
       button.disabled = isLocked;
-      button.innerHTML = `<strong>${t("round", { n: index + 1, total: pages.length })}</strong><span>${t(page.name)}</span><small>${state.cleared.includes(index) ? t("complete") : isLocked ? t("locked") : t("open")}${page.checkpoint ? ` · ${t("checkpoint")}` : ""}</small>`;
+      button.innerHTML = `<strong>${t("round", { n: index + 1, total: pages.length })}</strong><span>${pageTitle(page, index)}</span><small>${state.cleared.includes(index) ? t("complete") : isLocked ? t("locked") : t("open")}${page.checkpoint ? ` · ${t("checkpoint")}` : ""}</small>`;
       if (!isLocked) button.addEventListener("click", () => startPage(index));
       return button;
     }));
@@ -134,9 +159,9 @@
   const renderBattle = () => {
     const page = pages[state.page];
     const targetLength = page.solution.length;
-    $("roundName").textContent = t(page.name);
+    $("roundName").textContent = pageTitle(page, state.page);
     $("roundLabel").textContent = t("round", { n: state.page + 1, total: pages.length });
-    $("routeNote").textContent = t(page.note);
+    $("routeNote").textContent = pageNote(page, state.page);
     $("turnCount").textContent = t("turnCount", { n: state.route.length });
     $("route").replaceChildren(...state.route.map((direction) => {
       const chip = document.createElement("span");
@@ -183,15 +208,28 @@
   const clearRoute = () => { state.route = []; renderBattle(); announce("waiting"); };
   const ruleValid = (page) => {
     if (page.mechanic === "no-backtrack" && state.route.some((direction, index) => index > 0 && opposites[direction] === state.route[index - 1])) return false;
-    if (page.mechanic === "current" && !state.route.includes(page.current)) return false;
-    if (page.mechanic === "beacon-order" && state.route.indexOf(page.beaconA) > state.route.indexOf(page.beaconB)) return false;
-    if (page.mechanic === "echo-signal" && state.route[0] !== page.signal) return false;
+    if (page.mechanic === "current-window") {
+      if (state.route[page.currentAt] !== page.current) return false;
+      if (state.route.filter((direction) => direction === page.current).length !== 1) return false;
+    }
+    if (page.mechanic === "beacon-gap") {
+      const beaconA = state.route.indexOf(page.beaconA);
+      const beaconB = state.route.indexOf(page.beaconB);
+      if (beaconA < 0 || beaconB !== beaconA + 2) return false;
+    }
+    if (page.mechanic === "echo-lantern") {
+      if (state.route[0] !== page.signal || state.route[state.route.length - 1] !== page.signal) return false;
+      if (state.route[2] !== page.echo || state.route[3] !== opposites[page.echo]) return false;
+      if (state.route[1] === state.route[4]) return false;
+    }
     return true;
   };
   const checkRoute = () => {
     const page = pages[state.page];
     if (state.route.length < page.solution.length) { announce("incomplete"); return; }
-    const correct = JSON.stringify(state.route) === JSON.stringify(page.solution) && ruleValid(page);
+    const exactRoute = JSON.stringify(state.route) === JSON.stringify(page.solution);
+    const constraintRoute = ["current-window", "beacon-gap", "echo-lantern"].includes(page.mechanic);
+    const correct = (constraintRoute ? ruleValid(page) : exactRoute && ruleValid(page));
     if (!correct) { state.route = []; renderBattle(); announce("wrong"); return; }
     announce("correct");
     if (!state.cleared.includes(state.page)) state.cleared.push(state.page);

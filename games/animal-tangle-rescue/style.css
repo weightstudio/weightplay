@@ -104,6 +104,7 @@ select { min-height: 44px; max-width: 62%; padding: 8px 10px; border: 1px solid 
 .stage-card:hover:not(:disabled), .stage-card:focus-visible { border-color: var(--mint-strong); transform: translateY(-1px); }
 .stage-card:disabled { cursor: not-allowed; opacity: .55; }
 .stage-card.complete { border-color: #9bcfae; background: #f2fbf2; }
+.stage-card.checkpoint { border-left: 4px solid var(--gold); }
 .stage-number { color: var(--muted); font-size: .8rem; font-weight: 900; }
 .stage-card strong { font-size: 1rem; }
 .stage-card b { color: var(--mint-strong); font-size: .78rem; white-space: nowrap; }
@@ -128,7 +129,9 @@ select { min-height: 44px; max-width: 62%; padding: 8px 10px; border: 1px solid 
 .endpoint-card.selected { border-color: var(--berry); background: #fff1f0; box-shadow: 0 0 0 3px rgb(215 101 112 / 15%); }
 .endpoint-card small, .shelter-card small { display: block; color: var(--muted); font-size: .68rem; font-weight: 700; }
 .paw-chip { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 11px; color: white; font-size: 1rem; }
-.paw-0 { background: #5c9ccc; } .paw-1 { background: #ca7b62; } .paw-2 { background: #6ca878; } .paw-3 { background: #a56eae; }
+.paw-0 { background: #5c9ccc; } .paw-1 { background: #ca7b62; } .paw-2 { background: #6ca878; } .paw-3 { background: #a56eae; } .paw-4 { background: #3c79b8; } .paw-5 { background: #a45a49; }
+.endpoint-card.locked { cursor: not-allowed; opacity: .72; border-style: dashed; }
+.shelter-card.decoy { border-style: dotted; color: var(--muted); background: rgb(247 250 247 / 78%); }
 .shelter-card { display: flex; align-items: center; justify-content: flex-end; gap: 7px; padding: 7px 10px; border: 1px dashed #aac9b8; color: var(--ink); text-align: right; background: rgb(255 255 255 / 72%); }
 .shelter-icon { font-size: 1.25rem; }
 .board-dot { width: 12px; height: 12px; margin: auto; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 5px rgb(232 184 77 / 18%); }

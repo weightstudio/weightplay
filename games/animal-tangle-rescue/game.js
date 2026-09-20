@@ -3,12 +3,53 @@
 
   const localeMap = window.TANGLE_RESCUE_LOCALES || {};
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  const animals = ["animalFox", "animalBadger", "animalOtter", "animalHare"];
-  const animalColors = ["#5c9ccc", "#ca7b62", "#6ca878", "#a56eae"];
+  const tokenMeta = {
+    foxA: { copy: "animalFox", color: "#5c9ccc", suffix: " A" },
+    badgerA: { copy: "animalBadger", color: "#ca7b62", suffix: " A" },
+    otterA: { copy: "animalOtter", color: "#6ca878", suffix: " A" },
+    hareA: { copy: "animalHare", color: "#a56eae", suffix: " A" },
+    foxB: { copy: "animalFox", color: "#3c79b8", suffix: " B" },
+    badgerB: { copy: "animalBadger", color: "#a45a49", suffix: " B" },
+  };
+  // Authored v6 campaign: six arcs and five boards per arc. The later arcs
+  // deliberately use repeated animal families with A/B endpoint identities so
+  // the six-endpoint permutation remains readable in every existing locale.
   const boards = [
-    { name: "boardOne", hint: "boardHint1", target: ["animalOtter", "animalHare", "animalFox", "animalBadger"], start: ["animalFox", "animalBadger", "animalOtter", "animalHare"] },
-    { name: "boardTwo", hint: "boardHint2", target: ["animalBadger", "animalFox", "animalHare", "animalOtter"], start: ["animalHare", "animalOtter", "animalFox", "animalBadger"] },
-    { name: "boardThree", hint: "boardHint3", target: ["animalHare", "animalOtter", "animalBadger", "animalFox"], start: ["animalBadger", "animalHare", "animalFox", "animalOtter"] },
+    { arc: 1, checkpoint: false, title: "Creek braid", hint: "Read four endpoints before making the first rescue swap.", target: ["foxA", "badgerA", "otterA", "hareA"], start: ["otterA", "hareA", "foxA", "badgerA"] },
+    { arc: 1, checkpoint: false, title: "Fern turn", hint: "A second four-endpoint braid needs a different swap order.", target: ["badgerA", "foxA", "hareA", "otterA"], start: ["hareA", "otterA", "badgerA", "foxA"] },
+    { arc: 1, checkpoint: false, title: "Moon crossing", hint: "Two exchanges untangle the crossing paths.", target: ["hareA", "otterA", "badgerA", "foxA"], start: ["badgerA", "hareA", "foxA", "otterA"] },
+    { arc: 1, checkpoint: false, title: "Quiet shelter", hint: "The shelter order is not the same as the endpoint order.", target: ["foxA", "otterA", "badgerA", "hareA"], start: ["badgerA", "foxA", "hareA", "otterA"] },
+    { arc: 1, checkpoint: true, title: "First rescue checkpoint", hint: "Complete the first four-endpoint rescue arc.", target: ["otterA", "foxA", "hareA", "badgerA"], start: ["hareA", "badgerA", "otterA", "foxA"] },
+
+    { arc: 2, checkpoint: false, title: "Fifth trail", hint: "A fifth endpoint adds one more route to read.", target: ["foxA", "badgerA", "otterA", "hareA", "foxB"], start: ["foxB", "otterA", "foxA", "badgerA", "hareA"] },
+    { arc: 2, checkpoint: false, title: "Locked fern", hint: "The second endpoint is already safe; leave it untouched.", lockedRows: [1], target: ["badgerA", "foxB", "hareA", "otterA", "foxA"], start: ["hareA", "foxB", "badgerA", "foxA", "otterA"] },
+    { arc: 2, checkpoint: false, title: "Long crossing", hint: "Follow the longer route before checking the five shelters.", target: ["foxB", "otterA", "badgerA", "foxA", "hareA"], start: ["badgerA", "foxA", "hareA", "otterA", "foxB"] },
+    { arc: 2, checkpoint: false, title: "Safe first row", hint: "The first row is solved; untangle the remaining four.", lockedRows: [0], target: ["hareA", "foxA", "foxB", "badgerA", "otterA"], start: ["hareA", "otterA", "foxA", "foxB", "badgerA"] },
+    { arc: 2, checkpoint: true, title: "Fifth-trail checkpoint", hint: "Finish the fifth-endpoint rescue without disturbing safe rows.", target: ["otterA", "hareA", "badgerA", "foxB", "foxA"], start: ["foxA", "badgerA", "otterA", "hareA", "foxB"] },
+
+    { arc: 3, checkpoint: false, title: "Hidden shelter", hint: "One shelter is a decoy; infer its animal from the routes.", decoyRows: [2], target: ["foxB", "badgerA", "otterA", "hareA", "foxA"], start: ["otterA", "foxA", "foxB", "badgerA", "hareA"] },
+    { arc: 3, checkpoint: false, title: "Bramble pair", hint: "Five animals cross twice before reaching their shelters.", target: ["badgerA", "otterA", "foxA", "foxB", "hareA"], start: ["foxB", "hareA", "badgerA", "otterA", "foxA"] },
+    { arc: 3, checkpoint: false, title: "Locked moon", hint: "The first row is complete; solve around the locked shelter.", lockedRows: [0], decoyRows: [3], target: ["hareA", "foxB", "badgerA", "otterA", "foxA"], start: ["hareA", "otterA", "foxA", "badgerA", "foxB"] },
+    { arc: 3, checkpoint: false, title: "Two decoys", hint: "Two shelters hide their labels; the endpoints reveal the route.", decoyRows: [1, 4], target: ["foxA", "hareA", "foxB", "badgerA", "otterA"], start: ["badgerA", "foxA", "otterA", "foxB", "hareA"] },
+    { arc: 3, checkpoint: true, title: "Decoy checkpoint", hint: "Complete the hidden-shelter arc with every path connected.", decoyRows: [0, 3], target: ["otterA", "foxB", "foxA", "hareA", "badgerA"], start: ["foxA", "badgerA", "otterA", "foxB", "hareA"] },
+
+    { arc: 4, checkpoint: false, title: "Sixth endpoint", hint: "Six endpoints make the route graph wider.", target: ["foxA", "badgerA", "otterA", "hareA", "foxB", "badgerB"], start: ["badgerB", "foxB", "foxA", "otterA", "hareA", "badgerA"] },
+    { arc: 4, checkpoint: false, title: "Fixed fern", hint: "The second shelter is already correct; keep it fixed.", lockedRows: [1], decoyRows: [4], target: ["badgerB", "foxA", "hareA", "otterA", "badgerA", "foxB"], start: ["hareA", "foxA", "badgerB", "foxB", "otterA", "badgerA"] },
+    { arc: 4, checkpoint: false, title: "Six-way crossing", hint: "Untangle six routes without relying on a single cycle.", target: ["otterA", "badgerB", "foxB", "foxA", "badgerA", "hareA"], start: ["foxB", "hareA", "badgerA", "otterA", "foxA", "badgerB"] },
+    { arc: 4, checkpoint: false, title: "Moon lock", hint: "The first shelter is safe while two routes cross behind it.", lockedRows: [0], decoyRows: [1, 3], target: ["hareA", "foxB", "badgerA", "badgerB", "otterA", "foxA"], start: ["hareA", "otterA", "badgerB", "foxA", "foxB", "badgerA"] },
+    { arc: 4, checkpoint: true, title: "Six-endpoint checkpoint", hint: "Finish the first full six-endpoint rescue arc.", target: ["foxB", "otterA", "badgerB", "hareA", "foxA", "badgerA"], start: ["badgerA", "foxA", "foxB", "otterA", "hareA", "badgerB"] },
+
+    { arc: 5, checkpoint: false, title: "Shelter shuffle", hint: "Two decoy shelters make the swap order less obvious.", decoyRows: [0, 5], target: ["badgerA", "foxA", "badgerB", "otterA", "foxB", "hareA"], start: ["foxB", "hareA", "badgerA", "foxA", "badgerB", "otterA"] },
+    { arc: 5, checkpoint: false, title: "Long fern braid", hint: "Six routes must be resolved while every row remains selectable.", target: ["otterA", "foxB", "hareA", "badgerA", "foxA", "badgerB"], start: ["foxA", "badgerA", "otterA", "badgerB", "foxB", "hareA"] },
+    { arc: 5, checkpoint: false, title: "Locked moon pair", hint: "The first row is safe; a decoy hides one target in the middle.", lockedRows: [0], decoyRows: [2, 4], target: ["foxA", "badgerB", "otterA", "foxB", "badgerA", "hareA"], start: ["foxA", "hareA", "badgerA", "otterA", "badgerB", "foxB"] },
+    { arc: 5, checkpoint: false, title: "Far shelters", hint: "Keep the endpoints readable while the far shelters swap places.", decoyRows: [1, 5], target: ["hareA", "otterA", "foxA", "badgerB", "foxB", "badgerA"], start: ["badgerB", "foxB", "hareA", "badgerA", "foxA", "otterA"] },
+    { arc: 5, checkpoint: true, title: "Shuffle checkpoint", hint: "A clean six-way permutation completes the fifth arc.", target: ["badgerB", "otterA", "foxB", "foxA", "hareA", "badgerA"], start: ["foxA", "badgerA", "otterA", "hareA", "badgerB", "foxB"] },
+
+    { arc: 6, checkpoint: false, title: "Final creek", hint: "The last arc combines six endpoints and a hidden shelter.", decoyRows: [2], target: ["foxA", "foxB", "badgerA", "otterA", "badgerB", "hareA"], start: ["hareA", "badgerB", "foxA", "foxB", "badgerA", "otterA"] },
+    { arc: 6, checkpoint: false, title: "Final locked fern", hint: "Leave the first shelter safe while solving the five remaining rows.", lockedRows: [0], decoyRows: [3, 4], target: ["badgerA", "hareA", "foxB", "badgerB", "otterA", "foxA"], start: ["badgerA", "foxA", "otterA", "hareA", "foxB", "badgerB"] },
+    { arc: 6, checkpoint: false, title: "Bramble finale", hint: "Every route crosses; use the endpoint colors as your guide.", decoyRows: [0, 5], target: ["otterA", "badgerB", "foxA", "hareA", "foxB", "badgerA"], start: ["foxB", "otterA", "badgerA", "foxA", "badgerB", "hareA"] },
+    { arc: 6, checkpoint: false, title: "Last moon turn", hint: "A final locked row narrows the valid rescue sequence.", lockedRows: [1], target: ["hareA", "foxA", "badgerB", "foxB", "badgerA", "otterA"], start: ["badgerA", "foxA", "hareA", "otterA", "foxB", "badgerB"] },
+    { arc: 6, checkpoint: true, title: "Taro's rescue finale", hint: "Connect every endpoint and open all six shelters.", decoyRows: [1, 4], target: ["foxB", "badgerB", "otterA", "foxA", "hareA", "badgerA"], start: ["badgerA", "foxA", "foxB", "badgerB", "otterA", "hareA"] },
   ];
   const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: true, best: {}, statusKey: "ready", statusVars: {}, statusError: false };
   const $ = (id) => document.getElementById(id);
@@ -24,10 +65,15 @@
   };
   const bestKey = () => "weightplay-animal-tangle-rescue-best-" + state.board;
   const bestForBoard = () => Number(safeGet(bestKey(), "0")) || 0;
-  const titleForAnimal = (animalKey) => copy(animalKey);
-  const indexForAnimal = (animalKey) => animals.indexOf(animalKey);
+  const titleForAnimal = (animalKey) => {
+    const meta = tokenMeta[animalKey] || { copy: animalKey, suffix: "" };
+    return copy(meta.copy) + (meta.suffix || "");
+  };
+  const indexForAnimal = (animalKey) => Object.keys(tokenMeta).indexOf(animalKey);
+  const lockedRows = (board = boards[state.board]) => board.lockedRows || [];
+  const decoyRows = (board = boards[state.board]) => board.decoyRows || [];
   const analytics = (eventName, details = {}) => {
-    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v5", ...details }); } catch (_error) {}
+    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v6", ...details }); } catch (_error) {}
     window.__tangleRescueEvents = window.__tangleRescueEvents || [];
     window.__tangleRescueEvents.push({ eventName, ...details });
   };
@@ -63,7 +109,7 @@
     if (screen === "battle") renderBattle();
     window.scrollTo(0, 0);
   };
-  const routeColor = (animalKey) => animalColors[indexForAnimal(animalKey)] || animalColors[0];
+  const routeColor = (animalKey) => tokenMeta[animalKey]?.color || "#5c9ccc";
   const routePath = (fromRow, toRow, width, height) => {
     const left = 112;
     const right = width - 112;
@@ -75,17 +121,23 @@
   const renderBoard = () => {
     const board = boards[state.board];
     const diagram = $("boardDiagram");
-    const height = 292;
+    const height = Math.max(292, state.current.length * 62 + 16);
     const width = Math.max(diagram.clientWidth || 640, 320);
+    diagram.style.minHeight = height + "px";
     const paths = state.current.map((animalKey, row) => {
       const targetRow = board.target.indexOf(animalKey);
       return `<path d="${routePath(row, targetRow, width, height)}" stroke="${routeColor(animalKey)}"></path>`;
     }).join("");
     const rows = state.current.map((animalKey, row) => {
-      const animalIndex = indexForAnimal(animalKey);
+      const animalIndex = Math.max(0, indexForAnimal(animalKey));
       const selected = state.selected === row;
       const targetKey = board.target[row];
-      return `<div class="board-row"><button class="endpoint-card${selected ? " selected" : ""}" type="button" data-endpoint="${row}" aria-pressed="${selected}" aria-label="${copy("swapName", { number: row + 1 })}: ${titleForAnimal(animalKey)}${selected ? " — " + copy("selected") : ""}"><span class="paw-chip paw-${animalIndex}">●</span><span><strong>${titleForAnimal(animalKey)}</strong><small>${copy("current")}</small></span></button><span class="board-dot" aria-hidden="true"></span><div class="shelter-card"><span><strong>${titleForAnimal(targetKey)}</strong><small>${copy("shelter", { number: row + 1 })}</small></span><span class="shelter-icon" aria-hidden="true">⌂</span></div></div>`;
+      const locked = lockedRows(board).includes(row);
+      const decoy = decoyRows(board).includes(row);
+      const shelter = decoy
+        ? `<span><strong>?</strong><small>${copy("shelter", { number: row + 1 })}</small></span>`
+        : `<span><strong>${titleForAnimal(targetKey)}</strong><small>${copy("shelter", { number: row + 1 })}</small></span>`;
+      return `<div class="board-row${locked ? " locked-row" : ""}"><button class="endpoint-card${selected ? " selected" : ""}${locked ? " locked" : ""}" type="button" data-endpoint="${row}" aria-pressed="${selected}" aria-label="${copy("swapName", { number: row + 1 })}: ${titleForAnimal(animalKey)}${locked ? " — locked" : ""}${selected ? " — " + copy("selected") : ""}"${locked ? " disabled aria-disabled=\"true\"" : ""}><span class="paw-chip paw-${animalIndex}">●</span><span><strong>${titleForAnimal(animalKey)}</strong><small>${locked ? "LOCKED" : copy("current")}</small></span></button><span class="board-dot" aria-hidden="true"></span><div class="shelter-card${decoy ? " decoy" : ""}">${shelter}<span class="shelter-icon" aria-hidden="true">${decoy ? "?" : "⌂"}</span></div></div>`;
     }).join("");
     diagram.innerHTML = `<svg class="route-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">${paths}</svg>${rows}`;
     diagram.querySelectorAll("[data-endpoint]").forEach((button) => button.addEventListener("click", () => selectEndpoint(Number(button.dataset.endpoint))));
@@ -94,15 +146,25 @@
     $("stageList").innerHTML = boards.map((board, index) => {
       const done = state.completed.includes(index);
       const unlocked = index === 0 || state.completed.includes(index - 1);
-      return `<button class="stage-card${done ? " complete" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span><strong>${copy(board.name)}</strong><small>${copy(board.hint)}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></button>`;
+      const titleKey = "boardTitle" + (index + 1);
+      const hintKey = "boardHint" + (index + 1);
+      const localizedTitle = copy(titleKey);
+      const localizedHint = copy(hintKey);
+      const title = localizedTitle === titleKey ? board.title : localizedTitle;
+      const hint = localizedHint === hintKey ? board.hint : localizedHint;
+      return `<button class="stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span><strong>Arc ${board.arc} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></button>`;
     }).join("");
     $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startBoard(Number(button.dataset.stage))));
   };
   const renderBattle = () => {
     const board = boards[state.board];
     $("battleHeading").textContent = copy("round", { number: state.board + 1, total: boards.length });
-    $("roundHint").textContent = `${copy(board.name)} · ${copy(board.hint)}`;
-    $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length });
+    const titleKey = "boardTitle" + (state.board + 1);
+    const hintKey = "boardHint" + (state.board + 1);
+    const localizedTitle = copy(titleKey);
+    const localizedHint = copy(hintKey);
+    $("roundHint").textContent = `${localizedTitle === titleKey ? board.title : localizedTitle} · ${localizedHint === hintKey ? board.hint : localizedHint}`;
+    $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length }).replaceAll("/3", "/" + boards.length);
     $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
     $("battleStatus").classList.toggle("error", state.statusError);
     renderBoard();
@@ -113,7 +175,9 @@
     const best = !oldBest || moves < oldBest ? moves : oldBest;
     if (!oldBest || moves < oldBest) safeSet(bestKey(), String(moves));
     $("resultHeading").textContent = copy(final ? "finalTitle" : "resultTitle");
-    $("resultText").textContent = copy(final ? "finalText" : "resultText");
+    // The legacy finalText says “three”; v6 has thirty boards, so use neutral
+    // result copy for the final board as well.
+    $("resultText").textContent = copy("resultText");
     $("resultStats").textContent = copy("stats", { moves: copy("placements", { count: moves }), best: copy("placements", { count: best }) });
     const canNext = state.board + 1 < boards.length && state.completed.includes(state.board);
     $("nextStageBtn").disabled = !canNext;
@@ -122,6 +186,7 @@
     setScreen("result");
   };
   const selectEndpoint = (row) => {
+    if (lockedRows().includes(row)) return;
     if (state.selected < 0) {
       state.selected = row;
       state.statusKey = "selectSecond";
@@ -181,7 +246,7 @@
     $("soundBtn").setAttribute("aria-pressed", String(state.sound));
     $("battleSoundBtn").setAttribute("aria-label", copy("soundOn"));
     $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("mainProgress").textContent = copy("progress", { count: state.completed.length });
+    $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + boards.length);
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
   };

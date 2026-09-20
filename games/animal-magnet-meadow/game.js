@@ -20,9 +20,9 @@
 
     { arc: 3, checkpoint: false, title: "Anchored partner", hint: "The anchored moonstone never moves.", mechanic: "fixed anchor", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["b"], initial: { a: 0, b: 5 }, target: { a: 2, b: 5 } },
     { arc: 3, checkpoint: false, title: "Anchored lead", hint: "Move the free stone around the fixed lead.", mechanic: "fixed anchor", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["a"], initial: { a: 1, b: 5 }, target: { a: 1, b: 3 } },
-    { arc: 3, checkpoint: false, title: "Anchor turn", hint: "Two pulls bring the free stone back beside its anchor.", mechanic: "anchor turn", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["b"], initial: { a: 4, b: 2 }, target: { a: 2, b: 2 } },
+    { arc: 3, checkpoint: false, title: "Anchor turn", hint: "Pull the free stone back beside its anchor.", mechanic: "anchor turn", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["b"], initial: { a: 4, b: 2 }, target: { a: 1, b: 2 } },
     { arc: 3, checkpoint: false, title: "Wide anchor", hint: "Use the wider board without disturbing the anchor.", mechanic: "wide anchor", relation: "pull", boardSize: 8, stones: ["a", "b"], anchors: ["a"], initial: { a: 6, b: 1 }, target: { a: 6, b: 4 } },
-    { arc: 3, checkpoint: true, title: "Anchor checkpoint", hint: "Keep the anchor safe through three careful pulls.", mechanic: "checkpoint anchor", relation: "pull", boardSize: 8, stones: ["a", "b"], anchors: ["b"], initial: { a: 0, b: 3 }, target: { a: 3, b: 3 } },
+    { arc: 3, checkpoint: true, title: "Anchor checkpoint", hint: "Keep the anchor safe through a careful pull.", mechanic: "checkpoint anchor", relation: "pull", boardSize: 8, stones: ["a", "b"], anchors: ["b"], initial: { a: 0, b: 4 }, target: { a: 3, b: 4 } },
 
     { arc: 4, checkpoint: false, title: "Quiet obstacle", hint: "The blocked dock cannot receive a moonstone.", mechanic: "blocked dock", relation: "pull", boardSize: 7, stones: ["a", "b"], blocked: [2], initial: { a: 0, b: 4 }, target: { a: 1, b: 5 } },
     { arc: 4, checkpoint: false, title: "Twin barriers", hint: "Read the open route before making a push.", mechanic: "twin barriers", relation: "push", boardSize: 8, stones: ["a", "b"], blocked: [3, 4], initial: { a: 6, b: 1 }, target: { a: 7, b: 0 } },
@@ -62,9 +62,13 @@
     state.statusStone = stoneId;
     $("battleStatus").textContent = battleStatusText();
   };
-  const samePosition = (first, second) => first.a === second.a && first.b === second.b;
+  const samePosition = (first, second) => Object.keys(second).every((key) => first[key] === second[key]);
   const currentRound = () => rounds[state.round];
-  const bestTotal = () => Number(safeGet("weightplay-animal-magnet-meadow-best", "0")) || 0;
+  const boardSize = (round = currentRound()) => round.boardSize || 6;
+  const stoneIds = (round = currentRound()) => round.stones || Object.keys(round.initial);
+  const anchors = (round = currentRound()) => round.anchors || [];
+  const blocked = (round = currentRound()) => round.blocked || [];
+  const bestTotal = () => Number(safeGet(bestKey, "0")) || 0;
   const showToast = (message) => { $("toast").textContent = message; $("toast").classList.add("visible"); window.clearTimeout(showToast.timer); showToast.timer = window.setTimeout(() => $("toast").classList.remove("visible"), 1800); };
   const applyText = () => {
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
@@ -72,7 +76,7 @@
     $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff");
     $("battleSoundBtn").setAttribute("aria-label", copy("sound"));
     $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("mainProgress").textContent = copy("progress", { count: state.completed.length });
+    $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
     if (state.screen === "battle") $("battleStatus").textContent = battleStatusText();
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
@@ -98,27 +102,58 @@
       const done = state.completed.includes(index);
       const unlocked = stageUnlocked(index);
       const disabled = unlocked ? "" : " disabled";
-      return "<button class=\"stage-card" + (done ? " complete" : "") + "\" type=\"button\" data-stage=\"" + index + "\"" + disabled + "><span class=\"stage-number\">" + copy("round", { number: index + 1, total: rounds.length }) + "</span><strong>" + copy("roundTitle" + (index + 1)) + "</strong><span>" + copy("stageHint" + (index + 1)) + "</span><b>" + (done ? copy("completed") : unlocked ? copy("readyStage") : "—") + "</b></button>";
+      const titleKey = "roundTitle" + (index + 1);
+      const hintKey = "stageHint" + (index + 1);
+      const localizedTitle = copy(titleKey);
+      const localizedHint = copy(hintKey);
+      const title = localizedTitle === titleKey ? round.title : localizedTitle;
+      const hint = localizedHint === hintKey ? round.hint : localizedHint;
+      return "<button class=\"stage-card" + (done ? " complete" : "") + (round.checkpoint ? " checkpoint" : "") + "\" type=\"button\" data-stage=\"" + index + "\"" + disabled + "><span class=\"stage-number\">" + copy("round", { number: index + 1, total: rounds.length }) + "</span><strong>Arc " + round.arc + " · " + title + "</strong><span>" + hint + "</span><b>" + (done ? copy("completed") : unlocked ? copy("readyStage") : "—") + "</b></button>";
     }).join("");
     $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startRound(Number(button.dataset.stage))));
   };
   const slotLabel = (index) => copy("slot", { number: index + 1 });
-  const stoneLabel = (id) => id === "a" ? copy("stoneA") : copy("stoneB");
+  const stoneLabel = (id) => {
+    const key = "stone" + String(id).toUpperCase();
+    const localized = copy(key);
+    return localized === key ? "Moonstone " + String(id).toUpperCase() : localized;
+  };
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
   const getSlotFromPointer = (event) => {
     const rect = $("magnetTrack").getBoundingClientRect();
     const ratio = clamp((event.clientX - rect.left) / rect.width, 0, 0.999);
-    return Math.floor(ratio * 6);
+    return Math.floor(ratio * boardSize());
+  };
+  const activeRelation = (round = currentRound()) => {
+    if (round.relation !== "flip") return round.relation;
+    return state.moves % 2 === 0 ? "pull" : "push";
+  };
+  const validPositionSet = (positions, round = currentRound()) => {
+    const values = Object.values(positions);
+    return values.every((value) => value >= 0 && value < boardSize(round) && !blocked(round).includes(value)) && new Set(values).size === values.length;
   };
   const commitMove = (id, destination) => {
     const round = currentRound();
     const from = state.positions[id];
     if (destination === from) return;
+    if (anchors(round).includes(id) || blocked(round).includes(destination)) {
+      setBattleStatus("incorrect");
+      return;
+    }
     const direction = Math.sign(destination - from);
-    state.positions[id] = destination;
-    const other = id === "a" ? "b" : "a";
-    const response = round.relation === "pull" ? direction : -direction;
-    state.positions[other] = clamp(state.positions[other] + response, 0, 5);
+    const response = activeRelation(round) === "pull" ? direction : -direction;
+    const next = { ...state.positions, [id]: destination };
+    let chainIndex = 0;
+    stoneIds(round).forEach((other) => {
+      if (other === id || anchors(round).includes(other)) return;
+      chainIndex += 1;
+      next[other] = clamp(next[other] + response * chainIndex, 0, boardSize(round) - 1);
+    });
+    if (!validPositionSet(next, round)) {
+      setBattleStatus("incorrect");
+      return;
+    }
+    state.positions = next;
     state.moves += 1;
     state.selected = id;
     setBattleStatus("moved", id);
@@ -126,11 +161,13 @@
   };
   const renderStones = () => {
     const layer = $("stoneLayer");
-    layer.innerHTML = ["a", "b"].map((id) => {
+    const round = currentRound();
+    layer.innerHTML = stoneIds(round).map((id) => {
       const selected = state.selected === id;
       const position = state.positions[id];
-      const left = ((position + 0.5) / 6) * 100;
-      return "<button class=\"moonstone stone-" + id + (selected ? " selected" : "") + "\" type=\"button\" data-stone=\"" + id + "\" style=\"left:" + left + "%\" aria-label=\"" + stoneLabel(id) + "\" aria-pressed=\"" + selected + "\"><span>" + (id === "a" ? "A" : "B") + "</span></button>";
+      const left = ((position + 0.5) / boardSize(round)) * 100;
+      const fixed = anchors(round).includes(id);
+      return "<button class=\"moonstone stone-" + id + (selected ? " selected" : "") + (fixed ? " anchored" : "") + "\" type=\"button\" data-stone=\"" + id + "\" style=\"left:" + left + "%\" aria-label=\"" + stoneLabel(id) + "\" aria-pressed=\"" + selected + "\"" + (fixed ? " disabled aria-disabled=\"true\"" : "") + "><span>" + String(id).toUpperCase() + "</span></button>";
     }).join("");
     layer.querySelectorAll("[data-stone]").forEach((stone) => {
       const id = stone.dataset.stone;
@@ -145,7 +182,7 @@
       stone.addEventListener("pointermove", (event) => {
         if (!state.drag || state.drag.id !== id) return;
         state.drag.destination = getSlotFromPointer(event);
-        stone.style.left = (((state.drag.destination + 0.5) / 6) * 100) + "%";
+        stone.style.left = (((state.drag.destination + 0.5) / boardSize()) * 100) + "%";
       });
       stone.addEventListener("pointerup", (event) => {
         if (!state.drag || state.drag.id !== id) return;
@@ -160,18 +197,27 @@
   const renderBattle = () => {
     const round = currentRound();
     $("battleHeading").textContent = copy("round", { number: state.round + 1, total: rounds.length });
-    $("roundHint").textContent = copy("stageHint" + (state.round + 1));
-    $("relationBadge").textContent = copy(round.relation === "pull" ? "relationPull" : "relationPush");
-    $("targetText").textContent = "A" + (round.target.a + 1) + " · B" + (round.target.b + 1);
+    const hintKey = "stageHint" + (state.round + 1);
+    const localizedHint = copy(hintKey);
+    $("roundHint").textContent = (localizedHint === hintKey ? round.hint : localizedHint) + " · " + round.mechanic;
+    const relation = activeRelation(round);
+    $("relationBadge").textContent = copy(relation === "pull" ? "relationPull" : "relationPush") + (round.relation === "flip" ? " · FLIP" : "");
+    $("targetText").textContent = stoneIds(round).map((id) => String(id).toUpperCase() + (round.target[id] + 1)).join(" · ");
     $("moveText").textContent = copy("move", { count: state.moves });
     $("battleStatus").textContent = battleStatusText();
-    $("slotGrid").innerHTML = Array.from({ length: 6 }, (_, index) => "<button class=\"slot\" type=\"button\" data-slot=\"" + index + "\" aria-label=\"" + slotLabel(index) + "\"><span>" + (index + 1) + "</span></button>").join("");
+    const slotGrid = $("slotGrid");
+    slotGrid.style.gridTemplateColumns = "repeat(" + boardSize(round) + ", minmax(0, 1fr))";
+    slotGrid.innerHTML = Array.from({ length: boardSize(round) }, (_, index) => {
+      const isBlocked = blocked(round).includes(index);
+      return "<button class=\"slot" + (isBlocked ? " blocked" : "") + "\" type=\"button\" data-slot=\"" + index + "\" aria-label=\"" + slotLabel(index) + "\"" + (isBlocked ? " disabled aria-disabled=\"true\"" : "") + "><span>" + (isBlocked ? "×" : index + 1) + "</span></button>";
+    }).join("");
     $("slotGrid").querySelectorAll("[data-slot]").forEach((slot) => slot.addEventListener("click", () => commitMove(state.selected, Number(slot.dataset.slot))));
+    $("legend").innerHTML = stoneIds(round).map((id) => "<span class=\"legend-stone stone-" + id + "\">" + stoneLabel(id) + (anchors(round).includes(id) ? " · fixed" : "") + "</span>").join("");
     renderStones();
     $("resultPanel").hidden = true;
     $("battlePanel").hidden = false;
   };
-  const resetRound = () => { state.positions = { ...currentRound().initial }; state.moves = 0; state.selected = "a"; setBattleStatus("ready"); renderBattle(); };
+  const resetRound = () => { const round = currentRound(); state.positions = { ...round.initial }; state.moves = 0; state.selected = stoneIds(round).find((id) => !anchors(round).includes(id)) || stoneIds(round)[0]; setBattleStatus("ready"); renderBattle(); };
   const showResult = () => {
     const final = state.round === rounds.length - 1;
     const total = state.moves;
@@ -181,11 +227,14 @@
     $("battlePanel").hidden = true;
     $("resultPanel").hidden = false;
     $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle");
-    $("resultText").textContent = copy(final ? "finishText" : "resultText");
+    // Keep the result copy locale-safe: the legacy finishText says “three” and
+    // predates the v8 thirty-board campaign, so the neutral result copy is used
+    // for both intermediate and final boards.
+    $("resultText").textContent = copy("resultText");
     $("resultStats").textContent = copy("stats", { moves: total, best: copy("best", { count: final ? Math.min(total, previousBest || total) : bestTotal() || copy("noBest") }) });
     $("resultPrimaryBtn").textContent = copy(final ? "replay" : "next");
     $("resultPrimaryBtn").onclick = () => final ? startRound(0) : startRound(state.round + 1);
-    $("mainProgress").textContent = copy("progress", { count: state.completed.length });
+    $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
   };
   const checkRound = () => {
     if (samePosition(state.positions, currentRound().target)) {
@@ -200,7 +249,7 @@
     state.round = clamp(index, 0, rounds.length - 1);
     state.positions = { ...rounds[state.round].initial };
     state.moves = 0;
-    state.selected = "a";
+    state.selected = stoneIds(rounds[state.round]).find((id) => !anchors(rounds[state.round]).includes(id)) || stoneIds(rounds[state.round])[0];
     setBattleStatus("ready");
     setScreen("battle");
   };
