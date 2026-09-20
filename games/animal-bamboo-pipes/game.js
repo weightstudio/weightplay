@@ -425,9 +425,12 @@
   function applyLocale() {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    window.BAMBOO_GUIDE?.apply?.(locale);
     document.title = `${text("title")} | WeightPlay`;
     document.querySelectorAll("[data-bamboo-t]").forEach(node => { node.textContent = text(node.dataset.bambooT); });
+    // The FAQ is game-owned. Apply it after the generic data-bamboo pass so a
+    // stale route shell or later shared-localizer transaction cannot leave raw
+    // faqTitle/faqQuestion/faqAnswer keys visible.
+    window.BAMBOO_GUIDE?.apply?.(locale);
     document.querySelector(".locale").firstChild.textContent = `${text("language")} `;
     $("battleLocale").value = locale;
     $("battleLanguageLabel").textContent = text("language");

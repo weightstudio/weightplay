@@ -35,6 +35,7 @@
       section.className = 'game-info-section';
     }
     section.dataset.bambooGuideFaq = '';
+    section.dataset.runtimeLocalize = 'off';
     if (section.parentElement !== sections) sections.append(section);
     if (!section.querySelector('[data-bamboo-t="faqTitle"]')) {
       section.replaceChildren();

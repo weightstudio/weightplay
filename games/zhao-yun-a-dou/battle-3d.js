@@ -32,6 +32,34 @@ export class ZhaoBattle3D {
     if(!this.materials.has(key))this.materials.set(key,new THREE.MeshBasicMaterial({color,depthTest:false,depthWrite:false,toneMapped:false}));
     const mesh=new THREE.Mesh(this.geometry,this.materials.get(key));mesh.position.set(x,y,z);mesh.scale.set(w,h,d);mesh.renderOrder=10;parent.add(mesh);return mesh;
   }
+  glowBox(parent,x,y,z,w,h,d,color){
+    const key='glow:'+color;
+    if(!this.materials.has(key))this.materials.set(key,new THREE.MeshBasicMaterial({color,toneMapped:false,depthWrite:false}));
+    const mesh=new THREE.Mesh(this.geometry,this.materials.get(key));mesh.position.set(x,y,z);mesh.scale.set(w,h,d);parent.add(mesh);return mesh;
+  }
+  impact(f){
+    const g=new THREE.Group(),color=f.kind==='block'?0x7ee8ff:f.kind==='heal'?0x82f1b4:f.enemy?0xffb26c:0xffdc83;
+    if(f.kind==='arrow'){
+      this.glowBox(g,0,0,0,.46,.035,.035,0xffedbe);this.glowBox(g,.24,0,0,.10,.10,.035,0xffffff);
+    }else if(f.kind==='heal'){
+      this.glowBox(g,0,0,0,.12,.44,.04,color);this.glowBox(g,0,0,0,.44,.12,.04,color);
+    }else if(f.kind==='attack'){
+      // A short, faceted crescent, only visible during the committed swing.
+      for(let i=0;i<6;i++){const a=-1.1+i*.38;const m=this.glowBox(g,Math.cos(a)*.48,Math.sin(a)*.48,0,.06,.23,.035,color);m.rotation.z=a;}
+    }else{
+      const count=f.kind==='block'?4:6;
+      if(f.kind==='hit'){
+        this.glowBox(g,0,0,.04,.13,.38,.035,0xfff6df);
+        this.glowBox(g,0,0,.04,.38,.10,.035,0xfff6df);
+      }
+      for(let i=0;i<count;i++){
+        const angle=i*Math.PI*2/count+Math.PI/4;
+        const m=this.glowBox(g,Math.cos(angle)*.22,Math.sin(angle)*.22,0,f.kind==='defeat'?.14:.22,f.kind==='defeat'?.12:.055,.055,color);
+        m.rotation.z=angle;m.userData.sparkAngle=angle;
+      }
+    }
+    return g;
+  }
   buildWorld(){
     const g=this.environment;
     // A single road, with paired fortresses. X is the combat axis; Y is up.
@@ -124,7 +152,7 @@ export class ZhaoBattle3D {
         this.box(weapon,0,.42,0,.29,.08,.12,0xd3ae5e,true);
       }
       const trail=new THREE.Group();weapon.add(trail);trail.visible=false;g.userData.strikeTrail=trail;
-      for(let i=0;i<3;i++)this.box(trail,0,.48+i*.18,.11+i*.10,.08,.28,.045,enemy?0xffbd86:0xffedb3,true);
+      for(let i=0;i<5;i++){const a=-.65+i*.25;const m=this.glowBox(trail,0,.3+Math.cos(a)*.6,.12+Math.sin(a)*.6,.045,.26,.065,enemy?0xffbd86:0xffedb3);m.rotation.x=a;}
       if(type==='shield'||type==='bulwark'||(type==='blade'&&!general)){
         g.userData.shields=[this.box(rig,-.46,.65+lift,-.27,.4,.7,.1,0x54727a,true),this.box(rig,-.46,.65+lift,-.34,.32,.055,.04,0xd7b365,true)];
       }
@@ -187,12 +215,13 @@ export class ZhaoBattle3D {
       // first two, travel the third, then a held contact pose and recovery.
       const phase=attacking?5-a.attackFlash+mix:5;
       const ease=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
-      const prepare=ease(phase/2),swing=ease(phase-2),recover=ease((phase-3.4)/1.6);
+      const prepare=ease(phase/2),swing=ease(phase-2),recover=ease((phase-3.8)/1.2);
       const strike=attacking?swing*(1-recover):0;
       const recoil=a.hp>0?Math.max(0,(a.hitFlash-mix)/3):0;
       rig.position.y=this.reduced?0:a.moving?Math.abs(Math.sin(time*10+a.id))*.04:0;
-      rig.position.z=this.reduced?0:-strike*.22+recoil*.16;
-      rig.rotation.set(this.reduced?0:strike*.12-recoil*.22,0,0);
+      rig.position.z=this.reduced?0:-strike*.28+recoil*.23;
+      rig.rotation.set(this.reduced?0:strike*.18-recoil*.3,0,this.reduced?0:recoil*.06);
+      rig.scale.set(1+(!this.reduced?recoil*.035:0),1-(!this.reduced?recoil*.035:0),1);
       if(data.attackArm){
         const thrust=data.attackStyle==='thrust',bow=data.attackStyle==='bow';
         const rest=thrust?1.12:bow?.85:0;
@@ -218,18 +247,33 @@ export class ZhaoBattle3D {
     const effectIds=new Set();
     for(const f of battle.effects){
       effectIds.add(f.id);let obj=this.fx.get(f.id);
-      if(!obj){obj=new THREE.Group();const color=f.kind==='heal'?0x64e1a5:f.kind==='block'?0x74cbea:0xffe1a0;
-        for(let k=0;k<(f.kind==='defeat'?4:1);k++)this.box(obj,k*.075,k*.06,0,f.kind==='arrow'?.38:.1,.10,.12,color,true);
-        this.scene.add(obj);this.fx.set(f.id,obj);
+      if(!obj){obj=this.impact(f);this.scene.add(obj);this.fx.set(f.id,obj);}
+      const age=6-f.ttl+mix,flight=Math.min(1,Math.max(0,age-2));
+      const x=f.kind==='arrow'?f.fromX+(f.x-f.fromX)*flight:f.kind==='attack'?(f.fromX+f.x)/2:f.x;
+      const targetZ=f.targetId==null?.35:(f.targetId%5-2)*.27;
+      const sourceZ=f.sourceId==null?targetZ:(f.sourceId%5-2)*.27;
+      const z=f.kind==='arrow'?sourceZ+(targetZ-sourceZ)*flight:targetZ;
+      obj.position.set(worldX(x),1.05,z+.3);obj.quaternion.copy(this.camera.quaternion);
+      obj.visible=f.kind!=='charge'&&(f.kind!=='attack'||(!this.reduced&&age>=2&&age<3.7));
+      const life=f.kind==='defeat'?8:6,progress=Math.max(0,(life-f.ttl+mix)/life);
+      const power=f.strong?1.35:1;
+      obj.scale.setScalar(f.kind==='arrow'?1:power*(this.reduced?.65:Math.max(.05,1-progress*.8)));
+      if(f.kind==='arrow'){obj.visible=age>=2&&age<=3;obj.rotation.z=f.enemy?Math.PI:0;}
+      if(f.kind==='attack'){obj.rotation.z=f.enemy?Math.PI:0;obj.scale.setScalar(.8);}
+      for(const m of obj.children)if(m.userData.sparkAngle!=null){
+        const a=m.userData.sparkAngle,spread=this.reduced?.2:.18+progress*(f.kind==='defeat'?.9:.6);
+        m.position.x=Math.cos(a)*spread;m.position.y=Math.sin(a)*spread-(f.kind==='defeat'?progress*progress*.7:0);
+        m.visible=!this.reduced||f.kind==='block';
       }
-      const x=['arrow','attack'].includes(f.kind)?f.fromX+(f.x-f.fromX)*Math.min(1,(6-f.ttl)/3):f.x;
-      obj.position.set(worldX(x),.8+(6-f.ttl)*.035,.35);obj.visible=f.kind!=='charge';
-      if(f.text){const key='fx'+f.id;labelKeys.add(key);this.label(key,f.text,worldX(x),1.3+(6-f.ttl)*.06,.4,f.kind);}
+      if(f.text){const key='fx'+f.id;labelKeys.add(key);this.label(key,f.text,worldX(x),1.55+progress*.35,z+.35,f.strong?'strong-hit':f.kind);}
     }
     for(const [id,obj] of this.fx)if(!effectIds.has(id)){this.scene.remove(obj);this.fx.delete(id);}
     for(const [key,node] of this.labels)if(!labelKeys.has(key)){node.remove();this.labels.delete(key);}
     this.hero.position.x=battle.chargeTicks>0?-4.2+(12-battle.chargeTicks)*.8:-4.15;
     this.hero.position.z=battle.chargeTicks>0?.6:1.05;
+    this.hero.userData.attackArm.rotation.x=battle.chargeTicks>0?1.45:0;
+    this.hero.userData.weapon.rotation.x=battle.chargeTicks>0?-2.8:0;
+    this.hero.userData.strikeTrail.visible=!this.reduced&&battle.chargeTicks>0;
     this.chargeTrail.visible=battle.chargeTicks>0;
     this.camp.rotation.z=!this.reduced&&battle.campFlash>0?Math.sin(time*50)*.025:0;
     this.renderer.render(this.scene,this.camera);const r=this.renderer.info;

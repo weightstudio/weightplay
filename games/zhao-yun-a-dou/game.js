@@ -46,8 +46,8 @@
   const talents = window.ZhaoTalents;
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const push = window.ZhaoPush;
-  let audioContext = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v33", document.currentScript.src).href;
+  let audioContext = null, impactNoise = null, lastSound = 0;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v34", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -70,12 +70,22 @@
   }
   function sound(kind) {
     if(window.WonderSound?.isMuted?.() || document.hidden)return;
+    const volume=(window.WonderSound?.getEffectsVolume?.()??70)/100;if(volume<=0)return;
     const now=performance.now();if(kind==='hit'&&now-lastSound<90)return;lastSound=now;
     try {audioContext ||= new (window.AudioContext||window.webkitAudioContext)();if(audioContext.state!=='running')return;
       const osc=audioContext.createOscillator(), gain=audioContext.createGain();
-      const frequency={hit:260,block:140,defeat:520,charge:90,merge:650,hurt:100}[kind]||300;
+      const frequency={hit:180,block:780,defeat:520,charge:90,merge:650,hurt:100}[kind]||300;
       osc.type=kind==='charge'?'sawtooth':'triangle';osc.frequency.setValueAtTime(frequency,audioContext.currentTime);osc.frequency.exponentialRampToValueAtTime(frequency*.45,audioContext.currentTime+.13);
-      gain.gain.setValueAtTime(Math.max(.0001,.025*(window.WonderSound?.getEffectsVolume?.()??70)/100),audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.16);osc.connect(gain);gain.connect(audioContext.destination);osc.start();osc.stop(audioContext.currentTime+.17);osc.onended=()=>{osc.disconnect();gain.disconnect();};
+      gain.gain.setValueAtTime(.035*volume,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.16);osc.connect(gain);gain.connect(audioContext.destination);osc.start();osc.stop(audioContext.currentTime+.17);osc.onended=()=>{osc.disconnect();gain.disconnect();};
+      if(['hit','block','hurt','charge','defeat'].includes(kind)){
+        if(!impactNoise){impactNoise=audioContext.createBuffer(1,Math.floor(audioContext.sampleRate*.16),audioContext.sampleRate);const samples=impactNoise.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=(Math.random()*2-1)*(1-i/samples.length);}
+        const crack=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),envelope=audioContext.createGain();
+        crack.buffer=impactNoise;filter.type='bandpass';filter.frequency.value=kind==='block'?2400:kind==='charge'?450:1200;
+        const duration=kind==='charge'?.15:.075,t=audioContext.currentTime;
+        envelope.gain.setValueAtTime((kind==='charge'?.075:.055)*volume,t);envelope.gain.exponentialRampToValueAtTime(.001,t+duration);
+        crack.connect(filter);filter.connect(envelope);envelope.connect(audioContext.destination);crack.start();crack.stop(t+duration);
+        crack.onended=()=>{crack.disconnect();filter.disconnect();envelope.disconnect();};
+      }
     } catch (_) {}
   }
   document.addEventListener('pointerdown',()=>{try{audioContext ||= new (window.AudioContext||window.webkitAudioContext)();audioContext.resume().catch(()=>{});}catch(_){}});
@@ -676,7 +686,7 @@
   showScreen("main");
   window.setTimeout(updateStaticLocale, 900);
 
-  window.addEventListener("pagehide",()=>{stopLoop();stopWorld();audioContext?.close().catch(()=>{});audioContext=null;});
+  window.addEventListener("pagehide",()=>{stopLoop();stopWorld();audioContext?.close().catch(()=>{});audioContext=null;impactNoise=null;});
   window.addEventListener('pageshow',event=>{if(event.persisted&&battle&&document.body.dataset.screen==='battle'){startWorld();if(!battle.result)startLoop();}});
   window.__zhaoYunADouSmoke = {
     renderer:()=>world?{...world.info,pending:worldPending,failed:worldFailed}:null,
