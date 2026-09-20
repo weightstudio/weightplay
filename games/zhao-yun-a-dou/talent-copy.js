@@ -15,9 +15,15 @@
  ar:['المواهب','الإمداد','الحراسة','الاندفاع','إعادة مجانية','النقاط {left}/{total} · +1 لكل 3 انتصارات أولى (حد 5).','ثابت أثناء القتال. غيّره في المهمات.','اندفاع تشاو يون','ينقذ المسار الأكثر خطرًا تلقائيًا','ابدأ مع +3 خبز','الدمج يعيد خبزة واحدة','كل تجنيد رابع مجاني','صحة المعسكر +4','مدة صعق الرماح ×2','النجاة مرة بصحة 3 من ضربة قاتلة','تبريد الاندفاع: 7 ثوانٍ','اندفاع في جميع المسارات','الاندفاع يجهّز كل هجمات القوات','مستوى1 82% · مستوى2 16% · قائد 2%. مستوى2+ مضمون كل 8 تجنيدات.','رمح35% · سيف35% · قوس20% · فارس10%.','جنّد عشوائيًا وادمج ودافع. يندفع تشاو يون إلى المسار الأكثر خطرًا.','اختر المواهب قبل القتال. يستخدم القادة مهاراتهم تلقائيًا.']
  };
  const keys=['talents','branch_supply','branch_guard','branch_charge','resetTalents','talentPoints','talentLocked','chargeAction','chargeAuto','talent_supply1','talent_supply2','talent_supply3','talent_guard1','talent_guard2','talent_guard3','talent_charge1','talent_charge2','talent_charge3','recruitOdds','typeOdds','commandHelp','talentHelp'];
+ const baseOdds={en:'Base odds: ', 'zh-Hant':'基礎機率：','zh-Hans':'基础概率：',ja:'基本確率：',ko:'기본 확률: ',es:'Probabilidad base: ','pt-BR':'Probabilidade base: ',fr:'Probabilités de base : ',de:'Grundchancen: ',it:'Probabilità base: ',ru:'Базовые шансы: ',hi:'मूल संभावना: ',ar:'الاحتمالات الأساسية: '};
  for(const [locale,row] of Object.entries(rows)){
   const d=window.ZHAO_YUN_ADOU_LOCALES[locale];keys.forEach((key,i)=>d[key]=row[i]);
+  d.recruitOdds=baseOdds[locale]+d.recruitOdds;
   d.summary=d.commandHelp;d.tutorialRecruit=d.commandHelp;d.tutorialDefend=d.talentHelp;
   d.noTarget=d.readySkill;d.guideBody=d.recruitOdds+' '+d.typeOdds+' '+d.talentHelp;
  }
+})();
+(() => {
+ const messages={en:'No enemies yet. Save the charge.', 'zh-Hant':'目前沒有敵人，先保留突襲。','zh-Hans':'目前没有敌人，先保留突袭。',ja:'敵がいません。突撃を温存しましょう。',ko:'아직 적이 없습니다. 돌격을 아끼세요.',es:'Aún no hay enemigos. Reserva la carga.','pt-BR':'Ainda não há inimigos. Guarde a investida.',fr:'Aucun ennemi. Gardez votre charge.',de:'Noch keine Gegner. Spare den Ansturm.',it:'Nessun nemico. Conserva la carica.',ru:'Врагов пока нет. Сохраните рывок.',hi:'अभी शत्रु नहीं हैं। धावा बचाकर रखें।',ar:'لا أعداء بعد. احتفظ بالاندفاع.'};
+ for(const [locale,text] of Object.entries(messages))window.ZHAO_YUN_ADOU_LOCALES[locale].noTarget=text;
 })();

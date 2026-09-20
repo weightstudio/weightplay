@@ -13,7 +13,11 @@ export class ZhaoBattle3D {
     this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.2;
     this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0x172e32);
     this.camera=new THREE.OrthographicCamera(-7,7,8,-8,.1,100);
-    this.camera.position.set(0,13.8,23);this.camera.lookAt(0,0,0);
+    // Local ten-angle comparison: separate formation rows without flattening
+    // faces or making the board too diagonal for a narrow phone.
+    const yaw=THREE.MathUtils.degToRad(20),elevation=THREE.MathUtils.degToRad(52),distance=27;
+    this.camera.position.set(distance*Math.sin(yaw)*Math.cos(elevation),distance*Math.sin(elevation),distance*Math.cos(yaw)*Math.cos(elevation));
+    this.camera.lookAt(0,0,0);
     this.scene.add(new THREE.HemisphereLight(0xc2e9ed,0x4a3425,2.2));
     const sun=new THREE.DirectionalLight(0xffdd9f,3.1);sun.position.set(-5,12,5);this.scene.add(sun);
     const rim=new THREE.DirectionalLight(0x75d8dc,1.5);rim.position.set(6,6,-8);this.scene.add(rim);
@@ -138,7 +142,8 @@ export class ZhaoBattle3D {
     battle.enemies.forEach(e=>{const key='e'+e.id;active.add(key);const obj=this.actor(key,e.boss?e.bossKind:e.kind==='shield'?'shield':e.kind==='medic'?'medic':e.kind==='raider'?'horse':'blade',e.boss,true);
       const mix=paused?1:Math.min(1,Math.max(0,(now-(battle.motionTimestamp||now))/100));
       const p=(e.motionStartPosition??e.position)+(e.position-(e.motionStartPosition??e.position))*mix;
-      obj.position.set((e.lane-1)*2.5+(e.id%3-1)*.33,0,-4.7+p*9.8);obj.rotation.y=Math.PI;
+      // Keep the foot anchor on the same centerline as the floor and attacks.
+      obj.position.set((e.lane-1)*2.5,0,-4.7+p*9.8);obj.rotation.y=Math.PI;
       obj.scale.setScalar((e.boss?1.2:.88)*(e.defeatedTicks?Math.max(.08,e.defeatedTicks/5):1));
       if(!this.reduced&&!paused){obj.userData.rig.position.y=e.hitFlash?.08:Math.abs(Math.sin(time*9+e.id))*.045;obj.rotation.z=e.hitFlash?.12:0;}
       if(e.bossKind==='bulwark')for(const shield of obj.userData.shields||[])shield.visible=e.shield;

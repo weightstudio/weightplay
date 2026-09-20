@@ -41,9 +41,10 @@
     guide.progression = [runtime.v27Progression || progression];
     guide.strategyTips = [runtime.commandHelp, runtime.mergeHint, runtime.waveReward];
     guide.how = [runtime.commandHelp,runtime.mergeHint,runtime.guideBody,runtime.rule_coverage];
-    guide.designNote = designNote;
+    guide.designNote = runtime.talentHelp || designNote;
     // The obsolete character-symbol quiz is not part of the illustrated game.
     if (locale !== 'en') guide.faq = guide.faq.slice(1);
+    if(runtime.recruitOdds&&guide.faq[0])guide.faq[0][1]=runtime.recruitOdds+' '+guide.faq[0][1];
   }
   // The route generator evaluates the same copy without allocating a DOM.
   if (typeof document === 'undefined') return;

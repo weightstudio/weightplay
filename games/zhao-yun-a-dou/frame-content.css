@@ -192,10 +192,12 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 .talent-node {position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;min-height:116px;margin:0 0 16px;padding:5px;border:1px solid #658e88;border-radius:9px;background:#23474a;color:#ecf1e4;cursor:pointer;font:11px/15px system-ui;}
 .talent-node:not(:last-child)::after {content:'';position:absolute;top:100%;height:16px;width:2px;background:#73988a;}
 .talent-node[aria-pressed="true"] {border:2px solid #f5c84c;background:#375c51;}
-.talent-node:disabled {cursor:default;opacity:.58;}
-.talent-node[aria-pressed="true"]:disabled {opacity:1;}
+#gameFrame .talent-dialog .talent-node:disabled {cursor:default;opacity:.8;filter:none;}
+#gameFrame .talent-dialog .talent-node[aria-pressed="true"]:disabled {opacity:1;}
 .talent-art {display:block;width:52px;height:46px;flex-shrink:0;background:var(--zhao-unit-art) center/contain no-repeat;}
 .talent-node small {margin-top:auto;color:#efd18e;}
+.talent-node, .talent-branch h3 {overflow-wrap:anywhere;}
+.talent-node > span {max-width:100%;}
 .talent-footer {position:sticky;bottom:-16px;display:flex;gap:8px;padding:8px 0;background:#17363a;}
 .talent-footer button {flex:1;min-height:44px;padding:6px;border-radius:8px;background:#cfaa59;color:#102d33;border:1px solid #e0c17c;cursor:pointer;}
 .talent-footer button:disabled {opacity:.45;}
@@ -208,3 +210,6 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
  #battle .formation-panel {bottom:0;}
  .talent-node {min-height:105px;}
 }
+#battle .recruit-reveal {position:absolute;z-index:4;top:12px;inset-inline-end:10px;max-width:190px;min-height:48px;box-sizing:border-box;padding:12px 10px 12px 54px;background:#183b40ed var(--zhao-unit-art) 4px center/44px auto no-repeat;border:1px solid #80ac9c;border-radius:9px;color:#e6eee0;pointer-events:none;font:600 12px/20px system-ui;}
+#battle .recruit-reveal.rare {border:2px solid #eac364;color:#ffe59f;box-shadow:0 0 16px #eac36444;}
+#battle .recruit-reveal[hidden] {display:none;}

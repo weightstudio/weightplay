@@ -42,6 +42,7 @@
   let loopTimer = null;
   let motionFrame = null;
   let statusTimer = null;
+  let recruitRevealTimer = null;
   let dragSlot = null;
   let formationRenderKey = null;
   let frame = null;
@@ -50,7 +51,7 @@
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const recruitCost = () => hasTalent("supply3") && (battle.recruitIndex+1)%4===0 ? 0 : 3;
   let audioContext = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v29", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v31", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -309,6 +310,7 @@
   }
 
   function renderStages() {
+    document.getElementById('talentsOpen').textContent=t('talents')+' · '+(talents.points(progress.stars)-(progress.talents||[]).length);
     const cleared = progress.stars.filter(Boolean).length;
     el.progress.textContent = t("stageProgress") + ": " + cleared + " / " + data.levels.length;
     el.stageGrid.innerHTML = "";
@@ -639,6 +641,11 @@
     const type = rolled.type;
     battle.recruitIndex += 1;
     battle.units[slot] = makeUnit(type, rolled.level, rolled.general);
+    let reveal=document.getElementById('recruitReveal');
+    if(!reveal){reveal=document.createElement('div');reveal.id='recruitReveal';reveal.setAttribute('role','status');document.querySelector('.battle-field').append(reveal);}
+    reveal.className='recruit-reveal unit-type-'+type+(rolled.general?' general-unit':'')+(rolled.level>1?' rare':'');
+    reveal.textContent=unitName(battle.units[slot]);reveal.hidden=false;
+    clearTimeout(recruitRevealTimer);recruitRevealTimer=setTimeout(()=>{reveal.hidden=true;},2200);
     setStatus(t("statusRecruit")+" "+unitName(battle.units[slot]), rolled.level>1?"promotion":undefined);
     sound(rolled.level>1?"merge":"hit");
     renderBattle();
@@ -980,8 +987,9 @@
     const button=el.skills.firstElementChild,cooldown=battle.skillsUsed.horse||0;
     button.disabled=cooldown>0||Boolean(battle.result);button.classList.toggle('ready',!cooldown);
     button.querySelector('strong').textContent=t('chargeAction');
-    button.querySelector('span').textContent=cooldown?Math.ceil(cooldown/10)+'s':t('chargeAuto');
-    button.setAttribute('aria-label',t('chargeAction')+': '+(cooldown?Math.ceil(cooldown/10)+'s':t('chargeAuto')));
+    const effect=hasTalent('charge2')?t('talent_charge2'):t('chargeAuto');
+    button.querySelector('span').textContent=cooldown?Math.ceil(cooldown/10)+'s':effect;
+    button.setAttribute('aria-label',t('chargeAction')+': '+(cooldown?Math.ceil(cooldown/10)+'s':effect));
   }
 
   function unitLabel(unit) {
@@ -1037,6 +1045,7 @@
   }
 
   function closeDialogs() {
+    clearTimeout(recruitRevealTimer);const reveal=document.getElementById('recruitReveal');if(reveal)reveal.hidden=true;
     setFormationOpen(false);
     document.getElementById("talentDialog").close();
     [el.tutorial, el.leaveBattle, el.result].forEach(function (dialog) {
@@ -1195,9 +1204,9 @@
         adouHp: battle && battle.adouHp,
         buns: battle && battle.buns, pity:battle?.pity, talents:battle?.talents, rescued:battle?.rescued, recruitIndex:battle?.recruitIndex,
         wave:battle?.wave, rule:battle?.level.rule, commandLane:battle?.commandLane, cooldown:battle?.skillsUsed.horse||0, ticks:battle?.ticks, bestTimes:progress.bestTimes,
-        enemyStates:battle?.enemies.map(e=>({id:e.id,kind:e.kind,bossKind:e.bossKind,hp:e.hp,lane:e.lane,position:e.position,age:e.age,shield:e.shield,telegraph:e.telegraph})),
+        enemyStates:battle?.enemies.map(e=>({id:e.id,kind:e.kind,bossKind:e.bossKind,hp:e.hp,lane:e.lane,position:e.position,age:e.age,shield:e.shield,telegraph:e.telegraph,stun:e.stun})),
         enemies: battle ? battle.enemies.length : 0,
-        units: battle ? battle.units.map(function (unit) { return unit && { type: unit.type, level: unit.level, general: unit.general }; }) : [],
+        units: battle ? battle.units.map(function (unit) { return unit && { type: unit.type, level: unit.level, general: unit.general, attackCooldown:unit.attackCooldown }; }) : [],
       };
     },
     enterStage: showStage,
