@@ -60,6 +60,12 @@
 @keyframes hintPulse{to{transform:scale(.9);filter:brightness(1.25)}}
 @media(prefers-reduced-motion:reduce){.board.celebrating,.board.celebrating .pipe.wet::after,.board.celebrating .pipe.target::before,.board.celebrating .pipe.target::after,.pipe.hint-target::after{animation:none}.board.celebrating .pipe.target::before{filter:brightness(1.5) drop-shadow(0 0 16px #fff5a8) drop-shadow(0 0 24px #73ffd0)}}
 
+/* The shared block-art frame owns every pipe cell.  These declarations make
+   the legacy atlas and goal fallback inert; frame-content.css supplies the
+   six canonical block-art cells after this file. */
+.pipe{background:#2f7c61!important}
+.pipe::before,.pipe.target::before{background:none}
+
 /* Canonical Main → Stage → Battle ownership. */
 .main-group{max-width:920px;margin:0 auto}
 .main-group[hidden],.public-guide[hidden]{display:none!important}

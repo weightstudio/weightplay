@@ -24,7 +24,7 @@
   const localeLang={en:"en","zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const localeByRoute={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
-  const GAME_VERSION="v16";
+  const GAME_VERSION="v17";
   const STAGE_CARD_POOL_SIZE=9;
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
@@ -294,8 +294,12 @@
 }
   function hint(){
     if(!level)return;
-    const color=Array.from({length:level.count},(_,i)=>i).find(i=>!connected(i));
-    if(color===undefined)return;
+    const color=Array.from({length:level.count},(_,i)=>i).find(i=>{
+      if(connected(i))return false;
+      const candidate=new Set(level.solution[i]||[]);
+      return !Object.entries(paths).some(([owner,path])=>Number(owner)!==i&&path.some(cell=>candidate.has(cell)));
+    });
+    if(color===undefined){$("#status").textContent=t("hintUnavailable");renderBoard();return}
     history.push(copyPaths());paths[color]=level.solution[color].slice();moves++;
     $("#status").textContent=t("hinted");renderBoard();tone(720,.08);checkComplete();
   }

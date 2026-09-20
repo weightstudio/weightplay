@@ -18,7 +18,7 @@
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 
-  const GAME_ID="animal-number-match",GAME_VERSION=15,INTERFACE_VERSION=7;
+  const GAME_ID="animal-number-match",GAME_VERSION=16,INTERFACE_VERSION=7;
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
@@ -127,7 +127,7 @@
     }
     const a=picked,b=index,matched=[{index:a,value:values[a]},{index:b,value:values[b]}];
     track("pair_attempt",{...attempt,outcome:"legal"});
-    history.push({a,b,va:values[a],vb:values[b]});values[a]=null;values[b]=null;picked=null;moves++;
+    history.push({type:"match",a,b,va:values[a],vb:values[b]});values[a]=null;values[b]=null;picked=null;moves++;
     track("pair_clear",{grove:selected+1,move:moves,pairs_left:values.filter(value=>value!==null).length/2,first_clear:moves===1,orientation:pairOrientation(a,b)});
     $("#status").textContent=t("match");renderBoard();showMatchEffect(matched);if(values.every(value=>value===null))complete();
   }
@@ -189,6 +189,7 @@
     lastInputType=normalizeInputType(actionInputType);
     const remaining=values.filter(value=>value!==null),pairs=pairValues(remaining);
     if(!pairs){track("reorder",{grove:selected+1,outcome:"unavailable"});return}
+    history.push({type:"reorder",values:values.slice(),picked,hintPair:hintPair.slice(),moves});
     values=Array(values.length).fill(null);pairs.flat().forEach((value,index)=>values[index]=value);picked=null;hintPair=[];moves++;$("#status").textContent=t("shuffled");renderBoard();
     track("reorder",{grove:selected+1,outcome:"reordered",move:moves,pairs_left:values.filter(value=>value!==null).length/2});
   }
@@ -232,7 +233,7 @@
     const tile=event.target.closest(".tile:not(.empty)");if(!tile)return;
     event.preventDefault();moveTileFocus(event.key,Number(tile.dataset.index));
   });
-  $("#undo").onclick=event=>{lastInputType=eventInputType(event);const last=history.pop();if(!last){track("undo",{grove:selected+1,outcome:"unavailable"});return}values[last.a]=last.va;values[last.b]=last.vb;picked=null;hintPair=[];moves=Math.max(0,moves-1);track("undo",{grove:selected+1,outcome:"applied",move:moves});$("#status").textContent=t("undone");renderBoard()};
+  $("#undo").onclick=event=>{lastInputType=eventInputType(event);const last=history.pop();if(!last){track("undo",{grove:selected+1,outcome:"unavailable"});return}if(last.type==="reorder"){values=last.values.slice();picked=last.picked??null;hintPair=last.hintPair?.slice()??[];moves=last.moves}else{values[last.a]=last.va;values[last.b]=last.vb;picked=null;hintPair=[];moves=Math.max(0,moves-1)}track("undo",{grove:selected+1,outcome:"applied",move:moves});$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=event=>hint(eventInputType(event));$("#shuffle").onclick=event=>reorder(eventInputType(event));$("#restart").onclick=event=>{lastInputType=eventInputType(event);track("restart",{from:"battle",grove:selected+1,input_type:lastInputType});__wpReplayStart(() => startLevel(selected,lastInputType,"restart"))};
   $("#resultStages").onclick=event=>claimResultAction("stages",eventInputType(event),()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=event=>claimResultAction("next_grove",eventInputType(event),()=>startLevel(selected+1,eventInputType(event),"next_grove"));$("#retry").onclick=event=>claimResultAction("replay",eventInputType(event),()=>__wpReplayStart(() => startLevel(selected,eventInputType(event),"replay")));
   applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};

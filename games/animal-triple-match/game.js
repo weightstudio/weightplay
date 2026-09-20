@@ -186,7 +186,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 24;
+  const GAME_VERSION = 25;
   const INTERFACE_VERSION = 7;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -1069,7 +1069,7 @@
       els[`${name}Btn`].disabled = run.ended || settling || run.tools[name] <= 0;
     }
   }
-  function snapshot() { return JSON.stringify({ pieces: run.pieces, tray: run.tray, matches: run.matches, moves: run.moves }); }
+  function snapshot() { return JSON.stringify({ pieces: run.pieces, tray: run.tray, matches: run.matches, moves: run.moves, peakTray: run.peakTray, lastTrayId: run.lastTrayId }); }
   function restore(raw) { const state = JSON.parse(raw); Object.assign(run, state); renderRun(); }
   function choosePiece(id, inputType = "pointer") {
     if (!run || run.paused || run.ended) return;

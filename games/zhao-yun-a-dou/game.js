@@ -46,14 +46,16 @@
   let formationRenderKey = null;
   let frame = null;
   let world = null, worldGeneration = 0, worldPending = false, worldFailed = false;
-  let recruitType = "spear";
+  const talents = window.ZhaoTalents;
+  const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
+  const recruitCost = () => hasTalent("supply3") && (battle.recruitIndex+1)%4===0 ? 0 : 3;
   let audioContext = null, lastSound = 0;
   const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v28-ui", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
   }
-  function paused() { return document.hidden || worldPending || worldFailed || Boolean(el.tutorial?.open || el.leaveBattle?.open || document.querySelector('#battle .wp-frame-popover:not([hidden])') || document.querySelector('#formationToggle[aria-expanded="true"]')); }
+  function paused() { return document.hidden || document.getElementById('talentDialog')?.open || worldPending || worldFailed || Boolean(el.tutorial?.open || el.leaveBattle?.open || document.querySelector('#battle .wp-frame-popover:not([hidden])') || document.querySelector('#formationToggle[aria-expanded="true"]')); }
   function stopWorld() { worldGeneration++; world?.dispose(); world=null; worldPending=false; worldFailed=false; document.querySelector('.zhao-render-error')?.remove(); }
   function startWorld() {
     stopWorld(); const generation=worldGeneration; worldPending=true;
@@ -153,7 +155,7 @@
   }
 
   function loadProgress() {
-    const fallback = { unlocked: 1, stars: Array(30).fill(0), bestTimes: Array(30).fill(null), tutorialSeen: false };
+    const fallback = { unlocked: 1, stars: Array(30).fill(0), bestTimes: Array(30).fill(null), tutorialSeen: false, talents: [] };
     try {
       const parsed = JSON.parse(safeGet(saveKey) || "null");
       if (!parsed) return fallback;
@@ -162,6 +164,7 @@
         stars: Array.from({ length: 30 }, function (_, index) { return Math.max(0, Math.min(3, Math.floor(Number(parsed.stars && parsed.stars[index])) || 0)); }),
         bestTimes: Array.from({length:30},(_,i)=>Number.isFinite(parsed.bestTimes?.[i]) && parsed.bestTimes[i]>0 ? parsed.bestTimes[i] : null),
         tutorialSeen: Boolean(parsed.tutorialSeen),
+        talents: window.ZhaoTalents.normalize(parsed.talents, parsed.stars),
       };
     } catch (_) {
       return fallback;
@@ -380,16 +383,17 @@
       });
     }
     return {
+      talents: [...(progress.talents||[])], pity:0, rescued:false,
       level: level,
       units: units,
       enemies: [],
       spawned: 0,
       ticks: 0,
-      buns: fixture === "merge" ? 8 : level.startingBuns,
+      buns: fixture === "merge" ? 8 : level.startingBuns + ((progress.talents||[]).includes("supply1")?3:0),
       commandHp: fixture === "loss" ? 999 : level.commandHp,
       maxCommandHp: fixture === "loss" ? 999 : level.commandHp,
-      adouHp: fixture === "loss" ? 1 : level.adouHp,
-      maxAdouHp: fixture === "loss" ? 1 : level.adouHp,
+      adouHp: fixture === "loss" ? 1 : level.adouHp + ((progress.talents||[]).includes("guard1")?4:0),
+      maxAdouHp: fixture === "loss" ? 1 : level.adouHp + ((progress.talents||[]).includes("guard1")?4:0),
        result: null,
        wave: 1, waveRest: 35, waveKills: 0, commandLane: 1, chargeTicks: 0, campFlash: 0, nextEnemyId: 1, strikes: [],
        status: "",
@@ -470,7 +474,7 @@
       const target=battle.enemies.find(e=>e.id===strike.target);
       if(target && target.hp>0){damageEnemy(target,strike.damage,strike.type);
         if(strike.type==='blade')battle.enemies.filter(e=>e.id!==target.id&&e.lane===target.lane&&Math.abs(e.position-target.position)<.14).forEach(e=>damageEnemy(e,Math.ceil(strike.damage*.55),'blade'));
-        if(strike.type==='spear')target.stun=Math.max(target.stun,2);
+        if(strike.type==='spear')target.stun=Math.max(target.stun,hasTalent('guard2')?4:2);
       } return false;
     });
     battle.enemies.forEach(function (enemy) {
@@ -564,7 +568,9 @@
     Object.keys(battle.skillsUsed).forEach(function (key) {
       if (battle.skillsUsed[key] > 0) battle.skillsUsed[key] -= 1;
     });
+    for(const type of ["blade","spear","bow"]) if(battle.units.some(u=>u?.general&&u.type===type)&&!battle.skillsUsed[type]&&battle.enemies.some(e=>e.hp>0&&e.position>.35)) useSkill(type);
     battle.motionTimestamp = window.performance?.now?.() || Date.now();
+    if (battle.adouHp <= 0 && hasTalent("guard3") && !battle.rescued) { battle.adouHp=3; battle.rescued=true; battle.campFlash=8; sound("merge"); setStatus(t("talent_guard3")); }
     if (battle.adouHp <= 0) finishBattle("loss");
     if (battle.commandHp <= 0) finishBattle("win");
   }
@@ -623,15 +629,18 @@
       setStatus(t("noSpace"));
       return;
     }
-    if (battle.buns < 3) {
+    if (battle.buns < recruitCost()) {
       setStatus(t("notEnough"));
       return;
     }
-    battle.buns -= 3;
-    const type = recruitType;
+    battle.buns -= recruitCost();
+    const rolled = talents.roll(Math.random,battle.pity);
+    battle.pity = rolled.level===1 ? battle.pity+1 : 0;
+    const type = rolled.type;
     battle.recruitIndex += 1;
-    battle.units[slot] = makeUnit(type, 1);
-    setStatus(t("statusRecruit"));
+    battle.units[slot] = makeUnit(type, rolled.level, rolled.general);
+    setStatus(t("statusRecruit")+" "+unitName(battle.units[slot]), rolled.level>1?"promotion":undefined);
+    sound(rolled.level>1?"merge":"hit");
     renderBattle();
     emitMeasurementEvent("recruit", { stage: stageIndex + 1 });
   }
@@ -671,6 +680,7 @@
       const mergedUnit = source.level >= 3
         ? makeUnit(source.type, 4, true)
         : makeUnit(source.type, source.level + 1);
+      if(hasTalent("supply2"))battle.buns=Math.min(24,battle.buns+1);
       battle.units[slot] = mergedUnit;
       battle.units[selectedSlot] = null;
       selectedSlot = null;
@@ -703,21 +713,23 @@
       return;
     }
     const victims = battle.enemies.filter(e=>e.hp>0).sort(function (a, b) { return b.position - a.position; });
-    if(!victims.length || (type==="horse"&&!victims.some(e=>e.lane===battle.commandLane))){setStatus(t('noTarget'));return;}
+    if(!victims.length){setStatus(t('noTarget'));return;}
+    if(type==="horse")battle.commandLane=victims[0].lane;
     if (type === "blade") {
        victims.slice(0, 3).forEach(function (enemy) { damageEnemy(enemy, 9, 'blade'); });
     } else if (type === "spear") {
        victims.forEach(function (enemy) { enemy.stun = 35; damageEnemy(enemy, 5); });
     } else if (type === "horse") {
-       victims.filter(e=>e.lane===battle.commandLane).forEach(target=>{
+       victims.filter(e=>hasTalent("charge2")||e.lane===battle.commandLane).forEach(target=>{
          damageEnemy(target,16,'charge');battle.effects.push({id:battle.nextEffectId++,kind:'charge',lane:target.lane,position:target.position,text:'',ttl:5});target.motionStartPosition=target.position;target.position=Math.max(.02,target.position-.2);target.stun=8;
        });
        battle.chargeTicks=10;sound('charge');
+       if(hasTalent("charge3"))battle.units.forEach(u=>{if(u)u.attackCooldown=0;});
        battle.effects.push({id:battle.nextEffectId++,kind:'charge',lane:battle.commandLane,position:.55,text:skillName(makeUnit("horse",4,true)),ttl:9});
     } else {
        victims.forEach(function (enemy) { damageEnemy(enemy, 8); });
     }
-    battle.skillsUsed[type] = type==="horse"?100:80;
+    battle.skillsUsed[type] = type==="horse"?(hasTalent("charge1")?70:100):80;
     setStatus(t("statusSkill"));
     renderBattle();
     emitMeasurementEvent("skill", { skill: type, stage: stageIndex + 1 });
@@ -791,9 +803,9 @@
     el.buns.textContent = String(battle.buns);
     el.adouHp.textContent = battle.adouHp + " / " + battle.maxAdouHp;
     el.baseHp.textContent = battle.adouHp + " / " + battle.maxAdouHp;
-    el.recruit.disabled = Boolean(battle.result) || battle.buns<3 || battle.units.every(Boolean);
-    el.recruit.textContent=t("recruit")+" · 3";
-    el.hint.textContent=t("chargeLane",{lane:battle.commandLane+1});
+    el.recruit.disabled = Boolean(battle.result) || battle.buns<recruitCost() || battle.units.every(Boolean);
+    el.recruit.textContent=t("recruit")+" · "+recruitCost();
+    el.hint.textContent=t("talents");
     el.hint.title=t("commandHelp");
     el.status.textContent = battle.status || t("mergeHint");
     renderPressureCue();
@@ -958,27 +970,18 @@
   }
 
   function renderSkills() {
-    const key=locale+':v27';
+    const key=locale+':v29';
     if(el.skills.dataset.renderKey!==key){
-      el.skills.dataset.renderKey=key;el.skills.innerHTML='';el.skills.classList.remove('is-preview');el.battleActions?.classList.remove('has-skill-preview');
-      unitTypes.forEach(type=>{
-        const button=document.createElement('button');button.type='button';button.className='draft-unit unit-type-'+type;button.dataset.recruitType=type;
-        button.innerHTML='<span>'+escapeHtml(unitLabel(makeUnit(type,1)))+'</span>';
-        button.title=t('counter_'+type);button.setAttribute('aria-label',unitLabel(makeUnit(type,1))+': '+t('counter_'+type));
-        button.addEventListener('click',()=>{recruitType=type;setStatus(t('counter_'+type));renderSkills();});el.skills.append(button);
-      });
-      unitTypes.forEach(type=>{
-        const button=document.createElement('button');button.type='button';button.className='skill-button skill-'+type;button.dataset.skill=type;
-        button.innerHTML='<span class="skill-cooldown"></span>';button.addEventListener('click',()=>useSkill(type));el.skills.append(button);
-      });
+      el.skills.dataset.renderKey=key;el.skills.innerHTML='';
+      const button=document.createElement('button');button.type='button';button.className='skill-button skill-horse';button.dataset.skill='horse';
+      button.innerHTML='<strong></strong><span class="skill-cooldown"></span>';
+      button.addEventListener('click',()=>useSkill('horse'));el.skills.append(button);
     }
-    el.skills.querySelectorAll('[data-recruit-type]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.recruitType===recruitType)));
-    el.skills.querySelectorAll('[data-skill]').forEach(button=>{
-      const type=button.dataset.skill,cooldown=battle.skillsUsed[type]||0,unlocked=type==='horse'||battle.units.some(u=>u?.general&&u.type===type);
-      button.disabled=!unlocked||cooldown>0||Boolean(battle.result);button.classList.toggle('ready',unlocked&&!cooldown);
-      button.querySelector('span').textContent=!unlocked?t('level')+' 4':cooldown?Math.ceil(cooldown/10)+'s':t('readySkill');
-      button.setAttribute('aria-label',skillName(makeUnit(type,4,true))+': '+(!unlocked?t('level')+' 4':type==='horse'?t('chargeLane',{lane:battle.commandLane+1}):t('readySkill')));
-    });
+    const button=el.skills.firstElementChild,cooldown=battle.skillsUsed.horse||0;
+    button.disabled=cooldown>0||Boolean(battle.result);button.classList.toggle('ready',!cooldown);
+    button.querySelector('strong').textContent=t('chargeAction');
+    button.querySelector('span').textContent=cooldown?Math.ceil(cooldown/10)+'s':t('chargeAuto');
+    button.setAttribute('aria-label',t('chargeAction')+': '+(cooldown?Math.ceil(cooldown/10)+'s':t('chargeAuto')));
   }
 
   function unitLabel(unit) {
@@ -1035,6 +1038,7 @@
 
   function closeDialogs() {
     setFormationOpen(false);
+    document.getElementById("talentDialog").close();
     [el.tutorial, el.leaveBattle, el.result].forEach(function (dialog) {
       if (dialog && dialog.open) (__wpNotifyMeasurement(), dialog.close());
     });
@@ -1085,6 +1089,39 @@
     if (nextLocale && nextLocale !== locale) applyLocale(nextLocale);
   });
   el.recruit.addEventListener("click", recruit);
+  function renderTalents() {
+    const locked=document.body.dataset.screen==='battle';
+    const total=talents.points(progress.stars),picked=progress.talents||[];
+    document.getElementById('talentSummary').textContent=locked?t('talentLocked'):t('talentPoints',{left:total-picked.length,total});
+    document.getElementById('recruitOdds').textContent=t('recruitOdds')+' '+t('typeOdds');
+    const tree=document.getElementById('talentTree');tree.replaceChildren();
+    for(const branch of talents.branches){
+      const column=document.createElement('section');column.className='talent-branch';
+      const heading=document.createElement('h3');heading.textContent=t('branch_'+branch);column.append(heading);
+      for(const node of talents.nodes.filter(n=>n.branch===branch)){
+        const button=document.createElement('button');button.type='button';button.dataset.talent=node.id;
+        const selected=picked.includes(node.id);button.className='talent-node unit-type-'+node.art+(node.tier===3?' general-unit':'');
+        button.setAttribute('aria-pressed',String(selected));
+        button.disabled=locked||selected||picked.length>=total||Boolean(node.parent&&!picked.includes(node.parent));
+        const art=document.createElement('span');art.className='talent-art';art.setAttribute('aria-hidden','true');
+        const label=document.createElement('span');label.textContent=t('talent_'+node.id);
+        const badge=document.createElement('small');badge.textContent=(selected?'✓ ':'')+node.tier+'/3';
+        button.append(art,label,badge);button.addEventListener('click',()=>{
+          if(document.body.dataset.screen==='battle')return;
+          progress.talents=talents.normalize([...picked,node.id],progress.stars);saveProgress();renderTalents();
+          document.querySelector('[data-talent="'+node.id+'"]').focus();
+        });column.append(button);
+      }tree.append(column);
+    }
+    document.getElementById('talentReset').disabled=locked||!picked.length;
+  }
+  function openTalents(){renderTalents();document.getElementById('talentDialog').showModal();}
+  document.getElementById('talentsOpen').addEventListener('click',openTalents);
+  document.getElementById('talentClose').addEventListener('click',()=>document.getElementById('talentDialog').close());
+  document.getElementById('talentReset').addEventListener('click',()=>{
+    if(document.body.dataset.screen==='battle')return;
+    progress.talents=[];saveProgress();renderTalents();
+  });
   function setFormationOpen(open) {
     const panel = document.getElementById('formationPanel');
     const toggle = document.getElementById('formationToggle');
@@ -1106,7 +1143,7 @@
     if (!button || !el.formation.contains(button)) return;
     handleSlot(Number(button.getAttribute("data-slot")));
   });
-  el.hint.addEventListener("click", ()=>{if(!battle||battle.result)return;battle.commandLane=(battle.commandLane+1)%3;renderBattle();});
+  el.hint.addEventListener("click", openTalents);
   el.battleBack.addEventListener("click", showLeaveDialog);
   document.querySelector("#stage [data-back]").addEventListener("click", showMain);
   el.tutorialClose.addEventListener("click", function () { (__wpNotifyMeasurement(), el.tutorial.close()); });
@@ -1123,7 +1160,7 @@
     if (el.battle.scrollTop) el.battle.scrollTop = 0;
   }, { passive: true });
   document.addEventListener("keydown", function (event) {
-    if ([el.tutorial, el.leaveBattle, el.result].some(function (dialog) { return dialog.open; })) {
+    if ([document.getElementById("talentDialog"), el.tutorial, el.leaveBattle, el.result].some(function (dialog) { return dialog.open; })) {
       if (event.key === "Escape" && el.tutorial.open) (__wpNotifyMeasurement(), el.tutorial.close());
       return;
     }
@@ -1156,7 +1193,7 @@
         result: battle && battle.result,
         commandHp: battle && battle.commandHp,
         adouHp: battle && battle.adouHp,
-        buns: battle && battle.buns,
+        buns: battle && battle.buns, pity:battle?.pity, talents:battle?.talents, rescued:battle?.rescued, recruitIndex:battle?.recruitIndex,
         wave:battle?.wave, rule:battle?.level.rule, commandLane:battle?.commandLane, cooldown:battle?.skillsUsed.horse||0, ticks:battle?.ticks, bestTimes:progress.bestTimes,
         enemyStates:battle?.enemies.map(e=>({id:e.id,kind:e.kind,bossKind:e.bossKind,hp:e.hp,lane:e.lane,position:e.position,age:e.age,shield:e.shield,telegraph:e.telegraph})),
         enemies: battle ? battle.enemies.length : 0,
@@ -1166,7 +1203,8 @@
     enterStage: showStage,
     enterBattle: function (index, options) { startBattle(Number(index) || 0, Object.assign({ skipTutorial: true }, options || {})); },
     recruit: recruit,
-    chooseRecruit:type=>{if(unitTypes.includes(type))recruitType=type;},
+    chooseRecruit:()=>{},
+    talents:()=>({picked:progress.talents,points:talents.points(progress.stars)}),
     skill:useSkill,
     aim:lane=>{if(battle&&[0,1,2].includes(lane))battle.commandLane=lane;},
     selectSlot: handleSlot,

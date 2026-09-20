@@ -129,7 +129,7 @@
     <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first" data-t-aria="stageList" aria-label="Stage list"></section>
     </div>
     <nav class="stage-tabs" role="tablist" data-wp-frame-nav data-t-aria="stageTabs" aria-label="Stage navigation">
-      <span aria-hidden="true"></span>
+      <button id="talentsOpen" type="button" data-t="talents">Talents</button>
       <button type="button" role="tab" data-wp-frame-action="tab" aria-current="page" aria-pressed="true" data-t="stages">Stages</button>
       <span aria-hidden="true"></span>
     </nav>
@@ -178,6 +178,8 @@
 
   <div id="generalReserve" class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
 
+  <dialog id="talentDialog" class="game-dialog talent-dialog" aria-labelledby="talentTitle"><h2 id="talentTitle" data-t="talents">Talents</h2><p id="talentSummary"></p><div id="talentTree"></div><p id="recruitOdds"></p><div class="talent-footer"><button id="talentReset" data-t="resetTalents">Reset</button><button id="talentClose" data-t="close">Close</button></div></dialog>
+
   <dialog id="tutorial" class="game-dialog" aria-modal="false" aria-labelledby="tutorialTitle">
     <p class="eyebrow" data-t="tip">TIP</p>
     <h2 id="tutorialTitle" data-t="tutorialTitle">Your first command</h2>
@@ -219,6 +221,8 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260918-ui-fix1"></script>
   <script src="frame.js?v=20260918-ui-fix1"></script>
+  <script src="talents.js?v=20260920-zhao-v29"></script>
+  <script src="talent-copy.js?v=20260920-zhao-v29"></script>
   <script src="game.js?v=20260920-zhao-v28-ui"></script>
   <script src="analytics-ownership.js?v=20260920-zhao-v28-ui"></script>
 

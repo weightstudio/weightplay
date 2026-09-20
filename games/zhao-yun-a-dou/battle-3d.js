@@ -13,7 +13,7 @@ export class ZhaoBattle3D {
     this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.2;
     this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0x172e32);
     this.camera=new THREE.OrthographicCamera(-7,7,8,-8,.1,100);
-    this.camera.position.set(3,18,20);this.camera.lookAt(0,0,0);
+    this.camera.position.set(0,13.8,23);this.camera.lookAt(0,0,0);
     this.scene.add(new THREE.HemisphereLight(0xc2e9ed,0x4a3425,2.2));
     const sun=new THREE.DirectionalLight(0xffdd9f,3.1);sun.position.set(-5,12,5);this.scene.add(sun);
     const rim=new THREE.DirectionalLight(0x75d8dc,1.5);rim.position.set(6,6,-8);this.scene.add(rim);
@@ -160,7 +160,7 @@ export class ZhaoBattle3D {
 
     }
     for(const [id,obj] of this.fx)if(!effectIds.has(id)){this.scene.remove(obj);this.fx.delete(id);}
-    for(let lane=0;lane<3;lane++){const key='lane'+lane;labelKeys.add(key);this.label(key,String(lane+1),(lane-1)*2.5,.2,5.5,'lane '+(battle.commandLane===lane?'aimed':''));const node=this.labels.get(key);node.className='world-label lane '+(battle.commandLane===lane?'aimed':'');}
+    for(let lane=0;lane<3;lane++){const key='lane'+lane;labelKeys.add(key);this.label(key,String(lane+1),(lane-1)*2.5,.2,5.5,'lane '+(battle.chargeTicks>0&&battle.commandLane===lane?'aimed':''));const node=this.labels.get(key);node.className='world-label lane '+(battle.chargeTicks>0&&battle.commandLane===lane?'aimed':'');}
     for(const enemy of battle.enemies.filter(e=>e.boss&&e.hp>0)){const key='boss'+enemy.id;labelKeys.add(key);this.label(key,enemy.label||'',(enemy.lane-1)*2.5,2.5,-4.7+enemy.position*9.8,'boss');}
     for(const [key,node] of this.labels)if(!labelKeys.has(key)){node.remove();this.labels.delete(key);}
     const imminent=battle.enemies.find(e=>e.telegraph>0&&e.hp>0);this.telegraph.visible=Boolean(imminent);if(imminent){this.telegraph.position.x=(imminent.lane-1)*2.5;this.telegraph.scale.z=1.2;this.telegraph.position.z=-4.7+imminent.position*9.8+.8;}
