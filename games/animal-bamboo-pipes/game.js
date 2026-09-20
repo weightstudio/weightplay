@@ -425,6 +425,7 @@
   function applyLocale() {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    window.BAMBOO_GUIDE?.apply?.(locale);
     document.title = `${text("title")} | WeightPlay`;
     document.querySelectorAll("[data-bamboo-t]").forEach(node => { node.textContent = text(node.dataset.bambooT); });
     document.querySelector(".locale").firstChild.textContent = `${text("language")} `;

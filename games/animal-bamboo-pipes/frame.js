@@ -14,7 +14,9 @@
     const mainContent = main.querySelector('.hero');
     const copy = mainContent.querySelector(':scope > div');
     mainContent.className = 'bamboo-main-content';
-    mainContent.querySelector('img').dataset.wpFramePoster = '';
+    const poster = mainContent.querySelector('img');
+    poster.dataset.wpFramePoster = '';
+    poster.classList.add('main-poster');
     copy.dataset.wpFrameCopy = '';
     copy.querySelector('[data-bamboo-t="summary"]').dataset.wpFrameSummary = '';
     copy.querySelector('h1').hidden = true;

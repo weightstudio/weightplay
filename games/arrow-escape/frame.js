@@ -20,7 +20,9 @@
   mainHeader.querySelector('strong').setAttribute('data-wp-frame-title', '');
   const hero = main.querySelector('.hero');
   hero.classList.remove('hero');
-  hero.querySelector('.poster').setAttribute('data-wp-frame-poster', '');
+  const poster = hero.querySelector('.poster');
+  poster.classList.add('main-poster');
+  poster.setAttribute('data-wp-frame-poster', '');
   const copy = hero.querySelector('.hero-copy');
   copy.classList.remove('hero-copy');
   copy.setAttribute('data-wp-frame-copy', '');

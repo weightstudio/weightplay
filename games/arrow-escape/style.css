@@ -13,6 +13,11 @@
 .arrow-battle-content > .battle-controls > button { min-width:0; width:100%; }
 .arrow-battle-content > .feedback { grid-column:1!important; grid-row:4!important; min-width:0; }
 
+/* v22/I7 current-source contract: keep the governed progress slot compact and
+   reserve the feedback lane so normal-action copy cannot move the controls. */
+#mainProgress[data-wp-frame-progress] { min-height:40px!important; height:40px!important; }
+.arrow-battle-content > .feedback { min-height:34px; height:34px; display:flex; align-items:center; justify-content:center; }
+
 /* v20 interface contract: keep the compact landscape poster and Stage navigation
    readable without changing the puzzle's authored canvas or reserve. */
 .stage-tabs{display:flex;align-items:center;gap:8px}
