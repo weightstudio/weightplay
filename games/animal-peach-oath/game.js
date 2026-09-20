@@ -467,7 +467,7 @@
     $("#ingotValue").textContent = fmt(state.resources.ingots);
     $("#foodValue").textContent = fmt(state.resources.food);
     $("#materialValue").textContent = fmt(state.resources.materials);
-    $("#waveText").textContent = `${copy("wave")} ${state.wave} / 5`;
+    $("#waveText").textContent = `${copy("wave")} ${state.wave} / ${C.bossEvery}`;
     if (!$("#management").classList.contains("is-hidden")) $("#managementMeta").textContent = `${copy("power")} ${fmt(totalPower())}`;
     updateDots();
     updateUnlocks();
@@ -603,7 +603,7 @@
   }
 
   function enemyPack() {
-    const boss = state.wave === 5;
+    const boss = state.wave === C.bossEvery;
     if (boss) return [makeUnit(C.enemies[4], "enemy", 0)];
     const count = clamp(2 + Math.floor((state.stage + state.wave) / 4), 2, 5);
     const available = C.enemies.slice(0, clamp(1 + Math.floor(state.stage / 2), 1, 4));
@@ -622,7 +622,7 @@
     battle.enemies = enemyPack();
     (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden"));
     syncFrameCoverage();
-    $("#battleStatus").textContent = state.wave === 5 ? copy("bossIncoming") : copy("enemyIncoming");
+    $("#battleStatus").textContent = state.wave === C.bossEvery ? copy("bossIncoming") : copy("enemyIncoming");
     renderCampaignMilestone();
     renderUnits();
     updateHud();
@@ -747,13 +747,13 @@
     if (!battle.running) return;
     battle.running = false;
     state.stats.kills += battle.enemies.length;
-    const reward = { coins: 70 + state.stage * 18 + state.wave * 12, materials: state.wave === 5 ? 3 : 1 };
+    const reward = { coins: 70 + state.stage * 18 + state.wave * 12, materials: state.wave === C.bossEvery ? 3 : 1 };
     battle.pendingLoot.coins += reward.coins;
     battle.pendingLoot.materials += reward.materials;
-    if (Math.random() < .18 || state.wave === 5) battle.pendingLoot.gear.push(C.equipment[Math.floor(Math.random() * C.equipment.length)].id);
+    if (Math.random() < .18 || state.wave === C.bossEvery) battle.pendingLoot.gear.push(C.equipment[Math.floor(Math.random() * C.equipment.length)].id);
     $("#lootPile").classList.remove("is-hidden");
     $("#battleStatus").textContent = copy("waveVictory", { wave: state.wave });
-    if (state.wave < 5) {
+    if (state.wave < C.bossEvery) {
       state.wave += 1;
       save();
       scheduleNextWave(900 / battle.speed);
