@@ -56,7 +56,13 @@
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = routeLocaleMap[routeSegment] || null;
   const progressKey = "weightplay-animal-lantern-lattice-progress-v2";
-  const state = { locale: routeLocale || "en", path: 0, chain: [], sessionChecks: 0, checks: 0, sound: true, screen: "main" };
+  const campaignBestKey = "weightplay-animal-lantern-lattice-best-v2";
+  const legacyCampaignBestKey = "weightplay-animal-lantern-lattice-best-v1";
+  const stageBestKey = "weightplay-animal-lantern-lattice-stage-best-v1";
+  const state = {
+    locale: routeLocale || "en", path: 0, chain: [], sessionChecks: 0, checks: 0,
+    sound: true, screen: "main", campaignRun: false, lastResultCampaign: false,
+  };
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => {
     const table = copy[state.locale] || copy.en || {};
@@ -80,14 +86,33 @@
   };
   const readBest = () => {
     try {
-      const value = Number(localStorage.getItem("weightplay-animal-lantern-lattice-best-v1"));
+      const value = Number(localStorage.getItem(campaignBestKey) || localStorage.getItem(legacyCampaignBestKey));
       return Number.isFinite(value) && value > 0 ? value : null;
     } catch (_) { return null; }
   };
   const writeBest = (value) => {
     try {
       const old = readBest();
-      if (!old || value < old) localStorage.setItem("weightplay-animal-lantern-lattice-best-v1", String(value));
+      if (!old || value < old) localStorage.setItem(campaignBestKey, String(value));
+    } catch (_) {}
+  };
+  const readStageBests = () => {
+    let parsed = {};
+    try { parsed = JSON.parse(localStorage.getItem(stageBestKey) || "{}"); } catch (_) {}
+    return Object.fromEntries(Object.entries(parsed).filter(([key, value]) => {
+      const stage = Number(key);
+      return Number.isInteger(stage) && stage >= 1 && stage <= paths.length && Number.isFinite(Number(value)) && Number(value) > 0;
+    }).map(([key, value]) => [key, Number(value)]));
+  };
+  const readStageBest = (stageNumber) => readStageBests()[String(stageNumber)] || null;
+  const writeStageBest = (stageNumber, value) => {
+    try {
+      const scores = readStageBests();
+      const old = scores[String(stageNumber)];
+      if (!old || value < old) {
+        scores[String(stageNumber)] = value;
+        localStorage.setItem(stageBestKey, JSON.stringify(scores));
+      }
     } catch (_) {}
   };
   const readProgress = () => {
@@ -124,7 +149,11 @@
     state.screen = screen;
     ["main", "stage", "battle", "result"].forEach((name) => { $(`${name}Screen`).hidden = name !== screen; });
     const guide = document.querySelector("[data-wp-game-guide]");
-    if (guide) guide.hidden = screen !== "main";
+    if (guide) {
+      const visible = screen === "main";
+      guide.hidden = !visible;
+      guide.setAttribute("aria-hidden", String(!visible));
+    }
     $("stageSettingsBtn")?.setAttribute("aria-label", t("settings"));
     $("battleSettingsBtn")?.setAttribute("aria-label", t("settings"));
     if (previous !== screen) {
@@ -211,8 +240,10 @@
     $("resultHeading").textContent = finalStage ? t("finishTitle") : t("correct");
     const item = paths[state.path];
     const resultVars = { stage: state.path + 1, next: state.path + 2, reward: t(item.rewardKey) };
-    $("resultText").textContent = finalStage
+    $("resultText").textContent = finalStage && state.lastResultCampaign
       ? t("campaignFinishText", { n: state.sessionChecks, best: readBest() || state.sessionChecks, reward: t(item.rewardKey) })
+      : finalStage
+        ? t("stageFinishText", { stage: state.path + 1, checks: state.checks, best: readStageBest(state.path + 1) || state.checks })
       : t(item.checkpoint ? "checkpointClear" : "stageClear", resultVars);
     $("resultPrimaryBtn").textContent = finalStage ? t("map") : t("nextStage");
     $("resultMapBtn").hidden = false;
@@ -243,6 +274,8 @@
     state.sessionChecks = 0;
     state.path = 0;
     state.chain = [];
+    state.campaignRun = true;
+    state.lastResultCampaign = false;
     show("stage");
     renderStages();
     track("session_start");
@@ -252,6 +285,7 @@
     state.path = index;
     state.chain = [];
     state.checks = 0;
+    state.lastResultCampaign = false;
     show("battle");
     renderBattle();
     track("path_start", { path: state.path + 1, arc: paths[state.path].arcKey });
@@ -294,8 +328,13 @@
     }
     $("battleStatus").textContent = t("correct");
     clearStage(state.path);
-    if (state.path >= paths.length - 1) {
+    writeStageBest(state.path + 1, state.checks);
+    const progress = readProgress();
+    const campaignCompleted = state.campaignRun && state.path >= paths.length - 1 && progress.cleared.length === paths.length;
+    if (campaignCompleted) {
       writeBest(state.sessionChecks);
+      state.lastResultCampaign = true;
+      state.campaignRun = false;
       track("session_complete", { checks: state.sessionChecks });
     }
     show("result");
@@ -309,10 +348,10 @@
   };
 
   $("startBtn").addEventListener("click", startSession);
-  $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); track("path_map"); });
+  $("mapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages(); track("path_map"); });
   $("stageBackBtn").addEventListener("click", () => show("main"));
   $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); });
-  $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
+  $("resultMapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages(); });
   $("resultHomeBtn").addEventListener("click", () => show("main"));
   $("checkBtn").addEventListener("click", checkPath);
   $("resetBtn").addEventListener("click", resetChain);
@@ -340,6 +379,8 @@
     chooseLantern,
     checkPath,
     getProgress: readProgress,
+    getBest: readBest,
+    getStageBests: readStageBests,
     getState: () => ({ ...state, chain: [...state.chain] }),
   };
 })();

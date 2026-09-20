@@ -3,8 +3,8 @@
 
   const $ = (id) => document.getElementById(id);
   const t = (key, vars) => window.deepSeaT?.(key, vars) || key;
-  const STORE_KEY = "weightplay:animal-deep-sea-salvage:v1";
-  const LEGACY_KEYS = ["weightplay_animal_deep_sea_salvage_v1"];
+  const STORE_KEY = "weightplay:animal-deep-sea-salvage:v2-campaign";
+  const LEGACY_KEYS = ["weightplay:animal-deep-sea-salvage:v1", "weightplay_animal_deep_sea_salvage_v1"];
   const MAX_OFFLINE_MS = 8 * 60 * 60 * 1000;
   const MIN_DIVE_MS = 4200;
   // The minimum-speed dive is the worst case for the eight-hour offline
@@ -112,6 +112,39 @@
     ],
   });
 
+  const CAMPAIGN_CONTRACTS = Object.freeze([
+    { id: "harbour-01", arc: "Harbour Survey", zone: "harbour", focus: "balanced", target: 1, reward: 90 },
+    { id: "harbour-02", arc: "Harbour Survey", zone: "harbour", focus: "value", target: 2, reward: 120 },
+    { id: "harbour-03", arc: "Harbour Survey", zone: "harbour", focus: "museum", target: 2, reward: 150, minMuseum: 1 },
+    { id: "harbour-04", arc: "Harbour Survey", zone: "harbour", focus: "balanced", target: 3, reward: 180, minUpgrade: ["salvage", 1] },
+    { id: "harbour-05", arc: "Harbour Survey", zone: "harbour", focus: "museum", target: 2, reward: 210, minUpgrade: ["movement", 1] },
+    { id: "wreck-01", arc: "Wreck Ledger", zone: "wreck", focus: "value", target: 1, reward: 240, minDepth: 180 },
+    { id: "wreck-02", arc: "Wreck Ledger", zone: "wreck", focus: "balanced", target: 2, reward: 270, minDepth: 180 },
+    { id: "wreck-03", arc: "Wreck Ledger", zone: "wreck", focus: "museum", target: 2, reward: 300, minDepth: 180, minMuseum: 2 },
+    { id: "wreck-04", arc: "Wreck Ledger", zone: "wreck", focus: "value", target: 2, reward: 340, minDepth: 260, minUpgrade: ["cargo", 1] },
+    { id: "wreck-05", arc: "Wreck Ledger", zone: "wreck", focus: "museum", target: 3, reward: 380, minDepth: 360, event: "ship" },
+    { id: "canyon-01", arc: "Canyon Recovery", zone: "canyon", focus: "balanced", target: 2, reward: 420, minDepth: 420, minRobots: 2 },
+    { id: "canyon-02", arc: "Canyon Recovery", zone: "canyon", focus: "value", target: 2, reward: 460, minDepth: 420, minUpgrade: ["movement", 2] },
+    { id: "canyon-03", arc: "Canyon Recovery", zone: "canyon", focus: "museum", target: 2, reward: 500, minDepth: 500, minMuseum: 3 },
+    { id: "canyon-04", arc: "Canyon Recovery", zone: "canyon", focus: "value", target: 3, reward: 560, minDepth: 500, minUpgrade: ["cargo", 2] },
+    { id: "canyon-05", arc: "Canyon Recovery", zone: "canyon", focus: "balanced", target: 3, reward: 620, minDepth: 620, minRare: 1 },
+    { id: "midnight-01", arc: "Midnight Museum", zone: "midnight", focus: "museum", target: 2, reward: 680, minDepth: 680, minUpgrade: ["depth", 6] },
+    { id: "midnight-02", arc: "Midnight Museum", zone: "midnight", focus: "value", target: 3, reward: 740, minDepth: 680, event: "quake" },
+    { id: "midnight-03", arc: "Midnight Museum", zone: "midnight", focus: "museum", target: 3, reward: 800, minDepth: 700, minMuseum: 4 },
+    { id: "midnight-04", arc: "Midnight Museum", zone: "midnight", focus: "balanced", target: 3, reward: 860, minDepth: 760, minRobots: 2 },
+    { id: "midnight-05", arc: "Midnight Museum", zone: "midnight", focus: "museum", target: 4, reward: 920, minDepth: 760, minRare: 2 },
+    { id: "volcano-01", arc: "Volcano Signal", zone: "volcano", focus: "value", target: 2, reward: 980, minDepth: 920, minTech: ["depth", 1] },
+    { id: "volcano-02", arc: "Volcano Signal", zone: "volcano", focus: "museum", target: 3, reward: 1040, minDepth: 920, event: "sonar" },
+    { id: "volcano-03", arc: "Volcano Signal", zone: "volcano", focus: "value", target: 3, reward: 1100, minDepth: 1000, minUpgrade: ["salvage", 4] },
+    { id: "volcano-04", arc: "Volcano Signal", zone: "volcano", focus: "balanced", target: 3, reward: 1180, minDepth: 1000, minRobots: 3 },
+    { id: "volcano-05", arc: "Volcano Signal", zone: "volcano", focus: "museum", target: 4, reward: 1260, minDepth: 1100, minMuseum: 6 },
+    { id: "ruins-01", arc: "Ruins Charter", zone: "ruins", focus: "balanced", target: 3, reward: 1340, minDepth: 1180, minRobots: 3 },
+    { id: "ruins-02", arc: "Ruins Charter", zone: "ruins", focus: "museum", target: 4, reward: 1420, minDepth: 1180, event: "creature" },
+    { id: "abyss-01", arc: "Abyss Charter", zone: "abyss", focus: "value", target: 3, reward: 1500, minDepth: 1500, minTech: ["depth", 3] },
+    { id: "abyss-02", arc: "Abyss Charter", zone: "abyss", focus: "museum", target: 5, reward: 1640, minDepth: 1500, event: "hotspot" },
+    { id: "abyss-03", arc: "Abyss Charter", zone: "abyss", focus: "balanced", target: 4, reward: 1800, minDepth: 1700, minPrestige: 1 },
+  ]);
+
   const els = {
     loading: $("loading"), app: $("app"), landing: $("mainLanding"), dashboard: $("gameDashboard"), startGame: $("startGameButton"), locale: $("localeSelect"), reset: $("resetButton"),
     dispatch: $("dispatchButton"), quickDive: $("quickDiveButton"), collect: $("collectButton"),
@@ -122,7 +155,7 @@
     diveStatus: $("diveStatus"), cargo: $("cargoValue"), currentDepth: $("currentDepthValue"), zoneList: $("zoneList"),
     zoneCount: $("zoneCount"), findLog: $("findLog"), totalDives: $("totalDivesLabel"), upgradeList: $("upgradeList"),
     robotList: $("robotList"), robotCount: $("robotCount"), museumGrid: $("museumGrid"), museumCount: $("museumCount"),
-    dailyMissionList: $("dailyMissionList"), dailyMissionCount: $("dailyMissionCount"), missionList: $("missionList"), missionCount: $("missionCount"),
+    dailyMissionList: $("dailyMissionList"), dailyMissionCount: $("dailyMissionCount"), missionList: $("missionList"), missionCount: $("missionCount"), contractList: $("contractList"), contractCount: $("contractCount"),
     achievementList: $("achievementList"), achievementCount: $("achievementCount"),
     techCopy: $("techCopy"), techUpgradeList: $("techUpgradeList"), research: $("researchValue"), researchMultiplier: $("researchMultiplier"), prestige: $("prestigeButton"),
     eventBanner: $("eventBanner"), eventTitle: $("eventTitle"), eventCopy: $("eventCopy"), eventBonusValue: $("eventBonusValue"), settingsList: $("settingsList"),
@@ -144,12 +177,12 @@
 
   const ZONE_ALIASES = { kelp: "wreck", trench: "volcano", rift: "ruins" };
   const freshState = () => ({
-    version: 2, coins: 120, maxDepth: 120, zoneId: "harbour", robots: 1,
+    version: 3, coins: 120, maxDepth: 120, zoneId: "harbour", robots: 1,
     upgrades: Object.fromEntries(CONFIG.upgrades.map((upgrade) => [upgrade.id, 0])),
     robotRoster: { scout: 1, salvager: 0, abyss: 0 },
     robotLevels: { scout: 0, salvager: 0, abyss: 0 },
     activeRobotType: "scout",
-    museum: [], museumMilestonesClaimed: [], museumValueBonus: 0, recentFinds: [], missionsClaimed: [], dailyKey: "", dailyClaimed: [], achievementsClaimed: [],
+    museum: [], museumMilestonesClaimed: [], museumValueBonus: 0, recentFinds: [], missionsClaimed: [], contractsClaimed: [], contractProgress: {}, dailyKey: "", dailyClaimed: [], achievementsClaimed: [],
     research: 0, prestigeCount: 0, techLevels: Object.fromEntries(CONFIG.techUpgrades.map((upgrade) => [upgrade.id, 0])),
     totalDives: 0, totalSold: 0, totalValue: 0, totalWeight: 0, rareFound: 0, totalEvents: 0, lastEvent: null,
     dailyProgress: { dives: 0, sold: 0, events: 0 },
@@ -169,6 +202,10 @@
     if (Array.isArray(raw.museumMilestonesClaimed)) state.museumMilestonesClaimed = [...new Set(raw.museumMilestonesClaimed.filter((id) => CONFIG.museumMilestones.some((milestone) => milestone.id === id)))];
     if (Array.isArray(raw.recentFinds)) state.recentFinds = raw.recentFinds.slice(0, 8).filter((entry) => entry && typeof entry === "object");
     if (Array.isArray(raw.missionsClaimed)) state.missionsClaimed = raw.missionsClaimed.filter((id) => CONFIG.missions.some((mission) => mission.id === id));
+    if (Array.isArray(raw.contractsClaimed)) state.contractsClaimed = raw.contractsClaimed.filter((id) => CAMPAIGN_CONTRACTS.some((contract) => contract.id === id));
+    if (raw.contractProgress && typeof raw.contractProgress === "object") {
+      state.contractProgress = Object.fromEntries(CAMPAIGN_CONTRACTS.map((contract) => [contract.id, clamp(Number(raw.contractProgress[contract.id]) || 0, 0, contract.target)]));
+    }
     if (Array.isArray(raw.dailyClaimed)) state.dailyClaimed = raw.dailyClaimed.filter((id) => CONFIG.dailyMissions.some((mission) => mission.id === id));
     if (Array.isArray(raw.achievementsClaimed)) state.achievementsClaimed = raw.achievementsClaimed.filter((id) => CONFIG.achievements.some((achievement) => achievement.id === id));
     for (const upgrade of CONFIG.upgrades) state.upgrades[upgrade.id] = clamp(Number(raw.upgrades?.[upgrade.id] || 0), 0, upgrade.max);
@@ -426,6 +463,7 @@
     state.totalDives += 1;
     state.dailyProgress.dives += 1;
     state.dailyProgress.sold += soldValue;
+    advanceContracts(dive, { event });
     state.currentDive = null;
     const payout = Math.round(earned);
     if (offline) pendingOffline += Math.round(payout * stats.offlineRate);
@@ -503,6 +541,32 @@
   const missionProgress = (mission) => metricValue(mission.metric || "dives");
   const dailyMissionProgress = (mission) => metricValue(mission.metric || "dives", true);
   const achievementProgress = (achievement) => metricValue(achievement.metric || "dives");
+
+  const contractGateOpen = (contract) => {
+    if (contract.minDepth && effectiveMaxDepth() < contract.minDepth) return false;
+    if (contract.minMuseum && state.museum.length < contract.minMuseum) return false;
+    if (contract.minRobots && totalRobots() < contract.minRobots) return false;
+    if (contract.minRare && state.rareFound < contract.minRare) return false;
+    if (contract.minPrestige && state.prestigeCount < contract.minPrestige) return false;
+    if (contract.minUpgrade && level(contract.minUpgrade[0]) < contract.minUpgrade[1]) return false;
+    if (contract.minTech && techLevel(contract.minTech[0]) < contract.minTech[1]) return false;
+    return true;
+  };
+  const contractMatchesDive = (contract, dive, result) => {
+    if (!dive || dive.zoneId !== contract.zone || dive.focus !== contract.focus) return false;
+    if (contract.minDepth && dive.targetDepth < contract.minDepth) return false;
+    if (contract.event && result?.event?.id !== contract.event) return false;
+    return contractGateOpen(contract);
+  };
+  const advanceContracts = (dive, result) => {
+    let changed = false;
+    for (const contract of CAMPAIGN_CONTRACTS) {
+      if (state.contractsClaimed.includes(contract.id) || !contractMatchesDive(contract, dive, result)) continue;
+      const current = Number(state.contractProgress[contract.id] || 0);
+      if (current < contract.target) { state.contractProgress[contract.id] = current + 1; changed = true; }
+    }
+    return changed;
+  };
 
   const applyStaticTranslations = () => {
     const locale = window.DEEP_SEA_LOCALE || "en";
@@ -610,6 +674,27 @@
       state.dailyClaimed.push(mission.id); state.coins += mission.reward;
       showToast(`+${number(mission.reward)} ${t("credits")} · ${t("missionComplete")}`); markSaving(); render();
     }));
+    if (els.contractList) {
+      const claimedContracts = CAMPAIGN_CONTRACTS.filter((contract) => state.contractsClaimed.includes(contract.id)).length;
+      els.contractCount.textContent = `${claimedContracts}/${CAMPAIGN_CONTRACTS.length} ${t("missionClaimed")}`;
+      els.contractList.innerHTML = CAMPAIGN_CONTRACTS.map((contract) => {
+        const current = Math.min(contract.target, Number(state.contractProgress[contract.id] || 0));
+        const claimed = state.contractsClaimed.includes(contract.id);
+        const ready = !claimed && current >= contract.target && contractGateOpen(contract);
+        const zone = CONFIG.zones.find((candidate) => candidate.id === contract.zone);
+        const focus = DIVE_FOCUSES[contract.focus];
+        const title = `${contract.arc} · ${zone ? zoneLabel(zone) : contract.zone} · ${focus ? t(focus.key) : contract.focus}`;
+        const gate = contract.event ? ` · ${contract.event}` : contract.minDepth ? ` · ${number(contract.minDepth)}${t("metres")}` : "";
+        const action = claimed ? t("missionClaimed") : ready ? t("missionClaim") : `${number(current)}/${number(contract.target)}`;
+        return `<article class="mission-card${ready || claimed ? " complete" : ""}"><div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(contract.arc)}${escapeHtml(gate)} · ${number(contract.reward)} ${escapeHtml(t("credits"))}</p><div class="mission-bar"><i style="width:${Math.round(clamp(current / contract.target * 100, 0, 100))}%"></i></div><small class="mission-progress">${escapeHtml(t("missionProgress"))} · ${number(current)}/${number(contract.target)}</small></div><button type="button" class="mission-action" data-contract="${contract.id}" ${claimed || !ready ? "disabled" : ""}>${escapeHtml(action)}</button></article>`;
+      }).join("");
+      els.contractList.querySelectorAll("[data-contract]").forEach((button) => button.addEventListener("click", () => {
+        const contract = CAMPAIGN_CONTRACTS.find((candidate) => candidate.id === button.dataset.contract);
+        if (!contract || state.contractsClaimed.includes(contract.id) || Number(state.contractProgress[contract.id] || 0) < contract.target || !contractGateOpen(contract)) return;
+        state.contractsClaimed.push(contract.id); state.coins += contract.reward;
+        showToast(`+${number(contract.reward)} ${t("credits")} · ${t("missionComplete")}`); markSaving(); render();
+      }));
+    }
   };
 
   const robotHireCost = (robot) => Math.round(420 * Math.pow(1.45, Math.max(0, totalRobots() - 1)) * (robot.id === "scout" ? 1 : robot.id === "salvager" ? 1.5 : 2.25));
@@ -896,13 +981,15 @@
       const museumMilestonesClaimed = state.museumMilestonesClaimed.slice();
       const museumValueBonus = state.museumValueBonus;
       const achievementsClaimed = state.achievementsClaimed.slice();
+      const contractsClaimed = state.contractsClaimed.slice();
+      const contractProgress = { ...state.contractProgress };
       const techLevels = { ...state.techLevels };
       const research = state.research + 1;
       const prestigeCount = state.prestigeCount + 1;
       state = freshState();
       state.started = true;
       state.museum = museum; state.museumMilestonesClaimed = museumMilestonesClaimed; state.museumValueBonus = museumValueBonus;
-      state.achievementsClaimed = achievementsClaimed; state.techLevels = techLevels;
+      state.achievementsClaimed = achievementsClaimed; state.contractsClaimed = contractsClaimed; state.contractProgress = contractProgress; state.techLevels = techLevels;
       state.research = research; state.prestigeCount = prestigeCount; state.dailyKey = localDateKey();
       pendingOffline = 0; applySettings(); startDive(); save(); render(); showToast(t("prestigeDone"));
     });
@@ -910,6 +997,11 @@
     window.addEventListener("beforeunload", save);
   };
 
+  window.__ANIMAL_DEEP_SEA_SALVAGE_TEST__ = {
+    contracts: CAMPAIGN_CONTRACTS,
+    getState: () => ({ contractsClaimed: [...state.contractsClaimed], contractProgress: { ...state.contractProgress }, totalDives: state.totalDives }),
+    contractGateOpen,
+  };
   applyStaticTranslations();
   applySettings();
   ensureDailyState();

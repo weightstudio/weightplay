@@ -40,6 +40,7 @@
     correct: ["The safe path is glowing.", "安全路徑亮起來了。", "安全路径亮起来了。", "安全な道が光っています。", "안전한 길이 빛나요.", "El camino seguro está brillando.", "O caminho seguro está brilhando.", "Le chemin sûr s’illumine.", "Der sichere Pfad leuchtet.", "Il sentiero sicuro si illumina.", "Безопасный путь засиял.", "सुरक्षित रास्ता चमक रहा है।", "أضاء المسار الآمن."],
     finishTitle: ["Lattice complete!", "燈影連線完成！", "灯影连线完成！", "灯りの格子が完成！", "등불 격자 완성!", "¡Malla completada!", "Trama concluída!", "Réseau terminé !", "Geflecht vollständig!", "Reticolo completato!", "Решётка готова!", "जाल पूरा हुआ!", "اكتملت الشبكة!"],
     finishText: ["Three night paths opened in {n} checks. Your best is {best}.", "三條夜路共用了 {n} 次檢查，最佳紀錄是 {best} 次。", "三条夜路共用了 {n} 次检查，最佳记录是 {best} 次。", "3つの夜道を{n}回のチェックで開きました。ベストは{best}回です。", "세 밤길을 {n}번 확인해 열었어요. 최고 기록은 {best}번이에요.", "Abriste tres caminos nocturnos en {n} comprobaciones. Tu mejor marca es {best}.", "Você abriu três caminhos noturnos em {n} verificações. Seu melhor é {best}.", "Vous avez ouvert trois chemins nocturnes en {n} vérifications. Votre record est de {best}.", "Du hast drei Nachtpfade mit {n} Prüfungen geöffnet. Dein Bestwert ist {best}.", "Hai aperto tre sentieri notturni con {n} controlli. Il tuo record è {best}.", "Вы открыли три ночных пути за {n} проверок. Ваш лучший результат — {best}.", "आपने {n} जाँचों में तीन रात के रास्ते खोले। आपका सर्वश्रेष्ठ {best} है।", "فتحت ثلاثة مسارات ليلية في {n} عمليات تحقق. أفضل نتيجة لك هي {best}."],
+    stageFinishText: ["Night path {stage} is clear in {checks} checks. Best for this path: {best}.", "夜路第 {stage} 關用了 {checks} 次檢查完成，本路最佳是 {best} 次。", "夜路第 {stage} 关用了 {checks} 次检查完成，本路最佳是 {best} 次。", "夜道{stage}を{checks}回でクリア。ベストは{best}回です。", "밤길 {stage}를 {checks}번 확인해 클리어했어요. 최고 기록은 {best}번이에요.", "Camino nocturno {stage} superado en {checks} comprobaciones. El mejor de este camino es {best}.", "Caminho noturno {stage} concluído em {checks} verificações. O melhor deste caminho é {best}.", "Chemin nocturne {stage} réussi en {checks} vérifications. Le meilleur de ce chemin est {best}.", "Nachtpfad {stage} mit {checks} Prüfungen geschafft. Der Bestwert dieses Pfads ist {best}.", "Sentiero notturno {stage} completato in {checks} controlli. Il record di questo sentiero è {best}.", "Ночной путь {stage} пройден за {checks} проверок. Лучший результат этого пути — {best}.", "रात्रि पथ {stage} {checks} जाँचों में पूरा। इस पथ का सर्वश्रेष्ठ {best} है।", "اكتمل المسار الليلي {stage} في {checks} عمليات تحقق. أفضل نتيجة لهذا المسار هي {best}."],
     next: ["Next path", "下一條路", "下一条路", "次の道", "다음 경로", "Siguiente camino", "Próximo caminho", "Chemin suivant", "Nächster Pfad", "Sentiero successivo", "Следующий путь", "अगला रास्ता", "المسار التالي"],
     map: ["Night map", "夜路地圖", "夜路地图", "夜道マップ", "밤길 지도", "Mapa nocturno", "Mapa noturno", "Carte nocturne", "Nachtkarte", "Mappa notturna", "Ночная карта", "रात का नक्शा", "الخريطة الليلية"],
     home: ["Back to menu", "回到選單", "回到菜单", "メニューに戻る", "메뉴로 돌아가기", "Volver al menú", "Voltar ao menu", "Retour au menu", "Zum Menü", "Torna al menu", "В меню", "मेनू पर लौटें", "العودة إلى القائمة"],
@@ -139,5 +140,121 @@
     arc6: "إتقان الشبكة",
   };
   Object.entries(arabicCampaign).forEach(([key, value]) => { rows[key][12] = value; });
+
+  // The campaign additions above were originally authored only for the two
+  // Chinese routes and Arabic.  Keep every other route locale-owned as well:
+  // this compact table gives each locale its own stage names, arc labels,
+  // rules, feedback, and rewards instead of silently exposing English.
+  const campaignLocaleConfigs = {
+    ja: {
+      stage: "夜道", themes: ["初光", "蛾の囮", "こだまの谷", "風返し", "つながる合図", "格子の極意"],
+      round: "ステージ {n} / {total}", hint: "手がかりに従い、{count}個の灯りを順番につなぎます。", needMore: "確認する前に{count}個の灯りを選んでください。",
+      guideOne: "6つの章で手がかりの読み方が変わり、最後は風返しの道へ進みます。", guideTwo: "手がかりの順に3〜6個の灯りをタップします。こだまの道では同じ灯りを2回使います。", guideThree: "違うと最初に見直すつながりが示されます。蛾の囮を避け、風返しは逆から読みます。時間制限も残機もありません。",
+      straight: "守り手の順序：巣から門まで手がかりを追います。", reverse: "風返し：最後の灯りから最初へ逆向きに読みます。", decoy: "蛾の囮：安全な手がかりを追い、{decoy}は消したままにします。", echo: "こだまの光：この道では{echo}が2回現れます。", decoyEcho: "二つの合図：{echo}を2回置き、蛾の囮{decoy}は消します。", mastery: "極意の風返し：逆に読み、{echo}を2回響かせ、{decoy}を消します。",
+      clueStart: "{name}から始めます。", reverseClueStart: "風返しは{name}から始め、そこから逆に進みます。", clueFollow: "次は{previous}の後に{name}です。", decoyWrong: "蛾の囮{name}が点灯しました。リセットして消してください。",
+      stageClear: "ステージ{stage}クリア。ステージ{next}が点灯しました。", checkpointClear: "チェックポイント{stage}クリア。{reward}を獲得し、ステージ{next}が点灯しました。", finish: "6章30本の夜道を{n}回の確認で開きました。自己ベストは{best}回です。{reward}を獲得しました。", replayFinish: "夜道{stage}を{checks}回の確認でクリア。自己ベストは{best}回です。",
+      next: "次のステージ", checkpoint: "チェックポイント", locked: "未解放", reward: "夜道のしるし", rewardSuffix: "の徽章",
+      arcs: ["初光篇", "蛾の囮篇", "こだまの谷篇", "風返し篇", "つながる合図篇", "格子の極意篇"], rewardFor: arc => `${arc}の徽章`,
+    },
+    ko: {
+      stage: "밤길", themes: ["첫 빛", "나방 미끼", "메아리 골짜기", "바람 전환", "이어진 신호", "격자 숙련"],
+      round: "스테이지 {n} / {total}", hint: "단서를 따라 {count}개의 등불을 순서대로 연결하세요.", needMore: "확인하기 전에 등불 {count}개를 선택하세요.",
+      guideOne: "6개 장마다 단서를 읽는 방식이 달라지고 마지막에는 바람 전환 규칙이 열립니다.", guideTwo: "단서 순서대로 등불 3~6개를 누르세요. 메아리 길에서는 같은 등불을 두 번 씁니다.", guideThree: "틀리면 다시 볼 첫 연결을 알려 줍니다. 나방 미끼를 피하고 바람 전환은 뒤에서 읽으세요. 시간 제한과 목숨은 없습니다.",
+      straight: "수호자 순서: 둥지에서 문까지 단서를 따라가세요.", reverse: "바람 전환: 마지막 등불에서 첫 등불까지 거꾸로 읽습니다.", decoy: "나방 미끼: 안전한 단서를 따라가며 {decoy}는 꺼 둡니다.", echo: "메아리 빛: 이 길에서는 {echo}가 두 번 나타납니다.", decoyEcho: "두 신호: {echo}를 두 번 놓고 나방 미끼 {decoy}는 꺼 두세요.", mastery: "숙련 전환: 거꾸로 읽고 {echo}를 두 번 울리며 {decoy}는 꺼 둡니다.",
+      clueStart: "{name}부터 시작하세요.", reverseClueStart: "바람 전환은 {name}에서 시작해 거꾸로 진행합니다.", clueFollow: "다음은 {previous} 뒤의 {name}입니다.", decoyWrong: "나방 미끼 {name}에 불이 켜졌어요. 초기화하고 꺼 두세요.",
+      stageClear: "스테이지 {stage} 클리어. 스테이지 {next}가 열렸습니다.", checkpointClear: "체크포인트 {stage} 클리어. {reward}를 얻고 스테이지 {next}가 열렸습니다.", finish: "6개 장의 밤길 30개를 {n}번 확인해 열었습니다. 최고 기록은 {best}번입니다. {reward}를 얻었습니다.", replayFinish: "밤길 {stage}를 {checks}번 확인해 클리어했습니다. 이 길의 최고 기록은 {best}번입니다.",
+      next: "다음 스테이지", checkpoint: "체크포인트", locked: "잠김", reward: "밤길 표식", rewardSuffix: " 배지",
+      arcs: ["첫 빛", "나방 미끼", "메아리 골짜기", "바람 전환", "이어진 신호", "격자 숙련"], rewardFor: arc => `${arc} 배지`,
+    },
+    es: {
+      stage: "Camino nocturno", themes: ["Primer resplandor", "Señuelo de polilla", "Valle del eco", "Giro del viento", "Señales unidas", "Dominio de la red"],
+      round: "Etapa {n} de {total}", hint: "Sigue las pistas y conecta {count} faroles en orden.", needMore: "Elige {count} faroles antes de comprobar.",
+      guideOne: "Cada uno de los seis arcos cambia la forma de leer las pistas, hasta llegar al giro final del viento.", guideTwo: "Toca de tres a seis faroles en el orden indicado. En las etapas de eco, un farol aparece dos veces.", guideThree: "Un error señala el primer enlace que debes revisar. Evita el señuelo de polilla y lee al revés las etapas de giro. No hay tiempo ni vidas.",
+      straight: "Orden del guardián: sigue cada pista del nido a la puerta.", reverse: "Giro del viento: lee el camino desde el último farol hasta el primero.", decoy: "Señuelo de polilla: sigue las pistas seguras y deja {decoy} apagado.", echo: "Luz de eco: {echo} aparece dos veces en este camino.", decoyEcho: "Dos señales: coloca el eco {echo} dos veces y deja apagado el señuelo {decoy}.", mastery: "Giro maestro: lee al revés, repite {echo} dos veces y deja {decoy} apagado.",
+      clueStart: "Empieza con {name}.", reverseClueStart: "El giro empieza en {name}; vuelve desde allí en sentido inverso.", clueFollow: "Después de {previous} va {name}.", decoyWrong: "Se encendió el señuelo {name}. Reinicia y déjalo apagado.",
+      stageClear: "Etapa {stage} superada. La etapa {next} ya está encendida.", checkpointClear: "Punto de control {stage} superado. {reward} marca el final del arco y la etapa {next} está encendida.", finish: "Abriste 30 caminos nocturnos en seis arcos con {n} comprobaciones. Tu mejor marca es {best}. Has ganado {reward}.", replayFinish: "Camino nocturno {stage} superado en {checks} comprobaciones. El mejor resultado de este camino es {best}.",
+      next: "Siguiente etapa", checkpoint: "Punto de control", locked: "Bloqueado", reward: "Marca del camino", rewardSuffix: "",
+      arcs: ["Primer resplandor", "Señuelo de polilla", "Valle del eco", "Giro del viento", "Señales unidas", "Dominio de la red"], rewardFor: arc => `Insignia de ${arc}`,
+    },
+    "pt-BR": {
+      stage: "Caminho noturno", themes: ["Primeiro brilho", "Isca de mariposa", "Vale do eco", "Virada do vento", "Sinais unidos", "Maestria da trama"],
+      round: "Etapa {n} de {total}", hint: "Siga as pistas e conecte {count} lanternas na ordem.", needMore: "Escolha {count} lanternas antes de conferir.",
+      guideOne: "Cada um dos seis arcos muda a leitura das pistas, até chegar à virada final do vento.", guideTwo: "Toque de três a seis lanternas na ordem indicada. Nas etapas de eco, uma lanterna aparece duas vezes.", guideThree: "Um erro indica o primeiro elo a revisar. Evite a isca de mariposa e leia as etapas de virada ao contrário. Não há tempo nem vidas.",
+      straight: "Ordem do guardião: siga cada pista do ninho até o portão.", reverse: "Virada do vento: leia o caminho da última lanterna até a primeira.", decoy: "Isca de mariposa: siga as pistas seguras e deixe {decoy} apagada.", echo: "Luz do eco: {echo} aparece duas vezes neste caminho.", decoyEcho: "Dois sinais: coloque o eco {echo} duas vezes e deixe a isca {decoy} apagada.", mastery: "Virada mestre: leia ao contrário, repita {echo} duas vezes e deixe {decoy} apagada.",
+      clueStart: "Comece com {name}.", reverseClueStart: "A virada começa em {name}; volte a partir dali.", clueFollow: "Depois de {previous}, siga com {name}.", decoyWrong: "A isca {name} acendeu. Reinicie e deixe-a apagada.",
+      stageClear: "Etapa {stage} concluída. A etapa {next} foi acesa.", checkpointClear: "Ponto de controle {stage} concluído. {reward} encerra este arco e a etapa {next} foi acesa.", finish: "Você abriu 30 caminhos noturnos em seis arcos com {n} verificações. Seu melhor é {best}. Você ganhou {reward}.", replayFinish: "Caminho noturno {stage} concluído em {checks} verificações. O melhor deste caminho é {best}.",
+      next: "Próxima etapa", checkpoint: "Ponto de controle", locked: "Bloqueado", reward: "Marca do caminho", rewardSuffix: "",
+      arcs: ["Primeiro brilho", "Isca de mariposa", "Vale do eco", "Virada do vento", "Sinais unidos", "Maestria da trama"], rewardFor: arc => `Emblema de ${arc}`,
+    },
+    fr: {
+      stage: "Chemin nocturne", themes: ["Première lueur", "Leurre de phalène", "Vallée de l’écho", "Tour du vent", "Signaux liés", "Maîtrise du réseau"],
+      round: "Étape {n} sur {total}", hint: "Suivez les indices et reliez {count} lanternes dans l’ordre.", needMore: "Choisissez {count} lanternes avant de vérifier.",
+      guideOne: "Les six arcs changent la lecture des indices, jusqu’au dernier tour du vent.", guideTwo: "Touchez de trois à six lanternes dans l’ordre indiqué. Dans les étapes d’écho, une lanterne apparaît deux fois.", guideThree: "Une erreur indique le premier lien à revoir. Évitez le leurre de phalène et lisez les étapes du tour à l’envers. Il n’y a ni temps ni vies.",
+      straight: "Ordre du gardien : suivez chaque indice du nid jusqu’à la porte.", reverse: "Tour du vent : lisez le chemin de la dernière lanterne vers la première.", decoy: "Leurre de phalène : suivez les indices sûrs et laissez {decoy} éteinte.", echo: "Lueur d’écho : {echo} apparaît deux fois sur ce chemin.", decoyEcho: "Deux signaux : placez l’écho {echo} deux fois et laissez le leurre {decoy} éteint.", mastery: "Tour de maîtrise : lisez à rebours, répétez {echo} deux fois et laissez {decoy} éteinte.",
+      clueStart: "Commencez par {name}.", reverseClueStart: "Le tour commence à {name} ; repartez de là en arrière.", clueFollow: "Après {previous}, suivez {name}.", decoyWrong: "Le leurre {name} est allumé. Réinitialisez et laissez-le éteint.",
+      stageClear: "Étape {stage} réussie. L’étape {next} est allumée.", checkpointClear: "Point de contrôle {stage} réussi. {reward} termine cet arc et l’étape {next} est allumée.", finish: "Vous avez ouvert 30 chemins nocturnes en six arcs avec {n} vérifications. Votre record est {best}. Vous gagnez {reward}.", replayFinish: "Chemin nocturne {stage} réussi en {checks} vérifications. Le meilleur de ce chemin est {best}.",
+      next: "Étape suivante", checkpoint: "Point de contrôle", locked: "Verrouillé", reward: "Marque du chemin", rewardSuffix: "",
+      arcs: ["Première lueur", "Leurre de phalène", "Vallée de l’écho", "Tour du vent", "Signaux liés", "Maîtrise du réseau"], rewardFor: arc => `Insigne ${arc}`,
+    },
+    de: {
+      stage: "Nachtpfad", themes: ["Erstes Leuchten", "Mottenköder", "Echotal", "Windwende", "Verbundene Signale", "Gittermeisterschaft"],
+      round: "Stufe {n} von {total}", hint: "Folge den Hinweisen und verbinde {count} Laternen in der richtigen Reihenfolge.", needMore: "Wähle vor der Prüfung {count} Laternen.",
+      guideOne: "Jeder der sechs Bögen führt eine neue Art ein, die Laternenhinweise zu lesen, bis zur letzten Windwende.", guideTwo: "Tippe drei bis sechs Laternen in Hinweisreihenfolge an. In Echo-Stufen erscheint eine Laterne zweimal.", guideThree: "Bei einem Fehler wird die erste zu prüfende Verbindung genannt. Meide den Mottenköder und lies Windwende-Stufen rückwärts. Es gibt weder Zeitlimit noch Leben.",
+      straight: "Hüterfolge: Folge jedem Hinweis vom Nest bis zum Tor.", reverse: "Windwende: Lies den Weg von der letzten Laterne zurück zur ersten.", decoy: "Mottenköder: Folge den sicheren Hinweisen und lasse {decoy} dunkel.", echo: "Echoleuchten: {echo} erscheint auf diesem Weg zweimal.", decoyEcho: "Zwei Signale: Setze {echo} zweimal und lasse den Köder {decoy} dunkel.", mastery: "Meisterwende: Lies rückwärts, wiederhole {echo} zweimal und lasse {decoy} dunkel.",
+      clueStart: "Beginne mit {name}.", reverseClueStart: "Die Windwende beginnt bei {name}; gehe von dort rückwärts.", clueFollow: "Nach {previous} folgt {name}.", decoyWrong: "Der Köder {name} leuchtet. Setze zurück und lasse ihn dunkel.",
+      stageClear: "Stufe {stage} geschafft. Stufe {next} ist jetzt erleuchtet.", checkpointClear: "Kontrollpunkt {stage} geschafft. {reward} beendet diesen Bogen; Stufe {next} ist erleuchtet.", finish: "Du hast 30 Nachtpfade in sechs Bögen mit {n} Prüfungen geöffnet. Dein Bestwert ist {best}. Du erhältst {reward}.", replayFinish: "Nachtpfad {stage} mit {checks} Prüfungen geschafft. Der Bestwert dieses Pfads ist {best}.",
+      next: "Nächste Stufe", checkpoint: "Kontrollpunkt", locked: "Gesperrt", reward: "Pfadmarke", rewardSuffix: "-Abzeichen",
+      arcs: ["Erstes Leuchten", "Mottenköder", "Echotal", "Windwende", "Verbundene Signale", "Gittermeisterschaft"], rewardFor: arc => `${arc}-Abzeichen`,
+    },
+    it: {
+      stage: "Sentiero notturno", themes: ["Prima luce", "Esca della falena", "Valle dell’eco", "Svolta del vento", "Segnali uniti", "Maestria della rete"],
+      round: "Tappa {n} di {total}", hint: "Segui gli indizi e collega {count} lanterne nell’ordine.", needMore: "Scegli {count} lanterne prima di controllare.",
+      guideOne: "Ognuno dei sei archi cambia il modo di leggere gli indizi, fino all’ultima svolta del vento.", guideTwo: "Tocca da tre a sei lanterne nell’ordine indicato. Nelle tappe eco una lanterna appare due volte.", guideThree: "Un errore indica il primo collegamento da rivedere. Evita l’esca della falena e leggi al contrario le tappe della svolta. Non ci sono tempo o vite.",
+      straight: "Ordine del custode: segui ogni indizio dal nido al cancello.", reverse: "Svolta del vento: leggi il percorso dall’ultima lanterna alla prima.", decoy: "Esca della falena: segui gli indizi sicuri e lascia spenta {decoy}.", echo: "Luce eco: {echo} appare due volte in questo percorso.", decoyEcho: "Due segnali: posiziona l’eco {echo} due volte e lascia spenta l’esca {decoy}.", mastery: "Svolta maestra: leggi all’indietro, ripeti {echo} due volte e lascia spenta {decoy}.",
+      clueStart: "Inizia con {name}.", reverseClueStart: "La svolta inizia da {name}; torna indietro da lì.", clueFollow: "Dopo {previous} viene {name}.", decoyWrong: "L’esca {name} si è accesa. Azzera e lasciala spenta.",
+      stageClear: "Tappa {stage} completata. La tappa {next} è illuminata.", checkpointClear: "Checkpoint {stage} completato. {reward} chiude l’arco e la tappa {next} è illuminata.", finish: "Hai aperto 30 sentieri notturni in sei archi con {n} controlli. Il tuo record è {best}. Hai ottenuto {reward}.", replayFinish: "Sentiero notturno {stage} completato in {checks} controlli. Il record di questo sentiero è {best}.",
+      next: "Tappa successiva", checkpoint: "Punto di controllo", locked: "Bloccato", reward: "Segno del sentiero", rewardSuffix: "",
+      arcs: ["Prima luce", "Esca della falena", "Valle dell’eco", "Svolta del vento", "Segnali uniti", "Maestria della rete"], rewardFor: arc => `Distintivo ${arc}`,
+    },
+    ru: {
+      stage: "Ночной путь", themes: ["Первое сияние", "Приманка мотылька", "Долина эха", "Поворот ветра", "Соединённые сигналы", "Мастерство решётки"],
+      round: "Этап {n} из {total}", hint: "Следуйте подсказкам и соедините {count} фонарей по порядку.", needMore: "Перед проверкой выберите {count} фонаря.",
+      guideOne: "Каждая из шести глав меняет способ чтения подсказок, а в конце появляется поворот ветра.", guideTwo: "Нажимайте от трёх до шести фонарей в порядке подсказок. В этапах эха один фонарь повторяется дважды.", guideThree: "Ошибка укажет первую связь для проверки. Избегайте приманки мотылька и читайте этапы поворота с конца. Таймера и жизней нет.",
+      straight: "Порядок хранителя: следуйте каждой подсказке от гнезда к воротам.", reverse: "Поворот ветра: читайте путь от последнего фонаря к первому.", decoy: "Приманка мотылька: следуйте безопасным подсказкам и оставьте {decoy} погашенным.", echo: "Сияние эха: {echo} появляется на пути дважды.", decoyEcho: "Два сигнала: поставьте эхо {echo} дважды, а приманку {decoy} оставьте погашенной.", mastery: "Мастерский поворот: читайте наоборот, повторите {echo} дважды и оставьте {decoy} погашенным.",
+      clueStart: "Начните с {name}.", reverseClueStart: "Поворот начинается с {name}; двигайтесь оттуда назад.", clueFollow: "После {previous} идёт {name}.", decoyWrong: "Приманка {name} зажжена. Сбросьте цепь и погасите её.",
+      stageClear: "Этап {stage} пройден. Этап {next} теперь открыт.", checkpointClear: "Точка {stage} пройдена. {reward} завершает главу, а этап {next} открыт.", finish: "Вы открыли 30 ночных путей в шести главах за {n} проверок. Ваш лучший результат — {best}. Вы получили {reward}.", replayFinish: "Ночной путь {stage} пройден за {checks} проверок. Лучший результат этого пути — {best}.",
+      next: "Следующий этап", checkpoint: "Точка проверки", locked: "Закрыто", reward: "Знак пути", rewardSuffix: "",
+      arcs: ["Первое сияние", "Приманка мотылька", "Долина эха", "Поворот ветра", "Соединённые сигналы", "Мастерство решётки"], rewardFor: arc => `Знак «${arc}»`,
+    },
+    hi: {
+      stage: "रात्रि पथ", themes: ["पहली चमक", "पतंगा चारा", "प्रतिध्वनि घाटी", "हवा मोड़", "जुड़े संकेत", "जाल निपुणता"],
+      round: "चरण {n} / {total}", hint: "संकेतों का पालन करके {count} लालटेन क्रम से जोड़ें।", needMore: "जाँच से पहले {count} लालटेन चुनें।",
+      guideOne: "छह अध्यायों में संकेत पढ़ने का तरीका बदलता है और अंत में हवा-मोड़ नियम आता है।", guideTwo: "संकेत क्रम में तीन से छह लालटेन चुनें। प्रतिध्वनि चरणों में एक लालटेन दो बार आती है।", guideThree: "गलती होने पर फिर देखने वाली पहली कड़ी बताई जाती है। पतंगा चारे से बचें और हवा-मोड़ चरण उलटे पढ़ें। कोई समय या जीवन सीमा नहीं है।",
+      straight: "रक्षक क्रम: घोंसले से द्वार तक हर संकेत का पालन करें।", reverse: "हवा मोड़: अंतिम लालटेन से पहली तक रास्ता उलटा पढ़ें।", decoy: "पतंगा चारा: सुरक्षित संकेतों का पालन करें और {decoy} को बुझा रखें।", echo: "प्रतिध्वनि प्रकाश: इस रास्ते में {echo} दो बार आता है।", decoyEcho: "दो संकेत: {echo} की प्रतिध्वनि दो बार रखें और {decoy} चारे को बुझा रखें।", mastery: "निपुण मोड़: उलटा पढ़ें, {echo} को दो बार दोहराएँ और {decoy} को बुझा रखें।",
+      clueStart: "{name} से शुरू करें।", reverseClueStart: "हवा मोड़ {name} से शुरू होता है; वहीं से पीछे चलें।", clueFollow: "{previous} के बाद {name} आएगा।", decoyWrong: "चारा {name} जल गया। रीसेट करें और उसे बुझा रखें।",
+      stageClear: "चरण {stage} पूरा। चरण {next} अब खुल गया है।", checkpointClear: "चेकपॉइंट {stage} पूरा। {reward} अध्याय का अंत दिखाता है और चरण {next} खुल गया है।", finish: "छह अध्यायों के 30 रात के रास्ते {n} जाँचों में खुले। आपका सर्वश्रेष्ठ {best} है। आपको {reward} मिला।", replayFinish: "रात्रि पथ {stage} {checks} जाँचों में पूरा। इस पथ का सर्वश्रेष्ठ {best} है।",
+      next: "अगला चरण", checkpoint: "चेकपॉइंट", locked: "बंद", reward: "पथ चिह्न", rewardSuffix: " बैज",
+      arcs: ["पहली चमक", "पतंगा चारा", "प्रतिध्वनि घाटी", "हवा मोड़", "जुड़े संकेत", "जाल निपुणता"], rewardFor: arc => `${arc} बैज`,
+    },
+  };
+  const campaignOverrideValues = (config) => ({
+    stageRound: config.round, campaignBattleHint: config.hint, campaignNeedMore: config.needMore,
+    campaignGuideOne: config.guideOne, campaignGuideTwo: config.guideTwo, campaignGuideThree: config.guideThree,
+    straightRule: config.straight, reverseRule: config.reverse, decoyRule: config.decoy, echoRule: config.echo,
+    decoyEchoRule: config.decoyEcho, masteryRule: config.mastery, clueStart: config.clueStart,
+    reverseClueStart: config.reverseClueStart, clueFollow: config.clueFollow, decoyWrong: config.decoyWrong,
+    stageClear: config.stageClear, checkpointClear: config.checkpointClear, campaignFinishText: config.finish,
+    stageFinishText: config.replayFinish, nextStage: config.next, checkpoint: config.checkpoint, locked: config.locked,
+    arc1: config.arcs[0], arc2: config.arcs[1], arc3: config.arcs[2], arc4: config.arcs[3], arc5: config.arcs[4], arc6: config.arcs[5],
+    stageReward: config.reward, checkpointReward1: config.rewardFor(config.arcs[0]), checkpointReward2: config.rewardFor(config.arcs[1]),
+    checkpointReward3: config.rewardFor(config.arcs[2]), checkpointReward4: config.rewardFor(config.arcs[3]),
+    checkpointReward5: config.rewardFor(config.arcs[4]), checkpointReward6: config.rewardFor(config.arcs[5]),
+  });
+  Object.entries(campaignLocaleConfigs).forEach(([locale, config]) => {
+    const index = keys.indexOf(locale);
+    Array.from({ length: 30 }, (_, stageIndex) => `${config.stage} ${stageIndex + 1} · ${config.themes[Math.floor(stageIndex / 5)]}`)
+      .forEach((title, stageIndex) => { rows[`stage${stageIndex + 1}Title`][index] = title; });
+    Object.entries(campaignOverrideValues(config)).forEach(([key, value]) => { rows[key][index] = value; });
+  });
   window.ANIMAL_LANTERN_LATTICE_LOCALES = Object.fromEntries(keys.map((locale, index) => [locale, Object.fromEntries(Object.entries(rows).map(([key, values]) => [key, values[index]]))]));
 })();
