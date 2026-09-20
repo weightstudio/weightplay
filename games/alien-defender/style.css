@@ -95,11 +95,11 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
 /* Keep the five Battle stats on the same stable HUD row as Return and the
    sound/restart actions. The previous fallback grid put the stats on row two,
    directly underneath the live rule message. */
-.battle-hud{grid-template-columns:48px minmax(0,1fr) auto!important;grid-template-rows:48px!important;align-items:start!important}
+.battle-hud{grid-template-columns:48px minmax(0,1fr) auto!important;grid-template-rows:48px!important;align-items:start!important;min-width:0!important}
 .battle-hud>.hud-stats{grid-column:2!important;grid-row:1!important;padding-left:0!important;width:auto!important;gap:clamp(4px,1.2vw,12px)!important}
-.battle-hud>.hud-actions{grid-column:3!important;grid-row:1!important}
+.battle-hud>.hud-actions{grid-column:3!important;grid-row:1!important;margin-inline-end:8px}
 .battle-message{top:72px!important;bottom:auto!important}
-@media(max-width:480px){.battle-hud{grid-template-columns:38px minmax(0,1fr) auto!important;grid-template-rows:38px!important}.battle-hud>.hud-stats{gap:2px!important}.battle-message{top:58px!important}}
+@media(max-width:480px){.battle-hud{grid-template-columns:38px minmax(0,1fr) auto!important;grid-template-rows:38px!important}.battle-hud>.hud-stats{gap:2px!important}.battle-message{top:58px!important}html[dir="ltr"] .battle-hud>.hud-actions{position:relative;right:32px!important}}
 
 /* Result remains inside Battle Canvas and reuses its reserve. Keep the live
    board inert behind an opaque result surface, with internal scrolling on

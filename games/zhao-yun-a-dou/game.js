@@ -47,7 +47,7 @@
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const push = window.ZhaoPush;
   let audioContext = null, impactNoise = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v34", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v35", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -283,6 +283,7 @@
     stopWorld();
     closeDialogs();
     battle = null;
+    stageIndex = Math.max(0, Math.min(data.levels.length - 1, progress.unlocked - 1));
     showScreen("stage");
     renderStages();
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
