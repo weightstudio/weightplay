@@ -75,6 +75,21 @@
         '<a data-wp-comparison-rules href="https://www.mobilityware.com/how-to-play-yukon-solitaire-a-complete-guide/" rel="noopener noreferrer" data-i18n="compareRules"></a></p>';
       guide.append(comparison);
     }
+    const faqSection = [...guide.querySelectorAll('.game-info-section')]
+      .find(section => !section.dataset.wpMarketComparison && section.querySelector('dl'));
+    if (faqSection) {
+      const faqKeys = [
+        'faqStockQuestion','faqStockAnswer',
+        'faqGroupQuestion','faqGroupAnswer',
+        'faqKingQuestion','faqKingAnswer',
+        'faqAlternatingQuestion','faqAlternatingAnswer',
+        'faqUndoQuestion','faqUndoAnswer',
+      ];
+      faqSection.querySelector('h3')?.setAttribute('data-i18n','faqTitle');
+      faqSection.querySelectorAll('dt,dd').forEach((node,index) => {
+        if (faqKeys[index]) node.setAttribute('data-i18n',faqKeys[index]);
+      });
+    }
     for (const id of ['startBtn','resultNewGame']) $(id).dataset.wpFrameAction = 'primary';
     for (const id of ['restartBtn','newGameBtn','undoBtn','hintBtn','battleRestartBtn','battleNewBtn','resultRestart','resultClose']) {
       $(id).dataset.wpFrameAction = 'secondary';

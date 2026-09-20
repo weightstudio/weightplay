@@ -172,5 +172,98 @@
     "قواعد Yukon من MobilityWare"
   ]
 };
- window.YUKON_GUIDE_LOCALES=Object.fromEntries(Object.entries(packs).map(([code,values])=>[code,Object.fromEntries(keys.map((key,i)=>[key,values[i]]))]));
+ const faq={
+  "en":{
+   faqTitle:"FAQ",faqStockQuestion:"Is there a Stock?",faqStockAnswer:"No. All 52 cards begin on the tableau.",
+   faqGroupQuestion:"Can any face-up group move?",faqGroupAnswer:"Yes. Any face-up card may carry every face-up card below it.",
+   faqKingQuestion:"What can fill an empty column?",faqKingAnswer:"A King or a group whose first card is a King.",
+   faqAlternatingQuestion:"Do tableau suits alternate?",faqAlternatingAnswer:"Yes. Tableau builds descend by rank in alternating colors.",
+   faqUndoQuestion:"Can I undo?",faqUndoAnswer:"Yes. Undo restores the full prior tableau and foundations."
+  },
+  "zh-tw":{
+   faqTitle:"常見問題",faqStockQuestion:"有牌庫嗎？",faqStockAnswer:"沒有。52 張牌一開始都在主牌欄上。",
+   faqGroupQuestion:"任何明牌組都能移動嗎？",faqGroupAnswer:"可以。只要起始牌能合法接上，它下方的所有明牌都能一起移動。",
+   faqKingQuestion:"空欄可以放什麼？",faqKingAnswer:"只有 K 或以 K 開頭的組牌。",
+   faqAlternatingQuestion:"主牌欄的花色會交替嗎？",faqAlternatingAnswer:"會。主牌欄按點數遞減並交替紅黑。",
+   faqUndoQuestion:"可以撤銷嗎？",faqUndoAnswer:"可以。撤銷會還原上一個完整的主牌欄與基礎牌堆狀態。"
+  },
+  "zh-cn":{
+   faqTitle:"常见问题",faqStockQuestion:"有牌库吗？",faqStockAnswer:"没有。52 张牌一开始都在主牌列上。",
+   faqGroupQuestion:"任何明牌组都能移动吗？",faqGroupAnswer:"可以。只要起始牌能合法接上，它下方的所有明牌都能一起移动。",
+   faqKingQuestion:"空列可以放什么？",faqKingAnswer:"只有 K 或以 K 开头的牌组。",
+   faqAlternatingQuestion:"主牌列的花色会交替吗？",faqAlternatingAnswer:"会。主牌列按点数递减并交替红黑。",
+   faqUndoQuestion:"可以撤销吗？",faqUndoAnswer:"可以。撤销会还原上一个完整的主牌列和基础牌堆状态。"
+  },
+  "ja":{
+   faqTitle:"よくある質問",faqStockQuestion:"山札はありますか？",faqStockAnswer:"いいえ。52枚すべてが最初から場札にあります。",
+   faqGroupQuestion:"表向きのまとまりはどれでも動かせますか？",faqGroupAnswer:"はい。先頭の表向きカードを合法的に置ければ、その下の表向きカードをすべて一緒に動かせます。",
+   faqKingQuestion:"空の列には何を置けますか？",faqKingAnswer:"K、またはKから始まるまとまりだけです。",
+   faqAlternatingQuestion:"場札では色を交互にしますか？",faqAlternatingAnswer:"はい。場札は色を交互にしながら数字を下げて重ねます。",
+   faqUndoQuestion:"元に戻せますか？",faqUndoAnswer:"はい。元に戻すと、直前の場札と組札の状態が完全に復元されます。"
+  },
+  "ko":{
+   faqTitle:"자주 묻는 질문",faqStockQuestion:"스톡(뽑기 더미)이 있나요?",faqStockAnswer:"아니요. 52장 모두 처음부터 테이블에 놓입니다.",
+   faqGroupQuestion:"앞면 카드 그룹은 모두 이동할 수 있나요?",faqGroupAnswer:"네. 첫 카드가 합법적으로 놓이면 그 아래 앞면 카드를 모두 함께 옮길 수 있습니다.",
+   faqKingQuestion:"빈 열에는 무엇을 놓을 수 있나요?",faqKingAnswer:"K 또는 K로 시작하는 그룹만 놓을 수 있습니다.",
+   faqAlternatingQuestion:"테이블에서 무늬 색이 번갈아 바뀌나요?",faqAlternatingAnswer:"네. 테이블은 색을 번갈아 가며 숫자가 내려가도록 쌓습니다.",
+   faqUndoQuestion:"실행 취소할 수 있나요?",faqUndoAnswer:"네. 실행 취소는 이전 테이블과 파운데이션 상태를 완전히 복원합니다."
+  },
+  "es":{
+   faqTitle:"Preguntas frecuentes",faqStockQuestion:"¿Hay mazo?",faqStockAnswer:"No. Las 52 cartas empiezan en el tablero.",
+   faqGroupQuestion:"¿Se puede mover cualquier grupo boca arriba?",faqGroupAnswer:"Sí. Si la primera carta encaja legalmente, puede llevarse todas las cartas boca arriba que tenga debajo.",
+   faqKingQuestion:"¿Qué puede ocupar una columna vacía?",faqKingAnswer:"Solo un Rey o un grupo que empiece por Rey.",
+   faqAlternatingQuestion:"¿Se alternan los colores en el tablero?",faqAlternatingAnswer:"Sí. El tablero baja de rango alternando los colores.",
+   faqUndoQuestion:"¿Puedo deshacer?",faqUndoAnswer:"Sí. Deshacer restaura el estado anterior completo del tablero y las bases."
+  },
+  "pt-br":{
+   faqTitle:"Perguntas frequentes",faqStockQuestion:"Há um monte de compra?",faqStockAnswer:"Não. As 52 cartas começam no tableau.",
+   faqGroupQuestion:"Qualquer grupo virado para cima pode ser movido?",faqGroupAnswer:"Sim. Se a primeira carta puder ser colocada legalmente, ela leva todas as cartas viradas para cima abaixo dela.",
+   faqKingQuestion:"O que pode preencher uma coluna vazia?",faqKingAnswer:"Apenas um Rei ou um grupo iniciado por Rei.",
+   faqAlternatingQuestion:"As cores alternam no tableau?",faqAlternatingAnswer:"Sim. O tableau desce em valor alternando as cores.",
+   faqUndoQuestion:"Posso desfazer?",faqUndoAnswer:"Sim. Desfazer restaura o estado anterior completo do tableau e das fundações."
+  },
+  "fr":{
+   faqTitle:"Questions fréquentes",faqStockQuestion:"Y a-t-il une pioche ?",faqStockAnswer:"Non. Les 52 cartes sont placées dès le début sur le tableau.",
+   faqGroupQuestion:"Peut-on déplacer n’importe quel groupe visible ?",faqGroupAnswer:"Oui. Si la première carte peut être posée légalement, elle peut emporter toutes les cartes visibles placées dessous.",
+   faqKingQuestion:"Que peut-on placer dans une colonne vide ?",faqKingAnswer:"Seulement un Roi ou un groupe qui commence par un Roi.",
+   faqAlternatingQuestion:"Les couleurs alternent-elles dans le tableau ?",faqAlternatingAnswer:"Oui. Le tableau descend en alternant les couleurs.",
+   faqUndoQuestion:"Puis-je annuler un coup ?",faqUndoAnswer:"Oui. Annuler restaure entièrement l’état précédent du tableau et des fondations."
+  },
+  "de":{
+   faqTitle:"Häufige Fragen",faqStockQuestion:"Gibt es einen Nachziehstapel?",faqStockAnswer:"Nein. Alle 52 Karten liegen von Anfang an im Tableau.",
+   faqGroupQuestion:"Kann jede offene Gruppe bewegt werden?",faqGroupAnswer:"Ja. Wenn die erste Karte regelgerecht passt, nimmt sie alle offenen Karten darunter mit.",
+   faqKingQuestion:"Was darf eine leere Spalte füllen?",faqKingAnswer:"Nur ein König oder eine Gruppe, die mit einem König beginnt.",
+   faqAlternatingQuestion:"Wechseln sich die Farben im Tableau ab?",faqAlternatingAnswer:"Ja. Das Tableau wird absteigend mit wechselnden Farben aufgebaut.",
+   faqUndoQuestion:"Kann ich einen Zug rückgängig machen?",faqUndoAnswer:"Ja. Rückgängig stellt den vorherigen Zustand von Tableau und Ablagen vollständig wieder her."
+  },
+  "it":{
+   faqTitle:"Domande frequenti",faqStockQuestion:"C’è un mazzo da pescare?",faqStockAnswer:"No. Tutte le 52 carte iniziano nel tableau.",
+   faqGroupQuestion:"Si può spostare qualsiasi gruppo scoperto?",faqGroupAnswer:"Sì. Se la prima carta può essere collocata legalmente, porta con sé tutte le carte scoperte sotto di essa.",
+   faqKingQuestion:"Cosa può riempire una colonna vuota?",faqKingAnswer:"Solo un Re o un gruppo che inizia con un Re.",
+   faqAlternatingQuestion:"I colori si alternano nel tableau?",faqAlternatingAnswer:"Sì. Il tableau scende di valore alternando i colori.",
+   faqUndoQuestion:"Posso annullare?",faqUndoAnswer:"Sì. Annulla ripristina completamente lo stato precedente del tableau e delle basi."
+  },
+  "ru":{
+   faqTitle:"Частые вопросы",faqStockQuestion:"Есть ли колода для добора?",faqStockAnswer:"Нет. Все 52 карты с самого начала находятся на игровом столе.",
+   faqGroupQuestion:"Можно ли перемещать любую открытую группу?",faqGroupAnswer:"Да. Если первая карта подходит по правилам, вместе с ней можно перенести все открытые карты ниже.",
+   faqKingQuestion:"Что можно поместить в пустую колонку?",faqKingAnswer:"Только короля или группу, начинающуюся с короля.",
+   faqAlternatingQuestion:"Чередуются ли цвета в таблице?",faqAlternatingAnswer:"Да. Карты в таблице идут по убыванию с чередованием цветов.",
+   faqUndoQuestion:"Можно ли отменить ход?",faqUndoAnswer:"Да. Отмена полностью восстанавливает предыдущее состояние таблицы и оснований."
+  },
+  "hi":{
+   faqTitle:"अक्सर पूछे जाने वाले प्रश्न",faqStockQuestion:"क्या कोई स्टॉक डेक है?",faqStockAnswer:"नहीं। सभी 52 पत्ते शुरुआत से ही टेबलो पर होते हैं।",
+   faqGroupQuestion:"क्या कोई भी खुला समूह चलाया जा सकता है?",faqGroupAnswer:"हाँ। यदि पहला पत्ता नियम के अनुसार बैठता है, तो उसके नीचे के सभी खुले पत्ते साथ ले जाए जा सकते हैं।",
+   faqKingQuestion:"खाली कॉलम में क्या रखा जा सकता है?",faqKingAnswer:"केवल बादशाह या बादशाह से शुरू होने वाला समूह।",
+   faqAlternatingQuestion:"क्या टेबलो में रंग बारी-बारी आते हैं?",faqAlternatingAnswer:"हाँ। टेबलो में पत्ते घटते क्रम में और बारी-बारी से रंग बदलकर रखे जाते हैं।",
+   faqUndoQuestion:"क्या चाल वापस ली जा सकती है?",faqUndoAnswer:"हाँ। वापस करें टेबलो और फाउंडेशन की पिछली पूरी स्थिति बहाल करता है।"
+  },
+  "ar":{
+   faqTitle:"الأسئلة الشائعة",faqStockQuestion:"هل توجد رزمة سحب؟",faqStockAnswer:"لا. تبدأ البطاقات الـ52 كلها على الجدول.",
+   faqGroupQuestion:"هل يمكن نقل أي مجموعة مكشوفة؟",faqGroupAnswer:"نعم. إذا أمكن وضع البطاقة الأولى بصورة قانونية، فيمكنها نقل كل البطاقات المكشوفة تحتها.",
+   faqKingQuestion:"ما الذي يمكن أن يملأ عمودًا فارغًا؟",faqKingAnswer:"ملك فقط أو مجموعة تبدأ بملك.",
+   faqAlternatingQuestion:"هل تتناوب الألوان في الجدول؟",faqAlternatingAnswer:"نعم. يُبنى الجدول تنازليًا مع تناوب الألوان.",
+   faqUndoQuestion:"هل يمكن التراجع؟",faqUndoAnswer:"نعم. يعيد التراجع الحالة السابقة كاملة للجدول والأساسات."
+  }
+ };
+ window.YUKON_GUIDE_LOCALES=Object.fromEntries(Object.entries(packs).map(([code,values])=>[code,{...Object.fromEntries(keys.map((key,i)=>[key,values[i]])),...(faq[code]||faq.en)}]));
 })();
