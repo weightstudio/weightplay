@@ -292,12 +292,20 @@ window.WONDER_LOBBY = {
     {
       id: "zhao-yun-a-dou",
       title: {
-        en: "Zhao Yun & A Dou: Inkline Defense", "zh-Hant": "趙雲與阿斗：墨線守衛", "zh-Hans": "赵云与阿斗：墨线守卫",
-        ja: "趙雲と阿斗：墨線ディフェンス", ko: "조운과 아두: 먹선 방어전", es: "Zhao Yun y A Dou: Defensa de tinta",
-        "pt-BR": "Zhao Yun e A Dou: Defesa de Tinta", fr: "Zhao Yun et A Dou : Défense d'encre",
-        de: "Zhao Yun und A Dou: Tuschewache", it: "Zhao Yun e A Dou: Difesa d'inchiostro",
-        ru: "Чжао Юнь и А-Доу: Чернильная оборона", hi: "झाओ युन और आ-दो: स्याही रक्षा", ar: "تشاو يون وآ دو: دفاع الحبر",
-      },
+  "en": "Zhao Yun & A Dou",
+  "zh-Hant": "趙雲與阿斗：墨線守衛",
+  "zh-Hans": "赵云与阿斗：墨线守卫",
+  "ja": "趙雲と阿斗：墨線ディフェンス",
+  "ko": "조운과 아두: 먹선 방어전",
+  "es": "Zhao Yun y A Dou: Defensa de tinta",
+  "pt-BR": "Zhao Yun e A Dou: Defesa de Tinta",
+  "fr": "Zhao Yun et A Dou : Défense d'encre",
+  "de": "Zhao Yun und A Dou: Tuschewache",
+  "it": "Zhao Yun e A Dou: Difesa d'inchiostro",
+  "ru": "Чжао Юнь и А-Доу: Чернильная оборона",
+  "hi": "झाओ युन और आ-दो: स्याही रक्षा",
+  "ar": "تشاو يون وآ دو: دفاع الحبر"
+},
       status: "playable",
       statusText: {
         en: "Play Now", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", ja: "今すぐ遊ぶ", ko: "지금 플레이",
@@ -305,47 +313,95 @@ window.WONDER_LOBBY = {
         ru: "Играть сейчас", hi: "अभी खेलें", ar: "العب الآن",
       },
       type: {
-        en: "Merge Strategy Defense", "zh-Hant": "合成策略防守", "zh-Hans": "合成策略防守", ja: "合成ストラテジー防衛",
-        ko: "합성 전략 방어", es: "Defensa estratégica de fusiones", "pt-BR": "Defesa estratégica de fusão",
-        fr: "Défense stratégique par fusion", de: "Strategische Fusionsverteidigung", it: "Difesa strategica a fusione",
-        ru: "Стратегическая защита слиянием", hi: "मर्ज रणनीति रक्षा", ar: "دفاع استراتيجي بالدمج",
-      },
-      categories: ["Strategy", "Defense", "Merge", "Family"],
+  "en": "Lane strategy",
+  "zh-Hant": "橫向推線",
+  "zh-Hans": "横向推线",
+  "ja": "横スクロール戦略",
+  "ko": "횡스크롤 전략",
+  "es": "Estrategia de avance",
+  "pt-BR": "Estratégia de avanço",
+  "fr": "Stratégie de progression",
+  "de": "Vormarschstrategie",
+  "it": "Strategia di avanzata",
+  "ru": "Стратегия наступления",
+  "hi": "आगे बढ़ने की रणनीति",
+  "ar": "استراتيجية التقدم"
+},
+      categories: ["Strategy", "Defense", "Family"],
       skills: ["Planning", "Timing", "Adaptation"],
       ages: ["9", "family"],
       href: "games/zhao-yun-a-dou/",
       previewVideo: "assets/previews/zhao-yun-a-dou-battle.webm",
       description: {
-        en: "Recruit Chinese-character soldiers, merge matching units, and protect A Dou across 30 short ink-wash defense missions.",
-        "zh-Hant": "徵召漢字小兵、合成相同部隊，在 30 個短局水墨防守關卡中保護阿斗。",
-        "zh-Hans": "征召汉字小兵、合成相同部队，在 30 个短局水墨防守关卡中保护阿斗。",
-        ja: "漢字の兵を招集し、同じ部隊を合成して、30の短い墨絵防衛任務で阿斗を守ります。",
-        ko: "한자 병사를 모집하고 같은 부대를 합쳐 30개의 짧은 먹선 방어 임무에서 아두를 지키세요.",
-        es: "Recluta soldados de caracteres, fusiónalos y protege a A Dou en 30 misiones breves de tinta.",
-        "pt-BR": "Recrute soldados de caracteres, faça fusões e proteja A Dou em 30 missões curtas de tinta.",
-        fr: "Recrutez des soldats-caractères, fusionnez-les et protégez A Dou dans 30 missions d'encre.",
-        de: "Rekrutiere Zeichen-Soldaten, verschmelze sie und beschütze A Dou in 30 kurzen Tusche-Missionen.",
-        it: "Recluta soldati-carattere, fondili e proteggi A Dou in 30 brevi missioni d'inchiostro.",
-        ru: "Призывайте воинов-знаки, объединяйте их и защищайте А-Доу в 30 коротких чернильных миссиях.",
-        hi: "अक्षर सैनिकों की भर्ती करें, समान इकाइयाँ मिलाएँ और 30 छोटी स्याही रक्षा मिशनों में आ-दो को बचाएँ।",
-        ar: "جنّد جنود الحروف وادمج الوحدات المتطابقة واحمِ آ دو في 30 مهمة دفاع قصيرة.",
-      },
+  "en": "Tap a troop card to deploy. Soldiers advance and fight automatically.",
+  "zh-Hant": "點下兵種卡就出兵，部隊會自動前進交戰。",
+  "zh-Hans": "点下兵种卡就出兵，部队会自动前进交战。",
+  "ja": "兵種カードをタップして出撃。兵士は自動で進軍し戦います。",
+  "ko": "병종 카드를 눌러 출격하세요. 병사들은 자동으로 전진하며 싸웁니다.",
+  "es": "Toca una carta para desplegar tropas. Avanzan y luchan automáticamente.",
+  "pt-BR": "Toque numa carta para enviar tropas. Elas avançam e lutam automaticamente.",
+  "fr": "Touchez une carte pour déployer des troupes. Elles avancent et combattent seules.",
+  "de": "Tippe eine Truppenkarte an. Soldaten rücken vor und kämpfen automatisch.",
+  "it": "Tocca una carta per schierare truppe. Avanzano e combattono da sole.",
+  "ru": "Нажмите карту бойца. Войска сами идут вперёд и сражаются.",
+  "hi": "सैनिक कार्ड दबाकर भेजें। सैनिक अपने आप आगे बढ़कर लड़ते हैं।",
+  "ar": "اضغط بطاقة جندي لإرساله. تتقدم القوات وتقاتل تلقائيًا."
+},
       meta: {
-        en: ["30 Missions", "Three Lanes", "General Skills"],
-        "zh-Hant": ["30 個關卡", "三條戰線", "武將技能"],
-        "zh-Hans": ["30 个关卡", "三条战线", "武将技能"],
-        ja: ["30任務", "3レーン", "武将スキル"],
-        ko: ["30개 임무", "3개 전선", "장수 기술"],
-        es: ["30 misiones", "Tres líneas", "Habilidades de generales"],
-        "pt-BR": ["30 missões", "Três linhas", "Habilidades de generais"],
-        fr: ["30 missions", "Trois lignes", "Compétences de généraux"],
-        de: ["30 Missionen", "Drei Linien", "General-Fähigkeiten"],
-        it: ["30 missioni", "Tre linee", "Abilità dei generali"],
-        ru: ["30 миссий", "Три линии", "Умения генералов"],
-        hi: ["30 मिशन", "तीन पंक्तियाँ", "सेनापति कौशल"],
-        ar: ["30 مهمة", "ثلاثة مسارات", "مهارات القادة"],
-      },
-      art: { kind: "image", background: "assets/zhao-yun-a-dou-cover.webp", hideHero: true },
+  "en": [
+    "Talents",
+    "Zhao Yun charge"
+  ],
+  "zh-Hant": [
+    "天賦",
+    "趙雲突襲"
+  ],
+  "zh-Hans": [
+    "天赋",
+    "赵云突袭"
+  ],
+  "ja": [
+    "才能",
+    "趙雲の突撃"
+  ],
+  "ko": [
+    "특성",
+    "조운 돌격"
+  ],
+  "es": [
+    "Talentos",
+    "Carga de Zhao Yun"
+  ],
+  "pt-BR": [
+    "Talentos",
+    "Investida de Zhao Yun"
+  ],
+  "fr": [
+    "Talents",
+    "Charge de Zhao Yun"
+  ],
+  "de": [
+    "Talente",
+    "Zhao Yuns Ansturm"
+  ],
+  "it": [
+    "Talenti",
+    "Carica di Zhao Yun"
+  ],
+  "ru": [
+    "Таланты",
+    "Рывок Чжао Юня"
+  ],
+  "hi": [
+    "प्रतिभाएँ",
+    "झाओ युन का धावा"
+  ],
+  "ar": [
+    "المواهب",
+    "اندفاع تشاو يون"
+  ]
+},
+      art: { kind: "image", background: "assets/interface7-redrawn/zhao-yun-a-dou.webp", hideHero: true },
     },
     {
       id: "animal-bus-jam",

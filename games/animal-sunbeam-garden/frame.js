@@ -10,7 +10,9 @@
     const copy = mainContent.querySelector('div');
     main.classList.remove('main-screen');
     mainContent.className = 'sunbeam-main-content';
-    mainContent.querySelector('img').dataset.wpFramePoster = '';
+    const poster = mainContent.querySelector('img');
+    poster.classList.add('main-poster');
+    poster.dataset.wpFramePoster = '';
     copy.dataset.wpFrameCopy = '';
     copy.querySelector('[data-t="summary"]').dataset.wpFrameSummary = '';
     copy.querySelector('h1').hidden = true;

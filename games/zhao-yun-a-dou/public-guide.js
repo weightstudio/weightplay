@@ -20,9 +20,9 @@
   registry.en ||= {games: {}};
   registry.en.games ||= {};
   registry.en.games['zhao-yun-a-dou'] ||= {
-    title: 'Zhao Yun & A Dou', gameplay: 'Merge strategy defense',
+    title: 'Zhao Yun & A Dou', gameplay: 'Lane strategy defense',
     difficulty: 'Progressive challenge', time: 'Short missions',
-    genre: ['Strategy', 'Defense', 'Merge'], skills: ['Planning', 'Timing'],
+    genre: ['Strategy', 'Defense'], skills: ['Planning', 'Timing'],
     systems: ['Recruiting costs three buns and fills the first empty slot. Buns regenerate during combat.', '', 'Each slot belongs to one of three lanes. Soldiers attack automatically.', 'Merge two matching level-three soldiers to promote a general. Activate ready skills yourself.'],
     how: ['Choose an unlocked mission.', 'Recruit soldiers, then select matching units to merge.', 'Move a unit into an empty slot to reinforce its lane.', 'Defeat the waves and enemy command while keeping A Dou alive. Retry if his health reaches zero.'],
     strategyTips: ['Keep all three lanes defended before merging.', 'Save ready general skills for an approaching threat.'],
@@ -35,16 +35,19 @@
     const guide = window.WeightPlayGeneralReviewedGuides?.[locale]?.games?.['zhao-yun-a-dou'];
     const runtime = window.ZHAO_YUN_ADOU_LOCALES?.[locale];
     if (!guide || !runtime) throw new Error('ZHAO_PUBLIC_GUIDE_LOCALE_MISSING:' + locale);
+    guide.title = runtime.title;
+    guide.gameplay = runtime.pushIntro;
+    guide.genre = [runtime.pushGenre];
     guide.intro = runtime.summary;
-    guide.story = [mission];
+    guide.story = [runtime.pushGoal];
     guide.systems = [runtime.commandHelp, runtime.mergeHint, runtime.guideBody, runtime.waveReward];
     guide.progression = [runtime.v27Progression || progression];
     guide.strategyTips = [runtime.commandHelp, runtime.mergeHint, runtime.waveReward];
     guide.how = [runtime.commandHelp,runtime.mergeHint,runtime.guideBody,runtime.rule_coverage];
     guide.designNote = runtime.talentHelp || designNote;
     // The obsolete character-symbol quiz is not part of the illustrated game.
-    if (locale !== 'en') guide.faq = guide.faq.slice(1);
-    if(runtime.recruitOdds&&guide.faq[0])guide.faq[0][1]=runtime.recruitOdds+' '+guide.faq[0][1];
+    guide.faq = [[runtime.tutorialTitle, runtime.pushIntro + ' ' + runtime.pushSupply], [runtime.chargeAction, runtime.chargeAuto], [runtime.talents, runtime.talentHelp]];
+
   }
   // The route generator evaluates the same copy without allocating a DOM.
   if (typeof document === 'undefined') return;

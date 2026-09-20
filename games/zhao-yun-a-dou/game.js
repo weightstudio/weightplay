@@ -37,26 +37,22 @@
     ? Number(new URLSearchParams(location.search).get('stage')) : 0;
   if(Number.isInteger(qaStage)&&qaStage>=1&&qaStage<=30)progress.unlocked=Math.max(progress.unlocked,qaStage);
   let stageIndex = 0;
-  let selectedSlot = null;
   let battle = null;
   let loopTimer = null;
   let motionFrame = null;
   let statusTimer = null;
-  let recruitRevealTimer = null;
-  let dragSlot = null;
-  let formationRenderKey = null;
   let frame = null;
   let world = null, worldGeneration = 0, worldPending = false, worldFailed = false;
   const talents = window.ZhaoTalents;
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
-  const recruitCost = () => hasTalent("supply3") && (battle.recruitIndex+1)%4===0 ? 0 : 3;
+  const push = window.ZhaoPush;
   let audioContext = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v31", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260920-zhao-v32", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
   }
-  function paused() { return document.hidden || document.getElementById('talentDialog')?.open || worldPending || worldFailed || Boolean(el.tutorial?.open || el.leaveBattle?.open || document.querySelector('#battle .wp-frame-popover:not([hidden])') || document.querySelector('#formationToggle[aria-expanded="true"]')); }
+  function paused() { return document.hidden || document.getElementById('talentDialog')?.open || worldPending || worldFailed || Boolean(el.tutorial?.open || el.leaveBattle?.open || document.querySelector('#battle .wp-frame-popover:not([hidden])')); }
   function stopWorld() { worldGeneration++; world?.dispose(); world=null; worldPending=false; worldFailed=false; document.querySelector('.zhao-render-error')?.remove(); }
   function startWorld() {
     stopWorld(); const generation=worldGeneration; worldPending=true;
@@ -97,19 +93,10 @@
     stageName: document.getElementById("stageName"),
     remaining: document.getElementById("remaining"),
     enemyHp: document.getElementById("enemyHp"),
-    commandPostHp: document.getElementById("commandPostHp"),
     buns: document.getElementById("buns"),
     adouHp: document.getElementById("adouHp"),
-    baseHp: document.getElementById("baseHp"),
-    enemyLanes: document.getElementById("enemyLanes"),
-    playerLanes: document.getElementById("playerLanes"),
-    formation: document.getElementById("formation"),
-    formationHint: document.getElementById("formationHint"),
-    recruit: document.getElementById("recruit"),
-    recruitHint: document.getElementById("recruitHint"),
     skills: document.getElementById("skills"),
     battleActions: document.querySelector("#battle .battle-actions"),
-    hint: document.getElementById("hint"),
     status: document.getElementById("status"),
     pressureCue: document.getElementById("pressureCue"),
     tutorial: document.getElementById("tutorial"),
@@ -238,8 +225,7 @@
     renderMainProgress();
     document.title = (dictionaries[locale] || dictionaries.en).title + " | WeightPlay";
     if (battle) {
-      formationRenderKey = null;
-      renderBattle();
+        renderBattle();
     } else if (document.body.getAttribute("data-screen") === "stage") {
       renderStages();
     }
@@ -279,8 +265,6 @@
     stopWorld();
     closeDialogs();
     battle = null;
-    selectedSlot = null;
-    formationRenderKey = null;
     showScreen("main");
   }
 
@@ -289,8 +273,6 @@
     stopWorld();
     closeDialogs();
     battle = null;
-    selectedSlot = null;
-    formationRenderKey = null;
     showScreen("stage");
     renderStages();
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
@@ -342,8 +324,6 @@
     stageIndex = Math.max(0, Math.min(data.levels.length - 1, index));
     const level = data.levels[stageIndex];
     battle = createBattle(level, options || {});
-    selectedSlot = null;
-    formationRenderKey = null;
     showScreen("battle");
     startWorld();
     renderBattle();
@@ -365,59 +345,7 @@
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 
-  function createBattle(level, options) {
-    const fixture = options.fixture || null;
-    const units = Array(9).fill(null);
-    if (fixture === "merge") {
-      units[0] = makeUnit("blade", 3);
-      units[1] = makeUnit("blade", 3);
-      units[3] = makeUnit("spear", 2);
-    } else if (fixture === "skill") {
-      units[0] = makeUnit("blade", 4, true);
-      units[1] = makeUnit("spear", 4, true);
-      units[2] = makeUnit("horse", 4, true);
-      units[3] = makeUnit("bow", 4, true);
-    } else if (fixture === "loss") {
-      units.fill(null);
-    } else {
-      level.startingUnits.forEach(function (item) {
-        units[item.slot] = makeUnit(item.type, item.level, item.level>=4);
-      });
-    }
-    return {
-      talents: [...(progress.talents||[])], pity:0, rescued:false,
-      level: level,
-      units: units,
-      enemies: [],
-      spawned: 0,
-      ticks: 0,
-      buns: fixture === "merge" ? 8 : level.startingBuns + ((progress.talents||[]).includes("supply1")?3:0),
-      commandHp: fixture === "loss" ? 999 : level.commandHp,
-      maxCommandHp: fixture === "loss" ? 999 : level.commandHp,
-      adouHp: fixture === "loss" ? 1 : level.adouHp + ((progress.talents||[]).includes("guard1")?4:0),
-      maxAdouHp: fixture === "loss" ? 1 : level.adouHp + ((progress.talents||[]).includes("guard1")?4:0),
-       result: null,
-       wave: 1, waveRest: 35, waveKills: 0, commandLane: 1, chargeTicks: 0, campFlash: 0, nextEnemyId: 1, strikes: [],
-       status: "",
-       effects: [],
-       nextEffectId: 1,
-       recruitIndex: 0,
-      lastAttack: 0,
-      skillsUsed: {},
-      fixture: fixture,
-    };
-  }
-
-  function makeUnit(type, level, isGeneral) {
-    return {
-      type: type,
-      level: level,
-      general: Boolean(isGeneral),
-      cooldown: 0,
-      attackCooldown: 0,
-      attackFlash: 0,
-    };
-  }
+  function createBattle(level) { return push.create(level, progress.talents || []); }
 
   function startLoop() {
     stopLoop();
@@ -435,29 +363,11 @@
     motionFrame = null;
   }
 
-  function enemyTokenPosition(progress) {
-    // Keep the painted token inside its lane; simulation progress is untouched.
-    return "clamp(var(--zhao-enemy-half-width, 32px), " + (progress * 100) + "%, calc(100% - var(--zhao-enemy-half-width, 32px)))";
-  }
-
   function renderEnemyMotion(timestamp) {
     motionFrame = null;
     if (!battle) return;
-    if(battle.result){world?.render(battle,timestamp,true);return;}
-    world?.render(battle, timestamp, paused());
-    battle.enemies.forEach(function (enemy) {
-      const token = el.enemyLanes.querySelector(".enemy-token[data-enemy-id=\"" + enemy.id + "\"]");
-      if (!token) return;
-      token.style.left = enemyTokenPosition(getEnemyVisualPosition(enemy, timestamp));
-    });
-    motionFrame = window.requestAnimationFrame(renderEnemyMotion);
-  }
-
-  function getEnemyVisualPosition(enemy, timestamp) {
-    const from = Number.isFinite(enemy.motionStartPosition) ? enemy.motionStartPosition : enemy.position;
-    const motionTimestamp = Number.isFinite(battle.motionTimestamp) ? battle.motionTimestamp : timestamp;
-    const progress = Math.max(0, Math.min(1, (timestamp - motionTimestamp) / 100));
-    return from + (enemy.position - from) * progress;
+    world?.render(battle, timestamp, paused() || Boolean(battle.result));
+    if (!battle.result) motionFrame = window.requestAnimationFrame(renderEnemyMotion);
   }
 
   function advanceBattle(steps) {
@@ -467,279 +377,33 @@
   }
 
   function tickBattle() {
-    if(battle.result)return;
-    battle.ticks += 1;
-    if(battle.chargeTicks>0)battle.chargeTicks--;
-    if(battle.campFlash>0)battle.campFlash--;
-    battle.strikes = battle.strikes.filter(strike => {
-      strike.delay--; if(strike.delay>0)return true;
-      const target=battle.enemies.find(e=>e.id===strike.target);
-      if(target && target.hp>0){damageEnemy(target,strike.damage,strike.type);
-        if(strike.type==='blade')battle.enemies.filter(e=>e.id!==target.id&&e.lane===target.lane&&Math.abs(e.position-target.position)<.14).forEach(e=>damageEnemy(e,Math.ceil(strike.damage*.55),'blade'));
-        if(strike.type==='spear')target.stun=Math.max(target.stun,hasTalent('guard2')?4:2);
-      } return false;
-    });
-    battle.enemies.forEach(function (enemy) {
-      enemy.motionStartPosition = enemy.position;
-    });
-    battle.effects = battle.effects.map(function (effect) {
-      return Object.assign({}, effect, { ttl: effect.ttl - 1 });
-    }).filter(function (effect) { return effect.ttl > 0; });
-    battle.enemies = battle.enemies.filter(function (enemy) { return enemy.hp > 0 || enemy.defeatedTicks > 0; });
-    battle.units.forEach(function (unit) {
-      if (unit && unit.attackFlash > 0) unit.attackFlash -= 1;
-    });
-    if (battle.ticks % (battle.level.rule === "reserve" ? 22 : 16) === 0 && battle.buns < 24) battle.buns += 1;
-    const level = battle.level;
-    const waveEnd=Math.ceil(level.enemyCount*battle.wave/level.waveCount);
-    if(battle.waveRest>0)battle.waveRest--;
-    else if (battle.spawned < waveEnd && battle.ticks % level.spawnGap === 0) spawnEnemy();
-    if(battle.spawned>=waveEnd && battle.wave<level.waveCount && !battle.enemies.some(e=>e.hp>0)){
-      battle.wave++;battle.waveRest=35;battle.buns=Math.min(24,battle.buns+4);
-      setStatus(t('waveReward'));sound('merge');
+    if (battle.result) return;
+    const outcome = push.step(battle);
+    battle.motionTimestamp = performance.now();
+    for (const event of new Set(battle.events)) {
+      if (event === 'wave') setStatus(t('waveReward'));
+      else if (event === 'boss') setStatus(t('boss_' + battle.level.bossKind));
+      else sound(event);
     }
-    battle.enemies.slice().forEach(function (enemy) {
-      if (enemy.hitFlash > 0) enemy.hitFlash -= 1;
-      if (enemy.defeatedTicks > 0) {
-        enemy.defeatedTicks -= 1;
-        return;
-      }
-      if (enemy.stun > 0) {
-        enemy.stun -= 1;
-        return;
-      }
-      enemy.age++;
-      if(enemy.telegraph>0)enemy.telegraph--;
-      if((enemy.kind==='raider'||enemy.bossKind==='charger'||enemy.bossKind==='warlord')&&enemy.age%65===35)enemy.telegraph=12;
-      let movement=enemy.speed;
-      if((enemy.kind==='raider'||enemy.bossKind==='charger'||enemy.bossKind==='warlord')&&enemy.age%65>=47)movement*=2.7;
-      if(level.rule==='mud' && enemy.lane===level.terrainLane)movement*=.55;
-      if((enemy.kind==='flanker'||enemy.bossKind==='weaver')&&!enemy.switched&&enemy.position>.4){
-        if(!enemy.switchAt){enemy.switchAt=enemy.age+12;enemy.telegraph=12;}
-        if(enemy.age>=enemy.switchAt){enemy.lane=(enemy.lane+1)%3;enemy.switched=true;}
-      }
-      if((enemy.kind==='medic'||enemy.bossKind==='healer')&&enemy.age%40===30)enemy.telegraph=10;
-      if((enemy.bossKind==='summoner'||enemy.bossKind==='warlord')&&enemy.age%75===63)enemy.telegraph=12;
-      if(enemy.bossKind==='bulwark'&&enemy.age%35===25)enemy.telegraph=10;
-      if((enemy.kind==='medic'||enemy.bossKind==='healer')&&enemy.age%40===0){battle.enemies.filter(e=>e.lane===enemy.lane&&e.hp>0).forEach(e=>{const healed=Math.min(4,e.maxHp-e.hp);e.hp+=healed;if(healed)battle.effects.push({id:battle.nextEffectId++,kind:'heal',lane:e.lane,position:e.position,text:'+'+healed,ttl:6});});}
-      if((enemy.bossKind==='summoner'||enemy.bossKind==='warlord')&&enemy.age%75===0&&battle.enemies.length<36)spawnReinforcement(enemy);
-      if(enemy.bossKind==='bulwark')enemy.shield=Math.floor(enemy.age/35)%2===0;
-      enemy.position += movement;
-      if (enemy.position >= 0.94) {
-        battle.adouHp = Math.max(0, battle.adouHp - enemy.damage);battle.campFlash=5;sound("hurt");
-        if(enemy.boss){enemy.position=.78;enemy.motionStartPosition=.78;enemy.stun=12;enemy.telegraph=12;}
-        else battle.enemies = battle.enemies.filter(function (candidate) { return candidate.id !== enemy.id; });
-        setStatus(t("adou") + " " + t("hp") + " " + battle.adouHp + "/" + battle.maxAdouHp);
-      }
-    });
-    battle.units.forEach(function (unit, slot) {
-      if (!unit) return;
-      if (unit.cooldown > 0) unit.cooldown -= 1;
-      if (unit.attackCooldown > 0) {
-        unit.attackCooldown -= 1;
-        return;
-      }
-      unit.attackCooldown = unit.general ? 5 : Math.max(4, Math.round(8 / (data.unitTypes[unit.type].speed || 1)));
-      const lane = slot % 3;
-       const target = battle.enemies.filter(function (enemy) { return enemy.lane === lane && enemy.hp > 0 && !enemy.defeatedTicks && enemy.position >= (battle.level.rule==="fog" ? .48 : 1-(unit.general?.95:data.unitTypes[unit.type].range)); }).sort(function (a, b) { return (unit.type==="bow"?Number(b.kind==="medic")-Number(a.kind==="medic"):0) || b.position - a.position; })[0];
-       const damage = unitDamage(unit) + (level.rule==="rally" && lane===level.terrainLane ? 2 : 0);
-       if (target) {
-         unit.attackFlash = 4;
-         battle.effects.push({
-           id: battle.nextEffectId++,
-           kind: "attack",
-           lane: lane,
-           position: Math.min(.82, Math.max(.18, target.position)),
-           text: t("attackCue") + ": " + unitLabel(unit) + " → " + (target.boss ? t("boss") : t("enemySoldier")),
-           ttl: 5,
-         });
-         battle.strikes.push({target:target.id,damage:damage,type:unit.type,delay:2});
-       } else if (battle.spawned >= level.enemyCount && !battle.enemies.some(function (enemy) { return enemy.hp > 0 && !enemy.defeatedTicks; }) && battle.commandHp > 0) {
-        unit.attackFlash = 4;
-        battle.effects.push({
-          id: battle.nextEffectId++,
-          kind: "attack",
-          lane: lane,
-          position: .82,
-          text: t("attackCue") + ": " + unitLabel(unit) + " → " + t("commandPost"),
-          ttl: 5,
-        });
-        battle.commandHp = Math.max(0, battle.commandHp - damage);
-      }
-    });
-    Object.keys(battle.skillsUsed).forEach(function (key) {
-      if (battle.skillsUsed[key] > 0) battle.skillsUsed[key] -= 1;
-    });
-    for(const type of ["blade","spear","bow"]) if(battle.units.some(u=>u?.general&&u.type===type)&&!battle.skillsUsed[type]&&battle.enemies.some(e=>e.hp>0&&e.position>.35)) useSkill(type);
-    battle.motionTimestamp = window.performance?.now?.() || Date.now();
-    if (battle.adouHp <= 0 && hasTalent("guard3") && !battle.rescued) { battle.adouHp=3; battle.rescued=true; battle.campFlash=8; sound("merge"); setStatus(t("talent_guard3")); }
-    if (battle.adouHp <= 0) finishBattle("loss");
-    if (battle.commandHp <= 0) finishBattle("win");
+    if (outcome) finishBattle(outcome);
   }
 
-  function spawnReinforcement(parent) {
-    battle.enemies.push({id:battle.nextEnemyId++,lane:(parent.lane+1)%3,position:.05,motionStartPosition:.05,hp:10,maxHp:10,speed:battle.level.enemySpeed,damage:1,kind:'soldier',boss:false,bossKind:null,shield:false,age:0,stun:0,hitFlash:0,defeatedTicks:0,telegraph:0});
-  }
-  function spawnEnemy() {
-    const level=battle.level, boss=Boolean(level.bossKind)&&battle.spawned===level.enemyCount-1;
-    const kind=boss?'boss':level.roster[battle.spawned%level.roster.length];
-    const maxHp=boss?level.enemyHp*4:level.enemyHp*(kind==='shield'?1.5:kind==='raider'?.8:1);
-    battle.enemies.push({id:battle.nextEnemyId++,lane:level.lanePattern[battle.spawned%level.lanePattern.length],
-      position:.04,motionStartPosition:.04,hp:Math.round(maxHp),maxHp:Math.round(maxHp),
-      speed:level.enemySpeed*(boss?.65:kind==='raider'?1.1:1),damage:boss?4:level.enemyDamage,
-      kind,boss,label:boss?t("boss_"+level.bossKind):t("enemy_"+kind),bossKind:boss?level.bossKind:null,shield:kind==='shield',age:0,stun:0,hitFlash:0,defeatedTicks:0,telegraph:0});
-    battle.spawned++;if(boss)setStatus(t('boss_'+level.bossKind));
-  }
-
-  function unitDamage(unit) {
-    if (unit.general) return data.generals[unit.type].damage * 2;
-    return data.unitTypes[unit.type].damage * Math.pow(2,unit.level-1);
-  }
-
-  function damageEnemy(enemy, amount, type) {
-    if (!enemy || enemy.hp <= 0) return;
-    const blocked=enemy.shield && type!=='blade' && type!=='charge';
-    amount=Math.min(enemy.hp,Math.max(1,Math.round(amount*(blocked?.35:1))));
-    enemy.hp = Math.max(0, enemy.hp - amount);sound(blocked?'block':'hit');
-    enemy.hitFlash = 3;
-    battle.effects.push({
-      id: battle.nextEffectId++,
-      kind: blocked ? "block" : "hit",
-      lane: enemy.lane,
-      position: enemy.position,
-      text: "-" + amount,
-      ttl: 5,
-    });
-    if (enemy.hp <= 0) {
-      enemy.defeatedTicks = 5;
-      battle.waveKills++; if(battle.waveKills%3===0)battle.buns=Math.min(24,battle.buns+1);sound("defeat");
-      battle.effects.push({
-        id: battle.nextEffectId++,
-        kind: "defeat",
-        lane: enemy.lane,
-        position: enemy.position,
-        text: t("defeated"),
-        ttl: 9,
-      });
-    }
-  }
-
-  function recruit() {
-    if (!battle || battle.result || document.hidden || el.leaveBattle?.open || el.tutorial?.open) return;
-    const slot = battle.units.findIndex(function (unit) { return !unit; });
-    if (slot < 0) {
-      setStatus(t("noSpace"));
-      return;
-    }
-    if (battle.buns < recruitCost()) {
-      setStatus(t("notEnough"));
-      return;
-    }
-    battle.buns -= recruitCost();
-    const rolled = talents.roll(Math.random,battle.pity);
-    battle.pity = rolled.level===1 ? battle.pity+1 : 0;
-    const type = rolled.type;
-    battle.recruitIndex += 1;
-    battle.units[slot] = makeUnit(type, rolled.level, rolled.general);
-    let reveal=document.getElementById('recruitReveal');
-    if(!reveal){reveal=document.createElement('div');reveal.id='recruitReveal';reveal.setAttribute('role','status');document.querySelector('.battle-field').append(reveal);}
-    reveal.className='recruit-reveal unit-type-'+type+(rolled.general?' general-unit':'')+(rolled.level>1?' rare':'');
-    reveal.textContent=unitName(battle.units[slot]);reveal.hidden=false;
-    clearTimeout(recruitRevealTimer);recruitRevealTimer=setTimeout(()=>{reveal.hidden=true;},2200);
-    setStatus(t("statusRecruit")+" "+unitName(battle.units[slot]), rolled.level>1?"promotion":undefined);
-    sound(rolled.level>1?"merge":"hit");
-    renderBattle();
-    emitMeasurementEvent("recruit", { stage: stageIndex + 1 });
-  }
-
-  function handleSlot(slot) {
-    if (!battle || battle.result) return;
-    const unit = battle.units[slot];
-    if (selectedSlot === null) {
-      if (!unit) return;
-      selectedSlot = slot;
-      battle.commandLane=slot%3;
-      setStatus(t("selected") + ": " + unitName(unit));
-      renderFormation();
-      return;
-    }
-    if (selectedSlot === slot) {
-      selectedSlot = null;
-      setStatus(t("mergeHint"));
-      renderFormation();
-      return;
-    }
-    const source = battle.units[selectedSlot];
-    if (!source) {
-      selectedSlot = null;
-      renderFormation();
-      return;
-    }
-    if (!unit) {
-      battle.units[slot] = source;
-      battle.units[selectedSlot] = null;
-      selectedSlot = null;
-      setStatus(t("statusMove"));
+  function recruit(type = 'blade') {
+    if (!battle || battle.result || paused()) return;
+    if (push.deploy(battle, type)) {
+      sound('merge');
+      setStatus(t('statusRecruit') + ' ' + unitLabel({type, general:false}));
       renderBattle();
-      return;
+      emitMeasurementEvent('recruit', {stage:stageIndex + 1, troop:type});
     }
-    if (canMerge(source, unit)) {
-      const mergedUnit = source.level >= 3
-        ? makeUnit(source.type, 4, true)
-        : makeUnit(source.type, source.level + 1);
-      if(hasTalent("supply2"))battle.buns=Math.min(24,battle.buns+1);
-      battle.units[slot] = mergedUnit;
-      battle.units[selectedSlot] = null;
-      selectedSlot = null;
-      const payoffKind = mergedUnit.general ? "promotion" : "merge-payoff";
-      setStatus(mergedUnit.general
-        ? t("statusGeneralPayoff")
-        : t("statusMergePayoff", { level: mergedUnit.level }), payoffKind);
-      sound("merge");
-      renderBattle();
-      emitMeasurementEvent("merge", { result: mergedUnit.general ? "promotion" : "level_up", stage: stageIndex + 1 });
-      return;
-    }
-    // Unlike units swap: redistribution is always possible on a full board.
-    battle.units[slot]=source;battle.units[selectedSlot]=unit;selectedSlot=null;
-    battle.commandLane=slot%3;setStatus(t("statusMove"));
-    renderFormation();
   }
 
-  function canMerge(first, second) {
-    return first && second && first.type === second.type && first.level === second.level && first.general === second.general && !first.general;
-  }
-
-  function useSkill(type) {
-    if (!battle || battle.result || el.leaveBattle?.open || el.tutorial?.open) return;
-    const unit = battle.units.find(function (candidate) { return candidate && candidate.general && candidate.type === type; });
-    if (!unit && type!=="horse") return;
-    const cooldown = battle.skillsUsed[type] || 0;
-    if (cooldown > 0) {
-      setStatus(t("cooldown"));
-      return;
-    }
-    const victims = battle.enemies.filter(e=>e.hp>0).sort(function (a, b) { return b.position - a.position; });
-    if(!victims.length){setStatus(t('noTarget'));return;}
-    if(type==="horse")battle.commandLane=victims[0].lane;
-    if (type === "blade") {
-       victims.slice(0, 3).forEach(function (enemy) { damageEnemy(enemy, 9, 'blade'); });
-    } else if (type === "spear") {
-       victims.forEach(function (enemy) { enemy.stun = 35; damageEnemy(enemy, 5); });
-    } else if (type === "horse") {
-       victims.filter(e=>hasTalent("charge2")||e.lane===battle.commandLane).forEach(target=>{
-         damageEnemy(target,16,'charge');battle.effects.push({id:battle.nextEffectId++,kind:'charge',lane:target.lane,position:target.position,text:'',ttl:5});target.motionStartPosition=target.position;target.position=Math.max(.02,target.position-.2);target.stun=8;
-       });
-       battle.chargeTicks=10;sound('charge');
-       if(hasTalent("charge3"))battle.units.forEach(u=>{if(u)u.attackCooldown=0;});
-       battle.effects.push({id:battle.nextEffectId++,kind:'charge',lane:battle.commandLane,position:.55,text:skillName(makeUnit("horse",4,true)),ttl:9});
-    } else {
-       victims.forEach(function (enemy) { damageEnemy(enemy, 8); });
-    }
-    battle.skillsUsed[type] = type==="horse"?(hasTalent("charge1")?70:100):80;
-    setStatus(t("statusSkill"));
-    renderBattle();
-    emitMeasurementEvent("skill", { skill: type, stage: stageIndex + 1 });
+  function useSkill() {
+    if (!battle || battle.result || paused()) return;
+    if (push.charge(battle)) {
+      sound('charge'); setStatus(t('chargeAuto')); renderBattle();
+      emitMeasurementEvent('skill', {skill:'horse', stage:stageIndex + 1});
+    } else if (!battle.enemies.some(e => e.hp > 0)) setStatus(t('noTarget'));
   }
 
   function ensureResultReplayGoal() {
@@ -793,7 +457,7 @@
         ? "faster_clear"
         : replayGoalKey === "resultReplayGoalStandard"
           ? "faster_three_star"
-          : "cover_all_lanes",
+          : "protect_camp",
     });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (typeof result === "boolean" ? (result ? "win" : "lose") : typeof result === "string" ? result : "complete"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
@@ -802,182 +466,39 @@
   function renderBattle() {
     if (!battle) return;
     const level = battle.level;
-    el.chapter.textContent = stageChapterName(level) + " · " + stageName(level);
+    battle.bossLabel = level.bossKind ? t("boss_" + level.bossKind) : "";
     el.stageName.textContent = stageName(level);
-    el.remaining.textContent = t("wave") + " " + battle.wave + " / " + level.waveCount;
-    el.enemyHp.textContent = battle.commandHp + " / " + battle.maxCommandHp;
-    el.commandPostHp.textContent = battle.commandHp + " / " + battle.maxCommandHp;
-    el.buns.textContent = String(battle.buns);
-    el.adouHp.textContent = battle.adouHp + " / " + battle.maxAdouHp;
-    el.baseHp.textContent = battle.adouHp + " / " + battle.maxAdouHp;
-    el.recruit.disabled = Boolean(battle.result) || battle.buns<recruitCost() || battle.units.every(Boolean);
-    el.recruit.textContent=t("recruit")+" · "+recruitCost();
-    el.hint.textContent=t("talents");
-    el.hint.title=t("commandHelp");
-    el.status.textContent = battle.status || t("mergeHint");
-    renderPressureCue();
-    renderLanes();
-    renderFormation();
-    renderSkills();
-    el.battle.scrollTop = 0;
-
-  }
-
-  function renderPressureCue() {
-    if (!el.pressureCue || !battle) return;
-    const laneStates = [0, 1, 2].map(function (lane) {
-      const hasDefender = battle.units.some(function (unit, slot) {
-        return Boolean(unit) && slot % 3 === lane;
-      });
-      const enemies = battle.enemies.filter(function (enemy) {
-        return enemy.lane === lane && enemy.hp > 0 && !enemy.defeatedTicks;
-      });
-      const furthest = enemies.reduce(function (max, enemy) {
-        return Math.max(max, enemy.position || 0);
-      }, 0);
-      const bossBonus = enemies.some(function (enemy) { return enemy.boss; }) ? .18 : 0;
-      return {
-        lane: lane,
-        hasDefender: hasDefender,
-        enemies: enemies,
-        pressure: (hasDefender ? 0 : .6) + (enemies.length ? .2 : 0) + furthest + bossBonus,
-      };
-    });
-    const attention = laneStates.filter(function (state) {
-      return !state.hasDefender || state.enemies.length > 0;
-    });
-    let message;
-    if (!attention.length) {
-      message = t("pressureClear");
-    } else {
-      attention.sort(function (first, second) {
-        return second.pressure - first.pressure || first.lane - second.lane;
-      });
-      const focus = attention[0];
-      const key = !focus.hasDefender && focus.enemies.length
-        ? "pressureOpenEnemy"
-        : !focus.hasDefender ? "pressureOpen" : "pressureEnemy";
-      message = t(key, { lane: focus.lane + 1 });
-    }
-    const boss=battle.enemies.find(e=>e.boss&&e.hp>0);
-    message=(boss?t("boss_"+boss.bossKind)+" · ":"")+t("rule_"+battle.level.rule)+" · "+message;
-    if (el.pressureCue.textContent !== message) el.pressureCue.textContent = message;
-  }
-
-  function renderLanes() {
-    const enemyRows = ensureLaneRows(el.enemyLanes);
-    const playerRows = ensureLaneRows(el.playerLanes);
-    for (let lane = 0; lane < 3; lane += 1) {
-      const enemyRow = enemyRows[lane];
-      enemyRow.setAttribute("data-lane", t("lane") + " " + (lane + 1));
-      const tokenById = new Map(Array.from(enemyRow.children).filter(function (node) {
-        return node.classList.contains("enemy-token");
-      }).map(function (node) { return [node.getAttribute("data-enemy-id"), node]; }));
-      const activeEnemyIds = new Set();
-      battle.enemies.filter(function (enemy) { return enemy.lane === lane; }).forEach(function (enemy) {
-        const enemyId = String(enemy.id);
-        const token = tokenById.get(enemyId) || document.createElement("span");
-        updateEnemyToken(token, enemy);
-        activeEnemyIds.add(enemyId);
-        enemyRow.appendChild(token);
-      });
-      tokenById.forEach(function (token, enemyId) {
-        if (!activeEnemyIds.has(enemyId)) token.remove();
-      });
-      enemyRow.querySelectorAll(".combat-effect").forEach(function (node) { node.remove(); });
-      battle.effects.filter(function (effect) { return effect.lane === lane; }).forEach(function (effect) {
-         const effectNode = document.createElement("span");
-         effectNode.className = "combat-effect " + effect.kind;
-         effectNode.style.left = (effect.position * 100) + "%";
-         effectNode.textContent = effect.text;
-         enemyRow.appendChild(effectNode);
-       });
-      const playerRow = playerRows[lane];
-      playerRow.setAttribute("data-lane", t("lane") + " " + (lane + 1));
-      playerRow.innerHTML = "";
-      battle.units.forEach(function (unit, slot) {
-        if (!unit || slot % 3 !== lane) return;
-        const token = document.createElement("span");
-        token.className = "lane-unit unit-type-" + unit.type + (unit.general ? " general-unit" : "") + (unit.attackFlash > 0 ? " is-attacking" : "");
-        const unitLabelText = unitLabel(unit);
-        const glyph = unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph;
-        token.innerHTML = "<span class=\"lane-unit-glyph\" aria-hidden=\"true\">" + glyph + "</span><span class=\"lane-unit-name\">" + escapeHtml(unitLabelText) + "</span><span class=\"lane-unit-arrow\" aria-hidden=\"true\">" + (unit.attackFlash > 0 ? "→" : "") + "</span>";
-        token.style.color = unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color;
-        token.title = unitName(unit);
-        token.setAttribute("aria-label", unitName(unit) + ", " + t("lane") + " " + (lane + 1) + (unit.attackFlash > 0 ? ", " + t("attackCue") : ""));
-        playerRow.appendChild(token);
-      });
-    }
-  }
-
-  function ensureLaneRows(container) {
-    const rows = Array.from(container.children);
-    if (rows.length !== 3 || rows.some(function (row) { return !row.classList.contains("lane-row"); })) {
-      container.innerHTML = "";
-      for (let lane = 0; lane < 3; lane += 1) {
-        const row = document.createElement("div");
-        row.className = "lane-row";
-        container.appendChild(row);
+    el.remaining.textContent = t('wave') + ' ' + battle.wave + ' / 3';
+    el.enemyHp.textContent = Math.ceil(battle.commandHp) + ' / ' + battle.maxCommandHp;
+    el.buns.textContent = battle.buns + ' / 30';
+    el.adouHp.textContent = Math.ceil(battle.adouHp) + ' / ' + battle.maxAdouHp;
+    el.status.textContent = battle.status || t('pushGoal');
+    el.pressureCue.textContent = battle.units.filter(u=>u.hp>0).length>=12 ? t('pushFull') : t('rule_' + level.rule);
+    const dock = document.getElementById('deployDock');
+    if (dock.dataset.locale !== locale) {
+      dock.dataset.locale=locale; dock.replaceChildren();
+      for (const type of unitTypes) {
+        const button=document.createElement('button');
+        button.type='button';button.dataset.deploy=type;button.className='deploy-card unit-type-'+type;
+        if (type === 'blade') button.setAttribute('data-wp-primary-action','');
+        button.innerHTML='<span class="deploy-art" aria-hidden="true"></span><strong></strong><small></small><span class="deploy-cost"></span>';
+        button.querySelector('strong').textContent=unitLabel({type,general:false});
+        button.querySelector('small').textContent=t('role_'+type);
+        button.addEventListener('click',()=>recruit(type));dock.append(button);
       }
-      return Array.from(container.children);
     }
-    return rows;
-  }
-
-  function updateEnemyToken(token, enemy) {
-    const enemyLabel = enemy.boss ? t("boss_"+enemy.bossKind) : t("enemy_"+enemy.kind);
-    const hpPercent = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
-      token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
-      token.setAttribute("data-enemy-id", String(enemy.id));
-    token.style.left = enemyTokenPosition(getEnemyVisualPosition(enemy, window.performance?.now?.() || Date.now()));
-    token.setAttribute("aria-label", enemyLabel + ", " + t("hp") + " " + enemy.hp + "/" + enemy.maxHp);
-    token.title = enemyLabel + " / " + enemy.hp + " / " + enemy.maxHp;
-    token.innerHTML = "<span class=\"enemy-glyph\">" + (enemy.boss ? "將" : "卒") + "</span><span class=\"enemy-name\">" + escapeHtml(enemyLabel) + "</span><span class=\"enemy-health\"><span style=\"width:" + hpPercent + "%\"></span></span>";
-  }
-
-  function renderFormation() {
-    const renderKey = locale + "|" + selectedSlot + "|" + battle.units.map(function (unit) {
-      return unit ? [unit.type, unit.level, unit.general ? "g" : "u"].join(":") : "-";
-    }).join(",");
-    if (renderKey === formationRenderKey && el.formation.children.length === battle.units.length) return;
-    formationRenderKey = renderKey;
-    el.formation.innerHTML = "";
-    el.formationHint.textContent = selectedSlot === null ? t("mergeHint") : t("selected") + ": " + unitName(battle.units[selectedSlot]) + ". " + t("mergeHint");
-    battle.units.forEach(function (unit, slot) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "unit-slot" + (unit ? " unit-type-" + unit.type : "") + (unit ? "" : " empty") + (selectedSlot === slot ? " selected" : "") + (unit && unit.general ? " general-unit" : "");
-      button.setAttribute("role", "gridcell");
-       button.setAttribute("data-slot", String(slot));
-       button.setAttribute("aria-pressed", selectedSlot === slot ? "true" : "false");
-      button.setAttribute("aria-label", unit ? unitName(unit) + ", " + t("lane") + " " + ((slot % 3) + 1) : t("empty") + ", " + t("lane") + " " + ((slot % 3) + 1));
-      const laneLabel = "L" + ((slot % 3) + 1);
-      const levelLabel = unit && unit.general ? "★" : t("level") + " " + (unit ? unit.level : "");
-      button.innerHTML = unit
-        ? "<span class=\"unit-lane\" aria-hidden=\"true\">" + laneLabel + "</span><span class=\"unit-glyph\" style=\"--unit-color:" + (unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color) + "\">" + (unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph) + "</span><span class=\"unit-level\" aria-hidden=\"true\">" + levelLabel + "</span>"
-        : "<span aria-hidden=\"true\">＋</span>";
-      button.addEventListener("dragstart", function (event) {
-        if (!unit) { event.preventDefault(); return; }
-        dragSlot = slot;
-        event.dataTransfer.effectAllowed = "move";
-      });
-      button.addEventListener("dragover", function (event) { event.preventDefault(); });
-      button.addEventListener("drop", function (event) {
-        event.preventDefault();
-        if (dragSlot !== null) {
-          const source = dragSlot;
-          dragSlot = null;
-          selectedSlot = source;
-          handleSlot(slot);
-        }
-      });
-      if (unit) button.draggable = true;
-      el.formation.appendChild(button);
-    });
+    for (const button of dock.children) {
+      const type=button.dataset.deploy, cooldown=battle.deployCooldown[type]||0, cost=push.cost(battle,type);
+      button.disabled=Boolean(battle.result)||cooldown>0||battle.buns<cost||battle.units.filter(u=>u.hp>0).length>=12;
+      button.querySelector('.deploy-cost').textContent=cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns');
+      button.style.setProperty('--ready', (100-cooldown/push.troops[type].cooldown*100)+'%');
+      button.setAttribute('aria-label',unitLabel({type,general:false})+' · '+t('role_'+type)+' · '+(cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns')));
+    }
+    renderSkills();
   }
 
   function renderSkills() {
-    const key=locale+':v29';
+    const key=locale+':v32';
     if(el.skills.dataset.renderKey!==key){
       el.skills.dataset.renderKey=key;el.skills.innerHTML='';
       const button=document.createElement('button');button.type='button';button.className='skill-button skill-horse';button.dataset.skill='horse';
@@ -987,7 +508,7 @@
     const button=el.skills.firstElementChild,cooldown=battle.skillsUsed.horse||0;
     button.disabled=cooldown>0||Boolean(battle.result);button.classList.toggle('ready',!cooldown);
     button.querySelector('strong').textContent=t('chargeAction');
-    const effect=hasTalent('charge2')?t('talent_charge2'):t('chargeAuto');
+    const effect=t('chargeAuto');
     button.querySelector('span').textContent=cooldown?Math.ceil(cooldown/10)+'s':effect;
     button.setAttribute('aria-label',t('chargeAction')+': '+(cooldown?Math.ceil(cooldown/10)+'s':effect));
   }
@@ -1045,8 +566,7 @@
   }
 
   function closeDialogs() {
-    clearTimeout(recruitRevealTimer);const reveal=document.getElementById('recruitReveal');if(reveal)reveal.hidden=true;
-    setFormationOpen(false);
+
     document.getElementById("talentDialog").close();
     [el.tutorial, el.leaveBattle, el.result].forEach(function (dialog) {
       if (dialog && dialog.open) (__wpNotifyMeasurement(), dialog.close());
@@ -1057,26 +577,7 @@
     if (battle && !battle.result) (__wpNotifyMeasurement(), el.leaveBattle.showModal());
   }
 
-  function showHint() {
-    if (!battle || battle.result) return;
-    const pair = findMergePair();
-    if (pair) {
-      selectedSlot = pair[0];
-      setStatus(t("tip") + ": " + unitName(battle.units[pair[0]]) + " + " + unitName(battle.units[pair[1]]));
-      renderFormation();
-    } else {
-      setStatus(t("tipText"));
-    }
-  }
-
-  function findMergePair() {
-    for (let i = 0; i < battle.units.length; i += 1) {
-      for (let j = i + 1; j < battle.units.length; j += 1) {
-        if (canMerge(battle.units[i], battle.units[j])) return [i, j];
-      }
-    }
-    return null;
-  }
+  function showHint() { if (battle && !battle.result) setStatus(t('pushGoal')); }
 
   function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, function (character) {
@@ -1097,12 +598,12 @@
     const nextLocale = event.detail?.locale || window.WonderI18n?.actualLocale?.();
     if (nextLocale && nextLocale !== locale) applyLocale(nextLocale);
   });
-  el.recruit.addEventListener("click", recruit);
+
   function renderTalents() {
     const locked=document.body.dataset.screen==='battle';
     const total=talents.points(progress.stars),picked=progress.talents||[];
     document.getElementById('talentSummary').textContent=locked?t('talentLocked'):t('talentPoints',{left:total-picked.length,total});
-    document.getElementById('recruitOdds').textContent=t('recruitOdds')+' '+t('typeOdds');
+    document.getElementById('recruitOdds').textContent=t('talentHelp');
     const tree=document.getElementById('talentTree');tree.replaceChildren();
     for(const branch of talents.branches){
       const column=document.createElement('section');column.className='talent-branch';
@@ -1131,28 +632,15 @@
     if(document.body.dataset.screen==='battle')return;
     progress.talents=[];saveProgress();renderTalents();
   });
-  function setFormationOpen(open) {
-    const panel = document.getElementById('formationPanel');
-    const toggle = document.getElementById('formationToggle');
-    panel.hidden = !open;
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.lastElementChild.textContent = open ? '▾' : '▴';
-  }
-  document.getElementById('formationToggle').addEventListener('click', () => {
-    setFormationOpen(document.getElementById('formationPanel').hidden);
-  });
+
+
   el.battleUtility?.addEventListener("click", function () {
     if (!battle || battle.result || !el.tutorial) return;
     if (el.tutorial.open) (__wpNotifyMeasurement(), el.tutorial.close());
     else (__wpNotifyMeasurement(), el.tutorial.show());
   });
-  el.formation.addEventListener("click", function (event) {
-    const target = event.target;
-    const button = target && typeof target.closest === "function" ? target.closest(".unit-slot") : null;
-    if (!button || !el.formation.contains(button)) return;
-    handleSlot(Number(button.getAttribute("data-slot")));
-  });
-  el.hint.addEventListener("click", openTalents);
+
+
   el.battleBack.addEventListener("click", showLeaveDialog);
   document.querySelector("#stage [data-back]").addEventListener("click", showMain);
   el.tutorialClose.addEventListener("click", function () { (__wpNotifyMeasurement(), el.tutorial.close()); });
@@ -1173,15 +661,13 @@
       if (event.key === "Escape" && el.tutorial.open) (__wpNotifyMeasurement(), el.tutorial.close());
       return;
     }
-    if (event.key === 'Escape' && !document.getElementById('formationPanel').hidden) {
-      setFormationOpen(false);
-      document.getElementById('formationToggle').focus();
-      return;
-    }
+
+
     if (document.activeElement && ["INPUT", "SELECT", "TEXTAREA"].indexOf(document.activeElement.tagName) >= 0) return;
     if (event.key.toLowerCase() === "r" && battle && !battle.result) recruit();
     if (event.key.toLowerCase() === "h" && battle && !battle.result) showHint();
-    if (event.key >= "1" && event.key <= "9" && battle && !battle.result) handleSlot(Number(event.key) - 1);
+    if (event.key >= "1" && event.key <= "4" && battle && !battle.result) recruit(unitTypes[Number(event.key)-1]);
+    if (event.code === "Space" && battle && !battle.result) { event.preventDefault(); useSkill(); }
     if (event.key === "Escape" && el.leaveBattle.open) (__wpNotifyMeasurement(), el.leaveBattle.close());
   });
 
@@ -1202,22 +688,22 @@
         result: battle && battle.result,
         commandHp: battle && battle.commandHp,
         adouHp: battle && battle.adouHp,
-        buns: battle && battle.buns, pity:battle?.pity, talents:battle?.talents, rescued:battle?.rescued, recruitIndex:battle?.recruitIndex,
+        deployCooldown:battle?.deployCooldown, buns: battle && battle.buns, pity:battle?.pity, talents:battle?.talents, rescued:battle?.rescued, recruitIndex:battle?.recruitIndex,
         wave:battle?.wave, rule:battle?.level.rule, commandLane:battle?.commandLane, cooldown:battle?.skillsUsed.horse||0, ticks:battle?.ticks, bestTimes:progress.bestTimes,
-        enemyStates:battle?.enemies.map(e=>({id:e.id,kind:e.kind,bossKind:e.bossKind,hp:e.hp,lane:e.lane,position:e.position,age:e.age,shield:e.shield,telegraph:e.telegraph,stun:e.stun})),
+        enemyStates:battle?.enemies.map(e=>({id:e.id,kind:e.kind,bossKind:e.bossKind,hp:e.hp,x:e.x,lane:e.lane,position:e.position,age:e.age,shield:e.shield,telegraph:e.telegraph,stun:e.stun})),
         enemies: battle ? battle.enemies.length : 0,
-        units: battle ? battle.units.map(function (unit) { return unit && { type: unit.type, level: unit.level, general: unit.general, attackCooldown:unit.attackCooldown }; }) : [],
+        units: battle ? battle.units.map(function (unit) { return unit && { type: unit.type, level: unit.level, general: unit.general, x:unit.x, hp:unit.hp, attackCooldown:unit.attackCooldown }; }) : [],
       };
     },
     enterStage: showStage,
     enterBattle: function (index, options) { startBattle(Number(index) || 0, Object.assign({ skipTutorial: true }, options || {})); },
     recruit: recruit,
-    chooseRecruit:()=>{},
+
     talents:()=>({picked:progress.talents,points:talents.points(progress.stars)}),
     skill:useSkill,
-    aim:lane=>{if(battle&&[0,1,2].includes(lane))battle.commandLane=lane;},
-    selectSlot: handleSlot,
-    mergePair: function (first, second) { selectedSlot = Number(first); handleSlot(Number(second)); },
+
+
+
     advance: advanceBattle,
     finish: finishBattle,
     setLocale: function (nextLocale) {

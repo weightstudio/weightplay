@@ -17,4 +17,13 @@
  ar:['وجّه ضوء الشمس بالمرايا لإيقاظ نبتة الحديقة.','طريقة اللعب','اتبع سهم كل مصدر ضوء. يسير الضوء بخط مستقيم حتى تغيّر المرآة اتجاهه.','اضغط المرآة للتبديل بين / و \\. راقب المسار الجديد قبل تدوير المرآة التالية.','يجب أن تصل جميع مصادر الضوء إلى النبتة بترتيب المرايا نفسه. خروج الضوء من اللوحة أو دورانه في حلقة لا يكمل الحديقة.','التلميح يحدد مرآة ولا يديرها. التراجع يلغي الدوران السابق، وإعادة الضبط تبدأ هذه الحديقة من جديد. أكملها لفتح الحديقة التالية.']
  };
  window.SUNBEAM_GUIDE_LOCALES=Object.fromEntries(Object.entries(packs).map(([code,values])=>[code,Object.fromEntries(keys.map((key,i)=>[key,values[i]]))]));
+ const reviewed=window.WeightPlayGeneralReviewedGuides||{};
+ const reviewedLocales=[];
+ for(const [code,localeData] of Object.entries(reviewed)){
+  const copy=localeData?.games?.['animal-sunbeam-garden'];
+  if(!copy) continue;
+  copy.hideRelatedGames=true;
+  reviewedLocales.push(code);
+ }
+ window.SUNBEAM_GUIDE_OWNER=Object.freeze({reviewedSource:'WeightPlayGeneralReviewedGuides',hideRelatedGamesLocales:Object.freeze(reviewedLocales)});
 })();
