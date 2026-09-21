@@ -11,8 +11,8 @@
    Main, Stage, Battle, and General reserve envelopes. */
 #app { width:100%; }
 @layer wp-tide-tally-override {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #gameGuide{border-radius:24px!important}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .game-info-section{border-radius:16px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #gameGuide{--wp-ui-radius:18px!important;border-radius:18px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .game-info-section{border-radius:18px!important}
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important}
   @media (min-width:700px) and (orientation:landscape) and (max-height:700px){
     html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .wp-standard-main-poster,

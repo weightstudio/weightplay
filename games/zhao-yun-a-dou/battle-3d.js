@@ -41,7 +41,11 @@ export class ZhaoBattle3D {
   }
   impact(f){
     const g=new THREE.Group(),color=f.kind==='block'?0x7ee8ff:f.kind==='heal'?0x82f1b4:f.enemy?0xffb26c:0xffdc83;
-    if(f.kind==='arrow'){
+    if(f.kind==='bomb'){
+      this.box(g,0,0,0,.25,.25,.25,0x433c37);this.glowBox(g,0,.18,0,.055,.12,.055,0xffbf66);
+    }else if(f.kind==='blast'||f.kind==='rally'){
+      for(let i=0;i<8;i++){const a=i*Math.PI/4;const m=this.glowBox(g,Math.cos(a)*.55,Math.sin(a)*.55,0,.18,.07,.05,f.kind==='rally'?0xf0ce69:0xffa56d);m.rotation.z=a;}
+    }else if(f.kind==='arrow'){
       this.glowBox(g,0,0,0,.46,.035,.035,0xffedbe);this.glowBox(g,.24,0,0,.10,.10,.035,0xffffff);
     }else if(f.kind==='heal'){
       this.glowBox(g,0,0,0,.12,.44,.04,color);this.glowBox(g,0,0,0,.44,.12,.04,color);
@@ -105,14 +109,15 @@ export class ZhaoBattle3D {
       if(side<0){this.camp=base;const baby=this.character('baby',false,false);baby.scale.setScalar(.6);baby.position.set(.2,1.85,.6);base.add(baby);}
       else this.fortress=base;
     }
-    this.hero=this.character('horse',true,false);this.hero.scale.setScalar(1.05);this.hero.rotation.y=-Math.PI/2+.22;this.hero.position.set(-4.15,0,1);g.add(this.hero);
+    this.hero=this.character('horse',true,false);this.hero.scale.setScalar(1.05);this.hero.rotation.y=-Math.PI/2-.46;this.hero.position.set(-4.15,0,1);g.add(this.hero);
     this.chargeTrail=this.box(g,0,.09,0,8,.045,.7,0xe4bd62);this.chargeTrail.visible=false;
   }
-  character(type,general,enemy){
+  character(type,general,enemy,rarity=0){
     const g=new THREE.Group(), rig=new THREE.Group();g.add(rig);g.userData.rig=rig;
     this.box(g,0,.018,.05,.76,.012,.56,0x354e48);
     const bossColors={bulwark:0x536b82,charger:0xb65c39,weaver:0x645c91,healer:0x399c7b,summoner:0xb38b47,warlord:0x922f3e};
-    const tint=bossColors[type]||(enemy?(type==='medic'?0x72568c:type==='shield'?0x667883:0x984c43):(palette[type]||0x39a396));
+    const specialColors={bomber:0xd67c38,drummer:0x9f7944,arbalest:0x506585};
+    const tint=bossColors[type]||specialColors[type]||(enemy?(type==='medic'?0x72568c:type==='shield'?0x667883:0x984c43):(palette[type]||0x39a396));
     const skin=enemy?0xc18e70:0xe6b38b, steel=enemy?0x7b8588:0xbccfd0;
     let mounted=type==='horse'||type==='charger';const lift=mounted?.48:0;
     if(mounted){
@@ -142,10 +147,24 @@ export class ZhaoBattle3D {
       this.box(rig,0,1.47+lift,.015,.64,.12,.53,enemy?0x4e535c:0x314345);
       this.box(rig,0,1.58+lift,.06,.2,.18,.2,general?0x192f34:tint);
       if(general){this.box(rig,0,.85+lift,.27,.62,.68,.09,tint);this.box(rig,0,.49+lift,.33,.7,.18,.1,tint);if(type!=='horse')this.box(rig,0,1.01+lift,-.26,.3,.25,.1,type==='bow'?0xe8e0c6:0x27353a);}
-      else {this.box(rig,-.29,1.22+lift,.02,.08,.42,.48,steel,true);this.box(rig,.29,1.22+lift,.02,.08,.42,.48,steel,true);}
+      else {this.box(rig,-.29,1.24+lift,.10,.08,.34,.28,steel,true);this.box(rig,.29,1.24+lift,.10,.08,.34,.28,steel,true);}
+      if(rarity>0){
+        const trim=rarity===2?0xf1cb68:0x85bbdb;
+        this.box(rig,0,1.43+lift,-.27,.65,.065,.055,trim,true);
+        this.box(rig,0,.77+lift,.28,.65,.67,.1,rarity===2?0x653f65:0x315f7c);
+        for(const x of [-.37,.37])this.box(rig,x,.97+lift,0,.27,.09,.47,trim,true);
+        if(rarity===2)this.box(rig,0,1.77+lift,.06,.14,.32,.16,trim);
+      }
       const weapon=new THREE.Group();weapon.position.set(.09,-.28,-.1);g.userData.attackArm.add(weapon);g.userData.weapon=weapon;
-      g.userData.attackStyle=['bow','medic','healer','flanker'].includes(type)?'bow':['spear','horse','charger'].includes(type)?'thrust':'slash';
-      if(type==='bow'||type==='medic'||type==='healer'){
+      g.userData.attackStyle=['bow','medic','healer','flanker','arbalest'].includes(type)?'bow':['spear','horse','charger'].includes(type)?'thrust':'slash';
+      if(type==='arbalest'){
+        this.box(weapon,0,.12,-.05,.1,.12,.8,0x815b3f);this.box(weapon,0,.12,-.32,.7,.08,.09,0xc2c8bc,true);this.box(weapon,0,.22,-.26,.045,.04,.75,0xd9c789);
+      }else if(type==='bomber'){
+        this.box(weapon,0,.15,-.03,.32,.35,.32,0x393d3e);g.userData.fuse=this.glowBox(weapon,0,.42,-.03,.05,.18,.05,0xffc36e);
+        this.box(rig,0,.76,.32,.55,.5,.32,0x855d3d);
+      }else if(type==='drummer'){
+        this.box(weapon,0,.2,0,.06,.55,.06,0xd6bb79);this.box(rig,0,.57,-.48,.75,.55,.45,0x965133);this.box(rig,0,.87,-.48,.8,.055,.49,0xe0c698);this.box(rig,0,.29,-.48,.8,.055,.49,0xb39662);
+      }else if(type==='bow'||type==='medic'||type==='healer'){
         for(const z of [-.23,.23])this.box(weapon,0,.12,z,.08,.65,.09,0xb88e57);
         this.box(weapon,0,.43,0,.08,.08,.54,0xc7a15b);this.box(weapon,0,-.18,0,.08,.08,.54,0x8a653e);
       }else{
@@ -165,6 +184,7 @@ export class ZhaoBattle3D {
     const faceY=(type==='baby'?.82:1.2+lift);
     for(const x of [-.14,.14]){this.box(rig,x,faceY,-.255,.12,.095,.025,0x273336);this.box(rig,x-.018,faceY+.015,-.273,.027,.025,.018,0xfff4d6);}
     this.box(rig,0,faceY-.12,-.27,.13,.05,.055,0xac705c);
+    this.box(rig,0,faceY-.035,-.288,.10,.10,.075,skin);
     return g;
   }
   label(key,text,x,y,z,kind=''){
@@ -199,9 +219,9 @@ export class ZhaoBattle3D {
       bar.style.top=Math.max(sizes[index].height+6,Math.min(this.height-6,(1-point.y)*this.height/2))+'px';
     });
   }
-  actor(key,type,general,enemy){let obj=this.actors.get(key);const signature=type+general+enemy;
+  actor(key,type,general,enemy,rarity=0){let obj=this.actors.get(key);const signature=type+general+enemy+rarity;
     if(obj&&obj.userData.signature!==signature){this.scene.remove(obj);this.actors.delete(key);obj=null;}
-    if(!obj){obj=this.character(type,general,enemy);obj.userData.signature=signature;
+    if(!obj){obj=this.character(type,general,enemy,rarity);obj.userData.signature=signature;
       const bar=new THREE.Group();bar.position.y=type==='horse'||type==='charger'?2.48:2.12;obj.add(bar);
       this.flatBox(bar,0,0,0,.84,.105,.008,0x203b3d);
       obj.userData.health=this.flatBox(bar,0,0,.012,.78,.055,.008,enemy?0xef987a:0x6ae3be);
@@ -218,17 +238,17 @@ export class ZhaoBattle3D {
     for(const a of [...battle.units,...battle.enemies]){
       const key='actor'+a.id;active.add(key);
       const type=a.enemy?(a.boss?a.bossKind:a.kind==='raider'?'horse':a.kind==='flanker'?'bow':a.kind==='soldier'?'blade':a.kind):a.type;
-      const obj=this.actor(key,type,a.boss,a.enemy);
+      const obj=this.actor(key,type,a.boss,a.enemy,a.rarity);
       const x=a.previousX+(a.x-a.previousX)*mix;
       obj.position.set(worldX(x),0,(a.id%5-2)*.27);
       // Three-quarter side silhouettes retain visible faces and the same foot axis.
-      obj.rotation.y=a.enemy?Math.PI/2-.22:-Math.PI/2+.22;
+      obj.rotation.y=a.enemy?Math.PI/2+.46:-Math.PI/2-.46;
       obj.scale.setScalar((a.boss?1.22:1.05)*(a.hp<=0?Math.max(.05,a.defeatedTicks/5):1));
       const rig=obj.userData.rig;
       const data=obj.userData, attacking=a.hp>0&&(Boolean(a.windup)||a.attackFlash>0);
       // The engine commits contact after three ticks. Preparation occupies the
       // first two, travel the third, then a held contact pose and recovery.
-      const phase=attacking?5-a.attackFlash+mix:5;
+      const phase=attacking?(a.windup?Math.min(3,3*(1-(a.windup.ticks-mix)/(a.windup.total||3))):5-a.attackFlash+mix):5;
       const ease=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
       const prepare=ease(phase/2),swing=ease(phase-2),recover=ease((phase-3.8)/1.2);
       const strike=attacking?swing*(1-recover):0;
@@ -250,6 +270,7 @@ export class ZhaoBattle3D {
       }
       if(obj.userData.legs)for(const [i,leg] of obj.userData.legs.entries())leg.rotation.x=this.reduced||paused||!a.moving?0:Math.sin(time*10+i*Math.PI)*.25;
       if(a.bossKind==='bulwark')for(const shield of obj.userData.shields||[])shield.visible=a.shield;
+      if(data.fuse)data.fuse.visible=Boolean(a.windup);
       // Cancel the parent's yaw before matching the camera. Both the track
       // and fill stay screen-horizontal even while the soldier faces left.
       data.healthBar.quaternion.copy(obj.quaternion).invert().multiply(this.camera.quaternion);
@@ -263,17 +284,19 @@ export class ZhaoBattle3D {
     for(const f of battle.effects){
       effectIds.add(f.id);let obj=this.fx.get(f.id);
       if(!obj){obj=this.impact(f);this.scene.add(obj);this.fx.set(f.id,obj);}
-      const age=6-f.ttl+mix,flight=Math.min(1,Math.max(0,age-2));
-      const x=f.kind==='arrow'?f.fromX+(f.x-f.fromX)*flight:f.kind==='attack'?(f.fromX+f.x)/2:f.x;
+      const duration=f.flight||3,age=(f.flight?f.flight+3:6)-f.ttl+mix,flight=Math.min(1,Math.max(0,age-(duration-1)));
+      const projectile=f.kind==='arrow'||f.kind==='bomb';
+      const x=projectile?f.fromX+(f.x-f.fromX)*flight:f.kind==='attack'?(f.fromX+f.x)/2:f.x;
       const targetZ=f.targetId==null?.35:(f.targetId%5-2)*.27;
       const sourceZ=f.sourceId==null?targetZ:(f.sourceId%5-2)*.27;
-      const z=f.kind==='arrow'?sourceZ+(targetZ-sourceZ)*flight:targetZ;
+      const z=projectile?sourceZ+(targetZ-sourceZ)*flight:targetZ;
       obj.position.set(worldX(x),1.05,z+.3);obj.quaternion.copy(this.camera.quaternion);
       obj.visible=f.kind!=='charge'&&(f.kind!=='attack'||(!this.reduced&&age>=2&&age<3.7));
       const life=f.kind==='defeat'?8:6,progress=Math.max(0,(life-f.ttl+mix)/life);
       const power=f.strong?1.35:1;
       obj.scale.setScalar(f.kind==='arrow'?1:power*(this.reduced?.65:Math.max(.05,1-progress*.8)));
-      if(f.kind==='arrow'){obj.visible=age>=2&&age<=3;obj.rotation.z=f.enemy?Math.PI:0;}
+      if(projectile){obj.visible=age>=duration-1&&age<=duration;obj.rotation.z=f.enemy?Math.PI:0;if(f.kind==='bomb')obj.position.y+=Math.sin(flight*Math.PI)*.7;}
+      if(f.kind==='blast'||f.kind==='rally')obj.scale.setScalar(this.reduced?.8:.5+progress*1.7);
       if(f.kind==='attack'){obj.rotation.z=f.enemy?Math.PI:0;obj.scale.setScalar(.8);}
       for(const m of obj.children)if(m.userData.sparkAngle!=null){
         const a=m.userData.sparkAngle,spread=this.reduced?.2:.18+progress*(f.kind==='defeat'?.9:.6);

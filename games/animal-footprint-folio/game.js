@@ -105,6 +105,7 @@
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     syncSharedSettingsIds();
+    window.WeightPlayBattleCanvas?.sync?.();
     requestAnimationFrame(syncSharedSettingsIds);
   }
   function applyCopy() {
@@ -114,6 +115,7 @@
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     $("#locale")?.setAttribute("aria-label", t("language"));
     document.querySelector(".wp-shell-settings-button")?.setAttribute("aria-label", t("settings"));
+    $("#battleBack")?.setAttribute("aria-label", t("back"));
     $(".poster").setAttribute("alt", t("coverAlt"));
     renderRecord();
     renderResult();
@@ -238,7 +240,7 @@
   }
   function start() {
     state.record = 0; state.solved = 0; state.selected = null; state.accepted = false; state.result = false;
-    setScreen("battle"); renderRecord(); renderResult(); track("footprint_folio_start");
+    setScreen("battle"); renderRecord(); renderResult(); window.WeightPlayBattleCanvas?.sync?.(); track("footprint_folio_start");
   }
   function home() { state.result = false; setScreen("main"); applyCopy(); track("footprint_folio_home"); }
 

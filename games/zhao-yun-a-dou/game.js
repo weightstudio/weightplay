@@ -30,7 +30,11 @@
   const interfaceValidatorRun = new URLSearchParams(location.search).get("qa") === "interface-validator";
   const unitTypes = Object.keys(data.unitTypes);
   let locale = getInitialLocale();
+  let storageFailed = false;
+  const army = window.ZhaoArmy;
   let progress = loadProgress();
+  let stagePanel = "stages";
+  let recentDraws = [];
   // Local-only acceptance entry: normal Stage controls, real rules, no save writes.
   const qaStage = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)
     && new URLSearchParams(location.search).get('qa')==='zhao-v27'
@@ -47,7 +51,7 @@
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const push = window.ZhaoPush;
   let audioContext = null, impactNoise = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v36", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v37", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -145,7 +149,7 @@
   }
 
   function safeSet(key, value) {
-    try { window.localStorage.setItem(key, value); } catch (_) {}
+    try { window.localStorage.setItem(key, value); } catch (_) { storageFailed = true; }
   }
 
   function emitMeasurementEvent(name, detail) {
@@ -153,7 +157,7 @@
   }
 
   function loadProgress() {
-    const fallback = { unlocked: 1, stars: Array(30).fill(0), bestTimes: Array(30).fill(null), tutorialSeen: false, talents: [] };
+    const fallback = { unlocked: 1, stars: Array(30).fill(0), bestTimes: Array(30).fill(null), tutorialSeen: false, talents: [], army: army.normalize(null) };
     try {
       const parsed = JSON.parse(safeGet(saveKey) || "null");
       if (!parsed) return fallback;
@@ -163,6 +167,7 @@
         bestTimes: Array.from({length:30},(_,i)=>Number.isFinite(parsed.bestTimes?.[i]) && parsed.bestTimes[i]>0 ? parsed.bestTimes[i] : null),
         tutorialSeen: Boolean(parsed.tutorialSeen),
         talents: window.ZhaoTalents.normalize(parsed.talents, parsed.stars),
+        army: army.normalize(parsed.army),
       };
     } catch (_) {
       return fallback;
@@ -285,6 +290,7 @@
     battle = null;
     stageIndex = Math.max(0, Math.min(data.levels.length - 1, progress.unlocked - 1));
     showScreen("stage");
+    switchStagePanel("stages");
     renderStages();
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
   }
@@ -303,7 +309,7 @@
   }
 
   function renderStages() {
-    document.getElementById('talentsOpen').textContent=t('talents')+' · '+(talents.points(progress.stars)-(progress.talents||[]).length);
+    document.getElementById('talentsOpen').textContent=t('talents');
     const cleared = progress.stars.filter(Boolean).length;
     el.progress.textContent = t("stageProgress") + ": " + cleared + " / " + data.levels.length;
     el.stageGrid.innerHTML = "";
@@ -328,6 +334,9 @@
       });
       el.stageGrid.appendChild(card);
     });
+    renderEnemyIntel();
+    if(stagePanel === "army") renderArmy();
+    if(stagePanel === "talents") renderTalents();
   }
 
   function startBattle(index, options) {
@@ -356,7 +365,75 @@
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 
-  function createBattle(level) { return push.create(level, progress.talents || []); }
+  function switchStagePanel(name) {
+    stagePanel=name;
+    document.getElementById('stageContent').dataset.panel=name;
+    for(const [key,panel,tab] of [['stages','stagesPanel','stagesOpen'],['army','armyPanel','armyOpen'],['talents','talentPanel','talentsOpen']]){
+      document.getElementById(panel).hidden=key!==name;
+      const button=document.getElementById(tab);
+      button.setAttribute('aria-selected',String(key===name));button.setAttribute('aria-pressed',String(key===name));
+      if(key===name)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+    }
+    if(name==='army')renderArmy();
+    if(name==='talents')renderTalents();
+    if(name==='stages')window.dispatchEvent(new CustomEvent('weightplay:stage-sync'));
+  }
+
+  const enemyKeys={soldier:'enemySoldier',shield:'enemyShield',raider:'enemyRaider',flanker:'enemyFlanker',medic:'enemyMedic',bomber:'enemyBomber',drummer:'enemyDrummer',arbalest:'enemyArbalest'};
+  function renderEnemyIntel() {
+    const level=data.levels[Math.max(0,progress.unlocked-1)];
+    const node=document.getElementById('enemyIntel');node.replaceChildren();
+    const heading=document.createElement('strong');heading.textContent=stageName(level)+' · '+t('enemyIntel');node.append(heading);
+    const list=document.createElement('p');list.textContent=[...new Set(level.roster)].map(kind=>t(enemyKeys[kind])).join(' · ');node.append(list);
+    const hint=document.createElement('p');hint.textContent=level.roster.includes('arbalest')?t('enemyBoltHelp'):level.roster.includes('drummer')?t('enemyDrumHelp'):level.roster.includes('bomber')?t('enemyBombHelp'):t('pushTip');node.append(hint);
+  }
+
+  function cardLabel(id) {const card=army.card(id);return t(['common','rare','epic'][card.rarity])+' · '+unitLabel({type:card.role});}
+  function resourceArt(kind) {
+    const image=document.createElement('img');image.src='/games/zhao-yun-a-dou/assets/zhao-yun-a-dou-'+kind+'-v37.png';image.alt='';image.width=24;image.height=24;image.className='army-resource-art';return image;
+  }
+  function renderArmy() {
+    const collection=progress.army;
+    const wallet=document.getElementById('armyWallet');wallet.replaceChildren();
+    for(const [kind,key,value] of [['recruit-seal','seals',collection.seals],['stardust','dust',collection.dust+'/20']]){
+      const counter=document.createElement('span');counter.append(resourceArt(kind),document.createTextNode(t(key)+' '+value));wallet.append(counter);
+    }
+    for(const id of ['drawOne','drawFive']){const button=document.getElementById(id);button.replaceChildren(resourceArt('recruit-seal'),document.createTextNode(t(id)));}
+    document.getElementById('armyPity').textContent=t('armyPity',{rare:10-collection.rarePity,epic:30-collection.epicPity});
+    document.getElementById('drawOne').disabled=collection.seals<1;
+    document.getElementById('drawFive').disabled=collection.seals<5;
+    const results=document.getElementById('drawResults');results.replaceChildren();
+    for(const result of recentDraws){
+      const row=document.createElement('div');row.className='draw-result unit-type-'+army.card(result.id).role;row.dataset.rarity=result.rarity;
+      const art=document.createElement('span');art.className='army-art';art.setAttribute('aria-hidden','true');
+      const text=document.createElement('span');text.textContent=cardLabel(result.id)+' '+result.stars+'★ · '+t(result.newCard?'newCard':result.promoted?'promotion':result.dust?'maxCard':'duplicate')+(result.dust?' +'+result.dust+' '+t('dust'):'')+(result.autoEquipped?' · '+t('equipped'):'');
+      row.append(art,text);results.append(row);
+    }
+    const grid=document.getElementById('armyCards');grid.replaceChildren();
+    for(const card of army.cards){
+      const count=collection.owned[card.id],stat=army.stats(collection,card.id),selected=collection.equipped[card.role]===card.id;
+      const item=document.createElement('article');item.className='army-card unit-type-'+card.role;item.dataset.rarity=card.rarity;item.dataset.card=card.id;
+      item.classList.toggle('is-equipped',selected);item.classList.toggle('is-unowned',!count);
+      const art=document.createElement('span');art.className='army-art';art.setAttribute('aria-hidden','true');
+      const name=document.createElement('strong');name.textContent=cardLabel(card.id);
+      const star=document.createElement('span');star.className='army-stars';star.textContent=count?'★'.repeat(stat.stars)+'☆'.repeat(5-stat.stars)+' · '+(stat.stars===5?t('maxCard'):count+'/'+army.thresholds[stat.stars]):t('unowned');
+      const trait=document.createElement('p');trait.textContent=card.trait?t('trait_'+card.trait):t('role_'+card.role);
+      const bonus=document.createElement('small');bonus.textContent=t('armyBonus',{hp:Math.round((stat.hp-1)*100),attack:Math.round((stat.damage-1)*100)});
+      const button=document.createElement('button');button.type='button';button.dataset.equip=card.id;button.textContent=t(selected?'equipped':'equip');button.disabled=!count||selected;button.setAttribute('aria-label',t('equip')+' '+cardLabel(card.id));
+      button.addEventListener('click',()=>{if(army.equip(collection,card.id)){saveProgress();renderArmy();document.querySelector('[data-card="'+card.id+'"]').focus();}});
+      item.tabIndex=-1;item.append(art,name,star,trait,bonus,button);grid.append(item);
+    }
+    const warning=document.getElementById('saveWarning');warning.hidden=!storageFailed;warning.textContent=t('armySavedError');
+  }
+
+  function drawCards(count) {
+    if(battle||stagePanel!=='army'||progress.army.seals<count)return;
+    recentDraws=[];
+    for(let i=0;i<count;i++)recentDraws.push(army.draw(progress.army));
+    saveProgress();sound(recentDraws.some(result=>result.rarity===2||result.promoted)?'charge':'merge');renderArmy();
+  }
+
+  function createBattle(level) { return push.create(level, progress.talents || [], army.loadout(progress.army)); }
 
   function startLoop() {
     stopLoop();
@@ -443,6 +520,7 @@
     battle.stars = stars;
     battle.seconds = seconds;
     if (result === "win") {
+      battle.sealReward = army.reward(progress.army, battle.level, !progress.stars[stageIndex]);
       progress.stars[stageIndex] = Math.max(progress.stars[stageIndex], stars);
       progress.unlocked = Math.max(progress.unlocked, Math.min(data.levels.length, stageIndex + 2));
       progress.bestTimes[stageIndex]=Math.min(progress.bestTimes[stageIndex]||Infinity,seconds);
@@ -452,6 +530,9 @@
     el.resultEyebrow.textContent = result === "win" ? t("win") : t("lose");
     el.resultTitle.textContent = result === "win" ? t("win") : t("lose");
     el.resultBody.textContent = result === "win" ? t("winBody") : t("loseBody");
+    const reward=document.getElementById("resultReward");
+    reward.replaceChildren(document.createTextNode(storageFailed ? t("armySavedError") : result === "win" ? t("armyReward", {n:battle.sealReward}) : t("armyEmpty")));
+    if(result==='win'&&!storageFailed)reward.prepend(resourceArt('recruit-seal'));
     const replayGoalKey = result === "win"
       ? (stars >= 3 ? "resultReplayGoalThree" : "resultReplayGoalStandard")
       : "resultReplayGoalLoss";
@@ -480,6 +561,8 @@
     battle.bossLabel = level.bossKind ? t("boss_" + level.bossKind) : "";
     el.stageName.textContent = stageName(level);
     el.remaining.textContent = t('wave') + ' ' + battle.wave + ' / 3';
+    const battleHint=level.roster.includes('arbalest')?t('enemyBoltHelp'):level.roster.includes('drummer')?t('enemyDrumHelp'):level.roster.includes('bomber')?t('enemyBombHelp'):t('pushTip');
+    document.querySelector('#tutorial [data-t="tutorialDefend"]').textContent=t('chargeAuto')+' '+battleHint;
     el.buns.textContent = battle.buns + ' / 30';
     for (const [bar, hp, maximum, name] of [
       [el.adouHp, battle.adouHp, battle.maxAdouHp, 'allyCamp'],
@@ -495,15 +578,17 @@
     el.status.textContent = battle.status || t('pushGoal');
     el.pressureCue.textContent = battle.units.filter(u=>u.hp>0).length>=12 ? t('pushFull') : t('rule_' + level.rule);
     const dock = document.getElementById('deployDock');
-    if (dock.dataset.locale !== locale) {
-      dock.dataset.locale=locale; dock.replaceChildren();
+    const dockKey=locale+JSON.stringify(battle.army);
+    if (dock.dataset.locale !== dockKey) {
+      dock.dataset.locale=dockKey; dock.replaceChildren();
       for (const type of unitTypes) {
         const button=document.createElement('button');
         button.type='button';button.dataset.deploy=type;button.className='deploy-card unit-type-'+type;
         if (type === 'blade') button.setAttribute('data-wp-primary-action','');
         button.innerHTML='<span class="deploy-art" aria-hidden="true"></span><strong></strong><small></small><span class="deploy-cost"></span>';
-        button.querySelector('strong').textContent=unitLabel({type,general:false});
-        button.querySelector('small').textContent=t('role_'+type);
+        button.querySelector('strong').textContent=unitLabel({type,general:false})+' '+(battle.army[type]?.stars||1)+'★';
+        button.dataset.rarity=battle.army[type]?.rarity||0;
+        button.querySelector('small').textContent=t(['common','rare','epic'][battle.army[type]?.rarity||0]);
         button.addEventListener('click',()=>recruit(type));dock.append(button);
       }
     }
@@ -587,7 +672,7 @@
 
   function closeDialogs() {
 
-    document.getElementById("talentDialog").close();
+    document.getElementById("talentDialog")?.close();
     [el.tutorial, el.leaveBattle, el.result].forEach(function (dialog) {
       if (dialog && dialog.open) (__wpNotifyMeasurement(), dialog.close());
     });
@@ -645,9 +730,14 @@
     }
     document.getElementById('talentReset').disabled=locked||!picked.length;
   }
-  function openTalents(){renderTalents();document.getElementById('talentDialog').showModal();}
+  function openTalents(){switchStagePanel('talents');}
   document.getElementById('talentsOpen').addEventListener('click',openTalents);
-  document.getElementById('talentClose').addEventListener('click',()=>document.getElementById('talentDialog').close());
+  document.getElementById('talentClose').addEventListener('click',()=>switchStagePanel('stages'));
+  document.getElementById('armyOpen').addEventListener('click',()=>switchStagePanel('army'));
+  document.getElementById('stagesOpen').addEventListener('click',()=>switchStagePanel('stages'));
+  document.getElementById('drawOne').addEventListener('click',()=>drawCards(1));
+  document.getElementById('drawFive').addEventListener('click',()=>drawCards(5));
+  document.getElementById('talentPanel').append(...document.getElementById('talentDialog').children);
   document.getElementById('talentReset').addEventListener('click',()=>{
     if(document.body.dataset.screen==='battle')return;
     progress.talents=[];saveProgress();renderTalents();
@@ -691,6 +781,7 @@
     if (event.key === "Escape" && el.leaveBattle.open) (__wpNotifyMeasurement(), el.leaveBattle.close());
   });
 
+  saveProgress();
   updateStaticLocale();
   frame = window.mountZhaoFrame();
   showScreen("main");
@@ -705,6 +796,7 @@
         screen: document.body.getAttribute("data-screen"),
         stageIndex: stageIndex + 1,
         unlocked: progress.unlocked,
+        army: JSON.parse(JSON.stringify(progress.army)), stagePanel,
         result: battle && battle.result,
         commandHp: battle && battle.commandHp,
         adouHp: battle && battle.adouHp,
@@ -712,7 +804,7 @@
         wave:battle?.wave, rule:battle?.level.rule, commandLane:battle?.commandLane, cooldown:battle?.skillsUsed.horse||0, ticks:battle?.ticks, bestTimes:progress.bestTimes,
         enemyStates:battle?.enemies.map(e=>({id:e.id,kind:e.kind,bossKind:e.bossKind,hp:e.hp,x:e.x,lane:e.lane,position:e.position,age:e.age,shield:e.shield,telegraph:e.telegraph,stun:e.stun})),
         enemies: battle ? battle.enemies.length : 0,
-        units: battle ? battle.units.map(function (unit) { return unit && { type: unit.type, level: unit.level, general: unit.general, x:unit.x, hp:unit.hp, attackCooldown:unit.attackCooldown }; }) : [],
+        units: battle ? battle.units.map(function (unit) { return unit && { type: unit.type, level: unit.level, rarity:unit.rarity, trait:unit.trait, cardId:unit.cardId, damage:unit.damage, maxHp:unit.maxHp, general: unit.general, x:unit.x, hp:unit.hp, attackCooldown:unit.attackCooldown }; }) : [],
       };
     },
     enterStage: showStage,

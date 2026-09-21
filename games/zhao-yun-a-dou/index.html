@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260918-ui-fix1">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260918-ui-fix1">
-  <link rel="stylesheet" href="frame-content.css?v=20260921-zhao-v36">
+  <link rel="stylesheet" href="frame-content.css?v=20260921-zhao-v37">
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
   <div id="gameFrame" data-wp-frame-root>
@@ -58,17 +58,22 @@
       <h2 data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</h2>
       <span class="scene-utility" aria-hidden="true"></span>
     </header>
-    <div id="stageContent">
+    <div id="stageContent" data-panel="stages">
+    <div id="stagesPanel">
     <section class="stage-intro">
       <p class="eyebrow" data-t="stageTitle">Choose a mission</p>
       <p id="progress" class="stage-progress"></p>
     </section>
     <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-t-aria="stageList" aria-label="Stage list"></section>
+    <aside id="enemyIntel" class="enemy-intel"></aside>
+    </div>
+    <section id="armyPanel" class="stage-management" hidden aria-labelledby="armyTitle"><div class="army-summary"><strong id="armyTitle" data-t="army">Army</strong><span id="armyWallet"></span></div><div class="army-recruit"><button id="drawOne" data-t="drawOne">Recruit · 1</button><button id="drawFive" data-t="drawFive">Recruit ×5 · 5</button></div><p id="armyPity"></p><details><summary><span data-t="common">Common</span> 72% · <span data-t="rare">Rare</span> 24% · <span data-t="epic">Epic</span> 4%</summary><p data-t="armyOdds"></p><p data-t="armyStars"></p><p data-t="armyAuto"></p></details><div id="drawResults" class="draw-results" role="status" aria-live="polite"></div><p data-t="armyHelp"></p><div id="armyCards" class="army-cards"></div><p id="saveWarning" role="status" hidden></p></section>
+    <section id="talentPanel" class="stage-management" hidden></section>
     </div>
     <nav class="stage-tabs" role="tablist" data-wp-frame-nav data-t-aria="stageTabs" aria-label="Stage navigation">
-      <button id="talentsOpen" type="button" data-t="talents">Talents</button>
-      <button type="button" role="tab" data-wp-frame-action="tab" aria-current="page" aria-pressed="true" data-t="stages">Stages</button>
-      <span aria-hidden="true"></span>
+      <button id="armyOpen" type="button" role="tab" data-wp-frame-action="tab" aria-selected="false" aria-controls="armyPanel" data-t="army">Army</button>
+      <button id="stagesOpen" type="button" role="tab" data-wp-frame-action="tab" aria-current="page" aria-selected="true" aria-controls="stagesPanel" aria-pressed="true" data-t="stages">Stages</button>
+      <button id="talentsOpen" type="button" role="tab" data-wp-frame-action="tab" aria-selected="false" aria-controls="talentPanel" data-t="talents">Talents</button>
     </nav>
   </main>
 
@@ -131,7 +136,7 @@
   <dialog id="result" class="game-dialog result-dialog" aria-labelledby="resultTitle">
     <p id="resultEyebrow" class="eyebrow"></p>
     <h2 id="resultTitle"></h2>
-    <p id="resultBody"></p>
+    <p id="resultBody"></p><p id="resultReward"></p>
     <p id="resultReplayGoal" class="result-replay-goal"></p>
     <div class="result-stats"><span data-t="stars">Stars</span><strong id="resultStars"></strong><span data-t="time">Time</span><strong id="resultTime"></strong></div>
     <div class="result-actions"><button id="resultStages" data-t="stages">Stages</button><button id="next" class="primary" data-t="nextStage">Next stage</button><button id="retry" data-t="replay">Replay</button></div>
@@ -144,21 +149,23 @@
   <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260826-game-funnel"></script>
-  <script src="levels.js?v=20260921-zhao-v36"></script>
-  <script src="locales.js?v=20260921-zhao-v36"></script>
-  <script src="guide-copy.js?v=20260921-zhao-v36"></script>
+  <script src="levels.js?v=20260921-zhao-v37"></script>
+  <script src="locales.js?v=20260921-zhao-v37"></script>
+  <script src="guide-copy.js?v=20260921-zhao-v37"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260918-ui-fix1"></script>
   <script src="frame.js?v=20260918-ui-fix1"></script>
-  <script src="talents.js?v=20260921-zhao-v36"></script>
-  <script src="talent-copy.js?v=20260921-zhao-v36"></script>
-  <script src="push-combat.js?v=20260921-zhao-v36"></script>
-  <script src="push-copy.js?v=20260921-zhao-v36"></script>
-  <script src="game.js?v=20260921-zhao-v36"></script>
-  <script src="analytics-ownership.js?v=20260921-zhao-v36"></script>
+  <script src="talents.js?v=20260921-zhao-v37"></script>
+  <script src="talent-copy.js?v=20260921-zhao-v37"></script>
+  <script src="push-combat.js?v=20260921-zhao-v37"></script>
+  <script src="push-copy.js?v=20260921-zhao-v37"></script>
+  <script src="army.js?v=20260921-zhao-v37"></script>
+  <script src="army-copy.js?v=20260921-zhao-v37"></script>
+  <script src="game.js?v=20260921-zhao-v37"></script>
+  <script src="analytics-ownership.js?v=20260921-zhao-v37"></script>
 
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title"></script>
-  <script src="public-guide.js?v=20260921-zhao-v36"></script>
+  <script src="public-guide.js?v=20260921-zhao-v37"></script>
 </body>
 </html>
