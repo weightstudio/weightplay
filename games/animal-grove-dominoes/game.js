@@ -16,7 +16,7 @@
   const {campaignGuide}=await import('./campaign-guide.mjs?v=20260909-grove-campaign-v6');
   for(const [locale,guide] of Object.entries(campaignGuide))Object.assign(locales[locale],guide);
   const {PROGRESS_KEY,normalizeProgress,completeStage}=await import('./progress.mjs?v=20260909-grove-campaign-v6');
-  const {createStageView}=await import('./stage-view.mjs?v=20260909-grove-campaign-v6');
+  const {createStageView}=await import('./stage-view.mjs?v=20260921-grove-dominoes-v6-safe-height-guide-contract');
   const {createHabitatArt}=await import('./habitat-art.mjs?v=20260909-grove-campaign-v6');
   const rounds=campaign.map(p=>({...p,tiles:p.tiles.map(tile=>Object.assign([tile.from,tile.to],tile))}));
   let stageView,progress,flipMode=false,fitBattle=()=>{},completionReceipt=null;
@@ -201,7 +201,9 @@
     frame.append(document.querySelector('#battleView .logical-shell'),$('resultView'));canvas.append(frame);
     fitBattle=()=>{
       if($('battleView').hidden)return;
-      const width=Math.min(920,document.documentElement.clientWidth),height=Math.max(1,(window.visualViewport?.height||innerHeight)-56);
+      const width=Math.min(920,document.documentElement.clientWidth);
+      const reserveHeight=Number(window.WeightPlayLayout?.reserveHeight)||0;
+      const height=Math.max(1,(window.visualViewport?.height||innerHeight)-reserveHeight);
       const wide=width>=680&&width>height*1.3;
       // Recompose route and rack tracks on viewport changes; domino, label
       // and action dimensions stay identical in both layouts.

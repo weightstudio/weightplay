@@ -210,7 +210,10 @@ body:not([data-screen="main"]) #guideScreen { display: none; }
   #battleScreen .mission-row { margin: 4px 0; }
   #battleScreen .tangle-board { padding: 8px; }
   #battleScreen .board-labels { padding-bottom: 4px; }
-  #battleScreen .board-diagram { height: 184px; min-height: 184px; gap: 2px; padding: 2px 0; }
+  /* renderBoard keeps a 292px inline minimum for normal boards; the short
+     landscape contract must override that inline minimum so all four 44px
+     endpoint targets stay inside the owning Canvas. */
+  #battleScreen .board-diagram { height: 184px; min-height: 184px !important; gap: 2px; padding: 2px 0; }
   #battleScreen .board-row { grid-template-columns: minmax(116px, 1fr) 28px minmax(116px, 1fr); gap: 4px; min-height: 44px; }
   #battleScreen .endpoint-card, #battleScreen .shelter-card { min-height: 44px; padding: 4px 6px; font-size: .8rem; }
   #battleScreen .paw-chip { flex-basis: 24px; width: 24px; height: 24px; font-size: .8rem; }

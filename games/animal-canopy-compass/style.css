@@ -336,7 +336,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-canopy-compass"]
   --wp-ui-radius:24px;
 }
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-canopy-compass"] .game-page-info .game-info-section {
-  --wp-ui-radius:16px;
+  --wp-ui-radius:24px;
 }
 @media (min-width:700px) and (max-height:560px) and (orientation:landscape) {
   body[data-wp-game-id="animal-canopy-compass"] .wp-standard-main-composition {

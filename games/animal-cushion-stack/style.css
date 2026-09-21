@@ -84,6 +84,13 @@ body[data-wp-game-id="animal-cushion-stack"] .wp-generated-main-title {
   pointer-events:none !important;
 }
 
+/* Interface 7 Guide contract: retain Cushion Stack's authored 26px visual
+   while exposing the shared radius token used by the governed Main shell. */
+body[data-wp-game-id="animal-cushion-stack"] .guide-card {
+  --wp-ui-radius: 26px !important;
+  border-radius: var(--wp-ui-radius) !important;
+}
+
 /* The authored Settings trigger mirrors the shared shell popover for the
    maintained legacy path. Keep its aria/visibility contract for existing
    smoke checks, but collapse the retired duplicate panel so only one real

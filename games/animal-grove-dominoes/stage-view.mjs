@@ -12,7 +12,8 @@ export function createStageView({campaign,copy,locale,progress,activate,home,sou
  root.querySelector('nav button').addEventListener('click',()=>controller?.center(progress().unlocked-1),{signal:lifecycle.signal});
  const fit=()=>{
    if(root.hidden)return;
-   const height=Math.max(1,(window.visualViewport?.height||innerHeight)-56),width=Math.min(920,document.documentElement.clientWidth);
+   const reserveHeight=Number(window.WeightPlayLayout?.reserveHeight)||0;
+   const height=Math.max(1,(window.visualViewport?.height||innerHeight)-reserveHeight),width=Math.min(920,document.documentElement.clientWidth);
    const wide=width>=680&&width>height*1.3;
    canvas.dataset.headerLayout=width>=700||wide?'single':'stacked';
    const scale=Math.min(width/(wide?740:390),height/(wide?354:520));

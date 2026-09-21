@@ -178,12 +178,12 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"]
   box-shadow:var(--shadow) !important;
 }
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .guide-card .game-info-section {
-  --wp-ui-radius:16px;
+  --wp-ui-radius:24px;
   display:grid !important;
   gap:10px !important;
   padding:16px !important;
   border:1px solid #d8e0ee !important;
-  border-radius:16px !important;
+  border-radius:var(--wp-ui-radius) !important;
   background:#fff !important;
 }
 
