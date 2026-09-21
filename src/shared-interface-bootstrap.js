@@ -12,9 +12,9 @@
   const root = document.documentElement;
   if (root.dataset.wpSharedInterfaceBootstrapped === "7") return;
 
-  // site-config.js is also used by the lobby and utility pages.  Restrict the
-  // rollout to canonical/localized game routes so the lobby keeps its own
-  // entry shell while consuming the same token source where appropriate.
+  // site-config.js is also used by lobby and utility pages. Restrict the
+  // complete runtime and token delivery to canonical/localized game routes;
+  // lobby presentation has a separate owner and does not consume this frame.
   const isGameRoute = /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(location.pathname);
   if (!isGameRoute) return;
 

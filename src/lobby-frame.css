@@ -1,0 +1,199 @@
+/* Lobby-owned controls. Keep this file independent from the game frame/theme. */
+body.general-lobby-page {
+  --lobby-frame-background: #0b202b;
+  --lobby-frame-surface: #14323d;
+  --lobby-frame-header: #163440;
+  --lobby-frame-line: #597775;
+  --lobby-frame-text: #f6f2dd;
+  --lobby-frame-muted: #a4bdb9;
+  --lobby-frame-gold: #edb74e;
+  --lobby-frame-active: #2c705d;
+  --lobby-frame-highlight: #41606b;
+  --lobby-frame-shadow: #061820;
+}
+
+body.general-lobby-page .lobby-preferences {
+  position: relative;
+  z-index: 110;
+  flex: 0 0 48px;
+  width: 48px;
+  margin-left: auto;
+  margin-right: 0;
+  direction: ltr;
+}
+
+body.general-lobby-page .lobby-settings-button {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 2px solid var(--lobby-frame-line);
+  border-radius: 3px;
+  background: linear-gradient(#244a55, #163440);
+  color: var(--lobby-frame-text);
+  box-shadow: inset 0 2px 0 var(--lobby-frame-highlight), 0 3px 0 var(--lobby-frame-shadow);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+body.general-lobby-page .lobby-settings-icon {
+  display: block;
+  width: 25px;
+  height: 25px;
+  fill: currentColor;
+}
+
+body.general-lobby-page .lobby-settings-popover {
+  position: absolute;
+  inset: 56px 0 auto auto;
+  box-sizing: border-box;
+  width: min(280px, calc(100vw - 40px));
+  min-width: 0;
+  max-height: calc(100dvh - 100px);
+  overflow: auto;
+  padding: 12px;
+  border: 2px solid var(--lobby-frame-line);
+  border-radius: 3px;
+  background: var(--lobby-frame-surface);
+  color: var(--lobby-frame-text);
+  box-shadow: 0 5px 0 var(--lobby-frame-shadow);
+  direction: initial;
+}
+
+body.general-lobby-page .lobby-settings-popover[hidden] {
+  display: none;
+}
+
+body.general-lobby-page .lobby-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 48px;
+  margin: 0;
+  padding: 0;
+}
+
+body.general-lobby-page .lobby-settings-row > span {
+  color: var(--lobby-frame-text);
+  font: 600 14px/1.3 system-ui, sans-serif;
+  white-space: nowrap;
+}
+
+body.general-lobby-page .lobby-settings-row select {
+  box-sizing: border-box;
+  width: 160px;
+  min-width: 0;
+  max-width: 65%;
+  height: 44px;
+  margin: 0;
+  padding: 0 8px;
+  border: 2px solid var(--lobby-frame-line);
+  border-radius: 3px;
+  background: var(--lobby-frame-background);
+  color: var(--lobby-frame-text);
+  color-scheme: dark;
+  font: 600 14px/1.3 system-ui, sans-serif;
+}
+
+body.general-lobby-page .lobby-settings-row option {
+  background: var(--lobby-frame-background);
+  color: var(--lobby-frame-text);
+}
+
+body.general-lobby-page .lobby-sound-toggle {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  gap: 8px;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 108px;
+  max-width: 150px;
+  height: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 6px 12px;
+  border: 2px solid var(--lobby-frame-line);
+  border-radius: 3px;
+  background: var(--lobby-frame-background);
+  color: var(--lobby-frame-text);
+  box-shadow: inset 0 1px 0 var(--lobby-frame-highlight);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+body.general-lobby-page .lobby-sound-icon {
+  display: block;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  color: var(--lobby-frame-muted);
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+body.general-lobby-page .lobby-sound-icon .lobby-sound-wave {
+  display: none;
+  fill: none;
+}
+
+body.general-lobby-page .lobby-sound-icon .lobby-sound-muted {
+  display: block;
+  fill: none;
+}
+
+body.general-lobby-page .lobby-sound-state {
+  display: block;
+  min-width: 2.5em;
+  color: var(--lobby-frame-muted);
+  font: 700 14px/1.2 system-ui, sans-serif;
+  text-align: center;
+}
+
+body.general-lobby-page .lobby-sound-toggle[aria-checked="true"] {
+  border-color: var(--lobby-frame-gold);
+  background: var(--lobby-frame-active);
+}
+
+body.general-lobby-page .lobby-sound-toggle[aria-checked="true"] .lobby-sound-wave {
+  display: block;
+}
+
+body.general-lobby-page .lobby-sound-toggle[aria-checked="true"] .lobby-sound-muted {
+  display: none;
+}
+
+body.general-lobby-page .lobby-sound-toggle[aria-checked="true"] .lobby-sound-state {
+  color: var(--lobby-frame-text);
+}
+
+body.general-lobby-page :is(.lobby-settings-button, .lobby-sound-toggle):hover {
+  filter: brightness(1.12);
+}
+
+body.general-lobby-page :is(.lobby-settings-button, .lobby-sound-toggle):active {
+  filter: brightness(.9);
+}
+
+body.general-lobby-page :is(.lobby-settings-button, .lobby-sound-toggle, .lobby-settings-row select):focus-visible {
+  outline: 3px solid var(--lobby-frame-gold);
+  outline-offset: 2px;
+}
+
+html[dir="rtl"] body.general-lobby-page .lobby-settings-popover {
+  direction: rtl;
+}
+
+@media (max-width: 360px) {
+  body.general-lobby-page .lobby-settings-popover {
+    width: min(280px, calc(100vw - 24px));
+  }
+}

@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "animal-wildwood-raid": {
+    "__localizedExact": true,
+    "en": "Wildwood Raid",
+    "zh-Hant": "荒林奇襲",
+    "zh-Hans": "荒林奇袭",
+    "ja": "荒森の冒険",
+    "ko": "야생 숲 원정",
+    "es": "Incursión del bosque",
+    "pt-BR": "Incursão na floresta",
+    "fr": "Raid de la forêt",
+    "de": "Waldexpedition",
+    "it": "Incursione nella foresta",
+    "ru": "Рейд в диком лесу",
+    "hi": "जंगली वन अभियान",
+    "ar": "غارة الغابة البرية"
+  },
   "pawaxe": {
     "__localizedExact": true,
     "en": "Axe & Ally",

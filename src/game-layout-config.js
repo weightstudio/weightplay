@@ -4,6 +4,7 @@
   if (window.WeightPlayLayout) return;
   const games = Object.freeze({
     "pawaxe": Object.freeze({ bannerAds: false }),
+    "animal-wildwood-raid": Object.freeze({ bannerAds: false }),
     "alien-defender": Object.freeze({ bannerAds: false }),
     "animal-2048": Object.freeze({ bannerAds: false }),
     "animal-abyss-diver": Object.freeze({ bannerAds: false }),

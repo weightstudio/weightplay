@@ -390,11 +390,11 @@
   });
 
   const colors = [
-    { id: "berry", labelKey: "bunny", asset: "assets/bubble-bunny-voxel-v1.png" },
-    { id: "sky", labelKey: "whale", asset: "assets/bubble-whale-voxel-v1.png" },
-    { id: "lemon", labelKey: "chick", asset: "assets/bubble-chick-voxel-v1.png" },
-    { id: "mint", labelKey: "frog", asset: "assets/bubble-frog-voxel-v1.png" },
-    { id: "grape", labelKey: "fox", asset: "assets/bubble-fox-voxel-v1.png" },
+    { id: "berry", labelKey: "bunny", asset: "../../assets/bubble-bakery/bunny-block-v1.png" },
+    { id: "sky", labelKey: "whale", asset: "../../assets/bubble-bakery/whale-block-v1.png" },
+    { id: "lemon", labelKey: "chick", asset: "../../assets/bubble-bakery/chick-block-v1.png" },
+    { id: "mint", labelKey: "frog", asset: "../../assets/bubble-bakery/frog-block-v1.png" },
+    { id: "grape", labelKey: "fox", asset: "../../assets/bubble-bakery/fox-block-v1.png" },
   ];
 
   const bakeryStage = (titleEn, titleZh, ruleEn, ruleZh, moves, palette, orders, rules = {}) => ({
@@ -811,7 +811,7 @@
         <span class="stage-stars">${starIcons(got, 3)}</span>
         <span class="stage-badge">${t(badgeKey)}</span>
         ${isLocked ? `<span class="stage-lock-requirement">${unlockRequirement}</span>` : ""}
-        ${stage.checkpoint ? `<em class="panko-check"><img src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" />${t("pankoCheck")}</em>` : ""}
+        ${stage.checkpoint ? `<em class="panko-check"><img src="../../assets/bubble-bakery/panko-block-v1.png" alt="" />${t("pankoCheck")}</em>` : ""}
       `;
       if (isLocked) {
         const comma = locale === "zh-Hant" ? "，" : ", ";
@@ -1601,8 +1601,8 @@
 
   function initLoading() {
     const assets = [
-      "../../assets/bubble-bakery-cover.webp",
-      "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
+      "../../assets/bubble-bakery/cover-block-v1.png",
+      "../../assets/bubble-bakery/panko-block-v1.png",
       "assets/order-target-ring.png",
       ...colors.map((item) => item.asset),
     ];

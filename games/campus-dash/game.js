@@ -407,13 +407,13 @@
   }
 
   const sprites = {
-    runway: loadImage("../../assets/campus-dash-savanna-runway.jpg"),
-    hero: loadImage("../../assets/campus-dash-spark-fox-runner.png"),
-    coin: loadImage("../../assets/campus-dash-coin-premium.webp"),
-    cone: loadImage("../../assets/campus-dash-cone-premium.webp"),
-    bag: loadImage("../../assets/campus-dash-bag-premium.webp"),
-    books: loadImage("../../assets/campus-dash-books-premium.webp"),
-    puddle: loadImage("../../assets/campus-dash-puddle-premium.webp"),
+    runway: loadImage("../../assets/campus-dash/runway-block-v1.png"),
+    hero: loadImage("../../assets/campus-dash/runner-block-v1.png"),
+    coin: loadImage("../../assets/campus-dash/coin-block-v1.png"),
+    cone: loadImage("../../assets/campus-dash/cone-block-v1.png"),
+    bag: loadImage("../../assets/campus-dash/bag-block-v1.png"),
+    books: loadImage("../../assets/campus-dash/books-block-v1.png"),
+    puddle: loadImage("../../assets/campus-dash/puddle-block-v1.png"),
   };
 
   let state = makeState();

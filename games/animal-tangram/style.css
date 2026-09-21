@@ -46,6 +46,8 @@ button { cursor: pointer; }
 .eyebrow { margin: 0; color: #277663; font-size: .75rem; font-weight: 900; letter-spacing: .14em; }
 .hero h1 { font-size: clamp(2.7rem, 7vw, 5rem); line-height: .94; letter-spacing: -.05em; margin: .15em 0; }
 .hero p { line-height: 1.55; }
+.tangram-coach { display: flex; align-items: center; gap: 10px; margin: 14px 0 16px; padding: 9px 12px; border: 1px solid #a6cbb4; border-radius: 16px; background: #f8fff0d9; font-size: .78rem; font-weight: 850; line-height: 1.35; }
+.tangram-coach img { width: 66px; height: 66px; object-fit: contain; flex: 0 0 auto; }
 .primary { border: 0; border-radius: 15px; padding: 14px 24px; background: linear-gradient(135deg, #287b68, #155d52); color: #fff; font-weight: 900; box-shadow: 0 8px 20px #1c5b4a33; }
 .hero details { margin-top: 16px; border-top: 1px solid #a6cbb4; padding-top: 10px; }
 .hero summary { font-weight: 900; }
@@ -160,13 +162,13 @@ button { cursor: pointer; }
 .medium { width: 18%; height: 18%; }
 .small-a, .small-b, .square { width: 13%; height: 13%; }
 .parallelogram { width: 19%; height: 12%; }
-.large-a { background: url("assets/piece-large-a.svg") center/contain no-repeat; }
-.large-b { background: url("assets/piece-large-b.svg") center/contain no-repeat; }
-.medium { background: url("assets/piece-medium.svg") center/contain no-repeat; }
-.small-a { background: url("assets/piece-small-a.svg") center/contain no-repeat; }
-.small-b { background: url("assets/piece-small-b.svg") center/contain no-repeat; }
-.square { background: url("assets/piece-square.svg") center/contain no-repeat; }
-.parallelogram { background: url("assets/piece-parallelogram.svg") center/contain no-repeat; }
+.large-a { background: url("../../assets/animal-tangram/piece-large-a-block-v1.png") center/contain no-repeat; }
+.large-b { background: url("../../assets/animal-tangram/piece-large-b-block-v1.png") center/contain no-repeat; }
+.medium { background: url("../../assets/animal-tangram/piece-medium-block-v1.png") center/contain no-repeat; }
+.small-a { background: url("../../assets/animal-tangram/piece-small-a-block-v1.png") center/contain no-repeat; }
+.small-b { background: url("../../assets/animal-tangram/piece-small-b-block-v1.png") center/contain no-repeat; }
+.square { background: url("../../assets/animal-tangram/piece-square-block-v1.png") center/contain no-repeat; }
+.parallelogram { background: url("../../assets/animal-tangram/piece-parallelogram-block-v1.png") center/contain no-repeat; }
 .target-piece { opacity: .42; filter: saturate(.85); pointer-events: none; outline: 2px dashed #173f38; outline-offset: 3px; transition: opacity .12s, filter .12s; }
 .target-piece.active-target { opacity: .78; filter: saturate(1.25) drop-shadow(0 0 8px #ffd75e); }
 .piece { z-index: 2; filter: drop-shadow(0 5px 3px #244b3d55); touch-action: none; }

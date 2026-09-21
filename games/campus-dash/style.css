@@ -1086,7 +1086,7 @@ body.dash-stage-select.weightplay-active-viewport .dash-game {
   border-radius: 18px;
   background:
     linear-gradient(rgba(4, 30, 23, 0.74), rgba(4, 25, 20, 0.94)),
-    url("../../assets/campus-dash-cover.webp") center / cover;
+    url("../../assets/campus-dash/cover-block-v1.png") center / cover;
 }
 
 .stage-panel {
@@ -1188,7 +1188,7 @@ body.dash-stage-select .stage-header.wp-stage-shell-header {
   color: #fff;
   background:
     linear-gradient(0deg, rgba(1, 12, 9, .96), rgba(3, 28, 20, .1)),
-    url("../../assets/campus-dash-savanna-runway.jpg") center / cover;
+    url("../../assets/campus-dash/runway-block-v1.png") center / cover;
   box-shadow: 0 12px 28px rgba(0,0,0,.42);
   text-align: left;
 }
@@ -1204,7 +1204,7 @@ body.dash-stage-select .stage-header.wp-stage-shell-header {
 .stage-card.is-centered:disabled {
   filter: none;
 }
-.stage-card.is-checkpoint { background-image: linear-gradient(0deg, rgba(16, 7, 2, .97), rgba(104, 54, 5, .18)), url("../../assets/campus-dash-cover.webp"); }
+.stage-card.is-checkpoint { background-image: linear-gradient(0deg, rgba(16, 7, 2, .97), rgba(104, 54, 5, .18)), url("../../assets/campus-dash/cover-block-v1.png"); }
 .stage-card:disabled { filter: grayscale(.78) brightness(.62); }
 .stage-card .stage-region { color: #a7f3d0; font-size: 11px; font-weight: 900; text-transform: uppercase; }
 .stage-card strong { font-size: 19px; line-height: 1.08; }

@@ -325,14 +325,14 @@
   });
 
   const itemIcons = {
-    fruit: "../../assets/zoo-helper-day-fruit-apple.svg",
-    water: "../../assets/zoo-helper-day-water-drop.svg",
-    brush: "../../assets/zoo-helper-day-care-brush.svg",
-    toy: "../../assets/zoo-helper-day-toy-block.svg",
-    leaf: "../../assets/zoo-helper-day-leaf-bunch.svg",
-    shower: "../../assets/zoo-helper-day-shower-head.svg",
-    fish: "../../assets/zoo-helper-day-fish-treat.svg",
-    ball: "../../assets/zoo-helper-day-play-ball.svg",
+    fruit: "../../assets/zoo-helper-day/fruit-apple-block-v1.png",
+    water: "../../assets/zoo-helper-day/water-drop-block-v1.png",
+    brush: "../../assets/zoo-helper-day/care-brush-block-v1.png",
+    toy: "../../assets/zoo-helper-day/toy-block-block-v1.png",
+    leaf: "../../assets/zoo-helper-day/leaf-bunch-block-v1.png",
+    shower: "../../assets/zoo-helper-day/shower-head-block-v1.png",
+    fish: "../../assets/zoo-helper-day/fish-treat-block-v1.png",
+    ball: "../../assets/zoo-helper-day/play-ball-block-v1.png",
   };
 
   function iconSrc(item) {
@@ -1209,7 +1209,7 @@
   }
 
   function initLoading() {
-    const assets = [...new Set(["../../assets/zoo-helper-day-cover.png", ...Object.values(animalAssets), ...Object.keys(itemIcons).map(iconSrc)])];
+    const assets = [...new Set(["../../assets/zoo-helper-day/cover-block-v1.png", ...Object.values(animalAssets), ...Object.keys(itemIcons).map(iconSrc)])];
     let loaded = 0;
     const finish = () => {
       loaded += 1;

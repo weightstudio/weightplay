@@ -71,7 +71,8 @@ h1{margin:0;font-size:clamp(2.7rem,7vw,5.4rem);line-height:.92;letter-spacing:-.
 .modal-layer[hidden]{display:none!important}
 .modal-card{width:min(440px,100%);border:0;border-radius:26px;padding:28px;text-align:center;color:var(--ink);background:#f8fff3;box-shadow:0 30px 90px #0b332e70}
 .battle{position:relative}
-.result-mark{width:138px;height:96px;margin:0 auto 15px;border-radius:22px;background:url("../../assets/animal-color-link-cover-kids-v2.webp") 45% 22%/cover no-repeat;box-shadow:0 10px 24px #153e3838}
+.color-link-keeper{display:block;width:min(100%,150px);height:150px;object-fit:contain;margin:8px auto 4px;filter:drop-shadow(0 9px 10px #153e3830)}
+.result-mark{width:138px;height:96px;margin:0 auto 15px;border-radius:22px;background:url("../../assets/animal-color-link/keeper-block-v1.png") center/contain no-repeat;box-shadow:0 10px 24px #153e3838}
 .modal-card h2{margin:.2rem 0;font-size:1.8rem}
 .result-actions,.modal-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));justify-content:center;gap:10px;margin-top:20px}
 .modal-actions{grid-template-columns:repeat(2,minmax(0,1fr))}

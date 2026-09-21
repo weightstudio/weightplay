@@ -22,8 +22,8 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "animal-carnival-claw": "/assets/interface7-redrawn/animal-carnival-claw.webp",
   "animal-chameleon-blend": "/assets/interface7-redrawn/animal-chameleon-blend.webp",
   "animal-cloudhook-courier": "/assets/interface7-redrawn/animal-cloudhook-courier.webp",
-  "animal-color-link": "/assets/interface7-redrawn/animal-color-link.webp",
-  "animal-color-springs": "/assets/interface7-redrawn/animal-color-springs.webp",
+  "animal-color-link": "/assets/animal-color-link/cover-block-v1.png",
+  "animal-color-springs": "/assets/animal-color-springs/cover-block-v1.png",
   "animal-coloring-studio": "/assets/interface7-redrawn/animal-coloring-studio.webp",
   "animal-constellation-keeper": "/assets/interface7-redrawn/animal-constellation-keeper.webp",
   "animal-costume-workshop": "/assets/interface7-redrawn/animal-costume-workshop.webp",
@@ -53,7 +53,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "animal-habitat-counts": "/assets/interface7-redrawn/animal-habitat-counts.webp",
   "animal-habitat-mahjong": "/assets/interface7-redrawn/animal-habitat-mahjong.webp",
   "animal-hero-trials": "/assets/interface7-redrawn/animal-hero-trials.webp",
-  "animal-hidden-safari": "/assets/interface7-redrawn/animal-hidden-safari.webp",
+  "animal-hidden-safari": "/assets/animal-hidden-safari/cover-block-v1.png",
   "animal-hollow-fit": "/assets/interface7-redrawn/animal-hollow-fit.webp",
   "animal-honey-shield": "/assets/interface7-redrawn/animal-honey-shield.webp",
   "animal-hoop-league": "/assets/interface7-redrawn/animal-hoop-league.webp",
@@ -111,7 +111,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "animal-story-stitch": "/assets/interface7-redrawn/animal-story-stitch.webp",
   "animal-sunbeam-garden": "/assets/interface7-redrawn/animal-sunbeam-garden.webp",
   "animal-tangle-rescue": "/assets/interface7-redrawn/animal-tangle-rescue.webp",
-  "animal-tangram": "/assets/interface7-redrawn/animal-tangram.webp",
+  "animal-tangram": "/assets/animal-tangram/cover-block-v1.png",
   "animal-tide-tally": "/assets/interface7-redrawn/animal-tide-tally.webp",
   "animal-tideglass": "/assets/interface7-redrawn/animal-tideglass.webp",
   "animal-trap-trail": "/assets/interface7-redrawn/animal-trap-trail.webp",
@@ -126,8 +126,8 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "beast-tactician": "/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp",
   "block-blast": "/assets/interface7-redrawn/block-blast.webp",
   "breakout": "/assets/interface7-redrawn/breakout.webp",
-  "bubble-bakery": "/assets/interface7-redrawn/bubble-bakery.webp",
-  "campus-dash": "/assets/interface7-redrawn/campus-dash.webp",
+  "bubble-bakery": "/assets/bubble-bakery/cover-block-v1.png",
+  "campus-dash": "/assets/campus-dash/cover-block-v1.png",
   "casino": "/assets/interface7-redrawn/casino.webp",
   "cat-color-sudoku": "/assets/interface7-redrawn/cat-color-sudoku.webp",
   "checkers": "/assets/interface7-redrawn/checkers.webp",
@@ -181,7 +181,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "wordle": "/assets/interface7-redrawn/wordle.webp",
   "yukon-solitaire": "/assets/interface7-redrawn/yukon-solitaire.webp",
   "zhao-yun-a-dou": "/assets/interface7-redrawn/zhao-yun-a-dou.webp",
-  "zoo-helper-day": "/assets/interface7-redrawn/zoo-helper-day.webp"
+  "zoo-helper-day": "/assets/zoo-helper-day/cover-block-v1.png"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/animal-dice-bastion/cover-block-v1.png": "/assets/animal-dice-bastion/cover-block-v1.png",

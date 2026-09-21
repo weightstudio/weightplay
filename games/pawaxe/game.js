@@ -163,7 +163,8 @@ function updateHud(){
     if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><progress></progress><small></small><progress class="enemy-clock" max="1"></progress>';b.onclick=()=>{if(state==='live')combat.target=combat.alive().findIndex(x=>x.uid===e.uid);};box.append(b);}
     b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.querySelector('strong').textContent=name(e);
     b.querySelector('progress').max=e.maxHp;b.querySelector('progress').value=e.hp;
-    b.querySelector('small').textContent=e.reflect>0?msg('REFLECT — no heavy','亮面 · 勿重擊'):e.opening>0?msg('COUNTER!','反擊窗口！'):e.shield>0?`${msg('Shield','盾')} ${Math.ceil(e.shield)}`:`${Math.ceil(e.hp)} / ${e.maxHp}`;
+    const protectedBySupport=e.boss&&enemies.some(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
+    b.querySelector('small').textContent=protectedBySupport?msg('Destroy support first','先擊破支援目標'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?msg('Guard to expose core','格擋後心核才會暴露'):e.reflect>0?msg('REFLECT — no heavy','亮面 · 勿重擊'):e.opening>0?msg('COUNTER!','反擊窗口！'):e.shield>0?`${msg('Shield','盾')} ${Math.ceil(e.shield)}`:`${Math.ceil(e.hp)} / ${e.maxHp}`;
     b.querySelector('.enemy-clock').value=e.warned?1-Math.max(0,e.t)/e.warn:0;
   });
   const threat=enemies.filter(e=>e.warned).sort((a,b)=>a.t-b.t)[0];

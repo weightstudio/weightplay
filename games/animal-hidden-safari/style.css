@@ -393,7 +393,7 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   border-radius: 26px;
   background:
     linear-gradient(180deg, rgba(24, 88, 62, 0.04), rgba(24, 88, 62, 0.04)),
-    url("../../assets/animal-hidden-safari-sunny-bg.webp") center / cover no-repeat,
+    url("../../assets/animal-hidden-safari/sunny-background-block-v1.png") center / cover no-repeat,
     #84d75f;
   box-shadow:
     inset 0 0 0 4px rgba(255, 255, 255, 0.24),
@@ -403,35 +403,35 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
 .scene[data-theme="river"] {
   background:
     linear-gradient(180deg, rgba(27, 99, 122, 0.02), rgba(27, 99, 122, 0.04)),
-    url("../../assets/animal-hidden-safari-river-bg.webp") center / cover no-repeat,
+    url("../../assets/animal-hidden-safari/river-background-block-v1.png") center / cover no-repeat,
     #84d75f;
 }
 
 .scene[data-theme="pond"] {
   background:
     linear-gradient(180deg, rgba(28, 118, 116, 0.02), rgba(60, 142, 89, 0.04)),
-    url("../../assets/animal-hidden-safari-pond-bg.webp") center / cover no-repeat,
+    url("../../assets/animal-hidden-safari/pond-background-block-v1.png") center / cover no-repeat,
     #86d879;
 }
 
 .scene[data-theme="sunset"] {
   background:
     linear-gradient(180deg, rgba(142, 82, 35, 0.02), rgba(92, 78, 28, 0.04)),
-    url("../../assets/animal-hidden-safari-sunset-bg.webp") center / cover no-repeat,
+    url("../../assets/animal-hidden-safari/sunset-background-block-v1.png") center / cover no-repeat,
     #f2b94e;
 }
 
 .scene[data-theme="jungle"] {
   background:
     linear-gradient(180deg, rgba(18, 75, 39, 0.04), rgba(12, 57, 31, 0.08)),
-    url("../../assets/animal-hidden-safari-jungle-bg.webp") center / cover no-repeat,
+    url("../../assets/animal-hidden-safari/jungle-background-block-v1.png") center / cover no-repeat,
     #367d49;
 }
 
 .scene[data-theme="lookout"] {
   background:
     linear-gradient(180deg, rgba(34, 98, 143, 0.02), rgba(159, 103, 34, 0.08)),
-    url("../../assets/animal-hidden-safari-lookout-bg.webp") center / cover no-repeat,
+    url("../../assets/animal-hidden-safari/lookout-background-block-v1.png") center / cover no-repeat,
     #c89948;
 }
 

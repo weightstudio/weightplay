@@ -267,16 +267,16 @@
   };
 
   const targetAssets = {
-    lion: "assets/lion-voxel-v1.png",
-    elephant: "assets/elephant-voxel-v1.png",
-    giraffe: "assets/giraffe-voxel-v1.png",
-    panda: "assets/panda-voxel-v1.png",
-    penguin: "../../assets/animal-zoo-penguin.png",
-    koala: "../../assets/tiny-weather-animal-koala.png",
-    rabbit: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
-    fox: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
-    frog: "../../assets/bubble-bakery-frog.png",
-    owl: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
+    lion: "assets/lion-block-v1.png",
+    elephant: "assets/elephant-block-v1.png",
+    giraffe: "assets/giraffe-block-v1.png",
+    panda: "assets/panda-block-v1.png",
+    penguin: "assets/penguin-block-v1.png",
+    koala: "assets/koala-block-v1.png",
+    rabbit: "assets/rabbit-block-v1.png",
+    fox: "assets/fox-block-v1.png",
+    frog: "assets/frog-block-v1.png",
+    owl: "assets/owl-block-v1.png",
   };
 
   const coverAssets = {
@@ -1188,18 +1188,18 @@
 
   function preloadGameAssets() {
     const urls = [
-      "../../assets/animal-hidden-safari-cover.webp",
-      "../../assets/animal-hidden-safari-sunny-bg.webp",
+      "../../assets/animal-hidden-safari/cover-block-v1.png",
+      "../../assets/animal-hidden-safari/sunny-background-block-v1.png",
       ...new Set(Object.values(targetAssets)),
       ...new Set(Object.values(coverAssets)),
       ...new Set(Object.values(feedbackAssets)),
     ];
     const laterScenes = [
-      "../../assets/animal-hidden-safari-river-bg.webp",
-      "../../assets/animal-hidden-safari-pond-bg.webp",
-      "../../assets/animal-hidden-safari-sunset-bg.webp",
-      "../../assets/animal-hidden-safari-jungle-bg.webp",
-      "../../assets/animal-hidden-safari-lookout-bg.webp",
+      "../../assets/animal-hidden-safari/river-background-block-v1.png",
+      "../../assets/animal-hidden-safari/pond-background-block-v1.png",
+      "../../assets/animal-hidden-safari/sunset-background-block-v1.png",
+      "../../assets/animal-hidden-safari/jungle-background-block-v1.png",
+      "../../assets/animal-hidden-safari/lookout-background-block-v1.png",
     ];
     let done = 0;
     const update = () => {

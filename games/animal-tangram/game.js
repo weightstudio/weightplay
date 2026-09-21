@@ -24,7 +24,7 @@
   const artStyle=document.createElement("style");
   artStyle.textContent=`
     .canvas{background:linear-gradient(155deg,#06192188,#06192166),url("../../assets/animal-tangram-garden-voxel-v1.png") center/cover}
-    .result-mark{width:132px;height:96px;border-radius:22px;margin:0 auto 12px;background:url("../../assets/animal-tangram-cover-kids-v2.webp") 50% 24%/cover no-repeat;color:transparent;box-shadow:0 10px 24px #173f3838}
+    .result-mark{width:132px;height:96px;border-radius:22px;margin:0 auto 12px;background:url("../../assets/animal-tangram/panko-block-v1.png") center/contain no-repeat;color:transparent;box-shadow:0 10px 24px #173f3838}
     #result,.tangram-leave-confirm{position:fixed;z-index:80;inset:0 auto auto 50%;width:min(100vw,920px);max-width:none;height:100dvh;max-height:none;margin:0;padding:16px;transform:translateX(-50%);border:0;border-radius:0;background:#0b2e29aa;display:grid;place-items:center;overflow:hidden;backdrop-filter:blur(4px)}
     #result:not([open]),.tangram-leave-confirm.hidden{display:none!important}
     .tangram-result-card,.tangram-leave-card{width:min(430px,calc(100% - 28px));max-height:calc(100% - 24px);padding:24px;display:grid;gap:12px;overflow-y:auto;overscroll-behavior:contain;border-radius:25px;background:#fbfff3;color:#173f38;text-align:center;box-shadow:0 28px 80px #10372f77}

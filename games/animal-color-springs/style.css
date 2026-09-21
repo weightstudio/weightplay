@@ -19,3 +19,8 @@
 .result-card .modal-actions button{min-width:0}
 .result-card .modal-actions button:disabled{opacity:.48;cursor:not-allowed;box-shadow:none!important}
 @media(max-width:600px){.result-card .modal-actions{grid-template-columns:repeat(3,minmax(0,1fr))}.result-card .modal-actions button{padding:6px 4px;font-size:.82rem}}
+.main-screen{background-image:linear-gradient(rgba(2,20,18,.1),rgba(2,20,18,.85)),url('../../assets/animal-color-springs/background-block-v1.png')}
+.stage-canvas,.battle-canvas{background-image:linear-gradient(rgba(3,25,24,.7),rgba(3,25,24,.91)),url('../../assets/animal-color-springs/background-block-v1.png')}
+.stage-card{background-image:linear-gradient(rgba(1,22,20,.24),rgba(1,22,20,.93)),url('../../assets/animal-color-springs/cover-block-v1.png')}
+.vessel{background-image:url('../../assets/animal-color-springs/vessel-block-v1.png')}
+.orb{background-image:url('../../assets/animal-color-springs/orb-block-v1.png')}
