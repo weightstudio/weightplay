@@ -291,9 +291,9 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   .hero-actions { margin-top: 8px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas { overflow: clip; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas { padding: 6px 12px 4px; }
-  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head { height: 44px; min-height: 44px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head { height: 48px; min-height: 48px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions { min-width: 106px; }
-  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-utility { width: 44px; height: 44px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-utility { width: 48px; height: 48px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .mission { display: none; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .clue-card { margin-top: 4px; padding: 6px 8px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .clue-card p { margin-top: 4px; font-size: .82rem; line-height: 1.2; }
@@ -324,64 +324,48 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   .panel-head { grid-template-columns: minmax(48px, 58px) minmax(0, 1fr) minmax(0, 106px); }
   .panel-head-actions { min-width: 0; width: 100%; max-width: 106px; overflow: hidden; }
   .panel-head-actions .panel-utility { flex: 0 0 48px; }
-  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions .panel-utility { transform: translateX(-15px); }
 }
 html[dir="rtl"] .wp-shell-settings-popover { right: auto; left: -4px; }
-html[dir="rtl"] body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions .panel-utility { transform: none; }
 
-/* Canopy Compass owns its Stage/Battle envelopes and its authored Guide.
-   Keep the Interface 7 theme from shrinking the Main poster or flattening
-   the Guide cards after the shared runtime is installed. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-canopy-compass"] .game-page-info {
-  --wp-ui-radius:24px;
+/* Shared-interface cleanup 2026-09-21: remove legacy play-screen chrome without
+   claiming a full Interface 7 migration. */
+body[data-wp-game-id="animal-canopy-compass"] #mapBtn,
+body[data-wp-game-id="animal-canopy-compass"] #stageHelp,
+body[data-wp-game-id="animal-canopy-compass"] #battleSound,
+body[data-wp-game-id="animal-canopy-compass"] #stageHeading,
+body[data-wp-game-id="animal-canopy-compass"] #battleHeading {
+  display: none !important;
 }
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-canopy-compass"] .game-page-info .game-info-section {
-  --wp-ui-radius:24px;
+body[data-wp-game-id="animal-canopy-compass"] :is(#stageScreen,#battleScreen) .panel-head {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  gap: 8px;
+  height: 48px;
+  min-height: 48px;
 }
-@media (min-width:700px) and (max-height:560px) and (orientation:landscape) {
-  body[data-wp-game-id="animal-canopy-compass"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size:420px !important;
-  }
+body[data-wp-game-id="animal-canopy-compass"] :is(#stageScreen,#battleScreen) .back-btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  overflow: hidden;
+  font-size: 0;
 }
-
-/* stage-selector-standard.css intentionally normalizes every generic rail.
-   Canopy Compass uses a compact authored list, so restore its local layout
-   after that shared contract without weakening the shared Canvas envelope. */
-body[data-wp-game-id="animal-canopy-compass"] .stage-rail {
-  display: grid !important;
-  grid-template-columns: 1fr !important;
-  grid-auto-columns: unset !important;
-  align-items: stretch !important;
-  justify-content: stretch !important;
-  gap: 12px !important;
-  min-height: 0 !important;
-  overflow: visible !important;
-  padding-inline: 0 !important;
-  scroll-snap-type: none !important;
-  touch-action: auto !important;
-  cursor: default !important;
+body[data-wp-game-id="animal-canopy-compass"] :is(#stageScreen,#battleScreen) .back-btn::before {
+  content: "←";
+  font-size: 1.25rem;
+  line-height: 1;
 }
-body[data-wp-game-id="animal-canopy-compass"] .stage-rail > .stage-card {
-  flex: initial !important;
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: auto !important;
-  min-height: 76px !important;
-  max-height: none !important;
-  transform: none !important;
-  scroll-snap-align: none !important;
+body[data-wp-game-id="animal-canopy-compass"] :is(#stageScreen,#battleScreen) .panel-head-actions {
+  gap: 8px;
 }
-body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions { min-width: 106px; }
-@media (orientation: landscape) and (max-height: 600px) and (min-width: 700px) {
-  body[data-wp-game-id="animal-canopy-compass"] .stage-rail { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
-  body[data-wp-game-id="animal-canopy-compass"] .stage-rail > .stage-card {
-    grid-template-columns: 1fr !important;
-    min-height: 112px !important;
-    padding: 12px !important;
-  }
-  body[data-wp-game-id="animal-canopy-compass"] .stage-rail > .stage-card :is(.stage-number, h3, p, .stage-chip) {
-    grid-column: auto !important;
-    grid-row: auto !important;
+body[data-wp-game-id="animal-canopy-compass"] :is(.stage-canvas,.battle-canvas) {
+  padding: 12px;
+}
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-canopy-compass"] :is(.stage-canvas,.battle-canvas) {
+    padding: 16px;
   }
 }
