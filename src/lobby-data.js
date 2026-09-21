@@ -16,6 +16,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "pawaxe",
       "animal-crownfall",
       "wonder-crash",
       "signal-veil", "animal-crystal-survivor", "beast-deck", "animal-relic-hunters", "animal-rune-tactics",
@@ -64,6 +65,16 @@ window.WONDER_LOBBY = {
     ],
   },
   games: [
+    {
+      id: "pawaxe", audience: "general", status: "planned", internalOnly: true,
+      internalTrial: "index.html?trial=1",
+      title: { en: "Axe & Ally", "zh-Hant": "斧刃夥伴" },
+      type: { en: "Timing Adventure", "zh-Hant": "守反冒險" },
+      description: { en: "Read enemy attacks, guard and counter with your palm-sized companion across a forest campaign.", "zh-Hant": "判讀敵招、格擋反擊，與掌心夥伴闖過森林冒險。" },
+      categories: ["Action", "Adventure", "Animal Games"], skills: ["Timing", "Focus"], ages: ["general"],
+      href: "games/pawaxe/", meta: { en: ["30 Stages", "Guard & Counter"], "zh-Hant": ["30 關", "格擋反擊"] },
+      art: { kind: "image", background: "games/pawaxe/art/cover-v1.png", hideHero: true },
+    },
     {
       id: "animal-crownfall", audience: "general", status: "planned", internalTrial: "index.html?trial=1",
       title: { en: "Crownfall", "zh-Hant": "落塊奪冠", "zh-Hans": "落块夺冠", ja: "ブロック王冠の旅", ko: "블록 왕관 모험", es: "La corona caída", "pt-BR": "A coroa perdida", fr: "La couronne perdue", de: "Kronensturz", it: "La corona perduta", ru: "Путь к короне", hi: "ताज की तलाश", ar: "رحلة التاج" },

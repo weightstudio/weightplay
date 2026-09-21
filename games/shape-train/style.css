@@ -396,7 +396,7 @@ html[dir="rtl"] .title-block {
   align-content: end;
   background:
     linear-gradient(180deg, var(--route-wash, rgba(255, 255, 255, 0.72)), var(--route-overlay, rgba(255, 255, 255, 0.48))),
-    url("../../assets/shape-train-cover.png") center / cover;
+    url("../../assets/shape-train/station-background-block-v1.png") center / cover;
   box-shadow: inset 0 0 0 1000px var(--route-overlay, rgba(255, 255, 255, 0.34)), 0 18px 34px var(--route-glow, rgba(38, 79, 113, 0.2));
   transition: background 0.24s ease, box-shadow 0.24s ease;
 }

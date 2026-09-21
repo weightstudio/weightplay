@@ -1233,6 +1233,10 @@
     adoptControls();
     normalizeBattleReturns();
     const { type, screen } = activeScreen();
+    const hideLanguage = type !== "main" || !localeOwner;
+    languageRow.hidden = hideLanguage;
+    if (hideLanguage) languageRow.style.setProperty("display", "none", "important");
+    else languageRow.style.removeProperty("display");
     const visibleResult = RESULT_SELECTORS
       .map((selector) => document.querySelector(selector))
       .find(visible);

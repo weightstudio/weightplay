@@ -237,22 +237,22 @@
     locked: "잠긴 스테이지",
   });
 
-  const trainCarAsset = "../../assets/shape-train-car.svg";
+  const trainCarAsset = "../../assets/shape-train/shape-train-car-block-v1.png";
   const shapes = {
-    circle: { token: "../../assets/shape-train-badge-circle.svg" },
-    square: { token: "../../assets/shape-train-badge-square.svg" },
-    triangle: { token: "../../assets/shape-train-badge-triangle.svg" },
-    star: { token: "../../assets/shape-train-badge-star.svg" },
-    diamond: { token: "../../assets/shape-train-badge-diamond.svg" },
-    heart: { token: "../../assets/shape-train-badge-heart.svg" },
+    circle: { token: "../../assets/shape-train/shape-train-badge-circle-block-v1.png" },
+    square: { token: "../../assets/shape-train/shape-train-badge-square-block-v1.png" },
+    triangle: { token: "../../assets/shape-train/shape-train-badge-triangle-block-v1.png" },
+    star: { token: "../../assets/shape-train/shape-train-badge-star-block-v1.png" },
+    diamond: { token: "../../assets/shape-train/shape-train-badge-diamond-block-v1.png" },
+    heart: { token: "../../assets/shape-train/shape-train-badge-heart-block-v1.png" },
   };
   const passengerAnimals = {
-    circle: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
-    square: "../../assets/weightplay-character-drum-belly-panda-clean-cutout.webp",
-    triangle: "../../assets/weightplay-character-spark-paw-captain-cutout.webp",
-    star: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
-    diamond: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
-    heart: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
+    circle: "../../assets/shape-train/shape-train-passenger-circle-block-v1.png",
+    square: "../../assets/shape-train/shape-train-passenger-square-block-v1.png",
+    triangle: "../../assets/shape-train/shape-train-passenger-triangle-block-v1.png",
+    star: "../../assets/shape-train/shape-train-passenger-star-block-v1.png",
+    diamond: "../../assets/shape-train/shape-train-passenger-diamond-block-v1.png",
+    heart: "../../assets/shape-train/shape-train-passenger-heart-block-v1.png",
   };
 
   const makeStage = (cars, tasks, options = {}) => ({ cars, tasks, rule: "direct", ...options });

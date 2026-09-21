@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "pawaxe": {
+    "__localizedExact": true,
+    "en": "Axe & Ally",
+    "zh-Hant": "斧刃夥伴",
+    "zh-Hans": "Axe & Ally",
+    "ja": "Axe & Ally",
+    "ko": "Axe & Ally",
+    "es": "Axe & Ally",
+    "pt-BR": "Axe & Ally",
+    "fr": "Axe & Ally",
+    "de": "Axe & Ally",
+    "it": "Axe & Ally",
+    "ru": "Axe & Ally",
+    "hi": "Axe & Ally",
+    "ar": "Axe & Ally"
+  },
   "animal-crownfall": {
     "__localizedExact": true,
     "en": "Crownfall",

@@ -425,6 +425,10 @@ body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):
   display: none !important;
 }
 
+body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-shell-language-row {
+  display: none !important;
+}
+
 .wp-shell-settings-row > span:first-child {
   grid-column: 1;
   grid-row: 1;

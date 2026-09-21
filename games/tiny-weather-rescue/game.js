@@ -64,17 +64,17 @@
   }
 
   const tools = {
-    umbrella: { icon: "../../assets/tiny-weather-tool-umbrella.svg", className: "umbrella" },
-    towel: { icon: "../../assets/tiny-weather-tool-towel.svg", className: "towel" },
-    fan: { icon: "../../assets/tiny-weather-tool-fan.svg", className: "fan" },
-    lantern: { icon: "../../assets/tiny-weather-tool-lantern.svg", className: "lantern" },
-    house: { icon: "../../assets/tiny-weather-tool-house.svg", className: "house" },
-    apple: { icon: "../../assets/tiny-weather-tool-apple.svg", className: "apple" },
-    boots: { icon: "../../assets/tiny-weather-tool-boots.svg", className: "boots" },
-    blanket: { icon: "../../assets/tiny-weather-tool-blanket.svg", className: "blanket" },
+    umbrella: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-umbrella-block-v1.png", className: "umbrella" },
+    towel: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-towel-block-v1.png", className: "towel" },
+    fan: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-fan-block-v1.png", className: "fan" },
+    lantern: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-lantern-block-v1.png", className: "lantern" },
+    house: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-house-block-v1.png", className: "house" },
+    apple: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-apple-block-v1.png", className: "apple" },
+    boots: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-boots-block-v1.png", className: "boots" },
+    blanket: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-blanket-block-v1.png", className: "blanket" },
   };
 
-  const cueAsset = (name) => `../../assets/tiny-weather-cue-${name}.svg`;
+  const cueAsset = (name) => `../../assets/tiny-weather-rescue/tiny-weather-cue-${name}-block-v1.png`;
   const problems = {
     rain: { icon: cueAsset("rain"), tool: "umbrella", scene: "rain" },
     puddle: { icon: cueAsset("puddle"), tool: "towel", scene: "puddle" },
@@ -88,12 +88,12 @@
   };
 
   const animalAssets = {
-    rabbit: "../../assets/tiny-weather-animal-rabbit.png",
-    fox: "../../assets/tiny-weather-animal-fox.png",
-    panda: "../../assets/tiny-weather-animal-panda.png",
-    penguin: "../../assets/tiny-weather-animal-penguin.png",
-    lion: "../../assets/weightplay-boom-mane-lion.png",
-    koala: "../../assets/tiny-weather-animal-koala.png",
+    rabbit: "../../assets/tiny-weather-rescue/tiny-weather-animal-rabbit-block-v1.png",
+    fox: "../../assets/tiny-weather-rescue/tiny-weather-animal-fox-block-v1.png",
+    panda: "../../assets/tiny-weather-rescue/tiny-weather-animal-panda-block-v1.png",
+    penguin: "../../assets/tiny-weather-rescue/tiny-weather-animal-penguin-block-v1.png",
+    lion: "../../assets/tiny-weather-rescue/tiny-weather-animal-lion-block-v1.png",
+    koala: "../../assets/tiny-weather-rescue/tiny-weather-animal-koala-block-v1.png",
   };
 
   const openingStages = [
