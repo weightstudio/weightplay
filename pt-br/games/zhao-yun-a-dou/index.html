@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260918-ui-fix1">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260918-ui-fix1">
-  <link rel="stylesheet" href="frame-content.css?v=20260921-zhao-v35">
+  <link rel="stylesheet" href="frame-content.css?v=20260921-zhao-v36">
   <meta name="description" content="Toque numa carta para enviar tropas. Elas avançam e lutam automaticamente." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -142,9 +142,7 @@
       <div id="battleInfo"><div><small id="chapter" hidden></small><strong id="stageName"></strong></div><div><span id="remaining" class="wave-readout"></span></div></div>
       <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-t-aria="tutorialAria" aria-label="Battle tutorial">?</button>
       <div class="battle-hud">
-        <div class="hud-card enemy-hud"><span data-t="enemyCamp">Acampamento inimigo</span><strong id="enemyHp"></strong></div>
         <div class="hud-card buns-hud"><span data-t="buns">Pães</span><strong id="buns"></strong></div>
-        <div class="hud-card ally-hud"><span data-t="allyCamp">Acampamento de A Dou</span><strong id="adouHp"></strong></div>
       </div>
       <div class="battle-guide" role="note">
         <strong data-t="battleGuideTitle">Plano de batalha</strong>
@@ -152,6 +150,14 @@
       </div>
       <p id="pressureCue" class="pressure-cue" role="status" aria-live="polite"></p>
       <div class="battle-field" aria-label="Three lane battle">
+        <div id="adouHp" class="castle-health castle-health--ally" data-camp-health="ally" role="meter" aria-label="A Dou's camp" aria-valuemin="0" aria-valuemax="120" aria-valuenow="120" hidden>
+          <span class="castle-health-name" data-t="allyCamp">Acampamento de A Dou</span>
+          <span class="castle-health-track" aria-hidden="true"><span class="castle-health-fill"></span></span>
+        </div>
+        <div id="enemyHp" class="castle-health castle-health--enemy" data-camp-health="enemy" role="meter" aria-label="Enemy command" aria-valuemin="0" aria-valuemax="150" aria-valuenow="150" hidden>
+          <span class="castle-health-name" data-t="enemyCamp">Acampamento inimigo</span>
+          <span class="castle-health-track" aria-hidden="true"><span class="castle-health-fill"></span></span>
+        </div>
       </div>
       <div class="battle-actions">
         <div id="deployDock" class="deploy-dock" role="group"></div>
@@ -200,21 +206,21 @@
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260826-game-funnel"></script>
-  <script src="levels.js?v=20260921-zhao-v35"></script>
-  <script src="locales.js?v=20260921-zhao-v35"></script>
-  <script src="guide-copy.js?v=20260921-zhao-v35"></script>
+  <script src="levels.js?v=20260921-zhao-v36"></script>
+  <script src="locales.js?v=20260921-zhao-v36"></script>
+  <script src="guide-copy.js?v=20260921-zhao-v36"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260918-ui-fix1"></script>
   <script src="frame.js?v=20260918-ui-fix1"></script>
-  <script src="talents.js?v=20260921-zhao-v35"></script>
-  <script src="talent-copy.js?v=20260921-zhao-v35"></script>
-  <script src="push-combat.js?v=20260921-zhao-v35"></script>
-  <script src="push-copy.js?v=20260921-zhao-v35"></script>
-  <script src="game.js?v=20260921-zhao-v35"></script>
-  <script src="analytics-ownership.js?v=20260921-zhao-v35"></script>
+  <script src="talents.js?v=20260921-zhao-v36"></script>
+  <script src="talent-copy.js?v=20260921-zhao-v36"></script>
+  <script src="push-combat.js?v=20260921-zhao-v36"></script>
+  <script src="push-copy.js?v=20260921-zhao-v36"></script>
+  <script src="game.js?v=20260921-zhao-v36"></script>
+  <script src="analytics-ownership.js?v=20260921-zhao-v36"></script>
 
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>
-  <script src="public-guide.js?v=20260921-zhao-v35"></script>
+  <script src="public-guide.js?v=20260921-zhao-v36"></script>
 </body>
 </html>

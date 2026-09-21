@@ -4,6 +4,8 @@ const palette={blade:0xbb614d,spear:0x258d8a,horse:0xc69742,bow:0x7865ae};
 export class ZhaoBattle3D {
   constructor(host, onFailure) {
     this.host=host; this.onFailure=onFailure; this.disposed=false; this.actors=new Map(); this.fx=new Map(); this.labels=new Map(); this.materials=new Map();
+    this.campBars=[...host.querySelectorAll('[data-camp-health]')];
+    this.campPoint=new THREE.Vector3();
     this.geometry=new THREE.BoxGeometry(1,1,1); this.canvas=document.createElement('canvas');
     this.canvas.className='zhao-world'; this.canvas.setAttribute('aria-hidden','true'); host.prepend(this.canvas);
     try { this.renderer=new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:false,powerPreference:'low-power'}); }
@@ -174,7 +176,7 @@ export class ZhaoBattle3D {
     // Fit the playable board and character headroom, not the decorative mountains.
     this.camera.updateMatrixWorld();
     const bounds=new THREE.Box2();
-    for(const x of [-6.1,6.1])for(const y of [-.7,3.2])for(const z of [-1.8,1.8]){
+    for(const x of [-6.1,6.1])for(const y of [-.7,3.8])for(const z of [-1.8,1.8]){
       const p=new THREE.Vector3(x,y,z).applyMatrix4(this.camera.matrixWorldInverse);
       bounds.expandByPoint(new THREE.Vector2(p.x,p.y));
     }
@@ -182,7 +184,20 @@ export class ZhaoBattle3D {
     const aspect=w/h,half=Math.max(size.y/2,size.x/(2*aspect))*1.025;
     this.camera.left=center.x-half*aspect;this.camera.right=center.x+half*aspect;
     this.camera.top=center.y+half;this.camera.bottom=center.y-half;
-    this.camera.updateProjectionMatrix();if(this.lastBattle)this.render(this.lastBattle,performance.now(),true);
+    this.camera.updateProjectionMatrix();this.positionCampBars();if(this.lastBattle)this.render(this.lastBattle,performance.now(),true);
+  }
+  positionCampBars(){
+    // Project only on resize: the shared canvas scale applies once, and
+    // fixed horizontal tracks do not inherit the castle's hit shake.
+    for(const bar of this.campBars)bar.hidden=false;
+    const sizes=this.campBars.map(bar=>({width:bar.offsetWidth,height:bar.offsetHeight}));
+    this.campBars.forEach((bar,index)=>{
+      const side=bar.dataset.campHealth==='ally'?-1:1;
+      const point=this.campPoint.set(side*5.1,3.08,0).project(this.camera);
+      const half=sizes[index].width/2+6;
+      bar.style.left=Math.max(half,Math.min(this.width-half,(point.x+1)*this.width/2))+'px';
+      bar.style.top=Math.max(sizes[index].height+6,Math.min(this.height-6,(1-point.y)*this.height/2))+'px';
+    });
   }
   actor(key,type,general,enemy){let obj=this.actors.get(key);const signature=type+general+enemy;
     if(obj&&obj.userData.signature!==signature){this.scene.remove(obj);this.actors.delete(key);obj=null;}
@@ -279,5 +294,5 @@ export class ZhaoBattle3D {
     this.renderer.render(this.scene,this.camera);const r=this.renderer.info;
     Object.assign(this.info,{frames:this.info.frames+1,drawCalls:r.render.calls,triangles:r.render.triangles,geometries:r.memory.geometries,textures:r.memory.textures,actors:this.actors.size,effects:this.fx.size});
   }
-  dispose(){if(this.disposed)return;this.disposed=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);this.geometry.dispose();for(const mat of this.materials.values())mat.dispose();this.materials.clear();this.actors.clear();this.fx.clear();for(const node of this.labels.values())node.remove();this.labels.clear();this.lastBattle=null;this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.canvas.remove();}
+  dispose(){if(this.disposed)return;this.disposed=true;for(const bar of this.campBars)bar.hidden=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);this.geometry.dispose();for(const mat of this.materials.values())mat.dispose();this.materials.clear();this.actors.clear();this.fx.clear();for(const node of this.labels.values())node.remove();this.labels.clear();this.lastBattle=null;this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.canvas.remove();}
 }

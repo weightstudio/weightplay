@@ -27,15 +27,21 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 /* v32: one road and a permanent deployment dock. Shared frame owns navigation. */
 #battle .battle-content {position:relative;display:grid;height:100%;min-height:0;grid-template-columns:minmax(0,1fr);grid-template-rows:30px 24px minmax(0,1fr) 134px 18px;gap:4px;}
 #battle .battle-guide {display:none;}
-#battle .battle-hud {grid-row:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;direction:ltr;}
-#battle .ally-hud {grid-column:1;grid-row:1;}
-#battle .buns-hud {grid-column:2;grid-row:1;}
-#battle .enemy-hud {grid-column:3;grid-row:1;}
+#battle .battle-hud {grid-row:1;display:flex;justify-content:center;}
+#battle .buns-hud {width:auto;min-width:108px;justify-content:center;}
 #battle .hud-card {min-height:30px;padding:2px 5px;border-radius:6px;font-size:10px;gap:4px;background:#17363a;}
 #battle .hud-card strong {font-size:12px;white-space:nowrap;}
 #battle .pressure-cue {grid-row:2;margin:0;height:24px;padding:2px 6px;font:600 11px/20px system-ui;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:4px;}
 #battle .battle-field {grid-row:3;position:relative;isolation:isolate;overflow:hidden;height:100%;min-height:0;max-height:none;box-sizing:border-box;background:#799e9a;border:1px solid #729e8e;border-radius:10px;}
 #battle .zhao-world {position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block;}
+#battle .castle-health {position:absolute;z-index:3;width:84px;max-width:24%;transform:translate(-50%,-100%);pointer-events:none;display:flex;flex-direction:column;align-items:stretch;gap:3px;--health:1;--camp-color:#70edc6;}
+#battle .castle-health[hidden] {display:none;}
+#battle .castle-health--enemy {--camp-color:#ff987e;}
+#battle .castle-health-name {display:block;text-align:center;color:#fff5df;font:700 10px/13px system-ui;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px #102e35,0 0 4px #102e35;}
+#battle .castle-health-track {display:block;box-sizing:border-box;height:9px;padding:2px;background:#102b31;border:1px solid #d2dfcd;border-radius:3px;box-shadow:0 2px 4px #102b3170;direction:ltr;}
+#battle .castle-health-fill {display:block;width:100%;height:100%;background:var(--camp-color);transform:scaleX(var(--health));transform-origin:left center;transition:transform .12s linear;}
+#battle .castle-health.is-critical .castle-health-track {border-color:#ffd377;}
+@media (prefers-reduced-motion:reduce) {#battle .castle-health-fill {transition:none;}}
 #battle .battle-actions {grid-row:4;display:grid;grid-template-columns:minmax(0,1fr) 44px;grid-template-rows:82px 48px;height:134px;gap:4px;}
 #battle .deploy-dock {grid-column:1 / -1;grid-row:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;min-width:0;}
 #battle .deploy-card {position:relative;display:grid;grid-template-rows:36px 16px 12px 14px;justify-items:center;align-content:center;min-width:0;height:82px;padding:1px;border:1px solid #76a396;border-radius:9px;overflow:hidden;background:#254d4e;color:#f2efda;font:600 11px/14px system-ui;cursor:pointer;}

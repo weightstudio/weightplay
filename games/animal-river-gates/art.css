@@ -193,6 +193,23 @@ body.wp-shell-battle-active .topbar {
     padding: 8px;
   }
 
+  /* Keep the authored stage brief readable on small phones. The shared
+     three-up variant leaves only ~109px per card at 390px, clipping the
+     objective before a player can read it. Use the standard single-card
+     snap width in that range; wider phones retain the three-up rail. */
+  @media (max-width: 480px) {
+    #stageScreen[data-wp-standard-stage-screen] .stage-rail {
+      padding-inline: max(24px, calc((100% - 264px) / 2)) !important;
+    }
+
+    #stageScreen[data-wp-standard-stage-screen] .stage-rail > .stage-card {
+      flex: 0 0 264px !important;
+      width: 264px !important;
+      min-width: 264px !important;
+      max-width: 264px !important;
+    }
+  }
+
   #stageScreen[data-wp-standard-stage-screen] .stage-header h2 {
     font-size: 1.25rem;
   }

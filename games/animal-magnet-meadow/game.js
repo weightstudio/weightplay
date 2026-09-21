@@ -44,7 +44,7 @@
   ];
   const firstRound = rounds[0];
   const state = { locale: "en", screen: "main", round: 0, positions: { ...firstRound.initial }, moves: 0, completed: [], selected: "a", statusKey: "ready", statusStone: null, sound: true, drag: null };
-  const bestKey = "weightplay-animal-magnet-meadow-best-v8";
+  const bestKey = "weightplay-animal-magnet-meadow-best-v9";
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
@@ -108,7 +108,7 @@
       const localizedHint = copy(hintKey);
       const title = localizedTitle === titleKey ? round.title : localizedTitle;
       const hint = localizedHint === hintKey ? round.hint : localizedHint;
-      return "<button class=\"stage-card" + (done ? " complete" : "") + (round.checkpoint ? " checkpoint" : "") + "\" type=\"button\" data-stage=\"" + index + "\"" + disabled + "><span class=\"stage-number\">" + copy("round", { number: index + 1, total: rounds.length }) + "</span><strong>Arc " + round.arc + " · " + title + "</strong><span>" + hint + "</span><b>" + (done ? copy("completed") : unlocked ? copy("readyStage") : "—") + "</b></button>";
+      return "<button class=\"stage-card" + (done ? " complete" : "") + (round.checkpoint ? " checkpoint" : "") + "\" type=\"button\" data-stage=\"" + index + "\"" + disabled + "><span class=\"stage-number\">" + copy("round", { number: index + 1, total: rounds.length }) + "</span><strong>" + copy("arc", { number: round.arc }) + " · " + title + "</strong><span>" + hint + "</span><b>" + (done ? copy("completed") : unlocked ? copy("readyStage") : "—") + "</b></button>";
     }).join("");
     $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startRound(Number(button.dataset.stage))));
   };
@@ -117,6 +117,11 @@
     const key = "stone" + String(id).toUpperCase();
     const localized = copy(key);
     return localized === key ? "Moonstone " + String(id).toUpperCase() : localized;
+  };
+  const mechanicLabel = (round) => {
+    const key = "mechanic_" + round.mechanic.replace(/[^a-z0-9]+/gi, "_");
+    const localized = copy(key);
+    return localized === key ? round.mechanic : localized;
   };
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
   const getSlotFromPointer = (event) => {
@@ -199,9 +204,9 @@
     $("battleHeading").textContent = copy("round", { number: state.round + 1, total: rounds.length });
     const hintKey = "stageHint" + (state.round + 1);
     const localizedHint = copy(hintKey);
-    $("roundHint").textContent = (localizedHint === hintKey ? round.hint : localizedHint) + " · " + round.mechanic;
+    $("roundHint").textContent = (localizedHint === hintKey ? round.hint : localizedHint) + " · " + mechanicLabel(round);
     const relation = activeRelation(round);
-    $("relationBadge").textContent = copy(relation === "pull" ? "relationPull" : "relationPush") + (round.relation === "flip" ? " · FLIP" : "");
+    $("relationBadge").textContent = copy(relation === "pull" ? "relationPull" : "relationPush") + (round.relation === "flip" ? " · " + copy("flip") : "");
     $("targetText").textContent = stoneIds(round).map((id) => String(id).toUpperCase() + (round.target[id] + 1)).join(" · ");
     $("moveText").textContent = copy("move", { count: state.moves });
     $("battleStatus").textContent = battleStatusText();
@@ -212,7 +217,7 @@
       return "<button class=\"slot" + (isBlocked ? " blocked" : "") + "\" type=\"button\" data-slot=\"" + index + "\" aria-label=\"" + slotLabel(index) + "\"" + (isBlocked ? " disabled aria-disabled=\"true\"" : "") + "><span>" + (isBlocked ? "×" : index + 1) + "</span></button>";
     }).join("");
     $("slotGrid").querySelectorAll("[data-slot]").forEach((slot) => slot.addEventListener("click", () => commitMove(state.selected, Number(slot.dataset.slot))));
-    $("legend").innerHTML = stoneIds(round).map((id) => "<span class=\"legend-stone stone-" + id + "\">" + stoneLabel(id) + (anchors(round).includes(id) ? " · fixed" : "") + "</span>").join("");
+    $("legend").innerHTML = stoneIds(round).map((id) => "<span class=\"legend-stone stone-" + id + "\">" + stoneLabel(id) + (anchors(round).includes(id) ? " · " + copy("fixed") : "") + "</span>").join("");
     renderStones();
     $("resultPanel").hidden = true;
     $("battlePanel").hidden = false;

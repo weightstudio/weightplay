@@ -31,18 +31,19 @@
     const marker = MARKERS[key];
     return `<span class="marker-icon marker-atlas marker-atlas-${key} ${extra}" aria-hidden="true" data-marker-art="atlas"></span>`;
   }
-  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v4", interface_version: 6, ...payload }); }
+  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v6", interface_version: 6, ...payload }); }
   function syncSharedSettingsIds() {
     const host = document.querySelector(".wp-shell-settings");
     if (host) document.querySelector(".wp-shell-locale-source")?.classList.remove("wp-shell-locale-source");
     const button = host?.querySelector(".wp-shell-settings-button");
     const popover = host?.querySelector(".wp-shell-settings-popover");
     if (!button) return;
-    // The Battle header keeps a legacy proxy button for the lifecycle smoke.
-    // Leave the generated shared control un-named there so the proxy remains
-    // the sole #battleSettingsButton and the shell cannot create a duplicate
-    // owner. Main still receives the canonical settingsButton id.
-    button.id = document.body.dataset.screen === "battle" ? "" : "settingsButton";
+    // The shared control is the sole Settings owner in both scenes. The
+    // Battle identity keeps lifecycle probes stable without a dead duplicate.
+    button.id = document.body.dataset.screen === "battle" ? "battleSettingsButton" : "settingsButton";
+    button.hidden = false;
+    button.removeAttribute("aria-hidden");
+    button.tabIndex = 0;
     if (popover) popover.id = "settingsPopover";
   }
   function syncSharedSettingsPlacement(name) {
@@ -53,7 +54,7 @@
     if (!host || !target) return;
     if (host.parentElement !== target) target.append(host);
     if (name === "main") target.classList.add("wp-shell-header", "wp-main-shell-header");
-    host.hidden = name !== "main";
+    host.hidden = false;
   }
   function setScreen(name) {
     const mainScreen = $("#mainScreen");

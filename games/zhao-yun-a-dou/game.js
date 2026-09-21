@@ -47,7 +47,7 @@
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const push = window.ZhaoPush;
   let audioContext = null, impactNoise = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v35", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v36", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -480,9 +480,18 @@
     battle.bossLabel = level.bossKind ? t("boss_" + level.bossKind) : "";
     el.stageName.textContent = stageName(level);
     el.remaining.textContent = t('wave') + ' ' + battle.wave + ' / 3';
-    el.enemyHp.textContent = Math.ceil(battle.commandHp) + ' / ' + battle.maxCommandHp;
     el.buns.textContent = battle.buns + ' / 30';
-    el.adouHp.textContent = Math.ceil(battle.adouHp) + ' / ' + battle.maxAdouHp;
+    for (const [bar, hp, maximum, name] of [
+      [el.adouHp, battle.adouHp, battle.maxAdouHp, 'allyCamp'],
+      [el.enemyHp, battle.commandHp, battle.maxCommandHp, 'enemyCamp'],
+    ]) {
+      const ratio = Math.max(0, Math.min(1, hp / maximum));
+      bar.style.setProperty('--health', String(ratio));
+      bar.setAttribute('aria-label', t(name));
+      bar.setAttribute('aria-valuemax', String(maximum));
+      bar.setAttribute('aria-valuenow', String(Math.max(0, hp)));
+      bar.classList.toggle('is-critical', ratio > 0 && ratio <= .25);
+    }
     el.status.textContent = battle.status || t('pushGoal');
     el.pressureCue.textContent = battle.units.filter(u=>u.hp>0).length>=12 ? t('pushFull') : t('rule_' + level.rule);
     const dock = document.getElementById('deployDock');
