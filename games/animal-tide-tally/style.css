@@ -128,3 +128,4 @@
   #stageScreen .stage-canvas,
   #battleScreen .battle-canvas { padding-inline:12px; }
 }
+.pill { direction:ltr; unicode-bidi:isolate; }

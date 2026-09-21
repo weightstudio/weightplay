@@ -190,3 +190,54 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
     object-fit:cover!important;
   }
 }
+
+/* v58 exact Issue 0816 repair: keep the RTL/LTR Battle HUD actions inside
+   the narrow Canvas. The previous flex minimum-content calculation shrank
+   the actions group while its fixed-size Restart child remained overflowing
+   on the physical left edge. Let the stats track absorb the responsive
+   squeeze and keep the action group atomic at both governed phone widths. */
+@media(max-width:720px){
+  .battle-hud{
+    box-sizing:border-box!important;
+    padding-inline:0!important;
+    gap:8px!important;
+  }
+  .battle-hud>.hud-stats{
+    flex:1 1 0!important;
+    min-width:0!important;
+    width:auto!important;
+  }
+  .battle-hud>.hud-actions{
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:max-content!important;
+    margin-inline-end:0!important;
+  }
+  html[dir="ltr"] .battle-hud>.hud-actions{
+    position:static!important;
+    right:auto!important;
+  }
+}
+@media(max-width:480px){
+  .battle-hud{gap:4px!important}
+  .battle-hud>.hud-actions{gap:4px!important}
+}
+
+/* The absolute HUD can otherwise keep its RTL intrinsic width when both
+   physical insets are set; anchor a bounded box so the actions cannot cross
+   the phone edge. */
+@media(max-width:720px){
+  .battle-hud{
+    left:12px!important;
+    right:auto!important;
+    width:calc(100% - 24px)!important;
+    max-width:calc(100vw - 24px)!important;
+  }
+}
+@media(max-width:480px){
+  .battle-hud{
+    left:8px!important;
+    width:calc(100% - 16px)!important;
+    max-width:calc(100vw - 16px)!important;
+  }
+}
