@@ -1,11 +1,10 @@
 /*
  * Interface 7 route bootstrap.
  *
- * Every game route gets one shared visual/control contract.  Explicit
- * WeightPlayScreenFrame consumers keep their mount() implementation; legacy
- * routes use the same theme and the standard shell adapter until their game
- * content is migrated into declared frame slots.  This file owns no game
- * state and never changes scene order or gameplay handlers.
+ * Every game route gets the single Interface 7 frame contract. Explicit
+ * WeightPlayScreenFrame consumers keep their declared slots; older game DOMs
+ * are normalized by that same runtime's auto-mount path. This file owns no
+ * game state and never changes scene order or gameplay handlers.
  */
 (() => {
   "use strict";
@@ -34,7 +33,7 @@
   }
 
 
-  const version = "20260918-ui-fix1";
+  const version = "20260921-interface7-single-frame-v2";
   const assetUrl = (name) => new URL(name, `${location.origin}/src/`).href;
 
   const addStylesheet = (name) => {
@@ -51,8 +50,8 @@
   // Insert the token source first; the frame CSS imports it as well, and the
   // duplicate-free check makes this safe for the four explicit adopters.
   addStylesheet("game-ui-theme.css");
+  addStylesheet("game-page-info.css");
   addStylesheet("game-screen-frame.css");
-  addStylesheet("game-shell-controls-standard.css");
 
   const addInterfaceMeta = () => {
     let meta = document.querySelector('meta[name="weightplay-interface-version"]');
@@ -126,23 +125,21 @@
     document.head.append(script);
   };
 
-  const ensureLegacyShell = () => {
-    // Explicit frames own their lifecycle.  The standard shell is only a
-    // compatibility adapter for routes without a mounted frame.
-    if (document.querySelector("[data-wp-frame-root],[data-wp-frame-adapted]")) return;
-    if (document.querySelector('script[src*="game-shell-controls-standard.js"]')) return;
-    if (document.querySelector('script[src*="game-screen-frame.js"]')) return;
-    if (window.__weightPlaySharedShellRequested) return;
-    window.__weightPlaySharedShellRequested = true;
-    const script = document.createElement("script");
-    script.src = assetUrl(`game-shell-controls-standard.js?v=${version}`);
-    script.dataset.wpSharedInterface = "7";
-    document.body.append(script);
+  const ensureFrameRuntime = () => {
+    if (!document.querySelector('script[src*="game-screen-frame.js"]') && !window.__weightPlayScreenFrameRequested) {
+      window.__weightPlayScreenFrameRequested = true;
+      const script = document.createElement("script");
+      script.src = assetUrl(`game-screen-frame.js?v=${version}`);
+      script.dataset.wpSharedInterface = "7";
+      document.body.append(script);
+      return;
+    }
+    window.WeightPlayScreenFrame?.autoMountDocument?.();
   };
 
   const ready = () => {
     addInterfaceMeta();
-    ensureLegacyShell();
+    ensureFrameRuntime();
     // Dynamic Main renderers create fresh images after initial startup or
     // returning from play. Captured image events cover that lifecycle without
     // a document-wide MutationObserver, timers, or retained old DOM nodes.

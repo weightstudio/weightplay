@@ -144,7 +144,7 @@ function stageWindowLimit(){return Math.max(0,levels.length-STAGE_CARD_POOL_SIZE
 function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL_SIZE/2),0,stageWindowLimit())}
 function createStageCard(){
   const button=document.createElement("button"),image=document.createElement("img"),body=document.createElement("span"),title=document.createElement("strong"),status=document.createElement("small");
-  button.type="button";button.className="stage-card";image.src="../../assets/interface7-redrawn/animal-carnival-claw.webp";image.alt="";
+  button.type="button";button.className="stage-card";image.src="/assets/interface7-redrawn/animal-carnival-claw.webp";image.alt="";
   body.dataset.wpItemContent="true";body.append(title,status);button.append(image,body);
   button.addEventListener("click",()=>{const index=Number(button.dataset.stageIndex);if(!Number.isInteger(index))return;selectStage(index,true);if(index<save.unlocked)startMission(index,"stage_card")});
   return button;

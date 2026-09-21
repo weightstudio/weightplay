@@ -184,6 +184,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "zoo-helper-day": "/assets/interface7-redrawn/zoo-helper-day.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
+  "/assets/animal-dice-bastion/cover-block-v1.png": "/assets/animal-dice-bastion/cover-block-v1.png",
   "/assets/interface7-redrawn/alien-defender.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__alien-defender.webp",
   "/assets/interface7-redrawn/animal-2048.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-2048.webp",
   "/assets/interface7-redrawn/animal-abyss-diver.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-abyss-diver.webp",

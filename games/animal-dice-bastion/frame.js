@@ -1,6 +1,22 @@
 /* Content adapter only: controls, imagery and header geometry belong to core. */
 (function () {
   'use strict';
+  const stageArtwork = '../../assets/animal-dice-bastion/stage-background-block-v1.png';
+  const applyStageArtwork = () => {
+    const stage = document.querySelector('#stageScreen .stage-canvas');
+    if (!stage) return;
+    const url = new URL(stageArtwork, document.baseURI).href;
+    stage.style.setProperty('--wp-stage-art', `url("${url.replaceAll('"', '\\"')}")`);
+  };
+  const queueStageArtwork = () => {
+    applyStageArtwork();
+    requestAnimationFrame(() => { applyStageArtwork(); requestAnimationFrame(applyStageArtwork); });
+  };
+  window.queueDiceBastionStageArtwork = queueStageArtwork;
+  window.addEventListener('load', queueStageArtwork, { once: true });
+  window.addEventListener('weightplay:screen-change', event => {
+    if (event.detail?.screen === 'stage') queueStageArtwork();
+  });
   window.mountDiceBastionFrame = function () {
     const root = document.getElementById('gameFrame');
     const main = document.getElementById('mainScreen');

@@ -230,7 +230,7 @@ window.WONDER_LOBBY = {
         hi: ["30 चरण", "निष्पक्ष यादृच्छिक बुलावा", "लाइव मर्ज रणनीति"],
         ar: ["30 مرحلة", "استدعاء عشوائي عادل", "تكتيكات دمج مباشرة"],
       },
-      art: { kind: "image", background: "assets/animal-dice-bastion/cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-dice-bastion/cover-block-v1.png", hideHero: true },
     },
     {
       id: "signal-veil",

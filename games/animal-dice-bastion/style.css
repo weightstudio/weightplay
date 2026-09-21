@@ -207,7 +207,11 @@
 #gameFrame :is(.battle-layout,.guardian-board,.command-stack,.result-actions){direction:ltr}
 #gameFrame .guardian b{direction:ltr;unicode-bidi:isolate}
 html[dir="rtl"] #gameFrame :is(.command-cell button,.command-head .charge-meter>span,#battleFeedback){direction:rtl}
-@media(orientation:landscape){
+/* Compact landscape phones/tablets use a side-by-side road and command dock.
+   Desktop landscape has enough height for the normal wide road-over-console
+   Battle composition; do not turn the entire desktop canvas into a narrow
+   three-column strip. */
+@media(orientation:landscape) and (max-height:520px){
   #gameFrame .battle-layout{grid-template-columns:34% minmax(0,66%);grid-template-rows:minmax(0,1fr)}
   #gameFrame .command-panel{grid-template-columns:minmax(0,1fr) minmax(240px,52%);grid-template-rows:minmax(0,1fr)}
   #gameFrame .guardian-board{width:min(100%,calc(100cqh * 5 / 3))}

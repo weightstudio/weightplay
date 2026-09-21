@@ -1,5 +1,26 @@
 @import url('./game-ui-theme.css?v=20260920-shared-header1');
 @layer wp-frame-contract {
+/* Main is normal document flow. Only Stage/Battle may own the fixed browser
+   edge; explicit frame consumers no longer depend on game-local lock classes. */
+html.wp-frame-main-flow,
+html:has(body.wp-frame-main-active) {
+ width:100%!important;height:auto!important;min-height:100%!important;max-height:none!important;
+ position:static!important;overflow-x:hidden!important;overflow-y:auto!important;
+ overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;
+}
+body.wp-frame-main-active {
+ width:100%!important;height:auto!important;min-height:100vh!important;max-height:none!important;
+ position:static!important;overflow-x:hidden!important;overflow-y:auto!important;
+ overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;
+}
+html.wp-frame-active-play,
+html:has(body:is(.wp-frame-stage-active,.wp-frame-battle-active)),
+body:is(.wp-frame-stage-active,.wp-frame-battle-active) {
+ width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;
+ overflow:hidden!important;overscroll-behavior:none!important;touch-action:none!important;
+}
+html:has(body:is(.wp-frame-stage-active,.wp-frame-battle-active)),
+body:is(.wp-frame-stage-active,.wp-frame-battle-active) {position:fixed!important;inset:0!important;}
 /* One protected preferences component, reused by lobby and all frame scenes. */
 html body [data-wp-preferences] {position:relative!important;z-index:110;direction:ltr}
 html body [data-wp-preferences] .wp-frame-settings {display:grid!important;place-items:center!important;width:48px!important;height:48px!important;padding:0!important;border:2px solid var(--wp-ui-line)!important;border-radius:3px!important;background:var(--wp-ui-button-image)!important;color:var(--wp-ui-text)!important;cursor:pointer}
@@ -205,3 +226,1217 @@ body[data-wp-frame-tutorial="true"] .wp-tutorial-action {
 body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):focus-visible {
   outline:2px solid var(--wp-ui-gold);outline-offset:3px;
 }
+
+/* Auto-discovered game-owned DOM uses the same Interface 7 frame tokens and controls. */
+.wp-shell-header {
+  position: relative;
+  z-index: 100;
+  isolation: isolate;
+}
+
+.wp-main-shell-header {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: 58px minmax(0, 1fr) 58px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 56px;
+  width: min(100%, 920px) !important;
+  max-width: 920px !important;
+  margin-inline: auto !important;
+  padding: 4px 6px !important;
+}
+
+.wp-route-heading {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.wp-main-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control) {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.wp-main-shell-header > :is(.top-nav-left, .top-nav-right) {
+  display: contents !important;
+}
+
+.wp-main-shell-header > strong,
+.wp-main-shell-header > h1,
+.wp-main-shell-header > h2,
+.wp-main-shell-header > div:not(.wp-shell-settings) {
+  text-align: center;
+}
+
+.wp-main-shell-header > :is(.wp-generated-main-title, .wp-shell-main-title, h1, h2, strong) {
+  position: absolute !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  inset-inline: 70px !important;
+  left: 70px !important;
+  width: auto !important;
+  max-width: none !important;
+  transform: none !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+.wp-main-shell-header > .wp-shell-main-title {
+  font: 800 22px/1.2 system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.wp-shell-return {
+  box-sizing: border-box !important;
+  grid-column: 1;
+  justify-self: start;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 58px !important;
+  min-width: 58px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+}
+
+.wp-shell-return > img {
+  display: block;
+  width: 23px !important;
+  height: 23px !important;
+  object-fit: contain;
+}
+
+.wp-shell-return-arrow {
+  font: 900 22px/1 system-ui, sans-serif;
+}
+
+.wp-shell-return[data-wp-return="main"],
+.wp-shell-return[data-wp-return="main"] > .wp-shell-return-arrow {
+  color: var(--wp-main-return-arrow-color, #176a9d) !important;
+  opacity: 1 !important;
+}
+
+.wp-stage-shell-header > [data-wp-return="stage"] > .wp-shell-return-arrow {
+  color: var(--wp-stage-return-arrow-color, #176a9d) !important;
+  opacity: 1 !important;
+}
+
+.wp-shell-return[data-wp-return="stage"],
+.wp-shell-return[data-wp-return="stage"] > .wp-shell-return-arrow,
+.wp-shell-return[data-wp-return="battle"],
+.wp-shell-return[data-wp-return="battle"] > .wp-shell-return-arrow {
+  color: var(--wp-scene-return-arrow-color, #176a9d) !important;
+  opacity: 1 !important;
+}
+
+.wp-shell-settings {
+  grid-column: 3;
+  justify-self: end;
+  position: relative;
+  z-index: 40;
+}
+
+.wp-shell-settings-button {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border: 1px solid color-mix(in srgb, currentColor 34%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, #071426 88%, transparent);
+  color: #fff;
+  box-shadow: 0 8px 22px #0005;
+  cursor: pointer;
+}
+
+.wp-shell-settings-button svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.wp-shell-settings-button:focus-visible,
+.wp-shell-settings-popover :is(button, select, input):focus-visible {
+  outline: 3px solid #66e6bd;
+  outline-offset: 2px;
+}
+
+.wp-shell-settings-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(280px, calc(100vw - 24px));
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #ffffff42;
+  border-radius: 16px;
+  background: #071426;
+  color: #fff;
+  box-shadow: 0 18px 45px #0009;
+  text-align: start;
+}
+
+.wp-shell-settings-popover[hidden] {
+  display: none !important;
+}
+
+/* In RTL Main headers the Settings control occupies the physical left edge;
+   open its popover inward so every control stays inside the play envelope. */
+:dir(rtl) .wp-main-shell-header > .wp-shell-settings > .wp-shell-settings-popover {
+  right: auto;
+  left: 0;
+  transform-origin: top left;
+}
+
+.wp-shell-settings-title {
+  font: 900 16px/1.2 system-ui, sans-serif;
+}
+
+.wp-shell-settings-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font: 800 13px/1.25 system-ui, sans-serif;
+}
+
+.wp-shell-settings-row[hidden] {
+  display: none !important;
+}
+
+.wp-shell-settings-row > span:first-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.wp-shell-language-row > :not(span:first-child) {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  width: 144px !important;
+  max-width: 144px !important;
+}
+
+.wp-shell-language-row > :not(span:first-child) > span {
+  display: none !important;
+}
+
+.wp-shell-settings-row select {
+  width: 144px !important;
+  max-width: 144px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  border: 1px solid #ffffff42 !important;
+  border-radius: 10px !important;
+  background: #10233c !important;
+  color: #fff !important;
+  padding: 0 10px !important;
+}
+
+.wp-shell-volume-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+
+.wp-shell-volume-control input[type="range"] {
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  margin: 0;
+  accent-color: #66e6bd;
+  cursor: pointer;
+}
+
+.wp-shell-volume-control output {
+  color: #dffdf4;
+  font: 800 12px/1 system-ui, sans-serif;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-shell-combined-sound-row {
+  grid-template-columns: minmax(0, 1fr) 52px;
+  align-items: center;
+  gap: 12px;
+}
+
+.wp-shell-combined-sound-toggle {
+  position: relative;
+  width: 52px;
+  min-width: 52px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: 1px solid #ffffff52;
+  border-radius: 999px;
+  background: #34445a;
+  cursor: pointer;
+}
+
+.wp-shell-combined-sound-toggle::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 7px #0007;
+  transition: transform 160ms ease;
+}
+
+.wp-shell-combined-sound-toggle[aria-checked="true"] {
+  border-color: #66e6bd;
+  background: #1f9b79;
+}
+
+.wp-shell-combined-sound-toggle[aria-checked="true"]::after {
+  transform: translateX(22px);
+}
+
+/* Stage themes must not resize controls nested inside the Settings popover. */
+.wp-stage-shell-header .wp-shell-settings-popover .wp-shell-settings-title {
+  font: 900 16px/1.2 system-ui, sans-serif !important;
+}
+
+.wp-stage-shell-header .wp-shell-settings-popover .wp-shell-combined-sound-toggle {
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
+.wp-shell-legacy-control {
+  display: none !important;
+}
+
+/* sound.js injects its rule after the static styles; keep the retired floating
+   control hidden once Settings owns the combined sound switch. */
+.sound-toggle.wp-shell-legacy-control {
+  display: none !important;
+}
+
+.wp-shell-settings-extra {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  position: static !important;
+}
+
+.wp-stage-shell-header {
+  --wp-frame-play-header-height: 56px;
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 80 !important;
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: var(--wp-frame-play-header-height, 48px) !important;
+  min-height: var(--wp-frame-play-header-height, 48px) !important;
+  padding: 0 4px !important;
+  overflow: visible !important;
+}
+
+.wp-stage-shell-header:has(> .wp-stage-header-action) {
+  grid-template-columns: 48px minmax(0, 1fr) minmax(96px, auto) 48px !important;
+}
+
+.wp-stage-shell-header > .wp-stage-header-action {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end;
+  width: auto !important;
+  min-width: 96px !important;
+  max-width: min(148px, 32vw) !important;
+  margin: 0 !important;
+  white-space: normal !important;
+}
+
+.wp-stage-shell-header:has(> .wp-stage-header-action) > .wp-shell-settings {
+  grid-column: 4;
+}
+
+/* Battle screens without a recognized native header receive this overlay.
+   It must never participate in the Battle grid, or the adopted return action
+   can become a final row underneath the play controls. */
+body.wp-shell-battle-active .wp-generated-battle-header {
+  box-sizing: border-box !important;
+  position: absolute !important;
+  z-index: 90 !important;
+  inset: 8px auto auto 8px !important;
+  display: block !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battle"] {
+  position: static !important;
+  inset: auto !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  transform: none !important;
+  pointer-events: auto;
+}
+
+.wp-stage-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control):not(.wp-stage-header-action) {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  margin: 0 !important;
+  overflow: hidden;
+  text-align: center !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Animal Sanctuary Loop's adopted title must remain complete at the phone and
+   short-landscape Stage envelopes. Its former decorative mascot occupied the
+   Settings column and made the shared ellipsis rule look like a valid layout. */
+body[data-game-id="animal-sanctuary-loop"] .wp-stage-shell-header > strong {
+  overflow: visible !important;
+  overflow-wrap: anywhere;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  line-height: 1.05 !important;
+}
+
+body[data-game-id="animal-sanctuary-loop"] .wp-stage-shell-header > img {
+  display: none !important;
+}
+
+.wp-stage-shell-header > :is(h1, h2, strong) {
+  font: 800 22px/1.2 system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+body.wp-shell-main-active .wp-standard-main-screen {
+  box-sizing: border-box !important;
+  display: block;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  grid-template: none !important;
+  width: min(100%, 920px) !important;
+  max-width: 920px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-flow-owner,
+body.wp-kids-audience.wp-shell-main-active .wp-standard-main-flow-owner {
+  box-sizing: border-box !important;
+  display: block !important;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  height: auto !important;
+  min-height: var(--wp-main-flow-min-height, 0px) !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-flow-owner[hidden] {
+  display: none !important;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-flow-owner .wp-standard-main-flow-node,
+body.wp-kids-audience.wp-shell-main-active .wp-standard-main-flow-owner .wp-standard-main-flow-node {
+  box-sizing: border-box !important;
+  display: block !important;
+  position: relative !important;
+  inset: auto !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  transform-origin: center !important;
+  width: 100% !important;
+  max-width: 920px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin-inline: auto !important;
+  overflow: visible !important;
+}
+
+.wp-standard-main-composition {
+  box-sizing: border-box;
+  flex: 0 0 100% !important;
+  grid-column: 1 / -1;
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: 420px minmax(0, 1fr) !important;
+  align-items: center;
+  gap: clamp(16px, 3vw, 28px);
+  margin: 0 !important;
+  padding: clamp(12px, 2.5vw, 22px) !important;
+}
+
+/* General Main content must stay readable even when a game's native theme
+   only supplies a dark map or table background. Keep this surface outside the
+   Kids branch: Kids has its own age-fit Main treatment. */
+body:not(.wp-kids-audience) .wp-main-shell-header,
+body:not(.wp-kids-audience) .wp-standard-main-composition {
+  color: #f8fafc;
+}
+
+body:not(.wp-kids-audience) .wp-main-shell-header > :is(.wp-generated-main-title, .wp-shell-main-title, h1, h2, strong) {
+  color: #f8fafc !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .28);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-composition {
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(7, 20, 38, .98), rgba(13, 49, 65, .96));
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 24px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .28);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-poster {
+  background: #0b1d35;
+  border: 1px solid rgba(255, 255, 255, .16);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-copy {
+  color: #f8fafc;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-summary {
+  color: #e7f0fa;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .28);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-start,
+body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start] {
+  appearance: none;
+  border: 0 !important;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffeaa0, #ffbf42) !important;
+  color: #241a08 !important;
+  font: 900 16px/1.2 system-ui, sans-serif !important;
+  box-shadow: 0 10px 22px rgba(255, 191, 66, .22);
+  cursor: pointer;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-start:hover,
+body:not(.wp-kids-audience) .wp-standard-main-start:focus-visible,
+body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:hover,
+body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:focus-visible {
+  filter: brightness(1.04);
+  outline: 3px solid rgba(255, 234, 160, .42);
+  outline-offset: 2px;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .12);
+  color: #f8fafc;
+  font: 800 14px/1.2 system-ui, sans-serif;
+}
+
+.wp-standard-main-poster {
+  width: 420px;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.wp-standard-main-poster-media,
+.wp-standard-main-poster-media > img,
+.wp-standard-main-poster > img {
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 420px !important;
+  min-width: 420px !important;
+  max-width: 420px !important;
+  height: 420px !important;
+  min-height: 420px !important;
+  max-height: 420px !important;
+  aspect-ratio: 1 !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  border-radius: inherit;
+}
+
+.wp-standard-main-copy {
+  min-width: 0;
+  height: 420px;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: center;
+  gap: 14px;
+}
+
+@media (min-width: 700px) and (max-height: 560px) {
+  .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: var(--wp-main-poster-size, 420px);
+    grid-template-columns:
+      var(--wp-main-landscape-poster-size)
+      minmax(0, 1fr) !important;
+  }
+
+  /* Casino's v18 Main poster must use the canonical 300px wide-layout column
+     at 844x390 while retaining the shared responsive shell elsewhere. */
+  body[data-wp-card-game="casino"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Crazy Eights' v12 Main uses the same canonical wide-layout poster
+     column, keeping its 844x390 composition at exactly 300px. */
+  body[data-wp-card-game="crazy-eights"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Go Fish v21 uses the canonical 300px wide-layout poster column at the
+     governed compact-landscape viewport, matching its exact Interface 6
+     acceptance contract without changing other card-game shells. */
+  body[data-wp-card-game="go-fish"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Trap Trail v15 uses the shared canonical 420px wide-layout poster column
+     at compact landscape so the current Interface 6 contract remains
+     consistent with the standard composition. */
+  body[data-wp-five-game="animal-trap-trail"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  /* Flip Foundry uses the canonical 420px wide-layout poster column in
+     compact landscape, matching the shared Main acceptance contract. */
+  body[data-wp-five-game="animal-flip-foundry"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  /* Spectrum Pulse v17 keeps the governed compact-landscape Main poster on
+     the canonical 420px column instead of the height-derived 310px clamp. */
+  body[data-wp-game-id="animal-spectrum-pulse"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  /* Ring Garden's exact Interface 6 issue contract requires the canonical
+     420px wide-layout poster even in the 844x390 compact-landscape viewport;
+     do not shrink this candidate to the generic height-derived 310px size. */
+  body[data-wp-game-id="animal-ring-garden"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  /* Balance Grove's exact Main issue contract keeps its 420px poster column
+     in compact landscape; the general height clamp would otherwise produce
+     the measured 310px poster. */
+  body[data-wp-game-id="animal-balance-grove"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  body[data-wp-game-id="animal-spectrum-pulse"] .stage-canvas {
+    grid-template-rows: 58px 44px minmax(0, 1fr) !important;
+  }
+
+  /* Maze Chase uses the shared standard Main composition after its native
+     classic shell is normalized. Keep its compact landscape poster column at
+     the exact Interface 6 acceptance size without changing other chase games. */
+  body[data-game-id="maze-chase"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Snake uses the shared Main composition after the legacy arcade shell is
+     normalized. Keep its compact landscape poster at the canonical 420px
+     wide-layout size without changing other popular-game posters. */
+  body[data-game-id="snake"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  /* Space Rocks uses the shared Main composition after the legacy arcade
+     shell is normalized. Keep its compact landscape poster on the canonical
+     420px wide-layout column without changing other chase-game posters. */
+  body[data-game-id="space-rocks"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  /* TriPeaks v23 keeps the compact-landscape Main poster on the canonical
+     300px column without changing Classic Solitaire's other viewports. */
+  body[data-wp-game-id="tripeaks-solitaire"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Golf Solitaire v20 keeps the compact-landscape Main poster at the
+     exact Interface 6 acceptance size without changing other card games. */
+  body[data-wp-game-id="golf-solitaire"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Gin Rummy v14 keeps the compact-landscape Main poster on the canonical
+     300px column without changing its phone or desktop composition. */
+  body[data-wp-game-id="gin-rummy"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Wonder Crash v19 follows the current width-based 420px Main contract;
+     short landscape scrolls rather than shrinking its poster. */
+  body[data-wp-game-id="wonder-crash"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  /* Hearts v14 fixes the exact Main poster column measured at 310px in the
+     governed 844x390 landscape viewport while preserving other card-game
+     breakpoints and the shared 420px desktop column. */
+  body[data-wp-card-game="hearts"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Speed v13 uses the canonical 300px wide-layout poster column at the
+     governed compact-landscape viewport while preserving its shared 420px
+     desktop column and all other responsive breakpoints. */
+  body[data-wp-card-game="speed"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Number Match uses the canonical 300px wide-layout poster column at the
+     governed compact-landscape viewport while preserving phone and desktop
+     composition. */
+  body[data-wp-game-id="animal-number-match"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* War v9 uses the same canonical 300px wide-layout poster column at the
+     governed compact-landscape viewport; keep its Main shell inside the
+     exact Interface 6 canvas without changing other card games. */
+  body[data-wp-game-id="war"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Road Crosser v20/I7 uses the canonical 420px wide-layout poster column at
+     the governed compact-landscape viewport without changing its desktop or
+     phone composition. */
+  body[data-wp-game-id="road-crosser"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  .wp-standard-main-poster,
+  .wp-standard-main-poster-media,
+  .wp-standard-main-poster-media > img,
+  .wp-standard-main-poster > img {
+    width: var(--wp-main-landscape-poster-size) !important;
+    min-width: var(--wp-main-landscape-poster-size) !important;
+    max-width: var(--wp-main-landscape-poster-size) !important;
+    height: var(--wp-main-landscape-poster-size) !important;
+    min-height: var(--wp-main-landscape-poster-size) !important;
+    max-height: var(--wp-main-landscape-poster-size) !important;
+  }
+
+  .wp-standard-main-copy {
+    height: var(--wp-main-landscape-poster-size);
+  }
+}
+
+/* Trap Trail has four chapters rather than a long map. Keep every enabled
+   chapter centre inside the owning rail after the recommended final chapter
+   is centred; the rail remains horizontally draggable for the shared Stage
+   contract without leaving an enabled button in its clipped gutter. */
+body[data-wp-game-id="animal-trap-trail"].wp-stage-select-active [data-wp-logical-stage-canvas] .stage-list,
+body[data-wp-game-id="animal-trap-trail"].wp-stage-select-active [data-wp-logical-stage-canvas] .stage-rail {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: 0 !important;
+}
+
+body[data-wp-game-id="animal-trap-trail"].wp-stage-select-active [data-wp-logical-stage-canvas] {
+  padding: 8px !important;
+}
+
+body[data-wp-game-id="animal-trap-trail"] .stage-list > .wp-stage-card-clipped {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.wp-standard-main-copy > * {
+  grid-column: 1 !important;
+}
+
+.wp-standard-main-summary {
+  display: block !important;
+  margin: 0 !important;
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.55;
+}
+
+.wp-standard-main-progress {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+  height: 44px !important;
+  min-height: 0 !important;
+  max-height: 44px !important;
+  padding-block: 0 !important;
+  overflow: hidden;
+  margin: 0 !important;
+}
+
+.wp-standard-main-start,
+.wp-standard-main-copy > [data-wp-main-start] {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  margin: 0 !important;
+}
+
+.wp-main-legacy-layout {
+  display: none !important;
+}
+
+body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-standard-main-composition {
+  display: none !important;
+}
+
+/* Main owns a document-flow page so the complete public guide remains
+   reachable. Contain the browser edge without disabling vertical scrolling;
+   Stage/Battle below use the stronger active-play lock. */
+html:has(body.wp-shell-main-active),
+html.wp-shell-main-flow {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior-y: contain !important;
+  touch-action: pan-y !important;
+}
+
+body.wp-shell-main-active {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100vh !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior-y: contain !important;
+  touch-action: pan-y !important;
+}
+
+/* Active play owns the browser edge. A downward gesture must stay inside the
+   Stage/Battle surface instead of handing control to document scrolling or
+   mobile pull-to-refresh. The fallback class is maintained by the shared
+   Shell runtime for browsers without :has support. */
+html:has(body:is(.wp-shell-stage-active, .wp-shell-battle-active)),
+html.wp-shell-active-play {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+body:is(.wp-shell-stage-active, .wp-shell-battle-active) {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+/* game-page-info.css intentionally restores document flow for Main and has a
+   more specific selector. These explicit active-play selectors keep that
+   Main-only rule from reopening the browser edge during a live scene. */
+html.has-game-page-info:has(body.wp-shell-stage-active),
+html.has-game-page-info:has(body.wp-shell-battle-active),
+html:has(body.has-game-page-info.wp-shell-stage-active),
+html:has(body.has-game-page-info.wp-shell-battle-active),
+html:not(.wp-mobile-game-mode):has(body.has-game-page-info.wp-shell-stage-active:not(.wp-mobile-game-mode):not(.zoo-playing)),
+html:not(.wp-mobile-game-mode):has(body.has-game-page-info.wp-shell-battle-active:not(.wp-mobile-game-mode):not(.zoo-playing)) {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+body.has-game-page-info.wp-shell-stage-active:not(.wp-mobile-game-mode):not(.zoo-playing),
+body.has-game-page-info.wp-shell-battle-active:not(.wp-mobile-game-mode):not(.zoo-playing),
+body.has-game-page-info.wp-shell-stage-active,
+body.has-game-page-info.wp-shell-battle-active {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  position: fixed !important;
+  inset: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+/* The shared Battle canvas owns the full viewport minus one fixed ad-safe
+   reserve. Prevent a flex parent from shrinking that reserve by a fractional
+   pixel when a game-specific Battle surface also has a border. */
+body.wp-shell-battle-active .play-reserve {
+  flex: 0 0 var(--wp-ad-reserve-height, 0px) !important;
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
+}
+
+body:is(.wp-shell-stage-active, .wp-shell-battle-active)
+  :is(.game-page-info, .public-guide, .game-guide, .guide) {
+  display: none !important;
+}
+
+.public-guide.guide {
+  width: 100%;
+  margin-top: 16px;
+  padding: clamp(18px, 4vw, 32px);
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 22px;
+  background: color-mix(in srgb, #071426 88%, transparent);
+  color: #f8fafc;
+  text-align: start;
+}
+
+.public-guide.guide h2 {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 4vw, 30px);
+}
+
+.public-guide.guide p {
+  margin: 0;
+  line-height: 1.65;
+}
+
+.wp-stage-shell-header > .wp-shell-settings {
+  position: relative;
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  top: auto;
+  right: auto;
+}
+
+.wp-stage-shell-header > .wp-shell-settings .wp-shell-language-row {
+  display: none;
+}
+
+/* In RTL the Stage return control remains on the physical right, so the
+   shared Settings control must occupy the physical left and open inward.
+   Stage is a transformed logical Canvas; the popover itself is scaled back
+   to physical size below, therefore its physical edge must be explicit. */
+:dir(rtl)
+  .wp-stage-shell-header
+  > .wp-shell-settings
+  > .wp-shell-settings-popover {
+  right: auto !important;
+  left: 0 !important;
+  transform-origin: top left !important;
+}
+
+/* The Stage header belongs to the uniformly scaled logical Canvas, but its
+   open Settings surface is physical UI. Cancel the parent Canvas scale so
+   short-landscape labels and controls remain readable and operable. */
+body.wp-stage-select-active
+  [data-wp-logical-stage-canvas]
+.wp-stage-shell-header
+  > .wp-shell-settings
+  > .wp-shell-settings-popover {
+  transform: scale(var(--wp-stage-canvas-inverse-scale, 1)) !important;
+  transform-origin: top right !important;
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  .wp-stage-shell-header
+    > .wp-shell-settings[data-wp-popover-edge="left"]
+    > .wp-shell-settings-popover {
+    right: auto !important;
+    left: 0 !important;
+    transform-origin: top left !important;
+  }
+}
+
+@media (max-width: 699px) {
+  .wp-main-shell-header > .wp-shell-main-title,
+  .wp-stage-shell-header > :is(h1, h2, strong) {
+    font-size: 20px !important;
+  }
+
+  .wp-main-shell-header {
+    grid-template-columns: 58px minmax(0, 1fr) 58px !important;
+    gap: 4px !important;
+  }
+
+  .wp-stage-shell-header:has(> .wp-stage-header-action) > :is(h1, h2, strong) {
+    font-size: 16px !important;
+    line-height: 1.05 !important;
+    text-overflow: clip;
+    white-space: normal !important;
+  }
+
+  .wp-shell-return {
+    width: 58px !important;
+    min-width: 58px !important;
+    height: 48px !important;
+  }
+
+  .wp-shell-settings-button {
+    width: 48px;
+    min-width: 48px;
+  }
+
+  .wp-standard-main-composition {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px;
+    padding: 10px !important;
+  }
+
+  .wp-standard-main-poster {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .wp-standard-main-copy {
+    height: auto;
+  }
+
+  .wp-standard-main-poster-media,
+  .wp-standard-main-poster-media > img,
+  .wp-standard-main-poster > img {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 1 !important;
+  }
+}
+
+/*
+ * Kids game code owns scene activation through its native hidden state.
+ * Several legacy screen rules also declare !important display values, so keep
+ * native hidden authoritative without deriving visibility from the shell's
+ * later observer-owned active class (which would create a feedback loop).
+ */
+body.wp-kids-audience
+  :is([data-screen], #mainScreen, #stageScreen, #battleScreen).hidden,
+body.wp-kids-audience
+  :is([data-screen], #mainScreen, #stageScreen, #battleScreen)[hidden] {
+  display: none !important;
+}
+
+/* The market-five Main keeps its authored compact composition but still
+   participates in the shared Main contract. */
+body[data-wp-market-game] .m5-progress {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  box-sizing: border-box;
+}
+
+/* Interface 7 universal compatibility skin.  Legacy game content remains
+ * game-owned, but every route consumes the same frame tokens and controls as
+ * the explicit WeightPlayScreenFrame adopters. */
+html[data-wp-shared-interface="7"] body {
+  background: var(--wp-ui-background-image) center top / 1440px 960px repeat var(--wp-ui-background) !important;
+  color: var(--wp-ui-text) !important;
+}
+
+html[data-wp-shared-interface="7"] body
+  :is(.wp-main-shell-header, .wp-stage-shell-header, .wp-shell-header,
+      .wp-generated-main-header, .wp-generated-stage-header) {
+  box-sizing: border-box !important;
+  background: var(--wp-ui-header-image) !important;
+  color: var(--wp-ui-text) !important;
+  border: 2px solid var(--wp-ui-line) !important;
+  border-radius: var(--wp-ui-radius) !important;
+  box-shadow: inset 0 2px 0 var(--wp-ui-highlight), 0 3px 0 var(--wp-ui-shadow) !important;
+}
+
+html[data-wp-shared-interface="7"] body
+  :is(.wp-shell-return, .wp-shell-settings-button) {
+  border: 2px solid var(--wp-ui-line) !important;
+  border-radius: var(--wp-ui-radius) !important;
+  background: var(--wp-ui-button-image) !important;
+  color: var(--wp-ui-text) !important;
+  box-shadow: inset 0 2px 0 var(--wp-ui-highlight), 0 3px 0 var(--wp-ui-shadow) !important;
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-return-arrow {
+  color: var(--wp-ui-text) !important;
+  font-weight: 900 !important;
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-settings-button {
+  font-size: 0 !important;
+  overflow: hidden !important;
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-settings-button svg {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-settings-button::before {
+  content: "";
+  display: block;
+  width: 25px;
+  height: 25px;
+  background: var(--wp-ui-text);
+  -webkit-mask: var(--wp-ui-settings-image) center / contain no-repeat;
+  mask: var(--wp-ui-settings-image) center / contain no-repeat;
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-combined-sound-toggle {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  border: 2px solid var(--wp-ui-line) !important;
+  border-radius: var(--wp-ui-radius) !important;
+  background: var(--wp-ui-button-image) !important;
+  box-shadow: inset 0 2px 0 var(--wp-ui-highlight), 0 3px 0 var(--wp-ui-shadow) !important;
+  font-size: 0 !important;
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-combined-sound-toggle::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: auto;
+  background: var(--wp-ui-text);
+  -webkit-mask: var(--wp-ui-sound-on-image) center / contain no-repeat;
+  mask: var(--wp-ui-sound-on-image) center / contain no-repeat;
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-combined-sound-toggle[aria-checked="false"]::before {
+  -webkit-mask-image: var(--wp-ui-sound-off-image);
+  mask-image: var(--wp-ui-sound-off-image);
+}
+
+html[data-wp-shared-interface="7"] body .wp-shell-combined-sound-toggle::after {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body.wp-shell-main-active [data-weightplay-version] {
+  display: none !important;
+}
+
+/* Native compatibility headers share one control track. HUD content remains game-owned. */
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row) {
+  --wp-frame-play-header-height:56px;
+  box-sizing:border-box!important; display:flex!important; align-items:center!important;
+  gap:8px!important; width:100%!important; height:var(--wp-frame-play-header-height)!important;
+  min-height:var(--wp-frame-play-header-height)!important; margin:0!important; padding:0 4px!important;
+  background:var(--wp-ui-header-image)!important; color:var(--wp-ui-text)!important;
+  border:0!important; border-radius:var(--wp-ui-radius)!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header > [data-wp-return="battle"] {
+  flex:0 0 var(--wp-frame-control-size)!important; width:var(--wp-frame-control-size)!important;
+  min-width:var(--wp-frame-control-size)!important; max-width:var(--wp-frame-control-size)!important;
+  height:var(--wp-frame-control-size)!important; min-height:var(--wp-frame-control-size)!important;
+  max-height:var(--wp-frame-control-size)!important; margin:0!important; padding:0!important;
+}
+
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) {
+  display:grid!important;
+  grid-template-columns:var(--wp-frame-control-size) minmax(0,1fr) var(--wp-frame-control-size)!important;
+  align-items:center!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) > [data-wp-return="battle"] {
+  grid-column:1!important;grid-row:1!important;justify-self:start!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) > [data-wp-battle-utility] {
+  grid-column:3!important;grid-row:1!important;justify-self:end!important;
+  box-sizing:border-box!important;width:var(--wp-frame-control-size)!important;min-width:var(--wp-frame-control-size)!important;max-width:var(--wp-frame-control-size)!important;
+  height:var(--wp-frame-control-size)!important;min-height:var(--wp-frame-control-size)!important;max-height:var(--wp-frame-control-size)!important;
+  margin:0!important;
+}
+html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(> [data-wp-battle-utility]) > :not([data-wp-return="battle"]):not([data-wp-battle-utility]) {
+  grid-column:2!important;grid-row:1!important;min-width:0!important;width:100%!important;margin:0!important;text-align:center!important;
+}
+
+.wp-stage-shell-header > [data-wp-shell-info] {
+  grid-column:2!important;grid-row:1!important;
+  box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:none!important;
+  height:var(--wp-frame-control-size,48px)!important;min-height:var(--wp-frame-control-size,48px)!important;
+  margin:0!important;padding:0 8px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;
+  overflow:hidden!important;
+}
+.wp-stage-shell-header > [data-wp-shell-info] > * {min-width:0!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+
+/* Play names are Main-owned; explicitly declared live HUD fields remain visible. */
+html[data-wp-shared-interface="7"] body :is(.wp-stage-shell-header,.wp-battle-shell-header) :is([data-wp-game-title],.wp-shell-main-title,.wp-generated-main-title):not([data-wp-frame-info]):not([data-wp-frame-stat]) {display:none!important}

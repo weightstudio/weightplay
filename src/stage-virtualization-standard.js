@@ -51,7 +51,7 @@
 
     const selector = options.cardSelector || CARD_SELECTOR;
     // Data-backed clients retain a fixed pool, not one hidden source DOM per
-    // stage. The legacy DOM adapter remains available to existing games.
+    // stage. The frame's automatic DOM normalization remains available to existing games.
     const dataBacked = typeof options.bind === "function";
     const poolSize = Math.max(1, Number(options.poolSize) || DEFAULT_POOL_SIZE);
     let sources = [];

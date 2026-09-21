@@ -263,6 +263,7 @@
     if (name === "main") requestAnimationFrame(() => $("startBtn").focus({preventScroll:true}));
     if (name === "stage") {
       renderStage();
+      window.queueDiceBastionStageArtwork?.();
       setStagePanel("stages", false);
       centerStage(Math.min(save.unlocked - 1, 29));
     }
