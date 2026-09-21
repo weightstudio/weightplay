@@ -1,0 +1,135 @@
+/* Interface 7 compatibility cleanup for Bridge Workshop.
+ * Scoped to legacy v6 markup; this does not claim full Interface 7 migration.
+ */
+:root {
+  --reserve: var(--wp-ad-reserve-height, 0px);
+}
+
+/* Battle owns the complete active play Canvas. Main header controls leave the
+   rendered/focus surface while Battle is active; Battle keeps its own return
+   and utility nodes instead of borrowing or retagging Main controls. */
+body:has(#battleScreen.active) > .shell > .topbar.wp-main-shell-header {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleScreen.active {
+  height: calc(100dvh - var(--wp-ad-reserve-height, 0px));
+  overflow: auto;
+  background: var(--wp-ui-shell, #17243a);
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleScreen.active > .card {
+  width: min(100%, 920px);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 0 12px 16px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--wp-ui-shell, #17243a);
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .battle-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  grid-template-rows: 48px auto auto;
+  column-gap: 8px;
+  row-gap: 0;
+  min-height: 48px;
+  align-items: center;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .battle-head > div {
+  display: contents;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleBack {
+  grid-column: 1;
+  grid-row: 1;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  align-self: center;
+  justify-self: start;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #chapterLabel {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  margin: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleSettingsButton {
+  grid-column: 3;
+  grid-row: 1;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  align-self: center;
+  justify-self: end;
+}
+
+/* Crossing name and objective are Battle-owned content below the title-free
+   48px top track, not a repeated game/page title in the shared header. */
+body[data-wp-game-id="animal-bridge-workshop"] #stageTitle {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin-top: 8px;
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #stageGoal {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin-top: 4px;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .workspace {
+  margin-top: 12px;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleSettingsPopover {
+  position: absolute;
+  z-index: 50;
+  top: 48px;
+  right: 0;
+  width: min(220px, calc(100vw - 24px));
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleSettingsPopover[hidden] {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-bridge-workshop"] #battleSettingsPopover #battleSoundButton {
+  width: 100%;
+  min-height: 44px;
+}
+
+/* The legacy reserve node follows the shared per-game layout variable only;
+   bannerAds:false therefore contributes exactly zero height and no phantom gap. */
+body[data-wp-game-id="animal-bridge-workshop"] .battle-ad-reserve {
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+}
+
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen.active > .card {
+    padding-inline: 16px;
+  }
+}
