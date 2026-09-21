@@ -12,3 +12,17 @@ button{white-space:nowrap}.modal-dialog[hidden]{display:none!important}
 .result-orla{width:min(38vw,150px);max-height:150px;margin:0 auto 8px}
 .modal-dialog{display:none}.modal-dialog.is-open{display:block}
 .wp-shell-main-title{pointer-events:none}
+
+/* Keep the complete framing workspace inside the governed Battle canvas. */
+.battle-screen .battle-content{box-sizing:border-box;height:calc(100% - 60px);min-height:0;padding:6px 18px 8px;gap:6px;overflow:hidden}
+.battle-screen .battle-heading h1{margin-bottom:4px;font-size:clamp(1.45rem,4vw,2.25rem)}
+.battle-screen .clue-card{margin:0;padding:10px 12px}
+.battle-screen .clue-card h2{margin-bottom:3px}
+.battle-screen .clue-text,.battle-screen .decoy-text{margin:2px 0;line-height:1.25}
+.battle-screen .scene-wrap{width:min(100%,300px);margin:0 auto;padding:8px}
+.battle-screen .postcard-frame{left:8px;top:8px;width:calc((100% - 22px)/2);height:calc((100% - 22px)/2)}
+.battle-screen .status{min-height:24px;margin:0}
+.battle-screen .move-controls{margin:0}
+.battle-screen .move-controls .secondary-button{min-height:44px;padding:8px 10px}
+.battle-screen .battle-actions{margin:0}
+.battle-screen .battle-actions button{min-height:48px}

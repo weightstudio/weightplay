@@ -152,7 +152,7 @@
       const localizedHint = copy(hintKey);
       const title = localizedTitle === titleKey ? board.title : localizedTitle;
       const hint = localizedHint === hintKey ? board.hint : localizedHint;
-      return `<button class="stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span><strong>Arc ${board.arc} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></button>`;
+      return `<button class="stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span><strong>${copy("arcLabel", { number: board.arc })} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></button>`;
     }).join("");
     $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startBoard(Number(button.dataset.stage))));
   };
@@ -164,7 +164,7 @@
     const localizedTitle = copy(titleKey);
     const localizedHint = copy(hintKey);
     $("roundHint").textContent = `${localizedTitle === titleKey ? board.title : localizedTitle} · ${localizedHint === hintKey ? board.hint : localizedHint}`;
-    $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length }).replaceAll("/3", "/" + boards.length);
+    $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length, total: boards.length });
     $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
     $("battleStatus").classList.toggle("error", state.statusError);
     renderBoard();
@@ -246,7 +246,7 @@
     $("soundBtn").setAttribute("aria-pressed", String(state.sound));
     $("battleSoundBtn").setAttribute("aria-label", copy("soundOn"));
     $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + boards.length);
+    $("mainProgress").textContent = copy("progress", { count: state.completed.length, total: boards.length });
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
   };
@@ -266,12 +266,22 @@
   const applyLocale = (locale) => { state.locale = normalizeLocale(locale) || "en"; safeSet("weightplay-locale", state.locale); safeSet("weightPlayLocale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
   const openLeaveDialog = () => { $("leaveDialog").hidden = false; $("cancelLeaveBtn").focus(); };
   const closeLeaveDialog = () => { $("leaveDialog").hidden = true; $("leaveBtn").focus(); };
+  const settingButtons = () => [...document.querySelectorAll("[data-wp-settings]")];
+  const setSettingsOpen = (open) => {
+    $("settingsPanel").hidden = !open;
+    settingButtons().forEach((button) => button.setAttribute("aria-expanded", String(open)));
+  };
+  const bindSettingsButtons = () => settingButtons().forEach((button) => {
+    if (button.dataset.tangleSettingsBound) return;
+    button.dataset.tangleSettingsBound = "true";
+    button.addEventListener("click", () => setSettingsOpen($("settingsPanel").hidden));
+  });
   const bind = () => {
     $("startBtn").addEventListener("click", () => setScreen("stage"));
     $("guideStartBtn").addEventListener("click", () => setScreen("stage"));
     $("mapBtn").addEventListener("click", () => setScreen("stage"));
-    $("mainSettingsBtn").addEventListener("click", () => { const open = $("settingsPanel").hidden; $("settingsPanel").hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); });
-    $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("mainSettingsBtn").setAttribute("aria-expanded", "false"); });
+    bindSettingsButtons();
+    $("closeSettingsBtn").addEventListener("click", () => setSettingsOpen(false));
     $("stageBackBtn").addEventListener("click", () => setScreen("main"));
     $("stageInfoBtn").addEventListener("click", () => { setScreen("main"); $("guideScreen").open = true; $("guideScreen").scrollIntoView({ block: "start" }); });
     $("battleBackBtn").addEventListener("click", () => setScreen("stage"));

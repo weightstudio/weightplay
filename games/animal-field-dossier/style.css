@@ -87,11 +87,19 @@ button { cursor:pointer; }
   .guide-card { padding:16px; }
   .guide-steps { display:grid; gap:6px; }
   .battle-screen { width:100%; }
-  .battle-header { padding:8px 10px; }
-  .case-shell { width:calc(100% - 16px); padding:16px 12px; }
+  .battle-header { padding:4px 6px; }
+  .case-shell { width:calc(100% - 16px); padding:10px 12px; }
+  .case-intro { padding:8px 10px; }
+  .case-setting { margin-bottom:2px; font-size:16px; }
+  .case-prompt { font-size:13px; line-height:1.25; }
+  .section-heading { margin:10px 0 6px; }
   .evidence-grid, .plan-grid { grid-template-columns:1fr; }
-  .evidence-card, .plan-card { min-height:72px; }
+  .evidence-grid, .plan-grid { gap:6px; }
+  .evidence-card, .plan-card { min-height:58px; padding:8px 10px; }
   .evidence-card strong, .plan-card strong { margin-bottom:3px; }
+  .evidence-card span, .plan-card span { line-height:1.2; }
+  .battle-feedback { min-height:32px; margin:8px 0 2px; padding:5px 8px; font-size:13px; }
+  .text-button { min-height:40px; }
   .overlay-card { width:calc(100% - 22px); }
 }
 @media (min-width:701px) {

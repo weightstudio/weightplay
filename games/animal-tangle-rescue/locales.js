@@ -39,9 +39,37 @@
     ar: { loading: "جارٍ تجهيز خريطة الإنقاذ…", brand: "WeightPlay", lobbyBack: "العودة إلى WeightPlay", kicker: "خريطة إنقاذ تارو ذي صدفة الطحلب", help: "طريقة اللعب", sound: "الصوت", boardKicker: "لوحة الإنقاذ", boardTitle: "لوحة أطراف الأغصان", current: "الطرف الحالي", noBest: "—", swapName: "الطرف {number}" },
   };
   Object.entries(completeness).forEach(([locale, copy]) => Object.assign(locales[locale], copy));
+  const finalTitles = {
+    en: "All shelters are connected", "zh-Hant": "所有棲所都已連線", "zh-Hans": "所有栖所都已连线", ja: "すべてのすみかがつながりました", ko: "모든 보금자리가 연결됐어요", es: "Todos los refugios están conectados", "pt-BR": "Todos os abrigos estão conectados", fr: "Tous les refuges sont reliés", de: "Alle Verstecke sind verbunden", it: "Tutti i rifugi sono collegati", ru: "Все убежища соединены", hi: "सभी आश्रय जुड़ गए", ar: "اتصلت جميع المآوي"
+  };
+  const arcLabels = {
+    en: "Arc {number}", "zh-Hant": "弧線 {number}", "zh-Hans": "弧线 {number}", ja: "アーク {number}", ko: "아크 {number}", es: "Arco {number}", "pt-BR": "Arco {number}", fr: "Arc {number}", de: "Bogen {number}", it: "Arco {number}", ru: "Дуга {number}", hi: "आर्क {number}", ar: "القوس {number}"
+  };
+  Object.entries(finalTitles).forEach(([locale, value]) => { locales[locale].finalTitle = value; });
+  Object.entries(arcLabels).forEach(([locale, value]) => { locales[locale].arcLabel = value; });
+  const arBoardTitles = [
+    "ضفيرة الجدول", "منعطف السرخس", "معبر القمر", "المأوى الهادئ", "نقطة إنقاذ القوس الأول",
+    "المسار الخامس", "السرخس المغلق", "العبور الطويل", "الصف الأول الآمن", "نقطة تحقق المسار الخامس",
+    "المأوى المخفي", "زوج العليق", "القمر المغلق", "خدعتان", "نقطة تحقق الخدعة",
+    "الطرف السادس", "السرخس الثابت", "عبور سداسي", "قفل القمر", "نقطة تحقق الأطراف الستة",
+    "تبديل المآوي", "ضفيرة السرخس الطويلة", "زوج القمر المغلق", "المآوي البعيدة", "نقطة تحقق التبديل",
+    "الجدول الأخير", "السرخس الأخير المغلق", "نهاية العليق", "منعطف القمر الأخير", "نهاية إنقاذ تارو"
+  ];
+  const arBoardHints = [
+    "اقرأ أربعة أطراف قبل إجراء أول تبديل للإنقاذ.", "تحتاج ضفيرة ثانية من أربعة أطراف إلى ترتيب تبديل مختلف.", "يؤدي تبديلان إلى فكّ المسارات المتقاطعة.", "لا يطابق ترتيب المأوى ترتيب الأطراف.", "أكمل قوس الإنقاذ الأول ذي الأطراف الأربعة.",
+    "يضيف الطرف الخامس مسارًا آخر لقراءته.", "الطرف الثاني آمن بالفعل؛ اتركه دون تغيير.", "اتبع المسار الأطول قبل فحص المآوي الخمسة.", "حُل الصف الأول؛ فكّ تشابك الصفوف الأربعة الباقية.", "أنهِ إنقاذ الأطراف الخمسة دون إزعاج الصفوف الآمنة.",
+    "أحد المآوي خدعة؛ استنتج حيوانه من المسارات.", "تعبر خمسة حيوانات مرتين قبل وصولها إلى مآويها.", "الصف الأول مكتمل؛ حلّ حول المأوى المغلق.", "يخفي مأويان ملصقيهما؛ تكشف الأطراف المسار.", "أكمل قوس المأوى المخفي مع اتصال كل المسارات.",
+    "تجعل ستة أطراف رسم المسار أوسع.", "المأوى الثاني صحيح بالفعل؛ أبقه ثابتًا.", "فكّ تشابك ستة مسارات دون الاعتماد على دورة واحدة.", "المأوى الأول آمن بينما تتقاطع مساران خلفه.", "أكمل أول قوس إنقاذ كامل ذي ستة أطراف.",
+    "يجعل مأويان خدعة ترتيب التبديل أقل وضوحًا.", "يجب حل ستة مسارات مع بقاء كل صف قابلًا للاختيار.", "الصف الأول آمن؛ تخفي خدعة هدفًا في الوسط.", "أبقِ الأطراف واضحة بينما تتبادل المآوي البعيدة أماكنها.", "يكمل تبديل سداسي واضح القوس الخامس.",
+    "يجمع القوس الأخير ستة أطراف ومأوى مخفيًا.", "اترك المأوى الأول آمنًا وحل الصفوف الخمسة الباقية.", "تتقاطع كل المسارات؛ استخدم ألوان الأطراف كدليل.", "يضيّق صف مغلق أخير تسلسل الإنقاذ الصحيح.", "صِل كل الأطراف وافتح المآوي الستة."
+  ];
+  arBoardTitles.forEach((value, index) => { locales.ar[`boardTitle${index + 1}`] = value; });
+  arBoardHints.forEach((value, index) => { locales.ar[`boardHint${index + 1}`] = value; });
   Object.values(locales).forEach((dictionary) => {
     dictionary.stages = dictionary.map;
     dictionary.nextStage = dictionary.next;
+    if (typeof dictionary.progress === "string") dictionary.progress = dictionary.progress.replace(/\b3\b/g, "{total}");
+    if (typeof dictionary.progressBadge === "string") dictionary.progressBadge = dictionary.progressBadge.replace(/\b3\b/g, "{total}");
   });
   window.TANGLE_RESCUE_LOCALES = locales;
 }());

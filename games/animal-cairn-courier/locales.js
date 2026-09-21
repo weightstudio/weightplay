@@ -54,5 +54,37 @@
       coverAlt: "بيبل باو يبني كومة حجارة على درب جبلي مشمس", guideAlt: "بيبل باو يحمل حجرًا أملس للدرب", atlasAlt: "ثلاث حجارة للكومة وكومة مكتملة ثابتة", resultAlt: "بيبل باو يحتفل بكومة ثابتة", returnMain: "العودة إلى WeightPlay", guideLabel: "دليل لعبة رسول أكوام الحجارة"
     }
   };
+  const stageTitlesEn = [
+    "Base Camp", "Anchor Point", "Wind Shelf", "Courier’s Mark", "Ridge Checkpoint",
+    "Twin Supports", "Split Supports", "Cross Brace", "Two Safe Shelves", "Beaver’s Pair Check",
+    "First Gust", "Cool Ridge", "Crosswind", "Quiet Shelf", "Heron’s Wind Check",
+    "Light Center", "Heavy Center", "Balanced Shelf", "Counterweight", "Turtle’s Balance",
+    "Relay Start", "Relay Fork", "Long Relay", "Repair Relay", "Otter’s Relay Check",
+    "Summit Plan", "Summit Detour", "Final Bridge", "Lantern Ridge", "Riverkeeper’s Cairn"
+  ];
+  const stageTitlesAr = [
+    "مخيم القاعدة", "نقطة الارتكاز", "رف الرياح", "علامة الرسول", "نقطة تفقد الحافة",
+    "دعامتان", "دعامات منقسمة", "دعامة متقاطعة", "رفّان آمنان", "تفقد زوج القندس",
+    "الهبّة الأولى", "حافة باردة", "رياح متقاطعة", "رف هادئ", "تفقد رياح مالك الحزين",
+    "مركز خفيف", "مركز ثقيل", "رف متوازن", "ثقل موازن", "توازن السلحفاة",
+    "بداية التتابع", "تفرّع التتابع", "تتابع طويل", "إصلاح التتابع", "تفقد تتابع القضاعة",
+    "خطة القمة", "منعطف القمة", "الجسر الأخير", "حافة الفانوس", "كومة حارس النهر"
+  ];
+  stageTitlesEn.forEach((title, index) => {
+    tables.en[`stageTitle${index + 1}`] = title;
+    tables.ar[`stageTitle${index + 1}`] = stageTitlesAr[index];
+  });
+  Object.assign(tables.en, {
+    arc1: "Base and Cap", arc2: "Paired Supports", arc3: "Wind and Material", arc4: "Weight Windows", arc5: "Courier Relay", arc6: "Summit Contracts",
+    checkpointRule5: "base, bridge, anchor, then the cap route", checkpointRule10: "both marked pairs must stay together", checkpointRule15: "no two neighbouring stones share a material", checkpointRule20: "the center stays under the ridge limit", checkpointRule25: "the courier marker must pass every relay", checkpointRule30: "all support, relay, material and weight checks must hold",
+    groupEarth: "Earth", groupStone: "Stone", groupSummit: "Summit", groupWind: "Wind", stoneAnchor: "Anchor", stoneBridge: "Bridge", stoneMarker: "Courier marker"
+  });
+  Object.assign(tables.ar, {
+    arc1: "القاعدة والقمة", arc2: "الدعامات المزدوجة", arc3: "الرياح والمواد", arc4: "نوافذ الوزن", arc5: "تتابع الرسول", arc6: "عقود القمة",
+    checkpointRule5: "القاعدة والجسر والمرساة، ثم طريق القمة", checkpointRule10: "يجب أن يبقى الزوجان المعلّمان متجاورين", checkpointRule15: "يجب ألا يتشارك حجران متجاوران المادة نفسها", checkpointRule20: "يبقى المركز تحت حد الحافة", checkpointRule25: "يجب أن يمرّ حجر الرسول عبر كل تتابع", checkpointRule30: "يجب تحقق كل شروط الدعم والتتابع والمادة والوزن",
+    groupEarth: "ترابي", groupStone: "حجري", groupSummit: "قمة", groupWind: "رياح", stoneAnchor: "مرساة", stoneBridge: "جسر", stoneMarker: "علامة الرسول",
+    stagesV7: "تقدم الدرب: {current} من {total}", roundV7: "المرحلة {n} من {total}", detail: "{rule} · {count} حجارة · {status}", stageNote: "اقرأ الملاحظة، واختر كل حجر معروض مرة واحدة، ثم تحقّق.", checkpoint: "نقطة تفقد",
+    supportOrder: "ضع كل دعامة قبل الحجر الذي تحمله.", pairRule: "أبقِ كل زوج من الدعامات المعلّمة معًا.", windRule: "بدّل مواد الدرب؛ تبدأ القاعدة وتنتهي القمة.", weightRule: "أبقِ مركز الكومة ضمن نافذة الوزن المذكورة.", relayRule: "مرّر علامة الرسول عبر التتابع قبل القمة.", finaleRule: "استوفِ كل شروط الدعم والتتابع والتوازن والمواد الظاهرة.", locked: "مقفلة", unavailable: "غير متاحة"
+  });
   window.ANIMAL_CAIRN_COURIER_LOCALES = tables;
 }());

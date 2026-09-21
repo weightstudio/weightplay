@@ -204,10 +204,5 @@ body[data-screen="result"] footer { display:none; }
   }
 }
 
-/* Shared Interface 7 applies a compact radius token to generic guides; this
-   authored Guide is intentionally the same 24px surface as the Main card. */
-@layer pattern-patch-interface {
-  html[data-wp-shared-interface="7"] body details.guide-card.game-page-info {
-    border-radius:24px !important;
-  }
-}
+/* Shared Interface 7 owns the Guide radius through the shared token. */
+.guide-card { border-radius:var(--wp-ui-radius) !important; }

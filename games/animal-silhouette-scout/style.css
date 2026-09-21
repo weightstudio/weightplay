@@ -4,14 +4,14 @@
    when the shared interface theme supplies a compact 3px radius by default. */
 @layer wp-silhouette-guide-contract {
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-silhouette-scout"] .game-page-info {
-    border-radius: 18px !important;
+    border-radius: var(--wp-ui-radius) !important;
   }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-silhouette-scout"] .game-info-sections {
     display: grid !important;
     gap: 14px !important;
   }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-silhouette-scout"] .game-info-section {
-    border-radius: 16px !important;
+    border-radius: var(--wp-ui-radius) !important;
     padding: 16px !important;
     background: #fff !important;
   }

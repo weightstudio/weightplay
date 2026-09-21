@@ -49,13 +49,14 @@
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `animal_tide_tally_${name}`, note: noteIndex + 1, checks, ...data }); };
   const bestKey = "weightplay-animal-tide-tally-best-v6";
   const bestValue = () => Number(storage.get(bestKey) || 0) || "—";
-  const sum = (values = []) => values.length ? values.join(" + ") : "0";
+  const addTerms = (values = []) => values.length ? values.join(" + ") : "0";
+  const subtractTerms = (values = []) => values.length ? values.map((value) => `− ${value}`).join(" ") : "− 0";
   function noteEquation(note) {
-    if (note.mode === "missing") return `${note.start} + ? − ${sum(note.departures)} = ${note.final}`;
+    if (note.mode === "missing") return `${note.start} + ? ${subtractTerms(note.departures)} = ${note.final}`;
     if (note.mode === "compare") return `|${note.left} − ${note.right}| = ?`;
-    if (note.mode === "two-step") return `(${note.start} + ${note.arrivals[0]} − ${note.departures[0]}) + ${note.arrivals[1]} − ${note.departures[1]} = ?`;
-    if (note.mode === "interference") return `${note.start} + ${sum(note.arrivals)} − ${sum(note.departures)} − ${note.interference} = ?`;
-    return `${note.start} + ${sum(note.arrivals)} − ${sum(note.departures)} = ?`;
+    if (note.mode === "two-step") return `(${note.start} + ${note.arrivals[0]} ${subtractTerms([note.departures[0]])}) + ${note.arrivals[1]} ${subtractTerms([note.departures[1]])} = ?`;
+    if (note.mode === "interference") return `${note.start} + ${addTerms(note.arrivals)} ${subtractTerms(note.departures)} − ${note.interference} = ?`;
+    return `${note.start} + ${addTerms(note.arrivals)} ${subtractTerms(note.departures)} = ?`;
   }
   const noteSummary = (note) => `${copy("arc")} ${note.arc} · ${copy("mode_" + note.mode)} · ${noteEquation(note)}${note.checkpoint ? ` · ${copy("checkpoint")}` : ""}`;
   function show(screen) { currentScreen = screen; document.body.dataset.screen = screen; document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("gameGuide").hidden = screen !== "main"; $("settingsPanel").hidden = true; $("settingsBtn")?.setAttribute("aria-expanded", "false"); window.scrollTo(0, 0); }

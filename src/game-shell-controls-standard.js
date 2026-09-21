@@ -490,13 +490,27 @@
   }
 
   function adoptControls() {
+    // The shared Settings owner replaces legacy game-owned launch buttons.
+    // Retire those buttons completely so callers that resolve the first
+    // matching selector cannot activate an emptied legacy popover after its
+    // language control has moved into the shared panel.
+    document.querySelectorAll("button.wp-shell-settings-button,button[data-wp-settings]").forEach((candidate) => {
+      if (candidate === button || host.contains(candidate) || candidate.hasAttribute("data-wp-battle-utility")) return;
+      candidate.classList.remove("wp-shell-settings-button");
+      candidate.classList.add("wp-shell-legacy-control");
+      candidate.removeAttribute("data-wp-settings");
+      candidate.hidden = true;
+      candidate.setAttribute("aria-hidden", "true");
+      candidate.tabIndex = -1;
+    });
+
     if (!localeOwner || !localeOwner.isConnected) localeOwner = findLocaleOwner();
     if (localeOwner && !languageRow.contains(localeOwner)) {
       localeOwner.classList.remove("wp-shell-legacy-control");
       languageRow.append(localeOwner);
     }
 
-    const candidate = document.querySelector("button[data-sound-toggle]");
+    const candidate = document.querySelector("button[data-sound-toggle]:not([data-wp-battle-utility])");
     if (candidate && candidate !== soundToggle) soundToggle = candidate;
     if (soundToggle) {
       soundToggle.classList.add("wp-shell-legacy-control");

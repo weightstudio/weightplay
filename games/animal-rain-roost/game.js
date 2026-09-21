@@ -97,10 +97,16 @@
     try { const Audio = window.AudioContext || window.webkitAudioContext; const audio = new Audio(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = kind === "good" ? 650 : 180; gain.gain.setValueAtTime(.0001, audio.currentTime); gain.gain.exponentialRampToValueAtTime(.025, audio.currentTime + .01); gain.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + .1); oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + .11); oscillator.addEventListener("ended", () => audio.close(), { once: true }); } catch (_) {}
   }
   function showView(view) {
-    $("mainView").hidden = view !== "main";
+    $("mainScreen").hidden = view !== "main";
+    $("mainView").hidden = false;
     $("battleView").hidden = view !== "battle";
     $("resultView").hidden = view !== "result";
+    $("gameGuide").hidden = view !== "main";
+    document.body.classList.toggle("wp-shell-main-active", view === "main");
+    document.body.classList.toggle("wp-shell-battle-active", view === "battle");
+    document.body.classList.toggle("wp-shell-result-active", view === "result");
     document.body.dataset.screen = view;
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
     window.scrollTo(0, 0);
   }
   function updateScore() {

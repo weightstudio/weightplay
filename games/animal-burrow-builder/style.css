@@ -87,10 +87,5 @@ body[data-screen="battle"] footer { display: none; }
   }
 }
 
-/* Interface 7's frame layer supplies a compact radius token to generic
-   guides; retain this game's authored 18px Guide surface. */
-@layer burrow-builder-interface {
-  html[data-wp-shared-interface="7"] body details.guide-card.game-page-info {
-    border-radius:18px !important;
-  }
-}
+/* Shared Interface 7 owns the Guide radius through the shared token. */
+.guide-card { border-radius:var(--wp-ui-radius) !important; }

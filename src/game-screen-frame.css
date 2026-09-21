@@ -57,7 +57,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .ga
 /* Moonlight Workshop v7/I6 restores the framed Guide and its structured
    single-column sections after the shared Interface 7 contract is applied. */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-page-info,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-info-section {border-radius:18px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-info-section {border-radius:var(--wp-ui-radius)!important}
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
 /* Mosaic Clues v21/I6 keeps the generated Guide as a framed reading surface
    after the shared Interface 7 compact-radius contract is applied. */
