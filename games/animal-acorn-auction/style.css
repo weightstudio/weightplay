@@ -6,3 +6,13 @@
 :where([hidden]),*[hidden]{display:none!important}@media(max-width:560px){#mainScreen>.main-header{margin-left:-17px;width:calc(100% + 34px)}}
 /* v5 locale-guide repair: keep the mobile shell header inside the logical canvas. */
 @media(max-width:560px){#mainScreen>.main-header{margin-left:0;width:100%}}
+
+/* Interface 7 shared-interface cleanup: keep game-owned content, retire duplicate/private chrome. */
+#mainScreen #mapBtn,#battleScreen #backMarketBtn,#settingsBtn,#stageSettingsBtn,#battleUtilityBtn{display:none!important}
+#stageScreen .stage-header>div{display:none!important}
+body.wp-shell-stage-active #stageScreen .wp-stage-shell-header>:is(.wp-generated-main-title,h1,h2,strong){display:none!important}
+#battleScreen .battle-header .eyebrow{display:none!important}
+#stageScreen,#battleScreen{border:0!important;border-radius:0!important;box-shadow:none!important}
+#stageScreen .stage-header,#battleScreen .battle-header{height:48px!important;min-height:48px!important;max-height:48px!important}
+#stageScreen[data-wp-standard-stage-screen] #stageList{display:flex!important;grid-template-columns:none!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;overflow-x:auto!important;overflow-y:hidden!important;padding-inline:max(24px,calc((100% - 264px)/2))!important;min-height:198px!important;min-width:0!important;touch-action:none!important;scroll-snap-type:x mandatory!important;scroll-behavior:smooth!important}
+#stageScreen[data-wp-standard-stage-screen] #stageList>.stage-card{box-sizing:border-box!important;flex:0 0 264px!important;width:264px!important;min-width:264px!important;max-width:264px!important;height:190px!important;min-height:190px!important;max-height:190px!important;scroll-snap-align:center!important}

@@ -13,3 +13,7 @@
 .lot-icon{display:block;width:64px;height:64px;background-image:url("assets/animal-acorn-auction-lot-atlas.png");background-repeat:no-repeat;background-size:400% auto;background-position:0 100%}
 .lot-icon--2{background-position:33.3333% 100%}
 .lot-icon--3{background-position:66.6667% 100%}
+
+/* Interface 7 recheck: Stage title cleanup must not hide the shared Settings host
+   that auto-mount appends as a direct child of the legacy stage header. */
+body.wp-shell-stage-active #stageScreen .stage-header>.wp-shell-settings:not([hidden]){display:block!important}
