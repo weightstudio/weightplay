@@ -1,5 +1,12 @@
 (()=>{
   "use strict";
+  if(!window.__weightPlayPrismInterfaceCompatRequested){
+    window.__weightPlayPrismInterfaceCompatRequested=true;
+    const script=document.createElement("script");
+    script.src=new URL("interface-compat.js?v=20260921-interface-cleanup1",document.currentScript?.src||location.href).href;
+    script.async=false;
+    document.head.append(script);
+  }
   const TOTAL=30,POOL=9,clamp=(value,min=1,max=TOTAL)=>Math.max(min,Math.min(max,value));
   let api=null,cards=[],windowStart=1,settleRaf=0,restore=()=>{};
   const desired=stage=>clamp(stage-Math.floor(POOL/2),1,TOTAL-POOL+1);
