@@ -78,3 +78,89 @@
 }
 
 .battle-head>.battle-utility{flex:0 0 48px;width:48px;min-width:48px;height:48px;min-height:48px;max-height:48px;margin:0;padding:0;display:grid;place-items:center;font-size:26px;line-height:1}
+
+/* Interface 7 shared-frame cleanup.
+   Retire game-owned duplicate chrome while keeping Twin-specific play content. */
+body[data-wp-game-id="animal-twin-switchyard"] #mainScreen #soundBtn,
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen #stageSoundBtn {
+  display: none !important;
+}
+
+/* Stage is title-free under UI-PLAY-TOP-001. Battle keeps only the useful
+   Stage number and live HUD; the generic Battle kicker is retired. */
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen #stageEyebrow,
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen #stageTitle,
+body[data-wp-game-id="animal-twin-switchyard"] #battleScreen #battleEyebrow {
+  display: none !important;
+}
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen > .section-head > div:nth-child(2) {
+  display: none !important;
+}
+
+/* Stage/Battle are the logical Canvas, not rounded phone cards inside one.
+   Keep the Canvas itself edge-to-edge while preserving the standard internal
+   content inset and the fixed 56px Stage navigation boundary. */
+body[data-wp-game-id="animal-twin-switchyard"]:is(.wp-shell-stage-active,.wp-shell-battle-active,.wp-frame-stage-active,.wp-frame-battle-active) .shell {
+  width: min(100%, 920px) !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen,
+body[data-wp-game-id="animal-twin-switchyard"] #battleScreen {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen {
+  padding: 12px 12px 56px !important;
+}
+body[data-wp-game-id="animal-twin-switchyard"] #battleScreen {
+  padding: 12px !important;
+}
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen > .section-head,
+body[data-wp-game-id="animal-twin-switchyard"] #battleScreen > .section-head {
+  box-sizing: border-box !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body[data-wp-game-id="animal-twin-switchyard"] #stageScreen > .stage-help {
+  padding-inline: 0;
+}
+
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-twin-switchyard"] #stageScreen {
+    padding: 16px 16px 56px !important;
+  }
+  body[data-wp-game-id="animal-twin-switchyard"] #battleScreen {
+    padding: 16px !important;
+  }
+}
+
+/* The old short-landscape clone lived fixed on document.body, outside the
+   Battle Canvas. Use the canonical Battle-owned touch controls instead. */
+@media (max-height: 520px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-twin-switchyard"] #battleScreen .touch-controls {
+    display: grid !important;
+  }
+  body[data-wp-game-id="animal-twin-switchyard"] .twin-landscape-controls {
+    display: none !important;
+  }
+  body[data-wp-game-id="animal-twin-switchyard"] #battleScreen .canvas-wrap canvas {
+    width: auto !important;
+    height: calc(100dvh - 120px) !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - 120px) !important;
+  }
+}
