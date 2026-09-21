@@ -391,3 +391,99 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Interface 7 compatibility cleanup — 2026-09-21.
+   Shared frame owns Settings and Stage/Battle play-top chrome. */
+html[data-wp-shared-interface="7"] body.safari-main #mainScreen .secondary-row {
+  display: none;
+}
+html[data-wp-shared-interface="7"] body.safari-main #mainScreen .main-actions {
+  height: 92px;
+  grid-template-rows: 62px;
+}
+html[data-wp-shared-interface="7"] #mainScreen #soundMain,
+html[data-wp-shared-interface="7"] #stageScreen #soundStage {
+  display: none;
+}
+html[data-wp-shared-interface="7"] #stageScreen .compact-topbar {
+  --wp-frame-play-header-height: 48px;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  padding-block: 0;
+}
+html[data-wp-shared-interface="7"] #stageScreen #stageBack {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+}
+html[data-wp-shared-interface="7"] #stageScreen #stageTitle {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] #safariBattleScreen .battle-header {
+  --wp-frame-play-header-height: 48px;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  grid-template-columns: 48px repeat(4, minmax(0, 1fr)) 48px;
+  gap: 8px;
+  padding: 0;
+  border-radius: 0;
+}
+html[data-wp-shared-interface="7"] #safariBattleScreen .battle-header .back-button,
+html[data-wp-shared-interface="7"] #safariBattleScreen .battle-header .battle-utility-button {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+}
+@media (min-width: 560px) and (orientation: portrait) {
+  html[data-wp-shared-interface="7"] #safariBattleScreen .battle-live {
+    grid-template-rows: 48px 35px minmax(0, 1fr);
+  }
+}
+@media (orientation: landscape) {
+  html[data-wp-shared-interface="7"] #stageScreen.is-active {
+    grid-template-rows: 48px minmax(0, 1fr) 67px;
+  }
+  html[data-wp-shared-interface="7"] #safariBattleScreen .battle-live {
+    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-rows: 48px 30px minmax(0, 1fr);
+  }
+  html[data-wp-shared-interface="7"] #safariBattleScreen .battle-header {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: auto;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    grid-template-columns: 48px repeat(4, minmax(0, 1fr)) 48px;
+    grid-template-rows: 48px;
+    grid-auto-rows: unset;
+    gap: 8px;
+    padding: 0;
+    border-radius: 0;
+  }
+  html[data-wp-shared-interface="7"] #safariBattleScreen .battle-header .back-button {
+    align-self: center;
+    justify-self: start;
+  }
+  html[data-wp-shared-interface="7"] #safariBattleScreen .battle-message {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  html[data-wp-shared-interface="7"] #safariBattleScreen .play-frame {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  html[data-wp-shared-interface="7"] #safariBattleScreen .queue-bar {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
