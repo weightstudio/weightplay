@@ -95,7 +95,12 @@
     return Object.entries(vars).reduce((out, [name, val]) => out.replaceAll(`{${name}}`, String(val)), value);
   };
   const localize = (value) => value || "";
-  const stage = (id, title, arc, mechanic, config) => ({ id, title, arc, mechanic, ...config, checkpoint: id % 5 === 0 });
+  const stage = (id, title, arc, mechanic, config) => ({ id, title, arc, mechanic, titleKey: `stage${id}Title`, arcKey: `arc${Math.ceil(id / 5)}`, mechanicKey: `mechanic_${mechanic.replaceAll("-", "_")}`, ...config, checkpoint: id % 5 === 0 });
+  const stageText = (plan, field) => {
+    const key = field === "title" ? plan.titleKey : field === "arc" ? plan.arcKey : plan.mechanicKey;
+    const value = copy(key);
+    return value === key ? plan[field] : value;
+  };
 
   // Each row is authored independently: the network, route constraints and terminal
   // condition change by arc. These are not copies of the old three Boolean plans.
@@ -441,7 +446,7 @@
     STAGES.forEach((plan, index) => {
       const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(index === stageIndex));
       const locked = !stageUnlocked(index); const status = solved.has(plan.id) ? copy("solved") : locked ? copy("locked") : copy("open");
-      button.disabled = locked; button.innerHTML = `<span><strong>${plan.id}. ${localize(plan.title)}</strong><small>${copy("arc", { arc: plan.arc, name: plan.mechanic })}</small><small>${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 })}</small></span><span class="arrow" aria-label="${status}">${solved.has(plan.id) ? "✓" : locked ? "🔒" : "→"}</span>`;
+      button.disabled = locked; button.innerHTML = `<span><strong>${plan.id}. ${stageText(plan, "title")}</strong><small>${copy("arc", { arc: stageText(plan, "arc"), name: stageText(plan, "mechanic") })}</small><small>${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 })}</small></span><span class="arrow" aria-label="${status}">${solved.has(plan.id) ? "✓" : locked ? "🔒" : "→"}</span>`;
       button.addEventListener("click", () => startStage(index)); root.appendChild(button);
     });
   };
@@ -454,7 +459,7 @@
   };
   const renderBattle = () => {
     if (!$('gateGrid') || currentScreen !== "battle" || !state) return; const plan = currentStage();
-    $("planTitle").textContent = `${plan.id}. ${localize(plan.title)}`; $("progressPill").textContent = `${plan.id} / ${STAGES.length}`;
+    $("planTitle").textContent = `${plan.id}. ${stageText(plan, "title")}`; $("progressPill").textContent = `${plan.id} / ${STAGES.length}`;
     $("prompt").textContent = copy("prompt"); $("rule").textContent = `${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 })}${plan.checkpointRule ? ` · ${copy("checkpointRule", { rule: plan.checkpointRule })}` : ""}`;
     const root = $("gateGrid"); root.replaceChildren(); currentStage().edges.forEach((action) => root.appendChild(actionButton(action)));
     const wait = document.createElement("button"); wait.type = "button"; wait.className = "gate action-card wait-card"; wait.innerHTML = `<span class="gate-icon" aria-hidden="true">⌛</span><strong>${copy("waitAction")}</strong><small>${phaseName("even")} / ${copy("tide")} ${state.beat}</small>`; wait.addEventListener("click", waitAction); wait.disabled = state.beat >= plan.beats; root.appendChild(wait);

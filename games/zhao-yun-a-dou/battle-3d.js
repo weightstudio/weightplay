@@ -41,7 +41,10 @@ export class ZhaoBattle3D {
   }
   impact(f){
     const g=new THREE.Group(),color=f.kind==='block'?0x7ee8ff:f.kind==='heal'?0x82f1b4:f.enemy?0xffb26c:0xffdc83;
-    if(f.kind==='bomb'){
+    if(f.kind==='rocket'){
+      this.box(g,0,0,0,.56,.14,.14,0xd8dbc4,true);this.box(g,.3,0,0,.15,.10,.10,0xb64c35);
+      this.glowBox(g,-.4,0,0,.30,.10,.08,0xffa84c);this.glowBox(g,-.63,0,0,.20,.05,.04,0xffe7a5);
+    }else if(f.kind==='bomb'){
       this.box(g,0,0,0,.25,.25,.25,0x433c37);this.glowBox(g,0,.18,0,.055,.12,.055,0xffbf66);
     }else if(f.kind==='blast'||f.kind==='rally'){
       for(let i=0;i<8;i++){const a=i*Math.PI/4;const m=this.glowBox(g,Math.cos(a)*.55,Math.sin(a)*.55,0,.18,.07,.05,f.kind==='rally'?0xf0ce69:0xffa56d);m.rotation.z=a;}
@@ -113,11 +116,14 @@ export class ZhaoBattle3D {
     this.chargeTrail=this.box(g,0,.09,0,8,.045,.7,0xe4bd62);this.chargeTrail.visible=false;
   }
   character(type,general,enemy,rarity=0){
+    const identity=type;
+    type=({guard:'blade',frost:'spear',vanguard:'horse',berserker:'blade',halberd:'spear',lancer:'horse',firebow:'bow',scout:'blade'})[type]||type;
     const g=new THREE.Group(), rig=new THREE.Group();g.add(rig);g.userData.rig=rig;
     this.box(g,0,.018,.05,.76,.012,.56,0x354e48);
     const bossColors={bulwark:0x536b82,charger:0xb65c39,weaver:0x645c91,healer:0x399c7b,summoner:0xb38b47,warlord:0x922f3e};
     const specialColors={bomber:0xd67c38,drummer:0x9f7944,arbalest:0x506585};
-    const tint=bossColors[type]||specialColors[type]||(enemy?(type==='medic'?0x72568c:type==='shield'?0x667883:0x984c43):(palette[type]||0x39a396));
+    const identities={guard:0x395b86,frost:0x69b8cc,vanguard:0xb96538,berserker:0xa33446,halberd:0x377768,lancer:0x8470b1,firebow:0xba7133,cannon:0x596f78,medic:0xd6dfb9,scout:0x4d5f7e};
+    const tint=identities[identity]||bossColors[type]||specialColors[type]||(enemy?(type==='medic'?0x72568c:type==='shield'?0x667883:0x984c43):(palette[type]||0x39a396));
     const skin=enemy?0xc18e70:0xe6b38b, steel=enemy?0x7b8588:0xbccfd0;
     let mounted=type==='horse'||type==='charger';const lift=mounted?.48:0;
     if(mounted){
@@ -157,7 +163,19 @@ export class ZhaoBattle3D {
       }
       const weapon=new THREE.Group();weapon.position.set(.09,-.28,-.1);g.userData.attackArm.add(weapon);g.userData.weapon=weapon;
       g.userData.attackStyle=['bow','medic','healer','flanker','arbalest'].includes(type)?'bow':['spear','horse','charger'].includes(type)?'thrust':'slash';
-      if(type==='arbalest'){
+      if(type==='cannon'){
+        // An original wheeled rocket carriage, with its operator behind it.
+        weapon.visible=false;g.userData.attackStyle='cannon';
+        for(const x of [-.48,.48])for(const z of [-.75,-.05])this.box(rig,x,.23,z,.17,.42,.42,0x303e42,true);
+        this.box(rig,0,.40,-.45,.88,.18,1.08,0x795c42);
+        const launcher=new THREE.Group();launcher.position.set(0,.73,-.45);rig.add(launcher);g.userData.launcher=launcher;
+        for(const x of [-.22,0,.22]){this.box(launcher,x,0,-.15,.18,.20,1.04,0x455d66,true);this.box(launcher,x,0,-.69,.14,.14,.035,0x162e36);this.box(launcher,x,.15,-.04,.12,.08,.75,0xc9b575);}
+        this.box(rig,0,.70,.29,.6,.43,.30,0x785942);
+      }else if(type==='medic'&&!enemy){
+        this.box(weapon,0,.15,0,.08,1.05,.08,0x725b44);this.box(weapon,0,.69,0,.32,.28,.13,0x71c6a0);
+        this.box(rig,-.40,.53,.07,.25,.37,.38,0xe2d2a2);this.box(rig,-.54,.56,-.04,.02,.21,.065,0x3d917b);
+        this.box(rig,-.54,.56,-.04,.02,.065,.22,0x3d917b);
+      }else if(type==='arbalest'){
         this.box(weapon,0,.12,-.05,.1,.12,.8,0x815b3f);this.box(weapon,0,.12,-.32,.7,.08,.09,0xc2c8bc,true);this.box(weapon,0,.22,-.26,.045,.04,.75,0xd9c789);
       }else if(type==='bomber'){
         this.box(weapon,0,.15,-.03,.32,.35,.32,0x393d3e);g.userData.fuse=this.glowBox(weapon,0,.42,-.03,.05,.18,.05,0xffc36e);
@@ -177,6 +195,16 @@ export class ZhaoBattle3D {
       if(type==='shield'||type==='bulwark'||(type==='blade'&&!general)){
         g.userData.shields=[this.box(rig,-.46,.65+lift,-.27,.4,.7,.1,0x54727a,true),this.box(rig,-.46,.65+lift,-.34,.32,.055,.04,0xd7b365,true)];
       }
+      if(identity==='guard'){for(const shield of g.userData.shields||[])shield.scale.y*=1.4;this.box(rig,0,1.51,.05,.82,.10,.66,0x6a8d9c,true);}
+      if(identity==='frost'){this.box(weapon,0,1.24,0,.23,.37,.10,0x8ce0e0,true);this.box(weapon,0,.92,0,.36,.08,.12,0x9adbd3);}
+      if(identity==='halberd'){for(const x of [-.17,.17])this.box(weapon,x,1.06,0,.21,.42,.09,0xbfcfb8,true);}
+      if(identity==='berserker'||identity==='scout'){
+        for(const shield of g.userData.shields||[])shield.visible=false;
+        this.box(g.userData.offArm,0,-.55,-.05,.13,.55,.07,0xd4e1d9,true);
+        this.box(rig,0,1.08,-.28,.57,.16,.05,identity==='scout'?0x354b58:0x712f41);
+      }
+      if(identity==='vanguard'||identity==='lancer'){this.box(rig,0,1.8,.34,.05,1.05,.05,0xccb174);this.box(rig,.20,2.12,.34,.43,.37,.045,tint);}
+      if(identity==='firebow'){this.box(weapon,0,.45,-.25,.19,.23,.13,0xe1aa50);this.box(rig,0,.76,.33,.42,.7,.25,0x794a37);}
     }
     if(type==='summoner'){this.box(rig,0,.75,-.55,.85,.7,.45,0xa77138);this.box(rig,0,1.12,-.55,.89,.06,.48,0xe1c087);}
     if(type==='weaver'){this.box(rig,-.46,1,-.15,.13,1.1,.1,0xd5dceb,true);this.box(rig,0,1.57,.1,.9,.08,.45,0x675486);}
@@ -222,7 +250,7 @@ export class ZhaoBattle3D {
   actor(key,type,general,enemy,rarity=0){let obj=this.actors.get(key);const signature=type+general+enemy+rarity;
     if(obj&&obj.userData.signature!==signature){this.scene.remove(obj);this.actors.delete(key);obj=null;}
     if(!obj){obj=this.character(type,general,enemy,rarity);obj.userData.signature=signature;
-      const bar=new THREE.Group();bar.position.y=type==='horse'||type==='charger'?2.48:2.12;obj.add(bar);
+      const bar=new THREE.Group();bar.position.y=['horse','charger','vanguard','lancer'].includes(type)?2.65:2.12;obj.add(bar);
       this.flatBox(bar,0,0,0,.84,.105,.008,0x203b3d);
       obj.userData.health=this.flatBox(bar,0,0,.012,.78,.055,.008,enemy?0xef987a:0x6ae3be);
       obj.userData.healthBar=bar;
@@ -237,7 +265,7 @@ export class ZhaoBattle3D {
     const worldX=x=>(x-50)*.102;
     for(const a of [...battle.units,...battle.enemies]){
       const key='actor'+a.id;active.add(key);
-      const type=a.enemy?(a.boss?a.bossKind:a.kind==='raider'?'horse':a.kind==='flanker'?'bow':a.kind==='soldier'?'blade':a.kind):a.type;
+      const type=a.enemy?(a.boss?a.bossKind:a.kind==='raider'?'horse':a.kind==='flanker'?'bow':a.kind==='soldier'?'blade':a.kind):(a.model||a.type);
       const obj=this.actor(key,type,a.boss,a.enemy,a.rarity);
       const x=a.previousX+(a.x-a.previousX)*mix;
       obj.position.set(worldX(x),0,(a.id%5-2)*.27);
@@ -271,6 +299,14 @@ export class ZhaoBattle3D {
       if(obj.userData.legs)for(const [i,leg] of obj.userData.legs.entries())leg.rotation.x=this.reduced||paused||!a.moving?0:Math.sin(time*10+i*Math.PI)*.25;
       if(a.bossKind==='bulwark')for(const shield of obj.userData.shields||[])shield.visible=a.shield;
       if(data.fuse)data.fuse.visible=Boolean(a.windup);
+      if(data.launcher)data.launcher.position.z=-.45+(this.reduced?0:strike*.22);
+      if(battle.result){
+        const winner=(battle.result==='win')!==a.enemy;
+        rig.rotation.x=this.reduced?0:winner?-.04:.20;
+        rig.position.z=0;
+        if(data.attackArm){data.attackArm.rotation.x=winner?-2.5:.2;data.offArm.rotation.x=winner?-2.1:.1;data.strikeTrail.visible=false;}
+        if(!this.reduced&&winner)rig.position.y=Math.max(0,Math.sin((battle.finaleElapsed||0)/180+a.id))*.07;
+      }
       // Cancel the parent's yaw before matching the camera. Both the track
       // and fill stay screen-horizontal even while the soldier faces left.
       data.healthBar.quaternion.copy(obj.quaternion).invert().multiply(this.camera.quaternion);
@@ -285,17 +321,19 @@ export class ZhaoBattle3D {
       effectIds.add(f.id);let obj=this.fx.get(f.id);
       if(!obj){obj=this.impact(f);this.scene.add(obj);this.fx.set(f.id,obj);}
       const duration=f.flight||3,age=(f.flight?f.flight+3:6)-f.ttl+mix,flight=Math.min(1,Math.max(0,age-(duration-1)));
-      const projectile=f.kind==='arrow'||f.kind==='bomb';
-      const x=projectile?f.fromX+(f.x-f.fromX)*flight:f.kind==='attack'?(f.fromX+f.x)/2:f.x;
+      const projectile=f.kind==='arrow'||f.kind==='bomb'||f.kind==='rocket';
+      const rocketFlight=Math.max(0,Math.min(1,(age-3)/(duration-3)));
+      const travel=f.kind==='rocket'?rocketFlight:flight;
+      const x=projectile?f.fromX+(f.x-f.fromX)*travel:f.kind==='attack'?(f.fromX+f.x)/2:f.x;
       const targetZ=f.targetId==null?.35:(f.targetId%5-2)*.27;
       const sourceZ=f.sourceId==null?targetZ:(f.sourceId%5-2)*.27;
-      const z=projectile?sourceZ+(targetZ-sourceZ)*flight:targetZ;
+      const z=projectile?sourceZ+(targetZ-sourceZ)*travel:targetZ;
       obj.position.set(worldX(x),1.05,z+.3);obj.quaternion.copy(this.camera.quaternion);
       obj.visible=f.kind!=='charge'&&(f.kind!=='attack'||(!this.reduced&&age>=2&&age<3.7));
       const life=f.kind==='defeat'?8:6,progress=Math.max(0,(life-f.ttl+mix)/life);
       const power=f.strong?1.35:1;
-      obj.scale.setScalar(f.kind==='arrow'?1:power*(this.reduced?.65:Math.max(.05,1-progress*.8)));
-      if(projectile){obj.visible=age>=duration-1&&age<=duration;obj.rotation.z=f.enemy?Math.PI:0;if(f.kind==='bomb')obj.position.y+=Math.sin(flight*Math.PI)*.7;}
+      obj.scale.setScalar(projectile?1:power*(this.reduced?.65:Math.max(.05,1-progress*.8)));
+      if(projectile){obj.visible=age>=(f.kind==='rocket'?3:duration-1)&&age<=duration;obj.rotation.z=f.enemy?Math.PI:0;if(f.kind==='bomb')obj.position.y+=Math.sin(flight*Math.PI)*.7;if(f.kind==='rocket')obj.position.y+=Math.sin(rocketFlight*Math.PI)*.8;}
       if(f.kind==='blast'||f.kind==='rally')obj.scale.setScalar(this.reduced?.8:.5+progress*1.7);
       if(f.kind==='attack'){obj.rotation.z=f.enemy?Math.PI:0;obj.scale.setScalar(.8);}
       for(const m of obj.children)if(m.userData.sparkAngle!=null){
@@ -314,8 +352,58 @@ export class ZhaoBattle3D {
     this.hero.userData.strikeTrail.visible=!this.reduced&&battle.chargeTicks>0;
     this.chargeTrail.visible=battle.chargeTicks>0;
     this.camp.rotation.z=!this.reduced&&battle.campFlash>0?Math.sin(time*50)*.025:0;
+    if(battle.result)this.renderFinale(battle);
     this.renderer.render(this.scene,this.camera);const r=this.renderer.info;
     Object.assign(this.info,{frames:this.info.frames+1,drawCalls:r.render.calls,triangles:r.render.triangles,geometries:r.memory.geometries,textures:r.memory.textures,actors:this.actors.size,effects:this.fx.size});
   }
+  renderFinale(battle){
+    const p=Math.min(1,(battle.finaleElapsed||0)/(battle.finaleDuration||1800));
+    const base=battle.result==='win'?this.fortress:this.camp;
+    base.position.y=this.reduced?-.25:-Math.min(1,p*1.4)*.8;
+    base.rotation.z=this.reduced?0:(battle.result==='win'?1:-1)*Math.min(.18,p*.2);
+    if(!this.finalFragments){
+      this.finalFragments=new THREE.Group();this.environment.add(this.finalFragments);
+      for(let i=0;i<16;i++){const m=this.box(this.finalFragments,0,0,0,.14+i%3*.03,.13,.16,i%2?0xe2c37b:0x8b8978);m.userData.seed=i;}
+    }
+    this.finalFragments.visible=!this.reduced&&p<.85;
+    this.finalFragments.position.x=base.position.x;
+    for(const m of this.finalFragments.children){const i=m.userData.seed,a=i*2.4;m.position.set(Math.cos(a)*p*1.7,.9+Math.sin(p*Math.PI)*1.1-p*.9,Math.sin(a)*p*1.3);m.rotation.set(p*4+i,p*3,0);m.scale.setScalar(.15*(1-p*.7));}
+  }
   dispose(){if(this.disposed)return;this.disposed=true;for(const bar of this.campBars)bar.hidden=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);this.geometry.dispose();for(const mat of this.materials.values())mat.dispose();this.materials.clear();this.actors.clear();this.fx.clear();for(const node of this.labels.values())node.remove();this.labels.clear();this.lastBattle=null;this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.canvas.remove();}
+}
+
+// Production portraits are rendered from the exact authored combat rigs.
+// Build-time only: no extra runtime WebGL context is needed for collection cards.
+export function renderArmyPortrait(card, currency=null) {
+  const painter=Object.create(ZhaoBattle3D.prototype);
+  painter.geometry=new THREE.BoxGeometry(1,1,1);painter.materials=new Map();
+  let renderer;
+  try {
+    const scene=new THREE.Scene();
+    scene.add(new THREE.HemisphereLight(0xe9f4ee,0x354d47,2.6));
+    const light=new THREE.DirectionalLight(0xffe0b0,3.5);light.position.set(-3,6,-4);scene.add(light);
+    const rim=new THREE.DirectionalLight(0x92e4f1,2);rim.position.set(4,3,3);scene.add(rim);
+    let subject;
+    if(currency){
+      subject=new THREE.Group();
+      if(currency==='coins'){
+        for(let i=0;i<3;i++){
+          const coin=new THREE.Group();coin.position.set((i-1)*.26,.16+i*.18,i%2*.15);coin.rotation.y=i*.25;subject.add(coin);
+          painter.box(coin,0,0,0,.73,.15,.73,0xd8a238,true);painter.box(coin,0,.10,0,.56,.08,.56,0xf3cb67,true);painter.box(coin,0,.15,0,.18,.018,.18,0x8e682d);
+        }
+      }else{
+        for(let i=0;i<3;i++){
+          const gem=new THREE.Group();gem.position.set((i-1)*.35,.32+i%2*.30,i%2*.10);gem.rotation.set(.18,.35,Math.PI/4);subject.add(gem);
+          painter.box(gem,0,0,0,.43,.43,.43,0x32b6c1,true);painter.box(gem,-.065,.065,-.06,.30,.30,.37,0x8fe5e4,true);
+        }
+      }
+    }else subject=painter.character(card.model,false,false,card.rarity);
+    scene.add(subject);subject.updateMatrixWorld(true);
+    const bounds=new THREE.Box3().setFromObject(subject),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());
+    const span=Math.max(size.y,size.x,size.z)*.72;
+    const camera=new THREE.OrthographicCamera(-span,span,span,-span,.1,30);
+    camera.position.copy(center).add(new THREE.Vector3(3.4,2.1,-5));camera.lookAt(center);
+    renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setSize(currency?128:192,currency?128:192);renderer.setClearColor(0x000000,0);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+    renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');
+  }finally{painter.geometry.dispose();for(const material of painter.materials.values())material.dispose();renderer?.dispose();renderer?.forceContextLoss();}
 }

@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260918-ui-fix1">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260918-ui-fix1">
-  <link rel="stylesheet" href="frame-content.css?v=20260921-zhao-v37">
+  <link rel="stylesheet" href="frame-content.css?v=20260921-zhao-v38">
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
   <div id="gameFrame" data-wp-frame-root>
@@ -67,7 +67,16 @@
     <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-t-aria="stageList" aria-label="Stage list"></section>
     <aside id="enemyIntel" class="enemy-intel"></aside>
     </div>
-    <section id="armyPanel" class="stage-management" hidden aria-labelledby="armyTitle"><div class="army-summary"><strong id="armyTitle" data-t="army">Army</strong><span id="armyWallet"></span></div><div class="army-recruit"><button id="drawOne" data-t="drawOne">Recruit · 1</button><button id="drawFive" data-t="drawFive">Recruit ×5 · 5</button></div><p id="armyPity"></p><details><summary><span data-t="common">Common</span> 72% · <span data-t="rare">Rare</span> 24% · <span data-t="epic">Epic</span> 4%</summary><p data-t="armyOdds"></p><p data-t="armyStars"></p><p data-t="armyAuto"></p></details><div id="drawResults" class="draw-results" role="status" aria-live="polite"></div><p data-t="armyHelp"></p><div id="armyCards" class="army-cards"></div><p id="saveWarning" role="status" hidden></p></section>
+    <section id="armyPanel" class="stage-management" hidden aria-labelledby="armyTitle">
+      <div class="army-summary"><strong id="armyTitle" data-t="army">Army</strong><span id="armyWallet"></span></div>
+      <div class="army-recruit"><button id="drawFree" data-t="freeDraw">Daily free</button><button id="drawOne" data-t="coinDraw">100 coins</button><button id="drawFive" data-t="diamondDraw">60 diamonds</button></div>
+      <p class="draw-help" data-t="drawHelp"></p><p id="armyPity"></p>
+      <div id="drawResults" class="draw-results" role="status" aria-live="polite"></div>
+      <div class="squad-heading"><strong id="collectionCount"></strong><span data-t="fourSlots">4 battle slots</span></div>
+      <div id="armySquad" class="army-squad"></div><p id="squadHelp"></p>
+      <details><summary><span data-t="common">Common</span> 72% · <span data-t="rare">Rare</span> 24% · <span data-t="epic">Epic</span> 4%</summary><p data-t="armyOdds"></p><p data-t="armyStars"></p><p data-t="armyAuto"></p><p data-t="freeReset"></p></details>
+      <div id="armyCards" class="army-cards"></div><p id="saveWarning" role="status" hidden></p>
+    </section>
     <section id="talentPanel" class="stage-management" hidden></section>
     </div>
     <nav class="stage-tabs" role="tablist" data-wp-frame-nav data-t-aria="stageTabs" aria-label="Stage navigation">
@@ -94,6 +103,7 @@
       </div>
       <p id="pressureCue" class="pressure-cue" role="status" aria-live="polite"></p>
       <div class="battle-field" aria-label="Three lane battle">
+        <div id="battleFinale" class="battle-finale" role="status" aria-live="assertive" hidden><strong></strong><span></span></div>
         <div id="adouHp" class="castle-health castle-health--ally" data-camp-health="ally" role="meter" aria-label="A Dou's camp" aria-valuemin="0" aria-valuemax="120" aria-valuenow="120" hidden>
           <span class="castle-health-name" data-t="allyCamp">A Dou's camp</span>
           <span class="castle-health-track" aria-hidden="true"><span class="castle-health-fill"></span></span>
@@ -149,23 +159,23 @@
   <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260826-game-funnel"></script>
-  <script src="levels.js?v=20260921-zhao-v37"></script>
-  <script src="locales.js?v=20260921-zhao-v37"></script>
-  <script src="guide-copy.js?v=20260921-zhao-v37"></script>
+  <script src="levels.js?v=20260921-zhao-v38"></script>
+  <script src="locales.js?v=20260921-zhao-v38"></script>
+  <script src="guide-copy.js?v=20260921-zhao-v38"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260918-ui-fix1"></script>
   <script src="frame.js?v=20260918-ui-fix1"></script>
-  <script src="talents.js?v=20260921-zhao-v37"></script>
-  <script src="talent-copy.js?v=20260921-zhao-v37"></script>
-  <script src="push-combat.js?v=20260921-zhao-v37"></script>
-  <script src="push-copy.js?v=20260921-zhao-v37"></script>
-  <script src="army.js?v=20260921-zhao-v37"></script>
-  <script src="army-copy.js?v=20260921-zhao-v37"></script>
-  <script src="game.js?v=20260921-zhao-v37"></script>
-  <script src="analytics-ownership.js?v=20260921-zhao-v37"></script>
+  <script src="talents.js?v=20260921-zhao-v38"></script>
+  <script src="talent-copy.js?v=20260921-zhao-v38"></script>
+  <script src="push-combat.js?v=20260921-zhao-v38"></script>
+  <script src="push-copy.js?v=20260921-zhao-v38"></script>
+  <script src="army.js?v=20260921-zhao-v38"></script>
+  <script src="army-copy.js?v=20260921-zhao-v38"></script>
+  <script src="game.js?v=20260921-zhao-v38"></script>
+  <script src="analytics-ownership.js?v=20260921-zhao-v38"></script>
 
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title"></script>
-  <script src="public-guide.js?v=20260921-zhao-v37"></script>
+  <script src="public-guide.js?v=20260921-zhao-v38"></script>
 </body>
 </html>

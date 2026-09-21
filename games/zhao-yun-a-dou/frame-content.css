@@ -48,7 +48,7 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 #battle .deploy-card:disabled {opacity:.7;cursor:default;}
 #battle .deploy-card::after {content:'';position:absolute;bottom:0;left:0;height:3px;width:var(--ready,100%);background:#e7c773;}
 #battle .deploy-art {width:54px;height:36px;background:var(--zhao-unit-art) center/contain no-repeat;}
-#battle .deploy-card strong {font-size:11px;max-width:100%;overflow:hidden;white-space:nowrap;}
+#battle .deploy-card strong {font-size:10px;line-height:11px;max-width:100%;overflow:hidden;white-space:normal;overflow-wrap:anywhere;}
 #battle .deploy-card small {font-size:9px;max-width:100%;white-space:nowrap;overflow:hidden;}
 #battle .deploy-cost {font-size:10px;color:#ffe095;}
 #battle .skills {grid-column:1;grid-row:2;display:block;height:48px;min-height:48px;overflow:hidden;}
@@ -119,11 +119,11 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 .army-resource-art {display:inline-block;width:24px;height:24px;object-fit:contain;vertical-align:middle;flex:none;}
 .army-recruit button .army-resource-art {margin-inline-end:6px;}
 #resultReward .army-resource-art {margin-inline-end:6px;}
-.army-recruit {display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.army-recruit {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
 .army-recruit button,.army-card button {min-height:56px;border:1px solid #d7bc7a;border-radius:8px;background:#ddbd70;color:#142c30;font:700 13px/1.2 system-ui;padding:6px;cursor:pointer;}
 .army-recruit button:disabled,.army-card button:disabled {opacity:.55;cursor:default;}
 .army-cards {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0;}
-.army-card {position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;min-height:238px;text-align:center;padding:10px;border:1px solid #6d9a91;border-radius:12px;background:linear-gradient(150deg,#2e5352,#152e37);box-sizing:border-box;}
+.army-card {position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;height:398px;text-align:center;padding:10px;border:1px solid #6d9a91;border-radius:12px;background:linear-gradient(150deg,#2e5352,#152e37);box-sizing:border-box;}
 .army-card[data-rarity="1"],.draw-result[data-rarity="1"] {border-color:#88baeb;background:linear-gradient(150deg,#304d68,#1b303f);}
 .army-card[data-rarity="2"],.draw-result[data-rarity="2"] {border-color:#e7c36f;background:linear-gradient(150deg,#62502e,#2c2c35);}
 .army-card.is-equipped {box-shadow:inset 0 0 0 2px #ffe29a;}
@@ -134,9 +134,9 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 .army-card small {font-size:10px;color:#c1d7ca;}
 .army-card button {width:100%;margin-top:8px;}
 .army-card.is-equipped button {opacity:1;background:#315c53;color:#ffe29a;}
-.army-art {display:block;width:80px;height:68px;flex-shrink:0;background:var(--zhao-unit-art) center/contain no-repeat;}
+.army-art {display:block;width:80px;height:80px;flex-shrink:0;object-fit:contain;}
 .army-stars {color:#f4d789;font-size:11px;}
-.draw-results {display:grid;gap:4px;}
+.draw-results {height:72px;overflow:auto;display:grid;align-content:center;gap:4px;margin:8px 0;padding:4px;border:1px solid #426563;border-radius:8px;box-sizing:border-box;}
 .draw-result {display:flex;align-items:center;gap:8px;padding:4px 8px;border:1px solid #6d9a91;border-radius:8px;background:#284f4c;font-size:12px;}
 .draw-result .army-art {width:36px;height:38px;}
 #armyPanel details {padding:8px;background:#16373b;border-radius:8px;font-size:12px;}
@@ -150,3 +150,33 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 #battle .deploy-card[data-rarity="2"] {border-color:#e7c36f;}
 @media (min-width:600px) {.army-cards {grid-template-columns:repeat(4,minmax(0,1fr));}}
 @media (orientation:landscape) and (max-height:600px) {.enemy-intel {display:none;}}
+.army-recruit button {height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.draw-help,#armyPity,#squadHelp {font-size:11px;min-height:32px;}
+.squad-heading {display:flex;justify-content:space-between;gap:8px;align-items:center;margin:12px 0 8px;}
+.army-squad {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;}
+.squad-slot {height:96px;min-width:0;border:1px solid #72998e;background:#254a4b;color:#edf4e3;border-radius:8px;display:flex;flex-direction:column;align-items:center;padding:4px;font:600 11px/1.25 system-ui;cursor:pointer;}
+.squad-slot .army-art {height:60px;width:60px;}
+.squad-slot span {max-width:100%;overflow-wrap:anywhere;}
+.squad-slot[aria-pressed="true"] {border-color:#ffe099;box-shadow:inset 0 0 0 2px #d9b767;}
+.army-card strong {min-height:34px;display:flex;align-items:center;}
+.army-card p {margin:4px 0;font-size:11px;min-height:42px;}
+.army-card .shard-count {margin-top:6px;color:#f9df97;font-size:12px;}
+.army-card progress {width:100%;height:7px;accent-color:#e9bd63;}
+.army-card button {flex-shrink:0;}
+.army-card .equip-action {background:#254a4b;color:#edf4e3;border-color:#799f94;}
+.army-card-actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;width:100%;}
+.army-card-actions button {font-size:11px;padding:4px;}
+.army-card.is-equipped .equip-action {background:#315c53;color:#ffe29a;}
+#battle img.deploy-art {object-fit:contain;background:none;}
+#battle .deploy-card {grid-template-rows:30px 22px 12px 14px;}
+#battle img.deploy-art {height:30px;}
+@media (orientation:landscape) and (max-height:600px) {#battle .deploy-card {grid-template-rows:20px 22px 10px 12px;}#battle img.deploy-art {height:20px;}}
+#resultReward {display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+#resultReward>span {display:inline-flex;align-items:center;}
+.battle-finale {position:absolute;z-index:12;inset:9% 12px auto;display:grid;justify-items:center;gap:8px;padding:18px 12px;border-block:2px solid #eac675;background:linear-gradient(90deg,#162e35b3,#162e35f5,#162e35b3);color:#ffe19c;text-align:center;pointer-events:none;animation:finale-enter .35s ease-out;}
+.battle-finale[hidden] {display:none;}
+.battle-finale strong {font:900 30px/1.2 system-ui;letter-spacing:3px;}
+.battle-finale span {font:600 13px/1.4 system-ui;}
+.battle-finale[data-outcome="loss"] {color:#ffd1b2;border-color:#c07e6a;}
+@keyframes finale-enter {from{opacity:0;transform:translateY(-12px) scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce) {.battle-finale {animation:none;}}

@@ -26,5 +26,22 @@
   };
   const locales = Object.fromEntries(Object.entries(overrides).map(([key, value]) => [key, { ...en, ...value }]));
   locales.en = en;
+  Object.assign(locales.ar, {
+    stage1Title: "التفرّع الأول", stage2Title: "منعطف العودة", stage3Title: "القناة الجانبية الجافة", stage4Title: "المساران المتوازيان", stage5Title: "تفقد القندس",
+    stage6Title: "بركة الاحتجاز", stage7Title: "القفل الضيق", stage8Title: "البركتان", stage9Title: "إغلاق الخزان", stage10Title: "خزان ثعلب الماء",
+    stage11Title: "الحضانة أولاً", stage12Title: "تتابع الشتلات", stage13Title: "اختصار البستان", stage14Title: "المستنقع المستعاد", stage15Title: "ترتيب مالك الحزين",
+    stage16Title: "المدّ الصاعد", stage17Title: "مخرج الجزر", stage18Title: "حوض الملجأ", stage19Title: "التياران المتناوبان", stage20Title: "عبّارة القمر",
+    stage21Title: "الجسر الخشبي", stage22Title: "المزلاج المشترك", stage23Title: "التحويلة الطويلة", stage24Title: "فريق الإصلاح", stage25Title: "عبور السلحفاة",
+    stage26Title: "مدّ المهرجان", stage27Title: "مهرجان الضفتين", stage28Title: "العبّارة الأخيرة", stage29Title: "احتياطي الفوانيس", stage30Title: "وعد حارس النهر",
+    arc1: "التفرّع الأول", arc2: "بركة الاحتجاز", arc3: "تتابع الحضانة", arc4: "المدّ الصاعد", arc5: "الجسر الخشبي", arc6: "مدّ المهرجان",
+    mechanic_fork: "تفرّع", mechanic_return_bend: "منعطف العودة", mechanic_dry_side: "القناة الجافة", mechanic_twin_paths: "مساران متوازيان", mechanic_protected_habitat: "موطن محمي",
+    mechanic_shared_pond: "بركة مشتركة", mechanic_narrow_lock: "قفل ضيق", mechanic_two_ponds: "بركتان", mechanic_cutoff: "إغلاق الخزان", mechanic_balanced_reserve: "احتياطي متوازن",
+    mechanic_nursery_gate: "بوابة الحضانة", mechanic_relay: "تتابع الشتلات", mechanic_shortcut: "اختصار البستان", mechanic_restored_marsh: "مستنقع مستعاد", mechanic_ordered_outlets: "مخارج مرتبة",
+    mechanic_phase_intake: "دخول حسب المدّ", mechanic_phase_outlet: "مخرج حسب المدّ", mechanic_phase_shelter: "حوض ملجأ المدّ", mechanic_alternating_branches: "فروع متناوبة", mechanic_timed_window: "نافذة توقيت",
+    mechanic_one_use_bridge: "جسر للاستخدام مرة واحدة", mechanic_sibling_closure: "إغلاق المسار الشقيق", mechanic_preserve_bridge: "الحفاظ على الجسر", mechanic_repair_route: "مسار الإصلاح", mechanic_habitat_reserve: "احتياطي الموطن",
+    mechanic_festival_network: "شبكة المهرجان", mechanic_swapped_dependency: "اعتماد متبادل", mechanic_departure_bridge: "جسر المغادرة", mechanic_reserve_order: "ترتيب الاحتياطي", mechanic_finale_network: "شبكة الختام",
+    arc: "الفصل {arc} · {name}", stageDemand: "توصيل الحديقة أ {a} · الحديقة ب {b}", stageReserve: "احتفظ في الخزان ≥ {value} · الهدر ≤ {waste}",
+    solved: "مكتملة", locked: "مقفلة", open: "متاحة"
+  });
   window.RIVER_GATES_LOCALES = locales;
 }());

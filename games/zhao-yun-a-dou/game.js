@@ -35,6 +35,7 @@
   let progress = loadProgress();
   let stagePanel = "stages";
   let recentDraws = [];
+  let selectedArmySlot = 0, armyNotice = "", finaleLastTime = null;
   // Local-only acceptance entry: normal Stage controls, real rules, no save writes.
   const qaStage = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)
     && new URLSearchParams(location.search).get('qa')==='zhao-v27'
@@ -51,7 +52,7 @@
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const push = window.ZhaoPush;
   let audioContext = null, impactNoise = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v37", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v38", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -78,13 +79,14 @@
     const now=performance.now();if(kind==='hit'&&now-lastSound<90)return;lastSound=now;
     try {audioContext ||= new (window.AudioContext||window.webkitAudioContext)();if(audioContext.state!=='running')return;
       const osc=audioContext.createOscillator(), gain=audioContext.createGain();
-      const frequency={hit:180,block:780,defeat:520,charge:90,merge:650,hurt:100}[kind]||300;
+      const frequency={hit:180,block:780,defeat:520,charge:90,merge:650,hurt:100,rocket:70,victory:660,loss:140}[kind]||300;
+      if(kind==='victory'||kind==='loss'){for(let i=0;i<3;i++){const note=audioContext.createOscillator(),amp=audioContext.createGain(),at=audioContext.currentTime+i*.13;note.type='triangle';note.frequency.value=(kind==='victory'?[440,554,660]:[220,185,140])[i];amp.gain.setValueAtTime(.06*volume,at);amp.gain.exponentialRampToValueAtTime(.001,at+.4);note.connect(amp);amp.connect(audioContext.destination);note.start(at);note.stop(at+.41);note.onended=()=>{note.disconnect();amp.disconnect();};}}
       osc.type=kind==='charge'?'sawtooth':'triangle';osc.frequency.setValueAtTime(frequency,audioContext.currentTime);osc.frequency.exponentialRampToValueAtTime(frequency*.45,audioContext.currentTime+.13);
       gain.gain.setValueAtTime(.035*volume,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.16);osc.connect(gain);gain.connect(audioContext.destination);osc.start();osc.stop(audioContext.currentTime+.17);osc.onended=()=>{osc.disconnect();gain.disconnect();};
-      if(['hit','block','hurt','charge','defeat'].includes(kind)){
+      if(['hit','block','hurt','charge','defeat','rocket'].includes(kind)){
         if(!impactNoise){impactNoise=audioContext.createBuffer(1,Math.floor(audioContext.sampleRate*.16),audioContext.sampleRate);const samples=impactNoise.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=(Math.random()*2-1)*(1-i/samples.length);}
         const crack=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),envelope=audioContext.createGain();
-        crack.buffer=impactNoise;filter.type='bandpass';filter.frequency.value=kind==='block'?2400:kind==='charge'?450:1200;
+        crack.buffer=impactNoise;filter.type='bandpass';filter.frequency.value=kind==='block'?2400:kind==='charge'||kind==='rocket'?450:1200;
         const duration=kind==='charge'?.15:.075,t=audioContext.currentTime;
         envelope.gain.setValueAtTime((kind==='charge'?.075:.055)*volume,t);envelope.gain.exponentialRampToValueAtTime(.001,t+duration);
         crack.connect(filter);filter.connect(envelope);envelope.connect(audioContext.destination);crack.start();crack.stop(t+duration);
@@ -388,49 +390,64 @@
     const hint=document.createElement('p');hint.textContent=level.roster.includes('arbalest')?t('enemyBoltHelp'):level.roster.includes('drummer')?t('enemyDrumHelp'):level.roster.includes('bomber')?t('enemyBombHelp'):t('pushTip');node.append(hint);
   }
 
-  function cardLabel(id) {const card=army.card(id);return t(['common','rare','epic'][card.rarity])+' · '+unitLabel({type:card.role});}
+  function cardLabel(id) { return t('card_'+id); }
   function resourceArt(kind) {
-    const image=document.createElement('img');image.src='/games/zhao-yun-a-dou/assets/zhao-yun-a-dou-'+kind+'-v37.png';image.alt='';image.width=24;image.height=24;image.className='army-resource-art';return image;
+    const image=document.createElement('img');image.src='/games/zhao-yun-a-dou/assets/'+kind+'-v38.png';image.alt='';image.width=24;image.height=24;image.className='army-resource-art';return image;
+  }
+  function cardArt(id, className='army-art') {
+    const image=document.createElement('img');image.src='/games/zhao-yun-a-dou/assets/card-'+id+'-v38.png';image.alt='';image.className=className;image.width=96;image.height=96;return image;
   }
   function renderArmy() {
     const collection=progress.army;
     const wallet=document.getElementById('armyWallet');wallet.replaceChildren();
-    for(const [kind,key,value] of [['recruit-seal','seals',collection.seals],['stardust','dust',collection.dust+'/20']]){
-      const counter=document.createElement('span');counter.append(resourceArt(kind),document.createTextNode(t(key)+' '+value));wallet.append(counter);
+    for(const kind of ['coins','diamonds']){
+      const counter=document.createElement('span');counter.append(resourceArt(kind),document.createTextNode(t(kind)+' '+collection[kind]));wallet.append(counter);
     }
-    for(const id of ['drawOne','drawFive']){const button=document.getElementById(id);button.replaceChildren(resourceArt('recruit-seal'),document.createTextNode(t(id)));}
+    for(const [id,kind,key,art] of [['drawFree','free',army.canDraw(collection,'free')?'freeDraw':'freeUsed','diamonds'],['drawOne','coin','coinDraw','coins'],['drawFive','diamond','diamondDraw','diamonds']]){
+      const button=document.getElementById(id);button.replaceChildren(resourceArt(art),document.createTextNode(t(key)));button.disabled=!army.canDraw(collection,kind);
+    }
     document.getElementById('armyPity').textContent=t('armyPity',{rare:10-collection.rarePity,epic:30-collection.epicPity});
-    document.getElementById('drawOne').disabled=collection.seals<1;
-    document.getElementById('drawFive').disabled=collection.seals<5;
+    document.getElementById('squadHelp').textContent=t('squadHelp',{slot:selectedArmySlot+1});
+    document.getElementById('collectionCount').textContent=t('collectionCount',{n:army.cards.filter(c=>collection.owned[c.id].stars>0).length,total:army.cards.length});
+    const squad=document.getElementById('armySquad');squad.replaceChildren();
+    collection.equipped.forEach((id,index)=>{
+      const slot=document.createElement('button');slot.type='button';slot.className='squad-slot';slot.dataset.slot=index;slot.setAttribute('aria-pressed',String(index===selectedArmySlot));slot.setAttribute('aria-label',t('slotPick',{n:index+1})+' '+cardLabel(id));
+      const label=document.createElement('span');label.textContent=(index+1)+'. '+cardLabel(id);
+      slot.append(cardArt(id),label);slot.addEventListener('click',()=>{selectedArmySlot=index;renderArmy();document.querySelector('[data-slot="'+index+'"]').focus();});squad.append(slot);
+    });
     const results=document.getElementById('drawResults');results.replaceChildren();
+    if(!armyNotice&&!recentDraws.length){const hint=document.createElement('p');hint.textContent=t('armyHelp');results.append(hint);}
+    if(armyNotice){const message=document.createElement('p');message.textContent=armyNotice;results.append(message);}
     for(const result of recentDraws){
-      const row=document.createElement('div');row.className='draw-result unit-type-'+army.card(result.id).role;row.dataset.rarity=result.rarity;
-      const art=document.createElement('span');art.className='army-art';art.setAttribute('aria-hidden','true');
-      const text=document.createElement('span');text.textContent=cardLabel(result.id)+' '+result.stars+'★ · '+t(result.newCard?'newCard':result.promoted?'promotion':result.dust?'maxCard':'duplicate')+(result.dust?' +'+result.dust+' '+t('dust'):'')+(result.autoEquipped?' · '+t('equipped'):'');
-      row.append(art,text);results.append(row);
+      const row=document.createElement('div');row.className='draw-result';row.dataset.rarity=result.rarity;
+      const text=document.createElement('span');text.textContent=cardLabel(result.id)+' · '+t('receivedShards',{n:result.amount})+(result.coins?' · '+t('overflowCoins',{n:result.coins}):result.ready?' · '+t(result.unlocked?'readyUpgrade':'readyUnlock'):'')+(result.diamonds?' · '+t('freeBonus',{n:result.diamonds}):'');
+      row.append(cardArt(result.id),text);results.append(row);
     }
     const grid=document.getElementById('armyCards');grid.replaceChildren();
     for(const card of army.cards){
-      const count=collection.owned[card.id],stat=army.stats(collection,card.id),selected=collection.equipped[card.role]===card.id;
-      const item=document.createElement('article');item.className='army-card unit-type-'+card.role;item.dataset.rarity=card.rarity;item.dataset.card=card.id;
-      item.classList.toggle('is-equipped',selected);item.classList.toggle('is-unowned',!count);
-      const art=document.createElement('span');art.className='army-art';art.setAttribute('aria-hidden','true');
+      const entry=collection.owned[card.id],stat=army.stats(collection,card.id),slot=collection.equipped.indexOf(card.id),need=army.needed(collection,card.id);
+      const item=document.createElement('article');item.className='army-card';item.dataset.rarity=card.rarity;item.dataset.card=card.id;item.tabIndex=-1;
+      item.classList.toggle('is-equipped',slot>=0);item.classList.toggle('is-unowned',!entry.stars);
       const name=document.createElement('strong');name.textContent=cardLabel(card.id);
-      const star=document.createElement('span');star.className='army-stars';star.textContent=count?'★'.repeat(stat.stars)+'☆'.repeat(5-stat.stars)+' · '+(stat.stars===5?t('maxCard'):count+'/'+army.thresholds[stat.stars]):t('unowned');
+      const star=document.createElement('span');star.className='army-stars';star.textContent=t(['common','rare','epic'][card.rarity])+' · '+(entry.stars?entry.stars+' / 10 ★':t('unowned'));
       const trait=document.createElement('p');trait.textContent=card.trait?t('trait_'+card.trait):t('role_'+card.role);
-      const bonus=document.createElement('small');bonus.textContent=t('armyBonus',{hp:Math.round((stat.hp-1)*100),attack:Math.round((stat.damage-1)*100)});
-      const button=document.createElement('button');button.type='button';button.dataset.equip=card.id;button.textContent=t(selected?'equipped':'equip');button.disabled=!count||selected;button.setAttribute('aria-label',t('equip')+' '+cardLabel(card.id));
-      button.addEventListener('click',()=>{if(army.equip(collection,card.id)){saveProgress();renderArmy();document.querySelector('[data-card="'+card.id+'"]').focus();}});
-      item.tabIndex=-1;item.append(art,name,star,trait,bonus,button);grid.append(item);
+      const spec={...push.troops[card.role],...card.combat},bonus=document.createElement('small');bonus.textContent=t('statLine',{hp:Math.round(spec.hp*stat.hp),attack:Math.round(spec.damage*stat.damage),cost:spec.cost});
+      const count=document.createElement('span');count.className='shard-count';count.textContent=need?entry.shards+' / '+need+' '+t('shards'):t('maxRank');
+      const track=document.createElement('progress');track.max=need||1;track.value=need?Math.min(need,entry.shards):1;track.setAttribute('aria-label',cardLabel(card.id)+' '+count.textContent);
+      const upgrade=document.createElement('button');upgrade.type='button';upgrade.dataset.upgrade=card.id;upgrade.textContent=t(!entry.stars?'unlock':entry.stars===10?'maxRank':'upgrade');upgrade.disabled=!need||entry.shards<need;
+      upgrade.addEventListener('click',()=>{if(army.upgrade(collection,card.id)){armyNotice=t('upgradeDone',{name:cardLabel(card.id),n:collection.owned[card.id].stars});recentDraws=[];saveProgress();sound('merge');renderArmy();document.querySelector('[data-card="'+card.id+'"]').focus();}});
+      const equip=document.createElement('button');equip.type='button';equip.className='equip-action';equip.dataset.equip=card.id;equip.textContent=slot>=0?t('equipped')+' '+(slot+1):t('replaceSlot',{n:selectedArmySlot+1});equip.disabled=!entry.stars||slot>=0;
+      equip.addEventListener('click',()=>{if(army.equip(collection,card.id,selectedArmySlot)){saveProgress();renderArmy();document.querySelector('[data-card="'+card.id+'"]').focus();}});
+      const actions=document.createElement('div');actions.className='army-card-actions';actions.append(upgrade,equip);
+      item.append(cardArt(card.id),name,star,trait,bonus,count,track,actions);grid.append(item);
     }
     const warning=document.getElementById('saveWarning');warning.hidden=!storageFailed;warning.textContent=t('armySavedError');
   }
 
-  function drawCards(count) {
-    if(battle||stagePanel!=='army'||progress.army.seals<count)return;
-    recentDraws=[];
-    for(let i=0;i<count;i++)recentDraws.push(army.draw(progress.army));
-    saveProgress();sound(recentDraws.some(result=>result.rarity===2||result.promoted)?'charge':'merge');renderArmy();
+  function drawCards(kind) {
+    if(battle||stagePanel!=='army')return;
+    const result=army.draw(progress.army,kind);if(!result)return;
+    recentDraws=[result];armyNotice='';saveProgress();sound(result.rarity===2?'charge':'merge');renderArmy();
   }
 
   function createBattle(level) { return push.create(level, progress.talents || [], army.loadout(progress.army)); }
@@ -449,13 +466,20 @@
     loopTimer = null;
     if (motionFrame !== null) window.cancelAnimationFrame(motionFrame);
     motionFrame = null;
+    finaleLastTime=null;
+    const banner=document.getElementById('battleFinale');if(banner)banner.hidden=true;
   }
 
   function renderEnemyMotion(timestamp) {
     motionFrame = null;
     if (!battle) return;
     world?.render(battle, timestamp, paused() || Boolean(battle.result));
-    if (!battle.result) motionFrame = window.requestAnimationFrame(renderEnemyMotion);
+    if(battle.result&&!el.result.open){
+      if(!paused()&&finaleLastTime!==null)battle.finaleElapsed+=Math.min(100,Math.max(0,timestamp-finaleLastTime));
+      finaleLastTime=timestamp;
+      if(battle.finaleElapsed>=battle.finaleDuration){document.getElementById('battleFinale').hidden=true;el.result.showModal();el.resultStages.focus();}
+      else motionFrame=window.requestAnimationFrame(renderEnemyMotion);
+    }else if(!battle.result)motionFrame=window.requestAnimationFrame(renderEnemyMotion);
   }
 
   function advanceBattle(steps) {
@@ -476,11 +500,11 @@
     if (outcome) finishBattle(outcome);
   }
 
-  function recruit(type = 'blade') {
+  function recruit(type = battle?.loadout[0]) {
     if (!battle || battle.result || paused()) return;
     if (push.deploy(battle, type)) {
       sound('merge');
-      setStatus(t('statusRecruit') + ' ' + unitLabel({type, general:false}));
+      setStatus(t('statusRecruit') + ' ' + (battle.army[type]?cardLabel(type):unitLabel({type, general:false})));
       renderBattle();
       emitMeasurementEvent('recruit', {stage:stageIndex + 1, troop:type});
     }
@@ -520,7 +544,7 @@
     battle.stars = stars;
     battle.seconds = seconds;
     if (result === "win") {
-      battle.sealReward = army.reward(progress.army, battle.level, !progress.stars[stageIndex]);
+      battle.armyReward = army.reward(progress.army, battle.level, !progress.stars[stageIndex]);
       progress.stars[stageIndex] = Math.max(progress.stars[stageIndex], stars);
       progress.unlocked = Math.max(progress.unlocked, Math.min(data.levels.length, stageIndex + 2));
       progress.bestTimes[stageIndex]=Math.min(progress.bestTimes[stageIndex]||Infinity,seconds);
@@ -531,8 +555,9 @@
     el.resultTitle.textContent = result === "win" ? t("win") : t("lose");
     el.resultBody.textContent = result === "win" ? t("winBody") : t("loseBody");
     const reward=document.getElementById("resultReward");
-    reward.replaceChildren(document.createTextNode(storageFailed ? t("armySavedError") : result === "win" ? t("armyReward", {n:battle.sealReward}) : t("armyEmpty")));
-    if(result==='win'&&!storageFailed)reward.prepend(resourceArt('recruit-seal'));
+    reward.replaceChildren();
+    if(storageFailed||result!=='win')reward.textContent=t(storageFailed?'armySavedError':'armyEmpty');
+    else for(const kind of ['coins','diamonds']){const span=document.createElement('span');span.append(resourceArt(kind),document.createTextNode('+'+battle.armyReward[kind]+' '+t(kind)));reward.append(span);}
     const replayGoalKey = result === "win"
       ? (stars >= 3 ? "resultReplayGoalThree" : "resultReplayGoalStandard")
       : "resultReplayGoalLoss";
@@ -541,7 +566,15 @@
     el.resultStars.textContent = stars + " / 3";
     el.resultTime.textContent = seconds + "s" + (progress.bestTimes[stageIndex] ? " · " + t("best") + " " + progress.bestTimes[stageIndex]+"s" : "");
     el.next.disabled = result !== "win" || stageIndex >= data.levels.length - 1 || stageIndex + 1 >= progress.unlocked;
-    (__wpNotifyMeasurement(), el.result.showModal());
+    battle.finaleElapsed=0;
+    battle.finaleDuration=matchMedia('(prefers-reduced-motion: reduce)').matches?900:1800;
+    battle.effects=[];
+    finaleLastTime=null;
+    const banner=document.getElementById('battleFinale');banner.hidden=false;banner.dataset.outcome=result;
+    banner.querySelector('strong').textContent=t(result==='win'?'win':'lose');
+    banner.querySelector('span').textContent=t(result==='win'?'victoryBeat':'defeatBeat');
+    sound(result==='win'?'victory':'loss');
+    motionFrame=window.requestAnimationFrame(renderEnemyMotion);
     emitMeasurementEvent("result", {
       stage: stageIndex + 1,
       outcome: result === "win" ? "win" : "loss",
@@ -581,12 +614,13 @@
     const dockKey=locale+JSON.stringify(battle.army);
     if (dock.dataset.locale !== dockKey) {
       dock.dataset.locale=dockKey; dock.replaceChildren();
-      for (const type of unitTypes) {
+      for (const [slot,type] of battle.loadout.entries()) {
         const button=document.createElement('button');
-        button.type='button';button.dataset.deploy=type;button.className='deploy-card unit-type-'+type;
-        if (type === 'blade') button.setAttribute('data-wp-primary-action','');
+        button.type='button';button.dataset.deploy=type;button.className='deploy-card';
+        if (slot === 0) button.setAttribute('data-wp-primary-action','');
         button.innerHTML='<span class="deploy-art" aria-hidden="true"></span><strong></strong><small></small><span class="deploy-cost"></span>';
-        button.querySelector('strong').textContent=unitLabel({type,general:false})+' '+(battle.army[type]?.stars||1)+'★';
+        button.querySelector('.deploy-art').replaceWith(cardArt(type,'deploy-art'));
+        button.querySelector('strong').textContent=cardLabel(type)+' '+(battle.army[type]?.stars||1)+'★';
         button.dataset.rarity=battle.army[type]?.rarity||0;
         button.querySelector('small').textContent=t(['common','rare','epic'][battle.army[type]?.rarity||0]);
         button.addEventListener('click',()=>recruit(type));dock.append(button);
@@ -596,8 +630,8 @@
       const type=button.dataset.deploy, cooldown=battle.deployCooldown[type]||0, cost=push.cost(battle,type);
       button.disabled=Boolean(battle.result)||cooldown>0||battle.buns<cost||battle.units.filter(u=>u.hp>0).length>=12;
       button.querySelector('.deploy-cost').textContent=cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns');
-      button.style.setProperty('--ready', (100-cooldown/push.troops[type].cooldown*100)+'%');
-      button.setAttribute('aria-label',unitLabel({type,general:false})+' · '+t('role_'+type)+' · '+(cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns')));
+      button.style.setProperty('--ready', (100-cooldown/push.troop(battle,type).cooldown*100)+'%');
+      button.setAttribute('aria-label',cardLabel(type)+' · '+t(battle.army[type].trait?'trait_'+battle.army[type].trait:'role_'+battle.army[type].role)+' · '+(cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns')));
     }
     renderSkills();
   }
@@ -735,8 +769,9 @@
   document.getElementById('talentClose').addEventListener('click',()=>switchStagePanel('stages'));
   document.getElementById('armyOpen').addEventListener('click',()=>switchStagePanel('army'));
   document.getElementById('stagesOpen').addEventListener('click',()=>switchStagePanel('stages'));
-  document.getElementById('drawOne').addEventListener('click',()=>drawCards(1));
-  document.getElementById('drawFive').addEventListener('click',()=>drawCards(5));
+  document.getElementById('drawFree').addEventListener('click',()=>drawCards('free'));
+  document.getElementById('drawOne').addEventListener('click',()=>drawCards('coin'));
+  document.getElementById('drawFive').addEventListener('click',()=>drawCards('diamond'));
   document.getElementById('talentPanel').append(...document.getElementById('talentDialog').children);
   document.getElementById('talentReset').addEventListener('click',()=>{
     if(document.body.dataset.screen==='battle')return;
@@ -776,7 +811,7 @@
     if (document.activeElement && ["INPUT", "SELECT", "TEXTAREA"].indexOf(document.activeElement.tagName) >= 0) return;
     if (event.key.toLowerCase() === "r" && battle && !battle.result) recruit();
     if (event.key.toLowerCase() === "h" && battle && !battle.result) showHint();
-    if (event.key >= "1" && event.key <= "4" && battle && !battle.result) recruit(unitTypes[Number(event.key)-1]);
+    if (event.key >= "1" && event.key <= "4" && battle && !battle.result) recruit(battle.loadout[Number(event.key)-1]);
     if (event.code === "Space" && battle && !battle.result) { event.preventDefault(); useSkill(); }
     if (event.key === "Escape" && el.leaveBattle.open) (__wpNotifyMeasurement(), el.leaveBattle.close());
   });
@@ -788,7 +823,7 @@
   window.setTimeout(updateStaticLocale, 900);
 
   window.addEventListener("pagehide",()=>{stopLoop();stopWorld();audioContext?.close().catch(()=>{});audioContext=null;impactNoise=null;});
-  window.addEventListener('pageshow',event=>{if(event.persisted&&battle&&document.body.dataset.screen==='battle'){startWorld();if(!battle.result)startLoop();}});
+  window.addEventListener('pageshow',event=>{if(event.persisted&&battle&&document.body.dataset.screen==='battle'){startWorld();if(!battle.result)startLoop();else if(!el.result.open){finaleLastTime=null;motionFrame=requestAnimationFrame(renderEnemyMotion);}}});
   window.__zhaoYunADouSmoke = {
     renderer:()=>world?{...world.info,pending:worldPending,failed:worldFailed}:null,
     snapshot: function () {
@@ -797,7 +832,7 @@
         stageIndex: stageIndex + 1,
         unlocked: progress.unlocked,
         army: JSON.parse(JSON.stringify(progress.army)), stagePanel,
-        result: battle && battle.result,
+        result: battle && battle.result, finaleElapsed:battle?.finaleElapsed, resultOpen:el.result.open, loadout:battle?.loadout,
         commandHp: battle && battle.commandHp,
         adouHp: battle && battle.adouHp,
         deployCooldown:battle?.deployCooldown, buns: battle && battle.buns, pity:battle?.pity, talents:battle?.talents, rescued:battle?.rescued, recruitIndex:battle?.recruitIndex,

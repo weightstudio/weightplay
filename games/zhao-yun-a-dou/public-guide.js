@@ -40,7 +40,7 @@
     guide.genre = [runtime.pushGenre];
     guide.intro = runtime.summary;
     guide.story = [runtime.pushGoal];
-    guide.systems = [runtime.commandHelp, runtime.mergeHint, runtime.guideBody, runtime.waveReward];
+    guide.systems = [runtime.commandHelp, runtime.armyHelp, runtime.drawHelp, runtime.guideBody];
     guide.progression = [runtime.v27Progression || progression];
     guide.strategyTips = [runtime.pushTip, runtime.enemyBombHelp, runtime.enemyDrumHelp, runtime.enemyBoltHelp];
     guide.how = [runtime.commandHelp,runtime.mergeHint,runtime.guideBody,runtime.rule_coverage];
