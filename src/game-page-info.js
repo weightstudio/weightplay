@@ -22736,6 +22736,519 @@
 }).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }])),
   };
 
+  // Text Growth 1.3.0: restore six locale-owned comparisons in the shared source.
+  // Static entries and runtime hydration must use this same renderer; never
+  // maintain these passages only in generated HTML.
+  const restoredKidsMarketComparisons = {
+  "animal-coloring-studio": {
+    "name": "Crayola animal coloring pages",
+    "source": "https://www.crayola.com/animals",
+    "locales": {
+      "ar": {
+        "heading": "مقارنة مع نشاط تلوين مشابه",
+        "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+        "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+        "body": "تُعد صفحات تلوين الحيوانات من Crayola مرجعًا مناسبًا لأن التجربتين تقومان على اختيار رسومات حيوانات وتلوينها بحرية. صفحات Crayola الرسمية هي أساسًا أوراق تلوين قابلة للطباعة، بينما استوديو تلوين الحيوانات لعبة تفاعلية في المتصفح تضم 12 رسمة حيوانات أصلية، وتعبئة للمناطق، وفرشاة حرة، وممحاة، وتراجعًا، ومعرضًا يُحفظ على هذا الجهاز فقط."
+      },
+      "de": {
+        "heading": "Vergleich mit einem ähnlichen Malangebot",
+        "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+        "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+        "body": "Die Crayola-Tierausmalbilder sind ein sinnvoller Vergleich, weil bei beiden Angeboten Tiermotive ausgewählt und frei koloriert werden. Die offiziellen Crayola-Seiten sind vor allem Druckvorlagen; Tier-Malstudio ist dagegen ein interaktives Browserspiel mit zwölf eigenen Tierbildern, Flächenfüllung, freiem Pinsel, Radierer, Rückgängig-Funktion und einer Galerie, die nur auf diesem Gerät gespeichert wird."
+      },
+      "en": {
+        "heading": "Similar coloring reference",
+        "sourceLabel": "Official reference",
+        "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+        "body": "Crayola animal coloring pages are a useful comparison because both experiences center on choosing animal artwork and adding color. Crayola's official pages are primarily printable coloring sheets, while Coloring Studio is an interactive browser game with twelve original animal pages, bounded Fill, free Brush, eraser and undo tools, plus a gallery stored locally on this device."
+      },
+      "es": {
+        "heading": "Comparación con una actividad similar",
+        "sourceLabel": "Información oficial del juego citado",
+        "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+        "body": "Las páginas de animales para colorear de Crayola son una referencia útil porque ambas experiencias consisten en elegir dibujos de animales y darles color libremente. Las páginas oficiales de Crayola son principalmente láminas imprimibles; Estudio de Colorear Animales es un juego interactivo de navegador con doce dibujos originales, relleno por zonas, pincel libre, borrador, deshacer y una galería guardada solo en este dispositivo."
+      },
+      "fr": {
+        "heading": "Comparaison avec une activité similaire",
+        "sourceLabel": "Informations officielles du jeu cité",
+        "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+        "body": "Les pages de coloriage d'animaux Crayola constituent une référence utile, car les deux expériences proposent de choisir un dessin d'animal et de le colorier librement. Les pages officielles Crayola sont surtout des feuilles à imprimer ; Atelier de coloriage des animaux est un jeu interactif dans le navigateur avec douze dessins originaux, remplissage par zone, pinceau libre, gomme, annulation et galerie enregistrée uniquement sur cet appareil."
+      },
+      "hi": {
+        "heading": "मिलती-जुलती रंग गतिविधि से तुलना",
+        "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+        "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+        "body": "Crayola के पशु रंग पेज उपयोगी तुलना हैं क्योंकि दोनों में पशु चित्र चुनकर अपनी पसंद के रंग भरे जाते हैं। Crayola के आधिकारिक पेज मुख्य रूप से प्रिंट करने योग्य रंग शीट हैं; पशु रंग स्टूडियो ब्राउज़र में चलने वाला इंटरैक्टिव गेम है जिसमें 12 मौलिक पशु चित्र, सीमित क्षेत्र भरना, मुक्त ब्रश, रबर, undo और केवल इसी डिवाइस पर सहेजी जाने वाली गैलरी है।"
+      },
+      "it": {
+        "heading": "Confronto con un'attività simile",
+        "sourceLabel": "Informazioni ufficiali sul gioco citato",
+        "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+        "body": "Le pagine di animali da colorare Crayola sono un riferimento utile perché entrambe le esperienze permettono di scegliere un disegno di animale e colorarlo liberamente. Le pagine ufficiali Crayola sono soprattutto schede stampabili; Studio da colorare degli animali è invece un gioco interattivo nel browser con dodici disegni originali, riempimento delle aree, pennello libero, gomma, annulla e una galleria salvata solo su questo dispositivo."
+      },
+      "ja": {
+        "heading": "似ているぬりえ体験との比較",
+        "sourceLabel": "参照作品の公式情報",
+        "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+        "body": "Crayola の動物ぬりえページ も、動物の絵を選んで自由に色を付ける点が共通しています。Crayola の公式ページは主に印刷して使うぬりえですが、「どうぶつぬりえスタジオ」はブラウザー上で遊ぶゲームで、12 枚のオリジナル動物絵、領域の塗りつぶし、自由ブラシ、消しゴム、元に戻す機能、端末内だけに保存されるギャラリーがあります。"
+      },
+      "ko": {
+        "heading": "비슷한 색칠 활동과 비교",
+        "sourceLabel": "참고 게임의 공식 정보",
+        "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+        "body": "Crayola 동물 색칠 페이지 도 동물 그림을 고르고 자유롭게 색을 입힌다는 점에서 비슷합니다. Crayola 공식 페이지는 주로 인쇄용 색칠 도안인 반면, 동물 색칠 스튜디오는 브라우저에서 바로 즐기는 게임으로 12개의 오리지널 동물 그림, 영역 채우기, 자유 붓, 지우개, 되돌리기, 이 기기에만 저장되는 갤러리를 제공합니다."
+      },
+      "pt-BR": {
+        "heading": "Comparação com uma atividade parecida",
+        "sourceLabel": "Informações oficiais do jogo citado",
+        "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+        "body": "As páginas de animais para colorir da Crayola são uma boa referência porque as duas experiências envolvem escolher desenhos de animais e colori-los livremente. As páginas oficiais da Crayola são principalmente folhas para imprimir; o Ateliê de Colorir Animais é um jogo interativo no navegador com doze desenhos originais, preenchimento por área, pincel livre, borracha, desfazer e uma galeria salva apenas neste dispositivo."
+      },
+      "ru": {
+        "heading": "Сравнение с похожей раскраской",
+        "sourceLabel": "Официальная информация об упомянутой игре",
+        "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+        "body": "Раскраски с животными Crayola подходят для сравнения, потому что в обоих случаях можно выбрать изображение животного и свободно подобрать цвета. Официальные страницы Crayola — прежде всего материалы для печати; «Студия раскрашивания животных» — интерактивная браузерная игра с двенадцатью оригинальными рисунками, заливкой областей, свободной кистью, ластиком, отменой действий и галереей, которая хранится только на этом устройстве."
+      },
+      "zh-Hans": {
+        "heading": "相似涂色玩法参考",
+        "sourceLabel": "参考作品官方说明",
+        "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+        "body": "Crayola 动物涂色页 同样以选择动物图案并自由上色为核心，因此适合作为玩法比较。Crayola 官方内容主要是可打印的涂色图；《动物涂色工作室》则是浏览器互动游戏，提供 12 张原创动物图、区域填色、自由画笔、橡皮擦、撤销，以及只保存在本机设备的作品图库。"
+      },
+      "zh-Hant": {
+        "heading": "相似塗色玩法參考",
+        "sourceLabel": "參考作品官方說明",
+        "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+        "body": "Crayola 動物著色頁 同樣以挑選動物圖案並自由上色為核心，因此適合作為玩法比較。Crayola 官方內容主要是可列印的著色圖；《塗色工作室》則是瀏覽器互動遊戲，提供 12 張原創動物圖、區域填色、自由畫筆、橡皮擦、復原，以及只儲存在本機裝置的作品圖庫。"
+      }
+    }
+  },
+  "animal-quiz": {
+    "name": "National Geographic Kids Animal Quizzes",
+    "source": "https://www.natgeokids.com/uk/category/discover/animals/",
+    "locales": {
+      "ar": {
+        "heading": "مقارنة مع اختبارات حيوانات مشابهة",
+        "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+        "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+        "body": "تُعد محتويات واختبارات الحيوانات من National Geographic Kids مرجعًا مناسبًا لأن التجربتين تطلبان استخدام معلومات عن الحيوانات لاختيار الإجابة والتعلم من النتيجة. تقدم National Geographic Kids محتوى ويب قصيرًا حول موضوعات حيوانية متعددة؛ أما Animal Quiz فتبني حملة واحدة من 30 مرحلة، وفي كل مرحلة عشرة حيوانات مختلفة، وتتدرج الصور من صور واضحة إلى صور ضبابية وظلال، مع ثلاثة أو أربعة خيارات وإعادة المحاولة بعد الخطأ وحفظ التقدم محليًا."
+      },
+      "de": {
+        "heading": "Vergleich mit anderen Tierquiz-Angeboten",
+        "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+        "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+        "body": "Die Tierinhalte und Quizangebote von National Geographic Kids eignen sich als Vergleich, weil bei beiden Erfahrungen Tierwissen genutzt wird, um Antworten auszuwählen und aus dem Ergebnis zu lernen. National Geographic Kids bietet kurze Webinhalte zu vielen Tierthemen; Animal Quiz bildet dagegen eine zusammenhängende Browser-Kampagne mit 30 Stufen, zehn verschiedenen Tieren pro Stufe, Bildern von klaren Porträts bis zu Unschärfe und Silhouetten, drei oder vier Antworten, erneuten Versuchen nach Fehlern und lokalem Fortschritt."
+      },
+      "en": {
+        "heading": "Similar animal-quiz reference",
+        "sourceLabel": "Official reference",
+        "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+        "body": "National Geographic Kids Animal Quizzes are a useful comparison because both experiences ask children to use animal facts to choose an answer and learn from the result. National Geographic Kids presents short web quizzes across many animal topics; Animal Quiz instead builds one 30-stage browser campaign with ten unique animals per stage, portraits that progress into blurred images and silhouettes, three-to-four choices, retry-friendly wrong answers, and local stage progress."
+      },
+      "es": {
+        "heading": "Comparación con otros cuestionarios de animales",
+        "sourceLabel": "Información oficial del juego citado",
+        "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+        "body": "Los contenidos y cuestionarios de animales de National Geographic Kids son una referencia útil porque ambas experiencias invitan a usar datos sobre animales para elegir respuestas y aprender del resultado. National Geographic Kids ofrece contenidos web breves sobre muchos temas animales; Animal Quiz crea una campaña única de 30 etapas con diez animales distintos por etapa, imágenes que avanzan de retratos claros a desenfoques y siluetas, tres o cuatro opciones, reintentos tras errores y progreso local."
+      },
+      "fr": {
+        "heading": "Comparaison avec d'autres quiz sur les animaux",
+        "sourceLabel": "Informations officielles du jeu cité",
+        "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+        "body": "Les contenus et quiz animaliers de National Geographic Kids constituent une référence utile, car les deux expériences demandent d'utiliser des faits sur les animaux pour choisir une réponse et apprendre du résultat. National Geographic Kids propose de courts contenus web sur de nombreux thèmes animaliers ; Animal Quiz construit une campagne unique de 30 étapes, avec dix animaux différents par étape, des images allant du portrait net au flou puis à la silhouette, trois ou quatre choix, la possibilité de réessayer après une erreur et une progression locale."
+      },
+      "hi": {
+        "heading": "मिलते-जुलते पशु क्विज़ से तुलना",
+        "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+        "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+        "body": "National Geographic Kids के पशु लेख और क्विज़ उपयोगी तुलना हैं क्योंकि दोनों अनुभव पशुओं के तथ्यों का उपयोग करके उत्तर चुनने और परिणाम से सीखने पर आधारित हैं। National Geographic Kids कई पशु विषयों पर छोटे वेब लेख और क्विज़ देता है; Animal Quiz एक 30-स्टेज ब्राउज़र अभियान बनाता है, जिसमें हर स्टेज पर दस अलग पशु, साफ चित्रों से धुंधली छवियों और सिल्हूट तक बदलाव, तीन या चार विकल्प, गलत उत्तर के बाद दोबारा कोशिश और स्थानीय प्रगति होती है।"
+      },
+      "it": {
+        "heading": "Confronto con altri quiz sugli animali",
+        "sourceLabel": "Informazioni ufficiali sul gioco citato",
+        "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+        "body": "I contenuti e quiz sugli animali di National Geographic Kids sono un riferimento utile perché entrambe le esperienze chiedono di usare informazioni sugli animali per scegliere una risposta e imparare dal risultato. National Geographic Kids offre brevi contenuti web su molti temi animali; Animal Quiz costruisce invece una campagna unica di 30 livelli, con dieci animali diversi per livello, immagini che passano da ritratti nitidi a sfocature e silhouette, tre o quattro opzioni, nuovi tentativi dopo gli errori e progressi locali."
+      },
+      "ja": {
+        "heading": "似ている動物クイズとの比較",
+        "sourceLabel": "参照作品の公式情報",
+        "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+        "body": "National Geographic Kids の動物コンテンツとクイズ は、動物の知識を使って答えを選び、結果から学ぶ点が共通するため比較に適しています。National Geographic Kids は多くの動物テーマについて短いウェブ記事やクイズを提供します。Animal Quiz は30ステージのブラウザキャンペーンとして構成され、各ステージに10種類の動物が登場し、鮮明な写真からぼかし画像やシルエットへ進み、3～4択、間違えても再挑戦できる仕組み、端末内の進行保存があります。"
+      },
+      "ko": {
+        "heading": "비슷한 동물 퀴즈와 비교",
+        "sourceLabel": "참고 게임의 공식 정보",
+        "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+        "body": "National Geographic Kids의 동물 콘텐츠와 퀴즈 는 동물 지식을 이용해 답을 고르고 결과에서 배운다는 점에서 좋은 비교 대상입니다. National Geographic Kids는 다양한 동물 주제의 짧은 웹 콘텐츠와 퀴즈를 제공합니다. Animal Quiz는 하나의 30스테이지 브라우저 캠페인으로 구성되며, 스테이지마다 서로 다른 동물 10종, 선명한 사진에서 흐린 이미지와 실루엣으로 이어지는 변화, 3~4개 선택지, 오답 후 재시도, 로컬 진행 저장을 제공합니다."
+      },
+      "pt-BR": {
+        "heading": "Comparação com outros quizzes de animais",
+        "sourceLabel": "Informações oficiais do jogo citado",
+        "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+        "body": "Os conteúdos e quizzes de animais da National Geographic Kids são uma referência útil porque as duas experiências usam fatos sobre animais para escolher respostas e aprender com o resultado. A National Geographic Kids oferece conteúdos curtos na web sobre muitos temas de animais; Animal Quiz organiza uma campanha única de 30 fases, com dez animais diferentes por fase, imagens que passam de retratos nítidos para imagens desfocadas e silhuetas, três ou quatro opções, novas tentativas após erros e progresso local."
+      },
+      "ru": {
+        "heading": "Сравнение с другими викторинами о животных",
+        "sourceLabel": "Официальная информация об упомянутой игре",
+        "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+        "body": "Материалы и викторины National Geographic Kids о животных подходят для сравнения, потому что в обоих случаях ребёнок использует факты о животных, выбирает ответ и учится по результату. National Geographic Kids предлагает короткие веб-материалы на разные темы о животных; Animal Quiz строит единую кампанию из 30 этапов, где на каждом этапе десять разных животных, изображения переходят от чётких портретов к размытым картинкам и силуэтам, есть три или четыре варианта, повторная попытка после ошибки и локальное сохранение прогресса."
+      },
+      "zh-Hans": {
+        "heading": "相似动物问答内容参考",
+        "sourceLabel": "参考作品官方说明",
+        "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+        "body": "National Geographic Kids 动物内容与问答 适合作为比较，因为两者都让孩子利用动物知识选择答案并从结果学习。National Geographic Kids 提供多种动物主题的短篇网页知识与问答；Animal Quiz 则建立一套 30 关浏览器游戏，每关有 10 种不同动物，并从清楚照片逐步加入模糊图片与剪影、3～4 个选项、答错可重试，以及本机关卡进度。"
+      },
+      "zh-Hant": {
+        "heading": "相似動物問答內容參考",
+        "sourceLabel": "參考作品官方說明",
+        "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+        "body": "National Geographic Kids 動物內容與問答 適合作為比較，因為兩者都讓孩子利用動物知識選擇答案並從結果學習。National Geographic Kids 提供多種動物主題的短篇網頁知識與問答；Animal Quiz 則建立一套 30 關瀏覽器遊戲，每關有 10 種不同動物，並從清楚照片逐步加入模糊圖片與剪影、3～4 個選項、答錯可重試，以及本機關卡進度。"
+      }
+    }
+  },
+  "animal-rescue": {
+    "name": "ThinkFun Rush Hour",
+    "source": "https://www.thinkfun.com/en-US/products/rush-hour-76440",
+    "locales": {
+      "ar": {
+        "heading": "مقارنة مع لغز مسار مشابه",
+        "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+        "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+        "body": "تُعد ThinkFun Rush Hour مرجعًا مناسبًا لأن اللعبتين تطلبان تخطيط مسار داخل مساحة مقيدة بالعوائق بدل الاعتماد على السرعة. تستخدم Rush Hour مركبات منزلقة على شبكة مرور لفتح طريق السيارة الحمراء؛ أما Rescue Trail فتستخدم شبكة حركة 5×5 عبر 30 مسارًا، وتضيف فاكهة مطلوبة وطينًا بتكلفة حركة أعلى ومفاتيح وبوابات ومربعات هشة للاستخدام مرة واحدة والتراجع وأهداف النجوم."
+      },
+      "de": {
+        "heading": "Vergleich mit einem ähnlichen Routenpuzzle",
+        "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+        "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+        "body": "ThinkFun Rush Hour eignet sich als Vergleich, weil in beiden Spielen ein Weg durch einen blockierten Raum geplant werden muss, statt auf Geschwindigkeit zu setzen. Rush Hour nutzt verschiebbare Fahrzeuge auf einem Verkehrsraster, um das rote Auto zu befreien; Rescue Trail nutzt ein 5×5-Bewegungsraster mit 30 Wegen und ergänzt Pflichtfrüchte, teureren Schlamm, Schlüssel und Tore, einmal nutzbare brüchige Felder, Rückgängig und Sternziele."
+      },
+      "en": {
+        "heading": "Similar route-puzzle reference",
+        "sourceLabel": "Official reference",
+        "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+        "body": "ThinkFun Rush Hour is a useful comparison because both games ask players to plan a constrained route around blocking pieces instead of relying on speed. Rush Hour uses sliding vehicles on a traffic grid to free the red car; Rescue Trail uses a 5-by-5 walking grid across 30 trails, then adds required fruit, weighted mud, keys and gates, one-use fragile squares, Undo, and star goals."
+      },
+      "es": {
+        "heading": "Comparación con otro rompecabezas de rutas",
+        "sourceLabel": "Información oficial del juego citado",
+        "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+        "body": "ThinkFun Rush Hour es una referencia útil porque ambos juegos piden planificar una ruta dentro de un espacio bloqueado en vez de depender de la velocidad. Rush Hour usa vehículos deslizantes en una cuadrícula de tráfico para liberar el coche rojo; Rescue Trail usa una cuadrícula de movimiento de 5 por 5 en 30 rutas y añade fruta obligatoria, barro con coste extra, llaves y puertas, casillas frágiles de un solo uso, deshacer y objetivos de estrellas."
+      },
+      "fr": {
+        "heading": "Comparaison avec un autre puzzle de trajet",
+        "sourceLabel": "Informations officielles du jeu cité",
+        "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+        "body": "ThinkFun Rush Hour est une référence utile, car les deux jeux demandent de planifier un trajet dans un espace encombré plutôt que de compter sur la vitesse. Rush Hour utilise des véhicules coulissants sur une grille de circulation afin de libérer la voiture rouge ; Rescue Trail utilise une grille de déplacement 5 × 5 sur 30 parcours et ajoute des fruits obligatoires, de la boue plus coûteuse, des clés et portes, des cases fragiles à usage unique, l'annulation et des objectifs d'étoiles."
+      },
+      "hi": {
+        "heading": "मिलते-जुलते मार्ग पहेली से तुलना",
+        "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+        "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+        "body": "ThinkFun Rush Hour उपयोगी तुलना है क्योंकि दोनों खेल गति के बजाय बाधाओं वाले सीमित स्थान में रास्ता बनाने की योजना पर आधारित हैं। Rush Hour में ट्रैफिक ग्रिड पर वाहनों को सरकाकर लाल कार के लिए निकास बनाया जाता है; Rescue Trail 5×5 चलने वाले ग्रिड और 30 मार्गों का उपयोग करता है तथा अनिवार्य फल, अधिक चाल खर्च वाली कीचड़, चाबी और फाटक, एक बार उपयोग होने वाले नाजुक खाने, Undo और स्टार लक्ष्य जोड़ता है।"
+      },
+      "it": {
+        "heading": "Confronto con un altro rompicapo di percorso",
+        "sourceLabel": "Informazioni ufficiali sul gioco citato",
+        "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+        "body": "ThinkFun Rush Hour è un riferimento utile perché entrambi i giochi richiedono di pianificare un percorso in uno spazio bloccato invece di affidarsi alla velocità. Rush Hour usa veicoli scorrevoli su una griglia di traffico per liberare l'auto rossa; Rescue Trail usa una griglia di movimento 5×5 in 30 percorsi e aggiunge frutta obbligatoria, fango con costo maggiore, chiavi e cancelli, caselle fragili utilizzabili una sola volta, annulla e obiettivi a stelle."
+      },
+      "ja": {
+        "heading": "似ている経路パズルとの比較",
+        "sourceLabel": "参照作品の公式情報",
+        "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+        "body": "ThinkFun Rush Hour は、速さではなく障害物のある空間で経路を計画する点が共通するため、比較に適しています。Rush Hour は交通グリッド上の車をスライドさせて赤い車の出口を作ります。Rescue Trail は5×5の歩行グリッドと30のルートを使い、必須フルーツ、移動コストが高い泥、鍵と門、1回だけ通れる壊れやすいマス、Undo、スター目標を段階的に加えます。"
+      },
+      "ko": {
+        "heading": "비슷한 경로 퍼즐과 비교",
+        "sourceLabel": "참고 게임의 공식 정보",
+        "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+        "body": "ThinkFun Rush Hour 는 속도보다 막힌 공간에서 경로를 계획해야 한다는 점에서 좋은 비교 대상입니다. Rush Hour는 교통 격자에서 차량을 밀어 빨간 자동차의 출구를 만드는 퍼즐입니다. Rescue Trail은 5×5 이동 격자와 30개 경로를 사용하고, 필수 과일, 이동 비용이 큰 진흙, 열쇠와 문, 한 번만 지날 수 있는 약한 칸, 되돌리기와 별 목표를 단계적으로 추가합니다."
+      },
+      "pt-BR": {
+        "heading": "Comparação com outro quebra-cabeça de rotas",
+        "sourceLabel": "Informações oficiais do jogo citado",
+        "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+        "body": "ThinkFun Rush Hour é uma referência útil porque os dois jogos pedem planejamento de rota em um espaço bloqueado, em vez de depender de velocidade. Rush Hour usa veículos deslizantes em uma grade de trânsito para liberar o carro vermelho; Rescue Trail usa uma grade de movimento 5 por 5 em 30 trilhas e acrescenta frutas obrigatórias, lama com custo maior, chaves e portões, casas frágeis de uso único, desfazer e metas de estrelas."
+      },
+      "ru": {
+        "heading": "Сравнение с похожей головоломкой на маршрут",
+        "sourceLabel": "Официальная информация об упомянутой игре",
+        "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+        "body": "ThinkFun Rush Hour подходит для сравнения, потому что в обеих играх нужно планировать путь в ограниченном пространстве с препятствиями, а не полагаться на скорость. В Rush Hour машины сдвигаются по дорожной сетке, чтобы освободить красный автомобиль; Rescue Trail использует поле 5×5 и 30 маршрутов, добавляя обязательные фрукты, более дорогую грязь, ключи и ворота, хрупкие клетки на один проход, отмену хода и цели по звёздам."
+      },
+      "zh-Hans": {
+        "heading": "相似路线益智玩法参考",
+        "sourceLabel": "参考作品官方说明",
+        "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+        "body": "ThinkFun Rush Hour 适合作为比较，因为两款游戏都要求玩家在受阻空间中规划路线，而不是依靠反应速度。Rush Hour 通过交通格上的滑动车辆清出红色汽车的出口；Rescue Trail 则使用 5×5 步行格与 30 条路线，并逐步加入必收水果、加权泥地、钥匙与闸门、只能走一次的脆弱地板、撤销以及星级目标。"
+      },
+      "zh-Hant": {
+        "heading": "相似路線益智玩法參考",
+        "sourceLabel": "參考作品官方說明",
+        "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+        "body": "ThinkFun Rush Hour 適合作為比較，因為兩款遊戲都要求玩家在受阻的空間中規劃路線，而不是依靠反應速度。Rush Hour 透過交通格上的滑動車輛清出紅色汽車的出口；Rescue Trail 則使用 5×5 步行格與 30 條路線，並逐步加入必收水果、加權泥地、鑰匙與閘門、只能走一次的脆弱地板、復原以及星級目標。"
+      }
+    }
+  },
+  "fruit-merge": {
+    "name": "Suika Game",
+    "source": "https://www.aladdinx.jp/pages/suika-game",
+    "locales": {
+      "ar": {
+        "heading": "مقارنة مع لعبة دمج مشابهة",
+        "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+        "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+        "body": "تُعد Suika Game مرجعًا مناسبًا لأن اللعبتين تسقطان قطعًا متأثرة بالفيزياء داخل حاوية، وتدمجان القطع المتطابقة إلى مستوى أعلى مع إدارة ارتفاع الكومة. تستخدم لعبة Aladdin X الرسمية سلسلة تطور للفواكه وصندوقًا واحدًا يركز على النقاط؛ أما Merge Tower فتضم 11 مستوى من الحيوانات وحملة منفصلة من 30 تحديًا تغيّر مساحة التصويب والرياح والجاذبية وترتيب التوليد الثابت وأهداف المراحل."
+      },
+      "de": {
+        "heading": "Vergleich mit einem ähnlichen Merge-Spiel",
+        "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+        "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+        "body": "Suika Game eignet sich als Vergleich, weil in beiden Spielen physikbasierte Teile in einen Behälter fallen und gleiche Teile zu einer höheren Stufe verschmelzen, während die Stapelhöhe kontrolliert wird. Das offizielle Spiel von Aladdin X nutzt eine Frucht-Entwicklungskette und eine einzelne, punkteorientierte Box; Merge Tower bietet elf Tierstufen sowie eine separate Kampagne mit 30 Herausforderungen, die Zielbereich, Wind, Schwerkraft, feste Reihenfolgen und Ziele verändert."
+      },
+      "en": {
+        "heading": "Similar merge reference",
+        "sourceLabel": "Official reference",
+        "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+        "body": "Suika Game is a useful comparison because both games drop physics-driven pieces into a container and merge matching pieces into a larger tier while managing the pile. Aladdin X's official game uses a fruit evolution chain and a single score-focused box; Merge Tower uses eleven animal tiers plus a separate 30-challenge campaign with changing aim space, wind, gravity, fixed queues and stage goals."
+      },
+      "es": {
+        "heading": "Comparación con otro juego de fusión",
+        "sourceLabel": "Información oficial del juego citado",
+        "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+        "body": "Suika Game es una referencia útil porque ambos juegos dejan caer piezas con física dentro de un recipiente y fusionan piezas iguales en un nivel mayor mientras se controla la altura de la pila. El juego oficial de Aladdin X usa una cadena de evolución de frutas y una sola caja centrada en la puntuación; Merge Tower tiene once niveles de animales y una campaña aparte de 30 desafíos que cambia el espacio de apuntado, el viento, la gravedad, las colas fijas y los objetivos."
+      },
+      "fr": {
+        "heading": "Comparaison avec un autre jeu de fusion",
+        "sourceLabel": "Informations officielles du jeu cité",
+        "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+        "body": "Suika Game est une référence utile, car les deux jeux font tomber des pièces soumises à la physique dans un récipient et fusionnent les pièces identiques vers un niveau supérieur tout en contrôlant la hauteur de la pile. Le jeu officiel d'Aladdin X utilise une chaîne d'évolution de fruits et une seule boîte axée sur le score ; Merge Tower propose onze niveaux d'animaux et une campagne distincte de 30 défis qui modifie la zone de visée, le vent, la gravité, les files fixes et les objectifs."
+      },
+      "hi": {
+        "heading": "मिलते-जुलते मर्ज खेल से तुलना",
+        "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+        "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+        "body": "Suika Game उपयोगी तुलना है क्योंकि दोनों खेलों में भौतिकी से चलने वाले टुकड़े एक कंटेनर में गिरते हैं, समान टुकड़े मिलकर अगला स्तर बनाते हैं और खिलाड़ी ढेर की ऊँचाई संभालता है। Aladdin X के आधिकारिक खेल में फलों की विकास श्रृंखला और एक स्कोर-केंद्रित बॉक्स है; Merge Tower में 11 पशु स्तर और अलग 30-चुनौती अभियान है, जिसमें निशाना क्षेत्र, हवा, गुरुत्वाकर्षण, निश्चित क्रम और स्टेज लक्ष्य बदलते हैं।"
+      },
+      "it": {
+        "heading": "Confronto con un altro gioco di fusione",
+        "sourceLabel": "Informazioni ufficiali sul gioco citato",
+        "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+        "body": "Suika Game è un riferimento utile perché entrambi i giochi fanno cadere pezzi soggetti alla fisica in un contenitore e fondono pezzi uguali in un livello superiore mentre si controlla l'altezza della pila. Il gioco ufficiale di Aladdin X usa una catena evolutiva di frutti e un'unica scatola incentrata sul punteggio; Merge Tower offre undici livelli di animali e una campagna separata di 30 sfide che modifica spazio di mira, vento, gravità, code fisse e obiettivi."
+      },
+      "ja": {
+        "heading": "似ているマージゲームとの比較",
+        "sourceLabel": "参照作品の公式情報",
+        "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+        "body": "スイカゲーム は、物理で動くピースを容器へ落とし、同じピース同士をぶつけて上位へ進化させながら積み上がりを管理する点が共通するため、比較に適しています。Aladdin X 公式のスイカゲームはフルーツの進化と1つのボックスでのスコア挑戦が中心です。Merge Tower は11段階の動物マージに加え、照準範囲、風、重力、固定キュー、ステージ目標が変化する30のチャレンジを別に用意しています。"
+      },
+      "ko": {
+        "heading": "비슷한 머지 게임과 비교",
+        "sourceLabel": "참고 게임의 공식 정보",
+        "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+        "body": "Suika Game 은 물리로 움직이는 조각을 상자에 떨어뜨리고 같은 조각을 충돌시켜 더 높은 단계로 합치면서 더미 높이를 관리한다는 점에서 좋은 비교 대상입니다. Aladdin X의 공식 게임은 과일 진화 체인과 하나의 상자에서 점수를 높이는 플레이가 중심입니다. Merge Tower는 11단계 동물 머지 체인에 더해 조준 범위, 바람, 중력, 고정 생성 순서와 스테이지 목표가 달라지는 30개 챌린지를 별도로 제공합니다."
+      },
+      "pt-BR": {
+        "heading": "Comparação com outro jogo de fusão",
+        "sourceLabel": "Informações oficiais do jogo citado",
+        "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+        "body": "Suika Game é uma referência útil porque os dois jogos deixam peças com física caírem em um recipiente e fundem peças iguais em um nível maior enquanto o jogador controla a altura da pilha. O jogo oficial da Aladdin X usa uma cadeia de evolução de frutas e uma única caixa focada em pontuação; Merge Tower tem onze níveis de animais e uma campanha separada com 30 desafios que altera área de mira, vento, gravidade, filas fixas e objetivos."
+      },
+      "ru": {
+        "heading": "Сравнение с похожей игрой на слияние",
+        "sourceLabel": "Официальная информация об упомянутой игре",
+        "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+        "body": "Suika Game подходит для сравнения: в обеих играх физические объекты падают в контейнер, одинаковые объекты объединяются в следующий уровень, а игрок следит за высотой стопки. Официальная игра Aladdin X использует цепочку фруктов и одну коробку, где основная цель — счёт; Merge Tower предлагает 11 уровней животных и отдельную кампанию из 30 испытаний, меняющих область прицеливания, ветер, гравитацию, фиксированную очередь и цели этапов."
+      },
+      "zh-Hans": {
+        "heading": "相似合成玩法参考",
+        "sourceLabel": "参考作品官方说明",
+        "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+        "body": "西瓜游戏（Suika Game） 适合作为比较，因为两款游戏都会把受物理影响的物体投入容器，让相同物体碰撞后合成更高等级，同时控制堆叠高度。Aladdin X 官方《西瓜游戏》使用水果进化链，核心集中在单一箱体的分数挑战；Merge Tower 则有 11 阶动物合成链，并另外提供 30 个挑战关卡，会改变瞄准范围、风力、重力、固定生成顺序和关卡目标。"
+      },
+      "zh-Hant": {
+        "heading": "相似合成玩法參考",
+        "sourceLabel": "參考作品官方說明",
+        "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+        "body": "西瓜遊戲（Suika Game） 適合作為比較，因為兩款遊戲都會把受物理影響的物件投入容器，讓相同物件碰撞後合成更高階級，同時控制堆疊高度。Aladdin X 官方《西瓜遊戲》使用水果進化鏈，核心集中在單一箱體的分數挑戰；Merge Tower 則有 11 階動物合成鏈，並另外提供 30 個挑戰關卡，會改變瞄準範圍、風力、重力、固定生成順序與關卡目標。"
+      }
+    }
+  },
+  "garden-tiles": {
+    "name": "Simon",
+    "source": "https://instructions.hasbro.com/en-us/instruction/simon-game",
+    "locales": {
+      "ar": {
+        "heading": "مقارنة مع لعبة ذاكرة مشابهة",
+        "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+        "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+        "body": "تُعد Simon مرجعًا مناسبًا لأن اللعبتين تختبران الذاكرة البصرية عبر تذكّر معلومات لا تبقى ظاهرة باستمرار. تطلب Simon من Hasbro تكرار تسلسل متزايد الطول من الإشارات الضوئية الملونة؛ أما Pet Garden Tiles فتستخدم أزواج صور مقلوبة في 30 تحديًا، ثم تغيّر الذاكرة المكانية عبر معاينة البداية، والبطاقة الأولى المؤقتة، وخلط البطاقات غير المتطابقة، وتدوير البطاقات المتبقية."
+      },
+      "de": {
+        "heading": "Vergleich mit einem ähnlichen Gedächtnisspiel",
+        "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+        "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+        "body": "Simon eignet sich als Vergleich, weil beide Spiele visuelles Gedächtnis verlangen und Informationen später nicht dauerhaft sichtbar sind. Hasbros Simon fordert dazu auf, eine immer längere Folge farbiger Lichtsignale zu wiederholen; Pet Garden Tiles nutzt verdeckte Bildpaare in 30 Herausforderungen und verändert die räumliche Erinnerung anschließend durch Vorschauen, kurz sichtbare erste Karten, gemischte nicht gefundene Karten und rotierende Restkarten."
+      },
+      "en": {
+        "heading": "Similar memory-game reference",
+        "sourceLabel": "Official reference",
+        "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+        "body": "Simon is a useful comparison because both games test visual memory by asking players to remember information that is no longer continuously visible. Hasbro's Simon asks players to repeat an increasingly long sequence of colored-light signals; Pet Garden Tiles instead uses face-down picture pairs across 30 challenges, then changes spatial memory with previews, temporary first picks, shuffled unmatched cards, and rotating survivors."
+      },
+      "es": {
+        "heading": "Comparación con otro juego de memoria",
+        "sourceLabel": "Información oficial del juego citado",
+        "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+        "body": "Simon es una referencia útil porque ambos juegos ponen a prueba la memoria visual al pedir que se recuerde información que deja de estar visible. Simon de Hasbro pide repetir una secuencia cada vez más larga de señales luminosas de colores; Pet Garden Tiles usa parejas de imágenes boca abajo en 30 desafíos y después cambia la memoria espacial con vistas previas, primeras cartas temporales, cartas no emparejadas que se barajan y cartas restantes que rotan."
+      },
+      "fr": {
+        "heading": "Comparaison avec un autre jeu de mémoire",
+        "sourceLabel": "Informations officielles du jeu cité",
+        "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+        "body": "Simon est une référence utile, car les deux jeux sollicitent la mémoire visuelle en demandant de retenir des informations qui ne restent pas affichées. Le Simon de Hasbro demande de reproduire une séquence de signaux lumineux colorés de plus en plus longue ; Pet Garden Tiles utilise des paires d'images face cachée dans 30 défis, puis modifie la mémoire spatiale avec des aperçus, une première carte temporaire, le mélange des cartes non associées et la rotation des cartes restantes."
+      },
+      "hi": {
+        "heading": "मिलते-जुलते स्मृति खेल से तुलना",
+        "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+        "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+        "body": "Simon उपयोगी तुलना है क्योंकि दोनों खेल दृश्य जानकारी को याद रखने की क्षमता पर निर्भर करते हैं, जबकि वह जानकारी लगातार दिखाई नहीं देती। Hasbro के Simon में खिलाड़ी को रंगीन रोशनी के बढ़ते क्रम को दोहराना होता है; Pet Garden Tiles 30 चुनौतियों में उलटे चित्रों की जोड़ियाँ मिलाता है और फिर शुरुआती झलक, थोड़ी देर खुला पहला कार्ड, न मिली जोड़ियों का फेरबदल और बची हुई कार्डों की घुमाव व्यवस्था से स्थानिक स्मृति बदलता है।"
+      },
+      "it": {
+        "heading": "Confronto con un altro gioco di memoria",
+        "sourceLabel": "Informazioni ufficiali sul gioco citato",
+        "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+        "body": "Simon è un riferimento utile perché entrambi i giochi mettono alla prova la memoria visiva chiedendo di ricordare informazioni che non restano sempre visibili. Simon di Hasbro richiede di ripetere una sequenza sempre più lunga di segnali luminosi colorati; Pet Garden Tiles usa coppie di immagini coperte in 30 sfide e poi modifica la memoria spaziale con anteprime, prima carta temporanea, rimescolamento delle carte non abbinate e rotazione delle carte rimaste."
+      },
+      "ja": {
+        "heading": "似ている記憶ゲームとの比較",
+        "sourceLabel": "参照作品の公式情報",
+        "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+        "body": "Simon は、常に表示されない視覚情報を覚える点が共通するため、比較に適しています。Hasbro の Simon は長くなっていく色付きライトの順番を再現するゲームです。Pet Garden Tiles は30の神経衰弱チャレンジで位置記憶を使い、開始時のプレビュー、短時間だけ開く1枚目、未一致カードのシャッフル、成立後に残りカードが回転するルールを段階的に加えます。"
+      },
+      "ko": {
+        "heading": "비슷한 기억 게임과 비교",
+        "sourceLabel": "참고 게임의 공식 정보",
+        "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+        "body": "Simon 은 계속 보이지 않는 시각 정보를 기억해야 한다는 점에서 좋은 비교 대상입니다. Hasbro의 Simon은 점점 길어지는 색상 불빛 순서를 그대로 반복하는 게임입니다. Pet Garden Tiles는 30개의 뒤집기 짝맞추기 챌린지에서 위치 기억을 사용하고, 시작 미리보기, 잠시만 열린 첫 카드, 맞지 않은 카드 섞기, 성공 후 남은 카드 회전 같은 규칙을 단계적으로 추가합니다."
+      },
+      "pt-BR": {
+        "heading": "Comparação com outro jogo de memória",
+        "sourceLabel": "Informações oficiais do jogo citado",
+        "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+        "body": "Simon é uma referência útil porque os dois jogos testam a memória visual ao pedir que o jogador lembre informações que deixam de ficar visíveis. O Simon da Hasbro pede a repetição de uma sequência cada vez maior de sinais luminosos coloridos; Pet Garden Tiles usa pares de imagens viradas para baixo em 30 desafios e depois altera a memória espacial com prévias, primeira carta temporária, embaralhamento das cartas não combinadas e rotação das cartas restantes."
+      },
+      "ru": {
+        "heading": "Сравнение с похожей игрой на память",
+        "sourceLabel": "Официальная информация об упомянутой игре",
+        "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+        "body": "Simon подходит для сравнения, потому что обе игры проверяют зрительную память и требуют помнить информацию, которая больше не остаётся на экране. В Simon от Hasbro нужно повторять всё более длинную последовательность цветных световых сигналов; Pet Garden Tiles использует закрытые пары картинок в 30 испытаниях, а затем усложняет пространственную память предварительным показом, временно открытой первой картой, перемешиванием несовпавших карт и вращением оставшихся карт."
+      },
+      "zh-Hans": {
+        "heading": "相似记忆游戏参考",
+        "sourceLabel": "参考作品官方说明",
+        "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+        "body": "Simon 适合作为比较，因为两款游戏都要求玩家记住不会持续显示的视觉信息。Hasbro 的 Simon 要玩家依序重复越来越长的彩色灯号；Pet Garden Tiles 则以 30 个翻牌配对挑战训练空间记忆，并逐步加入开局预览、短暂显示的第一张牌、未配对牌洗牌，以及成功配对后剩余卡片轮转等规则。"
+      },
+      "zh-Hant": {
+        "heading": "相似記憶遊戲參考",
+        "sourceLabel": "參考作品官方說明",
+        "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+        "body": "Simon 適合作為比較，因為兩款遊戲都要求玩家記住不會持續顯示的視覺資訊。Hasbro 的 Simon 要玩家依序重複愈來愈長的彩色燈號；Pet Garden Tiles 則以 30 個翻牌配對挑戰訓練空間記憶，並逐步加入開局預覽、短暫顯示的第一張牌、未配對牌洗牌，以及成功配對後剩餘卡片輪轉等規則。"
+      }
+    }
+  },
+  "snack-blocks": {
+    "name": "Candy Crush Saga",
+    "source": "https://www.candycrush.com/",
+    "locales": {
+      "ar": {
+        "heading": "مقارنة مع لعبة مطابقة ثلاثية مشابهة",
+        "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
+        "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
+        "body": "تُعد Candy Crush Saga مرجعًا مناسبًا لأن اللعبتين تعتمدان على تبديل قطع طعام متجاورة لتكوين مجموعات من ثلاث قطع أو أكثر وإنجاز أهداف المرحلة ضمن عدد محدود من الحركات. تضم لعبة King آلاف المراحل وحلوى خاصة ومعززات وعوائق؛ أما Snack Blocks فتركز على 30 مرحلة ثابتة في المتصفح، ومجموعات متغيرة من أربعة إلى ستة أنواع من الوجبات الخفيفة، وست عائلات من الأهداف، ونقاط للسلاسل، وتقدم محلي من دون معززات."
+      },
+      "de": {
+        "heading": "Vergleich mit einem ähnlichen Match-3-Spiel",
+        "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
+        "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
+        "body": "Candy Crush Saga eignet sich als Vergleich, weil in beiden Spielen benachbarte, essensbezogene Steine getauscht werden, um mindestens drei gleiche zu verbinden und Ziele innerhalb eines Zuglimits zu erfüllen. Kings Spiel bietet Tausende Level, Spezialbonbons, Booster und Hindernisse; Snack Blocks konzentriert sich auf 30 feste Browser-Stufen, wechselnde Pools aus vier bis sechs Snacks, sechs Zielfamilien, Kaskadenwertung und lokalen Fortschritt ohne Booster."
+      },
+      "en": {
+        "heading": "Similar match-3 reference",
+        "sourceLabel": "Official reference",
+        "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
+        "body": "Candy Crush Saga is a useful comparison because both games swap adjacent food-themed tiles to make matches of three or more and clear stage goals within a move budget. King's game spans thousands of levels and uses special candies, boosters and blockers; Snack Blocks instead focuses on 30 fixed browser stages, rotating four-to-six-snack pools, six goal families, cascade scoring, and local progress without boosters."
+      },
+      "es": {
+        "heading": "Comparación con otro juego de match 3",
+        "sourceLabel": "Información oficial del juego citado",
+        "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
+        "body": "Candy Crush Saga es una referencia útil porque ambos juegos intercambian fichas adyacentes con temática de comida para formar grupos de tres o más y cumplir objetivos con un número limitado de movimientos. El juego de King ofrece miles de niveles, caramelos especiales, potenciadores y obstáculos; Snack Blocks se centra en 30 fases fijas de navegador, grupos rotativos de cuatro a seis aperitivos, seis familias de objetivos, puntuación por cascadas y progreso local sin potenciadores."
+      },
+      "fr": {
+        "heading": "Comparaison avec un autre match 3",
+        "sourceLabel": "Informations officielles du jeu cité",
+        "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
+        "body": "Candy Crush Saga est une référence utile, car les deux jeux demandent d'échanger des tuiles adjacentes sur le thème de la nourriture afin d'aligner au moins trois éléments et d'atteindre des objectifs avec un nombre de coups limité. Le jeu de King propose des milliers de niveaux, des bonbons spéciaux, des boosters et des obstacles ; Snack Blocks se concentre sur 30 niveaux fixes dans le navigateur, des groupes variables de quatre à six snacks, six familles d'objectifs, les scores de cascades et une progression locale sans boosters."
+      },
+      "hi": {
+        "heading": "मिलते-जुलते मैच-3 खेल से तुलना",
+        "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
+        "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
+        "body": "Candy Crush Saga उपयोगी तुलना है क्योंकि दोनों खेलों में पास-पास की भोजन-थीम वाली टाइलों को बदलकर तीन या अधिक का मेल बनाया जाता है और सीमित चालों में लक्ष्य पूरा किया जाता है। King के खेल में हजारों स्तर, विशेष कैंडी, बूस्टर और बाधाएँ हैं; Snack Blocks 30 निश्चित ब्राउज़र स्टेज, हर स्टेज में बदलने वाले 4–6 स्नैक समूह, छह प्रकार के लक्ष्य, कैस्केड स्कोर और बिना बूस्टर के स्थानीय प्रगति पर केंद्रित है।"
+      },
+      "it": {
+        "heading": "Confronto con un altro match 3",
+        "sourceLabel": "Informazioni ufficiali sul gioco citato",
+        "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
+        "body": "Candy Crush Saga è un riferimento utile perché entrambi i giochi fanno scambiare tessere adiacenti a tema cibo per creare gruppi di almeno tre elementi e completare obiettivi entro un limite di mosse. Il gioco di King offre migliaia di livelli, caramelle speciali, booster e ostacoli; Snack Blocks si concentra su 30 livelli fissi nel browser, gruppi variabili di quattro-sei snack, sei famiglie di obiettivi, punteggi a cascata e progressi locali senza booster."
+      },
+      "ja": {
+        "heading": "似ているマッチ3ゲームとの比較",
+        "sourceLabel": "参照作品の公式情報",
+        "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
+        "body": "Candy Crush Saga は、食べ物をテーマにした隣接タイルを入れ替え、3個以上そろえて限られた手数でステージ目標を達成する点が共通するため、比較に適しています。King のゲームは数千のレベル、スペシャルキャンディ、ブースター、障害物を備えています。一方 Snack Blocks は、30 の固定ブラウザステージ、4～6種類で変化するスナック構成、6種類の目標、連鎖スコア、本機保存の進行に集中し、ブースターは使いません。"
+      },
+      "ko": {
+        "heading": "비슷한 매치3 게임과 비교",
+        "sourceLabel": "참고 게임의 공식 정보",
+        "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
+        "body": "Candy Crush Saga 는 음식 테마의 인접 타일을 바꿔 세 개 이상 맞추고 제한된 이동 횟수 안에 스테이지 목표를 달성한다는 점에서 좋은 비교 대상입니다. King의 게임은 수천 개의 레벨과 특수 캔디, 부스터, 장애물을 제공하지만, Snack Blocks는 30개의 고정 브라우저 스테이지, 매 스테이지 달라지는 4~6종 스낵 구성, 6가지 목표 유형, 연쇄 점수와 로컬 진행에 집중하며 부스터를 사용하지 않습니다."
+      },
+      "pt-BR": {
+        "heading": "Comparação com outro jogo match 3",
+        "sourceLabel": "Informações oficiais do jogo citado",
+        "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
+        "body": "Candy Crush Saga é uma referência útil porque os dois jogos trocam peças adjacentes com tema de comida para formar combinações de três ou mais e cumprir objetivos com um limite de movimentos. O jogo da King tem milhares de fases, doces especiais, boosters e obstáculos; Snack Blocks se concentra em 30 fases fixas no navegador, conjuntos rotativos de quatro a seis lanches, seis famílias de objetivos, pontuação por cascatas e progresso local sem boosters."
+      },
+      "ru": {
+        "heading": "Сравнение с похожей игрой «три в ряд»",
+        "sourceLabel": "Официальная информация об упомянутой игре",
+        "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
+        "body": "Candy Crush Saga подходит для сравнения: в обеих играх нужно менять местами соседние фишки с едой, собирать ряды из трёх и более элементов и выполнять цели за ограниченное число ходов. В игре King есть тысячи уровней, особые конфеты, усилители и препятствия; Snack Blocks сосредоточена на 30 фиксированных браузерных этапах, меняющихся наборах из 4–6 закусок, шести типах целей, очках за каскады и локальном прогрессе без усилителей."
+      },
+      "zh-Hans": {
+        "heading": "相似三消玩法参考",
+        "sourceLabel": "参考作品官方说明",
+        "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
+        "body": "Candy Crush Saga（糖果传奇） 适合作为比较，因为两款游戏都会交换相邻的食物主题方块，凑出三个以上相同图案，并在有限步数内完成关卡目标。King 的作品包含数千个关卡、特殊糖果、增益道具和阻挡物；Snack Blocks 则专注于 30 个固定浏览器关卡、每关轮换的 4～6 种点心池、6 类目标、连锁消除计分，以及不使用增益道具的本机进度。"
+      },
+      "zh-Hant": {
+        "heading": "相似三消玩法參考",
+        "sourceLabel": "參考作品官方說明",
+        "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
+        "body": "Candy Crush Saga（Candy Crush 糖果傳奇） 適合作為比較，因為兩款遊戲都會交換相鄰的食物主題方塊，湊出三個以上相同圖案，並在有限步數內完成關卡目標。King 的作品包含數千個關卡、特殊糖果、增益道具與阻擋物；Snack Blocks 則專注於 30 個固定瀏覽器關卡、每關輪替的 4～6 種點心池、6 類目標、連鎖消除計分，以及不使用增益道具的本機進度。"
+      }
+    }
+  }
+};
+  for (const [gameId, reference] of Object.entries(restoredKidsMarketComparisons)) {
+    gameplayProfiles[gameId].marketComparison = reference;
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", installMarketComparisonSync, { once: true });
   } else {
