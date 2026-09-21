@@ -134,14 +134,53 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 [dir="rtl"] .field-row { flex-direction: row-reverse; }
 [dir="rtl"] .topbar { direction: ltr; }
 
-/* Interface 7's block skin defaults to a 3px radius. Meadow Find's public
-   Guide is a content frame, so scope the larger radius to the Guide only;
-   Battle and the shared shell keep their compact control geometry. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] .game-page-info-static {
-  --wp-ui-radius: 16px;
+/* Interface 7 compatibility cleanup. The shared bootstrap owns Main
+   preferences and public guide presentation. Keep the legacy controls in the
+   DOM for the existing locale/audio bindings, but do not render a second
+   settings/help card beside the shared frame. Battle keeps only compact round
+   context in the top track; the repeated page title and extra Result branding
+   are retired, and the outer Battle canvas is no longer a rounded phone card. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] .control-card,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] .help-card,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView .screen-heading h2,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView #battleSoundToggle,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView.is-result .brand-line {
+  display: none;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView {
+  padding: 12px;
+  border-radius: 0;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView .screen-head {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  min-height: 48px;
+  height: 48px;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView .screen-heading {
+  min-width: 0;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView #roundLabel {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView [data-wp-return="battle"] {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+}
+@media (min-width: 700px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView {
+    padding: 16px;
+  }
 }
 
-/* Interface 6 lifecycle repair: the direct compare game keeps both authored
+/* Legacy compact-battle repair: the direct compare game keeps both authored
    panels visible in a bounded Battle Canvas at compact viewports. The panels
    share two columns, the arrow floats between them, and a five-column tile
    grid is used only in short landscape so every actionable tile retains a
@@ -151,9 +190,11 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-differenc
     overflow: hidden !important;
   }
   body.wp-logical-battle-active #battleView .screen-head {
-    grid-template-columns: 58px minmax(0, 1fr) 48px;
-    min-height: 60px;
-    margin-bottom: 6px;
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    min-height: 48px;
+    height: 48px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
   body.wp-logical-battle-active #battleView .instruction {
     margin-bottom: 8px;

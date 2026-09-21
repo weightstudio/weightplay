@@ -119,7 +119,20 @@
       article.append(heading, paragraph); sections.append(article);
     });
   };
-  const show = (screen) => { state.screen = screen; document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); document.body.dataset.screen = screen; if (screen === "main") renderMain(); };
+  const show = (screen) => {
+    state.screen = screen;
+    const owner = screen === "result" ? "battle" : screen;
+    document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== owner; });
+    document.body.dataset.screen = owner;
+    const result = $("resultScreen");
+    const battle = $("battleScreen");
+    const battleContent = battle?.querySelector(".battle-content");
+    const battleHeader = battle?.querySelector(".panel-head");
+    if (result) result.hidden = screen !== "result";
+    if (battleContent) battleContent.hidden = screen === "result";
+    if (battleHeader) battleHeader.hidden = screen === "result";
+    if (screen === "main") renderMain();
+  };
   const renderStages = () => {
     $("stageList").replaceChildren(...scenes.map((scene, index) => {
       const button = document.createElement("button");
@@ -146,8 +159,20 @@
     }));
     $("moveCount").textContent = t("moveCount", { n: state.sessionMoves });
   };
-  const renderBattle = () => { const scene = currentScene(); $("groveName").textContent = t(scene.nameKey); $("groveLabel").textContent = t("round", { n: state.scene + 1, total: scenes.length }); $("groveIntro").textContent = `${t(scene.introKey)} ${t(scene.mechanicKey)}`; renderTarget(scene); renderLayers(); $("checkBtn").disabled = !state.order.length; };
-  const renderResult = () => { const complete = state.completed >= scenes.length; $("resultTitle").textContent = complete ? t("resultTitle") : t("resultPartial"); $("resultText").textContent = t("resultText", { count: state.completed, total: scenes.length, moves: state.sessionMoves }); $("resultPrimaryBtn").textContent = complete ? t("map") : t("next"); $("resultPrimaryBtn").onclick = complete ? () => { show("stage"); renderStages(); } : () => startScene(state.scene + 1); $("resultMapBtn").hidden = complete; };
+  const renderBattle = () => { const scene = currentScene(); $("groveLabel").textContent = t("round", { n: state.scene + 1, total: scenes.length }); $("groveIntro").textContent = `${t(scene.introKey)} ${t(scene.mechanicKey)}`; renderTarget(scene); renderLayers(); $("checkBtn").disabled = !state.order.length; };
+  const renderResult = () => {
+    const complete = state.completed >= scenes.length;
+    const finalStage = state.scene >= scenes.length - 1;
+    $("resultTitle").textContent = complete ? t("resultTitle") : t("resultPartial");
+    $("resultText").textContent = t("resultText", { count: state.completed, total: scenes.length, moves: state.sessionMoves });
+    $("resultMapBtn").textContent = t("map");
+    $("resultMapBtn").hidden = false;
+    $("resultPrimaryBtn").textContent = t("next");
+    $("resultPrimaryBtn").disabled = finalStage;
+    $("resultPrimaryBtn").onclick = finalStage ? null : () => startScene(state.scene + 1);
+    $("resultHomeBtn").textContent = t("replay");
+    $("resultHomeBtn").onclick = () => startScene(state.scene);
+  };
   const startScene = (index) => { if (index < 0 || index >= scenes.length || index > state.completed) return; state.scene = index; state.order = [...scenes[state.scene].initial]; state.moves = 0; if (index === 0) state.sessionMoves = 0; show("battle"); renderBattle(); announce("waiting"); track("scene_start", { scene: state.scene + 1, stageId: currentScene().id }); };
   const moveLayer = (index, direction) => { const next = index + direction; if (next < 0 || next >= state.order.length) return; [state.order[index], state.order[next]] = [state.order[next], state.order[index]]; state.moves += 1; state.sessionMoves += 1; renderLayers(); announce("selected"); tone(520); track("layer_move", { scene: state.scene + 1, moves: state.sessionMoves }); };
   const resetLayers = () => { state.order = [...currentScene().initial]; renderLayers(); announce("waiting"); track("layer_reset", { scene: state.scene + 1 }); };
@@ -157,11 +182,11 @@
     if (!matched) { const mismatch = expected.findIndex((id, index) => state.order[index] !== id); const expectedId = mismatch >= 0 ? expected[mismatch] : scene.decoy; announce("wrong", { hint: t("placementHint", { name: t(expectedId), depth: depthLabel(mismatch >= 0 ? mismatch : state.order.length - 1) }) }, "wrong"); tone(220); track("window_check", { scene: state.scene + 1, result: "wrong" }); return; }
     state.completed = Math.max(state.completed, state.scene + 1); saveProgress(); announce("correct", {}, "correct"); tone(760); track("window_check", { scene: state.scene + 1, result: "correct" }); if (state.completed >= scenes.length) saveBest(); show("result"); renderResult();
   };
-  const applyLocale = () => { document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); }); $("localeSelect").value = state.locale; $("localeSelect").setAttribute("aria-label", t("language")); $("soundState").textContent = state.sound ? t("on") : t("off"); $("soundBtn").setAttribute("aria-pressed", String(state.sound)); $("battleSoundBtn").setAttribute("aria-label", t("sound")); $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound)); renderMain(); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); if (state.screen === "result") renderResult(); };
+  const applyLocale = () => { document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); }); $("localeSelect").value = state.locale; $("localeSelect").setAttribute("aria-label", t("language")); $("soundState").textContent = state.sound ? t("on") : t("off"); $("soundBtn").setAttribute("aria-pressed", String(state.sound)); renderMain(); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); if (state.screen === "result") renderResult(); };
   const installSoundBridge = () => { if (!window.WonderSound) window.WonderSound = { isMuted: () => !state.sound, setMuted: (muted) => { state.sound = !muted; applyLocale(); track("sound", { enabled: state.sound }); window.dispatchEvent(new CustomEvent("wonder:audio-volume-change")); } }; if (typeof window.WonderSound.isMuted === "function") state.sound = !window.WonderSound.isMuted(); window.addEventListener("wonder:audio-volume-change", () => { if (typeof window.WonderSound?.isMuted === "function") { state.sound = !window.WonderSound.isMuted(); applyLocale(); } }); };
-  const settingsBtn = $("settingsBtn"); const soundBtn = $("soundBtn"); const battleSoundBtn = $("battleSoundBtn"); const openStage = () => { show("stage"); renderStages(); };
-  $("startBtn").addEventListener("click", openStage); $("mapBtn").addEventListener("click", openStage); $("stageBackBtn").addEventListener("click", () => show("main")); $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", openStage); $("resultHomeBtn").addEventListener("click", () => show("main")); $("checkBtn").addEventListener("click", checkWindow); $("resetBtn").addEventListener("click", resetLayers);
-  settingsBtn?.addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; }); soundBtn?.addEventListener("click", () => { state.sound = !state.sound; applyLocale(); }); battleSoundBtn?.addEventListener("click", () => { state.sound = !state.sound; applyLocale(); }); $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightPlayLocale", state.locale); } catch (_) {} applyLocale(); });
+  const settingsBtn = $("settingsBtn"); const soundBtn = $("soundBtn"); const openStage = () => { show("stage"); renderStages(); };
+  $("startBtn").addEventListener("click", openStage); $("mapBtn").addEventListener("click", openStage); $("stageBackBtn").addEventListener("click", () => show("main")); $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", openStage); $("checkBtn").addEventListener("click", checkWindow); $("resetBtn").addEventListener("click", resetLayers);
+  settingsBtn?.addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; }); soundBtn?.addEventListener("click", () => { state.sound = !state.sound; applyLocale(); }); $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightPlayLocale", state.locale); } catch (_) {} applyLocale(); });
   const initialLocale = () => { const query = new URLSearchParams(window.location.search).get("lang"); if (query && locales[query]) return query; const routeLocale = document.documentElement.lang; if (routeLocale && locales[routeLocale]) return routeLocale; try { const saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale"); if (saved && locales[saved]) return saved; } catch (_) {} return "en"; };
   state.locale = initialLocale(); installSoundBridge(); ensureGuideDepth(); applyLocale(); show("main"); window.setTimeout(() => $("loadingScreen").classList.add("is-ready"), 0);
   window.__ANIMAL_LAYER_GROVE_TEST__ = { scenes, startScene, moveLayer, resetLayers, checkWindow, getState: () => ({ ...state, order: [...state.order] }) };

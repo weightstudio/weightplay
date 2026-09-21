@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  document.body.dataset.wpBattleSettings = "visible";
+
   const locales = window.MEADOW_FIND_LOCALES;
   const localeKeys = locales.__localeKeys;
   const rounds = [
@@ -36,6 +38,11 @@
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale === "zh-Hans" ? "zh-CN" : state.locale;
     document.documentElement.dir = copy.direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    const battleReturn = $("homeFromBattle");
+    if (battleReturn) {
+      battleReturn.textContent = "←";
+      battleReturn.setAttribute("aria-label", t("home"));
+    }
     $("startButton").setAttribute("data-runtime-localize", "off");
     $("startButton").textContent = startLabels[state.locale] || t("start");
     const mainReturn = document.querySelector(".main-return[data-wp-return='main']");
