@@ -293,7 +293,7 @@ html[dir="rtl"] body.general-lobby-page .game-hall-switch button::before { left:
 }
 
 /* Owner-directed Block Arcade skin. Geometric scenery, extruded controls and
-   poster frames use original CSS/SVG geometry; no new runtime or animation. */
+   poster frames use lobby-owned tokens and original CSS/SVG geometry. */
 body.general-lobby-page {
   --lobby-ink: #f1f7eb;
   --lobby-muted: #a4bdb9;

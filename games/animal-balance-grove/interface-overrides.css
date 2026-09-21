@@ -83,3 +83,65 @@ html.wp-active-play,body.wp-active-play{height:100%;overflow:hidden;overscroll-b
 @media(max-width:420px){
   .taro-guide{margin-bottom:-54px}
 }
+
+/* 2026-09-21 shared-interface cleanup: keep game content, remove legacy shell
+   chrome that conflicts with Interface 7. */
+#mainScreen #mapBtn{display:none!important}
+#stageScreen #stageHeading,
+#battleScreen #battleHeading{display:none!important}
+#stageScreen .panel-head,
+#battleScreen .panel-head{
+  box-sizing:border-box!important;
+  display:grid!important;
+  align-items:center!important;
+  min-height:48px!important;
+  height:48px!important;
+  gap:8px!important;
+  padding:0 12px!important;
+}
+#stageScreen .panel-head{
+  grid-template-columns:48px 48px!important;
+  justify-content:space-between!important;
+}
+#battleScreen .panel-head{
+  grid-template-columns:48px minmax(0,1fr) auto!important;
+}
+#stageScreen .back-btn,
+#battleScreen .back-btn,
+#stageScreen .panel-utility,
+#battleScreen .panel-utility{
+  box-sizing:border-box!important;
+  width:48px!important;
+  min-width:48px!important;
+  height:48px!important;
+  min-height:48px!important;
+}
+#battleScreen .panel-head>div{
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#battleScreen .round-label{
+  min-width:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+#battleScreen .panel-head-actions{
+  min-width:0!important;
+  height:48px!important;
+}
+#stageScreen .stage-rail{max-height:calc(100% - 104px)!important}
+@media(min-width:700px){
+  #stageScreen .panel-head,#battleScreen .panel-head{padding-inline:16px!important}
+}
+@media(min-width:721px){
+  #battleScreen .battle-content{height:calc(100% - 48px)!important}
+}
+@media(max-height:520px) and (orientation:landscape){
+  #stageScreen .stage-rail{max-height:calc(100% - 104px)!important}
+  #battleScreen .battle-content{inset:48px 16px 10px!important}
+}
