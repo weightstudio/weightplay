@@ -198,4 +198,26 @@
     mechanic_push_plus_barriers: "دفع مع حواجز",
     mechanic_final_chain: "السلسلة النهائية"
   });
+
+  // Interface 7 Main uses one catalog-wide Start Game label rather than a
+  // game-specific destination label. Keep the locale source authoritative so
+  // canonical and generated locale routes share the same first action copy.
+  const sharedStartLabels = {
+    en: "Start Game",
+    "zh-Hant": "開始遊戲",
+    "zh-Hans": "开始游戏",
+    ja: "ゲーム開始",
+    ko: "게임 시작",
+    es: "Jugar",
+    "pt-BR": "Jogar",
+    fr: "Jouer",
+    de: "Spiel starten",
+    it: "Gioca",
+    ru: "Начать игру",
+    hi: "खेल शुरू करें",
+    ar: "ابدأ اللعب",
+  };
+  Object.entries(sharedStartLabels).forEach(([locale, label]) => {
+    if (window.MAGNET_MEADOW_LOCALES[locale]) window.MAGNET_MEADOW_LOCALES[locale].start = label;
+  });
 }());

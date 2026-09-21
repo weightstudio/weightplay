@@ -1,0 +1,94 @@
+/*
+ * Tangle Rescue — scoped Interface 7 compatibility cleanup.
+ *
+ * The game remains authored as v6 / Interface 6. This file only removes
+ * legacy chrome that conflicts with docs/game-screen-flow-standard.md while
+ * the shared route bootstrap supplies the catalog frame/selector runtime.
+ */
+
+body[data-wp-game-id="animal-tangle-rescue"] #mainSettingsBtn,
+body[data-wp-game-id="animal-tangle-rescue"] #mapBtn,
+body[data-wp-game-id="animal-tangle-rescue"] #stageInfoBtn,
+body[data-wp-game-id="animal-tangle-rescue"] #battleSoundBtn {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Shared play surfaces use the catalog outer inset rather than the legacy
+   fluid 16–56px gutter. Keep the top control row inside the same bounded
+   Canvas at every acceptance width. */
+body[data-wp-game-id="animal-tangle-rescue"] :is(
+  #stageScreen .stage-canvas,
+  #battleScreen .battle-canvas
+) {
+  padding: 12px !important;
+}
+
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-tangle-rescue"] :is(
+    #stageScreen .stage-canvas,
+    #battleScreen .battle-canvas
+  ) {
+    padding: 16px !important;
+  }
+}
+
+/* Stage is a title-free 48px play track followed immediately by the selector
+   workspace and the independent 56px Stage navigation track. */
+body[data-wp-game-id="animal-tangle-rescue"] #stageScreen .stage-canvas {
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  min-height: calc(100svh - var(--wp-ad-reserve-height, 0px)) !important;
+  height: calc(100svh - var(--wp-ad-reserve-height, 0px)) !important;
+  overflow: hidden !important;
+}
+
+body[data-wp-game-id="animal-tangle-rescue"] #stageScreen .panel-head,
+body[data-wp-game-id="animal-tangle-rescue"] .wp-stage-shell-header {
+  --wp-frame-play-header-height: 48px !important;
+  box-sizing: border-box !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+}
+
+body[data-wp-game-id="animal-tangle-rescue"] #stageScreen .panel-head > h2,
+body[data-wp-game-id="animal-tangle-rescue"] #stageScreen > .stage-canvas > .panel-intro {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-tangle-rescue"] #stageScreen .stage-list {
+  min-height: 198px !important;
+  margin-top: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+body[data-wp-game-id="animal-tangle-rescue"] #stageScreen .stage-tabs {
+  box-sizing: border-box !important;
+  align-self: stretch !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  margin-top: 0 !important;
+}
+
+/* Battle keeps Board n / 30 because that is concise current-state HUD, but
+   retires the old standalone sound control and restores the 48px play top at
+   every viewport, including the legacy compact-landscape branch. */
+body[data-wp-game-id="animal-tangle-rescue"] #battleScreen .panel-head,
+body[data-wp-game-id="animal-tangle-rescue"] .wp-battle-shell-header {
+  box-sizing: border-box !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+}
+
+@media (min-width: 700px) and (max-width: 1023px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-tangle-rescue"] #battleScreen .panel-head {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+  }
+}

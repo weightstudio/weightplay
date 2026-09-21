@@ -167,3 +167,46 @@ body.wp-logical-battle-active #resultPanel[hidden] { display:none !important; }
   overflow-y:auto;
   overscroll-behavior:contain;
 }
+
+/* Interface 7 shared-interface cleanup — 2026-09-22. The shared frame owns
+   Main/Stage chrome; Magnet Meadow keeps only its game-specific content. */
+body[data-wp-game-id="animal-magnet-meadow"] #mainScreen #mapBtn {
+  display:none !important;
+}
+body[data-wp-game-id="animal-magnet-meadow"] #stageScreen .panel-head > h2,
+body[data-wp-game-id="animal-magnet-meadow"] #stageScreen > .stage-canvas > .panel-intro {
+  display:none !important;
+}
+body[data-wp-game-id="animal-magnet-meadow"] #stageScreen .stage-list {
+  margin-top:0;
+}
+body[data-wp-game-id="animal-magnet-meadow"] :is(#stageScreen,#battleScreen) .panel-head {
+  min-height:48px !important;
+  height:48px !important;
+}
+body[data-wp-game-id="animal-magnet-meadow"] :is(#stageScreen,#battleScreen) .panel-head .back-btn {
+  width:48px !important;
+  min-width:48px !important;
+  max-width:48px !important;
+  height:48px !important;
+  min-height:48px !important;
+  padding:0 !important;
+  justify-content:center !important;
+}
+body[data-wp-game-id="animal-magnet-meadow"] #stageScreen .stage-tabs {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  gap:8px;
+  width:100%;
+  height:56px;
+  min-height:56px;
+  margin-top:0;
+  padding:6px;
+}
+body[data-wp-game-id="animal-magnet-meadow"] #stageScreen .stage-tabs > button {
+  grid-column:2;
+  height:44px;
+  min-height:44px;
+  margin:0;
+}
