@@ -1,74 +1,219 @@
-@media (max-height:500px) and (min-aspect-ratio:3/2) {
-  .stage-canvas {
-    grid-template-columns:300px minmax(0,1fr);
-    grid-template-rows:68px minmax(0,1fr) 44px;
-    gap:7px;
-    padding:8px;
-  }
+/*
+ * Pattern Mosaic / animal-mosaic-clues
+ * Interface 7 compatibility cleanup.
+ *
+ * The shared frame owns Main composition, Stage selector geometry, and the
+ * title-free 48px Stage/Battle top track. Keep this file scoped to the few
+ * game-specific placements that remain after the shared styles load.
+ */
 
-  .stage-header {
-    grid-column:1;
-    grid-row:1;
-  }
+/* Stage: one 48px play-top, shared rail in the middle, one 56px nav track. */
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-canvas[data-wp-logical-stage-canvas] {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  gap: 8px !important;
+  padding: 12px !important;
+}
 
-  .stage-header strong {
-    font-size:18px;
-    white-space:nowrap;
-    line-height:1.1;
-  }
-
-  .stage-rail {
-    grid-column:2;
-    grid-row:1 / 4;
-    min-width:0;
-  }
-
-  .stage-card {
-    height:196px;
-  }
-
-  .stage-hint {
-    grid-column:1;
-    grid-row:2 / 4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    align-self:stretch;
-    margin:0;
-    padding:14px 18px;
-    border:1px solid var(--line);
-    border-radius:15px;
-    background:#07172ded;
-    font-size:16px;
-    line-height:1.45;
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-canvas[data-wp-logical-stage-canvas],
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-live {
+    padding: 16px !important;
   }
 }
 
-/* v22: keep the returned Stage title readable beside the progress action in
-   the 844x390 short-landscape envelope. The wider title track preserves the
-   existing 48px return and separate progress action without overlap. */
-@media (max-height:500px) and (min-aspect-ratio:3/2) {
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header {
-    grid-template-columns:48px minmax(0,1fr) 60px !important;
-    gap:4px !important;
-    padding:4px !important;
-  }
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header {
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
 
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header > strong {
-    justify-self:start !important;
-    text-align:left !important;
-    font-size:16px !important;
-    line-height:1.2 !important;
-  }
+/* Interface 7 has no Stage page title. Remove the legacy heading completely;
+   accessible names remain on the actual return, tab, rail, and Settings controls. */
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header > strong {
+  display: none !important;
+}
 
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header #stageSummary {
-    min-width:0 !important;
-    width:auto !important;
-    max-width:60px !important;
-    font-size:14px !important;
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header > [data-wp-return="stage"] {
+  grid-column: 1 !important;
+  justify-self: start !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header #stageSummary {
+  grid-column: 2 !important;
+  justify-self: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header > :is(.wp-shell-settings, [data-wp-settings-trigger]) {
+  grid-column: 3 !important;
+  justify-self: end !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-rail {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+/* The existing Mosaic tab is the fixed centre slot of the shared 56px Stage
+   navigation. It stays a real control; no fake left/right actions are added. */
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tabs {
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  padding: 6px 0 !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab {
+  box-sizing: border-box !important;
+  grid-column: 2 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding: 6px 10px !important;
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, 0.16)) !important;
+  border-radius: 14px !important;
+  background: var(--wp-ui-control, #f8fafc) !important;
+  color: var(--wp-ui-control-text, #176a9d) !important;
+  font: 700 14px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab[aria-selected="true"] {
+  border-color: var(--wp-ui-accent, #b894ff) !important;
+  background: var(--wp-ui-surface, rgba(15, 29, 49, 0.92)) !important;
+  color: var(--wp-ui-text, #f8fafc) !important;
+  box-shadow: 0 0 0 2px var(--wp-ui-accent, #b894ff), 0 0 12px var(--wp-ui-accent, #b894ff) !important;
+}
+
+/* The rail gesture is self-evident and standardized; the old private hint row
+   would otherwise create a fourth Stage track. */
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-hint {
+  display: none !important;
+}
+
+/* Battle: preserve useful current-stage HUD, stats, and Help while normalizing
+   the shared outer spacing and keeping the play-top exactly 48px. */
+body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-live {
+  grid-template-rows: 48px 36px minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  padding: 12px !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-header {
+  box-sizing: border-box !important;
+  grid-template-columns: 48px minmax(0, 1fr) minmax(126px, 40%) 48px !important;
+  gap: 8px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-header {
+    grid-template-columns: 48px minmax(0, 1fr) minmax(170px, 40%) 48px !important;
   }
 }
 
+body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-controls {
+  gap: 8px !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab:focus-visible,
+body[data-wp-game-id="animal-mosaic-clues"] #battleScreen [data-wp-battle-utility]:focus-visible {
+  outline: 2px solid var(--wp-ui-accent, #b894ff);
+  outline-offset: 2px;
+}
+
+/* Short landscape keeps the same Interface 7 Stage geometry. Only Battle
+   gameplay placement compacts, using the standard 8px gap. */
+@media (max-height: 500px) and (min-aspect-ratio: 3/2) {
+  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header,
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-header {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+  }
+
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-live {
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    grid-template-rows: 48px 30px minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-header {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+  }
+
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .objective {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+  }
+
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .arena-wrap {
+    grid-column: 1 !important;
+    grid-row: 2 / 4 !important;
+  }
+
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .battle-controls {
+    grid-column: 2 !important;
+    grid-row: 3 !important;
+    align-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  body[data-wp-game-id="animal-mosaic-clues"] #battleScreen .feedback {
+    display: none !important;
+  }
+}
+
+/* Existing Result action geometry is unrelated to the shared play-top and is
+   retained to avoid regressing the completed-game flow. */
 #resultModal .modal-actions {
   grid-column: 1 / -1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -88,96 +233,4 @@
 #resultModal .modal-actions button:disabled {
   cursor: not-allowed;
   opacity: 0.48;
-}
-
-/* v15: expose the Mosaic rail through one truthful fixed-slot Stage tab and
-   keep the tab, rail, and hint inside the same logical canvas. */
-body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-canvas[data-wp-logical-stage-canvas] {
-  grid-template-rows: 68px 44px minmax(0, 1fr) 32px !important;
-}
-
-body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tabs {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  align-items: stretch !important;
-  gap: 6px !important;
-  min-width: 0 !important;
-  min-height: 44px !important;
-  width: 100% !important;
-  padding: 0 4px !important;
-}
-
-body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab {
-  grid-column: 2;
-  min-width: 0;
-  min-height: 44px;
-  padding: 7px 10px;
-  border: 1px solid #b894ff;
-  border-radius: 10px;
-  background: #24174a;
-  color: #f7edff;
-  font-weight: 900;
-  line-height: 1.1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab[aria-selected="true"] {
-  border-color: #ffd96b;
-  background: #49336e;
-  color: #fff1ad;
-  box-shadow: 0 0 0 2px #ffd96b55;
-}
-
-/* v19: keep the governed compact-landscape Main poster at the canonical 420px slot. */
-@media (min-width: 700px) and (max-height: 560px) {
-  body[data-wp-game-id="animal-mosaic-clues"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 420px;
-  }
-}
-
-body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab:focus-visible,
-body[data-wp-game-id="animal-mosaic-clues"] #battleScreen [data-wp-battle-utility]:focus-visible {
-  outline: 3px solid #ffd96b;
-  outline-offset: 2px;
-}
-
-@media (max-height:500px) and (min-aspect-ratio:3/2) {
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-canvas[data-wp-logical-stage-canvas] {
-    grid-template-columns: 300px minmax(0, 1fr) !important;
-    grid-template-rows: 68px 44px minmax(0, 1fr) 44px !important;
-  }
-
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-header {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
-  }
-
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tabs {
-    grid-column: 1 !important;
-    grid-row: 2 !important;
-  }
-
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-rail {
-    grid-column: 2 !important;
-    grid-row: 1 / 5 !important;
-    min-height: 0 !important;
-  }
-
-  body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-hint {
-    grid-column: 1 !important;
-    grid-row: 3 !important;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    align-self: stretch;
-    margin: 0;
-    padding: 14px 18px;
-    border: 1px solid var(--line);
-    border-radius: 15px;
-    background: #07172ded;
-    font-size: 16px;
-    line-height: 1.45;
-  }
 }

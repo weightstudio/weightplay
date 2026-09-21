@@ -20,6 +20,25 @@
   };
   if (Object.values(roots).some((node) => !node) || Object.values(returns).some((node) => !node) || Object.values(mainFlow).some((node) => !node)) return;
 
+  const stageTab = document.getElementById("mosaicsTab");
+  const stageTabLabels = Object.freeze({
+    en: "Mosaics",
+    "zh-Hant": "馬賽克",
+    "zh-Hans": "马赛克",
+    ja: "モザイク",
+    ko: "모자이크",
+    es: "Mosaicos",
+    "pt-BR": "Mosaicos",
+    fr: "Mosaïques",
+    de: "Mosaike",
+    it: "Mosaici",
+    ru: "Мозаики",
+    hi: "मोज़ेक",
+    ar: "فسيفساء",
+  });
+  const activeLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
+  if (stageTab) stageTab.textContent = stageTabLabels[activeLocale] || stageTabLabels.en;
+
   const identities = new Map(Object.entries({ ...roots, poster: mainFlow.poster, start: mainFlow.start, ...Object.fromEntries(
     Object.entries(returns).map(([name, node]) => [`${name}Return`, node]),
   ) }));
