@@ -270,3 +270,32 @@ body.wp-shell-battle-active > main > .battle-ad-reserve { display: block; positi
     padding-inline: 12px;
   }
 }
+
+/* Shared-interface cleanup: keep direct Battle on the current compact top-track geometry. */
+#battleScreen[data-wp-logical-battle-canvas] {
+  padding: 12px;
+}
+#battleScreen[data-wp-logical-battle-canvas] .battle-header {
+  min-height: 48px;
+  height: 48px;
+  grid-template-columns: 48px minmax(0, 1fr) auto auto;
+  gap: 8px;
+  padding: 0;
+}
+#battleScreen[data-wp-logical-battle-canvas] #battleBack {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+}
+@media (min-width: 700px) {
+  #battleScreen[data-wp-logical-battle-canvas] { padding: 16px; }
+}
+@media (min-width: 700px) and (max-height: 600px) {
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header {
+    flex: 0 0 48px;
+    min-height: 48px;
+    height: 48px;
+  }
+}

@@ -11,6 +11,16 @@
   <meta name="weightplay-interface-version" content="6" />
   <title>Bloom Mixer | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260905-bloom-mixer-v1-art" />
+  <style data-wp-play-top-fix>
+    #stageScreen > .topbar,
+    #battleScreen > .topbar { min-height: 48px; height: 48px; gap: 8px; }
+    #stageScreen .wp-shell-return,
+    #battleScreen .wp-shell-return { width: 48px; min-width: 48px; height: 48px; min-height: 48px; padding: 0; justify-content: center; }
+    #stageScreen .wp-shell-return span:first-child,
+    #battleScreen .wp-shell-return span:first-child { width: auto; height: auto; }
+    #stageScreen .wp-shell-settings-button,
+    #battleScreen .wp-shell-settings-button { width: 48px; min-width: 48px; height: 48px; min-height: 48px; padding: 0; }
+  </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
 </head>
 <body data-wp-game-id="animal-bloom-mixer" data-wp-audience="general" data-wp-game-version="v1">
@@ -31,12 +41,12 @@
     </section>
 
     <section id="stageScreen" class="screen" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="assets/animal-bloom-mixer-cover.png" style="--wp-stage-art:url('assets/animal-bloom-mixer-cover.png')" hidden>
-      <header class="topbar wp-main-shell-header"><button id="stage-back" class="return-link wp-shell-return" type="button" data-wp-return="stage"><span aria-hidden="true">←</span><span data-copy="backMain">Main</span></button><strong class="wp-shell-main-title" data-copy="title">Bloom Mixer</strong><button id="stage-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙ <span data-copy="settings">Settings</span></button></header>
+      <header class="topbar"><button id="stage-back" class="return-link wp-shell-return" type="button" data-wp-return="stage" aria-label="Back to Main"><span aria-hidden="true">←</span></button><button id="stage-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙ <span data-copy="settings">Settings</span></button></header>
       <div class="content-column"><p class="eyebrow" data-copy="stageEyebrow">CHOOSE A RECIPE</p><h1 data-copy="stageTitle">Which bloom will you mix?</h1><p class="lede" data-copy="stageLede">Each note needs one exact set of three petals.</p><div id="recipe-list" class="recipe-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Recipe sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stageTitle">Which bloom will you mix?</button><span aria-hidden="true"></span></nav></div>
     </section>
 
     <section id="battleScreen" class="screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-art="assets/animal-bloom-mixer-background.png" style="--wp-battle-art:url('assets/animal-bloom-mixer-background.png')" hidden>
-      <header class="topbar wp-main-shell-header"><button id="battle-back" class="return-link wp-shell-return" type="button" data-wp-return="battle"><span aria-hidden="true">←</span><span data-copy="backRecipes">Recipes</span></button><strong class="wp-shell-main-title" data-copy="title">Bloom Mixer</strong><button id="battle-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙ <span data-copy="settings">Settings</span></button></header>
+      <header class="topbar"><button id="battle-back" class="return-link wp-shell-return" type="button" data-wp-return="battle" aria-label="Back to recipes"><span aria-hidden="true">←</span></button><button id="battle-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙ <span data-copy="settings">Settings</span></button></header>
       <div id="battle-panel" class="content-column battle-content">
         <div class="battle-heading"><div><p class="eyebrow" data-copy="battleEyebrow">MEADOW NOTE</p><h1 id="recipe-title">Moon Bloom</h1></div><div class="pick-badge"><span data-copy="picks">Picks</span> <strong id="pick-count">0</strong><small>/ 3</small></div></div>
         <p id="recipe-note" class="note-card"></p>
