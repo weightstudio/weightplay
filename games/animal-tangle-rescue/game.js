@@ -254,10 +254,11 @@
     const guide = $("guideScreen");
     if (!guide) return;
     // The Interface 7 fallback theme is loaded after this game and its
-    // unlayered important token uses a 3px arcade radius. This authored Guide
-    // is the game's structured public surface, so keep its approved framed
-    // treatment explicit at the element boundary.
-    guide.style.setProperty("border-radius", "24px", "important");
+    // The shared skin supplies --wp-ui-radius after game CSS. Keep the
+    // approved authored Guide radius explicit through that same token so the
+    // visible surface and the shared contract cannot drift apart.
+    guide.style.setProperty("--wp-ui-radius", "24px", "important");
+    guide.style.setProperty("border-radius", "var(--wp-ui-radius)", "important");
     guide.style.setProperty("border-width", "1px", "important");
     guide.style.setProperty("background", "rgb(255 253 247 / 96%)", "important");
     guide.style.setProperty("box-shadow", "0 10px 24px rgb(38 82 71 / 6%)", "important");
