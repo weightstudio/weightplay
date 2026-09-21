@@ -2,6 +2,9 @@ import { stages,gear } from './campaign.js';
 import { Combat } from './combat.js';
 import { LOCALES,copy } from './locales.js';
 import { loadSave,storeSave } from './save.js';
+import { Expedition } from './expedition.js';
+import { rollLoot,collectGear,promoteGear,shardsNeeded,MAX_RANK,dropChance,tier } from './loot.js';
+import { expeditionCopy } from './expedition-copy.js';
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const save=loadSave();
@@ -9,8 +12,9 @@ try{const locale=localStorage.getItem('weightPlayLocale');if(LOCALES.includes(lo
 if(!LOCALES.includes(save.locale))save.locale='zh-Hant';
 let selected=save.unlocked, combat=null,renderer=null,raf=0,last=0,acc=0,node=0,runHp=0,runEnergy=100;
 let state='idle',screen='main',runGeneration=0,transitionRemaining=0,modalKind='',resumeAction=null;
-let feedbackUntil=0,feedbackText='',runStats={blocks:0,perfects:0},resultPaid=false,rendererModule=null;
-const t=k=>copy[save.locale]?.[k]||copy.en[k]||k;
+let feedbackUntil=0,feedbackText='',rendererModule=null;
+let journey=null,runKit=null,runReward=0,runKills=0,runDrops=0,runCombo=0;
+const t=k=>expeditionCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
 const zh=()=>save.locale==='zh-Hant'||save.locale==='zh-Hans';
 const msg=(en,tw)=>zh()?tw:en;
 const name=e=>zh()?(e.zh||e.name):e.name;
@@ -53,23 +57,7 @@ function localize(){
   $('#stageHint').textContent=msg('Drag to explore · tap a stage to play','左右拖曳探索 · 點選關卡開始');
   $('[data-mode="break"]').textContent=msg('Break Formation','破陣');$('[data-mode="guard"]').textContent=msg('Guardian','守護');
   $('#allyDescription').textContent=msg('Nibs uses 100 energy. Break Formation strips shields, clears reflection and hits every enemy. Guardian heals 10% HP and removes one harmful status.','栗栗消耗 100 能量。破陣削盾、解除亮面並攻擊全體；守護恢復 10% 生命並解除一項負面狀態。');
-  const sections=zh()?[
-    ['森林心核之旅','與菲雅和栗栗完成森林路線。每關包含兩次遭遇、免費補給、兩次遭遇；清完最後敵人即通關。'],
-    ['看招、格擋、反擊','菲雅會自動揮斧。敵人卡片的金色讀條走滿時出招；按防禦進入守勢，再按一次解除。維持防禦會消耗耐力，解除後恢復。接觸前一瞬防禦可完美格擋，普通格擋也能保命並創造反擊窗口。'],
-    ['重擊與夥伴','重擊有前搖及六秒冷卻，反擊窗口內傷害更強，還可打斷修補與召喚。亮面會反彈重擊，先用栗栗解除，或等待亮面消失。防禦可取消尚未接觸的揮擊，冷卻不退還。'],
-    ['敵人與首領','點敵人或上方目標卡切換目標。先拆供盾符樁，或打斷修補者與召喚者；格擋荊棘攻擊可避免裂痕。鐘衛、根爐、鏡鹿、織衛、指揮官與心核各有不同支援或階段規則。'],
-    ['裝備與進度','關卡頁可配置夥伴及七個裝備部位。首次通關得到較多金幣並解鎖後關與指定裝備，重玩通關得五金幣，失敗不扣永久資源。每個部位可強化三次，費用 30／60／100；換裝保留同部位強化。'],
-    ['操作與恢復','觸控或滑鼠點選操作。鍵盤 G 防禦、H 重擊、J 夥伴，A／D 切換目標。返回及切到背景會暫停。離開只放棄本次未結算路線；已通關、裝備及金幣留在此瀏覽器。無需登入或付費。'],
-    ['常見問題','為什麼不能重擊？確認冷卻和收招是否完成。為什麼栗栗不能施放？需要滿能量，且施放至少間隔四秒。如何回血？選補給回血或守護模式。清除瀏覽器資料會刪除本機進度。']
-  ]:[
-    ['The forest heart','Journey with Fia and Nibs through four encounters and a free supply choice in each stage. Clear the final enemies to finish.'],
-    ['Read, guard, counter','Fia swings automatically. Enemy gold meters fill toward contact. Toggle Guard to block; toggle it off to recover stamina. A last-moment guard prevents all damage, but ordinary blocks also protect you and create a counter window.'],
-    ['Heavy and ally','Heavy Strike has a wind-up and six-second cooldown. It rewards openings and interrupts menders and callers. Mirror stance reflects heavy attacks: clear it with Nibs or wait. Guard cancels an uncommitted swing without refunding its cooldown.'],
-    ['Target priority','Tap an enemy or target card. Destroy shield-supplying roots, interrupt support and block thorn attacks to prevent Crack. Six guardians mix telegraphs, support objects, reflection, summoning and phases.'],
-    ['Equipment and progress','Choose Nibs mode and seven equipment slots in Stage. First clears unlock stages and gear; replay clears grant five coins. Failure costs no permanent resources. Slot upgrades cost 30, 60 and 100 coins and remain when changing equipment.'],
-    ['Controls and recovery','Touch, mouse and keyboard: G guard, H heavy, J ally, A/D targets. Back and backgrounding pause. Leaving discards only the unsettled run. Progress lives in this browser when storage is available; no login or purchase.'],
-    ['FAQ','Heavy unavailable? Wait for cooldown and recovery. Ally unavailable? Fill energy and wait four seconds between casts. Heal with supply or Guardian mode. Clearing browser data removes local progress.']
-  ];
+  const sections=[[t('equipment'),`${t('dropRate')}: 2.5% → 7% · ${t('boss')}: 18%.`],[t('journey'),t('leaveText')]];
   $('#guideDetails').replaceChildren(...sections.map(([h,p])=>{const s=document.createElement('section');const title=document.createElement('h3');title.textContent=h;const text=document.createElement('p');text.textContent=p;s.append(title,text);return s;}));
   frame.refresh();renderEquipment();if(rail)rail.refresh();
 }
@@ -85,33 +73,46 @@ function renderStage(){
   $$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===save.mode));
 }
 const gearZh=['旅途斧','破盾斧','輕快斧','旅途兜帽','稜鏡面罩','斥候背心','樹皮護甲','旅途手套','鐵護腕','旅途靴','沼澤靴','橡果護符','月光護符','銅戒','節拍環'];
-const effects=['24 · 1.0s','28 · 1.15s · +20 shield','18 · 0.75s','Crack −20%','Perfect +6 energy','HP +10','HP +25 · stamina −5/s','Heavy → +5 energy','Block stamina −5','Guard → attack','Root penalty ÷2','Ally shield +8','Ally cleanse','Defeat +12 energy','Every 3rd hit ×1.5'];
-const effectsZh=['攻擊 24 · 週期 1 秒','攻擊 28 · 1.15 秒 · 重擊削盾 +20','攻擊 18 · 週期 0.75 秒','裂痕持續時間 −20%','完美格擋額外能量 +6','最大生命 +10','生命 +25 · 耐力恢復 −5／秒','重擊後普攻能量 +5','格擋耐力消耗 −5','解除防禦後快速起手','纏根的恢復懲罰減半','夥伴額外削盾 +8','施放夥伴解除一項狀態','擊敗必要敵人能量 +12','每第三次普攻傷害 ×1.5'];
 function renderEquipment(){
-  $('#coins').textContent=msg('Route coins: ','路線金幣：')+save.coins;
-  $('#equipment').replaceChildren(...gear.filter(g=>!g.unlock||save.cleared.includes(g.unlock)).map(g=>{
-    const d=document.createElement('div');d.className='gear';const i=gear.indexOf(g),equipped=save.loadout.includes(g.id),level=save.upgrades[g.slot]||0;
+  $('#coins').textContent=`${t('collection')} ${Object.keys(save.collection).length} / ${gear.length}`;
+  $('#equipment').replaceChildren(...gear.map(g=>{
+    const d=document.createElement('div');d.className='gear';const i=gear.indexOf(g),equipped=save.loadout.includes(g.id),item=save.collection[g.id],level=item?.rank||0;
+    d.dataset.gear=g.id;d.dataset.tier=tier(g);d.classList.toggle('unowned',!item);
     const icon=document.createElement('span');icon.className='gear-icon';icon.style.backgroundPosition=`${(i%4)*100/3}% ${Math.floor(i/4)*100/3}%`;icon.setAttribute('aria-hidden','true');
     const b=document.createElement('b');b.textContent=zh()?gearZh[i]:g.name;
-    const p=document.createElement('p');p.textContent=zh()?effectsZh[i]:effects[i];d.append(icon,b,p);
-    const equip=document.createElement('button');equip.textContent=equipped?msg('Equipped','使用中'):msg('Equip','裝備');equip.disabled=equipped;
+    const p=document.createElement('p');
+    const power=Math.round(((g.slot==='axe'?.12:.025)*level+(g.slot==='axe'?.15:.035)*tier(g))*100);
+    const weaponBase={'trail-axe':24,'breaker-axe':28,'quick-axe':18},healthBase=g.id==='bark-vest'?25:g.id==='scout-vest'?10:0;
+    p.textContent=`${t('rank')} ${level+1} · ${t('attackPower')} ${g.slot==='axe'?Math.round(weaponBase[g.id]*(1+power/100)):`+${power}%`}${g.slot==='axe'?'':` · ${t('healthPower')} +${healthBase+level*6+tier(g)*8}`}`;
+    const shards=document.createElement('p');shards.className='shards';shards.textContent=item?`${t('shards')} ${item.shards}/${shardsNeeded(level)}`:`${t('dropFrom')} ${Math.max(1,g.unlock)}`;
+    d.append(icon,b,p,shards);
+    const equip=document.createElement('button');equip.textContent=equipped?t('equipped'):t('equip');equip.disabled=equipped||!item;
     equip.onclick=()=>{save.loadout=save.loadout.filter(id=>gear.find(x=>x.id===id)?.slot!==g.slot);save.loadout.push(g.id);persist();renderEquipment();};d.append(equip);
-    if(equipped){const u=document.createElement('button'),cost=[30,60,100][level];u.textContent=level===3?msg('Maximum upgrade','已滿級'):`${msg('Upgrade','強化')} ${level} → ${level+1} · ${cost}`;u.disabled=level===3||save.coins<cost;u.onclick=()=>{if(save.coins<cost||save.upgrades[g.slot]!==level)return;save.coins-=cost;save.upgrades[g.slot]++;persist();renderEquipment();};d.append(u);}return d;
+    const u=document.createElement('button');u.textContent=level===MAX_RANK?`${t('rank')} MAX`:t('promote');u.disabled=!item||level===MAX_RANK||item.shards<shardsNeeded(level);
+    u.onclick=()=>{if(promoteGear(save,g.id)){persist();renderEquipment();}};d.append(u);return d;
   }));
 }
 function selectTab(tab){$$('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));['ally','stage','equip'].forEach(x=>$('#'+x+'Panel').hidden=x!==tab);if(tab==='stage')requestAnimationFrame(()=>rail?.center());}
-let audio=null;
-function sound(kind){
+let audio=null,impactNoise=null;
+function sound(kind,strong=false){
   if(window.WonderSound?.isMuted())return;
   try{audio||=new AudioContext();audio.resume();const frequencies={hit:170,break:310,hurt:85,perfect:720,block:210,ally:520,defeat:370,counter:440,heal:620};
     if(!frequencies[kind])return;const o=audio.createOscillator(),g=audio.createGain(),at=audio.currentTime;
-    o.type=kind==='hurt'?'triangle':'sine';o.frequency.setValueAtTime(frequencies[kind],at);o.frequency.exponentialRampToValueAtTime(frequencies[kind]*.45,at+.12);
+    o.type=kind==='hit'||kind==='hurt'?'triangle':'sine';const pitch=strong?frequencies[kind]*.65:frequencies[kind];o.frequency.setValueAtTime(pitch,at);o.frequency.exponentialRampToValueAtTime(pitch*.45,at+.12);
     g.gain.setValueAtTime(.055*((window.WonderSound?.getEffectsVolume()??80)/100),at);g.gain.exponentialRampToValueAtTime(.001,at+.16);o.connect(g).connect(audio.destination);o.start(at);o.stop(at+.16);
+    if(kind==='hit'||kind==='break'){
+      if(!impactNoise){impactNoise=audio.createBuffer(1,Math.ceil(audio.sampleRate*.07),audio.sampleRate);const data=impactNoise.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);}
+      const noise=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();noise.buffer=impactNoise;filter.type='lowpass';filter.frequency.value=strong?700:1800;
+      gain.gain.setValueAtTime((strong?.14:.065)*((window.WonderSound?.getEffectsVolume()??80)/100),at);gain.gain.exponentialRampToValueAtTime(.001,at+.07);
+      noise.connect(filter).connect(gain).connect(audio.destination);noise.start(at);noise.stop(at+.07);
+    }
   }catch{}
 }
 function feedback(text,seconds=1.4){feedbackText=text;feedbackUntil=performance.now()+seconds*1000;$('#feedback').textContent=text;}
 async function startRun(){
-  disposeRun();node=0;runHp=0;runEnergy=100;runStats={blocks:0,perfects:0};resultPaid=false;show('battle');state='loading';
+  disposeRun();node=0;runHp=0;runEnergy=100;runReward=0;runKills=0;runDrops=0;runCombo=0;
+  journey=new Expedition(stages[selected-1]);runKit=JSON.parse(JSON.stringify({loadout:save.loadout,mode:save.mode,collection:save.collection}));show('battle');state='loading';
+  $('#lootToast').hidden=true;updateProgress();
   const generation=runGeneration;dialog(t('title'),msg('Preparing the forest…','正在準備森林…'),[], 'loading');
   try{
     if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
@@ -122,25 +123,32 @@ async function startRun(){
   }catch(error){if(generation!==runGeneration)return;renderer?.dispose();renderer=null;state='error';dialog(msg('Forest unavailable','森林載入失敗'),msg('This game needs WebGL 2. Retry, or return to stages.','此遊戲需要 WebGL 2。你可以重試或返回關卡。'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
 }
 function startEncounter(){
-  combat=new Combat(stages[selected-1],save.loadout,save.mode,node,save.upgrades);
+  const stage={...stages[selected-1],encounters:[journey.encounter()]};
+  combat=new Combat(stage,runKit.loadout,runKit.mode,0,{}, {collection:runKit.collection,autoAttack:save.autoAttack});
+  combat.slashes=runCombo;
   if(runHp>0)combat.hp=Math.min(combat.maxHp,runHp);combat.energy=runEnergy;
   renderer.setEnemies(combat.alive());state='live';transitionRemaining=0;
-  $('#hudStage').textContent=selected;$('#node').textContent=`${[1,2,4,5][node]} / 5`;
-  feedback(name(stages[selected-1]),2);updateHud();startLoop();
+  $('#hudStage').textContent=selected;updateProgress();updateHud();startLoop();
 }
-function resume(){closeDialog();state='live';startLoop();$('#battleBack').focus();}
+function resume(){closeDialog();state='live';startLoop();$('#canvas').focus();}
 function loop(now){
   if(!renderer||!combat||!['live','transition'].includes(state))return;
+  if(now>lootUntil)$('#lootToast').hidden=true;
   const delta=Math.min(.1,Math.max(0,(now-last)/1000));last=now;
   if(document.querySelector('.wp-frame-popover:not([hidden])')){last=now;raf=requestAnimationFrame(loop);return;}
   if(state==='transition'){
-    transitionRemaining-=delta;renderer.render(delta,combat);
-    if(transitionRemaining<=0){startEncounter();return;}
+    transitionRemaining-=delta;renderer.walk(delta,.9-transitionRemaining);renderer.render(delta,combat);
+    if(transitionRemaining<=0){journey.advance();node=journey.wave;startEncounter();return;}
   }else{
     acc=Math.min(acc+delta,.12);
     while(acc>=1/60){combat.tick(1/60);acc-=1/60;}
     for(const e of combat.events.splice(0)){
-      renderer.event(e);sound(e.type);
+      renderer.event(e);sound(e.type,e.heavy);
+      if(e.type==='defeat'){
+        runKills++;
+        const id=e.summon?null:rollLoot(selected,e.boss);
+        if(id){const item=collectGear(save,id);runDrops++;persist();showLoot(item);}
+      }
       const labels={perfect:msg('Perfect guard! Counter now.','完美格擋！趁隙反擊'),block:msg('Blocked · counter window','格擋成功 · 反擊窗口'),break:msg('Shield broken!','護盾破碎！'),counter:msg('Counter strike!','反擊重擊！'),interrupt:msg('Cast interrupted','施法已打斷'),reflect:msg('Reflected! Use Nibs first.','亮面反彈！先用栗栗解除'),exhausted:msg('Stamina empty — recover','耐力耗盡 · 解除守勢恢復'),phase:msg('Guardian changes phase','首領進入下一階段'),heal:msg('Health restored','生命恢復')};
       if(labels[e.type])feedback(labels[e.type]);
       if(e.type==='hit'||e.type==='hurt'){const n=document.createElement('strong');n.className=e.type==='hurt'?'hurt':'';n.textContent=e.type==='hurt'?`−${e.amount} HP`:e.amount>0?`${e.amount}`:`${msg('Shield','盾')} −${e.shield}`;$('#damageNumbers').replaceChildren(n);}
@@ -151,39 +159,53 @@ function loop(now){
   raf=requestAnimationFrame(loop);
 }
 function updateHud(){
-  $('#hp').textContent=Math.ceil(combat.hp);$('#stamina').value=combat.stamina;$('#guardValue').textContent=`${Math.floor(combat.stamina)} / 100`;
-  $('#guard').classList.toggle('active',combat.guard);$('#guard').setAttribute('aria-pressed',String(combat.guard));
-  $('#heavyValue').textContent=combat.heavyCd>0?`${combat.heavyCd.toFixed(1)} s`:t('ready');$('#heavyMeter').value=6-combat.heavyCd;
-  $('#heavy').disabled=combat.heavyCd>0||combat.recovery>0;$('#energy').textContent=`${Math.floor(combat.energy)} / 100`;
+  $('#hp').textContent=Math.ceil(combat.hp);$('#attackValue').textContent=`${t('combo')} ${combat.slashes} · ${combat.slashes%8}/8`;
+  $('#auto').classList.toggle('active',save.autoAttack);$('#auto').setAttribute('aria-pressed',String(save.autoAttack));
+  $('#autoValue').textContent=save.autoAttack?t('on'):t('off');$('#energy').textContent=`${Math.floor(combat.energy)} / 100`;
   $('#allyMeter').value=combat.energy;$('#ally').disabled=combat.energy<100||combat.allyCd>0;
   const enemies=combat.alive(),box=$('#targets');
   for(const b of [...box.children])if(!enemies.some(e=>e.uid===+b.dataset.uid))b.remove();
   enemies.forEach((e,i)=>{
     let b=box.querySelector(`[data-uid="${e.uid}"]`);
-    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><progress></progress><small></small><progress class="enemy-clock" max="1"></progress>';b.onclick=()=>{if(state==='live')combat.target=combat.alive().findIndex(x=>x.uid===e.uid);};box.append(b);}
+    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><progress></progress><small></small><progress class="enemy-clock" max="1"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
     b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.querySelector('strong').textContent=name(e);
     b.querySelector('progress').max=e.maxHp;b.querySelector('progress').value=e.hp;
     const protectedBySupport=e.boss&&enemies.some(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
-    b.querySelector('small').textContent=protectedBySupport?msg('Destroy support first','先擊破支援目標'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?msg('Guard to expose core','格擋後心核才會暴露'):e.reflect>0?msg('REFLECT — no heavy','亮面 · 勿重擊'):e.opening>0?msg('COUNTER!','反擊窗口！'):e.shield>0?`${msg('Shield','盾')} ${Math.ceil(e.shield)}`:`${Math.ceil(e.hp)} / ${e.maxHp}`;
+    b.querySelector('small').textContent=protectedBySupport?msg('Destroy support first','先擊破支援目標'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?msg('Core opens after attack','出招後心核會暴露'):e.reflect>0?msg('Mirror armor','鏡面護甲'):e.opening>0?msg('Opening!','破綻！'):e.shield>0?`${msg('Shield','盾')} ${Math.ceil(e.shield)}`:`${Math.ceil(e.hp)} / ${e.maxHp}`;
     b.querySelector('.enemy-clock').value=e.warned?1-Math.max(0,e.t)/e.warn:0;
   });
   const threat=enemies.filter(e=>e.warned).sort((a,b)=>a.t-b.t)[0];
-  $('#warning').textContent=threat?`${name(threat)} · ${msg('Incoming','即將出手')} ${Math.max(0,threat.t).toFixed(1)} s`:msg('Read the tell · guard near contact · release to attack','判讀預警 · 接觸前防禦 · 解除後揮斧');
+  $('#warning').textContent=threat?`${name(threat)} · ${msg('Incoming','即將出手')} ${Math.max(0,threat.t).toFixed(1)} s`:t('tap');
   $('#status').textContent=Object.entries(combat.status).filter(([,v])=>v>0).map(([k,v])=>`${k==='crack'?msg('Crack','裂痕'):msg('Root','纏根')} ${v.toFixed(1)}s`).join(' · ');
   if(performance.now()>feedbackUntil)$('#feedback').textContent='';else $('#feedback').textContent=feedbackText;
 }
 function encounterWon(){
-  stopLoop();runHp=combat.hp;runEnergy=combat.energy;runStats.blocks+=combat.blocks;runStats.perfects+=combat.perfects;
-  if(node===3){finish(true);return;}
-  if(node===1){state='supply';dialog(t('supply'),msg('Choose one free benefit for the remaining encounters.','為後半段路線選擇一項免費補給。'),[[t('heal'),()=>{runHp=Math.min(combat.maxHp,runHp+combat.maxHp*.2);node++;startEncounter();}],[t('charge'),()=>{runEnergy=Math.min(100,runEnergy+50);node++;startEncounter();}]],'supply');return;}
-  node++;state='transition';transitionRemaining=.7;feedback(msg('Path cleared · moving forward','道路已清空 · 繼續前進'),.7);startLoop();
+  stopLoop();runHp=Math.min(combat.maxHp,combat.hp+combat.maxHp*.14);runEnergy=Math.min(100,combat.energy+18);runCombo=combat.slashes;
+  if(journey.clear()){
+    const first=!save.cleared.includes(selected);
+    runReward=first?stages[selected-1].reward*(stages[selected-1].checkpoint?2:1):5;
+    if(first)save.cleared.push(selected);save.coins=Math.min(999999,save.coins+runReward);save.unlocked=Math.max(save.unlocked,Math.min(30,selected+1));persist();
+  }
+  updateProgress();state='transition';transitionRemaining=.9;feedback(t('moving'),.9);startLoop();
+}
+function updateProgress(){
+  const percent=Math.round((journey?.progress||0)*100),complete=journey?.completed===true;
+  $('#routeProgress').value=percent;$('#routeProgress').setAttribute('aria-label',t('journey'));
+  $('#routeLabel').textContent=complete?t('farm'):`${t('journey')} ${Math.min(journey?.cleared||0,journey?.length||12)}/${journey?.length||12}`;
+  $('#node').textContent=`${percent}%`;
+  $('#claim').disabled=!complete;$('#claim').textContent=complete?`✓ ${t('claim')}`:`${percent}%`;
+  $('#claim').classList.toggle('complete',complete);
+}
+let lootUntil=0;
+function showLoot(item){
+  const g=gear.find(g=>g.id===item.id),index=gear.indexOf(g);
+  $('#lootIcon').style.backgroundPosition=`${(index%4)*100/3}% ${Math.floor(index/4)*100/3}%`;
+  $('#lootText').textContent=`${item.fresh?t('newItem'):t('loot')} · ${zh()?gearZh[index]:g.name}${item.fresh?'':` · ${item.shards}/${shardsNeeded(item.rank)}`}`;
+  $('#lootToast').hidden=false;lootUntil=performance.now()+4500;
 }
 function finish(win){
-  stopLoop();state='result';let reward=0;
-  if(win&&!resultPaid){resultPaid=true;const first=!save.cleared.includes(selected);reward=first?stages[selected-1].reward*(stages[selected-1].checkpoint?2:1):5;
-    if(first)save.cleared.push(selected);save.coins+=reward;save.unlocked=Math.max(save.unlocked,Math.min(30,selected+1));persist();}
-  const text=win?`${name(stages[selected-1])} · +${reward} ${msg('coins','金幣')}\n${msg('Blocks','格擋')} ${runStats.blocks} · ${msg('Perfect','完美')} ${runStats.perfects}`
-    :msg('Try shorter guards to recover stamina. Interrupt support, and save Nibs for shields or reflection. Permanent progress is safe.','縮短守勢來恢復耐力，打斷支援者，把栗栗留給護盾或亮面。永久進度已保留。');
+  stopLoop();state='result';win=win||journey.completed;
+  const text=win?`${name(stages[selected-1])}\n${t('reward')} +${runReward} · ${t('kills')} ${runKills} · ${t('loot')} ${runDrops}`:t('failText');
   dialog(win?t('victory'):t('fail'),text,[[t('returnStages'),()=>show('stage')],[t('next'),()=>{selected++;startRun();},!win||selected===30],[t('replay'),startRun]],'result');
 }
 function closeDialog(){
@@ -202,11 +224,14 @@ function pause(){
 }
 function action(kind){if(screen!=='battle'||state!=='live'||modalKind||document.querySelector('.wp-frame-popover:not([hidden])'))return;combat[kind]();updateHud();}
 $('#start').onclick=()=>show('stage');$('#stageBack').onclick=()=>show('main');$('#battleBack').onclick=pause;
-$('#guard').onclick=()=>action('toggleGuard');$('#heavy').onclick=()=>action('heavy');$('#ally').onclick=()=>action('ally');
+$('#attack').onclick=()=>action('attack');$('#ally').onclick=()=>action('ally');
+$('#auto').onclick=()=>{if(modalKind||screen!=='battle'||!['live','transition'].includes(state)||document.querySelector('.wp-frame-popover:not([hidden])'))return;save.autoAttack=!save.autoAttack;combat.autoAttack=save.autoAttack;persist();updateHud();};
+$('#claim').onclick=()=>{if(journey?.completed&&!modalKind)finish(true);};
 $$('.tabs button').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
 $$('[data-mode]').forEach(b=>b.onclick=()=>{save.mode=b.dataset.mode;persist();$$('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));});
 locale.onchange=()=>{save.locale=locale.value;try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();};
-$('#canvas').addEventListener('pointerdown',e=>{if(state!=='live'||modalKind)return;const uid=renderer.pick(e.clientX,e.clientY);const i=combat.alive().findIndex(x=>x.uid===uid);if(i>=0){combat.target=i;updateHud();}});
+$('#canvas').tabIndex=0;
+$('#canvas').addEventListener('pointerdown',e=>{if(state!=='live'||modalKind||e.button!==0)return;const uid=renderer.pick(e.clientX,e.clientY);const i=combat.alive().findIndex(x=>x.uid===uid);if(i>=0)combat.target=i;action('attack');});
 $('#canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();if(screen!=='battle'||!renderer)return;stopLoop();state='error';dialog(msg('Graphics interrupted','畫面暫時中斷'),msg('Restart this run safely, or return to stages.','可以安全重試本關，或返回關卡。'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');});
 document.addEventListener('keydown',e=>{
   if(e.defaultPrevented)return;
@@ -216,7 +241,7 @@ document.addEventListener('keydown',e=>{
     if(e.key==='Escape'&&modalKind==='pause'){e.preventDefault();resumeAction?.();}return;
   }
   if(e.repeat||screen!=='battle'||state!=='live'||e.target.matches('input,select,textarea'))return;
-  if(e.code==='KeyG')action('toggleGuard');else if(e.code==='KeyH')action('heavy');else if(e.code==='KeyJ')action('ally');
+  if(e.code==='Space'){e.preventDefault();if(e.target.tagName!=='BUTTON')action('attack');}else if(e.code==='KeyJ')action('ally');else if(e.code==='KeyF')$('#auto').click();
   else if(['KeyA','KeyD','ArrowLeft','ArrowRight'].includes(e.code)){e.preventDefault();const n=combat.alive().length;combat.target=(combat.target+(['KeyA','ArrowLeft'].includes(e.code)?-1:1)+n)%n;updateHud();}
   else if(e.key==='Escape')pause();
 });
@@ -225,5 +250,5 @@ window.addEventListener('resize',fit);visualViewport?.addEventListener('resize',
 window.addEventListener('pagehide',()=>{disposeRun();audio?.close();audio=null;});
 window.addEventListener('pageshow',e=>{if(e.persisted)show('main');});
 // Read-only local diagnostics: never grant progress or alter the simulation.
-if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.PawaxeDiagnostics=Object.freeze({snapshot:()=>({screen,state,modal:modalKind,stage:selected,node,hp:combat?.hp,energy:combat?.energy,guard:combat?.guard,time:combat?.time,unlocked:save.unlocked,coins:save.coins,raf:Boolean(raf),renderer:renderer?.metrics()||null,targets:combat?.alive().map(e=>({id:e.id,hp:e.hp,shield:e.shield,t:e.t,warn:e.warn,reflect:e.reflect}))||[]})});
+if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.PawaxeDiagnostics=Object.freeze({snapshot:()=>({screen,state,modal:modalKind,stage:selected,node,hp:combat?.hp,energy:combat?.energy,time:combat?.time,auto:save.autoAttack,slashes:combat?.slashes,kills:runKills,drops:runDrops,progress:journey?.progress,completed:journey?.completed,unlocked:save.unlocked,coins:save.coins,raf:Boolean(raf),renderer:renderer?.metrics()||null,targets:combat?.alive().map(e=>({id:e.id,hp:e.hp,shield:e.shield,t:e.t,warn:e.warn,reflect:e.reflect}))||[]})});
 localize();show('main');

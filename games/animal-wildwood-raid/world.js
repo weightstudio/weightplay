@@ -39,19 +39,21 @@ export class WildwoodWorld {
    this.box(g,'cream',[s*.27,1.25,.33],[.2,.25,.08]);this.box(g,'dark',[s*.16,1.4,.35],[.095,.105,.04]);this.box(g,'white',[s*.17,1.425,.375],[.03,.035,.015]);this.box(g,color,[s*.29,1.67,0],[.2,friend?.5:.25,.2]);this.box(g,'dark',[s*.29,1.69,.08],[.1,.1,.04]);
   }
   this.box(g,'dark',[0,1.2,.49],[.12,.08,.08]);
-  const legs=[];for(const s of [-1,1])legs.push(this.box(g,'dark',[s*.2,.22,0],[.24,.42,.3]));
+  const legs=[];for(const sign of [-1,1]){const hip=new THREE.Group();hip.position.set(sign*.2,.49,0);g.add(hip);this.box(hip,'dark',[0,-.25,0],[.25,.48,.34]);this.box(hip,hero?'wood':'dark',[0,-.43,.08],[.29,.17,.4]);legs.push(hip);}
   const arm=new THREE.Group();arm.position.set(.42,.9,0);g.add(arm);this.box(arm,color,[0,-.18,0],[.22,.48,.25]);
-  this.box(g,color,[-.43,.72,0],[.22,.5,.25]);
+  const offarm=new THREE.Group();offarm.position.set(-.43,.98,0);g.add(offarm);this.box(offarm,color,[0,-.25,0],[.24,.55,.28]);
   if(hero){
    this.box(g,'teal',[0,1,.03],[.73,.16,.64]);this.box(g,'teal',[-.2,.75,.3],[.22,.4,.12]);this.box(g,'gold',[0,.49,.27],[.13,.12,.06]);
    const tail=new THREE.Group();tail.position.set(0,.6,-.25);tail.rotation.x=-.65;g.add(tail);for(let i=0;i<5;i++)this.box(tail,i%2?'dark':'orange',[0,0,-i*.28],[.36,.36,.35]);
-   this.box(arm,'wood',[0,-.12,.3],[.1,.9,.1]);this.box(arm,'white',[.16,.24,.3],[.45,.34,.15]);this.box(arm,'gold',[.05,.22,.3],[.1,.38,.17]);this.box(g,'gold',[-.43,.4,.2],[.18,.23,.18]);
+   this.box(arm,'wood',[0,-.04,.4],[.13,1.25,.13]);this.box(arm,'white',[.22,.5,.4],[.65,.48,.19]);this.box(arm,'gold',[.07,.48,.4],[.12,.51,.22]);this.box(g,'gold',[-.43,.4,.2],[.18,.23,.18]);
   }else if(['shield','ironbark','stumpback'].includes(type)){
    this.box(arm,'wood',[0,-.1,.35],[.7,.95,.18]);this.box(arm,'gold',[0,-.1,.46],[.55,.14,.04]);this.box(arm,'cyan',[0,-.1,.49],[.17,.3,.04]);
   }else if(['caster','shaman','mosswitch'].includes(type)){this.box(arm,'wood',[0,0,.2],[.13,1.6,.13]);this.box(arm,type==='caster'?'purple':'cyan',[0,.75,.2],[.38,.4,.38]);}
   if(['ram','hornroot','heartwood'].includes(type))for(const s of [-1,1]){this.box(g,'cream',[s*.5,1.6,0],[.45,.18,.2]);this.box(g,'cream',[s*.68,1.8,0],[.17,.5,.18]);if(boss)this.box(g,'gold',[s*.8,1.9,0],[.4,.14,.16]);}
+  if(type==='stormowl'){for(const sign of [-1,1]){this.box(g,'teal',[sign*.72,1,0],[.65,.7,.23]);this.box(g,'white',[sign*.93,.8,.05],[.3,.6,.18]);}this.box(g,'gold',[0,1.25,.52],[.23,.3,.3]);}
+  if(type==='rootweaver'){for(const sign of [-1,1])for(let i=0;i<3;i++){const root=this.box(g,'wood',[sign*(.5+i*.22),.2,0],[.28,.35,.7]);root.rotation.z=sign*.3;}this.box(g,'purple',[0,1.75,0],[.6,.32,.6]);}
   if(boss){g.scale.setScalar(1.35);this.box(g,'cyan',[0,.74,.27],[.25,.35,.07]);for(let i=-1;i<=1;i++)this.box(g,'gold',[i*.24,1.72,0],[.14,.35+Math.abs(i)*.1,.18]);}
-  g.userData={legs,arm,kind,type};return g;
+  g.userData={legs,arm,offarm,kind,type};return g;
  }
  model(e){
   let g=new THREE.Group();
@@ -72,23 +74,32 @@ export class WildwoodWorld {
  render(dt=0){
   const sim=this.sim,h=sim.hero;this.heroModel.position.set(h.x,Math.sin(sim.time*10)*(h.attack?.015:0),h.z);this.heroModel.rotation.y=h.angle;
   this.camera.position.set(h.x,20,h.z+16);this.camera.lookAt(h.x,0,h.z);this.camera.updateMatrixWorld();
-  const nearby=p=>Math.hypot(p.x-h.x,p.z-h.z)<4.6;
-  this.heroModel.userData.arm.rotation.x=h.attack?-Math.sin((1-h.attack.left/.18)*Math.PI)*1.8:0;
+  const nearby=()=>true; // Camera clipping only: never spawn scenery in the middle of the visible arena.
   const walking=this.lastHero&&Math.hypot(h.x-this.lastHero.x,h.z-this.lastHero.z)>.001;this.lastHero={x:h.x,z:h.z};
-  this.heroModel.userData.legs.forEach((leg,i)=>leg.rotation.x=h.dash>0?.7:walking?Math.sin(sim.time*11+i*Math.PI)*.3:0);
+  const stride=walking?Math.sin(sim.time*12):0,attack=h.attack?1-h.attack.left/h.attack.total:0;
+  const swing=h.attack?(attack<.46?-2.15*attack/.46:-2.15+3.6*Math.sin((attack-.46)/.54*Math.PI*.7)):stride*.55;
+  const rig=this.heroModel.userData;rig.arm.rotation.set(swing,h.attack?Math.sin(attack*Math.PI)*.85:0,h.attack?Math.sin(attack*Math.PI)*-.75:0);
+  rig.offarm.rotation.x=-stride*.65;this.heroModel.rotation.z=walking?stride*.085:0;this.heroModel.rotation.x=h.attack?Math.sin(attack*Math.PI)*.15:walking?.1:0;
+  this.heroModel.position.y=h.recoil>0?.1:walking?Math.abs(stride)*.085:0;
+  rig.legs.forEach((leg,i)=>leg.rotation.x=h.dash>0?.9:walking?Math.sin(sim.time*12+i*Math.PI)*.82:0);
   this.exit.position.set(sim.exit.x,0,sim.exit.z);this.exit.visible=sim.ready()&&nearby(sim.exit);
-  for(const e of sim.ents){let g=this.models.get(e.uid);if(!g){g=this.model(e);this.models.set(e.uid,g);}g.visible=e.hp>0&&nearby(e)&&(!e.hidden||Math.hypot(e.x-h.x,e.z-h.z)<2.5);g.position.set(e.x,e.recoil?Math.sin(e.recoil*30)*.05:0,e.z);g.rotation.y=e.angle||0;
-   if(g.userData.arm)g.userData.arm.rotation.x=e.wind?-Math.sin((1-e.wind.left/e.wind.total)*Math.PI)*1.1:0;
-   const previous=g.userData.previous,moving=previous&&Math.hypot(e.x-previous.x,e.z-previous.z)>.001;if(g.userData.legs)g.userData.legs.forEach((leg,i)=>leg.rotation.x=moving?Math.sin(sim.time*8+i*Math.PI)*.3:0);g.userData.previous={x:e.x,z:e.z};
+  for(const e of sim.ents){let g=this.models.get(e.uid);if(!g){g=this.model(e);this.models.set(e.uid,g);}const falling=e.hp<=0&&sim.time-(e.defeatedAt??-10)<.5;g.visible=e.hp>0||falling;g.position.set(e.x,e.recoil?Math.sin(e.recoil*30)*.05:0,e.z);g.rotation.y=e.angle||0;g.rotation.z=falling?(sim.time-e.defeatedAt)*2.8:e.recoil>0?Math.sin(e.recoil*40)*.18:0;
+   if(g.userData.arm)g.userData.arm.rotation.x=e.wind?-2*(1-e.wind.left/e.wind.total):e.swing?Math.sin(e.swing/.36*Math.PI)*1.9:0;
+   const previous=g.userData.previous,moving=previous&&Math.hypot(e.x-previous.x,e.z-previous.z)>.001;if(g.userData.legs)g.userData.legs.forEach((leg,i)=>leg.rotation.x=moving?Math.sin(sim.time*9+i*Math.PI)*.7:0);g.userData.previous={x:e.x,z:e.z};
   }
+  for(const [uid,g] of this.models)if(!sim.ents.some(e=>e.uid===uid)){this.root.remove(g);this.parts=this.parts.filter(p=>!isChild(p.node,g));this.models.delete(uid);}
   // Dynamic markers use the same instanced geometry and are recycled each frame.
   if(this.dynamic){this.root.remove(this.dynamic);const old=this.dynamic;this.parts=this.parts.filter(p=>!isChild(p.node,old));}
   this.dynamic=new THREE.Group();this.root.add(this.dynamic);const d=this.dynamic;
   for(const e of sim.alive())if(e.wind&&nearby(e)){const w=e.wind,p=1-w.left/w.total;const mark=new THREE.Group();mark.position.set(e.x,.035,e.z);mark.rotation.y=Math.atan2(w.dx,w.dz);d.add(mark);
    if(w.kind==='charge')this.box(mark,p>.75?'red':'gold',[0,0,3],[1.1,.055,6]);
+   else if(w.kind==='burst'){for(let i=0;i<8;i++){const ray=new THREE.Group();ray.rotation.y=i*Math.PI/4;mark.add(ray);this.box(ray,'gold',[0,0,2],[.12,.05,3.5]);}}
+   else if(w.kind==='roots'){this.box(mark,'purple',[0,0,0],[2.5,.04,2.5]);}
    else if(w.kind==='shot')this.box(mark,'gold',[0,0,2],[.16,.05,4]);
    else this.box(mark,p>.75?'red':'gold',[0,0,.1],[3.4,.045,3.4]);
   }
+  for(const hazard of sim.hazards||[]){this.box(d,hazard.delay>0?'gold':'purple',[hazard.x,.045,hazard.z],[hazard.r*2,.05,hazard.r*2]);if(hazard.delay<=0)for(let i=0;i<4;i++)this.box(d,'wood',[hazard.x+Math.cos(i*1.57)*.6,.5,hazard.z+Math.sin(i*1.57)*.6],[.16,1,.16]);}
+  for(const e of sim.ents)if(e.hp<=0&&e.spawn){this.box(d,e.kind==='tree'?'wood':'gold',[e.x,.06,e.z],[e.kind==='tree'?.4:1.3,.12,e.kind==='tree'?.4:1.3]);}
   for(const o of sim.obstacles)if(o.hp>0&&nearby(o)){this.box(d,o.breakable?'wood':'stone',[o.x,.5,o.z],[o.w*2,1,o.h*2]);this.box(d,'moss',[o.x,1.03,o.z],[o.w*1.9,.12,o.h*1.9]);}
   for(const z of sim.zones)if(nearby(z))this.box(d,z.type==='mud'?'wood':z.type==='thorn'?(sim.time%3>2.1?'red':'purple'):'teal',[z.x,.01,z.z],[z.r*2,.035,z.r*2]);
   for(const f of sim.fields)this.box(d,'teal',[f.x,.04,f.z],[f.r*2,.045,f.r*2]);
@@ -106,8 +117,8 @@ export class WildwoodWorld {
   for(const mesh of this.batches.values())mesh.instanceMatrix.needsUpdate=true;
   this.renderer.render(this.scene,this.camera);
  }
- metrics(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,materials:this.batches.size,models:this.models.size,effects:this.effects.length};}
- project(x,z){const v=new THREE.Vector3(x,.5,z).project(this.camera);return {x:(v.x+1)/2,y:(1-v.y)/2};}
+ metrics(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,materials:this.batches.size,models:this.models.size,effects:this.effects.length,visibleObjects:[...this.models.values()].filter(g=>g.visible).length,heroPose:{arm:this.heroModel.userData.arm.rotation.x,leg:this.heroModel.userData.legs[0].rotation.x}};}
+ project(x,z,height=.5){const v=new THREE.Vector3(x,height,z).project(this.camera);return {x:(v.x+1)/2,y:(1-v.y)/2};}
  dispose(){this.sun.shadow.map?.dispose();this.ground.dispose();this.geometry.dispose();for(const b of this.batches.values()){b.dispose();b.material.dispose();}this.batches.clear();this.parts=[];this.models.clear();this.effects=[];this.renderer.dispose();}
 }
 function isChild(n,parent){for(let p=n;p;p=p.parent)if(p===parent)return true;return false;}

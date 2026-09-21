@@ -49,8 +49,22 @@ export class PawRenderer {
     this.box(this.world,5.2,.8,1,0x516a5c,0,5,-15);
     this.box(this.world,1.2,1.2,.3,0x58e9c7,0,3,-15,true).rotation.z=Math.PI/4;
     // Batch static scenery by material; bounded draw calls independent of tree count.
+    const horizon=new Set(this.world.children.slice(-4));
     const groups=new Map();for(const mesh of [...this.world.children]){if(mesh===this.ground)continue;const batch=groups.get(mesh.material)||[];batch.push(mesh);groups.set(mesh.material,batch);}
-    for(const [material,meshes] of groups){const batch=new THREE.InstancedMesh(this.geometry,material,meshes.length);meshes.forEach((m,i)=>{m.updateMatrix();batch.setMatrixAt(i,m.matrix);this.world.remove(m);});batch.castShadow=true;batch.receiveShadow=true;this.world.add(batch);}
+    for(const [material,meshes] of groups){const batch=new THREE.InstancedMesh(this.geometry,material,meshes.length);batch.userData.poses=[];meshes.forEach((m,i)=>{m.updateMatrix();batch.setMatrixAt(i,m.matrix);batch.userData.poses.push({matrix:m.matrix.clone(),travel:m.scale.x<6&&!horizon.has(m)});this.world.remove(m);});batch.castShadow=true;batch.receiveShadow=true;this.world.add(batch);}
+  }
+  walk(dt,elapsed){
+    if(this.reduced)return;
+    this.distance=((this.distance||0)+dt*5)%38;
+    for(const batch of this.world.children){
+      if(!batch.isInstancedMesh)continue;
+      batch.userData.poses.forEach(({matrix,travel},i)=>{
+        if(!travel)return;
+        const moved=matrix.clone();moved.elements[14]=((matrix.elements[14]+this.distance+32)%38+38)%38-32;batch.setMatrixAt(i,moved);
+      });batch.instanceMatrix.needsUpdate=true;
+    }
+    this.c.position.y=2.3+Math.sin(Math.min(.9,elapsed)/.9*Math.PI*4)*.045;
+    if(elapsed>=.88)this.c.position.y=2.3;
   }
   buildHands() {
     this.axe=new THREE.Group();this.view.add(this.axe);
@@ -150,7 +164,7 @@ export class PawRenderer {
   impact(strong=false){if(!this.reduced)this.shake=strong?.16:.07;}
   event(e){
     const g=this.models.get(e.uid);
-    if(e.type==='swing'){this.swing(e.heavy,e.uid);if(e.windup)this.swingContact=e.windup;}
+    if(e.type==='swing'){this.swing(e.heavy,e.uid);if(e.windup)this.swingContact=e.windup;if(e.duration)this.swingTime=this.swingDuration=e.duration;}
     if(g&&['hurt','block','perfect'].includes(e.type))g.userData.attackKick=.2;
     if(['hit','break','perfect','defeat'].includes(e.type)){
       if(g)g.userData.recoil=e.heavy?.22:.1;

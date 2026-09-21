@@ -4315,7 +4315,7 @@ body.kids-lobby-page {
   .kids-lobby-page .lobby-feature {
     right: 12px;
     bottom: 12px;
-    width: min(245px, 70%);
+    width: min(245px, calc(100% - 108px));
     min-height: 58px;
     grid-template-columns: 42px minmax(0, 1fr);
   }

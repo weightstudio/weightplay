@@ -1,21 +1,22 @@
 import { ENEMIES } from './campaign.js';
+import { equipmentPower } from './loot.js';
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 export class Combat {
-  constructor(stage, loadout, mode, node = 0, upgrades = {}) {
+  constructor(stage, loadout, mode, node = 0, upgrades = {}, options = {}) {
     Object.assign(this, { stage, loadout, mode, node, upgrades });
+    this.power=equipmentPower(loadout,options.collection||{});
+    this.autoAttack=options.autoAttack===true;this.queue=0;this.slashes=0;
     this.maxHp = 120 + (loadout.includes('bark-vest') ? 25 : 10)
-      + ['head','body','hands','feet','charm','ring'].reduce((n,s) => n + 2*(upgrades[s]||0), 0);
-    Object.assign(this, {hp:this.maxHp, stamina:100, energy:100, guard:false, guardStarted:-99,
-      guardLock:0, heavyCd:0, allyCd:0, time:0, target:0, events:[], combo:0, auto:.45,
-      pending:null, recovery:0, serial:0, hitstop:0, lastEnemyHit:-1, blocks:0, perfects:0, damageTaken:0});
-    this.status = {crack:0, root:0}; this.enemies = [];
+      + this.power.health;
+    Object.assign(this, {hp:this.maxHp,energy:100,allyCd:0,time:0,target:0,events:[],combo:0,auto:.45,
+      pending:null,recovery:0,serial:0,hitstop:0,lastEnemyHit:-1,damageTaken:0});
+    this.status = {crack:0}; this.enemies = [];
     (stage.encounters?.[node] || stage.enemies).forEach((id,i) => this.spawn(id,i));
-    if (stage.id === 17) this.status.root = 5;
   }
   has(id) { return this.loadout.includes(id); }
   weapon() {
     const w = this.has('breaker-axe') ? {a:28,cycle:1.15} : this.has('quick-axe') ? {a:18,cycle:.75} : {a:24,cycle:1};
-    w.a *= 1 + .03*(this.upgrades.axe||0); return w;
+    w.a *= this.power.attack; return w;
   }
   spawn(id, index = this.alive().length) {
     const boss = id.startsWith('boss-'), def = ENEMIES[id] || ENEMIES.scout;
@@ -32,17 +33,18 @@ export class Combat {
   alive() { return this.enemies.filter(e => e.hp>0); }
   selected() { return this.alive()[Math.min(this.target,this.alive().length-1)]; }
   log(type,data={}) { this.events.push({type,...data}); }
-  toggleGuard() {
-    if (this.lost || this.won || this.guardLock>0 || (!this.guard && this.stamina<5)) return false;
-    this.guard = !this.guard; this.guardLock = .25;
-    if (this.guard) { this.guardStarted=this.time; this.pending=null; }
-    else if(this.has('trail-boots'))this.quickNext=true;
-    this.log('guard',{on:this.guard}); return true;
+  attack() {
+    if(this.lost||this.won)return false;
+    this.queue++;
+    if(!this.pending)this.beginSwing();
+    return true;
   }
-  heavy() {
-    if (this.lost || this.won || this.heavyCd>0 || this.recovery>0) return false;
-    this.guard=false; this.heavyCd=6; this.pending={target:this.selected(),time:.35,heavy:true};
-    this.log('swing',{heavy:true,uid:this.pending.target?.uid}); return true;
+  beginSwing(){
+    if(!this.queue||!this.selected())return;
+    this.queue--;this.slashes++;
+    const heavy=this.slashes%8===0,windup=heavy?.09:this.has('trail-boots')?.045:.055;
+    this.pending={target:this.selected(),time:windup,heavy};
+    this.log('swing',{heavy,uid:this.pending.target.uid,windup,duration:heavy?.23:.15});
   }
   ally() {
     if (this.lost || this.won || this.energy<100 || this.allyCd>0) return false;
@@ -56,7 +58,7 @@ export class Combat {
       const healed=Math.min(this.maxHp-this.hp,this.maxHp*.1); this.hp+=healed;
       this.log('heal',{amount:Math.round(healed)});
     }
-    if (this.mode==='guard'||this.has('lunar-charm')) { if(this.status.crack>0)this.status.crack=0;else this.status.root=0; }
+    if (this.mode==='guard'||this.has('lunar-charm'))this.status.crack=0;
     this.log('ally',{mode:this.mode}); return true;
   }
   stripShield(e,amount) {
@@ -66,11 +68,12 @@ export class Combat {
   hit(mult=1,heavy=false,e=this.selected()) {
     if(!e||e.hp<=0||this.lost)return;
     let amount=this.weapon().a*mult;
-    if(heavy&&e.reflect>0){this.playerDamage(amount*.4,e,false);this.log('reflect',{uid:e.uid});return;}
+    if(heavy&&e.reflect>0){amount*=.65;this.stripShield(e,20);this.log('break',{uid:e.uid});}
     if(heavy&&e.opening>0){amount*=1.25;this.log('counter',{uid:e.uid});}
-    if(!heavy){this.combo++;if(this.has('rhythm-band')&&this.combo%3===0)amount*=1.5;}
+    this.combo++;if(this.has('rhythm-band')&&this.combo%3===0)amount*=1.5;
     const effective=this.damage(e,amount,heavy);
-    if(effective&&!heavy)this.energy=clamp(this.energy+(this.has('quick-axe')?9:12)+(this.gloveCharge?5:0),0,100);
+    if(heavy)for(const other of this.alive())if(other!==e)this.damage(other,amount*.45,false,'cleave');
+    if(effective&&!heavy)this.energy=clamp(this.energy+(this.has('quick-axe')?9:12)+(this.has('prism-visor')?3:0)+(this.gloveCharge?5:0),0,100);
     if(!heavy)this.gloveCharge=false;
     if(heavy){
       this.gloveCharge=this.has('trail-gloves');
@@ -90,7 +93,8 @@ export class Combat {
     this.log('hit',{uid:e.uid,amount:Math.round(healthDamage),shield:Math.round(shieldDamage),heavy,source,protectedCore});
     if(heavy&&healthDamage>0)this.hitstop=.045;
     if(e.hp===0){
-      this.log('defeat',{uid:e.uid});
+      this.log('defeat',{uid:e.uid,boss:e.boss,summon:e.summon===true});
+      this.hp=Math.min(this.maxHp,this.hp+this.maxHp*.035);
       if(this.has('copper-ring')&&!e.summon)this.energy=clamp(this.energy+12,0,100);
       this.target=Math.min(this.target,Math.max(0,this.alive().length-1));
     }
@@ -98,19 +102,10 @@ export class Combat {
   }
   playerDamage(amount,source,blockable=true) {
     if(amount<=0)return false;
-    const armor=this.has('bark-vest')?18:8; let d=amount*(1-Math.min(.35,armor/(armor+100)));
-    const blocked=this.guard&&blockable;
-    if(blocked){
-      const perfect=this.time-this.guardStarted<=.18; d*=perfect?0:.3;
-      this.stamina=clamp(this.stamina-(this.has('iron-brace')?10:15),0,100);
-      this.energy=clamp(this.energy+(perfect?20+(this.has('prism-visor')?6:0):8),0,100);
-      this.blocks++;if(perfect)this.perfects++;
-      if(source&&typeof source==='object')source.opening=source.id==='boss-heart'&&source.phase===3?(perfect?2.4:1.8):perfect?1.2:.7;
-      this.log(perfect?'perfect':'block',{uid:source?.uid});
-      if(!this.stamina){this.guard=false;this.guardLock=.6;}
-    }
+    const armor=this.has('bark-vest')?18:8; let d=amount*.38*(1-Math.min(.35,armor/(armor+100)));
+    if(this.has('iron-brace'))d*=.85;
     this.hp=clamp(this.hp-d,0,this.maxHp);this.damageTaken+=d;
-    if(d>0){this.lastCause=blockable?'attack':'reflect';this.log('hurt',{amount:Math.round(d),uid:source?.uid});} return blocked;
+    if(d>0){this.lastCause='attack';this.log('hurt',{amount:Math.round(d),uid:source?.uid});} return false;
   }
   special(e,blocked) {
     e.attackCount++;
@@ -125,7 +120,7 @@ export class Combat {
       else if(e.casts<(e.boss?4:2)&&this.alive().length<3){const c=this.spawn('scout');c.hp=c.maxHp=40;c.summon=true;e.casts++;this.log('summon',{uid:c.uid});}
     }
     if((e.id==='thorn'||e.id==='root-crack')&&!blocked)this.status.crack=this.has('trail-hood')?3.2:4;
-    if(e.id==='root-drain')this.status.root=5;
+    if(e.id==='root-drain')this.energy=Math.max(0,this.energy-8);
     if(e.id==='charger'||e.id==='boss-bell')e.opening=blocked?1.4:.6;
     if(e.id.startsWith('mirror')&&e.disabledMirror<=0)e.reflect=2;
   }
@@ -144,24 +139,30 @@ export class Combat {
   tick(dt) {
     if(this.lost||this.won)return;dt=clamp(dt,0,.05);
     if(this.hitstop>0){this.hitstop-=dt;return;}this.time+=dt;
-    for(const k of ['guardLock','heavyCd','allyCd','recovery'])this[k]=Math.max(0,this[k]-dt);
-    for(const k of ['crack','root'])this.status[k]=Math.max(0,this.status[k]-dt);
-    if(this.status.crack>0){this.hp=Math.max(0,this.hp-3*dt);this.lastCause='crack';}
-    if(this.guard){this.stamina=Math.max(0,this.stamina-25*dt);if(!this.stamina){this.guard=false;this.guardLock=.6;this.log('exhausted');}}
-    else this.stamina=Math.min(100,this.stamina+(this.has('bark-vest')?25:30)*(this.status.root>0?this.has('marsh-boots')?.75:.5:1)*dt);
-    if(!this.guard)this.auto=Math.max(0,this.auto-dt);
+    for(const k of ['allyCd','recovery'])this[k]=Math.max(0,this[k]-dt);
+    this.status.crack=Math.max(0,this.status.crack-dt);
+    if(this.status.crack>0){this.hp=Math.max(0,this.hp-(this.has('marsh-boots')?.35:.7)*dt);this.lastCause='crack';}
+    if(this.autoAttack){
+      this.auto=Math.max(0,this.auto-dt);
+      if(this.auto<=0){
+        this.auto=this.weapon().cycle*.6;
+        const priority=['root-crack','root-drain','mirror-left','mirror-right','anchor','mender','caller'];
+        const alive=this.alive(),support=alive.find(e=>priority.includes(e.id));
+        if(support)this.target=alive.indexOf(support);
+        if(this.queue===0)this.attack();
+      }
+      if(this.energy>=100)this.ally();
+    }
     if(this.pending){
       this.pending.time-=dt;
-      if(this.pending.time<=0){const a=this.pending;this.pending=null;this.hit(a.heavy?2.2:1,a.heavy,a.target);this.recovery=a.heavy?.55:.2;}
-    }else if(!this.guard&&this.recovery<=0){
-      if(this.auto<=0){const windup=this.quickNext?.15:.2;this.quickNext=false;this.auto=this.weapon().cycle;this.pending={target:this.selected(),time:windup,heavy:false};this.log('swing',{uid:this.pending.target?.uid,heavy:false,windup});}
-    }
+      if(this.pending.time<=0){const a=this.pending;this.pending=null;this.hit(a.heavy?2.2:1,a.heavy,a.target);this.recovery=.025;}
+    }else if(this.recovery<=0)this.beginSwing();
     for(const e of this.alive()){
       for(const k of ['opening','reflect','disabledMirror'])e[k]=Math.max(0,(e[k]||0)-dt);
       if(['mirror-left','mirror-right'].includes(e.id)&&e.disabledMirror<=0)e.reflect=(Math.floor(this.time/2)%2===(e.id==='mirror-left'?0:1))?1:0;
       this.bossRule(e);e.t-=dt;
       if(!e.warned&&e.t<=e.warn){e.warned=true;this.log('warning',{uid:e.uid});}
-      if(e.t<=0&&this.time-this.lastEnemyHit>=.5){const blocked=this.playerDamage(e.damage,e);this.special(e,blocked);this.lastEnemyHit=this.time;e.t=e.period+(e.id==='boss-bell'&&e.attackCount%3===2?.9:0);e.warned=false;}
+      if(e.t<=0&&this.time-this.lastEnemyHit>=.5){const blocked=this.playerDamage(e.damage,e);this.special(e,blocked);if(e.id==='boss-heart'&&e.phase===3)e.opening=2.4;this.lastEnemyHit=this.time;e.t=e.period+(e.id==='boss-bell'&&e.attackCount%3===2?.9:0);e.warned=false;}
     }
   }
   get won(){return this.hp>0&&this.alive().length===0;}

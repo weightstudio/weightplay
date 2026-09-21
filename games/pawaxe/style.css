@@ -2,3 +2,19 @@
 #stagePanel{position:relative}.rail>button{margin-top:0;position:relative;top:calc(38% - 95px)}.stage-card[aria-current=true]{border-color:#ffd477;box-shadow:0 0 0 2px #edb74e55,0 0 24px #edb74e88}
 .gear-icon{display:block;width:80px;height:80px;margin:0 auto 8px;background-image:url('art/equipment-v1.png');background-size:400% 400%;background-repeat:no-repeat}.gear{text-align:center}.gear p{clear:both}.gear b{display:block}#coins:before{content:'';display:inline-block;vertical-align:middle;width:36px;height:36px;background:url('art/equipment-v1.png') 100% 100%/400% 400%;margin-inline-end:8px}
 .play-scene{max-width:none}
+#battle .battle-area{grid-template-rows:52px minmax(0,1fr) 30px 76px}
+#battle .route{display:flex;gap:12px;align-items:center;padding:4px 10px;background:#15373d}
+#battle .route-track{flex:1;min-width:0;font-size:12px;color:#dfedce}
+#battle .route-track progress{display:block;width:100%;height:10px;margin-top:5px;accent-color:#edb74e}
+#battle #claim{width:148px;height:44px;flex:none;border:1px solid #6c9882;background:#264b46;color:#dfeccf;font-size:12px;font-weight:800}
+#battle #claim.complete{background:#edb74e;color:#18332c;border-color:#fff2ac}
+#battle .warning{position:absolute;top:92px;inset-inline:10px;min-height:24px;background:#163830dc;pointer-events:none;font-size:12px}
+#battle #attack{background:#dba84d;color:#15342e;border-color:#ffe3a0}
+#battle #attack:active{background:#f0c56d}
+#battle .loot-toast{position:absolute;inset-inline:12px;bottom:42px;display:flex;align-items:center;gap:10px;background:#14372fee;border:1px solid #e7c673;color:#fff1be;padding:8px;pointer-events:none;font-size:13px}
+#battle .loot-toast .gear-icon{flex:none;width:44px;height:44px;margin:0}
+#stage .gear.unowned{opacity:.65}
+#stage .gear[data-tier="2"]{border-color:#83b6df}
+#stage .gear[data-tier="3"]{border-color:#d6a4ed}
+#stage .gear .shards{min-height:24px;color:#f4d184}
+#stage #coins:before{display:none}

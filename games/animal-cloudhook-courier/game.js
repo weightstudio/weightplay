@@ -45,13 +45,13 @@
   const H = canvas.height;
   const battleBackground = new Image();
   battleBackground.decoding = "async";
-  battleBackground.src = "battle-bg-v2.webp";
+  battleBackground.src = "battle-bg-block-v1.webp";
   const courierSprites = new Image();
   courierSprites.decoding = "async";
-  courierSprites.src = "courier-sprites-v2.webp";
+  courierSprites.src = "courier-sprites-block-v1.webp";
   const cloudhookProps = new Image();
   cloudhookProps.decoding = "async";
-  cloudhookProps.src = "cloudhook-props-v2.webp";
+  cloudhookProps.src = "cloudhook-props-block-v1.webp";
   const authoredStages = [
     { arc: 0, wind: 0, anchors: [[210,300],[370,230],[530,330],[690,210]], parcels: [[300,410],[600,360]], spikes: [] },
     { arc: 0, wind: 8, anchors: [[205,290],[360,190],[500,315],[665,180],[790,300]], parcels: [[300,150],[575,190],[735,130]], spikes: [] },

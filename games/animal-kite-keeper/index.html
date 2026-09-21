@@ -35,7 +35,7 @@
         <button id="backBtn" class="icon-btn wp-shell-return" data-wp-return="main" type="button" aria-label="Back to General lobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="WeightPlay" width="24" height="24"></button>
         <div class="brand"><span class="eyebrow">WEIGHTPLAY · GENERAL</span><strong class="wp-shell-main-title" data-i18n="title">Kite Keeper</strong></div>
       </header>
-      <div class="cover-wrap main-hero"><img class="cover main-poster" src="assets/animal-kite-keeper-cover-v1.webp" alt="Kite Keeper game artwork" width="1536" height="1024"></div>
+      <div class="cover-wrap main-hero"><img class="cover main-poster" src="assets/animal-kite-keeper-cover-block-v1.webp" alt="Kite Keeper game artwork" width="1536" height="1024"></div>
       <p class="kicker">6+ · FAMILY · ORIGINAL PROTOTYPE</p>
       <h1 data-i18n="title">Kite Keeper</h1>
       <p class="subtitle main-summary" data-i18n="subtitle">Choose the wind. Find the lantern dock.</p>
@@ -45,7 +45,7 @@
     </section>
 
     <section id="gameGuide" class="guide-card game-page-info game-page-info-static" data-wp-game-guide aria-label="Kite Keeper game guide">
-      <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro.webp" alt="Moss Shell Taro holding a kite spool" width="1024" height="1536"><div><h2 data-i18n="guideTitle">How to play</h2><p data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p></div></div>
+      <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="Moss Shell Taro holding a kite spool" width="1024" height="1536"><div><h2 data-i18n="guideTitle">How to play</h2><p data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p></div></div>
     </section>
 
     <section id="stageScreen" data-screen="stage" class="screen stage-screen stage-canvas" hidden>
@@ -71,7 +71,7 @@
     </section>
 
     <section id="resultScreen" data-screen="result" class="screen result-screen" hidden>
-      <p class="eyebrow">RESULT</p><img class="result-character" src="assets/animal-kite-keeper-taro.webp" alt="Moss Shell Taro celebrating with his kite" width="1024" height="1536"><h1 id="resultTitle" data-i18n="resultTitle">Route complete</h1><p id="resultText" class="result-text"></p>
+      <p class="eyebrow">RESULT</p><img class="result-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="Moss Shell Taro celebrating with his kite" width="1024" height="1536"><h1 id="resultTitle" data-i18n="resultTitle">Route complete</h1><p id="resultText" class="result-text"></p>
       <div class="result-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next route</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="map">Sky routes</button><button id="homeBtn" class="secondary" type="button" data-i18n="back">Back to General lobby</button></div>
     </section>
 
@@ -79,5 +79,15 @@
     <div id="battleAdReserve" class="battle-ad-reserve" data-wp-ad-reserve hidden aria-hidden="true"></div>
   </main>
   <script src="locales.js?v=20260911-kite-keeper-v6-interface-repair"></script><script src="game.js?v=20260911-kite-keeper-v6-interface-repair"></script>
+  <script id="kite-keeper-block-asset-upgrade-v1">
+    (() => {
+      const poster = document.querySelector('.main-poster');
+      if (poster) poster.src = 'assets/animal-kite-keeper-cover-block-v1.webp';
+      document.querySelectorAll('.guide-character, .result-character').forEach((image) => {
+        image.src = 'assets/animal-kite-keeper-taro-block-v1.webp';
+      });
+      document.documentElement.dataset.wpVoxelAssetSet = 'kite-keeper-block-v1';
+    })();
+  </script>
 </body>
 </html>

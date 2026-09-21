@@ -287,8 +287,8 @@
   };
 
   const feedbackAssets = {
-    hint: "../../assets/animal-hidden-safari-hint-ring.png",
-    found: "../../assets/animal-hidden-safari-found-burst.png",
+    hint: "../../assets/animal-hidden-safari/hint-ring-block-v1.png",
+    found: "../../assets/animal-hidden-safari/found-burst-block-v1.png",
   };
 
   const stages = [

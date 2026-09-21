@@ -39,7 +39,7 @@
   <meta name="twitter:title" content="Color Springs | WeightPlay" />
   <meta name="twitter:description" content="Color Springs is a 30-stage sorting puzzle about moving colored spring orbs between ornate vessels until every vessel contains one color." />
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-color-springs/cover-block-v1.png" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Color Springs","description":"Color Springs is a 30-stage sorting puzzle about moving colored spring orbs between ornate vessels until every vessel contains one color.","url":"https://weightplay.com/en/games/animal-color-springs/","image":"https://weightplay.com/games/animal-color-springs/assets/animal-color-springs-cover.webp","genre":["Puzzle","Logic","Animal","Browser Game"],"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Color Springs","description":"Color Springs is a 30-stage sorting puzzle about moving colored spring orbs between ornate vessels until every vessel contains one color.","url":"https://weightplay.com/en/games/animal-color-springs/","image":"https://weightplay.com/assets/animal-color-springs/cover-block-v1.png","genre":["Puzzle","Logic","Animal","Browser Game"],"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9}}</script>
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -61,7 +61,7 @@
         <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="assets/animal-color-springs-cover.webp" alt="森林裡的貓頭鷹與白兔正在整理發光彩泉" data-i18n-alt="Color Springs game artwork" />
+        <img class="main-poster" src="/assets/animal-color-springs/cover-block-v1.png" alt="森林裡的貓頭鷹與白兔正在整理發光彩泉" data-i18n-alt="Color Springs game artwork" />
         <div class="main-copy"><small data-i18n="eyebrow">森林彩泉謎題</small><h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Color Springs</h1><p data-i18n="pitch">把相同顏色的彩珠聚在同一座泉器，讓混亂的森林泉水恢復光彩。</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">開始遊戲</button></div>
       </section>
     </main>
@@ -72,7 +72,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-color-springs-cover.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('/assets/animal-color-springs/cover-block-v1.png')">
       <header class="stage-header"><button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇彩泉</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel"></div>

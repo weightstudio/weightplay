@@ -1,5 +1,5 @@
 export const TOOLS=[
-{id:'axe',unlock:1,label:'Ranger Axe',icon:'tool-ranger-axe-v1.webp',cooldown:.55,range:1.65,power:16},
+{id:'axe',unlock:1,label:'Ranger Axe',icon:'tool-ranger-axe-v1.webp',cooldown:.66,range:1.65,power:16},
 {id:'bow',unlock:3,label:'Thorn Bow',icon:'tool-thorn-bow-v1.webp',cooldown:1.05,range:5.8,power:24},
 {id:'lantern',unlock:8,label:'Lantern Pulse',icon:'skill-lantern-pulse-v1.webp',cooldown:8,range:4.6,power:16},
 {id:'snare',unlock:13,label:'Root Snare',icon:'skill-root-snare-v1.webp',cooldown:10,range:3.2,power:0},
@@ -54,6 +54,10 @@ hornroot:{hp:230,damage:19,speed:.58,rule:'charge',phases:2},
 mosswitch:{hp:260,damage:13,speed:.44,rule:'summon',phases:3},
 ironbark:{hp:310,damage:18,speed:.42,rule:'armor',phases:3},
 twinroot:{hp:220,damage:14,speed:.48,rule:'pair',phases:2,count:2},
-heartwood:{hp:520,damage:21,speed:.46,rule:'finale',phases:3}
+heartwood:{hp:520,damage:21,speed:.65,rule:'finale',phases:3},
+stormowl:{hp:230,damage:16,speed:.72,rule:'radial-barrage',phases:3},
+rootweaver:{hp:270,damage:18,speed:.65,rule:'delayed-root-traps',phases:3}
 };
+export const GUARDIAN_ORDER=['stumpback','hornroot','stormowl','rootweaver','stumpback','mosswitch','hornroot','ironbark','stormowl','hornroot','rootweaver','mosswitch','ironbark','stormowl','mosswitch','rootweaver','twinroot','hornroot','stormowl','ironbark','mosswitch','rootweaver','twinroot','stormowl','twinroot','hornroot','ironbark','rootweaver','stormowl','heartwood'];
+export const guardianFor=id=>GUARDIAN_ORDER[id-1]||'stumpback';
 export const ART='./art/';

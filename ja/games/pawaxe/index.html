@@ -81,11 +81,11 @@
 <section id="battle" class="scene play-scene" hidden>
 <header><button data-wp-return="battle" id="battleBack" aria-label="返回關卡">←</button><span data-wp-frame-title hidden></span></header>
 <main class="battle-area">
-<div id="battleInfo" data-wp-frame-info><span><b id="hudStage">1</b> / 30</span><span id="node">1 / 5</span><span>HP <b id="hp">130</b></span></div>
-<div id="warning" class="warning" aria-live="polite"></div>
-<div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div></div>
+<div id="battleInfo" data-wp-frame-info><span><b id="hudStage">1</b> / 30</span><span id="node">0%</span><span>HP <b id="hp">130</b></span></div>
+<div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0"></progress></div><button id="claim" disabled>0%</button></div>
+<div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><span id="lootIcon" class="gear-icon" aria-hidden="true"></span><span id="lootText"></span></div></div>
 <div id="feedback" class="feedback" aria-live="polite"></div>
-<div class="actions"><button id="guard"><span data-i18n="guard"></span><small id="guardValue"></small><progress id="stamina" max="100" value="100"></progress></button><button id="heavy"><span data-i18n="heavy"></span><small id="heavyValue"></small><progress id="heavyMeter" max="6" value="6"></progress></button><button id="ally"><span data-i18n="ally"></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
+<div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack"><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span data-i18n="ally"></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
 </section>
