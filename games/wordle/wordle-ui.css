@@ -38,12 +38,3 @@ html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessag
 .wordle-leave-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
 .wordle-leave-actions button{min-height:50px}
 @media(max-width:520px){.wordle-leave-actions{grid-template-columns:1fr}}
-
-/* Wordle v15 keeps the canonical compact-landscape Main poster column. The
-   shared shell derives 310px from viewport height; override that variable on
-   the generated composition without changing Battle or sibling games. */
-@media (min-width:700px) and (max-height:520px) and (orientation:landscape) {
-  html body[data-game-id="wordle"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size:420px;
-  }
-}

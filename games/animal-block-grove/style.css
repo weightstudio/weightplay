@@ -40,3 +40,8 @@ body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle
   .block-grove-battle-canvas .leave-card button,
   .block-grove-battle-canvas .result-card button{min-height:96px;font-size:22px}
 }
+
+/* Shared-interface cleanup: keep Stage/Battle top chrome within the Interface 7 title-free 48px track without claiming full migration. */
+.stage-header{left:16px;right:16px;top:16px;height:48px;grid-template-columns:48px minmax(0,1fr);gap:8px;padding:0 8px;border-radius:14px}.stage-header button,.battle-header>button{width:48px;height:48px}.stage-header strong,.stage-header img{display:none}.stage-header div{display:block;min-width:0;text-align:right}.stage-header span{display:block;color:#b8ead8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stage-mode-tabs{left:16px;right:16px;top:76px}.chapter-panel{left:16px;right:16px;top:136px}.block-grove-battle-canvas{grid-template-rows:48px 44px minmax(0,1fr) 150px 58px}.battle-header{padding:0 8px;border-radius:14px}
+@media(max-width:700px){.stage-header{left:12px;right:12px;top:12px}.stage-mode-tabs{left:12px;right:12px;top:68px}.chapter-panel{left:12px;right:12px;top:124px}.block-grove-battle-canvas{grid-template-rows:48px 68px minmax(0,1fr) 126px 54px}.battle-header>button{width:48px;height:48px}}
+@media(max-height:520px) and (orientation:landscape){.stage-header{height:48px}.stage-mode-tabs{top:68px}.chapter-panel{top:124px;left:12px;right:auto;width:34%}.stage-rail{left:36%;top:124px;bottom:4px;height:auto}.block-grove-battle-canvas{grid-template-rows:48px 72px minmax(0,1fr)}}

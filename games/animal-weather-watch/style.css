@@ -189,16 +189,13 @@ button:disabled { opacity: .48; cursor: not-allowed; }
 }
 
 .stage-header, .battle-header {
-  min-height: 56px;
+  min-height: 48px;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  grid-template-columns: 48px 48px;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 0;
 }
-
-.stage-header > div, .battle-header > div { min-width: 0; text-align: center; }
-.stage-header .eyebrow, .battle-header .eyebrow { margin: 0; }
-.stage-header h2, .battle-header h2 { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.7rem; }
 .stage-utility { width: 48px; height: 48px; }
 
 .stage-tabs {
