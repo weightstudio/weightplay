@@ -31,7 +31,7 @@
     title.setAttribute("data-wp-frame-title", "");
     battleHeader.append(title);
     battle.prepend(battleHeader);
-    live.querySelector(".target-strip").append(document.getElementById("pauseBtn"));
+    live.querySelector(".target-strip").append(document.getElementById("restartBtn"));
     const slots = {
       ".main-poster": "poster", ".main-copy": "copy",
       ".main-copy > p": "summary", "#mainProgress": "progress"

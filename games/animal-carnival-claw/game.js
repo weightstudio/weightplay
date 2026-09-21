@@ -21,7 +21,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v43",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v44",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
 const interfaceValidatorRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
@@ -326,7 +326,7 @@ function startMission(index,entry="stage_select"){
   const missionEntry=stageEntry==="battle_return"?"stage_reentry":entry;stageEntry="main";
   selected=index;const level=levels[index];
   run={
-    index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,lockValue:.08,lockDirection:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,aimCorrection:null,lastSpatialCorrection:"",
+    index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:randomBetween(150,850),aimY:randomBetween(250,455),dropX:null,lockValue:randomBetween(.06,.94),lockCenter:.5,lockDirection:Math.random()<.5?-1:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,aimCorrection:null,lastSpatialCorrection:"",
     prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,lockGrace:0,result:null,feedback:index===0&&!save.medals[0]?["phaseAim","landingCue"]:"phaseAim",lastCorrection:"phaseAim"
   };
   settledDecision=false;resolvedWallAnchor=0;(__wpNotifyMeasurement(), $("resultPanel").hidden=true);(__wpNotifyMeasurement(), $("leavePanel").hidden=true);(__wpNotifyMeasurement(), $("pausePanel").hidden=true);$("battleLive").hidden=false;$("battleLive").inert=false;
@@ -343,12 +343,14 @@ function renderHud(){
   $("missionLabel").textContent=t("mission",{n:run.index+1});$("objectiveText").textContent=t("objective",{count:remainingTargets().length});
   $("dropsValue").textContent=run.drops;$("gripValue").textContent=`${Math.round(run.grip*100)}%`;
   $("timingMeter").classList.toggle("timing-active",run.phase==="secure");
+  $("timingMeter").disabled=run.phase!=="secure";
   $("timingMeter").style.setProperty("--timing-position",`${clamp(run.lockValue)*100}%`);
   const timingWindow=run.phase==="secure"&&run.held?lockWindow():.15;
-  $("timingMeter").style.setProperty("--timing-start",`${(50-timingWindow*100).toFixed(1)}%`);
-  $("timingMeter").style.setProperty("--timing-end",`${(50+timingWindow*100).toFixed(1)}%`);
+  const timingCenter=run.phase==="secure"?run.lockCenter:.5;
+  $("timingMeter").style.setProperty("--timing-start",`${((timingCenter-timingWindow)*100).toFixed(1)}%`);
+  $("timingMeter").style.setProperty("--timing-end",`${((timingCenter+timingWindow)*100).toFixed(1)}%`);
   $("targetList").innerHTML=run.targets.map(kind=>`<span class="target-chip ${run.delivered.some(entry=>entry.target&&entry.kind===kind)?"done":""}"><i class="target-thumb" aria-hidden="true" style="${prizeSpriteStyle(kind)}"></i><b>${prizeName(kind)}</b></span>`).join("");
-  $("dropBtn").disabled=!["aim","secure"].includes(run.phase);$("dropBtn").textContent=t(run.phase==="secure"?"holdGrip":"drop");$("restartBtn").disabled=!!run.result;
+  $("restartBtn").disabled=!!run.result;
   if(!["secure","lift","fall"].includes(run.phase))$("steerAction").hidden=true;
   announce(run.feedback||"phaseAim");
 }
@@ -373,7 +375,7 @@ function update(dt,wallTime=null){
     run.lockValue+=run.lockDirection*speed*dt;
     if(run.lockValue>=1){run.lockValue=2-run.lockValue;run.lockDirection=-1}
     if(run.lockValue<=0){run.lockValue=-run.lockValue;run.lockDirection=1}
-    const distance=Math.abs(run.lockValue-.5),windowSize=lockWindow();
+    const distance=Math.abs(run.lockValue-run.lockCenter),windowSize=lockWindow();
     run.lockGrace=distance<=windowSize?.16:Math.max(0,run.lockGrace-dt);
     run.grip=clamp(1-run.phaseTime*.16);
     updateTimingCoach();
@@ -411,7 +413,7 @@ function resolveGrip(){
   const nearest=active.map(prize=>({prize,d:grabMetric(prize,claw.x,run.aimY)})).sort((a,b)=>a.d-b.d)[0];
   const grabRadius=nearest?gripWindowFor(nearest.prize):0;
   if(nearest&&nearest.d<=grabRadius){
-    run.held=nearest.prize;run.phase="secure";run.phaseTime=0;run.lockValue=.08;run.lockDirection=1;run.lockQuality=0;run.grip=clamp(1-nearest.d/(grabRadius*1.45));run.stability=1;run.swing=0;run.feedback="phaseLift";
+    run.held=nearest.prize;run.phase="secure";run.phaseTime=0;randomizeTimingChallenge();run.lockQuality=0;run.grip=clamp(1-nearest.d/(grabRadius*1.45));run.stability=1;run.swing=0;run.feedback="phaseLift";
   }else{
     const target=run.prizes.find(prize=>prize.active&&remainingTargets().includes(prize.kind));
     const dx=target?target.x-claw.x:0,dy=target?target.y-run.aimY:0,steps=[];
@@ -424,10 +426,22 @@ function resolveGrip(){
   renderHud();
 }
 function firstGripLesson(){return Boolean(run?.index===0&&!save.medals[0]&&run?.drops===2)}
-function lockWindow(){const base=clamp(.23+save.upgrades.stability*.025-run.held.weight*.015,.16,.28),onboarding=firstGripLesson();return clamp(base+(onboarding?.035:0),.16,.32)}
+function randomBetween(min,max){return min+Math.random()*(max-min)}
+function lockWindow(){
+  const missionPressure=run.index/Math.max(1,levels.length-1),weightPressure=Math.max(0,run.held.weight-1)*.012;
+  const base=.16-missionPressure*.085-weightPressure+save.upgrades.stability*.012+(firstGripLesson()?.025:0);
+  return clamp(base,.055,.19);
+}
+function randomizeTimingChallenge(){
+  const windowSize=lockWindow(),edge=windowSize+.045;
+  run.lockCenter=randomBetween(edge,1-edge);
+  run.lockValue=randomBetween(.04,.96);
+  run.lockDirection=Math.random()<.5?-1:1;
+  run.lockGrace=0;
+}
 function attemptLock(){
   if(!run||run.phase!=="secure"||!run.held)return;
-  const distance=Math.abs(run.lockValue-.5),windowSize=lockWindow();
+  const distance=Math.abs(run.lockValue-run.lockCenter),windowSize=lockWindow();
   if(distance<=windowSize||run.lockGrace>0){
     run.lockQuality=clamp(1-distance/windowSize);run.phase="lift";run.phaseTime=0;resolvedWallAnchor=performance.now();run.grip=.72+run.lockQuality*.28;run.feedback="holdingGood";updateTimingCoach(true);renderHud();
   }else beginFall("lockMiss");
@@ -485,7 +499,7 @@ function updateTimingCoach(locked=false,failed=false){
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
 function resolvedAutoplayPhase(){return Boolean(run&&["lift","return"].includes(run.phase))}
-function syncBattleModalState(id,open){if(!["tutorialPanel","leavePanel","pausePanel"].includes(id))return;$("battleLive").inert=open;["battleBackBtn","pauseBtn","dropBtn","restartBtn"].forEach(buttonId=>{const button=$(buttonId);if(!button)return;button.inert=open;if(open)button.setAttribute("aria-disabled","true");else button.removeAttribute("aria-disabled")})}
+function syncBattleModalState(id,open){if(!["tutorialPanel","leavePanel","pausePanel"].includes(id))return;$("battleLive").inert=open;["battleBackBtn","timingMeter","restartBtn"].forEach(buttonId=>{const button=$(buttonId);if(!button)return;button.inert=open;if(open)button.setAttribute("aria-disabled","true");else button.removeAttribute("aria-disabled")})}
 function openModal(id,focus){focusReturn=document.activeElement;syncBattleModalState(id,true);$(id).hidden=false;frame?.activate(screen,{covered:true});cancelAnimationFrame(raf);raf=0;resolvedWallAnchor=0;requestAnimationFrame(()=>focus?.focus({preventScroll:true}))}
 function closeModal(id,resume=true){$(id).hidden=true;syncBattleModalState(id,false);frame?.activate(screen,{covered:Boolean(activeModal()||run?.result)});focusReturn?.focus?.({preventScroll:true});focusReturn=null;if(resume)resumeLoop()}
 function resumeLoop(){if(!run||run.result||screen!=="battle"||activeModal())return;cancelAnimationFrame(raf);last=performance.now();if(resolvedAutoplayPhase())resolvedWallAnchor=last-run.phaseTime*1000;raf=requestAnimationFrame(loop)}
@@ -604,10 +618,9 @@ function bind(){
   $("battleBackBtn").addEventListener("click",()=>openModal("leavePanel",$("leaveContinueBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal("leavePanel"));
   $("leaveStagesBtn").addEventListener("click",()=>{track("battle_return",{from:"battle",destination:"stages",mission:boundedMetric((run?.index??0)+1,30)});stageEntry="battle_return";closeModal("leavePanel",false);show("stage")});
-  $("pauseBtn").addEventListener("click",()=>openModal("pausePanel",$("resumeBtn")));
   $("resumeBtn").addEventListener("click",()=>closeModal("pausePanel"));
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorial=true;persist();closeModal("tutorialPanel")});
-  $("dropBtn").addEventListener("click",()=>{if(run?.phase==="aim")beginDrop();else if(run?.phase==="secure")attemptLock()});
+  $("timingMeter").addEventListener("click",()=>attemptLock());
   $("restartBtn").addEventListener("click",()=>__wpReplayStart(() => startMission(run.index,"battle_restart")));
   $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"stages",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});track("battle_return",{from:"result",destination:"stages",mission:boundedMetric((run?.index??0)+1,30)});stageEntry="battle_return";show("stage")}));
   $("nextBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"next",mission:boundedMetric((run?.index??0)+1,30),outcome:"clear"});startMission(Math.min(29,run.index+1),"next_mission")}));
@@ -632,7 +645,7 @@ window.__CARNIVAL_CLAW_TEST__={
   prepareLift(kind,phaseTime=.2){
     if(!run)startMission(selected);
     const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return null;
-    run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="secure";run.phaseTime=phaseTime;run.held=target;run.grip=1;run.stability=1;run.lockValue=.08+phaseTime*.7;run.lockDirection=1;run.lockQuality=0;run.swing=0;run.feedback="phaseLift";renderHud();draw();return this.contactGeometry();
+    run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="secure";run.phaseTime=phaseTime;run.held=target;run.grip=1;run.stability=1;randomizeTimingChallenge();run.lockQuality=0;run.swing=0;run.feedback="phaseLift";renderHud();draw();return this.contactGeometry();
   },
   freeze(){cancelAnimationFrame(raf);raf=0;draw();return this.snapshot()},
   contactGeometry(){const claw=clawPosition();return{claw,held:run?.held?{x:claw.x,y:claw.y}:null,dropX:run?.dropX,aimY:run?.aimY}},
@@ -651,7 +664,7 @@ window.__CARNIVAL_CLAW_TEST__={
   },
   setLockValue(value){if(run?.phase==="secure"){run.lockValue=clamp(value);draw()}return this.snapshot()},
   attemptLock(){attemptLock();return this.snapshot()},
-  perfectDrop(kind){if(!run)return;const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return;run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="secure";run.phaseTime=0;run.drops--;run.held=target;run.grip=1;run.stability=1;run.lockValue=.5;attemptLock();for(let time=0;time<1.5&&!run.result;time+=.02)update(.02);draw();return this.snapshot()},
+  perfectDrop(kind){if(!run)return;const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return;run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="secure";run.phaseTime=0;run.drops--;run.held=target;run.grip=1;run.stability=1;randomizeTimingChallenge();run.lockValue=run.lockCenter;attemptLock();for(let time=0;time<1.5&&!run.result;time+=.02)update(.02);draw();return this.snapshot()},
   solve(){for(const kind of [...remainingTargets()])this.perfectDrop(kind);this.step(1);return this.snapshot()},
   snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},getLocale(){return locale},setLocale,show
 };

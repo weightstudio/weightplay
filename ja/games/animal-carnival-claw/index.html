@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260913-durable-collection-v43"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="style.css?v=20260921-timing-bar-v44"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="カーニバルクロー | WeightPlay" />
@@ -97,8 +97,8 @@
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
           <li data-i18n="how1">照準を指定のチャームまでドラッグします。</li>
-          <li data-i18n="how2">揺れるクレーンが重なったら指を離すか、降下ボタンを押します。</li>
-          <li data-i18n="how3">つかんだ後、指針が緑の範囲に入った瞬間にグリップを固定します。</li>
+          <li data-i18n="how2">揺れるクレーンが合ったら、画面をタップするか、ドラッグして離します。</li>
+          <li data-i18n="how3">つかんだ後、針が緑に入ったらタイミングバーのどこかをタップします。</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">3回以内に指定のチャームをすべて集めればクリア。ほかのチャームはコレクションに加わりますが、目標には数えません。</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">ミッション</h3><p data-i18n="progressText">クリアすると次のミッションが解放されます。移動する棚、磁力によるずれ、異なる重さに挑戦し、獲得したスターボルトで工房の機械を強化しましょう。</p></article>
@@ -110,7 +110,7 @@
           <div><dt data-i18n="faq3q">次は何を遊べばいいでしょうか？</dt><dd data-i18n="faq3a">別のタイミング チャレンジにはアニマル リーフ フィッシャーを、慎重な計画にはアニマル パーキング パトロールをお試しください。</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="guideDeepTitle">操作と戻り方</h3>
-          <p data-i18n="guideDeep4">タッチ・マウス：ドラッグで狙い、離して降下し、グリップ固定ボタンを押します。キーボード：矢印キーで照準、スペースかEnterで降下・固定。一時停止で動きが止まり、ミッションへ戻ると今回の挑戦が終了します。</p>
+          <p data-i18n="guideDeep4">タッチ・マウス：画面をタップするかドラッグして離して降下し、つかんだ後はタイミングバー全体をタップできます。キーボード：矢印で照準、SpaceまたはEnterで降下・固定します。</p>
         </article>
       </div>
     </section>
@@ -149,26 +149,22 @@
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">カーニバルクロー</strong></div>
           <div class="battle-stat"><small data-i18n="drops">回数</small><strong id="dropsValue">3</strong></div>
           <div class="battle-stat"><small data-i18n="grip">グリップ</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="一時停止">Ⅱ</button>
+          <button id="restartBtn" class="utility-button" type="button" data-i18n-aria="restart" aria-label="リスタート">↻</button>
         </header>
         <section class="target-strip"><strong data-i18n="targets">目標</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="カーニバルクローを狙って操作する"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
-          <div id="timingMeter" class="stability-meter timing-hud"><span data-i18n="timing">タイミング</span><i><b id="stabilityFill"></b></i></div>
+          <button id="timingMeter" class="stability-meter timing-hud" type="button" data-i18n-aria="holdGrip" aria-label="グリップ固定" disabled><span data-i18n="timing">タイミング</span><i><b id="stabilityFill"></b></i><span class="timing-tap-icon" aria-hidden="true">◎</span></button>
         </section>
-        <div class="battle-controls">
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">クローを下ろす</button>
-          <button id="restartBtn" type="button" data-i18n="restart">リスタート</button>
-        </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">狙う・下ろす・安定</h2><ol>
           <li data-i18n="tutorial1">要求されたチャームの 1 つ上にレティクルをドラッグします。</li>
-          <li data-i18n="tutorial2">揺れる爪がターゲットに重なるとドロップ。</li>
-          <li data-i18n="tutorial3">つかんだ後、動く針が緑に入ったらグリップ固定を押します。</li>
+          <li data-i18n="tutorial2">画面をタップするか、ドラッグして離してクレーンを下げます。</li>
+          <li data-i18n="tutorial3">つかんだ後、針が緑に入ったらタイミングバー全体のどこかをタップします。</li>
         </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">マシン開始</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
@@ -198,8 +194,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
-  <script src="frame.js?v=20260913-durable-collection-v43"></script>
-  <script src="locales.js?v=20260913-durable-collection-v43"></script><script src="game.js?v=20260913-durable-collection-v43"></script>
+  <script src="frame.js?v=20260921-timing-bar-v44"></script>
+  <script src="locales.js?v=20260921-timing-bar-v44"></script><script src="game.js?v=20260921-timing-bar-v44"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="カーニバルクロー";document.title="カーニバルクロー | WeightPlay";},{once:true});</script>

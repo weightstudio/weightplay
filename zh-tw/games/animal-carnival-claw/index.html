@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260913-durable-collection-v43"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="style.css?v=20260921-timing-bar-v44"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="嘉年華抓寶機 | WeightPlay" />
@@ -97,8 +97,8 @@
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">遊玩方式</h3><ol>
           <li data-i18n="how1">拖曳瞄準標記到指定收藏物上。</li>
-          <li data-i18n="how2">擺動的爪子對準時放開，或按下「放下爪子」。</li>
-          <li data-i18n="how3">抓到後，等指針進入綠色區域，再按下「夾緊」。</li>
+          <li data-i18n="how2">擺動的爪子對準時，點遊戲畫面，或拖曳後放開。</li>
+          <li data-i18n="how3">抓到後，等指針進入綠色區，再點按整條時機條的任一處。</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">規則與結果</h3><p data-i18n="rulesText">三次抓取內集齊所有指定收藏物即可過關。其他收藏物會加入收藏櫃，但不計入本關目標。</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">任務</h3><p data-i18n="progressText">過關後解鎖下一個任務。後續機台加入移動層架、磁力漂移與不同重量；賺取星栓可在工坊調校機台。</p></article>
@@ -110,7 +110,7 @@
           <div><dt data-i18n="faq3q">接下來可以玩什麼？</dt><dd data-i18n="faq3a">想挑戰時機可玩《動物珊瑚礁釣手》，想仔細規劃可玩《森林停車疏導隊》。</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="guideDeepTitle">操作與返回</h3>
-          <p data-i18n="guideDeep4">觸控或滑鼠：拖曳瞄準、放開下爪，再點按夾緊。鍵盤：方向鍵瞄準，空白鍵或 Enter 下爪與夾緊。暫停會凍結本次挑戰；返回任務會結束本次挑戰。</p>
+          <p data-i18n="guideDeep4">觸控或滑鼠：點遊戲畫面，或拖曳後放開下爪；抓到後可點按整條時機條。鍵盤：方向鍵瞄準，空白鍵或 Enter 下爪與夾緊。暫停會凍結挑戰；返回任務會結束本次挑戰。</p>
         </article>
       </div>
     </section>
@@ -149,26 +149,22 @@
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">嘉年華抓寶機</strong></div>
           <div class="battle-stat"><small data-i18n="drops">次數</small><strong id="dropsValue">3</strong></div>
           <div class="battle-stat"><small data-i18n="grip">抓力</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="暫停">Ⅱ</button>
+          <button id="restartBtn" class="utility-button" type="button" data-i18n-aria="restart" aria-label="重新開始">↻</button>
         </header>
         <section class="target-strip"><strong data-i18n="targets">目標</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="瞄準並操作嘉年華爪子"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
-          <div id="timingMeter" class="stability-meter timing-hud"><span data-i18n="timing">時機</span><i><b id="stabilityFill"></b></i></div>
+          <button id="timingMeter" class="stability-meter timing-hud" type="button" data-i18n-aria="holdGrip" aria-label="看準夾緊" disabled><span data-i18n="timing">時機</span><i><b id="stabilityFill"></b></i><span class="timing-tap-icon" aria-hidden="true">◎</span></button>
         </section>
-        <div class="battle-controls">
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">放下爪子</button>
-          <button id="restartBtn" type="button" data-i18n="restart">重新開始</button>
-        </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">瞄準、放下、穩定</h2><ol>
           <li data-i18n="tutorial1">把瞄準標記拖到一個指定收藏物上。</li>
-          <li data-i18n="tutorial2">擺動爪子與目標重疊時放下。</li>
-          <li data-i18n="tutorial3">抓到後，等移動指針進入綠色區，再按下「夾緊」。</li>
+          <li data-i18n="tutorial2">點遊戲畫面，或拖曳後放開，讓爪子下降。</li>
+          <li data-i18n="tutorial3">抓到後，等指針進入綠色區，再點按整條時機條的任一處。</li>
         </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">啟動機台</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
@@ -197,8 +193,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
-  <script src="frame.js?v=20260913-durable-collection-v43"></script>
-  <script src="locales.js?v=20260913-durable-collection-v43"></script><script src="game.js?v=20260913-durable-collection-v43"></script>
+  <script src="frame.js?v=20260921-timing-bar-v44"></script>
+  <script src="locales.js?v=20260921-timing-bar-v44"></script><script src="game.js?v=20260921-timing-bar-v44"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>

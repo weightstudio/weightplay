@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260913-durable-collection-v43"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="style.css?v=20260921-timing-bar-v44"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="कार्निवल क्लॉ | WeightPlay" />
@@ -97,8 +97,8 @@
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">कैसे खेलें</h3><ol>
           <li data-i18n="how1">निशाने को खींचकर माँगे गए आभूषण पर रखें।</li>
-          <li data-i18n="how2">झूलता पंजा सीध में आने पर छोड़ें या नीचे उतारने का बटन दबाएँ।</li>
-          <li data-i18n="how3">पकड़ने के बाद सूचक के हरे क्षेत्र में आते ही पकड़ लॉक करें।</li>
+          <li data-i18n="how2">पंजा सीध में आने पर खेल क्षेत्र को टैप करें, या खींचकर छोड़ें।</li>
+          <li data-i18n="how3">पकड़ने के बाद सूचक हरे क्षेत्र में आए तो टाइमिंग बार पर कहीं भी टैप करें।</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">नियम और परिणाम</h3><p data-i18n="rulesText">तीन कोशिशों में सभी माँगे गए आभूषण इकट्ठे करें। दूसरे आभूषण संग्रह में जुड़ते हैं, लेकिन मिशन का लक्ष्य पूरा नहीं करते।</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">मिशन</h3><p data-i18n="progressText">मिशन पूरा करने पर अगला खुलता है। आगे चलती शेल्फ, चुंबकीय बहाव और अलग-अलग वजन मिलेंगे। कमाए गए स्टारबोल्ट से कार्यशाला में मशीन सुधारें।</p></article>
@@ -110,7 +110,7 @@
           <div><dt data-i18n="faq3q">मुझे आगे क्या खेलना चाहिए?</dt><dd data-i18n="faq3a">किसी अन्य टाइमिंग चुनौती के लिए एनिमल रीफ फिशर या सावधानीपूर्वक योजना बनाने के लिए एनिमल पार्किंग गश्ती का प्रयास करें।</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="guideDeepTitle">नियंत्रण और वापसी</h3>
-          <p data-i18n="guideDeep4">टच या माउस: खींचकर निशाना लगाएँ, छोड़कर पंजा उतारें, फिर पकड़ लॉक करें। कीबोर्ड: तीरों से निशाना और स्पेस या Enter से नीचे उतारना व लॉक करना। विराम कोशिश को रोकता है; मिशन पर लौटना इसे समाप्त करता है।</p>
+          <p data-i18n="guideDeep4">टच या माउस: नीचे करने के लिए क्षेत्र टैप करें या खींचकर छोड़ें; पकड़ने के बाद पूरी टाइमिंग बार टैप की जा सकती है। कीबोर्ड: तीर से निशाना, Space या Enter से नीचे और लॉक।</p>
         </article>
       </div>
     </section>
@@ -149,26 +149,22 @@
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">कार्निवल क्लॉ</strong></div>
           <div class="battle-stat"><small data-i18n="drops">मौके</small><strong id="dropsValue">3</strong></div>
           <div class="battle-stat"><small data-i18n="grip">पकड़</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="रोकें">Ⅱ</button>
+          <button id="restartBtn" class="utility-button" type="button" data-i18n-aria="restart" aria-label="फिर शुरू करें">↻</button>
         </header>
         <section class="target-strip"><strong data-i18n="targets">लक्ष्य</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="कार्निवल पंजे को निशाना बनाएं और संचालित करें"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
-          <div id="timingMeter" class="stability-meter timing-hud"><span data-i18n="timing">समय</span><i><b id="stabilityFill"></b></i></div>
+          <button id="timingMeter" class="stability-meter timing-hud" type="button" data-i18n-aria="holdGrip" aria-label="पकड़ लॉक करें" disabled><span data-i18n="timing">समय</span><i><b id="stabilityFill"></b></i><span class="timing-tap-icon" aria-hidden="true">◎</span></button>
         </section>
-        <div class="battle-controls">
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">पंजा नीचे करें</button>
-          <button id="restartBtn" type="button" data-i18n="restart">फिर शुरू करें</button>
-        </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">निशाना, नीचे, स्थिर</h2><ol>
           <li data-i18n="tutorial1">एक अनुरोधित आकर्षण पर लजीला व्यक्ति को खींचें।</li>
-          <li data-i18n="tutorial2">जब लहराता हुआ पंजा लक्ष्य को ओवरलैप कर ले तो गिरा दें।</li>
-          <li data-i18n="tutorial3">पकड़ने के बाद सूचक के हरे क्षेत्र में आते ही पकड़ लॉक करें दबाएँ।</li>
+          <li data-i18n="tutorial2">पंजा नीचे करने के लिए खेल क्षेत्र को टैप करें, या खींचकर छोड़ें।</li>
+          <li data-i18n="tutorial3">पकड़ने के बाद सूचक हरे क्षेत्र में आए तो पूरी टाइमिंग बार में कहीं भी टैप करें।</li>
         </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">मशीन शुरू करें</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
@@ -197,8 +193,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
-  <script src="frame.js?v=20260913-durable-collection-v43"></script>
-  <script src="locales.js?v=20260913-durable-collection-v43"></script><script src="game.js?v=20260913-durable-collection-v43"></script>
+  <script src="frame.js?v=20260921-timing-bar-v44"></script>
+  <script src="locales.js?v=20260921-timing-bar-v44"></script><script src="game.js?v=20260921-timing-bar-v44"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>

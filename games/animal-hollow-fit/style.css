@@ -3,6 +3,14 @@
 .target-card{background:linear-gradient(90deg,#10384b9e 0%,#10384b82 54%,#10384b55 100%),url("assets/animal-hollow-fit-background.png") center 72%/cover}
 .result-guide{display:block;width:min(100%,220px);height:auto;max-height:280px;object-fit:contain;margin:0 auto -18px;filter:drop-shadow(0 18px 24px #0008)}
 
+/* Exact v7/I6 current-source Guide contract: keep Hollow Fit's established
+   18px surface while making the local radius token agree with the shared
+   Interface 7 validator. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .game-page-info { --wp-ui-radius:18px!important; border-radius:18px!important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .game-info-section { border-radius:18px!important; }
+}
+
 /* Exact v5/I6 contract: preserve the shared Guide structure, keep the
    compact-landscape poster at 420px, and expose shared Settings during Battle. */
 

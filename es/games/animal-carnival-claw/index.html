@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260913-durable-collection-v43"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="style.css?v=20260921-timing-bar-v44"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Garra de Carnaval | WeightPlay" />
@@ -97,8 +97,8 @@
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">como jugar</h3><ol>
           <li data-i18n="how1">Arrastra la mira hasta un amuleto pedido.</li>
-          <li data-i18n="how2">Suelta o pulsa el botón de descenso cuando la garra se alinee.</li>
-          <li data-i18n="how3">Tras atraparlo, fija el agarre cuando el indicador entre en la zona verde.</li>
+          <li data-i18n="how2">Toca el campo de juego, o arrastra y suelta, cuando la garra se alinee.</li>
+          <li data-i18n="how3">Tras atraparlo, toca cualquier punto de la barra cuando el indicador entre en verde.</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">Reglas y resultados</h3><p data-i18n="rulesText">Recoge todos los amuletos pedidos en tres intentos. Los demás se añaden a tu colección, pero no completan el objetivo.</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">Misiones</h3><p data-i18n="progressText">Supera una misión para abrir la siguiente. Después aparecen estantes móviles, desvíos magnéticos y distintos pesos. Usa los pernos estrella ganados para mejorar la máquina en el taller.</p></article>
@@ -110,7 +110,7 @@
           <div><dt data-i18n="faq3q">¿Qué debería jugar a continuación?</dt><dd data-i18n="faq3a">Pruebe Animal Reef Fisher para otro desafío de cronometraje o Animal Parking Patrol para una planificación cuidadosa.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Controles y regreso</h3>
-          <p data-i18n="guideDeep4">Táctil o ratón: arrastra para apuntar, suelta para bajar y pulsa para fijar el agarre. Teclado: flechas para apuntar; Espacio o Enter para bajar y fijar. La pausa congela el intento; volver a Misiones lo termina.</p>
+          <p data-i18n="guideDeep4">Táctil o ratón: toca el campo, o arrastra y suelta, para bajar; tras atrapar, toca cualquier punto de la barra. Teclado: flechas para apuntar y Espacio o Enter para bajar y fijar.</p>
         </article>
       </div>
     </section>
@@ -149,26 +149,22 @@
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">Garra de Carnaval</strong></div>
           <div class="battle-stat"><small data-i18n="drops">Intentos</small><strong id="dropsValue">3</strong></div>
           <div class="battle-stat"><small data-i18n="grip">Agarre</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pausa">Ⅱ</button>
+          <button id="restartBtn" class="utility-button" type="button" data-i18n-aria="restart" aria-label="Reiniciar">↻</button>
         </header>
         <section class="target-strip"><strong data-i18n="targets">Objetivos</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Apunta y opera la garra de carnaval."></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
-          <div id="timingMeter" class="stability-meter timing-hud"><span data-i18n="timing">Momento</span><i><b id="stabilityFill"></b></i></div>
+          <button id="timingMeter" class="stability-meter timing-hud" type="button" data-i18n-aria="holdGrip" aria-label="FIJAR AGARRE" disabled><span data-i18n="timing">Momento</span><i><b id="stabilityFill"></b></i><span class="timing-tap-icon" aria-hidden="true">◎</span></button>
         </section>
-        <div class="battle-controls">
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">Bajar garra</button>
-          <button id="restartBtn" type="button" data-i18n="restart">Reiniciar</button>
-        </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Apunta, baja y estabiliza</h2><ol>
           <li data-i18n="tutorial1">Arrastre la retícula sobre un amuleto solicitado.</li>
-          <li data-i18n="tutorial2">Suelta cuando la garra oscilante se superpone al objetivo.</li>
-          <li data-i18n="tutorial3">Tras atrapar, pulsa Fijar agarre cuando el indicador móvil entre en la zona verde.</li>
+          <li data-i18n="tutorial2">Toca el campo, o arrastra y suelta, para bajar la garra.</li>
+          <li data-i18n="tutorial3">Tras atraparlo, toca cualquier punto de la barra cuando el indicador entre en verde.</li>
         </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Iniciar máquina</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
@@ -197,8 +193,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
-  <script src="frame.js?v=20260913-durable-collection-v43"></script>
-  <script src="locales.js?v=20260913-durable-collection-v43"></script><script src="game.js?v=20260913-durable-collection-v43"></script>
+  <script src="frame.js?v=20260921-timing-bar-v44"></script>
+  <script src="locales.js?v=20260921-timing-bar-v44"></script><script src="game.js?v=20260921-timing-bar-v44"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>

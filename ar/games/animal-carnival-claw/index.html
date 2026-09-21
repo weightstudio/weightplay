@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260913-durable-collection-v43"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="style.css?v=20260921-timing-bar-v44"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مخلب كرنفال | WeightPlay" />
@@ -97,8 +97,8 @@
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">كيف تلعب</h3><ol>
           <li data-i18n="how1">اسحب علامة التصويب إلى إحدى التعليقات المطلوبة.</li>
-          <li data-i18n="how2">ارفع إصبعك أو اضغط زر الإنزال عندما يصطف المخلب المتأرجح مع الهدف.</li>
-          <li data-i18n="how3">بعد الإمساك، ثبّت القبضة عندما يدخل المؤشر المنطقة الخضراء.</li>
+          <li data-i18n="how2">اضغط ساحة اللعب، أو اسحب ثم أفلت، عندما يصطف المخلب.</li>
+          <li data-i18n="how3">بعد الإمساك، اضغط أي مكان في شريط التوقيت عندما يدخل المؤشر المنطقة الخضراء.</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">القواعد والنتائج</h3><p data-i18n="rulesText">اجمع كل التعليقات المطلوبة خلال ثلاث محاولات. تُضاف التعليقات الأخرى إلى مجموعتك لكنها لا تحقق هدف المهمة.</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">المهمات</h3><p data-i18n="progressText">أكمل المهمة لفتح التالية. تضيف الآلات اللاحقة رفوفاً متحركة وانحرافاً مغناطيسياً وأوزاناً مختلفة. حسّن الآلة في الورشة بالمسامير النجمية التي تكسبها.</p></article>
@@ -110,7 +110,7 @@
           <div><dt data-i18n="faq3q">ماذا يجب أن ألعب بعد ذلك؟</dt><dd data-i18n="faq3a">جرب Animal Reef Fisher لتحدي توقيت آخر أو Animal Parking Patrol للتخطيط الدقيق.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="guideDeepTitle">التحكم والعودة</h3>
-          <p data-i18n="guideDeep4">باللمس أو الفأرة: اسحب للتصويب، ثم اترك للإنزال واضغط لتثبيت القبضة. بلوحة المفاتيح: الأسهم للتصويب والمسافة أو Enter للإنزال والتثبيت. الإيقاف المؤقت يجمّد المحاولة؛ العودة إلى المهام تنهيها.</p>
+          <p data-i18n="guideDeep4">باللمس أو الفأرة: اضغط الساحة أو اسحب وأفلت للإنزال؛ بعد الإمساك اضغط أي مكان في شريط التوقيت. بلوحة المفاتيح: الأسهم للتصويب والمسافة أو Enter للإنزال والتثبيت.</p>
         </article>
       </div>
     </section>
@@ -149,26 +149,22 @@
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">مخلب كرنفال</strong></div>
           <div class="battle-stat"><small data-i18n="drops">المحاولات</small><strong id="dropsValue">3</strong></div>
           <div class="battle-stat"><small data-i18n="grip">القبضة</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="إيقاف مؤقت">Ⅱ</button>
+          <button id="restartBtn" class="utility-button" type="button" data-i18n-aria="restart" aria-label="إعادة البدء">↻</button>
         </header>
         <section class="target-strip"><strong data-i18n="targets">الأهداف</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="الهدف وتشغيل مخلب الكرنفال"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
-          <div id="timingMeter" class="stability-meter timing-hud"><span data-i18n="timing">التوقيت</span><i><b id="stabilityFill"></b></i></div>
+          <button id="timingMeter" class="stability-meter timing-hud" type="button" data-i18n-aria="holdGrip" aria-label="ثبّت القبضة" disabled><span data-i18n="timing">التوقيت</span><i><b id="stabilityFill"></b></i><span class="timing-tap-icon" aria-hidden="true">◎</span></button>
         </section>
-        <div class="battle-controls">
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">أنزل المخلب</button>
-          <button id="restartBtn" type="button" data-i18n="restart">إعادة البدء</button>
-        </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">صوّب وأنزل وثبّت</h2><ol>
           <li data-i18n="tutorial1">اسحب الشبيكة فوق السحر المطلوب.</li>
-          <li data-i18n="tutorial2">أسقط عندما يتداخل المخلب المتمايل مع الهدف.</li>
-          <li data-i18n="tutorial3">بعد الالتقاط، اضغط تثبيت القبضة عندما يدخل المؤشر المتحرك المنطقة الخضراء.</li>
+          <li data-i18n="tutorial2">اضغط الساحة، أو اسحب وأفلت، لإنزال المخلب.</li>
+          <li data-i18n="tutorial3">بعد الإمساك، اضغط أي مكان في شريط التوقيت عندما يدخل المؤشر المنطقة الخضراء.</li>
         </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">شغّل الآلة</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
@@ -197,8 +193,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
-  <script src="frame.js?v=20260913-durable-collection-v43"></script>
-  <script src="locales.js?v=20260913-durable-collection-v43"></script><script src="game.js?v=20260913-durable-collection-v43"></script>
+  <script src="frame.js?v=20260921-timing-bar-v44"></script>
+  <script src="locales.js?v=20260921-timing-bar-v44"></script><script src="game.js?v=20260921-timing-bar-v44"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>

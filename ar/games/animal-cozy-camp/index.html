@@ -28,8 +28,8 @@
   <meta name="weightplay-game-version" content="v6" />
   <meta name="weightplay-interface-version" content="6" />
   <title>لغز المقاعد حول النار | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260913-cozy-camp-v6-settings-arabic" data-wp-game-guide />
-  <link rel="stylesheet" href="styles.css?v=20260913-cozy-camp-v6-settings-arabic" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-cozy-camp-v6-guide-contract" data-wp-game-guide />
+  <link rel="stylesheet" href="styles.css?v=20260921-cozy-camp-v6-guide-contract" />
   <style>
     .app-shell{width:min(100%,920px);margin:auto}
     .wp-shell-return{width:58px;height:48px;min-width:58px;display:inline-flex;align-items:center;gap:3px;padding:4px}
@@ -51,8 +51,8 @@
     .battle-screen{height:calc(100svh - 56px);min-height:calc(100svh - 56px);overflow:auto}
     .battle-ad-reserve{width:min(100%,920px);height:56px;margin:0 auto;background:#061514;border-top:1px solid #214a3a}
     .battle-screen .camp-scene{min-height:100px}
-    html[data-wp-shared-interface="7"] body #gameGuide{border-radius:18px!important}
-    html[data-wp-shared-interface="7"] body #gameGuide .game-info-section{border-radius:13px!important}
+    html[data-wp-shared-interface="7"] body #gameGuide{border-radius:24px!important}
+    html[data-wp-shared-interface="7"] body #gameGuide .game-info-section{border-radius:24px!important}
     html body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen{display:flex!important;flex-direction:column!important;gap:0!important;padding:0!important;box-sizing:border-box!important;overflow:hidden!important}
     html body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen>.topbar{flex:0 0 64px!important;width:100%!important;height:64px!important;min-height:64px!important;margin:0!important;position:relative!important;z-index:10!important}
     html body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen>.topbar>:is(.return-link,.utility-button){position:relative!important;z-index:20!important}
@@ -94,15 +94,15 @@
         <div class="main-actions"><button id="start-button" class="primary-button" type="button" data-wp-main-start data-copy="start">ابدأ المخيم</button><button id="guide-button" class="secondary-button" type="button" data-copy="guide">طريقة اللعب</button></div>
       </div>
     </section>
-    <section id="gameGuide" class="game-page-info guide-card" data-view="main" data-wp-game-guide data-copy-aria="guideTitle" aria-label="طريقة اللعب" style="border-radius:18px!important">
+    <section id="gameGuide" class="game-page-info guide-card" data-view="main" data-wp-game-guide data-copy-aria="guideTitle" aria-label="طريقة اللعب" style="--wp-ui-radius:24px!important;border-radius:24px!important">
       <h2 data-copy="guideTitle">طريقة اللعب</h2>
       <div class="game-info-sections">
-        <div class="game-info-section" style="border-radius:13px!important"><h3 data-copy="guide1Title">1. اقرأ الملاحظات</h3><p data-copy="guide1">اقرأ ملاحظتي الراحة في الدائرة الحالية. توضّح كل ملاحظة علاقة أو جارًا مفضّلًا أو اتجاهًا مهمًا حول النار. انتبه إلى الكلمات التي تحدد الجوار أو المقابلة، فكل دائرة تمنحك دلائل جديدة وواضحة.</p></div>
-        <div class="game-info-section" style="border-radius:13px!important"><h3 data-copy="guide2Title">2. قارن الدوائر</h3><p data-copy="guide2">اعرض بطاقات الدوائر الثلاث التي تحتوي على ترتيبات مقاعد كاملة. في الدائرة يكون المقعد الأول والأخير متجاورين. قارن كل بطاقة بالملاحظتين قبل التحقق، وتذكّر أن ترتيبًا يبدو صحيحًا قد يخالف علاقة واحدة صغيرة.</p></div>
-        <div class="game-info-section" style="border-radius:13px!important"><h3 data-copy="guide3Title">3. تحقق بلطف</h3><p data-copy="guide3">المس بطاقة لاختيارها. تظهر علامة واضحة ويصبح زر التحقق متاحًا. إذا أخطأت فلن تفقد شيئًا: تبقى الدائرة والملاحظات مفتوحة، ويمكنك إعادة الاختيار أو استخدام زر إعادة الاختيار ثم المحاولة بهدوء.</p></div>
-        <div class="game-info-section" style="border-radius:13px!important"><h3 data-copy="guide4Title">4. اتبع إيقاع الدوائر الثلاث</h3><p data-copy="guide4">يتكوّن المخيم من ثلاث دوائر مؤلّفة: دائرة الفانوس، ودائرة الصنوبر، والدائرة الهادئة. بعد التحقق الصحيح تظهر الدائرة التالية تلقائيًا، ويبيّن عدّاد الجولة مكانك. لا يوجد مؤقت أو عقوبة؛ خذ وقتك لقراءة علاقة واحدة في كل مرة.</p></div>
-        <div class="game-info-section" style="border-radius:13px!important"><h3 data-copy="guide5Title">5. أنهِ اللعب وأعد المحاولة</h3><p data-copy="guide5">عند حل الدوائر الثلاث تعرض شاشة النتيجة عدد مرات التحقق وتقارنه بأفضل نتيجة محفوظة على هذا الجهاز. تبدأ إعادة اللعب من الدائرة الأولى دون اختيار أو رسالة نجاح قديمة، بينما تعيد العودة إلى البداية فتح الشاشة الرئيسية وإعداداتها. تُحفظ أفضل نتيجة وتفضيل الصوت محليًا فقط.</p></div>
-        <div class="game-info-section" style="border-radius:13px!important"><h3 data-copy="faqTitle">أسئلة شائعة</h3><p data-copy="faqText">كم تستغرق الجولة؟ يمكن لمعظم اللاعبين قراءة الدوائر الثلاث وحلها خلال دقائق قليلة دون استعجال. ماذا يحدث عند الخطأ؟ لا يضيع شيء؛ تبقى الدائرة مفتوحة لتعيد قراءة الملاحظات وتختار بطاقة أخرى. هل تحتاج اللعبة إلى جهاز خاص؟ لا، فالبطاقات والأزرار مناسبة للمس والماوس ولوحة المفاتيح وتتكيف مع الشاشات الطولية والعرضية. هل الترتيب عشوائي؟ لا، الجولات الثلاث مؤلّفة وثابتة، لذلك تصف الملاحظات الحل نفسه كل مرة. هل يمكن تغيير الصوت أو اللغة؟ افتح إعدادات الشاشة الحالية، اختر اللغة، واستخدم مفتاح الصوت عند الحاجة. لا توجد إعلانات أو مشتريات أو حسابات في مساحة اللعب.</p></div>
+        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide1Title">1. اقرأ الملاحظات</h3><p data-copy="guide1">اقرأ ملاحظتي الراحة في الدائرة الحالية. توضّح كل ملاحظة علاقة أو جارًا مفضّلًا أو اتجاهًا مهمًا حول النار. انتبه إلى الكلمات التي تحدد الجوار أو المقابلة، فكل دائرة تمنحك دلائل جديدة وواضحة.</p></div>
+        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide2Title">2. قارن الدوائر</h3><p data-copy="guide2">اعرض بطاقات الدوائر الثلاث التي تحتوي على ترتيبات مقاعد كاملة. في الدائرة يكون المقعد الأول والأخير متجاورين. قارن كل بطاقة بالملاحظتين قبل التحقق، وتذكّر أن ترتيبًا يبدو صحيحًا قد يخالف علاقة واحدة صغيرة.</p></div>
+        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide3Title">3. تحقق بلطف</h3><p data-copy="guide3">المس بطاقة لاختيارها. تظهر علامة واضحة ويصبح زر التحقق متاحًا. إذا أخطأت فلن تفقد شيئًا: تبقى الدائرة والملاحظات مفتوحة، ويمكنك إعادة الاختيار أو استخدام زر إعادة الاختيار ثم المحاولة بهدوء.</p></div>
+        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide4Title">4. اتبع إيقاع الدوائر الثلاث</h3><p data-copy="guide4">يتكوّن المخيم من ثلاث دوائر مؤلّفة: دائرة الفانوس، ودائرة الصنوبر، والدائرة الهادئة. بعد التحقق الصحيح تظهر الدائرة التالية تلقائيًا، ويبيّن عدّاد الجولة مكانك. لا يوجد مؤقت أو عقوبة؛ خذ وقتك لقراءة علاقة واحدة في كل مرة.</p></div>
+        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide5Title">5. أنهِ اللعب وأعد المحاولة</h3><p data-copy="guide5">عند حل الدوائر الثلاث تعرض شاشة النتيجة عدد مرات التحقق وتقارنه بأفضل نتيجة محفوظة على هذا الجهاز. تبدأ إعادة اللعب من الدائرة الأولى دون اختيار أو رسالة نجاح قديمة، بينما تعيد العودة إلى البداية فتح الشاشة الرئيسية وإعداداتها. تُحفظ أفضل نتيجة وتفضيل الصوت محليًا فقط.</p></div>
+        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="faqTitle">أسئلة شائعة</h3><p data-copy="faqText">كم تستغرق الجولة؟ يمكن لمعظم اللاعبين قراءة الدوائر الثلاث وحلها خلال دقائق قليلة دون استعجال. ماذا يحدث عند الخطأ؟ لا يضيع شيء؛ تبقى الدائرة مفتوحة لتعيد قراءة الملاحظات وتختار بطاقة أخرى. هل تحتاج اللعبة إلى جهاز خاص؟ لا، فالبطاقات والأزرار مناسبة للمس والماوس ولوحة المفاتيح وتتكيف مع الشاشات الطولية والعرضية. هل الترتيب عشوائي؟ لا، الجولات الثلاث مؤلّفة وثابتة، لذلك تصف الملاحظات الحل نفسه كل مرة. هل يمكن تغيير الصوت أو اللغة؟ افتح إعدادات الشاشة الحالية، اختر اللغة، واستخدم مفتاح الصوت عند الحاجة. لا توجد إعلانات أو مشتريات أو حسابات في مساحة اللعب.</p></div>
       </div>
     </section>
 
@@ -130,8 +130,8 @@
     <dialog id="leave-dialog" class="modal-dialog"><div class="dialog-card"><div class="dialog-head"><h2 data-copy="leaveTitle">هل تريد مغادرة المخيم؟</h2><button id="cancel-leave" class="close-button" type="button" data-copy-aria="close" aria-label="إغلاق">×</button></div><p data-copy="leaveText">ستتم إعادة ضبط دائرتك الحالية بأمان.</p><div class="dialog-actions"><button id="keep-playing" class="secondary-button" type="button" data-copy="keepPlaying">متابعة اللعب</button><button id="confirm-leave" class="primary-button" type="button" data-copy="confirmLeave">مغادرة</button></div></div></dialog>
   </main>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260913-cozy-camp-v6-settings-arabic"></script>
-  <script src="game.js?v=20260913-cozy-camp-v6-settings-arabic"></script>
+  <script src="locales.js?v=20260921-cozy-camp-v6-guide-contract"></script>
+  <script src="game.js?v=20260921-cozy-camp-v6-guide-contract"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
