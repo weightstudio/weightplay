@@ -1,10 +1,11 @@
 import * as THREE from './vendor/three/three.module.min.js';
+import {GroundCues} from './ground-cues.js';
 const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555};
 export class WildwoodWorld {
  constructor(canvas,sim){
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-  this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0x173d3c);
+  this.scene=new THREE.Scene();this.cues=new GroundCues(this.scene);this.scene.background=new THREE.Color(0x173d3c);
   this.ground=new THREE.TextureLoader().load(new URL('./art/ground-v1.webp',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(2,2);
   this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,20,16);this.camera.lookAt(0,0,0);
   const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
@@ -91,14 +92,8 @@ export class WildwoodWorld {
   // Dynamic markers use the same instanced geometry and are recycled each frame.
   if(this.dynamic){this.root.remove(this.dynamic);const old=this.dynamic;this.parts=this.parts.filter(p=>!isChild(p.node,old));}
   this.dynamic=new THREE.Group();this.root.add(this.dynamic);const d=this.dynamic;
-  for(const e of sim.alive())if(e.wind&&nearby(e)){const w=e.wind,p=1-w.left/w.total;const mark=new THREE.Group();mark.position.set(e.x,.035,e.z);mark.rotation.y=Math.atan2(w.dx,w.dz);d.add(mark);
-   if(w.kind==='charge')this.box(mark,p>.75?'red':'gold',[0,0,3],[1.1,.055,6]);
-   else if(w.kind==='burst'){for(let i=0;i<8;i++){const ray=new THREE.Group();ray.rotation.y=i*Math.PI/4;mark.add(ray);this.box(ray,'gold',[0,0,2],[.12,.05,3.5]);}}
-   else if(w.kind==='roots'){this.box(mark,'purple',[0,0,0],[2.5,.04,2.5]);}
-   else if(w.kind==='shot')this.box(mark,'gold',[0,0,2],[.16,.05,4]);
-   else this.box(mark,p>.75?'red':'gold',[0,0,.1],[3.4,.045,3.4]);
-  }
-  for(const hazard of sim.hazards||[]){this.box(d,hazard.delay>0?'gold':'purple',[hazard.x,.045,hazard.z],[hazard.r*2,.05,hazard.r*2]);if(hazard.delay<=0)for(let i=0;i<4;i++)this.box(d,'wood',[hazard.x+Math.cos(i*1.57)*.6,.5,hazard.z+Math.sin(i*1.57)*.6],[.16,1,.16]);}
+  this.cues.render(sim);
+  for(const hazard of sim.hazards||[])if(hazard.delay<=0)for(let i=0;i<4;i++)this.box(d,'wood',[hazard.x+Math.cos(i*1.57)*.6,.5,hazard.z+Math.sin(i*1.57)*.6],[.16,1,.16]);
   for(const e of sim.ents)if(e.hp<=0&&e.spawn){this.box(d,e.kind==='tree'?'wood':'gold',[e.x,.06,e.z],[e.kind==='tree'?.4:1.3,.12,e.kind==='tree'?.4:1.3]);}
   for(const o of sim.obstacles)if(o.hp>0&&nearby(o)){this.box(d,o.breakable?'wood':'stone',[o.x,.5,o.z],[o.w*2,1,o.h*2]);this.box(d,'moss',[o.x,1.03,o.z],[o.w*1.9,.12,o.h*1.9]);}
   for(const z of sim.zones)if(nearby(z))this.box(d,z.type==='mud'?'wood':z.type==='thorn'?(sim.time%3>2.1?'red':'purple'):'teal',[z.x,.01,z.z],[z.r*2,.035,z.r*2]);
@@ -117,8 +112,8 @@ export class WildwoodWorld {
   for(const mesh of this.batches.values())mesh.instanceMatrix.needsUpdate=true;
   this.renderer.render(this.scene,this.camera);
  }
- metrics(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,materials:this.batches.size,models:this.models.size,effects:this.effects.length,visibleObjects:[...this.models.values()].filter(g=>g.visible).length,heroPose:{arm:this.heroModel.userData.arm.rotation.x,leg:this.heroModel.userData.legs[0].rotation.x}};}
+ metrics(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,materials:this.batches.size+1,cues:{vertices:this.cues.count,kinds:this.cues.kinds},models:this.models.size,effects:this.effects.length,visibleObjects:[...this.models.values()].filter(g=>g.visible).length,heroPose:{arm:this.heroModel.userData.arm.rotation.x,leg:this.heroModel.userData.legs[0].rotation.x}};}
  project(x,z,height=.5){const v=new THREE.Vector3(x,height,z).project(this.camera);return {x:(v.x+1)/2,y:(1-v.y)/2};}
- dispose(){this.sun.shadow.map?.dispose();this.ground.dispose();this.geometry.dispose();for(const b of this.batches.values()){b.dispose();b.material.dispose();}this.batches.clear();this.parts=[];this.models.clear();this.effects=[];this.renderer.dispose();}
+ dispose(){this.cues.dispose();this.sun.shadow.map?.dispose();this.ground.dispose();this.geometry.dispose();for(const b of this.batches.values()){b.dispose();b.material.dispose();}this.batches.clear();this.parts=[];this.models.clear();this.effects=[];this.renderer.dispose();}
 }
 function isChild(n,parent){for(let p=n;p;p=p.parent)if(p===parent)return true;return false;}

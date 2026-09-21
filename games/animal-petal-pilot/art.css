@@ -1,12 +1,11 @@
 .battle-screen {
-  background: linear-gradient(180deg, #071525d9 0%, #071525b8 46%, #071525ed 100%),
-    url("assets/animal-petal-pilot-background.png") center / cover no-repeat;
+  background: linear-gradient(180deg, #071525d9 0%, #071525b8 46%, #071525ed 100%) center / cover no-repeat;
 }
 
 .ring-orbit {
   border: 1px solid #e99abb;
   background-color: #122e40;
-  background-image: url("assets/animal-petal-pilot-petals.png");
+  background-image: none;
   background-repeat: no-repeat;
   background-size: 300% 100%;
   background-position: 0 0;
