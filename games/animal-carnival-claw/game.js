@@ -145,8 +145,8 @@ function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL
 function createStageCard(){
   const button=document.createElement("button"),image=document.createElement("img"),body=document.createElement("span"),title=document.createElement("strong"),status=document.createElement("small");
   button.type="button";button.className="stage-card";image.src="../../assets/interface7-redrawn/animal-carnival-claw.webp";image.alt="";
-  body.append(title,status);button.append(image,body);
-  button.addEventListener("click",()=>{const index=Number(button.dataset.stageIndex);if(Number.isInteger(index))selectStage(index,true)});
+  body.dataset.wpItemContent="true";body.append(title,status);button.append(image,body);
+  button.addEventListener("click",()=>{const index=Number(button.dataset.stageIndex);if(!Number.isInteger(index))return;selectStage(index,true);if(index<save.unlocked)startMission(index,"stage_card")});
   return button;
 }
 function bindStageCard(button,index){
@@ -274,7 +274,6 @@ function renderStage(){
   $("chapterKicker").textContent=t("mission",{n:selected+1});
   $("chapterTitle").textContent=t(chapter.name);$("chapterRule").textContent=t(chapter.rule);
   ensureStageWindow(selected);
-  $("enterBtn").disabled=selected>=save.unlocked;
   renderCabinet();renderWorkshop();
 }
 function selectStage(index,center){
@@ -282,7 +281,6 @@ function selectStage(index,center){
   ensureStageWindow(selected);
   const chapter=chapters[Math.floor(selected/5)];
   $("chapterKicker").textContent=t("mission",{n:selected+1});$("chapterTitle").textContent=t(chapter.name);$("chapterRule").textContent=t(chapter.rule);
-  $("enterBtn").disabled=selected>=save.unlocked;
   if(center)centerSelected();
 }
 function centerSelected(){
@@ -609,11 +607,10 @@ function bind(){
   });
   $("startBtn").addEventListener("click",()=>{track("game_start",{entry:"main"});stageEntry="main";show("stage");setStagePanel("stages")});
   $("stageBackBtn").addEventListener("click",()=>{track("main_return",{from:"stages"});stageEntry="main";show("main")});
-  $("enterBtn").addEventListener("click",()=>selected<save.unlocked&&startMission(selected,"stage_select"));
   $("stagesTab").addEventListener("click",()=>setStagePanel("stages"));
   $("cabinetTab").addEventListener("click",()=>setStagePanel("cabinet"));
   $("workshopTab").addEventListener("click",()=>setStagePanel("workshop"));
-  $("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();if(event.key==="Enter"||event.key===" "){if(selected<save.unlocked)startMission(selected);return}const rail=$("stageRail"),baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior"),next=event.key==="Home"?0:event.key==="End"?29:selected+(event.key==="ArrowLeft"?-1:1);rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");selectStage(clamp(next,0,29),false);rail.querySelector(`[data-stage-index="${selected}"]`)?.focus({preventScroll:true});positionStageRail(selected);requestAnimationFrame(()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")})});
+  $("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();if(event.key==="Enter"||event.key===" "){if(selected<save.unlocked)startMission(selected,"stage_card");return}const rail=$("stageRail"),baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior"),next=event.key==="Home"?0:event.key==="End"?29:selected+(event.key==="ArrowLeft"?-1:1);rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");selectStage(clamp(next,0,29),false);rail.querySelector(`[data-stage-index="${selected}"]`)?.focus({preventScroll:true});positionStageRail(selected);requestAnimationFrame(()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")})});
   $("stageRail").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&levels[index])selectStage(index,false)});
   $("battleBackBtn").addEventListener("click",()=>openModal("leavePanel",$("leaveContinueBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal("leavePanel"));

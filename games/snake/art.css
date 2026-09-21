@@ -1,0 +1,9 @@
+body[data-game-id="snake"] #battleScreen {
+  background:
+    linear-gradient(145deg, rgba(7, 35, 41, .58), rgba(3, 18, 29, .82)),
+    url("assets/snake-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-game-id="snake"] #battleScreen .arcade-panel {
+  background: rgba(7, 29, 38, .78);
+}

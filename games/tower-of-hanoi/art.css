@@ -1,0 +1,8 @@
+/* Game-owned voxel scenery; the Hanoi board remains DOM-rendered for readability. */
+body[data-logic-game="tower-of-hanoi"] .logic-battle-screen {
+  background: linear-gradient(180deg, rgba(5, 16, 33, .16), rgba(5, 16, 33, .42)), url("assets/tower-of-hanoi-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-logic-game="tower-of-hanoi"] .logic-board-panel {
+  background: linear-gradient(160deg, rgba(17, 50, 92, .7), rgba(8, 23, 46, .8)), url("assets/tower-of-hanoi-board-block-v1.png") center / cover no-repeat;
+}

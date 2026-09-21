@@ -1,0 +1,9 @@
+body[data-wp-game-id="cat-color-sudoku"] .battle-screen {
+  background:
+    linear-gradient(145deg, rgba(23, 31, 75, .62), rgba(10, 18, 54, .82)),
+    url("assets/cat-color-sudoku-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-wp-game-id="cat-color-sudoku"] .battle-content {
+  background: linear-gradient(145deg, rgba(23, 31, 75, .48), rgba(14, 21, 56, .64));
+}

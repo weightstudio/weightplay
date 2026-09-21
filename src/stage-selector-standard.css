@@ -222,6 +222,29 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(
   background-repeat: no-repeat !important;
 }
 
+/* Interface 7's frame scene surface is intentionally opaque. Keep the
+   declared game poster above that surface while retaining the shared scrim. */
+html body [data-wp-frame="2"] [data-wp-frame-scene].wp-stage-art-shell {
+  background-color: #17243a !important;
+  background-image: var(--wp-stage-scrim), var(--wp-stage-art) !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Shared Item contract: game cards own the surface and artwork, while one
+   marked wrapper owns stable, bilingual-safe content alignment. */
+[data-wp-item-content] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
 /* Breakout owns a stable poster even while the Stage rail is populated after
    the shared shell boots. Keep the production art addressable before the
    first rail mutation, including localized routes. */

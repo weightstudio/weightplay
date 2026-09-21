@@ -1,0 +1,11 @@
+body[data-game-id="hangman"] #battleScreen,
+body[data-game-id="hangman"] #resultScreen {
+  background:
+    linear-gradient(145deg, rgba(17, 31, 43, .56), rgba(6, 20, 29, .82)),
+    url("assets/hangman-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-game-id="hangman"] #battleScreen .battle-panel,
+body[data-game-id="hangman"] #resultScreen .arcade-panel {
+  background: rgba(14, 34, 42, .8);
+}

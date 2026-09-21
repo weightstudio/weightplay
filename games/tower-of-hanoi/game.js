@@ -1,3 +1,7 @@
+const towerOfHanoiArtLink = document.createElement("link");
+towerOfHanoiArtLink.rel = "stylesheet";
+towerOfHanoiArtLink.href = "art.css?v=20260921-tower-of-hanoi-block-scene-v1";
+document.head.appendChild(towerOfHanoiArtLink);
 window.WPClassicLogic?.mount("tower-of-hanoi");
 
 function reconcileTowerGuide() {

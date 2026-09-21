@@ -1,3 +1,7 @@
+const minefieldArtLink = document.createElement("link");
+minefieldArtLink.rel = "stylesheet";
+minefieldArtLink.href = "art.css?v=20260921-minefield-block-scene-v1";
+document.head.appendChild(minefieldArtLink);
 window.WPClassicLogic?.mount("minefield-logic");
 
 (() => {

@@ -1,0 +1,11 @@
+body[data-wp-game-id="breakout"] #battleScreen .battle-canvas,
+body[data-wp-game-id="breakout"] #resultScreen .battle-canvas {
+  background:
+    linear-gradient(145deg, rgba(9, 22, 38, .62), rgba(4, 12, 27, .84)),
+    url("assets/breakout-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-wp-game-id="breakout"] #battleScreen .battle-panel,
+body[data-wp-game-id="breakout"] #resultScreen .arcade-panel {
+  background: rgba(13, 28, 44, .78);
+}

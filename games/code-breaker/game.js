@@ -1,3 +1,7 @@
+const codeBreakerArtLink = document.createElement("link");
+codeBreakerArtLink.rel = "stylesheet";
+codeBreakerArtLink.href = "art.css?v=20260921-code-breaker-block-scene-v1";
+document.head.appendChild(codeBreakerArtLink);
 window.WPClassicLogic?.mount("code-breaker");
 
 (() => {

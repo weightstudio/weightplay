@@ -1,0 +1,9 @@
+body[data-wp-game-id="animal-deep-sea-salvage"] #gameDashboard .ocean-stage {
+  background:
+    linear-gradient(145deg, rgba(3, 26, 44, .5), rgba(2, 13, 28, .72)),
+    url("assets/animal-deep-sea-salvage-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-wp-game-id="animal-deep-sea-salvage"] #gameDashboard #oceanCanvas {
+  opacity: .8;
+}

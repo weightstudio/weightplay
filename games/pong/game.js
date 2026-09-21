@@ -25,6 +25,7 @@
   const [{ Match, WIDTH, HEIGHT }, { COPY, ROUTES }] = await Promise.all([import(new URL('engine.mjs',base)),import(new URL('locale.mjs',base))]);
   const asset = name => new URL('../../assets/'+name,base).href;
   const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=11',base); document.head.append(style);
+  const artStyle=document.createElement('link'); artStyle.rel='stylesheet'; artStyle.href=new URL('art.css?v=20260921-pong-block-scene-v1',base); document.head.append(artStyle);
   let locale=Object.keys(ROUTES).find(key=>location.pathname.startsWith('/'+ROUTES[key]+'/'))||document.documentElement.lang;
   if(!COPY[locale]) locale='en';
   let t=COPY[locale], difficulty=0, sound=true, wins=[0,0,0];

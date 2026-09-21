@@ -1,5 +1,9 @@
 (function () {
   "use strict";
+  const habitatArtLink = document.createElement("link");
+  habitatArtLink.rel = "stylesheet";
+  habitatArtLink.href = "art.css?v=20260921-habitat-counts-block-scene-v1";
+  document.head.appendChild(habitatArtLink);
   const locales = window.ANIMAL_HABITAT_COUNTS_LOCALES || {};
   const localeKeys = Object.keys(locales);
   const rounds = [

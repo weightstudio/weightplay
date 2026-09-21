@@ -129,6 +129,9 @@ html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-f
 html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):active {filter:brightness(.9)}
 html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound,[data-wp-frame-action]):focus-visible {outline:3px solid var(--wp-ui-gold);outline-offset:2px}
 html body [data-wp-frame="2"] [data-wp-frame-scene] {box-sizing:border-box;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important}
+/* Stage poster art is a shared scene background, not a game-local surface.
+   Keep it above the frame's opaque scene token while retaining the scrim. */
+html body [data-wp-frame="2"] [data-wp-frame-scene].wp-stage-art-shell {background-color:#17243a!important;background-image:var(--wp-stage-scrim),var(--wp-stage-art)!important;background-position:center,center!important;background-size:cover,cover!important;background-repeat:no-repeat!important}
 html body [data-wp-frame="2"] [data-wp-frame-scene="main"] {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;width:100%!important;max-width:var(--wp-main-width)!important;padding:8px!important;gap:12px!important;margin:0 auto!important;overflow:visible!important}
 html body [data-wp-frame="2"] [data-wp-frame-content] {min-width:0;min-height:0}
 html body [data-wp-frame="2"] [data-wp-frame-content="main"] {display:grid;grid-template-columns:minmax(0,1fr);gap:12px}

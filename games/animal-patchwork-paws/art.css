@@ -1,0 +1,9 @@
+body[data-wp-game-id="animal-patchwork-paws"] .screen.battle-screen {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .46), rgba(226, 240, 235, .68)),
+    url("assets/animal-patchwork-paws-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-wp-game-id="animal-patchwork-paws"] .screen.battle-screen .weave-card {
+  background: linear-gradient(145deg, rgba(245, 236, 217, .9), rgba(231, 242, 231, .86));
+}

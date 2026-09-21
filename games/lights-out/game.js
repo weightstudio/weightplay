@@ -1,3 +1,7 @@
+const lightsOutArtLink = document.createElement("link");
+lightsOutArtLink.rel = "stylesheet";
+lightsOutArtLink.href = "art.css?v=20260921-lights-out-block-scene-v1";
+document.head.appendChild(lightsOutArtLink);
 window.WPClassicLogic?.mount("lights-out");
 
 (() => {

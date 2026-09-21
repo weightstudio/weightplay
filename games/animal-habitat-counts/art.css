@@ -1,0 +1,9 @@
+/* Game-owned voxel scenery; habitat clues and cells remain DOM-rendered for readability. */
+body[data-wp-game-id="animal-habitat-counts"] .battle-canvas {
+  background: linear-gradient(180deg, rgba(255, 253, 247, .18), rgba(34, 67, 48, .28)), url("assets/animal-habitat-counts-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-wp-game-id="animal-habitat-counts"] .battle-content {
+  background: rgba(255, 253, 247, .88);
+  border-radius: 24px;
+}

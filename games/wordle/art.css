@@ -1,0 +1,11 @@
+body[data-wp-game-id="wordle"] #battleScreen .battle-canvas,
+body[data-wp-game-id="wordle"] #resultScreen .battle-canvas {
+  background:
+    linear-gradient(145deg, rgba(22, 39, 48, .58), rgba(7, 24, 33, .84)),
+    url("assets/wordle-board-block-v1.png") center / cover no-repeat;
+}
+
+body[data-wp-game-id="wordle"] #battleScreen .battle-panel,
+body[data-wp-game-id="wordle"] #resultScreen .arcade-panel {
+  background: rgba(14, 34, 42, .8);
+}

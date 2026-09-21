@@ -50,7 +50,7 @@ button { cursor: pointer; }
 .hero details { margin-top: 16px; border-top: 1px solid #a6cbb4; padding-top: 10px; }
 .hero summary { font-weight: 900; }
 
-.canvas { height: 100svh; min-height: 430px; background: linear-gradient(155deg, #06192188, #06192166), url("assets/animal-tangram-garden-voxel-v1.png") center/cover; overflow: hidden; }
+.canvas { height: 100svh; min-height: 430px; background: linear-gradient(155deg, #06192188, #06192166), url("../../assets/animal-tangram-garden-voxel-v1.png") center/cover; overflow: hidden; }
 .scene-header { height: 76px; padding: 10px 16px; background: #19584e; color: #fff; }
 .scene-header small { font-size: .66rem; letter-spacing: .13em; opacity: .75; }
 .scene-header h2 { margin: 2px 0 0; font-size: 1.16rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
