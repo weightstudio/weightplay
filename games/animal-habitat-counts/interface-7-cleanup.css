@@ -1,0 +1,85 @@
+/*
+ * Scoped Interface 7 compatibility cleanup for Habitat Counts.
+ *
+ * The game remains declared Interface 6 until a formal migration/acceptance
+ * cycle. These rules only remove legacy Main/Stage/Battle chrome that conflicts
+ * with the current shared frame contract.
+ */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] #mapBtn {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .hero-actions {
+  display: block !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] #startBtn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 16px !important;
+  font: 800 16px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+}
+
+/* Stage/Battle use the shared title-free 48px play-top. Legacy page titles,
+   the authored Stage info button, and the standalone Battle sound button are
+   not second utility owners. Shared Settings remains the sole utility. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] :is(
+  #stageInfoBtn,
+  .stage-canvas > .panel-head > h2,
+  #battleHeading,
+  #battleSoundBtn
+) {
+  display: none !important;
+}
+
+/* The Stage workspace is for the selector itself. Interface 7 anchors the
+   selected 264x190 card in the upper-middle at 38% of workspace height, not
+   at the vertical midpoint. Clamp only enough to preserve the 190px card plus
+   the required 8px clearance in short landscape. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace {
+  position: relative !important;
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding-top: 0 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace > .panel-intro {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace > .stage-rail {
+  position: absolute !important;
+  left: 0 !important;
+  top: clamp(99px, 38%, calc(100% - 99px)) !important;
+  width: 100% !important;
+  height: 198px !important;
+  min-height: 198px !important;
+  transform: translateY(-50%) !important;
+  align-items: center !important;
+}
+
+/* art.css previously wrapped the whole Battle workspace in a second rounded
+   surface. Gameplay cards may keep their own local surfaces, but the Battle
+   workspace itself belongs directly to the shared Canvas. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-content {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Habitat Counts has bannerAds:false. Do not retain the legacy physical 56px
+   reserve if the shared policy is disabled; the Stage 56px tab bar is separate. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .general-reserve {
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
+}

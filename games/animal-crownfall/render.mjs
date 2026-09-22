@@ -7,11 +7,11 @@ export class CrownScene {
   constructor(host,{label,onPick,onError,onContact=()=>{},reduced=()=>false,isBusy=()=>false,isPaused=()=>false,cameraText=key=>key}) {
     this.isPaused=isPaused;this.isBusy=isBusy;this.cameraText=cameraText;this.following=true;this.overview=false;this.view=null;this.cameraFrame=0;this.host=host;this.label=label;this.onPick=onPick;this.reduced=reduced;this.disposed=false;this.frame=0;this.materials=new Map();this.hitTargets=[];this.ray=new THREE.Raycaster();this.abort=new AbortController();
     this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'});
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.setClearColor(0x243c48);this.renderer.outputColorSpace=THREE.SRGBColorSpace;
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.setClearColor(0x243c48);this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.12;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
     this.canvas=this.renderer.domElement;this.canvas.setAttribute('aria-hidden','true');host.prepend(this.canvas);
-    this.scene=new THREE.Scene();this.camera=new THREE.OrthographicCamera(-4,4,6,-6,.1,100);this.scene.add(new THREE.HemisphereLight(0xc1edff,0x604348,2.5));
-    const sun=new THREE.DirectionalLight(0xffe1a3,3);sun.position.set(-4,10,14);this.scene.add(sun);
-    const fill=new THREE.DirectionalLight(0x5baeff,1);fill.position.set(7,0,6);this.scene.add(fill);
+    this.scene=new THREE.Scene();this.camera=new THREE.OrthographicCamera(-4,4,6,-6,.1,100);this.scene.add(new THREE.HemisphereLight(0xbcd8ee,0x283347,1.05));
+    const sun=new THREE.DirectionalLight(0xffdfaa,3.3);sun.position.set(-4,10,14);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.bias=-.0004;sun.shadow.normalBias=.025;sun.shadow.camera.near=.1;sun.shadow.camera.far=70;this.sun=sun;this.scene.add(sun,sun.target);
+    const fill=new THREE.DirectionalLight(0x779aca,.65);fill.position.set(7,0,6);this.scene.add(fill);
     const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
     this.geometry=new THREE.ExtrudeGeometry(shape,{depth:.84,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.04,bevelThickness:.04});this.geometry.translate(0,0,-.42);
     this.onContact=onContact;this.world=new THREE.Group();this.scene.add(this.world);this.terrain=new THREE.Group();this.world.add(this.terrain);this.actorNodes=new Map();this.labels=document.createElement('div');this.labels.className='actor-labels';host.append(this.labels);
@@ -37,8 +37,8 @@ export class CrownScene {
     this.canvas.addEventListener('pointerup',e=>{if(!down||e.pointerId!==down.id)return;const p=down;down=null;if(p.dragged||Math.hypot(e.clientX-p.x,e.clientY-p.y)>p.threshold||this.isBusy())return;const r=this.canvas.getBoundingClientRect(),v=new THREE.Vector3((p.x-r.left)/r.width*2-1,1-(p.y-r.top)/r.height*2,0).unproject(this.camera),x=Math.round(v.x),y=Math.round(-v.y);if(/^[ABC]$/.test(this.state.board[y]?.[x]||''))onPick(x,y);},{signal:this.abort.signal});
     this.resize();
   }
-  material(colour,metal=false) {const key=`${colour}-${metal}`;if(!this.materials.has(key))this.materials.set(key,new THREE.MeshStandardMaterial({color:colour,roughness:metal?.3:.72,metalness:metal?.5:.05}));return this.materials.get(key);}
-  box(parent,x,y,z,w,h,d,c,metal=false) {const mesh=new THREE.Mesh(this.geometry,this.material(c,metal));mesh.position.set(x,y,z);mesh.scale.set(w,h,d);parent.add(mesh);return mesh;}
+  material(colour,metal=false) {const key=`${colour}-${metal}`;if(!this.materials.has(key))this.materials.set(key,new THREE.MeshStandardMaterial({color:colour,roughness:metal?.26:.88,metalness:metal?.48:0}));return this.materials.get(key);}
+  box(parent,x,y,z,w,h,d,c,metal=false) {const mesh=new THREE.Mesh(this.geometry,this.material(c,metal));mesh.position.set(x,y,z);mesh.scale.set(w,h,d);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
   actor(enemy=null,gear=null) {return makeActor(this.box.bind(this),enemy,gear);}
   prop(item) {return makeProp(this.box.bind(this),item);}
   clearWorld() {
@@ -54,14 +54,14 @@ export class CrownScene {
     for(const [material,parts] of groups) {
       const batch=new THREE.InstancedMesh(this.geometry,material,parts.length);
       parts.forEach((part,i)=>batch.setMatrixAt(i,part.matrixWorld));
-      batch.instanceMatrix.needsUpdate=true;this.terrain.add(batch);
+      batch.instanceMatrix.needsUpdate=true;batch.receiveShadow=true;this.terrain.add(batch);
     }
     source.clear();
   }
   point(x,row){return {x,y:-row};}
   show(state,highlight=[],{preserve=false}={}) {
     this.state=state;this.labels.replaceChildren();this.labelNodes=[];
-    const rows=state.board.length;this.rows=rows;this.columns=state.board[0].length;this.folded=false;
+    const rows=state.board.length;this.rows=rows;this.columns=state.board[0].length;this.folded=false;const middleX=(this.columns-1)/2,middleY=-(rows-1)/2,extent=Math.max(rows,this.columns)*.65+2;this.sun.position.set(middleX-5,middleY+9,14);this.sun.target.position.set(middleX,middleY,0);Object.assign(this.sun.shadow.camera,{left:-extent,right:extent,top:extent,bottom:-extent});this.sun.shadow.camera.updateProjectionMatrix();
     const terrainKey=JSON.stringify([state.board,highlight,this.folded]);
     if(terrainKey!==this.terrainKey){this.terrainKey=terrainKey;this.terrain.traverse(n=>{if(n.isInstancedMesh)n.dispose();});this.terrain.clear();this.hitTargets=[];this.castle(rows);
     const marked=new Set(highlight.map(p=>p.join(',')));
@@ -234,5 +234,5 @@ export class CrownScene {
     return {calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,...this.renderer.info.memory,materials:this.materials.size,contexts:1,revision:THREE.REVISION,maxGroundGap,heroBounds,camera:this.view?{...this.view,following:this.following,overview:this.overview,moving:!!this.cameraResolve}:null,impactVisible:this.strikeFX.visible,heroArms:this.actorNodes.get('hero')?.userData.arms?.map(a=>a.rotation.z),animation:this.activeAnimation?{...this.activeAnimation}:null,poses:Object.fromEntries([...this.actorNodes].map(([id,n])=>[id,{x:n.position.x,y:n.position.y,visible:n.visible}]))};
   }
   stop(){this.cancelCamera();cancelAnimationFrame(this.frame);this.resolveAnimation?.();this.resolveAnimation=null;}
-  destroy(){if(this.disposed)return;this.disposed=true;this.stop();this.abort.abort();this.observer.disconnect();this.clearWorld();this.actorNodes.clear();this.geometry.dispose();for(const m of this.materials.values())m.dispose();this.materials.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.canvas.remove();this.labels.remove();this.effect.remove();this.mapNav.remove();this.floorLabel.remove();}
+  destroy(){if(this.disposed)return;this.disposed=true;this.stop();this.abort.abort();this.observer.disconnect();this.clearWorld();this.actorNodes.clear();this.geometry.dispose();for(const m of this.materials.values())m.dispose();this.materials.clear();this.sun.shadow.map?.dispose();this.renderer.dispose();this.renderer.forceContextLoss();this.canvas.remove();this.labels.remove();this.effect.remove();this.mapNav.remove();this.floorLabel.remove();}
 }

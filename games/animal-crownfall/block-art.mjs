@@ -161,27 +161,27 @@ export function makeCastle(box, rows, folded=false, columns=7) {
   const wings=folded?[0,8.2]:[0];
   // Fill the arena behind the architecture, including spare portrait height.
   // A single shared-geometry instance avoids a visible rectangular backdrop.
-  add((columns-1)/2,-(height-1)/2,-2.65,200,200,.12,0x243c48);
+  add((columns-1)/2,-(height-1)/2,-2.65,200,200,.12,0x132536);
   for(const offset of wings) {
-    add(offset+(columns-1)/2,-(height-1)/2,-2.5,columns+1.15,height+4,.3,0x243c48);
+    add(offset+(columns-1)/2,-(height-1)/2,-2.5,columns+1.15,height+4,.3,0x132536);
     // Quiet recessed walls, varied courses and inset windows, not a flat grid.
     for(let row=-1;row<=height;row++) {
       for(let col=0;col<Math.ceil((columns+1)/2);col++) {
         const x=offset-.2+col*2+(row%2?.5:0);
-        add(x,-row,-2.21,1.9,.91,.14,(row+col)%3===0?0x314b55:0x2a424d);
+        add(x,-row,-2.21,1.9,.91,.14,(row+col)%3===0?0x284052:0x203344);
       }
     }
     for(const x of [offset-.85,offset+columns-.15]) {
-      add(x,-(height-1)/2,-1.16,.48,height+1.5,.72,0x8a958c);
+      add(x,-(height-1)/2,-1.16,.48,height+1.5,.72,0x786e5d);
       for(let y=-1;y<=height;y+=2) {
-        add(x,-y,-.94,.57,.16,.8,0xb6b7a0);
-        add(x-.06,-y-.55,-.735,.14,.82,.06,0xa7af9f);
+        add(x,-y,-.94,.57,.16,.8,0xa99a7c);
+        add(x-.06,-y-.55,-.735,.14,.82,.06,0x8e8571);
       }
-      add(x,.86,-1,.8,.23,.9,0xc7c5aa);
-      for(const dx of [-.25,.25])add(x+dx,1.06,-1,.23,.24,.85,0xb6b7a0);
+      add(x,.86,-1,.8,.23,.9,0xc2b38e);
+      for(const dx of [-.25,.25])add(x+dx,1.06,-1,.23,.24,.85,0xa99a7c);
     }
     for(const x of [offset+1.2,offset+columns-2.2]) {
-      add(x,-height*.38,-2,.84,1.65,.13,0x172d3c);
+      add(x,-height*.38,-2,.84,1.65,.13,0x0b1728);
       add(x,-height*.38-.74,-1.85,.96,.12,.3,0x536c73);
       add(x,-height*.38+.83,-1.91,.48,.15,.2,0x62757a);
       for(const side of [-1,1]) {

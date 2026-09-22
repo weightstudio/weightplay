@@ -1,3 +1,5 @@
+@import url("interface-7-cleanup.css?v=20260922-general-interface1");
+
 /* Game-owned voxel scenery; habitat clues and cells remain DOM-rendered for readability. */
 body[data-wp-game-id="animal-habitat-counts"] .battle-canvas {
   background: linear-gradient(180deg, rgba(255, 253, 247, .18), rgba(34, 67, 48, .28)), url("assets/animal-habitat-counts-board-block-v1.png") center / cover no-repeat;

@@ -1,0 +1,147 @@
+/* Interface 7 scoped cleanup for Orbit Orchard.
+   Keep game-owned artwork/gameplay while shared frame owns Main/Stage/Battle geometry. */
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #mainScreen .kicker,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #mainScreen .facts {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #mainScreen .hero-actions .primary-btn {
+  width: 100% !important;
+  min-height: 52px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] :is(#stageScreen, #battleScreen) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* No game-owned 56px blank reserve when the shared layout has ads disabled. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] :is(#stageScreen, #battleScreen) .general-reserve {
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+/* The Stages rail uses the catalog-wide upper-middle anchor. The authored v6
+   override stretched the rail across the full workspace, which put the cards
+   outside the required 38% center contract. Keep the shared 264x190 cards and
+   clamp only enough to preserve 8px clearance in short landscape. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-workspace {
+  position: relative !important;
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-workspace > #orbitList.stage-rail {
+  position: absolute !important;
+  left: 0 !important;
+  top: clamp(99px, 38%, calc(100% - 99px)) !important;
+  width: 100% !important;
+  height: 198px !important;
+  min-height: 198px !important;
+  transform: translateY(-50%) !important;
+  align-items: center !important;
+}
+
+/* The old Battle "Orbit map" button duplicated the permanent Battle return
+   and bypassed the leave-confirmation path. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #mapBtn {
+  display: none !important;
+}
+
+/* Result is a Battle substate, not a fourth scene. game.js moves this node into
+   the Battle logical shell at startup and this overlay stays inside that Canvas. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .logical-shell {
+  position: relative !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #resultScreen.battle-result-substate {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 20 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  overflow: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: rgba(243, 250, 255, .96) !important;
+}
+
+.orbit-leave-dialog[hidden] {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .orbit-leave-dialog {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgb(9 18 32 / 70%);
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .orbit-leave-card {
+  width: min(100%, 430px);
+  padding: 20px;
+  border-radius: 16px;
+  background: #f8fafc;
+  color: #20364a;
+  box-shadow: 0 18px 44px rgb(9 18 32 / 30%);
+  text-align: center;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .orbit-leave-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .orbit-leave-card p {
+  margin: 0 0 16px;
+  color: #607587;
+  line-height: 1.45;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .orbit-leave-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .orbit-leave-actions button,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #resultScreen .result-actions > button {
+  min-width: 0 !important;
+  min-height: 44px !important;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  line-height: 1.2 !important;
+}
+
+/* Interface 7 keeps the 420x420 Main poster at >=700px, including 844x390.
+   The legacy style.css had a game-specific 300x300 short-landscape exception. */
+@media (min-width: 700px) and (max-height: 540px) and (orientation: landscape) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #mainScreen .hero-card {
+    grid-template-columns: 420px minmax(0, 1fr) !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #mainScreen .hero-card .main-poster {
+    width: 420px !important;
+    height: 420px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .orbit-leave-actions {
+    grid-template-columns: 1fr;
+  }
+}
