@@ -1,91 +1,206 @@
-(function () {
+(() => {
   "use strict";
-  const $ = (id) => document.getElementById(id);
-  const locales = window.ACORN_AUCTION_LOCALES || {};
-  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  const routeLocales = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
-  const guideInfoCopy = {
-    en: { kicker: "WeightPlay Original Game Guide", gameplay: "Gameplay", gameplayValue: "Quantity and budget choice puzzle", genre: "Genre", genreValue: "Puzzle · Logic · Planning · Family · Animal", faq: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser.", guideAria: "Acorn Auction game information" },
-    "zh-Hant": { kicker: "WeightPlay 原創遊戲指南", gameplay: "玩法", gameplayValue: "數量與預算選擇益智", genre: "類型", genreValue: "益智 · 邏輯 · 規劃 · 家庭 · 動物", faq: "常見問題", faqQuestion: "進度會保存嗎？", faqAnswer: "會，只保存在這個瀏覽器中。", guideAria: "橡果拍賣遊戲資訊" },
-    "zh-Hans": { kicker: "WeightPlay 原创游戏指南", gameplay: "玩法", gameplayValue: "数量与预算选择益智", genre: "类型", genreValue: "益智 · 逻辑 · 规划 · 家庭 · 动物", faq: "常见问题", faqQuestion: "进度会保存吗？", faqAnswer: "是，仅保存在此浏览器中。", guideAria: "橡果拍卖游戏信息" },
-    ja: { kicker: "WeightPlay オリジナルゲームガイド", gameplay: "ゲーム内容", gameplayValue: "数量と予算を選ぶパズル", genre: "ジャンル", genreValue: "パズル · ロジック · 計画 · ファミリー · 動物", faq: "よくある質問", faqQuestion: "進行状況は保存されますか？", faqAnswer: "はい、このブラウザにのみ保存されます。", guideAria: "どんぐりオークション ゲーム情報" },
-    ko: { kicker: "WeightPlay 오리지널 게임 가이드", gameplay: "게임플레이", gameplayValue: "수량과 예산 선택 퍼즐", genre: "장르", genreValue: "퍼즐 · 논리 · 계획 · 가족 · 동물", faq: "자주 묻는 질문", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "예, 이 브라우저에만 저장됩니다.", guideAria: "도토리 경매 게임 정보" },
-    es: { kicker: "Guía de juegos originales de WeightPlay", gameplay: "Jugabilidad", gameplayValue: "Puzle de elección de cantidad y presupuesto", genre: "Género", genreValue: "Puzle · Lógica · Planificación · Familiar · Animales", faq: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, solo en este navegador.", guideAria: "Información del juego Subasta de bellotas" },
-    "pt-BR": { kicker: "Guia de jogos originais WeightPlay", gameplay: "Jogabilidade", gameplayValue: "Quebra-cabeça de escolha de quantidade e orçamento", genre: "Gênero", genreValue: "Quebra-cabeça · Lógica · Planejamento · Família · Animais", faq: "Perguntas frequentes", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, apenas neste navegador.", guideAria: "Informações do jogo Leilão de bolotas" },
-    fr: { kicker: "Guide des jeux originaux WeightPlay", gameplay: "Jeu", gameplayValue: "Puzzle de choix de quantité et de budget", genre: "Genre", genreValue: "Puzzle · Logique · Planification · Famille · Animaux", faq: "Questions fréquentes", faqQuestion: "La progression est-elle sauvegardée ?", faqAnswer: "Oui, uniquement dans ce navigateur.", guideAria: "Informations sur le jeu Vente aux enchères de glands" },
-    de: { kicker: "WeightPlay-Leitfaden für Originalspiele", gameplay: "Spielweise", gameplayValue: "Rätsel zur Wahl von Menge und Budget", genre: "Genre", genreValue: "Rätsel · Logik · Planung · Familie · Tiere", faq: "Häufige Fragen", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser.", guideAria: "Informationen zum Spiel Eichel-Auktion" },
-    it: { kicker: "Guida ai giochi originali WeightPlay", gameplay: "Gioco", gameplayValue: "Puzzle di scelta tra quantità e budget", genre: "Genere", genreValue: "Puzzle · Logica · Pianificazione · Famiglia · Animali", faq: "Domande frequenti", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser.", guideAria: "Informazioni sul gioco Asta delle ghiande" },
-    ru: { kicker: "Руководство по оригинальным играм WeightPlay", gameplay: "Геймплей", gameplayValue: "Головоломка выбора количества и бюджета", genre: "Жанр", genreValue: "Головоломка · Логика · Планирование · Семейная · Животные", faq: "Частые вопросы", faqQuestion: "Сохраняется ли прогресс?", faqAnswer: "Да, только в этом браузере.", guideAria: "Информация об игре «Аукцион желудей»" },
-    hi: { kicker: "WeightPlay मौलिक गेम गाइड", gameplay: "गेमप्ले", gameplayValue: "मात्रा और बजट चुनने की पहेली", genre: "शैली", genreValue: "पहेली · तर्क · योजना · परिवार · जानवर", faq: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।", guideAria: "बलूत नीलामी गेम की जानकारी" },
-    ar: { kicker: "دليل ألعاب WeightPlay الأصلية", gameplay: "طريقة اللعب", gameplayValue: "لغز اختيار الكمية والميزانية", genre: "النوع", genreValue: "لغز · منطق · تخطيط · عائلية · حيوانات", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", guideAria: "معلومات لعبة مزاد البلوط" },
+
+  if (window.__ACORN_AUCTION_INTERFACE7_COMPAT__) return;
+  window.__ACORN_AUCTION_INTERFACE7_COMPAT__ = true;
+
+  const routeLocales = {
+    en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es",
+    "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar"
   };
-  const storage = (() => { try { return window.localStorage; } catch { return { getItem: () => null, setItem: () => {} }; } })();
-  const rounds = [
-    { id: 1, name: "round1", hint: "hint1", request: "request1", animal: "animal1", count: 3, budget: 5, answer: 1, lots: [[2, 4], [3, 5], [4, 6]] },
-    { id: 2, name: "round2", hint: "hint2", request: "request2", animal: "animal2", count: 4, budget: 6, answer: 1, lots: [[3, 4], [4, 6], [5, 8]] },
-    { id: 3, name: "round3", hint: "hint3", request: "request3", animal: "animal3", count: 2, budget: 7, answer: 0, lots: [[2, 7], [3, 5], [4, 8]] },
-  ];
+  const startLabels = {
+    en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始", ko: "게임 시작",
+    es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Commencer", de: "Spiel starten", it: "Inizia gioco",
+    ru: "Начать игру", hi: "गेम शुरू करें", ar: "ابدأ اللعبة"
+  };
+  const stageLabels = {
+    en: "Stages", "zh-Hant": "關卡", "zh-Hans": "关卡", ja: "ステージ", ko: "스테이지", es: "Niveles",
+    "pt-BR": "Fases", fr: "Niveaux", de: "Level", it: "Livelli", ru: "Уровни", hi: "स्तर", ar: "المراحل"
+  };
+  const leaveMessages = {
+    en: "Leave “{stage}” and return to Stages? Any pending result or unfinished picks for this round will be discarded; rounds already completed stay completed.",
+    "zh-Hant": "要離開「{stage}」並返回關卡嗎？本回合尚未完成的選擇或待顯示的結算會放棄；已完成的回合仍會保留。",
+    "zh-Hans": "要离开“{stage}”并返回关卡吗？本回合尚未完成的选择或待显示的结算会放弃；已完成的回合仍会保留。",
+    ja: "「{stage}」を離れてステージに戻りますか？このラウンドの未完了の選択または保留中の結果は破棄されますが、完了済みのラウンドは保持されます。",
+    ko: "“{stage}”에서 나가 스테이지로 돌아갈까요? 이 라운드의 완료되지 않은 선택이나 대기 중인 결과는 사라지지만 이미 완료한 라운드는 유지됩니다.",
+    es: "¿Salir de «{stage}» y volver a Niveles? Se descartarán las elecciones sin terminar o el resultado pendiente de esta ronda; las rondas ya completadas se conservarán.",
+    "pt-BR": "Sair de “{stage}” e voltar às Fases? As escolhas não concluídas ou o resultado pendente desta rodada serão descartados; as rodadas já concluídas serão mantidas.",
+    fr: "Quitter « {stage} » et revenir aux Niveaux ? Les choix non terminés ou le résultat en attente de cette manche seront abandonnés ; les manches déjà terminées resteront enregistrées.",
+    de: "„{stage}“ verlassen und zu den Leveln zurückkehren? Unfertige Entscheidungen oder das ausstehende Ergebnis dieser Runde werden verworfen; bereits abgeschlossene Runden bleiben erhalten.",
+    it: "Uscire da “{stage}” e tornare ai Livelli? Le scelte non completate o il risultato in attesa di questo round verranno scartati; i round già completati resteranno salvati.",
+    ru: "Выйти из «{stage}» и вернуться к уровням? Незавершённые выборы или ожидающий результат этого раунда будут сброшены; уже завершённые раунды сохранятся.",
+    hi: "“{stage}” छोड़कर स्तरों पर लौटें? इस राउंड की अधूरी पसंदें या लंबित परिणाम हटा दिए जाएँगे; पहले से पूरे किए गए राउंड सुरक्षित रहेंगे।",
+    ar: "هل تريد مغادرة «{stage}» والعودة إلى المراحل؟ ستُلغى الاختيارات غير المكتملة أو النتيجة المعلّقة لهذه الجولة، بينما ستبقى الجولات المكتملة محفوظة."
+  };
+  const continueLabels = {
+    en: "Continue playing", "zh-Hant": "繼續遊玩", "zh-Hans": "继续游戏", ja: "プレイを続ける", ko: "계속 플레이",
+    es: "Seguir jugando", "pt-BR": "Continuar jogando", fr: "Continuer à jouer", de: "Weiterspielen", it: "Continua a giocare",
+    ru: "Продолжить игру", hi: "खेल जारी रखें", ar: "متابعة اللعب"
+  };
+  const returnLabels = {
+    en: "Return to Stages", "zh-Hant": "返回關卡", "zh-Hans": "返回关卡", ja: "ステージへ戻る", ko: "스테이지로 돌아가기",
+    es: "Volver a Niveles", "pt-BR": "Voltar às Fases", fr: "Retour aux niveaux", de: "Zu den Leveln", it: "Torna ai livelli",
+    ru: "К уровням", hi: "स्तरों पर लौटें", ar: "العودة إلى المراحل"
+  };
+
   const normalizeLocale = (value) => {
-    if (value === "zh-TW") return "zh-Hant";
-    if (value === "zh-CN") return "zh-Hans";
-    if (value?.toLowerCase?.().startsWith("pt")) return "pt-BR";
-    return supportedLocales.includes(value) ? value : "en";
+    const raw = String(value || "");
+    if (raw === "zh-TW" || raw.toLowerCase() === "zh-tw") return "zh-Hant";
+    if (raw === "zh-CN" || raw.toLowerCase() === "zh-cn") return "zh-Hans";
+    if (raw.toLowerCase().startsWith("pt")) return "pt-BR";
+    return startLabels[raw] ? raw : "en";
   };
-  const pathLocale = routeLocales[window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase?.()];
-  let locale = normalizeLocale(pathLocale || window.WonderI18n?.localeFromPath?.() || window.WonderI18n?.actualLocale?.() || storage.getItem("weightplay-acorn-auction-locale") || "en");
-  if (!locales[locale]) locale = "en";
-  let sound = storage.getItem("weightplay-acorn-auction-sound") !== "off";
-  let roundIndex = 0; let phase = "main"; let picks = 0; let sessionPicks = 0; let solved = new Set(); let feedback = ""; let timer = null;
-  const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
-  const bestValue = () => Number(storage.getItem("weightplay-acorn-auction-best-v1") || 0) || "—";
-  const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `acorn_auction_${name}`, round: roundIndex + 1, picks, ...data }); };
-  const setText = (node, value) => { if (node && node.textContent !== value) node.replaceChildren(document.createTextNode(value)); };
-  const guideElement = () => $("gameGuide") || document.querySelector(".game-page-info[data-wp-acorn-auction-guide]");
-  function applyGuideLocale() {
-    const guide = document.querySelector(".game-page-info[data-wp-acorn-auction-guide]");
-    if (!guide) return;
-    const guideCopy = guideInfoCopy[locale] || guideInfoCopy.en;
-    if (guide.getAttribute("aria-label") !== guideCopy.guideAria) guide.setAttribute("aria-label", guideCopy.guideAria);
-    setText(guide.querySelector(".game-info-kicker"), guideCopy.kicker);
-    setText(guide.querySelector(".game-info-title h2"), copy("title"));
-    setText(guide.querySelector(".game-info-title p"), copy("intro"));
-    const facts = guide.querySelectorAll(".game-info-fact");
-    setText(facts[0]?.querySelector("span"), guideCopy.gameplay);
-    setText(facts[0]?.querySelector("strong"), guideCopy.gameplayValue);
-    setText(facts[1]?.querySelector("span"), guideCopy.genre);
-    setText(facts[1]?.querySelector("strong") || facts[1]?.querySelector(".game-info-tags"), guideCopy.genreValue);
-    const faqSection = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector("dl"));
-    setText(faqSection?.querySelector("h3"), guideCopy.faq);
-    setText(faqSection?.querySelector("dt"), guideCopy.faqQuestion);
-    setText(faqSection?.querySelector("dd"), guideCopy.faqAnswer);
-  }
-  function show(screen) { phase = screen; document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("settingsPanel").hidden = true; $("backBtn").hidden = false; const guide = guideElement(); if (guide) guide.hidden = screen !== "main"; $("stageReserve").hidden = screen !== "stage"; $("battleReserve").hidden = screen !== "battle"; }
-  function renderStatic() {
-    const guideCopy = guideInfoCopy[locale] || guideInfoCopy.en;
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); });
-    document.querySelectorAll(".wp-shell-return").forEach((node) => node.setAttribute("aria-label", copy("close")));
-    document.querySelectorAll("[data-wp-settings]").forEach((node) => node.setAttribute("aria-label", copy("settings")));
-    $("closeSettings").setAttribute("aria-label", copy("close"));
-    $("localeSelect").setAttribute("aria-label", copy("language"));
-    $("soundBtn").textContent = sound ? copy("on") : copy("off");
-    $("soundBtn").setAttribute("aria-pressed", String(sound));
-    $("best").textContent = copy("best", { best: bestValue() });
-    applyGuideLocale();
-    renderStages(); renderBattle(); renderResult();
-  }
-  function renderStages() { const root = $("stageList"); if (!root) return; root.setAttribute("aria-label", copy("rounds")); root.replaceChildren(); rounds.forEach((round, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.dataset.roundIndex = String(index); button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(roundIndex === index)); button.setAttribute("aria-controls", "battleScreen"); button.innerHTML = `<span><strong>${copy(round.name)}</strong><small>${copy(round.hint)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`; button.addEventListener("click", () => startRound(index, true)); root.appendChild(button); }); }
-  function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
-  function startRound(index, fromStage = false) { clearTimer(); roundIndex = index; picks = 0; feedback = ""; if (index === 0 || fromStage) sessionPicks = 0; show("battle"); phase = "choose"; renderBattle(); announce("start"); }
-  function replayRound() { phase = "choose"; feedback = ""; renderBattle(); }
-  function renderBattle() { if (!$("lotCards") || phase === "main" || phase === "stage" || phase === "result") return; const round = rounds[roundIndex]; $("roundTitle").textContent = copy(round.name); $("progressPill").textContent = `${roundIndex + 1} / ${rounds.length}`; $("requestTitle").textContent = `${copy("request")} · ${copy(round.animal)}`; $("requestText").textContent = copy(round.request); $("prompt").textContent = feedback === "wrong" ? copy("wrong") : feedback === "correct" ? copy("correct") : copy("prompt"); const feedbackArt = $("feedbackArt"); if (feedbackArt) { feedbackArt.hidden = !feedback; feedbackArt.className = `feedback-art ${feedback ? `feedback-art--${feedback}` : ""}`; } const root = $("lotCards"); root.setAttribute("aria-label", copy("lotLabel", { count: round.lots.length })); root.replaceChildren(); round.lots.forEach(([count, cost], index) => { const button = document.createElement("button"); button.type = "button"; button.className = `lot-card ${feedback === "correct" && index === round.answer ? "is-correct" : ""}`; button.disabled = phase !== "choose"; button.setAttribute("data-wp-primary-action", "true"); button.setAttribute("aria-label", copy("lotLabel", { count: index + 1 }) + ": " + copy("lot", { count, cost })); button.innerHTML = `<span class="lot-icon lot-icon--${index + 1}" aria-hidden="true"></span><strong>${copy("lotLabel", { count: index + 1 })}</strong><span>${copy("lot", { count, cost })}</span>`; button.addEventListener("click", () => chooseLot(index)); root.appendChild(button); }); $("resetBtn").disabled = phase === "complete"; $("status").textContent = copy("selected", { count: picks }); $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status"; }
-  function chooseLot(index) { if (phase !== "choose") return; const round = rounds[roundIndex]; picks += 1; sessionPicks += 1; if (index !== round.answer) { feedback = "wrong"; phase = "retry"; announce("wrong", { lot: index + 1 }); renderBattle(); timer = setTimeout(replayRound, 760); return; } solved.add(roundIndex); feedback = "correct"; phase = "complete"; announce("complete", { lot: index + 1 }); renderBattle(); timer = setTimeout(() => { show("result"); renderResult(); }, 420); }
-  function renderResult() { if (!$("resultText")) return; const complete = solved.size === rounds.length; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultRound"); $("resultText").textContent = complete ? copy("resultAll", { best: bestValue() }) : copy("resultText", { count: solved.size, picks }); $("nextBtn").hidden = complete; $("resultMapBtn").hidden = !complete; if (complete) { const old = Number(storage.getItem("weightplay-acorn-auction-best-v1") || 0); if (!old || sessionPicks < old) storage.setItem("weightplay-acorn-auction-best-v1", String(sessionPicks)); $("resultText").textContent = copy("resultAll", { best: Math.min(old || sessionPicks, sessionPicks) }); } }
-  function nextRound() { const next = roundIndex + 1; if (next < rounds.length) startRound(next); else { show("stage"); renderStages(); } }
-  function goBack() { clearTimer(); if (["battle", "choose", "retry", "complete"].includes(phase)) { show("stage"); renderStages(); } else if (phase === "stage" || phase === "result") show("main"); }
-  function bind() { $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRound); $("resetBtn").addEventListener("click", () => startRound(roundIndex)); $("backMarketBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("backBtn").addEventListener("click", goBack); $("stageBackBtn").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); const openSettings = () => { $("settingsPanel").hidden = false; }; ["settingsBtn", "stageSettingsBtn", "battleUtilityBtn"].forEach((id) => { const button = $(id); if (button) button.addEventListener("click", openSettings); }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundBtn").addEventListener("click", () => { sound = !sound; storage.setItem("weightplay-acorn-auction-sound", sound ? "on" : "off"); renderStatic(); }); $("localeSelect").addEventListener("change", (event) => { locale = normalizeLocale(event.target.value); storage.setItem("weightplay-acorn-auction-locale", locale); renderStatic(); }); }
-  function boot() { bind(); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
-  window.__ACORN_AUCTION_TEST__ = { rounds, startRound, chooseLot, getState: () => ({ roundIndex, phase, solved: [...solved], picks, screen: phase }) };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
-}());
+  const localeFromPath = () => routeLocales[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase?.()] || null;
+  const currentLocale = () => normalizeLocale(localeFromPath() || document.documentElement.lang || "en");
+
+  Object.entries(startLabels).forEach(([locale, label]) => {
+    if (window.ACORN_AUCTION_LOCALES?.[locale]) window.ACORN_AUCTION_LOCALES[locale].start = label;
+  });
+
+  const startButton = document.getElementById("startBtn");
+  startButton?.setAttribute("data-wp-main-start", "true");
+
+  const ensureStageNav = () => {
+    const stage = document.getElementById("stageScreen");
+    if (!stage) return;
+    let nav = document.getElementById("acornInterface7StageNav");
+    if (!nav) {
+      nav = document.createElement("nav");
+      nav.id = "acornInterface7StageNav";
+      nav.className = "acorn-interface7-stage-nav";
+      nav.innerHTML = '<span class="acorn-interface7-stage-slot" aria-hidden="true"></span><button id="acornInterface7StagesTab" class="acorn-interface7-stage-tab is-active" type="button" aria-current="page"></button><span class="acorn-interface7-stage-slot" aria-hidden="true"></span>';
+      stage.appendChild(nav);
+      nav.querySelector("button")?.addEventListener("click", () => {
+        stage.querySelector('#stageList [aria-selected="true"]')?.scrollIntoView?.({ behavior: "smooth", block: "nearest", inline: "center" });
+      });
+    }
+    const locale = currentLocale();
+    const tab = document.getElementById("acornInterface7StagesTab");
+    if (tab) tab.textContent = stageLabels[locale] || stageLabels.en;
+    nav.setAttribute("aria-label", stageLabels[locale] || stageLabels.en);
+  };
+
+  const retireLegacyExtras = () => {
+    document.querySelectorAll("#mainScreen .cover-badge, #mainScreen > .eyebrow, #mainScreen .guide-art-wrap, #mainScreen #mapBtn, #battleScreen #backMarketBtn")
+      .forEach((node) => {
+        node.setAttribute("aria-hidden", "true");
+        node.setAttribute("tabindex", "-1");
+      });
+  };
+
+  const installBattleLeaveGuard = () => {
+    const button = document.getElementById("battleBackBtn");
+    if (!button || button.dataset.wpAcornLeaveGuard === "true") return;
+    button.dataset.wpAcornLeaveGuard = "true";
+    let bypass = false;
+    let pausedPending = null;
+    let coveredNodes = [];
+
+    const ensureDialog = () => {
+      let dialog = document.getElementById("acornInterface7LeaveDialog");
+      if (dialog) return dialog;
+      const battle = document.getElementById("battleScreen");
+      if (!battle) return null;
+      dialog = document.createElement("div");
+      dialog.id = "acornInterface7LeaveDialog";
+      dialog.className = "acorn-interface7-leave-layer";
+      dialog.setAttribute("role", "dialog");
+      dialog.setAttribute("aria-modal", "true");
+      dialog.setAttribute("aria-labelledby", "acornInterface7LeaveMessage");
+      dialog.hidden = true;
+      dialog.innerHTML = '<div class="acorn-interface7-leave-card"><p id="acornInterface7LeaveMessage"></p><div class="acorn-interface7-leave-actions"><button id="acornInterface7Continue" class="primary" type="button"></button><button id="acornInterface7Return" class="secondary" type="button"></button></div></div>';
+      battle.appendChild(dialog);
+      return dialog;
+    };
+
+    const restoreCovered = () => {
+      coveredNodes.forEach(({ node, inert }) => { node.inert = inert; });
+      coveredNodes = [];
+    };
+
+    const closeDialog = ({ resume = false, restoreFocus = false } = {}) => {
+      const dialog = ensureDialog();
+      if (!dialog || dialog.hidden) return;
+      dialog.hidden = true;
+      restoreCovered();
+      if (resume) window.__ACORN_AUCTION_INTERFACE_BRIDGE__?.resumePending?.(pausedPending);
+      pausedPending = null;
+      if (restoreFocus) button.focus({ preventScroll: true });
+    };
+
+    const openDialog = () => {
+      const battle = document.getElementById("battleScreen");
+      const dialog = ensureDialog();
+      if (!battle || !dialog) return;
+      const locale = currentLocale();
+      const stage = document.getElementById("roundTitle")?.textContent?.trim() || stageLabels[locale] || stageLabels.en;
+      const message = (leaveMessages[locale] || leaveMessages.en).replace("{stage}", stage);
+      dialog.querySelector("#acornInterface7LeaveMessage").textContent = message;
+      dialog.querySelector("#acornInterface7Continue").textContent = continueLabels[locale] || continueLabels.en;
+      dialog.querySelector("#acornInterface7Return").textContent = returnLabels[locale] || returnLabels.en;
+      pausedPending = window.__ACORN_AUCTION_INTERFACE_BRIDGE__?.pausePending?.() || null;
+      coveredNodes = [...battle.children]
+        .filter((node) => node !== dialog)
+        .map((node) => ({ node, inert: Boolean(node.inert) }));
+      coveredNodes.forEach(({ node }) => { node.inert = true; });
+      dialog.hidden = false;
+      dialog.querySelector("#acornInterface7Continue")?.focus({ preventScroll: true });
+    };
+
+    const dialog = ensureDialog();
+    dialog?.querySelector("#acornInterface7Continue")?.addEventListener("click", () => closeDialog({ resume: true, restoreFocus: true }));
+    dialog?.querySelector("#acornInterface7Return")?.addEventListener("click", () => {
+      closeDialog();
+      bypass = true;
+      button.click();
+    });
+    dialog?.addEventListener("keydown", (event) => {
+      if (dialog.hidden) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        closeDialog({ resume: true, restoreFocus: true });
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const actions = [...dialog.querySelectorAll("button:not(:disabled)")];
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    button.addEventListener("click", (event) => {
+      if (bypass) {
+        bypass = false;
+        return;
+      }
+      const battle = document.getElementById("battleScreen");
+      if (!battle || battle.hidden) return;
+      const phase = window.__ACORN_AUCTION_INTERFACE_BRIDGE__?.getState?.().phase;
+      if (!new Set(["choose", "retry", "complete"]).has(phase)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openDialog();
+    }, true);
+  };
+
+  ensureStageNav();
+  retireLegacyExtras();
+  installBattleLeaveGuard();
+
+  import("/src/stage-selector-standard.js");
+  import("./game-v4-base.js").then(() => {
+    ensureStageNav();
+    retireLegacyExtras();
+    installBattleLeaveGuard();
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    document.getElementById("localeSelect")?.addEventListener("change", () => queueMicrotask(ensureStageNav));
+  });
+})();
