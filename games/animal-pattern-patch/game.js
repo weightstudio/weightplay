@@ -13,6 +13,8 @@
   markerFiles.mismatch = "assets/animal-pattern-patch-marker-mismatch.png";
   markerFiles.completion = "assets/animal-pattern-patch-marker-completion.png";
   const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), roundIndex: 0, checks: 0, solved: 0 };
+  const pendingTimers = new Set();
+  let leaveDialogOpen = false;
   window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeStorage = {
@@ -45,7 +47,7 @@
     $("homeFromBattle").setAttribute("aria-label", t("home"));
     $("patternGrid").setAttribute("aria-label", t("patternGrid"));
     $("localeSelect").setAttribute("aria-label", t("language"));
-    if (!$('battleView').hidden) renderRound();
+    if (!$("battleView").hidden && $("resultView").hidden) renderRound();
   }
   function populateLocales() {
     const select = $("localeSelect");
@@ -54,6 +56,12 @@
     select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-pattern-locale", state.locale); applyLocale(); });
   }
   function playTone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
+  function setGameplayInert(inert) {
+    const header = $("battleView").querySelector(".battle-header");
+    const content = $("battleView").querySelector(".battle-content");
+    if (header) header.inert = inert;
+    if (content) content.inert = inert;
+  }
   function showView(id) {
     const mainActive = id === "mainView";
     const resultActive = id === "resultView";
@@ -62,10 +70,14 @@
     $("resultView").hidden = !resultActive;
     $("gameGuide").hidden = !mainActive;
     $("leaveDialog").hidden = true;
+    leaveDialogOpen = false;
+    setGameplayInert(resultActive);
     $("mainView").classList.toggle("is-active", mainActive);
     $("battleView").classList.toggle("is-active", !mainActive);
     $("resultView").classList.toggle("is-active", resultActive);
-    document.body.dataset.screen = mainActive ? "main" : resultActive ? "result" : "battle";
+    document.body.dataset.screen = mainActive ? "main" : "battle";
+    if (resultActive) document.body.dataset.battleSubstate = "result";
+    else delete document.body.dataset.battleSubstate;
     if (mainActive) {
       $("mainSettingsPopover").hidden = true;
       $("mainSettingsBtn").setAttribute("aria-expanded", "false");
@@ -94,20 +106,97 @@
     $("optionGrid").replaceChildren(...round.options.map((token) => { const option = makeToken(token, t("option", { token: (locales[state.locale].tokenNames || {})[token] || token }), true, () => choose(token, option)); option.classList.add("option-token"); return option; }));
     $("checkCount").textContent = String(state.checks); $("feedback").textContent = ""; $("feedback").classList.remove("is-wrong");
   }
+  function runPendingTimer(entry) {
+    entry.timer = 0;
+    pendingTimers.delete(entry);
+    entry.callback();
+  }
+  function schedulePending(callback, delay) {
+    const entry = { callback, remaining: delay, startedAt: performance.now(), timer: 0 };
+    entry.timer = window.setTimeout(() => runPendingTimer(entry), delay);
+    pendingTimers.add(entry);
+    return entry;
+  }
+  function pausePendingTimers() {
+    const now = performance.now();
+    pendingTimers.forEach((entry) => {
+      if (!entry.timer) return;
+      window.clearTimeout(entry.timer);
+      entry.timer = 0;
+      entry.remaining = Math.max(0, entry.remaining - (now - entry.startedAt));
+    });
+  }
+  function resumePendingTimers() {
+    pendingTimers.forEach((entry) => {
+      if (entry.timer) return;
+      entry.startedAt = performance.now();
+      entry.timer = window.setTimeout(() => runPendingTimer(entry), entry.remaining);
+    });
+  }
+  function clearPendingTimers() {
+    pendingTimers.forEach((entry) => { if (entry.timer) window.clearTimeout(entry.timer); });
+    pendingTimers.clear();
+  }
   function choose(token, node) {
+    if (leaveDialogOpen) return;
     state.checks += 1; $("checkCount").textContent = String(state.checks);
     const round = rounds[state.roundIndex];
-    if (token !== round.answer) { node.classList.add("is-wrong"); setFeedback("wrong", "mismatch"); $("feedback").classList.add("is-wrong"); playTone("feedback.error"); window.setTimeout(() => node.classList.remove("is-wrong"), 420); return; }
+    if (token !== round.answer) { node.classList.add("is-wrong"); setFeedback("wrong", "mismatch"); $("feedback").classList.add("is-wrong"); playTone("feedback.error"); schedulePending(() => node.classList.remove("is-wrong"), 420); return; }
     node.classList.add("is-correct"); node.disabled = true; state.solved += 1; $("feedback").classList.remove("is-wrong"); setFeedback("correct", "completion"); $("appStatus").textContent = t("correct"); playTone("feedback.success");
-    window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; renderRound(); } else finish(); }, 460);
+    schedulePending(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; renderRound(); } else finish(); }, 460);
   }
-  function start() { state.roundIndex = 0; state.checks = 0; state.solved = 0; showView("battleView"); renderRound(); }
-  function finish() { const key = "weightplay-pattern-patch-best-checks"; const prior = Number(safeStorage.get(key)); if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks)); $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView"); }
-  function goHome() { showView("mainView"); applyLocale(); }
+  function start() { clearPendingTimers(); state.roundIndex = 0; state.checks = 0; state.solved = 0; showView("battleView"); renderRound(); }
+  function finish() { clearPendingTimers(); const key = "weightplay-pattern-patch-best-checks"; const prior = Number(safeStorage.get(key)); if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks)); $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView"); }
+  function goHome() { clearPendingTimers(); showView("mainView"); applyLocale(); }
   function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
   function toggleSettings() { const popover = $("mainSettingsPopover"); const open = popover.hidden; popover.hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }
-  function openLeaveDialog() { $("leaveDialog").hidden = false; $("continueBtn").focus(); }
-  function closeLeaveDialog() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }
+  function openLeaveDialog() {
+    if (leaveDialogOpen || !$("resultView").hidden) return;
+    leaveDialogOpen = true;
+    pausePendingTimers();
+    setGameplayInert(true);
+    $("leaveDialog").hidden = false;
+    $("continueBtn").focus();
+  }
+  function closeLeaveDialog() {
+    if (!leaveDialogOpen) return;
+    $("leaveDialog").hidden = true;
+    leaveDialogOpen = false;
+    setGameplayInert(false);
+    resumePendingTimers();
+    $("homeFromBattle").focus();
+  }
+  function confirmLeave() {
+    if (!leaveDialogOpen) return;
+    $("leaveDialog").hidden = true;
+    leaveDialogOpen = false;
+    clearPendingTimers();
+    goHome();
+  }
+  function trapLeaveDialogFocus(event) {
+    if (!leaveDialogOpen) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      closeLeaveDialog();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const actions = [$("continueBtn"), $("confirmLeaveBtn")].filter((node) => node && !node.disabled && !node.hidden);
+    if (!actions.length) return;
+    const first = actions[0];
+    const last = actions[actions.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    } else if (!actions.includes(document.activeElement)) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => {
     document.body.dataset.screen = "main";
@@ -118,11 +207,12 @@
     $("homeFromBattle").addEventListener("click", openLeaveDialog);
     $("leaveBtn").addEventListener("click", openLeaveDialog);
     $("continueBtn").addEventListener("click", closeLeaveDialog);
-    $("confirmLeaveBtn").addEventListener("click", goHome);
+    $("confirmLeaveBtn").addEventListener("click", confirmLeave);
     $("homeFromResult").addEventListener("click", goHome);
     $("mainSettingsBtn").addEventListener("click", toggleSettings);
     $("soundToggle").addEventListener("click", toggleSound);
     $("battleSoundToggle").addEventListener("click", toggleSound);
+    document.addEventListener("keydown", trapLeaveDialogFocus, true);
   });
   window.PATTERN_PATCH_TEST = { rounds, symbols, start, renderRound };
 })();
