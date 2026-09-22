@@ -1,5 +1,5 @@
 import { stages,gear } from './campaign.js?v=4';
-import { Combat } from './combat.js?v=4';
+import { Combat } from './combat.js?v=5';
 import { LOCALES,copy } from './locales.js?v=4';
 import { loadSave,storeSave } from './save.js?v=4';
 import { Expedition } from './expedition.js?v=4';
@@ -64,7 +64,7 @@ function localize(){
   frame.refresh();renderEquipment();renderCompanions();if(rail)rail.refresh();
 }
 function renderStage(){
-  $('#stageNum').textContent=save.unlocked;
+  $('#stageNum').textContent=`${save.unlocked}/30`;
   if(!rail)rail=window.WeightPlayStageV6.install($('#rail'),{total:()=>stages.length,poolSize:9,initialIndex:()=>save.unlocked-1,
     bind:(card,i)=>{const s=stages[i];card.className='stage-card';card.setAttribute('aria-disabled',String(s.id>save.unlocked));
       card.innerHTML=`<div data-wp-item-content><strong>${t('stages')} ${s.id}</strong><h3>${name(s)}</h3><div>${s.checkpoint?t('boss'):t('forest')}</div><small>${save.cleared.includes(s.id)?t('cleared'):s.id<=save.unlocked?t('ready'):t('locked')}</small></div>`;},
@@ -138,7 +138,7 @@ function startEncounter(){
   $('#targets').classList.toggle('two-rows',combat.enemies.some(e=>e.slot>=3));
   $('.arena').classList.toggle('two-rows',combat.enemies.some(e=>e.slot>=3));
   $('#allyPortrait').src=`art/objects/${runKit.companion}.png`;
-  $('#hudStage').textContent=selected;updateProgress();updateHud();startLoop();
+  $('#hudStage').textContent=`${selected}/30`;updateProgress();updateHud();startLoop();
 }
 function resume(){closeDialog();state='live';startLoop();$('#canvas').focus();}
 function loop(now){
@@ -183,7 +183,10 @@ function loop(now){
   raf=requestAnimationFrame(loop);
 }
 function updateHud(){
-  $('#hp').textContent=Math.ceil(combat.hp);$('#attackValue').textContent=`${t('combo')} ${combat.slashes} · ${combat.slashes%8}/8`;
+  $('#hp').textContent=Math.ceil(combat.hp);
+  const playerHp=$('#playerHp');playerHp.max=combat.maxHp;playerHp.value=combat.hp;playerHp.setAttribute('aria-valuetext',`${Math.ceil(combat.hp)} / ${Math.ceil(combat.maxHp)}`);
+  $('#barrierStatus').textContent=combat.barrier>0?cc().status[5]:'';
+  $('#attackValue').textContent=`${t('combo')} ${combat.slashes} · ${combat.slashes%8}/8`;
   $('#auto').classList.toggle('active',save.autoAttack);$('#auto').setAttribute('aria-pressed',String(save.autoAttack));
   $('#autoValue').textContent=save.autoAttack?t('on'):t('off');$('#energy').textContent=`${Math.floor(combat.energy)} / 100`;
   $('#allyName').textContent=cc().names[companions.findIndex(c=>c.id===runKit.companion)];
@@ -192,12 +195,13 @@ function updateHud(){
   for(const b of [...box.children])if(!enemies.some(e=>e.uid===+b.dataset.uid))b.remove();
   enemies.forEach((e,i)=>{
     let b=box.querySelector(`[data-uid="${e.uid}"]`);
-    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><progress></progress><small></small><progress class="enemy-clock" max="1"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
+    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><progress class="enemy-hp" aria-label="Enemy health"></progress><progress class="enemy-shield" max="1" aria-label="Enemy shield"></progress><small></small><progress class="enemy-clock" max="1" aria-label="Enemy attack warning"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
     b.style.gridColumn=String(e.slot>=3?e.slot-2:e.slot+1);b.style.gridRow=e.slot>=3?'2':'1';
     b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.classList.toggle('boss',e.boss);b.querySelector('strong').textContent=`${e.boss?`${t('boss')} · `:''}${name(e)}`;
-    b.querySelector('progress').max=e.maxHp;b.querySelector('progress').value=e.hp;
+    const healthBar=b.querySelector('.enemy-hp');healthBar.max=e.maxHp;healthBar.value=e.hp;
+    const shieldBar=b.querySelector('.enemy-shield');shieldBar.max=Math.max(1,e.maxShield||1);shieldBar.value=e.shield;shieldBar.hidden=e.shield<=0;
     const protectedBySupport=e.boss&&enemies.some(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
-    b.querySelector('small').textContent=protectedBySupport?msg('Destroy support first','先擊破支援目標'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?msg('Core opens after attack','出招後心核會暴露'):e.reflect>0?msg('Mirror armor','鏡面護甲'):e.opening>0?msg('Opening!','破綻！'):e.shield>0?`${msg('Shield','盾')} ${Math.ceil(e.shield)}`:`${Math.ceil(e.hp)} / ${e.maxHp}`;
+    b.querySelector('small').textContent=protectedBySupport?msg('Destroy support first','先擊破支援目標'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?msg('Core opens after attack','出招後心核會暴露'):e.reflect>0?msg('Mirror armor','鏡面護甲'):e.opening>0?msg('Opening!','破綻！'):e.shield>0?msg('Shield active','護盾中'):'';
     b.querySelector('.enemy-clock').value=e.warned?1-Math.max(0,e.t)/e.warn:0;
   });
   const threat=enemies.filter(e=>e.warned).sort((a,b)=>a.t-b.t)[0];
@@ -206,7 +210,10 @@ function updateHud(){
   if(performance.now()>feedbackUntil)$('#feedback').textContent='';else $('#feedback').textContent=feedbackText;
 }
 function encounterWon(){
-  stopLoop();runHp=Math.min(combat.maxHp,combat.hp+combat.maxHp*.14);runEnergy=Math.min(100,combat.energy+18);runCombo=combat.slashes;
+  stopLoop();
+  // A cleared wave gives a small breather, while keeping early-stage farming
+  // meaningful instead of restoring a full bar after every encounter.
+  runHp=Math.min(combat.maxHp,combat.hp+combat.maxHp*.05);runEnergy=Math.min(100,combat.energy+18);runCombo=combat.slashes;
   if(journey.clear()){
     const first=!save.cleared.includes(selected);
     runReward=first?stages[selected-1].reward*(stages[selected-1].checkpoint?2:1):5;
@@ -218,8 +225,8 @@ function updateProgress(){
   const percent=Math.round((journey?.progress||0)*100),complete=journey?.completed===true;
   $('#routeProgress').value=percent;$('#routeProgress').setAttribute('aria-label',t('journey'));
   $('#routeLabel').textContent=complete?t('farm'):`${t('journey')} ${Math.min(journey?.cleared||0,journey?.length||12)}/${journey?.length||12}`;
-  $('#node').textContent=`${percent}%`;
-  $('#claim').disabled=!complete;$('#claim').textContent=complete?`✓ ${t('claim')}`:`${percent}%`;
+  $('#routePercent').textContent=`${percent}%`;
+  $('#claim').disabled=!complete;$('#claim').textContent=complete?`✓ ${t('claim')}`:'—';
   $('#claim').classList.toggle('complete',complete);
 }
 let lootUntil=0;const lootQueue=[];

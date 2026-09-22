@@ -66,7 +66,7 @@ function healthLabels(dt){
   const signature=[select.value,e.hp,e.maxHp,e.power,e.reward?.stat,e.reward?.amount,Math.ceil(e.respawn||0)].join('|');
   if(el.labelSignature===signature)continue;el.labelSignature=signature;
   const reward=el.firstElementChild,bar=el.lastElementChild;reward.replaceChildren();
-  if(e.hp<=0){reward.removeAttribute('title');reward.append(icon('clock'),document.createTextNode(statNumber(Math.max(0,Math.ceil(e.respawn||0)))));reward.setAttribute('aria-label',`${t('respawn')} ${Math.max(0,Math.ceil(e.respawn||0))} ${t('seconds')}`);bar.hidden=true;continue;}bar.hidden=e.kind==='tree';reward.removeAttribute('aria-label');
+  if(e.hp<=0){reward.removeAttribute('title');reward.append(icon('clock'),document.createTextNode(statNumber(Math.max(0,Math.ceil(e.respawn||0)))));reward.setAttribute('aria-label',`${t('respawn')} ${Math.max(0,Math.ceil(e.respawn||0))} ${t('seconds')}`);bar.hidden=true;continue;}bar.hidden=false;reward.removeAttribute('aria-label');
   if(e.kind==='hero'){reward.title=statLabel('attack');reward.append(icon('axe'),document.createTextNode(statNumber(e.power)));}
   else if(e.reward){reward.append(icon(statIcon(e.reward.stat)),document.createTextNode(statNumber(e.reward.amount)));reward.title=`${t('permanent')} · ${statLabel(e.reward.stat)} ${statNumber(e.reward.amount)}`;}
   else reward.textContent=e.kind==='cage'?`${t('rescues')} ${e.order}`:e.kind==='friend'?t('protect'):t('shrines');

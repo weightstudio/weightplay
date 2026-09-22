@@ -22,7 +22,7 @@
 <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-interface-version" content="7">
 <title>Axe &amp; Ally | WeightPlay</title>
 <script src="../../src/game-layout-config.js"></script><script src="../../src/site-config.js"></script>
-<link rel="stylesheet" href="style.css?v=4"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
+<link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2?wp-audio=1.0.0" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
   <meta name="description" content="一路挥斧探索森林，收集四种能力伙伴与特殊装备，挑战首领并持续刷宝。" />
@@ -72,7 +72,7 @@
 <section id="stage" class="scene play-scene" hidden data-wp-standard-stage-screen data-wp-stage-art="art/cover-v1.png" style="--wp-stage-art:url('art/cover-v1.png')">
 <header><button data-wp-return="stage" id="stageBack" aria-label="返回主畫面">←</button><span data-wp-frame-title hidden></span></header>
 <div class="workspace">
-<div id="stageInfo" data-wp-frame-info><span><b id="stageNum">1</b> / 30</span></div>
+<div id="stageInfo" data-wp-frame-info><span class="stage-count"><b id="stageNum">1/30</b></span></div>
 <div id="stagePanel" class="panel"><div id="rail" class="rail" data-wp-stage-rail aria-label="關卡"></div><p id="stageHint" class="stage-hint"></p></div>
 <div id="allyPanel" class="panel management" hidden><h2 data-i18n="companion"></h2><p id="allyDescription"></p><div id="companions" class="equipment"></div></div>
 <div id="equipPanel" class="panel management" hidden><h2 data-i18n="equipment"></h2><p id="coins"></p><div id="equipment" class="equipment"></div></div>
@@ -82,15 +82,15 @@
 <section id="battle" class="scene play-scene" hidden>
 <header><button data-wp-return="battle" id="battleBack" aria-label="返回關卡">←</button><span data-wp-frame-title hidden></span></header>
 <main class="battle-area">
-<div id="battleInfo" data-wp-frame-info><span><b id="hudStage">1</b> / 30</span><span id="node">0%</span><span>HP <b id="hp">130</b></span></div>
-<div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0"></progress></div><button id="claim" disabled>0%</button></div>
+<div id="battleInfo" data-wp-frame-info><span class="stage-count"><b id="hudStage">1/30</b></span><span class="player-health" title="生命"><span class="health-caption" aria-hidden="true">HP</span><progress id="playerHp" max="130" value="130" aria-label="Player health"></progress><span id="barrierStatus" class="barrier-status" aria-live="polite"></span><span id="hp" class="sr-only">130</span></span></div>
+<div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0" aria-label="Journey progress"></progress><strong id="routePercent">0%</strong></div><button id="claim" disabled aria-label="Settle expedition">—</button></div>
 <div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><img id="lootIcon" class="object-icon" alt="" width="44" height="44"><span id="lootText"></span></div></div>
 <div id="feedback" class="feedback" aria-live="polite"></div>
 <div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack"><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span class="ally-heading"><img id="allyPortrait" alt="" width="18" height="18"><span id="allyName" data-i18n="ally"></span></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
 </section>
-</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=4&amp;wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=5&amp;wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Axe &amp; Ally 游戏信息">

@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {GroundCues} from './ground-cues.js';
-import {axePose,ease,enemyWind,enemyStroke} from './combat-pose.js';
+import {axePose,chopBody,ease,enemyWind,enemyStroke} from './combat-pose.js';
 const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555};
 export class WildwoodWorld {
  constructor(canvas,sim){
@@ -42,12 +42,26 @@ export class WildwoodWorld {
   }
   this.box(g,'dark',[0,1.2,.49],[.12,.08,.08]);
   const legs=[];for(const sign of [-1,1]){const hip=new THREE.Group();hip.position.set(sign*.2,.49,0);g.add(hip);this.box(hip,'dark',[0,-.25,0],[.25,.48,.34]);this.box(hip,hero?'wood':'dark',[0,-.43,.08],[.29,.17,.4]);legs.push(hip);}
-  const arm=new THREE.Group();arm.position.set(.42,.9,0);g.add(arm);this.box(arm,color,[0,-.18,0],[.22,.48,.25]);
+  const arm=new THREE.Group();arm.position.set(hero?.43:.42,hero?1.12:.9,0);g.add(arm);this.box(arm,color,[0,hero?-.14:-.18,0],[.22,hero?.3:.48,.25]);
+  let elbow,bladeTip;
   const offarm=new THREE.Group();offarm.position.set(-.43,.98,0);g.add(offarm);this.box(offarm,color,[0,-.25,0],[.24,.55,.28]);
   if(hero){
    this.box(g,'teal',[0,1,.03],[.73,.16,.64]);this.box(g,'teal',[-.2,.75,.3],[.22,.4,.12]);this.box(g,'gold',[0,.49,.27],[.13,.12,.06]);
    const tail=new THREE.Group();tail.position.set(0,.6,-.25);tail.rotation.x=-.65;g.add(tail);for(let i=0;i<5;i++)this.box(tail,i%2?'dark':'orange',[0,0,-i*.28],[.36,.36,.35]);
-   this.box(arm,'wood',[0,-.04,.4],[.13,1.25,.13]);this.box(arm,'white',[.22,.5,.4],[.65,.48,.19]);this.box(arm,'gold',[.07,.48,.4],[.12,.51,.22]);this.box(g,'gold',[-.43,.4,.2],[.18,.23,.18]);
+   elbow=new THREE.Group();elbow.position.y=-.28;arm.add(elbow);
+   this.box(elbow,'orange',[0,-.11,0],[.23,.25,.25]);this.box(elbow,'dark',[0,-.24,.02],[.25,.16,.27]);
+   // Original compact splitting axe: dark eye/poll, stepped forged cheek,
+   // broad pale cutting edge, wooden haft and three teal grip wraps.
+   this.box(elbow,'wood',[0,-.34,.10],[.12,.67,.13]);
+   for(let i=0;i<3;i++)this.box(elbow,'teal',[0,-.19-i*.075,.10],[.145,.045,.15]);
+   this.box(elbow,'gold',[0,-.45,.10],[.15,.07,.16]);
+   this.box(elbow,'dark',[0,-.53,.08],[.22,.25,.28]);
+   this.box(elbow,'stone',[0,-.52,.24],[.20,.34,.26]);
+   this.box(elbow,'stone',[0,-.56,.36],[.16,.43,.17]);
+   this.box(elbow,'white',[0,-.56,.465],[.09,.49,.075]);
+   this.box(elbow,'gold',[.115,-.51,.10],[.025,.075,.075]);
+   bladeTip=new THREE.Object3D();bladeTip.position.set(0,-.56,.50);elbow.add(bladeTip);
+   this.box(g,'gold',[-.43,.4,.2],[.18,.23,.18]);
   }else if(['shield','ironbark','stumpback'].includes(type)){
    this.box(arm,'wood',[0,-.1,.35],[.7,.95,.18]);this.box(arm,'gold',[0,-.1,.46],[.55,.14,.04]);this.box(arm,'cyan',[0,-.1,.49],[.17,.3,.04]);
   }else if(['caster','shaman','mosswitch'].includes(type)){this.box(arm,'wood',[0,0,.2],[.13,1.6,.13]);this.box(arm,type==='caster'?'purple':'cyan',[0,.75,.2],[.38,.4,.38]);}
@@ -55,7 +69,7 @@ export class WildwoodWorld {
   if(type==='stormowl'){for(const sign of [-1,1]){this.box(g,'teal',[sign*.72,1,0],[.65,.7,.23]);this.box(g,'white',[sign*.93,.8,.05],[.3,.6,.18]);}this.box(g,'gold',[0,1.25,.52],[.23,.3,.3]);}
   if(type==='rootweaver'){for(const sign of [-1,1])for(let i=0;i<3;i++){const root=this.box(g,'wood',[sign*(.5+i*.22),.2,0],[.28,.35,.7]);root.rotation.z=sign*.3;}this.box(g,'purple',[0,1.75,0],[.6,.32,.6]);}
   if(boss){g.scale.setScalar(1.35);this.box(g,'cyan',[0,.74,.27],[.25,.35,.07]);for(let i=-1;i<=1;i++)this.box(g,'gold',[i*.24,1.72,0],[.14,.35+Math.abs(i)*.1,.18]);}
-  g.userData={legs,arm,offarm,kind,type};return g;
+  g.userData={legs,arm,offarm,elbow,bladeTip,kind,type};return g;
  }
  model(e){
   let g=new THREE.Group();
@@ -71,6 +85,17 @@ export class WildwoodWorld {
  batch(color){if(this.batches.has(color))return this.batches.get(color);const material=new THREE.MeshStandardMaterial({color:color==='ground'?0xffffff:palette[color]||color,map:color==='ground'?this.ground:null,roughness:.72,metalness:['gold','white'].includes(color)?.35:.05,emissive:color==='cyan'?0x39aa8b:0,emissiveIntensity:.35});const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;}
  resize(){const r=this.canvas.getBoundingClientRect();this.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);const aspect=r.width/Math.max(1,r.height);const halfH=Math.max(4.8,4.8/aspect),halfW=halfH*aspect;Object.assign(this.camera,{left:-halfW,right:halfW,top:halfH,bottom:-halfH});this.camera.updateProjectionMatrix();}
  consume(events){for(const e of events)if(['hit','hurt','defeat','wardBlock','pulse','mastery','pickup'].includes(e.type)){
+   if(e.type==='defeat'&&['enemy','boss'].includes(e.kind)){
+    const actor=this.sim.ents.find(a=>a.uid===e.uid),colors=['moss','wood','cream','dark'];
+    if(['caster','shaman','mosswitch'].includes(actor?.type))colors[0]='purple';
+    if(['ram','hornroot','heartwood'].includes(actor?.type))colors[0]='wood';
+    if(actor?.type==='stormowl')colors[0]='teal';
+    const count=this.reduced?4:e.kind==='boss'?12:8;
+    // Defeats take priority over old chips, with the same 24-piece budget.
+    while(this.effects.length+count>24){const old=this.effects.shift();this.root.remove(old.g);this.parts=this.parts.filter(p=>!isChild(p.node,old.g));}
+    for(let i=0;i<count;i++){const g=new THREE.Group();this.root.add(g);const size=(e.kind==='boss'?.4:.3)*(i%3===0?1.3:1);this.box(g,colors[i%colors.length],[0,0,0],[size,size,size]);this.effects.push({g,x:e.x,z:e.z,angle:i*2.4,life:.7,total:.7,shatter:true,height:.45+(i%3)*.4,spread:this.reduced?.3:1.1+(i%3)*.25});}
+    continue;
+   }
    for(let i=0;i<(this.reduced?2:e.type==='defeat'?6:3)&&this.effects.length<24;i++){const g=new THREE.Group();this.root.add(g);this.box(g,e.type==='hurt'?'red':e.type==='pickup'?'cyan':'gold',[0,0,0],[.13,.13,.13]);this.effects.push({g,x:e.x??this.sim.hero.x,z:e.z??this.sim.hero.z,angle:i*2.4,life:.35,total:.35});}
   }}
  render(dt=0){
@@ -81,15 +106,17 @@ export class WildwoodWorld {
   this.walkBlend=(this.walkBlend||0)+((walking?1:0)-(this.walkBlend||0))*(1-Math.exp(-dt*14));
   const stride=Math.sin(sim.time*12)*this.walkBlend,rig=this.heroModel.userData;
   if(h.attack&&h.attack!==this.lastAttack){this.attackBegan=sim.time-(h.attack.total-h.attack.left);this.attackStart=rig.arm.rotation.x;this.lastAttack=h.attack;}
+  if(h.moving&&sim.time-(this.attackBegan??-10)<.62){this.attackBegan=-10;this.recovery={at:sim.time,x:rig.arm.rotation.x,y:rig.arm.rotation.y,z:rig.arm.rotation.z,elbow:rig.elbow.rotation.x,lean:this.heroModel.rotation.x,brace:rig.offarm.rotation.x,drop:this.heroModel.position.y};}
   const elapsed=sim.time-(this.attackBegan??-10),attacking=elapsed<.62;
-  const weight=attacking?ease(elapsed/.18)*(1-ease((elapsed-.36)/.26)):0;
-  rig.arm.rotation.set(attacking?axePose(elapsed,this.attackStart,stride*.55):stride*.55,weight*.65,-weight*.55);
-  rig.offarm.rotation.x=-stride*.65-weight*.22;this.heroModel.rotation.z=stride*.085;
-  this.heroModel.rotation.x=this.walkBlend*.1+weight*.15;
-  this.heroModel.position.y=h.recoil>0?.1:Math.abs(stride)*.085;
+  const body=attacking?chopBody(elapsed):{elbow:0,lean:0,brace:0,drop:0};
+  rig.arm.rotation.set(attacking?axePose(elapsed,this.attackStart,stride*.4):stride*.4,0,0);
+  rig.elbow.rotation.x=body.elbow;rig.offarm.rotation.x=-stride*.65-body.brace;this.heroModel.rotation.z=stride*.085;
+  this.heroModel.rotation.x=this.walkBlend*.1+body.lean;
+  this.heroModel.position.y=h.recoil>0?.1:Math.abs(stride)*.085+body.drop;
+  if(this.recovery){const blend=ease((sim.time-this.recovery.at)/.18),r=this.recovery,mix=(a,b)=>a*(1-blend)+b*blend;rig.arm.rotation.set(mix(r.x,rig.arm.rotation.x),r.y*(1-blend),r.z*(1-blend));rig.elbow.rotation.x=mix(r.elbow,body.elbow);rig.offarm.rotation.x=mix(r.brace,rig.offarm.rotation.x);this.heroModel.rotation.x=mix(r.lean,this.heroModel.rotation.x);this.heroModel.position.y=mix(r.drop,this.heroModel.position.y);if(blend>=1)this.recovery=null;}
   rig.legs.forEach((leg,i)=>leg.rotation.x=h.dash>0?.9:Math.sin(sim.time*12+i*Math.PI)*.82*this.walkBlend);
   this.exit.position.set(sim.exit.x,0,sim.exit.z);this.exit.visible=sim.ready()&&nearby(sim.exit);
-  for(const e of sim.ents){let g=this.models.get(e.uid);if(!g){g=this.model(e);this.models.set(e.uid,g);}const falling=e.hp<=0&&sim.time-(e.defeatedAt??-10)<.5;g.visible=e.hp>0||falling;g.position.set(e.x,e.recoil?Math.sin(e.recoil*30)*.05:0,e.z);g.rotation.y=e.angle||0;g.rotation.z=falling?(sim.time-e.defeatedAt)*2.8:e.recoil>0?Math.sin(e.recoil*40)*.18:0;
+  for(const e of sim.ents){let g=this.models.get(e.uid);if(!g){g=this.model(e);this.models.set(e.uid,g);}const falling=e.hp<=0&&!['enemy','boss'].includes(e.kind)&&sim.time-(e.defeatedAt??-10)<.5;g.visible=e.hp>0||falling;g.position.set(e.x,e.recoil?Math.sin(e.recoil*30)*.05:0,e.z);g.rotation.y=e.angle||0;g.rotation.z=falling?(sim.time-e.defeatedAt)*2.8:e.recoil>0?Math.sin(e.recoil*40)*.18:0;
    if(g.userData.arm)g.userData.arm.rotation.x=e.wind?enemyWind(1-e.wind.left/e.wind.total):e.swing?enemyStroke(.36-e.swing):0;
    const previous=g.userData.previous,moving=previous&&Math.hypot(e.x-previous.x,e.z-previous.z)>.001;if(g.userData.legs)g.userData.legs.forEach((leg,i)=>leg.rotation.x=moving?Math.sin(sim.time*9+i*Math.PI)*.7:0);g.userData.previous={x:e.x,z:e.z};
   }
@@ -99,7 +126,7 @@ export class WildwoodWorld {
   this.dynamic=new THREE.Group();this.root.add(this.dynamic);const d=this.dynamic;
   this.cues.render(sim);
   for(const hazard of sim.hazards||[])if(hazard.delay<=0)for(let i=0;i<4;i++)this.box(d,'wood',[hazard.x+Math.cos(i*1.57)*.6,.5,hazard.z+Math.sin(i*1.57)*.6],[.16,1,.16]);
-  for(const e of sim.ents)if(e.hp<=0&&e.spawn){this.box(d,e.kind==='tree'?'wood':'gold',[e.x,.06,e.z],[e.kind==='tree'?.4:1.3,.12,e.kind==='tree'?.4:1.3]);}
+  for(const e of sim.ents)if(e.hp<=0&&e.kind==='tree'&&e.spawn)this.box(d,'wood',[e.x,.06,e.z],[.4,.12,.4]);
   for(const o of sim.obstacles)if(o.hp>0&&nearby(o)){this.box(d,o.breakable?'wood':'stone',[o.x,.5,o.z],[o.w*2,1,o.h*2]);this.box(d,'moss',[o.x,1.03,o.z],[o.w*1.9,.12,o.h*1.9]);}
   for(const z of sim.zones)if(nearby(z))this.box(d,z.type==='mud'?'wood':z.type==='thorn'?(sim.time%3>2.1?'red':'purple'):'teal',[z.x,.01,z.z],[z.r*2,.035,z.r*2]);
   for(const f of sim.fields)this.box(d,'teal',[f.x,.04,f.z],[f.r*2,.045,f.r*2]);
@@ -110,14 +137,14 @@ export class WildwoodWorld {
    else{this.box(item,'gold',[0,0,0],[.32,.42,.3]);this.box(item,'wood',[0,.24,0],[.4,.17,.38]);this.box(item,'wood',[0,.37,0],[.08,.16,.08]);}
   }
   if(h.ward)this.box(d,'cyan',[h.x,.65,h.z-.4],[.85,1,.08]);
-  for(const fx of this.effects){fx.life-=dt;const t=(1-fx.life/fx.total);fx.g.position.set(fx.x+Math.cos(fx.angle)*t,.5+Math.sin(t*Math.PI)*.6,fx.z+Math.sin(fx.angle)*t);fx.g.scale.setScalar(Math.max(0,1-t));}
+  for(const fx of this.effects){fx.life-=dt;const t=(1-fx.life/fx.total);if(fx.shatter){fx.g.position.set(fx.x+Math.cos(fx.angle)*t*fx.spread,Math.max(.08,fx.height+1.6*t-2.6*t*t),fx.z+Math.sin(fx.angle)*t*fx.spread);if(!this.reduced)fx.g.rotation.set(t*3,fx.angle+t*2,t*2);fx.g.scale.setScalar(1-ease((t-.55)/.45));}else{fx.g.position.set(fx.x+Math.cos(fx.angle)*t,.5+Math.sin(t*Math.PI)*.6,fx.z+Math.sin(fx.angle)*t);fx.g.scale.setScalar(Math.max(0,1-t));}}
   for(const fx of this.effects.filter(x=>x.life<=0)){this.root.remove(fx.g);this.parts=this.parts.filter(p=>!isChild(p.node,fx.g));}this.effects=this.effects.filter(x=>x.life>0);
   this.root.updateMatrixWorld(true);for(const mesh of this.batches.values())mesh.count=0;
   for(const p of this.parts){let visible=true;for(let node=p.node;node;node=node.parent)if(!node.visible){visible=false;break;}if(!visible)continue;const b=this.batch(p.color);if(b.count<2048)b.setMatrixAt(b.count++,p.node.matrixWorld);}
   for(const mesh of this.batches.values())mesh.instanceMatrix.needsUpdate=true;
   this.renderer.render(this.scene,this.camera);
  }
- metrics(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,materials:this.batches.size+1,cues:{vertices:this.cues.count,kinds:this.cues.kinds},models:this.models.size,effects:this.effects.length,visibleObjects:[...this.models.values()].filter(g=>g.visible).length,heroPose:{arm:this.heroModel.userData.arm.rotation.x,leg:this.heroModel.userData.legs[0].rotation.x}};}
+ metrics(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,materials:this.batches.size+1,cues:{vertices:this.cues.count,kinds:this.cues.kinds},models:this.models.size,effects:this.effects.length,fragments:this.effects.filter(f=>f.shatter).length,deadHostileModels:this.sim.ents.filter(e=>e.hp<=0&&['enemy','boss'].includes(e.kind)&&this.models.get(e.uid)?.visible).length,deathSlabs:this.parts.filter(p=>p.node.parent===this.dynamic&&p.color==='gold'&&p.node.position.y===.06).length,visibleObjects:[...this.models.values()].filter(g=>g.visible).length,bladeTip:this.heroModel.userData.bladeTip.getWorldPosition(new THREE.Vector3()).toArray(),heroPose:{elbow:this.heroModel.userData.elbow.rotation.x,arm:this.heroModel.userData.arm.rotation.x,leg:this.heroModel.userData.legs[0].rotation.x}};}
  project(x,z,height=.5){const v=new THREE.Vector3(x,height,z).project(this.camera);return {x:(v.x+1)/2,y:(1-v.y)/2};}
  dispose(){this.cues.dispose();this.sun.shadow.map?.dispose();this.ground.dispose();this.geometry.dispose();for(const b of this.batches.values()){b.dispose();b.material.dispose();}this.batches.clear();this.parts=[];this.models.clear();this.effects=[];this.renderer.dispose();}
 }

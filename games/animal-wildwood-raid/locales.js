@@ -101,3 +101,23 @@ ar:['تجدد الصحة / 3 ث','تستعيد نقطة صحة كل 3 ثوانٍ
 };
 for(const l of LOCALES)['regen','regenGuide','treeGuide'].forEach((key,i)=>COPY[l][key]=recoveryCopy[l][i]);
 ['Ranger','角色','角色','キャラクター','캐릭터','Personaje','Personagem','Personnage','Charakter','Personaggio','Персонаж','पात्र','الشخصية'].forEach((name,i)=>COPY[LOCALES[i]].ranger=name);
+const stationaryHints=[
+ 'Drag to move · stop near a target to chop · Space to dash',
+ '拖曳移動 · 靠近目標停下才揮斧 · 空白鍵閃避',
+ '拖动移动 · 靠近目标停下才挥斧 · 空格键闪避',
+ 'ドラッグで移動 · 敵や木の近くで止まると斧攻撃 · 空白で回避',
+ '드래그로 이동 · 대상 근처에 멈추면 도끼 공격 · 스페이스로 회피',
+ 'Arrastra para moverte · párate cerca para atacar · Espacio: esquiva',
+ 'Arraste para mover · pare perto do alvo para atacar · Espaço: esquiva',
+ 'Glissez pour bouger · arrêtez-vous près d’une cible pour frapper · Espace : esquive',
+ 'Ziehen: bewegen · nahe am Ziel stehen bleiben: schlagen · Leertaste: ausweichen',
+ 'Trascina per muoverti · fermati vicino al bersaglio per colpire · Spazio: schiva',
+ 'Тяните для движения · стойте рядом с целью для удара · Пробел: рывок',
+ 'खींचकर चलें · लक्ष्य के पास रुककर कुल्हाड़ी चलाएँ · स्पेस से बचें',
+ 'اسحب للتحرك · توقف قرب الهدف لضربه بالفأس · مسافة للتفادي'
+];
+for(const [i,l] of LOCALES.entries()){
+ COPY[l].moveHint=stationaryHints[i];
+ COPY[l].equipmentHelp+=` ${stationaryHints[i]}`;
+ effects[l]=stationaryHints[i]+'|'+effects[l].split('|').slice(1).join('|');
+}

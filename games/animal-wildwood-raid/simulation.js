@@ -2,6 +2,9 @@ import {STAGES,TOOLS,ENEMIES,BOSS,guardianFor} from './game-data.js';
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const hostile=e=>e.kind==='enemy'||e.kind==='boss';
+// Stage one teaches the rhythm; stage two starts the real combat curve.
+// Fixed stage pressure preserves the value of permanent earned growth.
+const pressure=id=>id===1?1:1.55+(id-2)*.025;
 export function mission(stage){
  const s=typeof stage==='number'?STAGES[stage-1]:stage;
  const req=s.type==='gather'?{wood:s.target}:s.type==='defeat'?{kills:s.target}:s.type==='rescue'?{rescues:s.target}:s.type==='shrine'?{shrines:s.target}:s.type==='survive'?{seconds:s.target}:s.type==='boss'?{bosses:BOSS[s.boss].count||1}:s.id===3?{wood:8,kills:3}:{rescues:3,kills:6};
@@ -28,14 +31,14 @@ export class Simulation {
    if(e.kind==='enemy'&&e.respawn<=2&&!e.spawnWarning){let spot=null;for(let i=0;i<16;i++){const a=i*2.4,p={x:clamp(e.spawn.x+Math.cos(a)*Math.floor(i/4),-6.3,6.3),z:clamp(e.spawn.z+Math.sin(a)*Math.floor(i/4),-7,7)};if(dist(p,this.hero)>3&&!this.obstacles.some(o=>o.hp>0&&Math.abs(p.x-o.x)<o.w+.6&&Math.abs(p.z-o.z)<o.h+.6)){spot=p;break;}}if(!spot){e.respawn=2.1;continue;}Object.assign(e,spot);e.spawnWarning=true;e.respawn=2;}
    if(e.respawn<=0){e.hp=e.maxHp;e.wind=null;e.charge=null;e.stun=0;e.exposed=0;e.recoil=0;e.cd=1.3;e.hidden=false;e.spawnWarning=false;e.respawn=null;this.log('respawn',{uid:e.uid});}
   }}
- enemy(type,x,z,extra={}){const base=ENEMIES[type],scale=1+this.stage.id*.2+this.stage.id**2*.015,d={...base,hp:Math.round(base.hp*scale),damage:Math.round(base.damage*(1+this.stage.id*.18)),speed:base.speed*1.15};return this.entity('enemy',x,z,{...d,type,maxHp:d.hp,cd:1+this.random(),wind:null,slow:0,stun:0,hidden:type==='sneak',...extra});}
+ enemy(type,x,z,extra={}){const base=ENEMIES[type],scale=(1+this.stage.id*.2+this.stage.id**2*.015)*pressure(this.stage.id),d={...base,hp:Math.round(base.hp*scale),damage:Math.round(base.damage*(1+this.stage.id*.18)*pressure(this.stage.id)),speed:base.speed*1.15};return this.entity('enemy',x,z,{...d,type,maxHp:d.hp,cd:1+this.random(),wind:null,slow:0,stun:0,hidden:type==='sneak',...extra});}
  build(){
   const q=this.stage;
   const treePos=[[-4,5],[3.7,4.6],[-5.2,1.5],[5.1,1.1],[-4.8,-3.4],[4.5,-4.8],[-2.8,-6.5],[2.8,-6.4],[-6,4],[6,4],[-6,-1],[6,-2]];
   treePos.slice(0,Math.max(q.req.wood?Math.ceil(q.req.wood/2)+1:6,6)).forEach(([x,z],i)=>this.entity('tree',x,z,{hp:5,maxHp:5,r:.52,variant:i%3}));
   if(q.req.rescues){const positions=[[-4,-1],[4,-4],[-4,-5],[4,2]];positions.slice(0,q.req.rescues).forEach(([x,z],i)=>this.entity('cage',x,z,{hp:24,maxHp:24,order:i+1}));}
   if(q.req.shrines){[[-4,-3],[4,-4],[0,1]].slice(0,q.req.shrines).forEach(([x,z],i)=>this.entity('shrine',x,z,{hp:1,maxHp:1,order:i+1,channel:0}));}
-  if(q.protect){this.protectedHp=200+q.id*60;this.entity('friend',0,-1,{hp:this.protectedHp,maxHp:this.protectedHp,r:.6});}
+  if(q.protect){this.protectedHp=Math.round((200+q.id*60)*pressure(q.id)**2);this.entity('friend',0,-1,{hp:this.protectedHp,maxHp:this.protectedHp,r:.6});}
   const layouts={fork:[[-1,1,1,2]],long:[[-2,0,.7,3],[2,-2,.7,3]],split:[[0,0,1.5,3]],cover:[[-3,0,1,1],[3,-2,1,1]],ring:[[0,0,1.2,1.2]],gate:[[-3,0,1.8,.5],[3,0,1.8,.5]],branches:[[0,-1,.6,3]],current:[[-2,0,.7,2],[2,-3,.7,2]],switch:[[-2,-1,1,1],[2,-1,1,1]],chain:[[0,-2,1,2]],road:[[-4,0,1,2],[4,0,1,2]],gauntlet:[[0,1,1,1],[-3,-3,1,1]]};
   for(const [x,z,w,h] of layouts[q.layout]||[])this.obstacles.push({x,z,w,h,hp:q.layout==='switch'?1:Infinity,breakable:q.layout==='switch'});
   if(q.boss==='hornroot')this.obstacles.push({x:0,z:0,w:1.3,h:.7,hp:1,breakable:true});
@@ -46,7 +49,7 @@ export class Simulation {
   }
   const count=q.id===1?1:q.protect?3:q.req.kills||Math.min(6,2+Math.floor(q.id/6));
   for(let i=0;i<count;i++){const a=i*2.399+q.id*.4,r=3.5+i%2*1.5;this.enemy(q.enemies[i%q.enemies.length],Math.cos(a)*r,Math.sin(a)*r-2,{elite:q.id===29});}
-  if(q.boss){const base=BOSS[q.boss],d={...base,hp:Math.round((300+q.id*105)*(1+q.id*.095)*(1+q.id*.08)*(q.boss==='twinroot'?.62:1)),damage:Math.round((20+q.id*5.5)*(1+q.id*.07)*(q.boss==='stormowl'?.7:1)),speed:base.speed*1.5};for(let i=0;i<(d.count||1);i++)this.entity('boss',d.count?(i?2.4:-2.4):0,-3.5,{...d,type:q.boss,boss:q.boss,maxHp:d.hp,r:.8,cd:1.6,wind:null,phase:1,slow:0,stun:0,exposed:0,role:d.count?(i?'healer':'tank'):null,summonCd:5,awake:false});}
+  if(q.boss){const base=BOSS[q.boss],d={...base,hp:Math.round((300+q.id*105)*(1+q.id*.095)*(1+q.id*.08)*pressure(q.id)*(q.boss==='twinroot'?.62:1)),damage:Math.round((20+q.id*5.5)*(1+q.id*.07)*pressure(q.id)*(q.boss==='stormowl'?.7:1)),speed:base.speed*1.5};for(let i=0;i<(d.count||1);i++)this.entity('boss',d.count?(i?2.4:-2.4):0,-3.5,{...d,type:q.boss,boss:q.boss,maxHp:d.hp,r:.8,cd:1.6,wind:null,phase:1,slow:0,stun:0,exposed:0,role:d.count?(i?'healer':'tank'):null,summonCd:5,awake:false});}
   if(q.boss==='mosswitch')this.entity('totem',-3,-3,{hp:30,maxHp:30});
   for(const e of this.ents){for(const o of this.obstacles)if(Math.abs(e.x-o.x)<o.w+e.r+.15&&Math.abs(e.z-o.z)<o.h+e.r+.15)e.x=clamp(o.x+Math.sign(e.x-o.x||1)*(o.w+e.r+.3),-6.5,6.5);}
   for(const e of this.ents)if(e.spawn)e.spawn={x:e.x,z:e.z};
@@ -117,7 +120,7 @@ export class Simulation {
    else if(w.kind==='heal'){const targets=this.alive().filter(x=>x!==e&&hostile(x)&&dist(e,x)<4);targets.forEach(x=>x.hp=Math.min(x.maxHp,x.hp+Math.max(12,x.maxHp*.07)));this.log('heal',{x:e.x,z:e.z});}
    else if(w.kind==='summon'){if(this.alive().filter(hostile).length<9){this.enemy('thornling',e.x+1,e.z+1,{summon:true});this.enemy('caster',e.x-1,e.z+1,{summon:true});}this.log('summon');}
    else{const locked=w.target?this.ents.find(x=>x.uid===w.target):this.hero;if(locked&&locked.hp>0&&dist(e,locked)<(w.kind==='sweep'?2.5:1.65))this.hurt(e.damage,locked);e.exposed=e.boss?1.6:.4;this.log('swing',{uid:e.uid,x:e.x,z:e.z});}
-   e.cd=e.boss?1.7:ENEMIES[e.type].cooldown;return;
+   e.cd=(e.boss?1.7:ENEMIES[e.type].cooldown)*Math.max(.75,1-(this.stage.id-1)*.009);return;
   }
   if(e.charge){const c=e.charge;c.left-=dt;const nx=e.x+c.dx*12*dt,nz=e.z+c.dz*12*dt;
    const wall=this.obstacles.find(o=>o.hp>0&&Math.abs(nx-o.x)<o.w+.65&&Math.abs(nz-o.z)<o.h+.65);
@@ -145,12 +148,14 @@ export class Simulation {
   if(this.won||this.lost)return;dt=clamp(dt,0,1/30);this.time+=dt;this.tick++;this.tally.seconds=this.time;const h=this.hero;
   for(const k in this.cool)this.cool[k]=Math.max(0,this.cool[k]-dt);
   h.invulnerable=Math.max(0,h.invulnerable-dt);h.recoil=Math.max(0,h.recoil-dt);h.boots=Math.max(0,h.boots-dt);h.dash=Math.max(0,h.dash-dt);
-  let x=input.x||0,z=input.z||0,l=Math.hypot(x,z);if(l>1){x/=l;z/=l;}if(l>.1&&(!h.attack||h.dash>0))h.angle=Math.atan2(x,z);
+  let x=input.x||0,z=input.z||0,l=Math.hypot(x,z);if(l<=.1){x=0;z=0;}if(l>1){x/=l;z/=l;}h.moving=l>.1||h.dash>0;
+  if(h.moving&&h.attack){h.attack.cancelled=true;h.attack=null;}
+  if(l>.1)h.angle=Math.atan2(x,z);
   let speed=(h.boots?4.8:4);for(const zone of this.zones)if(dist(h,zone)<zone.r){if(zone.type==='mud')speed*=.6;if(zone.type==='current')z=Math.max(z,-.2);if(zone.type==='thorn'&&this.time%3>2.1)this.hurt(8);}
   if(h.dash>0){x=Math.sin(h.angle);z=Math.cos(h.angle);speed=12;}
   this.moveObject(h,x*speed*dt,z*speed*dt);
   if(h.attack){h.attack.left-=dt;if(!h.attack.contacted&&h.attack.left<=.14){h.attack.contacted=true;const target=this.ents.find(e=>e.uid===h.attack.uid);if(target&&target.hp>0&&dist(h,target)<2.05&&this.clearLine(h,target))this.hit(target,h.power);}if(h.attack.left<=0)h.attack=null;}
-  else if(this.cool.axe<=0){const target=this.target(1.65);if(target&&target.kind!=='shrine'){h.attack={uid:target.uid,left:.44,total:.44,contacted:false};h.angle=Math.atan2(target.x-h.x,target.z-h.z);this.cool.axe=.66;}}
+  else if(!h.moving&&this.cool.axe<=0){const target=this.target(1.65);if(target&&target.kind!=='shrine'){h.attack={uid:target.uid,left:.44,total:.44,contacted:false};h.angle=Math.atan2(target.x-h.x,target.z-h.z);this.cool.axe=.66;}}
   for(const e of this.alive()){
    if(e.kind==='friend')e.invulnerable=Math.max(0,(e.invulnerable||0)-dt);
    if(hostile(e))this.actEnemy(e,dt);

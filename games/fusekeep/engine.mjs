@@ -160,7 +160,15 @@ export class Battle {
   if(this.queue.length&&this.enemies.length<LIMITS.enemies){
    this.spawnTime-=dt;
    if(this.spawnTime<=0){const item=this.queue.shift(),i=item.index,pattern=this.stage.pattern;
-    const x=pattern==='sides'?(i%2?2.5:-2.5):pattern==='column'?(this.wave%3-1)*2.1:(this.random()-.5)*(pattern==='cluster'?2:6);
+    // Patterns shape the distribution, while each enemy still receives its own
+    // seeded lane. This keeps authored pressure (alternating sides/columns)
+    // without making every wave look like two fixed vertical queues.
+    const side=i%2?1:-1;
+    const x=pattern==='sides'
+     ?clamp((this.random()-.5)*6.2+(this.random()<.55?side*.8:0),-3.15,3.15)
+     :pattern==='column'
+      ?clamp((this.wave%3-1)*2.1+(this.random()-.5)*1.55,-3.15,3.15)
+      :(this.random()-.5)*(pattern==='cluster'?3.5:6.2);
     this.spawn(item.type,x);this.spawnTime=pattern==='burst'?(i%4===3?1.8:.3):pattern==='cluster'?.32:.65;
    }
   }

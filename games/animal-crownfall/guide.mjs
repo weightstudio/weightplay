@@ -61,16 +61,16 @@ const extendedGuide={
     "Let the fall and encounters finish. Compare the new power with the next guard before choosing another group.",
     "Reach the crown, then choose the next stage or replay. After a mistake, undo the last action or retry the puzzle.",
     "How the challenge grows",
-    "Stages 1–4 introduce dropping, absorption and a landing sword. From stage 5, addition before multiplication matters; split floors can require dropping a strong guard away before releasing the fox. Middle stages mix keys, mirrored routes, shield runes and linked rooms. Later puzzles demand preparation across several floors rather than simply clearing the floor beneath you. Stage 20 checks the side of approach; stage 25 has a second boss phase; stage 30 combines a banner, a shield and seals in order. These are fixed puzzles with increasing combinations, not a selectable difficulty mode.",
+    "Stages 1–4 introduce dropping, absorption and a landing sword. From stage 5, addition before multiplication matters; split floors can require dropping a strong guard away before releasing the fox. Middle stages mix keys, mirrored routes, shield runes and linked rooms. Later puzzles require preparation across several floors, not just clearing beneath you. Stage 20 checks the side of approach; stage 25 has a second boss phase; stage 30 combines a banner, a shield and seals in order. These are fixed puzzles with increasing combinations, not a selectable difficulty mode.",
     "Useful decisions",
     "Compare both orders: collecting +10 before ×2 gives 10 more power than collecting it afterward.",
     "Inspect the lower landing before releasing the fox; a guard or supply may need to fall first.",
     "Keep required guards, supplies and the crown away from spikes. Losing an objective can end the attempt.",
     "Use undo to compare routes. A hint can help recovery, but a no-hint badge requires a clear without one.",
     "Design note",
-    "Each removal is a deliberate turn. Connected blocks vanish without refilling, so their absence is a lasting change to the route. The same choices produce the same outcome, letting a retry test a different order instead of hoping for a lucky drop. Attacks happen automatically after an approach: the visible wind-up and contact explain the calculation, rather than asking for a reaction tap. The camera follows the descent, while dragging, arrows and overview let you inspect floors outside the current view. This keeps a tall castle readable on a phone without shrinking the entire puzzle into one screen. The preview supports planning but does not supply a winning sequence.",
+    "Each removal is a deliberate turn. Connected blocks vanish without refilling, so their absence is a lasting change to the route. The same choices produce the same outcome, letting a retry test a different order without luck. Attacks happen automatically after an approach: the visible wind-up and contact explain the calculation, rather than asking for a reaction tap. The camera follows the descent, while dragging, arrows and overview let you inspect floors outside the current view. This keeps a tall castle readable on a phone without shrinking the entire puzzle into one screen. The preview supports planning but does not supply a winning sequence.",
     "Player, device and save information",
-    "Play with touch or mouse; keyboard controls are available for focused board cells. There is no timer, login or in-game spending. Allow roughly 1–3 minutes per attempt, longer for harder routes. Unlocks, badges, settings and an unfinished run use this browser’s local storage; they do not sync between devices. Clearing browser data can remove them. If saving is unavailable, play can continue in the session.",
+    "Use touch, mouse or focused-cell keyboard controls. There is no timer, login or in-game spending. Allow roughly 1–3 minutes per attempt, longer for harder routes. Unlocks, badges, settings and an unfinished run use this browser’s local storage; they do not sync between devices. Clearing browser data can remove them. If saving is unavailable, play can continue in the session.",
     "Questions about the castle",
     "Is power also health?",
     "No. The displayed number is attack power, with no separate health pool. A guard is beaten only with strictly greater power and the required conditions; equal power loses. Victory adds the guard’s power.",
@@ -79,7 +79,7 @@ const extendedGuide={
     "Can enough power ignore a shield or boss rule?",
     "No. Obtain the matching rune for a shield, defeat required deputies, obey the indicated approach side and collect seals in order where required. A two-phase boss must also be defeated in its final form.",
     "Must every guard be defeated?",
-    "Only the stage’s required targets and living bosses block the crown; some side guards are optional. Check the target display and route before skipping one. Clearing a stage unlocks the next, while replaying can improve badges."
+    "Only the stage’s required targets and living bosses block the crown; some side guards are optional. Check the target display and route before skipping one."
   ],
   "zh-Hant": [
     "古堡與任務",
@@ -419,3 +419,24 @@ const extendedGuide={
   ]
 };
 for(const [locale,parts] of Object.entries(DETAILS))parts.push(...extendedGuide[locale]);
+// Public gameplay tags and related-game heading; indices 0–29 remain stable.
+const discoveryCopy={
+ en:['Connected-block removal','Order puzzle','Route planning','Related games'],
+ 'zh-Hant':['相連方塊消除','順序解謎','路線規劃','相關遊戲'],
+ 'zh-Hans':['相连方块消除','顺序解谜','路线规划','相关游戏'],
+ ja:['つながったブロックの消去','順序パズル','ルート計画','関連ゲーム'],
+ ko:['연결된 블록 제거','순서 퍼즐','경로 계획','관련 게임'],
+ es:['Eliminación de bloques conectados','Puzle de orden','Planificación de rutas','Juegos relacionados'],
+ 'pt-BR':['Remoção de blocos conectados','Quebra-cabeça de ordem','Planejamento de rotas','Jogos relacionados'],
+ fr:['Suppression de blocs reliés','Casse-tête de séquence','Planification du parcours','Jeux associés'],
+ de:['Verbundene Blöcke entfernen','Reihenfolge-Rätsel','Routenplanung','Ähnliche Spiele'],
+ it:['Rimozione di blocchi collegati','Rompicapo di sequenza','Pianificazione del percorso','Giochi correlati'],
+ ru:['Удаление связанных блоков','Головоломка на порядок','Планирование маршрута','Похожие игры'],
+ hi:['जुड़े ब्लॉक हटाना','क्रम की पहेली','रास्ते की योजना','संबंधित खेल'],
+ ar:['إزالة الكتل المتصلة','لغز ترتيب','تخطيط المسار','ألعاب ذات صلة']
+};
+for(const [locale,parts] of Object.entries(DETAILS))parts.push(...discoveryCopy[locale]);
+export const RELATED=[
+ {id:'arrow-escape',image:'assets/lobby-thumbs/w480/assets__arrow-escape__cover.webp'},
+ {id:'block-blast',image:'assets/lobby-thumbs/w480/assets__block-blast__cover.webp'}
+];

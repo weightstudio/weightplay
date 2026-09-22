@@ -26,10 +26,12 @@ export class Combat {
   }
   spawn(id, index = this.alive().length) {
     const boss = id.startsWith('boss-'), def = ENEMIES[id] || ENEMIES.scout;
-    const hp = Math.round((boss ? 230 + this.stage.id*4 : def.hp + Math.floor((this.stage.id-1)/5)*4)*(1.4+(this.stage.id-1)*.012));
+    const hp = Math.round((boss ? 230 + this.stage.id*4 : def.hp + Math.floor((this.stage.id-1)/5)*4)*(1.4+Math.min(.55,Math.max(0,this.stage.id-1)*.08)));
     const slot=[1,0,2,3,4].slice(0,this.capacity).find(slot=>!this.alive().some(e=>e.slot===slot));
-    const e = {...def,id,uid:++this.serial,hp,maxHp:hp,maxShield:def.shield||0,shield:def.shield||0,
-      slot,t:def.period+index*.65,warned:false,phase:1,casts:0,opening:0,reflect:0,boss,attackCount:0,disabledMirror:0};
+    const pressure=1.2+Math.min(.25,this.stage.id*.005);
+    const period=def.period*(this.stage.id<=10?.9:.95),opening=def.period*(this.stage.id<=10?.78:.9);
+    const e = {...def,id,uid:++this.serial,damage:def.damage*pressure,period,hp,maxHp:hp,maxShield:def.shield||0,shield:def.shield||0,
+      slot,t:opening+index*.65,warned:false,phase:1,casts:0,opening:0,reflect:0,boss,attackCount:0,disabledMirror:0};
     this.enemies.push(e);
     if (boss && ['boss-furnace','boss-loom','boss-stag','boss-heart'].includes(id)) {
       const children = id === 'boss-stag' ? ['mirror-left','mirror-right'] : id === 'boss-loom' ? ['root-drain','root-crack'] : ['anchor'];
@@ -114,7 +116,7 @@ export class Combat {
     if((heavy||critical)&&healthDamage>0)this.hitstop=critical?.055:.045;
     if(e.hp===0){
       this.log('defeat',{uid:e.uid,boss:e.boss,summon:e.summon===true});
-      this.hp=Math.min(this.maxHp,this.hp+this.maxHp*.035);
+      this.hp=Math.min(this.maxHp,this.hp+this.maxHp*.02);
       if(this.has('trail-hood'))this.status={crack:0,burn:0,chill:0};
       if(this.has('trail-boots'))this.haste=2;
       if(this.has('copper-ring')&&!e.summon)this.energy=clamp(this.energy+12,0,100);
@@ -126,7 +128,7 @@ export class Combat {
     if(amount<=0)return false;
     this.enemyHits++;
     if(this.has('scout-vest')&&this.enemyHits%5===0){this.log('dodge');return true;}
-    const armor=this.has('bark-vest')?18:8; let d=amount*(.60+(this.stage.id-1)*.006)*(source?.boss?1.2:1)*(1-Math.min(.35,armor/(armor+100)));
+    const armor=this.has('bark-vest')?18:8; let d=amount*(.72+(this.stage.id-1)*.006)*(source?.boss?1.2:1)*(1-Math.min(.35,armor/(armor+100)));
     const absorbed=Math.min(this.barrier,d);this.barrier-=absorbed;d-=absorbed;
     if(absorbed)this.log('absorb',{amount:Math.ceil(absorbed)});
     this.hp=clamp(this.hp-d,0,this.maxHp);this.damageTaken+=d;
