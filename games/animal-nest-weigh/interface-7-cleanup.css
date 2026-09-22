@@ -1,0 +1,333 @@
+/* Animal Nest Weigh — scoped Interface 7 Main / Stage / Battle cleanup. */
+body[data-wp-game-id="animal-nest-weigh"] #mainScreen .hero-card {
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #mainScreen .hero-copy > h1,
+body[data-wp-game-id="animal-nest-weigh"] #mapBtn {
+  display: none !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #mainScreen .hero-actions {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 12px !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #startBtn {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 16px !important;
+  font: 700 16px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+}
+
+/* Stage and Battle share the governed logical Canvas geometry. The authored
+   v4 canvases were block-flow containers with 20/18px custom padding, so the
+   old grid-template declarations did not own any rows. Make the track model
+   explicit and restore the standard 12/16px outer inset. */
+body[data-wp-game-id="animal-nest-weigh"] :is(#stageScreen .stage-canvas, #battleScreen .battle-canvas) {
+  position: relative !important;
+  box-sizing: border-box !important;
+  width: min(100%, 920px) !important;
+  height: calc(100vh - var(--wp-ad-reserve-height, 0px)) !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 12px !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #stageScreen .stage-canvas {
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  gap: 0 !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #battleScreen .battle-canvas {
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) !important;
+  gap: 0 !important;
+  padding-bottom: 12px !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #battlePanel,
+body[data-wp-game-id="animal-nest-weigh"] #resultPanel {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+body[data-wp-game-id="animal-nest-weigh"] :is(#stageScreen, #battleScreen) .panel-head,
+body[data-wp-game-id="animal-nest-weigh"] :is(#stageScreen, #battleScreen) .wp-frame-header {
+  box-sizing: border-box !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  max-height: 48px !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding-block: 0 !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] :is(button, a)[data-wp-return="stage"],
+body[data-wp-game-id="animal-nest-weigh"] :is(button, a)[data-wp-return="battle"] {
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 48px !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] :is(button, a)[data-wp-return="stage"]::before,
+body[data-wp-game-id="animal-nest-weigh"] :is(button, a)[data-wp-return="battle"]::before {
+  content: "←";
+  font: 800 22px/1 system-ui, sans-serif !important;
+}
+
+body[data-wp-game-id="animal-nest-weigh"] #stageScreen .panel-head h2,
+body[data-wp-game-id="animal-nest-weigh"] #stageInfoBtn,
+body[data-wp-game-id="animal-nest-weigh"] #stageScreen .panel-intro {
+  display: none !important;
+}
+
+/* One real flexible Stage workspace owns the selector. The rail center is the
+   shared 38% upper-middle anchor, clamped only enough to preserve the complete
+   264x190 card plus 8px clearance in short landscape. */
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-stage-workspace {
+  position: relative !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #stageList[data-wp-stage-rail] {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: clamp(103px, 38%, calc(100% - 103px)) !important;
+  right: 0 !important;
+  left: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 206px !important;
+  min-height: 206px !important;
+  max-height: 206px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  transform: translateY(-50%) !important;
+  scroll-snap-type: none !important;
+  scroll-behavior: auto !important;
+  overscroll-behavior-inline: contain !important;
+  scrollbar-width: none !important;
+  touch-action: none !important;
+  cursor: grab !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #stageList[data-wp-stage-rail]::-webkit-scrollbar {
+  display: none;
+}
+body[data-wp-game-id="animal-nest-weigh"] #stageList[data-wp-stage-rail]:active {
+  cursor: grabbing !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-stage-virtual-spacer {
+  position: relative !important;
+  display: block !important;
+  min-width: 0 !important;
+  height: 206px !important;
+  min-height: 206px !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #stageList[data-wp-stage-rail] > .wp-nest-stage-virtual-spacer > .stage-card {
+  position: absolute !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  overflow: hidden !important;
+  scroll-snap-align: none !important;
+}
+
+body[data-wp-game-id="animal-nest-weigh"] #stageScreen :is(.stage-tabs, [data-wp-frame-nav]) {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  margin: 0 !important;
+  padding: 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #stageScreen :is(.stage-tabs, [data-wp-frame-nav]) > button {
+  grid-column: 2 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding: 0 10px !important;
+  border: 2px solid var(--moss) !important;
+  border-radius: 14px !important;
+  background: #f5fbf2 !important;
+  color: var(--moss-dark) !important;
+  box-shadow: 0 0 0 2px rgba(49,118,90,.10), 0 0 14px rgba(49,118,90,.16) !important;
+  font: 700 14px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #stageScreen :is(.stage-tabs, [data-wp-frame-nav]) > [aria-hidden="true"] {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-nest-weigh"] #battleSoundBtn,
+body[data-wp-game-id="animal-nest-weigh"] #battleScreen .panel-head h2,
+body[data-wp-game-id="animal-nest-weigh"] #battleScreen .mission-row > div > .eyebrow {
+  display: none !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #battleScreen .mission-row {
+  margin-top: 8px !important;
+}
+
+/* Battle-owned leave confirmation stays inside the Battle Canvas and has one
+   stable two-action focus surface. */
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-dialog {
+  position: absolute !important;
+  z-index: 220 !important;
+  inset: 0 !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 12px !important;
+  background: rgba(24, 38, 31, .78) !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-dialog[hidden] {
+  display: none !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-card {
+  box-sizing: border-box !important;
+  display: grid !important;
+  gap: 12px !important;
+  width: min(420px, 100%) !important;
+  max-height: calc(100% - 8px) !important;
+  padding: 18px !important;
+  overflow-y: auto !important;
+  border: 1px solid #c9d9c6 !important;
+  border-radius: 16px !important;
+  background: #fffdf8 !important;
+  color: var(--ink) !important;
+  box-shadow: 0 18px 44px rgba(35,53,46,.28) !important;
+  text-align: center !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-card :is(h2, p) {
+  margin: 0 !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-card h2 {
+  font: 800 22px/1.2 system-ui, sans-serif !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-card p {
+  color: var(--muted) !important;
+  font: 500 14px/1.5 system-ui, sans-serif !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-actions > button {
+  box-sizing: border-box !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding: 0 10px !important;
+  border: 1px solid #c9d9c6 !important;
+  border-radius: 14px !important;
+  background: #f8fbf4 !important;
+  color: var(--moss-dark) !important;
+  font: 700 14px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #wp-nest-continue {
+  border-color: var(--moss) !important;
+  background: var(--moss) !important;
+  color: #fff !important;
+}
+
+/* Result is the Battle's second-row substate and owns exactly three persistent,
+   equal recovery tracks: Stages, Next Stage, Replay. */
+body[data-wp-game-id="animal-nest-weigh"] #resultPanel {
+  align-self: stretch !important;
+  margin-top: 0 !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #resultPanel .result-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 20px !important;
+}
+body[data-wp-game-id="animal-nest-weigh"] #resultPanel .result-actions > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  border-radius: 14px !important;
+  font: 700 13px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-nest-weigh"] :is(#stageScreen .stage-canvas, #battleScreen .battle-canvas) {
+    padding: 16px !important;
+  }
+  body[data-wp-game-id="animal-nest-weigh"] #battleScreen .battle-canvas {
+    padding-bottom: 16px !important;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-nest-weigh"] .wp-nest-leave-dialog {
+    place-items: start center !important;
+    overflow-y: auto !important;
+    padding: 8px !important;
+  }
+  body[data-wp-game-id="animal-nest-weigh"] #resultPanel {
+    align-self: stretch !important;
+    overflow-y: auto !important;
+  }
+}
