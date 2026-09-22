@@ -43,6 +43,8 @@ export function makeActor(box, enemy = null, gear = null) {
   }
   add(0,.035,0,.43,.4,.34,armor,true);
   add(0,.08,.192,.34,.25,.08,enemy?0x8095a1:C.tealLight,true);
+  add(0,.192,.244,.28,.025,.024,enemy?0xdde7df:0x99e8df,true);
+  add(0,-.031,.244,.28,.025,.024,enemy?0x344859:0x165567,true);
   add(0,-.15,.015,.46,.075,.38,trim,true);
   add(0,-.15,.223,.095,.09,.045,C.ink);
   const arms=[];
@@ -53,6 +55,8 @@ export function makeActor(box, enemy = null, gear = null) {
     box(arm,0,-.13,0,.145,.19,.19,fur);
     box(arm,0,-.24,.09,.245,.225,.27,enemy?C.pale:C.gold,true);
     box(arm,0,-.235,.237,.16,.13,.045,enemy?C.guard:C.goldLight,true);
+    box(arm,0,-.178,.267,.16,.022,.016,enemy?C.pale:0xfff0b1,true);
+    box(arm,0,-.292,.265,.16,.026,.016,enemy?C.ink:0x9a6223,true);
     if(!enemy) {
       box(arm,-side*.023,-.21,.264,.052,.12,.024,C.cream,true);
       box(arm,side*.02,-.26,.264,.09,.045,.024,C.cream,true);
@@ -89,6 +93,8 @@ export function makeActor(box, enemy = null, gear = null) {
     box(shield,0,0,0,.29,.4,.1,trim,true);
     box(shield,0,-.19,0,.18,.08,.1,trim,true);
     box(shield,0,0,.061,.23,.32,.045,enemy.shield?C.blue:armor,true);
+    box(shield,-.067,0,.09,.058,.27,.018,enemy.shield?0x153c73:0x233b4b,true);
+    box(shield,0,.138,.091,.19,.025,.022,trim,true);
     box(shield,0,0,.093,.085,.16,.025,enemy.shield?C.blueLight:trim,true);
     // Sword is held in the other gauntlet, not floating beside the hand.
     add(.37,-.075,.2,.07,.14,.075,C.ink);
@@ -110,7 +116,7 @@ export function makeActor(box, enemy = null, gear = null) {
   }
   g.userData.arms=arms;
   g.userData.legs=legs;
-  if(!enemy&&gear?.armed){const sword=new THREE.Group();arms[1].add(sword);sword.position.set(.07,-.22,.2);box(sword,0,.24,0,.085,.6,.07,C.pale,true);box(sword,0,.04,0,.3,.075,.1,C.gold,true);box(sword,0,.57,0,.05,.08,.07,C.blueLight,true);}
+  if(!enemy&&gear?.armed){const sword=new THREE.Group();arms[1].add(sword);sword.position.set(.07,-.22,.2);box(sword,0,.24,0,.085,.6,.07,C.pale,true);box(sword,0,.04,0,.3,.075,.1,C.gold,true);box(sword,0,.57,0,.05,.08,.07,C.blueLight,true);box(sword,-.021,.3,.046,.027,.48,.012,0xf2f3dc,true);box(sword,.027,.3,.046,.019,.48,.012,0x718a97,true);}
   g.scale.setScalar(boss?.81:.75);
   return g;
 }
@@ -122,13 +128,17 @@ export function makeProp(box, item) {
     add(0,-.24,0,.55,.06,.43,C.pale);
     add(0,-.1,0,.49,.15,.34,C.gold,true);
     add(0,-.155,.2,.56,.055,.08,C.goldLight,true);
+    add(0,-.09,.186,.46,.035,.045,0x9c6724,true);
+    add(0,-.186,.245,.49,.02,.024,0xffedab,true);
     for(const x of [-.2,0,.2]) {
       add(x,.075,.14,.095,x===0?.31:.22,.1,C.gold,true);
       add(x,x===0?.265:.195,.14,.115,.07,.12,C.goldLight,true);
-      add(x,.04,.206,.063,.07,.035,x===0?0xd9507d:C.tealLight,true);
+      add(x,.04,.198,.09,.095,.025,0x986325,true);
+      add(x,.04,.219,.063,.07,.035,x===0?0xd9507d:C.tealLight,true);
+      add(x-.012,.06,.241,.024,.024,.01,x===0?0xffc4d5:0xc6fff2,true);
     }
   } else if(item.kind==='sword') {
-    add(0,-.22,0,.08,.22,.1,C.ink);add(0,-.08,0,.42,.09,.15,C.gold,true);add(0,.2,0,.12,.5,.09,C.pale,true);add(0,.48,0,.06,.1,.08,C.blueLight,true);
+    add(0,-.22,0,.08,.22,.1,C.ink);add(0,-.08,0,.42,.09,.15,C.gold,true);add(0,.2,0,.12,.5,.09,C.pale,true);add(0,.48,0,.06,.1,.08,C.blueLight,true);add(-.025,.2,.054,.045,.44,.016,0xf2f3dc,true);add(.034,.2,.053,.027,.44,.014,0x718a97,true);
   } else if(item.kind==='power'||item.kind==='multiply') {
     const times=item.kind==='multiply';const gem=add(0,0,0,.35,.5,.25,times?0xb883ed:C.tealLight,true);gem.rotation.z=.35;const mark=new THREE.Group();g.add(mark);mark.rotation.z=times?Math.PI/4:0;box(mark,0,0,.2,.07,.3,.04,0xffffff,true);box(mark,0,0,.21,.3,.07,.04,0xffffff,true);
   } else if(item.kind==='key') {
@@ -161,14 +171,15 @@ export function makeCastle(box, rows, folded=false, columns=7) {
   const wings=folded?[0,8.2]:[0];
   // Fill the arena behind the architecture, including spare portrait height.
   // A single shared-geometry instance avoids a visible rectangular backdrop.
-  add((columns-1)/2,-(height-1)/2,-2.65,200,200,.12,0x132536);
+  add((columns-1)/2,-(height-1)/2,-2.65,200,200,.12,0x20313d);
   for(const offset of wings) {
-    add(offset+(columns-1)/2,-(height-1)/2,-2.5,columns+1.15,height+4,.3,0x132536);
+    add(offset+(columns-1)/2,-(height-1)/2,-1.9,columns+1.15,height+4,.3,0x20313d);
     // Quiet recessed walls, varied courses and inset windows, not a flat grid.
     for(let row=-1;row<=height;row++) {
       for(let col=0;col<Math.ceil((columns+1)/2);col++) {
         const x=offset-.2+col*2+(row%2?.5:0);
-        add(x,-row,-2.21,1.9,.91,.14,(row+col)%3===0?0x284052:0x203344);
+        add(x,-row,-1.61,1.97,.97,.14,(row+col)%3===0?0x304451:0x293c49);
+        add(x,-row+.455,-1.522,1.88,.032,.018,0x3b4f59);
       }
     }
     for(const x of [offset-.85,offset+columns-.15]) {
@@ -181,23 +192,23 @@ export function makeCastle(box, rows, folded=false, columns=7) {
       for(const dx of [-.25,.25])add(x+dx,1.06,-1,.23,.24,.85,0xa99a7c);
     }
     for(const x of [offset+1.2,offset+columns-2.2]) {
-      add(x,-height*.38,-2,.84,1.65,.13,0x0b1728);
-      add(x,-height*.38-.74,-1.85,.96,.12,.3,0x536c73);
-      add(x,-height*.38+.83,-1.91,.48,.15,.2,0x62757a);
+      add(x,-height*.38,-1.4,.84,1.65,.13,0x182c3d);
+      add(x,-height*.38-.74,-1.25,.96,.12,.3,0x536c73);
+      add(x,-height*.38+.83,-1.31,.48,.15,.2,0x62757a);
       for(const side of [-1,1]) {
-        add(x+side*.43,-height*.38,-1.9,.13,1.65,.18,0x51676f);
-        add(x+side*.28,-height*.38+.72,-1.9,.19,.17,.18,0x51676f);
+        add(x+side*.43,-height*.38,-1.3,.13,1.65,.18,0x51676f);
+        add(x+side*.28,-height*.38+.72,-1.3,.19,.17,.18,0x51676f);
       }
-      add(x,-height*.38,-1.85,.065,1.5,.045,0x3a6074);
-      add(x,-height*.38+.13,-1.85,.7,.06,.045,0x3a6074);
+      add(x,-height*.38,-1.25,.065,1.5,.045,0x3a6074);
+      add(x,-height*.38+.13,-1.25,.7,.06,.045,0x3a6074);
     }
     // Teal pennants echo the poster; no animated clutter behind touch cells.
     for(const x of [offset-.38,offset+columns-.62]) {
-      add(x,-.22,-1.72,.34,1.15,.05,C.teal);
-      add(x,-.85,-1.72,.2,.17,.05,C.teal);
-      add(x,.36,-1.67,.43,.075,.08,0xbaa35c,true);
-      add(x,-.12,-1.67,.045,.28,.02,0xc0b176,true);
-      add(x,-.12,-1.67,.17,.05,.02,0xc0b176,true);
+      add(x,-.22,-1.32,.34,1.15,.05,C.teal);
+      add(x,-.85,-1.32,.2,.17,.05,C.teal);
+      add(x,.36,-1.27,.43,.075,.08,0xbaa35c,true);
+      add(x,-.12,-1.27,.045,.28,.02,0xc0b176,true);
+      add(x,-.12,-1.27,.17,.05,.02,0xc0b176,true);
     }
   }
   return g;

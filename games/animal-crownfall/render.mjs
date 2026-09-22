@@ -10,7 +10,7 @@ export class CrownScene {
     this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.setClearColor(0x243c48);this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.12;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
     this.canvas=this.renderer.domElement;this.canvas.setAttribute('aria-hidden','true');host.prepend(this.canvas);
     this.scene=new THREE.Scene();this.camera=new THREE.OrthographicCamera(-4,4,6,-6,.1,100);this.scene.add(new THREE.HemisphereLight(0xbcd8ee,0x283347,1.05));
-    const sun=new THREE.DirectionalLight(0xffdfaa,3.3);sun.position.set(-4,10,14);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.bias=-.0004;sun.shadow.normalBias=.025;sun.shadow.camera.near=.1;sun.shadow.camera.far=70;this.sun=sun;this.scene.add(sun,sun.target);
+    const sun=new THREE.DirectionalLight(0xffdfaa,3.3);sun.position.set(-4,10,14);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.intensity=.4;sun.shadow.bias=-.0004;sun.shadow.normalBias=.025;sun.shadow.camera.near=.1;sun.shadow.camera.far=70;this.sun=sun;this.scene.add(sun,sun.target);
     const fill=new THREE.DirectionalLight(0x779aca,.65);fill.position.set(7,0,6);this.scene.add(fill);
     const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
     this.geometry=new THREE.ExtrudeGeometry(shape,{depth:.84,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.04,bevelThickness:.04});this.geometry.translate(0,0,-.42);
@@ -88,7 +88,7 @@ export class CrownScene {
       node.userData.cellOffset=kind==='item'?occupied?.38:(rank-(roommates.length-1)/2)*.42:0;
       node.userData.labelLift=kind==='item'?(occupied?.45:0)+Math.max(0,rank)*.42:0;
       const at=this.point(a.x,a.y);if(!preserve||!oldPosition)node.position.set(at.x+node.userData.cellOffset,at.y+node.userData.groundOffset,.65);
-      if(!preserve){node.rotation.set(0,0,0);node.visible=true;node.scale.setScalar(a.boss?.81:kind==='item'?1:.75);}
+      if(!preserve){node.rotation.set(0,kind==='hero'?.28:kind==='enemy'?-.28:['crown','sword'].includes(a.kind)?.2:0,0);node.visible=true;node.scale.setScalar(a.boss?.81:kind==='item'?1:.75);}
       const label=document.createElement('span');label.className=`actor-tag ${kind}`;const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',fullLabel);this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
     };
     add(state.hero,'hero');state.enemies.filter(e=>e.alive).forEach(e=>add(e,'enemy'));state.items.filter(i=>i.alive).forEach(i=>add(i,'item'));

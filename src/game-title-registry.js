@@ -2798,21 +2798,5 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Цепочка домино среды обитания",
     "hi": "आवास डोमिनो श्रृंखला",
     "ar": "سلسلة دومينو المواطن"
-  },
-  "pawflow": {
-    "__localizedExact": true,
-    "en": "Pawflow",
-    "zh-Hant": "彩爪流轉",
-    "zh-Hans": "彩爪流转",
-    "ja": "いろ爪ループ",
-    "ko": "색발자국 루프",
-    "es": "Patas en órbita",
-    "pt-BR": "Patas em órbita",
-    "fr": "Pattes en boucle",
-    "de": "Pfoten im Kreis",
-    "it": "Zampe in orbita",
-    "ru": "Лапки по кругу",
-    "hi": "रंगीन पंजों का चक्र",
-    "ar": "حلقة الكفوف الملونة"
   }
 };

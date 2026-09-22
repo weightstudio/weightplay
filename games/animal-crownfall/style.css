@@ -32,12 +32,12 @@
 
 /* Read-only map navigation lives at the edges of the play surface. */
 .map-nav{position:absolute;inset:0;pointer-events:none;z-index:5}
-.map-nav button{position:absolute;pointer-events:auto;width:30px;height:30px;padding:0;border:1px solid #aec9bb;border-radius:6px;background:#173944ed;color:#ffe7a7;font-size:20px;line-height:28px;touch-action:manipulation}
+.map-nav button{position:absolute;pointer-events:auto;width:48px;height:48px;padding:0;border:1px solid #aec9bb;border-radius:14px;background:#173944ed;color:#ffe7a7;font-size:20px;line-height:46px;touch-action:manipulation}
 .map-nav button:disabled{opacity:.28;pointer-events:none}
-#mapUp{top:4px;left:calc(50% - 15px)}
-#mapDown{bottom:4px;left:calc(50% - 15px)}
-#mapLeft{left:4px;top:calc(50% - 15px)}
-#mapRight{right:4px;top:calc(50% - 15px)}
+#mapUp{top:4px;left:calc(50% - 24px)}
+#mapDown{bottom:4px;left:calc(50% - 24px)}
+#mapLeft{left:4px;top:calc(50% - 24px)}
+#mapRight{right:4px;top:calc(50% - 24px)}
 #mapFollow{right:4px;bottom:4px}
 #mapOverview{left:4px;bottom:4px}
 .map-nav button[aria-pressed="true"]{border-color:#ffdf85;background:#365856}
@@ -52,6 +52,7 @@
 #stage{--wp-stage-scrim:linear-gradient(#102331a8,#102331ce);--wp-stage-art:url('../../assets/lobby-thumbs/w480/assets__animal-crownfall__cover.webp');background:linear-gradient(#102331db,#102331e8),var(--wp-stage-art) center/cover}
 #loadingPanel{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#102331f2;color:#ffdf89;font-size:20px}
 body[data-wp-game-id="animal-crownfall"] .wp-tutorial-button{width:44px;height:44px;top:80px;right:max(12px,calc((100vw - 920px)/2 + 12px));opacity:1}
+body[data-wp-game-id="animal-crownfall"] .wp-tutorial-close{width:44px;height:44px;min-width:44px;min-height:44px;flex-shrink:0}
 body[data-screen="battle"] .wp-tutorial-button{top:70px}
 body[data-screen="stage"] .wp-tutorial-button{display:none}
 #stageContent{position:relative;display:block}
