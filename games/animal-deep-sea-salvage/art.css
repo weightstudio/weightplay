@@ -7,3 +7,31 @@ body[data-wp-game-id="animal-deep-sea-salvage"] #gameDashboard .ocean-stage {
 body[data-wp-game-id="animal-deep-sea-salvage"] #gameDashboard #oceanCanvas {
   opacity: .8;
 }
+
+/* Interface 7 shared-Main cleanup.
+   The shared frame owns the single title presentation; the legacy copy-column
+   title and private eyebrow no longer render as competing Main chrome. */
+body[data-wp-game-id="animal-deep-sea-salvage"]:not(.deep-sea-game-started)
+  #mainLanding .wp-standard-main-copy > :is(.eyebrow, #gameTitle) {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-deep-sea-salvage"]:not(.deep-sea-game-started)
+  #mainLanding .standard-main-start {
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  margin-top: 12px !important;
+  padding: 0 16px !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
