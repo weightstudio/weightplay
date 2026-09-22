@@ -1,0 +1,276 @@
+/* Scoped Interface 7 cleanup for Animal Grove Dominoes.
+ * Keep game art/gameplay inside the shared Main / Stage / Battle frame.
+ */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #mainView .kicker {
+  display: none !important;
+}
+
+/* The shared Settings owner replaces every game-local Settings/Sound launcher. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] :is(
+  #settingsBtn,
+  #settingsPanel,
+  #battleSoundBtn,
+  #stageView [data-sound-toggle]
+) {
+  display: none !important;
+}
+
+/* Shared primary action geometry is exact, not content-sized. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #startBtn {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 16px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Interface 7 Stage: 48px title-free play-top + flexible workspace + 56px tabs. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-logical,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-canvas[data-header-layout="stacked"] .grove-stage-logical {
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-logical > header,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-canvas[data-header-layout="stacked"] .grove-stage-logical > header {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  grid-template-rows: 48px !important;
+  gap: 8px !important;
+  padding: 0 12px !important;
+  align-items: center !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-logical > header > :is(h1,h2,strong,.wp-generated-main-title):not(.wp-shell-settings-title) {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-logical > header [data-wp-return="stage"] {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-logical > header .wp-shell-settings {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+}
+
+/* The selected 264x190 card owns the shared 38% upper-middle anchor. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-rail {
+  top: clamp(103px, 38%, calc(100% - 103px)) !important;
+  transform: translateY(-50%) !important;
+  width: 100% !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 0 max(0px, calc((100% - 264px) / 2)) !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-card {
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  height: 190px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-tabs {
+  height: 56px !important;
+  min-height: 56px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-rows: 44px !important;
+  gap: 8px !important;
+  padding: 6px !important;
+  align-items: center !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-tabs button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 10px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Interface 7 Battle: keep only Back + useful round state in a 48px top track. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #battleView .battle-canvas {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #battleView .logical-shell {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  grid-template-rows: 48px minmax(0, 1fr) !important;
+  padding: 0 12px 18px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #battleView .panel-head {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  align-items: center !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #battleView .panel-head h2 {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] :is(button,a)[data-wp-return="battle"] {
+  box-sizing: border-box !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #battleView .panel-head > div {
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #battleView .round-label {
+  margin: 0 !important;
+}
+
+/* Back already owns Battle -> Stage. Do not expose a duplicate Stage exit in content. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #leaveBtn {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-battle-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* Result stays inside the same Battle Canvas and keeps three persistent tracks. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #resultView .result-actions {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #resultView .result-actions button {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+/* Localized leave confirmation stays inside the existing Battle Canvas. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-leave-dialog {
+  position: absolute;
+  inset: 0;
+  z-index: 140;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(5, 18, 27, .72);
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-leave-dialog[hidden] {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-leave-panel {
+  box-sizing: border-box;
+  width: min(360px, calc(100% - 24px));
+  padding: 18px;
+  border: 2px solid var(--wp-ui-line, #597775);
+  border-radius: var(--wp-ui-radius, 3px);
+  background: var(--wp-ui-surface, #14323d);
+  color: var(--wp-ui-text, #f6f2dd);
+  box-shadow: 0 5px 0 var(--wp-ui-shadow, #061820);
+  text-align: center;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-leave-panel h2 {
+  margin: 0 0 10px;
+  color: inherit;
+  font: 800 20px/1.25 system-ui, sans-serif;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-leave-panel p {
+  margin: 0 0 16px;
+  color: var(--wp-ui-muted, #a4bdb9);
+  font: 500 14px/1.5 system-ui, sans-serif;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-leave-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-leave-actions button {
+  box-sizing: border-box;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 12px;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (min-width: 700px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-logical > header,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .grove-stage-canvas[data-header-layout="stacked"] .grove-stage-logical > header {
+    padding-inline: 16px !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] #battleView .logical-shell {
+    padding-inline: 16px !important;
+  }
+}

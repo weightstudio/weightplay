@@ -5,8 +5,34 @@
   const localeKeys = locales.__localeKeys;
   const GAME_VERSION = "v6";
   let advanceTimer = null;
+  let advanceDeadline = 0;
+  let pausedAdvanceRemaining = null;
   let viewportResetFrame = 0;
-  const cancelAdvance = () => { clearTimeout(advanceTimer); advanceTimer = null; };
+  const clearAdvanceTimer = () => { clearTimeout(advanceTimer); advanceTimer = null; advanceDeadline = 0; };
+  const cancelAdvance = () => { clearAdvanceTimer(); pausedAdvanceRemaining = null; };
+  const scheduleAdvance = (delay = 420) => {
+    clearAdvanceTimer();
+    pausedAdvanceRemaining = null;
+    const wait = Math.max(0, Number(delay) || 0);
+    advanceDeadline = performance.now() + wait;
+    advanceTimer = window.setTimeout(() => {
+      advanceTimer = null;
+      advanceDeadline = 0;
+      if ($("battleView").hidden) return;
+      finish();
+    }, wait);
+  };
+  const pauseAdvance = () => {
+    if (!advanceTimer) return;
+    pausedAdvanceRemaining = Math.max(0, advanceDeadline - performance.now());
+    clearAdvanceTimer();
+  };
+  const resumeAdvance = () => {
+    if (pausedAdvanceRemaining === null) return;
+    const delay = pausedAdvanceRemaining;
+    pausedAdvanceRemaining = null;
+    scheduleAdvance(delay);
+  };
   window.addEventListener('pagehide', cancelAdvance);
   window.addEventListener('pagehide',()=>cancelAnimationFrame(viewportResetFrame));
   const {createChain,play,undo,outcome}=await import('./chain-engine.mjs?v=20260909-grove-campaign-v6');
@@ -157,7 +183,7 @@
     chainState=result.state;
     button.disabled = true; button.classList.add("is-correct"); state.placed.push(reversed?[tile[1],tile[0]]:tile); state.rack[index] = null; state.currentEnd = chainState.end; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("board.move"); renderRound(); setFeedbackState("matched");
     if(outcome(chainState)==='dead-end'){$('battleStatus').textContent=(recoveryCopy[state.locale]||recoveryCopy.en)[1];setFeedbackState('wrong');}
-    if (outcome(chainState)==='complete') { recordCompletion();cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; finish(); }, 420); }
+    if (outcome(chainState)==='complete') { recordCompletion(); scheduleAdvance(420); }
   }
   function startRound() { cancelAdvance();flipMode=false; const round = rounds[state.roundIndex];chainState=createChain(campaign[state.roundIndex]); state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles);rackOrder=[...state.rack]; $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
   function undoChoice(){
@@ -220,4 +246,5 @@
   };
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initialize,{once:true});else initialize();
   window.GROVE_CHAIN_TEST = { rounds, start, choose, state };
+  window.GROVE_CHAIN_LEAVE_LIFECYCLE = { pause: pauseAdvance, resume: resumeAdvance, discard: cancelAdvance };
 })();

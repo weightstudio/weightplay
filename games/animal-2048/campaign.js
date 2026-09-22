@@ -34,4 +34,101 @@
     {"type":"score","target":1200,"limit":54,"blocked":[6,9],"start":[32,32,32,32,32,32,0,32,32,0,0,0,0,0,0,0],"seed":1920970932}, // 29
     {"type":"tile","target":2048,"limit":60,"blocked":[1,14],"start":[64,0,64,64,512,512,128,128,128,128,64,64,64,64,0,64],"seed":347552519,"checkpoint":{"kind":"pairs","target":3}} // 30
   ];
+
+  /* Interface 7: Infinite Forest is a real Stage-rail destination, not a
+   private right-side Stage tab.  Wrap the shared data-backed selector before
+   game.js installs it so campaign missions and the endless destination remain
+   one standard horizontal rail. */
+  const stageApi = window.WeightPlayStageV6;
+  if (!stageApi?.install || stageApi.__animal2048UnifiedRail) return;
+  const originalInstall = stageApi.install.bind(stageApi);
+  const INFINITE_INDEX = 30;
+  const SAVE_KEY = "weightplay_animal_2048_v1";
+  const localeAliases = {"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR"};
+  const currentLocale = () => {
+    const runtime = window.WonderI18n?.locale?.();
+    if (window.Animal2048Locales?.[runtime]) return runtime;
+    const route = location.pathname.split("/").filter(Boolean)[0] || "en";
+    const normalized = localeAliases[route] || route;
+    if (window.Animal2048Locales?.[normalized]) return normalized;
+    try {
+      const saved = localStorage.getItem("weightPlayLocale");
+      if (window.Animal2048Locales?.[saved]) return saved;
+    } catch {}
+    return "en";
+  };
+  const text = (key, vars = {}) => String(
+    window.Animal2048Locales?.[currentLocale()]?.[key]
+      ?? window.Animal2048Locales?.en?.[key]
+      ?? key
+  ).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? "");
+  const endlessBest = () => {
+    try {
+      const value = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+      return Math.max(0, Number(value?.endlessBest) || 0);
+    } catch { return 0; }
+  };
+  const isChallengeView = () => document.querySelector("#stageScreen")?.dataset.mode === "challenge";
+  const bindInfinite = (card) => {
+    card.type = "button";
+    card.className = "stage-card infinite-stage-card unlocked";
+    card.dataset.index = String(INFINITE_INDEX);
+    card.setAttribute("aria-disabled", "false");
+    card.setAttribute("aria-label", text("infiniteMode"));
+    card.innerHTML = `<small><span>${text("infiniteMode")}</span><span>∞</span></small><strong>${text("endlessCardGoal")}</strong><span>${text("endlessCardBest", {score:endlessBest()})}</span>`;
+  };
+  stageApi.install = (rail, options = {}) => {
+    if (rail?.id !== "stageRail" || typeof options.bind !== "function") return originalInstall(rail, options);
+    const originalTotal = options.total;
+    const originalBind = options.bind;
+    const originalActivate = options.activate;
+    const originalFocus = options.onFocus;
+    const authoredTotal = () => Math.max(1, Number(typeof originalTotal === "function" ? originalTotal() : originalTotal) || 1);
+    return originalInstall(rail, {
+      ...options,
+      total: () => isChallengeView() ? authoredTotal() : authoredTotal() + 1,
+      bind: (card, index) => {
+        const total = authoredTotal();
+        if (!isChallengeView() && index === total) bindInfinite(card);
+        else originalBind(card, index);
+      },
+      activate: (index, source, card, event) => {
+        const total = authoredTotal();
+        if (!isChallengeView() && index === total) {
+          window.__animal2048Smoke?.startStage?.(INFINITE_INDEX, "stage_select");
+          return;
+        }
+        originalActivate?.(index, source, card, event);
+      },
+      onFocus: (index, source, card) => {
+        const total = authoredTotal();
+        if (!isChallengeView() && index === total) {
+          rail.dispatchEvent(new CustomEvent("wonder:stage-snap", {detail:{index:INFINITE_INDEX, card}}));
+          return;
+        }
+        originalFocus?.(index, source, card);
+      }
+    });
+  };
+  stageApi.__animal2048UnifiedRail = true;
+
+  const normalizeStageNavigation = () => {
+    const nav = document.querySelector(".stage-mode-tabs");
+    const stages = document.getElementById("campaignTab");
+    const challenge = document.getElementById("challengeTab");
+    nav?.setAttribute("data-wp-frame-stage-nav", "");
+    stages?.setAttribute("data-wp-frame-stage-slot", "stages");
+    challenge?.remove();
+
+    /* The Result Stages action always returns to the highest unlocked campaign
+       Stage.  Endless is still reachable as the final rail card. */
+    const resultStages = document.getElementById("resultStagesBtn");
+    resultStages?.addEventListener("click", (event) => {
+      if (window.__animal2048Smoke?.snapshot?.().stage !== "infinite") return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      window.__animal2048Smoke?.showStage?.();
+    }, true);
+  };
+  setTimeout(normalizeStageNavigation, 0);
 })();

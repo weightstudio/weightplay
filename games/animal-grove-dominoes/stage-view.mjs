@@ -1,4 +1,5 @@
 import '../../src/stage-virtualization-standard.js';
+import './interface-7-compat.mjs?v=20260922-grove-dominoes-i7-cleanup2';
 import {createHabitatArt} from './habitat-art.mjs?v=20260909-grove-campaign-v6';
 export function createStageView({campaign,copy,locale,progress,activate,home,sound,soundLabel,toggleSound}){
  const root=document.createElement('section');root.id='stageView';root.hidden=true;root.dataset.screen='stage';

@@ -1,0 +1,26 @@
+/* Animal 2048 — scoped Interface 7 Main / Stage / Battle cleanup. */
+.main-copy > small[data-i18n="eyebrow"]{display:none!important}
+
+/* The shared frame owns the permanent controls and title visibility.  This
+   route still inherits the older 56px play-header token, so pin only this
+   adopted logical Canvas to the current 48px Interface 7 top-track contract. */
+.stage-canvas,.battle-canvas{--wp-frame-play-header-height:48px!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.stage-screen,.battle-screen{grid-template-rows:minmax(0,1fr) var(--wp-ad-reserve-height,0px)!important}
+
+.stage-content{position:relative!important;display:block!important;min-height:0!important;overflow:hidden!important}
+.stage-summary,.chapter-panel{display:none!important}
+.stage-rail{position:absolute!important;inset-inline:0!important;top:clamp(103px,38%,calc(100% - 103px))!important;transform:translateY(-50%)!important;width:100%!important;height:190px!important;min-height:190px!important;align-items:center!important;gap:18px!important;padding:0 calc(50% - 132px)!important}
+.stage-card{flex:0 0 264px!important;width:264px!important;height:190px!important;padding:18px!important;grid-template-rows:30px minmax(0,1fr) 30px!important;gap:10px!important}
+
+/* Keep the shared Stage bar as three equal slots.  Animal 2048 has no Team or
+   Equipment workspace, so both side tracks remain genuinely empty.  Infinite
+   Forest lives in the Stage rail instead of impersonating the right slot. */
+.stage-canvas .stage-mode-tabs[data-wp-frame-nav]{height:56px!important;min-height:56px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:44px!important;gap:8px!important;padding:6px!important;align-items:center!important}
+.stage-canvas .stage-mode-tabs[data-wp-frame-nav]::before{content:none!important;display:none!important}
+.stage-canvas .stage-mode-tabs[data-wp-frame-nav]>#campaignTab{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important;height:44px!important;min-height:44px!important;margin:0!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important}
+.stage-canvas .stage-mode-tabs[data-wp-frame-nav]>#challengeTab{display:none!important}
+
+@media(orientation:landscape) and (max-height:560px){
+  .stage-rail{top:clamp(103px,38%,calc(100% - 103px))!important;height:190px!important;min-height:190px!important}
+  .stage-card{flex-basis:264px!important;width:264px!important;height:190px!important}
+}
