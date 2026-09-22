@@ -544,7 +544,7 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-shell-language-row 
   display: none !important;
 }
 
-/* sound.js injects its rule after the static styles; keep the retired floating
+/* WeightPlayAudio injects its rule after the static styles; keep the retired floating
    control hidden once Settings owns the combined sound switch. */
 .sound-toggle.wp-shell-legacy-control {
   display: none !important;

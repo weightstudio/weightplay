@@ -976,7 +976,7 @@ body.memory-result .result-panel {
   transition: width 0.1s linear;
 }
 
-/* Sound Toggle (dynamically added by sound.js) */
+/* Sound Toggle (dynamically added by WeightPlayAudio) */
 .sound-toggle {
   position: absolute !important;
   top: env(safe-area-inset-top, 0px) !important;

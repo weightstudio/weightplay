@@ -277,7 +277,7 @@ body.general-lobby-page .desktop-filter-rail { display: none; }
 html[dir="rtl"] body.general-lobby-page .lobby-hero-copy { left: auto; right: 30px; }
 html[dir="rtl"] body.general-lobby-page .lobby-hero::after { transform: scaleX(-1); }
 html[dir="rtl"] body.general-lobby-page #spotlightGameSection { right: auto; left: 20px; }
-/* Override sound.js's injected physical-edge !important placement in RTL. */
+/* Override WeightPlayAudio's injected physical-edge !important placement in RTL. */
 html[dir="rtl"] body.general-lobby-page .lobby-hero .sound-toggle { left: auto !important; right: 20px !important; }
 html[dir="rtl"] body.general-lobby-page .game-hall-switch button { padding-inline-start: 58px; padding-inline-end: 18px; }
 html[dir="rtl"] body.general-lobby-page .game-hall-switch button::before { left: auto; right: 18px; }

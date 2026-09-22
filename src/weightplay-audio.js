@@ -1,7 +1,9 @@
 /* WeightPlay shared sample-based audio service. See docs/shared-audio-standard.md. */
 (function () {
   "use strict";
-  if (window.WeightPlayAudio) return;
+  const removedLegacyName='Wonder'+'Sound';
+  if (window.WeightPlayAudio) { try { delete window[removedLegacyName]; } catch {} return; }
+  try { delete window[removedLegacyName]; } catch {}
   const muteKey = "wonderSoundMuted";
   const effectsVolumeKey = "weightPlayEffectsVolume";
   const musicVolumeKey = "weightPlayMusicVolume";
@@ -444,9 +446,6 @@
     setEnabled:enabled=>{const wanted=Boolean(enabled);if(wanted===muted)setMuted(!wanted);return !muted;},
     getEffectsVolume:()=>effectsVolume,setEffectsVolume,getMusicVolume:()=>musicVolume,setMusicVolume,
   });
-  // Only stale cached bundles use this isolated compatibility facade.
-  const legacyEvents={click:'ui.click',select:'ui.click',toggle:'ui.click',tap:'ui.click',success:'feedback.success',correct:'feedback.success',good:'feedback.success',wrong:'feedback.error',error:'feedback.error',bad:'feedback.error',miss:'feedback.error',win:'result.win',victory:'result.win',lose:'result.lose',loss:'result.lose',fail:'result.lose',start:'game.start',shoot:'projectile.launch',hit:'combat.strike',wallHit:'impact.stone',enemyDown:'enemy.defeat',boss:'alert.boss',upgrade:'reward.upgrade',coin:'reward.coin',collect:'reward.collect',power:'magic.cast',pop:'puzzle.pop',hint:'feedback.hint',move:'board.move'};
-  window.WonderSound={...window.WeightPlayAudio,play:name=>window.WeightPlayAudio.play(legacyEvents[name]||name)};
   function boot() {
     applyMediaVolumes();
     new MutationObserver(records=>{

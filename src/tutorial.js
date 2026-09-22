@@ -114,7 +114,26 @@
     ],
   });
 
+  const crownfallCopy = {
+    en: ["Reclaim the crown", "Defeat required guards, then reach the crown.", "Remove supports", "Tap a connected colour group, inspect the route, then confirm.", "Calculate first", "Power must exceed the enemy. Additions and multipliers change order; spikes cause defeat."],
+    "zh-Hant": ["奪回皇冠", "擊敗必要守衛，再抵達皇冠。", "消除支撐", "點相連同色方塊，查看路線，再確認消除。", "先算再走", "戰力必須大於敵人。加法與倍數要算順序；碰到尖刺會失敗。"],
+    "zh-Hans": ["夺回皇冠", "击败必要守卫，再抵达皇冠。", "消除支撑", "点相连同色方块，查看路线，再确认消除。", "先算再走", "战力必须大于敌人。加法与倍数要算顺序；碰到尖刺会失败。"],
+    ja: ["王冠を取り戻す", "必要な衛兵を倒して王冠へ進もう。", "足場を消す", "つながった同色ブロックをタップし、経路を見て確定。", "先に計算", "戦力は敵より大きく。加算と倍率の順番を考えよう。トゲは敗北。"],
+    ko: ["왕관 되찾기", "필수 경비병을 물리치고 왕관에 도달하세요.", "발판 제거", "연결된 같은 색 블록을 누르고 경로를 확인한 뒤 제거하세요.", "먼저 계산", "전투력이 적보다 높아야 해요. 더하기와 곱하기 순서를 생각하세요. 가시는 실패예요."],
+    es: ["Recupera la corona", "Vence a los guardias necesarios y alcanza la corona.", "Quita apoyos", "Toca un grupo conectado del mismo color, revisa la ruta y confirma.", "Calcula primero", "Tu poder debe superar al rival. Ordena sumas y multiplicadores; los pinchos causan derrota."],
+    "pt-BR": ["Recupere a coroa", "Vença os guardas necessários e alcance a coroa.", "Remova apoios", "Toque num grupo conectado da mesma cor, confira a rota e confirme.", "Calcule antes", "Seu poder deve superar o inimigo. Planeje somas e multiplicadores; espinhos causam derrota."],
+    fr: ["Reprenez la couronne", "Battez les gardes requis puis atteignez la couronne.", "Retirez les appuis", "Touchez un groupe relié de même couleur, vérifiez le trajet et confirmez.", "Calculez avant", "Votre puissance doit dépasser celle de l’ennemi. Ordonnez additions et multiplicateurs ; les piques font perdre."],
+    de: ["Erobere die Krone", "Besiege die nötigen Wachen und erreiche die Krone.", "Stützen entfernen", "Tippe eine verbundene Farbgruppe an, prüfe den Weg und bestätige.", "Erst rechnen", "Deine Stärke muss größer sein. Plane Addition und Multiplikation; Stacheln führen zur Niederlage."],
+    it: ["Riprendi la corona", "Sconfiggi le guardie richieste e raggiungi la corona.", "Rimuovi gli appoggi", "Tocca un gruppo collegato dello stesso colore, controlla il percorso e conferma.", "Calcola prima", "La potenza deve superare il nemico. Ordina somme e moltiplicatori; le punte causano la sconfitta."],
+    ru: ["Верните корону", "Победите нужных стражей и доберитесь до короны.", "Уберите опоры", "Нажмите связанную группу одного цвета, проверьте путь и подтвердите.", "Сначала считайте", "Сила должна превышать силу врага. Важен порядок сложения и умножения; шипы ведут к поражению."],
+    hi: ["मुकुट वापस लें", "ज़रूरी पहरेदारों को हराकर मुकुट तक पहुँचें।", "सहारे हटाएँ", "जुड़े हुए एक रंग के समूह पर टैप करें, रास्ता देखें और पुष्टि करें।", "पहले गणना करें", "शक्ति दुश्मन से अधिक होनी चाहिए। जोड़ और गुणा का क्रम सोचें; काँटों से हार होती है।"],
+    ar: ["استعد التاج", "اهزم الحراس المطلوبين ثم وصل إلى التاج.", "أزل الدعامات", "اضغط مجموعة متصلة من لون واحد، راجع المسار ثم أكد.", "احسب أولًا", "يجب أن تتجاوز قوتك قوة العدو. خطط لترتيب الجمع والضرب؛ الأشواك تسبب الخسارة."]
+  };
   const tutorials = {
+    "animal-crownfall": {
+      title: Object.fromEntries(Object.entries(crownfallCopy).map(([lang, copy]) => [lang, copy[0]])),
+      steps: [0, 1, 2].map(index => ({ icon: String(index + 1), ...Object.fromEntries(Object.entries(crownfallCopy).map(([lang, copy]) => [lang, copy.slice(index * 2, index * 2 + 2)])) }))
+    },
     "freecell-solitaire": classicTutorial("freecell"),
     "pyramid-solitaire": classicTutorial("pyramid"),
     "tripeaks-solitaire": classicTutorial("tripeaks"),
@@ -466,6 +485,7 @@
   };
 
   const battleTutorialGames = new Set([
+    "animal-crownfall",
     "freecell-solitaire",
     "pyramid-solitaire",
     "tripeaks-solitaire",

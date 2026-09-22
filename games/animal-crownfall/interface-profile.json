@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "gameId": "animal-crownfall",
+  "audience": "general",
+  "interfaceVersion": 7,
+  "flow": "main-stage-battle",
+  "stage": {
+    "enabled": true,
+    "leftWorkspace": null,
+    "rightWorkspace": null
+  }
+}
