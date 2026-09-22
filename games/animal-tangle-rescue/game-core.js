@@ -51,7 +51,8 @@
     { arc: 6, checkpoint: false, title: "Last moon turn", hint: "A final locked row narrows the valid rescue sequence.", lockedRows: [1], target: ["hareA", "foxA", "badgerB", "foxB", "badgerA", "otterA"], start: ["badgerA", "foxA", "hareA", "otterA", "foxB", "badgerB"] },
     { arc: 6, checkpoint: true, title: "Taro's rescue finale", hint: "Connect every endpoint and open all six shelters.", decoyRows: [1, 4], target: ["foxB", "badgerB", "otterA", "foxA", "hareA", "badgerA"], start: ["badgerA", "foxA", "foxB", "badgerB", "otterA", "hareA"] },
   ];
-  const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: true, best: {}, statusKey: "ready", statusVars: {}, statusError: false };
+  const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: !window.WeightPlayAudio.isMuted(), best: {}, statusKey: "ready", statusVars: {}, statusError: false };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
@@ -77,22 +78,7 @@
     window.__tangleRescueEvents = window.__tangleRescueEvents || [];
     window.__tangleRescueEvents.push({ eventName, ...details });
   };
-  const playTone = (frequency = 440) => {
-    if (!state.sound) return;
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      const context = new AudioContext();
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.frequency.value = frequency;
-      gain.gain.setValueAtTime(0.035, context.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.12);
-      oscillator.connect(gain).connect(context.destination);
-      oscillator.start(); oscillator.stop(context.currentTime + 0.12);
-      oscillator.addEventListener("ended", () => context.close().catch(() => {}), { once: true });
-    } catch (_error) {}
-  };
+  const playTone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   const showToast = (message) => { $("toast").textContent = message; $("toast").classList.add("visible"); window.clearTimeout(showToast.timer); showToast.timer = window.setTimeout(() => $("toast").classList.remove("visible"), 1800); };
   const setScreen = (screen) => {
     state.screen = screen;
@@ -214,7 +200,7 @@
     state.statusVars = { first: firstName, second: secondName };
     state.statusError = false;
     analytics("tangle_endpoint_swapped", { first, second: row, swaps: state.swaps });
-    playTone(520);
+    playTone("board.move");
     $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
     renderBoard();
     $("battleStatus").classList.remove("error");
@@ -225,7 +211,7 @@
       if (!state.completed.includes(state.board)) state.completed.push(state.board);
       safeSet("weightplay-animal-tangle-rescue-completed", JSON.stringify(state.completed));
       analytics("tangle_board_completed", { board: state.board, swaps: state.swaps });
-      playTone(760);
+      playTone("puzzle.clear");
       renderResult(state.swaps);
       return;
     }
@@ -295,12 +281,12 @@
       const highestUnlocked = Math.max(0, ...state.completed.filter((index) => index >= 0 && index < boards.length));
       $("stageList").querySelector(`[data-stage="${highestUnlocked}"]`)?.focus();
     });
-    [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-tangle-rescue-sound", state.sound ? "on" : "off"); applyText(); }));
+    [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); safeSet("weightplay-animal-tangle-rescue-sound", state.sound ? "on" : "off"); applyText(); }));
     $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
   };
   const init = () => {
     try { const saved = JSON.parse(safeGet("weightplay-animal-tangle-rescue-completed", "[]")); state.completed = Array.isArray(saved) ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < boards.length) : []; } catch (_error) { state.completed = []; }
-    state.sound = safeGet("weightplay-animal-tangle-rescue-sound", "on") !== "off";
+    state.sound = window.WeightPlayAudio.setEnabled(safeGet("weightplay-animal-tangle-rescue-sound", "on") !== "off");
     bind();
     ensureGuideContract();
     window.addEventListener("wonder:locale-change", (event) => applyLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));

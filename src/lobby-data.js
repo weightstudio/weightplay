@@ -81,10 +81,10 @@ window.WONDER_LOBBY = {
       id: "pawaxe", audience: "general", status: "planned", internalOnly: true,
       internalTrial: "index.html?trial=1",
       title: { en: "Axe & Ally", "zh-Hant": "斧刃夥伴" },
-      type: { en: "Loot Adventure", "zh-Hant": "刷寶探險" },
-      description: { en: "Slash through a long forest expedition, collect four allies and build around special equipment abilities.", "zh-Hant": "一路揮斧探索森林，收集四種能力夥伴與特殊裝備，挑戰首領並持續刷寶。" },
+      type: { en: "Loot Adventure", "zh-Hant": "刷寶探險", "zh-Hans": "刷宝探险", ja: "収集冒険", ko: "수집 모험", es: "Aventura y botín", "pt-BR": "Aventura e saques", fr: "Aventure et butin", de: "Beuteabenteuer", it: "Avventura e bottino", ru: "Приключение и добыча", hi: "लूट का रोमांच", ar: "مغامرة الغنائم" },
+      description: { en: "Slash through a long forest expedition, collect four allies and build around special equipment abilities.", "zh-Hant": "一路揮斧探索森林，收集四種能力夥伴與特殊裝備，挑戰首領並持續刷寶。", "zh-Hans": "一路挥斧探索森林，收集四种能力伙伴与特殊装备，挑战首领并持续刷宝。", ja: "斧で森を進み、4種類の仲間と特殊装備を集めてボスに挑もう。", ko: "도끼로 숲을 탐험하고 네 종류의 동료와 특수 장비를 모아 보스에 도전하세요.", es: "Recorre el bosque a hachazos, reúne cuatro aliados y equipo especial y desafía a los jefes.", "pt-BR": "Explore a floresta com seu machado, reúna quatro aliados e equipamentos especiais e enfrente chefes.", fr: "Traversez la forêt à la hache, collectionnez quatre alliés et des équipements spéciaux et défiez les boss.", de: "Erkunde den Wald mit deiner Axt, sammle vier Begleiter und Spezialausrüstung und fordere Bosse heraus.", it: "Esplora la foresta con l’ascia, raccogli quattro alleati ed equipaggiamento speciale e sfida i boss.", ru: "Прокладывайте путь топором, собирайте четырёх спутников и особое снаряжение и побеждайте боссов.", hi: "कुल्हाड़ी से वन में आगे बढ़ें, चार साथी और विशेष उपकरण जुटाएँ और बॉस को चुनौती दें।", ar: "شق طريقك بالفأس في الغابة واجمع أربعة رفاق ومعدات خاصة وتحدَّ الزعماء." },
       categories: ["Action", "Adventure", "Animal Games"], skills: ["Timing", "Focus"], ages: ["general"],
-      href: "games/pawaxe/", meta: { en: ["30 Stages", "4 Allies"], "zh-Hant": ["30 關", "4 種夥伴"] },
+      href: "games/pawaxe/", meta: { en: ["30 Stages", "4 Allies"], "zh-Hant": ["30 關", "4 種夥伴"], "zh-Hans": ["30 关", "4 种伙伴"], ja: ["30 ステージ", "4 種の仲間"], ko: ["30 스테이지", "동료 4종"], es: ["30 etapas", "4 aliados"], "pt-BR": ["30 fases", "4 aliados"], fr: ["30 étapes", "4 alliés"], de: ["30 Etappen", "4 Begleiter"], it: ["30 tappe", "4 alleati"], ru: ["30 этапов", "4 спутника"], hi: ["30 चरण", "4 साथी"], ar: ["30 مرحلة", "4 رفاق"] },
       art: { kind: "image", background: "games/pawaxe/art/cover-v1.png", hideHero: true },
     },
     {

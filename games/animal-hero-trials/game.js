@@ -608,7 +608,7 @@
   }
 
   function playSound(cue) {
-    window.WonderSound?.play?.(cue);
+    window.WeightPlayAudio?.play?.(cue);
   }
 
   const soundActionLabels = {
@@ -646,7 +646,7 @@
   function syncSoundToggle() {
     const button = $("#soundToggle");
     if (!button) return;
-    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
     const labels = soundActionLabels[locale] || soundActionLabels.en;
     const sourceLabel = muted ? "Turn sound on" : "Mute sound";
     const label = labels[muted ? "unmute" : "mute"] || sourceLabel;
@@ -1030,7 +1030,7 @@
     });
     $("#skillBtn img").src = ASSET_ROOT + hero.asset;
     spawn();
-    playSound("start");
+    playSound("game.start");
     $("#game").focus({ preventScroll: true });
     loop(performance.now());
 
@@ -1048,7 +1048,7 @@
       $("#roomText").textContent = roomLabel(run.room, true);
       $("#objective").textContent = interpolate("bossObjectiveNamed",{boss:localizedPair(boss.name)});
       updateHud();
-      playSound("boss");
+      playSound("alert.boss");
       return;
     }
     const elite=encounter.elite;
@@ -1068,7 +1068,7 @@
       ? interpolate("eliteObjective",{enemy:enemyNames})
       : interpolate("enemyObjective",{count:run.enemies.length,enemy:enemyNames});
     updateHud();
-    if(elite) playSound("boss");
+    if(elite) playSound("alert.boss");
   }
 
   function skillEffectLabel() {
@@ -1127,7 +1127,10 @@
     }
     if(enemy.bossRule==="charge"&&!enemy.open) applied*=.35;
     if(enemy.bossRule==="crown"&&enemy.phase===1&&source!=="skill") applied*=.3;
+    const blocked = applied < amount;
     enemy.hp-=applied;
+    playSound(blocked ? "combat.block" : run.heroId === "leo" || run.heroId === "fia" ? "weapon.sword.hit" : "magic.hit");
+    if (enemy.hp <= 0) playSound("enemy.defeat");
     const direction = Math.atan2(enemy.y - run.leo.y, enemy.x - run.leo.x);
     enemy.hitFlash = Math.max(enemy.hitFlash || 0, source === "skill" ? 0.24 : 0.16);
     enemy.hitOffsetX = Math.cos(direction) * (source === "skill" ? 9 : 5);
@@ -1141,7 +1144,7 @@
   function skill() {
     if (!run?.active || run.cool > 0) return;
     beginRangeGuidance();
-    playSound("shoot");
+    playSound(run.heroId === "leo" ? "weapon.sword.swing" : run.heroId === "fia" ? "movement.dash" : "magic.cast");
     if (run.heroId === "leo") {
       run.cool = Math.max(2.5, 5 - run.bless.speed * 0.5);
       run.fx.push({ type: "roar", x: run.leo.x, y: run.leo.y, t: 0.45 });
@@ -1272,7 +1275,7 @@
       hp: Math.max(0, Math.round(run.hp)),
       max_hp: run.maxHp,
     });
-    playSound("success");
+    playSound("feedback.success");
     renderBlessings(false);
     setChoiceModal(true);
   }
@@ -1306,7 +1309,7 @@
         if (blessingDecisionCommitted || $("#choiceModal").classList.contains("hidden")) return;
         blessingDecisionCommitted = true;
         clearRerollConfirmation();
-        playSound("upgrade");
+        playSound("reward.upgrade");
         trackTrialEvent("blessing_pick", {
           stage: run.stage,
           room: run.room,
@@ -1403,7 +1406,7 @@
       return updateRerollUi(interpolate("rerollNeed", { balance: window.WeightPlayWallet?.read?.().diamonds || 0 }));
     }
     run.rerollUsed = true;
-    playSound("coin");
+    playSound("reward.coin");
     renderBlessings(true);
     updateRerollUi(t("rerollDone"));
     window.WonderAnalytics?.track?.("diamond_spend", {
@@ -1440,7 +1443,7 @@
       button.classList.toggle("primary", button === resultPrimary);
     });
     $("#resultHome").onclick = () => commitResultDecision(() => {
-      playSound("click");
+      playSound("ui.click");
       show("stage");
       focusStage(Math.min(TRIAL_COUNT, unlocked));
     });
@@ -1495,7 +1498,7 @@
       $("#resultNext").onclick = null;
     }
     setResultModal(true, resultPrimary);
-    playSound(won ? "win" : "wrong");
+    playSound(won ? "result.win" : "result.lose");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -1838,8 +1841,8 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     soundToggle.onclick = () => {
-      window.WonderSound?.unlock?.();
-      window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());
+      window.WeightPlayAudio?.unlock?.();
+      window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio?.isMuted?.());
       syncSoundToggle();
     };
   }
@@ -1870,8 +1873,8 @@
     const card = event.target.closest(".stage-card");
     if (card) setStageTabStop(card);
   });
-  $("#startBtn").onclick = () => { playSound("click"); show("stage"); focusStage(); };
-  $("#stageBack").onclick = () => { playSound("click"); show("main"); focusMain(); };
+  $("#startBtn").onclick = () => { playSound("ui.click"); show("stage"); focusStage(); };
+  $("#stageBack").onclick = () => { playSound("ui.click"); show("main"); focusMain(); };
   $("#battleBack").onclick = openQuitDecision;
   $("#battleHelp").onclick = () => {
     if (!run || document.body.dataset.gameView !== "battle") return;
@@ -1893,7 +1896,7 @@
   $("#quitLeave").onclick = () => {
     const stage = run?.stage || Math.min(TRIAL_COUNT, unlocked);
     closeQuitDecision(false, false);
-    playSound("click");
+    playSound("ui.click");
     show("stage");
     focusStage(stage);
   };
@@ -1957,7 +1960,7 @@
       mastery += 1;
       save();
       localize();
-      playSound("upgrade");
+      playSound("reward.upgrade");
     }
   };
   addEventListener("keydown", (event) => {

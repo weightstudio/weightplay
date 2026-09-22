@@ -91,10 +91,11 @@
   let locale = routeLocale || localStorage.getItem("weightplay-locale") || "en";
   if (!localeKeys.includes(locale)) locale = "en";
   let audioContext = null;
-  const sharedSoundMuted = () => typeof window.WonderSound?.isMuted === "function"
-    ? Boolean(window.WonderSound.isMuted())
+  const sharedSoundMuted = () => typeof window.WeightPlayAudio?.isMuted === "function"
+    ? Boolean(window.WeightPlayAudio.isMuted())
     : null;
-  let muted = sharedSoundMuted() ?? (localStorage.getItem("weightplay-sound") === "off");
+  let muted = window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { muted = window.WeightPlayAudio.isMuted(); });
   let swipeStart = null;
   let canvasSizing = { width: 0, height: 0, dpr: 0 };
 
@@ -159,21 +160,8 @@
     || (GAME_TEXT[gameId][key] && (GAME_TEXT[gameId][key][locale] || GAME_TEXT[gameId][key].en)) || "";
   const label = (name, value) => `${name}: ${value}`;
 
-  function ensureAudio() {
-    if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioContext.state === "suspended") audioContext.resume();
-  }
-  function tone(frequency, duration = 0.06, type = "sine", volume = 0.035) {
-    if (muted) return;
-    try {
-      ensureAudio();
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      oscillator.type = type; oscillator.frequency.value = frequency; gain.gain.value = volume;
-      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
-      oscillator.connect(gain).connect(audioContext.destination); oscillator.start(); oscillator.stop(audioContext.currentTime + duration);
-    } catch { /* Audio is an enhancement; gameplay remains available. */ }
-  }
+  function ensureAudio() { return window.WeightPlayAudio?.unlock(); }
+  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
   function setMessage(text, toneName = "") { ui.message.textContent = text; ui.message.dataset.tone = toneName; }
   function setLocale(nextLocale) {
@@ -227,11 +215,11 @@
 
   function setSoundMuted(nextMuted) {
     const desired = Boolean(nextMuted);
-    if (typeof window.WonderSound?.setMuted === "function") {
-      window.WonderSound.setMuted(desired);
-      muted = Boolean(window.WonderSound.isMuted?.() ?? desired);
+    if (typeof window.WeightPlayAudio?.setMuted === "function") {
+      window.WeightPlayAudio.setMuted(desired);
+      muted = !window.WeightPlayAudio.setEnabled(!(Boolean(window.WeightPlayAudio.isMuted?.() ?? desired)));
     } else {
-      muted = desired;
+      muted = !window.WeightPlayAudio.setEnabled(!(desired));
       localStorage.setItem("weightplay-sound", muted ? "off" : "on");
     }
     setLocale(locale);
@@ -310,16 +298,16 @@
     state.input = {};
     setMessage(tr("ready")); updateHud(); drawMaze();
   }
-  function mazeSetDirection(direction) { if (gameId !== "maze" || !state.running) return; state.maze.player.next = direction; tone(280, 0.025, "triangle", 0.018); }
+  function mazeSetDirection(direction) { if (gameId !== "maze" || !state.running) return; state.maze.player.next = direction; tone("movement.step", 0.025, "triangle", 0.018); }
   function mazeResolvePlayerCollision() {
     const maze = state.maze; const player = maze.player;
     const enemy = maze.enemies.find((item) => item.x === player.x && item.y === player.y);
     if (!enemy) return;
-    if (maze.power > 0) { state.score += 200 + maze.combo * 100; maze.combo += 1; enemy.x = enemy.homeX; enemy.y = enemy.homeY; tone(180 + maze.combo * 80, 0.11, "square", 0.04); return; }
-    if (player.grace > 0) { setMessage(tr("grace"), "success"); tone(480, 0.06, "triangle", 0.025); return; }
+    if (maze.power > 0) { state.score += 200 + maze.combo * 100; maze.combo += 1; enemy.x = enemy.homeX; enemy.y = enemy.homeY; tone("enemy.defeat", 0.11, "square", 0.04); return; }
+    if (player.grace > 0) { setMessage(tr("grace"), "success"); tone("combat.block", 0.06, "triangle", 0.025); return; }
     state.maze.player = { x: player.x, y: player.y, dir: player.dir, next: player.next, grace: 6000 };
     state.maze.enemies.forEach((item) => { item.x = item.homeX; item.y = item.homeY; }); state.maze.power = 0; state.maze.moveClock = 0; state.maze.enemyClock = -4500; state.maze.lives = (state.maze.lives || 5) - 1;
-    setMessage(tr("hit"), "danger"); tone(120, 0.2, "sawtooth", 0.05); if (state.maze.lives <= 0) finish(false, { stage: state.level, lives: 0 });
+    setMessage(tr("hit"), "danger"); tone("player.hurt", 0.2, "sawtooth", 0.05); if (state.maze.lives <= 0) finish(false, { stage: state.level, lives: 0 });
   }
   function mazeStepPlayer() {
     const maze = state.maze; const player = maze.player; const next = DIRS[player.next];
@@ -327,13 +315,13 @@
     const current = DIRS[player.dir];
     if (mazeCanMove(player.x + current.x, player.y + current.y)) { player.x += current.x; player.y += current.y; }
     const key = `${player.x},${player.y}`;
-    if (maze.pellets.delete(key)) { state.score += maze.power > 0 ? 20 : 10; tone(620, 0.04, "sine", 0.025); }
-    if (maze.beacons.has(key)) { maze.beacons.delete(key); maze.power = 18000; maze.combo = 0; state.score += 50; tone(880, 0.16, "square", 0.035); setMessage(tr("powerReady"), "success"); }
+    if (maze.pellets.delete(key)) { state.score += maze.power > 0 ? 20 : 10; tone("reward.collect", 0.04, "sine", 0.025); }
+    if (maze.beacons.has(key)) { maze.beacons.delete(key); maze.power = 18000; maze.combo = 0; state.score += 50; tone("magic.shield", 0.16, "square", 0.035); setMessage(tr("powerReady"), "success"); }
     mazeResolvePlayerCollision();
     if (!state.running) return;
     if (!maze.pellets.size) {
       if (state.level >= 3) finish(true, { stage: state.level });
-      else { state.level += 1; mazeResetStage(); setMessage(tr("clear"), "success"); tone(980, 0.2, "triangle", 0.035); }
+      else { state.level += 1; mazeResetStage(); setMessage(tr("clear"), "success"); tone("game.checkpoint", 0.2, "triangle", 0.035); }
     }
   }
   function mazeEnemyStep() {
@@ -380,7 +368,7 @@
     if (state.level >= 2) space.ufo = { x: 90, y: 100, vx: 38, cooldown: 1.7 };
   }
   function resetSpace() { state.space = { ship: { x: 480, y: 270, vx: 0, vy: 0, angle: -Math.PI / 2 }, rocks: [], bullets: [], particles: [], rapid: 0, hits: 0, invincible: 3.2, fireClock: 0, combo: 0, comboClock: 0, transition: 0, tutorialClock: 6, aimCueClock: 0, aimCueSeen: false, guardianFlash: 0, ufo: null, shots: 0, fragments: 0 }; spawnSpaceWave(); state.input = {}; updateHud(); drawSpace(); setMessage(tr("ready")); }
-  function spaceShoot() { if (!state.running || gameId !== "space") return; const space = state.space; if (space.fireClock > 0) return; const ship = space.ship; const speed = 410; space.bullets.push({ x: ship.x + Math.cos(ship.angle) * 18, y: ship.y + Math.sin(ship.angle) * 18, vx: ship.vx + Math.cos(ship.angle) * speed, vy: ship.vy + Math.sin(ship.angle) * speed, life: 1.45 }); space.fireClock = space.rapid > 0 ? 0.075 : 0.16; space.shots += 1; if (!space.aimCueSeen) { space.aimCueSeen = true; space.aimCueClock = 4; setMessage(spaceHint("aimCue"), "success"); } tone(710, 0.045, "square", 0.022); }
+  function spaceShoot() { if (!state.running || gameId !== "space") return; const space = state.space; if (space.fireClock > 0) return; const ship = space.ship; const speed = 410; space.bullets.push({ x: ship.x + Math.cos(ship.angle) * 18, y: ship.y + Math.sin(ship.angle) * 18, vx: ship.vx + Math.cos(ship.angle) * speed, vy: ship.vy + Math.sin(ship.angle) * speed, life: 1.45 }); space.fireClock = space.rapid > 0 ? 0.075 : 0.16; space.shots += 1; if (!space.aimCueSeen) { space.aimCueSeen = true; space.aimCueClock = 4; setMessage(spaceHint("aimCue"), "success"); } tone("weapon.laser.fire", 0.045, "square", 0.022); }
   function spaceShield() { if (!state.running || gameId !== "space" || state.space.hits >= 5) return; state.input.shield = true; setMessage(spaceHint("shieldCue"), "success"); }
   function updateSpace(dt) {
     const space = state.space, ship = space.ship, input = state.input; space.fireClock = Math.max(0, space.fireClock - dt); space.rapid = Math.max(0, space.rapid - dt); space.comboClock = Math.max(0, space.comboClock - dt); space.tutorialClock = Math.max(0, space.tutorialClock - dt); space.aimCueClock = Math.max(0, space.aimCueClock - dt); space.guardianFlash = Math.max(0, space.guardianFlash - dt); if (!space.comboClock) space.combo = 0;
@@ -393,12 +381,12 @@
     if (space.ufo) { space.ufo.x = wrap(space.ufo.x + space.ufo.vx * dt, 960); space.ufo.cooldown -= dt; if (space.ufo.cooldown <= 0) { space.ufo.cooldown = 1.8; const a = Math.atan2(ship.y - space.ufo.y, ship.x - space.ufo.x); space.bullets.push({ x: space.ufo.x, y: space.ufo.y, vx: Math.cos(a) * 170, vy: Math.sin(a) * 170, life: 2.6, enemy: true }); } }
     for (let b = space.bullets.length - 1; b >= 0; b--) { const bullet = space.bullets[b]; if (bullet.enemy) { if (distance(bullet, ship) < 15) { space.bullets.splice(b, 1); spaceHit(); } continue; } for (let r = space.rocks.length - 1; r >= 0; r--) { const rock = space.rocks[r]; if (distance(bullet, rock) < rock.radius) { space.bullets.splice(b, 1); hitRock(r); break; } } }
     space.rocks.forEach((rock) => { if (distance(rock, ship) < rock.radius + 7) spaceHit(); });
-    if (space.transition > 0) { space.transition -= dt; if (space.transition <= 0) { if (state.level >= 3) finish(true, { wave: state.level, shots: space.shots, fragments: space.fragments }); else { state.level += 1; spawnSpaceWave(); if (state.level === 3) { space.guardianFlash = 3; setMessage(spaceHint("guardianCue"), "success"); tone(180, 0.28, "sawtooth", 0.05); } else tone(960, 0.16, "triangle", 0.035); } } }
+    if (space.transition > 0) { space.transition -= dt; if (space.transition <= 0) { if (state.level >= 3) finish(true, { wave: state.level, shots: space.shots, fragments: space.fragments }); else { state.level += 1; spawnSpaceWave(); if (state.level === 3) { space.guardianFlash = 3; setMessage(spaceHint("guardianCue"), "success"); tone("alert.boss", 0.28, "sawtooth", 0.05); } else tone("game.checkpoint", 0.16, "triangle", 0.035); } } }
     if (!space.rocks.length && space.transition <= 0) { space.transition = 1.2; setMessage(tr("clear"), "success"); }
     updateHud(); drawSpace();
   }
-  function hitRock(index) { const space = state.space, rock = space.rocks[index]; space.rocks.splice(index, 1); state.score += rock.boss ? 1200 : rock.size === 2 ? 90 : rock.size === 1 ? 55 : 30; space.combo += 1; space.comboClock = 2.2; space.fragments += 1; if (rock.boss) { space.guardianFlash = 1.6; setMessage(spaceHint("guardianHitCue"), "success"); for (let i = 0; i < 14; i++) space.particles.push({ x: rock.x, y: rock.y, life: 0.8, color: i % 2 ? "#ffdc8a" : "#ff8b6e" }); } if (!rock.boss && rock.size > 0) { for (let i = 0; i < 2; i++) spawnRock(rock.size - 1, rock.x, rock.y, randomAngle(i + rock.x + state.score), 48 + (2 - rock.size) * 18 + state.level * 4); } if (Math.random() < 0.3) { space.rapid = 8; setMessage(tr("rapid"), "success"); } if (!rock.boss && state.level < 3 && space.rocks.length === 1) { space.aimCueClock = 3.2; setMessage(spaceHint("reacquireCue"), "success"); } tone(rock.boss ? 190 : 420 + rock.size * 80, 0.08, "sawtooth", 0.035); }
-  function spaceHit() { const space = state.space; if (space.invincible > 0) return; if (space.shielding && space.hits < 5) { space.hits += 1; space.invincible = 1.8; setMessage(spaceHint("shieldSpentCue", { count: 5 - space.hits }), "success"); tone(300, 0.1, "triangle", 0.04); return; } space.hits += 1; space.invincible = 1.7; space.ship.x = 480; space.ship.y = 270; space.ship.vx = 0; space.ship.vy = 0; setMessage(spaceHint("hitRecoveryCue", { count: space.hits }), "danger"); tone(100, 0.2, "sawtooth", 0.05); if (space.hits >= 5) finish(false, { wave: state.level, shots: space.shots, fragments: space.fragments }); }
+  function hitRock(index) { const space = state.space, rock = space.rocks[index]; space.rocks.splice(index, 1); state.score += rock.boss ? 1200 : rock.size === 2 ? 90 : rock.size === 1 ? 55 : 30; space.combo += 1; space.comboClock = 2.2; space.fragments += 1; if (rock.boss) { space.guardianFlash = 1.6; setMessage(spaceHint("guardianHitCue"), "success"); for (let i = 0; i < 14; i++) space.particles.push({ x: rock.x, y: rock.y, life: 0.8, color: i % 2 ? "#ffdc8a" : "#ff8b6e" }); } if (!rock.boss && rock.size > 0) { for (let i = 0; i < 2; i++) spawnRock(rock.size - 1, rock.x, rock.y, randomAngle(i + rock.x + state.score), 48 + (2 - rock.size) * 18 + state.level * 4); } if (Math.random() < 0.3) { space.rapid = 8; setMessage(tr("rapid"), "success"); } if (!rock.boss && state.level < 3 && space.rocks.length === 1) { space.aimCueClock = 3.2; setMessage(spaceHint("reacquireCue"), "success"); } tone(rock.boss ? "explosion.large" : "explosion.small", 0.08, "sawtooth", 0.035); }
+  function spaceHit() { const space = state.space; if (space.invincible > 0) return; if (space.shielding && space.hits < 5) { space.hits += 1; space.invincible = 1.8; setMessage(spaceHint("shieldSpentCue", { count: 5 - space.hits }), "success"); tone("combat.block", 0.1, "triangle", 0.04); return; } space.hits += 1; space.invincible = 1.7; space.ship.x = 480; space.ship.y = 270; space.ship.vx = 0; space.ship.vy = 0; setMessage(spaceHint("hitRecoveryCue", { count: space.hits }), "danger"); tone("player.hurt", 0.2, "sawtooth", 0.05); if (space.hits >= 5) finish(false, { wave: state.level, shots: space.shots, fragments: space.fragments }); }
   function drawSpace() {
     const w = 960, h = 540; resizeCanvas(w, h); ctx.fillStyle = "#030817"; ctx.fillRect(0, 0, w, h); ctx.save(); for (let i = 0; i < 90; i++) { const x = (i * 137) % w, y = (i * 71) % h; ctx.fillStyle = i % 7 === 0 ? "#9ae9ff" : "rgba(255,255,255,.5)"; ctx.fillRect(x, y, i % 5 === 0 ? 2 : 1, i % 5 === 0 ? 2 : 1); } ctx.restore();
     if (!state.space) return; const space = state.space;
@@ -425,14 +413,14 @@
   function startGame() { ensureAudio(); setPlayMode(true); state.running = true; state.confirming = false; state.score = 0; state.level = 1; state.result = null; ui.main.hidden = true; ui.battle.hidden = false; (__wpNotifyMeasurement(), ui.result.hidden = true); ui.battle.classList.remove("has-result"); (__wpNotifyMeasurement(), ui.confirm.hidden = true); window.dispatchEvent(new Event("weightplay:shell-sync")); window.dispatchEvent(new Event("weightplay:battle-open")); syncBattleGeometry(); if (gameId === "maze") mazeResetStage(); else resetSpace(); ui.canvas.focus(); setMessage(gameId === "space" ? spaceHint("driftCue") : tr("ready")); state.lastTime = performance.now(); requestAnimationFrame(loop);
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-  function finish(won, details) { if (!state.running) return; state.running = false; state.result = { won, details }; if (state.score > state.best) { state.best = state.score; localStorage.setItem(`weightplay-${gameId}-best`, String(state.best)); } tone(won ? 880 : 110, won ? 0.25 : 0.3, won ? "triangle" : "sawtooth", 0.05); renderResult(); (__wpNotifyMeasurement(), ui.result.hidden = false); ui.battle.classList.add("has-result");
+  function finish(won, details) { if (!state.running) return; state.running = false; state.result = { won, details }; if (state.score > state.best) { state.best = state.score; localStorage.setItem(`weightplay-${gameId}-best`, String(state.best)); } tone(won ? "result.win" : "result.lose", won ? 0.25 : 0.3, won ? "triangle" : "sawtooth", 0.05); renderResult(); (__wpNotifyMeasurement(), ui.result.hidden = false); ui.battle.classList.add("has-result");
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function renderResult() { if (!state.result) return; const won = state.result.won; ui.resultTitle.textContent = won ? resultText("win") : resultText("lose"); ui.resultCopy.textContent = won ? resultText("winCopy") : resultText("loseCopy"); const d = state.result.details || {}; const rows = gameId === "maze" ? [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("stageStat"), d.stage || state.level], [tr("livesStat"), state.maze?.lives ?? 0]] : [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("waveStat"), d.wave || state.level], [tr("shotsStat"), d.shots || state.space?.shots || 0], [tr("fragmentsStat"), d.fragments || state.space?.fragments || 0]]; ui.stats.replaceChildren(); rows.forEach(([name, value]) => { const item = document.createElement("div"); item.className = "stat"; item.innerHTML = `<span>${name}</span><strong>${value}</strong>`; ui.stats.append(item); }); }
   function loop(now) { if (!state.running) return; if (state.confirming) { requestAnimationFrame(loop); return; } const dt = Math.min(0.05, Math.max(0, (now - state.lastTime) / 1000)); state.lastTime = now; if (gameId === "maze") updateMaze(dt); else updateSpace(dt); if (state.running) requestAnimationFrame(loop); }
 
-  ui.start.addEventListener("click", startGame); ui.retry.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.home.addEventListener("click", showMain); ui.restart.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.back.addEventListener("click", () => { if (!state.running) return showMain(); state.confirming = true; state.input = {}; (__wpNotifyMeasurement(), ui.confirm.hidden = false); ui.stay.focus({ preventScroll: true }); }); ui.stay.addEventListener("click", () => { state.confirming = false; state.lastTime = performance.now(); (__wpNotifyMeasurement(), ui.confirm.hidden = true); ui.canvas.focus(); }); ui.leave.addEventListener("click", showMain); ui.sound.addEventListener("click", () => { setSoundMuted(!muted); if (!muted) tone(720, 0.07); });
-  window.addEventListener("wonder:audio-volume-change", () => { const sharedMuted = sharedSoundMuted(); if (sharedMuted === null || sharedMuted === muted) return; muted = sharedMuted; setLocale(locale); });
+  ui.start.addEventListener("click", startGame); ui.retry.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.home.addEventListener("click", showMain); ui.restart.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.back.addEventListener("click", () => { if (!state.running) return showMain(); state.confirming = true; state.input = {}; (__wpNotifyMeasurement(), ui.confirm.hidden = false); ui.stay.focus({ preventScroll: true }); }); ui.stay.addEventListener("click", () => { state.confirming = false; state.lastTime = performance.now(); (__wpNotifyMeasurement(), ui.confirm.hidden = true); ui.canvas.focus(); }); ui.leave.addEventListener("click", showMain); ui.sound.addEventListener("click", () => { setSoundMuted(!muted); if (!muted) tone("ui.click", 0.07); });
+  window.addEventListener("weightplay:audio-volume-change", () => { const sharedMuted = sharedSoundMuted(); if (sharedMuted === null || sharedMuted === muted) return; muted = !window.WeightPlayAudio.setEnabled(!(sharedMuted)); setLocale(locale); });
   window.addEventListener("keydown", (event) => { if (state.confirming) { if (event.key === "Escape") { state.confirming = false; (__wpNotifyMeasurement(), ui.confirm.hidden = true); ui.canvas.focus(); } return; } const key = event.key.toLowerCase(); if (gameId === "maze") { const direction = key === "arrowup" || key === "w" ? "up" : key === "arrowdown" || key === "s" ? "down" : key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : null; if (direction) { event.preventDefault(); mazeSetDirection(direction); } } else { const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : key === "shift" ? "shield" : null; if (action) { event.preventDefault(); if (action === "shield") spaceShield(); else state.input[action] = true; } } });
   window.addEventListener("keyup", (event) => { if (gameId !== "space") return; const key = event.key.toLowerCase(); const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : null; if (action) state.input[action] = false; });
   ui.canvas.addEventListener("pointerdown", (event) => { swipeStart = { x: event.clientX, y: event.clientY }; ui.canvas.setPointerCapture?.(event.pointerId); }); ui.canvas.addEventListener("pointerup", (event) => { if (!swipeStart || gameId !== "maze") return; const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y; swipeStart = null; if (Math.max(Math.abs(dx), Math.abs(dy)) < 12) return; mazeSetDirection(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up")); });

@@ -1164,7 +1164,7 @@
       nodes.hintText.textContent = t("goalReady");
     }
     markMatches(matches);
-    window.WonderSound?.play(matches.length >= 5 ? "success" : "coin");
+    window.WeightPlayAudio?.play(matches.length >= 5 ? "puzzle.clear" : "puzzle.match");
 
     scheduleBoardTask(() => {
       const dropMap = collapse(matches);
@@ -1189,7 +1189,7 @@
     renderBoard();
 
     if (!findMatches().length) {
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("feedback.error");
       scheduleBoardTask(() => {
         swap(first, target);
         state.combo = 1;
@@ -1202,7 +1202,7 @@
 
     state.moves -= 1;
     updateHud();
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     scheduleBoardTask(resolveBoard, 120);
   }
 
@@ -1381,8 +1381,8 @@
   function startStage(index) {
     if (index >= loadUnlocked()) return;
     invalidateBoardSession();
-    window.WonderSound?.unlock();
-    window.WonderSound?.play("start");
+    window.WeightPlayAudio?.unlock();
+    window.WeightPlayAudio?.play("game.start");
     state.currentStageIndex = index;
     state.score = 0;
     state.moves = activeStage().moves;
@@ -1464,7 +1464,7 @@
     nodes.playPanel.classList.add("hidden");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
-    window.WonderSound?.play(cleared ? "win" : "wrong");
+    window.WeightPlayAudio?.play(cleared ? "result.win" : "result.lose");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
       stage: stage.id,

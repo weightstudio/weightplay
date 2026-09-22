@@ -194,7 +194,7 @@
     const mission=chapterCopy("chapterMissions",level.chapter);
     $("#objective").textContent=mission;
     $("#status").textContent=`${mission} ${t("ready")}`;
-    show("battle");renderBoard();tone(520,.05);
+    show("battle");renderBoard();tone("game.start",.05);
     window.WonderAnalytics?.track?.("game_start",{game_id:"animal-prism-garden",game_version:GAME_VERSION,stage:index+1});
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -252,7 +252,7 @@
     paths[color]=[index];activeColor=color;pointerId=event.pointerId;
     lastPointerPoint={x:event.clientX,y:event.clientY};
     $("#grid").setPointerCapture?.(pointerId);
-    renderBoard();tone(360,.035);
+    renderBoard();tone("board.move",.035);
   }
   function extend(index){
     if(activeColor===null)return;
@@ -264,7 +264,7 @@
     if(!adjacent(last,index)||path.includes(index)){blocked(index);return}
     const seed=seedColorAt(index),owner=ownerAt(index),gate=Number.isInteger(level.gates[index])?level.gates[index]:-1;
     if((seed>=0&&seed!==activeColor)||(owner>=0&&owner!==activeColor)||(gate>=0&&gate!==activeColor)){blocked(index);return}
-    path.push(index);renderBoard();tone(250+path.length*7,.018);
+    path.push(index);renderBoard();tone("board.move",.018);
   }
   function blocked(index){
     const cell=$(`.cell[data-index="${index}"]`);cell?.classList.add("blocked");
@@ -301,7 +301,7 @@
     });
     if(color===undefined){$("#status").textContent=t("hintUnavailable");renderBoard();return}
     history.push(copyPaths());paths[color]=level.solution[color].slice();moves++;
-    $("#status").textContent=t("hinted");renderBoard();tone(720,.08);checkComplete();
+    $("#status").textContent=t("hinted");renderBoard();tone("feedback.hint",.08);checkComplete();
   }
   function undo(){
     const previous=history.pop();
@@ -314,16 +314,8 @@
     paths={};activeColor=null;moves++;
     $("#status").textContent=t("fresh");renderBoard();
   }
-  function tone(frequency,duration){
-    if(window.WonderSound?.isMuted?.())return;
-    try{
-      audioContext ||= new(window.AudioContext||window.webkitAudioContext)();
-      const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();
-      oscillator.frequency.value=frequency;oscillator.type="sine";gain.gain.setValueAtTime(.035,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
-      oscillator.connect(gain).connect(audioContext.destination);oscillator.start();oscillator.stop(audioContext.currentTime+duration);
-    }catch{}
-  }
-  function successTone(){[520,680,880].forEach((note,index)=>setTimeout(()=>tone(note,.14),index*100))}
+  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
+  function successTone() { return window.WeightPlayAudio?.play("puzzle.clear"); }
 
   $("#grid").addEventListener("pointerdown",event=>begin(Number(event.target.closest(".cell")?.dataset.index),event));
   function tracePointer(event){

@@ -564,7 +564,7 @@
   }
 
   function playSound(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function track(event, payload = {}) {
@@ -634,7 +634,7 @@
         if (nodes.stageGrid.dataset.draggingClick === "1") return;
         if (stageNo > unlocked) {
           showFloatingText(t("locked"), 50, 50);
-          playSound("click");
+          playSound("ui.click");
           return;
         }
         startStage(index);
@@ -810,7 +810,7 @@
     startTimer();
     requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target[data-index]:not(:disabled)")?.focus({ preventScroll: true }));
     track("game_start", { level: index + 1 });
-    playSound("start");
+    playSound("game.start");
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -896,7 +896,7 @@
         const message = t("decoyTap");
         showFloatingText(message, x, y);
         announceStatus(message);
-        playSound("error");
+        playSound("feedback.error");
       });
       nodes.targetsLayer.appendChild(button);
     });
@@ -908,7 +908,7 @@
       const message = t("tryAgain");
       showFloatingText(message, ((event.clientX - rect.left) / rect.width) * 100, ((event.clientY - rect.top) / rect.height) * 100);
       announceStatus(message);
-      playSound("error");
+      playSound("feedback.error");
     };
   }
 
@@ -946,7 +946,7 @@
       announceStatus(message);
       button.classList.add("wrong-order");
       scheduleTransientFeedback(button, () => button.classList.remove("wrong-order"), 360);
-      playSound("error");
+      playSound("feedback.error");
       return;
     }
     found.add(index);
@@ -957,7 +957,7 @@
     button.setAttribute("aria-hidden", "true");
     showImageEffect("found", Number.parseFloat(button.style.left), Number.parseFloat(button.style.top), button.offsetWidth);
     showFloatingText(t("found"), Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
-    playSound("coin");
+    playSound("reward.collect");
     renderTargetList();
     updateOrderedTargets();
     updateHud();
@@ -972,7 +972,7 @@
     if (!acceptingInput) return;
     if (hintsLeft <= 0) {
       showFloatingText(t("noHints"), 50, 18);
-      playSound("error");
+      playSound("feedback.error");
       return;
     }
     const targets = stages[currentStage].targets;
@@ -990,7 +990,7 @@
     announceStatus(hintMessage);
     showFloatingText(hintMessage, x, y, true);
     track("hint_used", { level: currentStage + 1 });
-    playSound("select");
+    playSound("board.move");
   }
 
   function updateHud() {
@@ -1109,7 +1109,7 @@
       primaryAction.focus({ preventScroll: true });
     });
     track("game_complete", { level: stageNo, score: starCount * 100 - mistakes * 5, time_seconds: seconds });
-    playSound("success");
+    playSound("result.win");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }

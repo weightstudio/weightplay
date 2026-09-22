@@ -8,7 +8,8 @@
     { target: [40, 160, 280], options: [[40, 160, 280], [62, 182, 302], [40, 135, 230]] },
     { target: [10, 130, 250], options: [[10, 130, 250], [34, 154, 274], [10, 100, 210]] }
   ];
-  const state = { view: "main", locale: "en", round: 0, selected: null, totalChecks: 0, sound: false };
+  const state = { view: "main", locale: "en", round: 0, selected: null, totalChecks: 0, sound: !window.WeightPlayAudio.isMuted() };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const t = (key, vars = {}) => {
     const copy = locales[state.locale] || locales.en || {};
     const value = copy[key] ?? (locales.en || {})[key] ?? key;
@@ -16,19 +17,7 @@
     return String(value).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
   };
   const track = (name, detail = {}) => window.WonderAnalytics?.track?.(`petal_pilot_${name}`, detail);
-  const tone = (frequency) => {
-    if (!state.sound) return;
-    try {
-      const context = new AudioContext();
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.frequency.value = frequency;
-      gain.gain.value = 0.035;
-      oscillator.connect(gain).connect(context.destination);
-      oscillator.start();
-      oscillator.stop(context.currentTime + 0.08);
-    } catch (_) {}
-  };
+  const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   const readBest = () => {
     try { return Number(localStorage.getItem("weightplay-animal-petal-pilot-best")) || 0; } catch (_) { return 0; }
   };
@@ -154,13 +143,13 @@
     if (state.selected !== 0) {
       $("battle-status").textContent = t("wrong");
       $("battle-status").dataset.kind = "wrong";
-      tone(180);
+      tone("feedback.error");
       track("check", { round: state.round + 1, result: "wrong" });
       return;
     }
     $("battle-status").textContent = t("correct");
     $("battle-status").dataset.kind = "correct";
-    tone(680);
+    tone("feedback.success");
     track("check", { round: state.round + 1, result: "correct" });
     if (state.round < rounds.length - 1) {
       state.round += 1;
@@ -195,10 +184,10 @@
     $("start-button").addEventListener("click", start);
     $("guide-button").addEventListener("click", openSettings);
     $("main-settings").addEventListener("click", openSettings);
-    $("battle-sound").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); });
+    $("battle-sound").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); });
     $("result-settings").addEventListener("click", openSettings);
     $("close-settings").addEventListener("click", closeSettings);
-    $("sound-toggle").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); });
+    $("sound-toggle").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); });
     $("battle-home").addEventListener("click", goHome);
     $("result-home").addEventListener("click", goHome);
     $("reset-button").addEventListener("click", reset);

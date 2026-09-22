@@ -3296,7 +3296,7 @@
       state.selected = hero.id;
       applyHeroTerrain(hero);
       playFx("dust-burst", x, y);
-      playCue("click");
+      playCue("ui.click");
       log("moveReady", { hero: t(hero.name) });
       render();
       checkEnd();
@@ -3336,21 +3336,21 @@
     }
     markActed(hero);
     playFx(isSkill ? "rune-burst" : "attack-hit", enemy.x, enemy.y, { value: -damage });
-    playCue(isSkill ? "shoot" : "hit");
+    playCue(isSkill ? "magic.cast" : "magic.hit");
     log(blockedByStoneHide ? "stagArmorHit" : isSkill ? "skillUsed" : "attacked", { hero: t(hero.name), enemy: t(enemy.name) });
     if (chainBonus > 0 && damage > 0) {
       playFx("rune-burst", enemy.x, enemy.y, { value: chainBonus, chain: true });
-      playCue("success");
+      playCue("feedback.success");
       log("runeChain", { count: state.chainCount, bonus: chainBonus });
     }
     if (enemy.hp <= 0) {
       enemy.hp = 0;
-      playCue("enemyDown");
+      playCue("enemy.defeat");
     }
     if (enemy.id === "boar" && enemy.hp > 0 && distance(hero, enemy) <= 1) {
       hero.hp = Math.max(0, hero.hp - 1);
       playFx("attack-hit", hero.x, hero.y, { value: -1 });
-      playCue("wrong");
+      playCue("feedback.error");
       log("boarCounterHit", { hero: t(hero.name) });
       tryAutoRevive(hero);
     }
@@ -3383,7 +3383,7 @@
     markActed(hero);
     hero.guard = true;
     playFx("guard-shield", hero.x, hero.y);
-    playCue("upgrade");
+    playCue("reward.upgrade");
     log("guarded", { hero: t(hero.name) });
     render();
     checkEnd();
@@ -3409,7 +3409,7 @@
       });
       markActed(hero);
       hero.guard = true;
-      playCue("success");
+      playCue("feedback.success");
       log("skillUsed", { hero: t(hero.name) });
       render();
       checkEnd();
@@ -3462,7 +3462,7 @@
     const damage = Math.max(1, amount + markedBonus - (target.guard ? 1 : 0));
     target.hp = Math.max(0, target.hp - damage);
     playFx("attack-hit", target.x, target.y, { value: -damage });
-    playCue("wrong");
+    playCue("feedback.error");
     tryAutoRevive(target);
     if (key) log(key, { enemy: t(enemy.name), hero: t(target.name) });
     return damage;
@@ -3506,7 +3506,7 @@
       const phase = enemy.phasesTriggered;
       state.phaseEvents.push({ boss: enemy.id, phase, turn: state.turn });
       playFx("rune-burst", enemy.x, enemy.y);
-      playCue("boss");
+      playCue("alert.boss");
       if (enemy.bossKit === "stag") {
         enemy.armorReady = true;
         livingHeroes().filter((hero) => hero.y === enemy.y).forEach((hero) => damageHero(hero, 1 + phase, enemy));
@@ -3690,7 +3690,7 @@
     state.phase = "reward";
     setPauseActionAvailable(false);
     playFx("mission-clear", 2, 1);
-    playCue("win");
+    playCue("result.win");
     render();
     scheduleRewardSettlement(320);
   }
@@ -3832,7 +3832,7 @@
 }
 
   function playCue(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function playChainLink(from, to) {

@@ -84,12 +84,12 @@
       languageText.textContent = labels[1];
       select.setAttribute('aria-label', labels[1]);
       if (Array.from(select.options).some((option) => option.value === selectedLocale)) select.value = selectedLocale;
-      const muted = Boolean(window.WonderSound?.isMuted?.());
+      const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
       soundText.textContent = labels[2];
       soundState.textContent = muted ? labels[4] : labels[3];
       sound.setAttribute('aria-label', `${labels[2]}：${muted ? labels[4] : labels[3]}`);
       sound.setAttribute('aria-checked', String(!muted));
-      sound.disabled = !window.WonderSound?.setMuted;
+      sound.disabled = !window.WeightPlayAudio?.setMuted;
     };
 
     listen(button, 'click', () => {
@@ -106,7 +106,7 @@
     });
     if (localeSelect) listen(localeSelect, 'change', refresh);
     listen(sound, 'click', () => {
-      window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());
+      window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio?.isMuted?.());
       refresh();
     });
     listen(panel, 'pointerdown', (event) => event.stopPropagation());
@@ -121,7 +121,7 @@
       close(true);
     });
     listen(window, 'wonder:locale-change', refresh);
-    listen(window, 'wonder:audio-volume-change', refresh);
+    listen(window, 'weightplay:audio-volume-change', refresh);
     refresh();
 
     return Object.freeze({

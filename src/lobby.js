@@ -968,7 +968,7 @@ async function loadGameStats() {
 }
 
 function openGame(game, title, ageLabel) {
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   recordRecentGame(game.id);
   window.WonderAnalytics?.track("game_open", {
     game_id: game.id,
@@ -1051,7 +1051,7 @@ function toggleFavorite(game, title) {
   const wasFavorite = isFavorite(game.id);
   favoriteGameIds = wasFavorite ? favoriteGameIds.filter((id) => id !== game.id) : [...favoriteGameIds, game.id];
   saveFavorites();
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   window.WonderAnalytics?.track(wasFavorite ? "favorite_remove" : "favorite_add", {
     game_id: game.id,
     game_title: title,
@@ -1448,7 +1448,7 @@ function claimDailyReward() {
       totalClaims: reward.totalClaims + 1,
     }),
   );
-  window.WonderSound?.play("success");
+  window.WeightPlayAudio?.play("feedback.success");
   window.WonderAnalytics?.track("daily_reward_claim", {
     reward_type: "diamonds",
     reward_amount: reward.reward,
@@ -1844,7 +1844,7 @@ function selectSkillPath(skill) {
   setActiveButtons(skillButtons, "skillFilter", skill);
   setActiveButtons(libraryButtons, "libraryTab", "all");
   setActiveButtons(availabilityButtons, "availabilityFilter", "all");
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   window.WonderAnalytics?.track("skill_path_open", { skill_path: skill, locale: i18n.locale() });
   applyFilter({ historyMode: "push" });
   filterStatus?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1879,7 +1879,7 @@ function clearDiscoverySelections() {
 
 function resetDiscoveryFilters() {
   clearDiscoverySelections();
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   window.WonderAnalytics?.track("clear_lobby_filters", { locale: i18n.locale() });
   applyFilter({ historyMode: "push" });
 }
@@ -2171,7 +2171,7 @@ function showPlannedGame(game) {
     return;
   }
   if (handleHiddenTrialGate(game)) return;
-  window.WonderSound?.play("wrong");
+  window.WeightPlayAudio?.play("feedback.error");
   window.WonderAnalytics?.track("planned_game_click", {
     game_id: game.id,
     game_title: text(game.title),
@@ -2246,7 +2246,7 @@ function handleHiddenTrialGate(game) {
     } catch (error) {
       // The trial route can still open when storage is unavailable.
     }
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
     window.location.href = hiddenTrialUrl(game, trialPath);
     return true;
   }
@@ -2257,7 +2257,7 @@ function handleHiddenTrialGate(game) {
   }, hiddenTrialGate.resetMs);
   hiddenTrialGate.timers.set(game.id, timer);
 
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   showToast(i18n.t("toast.coming_soon", { title: text(game.title) }));
   return true;
 }
@@ -2268,7 +2268,7 @@ hallButtons.forEach((button) => {
     if (nextHall === activeHall) return;
     activeHall = nextHall;
     clearDiscoverySelections();
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("lobby_hall_switch", { lobby_hall: activeHall, locale: i18n.locale() });
     renderLobby({ historyMode: "push" });
   });
@@ -2278,7 +2278,7 @@ filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeFilter = button.dataset.ageFilter;
 
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("age_filter", { age_filter: activeFilter, locale: i18n.locale() });
     setActiveButtons(filterButtons, "ageFilter", activeFilter);
     applyFilter({ historyMode: "push" });
@@ -2290,7 +2290,7 @@ topicButtons.forEach((button) => {
     activeTopic = button.dataset.topicFilter;
     activeSkill = "all";
 
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("topic_filter", { topic_filter: activeTopic, locale: i18n.locale() });
     setActiveButtons(topicButtons, "topicFilter", activeTopic);
     setActiveButtons(skillButtons, "skillFilter", "all");
@@ -2304,7 +2304,7 @@ skillButtons.forEach((button) => {
     activeSkill = button.dataset.skillFilter;
     activeTopic = "all";
 
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("skill_filter", { skill_filter: activeSkill, locale: i18n.locale() });
     setActiveButtons(skillButtons, "skillFilter", activeSkill);
     setActiveButtons(topicButtons, "topicFilter", "all");
@@ -2317,7 +2317,7 @@ libraryButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeLibrary = button.dataset.libraryTab;
 
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("library_tab", { library_tab: activeLibrary, locale: i18n.locale() });
     setActiveButtons(libraryButtons, "libraryTab", activeLibrary);
     applyFilter({ historyMode: "push" });
@@ -2328,7 +2328,7 @@ availabilityButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeAvailability = button.dataset.availabilityFilter;
 
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("availability_filter", { availability_filter: activeAvailability, locale: i18n.locale() });
     setActiveButtons(availabilityButtons, "availabilityFilter", activeAvailability);
     applyFilter({ historyMode: "push" });
@@ -2348,7 +2348,7 @@ document.querySelectorAll("[data-reset-discovery]").forEach((button) => {
 });
 
 localeSelect.addEventListener("change", () => {
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   i18n.setLocale(localeSelect.value);
 });
 

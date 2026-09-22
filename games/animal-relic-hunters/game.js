@@ -2122,7 +2122,7 @@
         updateExpeditionSetup();
         if (card.getAttribute("aria-disabled") === "true") return;
         selectedExpedition = id;
-        window.WonderSound?.play("click");
+        window.WeightPlayAudio?.play("ui.click");
         startRun(event.detail === 0 ? "keyboard" : "pointer");
       });
       nodes.expeditionRail.append(card);
@@ -2430,7 +2430,7 @@
     renderGrowthPrompt();
     updateHUDText();
     updateResultPrimaryAction();
-    window.WonderSound?.play("upgrade");
+    window.WeightPlayAudio?.play("reward.upgrade");
   }
 
   // Calculate stats based on relics and equipped gear
@@ -2621,7 +2621,7 @@
     renderBackpack();
     updateHUDText();
     if (restoreFocus) restoreBackpackActionFocus(key, ".gear-upgrade-btn");
-    window.WonderSound?.play("upgrade");
+    window.WeightPlayAudio?.play("reward.upgrade");
   }
 
   function equipGearItem(key, restoreFocus = false) {
@@ -2645,7 +2645,7 @@
     renderGrowthPrompt();
     updateHUDText();
     if (restoreFocus) restoreBackpackActionFocus(key, ".gear-equip-btn");
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
   }
 
   // Combat loop updates
@@ -2714,7 +2714,7 @@
     trackGrowthEvent("game_start", { input_type: inputType });
     trackGrowthEvent("room_start", { input_type: inputType });
     updateHUDText();
-    window.WonderSound?.play("start");
+    window.WeightPlayAudio?.play("game.start");
     
     cancelAnimationFrame(state.gameLoopId);
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
@@ -2948,7 +2948,7 @@
       const checkpoint = room === ROOMS_PER_EXPEDITION && mission.checkpoint;
       if (room === ROOMS_PER_EXPEDITION) {
         state.bossWarningUntil = performance.now() + 2400;
-        window.WonderSound?.play("boss");
+        window.WeightPlayAudio?.play("alert.boss");
       }
       state.enemies.push(createGuardian(mission.region, checkpoint, {
         hpMultiplier: encounterProfile?.eliteHp[roomIndex],
@@ -3026,7 +3026,7 @@
       trail: [],
       visualKey: state.eqWeapon || "default",
     });
-    window.WonderSound?.play("shoot");
+    window.WeightPlayAudio?.play("magic.cast");
   }
 
   // Exp/Level up draft Relic selection
@@ -3065,7 +3065,7 @@
     profile.exp = state.exp;
     profile.expNeed = state.expNeed;
     saveProfile();
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
 
     // Pause game loop
     state.gameActive = false;
@@ -3230,7 +3230,7 @@
     updateDraftRerollUI();
     updateDiamondShopUI();
     nodes.draftCards.querySelector(".draft-item-btn")?.focus();
-    window.WonderSound?.play("upgrade");
+    window.WeightPlayAudio?.play("reward.upgrade");
   }
 
   function applyRelic(relicId) {
@@ -3280,7 +3280,7 @@
   function triggerChestLoot() {
     state.gameActive = false;
     clearMovementInput();
-    window.WonderSound?.play("upgrade");
+    window.WeightPlayAudio?.play("reward.upgrade");
 
     // Random roll gear based on current room
     const rolls = {
@@ -3398,10 +3398,10 @@
       if (profile.unlockedExpedition > previousUnlocked) newlyUnlocked = profile.unlockedExpedition;
       saveProfile();
       nodes.resultText.textContent = t("report_win");
-      window.WonderSound?.play("win");
+      window.WeightPlayAudio?.play("result.win");
     } else {
       nodes.resultText.textContent = t("report_partial", { room: state.room });
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("result.lose");
     }
     resultNextExpedition = won && (state.expedition || 1) < EXPEDITION_COUNT && profile.unlockedExpedition >= (state.expedition || 1) + 1
       ? (state.expedition || 1) + 1
@@ -3434,7 +3434,7 @@
     trackGrowthEvent("room_start");
     renderStatsPanel();
     updateHUDText();
-    window.WonderSound?.play("start");
+    window.WeightPlayAudio?.play("game.start");
   }
 
   // Shuffling
@@ -3560,7 +3560,7 @@
         if (shot.kind === "silence") state.silencedUntil = performance.now() + 1500;
         if (shot.kind === "pulse") state.slowUntil = performance.now() + 1200;
         state.enemyShots.splice(index, 1);
-        window.WonderSound?.play("hit");
+        window.WeightPlayAudio?.play("player.hurt");
         renderStatsPanel();
         if (state.playerHp <= 0) endGame(false);
       } else if (shot.life <= 0 || shot.x < -30 || shot.x > ARENA_WIDTH + 30 || shot.y < -30 || shot.y > ARENA_HEIGHT + 30) {
@@ -3657,7 +3657,7 @@
         const now = performance.now();
         if (now - state.lastHitSoundAt > 520) {
           state.lastHitSoundAt = now;
-          window.WonderSound?.play("hit");
+          window.WeightPlayAudio?.play("player.hurt");
         }
         renderStatsPanel();
         if (state.playerHp <= 0) {
@@ -3692,7 +3692,7 @@
           if (enemy.hp <= 0) {
             state.enemies.splice(eIndex, 1);
             if (enemy.behavior === "splitter") summonThreats(enemy, "rusher", 2);
-            window.WonderSound?.play("enemyDown");
+            window.WeightPlayAudio?.play("enemy.defeat");
 
             // Drop Relic Orbs
             const orbCount = enemy.isElite ? 10 : 3;
@@ -3750,7 +3750,7 @@
       if (odist < 20) {
         state.orbs.splice(oIndex, 1);
         gainExp(orb.value);
-        window.WonderSound?.play("coin");
+        window.WeightPlayAudio?.play("reward.coin");
         updateHUDText();
 
         if (state.gameActive && state.exp >= state.expNeed) {
@@ -3771,7 +3771,7 @@
           state.keys++;
           state.runKeys++;
           trackGrowthEvent("key_pickup", { keys: state.keys, run_keys: state.runKeys });
-          window.WonderSound?.play("success");
+          window.WeightPlayAudio?.play("feedback.success");
           updateHUDText();
 
           // Spawn Chest and Portal
@@ -3781,7 +3781,7 @@
         } else if (pickup.type === "gold") {
           state.pickups.splice(pIndex, 1);
           gainGold(pickup.value || 1);
-          window.WonderSound?.play("coin");
+          window.WeightPlayAudio?.play("reward.coin");
         } else if (pickup.type === "chest") {
           if (state.keys > 0) {
             state.keys--;
@@ -4336,7 +4336,7 @@
 
     // Event buttons
     nodes.showStageBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       showStage();
     });
     nodes.showStageBtn.addEventListener("keydown", (event) => {
@@ -4391,49 +4391,49 @@
     nodes.expeditionRail.addEventListener("scrollend", syncCenteredExpedition);
 
     nodes.stageBackBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       showMain();
     });
 
     nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
       button.addEventListener("click", () => {
-        window.WonderSound?.play("click");
+        window.WeightPlayAudio?.play("ui.click");
         selectStageTab(button.dataset.stageTab);
       });
     });
 
     nodes.retryBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       trackGrowthEvent("retry", { input_type: "result" });
       __wpReplayStart(() => startRun("retry"));
     });
 
     nodes.resultNextBtn.addEventListener("click", () => {
       if (!resultNextExpedition) return;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       selectedExpedition = resultNextExpedition;
       trackGrowthEvent("next", { input_type: "result", next_expedition: selectedExpedition });
       startRun("next");
     });
 
     nodes.backToStageBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       setPauseModalActive(true, true, "leave");
     });
 
     nodes.pauseBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       setPauseModalActive(true);
     });
     nodes.pauseBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.resumeBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       setPauseModalActive(false);
     });
     nodes.pauseStageBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       showStage();
     });
     nodes.pausePanel.addEventListener("keydown", (event) => {
@@ -4461,7 +4461,7 @@
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       showStage();
     });
 
@@ -4485,7 +4485,7 @@
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       window.WonderI18n?.setLocale?.(e.target.value);
     });
 
@@ -4574,7 +4574,7 @@
       if (spent) {
         state.amuletUnlocked = true;
         saveLocalState();
-        window.WonderSound?.play("success");
+        window.WeightPlayAudio?.play("feedback.success");
         updateDiamondShopUI();
       }
     });
@@ -4607,7 +4607,7 @@
         },
         forceBossWarning() {
           state.bossWarningUntil = performance.now() + 2400;
-          window.WonderSound?.play("boss");
+          window.WeightPlayAudio?.play("alert.boss");
           drawCanvasFrame();
           return { warningText: t("bossWarning"), bossWarningActive: state.bossWarningUntil > performance.now() };
         },

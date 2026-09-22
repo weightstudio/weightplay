@@ -897,7 +897,7 @@
   function startLevel(index) {
     if (index + 1 > unlocked) {
       showMessage(t("locked"));
-      window.WonderSound?.play?.("wrong");
+      window.WeightPlayAudio?.play?.("feedback.error");
       return;
     }
     invalidateRoundTasks();
@@ -1047,7 +1047,7 @@
     if (!selectedTile) {
       selectedTile = tile;
       renderBoard(tile.index);
-      window.WonderSound?.play?.("click");
+      window.WeightPlayAudio?.play?.("board.move");
       if (levels[currentLevelIndex].rules.includes("mist")) {
         const token = ++firstPickTaskToken;
         scheduleRoundTask(() => {
@@ -1074,7 +1074,7 @@
       selectedTile = null;
       busy = true;
       showMessage(t("matched"));
-      window.WonderSound?.play?.("success");
+      window.WeightPlayAudio?.play?.("puzzle.match");
       renderBoard();
       scheduleRoundTask(() => {
         firstMatch.matchFading = true;
@@ -1104,7 +1104,7 @@
       selectedTile = null;
       busy = true;
       showMessage(t("miss"));
-      window.WonderSound?.play?.("wrong");
+      window.WeightPlayAudio?.play?.("feedback.error");
       renderBoard(second);
       markWrong(first, second);
       scheduleRoundTask(() => {

@@ -1281,7 +1281,7 @@
     if (!["es", "fr", "de", "it", "ja"].includes(actualLocale)) return;
     const toggle = document.querySelector("button[data-sound-toggle]");
     if (!toggle) return;
-    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
     const soundCopy = text[actualLocale];
     toggle.title = soundCopy.soundTitle;
     toggle.setAttribute("aria-label", muted ? soundCopy.enableSound : soundCopy.disableSound);
@@ -1373,7 +1373,7 @@
     const now = performance.now();
     if (soundAt[name] && now - soundAt[name] < gap * 1000) return;
     soundAt[name] = now;
-    window.WonderSound?.play(name);
+    window.WeightPlayAudio?.play(name);
   }
 
   function loadSave() {
@@ -2036,7 +2036,7 @@
     save.starStones -= cost;
     save.rooms[id] = level + 1;
     persist();
-    playSound("success", 0.2);
+    playSound("feedback.success", 0.2);
     renderMenu();
     if (restoreFocus) restoreRoomUpgradeFocus(id);
     track("room_upgrade", { room: id, level: save.rooms[id] });
@@ -2064,7 +2064,7 @@
       updateKeyboardAimPreview();
     });
     lastFrame = performance.now();
-    playSound("start", 0.2);
+    playSound("game.start", 0.2);
     track("raid_start", { tier: state.raidTier, wave: state.wave, wave_total: state.waveTotal });
     trackGrowth("raid_start", { tier: state.raidTier, wave: state.wave, wave_total: state.waveTotal });
     loop(lastFrame);
@@ -2487,7 +2487,7 @@
     state.readyTimer = state.orbs.length < capacity ? Math.min(0.08, state.orbCooldown) : state.orbCooldown;
     nodes.hintText.textContent = t("orbFlying");
     updateArenaControlLabel(true);
-    playSound("shoot", 0.08);
+    playSound("projectile.launch", 0.08);
     const shotAngle = Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90);
     track("shot_fired", { wave: state.wave, orb_capacity: capacity, active_orbs: state.orbs.length, first_shot: firstShot, angle: shotAngle });
     trackGrowth("shot_fired", { wave: state.wave, orb_capacity: capacity, active_orbs: state.orbs.length, first_shot: firstShot, angle: shotAngle });
@@ -2603,7 +2603,7 @@
         enemy.hp = 0;
         nodes.hintText.textContent = t("fortressHit");
         track("core_damage", { amount: coreDamage, core_remaining: Math.max(0, Math.ceil(state.core)), wave: state.wave, enemy_kind: enemy.kind });
-        playSound("wrong", 0.2);
+        playSound("feedback.error", 0.2);
         renderHud();
       }
     });
@@ -2842,7 +2842,7 @@
       life: 0.34,
       maxLife: 0.34,
     });
-    playSound("hit", 0.08);
+    playSound("magic.hit", 0.08);
   }
 
   function nearestChainTarget(source) {
@@ -2859,7 +2859,7 @@
     orb.vy = 0;
     nodes.hintText.textContent = t("orbSpent");
     state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.26, maxLife: 0.26, effectIndex: orb.capacity > 1 ? 1 : 0 });
-    playSound("click", 0.08);
+    playSound("ui.click", 0.08);
   }
 
   function registerOrbBounce(orb, surface) {
@@ -2867,7 +2867,7 @@
     orb.bounces += 1;
     state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
     if (surface === "obstacle") state.mechanicEvents.push("pylon_bounce");
-    playSound("click", surface === "obstacle" ? 0.06 : 0.08);
+    playSound("ui.click", surface === "obstacle" ? 0.06 : 0.08);
     if (orb.bounces >= orb.maxBounces) expireOrb(orb);
     return orb.life <= 0;
   }
@@ -2989,7 +2989,7 @@
         if (critical || (shieldBefore > 0 && enemy.shield === 0) || enemy.hp <= 0) {
           state.sparks.push({ kind: "block-break", x: enemy.x, y: enemy.y, life: 0.56, maxLife: 0.56, effectIndex: critical ? 1 : 4, label: critical ? t("crit") : "" });
         }
-        playSound("hit", 0.06);
+        playSound(critical ? "combat.critical" : "impact.stone", 0.06);
       }
     });
   }
@@ -3138,7 +3138,7 @@
     (__wpNotifyMeasurement(), backgroundSuspended = false);
     show(nodes.gamePanel);
     window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
-    playSound("success", 0.2);
+    playSound("feedback.success", 0.2);
     track("blessing_choice", { upgrade: id, wave: state.wave });
     trackGrowth("blessing_choice", { upgrade: id, wave: state.wave });
     track("upgrade_pick", { upgrade: id, wave: state.wave });
@@ -3153,7 +3153,7 @@
       clearRerollConfirmation();
       nodes.upgradeStatus.textContent = t("rerollNeed", { balance });
       nodes.rerollBtn.classList.remove("is-confirming");
-      playSound("wrong", 0.2);
+      playSound("feedback.error", 0.2);
       return;
     }
     if (!state.rerollPending) {
@@ -3166,7 +3166,7 @@
     const wallet = window.WeightPlayWallet;
     if (!wallet?.spendDiamonds || !wallet.spendDiamonds(rerollCost)) {
       nodes.upgradeStatus.textContent = t("rerollNeed", { balance: walletDiamonds() });
-      playSound("wrong", 0.2);
+      playSound("feedback.error", 0.2);
       return;
     }
     state.rerolled = true;
@@ -3242,7 +3242,7 @@
       }, 760);
     }, 760);
     renderMenu();
-    playSound(win ? "success" : "wrong", 0.2);
+    playSound(win ? "result.win" : "result.lose", 0.2);
     track("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(state.waveTotal, state.wave), wave_total: state.waveTotal, stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
     trackGrowth("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(state.waveTotal, state.wave), wave_total: state.waveTotal, stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
 

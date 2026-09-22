@@ -21,7 +21,7 @@
   const state={locale:locales[document.documentElement.lang]?document.documentElement.lang:'en',patrol:0,code:[],checks:0,sessionChecks:0,screen:'main',clue:true,hints:0,feedback:''};
   const t=(key,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,String(v)),String(copy[state.locale]?.[key]??locales[state.locale]?.[key]??copy.en[key]??locales.en[key]??key));
   const art=(i,cls='animal-icon')=>`<img class="${cls}" src="${portraits[i]}" alt="" draggable="false">`;
-  const sound=(good=false)=>{try{if(window.WonderSound?.play) window.WonderSound.play(good?'success':'click');}catch{}};
+  const sound=(good=false)=>{try{if(window.WeightPlayAudio?.play) window.WeightPlayAudio.play(good ? "feedback.success" : "ui.click");}catch{}};
   const scene=()=>window.dispatchEvent(new CustomEvent('wp:block-scene',{detail:{active:state.screen==='battle',colours:hex,lit:state.code.length,labels:animals.map(a=>t(a))}}));
   function show(screen){state.screen=screen;document.querySelectorAll('[data-screen]').forEach(n=>n.hidden=n.dataset.screen!==screen);document.body.dataset.screen=screen;window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));scene();
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
@@ -50,7 +50,7 @@
   function startPatrol(index){if(!Number.isInteger(index)||index<0||index>=30||index+1>progress.unlocked)return;Object.assign(state,{patrol:index,code:[],checks:0,hints:0,clue:true,feedback:''});show('battle');renderBattle();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-  function chooseSignal(animal){const p=patrols[state.patrol],id=animals.indexOf(animal);if(state.screen!=='battle'||id<0||state.code.length>=p.order.length||(p.memory&&state.clue))return;state.code.push(id);state.feedback='';sound();renderBattle();}
+  function chooseSignal(animal){const p=patrols[state.patrol],id=animals.indexOf(animal);if(state.screen!=='battle'||id<0||state.code.length>=p.order.length||(p.memory&&state.clue))return;state.code.push(id);state.feedback='';sound(false);renderBattle();}
   function clearCode(){state.code=[];state.feedback='';renderBattle();}
   function checkCode(){const p=patrols[state.patrol];if(state.screen!=='battle'||state.code.length!==p.order.length||(p.memory&&state.clue))return;state.checks++;state.sessionChecks++;const wrong=state.code.findIndex((v,i)=>v!==p.order[i]);if(wrong>=0){state.feedback=t('wrongAt',{n:wrong+1});$('battleScreen').dataset.feedback='wrong';renderBattle();return;}const stars=state.checks===1&&!state.hints?3:state.checks<=3?2:1;progress.stars[p.number]=Math.max(Number(progress.stars[p.number])||0,stars);progress.unlocked=Math.max(progress.unlocked,Math.min(30,p.number+1));persist();sound(true);show('result');renderResult();renderMain();}
   function openPatrolMap(){show('stage');renderStages();}

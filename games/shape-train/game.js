@@ -523,7 +523,7 @@
   }
 
   function playSound(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function track(event, payload = {}) {
@@ -597,7 +597,7 @@
   function activateStageNumber(stageNo) {
     if (stageNo > unlocked) {
       showFloatingText(t("locked"));
-      playSound("click");
+      playSound("ui.click");
       return;
     }
     startStage(stageNo - 1);
@@ -895,7 +895,7 @@
     renderTask();
     exitSharedPlayViewport();
     updateShapeFrame();
-    playSound("start");
+    playSound("game.start");
     track("game_start", { level: index + 1 });
     requestAnimationFrame(() => {
       exitSharedPlayViewport();
@@ -965,7 +965,7 @@
       feedbackKey = "selectFirst";
       nodes.feedbackText.textContent = t(feedbackKey);
       nodes.passengerBtn.classList.add("wrong");
-      playSound("wrong");
+      playSound("feedback.error");
       return;
     }
     if (!selectedPassenger) {
@@ -982,7 +982,7 @@
       void car.offsetWidth;
       car.classList.add("wrong");
       nodes.passengerBtn.classList.add("wrong");
-      playSound("wrong");
+      playSound("feedback.error");
       track("game_answer", { level: currentStage + 1, correct: false, task: currentShape, answer: shape });
       return;
     }
@@ -992,7 +992,7 @@
     car.classList.add("correct");
     feedbackKey = "correct";
     nodes.feedbackText.textContent = t(feedbackKey);
-    playSound("success");
+    playSound("feedback.success");
     track("game_answer", { level: currentStage + 1, correct: true, task: currentShape, answer: shape });
     scheduleTaskTransition(() => {
       currentTask += 1;
@@ -1041,7 +1041,7 @@
       nodes.playPanel.scrollLeft = 0;
       (nodes.resultPanel.querySelector(".primary-action") || nodes.retryBtn).focus({ preventScroll: true });
     });
-    playSound("win");
+    playSound("result.win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
@@ -1155,7 +1155,7 @@
       }
       selectedPassenger = true;
       markTarget(true);
-      playSound("click");
+      playSound("ui.click");
     });
     nodes.passengerBtn.addEventListener("dragstart", (event) => {
       event.dataTransfer.setData("text/plain", currentShape);

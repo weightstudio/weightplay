@@ -21,7 +21,8 @@
   const localeMap = window.FOLDED_FIELD_LOCALES || { en: {} };
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const rtlLocales = new Set(["ar"]);
-  const state = { locale: "en", screen: "main", round: 0, pattern: [], flips: 0, cleared: [], sound: true };
+  const state = { locale: "en", screen: "main", round: 0, pattern: [], flips: 0, cleared: [], sound: !window.WeightPlayAudio.isMuted() };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => {
     try { return localStorage.getItem(key) || fallback; } catch (error) { return fallback; }
@@ -125,22 +126,7 @@
     next[(index + 1) % next.length] = next[(index + 1) % next.length] ? 0 : 1;
     return next;
   };
-  const beep = () => {
-    if (!state.sound || !window.AudioContext && !window.webkitAudioContext) return;
-    try {
-      const AudioCtor = window.AudioContext || window.webkitAudioContext;
-      const context = new AudioCtor();
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.frequency.value = 520;
-      gain.gain.setValueAtTime(0.035, context.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.08);
-      oscillator.connect(gain).connect(context.destination);
-      oscillator.start();
-      oscillator.stop(context.currentTime + 0.08);
-      window.setTimeout(() => context.close(), 140);
-    } catch (error) { /* audio is an optional enhancement */ }
-  };
+  const beep = (cue = "board.rotate") => { return window.WeightPlayAudio?.play(cue); };
   const pinViewportTop = (active) => {
     document.documentElement.style.overflow = active ? "hidden" : "";
     document.body.style.position = active ? "fixed" : "";
@@ -235,7 +221,7 @@
         state.pattern = toggle(Number(button.dataset.flap));
         state.flips += 1;
         announce("moveHint");
-        beep();
+        beep("board.rotate");
         renderBattle();
       }));
     }
@@ -276,7 +262,7 @@
       announce("incorrect");
       return;
     }
-    beep();
+    beep("puzzle.clear");
     if (!state.cleared.includes(state.round)) state.cleared.push(state.round);
     const best = getBest();
     if (!best || state.flips < best) safeSet("weightplay-animal-folded-field-best", String(state.flips));
@@ -333,7 +319,7 @@
       panel.hidden = !panel.hidden;
       $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden));
     });
-    $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-folded-field-sound", state.sound ? "on" : "off"); applyLocale(state.locale); });
+    $("soundBtn").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); safeSet("weightplay-animal-folded-field-sound", state.sound ? "on" : "off"); applyLocale(state.locale); });
     $("foldedChoice").addEventListener("change", (event) => applyLocale(event.target.value));
     $("stageInfoBtn").addEventListener("click", () => window.alert(copy("mapIntro")));
     $("battleInfoBtn").addEventListener("click", () => window.alert(copy("moveHint")));
@@ -348,7 +334,7 @@
     const routeLocale = String(window.__WEIGHTPLAY_ROUTE_LOCALE__ || "").trim();
     const savedLocale = localeList.includes(routeLocale) ? routeLocale : safeGet("weightplay-locale", "en");
     const savedSound = safeGet("weightplay-animal-folded-field-sound", "on");
-    state.sound = savedSound !== "off";
+    state.sound = window.WeightPlayAudio.setEnabled(savedSound !== "off");
     state.cleared = [];
     bind();
     if ($("foldedChoice")) $("foldedChoice").value = localeList.includes(savedLocale) ? savedLocale : "en";

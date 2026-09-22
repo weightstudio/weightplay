@@ -49,7 +49,8 @@
   const routeLocale = document.documentElement.lang && document.documentElement.lang !== "en" ? document.documentElement.lang : "";
   let locale = routeLocale || localStorage.getItem("weightplay-echo-orchard-locale") || "en";
   if (!locales[locale]) locale = "en";
-  let sound = window.WonderSound ? !window.WonderSound.isMuted() : localStorage.getItem("weightplay-echo-orchard-sound") !== "off";
+  let sound = !window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
   let groveIndex = 0; let phase = "main"; let entered = []; let attempts = 0; let sessionAttempts = 0; let litFruit = ""; let timer = null; let feedback = "";
   let unlockedThrough = Math.max(1, Math.min(groves.length, Number(localStorage.getItem("weightplay-echo-orchard-unlocked-v2") || 1) || 1));
   let solved = new Set();
@@ -66,14 +67,14 @@
   function syncSharedSound(event) {
     const effectsVolume = Number(event.detail?.effectsVolume);
     if (!Number.isFinite(effectsVolume)) return;
-    sound = effectsVolume > 0;
+    sound = window.WeightPlayAudio.setEnabled(effectsVolume > 0);
     localStorage.setItem("weightplay-echo-orchard-sound", sound ? "on" : "off");
     renderStatic();
   }
   function setSoundEnabled(enabled) {
-    sound = Boolean(enabled);
+    sound = window.WeightPlayAudio.setEnabled(Boolean(enabled));
     localStorage.setItem("weightplay-echo-orchard-sound", sound ? "on" : "off");
-    if (window.WonderSound && window.WonderSound.isMuted() === sound) window.WonderSound.setMuted(!sound);
+    if (window.WeightPlayAudio && window.WeightPlayAudio.isMuted() === sound) window.WeightPlayAudio.setMuted(!sound);
     renderStatic();
   }
   function show(screen) { phase = screen; document.body.dataset.screen = screen; document.querySelectorAll("[data-screen]:not(body)").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("settingsPanel").hidden = true; $("backBtn").hidden = screen !== "main";
@@ -104,7 +105,7 @@
     window.dispatchEvent(new Event("weightplay:stage-sync"));
   }
   function bind() { $("startBtn").addEventListener("click", openStage); $("mapBtn").addEventListener("click", openStage); $("resultMapBtn").addEventListener("click", openStage); $("nextBtn").addEventListener("click", nextGrove); $("replayBtn").addEventListener("click", playPattern); $("resetBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex)); }); $("backBtn").addEventListener("click", goBack); $("stageBack").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); $("battleUtilityBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundBtn").addEventListener("click", () => { setSoundEnabled(!sound); }); $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-echo-orchard-locale", locale); renderStatic(); }); }
-  window.addEventListener("wonder:audio-volume-change", syncSharedSound);
+  window.addEventListener("weightplay:audio-volume-change", syncSharedSound);
   function boot() { bind(); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
   window.__ECHO_ORCHARD_TEST__ = { groves, startGrove, playPattern, chooseFruit, getState: () => ({ groveIndex, phase, entered: [...entered], solved: [...solved], unlockedThrough, attempts, screen: phase }) };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();

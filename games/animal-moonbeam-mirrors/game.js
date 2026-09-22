@@ -7,7 +7,8 @@
     { mirrors: { 0: 1, 1: 0, 3: 1, 4: 0 }, initial: { 0: 0, 1: 0, 3: 1, 4: 1 }, goal: 2, startRow: 0 },
     { mirrors: { 0: 1, 3: 1, 4: 1, 7: 1 }, initial: { 0: 1, 3: 0, 4: 1, 7: 0 }, goal: 8, startRow: 0 }
   ];
-  const state = { locale: "en", sound: true, round: 0, orientations: {}, turns: 0, totalTurns: 0, best: null };
+  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), round: 0, orientations: {}, turns: 0, totalTurns: 0, best: null };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value); } catch (_) {} } };
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -16,7 +17,7 @@
   const backslashTurns = { R: "D", D: "R", L: "U", U: "L" };
   function t(key, vars = {}) { const copy = locales[state.locale] || locales.en; return String(copy[key] || locales.en[key] || key).replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")); }
   function queryLocale() { const query = new URLSearchParams(location.search).get("lang"); if (query && locales[query]) return query; const segment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(); return routeLocaleMap[segment] || safeStorage.get("weightplay-moonbeam-mirrors-locale") || "en"; }
-  function tone(kind) { if (!state.sound || !(window.AudioContext || window.webkitAudioContext)) return; try { const Audio = window.AudioContext || window.webkitAudioContext; const context = new Audio(); const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.frequency.value = kind === "success" ? 620 : 170; gain.gain.setValueAtTime(0.0001, context.currentTime); gain.gain.exponentialRampToValueAtTime(0.024, context.currentTime + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.11); oscillator.connect(gain).connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + 0.12); oscillator.addEventListener("ended", () => context.close(), { once: true }); } catch (_) {} }
+  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function emit(name) { document.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { event: name, game: "animal-moonbeam-mirrors" } })); }
   function applyLocale() {
     const copy = locales[state.locale] || locales.en;
@@ -51,12 +52,12 @@
     }
   }
   function renderBattle() { $("roundLabel").textContent = t("round", { current: state.round + 1, total: rounds.length }); $("turnCount").textContent = String(state.totalTurns); $("instruction").textContent = t("instruction"); renderBoard(); }
-  function check() { const result = trace(); if (!result.reached) { $("beamStatus").textContent = t("wrong"); $("beamStatus").className = "feedback is-wrong"; tone("wrong"); emit("moonbeam_miss"); renderBoard(); return; } $("beamStatus").textContent = t("success"); $("beamStatus").className = "feedback is-correct"; tone("success"); emit("moonbeam_path_complete"); if (state.round < rounds.length - 1) { window.setTimeout(() => { state.round += 1; cloneRound(); renderBattle(); }, 260); return; } window.setTimeout(finish, 260); }
+  function check() { const result = trace(); if (!result.reached) { $("beamStatus").textContent = t("wrong"); $("beamStatus").className = "feedback is-wrong"; tone("feedback.error"); emit("moonbeam_miss"); renderBoard(); return; } $("beamStatus").textContent = t("success"); $("beamStatus").className = "feedback is-correct"; tone("feedback.success"); emit("moonbeam_path_complete"); if (state.round < rounds.length - 1) { window.setTimeout(() => { state.round += 1; cloneRound(); renderBattle(); }, 260); return; } window.setTimeout(finish, 260); }
   function finish() { const key = "weightplay-moonbeam-mirrors-best-turns"; const prior = Number(safeStorage.get(key)); if (!prior || state.totalTurns < prior) safeStorage.set(key, String(state.totalTurns)); $("resultSummary").textContent = t("summary", { turns: state.totalTurns }); $("bestCount").textContent = safeStorage.get(key) || String(state.totalTurns); showView("result"); emit("moonbeam_complete"); }
   function reset() { cloneRound(); $("beamStatus").textContent = ""; $("beamStatus").className = "feedback"; renderBattle(); }
   function goHome() { showView("main"); applyLocale(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
-  function toggleSound() { state.sound = !state.sound; applyLocale(); }
+  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
   function openLeave() { $("leaveDialog").hidden = false; $("continueBtn").focus(); }
   function closeLeave() { $("leaveDialog").hidden = true; $("homeBtn").focus(); }
   state.locale = queryLocale();

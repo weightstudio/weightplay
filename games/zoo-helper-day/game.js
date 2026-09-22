@@ -754,7 +754,7 @@
   }
 
   function playSound(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function track(event, payload = {}) {
@@ -810,7 +810,7 @@
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
           showFloatingText(t("locked"));
-          playSound("click");
+          playSound("ui.click");
           return;
         }
         startStage(index);
@@ -962,7 +962,7 @@
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleViewport(true);
     track("game_start", { level: index + 1 });
-    playSound("start");
+    playSound("game.start");
     renderTask();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -1120,7 +1120,7 @@
       void nodes.animalCard.offsetWidth;
       nodes.animalCard.classList.add("wrong");
       button?.classList.add("wrong");
-      playSound("wrong");
+      playSound("feedback.error");
       track("game_answer", { level: currentStage + 1, correct: false, task: task.value, item });
       return;
     }
@@ -1134,7 +1134,7 @@
     void nodes.animalCard.offsetWidth;
     nodes.animalCard.classList.add("happy");
     nodes.feedbackText.textContent = t("correct");
-    playSound("success");
+    playSound("feedback.success");
     track("game_answer", { level: currentStage + 1, correct: true, task: task.value, item });
     scheduleCareTransition(() => {
       if (wasFirstTry) firstTryTasks += 1;
@@ -1171,7 +1171,7 @@
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     updateResultControlSize();
     requestAnimationFrame(focusResultAction);
-    playSound("win");
+    playSound("result.win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();

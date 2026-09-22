@@ -42,7 +42,8 @@
     { target: 6, objects: [[.52, "rain", 0], [.2, "rain", .35], [.78, "leaf", .7], [.35, "rain", 1.04], [.88, "rain", 1.42], [.56, "leaf", 1.8], [.13, "rain", 2.16], [.69, "rain", 2.54], [.4, "leaf", 2.9], [.82, "rain", 3.27]] }
   ];
   const $ = (id) => document.getElementById(id);
-  const state = { locale: "en", sound: true, round: 0, caught: 0, best: 0, basket: .5, objects: [], elapsed: 0, running: false, raf: 0, lastTime: 0 };
+  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), round: 0, caught: 0, best: 0, basket: .5, objects: [], elapsed: 0, running: false, raf: 0, lastTime: 0 };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const canvas = $("rainCanvas");
   const ctx = canvas.getContext("2d");
   const art = { background: new Image(), nori: new Image(), weather: new Image() };
@@ -92,10 +93,7 @@
     select.value = state.locale;
     select.addEventListener("change", () => { state.locale = select.value; storage.set("weightplay-rain-roost-locale", state.locale); applyLocale(); });
   }
-  function tone(kind) {
-    if (!state.sound || !(window.AudioContext || window.webkitAudioContext)) return;
-    try { const Audio = window.AudioContext || window.webkitAudioContext; const audio = new Audio(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = kind === "good" ? 650 : 180; gain.gain.setValueAtTime(.0001, audio.currentTime); gain.gain.exponentialRampToValueAtTime(.025, audio.currentTime + .01); gain.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + .1); oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + .11); oscillator.addEventListener("ended", () => audio.close(), { once: true }); } catch (_) {}
-  }
+  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function showView(view) {
     $("mainScreen").hidden = view !== "main";
     $("mainView").hidden = false;
@@ -126,8 +124,8 @@
   }
   function finishRound() {
     state.running = false; const goal = rounds[state.round].target;
-    if (state.caught < goal) { $("feedback").textContent = t("showerFail"); $("feedback").className = "feedback is-wrong"; tone("wrong"); return; }
-    $("feedback").textContent = t("roundClear"); $("feedback").className = "feedback is-good"; tone("good");
+    if (state.caught < goal) { $("feedback").textContent = t("showerFail"); $("feedback").className = "feedback is-wrong"; tone("result.lose"); return; }
+    $("feedback").textContent = t("roundClear"); $("feedback").className = "feedback is-good"; tone("feedback.success");
     if (state.round < rounds.length - 1) window.setTimeout(() => { state.round += 1; startRound(); }, 760); else window.setTimeout(finish, 760);
   }
   function finish() {
@@ -148,9 +146,9 @@
     const basketX = state.basket * width; const basketWidth = Math.min(112, Math.max(74, width * .16)); const basketY = height - 50;
     const objectX = object.x * width; const inBasket = Math.abs(objectX - basketX) < basketWidth * .54;
     object.done = true;
-    if (object.type === "rain" && inBasket) { state.caught += 1; state.best = Math.max(state.best, state.caught); $("feedback").textContent = t("hit"); $("feedback").className = "feedback is-good"; tone("good"); updateScore(); }
+    if (object.type === "rain" && inBasket) { state.caught += 1; state.best = Math.max(state.best, state.caught); $("feedback").textContent = t("hit"); $("feedback").className = "feedback is-good"; tone("feedback.success"); updateScore(); }
     else if (object.type === "leaf") { $("feedback").textContent = t("leaf"); $("feedback").className = "feedback"; }
-    else { $("feedback").textContent = t("miss"); $("feedback").className = "feedback is-wrong"; tone("wrong"); }
+    else { $("feedback").textContent = t("miss"); $("feedback").className = "feedback is-wrong"; tone("feedback.error"); }
     return { basketX, basketWidth, basketY };
   }
   function tick(now) {
@@ -206,7 +204,7 @@
   function openLeave() { $("leaveDialog").hidden = false; $("continueButton").focus(); }
   function closeLeave() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }
   function goHome() { state.running = false; cancelAnimationFrame(state.raf); $("leaveDialog").hidden = true; showView("main"); applyLocale(); }
-  function toggleSound() { state.sound = !state.sound; applyLocale(); }
+  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => {
     populateLocales(); applyLocale(); window.addEventListener("resize", resizeCanvas);

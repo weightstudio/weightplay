@@ -2,6 +2,7 @@
 <html lang="en" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-cozy-camp/"+location.search+location.hash)}catch{location.replace("/en/games/animal-cozy-camp/"+location.search+location.hash)}})();</script>
+    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-cozy-camp/" />
@@ -117,8 +118,7 @@
     <dialog id="settings-dialog" class="modal-dialog" role="dialog"><div class="dialog-card"><div class="dialog-head"><h2 data-copy="settings">Settings</h2><button id="close-settings" class="close-button" type="button" data-copy-aria="close" aria-label="Close">×</button></div><label id="locale-label" for="locale-select" data-copy="language">Language</label><select id="locale-select" data-copy-aria="language" aria-label="Language"></select><label for="camp-picker" data-copy="language">Language</label><select id="camp-picker" data-camp-locale-picker aria-label="Language"></select><button id="sound-toggle" class="secondary-button" data-sound-toggle data-copy-aria="sound" type="button" aria-pressed="true">Sound: On</button><button id="camp-sound-toggle" class="secondary-button" data-camp-sound-toggle data-copy-aria="sound" type="button" aria-pressed="true">Sound: On</button></div></dialog>
     <dialog id="leave-dialog" class="modal-dialog"><div class="dialog-card"><div class="dialog-head"><h2 data-copy="leaveTitle">Leave the camp?</h2><button id="cancel-leave" class="close-button" type="button" data-copy-aria="close" aria-label="Close">×</button></div><p data-copy="leaveText">Your current circle will be safely reset.</p><div class="dialog-actions"><button id="keep-playing" class="secondary-button" type="button" data-copy="keepPlaying">Keep playing</button><button id="confirm-leave" class="primary-button" type="button" data-copy="confirmLeave">Leave</button></div></div></dialog>
   </main>
-  <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="locales.js?v=20260921-cozy-camp-v6-guide-contract"></script>
-  <script src="game.js?v=20260921-cozy-camp-v6-guide-contract"></script>
+  <script src="game.js?v=20260921-cozy-camp-v6-guide-contract&wp-audio=1.0.0"></script>
 </body>
 </html>

@@ -12,7 +12,8 @@
   ];
   const symbols = { leaf: "✦", droplet: "●", circle: "○", triangle: "▲", star: "★", wave: "≈", diamond: "◆", dot: "•", crescent: "☾", sun: "☀", hex: "⬢", flower: "✿" };
   const spritePositions = { leaf: "0%", droplet: "14.2857%", circle: "28.5714%", triangle: "42.8571%", star: "57.1428%", wave: "14.2857%", diamond: "28.5714%", dot: "42.8571%", crescent: "71.4285%", sun: "57.1428%", hex: "42.8571%", flower: "28.5714%" };
-  const state = { locale: "en", sound: true, roundIndex: 0, checks: 0, solved: 0 };
+  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), roundIndex: 0, checks: 0, solved: 0 };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const startLabels = { en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲームを始める", ko: "게임 시작", es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Démarrer le jeu", de: "Spiel starten", it: "Inizia il gioco", ru: "Начать игру", hi: "गेम शुरू करें", ar: "ابدأ اللعبة" };
   const $ = (id) => document.getElementById(id);
   const safeStorage = {
@@ -62,22 +63,7 @@
     select.value = state.locale;
     select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-meadow-locale", state.locale); applyLocale(); });
   }
-  function playTone(kind) {
-    if (!state.sound || !window.AudioContext && !window.webkitAudioContext) return;
-    try {
-      const AudioCtor = window.AudioContext || window.webkitAudioContext;
-      const audio = new AudioCtor();
-      const oscillator = audio.createOscillator();
-      const gain = audio.createGain();
-      oscillator.frequency.value = kind === "success" ? 640 : 220;
-      gain.gain.setValueAtTime(0.0001, audio.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.035, audio.currentTime + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.13);
-      oscillator.connect(gain).connect(audio.destination);
-      oscillator.start(); oscillator.stop(audio.currentTime + 0.14);
-      oscillator.addEventListener("ended", () => audio.close(), { once: true });
-    } catch (_) { /* audio is an optional enhancement */ }
-  }
+  function playTone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function showView(id) {
     const mainActive = id === "mainScreen";
     const resultActive = id === "resultView";
@@ -121,11 +107,11 @@
     state.checks += 1; $("checkCount").textContent = String(state.checks);
     const round = rounds[state.roundIndex];
     if (index !== round.changedIndex) {
-      node.classList.add("is-wrong"); $("feedback").textContent = t("wrong", { row: Math.floor(index / 3) + 1, tile: (index % 3) + 1 }); $("feedback").classList.add("is-wrong"); playTone("wrong");
+      node.classList.add("is-wrong"); $("feedback").textContent = t("wrong", { row: Math.floor(index / 3) + 1, tile: (index % 3) + 1 }); $("feedback").classList.add("is-wrong"); playTone("feedback.error");
       window.setTimeout(() => node.classList.remove("is-wrong"), 420);
       return;
     }
-    node.classList.add("is-correct"); node.disabled = true; state.solved += 1; playTone("success"); $("feedback").classList.remove("is-wrong"); $("feedback").textContent = t("correct"); $("appStatus").textContent = t("correct");
+    node.classList.add("is-correct"); node.disabled = true; state.solved += 1; playTone("feedback.success"); $("feedback").classList.remove("is-wrong"); $("feedback").textContent = t("correct"); $("appStatus").textContent = t("correct");
     window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; renderRound(); } else finish(); }, 460);
   }
   function start() { state.roundIndex = 0; state.checks = 0; state.solved = 0; showView("battleView"); renderRound(); }
@@ -134,7 +120,7 @@
     $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView");
   }
   function goHome() { showView("mainScreen"); applyLocale(); }
-  function toggleSound() { state.sound = !state.sound; applyLocale(); }
+  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); $("startButton").addEventListener("click", start); $("replayButton").addEventListener("click", start); $("homeFromBattle").addEventListener("click", goHome); $("homeFromResult").addEventListener("click", goHome); $("soundToggle").addEventListener("click", toggleSound); $("battleSoundToggle").addEventListener("click", toggleSound); });
   window.MEADOW_FIND_TEST = { rounds, symbols, start, renderRound };

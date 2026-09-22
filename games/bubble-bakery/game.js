@@ -758,7 +758,7 @@
   }
 
   function playSound(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function track(event, payload = {}) {
@@ -1025,7 +1025,7 @@
     const unlockRequirement = t("unlockRequirement", { stage: t("stage", { n: Math.max(1, stageNo - 1) }) });
     nodes.stageFeedback.textContent = `${t("locked")}。${unlockRequirement}`;
     showFloat(unlockRequirement);
-    playSound("error");
+    playSound("feedback.error");
   }
 
   function showStageSelect(focusStageIndex = null) {
@@ -1092,7 +1092,7 @@
       nodes.playPanel.scrollIntoView?.({ block: "start", inline: "nearest", behavior: "auto" });
       nodes.board.querySelector(".bubble")?.focus({ preventScroll: true });
     });
-    playSound("start");
+    playSound("game.start");
     track("game_start", { level: index + 1 });
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -1277,7 +1277,7 @@
     const stage = stages[currentStage];
     if (group.length < 2) {
       nodes.hintText.textContent = t("smallGroup");
-      playSound("error");
+      playSound("feedback.error");
       return;
     }
     const minimum = stage.minOrderGroup || 2;
@@ -1315,7 +1315,7 @@
         : wasNeeded ? stageRule(stage) : t("notOrderTarget");
       showFloat(wasNeeded && !meetsOrderMinimum ? t("groupTooSmall", { count: minimum }) : `+${baseScore}`, window.innerWidth / 2, window.innerHeight * 0.5);
     }
-    playSound("pop");
+    playSound("puzzle.pop");
 
     try {
       await markPopping(group);
@@ -1479,7 +1479,7 @@
     lastResult = { won, stageNo, earned, unlockedStageNo, stamp, moves, report };
     setBattleCovered(true);
     renderResult(lastResult);
-    playSound(won ? "success" : "error");
+    playSound(won ? "result.win" : "result.lose");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();

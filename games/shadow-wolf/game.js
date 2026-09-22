@@ -1294,7 +1294,7 @@
       });
       button.addEventListener("click", () => {
         if (locked) return;
-        window.WonderSound?.play("click");
+        window.WeightPlayAudio?.play("ui.click");
         state.selectedStage = definition.id;
         saveLocalState();
         startRun(definition.id);
@@ -1461,7 +1461,7 @@
         button.addEventListener("click", () => {
           if (stageDragClickSuppressed) return;
           if (button.getAttribute("aria-disabled") === "true") return;
-          window.WonderSound?.play("click");
+          window.WeightPlayAudio?.play("ui.click");
           state.selectedStage = Number(button.dataset.zone);
           saveLocalState();
           startRun(state.selectedStage);
@@ -2017,7 +2017,7 @@
 
     state.gameActive = true;
     nodes.gameCanvas.focus({ preventScroll: true });
-    window.WonderSound?.play("start");
+    window.WeightPlayAudio?.play("game.start");
 
     cancelAnimationFrame(state.gameLoopId);
     resetSimulationClock();
@@ -2043,12 +2043,12 @@
       state.grounded = false;
       state.doubleJumpAvailable = true;
       jumped = true;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
     } else if (state.doubleJumpAvailable) {
       state.vy = -stats.jump * 0.95;
       state.doubleJumpAvailable = false;
       jumped = true;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       createJumpDust(state.x + state.width / 2, state.y + state.height);
     }
     if (jumped) showFirstResponse("jump");
@@ -2059,7 +2059,7 @@
     const stats = getStats();
     state.attackTimer = stats.attackFrames;
     showFirstResponse("attack");
-    window.WonderSound?.play("shoot");
+    window.WeightPlayAudio?.play("weapon.sword.swing");
 
     // Attack collision sweeps forward
     const slashRange = 124;
@@ -2093,7 +2093,7 @@
         enemy.hitTimer = 10;
         damageNumbers.push({ x: enemy.x + enemy.width / 2, y: enemy.y - 4, value: Math.round(finalDmg), crit: isCrit, life: 34 });
         createSlashSparks(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, isCrit);
-        window.WonderSound?.play("hit");
+        window.WeightPlayAudio?.play(isCrit ? "combat.critical" : "weapon.sword.hit");
 
         if (enemy.hp <= 0) {
           handleEnemyDefeated(enemy);
@@ -2113,12 +2113,12 @@
     state.dashCooldown = 60; // 1 second cooldown
     state.invincibilityTimer = 15;
     showFirstResponse("dash");
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     createDashGhost(state.x, state.y);
   }
 
   function handleEnemyDefeated(enemy) {
-    window.WonderSound?.play("enemyDown");
+    window.WeightPlayAudio?.play("enemy.defeat");
     
     // Spawn EXP orbs
     const value = enemy.isElite ? (enemy.type === "boss" ? 0 : 30) : 10;
@@ -2155,7 +2155,7 @@
     state.gameActive = false;
     clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
     renderStatsPanel();
     updateHUDText();
     renderAttributeDraft();
@@ -2186,7 +2186,7 @@
   function triggerChestLoot() {
     state.gameActive = false;
     clearActiveInputs();
-    window.WonderSound?.play("upgrade");
+    window.WeightPlayAudio?.play("reward.upgrade");
 
     const rolls = {
       1: ["sword-rare", "armor-rare", "boots-rare"],
@@ -2221,7 +2221,7 @@
     }
 
     nodes.lootPanel.classList.add("hidden");
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
 
     state.gameActive = true;
     renderStatsPanel();
@@ -2243,7 +2243,7 @@
     buildRoomGeometry();
     renderStatsPanel();
     updateHUDText();
-    window.WonderSound?.play("start");
+    window.WeightPlayAudio?.play("game.start");
   }
 
   // End Expedition
@@ -2466,12 +2466,12 @@
       nodes.resultText.textContent = t("report_win");
       nodes.skillReportText.textContent = t("report_win");
       window.WeightPlayWallet?.addDiamonds(8);
-      window.WonderSound?.play("win");
+      window.WeightPlayAudio?.play("result.win");
     } else {
       nodes.resultText.textContent = t("report_partial", { room: state.room });
       nodes.skillReportText.textContent = t("report_partial", { room: state.room });
       window.WeightPlayWallet?.addDiamonds(state.room - 1);
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("feedback.error");
     }
     setResultModalOpen(true);
   }
@@ -2499,11 +2499,11 @@
         ? "All 30 stages and six region bosses cleared! Replay any stage to refine your squad."
         : t("report_win", { stage: clearedStage });
       nodes.skillReportText.textContent = t("report_skill_win", { stage: clearedStage });
-      window.WonderSound?.play("win");
+      window.WeightPlayAudio?.play("result.win");
     } else {
       nodes.resultText.textContent = t("report_partial", { stage: clearedStage });
       nodes.skillReportText.textContent = t("report_skill_partial", { stage: clearedStage });
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("result.lose");
     }
 
     if (nodes.logicStars) nodes.logicStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
@@ -2706,7 +2706,7 @@
           state.y = 200;
           state.vx = 0;
           state.vy = 0;
-          window.WonderSound?.play("wrong");
+          window.WeightPlayAudio?.play("player.hurt");
           renderStatsPanel();
 
           if (state.playerHp <= 0) {
@@ -2780,7 +2780,7 @@
           for (let aOffset of [-0.18, 0, 0.18]) {
             state.bullets.push({ x: bossCenter, y: enemy.y + 46, vx: Math.cos(baseAngle + aOffset) * 3.8, vy: Math.sin(baseAngle + aOffset) * 3.8, size: 6 });
           }
-          window.WonderSound?.play("shoot");
+          window.WeightPlayAudio?.play("magic.cast");
         }
 
         // Boss contact dmg
@@ -2853,7 +2853,7 @@
       if (dist < 20) {
         state.orbs.splice(index, 1);
         state.exp += Math.ceil(orb.value * getStats().expBonus);
-        window.WonderSound?.play("coin");
+        window.WeightPlayAudio?.play("reward.coin");
         updateHUDText();
 
         if (state.exp >= state.expNeed) {
@@ -2874,7 +2874,7 @@
         if (pickup.type === "key") {
           state.pickups.splice(index, 1);
           state.keys++;
-          window.WonderSound?.play("success");
+          window.WeightPlayAudio?.play("feedback.success");
           updateHUDText();
 
           // Elite seals now open the next route directly; no gear chest system.
@@ -3547,7 +3547,7 @@
       if (!event.repeat && (event.key === "Enter" || event.key === " ")) mainEntryKeyboardKey = event.key;
     });
     nodes.startBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       showStage();
       document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
     });
@@ -3580,39 +3580,39 @@
     nodes.pauseBtn.addEventListener("click", openPause);
     nodes.resumeBtn.addEventListener("click", () => closePause(true));
     nodes.pauseStagesBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       showStage();
       document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
     });
 
     nodes.retryBtn.addEventListener("click", () => {
       if (!claimResultAction()) return;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       __wpReplayStart(() => startRun(Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage));
     });
 
     nodes.nextStageBtn.addEventListener("click", () => {
       if (nodes.nextStageBtn.disabled) return;
       if (!claimResultAction()) return;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       const settledStage = Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage;
       startRun(Math.min(STAGE_COUNT, settledStage + 1));
     });
 
     nodes.menuBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       openPause();
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {
       if (!claimResultAction()) return;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       showStage();
       document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       window.WonderI18n?.setLocale?.(e.target.value);
     });
 
@@ -3631,7 +3631,7 @@
         amuletConfirmPending = true;
         updateDiamondShopUI();
         armAmuletConfirmation(5000);
-        window.WonderSound?.play("click");
+        window.WeightPlayAudio?.play("ui.click");
         return;
       }
       clearAmuletConfirmation();
@@ -3639,7 +3639,7 @@
       if (spent) {
         state.amuletUnlocked = true;
         saveLocalState();
-        window.WonderSound?.play("success");
+        window.WeightPlayAudio?.play("feedback.success");
       }
       updateDiamondShopUI();
     });

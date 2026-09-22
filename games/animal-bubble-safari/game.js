@@ -187,7 +187,8 @@
   let selectedStage = Math.min(save.unlocked, stageDefs.length);
   let centeredStageFrame = 0;
   let currentScreen = "loading";
-  let audioEnabled = save.audio !== false;
+  let audioEnabled = !window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { audioEnabled = !window.WeightPlayAudio.isMuted(); });
   let audioContext = null;
   let game = null;
   let animationFrame = 0;
@@ -597,7 +598,7 @@
     if (dy > -40) dy = -40;
     const length = Math.hypot(dx, dy) || 1;
     game.projectile = { x: origin.x, y: origin.y - 28, vx: dx / length * 420, vy: dy / length * 420, type: game.currentType, power: game.currentPower, bounced: false };
-    tone(420, .05);
+    tone("projectile.launch", .05);
     track("bubble_shot", { level: game.def.id });
   }
 
@@ -658,8 +659,8 @@
       p.vx += (game.def.wind || 0) * stepTime;
       p.vx = Math.max(-500, Math.min(500, p.vx));
       p.x += p.vx * stepTime; p.y += p.vy * stepTime;
-      if (p.x < PROJECTILE_RADIUS) { p.x = PROJECTILE_RADIUS; p.vx = Math.abs(p.vx); p.bounced = true; tone(680,.025); }
-      if (p.x > 360 - PROJECTILE_RADIUS) { p.x = 360 - PROJECTILE_RADIUS; p.vx = -Math.abs(p.vx); p.bounced = true; tone(680,.025); }
+      if (p.x < PROJECTILE_RADIUS) { p.x = PROJECTILE_RADIUS; p.vx = Math.abs(p.vx); p.bounced = true; tone("puzzle.pop",.025); }
+      if (p.x > 360 - PROJECTILE_RADIUS) { p.x = 360 - PROJECTILE_RADIUS; p.vx = -Math.abs(p.vx); p.bounced = true; tone("puzzle.pop",.025); }
       const hit = game.bubbles
         .filter(bubble => bubble.alive && Math.hypot(bubble.x-p.x,bubble.y-p.y) <= CONTACT_DISTANCE)
         .sort((a,b) => Math.hypot(a.x-p.x,a.y-p.y) - Math.hypot(b.x-p.x,b.y-p.y))[0];
@@ -762,7 +763,7 @@
     leaves.forEach((leaf) => { leaf.alive = false; });
     game.score += group.length * 120 + (bounced ? 180 : 0) + game.rescued * 300;
     dom.battleMessage.textContent = leaves.length ? t("leafUsed") : game.rescued ? t("rescuedNow") : t("match");
-    tone(game.rescued ? 920 : 760, .12);
+    tone("puzzle.clear", .12);
     advanceQueue();
     checkEnd();
   }
@@ -779,7 +780,7 @@
     game.matches += 1;
     game.score += cleared * 140 + 260;
     dom.battleMessage.textContent = t(`${power}Used`);
-    tone(power === "burst" ? 980 : 860, .14);
+    tone("puzzle.clear", .14);
     advanceQueue();
     checkEnd();
   }
@@ -969,17 +970,9 @@
     animationFrame = requestAnimationFrame(loop);
   }
 
-  function tone(frequency, duration) {
-    if (!audioEnabled) return;
-    try {
-      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator(); const gain = audioContext.createGain();
-      oscillator.frequency.value=frequency; gain.gain.setValueAtTime(.06,audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
-      oscillator.connect(gain).connect(audioContext.destination); oscillator.start(); oscillator.stop(audioContext.currentTime+duration);
-    } catch (_) {}
-  }
+  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
-  function toggleSound() { audioEnabled=!audioEnabled; persist(); document.querySelectorAll("#soundMain,#soundStage").forEach(button => button.textContent=audioEnabled?"♪":"×"); tone(520,.06); }
+  function toggleSound() { audioEnabled=window.WeightPlayAudio.setEnabled(!audioEnabled); persist(); document.querySelectorAll("#soundMain,#soundStage").forEach(button => button.textContent=audioEnabled?"♪":"×"); tone("ui.click",.06); }
   function track(event, details={}) { try { window.WonderAnalytics?.track?.(event,{ game:"animal-bubble-safari",...details }); } catch (_) {} }
   function openGuide() { (__wpNotifyMeasurement(), dom.guideModal.hidden=false); writeStorage(FIRST_PLAY_KEY,"seen"); }
   function closeGuide() { (__wpNotifyMeasurement(), dom.guideModal.hidden=true); }

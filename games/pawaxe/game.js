@@ -111,20 +111,9 @@ function renderEquipment(){
   }));
 }
 function selectTab(tab){$$('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));['ally','stage','equip'].forEach(x=>$('#'+x+'Panel').hidden=x!==tab);if(tab==='stage')requestAnimationFrame(()=>rail?.center());}
-let audio=null,impactNoise=null;
 function sound(kind,strong=false){
-  if(window.WonderSound?.isMuted())return;
-  try{audio||=new AudioContext();audio.resume();const frequencies={hit:170,critical:460,break:310,hurt:85,perfect:720,block:210,ally:520,defeat:370,counter:440,heal:620};
-    if(!frequencies[kind])return;const o=audio.createOscillator(),g=audio.createGain(),at=audio.currentTime;
-    o.type=kind==='hit'||kind==='hurt'?'triangle':'sine';const pitch=strong?frequencies[kind]*.65:frequencies[kind];o.frequency.setValueAtTime(pitch,at);o.frequency.exponentialRampToValueAtTime(pitch*.45,at+.12);
-    g.gain.setValueAtTime(.055*((window.WonderSound?.getEffectsVolume()??80)/100),at);g.gain.exponentialRampToValueAtTime(.001,at+.16);o.connect(g).connect(audio.destination);o.start(at);o.stop(at+.16);
-    if(kind==='hit'||kind==='critical'||kind==='break'){
-      if(!impactNoise){impactNoise=audio.createBuffer(1,Math.ceil(audio.sampleRate*.07),audio.sampleRate);const data=impactNoise.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);}
-      const noise=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();noise.buffer=impactNoise;filter.type='lowpass';filter.frequency.value=strong?700:1800;
-      gain.gain.setValueAtTime((strong?.14:.065)*((window.WonderSound?.getEffectsVolume()??80)/100),at);gain.gain.exponentialRampToValueAtTime(.001,at+.07);
-      noise.connect(filter).connect(gain).connect(audio.destination);noise.start(at);noise.stop(at+.07);
-    }
-  }catch{}
+  const cue={hit:"weapon.axe.hit",critical:"combat.critical",break:"combat.shield.break",hurt:"player.hurt",perfect:"combat.critical",block:"combat.block",ally:"magic.cast",defeat:"enemy.defeat",counter:"combat.critical",heal:"magic.heal",swing:"weapon.axe.swing"}[kind];
+  if(cue)return window.WeightPlayAudio?.play(cue);
 }
 function feedback(text,seconds=1.4){feedbackText=text;feedbackUntil=performance.now()+seconds*1000;$('#feedback').textContent=text;}
 async function startRun(){
@@ -148,6 +137,7 @@ function startEncounter(){
   renderer.setEnemies(combat.alive());state='live';transitionRemaining=0;
   $('#targets').classList.toggle('two-rows',combat.enemies.some(e=>e.slot>=3));
   $('.arena').classList.toggle('two-rows',combat.enemies.some(e=>e.slot>=3));
+  $('#allyPortrait').src=`art/objects/${runKit.companion}.png`;
   $('#hudStage').textContent=selected;updateProgress();updateHud();startLoop();
 }
 function resume(){closeDialog();state='live';startLoop();$('#canvas').focus();}
@@ -238,12 +228,13 @@ function showLoot(item){
   const g=gear.find(g=>g.id===item.id),index=gear.indexOf(g);
   $('#lootIcon').src=`art/objects/${item.id}.png`;
   const title=item.kind==='companion'?cc().names[companions.findIndex(c=>c.id===item.id)]:zh()?gearZh[index]:g.name;
-  $('#lootText').textContent=`${item.fresh?t('newItem'):t('loot')} · ${title}${item.fresh?'':` · ${item.shards}/${shardsNeeded(item.rank)}`}`;
+  const label=item.kind==='companion'?(item.fresh?cc().newAlly:cc().allyShard):(item.fresh?t('newItem'):t('loot'));
+  $('#lootText').textContent=`${label} · ${title}${item.fresh?'':` · ${item.shards}/${shardsNeeded(item.rank)}`}`;
   $('#lootToast').hidden=false;lootUntil=performance.now()+1800;
 }
 function finish(win){
   stopLoop();state='result';win=win||journey.completed;
-  const text=win?`${name(stages[selected-1])}\n${t('reward')} +${runReward} · ${t('kills')} ${runKills} · ${t('loot')} ${runDrops}`:t('failText');
+  const text=win?`${name(stages[selected-1])}\n${t('reward')} +${runReward} · ${t('kills')} ${runKills} · ${cc().lootTotal} ${runDrops}`:t('failText');
   dialog(win?t('victory'):t('fail'),text,[[t('returnStages'),()=>show('stage')],[t('next'),()=>{selected++;startRun();},!win||selected===30],[t('replay'),startRun]],'result');
 }
 function closeDialog(){

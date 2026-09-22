@@ -1872,7 +1872,7 @@ return __wpReturn;
   }
 
   function playSound(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function viewportBucket() {
@@ -2246,7 +2246,7 @@ return __wpReturn;
       if (!Number.isInteger(index)) return;
       if (index + 1 > unlocked) {
         showFloatingText(t("locked"));
-        playSound("click");
+        playSound("ui.click");
         return;
       }
       startStage(index);
@@ -2690,7 +2690,7 @@ return __wpReturn;
     updateHud();
     track("stage_start", { outcome: "started" });
     track("game_start", { level: index + 1 });
-    playSound("start");
+    playSound("game.start");
     window.WeightPlayGame?.exitMobileGameMode?.();
     raf = requestAnimationFrame(tick);
 
@@ -2856,7 +2856,7 @@ return __wpReturn;
         recallMode=false;rallyMode=false;
         nodes.hintText.textContent=`${t(unit.nameKey)} · ${t(unit.abilityKey)}`;
         track("guard_selected");
-        playSound("click");
+        playSound("ui.click");
         renderUnits();
         if (restoreFocus) {
           nodes.unitBar.querySelector(`[data-unit-id="${unit.id}"]`)?.focus({ preventScroll: true });
@@ -2872,7 +2872,7 @@ return __wpReturn;
     if(rallyMode){
       if(combatPhase!=='combat'||rallyCooldown>0)return;
       entities.filter(e=>e.kind==='zombie'&&e.row===row).forEach(e=>{applySlow(e,.25,2000);e.hitMs=200;});
-      rallyCooldown=20000;rallyMode=false;pulseClass(nodes.yardBoard,'rally-lane',300);playSound('select');updateHud();return;
+      rallyCooldown=20000;rallyMode=false;pulseClass(nodes.yardBoard,'rally-lane',300);playSound("ui.click");updateHud();return;
     }
     if(recallMode&&cell?.unit){
       const guard=cell.unit,refund=Math.floor(guard.data.cost*(combatPhase==='prepare'?1:.5)*Math.max(0,guard.hp/guard.maxHp));
@@ -2880,24 +2880,24 @@ return __wpReturn;
       nodes.hintText.textContent=t('refund',{n:refund});updateHud();renderUnits();return;
     }
     if(recallMode)return;
-    if(stages[currentStage].blocked?.some(c=>c[0]===row&&c[1]===col)){nodes.hintText.textContent=t('blocked');playSound('error');return;}
+    if(stages[currentStage].blocked?.some(c=>c[0]===row&&c[1]===col)){nodes.hintText.textContent=t('blocked');playSound("feedback.error");return;}
     const baseUnit = units.find((item) => item.id === selectedUnit);
     if (!cell || !baseUnit) return;
     const unit = trainedUnit(baseUnit);
     if (!isOwned(unit.id)) {
       showFloatingText(t("noDiamonds"));
-      playSound("error");
+      playSound("feedback.error");
       return;
     }
     if (cell.unit) {
       showFloatingText(t("occupied"));
-      playSound("error");
+      playSound("feedback.error");
       return;
     }
-    if(entities.filter(e=>e.kind==='guard').length>=12){nodes.hintText.textContent=t('capacity');playSound('error');return;}
+    if(entities.filter(e=>e.kind==='guard').length>=12){nodes.hintText.textContent=t('capacity');playSound("feedback.error");return;}
     if (energy < unit.cost) {
       showFloatingText(t("noEnergy"));
-      playSound("error");
+      playSound("feedback.error");
       return;
     }
     energy -= unit.cost;
@@ -2949,7 +2949,7 @@ return __wpReturn;
     spawnImpact(cellCenterX(col), laneProjectileY(row), "place");
     updateHud();
     renderUnits();
-    playSound("select");
+    playSound("ui.click");
   }
 
   function spawnZombie() {
@@ -3158,11 +3158,13 @@ return __wpReturn;
         }
       }
     }
-    playSound("hit");
+    playSound(target.shellClosed ? "combat.block" : impactType === "cat" ? "weapon.arrow.hit" : impactType === "dog" ? "combat.strike" : impactType === "owl" ? "magic.hit" : "impact.soft");
+    if (target.hp <= 0) playSound("enemy.defeat");
   }
 
   function meleeAttack(guard, target) {
     guard.attackCount += 1;
+    playSound("movement.dash");
     faceTarget(guard, target);
     pulseClass(guard.el, "is-shooting");
     const y = laneProjectileY(target.row);
@@ -3186,7 +3188,7 @@ return __wpReturn;
       const supportTarget = findFoxSupportTarget(guard, target);
       if (supportTarget) spawnProjectile(guard, supportTarget, Math.max(1, Math.round(guard.data.damage * 0.6)), true);
     }
-    playSound("shoot");
+    playSound(guard.id === "cat" ? "weapon.bow.release" : guard.id === "owl" ? "magic.cast" : "projectile.launch");
   }
 
   function spawnProjectile(guard, target, damage, isSupportShot = false, isPiercing = false) {
@@ -3291,7 +3293,7 @@ return __wpReturn;
           pulseClass(zombie.el, "is-biting");
           pulseClass(blocking.el, "is-hit");
           spawnImpact(cellCenterX(blocking.col), laneProjectileY(blocking.row), "bite");
-          playSound("hit");
+          playSound("player.hurt");
         }
       } else {
         zombie.rushMs = Math.max(0, (zombie.rushMs || 0) - dt);
@@ -3310,7 +3312,7 @@ return __wpReturn;
           showBoardText(talentText('safeguard'), .22, laneProjectileY(zombie.row), 'talent-heal');
           spawnImpact(.06, laneProjectileY(zombie.row), 'owl');
           nodes.hintText.textContent = talentText('safeguard');
-          playSound('coin');
+          playSound("reward.coin");
           renderUnits();
           return;
         }
@@ -3325,7 +3327,7 @@ return __wpReturn;
         baseHp -= 1;
         track("home_heart_lost", { remaining_hearts: Math.max(0, baseHp), outcome: "damage" });
         pulseDanger();
-        playSound("error");
+        playSound("feedback.error");
       }
       updateEntityElement(zombie);
     });
@@ -3498,7 +3500,7 @@ return __wpReturn;
     if (now - lastDangerAt > 1100) {
       lastDangerAt = now;
       showBoardText(t("danger"), 0.22, Math.max(0.08, laneProjectileY(row) - 0.08));
-      playSound("error");
+      playSound("feedback.error");
     }
   }
 
@@ -3635,11 +3637,11 @@ return __wpReturn;
       nodes.resultTitle.textContent = t("victory");
       resultMessage = `${t("resultWin", { n: currentStage + 1, hp: Math.max(0, baseHp) })} ${t("reward", { coins: coinsEarned })}`;
       if (perfectBonus > 0) resultMessage = `${t("perfectClear")} ${resultMessage} ${t("perfectBonus", { coins: perfectBonus })}`;
-      playSound("win");
+      playSound("result.win");
     } else {
       nodes.resultTitle.textContent = t("defeat");
       resultMessage = `${t("resultLose")} ${t("reward", { coins: coinsEarned })}`;
-      playSound("lose");
+      playSound("result.lose");
     }
     finalScore = (currentStage + 1) * 60 + Math.max(0, baseHp) * 8 + coinsEarned + (won ? 80 : 0);
     const progress = saveProgress(finalScore, won, perfect);
@@ -3736,18 +3738,18 @@ return __wpReturn;
     if (!isOwned(unitId)) {
       if (!window.WeightPlayWallet?.spendDiamonds?.(unit.unlockCost)) {
         showFloatingText(t("noDiamonds"));
-        playSound("error");
+        playSound("feedback.error");
         return;
       }
       profile.owned[unitId] = true;
       saveProfile();
       showFloatingText(`${t(unit.nameKey)} ${t("owned")}`);
-      playSound("win");
+      playSound("result.win");
     } else {
       const cost = upgradeCost(unitId);
       if (profile.coins < cost) {
         showFloatingText(t("noCoins"));
-        playSound("error");
+        playSound("feedback.error");
         return;
       }
       profile.coins -= cost;
@@ -3758,7 +3760,7 @@ return __wpReturn;
         level: unitLevel(unitId),
       });
       showFloatingText(`${t(unit.nameKey)} ${t("level", { n: unitLevel(unitId) })}`);
-      playSound("coin");
+      playSound("reward.coin");
     }
     renderWallet();
     renderTrainingBridge();
@@ -3829,7 +3831,7 @@ return __wpReturn;
       track("animals_open", { action: "open" });
       track("upgrade_view", { unit_count: units.length });
     }
-    playSound("click");
+    playSound("ui.click");
   });
   nodes.playPanel.addEventListener("click", (event) => {
     if (reclaimVisiblePlayerAction(event)) return;
@@ -3963,7 +3965,7 @@ return __wpReturn;
     else resumeBattleLifecycle();
   });
 
-  $('launchWave').onclick=()=>{if(!running||combatPhase!=='prepare'||!entities.some(e=>e.kind==='guard'))return;waveIndex++;waveLimit=Math.ceil(stages[currentStage].total*waveIndex/stages[currentStage].waveCount);combatPhase='combat';waveElapsed=0;nextSpawnAt=1800;currentSpawnDelay=1800;nextSpawnPlan=makeSpawnPlan();nodes.hintText.textContent=t('incomeHint');playSound('start');updateHud();};
+  $('launchWave').onclick=()=>{if(!running||combatPhase!=='prepare'||!entities.some(e=>e.kind==='guard'))return;waveIndex++;waveLimit=Math.ceil(stages[currentStage].total*waveIndex/stages[currentStage].waveCount);combatPhase='combat';waveElapsed=0;nextSpawnAt=1800;currentSpawnDelay=1800;nextSpawnPlan=makeSpawnPlan();nodes.hintText.textContent=t('incomeHint');playSound("game.start");updateHud();};
   $('recallGuard').onclick=()=>{recallMode=!recallMode;rallyMode=false;nodes.hintText.textContent=t('incomeHint');updateHud();};
   $('rallyLane').onclick=()=>{if(rallyCooldown>0||combatPhase!=='combat')return;rallyMode=!rallyMode;recallMode=false;nodes.hintText.textContent=t('rallyHint');updateHud();};
   $('yardSpeed').onclick=()=>{speedFactor=speedFactor===1?2:1;updateHud();};

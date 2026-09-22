@@ -12,7 +12,7 @@
   const stage = root.querySelector('.stage-canvas'), battle = $('battleLive');
   const select = $('localeSelect');
   // Retain IDs used by the original sound state handler without displaying
-  // a second preferences UI. The shared sound component uses WonderSound.
+  // a second preferences UI. The shared sound component uses WeightPlayAudio.
   select.hidden = true;
   root.append(select);
   main.querySelector('.main-controls').hidden = true;

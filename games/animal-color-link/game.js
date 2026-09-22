@@ -213,7 +213,7 @@
     const cells=new Set(Object.values(paths).flat());
     if(Object.keys(paths).length!==level.count||cells.size!==level.size*level.size)return;
     if(selected+2>unlocked){unlocked=Math.min(31,selected+2);writeStore(storeKey,String(unlocked))}
-    playTone(523,.08);setTimeout(()=>playTone(659,.12),90);
+    playTone("puzzle.clear",.08);setTimeout(()=>void 0,90);
     $("#resultBody").textContent=text("resultBody",{n:selected+1,moves});
     resultClaimed=false;
     $("#next").disabled=selected===29;
@@ -223,11 +223,7 @@
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
-  function playTone(frequency,duration){
-    const volume=Math.max(0,Math.min(100,Number(localStorage.getItem("weightPlayEffectsVolume")??80)))/100;
-    if(volume<=0)return;
-    try{const audio=new(window.AudioContext||window.webkitAudioContext)(),osc=audio.createOscillator(),gain=audio.createGain();osc.frequency.value=frequency;gain.gain.setValueAtTime(.045*volume,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+duration)}catch{}
-  }
+  function playTone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function hint(){
     const unresolved=Object.keys(level.solution).map(Number).find(color=>!paths[color]);
     if(unresolved===undefined)return;

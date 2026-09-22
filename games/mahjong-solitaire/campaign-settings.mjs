@@ -2,7 +2,7 @@ import {CAMPAIGN_LOCALES} from './campaign-copy.mjs';
 import {mahjongMainCopy} from './campaign-main-copy.mjs';
 const names=['English','繁體中文','简体中文','日本語','한국어','Español','Português','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];
 let sequence=0;
-// Share the entry's audio owner (e.g. WonderSound). No independent preference,
+// Share the entry's audio owner (e.g. WeightPlayAudio). No independent preference,
 // AudioContext, global observer or scene-specific locale store is created here.
 export function createCampaignSettings({locale,setLocale,sound,allowLanguage=true}) {
  if(!sound?.isMuted||!sound?.setMuted||typeof locale!=='function'||(allowLanguage&&typeof setLocale!=='function'))throw new Error('Settings owner callbacks required');

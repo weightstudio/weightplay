@@ -2,6 +2,7 @@
 <html lang="en" data-wp-official-name>
   <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-hidden-safari/"+location.search+location.hash)}catch{location.replace("/en/games/animal-hidden-safari/"+location.search+location.hash)}})();</script>
+    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <meta charset="UTF-8" />
@@ -218,6 +219,7 @@
             <div><dt>Is the Skill Report a formal assessment?</dt><dd>No. It only summarizes finds, empty taps, hints, and time from the local game.</dd></div>
           </dl>
         </div>
+        <section class="game-info-block" data-wp-market-comparison="1.3.0"><h2>How Hidden Safari differs from Hidden Folks</h2><p>Hidden Safari and <a href="https://hiddenfolks.com/" rel="noopener noreferrer">Hidden Folks</a> are seek-and-find games built around scanning a scene, checking a target list, and using hints when a detail is hard to spot. Hidden Folks uses hand-drawn interactive miniature landscapes, a target strip, environmental interactions, and enough finds to unlock the next area.</p><p>Hidden Safari instead uses 30 fixed animal habitats with exactly six pictured targets per stage. Its campaign adds Ranger Order, separate Animal Pairs, Deep Camouflage, off-list Habitat Visitors, gently Moving Patrol targets, two hints per habitat, retry-friendly stars, and browser-local best times without a countdown failure.</p><p><small>Independent comparison: Hidden Safari is a WeightPlay original, not an official Hidden Folks game, and is not affiliated with, endorsed by, licensed by, or co-developed with Hidden Folks B.V.</small></p></section>
       </div>
     </section>
     <!-- adsense-static-guide:end -->
@@ -227,11 +229,10 @@
     <script>
       window.WonderAnalytics?.track("game_view", { game_id: "animal-hidden-safari" });
     </script>
-    <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260729-interface-v4-2"></script>
+    <script src="game.js?v=20260729-interface-v4-2&wp-audio=1.0.0"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -253,6 +254,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2&wp-audio=1.0.0"></script>
 </body>
 </html>

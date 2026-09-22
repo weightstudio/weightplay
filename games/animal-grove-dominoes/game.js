@@ -22,7 +22,8 @@
   let stageView,progress,flipMode=false,fitBattle=()=>{},completionReceipt=null;
   const cc=()=>campaignCopy[state.locale]||campaignCopy.en;
   let chainState=null,rackOrder=[];
-  const state = { locale: "en", sound: true, roundIndex: 0, currentEnd: "", picks: 0, placed: [], rack: [], solved: 0 };
+  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), roundIndex: 0, currentEnd: "", picks: 0, placed: [], rack: [], solved: 0 };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value);return true; } catch (_) {return false;} } };
   progress=normalizeProgress(safeStorage.get(PROGRESS_KEY));
@@ -43,10 +44,7 @@
     window.ANIMAL_GROVE_CHAIN_EVENTS = Array.isArray(window.ANIMAL_GROVE_CHAIN_EVENTS) ? window.ANIMAL_GROVE_CHAIN_EVENTS.slice(-39) : [];
     window.ANIMAL_GROVE_CHAIN_EVENTS.push(event);
   }
-  function playTone(kind) {
-    if (!state.sound || !(window.AudioContext || window.webkitAudioContext)) return;
-    try { const AudioCtor = window.AudioContext || window.webkitAudioContext; const audio = new AudioCtor(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = kind === "success" ? 620 : 210; gain.gain.setValueAtTime(0.0001, audio.currentTime); gain.gain.exponentialRampToValueAtTime(0.03, audio.currentTime + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.13); oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + 0.14); oscillator.addEventListener("ended", () => audio.close(), { once: true }); } catch (_) {}
-  }
+  function playTone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function applyLocale() {
     document.documentElement.lang = state.locale;
     document.body.dataset.gameVersion = GAME_VERSION;
@@ -155,9 +153,9 @@
     const tile = state.rack[index]; if (!tile) return;
     state.picks += 1; track("tile_selected", { round: state.roundIndex + 1, left: tile[0], right: tile[1], correct: tile[0] === state.currentEnd });
     const reversed=flipMode&&tile.reversible,result=play(chainState,tile.id,{reverse:reversed});
-    if(!result.accepted){button.classList.add('is-wrong');$('battleStatus').textContent=t('wrong');setFeedbackState('wrong');playTone('wrong');return;}
+    if(!result.accepted){button.classList.add('is-wrong');$('battleStatus').textContent=t('wrong');setFeedbackState('wrong');playTone("feedback.error");return;}
     chainState=result.state;
-    button.disabled = true; button.classList.add("is-correct"); state.placed.push(reversed?[tile[1],tile[0]]:tile); state.rack[index] = null; state.currentEnd = chainState.end; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound(); setFeedbackState("matched");
+    button.disabled = true; button.classList.add("is-correct"); state.placed.push(reversed?[tile[1],tile[0]]:tile); state.rack[index] = null; state.currentEnd = chainState.end; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("board.move"); renderRound(); setFeedbackState("matched");
     if(outcome(chainState)==='dead-end'){$('battleStatus').textContent=(recoveryCopy[state.locale]||recoveryCopy.en)[1];setFeedbackState('wrong');}
     if (outcome(chainState)==='complete') { recordCompletion();cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; finish(); }, 420); }
   }
@@ -187,7 +185,7 @@
   }
   function goHome() { track("session_abandoned", { round: state.roundIndex + 1 }); showView("mainView"); applyLocale(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
-  function toggleSound() { state.sound = !state.sound; applyLocale(); track("sound_changed", { enabled: state.sound }); }
+  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); track("sound_changed", { enabled: state.sound }); }
   state.locale = queryLocale();
   const initialize = () => {
     const actions=document.createElement('div');actions.className='grove-battle-actions';$('leaveBtn').before(actions);

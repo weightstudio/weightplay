@@ -1386,7 +1386,7 @@
     loadFood();
     if (focusChoice) dropZone.querySelector(".lunchbox")?.focus({ preventScroll: true });
     requestAnimationFrame(updateLunchFrame);
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: stage.id, locale: locale() });
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -1431,7 +1431,7 @@
         food: t(food.nameKey),
         color: t(colorDB[food.color].labelKey),
       })}`;
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("feedback.error");
       window.WonderAnalytics?.track("game_answer", {
         game_id: GAME_ID,
         result: "wrong",
@@ -1452,7 +1452,7 @@
     const bonus = Math.max(4, 12 - Math.min(state.mistakes, 6));
     state.score += bonus;
     feedbackText.textContent = t("correct");
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
     window.WonderAnalytics?.track("game_answer", {
       game_id: GAME_ID,
       result: "correct",
@@ -1513,7 +1513,7 @@
     (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     setBattleCovered(true);
     primaryAction.focus({ preventScroll: true });
-    window.WonderSound?.play("win");
+    window.WeightPlayAudio?.play("result.win");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
       stage: stage.id,
@@ -1598,11 +1598,11 @@
   });
 
   localeSelect.addEventListener("change", () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderI18n?.setLocale(localeSelect.value);
   });
   localeSelect.addEventListener("input", () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderI18n?.setLocale(localeSelect.value);
   });
   window.addEventListener("wonder:locale-change", translateStaticUI);
@@ -1618,7 +1618,7 @@
     if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
   });
   startBtn.addEventListener("click", () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     showStageSelect(true);
   });
   stageBackBtn.addEventListener("click", () => showMain(true));
@@ -1648,7 +1648,7 @@
   });
   nextStageBtn.addEventListener("click", () => startStage(Math.min(state.stageIndex + 1, stages.length - 1), true));
   stageSelectBtn.addEventListener("click", () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     showStageSelect(true);
   });
   battleBackBtn.addEventListener("click", () => {
@@ -1677,7 +1677,7 @@
   homeLink.addEventListener("click", (event) => {
     if (document.body.classList.contains("lunch-main")) return;
     event.preventDefault();
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     showMain(true);
   });
 

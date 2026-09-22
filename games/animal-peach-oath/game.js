@@ -453,7 +453,7 @@
       state.player.xp -= levelGoal(state.player.level);
       state.player.level += 1;
       toast(`${copy("level")} ${state.player.level}`);
-      tone(620, .08);
+      tone("reward.upgrade", .08);
     }
   }
 
@@ -700,7 +700,7 @@
     } else {
       $("#battleStatus").textContent = copy("skillCrane", { name: localizedValue(unit.data.name), skill: localizedValue(unit.data.skill) });
     }
-    tone(520, .05);
+    tone("magic.cast", .05);
   }
 
   function animateAttack(unit, target, damage, crit, skill) {
@@ -786,7 +786,7 @@
     if (win) collectLoot(true);
     updateHud();
     save();
-    tone(win ? 720 : 180, .12);
+    tone(win ? "result.win" : "result.lose", .12);
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -1076,7 +1076,7 @@
       openManagement('tavern');
       $('#managementBody [data-action="summon"]').focus({preventScroll:true});
     });
-    renderTavern(); tone(660, .1);
+    renderTavern(); tone("magic.cast", .1);
   }
 
   function runCampaign(id) {
@@ -1379,19 +1379,7 @@
   }
 
   let audioContext;
-  function tone(frequency, duration) {
-    if (window.WonderSound?.isMuted?.()) return;
-    try {
-      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      oscillator.frequency.value = frequency;
-      gain.gain.setValueAtTime(.035, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.0001, audioContext.currentTime + duration);
-      oscillator.connect(gain).connect(audioContext.destination);
-      oscillator.start(); oscillator.stop(audioContext.currentTime + duration);
-    } catch { /* Sound is optional. */ }
-  }
+  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
   function bind() {
     $("#startBtn").addEventListener("click", () => showScene("battle"));

@@ -192,14 +192,9 @@
     ["الإتقان","خاتمة الخطاف السحابي","وصّل كل الطرود بعد تأرجح كامل عبر المسار كله.","نقطة التحقق الأخيرة: كل الأنظمة مفعّلة.","اكتملت توصيلة الخطاف السحابي؛ أعد اللعب لإتقان السرعة."],
   ];
   let locale = "en";
-  let soundEnabled = true;
-  if (!window.WonderSound) {
-    let muted = false;
-    window.WonderSound = {
-      isMuted: () => muted,
-      setMuted: (next) => { muted = Boolean(next); soundEnabled = !muted; refreshShell(); window.dispatchEvent(new CustomEvent("wonder:audio-volume-change")); },
-    };
-  }
+  let soundEnabled = !window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { soundEnabled = !window.WeightPlayAudio.isMuted(); });
+
   let currentStage = 0;
   let state = null;
   let frame = 0;
@@ -275,23 +270,7 @@
     return { arc: row[0], title: row[1], objective: row[2], warning: row[3], result: row[4] };
   };
   const messageText = (key) => key === "swingRequired" ? stageMeta().warning : text(key);
-  const beep = (frequency = 440, duration = 0.06) => {
-    if (!soundEnabled) return;
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      const audio = window.__cloudhookAudio || (window.__cloudhookAudio = new AudioContext());
-      if (audio.state === "suspended") audio.resume();
-      const oscillator = audio.createOscillator();
-      const gain = audio.createGain();
-      oscillator.frequency.value = frequency;
-      oscillator.type = "sine";
-      gain.gain.setValueAtTime(0.035, audio.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + duration);
-      oscillator.connect(gain).connect(audio.destination);
-      oscillator.start(); oscillator.stop(audio.currentTime + duration);
-    } catch {}
-  };
+  const beep = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   const anchorPosition = (anchor, time) => ({ x: anchor.x, y: anchor.y + (anchor.move ? Math.sin(time * 1.8 + anchor.x) * 34 : 0) });
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const config = () => stageConfigs[currentStage];
@@ -328,11 +307,11 @@
   const attach = () => {
     if (!state || state.done || hidden || state.attached) return;
     const index = nearestAnchor();
-    if (index < 0) { announce("noAnchor"); beep(180); return; }
+    if (index < 0) { announce("noAnchor"); beep("feedback.error"); return; }
     const anchor = anchorPosition(config().anchors[index], state.time);
     state.attached = true; state.anchor = index; state.lastAnchor = -1; state.targetAnchor = currentStage <= 1 && index + 1 < config().anchors.length ? index + 1 : -1; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time; state.swingReady = false;
     if (!state.firstAttach) { state.firstAttach = true; track("attach"); }
-    announce("attached"); beep(620, 0.08); updateTetherLabel();
+    announce("attached"); beep("movement.hook", 0.08); updateTetherLabel();
   };
   const release = () => {
     if (!state || state.done || !state.attached) return;
@@ -354,7 +333,7 @@
       : 0;
     state.attached = false; state.lastAnchor = releasedAnchor; state.targetAnchor = routeAssistEnabled ? nextAnchor : -1; state.anchor = -1; state.vx += inputAxis * 42 + (target.x - state.x) / targetDistance * releaseBoost; state.vy += (target.y - state.y) / targetDistance * releaseBoost - 16;
     state.attachedAt = 0; track("release", { hold_bucket: holdBucket(heldFor) });
-    announce("released"); beep(840, 0.08); updateTetherLabel();
+    announce("released"); beep("movement.release", 0.08); updateTetherLabel();
   };
   const setTether = (pressed) => { if (pressed) attach(); else release(); };
   const setInputAxis = (next) => {
@@ -369,12 +348,12 @@
     const best = Number(safeGet(bestKey(currentStage), 0)) || 0;
     if (success && (!best || state.time < best)) safeSet(bestKey(currentStage), state.time.toFixed(2));
     if (success && currentStage + 1 < stageConfigs.length) safeSet(stageKey("unlocked"), Math.max(unlocked(), currentStage + 2));
-    beep(success ? 980 : 140, 0.16); renderResult(); setScreen("battle"); setResultOpen(true);
+    beep(success ? "result.win" : "result.lose", 0.16); renderResult(); setScreen("battle"); setResultOpen(true);
   };
   const update = (dt) => {
     if (!state || state.done || hidden || !isBattleActive()) return;
     state.time += dt;
-    if (state.attached && !state.swingReady && state.time - state.attachedAt >= 0.45) { state.swingReady = true; state.masteredSwing = true; announce("swinging"); beep(700, 0.05); }
+    if (state.attached && !state.swingReady && state.time - state.attachedAt >= 0.45) { state.swingReady = true; state.masteredSwing = true; announce("swinging"); beep("reward.collect", 0.05); }
     const cfg = config();
     const gust = cfg.gust ? Math.sin(state.time * cfg.gustRate + currentStage * 0.6) * cfg.gust : 0;
     const wind = (cfg.wind + gust) * (state.attached ? 0.45 : 1);
@@ -386,7 +365,7 @@
       let dx = state.x - anchor.x; let dy = state.y - anchor.y; const d = Math.max(1, Math.hypot(dx, dy));
       if (d > state.rope) { const nx = dx / d; const ny = dy / d; state.x = anchor.x + nx * state.rope; state.y = anchor.y + ny * state.rope; const tangentX = -ny; const tangentY = nx; const tangentSpeed = state.vx * tangentX + state.vy * tangentY; state.vx = tangentX * tangentSpeed; state.vy = tangentY * tangentSpeed; }
     }
-    config().parcels.forEach((parcel, index) => { const sequenceReady = !cfg.parcelSequence || index === state.collected.length; if (sequenceReady && !state.collected.includes(index) && distance(state, parcel) < 30) { state.collected.push(index); state.parcels += 1; state.score += 100; state.flash = 0.25; track("parcel_collect", { parcels: state.parcels }); announce("parcel"); beep(720); } });
+    config().parcels.forEach((parcel, index) => { const sequenceReady = !cfg.parcelSequence || index === state.collected.length; if (sequenceReady && !state.collected.includes(index) && distance(state, parcel) < 30) { state.collected.push(index); state.parcels += 1; state.score += 100; state.flash = 0.25; track("parcel_collect", { parcels: state.parcels }); announce("parcel"); beep("reward.collect"); } });
     if (config().spikes.some((spike) => rectHit(state.x, state.y, spike))) { finish(false); return; }
     const target = targetPosition();
     if (state.x > target.x - 30 && state.y > target.y - 85 && state.y < target.y + 115) {
@@ -439,9 +418,9 @@
   const setResultOpen = (open) => { resultOpen = Boolean(open); if (resultOpen) { leaveOpen = false; leaveOverlay.hidden = true; } resultScreen.hidden = !resultOpen; battleScreen.classList.toggle("result-open", resultOpen); battleScreen.classList.remove("leave-open"); syncBattleOverlayState(); if (resultOpen) { resultScreen.scrollTop = 0; const focusTarget = $("#nextBtn").disabled ? $("#retryBtn") : $("#nextBtn"); focusTarget?.focus(); } };
   const setLeaveOpen = (open, restoreFocus = true) => { if (open && resultOpen) return; leaveOpen = Boolean(open); leaveOverlay.hidden = !leaveOpen; battleScreen.classList.toggle("leave-open", leaveOpen); syncBattleOverlayState(); if (leaveOpen) $("#continueBattle").focus(); else if (restoreFocus && !battleScreen.hidden) $("#battleBack")?.focus(); };
   const renderStages = () => { const count = unlocked(); $("#stageGrid").innerHTML = stageConfigs.map((_, index) => { const open = index < count; const best = Number(safeGet(bestKey(index), 0)); const meta = stageMeta(index); const status = open ? (best ? `${text("stageDone")}: ${formatTime(best)}` : text("choose")) : text("stageLocked"); return `<button type="button" class="stage-card${open ? "" : " locked"}" data-stage="${index}" data-arc="${meta.arc}" aria-posinset="${index + 1}" aria-setsize="${stageConfigs.length}" aria-label="${formatStage(index)} · ${meta.title}" ${open ? "" : "disabled"}><strong>${formatStage(index)} · ${meta.title}</strong><small>${meta.arc} · ${meta.objective} · ${status}</small><span aria-hidden="true">${open ? "✦" : "◌"}</span></button>`; }).join(""); $("#stageGrid").dataset.wpStageTotal = String(stageConfigs.length); $("#stageTitle").textContent = text("stages"); $("#stageTab").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); $("#stageGrid").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", (event) => { noteInput(event); startStage(Number(button.dataset.stage), "stage_card"); })); };
-  const startStage = (index, source = "stage_card") => { setResultOpen(false); setLeaveOpen(false, false); currentStage = Math.max(0, Math.min(stageConfigs.length - 1, index)); resetState(); track("stage_start", { source, stage: currentStage + 1 }); $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = `${formatStage(currentStage)} · ${stageMeta().title}`; $("#battleStatus").textContent = stageMeta().objective; canvas.setAttribute("aria-label", text("ariaCanvas")); $("#nudgeLeft").setAttribute("aria-label", text("ariaLeft")); $("#nudgeRight").setAttribute("aria-label", text("ariaRight")); setScreen("battle"); window.dispatchEvent(new Event("weightplay:battle-open")); window.WeightPlayBattleCanvas?.sync?.(); window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0); beep(440); };
+  const startStage = (index, source = "stage_card") => { setResultOpen(false); setLeaveOpen(false, false); currentStage = Math.max(0, Math.min(stageConfigs.length - 1, index)); resetState(); track("stage_start", { source, stage: currentStage + 1 }); $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = `${formatStage(currentStage)} · ${stageMeta().title}`; $("#battleStatus").textContent = stageMeta().objective; canvas.setAttribute("aria-label", text("ariaCanvas")); $("#nudgeLeft").setAttribute("aria-label", text("ariaLeft")); $("#nudgeRight").setAttribute("aria-label", text("ariaRight")); setScreen("battle"); window.dispatchEvent(new Event("weightplay:battle-open")); window.WeightPlayBattleCanvas?.sync?.(); window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0); beep("game.start"); };
   const refreshShell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `Cloudhook Courier | WeightPlay`; $("#eyebrow").textContent = text("eyebrow"); $("#coming").textContent = text("coming"); $("#languageLabel").textContent = text("language"); $("#tagline").textContent = text("objective"); $("#objective").textContent = text("objective"); $("#guideTitle").textContent = text("guideTitle"); $("#guideBody").textContent = text("guideBody"); $("#guideControls").textContent = text("guideControls"); $("#startBtn").textContent = text("start"); $("#soundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#soundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#stageSoundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#stageSoundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#battleSoundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#battleSoundBtn").setAttribute("aria-label", soundEnabled ? text("soundOn") : text("soundOff")); $("#battleSoundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#stageBack").setAttribute("aria-label", text("backMain")); $("#battleBack").setAttribute("aria-label", text("backStages")); $("#battleBack").setAttribute("data-wp-return", "battle"); $("#restartBtn").textContent = text("restart"); $("#stageTitle").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); applyLeaveCopy(); renderStages(); if (state && document.body.dataset.screen === "battle") { $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = formatStage(currentStage); $("#battleStatus").textContent = text(state.messageKey || "ready"); updateHud(); } if (state && resultOpen) renderResult(); updateTetherLabel(); };
-  const toggleSound = () => { soundEnabled = !soundEnabled; safeSet("weightplay_sound", soundEnabled ? "on" : "off"); refreshShell(); if (soundEnabled) beep(660); };
+  const toggleSound = () => { soundEnabled = window.WeightPlayAudio.setEnabled(!soundEnabled); safeSet("weightplay_sound", soundEnabled ? "on" : "off"); refreshShell(); if (soundEnabled) beep("ui.click"); };
   const goStage = () => { if (document.body.dataset.screen === "main") track("game_start", { stage: 1, source: "main_start" }); setResultOpen(false); setLeaveOpen(false, false); renderStages(); setScreen("stage"); };
   $("#startBtn").addEventListener("click", (event) => { noteInput(event); goStage(); }); $("#stageBack").addEventListener("click", () => setScreen("main")); $("#soundBtn").addEventListener("click", toggleSound); $("#stageSoundBtn").addEventListener("click", toggleSound); $("#battleSoundBtn").addEventListener("click", toggleSound); $("#restartBtn").addEventListener("click", (event) => { noteInput(event); startStage(currentStage, "stage_card"); }); $("#retryBtn").addEventListener("click", (event) => { noteInput(event); track("result_retry", { action: "retry", source: "result" }); startStage(currentStage, "retry"); }); $("#nextBtn").addEventListener("click", (event) => { if (!$("#nextBtn").disabled) { noteInput(event); track("result_next", { action: "next", source: "result" }); startStage(currentStage + 1, "next"); } }); $("#resultStagesBtn").addEventListener("click", (event) => { noteInput(event); track("result_stages", { action: "stages", source: "result" }); goStage(); });
   document.addEventListener("click", (event) => { const control = event.target?.closest?.('#battleScreen [data-wp-return="battle"]'); if (!control || battleScreen.hidden || resultOpen) return; event.preventDefault(); event.stopImmediatePropagation(); setLeaveOpen(true); }, true);
@@ -461,7 +440,7 @@
   document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; noteInput(event); if (["ArrowLeft","ArrowRight"," ","Spacebar","r","R"].includes(event.key)) event.preventDefault(); if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") setInputAxis(-1); if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") setInputAxis(1); if (event.key === " " || event.key === "Spacebar") setTether(true); if (event.key.toLowerCase() === "r") startStage(currentStage, "stage_card"); });
   document.addEventListener("keyup", (event) => { noteInput(event); if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") { if (inputAxis < 0) setInputAxis(0); } if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") { if (inputAxis > 0) setInputAxis(0); } if (event.key === " " || event.key === "Spacebar") setTether(false); });
   document.addEventListener("visibilitychange", () => { hidden = document.hidden; lastTime = performance.now(); if (hidden && state?.attached) release(); });
-  const initialLocale = (() => { const routeLocale = document.documentElement.lang; const saved = safeGet("weightPlayLocale", "en"); return COPY[routeLocale] ? routeLocale : COPY[saved] ? saved : "en"; })(); locale = initialLocale; $("#localeSelect").innerHTML = LOCALE_ORDER.map((code) => `<option value="${code}">${code}</option>`).join(""); $("#localeSelect").value = locale; $("#localeSelect").addEventListener("change", (event) => { locale = event.target.value; safeSet("weightPlayLocale", locale); refreshShell(); }); soundEnabled = safeGet("weightplay_sound", "on") !== "off"; resetState(); refreshShell(); setScreen("main"); lastTime = performance.now(); frame = window.requestAnimationFrame(tick);
+  const initialLocale = (() => { const routeLocale = document.documentElement.lang; const saved = safeGet("weightPlayLocale", "en"); return COPY[routeLocale] ? routeLocale : COPY[saved] ? saved : "en"; })(); locale = initialLocale; $("#localeSelect").innerHTML = LOCALE_ORDER.map((code) => `<option value="${code}">${code}</option>`).join(""); $("#localeSelect").value = locale; $("#localeSelect").addEventListener("change", (event) => { locale = event.target.value; safeSet("weightPlayLocale", locale); refreshShell(); }); soundEnabled = window.WeightPlayAudio.setEnabled(safeGet("weightplay_sound", "on") !== "off"); resetState(); refreshShell(); setScreen("main"); lastTime = performance.now(); frame = window.requestAnimationFrame(tick);
   $("#stageBack").setAttribute("data-wp-return", "stage");
   $("#stageScreen").setAttribute("data-wp-standard-stage-screen", "");
   $("#stageGrid").setAttribute("data-wp-stage-rail", "");

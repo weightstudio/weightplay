@@ -2,6 +2,7 @@
 <html lang="zh-Hant"><head>
 
     <base href="/games/pawaxe/" />
+    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/pawaxe/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/pawaxe/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/pawaxe/" />
@@ -22,8 +23,8 @@
 <title>斧刃夥伴 | WeightPlay</title>
 <script src="../../src/game-layout-config.js"></script><script src="../../src/site-config.js"></script>
 <link rel="stylesheet" href="style.css?v=4"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
-<script src="../../src/sound.js" defer></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
+<script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2?wp-audio=1.0.0" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
   <meta name="description" content="一路揮斧探索森林，收集四種能力夥伴與特殊裝備，挑戰首領並持續刷寶。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -86,11 +87,11 @@
 <div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0"></progress></div><button id="claim" disabled>0%</button></div>
 <div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><img id="lootIcon" class="object-icon" alt="" width="44" height="44"><span id="lootText"></span></div></div>
 <div id="feedback" class="feedback" aria-live="polite"></div>
-<div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack"><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span id="allyName" data-i18n="ally"></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
+<div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack"><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span class="ally-heading"><img id="allyPortrait" alt="" width="18" height="18"><span id="allyName" data-i18n="ally"></span></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
 </section>
-</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=4"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=4&amp;wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="斧刃夥伴 遊戲資訊">

@@ -730,7 +730,7 @@ function accessibleName(key) {
 function syncSoundAccessibleName() {
   const toggle = document.querySelector("button[data-sound-toggle]");
   if (!toggle) return;
-  const muted = Boolean(window.WonderSound?.isMuted?.());
+  const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
   toggle.title = accessibleName("sound");
   toggle.setAttribute("aria-label", accessibleName(muted ? "soundEnable" : "soundDisable"));
   if (toggle.dataset.quizSoundLocaleOwner === "true") return;
@@ -1227,7 +1227,7 @@ function chooseAnswer(choiceId, answerId, button) {
   if (state.answered) return;
 
   if (choiceId !== answerId) {
-    window.WonderSound?.play("wrong");
+    window.WeightPlayAudio?.play("feedback.error");
     feedbackText.textContent = t("wrong");
     button.classList.add("wrong");
     button.setAttribute("aria-invalid", "true");
@@ -1251,7 +1251,7 @@ function chooseAnswer(choiceId, answerId, button) {
   choiceGrid.setAttribute("aria-busy", "true");
   choiceGrid.querySelectorAll("button").forEach((choice) => { choice.disabled = true; });
   state.score += 1;
-  window.WonderSound?.play("success");
+  window.WeightPlayAudio?.play("feedback.success");
   const answeredAnimal = animalMap.get(answerId);
   feedbackText.textContent = answeredAnimal
     ? t("animalNote", {
@@ -1296,7 +1296,7 @@ function finishStage() {
   (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
   setBattleCovered(true);
   requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
-  window.WonderSound?.play("win");
+  window.WeightPlayAudio?.play("result.win");
   window.WonderAnalytics?.track("game_complete", {
     game_id: GAME_ID,
     stage: state.stageIndex + 1,
@@ -1484,7 +1484,7 @@ window.addEventListener("wonder:locale-change", () => {
 });
 
 againBtn.addEventListener("click", () => {
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   window.WonderAnalytics?.track("game_restart", {
     game_id: GAME_ID,
     stage: state.stageIndex + 1,
@@ -1494,12 +1494,12 @@ againBtn.addEventListener("click", () => {
 });
 
 nextStageBtn.addEventListener("click", () => {
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   startStage(Math.min(state.stageIndex + 1, stages.length - 1));
 });
 
 stageSelectBtn.addEventListener("click", () => {
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   showStageSelect();
 });
 

@@ -71,7 +71,8 @@
   let windowFocused = true;
   let modalOwner = null;
   let resultClaimed = false;
-  let soundEnabled = true;
+  let soundEnabled = !window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { soundEnabled = !window.WeightPlayAudio.isMuted(); });
   let inputClass = "system";
   let audioContext = null;
 
@@ -84,8 +85,8 @@
   function noteInput(event){if(event?.pointerType)inputClass=event.pointerType;else if(event?.type?.startsWith("key"))inputClass="keyboard";else inputClass="mouse"}
   function viewportBucket(){const w=innerWidth,h=innerHeight;if(h<=430)return"short-landscape";if(w<=480)return"phone";if(w<=920)return h>=w?"tablet-portrait":"tablet-landscape";return"desktop"}
   function track(name,data={}){try{const allowedOutcome=["goal","saved","wide","conceded","late","win","loss"];const payload={game_id:GAME_ID,game_version:GAME_VERSION,interface_version:INTERFACE_VERSION,locale:lang,viewport_bucket:viewportBucket(),input_class:inputClass,match:Math.max(1,Math.min(30,(match?.stage??selectedStage)+1))};if(allowedOutcome.includes(data.outcome))payload.outcome=data.outcome;if(Number.isInteger(data.zone))payload.zone=Math.max(1,Math.min(6,data.zone+1));if(["low","good","perfect","high"].includes(data.power))payload.power=data.power;if(Number.isInteger(data.round))payload.round=Math.max(1,Math.min(8,data.round));if(Number.isInteger(data.stars))payload.stars=Math.max(0,Math.min(3,data.stars));window.WeightPlayAnalytics?.track?.(name,payload);window.WonderAnalytics?.track?.(name,payload)}catch{}}
-  function beep(frequency=440,duration=.07,type="sine"){if(!soundEnabled||window.WonderSound?.isMuted?.())return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audioContext ||= new Audio();if(audioContext.state==="suspended")audioContext.resume();const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();oscillator.type=type;oscillator.frequency.value=frequency;gain.gain.setValueAtTime(.045,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);oscillator.connect(gain).connect(audioContext.destination);oscillator.start();oscillator.stop(audioContext.currentTime+duration)}catch{}}
-  function setSound(enabled){soundEnabled=Boolean(enabled);window.WonderSound?.setMuted?.(!soundEnabled);updateSoundButtons();beep(620)}
+  function beep(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
+  function setSound(enabled){soundEnabled=window.WeightPlayAudio.setEnabled(Boolean(enabled));window.WeightPlayAudio?.setMuted?.(!soundEnabled);updateSoundButtons();beep("ui.click")}
   function updateSoundButtons(){const label=t(soundEnabled?"soundOn":"soundOff");["pauseSoundBtn"].forEach(id=>{const node=$(id);if(!node)return;node.textContent=label;node.setAttribute("aria-pressed",String(soundEnabled))})}
 
   function setScreen(screen){
@@ -114,7 +115,7 @@
   function seeded(...values){let x=values.reduce((sum,n,i)=>sum+((Number(n)||0)+17)*(i+11)*2654435761,2166136261)>>>0;x^=x<<13;x^=x>>>17;x^=x<<5;return(x>>>0)/4294967295}
   function freshMatch(stage){return{stage,level:LEVELS[stage],phase:"shoot-ready",round:0,player:0,rival:0,playerMarks:[],rivalMarks:[],power:.5,powerDirection:1,holding:false,heldZone:null,lastShot:null,repeats:0,perfectShots:0,saves:0,ended:false,result:null,mutable:false,defendTarget:null,defendChoice:null,startedAt:performance.now(),simTime:0}}
   function startMatch(index,source="stage"){
-    cancelTimer();closeAllBattleModals(false);selectedStage=Math.max(0,Math.min(29,index));match=freshMatch(selectedStage);resultClaimed=false;setScreen("battle");renderBattleShell();resetActors();setStatus("shootHint");track("match_start",{round:1});beep(480,.08);requestAnimationFrame(()=>$("battleBackBtn").focus({preventScroll:true}));scheduleFrame();
+    cancelTimer();closeAllBattleModals(false);selectedStage=Math.max(0,Math.min(29,index));match=freshMatch(selectedStage);resultClaimed=false;setScreen("battle");renderBattleShell();resetActors();setStatus("shootHint");track("match_start",{round:1});beep("game.start",.08);requestAnimationFrame(()=>$("battleBackBtn").focus({preventScroll:true}));scheduleFrame();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -137,7 +138,7 @@
   function commitShot(zone){
     if(match.phase!=="shoot-ready")return;const power=match.power,bucket=powerBucket(power);match.holding=false;match.heldZone=null;match.phase="shot-flight";refreshZoneAvailability();match.mutable=true;
     const repeat=match.lastShot===zone?match.repeats+1:0;match.repeats=repeat;match.lastShot=zone;const repeatedRead=seeded(match.stage,match.round,zone,41)<match.level.keeperRead*Math.min(1,repeat*.7);const keeperZone=repeatedRead?zone:Math.floor(seeded(match.stage,match.round,zone,71)*6);const accuracy=1-Math.abs(power-.82)*1.75;const wide=power<.28||power>.99||accuracy<.32;const same=keeperZone===zone;const corner=zone===0||zone===2;const beatsKeeper=same&&corner&&bucket==="perfect"&&seeded(match.stage,match.round,zone,93)>.38;const goal=!wide&&(!same||beatsKeeper);if(bucket==="perfect")match.perfectShots++;
-    track("shot_committed",{zone,power:bucket,round:match.round+1});animateBall(zone);animateKeeper(keeperZone);$("strikerArt").classList.add("kick");schedule(()=>{if(goal){match.player++;match.playerMarks[match.round]="goal";setStatus("goal");beep(930,.14)}else if(wide){match.playerMarks[match.round]="miss";setStatus("wide");beep(170,.14)}else{match.playerMarks[match.round]="miss";setStatus("saved");beep(240,.12)}track("shot_result",{zone,power:bucket,round:match.round+1,outcome:goal?"goal":wide?"wide":"saved"});renderScores();schedule(prepareDefence,720)},560);
+    track("shot_committed",{zone,power:bucket,round:match.round+1});animateBall(zone);animateKeeper(keeperZone);$("strikerArt").classList.add("kick");schedule(()=>{if(goal){match.player++;match.playerMarks[match.round]="goal";setStatus("goal");beep("sport.goal",.14)}else if(wide){match.playerMarks[match.round]="miss";setStatus("wide");beep("feedback.error",.14)}else{match.playerMarks[match.round]="miss";setStatus("saved");beep("sport.bounce",.12)}track("shot_result",{zone,power:bucket,round:match.round+1,outcome:goal?"goal":wide?"wide":"saved"});renderScores();schedule(prepareDefence,720)},560);
   }
   function prepareDefence(){resetActors();match.phase="cue-wait";match.defendChoice=null;$("turnLabel").textContent=t("defend");setStatus("defendHint");refreshZoneAvailability();const target=Math.floor(seeded(match.stage,match.round,match.rival,131)*6);match.defendTarget=target;if(match.level.feint){let fake=(target+1+Math.floor(seeded(match.stage,match.round,151)*5))%6;if(fake===target)fake=(fake+1)%6;showCue(fake,true);setStatus("fakeCue");schedule(()=>{clearCue();schedule(()=>showRealCue(target),180)},420)}else schedule(()=>showRealCue(target),330)}
   function showCue(zone,fake){const point=ZONES[zone],cue=$("cue");cue.style.left=`${point.x}%`;cue.style.top=`${point.y}%`;cue.className=`cue ${fake?"fake":"real"}`;const button=$("goalGrid").querySelector(`[data-zone="${zone}"]`);if(!button)return;button.classList.add(fake?"cue-fake":"cue-real");if(!fake){button.setAttribute("aria-current","true");button.setAttribute("aria-label",t("defendTarget",{zone:zoneLabel(zone)}))}}
@@ -146,7 +147,7 @@
   function chooseDefence(index,event){noteInput(event);if(match?.phase!=="defend-ready"||paused)return;event.preventDefault();resolveDefence(index)}
   function resolveDefence(choice){
     if(match.phase!=="defend-ready")return;cancelTimer();clearCue();match.phase="defence-flight";match.defendChoice=choice;refreshZoneAvailability();const target=match.defendTarget,late=choice===null,saveMade=!late&&choice===target;animateBall(target);if(!late)animateKeeper(choice);if(saveMade)match.saves++;if(saveMade)match.rivalMarks[match.round]="save";else{match.rivalMarks[match.round]="concede";match.rival++}
-    schedule(()=>{setStatus(saveMade?"saved":late?"tooLate":"conceded");beep(saveMade?720:190,.13);track("defence_result",{zone:choice??undefined,round:match.round+1,outcome:saveMade?"saved":late?"late":"conceded"});renderScores();schedule(finishPair,720)},520)
+    schedule(()=>{setStatus(saveMade?"saved":late?"tooLate":"conceded");beep(saveMade ? "feedback.success" : "feedback.error",.13);track("defence_result",{zone:choice??undefined,round:match.round+1,outcome:saveMade?"saved":late?"late":"conceded"});renderScores();schedule(finishPair,720)},520)
   }
   function finishPair(){match.round++;const regulationDone=match.round>=5,decided=regulationDone&&match.player!==match.rival,suddenDone=match.round>=8;if(decided||suddenDone){const win=decided?match.player>match.rival:(match.perfectShots+match.saves)>=3;finishMatch(win);return}resetActors();match.phase="shoot-ready";$("battleRound").textContent=`${t("match",{n:match.stage+1})} · ${t("round",{n:match.round+1})}`;$("turnLabel").textContent=t("shoot");setStatus(match.round>=5?"sudden":"shootHint");refreshZoneAvailability()}
   function finishMatch(win){

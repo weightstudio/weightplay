@@ -28,8 +28,9 @@
   const artStyle=document.createElement('link'); artStyle.rel='stylesheet'; artStyle.href=new URL('art.css?v=20260921-pong-block-scene-v1',base); document.head.append(artStyle);
   let locale=Object.keys(ROUTES).find(key=>location.pathname.startsWith('/'+ROUTES[key]+'/'))||document.documentElement.lang;
   if(!COPY[locale]) locale='en';
-  let t=COPY[locale], difficulty=0, sound=true, wins=[0,0,0];
-  try { const save=JSON.parse(localStorage.getItem('wp-pong-realtime-v1')||'{}'); difficulty=[0,1,2].includes(save.difficulty)?save.difficulty:0; sound=save.sound!==false; wins=[0,1,2].map(i=>Number.isInteger(save.wins?.[i])?Math.max(0,Math.min(1000000,save.wins[i])):0); } catch {}
+  let t=COPY[locale], difficulty=0, sound=!window.WeightPlayAudio.isMuted(), wins=[0,0,0];
+  window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
+  try { const save=JSON.parse(localStorage.getItem('wp-pong-realtime-v1')||'{}'); difficulty=[0,1,2].includes(save.difficulty)?save.difficulty:0; sound=window.WeightPlayAudio.setEnabled(save.sound!==false); wins=[0,1,2].map(i=>Number.isInteger(save.wins?.[i])?Math.max(0,Math.min(1000000,save.wins[i])):0); } catch {}
   const persist=()=>{try{localStorage.setItem('wp-pong-realtime-v1',JSON.stringify({difficulty,wins,sound}));}catch{}};
   let match=new Match(difficulty), screen='main', frame=0, previous=0, audio=null, lastTone=0;
   const held=new Set();
@@ -72,12 +73,8 @@
     for(const id of ['helpCopy','publicGuide']){ if(id==='publicGuide' && initialGuide) continue; $(id).replaceChildren();for(const text of [t.how,t.tip,t.save]){const p=document.createElement('p');p.textContent=text;$(id).append(p);} }
     $('publicGuide').setAttribute('aria-label',t.guide);hud();draw();
   }
-  function unlockSound(){if(!sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){audio ||= new AC();audio.resume().catch(()=>{});}}catch{}}
-  function beep(high=false){
-    if(!sound||audio?.state!=='running'||audio.currentTime-lastTone<.065)return;lastTone=audio.currentTime;
-    const oscillator=audio.createOscillator(),gain=audio.createGain();oscillator.frequency.value=high?690:360;
-    gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.07);oscillator.connect(gain).connect(audio.destination);oscillator.start();oscillator.stop(audio.currentTime+.08);oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};
-  }
+  function unlockSound() { return window.WeightPlayAudio?.unlock(); }
+  function beep(cue = "sport.bounce") { return window.WeightPlayAudio?.play(cue); }
   function stop(){cancelAnimationFrame(frame);frame=0;previous=0;held.clear();}
   function pause(){match.pause();stop();hud();draw();
     __wpNotifyMeasurement();
@@ -106,7 +103,7 @@
   function tick(now){
     frame=0;if(screen!=='battle'||match.phase!=='playing')return;const dt=previous?Math.min((now-previous)/1000,.035):0;previous=now;
     const direction=(held.has('right')?1:0)-(held.has('left')?1:0);if(direction)match.move(match.aim+direction*760*dt);
-    const events=match.step(dt);if(events.includes('hit'))beep();if(events.includes('point')){beep(true);hud();}draw();if(match.phase==='finished')finish();else if(match.phase==='playing')frame=requestAnimationFrame(tick);
+    const events=match.step(dt);if(events.includes('hit'))beep("sport.bounce");if(events.includes('point')){beep("sport.bounce");hud();}draw();if(match.phase==='finished')finish();else if(match.phase==='playing')frame=requestAnimationFrame(tick);
   }
   function launch(){if(screen!=='battle'||$('settings').open||$('help').open||match.phase==='finished')return;unlockSound();if(match.phase==='playing'){pause();return;}if(match.phase==='paused')match.resume();else match.serve();previous=0;hud();draw();if(!frame)frame=requestAnimationFrame(tick);
     if (!__wpMeasurement.started || __wpMeasurement.ended) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = Boolean(__wpMeasurement.restart && !__wpMeasurement.started); __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
@@ -128,7 +125,7 @@
   $('startBtn').onclick=start;$('retryBtn').onclick=function (...args) { return __wpReplayStart(() => start.apply(this, args)); };$('homeBtn').onclick=home;$('battleBackBtn').onclick=home;$('serveBtn').onclick=launch;
   const openSettings=()=>{pause();(__wpNotifyMeasurement(), $('settings').showModal());};$('settingsBtn').onclick=openSettings;$('battleSettingsBtn').onclick=openSettings;$('closeSettings').onclick=()=>$('settings').close();
   const openHelp=()=>{pause();if($('settings').open)$('settings').close();(__wpNotifyMeasurement(), $('help').showModal());};$('guideBtn').onclick=openHelp;$('helpInSettings').onclick=openHelp;$('closeHelp').onclick=()=>$('help').close();
-  $('soundBtn').onclick=()=>{sound=!sound;persist();if(sound)unlockSound();else audio?.suspend().catch(()=>{});localize();};
+  $('soundBtn').onclick=()=>{sound=window.WeightPlayAudio.setEnabled(!sound);persist();if(sound)unlockSound();else audio?.suspend().catch(()=>{});localize();};
   $('difficulty').onchange=()=>{if(screen!=='main')return;difficulty=Number($('difficulty').value);persist();localize();};$('localeSelect').onchange=()=>{locale=$('localeSelect').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();};
   for(const [id,key] of [['leftBtn','left'],['rightBtn','right']]){$(id).onpointerdown=e=>{e.preventDefault();$(id).setPointerCapture(e.pointerId);held.add(key);};for(const event of ['pointerup','pointercancel','lostpointercapture'])$(id).addEventListener(event,()=>held.delete(key));}
   const aim=e=>{if(screen!=='battle'||$('settings').open||$('help').open)return;const r=canvas.getBoundingClientRect();match.move((e.clientX-r.left)/r.width*WIDTH);};canvas.onpointerdown=e=>{canvas.setPointerCapture(e.pointerId);aim(e);};canvas.onpointermove=e=>{if(e.pointerType==='mouse'||canvas.hasPointerCapture(e.pointerId))aim(e);};

@@ -435,8 +435,8 @@
   function save(){return persistState(state)}
   function wallet(){return window.WeightPlayWallet?.read?.()||{diamonds:0}}
   function spendDiamonds(cost){return Boolean(window.WeightPlayWallet?.spendDiamonds?.(cost))}
-  function playSound(name){window.WonderSound?.play?.(name)}
-  function syncSoundToggle(){const button=$("#soundToggle");if(!button)return;const muted=Boolean(window.WonderSound?.isMuted?.());button.setAttribute("aria-pressed",String(muted));window.dispatchEvent(new Event("wonder:locale-change"))}
+  function playSound(name){window.WeightPlayAudio?.play?.(name)}
+  function syncSoundToggle(){const button=$("#soundToggle");if(!button)return;const muted=Boolean(window.WeightPlayAudio?.isMuted?.());button.setAttribute("aria-pressed",String(muted));window.dispatchEvent(new Event("wonder:locale-change"))}
   function createOffers(){return Object.keys(gadgets).map(id=>({id,level:1+Math.floor(Math.random()*3)}))}
   function selectedOffer(){return gadgetOffers.find(offer=>offer.id===gadget)||gadgetOffers[0]}
   let economyFeedbackTimer=0,pendingEconomy="",pendingEconomyTimer=0,pendingEconomyDeadline=0,pendingEconomyRemaining=0,windowFocused=document.hasFocus();
@@ -478,14 +478,14 @@
     if(pendingEconomy!=="reroll"){armEconomy("reroll",3,"rerollDecision");return}
     clearPendingEconomy({render:false});
     if(!spendDiamonds(3)){renderEconomy();economyMessage(t("notEnough"));return}
-    gadgetOffers=createOffers();gadget=gadgetOffers[0].id;economyMessage(t("rerolled"));renderGadgets();renderEconomy();updateGadget();playSound("upgrade");
+    gadgetOffers=createOffers();gadget=gadgetOffers[0].id;economyMessage(t("rerolled"));renderGadgets();renderEconomy();updateGadget();playSound("reward.upgrade");
   }
   function buyInsurance(){
     if(insuranceActive){clearPendingEconomy();economyMessage(t("alreadyInsured"));return}
     if(pendingEconomy!=="insurance"){armEconomy("insurance",5,"insuranceDecision");return}
     clearPendingEconomy({render:false});
     if(!spendDiamonds(5)){renderEconomy();economyMessage(t("notEnough"));return}
-    insuranceActive=true;state.insuranceReady=true;save();economyMessage(t("insuranceReady"));renderEconomy();playSound("upgrade");
+    insuranceActive=true;state.insuranceReady=true;save();economyMessage(t("insuranceReady"));renderEconomy();playSound("reward.upgrade");
   }
   function t(key,vars={}){const owned=copy[locale]?.[key];let value=owned||copy.en[key]||key;value=owned?String(value):sharedText(value);Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
   function applyOwnedLocaleSurface(){const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n],[data-game-i18n]").forEach(n=>{const key=n.dataset.gameI18n||n.dataset.i18n;n.dataset.gameI18n=key;n.dataset.runtimeLocalize="off";delete n.dataset.i18n;n.textContent=t(key)});const ownedNodes=[$("#localeSelect"),$(".main-poster"),$(".planner > img"),nodes.rail,nodes.fia,$("#stageBackBtn"),$("#battleBackBtn")].filter(Boolean);ownedNodes.forEach(node=>node.dataset.runtimeLocalize="off");$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"))}
@@ -608,7 +608,7 @@
     (m.safeZones||[]).forEach(([x,y,size])=>{const zone=document.createElement("span");zone.className="safe-zone";zone.style.left=`${x}%`;zone.style.top=`${y}%`;zone.style.setProperty("--zone-size",`${size*2}%`);zone.setAttribute("aria-hidden","true");nodes.patrolLayer.append(zone)});
     patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
     if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=campaignText(m.guardian.name);patrols.push(guardian)}
-    nodes.feedback.textContent=t("holdRoute");updateAlertMeter();$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();playSound("start");startBattleLoop();
+    nodes.feedback.textContent=t("holdRoute");updateAlertMeter();$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();playSound("game.start");startBattleLoop();
     requestAnimationFrame(()=>nodes.field.focus({preventScroll:true}));
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -671,20 +671,20 @@
   function routeTo(clientX,clientY,commit=false){const r=nodes.field.getBoundingClientRect();const x=Math.max(6,Math.min(94,(clientX-r.left)/r.width*100));const y=Math.max(8,Math.min(92,(clientY-r.top)/r.height*100));const start=point(nodes.fia);const dx=(x-start[0])/100*r.width,dy=(y-start[1])/100*r.height;const len=Math.hypot(dx,dy);nodes.route.hidden=false;nodes.route.style.left=`${start[0]}%`;nodes.route.style.top=`${start[1]}%`;nodes.route.style.width=`${len}px`;nodes.route.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;const exposed=patrols.some(p=>distance([x,y],point(p.img))<22);nodes.route.classList.toggle("route-exposed",exposed);nodes.feedback.textContent=t(commit?"holdRoute":exposed?"routeExposed":"move");preview=[x,y];if(commit){track("input_action",{mission:selectedMission+1,action:"route_commit",input_type:"pointer",alert_level:Math.round(alert)});if(!firstMoveTracked){firstMoveTracked=true;track("first_move",{mission:selectedMission+1,input_type:"pointer"})}const level=selectedOffer().level,dashTime=gadget==="dash"?Math.max(180,320-level*45):650;nodes.route.hidden=true;nodes.fia.style.transitionDuration=`${dashTime}ms`;place(nodes.fia,preview);scheduleArrival(dashTime+20)}}
   function resolveArrival(){
     const p=point(nodes.fia),m=activeMission();
-    if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;track("treasure_collected",{mission:selectedMission+1});showFx("pickup");nodes.feedback.textContent=t("treasureFound");playSound("coin")}
+    if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;track("treasure_collected",{mission:selectedMission+1});showFx("pickup");nodes.feedback.textContent=t("treasureFound");playSound("reward.coin")}
     if(!objectFound&&distance(p,point(nodes.objective))<12){
       if(m.order==="treasure-first"&&!treasureFound){nodes.feedback.textContent=t("firstSeal");showFx("warning");return}
       objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;track("objective_pickup",{mission:selectedMission+1});if(m.phaseExit)place(nodes.exit,m.phaseExit);
       if(selectedMission<2){pickupCoverUntil=performance.now()+(selectedMission===0?1800:1000);alert=Math.max(0,alert-(selectedMission===0?18:10));updateAlertMeter()}
       if(m.guardian?.behavior==="eclipse"){guardianPhase=2;patrols.forEach(p=>p.direction*=-1);alert=Math.max(alert,28);updateAlertMeter()}
-      $("#objectiveLabel").textContent=t("extraction");updateExtractionCue();showFx("pickup");nodes.feedback.textContent=t(selectedMission<2?"pickupCover":"found");playSound("success");
+      $("#objectiveLabel").textContent=t("extraction");updateExtractionCue();showFx("pickup");nodes.feedback.textContent=t(selectedMission<2?"pickupCover":"found");playSound("feedback.success");
     }
     if(objectFound&&distance(p,point(nodes.exit))<13)win();
   }
   function showFx(type){nodes.fx.src=`../../assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
-  function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;updateAlertMeter();smokeUntil=performance.now()+(800+level*500);showFx("shadow")}playSound("shoot")}
-  function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();track("alert",{mission:selectedMission+1,outcome:"capture",alert_level:100});showFx("warning");nodes.fia.classList.add("caught");playSound("wrong");openResult(false)}
-  function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();track("extraction",{mission:selectedMission+1,treasure_collected:treasureFound,medals,reward});playSound("win");openResult(true,medals,reward)}
+  function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;updateAlertMeter();smokeUntil=performance.now()+(800+level*500);showFx("shadow")}playSound("magic.cast")}
+  function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();track("alert",{mission:selectedMission+1,outcome:"capture",alert_level:100});showFx("warning");nodes.fia.classList.add("caught");playSound("feedback.error");openResult(false)}
+  function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();track("extraction",{mission:selectedMission+1,treasure_collected:treasureFound,medals,reward});playSound("result.win");openResult(true,medals,reward)}
   function openResult(ok,medals=0,reward=0){
     $("#resultTitle").textContent=t(ok?"victory":"captured");
     $("#resultText").textContent=ok
@@ -740,7 +740,7 @@
     const soundToggle=$("#soundToggle");
     if(soundToggle){
       soundToggle.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
-      soundToggle.addEventListener("click",()=>{window.WonderSound?.unlock?.();window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());syncSoundToggle()});
+      soundToggle.addEventListener("click",()=>{window.WeightPlayAudio?.unlock?.();window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio?.isMuted?.());syncSoundToggle()});
     }
     const handleLocaleSelect=async event=>{if(event.target?.id!=="localeSelect")return;const requested=normalizeLocale(event.target.value);if(requested===locale)return;try{await ensureRuntimeCatalog(requested)}catch(error){console.error(error);event.target.value=locale;return}locale=requested;window.WonderI18n?.setLocale?.(requested);writeOptionalStorage(localeKey,requested);localize()};
     document.addEventListener("input",handleLocaleSelect,true);

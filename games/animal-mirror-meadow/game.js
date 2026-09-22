@@ -8,7 +8,8 @@ const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fa
 let storedLocale='en';try{storedLocale=localStorage.getItem('weightPlayLocale')||'en';}catch{}
 let locale=routes[location.pathname.split('/')[1]]||new URLSearchParams(location.search).get('locale')||storedLocale;
 if(!COPY[locale])locale='en';
-let save=normalizeSave(read(SAVE,{})),sound=read('mirror-meadow-sound',true)!==false;
+let save=normalizeSave(read(SAVE,{})),sound=!window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
 let scene='main',index=0,angles=[],history=[],moves=0,result=null,view=null,railInstalled=false,modal=null,focusReturn=null,audio=null;
 let lastStats={geometries:0,textures:0,renderers:0};
 const t=k=>COPY[locale][k];
@@ -62,10 +63,7 @@ function copy(){
   $('soundButton').setAttribute('aria-label',t('sound'));$('soundButton').setAttribute('aria-checked',String(sound));$('soundButton').textContent=sound?'●':'○';
   if(scene==='stage')showStages();
 }
-function chirp(won=false){
-  if(!sound)return;
-  try{audio ||= new (window.AudioContext||window.webkitAudioContext)();audio.resume().catch(()=>{});const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.setValueAtTime(won?660:420,audio.currentTime);g.gain.setValueAtTime(.045,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.17);o.start();o.stop(audio.currentTime+.18);o.onended=()=>{o.disconnect();g.disconnect();};}catch{}
-}
+function chirp(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 function startLevel(i){
   if(!Number.isInteger(i)||i<0||i>=save.unlocked||i>=LEVELS.length)return;
   releaseView();index=i;angles=LEVELS[i].mirrors.map(p=>p.initial);moves=0;history=[];
@@ -100,7 +98,7 @@ function update(){
   $('pieceLabels').querySelectorAll('[data-target]').forEach(el=>{const lit=result.lit.includes(+el.dataset.target);el.classList.toggle('lit',lit);el.textContent=`${lit?'✓':'◇'} ${+el.dataset.target+1}`;});
   $('pieceLabels').querySelectorAll('[data-mirror]').forEach(el=>{const i=+el.dataset.mirror;el.textContent=`${i+1}${angles[i]?'＼':'／'}`;el.setAttribute('aria-label',`${LEVELS[index].prisms.includes(i)?t('splitter'):t('rotate')} ${i+1} ${angles[i]?'＼':'／'}`);el.classList.remove('hinted');});
 }
-function turn(i){if(scene!=='battle'||modal||!view)return;history.push([...angles]);if(history.length>256)history.shift();angles[i]^=1;moves++;update();chirp(result.won);}
+function turn(i){if(scene!=='battle'||modal||!view)return;history.push([...angles]);if(history.length>256)history.shift();angles[i]^=1;moves++;update();chirp(result.won ? "result.win" : "board.rotate");}
 function closeDialog(){if(!modal)return;$('overlay').hidden=true;$('battleLive').inert=false;modal=null;focusReturn?.focus({preventScroll:true});focusReturn=null;}
 function dialog(kind,title,body,actions){
   focusReturn=document.activeElement;modal=kind;$('dialogTitle').textContent=title;$('dialogCopy').textContent=body;$('dialogActions').replaceChildren();
@@ -126,7 +124,7 @@ $('hintButton').onclick=()=>{if(modal)return;const solution=solve(LEVELS[index],
 $('resetButton').onclick=()=>{if(modal)return;history=[];angles=LEVELS[index].mirrors.map(m=>m.initial);moves=0;update();};$('finishButton').onclick=settle;
 Object.entries(LOCALE_NAMES).forEach(([value,text])=>{const option=new Option(text,value);$('locale').add(option);});
 $('locale').onchange=()=>{locale=$('locale').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}copy();};
-$('soundButton').onclick=()=>{sound=!sound;try{localStorage.setItem('mirror-meadow-sound',JSON.stringify(sound));}catch{}copy();if(!sound){audio?.close().catch(()=>{});audio=null;}};
+$('soundButton').onclick=()=>{sound=window.WeightPlayAudio.setEnabled(!sound);try{localStorage.setItem('mirror-meadow-sound',JSON.stringify(sound));}catch{}copy();if(!sound){audio?.close().catch(()=>{});audio=null;}};
 document.querySelectorAll('[data-settings]').forEach(b=>b.onclick=()=>{const was=b.getAttribute('aria-expanded')==='true';closeSettings();if(was)return;const r=b.getBoundingClientRect();$('settingsPanel').style.left=`${Math.max(8,Math.min(innerWidth-288,r.right-280))}px`;$('settingsPanel').style.top=`${r.bottom+8}px`;$('languageRow').hidden=scene!=='main';$('settingsPanel').hidden=false;b.setAttribute('aria-expanded','true');});
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('.settings-panel,[data-settings]'))closeSettings();});
 document.addEventListener('keydown',e=>{

@@ -37,18 +37,18 @@
       const labels=copy[locale]||copy.en;
       button.setAttribute('aria-label',labels[0]);panel.setAttribute('aria-label',labels[0]);
       languageText.textContent=labels[1];select.setAttribute('aria-label',labels[1]);select.value=localeSelect?.value||locale;
-      const muted=Boolean(window.WonderSound?.isMuted?.());
+      const muted=Boolean(window.WeightPlayAudio?.isMuted?.());
       soundText.textContent=labels[2];soundState.textContent=muted?labels[4]:labels[3];sound.setAttribute('aria-label',`${labels[2]}：${muted?labels[4]:labels[3]}`);sound.setAttribute('aria-checked',String(!muted));
-      sound.disabled=!window.WonderSound?.setMuted;
+      sound.disabled=!window.WeightPlayAudio?.setMuted;
     };
     listen(button,'click',()=>{refresh();const open=panel.hidden;if(open)onOpen();panel.hidden=!open;button.setAttribute('aria-expanded',String(open));notifyInteraction();});
     listen(select,'change',()=>{localeSelect.value=select.value;localeSelect.dispatchEvent(new Event('change',{bubbles:true}));refresh();});
-    listen(sound,'click',()=>{window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());refresh();});
+    listen(sound,'click',()=>{window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio?.isMuted?.());refresh();});
     // Inside interactions belong to this component, not legacy game dismissal handlers.
     for(const event of ['pointerdown','click'])listen(panel,event,e=>e.stopPropagation());
     listen(document,'pointerdown',e=>{if(!utility.contains(e.target))close();});
     listen(document,'keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();close(true);}});
-    listen(window,'wonder:locale-change',refresh);listen(window,'wonder:audio-volume-change',refresh);
+    listen(window,'wonder:locale-change',refresh);listen(window,'weightplay:audio-volume-change',refresh);
     refresh();
     return {utility,button,panel,select,sound,close,refresh,destroy(){const wasOpen=!panel.hidden;abort.abort();utility.remove();if(wasOpen)notifyInteraction();}};
   }
@@ -169,7 +169,7 @@
       });
     });
     listen(window, 'wonder:locale-change', () => queueMicrotask(refresh));
-    listen(window, 'wonder:audio-volume-change', refresh);
+    listen(window, 'weightplay:audio-volume-change', refresh);
     const api = Object.freeze({
       activate(name, { covered = false } = {}) {
         if (!entries[name]) throw new Error(`FRAME_UNKNOWN_SCENE:${name}`);
@@ -735,12 +735,12 @@
     host.append(button, popover);
 
     const syncCombinedSound = () => {
-      const enabled = !Boolean(window.WonderSound?.isMuted?.());
+      const enabled = !Boolean(window.WeightPlayAudio?.isMuted?.());
       combinedSoundToggle.setAttribute("aria-checked", String(enabled));
       combinedSoundToggle.dataset.state = enabled ? "on" : "off";
     };
     combinedSoundToggle.addEventListener("click", () => {
-      window.WonderSound?.setMuted?.(!Boolean(window.WonderSound?.isMuted?.()));
+      window.WeightPlayAudio?.setMuted?.(!Boolean(window.WeightPlayAudio?.isMuted?.()));
       syncCombinedSound();
     });
     combinedSoundToggle.addEventListener("keydown", (event) => {
@@ -751,10 +751,10 @@
       // click from toggling it twice.
       event.preventDefault();
       event.stopPropagation();
-      window.WonderSound?.setMuted?.(!Boolean(window.WonderSound?.isMuted?.()));
+      window.WeightPlayAudio?.setMuted?.(!Boolean(window.WeightPlayAudio?.isMuted?.()));
       syncCombinedSound();
     });
-    window.addEventListener("wonder:audio-volume-change", syncCombinedSound);
+    window.addEventListener("weightplay:audio-volume-change", syncCombinedSound);
 
     button.addEventListener("click", () => setOpen(popover.hidden));
     document.addEventListener("pointerdown", (event) => {

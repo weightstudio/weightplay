@@ -65,12 +65,12 @@
     hi: { reputation:'प्रतिष्ठा', coins:'स्काई कॉइन', blueprintStamps:'ब्लूप्रिंट स्टैम्प', medals:'पदक', safe:'सुरक्षित मार्ग', errors:'त्रुटियाँ', protected:'अनुबंध बोनस सुरक्षित', retry:'मुफ्त पुनः प्रयास', total:'कुल', shiftUnlocked:'शिफ्ट {n} अनलॉक', allShiftsComplete:'सभी शिफ्ट पूरी' },
     ar: { reputation:'السمعة', coins:'عملات السماء', blueprintStamps:'طوابع المخطط', medals:'الأوسمة', safe:'توجيه آمن', errors:'الأخطاء', protected:'تمت حماية مكافأة العقد', retry:'إعادة المحاولة مجانية', total:'المجموع', shiftUnlocked:'تم فتح المناوبة {n}', allShiftsComplete:'اكتملت كل المناوبات' },
   };
-  const playSound = (cue) => window.WonderSound?.play?.(cue);
+  const playSound = (cue) => window.WeightPlayAudio?.play?.(cue);
   function syncSoundToggle() {
     const toggle = $('soundToggle');
     if (!toggle) return;
     const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
-    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
     const actions = soundActionLabels[activeLocale] || soundActionLabels.en;
     const sourceAction = muted ? 'Turn sound on' : 'Mute sound';
     const action = actions[muted ? 1 : 0];
@@ -840,7 +840,7 @@
     state = {shift, config, done:0, errors:0, goal:config.goal, flightIndex:0, matched:0, selected:false, routePassed:0, contract:Boolean(state.contract)};
     setBattleHelp(false);
     show('battleShell');
-    playSound('click');
+    playSound("ui.click");
     nextFlight();
     renderHud();
     focusCurrentBattleAction();
@@ -876,7 +876,7 @@
     const insuredRun = insuranceActive;
     setBattleHelp(false);
     show('result');
-    if (win) playSound('win');
+    if (win) playSound("result.win");
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
     const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
@@ -1004,10 +1004,10 @@
         result(true);
         return;
       }
-      playSound('success');
+      playSound("result.win");
       nextFlight();
     } else {
-      playSound('wrong');
+      playSound("result.lose");
       state.errors += 1;
       state.lastError = state.routeViolation==='barrier'?t('routeStorm'):state.routeViolation==='self'?t('routeSelf'):state.routeViolation==='beacon'?t('routeBeacon'):t('wrongDock');
       state.routeViolation='';
@@ -1141,11 +1141,11 @@
     if (event.key === 'Escape') { event.preventDefault(); setBattleHelp(false); $('battleHelp').focus({preventScroll:true}); }
   });
   $('soundToggle').onclick = () => {
-    window.WonderSound?.unlock?.();
-    const nextMuted = !Boolean(window.WonderSound?.isMuted?.());
-    window.WonderSound?.setMuted?.(nextMuted);
+    window.WeightPlayAudio?.unlock?.();
+    const nextMuted = !Boolean(window.WeightPlayAudio?.isMuted?.());
+    window.WeightPlayAudio?.setMuted?.(nextMuted);
     syncSoundToggle();
-    if (!nextMuted) playSound('click');
+    if (!nextMuted) playSound("ui.click");
   };
   $('soundToggle').addEventListener('keydown', (event) => {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();

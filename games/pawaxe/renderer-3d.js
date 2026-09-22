@@ -192,13 +192,14 @@ export class PawRenderer {
       if(e.type==='hit'||e.type==='break')this.impact(e.critical||e.heavy||e.type==='break');
       if(g&&e.critical&&this.effects.length<=16){
         for(let i=0;i<8;i++){
-          const angle=i*Math.PI/4,m=this.box(this.s,.045,.22,.035,0xffd15b,g.position.x+Math.cos(angle)*.18,1.35+Math.sin(angle)*.18,-2.15,true);m.rotation.z=angle-Math.PI/2;
+          const angle=i*Math.PI/4,m=this.box(this.s,.045,.22,.035,0xffd15b,g.position.x+Math.cos(angle)*.18,1.35+Math.sin(angle)*.18,g.userData.baseZ+.55,true);m.rotation.z=angle-Math.PI/2;
           this.effects.push({m,life:.25,vx:Math.cos(angle)*2.6,vy:Math.sin(angle)*2.6,burst:true});
         }
       }
       if(g&&this.effects.length<24){
         for(let i=0;i<4;i++){
-          const m=this.box(this.s,.07,.07,.07,e.shield?0x7cf2e0:0xe3c58a,g.position.x,1.35,-2.25,true);
+          const color=e.source==='lightning'||e.source==='frost'?0x8ee0e8:e.source==='flame'?0xef9f48:e.shield?0x7cf2e0:0xe3c58a;
+          const m=this.box(this.s,.07,.07,.07,color,g.position.x,1.35,g.userData.baseZ+.45,true);
           this.effects.push({m,life:.35,vx:Math.sin(i*2+this.clock)*2,vy:1+i*.3});
         }
       }
@@ -226,6 +227,7 @@ export class PawRenderer {
     this.axe.position.set(Math.min(.80,halfW*.78),-.53,-2);
     this.axeRest=this.axe.position.clone();
     this.hand.position.set(-Math.min(.7,halfW*.68),-.7,-2);
+    this.hand.scale.setScalar(Math.min(.75,aspect*.95));
   }
   render(dt,combat){
     this.clock+=dt;

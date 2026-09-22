@@ -12,7 +12,8 @@
   const markerFiles = Object.fromEntries(Object.keys(symbols).map((token) => [token, `assets/animal-pattern-patch-marker-${token}.png`]));
   markerFiles.mismatch = "assets/animal-pattern-patch-marker-mismatch.png";
   markerFiles.completion = "assets/animal-pattern-patch-marker-completion.png";
-  const state = { locale: "en", sound: true, roundIndex: 0, checks: 0, solved: 0 };
+  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), roundIndex: 0, checks: 0, solved: 0 };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeStorage = {
     get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } },
@@ -52,10 +53,7 @@
     select.value = state.locale;
     select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-pattern-locale", state.locale); applyLocale(); });
   }
-  function playTone(kind) {
-    if (!state.sound || !(window.AudioContext || window.webkitAudioContext)) return;
-    try { const AudioCtor = window.AudioContext || window.webkitAudioContext; const audio = new AudioCtor(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = kind === "success" ? 640 : 220; gain.gain.setValueAtTime(0.0001, audio.currentTime); gain.gain.exponentialRampToValueAtTime(0.035, audio.currentTime + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.13); oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + 0.14); oscillator.addEventListener("ended", () => audio.close(), { once: true }); } catch (_) { /* optional audio */ }
-  }
+  function playTone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function showView(id) {
     const mainActive = id === "mainView";
     const resultActive = id === "resultView";
@@ -99,14 +97,14 @@
   function choose(token, node) {
     state.checks += 1; $("checkCount").textContent = String(state.checks);
     const round = rounds[state.roundIndex];
-    if (token !== round.answer) { node.classList.add("is-wrong"); setFeedback("wrong", "mismatch"); $("feedback").classList.add("is-wrong"); playTone("wrong"); window.setTimeout(() => node.classList.remove("is-wrong"), 420); return; }
-    node.classList.add("is-correct"); node.disabled = true; state.solved += 1; $("feedback").classList.remove("is-wrong"); setFeedback("correct", "completion"); $("appStatus").textContent = t("correct"); playTone("success");
+    if (token !== round.answer) { node.classList.add("is-wrong"); setFeedback("wrong", "mismatch"); $("feedback").classList.add("is-wrong"); playTone("feedback.error"); window.setTimeout(() => node.classList.remove("is-wrong"), 420); return; }
+    node.classList.add("is-correct"); node.disabled = true; state.solved += 1; $("feedback").classList.remove("is-wrong"); setFeedback("correct", "completion"); $("appStatus").textContent = t("correct"); playTone("feedback.success");
     window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; renderRound(); } else finish(); }, 460);
   }
   function start() { state.roundIndex = 0; state.checks = 0; state.solved = 0; showView("battleView"); renderRound(); }
   function finish() { const key = "weightplay-pattern-patch-best-checks"; const prior = Number(safeStorage.get(key)); if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks)); $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView"); }
   function goHome() { showView("mainView"); applyLocale(); }
-  function toggleSound() { state.sound = !state.sound; applyLocale(); }
+  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
   function toggleSettings() { const popover = $("mainSettingsPopover"); const open = popover.hidden; popover.hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }
   function openLeaveDialog() { $("leaveDialog").hidden = false; $("continueBtn").focus(); }
   function closeLeaveDialog() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }

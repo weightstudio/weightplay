@@ -1657,7 +1657,7 @@
     const amount = Math.floor(save.ticketBox);
     if (amount <= 0) {
       popToast(t("noTickets"));
-      playSound("error");
+      playSound("feedback.error");
       return;
     }
     save.coins += amount;
@@ -1665,7 +1665,7 @@
     save.lifetimeTickets += amount;
     save.tour.collected += amount;
     popToast(t("collected", { coins: formatNumber(amount) }));
-    playSound("coin");
+    playSound("reward.coin");
     saveGame();
     render();
   }
@@ -1674,7 +1674,7 @@
     const waitSeconds = careWaitSeconds();
     if (waitSeconds > 0) {
       popToast(t("careWait", { n: waitSeconds }));
-      playSound("error");
+      playSound("feedback.error");
       render();
       return;
     }
@@ -1719,7 +1719,7 @@
     popToast(route === "habitat"
       ? t("careRouteHabitatDone")
       : t("careRouteEnrichmentDone", { tickets: formatNumber(ticketReward) }));
-    playSound("success");
+    playSound("feedback.success");
     window.WonderAnalytics?.track("zoo_care_route", { game_id: GAME_ID, route });
     saveGame();
     render();
@@ -1735,7 +1735,7 @@
     save.tour.built += 1;
     save.happiness = clamp(save.happiness + 7, 18, 100);
     popToast(t("upgraded"));
-    playSound("upgrade");
+    playSound("reward.upgrade");
     saveGame();
     render();
   }
@@ -1751,7 +1751,7 @@
     save.happiness = clamp(save.happiness + 12, 18, 100);
     newlyRecruitedAnimalId = animal.id;
     popToast(t("recruited", { name: t(animal.id) }));
-    playSound("upgrade");
+    playSound("reward.upgrade");
     window.WonderAnalytics?.track("animal_unlock", { game_id: GAME_ID, animal_id: animal.id });
     saveGame();
     render();
@@ -1769,7 +1769,7 @@
     save.tour.built += 1;
     save.happiness = clamp(save.happiness + 5 + facility.careBonus, 18, 100);
     popToast(t("facilityBuilt", { name: facilityName(facility) }));
-    playSound("upgrade");
+    playSound("reward.upgrade");
     window.WonderAnalytics?.track("zoo_facility_upgrade", { game_id: GAME_ID, facility_id: facility.id, level: save.facilities[facility.id] });
     saveGame();
     render();
@@ -1782,7 +1782,7 @@
     save.claimedMilestones[milestone.id] = true;
     save.coins += milestone.reward;
     popToast(t("milestoneClaimed"));
-    playSound("coin");
+    playSound("reward.coin");
     window.WonderAnalytics?.track("zoo_milestone_claim", { game_id: GAME_ID, milestone_id: milestone.id });
     saveGame();
     render();
@@ -1794,7 +1794,7 @@
     save.coins += challenge.reward;
     save.challengeCleared[String(id)] = true;
     popToast(t("tourComplete"));
-    playSound("success");
+    playSound("feedback.success");
     window.WonderAnalytics?.track("zoo_milestone_claim", { game_id: GAME_ID, milestone_id: challenge.id });
     saveGame();
     render();
@@ -1807,7 +1807,7 @@
   function notEnough(cost = 0) {
     const missing = Math.max(1, Math.ceil(Number(cost || 0) - save.coins));
     popToast(t("notEnough", { coins: formatCost(missing) }));
-    playSound("error");
+    playSound("feedback.error");
   }
 
   function popHearts() {
@@ -1909,7 +1909,7 @@
   }
 
   function playSound(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function setParkLeaveOpen(open, restoreFocus = true) {

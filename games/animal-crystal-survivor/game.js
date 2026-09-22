@@ -1193,7 +1193,7 @@
     const now = performance.now();
     if (soundGate[name] && now - soundGate[name] < gap * 1000) return;
     soundGate[name] = now;
-    window.WonderSound?.play(name);
+    window.WeightPlayAudio?.play(name);
   }
 
   function loadSave() {
@@ -1287,7 +1287,7 @@
     else return;
     next.equippedTalents=talentIds.filter(id=>next.talents[id]>0);
     if(!writeStorage(saveKey,JSON.stringify(next))){renderTalents(runeCopy().saveError);return;}
-    save=next;renderTalents();playSound('upgrade',.15);
+    save=next;renderTalents();playSound("reward.upgrade",.15);
   }
 
   function persist() {
@@ -1596,7 +1596,7 @@
 
   function updateMenuSound() {
     if (!nodes.menuSoundBtn) return;
-    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
     nodes.menuSoundBtn.setAttribute("aria-pressed", String(!muted));
     nodes.menuSoundBtn.setAttribute("aria-label", `${t("soundEffects")}: ${t(muted ? "soundOff" : "soundOn")}`);
     if (nodes.soundStateText) nodes.soundStateText.textContent = t(muted ? "soundOff" : "soundOn");
@@ -1643,7 +1643,7 @@
     if (balance < crystalCharmCost) {
       clearCharmConfirmation();
       updateDiamondShop(t("charmNeed", { cost: crystalCharmCost, balance }));
-      playSound("wrong", 0.2);
+      playSound("feedback.error", 0.2);
       return;
     }
     if (!charmPurchasePending) {
@@ -1656,7 +1656,7 @@
     const wallet = getWallet();
     if (!wallet?.spendDiamonds || !wallet.spendDiamonds(crystalCharmCost)) {
       updateDiamondShop(t("charmNeed", { cost: crystalCharmCost, balance: diamondBalance() }));
-      playSound("wrong", 0.2);
+      playSound("feedback.error", 0.2);
       return;
     }
     const transferFocus = document.activeElement === nodes.charmBtn;
@@ -1664,7 +1664,7 @@
     persist();
     updateDiamondShop(t("charmBought", { balance: diamondBalance() }));
     if (transferFocus) nodes.equipmentTabBtn?.focus({ preventScroll: true });
-    playSound("success", 0.2);
+    playSound("feedback.success", 0.2);
     track("diamond_spend", { item: "crystal_charm", cost: crystalCharmCost, balance: diamondBalance() });
   }
 
@@ -2066,7 +2066,7 @@
       canvas.focus({ preventScroll: true });
     });
     lastFrame = performance.now();
-    playSound("start", 0.2);
+    playSound("game.start", 0.2);
     track("stage_start", { entry, mode: state.stageConfig.mode, boss_stage: Boolean(state.stageConfig.bossImage) });
     track("game_start", { entry, prototype: true });
     scheduleLoop();
@@ -2223,7 +2223,7 @@
         state.hazardDamageTimer = .2;
         hazard.tick = 0.82;
         addSpark(p.x, p.y, hazard.color);
-        playSound("hit", 0.3);
+        playSound("player.hurt", 0.3);
         if (hazard.kind === "arrow") hazard.life = 0;
       }
       return hazard.life > 0;
@@ -2238,7 +2238,7 @@
         if (Math.hypot(p.x - state.safeZone.x, p.y - state.safeZone.y) > state.safeZone.r) {
           const received = hurtPlayer(11);
           if (received) addFloater(`-${received}`, p.x, p.y - 60, "#d8b4fe");
-          playSound("hit", 0.3);
+          playSound("player.hurt", 0.3);
         }
       }
     }
@@ -2506,7 +2506,7 @@
         const received=Math.max(0,healthBefore-p.hp);
         addSpark(p.x, p.y - 34, received?"#ff7b7b":"#8de6ef");
         addFloater(received?`-${received}`:"◇", p.x, p.y - 74, received?"#ffb4b4":"#8de6ef");
-        playSound("hit", 0.35);
+        playSound(received ? "player.hurt" : "combat.block", 0.35);
       }
     });
   }
@@ -2524,6 +2524,7 @@
     });
     if (!target) return;
     state.shots.push({ x: p.x, y: p.y - 22, px: p.x, py: p.y - 22, originX: p.x, originY: p.y - 22, age: 0, target, speed: 620, damage: p.damage, image: p.damage > 17 ? "blade" : "seed" });
+    playSound(p.damage > 17 ? "weapon.sword.swing" : "magic.cast", .08);
     p.castPulse = 0.18;
     p.shotTimer = p.cooldown;
   }
@@ -2614,14 +2615,16 @@
         const critical = !shot.pet && ((state.player.impactHits || 0) + 1) % (5 - state.player.rhythm) === 0;
         const impactDamage = shot.damage * (critical ? 1.6 : 1);
         const hit = damageEnemy(shot.target, impactDamage);
+        if (hit.blocked) playSound("combat.block", .08);
         if (!hit.blocked) {
+          if (!critical) playSound(shot.pet ? "magic.hit" : shot.image === "blade" ? "weapon.sword.hit" : "magic.hit", .08);
           if (!shot.pet) state.player.impactHits = (state.player.impactHits || 0) + 1;
           addFloater(critical ? `✦ ${hit.damage} ×1.6` : `${hit.damage}`,
             shot.target.x, shot.target.y - 52, critical ? "#ffe083" : "#edfaff");
           if (critical) {
             if(state.player.talents.surge)state.player.surgeTimer=1.5;
             addSpark(shot.target.x, shot.target.y, "#ffe083", { kind: "magicHit", element: "critical", height: (shot.target.size || 64) / 64 * .8, punch: .13 });
-            playSound("hit", .18);
+            playSound("combat.critical", .18);
           }
           if (!shot.pet) triggerMagic(shot.target, shot.damage);
           else if (shot.pet === "ice" && shot.target.hp > 0) shot.target.chill = 2.4;
@@ -2705,7 +2708,7 @@
     // Secondary hits never recurse; all damage still respects existing shields.
     if (p.chain && p.magicHits % 3 === 0) {
       addSpark(target.x, target.y, "#b8a4ff", { kind: "magicHit", element: "chain", height: (target.size || 64) / 64 * .8, fromX: p.x, fromY: p.y, fromHeight: 2.45, fromPlayer: true });
-      playSound("hit", .12);
+      playSound("magic.hit", .12);
       let from = target;
       const visited = new Set([target]);
       for (let jump = 0; jump < p.chain; jump++) {
@@ -2762,7 +2765,7 @@
         collected += drop.value;
         addSpark(drop.x, drop.y, "#fef08a");
         addFloater(`+${drop.value}`, drop.x, drop.y - 18, "#fef08a");
-        playSound("coin", 0.12);
+        playSound("reward.coin", 0.12);
         if (state.mode === "running" && state.xp >= state.xpNeed) levelUp();
         return false;
       }
@@ -2804,7 +2807,7 @@
       nodes.upgradeCards.querySelectorAll("button").forEach(button => { button.disabled = false; });
       nodes.upgradeCards.querySelector("button")?.focus({ preventScroll: true });
     }, 1100);
-    playSound("upgrade", 0.2);
+    playSound("reward.upgrade", 0.2);
     track("upgrade_open", { level: state.level, option_count: 3 });
     track("game_level_up", { level: state.level, prototype: true });
   }
@@ -2896,7 +2899,7 @@
     if (id === "pickup") p.pickup += 24;
     state.mode = "running";
     setUpgradeModalOpen(false);
-    playSound("click", 0.1);
+    playSound("ui.click", 0.1);
     track("upgrade_select", { upgrade: id, level: state.level });
     track("game_upgrade_choice", { upgrade: id, level: state.level, prototype: true });
     if (state.xp >= state.xpNeed) { levelUp(); return; }
@@ -2931,7 +2934,7 @@
     const heading=document.createElement("strong");heading.textContent=title;
     const subtitle=document.createElement("p");subtitle.textContent=detail;
     overlay.append(symbol,heading,subtitle);nodes.gamePanel.append(overlay);
-    playSound(kind==="victory"?"win":"wrong",.4);
+    playSound(kind==="victory" ? "result.win" : "feedback.error",.4);
     lastFrame=performance.now();
   }
   function endRun(reason) {
@@ -2978,7 +2981,7 @@
       button.classList.toggle("result-primary", button === primaryAction);
     });
     primaryAction.focus({ preventScroll: true });
-    playSound(stageCleared ? "win" : "wrong", 0.4);
+    playSound(stageCleared ? "result.win" : "result.lose", 0.4);
     track(stageCleared ? "stage_complete" : "stage_fail", {
       reason,
       keys: state.keys,
@@ -3726,8 +3729,8 @@
   nodes.charmBtn?.addEventListener("click", buyCrystalCharm);
   nodes.menuSoundBtn?.addEventListener("click", () => {
     clearCharmConfirmation(true);
-    const muted = Boolean(window.WonderSound?.isMuted?.());
-    window.WonderSound?.setMuted?.(!muted);
+    const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
+    window.WeightPlayAudio?.setMuted?.(!muted);
     updateMenuSound();
   });
   nodes.retryBtn.addEventListener("click", () => {
@@ -3758,7 +3761,7 @@
     }
   });
   nodes.menuBtn.addEventListener("click", () => {
-    playSound("click", 0.1);
+    playSound("ui.click", 0.1);
     confirmBattleLeave();
   });
   document.addEventListener("keydown", event => {
@@ -3773,7 +3776,7 @@
     runToken += 1;
     clearInput();
     state.mode = "stage";
-    playSound("click", 0.1);
+    playSound("ui.click", 0.1);
     showStageSelection(true);
   });
   document.getElementById("talentWorkshop")?.addEventListener("click", event => {

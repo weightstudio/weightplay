@@ -645,7 +645,7 @@
     persist();
     renderAtelier();
     $("atelierFeedback").textContent = t("styleBoughtDetail", { style: styleName });
-    window.WonderSound?.play?.("success");
+    window.WeightPlayAudio?.play?.("feedback.success");
   }
 
   const stageTabButtons = [...document.querySelectorAll(".stage-tabs [data-tab]")];
@@ -883,7 +883,7 @@
     (__wpNotifyMeasurement(), run.paused = lifecycleSuspended);
     ensureVisibleTick();
     if (!lifecycleSuspended) raf = requestAnimationFrame(frame);
-    window.WonderSound?.play?.("start");
+    window.WeightPlayAudio?.play?.("game.start");
     if (!save.tutorialSeen && !interfaceValidator) requestAnimationFrame(() => openTutorial(false));
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -1057,7 +1057,7 @@
     redrawLand();
     $("feedback").textContent = t("loopClosed");
     track("loop_close", { mission: run.stage.n, filled, restored: Math.round(territoryPercent()) });
-    window.WonderSound?.play?.("success");
+    window.WeightPlayAudio?.play?.("feedback.success");
     return filled;
   }
 
@@ -1072,7 +1072,7 @@
     $("feedback").textContent = t("trailCut");
     track("hunter_cut", { mission: run.stage.n, hearts: run.hearts });
     track("hearts_loss", { mission: run.stage.n, hearts: run.hearts });
-    window.WonderSound?.play?.("wrong");
+    window.WeightPlayAudio?.play?.("feedback.error");
     if (run.hearts <= 0) finish(false);
     return true;
   }
@@ -1509,7 +1509,7 @@
     $("battleLive").hidden = true;
     $("battleLive").inert = true;
     requestAnimationFrame(() => primaryAction.focus());
-    window.WonderSound?.play?.(won ? "success" : "wrong");
+    window.WeightPlayAudio?.play?.(won ? "result.win" : "result.lose");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }

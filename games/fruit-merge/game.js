@@ -877,7 +877,7 @@
     document.body.classList.remove("fruit-stage", "fruit-main");
     document.body.classList.add("fruit-playing");
     syncSharedScene("battle");
-    window.WonderSound?.play?.("start");
+    window.WeightPlayAudio?.play?.("game.start");
     resetGame(false, `challenge-${id}`);
   }
 
@@ -1025,7 +1025,7 @@
     currentLevel = nextLevel;
     nextLevel = randomNextLevel();
     canDropAt = activeNow() + 520;
-    window.WonderSound?.play?.("click");
+    window.WeightPlayAudio?.play?.("board.move");
     updateHud();
     updateAimCoach();
     updateAimAccessibility();
@@ -1317,7 +1317,7 @@
           showToast(t("milestoneNew", { name: t(`fruit${merged.level}`) }));
         }
         if (merged.level === fruits.length - 1) showToast(t("fruit10"));
-        window.WonderSound?.play?.("success");
+        window.WeightPlayAudio?.play?.("puzzle.merge");
         break;
       }
     }
@@ -1997,7 +1997,7 @@
     menuPanel.classList.add("hidden");
     document.body.classList.remove("fruit-main", "fruit-stage");
     document.body.classList.add("fruit-playing");
-    window.WonderSound?.play?.("start");
+    window.WeightPlayAudio?.play?.("game.start");
     resetGame(false, "free-play");
   });
   stageBackBtn.addEventListener("click", () => resetGame(true, "stage-return"));

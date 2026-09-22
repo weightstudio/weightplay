@@ -78,10 +78,10 @@
     });
     const abort = new AbortController();
     const syncSound = () => {
-      view.audio.setEnabled(!window.WonderSound.isMuted());
+      view.audio.setEnabled(!window.WeightPlayAudio.isMuted());
       view.refreshSound?.();
     };
-    window.addEventListener('wonder:audio-volume-change',syncSound,{signal:abort.signal});
+    window.addEventListener('weightplay:audio-volume-change',syncSound,{signal:abort.signal});
     const sync = () => {
       const code = ({'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'}[view.locale] || view.locale || 'en');
       const strings = window.TRIPEAKS_GUIDE_LOCALES?.[code] || window.TRIPEAKS_GUIDE_LOCALES?.en || {};

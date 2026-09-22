@@ -55,7 +55,8 @@
   function saveNumber(key, value) { try { localStorage.setItem(key, String(value)); } catch { /* session still works */ } }
 
   let locale = preferredLocale();
-  let soundEnabled = true;
+  let soundEnabled = !window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { soundEnabled = !window.WeightPlayAudio.isMuted(); });
   let stageIndex = 0;
   let unlocked = Math.min(30, readNumber("animalLanternGuidesUnlocked", 1));
   let best = Math.min(30, readNumber("animalLanternGuidesBest", 0));
@@ -141,7 +142,7 @@
     const button=document.createElement('button');button.type='button';button.className='symbol-button';button.dataset.symbol=id;button.dataset.role='guide';button.innerHTML=`${glyph(id)}<span>${symbolName(id)}</span>`;button.setAttribute('aria-label',symbolName(id));button.onclick=()=>guideChoice(id);return button;
   }
   function scene(){window.dispatchEvent(new CustomEvent('wp:block-scene',{detail:{active:document.body.dataset.screen==='battle',colours:['#e4be65','#64cfb0','#a78bfd'],lit:bridgeStep}}));}
-  function cue(good=false){try{if(soundEnabled)window.WonderSound?.play(good?'success':'click');}catch{}}
+  function cue(good=false){try{if(soundEnabled)window.WeightPlayAudio?.play(good ? "feedback.success" : "ui.click");}catch{}}
 
   function renderStage() {
     setText("stageProgress", text("stageProgress", { unlocked, total: STAGES.length }));
@@ -234,7 +235,7 @@
   $("battleBackBtn").addEventListener("click", showStage); $("leaveBtn").addEventListener("click", showStage); $("homeBtn").addEventListener("click", showStage);
   $("replayBtn").addEventListener("click", () => __wpReplayStart(() => startStage(stageIndex))); $("nextBtn").addEventListener("click", () => startStage(Math.min(stageIndex + 1, STAGES.length - 1))); $("passBtn").addEventListener("click", passToGuide);
   [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.addEventListener("click", toggleSettings));
-  $("soundBtn").addEventListener("click", () => { soundEnabled = !soundEnabled; applyCopy(); });
+  $("soundBtn").addEventListener("click", () => { soundEnabled = window.WeightPlayAudio.setEnabled(!soundEnabled); applyCopy(); });
   $("localeSelect").addEventListener("change", event => {
     event.stopImmediatePropagation();
     locale = SUPPORTED_LOCALES.includes(event.target.value) ? event.target.value : "en";

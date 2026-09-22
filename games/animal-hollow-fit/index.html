@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-hollow-fit/"+location.search+location.hash)}catch{location.replace("/en/games/animal-hollow-fit/"+location.search+location.hash)}})();</script>
+    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-hollow-fit/" />
@@ -30,10 +31,11 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-hollow-fit-v7-guide-contract" data-wp-game-guide>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <link rel="stylesheet" href="style.css?v=20260921-hollow-fit-v7-guide-contract">
+  <link rel="stylesheet" href="interface-7-compat.css?v=20260922-hollow-fit-shared-cleanup1">
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
 </head>
-<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v7" data-wp-battle-layout="native" data-runtime-localize="off">
+<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v7" data-wp-battle-layout="native" data-runtime-localize="off" data-sound-toggle="off">
   <div class="app-shell">
     <main id="mainScreen" class="screen main-screen" data-view="main" data-screen="main">
       <header class="topbar wp-main-shell-header">
@@ -90,6 +92,7 @@
 
   <dialog id="settings-dialog" class="modal-dialog" role="dialog"><form method="dialog" class="dialog-card"><div class="dialog-head"><h2 data-copy="settings">Settings</h2><button id="close-settings" class="close-button" value="close" data-copy-aria="close" aria-label="Close">×</button></div><label for="locale-select" data-copy="language">Language</label><select id="locale-select" data-copy-aria="language" aria-label="Language"></select><label for="hollow-locale-select" data-copy="language">Language</label><select id="hollow-locale-select" data-hollow-locale-picker data-copy-aria="language" aria-label="Language"></select><button id="sound-toggle" class="secondary-button" type="button" data-sound-toggle data-copy-aria="sound" aria-pressed="false">Sound: Off</button><button id="hollow-sound-toggle" class="secondary-button" type="button" data-hollow-sound-toggle data-copy-aria="sound" aria-pressed="false">Sound: Off</button></form></dialog>
   <script src="locales.js?v=20260921-hollow-fit-v7-guide-contract"></script>
-  <script src="game.js?v=20260921-hollow-fit-v7-guide-contract"></script>
+  <script src="game.js?v=20260921-hollow-fit-v7-guide-contract&wp-audio=1.0.0"></script>
+  <script src="interface-7-compat.js?v=20260922-hollow-fit-shared-cleanup1&wp-audio=1.0.0"></script>
 </body>
 </html>

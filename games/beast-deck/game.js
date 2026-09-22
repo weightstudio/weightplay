@@ -1988,7 +1988,7 @@
           saveLocalState();
           renderCollectionUI();
           if (keyboardActivation) restoreLoadoutFocus(cardId, nodes.collectionGrid);
-          window.WonderSound?.play("click");
+          window.WeightPlayAudio?.play("ui.click");
         });
         nodes.deckSlots.appendChild(button);
       });
@@ -2028,7 +2028,7 @@
         if (keyboardActivation) {
           restoreLoadoutFocus(cardId, canEquipCard(cardId) ? nodes.collectionGrid : nodes.deckSlots);
         }
-        window.WonderSound?.play("click");
+        window.WeightPlayAudio?.play("ui.click");
       });
       nodes.collectionGrid.appendChild(button);
     });
@@ -2062,7 +2062,7 @@
         saveLocalState();
         renderCollectionUI();
         if (keyboardActivation) restoreGearFocus(gearId);
-        window.WonderSound?.play("upgrade");
+        window.WeightPlayAudio?.play("reward.upgrade");
       });
       nodes.gearGrid.appendChild(button);
     });
@@ -2071,7 +2071,7 @@
   function drawPack(event) {
     if (profile.coins < packCost) {
       nodes.packStatus.textContent = t("packNeed", { cost: packCost });
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("feedback.error");
       return;
     }
     const keyboardActivation = event?.detail === 0 && document.activeElement === nodes.packBtn;
@@ -2094,7 +2094,7 @@
         target?.focus({ preventScroll: true });
       });
     }
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
   }
 
   function showPackReward(image, typeLabel, message) {
@@ -2183,7 +2183,7 @@
       if (!Number.isInteger(mission) || button.getAttribute("aria-disabled") === "true") return;
       profile.selectedMission = mission;
       saveLocalState();
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       startRun();
     });
     return button;
@@ -2532,7 +2532,7 @@
       profile.xp -= xpToNext(profile.level);
       profile.level += 1;
       log(t("levelUp", { level: profile.level }), "system");
-      window.WonderSound?.play("success");
+      window.WeightPlayAudio?.play("feedback.success");
     }
     saveLocalState();
   }
@@ -2778,7 +2778,7 @@
     profile.amuletUnlocked = true;
     saveLocalState();
     updateDiamondShopUI();
-    window.WonderSound?.play("success");
+    window.WeightPlayAudio?.play("feedback.success");
   }
 
   function resolvePlayerAttack(baseDamage) {
@@ -2804,7 +2804,7 @@
     const card = cardDb[cardId];
     const cost = effectiveCardCost(cardId);
     if (!card || state.energy < cost || state.enemySeal === card.type) {
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("feedback.error");
       return;
     }
 
@@ -2830,36 +2830,36 @@
       if (damage === 12) log(t("log_combo", { card: cardName, damage }), "player-synergy");
       resolvePlayerAttack(damage);
       state.attacksPlayedThisTurn++;
-      window.WonderSound?.play("shoot");
+      window.WeightPlayAudio?.play("combat.strike");
     } else if (cardId === "guard-bear") {
       state.playerShield += 6;
       log(t("log_player_block", { amount: 6 }), "system");
       showCombatFeedback(t("combatGainBlock", { amount: 6 }), "block");
-      window.WonderSound?.play("upgrade");
+      window.WeightPlayAudio?.play("reward.upgrade");
     } else if (cardId === "sky-hawk") {
       resolvePlayerAttack(14);
       state.attacksPlayedThisTurn++;
       drawCards(1);
-      window.WonderSound?.play("shoot");
+      window.WeightPlayAudio?.play("combat.strike");
     } else if (cardId === "cheetah-sprint") {
       drawCards(2);
       state.energy += 1;
-      window.WonderSound?.play("upgrade");
+      window.WeightPlayAudio?.play("reward.upgrade");
     } else if (cardId === "viper-venom") {
       state.enemyPoison += 3;
       showCombatFeedback(t("combatApplyPoison", { amount: 3 }), "poison");
-      window.WonderSound?.play("shoot");
+      window.WeightPlayAudio?.play("magic.cast");
     } else if (cardId === "owl-wisdom") {
       drawCards(1);
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
     } else if (cardId === "iron-tortoise") {
       state.playerShield += 15;
       log(t("log_player_block", { amount: 15 }), "system");
       showCombatFeedback(t("combatGainBlock", { amount: 15 }), "block");
-      window.WonderSound?.play("upgrade");
+      window.WeightPlayAudio?.play("reward.upgrade");
     } else if (cardId === "mist-curse") {
       log(t("log_curse_clear"), "player-synergy");
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
     }
 
     const playerDefeated = state.playerHp <= 0;
@@ -2870,7 +2870,7 @@
     if (playerDefeated) {
       scheduleBattleTransition(() => endGame(false), 500);
     } else if (enemyDefeated) {
-      window.WonderSound?.play("enemyDown");
+      window.WeightPlayAudio?.play("enemy.defeat");
       scheduleBattleTransition(handleBattleWin, 500);
     } else {
       focusBattleDecision(index);
@@ -2920,24 +2920,24 @@
       actionText = t("intent_attack", { amount: intent.val });
       if (result.damage > 0) log(t("playerDamage", { damage: result.damage, hp: state.playerHp }), "enemy");
       else log(t("shieldAbsorbed", { shield: state.playerShield }), "system");
-      window.WonderSound?.play(result.damage > 0 ? "hit" : "wallHit");
+      window.WeightPlayAudio?.play(result.damage > 0 ? "player.hurt" : "combat.block");
     } else if (intent.type === "defend") {
       state.enemyShield += intent.val;
       actionText = t("intent_defend", { amount: intent.val });
-      window.WonderSound?.play("upgrade");
+      window.WeightPlayAudio?.play("reward.upgrade");
     } else if (intent.type === "poison") {
       state.playerPoison += intent.val;
       actionText = t("intent_poison", { amount: intent.val });
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
     } else if (intent.type === "buff") {
       actionText = t("intent_buff");
       const nextAttack = state.enemy.intents.find((item) => item.type === "attack");
       if (nextAttack) nextAttack.val += 2;
-      window.WonderSound?.play("boss");
+      window.WeightPlayAudio?.play("alert.boss");
     } else if (intent.type === "armor") {
       state.enemyArmor += intent.val;
       actionText = t("intent_armor", { amount: intent.val });
-      window.WonderSound?.play("upgrade");
+      window.WeightPlayAudio?.play("reward.upgrade");
     } else if (intent.type === "riposte") {
       state.enemyRiposte = intent.val + state.enemyRiposteBonus;
       actionText = t("intent_riposte", { amount: state.enemyRiposte });
@@ -3069,12 +3069,12 @@
       profile.selectedMission = Math.min(profile.unlockedMission, state.mission + 1);
       saveLocalState();
       log(t(state.enemy?.isBoss ? "log_win_boss" : "log_win_mission", { xp: mission.xp }), "system");
-      window.WonderSound?.play("win");
+      window.WeightPlayAudio?.play("result.win");
       scheduleBattleTransition(() => endGame(true), 900);
     } else {
       addXp(18 + state.mission * 2);
       log(t("log_win_battle", { enemy: enemyName(state.enemy) }), "system");
-      window.WonderSound?.play("coin");
+      window.WeightPlayAudio?.play("reward.coin");
       scheduleBattleTransition(showDraftScreen, 650);
     }
   }
@@ -3324,10 +3324,10 @@
       nodes.resultText.textContent = t("report_win", { mission: state.mission, xp: state.xpEarned });
     } else if (cleared > 0) {
       nodes.resultText.textContent = t("report_partial", { mission: state.mission, count: cleared, xp: state.xpEarned });
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("result.lose");
     } else {
       nodes.resultText.textContent = t("report_no_wins");
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("result.lose");
     }
     nodes.resultRewards.textContent = t("resultRewards", { xp: state.xpEarned, coins: state.coinsEarned });
     nodes.resultSaved.textContent = formatResultSaved({ level: profile.level, xp: profile.xp, nextXp: xpToNext(profile.level), coins: profile.coins });
@@ -3435,7 +3435,7 @@
   function refreshBattleUtility() {
     const button = nodes.battleUtilityBtn;
     if (!button) return;
-    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
     const battleSoundLabels = {
       en: { enable: "Enable sound", disable: "Disable sound" },
       "zh-Hant": { enable: "開啟音效", disable: "關閉音效" },
@@ -3492,7 +3492,7 @@
     positionBattleSoundControl();
     startNextBattle();
     requestAnimationFrame(() => nodes.handRow.querySelector("button:not(:disabled)")?.focus({ preventScroll: true }));
-    window.WonderSound?.play("start");
+    window.WeightPlayAudio?.play("game.start");
     nodes.gamePanel.scrollIntoView({ behavior: "smooth", block: "start" });
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -3895,20 +3895,20 @@
     updateDiamondShopUI();
 
     nodes.startBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       startRun();
     });
     nodes.endTurnBtn.addEventListener("click", (event) => {
       if (!reclaimVisibleBattleInteraction(event)) return;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       endPlayerTurn();
     });
     nodes.battleUtilityBtn?.addEventListener("click", () => {
-      window.WonderSound?.setMuted?.(!Boolean(window.WonderSound?.isMuted?.()));
+      window.WeightPlayAudio?.setMuted?.(!Boolean(window.WeightPlayAudio?.isMuted?.()));
       refreshBattleUtility();
     });
     window.addEventListener("wonder:locale-change", refreshBattleUtility);
-    window.addEventListener("wonder:audio-volume-change", refreshBattleUtility);
+    window.addEventListener("weightplay:audio-volume-change", refreshBattleUtility);
     refreshBattleUtility();
     const rejectRepeatedBattleActivation = (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
@@ -3934,16 +3934,16 @@
       }
     });
     nodes.menuBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       setLeaveDecision(true);
     });
     nodes.menuBtn.addEventListener("keydown", rejectRepeatedBattleActivation);
     nodes.leaveKeepBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       setLeaveDecision(false);
     });
     nodes.leaveConfirmBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       setLeaveDecision(false, { restoreFocus: false, resume: false });
       nodes.gamePanel.classList.add("hidden");
       showStage();
@@ -3976,7 +3976,7 @@
       if (resultTransactionLocked || nodes.resultPanel.classList.contains("hidden")) return;
       if (action === "next" && nodes.nextMissionBtn.disabled) return;
       resultTransactionLocked = true;
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       if (action === "stages") {
         profile.selectedMission = profile.unlockedMission;
         saveLocalState();
@@ -4037,7 +4037,7 @@
       button.addEventListener("click", () => selectStageTab(button.dataset.stageTab));
     });
     nodes.localeSelect.addEventListener("change", (event) => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       window.WonderI18n?.setLocale?.(event.target.value);
     });
     nodes.stageGrid?.addEventListener("scroll", () => {

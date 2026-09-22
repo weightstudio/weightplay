@@ -164,7 +164,7 @@ function bindLocaleSelect(select) {
   select.dataset.localeBound = "true";
   select.value = locale();
   const updateLocale = () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     window.WonderI18n?.setLocale(select.value);
     syncLocaleSelects();
   };
@@ -987,7 +987,7 @@ function triggerPassive(id) {
   if (!state?.running || !state.abilityCooldowns || !Object.hasOwn(state.abilityCooldowns, id)) return false;
   const cooldown = state.abilityCooldowns[id] || 0;
   if (cooldown > 0) {
-    window.WonderSound?.play("wrong");
+    window.WeightPlayAudio?.play("feedback.error");
     return false;
   }
   if (id === "roar") activateRoar();
@@ -1015,7 +1015,7 @@ function activateRoar() {
   }
   state.hits.push({ x: state.hero.x, y: wallY - H * 0.1, radius: 120 + mastery * 30, life: 0.5, roar: true });
   if(!defense3D)state.damageTexts.push({ x: state.hero.x, y: state.hero.y - 90, value: t("roar_label"), roar: true, life: 0.72, maxLife: 0.72 });
-  window.WonderSound?.play("start");
+  window.WeightPlayAudio?.play("magic.cast");
 }
 
 function activatePrideVolley() {
@@ -1036,7 +1036,7 @@ function activatePrideVolley() {
   }
   state.hits.push({ x: state.hero.x, y: state.hero.y - 74, radius: 70 + count * 8, life: 0.42, volley: true });
   if(!defense3D)state.damageTexts.push({ x: state.hero.x, y: state.hero.y - 104, value: t("ability_volley_label"), ability: true, life: 0.72, maxLife: 0.72 });
-  window.WonderSound?.play("shoot");
+  window.WeightPlayAudio?.play("projectile.launch");
   if (getTalentLevel('tempest')) {
     for (const enemy of state.enemies.filter(e => e.hp > 0).slice(0, 8)) {
       damageEnemy(enemy, getDamageToEnemy(enemy, 4 * getTalentLevel('tempest')), false);
@@ -1058,7 +1058,7 @@ function activateWallAegis() {
   state.wallHp += Math.max(0, heal);
   state.hits.push({ x: W / 2, y: wallY, radius: W * 0.42, life: 0.46, shield: true });
   if(!defense3D)state.damageTexts.push({ x: W / 2, y: wallY - 46, value: t("ability_aegis_label"), ability: true, life: 0.72, maxLife: 0.72 });
-  window.WonderSound?.play("upgrade");
+  window.WeightPlayAudio?.play("magic.shield");
 }
 
 function syncPassiveAccessibility() {
@@ -1192,7 +1192,7 @@ window.addEventListener("resize", updateBattleShell);
 function startLevel(levelIndex) {
   if (levelIndex + 1 > highestUnlocked) {
     showFloatingMessage(t("locked"));
-    window.WonderSound?.play("wrong");
+    window.WeightPlayAudio?.play("feedback.error");
     return;
   }
   clearFloatingMessage();
@@ -1219,7 +1219,7 @@ function startLevel(levelIndex) {
   updateHud();
   syncPassiveAccessibility();
   requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
-  window.WonderSound?.play("start");
+  window.WeightPlayAudio?.play("game.start");
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -1501,7 +1501,7 @@ function shootWeaponSlot(slotIndex, entry) {
   const weapon = entry.weapon;
   const projectileCount = state.projectileCount;
   const spread = 36;
-  window.WonderSound?.play("shoot");
+  window.WeightPlayAudio?.play("projectile.launch");
   for (let burst = 0; burst < state.burstCount; burst += 1) {
     for (let i = 0; i < projectileCount; i += 1) {
       const offset = (i - (projectileCount - 1) / 2) * spread;
@@ -1628,7 +1628,7 @@ function spawnBoss(wave) {
         ? wave.bossRuleAr
         : wave.bossRuleByLocale?.[activeLocale] || wave.bossRuleEn;
   state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), rule: bossRule || "", life: 2.6 };
-  window.WonderSound?.play("boss");
+  window.WeightPlayAudio?.play("alert.boss");
 }
 
 function spawnBossMinions(wave) {
@@ -1749,7 +1749,7 @@ function throwBossBall(enemy, options = {}) {
     color: getBossBallColor(enemy),
   });
   state.hits.push({ x: startX, y: startY, radius: size * 0.65, life: 0.18 });
-  window.WonderSound?.play("boss");
+  window.WeightPlayAudio?.play("alert.boss");
 }
 
 function getBossBallColor(enemy) {
@@ -1785,7 +1785,7 @@ function loseLevel() {
   menuTabs.classList.add("hidden");
   overlay.classList.remove("hidden");
   updateHud();
-  window.WonderSound?.play("wrong");
+  window.WeightPlayAudio?.play("feedback.error");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "lose"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -1822,7 +1822,7 @@ function winLevel() {
   focusSettlementPrimary();
   overlay.classList.remove("hidden");
   updateHud();
-  window.WonderSound?.play("win");
+  window.WeightPlayAudio?.play("result.win");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -1858,7 +1858,7 @@ function rollLevelDrops() {
     profile.backpackItems.push(item);
     drops.push(item);
     saveProfile();
-    window.WonderSound?.play("coin");
+    window.WeightPlayAudio?.play("reward.coin");
   }
   return drops;
 }
@@ -2109,7 +2109,7 @@ function damageEnemy(enemy, damage, crit, hitX = enemy.x, hitY = enemy.y) {
     defeatEnemy(enemy);
     return;
   }
-  window.WonderSound?.play("hit");
+  window.WeightPlayAudio?.play(crit ? "combat.critical" : "impact.soft");
 }
 
 function applyHitSlow(enemy, hitX, hitY) {
@@ -2154,7 +2154,7 @@ function defeatEnemy(enemy) {
     });
   }
   state.hits.push({ x: enemy.x, y: enemy.y, radius: enemy.size * 0.34, life: 0.24 });
-  window.WonderSound?.play("enemyDown");
+  window.WeightPlayAudio?.play("enemy.defeat");
 }
 
 function splashDamage(projectile, primaryEnemy) {
@@ -2204,7 +2204,7 @@ function resolveBossProjectiles() {
         life: 0.7,
         maxLife: 0.7,
       });
-      window.WonderSound?.play("wallHit");
+      window.WeightPlayAudio?.play("player.hurt");
     }
   }
 }
@@ -2218,7 +2218,7 @@ function damageWall() {
       state.wallHp = Math.max(0, state.wallHp - damage);
       if (damage <= 0) continue;
       state.hits.push({ x: enemy.x, y: wallY, radius: enemy.type.ability === "breaker" ? 54 : 36, life: 0.28 });
-      window.WonderSound?.play("wallHit");
+      window.WeightPlayAudio?.play("player.hurt");
     }
   }
 }
@@ -2233,7 +2233,7 @@ function applyWallImpact(damage, x) {
     state.damageTexts.push({ x, y: wallY - 44, value: t("shield_blocked"), shield: true, life: 0.72, maxLife: 0.72 });
     triggerWallThorns(x);
     if (getTalentLevel('counter')) retaliateWall(x, getTalentLevel('counter')*4);
-    window.WonderSound?.play("upgrade");
+    window.WeightPlayAudio?.play("reward.upgrade");
     return 0;
   }
   const guarded = getGuardedWallDamage(damage);
@@ -3147,7 +3147,7 @@ function canBuyTalent(talent) {
 function buyTalent(id) {
   const talent = getTalent(id);
   if (!canBuyTalent(talent)) {
-    window.WonderSound?.play("wrong");
+    window.WeightPlayAudio?.play("feedback.error");
     return;
   }
   const cost = getTalentCost(talent);
@@ -3159,7 +3159,7 @@ function buyTalent(id) {
   updateHud();
   renderTalentDialog();
   talentDialog?.querySelector(canBuyTalent(talent)?'[data-talent-buy]':'[data-talent-close]')?.focus({preventScroll:true});
-  window.WonderSound?.play("upgrade");
+  window.WeightPlayAudio?.play("reward.upgrade");
 }
 
 function renderTalentTree(branchFilter = "all") {
@@ -3304,7 +3304,7 @@ function renderProfilePanel(tab = activeMenuTab) {
   const backToLobbyBtn = profilePanel.querySelector("#backToLobbyBtn");
   if (backToLobbyBtn) {
     backToLobbyBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("ui.click");
       window.location.href = window.WonderI18n?.localizedPath?.(window.WonderI18n.actualLocale(), "/") || "/";
     });
   }
@@ -3471,7 +3471,7 @@ function buyProfileUpgrade(type) {
   const isDiamondUpgrade = type === "diamondPower";
   const wallet = readWallet();
   if ((isDiamondUpgrade && wallet.diamonds < cost) || (!isDiamondUpgrade && profile.coins < cost)) {
-    window.WonderSound?.play("wrong");
+    window.WeightPlayAudio?.play("feedback.error");
     return;
   }
   if (isDiamondUpgrade) {
@@ -3493,7 +3493,7 @@ function buyProfileUpgrade(type) {
   saveProfile();
   renderProfilePanel(activeMenuTab);
   updateHud();
-  window.WonderSound?.play("upgrade");
+  window.WeightPlayAudio?.play("reward.upgrade");
 }
 
 function pickUpgrades(count) {
@@ -3548,7 +3548,7 @@ function applyUpgrade(upgrade) {
   if (effect.roarCooldownReduction) state.roarCooldownReduction += effect.roarCooldownReduction;
   if (effect.chainEvery) state.chainEvery = state.chainEvery ? Math.min(state.chainEvery, effect.chainEvery) : effect.chainEvery;
   if (effect.chainDamage) state.chainDamage = Math.max(state.chainDamage, effect.chainDamage);
-  window.WonderSound?.play("upgrade");
+  window.WeightPlayAudio?.play("reward.upgrade");
 }
 
 function bankRunCoins() {

@@ -72,3 +72,5 @@ const rows={
  'حاجز|حرق|برد|بطيء|تفادٍ!|امتصاص','نيبس|موس|فروست|إمبر']
 };
 export const collectionCopy=Object.fromEntries(Object.entries(rows).map(([locale,[rosterHint,skills,descriptions,abilities,status,names]])=>[locale,{rosterHint,skills:skills.split('|'),descriptions:descriptions.split('|'),abilities:abilities.split('|'),status:status.split('|'),names:names.split('|')} ]));
+const drops={en:['New ally','Ally shard','Loot found'],'zh-Hant':['新夥伴','夥伴碎片','獲得掉落'],'zh-Hans':['新伙伴','伙伴碎片','获得掉落'],ja:['新しい仲間','仲間のかけら','獲得アイテム'],ko:['새 동료','동료 조각','획득 보상'],es:['Nuevo aliado','Fragmento aliado','Botín obtenido'],'pt-BR':['Novo aliado','Fragmento aliado','Saques obtidos'],fr:['Nouvel allié','Fragment allié','Butin obtenu'],de:['Neuer Begleiter','Begleitersplitter','Beute erhalten'],it:['Nuovo alleato','Frammento alleato','Bottino trovato'],ru:['Новый спутник','Осколок спутника','Получено добычи'],hi:['नया साथी','साथी का टुकड़ा','मिली लूट'],ar:['رفيق جديد','شظية رفيق','الغنائم']};
+for(const [locale,[newAlly,allyShard,lootTotal]] of Object.entries(drops))Object.assign(collectionCopy[locale],{newAlly,allyShard,lootTotal});

@@ -1799,11 +1799,12 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     firstPlacementCue: null,
     resultReward: null,
     manualSimulation: false,
-    soundEnabled: false,
+    soundEnabled: !window.WeightPlayAudio.isMuted(),
     audioCtx: null,
     impactShake: { life: 0, max: 0, strength: 0 },
     impactFlash: { life: 0, max: 0, color: "255, 209, 102" },
   };
+  window.addEventListener("weightplay:audio-volume-change", () => { state.soundEnabled = !window.WeightPlayAudio.isMuted(); });
   let rewardRerollConfirmTimer = 0;
   let rewardRerollConfirmDueAt = 0;
   let rewardRerollConfirmRemaining = 0;
@@ -2128,19 +2129,20 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   }
 
   function setSoundEnabled(enabled, announce = false) {
-    state.soundEnabled = Boolean(enabled);
+    state.soundEnabled = window.WeightPlayAudio.setEnabled(Boolean(enabled));
     writeStorage(soundKey, state.soundEnabled ? "on" : "off");
     updateSoundButton();
     if (announce) showToast(t(state.soundEnabled ? "soundEnabled" : "soundDisabled"));
     track("game_audio_toggle", { enabled: state.soundEnabled });
-    if (state.soundEnabled) playSfx("toggle");
+    if (state.soundEnabled) playSfx("ui.click");
   }
 
-  // The shared Version 4 Settings switch owns the visible control while this
-  // adapter preserves Beast Guardian's existing SFX state and storage key.
-  window.WonderSound = window.WonderSound || {};
-  window.WonderSound.isMuted = () => !state.soundEnabled;
-  window.WonderSound.setMuted = (muted) => setSoundEnabled(!Boolean(muted), true);
+  // Shared settings own the audio preference. Never overwrite the platform API.
+  state.soundEnabled = window.WeightPlayAudio.setEnabled(!window.WeightPlayAudio.isMuted());
+  window.addEventListener("weightplay:audio-volume-change", () => {
+    state.soundEnabled = window.WeightPlayAudio.setEnabled(!window.WeightPlayAudio.isMuted());
+    updateSoundButton();
+  });
   nodes.soundBtn?.setAttribute("data-sound-toggle", "");
   document.addEventListener("keydown", (event) => {
     if (event.repeat
@@ -2150,53 +2152,9 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     }
   }, true);
 
-  function ensureAudioContext() {
-    if (!state.soundEnabled) return null;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return null;
-    try {
-      if (!state.audioCtx) state.audioCtx = new AudioContext();
-      if (state.audioCtx.state === "suspended") state.audioCtx.resume?.();
-      return state.audioCtx;
-    } catch {
-      return null;
-    }
-  }
+  function ensureAudioContext() { return window.WeightPlayAudio?.unlock(); }
 
-  function playSfx(type) {
-    const audio = ensureAudioContext();
-    if (!audio) return false;
-    const presets = {
-      toggle: [660, 0.08, "sine", 0.028],
-      build: [392, 0.1, "triangle", 0.035],
-      upgrade: [784, 0.14, "triangle", 0.035],
-      sell: [220, 0.08, "sawtooth", 0.022],
-      wave: [330, 0.12, "square", 0.026],
-      boss: [110, 0.26, "sawtooth", 0.032],
-      victory: [880, 0.24, "triangle", 0.04],
-      defeat: [146, 0.28, "sine", 0.034],
-      revive: [523, 0.16, "sine", 0.038],
-      reward: [698, 0.12, "triangle", 0.032],
-      unlock: [988, 0.18, "triangle", 0.038],
-    };
-    const [frequency, duration, wave, volume] = presets[type] || presets.toggle;
-    try {
-      const oscillator = audio.createOscillator();
-      const gain = audio.createGain();
-      oscillator.type = wave;
-      oscillator.frequency.setValueAtTime(frequency, audio.currentTime);
-      gain.gain.setValueAtTime(0.0001, audio.currentTime);
-      gain.gain.exponentialRampToValueAtTime(volume, audio.currentTime + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + duration);
-      oscillator.connect(gain);
-      gain.connect(audio.destination);
-      oscillator.start();
-      oscillator.stop(audio.currentTime + duration + 0.02);
-      return true;
-    } catch {
-      return false;
-    }
-  }
+  function playSfx(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
   function prefersReducedMotion() {
     return Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);
@@ -2986,7 +2944,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
         save();
         renderTech();
         if (restoreKeyboardFocus) window.requestAnimationFrame(() => nodes.techGrid.querySelector(`[data-tech-id="${tech.id}"]`)?.focus({ preventScroll: true }));
-        playSfx("upgrade");
+        playSfx("reward.upgrade");
         track("game_permanent_upgrade", { tech: tech.id, level: level + 1, cost: tech.cost });
       });
       card.appendChild(button);
@@ -3057,7 +3015,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     save();
     renderTech();
     if (transferFocus) nodes.equipmentTabBtn?.focus({ preventScroll: true });
-    playSfx("unlock");
+    playSfx("reward.unlock");
     track("game_spend_virtual_currency", { stage: state.currentStage, item: "golden_defender_frame", currency: "diamonds", amount: 15 });
   }
 
@@ -3156,7 +3114,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     if (!isCoreCritical() || state.coreCriticalShown) return;
     state.coreCriticalShown = true;
     showToast(t("coreCritical"));
-    playSfx("defeat");
+    playSfx("result.lose");
     triggerImpactFeedback(7, 0.24, "255, 70, 70");
     track("game_core_critical", { stage: state.currentStage, wave: state.wave, core_hp: Math.max(0, Math.ceil(state.coreHp)) });
   }
@@ -3350,7 +3308,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     addSkillEffect(tileToPoint(defender.tile), skillFxFrames.gear, 0.82, 0.36);
     addFloatingText(tileToPoint(defender.tile), t("buildFeedback"), "#d9f99d");
     showToast(t("built", { name: unitName(unit) }));
-    playSfx("build");
+    playSfx("board.move");
     track("game_build_unit", { stage: state.currentStage, unit: unit.id, kind: unit.kind, cost: unit.cost });
     updateEnemyPaths();
     const currentPath = findPath(false);
@@ -3380,7 +3338,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     addSkillEffect(tileToPoint(d.tile), skillFxFrames.gear, 1.05, 0.5);
     addFloatingText(tileToPoint(d.tile), `↑ ${battleLevelText(d.level)}`, "#fef08a");
     showToast(`${d.name} ↑ ${battleLevelText(d.level)}`);
-    playSfx("upgrade");
+    playSfx("reward.upgrade");
     track("game_upgrade_unit", { stage: state.currentStage, unit: d.type, level: d.level, cost });
     updateHud();
   }
@@ -3396,7 +3354,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     addSkillEffect(point, skillFxFrames.heal, 0.85, 0.38);
     addFloatingText(point, t("sellFeedback", { coins: refund }), "#fde68a");
     showToast(t("sold"));
-    playSfx("sell");
+    playSfx("reward.coin");
     track("game_sell_unit", { stage: state.currentStage, unit: d.type, level: d.level });
     updateEnemyPaths();
     updateHud();
@@ -3432,7 +3390,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     addSkillEffect(point, skillFxFrames.gear, 1.3, 0.72);
     addFloatingText(point, tacticalText("rallyUsed", { name: defender.name }), "#fef08a");
     showToast(tacticalText("rallyUsed", { name: defender.name }));
-    playSfx("upgrade");
+    playSfx("reward.upgrade");
     triggerImpactFeedback(6, 0.22, "255, 209, 102");
     track("game_rally_order", {
       stage: state.currentStage,
@@ -3486,7 +3444,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     state.waveSpawned = 0;
     state.waveToSpawn = waveEnemyCount(state.stage, state.wave);
     state.spawnTimer = 0;
-    playSfx("wave");
+    playSfx("game.start");
     track("game_wave_start", { stage: state.currentStage, wave: state.wave, total_waves: state.stage.waves, enemies: state.waveToSpawn });
     updateHud();
   }
@@ -3583,7 +3541,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
       addSkillEffect(enemy.pos, skillFxFrames.bossPortal, 1.75, 0.82);
       triggerImpactFeedback(12, 0.36, "255, 70, 70");
       showToast(t("bossIncoming", { boss: localizedBossName(state.stage) || t("boss") }));
-      playSfx("boss");
+      playSfx("alert.boss");
       track("game_boss_spawn", { stage: state.currentStage, wave: state.wave, boss: state.stage.bossName || "Boss" });
     }
     state.waveSpawned += 1;
@@ -3647,7 +3605,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     showToast(t("bossPhase", { boss: localizedBossName(state.stage) || t("boss") }));
     addSkillEffect(enemy.pos, skillFxFrames.bossPortal, 1.5, 0.7);
     triggerImpactFeedback(9, 0.3, "126, 249, 255");
-    playSfx("boss");
+    playSfx("alert.boss");
   }
 
   function updateEnemySpecial(enemy, dt) {
@@ -4171,7 +4129,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     addSkillEffect(core, skillFxFrames.heal, 1.18, 0.52);
     addFloatingText(core, message, "#9fffd0");
     showToast(message);
-    playSfx("reward");
+    playSfx("reward.collect");
     track("game_wave_clear", { stage: state.currentStage, wave: state.wave, core_hp: Math.max(0, Math.ceil(state.coreHp)) });
     if (!state.manualSimulation && state.wave < state.stage.waves) state.nextWaveTimer = 5;
     updateHud();
@@ -4271,7 +4229,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     renderResultReward();
     resultDecisionCommitted = false;
     setScreen("result");
-    playSfx("victory");
+    playSfx("result.win");
     track("game_complete", { stage: stage.id, core_hp: Math.max(0, Math.ceil(state.coreHp)), waves: stage.waves, stars });
   }
 
@@ -4294,7 +4252,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     nodes.nextStageBtn.disabled = true;
     resultDecisionCommitted = false;
     setScreen("result");
-    playSfx("defeat");
+    playSfx("result.lose");
     track("game_fail", { stage: state.currentStage, wave: state.wave, core_hp: Math.max(0, Math.ceil(state.coreHp)) });
   }
 
@@ -4321,7 +4279,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     showToast(t("reviveUsed"));
     setScreen("game");
     window.requestAnimationFrame(() => nodes.canvas.focus({ preventScroll: true }));
-    playSfx("revive");
+    playSfx("magic.heal");
     track("game_spend_virtual_currency", { stage: state.currentStage, item: "core_revive", currency: "diamonds", amount: 5 });
   }
 
@@ -4444,7 +4402,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     save();
     renderResultReward();
     showToast(t("rewardRerollUsed"));
-    playSfx("reward");
+    playSfx("reward.collect");
     track("game_spend_virtual_currency", { stage: reward.stageId, item: "reward_reroll", currency: "diamonds", amount: 3 });
     track("game_reward_reroll", { stage: reward.stageId, points: reward.points, delta_points: deltaPoints });
   }
@@ -7665,12 +7623,12 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     const enabledText = nodes.soundBtn?.textContent || "";
     const enabledPressed = nodes.soundBtn?.getAttribute("aria-pressed");
     const storedOn = localStorage.getItem(soundKey);
-    const played = playSfx("toggle");
+    const played = playSfx("ui.click");
     setSoundEnabled(false);
     const disabledText = nodes.soundBtn?.textContent || "";
     const disabledPressed = nodes.soundBtn?.getAttribute("aria-pressed");
     const storedOff = localStorage.getItem(soundKey);
-    state.soundEnabled = previousEnabled;
+    state.soundEnabled = window.WeightPlayAudio.setEnabled(previousEnabled);
     if (previousStored === null) localStorage.removeItem(soundKey);
     else localStorage.setItem(soundKey, previousStored);
     updateSoundButton();
@@ -7795,7 +7753,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
         events.push({ event, payload });
       },
     };
-    state.soundEnabled = false;
+    state.soundEnabled = window.WeightPlayAudio.setEnabled(false);
     state.save = {
       bestStage: 10,
       diamonds: 30,
@@ -7821,7 +7779,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     buyGoldenFrame();
     window.WonderAnalytics = previousAnalytics;
     state.save = previousSave;
-    state.soundEnabled = previousSound;
+    state.soundEnabled = window.WeightPlayAudio.setEnabled(previousSound);
     updateProfile();
     updateHud();
     renderTech();
@@ -7844,7 +7802,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     nodes.localeSelect.value = state.locale;
     if (state.locale === "es") repairSpanishDocument();
     state.save = loadSave();
-    state.soundEnabled = readStorage(soundKey) === "on";
+    state.soundEnabled = window.WeightPlayAudio.setEnabled(!window.WeightPlayAudio.isMuted());
     updateProfile();
     bindEvents();
     updateLocale();

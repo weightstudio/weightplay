@@ -77,7 +77,7 @@ function showScene(name){
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-const sound=name=>{if(!document.hidden)window.WonderSound?.play(name);};
+const sound=name=>{if(!document.hidden)window.WeightPlayAudio?.play(name);};
 function saved(){try{const data=localStorage.getItem(saveKey);return data?ChessSession.restore(JSON.parse(data)):null;}catch{return null;}}
 function updateMain(){const copy=mainLocales[locale];challengeButton.textContent=copy.start;$('intro').textContent=copy.intro;$('exit').setAttribute('aria-label',copy.back);const count=document.createElement('bdi');count.dir='ltr';count.textContent=`${progress.cleared.length} / ${challenges.length}`;$('campaignProgress').replaceChildren(document.createTextNode(copy.progress+' · '),count);}
 function persist(){if(currentChallenge){$('saved').textContent='';return;}try{localStorage.setItem(saveKey,JSON.stringify(session.serialize()));$('saved').textContent=text('saved');}catch{$('saved').textContent='';}}
@@ -152,7 +152,7 @@ function finishResult(key,move=null){
   let image;try{image=view?.snapshot();}catch{image=null;}
   stop();outcomeKey=key;showScene('result');
   if(image){$('resultBoard').src=image;(__wpNotifyMeasurement(), $('resultBoard').hidden=false);}
-  updateResult();sound(['cleared','win'].includes(key)?'win':'wrong');$('outcome').focus({preventScroll:true});
+  updateResult();sound(['cleared','win'].includes(key) ? "result.win" : "feedback.error");$('outcome').focus({preventScroll:true});
  };
  if(view){view.setPosition(session.game.board(),[],session.game.isCheck()?session.turn:null);view.setFocus(null,null);view.animateMove(move,finish);}else finish();
 
@@ -199,7 +199,7 @@ view?.setPosition(session.game.board(),selected?session.moves(selected).map(m=>m
 }
 function finishMatch(move){const state=session.status();if(!state.ended)return false;persist();finishResult(state.winner==='w'?'win':state.winner==='b'?'lose':'draw',move);return true;}
 async function reply(){if((currentChallenge&&!currentChallenge.computer)||!active||session.turn!=='b'||session.status().ended)return;busy=true;render();const fence=epoch,fen=session.fen;const answer=await ai.request(fen,{maxDepth:3,timeMs:180,maxNodes:6000});if(fence!==epoch||!active||session.fen!==fen)return;busy=false;if(answer.cancelled)return;if(answer.error||!answer.move){fail(answer.error||'EMPTY_SEARCH_RESULT');return;}const result=session.move(answer.move.from,answer.move.to,answer.move.promotion);if(!result.ok){fail();return;}if(currentChallenge&&settleChallenge(result.move))return;if(!currentChallenge&&finishMatch(result.move))return;persist();render();view?.animateMove(result.move);}
-function commit(from,to,piece){const result=session.move(from,to,piece);if(!result.ok)return result;sound(result.move.captured?'hit':'click');selected=null;if(currentChallenge&&settleChallenge(result.move))return result;if(!currentChallenge&&finishMatch(result.move))return result;persist();render();reply();view?.animateMove(result.move);return result;}
+function commit(from,to,piece){const result=session.move(from,to,piece);if(!result.ok)return result;sound(result.move.captured ? "board.move" : "board.move");selected=null;if(currentChallenge&&settleChallenge(result.move))return result;if(!currentChallenge&&finishMatch(result.move))return result;persist();render();reply();view?.animateMove(result.move);return result;}
 function select(square){if(!active||busy||session.turn!=='w'||$('promotion').open)return;focused=square;const piece=session.game.get(square);if(piece?.color==='w'){selected=square;render();return;}if(!selected){describeFocus();return;}const result=commit(selected,square);if(result?.reason==='ILLEGAL_MOVE')describeFocus(boardLocales[locale].invalid);if(result?.reason==='PROMOTION_REQUIRED'){promotion={from:selected,to:square};$('promoteChoices').replaceChildren();for(const type of result.choices){const button=document.createElement('button');button.dataset.piece=type;button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[type]);button.onclick=()=>{const move=promotion;promotion=null;$('promotion').close();if(move)commit(move.from,move.to,type);};$('promoteChoices').append(button);}(__wpNotifyMeasurement(), $('promotion').showModal());}}
 function describeFocus(message=''){
  const t=boardLocales[locale],parts=[squareDescription(session.game,focused,locale)];

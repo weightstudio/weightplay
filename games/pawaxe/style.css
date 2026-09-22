@@ -51,3 +51,5 @@
 #battle .arena.two-rows .warning{top:144px}
 #battle .loot-toast{bottom:32px;padding:6px;font-size:12px;gap:8px}
 #battle .loot-toast .object-icon{width:36px;height:36px;margin:0}
+#battle .actions .ally-heading{display:flex;justify-content:center;align-items:center;gap:4px;height:18px}
+#battle .ally-heading img{width:18px;height:18px;object-fit:contain}

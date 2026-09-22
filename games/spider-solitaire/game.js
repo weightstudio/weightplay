@@ -630,20 +630,20 @@
   const audio = new SoundEngine(STORAGE.sound);
 
   function syncSharedSound() {
-    if (!window.WonderSound?.isMuted) return;
-    const enabled = !window.WonderSound.isMuted();
+    if (!window.WeightPlayAudio?.isMuted) return;
+    const enabled = !window.WeightPlayAudio.isMuted();
     if (audio.enabled !== enabled) audio.setEnabled(enabled);
   }
 
   function setCardSoundEnabled(enabled) {
     audio.setEnabled(enabled);
-    if (window.WonderSound?.isMuted && window.WonderSound?.setMuted) {
+    if (window.WeightPlayAudio?.isMuted && window.WeightPlayAudio?.setMuted) {
       const shouldMute = !enabled;
-      if (Boolean(window.WonderSound.isMuted()) !== shouldMute) window.WonderSound.setMuted(shouldMute);
+      if (Boolean(window.WeightPlayAudio.isMuted()) !== shouldMute) window.WeightPlayAudio.setMuted(shouldMute);
     }
   }
 
-  window.addEventListener("wonder:audio-volume-change", syncSharedSound);
+  window.addEventListener("weightplay:audio-volume-change", syncSharedSound);
   syncSharedSound();
 
   function loadStats() {
@@ -1805,7 +1805,7 @@
         };
       },
       soundState() {
-        return { enabled: audio.enabled, globalMuted: Boolean(window.WonderSound?.isMuted?.()) };
+        return { enabled: audio.enabled, globalMuted: Boolean(window.WeightPlayAudio?.isMuted?.()) };
       },
     };
   }

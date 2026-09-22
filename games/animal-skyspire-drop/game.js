@@ -42,7 +42,8 @@
     els.stageScreen.append(stageReserve);
   }
   const defaultSave={unlocked:1,stars:{},best:{},shards:0,upgrades:{grip:0,aegis:0,spark:0},tutorial:false,aura:false};
-  let lang=detectLocale(),save=loadSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,raf=0,lastFrame=0,screen="main",sceneGeneration=0,activeTab="towers",resizeObserver=null,lifecycleSuspended=document.hidden,windowFocused=document.hasFocus(),modalOpener=null,resultActionClaimed=false,forgeDecisionReadyAt={},battleSoundOn=true;
+  let lang=detectLocale(),save=loadSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,raf=0,lastFrame=0,screen="main",sceneGeneration=0,activeTab="towers",resizeObserver=null,lifecycleSuspended=document.hidden,windowFocused=document.hasFocus(),modalOpener=null,resultActionClaimed=false,forgeDecisionReadyAt={},battleSoundOn=!window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { battleSoundOn = !window.WeightPlayAudio.isMuted(); });
   const GAME_VERSION="v18";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const STAGE_CARD_POOL_SIZE=9;
@@ -203,7 +204,7 @@
   function closeHelp(){save.tutorial=true;persist();closeBattleModal(els.helpModal,{resume:true})}
   function continueLeave(){closeBattleModal(els.leaveModal,{resume:true})}
   function refreshBattleUtility(){if(!els.battleUtility)return;const label=t("settings");els.battleUtility.textContent=battleSoundOn?"🔊":"🔇";els.battleUtility.setAttribute("aria-label",`${label}: ${battleSoundOn?t("soundOn"):t("soundOff")}`);els.battleUtility.title=label;els.battleUtility.setAttribute("aria-pressed",String(battleSoundOn))}
-  function toggleBattleSound(){battleSoundOn=!battleSoundOn;window.WonderSound?.setMuted?.(!battleSoundOn);refreshBattleUtility();els.feedback.textContent=t(battleSoundOn?"soundOn":"soundOff");track("battle_sound_toggle",{enabled:battleSoundOn})}
+  function toggleBattleSound(){battleSoundOn=window.WeightPlayAudio.setEnabled(!battleSoundOn);window.WeightPlayAudio?.setMuted?.(!battleSoundOn);refreshBattleUtility();els.feedback.textContent=t(battleSoundOn?"soundOn":"soundOff");track("battle_sound_toggle",{enabled:battleSoundOn})}
   function startBattle(index,{skipTutorial=false}={}){unlockSound();stageIndex=Math.max(0,Math.min(29,index));const stage=buildStage(stageIndex);run={stage,current:0,rotation:0,rotationTarget:0,height:2.3,velocity:0,bounce:0.18,transition:0,departing:null,elapsed:0,accum:0,lastHudAt:0,combo:0,bestCombo:0,power:false,shield:save.upgrades.aegis>=2?2:save.upgrades.aegis>=1?1:0,paused:false,ended:false,result:null,lastFeedback:"",firstRotationShown:false,firstRotationFeedbackUntil:0,pendingFeedback:"",dragging:false,dragPointerId:null,lastX:0,keys:new Set(),landings:0,shieldsUsed:0};const first=stage.rings[0];run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-first.offset-first.gap-first.gapWidth/2-.3);
     for(let i=0;i<32&&sectorAtPlayer(first)==="hazard";i++)run.rotation=run.rotationTarget=normAngle(run.rotation+.2);
     (__wpNotifyMeasurement(), els.resultModal.hidden=true);(__wpNotifyMeasurement(), els.leaveModal.hidden=true);(__wpNotifyMeasurement(), els.helpModal.hidden=true);setBattleIsolation(false);els.feedback.textContent="";try{ensure3D();view3d.setStage(stage)}catch(error){release3D();console.error(error);setScreen("stage");showGraphicsError();return}setScreen("battle");syncArenaSize();renderHud();refreshBattleUtility();track("game_start");if(!save.tutorial&&!skipTutorial&&!interfaceValidationRun){(__wpNotifyMeasurement(), run.paused=true);openBattleModal(els.helpModal,els.helpClose)}else{save.tutorial=true;persist();focusArena()}
@@ -261,7 +262,7 @@
 
   function syncArenaSize(){view3d?.resize();if(run&&(run.paused||run.ended))draw()}
   function release3D(){
-    if(audioContext){audioContext.close().catch(()=>{});audioContext=null;}
+    window.WeightPlayAudio?.stopAll({ combatOnly: true });
     view3d?.dispose();view3d=null;
     const fresh=els.arena.cloneNode(false);fresh.dataset.renderer="released";
     els.arena.replaceWith(fresh);els.arena=fresh;
@@ -280,16 +281,8 @@
   function draw(){if(run&&view3d)view3d.render(run,ringAngle,hazardWidthAt,save.aura)}
 
   let audioContext=null;
-  function unlockSound(){if(!battleSoundOn)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(Audio&&!audioContext)audioContext=new Audio();if(audioContext?.state==="suspended")audioContext.resume().catch(()=>{})}catch{}}
-  function soundCue(kind){
-    if(!battleSoundOn||audioContext?.state!=="running")return;
-    const ctx=audioContext,osc=ctx.createOscillator(),gain=ctx.createGain(),now=ctx.currentTime;
-    const pass=kind==="pass"||kind==="comet_smash"||kind==="break";
-    osc.type=kind==="fail"?"triangle":"sine";osc.frequency.setValueAtTime(kind==="fail"?160:pass?480+Math.min(run.combo,5)*70:240,now);
-    osc.frequency.exponentialRampToValueAtTime(kind==="fail"?55:pass?950:340,now+.12);
-    gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.06,now+.012);gain.gain.exponentialRampToValueAtTime(.0001,now+.16);
-    osc.connect(gain);gain.connect(ctx.destination);osc.start(now);osc.stop(now+.18);osc.onended=()=>{osc.disconnect();gain.disconnect()};
-  }
+  function unlockSound() { return window.WeightPlayAudio?.unlock(); }
+  function soundCue(kind) { const cue = {"pass":"movement.land","comet_smash":"impact.stone","break":"impact.wood","fail":"player.hurt","hit":"player.hurt","win":"result.win","finish":"result.win"}[kind]; if (cue) return window.WeightPlayAudio?.play(cue); }
   function setFeedback(message){if(!run)return;if(run.firstRotationFeedbackUntil>performance.now()){run.pendingFeedback=message;return}run.lastFeedback=message;els.feedback.textContent=message}
   function showFirstRotation(inputType){if(!run||run.firstRotationShown)return;run.firstRotationShown=true;run.firstRotationFeedbackUntil=performance.now()+1500;run.pendingFeedback="";run.lastFeedback=t("rotateCue");els.feedback.textContent=run.lastFeedback;track("first_rotate",{input_type:inputType});const owner=run;window.setTimeout(()=>{if(run!==owner||owner.ended)return;owner.firstRotationFeedbackUntil=0;if(owner.pendingFeedback){owner.lastFeedback=owner.pendingFeedback;owner.pendingFeedback="";els.feedback.textContent=owner.lastFeedback}},1500)}
   function rotateBy(delta,inputType="drag"){if(!run||run.paused||run.ended||!Number.isFinite(delta)||Math.abs(delta)<.0001)return;const grip=1+save.upgrades.grip*.18;run.rotationTarget=normAngle(run.rotationTarget+delta*grip*(currentReverse()?-1:1));track("input_action",{action:"rotate",input_type:inputType,direction:delta>0?"right":"left"});showFirstRotation(inputType)}

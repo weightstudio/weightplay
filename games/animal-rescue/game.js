@@ -789,7 +789,7 @@ function startLevel(index) {
   document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
   document.querySelector(".rescue-game")?.classList.remove("weightplay-active-viewport");
   updateBattleScale();
-  window.WonderSound?.play("start");
+  window.WeightPlayAudio?.play("game.start");
   window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: level.id, locale: locale() });
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -854,7 +854,7 @@ function showMain({ focusStart = false } = {}) {
 }
 
 function showLocked() {
-  window.WonderSound?.play("wrong");
+  window.WeightPlayAudio?.play("feedback.error");
   const original = stageSelectTitle.textContent;
   stageSelectTitle.textContent = t("lockedToast");
   setTimeout(() => {
@@ -1000,12 +1000,12 @@ function moveTo(pos) {
   state.moves += (level.mud || []).some((position) => keyOf(position) === key) ? 2 : 1;
   if (state.fruits.delete(key)) {
     state.collected += 1;
-    window.WonderSound?.play("coin");
+    window.WeightPlayAudio?.play("reward.coin");
   } else if (state.keys.delete(key)) {
     state.keysCollected += 1;
-    window.WonderSound?.play("coin");
+    window.WeightPlayAudio?.play("reward.coin");
   } else {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
   }
   if ((level.gates || []).some((position) => keyOf(position) === key)) state.openedGates.add(key);
   if (key === keyOf(level.home)) finishLevel();
@@ -1019,7 +1019,7 @@ function undoMove() {
   state.path.pop();
   state.position = [...state.path[state.path.length - 1]];
   recomputePathState();
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   renderBoard(true);
   updateHud();
 }
@@ -1053,7 +1053,7 @@ function resetLevel() {
 }
 
 function rejectMove(messageKey = "wrongTile") {
-  window.WonderSound?.play("wrong");
+  window.WeightPlayAudio?.play("feedback.error");
   hintText.textContent = t(messageKey);
   scheduleRouteHintReset(900);
 }
@@ -1113,7 +1113,7 @@ function finishLevel() {
   setResultOwnership(true);
   document.body.classList.add("rescue-result");
   requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
-  window.WonderSound?.play("win");
+  window.WeightPlayAudio?.play("result.win");
   window.WonderAnalytics?.track("game_complete", {
     game_id: GAME_ID,
     stage: level.id,
@@ -1142,7 +1142,7 @@ function openLeaveDecision() {
   (__wpNotifyMeasurement(), leavePanel.classList.remove("hidden"));
   setResultOwnership(true);
   requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll:true }));
-  window.WonderSound?.play("click");
+  window.WeightPlayAudio?.play("ui.click");
   window.WonderAnalytics?.track("game_quit_prompt", { game_id:GAME_ID, stage:state.level.id, moves:state.moves, fruit:state.collected, locale:locale() });
 }
 

@@ -797,7 +797,7 @@
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     hud.classList.remove("hidden");
     lastTime = performance.now();
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
     exitSharedPlayViewport();
     updateDashFrame();
     syncSharedScene("battle");
@@ -917,7 +917,7 @@
         state.obstaclesHit += 1;
         if (obstacle.kind === "puddle" && state.route.mechanics.includes("mud")) state.mudSlow = 1.25;
         addSpark(state.x, state.y - 60, "-80", "#ef4444");
-        window.WonderSound?.play("wrong");
+        window.WeightPlayAudio?.play("feedback.error");
       }
     }
     for (const coin of state.coins) {
@@ -928,7 +928,7 @@
         state.bestCombo = Math.max(state.bestCombo, state.combo - 1);
         state.coinsCollected += 1;
         addSpark(coin.x, coin.y, `+${50 * (state.combo - 1)}`, "#fbbf24");
-        window.WonderSound?.play("success");
+        window.WeightPlayAudio?.play("feedback.success");
       }
     }
   }
@@ -951,7 +951,7 @@
     state.lanePulseLane = nextLane;
     state.lanePulseDir = Math.sign(delta);
     laneStatus.textContent = t("laneMoved", { lane: t(["laneLeft", "laneCenter", "laneRight"][nextLane]) });
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("ui.click");
   }
 
   function finishRun() {
@@ -988,7 +988,7 @@
     canvasWrap.setAttribute("aria-hidden", "true");
     (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
-    window.WonderSound?.play("win");
+    window.WeightPlayAudio?.play("result.win");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
       score: state.score,

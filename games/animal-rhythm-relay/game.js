@@ -45,7 +45,8 @@
     try { saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale") || ""; } catch (_) { /* session-safe */ }
     return normalizeLocale(window.WonderI18n?.actualLocale?.() || saved || document.documentElement.lang);
   };
-  let locale = readInitialLocale(), station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = true, ready = false, liveStatusKey = "timingTip", liveStatusGood = false;
+  let locale = readInitialLocale(), station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = !window.WeightPlayAudio.isMuted(), ready = false, liveStatusKey = "timingTip", liveStatusGood = false;
+  window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
   const t = (key, vars = {}) => { const source = key === "completeBody" ? (COMPLETE_BODY[locale] || COMPLETE_BODY.en) : ((COPY[locale] || COPY.en)[key] || COPY.en[key] || key); const normalized = source.replaceAll(" / 4", " / 4"); return Object.entries(vars).reduce((value, [name, replacement]) => value.replaceAll(`{${name}}`, replacement), normalized); };
   const a11y = (key) => (ACCESSIBLE_LABELS[locale] || ACCESSIBLE_LABELS.en)[key];
   const track = (event, details = {}) => {
@@ -56,8 +57,8 @@
   function readBest() { try { return Number(localStorage.getItem("animalRhythmRelayBest") || 0); } catch { return 0; } }
   function saveBest(value) { try { localStorage.setItem("animalRhythmRelayBest", String(value)); } catch { /* session-safe */ } }
   function announce(key, good = false) { liveStatusKey = key; liveStatusGood = Boolean(good); $("battleStatus").textContent = t(key); $("battleStatus").style.color = good ? "#ffe59b" : "#fff"; }
-  function setSound(next) { sound = Boolean(next); document.querySelectorAll("[data-sound-toggle]").forEach((button) => { button.textContent = t(sound ? "soundOn" : "soundOff"); button.setAttribute("aria-pressed", String(sound)); }); }
-  function beep(frequency) { if (!sound) return; try { const audio = new AudioContext(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = frequency; gain.gain.value = .035; oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + .07); oscillator.addEventListener("ended", () => audio.close(), { once:true }); } catch { /* audio is optional */ } }
+  function setSound(next) { sound = window.WeightPlayAudio.setEnabled(Boolean(next)); document.querySelectorAll("[data-sound-toggle]").forEach((button) => { button.textContent = t(sound ? "soundOn" : "soundOff"); button.setAttribute("aria-pressed", String(sound)); }); }
+  function beep(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function renderResult() {
     if ($("resultCard").hidden) return;
     $("resultTitle").textContent = t("completeTitle");
@@ -80,9 +81,9 @@
   function finishRelay() { clearInterval(ticker); best = Math.max(best, combo); saveBest(best); $("resultCard").hidden = false; renderResult(); $("badgeLabel").textContent = t("badge", { n: 1 }); $("retryButton").focus(); track("game_complete", { combo, best }); }
   function tap(index) {
     if ($("battleScreen").hidden || station >= 4) return;
-    if (index !== station) { combo = 0; announce("wrong"); beep(170); renderBattle(); return; }
+    if (index !== station) { combo = 0; announce("wrong"); beep("feedback.error"); renderBattle(); return; }
     const phase = ((performance.now() - startedAt) % 1600) / 1600; const accurate = phase > .36 && phase < .64;
-    combo += accurate ? 1 : 0; announce(accurate ? "good" : phase <= .36 ? "early" : "late", accurate); beep(accurate ? 720 : 310); station += 1; renderBattle(); track("relay_tap", { station, accurate, timing: accurate ? "good" : phase <= .36 ? "early" : "late" });
+    combo += accurate ? 1 : 0; announce(accurate ? "good" : phase <= .36 ? "early" : "late", accurate); beep(accurate ? "feedback.success" : "feedback.error"); station += 1; renderBattle(); track("relay_tap", { station, accurate, timing: accurate ? "good" : phase <= .36 ? "early" : "late" });
     if (station >= 4) window.setTimeout(finishRelay, 260);
   }
   $("startButton").addEventListener("click", startRelay); $("retryButton").addEventListener("click", startRelay); $("homeButton").addEventListener("click", showMain); $("battleBack").addEventListener("click", showMain);

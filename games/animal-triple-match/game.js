@@ -323,7 +323,7 @@
     pending.runRef.matches += groups.length;
     pending.runRef.paused = false;
     track("trio_match", { stage: stageIndex + 1, count: groups.length, matches: pending.runRef.matches, outcome: "settled" });
-    els.feedback.textContent = t("matched"); sound("match");
+    els.feedback.textContent = t("matched"); sound("puzzle.match");
     if (firstTrio) showFirstTrioBeat();
     if (pending.runRef.config.shiftEvery && pending.runRef.moves % pending.runRef.config.shiftEvery === 0) shiftRemaining();
     checkEnd(); renderRun();
@@ -925,7 +925,7 @@
       if (run !== battleRun || screen !== "battle") return;
       fitCanvas();
     }));
-    sound("start");
+    sound("game.start");
     // The governed interface journey must reach the playable Battle surface
     // without optional onboarding layers intercepting its hit-test probes.
     // The Help button still exposes the same tutorial for an explicit player
@@ -1076,12 +1076,12 @@
     const piece = run.pieces.find(p => p.id === id);
     if (!piece || isBlocked(piece)) return;
     track("piece_tap", { stage: stageIndex + 1, piece_type: piece.type, input_type: inputType, outcome: piece.vine || piece.crystal || piece.mystery ? "obstacle" : "collect" });
-    if (piece.vine) { piece.vine = false; els.feedback.textContent = t("tangled"); sound("crack"); renderRun(); return; }
-    if (piece.crystal) { piece.crystal = false; els.feedback.textContent = t("cracked"); sound("crack"); renderRun(); return; }
-    if (piece.mystery) { piece.mystery = false; els.feedback.textContent = t("revealed"); sound("reveal"); renderRun(); return; }
+    if (piece.vine) { piece.vine = false; els.feedback.textContent = t("tangled"); sound("impact.wood"); renderRun(); return; }
+    if (piece.crystal) { piece.crystal = false; els.feedback.textContent = t("cracked"); sound("impact.wood"); renderRun(); return; }
+    if (piece.mystery) { piece.mystery = false; els.feedback.textContent = t("revealed"); sound("card.flip"); renderRun(); return; }
     run.history.push(snapshot()); if (run.history.length > 12) run.history.shift();
     piece.tray = true; run.tray.push(piece); run.peakTray = Math.max(run.peakTray, run.tray.length); run.lastTrayId = piece.id; run.moves++;
-    sound("pick"); resolveMatch(piece.type);
+    sound("board.move"); resolveMatch(piece.type);
   }
   function resolveMatch(type) {
     const pendingIds = pendingPieceIds();
@@ -1102,7 +1102,7 @@
   function shiftRemaining() {
     const random = rng(5501 + stageIndex * 97 + run.moves);
     run.pieces.filter(p => p.active && !p.tray).forEach(p => { p.x = Math.min(.96, Math.max(.04, p.x + (random() - .5) * .2)); p.y = Math.min(.9, Math.max(.02, p.y + (random() - .5) * .13)); });
-    els.feedback.textContent = t("shuffled"); sound("shuffle");
+    els.feedback.textContent = t("shuffled"); sound("card.shuffle");
   }
   function checkEnd() { if (!run.pieces.some(p => p.active && !p.tray) && run.tray.length === 0) finish(true); }
   function commitResultDecision(action) {
@@ -1143,13 +1143,13 @@
     els.nextBtn.classList.toggle("primary", canAdvance);
     (__wpNotifyMeasurement(), els.resultStages.classList.toggle("primary", !canAdvance));
     openModal(els.resultModal, canAdvance ? els.nextBtn : els.resultStages);
-    sound(win ? "win" : "fail"); track(win ? "game_complete" : "game_fail", { stage: stageIndex + 1, stars });
+    sound(win ? "result.win" : "result.lose"); track(win ? "game_complete" : "game_fail", { stage: stageIndex + 1, stars });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function undo() {
     if (!run.history.length || run.tools.undo <= 0 || run.paused) { els.feedback.textContent = t("noUndo"); return; }
-    run.tools.undo--; restore(run.history.pop()); sound("undo");
+    run.tools.undo--; restore(run.history.pop()); sound("board.undo");
   }
   function magnet() {
     if (run.tools.magnet <= 0 || run.paused) return;
@@ -1160,7 +1160,7 @@
     run.tools.magnet--; renderTools();
     els.board.querySelector(`[data-piece="${target.id}"]`)?.classList.add("hint");
     els.feedback.textContent = pairFinderFeedback(pieceName(target));
-    sound("hint");
+    sound("feedback.hint");
   }
   function shuffleTool() {
     if (run.tools.shuffle <= 0 || run.paused) return;
@@ -1168,7 +1168,7 @@
     const random = rng(Date.now() ^ (stageIndex + 1));
     const open = run.pieces.filter(p => p.active && !p.tray);
     shuffle(open, random).forEach((p, i) => { p.layer = i % Math.max(2, Math.min(5, Math.ceil(open.length / 12))); p.x = random(); p.y = random() * .88; });
-    els.feedback.textContent = t("shuffled"); sound("shuffle"); renderRun();
+    els.feedback.textContent = t("shuffled"); sound("card.shuffle"); renderRun();
   }
 
   function isolateBattle(value) {
@@ -1192,24 +1192,8 @@
     const first = buttons[0], last = buttons.at(-1);
     if ((event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) { event.preventDefault(); (event.shiftKey ? last : first).focus(); }
   }
-  function sound(kind) {
-    let volume = 0.8;
-    try {
-      volume = Math.max(0, Math.min(100, Number(localStorage.getItem("weightPlayEffectsVolume") ?? 80))) / 100;
-    } catch {}
-    // Shared preferences own sound; a legacy per-game save must not contradict them.
-    if (window.WonderSound) volume = window.WonderSound.getEffectsVolume() / 100;
-    if ((window.WonderSound ? window.WonderSound.isMuted() : !save.sound) || volume <= 0) return;
-    try {
-      audio ||= new (window.AudioContext || window.webkitAudioContext)();
-      const tones = { start:[392,.08],pick:[520,.05],match:[784,.18],crack:[220,.08],reveal:[660,.1],shuffle:[330,.12],undo:[280,.08],hint:[880,.1],win:[988,.35],fail:[170,.28] };
-      const [frequency, duration] = tones[kind] || [440,.06], osc = audio.createOscillator(), gain = audio.createGain();
-      osc.type = kind === "fail" ? "sawtooth" : "sine"; osc.frequency.value = frequency; gain.gain.setValueAtTime(.0001, audio.currentTime);
-      gain.gain.exponentialRampToValueAtTime(Math.max(.0001, .12 * volume), audio.currentTime + .01); gain.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + duration);
-      osc.connect(gain).connect(audio.destination); osc.start(); osc.stop(audio.currentTime + duration + .03);
-    } catch {}
-  }
-  window.addEventListener("wonder:audio-volume-change", event => {
+  function sound(cue) { return window.WeightPlayAudio?.play(cue); }
+  window.addEventListener("weightplay:audio-volume-change", event => {
     if (event.detail?.channel !== "effects") return;
     save.sound = Number(event.detail.value) > 0;
     persist();
@@ -1258,7 +1242,7 @@
   els.retryBtn.addEventListener("click", () => commitResultDecision(() => { track("retry", { stage: stageIndex + 1, outcome: "result_retry" }); __wpReplayStart(() => startBattle(stageIndex, true)); }));
   els.nextBtn.addEventListener("click", () => commitResultDecision(() => { track("next_stage", { stage: stageIndex + 2, from_stage: stageIndex + 1, outcome: "result_next" }); startBattle(Math.min(29, stageIndex + 1), true); }));
   els.resultStages.addEventListener("click", () => commitResultDecision(() => { track("return_stages", { stage: stageIndex + 1, outcome: "result_stages" }); cancelPendingMatch(); (__wpNotifyMeasurement(), els.resultModal.hidden = true); isolateBattle(false); run = null; setScreen("stage"); }));
-  els.soundBtn.addEventListener("click", () => { save.sound = !save.sound; persist(); renderRun(); if (save.sound) sound("pick"); });
+  els.soundBtn.addEventListener("click", () => { save.sound = !save.sound; persist(); renderRun(); if (save.sound) sound("board.move"); });
   els.tutorialModal.addEventListener("keydown", e => trap(e, () => closeModal(els.tutorialModal, els.helpBtn)));
   els.firstPlanModal.addEventListener("keydown", e => trap(e, dismissFirstPlan));
   els.leaveModal.addEventListener("keydown", e => trap(e, () => closeModal(els.leaveModal, els.battleBack)));

@@ -989,11 +989,11 @@
   }
 
   function playSound(name) {
-    window.WonderSound?.play(name);
+    window.WeightPlayAudio?.play(name);
   }
 
   function updateSoundButton() {
-    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
     nodes.menuSoundBtn.textContent = t(muted ? "soundOff" : "soundOn");
     nodes.menuSoundBtn.setAttribute("aria-label", t(muted ? "enableSound" : "disableSound"));
     nodes.menuSoundBtn.setAttribute("aria-pressed", String(!muted));
@@ -1648,7 +1648,7 @@
       returnedToMain = false;
     }
     track("game_start", { zone: zone.id, stage: zone.stage, entry_action: entryAction, input_type: run.lastInputType });
-    playSound("start");
+    playSound("game.start");
     canvas.focus({ preventScroll: true });
     restartFishingLoop();
 
@@ -1755,7 +1755,7 @@
     renderMenu();
     primaryResultAction.focus({ preventScroll: true });
     window.requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
-    playSound(won ? "win" : "wrong");
+    playSound(won ? "result.win" : "result.lose");
     track("result", { zone: run.zone.id, stage: run.zone.stage, outcome: won ? "win" : "loss", catches: run.catches, newFish: run.newFish, notes: run.notes, input_type: run.lastInputType });
     track("game_complete", { zone: run.zone.id, stage: run.zone.stage, outcome: won ? "win" : "loss", won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore, input_type: run.lastInputType });
 
@@ -1815,7 +1815,7 @@
     updateTensionGuide();
     updateSonarButton();
     track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id, stage: run.zone.stage, input_type: run.lastInputType });
-    playSound("hit");
+    playSound("movement.hook");
   }
 
   function landFish() {
@@ -1846,7 +1846,7 @@
     updateTensionGuide();
     updateSonarButton();
     if (run.catches >= run.zone.goal) finishRun(true);
-    else playSound(isNew ? "upgrade" : "success");
+    else playSound(isNew ? "reward.upgrade" : "feedback.success");
   }
 
   function fishById(id) {
@@ -2068,7 +2068,7 @@
     nodes.hintText.textContent = lineBreakRecoveryText();
     updateTensionGuide();
     updateSonarButton();
-    playSound("wrong");
+    playSound("feedback.error");
     track("line_break", { zone: run.zone.id, stage: run.zone.stage, input_type: run.lastInputType });
   }
 
@@ -2267,7 +2267,7 @@
           run.lastGustCycle = gustCycle;
           run.tension += (gustCycle % 2 ? 1 : -1) * (run.zone.rule === "abyss" ? 18 : 13);
           run.hazardFlash = 1.1;
-          playSound("wallHit");
+          playSound("alert.warning");
           warningPlayedThisStep = true;
         }
       }
@@ -2275,7 +2275,7 @@
       const { safe } = tensionRange();
       if (safe) run.safeReelTime += dt;
       else run.dangerReelTime += dt;
-      if (!safe && run.tensionSafe && !warningPlayedThisStep) playSound("wallHit");
+      if (!safe && run.tensionSafe && !warningPlayedThisStep) playSound("alert.warning");
       run.tensionSafe = safe;
       if (!safe) run.struggle += dt;
       else run.struggle = Math.max(0, run.struggle - dt * 1.8);
@@ -2529,7 +2529,7 @@
       updateTensionGuide();
       updateSonarButton();
       track("cast", { power: Math.round(run.castPower), zone: run.zone.id, stage: run.zone.stage, fish: run.hookFish.id, input_type: run.lastInputType });
-      playSound("shoot");
+      playSound("movement.release");
     }
   }
 
@@ -2678,7 +2678,7 @@
       clearDiamondPurchaseConfirmation();
       renderMenu();
       nodes.hintText.textContent = t("needDiamonds", { cost });
-      playSound("wrong");
+      playSound("feedback.error");
       return;
     }
     if (diamondPurchasePending !== type) {
@@ -2691,14 +2691,14 @@
     clearDiamondPurchaseConfirmation();
     if (!window.WeightPlayWallet || !window.WeightPlayWallet.spendDiamonds(cost)) {
       nodes.hintText.textContent = t("needDiamonds", { cost });
-      playSound("wrong");
+      playSound("feedback.error");
       return;
     }
     if (type === "lure") save.lureReady = true;
     else save.sonarReady = true;
     saveProgress();
     renderMenu();
-    playSound("coin");
+    playSound("reward.coin");
     track(type === "lure" ? "rare_lure_purchase" : "sonar_purchase", { cost, item: type, input_type: actionInputType });
   }
 
@@ -2709,7 +2709,7 @@
     if (!item || level >= 5) return;
     const cost = item.cost * level;
     if (save.notes < cost) {
-      playSound("wrong");
+      playSound("feedback.error");
       return;
     }
     save.notes -= cost;
@@ -2717,7 +2717,7 @@
     saveProgress();
     renderMenu();
     if (restoreFocus) restoreGearFocus(id);
-    playSound("upgrade");
+    playSound("reward.upgrade");
     track("gear_upgrade", { gear: id, level: level + 1, input_type: actionInputType });
   }
 
@@ -2759,7 +2759,7 @@
     if (event.repeat && event.key === " ") event.preventDefault();
   }, true);
   nodes.startBtn.addEventListener("click", () => {
-    playSound("click");
+    playSound("ui.click");
     state = "stage";
     showPanel("stage");
     renderMenu();
@@ -2771,7 +2771,7 @@
     track("main_return", { from: state, input_type: eventInputType(event) });
     returnedToMain = true;
     clearDiamondPurchaseConfirmation();
-    playSound("click");
+    playSound("ui.click");
     state = "main";
     showPanel("main");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -2785,7 +2785,7 @@
   });
   nodes.leaveKeepBtn.addEventListener("click", () => setLeaveDecision(false));
   nodes.leaveConfirmBtn.addEventListener("click", () => {
-    playSound("click");
+    playSound("ui.click");
     setLeaveDecision(false, { restoreFocus: false });
     run = null;
     state = "stage";
@@ -2831,7 +2831,7 @@
   }));
   nodes.resultMenuBtn.addEventListener("click", (event) => commitResultDecision(() => {
     track("stages", { from: "result", zone: run?.zone?.id, stage: run?.zone?.stage, input_type: eventInputType(event) });
-    playSound("click");
+    playSound("ui.click");
     state = "stage";
     showPanel("stage");
     renderMenu();
@@ -2882,7 +2882,7 @@
     updateTensionGuide();
     updateSonarButton();
     canvas.focus({ preventScroll: true });
-    playSound("coin");
+    playSound("reward.coin");
     track("sonar_use", {
       zone: run.zone.id,
       fish: run.hookFish.id,
@@ -2909,11 +2909,11 @@
     applyLocale();
   });
   nodes.menuSoundBtn.addEventListener("click", () => {
-    window.WonderSound?.unlock?.();
-    const nextMuted = !Boolean(window.WonderSound?.isMuted?.());
-    window.WonderSound?.setMuted?.(nextMuted);
+    window.WeightPlayAudio?.unlock?.();
+    const nextMuted = !Boolean(window.WeightPlayAudio?.isMuted?.());
+    window.WeightPlayAudio?.setMuted?.(nextMuted);
     updateSoundButton();
-    if (!nextMuted) playSound("click");
+    if (!nextMuted) playSound("ui.click");
   });
   canvas.addEventListener("pointerdown", startCharge);
   canvas.addEventListener("pointermove", (evt) => {

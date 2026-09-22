@@ -256,53 +256,25 @@
     constructor(storageKey = "card_games_sound_v1") {
       this.storageKey = storageKey;
       this.enabled = true;
-      try { this.enabled = localStorage.getItem(storageKey) !== "0"; } catch (_error) { }
+      this.enabled = !window.WeightPlayAudio?.isMuted();
       this.ctx = null;
     }
 
-    ensureContext() {
-      if (!this.enabled || this.ctx) return;
-      try {
-        const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContextCtor) return;
-        this.ctx = new AudioContextCtor();
-        if (this.ctx.state === "suspended") this.ctx.resume().catch(() => {});
-      } catch (_error) {
-        this.ctx = null;
-      }
-    }
-
+    ensureContext() { return window.WeightPlayAudio?.unlock(); }
     setEnabled(value) {
       this.enabled = Boolean(value);
-      try { localStorage.setItem(this.storageKey, this.enabled ? "1" : "0"); } catch (_error) { }
+      window.WeightPlayAudio?.setMuted(!this.enabled);
+      try { localStorage.setItem(this.storageKey, this.enabled ? "1" : "0"); } catch (_) { }
     }
+    beep(cue = "card.place") { return window.WeightPlayAudio?.play(cue); }
+    deal() { return this.beep("card.draw"); }
+    draw() { return this.deal(); }
+    place() { return this.beep("card.place"); }
+    flip() { return this.beep("card.flip"); }
+    complete() { return this.beep("feedback.success"); }
+    win() { return this.beep("result.win"); }
+    reject() { return this.beep("feedback.error"); }
 
-    beep({ frequency = 500, duration = 90, type = "triangle", gain = 0.12 } = {}) {
-      if (!this.enabled) return;
-      this.ensureContext();
-      if (!this.ctx) return;
-      try {
-        const start = this.ctx.currentTime;
-        const oscillator = this.ctx.createOscillator();
-        const amplifier = this.ctx.createGain();
-        oscillator.type = type;
-        amplifier.gain.setValueAtTime(0, start);
-        amplifier.gain.linearRampToValueAtTime(gain, start + 0.008);
-        amplifier.gain.exponentialRampToValueAtTime(0.0001, start + Math.max(0.02, duration) / 1000);
-        oscillator.frequency.setValueAtTime(frequency, start);
-        oscillator.connect(amplifier).connect(this.ctx.destination);
-        oscillator.start(start);
-        oscillator.stop(start + duration / 1000);
-      } catch (_error) { }
-    }
-
-    deal() { this.beep({ frequency: 330, duration: 70, type: "sawtooth", gain: 0.07 }); }
-    draw() { this.deal(); }
-    place() { this.beep({ frequency: 520, duration: 75, type: "triangle", gain: 0.11 }); }
-    flip() { this.beep({ frequency: 660, duration: 85, type: "triangle", gain: 0.08 }); }
-    complete() { this.beep({ frequency: 780, duration: 150, type: "sine", gain: 0.13 }); }
-    win() { this.beep({ frequency: 740, duration: 120, type: "square", gain: 0.15 }); }
-    reject() { this.beep({ frequency: 180, duration: 120, type: "square", gain: 0.08 }); }
   }
 
   root.WPCardEngine = Object.freeze({

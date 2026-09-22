@@ -1202,7 +1202,7 @@
     // Flip the card
     card.classList.add("flipped");
     updateCardAccessibility(card, "revealed");
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("card.flip");
     state.selectedCards.push(card);
     
     if (state.selectedCards.length === 2) {
@@ -1248,7 +1248,7 @@
         setTimeout(() => comboContainer.style.animation = "", 10);
       }
       
-      window.WonderSound?.play("success");
+      window.WeightPlayAudio?.play("puzzle.match");
       
       // Analytics: match pair
       window.WonderAnalytics?.track("level_complete", {
@@ -1275,7 +1275,7 @@
       comboContainer.classList.add("hidden");
       feedbackText.textContent = symbol1 === symbol2 && !followsOrder ? t("wrongOrder") : t("tipMismatch");
       
-      window.WonderSound?.play("wrong");
+      window.WeightPlayAudio?.play("feedback.error");
       
       scheduleRoundTask(() => {
         card1.classList.remove("flipped");
@@ -1349,7 +1349,7 @@
     (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     primaryAction.focus({ preventScroll: true });
     
-    window.WonderSound?.play("win");
+    window.WeightPlayAudio?.play("result.win");
     
     // Analytics Level Complete
     window.WonderAnalytics?.track("game_complete", {
@@ -1389,7 +1389,7 @@
     (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     againBtn.focus({ preventScroll: true });
     
-    window.WonderSound?.play("wrong");
+    window.WeightPlayAudio?.play("feedback.error");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "lose"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -1444,7 +1444,7 @@
   });
   resultPanel.addEventListener("keydown", rejectRepeatedActivation, true);
   startBtn.addEventListener("click", () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("card.flip");
     showStageSelect();
   });
   stageBackBtn.addEventListener("click", showMain);
@@ -1460,12 +1460,12 @@
   });
 
   localeSelect.addEventListener("change", () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("card.flip");
     window.WonderI18n?.setLocale(localeSelect.value);
   });
 
   localeSelect.addEventListener("input", () => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("card.flip");
     window.WonderI18n?.setLocale(localeSelect.value);
   });
 
@@ -1486,7 +1486,7 @@
   }
 
   againBtn.addEventListener("click", () => commitResultAction(() => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("card.flip");
     window.WonderAnalytics?.track("game_restart", {
       game_id: GAME_ID,
       stage: stages[state.stageIndex].id,
@@ -1498,20 +1498,20 @@
   nextLevelBtn.addEventListener("click", () => {
     if (nextLevelBtn.disabled) return;
     commitResultAction(() => {
-      window.WonderSound?.play("click");
+      window.WeightPlayAudio?.play("card.flip");
       startStage(Math.min(state.stageIndex + 1, stages.length - 1));
     });
   });
 
   stageSelectBtn.addEventListener("click", () => commitResultAction(() => {
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("card.flip");
     showStageSelect();
   }));
 
   document.querySelector("#homeLink").addEventListener("click", (event) => {
     if (document.body.classList.contains("memory-main")) return;
     event.preventDefault();
-    window.WonderSound?.play("click");
+    window.WeightPlayAudio?.play("card.flip");
     if (document.body.classList.contains("memory-playing")) showStageSelect(state.stageIndex);
     else showMain();
   });

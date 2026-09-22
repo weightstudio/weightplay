@@ -585,15 +585,15 @@
       if(!state.chapter2Started){
         state.chapter2Started=true;lineKey="chapter2Briefing";showToast(t("moonfallUnlocked"),2600);
       }else if(moonfallDefeated()>=moonfallEnemySeeds.length&&state.relays.size>=RELAY_NODES.length&&!state.storyComplete){
-        state.storyComplete=true;lineKey="chapter2Debrief";playTone(820,.3);
+        state.storyComplete=true;lineKey="chapter2Debrief";playTone("game.checkpoint",.3);
       }else if(state.storyComplete&&!state.chapter3Started){
         state.chapter3Started=true;lineKey="chapter3Briefing";showToast(t("ashfallUnlocked"),2600);
       }else if(state.ashfallReturned&&!state.chapter3Complete){
-        state.chapter3Complete=true;lineKey=state.ashfallChoice==="broadcast"?"chapter3DebriefBroadcast":"chapter3DebriefProtect";playTone(880,.35);
+        state.chapter3Complete=true;lineKey=state.ashfallChoice==="broadcast"?"chapter3DebriefBroadcast":"chapter3DebriefProtect";playTone("game.checkpoint",.35);
       }else if(state.chapter3Complete&&!state.chapter4Started){
         state.chapter4Started=true;lineKey=state.ashfallChoice==="broadcast"?"chapter4BriefingBroadcast":"chapter4BriefingProtect";showToast(t("lunarUnlocked"),2600);
       }else if(state.lunarReturned&&!state.chapter4Complete){
-        state.chapter4Complete=true;lineKey=state.lunarChoice==="answer"?"chapter4DebriefAnswer":"chapter4DebriefShield";playTone(920,.4);
+        state.chapter4Complete=true;lineKey=state.lunarChoice==="answer"?"chapter4DebriefAnswer":"chapter4DebriefShield";playTone("reward.unlock",.4);
       }else if(state.chapter4Started){
         lineKey=state.chapter4Complete?"chapter4After":"chapter4Reminder";
       }else if(state.chapter3Started){
@@ -981,7 +981,7 @@
     if(moonfallDefeated()<moonfallEnemySeeds.length){showToast(t("relayLocked"),2200);return}
     const expected=RELAY_NODES.find(node=>!state.relays.has(node.id));
     if(expected&&relay.id!==expected.id){showToast(t("relaySequenceLocked",{record:t(expected.name)}),2400);return}
-    state.relays.add(relay.id);gainXp(24);playTone(660,.2);
+    state.relays.add(relay.id);gainXp(24);playTone("mechanism.unlock",.2);
     showToast(t("relayActivated",{n:state.relays.size}),2200);
     currentDialogue=`relay-${relay.id}`;(__wpNotifyMeasurement(), paused=true);
     nodes.speaker.textContent=t(relay.name);
@@ -990,7 +990,7 @@
     saveGame();updateObjective();updateHud();
   }
   function activateAshfallNode(node) {
-    state.ashfallFindings.add(node.id);gainXp(node.id==="core"?36:20);playTone(node.id==="core"?760:610,.2);
+    state.ashfallFindings.add(node.id);gainXp(node.id==="core"?36:20);playTone("mechanism.unlock",.2);
     currentDialogue=`ashfall-${node.id}`;(__wpNotifyMeasurement(), paused=true);
     nodes.speaker.textContent=t(node.name);
     nodes.dialogueText.textContent=t(node.message);
@@ -1014,7 +1014,7 @@
   function activateLunarNode(node) {
     const choosing=node.id==="core"&&activeQuest()?.quest.type==="lunarChoice";
     if(!choosing){
-      state.lunarFindings.add(node.id);gainXp(node.id==="core"?42:24);playTone(node.id==="core"?820:680,.22);
+      state.lunarFindings.add(node.id);gainXp(node.id==="core"?42:24);playTone("mechanism.unlock",.22);
     }
     currentDialogue=choosing?"lunar-choice":`lunar-${node.id}`;(__wpNotifyMeasurement(), paused=true);
     nodes.speaker.textContent=t(node.name);
@@ -1058,7 +1058,7 @@
     recordFirstCombatAction("attack",inputType);
     canvas.dataset.lastAction="attack";
     canvas.dataset.slashDirection=state.facing;
-    attackCooldown=.32;swingTimer=.18;playTone(150,.07);const v=facingVector(),point={x:state.x+v.x*62,y:state.y+v.y*62};
+    attackCooldown=.32;swingTimer=.18;playTone("weapon.sword.swing",.07);const v=facingVector(),point={x:state.x+v.x*62,y:state.y+v.y*62};
     enemies.forEach(enemy=>{if(enemy.mapId===state.mapId&&!enemy.dead&&(!enemy.hidden||trueVision)&&distance(point,enemy)<78)damageEnemy(enemy,effectiveAttack())});
     if(state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15&&distance(point,boss)<105)damageBoss(effectiveAttack());
   }
@@ -1066,7 +1066,7 @@
     if(isSimulationPaused()||skillCooldown>0)return;
     recordFirstCombatAction("skill",inputType);
     canvas.dataset.lastAction="skill";
-    skillCooldown=2.4;const v=facingVector();projectiles.push({x:state.x+v.x*40,y:state.y+v.y*40,vx:v.x*470,vy:v.y*470,life:1.3,damage:effectiveAttack()*.78});playTone(520,.1);
+    skillCooldown=2.4;const v=facingVector();projectiles.push({x:state.x+v.x*40,y:state.y+v.y*40,vx:v.x*470,vy:v.y*470,life:1.3,damage:effectiveAttack()*.78});playTone("magic.cast",.1);
   }
   function toggleVision() {
     if(isSimulationPaused())return;
@@ -1078,7 +1078,7 @@
     recordFirstCombatHit("enemy");
     enemy.hp-=amount;state.enemyHp[enemy.id]=Math.max(0,enemy.hp);effects.push({x:enemy.x,y:enemy.y,index:10,size:52,life:.35});
     if(enemy.hp<=0){
-      enemy.dead=true;state.defeated.add(enemy.id);gainXp(12+(enemy.id>7?6:0));playTone(240,.12);
+      enemy.dead=true;state.defeated.add(enemy.id);gainXp(12+(enemy.id>7?6:0));playTone("weapon.sword.hit",.12);
       updateObjective();saveGame();
     }else saveGame();
   }
@@ -1092,7 +1092,7 @@
     let levels=0;
     while(state.xp>=xpNeeded()){
       state.xp-=xpNeeded();state.level++;state.maxHp+=8;state.attack+=2;state.defense+=1;state.hp=state.maxHp;levels++;
-      if(announce){showToast(t("levelUp",{n:state.level}),2400);playTone(720,.18)}
+      if(announce){showToast(t("levelUp",{n:state.level}),2400);playTone("reward.upgrade",.18)}
     }
     return levels;
   }
@@ -1102,7 +1102,7 @@
   }
   function hurt(amount) {
     if(invulnerability>0||isSimulationPaused())return;
-    state.hp-=Math.max(1,amount-effectiveDefense());invulnerability=.75;playTone(90,.12);
+    state.hp-=Math.max(1,amount-effectiveDefense());invulnerability=.75;playTone("player.hurt",.12);
     if(state.hp<=0){
       track("player_defeat",{map_id:state.mapId,quests_completed:completedQuestCount()});
       state.hp=state.maxHp;state.mapId=state.checkpoint.mapId||MAP_SIGNAL_TOWN;state.x=state.checkpoint.x;state.y=state.checkpoint.y;
@@ -1167,7 +1167,7 @@
       resultRevealTimer=0;
       if(!playing||document.body.dataset.screen!=="battle"||nodes.battle.hidden)return;
       setPanel(nodes.result);
-    },500);playTone(820,.35);
+    },500);playTone("game.checkpoint",.35);
   }
 
   function update(dt) {
@@ -1197,10 +1197,7 @@
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function playTone(frequency,duration) {
-    if(window.WonderSound?.isMuted?.())return;
-    try{const audio=playTone.audio||(playTone.audio=new (window.AudioContext||window.webkitAudioContext)()),osc=audio.createOscillator(),gain=audio.createGain();osc.frequency.value=frequency;osc.type="square";gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+duration)}catch{}
-  }
+  function playTone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function showBattle(entry="main") {
     nodes.main.hidden=true;nodes.battle.hidden=false;setScreenOwner("battle");playing=true;(__wpNotifyMeasurement(), paused=false);lastTime=performance.now();resizeCanvas();updateHud();updateObjective();renderInventory();canvas.focus({preventScroll:true});
     track("game_start",{entry,quests_completed:completedQuestCount()});

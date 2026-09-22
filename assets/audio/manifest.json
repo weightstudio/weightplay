@@ -1,0 +1,1701 @@
+{
+  "version": "1.0.0",
+  "sampleRate": 44100,
+  "format": "MP3, mono, 44.1kHz, 128kbps",
+  "sounds": [
+    {
+      "id": "ui.click",
+      "title": "普通按鈕",
+      "when": "開始、返回、設定、確認、分頁等普通按鈕的有效啟用",
+      "avoid": "不得拿來替代攻擊、命中、棋子落位或受傷",
+      "volume": 0.55,
+      "cooldownMs": 55,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/ui/click.mp3",
+      "duration": 0.0071,
+      "bytes": 1297,
+      "sha256": "44c676ed365720debb1a1568a6777590375bc25b105d403c71311dd506bcd4ec",
+      "peakDb": -13.28,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "click_003.ogg",
+          "sha256": "2fa929138bc3a0f432696588f66eac94b8f6d463905ec8808c6461ce4b054292"
+        }
+      ]
+    },
+    {
+      "id": "ui.open",
+      "title": "面板開啟",
+      "when": "非按鈕觸發的抽屜或面板展開",
+      "avoid": "按鈕開啟面板已播 ui.click 時不再重疊",
+      "volume": 0.7,
+      "cooldownMs": 70,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/ui/open.mp3",
+      "duration": 0.28,
+      "bytes": 5477,
+      "sha256": "23084e5584eb4570c980a00f4e62281ebaac867222aed0dcd27c62fdbea40c45",
+      "peakDb": -10.25,
+      "rmsDb": -22.52,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "open_002.ogg",
+          "sha256": "24ff224fe2c09c6aed1b41249825382dc74cf324b887ff279d8494912ce2beee"
+        }
+      ]
+    },
+    {
+      "id": "ui.close",
+      "title": "面板關閉",
+      "when": "非按鈕觸發的面板收起",
+      "avoid": "一般返回按鈕仍用 ui.click，不為每款遊戲另選返回聲",
+      "volume": 0.7,
+      "cooldownMs": 70,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/ui/close.mp3",
+      "duration": 0.25,
+      "bytes": 5059,
+      "sha256": "13d9b14b834c70ede5c0ab9aacc32a451e548d631cf466842a769b9bf89ed2b7",
+      "peakDb": -11.25,
+      "rmsDb": -22.59,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "close_002.ogg",
+          "sha256": "bc4279d2bb2bf86592473eab6a8eab55e51b54a8619315000dbd780a83b102d8"
+        }
+      ]
+    },
+    {
+      "id": "ui.tick",
+      "title": "刻度與倒數",
+      "when": "拖曳跨過離散刻度、倒數每秒一拍",
+      "avoid": "不能每幀或滑鼠移動就播",
+      "volume": 0.4,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/ui/tick.mp3",
+      "duration": 0.0203,
+      "bytes": 1297,
+      "sha256": "c3afdbc01a79eb82ca196841e09995b95cb31b22bcc992211535a0f4d2537157",
+      "peakDb": -10.8,
+      "rmsDb": -22.54,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "tick_002.ogg",
+          "sha256": "869442f54214be902ec7437f79e400dc91c1bfd90d18a6dd2d5b7e41ffbf457b"
+        }
+      ]
+    },
+    {
+      "id": "feedback.success",
+      "title": "正確與小成功",
+      "when": "答題正確、完成一個非結算的小目標",
+      "avoid": "不是所有攻擊或每次撿取都播成功旋律",
+      "volume": 0.7,
+      "cooldownMs": 120,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/feedback/success.mp3",
+      "duration": 0.48,
+      "bytes": 8821,
+      "sha256": "2ea5986ca38f930d048661263404b099a1cd4d6fa2a9d996bf5b1060da886c05",
+      "peakDb": -9.37,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "confirmation_002.ogg",
+          "sha256": "33b17a9a9a2397c62b285c52c33a907fdffb476909c99e42dde603f6a7a8b12c"
+        }
+      ]
+    },
+    {
+      "id": "feedback.error",
+      "title": "操作不成立",
+      "when": "無效落點、資源不足、錯誤答案",
+      "avoid": "角色受傷和整局失敗有獨立事件",
+      "volume": 0.7,
+      "cooldownMs": 180,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/feedback/error.mp3",
+      "duration": 0.3368,
+      "bytes": 6313,
+      "sha256": "48ddb84e31872dcfaa6b433c9d3956e2ce64f5993412cdbfa789aef421e86de9",
+      "peakDb": -5.28,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "error_003.ogg",
+          "sha256": "885b28175c7b511118bcffab95675b48bbac9005cf6514656ebdad979276b3ab"
+        }
+      ]
+    },
+    {
+      "id": "feedback.hint",
+      "title": "提示出現",
+      "when": "玩家主動取得提示、找到線索",
+      "avoid": "不要當普通按鈕聲或連續提示刷屏",
+      "volume": 0.7,
+      "cooldownMs": 180,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/feedback/hint.mp3",
+      "duration": 0.3325,
+      "bytes": 6313,
+      "sha256": "a7df5583c2221df00017708d71be0d106c70b2f8309d6dff1437957752f7f120",
+      "peakDb": -13.33,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "question_002.ogg",
+          "sha256": "46056f10c70dda860e93bd27b66f4d33c0b7154eff28def06471b50028efa5b3"
+        }
+      ]
+    },
+    {
+      "id": "game.start",
+      "title": "回合開始",
+      "when": "真正開始一局或新波次",
+      "avoid": "打開 Stage 選單本身不是戰鬥開始",
+      "volume": 0.7,
+      "cooldownMs": 200,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/game/start.mp3",
+      "duration": 0.2563,
+      "bytes": 5059,
+      "sha256": "cd4351523c1e11ac46b21d9055365c9182a975c2733c6a7b7488dac464b31dd1",
+      "peakDb": -14.02,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "maximize_002.ogg",
+          "sha256": "cc51162cb4506158b953b121bf479aad070056533ade5c5cd2f980183127ceb4"
+        }
+      ]
+    },
+    {
+      "id": "game.checkpoint",
+      "title": "檢查點",
+      "when": "抵達檢查點、完成中途目標",
+      "avoid": "未通關不要播結算勝利",
+      "volume": 0.7,
+      "cooldownMs": 250,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/game/checkpoint.mp3",
+      "duration": 0.49,
+      "bytes": 8821,
+      "sha256": "88ac2c1d8332b34245728967fc26880735c2298f0c8e051b51f8315ad3d65b7f",
+      "peakDb": -11.59,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "confirmation_004.ogg",
+          "sha256": "568967a3d9f8a8f6af54ea01729c4882284308f2a27d78c07ffd7ee0d6951661"
+        }
+      ]
+    },
+    {
+      "id": "result.win",
+      "title": "整局勝利",
+      "when": "整場遊戲實際勝利結算，一次",
+      "avoid": "小成功、升級、每隻怪死亡都不得使用",
+      "volume": 0.75,
+      "cooldownMs": 1200,
+      "maxVoices": 1,
+      "priority": 8,
+      "file": "assets/audio/sfx/result/win.mp3",
+      "duration": 0.7849,
+      "bytes": 13836,
+      "sha256": "08b0c421a99f585a46eb67de601f0703dead747672506e089d61751ef254b850",
+      "peakDb": -11.66,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "music-jingles",
+          "file": "jingles_PIZZI10.ogg",
+          "sha256": "baf50beffc4cc2dbb92c9d596a22732a8b5249c7648b681c0df6d0af6c561478"
+        }
+      ]
+    },
+    {
+      "id": "result.lose",
+      "title": "整局失敗",
+      "when": "整場遊戲實際失敗結算，一次",
+      "avoid": "無效按鈕、一般受傷不得使用",
+      "volume": 0.65,
+      "cooldownMs": 1200,
+      "maxVoices": 1,
+      "priority": 8,
+      "file": "assets/audio/sfx/result/lose.mp3",
+      "duration": 0.4571,
+      "bytes": 8403,
+      "sha256": "3fd7648658d24e8a53fb90c14fe784bf17b87b41814e0a710ed63da4625f4ba2",
+      "peakDb": -10.6,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "music-jingles",
+          "file": "jingles_PIZZI16.ogg",
+          "sha256": "1b1211b6360aae37ea685fee057bcabd034a749c1dfac6a9d643086d96e9b9aa"
+        }
+      ]
+    },
+    {
+      "id": "reward.coin",
+      "title": "金幣拾取",
+      "when": "獲得或拾取金幣",
+      "avoid": "不要每顆同幀金幣都疊播",
+      "volume": 0.55,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/reward/coin.mp3",
+      "duration": 0.55,
+      "bytes": 10075,
+      "sha256": "ae2664c2932620a62d77751c93fbc5775dc0c0e1d05b1cfe2a29ae2df19f635f",
+      "peakDb": -4.51,
+      "rmsDb": -31.96,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "handleCoins.ogg",
+          "sha256": "8a91f969e932df709df80ee124d86a51389eed9b67f22e5e716bc2bbf60d8dab"
+        }
+      ]
+    },
+    {
+      "id": "reward.collect",
+      "title": "一般物品拾取",
+      "when": "收集碎片、星星、補給等非金幣物品",
+      "avoid": "攻擊命中不能假裝成拾取",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/reward/collect.mp3",
+      "duration": 0.2402,
+      "bytes": 5059,
+      "sha256": "6b1d726e4db50267ecf3ebd44820c17838921bbc66a47661bbd1d73f2b4bb79b",
+      "peakDb": -7.86,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "glass_001.ogg",
+          "sha256": "183eebee20eb0a532b0b85104d139cbf2673eb66d95c3cc733ac9ea98362e7e8"
+        }
+      ]
+    },
+    {
+      "id": "reward.upgrade",
+      "title": "升級完成",
+      "when": "角色、武器或能力等級確實提升",
+      "avoid": "一般選單選取不是升級",
+      "volume": 0.7,
+      "cooldownMs": 250,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/reward/upgrade.mp3",
+      "duration": 0.2939,
+      "bytes": 5895,
+      "sha256": "b66471afb8f52f0289e657944f9366e55e51783afb2e4720f50d4063d88694be",
+      "peakDb": -10.55,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "digital-audio",
+          "file": "powerUp7.ogg",
+          "sha256": "9048d651b51f528099c384566b0d4c6c597bee8b56c48f3adab7a901feba0fa5"
+        }
+      ]
+    },
+    {
+      "id": "reward.unlock",
+      "title": "解鎖完成",
+      "when": "新道具、機關、角色或關卡真正解鎖",
+      "avoid": "僅打開已解鎖面板不要播",
+      "volume": 0.7,
+      "cooldownMs": 250,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/reward/unlock.mp3",
+      "duration": 0.3784,
+      "bytes": 7149,
+      "sha256": "395d0328fb221d7ea41a96de525543920ca7bdac35ad315d4e4acb7dc9fdc6ce",
+      "peakDb": -9.17,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "maximize_006.ogg",
+          "sha256": "f050b3bb77cb0b901bc8df43d2cc1872c353aebae10b4030cf8ae681726ad343"
+        }
+      ]
+    },
+    {
+      "id": "shop.purchase",
+      "title": "購買成功",
+      "when": "金錢扣除且物品入手之後",
+      "avoid": "資源不足應用 feedback.error",
+      "volume": 0.7,
+      "cooldownMs": 160,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/shop/purchase.mp3",
+      "duration": 0.2969,
+      "bytes": 5895,
+      "sha256": "7e9464224548311b05ad1973cb7c1076291542248d114b1c372cbaaf87df1c0b",
+      "peakDb": -4.85,
+      "rmsDb": -26.29,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "handleCoins2.ogg",
+          "sha256": "4b857968d64f9ac9336a10ffac6694d7547e1f01566ad6857b30bc8db3ee6c32"
+        }
+      ]
+    },
+    {
+      "id": "weapon.sword.swing",
+      "title": "刀劍揮動",
+      "when": "刀劍出手的破風／切風瞬間，揮空也能播",
+      "avoid": "不能在命中前先播命中聲；不得套用弓箭",
+      "volume": 0.65,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/sword-swing.mp3",
+      "duration": 0.4,
+      "bytes": 7567,
+      "sha256": "284297639b6c06b50f7d5f0469a393a3646c448bc0661225471008e36de14c67",
+      "peakDb": -4.74,
+      "rmsDb": -22.4,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "knifeSlice2.ogg",
+          "sha256": "6c2064d0ef988d1ec3d56868e823ea8823a5cac00f2742560052633529407def"
+        }
+      ]
+    },
+    {
+      "id": "weapon.sword.hit",
+      "title": "刀劍命中",
+      "when": "刀劍實際打中目標",
+      "avoid": "揮空或格擋不得播成功命中",
+      "volume": 0.7,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/sword-hit.mp3",
+      "duration": 0.3558,
+      "bytes": 6731,
+      "sha256": "bcf3cd2932b50245bb53b38eb73eab2ac80562ef8275c6a8f0d854190f0b66e2",
+      "peakDb": -8.45,
+      "rmsDb": -22.43,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "knifeSlice.ogg",
+          "sha256": "4cd96dc630bed9840c15f1dd2306da2cc56a4da26a5d3f1a03c5a7265ac5e54f"
+        },
+        {
+          "pack": "impact-sounds",
+          "file": "impactPunch_medium_000.ogg",
+          "offset": 0.025,
+          "gain": 0.65,
+          "sha256": "486988aa2d6440ffc4c62a0e8ccf3c23673ba84424bd4723378d451b7255eb5c"
+        }
+      ]
+    },
+    {
+      "id": "weapon.axe.swing",
+      "title": "斧頭揮動",
+      "when": "揮斧出手",
+      "avoid": "不要和砍樹落點同時重複當兩次命中",
+      "volume": 0.7,
+      "cooldownMs": 90,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/axe-swing.mp3",
+      "duration": 0.52,
+      "bytes": 9239,
+      "sha256": "520b4f6409a3cd3c209e83fd08894c962826721ade531f51dadb99667e973feb",
+      "peakDb": -4.62,
+      "rmsDb": -23.49,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "knifeSlice2.ogg",
+          "sha256": "6c2064d0ef988d1ec3d56868e823ea8823a5cac00f2742560052633529407def"
+        }
+      ]
+    },
+    {
+      "id": "weapon.axe.hit",
+      "title": "斧頭砍擊",
+      "when": "斧頭砍中樹木或木質目標",
+      "avoid": "金屬格擋應用 combat.block",
+      "volume": 0.7,
+      "cooldownMs": 90,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/axe-hit.mp3",
+      "duration": 0.2276,
+      "bytes": 4641,
+      "sha256": "191a857282e4753b414c9640fb41a7878cae263dd27337cdc3cc58982b5904f4",
+      "peakDb": -4.53,
+      "rmsDb": -23.28,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "chop.ogg",
+          "sha256": "d00c2b3c9fff07e376145c8c8c45c90e5084ec192f6ce0387db233f7b86f1486"
+        }
+      ]
+    },
+    {
+      "id": "weapon.bow.release",
+      "title": "弓弦放箭",
+      "when": "箭矢實際離弦的瞬間；弓弦回彈實錄",
+      "avoid": "不得套用槍械、雷射、魔法或箭矢命中",
+      "volume": 0.7,
+      "cooldownMs": 75,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/bow-release.mp3",
+      "duration": 0.1602,
+      "bytes": 3805,
+      "sha256": "107e1a0df47e88e10eaf87d2b35f23224ed47769baffbaef2cc452eccd37217a",
+      "peakDb": -9.24,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "freesound-bow",
+          "file": "bow-release.mp3",
+          "sha256": "ece6c098cb7a03438b494a3f3e2bdd8b629fe26555d5b39f1933d78731b13fbf"
+        }
+      ]
+    },
+    {
+      "id": "weapon.arrow.hit",
+      "title": "箭矢命中",
+      "when": "箭矢確實撞入非金屬目標",
+      "avoid": "箭矢離弦用 weapon.bow.release",
+      "volume": 0.7,
+      "cooldownMs": 70,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/arrow-hit.mp3",
+      "duration": 0.0924,
+      "bytes": 2551,
+      "sha256": "224282d22a3822f1185e922f7ab26edb05541ce4aadc2b743bee63661032b3cc",
+      "peakDb": -6.28,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactWood_light_001.ogg",
+          "sha256": "4b76bf3ccc8e60d19188f3165b778a7817786faa6887c55d9049bcbeef3b425f"
+        }
+      ]
+    },
+    {
+      "id": "weapon.gun.fire",
+      "title": "風格化槍擊",
+      "when": "火藥式槍械開火；短爆裂與機械聲的風格化混音",
+      "avoid": "不是弓箭，也不是雷射；非真實槍械錄音",
+      "volume": 0.58,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/gun-fire.mp3",
+      "duration": 0.22,
+      "bytes": 4641,
+      "sha256": "6026ed246e2c4673696e7a7c4d1f9711ce4d403b04ae540976efd7bef0043e78",
+      "peakDb": -13.86,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "explosionCrunch_000.ogg",
+          "sha256": "4b597d658d0ae101f0a030fbeea5fc3a4292ab85f017470a8254a8e7959cbd69"
+        },
+        {
+          "pack": "rpg-audio",
+          "file": "metalClick.ogg",
+          "offset": 0.03,
+          "gain": 0.4,
+          "sha256": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3"
+        }
+      ]
+    },
+    {
+      "id": "weapon.laser.fire",
+      "title": "雷射發射",
+      "when": "科幻能量彈、雷射炮真正發射",
+      "avoid": "不能當刀劍或真實弓箭聲",
+      "volume": 0.6,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/weapon/laser-fire.mp3",
+      "duration": 0.2444,
+      "bytes": 5059,
+      "sha256": "26cc47de03192636d5be8f4a14b7bed3bda246eace132f0c0dfca35fcdaae745",
+      "peakDb": -4.75,
+      "rmsDb": -23.22,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "laserSmall_001.ogg",
+          "sha256": "ab87913aba9790a0c5fa173d086267ba521ad522fcad2252271db49988313cf5"
+        }
+      ]
+    },
+    {
+      "id": "projectile.launch",
+      "title": "機械／拋射發射",
+      "when": "彈簧、投擲器等沒有弓弦與火藥的發射",
+      "avoid": "明確的弓箭、槍或魔法應選各自事件",
+      "volume": 0.7,
+      "cooldownMs": 75,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/projectile/launch.mp3",
+      "duration": 0.0888,
+      "bytes": 2551,
+      "sha256": "db7d4356fe2f501fee3aa48453586afcf9f3a51eb918412cd187e9f842387ccd",
+      "peakDb": -4.47,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "pluck_001.ogg",
+          "sha256": "be97ec4893a02d6eccfb678daa76c83e34cb2583b834ec2593d2641def739fa4"
+        }
+      ]
+    },
+    {
+      "id": "combat.strike",
+      "title": "拳爪撞擊",
+      "when": "拳、爪、身體或一般近身接觸命中",
+      "avoid": "不得充當揮刀或放箭",
+      "volume": 0.7,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/combat/strike.mp3",
+      "duration": 0.28,
+      "bytes": 5477,
+      "sha256": "05f8944089f32c0c67efac37f4063aec8c9a4459797a488d95e76b226ab58eff",
+      "peakDb": -7.45,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactPunch_medium_002.ogg",
+          "sha256": "6492f9ccbc8d24dcef607bb1b48790b7870961474561f7fe5601e1c73a3018ef"
+        }
+      ]
+    },
+    {
+      "id": "combat.critical",
+      "title": "重擊／暴擊",
+      "when": "真正造成重擊或暴擊時的強命中回饋",
+      "avoid": "不與普通命中疊播同一接觸點",
+      "volume": 0.75,
+      "cooldownMs": 90,
+      "maxVoices": 3,
+      "priority": 4,
+      "file": "assets/audio/sfx/combat/critical.mp3",
+      "duration": 0.3702,
+      "bytes": 7149,
+      "sha256": "27fc0583df83dc3b6f98bb987a250420865d35edc5d8b5c9505ce270e32dd81c",
+      "peakDb": -7.77,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactPunch_heavy_001.ogg",
+          "sha256": "f92f5cb6ba4ff2766497292ffd90865654317eeca976f5652e0708dbdcdc0dd9"
+        }
+      ]
+    },
+    {
+      "id": "combat.block",
+      "title": "格擋",
+      "when": "武器或盾牌擋住一次攻擊",
+      "avoid": "不能在免疫／格擋時播成功砍中",
+      "volume": 0.7,
+      "cooldownMs": 90,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/combat/block.mp3",
+      "duration": 0.1162,
+      "bytes": 2969,
+      "sha256": "e1acbf0195eb7b0b9ed17ed4ddf588dc8d008e8d966a2359f74b4bf64a5b0b32",
+      "peakDb": -6.05,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactMetal_medium_002.ogg",
+          "sha256": "7e89ce2ca0dbda95ea2b78d4b50791cab35c10d20e9f5ccd45dd0b00e99ff548"
+        }
+      ]
+    },
+    {
+      "id": "combat.shield.break",
+      "title": "護盾破裂",
+      "when": "護盾數值真正耗盡",
+      "avoid": "一般格擋沒有破盾就不播",
+      "volume": 0.7,
+      "cooldownMs": 140,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/combat/shield-break.mp3",
+      "duration": 0.2463,
+      "bytes": 5059,
+      "sha256": "a86541275fe8329e9165bb3b4eeb5fd964b04ccf080cc0073744ec77626abe00",
+      "peakDb": -4.84,
+      "rmsDb": -22.46,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactGlass_heavy_001.ogg",
+          "sha256": "58686e0e562612cc566791844a10e269f8d1921f4766c14ba43976fd0a429f4e"
+        }
+      ]
+    },
+    {
+      "id": "player.hurt",
+      "title": "玩家受傷",
+      "when": "玩家或需保護目標實際扣血",
+      "avoid": "不可用於玩家成功砍怪；受傷無敵期間不重播",
+      "volume": 0.7,
+      "cooldownMs": 180,
+      "maxVoices": 3,
+      "priority": 7,
+      "file": "assets/audio/sfx/player/hurt.mp3",
+      "duration": 0.4,
+      "bytes": 7567,
+      "sha256": "a318c8b059fedf71d5a531a98c1e9107e9be7de0932a1574bc78dec12ba09986",
+      "peakDb": -6.87,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactSoft_heavy_000.ogg",
+          "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1"
+        }
+      ]
+    },
+    {
+      "id": "enemy.defeat",
+      "title": "敵人倒下",
+      "when": "敵人血量歸零／被擊敗",
+      "avoid": "不是命中一次就當成死亡；群殺需節流",
+      "volume": 0.6,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 4,
+      "file": "assets/audio/sfx/enemy/defeat.mp3",
+      "duration": 0.5413,
+      "bytes": 9657,
+      "sha256": "5a7b9aee4051fb327b618f9433def284dd9e8eeac6350cfde09a5ddf5d1075eb",
+      "peakDb": -6.32,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactSoft_heavy_003.ogg",
+          "sha256": "d00286a2dc62ee5cb4d42bf56120e7050a855f69e655fc1294410aadd337eba3"
+        }
+      ]
+    },
+    {
+      "id": "alert.boss",
+      "title": "強敵警示",
+      "when": "Boss 或明確危險階段開始",
+      "avoid": "不要每幀或普通怪物出場就播",
+      "volume": 0.7,
+      "cooldownMs": 1000,
+      "maxVoices": 1,
+      "priority": 8,
+      "file": "assets/audio/sfx/alert/boss.mp3",
+      "duration": 0.7141,
+      "bytes": 12582,
+      "sha256": "62fcde6a541a3a98f1812fdccbd4f22b8f3092904ca075bf6bd658d2945f4ccb",
+      "peakDb": -13.03,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "forceField_004.ogg",
+          "sha256": "05609bb296cbc287ae95ac8924c89809d69c89d7bb357cc6a117ec1b1ef65e09"
+        }
+      ]
+    },
+    {
+      "id": "alert.warning",
+      "title": "危險提醒",
+      "when": "低血量、最後倒數、重要危險狀態的首次提醒",
+      "avoid": "持續低血量時不得連續刷聲",
+      "volume": 0.7,
+      "cooldownMs": 900,
+      "maxVoices": 1,
+      "priority": 8,
+      "file": "assets/audio/sfx/alert/warning.mp3",
+      "duration": 0.1393,
+      "bytes": 3387,
+      "sha256": "719e382e01ba6f548ff8ea283d58826023f52ba0740886083d211a892c6c5c91",
+      "peakDb": -4.55,
+      "rmsDb": -24.77,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "error_008.ogg",
+          "sha256": "eba17ecb2a426bfd4a8a6acff5f8a86202b6424a77af0fd842e37809a1ab6d81"
+        }
+      ]
+    },
+    {
+      "id": "magic.cast",
+      "title": "施法",
+      "when": "能量技能出手或魔法啟動",
+      "avoid": "不要拿來當普通弓箭或刀劍",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/magic/cast.mp3",
+      "duration": 0.65,
+      "bytes": 11328,
+      "sha256": "c932329b5e13d0a3e0a7fcdee67af1937f0b0f2dd2ae235c441a4b6d138f1cfe",
+      "peakDb": -13.47,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "forceField_000.ogg",
+          "sha256": "c2916f2a062c8ddd1aca2826d134fe90847037db31342726ffb0f9097afe339c"
+        }
+      ]
+    },
+    {
+      "id": "magic.hit",
+      "title": "魔法命中",
+      "when": "魔法彈／能量攻擊實際命中",
+      "avoid": "出手尚未命中不要播",
+      "volume": 0.7,
+      "cooldownMs": 70,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/magic/hit.mp3",
+      "duration": 0.32,
+      "bytes": 6313,
+      "sha256": "46529a2b715efc65a5dd50c37485b2b1711a6ff1812dde138feb6073eef98627",
+      "peakDb": -14.57,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "digital-audio",
+          "file": "zap1.ogg",
+          "sha256": "4e4bf11c671a4be0723022a7177f8e122329fa32a0c59555581f4193ed111585"
+        }
+      ]
+    },
+    {
+      "id": "magic.fire",
+      "title": "火焰",
+      "when": "火焰噴發或火球爆燃",
+      "avoid": "不作持續無限音；長火焰須使用管理中的循環聲",
+      "volume": 0.7,
+      "cooldownMs": 110,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/magic/fire.mp3",
+      "duration": 0.5,
+      "bytes": 9239,
+      "sha256": "f59ef817427df6c27ec53bed1434d20002332ef9e3c99efa10f8f559ec983361",
+      "peakDb": -7.57,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "thrusterFire_000.ogg",
+          "sha256": "0fdc474d93f209debf1fc4ea77765a669dcb7676db31b4d8a0a509685bccf374"
+        }
+      ]
+    },
+    {
+      "id": "magic.ice",
+      "title": "冰晶",
+      "when": "冰凍、冰晶破裂或寒冰技能命中",
+      "avoid": "非冰屬性不可任意借用",
+      "volume": 0.7,
+      "cooldownMs": 90,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/magic/ice.mp3",
+      "duration": 0.332,
+      "bytes": 6313,
+      "sha256": "f62b8b050d11c81d33e0f75c888f1d0836c57b7ce9a88f89a39f9316b450440e",
+      "peakDb": -5.22,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactGlass_medium_003.ogg",
+          "sha256": "dccea1ecc3d942ee5fd217c684632638f6c039c97cd3ae59c75ab15d0c3f0b59"
+        }
+      ]
+    },
+    {
+      "id": "magic.heal",
+      "title": "治療",
+      "when": "補血或治療效果成功套用",
+      "avoid": "普通選取、未生效治療不得播",
+      "volume": 0.7,
+      "cooldownMs": 180,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/magic/heal.mp3",
+      "duration": 0.1935,
+      "bytes": 4223,
+      "sha256": "1a55c81180fdca0c7446a4c96729007389c508035264531aea8dd7c2d7bfd3d2",
+      "peakDb": -9.32,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "digital-audio",
+          "file": "powerUp2.ogg",
+          "sha256": "83786b43d828a399e14ac20604b63a60ca05385977f5477d00304c2adc696204"
+        }
+      ]
+    },
+    {
+      "id": "magic.shield",
+      "title": "護盾生成",
+      "when": "護盾或保護狀態真正建立",
+      "avoid": "命中護盾請用 combat.block",
+      "volume": 0.7,
+      "cooldownMs": 180,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/magic/shield.mp3",
+      "duration": 0.7,
+      "bytes": 12164,
+      "sha256": "2c007dcabbdb511f53233c26c949abd735a0a4e0c8643f8c0972508e2441a285",
+      "peakDb": -13.12,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "forceField_002.ogg",
+          "sha256": "051b0eafc479695af4ca3607d41fd4be41bae7c21f4f9508d004722b09f1bd63"
+        }
+      ]
+    },
+    {
+      "id": "explosion.small",
+      "title": "小爆炸",
+      "when": "小炸彈、火球爆炸或小型破壞",
+      "avoid": "近身普通命中不要用爆炸替代",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/explosion/small.mp3",
+      "duration": 0.7,
+      "bytes": 12164,
+      "sha256": "30b673a9d4817530e37234db728450fbd0ed12f9c72e75f3482b465e064a939a",
+      "peakDb": -13.35,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "explosionCrunch_001.ogg",
+          "sha256": "fdd04d6f0032d4d57c134ad37f3587d2d00e58c9572715275bd8cf4f43593576"
+        }
+      ]
+    },
+    {
+      "id": "explosion.large",
+      "title": "大爆炸",
+      "when": "大型炸彈、Boss 爆裂或較強破壞",
+      "avoid": "必須有對應的大爆炸畫面與結果",
+      "volume": 0.65,
+      "cooldownMs": 200,
+      "maxVoices": 3,
+      "priority": 5,
+      "file": "assets/audio/sfx/explosion/large.mp3",
+      "duration": 1.2,
+      "bytes": 20106,
+      "sha256": "a7b803d9a4127124090400f71dc56e9c924f16ab27a5aba52bf04ff82c75dcb5",
+      "peakDb": -7.59,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "lowFrequency_explosion_000.ogg",
+          "sha256": "3cb48d86dab63140cfb9aaeea4d4a6846abaca5831d157d8adbec0490da26343"
+        }
+      ]
+    },
+    {
+      "id": "impact.soft",
+      "title": "柔和碰撞",
+      "when": "柔軟物體、輕微撞擊或沒有特定材質的接觸",
+      "avoid": "玩家扣血優先用 player.hurt",
+      "volume": 0.7,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/impact/soft.mp3",
+      "duration": 0.1804,
+      "bytes": 3805,
+      "sha256": "9ad64ba59216f45effcb171738cb4b761b065206ed6ccc095f576069397be78b",
+      "peakDb": -8.35,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactSoft_medium_001.ogg",
+          "sha256": "7642a4fd43e547afe4f7adfadb3dabb681c0ff512f52c1674bae30a726841faf"
+        }
+      ]
+    },
+    {
+      "id": "impact.wood",
+      "title": "木材碰撞",
+      "when": "木板、木箱、木牆的碰撞",
+      "avoid": "不要當金屬或玻璃",
+      "volume": 0.7,
+      "cooldownMs": 80,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/impact/wood.mp3",
+      "duration": 0.2247,
+      "bytes": 4641,
+      "sha256": "cfb996332252797d9f4b97ad804d2af1d1f400a17b2ccf935bb04dd87f1d5803",
+      "peakDb": -4.53,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactWood_medium_002.ogg",
+          "sha256": "3f3f1917428b828f733a963167833c707bf88296ff158e1559c57c5cb813d799"
+        }
+      ]
+    },
+    {
+      "id": "impact.metal",
+      "title": "金屬碰撞",
+      "when": "機械、金屬板或金屬物體碰撞",
+      "avoid": "軟身體或木材不適用",
+      "volume": 0.7,
+      "cooldownMs": 80,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/impact/metal.mp3",
+      "duration": 0.149,
+      "bytes": 3387,
+      "sha256": "65d8ebfd9af89f49440864349202368f9e8f8d76e7bb2098ca682cbfb1cfbe2a",
+      "peakDb": -5.13,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactMetal_light_002.ogg",
+          "sha256": "25a96f90a9a1f88a531e824e126f0519504625e5635e65a72e4f31611428db29"
+        }
+      ]
+    },
+    {
+      "id": "impact.glass",
+      "title": "玻璃破裂",
+      "when": "玻璃或脆性晶體破裂",
+      "avoid": "未破壞的普通選取不要用",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/impact/glass.mp3",
+      "duration": 0.3326,
+      "bytes": 6313,
+      "sha256": "93de02087b09d1ae620a1d400f732a65fce2729ca6073e45e94296a910c3bb17",
+      "peakDb": -5.61,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactGlass_medium_000.ogg",
+          "sha256": "9252d50bfb85edb17d6073c4a7806e10cdb9de56d3dbfc93a4b9727146d2df6d"
+        }
+      ]
+    },
+    {
+      "id": "impact.stone",
+      "title": "石頭碰撞",
+      "when": "石塊、採礦或硬質地面撞擊",
+      "avoid": "非石材不應一律套用",
+      "volume": 0.7,
+      "cooldownMs": 80,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/impact/stone.mp3",
+      "duration": 0.35,
+      "bytes": 6731,
+      "sha256": "db0070912d58b8aca82535b1618acbdbacaabfb0362ffc4c80287f6140ad02ce",
+      "peakDb": -6.02,
+      "rmsDb": -22.43,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactMining_001.ogg",
+          "sha256": "61235a18de3f3d92118235398222dbf51d448f1be70b1c8bc962b10b86f2d9c6"
+        }
+      ]
+    },
+    {
+      "id": "movement.step",
+      "title": "走一步",
+      "when": "棋盤／格子或角色離散移動",
+      "avoid": "不是每幀更新位置都播",
+      "volume": 0.4,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/movement/step.mp3",
+      "duration": 0.1459,
+      "bytes": 3387,
+      "sha256": "374725d78c914b191704afcbebcacd1542e24baa266b12f2ed116db5e5f939be",
+      "peakDb": -5.67,
+      "rmsDb": -22.51,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "footstep_grass_001.ogg",
+          "sha256": "fb28781bd22b2eefdc14077f1adf5c94d7fe9c3a130194633b55f3e0d39d9f04"
+        }
+      ]
+    },
+    {
+      "id": "movement.jump",
+      "title": "跳躍",
+      "when": "角色開始跳躍",
+      "avoid": "尚未落地不要播落地聲",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/movement/jump.mp3",
+      "duration": 0.1143,
+      "bytes": 2969,
+      "sha256": "0c05e945f6be77b3d122e15bc709d6fa64c54a8baf5676159c5781199c1b496f",
+      "peakDb": -7.6,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "pluck_002.ogg",
+          "sha256": "c977fe249ff42d1c93a552b33abc13a8399df3879fa510475426e5c4bbac1da9"
+        }
+      ]
+    },
+    {
+      "id": "movement.land",
+      "title": "落地",
+      "when": "角色或物件真正接觸地面",
+      "avoid": "空中經過或跳起時不播",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/movement/land.mp3",
+      "duration": 0.1373,
+      "bytes": 3387,
+      "sha256": "1574a3cde787bba3f5839a7b3582bdf8db42d08dddc770327183d8d5c5ea5e00",
+      "peakDb": -9.07,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactSoft_medium_003.ogg",
+          "sha256": "5c4a1f35fde7e14046931da7bc3d1b23736541b7190ba107e08a379c4ca43cd6"
+        }
+      ]
+    },
+    {
+      "id": "movement.dash",
+      "title": "衝刺",
+      "when": "角色衝刺或快速閃避",
+      "avoid": "普通走路不用衝刺聲",
+      "volume": 0.7,
+      "cooldownMs": 120,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/movement/dash.mp3",
+      "duration": 0.3312,
+      "bytes": 6313,
+      "sha256": "bc5bc9ddce3d4fc59e31d537b5777076e76dde5cdb1bee30e282621cfcf759a2",
+      "peakDb": -4.54,
+      "rmsDb": -22.75,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "cloth2.ogg",
+          "sha256": "8a7451193c38bc05483aec25dd193e163a15d44cf7fff04ac7912573231b0201"
+        }
+      ]
+    },
+    {
+      "id": "movement.hook",
+      "title": "鉤索掛上",
+      "when": "鉤索成功附著到錨點",
+      "avoid": "射出或失敗附著不當成已掛住",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/movement/hook.mp3",
+      "duration": 0.1736,
+      "bytes": 3805,
+      "sha256": "c3fa23cd60d0d1683387c6f9f633cbd1065ac2aebda61f4f951435f821149ca6",
+      "peakDb": -4.63,
+      "rmsDb": -24.66,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "metalLatch.ogg",
+          "sha256": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708"
+        }
+      ]
+    },
+    {
+      "id": "movement.release",
+      "title": "鉤索釋放",
+      "when": "繩索或鉤索被主動放開",
+      "avoid": "不能當斷繩失敗警告",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/movement/release.mp3",
+      "duration": 0.3,
+      "bytes": 5895,
+      "sha256": "4745f8e6adf3015a2fc936d85adb94c8c09c0b10a0699641b20eb562bf331959",
+      "peakDb": -4.43,
+      "rmsDb": -28.32,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "clothBelt2.ogg",
+          "sha256": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038"
+        }
+      ]
+    },
+    {
+      "id": "board.move",
+      "title": "棋子／方塊落位",
+      "when": "棋子、方塊、零件成功落位",
+      "avoid": "無效落位用 feedback.error；卡片用 card.place",
+      "volume": 0.7,
+      "cooldownMs": 60,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/board/move.mp3",
+      "duration": 0.1093,
+      "bytes": 2969,
+      "sha256": "d5d5f817d9d5319489ea33ecc1ebec73fab455feeb4d73e105b67c1dadaa959b",
+      "peakDb": -6.39,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactWood_light_000.ogg",
+          "sha256": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3"
+        }
+      ]
+    },
+    {
+      "id": "board.rotate",
+      "title": "旋轉零件",
+      "when": "鏡子、拼片、旋鈕旋轉到新位置",
+      "avoid": "不要每幀拖曳都播",
+      "volume": 0.7,
+      "cooldownMs": 70,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/board/rotate.mp3",
+      "duration": 0.1515,
+      "bytes": 3387,
+      "sha256": "ac749c4b27d1b873edf306ad277ef64edf20cb3c89c42c161cb145f4132afd4b",
+      "peakDb": -4.49,
+      "rmsDb": -22.73,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "switch_004.ogg",
+          "sha256": "541c19cc1ab712a9efc5765df602e7d0da09d9cafdd297ce1e19b092289fd62f"
+        }
+      ]
+    },
+    {
+      "id": "board.undo",
+      "title": "撤銷",
+      "when": "有效撤銷一步",
+      "avoid": "沒有可撤銷操作時用 feedback.error",
+      "volume": 0.7,
+      "cooldownMs": 100,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/board/undo.mp3",
+      "duration": 0.061,
+      "bytes": 2133,
+      "sha256": "91809d105e868b929424299e84ac9ef0072fbb7c1d6b5a051d5a3e53115c48f9",
+      "peakDb": -4.44,
+      "rmsDb": -26.66,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "back_001.ogg",
+          "sha256": "07db973f79f6ae0f2edc34561e7592e24d0577455919fb602cb8ecc0da991dcf"
+        }
+      ]
+    },
+    {
+      "id": "puzzle.match",
+      "title": "配對／消除",
+      "when": "成功配對或一組消除",
+      "avoid": "不能把選中第一個物件當成已配對",
+      "volume": 0.7,
+      "cooldownMs": 90,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/puzzle/match.mp3",
+      "duration": 0.1037,
+      "bytes": 2551,
+      "sha256": "3bdf4541e417acab420288c8b04edc1f961d9259945b957841ea2e045f85d86e",
+      "peakDb": -7.44,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "glass_002.ogg",
+          "sha256": "08e972c73e53c91d6d310e107e80db60edce78ae47225889a028e628a6f3da49"
+        }
+      ]
+    },
+    {
+      "id": "puzzle.merge",
+      "title": "合成",
+      "when": "兩個物件確實合成新的物件",
+      "avoid": "只是拖到附近而未合成不要播",
+      "volume": 0.7,
+      "cooldownMs": 110,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/puzzle/merge.mp3",
+      "duration": 0.55,
+      "bytes": 10075,
+      "sha256": "d4142a7dabf736e035f39bd67a0f4c3bab8f46a0b03d3c9223672da53a407a77",
+      "peakDb": -10.0,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "digital-audio",
+          "file": "powerUp1.ogg",
+          "sha256": "8c361b624b560c0bc30ea3063b71212bc30caebf425c9df2481c13b25561485c"
+        }
+      ]
+    },
+    {
+      "id": "puzzle.pop",
+      "title": "泡泡破裂",
+      "when": "泡泡、氣泡或輕盈物件破裂",
+      "avoid": "實體戰鬥命中不適用",
+      "volume": 0.7,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/puzzle/pop.mp3",
+      "duration": 0.1199,
+      "bytes": 2969,
+      "sha256": "0e746759205847f674e177aed27dab24d9f6a378769f54008d37e734ddafea82",
+      "peakDb": -8.85,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "bong_001.ogg",
+          "sha256": "d21d0f0b782445db579d11e2506b24cd1ac9d664ee33aeaf807761aa7b6fd710"
+        }
+      ]
+    },
+    {
+      "id": "puzzle.clear",
+      "title": "一批清除",
+      "when": "一個區域／連線／多個目標一起完成",
+      "avoid": "每顆碎片各播一次會形成疊音",
+      "volume": 0.7,
+      "cooldownMs": 180,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/puzzle/clear.mp3",
+      "duration": 0.322,
+      "bytes": 6313,
+      "sha256": "0dec66f68b308527d9f302edad3867e4aab6bdd4e36938771fe7cd196f763447",
+      "peakDb": -8.42,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "confirmation_003.ogg",
+          "sha256": "3091bf0be0497f825769ee0733ca7bdc3bcd59bd6c6e8f2ba8f93d580ff38022"
+        }
+      ]
+    },
+    {
+      "id": "card.place",
+      "title": "放牌",
+      "when": "卡片放到桌上或移動到新牌疊",
+      "avoid": "不是所有普通按鈕都發牌聲",
+      "volume": 0.7,
+      "cooldownMs": 65,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/card/place.mp3",
+      "duration": 0.2002,
+      "bytes": 4223,
+      "sha256": "d5f7abc586194ea220e902d58b65a99e72c0a1a62a5a050bc78cfa5c0dc6cbec",
+      "peakDb": -4.44,
+      "rmsDb": -25.06,
+      "sources": [
+        {
+          "pack": "casino-audio",
+          "file": "card-place-1.ogg",
+          "sha256": "d8f26c33a665dcbdcc6f632f6050bc9dd548feb0d4942d4547615926d3926810"
+        }
+      ]
+    },
+    {
+      "id": "card.draw",
+      "title": "抽牌",
+      "when": "從牌庫取出卡片",
+      "avoid": "不要用於金幣獎勵",
+      "volume": 0.7,
+      "cooldownMs": 80,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/card/draw.mp3",
+      "duration": 0.35,
+      "bytes": 6731,
+      "sha256": "3242131f61ed39a39a5fd8d3c9900852bca09a398f01aca0c1d68647f2f9ea6d",
+      "peakDb": -4.53,
+      "rmsDb": -26.75,
+      "sources": [
+        {
+          "pack": "casino-audio",
+          "file": "card-slide-2.ogg",
+          "sha256": "e674a1679ec87b507047fe012d068ad2c412125f56186f0e732684705c2a6888"
+        }
+      ]
+    },
+    {
+      "id": "card.flip",
+      "title": "翻牌",
+      "when": "卡面從背面翻到正面",
+      "avoid": "已公開卡片重新渲染不得重播",
+      "volume": 0.7,
+      "cooldownMs": 75,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/card/flip.mp3",
+      "duration": 0.25,
+      "bytes": 5059,
+      "sha256": "ba2eddd79f6642ef23bfb67c5db1f8a70230ffea2d6d129301d0335ece6055e4",
+      "peakDb": -4.4,
+      "rmsDb": -28.06,
+      "sources": [
+        {
+          "pack": "casino-audio",
+          "file": "card-shove-1.ogg",
+          "sha256": "1ea667aa6795d5f14239192116ebcbd8f3f47eb1c7faaf2ec56844b9067b8b06"
+        }
+      ]
+    },
+    {
+      "id": "card.shuffle",
+      "title": "洗牌",
+      "when": "真正執行洗牌或新牌局洗牌",
+      "avoid": "單張移牌用 card.place",
+      "volume": 0.7,
+      "cooldownMs": 300,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/card/shuffle.mp3",
+      "duration": 0.95,
+      "bytes": 16344,
+      "sha256": "7bcd03c218cbda6c391434a37a0e34edff93a7a419b0584d65867a82c298f6d3",
+      "peakDb": -4.14,
+      "rmsDb": -32.93,
+      "sources": [
+        {
+          "pack": "casino-audio",
+          "file": "card-shuffle.ogg",
+          "sha256": "96c84883a30845ede723a4cf2e8369e9837e7dd4e0d4eb0212b0a7ed21b0f544"
+        }
+      ]
+    },
+    {
+      "id": "dice.roll",
+      "title": "擲骰",
+      "when": "骰子實際擲出或重擲",
+      "avoid": "點擊尚未開始擲骰的按鈕仍是 ui.click",
+      "volume": 0.7,
+      "cooldownMs": 220,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/dice/roll.mp3",
+      "duration": 0.2623,
+      "bytes": 5477,
+      "sha256": "0598a1d301f63001afa2ee79707b1efe58d80d5ae0657deb323f8113cace29cf",
+      "peakDb": -4.44,
+      "rmsDb": -34.84,
+      "sources": [
+        {
+          "pack": "casino-audio",
+          "file": "dice-throw-2.ogg",
+          "sha256": "e0b8c370503b2c5c2a72d311cccae30fe63a6afd48f2be32e771fcf1a98585d6"
+        }
+      ]
+    },
+    {
+      "id": "reel.spin",
+      "title": "轉輪啟動",
+      "when": "符文／機械轉輪真正開始轉動",
+      "avoid": "不能每格轉動或每幀都播整段",
+      "volume": 0.7,
+      "cooldownMs": 220,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/reel/spin.mp3",
+      "duration": 0.6,
+      "bytes": 10493,
+      "sha256": "79c5f293c27bd582d4c00eb7f4ae1a0a9e889710242cfdb1238acd4442e98d3e",
+      "peakDb": -4.27,
+      "rmsDb": -36.64,
+      "sources": [
+        {
+          "pack": "casino-audio",
+          "file": "dice-shake-2.ogg",
+          "sha256": "47e8e2cb0adb95bcd7348b58db8dc2bbfe3c553e50a4e9ef007e67891ed51ca2"
+        }
+      ]
+    },
+    {
+      "id": "reel.stop",
+      "title": "轉輪停下",
+      "when": "一個轉輪停到結果位置",
+      "avoid": "停止後重新畫面不得重播",
+      "volume": 0.7,
+      "cooldownMs": 70,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/reel/stop.mp3",
+      "duration": 0.1435,
+      "bytes": 3387,
+      "sha256": "3dbb4325fcdd8a713a700fa596465e113575e3d7dd0c4940657c1fe23ff92705",
+      "peakDb": -4.38,
+      "rmsDb": -23.26,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "switch_006.ogg",
+          "sha256": "2676ddc4e341ee557b4d1dc8767ef8655540d66fb3ded6a1614080dbc4dc6f18"
+        }
+      ]
+    },
+    {
+      "id": "water.splash",
+      "title": "入水／水花",
+      "when": "物件、魚或角色實際進出水面；風格化水聲",
+      "avoid": "陸地碰撞不要套用",
+      "volume": 0.55,
+      "cooldownMs": 140,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/water/splash.mp3",
+      "duration": 0.4974,
+      "bytes": 9239,
+      "sha256": "1b46a8e0df558e47efb0a5f3db5497bd8f5fbd557a1d3fb2550548409b8e567a",
+      "peakDb": -4.46,
+      "rmsDb": -29.85,
+      "sources": [
+        {
+          "pack": "sci-fi-sounds",
+          "file": "slime_000.ogg",
+          "sha256": "480ee82b690136ea9db6966a3c3033356b8274752795c4e37afd6b6defcfacff"
+        }
+      ]
+    },
+    {
+      "id": "sport.kick",
+      "title": "踢球",
+      "when": "腳真正踢到球",
+      "avoid": "射門結果還沒確定不能先播得分",
+      "volume": 0.7,
+      "cooldownMs": 90,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/sport/kick.mp3",
+      "duration": 0.25,
+      "bytes": 5059,
+      "sha256": "375378defff8a4afe82a1e0f851facf6fa83cc4bfb19f1cd9ce9b1a3f842dc3b",
+      "peakDb": -8.25,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactPunch_medium_004.ogg",
+          "sha256": "4a256878a3afb994ec9a4399336687748e68c7c136872c08c9c797d8c4e2464a"
+        }
+      ]
+    },
+    {
+      "id": "sport.bounce",
+      "title": "球拍／球碰撞",
+      "when": "球碰球拍、桌邊或地面",
+      "avoid": "連續接觸同一表面不可每幀重播",
+      "volume": 0.7,
+      "cooldownMs": 55,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/sport/bounce.mp3",
+      "duration": 0.1146,
+      "bytes": 2969,
+      "sha256": "4ed6b7da8b7ac8d586ee8c1b55555add5294a5596b9fe2c6debbaa4c1ac7d290",
+      "peakDb": -6.77,
+      "rmsDb": -22.44,
+      "sources": [
+        {
+          "pack": "impact-sounds",
+          "file": "impactGeneric_light_001.ogg",
+          "sha256": "c3cd1c073d186ae8fa35788ba94de581f1826e7427a7bb26490b2695fac18efa"
+        }
+      ]
+    },
+    {
+      "id": "sport.goal",
+      "title": "進球／得分",
+      "when": "確認進球或正式得分",
+      "avoid": "踢球出手用 sport.kick",
+      "volume": 0.7,
+      "cooldownMs": 300,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/sport/goal.mp3",
+      "duration": 0.2898,
+      "bytes": 5895,
+      "sha256": "838514f22bba442b2f299a1ea8ddce06c84c40ad3b1b9787b2528a4e7bb31ad9",
+      "peakDb": -12.36,
+      "rmsDb": -22.45,
+      "sources": [
+        {
+          "pack": "interface-sounds",
+          "file": "confirmation_001.ogg",
+          "sha256": "063564703b6094d70718a3e787a55cc9141611e4ecd6b6637f8828f79b4a8c3a"
+        }
+      ]
+    },
+    {
+      "id": "mechanism.unlock",
+      "title": "機關打開",
+      "when": "門鎖、機關或扣件實際開啟",
+      "avoid": "普通設定選單不算機關",
+      "volume": 0.7,
+      "cooldownMs": 160,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/mechanism/unlock.mp3",
+      "duration": 0.1471,
+      "bytes": 3387,
+      "sha256": "cb77cc6c0bed98778d673920cd3ae10fe27a6c9594d7793b86dae08f9ba3ad35",
+      "peakDb": -4.49,
+      "rmsDb": -25.05,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "metalLatch.ogg",
+          "sha256": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708"
+        }
+      ]
+    },
+    {
+      "id": "mechanism.screw",
+      "title": "螺絲拆裝",
+      "when": "螺絲旋動／零件成功拆裝",
+      "avoid": "板子真正落下應另用 impact.metal",
+      "volume": 0.7,
+      "cooldownMs": 110,
+      "maxVoices": 3,
+      "priority": 2,
+      "file": "assets/audio/sfx/mechanism/screw.mp3",
+      "duration": 0.3,
+      "bytes": 5895,
+      "sha256": "0d420505c7d2af4e639971c4ea6666f26c5848d7613524d1caf1e31ead43cb77",
+      "peakDb": -4.61,
+      "rmsDb": -29.69,
+      "sources": [
+        {
+          "pack": "rpg-audio",
+          "file": "metalClick.ogg",
+          "sha256": "9851a69d0c613e13bceef08060ecc4148f098ef487927cbebe270d642398a3b3"
+        }
+      ]
+    },
+    {
+      "id": "instrument.pluck",
+      "title": "可調音高撥弦取樣",
+      "when": "只有旋律、節奏提示或音高辨識玩法可以調整此取樣音高",
+      "avoid": "不得以改音高代替刀、弓、命中或普通按鈕音色",
+      "volume": 0.5,
+      "cooldownMs": 0,
+      "maxVoices": 12,
+      "priority": 2,
+      "file": "assets/audio/sfx/instrument/pluck.mp3",
+      "duration": 1.2,
+      "bytes": 20106,
+      "sha256": "782526be06185cfc15100a9cd2144a43387ae5932bc470008518aa61b00ad7a2",
+      "peakDb": -4.06,
+      "rmsDb": -23.25,
+      "sources": [
+        {
+          "pack": "original",
+          "file": "pluck-c4.wav",
+          "sha256": "original-karplus-strong-c4-v1"
+        }
+      ],
+      "rootHz": 261.625565
+    }
+  ]
+}

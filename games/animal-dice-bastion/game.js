@@ -541,7 +541,7 @@
     if (save.upgrades[upgrade.id] >= 5) return;
     save.dust -= cost; save.upgrades[upgrade.id] += 1; persist();
     $("upgradeFeedback").textContent = t("upgraded",{name:t(upgrade.name),level:save.upgrades[upgrade.id]});
-    renderWorkshop(); window.WonderSound?.play?.("collect");
+    renderWorkshop(); window.WeightPlayAudio?.play?.("reward.collect");
   }
 
   function seeded(seed) {
@@ -595,7 +595,7 @@
     showScreen("battle"); renderBoard(); updateBattleHud(true); announce(t("objective"));
     (__wpNotifyMeasurement(), lifecyclePaused = document.hidden); (__wpNotifyMeasurement(), run.paused = lifecyclePaused);
     lastTime = performance.now(); stopLoop(); if (!run.paused) raf = requestAnimationFrame(frame);
-    window.WonderSound?.play?.("start");
+    window.WeightPlayAudio?.play?.("game.start");
     if (!save.tutorialSeen) {
       trackDiceFunnel("tutorial_start", {stage: stage.n, chapter: stage.chapter + 1, source: "battle"});
       requestAnimationFrame(() => openModal($("tutorialPanel"), $("tutorialStartBtn")));
@@ -663,7 +663,7 @@
       trackDiceFunnel("first_summon", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
     }
     announce(forceMatch ? t("droughtGift",{guardian:t(type)}) : t("summoned",{guardian:t(type)}));
-    window.WonderSound?.play?.("collect");
+    window.WeightPlayAudio?.play?.("reward.collect");
   }
   function selectOrMerge(index, inputClass = "system") {
     if (!run || !run.board[index]) { run.selected = -1; renderBoard(); return; }
@@ -684,7 +684,7 @@
       run.firstMergeTracked = true;
       trackDiceFunnel("first_merge", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
     }
-    renderBoard(); announce(t("merged",{rank,guardian:t(type)})); window.WonderSound?.play?.("correct");
+    renderBoard(); announce(t("merged",{rank,guardian:t(type)})); window.WeightPlayAudio?.play?.("dice.roll");
   }
   function mergeByPointer(sourceIndex, targetIndex, inputClass = "pointer") {
     if (!run || activeModal() || sourceIndex === targetIndex || !run.board[sourceIndex] || !run.board[targetIndex]) return;
@@ -706,7 +706,7 @@
     if (run.rallyCooldown > 0) { announce(t("rallyNotReady")); return; }
     run.rally = 6; run.rallyCooldown = 18;updateOrderEffects();
     trackDiceFunnel("rally", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
-    announce(t("rallyUsed"));window.WonderSound?.play?.("power");
+    announce(t("rallyUsed"));window.WeightPlayAudio?.play?.("reward.upgrade");
   }
   function burst(inputClass = "system") {
     if (!run || activeModal()) return;
@@ -720,7 +720,7 @@
     });
     updateOrderEffects();
     trackDiceFunnel("burst", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
-    announce(t("burstUsed")); window.WonderSound?.play?.("power");
+    announce(t("burstUsed")); window.WeightPlayAudio?.play?.("reward.upgrade");
   }
   function renderBoard() {
     if (!run) return;
@@ -858,7 +858,7 @@
           enemy.healClock = 2.4;
         }
       }
-      if (enemy.x >= 1.02) { enemy.hit = true; run.core -= enemy.boss ? 3 : 1; announce(t("coreHit",{core:Math.max(0,run.core)})); window.WonderSound?.play?.("wrong"); }
+      if (enemy.x >= 1.02) { enemy.hit = true; run.core -= enemy.boss ? 3 : 1; announce(t("coreHit",{core:Math.max(0,run.core)})); window.WeightPlayAudio?.play?.("feedback.error"); }
     }
     updateProjectiles(dt);
     run.enemies = run.enemies.filter((enemy) => !enemy.hit && enemy.hp > 0);
@@ -991,7 +991,7 @@
     sharedFrame.activate('battle', {covered:true});
     [$("resultStagesBtn"),$("nextBtn"),$("retryBtn")].forEach(button=>button.setAttribute('data-wp-frame-action',button===primary?'primary':'secondary'));
     const focusPrimary=()=>{if(!$("resultPanel").hidden&&primary.isConnected)primary.focus({preventScroll:true})};
-    requestAnimationFrame(focusPrimary);setTimeout(focusPrimary,80);window.WonderSound?.play?.(won?"win":"wrong");
+    requestAnimationFrame(focusPrimary);setTimeout(focusPrimary,80);window.WeightPlayAudio?.play?.(won ? "result.win" : "result.lose");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }

@@ -548,7 +548,7 @@
   }
 
   function playSound(name) {
-    window.WonderSound?.play?.(name);
+    window.WeightPlayAudio?.play?.(name);
   }
 
   function track(event, payload = {}) {
@@ -649,7 +649,7 @@
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
           showFloatingText(t("locked"));
-          playSound("click");
+          playSound("ui.click");
           return;
         }
         startStage(index);
@@ -1005,7 +1005,7 @@
       zone?.classList.add("happy");
       showFace("\u{1F604}", "happy");
       nodes.hintText.textContent = t("correct");
-      playSound("success");
+      playSound("feedback.success");
     } else {
       mistakes += 1;
       roundMistakes += 1;
@@ -1014,7 +1014,7 @@
       zone?.classList.add("sad");
       showFace("\u{1F622}", "sad");
       nodes.hintText.textContent = t(skipped ? "moveOn" : "wrong");
-      playSound("wrong");
+      playSound("feedback.error");
     }
     track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct, skipped, mistakes, roundMistakes });
     scheduleCareTask(() => {
@@ -1128,7 +1128,7 @@
     (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("result-primary", isFinalClear));
     (isFinalClear ? nodes.resultStagesBtn : cleared ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderStageGrid();
-    playSound(cleared ? "success" : "wrong");
+    playSound(cleared ? "result.win" : "result.lose");
     track("game_complete", { stage: stage.id, score, stars, cleared, mistakes });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();

@@ -790,132 +790,12 @@ const GAME_VERSION = "v36";
   let audioCtx = null;
 
   function isSoundMuted() {
-    return Boolean(window.WonderSound?.isMuted?.());
+    return Boolean(window.WeightPlayAudio?.isMuted?.());
   }
 
-  function initAudio() {
-    if (isSoundMuted()) return;
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx.state === "suspended") {
-      audioCtx.resume();
-    }
-  }
+  function initAudio() { return window.WeightPlayAudio?.unlock(); }
 
-  function playSynth(type) {
-    if (!audioCtx || isSoundMuted()) return;
-    try {
-      const osc = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-      osc.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-
-      const now = audioCtx.currentTime;
-
-      if (type === "click") {
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(400, now);
-        osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
-        gainNode.gain.setValueAtTime(0.08, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.05);
-        osc.start(now);
-        osc.stop(now + 0.05);
-      } else if (type === "buy") {
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(300, now);
-        osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
-        gainNode.gain.setValueAtTime(0.12, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.15);
-        osc.start(now);
-        osc.stop(now + 0.15);
-      } else if (type === "sell") {
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(600, now);
-        osc.frequency.exponentialRampToValueAtTime(150, now + 0.12);
-        gainNode.gain.setValueAtTime(0.1, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.12);
-        osc.start(now);
-        osc.stop(now + 0.12);
-      } else if (type === "combine") {
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.setValueAtTime(440, now + 0.06);
-        osc.frequency.setValueAtTime(880, now + 0.12);
-        gainNode.gain.setValueAtTime(0.15, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
-        osc.start(now);
-        osc.stop(now + 0.2);
-      } else if (type === "hit") {
-        // Low triangle sweep + noise-like click
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(150, now);
-        osc.frequency.exponentialRampToValueAtTime(40, now + 0.08);
-        gainNode.gain.setValueAtTime(0.2, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.08);
-        osc.start(now);
-        osc.stop(now + 0.08);
-      } else if (type === "faint") {
-        osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.exponentialRampToValueAtTime(50, now + 0.2);
-        gainNode.gain.setValueAtTime(0.15, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
-        osc.start(now);
-        osc.stop(now + 0.2);
-      } else if (type === "shield") {
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(880, now);
-        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
-        gainNode.gain.setValueAtTime(0.1, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.1);
-        osc.start(now);
-        osc.stop(now + 0.1);
-      } else if (type === "buff") {
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(400, now);
-        osc.frequency.exponentialRampToValueAtTime(900, now + 0.25);
-        gainNode.gain.setValueAtTime(0.1, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.25);
-        osc.start(now);
-        osc.stop(now + 0.25);
-      } else if (type === "win") {
-        // Major arpeggio
-        const notes = [261.6, 329.6, 392.0, 523.3];
-        notes.forEach((f, idx) => {
-          const oscNode = audioCtx.createOscillator();
-          const gainNode2 = audioCtx.createGain();
-          oscNode.connect(gainNode2);
-          gainNode2.connect(audioCtx.destination);
-          oscNode.type = "sine";
-          oscNode.frequency.setValueAtTime(f, now + idx * 0.08);
-          gainNode2.gain.setValueAtTime(0.08, now + idx * 0.08);
-          gainNode2.gain.linearRampToValueAtTime(0, now + idx * 0.08 + 0.25);
-          oscNode.start(now + idx * 0.08);
-          oscNode.stop(now + idx * 0.08 + 0.25);
-        });
-      } else if (type === "fail") {
-        // Sad slide
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(330, now);
-        osc.frequency.linearRampToValueAtTime(180, now + 0.4);
-        gainNode.gain.setValueAtTime(0.15, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
-        osc.start(now);
-        osc.stop(now + 0.4);
-      } else if (type === "revive") {
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(200, now);
-        osc.frequency.exponentialRampToValueAtTime(800, now + 0.5);
-        gainNode.gain.setValueAtTime(0.15, now);
-        gainNode.gain.linearRampToValueAtTime(0, now + 0.5);
-        osc.start(now);
-        osc.stop(now + 0.5);
-      }
-    } catch (e) {
-      console.warn("Audio failed to play:", e);
-    }
-  }
+  function playSynth(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
   // Helper selectors
   const $ = (id) => document.getElementById(id);
@@ -3657,7 +3537,7 @@ const GAME_VERSION = "v36";
         skinPurchaseNoticePending = true;
         armSkinPurchaseDecision();
         renderCosmeticSection();
-        playSynth("click");
+        playSynth("ui.click");
         return;
       }
       clearSkinPurchaseDecision();
@@ -3665,7 +3545,7 @@ const GAME_VERSION = "v36";
       armSkinPurchaseDecision();
       renderCosmeticSection();
       nodes.buySkinBtn.focus({ preventScroll: true });
-      playSynth("click");
+      playSynth("ui.click");
       return;
     }
     clearSkinPurchaseDecision();
@@ -3677,7 +3557,7 @@ const GAME_VERSION = "v36";
       save.unlockedSkin = true;
       save.selectedSkin = "golden";
       saveSave();
-      playSynth("win");
+      playSynth("result.win");
       renderCosmeticSection();
       window.WonderAnalytics?.track("cosmetic_skin_purchase", { game_id: GAME_ID, cost: 15 });
     }
@@ -3687,7 +3567,7 @@ const GAME_VERSION = "v36";
     initAudio();
     save.selectedSkin = save.selectedSkin === "golden" ? "normal" : "golden";
     saveSave();
-    playSynth("click");
+    playSynth("ui.click");
     renderCosmeticSection();
   }
 
@@ -3795,21 +3675,21 @@ const GAME_VERSION = "v36";
       const cost = premiumUnlockCost(id);
       if (!spendWalletDiamonds(cost)) {
         showActionNotice(nodes.stageNotice, t("noDiamonds"), document.activeElement);
-        playSynth("click");
+        playSynth("ui.click");
         return;
       }
     } else {
       const cost = animalUnlockCost(id);
       if (save.coins < cost) {
         showActionNotice(nodes.stageNotice, t("noGold"), document.activeElement);
-        playSynth("click");
+        playSynth("ui.click");
         return;
       }
       save.coins -= cost;
     }
     save.unlockedAnimals = [...new Set([...save.unlockedAnimals, Number(id)])].sort((a, b) => a - b);
     saveSave();
-    playSynth("buy");
+    playSynth("shop.purchase");
     renderTrainingRoster(id);
   }
 
@@ -3823,13 +3703,13 @@ const GAME_VERSION = "v36";
     const cost = animalUpgradeCost(id);
     if (save.coins < cost) {
       showActionNotice(nodes.stageNotice, t("noGold"), document.activeElement);
-      playSynth("click");
+      playSynth("ui.click");
       return;
     }
     save.coins -= cost;
     save.animalLevels[id] = currentLevel + 1;
     saveSave();
-    playSynth("combine");
+    playSynth("puzzle.merge");
     renderTrainingRoster(id);
   }
 
@@ -3952,7 +3832,7 @@ const GAME_VERSION = "v36";
   // Start Expedition Run
   function startExpedition() {
     initAudio();
-    playSynth("click");
+    playSynth("ui.click");
     setResultOwnership(false);
     state = makeState();
     state.stage = normalizeSave(save).selectedStage;
@@ -4297,7 +4177,7 @@ const GAME_VERSION = "v36";
       if (!card) return;
       selectedSlot = { area, index };
       highlightSelectedCard(true);
-      playSynth("click");
+      playSynth("ui.click");
       renderPrepScreen({ area, index });
     } else {
       const source = selectedSlot;
@@ -4306,7 +4186,7 @@ const GAME_VERSION = "v36";
       if (source.area === area && source.index === index) {
         selectedSlot = null;
         highlightSelectedCard(false);
-        playSynth("click");
+        playSynth("ui.click");
         renderPrepScreen({ area, index });
         return;
       }
@@ -4333,7 +4213,7 @@ const GAME_VERSION = "v36";
         else {
           selectedSlot = { area, index };
           highlightSelectedCard(true);
-          playSynth("click");
+          playSynth("ui.click");
           renderPrepScreen({ area, index });
         }
       } else {
@@ -4396,7 +4276,7 @@ const GAME_VERSION = "v36";
       selectedSlot = null;
       highlightSelectedCard(false);
       saveActiveFormation();
-      playSynth("click");
+      playSynth("ui.click");
       updateHUD();
       renderPrepScreen({ area: destArea, index: destIndex });
       return;
@@ -4407,7 +4287,7 @@ const GAME_VERSION = "v36";
       selectedSlot = null;
       highlightSelectedCard(false);
       saveActiveFormation();
-      playSynth("click");
+      playSynth("ui.click");
       updateHUD();
       renderPrepScreen({ area: destArea, index: destIndex });
       return;
@@ -4421,7 +4301,7 @@ const GAME_VERSION = "v36";
       selectedSlot = null;
       highlightSelectedCard(false);
       saveActiveFormation();
-      playSynth("click");
+      playSynth("ui.click");
       updateHUD();
       renderPrepScreen({ area: destArea, index: destIndex });
       return;
@@ -4440,13 +4320,13 @@ const GAME_VERSION = "v36";
         setCardAt(srcArea, srcIndex, null);
         setCardAt(destArea, destIndex, card);
         triggerBuyAbility(card);
-        playSynth("buy");
+        playSynth("shop.purchase");
       } else if (targetCard.id === card.id) {
         // Combine shop with existing
         state.gold -= 3;
         setCardAt(srcArea, srcIndex, null);
         combineCards(targetCard, card);
-        playSynth("combine");
+        playSynth("puzzle.merge");
       }
     }
 
@@ -4461,7 +4341,7 @@ const GAME_VERSION = "v36";
       state.gold -= 3;
       setCardAt(srcArea, srcIndex, null);
       feedAnimal(targetCard, card);
-      playSynth("buy");
+      playSynth("shop.purchase");
     }
 
     // 3. Move/Combine inside active zones
@@ -4473,17 +4353,17 @@ const GAME_VERSION = "v36";
         // Move to empty
         setCardAt(srcArea, srcIndex, null);
         setCardAt(destArea, destIndex, card);
-        playSynth("click");
+        playSynth("ui.click");
       } else if (targetCard.id === card.id) {
         // Combine
         setCardAt(srcArea, srcIndex, null);
         combineCards(targetCard, card);
-        playSynth("combine");
+        playSynth("puzzle.merge");
       } else {
         // Swap slots
         setCardAt(srcArea, srcIndex, targetCard);
         setCardAt(destArea, destIndex, card);
-        playSynth("click");
+        playSynth("ui.click");
       }
     }
 
@@ -4511,21 +4391,21 @@ const GAME_VERSION = "v36";
       animal.currentAtk += 1;
       animal.currentHp += 1;
       animal.maxHp += 1;
-      playSynth("buff");
+      playSynth("magic.heal");
     } else if (food.id === 1) {
       // Honey: +2 HP, gain 1 gold back immediately
       animal.currentHp += 2;
       animal.maxHp += 2;
       state.gold = Math.min(10, state.gold + 1);
-      playSynth("buff");
+      playSynth("magic.heal");
     } else if (food.id === 2) {
       // Melon: gives Melon Shield
       animal.hasShield = true;
-      playSynth("shield");
+      playSynth("magic.shield");
     } else if (food.id === 3) {
       // Chocolate: +2 Exp
       combineCards(animal, { exp: 2, level: 1, atk: 0, hp: 0 });
-      playSynth("combine");
+      playSynth("puzzle.merge");
     }
     window.WonderAnalytics?.track("feed_food", { game_id: GAME_ID, food_id: food.id });
   }
@@ -4538,7 +4418,7 @@ const GAME_VERSION = "v36";
       card.currentAtk += level;
       card.currentHp += level;
       card.maxHp += level;
-      playSynth("buff");
+      playSynth("magic.heal");
     } else if (card.id === 2) {
       // Beaver: give 2 random allies +1 HP
       buffRandomAllies(2, 0, level);
@@ -4554,7 +4434,7 @@ const GAME_VERSION = "v36";
           c.maxHp += 2 * level;
         }
       });
-      playSynth("buff");
+      playSynth("magic.heal");
     }
   }
 
@@ -4574,7 +4454,7 @@ const GAME_VERSION = "v36";
         rand.currentAtk += 2 * level;
         rand.currentHp += 2 * level;
         rand.maxHp += 2 * level;
-        playSynth("buff");
+        playSynth("magic.heal");
       }
     }
   }
@@ -4588,7 +4468,7 @@ const GAME_VERSION = "v36";
       rand.currentHp += hpVal;
       rand.maxHp += hpVal;
     }
-    playSynth("buff");
+    playSynth("magic.heal");
   }
 
   function runUpgradeCost(card) {
@@ -4612,7 +4492,7 @@ const GAME_VERSION = "v36";
     card.currentHp += 2;
     card.maxHp += 2;
     selectedSlot = null;
-    playSynth("combine");
+    playSynth("puzzle.merge");
     updateHUD();
     renderPrepScreen();
   }
@@ -4631,7 +4511,7 @@ const GAME_VERSION = "v36";
     state.freeRerollThisRound = false;
     state.rerollsUsedThisRound++;
 
-    playSynth("sell");
+    playSynth("reward.coin");
     generateShop();
     updateHUD();
     renderPrepScreen();
@@ -4645,7 +4525,7 @@ const GAME_VERSION = "v36";
     } else {
       state.shop.frozenItems[idx] = !state.shop.frozenItems[idx];
     }
-    playSynth("click");
+    playSynth("ui.click");
     renderPrepScreen();
   }
 
@@ -4957,7 +4837,7 @@ const GAME_VERSION = "v36";
   function startBattle(event) {
     reclaimVisibleForeground(event);
     initAudio();
-    playSynth("click");
+    playSynth("ui.click");
     clearActionNotice(nodes.prepNotice);
 
     // Gather active players (non-null in squad)
@@ -5162,7 +5042,7 @@ const GAME_VERSION = "v36";
     renderCombatPaceControl();
     combatLog(t(state.combat.pace === "swift" ? "paceSwiftNotice" : "paceStandardNotice"));
     updateCombatSummary();
-    playSynth("click");
+    playSynth("ui.click");
   }
 
   function toggleCombatTactic() {
@@ -5174,7 +5054,7 @@ const GAME_VERSION = "v36";
     renderCombatTactic();
     combatLog(t("tacticNotice", { tactic: tacticLabel() }));
     updateCombatSummary();
-    playSynth("click");
+    playSynth("ui.click");
   }
 
   function clearScheduledCombatTimers() {
@@ -5741,19 +5621,19 @@ const GAME_VERSION = "v36";
     // Check end condition
     if (!playerSquad.length && !enemySquad.length) {
       combatLog(t("drawText"));
-      playSynth("fail");
+      playSynth("result.lose");
       scheduleCombatEnd("draw");
       return;
     }
     if (!playerSquad.length) {
       combatLog(t("failText"));
-      playSynth("fail");
+      playSynth("result.lose");
       scheduleCombatEnd("lose");
       return;
     }
     if (!enemySquad.length) {
       combatLog(t("winText"));
-      playSynth("win");
+      playSynth("result.win");
       scheduleCombatEnd("win");
       return;
     }
@@ -5764,7 +5644,7 @@ const GAME_VERSION = "v36";
     triggerBeforeClashAbilities();
     if (!enemySquad.length) {
       combatLog(t("winText"));
-      playSynth("win");
+      playSynth("result.win");
       scheduleCombatEnd("win", 900);
       return;
     }
@@ -5776,7 +5656,7 @@ const GAME_VERSION = "v36";
     // Trigger visual shake/bump animation
     state.combat.shakeFrames = 10;
     state.combat.shakeTarget = "player";
-    playSynth("hit");
+    playSynth("combat.strike");
 
     // Apply shield logic
     let pDmg = eUnit.atk;
@@ -5826,7 +5706,7 @@ const GAME_VERSION = "v36";
         fainted = true;
       }
       if (fainted) {
-        playSynth("faint");
+        playSynth("enemy.defeat");
       }
     }, 400);
   }
@@ -5834,7 +5714,7 @@ const GAME_VERSION = "v36";
   function resolveOrderedCombatStep(playerSquad, enemySquad) {
     const slot = state.combat.step % 6;
     state.combat.step++;
-    playSynth("hit");
+    playSynth("combat.strike");
     state.combat.lastActionShort = "";
 
     const actions = [];
@@ -5857,7 +5737,7 @@ const GAME_VERSION = "v36";
       const before = playerSquad.length + enemySquad.length;
       removeDefeatedUnits(playerSquad, "player");
       removeDefeatedUnits(enemySquad, "enemy");
-      if (before !== playerSquad.length + enemySquad.length) playSynth("faint");
+      if (before !== playerSquad.length + enemySquad.length) playSynth("enemy.defeat");
     }, 0);
     if (shouldOpenStallRecovery) {
       scheduleCombatStepCleanup(() => openStallRecoveryPopup(), 0);
@@ -6218,14 +6098,14 @@ const GAME_VERSION = "v36";
     clearActionNotice(nodes.reviveNotice);
     if (getWalletDiamonds() < 5) {
       showActionNotice(nodes.reviveNotice, t("noDiamonds"), nodes.reviveBtn);
-      playSynth("click");
+      playSynth("ui.click");
       return;
     }
     if (spendWalletDiamonds(5)) {
       setBattleDecisionOwnership(nodes.defeatRevivePanel, false);
       nodes.defeatRevivePanel.classList.add("is-hidden");
       state.hearts = 2;
-      playSynth("revive");
+      playSynth("magic.heal");
 
       // Return to shop prep
       showTeamPreparationView();
@@ -6237,7 +6117,7 @@ const GAME_VERSION = "v36";
 
   function handleGiveUp() {
     initAudio();
-    playSynth("click");
+    playSynth("ui.click");
     setBattleDecisionOwnership(nodes.defeatRevivePanel, false);
     nodes.defeatRevivePanel.classList.add("is-hidden");
     state.activeRun = false;
@@ -6284,7 +6164,7 @@ const GAME_VERSION = "v36";
     if (!stallDecisionOpen) return;
     closeStallDecision();
     initAudio();
-    playSynth("click");
+    playSynth("ui.click");
     state.combat.playerSquad = [];
     state.combat.enemySquad = [];
     state.combat.lastAction = "";
@@ -6301,7 +6181,7 @@ const GAME_VERSION = "v36";
     if (!stallDecisionOpen) return;
     closeStallDecision();
     initAudio();
-    playSynth("sell");
+    playSynth("reward.coin");
     state.activeRun = false;
     state.combat.stallEnded = true;
     window.WonderAnalytics?.track("battle_no_progress_end", { game_id: GAME_ID, stage: state.stage, wave: state.round });
@@ -6466,7 +6346,7 @@ const GAME_VERSION = "v36";
     setResultOwnership(true);
     requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
 
-    playSynth(isWin ? "win" : "fail");
+    playSynth(isWin ? "result.win" : "result.lose");
     window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
@@ -6499,7 +6379,7 @@ const GAME_VERSION = "v36";
   function confirmQuitRun() {
     closeQuitDecision(false);
     initAudio();
-    playSynth("sell");
+    playSynth("reward.coin");
     state.activeRun = false;
     showStageSelection();
   }

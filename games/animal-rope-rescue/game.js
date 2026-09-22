@@ -563,7 +563,7 @@
   function setStageState(isStage) {
     document.documentElement.classList.toggle("is-vine-stage-select", isStage);
     document.body.classList.toggle("is-vine-stage-select", isStage);
-    window.WonderSound?.setGameActive?.(isStage);
+    window.WeightPlayAudio?.setGameActive?.(isStage);
     window.WeightPlayGame?.updateVisualViewportVars?.();
     requestAnimationFrame(updateStageScale);
   }
@@ -827,7 +827,7 @@
     nodes.hintText.textContent = t("fallHint");
     requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
     lastFrame = performance.now();
-    window.WonderSound?.play?.("click");
+    window.WeightPlayAudio?.play?.("ui.click");
     physicsFrame = requestAnimationFrame(tick);
   }
 
@@ -865,7 +865,7 @@
       applyLeafBounce(route, rect.height, offset);
       y = paddleY - fruitPx * 0.45;
       showFloat(t("bounceProgress", { current: Math.min(bounceCount, Number(route.requiredBounces || 1)), total: Number(route.requiredBounces || 1) }));
-      window.WonderSound?.play?.("pop");
+      window.WeightPlayAudio?.play?.("movement.release");
     }
 
     fruit.x = (x / rect.width) * 100;
@@ -1022,7 +1022,7 @@
     });
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     primaryAction.focus({ preventScroll: true });
-    window.WonderSound?.play?.(success ? "success" : "error");
+    window.WeightPlayAudio?.play?.(success ? "result.win" : "result.lose");
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (success ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -1157,7 +1157,7 @@
     if (key === "Home") setPaddlePosition(16);
     else if (key === "End") setPaddlePosition(84);
     else setPaddlePosition(paddleX + (key === "ArrowLeft" ? -4 : 4));
-    window.WonderSound?.play?.("click");
+    window.WeightPlayAudio?.play?.("ui.click");
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));

@@ -746,7 +746,8 @@
   };
 
   let locale = "en";
-  let soundOn = true;
+  let soundOn = !window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change", () => { soundOn = !window.WeightPlayAudio.isMuted(); });
   let activeGame = null;
   let app = null;
 
@@ -792,13 +793,7 @@
   }
   function esc(value) { return String(value).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch])); }
   function announce(message, kind = "") { if (!app) return; app.status.textContent = message; app.status.className = `logic-status-line ${kind}`; }
-  function beep(kind = "click") {
-    if (!soundOn || !window.AudioContext && !window.webkitAudioContext) return;
-    try {
-      const Ctx = window.AudioContext || window.webkitAudioContext; const ctx = new Ctx(); const osc = ctx.createOscillator(); const gain = ctx.createGain();
-      osc.type = "sine"; osc.frequency.value = kind === "success" ? 660 : kind === "wrong" ? 170 : 330; gain.gain.setValueAtTime(.0001, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.08, ctx.currentTime + .01); gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .14); osc.connect(gain).connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + .16); osc.addEventListener("ended", () => ctx.close(), { once: true });
-    } catch { /* Audio is an optional enhancement. */ }
-  }
+  function beep(cue = "board.move") { return window.WeightPlayAudio?.play(cue); }
   function saveBest(id, value) { const old = Number(localStorageSafe(`classicLogicBest:${id}`) || 0); if (!old || value < old) localStorageSafe(`classicLogicBest:${id}`, value); return Math.min(old || value, value); }
   function makeButton(label, className = "logic-secondary") { const button = document.createElement("button"); button.type = "button"; button.className = className; button.textContent = label; return button; }
   function selectDifficulty(value = "easy") { const select = document.createElement("select"); select.className = "logic-select"; select.setAttribute("aria-label", t("level")); for (const [valueKey, labelKey] of [["easy", "easy"], ["medium", "medium"], ["hard", "hard"]]) { const option = document.createElement("option"); option.value = valueKey; option.textContent = t(labelKey); if (valueKey === value) option.selected = true; select.append(option); } return select; }
@@ -857,8 +852,8 @@
     }
     const picker = app.root.querySelector("#localePicker"); for (const key of LOCALES) { const option = document.createElement("option"); option.value = key; option.textContent = localeLabels[key]; option.selected = key === locale; picker.append(option); }
     const settings = app.root.querySelector("#settingsPanel"); const settingsButton = app.root.querySelector("#settingsButton"); settingsButton.addEventListener("click", () => { settings.hidden = !settings.hidden; settingsButton.setAttribute("aria-expanded", String(!settings.hidden)); });
-    app.root.querySelector("#soundButton").addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });
-    app.stageSound?.addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });
+    app.root.querySelector("#soundButton").addEventListener("click", () => { soundOn = window.WeightPlayAudio.setEnabled(!soundOn); updateSoundButton(); beep("ui.click"); });
+    app.stageSound?.addEventListener("click", () => { soundOn = window.WeightPlayAudio.setEnabled(!soundOn); updateSoundButton(); beep("ui.click"); });
     picker.addEventListener("change", () => {
       localStorageSafe("weightPlayLocale", picker.value);
       if (["four-in-a-row", "sliding-15", "sudoku", "tower-of-hanoi", "reversi", "lights-out", "code-breaker", "peg-solitaire"].includes(id)) {
@@ -941,7 +936,7 @@
 
   function finish(won, detail = "") {
     if (!app) return;
-    beep(won ? "success" : "wrong");
+    beep(won ? "result.win" : "result.lose");
     const staged = (app.id === "code-breaker" || app.id === "sliding-15") && app.currentStage;
     if (staged) {
       const stage = Number(app.currentStage); const sliding = app.id === "sliding-15"; const total = sliding ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; const campaignCopy = sliding ? slidingCampaignCopy : codeCampaignCopy; const progress = won ? (sliding ? markSlidingStageCleared(stage) : markCodeStageCleared(stage)) : (sliding ? readSlidingProgress() : readCodeProgress());
@@ -1034,7 +1029,7 @@
     function remainingCells() { return values.reduce((count, value, index) => count + (!given.has(index) && !value ? 1 : 0), 0); }
     function resultGoal() { const target = Math.max(1, history.length - 1); return difficulty === "hard" ? feedback("hardGoal", { level: t(difficulty), target }) : feedback("goal", { level: t(difficulty), target, next: t(difficulty === "easy" ? "medium" : "hard") }); }
     function render() { cellButtons.forEach((b, i) => { const value = values[i] || ""; const state = given.has(i) ? fillTemplate(text(sudokuCopy.given), { value }) : value ? fillTemplate(text(sudokuCopy.filled), { value }) : text(sudokuCopy.empty); const labelState = i === hintIndex ? fillTemplate(text(sudokuCopy.hinted), { state }) : state; const label = fillTemplate(text(sudokuCopy.cell), { row: Math.floor(i / 9) + 1, col: (i % 9) + 1, state: labelState }); b.className = `logic-cell ${given.has(i) ? "given" : ""} ${i === selected ? "is-selected" : ""} ${i === hintIndex ? "is-hint" : ""}`; b.textContent = value; b.setAttribute("aria-label", label); }); clearButton.textContent = t("clear"); }
-    function enter(value) { if (selected < 0 || given.has(selected)) return; const previous = values[selected]; if (previous === (value || 0)) { announce(feedback("ready")); return; } values[selected] = 0; if (value && !sudokuCanPlace(values, selected, value)) { values[selected] = previous; hintIndex = -1; render(); announce(feedback("invalid"), "is-error"); beep("wrong"); return; } history.push({ index: selected, value: previous }); values[selected] = value || 0; hintIndex = -1; render(); const remaining = remainingCells(); if (sudokuComplete(values)) { finish(true, `${t("solved")} · ${resultGoal()}`); announce(`${t("solved")} · ${t("win")}`, "is-good"); } else { announce(feedback(value ? "correct" : "cleared", { remaining }), "is-good"); beep(value ? "success" : "click"); } }
+    function enter(value) { if (selected < 0 || given.has(selected)) return; const previous = values[selected]; if (previous === (value || 0)) { announce(feedback("ready")); return; } values[selected] = 0; if (value && !sudokuCanPlace(values, selected, value)) { values[selected] = previous; hintIndex = -1; render(); announce(feedback("invalid"), "is-error"); beep("feedback.error"); return; } history.push({ index: selected, value: previous }); values[selected] = value || 0; hintIndex = -1; render(); const remaining = remainingCells(); if (sudokuComplete(values)) { finish(true, `${t("solved")} · ${resultGoal()}`); announce(`${t("solved")} · ${t("win")}`, "is-good"); } else { announce(feedback(value ? "correct" : "cleared", { remaining }), "is-good"); beep(value ? "feedback.success" : "ui.click"); } }
     function reset() { difficulty = select.value; const baseSolution = solution.slice(0, 81); values = baseSolution.map((v, i) => masks[difficulty].includes(i) ? 0 : v); given = new Set(baseSolution.map((_, i) => i).filter((i) => !masks[difficulty].includes(i))); selected = -1; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(feedback("ready"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
@@ -1185,7 +1180,7 @@
     function minimumMoves() { return (2 ** count) - 1; }
     function legalDestination(index) { if (selected < 0 || selected === index) return false; const from = towers[selected]; const disk = from?.[from.length - 1]; const to = towers[index]; return Boolean(disk) && (!to.length || to[to.length - 1] > disk); }
     function render(status = `${t("moves")}: ${moves}`) { target.textContent = fillTemplate(text(hanoiCopy.minimumMoves), { moves, minimum: minimumMoves() }); board.replaceChildren(); towers.forEach((tower, index) => { const peg = document.createElement("button"); peg.type = "button"; peg.className = `logic-tower ${selected === index ? "is-selected" : ""} ${legalDestination(index) ? "is-legal-destination" : ""}`; peg.setAttribute("aria-label", fillTemplate(text(hanoiCopy.pegLabel), { peg: index + 1 })); tower.forEach((disk) => { const diskEl = document.createElement("span"); diskEl.className = "logic-disk"; diskEl.style.width = `${30 + disk * (56 / count)}%`; diskEl.textContent = disk; peg.append(diskEl); }); peg.addEventListener("click", () => clickPeg(index)); board.append(peg); }); announce(status); }
-    function clickPeg(index) { if (selected < 0) { if (towers[index].length) { selected = index; render(t("selectTarget")); } else render(t("selectSource")); return; } if (selected === index) { selected = -1; render(t("selectSource")); return; } const from = towers[selected], to = towers[index]; const disk = from[from.length - 1]; if (disk && (!to.length || to[to.length - 1] > disk)) { history.push({ towers: towers.map((tower) => tower.slice()), moves }); from.pop(); to.push(disk); moves += 1; selected = -1; beep(); if (to.length === count && index === 2) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (to.length === count) render(fillTemplate(text(hanoiCopy.goalPeg), { peg: index + 1 })); else render(); } else { selected = -1; render(t("failed")); } }
+    function clickPeg(index) { if (selected < 0) { if (towers[index].length) { selected = index; render(t("selectTarget")); } else render(t("selectSource")); return; } if (selected === index) { selected = -1; render(t("selectSource")); return; } const from = towers[selected], to = towers[index]; const disk = from[from.length - 1]; if (disk && (!to.length || to[to.length - 1] > disk)) { history.push({ towers: towers.map((tower) => tower.slice()), moves }); from.pop(); to.push(disk); moves += 1; selected = -1; beep("board.move"); if (to.length === count && index === 2) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (to.length === count) render(fillTemplate(text(hanoiCopy.goalPeg), { peg: index + 1 })); else render(); } else { selected = -1; render(t("failed")); } }
     function reset() { count = select.value === "easy" ? 3 : select.value === "medium" ? 4 : 5; towers = [Array.from({ length: count }, (_, i) => count - i), [], []]; selected = -1; moves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render();
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
