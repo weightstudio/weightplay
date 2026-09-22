@@ -1,4 +1,4 @@
-import { gear } from './campaign.js';
+import { gear } from './campaign.js?v=4';
 export const MAX_RANK=50;
 export const shardsNeeded=rank=>10*(rank+1);
 export const tier=g=>g.unlock>=15?3:g.unlock>=8?2:g.unlock?1:0;

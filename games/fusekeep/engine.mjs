@@ -29,7 +29,7 @@ export class Battle {
   if(!pad(from)||!pad(to)||from===to||!this.board[from])return 'invalid';
   if(this.frozen[from]>0||this.frozen[to]>0)return 'frozen';
   const a=this.board[from],b=this.board[to];if(!b)return 'move';
-  if(a.rank!==b.rank)return 'rank';return a.rank>=MAX_RANK?'max':'merge';
+  if(a.rank!==b.rank||a.type!==b.type)return 'rank';return a.rank>=MAX_RANK?'max':'merge';
  }
  move(from,to,expectedUnitId){
   const result=this.canMove(from,to);

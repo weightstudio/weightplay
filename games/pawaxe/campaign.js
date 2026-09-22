@@ -1,4 +1,8 @@
 export const ENEMIES = {
+  emberling:{name:'Ember Caster',zh:'燼火術士',hp:82,damage:15,period:3.8,warn:1.3},
+  frostguard:{name:'Frost Sentinel',zh:'霜甲守衛',hp:105,damage:13,period:3.5,warn:1.2,shield:28},
+  brute:{name:'Wildwood Brute',zh:'狂木巨兵',hp:135,damage:24,period:4.2,warn:1.5},
+  siphon:{name:'Rune Siphon',zh:'汲能巫木',hp:94,damage:11,period:3.6,warn:1.3},
   "scout": {
     "name": "Wood Scout",
     "zh": "木甲斥候",

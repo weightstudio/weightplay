@@ -1,5 +1,5 @@
 // Stable mission IDs and troop identities. Save migration preserves version-1 progress.
-export const VERSION=3;
+export const VERSION=4;
 export const STEP=1/30;
 export const MAX_RANK=6;
 export const WAVES=15;

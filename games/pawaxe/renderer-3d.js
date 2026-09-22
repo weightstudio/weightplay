@@ -1,5 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import { buildAxe } from './axe-model.js';
+import { buildAxe } from './axe-model.js?v=4';
 
 // One renderer per run. Geometry/material caches are bounded and disposed together.
 export class PawRenderer {
@@ -72,7 +72,32 @@ export class PawRenderer {
     this.hand=new THREE.Group();this.view.add(this.hand);
     this.box(this.hand,.44,.13,.36,0xe18a39,0,0,0);
     this.box(this.hand,.45,.09,.1,0xffdc9b,0,.09,.13);
+    this.setCompanion('nibs');
+  }
+  setCompanion(id){
+    if(this.nibs)this.hand.remove(this.nibs);
     this.nibs=new THREE.Group();this.hand.add(this.nibs);
+    if(id!=='nibs'){
+      const c=id==='moss'?0x74ab69:id==='frost'?0x8ccce2:0xe68551;
+      this.box(this.nibs,.29,.26,.27,c,0,.21,0);
+      this.box(this.nibs,.34,.25,.28,c,0,.43,0);
+      if(id==='moss'){
+        this.box(this.nibs,.39,.19,.34,0x476653,0,.25,-.04);this.box(this.nibs,.21,.13,.22,0xb7d799,0,.37,-.07);
+        for(const side of [-1,1])this.box(this.nibs,.12,.07,.2,c,side*.16,.14,.02);
+      }else if(id==='frost'){
+        for(const side of [-1,1]){
+          this.box(this.nibs,.10,.23,.2,0x44798f,side*.18,.23,0);
+          this.box(this.nibs,.09,.11,.10,c,side*.13,.59,0);
+          this.box(this.nibs,.13,.14,.04,0xeaffef,side*.095,.45,.15);
+        }
+      }else{
+        for(const side of [-1,1])this.box(this.nibs,.06,.15,.07,0xdeb660,side*.10,.6,0);
+        this.box(this.nibs,.30,.07,.08,c,.20,.18,-.10);this.box(this.nibs,.10,.13,.09,0xdeb660,.36,.23,-.10);
+      }
+      for(const side of [-1,1]){this.box(this.nibs,.05,.065,.025,0x201e1a,side*.085,.46,.17);this.box(this.nibs,.015,.02,.012,0xffffff,side*.085,.48,.188);}
+      this.box(this.nibs,.065,.055,.055,id==='frost'?0xdeb660:0x694e3d,0,.38,.17);
+      this.box(this.nibs,.07,.08,.04,id==='ember'?0xffcd72:0x59ddba,0,.21,.17,true);return;
+    }
     this.box(this.nibs,.28,.29,.24,0xd39442,0,.19,0);
     this.box(this.nibs,.32,.26,.27,0xe8aa50,0,.43,0);
     this.box(this.nibs,.25,.12,.04,0xffe1a2,0,.37,.15);
@@ -89,7 +114,7 @@ export class PawRenderer {
   enemyModel(e) {
     const g=new THREE.Group();g.userData.uid=e.uid;
     const object=['anchor','root-drain','root-crack'].includes(e.id), mirror=e.id.startsWith('mirror');
-    const wood=e.id==='thorn'||e.id==='boss-loom'?0x526b3d:mirror?0x597d85:0x886744;
+    const wood=e.id==='frostguard'?0x597d85:e.id==='emberling'?0xb76c42:e.id==='siphon'?0x776293:e.id==='thorn'||e.id==='boss-loom'?0x526b3d:mirror?0x597d85:0x886744;
     const dark=0x443f32,rune=e.id==='thorn'||e.id==='root-crack'?0xec9864:0x62dbc0;
     if(object){
       this.box(g,.8,.22,.8,0x4e6553,0,.11,0);this.box(g,.5,1.4,.5,wood,0,.8,0);
@@ -127,6 +152,10 @@ export class PawRenderer {
       this.box(g,.12,2.1,.12,0x604c31,.92,1.1,.1);this.box(g,.35,.35,.3,e.id==='mender'?0x9fea88:0xb396ec,.92,2.2,.1,true).rotation.z=.7;
     }
     if(e.id==='thorn'||e.id==='boss-loom')for(let i=-1;i<=1;i++)this.box(g,.15,.42,.16,0x738246,i*.29,2.5,0).rotation.z=i*.4;
+    if(e.id==='emberling'){this.box(g,.28,.65,.28,0xef9f48,.9,1.7,.15,true);this.box(g,.16,.25,.16,0xffd15b,.9,2.13,.15,true);}
+    if(e.id==='frostguard')for(const side of [-1,1])this.box(g,.25,.5,.25,0x8ee0e8,side*.6,1.9,0,true);
+    if(e.id==='siphon'){this.box(g,.12,2.0,.12,0x604c31,.92,1.1,.1);this.box(g,.5,.15,.5,0xb396ec,.92,2.2,.1,true);}
+    if(e.id==='brute'){this.box(g,.55,.65,.55,0x443f32,.9,.85,.1);g.scale.setScalar(1.12);}
     if(e.boss){
       const crown=this.box(g,.7,.21,.6,0xc3a858,0,2.5,0);crown.rotation.y=.2;
       if(e.id==='boss-bell')this.box(g,.6,.65,.6,0xb79a55,1,1,.05);
@@ -148,7 +177,7 @@ export class PawRenderer {
       let g=this.models.get(e.uid);
       if(g&&g.userData.enemy?.id!==e.id){this.s.remove(g);this.models.delete(e.uid);g=null;}
       if(!g){g=this.enemyModel(e);this.models.set(e.uid,g);}
-      g.userData.baseX=(e.slot-1)*1.8;g.position.set(g.userData.baseX,0,-2.7);
+      g.userData.baseX=[-1.8,0,1.8,-.95,.95][e.slot];g.userData.baseZ=e.slot>=3?-5.2:-2.7;g.position.set(g.userData.baseX,0,g.userData.baseZ);
       g.userData.enemy=e;
     });
   }
@@ -204,7 +233,7 @@ export class PawRenderer {
       const e=g.userData.enemy;g.userData.recoil=Math.max(0,g.userData.recoil-dt);
       g.userData.attackKick=Math.max(0,(g.userData.attackKick||0)-dt);
       const wind=e.warned?Math.max(0,1-e.t/e.warn):0;
-      g.position.x=g.userData.baseX;g.position.z=-2.7+Math.sin(wind*Math.PI)*.3-g.userData.recoil+Math.sin(g.userData.attackKick/.2*Math.PI)*.7;
+      g.position.x=g.userData.baseX;g.position.z=g.userData.baseZ+Math.sin(wind*Math.PI)*.3-g.userData.recoil+Math.sin(g.userData.attackKick/.2*Math.PI)*.7;
       g.rotation.z=g.userData.recoil*1.3;g.position.y=this.reduced?0:Math.sin(this.clock*2+e.uid)*.025;
       if(g.userData.arm)g.userData.arm.rotation.x=-wind*1.6;
       g.userData.shield.visible=e.shield>0||e.reflect>0;

@@ -64,8 +64,8 @@ export class Arena {
   b.push([-1.85,1.04,-8,.8,2.3,1.1,0xb2ccdf],[1.85,1.04,-8,.8,2.3,1.1,0xb2ccdf],[0,2.32,-8,4.65,.56,1.1,0xe4f3ff],[0,1,-8.4,2.95,2,.2,0x273e60],[0,2.76,-8,.65,.34,.72,0xffd17b]);
   for(let x=-4;x<=4;x+=2)b.push([x,.99,3.95,.74,.45,.63,0xdcecf5]);return b;
  }
- fit(camera,rect,{x=4.95,z0,z1,y=2.8}){
-  const center=(z0+z1)/2;camera.position.set(0,28,center+16);camera.lookAt(0,.4,center);camera.updateMatrixWorld(true);
+ fit(camera,rect,{x=4.95,z0,z1,y=2.8,elevation=28,depth=16}){
+  const center=(z0+z1)/2;camera.position.set(0,elevation,center+depth);camera.lookAt(0,.4,center);camera.updateMatrixWorld(true);
   let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
   for(const xx of [-x,x])for(const yy of [0,y])for(const zz of [z0,z1]){
    const v=point(xx,yy,zz).applyMatrix4(camera.matrixWorldInverse);
@@ -84,16 +84,16 @@ export class Arena {
   const full={x:0,y:0,w,h,camera:this.fullCamera};this.fit(this.fullCamera,full,{z0:-8.6,z1:9.4});
   this.views=[full];this.boardView=full;this.fieldView=full;
   const a=this.project(PADS[0].x,.38,PADS[0].z,full),b=this.project(PADS[3].x,.38,PADS[3].z,full);
-  if(Math.abs(a.y-b.y)*physicalScale<49||w/h>1.4){
+  if(Math.abs(a.y-b.y)*physicalScale<49||w/h>1.4||w/h<1){
    let field,formation;
    if(w/h>1.35){
     const bw=Math.min(w*.47,Math.max(240/physicalScale,w*.36));
     field={x:0,y:0,w:Math.max(1,w-bw-4),h,camera:this.fieldCamera};formation={x:w-bw,y:0,w:bw,h,camera:this.boardCamera};
    }else{
-    const bh=Math.min(h*.52,Math.max(195/physicalScale,h*.37));
+    const bh=Math.min(h*.42,Math.max(168/physicalScale,h*.27));
     field={x:0,y:0,w,h:Math.max(1,h-bh-4),camera:this.fieldCamera};formation={x:0,y:h-bh,w,h:bh,camera:this.boardCamera};
    }
-   this.fit(this.fieldCamera,field,{z0:-8.6,z1:4.4});this.fit(this.boardCamera,formation,{x:4.15,z0:4.3,z1:9.35,y:2.1});
+   this.fit(this.fieldCamera,field,{z0:-8.6,z1:4.4,y:3.25,elevation:18,depth:24});this.fit(this.boardCamera,formation,{x:4.75,z0:4.3,z1:9.35,y:2.1});
    this.views=[field,formation];this.boardView=formation;this.fieldView=field;
   }
   this.host.dataset.cameraLayout=this.views.length===1?'continuous':this.boardView.y?'stacked':'side-by-side';
@@ -173,7 +173,7 @@ export class Arena {
   });
   battle.enemies.forEach(enemy=>{
    live.add(enemy.id);let item=this.entities.get(enemy.id);if(!item){item=this.makeEntity(enemy,true);this.entities.set(enemy.id,item);}
-   const scale=enemy.boss?1.19:enemy.type==='small'?.45:.74;
+   const scale=enemy.boss?1.48:enemy.type==='small'?.7:1.12;
    item.root.position.set(enemy.x,.08,enemy.z);item.mesh.scale.setScalar(scale);item.mesh.rotation.y=Math.PI;
    item.mesh.rotation.z=!this.reducedMotion&&enemy.stun<=0?Math.sin(battle.time*7+enemy.id)*.035:0;
    item.mesh.position.y=!this.reducedMotion&&item.hit>battle.time?.09:0;

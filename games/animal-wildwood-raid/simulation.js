@@ -11,8 +11,8 @@ export function mission(stage){
 export class Simulation {
  constructor(id,loadout=['bow','lantern','snare'],growth={health:0,attack:0}){
   this.stage=mission(id);this.time=0;this.tick=0;this.nextId=1;this.events=[];this.ents=[];this.shots=[];this.fields=[];this.drops=[];this.obstacles=[];this.zones=[];
-  this.growth={health:Math.max(0,growth.health||0),attack:Math.max(0,growth.attack||0)};this.hazards=[];
-  this.hero={x:0,z:6.5,hp:100+this.growth.health,maxHp:100+this.growth.health,power:16+this.growth.attack,angle:Math.PI,ward:0,boots:0,invulnerable:0,dash:0,recoil:0,attack:null};
+  this.growth={health:Math.max(0,growth.health||0),attack:Math.max(0,growth.attack||0),regen:Math.max(0,growth.regen||0)};this.hazards=[];this.regenClock=0;this.regenHealed=0;
+  this.hero={x:0,z:6.5,hp:100+this.growth.health,maxHp:100+this.growth.health,power:16+this.growth.attack,regen:1+this.growth.regen,angle:Math.PI,ward:0,boots:0,invulnerable:0,dash:0,recoil:0,attack:null};
   this.tally={wood:0,kills:0,rescues:0,shrines:0,bosses:0,seconds:0};this.cool={axe:.3,dash:0,...Object.fromEntries(TOOLS.slice(1).map(t=>[t.id,0]))};
   this.loadout=loadout.filter(id=>TOOLS.some(t=>t.id===id&&t.unlock<=this.stage.id)).slice(0,3);
   this.protectedHp=100;this.won=false;this.lost=false;this.exit={x:0,z:-7.1};this.nextWave=7;this.rng=id*713+19;this.combo=0;this.build();
@@ -20,10 +20,10 @@ export class Simulation {
  random(){this.rng=(this.rng*1664525+1013904223)>>>0;return this.rng/4294967296;}
  log(type,data={}){this.events.push({type,time:this.time,...data});if(this.events.length>60)this.events.shift();}
  entity(kind,x,z,extra={}){const e={uid:this.nextId++,kind,x,z,hp:24,maxHp:24,r:.4,angle:0,recoil:0,...extra};
-  if(['tree','enemy','boss'].includes(kind)){const stat=e.uid%2?'health':'attack';e.reward={stat,amount:kind==='boss'?(stat==='health'?30+this.stage.id*3:5+Math.floor(this.stage.id/3)):stat==='health'?(kind==='tree'?6:10)+Math.floor(this.stage.id/4)*2:(kind==='tree'?1:2)+Math.floor(this.stage.id/8)};}
+  if(['tree','enemy','boss'].includes(kind)){const stat=kind==='tree'?(e.uid%2?'health':'attack'):['health','attack','regen'][e.uid%3];e.reward={stat,amount:stat==='regen'?(kind==='boss'?.3:.1):kind==='boss'?(stat==='health'?30+this.stage.id*3:5+Math.floor(this.stage.id/3)):stat==='health'?(kind==='tree'?6:10)+Math.floor(this.stage.id/4)*2:(kind==='tree'?1:2)+Math.floor(this.stage.id/8)};if(kind!=='tree'&&stat!=='regen')e.reward.amount=Math.ceil(e.reward.amount*1.5);}
   if(kind==='tree'||kind==='enemy'&&!extra.summon)e.spawn={x,z};this.ents.push(e);return e;}
- syncGrowth(growth){const hp=Math.max(this.growth.health,growth.health||0),atk=Math.max(this.growth.attack,growth.attack||0);if(this.hero.hp>0)this.hero.hp+=hp-this.growth.health;this.growth={health:hp,attack:atk};this.hero.maxHp=100+hp;this.hero.power=16+atk;}
- grant(e){if(!e.reward)return;const {stat,amount}=e.reward;this.syncGrowth({...this.growth,[stat]:this.growth[stat]+amount});this.log('growth',{uid:e.uid,stat,amount,x:e.x,z:e.z});}
+ syncGrowth(growth){const hp=Math.max(this.growth.health,growth.health||0),atk=Math.max(this.growth.attack,growth.attack||0);if(this.hero.hp>0)this.hero.hp+=hp-this.growth.health;this.growth={health:hp,attack:atk,regen:Math.max(this.growth.regen,growth.regen||0)};this.hero.maxHp=100+hp;this.hero.power=16+atk;this.hero.regen=Math.round((1+this.growth.regen)*10)/10;}
+ grant(e){if(!e.reward)return;const {stat,amount}=e.reward;this.syncGrowth({...this.growth,[stat]:Math.round((this.growth[stat]+amount)*10)/10});this.log('growth',{uid:e.uid,stat,amount,x:e.x,z:e.z});}
  respawns(dt){for(const e of this.ents){if(e.hp>0||!e.spawn||e.respawn==null)continue;e.respawn-=dt;
    if(e.kind==='enemy'&&e.respawn<=2&&!e.spawnWarning){let spot=null;for(let i=0;i<16;i++){const a=i*2.4,p={x:clamp(e.spawn.x+Math.cos(a)*Math.floor(i/4),-6.3,6.3),z:clamp(e.spawn.z+Math.sin(a)*Math.floor(i/4),-7,7)};if(dist(p,this.hero)>3&&!this.obstacles.some(o=>o.hp>0&&Math.abs(p.x-o.x)<o.w+.6&&Math.abs(p.z-o.z)<o.h+.6)){spot=p;break;}}if(!spot){e.respawn=2.1;continue;}Object.assign(e,spot);e.spawnWarning=true;e.respawn=2;}
    if(e.respawn<=0){e.hp=e.maxHp;e.wind=null;e.charge=null;e.stun=0;e.exposed=0;e.recoil=0;e.cd=1.3;e.hidden=false;e.spawnWarning=false;e.respawn=null;this.log('respawn',{uid:e.uid});}
@@ -32,7 +32,7 @@ export class Simulation {
  build(){
   const q=this.stage;
   const treePos=[[-4,5],[3.7,4.6],[-5.2,1.5],[5.1,1.1],[-4.8,-3.4],[4.5,-4.8],[-2.8,-6.5],[2.8,-6.4],[-6,4],[6,4],[-6,-1],[6,-2]];
-  treePos.slice(0,Math.max(q.req.wood?Math.ceil(q.req.wood/2)+1:6,6)).forEach(([x,z],i)=>this.entity('tree',x,z,{hp:Math.round(28+q.id*5),maxHp:Math.round(28+q.id*5),r:.52,variant:i%3}));
+  treePos.slice(0,Math.max(q.req.wood?Math.ceil(q.req.wood/2)+1:6,6)).forEach(([x,z],i)=>this.entity('tree',x,z,{hp:5,maxHp:5,r:.52,variant:i%3}));
   if(q.req.rescues){const positions=[[-4,-1],[4,-4],[-4,-5],[4,2]];positions.slice(0,q.req.rescues).forEach(([x,z],i)=>this.entity('cage',x,z,{hp:24,maxHp:24,order:i+1}));}
   if(q.req.shrines){[[-4,-3],[4,-4],[0,1]].slice(0,q.req.shrines).forEach(([x,z],i)=>this.entity('shrine',x,z,{hp:1,maxHp:1,order:i+1,channel:0}));}
   if(q.protect){this.protectedHp=200+q.id*60;this.entity('friend',0,-1,{hp:this.protectedHp,maxHp:this.protectedHp,r:.6});}
@@ -77,6 +77,7 @@ export class Simulation {
   if(e.kind==='shrine')return;
   if((e.type==='shield'||e.boss==='ironbark'||e.boss==='stumpback'||e.role==='tank')&&(!e.exposed||e.boss==='ironbark')){const dx=this.hero.x-e.x,dz=this.hero.z-e.z,d=Math.hypot(dx,dz)||1;if((dx*Math.sin(e.angle)+dz*Math.cos(e.angle))/d>.4){power*=e.boss==='ironbark'?.12:.25;this.log('blocked',{uid:e.uid});}}
   if(e.boss==='mosswitch'&&this.alive().some(x=>x.kind==='totem')){this.log('immune',{uid:e.uid});return;}
+  if(e.kind==='tree')power=1;
   e.hp=Math.max(0,e.hp-power);e.recoil=.15;this.log('hit',{uid:e.uid,x:e.x,z:e.z,amount:power,source});
   if(e.hp===0){
    if(e.kind==='tree')this.tally.wood+=2;
@@ -166,10 +167,11 @@ export class Simulation {
   this.hazards=this.hazards.filter(p=>p.life>0);this.respawns(dt);
   this.ents=this.ents.filter(e=>e.hp>0||e.spawn||e.kind==='boss'||this.time-(e.defeatedAt??this.time)<1);
   this.shots=this.shots.filter(p=>p.life>0);this.fields.forEach(f=>f.life-=dt);this.fields=this.fields.filter(f=>f.life>0);
-  this.drops=this.drops.filter(d=>{if(dist(d,h)>1)return true;if(d.kind==='heart')h.hp=Math.min(h.maxHp,h.hp+Math.max(25,Math.round(h.maxHp*.22)));if(d.kind==='ward')h.ward=1;if(d.kind==='boots')h.boots=8;this.log('pickup',{kind:d.kind,x:d.x,z:d.z});return false;});
+  this.drops=this.drops.filter(d=>{if(dist(d,h)>1)return true;if(d.kind==='heart'&&h.hp>0)h.hp=Math.min(h.maxHp,h.hp+Math.max(25,Math.round(h.maxHp*.22)));if(d.kind==='ward')h.ward=1;if(d.kind==='boots')h.boots=8;this.log('pickup',{kind:d.kind,x:d.x,z:d.z});return false;});
   if(this.stage.protect&&this.time>=this.nextWave&&!this.ready()){this.nextWave+=8;const n=this.stage.id===28?3:2;for(let i=0;i<n&&this.alive().filter(hostile).length<10;i++)this.enemy(this.stage.enemies[(Math.floor(this.time/8)+i)%this.stage.enemies.length],i%2?6:-6,-5+i*3,{summon:true});}
   if(h.hp<=0||this.protectedHp<=0){this.lost=true;this.log('loss');return;}
+  this.regenClock+=dt;if(this.regenClock>=3-1e-9){this.regenClock=Math.max(0,this.regenClock-3);const healed=Math.min(h.regen,h.maxHp-h.hp);h.hp=Math.min(h.maxHp,Math.round((h.hp+healed)*1000)/1000);this.regenHealed+=healed;if(healed>0)this.log('regen',{amount:healed});}
   if(this.ready()&&dist(h,this.exit)<1.25){this.won=true;this.log('win');}
  }
- snapshot(){return {stage:this.stage.id,time:this.time,hp:this.hero.hp,maxHp:this.hero.maxHp,power:this.hero.power,growth:{...this.growth},protectedHp:this.protectedHp,tally:{...this.tally},req:{...this.stage.req},won:this.won,lost:this.lost,ready:this.ready(),hero:{x:this.hero.x,z:this.hero.z},enemies:this.alive().filter(hostile).length,objects:this.alive().map(e=>({uid:e.uid,kind:e.kind,type:e.type,x:e.x,z:e.z,hp:e.hp,maxHp:e.maxHp,reward:e.reward,wind:e.wind?.kind})),cooldowns:{...this.cool}};}
+ snapshot(){return {stage:this.stage.id,time:this.time,hp:this.hero.hp,maxHp:this.hero.maxHp,power:this.hero.power,regen:this.hero.regen,regenIn:3-this.regenClock,regenHealed:this.regenHealed,growth:{...this.growth},protectedHp:this.protectedHp,tally:{...this.tally},req:{...this.stage.req},won:this.won,lost:this.lost,ready:this.ready(),hero:{x:this.hero.x,z:this.hero.z},enemies:this.alive().filter(hostile).length,objects:this.alive().map(e=>({uid:e.uid,kind:e.kind,type:e.type,x:e.x,z:e.z,hp:e.hp,maxHp:e.maxHp,reward:e.reward,wind:e.wind?.kind})),cooldowns:{...this.cool}};}
 }

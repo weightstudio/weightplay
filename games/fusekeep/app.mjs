@@ -1,4 +1,4 @@
-import {Battle} from './engine.mjs?v=3';
+import {Battle} from './engine.mjs?v=4';
 import {STEP,STAGES,TYPES,BOSSES} from './data.mjs';
 import {createStore,settle,SAVE_KEY} from './save.mjs';
 import {LOCALES,LABELS,DICT,translator} from './locales.mjs';
@@ -87,7 +87,7 @@ TYPES.forEach((type,index)=>{
 function loadRenderer(){
  if(rendererPromise)return rendererPromise;
  if(rendererAttempts>=2)return Promise.reject(Error('RELOAD_REQUIRED'));
- rendererAttempts++;const suffix=rendererAttempts===1?'3':`3-retry${rendererAttempts}`;
+ rendererAttempts++;const suffix=rendererAttempts===1?'4':`4-retry${rendererAttempts}`;
  rendererPromise=import(`./renderer.mjs?v=${suffix}`).catch(error=>{rendererPromise=null;throw error;});return rendererPromise;
 }
 async function loadPortraits(){
@@ -386,7 +386,7 @@ listen(window,'pageshow',event=>{
 });
 // Observability for the next AI; no cheat setters, release flags, or test acceptance.
 window.FusekeepDiagnostics=Object.freeze({
- snapshot:()=>({scene,version:3,locale,modal,speed,loopActive:Boolean(raf),selected,
+ snapshot:()=>({scene,version:4,locale,modal,speed,loopActive:Boolean(raf),selected,
   battle:battle?{stage:battle.stage.id,wave:battle.wave,status:battle.status,hp:battle.hp,gold:battle.gold,
    board:battle.board.map(unit=>unit?{id:unit.id,type:unit.type,rank:unit.rank}:null),enemies:battle.enemies.length,
    pending:battle.pending.length,shots:battle.shots.length,time:battle.time}:null,

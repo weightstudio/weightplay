@@ -13,3 +13,14 @@
 #stageRail .stage-card{padding:12px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);cursor:pointer;box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)}
 #stageRail .stage-card:is(.centered,.is-centered){border-color:var(--wp-ui-gold);box-shadow:inset 0 0 0 2px var(--wp-ui-gold)}
 #stageRail .stage-card[aria-disabled=true]{color:var(--wp-ui-muted)}#stageRail [data-wp-item-content]{height:100%;gap:8px}#stageRail .mission-rule{-webkit-line-clamp:2}#stageRail .mission-arc{display:none}
+/* Battle v4: two stable control rows; explanations live in Help. */
+#battleContent{grid-template-rows:24px minmax(0,1fr) 94px;gap:6px}
+#commands{grid-template-rows:44px 44px;gap:6px}
+#selectionHint{display:none!important}
+#commands #feedback{position:absolute;inset-inline:12px;bottom:106px;height:auto;max-height:42px;z-index:5;padding:6px 8px;background:#1b3557ed;color:#fff5dc;pointer-events:none;border-radius:3px}
+#commands #feedback:empty{display:none}
+#battleContent[data-wide=true]{grid-template-columns:minmax(0,1fr) 174px;grid-template-rows:24px minmax(0,1fr)}
+#battleContent[data-wide=true] #commands{grid-template-rows:94px 144px;gap:6px}
+#battleContent[data-wide=true] .utility-row{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:44px 44px;gap:6px}
+#battleContent[data-wide=true] .action-row{gap:6px}
+#battleContent[data-wide=true] #feedback{inset-inline-start:8px;inset-inline-end:190px;bottom:8px}

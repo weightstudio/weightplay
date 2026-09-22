@@ -1,4 +1,5 @@
-import { gear } from './campaign.js';
+import { gear } from './campaign.js?v=4';
+import { companions as roster } from './companions.js?v=4';
 export const SAVE_KEY='pawaxeSaveV2';
 export const STARTER=['trail-axe','trail-hood','scout-vest','trail-gloves','trail-boots','nut-charm','copper-ring'];
 const finite=(v,fallback=0)=>typeof v==='number'&&Number.isFinite(v)?v:fallback;
@@ -8,7 +9,7 @@ export function normalizeSave(raw={}){
   const unlocked=Math.min(30,Math.max(1,Math.floor(finite(raw.unlocked,1)),...cleared.map(n=>n+1)));
   const collection={};
   for(const g of gear){
-    const old=raw.schemaVersion!==3&&(!g.unlock||cleared.includes(g.unlock));
+    const old=!(raw.schemaVersion>=3)&&(!g.unlock||cleared.includes(g.unlock));
     const item=raw.collection?.[g.id];
     if(!g.unlock||old||(item&&typeof item==='object'&&!Array.isArray(item)))collection[g.id]={
       rank:Math.max(0,Math.min(50,Math.floor(finite(item?.rank,old?Math.min(3,finite(raw.upgrades?.[g.slot])):0)))),
@@ -20,7 +21,9 @@ export function normalizeSave(raw={}){
     return (Array.isArray(raw.loadout)?raw.loadout:[]).find(x=>gear.some(g=>g.id===x&&g.slot===slot&&collection[x]))||id;
   });
   const upgrades=Object.fromEntries(['axe','head','body','hands','feet','charm','ring'].map(s=>[s,Math.max(0,Math.min(3,Math.floor(finite(raw.upgrades?.[s]))))]));
-  return {schemaVersion:3,collection,autoAttack:raw.autoAttack===true,unlocked,cleared,loadout,upgrades,coins:Math.max(0,Math.min(999999,Math.floor(finite(raw.coins)))),mode:raw.mode==='guard'?'guard':'break',locale:typeof raw.locale==='string'?raw.locale:'zh-Hant',tutorial:raw.schemaVersion===3&&raw.tutorial===true,bests:raw.bests&&typeof raw.bests==='object'?raw.bests:{}};
+  const companions={nibs:{rank:0,shards:0}};
+  for(const c of roster){const item=raw.companions?.[c.id];if(item&&typeof item==='object'&&!Array.isArray(item))companions[c.id]={rank:Math.max(0,Math.min(50,Math.floor(finite(item.rank)))),shards:Math.max(0,Math.min(999999,Math.floor(finite(item.shards))))};}
+  return {schemaVersion:4,collection,companions,companion:companions[raw.companion]?raw.companion:'nibs',autoAttack:raw.autoAttack===true,unlocked,cleared,loadout,upgrades,coins:Math.max(0,Math.min(999999,Math.floor(finite(raw.coins)))),mode:raw.mode==='guard'?'guard':'break',locale:typeof raw.locale==='string'?raw.locale:'zh-Hant',tutorial:raw.schemaVersion>=3&&raw.tutorial===true,bests:raw.bests&&typeof raw.bests==='object'?raw.bests:{}};
 }
 export function loadSave(){try{return normalizeSave(JSON.parse(localStorage.getItem(SAVE_KEY)||'{}'));}catch{return normalizeSave();}}
 export function storeSave(save){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));return true;}catch{return false;}}

@@ -26,3 +26,28 @@
 @keyframes impact-number{to{transform:translate(-50%,calc(-50% - 24px));opacity:0}}
 @keyframes critical-number{0%{transform:translate(-50%,-50%) scale(1.12)}25%{transform:translate(-50%,calc(-50% - 6px)) scale(1)}70%{opacity:1}100%{transform:translate(-50%,calc(-50% - 30px));opacity:0}}
 @media(prefers-reduced-motion:reduce){.damage-numbers strong,.damage-numbers .critical{animation:none}}
+/* 390 × 780 reference: only the owning Canvas scales these logical sizes. */
+#stage .management{padding:16px}
+#stage .management h2{font-size:18px;margin:0 0 8px}
+#stage #allyDescription{font-size:13px;line-height:1.5;margin:0 0 16px}
+#stage #coins{height:44px;display:flex;align-items:center;margin:0}
+#stage .equipment{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#stage .gear{display:flex;flex-direction:column;padding:12px;min-height:360px}
+#stage .gear .ability{font-size:13px;line-height:1.5;min-height:60px;flex:1;color:#e6edcf;margin:8px 0}
+#stage .gear p:not(.ability){min-height:24px;font-size:12px;line-height:1.5;margin:4px 0}
+#stage .gear button{height:44px;min-height:44px;flex:none;font-size:14px;line-height:1.2;font-weight:600;white-space:nowrap;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.object-icon{width:80px;height:80px;object-fit:contain;display:block;margin:0 auto 8px;flex:none}
+#battle .battle-area{grid-template-rows:52px minmax(0,1fr) 24px 64px}
+#battle .actions{height:64px;padding:6px 10px}
+#battle .actions button{height:52px;padding:3px 6px;font-size:14px}
+#battle .actions small{height:13px;font-size:10px;line-height:13px;margin-top:2px}
+#battle .actions progress{height:4px;margin-top:2px}
+#battle .feedback{height:24px;line-height:24px;font-size:12px}
+#battle .target{height:60px;padding:4px;font-size:11px}
+#battle .target progress{height:4px;margin:3px 0}
+#battle .target small{font-size:10px}
+#battle .target.boss{border-color:#f4b264}
+#battle .warning{top:78px}
+#battle .arena.two-rows .warning{top:144px}
+#battle .loot-toast{bottom:32px;padding:6px;font-size:12px;gap:8px}
+#battle .loot-toast .object-icon{width:36px;height:36px;margin:0}

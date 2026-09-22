@@ -20,7 +20,7 @@
 <meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general"><meta name="weightplay-interface-version" content="7">
 <title>斧刃夥伴 · Axe &amp; Ally | WeightPlay</title>
 <script src="../../src/game-layout-config.js"></script><script src="../../src/site-config.js"></script>
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
+<link rel="stylesheet" href="style.css?v=4"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
 <script src="../../src/sound.js" defer></script><script src="../../src/game-screen-frame.js" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
 </head><body data-game-id="pawaxe" data-wp-game-id="pawaxe" data-screen="main" data-has-stage="true"><div id="frame" data-wp-frame-root>
 <section id="main" class="scene main-scene">
@@ -33,7 +33,7 @@
 <div class="workspace">
 <div id="stageInfo" data-wp-frame-info><span><b id="stageNum">1</b> / 30</span></div>
 <div id="stagePanel" class="panel"><div id="rail" class="rail" data-wp-stage-rail aria-label="關卡"></div><p id="stageHint" class="stage-hint"></p></div>
-<div id="allyPanel" class="panel management" hidden><img class="companion-art" src="art/cover-v1.png" alt="菲雅與栗栗"><h2 data-i18n="companion"></h2><p id="allyDescription"></p><div class="choice-row"><button data-mode="break"></button><button data-mode="guard"></button></div></div>
+<div id="allyPanel" class="panel management" hidden><h2 data-i18n="companion"></h2><p id="allyDescription"></p><div id="companions" class="equipment"></div></div>
 <div id="equipPanel" class="panel management" hidden><h2 data-i18n="equipment"></h2><p id="coins"></p><div id="equipment" class="equipment"></div></div>
 </div>
 <nav class="tabs" data-wp-frame-stage-nav><button data-tab="ally" data-i18n="companion"></button><button data-tab="stage" data-wp-frame-stage-slot="stages" class="active" data-i18n="stages"></button><button data-tab="equip" data-wp-frame-stage-slot="equipment" data-i18n="equipment"></button></nav>
@@ -43,10 +43,10 @@
 <main class="battle-area">
 <div id="battleInfo" data-wp-frame-info><span><b id="hudStage">1</b> / 30</span><span id="node">0%</span><span>HP <b id="hp">130</b></span></div>
 <div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0"></progress></div><button id="claim" disabled>0%</button></div>
-<div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><span id="lootIcon" class="gear-icon" aria-hidden="true"></span><span id="lootText"></span></div></div>
+<div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><img id="lootIcon" class="object-icon" alt="" width="44" height="44"><span id="lootText"></span></div></div>
 <div id="feedback" class="feedback" aria-live="polite"></div>
-<div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack"><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span data-i18n="ally"></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
+<div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack"><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span id="allyName" data-i18n="ally"></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
 </section>
-</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js"></script></body></html>
+</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=4"></script></body></html>
