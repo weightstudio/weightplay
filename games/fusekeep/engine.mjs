@@ -5,7 +5,8 @@ const distance=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const finite=(n,fallback=0)=>Number.isFinite(n)?n:fallback;
 /** Authoritative fixed-step simulation. Rendering and input cannot award damage or rewards. */
 export class Battle {
- constructor(stageId=1,deck,seed=1){
+ constructor(stageId=1,deck,seed=1,advancement={}){
+  this.advancement=Object.fromEntries(Object.keys(TROOPS).map(type=>[type,clamp(Math.trunc(finite(advancement?.[type])),0,5)]));
   const id=clamp(Math.trunc(finite(Number(stageId),1)),1,STAGES.length);
   this.stage=STAGES[id-1];this.deck=normalizeDeck(deck);this.rng=(seed>>>0)||1;this.nextId=1;
   this.board=Array(9).fill(null);this.frozen=Array(9).fill(0);this.enemies=[];this.events=[];
@@ -125,7 +126,7 @@ export class Battle {
   const stats=TROOPS[unit.type],target=targets[0];let support=1;
   for(let j=0;j<9;j++)if(j!==index&&this.board[j]?.type==='deer'&&this.frozen[j]<=0
    &&Math.abs(j%3-index%3)+Math.abs(Math.floor(j/3)-Math.floor(index/3))===1)support+=TROOPS.deer.support;
-  const power=stats.damage*2.16**(unit.rank-1)*(1+this.upgrades*.2)*Math.min(1.9,support);
+  const power=stats.damage*2.16**(unit.rank-1)*(1+this.upgrades*.2)*Math.min(1.9,support)*(1+this.advancement[unit.type]*.1);
   if(this.shots.length>=LIMITS.shots)return false;
   const shot={id:this.nextId++,pad:index,unitId:unit.id,troop:unit.type,rank:unit.rank,power,
    targetId:target.id,x:target.x,z:target.z,from:{...PADS[index]},start:this.time,duration:.22,remaining:.22};
@@ -141,7 +142,7 @@ export class Battle {
   victims.forEach((enemy,i)=>{
    this.damage(enemy,shot.power*(stats.chain?.78**i:1),stats.pierce);
    if(!enemy.dead&&stats.slow){enemy.slow=2;enemy.slowPower=stats.slow;}
-   if(!enemy.dead&&stats.poison){enemy.poison=3;enemy.poisonDps=Math.max(enemy.poisonDps,stats.poison*2.16**(shot.rank-1)*(1+this.upgrades*.2));}
+   if(!enemy.dead&&stats.poison){enemy.poison=3;enemy.poisonDps=Math.max(enemy.poisonDps,stats.poison*2.16**(shot.rank-1)*(1+this.upgrades*.2)*(1+this.advancement[shot.troop]*.1));}
   });
   this.emit('impact',{id:shot.id,troop:shot.troop,x:center.x,z:center.z,targets:victims.map(e=>({x:e.x,z:e.z}))});
  }

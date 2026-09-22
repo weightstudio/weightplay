@@ -1,6 +1,8 @@
-import {Battle} from './engine.mjs?v=4';
+import {Battle} from './engine.mjs?v=5';
 import {STEP,STAGES,TYPES,BOSSES} from './data.mjs';
-import {createStore,settle,SAVE_KEY} from './save.mjs';
+import {createStore,settle,SAVE_KEY} from './save.mjs?v=5';
+import {shardBalance,nextCost,advanceCollection,rewardType,sources,clearCount} from './progression.mjs';
+import {PROGRESSION_COPY} from './progression-copy.mjs';
 import {LOCALES,LABELS,DICT,translator} from './locales.mjs';
 import {COPY,ROUTES,interpolate} from './copy.mjs';
 import {cue,combatAudio,resetAudio} from './audio.mjs';
@@ -11,7 +13,7 @@ const $=id=>{const node=document.getElementById(id);if(!node)throw Error(`MISSIN
 const text=(node,value)=>{const next=String(value);if(node.textContent!==next)node.textContent=next;};
 const create=(tag,className='',value)=>{const n=document.createElement(tag);if(className)n.className=className;if(value!==undefined)n.textContent=String(value);return n;};
 const locale=LOCALES.includes(document.documentElement.lang)?document.documentElement.lang:'en';
-const d=DICT[locale],copy=COPY[locale],baseT=translator(locale);
+const d=DICT[locale],copy={...COPY[locale],...PROGRESSION_COPY[locale]},baseT=translator(locale);
 const t=(key,values={})=>Object.hasOwn(copy,key)?interpolate(copy[key],values):baseT(key,values);
 let storage;try{storage=window.localStorage;}catch{/* Session-only operation remains available. */}
 const store=createStore(storage);let saved=store.value,draft=[...saved.deck];
@@ -27,6 +29,7 @@ const formatTime=seconds=>`${Math.floor(seconds/60)}:${String(Math.floor(seconds
 const troopName=type=>d.troops[TYPES.indexOf(type)];
 const unitLabel=unit=>t('unitHint',{name:troopName(unit.type),rank:unit.rank});
 function feedback(key,values={}){
+ if(['move','merge','summon','upgrade','spell'].includes(key)){feedbackText='';feedbackExpiry=0;renderHUD();return;}
  const aliases={move:'moved',merge:'merged',summon:'summoned',upgrade:'upgraded',spell:'cast'};
  feedbackText=t(aliases[key]||key,values);feedbackExpiry=(battle?.time||0)+3;renderHUD();
 }
@@ -55,12 +58,12 @@ function bindStage(card,index){
  }
  card.type='button';card.classList.add('stage-card');card.disabled=false;card.dataset.stageIndex=String(index);
  const locked=stage.id>saved.unlocked;card.setAttribute('aria-disabled',String(locked));card.dataset.wpStageRecommended=String(stage.id===saved.unlocked);
- text(nodes.number,stage.id);text(nodes.name,copy.missions[index]);text(nodes.arc,d.chapters[stage.arc]);
+ text(nodes.number,stage.id);text(nodes.name,copy.missions[index]);text(nodes.arc,t('reward',{name:troopName(rewardType(stage.id)),n:clearCount(saved.collection,stage.id)?4:8}));
  text(nodes.rule,stage.boss?`${d.bosses[BOSSES.indexOf(stage.boss)]} · ${t('bossRule')}`:copy.patterns[stage.pattern]);
  text(nodes.record,locked?t('locked'):`${t('stars')} ${saved.stars[index]}/3${saved.best[index]?` · ${t('best')} ${formatTime(saved.best[index])}`:''}`);
- card.setAttribute('aria-label',`${t('level',{n:stage.id})}: ${copy.missions[index]}. ${nodes.rule.textContent}. ${nodes.record.textContent}`);
+ card.setAttribute('aria-label',`${t('level',{n:stage.id})}: ${copy.missions[index]}. ${nodes.rule.textContent}. ${nodes.arc.textContent}. ${nodes.record.textContent}`);
 }
-function refreshStage(){stageController?.refresh();renderProgress();}
+function refreshStage(){stageController?.refresh();renderProgress();renderDeck();}
 function setTab(deck){
  $('deckPane').hidden=!deck;$('deckPane').inert=!deck;$('missionPane').hidden=deck;$('missionPane').inert=deck;
  $('deckTab').setAttribute('aria-selected',String(deck));$('missionTab').setAttribute('aria-selected',String(!deck));
@@ -69,25 +72,36 @@ function setTab(deck){
  if(deck&&scene==='stage')void loadPortraits();
 }
 function renderDeck(){
- deckNodes.forEach(({button},index)=>button.setAttribute('aria-pressed',String(draft.includes(TYPES[index]))));
+ deckNodes.forEach(({button,details,advance,source},index)=>{
+  const type=TYPES[index],owned=saved.collection.owned.includes(type),level=saved.collection.levels[type],cost=nextCost(saved.collection,type);
+  button.setAttribute('aria-pressed',String(draft.includes(type)));button.disabled=!owned;
+  text(details,`${owned?t('tier',{n:level}):t('troopLocked')} · ${t('shards')} ${shardBalance(saved.collection,type)}${cost===null?'':`/${cost}`} · ${t('power',{n:level*10})}`);
+  text(source,t('source',{n:sources(type).join('、')}));
+  text(advance,cost===null?t('maxTier'):`${t(owned?'advanceTroop':'unlockTroop')} · ${cost}`);
+  advance.disabled=cost===null||shardBalance(saved.collection,type)<cost;
+ });
  text($('deckCount'),`${draft.length} / 5 · ${t('chance')}`);renderProgress();
 }
 TYPES.forEach((type,index)=>{
+ const card=create('article','collection-card'),details=create('p','collection-details'),source=create('p','collection-source'),advance=create('button','collection-advance');advance.type='button';
  const button=create('button','troop-card');button.type='button';
  const group=create('span');group.dataset.wpItemContent='';
  const image=create('img');image.width=104;image.height=104;image.alt='';image.src=new URL('poster.webp',assetURL).href;
  group.append(image,create('strong','',d.troops[index]),create('span','troop-description',d.roles[index]));button.append(group);
  listen(button,'click',()=>{
+  if(!saved.collection.owned.includes(type))return;
   cue('click');if(draft.includes(type))draft=draft.filter(id=>id!==type);
   else if(draft.length<5)draft.push(type);else{text($('deckMessage'),t('deckFull'));return;}
   text($('deckMessage'),draft.length===5?t('chance'):t('deckMin'));
   if(draft.length===5)save({...saved,deck:[...draft]});renderDeck();
- });$('deckGrid').append(button);deckNodes.push({button,image});
+ });
+ listen(advance,'click',()=>{saved=store.refresh();save({...saved,collection:advanceCollection(saved.collection,type)});renderDeck();cue('click');});
+ card.append(button,details,source,advance);$('deckGrid').append(card);deckNodes.push({button,image,details,source,advance});
 });
 function loadRenderer(){
  if(rendererPromise)return rendererPromise;
  if(rendererAttempts>=2)return Promise.reject(Error('RELOAD_REQUIRED'));
- rendererAttempts++;const suffix=rendererAttempts===1?'4':`4-retry${rendererAttempts}`;
+ rendererAttempts++;const suffix=rendererAttempts===1?'5':`5-retry${rendererAttempts}`;
  rendererPromise=import(`./renderer.mjs?v=${suffix}`).catch(error=>{rendererPromise=null;throw error;});return rendererPromise;
 }
 async function loadPortraits(){
@@ -197,14 +211,14 @@ function seed(){try{return crypto.getRandomValues(new Uint32Array(1))[0];}catch{
 async function startBattle(id){
  if(disposed||!Number.isInteger(id)||id<1||id>saved.unlocked||id>STAGES.length)return;
  if(draft.length!==5){setTab(true);text($('deckMessage'),t('deckMin'));return;}
- disposeRun();save({...saved,deck:[...draft]});battle=new Battle(id,draft,seed());battle.pause(true);speed=1;feedbackText='';
+ disposeRun();save({...saved,deck:[...draft]});draft=[...saved.deck];battle=new Battle(id,draft,seed(),saved.collection.levels);battle.pause(true);speed=1;feedbackText='';
  activate('battle');await restoreArena();
 }
 function showResult(){
  if(!battle||modal==='result')return;
- const won=battle.status==='won',id=battle.stage.id;if(won)save(settle(saved,battle));
+ const won=battle.status==='won',id=battle.stage.id;if(won)save(settle(store.refresh(),battle,store.actor));
  cue(won?'win':'wrong');
- showModal('result',t(won?'victory':'defeat'),won&&id===STAGES.length?t('complete'):'',[
+ showModal('result',t(won?'victory':'defeat'),won?t('reward',{name:troopName(battle.shardReward.type),n:battle.shardReward.amount}):'',[
   {label:t('back'),run:toStage},
   {label:t('next'),run:()=>void startBattle(id+1),disabled:!won||id>=STAGES.length},
   {label:t('retry'),run:()=>void startBattle(id)},
@@ -386,7 +400,7 @@ listen(window,'pageshow',event=>{
 });
 // Observability for the next AI; no cheat setters, release flags, or test acceptance.
 window.FusekeepDiagnostics=Object.freeze({
- snapshot:()=>({scene,version:4,locale,modal,speed,loopActive:Boolean(raf),selected,
+ snapshot:()=>({scene,version:5,locale,modal,speed,loopActive:Boolean(raf),selected,
   battle:battle?{stage:battle.stage.id,wave:battle.wave,status:battle.status,hp:battle.hp,gold:battle.gold,
    board:battle.board.map(unit=>unit?{id:unit.id,type:unit.type,rank:unit.rank}:null),enemies:battle.enemies.length,
    pending:battle.pending.length,shots:battle.shots.length,time:battle.time}:null,

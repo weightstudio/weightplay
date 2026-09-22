@@ -1,3 +1,4 @@
+import {PROGRESSION_COPY} from './progression-copy.mjs';
 // Canonical visible guide copy for both static locale pages and runtime help.
 // New game remains noindex until the independent release workflow accepts it.
 export const PAGES={
@@ -108,3 +109,5 @@ export const PAGES={
 };
 export const RELATED_NAMES={en:'Rune Reels','zh-Hant':'符文轉輪','zh-Hans':'符文转轮',ja:'ルーンリール',ko:'룬 릴',es:'Carretes de Runas','pt-BR':'Roletas de Runas',fr:'Roues de runes',de:'Runenräder',it:'Rulli di rune',ru:'Животные: рунические барабаны',hi:'रूण रील',ar:'بكرات الرون للحيوانات'};
 export const FAQ_ANSWER_INDICES=[1,5,4];
+
+for(const [locale,page] of Object.entries(PAGES))page.guide[2]+=' '+PROGRESSION_COPY[locale].collectionGuide;
