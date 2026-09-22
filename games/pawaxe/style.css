@@ -68,3 +68,8 @@
 #battle .target .enemy-hp{accent-color:#80d6ab}
 #battle .target .enemy-shield{accent-color:#72c9df}
 #battle .target .enemy-clock{accent-color:#ffb85b}
+#battle #playerHp{width:clamp(110px,20vw,160px);height:11px}
+#battle .health-value{min-width:48px;color:#fff4c7;font-size:11px;font-variant-numeric:tabular-nums;line-height:1;white-space:nowrap;text-align:right}
+#battle .enemy-health-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px;min-width:0}
+#battle .target .enemy-hp{height:8px;margin:3px 0}
+#battle .enemy-health-value{color:#dcefd8;font-size:10px;font-variant-numeric:tabular-nums;line-height:1;white-space:nowrap}

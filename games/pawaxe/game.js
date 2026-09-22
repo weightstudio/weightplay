@@ -1,5 +1,5 @@
 import { stages,gear } from './campaign.js?v=4';
-import { Combat } from './combat.js?v=5';
+import { Combat } from './combat.js?v=6';
 import { LOCALES,copy } from './locales.js?v=4';
 import { loadSave,storeSave } from './save.js?v=4';
 import { Expedition } from './expedition.js?v=4';
@@ -183,8 +183,9 @@ function loop(now){
   raf=requestAnimationFrame(loop);
 }
 function updateHud(){
-  $('#hp').textContent=Math.ceil(combat.hp);
-  const playerHp=$('#playerHp');playerHp.max=combat.maxHp;playerHp.value=combat.hp;playerHp.setAttribute('aria-valuetext',`${Math.ceil(combat.hp)} / ${Math.ceil(combat.maxHp)}`);
+  const currentHp=Math.ceil(combat.hp),maxHp=Math.ceil(combat.maxHp);
+  $('#hp').textContent=`${currentHp}/${maxHp}`;
+  const playerHp=$('#playerHp');playerHp.max=combat.maxHp;playerHp.value=combat.hp;playerHp.setAttribute('aria-valuetext',`${currentHp} / ${maxHp}`);
   $('#barrierStatus').textContent=combat.barrier>0?cc().status[5]:'';
   $('#attackValue').textContent=`${t('combo')} ${combat.slashes} · ${combat.slashes%8}/8`;
   $('#auto').classList.toggle('active',save.autoAttack);$('#auto').setAttribute('aria-pressed',String(save.autoAttack));
@@ -195,10 +196,10 @@ function updateHud(){
   for(const b of [...box.children])if(!enemies.some(e=>e.uid===+b.dataset.uid))b.remove();
   enemies.forEach((e,i)=>{
     let b=box.querySelector(`[data-uid="${e.uid}"]`);
-    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><progress class="enemy-hp" aria-label="Enemy health"></progress><progress class="enemy-shield" max="1" aria-label="Enemy shield"></progress><small></small><progress class="enemy-clock" max="1" aria-label="Enemy attack warning"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
+    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><span class="enemy-health-row"><progress class="enemy-hp" aria-label="Enemy health"></progress><span class="enemy-health-value"></span></span><progress class="enemy-shield" max="1" aria-label="Enemy shield"></progress><small></small><progress class="enemy-clock" max="1" aria-label="Enemy attack warning"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
     b.style.gridColumn=String(e.slot>=3?e.slot-2:e.slot+1);b.style.gridRow=e.slot>=3?'2':'1';
     b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.classList.toggle('boss',e.boss);b.querySelector('strong').textContent=`${e.boss?`${t('boss')} · `:''}${name(e)}`;
-    const healthBar=b.querySelector('.enemy-hp');healthBar.max=e.maxHp;healthBar.value=e.hp;
+    const healthBar=b.querySelector('.enemy-hp');healthBar.max=e.maxHp;healthBar.value=e.hp;b.querySelector('.enemy-health-value').textContent=`${Math.ceil(e.hp)}/${Math.ceil(e.maxHp)}`;
     const shieldBar=b.querySelector('.enemy-shield');shieldBar.max=Math.max(1,e.maxShield||1);shieldBar.value=e.shield;shieldBar.hidden=e.shield<=0;
     const protectedBySupport=e.boss&&enemies.some(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
     b.querySelector('small').textContent=protectedBySupport?msg('Destroy support first','先擊破支援目標'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?msg('Core opens after attack','出招後心核會暴露'):e.reflect>0?msg('Mirror armor','鏡面護甲'):e.opening>0?msg('Opening!','破綻！'):e.shield>0?msg('Shield active','護盾中'):'';

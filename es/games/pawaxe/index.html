@@ -22,7 +22,7 @@
 <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-interface-version" content="7">
 <title>Axe &amp; Ally | WeightPlay</title>
 <script src="../../src/game-layout-config.js"></script><script src="../../src/site-config.js"></script>
-<link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
+<link rel="stylesheet" href="style.css?v=6"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2?wp-audio=1.0.0" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
   <meta name="description" content="Recorre el bosque a hachazos, reúne cuatro aliados y equipo especial y desafía a los jefes." />
@@ -82,7 +82,7 @@
 <section id="battle" class="scene play-scene" hidden>
 <header><button data-wp-return="battle" id="battleBack" aria-label="返回關卡">←</button><span data-wp-frame-title hidden></span></header>
 <main class="battle-area">
-<div id="battleInfo" data-wp-frame-info><span class="stage-count"><b id="hudStage">1/30</b></span><span class="player-health" title="生命"><span class="health-caption" aria-hidden="true">HP</span><progress id="playerHp" max="130" value="130" aria-label="Player health"></progress><span id="barrierStatus" class="barrier-status" aria-live="polite"></span><span id="hp" class="sr-only">130</span></span></div>
+<div id="battleInfo" data-wp-frame-info><span class="stage-count"><b id="hudStage">1/30</b></span><span class="player-health" title="生命"><span class="health-caption" aria-hidden="true">HP</span><progress id="playerHp" max="130" value="130" aria-label="Player health"></progress><span id="hp" class="health-value" aria-live="polite">130/130</span><span id="barrierStatus" class="barrier-status" aria-live="polite"></span></span></div>
 <div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0" aria-label="Journey progress"></progress><strong id="routePercent">0%</strong></div><button id="claim" disabled aria-label="Settle expedition">—</button></div>
 <div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><img id="lootIcon" class="object-icon" alt="" width="44" height="44"><span id="lootText"></span></div></div>
 <div id="feedback" class="feedback" aria-live="polite"></div>
@@ -90,7 +90,7 @@
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
 </section>
-</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=5&amp;wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=6&amp;wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/es.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Información de Axe &amp; Ally">
