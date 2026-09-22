@@ -15,3 +15,21 @@ hi:['वार करें','दबाकर वार करें','ऑटो
 ar:['اضرب','اضغط للهجوم','تلقائي','تشغيل','إيقاف','التقدم','اكتمل · النتيجة','صيد حر','نتقدم للأمام','معدات مكتشفة','معدات جديدة','رتبة','ترقية','مجهّز','تجهيز','شظايا','بدءًا من المرحلة','المجموعة','ضربات','شق طريقك عبر الغابة واجمع معدات نادرة في رحلة طويلة.','اضغط ساحة القتال أو زر الهجوم أو مفتاح المسافة. يقاتل الوضع التلقائي عنك. كل ضربة ثامنة تصيب الجميع. تتقدم بعد كل موجة. عند 100% اضغط علامة الإكمال لعرض النتيجة أو واصل الصيد. تتحول المعدات المكررة إلى شظايا؛ أول ترقية تحتاج إلى 10. المراحل اللاحقة تتيح معدات أقوى.','المغادرة تنهي الرحلة. تُحفظ المعدات والمسارات المكتملة فورًا عندما يكون التخزين متاحًا.','جرّب الضربات السريعة أو الوضع التلقائي أو الرفيق أو ترقية المعدات. تبقى الغنائم والمسارات المكتملة.','مكافأة','هزائم','فرصة الغنيمة','هجوم','صحة']
 };
 export const expeditionCopy=Object.fromEntries(Object.entries(rows).map(([locale,row])=>[locale,Object.fromEntries(keys.map((k,i)=>[k,row[i]]))]));
+const criticalCopy={
+  en:['CRITICAL!','Axe hits have an 18% chance to deal 1.8× damage. Gold sparks and a CRITICAL label mark the hit.'],
+  'zh-Hant':['爆擊！','斧擊有 18% 機率造成 1.8 倍傷害，金色火花與「爆擊」字樣會標示命中。'],
+  'zh-Hans':['暴击！','斧击有 18% 概率造成 1.8 倍伤害，金色火花与“暴击”字样会标示命中。'],
+  ja:['会心！','斧攻撃は18%の確率で1.8倍のダメージ。金色の火花と「会心」の表示が目印です。'],
+  ko:['치명타!','도끼 공격은 18% 확률로 1.8배 피해를 줍니다. 금빛 불꽃과 치명타 표시로 확인하세요.'],
+  es:['¡CRÍTICO!','Los golpes de hacha tienen un 18% de probabilidad de infligir 1,8 veces el daño, con chispas doradas y un aviso de crítico.'],
+  'pt-BR':['CRÍTICO!','Golpes de machado têm 18% de chance de causar 1,8 vez o dano, com faíscas douradas e um aviso de crítico.'],
+  fr:['CRITIQUE !','Les coups de hache ont 18 % de chances de causer 1,8 fois les dégâts, avec des étincelles dorées et une indication critique.'],
+  de:['KRITISCH!','Axttreffer verursachen mit 18 % Chance 1,8-fachen Schaden. Goldene Funken und eine Anzeige markieren kritische Treffer.'],
+  it:['CRITICO!','I colpi d’ascia hanno il 18% di probabilità di infliggere 1,8 volte i danni, con scintille dorate e un avviso di colpo critico.'],
+  ru:['КРИТИЧЕСКИЙ!','Удары топором с вероятностью 18% наносят в 1,8 раза больше урона. Золотые искры и надпись отмечают критический удар.'],
+  hi:['गंभीर प्रहार!','कुल्हाड़ी के वार में 18% संभावना से 1.8 गुना नुकसान होता है। सुनहरी चिंगारियाँ और संदेश इसे दर्शाते हैं।'],
+  ar:['ضربة حرجة!','ضربات الفأس لها فرصة 18% لإحداث ضرر بمقدار 1.8 ضعف. تظهر شرارات ذهبية وعبارة الضربة الحرجة عند الإصابة.']
+};
+for(const [locale,[critical,help]] of Object.entries(criticalCopy)){
+  expeditionCopy[locale].critical=critical;expeditionCopy[locale].guideText+=` ${help}`;
+}

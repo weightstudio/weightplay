@@ -53,13 +53,11 @@ function hud(dt=0){if(!sim)return;$('#hudStage').textContent=`${selected} / 30`;
 }
 function healthLabels(dt){
  const priority=e=>e.kind==='hero'?0:e.kind==='boss'?1:e.kind==='enemy'?2:3;
- const all=[{...sim.hero,uid:'hero',kind:'hero'},...sim.ents].sort((a,b)=>priority(a)-priority(b)),active=new Set(),placed=[],width=$('#worldLabels').clientWidth,height=$('#worldLabels').clientHeight;
+ const all=[{...sim.hero,uid:'hero',kind:'hero'},...sim.ents].sort((a,b)=>priority(a)-priority(b)),active=new Set(),width=$('#worldLabels').clientWidth,height=$('#worldLabels').clientHeight;
  for(const e of all){if(e.hp<=0&&!e.spawn)continue;const lift=e.kind==='tree'?3.05:e.kind==='boss'?2.8:2.05,p=world.project(e.x,e.z,lift);if(p.x<-.03||p.x>1.03||p.y<0||p.y>.98)continue;active.add(e.uid);
   let el=unitLabels.get(e.uid);if(!el){el=document.createElement('div');el.className='unit-label unit-'+e.kind;el.dataset.unit=e.uid;el.innerHTML='<div class="reward-tag"></div><div class="unit-health" role="progressbar"><i></i><b></b></div>';unitLabels.set(e.uid,el);$('#worldLabels').append(el);}
-  const labelWidth=e.kind==='hero'?96:e.kind==='boss'?94:76,anchor={x:p.x*width,y:p.y*height},labelHeight=e.hp<=0?20:39;
-  const position=placeLabel(el.labelLayout??={},anchor,{w:labelWidth,h:labelHeight},{w:width,h:height},placed,sim.time,dt,e.kind==='hero');
-  placed.push(position);el.hidden=false;el.style.transform=`translate3d(${position.x}px,${position.y}px,0) translate(-50%,-100%)`;
-  const linkX=anchor.x-position.x,linkY=anchor.y-position.y;el.style.setProperty('--link-height',`${Math.hypot(linkX,linkY)>5?Math.hypot(linkX,linkY):0}px`);el.style.setProperty('--link-angle',`${-Math.atan2(linkX,linkY)}rad`);
+  const position=placeLabel({x:p.x*width,y:p.y*height});
+  el.hidden=false;el.style.transform=`translate3d(${position.x}px,${position.y}px,0) translate(-50%,-100%)`;
   const signature=[select.value,e.hp,e.maxHp,e.power,e.reward?.stat,e.reward?.amount,Math.ceil(e.respawn||0)].join('|');
   if(el.labelSignature===signature)continue;el.labelSignature=signature;
   const reward=el.firstElementChild,bar=el.lastElementChild;reward.replaceChildren();

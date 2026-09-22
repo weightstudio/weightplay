@@ -1,6 +1,7 @@
 // Canonical poster delivery. Pending redraws retain original artwork.
 // Only individually generated and inspected images replace originals.
 window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
+  "fusekeep": "/assets/fusekeep/poster.webp",
   "alien-defender": "/assets/interface7-redrawn/alien-defender.webp",
   "animal-2048": "/assets/interface7-redrawn/animal-2048.webp",
   "animal-abyss-diver": "/assets/interface7-redrawn/animal-abyss-diver.webp",
@@ -184,6 +185,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "zoo-helper-day": "/assets/zoo-helper-day/cover-block-v1.png"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
+  "/assets/fusekeep/poster.webp": "/assets/lobby-thumbs/w480/assets__fusekeep__poster.webp",
   "/assets/animal-dice-bastion/cover-block-v1.png": "/assets/animal-dice-bastion/cover-block-v1.png",
   "/assets/interface7-redrawn/alien-defender.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__alien-defender.webp",
   "/assets/interface7-redrawn/animal-2048.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-2048.webp",

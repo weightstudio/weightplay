@@ -1,5 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {GroundCues} from './ground-cues.js';
+import {axePose,ease,enemyWind,enemyStroke} from './combat-pose.js';
 const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555};
 export class WildwoodWorld {
  constructor(canvas,sim){
@@ -77,15 +78,19 @@ export class WildwoodWorld {
   this.camera.position.set(h.x,20,h.z+16);this.camera.lookAt(h.x,0,h.z);this.camera.updateMatrixWorld();
   const nearby=()=>true; // Camera clipping only: never spawn scenery in the middle of the visible arena.
   const walking=this.lastHero&&Math.hypot(h.x-this.lastHero.x,h.z-this.lastHero.z)>.001;this.lastHero={x:h.x,z:h.z};
-  const stride=walking?Math.sin(sim.time*12):0,attack=h.attack?1-h.attack.left/h.attack.total:0;
-  const swing=h.attack?(attack<.46?-2.15*attack/.46:-2.15+3.6*Math.sin((attack-.46)/.54*Math.PI*.7)):stride*.55;
-  const rig=this.heroModel.userData;rig.arm.rotation.set(swing,h.attack?Math.sin(attack*Math.PI)*.85:0,h.attack?Math.sin(attack*Math.PI)*-.75:0);
-  rig.offarm.rotation.x=-stride*.65;this.heroModel.rotation.z=walking?stride*.085:0;this.heroModel.rotation.x=h.attack?Math.sin(attack*Math.PI)*.15:walking?.1:0;
-  this.heroModel.position.y=h.recoil>0?.1:walking?Math.abs(stride)*.085:0;
-  rig.legs.forEach((leg,i)=>leg.rotation.x=h.dash>0?.9:walking?Math.sin(sim.time*12+i*Math.PI)*.82:0);
+  this.walkBlend=(this.walkBlend||0)+((walking?1:0)-(this.walkBlend||0))*(1-Math.exp(-dt*14));
+  const stride=Math.sin(sim.time*12)*this.walkBlend,rig=this.heroModel.userData;
+  if(h.attack&&h.attack!==this.lastAttack){this.attackBegan=sim.time-(h.attack.total-h.attack.left);this.attackStart=rig.arm.rotation.x;this.lastAttack=h.attack;}
+  const elapsed=sim.time-(this.attackBegan??-10),attacking=elapsed<.62;
+  const weight=attacking?ease(elapsed/.18)*(1-ease((elapsed-.36)/.26)):0;
+  rig.arm.rotation.set(attacking?axePose(elapsed,this.attackStart,stride*.55):stride*.55,weight*.65,-weight*.55);
+  rig.offarm.rotation.x=-stride*.65-weight*.22;this.heroModel.rotation.z=stride*.085;
+  this.heroModel.rotation.x=this.walkBlend*.1+weight*.15;
+  this.heroModel.position.y=h.recoil>0?.1:Math.abs(stride)*.085;
+  rig.legs.forEach((leg,i)=>leg.rotation.x=h.dash>0?.9:Math.sin(sim.time*12+i*Math.PI)*.82*this.walkBlend);
   this.exit.position.set(sim.exit.x,0,sim.exit.z);this.exit.visible=sim.ready()&&nearby(sim.exit);
   for(const e of sim.ents){let g=this.models.get(e.uid);if(!g){g=this.model(e);this.models.set(e.uid,g);}const falling=e.hp<=0&&sim.time-(e.defeatedAt??-10)<.5;g.visible=e.hp>0||falling;g.position.set(e.x,e.recoil?Math.sin(e.recoil*30)*.05:0,e.z);g.rotation.y=e.angle||0;g.rotation.z=falling?(sim.time-e.defeatedAt)*2.8:e.recoil>0?Math.sin(e.recoil*40)*.18:0;
-   if(g.userData.arm)g.userData.arm.rotation.x=e.wind?-2*(1-e.wind.left/e.wind.total):e.swing?Math.sin(e.swing/.36*Math.PI)*1.9:0;
+   if(g.userData.arm)g.userData.arm.rotation.x=e.wind?enemyWind(1-e.wind.left/e.wind.total):e.swing?enemyStroke(.36-e.swing):0;
    const previous=g.userData.previous,moving=previous&&Math.hypot(e.x-previous.x,e.z-previous.z)>.001;if(g.userData.legs)g.userData.legs.forEach((leg,i)=>leg.rotation.x=moving?Math.sin(sim.time*9+i*Math.PI)*.7:0);g.userData.previous={x:e.x,z:e.z};
   }
   for(const [uid,g] of this.models)if(!sim.ents.some(e=>e.uid===uid)){this.root.remove(g);this.parts=this.parts.filter(p=>!isChild(p.node,g));this.models.delete(uid);}

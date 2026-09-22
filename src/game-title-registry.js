@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "fusekeep": {
+    "__localizedExact": true,
+    "en": "Fusekeep",
+    "zh-Hant": "合成守城",
+    "zh-Hans": "合成守城",
+    "ja": "合成の砦",
+    "ko": "합성 요새",
+    "es": "Fortaleza Fusión",
+    "pt-BR": "Fortaleza da Fusão",
+    "fr": "Forteresse Fusion",
+    "de": "Fusionsfestung",
+    "it": "Fortezza Fusione",
+    "ru": "Крепость слияния",
+    "hi": "विलय दुर्ग",
+    "ar": "حصن الدمج"
+  },
   "animal-wildwood-raid": {
     "__localizedExact": true,
     "en": "Wildwood Raid",

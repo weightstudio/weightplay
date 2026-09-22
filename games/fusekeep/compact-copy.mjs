@@ -1,0 +1,4 @@
+// Concise labels for the shared fixed-width controls; full help stays in the guide.
+const keys=['retry','recover','resume','begin','waveLabel'];
+const rows={en:'Retry|Restore|Resume|Defend!|Wave','zh-Hant':'重試|恢復|繼續|開始防守|波次','zh-Hans':'重试|恢复|继续|开始防守|波次',ja:'再挑戦|復元|再開|防衛開始|ウェーブ',ko:'재도전|복구|계속|방어 시작|공세',es:'Reintentar|Restaurar|Continuar|¡Defender!|Oleada','pt-BR':'Repetir|Restaurar|Continuar|Defender!|Onda',fr:'Rejouer|Restaurer|Reprendre|Défendre !|Vague',de:'Erneut|Laden|Weiter|Start|Welle',it:'Riprova|Ripristina|Riprendi|Difendi!|Ondata',ru:'Повтор|Открыть|Далее|Защищать!|Волна',hi:'फिर खेलें|बहाल करें|जारी रखें|रक्षा शुरू|लहर',ar:'إعادة|استعادة|متابعة|ابدأ الدفاع|الموجة'};
+export const BUTTONS=Object.freeze(Object.fromEntries(Object.entries(rows).map(([locale,row])=>[locale,Object.fromEntries(row.split('|').map((value,index)=>[keys[index],value]))])));

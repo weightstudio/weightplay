@@ -3,6 +3,7 @@
   'use strict';
   if (window.WeightPlayLayout) return;
   const games = Object.freeze({
+    "fusekeep": Object.freeze({ bannerAds: false }),
     "pawaxe": Object.freeze({ bannerAds: false }),
     "animal-wildwood-raid": Object.freeze({ bannerAds: false }),
     "alien-defender": Object.freeze({ bannerAds: false }),

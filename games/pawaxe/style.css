@@ -18,3 +18,11 @@
 #stage .gear[data-tier="3"]{border-color:#d6a4ed}
 #stage .gear .shards{min-height:24px;color:#f4d184}
 #stage #coins:before{display:none}
+/* Contact feedback is anchored to each fixed enemy lane and never moves controls. */
+.damage-numbers{inset:0;text-align:center}
+.damage-numbers strong{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font-size:30px;animation:impact-number .6s ease-out forwards}
+.damage-numbers .critical{color:#ffdc65;font-size:39px;line-height:1.05;text-shadow:0 2px 0 #55301b,1px 0 0 #55301b,-1px 0 0 #55301b;animation:critical-number .85s ease-out forwards}
+.damage-numbers .critical small{display:block;font-size:12px;line-height:1.5;letter-spacing:.02em}
+@keyframes impact-number{to{transform:translate(-50%,calc(-50% - 24px));opacity:0}}
+@keyframes critical-number{0%{transform:translate(-50%,-50%) scale(1.12)}25%{transform:translate(-50%,calc(-50% - 6px)) scale(1)}70%{opacity:1}100%{transform:translate(-50%,calc(-50% - 30px));opacity:0}}
+@media(prefers-reduced-motion:reduce){.damage-numbers strong,.damage-numbers .critical{animation:none}}

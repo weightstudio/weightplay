@@ -6,12 +6,15 @@ export class Combat {
     Object.assign(this, { stage, loadout, mode, node, upgrades });
     this.power=equipmentPower(loadout,options.collection||{});
     this.autoAttack=options.autoAttack===true;this.queue=0;this.slashes=0;
+    this.random=options.random||Math.random;
     this.maxHp = 120 + (loadout.includes('bark-vest') ? 25 : 10)
       + this.power.health;
     Object.assign(this, {hp:this.maxHp,energy:100,allyCd:0,time:0,target:0,events:[],combo:0,auto:.45,
       pending:null,recovery:0,serial:0,hitstop:0,lastEnemyHit:-1,damageTaken:0});
     this.status = {crack:0}; this.enemies = [];
     (stage.encounters?.[node] || stage.enemies).forEach((id,i) => this.spawn(id,i));
+    const slots=this.enemies.length===1?[1]:this.enemies.length===2?[0,2]:[0,1,2];
+    this.enemies.forEach((e,i)=>{e.slot=slots[i];});
   }
   has(id) { return this.loadout.includes(id); }
   weapon() {
@@ -20,9 +23,10 @@ export class Combat {
   }
   spawn(id, index = this.alive().length) {
     const boss = id.startsWith('boss-'), def = ENEMIES[id] || ENEMIES.scout;
-    const hp = boss ? 170 + this.stage.id*2 : def.hp + Math.floor((this.stage.id-1)/5)*4;
+    const hp = Math.round((boss ? 170 + this.stage.id*2 : def.hp + Math.floor((this.stage.id-1)/5)*4)*(1.28+(this.stage.id-1)*.006));
+    const slot=[1,0,2].find(slot=>!this.alive().some(e=>e.slot===slot));
     const e = {...def,id,uid:++this.serial,hp,maxHp:hp,maxShield:def.shield||0,shield:def.shield||0,
-      t:def.period+index*.65,warned:false,phase:1,casts:0,opening:0,reflect:0,boss,attackCount:0,disabledMirror:0};
+      slot,t:def.period+index*.65,warned:false,phase:1,casts:0,opening:0,reflect:0,boss,attackCount:0,disabledMirror:0};
     this.enemies.push(e);
     if (boss && ['boss-furnace','boss-loom','boss-stag','boss-heart'].includes(id)) {
       const children = id === 'boss-stag' ? ['mirror-left','mirror-right'] : id === 'boss-loom' ? ['root-drain','root-crack'] : ['anchor'];
@@ -71,8 +75,10 @@ export class Combat {
     if(heavy&&e.reflect>0){amount*=.65;this.stripShield(e,20);this.log('break',{uid:e.uid});}
     if(heavy&&e.opening>0){amount*=1.25;this.log('counter',{uid:e.uid});}
     this.combo++;if(this.has('rhythm-band')&&this.combo%3===0)amount*=1.5;
-    const effective=this.damage(e,amount,heavy);
-    if(heavy)for(const other of this.alive())if(other!==e)this.damage(other,amount*.45,false,'cleave');
+    const critical=this.random()<.18;
+    if(critical)amount*=1.8;
+    const effective=this.damage(e,amount,heavy,'axe',critical);
+    if(heavy)for(const other of this.alive())if(other!==e)this.damage(other,amount*.45,false,'cleave',critical);
     if(effective&&!heavy)this.energy=clamp(this.energy+(this.has('quick-axe')?9:12)+(this.has('prism-visor')?3:0)+(this.gloveCharge?5:0),0,100);
     if(!heavy)this.gloveCharge=false;
     if(heavy){
@@ -82,7 +88,7 @@ export class Combat {
       }
     }
   }
-  damage(e,amount,heavy,source='axe') {
+  damage(e,amount,heavy,source='axe',critical=false) {
     const supports=this.alive().filter(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
     const protectedCore=e.boss&&(supports.length>0||(e.id==='boss-heart'&&e.phase===3&&e.opening<=0));
     if(protectedCore){this.log('protected',{uid:e.uid});return 0;}
@@ -90,8 +96,8 @@ export class Combat {
     const shieldDamage=shieldBefore?this.stripShield(e,amount*(heavy?2:1)+(heavy&&this.has('breaker-axe')?20:0)):0;
     const healthDamage=Math.min(e.hp,shieldBefore?Math.max(0,amount-shieldBefore/(heavy?2:1)):amount);
     e.hp=Math.max(0,e.hp-healthDamage);
-    this.log('hit',{uid:e.uid,amount:Math.round(healthDamage),shield:Math.round(shieldDamage),heavy,source,protectedCore});
-    if(heavy&&healthDamage>0)this.hitstop=.045;
+    this.log('hit',{uid:e.uid,amount:Math.round(healthDamage),shield:Math.round(shieldDamage),heavy,source,critical:critical&&(healthDamage+shieldDamage>0),protectedCore});
+    if((heavy||critical)&&healthDamage>0)this.hitstop=critical?.055:.045;
     if(e.hp===0){
       this.log('defeat',{uid:e.uid,boss:e.boss,summon:e.summon===true});
       this.hp=Math.min(this.maxHp,this.hp+this.maxHp*.035);
@@ -102,7 +108,7 @@ export class Combat {
   }
   playerDamage(amount,source,blockable=true) {
     if(amount<=0)return false;
-    const armor=this.has('bark-vest')?18:8; let d=amount*.38*(1-Math.min(.35,armor/(armor+100)));
+    const armor=this.has('bark-vest')?18:8; let d=amount*(.50+(this.stage.id-1)*.002)*(1-Math.min(.35,armor/(armor+100)));
     if(this.has('iron-brace'))d*=.85;
     this.hp=clamp(this.hp-d,0,this.maxHp);this.damageTaken+=d;
     if(d>0){this.lastCause='attack';this.log('hurt',{amount:Math.round(d),uid:source?.uid});} return false;

@@ -96,11 +96,11 @@ function selectTab(tab){$$('.tabs button').forEach(b=>b.classList.toggle('active
 let audio=null,impactNoise=null;
 function sound(kind,strong=false){
   if(window.WonderSound?.isMuted())return;
-  try{audio||=new AudioContext();audio.resume();const frequencies={hit:170,break:310,hurt:85,perfect:720,block:210,ally:520,defeat:370,counter:440,heal:620};
+  try{audio||=new AudioContext();audio.resume();const frequencies={hit:170,critical:460,break:310,hurt:85,perfect:720,block:210,ally:520,defeat:370,counter:440,heal:620};
     if(!frequencies[kind])return;const o=audio.createOscillator(),g=audio.createGain(),at=audio.currentTime;
     o.type=kind==='hit'||kind==='hurt'?'triangle':'sine';const pitch=strong?frequencies[kind]*.65:frequencies[kind];o.frequency.setValueAtTime(pitch,at);o.frequency.exponentialRampToValueAtTime(pitch*.45,at+.12);
     g.gain.setValueAtTime(.055*((window.WonderSound?.getEffectsVolume()??80)/100),at);g.gain.exponentialRampToValueAtTime(.001,at+.16);o.connect(g).connect(audio.destination);o.start(at);o.stop(at+.16);
-    if(kind==='hit'||kind==='break'){
+    if(kind==='hit'||kind==='critical'||kind==='break'){
       if(!impactNoise){impactNoise=audio.createBuffer(1,Math.ceil(audio.sampleRate*.07),audio.sampleRate);const data=impactNoise.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);}
       const noise=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();noise.buffer=impactNoise;filter.type='lowpass';filter.frequency.value=strong?700:1800;
       gain.gain.setValueAtTime((strong?.14:.065)*((window.WonderSound?.getEffectsVolume()??80)/100),at);gain.gain.exponentialRampToValueAtTime(.001,at+.07);
@@ -112,7 +112,7 @@ function feedback(text,seconds=1.4){feedbackText=text;feedbackUntil=performance.
 async function startRun(){
   disposeRun();node=0;runHp=0;runEnergy=100;runReward=0;runKills=0;runDrops=0;runCombo=0;
   journey=new Expedition(stages[selected-1]);runKit=JSON.parse(JSON.stringify({loadout:save.loadout,mode:save.mode,collection:save.collection}));show('battle');state='loading';
-  $('#lootToast').hidden=true;updateProgress();
+  $('#lootToast').hidden=true;$('#damageNumbers').replaceChildren();updateProgress();
   const generation=runGeneration;dialog(t('title'),msg('Preparing the forest…','正在準備森林…'),[], 'loading');
   try{
     if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
@@ -134,6 +134,7 @@ function resume(){closeDialog();state='live';startLoop();$('#canvas').focus();}
 function loop(now){
   if(!renderer||!combat||!['live','transition'].includes(state))return;
   if(now>lootUntil)$('#lootToast').hidden=true;
+  for(const n of $('#damageNumbers').children)if(now>Number(n.dataset.until))n.remove();
   const delta=Math.min(.1,Math.max(0,(now-last)/1000));last=now;
   if(document.querySelector('.wp-frame-popover:not([hidden])')){last=now;raf=requestAnimationFrame(loop);return;}
   if(state==='transition'){
@@ -143,7 +144,7 @@ function loop(now){
     acc=Math.min(acc+delta,.12);
     while(acc>=1/60){combat.tick(1/60);acc-=1/60;}
     for(const e of combat.events.splice(0)){
-      renderer.event(e);sound(e.type,e.heavy);
+      renderer.event(e);sound(e.critical?'critical':e.type,e.critical||e.heavy);
       if(e.type==='defeat'){
         runKills++;
         const id=e.summon?null:rollLoot(selected,e.boss);
@@ -151,7 +152,16 @@ function loop(now){
       }
       const labels={perfect:msg('Perfect guard! Counter now.','完美格擋！趁隙反擊'),block:msg('Blocked · counter window','格擋成功 · 反擊窗口'),break:msg('Shield broken!','護盾破碎！'),counter:msg('Counter strike!','反擊重擊！'),interrupt:msg('Cast interrupted','施法已打斷'),reflect:msg('Reflected! Use Nibs first.','亮面反彈！先用栗栗解除'),exhausted:msg('Stamina empty — recover','耐力耗盡 · 解除守勢恢復'),phase:msg('Guardian changes phase','首領進入下一階段'),heal:msg('Health restored','生命恢復')};
       if(labels[e.type])feedback(labels[e.type]);
-      if(e.type==='hit'||e.type==='hurt'){const n=document.createElement('strong');n.className=e.type==='hurt'?'hurt':'';n.textContent=e.type==='hurt'?`−${e.amount} HP`:e.amount>0?`${e.amount}`:`${msg('Shield','盾')} −${e.shield}`;$('#damageNumbers').replaceChildren(n);}
+      if(e.type==='hit'||e.type==='hurt'){
+        const box=$('#damageNumbers'),key=e.type==='hurt'?'player':String(e.uid);
+        box.querySelector(`[data-target="${key}"]`)?.remove();
+        const n=document.createElement('strong'),point=e.type==='hurt'?{x:50,y:74}:renderer.impactPoint(e.uid);
+        n.dataset.target=key;n.dataset.until=now+(e.critical?850:600);n.className=e.type==='hurt'?'hurt':e.critical?'critical':'';
+        n.style.left=`${point.x}%`;n.style.top=`${point.y}%`;
+        const amount=e.type==='hurt'?`−${e.amount} HP`:e.amount>0?`${e.amount}`:`${msg('Shield','盾')} −${e.shield}`;
+        if(e.critical){const label=document.createElement('small');label.textContent=t('critical');n.append(label,document.createTextNode(amount));}else n.textContent=amount;
+        box.append(n);while(box.children.length>4)box.firstElementChild.remove();
+      }
     }
     renderer.setEnemies(combat.alive());updateHud();renderer.render(delta,combat);
     if(combat.lost){finish(false);return;}if(combat.won){encounterWon();return;}
@@ -168,6 +178,7 @@ function updateHud(){
   enemies.forEach((e,i)=>{
     let b=box.querySelector(`[data-uid="${e.uid}"]`);
     if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><progress></progress><small></small><progress class="enemy-clock" max="1"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
+    b.style.gridColumn=String(e.slot+1);b.style.gridRow='1';
     b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.querySelector('strong').textContent=name(e);
     b.querySelector('progress').max=e.maxHp;b.querySelector('progress').value=e.hp;
     const protectedBySupport=e.boss&&enemies.some(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
