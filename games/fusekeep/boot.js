@@ -6,8 +6,8 @@
  const fail=()=>{if(abandoned||document.documentElement.dataset.fusekeepReady==='true')return;document.getElementById('bootError').hidden=false;};
  const timer=setTimeout(fail,15000);
  window.addEventListener('pagehide',event=>{if(!event.persisted){abandoned=true;clearTimeout(timer);}},{once:true});
- import(new URL('./screens.mjs?v=5',src).href).then(module=>{
-  if(abandoned)return;module.mountPlayScreens();return import(new URL('./app.mjs?v=5',src).href);
+ import(new URL('./screens.mjs?v=7',src).href).then(module=>{
+  if(abandoned)return;module.mountPlayScreens();return import(new URL('./app.mjs?v=7',src).href);
  }).then(()=>{clearTimeout(timer);if(abandoned)return;document.getElementById('start').disabled=false;document.getElementById('bootError').hidden=true;})
  .catch(error=>{clearTimeout(timer);console.warn('Fusekeep startup:',error?.message);fail();});
 })();

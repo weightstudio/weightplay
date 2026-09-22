@@ -13,7 +13,7 @@ export class Battle {
   this.shots=[];this.pending=[];this.queue=[];this.warnings=[];this.gold=this.stage.initialGold;
   this.hp=this.maxHp=5000;this.summons=0;this.upgrades=0;this.kills=0;this.merges=0;
   this.time=0;this.wave=0;this.breakTime=3;this.spawnTime=0;this.spellCooldown=5;this.environment=12;
-  this.status='playing';this.targetMode='front';this.settled=false;this.bossDefeated=!this.stage.boss;
+  this.status='playing';this.settled=false;this.bossDefeated=!this.stage.boss;
   [0,4,8].forEach((index,i)=>this.board[index]=this.unit(this.deck[i],1));
  }
  random(){let x=this.rng;x^=x<<13;x^=x>>>17;x^=x<<5;this.rng=x>>>0;return this.rng/4294967296;}
@@ -117,8 +117,7 @@ export class Battle {
  }
  targetList(index){
   return this.enemies.filter(e=>!e.dead).sort((a,b)=>{
-   const primary=this.targetMode==='strong'?b.hp-a.hp:b.z-a.z;
-   return primary||distance(a,PADS[index])-distance(b,PADS[index])||a.id-b.id;
+   return b.z-a.z||distance(a,PADS[index])-distance(b,PADS[index])||a.id-b.id;
   });
  }
  attack(index,unit){

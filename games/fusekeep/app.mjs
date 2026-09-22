@@ -1,9 +1,9 @@
-import {Battle} from './engine.mjs?v=5';
+import {Battle} from './engine.mjs?v=7';
 import {STEP,STAGES,TYPES,BOSSES} from './data.mjs';
-import {createStore,settle,SAVE_KEY} from './save.mjs?v=5';
+import {createStore,settle,SAVE_KEY} from './save.mjs?v=7';
 import {shardBalance,nextCost,advanceCollection,rewardType,sources,clearCount} from './progression.mjs';
 import {PROGRESSION_COPY} from './progression-copy.mjs';
-import {LOCALES,LABELS,DICT,translator} from './locales.mjs';
+import {LOCALES,LABELS,DICT,translator} from './locales.mjs?v=7';
 import {COPY,ROUTES,interpolate} from './copy.mjs';
 import {cue,combatAudio,resetAudio} from './audio.mjs';
 const rootURL=new URL('../../',import.meta.url),assetURL=new URL('./assets/',import.meta.url);
@@ -29,7 +29,12 @@ const formatTime=seconds=>`${Math.floor(seconds/60)}:${String(Math.floor(seconds
 const troopName=type=>d.troops[TYPES.indexOf(type)];
 const unitLabel=unit=>t('unitHint',{name:troopName(unit.type),rank:unit.rank});
 function feedback(key,values={}){
- if(['move','merge','summon','upgrade','spell'].includes(key)){feedbackText='';feedbackExpiry=0;renderHUD();return;}
+ if(key==='upgrade'){
+  const level=battle?.upgrades||0;
+  feedbackText=`${t('upgrade')} · Lv.${level} · +${level*20}%`;
+  feedbackExpiry=(battle?.time||0)+3;renderHUD();return;
+ }
+ if(['move','merge','summon','spell'].includes(key)){feedbackText='';feedbackExpiry=0;renderHUD();return;}
  const aliases={move:'moved',merge:'merged',summon:'summoned',upgrade:'upgraded',spell:'cast'};
  feedbackText=t(aliases[key]||key,values);feedbackExpiry=(battle?.time||0)+3;renderHUD();
 }
@@ -101,7 +106,7 @@ TYPES.forEach((type,index)=>{
 function loadRenderer(){
  if(rendererPromise)return rendererPromise;
  if(rendererAttempts>=2)return Promise.reject(Error('RELOAD_REQUIRED'));
- rendererAttempts++;const suffix=rendererAttempts===1?'5':`5-retry${rendererAttempts}`;
+ rendererAttempts++;const suffix=rendererAttempts===1?'7':`7-retry${rendererAttempts}`;
  rendererPromise=import(`./renderer.mjs?v=${suffix}`).catch(error=>{rendererPromise=null;throw error;});return rendererPromise;
 }
 async function loadPortraits(){
@@ -181,7 +186,7 @@ function openPause(leaving=false,background=false){
 function help(intro=false){
  if(!battle)return;
  showModal('help',t('guide'),`${t('chance')} ${t('bossRule')}`,[
-  {label:t('back'),run:toStage},{label:t(intro?'begin':'resume'),run:()=>{if(intro)save({...saved,tutorial:true});hideModal(true);}},null,
+  null,{label:t(intro?'begin':'resume'),run:()=>{if(intro)save({...saved,tutorial:true});hideModal(true);}},null,
  ],[d.guideText[1],d.guideText[2],d.guideText[4]]);
 }
 function failure(){
@@ -232,11 +237,7 @@ function action(command){
 }
 listen($('summon'),'click',()=>action('summon'));listen($('upgrade'),'click',()=>action('upgrade'));listen($('spell'),'click',()=>action('spell'));
 listen($('speed'),'click',()=>{if(!actionable()||gesture)return;speed=speed===1?2:1;renderHUD();cue('click');});
-listen($('priority'),'click',()=>{
- if(!actionable()||gesture)return;battle.targetMode=battle.targetMode==='front'?'strong':'front';
- feedbackText=`${t('target')}: ${t(battle.targetMode==='front'?'front':'strong')}`;feedbackExpiry=battle.time+3;renderOnce();cue('click');
-});
-listen($('pause'),'click',()=>openPause());listen($('help'),'click',()=>help());
+listen($('help'),'click',()=>help());
 function choose(index){
  if(!actionable())return;
  if(selected===index)selected=-1;
@@ -311,12 +312,11 @@ function renderHUD(){
  if(!battle)return;
  text($('battleLevel'),battle.stage.id);text($('battleWave'),`${battle.wave}/15`);text($('battleGold'),battle.gold);
  $('wallMeter').value=battle.hp;text($('wallText'),`${battle.hp}/${battle.maxHp}`);
- const active=Boolean(actionable()),priority=t(battle.targetMode==='front'?'front':'strong');
- $('priority').setAttribute('aria-label',`${t('target')}: ${priority}`);$('priority').setAttribute('aria-pressed',String(battle.targetMode==='strong'));
+ const active=Boolean(actionable());
  text($('speedValue'),`×${speed}`);$('speed').setAttribute('aria-label',`${t('speed')}: ${speed}`);
  text($('summonCost'),battle.summonCost);text($('upgradeCost'),battle.upgrades>=5?t('max'):battle.upgradeCost);
  text($('spellCost'),battle.spellCooldown>0?Math.ceil(battle.spellCooldown):'✓');
- for(const id of ['summon','upgrade','spell','speed','priority','pause','help'])$(id).disabled=!active;
+ for(const id of ['summon','upgrade','spell','speed','help'])$(id).disabled=!active;
  if(battle.upgrades>=5)$('upgrade').disabled=true;if(battle.spellCooldown>0)$('spell').disabled=true;
  $('summon').setAttribute('aria-label',`${t('summon')}: ${battle.summonCost} ${t('goldLabel')}`);
  $('upgrade').setAttribute('aria-label',`${t('upgrade')}: ${battle.upgrades>=5?t('max'):battle.upgradeCost+' '+t('goldLabel')}`);
@@ -400,7 +400,7 @@ listen(window,'pageshow',event=>{
 });
 // Observability for the next AI; no cheat setters, release flags, or test acceptance.
 window.FusekeepDiagnostics=Object.freeze({
- snapshot:()=>({scene,version:5,locale,modal,speed,loopActive:Boolean(raf),selected,
+ snapshot:()=>({scene,version:7,locale,modal,speed,loopActive:Boolean(raf),selected,
   battle:battle?{stage:battle.stage.id,wave:battle.wave,status:battle.status,hp:battle.hp,gold:battle.gold,
    board:battle.board.map(unit=>unit?{id:unit.id,type:unit.type,rank:unit.rank}:null),enemies:battle.enemies.length,
    pending:battle.pending.length,shots:battle.shots.length,time:battle.time}:null,

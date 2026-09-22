@@ -29,9 +29,7 @@ export function mountPlayScreens(){
     <div id="arenaFrame" data-t-aria="formation" role="group"><div id="arenaHost"></div><div id="padLayer"></div><div id="damageLayer" aria-hidden="true"></div><p id="battleCue" role="status" aria-live="polite" hidden></p></div>
     <div id="commands">
      <div class="utility-row">
-      <button id="pause" type="button" data-wp-frame-action="secondary" data-t-aria="pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
       <button id="speed" type="button" data-wp-frame-action="secondary" data-t-aria="speed"><span id="speedValue">×1</span></button>
-      <button id="priority" type="button" data-wp-frame-action="secondary" data-t-aria="target" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M11 1h2v3a8 8 0 0 1 7 7h3v2h-3a8 8 0 0 1-7 7v3h-2v-3a8 8 0 0 1-7-7H1v-2h3a8 8 0 0 1 7-7V1zm1 5a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 3a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg></button>
       <button id="help" type="button" data-wp-frame-action="secondary" data-t-aria="help"><span aria-hidden="true">?</span></button>
      </div>
      <p id="selectionHint" class="bounded-message"></p>

@@ -1,4 +1,4 @@
-import {guides} from './guides.mjs';
+import {guides} from './guides.mjs?v=7';
 // Complete game-owned dictionaries. Delimited rows share an asserted schema.
 export const LOCALES=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
 export const LABELS=['English','繁體中文','简体中文','日本語','한국어','Español','Português (Brasil)','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];
