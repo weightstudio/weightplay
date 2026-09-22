@@ -2,6 +2,24 @@
   "use strict";
   const locales = window.ANIMAL_COZY_CAMP_LOCALES || {};
   const localeKeys = window.ANIMAL_COZY_CAMP_LOCALE_KEYS || ["en"];
+  const startLabels = {
+    en: "Start Game",
+    "zh-Hant": "開始遊戲",
+    "zh-Hans": "开始游戏",
+    ja: "ゲーム開始",
+    ko: "게임 시작",
+    es: "Iniciar juego",
+    "pt-BR": "Iniciar jogo",
+    fr: "Démarrer le jeu",
+    de: "Spiel starten",
+    it: "Avvia gioco",
+    ru: "Начать игру",
+    hi: "खेल शुरू करें",
+    ar: "ابدأ اللعبة"
+  };
+  Object.entries(startLabels).forEach(([locale, label]) => {
+    if (locales[locale]) locales[locale].start = label;
+  });
   const rounds = [
     { title: "roundOne", clues: ["r1c1", "r1c2"], layouts: [["orla", "moss", "taro", "pip"], ["orla", "taro", "moss", "pip"], ["moss", "orla", "pip", "taro"]], solution: 0 },
     { title: "roundTwo", clues: ["r2c1", "r2c2"], layouts: [["taro", "pip", "orla", "moss"], ["taro", "orla", "pip", "moss"], ["pip", "taro", "moss", "orla"]], solution: 0 },
