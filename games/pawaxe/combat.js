@@ -96,7 +96,7 @@ export class Combat {
     const shieldDamage=shieldBefore?this.stripShield(e,amount*(heavy?2:1)+(heavy&&this.has('breaker-axe')?20:0)):0;
     const healthDamage=Math.min(e.hp,shieldBefore?Math.max(0,amount-shieldBefore/(heavy?2:1)):amount);
     e.hp=Math.max(0,e.hp-healthDamage);
-    this.log('hit',{uid:e.uid,amount:Math.round(healthDamage),shield:Math.round(shieldDamage),heavy,source,critical:critical&&(healthDamage+shieldDamage>0),protectedCore});
+    this.log('hit',{uid:e.uid,amount:Math.ceil(healthDamage),shield:Math.ceil(shieldDamage),heavy,source,critical:critical&&(healthDamage+shieldDamage>0),protectedCore});
     if((heavy||critical)&&healthDamage>0)this.hitstop=critical?.055:.045;
     if(e.hp===0){
       this.log('defeat',{uid:e.uid,boss:e.boss,summon:e.summon===true});
