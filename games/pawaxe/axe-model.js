@@ -8,7 +8,7 @@ export function buildAxe(renderer) {
     const m=new THREE.MeshStandardMaterial({color,roughness,metalness});
     renderer.materials.set(`axe:${name}`,m);return m;
   };
-  const steel=metal('steel',0x557a86,.34,.72),edge=metal('edge',0xe4f4ee,.22,.8),brass=metal('brass',0xc69643,.4,.65);
+  const steel=metal('steel',0x557a86,.34,.55),edge=metal('edge',0xe4f4ee,.28,.28),brass=metal('brass',0xc69643,.4,.65);
   const plate=(points,depth,material,z=0,bevel=.012)=>{
     const shape=new THREE.Shape();points.forEach(([x,y],i)=>i?shape.lineTo(x,y):shape.moveTo(x,y));shape.closePath();
     const geometry=new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSize:bevel,bevelThickness:bevel,bevelSegments:1,steps:1});

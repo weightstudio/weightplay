@@ -193,6 +193,7 @@ export class PawRenderer {
     this.c.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(48/2))/Math.min(1,aspect/.78)));
     this.c.updateProjectionMatrix();this.vc.aspect=aspect;this.vc.updateProjectionMatrix();
     const halfW=Math.tan(THREE.MathUtils.degToRad(24))*2*aspect;
+    this.axe.scale.setScalar(Math.min(.85,aspect*.95));
     this.axe.position.set(Math.min(.80,halfW*.78),-.53,-2);
     this.axeRest=this.axe.position.clone();
     this.hand.position.set(-Math.min(.7,halfW*.68),-.7,-2);
