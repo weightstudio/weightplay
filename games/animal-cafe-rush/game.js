@@ -49,6 +49,79 @@
   nodes.stage?.setAttribute("data-wp-stage-landscape-height", "360");
   nodes.play?.setAttribute("data-wp-battle-landscape-width", "760");
   nodes.play?.setAttribute("data-wp-battle-landscape-height", "360");
+
+  /* Interface 7 Stage always owns one fixed three-slot tab bar. Cafe Rush has
+     no party-preparation category, so the left slot remains intentionally
+     empty; Stages owns the center and Cafe upgrades owns the right slot. */
+  const stageTabs = (() => {
+    const workspace = nodes.stage?.querySelector(".stage-workspace");
+    if (!nodes.stage || !workspace || nodes.stage.querySelector(".cafe-stage-tabs")) return null;
+    workspace.setAttribute("data-wp-stage-workspace", "");
+    const nav = document.createElement("nav");
+    nav.className = "stage-tabs cafe-stage-tabs";
+    nav.setAttribute("data-wp-frame-nav", "");
+    const empty = document.createElement("span");
+    empty.className = "stage-tab-empty";
+    empty.setAttribute("aria-hidden", "true");
+    const stages = document.createElement("button");
+    stages.type = "button";
+    stages.dataset.wpFrameStageSlot = "stages";
+    stages.dataset.wpFrameAction = "tab";
+    stages.setAttribute("aria-current", "page");
+    const upgrades = document.createElement("button");
+    upgrades.type = "button";
+    upgrades.dataset.wpFrameStageSlot = "equipment";
+    upgrades.dataset.wpFrameAction = "tab";
+    nav.append(empty, stages, upgrades);
+    nodes.stage.append(nav);
+
+    const labels = {
+      en: ["Stage sections", "Stages", "Upgrades"],
+      "zh-Hant": ["關卡選單", "關卡", "升級"],
+      "zh-Hans": ["关卡选单", "关卡", "升级"],
+      ja: ["ステージメニュー", "ステージ", "アップグレード"],
+      ko: ["스테이지 메뉴", "스테이지", "업그레이드"],
+      es: ["Secciones de niveles", "Niveles", "Mejoras"],
+      "pt-BR": ["Seções de fases", "Fases", "Melhorias"],
+      fr: ["Sections de niveaux", "Niveaux", "Améliorations"],
+      de: ["Stufenbereiche", "Stufen", "Verbesserungen"],
+      it: ["Sezioni livelli", "Livelli", "Potenziamenti"],
+      ru: ["Разделы этапов", "Этапы", "Улучшения"],
+      hi: ["स्टेज अनुभाग", "स्टेज", "अपग्रेड"],
+      ar: ["أقسام المراحل", "المراحل", "الترقيات"],
+    };
+    const localeCode = () => {
+      const raw = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || document.documentElement.lang || "en";
+      if (/^zh-(tw|hant)/i.test(raw)) return "zh-Hant";
+      if (/^zh/i.test(raw)) return "zh-Hans";
+      if (/^pt/i.test(raw)) return "pt-BR";
+      const short = raw.split("-")[0];
+      return labels[raw] ? raw : (labels[short] ? short : "en");
+    };
+    const refresh = () => {
+      const text = labels[localeCode()] || labels.en;
+      nav.setAttribute("aria-label", text[0]);
+      stages.textContent = text[1];
+      upgrades.textContent = text[2];
+    };
+    const set = (tab, focus = false) => {
+      const upgradesActive = tab === "upgrades";
+      nodes.stage.classList.toggle("is-upgrades-tab", upgradesActive);
+      stages.toggleAttribute("aria-current", !upgradesActive);
+      upgrades.toggleAttribute("aria-current", upgradesActive);
+      if (!upgradesActive) stages.setAttribute("aria-current", "page");
+      else upgrades.setAttribute("aria-current", "page");
+      if (focus) (upgradesActive ? upgrades : stages).focus({ preventScroll: true });
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    };
+    stages.addEventListener("click", () => set("stages", true));
+    upgrades.addEventListener("click", () => set("upgrades", true));
+    window.addEventListener("wonder:locale-change", () => queueMicrotask(refresh));
+    refresh();
+    set("stages");
+    return { set, refresh, nav, stages, upgrades };
+  })();
+
   const copy = { en: { title:"Animal Cafe Rush", language:"Language", internal:"Internal prototype", menuTitle:"Serve the animal cafe.", menuHint:"Tap a customer, prepare each pictured order, then tap the ready tray to serve.", day:"Day", coins:"Coins", best:"Best", upgrades:"Cafe upgrades", upgradeHint:"Coins make future days friendlier.", start:"Start day", served:"Served", select:"Choose a customer", tray:"Ready tray", empty:"Choose the matching station", serve:"Serve selected customer", complete:"Day complete", next:"Next day", retry:"Try again", pause:"Customers need a break", pauseText:"Take it slowly and plan this day again.", menu:"Menu", skill:"You practiced planning, matching, and quick decisions.", speed:"Quick stations", capacity:"Extra tray", comfort:"Cozy cafe", smoothie:"Smoothie", sandwich:"Sandwich", fruit:"Fruit bowl", cookie:"Bakery treat", buy:"Upgrade {cost}", max:"Max", servedMessage:"Perfect service!", wrong:"That order belongs to another customer.", noTray:"Prepare the pictured order first.", locked:"Unlocks after Day {day}" }, "zh-Hant": { title:"動物咖啡快手", language:"語言", internal:"內部原型", menuTitle:"經營動物咖啡館。", menuHint:"點選客人，準備圖示餐點，再點選托盤完成服務。", day:"天數", coins:"金幣", best:"最佳", upgrades:"咖啡館升級", upgradeHint:"金幣讓之後的咖啡日更順利。", start:"開始營業", served:"已服務", select:"選擇一位客人", tray:"完成托盤", empty:"選擇對應工作站", serve:"服務選定客人", complete:"今日完成", next:"下一天", retry:"再試一次", pause:"客人需要休息", pauseText:"慢慢來，重新安排這一天的訂單。", menu:"選單", skill:"你練習了規劃、配對與快速判斷。", speed:"快速工作站", capacity:"加大托盤", comfort:"舒適咖啡館", smoothie:"果昔", sandwich:"三明治", fruit:"水果碗", cookie:"烘焙點心", buy:"升級 {cost}", max:"已滿", servedMessage:"服務得很完美！", wrong:"這份餐點屬於另一位客人。", noTray:"先準備圖示中的餐點。", locked:"通過第 {day} 天後解鎖" } };
   const flowCopy = { en: { pickFood:"Pick the food tiles for an order.", deliver:"Tap the customer whose bubble matches your selected food.", selected:"Selected food", queue:"More customers are joining the line.", priority:"VIP", rating:"Business rating", leaving:"A customer left unhappy.", basics:"Match the pictured foods", sequence:"Cook from 1 to 2 to 3", vip:"Serve a waiting VIP first", table:"Serve Table A, then Table B", variety:"Serve a different animal next", festival:"Festival: combine the visible rules", checkpoint:"Cafe Review", sequenceWrong:"Follow the numbered recipe order.", vipWrong:"A VIP is waiting. Serve that guest first.", tableWrong:"Serve Table {table} next.", varietyWrong:"Choose a different animal next.", tableTag:"Table {table}" }, "zh-Hant": { pickFood:"\u9ede\u9078\u9910\u9ede\u65b9\u584a\u7d44\u51fa\u8a02\u55ae\u3002", deliver:"\u9ede\u9078\u982d\u4e0a\u8a02\u55ae\u8207\u5df2\u9078\u9910\u9ede\u76f8\u540c\u7684\u5ba2\u4eba\u3002", selected:"\u5df2\u9078\u9910\u9ede", queue:"\u66f4\u591a\u5ba2\u4eba\u6b63\u5728\u6392\u968a\u3002", priority:"VIP", rating:"\u71df\u696d\u8a55\u5206", leaving:"\u5ba2\u4eba\u4e0d\u958b\u5fc3\u5730\u96e2\u958b\u4e86\u3002", basics:"\u914d\u5c0d\u5716\u7247\u9910\u9ede", sequence:"\u4f9d 1\u30012\u30013 \u7684\u9806\u5e8f\u6599\u7406", vip:"\u5148\u670d\u52d9\u7b49\u5f85\u4e2d\u7684 VIP", table:"A \u684c\u3001B \u684c\u8f2a\u6d41\u670d\u52d9", variety:"\u4e0b\u4e00\u4f4d\u8981\u63db\u4e0d\u540c\u52d5\u7269", festival:"\u6176\u5178\uff1a\u7d44\u5408\u756b\u9762\u4e0a\u7684\u898f\u5247", checkpoint:"\u5496\u5561\u9928\u5be9\u67e5", sequenceWrong:"\u8acb\u6309\u7167\u6578\u5b57\u9806\u5e8f\u6e96\u5099\u9910\u9ede\u3002", vipWrong:"VIP \u6b63\u5728\u7b49\u5f85\uff0c\u8acb\u5148\u670d\u52d9\u3002", tableWrong:"\u4e0b\u4e00\u4f4d\u8acb\u670d\u52d9 {table} \u684c\u3002", varietyWrong:"\u4e0b\u4e00\u4f4d\u8acb\u63db\u4e0d\u540c\u52d5\u7269\u3002", tableTag:"{table} \u684c" } };
   copy.es = { title:"Café Animal Exprés", language:"Idioma", internal:"Prototipo interno", menuTitle:"Atiende el café de los animales.", menuHint:"Toca a un cliente, prepara cada pedido ilustrado y sirve la bandeja cuando esté lista.", day:"Día", coins:"Monedas", best:"Mejor", upgrades:"Mejoras del café", upgradeHint:"Las monedas facilitan los próximos días.", start:"Abrir el café", served:"Atendidos", select:"Elige un cliente", tray:"Bandeja lista", empty:"Elige la estación correcta", serve:"Atender al cliente elegido", complete:"Día completado", next:"Siguiente día", retry:"Intentar de nuevo", pause:"Los clientes necesitan un descanso", pauseText:"Ve con calma y vuelve a planificar este día.", menu:"Menú", skill:"Practicaste planificación, asociación y decisiones rápidas.", speed:"Estaciones rápidas", capacity:"Bandeja extra", comfort:"Café acogedor", smoothie:"Batido", sandwich:"Sándwich", fruit:"Bol de fruta", cookie:"Dulce de panadería", buy:"Mejorar {cost}", max:"Máximo", servedMessage:"¡Servicio perfecto!", wrong:"Ese pedido pertenece a otro cliente.", noTray:"Prepara primero el pedido de la imagen.", locked:"Se desbloquea después del día {day}" };
@@ -122,6 +195,7 @@
     document.documentElement.lang = locale;
     document.title = `${(copy[locale] || copy.en).title} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => node.textContent = t(node.dataset.ui));
+    stageTabs?.refresh();
     const releaseCopy = locale === "zh-Hant"
       ? { internal: "\u6b63\u5f0f\u71df\u696d", menuHint: "\u9ede\u9078\u5ba2\u4eba\u6c23\u6ce1\u88e1\u7684\u9910\u9ede\uff0c\u518d\u9ede\u8a72\u5ba2\u4eba\u5b8c\u6210\u51fa\u9910\u3002" }
       : locale === "es"
@@ -195,9 +269,9 @@
   function updateCafeBattleScale() { const isStage=document.body.classList.contains("is-cafe-stage"); const isPlaying=document.body.classList.contains("is-cafe-playing"); const active=isPlaying||isStage; if(!active) return; const viewport=window.visualViewport; const visualWidth=Math.round(viewport?.width||0); const visualHeight=Math.round(viewport?.height||0); const useVisual=visualWidth>0&&visualHeight>0&&Math.abs(visualWidth-innerWidth)<=2&&visualHeight<=innerHeight+2; const safeWidth=useVisual?visualWidth:innerWidth; const height=useVisual?visualHeight:innerHeight; const width=Math.min(Math.max(1,safeWidth),920); const shortCanvas=height<=430&&width>height&&(isStage||isPlaying); const minimumWidth=shortCanvas?760:390; const minimumHeight=shortCanvas?360:788; const scale=Math.min(width/minimumWidth,Math.max(1,height)/minimumHeight); const logicalWidth=width/scale; const logicalHeight=height/scale; const root=document.documentElement.style; root.setProperty("--cafe-vw",`${width}px`); root.setProperty("--cafe-vh",`${height}px`); root.setProperty("--cafe-canvas-scale",String(scale)); root.setProperty("--cafe-logical-width",`${logicalWidth}px`); root.setProperty("--cafe-logical-height",`${logicalHeight}px`); root.setProperty("--cafe-canvas-left",`${Math.max(0,(safeWidth-width)/2)}px`); root.setProperty("--cafe-canvas-top","0px"); }
   window.addEventListener("blur",suspendRunTimers); window.addEventListener("focus",resumeRunTimers); window.addEventListener("pagehide",suspendRunTimers); window.addEventListener("pageshow",resumeRunTimers); document.addEventListener("visibilitychange",()=>{ if(document.hidden) suspendRunTimers(); else resumeRunTimers(); });
   window.addEventListener?.("resize",updateCafeBattleScale,{passive:true}); window.addEventListener?.("orientationchange",updateCafeBattleScale,{passive:true}); window.visualViewport?.addEventListener("resize",updateCafeBattleScale,{passive:true});
-  if(new URLSearchParams(location.search).has("test")) window.__AnimalCafeRushTest={ definitions(){ return dayModes.map((mode)=>({day:mode.day,titleEn:mode.titleEn,titleZh:mode.titleZh,checkpoint:mode.checkpoint,rules:[...mode.rules],goal:dayGoal(mode.day),orders:mode.orders.map((order)=>[...order])})); }, prepareDay(day){ profile.day=CAMPAIGN_DAYS; selectedDay=Math.max(1,Math.min(CAMPAIGN_DAYS,Number(day)||1)); startDay(selectedDay); return this.snapshot(); }, setSelectedFoods(items=[]){ if(!run) return null; run.selectedFoods=[...items]; renderPlay(); return this.snapshot(); }, setLastServedAnimal(id=""){ if(!run) return null; run.lastServedAnimal=id; renderPlay(); return this.snapshot(); }, serveIndex(index=0){ const customer=run?.queue[index]; if(customer) serve(customer.uid); return { message:nodes.message.textContent, ...this.snapshot() }; }, ruleDecision(index=0){ const customer=run?.queue[index]; return customer?{customer:{id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order]},block:serviceBlock(customer),rules:[...activeRules()],tableTurn:run.tableTurn,lastServedAnimal:run.lastServedAnimal}:null; }, forceComplete(){ if(!run) return null; run.served=run.goal; run.coins=run.goal*3; finishDay(); return { served:run.served, goal:run.goal, finishing:run.finishing, resultVisible:!nodes.result.classList.contains("is-hidden"), profile:JSON.parse(readStorage(saveKey)||"{}") }; }, snapshot(){ return { selectedDay, run:run?{ day:run.day, mode:run.mode.id, modeLabel:t(run.mode.label), ruleSummary:ruleSummary(), rules:[...run.mode.rules], checkpoint:run.mode.checkpoint, served:run.served, goal:run.goal, finishing:run.finishing, tableTurn:run.tableTurn, lastServedAnimal:run.lastServedAnimal, queue:run.queue.map((customer)=>({id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order],leaving:customer.leaving})), firstOrder:[...(run.queue[0]?.order||[])], firstOrderBonus:run.queue[0]?orderBonus(run.queue[0].order):0 }:null, profile:JSON.parse(readStorage(saveKey)||"{}") }; } };
+  if(new URLSearchParams(location.search).has("test")) window.__AnimalCafeRushTest={ definitions(){ return dayModes.map((mode)=>({day:mode.day,titleEn:mode.titleEn,titleZh:mode.titleZh,checkpoint:mode.checkpoint,rules:[...mode.rules],goal:dayGoal(mode.day),orders:mode.orders.map((order)=>[...order])})); }, prepareDay(day){ profile.day=CAMPAIGN_DAYS; selectedDay=Math.max(1,Math.min(CAMPAIGN_DAYS,Number(day)||1)); startDay(selectedDay); return this.snapshot(); }, setSelectedFoods(items=[]){ if(!run) return null; run.selectedFoods=[...items]; renderPlay(); return this.snapshot(); }, setLastServedAnimal(id=""){ if(!run) return null; run.lastServedAnimal=id; renderPlay(); return this.snapshot(); }, serveIndex(index=0){ const customer=run?.queue[index]; if(customer) serve(customer.uid); return { message:nodes.message.textContent, ...this.snapshot() }; }, ruleDecision(index=0){ const customer=run?.queue[index]; return customer?{customer:{id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order]},block:serviceBlock(customer),rules:[...activeRules()],tableTurn:run.tableTurn,lastServedAnimal:run.lastServedAnimal}:null; }, forceComplete(){ if(!run) return null; run.served=run.goal; run.coins=run.goal*3; finishDay(); return { served:run.served, goal:run.goal, finishing:run.finishing, resultVisible:!nodes.result.classList.contains("is-hidden"), profile:JSON.parse(readStorage(saveKey)||"{}") }; }, snapshot(){ return { selectedDay, run:run?{ day:run.day, mode:run.mode.id, modeLabel:t(run.mode.label), ruleSummary:ruleSummary(), rules:[...activeRules()], checkpoint:run.mode.checkpoint, served:run.served, goal:run.goal, finishing:run.finishing, tableTurn:run.tableTurn, lastServedAnimal:run.lastServedAnimal, queue:run.queue.map((customer)=>({id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order],leaving:customer.leaving})), firstOrder:[...(run.queue[0]?.order||[])], firstOrderBonus:run.queue[0]?orderBonus(run.queue[0].order):0 }:null, profile:JSON.parse(readStorage(saveKey)||"{}") }; } };
   nodes.locale.addEventListener("change",()=>{ const requested=nodes.locale.value; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; writeStorage(localeKey,requested); applyLocale(); });
-  nodes.mainStart.addEventListener("click",()=>{ showStage(selectedDay); updateCafeBattleScale(); });
+  nodes.mainStart.addEventListener("click",()=>{ stageTabs?.set("stages"); showStage(selectedDay); updateCafeBattleScale(); });
   nodes.stageBack.addEventListener("click",showMain);
   nodes.start.addEventListener("click",()=>startDay(selectedDay));
   nodes.back.addEventListener("click",openLeaveDecision);
@@ -205,7 +279,7 @@
   nodes.leaveDay.addEventListener("click",leaveCafeDay);
   nodes.leave.addEventListener("keydown",keepLeaveFocus,true);
   nodes.result.addEventListener("keydown",keepResultFocus);
-  nodes.menuBtn.addEventListener("click",()=>{ selectedDay=profile.day; showStage(profile.day); updateCafeBattleScale(); });
+  nodes.menuBtn.addEventListener("click",()=>{ stageTabs?.set("stages"); selectedDay=profile.day; showStage(profile.day); updateCafeBattleScale(); });
   nodes.next.addEventListener("click",()=>startDay(profile.day));
   installDayRailSelection();
   applyLocale();

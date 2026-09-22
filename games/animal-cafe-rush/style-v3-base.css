@@ -1,0 +1,881 @@
+:root { font-family: "Noto Sans TC", system-ui, sans-serif; color: #fffdf5; background: #123b39; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100svh; background: radial-gradient(circle at top, #2d746e, #102d2b 68%); }
+button, select { font: inherit; }
+.cafe-app { width: min(100%, 920px); min-height: 100svh; margin: auto; padding: max(12px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom)); }
+.topbar { display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(116px, 170px); gap: 10px; align-items: center; margin-bottom: 12px; }
+.home-link { width: 58px; min-height: 44px; display: grid; grid-template-columns: 16px 28px; place-content: center; gap: 4px; overflow: hidden; border-radius: 12px; background: #fff9e9; color: #235a55; text-decoration: none; font-size: 1.35rem; font-weight: 900; }
+.home-link img { width: 28px; height: 28px; object-fit: contain; }.brand span,.locale span,.profile-grid span,.play-hud span { display:block; color:#a8e4d7; font-size:12px; font-weight:800; }.brand h1 { margin:2px 0 0; font-size:clamp(20px,5vw,32px); line-height:1.05; }.locale { display:grid; gap:4px; }.locale select { min-height:38px; border:1px solid #69b5aa; border-radius:10px; color:#fff; background:#123b39; padding:0 8px; }
+.menu-panel { display:grid; grid-template-columns:minmax(220px,.82fr) minmax(0,1fr); gap:18px; padding:16px; border:2px solid #7bc9ba; border-radius:18px; background:#164b46; box-shadow:0 16px 40px #061d1b88; }.cover { width:100%; aspect-ratio:1; object-fit:cover; border-radius:13px; }.menu-copy { display:grid; align-content:start; gap:13px; }.eyebrow { width:max-content; padding:5px 9px; border-radius:99px; background:#f7cd63; color:#583d12; font-size:12px; font-weight:900; }.menu-copy h2,.menu-copy p { margin:0; }.menu-copy p { color:#d3eee8; line-height:1.5; }.profile-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }.profile-grid>div,.upgrade-panel { padding:10px; border:1px solid #5fa899; border-radius:12px; background:#0f3936; }.profile-grid b { font-size:20px; color:#ffe293; }
+.upgrade-panel { display:grid; gap:10px; }.upgrade-panel small { display:block; color:#b8dcd4; margin-top:3px; }.upgrade-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }.upgrade-card { display:grid; grid-template-columns:38px minmax(0,1fr); align-items:center; gap:7px; min-height:82px; border:1px solid #75b8ad; border-radius:10px; background:#194b46; color:#fff; padding:7px; text-align:left; }.upgrade-card:disabled { opacity:.55; }.upgrade-copy { min-width:0; }.upgrade-card b,.upgrade-copy span { display:block; }.upgrade-copy span { color:#fee08a; font-size:11px; margin-top:4px; }.upgrade-icon { width:38px; aspect-ratio:1; display:block; border-radius:10px; background-color:#0e342f; background-position:center; background-repeat:no-repeat; background-size:cover; box-shadow:inset 0 0 0 1px rgb(255 255 255 / 18%); }.upgrade-speed { background-image:url('../../assets/animal-cafe-rush-upgrade-speed.png'); }.upgrade-capacity { background-image:url('../../assets/animal-cafe-rush-upgrade-capacity.png'); }.upgrade-comfort { background-image:url('../../assets/animal-cafe-rush-upgrade-comfort.png'); }
+.primary-btn,.secondary-btn { min-height:48px; border:0; border-radius:12px; font-weight:900; cursor:pointer; }.primary-btn { color:#173532; background:linear-gradient(#ffe68d,#f6aa3c); box-shadow:0 5px 0 #9c5a22; }.secondary-btn { color:#17443e; background:#e6faf4; }.is-hidden { display:none !important; }
+.play-panel { position:relative; display:grid; grid-template-rows:44px 44px minmax(0,1fr) 132px 30px; gap:8px; min-height:calc(var(--wp-mobile-vh, 100svh) - 80px); max-height:calc(var(--wp-mobile-vh, 100svh) - 80px); overflow:hidden; padding:8px; border:2px solid #83d8c5; border-radius:16px; background:#0e332f; }.play-return { position:absolute; z-index:3; top:8px; left:8px; width:40px; height:40px; display:grid; place-items:center; border:0; border-radius:10px; color:#21443f; background:#fff3c3; font-size:24px; font-weight:900; }.play-hud { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding-left:48px; }.play-hud>div { padding:5px 8px; border-radius:9px; background:#164943; text-align:center; }.play-hud b { display:block; color:#ffe490; }.objective-row { min-height:44px; display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:6px; padding:6px 10px; border-radius:10px; background:#fff8de; color:#34524a; font-weight:900; text-align:center; }.objective-copy,.day-rule { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }.day-rule { max-width:116px; padding:3px 6px; border-radius:6px; background:#d8f2dc; color:#285b45; font-size:9px; }.objective-row .food-icon { width:28px; height:28px; }.cafe-scene { position:relative; min-height:0; overflow:hidden; border-radius:13px; border:2px solid #6bb7a8; background:#143f3b; }.cafe-bg { width:100%; height:100%; object-fit:cover; }.customer-row { position:absolute; inset:0; display:flex; align-items:end; justify-content:space-evenly; gap:6px; padding:8px; }.customer { width:30%; max-width:150px; border:2px solid transparent; border-radius:12px; background:#0d342fcc; color:#fff; padding:3px; cursor:pointer; touch-action:manipulation; }.customer.is-selected { border-color:#ffe17c; box-shadow:0 0 0 3px #e9a73d88; }.customer img { display:block; width:100%; height:clamp(82px,20vw,120px); object-fit:contain; pointer-events:none; }.patience { height:7px; overflow:hidden; border-radius:99px; background:#371e1e; }.patience i { display:block; height:100%; background:linear-gradient(90deg,#ff6f70,#f6d365,#64d99b); }.customer small { display:block; min-height:17px; overflow:hidden; text-align:center; white-space:nowrap; text-overflow:ellipsis; font-size:10px; }
+.prep-row { display:grid; grid-template-columns:1fr 130px; gap:8px; min-height:0; }.station-row { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }.station { min-width:0; border:2px solid #63b6a7; border-radius:10px; overflow:hidden; background:#174641; color:#fff; cursor:pointer; padding:0; }.station img { display:block; width:100%; height:76px; object-fit:cover; }.station span { display:block; padding:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:10px; font-weight:900; }.tray { display:grid; place-items:center; border:2px dashed #e8c264; border-radius:11px; background:#123b37; padding:6px; text-align:center; cursor:pointer; }.tray .food-icon { width:58px; height:58px; }.tray b { font-size:11px; }.food-icon { display:inline-block; flex:0 0 auto; border-radius:14%; background-position:center; background-repeat:no-repeat; background-size:cover; }.food-smoothie { background-image:url('../../assets/animal-cafe-rush-order-smoothie.png'); }.food-sandwich { background-image:url('../../assets/animal-cafe-rush-order-sandwich.png'); }.food-fruit { background-image:url('../../assets/animal-cafe-rush-order-fruit.png'); }.food-cookie { background-image:url('../../assets/animal-cafe-rush-order-cookie.png'); }.food-cake { background-image:url('../../assets/animal-cafe-rush-order-cake.png'); }.food-juice { background-image:url('../../assets/animal-cafe-rush-order-juice.png'); }.food-salad { background-image:url('../../assets/animal-cafe-rush-order-salad.png'); }.food-bread { background-image:url('../../assets/animal-cafe-rush-order-bread.png'); }.play-message { display:grid; place-items:center; min-height:0; color:#d8f5ee; font-size:12px; font-weight:800; text-align:center; }
+.result-panel { position:fixed; z-index:90; inset:0; display:grid; place-items:center; padding:16px; background:#061815e8; }.result-card { width:min(100%,420px); display:grid; gap:11px; padding:18px; border:2px solid #8ad7c7; border-radius:18px; background:#174943; text-align:center; }.result-card img { width:110px; height:110px; object-fit:contain; margin:auto; }.result-card h2,.result-card p { margin:0; }.result-card p { color:#d1eee7; }.result-card>div { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; }
+.cafe-leave-card > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { position:fixed; top:0; bottom:0; left:50%; width:min(100vw,820px); height:var(--wp-mobile-vh,100svh); min-height:var(--wp-mobile-vh,100svh); max-height:var(--wp-mobile-vh,100svh); padding:8px; overflow:hidden; transform:translateX(-50%); } body.is-cafe-playing .topbar,body.is-cafe-playing .menu-panel,body.is-cafe-playing .game-page-info { display:none !important; }
+@media (max-width:620px) { .menu-panel { grid-template-columns:1fr; grid-template-rows:auto auto; align-content:start; }.cover { max-height:220px; object-position:center 30%; }.play-panel { grid-template-rows:42px 42px minmax(0,1fr) 124px 28px; }.station img { height:66px; }.prep-row { grid-template-columns:1fr 104px; } }
+
+/* Main owns one complete live-viewport Canvas; its guide follows in document flow. */
+body:not(.is-cafe-stage):not(.is-cafe-playing) .cafe-app {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 920px);
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+body:not(.is-cafe-stage):not(.is-cafe-playing) .topbar {
+  flex: 0 0 auto;
+}
+
+body:not(.is-cafe-stage):not(.is-cafe-playing) .menu-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 621px) and (max-height: 560px) {
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .cafe-app {
+    padding: max(8px, env(safe-area-inset-top)) 10px max(8px, env(safe-area-inset-bottom));
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .topbar {
+    margin-bottom: 8px;
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .menu-panel {
+    align-items: stretch;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .cover {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .menu-copy {
+    min-height: 0;
+    gap: 9px;
+    overflow: hidden;
+  }
+}
+
+/* First-day guidance uses the same visual language as the playable controls. */
+.step-number { display:grid; place-items:center; flex:0 0 24px; width:24px; height:24px; border-radius:50%; background:#f4b845; color:#244640; }
+.customer-select { color:#d7f4ed; font-size:9px; }
+.station { transition:border-color .16s ease, box-shadow .16s ease, opacity .16s ease; }
+.station.is-awaiting { opacity:.52; }
+.station.is-needed { border-color:#ffe17c; box-shadow:0 0 0 3px #e9a73d88; }
+.tray { transition:border-color .16s ease, box-shadow .16s ease, background .16s ease; }
+.tray.is-ready { border-style:solid; border-color:#9bea82; background:#215d46; box-shadow:0 0 0 3px #8fe07466; }
+.station img { object-fit:contain; padding:5px; background:#0e342f; }
+.queue-customer { position:relative; overflow:visible; padding-top:12px; animation:queue-arrive .22s ease-out; }
+.queue-customer img { margin-top:8px; }
+.order-cloud { position:absolute; z-index:2; top:-22px; left:50%; display:grid; place-items:center; width:48px; height:38px; border:2px solid #f2c765; border-radius:18px; background:#fff8de; box-shadow:0 4px 0 #9d6b2d; pointer-events:none; transform:translateX(-50%); }
+.order-cloud::after { position:absolute; bottom:-7px; left:12px; width:11px; height:11px; border-right:2px solid #f2c765; border-bottom:2px solid #f2c765; background:#fff8de; content:""; transform:rotate(45deg); }
+.order-cloud .food-icon { position:relative; z-index:1; width:27px; height:27px; }
+.queue-customer small { color:#c5e9e0; font-size:9px; }
+@keyframes queue-arrive { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+/* Speed-service board: food tiles replace the old cropped station artwork. */
+.customer-row { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); align-content:end; gap:18px 5px; padding:28px 6px 8px; }
+.queue-customer { width:100%; max-width:none; min-width:0; padding:10px 2px 2px; animation:queue-arrive .22s ease-out; }
+.queue-customer img { height:clamp(54px, 10vw, 86px); margin-top:2px; }
+.queue-customer small { min-height:0; padding:2px; font-size:8px; }
+.queue-customer.is-leaving { pointer-events:none; animation:customer-leave .45s ease-in forwards; }
+.queue-customer.is-priority { border-color:#f7cd63; box-shadow:0 0 0 2px #f7cd6355; }
+.queue-customer.is-priority small { color:#ffe17c; font-weight:900; }
+.queue-customer.is-next-table { background:#12534fcc; box-shadow:0 0 0 3px #79ead488; }
+.order-cloud { top:-24px; display:flex; width:max-content; min-width:38px; max-width:none; height:34px; gap:3px; padding:3px 6px; white-space:nowrap; }
+.order-item { position:relative; z-index:1; display:grid; place-items:center; flex:0 0 auto; width:22px; height:22px; }
+.order-item.is-sequence { margin-top:2px; }
+.recipe-step { position:absolute; z-index:3; top:-8px; left:-7px; display:grid; place-items:center; width:14px; height:14px; border-radius:50%; color:#fff; background:#296b8f; box-shadow:0 1px 2px #1238; font-size:9px; line-height:1; }
+.order-cloud .food-icon { width:21px; height:21px; }
+.order-count { position:absolute; right:-5px; bottom:-5px; z-index:2; display:grid; place-items:center; min-width:16px; height:16px; padding:0 3px; border-radius:8px; background:#e9564f; color:#fff; box-shadow:0 1px 0 #802b28; font-size:10px; line-height:1; }
+.order-cloud::after { left:calc(50% - 5px); }
+.prep-row { grid-template-columns:minmax(0, 1fr) 104px; }
+.station-row { grid-template-columns:repeat(4, minmax(0, 1fr)); grid-template-rows:repeat(2, minmax(0, 1fr)); gap:6px; }
+.station.food-tile { display:grid; place-items:center; min-height:0; border-color:#80cbbd; background:#1c554d; }
+.station.food-tile .food-icon { width:min(44px, 72%); aspect-ratio:1; height:auto; }
+.station.food-tile.is-new { animation:tile-drop .22s ease-out; }
+.queue-customer:focus-visible,.station.food-tile:focus-visible { outline:4px solid #fff4a8; outline-offset:2px; }
+.station img { display:none; }
+.tray { overflow:hidden; }
+.tray > div { display:flex; flex-wrap:wrap; justify-content:center; gap:3px; }
+.tray .food-icon { width:34px; height:34px; }
+@keyframes customer-leave { to { opacity:0; transform:translateY(-28px) scale(.82); } }
+@keyframes tile-drop { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:translateY(0); } }
+@media (max-width:620px) { .play-panel { grid-template-rows:42px 42px minmax(0,1fr) 142px 28px; }.prep-row { grid-template-columns:minmax(0, 1fr) 96px; }.customer-row { gap:16px 4px; padding-top:26px; }.queue-customer img { height:58px; }.station-row { gap:5px; }.station.food-tile .food-icon { width:min(40px, 76%); } }
+
+html:has(body.is-cafe-playing),body.is-cafe-playing { position:fixed; inset:0; width:100vw; height:100vh; min-height:0; overflow:hidden; overscroll-behavior:none; }
+body.is-cafe-playing .cafe-app { position:fixed; inset:0; width:100vw; max-width:none; height:100vh; min-height:0; max-height:none; padding:0; overflow:hidden; transform:none; }
+body.is-cafe-playing #playPanel.play-panel { position:fixed; z-index:50; left:var(--cafe-battle-left,4px); top:var(--cafe-battle-top,4px); width:390px; max-width:none; height:788px; min-height:788px; max-height:none; margin:0; padding:8px; transform:scale(var(--cafe-battle-scale,1)); transform-origin:top left; grid-template-rows:44px 44px minmax(0,1fr) 142px 30px; }
+
+/* Final Expanded Canvas override. */
+html:has(body.is-cafe-playing),
+body.is-cafe-playing {
+  width: 100%;
+  height: var(--cafe-vh, 100dvh);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.is-cafe-playing .cafe-app {
+  width: var(--cafe-vw, 100vw);
+  height: var(--cafe-vh, 100dvh);
+}
+
+body.is-cafe-playing #playPanel.play-panel {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  top: 4px;
+  width: min(calc(var(--cafe-vw, 100vw) - 8px), 612px);
+  max-width: none;
+  height: min(calc(var(--cafe-vh, 100dvh) - 8px), 788px);
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 8px;
+  transform: translateX(-50%);
+  grid-template-rows: 44px 44px minmax(0, 1fr) 142px 30px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.is-cafe-playing .wp-tutorial-backdrop,
+body.is-cafe-playing .wp-tutorial-button,
+body.is-cafe-playing .sound-toggle {
+  display: none !important;
+}
+
+@media (max-width: 560px), (max-height: 560px) {
+  body.is-cafe-playing #playPanel.play-panel {
+    width: calc(var(--cafe-vw, 100vw) - 8px);
+  }
+
+  body.is-cafe-playing #playPanel.play-panel {
+    height: calc(var(--cafe-vh, 100dvh) - 8px);
+  }
+}
+
+/* Kids screens share one fixed 390x788 logical Canvas and never reserve ad space. */
+html:has(body.is-cafe-stage),
+body.is-cafe-stage,
+html:has(body.is-cafe-playing),
+body.is-cafe-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.is-cafe-stage .cafe-app,
+body.is-cafe-playing .cafe-app {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transform: none;
+}
+
+body.is-cafe-stage #stagePanel.stage-panel,
+body.is-cafe-playing #playPanel.play-panel {
+  position: fixed;
+  inset: auto;
+  left: var(--cafe-canvas-left, 4px);
+  top: var(--cafe-canvas-top, 4px);
+  width: var(--cafe-logical-width, 390px);
+  min-width: var(--cafe-logical-width, 390px);
+  max-width: var(--cafe-logical-width, 390px);
+  height: var(--cafe-logical-height, 788px);
+  min-height: var(--cafe-logical-height, 788px);
+  max-height: var(--cafe-logical-height, 788px);
+  margin: 0;
+  transform: scale(var(--cafe-canvas-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+body.is-cafe-stage #stagePanel.stage-panel {
+  grid-template-columns: 1fr;
+  grid-template-rows: 52px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+}
+
+body.is-cafe-stage .stage-workspace {
+  grid-template-columns: 1fr;
+  grid-template-rows: 54px 190px minmax(0, 1fr) 52px;
+  gap: 8px;
+}
+
+body.is-cafe-stage :is(.stage-profile, .day-rail, #stagePanel .upgrade-panel, #stagePanel #startBtn) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-stage .day-card {
+  flex: 0 0 264px;
+  width: 264px;
+  min-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+}
+
+body.is-cafe-playing #playPanel.play-panel {
+  z-index: 50;
+  padding: 8px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 44px 44px minmax(0, 1fr) 142px 30px;
+  gap: 8px;
+}
+
+body.is-cafe-playing :is(.play-hud, .objective-row, .cafe-scene, .prep-row, .play-message) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-playing :is(#resultPanel, #leavePanel).result-panel {
+  position: absolute;
+  inset: -2px auto auto -2px;
+  z-index: 90;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  padding: 12px;
+  overflow: hidden;
+}
+
+body.is-cafe-playing :is(#resultPanel, #leavePanel) .result-card {
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+}
+
+body.is-cafe-stage .sound-toggle,
+body.is-cafe-playing .sound-toggle {
+  display: none !important;
+}
+
+/* Standard Main -> Stage -> Battle ownership. */
+.standard-main-start {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  font-size: 16px;
+}
+
+html:has(body.is-cafe-stage),
+body.is-cafe-stage {
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.is-cafe-stage .topbar,
+body.is-cafe-stage .game-page-info,
+body.is-cafe-stage .wp-tutorial-button,
+body.is-cafe-stage .wp-tutorial-backdrop,
+body.is-cafe-stage .sound-toggle {
+  display: none !important;
+}
+
+body.is-cafe-stage .cafe-app {
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  padding: 4px;
+  overflow: hidden;
+}
+
+#stagePanel.stage-panel {
+  position: fixed;
+  inset: 4px;
+  z-index: 40;
+  display: grid;
+  grid-template-rows: 52px minmax(0, 1fr);
+  gap: 8px;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 8px 8px 0;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 8px;
+  background-color: #17243a;
+  background-image: linear-gradient(rgb(5 24 28 / 78%), rgb(12 42 42 / 92%)), url("../../assets/animal-cafe-rush-cover.webp");
+  background-position: center;
+  background-size: cover;
+}
+
+.stage-head {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 8px;
+  color: #f8fafc;
+  text-align: center;
+}
+
+.stage-head::after { content: ""; }
+
+.stage-head button {
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #1676c9;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.stage-head strong {
+  overflow: hidden;
+  font-size: 18px;
+  line-height: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage-workspace {
+  display: grid;
+  grid-template-rows: 54px 190px minmax(0, 1fr) 52px;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stage-profile {
+  display: grid;
+  grid-template-columns: repeat(3, 104px);
+  justify-content: center;
+  gap: 8px;
+}
+
+.stage-profile > div {
+  display: grid;
+  align-content: center;
+  width: 104px;
+  height: 54px;
+  padding: 5px 8px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgb(255 255 255 / 92%);
+  color: #173f3b;
+}
+
+.stage-profile span,
+.stage-profile b {
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.day-rail {
+  display: flex;
+  width: 100%;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+  gap: 12px;
+  padding: 0 calc((100% - 264px) / 2);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+
+.day-rail::-webkit-scrollbar { display: none; }
+
+.day-card {
+  display: grid;
+  grid-template-rows: 22px 48px 28px 34px;
+  align-content: center;
+  flex: 0 0 264px;
+  width: 264px;
+  min-width: 264px;
+  max-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+  padding: 16px;
+  overflow: hidden;
+  border: 2px solid rgb(255 255 255 / 22%);
+  border-radius: 8px;
+  background: rgb(255 249 233 / 94%);
+  color: #244640;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  text-align: center;
+}
+
+.day-card strong { display:grid; place-items:center; overflow:hidden; color:#9c5a22; font-size:22px; line-height:24px; }
+.day-card span,.day-card small,.day-card em { overflow: hidden; font-weight: 900; text-overflow: ellipsis; }
+.day-card em { align-self:center; padding:4px 8px; border-radius:6px; background:#d8f2dc; color:#285b45; font-size:12px; font-style:normal; white-space:nowrap; }
+.day-card.is-selected { transform: none; }
+.day-card.is-centered {
+  border-color: #ffe070;
+  box-shadow:
+    0 0 0 3px rgb(255 224 112 / 92%),
+    0 0 18px 7px rgb(76 231 195 / 70%),
+    0 8px 20px rgb(16 67 58 / 38%);
+}
+.day-card.is-locked.is-centered { filter: none; opacity: .76; }
+.day-card.is-checkpoint { border-color:#f7cd63; background:linear-gradient(180deg,#fff4c9,#eefcf7); box-shadow:inset 0 0 0 2px rgb(247 205 99 / 32%); }
+.day-card.is-locked { opacity: .58; }
+
+#stagePanel .upgrade-panel {
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+  background: rgb(15 57 54 / 92%);
+}
+
+#stagePanel .upgrade-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-height: 0;
+  overflow-y: auto;
+}
+
+#stagePanel .upgrade-card {
+  height: 82px;
+  min-height: 82px;
+  max-height: 82px;
+  overflow: hidden;
+}
+
+#stagePanel #startBtn {
+  width: min(100%, 360px);
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  justify-self: center;
+}
+
+@media (max-height: 560px) {
+  #stagePanel.stage-panel {
+    grid-template-rows: 48px minmax(0, 1fr);
+    gap: 6px;
+    padding-top: 4px;
+  }
+
+  .stage-workspace {
+    grid-template-columns: 110px minmax(264px, 1fr) 220px;
+    grid-template-rows: minmax(0, 1fr) 48px;
+    gap: 6px;
+  }
+
+  .stage-profile {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 54px);
+    align-content: center;
+    gap: 6px;
+  }
+
+  .stage-profile > div { width: 104px; }
+
+  .day-rail {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    height: 176px;
+    min-height: 176px;
+    max-height: 176px;
+  }
+
+  .day-card {
+    height: 176px;
+    min-height: 176px;
+    max-height: 176px;
+  }
+
+  #stagePanel .upgrade-panel {
+    grid-column: 3;
+    grid-row: 1;
+    padding: 6px;
+  }
+
+  #stagePanel .upgrade-panel small { display: none; }
+  #stagePanel .upgrade-cards { grid-template-columns: 1fr; }
+  #stagePanel .upgrade-card { height: 62px; min-height: 62px; max-height: 62px; }
+
+  #stagePanel #startBtn {
+    grid-column: 3;
+    grid-row: 2;
+    width: 220px;
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
+  }
+}
+
+/* Final Kids Canvas ownership override. */
+body.is-cafe-stage #stagePanel.stage-panel,
+body.is-cafe-playing #playPanel.play-panel {
+  position: fixed;
+  inset: auto;
+  left: var(--cafe-canvas-left, 4px);
+  top: var(--cafe-canvas-top, 4px);
+  width: var(--cafe-logical-width, 390px);
+  min-width: var(--cafe-logical-width, 390px);
+  max-width: var(--cafe-logical-width, 390px);
+  height: var(--cafe-logical-height, 788px);
+  min-height: var(--cafe-logical-height, 788px);
+  max-height: var(--cafe-logical-height, 788px);
+  margin: 0;
+  transform: scale(var(--cafe-canvas-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+body.is-cafe-stage #stagePanel.stage-panel {
+  grid-template-columns: 1fr;
+  grid-template-rows: 52px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+}
+
+body.is-cafe-stage .stage-workspace {
+  grid-template-columns: 1fr;
+  grid-template-rows: 54px 190px minmax(0, 1fr) 52px;
+  gap: 8px;
+}
+
+body.is-cafe-stage :is(.stage-profile, .day-rail, #stagePanel .upgrade-panel, #stagePanel #startBtn) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-stage .stage-profile {
+  grid-template-columns: repeat(3, 104px);
+}
+
+body.is-cafe-stage .day-card {
+  flex: 0 0 264px;
+  width: 264px;
+  min-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+}
+
+body.is-cafe-stage #stagePanel .upgrade-panel {
+  grid-template-columns: minmax(0, 1fr) clamp(110px, 28%, 220px);
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: 8px;
+}
+
+body.is-cafe-stage #stagePanel .upgrade-panel > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+body.is-cafe-stage #stagePanel .upgrade-panel::after {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 10px;
+  background: url('../../assets/animal-cafe-rush-lion-guide.webp') center bottom / contain no-repeat;
+  content: "";
+}
+
+body.is-cafe-stage #stagePanel .upgrade-cards {
+  grid-column: 1;
+  grid-row: 2;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: repeat(3, 82px) !important;
+  align-content: center;
+}
+
+body.is-cafe-stage #stagePanel .upgrade-card {
+  width: min(100%, 360px);
+  height: 82px;
+  min-height: 82px;
+  max-height: 82px;
+  justify-self: center;
+}
+
+body.is-cafe-stage #stagePanel #startBtn {
+  width: min(100%, 360px);
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+}
+
+body.is-cafe-playing #playPanel.play-panel {
+  z-index: 50;
+  padding: 8px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 44px 44px minmax(0, 1fr) 142px 30px;
+  gap: 8px;
+}
+
+body.is-cafe-playing :is(.play-hud, .objective-row, .cafe-scene, .prep-row, .play-message) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-playing :is(#resultPanel, #leavePanel).result-panel {
+  position: absolute;
+  inset: -2px auto auto -2px;
+  z-index: 90;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  padding: 12px;
+  overflow: hidden;
+}
+
+body.is-cafe-playing :is(#resultPanel, #leavePanel) .result-card {
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel.stage-panel {
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding: 4px 8px 8px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .stage-workspace {
+    grid-template-columns: 250px minmax(0, 1fr) !important;
+    grid-template-rows: 48px 190px 48px !important;
+    gap: 5px !important;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .stage-profile {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    grid-template-columns: repeat(3, 78px) !important;
+    grid-template-rows: 48px !important;
+    justify-content: start;
+    gap: 5px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .stage-profile > div {
+    width: 78px !important;
+    height: 48px !important;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .day-rail {
+    grid-column: 1 / 3 !important;
+    grid-row: 2 !important;
+    height: 190px !important;
+    min-height: 190px !important;
+    max-height: 190px !important;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .upgrade-panel {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    padding: 1px 4px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .upgrade-panel > div:first-child { display: none !important; }
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .upgrade-panel::after { display: none; }
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .upgrade-cards {
+    grid-column: 1;
+    grid-row: 1;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: 46px !important;
+    gap: 4px;
+    overflow: hidden;
+  }
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .upgrade-card {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 4px;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    padding: 4px;
+  }
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .upgrade-icon { width: 30px; }
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] .upgrade-copy span { margin-top: 1px; font-size: 10px; }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-stage #stagePanel[data-wp-logical-stage-canvas] #startBtn {
+    grid-column: 1 / 3 !important;
+    grid-row: 3 !important;
+    width: min(100%, 360px);
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
+  }
+}
+
+/* Interface V4: semantic Battle header and three persistent Result tracks. */
+.play-head {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.play-return {
+  position: static;
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+}
+
+.play-hud { padding-left: 0; }
+
+body.is-cafe-playing #playPanel.play-panel {
+  grid-template-rows: 48px 44px minmax(0, 1fr) 142px 30px;
+}
+
+#resultPanel .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+#resultPanel .result-actions > button {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  padding: 0 10px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.2;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+#resultPanel .result-actions > button:disabled {
+  cursor: not-allowed;
+  opacity: .48;
+  box-shadow: none;
+  filter: saturate(.45);
+}
+
+body.is-cafe-playing :is(.wp-generated-battle-header, .wp-generated-main-header, .wp-shell-settings) {
+  display: none !important;
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #playPanel.play-panel {
+    grid-template-columns: 430px minmax(0, 1fr);
+    grid-template-rows: 48px 44px minmax(0, 1fr) 30px;
+    gap: 6px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-head {
+    position: absolute;
+    inset: 8px 8px auto;
+    z-index: 4;
+    grid-template-columns: 48px minmax(0, 1fr) 306px;
+    height: 48px;
+    pointer-events: none;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-head > * {
+    pointer-events: auto;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-hud {
+    grid-column: 3;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .cafe-scene {
+    grid-column: 1;
+    grid-row: 1 / 5;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .objective-row {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .prep-row {
+    grid-column: 2;
+    grid-row: 3;
+    grid-template-columns: minmax(0, 1fr) 90px;
+    gap: 6px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .station-row {
+    gap: 4px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .station.food-tile .food-icon {
+    width: min(34px, 72%);
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .tray .food-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-message {
+    grid-column: 2;
+    grid-row: 4;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-card {
+    grid-template-columns: 132px minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) 48px;
+    align-content: center;
+    width: min(100%, 680px);
+    height: 328px;
+    min-height: 328px;
+    max-height: 328px;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-card > img {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    width: 118px;
+    height: 118px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-card > :is(h2, p) {
+    grid-column: 2;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-actions {
+    grid-column: 1 / 3;
+    grid-row: 4;
+  }
+}
