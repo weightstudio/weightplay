@@ -7,3 +7,245 @@ body[data-wp-game-id="animal-patchwork-paws"] .screen.battle-screen {
 body[data-wp-game-id="animal-patchwork-paws"] .screen.battle-screen .weave-card {
   background: linear-gradient(145deg, rgba(245, 236, 217, .9), rgba(231, 242, 231, .86));
 }
+
+/* Interface 7 shared-screen cleanup. Keep gameplay art/content, but release
+   legacy private Main / Stage / Battle chrome back to the shared contract. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #mainScreen > .eyebrow,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #mainScreen > h1,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #mainScreen .cover-badge,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #mainScreen #mapBtn {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #mainScreen .main-actions {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #mainScreen #startBtn {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 16px !important;
+  border-radius: 14px !important;
+  font: 800 16px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #mainScreen #startBtn:focus-visible {
+  outline: 2px solid var(--wp-ui-accent, #63e6be) !important;
+  outline-offset: 2px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen {
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  --wp-stage-scrim: linear-gradient(rgb(9 18 32 / 78%), rgb(23 36 58 / 86%));
+  background-color: #17243a !important;
+  background-image: var(--wp-stage-scrim), var(--wp-stage-art) !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-header,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen .battle-header {
+  min-height: 48px !important;
+  height: 48px !important;
+  max-height: 48px !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-header h2,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen > .eyebrow,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen .battle-head-title > .eyebrow {
+  display: none !important;
+}
+
+/* Stage row 2 is the bounded workspace. Cards remain horizontally draggable,
+   but their vertical centre is fixed to workspace.top + 38% * workspace.height
+   instead of the legacy vertical centre. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-list {
+  position: relative !important;
+  z-index: 31 !important;
+  align-self: stretch !important;
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding-block: 0 !important;
+  padding-inline: max(24px, calc((100% - 264px) / 2)) !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  scrollbar-width: none;
+  touch-action: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-list::-webkit-scrollbar {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-card {
+  box-sizing: border-box !important;
+  position: relative !important;
+  top: max(8px, calc(38% - 95px)) !important;
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  scroll-snap-align: center !important;
+  transform: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-tabs {
+  position: relative !important;
+  z-index: 31 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  place-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  padding: 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: var(--wp-ui-shell, #17243a) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-tabs button {
+  box-sizing: border-box !important;
+  grid-column: 2 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding: 0 10px !important;
+  border-radius: 14px !important;
+  font: 700 14px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-tabs button:focus-visible {
+  outline: 2px solid var(--wp-ui-accent, #63e6be) !important;
+  outline-offset: 2px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen {
+  padding-top: 48px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen .battle-header {
+  position: absolute !important;
+  inset: 0 0 auto 0 !important;
+  grid-template-columns: 48px minmax(0, 1fr) auto !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen .battle-head-title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen .battle-head-title h2 {
+  margin: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font: 700 14px/1.2 system-ui, sans-serif !important;
+}
+
+/* Battle-owned leave confirmation injected by interface-v7.js. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-overlay {
+  position: absolute !important;
+  z-index: 140 !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 12px !important;
+  background: rgba(7, 20, 38, .86) !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-overlay[hidden] {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-card {
+  box-sizing: border-box !important;
+  width: min(460px, 100%) !important;
+  display: grid !important;
+  gap: 12px !important;
+  padding: 16px !important;
+  border: 2px solid var(--wp-ui-border, rgba(255,255,255,.16)) !important;
+  border-radius: 14px !important;
+  background: var(--wp-ui-surface, rgba(15,29,49,.98)) !important;
+  color: var(--wp-ui-text, #f8fafc) !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-card h2,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-card p {
+  margin: 0 !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-actions {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+  gap: 8px !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-actions button {
+  box-sizing: border-box !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 12px !important;
+  border-radius: 14px !important;
+  font: 700 14px/1.2 system-ui, sans-serif !important;
+  white-space: nowrap !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-actions button:first-child {
+  height: 52px !important;
+  min-height: 52px !important;
+  padding-inline: 16px !important;
+  background: var(--wp-ui-primary, #f5c84c) !important;
+  color: var(--wp-ui-primary-text, #1f2937) !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] .wp-patchwork-leave-actions button:focus-visible {
+  outline: 2px solid var(--wp-ui-accent, #63e6be) !important;
+  outline-offset: 2px !important;
+}
+
+@media (min-width: 700px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #stageScreen .stage-header,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-patchwork-paws"] #battleScreen .battle-header {
+    padding-inline: 16px !important;
+  }
+}

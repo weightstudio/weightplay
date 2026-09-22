@@ -59,7 +59,7 @@ function hud(dt=0){if(!sim)return;$('#hudStage').textContent=`${selected} / 30`;
 function healthLabels(dt){
  const priority=e=>e.kind==='hero'?0:e.kind==='boss'?1:e.kind==='enemy'?2:3;
  const all=[{...sim.hero,uid:'hero',kind:'hero'},...sim.ents].sort((a,b)=>priority(a)-priority(b)),active=new Set(),width=$('#worldLabels').clientWidth,height=$('#worldLabels').clientHeight;
- for(const e of all){if(e.hp<=0&&(e.kind!=='tree'||!e.spawn))continue;const lift=e.hp<=0?.2:e.kind==='tree'?3.05:e.kind==='boss'?2.8:2.05,p=world.project(e.x,e.z,lift);if(p.x<-.03||p.x>1.03||p.y<0||p.y>.98)continue;active.add(e.uid);
+ for(const e of all){if(e.hp<=0&&(e.kind!=='tree'||!e.spawn))continue;const lift=e.hp<=0?.2:e.kind==='tree'?3.05:e.kind==='boss'?2.8:e.kind==='hero'?2.55:2.05,p=world.project(e.x,e.z,lift);if(p.x<-.03||p.x>1.03||p.y<0||p.y>.98)continue;active.add(e.uid);
   let el=unitLabels.get(e.uid);if(!el){el=document.createElement('div');el.className='unit-label unit-'+e.kind;el.dataset.unit=e.uid;el.innerHTML='<div class="reward-tag"></div><div class="unit-health" role="progressbar"><i></i><b></b></div>';unitLabels.set(e.uid,el);$('#worldLabels').append(el);}
   const position=placeLabel({x:p.x*width,y:p.y*height});
   el.hidden=false;el.style.transform=`translate3d(${position.x}px,${position.y}px,0) translate(-50%,-100%)`;
@@ -94,4 +94,4 @@ document.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));document.
 addEventListener('storage',e=>{if(e.key===KEY){store(save);sim?.syncGrowth(save.growth);growthSummary();if(screen==='stage'){stages();equipment();}else if(screen==='battle')pause();}});
 addEventListener('pagehide',()=>{dispose();audio?.close();audio=null;});addEventListener('pageshow',e=>{if(e.persisted)show('main');});
 localize();show('main');
-if(['localhost','127.0.0.1','::1'].includes(location.hostname))Object.defineProperty(window,'WildwoodDiagnostics',{value:Object.freeze({snapshot:()=>({screen,modal,selected,unlocked:save.highestUnlocked,raf:!!raf,world:world?.metrics()||null,state:sim?.snapshot()||null,heroPoint:sim&&world?world.project(sim.hero.x,sim.hero.z,2.05):null,points:sim&&world?sim.alive().map(e=>({uid:e.uid,...world.project(e.x,e.z)})):[]}),model:()=>sim?structuredClone(sim):null})});
+if(['localhost','127.0.0.1','::1'].includes(location.hostname))Object.defineProperty(window,'WildwoodDiagnostics',{value:Object.freeze({snapshot:()=>({screen,modal,selected,unlocked:save.highestUnlocked,raf:!!raf,world:world?.metrics()||null,state:sim?.snapshot()||null,heroPoint:sim&&world?world.project(sim.hero.x,sim.hero.z,2.55):null,points:sim&&world?sim.alive().map(e=>({uid:e.uid,...world.project(e.x,e.z)})):[]}),model:()=>sim?structuredClone(sim):null})});
