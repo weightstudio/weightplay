@@ -4,7 +4,7 @@ import {frameSize,boundView,followView} from './camera.mjs';
 import {makeActor,makeProp,makeCastle} from './block-art.mjs';
 const PALETTE={A:0xd85078,B:0x39b8a5,C:0x8572d4,'#':0xa09c98,'1':0xd6a443,'2':0x57b7d4,'^':0x677082};
 export class CrownScene {
-  constructor(host,{label,onPick,onError,onContact=()=>{},reduced=()=>false,isBusy=()=>false,isPaused=()=>false,cameraText=key=>key}) {
+  constructor(host,{navigationHost=host,label,onPick,onError,onContact=()=>{},reduced=()=>false,isBusy=()=>false,isPaused=()=>false,cameraText=key=>key}) {
     this.isPaused=isPaused;this.isBusy=isBusy;this.cameraText=cameraText;this.following=true;this.overview=false;this.view=null;this.cameraFrame=0;this.host=host;this.label=label;this.onPick=onPick;this.reduced=reduced;this.disposed=false;this.frame=0;this.materials=new Map();this.hitTargets=[];this.ray=new THREE.Raycaster();this.abort=new AbortController();
     this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'});
     this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.setClearColor(0x243c48);this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.12;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -19,7 +19,7 @@ export class CrownScene {
     this.strikeFX=new THREE.Group();this.scene.add(this.strikeFX);this.strikeFX.visible=false;
     this.slashParts=[[-.25,.34,-.5],[0,.05,-.75],[.24,-.23,-1.0]].map(([x,y,r])=>{const part=this.box(this.strikeFX,x,y,1.8,.075,.55,.035,0xffefb0,true);part.rotation.z=r;return part;});
     this.sparks=Array.from({length:8},(_,i)=>this.box(this.strikeFX,0,0,1.9,.075,.075,.055,i%2?0xffce62:0xffffff,true));
-    this.mapNav=document.createElement('div');this.mapNav.className='map-nav';host.append(this.mapNav);
+    this.mapNav=document.createElement('div');this.mapNav.className='map-nav';navigationHost.append(this.mapNav);
     this.mapButtons={};
     for(const [key,glyph] of [['up','↑'],['down','↓'],['left','←'],['right','→'],['follow','◎'],['overview','▦']]){
       const button=document.createElement('button');button.type='button';button.id='map'+key[0].toUpperCase()+key.slice(1);button.dataset.mapDirection=key;button.textContent=glyph;this.mapButtons[key]=button;this.mapNav.append(button);
