@@ -1,0 +1,242 @@
+/* Animal Habitat Blueprint — Interface 7 shared-screen cleanup. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] {
+  --habitat-play-gap: 8px;
+}
+
+/* Main: one shared composition and one catalog-standard primary route. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #mainScreen {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #mainScreen > :is(.eyebrow, h1, .guide-art, .best),
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #mainScreen .cover-badge,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #mapBtn {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #mainScreen .main-actions {
+  display: block !important;
+  margin-top: 12px !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #startBtn {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding-inline: 16px !important;
+  border-radius: 14px !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] :is(.game-page-info, .game-info-section) {
+  border-radius: var(--wp-ui-radius, 16px) !important;
+}
+
+/* Stage: fixed 48 / flexible / 56 tracks, with permanent scene-owned Back. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageScreen {
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: var(--habitat-play-gap) !important;
+  box-sizing: border-box !important;
+  padding: 12px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageScreen > :is(.eyebrow, h2) {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] :is(.habitat-stage-header, .habitat-battle-header) {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] :is(#stageBackBtn, #battleBackBtn) {
+  grid-column: 1 !important;
+  box-sizing: border-box !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .habitat-stage-workspace {
+  position: relative !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageList.stage-rail {
+  position: absolute !important;
+  inset-inline: 0 !important;
+  top: clamp(103px, 38%, calc(100% - 103px)) !important;
+  transform: translateY(-50%) !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  margin: 0 !important;
+  padding-inline: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  touch-action: none !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageList.stage-rail > .stage-card {
+  box-sizing: border-box !important;
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  padding: 16px !important;
+  scroll-snap-align: center !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageList.stage-rail > .stage-card:is([aria-current="true"], .centered, .is-centered) {
+  border-color: #aa6634 !important;
+  box-shadow: 0 0 0 3px rgb(240 197 101 / 78%), 0 16px 30px rgb(41 74 85 / 24%) !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageList.stage-rail > .stage-card[aria-disabled="true"] {
+  opacity: .58 !important;
+  filter: saturate(.7) !important;
+  cursor: not-allowed !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageScreen .stage-tabs {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  margin: 0 !important;
+  padding: 6px !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #stageScreen .stage-tab {
+  grid-column: 2 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding-inline: 10px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Battle: fixed title-free top track; current plan HUD stays in play content. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #battleScreen {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 12px !important;
+  gap: var(--habitat-play-gap) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #battleScreen .battle-head > div > .eyebrow {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] :is(.stage-ad-reserve, .battle-ad-reserve) {
+  height: var(--wp-ad-reserve-height, 0px) !important;
+  min-height: var(--wp-ad-reserve-height, 0px) !important;
+  max-height: var(--wp-ad-reserve-height, 0px) !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+/* Result is a Battle substate with fixed Stages / Next / Replay ownership. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #resultScreen .result-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] #resultScreen .result-actions > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding-inline: 10px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Battle-owned leave confirmation. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .habitat-leave-modal {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 30 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 20px !important;
+  background: rgb(23 59 67 / 72%) !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .habitat-leave-modal[hidden] {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .habitat-leave-dialog {
+  width: min(420px, 100%) !important;
+  padding: 22px !important;
+  border: 1px solid #d5e3d5 !important;
+  border-radius: var(--wp-ui-radius, 16px) !important;
+  background: #fffdf5 !important;
+  box-shadow: 0 18px 46px rgb(23 59 67 / 30%) !important;
+  color: #203f4a !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .habitat-leave-dialog :is(h2, p) {
+  margin-top: 0 !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .habitat-leave-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .habitat-leave-actions > button {
+  min-height: 44px !important;
+  white-space: nowrap !important;
+}
+
+@media (min-width: 700px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] :is(#stageScreen, #battleScreen) {
+    padding: 16px !important;
+  }
+}

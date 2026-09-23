@@ -61,4 +61,16 @@
     ...Object.fromEntries(Object.entries(localized).map(([key, copy]) => [key, complete(copy, key)])),
   };
   window.GUST_GARDEN_LOCALE_NAMES = localeNames;
+
+  const localizedRoute = /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/animal-gust-garden\//i.test(location.pathname);
+  if (localizedRoute && document.readyState === "loading") {
+    const version = "20260923-gust-garden-interface7-localized1";
+    document.write(`<link rel="stylesheet" href="../../src/stage-selector-standard.css?v=${version}" data-wp-stage-standard>`);
+    document.write(`<link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=${version}" data-wp-battle-standard>`);
+    document.write(`<script src="../../src/stage-selector-standard.js?v=${version}" data-wp-stage-standard><\/script>`);
+    document.write(`<script src="../../src/battle-canvas-standard.js?v=${version}" data-wp-battle-standard><\/script>`);
+    document.write(`<script src="../../src/stage-virtualization-standard.js?v=${version}"><\/script>`);
+    document.write(`<script src="interface-7-stage-data.js?v=${version}"><\/script>`);
+    document.write(`<script defer src="interface-7-compat.js?v=${version}"><\/script>`);
+  }
 }());
