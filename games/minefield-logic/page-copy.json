@@ -1,0 +1,457 @@
+{
+  "en": {
+    "tags": [
+      "Logic puzzle",
+      "Minesweeper",
+      "Single player"
+    ],
+    "tipsTitle": "Practical tips",
+    "designTitle": "Design note",
+    "faqTitle": "Questions about this field",
+    "relatedTitle": "More WeightPlay puzzles",
+    "compareTitle": "Similar gameplay reference",
+    "source": "Official game information",
+    "browser": "Web browser",
+    "tips": "Start by reading the boundary of an open area, including diagonal neighbours. If a 1 touches just one covered cell, that cell is a mine. Compare overlapping numbers before using a flag. A matching flag count makes a number clickable, but does not prove your flags correct. Use Undo to understand a mistake rather than repeatedly guessing the same cells.",
+    "design": "Minefield Logic separates a readable board from its navigation. Large fields scroll inside the play area while the actions remain available. Hints propose a proven action rather than playing it automatically, so you can inspect the highlighted clues. Unassisted best times reward a clean solution; assisted rounds remain useful for exploring deductions without claiming a competitive record.",
+    "comparison": "Microsoft Minesweeper also uses number clues and mine marking. This WeightPlay game offers three random-field sizes, visible-evidence hints, Undo and browser-local unassisted best times. It does not provide a daily-challenge or adventure campaign. These are separate games; this comparison does not imply affiliation.",
+    "faq": [
+      [
+        "Must I flag every mine?",
+        "No. You win by opening every safe cell. Flags are optional notes, and the remaining-mine counter is only the total minus the flags you placed. It does not validate those flags."
+      ],
+      [
+        "Can the first move lose?",
+        "The first revealed cell and all of its existing neighbours are protected. This creates a safe opening, but it does not guarantee that every later decision is solvable without guessing."
+      ],
+      [
+        "Why does Hint sometimes find nothing?",
+        "The helper checks visible numbers and the total with direct and subset deductions. No result means that this helper found no proof, not that guessing is certainly required or that the puzzle is impossible."
+      ],
+      [
+        "Does Undo qualify for a best time?",
+        "No. Using Hint or Undo marks the whole round assisted, even after undoing back to the opening. You can still finish normally, but only unassisted wins update the local best time."
+      ]
+    ]
+  },
+  "zh-Hant": {
+    "tags": [
+      "邏輯益智",
+      "掃雷",
+      "單人遊戲"
+    ],
+    "tipsTitle": "實用技巧",
+    "designTitle": "設計說明",
+    "faqTitle": "常見問題",
+    "relatedTitle": "其他 WeightPlay 益智遊戲",
+    "compareTitle": "相似玩法參考",
+    "source": "官方遊戲介紹",
+    "browser": "網頁瀏覽器",
+    "tips": "先讀已翻開區域邊緣的數字，別漏算斜角。如果數字 1 只接觸一個未翻開格，那一格就是地雷。比較相鄰數字後再插旗；旗數剛好符合數字，只代表可以連開，不代表旗標一定正確。復原後重新看線索，比反覆猜同一格更有幫助。",
+    "design": "地雷邏輯把棋盤與導覽分開：大盤面在遊玩區內捲動，操作按鈕保留在外側。提示只提出已證明的步驟，不替你操作，讓你能先觀察高亮線索。無輔助最佳時間獎勵完整的獨立解法；使用輔助的回合仍可探索推理，但不混入最佳時間紀錄。",
+    "comparison": "Microsoft Minesweeper 也使用數字線索與地雷標記。這款 WeightPlay 遊戲提供三種隨機盤面、依可見線索推理的提示、復原，以及瀏覽器本機的無輔助最佳時間；目前沒有每日挑戰或冒險戰役。兩者是不同作品，此比較不代表合作或授權關係。",
+    "faq": [
+      [
+        "一定要把所有地雷插旗嗎？",
+        "不用。翻開全部安全格就會獲勝，旗標只是可選的筆記。未標記雷數只用總雷數扣掉你插的旗數，不會判斷旗標是否正確。"
+      ],
+      [
+        "第一步可能踩雷嗎？",
+        "第一次翻開的格子與它周圍實際存在的相鄰格都受到保護，因此能安全開局。不過，這不代表後續每一步都保證可以完全不用猜。"
+      ],
+      [
+        "為什麼提示有時找不到步驟？",
+        "提示會利用可見數字及總雷數，檢查直接推理與集合相減。找不到結果只代表這個提示系統沒有證明下一步，不代表一定要猜，也不代表謎題無解。"
+      ],
+      [
+        "使用復原還能刷新最佳時間嗎？",
+        "不能。使用提示或復原後，整個回合都會標為輔助回合，即使復原到開局也一樣。仍可正常完成遊戲，但只有無輔助勝利會更新本機最佳時間。"
+      ]
+    ]
+  },
+  "zh-Hans": {
+    "tags": [
+      "逻辑益智",
+      "扫雷",
+      "单人游戏"
+    ],
+    "tipsTitle": "实用技巧",
+    "designTitle": "设计说明",
+    "faqTitle": "常见问题",
+    "relatedTitle": "其他 WeightPlay 益智游戏",
+    "compareTitle": "相似玩法参考",
+    "source": "官方游戏介绍",
+    "browser": "网页浏览器",
+    "tips": "先读已翻开区域边缘的数字，别漏算斜角。如果数字 1 只接触一个未翻开格，那一格就是地雷。比较相邻数字后再插旗；旗数刚好符合数字，只代表可以连开，不代表标记一定正确。撤销后重新看线索，比反复猜同一格更有帮助。",
+    "design": "地雷逻辑把棋盘与导航分开：大棋盘在游玩区内滚动，操作按钮保留在外侧。提示只提出已证明的步骤，不替你操作，让你先观察高亮线索。无辅助最佳时间奖励完整的独立解法；使用辅助的回合仍可探索推理，但不混入最佳时间记录。",
+    "comparison": "Microsoft Minesweeper 也使用数字线索与地雷标记。这款 WeightPlay 游戏提供三种随机棋盘、根据可见线索推理的提示、撤销，以及浏览器本地的无辅助最佳时间；目前没有每日挑战或冒险战役。两者是不同作品，此比较不代表合作或授权关系。",
+    "faq": [
+      [
+        "一定要把所有地雷插旗吗？",
+        "不用。翻开全部安全格就会获胜，标记只是可选的笔记。未标记雷数只用总雷数减去你插的旗数，不会判断标记是否正确。"
+      ],
+      [
+        "第一步可能踩雷吗？",
+        "第一次翻开的格子及其周围实际存在的相邻格都受到保护，因此可以安全开局。不过，这不代表后续每一步都保证完全不用猜。"
+      ],
+      [
+        "为什么提示有时找不到步骤？",
+        "提示利用可见数字及总雷数，检查直接推理与集合相减。没有结果只代表这个提示系统没有证明下一步，不代表一定要猜，也不代表谜题无解。"
+      ],
+      [
+        "使用撤销还能刷新最佳时间吗？",
+        "不能。使用提示或撤销后，整个回合都标为辅助回合，即使撤销到开局也一样。仍可正常完成游戏，但只有无辅助胜利会更新本地最佳时间。"
+      ]
+    ]
+  },
+  "ja": {
+    "tags": [
+      "論理パズル",
+      "マインスイーパー",
+      "一人用"
+    ],
+    "tipsTitle": "攻略のヒント",
+    "designTitle": "設計について",
+    "faqTitle": "よくある質問",
+    "relatedTitle": "ほかの WeightPlay パズル",
+    "compareTitle": "似ている遊び方の参考",
+    "source": "公式ゲーム紹介",
+    "browser": "ウェブブラウザー",
+    "tips": "開いた領域の境界にある数字から読み、斜めのマスも数えましょう。1 に接する未開封マスが一つなら、そこは地雷です。旗を立てる前に隣の数字も比較します。旗の数が合えばまとめて開けますが、旗が正しい保証ではありません。間違いを戻したら、同じマスを当てずっぽうで開くより手掛かりを見直しましょう。",
+    "design": "盤面とナビゲーションを分け、大きな盤面はプレイ領域内でスクロールします。ヒントは証明できた手を示すだけで自動操作せず、強調された数字を自分で確認できます。補助なしの最速記録と補助ありのラウンドを分け、試行錯誤した結果が独力の記録に混ざらないようにしています。",
+    "comparison": "Microsoft Minesweeper も数字の手掛かりと地雷のマーキングを使います。この WeightPlay 作品には三種類のランダム盤面、見える情報に基づくヒント、取り消し、ブラウザー内の補助なし最速記録があります。デイリーチャレンジや冒険キャンペーンはありません。別の作品であり、この比較は提携を意味しません。",
+    "faq": [
+      [
+        "すべての地雷に旗が必要ですか？",
+        "いいえ。安全なマスをすべて開けば勝利です。旗は任意のメモで、残り地雷数は総数から置いた旗の数を引くだけです。旗の正しさは判定しません。"
+      ],
+      [
+        "最初の一手で負けることはありますか？",
+        "最初に開くマスと、その周囲に存在する隣接マスは保護されます。ただし、安全に始められることと、最後まで推測なしで解けることは別です。"
+      ],
+      [
+        "ヒントが見つからないのはなぜですか？",
+        "見える数字と総地雷数を使い、直接の推論と集合の差を調べます。結果がないのは、この仕組みで証明できなかったという意味であり、推測が必須とも解けないとも限りません。"
+      ],
+      [
+        "取り消しを使って最速記録を更新できますか？",
+        "できません。ヒントや取り消しを使うと、そのラウンド全体が補助ありになります。開始時まで戻しても変わりません。クリアはできますが、記録は補助なしの勝利だけが更新します。"
+      ]
+    ]
+  },
+  "ko": {
+    "tags": [
+      "논리 퍼즐",
+      "지뢰찾기",
+      "싱글 플레이"
+    ],
+    "tipsTitle": "플레이 팁",
+    "designTitle": "설계 이야기",
+    "faqTitle": "자주 묻는 질문",
+    "relatedTitle": "다른 WeightPlay 퍼즐",
+    "compareTitle": "비슷한 게임 방식 참고",
+    "source": "공식 게임 소개",
+    "browser": "웹 브라우저",
+    "tips": "열린 영역의 가장자리 숫자부터 보고 대각선 칸도 세세요. 숫자 1 옆에 닫힌 칸이 하나뿐이면 그 칸은 지뢰입니다. 깃발을 놓기 전에 겹치는 숫자들을 비교하세요. 깃발 수가 맞으면 주변을 한꺼번에 열 수 있지만 깃발이 옳다는 보장은 아닙니다. 실수를 되돌린 뒤 같은 칸을 추측하기보다 단서를 다시 살펴보세요.",
+    "design": "보드와 탐색 기능을 분리해 큰 보드는 플레이 영역 안에서 스크롤되고 조작 버튼은 바깥에 남습니다. 힌트는 증명된 행동을 제안할 뿐 자동으로 수행하지 않아 강조된 단서를 직접 살펴볼 수 있습니다. 도움 없는 최고 기록은 독립적인 풀이를 기록하며, 도움을 사용한 라운드는 추론을 실험하는 데 쓸 수 있습니다.",
+    "comparison": "Microsoft Minesweeper도 숫자 단서와 지뢰 표시를 사용합니다. 이 WeightPlay 게임에는 세 가지 무작위 보드 크기, 보이는 정보로 추론하는 힌트, 되돌리기, 브라우저에 저장되는 도움 없는 최고 시간이 있습니다. 일일 도전이나 모험 캠페인은 없습니다. 서로 다른 게임이며 이 비교는 제휴를 뜻하지 않습니다.",
+    "faq": [
+      [
+        "모든 지뢰에 깃발을 꽂아야 하나요?",
+        "아니요. 안전한 칸을 모두 열면 승리합니다. 깃발은 선택적인 메모이며 남은 지뢰 수는 총수에서 놓은 깃발 수만 뺍니다. 깃발이 올바른 위치인지 확인하지 않습니다."
+      ],
+      [
+        "첫 행동에서 패배할 수 있나요?",
+        "처음 여는 칸과 주변에 실제로 존재하는 이웃 칸은 보호됩니다. 안전하게 시작할 수 있다는 뜻이며, 이후 모든 선택을 추측 없이 풀 수 있다는 보장은 아닙니다."
+      ],
+      [
+        "힌트가 없을 때는 무슨 뜻인가요?",
+        "도우미는 보이는 숫자와 전체 지뢰 수로 직접 추론과 집합의 차이를 확인합니다. 결과가 없다는 것은 이 도우미가 증명하지 못했다는 뜻이지, 반드시 추측해야 하거나 풀 수 없다는 뜻은 아닙니다."
+      ],
+      [
+        "되돌리기를 쓰고 최고 시간을 갱신할 수 있나요?",
+        "아니요. 힌트나 되돌리기를 사용하면 시작까지 되돌려도 해당 라운드 전체가 도움을 받은 것으로 표시됩니다. 정상적으로 완료할 수 있지만 도움 없는 승리만 최고 시간을 갱신합니다."
+      ]
+    ]
+  },
+  "es": {
+    "tags": [
+      "Puzzle lógico",
+      "Buscaminas",
+      "Un jugador"
+    ],
+    "tipsTitle": "Consejos prácticos",
+    "designTitle": "Nota de diseño",
+    "faqTitle": "Preguntas frecuentes",
+    "relatedTitle": "Más puzzles de WeightPlay",
+    "compareTitle": "Referencia de mecánicas similares",
+    "source": "Información oficial del juego",
+    "browser": "Navegador web",
+    "tips": "Lee el borde de la zona abierta e incluye las diagonales. Si un 1 toca una sola casilla oculta, esa casilla es una mina. Compara números que comparten casillas antes de marcar. Igualar las banderas permite abrir alrededor del número, pero no demuestra que sean correctas. Tras deshacer, revisa las pistas en vez de adivinar de nuevo.",
+    "design": "El tablero se separa de la navegación: los campos grandes se desplazan dentro de su zona y las acciones quedan disponibles. Las pistas proponen una acción demostrada sin jugar por ti, para que puedas revisar los números resaltados. Los mejores tiempos sin ayuda registran soluciones independientes; las rondas asistidas permiten experimentar sin mezclarse con esos récords.",
+    "comparison": "Microsoft Minesweeper también usa números y marcas de minas. Este juego de WeightPlay ofrece tres tamaños aleatorios, pistas basadas en información visible, Deshacer y mejores tiempos sin ayuda guardados en el navegador. No incluye desafíos diarios ni campaña de aventuras. Son juegos distintos; esta comparación no implica afiliación.",
+    "faq": [
+      [
+        "¿Tengo que marcar todas las minas?",
+        "No. Ganas al abrir todas las casillas seguras. Las banderas son notas opcionales y el contador solo resta las banderas colocadas del total de minas; no confirma que estén bien."
+      ],
+      [
+        "¿Puedo perder en la primera jugada?",
+        "La primera casilla abierta y sus vecinas existentes están protegidas. Eso garantiza una apertura segura, pero no que todas las decisiones posteriores puedan resolverse sin adivinar."
+      ],
+      [
+        "¿Por qué a veces no hay pista?",
+        "El sistema usa números visibles y el total de minas con deducciones directas y restas de conjuntos. No encontrar una prueba no significa que adivinar sea obligatorio ni que el puzzle sea imposible."
+      ],
+      [
+        "¿Deshacer permite conseguir un récord?",
+        "No. Pista o Deshacer convierten toda la ronda en asistida, incluso al volver al inicio. Puedes completarla, pero solo una victoria sin ayuda actualiza el mejor tiempo local."
+      ]
+    ]
+  },
+  "pt-BR": {
+    "tags": [
+      "Quebra-cabeça lógico",
+      "Campo minado",
+      "Um jogador"
+    ],
+    "tipsTitle": "Dicas práticas",
+    "designTitle": "Nota de design",
+    "faqTitle": "Perguntas frequentes",
+    "relatedTitle": "Mais desafios do WeightPlay",
+    "compareTitle": "Referência de jogabilidade semelhante",
+    "source": "Informações oficiais do jogo",
+    "browser": "Navegador web",
+    "tips": "Leia os números na borda da área aberta, incluindo as diagonais. Se um 1 tocar apenas uma casa coberta, ela é uma mina. Compare números com vizinhos em comum antes de marcar. Igualar as bandeiras permite abrir ao redor do número, mas não prova que estejam certas. Depois de desfazer, reveja as pistas em vez de repetir um palpite.",
+    "design": "O tabuleiro fica separado da navegação: campos grandes rolam dentro da área de jogo e as ações continuam disponíveis. As dicas sugerem uma ação comprovada sem jogar por você, permitindo conferir os números destacados. Os melhores tempos sem ajuda registram soluções independentes; rodadas assistidas servem para experimentar sem se misturar com esses recordes.",
+    "comparison": "Microsoft Minesweeper também usa pistas numéricas e marcação de minas. Este jogo do WeightPlay oferece três tamanhos aleatórios, dicas baseadas em informações visíveis, Desfazer e melhores tempos sem ajuda salvos no navegador. Não oferece desafios diários nem campanha de aventura. São jogos diferentes; esta comparação não indica afiliação.",
+    "faq": [
+      [
+        "Preciso marcar todas as minas?",
+        "Não. Você vence ao abrir todas as casas seguras. As bandeiras são anotações opcionais, e o contador apenas subtrai as bandeiras colocadas do total de minas, sem verificar se estão corretas."
+      ],
+      [
+        "Posso perder na primeira jogada?",
+        "A primeira casa aberta e todas as suas vizinhas existentes são protegidas. Isso garante uma abertura segura, mas não garante que todas as decisões seguintes possam ser resolvidas sem adivinhar."
+      ],
+      [
+        "Por que às vezes não há dica?",
+        "O sistema usa números visíveis e o total de minas com deduções diretas e diferenças de conjuntos. Não achar uma prova não significa que seja obrigatório adivinhar ou que o desafio seja impossível."
+      ],
+      [
+        "Desfazer permite bater um recorde?",
+        "Não. Usar Dica ou Desfazer torna toda a rodada assistida, mesmo voltando ao começo. Você ainda pode concluí-la, mas só vitórias sem ajuda atualizam o melhor tempo local."
+      ]
+    ]
+  },
+  "fr": {
+    "tags": [
+      "Puzzle logique",
+      "Démineur",
+      "Un joueur"
+    ],
+    "tipsTitle": "Conseils pratiques",
+    "designTitle": "Note de conception",
+    "faqTitle": "Questions fréquentes",
+    "relatedTitle": "D’autres puzzles WeightPlay",
+    "compareTitle": "Référence de mécanique similaire",
+    "source": "Présentation officielle du jeu",
+    "browser": "Navigateur web",
+    "tips": "Lisez les nombres au bord de la zone ouverte, diagonales comprises. Si un 1 touche une seule case cachée, cette case est une mine. Comparez les nombres qui partagent des voisines avant de poser un drapeau. Un nombre égal de drapeaux permet l’ouverture groupée sans prouver leur justesse. Après une annulation, relisez les indices plutôt que de deviner encore.",
+    "design": "Le plateau est séparé de la navigation : les grands champs défilent dans leur zone et les actions restent disponibles. Les indices proposent une action démontrée sans jouer automatiquement, afin de laisser le temps d’observer les nombres surlignés. Les meilleurs temps sans aide récompensent les solutions indépendantes ; les parties assistées permettent d’explorer sans modifier ces records.",
+    "comparison": "Microsoft Minesweeper utilise aussi des indices chiffrés et le marquage des mines. Ce jeu WeightPlay propose trois tailles aléatoires, des indices fondés sur les informations visibles, l’annulation et des meilleurs temps sans aide enregistrés dans le navigateur. Il ne propose ni défis quotidiens ni campagne d’aventure. Ce sont des jeux distincts, et cette comparaison n’implique aucune affiliation.",
+    "faq": [
+      [
+        "Faut-il marquer toutes les mines ?",
+        "Non. Vous gagnez en ouvrant toutes les cases sûres. Les drapeaux sont des notes facultatives ; le compteur soustrait seulement les drapeaux posés du total des mines, sans vérifier leur justesse."
+      ],
+      [
+        "Peut-on perdre au premier coup ?",
+        "La première case ouverte et ses voisines existantes sont protégées. Cela assure une ouverture sûre, mais ne garantit pas que toutes les décisions suivantes se résolvent sans deviner."
+      ],
+      [
+        "Pourquoi n’y a-t-il parfois aucun indice ?",
+        "L’aide utilise les nombres visibles et le total des mines, avec déductions directes et différences d’ensembles. Une absence de preuve ne signifie pas qu’il faut nécessairement deviner ni que le puzzle est impossible."
+      ],
+      [
+        "Annuler permet-il d’établir un record ?",
+        "Non. Indice ou Annuler rend toute la partie assistée, même en revenant au début. Vous pouvez la terminer, mais seules les victoires sans aide actualisent le meilleur temps local."
+      ]
+    ]
+  },
+  "de": {
+    "tags": [
+      "Logikrätsel",
+      "Minesweeper",
+      "Einzelspieler"
+    ],
+    "tipsTitle": "Praktische Tipps",
+    "designTitle": "Zur Gestaltung",
+    "faqTitle": "Häufige Fragen",
+    "relatedTitle": "Weitere WeightPlay-Rätsel",
+    "compareTitle": "Ähnliche Spielmechanik",
+    "source": "Offizielle Spielinformationen",
+    "browser": "Webbrowser",
+    "tips": "Lies die Zahlen am Rand des offenen Bereichs und zähle Diagonalen mit. Berührt eine 1 nur ein verdecktes Feld, liegt dort eine Mine. Vergleiche Zahlen mit gemeinsamen Nachbarn, bevor du markierst. Passende Flaggenzahlen erlauben Sammelöffnen, beweisen aber keine richtige Markierung. Lies nach Rückgängig die Hinweise erneut, statt denselben Tipp zu wiederholen.",
+    "design": "Brett und Navigation sind getrennt: Große Felder scrollen innerhalb der Spielfläche, während Aktionen erreichbar bleiben. Tipps schlagen bewiesene Schritte vor, führen sie aber nicht aus. So kannst du die hervorgehobenen Zahlen prüfen. Bestzeiten ohne Hilfe belohnen eigenständige Lösungen; Runden mit Hilfe ermöglichen Experimente, ohne diese Rekorde zu verändern.",
+    "comparison": "Microsoft Minesweeper verwendet ebenfalls Zahlenhinweise und Minenmarkierungen. Dieses WeightPlay-Spiel bietet drei zufällige Feldgrößen, Tipps aus sichtbaren Informationen, Rückgängig und im Browser gespeicherte Bestzeiten ohne Hilfe. Es bietet keine täglichen Herausforderungen oder Abenteuerkampagne. Es sind getrennte Spiele; der Vergleich behauptet keine Verbindung.",
+    "faq": [
+      [
+        "Muss ich jede Mine markieren?",
+        "Nein. Du gewinnst durch Öffnen aller sicheren Felder. Flaggen sind freiwillige Notizen. Der Zähler zieht nur gesetzte Flaggen von der Gesamtminenzahl ab und bestätigt nicht, dass sie richtig liegen."
+      ],
+      [
+        "Kann ich beim ersten Zug verlieren?",
+        "Das zuerst geöffnete Feld und seine vorhandenen Nachbarn sind geschützt. Das garantiert einen sicheren Anfang, aber nicht, dass jede spätere Entscheidung ohne Raten lösbar ist."
+      ],
+      [
+        "Warum findet der Tipp manchmal nichts?",
+        "Die Hilfe prüft sichtbare Zahlen und die Gesamtzahl mit direkten Schlussfolgerungen und Mengendifferenzen. Kein gefundener Beweis bedeutet weder zwingendes Raten noch, dass das Rätsel unmöglich ist."
+      ],
+      [
+        "Kann ich nach Rückgängig eine Bestzeit erzielen?",
+        "Nein. Tipp oder Rückgängig macht die gesamte Runde zu einer Runde mit Hilfe, auch nach Rückkehr zum Anfang. Du kannst sie beenden, doch nur Siege ohne Hilfe aktualisieren die lokale Bestzeit."
+      ]
+    ]
+  },
+  "it": {
+    "tags": [
+      "Puzzle logico",
+      "Campo minato",
+      "Giocatore singolo"
+    ],
+    "tipsTitle": "Consigli pratici",
+    "designTitle": "Nota di progettazione",
+    "faqTitle": "Domande frequenti",
+    "relatedTitle": "Altri puzzle WeightPlay",
+    "compareTitle": "Riferimento a meccaniche simili",
+    "source": "Informazioni ufficiali sul gioco",
+    "browser": "Browser web",
+    "tips": "Leggi i numeri al confine della zona aperta e includi le diagonali. Se un 1 tocca una sola casella coperta, quella è una mina. Confronta numeri con vicini condivisi prima di segnare. Un numero di bandiere corrispondente consente l’apertura multipla, ma non prova che siano giuste. Dopo Annulla, rileggi gli indizi invece di ripetere un tentativo casuale.",
+    "design": "Il tabellone è separato dalla navigazione: i campi grandi scorrono nella zona di gioco e le azioni restano disponibili. Gli indizi propongono mosse dimostrate senza eseguirle automaticamente, così puoi controllare i numeri evidenziati. I tempi senza aiuti premiano soluzioni indipendenti; le partite assistite consentono esperimenti senza modificare questi record.",
+    "comparison": "Microsoft Minesweeper usa anch’esso indizi numerici e segnalazione delle mine. Questo gioco WeightPlay offre tre dimensioni casuali, indizi basati su informazioni visibili, Annulla e migliori tempi senza aiuti salvati nel browser. Non offre sfide giornaliere o campagne avventura. Sono giochi distinti; il confronto non implica affiliazione.",
+    "faq": [
+      [
+        "Devo segnare tutte le mine?",
+        "No. Vinci aprendo tutte le caselle sicure. Le bandiere sono appunti facoltativi e il contatore sottrae soltanto quelle posizionate dal totale delle mine, senza verificarne la correttezza."
+      ],
+      [
+        "Posso perdere alla prima mossa?",
+        "La prima casella aperta e le sue vicine esistenti sono protette. Questo garantisce un inizio sicuro, ma non che ogni decisione successiva sia risolvibile senza indovinare."
+      ],
+      [
+        "Perché a volte non ci sono indizi?",
+        "Il sistema usa numeri visibili e totale delle mine con deduzioni dirette e differenze tra insiemi. Non trovare una prova non significa che si debba per forza indovinare o che il puzzle sia impossibile."
+      ],
+      [
+        "Posso ottenere un record dopo Annulla?",
+        "No. Indizio o Annulla rendono assistita tutta la partita, anche tornando all’inizio. Puoi completarla normalmente, ma solo le vittorie senza aiuti aggiornano il miglior tempo locale."
+      ]
+    ]
+  },
+  "ru": {
+    "tags": [
+      "Логическая головоломка",
+      "Сапёр",
+      "Один игрок"
+    ],
+    "tipsTitle": "Практические советы",
+    "designTitle": "О замысле игры",
+    "faqTitle": "Частые вопросы",
+    "relatedTitle": "Другие головоломки WeightPlay",
+    "compareTitle": "Сходство игровых механик",
+    "source": "Официальная информация об игре",
+    "browser": "Веб-браузер",
+    "tips": "Читайте числа на границе открытого участка, учитывая диагонали. Если у числа 1 только один закрытый сосед, там мина. Перед флагом сравните числа с общими соседями. Совпадение количества флагов разрешает групповое открытие, но не доказывает их правильность. После отмены изучите подсказки заново, вместо повторного угадывания.",
+    "design": "Поле отделено от навигации: большие поля прокручиваются внутри игровой области, а действия остаются доступными. Подсказка предлагает доказанный ход, но не выполняет его, позволяя проверить выделенные числа. Лучшие времена без помощи отмечают самостоятельные решения; раунды с помощью позволяют экспериментировать, не изменяя эти рекорды.",
+    "comparison": "Microsoft Minesweeper также использует числовые подсказки и отметки мин. Эта игра WeightPlay предлагает три размера случайных полей, выводы по видимой информации, отмену и локальные рекорды без помощи в браузере. Ежедневных заданий и приключенческой кампании здесь нет. Это разные игры; сравнение не подразумевает сотрудничества.",
+    "faq": [
+      [
+        "Нужно ли отметить все мины?",
+        "Нет. Для победы откройте все безопасные клетки. Флаги — необязательные заметки. Счётчик лишь вычитает число поставленных флагов из общего числа мин и не проверяет правильность отметок."
+      ],
+      [
+        "Можно ли проиграть первым ходом?",
+        "Первая открытая клетка и все её существующие соседи защищены. Это гарантирует безопасное начало, но не означает, что любое последующее решение обязательно можно вывести без угадывания."
+      ],
+      [
+        "Почему подсказка иногда ничего не находит?",
+        "Помощник проверяет видимые числа и общее число мин прямыми выводами и разностями множеств. Отсутствие доказанного хода не означает, что угадывать обязательно или что головоломка неразрешима."
+      ],
+      [
+        "Можно ли поставить рекорд после отмены?",
+        "Нет. Подсказка или отмена помечает весь раунд как пройденный с помощью, даже при возврате к началу. Завершить его можно, но локальный рекорд обновляют только победы без помощи."
+      ]
+    ]
+  },
+  "hi": {
+    "tags": [
+      "तर्क पहेली",
+      "माइनस्वीपर",
+      "एक खिलाड़ी"
+    ],
+    "tipsTitle": "उपयोगी सुझाव",
+    "designTitle": "डिज़ाइन के बारे में",
+    "faqTitle": "अक्सर पूछे जाने वाले प्रश्न",
+    "relatedTitle": "WeightPlay की और पहेलियाँ",
+    "compareTitle": "मिलते-जुलते खेल की तुलना",
+    "source": "खेल की आधिकारिक जानकारी",
+    "browser": "वेब ब्राउज़र",
+    "tips": "खुले क्षेत्र की सीमा की संख्याएँ पढ़ें और तिरछे पड़ोसी भी गिनें। यदि 1 के पास केवल एक छिपा खाना है, तो उसमें माइन है। झंडा लगाने से पहले साझा पड़ोस वाली संख्याएँ मिलाएँ। झंडों की संख्या मेल खाने पर आसपास के खाने खुल सकते हैं, लेकिन इससे झंडे सही सिद्ध नहीं होते। वापस लेने के बाद फिर अनुमान लगाने के बजाय संकेत दोबारा देखें।",
+    "design": "बोर्ड और नेविगेशन अलग हैं। बड़ा बोर्ड खेल क्षेत्र के भीतर स्क्रॉल होता है और क्रिया बटन उपलब्ध रहते हैं। संकेत सिद्ध कदम सुझाता है, अपने-आप नहीं चलता, ताकि आप उभारी गई संख्याएँ जाँच सकें। बिना सहायता का सर्वोत्तम समय स्वतंत्र समाधान दर्ज करता है; सहायता वाले राउंड रिकॉर्ड बदले बिना तर्क आज़माने देते हैं।",
+    "comparison": "Microsoft Minesweeper भी संख्याओं के संकेत और माइन के निशान इस्तेमाल करता है। इस WeightPlay खेल में तीन आकार के यादृच्छिक बोर्ड, दिखती जानकारी से संकेत, वापस लेना और ब्राउज़र में बिना सहायता के सर्वोत्तम समय हैं। इसमें दैनिक चुनौती या साहसिक अभियान नहीं है। ये अलग खेल हैं; तुलना किसी साझेदारी का दावा नहीं करती।",
+    "faq": [
+      [
+        "क्या हर माइन पर झंडा लगाना ज़रूरी है?",
+        "नहीं। सभी सुरक्षित खाने खोलने पर जीत होती है। झंडे वैकल्पिक निशान हैं। बची माइन का काउंटर कुल में से लगाए झंडे घटाता है; वह उनके सही होने की जाँच नहीं करता।"
+      ],
+      [
+        "क्या पहले कदम पर हार सकता हूँ?",
+        "पहला खोला गया खाना और उसके सभी मौजूद पड़ोसी सुरक्षित रखे जाते हैं। इससे शुरुआत सुरक्षित होती है, लेकिन बाद के हर निर्णय को बिना अनुमान हल करने की गारंटी नहीं मिलती।"
+      ],
+      [
+        "कभी संकेत क्यों नहीं मिलता?",
+        "सहायक दिखती संख्याएँ और कुल माइन लेकर सीधे निष्कर्ष तथा समुच्चयों का अंतर जाँचता है। कोई प्रमाण न मिलना यह नहीं बताता कि अनुमान लगाना ही होगा या पहेली असंभव है।"
+      ],
+      [
+        "वापस लेने के बाद सर्वोत्तम समय बन सकता है?",
+        "नहीं। संकेत या वापस लेना पूरे राउंड को सहायता वाला बनाता है, शुरुआत तक लौटने पर भी। खेल पूरा कर सकते हैं, लेकिन केवल बिना सहायता की जीत स्थानीय सर्वोत्तम समय बदलती है।"
+      ]
+    ]
+  },
+  "ar": {
+    "tags": [
+      "لغز منطقي",
+      "كاسحة ألغام",
+      "لاعب واحد"
+    ],
+    "tipsTitle": "نصائح عملية",
+    "designTitle": "ملاحظة عن التصميم",
+    "faqTitle": "أسئلة شائعة",
+    "relatedTitle": "ألغاز أخرى من WeightPlay",
+    "compareTitle": "مرجع لطريقة لعب مشابهة",
+    "source": "المعلومات الرسمية للعبة",
+    "browser": "متصفح ويب",
+    "tips": "اقرأ الأرقام على حدود المنطقة المفتوحة واحسب الجيران القطريين. إذا لامس الرقم 1 خانة مغطاة واحدة فقط، فهي لغم. قارن الأرقام التي تتشارك الجيران قبل وضع علم. تطابق عدد الأعلام يسمح بالفتح الجماعي، لكنه لا يثبت صحة الأعلام. بعد التراجع، راجع الأدلة بدل تكرار التخمين.",
+    "design": "تفصل اللعبة اللوحة عن التنقل؛ تتحرك الحقول الكبيرة داخل مساحة اللعب وتبقى أزرار الإجراءات متاحة. يقترح التلميح خطوة مثبتة ولا ينفذها، لتتمكن من فحص الأرقام المميزة. تسجل أفضل الأوقات بلا مساعدة الحلول المستقلة، بينما تتيح الجولات بمساعدة تجربة الاستنتاجات دون تغيير تلك الأرقام القياسية.",
+    "comparison": "تستخدم Microsoft Minesweeper أيضًا أدلة رقمية وتحديد الألغام. تقدم لعبة WeightPlay هذه ثلاثة أحجام لحقول عشوائية، وتلميحات من المعلومات الظاهرة، والتراجع، وأفضل أوقات بلا مساعدة محفوظة في المتصفح. لا تتضمن تحديات يومية أو حملة مغامرات. هما لعبتان منفصلتان، ولا تعني هذه المقارنة وجود شراكة.",
+    "faq": [
+      [
+        "هل يجب وضع علم على كل لغم؟",
+        "لا. تفوز بفتح كل الخانات الآمنة. الأعلام ملاحظات اختيارية؛ يطرح العداد عدد الأعلام التي وضعتها من مجموع الألغام فقط، ولا يتحقق من صحة مواضعها."
+      ],
+      [
+        "هل يمكن أن أخسر في أول خطوة؟",
+        "الخانة الأولى التي تفتحها وجيرانها الموجودون محميون. يضمن ذلك بداية آمنة، لكنه لا يضمن أن كل قرار لاحق يمكن حله دون تخمين."
+      ],
+      [
+        "لماذا لا يجد التلميح خطوة أحيانًا؟",
+        "يفحص المساعد الأرقام الظاهرة ومجموع الألغام باستنتاجات مباشرة وفروق المجموعات. عدم إيجاد دليل لا يعني أن التخمين ضروري حتمًا أو أن اللغز مستحيل."
+      ],
+      [
+        "هل يمكن تسجيل أفضل وقت بعد التراجع؟",
+        "لا. استخدام التلميح أو التراجع يجعل الجولة كلها بمساعدة، حتى عند الرجوع إلى البداية. يمكنك إكمالها، لكن الانتصارات بلا مساعدة وحدها تحدّث أفضل وقت محلي."
+      ]
+    ]
+  }
+}

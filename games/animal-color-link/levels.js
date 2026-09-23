@@ -50,4 +50,22 @@
   const api={levels:Array.from({length:30},(_,i)=>buildLevel(i)),buildLevel};
   root.COLOR_LINK_LEVELS=api;
   if(typeof module!=="undefined")module.exports=api;
+
+  if(typeof document!=="undefined"){
+    const start=document.getElementById("start");
+    const failOpen=()=>{start?.removeAttribute("disabled");start?.removeAttribute("aria-busy")};
+    if(start){start.disabled=true;start.setAttribute("aria-busy","true")}
+    const loadCompat=()=>{
+      if(document.documentElement.dataset.wpColorLinkI7Cleanup==="true")return;
+      let script=document.querySelector("script[data-wp-color-link-interface7]");
+      if(script){script.addEventListener("error",failOpen,{once:true});return}
+      script=document.createElement("script");
+      script.src="interface-7-compat.js?v=20260923-color-link-i7-cleanup2";
+      script.dataset.wpColorLinkInterface7="";
+      script.addEventListener("error",failOpen,{once:true});
+      document.body.append(script);
+    };
+    if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",loadCompat,{once:true});
+    else loadCompat();
+  }
 })(typeof window!=="undefined"?window:globalThis);

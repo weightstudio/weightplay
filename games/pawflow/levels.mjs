@@ -1,39 +1,8 @@
+import {MOSAICS} from './mosaics.mjs?v=3';
 import {RULES,clone,createState,capture,dispatch,finishLap,colorRemaining} from './engine.mjs';
 export const COLORS=Object.freeze(['#e96856','#edbc48','#58b994','#548ee5','#b677d5']);
 export const SYMBOLS=Object.freeze(['A','B','C','D','E']);
-/** Original 8x8 designs, padded to a stable 10x10 play board. Not reference assets. */
-const ART=[
-'...AA.../...AA.../..AAAA../...AA.../..BBBB../.BBBBBB./...BB.../...BB...',
-'AA....BB/AAA..BBB/.AA..BB./..ABBA../...AB.../...BA.../..BAAB../.BA..AB.',
-'AAAA..../...A..../.B.AAAA./.B....A./.BBBB.A./....B.A./.BBBB.A./.......A',
-'...A..../..BAB.../.BAAAB../ABAAAABA/.BAAAB../..BAB.../...B..../..BBB...',
-'AAAAAAAA/ABBBBBBA/ABCCCCBA/ABC..CBA/ABC..CBA/ABCCCCBA/ABBBBBBA/AAAAAAAA',
-'..AAAA../.ABBBBA./ABBCCBBA/ABCCCCBA/ABCCCCBA/ABBCCBBA/.ABBBBA./..AAAA..',
-'...A..../..AAA.../.AABAA../AABBBAA./ABBBBBA./AABBBAA./.AAAAA../..AAA...',
-'..A..A../.ABAABA./ABBCBBBA/.BCCCB../.BCCCB../ABBCBBBA/.ABAABA./..A..A..',
-'A..B..C./AA.B.CC./.AABBCC./..ABC.../..CBA.../.CCBBAA./CC.B.AA./C..B..A.',
-'..AAAA../.ABBBBA./ABCCCCBA/ABCBB CBA/ABCCCCBA/.ABBBBA./..AAAA../...BB...',
-'..AA..../.ABBA.../ABBCCA../ABBCCA../.ABBA.../..AADD../...DDDD./....DD..',
-'AA....DD/ABCCCCBD/ABCCCCBD/AB....BD/ABCCCCBD/ABCCCCBD/AA....DD/.BBBBBB.',
-'..AABB../.ACDDCB./ACDDDDCB/ACD..DCB/BC D..DCA/BCDDDDCA/.BCDDCA./..BBAA..',
-'.AAA.BBB/ACCA.BDD/ACCA.BDD/.AAA.BBB/..C...D./.CCCCDD./..CDCD../...CD...',
-'AAAAAAAA/ABBBBBBA/ABCCCCBA/ABCDDCBA/ABCDDCBA/ABCCCCBA/ABBBBBBA/AAAAAAAA',
-'...AA.../...AA.../..ABBA../.ABCCBA./ABCDDCBA/.ABCCBA./..ABBA../...AA...',
-'.A....A./ABA..ABA/ABC..CBA/.BCCCCB./..CDDC../.BCCCCB./ABA..ABA/.A....A.',
-'AABBCCDD/ABCDABCD/BC DABCDA/CDABCDAB/DABCDABC/ABCDABCD/B CDABCDA/DDCCBBAA',
-'A......./AB....../ABC...../ABCD..../ABCDDC../.BCDDCB./..CDDCBA/...DDCBA',
-'AAABBAAA/ABCCCCBA/ABCDDCBA/BCCDDCCB/BCCDDCCB/ABCDDCBA/ABCCCCBA/AAABBAAA',
-'...AA.../.B.AA.B./.BBCCBB./AACDDCAA/AACDDCAA/.BBCCBB./.B.AA.B./...AA...',
-'A..BB..A/.A.BB.A./..ACCA../BB CDDCBB/BB CDDCBB/..ACCA../.A.BB.A./A..BB..A',
-'..AABB../.ACDDCB./ACDBBDCA/ACBEEBCA/B C BEEBCB/BCDBBDCB/.BCDDCA./..BBAA..',
-'.AAA..../ABCBA.../ABCDBA../ABCDEBA./.BCDECB./..BDEDB./...BEB../....B...',
-'AABBCCDD/AEEDDEEB/B E ACCA EB/BDAEEADB/CD AEEADC/CEA CCAEC/DEEDDEEA/DDCCBBAA',
-'A......A/AA....AA/ABA..ABA/ABCCCCBA/ABCDEDCB/.BCD DCB./..BEEB../...BB...',
-'.AA..BB./ACCA BDD B/ACCA BDD B/.AEEEEB./..CEED../..CEED../.CCCCDD./..C..D..',
-'..AAAA../.ABBBBA./ABCCCCBA/ABCDEDCB/ABCDEDCB/ABCCCCBA/.ABBBBA./..AAAA..',
-'AABBCCDD/ABCDEABC/BCDEABCD/CDEABCDE/DEABCDEA/EABCDEAB/ABCDEABC/DDCCBBAA',
-'..AAAA../.ABBBBA./ABCCCCBA/ABCDEDCB/ABCDEDCB/ABCCCCBA/.ABBBBA./..AAAA..'
-];
+// Full-board animal silhouettes replace the former padded abstract patterns.
 const MODES=[0,0,0,0,0,1,1,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6];
 // Explicit per-stage parameters: palette, layers, reinforced stride, required keys, shutters.
 const PARAMETERS=[
@@ -47,13 +16,16 @@ const PARAMETERS=[
 function hash(value){let h=2166136261;for(const c of JSON.stringify(value)){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return (h>>>0).toString(16);}
 export function authoredLevel(id) {
   if(!Number.isInteger(id)||id<1||id>30)throw RangeError('LEVEL_ID');
-  const [palette,layers,armor,requiredKeys,shutters]=PARAMETERS[id-1];
-  const rows=ART[id-1].split('/').map(r=>r.replaceAll(' ',''));
+  const [declaredPalette,layers,armor,requiredKeys,shutters]=PARAMETERS[id-1];
+  const rows=MOSAICS[id-1].split('/');
+  if(rows.length!==10||rows.some(row=>row.length!==10||/[^.ABCDE]/.test(row)))throw Error(`MOSAIC_GEOMETRY:${id}`);
+  const palette=Math.max(declaredPalette,...[...rows.join('')].filter(c=>c!=='.').map(c=>c.charCodeAt(0)-64));
   const board=Array.from({length:100},()=>[]);
-  rows.forEach((row,y)=>[...row.slice(0,8)].forEach((c,x)=>{
+  rows.forEach((row,y)=>[...row].forEach((c,x)=>{
     if(c==='.')return;
-    const color=(c.charCodeAt(0)-65)%palette,index=(y+1)*10+x+1;
-    const depth=layers===1?1:1+Number((x+y+id)%3!==0)+(layers===3?Number((x-y+id)%4===0):0);
+    const color=c.charCodeAt(0)-65,index=y*10+x;
+    // Every layer retains the complete silhouette; the palette shift is global, not per-pixel noise.
+    const depth=layers;
     for(let l=0;l<depth;l++)board[index].push({color:(color+l+Number(l>0)*Math.floor(id/5))%palette,hp:armor&&(x+2*y+l+id)%armor===0?2:1,key:false,lock:false});
   }));
   // Outer visible keys can never be sealed behind their own lock dependency.
@@ -74,7 +46,7 @@ export function authoredLevel(id) {
     const x=i%10,y=Math.floor(i/10);
     if(x>=3&&x<=6&&y>=3&&y<=6&&!keyIndices.includes(i))cell.forEach(v=>v.lock=true);
   });
-  return {id,board,palette,requiredKeys,shutters:Boolean(shutters),gateTicks:120+(id%3)*30,
+  return {id,motifId:id,artRevision:3,board,palette,requiredKeys,shutters:Boolean(shutters),gateTicks:120+(id%3)*30,
     phaseOffset:0,reverse:false,chargeSize:10+Math.floor(id/5)*2,rule:MODES[id-1],checkpoint:id%5===0};
 }
 /** Build finite supply with a constructive, executable solution, not untested random ammo. */
@@ -120,7 +92,8 @@ export function dailyLevel(key=dailyKey()){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(key)||(!Number.isFinite(Date.parse(key+'T00:00:00Z'))||new Date(key+'T00:00:00Z').toISOString().slice(0,10)!==key))throw Error('DAILY_DATE');
   const seed=parseInt(hash(key),16),raw=authoredLevel(6+seed%25),offset=(seed>>>5)%raw.palette;
   raw.board=raw.board.map(cell=>cell.map(v=>({...v,color:(v.color+offset)%raw.palette})));
-  if(seed%2)raw.board=raw.board.map((_,i)=>raw.board[(9-(i%10))*10+Math.floor(i/10)]);
+  // Mirror horizontally only: daily animals never become sideways or upside down.
+  if(seed%2)raw.board=raw.board.map((_,i)=>raw.board[Math.floor(i/10)*10+9-i%10]);
   raw.phaseOffset=(seed>>>12)%raw.gateTicks;raw.id=31;raw.daily=key;raw.rule=6;
   const out=compileLevel(raw);out.signature=hash([out.signature,key]);return out;
 }
