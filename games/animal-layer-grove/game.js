@@ -1,442 +1,337 @@
+/* Owner-requested gameplay revision: occlusion-v1, 2026-09-22.
+   One game controller. Shared frame, Stage virtualizer and Canvas still own
+   navigation geometry. No target permutation is displayed or checked. */
 (() => {
-  "use strict";
-
-  const locales = window.ANIMAL_LAYER_GROVE_LOCALES || {};
-  const glyphs = {
-    fern: "🌿", pond: "◒", moon: "☾", moss: "✣", glow: "✦", root: "⌁", willow: "♧", brook: "≈", mist: "〰",
-    leaf: "🍃", rain: "☂", sun: "☀", bloom: "❀", canopy: "⌒", beacon: "✧", reeds: "🌾", creek: "≈", amber: "◆",
-    reed: "🌾", stone: "●", stream: "∿", pebble: "•", wind: "〽", pine: "♠", fog: "◌", fox: "🦊", wing: "🪽",
-    meadow: "⌁", whistle: "♫", storm: "ϟ", glass: "◇", ridge: "⌃", owl: "🦉", frost: "❄", echo: "◎", snow: "❅",
-    bell: "◉", hollow: "○", night: "☽", star: "★", shell: "◓", coral: "❈", kelp: "〽", tide: "≋", sand: "﹏",
-    water: "≈", acorn: "●", burrow: "◍", keeper: "⌂", moth: "✺"
+  'use strict';
+  const gameURL = document.currentScript.src;
+  const revision = '20260922-occlusion1';
+  const root = document.body;
+  const abort = new AbortController();
+  const listen = (node, event, fn, options = {}) => node?.addEventListener(event, fn, { ...options, signal: abort.signal });
+  const $ = id => document.getElementById(id);
+  const scripts = new Map();
+  const load = (path, ready) => {
+    if (ready()) return Promise.resolve();
+    const url = new URL(path, gameURL); url.searchParams.set('v', revision);
+    if (scripts.has(url.pathname)) return scripts.get(url.pathname);
+    const promise = new Promise((resolve, reject) => {
+      const old = [...document.scripts].find(s => new URL(s.src || gameURL).pathname === url.pathname);
+      const script = old || document.createElement('script');
+      const done = () => { cleanup(); ready() ? resolve() : reject(new Error('DEPENDENCY_NOT_READY')); };
+      const failed = () => { cleanup(); if (!old) script.remove(); reject(new Error('DEPENDENCY_LOAD_FAILED')); };
+      const cleanup = () => { clearTimeout(timer); script.removeEventListener('load', done); script.removeEventListener('error', failed); abort.signal.removeEventListener('abort', failed); };
+      const timer = setTimeout(failed, 10000);
+      script.addEventListener('load', done, { once: true }); script.addEventListener('error', failed, { once: true });
+      abort.signal.addEventListener('abort', failed, { once: true });
+      if (!old) { script.src = url.href; document.head.append(script); }
+      else if (ready()) done();
+    }).catch(error => { scripts.delete(url.pathname); throw error; });
+    scripts.set(url.pathname, promise); return promise;
   };
-
-  const specs = [
-    { name: "scene1", intro: "scene1Intro", target: ["fern", "pond", "moon"], initial: ["pond", "moon", "fern"], mechanic: "stack" },
-    { name: "scene2", intro: "scene2Intro", target: ["moss", "glow", "root"], initial: ["root", "moss", "glow"], mechanic: "stack" },
-    { name: "scene3", intro: "scene3Intro", target: ["willow", "brook", "mist"], initial: ["brook", "mist", "willow"], mechanic: "stack" },
-    { name: "scene4", intro: "scene4Intro", target: ["leaf", "rain", "sun"], initial: ["sun", "leaf", "rain"], mechanic: "stack" },
-    { name: "scene5", intro: "scene5Intro", target: ["bloom", "canopy", "beacon"], initial: ["canopy", "beacon", "bloom"], mechanic: "stack" },
-    { name: "scene6", intro: "scene6Intro", target: ["reeds", "creek", "amber"], initial: ["amber", "reeds", "creek", "moth"], mechanic: "decoy", decoy: "moth" },
-    { name: "scene7", intro: "scene7Intro", target: ["reed", "stone", "stream"], initial: ["moth", "stream", "reed", "stone"], mechanic: "decoy", decoy: "moth" },
-    { name: "scene8", intro: "scene8Intro", target: ["pebble", "brook", "glow"], initial: ["glow", "moth", "pebble", "brook"], mechanic: "decoy", decoy: "moth" },
-    { name: "scene9", intro: "scene9Intro", target: ["mist", "stone", "creek"], initial: ["stone", "creek", "moth", "mist"], mechanic: "decoy", decoy: "moth" },
-    { name: "scene10", intro: "scene10Intro", target: ["reeds", "sun", "willow"], initial: ["willow", "moth", "sun", "reeds"], mechanic: "decoy", decoy: "moth" },
-    { name: "scene11", intro: "scene11Intro", target: ["wind", "pine", "fog"], initial: ["wind", "fog", "pine"], mechanic: "wind" },
-    { name: "scene12", intro: "scene12Intro", target: ["fox", "leaf", "wind"], initial: ["fox", "wind", "leaf"], mechanic: "wind" },
-    { name: "scene13", intro: "scene13Intro", target: ["wing", "meadow", "sun"], initial: ["meadow", "wing", "sun"], mechanic: "wind" },
-    { name: "scene14", intro: "scene14Intro", target: ["whistle", "pine", "mist"], initial: ["whistle", "mist", "pine"], mechanic: "wind" },
-    { name: "scene15", intro: "scene15Intro", target: ["storm", "glass", "ridge"], initial: ["storm", "ridge", "glass"], mechanic: "wind" },
-    { name: "scene16", intro: "scene16Intro", target: ["owl", "frost", "pine", "echo"], initial: ["owl", "pine", "echo", "frost"], mechanic: "echo" },
-    { name: "scene17", intro: "scene17Intro", target: ["snow", "moon", "echo", "pine"], initial: ["pine", "snow", "moon", "echo"], mechanic: "echo" },
-    { name: "scene18", intro: "scene18Intro", target: ["bell", "bloom", "echo", "moss"], initial: ["moss", "echo", "bell", "bloom"], mechanic: "echo" },
-    { name: "scene19", intro: "scene19Intro", target: ["hollow", "stone", "echo", "fog"], initial: ["fog", "hollow", "stone", "echo"], mechanic: "echo" },
-    { name: "scene20", intro: "scene20Intro", target: ["night", "star", "echo", "owl"], initial: ["star", "owl", "night", "echo"], mechanic: "echo" },
-    { name: "scene21", intro: "scene21Intro", target: ["shell", "coral", "kelp", "tide"], initial: ["kelp", "shell", "tide", "coral"], mechanic: "echo" },
-    { name: "scene22", intro: "scene22Intro", target: ["coral", "sand", "tide"], initial: ["sand", "moth", "tide", "coral"], mechanic: "decoy", decoy: "moth" },
-    { name: "scene23", intro: "scene23Intro", target: ["kelp", "shell", "stream", "tide"], initial: ["tide", "stream", "kelp", "shell"], mechanic: "stack" },
-    { name: "scene24", intro: "scene24Intro", target: ["sand", "moon", "tide", "echo"], initial: ["echo", "sand", "moon", "tide"], mechanic: "echo" },
-    { name: "scene25", intro: "scene25Intro", target: ["star", "water", "tide", "shell"], initial: ["water", "shell", "star", "tide"], mechanic: "stack" },
-    { name: "scene26", intro: "scene26Intro", target: ["root", "acorn", "fog"], initial: ["fog", "root", "acorn"], mechanic: "wind" },
-    { name: "scene27", intro: "scene27Intro", target: ["bloom", "burrow", "leaf", "echo"], initial: ["leaf", "echo", "burrow", "bloom"], mechanic: "echo" },
-    { name: "scene28", intro: "scene28Intro", target: ["fog", "stone", "wind"], initial: ["wind", "fog", "stone", "moth"], mechanic: "decoy", decoy: "moth" },
-    { name: "scene29", intro: "scene29Intro", target: ["beacon", "night", "pine", "echo"], initial: ["pine", "beacon", "echo", "night"], mechanic: "echo" },
-    { name: "scene30", intro: "scene30Intro", target: ["keeper", "fern", "moon", "echo"], initial: ["moon", "echo", "keeper", "fern"], mechanic: "echo" }
-  ];
-
-  const scenes = specs.map((spec, index) => {
-    const layers = spec.decoy ? [...spec.target, spec.decoy] : [...spec.target];
-    return {
-      id: `stage-${String(index + 1).padStart(2, "0")}`,
-      nameKey: spec.name,
-      introKey: spec.intro,
-      targetKey: `target${index + 1}`,
-      wrongKey: `wrong${index + 1}`,
-      mechanicKey: `mechanic${spec.mechanic[0].toUpperCase()}${spec.mechanic.slice(1)}`,
-      target: spec.target,
-      initial: spec.initial,
-      layers,
-      decoy: spec.decoy || "",
-      mechanic: spec.mechanic,
-      glyphs: Object.fromEntries(layers.map((id) => [id, glyphs[id] || "◇"]))
-    };
-  });
-
-  const progressKeys = ["weightplay-animal-layer-grove-progress-v5", "weightplay-animal-layer-grove-progress-v4"];
-  const bestKeys = ["weightplay-animal-layer-grove-best-v5", "weightplay-animal-layer-grove-best-v4", "weightplay-animal-layer-grove-best-v3"];
-  const readNumber = (keys) => {
-    try {
-      for (const key of keys) {
-        const value = Number(localStorage.getItem(key));
-        if (Number.isFinite(value) && value >= 0) return value;
-      }
-    } catch (_) {}
-    return 0;
-  };
-  const readCompleted = () => Math.min(scenes.length, readNumber(progressKeys));
-  const state = { locale: "en", scene: 0, completed: readCompleted(), order: [], moves: 0, sessionMoves: 0, screen: "main", sound: !window.WeightPlayAudio.isMuted() };
-  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
-  const $ = (id) => document.getElementById(id);
-  const t = (key, vars = {}) => {
-    const table = locales[state.locale] || locales.en || {};
-    let value = uiOverrides[state.locale]?.[key] || table[key] || locales.en?.[key] || key;
-    if (key === "start" && state.locale === "en") value = "Start Game";
-    if (key === "start" && state.locale === "zh-Hant") value = "開始遊戲";
-    Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
-    return value;
-  };
-  const track = (event, detail = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-layer-grove", event, ...detail } })); };
-  const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
-  const readBest = () => { const value = readNumber(bestKeys); return value > 0 ? value : null; };
-  const saveProgress = () => { try { localStorage.setItem(progressKeys[0], String(state.completed)); } catch (_) {} };
-  const saveBest = () => { try { const old = readBest(); if (!old || state.sessionMoves < old) localStorage.setItem(bestKeys[0], String(state.sessionMoves)); } catch (_) {} };
-  const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind; };
-  const depthKey = (index) => index === 0 ? "front" : index === 1 ? "middle" : index === 2 ? "backLayer" : "farBack";
-  const depthLabel = (index) => t(depthKey(index));
-  const currentScene = () => scenes[state.scene];
-  const expectedOrder = (scene) => scene.mechanic === "wind" ? [...scene.target].reverse() : scene.target;
-
-  const renderMain = () => { $("mainProgress").textContent = `${t("groves")}: ${state.completed} / ${scenes.length}`; };
-  const ensureGuideDepth = () => {
-    const sections = document.querySelector("[data-wp-game-guide] .game-info-sections");
-    if (!sections || sections.querySelector("[data-wp-guide-depth]") ) return;
-    const authored = state.locale === "ar" ? [
-      ["قراءة نافذة الهدف", "الهدف رسم صغير للموطن يوضح الترتيب المقصود من الأمام إلى الخلف. لاحظ أي طبقة تؤطر الحيوان وأي طبقة خلف المركز وأي طبقة تثبت الحافة البعيدة. قد تظهر الرموز نفسها في الأقواس اللاحقة بدور مختلف، لذلك اقرأ النافذة الحالية كل مرة؛ فالتأمل الهادئ جزء من اللغز."],
-      ["قواعد الأقواس ونقاط التحقق", "تتكون الحملة من ستة أقواس، في كل منها خمس مراحل. تعلّم المراحل الأولى التكديس المباشر، ثم تضيف الأقواس اللاحقة طُعماً وقراءة للريح من الخلف إلى الأمام وطبقات صدى يجب أن تبقى في موضعها. تأتي نقاط التحقق في المراحل 5 و10 و15 و20 و25 و30 مع هدف واضح."],
-      ["خطط وانقل وأعد الضبط", "تغيّر كل نقلة طبقة واحدة. استخدم زري الأمام والخلف لقرارات صغيرة قابلة للعكس، وراقب تحديث تسميات العمق بعد كل نقلة. إذا تشابكت المحاولة، تعيد إعادة الضبط المشهد إلى ترتيبه الأول من دون فقدان التقدم. تبقى الترتيبات الخاطئة ظاهرة لتوضح ما حُجب وما انكشف."],
-      ["التقدم والراحة وإعادة اللعب", "أصلح مشهداً لفتح المرحلة التالية فقط، وتبقى المشاهد المكتملة متاحة لإعادة اللعب. يحفظ المتصفح الإكمال وأفضل مجموع للحركات محلياً عند توفر التخزين؛ لا يلزم حساب. تبقى الأزرار كبيرة وموسومة على الهاتف واللوحي وسطح المكتب، مع دعم لوحة المفاتيح والتغذية الراجعة والواجهة العربية من اليمين إلى اليسار."],
-      ["حلقة تعلم هادئة", "كل مشهد تجربة قصيرة ذات سبب ونتيجة واضحين. لاحظ ما تكشفه النقلة الأولى، وقارن التكديس المحدث بنافذة الحارس، ودع رسالة الحالة ترشد اختيارك التالي. لا يوجد عدّ تنازلي، لذا فالتفكير والتمرين المتكرر مرحّب بهما."]
-    ] : [
-      ["Reading the target window", "The target is a small habitat illustration that shows the intended front-to-back order. Look for which layer frames the animal, which layer sits behind the centre, and which layer anchors the far edge. The same symbols can appear in later arcs with a different role, so read the current window every time instead of relying on memory. A calm inspection is part of the puzzle, not wasted time."],
-      ["Arc rules and checkpoints", "The campaign is arranged as six five-stage arcs. Early stages teach direct stacking; later arcs add a moth decoy, back-to-front wind reading, and echo layers that must stay in their shown position. Checkpoint stages at 5, 10, 15, 20, 25, and 30 pause the lesson with a clear objective. Before moving anything, name the active rule in your head, then apply it to the target order. Each arc changes the decision context so the next scene feels authored rather than repetitive."],
-      ["Plan, move, and reset", "Each move changes one layer at a time. Use the front and back controls to make small, reversible decisions, and watch the depth labels update after every move. If a trial becomes tangled, Reset returns the scene to its starting order without costing progress. Wrong orders remain visible on purpose: they show what is hidden or exposed, so you can compare the result with the target and try a better sequence. Take a breath between attempts and use the feedback sentence as a precise clue."],
-      ["Progress, comfort, and replay", "Restore a scene to unlock exactly the next stage. Completed scenes stay open for replay, letting you refine a route or revisit a mechanic without losing the campaign frontier. The browser stores completion and best total moves locally when storage is available; no account is required, and a fresh browser starts with the first scene ready to learn. Controls stay large and labeled on phone, tablet, and desktop layouts, with keyboard-friendly buttons, readable status feedback, reduced-motion support, and right-to-left Arabic presentation. Choose a language in Settings before or during a session; scene names, objectives, rules, and result feedback follow that choice while local progress remains safe."],
-      ["A gentle learning loop", "Every scene is a short experiment with a visible cause and effect. Notice what the first move reveals, compare the updated stack with the keeper window, and let the status message guide the next choice. There is no countdown, so thoughtful play and repeatable practice are welcome."]
-    ];
-    authored.forEach(([title, text]) => {
-      const article = document.createElement("article"); article.className = "game-info-section"; article.dataset.wpGuideDepth = "true";
-      const heading = document.createElement("h3"); heading.textContent = title;
-      const paragraph = document.createElement("p"); paragraph.textContent = text;
-      article.append(heading, paragraph); sections.append(article);
-    });
-  };
-
-  // Content bindings only: header, preferences, rail drag and Canvas fitting
-  // remain owned by the existing shared runtimes on every locale route.
-  const gameScriptUrl = document.currentScript.src;
-  const mainRoot = $("mainScreen"), stageRoot = $("stageScreen"), battleRoot = $("battleScreen");
-  const stageCanvas = stageRoot.querySelector(".stage-canvas");
-  const battleCanvas = battleRoot.querySelector(".battle-canvas");
-  const battleHeader = battleCanvas.querySelector(".panel-head");
-  const battleContent = battleCanvas.querySelector(".battle-content");
-  const guide = document.querySelector("[data-wp-game-guide]");
-  const rail = $("stageList");
-  let generation = 0, leaveOpen = false, stageController = null, stageLoading = null;
-  const frontier = () => Math.min(state.completed, scenes.length - 1);
-
-  // Short control copy and the real leave consequence, in all supported locales.
-  const uiCopy = {
-    en: ["Check", "Reset", "Stages", "Next Stage", "Replay", "Leave this stage?", "Leave {stage}? Its current layer order will reset. Cleared stages stay saved.", "Continue playing", "Could not load stages. Try Start Game again."],
-    "zh-Hant": ["檢查疊影", "重設圖層", "關卡", "下一關", "重玩", "離開這一關？", "離開「{stage}」會重設本關的圖層排列；已通過的關卡仍會保留。", "繼續遊戲", "關卡載入失敗，請再按一次開始遊戲。"],
-    "zh-Hans": ["检查叠影", "重设图层", "关卡", "下一关", "重玩", "离开这一关？", "离开“{stage}”会重设本关的图层排列；已通过的关卡仍会保留。", "继续游戏", "关卡加载失败，请再按一次开始游戏。"],
-    ja: ["確認", "リセット", "ステージ", "次へ", "もう一度", "ステージを離れますか？", "「{stage}」を離れると、今のレイヤー配置はリセットされます。クリア済みのステージは保存されます。", "続ける", "読み込めませんでした。もう一度スタートしてください。"],
-    ko: ["확인", "초기화", "스테이지", "다음", "다시 하기", "스테이지를 나갈까요?", "{stage}에서 나가면 현재 레이어 순서가 초기화됩니다. 완료한 스테이지는 저장됩니다.", "계속하기", "스테이지를 불러오지 못했습니다. 시작을 다시 눌러 주세요."],
-    es: ["Comprobar", "Reiniciar", "Niveles", "Siguiente", "Repetir", "¿Salir del nivel?", "Al salir de {stage}, se reinicia el orden actual de las capas. Los niveles completados se conservan.", "Seguir jugando", "No se pudieron cargar los niveles. Vuelve a pulsar Iniciar."],
-    "pt-BR": ["Conferir", "Reiniciar", "Fases", "Próxima", "Repetir", "Sair desta fase?", "Ao sair de {stage}, a ordem atual das camadas será reiniciada. As fases concluídas continuam salvas.", "Continuar", "Não foi possível carregar as fases. Tente iniciar novamente."],
-    fr: ["Vérifier", "Réinitialiser", "Niveaux", "Suivant", "Rejouer", "Quitter ce niveau ?", "Quitter {stage} réinitialise l’ordre actuel des couches. Les niveaux terminés restent enregistrés.", "Continuer", "Impossible de charger les niveaux. Relancez le jeu."],
-    de: ["Prüfen", "Zurücksetzen", "Level", "Weiter", "Wiederholen", "Level verlassen?", "Beim Verlassen von {stage} wird die aktuelle Ebenenfolge zurückgesetzt. Abgeschlossene Level bleiben gespeichert.", "Weiterspielen", "Level konnten nicht geladen werden. Bitte erneut starten."],
-    it: ["Verifica", "Ripristina", "Livelli", "Avanti", "Rigioca", "Uscire dal livello?", "Uscendo da {stage}, l’ordine attuale dei livelli grafici viene ripristinato. I livelli completati restano salvati.", "Continua", "Impossibile caricare i livelli. Prova ad avviare di nuovo."],
-    ru: ["Проверить", "Сбросить", "Уровни", "Далее", "Повторить", "Выйти из уровня?", "При выходе из {stage} текущий порядок слоёв сбросится. Пройденные уровни сохранятся.", "Продолжить", "Не удалось загрузить уровни. Попробуйте начать снова."],
-    hi: ["जाँचें", "रीसेट", "स्तर", "अगला", "फिर खेलें", "यह स्तर छोड़ें?", "{stage} छोड़ने पर परतों का मौजूदा क्रम रीसेट होगा। पूरे किए गए स्तर सुरक्षित रहेंगे।", "खेल जारी रखें", "स्तर लोड नहीं हुए। खेल शुरू करने का बटन फिर दबाएँ।"],
-    ar: ["تحقّق", "إعادة ضبط", "المراحل", "التالية", "إعادة اللعب", "مغادرة المرحلة؟", "عند مغادرة {stage} يُعاد ضبط ترتيب الطبقات الحالي. تبقى المراحل المكتملة محفوظة.", "متابعة اللعب", "تعذّر تحميل المراحل. حاول بدء اللعبة مجدداً."]
-  };
-  const uiKeys = ["check", "reset", "map", "next", "replay", "leaveTitle", "leaveBody", "continuePlay", "stageLoadError"];
-  const uiOverrides = Object.fromEntries(Object.entries(uiCopy).map(([locale, values]) =>
-    [locale, Object.fromEntries(uiKeys.map((key, index) => [key, values[index]]))]));
-
-  // Remove the obsolete second Main action, score and post-mount coach.
-  // The shared Main composer keeps the poster/summary/progress/Start in flow.
-  mainRoot.querySelectorAll(".keeper-guide,.best-line,.guide-card").forEach(node => node.remove());
-  for (const id of ["stageBackBtn", "battleBackBtn"]) {
-    const back = $(id);
-    back.removeAttribute("data-copy");
-    if (!back.querySelector("span")) {
-      const arrow = document.createElement("span");
-      arrow.textContent = "←"; arrow.setAttribute("aria-hidden", "true");
-      back.replaceChildren(arrow);
-    }
+  // Remove obsolete Main-only decoration before the shared normalizer mounts.
+  $('mainScreen').querySelectorAll('.keeper-guide,.best-line,.guide-card').forEach(n => n.remove());
+  // Locale refresh must never replace the shared permanent arrow children.
+  for (const id of ['stageBackBtn', 'battleBackBtn']) {
+    const back = $(id); back.removeAttribute('data-copy');
+    if (!back.querySelector('span')) { const arrow = document.createElement('span'); arrow.textContent = '←'; arrow.setAttribute('aria-hidden', 'true'); back.replaceChildren(arrow); }
   }
-  document.documentElement.dataset.wpSharedInterface = "7";
-  rail.classList.add("stage-rail");
-  rail.dataset.wpStageCenterObserver = "manual";
-  stageCanvas.style.setProperty("--wp-stage-art", `url("${new URL("assets/animal-layer-grove-cover.png", gameScriptUrl).href}")`);
-  // A declared wide logical reference, not a second independent child scale.
-  battleCanvas.dataset.wpBattleLandscapeHeight = "390";
-  const targetGroup = document.createElement("div");
-  targetGroup.className = "target-group";
-  targetGroup.append($("groveIntro"), battleContent.querySelector(".target-card"));
-  battleContent.prepend(targetGroup);
-  const battleSettings = window.WeightPlayScreenFrame.createSettings({ localeSelect: $("localeSelect"), showLanguage: false, id: "layer-grove-battle" });
-  battleSettings.utility.dataset.wpBattleUtility = "";
-  battleHeader.append(battleSettings.utility);
-
-  const leavePanel = document.createElement("section");
-  leavePanel.id = "leavePanel"; leavePanel.className = "leave-panel";
-  leavePanel.hidden = true; leavePanel.inert = true;
-  leavePanel.setAttribute("role", "dialog"); leavePanel.setAttribute("aria-modal", "true");
-  leavePanel.setAttribute("aria-labelledby", "leaveTitle"); leavePanel.setAttribute("aria-describedby", "leaveText");
-  leavePanel.innerHTML = '<div class="leave-card"><h2 id="leaveTitle" data-copy="leaveTitle"></h2><p id="leaveText"></p><div class="leave-actions"><button id="continueBtn" class="primary-btn" type="button" data-copy="continuePlay"></button><button id="leaveBtn" class="secondary-btn" type="button" data-copy="map"></button></div></div>';
-  battleCanvas.append(leavePanel);
-  $("resultScreen").setAttribute("role", "dialog");
-  $("resultScreen").setAttribute("aria-modal", "true");
-  $("resultScreen").setAttribute("aria-labelledby", "resultTitle");
-  $("resultScreen").setAttribute("aria-describedby", "resultText");
-
-  const syncShared = () => {
-    window.dispatchEvent(new Event("weightplay:stage-sync"));
-    window.dispatchEvent(new Event("weightplay:shell-sync"));
-  };
-  const show = (screen) => {
-    const ticket = ++generation;
-    state.screen = screen; leaveOpen = false;
-    leavePanel.hidden = true; leavePanel.inert = true;
-    battleSettings.close();
-    const owner = screen === "result" ? "battle" : screen;
-    for (const [name, node] of Object.entries({ main: mainRoot, stage: stageRoot, battle: battleRoot })) {
-      node.hidden = name !== owner; node.inert = name !== owner;
-      node.setAttribute("aria-hidden", String(name !== owner));
-    }
-    document.body.dataset.screen = owner;
-    const settled = screen === "result";
-    battleCanvas.dataset.substate = settled ? "result" : "play";
-    $("resultScreen").hidden = !settled; $("resultScreen").inert = !settled;
-    battleContent.hidden = settled; battleContent.inert = settled;
-    battleHeader.hidden = settled; battleHeader.inert = settled;
-    if (guide) { guide.hidden = owner !== "main"; guide.inert = owner !== "main"; }
-    if (screen === "main") renderMain();
-    syncShared();
-    // Legacy shared discovery can reveal its header while synchronizing.
-    // The result still owns the covered state, including pointer/focus safety.
-    battleHeader.hidden = settled; battleHeader.inert = settled;
-    requestAnimationFrame(() => {
-      if (ticket !== generation) return;
-      if (screen === "stage") stageController?.center(frontier());
-      const focus = screen === "main" ? $("startBtn") : screen === "stage" ? rail.querySelector('[aria-current="true"]') : settled ? $("resultMapBtn") : $("battleBackBtn");
-      focus?.focus({ preventScroll: true });
-    });
-  };
-  const bindStage = (button, index) => {
-    const scene = scenes[index], locked = index > state.completed;
-    button.className = "stage-card";
-    button.setAttribute("role", "listitem");
-    button.classList.toggle("locked", locked);
-    button.dataset.stageId = scene.id;
-    button.dataset.wpStageRecommended = String(index === frontier());
-    button.setAttribute("aria-disabled", String(locked));
-    button.setAttribute("aria-label", `${t("round", { n: index + 1, total: scenes.length })}: ${t(scene.nameKey)} · ${t(locked ? "locked" : index < state.completed ? "complete" : "open")}`);
-    let content = button.querySelector("[data-wp-item-content]");
-    if (!content) {
-      content = document.createElement("span"); content.dataset.wpItemContent = "";
-      content.append(document.createElement("strong"), document.createElement("span"), document.createElement("small"));
-      button.replaceChildren(content);
-    }
-    content.children[0].textContent = t("round", { n: index + 1, total: scenes.length });
-    content.children[1].textContent = t(scene.nameKey);
-    content.children[2].textContent = t(index < state.completed ? "complete" : locked ? "locked" : "open");
-  };
-  const installStages = () => {
-    if (stageController) return stageController;
-    rail.removeAttribute("data-wp-stage-v6-auto");
-    stageController = window.WeightPlayStageV6.install(rail, {
-      total: scenes.length, poolSize: 9, initialIndex: frontier,
-      bind: bindStage,
-      activate: index => { if (state.screen === "stage") startScene(index); }
-    });
-    if (!stageController) throw new Error("Layer Grove shared Stage controller did not mount");
-    return stageController;
-  };
-  const loadStages = () => {
-    if (window.WeightPlayStageV6) return Promise.resolve().then(installStages);
-    if (stageLoading) return stageLoading;
-    stageLoading = new Promise((resolve, reject) => {
-      const existing = document.querySelector('script[src*="stage-virtualization-standard.js"]');
-      const script = existing || document.createElement("script");
-      const loaded = () => { cleanup(); resolve(); };
-      const failed = () => { cleanup(); script.remove(); reject(new Error("Shared Stage script unavailable")); };
-      const cleanup = () => { clearTimeout(deadline); script.removeEventListener("load", loaded); script.removeEventListener("error", failed); };
-      const deadline = setTimeout(failed, 10000);
-      script.addEventListener("load", loaded, { once: true });
-      script.addEventListener("error", failed, { once: true });
-      if (!existing) {
-        script.src = new URL("../../src/stage-virtualization-standard.js", gameScriptUrl).href;
-        script.dataset.wpStageVirtualizationStandard = "true";
-        document.body.append(script);
-      }
-    }).then(installStages).catch(error => { stageLoading = null; throw error; });
-    return stageLoading;
-  };
-  const renderStages = (reset = false) => {
-    if (!stageController) return;
-    const current = Number(rail.dataset.wpStageDragLogical);
-    stageController.refresh();
-    stageController.center(reset || !Number.isFinite(current) ? frontier() : current);
-  };
-  const renderTarget = (scene) => {
-    const wrap = $("targetWindow"), emblems = document.createElement("div"); emblems.className = "target-emblems";
-    expectedOrder(scene).forEach(id => {
-      const emblem = document.createElement("span"); emblem.className = `target-emblem layer-art layer-art-${id}`;
-      emblem.textContent = scene.glyphs[id]; emblem.setAttribute("aria-label", t(id)); emblems.append(emblem);
-    });
-    wrap.replaceChildren(emblems); $("targetCaption").textContent = t(scene.targetKey);
-  };
-  // Four stable rows: moves rebind content without replacing focused controls.
-  const layerRows = Array.from({ length: 4 }, (_, index) => {
-    const row = document.createElement("div"); row.className = "layer-row"; row.setAttribute("role", "listitem");
-    row.innerHTML = '<div class="layer-info"><span class="layer-glyph" aria-hidden="true"></span><span class="layer-copy"><strong></strong><small></small></span></div><button type="button" class="order-btn">↑</button><button type="button" class="order-btn">↓</button>';
-    const [up, down] = row.querySelectorAll("button");
-    up.addEventListener("click", () => moveLayer(index, -1));
-    down.addEventListener("click", () => moveLayer(index, 1));
-    return row;
+  $('startBtn').disabled = true;
+  Promise.all([
+    load('puzzle-engine.js', () => Boolean(window.LayerGrovePuzzle)),
+    load('puzzle-copy.js', () => Boolean(window.LayerGroveCopy)),
+  ]).then(boot).catch(error => {
+    if (abort.signal.aborted) return;
+    console.error('Layer Grove initialization failed', error);
+    const locale = document.documentElement.lang;
+    const messages = { en: 'Loading failed. Reload the page.', 'zh-Hant': '載入失敗，請重新整理。', 'zh-Hans': '加载失败，请刷新。', ja: '読み込み失敗。再読み込みしてください。', ko: '불러오기 실패. 새로고침하세요.', es: 'Error al cargar. Recarga la página.', 'pt-BR': 'Falha ao carregar. Recarregue a página.', fr: 'Échec du chargement. Rechargez la page.', de: 'Laden fehlgeschlagen. Seite neu laden.', it: 'Caricamento fallito. Ricarica la pagina.', ru: 'Ошибка загрузки. Обновите страницу.', hi: 'लोड नहीं हुआ। पृष्ठ दोबारा खोलें।', ar: 'تعذر التحميل. أعد تحميل الصفحة.' };
+    $('loadingScreen').classList.add('is-ready'); $('mainProgress').textContent = messages[locale] || messages.en;
   });
-  $("layerList").replaceChildren(...layerRows);
-  const renderLayers = () => {
-    const scene = currentScene();
-    layerRows.forEach((row, index) => {
-      const id = state.order[index]; row.hidden = !id;
-      if (!id) return;
-      row.dataset.depth = String(index); row.dataset.layerId = id;
-      const glyph = row.querySelector(".layer-glyph"); glyph.className = `layer-glyph layer-art layer-art-${id}`; glyph.textContent = scene.glyphs[id];
-      row.querySelector("strong").textContent = t(id);
-      row.querySelector("small").textContent = t("layerLabel", { name: t(id), depth: depthLabel(index) });
-      const [up, down] = row.querySelectorAll("button");
-      up.setAttribute("aria-label", t("moveForward", { name: t(id) }));
-      down.setAttribute("aria-label", t("moveBackward", { name: t(id) }));
-      up.disabled = index === 0; down.disabled = index === state.order.length - 1;
-    });
-    $("moveCount").textContent = t("moveCount", { n: state.sessionMoves });
-  };
-  const renderBattle = () => { const scene = currentScene(); $("groveLabel").textContent = t("round", { n: state.scene + 1, total: scenes.length }); $("groveIntro").textContent = `${t(scene.introKey)} ${t(scene.mechanicKey)}`; renderTarget(scene); renderLayers(); $("checkBtn").disabled = !state.order.length; };
-  const renderResult = () => {
-    const complete = state.completed >= scenes.length, finalStage = state.scene >= scenes.length - 1;
-    $("resultTitle").textContent = complete ? t("resultTitle") : t("resultPartial");
-    $("resultText").textContent = t("resultText", { count: state.completed, total: scenes.length, moves: state.sessionMoves });
-    $("resultMapBtn").textContent = t("map"); $("resultMapBtn").hidden = false;
-    $("resultPrimaryBtn").textContent = t("next"); $("resultPrimaryBtn").disabled = finalStage;
-    $("resultHomeBtn").textContent = t("replay");
-  };
-  const startScene = (index) => {
-    if (!Number.isInteger(index) || index < 0 || index >= scenes.length || index > state.completed) return;
-    state.scene = index; state.order = [...scenes[index].initial]; state.moves = 0;
-    if (index === 0) state.sessionMoves = 0;
-    show("battle"); renderBattle(); announce("waiting");
-    track("scene_start", { scene: index + 1, stageId: currentScene().id });
-  };
-  const canPlay = () => state.screen === "battle" && !leaveOpen;
-  const moveLayer = (index, direction) => {
-    if (!canPlay() || !Number.isInteger(index) || ![-1, 1].includes(direction)) return;
-    const next = index + direction;
-    if (index < 0 || index >= state.order.length || next < 0 || next >= state.order.length) return;
-    [state.order[index], state.order[next]] = [state.order[next], state.order[index]];
-    state.moves += 1; state.sessionMoves += 1;
-    renderLayers(); announce("selected"); tone("board.move"); track("layer_move", { scene: state.scene + 1, moves: state.sessionMoves });
-  };
-  const resetLayers = () => { if (!canPlay()) return; state.order = [...currentScene().initial]; renderLayers(); announce("waiting"); track("layer_reset", { scene: state.scene + 1 }); };
-  const checkWindow = () => {
-    if (!canPlay()) return;
-    const scene = currentScene(); if (!state.order.length) return; const expected = expectedOrder(scene);
-    const matched = expected.every((id, index) => state.order[index] === id) && (scene.decoy ? state.order[state.order.length - 1] === scene.decoy : true);
-    if (!matched) {
-      const mismatch = expected.findIndex((id, index) => state.order[index] !== id), expectedId = mismatch >= 0 ? expected[mismatch] : scene.decoy;
-      announce("wrong", { hint: t("placementHint", { name: t(expectedId), depth: depthLabel(mismatch >= 0 ? mismatch : state.order.length - 1) }) }, "wrong");
-      tone("feedback.error"); track("window_check", { scene: state.scene + 1, result: "wrong" }); return;
-    }
-    state.completed = Math.max(state.completed, state.scene + 1); saveProgress(); announce("correct", {}, "correct"); tone("feedback.success");
-    track("window_check", { scene: state.scene + 1, result: "correct" }); if (state.completed >= scenes.length) saveBest();
-    show("result"); renderResult();
-  };
-  const openStage = async () => {
-    const ticket = generation;
-    $("startBtn").disabled = true;
+  function boot() {
+    if (abort.signal.aborted) return;
+    const E = window.LayerGrovePuzzle, catalogs = window.LayerGroveCopy, oldLocales = window.ANIMAL_LAYER_GROVE_LOCALES || {};
+    const levels = E.levels, symbols = ['▲', '●', '◆', '✚', '★'];
+    const saveKey = 'weightplay-animal-layer-grove-occlusion-v1';
+    let record = { schema: 1, completed: 0, best: {}, stars: {} };
     try {
-      await loadStages();
-      if (ticket !== generation) return;
-      renderStages(true); show("stage"); stageController.center(frontier());
-    } catch (error) {
-      if (ticket !== generation) return;
-      console.error("Layer Grove Stage loading failed", error);
-      if (state.screen === "main") $("mainProgress").textContent = t("stageLoadError");
-    } finally { $("startBtn").disabled = false; }
-  };
-  const continuePlaying = () => {
-    if (!leaveOpen) return;
-    leaveOpen = false; leavePanel.hidden = true; leavePanel.inert = true;
-    battleContent.inert = false; battleHeader.inert = false;
-    $("battleBackBtn").focus({ preventScroll: true });
-  };
-  const askLeave = () => {
-    if (!canPlay()) return;
-    leaveOpen = true; battleSettings.close();
-    $("leaveText").textContent = t("leaveBody", { stage: t(currentScene().nameKey) });
-    leavePanel.hidden = false; leavePanel.inert = false;
-    battleContent.inert = true; battleHeader.inert = true;
-    $("continueBtn").focus({ preventScroll: true });
-  };
-  const trapDialog = (event, panel) => {
-    if (event.key !== "Tab") return;
-    const controls = [...panel.querySelectorAll("button:not(:disabled)")].filter(node => !node.hidden);
-    const first = controls[0], last = controls.at(-1);
-    if (!panel.contains(document.activeElement) || (event.shiftKey && document.activeElement === first)) { event.preventDefault(); (event.shiftKey ? last : first)?.focus(); }
-    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
-  };
-  document.addEventListener("keydown", event => {
-    if (leaveOpen) {
-      if (event.key === "Escape") { event.preventDefault(); continuePlaying(); }
-      else trapDialog(event, leavePanel);
-    } else if (state.screen === "result") trapDialog(event, $("resultScreen"));
-  });
-  const applyLocale = () => {
-    document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-copy]").forEach(node => {
-      // Never replace the shared return's permanent arrow/logo children.
-      if (node.hasAttribute("data-wp-return")) node.setAttribute("aria-label", t(node.dataset.copy));
-      else node.textContent = t(node.dataset.copy);
+      const saved = JSON.parse(localStorage.getItem(saveKey));
+      if (saved?.schema === 1) {
+        if (Number.isInteger(saved.completed)) record.completed = Math.max(0, Math.min(levels.length, saved.completed));
+        for (let i = 0; i < levels.length; i += 1) {
+          if (Number.isInteger(saved.best?.[i]) && saved.best[i] > 0 && saved.best[i] <= 1000000) record.best[i] = saved.best[i];
+          if (Number.isInteger(saved.stars?.[i]) && saved.stars[i] >= 1 && saved.stars[i] <= 3) record.stars[i] = saved.stars[i];
+        }
+      }
+    } catch { /* Storage is optional; retain this session's record. */ }
+    const pickLocale = () => {
+      const query = new URLSearchParams(location.search).get('lang');
+      if (catalogs[query]) return query;
+      if (catalogs[document.documentElement.lang]) return document.documentElement.lang;
+      try { const saved = localStorage.getItem('weightPlayLocale'); if (catalogs[saved]) return saved; } catch { /* Session only. */ }
+      return 'en';
+    };
+    const state = { locale: pickLocale(), screen: 'main', scene: 0, puzzle: E.initial(levels[0]), moves: 0, hints: 0, selected: 0 };
+    let generation = 0, focusFrame = 0, leaveOpen = false, history = [], inspected = false, checked = null, hintCells = [];
+    let stageController = null, stagePromise = null, entering = false;
+    const main = $('mainScreen'), stage = $('stageScreen'), battle = $('battleScreen');
+    const stageCanvas = stage.querySelector('.stage-canvas'), canvas = battle.querySelector('.battle-canvas');
+    const header = battle.querySelector('.panel-head'), content = battle.querySelector('.battle-content');
+    const rail = $('stageList'), result = $('resultScreen'), guide = document.querySelector('[data-wp-game-guide]');
+    const t = (key, vars = {}) => {
+      let text = catalogs[state.locale]?.[key] ?? oldLocales[state.locale]?.[key] ?? catalogs.en[key] ?? oldLocales.en?.[key] ?? key;
+      for (const [name, value] of Object.entries(vars)) text = String(text).replaceAll(`{${name}}`, String(value));
+      return text;
+    };
+    const current = () => levels[state.scene];
+    const frontier = () => Math.min(record.completed, levels.length - 1);
+    const coord = p => `${'ABCD'[p % 4]}${Math.floor(p / 4) + 1}`;
+    const icon = i => symbols[i] || '·';
+    const play = cue => window.WeightPlayAudio?.play?.(cue);
+    const track = (event, detail = {}) => {
+      // Local diagnostics do not emit production analytics.
+      if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
+      window.dispatchEvent(new CustomEvent('weightplay:analytics', { detail: { game: 'animal-layer-grove', event, scene: state.scene + 1, revision: 'occlusion-v1', ...detail } }));
+    };
+    const save = () => { try { localStorage.setItem(saveKey, JSON.stringify(record)); } catch { /* Session progress survives unavailable storage. */ } };
+    const feedback = (text, kind = '') => { $('battleStatus').textContent = text; $('battleStatus').dataset.kind = kind; };
+    const description = rule => {
+      const [type, subject, value] = rule;
+      if (type === 'cell') return `${coord(subject)} → ${icon(value)}`;
+      if (type === 'count') return `${t('total')} ${icon(subject)} = ${value}`;
+      return `${t(type, { n: type === 'row' ? subject[0] + 1 : 'ABCD'[subject[0]] })} ${icon(subject[1])} = ${value}`;
+    };
+    const scope = rule => {
+      if (rule[0] === 'cell') return [rule[1]];
+      if (rule[0] === 'row') return Array.from({ length: 4 }, (_, x) => rule[1][0] * 4 + x);
+      if (rule[0] === 'column') return Array.from({ length: 4 }, (_, y) => y * 4 + rule[1][0]);
+      return Array.from({ length: 16 }, (_, i) => i);
+    };
+    document.documentElement.dataset.wpSharedInterface = '7';
+    root.dataset.wpGameplayRevision = 'occlusion-v1';
+    rail.classList.add('stage-rail'); rail.dataset.wpStageCenterObserver = 'manual';
+    rail.removeAttribute('data-wp-stage-v6-auto');
+    stageCanvas.style.setProperty('--wp-stage-art', `url("${new URL('assets/animal-layer-grove-cover.png', gameURL).href}")`);
+    // Same shared scaler; declare enough logical height for five 44px rows.
+    canvas.dataset.wpBattleMinHeight = '844'; canvas.dataset.wpBattleLandscapeWidth = '760'; canvas.dataset.wpBattleLandscapeHeight = '390';
+    content.innerHTML = '<section class="puzzle-scene"><h3 data-puzzle-copy="scene"></h3><div class="puzzle-board-wrap"><div id="puzzleBoard" class="puzzle-board" dir="ltr"></div></div></section><section class="puzzle-layers"><div class="puzzle-heading"><h3 data-puzzle-copy="layers"></h3><small data-puzzle-copy="frontBack"></small></div><div id="layerList" class="puzzle-layer-list"></div></section><section class="puzzle-goals"><h3 data-puzzle-copy="clues"></h3><ol id="clueList"></ol><p id="battleStatus" role="status" aria-live="polite"></p></section><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-puzzle-copy="check"></button><button id="undoBtn" class="order-btn" type="button">↶</button><button id="hintBtn" class="order-btn" type="button">?</button><button id="resetBtn" class="order-btn" type="button">⟲</button></div>';
+    const battleSettings = window.WeightPlayScreenFrame.createSettings({ localeSelect: $('localeSelect'), showLanguage: false, id: 'layer-grove-battle' });
+    battleSettings.utility.dataset.wpBattleUtility = ''; header.append(battleSettings.utility);
+    const leave = document.createElement('section');
+    leave.id = 'leavePanel'; leave.className = 'leave-panel'; leave.hidden = true; leave.inert = true;
+    leave.setAttribute('role', 'dialog'); leave.setAttribute('aria-modal', 'true'); leave.setAttribute('aria-labelledby', 'leaveTitle'); leave.setAttribute('aria-describedby', 'leaveText');
+    leave.innerHTML = '<div class="leave-card"><h2 id="leaveTitle" data-puzzle-copy="leaveTitle"></h2><p id="leaveText"></p><div class="leave-actions"><button id="continueBtn" class="primary-btn" type="button" data-puzzle-copy="continuePlay"></button><button id="leaveBtn" class="secondary-btn" type="button" data-puzzle-copy="map"></button></div></div>';
+    canvas.append(leave);
+    result.setAttribute('role', 'dialog'); result.setAttribute('aria-modal', 'true'); result.setAttribute('aria-labelledby', 'resultTitle'); result.setAttribute('aria-describedby', 'resultText');
+    const medal = document.createElement('p'); medal.id = 'resultGrade'; $('resultText').after(medal);
+    const cells = [];
+    for (let y = -1; y < 4; y += 1) for (let x = -1; x < 4; x += 1) {
+      const node = document.createElement(x < 0 || y < 0 ? 'span' : 'button');
+      if (x < 0 || y < 0) { node.className = 'puzzle-coordinate'; node.textContent = y < 0 ? (x < 0 ? '' : 'ABCD'[x]) : String(y + 1); node.setAttribute('aria-hidden', 'true'); }
+      else {
+        const p = y * 4 + x; node.type = 'button'; node.className = 'puzzle-cell'; node.dataset.cell = coord(p); cells.push(node);
+        listen(node, 'click', () => { if (!canPlay()) return; const i = E.compose(current(), state.puzzle)[p]; if (i >= 0) select(i); });
+      }
+      $('puzzleBoard').append(node);
+    }
+    // A stable row pool preserves focus and control rectangles after every move.
+    const rows = Array.from({ length: 5 }, (_, index) => {
+      const row = document.createElement('div'); row.className = 'puzzle-layer-row';
+      row.innerHTML = '<button class="layer-inspect" type="button"><span class="layer-symbol" aria-hidden="true"></span><span class="layer-mini" aria-hidden="true"></span></button><button class="order-btn" type="button">↑</button><button class="order-btn" type="button">↓</button><button class="order-btn" type="button">↻</button>';
+      for (let p = 0; p < 16; p += 1) row.querySelector('.layer-mini').append(document.createElement('i'));
+      const [inspect, up, down, turn] = row.querySelectorAll('button');
+      listen(inspect, 'click', () => { if (canPlay()) select(state.puzzle.order[index]); });
+      listen(up, 'click', () => change({ type: 'swap', index, direction: -1 }));
+      listen(down, 'click', () => change({ type: 'swap', index, direction: 1 }));
+      listen(turn, 'click', () => change({ type: 'rotate', index: state.puzzle.order[index] }));
+      $('layerList').append(row); return row;
     });
-    $("stageBackBtn").setAttribute("aria-label", t("back")); $("battleBackBtn").setAttribute("aria-label", t("back"));
-    $("localeSelect").value = state.locale; $("localeSelect").setAttribute("aria-label", t("language"));
-    $("soundState").textContent = state.sound ? t("on") : t("off"); $("soundBtn").setAttribute("aria-pressed", String(state.sound));
-    renderMain();
-    if (state.screen === "stage") renderStages();
-    if (state.screen === "battle") renderBattle();
-    if (state.screen === "result") renderResult();
-    if (leaveOpen) $("leaveText").textContent = t("leaveBody", { stage: t(currentScene().nameKey) });
-    battleSettings.refresh();
-  };
-  const installSoundBridge = () => {
-    if (typeof window.WeightPlayAudio.isMuted === "function") state.sound = !window.WeightPlayAudio.isMuted();
-    window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); applyLocale(); });
-  };
-  $("startBtn").addEventListener("click", openStage);
-  $("stageBackBtn").addEventListener("click", () => show("main"));
-  $("battleBackBtn").addEventListener("click", askLeave);
-  $("continueBtn").addEventListener("click", continuePlaying);
-  $("leaveBtn").addEventListener("click", () => { if (leaveOpen) void openStage(); });
-  $("resultMapBtn").addEventListener("click", () => { if (state.screen === "result") void openStage(); });
-  $("resultPrimaryBtn").addEventListener("click", () => { if (state.screen === "result") startScene(state.scene + 1); });
-  $("resultHomeBtn").addEventListener("click", () => { if (state.screen === "result") startScene(state.scene); });
-  $("checkBtn").addEventListener("click", checkWindow); $("resetBtn").addEventListener("click", resetLayers);
-  $("soundBtn").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); });
-  $("localeSelect").addEventListener("change", event => {
-    state.locale = locales[event.target.value] ? event.target.value : "en";
-    try { localStorage.setItem("weightPlayLocale", state.locale); } catch (_) {}
-    applyLocale(); syncShared();
-  });
-  const initialLocale = () => {
-    const query = new URLSearchParams(window.location.search).get("lang"); if (query && locales[query]) return query;
-    const routeLocale = document.documentElement.lang; if (routeLocale && locales[routeLocale]) return routeLocale;
-    try { const saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale"); if (saved && locales[saved]) return saved; } catch (_) {}
-    return "en";
-  };
-  state.locale = initialLocale(); installSoundBridge(); ensureGuideDepth(); applyLocale(); show("main");
-  $("loadingScreen").classList.add("is-ready");
-  window.__ANIMAL_LAYER_GROVE_TEST__ = { scenes, startScene, moveLayer, resetLayers, checkWindow, getState: () => ({ ...state, leaveOpen, order: [...state.order] }) };
+    const clueNodes = Array.from({ length: 4 }, () => {
+      const li = document.createElement('li'); li.innerHTML = '<span class="clue-state" aria-hidden="true">○</span><span class="clue-text"></span>';
+      $('clueList').append(li); return li;
+    });
+    // Replace obsolete target-order/arc advice once; guide stays Main's sibling.
+    const guideSections = guide?.querySelector('.game-info-sections');
+    if (guideSections) {
+      guideSections.replaceChildren();
+      for (const [title, text] of [['howTitle', 'guideControls'], ['rulesTitle', 'guideRules'], ['progressTitle', 'guideProgression'], ['saveTitle', 'guideSave'], ['tipsTitle', 'guideTips']]) {
+        const article = document.createElement('article'); article.className = 'game-info-section';
+        const h3 = document.createElement('h3'), p = document.createElement('p'); h3.dataset.puzzleCopy = title; p.dataset.puzzleCopy = text; article.append(h3, p); guideSections.append(article);
+      }
+    }
+    const canPlay = () => state.screen === 'battle' && !leaveOpen && !entering;
+    function renderMain() {
+      const text = t('progress', { n: record.completed, total: levels.length });
+      $('mainProgress').textContent = text;
+      main.querySelectorAll('.wp-standard-main-progress').forEach(n => { n.textContent = text; });
+      main.querySelectorAll('.wp-standard-main-summary,[data-copy="intro"]').forEach(n => { n.textContent = t('intro'); });
+    }
+    function draw() {
+      const level = current(), evaluated = E.evaluate(level, state.puzzle);
+      const footprint = E.maskAt(level.masks[state.selected], state.puzzle.turns[state.selected]);
+      const highlighted = new Set(checked ? checked.checks.filter(c => !c.met).flatMap(c => scope(c.rule)) : hintCells);
+      cells.forEach((cell, p) => {
+        const i = evaluated.board[p]; cell.dataset.layer = String(i); cell.textContent = icon(i);
+        cell.classList.toggle('is-inspected', inspected && Boolean(footprint & (1 << p)));
+        cell.classList.toggle('is-clue', highlighted.has(p));
+        cell.setAttribute('aria-label', t('boardCell', { cell: coord(p), symbol: i < 0 ? t('empty') : icon(i) }));
+      });
+      rows.forEach((row, index) => {
+        const id = state.puzzle.order[index]; row.hidden = id === undefined;
+        if (id === undefined) return;
+        row.dataset.layer = String(id); row.dataset.layerId = String(id);
+        const [inspect, up, down, turn] = row.querySelectorAll('button');
+        row.querySelector('.layer-symbol').textContent = icon(id);
+        const mask = E.maskAt(level.masks[id], state.puzzle.turns[id]);
+        [...row.querySelector('.layer-mini').children].forEach((cell, p) => { cell.classList.toggle('solid', Boolean(mask & (1 << p))); });
+        inspect.setAttribute('aria-label', t('inspect', { symbol: icon(id) })); inspect.setAttribute('aria-pressed', String(inspected && id === state.selected));
+        up.disabled = index === 0; down.disabled = index === level.masks.length - 1; turn.disabled = !level.rotatable.includes(id);
+        for (const [button, key] of [[up, 'forward'], [down, 'backward'], [turn, 'rotate']]) { const label = t(key, { symbol: icon(id) }); button.setAttribute('aria-label', label); button.title = button === turn && turn.disabled ? t('rotationLocked') : label; }
+      });
+      clueNodes.forEach((li, i) => {
+        const rule = level.clues[i]; li.hidden = !rule;
+        if (!rule) return;
+        li.querySelector('.clue-text').textContent = description(rule);
+        li.querySelector('.clue-state').textContent = checked ? (checked.checks[i].met ? '✓' : '×') : '○';
+        li.dataset.met = checked ? String(checked.checks[i].met) : '';
+      });
+      $('groveLabel').textContent = t('stage', { n: state.scene + 1, total: levels.length });
+      $('moveCount').textContent = t('moves', { n: state.moves });
+      $('undoBtn').disabled = history.length === 0;
+    }
+    function select(id) { if (!Number.isInteger(id) || id < 0 || id >= current().masks.length) return; state.selected = id; inspected = true; draw(); feedback(t('inspectText', { symbol: icon(id) })); }
+    function remember() { history.push(E.copy(state.puzzle)); if (history.length > 128) history.shift(); }
+    function change(action) {
+      if (!canPlay()) return;
+      const next = E.act(current(), state.puzzle, action); if (!next) return;
+      remember(); state.puzzle = next; state.moves += 1; checked = null; hintCells = [];
+      draw(); feedback(t('changed')); play('board.move'); track('layer_move', { moves: state.moves, action: action.type });
+    }
+    function undo() { if (!canPlay() || !history.length) return; state.puzzle = history.pop(); checked = null; hintCells = []; draw(); feedback(t('changed')); play('board.move'); }
+    function resetLayers() {
+      if (!canPlay()) return;
+      const initial = E.initial(current());
+      if (JSON.stringify(initial) === JSON.stringify(state.puzzle)) return;
+      remember(); state.puzzle = initial; state.moves += 1; checked = null; hintCells = []; draw(); feedback(t('ready')); track('layer_reset');
+    }
+    function hint() {
+      if (!canPlay()) return;
+      const evaluated = E.evaluate(current(), state.puzzle), unmet = evaluated.checks.filter(c => !c.met);
+      if (!unmet.length) { feedback(t('changed')); return; }
+      state.hints += 1; const clue = unmet[(state.hints - 1) % unmet.length];
+      checked = null; hintCells = scope(clue.rule);
+      draw(); feedback(`${description(clue.rule)}. ${t('hintText')}`); track('puzzle_hint', { hints: state.hints });
+    }
+    function checkWindow() {
+      if (!canPlay()) return;
+      checked = E.evaluate(current(), state.puzzle); draw();
+      if (!checked.solved) { feedback(t('wrong', { n: checked.checks.filter(c => !c.met).length }), 'wrong'); play('feedback.error'); track('window_check', { result: 'wrong' }); return; }
+      const stars = state.hints ? 1 : state.moves <= current().par + 2 ? 3 : 2;
+      record.completed = Math.max(record.completed, state.scene + 1);
+      record.best[state.scene] = Math.min(record.best[state.scene] || Infinity, state.moves);
+      record.stars[state.scene] = Math.max(record.stars[state.scene] || 0, stars); save();
+      track('window_check', { result: 'correct', moves: state.moves, hints: state.hints, stars }); play('feedback.success');
+      show('result'); renderResult(stars);
+    }
+    function renderResult(stars) {
+      $('resultTitle').textContent = t('resultTitle');
+      $('resultText').textContent = t('resultText', { moves: state.moves, hints: state.hints, best: record.best[state.scene] });
+      medal.textContent = `${t('grade', { stars: stars ?? (state.hints ? 1 : state.moves <= current().par + 2 ? 3 : 2) })} · ★★★ ≤ ${current().par + 2}`;
+      $('resultMapBtn').textContent = t('map'); $('resultMapBtn').hidden = false;
+      $('resultPrimaryBtn').textContent = t('next'); $('resultPrimaryBtn').disabled = state.scene >= levels.length - 1 || state.scene + 1 > record.completed;
+      $('resultHomeBtn').textContent = t('replay');
+    }
+    function startScene(index) {
+      if (!Number.isInteger(index) || index < 0 || index >= levels.length || index > record.completed) return;
+      state.scene = index; state.puzzle = E.initial(current()); state.moves = 0; state.hints = 0; state.selected = state.puzzle.order[0];
+      history = []; inspected = false; checked = null; hintCells = [];
+      show('battle'); draw(); feedback(t('ready')); track('scene_start', { stageId: current().id });
+    }
+    function syncShared() { window.dispatchEvent(new Event('weightplay:stage-sync')); window.dispatchEvent(new Event('weightplay:shell-sync')); }
+    function show(screen) {
+      const ticket = ++generation; cancelAnimationFrame(focusFrame);
+      state.screen = screen; leaveOpen = false; leave.hidden = true; leave.inert = true; battleSettings.close();
+      const owner = screen === 'result' ? 'battle' : screen;
+      for (const [name, node] of Object.entries({ main, stage, battle })) { node.hidden = name !== owner; node.inert = name !== owner; node.setAttribute('aria-hidden', String(name !== owner)); }
+      root.dataset.screen = owner; canvas.dataset.substate = screen === 'result' ? 'result' : 'play';
+      const settled = screen === 'result'; result.hidden = !settled; result.inert = !settled; content.hidden = settled; content.inert = settled; header.hidden = settled; header.inert = settled;
+      if (guide) { guide.hidden = owner !== 'main'; guide.inert = owner !== 'main'; }
+      if (owner === 'main') renderMain(); syncShared(); header.hidden = settled; header.inert = settled;
+      focusFrame = requestAnimationFrame(() => { if (ticket !== generation) return; if (screen === 'stage') stageController?.center(frontier()); (screen === 'main' ? $('startBtn') : screen === 'stage' ? rail.querySelector('[aria-current="true"]') : settled ? $('resultMapBtn') : $('battleBackBtn'))?.focus({ preventScroll: true }); });
+    }
+    function bindStage(button, index) {
+      const locked = index > record.completed;
+      button.className = 'stage-card'; button.classList.toggle('locked', locked); button.dataset.stageId = levels[index].id;
+      button.dataset.wpStageRecommended = String(index === frontier()); button.setAttribute('aria-disabled', String(locked));
+      let copy = button.querySelector('[data-wp-item-content]');
+      if (!copy) { copy = document.createElement('span'); copy.dataset.wpItemContent = ''; copy.append(document.createElement('strong'), document.createElement('span'), document.createElement('small')); button.replaceChildren(copy); }
+      copy.children[0].textContent = t('stage', { n: index + 1, total: levels.length });
+      copy.children[1].textContent = catalogs[state.locale].chapters[levels[index].chapter];
+      copy.children[2].textContent = record.stars[index] ? `${'★'.repeat(record.stars[index])} · ${t('best', { n: record.best[index] })}` : t(locked ? 'locked' : 'open');
+      button.setAttribute('aria-label', [...copy.children].map(n => n.textContent).join('. '));
+    }
+    function getStageController() {
+      if (stageController) return Promise.resolve(stageController);
+      if (stagePromise) return stagePromise;
+      stagePromise = load('../../src/stage-virtualization-standard.js', () => Boolean(window.WeightPlayStageV6)).then(() => {
+        rail.removeAttribute('data-wp-stage-v6-auto');
+        stageController = window.WeightPlayStageV6.install(rail, { total: levels.length, poolSize: 9, initialIndex: frontier, bind: bindStage, activate: index => { if (state.screen === 'stage') startScene(index); } });
+        if (!stageController) throw new Error('STAGE_MOUNT_FAILED'); return stageController;
+      }).catch(error => { stagePromise = null; throw error; }); return stagePromise;
+    }
+    async function openStage() {
+      if (entering) return; entering = true; const ticket = generation; $('startBtn').disabled = true;
+      try {
+        const controller = await getStageController(); if (ticket !== generation || abort.signal.aborted) return;
+        controller.refresh(); show('stage'); controller.center(frontier());
+      } catch (error) {
+        if (ticket !== generation || abort.signal.aborted) return;
+        console.error('Layer Grove Stage load failed', error);
+        if (state.screen === 'main') $('mainProgress').textContent = t('loadError'); else if (leaveOpen) $('leaveText').textContent = t('loadError'); else $('resultText').textContent = t('loadError');
+      } finally { entering = false; $('startBtn').disabled = false; }
+    }
+    function continuePlaying() { if (!leaveOpen || entering) return; leaveOpen = false; leave.hidden = true; leave.inert = true; content.inert = false; header.inert = false; $('battleBackBtn').focus({ preventScroll: true }); }
+    function askLeave() {
+      if (!canPlay()) return; leaveOpen = true; battleSettings.close();
+      $('leaveText').textContent = t('leaveBody', { n: state.scene + 1 }); leave.hidden = false; leave.inert = false; content.inert = true; header.inert = true; $('continueBtn').focus({ preventScroll: true });
+    }
+    function trap(event, panel) {
+      if (event.key !== 'Tab') return;
+      const controls = [...panel.querySelectorAll('button:not(:disabled)')].filter(n => !n.hidden), first = controls[0], last = controls.at(-1);
+      if (!panel.contains(document.activeElement) || (event.shiftKey && document.activeElement === first)) { event.preventDefault(); (event.shiftKey ? last : first)?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    }
+    function applyLocale() {
+      document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === 'ar' ? 'rtl' : 'ltr';
+      const overrides = { intro: t('intro'), start: t('start'), groves: t('map'), guideSummary: t('intro'), gameplayValue: t('rulesTitle'), guideTitle: t('howTitle') };
+      document.querySelectorAll('[data-copy]').forEach(node => {
+        const key = node.dataset.copy;
+        if (node.hasAttribute('data-wp-game-title')) return;
+        const text = overrides[key] ?? oldLocales[state.locale]?.[key];
+        if (text !== undefined) { if (node.hasAttribute('data-wp-return')) node.setAttribute('aria-label', text); else node.textContent = text; }
+      });
+      document.querySelectorAll('[data-puzzle-copy]').forEach(n => { n.textContent = t(n.dataset.puzzleCopy); });
+      for (const [id, key] of [['undoBtn', 'undo'], ['hintBtn', 'hint'], ['resetBtn', 'reset'], ['stageBackBtn', 'back'], ['battleBackBtn', 'back']]) { $(id).setAttribute('aria-label', t(key)); $(id).title = t(key); }
+      $('localeSelect').value = state.locale; renderMain();
+      if (state.screen === 'stage' && stageController) { const index = Number(rail.dataset.wpStageDragLogical); stageController.refresh(); stageController.center(Number.isFinite(index) ? index : frontier()); }
+      if (state.screen === 'battle') { draw(); feedback(t('ready')); }
+      if (state.screen === 'result') renderResult();
+      if (leaveOpen) $('leaveText').textContent = t('leaveBody', { n: state.scene + 1 });
+      battleSettings.refresh();
+    }
+    listen($('startBtn'), 'click', openStage); listen($('stageBackBtn'), 'click', () => show('main'));
+    listen($('battleBackBtn'), 'click', askLeave); listen($('continueBtn'), 'click', continuePlaying); listen($('leaveBtn'), 'click', () => { if (leaveOpen) void openStage(); });
+    listen($('resultMapBtn'), 'click', () => { if (state.screen === 'result') void openStage(); });
+    listen($('resultPrimaryBtn'), 'click', () => { if (state.screen === 'result') startScene(state.scene + 1); });
+    listen($('resultHomeBtn'), 'click', () => { if (state.screen === 'result') startScene(state.scene); });
+    listen($('checkBtn'), 'click', checkWindow); listen($('undoBtn'), 'click', undo); listen($('hintBtn'), 'click', hint); listen($('resetBtn'), 'click', resetLayers);
+    listen(document, 'keydown', event => { if (leaveOpen) { if (event.key === 'Escape') { event.preventDefault(); continuePlaying(); } else trap(event, leave); } else if (state.screen === 'result') trap(event, result); });
+    listen($('localeSelect'), 'change', event => { if (!catalogs[event.target.value]) return; state.locale = event.target.value; try { localStorage.setItem('weightPlayLocale', state.locale); } catch { /* Session locale still changes. */ } applyLocale(); syncShared(); });
+    listen(window, 'weightplay:audio-volume-change', () => battleSettings.refresh());
+    listen($('soundBtn'), 'click', () => window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio.isMuted()));
+    listen(window, 'pagehide', event => { if (event.persisted) return; ++generation; cancelAnimationFrame(focusFrame); stageController?.destroy(); battleSettings.destroy(); abort.abort(); });
+    applyLocale(); show('main'); $('startBtn').disabled = false; $('loadingScreen').classList.add('is-ready');
+    window.__ANIMAL_LAYER_GROVE_TEST__ = Object.freeze({
+      levels, startScene, moveLayer: (index, direction) => change({ type: 'swap', index, direction }), rotateLayer: index => change({ type: 'rotate', index }), resetLayers, undo, checkWindow,
+      getState: () => ({ locale: state.locale, screen: state.screen, scene: state.scene, moves: state.moves, hints: state.hints, leaveOpen, completed: record.completed, historyLength: history.length, order: [...state.puzzle.order], turns: [...state.puzzle.turns] }),
+    });
+  }
 })();

@@ -1,5 +1,5 @@
-/* Layer Grove content only. Shared frame/theme own Main, headers, poster,
-   preferences, Stage cards, guide and Canvas scaling. No private shell skin. */
+/* Game content only. Shared frame/theme own Main, headers, poster,
+   preferences, Stage selection, guide and the single Canvas scale. */
 :root{color-scheme:dark;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
@@ -7,54 +7,71 @@ button,a,select{font:inherit}
 [hidden]{display:none!important}
 .screen{width:min(100%,920px);margin-inline:auto}
 #mainScreen{padding:0}
-/* The Stage's flexible selector track is not a second 48px header row. */
-#stageScreen .stage-canvas{position:relative;display:grid;grid-template-rows:48px minmax(0,1fr) 56px;gap:0;width:100%;min-height:100%}
+#stageScreen .stage-canvas{position:relative;display:grid;grid-template-rows:var(--wp-frame-play-header-height,56px) minmax(0,1fr) 56px;gap:0;width:100%;min-height:100%}
 #stageScreen .stage-tabs{grid-row:3;display:flex;align-items:center;justify-content:center;gap:8px;margin:0;padding:4px}
 #stageScreen .stage-tabs>button{flex:1}
 #stageScreen .stage-rail{min-height:0;align-self:stretch}
-#battleScreen .battle-canvas{position:relative;display:grid;grid-template-rows:48px minmax(0,1fr);gap:0;width:100%;min-height:100%;container-type:size;container-name:grove-battle}
+#battleScreen .battle-canvas{position:relative;display:grid;grid-template-rows:var(--wp-frame-play-header-height,56px) minmax(0,1fr);gap:0;width:100%;min-height:100%;container-type:size;container-name:grove-battle}
 #battleScreen .battle-tools{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;overflow:hidden}
 #battleScreen .battle-tools>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700;color:var(--wp-ui-text)}
-/* A single bounded play workspace: all persistent actions remain in flow. */
-#battleScreen .battle-content{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(236px,1fr) 268px 56px 52px;gap:8px;min-width:0;min-height:0;max-width:none;width:100%;margin:0;padding:12px;overflow:hidden;color:var(--wp-ui-text)}
-#battleScreen .target-group{display:grid;grid-template-rows:56px minmax(0,1fr);gap:8px;min-width:0;min-height:0}
-#battleScreen :is(.grove-intro,.target-card,.layer-card,.battle-status){margin:0;padding:8px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);min-width:0;min-height:0}
-#battleScreen .grove-intro{overflow:auto;font-size:13px;line-height:1.45;touch-action:pan-y;overscroll-behavior:contain}
-#battleScreen .target-card{display:grid;grid-template-rows:20px minmax(64px,1fr) 56px;gap:8px;overflow:hidden}
-#battleScreen :is(.target-card h3,.layer-card h3){margin:0;font-size:15px;line-height:20px;color:var(--wp-ui-text)}
-#battleScreen .target-window{position:relative;display:grid;place-items:center;min-width:0;min-height:0;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);overflow:hidden;background:var(--wp-ui-background)}
-#battleScreen .target-emblems{display:flex;align-items:center;justify-content:center;gap:8px}
-#battleScreen .target-emblem{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);font-size:28px}
-#battleScreen .target-caption{margin:0;overflow:auto;font-size:13px;line-height:1.4;color:var(--wp-ui-muted);touch-action:pan-y;overscroll-behavior:contain}
-#battleScreen .layer-card{display:grid;grid-template-rows:20px 216px;align-content:start;gap:8px;padding:8px}
-#battleScreen .layer-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
-#battleScreen .layer-heading>span{font-size:12px;line-height:20px;color:var(--wp-ui-muted)}
-#battleScreen .layer-list{display:grid;grid-template-rows:repeat(4,48px);gap:8px;min-width:0;min-height:0;margin:0}
-#battleScreen .layer-row{display:grid;grid-template-columns:minmax(0,1fr) 44px 44px;align-items:center;gap:8px;min-width:0;padding:1px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background)}
-#battleScreen .layer-row[data-depth="0"]{border-color:var(--wp-ui-gold)}
-#battleScreen .layer-info{display:flex;align-items:center;gap:8px;min-width:0}
-#battleScreen .layer-glyph{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:var(--wp-ui-radius);font-size:26px}
-#battleScreen .layer-copy{display:grid;gap:2px;min-width:0}
-#battleScreen .layer-copy :is(strong,small){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
-#battleScreen .layer-copy strong{font-size:14px}
-#battleScreen .layer-copy small{font-size:12px;color:var(--wp-ui-muted)}
+/* The scene, five-row layer tray, clue/feedback surface and action track are
+   stable logical regions. No viewport fonts, floating actions or answer strip. */
+#battleScreen .battle-content{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(250px,1fr) 260px 144px 52px;gap:8px;min-width:0;min-height:0;max-width:none;width:100%;margin:0;padding:8px;overflow:hidden;color:var(--wp-ui-text)}
+#battleScreen :is(.puzzle-scene,.puzzle-layers,.puzzle-goals){min-width:0;min-height:0;margin:0;padding:4px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface)}
+#battleScreen :is(.puzzle-scene,.puzzle-layers,.puzzle-goals) h3{margin:0;font-size:14px;line-height:18px;color:var(--wp-ui-text)}
+#battleScreen .puzzle-scene{display:grid;grid-template-rows:18px minmax(0,1fr);gap:4px}
+#battleScreen .puzzle-board-wrap{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;overflow:hidden}
+#battleScreen .puzzle-board{display:grid;flex:0 1 auto;grid-template-columns:18px repeat(4,minmax(0,1fr));grid-template-rows:18px repeat(4,minmax(0,1fr));gap:2px;aspect-ratio:1;height:100%;width:auto;max-height:280px;max-width:100%;min-width:0;direction:ltr}
+#battleScreen .puzzle-coordinate{display:grid;place-items:center;font:700 12px/1 system-ui;color:var(--wp-ui-muted)}
+#battleScreen [data-layer="0"]{--layer:#8ed7a8}
+#battleScreen [data-layer="1"]{--layer:#85ccef}
+#battleScreen [data-layer="2"]{--layer:#efcc82}
+#battleScreen [data-layer="3"]{--layer:#eea5b3}
+#battleScreen [data-layer="4"]{--layer:#cbb2ee}
+#battleScreen [data-layer="-1"]{--layer:#a0b5b6}
+#battleScreen .puzzle-cell{display:grid;place-items:center;min-width:0;min-height:0;margin:0;padding:0;background:var(--layer);color:#10252e;border:2px solid #122a35;border-radius:2px;box-shadow:inset 0 -4px 0 #10252e40;font:800 22px/1 system-ui;cursor:pointer;touch-action:manipulation;transition:background-color .12s ease}
+#battleScreen .puzzle-cell[data-layer="-1"]{background:repeating-linear-gradient(45deg,#18343c,#18343c 5px,#23454d 5px,#23454d 10px);color:var(--wp-ui-muted);box-shadow:none}
+#battleScreen .puzzle-cell.is-inspected{outline:2px dashed #fff;outline-offset:-5px}
+#battleScreen .puzzle-cell.is-clue{border-color:#fff;box-shadow:inset 0 0 0 2px #18232f}
+#battleScreen .puzzle-layers{display:grid;grid-template-rows:18px minmax(0,1fr);gap:4px;overflow:hidden}
+#battleScreen .puzzle-heading{display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0}
+#battleScreen .puzzle-heading small{font-size:12px;line-height:18px;color:var(--wp-ui-muted)}
+#battleScreen .puzzle-layer-list{display:grid;grid-template-rows:repeat(5,44px);gap:2px;min-width:0;min-height:0;margin:0}
+#battleScreen .puzzle-layer-row{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,44px);align-items:center;gap:4px;min-width:0;direction:ltr}
+#battleScreen .layer-inspect{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;min-width:44px;padding:0 4px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);color:var(--layer);cursor:pointer;touch-action:manipulation}
+#battleScreen .layer-inspect[aria-pressed="true"]{border-color:var(--layer)}
+#battleScreen .layer-symbol{font:800 22px/1 system-ui}
+#battleScreen .layer-mini{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:1px;width:36px;height:36px;flex:0 0 36px;direction:ltr}
+#battleScreen .layer-mini i{display:block;min-width:0;min-height:0;background:#69817d40}
+#battleScreen .layer-mini i.solid{background:var(--layer)}
 #battleScreen .order-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-button-image);color:var(--wp-ui-text);font-size:22px;cursor:pointer;touch-action:manipulation}
 #battleScreen .order-btn:disabled{opacity:.4;cursor:not-allowed}
-#battleScreen .battle-status{height:56px;overflow:auto;font-size:13px;line-height:1.4;color:var(--wp-ui-muted);touch-action:pan-y;overscroll-behavior:contain}
-#battleScreen .battle-status[data-kind="wrong"]{border-color:#f0aaa3;color:#ffe1dc}
-#battleScreen .battle-status[data-kind="correct"]{border-color:var(--wp-ui-active);color:var(--wp-ui-text)}
-#battleScreen .battle-actions{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:8px;height:52px;margin:0;padding:0}
-/* Only the declared logical envelope changes composition; no viewport font,
-   independent button scale, absolute action strip or translated layer rows. */
-@container grove-battle (min-width:700px){
- #battleScreen .battle-content{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(260px,1fr) 56px;padding:8px}
- #battleScreen .target-group{grid-column:1;grid-row:1}
- #battleScreen .layer-card{grid-column:2;grid-row:1;align-self:stretch}
- #battleScreen .battle-status{grid-column:1;grid-row:2}
- #battleScreen .battle-actions{grid-column:2;grid-row:2}
+#battleScreen .puzzle-goals{display:grid;grid-template-rows:18px 80px minmax(0,1fr);gap:2px;overflow:hidden}
+#battleScreen #clueList{display:grid;grid-template-rows:repeat(4,20px);list-style:none;margin:0;padding:0;min-width:0;min-height:0}
+#battleScreen #clueList li{display:flex;align-items:center;gap:4px;min-width:0;font:700 13px/20px system-ui;color:var(--wp-ui-text)}
+#battleScreen .clue-state{flex:0 0 16px;text-align:center}
+#battleScreen .clue-text{min-width:0;unicode-bidi:plaintext}
+#battleScreen #clueList li[data-met="false"]{color:#ffb9b0}
+#battleScreen #clueList li[data-met="true"]{color:#ade9c1}
+#battleScreen #battleStatus{min-height:0;margin:0;padding:2px;overflow:auto;font:400 12px/1.3 system-ui;color:var(--wp-ui-muted);touch-action:pan-y;overscroll-behavior:contain}
+#battleScreen #battleStatus[data-kind="wrong"]{color:#ffb9b0}
+#battleScreen .battle-actions{position:static;display:grid;grid-template-columns:minmax(0,1fr) repeat(3,44px);align-items:center;gap:8px;height:52px;margin:0;padding:0}
+@container grove-battle (min-width:580px) and (max-width:719px){
+ #battleScreen .battle-content{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(270px,1fr) 160px 52px}
+ #battleScreen .puzzle-scene{grid-column:1;grid-row:1}
+ #battleScreen .puzzle-layers{grid-column:2;grid-row:1}
+ #battleScreen .puzzle-goals{grid-column:1 / -1;grid-row:2}
+ #battleScreen .battle-actions{grid-column:1 / -1;grid-row:3}
 }
-/* Result/leave are substates of the same Battle Canvas, never new scenes.
-   Auto margins collapse for oversized cards, retaining a reachable scroll top. */
+@container grove-battle (min-width:720px){
+ #battleScreen .battle-content{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(0,1fr) 52px}
+ #battleScreen .puzzle-scene{grid-column:1;grid-row:1}
+ #battleScreen .puzzle-layers{grid-column:2;grid-row:1}
+ #battleScreen .puzzle-goals{grid-column:3;grid-row:1;grid-template-rows:18px 96px minmax(0,1fr)}
+ #battleScreen #clueList{grid-template-rows:repeat(4,24px)}
+ #battleScreen .battle-actions{grid-column:1 / -1;grid-row:2}
+}
+/* Existing Battle-owned dialogs and three persistent Result destinations. */
 #battleScreen :is(.result-panel,.leave-panel){position:absolute;z-index:300;inset:0;display:flex;overflow:auto;padding:16px;background:var(--wp-ui-surface);touch-action:pan-y;overscroll-behavior:contain}
 #battleScreen :is(.result-card,.leave-card){flex:0 0 auto;width:100%;max-width:620px;margin:auto;padding:16px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);color:var(--wp-ui-text);text-align:center}
 #battleScreen :is(.result-card,.leave-card) h2{margin:8px 0;font-size:24px;line-height:1.3}
@@ -64,18 +81,14 @@ button,a,select{font:inherit}
 #battleScreen .leave-actions{display:grid;grid-template-rows:52px 44px;gap:12px;margin-top:16px}
 #battleScreen .battle-canvas[data-substate="result"]>.panel-head{visibility:hidden;pointer-events:none}
 #battleScreen button:focus-visible{outline:2px solid var(--wp-ui-gold);outline-offset:2px}
-/* Bootstrap indicator only; gameplay never depends on delayed hide timers. */
 .loading-screen{position:fixed;inset:0;z-index:500;display:grid;place-content:center;gap:8px;background:var(--wp-ui-background);color:var(--wp-ui-text)}
 .loading-screen.is-ready{display:none}
-/* Game-owned play actions consume the shared tokens and fixed action tracks. */
 #battleScreen :is(.primary-btn,.secondary-btn){display:flex;align-items:center;justify-content:center;width:100%;min-width:0;box-sizing:border-box;margin:0;padding:0 12px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-button-image);color:var(--wp-ui-text);font:700 14px/1.2 system-ui;white-space:nowrap;cursor:pointer;touch-action:manipulation;box-shadow:0 3px 0 var(--wp-ui-shadow)}
 #battleScreen .primary-btn{height:52px;padding-inline:16px;background:var(--wp-ui-gold);color:var(--wp-ui-background);font-size:16px}
 #battleScreen .secondary-btn{height:44px}
 #battleScreen :is(.primary-btn,.secondary-btn):disabled{opacity:.4;cursor:not-allowed}
-#battleScreen :is(.primary-btn,.secondary-btn,.order-btn):not(:disabled):hover{filter:brightness(1.08)}
-#battleScreen :is(.primary-btn,.secondary-btn,.order-btn):not(:disabled):active{filter:brightness(.9)}
-/* Card dimensions/drag/alignment are shared; only the game's card surface and
-   concise bound content are supplied here. */
+#battleScreen :is(.primary-btn,.secondary-btn,.order-btn,.layer-inspect):not(:disabled):hover{filter:brightness(1.08)}
+#battleScreen :is(.primary-btn,.secondary-btn,.order-btn,.layer-inspect):not(:disabled):active{filter:brightness(.9)}
 #stageScreen .stage-card{padding:0;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);cursor:pointer}
 #stageScreen .stage-card [data-wp-item-content]{width:100%;height:100%;gap:8px;padding:16px}
 #stageScreen .stage-card [data-wp-item-content]>strong{font-size:15px;line-height:1.3}
@@ -83,4 +96,5 @@ button,a,select{font:inherit}
 #stageScreen .stage-card [data-wp-item-content]>small{font-size:13px;line-height:1.3;color:var(--wp-ui-muted)}
 #stageScreen .stage-card[aria-current="true"]{border-color:var(--wp-ui-gold)}
 #stageScreen .stage-card[aria-disabled="true"]{opacity:.6;cursor:not-allowed}
-#stageScreen .stage-tabs>button{height:48px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-active);color:var(--wp-ui-text);font-weight:700}
+#stageScreen .stage-tabs>button{height:44px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-active);color:var(--wp-ui-text);font-weight:700}
+@media(prefers-reduced-motion:reduce){#battleScreen .puzzle-cell{transition:none}}
