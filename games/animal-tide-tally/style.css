@@ -68,3 +68,23 @@ button,select { font:inherit; }
 }
 
 .tide-modal-actions button:disabled { opacity:.45;cursor:default; }
+
+
+/* Tide Tally v7 / Interface 7 owner correction.
+   Shared frame owns chrome; this game styles content only. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #mainScreen .main-actions #mapBtn{display:none!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #mainScreen .main-actions{display:block!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #mainScreen #startBtn{width:100%!important;height:52px!important;min-height:52px!important;margin:0!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] :is(#stageScreen,#battleScreen) .panel-head>h2{display:none!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #stageScreen .stage-canvas{--wp-frame-play-header-height:48px!important;background-image:linear-gradient(rgba(23,36,58,.78),rgba(23,36,58,.78)),var(--wp-stage-art)!important;background-size:cover!important;background-position:center!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #battleScreen .battle-canvas{--wp-frame-play-header-height:48px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace{min-height:0!important;overflow:hidden!important;display:flex!important;align-items:center!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace .stage-rail{width:100%!important;min-height:190px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;touch-action:pan-x!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace .stage-rail::-webkit-scrollbar{display:none}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace .stage-card{flex:0 0 264px!important;width:264px!important;height:190px!important;min-height:190px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .stage-tabs[data-wp-frame-stage-nav]{height:56px!important;min-height:56px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;padding:6px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .stage-tabs[data-wp-frame-stage-nav]>[data-wp-frame-stage-slot="stages"]{grid-column:2!important;height:44px!important;min-height:44px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal{position:absolute!important;inset:0!important;z-index:150!important;display:grid!important;place-items:center!important;padding:16px!important;background:rgba(5,18,27,.72)!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal[hidden]{display:none!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal-card{width:min(100%,420px)!important;max-height:calc(100% - 24px)!important;overflow:auto!important;padding:18px!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;box-shadow:0 5px 0 var(--wp-ui-shadow)!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
