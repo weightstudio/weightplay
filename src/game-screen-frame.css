@@ -1,4 +1,4 @@
-@import url('./game-ui-theme.css?v=20260920-shared-header1');
+@import url('./game-ui-theme.css?v=20260923-play-header48');
 @layer wp-frame-contract {
 /* Main is normal document flow. Only Stage/Battle may own the fixed browser
    edge; explicit frame consumers no longer depend on game-local lock classes. */
@@ -562,7 +562,7 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-shell-language-row 
 }
 
 .wp-stage-shell-header {
-  --wp-frame-play-header-height: 56px;
+  --wp-frame-play-header-height:48px;
   box-sizing: border-box !important;
   position: relative !important;
   z-index: 80 !important;
@@ -1399,7 +1399,7 @@ html[data-wp-shared-interface="7"] body.wp-shell-main-active [data-weightplay-ve
 
 /* Native compatibility headers share one control track. HUD content remains game-owned. */
 html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row) {
-  --wp-frame-play-header-height:56px;
+  --wp-frame-play-header-height:48px;
   box-sizing:border-box!important; display:flex!important; align-items:center!important;
   gap:8px!important; width:100%!important; height:var(--wp-frame-play-header-height)!important;
   min-height:var(--wp-frame-play-header-height)!important; margin:0!important; padding:0 4px!important;

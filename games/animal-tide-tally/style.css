@@ -1,90 +1,47 @@
-/* Shared frame, header, theme, Stage card and viewport geometry live in src/.
-   These rules own only Tide Tally's declared content slots. */
-:where([hidden]) { display:none !important; }
-* { box-sizing:border-box; }
-body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
-button,select { font:inherit; }
-.loading-screen { min-height:100svh;display:grid;place-content:center;text-align:center;padding:24px; }
-.main-screen { margin:0;padding:0; }
-.tide-stage-workspace { overflow:hidden; }
-.tide-stage-workspace > .stage-rail {
-  position:absolute;inset-inline:-8px;top:clamp(103px,38%,calc(100% - 103px));
-  height:206px;transform:translateY(-50%);
-}
-.tide-stage-workspace .stage-card > :is(strong,span,small) { display:block; }
-.tide-stage-workspace .stage-card > small { line-height:1.4; }
-.tide-play {
-  display:grid;grid-template-columns:minmax(0,1fr);
-  grid-template-rows:72px minmax(128px,1fr) 52px 64px 52px;
-  gap:8px;overflow:hidden;
-}
-.tide-prompt { margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;font-weight:800;line-height:1.4; }
-.tide-visual {
-  display:grid;grid-template-rows:48px minmax(0,1fr);min-width:0;min-height:0;
-  border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);
-  background:linear-gradient(#17243aaa,#17243ae8),url('assets/animal-tide-tally-background.png') center/cover;
-  overflow:hidden;
-}
-.tide-event { margin:0;padding:8px;text-align:center;align-self:center;font-weight:800;line-height:1.35; }
-.tide-pools { display:flex;align-items:center;justify-content:center;gap:12px;min-width:0;min-height:0;padding:8px;direction:ltr; }
-.tide-pool { flex:1;max-width:320px;min-width:0;text-align:center; }
-.tide-pool > strong { display:block;line-height:1.3;margin-bottom:12px;direction:initial; }
-.tide-shells { display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:4px;min-height:48px; }
-.tide-shell {
-  flex:0 0 32px;width:32px;height:32px;
-  /* One block-shaped shell per token; never count an entire composite atlas cell as one shell. */
-  clip-path:polygon(20% 0,80% 0,80% 20%,100% 20%,100% 60%,80% 60%,80% 80%,65% 80%,65% 100%,35% 100%,35% 80%,20% 80%,20% 60%,0 60%,0 20%,20% 20%);
-  background:repeating-conic-gradient(from -45deg at 50% 100%,#f6d4a0 0deg 16deg,#b7784f 16deg 22deg);
-  border:2px solid #f6d4a0;
-
-  filter:drop-shadow(0 2px 1px #102332);
-  animation:tide-arrival 180ms ease-out both;
-}
-.tide-unknown { font-size:40px;font-weight:900;line-height:48px; }
-.tide-answers,.tide-actions { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center;direction:ltr; }
-.tide-actions { grid-template-columns:repeat(2,minmax(0,1fr)); }
-.tide-answer { font-variant-numeric:tabular-nums; }
-.tide-answers button:disabled { cursor:default;opacity:.45; }
-.tide-answers button.is-wrong { opacity:.4;text-decoration:line-through; }
-.tide-status { margin:0;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.4;font-size:14px; }
-.tide-modal { position:absolute;inset:0;z-index:200;display:grid;place-items:center;padding:12px;background:#0b1724e8; }
-.tide-modal-card { width:min(100%,560px);max-height:100%;overflow:auto;overscroll-behavior:contain;padding:16px;background:var(--wp-ui-surface);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);text-align:center; }
-.tide-modal-card h2 { margin:0 0 12px;font-size:24px; }
-.tide-modal-card p { margin:0 0 12px;line-height:1.45; }
-.tide-solution { font-variant-numeric:tabular-nums;overflow-wrap:anywhere;font-weight:800; }
-.tide-modal-actions { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center; }
-.tide-modal-actions:has(#keepPlayingBtn) { grid-template-columns:repeat(2,minmax(0,1fr)); }
-@keyframes tide-arrival { from { opacity:.3;transform:translateY(6px); } to { opacity:1;transform:none; } }
-@media(prefers-reduced-motion:reduce) { .tide-shell { animation:none; } }
-@media(min-width:700px) and (max-height:600px) {
-  .tide-play { grid-template-columns:minmax(0,1fr) minmax(250px,.85fr);grid-template-rows:56px 52px minmax(48px,1fr) 52px; }
-  .tide-prompt { grid-column:1 / -1;font-size:16px; }
-  .tide-visual { grid-column:1;grid-row:2 / 5; }
-  .tide-answers { grid-column:2;grid-row:2; }
-  .tide-status { grid-column:2;grid-row:3;font-size:13px; }
-  .tide-actions { grid-column:2;grid-row:4; }
-  .tide-modal-card { padding:12px; }
-  .tide-modal-card h2 { font-size:20px; }
-}
-
-.tide-modal-actions button:disabled { opacity:.45;cursor:default; }
-
-
-/* Tide Tally v7 / Interface 7 owner correction.
-   Shared frame owns chrome; this game styles content only. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #mainScreen .main-actions #mapBtn{display:none!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #mainScreen .main-actions{display:block!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #mainScreen #startBtn{width:100%!important;height:52px!important;min-height:52px!important;margin:0!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] :is(#stageScreen,#battleScreen) .panel-head>h2{display:none!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #stageScreen .stage-canvas{--wp-frame-play-header-height:48px!important;background-image:linear-gradient(rgba(23,36,58,.78),rgba(23,36,58,.78)),var(--wp-stage-art)!important;background-size:cover!important;background-position:center!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #battleScreen .battle-canvas{--wp-frame-play-header-height:48px!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace{min-height:0!important;overflow:hidden!important;display:flex!important;align-items:center!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace .stage-rail{width:100%!important;min-height:190px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;touch-action:pan-x!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace .stage-rail::-webkit-scrollbar{display:none}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-stage-workspace .stage-card{flex:0 0 264px!important;width:264px!important;height:190px!important;min-height:190px!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .stage-tabs[data-wp-frame-stage-nav]{height:56px!important;min-height:56px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;padding:6px!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .stage-tabs[data-wp-frame-stage-nav]>[data-wp-frame-stage-slot="stages"]{grid-column:2!important;height:44px!important;min-height:44px!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal{position:absolute!important;inset:0!important;z-index:150!important;display:grid!important;place-items:center!important;padding:16px!important;background:rgba(5,18,27,.72)!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal[hidden]{display:none!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal-card{width:min(100%,420px)!important;max-height:calc(100% - 24px)!important;overflow:auto!important;padding:18px!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;box-shadow:0 5px 0 var(--wp-ui-shadow)!important}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .tide-modal-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+/* Interface 7 chrome and scaling belong to src/. This file owns only content. */
+:where([hidden]){display:none!important}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+button,select{font:inherit}
+.loading-screen{min-height:100svh;display:grid;place-content:center;text-align:center;padding:24px}
+.main-screen{margin:0;padding:0}
+.tide-stage-workspace{overflow:hidden}
+.tide-stage-workspace>.stage-rail{position:absolute;inset-inline:-8px;top:clamp(103px,38%,calc(100% - 103px));height:206px;transform:translateY(-50%)}
+.tide-stage-item{width:100%;height:100%;gap:8px}
+.tide-stage-item>*{display:block;max-width:100%;margin:0;line-height:1.35}
+.tide-stage-item small{font-size:13px}
+.tide-play{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:48px minmax(176px,1fr) 44px 40px 44px;gap:8px;overflow:hidden}
+.tide-prompt{margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:800;line-height:1.35}
+.tide-visual{position:relative;isolation:isolate;display:grid;grid-template-rows:32px minmax(0,1fr);min-width:0;min-height:0;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:linear-gradient(#17243aaa,#17243ae8),url('assets/animal-tide-tally-background.png') center/cover;overflow:hidden}
+.tide-water{position:absolute;z-index:-1;inset:26% -20% -10%;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,#327d9144 0 24px,#89dbdb55 24px 28px,#327d9144 28px 48px);border-top:8px solid #a6f3e944;transform:translate(0,0)}
+body[data-screen="battle"] .tide-water{animation:tide-swell 3.2s ease-in-out infinite alternate}
+.tide-visual[data-wave="out"] .tide-water{animation-direction:alternate-reverse}
+.tide-motion-paused .tide-water{animation-play-state:paused!important}
+.tide-event{position:relative;margin:0;padding:4px 8px;text-align:center;align-self:center;font-weight:800;font-size:14px;line-height:1.35}
+.tide-pools{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-width:0;min-height:0;padding:4px;direction:ltr}
+.tide-pool{flex:1;min-width:0;text-align:center}
+.tide-pool>strong{display:block;line-height:1.3;font-size:14px;margin-bottom:8px;direction:initial}
+.tide-shells{display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:4px;min-height:44px}
+.tide-shell-target{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;margin:0;padding:0;background:#102a3866;border:1px solid transparent;border-radius:var(--wp-ui-radius);cursor:pointer;touch-action:manipulation}
+.tide-shell-target[aria-pressed="true"]{background:#276a62;border-color:var(--wp-ui-gold);box-shadow:inset 0 0 0 2px #f5c84c55}
+.tide-shell-target:focus-visible{outline:2px solid var(--wp-ui-gold);outline-offset:1px}
+.tide-shell{display:block;width:32px;height:32px;clip-path:polygon(20% 0,80% 0,80% 20%,100% 20%,100% 60%,80% 60%,80% 80%,65% 80%,65% 100%,35% 100%,35% 80%,20% 80%,20% 60%,0 60%,0 20%,20% 20%);background:repeating-conic-gradient(from -45deg at 50% 100%,#f6d4a0 0deg 16deg,#b7784f 16deg 22deg);border:2px solid #f6d4a0;filter:drop-shadow(0 2px 1px #102332);pointer-events:none}
+.tide-unknown{font-size:40px;font-weight:900;line-height:44px}
+.tide-answers,.tide-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center;direction:ltr}
+.tide-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tide-answer{font-variant-numeric:tabular-nums}
+.tide-answer>span{display:block;pointer-events:none}
+.tide-answers button:disabled{cursor:default;opacity:.45}
+.tide-answers button.is-wrong{opacity:.4;text-decoration:line-through}
+.tide-status{margin:0;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35;font-size:13px}
+.tide-modal{position:absolute;inset:0;z-index:200;display:grid;place-items:center;padding:12px;background:#0b1724e8}
+.tide-modal-card{width:min(100%,560px);max-height:100%;overflow:auto;overscroll-behavior:contain;padding:16px;background:var(--wp-ui-surface);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);text-align:center}
+.tide-modal-card h2{margin:0 0 12px;font-size:24px}
+.tide-modal-card p{margin:0 0 12px;line-height:1.45}
+.tide-solution{font-variant-numeric:tabular-nums;overflow-wrap:anywhere;font-weight:800}
+.tide-stars{display:flex;justify-content:center;gap:12px;min-height:40px;margin-bottom:12px;color:var(--wp-ui-gold);font:800 32px/1.25 system-ui;direction:ltr}
+.tide-modal-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center}
+.tide-modal-actions:has(#keepPlayingBtn){grid-template-columns:repeat(2,minmax(0,1fr))}
+.tide-modal-actions button:disabled{opacity:.45;cursor:default}
+@keyframes tide-swell{from{transform:translate(-3%,8%)}to{transform:translate(3%,-8%)}}
+@media(prefers-reduced-motion:reduce){body[data-screen="battle"] .tide-water{animation:none}}

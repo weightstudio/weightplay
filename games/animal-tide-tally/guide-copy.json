@@ -1,0 +1,704 @@
+{
+  "en": {
+    "headings": [
+      "The cove and your goal",
+      "How to play",
+      "Progression and replay",
+      "Practical tips",
+      "Design notes",
+      "Controls, motion and saves",
+      "Questions and answers",
+      "Related games"
+    ],
+    "overview": "At Shell Cove, each tide note is a small number puzzle. Your job is to follow the changes, not to tap as quickly as possible. A wave may bring shells in, carry them away, hide one delivery or leave two coves to compare. The illustrated group describes the current clue, so a departing group is a subtraction rather than a new pile to add. Read the question before choosing: some notes ask for the final total, others for an unknown arrival or the difference between two piles. Success means identifying the one number that satisfies that note’s rule.",
+    "progression": "The campaign contains thirty authored notes arranged in six five-note chapters. Early notes establish arrivals and departures; later chapters add several waves, a missing delivery, two-cove comparison, alternating two-step tides and a crab taking extra shells. Every fifth note marks a chapter checkpoint. These markers do not add a timer or a separate combat mode. Clear notes in order to unlock the next one; completed notes remain replayable. New tide changes quantities within the same mechanic, and both the position and numerical rank of the correct option can vary. A better result raises that note’s best stars without erasing stronger earlier results.",
+    "tips": "Keep arrivals, departures and crab removals separate as you observe each wave. A visible change is not automatically the final total. In missing-delivery notes, work backwards from the known ending: ending plus departures minus the initial pile. For comparison notes, match the two piles conceptually and count the unmatched shells; the answer is a non-negative difference. Tap individual visible shells to mark your place while counting. Marks are only visual aids, clear when the clue changes and never submit an answer or affect stars.",
+    "design": "The game stays untimed so observation and correction remain more important than reaction speed. Shell entrances, moving water, answer feedback and result stars make changes easier to notice, but animation completion never computes a score or changes a saved result. The clue remains readable after its entrance effect. Answer buttons retain their positions during mistakes, and a rejected option becomes unavailable rather than moving the remaining choices. The cove is a fictional puzzle setting, not a tide forecast or a simulation of real shell movement. There are no opponents, attacks, equipment or purchases to manage.",
+    "player": "Use touch or a mouse to choose notes, advance waves, mark shells and answer. Tab with Enter or Space provides button access; number keys 1–3 choose the corresponding visible answer when answering is enabled. Settings pause decorative movement, and the system’s reduced-motion preference suppresses tween effects without changing puzzle rules. Completed notes and their best stars are stored only in this browser. If storage is blocked, progress lasts for the current page session; changing devices or clearing browser data does not restore it from an account.",
+    "faq": [
+      [
+        "Why can’t I answer immediately?",
+        "Observation comes first. Advance through the note’s clues at your own pace, then use the answer action. During a short entrance effect, repeated input cannot skip several clues accidentally."
+      ],
+      [
+        "Does watching again reset my mistakes?",
+        "No. Watching again replays the same clues and keeps the same options and mistakes for that attempt. A first correct answer earns three stars; one wrong choice earns two, and two wrong choices earn one."
+      ],
+      [
+        "What does the question mark hide?",
+        "It hides the size of a delivery in a missing-value note. The initial pile, departures and ending are known. Neither a hidden shell count nor an accessibility label supplies the missing answer."
+      ],
+      [
+        "What happens when I leave a note?",
+        "Battle Back opens an in-game confirmation. Continue returns to the same attempt. Leaving discards that unfinished attempt but preserves already saved clears and best stars. Result offers Stages, Next note and New tide."
+      ],
+      [
+        "Why is the middle number not always correct?",
+        "The answer generator chooses two distinct alternatives and then shuffles the options. The correct value can be the smallest, middle or largest available number, so the arithmetic—not a position shortcut—determines the answer."
+      ]
+    ],
+    "tags": [
+      "Number puzzle",
+      "Wave observation",
+      "Missing values"
+    ],
+    "related": [
+      "Compare quantities in a different visual puzzle.",
+      "Use spatial clues instead of tide arithmetic."
+    ],
+    "steps": [
+      "Choose Start Game, browse the Stage rail and select an unlocked note.",
+      "Advance each wave and track arrivals, departures and the crab; mark visible shells to keep your place.",
+      "Read the question and choose a number, or watch the same clues again before answering.",
+      "At Result, continue to the next note, replay with new quantities or return to Stages."
+    ]
+  },
+  "zh-Hant": {
+    "headings": [
+      "海灣與任務",
+      "玩法與完整流程",
+      "進度與重玩",
+      "實用提示",
+      "設計說明",
+      "操作、動態與存檔",
+      "常見問題",
+      "相關遊戲"
+    ],
+    "overview": "在貝殼灣，每張潮汐筆記都是一個小型數字謎題。你要追蹤潮水造成的變化，而不是比誰按得快。潮水可能帶來貝殼、帶走貝殼、遮住某次到來的數量，或讓你比較兩座海灣。畫面中的一組貝殼代表目前這條線索：標示離開的貝殼應該扣除，不能當成新加入的一堆。作答前先看清楚問題；有些筆記問最後留下多少，有些問被遮住的到來數量，另一些問兩堆相差多少。選出符合該題規則的唯一數字，就能完成筆記。",
+    "progression": "整段旅程有三十張原創筆記，分成六個章節，每章五張。前段先熟悉到來與離開，之後依序加入多次潮波、缺少的數值、雙海灣比較、交錯的兩步潮汐，以及螃蟹額外拿走貝殼。每第五張是章節檢查點，不會因此增加倒數或另一種戰鬥模式。依序完成才能解鎖下一張；已完成的筆記仍可重玩。「新潮汐」保留題型，但重新變化數量，正確選項的位置與數值大小排序也不固定。較好的結果會提高該筆記的最佳星數，不會覆蓋掉原本更好的紀錄。",
+    "tips": "觀察時，請分開記住帶來、帶走及螃蟹拿走的數量。畫面顯示的這次變化，不一定等於最後總數。缺數題可從最後倒推：最後數量加上離開數量，再扣掉起始數量。比較題則把兩堆想成一一配對，數出沒有配對的部分，答案不會是負數。你也可以點一下看得見的貝殼，標記自己數到的位置。標記只是視覺輔助，切換線索時會清除，不會送出答案，也不影響星數。",
+    "design": "這款遊戲沒有計時壓力，重點是觀察、推算與修正。貝殼進場、海水起伏、作答回饋與結算星星會以動態呈現，但動畫結束不會替你計分，也不會改寫已儲存的結果。進場效果結束後，線索仍可閱讀。答錯時選項位置保持不變，錯誤選項會停用，不會讓其他按鈕移到手指下面。貝殼灣是虛構謎題場景，不是潮汐預報，也不是現實貝殼移動模擬；不需要管理敵人、攻擊、裝備或購買項目。",
+    "player": "可用觸控或滑鼠選關、推進潮波、標記貝殼及作答；鍵盤可用 Tab、Enter 或空白鍵操作按鈕，作答階段也能用數字鍵 1–3 選擇對應的畫面選項。開啟設定會暫停裝飾性動態，系統的減少動態偏好也會停用補間效果，但不改變題目。過關進度與各關最佳星數只存於目前瀏覽器；無法寫入儲存空間時，只保留在這次頁面工作階段。換裝置、換瀏覽器或清除網站資料，不會從帳號或雲端找回紀錄。",
+    "faq": [
+      [
+        "為什麼不能一進關卡就作答？",
+        "先逐波觀察線索，再進入作答階段。每一步由你決定何時推進。短暫的進場動畫期間，連續輸入不會一次跳過好幾條線索。"
+      ],
+      [
+        "重新觀看會清除答錯次數嗎？",
+        "不會。重新觀看保留同一次挑戰的線索、選項與錯誤次數。第一次就答對得三星；先錯一次再答對得兩星；錯兩次後答對得一星。"
+      ],
+      [
+        "問號遮住的是什麼？",
+        "缺數題的問號遮住某一次帶來的數量。起始、離開與最後數量仍是已知線索；隱藏的貝殼數或輔助閱讀標籤都不會直接洩漏答案。"
+      ],
+      [
+        "離開筆記會失去哪些進度？",
+        "Battle 的返回鍵先顯示遊戲內確認。「繼續遊戲」保留同一次挑戰；確定離開只捨棄尚未完成的這次作答，已存的過關與最佳星數保留。結算可返回關卡、前往下一張或開始新潮汐。"
+      ],
+      [
+        "為什麼不能固定選中間的數字？",
+        "每次挑戰會產生兩個不重複的替代選項，再打亂位置。正解可能是最小、中間或最大的數字，必須根據題目推算，不能靠固定位置通關。"
+      ]
+    ],
+    "tags": [
+      "數字謎題",
+      "潮波觀察",
+      "缺數推理"
+    ],
+    "related": [
+      "換一種視覺謎題比較數量。",
+      "改用空間線索推理位置。"
+    ],
+    "steps": [
+      "選擇「開始遊戲」，拖曳關卡列，再點一張已解鎖的筆記。",
+      "逐波觀察帶來、帶走與螃蟹拿走的貝殼，必要時點貝殼做計數標記。",
+      "讀清楚問題後選一個數字；也可以先重新觀看同一組線索。",
+      "結算後可前往下一張、用新數量重玩，或返回關卡。"
+    ]
+  },
+  "zh-Hans": {
+    "headings": [
+      "海湾与任务",
+      "玩法与完整流程",
+      "进度与重玩",
+      "实用提示",
+      "设计说明",
+      "操作、动态与存档",
+      "常见问题",
+      "相关游戏"
+    ],
+    "overview": "在贝壳湾，每张潮汐笔记都是一个小型数字谜题。你要追踪潮水造成的变化，而不是比谁按得快。潮水可能带来贝壳、带走贝壳、遮住某次到来的数量，或让你比较两座海湾。画面中的一组贝壳代表当前线索：标示离开的贝壳应该扣除，不能当成新加入的一堆。作答前先看清楚问题；有些笔记问最后留下多少，有些问被遮住的到来数量，另一些问两堆相差多少。选出符合该题规则的唯一数字，就能完成笔记。",
+    "progression": "整个旅程有三十张原创笔记，分成六个章节，每章五张。前段先熟悉到来与离开，之后依次加入多次潮波、缺少的数值、双海湾比较、交错的两步潮汐，以及螃蟹额外拿走贝壳。每第五张是章节检查点，不会因此增加倒计时或另一种战斗模式。按顺序完成才能解锁下一张，已完成的笔记仍可重玩。“新潮汐”保留题型，但重新变化数量，正确选项的位置与数值大小排序也不固定。更好的结果会提高该笔记的最佳星数，不会覆盖原本更好的纪录。",
+    "tips": "观察时，请分别记住带来、带走及螃蟹拿走的数量。画面显示的这次变化不一定等于最后总数。缺数题可以从最后倒推：最后数量加上离开数量，再减去起始数量。比较题则把两堆想成一一配对，数出没有配对的部分，答案不会是负数。你也可以点击看得见的贝壳，标记自己数到的位置。标记只是视觉辅助，切换线索时会清除，不会提交答案，也不影响星数。",
+    "design": "游戏没有计时压力，重点是观察、推算与修正。贝壳入场、海水起伏、作答反馈与结算星星会以动态呈现，但动画结束不会替你计分，也不会改写已保存的结果。入场效果结束后，线索仍可阅读。答错时选项位置保持不变，错误选项会停用，不会让其他按钮移到手指下面。贝壳湾是虚构谜题场景，不是潮汐预报，也不是现实贝壳移动模拟；不需要管理敌人、攻击、装备或购买项目。",
+    "player": "可用触控或鼠标选关、推进潮波、标记贝壳及作答；键盘可用 Tab、Enter 或空格键操作按钮，作答阶段也能用数字键 1–3 选择对应的画面选项。打开设置会暂停装饰性动态，系统的减少动态偏好也会停用补间效果，但不改变题目。过关进度与各关最佳星数只存于当前浏览器；无法写入存储空间时，只保留在本次页面会话。换设备、换浏览器或清除网站数据，不会从账号或云端找回纪录。",
+    "faq": [
+      [
+        "为什么不能一进关卡就作答？",
+        "先逐波观察线索，再进入作答阶段。每一步由你决定何时推进。短暂的入场动画期间，连续输入不会一次跳过多条线索。"
+      ],
+      [
+        "重新观看会清除答错次数吗？",
+        "不会。重新观看保留同一次挑战的线索、选项与错误次数。第一次就答对得三星；先错一次再答对得两星；错两次后答对得一星。"
+      ],
+      [
+        "问号遮住的是什么？",
+        "缺数题的问号遮住某次带来的数量。起始、离开与最后数量仍是已知线索；隐藏的贝壳数量或辅助阅读标签都不会直接泄露答案。"
+      ],
+      [
+        "离开笔记会失去哪些进度？",
+        "Battle 返回键先显示游戏内确认。“继续游戏”保留同一次挑战；确定离开只放弃尚未完成的本次作答，已保存的过关与最佳星数保留。结算可返回关卡、前往下一张或开始新潮汐。"
+      ],
+      [
+        "为什么不能固定选中间的数字？",
+        "每次挑战会生成两个不重复的替代选项，再打乱位置。正确答案可能是最小、中间或最大的数字，必须根据题目推算，不能靠固定位置通关。"
+      ]
+    ],
+    "tags": [
+      "数字谜题",
+      "潮波观察",
+      "缺数推理"
+    ],
+    "related": [
+      "换一种视觉谜题比较数量。",
+      "改用空间线索推理位置。"
+    ],
+    "steps": [
+      "选择“开始游戏”，拖动关卡栏，再点一张已解锁的笔记。",
+      "逐波观察带来、带走与螃蟹拿走的贝壳，必要时点击贝壳做计数标记。",
+      "读清楚问题后选一个数字，也可以先重新观看同一组线索。",
+      "结算后可前往下一张、用新数量重玩，或返回关卡。"
+    ]
+  },
+  "ja": {
+    "headings": [
+      "入り江と目標",
+      "遊び方と流れ",
+      "進行と再挑戦",
+      "遊びのヒント",
+      "設計について",
+      "操作・動き・保存",
+      "よくある質問",
+      "関連ゲーム"
+    ],
+    "overview": "シェル・コーブでは、一枚の潮ノートが一つの数のパズルになっています。速く押すことではなく、貝の増減を追うことが目標です。波が貝を運び込むことも、運び去ることもあり、一度の到着数が隠される問題や、二つの入り江を比べる問題もあります。表示された貝のまとまりは現在の手掛かりです。「去る」貝は新しく足す山ではありません。最後の数、隠れた到着数、二つの山の差のうち、何を尋ねられているか確認してから答えましょう。条件に合う一つの数を選ぶとノートをクリアできます。",
+    "progression": "全三十枚のノートを、五枚ずつ六つの章に分けています。最初は到着と出発を扱い、続いて複数の波、欠けた数、二つの入り江の比較、交互に増減する二段階の潮、カニが持ち去る貝が加わります。五枚ごとのチェックポイントに時間制限や別の戦闘はありません。順番にクリアして次を開き、済んだノートには戻れます。「新しい潮」では同じ仕組みのまま数量が変わります。正解の位置も、選択肢を小さい順に並べたときの順番も一定ではありません。最高の星数は、より良い結果が出たときだけ更新されます。",
+    "tips": "届く貝、去る貝、カニが取る貝を分けて考えましょう。現在の変化の数と最後の合計は別です。隠れた到着数は、最後の数に去った数を足し、最初の数を引くと求められます。比較では二つの山を一対ずつ合わせ、余った貝を数えます。差は負になりません。見えている貝を押すと数えた位置に印を付けられます。印は手掛かりが変わると消え、解答や星数には影響しません。",
+    "design": "時間を競わず、観察して考え直せる構成です。貝の登場、海面の動き、解答への反応、結果の星に動きを付けていますが、アニメーションが得点を決めたり保存結果を書き換えたりすることはありません。登場後も手掛かりを読むことができます。誤答後もボタンの位置は固定され、選んだ誤答だけが無効になります。ここは架空の数のパズルで、実際の潮や貝の移動を再現した予報ではありません。敵、攻撃、装備、購入の管理もありません。",
+    "player": "タッチやマウスでノート選択、波の送り、貝への印、解答を操作します。TabとEnterまたはスペースでもボタンを使えます。解答可能なときは数字キー1～3が画面上の選択肢に対応します。設定を開くと装飾的な動きが止まり、端末の動きを減らす設定にも従います。問題の内容は変わりません。クリアと最高星数はこのブラウザーだけに保存します。保存できない場合は現在のページを開いている間だけ有効です。別の端末やブラウザーには移らず、サイトデータの削除後にアカウントから復元する仕組みもありません。",
+    "faq": [
+      [
+        "すぐに答えられないのはなぜ？",
+        "まず自分のペースで波を順に見てから解答へ進みます。短い登場アニメーション中の連打では、複数の手掛かりをまとめて飛ばせません。"
+      ],
+      [
+        "見直すと間違いは消えますか？",
+        "消えません。同じ挑戦の手掛かり、選択肢、間違いを保って再生します。初回で正解すると星三つ、一回間違うと二つ、二回間違うと一つです。"
+      ],
+      [
+        "疑問符は何を隠していますか？",
+        "一度の波が運んだ貝の数です。最初、出発、最後の数は分かっています。隠れた貝の個数や読み上げ用ラベルから正解が漏れることはありません。"
+      ],
+      [
+        "途中で戻るとどうなりますか？",
+        "プレイ画面の戻るボタンは確認を開きます。続けると同じ挑戦に戻り、終了すると未完了の挑戦だけを破棄します。保存済みのクリアと最高星数は残ります。"
+      ],
+      [
+        "真ん中の数がいつも正解ではない？",
+        "異なる二つの候補を作ってから並び順を混ぜます。正解は最小、中央、最大のどの数にもなり得るので、位置ではなく手掛かりで判断してください。"
+      ]
+    ],
+    "tags": [
+      "数のパズル",
+      "波の観察",
+      "欠けた数"
+    ],
+    "related": [
+      "別の見た目のパズルで数量を比べます。",
+      "潮の計算ではなく位置の手掛かりを使います。"
+    ],
+    "steps": [
+      "ゲーム開始を選び、ステージの列を動かして解放済みのノートを押します。",
+      "波を順に見て、到着・出発・カニの数を追い、必要なら貝に印を付けます。",
+      "質問を読んで数を選びます。答える前に同じ手掛かりを見直すこともできます。",
+      "結果から次のノート、新しい数での再挑戦、ステージへの戻りを選べます。"
+    ]
+  },
+  "ko": {
+    "headings": [
+      "만과 목표",
+      "게임 방법과 흐름",
+      "진행과 다시 도전",
+      "플레이 팁",
+      "설계 이야기",
+      "조작, 움직임과 저장",
+      "자주 묻는 질문",
+      "관련 게임"
+    ],
+    "overview": "셸 코브의 조수 노트 하나하나가 작은 숫자 퍼즐입니다. 빨리 누르기보다 조개 수가 어떻게 변하는지 따라가는 것이 목표예요. 파도는 조개를 가져오거나 가져갈 수 있고, 한 번의 도착 수가 숨겨지거나 두 만을 비교할 수도 있습니다. 화면의 조개 무리는 현재 단서를 뜻합니다. 떠나는 조개는 새로 더할 무리가 아닙니다. 마지막 수, 숨겨진 도착 수, 두 무리의 차이 중 무엇을 묻는지 먼저 읽으세요. 그 규칙을 만족하는 유일한 수를 고르면 노트를 완료합니다.",
+    "progression": "서른 개의 노트는 다섯 개씩 여섯 장으로 나뉩니다. 처음에는 도착과 출발을 다루고, 이후 여러 파도, 빠진 수, 두 만 비교, 번갈아 더하고 빼는 두 단계 조수, 게가 가져가는 조개가 등장해요. 다섯 번째마다 있는 체크포인트가 시간제한이나 별도 전투를 추가하지는 않습니다. 순서대로 완료해 다음 노트를 열고 완료한 노트에 다시 도전할 수 있습니다. 새 조수는 같은 규칙 안에서 수량을 바꿉니다. 정답의 위치뿐 아니라 크기순 순서도 고정되지 않으며, 더 좋은 결과를 얻었을 때만 최고 별 수가 올라갑니다.",
+    "tips": "들어오는 수, 떠나는 수, 게가 가져가는 수를 따로 생각하세요. 현재 변화량이 마지막 합계는 아닙니다. 빠진 도착 수는 마지막 수에 떠난 수를 더하고 처음 수를 빼서 구합니다. 비교할 때는 양쪽을 하나씩 짝지어 남은 조개를 세세요. 차이는 음수가 아닙니다. 보이는 조개를 누르면 어디까지 셌는지 표시할 수 있어요. 단서가 바뀌면 표시가 지워지며 정답 제출이나 별 수에는 영향을 주지 않습니다.",
+    "design": "시간제한 없이 관찰하고 다시 생각할 수 있도록 만들었습니다. 조개 등장, 물결, 정답·오답 반응, 결과의 별이 움직이지만 애니메이션이 점수를 계산하거나 저장된 결과를 바꾸지는 않습니다. 등장 효과가 끝나도 단서는 읽을 수 있습니다. 틀린 답을 골라도 버튼 위치는 그대로이며 그 선택지만 비활성화됩니다. 이 만은 가상의 숫자 퍼즐 배경이지 실제 조수 예보나 조개 이동 시뮬레이션이 아닙니다. 적, 공격, 장비 또는 구매 항목을 관리할 필요가 없습니다.",
+    "player": "터치나 마우스로 노트를 고르고 파도를 넘기며 조개를 표시하고 답할 수 있습니다. Tab과 Enter 또는 스페이스로 버튼을 조작하며 답할 수 있는 때에는 숫자키 1–3이 화면 선택지에 대응합니다. 설정을 열면 장식 움직임이 멈추고 시스템의 동작 줄이기 설정도 따릅니다. 퍼즐 규칙은 같아요. 완료한 노트와 최고 별 수는 현재 브라우저에만 저장됩니다. 저장이 차단되면 현재 페이지 세션에서만 유지됩니다. 기기나 브라우저를 바꾸거나 사이트 데이터를 지운 뒤 계정에서 복구하는 기능은 없습니다.",
+    "faq": [
+      [
+        "왜 바로 답할 수 없나요?",
+        "먼저 자신의 속도로 파도의 단서를 차례로 본 뒤 답하기로 넘어갑니다. 짧은 등장 효과 중 여러 번 눌러도 여러 단서를 한꺼번에 건너뛰지 않습니다."
+      ],
+      [
+        "다시 보면 오답 횟수가 지워지나요?",
+        "아니요. 같은 도전의 단서와 선택지, 오답 횟수를 유지합니다. 첫 정답은 별 세 개, 오답 한 번 후 정답은 두 개, 두 번 후 정답은 한 개입니다."
+      ],
+      [
+        "물음표는 무엇을 가리나요?",
+        "한 번의 파도가 가져온 조개 수입니다. 처음, 떠난 수, 마지막 수는 알려져 있습니다. 숨겨진 조개 수나 접근성 이름으로 정답이 드러나지 않습니다."
+      ],
+      [
+        "노트를 떠나면 무엇이 사라지나요?",
+        "플레이 화면의 뒤로 버튼은 확인을 엽니다. 계속하기는 같은 도전으로 돌아가고, 나가기는 미완료 도전만 버립니다. 저장된 완료 기록과 최고 별 수는 남습니다."
+      ],
+      [
+        "항상 가운데 크기의 수가 정답은 아닌가요?",
+        "서로 다른 대안 두 개를 만든 뒤 위치를 섞습니다. 정답은 가장 작거나 중간이거나 가장 클 수 있으므로 위치 요령이 아닌 단서로 계산해야 합니다."
+      ]
+    ],
+    "tags": [
+      "숫자 퍼즐",
+      "파도 관찰",
+      "빠진 수"
+    ],
+    "related": [
+      "다른 시각 퍼즐에서 수량을 비교하세요.",
+      "조수 계산 대신 위치 단서를 사용하세요."
+    ],
+    "steps": [
+      "게임 시작을 누르고 스테이지 목록을 끌어 열린 노트를 선택하세요.",
+      "파도를 차례로 보며 도착, 출발, 게의 수를 확인하고 필요하면 조개를 표시하세요.",
+      "질문을 읽고 수를 고르세요. 답하기 전에 같은 단서를 다시 볼 수도 있습니다.",
+      "결과에서 다음 노트, 새 수량으로 다시 도전, 스테이지로 돌아가기를 선택하세요."
+    ]
+  },
+  "es": {
+    "headings": [
+      "La cala y tu objetivo",
+      "Cómo jugar",
+      "Progreso y nuevas partidas",
+      "Consejos prácticos",
+      "Notas de diseño",
+      "Controles, movimiento y guardado",
+      "Preguntas frecuentes",
+      "Juegos relacionados"
+    ],
+    "overview": "En Cala Concha, cada nota de marea plantea un pequeño acertijo numérico. Tu objetivo es seguir los cambios, no pulsar a toda velocidad. Una ola puede traer conchas, llevárselas, ocultar una llegada o presentar dos calas para compararlas. El grupo ilustrado representa la pista actual: las conchas que se van deben restarse, no añadirse como una pila nueva. Lee la pregunta antes de responder. Algunas notas piden el total final, otras una llegada desconocida o la diferencia entre dos montones. La nota se completa al elegir el único número que cumple su regla.",
+    "progression": "La campaña contiene treinta notas originales en seis capítulos de cinco. Primero aparecen llegadas y salidas; después se incorporan varias olas, un valor desconocido, comparaciones, mareas de dos pasos y un cangrejo que retira conchas. Cada quinta nota marca un punto de control, sin añadir cronómetro ni otro modo de combate. Completa las notas en orden para desbloquear la siguiente; las resueltas siguen disponibles. Nueva marea cambia las cantidades manteniendo la mecánica. También varían la posición de la respuesta correcta y su lugar en el orden numérico. Un resultado mejor aumenta las mejores estrellas sin borrar una marca superior.",
+    "tips": "Distingue entre lo que llega, lo que se va y lo que toma el cangrejo. La cantidad del cambio actual no siempre es el total final. Para una llegada desconocida, calcula final más salidas menos inicio. Para comparar, empareja mentalmente los dos montones y cuenta lo que sobra; la diferencia no es negativa. Puedes tocar las conchas visibles para marcar por dónde vas contando. Las marcas se borran al cambiar la pista y no envían respuestas ni afectan las estrellas.",
+    "design": "El juego no tiene límite de tiempo: observar y corregirse importa más que reaccionar deprisa. Las entradas de conchas, el agua, las respuestas y las estrellas del resultado tienen movimiento, pero una animación nunca calcula la puntuación ni modifica un resultado guardado. La pista sigue siendo legible después de aparecer. Tras un error, las opciones conservan su posición y solo se desactiva la respuesta rechazada. La cala es un escenario ficticio de acertijos, no una predicción de mareas ni una simulación real. No hay enemigos, ataques, equipo ni compras que gestionar.",
+    "player": "Usa una pantalla táctil o un ratón para elegir notas, avanzar olas, marcar conchas y responder. Tab con Intro o espacio permite manejar los botones; las teclas 1–3 eligen la opción visible correspondiente durante la respuesta. Abrir los ajustes pausa el movimiento decorativo, y se respeta la preferencia del sistema de reducir movimiento sin cambiar las reglas. Las notas completadas y las mejores estrellas se guardan solo en este navegador. Si el almacenamiento está bloqueado, duran esta sesión. Cambiar de dispositivo o borrar los datos no permite recuperarlas desde una cuenta.",
+    "faq": [
+      [
+        "¿Por qué no puedo responder enseguida?",
+        "Primero observa las pistas a tu ritmo y después pasa a responder. Durante el breve efecto de entrada, pulsar repetidamente no permite saltarse varias pistas por accidente."
+      ],
+      [
+        "¿Ver de nuevo borra mis errores?",
+        "No. Conserva las pistas, las opciones y los errores del intento actual. Acertar a la primera da tres estrellas; tras un error, dos; y tras dos errores, una."
+      ],
+      [
+        "¿Qué oculta el signo de interrogación?",
+        "La cantidad de conchas de una llegada. Se conocen el inicio, las salidas y el final. Ni un recuento oculto ni una etiqueta de accesibilidad revelan la respuesta."
+      ],
+      [
+        "¿Qué pasa si abandono una nota?",
+        "El botón de volver durante el juego pide confirmación. Continuar conserva el mismo intento. Salir descarta solo el intento incompleto y mantiene los resultados guardados. El resultado ofrece niveles, siguiente nota y nueva marea."
+      ],
+      [
+        "¿Por qué no siempre es correcto el número intermedio?",
+        "Se generan dos alternativas diferentes y se mezclan las opciones. La respuesta puede ser el número menor, intermedio o mayor: debes resolver la regla, no seguir un atajo de posición."
+      ]
+    ],
+    "tags": [
+      "Acertijo numérico",
+      "Observación de olas",
+      "Valores desconocidos"
+    ],
+    "related": [
+      "Compara cantidades con otro acertijo visual.",
+      "Utiliza pistas espaciales en vez de calcular mareas."
+    ],
+    "steps": [
+      "Elige Iniciar juego, desplaza la fila de niveles y selecciona una nota desbloqueada.",
+      "Avanza las olas y sigue llegadas, salidas y al cangrejo; marca conchas para llevar la cuenta.",
+      "Lee la pregunta y elige un número, o vuelve a observar las mismas pistas antes de responder.",
+      "Desde el resultado, continúa, repite con otras cantidades o vuelve a los niveles."
+    ]
+  },
+  "pt-BR": {
+    "headings": [
+      "A enseada e seu objetivo",
+      "Como jogar",
+      "Progresso e novas partidas",
+      "Dicas práticas",
+      "Notas de design",
+      "Controles, movimento e salvamento",
+      "Perguntas frequentes",
+      "Jogos relacionados"
+    ],
+    "overview": "Na Enseada das Conchas, cada nota da maré é um pequeno enigma numérico. O objetivo é acompanhar as mudanças, não tocar o mais rápido possível. Uma onda pode trazer conchas, levá-las embora, esconder uma chegada ou mostrar duas enseadas para comparação. O grupo ilustrado representa a pista atual: conchas que saem devem ser subtraídas, não somadas como outro monte. Leia a pergunta antes de responder. Algumas notas pedem o total final, outras uma chegada desconhecida ou a diferença entre dois montes. Escolha o único número que satisfaz a regra para concluir a nota.",
+    "progression": "A campanha tem trinta notas originais em seis capítulos de cinco. O começo apresenta chegadas e saídas; depois surgem várias ondas, valores ausentes, comparação entre enseadas, marés em dois passos e um caranguejo que leva conchas extras. Cada quinta nota marca um ponto de controle, sem acrescentar cronômetro ou outro combate. Complete as notas em ordem para liberar a próxima; as concluídas podem ser repetidas. Nova maré altera as quantidades dentro da mesma mecânica. A posição e a ordem numérica da resposta correta também variam. Um resultado melhor aumenta as melhores estrelas sem apagar uma marca superior.",
+    "tips": "Separe as chegadas, as saídas e as conchas levadas pelo caranguejo. O valor da mudança atual nem sempre é o total final. Para a chegada desconhecida, calcule final mais saídas menos início. Para comparar, forme pares entre os montes e conte as conchas que sobram; a diferença não é negativa. Toque nas conchas visíveis para marcar até onde contou. As marcas somem quando a pista muda e não enviam respostas nem alteram estrelas.",
+    "design": "Não há limite de tempo: observar e corrigir importa mais que reagir depressa. Conchas entrando, água em movimento, respostas e estrelas do resultado ganham animações, mas o fim de uma animação nunca calcula pontos nem altera resultados salvos. A pista continua legível depois de aparecer. Ao errar, os botões permanecem no lugar e somente a alternativa rejeitada fica indisponível. A enseada é um cenário fictício de enigmas, não uma previsão de marés ou simulação real. Não há inimigos, ataques, equipamentos ou compras para administrar.",
+    "player": "Use toque ou mouse para escolher notas, avançar ondas, marcar conchas e responder. Tab com Enter ou espaço permite usar os botões; as teclas 1–3 selecionam as opções correspondentes quando a resposta está habilitada. Abrir as configurações pausa o movimento decorativo, e a preferência de reduzir movimento do sistema é respeitada sem mudar as regras. As notas concluídas e melhores estrelas ficam somente neste navegador. Se o armazenamento estiver bloqueado, duram esta sessão. Não há recuperação por conta ao trocar de aparelho, navegador ou apagar os dados do site.",
+    "faq": [
+      [
+        "Por que não posso responder imediatamente?",
+        "Primeiro observe as pistas no seu ritmo e depois avance para a resposta. Durante o breve efeito de entrada, toques repetidos não pulam várias pistas por acidente."
+      ],
+      [
+        "Ver novamente apaga meus erros?",
+        "Não. As pistas, opções e erros do mesmo desafio permanecem. Acertar de primeira dá três estrelas; depois de um erro, duas; depois de dois erros, uma."
+      ],
+      [
+        "O que a interrogação esconde?",
+        "A quantidade de uma chegada de conchas. O início, as saídas e o final são conhecidos. Nem uma contagem escondida nem o texto de acessibilidade revelam a resposta."
+      ],
+      [
+        "O que acontece se eu sair da nota?",
+        "O botão de voltar durante o jogo abre uma confirmação. Continuar mantém a mesma tentativa. Sair descarta só a tentativa incompleta, preservando resultados salvos. O resultado oferece fases, próxima nota e nova maré."
+      ],
+      [
+        "Por que o número intermediário nem sempre é correto?",
+        "Duas alternativas diferentes são geradas antes de misturar as opções. A resposta pode ser o menor, intermediário ou maior número, portanto use a regra em vez de um atalho de posição."
+      ]
+    ],
+    "tags": [
+      "Enigma numérico",
+      "Observação de ondas",
+      "Valores ausentes"
+    ],
+    "related": [
+      "Compare quantidades em outro enigma visual.",
+      "Use pistas espaciais em vez de contas de maré."
+    ],
+    "steps": [
+      "Escolha Iniciar jogo, deslize a fila de fases e selecione uma nota liberada.",
+      "Avance as ondas e acompanhe chegadas, saídas e o caranguejo; marque conchas para contar.",
+      "Leia a pergunta e escolha um número, ou reveja as mesmas pistas antes de responder.",
+      "No resultado, continue, repita com novas quantidades ou volte às fases."
+    ]
+  },
+  "fr": {
+    "headings": [
+      "La crique et votre objectif",
+      "Comment jouer",
+      "Progression et nouvelles parties",
+      "Conseils pratiques",
+      "Notes de conception",
+      "Commandes, animations et sauvegarde",
+      "Questions fréquentes",
+      "Jeux associés"
+    ],
+    "overview": "À l’Anse aux Coquillages, chaque note de marée est une petite énigme numérique. Votre objectif est de suivre les changements, pas de cliquer le plus vite possible. Une vague peut apporter des coquillages, en emporter, masquer une arrivée ou présenter deux criques à comparer. Le groupe illustré décrit l’indice actuel : les coquillages qui partent se soustraient, ils ne forment pas un nouveau tas à ajouter. Lisez la question : elle peut demander le total final, une arrivée inconnue ou la différence entre deux tas. Choisissez le seul nombre qui respecte la règle pour terminer la note.",
+    "progression": "La campagne comporte trente notes originales réparties en six chapitres de cinq. Les premières présentent les arrivées et les départs, puis viennent plusieurs vagues, une valeur manquante, la comparaison de criques, des marées en deux étapes et un crabe qui prend des coquillages. Chaque cinquième note marque un point de contrôle, sans ajouter de chronomètre ni de combat distinct. Terminez les notes dans l’ordre pour ouvrir la suivante ; les anciennes restent rejouables. Nouvelle marée modifie les quantités en gardant la même mécanique. La position et le rang numérique de la bonne réponse varient. Seul un meilleur résultat augmente les meilleures étoiles enregistrées.",
+    "tips": "Distinguez ce qui arrive, ce qui part et ce que prend le crabe. Le changement affiché n’est pas forcément le total final. Pour une arrivée inconnue, calculez fin plus départs moins début. Pour comparer, associez les deux tas par paires et comptez le reste : la différence n’est pas négative. Touchez les coquillages visibles pour marquer votre comptage. Les marques disparaissent quand l’indice change et ne valident aucune réponse ni ne modifient les étoiles.",
+    "design": "Sans limite de temps, l’observation et la correction comptent plus que la rapidité. L’arrivée des coquillages, l’eau, les réponses et les étoiles du résultat sont animées, mais la fin d’une animation ne calcule jamais un score et ne modifie pas une sauvegarde. L’indice reste lisible après son apparition. Après une erreur, les boutons gardent leur position et seul le choix rejeté devient indisponible. La crique est un décor fictif d’énigmes, pas une prévision des marées ni une simulation réelle. Il n’y a ni adversaires, ni attaques, ni équipement ou achats à gérer.",
+    "player": "Utilisez le tactile ou la souris pour choisir une note, avancer les vagues, marquer des coquillages et répondre. Tab avec Entrée ou espace donne accès aux boutons ; les touches 1–3 correspondent aux réponses visibles lorsqu’elles sont disponibles. Les réglages mettent les mouvements décoratifs en pause, et la préférence système de réduction des animations est respectée sans changer les règles. Les notes terminées et leurs meilleures étoiles restent dans ce navigateur. Si le stockage est bloqué, elles ne durent que cette session. Aucun compte ne restaure ces données après un changement d’appareil, de navigateur ou leur suppression.",
+    "faq": [
+      [
+        "Pourquoi ne puis-je pas répondre immédiatement ?",
+        "Observez d’abord les indices à votre rythme, puis passez à la réponse. Pendant le bref effet d’entrée, des clics répétés ne permettent pas de sauter plusieurs indices accidentellement."
+      ],
+      [
+        "Revoir efface-t-il les erreurs ?",
+        "Non. Les indices, les options et les erreurs de la tentative restent identiques. Réussir au premier choix donne trois étoiles, après une erreur deux, et après deux erreurs une."
+      ],
+      [
+        "Que cache le point d’interrogation ?",
+        "Le nombre de coquillages d’une arrivée. Le début, les départs et la fin sont connus. Aucun comptage caché ni libellé d’accessibilité ne révèle la valeur recherchée."
+      ],
+      [
+        "Que se passe-t-il si je quitte une note ?",
+        "Le retour en cours de jeu ouvre une confirmation. Continuer conserve la tentative. Quitter abandonne uniquement celle qui est inachevée ; les résultats sauvegardés restent. Le résultat propose les niveaux, la note suivante et une nouvelle marée."
+      ],
+      [
+        "Pourquoi le nombre du milieu n’est-il pas toujours juste ?",
+        "Deux alternatives distinctes sont créées, puis les options sont mélangées. Le bon nombre peut être le plus petit, l’intermédiaire ou le plus grand. Il faut résoudre la règle plutôt que deviner une position."
+      ]
+    ],
+    "tags": [
+      "Énigme numérique",
+      "Observation des vagues",
+      "Valeurs manquantes"
+    ],
+    "related": [
+      "Comparez des quantités dans une autre énigme visuelle.",
+      "Utilisez des indices spatiaux plutôt que les calculs de marée."
+    ],
+    "steps": [
+      "Choisissez Commencer le jeu, faites défiler les niveaux et sélectionnez une note déverrouillée.",
+      "Avancez les vagues et suivez arrivées, départs et crabe ; marquez les coquillages pour compter.",
+      "Lisez la question et choisissez un nombre, ou revoyez les mêmes indices avant de répondre.",
+      "Depuis le résultat, continuez, rejouez avec d’autres quantités ou revenez aux niveaux."
+    ]
+  },
+  "de": {
+    "headings": [
+      "Die Bucht und dein Ziel",
+      "So wird gespielt",
+      "Fortschritt und Wiederholung",
+      "Praktische Tipps",
+      "Hinweise zum Design",
+      "Steuerung, Bewegung und Speicherung",
+      "Häufige Fragen",
+      "Ähnliche Spiele"
+    ],
+    "overview": "In der Muschelbucht ist jede Gezeitennotiz ein kleines Zahlenrätsel. Du verfolgst Veränderungen, statt möglichst schnell zu klicken. Eine Welle bringt Muscheln, trägt sie fort, verdeckt eine Ankunft oder zeigt zwei Buchten zum Vergleichen. Die dargestellte Gruppe beschreibt den aktuellen Hinweis: Fortgetragene Muscheln werden abgezogen, nicht als neuer Haufen addiert. Lies vor der Antwort, ob die Endmenge, eine unbekannte Ankunft oder der Unterschied zweier Haufen gesucht ist. Die Notiz ist gelöst, wenn du die einzige Zahl wählst, die zu ihrer Regel passt.",
+    "progression": "Die Kampagne enthält dreißig gestaltete Notizen in sechs Kapiteln mit je fünf Aufgaben. Zunächst geht es um Ankünfte und Abgänge, später um mehrere Wellen, fehlende Werte, zwei Buchten, abwechselnde Zweischritt-Fluten und eine Krabbe, die zusätzliche Muscheln nimmt. Jede fünfte Notiz ist ein Kontrollpunkt, ohne Zeitlimit oder zusätzlichen Kampfmodus. Löse die Notizen nacheinander; abgeschlossene bleiben wiederholbar. Neue Flut verändert Mengen innerhalb derselben Mechanik. Sowohl die Position als auch der Größenrang der richtigen Antwort wechseln. Ein besseres Ergebnis erhöht die besten Sterne, ohne eine höhere frühere Wertung zu überschreiben.",
+    "tips": "Unterscheide Ankünfte, Abgänge und die Beute der Krabbe. Die angezeigte Veränderung ist nicht automatisch die Endmenge. Bei einer unbekannten Ankunft rechnest du Ende plus Abgänge minus Anfang. Beim Vergleich bildest du gedanklich Paare und zählst den Rest; der Unterschied ist nicht negativ. Sichtbare Muscheln lassen sich zum Mitzählen markieren. Die Markierung verschwindet beim nächsten Hinweis, gibt keine Antwort ab und verändert keine Sterne.",
+    "design": "Ohne Zeitlimit stehen Beobachten und Korrigieren vor Reaktionsgeschwindigkeit. Ankommende Muscheln, Wasser, Antworten und Ergebnissterne bewegen sich, doch ein Animationsende berechnet niemals Punkte oder verändert gespeicherte Ergebnisse. Hinweise bleiben nach ihrem Auftauchen lesbar. Nach einem Fehler behalten die Antwortknöpfe ihre Position; nur die falsche Option wird gesperrt. Die Bucht ist ein erfundenes Rätselszenario, keine Gezeitenvorhersage oder naturgetreue Simulation. Gegner, Angriffe, Ausrüstung und Käufe musst du nicht verwalten.",
+    "player": "Mit Touch oder Maus wählst du Notizen, gehst Wellen weiter, markierst Muscheln und antwortest. Tab mit Eingabe- oder Leertaste bedient die Knöpfe; die Ziffern 1–3 wählen die entsprechenden sichtbaren Antworten, sobald Antworten erlaubt sind. Einstellungen pausieren dekorative Bewegungen. Die Systemeinstellung für weniger Bewegung wird ohne Regeländerung beachtet. Gelöste Notizen und beste Sterne bleiben nur in diesem Browser. Ist der Speicher gesperrt, gilt der Fortschritt nur für die aktuelle Sitzung. Nach Geräte- oder Browserwechsel oder dem Löschen der Websitedaten gibt es keine Wiederherstellung über ein Konto.",
+    "faq": [
+      [
+        "Warum kann ich nicht sofort antworten?",
+        "Gehe zunächst die Hinweise in deinem Tempo durch und wechsle dann zum Antworten. Während des kurzen Einblendeffekts überspringen wiederholte Eingaben nicht versehentlich mehrere Hinweise."
+      ],
+      [
+        "Löscht erneutes Ansehen meine Fehler?",
+        "Nein. Hinweise, Optionen und Fehler desselben Versuchs bleiben erhalten. Die erste richtige Wahl bringt drei Sterne, nach einem Fehler zwei und nach zwei Fehlern einen."
+      ],
+      [
+        "Was verbirgt das Fragezeichen?",
+        "Die Muschelmenge einer Ankunft. Anfang, Abgänge und Ende sind bekannt. Weder eine versteckte Muschelzahl noch ein Barrierefreiheitslabel verrät den gesuchten Wert."
+      ],
+      [
+        "Was verliere ich beim Verlassen?",
+        "Zurück öffnet im Spiel eine Bestätigung. Weiterspielen erhält den Versuch. Verlassen verwirft nur den unvollständigen Versuch; gespeicherte Ergebnisse bleiben. Im Ergebnis stehen Level, nächste Notiz und neue Flut bereit."
+      ],
+      [
+        "Ist die mittlere Zahl nicht immer richtig?",
+        "Es werden zwei verschiedene Alternativen erzeugt und die Optionen gemischt. Die Lösung kann die kleinste, mittlere oder größte Zahl sein. Entscheidend ist die Rechnung, nicht ein Positionsmuster."
+      ]
+    ],
+    "tags": [
+      "Zahlenrätsel",
+      "Wellen beobachten",
+      "Fehlende Werte"
+    ],
+    "related": [
+      "Vergleiche Mengen in einem anderen visuellen Rätsel.",
+      "Nutze räumliche Hinweise statt Gezeitenrechnungen."
+    ],
+    "steps": [
+      "Wähle Spiel starten, bewege die Levelreihe und öffne eine freigeschaltete Notiz.",
+      "Gehe die Wellen durch und verfolge Ankünfte, Abgänge und Krabbe; markiere Muscheln zum Mitzählen.",
+      "Lies die Frage und wähle eine Zahl oder sieh dieselben Hinweise vor der Antwort erneut an.",
+      "Im Ergebnis kannst du fortfahren, mit neuen Mengen wiederholen oder zur Levelauswahl zurückkehren."
+    ]
+  },
+  "it": {
+    "headings": [
+      "La baia e il tuo obiettivo",
+      "Come giocare",
+      "Progressi e nuove partite",
+      "Consigli pratici",
+      "Note di progettazione",
+      "Comandi, animazioni e salvataggi",
+      "Domande frequenti",
+      "Giochi correlati"
+    ],
+    "overview": "A Baia Conchiglia ogni nota della marea è un piccolo enigma numerico. Devi seguire i cambiamenti, non premere il più velocemente possibile. Un’onda può portare conchiglie, trascinarle via, nascondere un arrivo o mostrare due baie da confrontare. Il gruppo illustrato descrive l’indizio attuale: le conchiglie che partono vanno sottratte, non aggiunte come un nuovo mucchio. Leggi prima la domanda: può chiedere il totale finale, un arrivo sconosciuto oppure la differenza tra due mucchi. Completi la nota scegliendo l’unico numero che soddisfa la sua regola.",
+    "progression": "La campagna comprende trenta note originali in sei capitoli da cinque. All’inizio affronti arrivi e partenze; poi compaiono più onde, valori mancanti, confronti tra baie, maree alternate in due passaggi e un granchio che prende altre conchiglie. Ogni quinta nota segna un punto di controllo senza aggiungere timer o un combattimento diverso. Completa le note in ordine per sbloccare la successiva; quelle concluse restano rigiocabili. Nuova marea cambia le quantità mantenendo la meccanica. Variano sia la posizione sia l’ordine numerico della risposta corretta. Un risultato migliore aumenta le stelle migliori senza cancellare un record superiore.",
+    "tips": "Tieni distinti arrivi, partenze e conchiglie prese dal granchio. La variazione mostrata non è necessariamente il totale finale. Per l’arrivo sconosciuto, calcola finale più partenze meno inizio. Nel confronto abbina idealmente i due mucchi e conta ciò che resta; la differenza non è negativa. Puoi toccare le conchiglie visibili per segnare fin dove hai contato. I segni scompaiono al cambio dell’indizio e non inviano risposte né modificano le stelle.",
+    "design": "Non c’è limite di tempo: osservare e correggersi conta più della velocità. Conchiglie in entrata, acqua, risposte e stelle del risultato sono animate, ma la fine di un’animazione non calcola mai punti né modifica risultati salvati. Gli indizi rimangono leggibili dopo l’ingresso. Dopo un errore i pulsanti non cambiano posizione; si disabilita soltanto l’alternativa scartata. La baia è un’ambientazione immaginaria, non una previsione delle maree o una simulazione reale. Non ci sono avversari, attacchi, equipaggiamento o acquisti da gestire.",
+    "player": "Usa touch o mouse per scegliere note, avanzare onde, segnare conchiglie e rispondere. Tab con Invio o spazio consente di usare i pulsanti; i tasti 1–3 scelgono la risposta visibile corrispondente quando le risposte sono abilitate. Aprire le impostazioni sospende i movimenti decorativi e viene rispettata la preferenza di sistema per ridurre il movimento, senza cambiare le regole. Le note completate e le stelle migliori restano solo in questo browser. Con memoria bloccata durano questa sessione. Cambiando dispositivo o browser o cancellando i dati, non vengono ripristinate da un account.",
+    "faq": [
+      [
+        "Perché non posso rispondere subito?",
+        "Prima osserva gli indizi al tuo ritmo, poi passa alla risposta. Durante il breve effetto di ingresso, premere ripetutamente non consente di saltare più indizi per errore."
+      ],
+      [
+        "Riguardare cancella gli errori?",
+        "No. Conserva indizi, opzioni ed errori dello stesso tentativo. Rispondere bene al primo colpo dà tre stelle, dopo un errore due e dopo due errori una."
+      ],
+      [
+        "Che cosa nasconde il punto interrogativo?",
+        "La quantità di conchiglie di un arrivo. Inizio, partenze e finale sono noti. Né un conteggio nascosto né un’etichetta di accessibilità rivela la risposta."
+      ],
+      [
+        "Che cosa succede se abbandono la nota?",
+        "Il comando indietro durante il gioco apre una conferma. Continua conserva il tentativo. Uscire scarta solo quello incompleto, mantenendo i risultati salvati. Il risultato offre livelli, nota successiva e nuova marea."
+      ],
+      [
+        "Il numero intermedio non è sempre corretto?",
+        "Si generano due alternative diverse e poi si mescolano le opzioni. La risposta può essere il numero minore, intermedio o maggiore: conta la regola, non una scorciatoia di posizione."
+      ]
+    ],
+    "tags": [
+      "Enigma numerico",
+      "Osservazione delle onde",
+      "Valori mancanti"
+    ],
+    "related": [
+      "Confronta quantità in un altro enigma visivo.",
+      "Usa indizi spaziali al posto dei calcoli delle maree."
+    ],
+    "steps": [
+      "Scegli Inizia il gioco, scorri la fila dei livelli e seleziona una nota sbloccata.",
+      "Avanza le onde e segui arrivi, partenze e granchio; segna le conchiglie per tenere il conto.",
+      "Leggi la domanda e scegli un numero oppure riguarda gli stessi indizi prima di rispondere.",
+      "Dal risultato puoi continuare, ripetere con nuove quantità o tornare ai livelli."
+    ]
+  },
+  "ru": {
+    "headings": [
+      "Бухта и ваша цель",
+      "Как играть",
+      "Прогресс и повторные попытки",
+      "Полезные советы",
+      "О замысле игры",
+      "Управление, анимация и сохранение",
+      "Вопросы и ответы",
+      "Похожие игры"
+    ],
+    "overview": "В бухте Ракушек каждая запись о приливе — небольшая числовая головоломка. Нужно следить за изменениями, а не нажимать быстрее всех. Волна может принести ракушки, унести их, скрыть одно поступление или показать две бухты для сравнения. Нарисованная группа описывает текущую подсказку: уходящие ракушки нужно вычитать, а не добавлять как новую кучку. Перед ответом прочитайте, что требуется: конечное количество, неизвестное поступление или разница между кучками. Запись решена, когда выбрано единственное число, соответствующее её правилу.",
+    "progression": "В кампании тридцать авторских записей: шесть глав по пять задач. Сначала появляются прибытия и убытия, затем несколько волн, пропущенные значения, сравнение бухт, чередующиеся двухэтапные приливы и краб, забирающий дополнительные ракушки. Каждая пятая запись — контрольная точка без таймера и отдельного боевого режима. Решайте записи по порядку, открывая следующие; пройденные можно повторять. Новый прилив меняет количества в той же механике. Положение правильного ответа и его место среди чисел по величине также меняются. Более удачный результат повышает лучшие звёзды, не стирая более высокий рекорд.",
+    "tips": "Различайте прибывшие ракушки, унесённые и добычу краба. Показанное изменение не обязательно равно конечному итогу. Для неизвестного поступления считайте: итог плюс убывшие минус начало. При сравнении мысленно составьте пары из двух кучек и посчитайте остаток; разница не бывает отрицательной. Нажимайте на видимые ракушки, чтобы отмечать ход подсчёта. Отметки исчезают при смене подсказки, не отправляют ответ и не влияют на звёзды.",
+    "design": "Время не ограничено, поэтому наблюдение и исправление ошибок важнее скорости реакции. Появление ракушек, вода, отклик на ответ и итоговые звёзды анимированы, но завершение анимации никогда не вычисляет очки и не меняет сохранённый результат. После появления подсказка остаётся читаемой. При ошибке кнопки не перемещаются: недоступным становится только отвергнутый вариант. Бухта — вымышленная головоломка, а не прогноз приливов или реалистичная модель. Управлять врагами, атаками, снаряжением и покупками не нужно.",
+    "player": "Сенсорный экран или мышь позволяют выбирать записи, переключать волны, отмечать ракушки и отвечать. Кнопки доступны через Tab и Enter или пробел; клавиши 1–3 выбирают соответствующий видимый вариант, когда ответ разрешён. Настройки приостанавливают декоративное движение, а системное уменьшение анимации соблюдается без изменения правил. Пройденные записи и лучшие звёзды хранятся только в этом браузере. При блокировке хранилища прогресс действует в текущем сеансе страницы. После смены устройства, браузера или очистки данных сайта восстановление через учётную запись не предусмотрено.",
+    "faq": [
+      [
+        "Почему нельзя ответить сразу?",
+        "Сначала просмотрите подсказки волн в своём темпе, затем перейдите к ответу. Во время короткого появления повторные нажатия не позволяют случайно пропустить сразу несколько подсказок."
+      ],
+      [
+        "Повторный просмотр сбрасывает ошибки?",
+        "Нет. Он сохраняет подсказки, варианты и ошибки текущей попытки. Первый верный ответ даёт три звезды, после одной ошибки — две, после двух — одну."
+      ],
+      [
+        "Что скрывает вопросительный знак?",
+        "Количество ракушек в одном поступлении. Начальное количество, убытия и итог известны. Ни скрытый счётчик, ни подпись для специальных возможностей не раскрывают ответ."
+      ],
+      [
+        "Что пропадёт при выходе из записи?",
+        "Кнопка возврата во время игры открывает подтверждение. Продолжение сохраняет текущую попытку. Выход отбрасывает лишь незавершённую попытку, оставляя сохранённые результаты. В результате доступны уровни, следующая запись и новый прилив."
+      ],
+      [
+        "Среднее по величине число не всегда правильное?",
+        "Создаются два различных альтернативных ответа, затем варианты перемешиваются. Решением может быть наименьшее, среднее или наибольшее число. Используйте правило, а не привычную позицию."
+      ]
+    ],
+    "tags": [
+      "Числовая головоломка",
+      "Наблюдение за волнами",
+      "Пропущенные значения"
+    ],
+    "related": [
+      "Сравните количества в другой визуальной головоломке.",
+      "Используйте пространственные подсказки вместо подсчёта прилива."
+    ],
+    "steps": [
+      "Выберите начало игры, прокрутите ряд уровней и откройте доступную запись.",
+      "Переключайте волны, следите за прибытием, убытием и крабом; отмечайте ракушки для подсчёта.",
+      "Прочитайте вопрос и выберите число либо ещё раз посмотрите те же подсказки перед ответом.",
+      "В результате можно продолжить, повторить с новыми количествами или вернуться к уровням."
+    ]
+  },
+  "hi": {
+    "headings": [
+      "खाड़ी और आपका लक्ष्य",
+      "कैसे खेलें",
+      "प्रगति और दोबारा खेलना",
+      "उपयोगी सुझाव",
+      "डिज़ाइन के बारे में",
+      "नियंत्रण, गति और सेव",
+      "सामान्य प्रश्न",
+      "संबंधित खेल"
+    ],
+    "overview": "शेल कोव में हर ज्वार-पर्ची एक छोटी संख्या पहेली है। लक्ष्य तेजी से बटन दबाना नहीं, बल्कि बदलावों का हिसाब रखना है। कोई लहर सीपियाँ लाती है, कोई ले जाती है, किसी आगमन की संख्या छिपी होती है और कभी दो खाड़ियों की तुलना करनी होती है। चित्र में दिखा समूह मौजूदा संकेत है। जाने वाली सीपियाँ घटानी हैं, उन्हें नया ढेर मानकर जोड़ना नहीं है। उत्तर से पहले पढ़ें कि अंतिम संख्या, छिपा आगमन या दो ढेरों का अंतर पूछा गया है। नियम पूरा करने वाली एकमात्र संख्या चुनने पर पर्ची पूरी होती है।",
+    "progression": "अभियान में तीस मूल पर्चियाँ हैं, पाँच-पाँच के छह अध्यायों में। शुरुआत आगमन और प्रस्थान से होती है। आगे कई लहरें, गुम संख्या, दो खाड़ियों की तुलना, बारी-बारी जोड़ने और घटाने वाला दो-चरण ज्वार तथा अतिरिक्त सीपियाँ ले जाने वाला केकड़ा आते हैं। हर पाँचवीं पर्ची अध्याय का चेकपॉइंट है; इससे टाइमर या अलग लड़ाई नहीं जुड़ती। क्रम से पूरा करके अगली पर्ची खोलें। पूरी पर्चियाँ फिर खेली जा सकती हैं। नया ज्वार उसी नियम में मात्राएँ बदलता है। सही विकल्प का स्थान और संख्याओं के क्रम में उसका स्थान भी निश्चित नहीं है। बेहतर परिणाम ही सबसे अधिक तारों का रिकॉर्ड बढ़ाता है।",
+    "tips": "आई सीपियों, गई सीपियों और केकड़े की सीपियों को अलग रखें। मौजूदा बदलाव की संख्या हमेशा अंतिम कुल नहीं होती। छिपे आगमन के लिए अंतिम संख्या में गई संख्या जोड़ें और शुरुआती संख्या घटाएँ। तुलना में दोनों ढेरों के जोड़े बनाकर बची सीपियाँ गिनें; अंतर ऋणात्मक नहीं होता। दिखती सीपियों पर टैप करके गिनती का स्थान चिन्हित कर सकते हैं। संकेत बदलते ही निशान हट जाते हैं। उनसे उत्तर जमा नहीं होता और तारे नहीं बदलते।",
+    "design": "कोई समय सीमा नहीं है, इसलिए प्रतिक्रिया की गति से अधिक जरूरी देखना और गलती सुधारना है। सीपियों का प्रवेश, पानी, उत्तर की प्रतिक्रिया और परिणाम के तारे गतिशील हैं, लेकिन एनीमेशन समाप्त होने से अंक नहीं गिने जाते और सहेजा परिणाम नहीं बदलता। प्रवेश प्रभाव के बाद भी संकेत पढ़ा जा सकता है। गलत उत्तर पर बटन अपनी जगह रहते हैं और केवल गलत विकल्प निष्क्रिय होता है। खाड़ी एक काल्पनिक पहेली है, असली ज्वार का पूर्वानुमान या वास्तविक अनुकरण नहीं। दुश्मन, हमले, उपकरण या खरीदारी संभालने की जरूरत नहीं है।",
+    "player": "टच या माउस से पर्ची चुनें, लहर आगे करें, सीपियाँ चिन्हित करें और उत्तर दें। Tab के साथ Enter या स्पेस से बटन इस्तेमाल होते हैं; उत्तर देने की अवस्था में 1–3 कुंजियाँ संबंधित विकल्प चुनती हैं। सेटिंग खोलने से सजावटी गति रुकती है। सिस्टम की कम गति वाली पसंद का पालन होता है, लेकिन नियम नहीं बदलते। पूरी पर्चियाँ और सर्वोत्तम तारे इसी ब्राउज़र में रहते हैं। स्टोरेज बंद होने पर प्रगति केवल मौजूदा पेज सत्र में रहती है। उपकरण या ब्राउज़र बदलने अथवा साइट डेटा मिटाने के बाद खाते से रिकॉर्ड वापस नहीं आता।",
+    "faq": [
+      [
+        "तुरंत उत्तर क्यों नहीं दे सकता?",
+        "पहले लहरों के संकेत अपनी गति से देखें, फिर उत्तर की अवस्था में जाएँ। छोटे प्रवेश प्रभाव के दौरान बार-बार दबाने से कई संकेत गलती से एक साथ नहीं छूटते।"
+      ],
+      [
+        "फिर देखने से गलतियाँ मिट जाती हैं?",
+        "नहीं। उसी प्रयास के संकेत, विकल्प और गलतियाँ बने रहते हैं। पहली बार सही चुनने पर तीन तारे, एक गलती के बाद दो और दो गलतियों के बाद एक मिलता है।"
+      ],
+      [
+        "प्रश्नचिह्न क्या छिपाता है?",
+        "किसी एक आगमन की सीपियों की संख्या। शुरुआत, जाने वाली संख्या और अंत ज्ञात हैं। छिपी सीपियों की गिनती या सहायक पढ़ने वाला लेबल उत्तर नहीं बताता।"
+      ],
+      [
+        "पर्ची छोड़ने पर क्या खोता है?",
+        "खेल में वापसी का बटन पुष्टि खोलता है। जारी रखने पर वही प्रयास बना रहता है। छोड़ने पर केवल अधूरा प्रयास हटता है, सहेजे परिणाम रहते हैं। परिणाम में स्तर, अगली पर्ची और नया ज्वार मिलता है।"
+      ],
+      [
+        "बीच की संख्या हमेशा सही क्यों नहीं है?",
+        "दो अलग वैकल्पिक संख्याएँ बनाकर विकल्पों का क्रम बदला जाता है। सही संख्या सबसे छोटी, बीच की या सबसे बड़ी हो सकती है। स्थान के बजाय नियम से उत्तर निकालें।"
+      ]
+    ],
+    "tags": [
+      "संख्या पहेली",
+      "लहरों का अवलोकन",
+      "गुम संख्याएँ"
+    ],
+    "related": [
+      "एक अलग दृश्य पहेली में मात्राएँ तुलना करें।",
+      "ज्वार की गणना के बजाय स्थान के संकेतों का उपयोग करें।"
+    ],
+    "steps": [
+      "खेल शुरू करें चुनें, स्तरों की पंक्ति खिसकाएँ और खुली पर्ची चुनें।",
+      "लहरें आगे करें और आगमन, प्रस्थान तथा केकड़े का हिसाब रखें; गिनने के लिए सीपियाँ चिन्हित करें।",
+      "प्रश्न पढ़कर संख्या चुनें या उत्तर से पहले वही संकेत फिर देखें।",
+      "परिणाम से अगली पर्ची खोलें, नई मात्राओं के साथ दोबारा खेलें या स्तरों पर लौटें।"
+    ]
+  },
+  "ar": {
+    "headings": [
+      "الخليج وهدفك",
+      "طريقة اللعب",
+      "التقدم وإعادة اللعب",
+      "نصائح عملية",
+      "ملاحظات التصميم",
+      "التحكم والحركة والحفظ",
+      "أسئلة وأجوبة",
+      "ألعاب ذات صلة"
+    ],
+    "overview": "في خليج الأصداف، تمثل كل ملاحظة مدّ لغزًا عدديًا صغيرًا. هدفك متابعة التغيّرات، لا الضغط بأقصى سرعة. قد تجلب موجة أصدافًا، أو تحملها بعيدًا، أو تخفي كمية وافدة، أو تعرض خليجين للمقارنة. المجموعة المرسومة تصف الدليل الحالي؛ الأصداف المغادرة تُطرح ولا تُضاف ككومة جديدة. اقرأ السؤال قبل الإجابة: قد يطلب العدد النهائي، أو كمية وافدة مجهولة، أو الفرق بين كومتين. تُحل الملاحظة عندما تختار العدد الوحيد الذي يحقق قاعدتها.",
+    "progression": "تضم الرحلة ثلاثين ملاحظة أصلية موزعة على ستة فصول، في كل فصل خمس ملاحظات. تبدأ بالوصول والمغادرة، ثم تظهر موجات متعددة، وقيمة ناقصة، ومقارنة خليجين، ومدّ بخطوتين متعاقبتين، وسرطان بحر يأخذ أصدافًا إضافية. كل ملاحظة خامسة نقطة تحقق لا تضيف مؤقتًا أو وضع قتال آخر. أكمل الملاحظات بالترتيب لفتح التالية، ويمكن إعادة المكتملة. يغيّر المدّ الجديد الكميات مع الحفاظ على الآلية. يتغير موضع الإجابة الصحيحة وترتيبها من حيث الحجم أيضًا. النتيجة الأفضل ترفع أفضل نجوم الملاحظة دون محو سجل أعلى.",
+    "tips": "افصل بين الأصداف الوافدة والمغادرة وما يأخذه سرطان البحر. مقدار التغيّر الظاهر ليس بالضرورة المجموع النهائي. للوصول المجهول احسب النهاية زائد المغادرات ناقص البداية. للمقارنة، كوّن أزواجًا ذهنيًا بين الكومتين وعدّ الباقي؛ الفرق غير سالب. يمكنك الضغط على الأصداف المرئية لوضع علامات تساعدك على متابعة العدّ. تختفي العلامات عند تغيّر الدليل، ولا ترسل إجابة ولا تؤثر في النجوم.",
+    "design": "لا يوجد حد زمني؛ الملاحظة وتصحيح الخطأ أهم من سرعة الاستجابة. تتحرك الأصداف عند الدخول والمياه وردود الإجابات ونجوم النتيجة، لكن انتهاء الحركة لا يحسب النقاط ولا يغيّر نتيجة محفوظة. يبقى الدليل مقروءًا بعد ظهوره. عند الخطأ تحافظ الأزرار على مواقعها ويُعطّل الخيار الخاطئ وحده. الخليج مشهد خيالي للألغاز، وليس توقعًا للمدّ أو محاكاة واقعية لحركة الأصداف. لا تحتاج إلى إدارة خصوم أو هجمات أو معدات أو مشتريات.",
+    "player": "استخدم اللمس أو الفأرة لاختيار الملاحظات وتقديم الموجات ووضع العلامات والإجابة. يتيح Tab مع Enter أو المسافة استخدام الأزرار، وتختار المفاتيح 1–3 الإجابة المرئية المقابلة عندما تكون الإجابة متاحة. فتح الإعدادات يوقف الحركة الزخرفية، وتُحترم رغبة النظام في تقليل الحركة دون تغيير القواعد. تُحفظ الملاحظات المكتملة وأفضل نجومها في هذا المتصفح فقط. عند حظر التخزين تبقى في جلسة الصفحة الحالية. لا تستعيدها من حساب بعد تغيير الجهاز أو المتصفح أو مسح بيانات الموقع.",
+    "faq": [
+      [
+        "لماذا لا أستطيع الإجابة فورًا؟",
+        "راقب أدلة الموجات أولًا بالوتيرة التي تختارها، ثم انتقل إلى الإجابة. أثناء تأثير الدخول القصير، لا يتسبب الضغط المتكرر في تخطي عدة أدلة بالخطأ."
+      ],
+      [
+        "هل تمحو إعادة المشاهدة أخطائي؟",
+        "لا. تحتفظ بأدلة المحاولة نفسها وخياراتها وأخطائها. الإجابة الصحيحة الأولى تمنح ثلاث نجوم، وبعد خطأ واحد نجمتين، وبعد خطأين نجمة واحدة."
+      ],
+      [
+        "ماذا تخفي علامة الاستفهام؟",
+        "كمية أصداف وافدة في موجة واحدة. البداية والمغادرات والنهاية معروفة. لا يكشف عدد مخفي للأصداف أو وصف مخصص لإمكانية الوصول الإجابة المطلوبة."
+      ],
+      [
+        "ماذا أفقد عند مغادرة الملاحظة؟",
+        "زر الرجوع أثناء اللعب يفتح تأكيدًا داخل اللعبة. المتابعة تبقي المحاولة نفسها، والمغادرة تتخلى عن غير المكتملة فقط مع إبقاء النتائج المحفوظة. تتيح النتيجة المراحل والملاحظة التالية والمدّ الجديد."
+      ],
+      [
+        "لماذا ليس العدد الأوسط صحيحًا دائمًا؟",
+        "يُنشأ بديلان مختلفان ثم تُخلط الخيارات. قد تكون الإجابة العدد الأصغر أو الأوسط أو الأكبر؛ احسب وفق القاعدة بدل الاعتماد على موضع ثابت."
+      ]
+    ],
+    "tags": [
+      "لغز عددي",
+      "مراقبة الموجات",
+      "قيم ناقصة"
+    ],
+    "related": [
+      "قارن الكميات في لغز بصري آخر.",
+      "استخدم أدلة المكان بدل حساب المدّ."
+    ],
+    "steps": [
+      "اختر بدء اللعبة، ومرّر صف المراحل، ثم افتح ملاحظة متاحة.",
+      "قدّم الموجات وتابع الوصول والمغادرة وسرطان البحر؛ ضع علامات على الأصداف لمتابعة العدّ.",
+      "اقرأ السؤال واختر عددًا، أو شاهد الأدلة نفسها مجددًا قبل الإجابة.",
+      "من النتيجة تابع إلى التالية، أو أعد اللعب بكميات جديدة، أو عد إلى المراحل."
+    ]
+  }
+}
