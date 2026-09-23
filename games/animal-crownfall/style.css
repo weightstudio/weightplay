@@ -25,10 +25,11 @@
 
 @media(min-aspect-ratio:1.45){
  #battleContent{grid-template-columns:minmax(0,1fr) 180px;grid-template-rows:minmax(0,1fr) 104px 32px 48px}
- #arena{grid-column:1;grid-row:1/5}
+ #arena{grid-column:1;grid-row:1/4}
  #mapControls{grid-column:2;grid-row:2}
  #side{grid-column:2;grid-row:3;height:32px;align-self:end}
- .tools{grid-column:2;grid-row:4}
+ .tools{grid-column:1/3;grid-row:4}
+ .tools button{white-space:nowrap}
  #choice{inset-inline-start:auto;inset-inline-end:0;width:180px}
 }
 
@@ -50,7 +51,7 @@
 #stage{--wp-stage-scrim:linear-gradient(#102331a8,#102331ce);--wp-stage-art:url('../../assets/lobby-thumbs/w480/assets__animal-crownfall__cover.webp');background:linear-gradient(#102331db,#102331e8),var(--wp-stage-art) center/cover}
 #loadingPanel{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#102331f2;color:#ffdf89;font-size:20px}
 body[data-wp-game-id="animal-crownfall"] .wp-tutorial-button{width:44px;height:44px;top:80px;right:max(12px,calc((100vw - 920px)/2 + 12px));opacity:1}
-body[data-wp-game-id="animal-crownfall"] .wp-tutorial-close{width:44px;height:44px;min-width:44px;min-height:44px;flex-shrink:0}
+body[data-wp-game-id="animal-crownfall"] .wp-tutorial-close{width:48px;height:48px;min-width:48px;min-height:48px;flex-shrink:0}
 .wp-tutorial-backdrop[data-game-id="animal-crownfall"]{z-index:200}
 body[data-screen="battle"] .wp-tutorial-button{top:70px}
 body[data-screen="stage"] .wp-tutorial-button{display:none}
