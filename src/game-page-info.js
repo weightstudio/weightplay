@@ -13343,6 +13343,183 @@
   gameplayProfiles["animal-habitat-builder"].marketComparison = { name: "Dorfromantik", source: "https://www.toukana.com/dorfromantik", locales: habitatBuilderMarketComparisonCopy };
   // Text Growth 1.3.0: Habitat Builder market comparison end
 
+
+  // Text Growth 1.3.0: Animal Parking Patrol market comparison begin
+  const parkingPatrolMarketComparisonCopy = {
+  "en": {
+    "heading": "Similar traffic-unblocking puzzle reference",
+    "tagsLabel": "Gameplay tags:",
+    "tags": [
+      "Traffic-order puzzle",
+      "Path scanning",
+      "Vehicle clearing",
+      "Sequence planning"
+    ],
+    "body": "Both games ask you to inspect a traffic jam and choose which vehicle can move next without hitting an obstacle. The official Parking Jam 3D listing says players choose which car to move, find smooth exits, avoid collisions and solve parking puzzles in the right order. Animal Parking Patrol instead uses wooden animal carts that can leave only in the direction they face across 30 authored forest routes. Later routes add signal carts, gated carts and ordered convoys, while three safety checks, Hint, Undo and Restart support recovery. It is a fixed stage-by-stage logic puzzle with browser-local stars and best blocked-tap records, not Parking Jam 3D's car-parking progression, skins and property/idle-money systems.",
+    "disclaimer": "Animal Parking Patrol is an independent WeightPlay game. WeightPlay is not affiliated with, endorsed by, licensed by, or co-developing this game with Popcore GmbH or Parking Jam 3D.",
+    "sourceLabel": "Official Parking Jam 3D App Store listing by Popcore GmbH"
+  },
+  "zh-Hant": {
+    "heading": "相似的交通疏導解謎玩法參考",
+    "tagsLabel": "玩法標籤：",
+    "tags": [
+      "交通順序解謎",
+      "路徑觀察",
+      "車輛疏導",
+      "順序規劃"
+    ],
+    "body": "兩款遊戲都要先觀察壅塞的交通局面，再判斷哪一輛車可以安全移動。Parking Jam 3D 的官方 App Store 頁面說明，玩家要選擇要移動的汽車、找出順暢出口、避免碰撞，並以正確順序解開停車場謎題。森林停車疏導隊則使用只能朝目前面向方向離開的動物木車，共有 30 條固定設計的森林路線；後期加入號誌車、閘門車與依序離場的連鎖車隊，並提供三次安全確認、提示、復原與重新開始。它是逐關完成的固定邏輯解謎，星星與最少受阻次數只保存在瀏覽器本機，沒有 Parking Jam 3D 的汽車停車成長、造型與房產／放置收益系統。",
+    "disclaimer": "森林停車疏導隊是 WeightPlay 的獨立遊戲。WeightPlay 與 Popcore GmbH 或 Parking Jam 3D 沒有隸屬、背書、授權或共同開發關係。",
+    "sourceLabel": "Popcore GmbH 的 Parking Jam 3D 官方 App Store 頁面"
+  },
+  "zh-Hans": {
+    "heading": "相似的交通疏导解谜玩法参考",
+    "tagsLabel": "玩法标签：",
+    "tags": [
+      "交通顺序解谜",
+      "路径观察",
+      "车辆疏导",
+      "顺序规划"
+    ],
+    "body": "两款游戏都要求先观察拥堵的交通局面，再判断哪一辆车可以安全移动。Parking Jam 3D 的官方 App Store 页面说明，玩家要选择要移动的汽车、找到顺畅出口、避免碰撞，并按正确顺序解开停车场谜题。森林停车疏导队则使用只能朝当前面向方向离开的动物木车，共有 30 条固定设计的森林路线；后期加入信号车、闸门车和按顺序离场的连锁车队，并提供三次安全确认、提示、撤销与重新开始。它是逐关完成的固定逻辑解谜，星星和最少受阻次数只保存在浏览器本地，没有 Parking Jam 3D 的汽车停车成长、外观与房产／放置收益系统。",
+    "disclaimer": "森林停车疏导队是 WeightPlay 的独立游戏。WeightPlay 与 Popcore GmbH 或 Parking Jam 3D 不存在隶属、背书、授权或共同开发关系。",
+    "sourceLabel": "Popcore GmbH 的 Parking Jam 3D 官方 App Store 页面"
+  },
+  "ja": {
+    "heading": "似た交通整理パズルの参考",
+    "tagsLabel": "ゲームプレイタグ：",
+    "tags": [
+      "交通順序パズル",
+      "経路確認",
+      "車両の整理",
+      "順番計画"
+    ],
+    "body": "どちらも渋滞した配置を観察し、障害物にぶつからず次に動かせる車両を判断するパズルです。Parking Jam 3D の公式 App Store ページでは、動かす車を選び、滑らかな出口を見つけ、衝突を避けながら正しい順番で駐車場のパズルを解くと説明されています。Animal Parking Patrol は、向いている方向にしか出られない木製の動物カートを使う30本の固定ルートで構成され、後半では信号カート、ゲート付きカート、順番通りに出る連結車列が加わります。安全確認は3回までで、ヒント、元に戻す、リスタートも使えます。ブラウザ内に星と最少ブロックタップ記録を保存するステージ制の論理パズルで、Parking Jam 3D の車両スキンや不動産・放置収益の進行とは異なります。",
+    "disclaimer": "Animal Parking Patrol は WeightPlay の独立作品です。WeightPlay は Popcore GmbH または Parking Jam 3D と提携、推薦、許諾、共同開発の関係にありません。",
+    "sourceLabel": "Popcore GmbH による Parking Jam 3D 公式 App Store ページ"
+  },
+  "ko": {
+    "heading": "비슷한 교통 정리 퍼즐 참고",
+    "tagsLabel": "게임플레이 태그:",
+    "tags": [
+      "교통 순서 퍼즐",
+      "경로 확인",
+      "차량 정리",
+      "순서 계획"
+    ],
+    "body": "두 게임 모두 막힌 교통 배치를 살펴보고 장애물과 충돌하지 않도록 다음에 움직일 차량을 고르는 것이 핵심입니다. Parking Jam 3D 공식 App Store 페이지는 움직일 차를 선택하고, 원활한 출구를 찾고, 충돌을 피하면서 올바른 순서로 주차 퍼즐을 푸는 게임이라고 설명합니다. Animal Parking Patrol은 바라보는 방향으로만 나갈 수 있는 나무 동물 카트를 사용하며 30개의 고정 숲 경로를 제공합니다. 후반에는 신호 카트, 게이트 카트, 정해진 순서로 나가는 연결 행렬이 추가되고, 안전 확인 3회와 힌트·실행 취소·다시 시작으로 복구할 수 있습니다. 별과 최소 막힘 탭 기록을 브라우저에만 저장하는 스테이지형 논리 퍼즐이며 Parking Jam 3D의 자동차 스킨, 부동산, 방치 수익 진행과는 다릅니다.",
+    "disclaimer": "Animal Parking Patrol은 WeightPlay의 독립 게임입니다. WeightPlay는 Popcore GmbH 또는 Parking Jam 3D와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "sourceLabel": "Popcore GmbH의 Parking Jam 3D 공식 App Store 페이지"
+  },
+  "es": {
+    "heading": "Referencia de un puzle similar para despejar tráfico",
+    "tagsLabel": "Etiquetas de juego:",
+    "tags": [
+      "Puzle de orden de tráfico",
+      "Lectura de rutas",
+      "Despeje de vehículos",
+      "Planificación de secuencias"
+    ],
+    "body": "Ambos juegos piden observar un atasco y decidir qué vehículo puede moverse a continuación sin chocar con un obstáculo. La ficha oficial de Parking Jam 3D en App Store explica que hay que elegir qué coche mover, encontrar salidas fluidas, evitar colisiones y resolver los aparcamientos en el orden correcto. Patrulla de Aparcamiento Animal usa en cambio carros de animales de madera que solo pueden salir en la dirección a la que miran, a lo largo de 30 rutas de bosque diseñadas. Más adelante aparecen carros de señal, carros con compuerta y convoyes que deben salir en orden, con tres controles de seguridad, Pista, Deshacer y Reiniciar para recuperarse. Es un puzle lógico por niveles con estrellas y el mejor registro de toques bloqueados guardados solo en el navegador, no la progresión de coches, aspectos y propiedades/ingresos inactivos de Parking Jam 3D.",
+    "disclaimer": "Patrulla de Aparcamiento Animal es un juego independiente de WeightPlay. WeightPlay no está afiliado, respaldado, autorizado ni desarrollado conjuntamente con Popcore GmbH o Parking Jam 3D.",
+    "sourceLabel": "Ficha oficial de Parking Jam 3D en App Store de Popcore GmbH"
+  },
+  "pt-BR": {
+    "heading": "Referência de quebra-cabeça semelhante para liberar o trânsito",
+    "tagsLabel": "Tags de jogabilidade:",
+    "tags": [
+      "Quebra-cabeça de ordem do trânsito",
+      "Leitura de caminhos",
+      "Liberação de veículos",
+      "Planejamento de sequência"
+    ],
+    "body": "Os dois jogos pedem que você observe um congestionamento e escolha qual veículo pode sair em seguida sem bater em um obstáculo. A página oficial de Parking Jam 3D na App Store diz que o jogador escolhe qual carro mover, procura saídas livres, evita colisões e resolve os estacionamentos na ordem correta. Animal Parking Patrol usa carrinhos de animais de madeira que só podem sair na direção para a qual apontam, em 30 rotas de floresta projetadas. Mais adiante surgem carrinhos de sinal, carrinhos com portão e comboios que precisam sair em ordem, com três verificações de segurança, Dica, Desfazer e Reiniciar para recuperação. É um quebra-cabeça lógico por fases, com estrelas e melhor registro de toques bloqueados salvos só no navegador, não a progressão de carros, visuais e propriedades/renda ociosa de Parking Jam 3D.",
+    "disclaimer": "Animal Parking Patrol é um jogo independente da WeightPlay. A WeightPlay não é afiliada, endossada, licenciada nem co-desenvolvedora com a Popcore GmbH ou Parking Jam 3D.",
+    "sourceLabel": "Página oficial de Parking Jam 3D na App Store da Popcore GmbH"
+  },
+  "fr": {
+    "heading": "Référence d’un puzzle similaire de désengorgement du trafic",
+    "tagsLabel": "Tags de gameplay :",
+    "tags": [
+      "Puzzle d’ordre de circulation",
+      "Lecture des trajectoires",
+      "Dégagement de véhicules",
+      "Planification de séquence"
+    ],
+    "body": "Les deux jeux demandent d’observer un embouteillage et de choisir quel véhicule peut bouger ensuite sans heurter un obstacle. La fiche officielle de Parking Jam 3D sur l’App Store indique qu’il faut choisir quelle voiture déplacer, trouver une sortie fluide, éviter les collisions et résoudre les parkings dans le bon ordre. Animal Parking Patrol utilise plutôt des chariots d’animaux en bois qui ne peuvent sortir que dans la direction où ils regardent, sur 30 itinéraires forestiers conçus. Plus tard apparaissent des chariots de signalisation, des chariots à barrière et des convois à faire sortir dans l’ordre, avec trois contrôles de sécurité, Indice, Annuler et Recommencer pour récupérer. C’est un puzzle logique par niveaux dont les étoiles et le meilleur nombre de touches bloquées restent dans le navigateur, et non la progression de voitures, apparences et propriétés/revenus passifs de Parking Jam 3D.",
+    "disclaimer": "Animal Parking Patrol est un jeu indépendant de WeightPlay. WeightPlay n’est ni affilié à Popcore GmbH ou Parking Jam 3D, ni approuvé ou licencié par eux, et il n’existe aucun développement conjoint.",
+    "sourceLabel": "Fiche officielle de Parking Jam 3D sur l’App Store par Popcore GmbH"
+  },
+  "de": {
+    "heading": "Referenz für ein ähnliches Verkehrs-Aufräumpuzzle",
+    "tagsLabel": "Gameplay-Tags:",
+    "tags": [
+      "Verkehrsreihenfolge",
+      "Wege prüfen",
+      "Fahrzeuge freiräumen",
+      "Ablaufplanung"
+    ],
+    "body": "In beiden Spielen wird eine blockierte Verkehrslage geprüft, um das nächste Fahrzeug ohne Kollision mit einem Hindernis zu bewegen. Der offizielle App-Store-Eintrag zu Parking Jam 3D beschreibt, dass man auswählt, welches Auto bewegt wird, freie Ausfahrten findet, Zusammenstöße vermeidet und Parkrätsel in der richtigen Reihenfolge löst. Animal Parking Patrol verwendet dagegen hölzerne Tierwagen, die nur in Blickrichtung ausfahren können, auf 30 gestalteten Waldstrecken. Später kommen Signalwagen, Torwagen und Konvois hinzu, die in einer festen Reihenfolge ausfahren müssen; drei Sicherheitsprüfungen sowie Hinweis, Rückgängig und Neustart helfen bei Fehlern. Es ist ein stufenbasiertes Logikpuzzle mit lokal gespeicherten Sternen und Bestwerten für blockierte Tipps, nicht Parking Jam 3Ds Fortschritt mit Autos, Skins und Immobilien/Idle-Einnahmen.",
+    "disclaimer": "Animal Parking Patrol ist ein unabhängiges WeightPlay-Spiel. WeightPlay ist weder mit Popcore GmbH oder Parking Jam 3D verbunden noch von ihnen unterstützt, lizenziert oder gemeinsam entwickelt.",
+    "sourceLabel": "Offizieller Parking Jam 3D App-Store-Eintrag von Popcore GmbH"
+  },
+  "it": {
+    "heading": "Riferimento a un puzzle simile per liberare il traffico",
+    "tagsLabel": "Tag di gioco:",
+    "tags": [
+      "Puzzle sull’ordine del traffico",
+      "Lettura dei percorsi",
+      "Sblocco dei veicoli",
+      "Pianificazione della sequenza"
+    ],
+    "body": "Entrambi i giochi chiedono di osservare un ingorgo e decidere quale veicolo può muoversi dopo senza urtare un ostacolo. La scheda ufficiale di Parking Jam 3D su App Store spiega che bisogna scegliere quale auto muovere, trovare uscite libere, evitare collisioni e risolvere i parcheggi nell’ordine corretto. Animal Parking Patrol usa invece carretti di animali in legno che possono uscire solo nella direzione verso cui sono rivolti, in 30 percorsi forestali progettati. Più avanti compaiono carretti-segnale, carretti con cancello e convogli che devono uscire in ordine; tre controlli di sicurezza, Suggerimento, Annulla e Riavvia aiutano a recuperare. È un puzzle logico a livelli con stelle e miglior numero di tocchi bloccati salvati solo nel browser, non la progressione con auto, skin e proprietà/guadagni inattivi di Parking Jam 3D.",
+    "disclaimer": "Animal Parking Patrol è un gioco indipendente di WeightPlay. WeightPlay non è affiliata, approvata, autorizzata o coinvolta in uno sviluppo congiunto con Popcore GmbH o Parking Jam 3D.",
+    "sourceLabel": "Scheda ufficiale di Parking Jam 3D su App Store di Popcore GmbH"
+  },
+  "ru": {
+    "heading": "Сравнение с похожей головоломкой про разгрузку движения",
+    "tagsLabel": "Теги игрового процесса:",
+    "tags": [
+      "Порядок движения",
+      "Проверка пути",
+      "Освобождение машин",
+      "Планирование последовательности"
+    ],
+    "body": "Обе игры предлагают изучить затор и решить, какое транспортное средство можно сдвинуть следующим, не задев препятствие. В официальной карточке Parking Jam 3D в App Store сказано, что игрок выбирает машину, ищет свободный выезд, избегает столкновений и решает парковочные головоломки в правильном порядке. Animal Parking Patrol вместо этого использует деревянные тележки с животными, которые могут выехать только в направлении, куда смотрят, на 30 заранее созданных лесных маршрутах. Позже появляются сигнальные тележки, тележки с воротами и колонны, которые должны выезжать по порядку; три проверки безопасности, подсказка, отмена и перезапуск помогают исправлять ошибки. Это поуровневая логическая головоломка со звёздами и лучшим числом заблокированных нажатий, сохранёнными только в браузере, а не прогрессия Parking Jam 3D с машинами, обликами и недвижимостью/пассивным доходом.",
+    "disclaimer": "Animal Parking Patrol — независимая игра WeightPlay. WeightPlay не связана с Popcore GmbH или Parking Jam 3D отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+    "sourceLabel": "Официальная страница Parking Jam 3D в App Store от Popcore GmbH"
+  },
+  "hi": {
+    "heading": "मिलते-जुलते ट्रैफिक खोलने वाले पज़ल का संदर्भ",
+    "tagsLabel": "गेमप्ले टैग:",
+    "tags": [
+      "ट्रैफिक क्रम पज़ल",
+      "रास्ता जाँचना",
+      "वाहन निकालना",
+      "क्रम योजना"
+    ],
+    "body": "दोनों खेल जाम लगी व्यवस्था को देखकर यह तय करने पर केंद्रित हैं कि कौन-सा वाहन बिना किसी बाधा से टकराए अगला चल सकता है। Parking Jam 3D की आधिकारिक App Store सूची बताती है कि खिलाड़ी किस कार को चलाना है यह चुनते हैं, साफ़ निकास ढूँढते हैं, टक्कर से बचते हैं और पार्किंग पज़ल सही क्रम में हल करते हैं। Animal Parking Patrol में लकड़ी की पशु गाड़ियाँ केवल उसी दिशा में बाहर जा सकती हैं जिस ओर वे देख रही हैं, और इसमें 30 तय जंगल मार्ग हैं। आगे सिग्नल गाड़ियाँ, गेट वाली गाड़ियाँ और क्रम से निकलने वाले काफ़िले जुड़ते हैं; तीन सुरक्षा जाँच, संकेत, पूर्ववत और रीस्टार्ट से गलती सुधारी जा सकती है। यह चरण-आधारित लॉजिक पज़ल है जिसकी स्टार और कम-से-कम अवरुद्ध टैप की उपलब्धियाँ केवल ब्राउज़र में रहती हैं; इसमें Parking Jam 3D जैसी कार, स्किन और संपत्ति/निष्क्रिय आय की प्रगति नहीं है।",
+    "disclaimer": "Animal Parking Patrol, WeightPlay का स्वतंत्र खेल है। WeightPlay का Popcore GmbH या Parking Jam 3D के साथ कोई संबद्धता, समर्थन, लाइसेंस या सह-विकास संबंध नहीं है।",
+    "sourceLabel": "Popcore GmbH की आधिकारिक Parking Jam 3D App Store सूची"
+  },
+  "ar": {
+    "heading": "مرجع للعبة ألغاز مشابهة لفك ازدحام المرور",
+    "tagsLabel": "وسوم أسلوب اللعب:",
+    "tags": [
+      "لغز ترتيب المرور",
+      "فحص المسار",
+      "إخلاء المركبات",
+      "تخطيط التسلسل"
+    ],
+    "body": "تطلب اللعبتان فحص ازدحام مروري وتحديد المركبة التي يمكن تحريكها تاليًا من دون الاصطدام بعائق. توضح صفحة Parking Jam 3D الرسمية في App Store أن اللاعب يختار السيارة التي سيحركها، ويبحث عن مخارج سلسة، ويتجنب الاصطدامات، ويحل ألغاز مواقف السيارات بالترتيب الصحيح. أما Animal Parking Patrol فتستخدم عربات حيوانات خشبية لا يمكنها الخروج إلا في الاتجاه الذي تواجهه عبر 30 مسارًا غابيًا مصممًا. تضيف المسارات اللاحقة عربات إشارات وعربات بوابات وقوافل يجب أن تخرج بالترتيب، مع ثلاث محاولات أمان وتلميح وتراجع وإعادة تشغيل للتعافي. إنها أحجية منطقية على مراحل تحفظ النجوم وأفضل عدد للنقرات المحجوبة داخل المتصفح فقط، وليست نظام تقدم Parking Jam 3D القائم على السيارات والمظاهر والعقارات/الدخل الخامل.",
+    "disclaimer": "Animal Parking Patrol لعبة مستقلة من WeightPlay. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وPopcore GmbH أو Parking Jam 3D.",
+    "sourceLabel": "صفحة Parking Jam 3D الرسمية في App Store من Popcore GmbH"
+  }
+};
+  gameplayProfiles["animal-parking-patrol"] ||= {};
+  gameplayProfiles["animal-parking-patrol"].marketComparison = { name: "Parking Jam 3D", source: "https://apps.apple.com/us/app/parking-jam-3d/id1498229533", locales: parkingPatrolMarketComparisonCopy };
+  // Text Growth 1.3.0: Animal Parking Patrol market comparison end
+
   function installMarketComparisonSync() {
     if (marketComparisonObserver || !gameplayProfiles[currentGameId()]?.marketComparison ||
         !document.body || typeof MutationObserver === "undefined") return;
