@@ -1,5 +1,161 @@
 @import url("./style-v4-base.css");
 
+.stage-list {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  min-height: 206px;
+  overflow-x: hidden;
+  padding-inline: max(24px, calc((100% - 264px) / 2));
+}
+
+.stage-card {
+  position: relative;
+  grid-template-rows: auto auto 1fr auto auto;
+  gap: 7px;
+  padding: 18px;
+  border: 2px solid rgba(200, 215, 236, .92);
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.stage-card.centered,
+.stage-card.is-centered {
+  border-color: #83a9c5;
+  box-shadow: 0 12px 26px rgba(62, 89, 123, .18), 0 0 0 3px rgba(145, 198, 217, .22);
+}
+
+.stage-card.is-locked {
+  filter: saturate(.55);
+  opacity: .56;
+}
+
+.stage-card.is-cleared {
+  background: linear-gradient(145deg, #f5fff4, rgba(255, 253, 247, .96));
+}
+
+.stage-card .stage-preview {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+}
+
+.stage-card .stage-chip {
+  justify-self: end;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(233, 241, 255, .86);
+}
+
+.block-atlas-crop {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  background-image: url("./assets/animal-cushion-stack-block-atlas-v2.png");
+  background-repeat: no-repeat;
+  background-size: calc(1254px * var(--block-atlas-scale)) calc(1254px * var(--block-atlas-scale));
+  background-position: var(--block-atlas-left) var(--block-atlas-top);
+}
+
+.stage-preview .block-atlas-crop {
+  width: 34px;
+  height: 34px;
+}
+
+.tower-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.tower-block-art {
+  width: min(62px, 48%);
+  height: 34px;
+}
+
+.tower-block[data-tone="green"] {
+  background: var(--green);
+}
+
+.tower-block-role {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.choice-icon {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.choice-icon[data-tone="green"] {
+  background-color: #a8d2a5;
+}
+
+.choice-btn[data-brace-option="true"] {
+  position: relative;
+  border-color: #8eb6c2;
+}
+
+.choice-btn[data-cloud-ready="true"] {
+  border-color: #398099;
+  box-shadow: inset 0 0 0 2px rgba(84, 171, 192, .22);
+}
+
+.cloud-option-mark {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(49, 86, 107, .25);
+}
+
+.cloud-brace-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 5px 12px;
+  border: 2px solid #8eb6c2;
+  border-radius: 14px;
+  color: #31566b;
+  background: linear-gradient(180deg, #f4fcff, #d7eff5);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.cloud-brace-btn[aria-pressed="true"] {
+  border-color: #398099;
+  box-shadow: 0 0 0 3px rgba(84, 171, 192, .28);
+}
+
+.cloud-brace-btn .block-atlas-crop {
+  width: 28px;
+  height: 28px;
+}
+
+.cloud-brace-btn[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 420px) {
+  .stage-card { padding: 14px; }
+  .stage-card .stage-preview { gap: 2px; }
+  .stage-preview .block-atlas-crop { width: 30px; height: 30px; }
+  .cloud-brace-btn { grid-column: 1 / -1; }
+}
+
 /* General Interface source repair — 2026-09-21.
    Keep Cushion Stack's game-owned artwork/gameplay surfaces, but let the
    catalog contract own the shared Main/Stage/Battle control geometry. */

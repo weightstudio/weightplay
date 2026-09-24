@@ -78,6 +78,11 @@
     if (!element || element.classList.contains("hidden")) return;
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
+        // A long-form Main page is also a readable document, not a newly
+        // revealed gameplay viewport. Preserve its scroll/geometry when a
+        // game's own Main ↔ Stage lifecycle toggles visibility.
+        if (document.body?.dataset.wpPreserveDocumentScroll === "true"
+          && document.body.classList.contains("wp-shell-main-active")) return;
         if (!force && document.body?.classList.contains("has-game-page-info") && window.scrollY > 20) return;
         const top = element.getBoundingClientRect().top + window.scrollY - 10;
         window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });

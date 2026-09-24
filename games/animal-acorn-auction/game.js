@@ -3,6 +3,7 @@
 
   if (window.__ACORN_AUCTION_INTERFACE7_COMPAT__) return;
   window.__ACORN_AUCTION_INTERFACE7_COMPAT__ = true;
+  document.body?.setAttribute("data-wp-preserve-document-scroll", "true");
 
   const routeLocales = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es",

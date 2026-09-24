@@ -28,6 +28,7 @@
   <title>Torre di cuscini | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-cushion-stack-v3-localization">
   <link rel="stylesheet" href="style.css?v=20260924-cushion-stack-v6-guide-settings">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260924-cushion-stack-v7-stage-rail2" data-wp-stage-standard>
   <meta name="description" content="Scegli il prossimo blocco morbido per costruire un punto d&#39;osservazione sicuro." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -140,7 +141,7 @@
         <div class="choice-head"><h3 data-copy="chooseBlock">Choose the next block</h3><span id="selectionLabel" class="selection-label"></span></div>
         <div id="choiceTray" class="choice-tray" role="group" aria-label="Choose the next block"></div>
         <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check stability</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button><button id="advanceBtn" class="primary-btn" type="button" hidden></button><button id="battleMapBtn" class="text-btn" type="button" data-copy="stages">Lookout map</button></div>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check stability</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button><button id="advanceBtn" class="primary-btn" type="button" hidden></button><button id="cloudBraceBtn" class="cloud-brace-btn" type="button" hidden></button><button id="battleMapBtn" class="text-btn" type="button" data-copy="stages">Lookout map</button></div>
       </div>
     </div>
   </section>
@@ -156,6 +157,7 @@
   <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20260903-cushion-stack-v3-localization"></script>
+  <script src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script>
   <script src="game.js?v=20260924-cushion-stack-v6-guide-settings&wp-audio=1.0.0"></script>
 </body>
 </html>
