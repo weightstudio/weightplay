@@ -121,6 +121,168 @@
   const publicCopy=Object.fromEntries(Object.entries(publicGuideRows).map(([code,values])=>[code,Object.fromEntries(publicGuideKeys.map((key,index)=>[key,values[index]]))]));
   for(const [code,copy] of Object.entries(publicCopy))Object.assign(dictionaries[code],copy);
   publicCopy.it.guideRelatedRift="Recupero della Fenditura Animale";
+  const marketGuideKeys=["tagLabel","tag1","tag2","tag3","tag4","heading","body","disclaimer","source"];
+  const marketGuideRows={
+  "en": [
+    "Gameplay tags",
+    "Tile stacking",
+    "Bridge building",
+    "Route planning",
+    "Rival racing",
+    "Similar bridge-racing reference",
+    "SUPERSONIC STUDIOS LTD’s Bridge Race also asks players to collect blocks in their own color, spend the stack to build bridges, choose a route, and reach the finish before rivals. Its official App Store description also mentions shortcuts and rivals that can steal blocks or slow the race. WeightPlay instead uses cyan Aurora tiles and dock deposits across 30 authored sky races, then adds crosswinds, bombs, cloud monsters, boost rings, champion rivals, Aurora Shard Workshop upgrades, and browser-local progress.",
+    "Skybridge Rivals is an independent WeightPlay game, not an official Bridge Race version. WeightPlay is not affiliated with, endorsed by, licensed by, or co-developed with SUPERSONIC STUDIOS LTD.",
+    "SUPERSONIC STUDIOS LTD: official Bridge Race App Store description"
+  ],
+  "zh-Hant": [
+    "玩法標籤",
+    "疊磚競速",
+    "橋梁建造",
+    "路線規劃",
+    "對手競速",
+    "相似的築橋競速玩法參考",
+    "SUPERSONIC STUDIOS LTD 的 Bridge Race 同樣要求玩家收集自己顏色的方塊、把堆疊用於搭橋、選擇路線，並在對手之前抵達終點；官方 App Store 說明也提到捷徑，以及對手可能搶走方塊或拖慢賽事。WeightPlay 這款遊戲則使用青色極光磚與橋頭存放機制，安排 30 場固定設計的雲端競賽，後續加入側風、炸彈、雲怪、加速環與冠軍對手，並以極光碎片升級工坊能力與在瀏覽器本機保存進度。",
+    "Skybridge Rivals 是 WeightPlay 獨立製作的遊戲，並非 Bridge Race 官方版本；WeightPlay 與 SUPERSONIC STUDIOS LTD 沒有隸屬、背書、授權或共同開發關係。",
+    "SUPERSONIC STUDIOS LTD：Bridge Race 官方 App Store 說明"
+  ],
+  "zh-Hans": [
+    "玩法标签",
+    "叠砖竞速",
+    "桥梁建造",
+    "路线规划",
+    "对手竞速",
+    "相似的筑桥竞速玩法参考",
+    "SUPERSONIC STUDIOS LTD 的 Bridge Race 同样要求玩家收集自己颜色的方块、把堆叠用于搭桥、选择路线，并在对手之前抵达终点；官方 App Store 说明也提到捷径，以及对手可能抢走方块或拖慢比赛。WeightPlay 这款游戏则使用青色极光砖与桥头存放机制，安排 30 场固定设计的云端竞赛，后续加入侧风、炸弹、云怪、加速环与冠军对手，并用极光碎片升级工坊能力以及在浏览器本机保存进度。",
+    "Skybridge Rivals 是 WeightPlay 独立制作的游戏，并非 Bridge Race 官方版本；WeightPlay 与 SUPERSONIC STUDIOS LTD 没有隶属、背书、授权或共同开发关系。",
+    "SUPERSONIC STUDIOS LTD：Bridge Race 官方 App Store 说明"
+  ],
+  "ja": [
+    "プレイ要素",
+    "タイル収集",
+    "橋の建設",
+    "ルート選択",
+    "ライバルレース",
+    "似た橋づくりレースの参考作品",
+    "SUPERSONIC STUDIOS LTD の Bridge Race も、自分の色のブロックを集め、積み上げたブロックで橋を作り、ルートを選んでライバルより先にゴールを目指します。公式 App Store 説明では、近道や、ライバルがブロックを奪ったり進行を遅らせたりする要素も紹介されています。WeightPlay 版はシアンのオーロラタイルを桟橋で橋の進行に変える 30 の設計済みスカイレースで、横風、爆弾、雲の怪物、ブーストリング、チャンピオン、オーロラ片による工房強化、ブラウザ内のローカル進行保存を備えます。",
+    "Skybridge Rivals は WeightPlay が独立制作したゲームで、Bridge Race の公式版ではありません。WeightPlay は SUPERSONIC STUDIOS LTD と提携、承認、ライセンス、共同開発の関係にありません。",
+    "SUPERSONIC STUDIOS LTD：Bridge Race 公式 App Store 説明"
+  ],
+  "ko": [
+    "플레이 태그",
+    "타일 쌓기",
+    "다리 건설",
+    "경로 선택",
+    "라이벌 레이스",
+    "비슷한 다리 건설 레이스 참고작",
+    "SUPERSONIC STUDIOS LTD의 Bridge Race도 자기 색 블록을 모아 스택으로 다리를 만들고, 경로를 고르며, 라이벌보다 먼저 결승에 도착하는 흐름을 사용합니다. 공식 App Store 설명에는 지름길과 라이벌이 블록을 빼앗거나 진행을 늦출 수 있다는 점도 나옵니다. WeightPlay 버전은 청록 오로라 타일을 선착장에 맡겨 다리 진행도로 바꾸는 30개의 제작된 하늘 레이스에 옆바람, 폭탄, 구름 괴물, 부스트 링, 챔피언 라이벌, 오로라 조각 공방 강화와 브라우저 로컬 진행 저장을 더합니다.",
+    "Skybridge Rivals는 WeightPlay가 독립 제작한 게임이며 Bridge Race의 공식 버전이 아닙니다. WeightPlay는 SUPERSONIC STUDIOS LTD와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "SUPERSONIC STUDIOS LTD: Bridge Race 공식 App Store 설명"
+  ],
+  "es": [
+    "Etiquetas de juego",
+    "Apilar losetas",
+    "Construir puentes",
+    "Planificar rutas",
+    "Carrera contra rivales",
+    "Referencia de carrera y construcción de puentes similar",
+    "Bridge Race, de SUPERSONIC STUDIOS LTD, también pide recoger bloques de tu color, gastar la pila para construir puentes, elegir una ruta y llegar a la meta antes que los rivales. Su descripción oficial en App Store también menciona atajos y rivales que pueden quitar bloques o frenarte. WeightPlay usa en cambio losetas Aurora cian y depósitos en los muelles durante 30 carreras celestes diseñadas, con viento lateral, bombas, monstruos de nube, anillos de impulso, rivales campeones, mejoras del Taller con Fragmentos Aurora y progreso guardado localmente en el navegador.",
+    "Skybridge Rivals es un juego independiente de WeightPlay y no una versión oficial de Bridge Race. WeightPlay no está afiliado, respaldado, licenciado ni desarrollado conjuntamente con SUPERSONIC STUDIOS LTD.",
+    "SUPERSONIC STUDIOS LTD: descripción oficial de Bridge Race en App Store"
+  ],
+  "pt-BR": [
+    "Tags de jogabilidade",
+    "Empilhar peças",
+    "Construir pontes",
+    "Planejar rotas",
+    "Corrida contra rivais",
+    "Referência de corrida com construção de pontes semelhante",
+    "Bridge Race, da SUPERSONIC STUDIOS LTD, também pede para coletar blocos da sua cor, gastar a pilha na construção de pontes, escolher uma rota e chegar antes dos rivais. A descrição oficial na App Store também cita atalhos e rivais que podem roubar blocos ou atrasar a corrida. Já o WeightPlay usa peças Aurora ciano e depósitos nos cais em 30 corridas celestes criadas à mão, com vento lateral, bombas, monstros de nuvem, anéis de impulso, rivais campeões, melhorias da Oficina com Fragmentos Aurora e progresso salvo localmente no navegador.",
+    "Skybridge Rivals é um jogo independente do WeightPlay e não uma versão oficial de Bridge Race. O WeightPlay não é afiliado, endossado, licenciado nem desenvolvido em conjunto com a SUPERSONIC STUDIOS LTD.",
+    "SUPERSONIC STUDIOS LTD: descrição oficial de Bridge Race na App Store"
+  ],
+  "fr": [
+    "Tags de gameplay",
+    "Empilement de dalles",
+    "Construction de ponts",
+    "Choix de route",
+    "Course contre des rivaux",
+    "Référence de course avec construction de ponts similaire",
+    "Bridge Race, de SUPERSONIC STUDIOS LTD, demande aussi de ramasser les blocs de sa couleur, de dépenser sa pile pour construire des ponts, de choisir un trajet et d’atteindre l’arrivée avant les rivaux. Sa description officielle sur l’App Store mentionne également les raccourcis et des rivaux capables de voler des blocs ou de ralentir la course. WeightPlay utilise plutôt des dalles Aurora cyan déposées aux pontons dans 30 courses célestes conçues à l’avance, avec vents latéraux, bombes, monstres nuageux, anneaux d’accélération, champions, améliorations d’atelier avec éclats d’aurore et progression locale dans le navigateur.",
+    "Skybridge Rivals est un jeu indépendant de WeightPlay et non une version officielle de Bridge Race. WeightPlay n’est ni affilié à SUPERSONIC STUDIOS LTD, ni approuvé, licencié ou codéveloppé par cette société.",
+    "SUPERSONIC STUDIOS LTD : description officielle de Bridge Race sur l’App Store"
+  ],
+  "de": [
+    "Gameplay-Tags",
+    "Platten stapeln",
+    "Brücken bauen",
+    "Routen planen",
+    "Rennen gegen Rivalen",
+    "Ähnliche Brückenrennen-Referenz",
+    "Bridge Race von SUPERSONIC STUDIOS LTD lässt Spieler ebenfalls Blöcke der eigenen Farbe sammeln, den Stapel zum Brückenbau einsetzen, eine Route wählen und vor den Rivalen ins Ziel kommen. Die offizielle App-Store-Beschreibung nennt außerdem Abkürzungen und Rivalen, die Blöcke stehlen oder das Rennen verlangsamen können. WeightPlay setzt stattdessen auf cyanfarbene Aurora-Platten, die an Stegen in Brückenfortschritt umgewandelt werden, und auf 30 gestaltete Himmelsrennen mit Seitenwind, Bomben, Wolkenmonstern, Boostringen, Champion-Rivalen, Werkstatt-Upgrades mit Aurora-Splittern und lokalem Browser-Fortschritt.",
+    "Skybridge Rivals ist ein unabhängig entwickeltes WeightPlay-Spiel und keine offizielle Version von Bridge Race. WeightPlay ist nicht mit SUPERSONIC STUDIOS LTD verbunden, von ihr unterstützt, lizenziert oder gemeinsam entwickelt.",
+    "SUPERSONIC STUDIOS LTD: offizielle Bridge-Race-Beschreibung im App Store"
+  ],
+  "it": [
+    "Tag di gioco",
+    "Impilare tessere",
+    "Costruire ponti",
+    "Pianificare percorsi",
+    "Gara contro rivali",
+    "Riferimento simile di gara e costruzione di ponti",
+    "Bridge Race di SUPERSONIC STUDIOS LTD richiede anch’esso di raccogliere blocchi del proprio colore, usare la pila per costruire ponti, scegliere un percorso e arrivare prima dei rivali. La descrizione ufficiale su App Store cita anche scorciatoie e rivali che possono rubare blocchi o rallentare la corsa. WeightPlay usa invece tessere Aurora ciano depositate ai pontili in 30 gare celesti progettate, con vento laterale, bombe, mostri di nuvole, anelli di spinta, rivali campioni, potenziamenti dell’Officina tramite Frammenti Aurora e progressi salvati localmente nel browser.",
+    "Skybridge Rivals è un gioco indipendente di WeightPlay e non una versione ufficiale di Bridge Race. WeightPlay non è affiliato, approvato, concesso in licenza o sviluppato con SUPERSONIC STUDIOS LTD.",
+    "SUPERSONIC STUDIOS LTD: descrizione ufficiale di Bridge Race su App Store"
+  ],
+  "ru": [
+    "Теги игрового процесса",
+    "Сбор и стопка плиток",
+    "Строительство мостов",
+    "Выбор маршрута",
+    "Гонка с соперниками",
+    "Похожая игра с гонкой и строительством мостов",
+    "В Bridge Race от SUPERSONIC STUDIOS LTD игроки тоже собирают блоки своего цвета, тратят запас на строительство мостов, выбирают маршрут и стараются прийти к финишу раньше соперников. В официальном описании App Store также упомянуты короткие пути и соперники, которые могут отбирать блоки или замедлять гонку. В WeightPlay вместо этого используются голубые плитки Aurora и сдача запаса на причалах в 30 заранее созданных небесных гонках с боковым ветром, бомбами, облачными монстрами, кольцами ускорения, чемпионами, улучшениями мастерской за осколки Aurora и локальным сохранением прогресса в браузере.",
+    "Skybridge Rivals — независимая игра WeightPlay, а не официальная версия Bridge Race. WeightPlay не связана с SUPERSONIC STUDIOS LTD отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+    "SUPERSONIC STUDIOS LTD: официальное описание Bridge Race в App Store"
+  ],
+  "hi": [
+    "गेमप्ले टैग",
+    "टाइलें जमा करना",
+    "पुल बनाना",
+    "रास्ता चुनना",
+    "प्रतिद्वंद्वी रेस",
+    "मिलती-जुलती पुल-निर्माण रेस का संदर्भ",
+    "SUPERSONIC STUDIOS LTD का Bridge Race भी खिलाड़ी से अपने रंग के ब्लॉक जुटाने, उस ढेर से पुल बनाने, रास्ता चुनने और प्रतिद्वंद्वियों से पहले फिनिश तक पहुँचने को कहता है। आधिकारिक App Store विवरण में शॉर्टकट और ऐसे प्रतिद्वंद्वी भी बताए गए हैं जो ब्लॉक छीन सकते हैं या रेस धीमी कर सकते हैं। WeightPlay में इसके बजाय सियान Aurora टाइलें घाट पर जमा करके पुल प्रगति बनती हैं और 30 तैयार आकाशी रेसों में आड़ी हवा, बम, बादल राक्षस, बूस्ट रिंग, चैंपियन प्रतिद्वंद्वी, Aurora Shard वर्कशॉप सुधार और ब्राउज़र में स्थानीय प्रगति सेव शामिल हैं।",
+    "Skybridge Rivals, WeightPlay द्वारा स्वतंत्र रूप से बनाया गया गेम है और Bridge Race का आधिकारिक संस्करण नहीं है। WeightPlay का SUPERSONIC STUDIOS LTD से कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+    "SUPERSONIC STUDIOS LTD: Bridge Race का आधिकारिक App Store विवरण"
+  ],
+  "ar": [
+    "وسوم أسلوب اللعب",
+    "جمع البلاطات",
+    "بناء الجسور",
+    "اختيار المسار",
+    "سباق المنافسين",
+    "مرجع مشابه لسباق بناء الجسور",
+    "تطلب Bridge Race من SUPERSONIC STUDIOS LTD أيضًا جمع كتل بلون اللاعب، واستخدام الرصيد لبناء الجسور، واختيار المسار والوصول إلى النهاية قبل المنافسين. ويذكر وصف App Store الرسمي كذلك الاختصارات ومنافسين يمكنهم سرقة الكتل أو إبطاء السباق. أما WeightPlay فيستخدم بلاطات Aurora السماوية وإيداعها عند الأرصفة عبر 30 سباقًا سماويًا مصممًا، مع رياح جانبية وقنابل ووحوش سحاب وحلقات اندفاع ومنافسين أبطال وترقيات للورشة بشظايا Aurora وحفظ التقدم محليًا في المتصفح.",
+    "Skybridge Rivals لعبة مستقلة من WeightPlay وليست إصدارًا رسميًا من Bridge Race. لا توجد علاقة انتساب أو اعتماد أو ترخيص أو تطوير مشترك بين WeightPlay وSUPERSONIC STUDIOS LTD.",
+    "SUPERSONIC STUDIOS LTD: الوصف الرسمي للعبة Bridge Race على App Store"
+  ]
+};
+  const marketDisclaimerOverrides={
+    "zh-Hant":"這是 WeightPlay 獨立製作的遊戲，並非 Bridge Race 官方版本；WeightPlay 與 SUPERSONIC STUDIOS LTD 沒有隸屬、背書、授權或共同開發關係。",
+    "zh-Hans":"这是 WeightPlay 独立制作的游戏，并非 Bridge Race 官方版本；WeightPlay 与 SUPERSONIC STUDIOS LTD 没有隶属、背书、授权或共同开发关系。",
+    "ja":"これは WeightPlay が独立制作したゲームであり、Bridge Race の公式版ではありません。WeightPlay は SUPERSONIC STUDIOS LTD と提携、推奨、ライセンス、共同開発の関係にありません。",
+    "ko":"이 게임은 WeightPlay가 독립 제작한 작품이며 Bridge Race의 공식 버전이 아닙니다. WeightPlay는 SUPERSONIC STUDIOS LTD와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "es":"Este juego es una obra independiente de WeightPlay y no una versión oficial de Bridge Race. WeightPlay no está afiliado, respaldado, licenciado ni desarrollado conjuntamente con SUPERSONIC STUDIOS LTD.",
+    "pt-BR":"Este jogo é uma obra independente da WeightPlay e não uma versão oficial de Bridge Race. A WeightPlay não é afiliada, endossada, licenciada nem desenvolvida em conjunto com a SUPERSONIC STUDIOS LTD.",
+    "fr":"Ce jeu est une création indépendante de WeightPlay et non une version officielle de Bridge Race. WeightPlay n’est ni affilié à SUPERSONIC STUDIOS LTD, ni approuvé, licencié ou codéveloppé par cette société.",
+    "de":"Dieses Spiel ist eine unabhängige WeightPlay-Produktion und keine offizielle Version von Bridge Race. WeightPlay ist nicht mit SUPERSONIC STUDIOS LTD verbunden, von ihr unterstützt, lizenziert oder gemeinsam entwickelt.",
+    "it":"Questo gioco è un’opera indipendente di WeightPlay e non una versione ufficiale di Bridge Race. WeightPlay non è affiliata, approvata, concessa in licenza o sviluppata congiuntamente con SUPERSONIC STUDIOS LTD.",
+    "ru":"Это независимая игра WeightPlay, а не официальная версия Bridge Race. WeightPlay не связана с SUPERSONIC STUDIOS LTD отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+    "hi":"यह WeightPlay द्वारा स्वतंत्र रूप से बनाया गया गेम है और Bridge Race का आधिकारिक संस्करण नहीं है। WeightPlay का SUPERSONIC STUDIOS LTD से कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+    "ar":"هذه لعبة مستقلة من WeightPlay وليست إصدارًا رسميًا من Bridge Race. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وSUPERSONIC STUDIOS LTD."
+  };
+  for(const [code,values] of Object.entries(marketGuideRows)){const market=Object.fromEntries(marketGuideKeys.map((key,index)=>[key,values[index]]));if(marketDisclaimerOverrides[code])market.disclaimer=marketDisclaimerOverrides[code];for(const [key,value] of Object.entries(market)){const targetKey='market'+key[0].toUpperCase()+key.slice(1);publicCopy[code][targetKey]=value;dictionaries[code][targetKey]=value;}}
+
   dictionaries.it.guideRelatedRift="Recupero della Fenditura Animale";
   window.ANIMAL_SKYBRIDGE_RIVALS_PUBLIC_COPY=publicCopy;
   window.AnimalSkybridgeRivalsLocales={codes,dictionaries};

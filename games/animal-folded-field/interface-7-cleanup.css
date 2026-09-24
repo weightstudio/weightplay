@@ -1,0 +1,73 @@
+/* Folded Field Interface 7 compatibility.
+ * Shared frame/header/Stage/Battle/Result geometry stays owned by /src.
+ * This file only removes legacy duplicate game content and styles the
+ * Battle-owned leave confirmation that is specific to this game.
+ */
+
+@layer wp-game-compat {
+  #mainScreen .hero-copy > :is(.kicker, .hero-title, .intro, .best-line),
+  #mainScreen #mapBtn,
+  #stageScreen :is(#stageHeading, #stageInfoBtn, .panel-intro),
+  #battleScreen :is(#battleHeading, #battleInfoBtn),
+  #foldedFieldLegacySettingsBtn {
+    display: none !important;
+  }
+
+  #battleScreen .round-label,
+  #battleScreen .check-pill {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #battleScreen .folded-leave-dialog[hidden] {
+    display: none !important;
+  }
+
+  #battleScreen .folded-leave-dialog {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    background: rgb(8 19 29 / 72%);
+  }
+
+  #battleScreen .folded-leave-card {
+    box-sizing: border-box;
+    width: min(420px, 100%);
+    max-height: calc(100% - 16px);
+    overflow: auto;
+    padding: 18px;
+    border-radius: 16px;
+    background: #fffdf6;
+    color: #203138;
+    box-shadow: 0 18px 48px rgb(0 0 0 / 32%);
+  }
+
+  #battleScreen .folded-leave-card h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    line-height: 1.25;
+  }
+
+  #battleScreen .folded-leave-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  #battleScreen .folded-leave-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  #battleScreen .folded-leave-actions > button {
+    min-width: 0;
+    min-height: 44px;
+  }
+}

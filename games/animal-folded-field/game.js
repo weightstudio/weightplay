@@ -12,6 +12,15 @@
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 
+  const gameScriptUrl = document.currentScript?.src || new URL("game.js", document.baseURI).href;
+  const interfaceStyleUrl = new URL("interface-7-cleanup.css?v=20260924-folded-field-i7-recheck-v2", gameScriptUrl).href;
+  if (![...document.querySelectorAll('link[rel="stylesheet"]')].some((link) => link.href.replace(/\?.*$/, "") === interfaceStyleUrl.replace(/\?.*$/, ""))) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = interfaceStyleUrl;
+    link.dataset.wpFoldedFieldInterface7 = "true";
+    document.head.append(link);
+  }
 
   const rounds = [
     { title: "stageTitle1", hint: "stageHint1", initial: [0, 0, 0], target: [1, 0, 1] },
@@ -39,21 +48,32 @@
   const getBest = () => Number(safeGet("weightplay-animal-folded-field-best", "0")) || 0;
   const setText = (node, key, vars) => { if (node) node.textContent = copy(key, vars); };
   const announce = (key, vars) => { setText($("battleStatus"), key, vars); };
-  // Interface 7 supplies one shared Settings owner. The authored legacy
-  // button remains in the markup for backwards-compatible bindings, but it
-  // must not compete with the generated shell control in the player-facing
-  // header.
+
+  const START_COPY = {
+    en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始", ko: "게임 시작",
+    es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Démarrer le jeu", de: "Spiel starten",
+    it: "Inizia gioco", ru: "Начать игру", hi: "गेम शुरू करें", ar: "ابدأ اللعبة"
+  };
+  const LEAVE_COPY = {
+    en: { title: "Leave this field page?", body: "Leaving “{stage}” discards the current {flips} fold moves. Your saved best-fold record is kept.", stay: "Continue", leave: "Leave stage" },
+    "zh-Hant": { title: "離開這個田野頁面？", body: "離開「{stage}」會捨棄目前 {flips} 次摺疊操作；已儲存的最佳摺疊紀錄會保留。", stay: "繼續", leave: "離開關卡" },
+    "zh-Hans": { title: "离开这个田野页面？", body: "离开“{stage}”会舍弃当前 {flips} 次折叠操作；已保存的最佳折叠记录会保留。", stay: "继续", leave: "离开关卡" },
+    ja: { title: "このフィールドページを離れますか？", body: "「{stage}」を離れると現在の {flips} 回の折り操作は破棄されます。保存済みのベスト記録は残ります。", stay: "続ける", leave: "ステージを離れる" },
+    ko: { title: "이 필드 페이지를 나갈까요?", body: "“{stage}”를 나가면 현재 {flips}번의 접기 진행은 사라집니다. 저장된 최고 기록은 유지됩니다.", stay: "계속", leave: "스테이지 나가기" },
+    es: { title: "¿Salir de esta página del campo?", body: "Salir de “{stage}” descarta los {flips} movimientos de pliegue actuales. Tu mejor registro guardado se conserva.", stay: "Continuar", leave: "Salir del nivel" },
+    "pt-BR": { title: "Sair desta página do campo?", body: "Sair de “{stage}” descarta os {flips} movimentos de dobra atuais. Seu melhor registro salvo será mantido.", stay: "Continuar", leave: "Sair da fase" },
+    fr: { title: "Quitter cette page du terrain ?", body: "Quitter « {stage} » annule les {flips} plis en cours. Votre meilleur score enregistré est conservé.", stay: "Continuer", leave: "Quitter le niveau" },
+    de: { title: "Diese Feldseite verlassen?", body: "Beim Verlassen von „{stage}“ gehen die aktuellen {flips} Faltzüge verloren. Dein gespeicherter Bestwert bleibt erhalten.", stay: "Fortsetzen", leave: "Level verlassen" },
+    it: { title: "Lasciare questa pagina del campo?", body: "Uscendo da “{stage}” perderai le {flips} mosse di piega correnti. Il record migliore salvato resta invariato.", stay: "Continua", leave: "Lascia livello" },
+    ru: { title: "Покинуть эту страницу поля?", body: "При выходе из «{stage}» текущие ходы складывания ({flips}) будут потеряны. Сохранённый лучший результат останется.", stay: "Продолжить", leave: "Выйти из этапа" },
+    hi: { title: "यह फ़ील्ड पेज छोड़ें?", body: "“{stage}” छोड़ने पर मौजूदा {flips} फोल्ड चालें मिट जाएँगी। आपका सेव किया गया सर्वश्रेष्ठ रिकॉर्ड बना रहेगा।", stay: "जारी रखें", leave: "स्टेज छोड़ें" },
+    ar: { title: "مغادرة صفحة الحقل هذه؟", body: "مغادرة «{stage}» ستلغي حركات الطي الحالية وعددها {flips}. سيبقى أفضل سجل محفوظ لديك.", stay: "متابعة", leave: "مغادرة المرحلة" }
+  };
+  const formatCopy = (text, values) => String(text).replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ""));
+
   const installInterfaceCompatibility = () => {
-    if (document.getElementById("foldedFieldInterfaceCompatibility")) return;
-    const style = document.createElement("style");
-    style.id = "foldedFieldInterfaceCompatibility";
-    style.textContent = `
-      @layer wp-frame-contract {
-        #mainScreen #settingsBtn { display: none !important; }
-      }
-    `;
     const legacySettings = $("settingsBtn");
-    if (legacySettings) {
+    if (legacySettings && !legacySettings.classList.contains("wp-frame-settings")) {
       legacySettings.classList.remove("wp-shell-settings-button");
       legacySettings.removeAttribute("data-wp-settings");
       legacySettings.hidden = true;
@@ -61,59 +81,25 @@
       legacySettings.tabIndex = -1;
       legacySettings.id = "foldedFieldLegacySettingsBtn";
     }
-    (document.body || document.head).append(style);
-  };
-  // The shared Main adapter promotes only the primary start action and marks
-  // the original hero branch as legacy. Keep the authored Field map entry
-  // reachable by moving it into the promoted copy pane once that pane exists.
-  const ensureMainMapAction = () => {
     const map = $("mapBtn");
-    const copyPane = document.querySelector(".wp-standard-main-copy");
-    if (!map || !copyPane) return false;
-    if (!copyPane.contains(map)) {
-      const actions = document.createElement("div");
-      actions.className = "hero-actions wp-standard-main-extra-actions";
-      actions.append(map);
-      copyPane.append(actions);
+    if (map) {
+      map.hidden = true;
+      map.setAttribute("aria-hidden", "true");
+      map.tabIndex = -1;
     }
-    map.hidden = false;
-    map.removeAttribute("aria-hidden");
-    map.classList.remove("wp-main-legacy-layout");
-    map.tabIndex = 0;
-    return true;
-  };
-  const ensureSharedSettingsButton = () => {
-    const button = document.querySelector(".wp-shell-settings-button");
-    if (!button) return false;
-    button.id = "settingsBtn";
-    button.hidden = false;
-    button.removeAttribute("aria-hidden");
-    button.tabIndex = 0;
-    // The shell may arrive after the game compatibility layer and inherit a
-    // hidden state from the legacy header branch. Reassert the contract on
-    // the generated control so the shared owner remains visibly actionable.
-    button.style.setProperty("display", "grid", "important");
-    button.style.setProperty("width", "48px", "important");
-    button.style.setProperty("height", "48px", "important");
-    return true;
-  };
-  const watchMainMapAction = () => {
-    const reconcile = () => {
-      const mapReady = ensureMainMapAction();
-      const settingsReady = ensureSharedSettingsButton();
-      return mapReady && settingsReady;
-    };
-    if (reconcile()) return;
-    const root = document.body || document.documentElement;
-    if (!root) return;
-    const observer = new MutationObserver(() => {
-      if (reconcile()) observer.disconnect();
+    [$("stageInfoBtn"), $("battleInfoBtn")].forEach((button) => {
+      if (!button) return;
+      button.hidden = true;
+      button.setAttribute("aria-hidden", "true");
+      button.tabIndex = -1;
     });
-    observer.observe(root, { childList: true, subtree: true });
-    window.setTimeout(() => {
-      if (reconcile()) observer.disconnect();
-    }, 2000);
+    const result = $("resultScreen");
+    if (result) {
+      result.removeAttribute("data-screen");
+      result.dataset.wpBattleSubstate = "result";
+    }
   };
+
   // The shared Battle scaler observes DOM mutations asynchronously. Folded
   // Field rerenders its flap board after every native action, so checkpoint
   // the settled logical envelope in the same task before the next input.
@@ -126,24 +112,140 @@
     next[(index + 1) % next.length] = next[(index + 1) % next.length] ? 0 : 1;
     return next;
   };
-  const beep = (cue = "board.rotate") => { return window.WeightPlayAudio?.play(cue); };
-  const pinViewportTop = (active) => {
-    document.documentElement.style.overflow = active ? "hidden" : "";
-    document.body.style.position = active ? "fixed" : "";
-    document.body.style.inset = active ? "0" : "";
-    document.body.style.width = active ? "100%" : "";
-    document.body.style.overflow = active ? "hidden" : "";
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    window.scrollTo(0, 0);
-    if (active) {
-      window.requestAnimationFrame(() => {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        window.scrollTo(0, 0);
-      });
-    }
+  const beep = (cue = "board.rotate") => window.WeightPlayAudio?.play(cue);
+
+  const settlement = { timer: 0, dueAt: 0, remaining: 0, paused: false };
+  const resetSettlementState = () => {
+    settlement.timer = 0;
+    settlement.dueAt = 0;
+    settlement.remaining = 0;
+    settlement.paused = false;
   };
+  const cancelSettlement = () => {
+    if (settlement.timer) window.clearTimeout(settlement.timer);
+    resetSettlementState();
+  };
+  const finishSettlement = () => {
+    resetSettlementState();
+    if (state.screen === "battle") show("result");
+  };
+  const scheduleSettlement = (delay) => {
+    if (settlement.timer) window.clearTimeout(settlement.timer);
+    settlement.paused = false;
+    settlement.remaining = Math.max(0, Number(delay) || 0);
+    settlement.dueAt = performance.now() + settlement.remaining;
+    settlement.timer = window.setTimeout(finishSettlement, settlement.remaining);
+  };
+  const pauseSettlement = () => {
+    if (!settlement.timer) return false;
+    settlement.remaining = Math.max(0, settlement.dueAt - performance.now());
+    window.clearTimeout(settlement.timer);
+    settlement.timer = 0;
+    settlement.dueAt = 0;
+    settlement.paused = true;
+    return true;
+  };
+  const resumeSettlement = () => {
+    if (!settlement.paused) return;
+    const delay = settlement.remaining;
+    settlement.paused = false;
+    settlement.remaining = 0;
+    if (delay <= 0) {
+      queueMicrotask(finishSettlement);
+      return;
+    }
+    scheduleSettlement(delay);
+  };
+  const settlementPending = () => Boolean(settlement.timer || settlement.paused);
+
+  let leaveDialog = null;
+  let leaveDialogOpen = false;
+  let coveredBattleNodes = [];
+  const leaveLabels = () => LEAVE_COPY[state.locale] || LEAVE_COPY.en;
+  const setBattleCovered = (covered) => {
+    if (!leaveDialog) return;
+    if (!covered) {
+      coveredBattleNodes.forEach((node) => { node.inert = false; });
+      coveredBattleNodes = [];
+      return;
+    }
+    const canvas = leaveDialog.closest(".battle-canvas");
+    coveredBattleNodes = [...(canvas?.children || [])].filter((node) => node !== leaveDialog && !node.inert);
+    coveredBattleNodes.forEach((node) => { node.inert = true; });
+  };
+  const refreshLeaveDialog = () => {
+    if (!leaveDialog) return;
+    const labels = leaveLabels();
+    const stage = copy(rounds[state.round]?.title || "stages");
+    leaveDialog.querySelector("[data-leave-title]").textContent = labels.title;
+    leaveDialog.querySelector("[data-leave-body]").textContent = formatCopy(labels.body, { stage, flips: state.flips });
+    leaveDialog.querySelector("[data-leave-stay]").textContent = labels.stay;
+    leaveDialog.querySelector("[data-leave-confirm]").textContent = labels.leave;
+  };
+  const closeLeaveDialog = ({ resume = true, restoreFocus = true } = {}) => {
+    if (!leaveDialogOpen || !leaveDialog) return;
+    leaveDialogOpen = false;
+    leaveDialog.hidden = true;
+    setBattleCovered(false);
+    if (resume) resumeSettlement();
+    if (restoreFocus) $("battleBackBtn")?.focus({ preventScroll: true });
+  };
+  const leaveBattle = () => {
+    closeLeaveDialog({ resume: false, restoreFocus: false });
+    cancelSettlement();
+    show("stage");
+  };
+  const ensureLeaveDialog = () => {
+    if (leaveDialog) return leaveDialog;
+    const canvas = document.querySelector("#battleScreen .battle-canvas");
+    if (!canvas) return null;
+    const dialog = document.createElement("section");
+    dialog.className = "folded-leave-dialog";
+    dialog.hidden = true;
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute("aria-labelledby", "foldedLeaveTitle");
+    dialog.setAttribute("aria-describedby", "foldedLeaveBody");
+    dialog.innerHTML = '<div class="folded-leave-card"><h2 id="foldedLeaveTitle" data-leave-title></h2><p id="foldedLeaveBody" data-leave-body></p><div class="folded-leave-actions"><button type="button" class="secondary-btn" data-leave-stay></button><button type="button" class="primary-btn" data-leave-confirm></button></div></div>';
+    canvas.append(dialog);
+    dialog.querySelector("[data-leave-stay]").addEventListener("click", () => closeLeaveDialog());
+    dialog.querySelector("[data-leave-confirm]").addEventListener("click", leaveBattle);
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        closeLeaveDialog();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusables = [...dialog.querySelectorAll("button:not(:disabled)")];
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+    leaveDialog = dialog;
+    refreshLeaveDialog();
+    return dialog;
+  };
+  const openLeaveDialog = () => {
+    if (leaveDialogOpen || state.screen !== "battle") return;
+    const dialog = ensureLeaveDialog();
+    if (!dialog) return;
+    pauseSettlement();
+    refreshLeaveDialog();
+    leaveDialogOpen = true;
+    setBattleCovered(true);
+    dialog.hidden = false;
+    window.requestAnimationFrame(() => dialog.querySelector("[data-leave-stay]")?.focus({ preventScroll: true }));
+  };
+
   const show = (screen) => {
     state.screen = screen;
     const loading = $("loadingPanel");
@@ -168,26 +270,23 @@
     if (battleActions) battleActions.hidden = screen !== "battle";
     document.body.dataset.screen = screen === "result" ? "battle" : screen;
     document.body.dataset.battleSubstate = screen === "result" ? "result" : "";
-    pinViewportTop(screen === "stage" || inBattle);
     if (screen === "main") renderMain();
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
     if (screen === "result") renderResult();
-    // The shared shell normally schedules placement from a MutationObserver.
-    // Reconcile synchronously at every screen boundary so returning from the
-    // terminal Result cannot expose Main before its Settings host is placed.
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
-    if (screen === "main") ensureSharedSettingsButton();
     window.scrollTo(0, 0);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
-      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-};
+      __wpMeasurement.screen = __wpNextScreen; __wpNotifyMeasurement(); }
+  };
   const renderMain = () => {
     setText($("mainProgress"), "progress", { count: rounds.length });
     setText($("bestValue"), getBest() ? String(getBest()) : "noBest");
+    const start = $("startBtn");
+    if (start) start.textContent = START_COPY[state.locale] || START_COPY.en;
   };
   const renderStages = () => {
     const list = $("stageList");
@@ -249,6 +348,8 @@
     }
   };
   const startRound = (number) => {
+    cancelSettlement();
+    if (leaveDialogOpen) closeLeaveDialog({ resume: false, restoreFocus: false });
     state.round = Math.max(0, Math.min(rounds.length - 1, number));
     state.pattern = rounds[state.round].initial.slice();
     state.flips = 0;
@@ -256,8 +357,9 @@
     show("battle");
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
-};
+  };
   const clearRound = () => {
+    if (settlementPending()) return;
     if (!samePattern()) {
       announce("incorrect");
       return;
@@ -267,7 +369,7 @@
     const best = getBest();
     if (!best || state.flips < best) safeSet("weightplay-animal-folded-field-best", String(state.flips));
     announce("correct");
-    window.setTimeout(() => show("result"), 250);
+    scheduleSettlement(250);
   };
   const applyLocale = (locale) => {
     state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en";
@@ -278,9 +380,8 @@
     document.querySelectorAll("[data-copy]").forEach((node) => setText(node, node.dataset.copy));
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
     const labels = [
-      ["settingsBtn", "settings"], ["settingsPanel", "settings"], ["foldedChoice", "language"],
-      ["stageInfoBtn", "mapIntro"], ["battleInfoBtn", "moveHint"], ["targetPattern", "targetPattern"],
-      ["currentPattern", "currentPattern"], ["flapBoard", "currentPattern"], ["resultBadges", "stages"],
+      ["foldedFieldLegacySettingsBtn", "settings"], ["settingsPanel", "settings"], ["foldedChoice", "language"],
+      ["targetPattern", "targetPattern"], ["currentPattern", "currentPattern"], ["flapBoard", "currentPattern"], ["resultBadges", "stages"]
     ];
     labels.forEach(([id, key]) => { const node = $(id); if (node) node.setAttribute("aria-label", copy(key)); });
     const sound = $("soundBtn");
@@ -289,6 +390,7 @@
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
     if (state.screen === "result") renderResult();
+    refreshLeaveDialog();
   };
   const bind = () => {
     document.addEventListener("click", (event) => {
@@ -297,40 +399,52 @@
       startRound(Number(card.dataset.stage));
     }, true);
     $("startBtn").addEventListener("click", () => show("stage"));
-    $("mapBtn").addEventListener("click", () => show("stage"));
     $("stageBackBtn").addEventListener("click", () => show("main"));
-    $("battleBackBtn").addEventListener("click", () => show("stage"));
-    $("resetBtn").addEventListener("click", () => { state.pattern = rounds[state.round].initial.slice(); state.flips = 0; announce("moveHint"); renderBattle();
+    $("battleBackBtn").addEventListener("click", (event) => {
+      if (state.screen !== "battle") return;
+      if (state.flips > 0 || settlementPending()) {
+        event.preventDefault();
+        openLeaveDialog();
+        return;
+      }
+      show("stage");
+    });
+    $("resetBtn").addEventListener("click", () => {
+      if (settlementPending()) return;
+      state.pattern = rounds[state.round].initial.slice();
+      state.flips = 0;
+      announce("moveHint");
+      renderBattle();
       __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
-});
+    });
     $("checkBtn").addEventListener("click", clearRound);
     $("resultMapBtn").addEventListener("click", () => {
       if (state.cleared.length) state.round = Math.max(...state.cleared);
       show("stage");
     });
-    $("resultHomeBtn").addEventListener("click", () => { const value = (startRound(state.round));
+    $("resultHomeBtn").addEventListener("click", () => {
+      const value = startRound(state.round);
       __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
- return value; });
+      return value;
+    });
     $("resultPrimaryBtn").addEventListener("click", () => {
       if ($("resultPrimaryBtn").dataset.action === "next") startRound(state.round + 1);
     });
-    $("settingsBtn")?.addEventListener("click", () => {
-      const panel = $("settingsPanel");
-      panel.hidden = !panel.hidden;
-      $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden));
+    $("soundBtn")?.addEventListener("click", () => {
+      state.sound = window.WeightPlayAudio.setEnabled(!state.sound);
+      safeSet("weightplay-animal-folded-field-sound", state.sound ? "on" : "off");
+      applyLocale(state.locale);
     });
-    $("soundBtn").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); safeSet("weightplay-animal-folded-field-sound", state.sound ? "on" : "off"); applyLocale(state.locale); });
-    $("foldedChoice").addEventListener("change", (event) => applyLocale(event.target.value));
-    $("stageInfoBtn").addEventListener("click", () => window.alert(copy("mapIntro")));
-    $("battleInfoBtn").addEventListener("click", () => window.alert(copy("moveHint")));
+    $("foldedChoice")?.addEventListener("change", (event) => applyLocale(event.target.value));
   };
   const boot = () => {
     installInterfaceCompatibility();
-    watchMainMapAction();
-    // Keep persistent actions outside the independently scrolling field.
+    // Keep persistent game actions outside the independently scrolling field;
+    // frame/header geometry remains wholly owned by the shared Interface 7 runtime.
     const canvas = document.querySelector("#battleScreen .battle-canvas");
-    const actions = canvas.querySelector(".battle-actions");
-    canvas.append(actions);
+    const actions = canvas?.querySelector(".battle-actions");
+    if (canvas && actions) canvas.append(actions);
+    ensureLeaveDialog();
     const routeLocale = String(window.__WEIGHTPLAY_ROUTE_LOCALE__ || "").trim();
     const savedLocale = localeList.includes(routeLocale) ? routeLocale : safeGet("weightplay-locale", "en");
     const savedSound = safeGet("weightplay-animal-folded-field-sound", "on");

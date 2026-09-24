@@ -441,6 +441,7 @@
   const warBattleCopy = () => WAR_BATTLE_COPY[currentLocale()] || WAR_BATTLE_COPY.en;
   let warShellSyncing = false;
   const syncWarShell = () => {
+    if (root.WeightPlayWarText) { root.WeightPlayWarText.sync(); return; }
     const copy = warShellCopy();
     if (warShellSyncing) return;
     warShellSyncing = true;
@@ -1475,6 +1476,10 @@
   };
 
   const t = (key, values = {}) => {
+    if (document.body?.dataset.wpCardGame === "war") {
+      const owned = root.WeightPlayWarText?.get(key, values);
+      if (owned !== undefined) return owned;
+    }
     const dictionary = TEXT[currentLocale()] || TEXT.en;
     let value = key === "cribbage" ? (TITLES.cribbage[currentLocale()] || TITLES.cribbage.en) : (dictionary[key] || TEXT.en[key] || key);
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
@@ -1534,6 +1539,7 @@
     ar: "الحروب: {wars} · أكبر كومة: {largest} بطاقة · الهدف التالي: أشعل حربًا واربحها.",
   };
   const warResultText = (wars, largest) => {
+    if (root.WeightPlayWarText) return root.WeightPlayWarText.get("resultStats", {wars, largest});
     const template = WAR_RESULT_COPY[currentLocale()] || WAR_RESULT_COPY.en;
     return template.replaceAll("{wars}", String(wars)).replaceAll("{largest}", String(largest));
   };
@@ -2291,6 +2297,7 @@
       battleUtility = document.querySelector("[data-wp-battle-utility]");
       syncWarShell();
       window.addEventListener("weightplay:shell-sync", syncWarShell);
+      window.addEventListener("wonder:locale-change", () => { syncWarShell(); updateStatsView(); render(); });
     }
     if (id === "old-maid") {
       syncOldMaidShell();
@@ -2384,6 +2391,7 @@
       battleUtility.setAttribute("aria-pressed", String(next));
       battleUtility.textContent = next ? "⚙" : "🔇";
       syncCribbageSoundControls();
+      if (id === "war") root.WeightPlayWarText?.syncSound();
     });
     let resultRecorded = false;
     const statsKey = `weightplay.cardgame.stats.${id}`;
@@ -2392,10 +2400,10 @@
     const statsContainer = document.querySelector(".card-game-stats");
     const statsNode = document.createElement("div");
     statsNode.className = "card-stat card-stat-history";
-    if (id === "cribbage" || id === "old-maid") statsNode.setAttribute("data-runtime-localize", "off");
+    if (id === "cribbage" || id === "old-maid" || id === "war") statsNode.setAttribute("data-runtime-localize", "off");
     statsNode.setAttribute("aria-label", STAT_LABELS[currentLocale()] || STAT_LABELS.en);
     statsContainer?.append(statsNode);
-    const updateStatsView = (stats = readStats()) => { statsNode.innerHTML = `<small>${STAT_LABELS[currentLocale()] || STAT_LABELS.en}</small><strong>${id === "cribbage" ? cribbageStatsText(stats) : id === "old-maid" ? oldMaidStatsText(stats) : `${stats.wins}W · ${stats.losses}L`}</strong>`; };
+    const updateStatsView = (stats = readStats()) => { statsNode.innerHTML = `<small>${STAT_LABELS[currentLocale()] || STAT_LABELS.en}</small><strong>${id === "war" && root.WeightPlayWarText ? root.WeightPlayWarText.get("record", stats) : id === "cribbage" ? cribbageStatsText(stats) : id === "old-maid" ? oldMaidStatsText(stats) : `${stats.wins}W · ${stats.losses}L`}</strong>`; };
     updateStatsView();
     let game;
     const controller = {
@@ -2489,10 +2497,18 @@
       } else if (id === "war" && battleUtility) {
         battleUtility.textContent = next ? "⚙" : "🔇";
         battleUtility.setAttribute("aria-pressed", String(next));
+        root.WeightPlayWarText?.syncSound();
       } else audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`;
     });
     localeSelect?.addEventListener("change", () => {
       const nextLocale = localeSelect.value;
+      if (id === "war" && root.WonderI18n?.setLocale) {
+        root.WonderI18n.setLocale(nextLocale);
+        syncWarShell();
+        updateStatsView();
+        render();
+        return;
+      }
       if (id === "spades" && root.WonderI18n?.setLocale) {
         root.WonderI18n.setLocale(nextLocale);
         return;
@@ -2558,6 +2574,7 @@
 }
 
   function gameSummary(id) {
+    if (id === "war" && root.WeightPlayWarText) return root.WeightPlayWarText.get("summary");
     if (id === "gin-rummy") return (GIN_MAIN_COPY[currentLocale()] || GIN_MAIN_COPY.en).summary;
     if (id === "speed") return (SPEED_MAIN_COPY[currentLocale()] || SPEED_MAIN_COPY.en).summary;
     const summaries = {
@@ -2741,7 +2758,7 @@
       reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", winner: null, warCount: 0, largestPot: 0 }); },
       card() {},
       action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
-      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div data-war-outcome="${s.phase === "war" ? "tie" : s.winner || "ready"}" class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip" ${s.phase === "finished" ? "disabled" : ""}>${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
+      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup(root.WeightPlayWarText?.get("computer") || "AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div data-war-outcome="${s.phase === "war" ? "tie" : s.winner || "ready"}" class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip" ${s.phase === "finished" ? "disabled" : ""}>${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
     };
   }
 

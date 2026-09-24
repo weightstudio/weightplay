@@ -55,3 +55,14 @@ html body [data-wp-frame="2"] .stage-tabs[data-wp-frame-nav] > .stage-tab {
   min-width: 0 !important;
   margin: 0 !important;
 }
+
+/* The shared Main frame reparents this progress node out of #menuPanel. Use
+   its stable class directly and retain a compact 42px border box across all
+   five governed sizes, including the otherwise-passing short-landscape case. */
+html body .profile-grid.main-progress {
+  box-sizing: border-box !important;
+  height: 42px !important;
+  min-height: 40px !important;
+  max-height: 44px !important;
+  padding-block: 0 !important;
+}

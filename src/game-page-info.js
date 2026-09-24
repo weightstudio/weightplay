@@ -13520,6 +13520,182 @@
   gameplayProfiles["animal-parking-patrol"].marketComparison = { name: "Parking Jam 3D", source: "https://apps.apple.com/us/app/parking-jam-3d/id1498229533", locales: parkingPatrolMarketComparisonCopy };
   // Text Growth 1.3.0: Animal Parking Patrol market comparison end
 
+  // Text Growth 1.3.0: Gearpack Expedition market comparison start
+  const gearpackExpeditionMarketComparisonCopy = {
+  "en": {
+    "heading": "Similar backpack-building gameplay reference",
+    "tagsLabel": "Gameplay tags:",
+    "tags": [
+      "Backpack packing",
+      "Spatial inventory",
+      "Gear placement",
+      "Auto-battle preparation"
+    ],
+    "body": "Both games make the backpack layout part of the strategy: shaped gear competes for limited space, and where items sit can change how useful a loadout becomes. The official Backpack Hero page describes an inventory-management roguelike where organizing the backpack and item placement affect item power while the player explores and fights. This WeightPlay game instead uses 30 fixed authored stages. Before each five-encounter route, you arrange and rotate shaped gear on an 11 by 7 grid, work around blocked cells, and build material or adjacency links; combat then resolves automatically, so the puzzle is the stage-by-stage packing plan rather than a randomly generated dungeon run.",
+    "disclaimer": "This is an independent WeightPlay game. WeightPlay is not affiliated with, endorsed by, licensed by, or co-developing this game with Jaspel, Pretty Soon, IndieArk, or Backpack Hero.",
+    "sourceLabel": "Official Backpack Hero Steam page"
+  },
+  "zh-Hant": {
+    "heading": "相似背包配置玩法參考",
+    "tagsLabel": "玩法標籤：",
+    "tags": [
+      "背包配置",
+      "空間收納",
+      "裝備擺放",
+      "自動戰鬥準備"
+    ],
+    "body": "兩款遊戲都把背包配置本身當成策略：不同形狀的裝備會爭奪有限空間，擺放位置也會影響整套配置的效果。Backpack Hero 官方頁面將它描述為庫存管理 Roguelike，玩家在探索與戰鬥時整理背包，而物品的位置會影響其能力。這款 WeightPlay 遊戲則採用 30 個固定設計關卡；每條五場遭遇的路線開始前，要在 11×7 格背包中擺放並旋轉不同形狀的裝備，避開封鎖格並建立材質或相鄰連結，之後由戰鬥自動結算，因此核心是逐關規劃收納，而不是隨機生成的地下城冒險。",
+    "disclaimer": "這是 WeightPlay 的獨立遊戲。WeightPlay 與 Jaspel、Pretty Soon、IndieArk 或 Backpack Hero 沒有隸屬、背書、授權或共同開發關係。",
+    "sourceLabel": "Backpack Hero 官方 Steam 頁面"
+  },
+  "zh-Hans": {
+    "heading": "相似背包配置玩法参考",
+    "tagsLabel": "玩法标签：",
+    "tags": [
+      "背包配置",
+      "空间收纳",
+      "装备摆放",
+      "自动战斗准备"
+    ],
+    "body": "两款游戏都把背包配置本身作为策略：不同形状的装备会争夺有限空间，摆放位置也会影响整套配置的效果。Backpack Hero 官方页面将它描述为库存管理 Roguelike，玩家在探索与战斗时整理背包，而物品的位置会影响其能力。这款 WeightPlay 游戏则采用 30 个固定设计关卡；每条五场遭遇的路线开始前，要在 11×7 格背包中摆放并旋转不同形状的装备，避开封锁格并建立材质或相邻连接，之后由战斗自动结算，因此核心是逐关规划收纳，而不是随机生成的地下城冒险。",
+    "disclaimer": "这是 WeightPlay 的独立游戏。WeightPlay 与 Jaspel、Pretty Soon、IndieArk 或 Backpack Hero 不存在隶属、背书、授权或共同开发关系。",
+    "sourceLabel": "Backpack Hero 官方 Steam 页面"
+  },
+  "ja": {
+    "heading": "似たバックパック配置ゲームの参考",
+    "tagsLabel": "ゲームプレイタグ：",
+    "tags": [
+      "バックパック整理",
+      "空間配置",
+      "装備配置",
+      "オートバトル準備"
+    ],
+    "body": "どちらもバックパックの配置そのものが戦略になります。形の異なる装備が限られたスペースを取り合い、置く位置によってロードアウトの働き方も変わります。Backpack Hero の公式ページでは、バックパックを整理し、アイテムの配置で性能が変化するインベントリ管理型ローグライクとして、探索と戦闘を行う作品だと説明されています。この WeightPlay ゲームは代わりに30個の固定設計ステージを採用しています。5回の遭遇で構成される各ルートの前に、11×7のグリッドで形の異なる装備を配置・回転し、使用不可マスを避け、素材や隣接のつながりを作ります。戦闘はその後自動で進むため、中心になるのはランダム生成ダンジョンの攻略ではなく、ステージごとの収納計画です。",
+    "disclaimer": "これは WeightPlay の独立作品です。WeightPlay は Jaspel、Pretty Soon、IndieArk、Backpack Hero と提携、推奨、許諾、共同開発の関係にありません。",
+    "sourceLabel": "Backpack Hero 公式 Steam ページ"
+  },
+  "ko": {
+    "heading": "비슷한 배낭 배치 게임 참고",
+    "tagsLabel": "게임플레이 태그:",
+    "tags": [
+      "배낭 정리",
+      "공간 인벤토리",
+      "장비 배치",
+      "자동 전투 준비"
+    ],
+    "body": "두 게임 모두 배낭 배치 자체가 전략의 일부입니다. 서로 다른 모양의 장비가 제한된 공간을 차지하고, 아이템의 위치에 따라 장비 구성이 발휘하는 효과도 달라집니다. Backpack Hero 공식 페이지는 배낭을 정리하고 아이템 배치가 성능에 영향을 주는 인벤토리 관리 로그라이크로 소개하며, 플레이어는 탐험과 전투를 진행합니다. 이 WeightPlay 게임은 대신 30개의 고정 설계 스테이지를 사용합니다. 다섯 번의 조우로 이루어진 각 루트 전에 11×7 격자에 다양한 모양의 장비를 놓고 회전하며, 막힌 칸을 피하고 재질 또는 인접 연결을 만듭니다. 이후 전투는 자동으로 진행되므로 핵심은 무작위 생성 던전 탐험이 아니라 스테이지별 배낭 계획입니다.",
+    "disclaimer": "이 게임은 WeightPlay의 독립 작품입니다. WeightPlay는 Jaspel, Pretty Soon, IndieArk 또는 Backpack Hero와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "sourceLabel": "Backpack Hero 공식 Steam 페이지"
+  },
+  "es": {
+    "heading": "Referencia de juego similar de organización de mochila",
+    "tagsLabel": "Etiquetas de jugabilidad:",
+    "tags": [
+      "Organización de mochila",
+      "Inventario espacial",
+      "Colocación de equipo",
+      "Preparación para combate automático"
+    ],
+    "body": "En ambos juegos, la distribución de la mochila forma parte de la estrategia: el equipo con distintas formas compite por un espacio limitado y la posición de los objetos puede cambiar la eficacia de la configuración. La página oficial de Backpack Hero lo describe como un roguelike de gestión de inventario en el que organizar la mochila y colocar los objetos afecta a su poder mientras se explora y combate. Este juego de WeightPlay usa en cambio 30 fases diseñadas y fijas. Antes de cada ruta de cinco encuentros, colocas y giras equipo de distintas formas en una cuadrícula de 11 por 7, esquivas casillas bloqueadas y creas enlaces por material o adyacencia; después el combate se resuelve automáticamente, así que el reto principal es planificar la mochila fase a fase y no recorrer una mazmorra generada al azar.",
+    "disclaimer": "Este es un juego independiente de WeightPlay. WeightPlay no está afiliado, respaldado, autorizado ni desarrollado conjuntamente con Jaspel, Pretty Soon, IndieArk o Backpack Hero.",
+    "sourceLabel": "Página oficial de Backpack Hero en Steam"
+  },
+  "pt-BR": {
+    "heading": "Referência de jogabilidade semelhante de organização de mochila",
+    "tagsLabel": "Tags de jogabilidade:",
+    "tags": [
+      "Organização da mochila",
+      "Inventário espacial",
+      "Posicionamento de equipamento",
+      "Preparação para batalha automática"
+    ],
+    "body": "Nos dois jogos, a organização da mochila faz parte da estratégia: equipamentos de formatos diferentes disputam espaço limitado, e a posição dos itens pode mudar a eficiência da configuração. A página oficial de Backpack Hero o descreve como um roguelike de gerenciamento de inventário em que organizar a mochila e posicionar os itens afeta seu poder durante exploração e combate. Este jogo da WeightPlay usa, em vez disso, 30 fases fixas e planejadas. Antes de cada rota de cinco encontros, você posiciona e gira equipamentos de vários formatos em uma grade 11 por 7, contorna casas bloqueadas e cria ligações por material ou adjacência; depois o combate é resolvido automaticamente, então o desafio central é planejar a mochila fase a fase, não percorrer uma masmorra gerada aleatoriamente.",
+    "disclaimer": "Este é um jogo independente da WeightPlay. A WeightPlay não é afiliada, endossada, licenciada nem codesenvolvedora com Jaspel, Pretty Soon, IndieArk ou Backpack Hero.",
+    "sourceLabel": "Página oficial de Backpack Hero no Steam"
+  },
+  "fr": {
+    "heading": "Référence de gameplay similaire autour de l’organisation du sac",
+    "tagsLabel": "Tags de gameplay :",
+    "tags": [
+      "Organisation du sac",
+      "Inventaire spatial",
+      "Placement d’équipement",
+      "Préparation au combat automatique"
+    ],
+    "body": "Dans les deux jeux, l’organisation du sac fait partie de la stratégie : les équipements de formes différentes se disputent un espace limité et leur position peut modifier l’efficacité de l’ensemble. La page officielle de Backpack Hero le présente comme un roguelike de gestion d’inventaire où l’organisation du sac et le placement des objets influencent leur puissance pendant l’exploration et les combats. Ce jeu WeightPlay propose plutôt 30 stages fixes conçus à l’avance. Avant chaque parcours de cinq rencontres, vous placez et faites pivoter des équipements de formes variées sur une grille de 11 sur 7, contournez les cases bloquées et créez des liens de matériau ou d’adjacence ; le combat se résout ensuite automatiquement. Le défi porte donc sur la planification du sac stage après stage, et non sur l’exploration d’un donjon généré aléatoirement.",
+    "disclaimer": "Il s’agit d’un jeu indépendant de WeightPlay. WeightPlay n’est ni affilié, ni approuvé, ni licencié, ni développé conjointement avec Jaspel, Pretty Soon, IndieArk ou Backpack Hero.",
+    "sourceLabel": "Page officielle de Backpack Hero sur Steam"
+  },
+  "de": {
+    "heading": "Referenz für ähnliches Rucksack-Planungs-Gameplay",
+    "tagsLabel": "Gameplay-Tags:",
+    "tags": [
+      "Rucksackplanung",
+      "Räumliches Inventar",
+      "Ausrüstungsplatzierung",
+      "Vorbereitung auf automatische Kämpfe"
+    ],
+    "body": "In beiden Spielen ist die Anordnung im Rucksack Teil der Strategie: unterschiedlich geformte Ausrüstung konkurriert um begrenzten Platz, und die Position der Gegenstände kann die Wirksamkeit einer Zusammenstellung verändern. Die offizielle Seite beschreibt Backpack Hero als Inventarverwaltungs-Roguelike, bei dem die Organisation des Rucksacks und die Platzierung von Gegenständen deren Stärke während Erkundung und Kämpfen beeinflussen. Dieses WeightPlay-Spiel verwendet stattdessen 30 fest entworfene Stufen. Vor jeder Route mit fünf Begegnungen platzierst und drehst du unterschiedlich geformte Ausrüstung auf einem 11×7-Raster, umgehst blockierte Felder und bildest Material- oder Nachbarschaftsverbindungen; anschließend wird der Kampf automatisch abgewickelt. Im Mittelpunkt steht daher die Rucksackplanung von Stufe zu Stufe statt eines zufällig erzeugten Dungeon-Laufs.",
+    "disclaimer": "Dies ist ein unabhängiges WeightPlay-Spiel. WeightPlay ist weder mit Jaspel, Pretty Soon, IndieArk oder Backpack Hero verbunden noch von ihnen unterstützt, lizenziert oder gemeinsam entwickelt.",
+    "sourceLabel": "Offizielle Backpack-Hero-Seite auf Steam"
+  },
+  "it": {
+    "heading": "Riferimento a un gameplay simile di organizzazione dello zaino",
+    "tagsLabel": "Tag di gameplay:",
+    "tags": [
+      "Organizzazione dello zaino",
+      "Inventario spaziale",
+      "Posizionamento equipaggiamento",
+      "Preparazione al combattimento automatico"
+    ],
+    "body": "In entrambi i giochi, l’organizzazione dello zaino fa parte della strategia: equipaggiamenti di forme diverse competono per uno spazio limitato e la posizione degli oggetti può cambiare l’efficacia della configurazione. La pagina ufficiale descrive Backpack Hero come un roguelike di gestione dell’inventario in cui organizzare lo zaino e posizionare gli oggetti ne influenza la potenza durante esplorazione e combattimenti. Questo gioco WeightPlay usa invece 30 stage fissi progettati in anticipo. Prima di ogni percorso di cinque incontri, sistemi e ruoti equipaggiamenti di forme diverse su una griglia 11×7, eviti le caselle bloccate e crei collegamenti per materiale o adiacenza; poi il combattimento si risolve automaticamente. Il fulcro è quindi pianificare lo zaino stage dopo stage, non attraversare un dungeon generato casualmente.",
+    "disclaimer": "Questo è un gioco indipendente di WeightPlay. WeightPlay non è affiliata, approvata, autorizzata o coinvolta in uno sviluppo congiunto con Jaspel, Pretty Soon, IndieArk o Backpack Hero.",
+    "sourceLabel": "Pagina ufficiale di Backpack Hero su Steam"
+  },
+  "ru": {
+    "heading": "Сравнение с похожим планированием рюкзака",
+    "tagsLabel": "Теги геймплея:",
+    "tags": [
+      "Укладка рюкзака",
+      "Пространственный инвентарь",
+      "Размещение снаряжения",
+      "Подготовка к автобою"
+    ],
+    "body": "В обеих играх расположение вещей в рюкзаке само становится частью стратегии: снаряжение разной формы занимает ограниченное пространство, а положение предметов может менять эффективность сборки. Официальная страница описывает Backpack Hero как рогалик с управлением инвентарём, где организация рюкзака и размещение предметов влияют на их силу во время исследования и боёв. Эта игра WeightPlay вместо этого использует 30 заранее спроектированных этапов. Перед каждым маршрутом из пяти столкновений вы размещаете и поворачиваете снаряжение разной формы на сетке 11×7, обходите заблокированные клетки и создаёте связи по материалу или соседству; затем бой проходит автоматически. Поэтому основная задача — планировать рюкзак от этапа к этапу, а не проходить случайно созданное подземелье.",
+    "disclaimer": "Это независимая игра WeightPlay. WeightPlay не связана с Jaspel, Pretty Soon, IndieArk или Backpack Hero отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+    "sourceLabel": "Официальная страница Backpack Hero в Steam"
+  },
+  "hi": {
+    "heading": "समान बैकपैक व्यवस्था वाले गेम का संदर्भ",
+    "tagsLabel": "गेमप्ले टैग:",
+    "tags": [
+      "बैकपैक व्यवस्था",
+      "स्थानिक सामान प्रबंधन",
+      "सामान की जगह",
+      "ऑटो-बैटल तैयारी"
+    ],
+    "body": "दोनों खेलों में बैकपैक की व्यवस्था ही रणनीति का हिस्सा है: अलग-अलग आकार का सामान सीमित जगह लेता है और वस्तु कहाँ रखी है, इससे पूरी तैयारी की उपयोगिता बदल सकती है। Backpack Hero का आधिकारिक पेज इसे सामान-प्रबंधन रोगलाइक बताता है, जिसमें बैकपैक व्यवस्थित करना और वस्तुओं की जगह उनकी शक्ति को प्रभावित करती है, जबकि खिलाड़ी खोज और लड़ाई करता है। यह WeightPlay खेल इसके बजाय 30 तय, पहले से बनाए चरणों का उपयोग करता है। पाँच मुठभेड़ों वाले हर मार्ग से पहले 11×7 ग्रिड में अलग आकार के उपकरण रखे और घुमाए जाते हैं, बंद खानों से बचते हुए सामग्री या पड़ोस के लिंक बनाए जाते हैं; इसके बाद लड़ाई अपने-आप चलती है। इसलिए मुख्य पहेली हर चरण के लिए बैकपैक योजना है, न कि बेतरतीब ढंग से बने कालकोठरी मार्ग की खोज।",
+    "disclaimer": "यह WeightPlay का स्वतंत्र खेल है। WeightPlay का Jaspel, Pretty Soon, IndieArk या Backpack Hero से कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+    "sourceLabel": "Backpack Hero का आधिकारिक Steam पेज"
+  },
+  "ar": {
+    "heading": "مرجع للعب مشابه قائم على ترتيب حقيبة الظهر",
+    "tagsLabel": "وسوم أسلوب اللعب:",
+    "tags": [
+      "ترتيب حقيبة الظهر",
+      "إدارة المساحة",
+      "وضع العتاد",
+      "الاستعداد للقتال التلقائي"
+    ],
+    "body": "في اللعبتين يصبح ترتيب حقيبة الظهر جزءًا من الاستراتيجية: تتنافس قطع العتاد ذات الأشكال المختلفة على مساحة محدودة، ويمكن لموضع كل قطعة أن يغيّر فاعلية التجهيز. تصف الصفحة الرسمية Backpack Hero بأنها لعبة روغلايك لإدارة المخزون، حيث يؤثر تنظيم الحقيبة ووضع العناصر في قوتها أثناء الاستكشاف والقتال. أما لعبة WeightPlay هذه فتستخدم 30 مرحلة ثابتة مصممة مسبقًا. قبل كل مسار مؤلف من خمس مواجهات، ترتب العتاد المختلف الأشكال وتدوّره على شبكة 11×7، وتتجنب الخانات المحجوبة وتبني روابط حسب المادة أو التجاور؛ وبعد ذلك يُحسم القتال تلقائيًا. لذلك يتركز التحدي على تخطيط الحقيبة مرحلة بعد مرحلة بدل استكشاف زنزانة مولدة عشوائيًا.",
+    "disclaimer": "هذه لعبة مستقلة من WeightPlay. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وبين Jaspel أو Pretty Soon أو IndieArk أو Backpack Hero.",
+    "sourceLabel": "صفحة Backpack Hero الرسمية على Steam"
+  }
+};
+  gameplayProfiles["animal-gearpack-expedition"] ||= {};
+  gameplayProfiles["animal-gearpack-expedition"].marketComparison = { name: "Backpack Hero", source: "https://store.steampowered.com/app/1970580/Backpack_Hero/", locales: gearpackExpeditionMarketComparisonCopy };
+  // Text Growth 1.3.0: Gearpack Expedition market comparison end
+
   function installMarketComparisonSync() {
     if (marketComparisonObserver || !gameplayProfiles[currentGameId()]?.marketComparison ||
         !document.body || typeof MutationObserver === "undefined") return;
@@ -13550,6 +13726,12 @@
     });
     window.addEventListener("pageshow", () => { observe(); schedule(); });
     syncMarketComparison();
+  }
+
+  // Native War text owns its Guide and shares the comparison source contract.
+  if (window.WeightPlayWarText) {
+    gameplayProfiles.war ||= {};
+    gameplayProfiles.war.marketComparison = window.WeightPlayWarText.reference;
   }
 
   window.WeightPlayGameInfo = {

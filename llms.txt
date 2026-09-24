@@ -59,6 +59,8 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- War: High Card: https://weightplay.com/en/games/war/ — A 52-card reveal-and-compare game against the computer. A is low; ties add three face-down cards and one reveal. The guide explains short-deck endings and browser-local completed-game records.
+
 - Hangman: https://weightplay.com/en/games/hangman/
 - Arrow Escape: https://weightplay.com/en/games/arrow-escape/
 - Block Blast: https://weightplay.com/en/games/block-blast/
