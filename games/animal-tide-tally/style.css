@@ -5,8 +5,7 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 button,select{font:inherit}
 /* Keep Tide Tally's declared Interface 7 Main slots inside their shared
    contract without changing the shared frame used by other games. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] [data-wp-frame="2"] [data-wp-frame-poster]{object-fit:cover!important}
-html body[data-wp-game-id="animal-tide-tally"] img.main-poster{object-fit:cover!important}
+html body[data-wp-game-id="animal-tide-tally"] #app #mainScreen img.main-poster{object-fit:cover!important}
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] [data-wp-frame="2"] [data-wp-frame-progress]{height:40px!important;min-height:40px!important;max-height:44px!important}
 body[data-wp-game-id="animal-tide-tally"] [data-wp-frame-header="stage"] .wp-frame-popover{min-height:80px!important}
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] [data-wp-preferences] .wp-shell-combined-sound-toggle::before{content:none!important;display:none!important}
