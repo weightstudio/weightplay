@@ -32,7 +32,7 @@
     if(start){start.removeAttribute('data-i18n');start.dataset.runtimeLocalize='off';start.textContent=labels.start;}
     const tab=document.querySelector('#stageScreen .stage-tabs button');
     if(tab){tab.removeAttribute('data-i18n');tab.dataset.runtimeLocalize='off';tab.textContent=labels.stages;}
-    if(overlay&&!overlay.hidden){
+    if(overlay){
       titleNode.textContent=labels.title;
       bodyNode.textContent=labels.body.replace('{stage}',stageName());
       continueBtn.textContent=labels.continue;
