@@ -31,10 +31,10 @@
   <meta name="weightplay-interface-version" content="7" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260902-acorn-auction-contract-v4" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260902-acorn-auction-contract-v4" />
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-acorn-auction-v5-locale-guide" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-acorn-auction-contract-v4" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-  <link rel="stylesheet" href="style.css?v=20260903-acorn-auction-v5-locale-guide" />
-  <link rel="stylesheet" href="style-v3.css?v=20260903-acorn-auction-v5-locale-guide" />
+  <link rel="stylesheet" href="style.css?v=20260924-acorn-auction-v6-i7-issue-repair" />
+  <link rel="stylesheet" href="style-v3.css?v=20260924-acorn-auction-v6-i7-issue-repair" />
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
   <meta name="description" content="Read each animal&#39;s request, compare three acorn lots, and choose a fair fit for both quantity and budget." />
     <meta property="og:site_name" content="WeightPlay" />
@@ -90,25 +90,57 @@
       <p id="best" class="best main-progress" data-wp-main-progress role="status" aria-live="polite" data-i18n="best">Best careful picks: —</p>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Open the market</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a round</button></div>
     </section>
-    <section class="game-page-info game-page-info-static" aria-label="Acorn Auction game information" data-wp-acorn-auction-guide="true">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Acorn Auction</h2><p>Read each animal&#39;s request, compare three acorn lots, and choose a fair fit for both quantity and budget.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Quantity-and-Budget Choice Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · Planning · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-acorn-auction-guide="true" data-runtime-localize="off" aria-label="Acorn Auction game information">
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Acorn Auction — Game Guide</h2><p>Read the woodland request, then select the single acorn lot that matches both its count and budget.</p></div></div>
+      <div class="game-info-sections">
+        <div class="game-info-section">
+          <h3>Game Overview and Mission</h3>
+          <p>Acorn Auction is a short, deterministic woodland-market puzzle. You are the shopper responsible for matching each animal's request to one of three visible acorn lots. Every request has two conditions: an exact number of acorns and a maximum price in tokens. A lot is suitable only when it satisfies both. The animals are not competing bidders, and there is no hidden price or changing stock; the market is a setting for comparing the information on the cards. Your mission is to complete all three requests with valid choices. Success means every animal receives the requested quantity without exceeding its stated budget. Nothing is timed, and an incorrect choice does not end the run, so you can inspect the clues and make another decision.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>How to Play and Complete Game Loop</h3>
+          <ol>
+            <li>Choose Open the market, then select a request from the three-round map.</li>
+            <li>Read the animal's exact acorn count and maximum token budget.</li>
+            <li>Compare the count and price printed on all three lots.</li>
+            <li>Choose the single lot that meets both conditions, then continue or revisit a round.</li>
+          </ol>
+          <p>Each lot card shows its quantity and cost before you select it. “Exactly” applies to the number of acorns; “at most” means a price equal to the budget is allowed, while a higher price is not. A correct choice completes that request. A wrong choice adds one to the pick count and returns you to the same request after its feedback, without removing earlier completed requests. Start this round over resets the current request's picks so you can retry it. The Result after a request reports how many of the three requests are ready and how many picks that round took. Next request continues the authored sequence; the round map lets you choose another request. After all three are complete, the final Result shows the best fewest-picks total saved in this browser. There is no timer, life counter, purchase, or fail screen.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Progression and Difficulty</h3>
+          <p>The game has three fixed requests, each with three lots and one answer that meets both clues. The Squirrel asks for exactly 3 acorns at no more than 5 tokens. The Rabbit asks for exactly 4 at no more than 6. The Otter asks for exactly 2 at no more than 7. Pressing Next request follows that order, but the map allows you to start or replay any request directly. The rules do not add a new mechanic or become timed later; the changing count-and-budget pairs are the progression. The later request may have a more generous budget even though it asks for fewer acorns, so price alone cannot reveal the answer. Difficulty comes from checking both numbers on every card rather than assuming the cheapest or largest lot is always right.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Practical Tips</h3>
+          <ul>
+            <li>Separate the two clues: first check the exact count, then check whether the price is within budget.</li>
+            <li>Compare all three cards; the cheapest lot can still have the wrong quantity.</li>
+            <li>A price equal to the stated maximum is allowed, but one token over is not.</li>
+            <li>After a miss, reread both values before trying again; the extra choice affects your pick count.</li>
+            <li>Use the round map when you want to revisit a request instead of following the sequence.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Developer Design Note</h3>
+          <p>The requests use fixed numbers and show the relevant information on each lot, so a player can reason from visible rules rather than guess at odds or discover a hidden system. Quantity and price appear together because the intended decision is a two-check comparison: satisfying only one clue is not enough. The three authored combinations vary the answer position and the relationship between quantity and budget, while keeping the rule set small enough to learn in a short session. An incorrect lot returns to the same request and counts as another pick; it does not remove a life or spend time. That feedback makes a correction possible while keeping the final fewest-picks result meaningful. The round map supports focused replay, and Next request supports a continuous three-request run. The game uses ordinary buttons so the same choice model works with touch, mouse, and keyboard input. It has no auction timer, opponent bidding, upgrades, collectible economy, or random lot generation.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Player, Device, and Save Information</h3>
+          <p>Play in a current browser on a phone, tablet, or computer. Tap a lot on a touch screen, click it with a mouse, or focus a native button and activate it from the keyboard. No sign-in, purchase, or other account feature is part of this game. Completed requests and the current attempt exist only in the open session. The best fewest-picks number is stored locally in this browser; clearing this site's browser data can remove that record. The game does not provide a cloud-save or cross-device progress feature.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>FAQ</h3>
+          <dl>
+            <div><dt>Does a lot need to match both clues?</dt><dd>Yes. It must contain exactly the requested number of acorns and cost no more than the listed budget. Meeting only one condition is not enough.</dd></div>
+            <div><dt>What happens after a wrong choice?</dt><dd>The pick is counted, feedback appears, and the same request becomes available again. Earlier completed requests remain complete; no life or timer is lost.</dd></div>
+            <div><dt>Can I replay a request I already finished?</dt><dd>Yes. Return to the round map and select any of the three requests. The map is available from the Result actions and does not lock completed requests.</dd></div>
+            <div><dt>What does “fewest careful picks” record?</dt><dd>It is the lowest total of lot selections for a completed three-request run. Wrong selections count too. The best number is kept in this browser, not in an online account.</dd></div>
+            <div><dt>Is the auction timed or multiplayer?</dt><dd>No. There is no countdown, competing bidder, online match, life limit, or spending system. The challenge is to compare each request with the three shown lots.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
     <section id="stageScreen" class="screen panel stage-screen stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-acorn-auction-cover.webp" style="--wp-stage-art:url('assets/animal-acorn-auction-cover.webp')" hidden><header class="stage-header"><button id="stageBackBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="stage" aria-label="Back"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><div><p class="eyebrow" data-i18n="rounds">Market rounds</p><h2 data-i18n="choose">Choose a round</h2></div><button id="stageSettingsBtn" class="icon-btn utility-button" type="button" data-wp-stage-utility data-wp-settings aria-label="Settings">⚙</button></header><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="tablist" aria-label="Market round selector"></div></section>
     <div id="stageReserve" class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true" hidden></div>
     <section id="battleScreen" class="screen panel battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
@@ -125,7 +157,7 @@
     <div id="battleReserve" class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true" hidden></div>
     <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle wp-shell-sound-row" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260903-acorn-auction-v5-locale-guide"></script><script src="game.js?v=20260903-acorn-auction-v5-locale-guide"></script>
+  <script src="locales.js?v=20260924-acorn-auction-v6-i7-issue-repair"></script><script src="game.js?v=20260924-acorn-auction-v6-i7-issue-repair"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
