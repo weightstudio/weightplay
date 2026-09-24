@@ -52,6 +52,12 @@
     { arc: 6, checkpoint: true, title: "Taro's rescue finale", hint: "Connect every endpoint and open all six shelters.", decoyRows: [1, 4], target: ["foxB", "badgerB", "otterA", "foxA", "hareA", "badgerA"], start: ["badgerA", "foxA", "foxB", "badgerB", "otterA", "hareA"] },
   ];
   const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: !window.WeightPlayAudio.isMuted(), best: {}, statusKey: "ready", statusVars: {}, statusError: false };
+  // A fixed larger pool covers the seven-card maximum at compact landscape
+  // width while keeping at least three prepared nodes beyond either edge.
+  // Pool construction remains independent of campaign length (30, 60, 90…).
+  const STAGE_CARD_POOL_SIZE = 13;
+  let stageRailController = null;
+  let stageResizeFrame = 0;
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
@@ -159,20 +165,65 @@
     diagram.innerHTML = `<svg class="route-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">${paths}</svg>${rows}`;
     diagram.querySelectorAll("[data-endpoint]").forEach((button) => button.addEventListener("click", () => selectEndpoint(Number(button.dataset.endpoint))));
   };
-  const renderStages = () => {
-    $("stageList").innerHTML = boards.map((board, index) => {
-      const done = state.completed.includes(index);
-      const unlocked = index === 0 || state.completed.includes(index - 1);
-      const titleKey = "boardTitle" + (index + 1);
-      const hintKey = "boardHint" + (index + 1);
-      const localizedTitle = copy(titleKey);
-      const localizedHint = copy(hintKey);
-      const title = localizedTitle === titleKey ? board.title : localizedTitle;
-      const hint = localizedHint === hintKey ? board.hint : localizedHint;
-      return `<button class="stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-card-content" data-wp-item-content><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span class="stage-card-copy"><strong>${copy("arcLabel", { number: board.arc })} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></span></button>`;
-    }).join("");
-    $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startBoard(Number(button.dataset.stage))));
+  const isStageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
+  const highestUnlockedStage = () => Math.min(boards.length - 1,
+    state.completed.reduce((highest, completedIndex) => Math.max(highest, completedIndex + 1), 0));
+  const bindStageCard = (button, index) => {
+    const board = boards[index];
+    const done = state.completed.includes(index);
+    const unlocked = isStageUnlocked(index);
+    const titleKey = "boardTitle" + (index + 1);
+    const hintKey = "boardHint" + (index + 1);
+    const localizedTitle = copy(titleKey);
+    const localizedHint = copy(hintKey);
+    const title = localizedTitle === titleKey ? board.title : localizedTitle;
+    const hint = localizedHint === hintKey ? board.hint : localizedHint;
+    button.type = "button";
+    button.className = `stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}${unlocked ? "" : " locked"}`;
+    button.dataset.stage = String(index);
+    // Keep locked cards pointer-reachable for rail gestures. The shared
+    // controller blocks activation from this semantic state.
+    button.setAttribute("aria-disabled", String(!unlocked));
+    button.removeAttribute("disabled");
+    button.innerHTML = `<span class="stage-card-content" data-wp-item-content><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span class="stage-card-copy"><strong>${copy("arcLabel", { number: board.arc })} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></span>`;
   };
+  const renderStages = () => {
+    const rail = $("stageList");
+    if (!window.WeightPlayStageV6?.install) {
+      rail.replaceChildren();
+      throw new Error("Animal Tangle Rescue requires the shared bounded Stage controller.");
+    }
+    if (stageRailController) {
+      if (!stageRailController.refresh()) throw new Error("Animal Tangle Rescue Stage controller could not refresh.");
+      return;
+    }
+    stageRailController = window.WeightPlayStageV6.install(rail, {
+      total: () => boards.length,
+      poolSize: STAGE_CARD_POOL_SIZE,
+      initialIndex: highestUnlockedStage,
+      bind: bindStageCard,
+      activate: (index) => {
+        if (isStageUnlocked(index)) startBoard(index);
+      },
+    });
+    if (!stageRailController) throw new Error("Animal Tangle Rescue could not install its bounded Stage pool.");
+  };
+  const recenterStageAfterViewportChange = () => {
+    if (state.screen !== "stage" || !stageRailController) return;
+    cancelAnimationFrame(stageResizeFrame);
+    stageResizeFrame = requestAnimationFrame(() => {
+      stageResizeFrame = 0;
+      stageRailController?.center();
+    });
+  };
+  window.addEventListener("resize", recenterStageAfterViewportChange, { passive: true });
+  window.addEventListener("orientationchange", recenterStageAfterViewportChange, { passive: true });
+  window.addEventListener("pagehide", (event) => {
+    if (event.persisted) return;
+    cancelAnimationFrame(stageResizeFrame);
+    stageRailController?.destroy();
+    stageRailController = null;
+  }, { once: true });
   const renderBattle = () => {
     const board = boards[state.board];
     $("battleHeading").textContent = copy("round", { number: state.board + 1, total: boards.length });
@@ -316,8 +367,8 @@
     $("confirmLeaveBtn").addEventListener("click", () => { closeLeaveDialog(); setScreen("stage"); });
     $("resultStagesBtn").addEventListener("click", () => {
       setScreen("stage");
-      const highestUnlocked = Math.max(0, ...state.completed.filter((index) => index >= 0 && index < boards.length));
-      $("stageList").querySelector(`[data-stage="${highestUnlocked}"]`)?.focus();
+      stageRailController?.center(highestUnlockedStage());
+      $("stageList").querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
     });
     [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(window.WeightPlayAudio.isMuted()); applyText(); }));
     $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
