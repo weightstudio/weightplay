@@ -1,0 +1,117 @@
+/* Penalty Cup — Interface 7 game-local cleanup.
+   Shared game-screen-frame owns common scene/header/tab/control geometry.
+   This file only trims legacy copy and positions game-owned Stage/Battle/Result content. */
+
+/* Main: remove duplicate trial/title chrome; keep one concise entry action. */
+#mainScreen .main-copy > small[data-i18n="eyebrow"],
+#mainScreen .main-copy > .coming,
+#mainScreen .main-copy > h1[data-wp-game-title] {
+  display: none !important;
+}
+
+#mainScreen #startBtn {
+  width: 100% !important;
+  min-height: 52px !important;
+  height: 52px !important;
+}
+
+/* Stage content: shared Frame owns 48px / workspace / 56px tracks.
+   The game-owned selector itself uses the standard 38% upper-middle anchor. */
+#stageScreen .chapter-panel {
+  position: absolute !important;
+  z-index: 3 !important;
+  left: 12px !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  width: auto !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
+#stageScreen #stageRail {
+  position: absolute !important;
+  z-index: 2 !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 38% !important;
+  width: 100% !important;
+  height: 190px !important;
+  min-width: 0 !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  margin: 0 !important;
+  padding: 0 calc((100% - 264px) / 2) !important;
+  transform: translateY(-50%) !important;
+  scrollbar-width: none !important;
+}
+
+#stageScreen #stageRail > .stage-card,
+#stageScreen #stageRail > [data-wp-stage-pool-node] {
+  box-sizing: border-box !important;
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+}
+
+#stageScreen #stageRail > [data-wp-stage-pool-node][aria-current="true"] {
+  border-color: #ffe78c !important;
+  box-shadow: 0 0 0 4px #f5c84c33, 0 0 28px #63e6be80, 0 16px 34px #020913 !important;
+}
+
+@media (max-height: 430px) {
+  #stageScreen .chapter-panel {
+    display: none !important;
+  }
+}
+
+/* Battle information moved out of the permanent shared top track remains
+   game-owned HUD content. */
+#battleScreen .interface7-battle-context {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto 44px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+}
+
+#battleScreen .interface7-battle-context .battle-heading,
+#battleScreen .interface7-battle-context .score-box {
+  min-width: 0 !important;
+}
+
+#battleScreen .interface7-battle-context #pauseBtn {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+}
+
+/* Result is game-owned content inside the existing Battle Canvas. */
+#battleScreen .result-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+#battleScreen .result-actions > button {
+  min-width: 0 !important;
+  min-height: 44px !important;
+  height: 44px !important;
+}
+
+/* This game declares bannerAds:false. Keep the legacy compatibility node at
+   zero geometry while the shared layout owns the actual lower boundary. */
+html[data-wp-banner-ads="false"] #generalReserve {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
