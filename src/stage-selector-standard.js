@@ -32,6 +32,7 @@
     "animal-gust-garden": [760, 334],
   };
   const stageLandscapeRatioThresholdByGame = {
+    "animal-postcard-crop": 1.25, // Keep shared 44px Stage controls usable at 1280x720.
     "animal-rune-tactics": 1.25,
     "animal-habitat-builder": 1.25,
     "animal-gust-garden": 1.25,

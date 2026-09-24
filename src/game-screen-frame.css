@@ -8,10 +8,12 @@ html:has(body.wp-frame-main-active) {
  position:static!important;overflow-x:hidden!important;overflow-y:auto!important;
  overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;
 }
+/* Main wheel/touch chains through the auto-height body to the document.
+   The HTML root still contains the browser edge; play locks are unchanged. */
 body.wp-frame-main-active {
  width:100%!important;height:auto!important;min-height:100vh!important;max-height:none!important;
  position:static!important;overflow-x:hidden!important;overflow-y:auto!important;
- overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;
+ overscroll-behavior-x:none!important;overscroll-behavior-y: auto!important;touch-action:pan-y!important;
 }
 html.wp-frame-active-play,
 html:has(body:is(.wp-frame-stage-active,.wp-frame-battle-active)),
@@ -1077,6 +1079,7 @@ html.wp-shell-main-flow {
   touch-action: pan-y !important;
 }
 
+/* Same document scroll owner for legacy-normalized frame consumers. */
 body.wp-shell-main-active {
   width: 100% !important;
   height: auto !important;
@@ -1085,7 +1088,7 @@ body.wp-shell-main-active {
   overflow-x: hidden !important;
   overflow-y: auto !important;
   overscroll-behavior-x: none !important;
-  overscroll-behavior-y: contain !important;
+  overscroll-behavior-y: auto !important;
   touch-action: pan-y !important;
 }
 

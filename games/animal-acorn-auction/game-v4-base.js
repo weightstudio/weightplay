@@ -63,7 +63,7 @@
     setText(faqSection?.querySelector("dt"), guideCopy.faqQuestion);
     setText(faqSection?.querySelector("dd"), guideCopy.faqAnswer);
   }
-  function show(screen) { phase = screen; const battleVisible = ["battle", "choose", "retry", "complete", "result"].includes(screen); document.querySelectorAll("[data-screen]").forEach((node) => { if (node.id === "battleScreen") node.hidden = !battleVisible; else node.hidden = node.dataset.screen !== screen; }); $("battleContent").hidden = screen === "result"; $("settingsPanel").hidden = true; $("backBtn").hidden = screen !== "main"; const guide = guideElement(); if (guide) guide.hidden = screen !== "main"; $("stageReserve").hidden = screen !== "stage"; $("battleReserve").hidden = !battleVisible; }
+  function show(screen) { phase = screen; const battleVisible = ["battle", "choose", "retry", "complete", "result"].includes(screen); document.querySelectorAll("[data-screen]").forEach((node) => { if (node.id === "battleScreen") node.hidden = !battleVisible; else node.hidden = node.dataset.screen !== screen; }); $("battleContent").hidden = screen === "result"; $("settingsPanel").hidden = true; $("backBtn").hidden = screen !== "main"; const guide = guideElement(); if (guide) guide.hidden = screen !== "main"; $("stageReserve").hidden = screen !== "stage"; $("battleReserve").hidden = !battleVisible; if (screen === "stage") window.dispatchEvent(new Event("weightplay:stage-sync")); }
   function renderStatic() {
     const guideCopy = guideInfoCopy[locale] || guideInfoCopy.en;
     document.documentElement.lang = locale;

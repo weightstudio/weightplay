@@ -12525,7 +12525,13 @@
         ![copy.heading, copy.body, copy.disclaimer, copy.sourceLabel].every(value => typeof value === "string" && value.trim())) {
       throw new Error(`Incomplete market comparison: ${gameId}/${localeCode}`);
     }
-    return `<article class="game-info-section" data-wp-market-comparison="1.3.0" data-comparison-locale="${escapeHtml(localeCode)}" data-runtime-localize="off"><h3>${escapeHtml(copy.heading)}</h3><div class="game-info-tags"><span><bdi>${escapeHtml(reference.name)}</bdi></span></div><p>${escapeHtml(copy.body)}</p><p>${escapeHtml(copy.disclaimer)}</p><p><a href="${escapeHtml(reference.source)}" rel="noopener noreferrer">${escapeHtml(copy.sourceLabel)}</a></p></article>`;
+    const tagBlock = Array.isArray(copy.tags) && copy.tags.length === 4
+    ? `<p><strong data-wp-gameplay-tags-label>${escapeHtml(copy.tagsLabel || "Gameplay tags:")}</strong></p><div class="game-info-tags" data-wp-gameplay-tags="1.2.0">${copy.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join("")}</div>`
+    : `<div class="game-info-tags"><span><bdi>${escapeHtml(reference.name)}</bdi></span></div>`;
+  const comparisonBody = Array.isArray(copy.tags) && copy.tags.length === 4
+    ? `<p><strong><bdi>${escapeHtml(reference.name)}</bdi>:</strong> <span data-wp-comparison-shared>${escapeHtml(copy.body)}</span></p>`
+    : `<p>${escapeHtml(copy.body)}</p>`;
+  return `<article class="game-info-section" data-wp-market-comparison="1.3.0" data-comparison-locale="${escapeHtml(localeCode)}" data-runtime-localize="off"><h3>${escapeHtml(copy.heading)}</h3>${tagBlock}${comparisonBody}<p>${escapeHtml(copy.disclaimer)}</p><p><a href="${escapeHtml(reference.source)}" rel="noopener noreferrer">${escapeHtml(copy.sourceLabel)}</a></p></article>`;
   }
 
   function syncMarketComparison() {
@@ -12633,6 +12639,182 @@
 };
   gameplayProfiles["pyramid-solitaire"] ||= {};
   gameplayProfiles["pyramid-solitaire"].marketComparison = { name: "Microsoft Solitaire Collection — Pyramid", source: "https://www.xbox.com/en-us/games/store/microsoft-solitaire-collection/9wzdncrfhwd2", locales: pyramidMarketComparisonCopy };
+
+  // Text Growth 1.3.0: Helper Quest market comparison start
+  const helperQuestMarketComparisonCopy = {
+  "en": {
+    "heading": "Similar care-tool gameplay reference",
+    "tagsLabel": "Gameplay tags:",
+    "tags": [
+      "picture clue matching",
+      "care item choice",
+      "priority decisions",
+      "short memory recall"
+    ],
+    "body": "Pepi Doctor and Animal Helper Quest both ask young players to read a character's situation and use an appropriate pictured item to help. Pepi Doctor is a medicine-themed role game with three patients, more than 20 doctor tools, and five illnesses that can be treated in any chosen order and at the player's own pace. Animal Helper Quest instead uses 30 fixed missions where weather and everyday clues map to eight helper items; later missions add paired-priority clues, short memory prompts, and a tray that reorders after mistakes. Choose it for a structured clue-to-tool puzzle rather than open-ended medical role play.",
+    "disclaimer": "Pepi Doctor and Animal Helper Quest are separate works. WeightPlay is not affiliated with, endorsed by, licensed by, or co-developed with Pepi Play.",
+    "sourceLabel": "Official Pepi Doctor reference"
+  },
+  "zh-Hant": {
+    "heading": "相似的情境道具選擇玩法參考",
+    "tagsLabel": "玩法標籤：",
+    "tags": [
+      "看圖線索配對",
+      "照顧道具選擇",
+      "優先順序判斷",
+      "短期記憶回想"
+    ],
+    "body": "Pepi Doctor 與《動物幫幫隊》都要先看懂角色遇到的情況，再使用合適的圖片道具提供幫助。Pepi Doctor 是醫療主題角色扮演遊戲，有三位病人、20 多種醫療工具與五種疾病，玩家可依自己的順序與步調處理。《動物幫幫隊》則是 30 個固定任務，把天氣與日常線索對應到八種幫手道具；後段還會加入雙線索優先判斷、短暫記憶需求，以及答錯後重新排列的道具盤。想玩結構明確的「讀線索再選道具」益智挑戰時，本作的重點與開放式醫療扮演不同。",
+    "disclaimer": "Pepi Doctor 與《動物幫幫隊》是彼此獨立的作品。WeightPlay 與 Pepi Play 之間沒有隸屬、背書、授權或共同開發關係。",
+    "sourceLabel": "Pepi Doctor 官方參考資料"
+  },
+  "zh-Hans": {
+    "heading": "相似的情境道具选择玩法参考",
+    "tagsLabel": "玩法标签：",
+    "tags": [
+      "看图线索配对",
+      "照顾道具选择",
+      "优先顺序判断",
+      "短期记忆回想"
+    ],
+    "body": "Pepi Doctor 与《动物帮帮队》都要先看懂角色遇到的情况，再使用合适的图片道具提供帮助。Pepi Doctor 是医疗主题角色扮演游戏，有三位病人、20 多种医疗工具和五种疾病，玩家可以按自己的顺序与节奏处理。《动物帮帮队》则有 30 个固定任务，把天气与日常线索对应到八种帮手道具；后期还会加入双线索优先判断、短暂记忆需求，以及答错后重新排列的道具盘。想玩结构明确的“读线索再选道具”益智挑战时，本作的重点与开放式医疗扮演不同。",
+    "disclaimer": "Pepi Doctor 与《动物帮帮队》是彼此独立的作品。WeightPlay 与 Pepi Play 之间不存在隶属、背书、授权或共同开发关系。",
+    "sourceLabel": "Pepi Doctor 官方参考资料"
+  },
+  "ja": {
+    "heading": "似たケア道具選びのゲームプレイ参考",
+    "tagsLabel": "ゲームプレイタグ：",
+    "tags": [
+      "絵の手がかり合わせ",
+      "ケア道具選び",
+      "優先順位判断",
+      "短期記憶"
+    ],
+    "body": "Pepi Doctor と Animal Helper Quest は、どちらもキャラクターの状況を見て、助けになる絵付きの道具を選ぶ点が共通しています。Pepi Doctor は医療をテーマにしたロールプレイゲームで、3人の患者、20種類以上の医療道具、5種類の症状があり、好きな順番とペースで治療できます。Animal Helper Quest は30個の固定ミッションで、天気や日常の手がかりを8種類のヘルパー道具に結び付けます。後半では2つの手がかりから優先度を判断する問題、短い記憶問題、間違えた後に並び替わる道具トレイも加わります。自由な医療ごっこより、手がかりを読んで正しい道具を選ぶ構造的なパズルを遊びたい場合に向いています。",
+    "disclaimer": "Pepi Doctor と Animal Helper Quest は別個の作品です。WeightPlay は Pepi Play と提携、推奨、ライセンス供与、共同開発の関係にありません。",
+    "sourceLabel": "Pepi Doctor 公式資料"
+  },
+  "ko": {
+    "heading": "비슷한 상황별 도구 선택 게임플레이 참고",
+    "tagsLabel": "게임플레이 태그:",
+    "tags": [
+      "그림 단서 맞추기",
+      "돌봄 도구 선택",
+      "우선순위 판단",
+      "짧은 기억 회상"
+    ],
+    "body": "Pepi Doctor와 Animal Helper Quest는 모두 캐릭터가 처한 상황을 살펴보고 알맞은 그림 도구를 골라 돕는다는 공통점이 있습니다. Pepi Doctor는 의료 테마 역할놀이 게임으로 환자 3명, 20개가 넘는 의사 도구, 5가지 질환을 원하는 순서와 속도로 치료할 수 있습니다. Animal Helper Quest는 30개의 고정 미션에서 날씨와 일상 단서를 8가지 도움 도구와 연결하며, 후반에는 두 단서의 우선순위 판단, 짧은 기억 문제, 오답 뒤 도구 위치 재배치가 추가됩니다. 자유로운 의료 역할놀이보다 단서를 읽고 도구를 고르는 구조적인 퍼즐을 원할 때 차이가 분명합니다.",
+    "disclaimer": "Pepi Doctor와 Animal Helper Quest는 서로 독립된 작품입니다. WeightPlay는 Pepi Play와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "sourceLabel": "Pepi Doctor 공식 자료"
+  },
+  "es": {
+    "heading": "Referencia de jugabilidad similar de elegir herramientas de ayuda",
+    "tagsLabel": "Etiquetas de jugabilidad:",
+    "tags": [
+      "emparejar pistas visuales",
+      "elegir objetos de ayuda",
+      "decidir prioridades",
+      "memoria breve"
+    ],
+    "body": "Pepi Doctor y Animal Helper Quest comparten una decisión básica: observar la situación de un personaje y usar un objeto ilustrado apropiado para ayudar. Pepi Doctor es un juego de rol de temática médica con tres pacientes, más de 20 herramientas de doctor y cinco enfermedades que pueden tratarse en el orden y al ritmo que el jugador prefiera. Animal Helper Quest, en cambio, ofrece 30 misiones fijas donde pistas del clima y de la vida diaria se relacionan con ocho objetos de ayuda; las misiones posteriores añaden pistas dobles con prioridad, recuerdos breves y una bandeja que cambia de posición después de un error. Es una opción más estructurada de leer pistas y escoger herramientas, no un juego médico abierto.",
+    "disclaimer": "Pepi Doctor y Animal Helper Quest son obras independientes. WeightPlay no está afiliado, respaldado, licenciado ni desarrollado conjuntamente con Pepi Play.",
+    "sourceLabel": "Referencia oficial de Pepi Doctor"
+  },
+  "pt-BR": {
+    "heading": "Referência de jogabilidade parecida de escolher itens de ajuda",
+    "tagsLabel": "Tags de jogabilidade:",
+    "tags": [
+      "combinar pistas visuais",
+      "escolher itens de cuidado",
+      "decidir prioridades",
+      "memória curta"
+    ],
+    "body": "Pepi Doctor e Animal Helper Quest compartilham uma decisão central: observar a situação de um personagem e usar um item ilustrado adequado para ajudar. Pepi Doctor é um jogo de interpretação com tema médico, três pacientes, mais de 20 ferramentas de médico e cinco doenças que podem ser tratadas na ordem e no ritmo escolhidos pelo jogador. Animal Helper Quest, por outro lado, tem 30 missões fixas em que pistas de clima e do cotidiano apontam para oito itens de ajuda; as missões posteriores acrescentam pistas duplas com prioridade, pequenos desafios de memória e uma bandeja que muda de posição após erros. Aqui o foco é um quebra-cabeça estruturado de ler pistas e escolher itens, não uma brincadeira médica aberta.",
+    "disclaimer": "Pepi Doctor e Animal Helper Quest são obras independentes. A WeightPlay não tem afiliação, endosso, licença nem desenvolvimento conjunto com a Pepi Play.",
+    "sourceLabel": "Referência oficial de Pepi Doctor"
+  },
+  "fr": {
+    "heading": "Référence de gameplay similaire autour du choix d’objets d’aide",
+    "tagsLabel": "Tags de gameplay :",
+    "tags": [
+      "associer des indices visuels",
+      "choisir un objet d’aide",
+      "décider des priorités",
+      "mémoire courte"
+    ],
+    "body": "Pepi Doctor et Animal Helper Quest partagent une décision centrale : observer la situation d’un personnage puis utiliser l’objet illustré approprié pour l’aider. Pepi Doctor est un jeu de rôle médical avec trois patients, plus de 20 outils de médecin et cinq maladies que l’on peut soigner dans l’ordre et au rythme de son choix. Animal Helper Quest propose plutôt 30 missions fixes où des indices météo et du quotidien correspondent à huit objets d’aide ; les missions avancées ajoutent des doubles indices à hiérarchiser, de courts rappels de mémoire et un plateau qui change l’ordre des objets après une erreur. Ici, le cœur du jeu est donc un puzzle structuré « lire l’indice puis choisir l’objet », et non un jeu de rôle médical ouvert.",
+    "disclaimer": "Pepi Doctor et Animal Helper Quest sont des œuvres indépendantes. WeightPlay n’est ni affilié à Pepi Play, ni approuvé, licencié ou codéveloppé par cette société.",
+    "sourceLabel": "Référence officielle de Pepi Doctor"
+  },
+  "de": {
+    "heading": "Referenz für ähnliches Helferwerkzeug-Gameplay",
+    "tagsLabel": "Gameplay-Tags:",
+    "tags": [
+      "Bildhinweise zuordnen",
+      "Hilfsgegenstände wählen",
+      "Prioritäten entscheiden",
+      "kurzes Erinnern"
+    ],
+    "body": "Pepi Doctor und Animal Helper Quest teilen eine zentrale Entscheidung: Die Situation einer Figur erkennen und einen passenden abgebildeten Gegenstand zum Helfen einsetzen. Pepi Doctor ist ein medizinisches Rollenspiel mit drei Patienten, mehr als 20 Arztwerkzeugen und fünf Krankheiten, die in frei gewählter Reihenfolge und im eigenen Tempo behandelt werden können. Animal Helper Quest bietet dagegen 30 feste Missionen, in denen Wetter- und Alltagshinweise acht Helfergegenständen zugeordnet werden; später kommen doppelte Hinweise mit Priorität, kurze Gedächtnisaufgaben und ein nach Fehlern neu sortiertes Werkzeugtablett hinzu. Hier steht damit ein strukturiertes Hinweis-zu-Werkzeug-Rätsel statt eines offenen medizinischen Rollenspiels im Mittelpunkt.",
+    "disclaimer": "Pepi Doctor und Animal Helper Quest sind voneinander unabhängige Werke. WeightPlay ist weder mit Pepi Play verbunden noch von Pepi Play empfohlen, lizenziert oder gemeinsam entwickelt.",
+    "sourceLabel": "Offizielle Pepi-Doctor-Referenz"
+  },
+  "it": {
+    "heading": "Riferimento per un gameplay simile di scelta degli strumenti di aiuto",
+    "tagsLabel": "Tag di gameplay:",
+    "tags": [
+      "abbinare indizi visivi",
+      "scegliere oggetti di cura",
+      "decidere le priorità",
+      "memoria breve"
+    ],
+    "body": "Pepi Doctor e Animal Helper Quest condividono una decisione centrale: osservare la situazione di un personaggio e usare l’oggetto illustrato più adatto per aiutarlo. Pepi Doctor è un gioco di ruolo a tema medico con tre pazienti, oltre 20 strumenti da dottore e cinque malattie che si possono curare nell’ordine e al ritmo scelti dal giocatore. Animal Helper Quest propone invece 30 missioni fisse in cui indizi sul meteo e sulla vita quotidiana corrispondono a otto oggetti di aiuto; più avanti aggiunge doppi indizi da mettere in priorità, brevi prove di memoria e un vassoio che riordina gli strumenti dopo un errore. Qui il fulcro è quindi un puzzle strutturato di lettura degli indizi e scelta dell’oggetto, non un gioco medico aperto.",
+    "disclaimer": "Pepi Doctor e Animal Helper Quest sono opere indipendenti. WeightPlay non è affiliata, approvata, autorizzata né sviluppata congiuntamente con Pepi Play.",
+    "sourceLabel": "Riferimento ufficiale di Pepi Doctor"
+  },
+  "ru": {
+    "heading": "Ориентир по похожему игровому выбору предметов помощи",
+    "tagsLabel": "Теги игрового процесса:",
+    "tags": [
+      "сопоставление по картинкам",
+      "выбор предмета помощи",
+      "выбор приоритета",
+      "короткая память"
+    ],
+    "body": "Pepi Doctor и Animal Helper Quest объединяет одно ключевое решение: понять ситуацию персонажа и выбрать подходящий изображённый предмет, чтобы помочь. Pepi Doctor — медицинская ролевая игра с тремя пациентами, более чем 20 инструментами врача и пятью заболеваниями, которые можно лечить в любом порядке и в своём темпе. Animal Helper Quest вместо этого предлагает 30 фиксированных заданий, где погодные и бытовые подсказки связаны с восемью предметами помощи; позже добавляются пары подсказок с выбором приоритета, короткие задания на память и перестановка предметов после ошибки. Здесь основной акцент — на структурированной головоломке «прочитай подсказку и выбери предмет», а не на свободной медицинской ролевой игре.",
+    "disclaimer": "Pepi Doctor и Animal Helper Quest — независимые произведения. WeightPlay не связан с Pepi Play отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+    "sourceLabel": "Официальный источник Pepi Doctor"
+  },
+  "hi": {
+    "heading": "मिलते-जुलते मदद-उपकरण चयन गेमप्ले का संदर्भ",
+    "tagsLabel": "गेमप्ले टैग:",
+    "tags": [
+      "चित्र संकेत मिलान",
+      "देखभाल वस्तु चयन",
+      "प्राथमिकता निर्णय",
+      "छोटी स्मृति याद"
+    ],
+    "body": "Pepi Doctor और Animal Helper Quest दोनों में खिलाड़ी पहले पात्र की स्थिति समझता है और फिर मदद के लिए सही चित्र वाला सामान चुनता है। Pepi Doctor चिकित्सा-विषयक रोल-प्ले गेम है, जिसमें तीन मरीज, डॉक्टर के 20 से अधिक उपकरण और पाँच बीमारियाँ हैं; खिलाड़ी उन्हें अपनी पसंद के क्रम और गति से संभाल सकता है। Animal Helper Quest में इसके बजाय 30 तय मिशन हैं, जहाँ मौसम और रोज़मर्रा के संकेत आठ मददगार वस्तुओं से जोड़े जाते हैं; आगे के मिशनों में दो संकेतों की प्राथमिकता, थोड़ी देर की स्मृति और गलती के बाद बदलने वाली टूल ट्रे जुड़ती है। इसलिए यहाँ खुली चिकित्सा भूमिका निभाने के बजाय संकेत पढ़कर सही वस्तु चुनने वाली संरचित पहेली मुख्य है।",
+    "disclaimer": "Pepi Doctor और Animal Helper Quest अलग-अलग स्वतंत्र कृतियाँ हैं। WeightPlay का Pepi Play से कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+    "sourceLabel": "Pepi Doctor का आधिकारिक संदर्भ"
+  },
+  "ar": {
+    "heading": "مرجع للعب مشابه يعتمد على اختيار أداة المساعدة",
+    "tagsLabel": "وسوم أسلوب اللعب:",
+    "tags": [
+      "مطابقة الأدلة المصورة",
+      "اختيار أداة العناية",
+      "تحديد الأولوية",
+      "تذكّر قصير"
+    ],
+    "body": "يشترك Pepi Doctor وAnimal Helper Quest في قرار أساسي: قراءة حالة الشخصية ثم استخدام الأداة المصورة المناسبة لمساعدتها. Pepi Doctor لعبة تقمص أدوار بطابع طبي تضم ثلاثة مرضى وأكثر من 20 أداة للطبيب وخمسة أمراض يمكن علاجها بالترتيب والوتيرة اللذين يختارهما اللاعب. أما Animal Helper Quest فتقدم 30 مهمة ثابتة تربط أدلة الطقس والحياة اليومية بثماني أدوات للمساعدة؛ وتضيف المهام المتقدمة دليلين لتحديد الأولوية، وتذكراً قصيراً للحاجة، وصينية أدوات يعاد ترتيبها بعد الخطأ. لذلك يركز هذا العمل على لغز منظم لقراءة الدليل ثم اختيار الأداة، لا على تقمص دور طبي مفتوح.",
+    "disclaimer": "Pepi Doctor وAnimal Helper Quest عملان مستقلان. لا توجد بين WeightPlay وPepi Play علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك.",
+    "sourceLabel": "مرجع Pepi Doctor الرسمي"
+  }
+};
+  gameplayProfiles["tiny-weather-rescue"] ||= {};
+  gameplayProfiles["tiny-weather-rescue"].marketComparison = { name: "Pepi Doctor", source: "https://www.pepiplay.com/pepi-doctor/", locales: helperQuestMarketComparisonCopy };
+  // Text Growth 1.3.0: Helper Quest market comparison end
 
   function installMarketComparisonSync() {
     if (marketComparisonObserver || !gameplayProfiles[currentGameId()]?.marketComparison ||

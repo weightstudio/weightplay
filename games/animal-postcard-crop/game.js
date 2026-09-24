@@ -1,4 +1,4 @@
-/* v5: permanent shared-frame scenes, content-based photography and cancellable motion. */
+/* v6: shared Stage selection and generated-guide-safe scene transitions. */
 (() => {
   'use strict';
   const E=window.PostcardCropEngine, cards=window.PostcardCropCards;
@@ -13,6 +13,42 @@
   const L=packs[locale];
   const t=(key,args={})=>{const text=L.ui[key];if(typeof text!=='string')throw new Error(`Missing native copy: ${locale}/${key}`);return text.replace(/\{(\w+)\}/g,(_,k)=>String(args[k]??''));};
   const asset='/games/animal-postcard-crop/assets/';
+  // Generated routes may replace #gameGuide with an anonymous shared guide.
+  // Optional document content must never interrupt a gameplay transition.
+  const guides=[...document.querySelectorAll('[data-wp-game-guide],.game-page-info')];
+  if (!$('gameGuide') && guides[0]) guides[0].id='gameGuide';
+  const showGuides=visible=>guides.forEach(node=>{node.hidden=!visible;});
+  let browseIndex=0;
+  const unlockedIndex=()=>Math.min(cards.length-1,Math.max(0,save.medals.findLastIndex(value=>value>0)+1));
+  const stageLabels={
+    en:['Stages','Swipe to browse. Tap an unlocked card to play.','Locked','Ready','Cleared'],
+    'zh-Hant':['關卡','左右滑動選關，點擊已解鎖的明信片開始遊玩。','未解鎖','可挑戰','已完成'],
+    'zh-Hans':['关卡','左右滑动选关，点击已解锁的明信片开始游戏。','未解锁','可挑战','已完成'],
+    ja:['ステージ','左右にスワイプ。開放済みのカードをタップして開始。','未開放','挑戦可能','クリア'],
+    ko:['스테이지','좌우로 넘기고 열린 카드를 눌러 시작하세요.','잠김','도전 가능','완료'],
+    es:['Niveles','Desliza para elegir. Toca una tarjeta desbloqueada.','Bloqueado','Disponible','Completado'],
+    'pt-BR':['Fases','Deslize para escolher. Toque em um cartão liberado.','Bloqueada','Disponível','Concluída'],
+    fr:['Niveaux','Faites glisser, puis touchez une carte débloquée.','Verrouillé','Disponible','Terminé'],
+    de:['Level','Wischen zum Blättern. Freie Karte antippen.','Gesperrt','Bereit','Abgeschlossen'],
+    it:['Livelli','Scorri e tocca una cartolina sbloccata.','Bloccato','Disponibile','Completato'],
+    ru:['Уровни','Листайте и нажмите на открытую карточку.','Закрыто','Доступно','Пройдено'],
+    hi:['स्तर','चुनने के लिए स्वाइप करें। खुले कार्ड पर टैप करें।','बंद','उपलब्ध','पूरा'],
+    ar:['المراحل','اسحب للتصفح، ثم اضغط بطاقة مفتوحة للعب.','مغلقة','متاحة','مكتملة']
+  }[locale];
+  const stage=document.createElement('section');
+  stage.id='stageScreen';stage.hidden=true;stage.className='pc-stage';
+  Object.assign(stage.dataset,{screen:'stage',wpStandardStageScreen:'',wpStageLandscapeWidth:'760',wpStageLandscapeHeight:'334',wpStageArt:asset+'animal-postcard-crop-cover-v2.webp'});
+  stage.style.setProperty('--wp-stage-art',`url('${stage.dataset.wpStageArt}')`);
+  stage.innerHTML=`<header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-act="stageBack" data-label="back"></button><span data-wp-frame-title hidden></span></header>
+    <div id="stageContent" class="pc-stage-content" data-wp-frame-content="stage" data-wp-stage-workspace>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail role="list" dir="ltr"></div>
+      <p id="stageHint" class="pc-stage-hint"></p>
+    </div>
+    <nav data-wp-frame-stage-nav><button id="stagesTab" type="button" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-act="stagesTab" aria-current="page" aria-pressed="true"></button></nav>`;
+  $('app').append(stage);
+  $('stageHint').textContent=stageLabels[1];$('stagesTab').textContent=stageLabels[0];
+  $('stageRail').setAttribute('aria-label',stageLabels[0]);
+
   let save;try{save=E.sanitizeSave(JSON.parse(read('weightplay-postcard-album-v5')),cards.length);}catch{save=E.sanitizeSave(null,cards.length);}
   let state={screen:'main',mode:'idle',index:0,pose:{...cards[0].start},moves:0,errors:0,hinted:false,par:0};
   let storageOK=true,epoch=0,gesture=null,previousFocus=null;
@@ -38,7 +74,7 @@
       <div class="pc-status"><p id="battleStatus" role="status" aria-live="polite"></p><p id="positionText" class="pc-sr-only"></p></div>
       <div class="pc-controls" data-wp-frame-logical-actions="battle"><div class="pc-directions" dir="ltr">${button('left')}${button('up')}${button('down')}${button('right')}</div><div class="pc-tools">${button('rotate')}${button('hint')}${button('reset')}${button('capture','capture',true)}</div></div>
     </div>
-    <div id="resultPanel" class="pc-overlay result-panel" role="dialog" aria-modal="true" aria-labelledby="resultHeading" hidden><div class="pc-result-card"><img src="${asset}animal-postcard-crop-orla-v1.webp" width="120" height="120" alt=""><h2 id="resultHeading"></h2><p id="resultStars" class="pc-stars"></p><p id="resultText"></p><p id="albumProgress"></p><p id="saveStatus" role="status"></p><div class="pc-result-actions" data-wp-frame-logical-actions="battle">${button('next','next',true)}${button('replay')}${button('home','back')}</div></div></div>
+    <div id="resultPanel" class="pc-overlay" role="dialog" aria-modal="true" aria-labelledby="resultHeading" hidden><div class="pc-result-card"><img src="${asset}animal-postcard-crop-orla-v1.webp" width="120" height="120" alt=""><h2 id="resultHeading"></h2><p id="resultStars" class="pc-stars"></p><p id="resultText"></p><p id="albumProgress"></p><p id="saveStatus" role="status"></p><div class="pc-result-actions" data-wp-frame-logical-actions="battle">${button('stages','back')}${button('next','next',true)}${button('replay')}</div></div></div>
     <div id="leavePanel" class="pc-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveHeading" hidden><div class="pc-result-card"><h2 id="leaveHeading" data-copy="leaveTitle"></h2><p data-copy="leaveBody"></p><div class="pc-result-actions" data-wp-frame-logical-actions="battle">${button('stay','stay',true)}${button('leave')}</div></div></div>`;
   $('app').append(battle);
   const reserveHeight=window.WeightPlayLayout?.reserveHeight||0;
@@ -52,10 +88,49 @@
   document.querySelectorAll('[data-copy]').forEach(n=>n.textContent=t(n.dataset.copy));
   document.querySelectorAll('[data-label]').forEach(n=>n.setAttribute('aria-label',t(n.dataset.label)));
   document.querySelectorAll('[data-wp-game-title]').forEach(n=>n.textContent=official);
+  // Main copy is native even when the route generator replaces guide markup.
+  const summary=document.querySelector('[data-wp-frame-summary]');
+  if(summary){summary.textContent=L.summary;if(summary.previousElementSibling?.tagName==='P')summary.previousElementSibling.textContent=L.page.status;}
+  const guideLink=document.querySelector('#mainContent a[href="#gameGuide"]');if(guideLink)guideLink.textContent=t('guide');
+  const startLabels=['Start Game','開始遊戲','开始游戏','ゲーム開始','게임 시작','Iniciar juego','Iniciar jogo','Commencer','Spiel starten','Inizia a giocare','Начать игру','खेल शुरू करें','ابدأ اللعب'];
+  $('startButton').textContent=startLabels[keys.indexOf(locale)];
   const frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:select,scenes:{
     main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},
+    stage:{root:stage,header:$('stageHeader'),content:$('stageContent')},
     battle:{root:battle,header:$('battleHeader'),content:$('battleContent'),headerInfo:$('battleInfo')}
   }});
+  const stageController=window.WeightPlayStageV6.install($('stageRail'),{
+    total:cards.length,poolSize:9,initialIndex:()=>browseIndex,
+    bind(node,index){
+      const card=cards[index],locked=index>unlockedIndex(),medal=save.medals[index];
+      node.className='stage-card pc-stage-card';node.setAttribute('aria-disabled',String(locked));
+      node.classList.toggle('locked',locked);
+      if(!node.firstElementChild){
+        const group=document.createElement('span');group.setAttribute('data-wp-item-content','');
+        for(const name of ['number','chapter','objective','status']){const part=document.createElement(name==='number'?'strong':'span');part.dataset.pcCardPart=name;group.append(part);}
+        node.append(group);
+      }
+      const put=(part,value)=>{const target=node.querySelector(`[data-pc-card-part="${part}"]`);if(target.textContent!==value)target.textContent=value;};
+      put('number',`${t('card')} ${index+1}`);put('chapter',L.chapters[card.chapter]);
+      put('objective',card.targets.map(value=>L.scenes[value]).join(' · '));
+      put('status',locked?stageLabels[2]:medal?`${stageLabels[4]} · ${'★'.repeat(medal)}${'☆'.repeat(3-medal)}`:stageLabels[3]);
+      node.setAttribute('aria-label',`${t('card')} ${index+1}. ${L.chapters[card.chapter]}. ${locked?stageLabels[2]:medal?stageLabels[4]:stageLabels[3]}`);
+    },
+    onChange(index){browseIndex=index;},
+    activate(index){if(state.screen==='stage'&&index<=unlockedIndex())startCard(index);}
+  });
+  // Re-centering is delegated to the shared rail, including a scaler refit.
+  const stageResize=new ResizeObserver(()=>{if(state.screen==='stage')stageController.center(browseIndex);});
+  stageResize.observe($('stageContent'));
+  $('resultPanel').querySelector('[data-act="stages"]').textContent=stageLabels[0];
+  function showStages(index=unlockedIndex()){
+    cancelMotion();audio?.stop();browseIndex=Math.max(0,Math.min(cards.length-1,index));
+    state.screen='stage';state.mode='idle';battle.hidden=true;$('mainScreen').hidden=true;showGuides(false);
+    $('resultPanel').hidden=true;$('leavePanel').hidden=true;$('battleContent').inert=false;stage.hidden=false;
+    if(reserve)reserve.hidden=false;
+    frame.activate('stage');stageController.refresh();stageController.center(browseIndex);
+    $('stageRail').querySelector('[aria-current="true"]')?.focus({preventScroll:true});
+  }
   on(select,'change',()=>{
     const i=keys.indexOf(select.value);if(i<0)return;
     try{for(const key of ['weightPlayLocale','weightplayLocale','wp-locale'])localStorage.setItem(key,select.value);}catch{}
@@ -69,7 +144,7 @@
   function persist(){try{localStorage.setItem('weightplay-postcard-album-v5',JSON.stringify(save));storageOK=true;}catch{storageOK=false;}}
   function showMain(){
     cancelMotion();audio?.stop();state.screen='main';state.mode='idle';
-    battle.hidden=true;if(reserve)reserve.hidden=true;$('mainScreen').hidden=false;$('gameGuide').hidden=false;
+    battle.hidden=true;stage.hidden=true;if(reserve)reserve.hidden=true;$('mainScreen').hidden=false;showGuides(true);
     $('resultPanel').hidden=true;$('leavePanel').hidden=true;$('battleContent').inert=false;
     frame.activate('main');$('mainProgress').textContent=progress();$('startButton').focus({preventScroll:true});
   }
@@ -83,10 +158,11 @@
   }
   function startCard(index){
     window.WeightPlayAudio?.preload?.(['game.start','ui.tick','feedback.hint','feedback.error','feedback.success','result.win'])?.catch(()=>{});
-    cancelMotion();audio?.stop();index=Math.max(0,Math.min(cards.length-1,index));const card=cards[index];
+    index=Math.max(0,Math.min(cards.length-1,index));if(index>unlockedIndex())return;
+    cancelMotion();audio?.stop();const card=cards[index];
     const solution=E.solve(card);if(!solution)throw new Error(`Unsolvable postcard ${index+1}`);
     state={screen:'battle',mode:'play',index,pose:{...card.start},moves:0,errors:0,hinted:false,par:solution.length};
-    $('mainScreen').hidden=true;$('gameGuide').hidden=true;battle.hidden=false;if(reserve)reserve.hidden=false;$('resultPanel').hidden=true;$('leavePanel').hidden=true;
+    $('mainScreen').hidden=true;stage.hidden=true;showGuides(false);battle.hidden=false;if(reserve)reserve.hidden=false;$('resultPanel').hidden=true;$('leavePanel').hidden=true;
     $('battleContent').inert=false;frame.activate('battle');
     $('chapterName').textContent=L.chapters[card.chapter];$('cardCount').textContent=`${index+1}/${cards.length}`;$('parCount').textContent=String(state.par);
     $('targetText').textContent=card.targets.map(i=>L.scenes[i]).join(' · ');$('avoidText').textContent=card.avoid.map(i=>L.scenes[i]).join(' · ');
@@ -116,8 +192,8 @@
     $('resultHeading').textContent=t(state.index===cards.length-1?'finished':'success');
     $('resultStars').textContent='★'.repeat(earned)+'☆'.repeat(3-earned);$('resultStars').setAttribute('aria-label',`${t('stars')} ${earned}/3`);
     $('resultText').textContent=t('result',state);$('albumProgress').textContent=progress();$('saveStatus').textContent=storageOK?'':t('saveFailed');
-    const next=$('resultPanel').querySelector('[data-act="next"]');next.textContent=t(state.index===cards.length-1?'start':'next');
-    tween($('resultPanel').firstChild,[{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],330);next.focus({preventScroll:true});
+    const next=$('resultPanel').querySelector('[data-act="next"]');next.textContent=t('next');next.disabled=state.index>=cards.length-1;
+    tween($('resultPanel').firstChild,[{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],330);(next.disabled?$('resultPanel').querySelector('[data-act="stages"]'):next).focus({preventScroll:true});
   }
   function capture(){
     if(state.mode!=='play')return;
@@ -132,7 +208,7 @@
     later(result,520);
   }
   function requestLeave(){
-    if(state.mode==='result'){showMain();return;}if(state.mode!=='play')return;
+    if(state.mode==='result'){showStages();return;}if(state.mode!=='play')return;
     cancelMotion();previousFocus=document.activeElement;state.mode='leave';$('battleContent').inert=true;frame.activate('battle',{covered:true});$('leavePanel').hidden=false;
     tween($('leavePanel').firstChild,[{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],180);
     $('leavePanel').querySelector('[data-act="stay"]').focus({preventScroll:true});
@@ -142,12 +218,15 @@
     const node=event.target.closest('[data-act]');if(!node||node.disabled)return;
     const name=node.dataset.act;
     if(event.detail>1&&['result','leave'].includes(state.mode))return;
-    if(name==='start'){const incomplete=save.medals.findIndex(v=>!v);startCard(incomplete<0?0:incomplete);}
+    if(name==='start'&&state.screen==='main')showStages();
+    else if(name==='stageBack'&&state.screen==='stage')showMain();
+    else if(name==='stagesTab'&&state.screen==='stage')stageController.center(browseIndex);
     else if(name==='back')requestLeave();else if(name==='capture')capture();else if(name==='hint')hint();
     else if(name==='reset'&&state.mode==='play')startCard(state.index);
     else if(name==='replay'&&state.mode==='result')startCard(state.index);
-    else if(name==='next'&&state.mode==='result')startCard((state.index+1)%cards.length);
-    else if(name==='home'||name==='leave'){if(['result','leave'].includes(state.mode))showMain();}
+    else if(name==='next'&&state.mode==='result'&&state.index<cards.length-1)startCard(state.index+1);
+    else if(name==='stages'&&state.mode==='result')showStages();
+    else if(name==='leave'&&state.mode==='leave')showStages(state.index);
     else if(name==='stay')stay();else action(name);
   });
   on(document,'keydown',event=>{
@@ -172,9 +251,9 @@
   for(const event of ['pointercancel','lostpointercapture'])on($('sceneGrid'),event,()=>{gesture=null;});
   function pauseMotion(){const pending=state.mode==='capturing';cancelMotion();audio?.stop();if(pending)result();}
   on(document,'visibilitychange',()=>{if(document.hidden)pauseMotion();});
-  on(window,'pagehide',event=>{pauseMotion();if(!event.persisted){resize.disconnect();frame.destroy();audio?.dispose();abort.abort();}});
+  on(window,'pagehide',event=>{pauseMotion();if(!event.persisted){resize.disconnect();stageResize.disconnect();stageController.destroy();frame.destroy();audio?.dispose();abort.abort();}});
   on(reduce,'change',()=>{pauseMotion();renderPosition();});
-  $('mainProgress').textContent=progress();frame.activate('main');
+  $('mainProgress').textContent=progress();frame.activate('main');$('app').dataset.pcReady='v6';
   // Canonical entry is locale-neutral; explicit localized routes always win over saved preferences.
   if(pathLocale<0&&/^https?:$/.test(location.protocol)&&!['localhost','127.0.0.1','[::1]'].includes(location.hostname)){
     const url=new URL(location.href);url.pathname=`/${routeNames[keys.indexOf(locale)]}/games/animal-postcard-crop/`;url.searchParams.delete('lang');location.replace(url.href);

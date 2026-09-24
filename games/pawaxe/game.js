@@ -1,3 +1,4 @@
+import { RUNTIME_COPY, syncPawaxeGuide, routeLocale } from './public-guide.mjs?v=1';
 import { stages,gear } from './campaign.js?v=4';
 import { Combat } from './combat.js?v=6';
 import { LOCALES,copy } from './locales.js?v=5';
@@ -12,12 +13,14 @@ import { collectionCopy } from './collection-copy.js?v=4';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const save=loadSave();
 try{const locale=localStorage.getItem('weightPlayLocale');if(LOCALES.includes(locale))save.locale=locale;}catch{}
+const entryLocale=routeLocale(location.pathname);
+if(entryLocale)save.locale=entryLocale;
 if(!LOCALES.includes(save.locale))save.locale='zh-Hant';
 let selected=save.unlocked, combat=null,renderer=null,raf=0,last=0,acc=0,node=0,runHp=0,runEnergy=100;
 let state='idle',screen='main',runGeneration=0,transitionRemaining=0,modalKind='',resumeAction=null;
 let feedbackUntil=0,feedbackText='',rendererModule=null;
 let journey=null,runKit=null,runReward=0,runKills=0,runDrops=0,runCombo=0;
-const t=k=>expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
+const t=k=>RUNTIME_COPY[save.locale]?.[k]||expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
 const cc=()=>collectionCopy[save.locale]||collectionCopy.en;
 const pc=()=>playerCopy[save.locale]||playerCopy.en;
 const name=e=>typeof e.id==='number'?pc().stageNames[e.id]:(pc().enemyNames[e.id]||e.name);
@@ -25,6 +28,13 @@ function persist(){if(!storeSave(save))feedback(t('storageError'),5);}
 const locale=$('#locale');
 locale.innerHTML=LOCALES.map(l=>`<option value="${l}">${({'zh-Hant':'繁體中文','zh-Hans':'简体中文',en:'English',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'})[l]}</option>`).join('');
 locale.value=save.locale;
+// Keep the shared header's health stat to two rows in every existing route shell.
+const healthSummary=document.createElement('div');
+healthSummary.className='health-summary';
+healthSummary.append($('#battleInfo .health-caption'),$('#barrierStatus'),$('#hp'));
+$('#battleInfo .player-health').prepend(healthSummary);
+// The percentage belongs to the settlement control, never on top of the meter.
+$('#claim').replaceChildren($('#routePercent'));
 const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:locale,scenes:{
   main:{root:$('#main'),header:$('#main header'),content:$('.hero')},
   stage:{root:$('#stage'),header:$('#stage header'),content:$('.workspace'),headerInfo:$('#stageInfo')},
@@ -63,8 +73,7 @@ function localize(){
   $('#progress').textContent=`${t('stages')} ${save.unlocked} / 30`;
   $('#stageHint').textContent=t('stageHint');
   $('#allyDescription').textContent=cc().rosterHint;
-  const sections=[[t('companion'),cc().rosterHint],[t('equipment'),`${t('dropRate')}: 2.5% → 7% · ${t('boss')}: 18%.`],[t('journey'),t('leaveText')]];
-  $('#guideDetails')?.replaceChildren(...sections.map(([h,p])=>{const s=document.createElement('section');const title=document.createElement('h3');title.textContent=h;const text=document.createElement('p');text.textContent=p;s.append(title,text);return s;}));
+  syncPawaxeGuide(save.locale);
   frame.refresh();renderEquipment();renderCompanions();if(rail)rail.refresh();
 }
 function renderStage(){
@@ -88,7 +97,7 @@ function renderCompanions(){
     const shards=document.createElement('p');shards.className='shards';shards.textContent=item?`${t('shards')} ${item.shards}/${shardsNeeded(rank)}`:`${t('dropFrom')} ${c.unlock}`;
     const equip=document.createElement('button');equip.textContent=save.companion===c.id?t('equipped'):t('equip');equip.disabled=!item||save.companion===c.id;
     equip.onclick=()=>{save.companion=c.id;persist();renderCompanions();};
-    const upgrade=document.createElement('button');upgrade.textContent=rank===MAX_RANK?`${t('rank')} MAX`:t('promote');upgrade.disabled=!item||rank===MAX_RANK||item.shards<shardsNeeded(rank);
+    const upgrade=document.createElement('button');upgrade.textContent=rank===MAX_RANK?t('maxRank'):t('promote');upgrade.disabled=!item||rank===MAX_RANK||item.shards<shardsNeeded(rank);
     upgrade.onclick=()=>{if(promoteCompanion(save,c.id)){persist();renderCompanions();}};
     d.append(objectImage(c.id),title,ability,stat,shards,equip,upgrade);return d;
   }));
@@ -109,7 +118,7 @@ function renderEquipment(){
     d.append(icon,b,ability,p,shards);
     const equip=document.createElement('button');equip.textContent=equipped?t('equipped'):t('equip');equip.disabled=equipped||!item;
     equip.onclick=()=>{save.loadout=save.loadout.filter(id=>gear.find(x=>x.id===id)?.slot!==g.slot);save.loadout.push(g.id);persist();renderEquipment();};d.append(equip);
-    const u=document.createElement('button');u.textContent=level===MAX_RANK?`${t('rank')} MAX`:t('promote');u.disabled=!item||level===MAX_RANK||item.shards<shardsNeeded(level);
+    const u=document.createElement('button');u.textContent=level===MAX_RANK?t('maxRank'):t('promote');u.disabled=!item||level===MAX_RANK||item.shards<shardsNeeded(level);
     u.onclick=()=>{if(promoteGear(save,g.id)){persist();renderEquipment();}};d.append(u);return d;
   }));
 }
@@ -232,8 +241,8 @@ function updateProgress(){
   const percent=Math.round((journey?.progress||0)*100),complete=journey?.completed===true;
   $('#routeProgress').value=percent;$('#routeProgress').setAttribute('aria-label',t('journeyProgress'));
   $('#routeLabel').textContent=complete?t('farm'):`${t('journey')} ${Math.min(journey?.cleared||0,journey?.length||12)}/${journey?.length||12}`;
-  $('#routePercent').textContent=`${percent}%`;
-  $('#claim').disabled=!complete;$('#claim').textContent=complete?`✓ ${t('claim')}`:'—';
+  $('#routePercent').textContent=`${complete?'✓ ':''}${percent}%`;
+  $('#claim').disabled=!complete;
   $('#claim').classList.toggle('complete',complete);
 }
 let lootUntil=0;const lootQueue=[];

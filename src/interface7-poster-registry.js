@@ -81,7 +81,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "animal-peach-oath": "/assets/interface7-redrawn/animal-peach-oath.webp",
   "animal-penalty-cup": "/assets/interface7-redrawn/animal-penalty-cup.webp",
   "animal-pocket-post": "/assets/interface7-redrawn/animal-pocket-post.webp",
-  "animal-postcard-crop": "/assets/interface7-redrawn/animal-postcard-crop.webp",
+  "animal-postcard-crop": "/games/animal-postcard-crop/assets/animal-postcard-crop-cover-v2.webp",
   "animal-prism-battalion": "/assets/interface7-redrawn/animal-prism-battalion.webp",
   "animal-prism-breakers": "/assets/interface7-redrawn/animal-prism-breakers.webp",
   "animal-prism-garden": "/assets/interface7-redrawn/animal-prism-garden.webp",
