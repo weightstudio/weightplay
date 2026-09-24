@@ -1,4 +1,4 @@
-/* Tide Tally v8 owner review, 2026-09-23.
+/* Tide Tally v9 owner review, 2026-09-24.
  * One shared Interface 7 frame; the game owns only content and puzzle state.
  * This file is also importable by the focused Node regression tests.
  */
@@ -158,14 +158,14 @@
   }
   function sheet(name) {
     if ([...document.querySelectorAll('link[rel="stylesheet"]')].some(n=>n.href.split('?')[0].endsWith('/'+name))) return;
-    const link=own('link');link.rel='stylesheet';link.href='/src/'+name+'?v=20260923-tide-v8';document.head.append(link);
+    const link=own('link');link.rel='stylesheet';link.href='/src/'+name+'?v=20260924-tide-v9';document.head.append(link);
   }
   function script(name, ready, base = '/src/') {
     if (ready?.()) return Promise.resolve();
     return new Promise((resolve,reject)=>{
       let node=[...document.scripts].find(n=>n.src.split('?')[0].endsWith('/'+name));
       const fresh=!node;
-      if(fresh){node=own('script');node.src=base+name+'?v=20260923-tide-v8';}
+      if(fresh){node=own('script');node.src=base+name+'?v=20260924-tide-v9';}
       const timeout=setTimeout(()=>finish(Error('Dependency timeout: '+name)),15000);
       function finish(error){clearTimeout(timeout);node.removeEventListener('load',loaded);node.removeEventListener('error',failed);error?reject(error):resolve();}
       function loaded(){finish(ready&&!ready()?Error('Missing API: '+name):null);}
@@ -240,6 +240,28 @@
   function settingsOpen() {
     return [...app.querySelectorAll('[data-wp-preferences] .wp-frame-popover')].some(n=>!n.hidden);
   }
+  function syncSettingsContract() {
+    for(const utility of app.querySelectorAll('[data-wp-preferences]')) {
+      utility.dataset.wpSettingsControl='';
+      const panel=utility.querySelector('.wp-frame-popover');
+      const languageRow=panel?.querySelector('label');
+      if(languageRow) {
+        languageRow.classList.add('wp-shell-settings-row','wp-shell-language-row');
+        const select=languageRow.querySelector('select');
+        if(select)select.dataset.wpLanguageSwitcher='';
+      }
+      const soundRow=panel?.querySelector('.wp-shell-combined-sound-row');
+      if(soundRow) {
+        soundRow.classList.add('wp-shell-settings-row');
+        const label=soundRow.querySelector(':scope > span');
+        const sound=soundRow.querySelector('.wp-frame-sound[role="switch"]');
+        if(label&&sound) {
+          sound.classList.add('wp-shell-combined-sound-toggle');
+          sound.setAttribute('aria-label',label.textContent.trim());
+        }
+      }
+    }
+  }
   function inputLocked() { return scene!=='battle'||Boolean(modal)||busy||document.hidden||settingsOpen(); }
   function syncMotionPause() {
     const paused = document.hidden || settingsOpen();
@@ -249,13 +271,13 @@
   function updateProgress() { $('mainProgress').textContent=text('progress',{count:progress.best.filter(Boolean).length,total:notes.length}); }
   function closeModal(focus=true) {
     if(!modal)return;const old=modal;modal=null;$('tideModal').hidden=true;
-    $('tidePlay').inert=false;frame.activate('battle');motion.resume('leave');syncMotionPause();
+    $('tidePlay').inert=false;frame.activate('battle');syncSettingsContract();motion.resume('leave');syncMotionPause();
     if(focus&&old.focus?.isConnected)old.focus.focus({preventScroll:true});
   }
   function show(name) {
     closeModal(false);motion.cancel();visualToken++;busy=false;scene=name;document.body.dataset.screen=name;
     for(const [key,node] of Object.entries(sceneRoots)){node.hidden=key!==name;node.inert=key!==name;}
-    $('gameGuide').hidden=name!=='main';frame.activate(name);updateProgress();
+    $('gameGuide').hidden=name!=='main';frame.activate(name);syncSettingsContract();updateProgress();
     if(name==='stage') {stageController.refresh();stageController.center(unlocked(progress));$('stageBackBtn').focus({preventScroll:true});}
     if(name==='main'){$('startBtn').focus({preventScroll:true});for(const node of [app.querySelector('[data-wp-frame-poster]'),app.querySelector('[data-wp-frame-summary]')])motion.animate(node,[{opacity:.2},{opacity:1}],{duration:420});}
     syncMotionPause();
@@ -388,6 +410,14 @@
       await Promise.all([script('game-screen-frame.js',()=>window.WeightPlayScreenFrame?.mount),script('stage-virtualization-standard.js',()=>window.WeightPlayStageV6?.install),script('motion.js',()=>window.AnimalTideMotion,'/games/animal-tide-tally/')]);
       motion=new window.AnimalTideMotion();
       const slots=normalize();frame=window.WeightPlayScreenFrame.mount({root:app,...slots});
+      // Keep the cloned visible selector as the canonical Settings owner;
+      // the original source select only relays its change event to routing.
+      slots.localeSelect.id='tideLocaleSource';
+      syncSettingsContract();
+      for(const button of app.querySelectorAll('[data-wp-preferences] [data-wp-settings]'))
+        listen(button,'click',syncSettingsContract);
+      listen(window,'wonder:locale-change',()=>queueMicrotask(syncSettingsContract));
+      listen(window,'weightplay:audio-volume-change',()=>queueMicrotask(syncSettingsContract));
       stageController=window.WeightPlayStageV6.install($('stageList'),{total:notes.length,poolSize:9,bind:stageBind,initialIndex:()=>unlocked(progress),activate:index=>startNote(index)});
       if(!stageController)throw Error('Stage controller unavailable');
       listen($('startBtn'),'click',()=>show('stage'));listen($('stageBackBtn'),'click',()=>show('main'));

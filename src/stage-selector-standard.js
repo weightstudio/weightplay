@@ -25,12 +25,14 @@
   // authored touch size instead of scaling the portrait shell down to ~20px
   // controls at 844x390.
   const stageLandscapeEnvelopeByGame = {
+    "animal-rune-tactics": [760, 334],
     "animal-habitat-builder": [788, 334],
     // Gust Garden keeps Stage navigation at authored touch size in compact
     // landscape instead of shrinking the portrait envelope.
     "animal-gust-garden": [760, 334],
   };
   const stageLandscapeRatioThresholdByGame = {
+    "animal-rune-tactics": 1.25,
     "animal-habitat-builder": 1.25,
     "animal-gust-garden": 1.25,
   };

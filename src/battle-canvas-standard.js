@@ -110,7 +110,7 @@
     "animal-rope-rescue": ["#gamePanel", 382, 780],
     "animal-rootvault-pins": [".battle-canvas", 390, 788, 760, 334],
     "animal-sketchwheel-rally": [".battle-canvas", 390, 788, 760, 334],
-    "animal-rune-tactics": [".rune-app", 382, 780],
+    "animal-rune-tactics": [".rune-app", 390, 788, 760, 334],
     "animal-skyport-dispatch": [".battle-canvas", 390, 788, 760, 334],
     "animal-screw-workshop": [".battle-canvas", 390, 844, 760, 360],
     "animal-starlight-trails": [".trail-battle-canvas", 390, 788, 760, 334],
@@ -502,8 +502,8 @@
       // ResizeObserver runs after the layout viewport has committed. Apply
       // immediately here so a coalesced or late resize event cannot leave the
       // previous wide logical envelope in place for the next player click.
-      update();
-      queueUpdate();
+      if (gameId === "animal-rune-tactics") queueUpdate();
+      else { update(); queueUpdate(); }
     })
     : null;
   logicalCanvasResizeObserver?.observe(document.documentElement);

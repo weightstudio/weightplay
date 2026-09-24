@@ -11,40 +11,32 @@
     { id: "panda", key: "panda" },
   ];
 
-  // Every stage changes the route plus a visible rule or checkpoint purpose.
-  // The six arcs are intentionally authored rather than generated from one
-  // encounter with only a larger number.
   const paths = [
     { titleKey: "stage1Title", arcKey: "arc1", target: ["owl", "fox", "otter"], ruleKey: "straightRule", rewardKey: "stageReward" },
     { titleKey: "stage2Title", arcKey: "arc1", target: ["rabbit", "turtle", "panda"], ruleKey: "straightRule", rewardKey: "stageReward" },
     { titleKey: "stage3Title", arcKey: "arc1", target: ["fox", "otter", "panda"], ruleKey: "straightRule", rewardKey: "stageReward" },
     { titleKey: "stage4Title", arcKey: "arc1", target: ["owl", "rabbit", "turtle", "panda"], ruleKey: "straightRule", rewardKey: "stageReward" },
     { titleKey: "stage5Title", arcKey: "arc1", target: ["owl", "fox", "otter", "panda"], reverse: true, checkpoint: true, ruleKey: "reverseRule", rewardKey: "checkpointReward1" },
-
     { titleKey: "stage6Title", arcKey: "arc2", target: ["rabbit", "owl", "turtle"], decoy: "fox", ruleKey: "decoyRule", rewardKey: "stageReward" },
     { titleKey: "stage7Title", arcKey: "arc2", target: ["fox", "panda", "otter", "rabbit"], decoy: "turtle", ruleKey: "decoyRule", rewardKey: "stageReward" },
     { titleKey: "stage8Title", arcKey: "arc2", target: ["turtle", "owl", "panda"], decoy: "fox", ruleKey: "decoyRule", rewardKey: "stageReward" },
     { titleKey: "stage9Title", arcKey: "arc2", target: ["otter", "rabbit", "fox", "turtle"], decoy: "panda", ruleKey: "decoyRule", rewardKey: "stageReward" },
     { titleKey: "stage10Title", arcKey: "arc2", target: ["owl", "panda", "rabbit", "otter"], decoy: "turtle", checkpoint: true, ruleKey: "decoyRule", rewardKey: "checkpointReward2" },
-
     { titleKey: "stage11Title", arcKey: "arc3", target: ["owl", "fox", "owl", "otter"], echoId: "owl", ruleKey: "echoRule", rewardKey: "stageReward" },
     { titleKey: "stage12Title", arcKey: "arc3", target: ["rabbit", "turtle", "panda", "turtle"], echoId: "turtle", ruleKey: "echoRule", rewardKey: "stageReward" },
     { titleKey: "stage13Title", arcKey: "arc3", target: ["fox", "otter", "panda", "otter"], echoId: "otter", ruleKey: "echoRule", rewardKey: "stageReward" },
     { titleKey: "stage14Title", arcKey: "arc3", target: ["panda", "rabbit", "panda", "turtle"], echoId: "panda", ruleKey: "echoRule", rewardKey: "stageReward" },
     { titleKey: "stage15Title", arcKey: "arc3", target: ["owl", "rabbit", "turtle", "owl", "panda"], echoId: "owl", checkpoint: true, ruleKey: "echoRule", rewardKey: "checkpointReward3" },
-
     { titleKey: "stage16Title", arcKey: "arc4", target: ["fox", "rabbit", "otter", "panda"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
     { titleKey: "stage17Title", arcKey: "arc4", target: ["turtle", "panda", "owl"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
     { titleKey: "stage18Title", arcKey: "arc4", target: ["otter", "fox", "rabbit", "turtle"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
     { titleKey: "stage19Title", arcKey: "arc4", target: ["panda", "owl", "otter", "rabbit"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
     { titleKey: "stage20Title", arcKey: "arc4", target: ["rabbit", "fox", "turtle", "panda", "owl"], reverse: true, checkpoint: true, ruleKey: "reverseRule", rewardKey: "checkpointReward4" },
-
     { titleKey: "stage21Title", arcKey: "arc5", target: ["owl", "fox", "owl", "turtle"], echoId: "owl", decoy: "panda", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
     { titleKey: "stage22Title", arcKey: "arc5", target: ["rabbit", "otter", "panda", "otter", "fox"], echoId: "otter", decoy: "turtle", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
     { titleKey: "stage23Title", arcKey: "arc5", target: ["turtle", "owl", "turtle", "panda"], echoId: "turtle", decoy: "fox", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
     { titleKey: "stage24Title", arcKey: "arc5", target: ["panda", "fox", "rabbit", "fox", "otter"], echoId: "fox", decoy: "owl", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
     { titleKey: "stage25Title", arcKey: "arc5", target: ["otter", "rabbit", "otter", "turtle", "panda"], echoId: "otter", decoy: "fox", checkpoint: true, ruleKey: "decoyEchoRule", rewardKey: "checkpointReward5" },
-
     { titleKey: "stage26Title", arcKey: "arc6", target: ["owl", "panda", "owl", "rabbit"], reverse: true, echoId: "owl", decoy: "fox", ruleKey: "masteryRule", rewardKey: "stageReward" },
     { titleKey: "stage27Title", arcKey: "arc6", target: ["fox", "turtle", "panda", "turtle", "otter"], reverse: true, echoId: "turtle", decoy: "rabbit", ruleKey: "masteryRule", rewardKey: "stageReward" },
     { titleKey: "stage28Title", arcKey: "arc6", target: ["rabbit", "otter", "rabbit", "owl", "panda"], reverse: true, echoId: "rabbit", decoy: "turtle", ruleKey: "masteryRule", rewardKey: "stageReward" },
@@ -189,6 +181,8 @@
       button.dataset.index = String(index);
       button.dataset.stageIndex = String(index);
       button.setAttribute("aria-disabled", String(!unlocked));
+      if (index + 1 === stageProgressSnapshot.highestUnlocked) button.dataset.wpStageRecommended = "true";
+      else delete button.dataset.wpStageRecommended;
       const title = document.createElement("strong");
       title.textContent = t("stageRound", { n: index + 1, total: paths.length });
       const name = document.createElement("span");
@@ -227,6 +221,7 @@
     } else stageRailController.refresh();
     stageRailController.center(stageBrowseIndex);
   };
+
   const ruleVars = (item) => ({
     name: t(item.echoId || item.decoy || "owl"),
     echo: t(item.echoId || "owl"),
@@ -282,7 +277,8 @@
     nextButton.textContent = t("nextStage");
     nextButton.disabled = finalStage;
     $("resultMapBtn").hidden = false;
-    $("resultHomeBtn").textContent = t("replay");
+    const replayButton = $("resultReplayBtn") || $("resultHomeBtn");
+    if (replayButton) replayButton.textContent = t("replay");
     nextButton.onclick = () => startPath(state.path + 1);
   };
   const guideCopy = window.ANIMAL_LANTERN_LATTICE_GUIDE_COPY || {};
@@ -447,4 +443,30 @@
     getStageBests: readStageBests,
     getState: () => ({ ...state, chain: [...state.chain] }),
   };
+
+  const installInterfaceSevenRuntime = () => {
+    if (document.querySelector('link[href*="interface-7-cleanup.css"]')) return;
+    const stageScreen = $("stageScreen");
+    const battleScreen = $("battleScreen");
+    const stageCanvas = stageScreen?.querySelector(".stage-canvas");
+    stageScreen?.setAttribute("data-wp-logical-stage-canvas", "");
+    stageScreen?.setAttribute("data-wp-canvas-max-width", "920");
+    stageCanvas?.setAttribute("data-wp-standard-stage-screen", "");
+    battleScreen?.setAttribute("data-wp-logical-battle-canvas", "");
+    battleScreen?.setAttribute("data-wp-canvas-max-width", "920");
+
+    const markup = [
+      '<link rel="stylesheet" href="/src/stage-selector-standard.css" data-wp-stage-standard>',
+      '<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">',
+       '<link rel="stylesheet" href="/games/animal-lantern-lattice/interface-7-cleanup.css?v=20260924-lantern-i7-hit-target-fix">',
+      '<script src="/src/stage-selector-standard.js" data-wp-stage-standard></script>',
+      '<script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script>',
+      '<script src="/src/battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1" data-wp-battle-standard></script>',
+       '<script src="/games/animal-lantern-lattice/interface-7-compat.js?v=20260924-lantern-i7-copy-hit-target-fix"></script>',
+      '<script src="/games/animal-lantern-lattice/interface-7-followup.js?v=20260923-lantern-i7-cleanup2"></script>',
+      '<script src="/src/game-screen-frame.js?v=20260921-interface7-single-frame-v2&wp-audio=1.0.0"></script>',
+    ].join("");
+    if (document.readyState === "loading") document.write(markup);
+  };
+  installInterfaceSevenRuntime();
 })();

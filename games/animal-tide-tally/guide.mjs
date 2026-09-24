@@ -70,16 +70,16 @@ export function applyTideGuide(html, locale) {
   html=html.replace(/(<button\b[^>]*\bid=["']battleSoundBtn["'][^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.sound)}$2`);
   html=html.replace(/(<button\b[^>]*\bid=["']closeSettings["'][^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.close)}$2`);
   html=html.replace(/(<(?:nav|div)\b[^>]*(?:class=["']stage-tabs["']|id=["'](?:stageChoices|answerGrid)["'])[^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.stages)}$2`);
-  html=html.replace(/(name=["']weightplay-game-version["']\s+content=["'])v\d+/i,'$1v8').replace(/data-wp-game-version=["']v\d+["']/g,'data-wp-game-version="v8"');
+  html=html.replace(/(name=["']weightplay-game-version["']\s+content=["'])v\d+/i,'$1v9').replace(/data-wp-game-version=["']v\d+["']/g,'data-wp-game-version="v9"');
   html=html.replace(/(name=["']weightplay-interface-version["']\s+content=["'])\d+/i,(_,prefix)=>prefix+'7').replace(/data-wp-interface-version=["']\d+["']/g,'data-wp-interface-version="7"');
-  html=html.replace(/((?:style\.css|game\.js|locales\.js)\?v=)[^"']+/g,(_,prefix)=>prefix+'20260923-tide-v8');
+  html=html.replace(/((?:style\.css|game\.js|locales\.js)\?v=)[^"']+/g,(_,prefix)=>prefix+'20260924-tide-v9');
   html=html.replace(/(<div\b[^>]*\bid=["']app["'])([^>]*>)/i,(_,a,b)=>a+b.replace(/\sdata-wp-frame-root(?:=["'][^"']*["'])?/g,'').replace('>',' data-wp-frame-root>'));
   html=html.replace(/<div\b([^>]*\bdata-wp-standard-stage-screen[^>]*)>/i,(_,attrs)=>{
     attrs=attrs.replace(/\sdata-wp-stage-art=["'][^"']*["']/g,'').replace(/\sstyle=["'][\s\S]*?["'](?=\s|$)/g,'');
     return `<div${attrs} data-wp-stage-art="/assets/interface7-redrawn/animal-tide-tally.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-tide-tally.webp')">`;
   });
-  if(!html.includes('game-screen-frame.css?v=20260923-tide-v8')){
-    html=html.replace(/(<script\b[^>]*src=["'][^"']*shared-interface-bootstrap\.js[^>]*>)/i,'<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260923-tide-v8">\n$1');
+  if(!/<link\b[^>]*href=["'][^"']*game-screen-frame\.css(?:\?[^"']*)?["']/i.test(html)){
+    html=html.replace(/(<script\b[^>]*src=["'][^"']*shared-interface-bootstrap\.js[^>]*>)/i,'<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260924-tide-v9">\n$1');
   }
   // Structured genres describe this game in the route locale. Keep SEO identity intact.
   html=html.replace(/(<script\b[^>]*type=["']application\/ld\+json["'][^>]*>)([\s\S]*?)(<\/script>)/gi,(all,a,raw,b)=>{

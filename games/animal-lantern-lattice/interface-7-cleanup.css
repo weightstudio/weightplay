@@ -1,0 +1,330 @@
+/* Interface 7 source cleanup for Lantern Lattice.
+ * Shared geometry remains owned by the canonical frame, Stage selector,
+ * virtualization, Battle canvas and banner-reserve runtimes.
+ */
+
+/* Main: one public start path; shared Header already owns the game title. */
+#mainScreen .orla-guide,
+#mainScreen .kicker,
+#mainScreen .hero-copy > h1,
+#mainScreen .best-line,
+#mapBtn {
+  display: none !important;
+}
+
+#mainScreen .hero-actions {
+  display: block !important;
+}
+
+#startBtn {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  margin-top: 12px !important;
+  padding: 0 16px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+/* Legacy preference controls stay as data/adapters only. Interface 7 owns the
+ * visible Settings entry in the shared frame. */
+#settingsBtn,
+#stageSettingsBtn,
+#battleSettingsBtn,
+#settingsPanel {
+  display: none !important;
+}
+
+/* Stage: the shared outer Canvas remains authoritative. This game owns only
+ * the internal 48px / flexible workspace / 56px track composition. */
+#stageScreen {
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+}
+
+/* This game's frame adapter does not set the shared adapted marker. Make the
+   content lane a real flex column so the rail workspace has a hit-testable
+   height instead of collapsing around its absolutely positioned cards. */
+#stageScreen [data-wp-frame-content="stage"] {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#stageScreen .stage-canvas {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+#stageScreen :is(.panel-head, .wp-frame-header) {
+  box-sizing: border-box !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+}
+
+#stageHeading {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#stageScreen .back-btn {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+#stageScreen .stage-workspace {
+  position: relative !important;
+  /* The shared frame changes stage content to a flex column. The virtualized
+     rail is absolutely positioned, so it contributes no intrinsic height;
+     let the workspace fill the remaining row or its overflow clip blocks hits. */
+  flex: 1 1 0% !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+#stageScreen .stage-list {
+  position: absolute !important;
+  inset-inline: 0 !important;
+  inset-block-start: clamp(8px, calc(38% - 95px), calc(100% - 198px)) !important;
+  width: 100% !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  margin: 0 !important;
+  padding: 0 max(24px, calc((100% - 264px) / 2)) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  overflow-x: hidden !important;
+  overflow-y: clip !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-padding-inline: max(24px, calc((100% - 264px) / 2)) !important;
+  overscroll-behavior-inline: contain !important;
+}
+
+#stageScreen .stage-card {
+  box-sizing: border-box !important;
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  margin: 0 !important;
+  scroll-snap-align: center !important;
+  transform: none !important;
+}
+
+#stageScreen .stage-tabs {
+  grid-row: 3 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  padding: 6px 8px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  align-items: center !important;
+  background: #0b1729e8 !important;
+  border-top: 1px solid #ffffff1a !important;
+}
+
+#stageScreen .stage-tabs > * {
+  min-width: 0 !important;
+}
+
+#stageScreen .stage-tab-slot {
+  min-height: 44px !important;
+}
+
+#stageScreen .stage-tabs button {
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding: 0 10px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  color: var(--ink) !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+/* Battle: the top track stays title-free. Gameplay HUD remains in the content
+ * area; only the repeated heading and private Settings entry leave the top. */
+#battleScreen :is(.panel-head, .wp-frame-header) {
+  box-sizing: border-box !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding-inline: 12px !important;
+}
+
+#battleHeading {
+  display: none !important;
+}
+
+#battleScreen .round-label {
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+#battleScreen .back-btn {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+/* Result is a Battle substate, not a fourth full-screen scene. */
+#battleScreen[data-wp-battle-result] .battle-content {
+  display: none !important;
+}
+
+#resultScreen.wp-lantern-result-substate {
+  position: absolute !important;
+  inset: 48px 0 0 !important;
+  z-index: 5 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  overflow: auto !important;
+  background: linear-gradient(180deg, #0d192bee, #08111fee) !important;
+  border-radius: 0 !important;
+}
+
+#resultScreen.wp-lantern-result-substate .result-card {
+  width: min(100%, 620px) !important;
+  margin: 0 auto !important;
+}
+
+#resultScreen .result-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+}
+
+#resultScreen .result-actions > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding-inline: 12px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+/* Battle leave confirmation is Battle-owned and blocks the covered game. */
+.wp-lantern-leave-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #050a12c9;
+}
+
+.wp-lantern-leave-layer[hidden] {
+  display: none !important;
+}
+
+.wp-lantern-leave-card {
+  width: min(100%, 430px);
+  max-height: 100%;
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid #6688ae;
+  border-radius: 20px;
+  background: #122039;
+  box-shadow: 0 24px 70px #0009;
+}
+
+.wp-lantern-leave-card h2 {
+  margin: 0 0 10px;
+}
+
+.wp-lantern-leave-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.wp-lantern-leave-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.wp-lantern-leave-actions button {
+  width: 100%;
+  min-height: 44px;
+}
+
+/* Banner ads are explicitly disabled for this game. The shared layout policy
+ * owns the zero reserve; legacy reserve nodes must not leave a private gap. */
+html[data-wp-banner-ads="false"] :is(.stage-ad-reserve, .battle-ad-reserve) {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+@media (min-width: 700px) {
+  #stageScreen :is(.panel-head, .wp-frame-header) {
+    padding-inline: 16px !important;
+  }
+
+  #battleScreen :is(.panel-head, .wp-frame-header) {
+    padding-inline: 16px !important;
+  }
+}

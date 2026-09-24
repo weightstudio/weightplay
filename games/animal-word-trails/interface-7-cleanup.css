@@ -1,0 +1,220 @@
+/* Word Trails Interface 7 shared-screen cleanup. Gameplay remains game-owned. */
+.word-trails {
+  width: min(100%, 920px);
+}
+
+.main-screen .locale-row {
+  display: none !important;
+}
+.main-screen .cover {
+  width: min(100%, 420px);
+}
+#start {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  padding-inline: 16px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 800;
+  margin-top: 12px;
+  white-space: nowrap;
+}
+.wp-word-main-progress {
+  min-height: 32px;
+  max-height: 44px;
+  margin: 4px 0 0;
+  display: grid;
+  place-items: center;
+  color: #315a46;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+body.word-stage .stage-screen {
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 8px !important;
+  padding: 12px !important;
+  overflow: hidden !important;
+}
+.stage-screen-head {
+  min-height: 48px !important;
+  height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  gap: 8px;
+  align-items: center;
+}
+.stage-screen-head > [data-copy="chooseStage"] {
+  display: none !important;
+}
+#stageBack {
+  position: static !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  grid-column: 1;
+  font-size: 24px;
+  line-height: 1;
+}
+#stageProgress {
+  grid-column: 2;
+  min-width: 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+.wp-word-stage-workspace {
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+.wp-word-stage-workspace .stage-rail {
+  position: absolute;
+  inset-inline: 0;
+  top: clamp(103px, 38%, calc(100% - 103px));
+  transform: translateY(-50%);
+  height: 190px;
+  margin: 0;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.wp-word-stage-workspace .stage-rail::-webkit-scrollbar {
+  display: none;
+}
+.wp-word-stage-workspace .stage-card {
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  margin: 0 !important;
+}
+.wp-word-stage-album,
+.wp-word-stage-workspace .stage-feedback {
+  position: absolute;
+  bottom: 0;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  margin: 0;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.wp-word-stage-album {
+  inset-inline-end: 0;
+  width: 96px;
+  padding-inline: 12px;
+}
+.wp-word-stage-workspace .stage-feedback {
+  inset-inline-start: 0;
+  inset-inline-end: 104px;
+  padding: 0 12px;
+}
+.wp-word-stage-tabs {
+  grid-row: 3;
+  width: 100%;
+  height: 56px;
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 6px 0;
+  align-items: center;
+}
+.wp-word-stage-tabs > button {
+  grid-column: 2;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  padding-inline: 10px;
+  border: 0;
+  border-radius: 14px;
+  background: #315a46;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.battle-canvas {
+  border-radius: 0 !important;
+}
+.battle-live {
+  grid-template-rows: 48px 64px auto minmax(0, 1fr) 64px !important;
+}
+.battle-top {
+  min-height: 48px !important;
+  height: 48px !important;
+  max-height: 48px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 68px !important;
+  gap: 8px;
+  padding: 0 !important;
+}
+.battle-top .back,
+#battleBack {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  border-radius: 14px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+}
+.result-overlay {
+  border-radius: 0 !important;
+  overflow: auto;
+}
+.result-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.result-screen button {
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  margin: 0;
+  padding-inline: 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+@media (min-width: 700px) {
+  body.word-stage .stage-screen {
+    padding: 16px !important;
+  }
+}

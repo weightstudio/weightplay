@@ -1119,7 +1119,7 @@
     de: "Nächste Bedrohung: {enemy} — {detail} Beispiel: Hat {hero} die wenigsten LP, bewege ihn vor dem Gegnerzug aus der Reichweite.",
     it: "Prossima minaccia: {enemy} — {detail} Esempio: se {hero} ha meno Salute, portalo fuori portata prima del turno nemico.",
     ru: "Следующая угроза: {enemy} — {detail} Пример: если у героя {hero} меньше всего здоровья, отведите его за пределы дальности до хода врага.",
-    hi: "अगला खतरा: {enemy} — {detail} उदाहरण: अगर {hero} का स्वास्थ्य सबसे कम है, तो ход से पहले उसे हमले की सीमा से बाहर ले जाएँ।",
+    hi: "अगला खतरा: {enemy} — {detail} उदाहरण: अगर {hero} का स्वास्थ्य सबसे कम है, तो दुश्मन की बारी से पहले उसे हमले की सीमा से बाहर ले जाएँ।",
     ar: "التهديد التالي: {enemy} — {detail} مثال: إذا كانت صحة {hero} هي الأقل، انقله خارج المدى قبل دور العدو.",
   };
   Object.entries(growthThreatCopy).forEach(([code, value]) => {
@@ -1843,9 +1843,21 @@
     Object.assign(text[key], {arenaMastery:copy[0], arenaMovement:copy[1], skillLionDesc:copy[2],skillOwlDesc:copy[3]});
   });
 
+  // Rune v25 source-owned locale integration. All gameplay rules remain unchanged.
+  const runeGuideCopy = window.WeightPlayRuneTacticsGuideCopy;
+  const runeNativeCopy = window.WeightPlayRuneTacticsNativeCopy;
+  const runeMissionCopy = window.WeightPlayRuneTacticsMissionCopy;
+  if (!runeGuideCopy || !runeNativeCopy || !runeMissionCopy) throw new Error("Missing Rune Tactics locale dependency");
+  for (const [code, copy] of Object.entries(runeNativeCopy)) text[code] = {...text[code], ...copy};
+  for (const [code, copy] of Object.entries(runeGuideCopy)) {
+    text[code] ||= {};
+    text[code].title = copy.title;
+    text[code].strategyTips = copy.strategyTips;
+  }
+
   const routeLocale = ({
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", es: "es", ja: "ja", ko: "ko", ar: "ar",
-    "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru",
+    "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi",
   })[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()];
   let locale = routeLocale || readStorage(localeKey) || window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || "en";
 
@@ -1892,77 +1904,156 @@
   let lifecycleSuspended = document.hidden;
   let renderedMovementMission = null;
   let movementAnimationActive = false;
-  let movementAnimationTimer = 0;
   let lastMovementEvidence = [];
+
+  // One owner for finite tween/FX lifetimes. No gameplay state is deferred to an animation.
+  const motionRecords = new Set();
+  const motionPauses = new Set(document.hidden ? ["lifecycle"] : []);
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  let movementGeneration = 0;
+
+  function freezeOwnedAnimation(animation) {
+    const heldTime = animation.currentTime ?? 0;
+    animation.pause();
+    animation.currentTime = heldTime;
+  }
+
+  function ownAnimation(animation, node, scope, remove = false) {
+    let settle;
+    const done = new Promise(resolve => { settle = resolve; });
+    const record = { animation, node, scope, done, finish: null };
+    record.finish = () => {
+      if (!motionRecords.delete(record)) return;
+      // Cancel only this game's owned animation; release forwards-fill references.
+      animation?.cancel();
+      if (remove) node.remove();
+      settle();
+    };
+    motionRecords.add(record);
+    if (!animation || reducedMotion.matches) record.finish();
+    else {
+      if (motionPauses.size) freezeOwnedAnimation(animation);
+      animation.finished.then(record.finish, record.finish);
+    }
+    return record;
+  }
+
+  function tween(node, frames, options = {}, scope = "feedback", remove = false) {
+    if (!node || reducedMotion.matches || typeof node.animate !== "function") {
+      if (remove) node?.remove();
+      return { done: Promise.resolve() };
+    }
+    return ownAnimation(node.animate(frames, { duration: 240, easing: "cubic-bezier(.22,.78,.22,1)", ...options }), node, scope, remove);
+  }
+
+  function clearMotion(scope) {
+    [...motionRecords].forEach(record => { if (!scope || record.scope === scope) record.finish(); });
+  }
+
+  function pauseMotion(reason, pause) {
+    if (pause) motionPauses.add(reason); else motionPauses.delete(reason);
+    motionRecords.forEach(({ animation }) => {
+      if (!animation) return;
+      if (motionPauses.size) freezeOwnedAnimation(animation);
+      else if (animation.playState === "paused") animation.play();
+    });
+  }
+
+  function ownCssEffect(node) {
+    // CSS artwork still supplies its authored keyframes; the same owner controls its lifetime.
+    const animations = node.getAnimations();
+    if (!animations.length || reducedMotion.matches) { node.remove(); return; }
+    Promise.all(animations.map(animation => ownAnimation(animation, node, "fx").done)).then(() => node.remove());
+  }
+
+  reducedMotion.addEventListener("change", () => { if (reducedMotion.matches) clearMotion(); });
 
   function unitRenderKey(unit) {
     return `${unit.team}:${unit.uid || unit.id}`;
   }
 
   function resetMovementAnimationTracking() {
-    clearTimeout(movementAnimationTimer);
-    movementAnimationTimer = 0;
+    movementGeneration += 1;
+    clearMotion("movement");
     movementAnimationActive = false;
     renderedMovementMission = null;
     nodes.grid.removeAttribute("aria-busy");
-    nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => unit.getAnimations().forEach((animation) => animation.cancel()));
   }
 
   function captureUnitRects() {
-    return new Map([...nodes.grid.querySelectorAll("[data-unit-key]")].map((unit) => [unit.dataset.unitKey, unit.getBoundingClientRect()]));
+    return new Map([...nodes.grid.querySelectorAll("[data-unit-key]")].map(unit => [unit.dataset.unitKey, {
+      rect: unit.getBoundingClientRect(), hp: Number(unit.dataset.hp), maxHp: Number(unit.dataset.maxHp),
+      image: unit.querySelector("img")?.src,
+    }]));
   }
 
   function animateMovedUnits(previousRects) {
-    clearTimeout(movementAnimationTimer);
-    movementAnimationTimer = 0;
+    const generation = ++movementGeneration;
+    clearMotion("movement");
     lastMovementEvidence = [];
-    if (!previousRects.size || matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      movementAnimationActive = false;
-      nodes.grid.removeAttribute("aria-busy");
-      return 0;
-    }
-    nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => {
+    const completions = [];
+    nodes.grid.querySelectorAll("[data-unit-key]").forEach(unit => {
       const previous = previousRects.get(unit.dataset.unitKey);
       if (!previous) return;
       const next = unit.getBoundingClientRect();
-      const dx = previous.left - next.left;
-      const dy = previous.top - next.top;
-      if (Math.hypot(dx, dy) < 2) return;
-      const distanceCells = Math.max(1, Math.round(Math.hypot(dx / Math.max(1, next.width), dy / Math.max(1, next.height))));
-      const duration = Math.min(520, 260 + distanceCells * 70);
-      unit.classList.add("is-moving");
-      const animation = unit.animate([
-        { transform: `translate(${dx}px, ${dy}px) scale(.94)`, offset: 0 },
-        { transform: `translate(${dx * .38}px, ${dy * .38}px) scale(1.04)`, offset: .68 },
-        { transform: "translate(0, 0) scale(1)", offset: 1 },
-      ], { duration, easing: "cubic-bezier(.22,.78,.22,1)", fill: "both" });
-      animation.finished.catch(() => {}).finally(() => unit.classList.remove("is-moving"));
-      lastMovementEvidence.push({ key: unit.dataset.unitKey, dx, dy, duration });
+      // getBoundingClientRect is physical; transform translations are logical Canvas pixels.
+      const scaleX = next.width / Math.max(1, unit.offsetWidth);
+      const scaleY = next.height / Math.max(1, unit.offsetHeight);
+      const dx = (previous.rect.left - next.left) / (scaleX || 1);
+      const dy = (previous.rect.top - next.top) / (scaleY || 1);
+      if (Math.hypot(dx, dy) >= 2 && !reducedMotion.matches) {
+        const duration = Math.min(520, 260 + Math.hypot(dx, dy) / Math.max(1, unit.offsetWidth) * 70);
+        unit.classList.add("is-moving");
+        const record = tween(unit, [{ transform: `translate(${dx}px,${dy}px) scale(.96)` }, { transform: "translate(0,0) scale(1)" }], { duration }, "movement");
+        completions.push(record.done.then(() => unit.classList.remove("is-moving")));
+        lastMovementEvidence.push({ key: unit.dataset.unitKey, dx, dy, scaleX, scaleY, duration });
+      }
+      const hp = Number(unit.dataset.hp);
+      if (hp !== previous.hp) {
+        const bar = unit.querySelector(".hpbar > span");
+        if (bar) tween(bar, [{ width: `${Math.max(0, previous.hp / previous.maxHp * 100)}%` }, { width: `${Math.max(0, hp / Number(unit.dataset.maxHp) * 100)}%` }], { duration: 340 });
+        const image = unit.querySelector(".unit");
+        if (image) tween(image, hp < previous.hp ? [{ transform: "translateX(0)", filter: "brightness(1)" }, { transform: "translateX(-6px)", filter: "brightness(1.9)", offset: .25 }, { transform: "translateX(4px)", offset: .55 }, { transform: "translateX(0)", filter: "brightness(1)" }] : [{ transform: "scale(1)" }, { transform: "scale(1.08)" }, { transform: "scale(1)" }], { duration: 320 });
+      }
     });
-    movementAnimationActive = lastMovementEvidence.length > 0;
+    // A defeated piece exits at its old physical position without retaining focus/interactive DOM.
+    previousRects.forEach((previous, key) => {
+      if (!previous.image || nodes.grid.querySelector(`[data-unit-key="${key}"]`)) return;
+      const layer = nodes.fxLayer.getBoundingClientRect();
+      const sx = layer.width / Math.max(1, nodes.fxLayer.offsetWidth) || 1;
+      const sy = layer.height / Math.max(1, nodes.fxLayer.offsetHeight) || 1;
+      const ghost = document.createElement("img"); ghost.src = previous.image; ghost.alt = "";
+      Object.assign(ghost.style, { position: "absolute", pointerEvents: "none", left: `${(previous.rect.left - layer.left) / sx}px`, top: `${(previous.rect.top - layer.top) / sy}px`, width: `${previous.rect.width / sx}px`, height: `${previous.rect.height / sy}px`, objectFit: "contain" });
+      nodes.fxLayer.append(ghost);
+      tween(ghost, [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "translateY(12px) scale(.65)" }], { duration: 320 }, "fx", true);
+    });
+    movementAnimationActive = completions.length > 0;
+    nodes.grid.toggleAttribute("aria-busy", movementAnimationActive);
     if (movementAnimationActive) nodes.grid.setAttribute("aria-busy", "true");
-    else nodes.grid.removeAttribute("aria-busy");
-    if (movementAnimationActive) {
-      const longest = Math.max(...lastMovementEvidence.map((item) => item.duration));
-      movementAnimationTimer = window.setTimeout(() => {
-        movementAnimationTimer = 0;
-        nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => {
-          unit.getAnimations().forEach((animation) => animation.cancel());
-          unit.classList.remove("is-moving");
-        });
-        movementAnimationActive = false;
-        nodes.grid.removeAttribute("aria-busy");
-        if (state && !nodes.gamePanel.classList.contains("is-hidden")) {
-          updateActionButtons();
-          if (endTurnKeyboardFocusRequested && state.phase === "player") {
-            endTurnKeyboardFocusRequested = false;
-            requestAnimationFrame(() => nodes.endTurnBtn.focus({ preventScroll: true }));
-          }
-        }
-      }, longest + 20);
-    }
+    Promise.all(completions).then(() => {
+      if (generation !== movementGeneration) return;
+      movementAnimationActive = false;
+      nodes.grid.removeAttribute("aria-busy");
+      if (state && document.body.dataset.screen === "battle") updateActionButtons();
+      if (endTurnKeyboardFocusRequested && state?.phase === "player" && !battlePaused) {
+        endTurnKeyboardFocusRequested = false;
+        nodes.endTurnBtn.focus({ preventScroll: true });
+      }
+    });
     return lastMovementEvidence.length;
   }
+
+  function animateAttack(hero, enemy, isSkill) {
+    const unit = nodes.grid.querySelector(`[data-unit-key="${unitRenderKey(hero)}"] .unit`);
+    if (!unit) return;
+    const dx = Math.sign(enemy.x - hero.x) * 13, dy = Math.sign(enemy.y - hero.y) * 10;
+    tween(unit, isSkill ? [{ transform: "scale(1)", filter: "brightness(1)" }, { transform: "scale(1.14)", filter: "brightness(1.7)", offset: .45 }, { transform: "scale(1)", filter: "brightness(1)" }] : [{ transform: "translate(0,0)" }, { transform: `translate(${dx}px,${dy}px)`, offset: .3 }, { transform: "translate(0,0)" }], { duration: isSkill ? 350 : 260 });
+  }
+
+  function enterPanel(panel) {
+    if (panel && !panel.classList.contains("is-hidden")) tween(panel, [{ opacity: .4, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 220 }, "ui");
+  }
+
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
@@ -2039,6 +2130,7 @@
       setBattleCovered(true);
       nodes.rewardPanel.classList.remove("is-hidden");
       renderRewards(false);
+      enterPanel(nodes.rewardPanel.querySelector(".overlay-card"));
     }, delay);
   }
 
@@ -2078,6 +2170,7 @@
 
   function setBattleCovered(covered) {
     nodes.gamePanel.inert = covered;
+    if (document.body.dataset.screen === "battle") screenFrame?.activate("battle", { covered });
     if (covered) nodes.gamePanel.setAttribute("aria-hidden", "true");
     else nodes.gamePanel.removeAttribute("aria-hidden");
   }
@@ -2112,6 +2205,7 @@
     if (!battlePaused) return;
     const focusOwner = pauseFocusOwner?.isConnected ? pauseFocusOwner : nodes.pauseBtn;
     battlePaused = false;
+    pauseMotion("pause", false);
     (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("is-hidden"));
     (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-expanded", "false"));
     nodes.battleBackBtn.setAttribute("aria-expanded", "false");
@@ -2126,6 +2220,7 @@
     if (!state || state.phase === "reward" || battlePaused || !nodes.rewardPanel.classList.contains("is-hidden") || !nodes.resultPanel.classList.contains("is-hidden")) return;
     pauseFocusOwner = focusOwner?.isConnected ? focusOwner : nodes.pauseBtn;
     battlePaused = true;
+    pauseMotion("pause", true);
     suspendTurnTransition();
     setBattleCovered(true);
     (__wpNotifyMeasurement(), nodes.pausePanel.classList.remove("is-hidden"));
@@ -2206,28 +2301,23 @@
     return window.WeightPlayWallet?.spendDiamonds?.(cost) || false;
   }
 
+
   function applyLocale() {
     document.documentElement.lang = locale;
-    document.title = `${t("title")} - WeightPlay`;
-    const chineseDescription = "指揮獅王、貓頭鷹與烏龜完成 30 個回合制戰棋任務，破解符文地形、特殊敵人與六位階段首領，並保存本機成長。";
-    const description = locale === "zh-Hans"
-      ? window.WonderI18n?.simplifyChineseText?.(chineseDescription) || chineseDescription
-      : locale === "zh-Hant"
-        ? chineseDescription
-        : locale === "es"
-          ? "Dirige a tres héroes animales en 30 misiones rúnicas con terreno, enemigos especiales, seis jefes por fases y mejoras permanentes."
-          : locale === "pt-BR"
-            ? "Comande três heróis animais em 30 missões rúnicas com terrenos, inimigos especiais, seis chefes em fases e melhorias permanentes."
-            : "Command three animal heroes through 30 authored rune-grid missions with terrain rules, special enemies, six phased Bosses, permanent upgrades, and local progress.";
+    const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[GAME_ID]?.[locale] || t("title");
+    document.title = `${officialTitle} | WeightPlay`;
+    const description = runeGuideCopy[locale].metaDescription;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+
     document.querySelector('meta[name="description"]')?.setAttribute("content", description);
-    document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${officialTitle} | WeightPlay`);
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
-    document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", `${officialTitle} | WeightPlay`);
     document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", description);
     nodes.backBtn.setAttribute("aria-label", t("backToLobby"));
     if (nodes.battleBackBtn) nodes.battleBackBtn.setAttribute("aria-label", t("backToMenu"));
     document.querySelectorAll("[data-ui]").forEach((node) => {
-      node.textContent = t(node.dataset.ui);
+      node.textContent = node.hasAttribute("data-wp-game-title") ? officialTitle : t(node.dataset.ui);
     });
     nodes.localeSelect.value = locale;
     nodes.localeSelect.setAttribute("aria-label", t("language"));
@@ -2235,6 +2325,8 @@
     nodes.grid.setAttribute("aria-label", t("boardLabel"));
     document.querySelector(".battle-secondary")?.setAttribute("aria-label", t("battleDetails"));
     if (nodes.mainStartBtn) nodes.mainStartBtn.textContent = t("startGame");
+    if (nodes.mainProgress) nodes.mainProgress.textContent = `${t("mission")} ${profile.unlockedMission} / ${MISSION_COUNT}`;
+    screenFrame?.refresh();
     if (nodes.stagePanel) {
       nodes.stagePanel.querySelector("strong").textContent = t("missionSelect");
       nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
@@ -2247,7 +2339,7 @@
 
   function localizeStrategyTips() {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
-    const tips = text[sourceLocale]?.strategyTips || text.en.strategyTips;
+    const tips = runeGuideCopy[locale].strategyTips;
     document.querySelectorAll(".game-info-strategy li").forEach((item, index) => {
       if (tips[index]) item.textContent = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(tips[index]) || tips[index] : tips[index];
     });
@@ -2291,6 +2383,7 @@
 
   function suspendAppLifecycle() {
     (__wpNotifyMeasurement(), lifecycleSuspended = true);
+    pauseMotion("lifecycle", true);
     suspendTurnTransition();
     suspendRewardSettlement();
     suspendTrainingIntent();
@@ -2299,6 +2392,7 @@
   function resumeAppLifecycle() {
     if (document.hidden || !document.hasFocus()) return;
     (__wpNotifyMeasurement(), lifecycleSuspended = false);
+    pauseMotion("lifecycle", false);
     resumeTurnTransition();
     resumeRewardSettlement();
     resumeTrainingIntent();
@@ -2307,6 +2401,7 @@
   function resumeAppLifecycleFromTrustedInput(event) {
     if (!event.isTrusted || document.hidden || !lifecycleSuspended) return;
     (__wpNotifyMeasurement(), lifecycleSuspended = false);
+    pauseMotion("lifecycle", false);
     resumeTurnTransition();
     resumeRewardSettlement();
     resumeTrainingIntent();
@@ -2366,6 +2461,8 @@
   }
 
   function missionLocaleCopy(mission) {
+    const native = runeMissionCopy[locale]?.[mission.id - 1];
+    if (native) return native;
     const nameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : locale === "pt-BR" ? mission.namePt : locale === "ar" ? mission.nameAr : mission.nameEn;
     const tacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : locale === "pt-BR" ? mission.tacticPt : locale === "ar" ? mission.tacticAr : mission.tacticEn;
     return {
@@ -2490,7 +2587,7 @@
         const from = dragLogical, index = Math.max(0, Math.min(MISSION_COUNT - 1, Math.round(from))), started = performance.now();
         centeredMission = index + 1; syncMissionCards(); positionMissionRail(from); rail.dataset.wpStageSettling = "true";
         const settle = (now) => {
-          const progress = Math.max(0, Math.min(1, (now - started) / 340)), eased = progress * progress * (3 - 2 * progress);
+          const progress = reducedMotion.matches ? 1 : Math.max(0, Math.min(1, (now - started) / 340)), eased = progress * progress * (3 - 2 * progress);
           positionMissionRail(from + (index - from) * eased);
           if (progress < 1 && document.body.dataset.screen === "stage") stageSettleFrame = requestAnimationFrame(settle);
           else { stageSettleFrame = 0; if (document.body.dataset.screen === "stage") { positionMissionRail(index); syncMissionCards(); renderMissionBriefing(); } restore(); }
@@ -2512,6 +2609,7 @@
   }
 
   function renderMenu(focusHeroId = null) {
+    if (nodes.mainProgress) nodes.mainProgress.textContent = `${t("mission")} ${profile.unlockedMission} / ${MISSION_COUNT}`;
     nodes.profileLevel.textContent = profile.level;
     nodes.profileXp.textContent = `${profile.xp}/100`;
     nodes.profileBest.textContent = profile.bestMission;
@@ -2549,10 +2647,7 @@
   function renderMissionBriefing() {
     if (!nodes.missionBriefing) return;
     const mission = missionDefs.find((item) => item.id === centeredMission) || missionDefs[0];
-    const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : locale === "pt-BR" ? mission.namePt : locale === "ar" ? mission.nameAr : mission.nameEn;
-    const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : locale === "pt-BR" ? mission.tacticPt : locale === "ar" ? mission.tacticAr : mission.tacticEn;
-    const missionName = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionNameSource) || missionNameSource : missionNameSource;
-    const missionTactic = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionTacticSource) || missionTacticSource : missionTacticSource;
+    const {name: missionName, tactic: missionTactic} = missionLocaleCopy(mission);
     const enemies = mission.enemies.map((id) => {
       const enemy = enemyDefs.find((item) => item.id === id) || enemyDefs[0];
       return `<span class="mission-briefing__enemy"><img src="${asset(enemy.img)}" alt="" /><b>${t(enemy.name)}</b><small>${t(`${enemy.trait}Short`)}</small></span>`;
@@ -2692,7 +2787,7 @@
     nodes.missionGrid.addEventListener("wonder:stage-snap", (event) => {
       setCenteredMission(Number(event.detail?.index) + 1);
     });
-    const stageTabs = [...stagePanel.querySelectorAll("[data-rune-stage-tab]")];
+    const stageTabs = ["heroes", "missions", "training"].map(key => stagePanel.querySelector(`[data-rune-stage-tab="${key}"]`));
     const activateStageTab = (button, { focus = false } = {}) => {
       const tab = button.dataset.runeStageTab;
       if (tab !== "training") resetTrainingIntent();
@@ -2707,6 +2802,8 @@
         view.classList.toggle("is-active", active);
         view.hidden = !active;
       });
+      clearMotion("ui");
+      enterPanel(stagePanel.querySelector(`[data-rune-stage-view="${tab}"]`));
       if (focus) button.focus({ preventScroll: true });
     };
     stageTabs.forEach((button) => button.addEventListener("click", () => activateStageTab(button)));
@@ -2726,6 +2823,54 @@
       event.preventDefault();
       activateStageTab(stageTabs[next], { focus: true });
     });
+  }
+
+  let screenFrame = null;
+  function installSharedFrame() {
+    const root = document.querySelector(".rune-app");
+    root.setAttribute("data-wp-frame-root", "");
+    const oldHeader = root.querySelector(".topbar");
+    nodes.localeSelect.replaceChildren(...["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"].map(key => { const option = document.createElement("option"); option.value = key; option.textContent = ({en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"})[key]; return option; }));
+    const title = oldHeader.querySelector("[data-wp-game-title]");
+    title.setAttribute("data-wp-frame-title", "");
+    const mainHeader = document.createElement("header");
+    mainHeader.append(nodes.backBtn, title);
+    const mainContent = document.createElement("div");
+    mainContent.append(...nodes.menuPanel.childNodes);
+    nodes.menuPanel.append(mainHeader, mainContent);
+    mainContent.querySelector(".cover")?.setAttribute("data-wp-frame-poster", "");
+    const copy = mainContent.querySelector(".menu-copy");
+    copy?.setAttribute("data-wp-frame-copy", "");
+    copy?.querySelector('[data-ui="menuHint"]')?.setAttribute("data-wp-frame-summary", "");
+    copy?.querySelector('[data-ui="menuTitle"]')?.setAttribute("hidden", "");
+    const progress = document.createElement("p"); progress.dataset.wpFrameProgress = "";
+    nodes.mainProgress = progress;
+    nodes.mainStartBtn.before(progress);
+    nodes.mainStartBtn.dataset.wpFrameAction = "primary";
+    const retained = document.createElement("div"); retained.hidden = true;
+    retained.append(nodes.localeSelect, nodes.pauseBtn); root.append(retained); oldHeader.remove();
+    // Battle owns its overlay layer; covering gameplay never makes its dialogs inert.
+    const battleRoot = document.createElement("section"); battleRoot.id = "runeBattleScene";
+    battleRoot.className = "is-hidden";
+    nodes.gamePanel.before(battleRoot);
+    const battleHeader = document.createElement("header");
+    const battleTitle = document.createElement("strong"); battleTitle.dataset.wpFrameTitle = "";
+    battleHeader.append(nodes.battleBackBtn, battleTitle);
+    battleRoot.append(battleHeader, nodes.gamePanel, nodes.pausePanel, nodes.rewardPanel, nodes.resultPanel);
+    nodes.battleScene = battleRoot;
+    const stageHeader = nodes.stagePanel.querySelector("header");
+    stageHeader.querySelector("strong").dataset.wpFrameTitle = "";
+    const nav = nodes.stagePanel.querySelector(".rune-stage-tabs");
+    nav.dataset.wpFrameStageNav = "";
+    nav.append(...["heroes", "missions", "training"].map(key => nav.querySelector(`[data-rune-stage-tab="${key}"]`)));
+    nav.querySelectorAll("button").forEach(button => { button.dataset.wpFrameAction = "tab"; });
+    nodes.stagePanel.style.setProperty("--wp-stage-art", `url("${asset("animal-rune-tactics-cover.webp")}")`);
+    nodes.stagePanel.classList.add("wp-stage-art-shell");
+    screenFrame = window.WeightPlayScreenFrame.mount({ root, localeSelect: nodes.localeSelect, scenes: {
+      main: { root: nodes.menuPanel, header: mainHeader, content: mainContent },
+      stage: { root: nodes.stagePanel, header: stageHeader, content: nodes.stagePanel.querySelector(".rune-stage-workspace") },
+      battle: { root: battleRoot, header: battleHeader, content: nodes.gamePanel },
+    } });
   }
 
   let sceneGeneration = 0;
@@ -2780,6 +2925,9 @@
   }
 
   function setScene(scene) {
+    clearMotion();
+    resetMovementAnimationTracking();
+    pauseMotion("pause", false);
     if (scene !== "stage") cancelStageRailInteraction();
     const generation = ++sceneGeneration;
     const main = scene === "main";
@@ -2796,6 +2944,9 @@
     nodes.menuPanel.classList.toggle("is-hidden", !main);
     nodes.stagePanel.classList.toggle("is-hidden", !stage);
     nodes.gamePanel.classList.toggle("is-hidden", !battle);
+    nodes.battleScene?.classList.toggle("is-hidden", !battle);
+    screenFrame?.activate(scene);
+    enterPanel(main ? nodes.menuPanel.querySelector("[data-wp-frame-copy]") : stage ? nodes.stagePanel.querySelector(".rune-stage-workspace") : nodes.gamePanel);
     nodes.backBtn.hidden = !main;
     nodes.battleBackBtn.hidden = !battle;
     window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -2985,6 +3136,7 @@
     nodes.missionText.textContent = state.mission;
     nodes.turnText.textContent = `${state.turn} / ${state.missionDef.par} ★`;
     nodes.enemyCountText.textContent = `${livingEnemies().length}/${state.enemies.length}`;
+    clearMotion("feedback");
     nodes.grid.innerHTML = "";
     const movable = validMoves();
     const attackable = validTargets();
@@ -3021,6 +3173,12 @@
             tile.setAttribute("aria-pressed", String(state.selected === unit.id));
           } else {
             tile.setAttribute("aria-label", t("enemyTileLabel", { enemy: t(unit.name), hp: unit.hp, maxHp: unit.maxHp, row: y + 1, column: x + 1 }));
+            if (attackable.includes(unit) && selectedHero()) {
+              const value = damagePreview(selectedHero(), unit).damage;
+              const preview = document.createElement("span"); preview.className = "damage-preview";
+              preview.textContent = String(value); preview.setAttribute("aria-hidden", "true"); tile.append(preview);
+              tile.setAttribute("aria-label", `${tile.getAttribute("aria-label")}. ${t("actionTarget", { action: t("attack"), value, target: t(unit.name) })}`);
+            }
           }
         } else if (movable.some((p) => p.x === x && p.y === y)) {
           tile.setAttribute("aria-label", t("moveTileLabel", { row: y + 1, column: x + 1 }));
@@ -3071,6 +3229,8 @@
     const wrap = document.createElement("div");
     wrap.className = unit.team === "enemy" ? "enemy" : `hero ${state?.acted?.has(unit.id) ? "has-acted" : state?.moved?.has(unit.id) ? "is-positioned" : "is-ready"}`;
     wrap.dataset.unitKey = unitRenderKey(unit);
+    wrap.dataset.hp = String(unit.hp);
+    wrap.dataset.maxHp = String(unit.maxHp);
     if (unit.bossKit) wrap.classList.add("is-boss");
     const img = document.createElement("img");
     img.className = "unit";
@@ -3157,6 +3317,7 @@
     nodes.turnRoster.innerHTML = `<strong class="turn-roster-title">${t("turnRosterTitle")}</strong><div>${items}</div>`;
     nodes.turnRoster.querySelectorAll("[data-roster-hero]").forEach((button) => {
       button.addEventListener("click", () => {
+        if (!state || state.phase !== "player" || movementAnimationActive || battlePaused) return;
         state.selected = button.dataset.rosterHero;
         render();
       });
@@ -3172,11 +3333,11 @@
     const skillTarget = hero && hero.id !== "turtle" ? skillTargets().sort((a,b) => distance(hero,a)-distance(hero,b))[0] : null;
     const attackBonus = attackTarget ? chainBonusFor(attackTarget) : 0;
     const skillBonus = skillTarget ? chainBonusFor(skillTarget) : 0;
-    nodes.attackBtn.textContent = hero ? t("attackValue", { value: hero.atk + attackBonus + (attackTarget ? flankBonusFor(hero, attackTarget) : 0) }) : t("attack");
+    nodes.attackBtn.textContent = hero && attackTarget ? t("attackValue", { value: damagePreview(hero, attackTarget).damage }) : t("attack");
     nodes.guardBtn.textContent = hero ? t("guardValue") : t("guard");
-    nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : hero.atk + 2 + skillBonus }) : t("skill");
+    nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : (skillTarget ? damagePreview(hero, skillTarget, true).damage : hero.atk + 2) }) : t("skill");
     nodes.attackBtn.setAttribute("aria-label", attackTarget
-      ? t("actionTarget", { action: t("attack"), value: hero.atk + attackBonus + (attackTarget ? flankBonusFor(hero, attackTarget) : 0), target: t(attackTarget.name) })
+      ? t("actionTarget", { action: t("attack"), value: damagePreview(hero, attackTarget).damage, target: t(attackTarget.name) })
       : attackUnavailable
         ? `${t("attack")}. ${t("attackRangeHint")}`
         : t("attack"));
@@ -3186,7 +3347,7 @@
       const skillResult = hero.id === "turtle"
         ? t("skillSquadResult", { skill: t(hero.skillName) })
         : skillTarget
-          ? t("actionTarget", { action: t(hero.skillName), value: hero.atk + 2 + skillBonus, target: t(skillTarget.name) })
+          ? t("actionTarget", { action: t(hero.skillName), value: (skillTarget ? damagePreview(hero, skillTarget, true).damage : hero.atk + 2), target: t(skillTarget.name) })
           : t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
       const energyResult = hero.energy > 0
         ? t("skillEnergyChange", { energy: hero.energy, remaining: hero.energy - 1 })
@@ -3276,7 +3437,7 @@
   }
 
   function onTile(x, y) {
-    if (!state || state.phase !== "player" || movementAnimationActive) return;
+    if (!state || state.phase !== "player" || movementAnimationActive || battlePaused || lifecycleSuspended) return;
     const unit = unitAt(x, y);
     if (unit?.team === "hero" && state.phase === "player") {
       state.selected = unit.id;
@@ -3308,22 +3469,24 @@
     return Math.min(2, state.chainCount);
   }
 
-  function attack(hero, enemy, isSkill) {
+  function damagePreview(hero, enemy, isSkill = false) {
     const chainBonus = chainBonusFor(enemy);
-    let damage = hero.atk + (isSkill ? 2 : 0) + chainBonus + flankBonusFor(hero, enemy);
     const blockedByStoneHide = (enemy.id === "stag" || enemy.id === "rhinoBoss") && enemy.armorReady;
-    const blockedByAllyGuard = enemy.allyGuard;
+    const blockedByAllyGuard = Boolean(enemy.allyGuard);
     const blockedByFlight = enemy.id === "griffinBoss" && enemy.flying && (hero.range || 1) > 1;
+    let damage = hero.atk + (isSkill ? 2 : 0) + chainBonus + flankBonusFor(hero, enemy);
+    if (blockedByStoneHide) damage = Math.max(1, damage - 1);
+    if (blockedByAllyGuard) damage = Math.max(0, damage - 2);
+    if (sealWardActive() && damage > 0) damage = Math.max(1, damage - 1);
     if (blockedByFlight) damage = 0;
-    if (blockedByStoneHide) {
-      damage = Math.max(1, damage - 1);
-      enemy.armorReady = false;
-    }
-    if (blockedByAllyGuard) {
-      damage = Math.max(0, damage - 2);
-      enemy.allyGuard = false;
-    }
-    if (sealWardActive()) damage = Math.max(1, damage - 1);
+    return { damage, chainBonus, blockedByStoneHide, blockedByAllyGuard, blockedByFlight };
+  }
+
+  function attack(hero, enemy, isSkill) {
+    const { damage, chainBonus, blockedByStoneHide } = damagePreview(hero, enemy, isSkill);
+    if (blockedByStoneHide) enemy.armorReady = false;
+    if (enemy.allyGuard) enemy.allyGuard = false;
+
     enemy.hp -= damage;
     enemy.hitsThisTurn = (enemy.hitsThisTurn || 0) + 1;
     const enemyKey = enemy.uid || enemy.id;
@@ -3367,6 +3530,7 @@
       });
     }
     render();
+    animateAttack(hero, enemy, isSkill);
     checkEnd();
   }
 
@@ -3420,7 +3584,7 @@
   }
 
   function endTurn() {
-    if (!state || state.phase !== "player") return;
+    if (!state || state.phase !== "player" || movementAnimationActive || battlePaused || lifecycleSuspended) return;
     clearTurnTransition();
     livingHeroes().forEach((hero) => { hero.silenced = false; });
     state.phase = "enemy";
@@ -3463,6 +3627,10 @@
     target.hp = Math.max(0, target.hp - damage);
     playFx("attack-hit", target.x, target.y, { value: -damage });
     playCue("feedback.error");
+    const generation = sceneGeneration;
+    requestAnimationFrame(() => {
+      if (generation === sceneGeneration && document.body.dataset.screen === "battle" && !nodes.gamePanel.classList.contains("is-hidden")) animateAttack(enemy, target, Boolean(enemy.bossKit));
+    });
     tryAutoRevive(target);
     if (key) log(key, { enemy: t(enemy.name), hero: t(target.name) });
     return damage;
@@ -3825,6 +3993,7 @@
       button.classList.toggle("secondary-btn", button !== primaryResultAction);
     });
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("is-hidden"));
+    enterPanel(nodes.resultPanel.querySelector(".overlay-card"));
     renderMenu();
     requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
 
@@ -3843,7 +4012,7 @@
     const beam=document.createElement("i");beam.className="rune-chain-link";
     Object.assign(beam.style,{left:`${nodes.grid.offsetLeft+a.offsetLeft+a.offsetWidth/2}px`,top:`${nodes.grid.offsetTop+a.offsetTop+a.offsetHeight/2}px`,width:`${Math.hypot(dx,dy)}px`,transform:`rotate(${Math.atan2(dy,dx)}rad)`});
     nodes.fxLayer.append(beam);
-    beam.addEventListener("animationend",()=>beam.remove(),{once:true});
+    ownCssEffect(beam);
   }
 
   function playFx(name, x, y, options = {}) {
@@ -3857,7 +4026,7 @@
     fx.style.left = left;
     fx.style.top = top;
     nodes.fxLayer.appendChild(fx);
-    setTimeout(() => fx.remove(), 620);
+    ownCssEffect(fx);
     if (Number.isFinite(options.value) && options.value !== 0) {
       const value = document.createElement("span");
       value.className = `fx-value ${options.value > 0 ? "is-positive" : "is-damage"}${options.chain ? " is-chain" : ""}`;
@@ -3865,7 +4034,7 @@
       value.style.left = left;
       value.style.top = top;
       nodes.fxLayer.appendChild(value);
-      setTimeout(() => value.remove(), 780);
+      ownCssEffect(value);
     }
   }
 
@@ -3900,6 +4069,15 @@
   function installTestHooks() {
     if (!testMode) return;
     window.__AnimalRuneTacticsTest = {
+      localeEvidence() {
+        const effective = locale === "zh-Hans" ? {...text["zh-Hant"],...text[locale]} : text[locale];
+        return {locale, dictionary: {...effective}, english: {...text.en},
+          missions: missionDefs.map(m => ({id:m.id, ...missionLocaleCopy(m)}))};
+      },
+      damagePreview(index = 0, isSkill = false) { return damagePreview(selectedHero(), state.enemies[index], isSkill); },
+      motionState() { return { count: motionRecords.size, paused: [...motionPauses], states: [...motionRecords].map(r => ({ scope:r.scope, state:r.animation?.playState, time:r.animation?.currentTime })) }; },
+      pauseBattle() { openPause(nodes.battleBackBtn); },
+      resumeBattle() { closePause({ restoreFocus:false }); },
       forceMissionClear() {
         if (!state) startMission(selectedMission);
         state.enemies.forEach((enemy) => {
@@ -4137,6 +4315,7 @@
 
   function boot() {
     installStandardStageFlow();
+    installSharedFrame();
     setScene("main");
     bind();
     installTestHooks();

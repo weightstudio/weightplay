@@ -38,3 +38,158 @@ html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessag
 .wordle-leave-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
 .wordle-leave-actions button{min-height:50px}
 @media(max-width:520px){.wordle-leave-actions{grid-template-columns:1fr}}
+
+/* Interface 7 shared-frame cleanup. The legacy controls remain available as
+   data/state adapters but no longer render as a second visible shell. */
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] :is(
+  #eyebrow,
+  #gameTagline,
+  #audioMenuBtn,
+  #audioPopover,
+  #battleUtilityBtn
+){display:none!important}
+
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #mainScreen .main-panel,
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen .battle-panel{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #startBtn{
+  width:100%!important;
+  height:52px!important;
+  min-height:52px!important;
+  max-height:52px!important;
+  padding:0 16px!important;
+  border-radius:14px!important;
+  font-size:16px!important;
+  line-height:1.2!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+}
+
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen .battle-top,
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen [data-wp-frame-header="battle"]{
+  min-height:48px!important;
+  height:48px!important;
+  max-height:48px!important;
+  gap:8px!important;
+  align-items:center!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleBackBtn{
+  width:48px!important;
+  min-width:48px!important;
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+  padding:0!important;
+}
+
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen .battle-canvas{
+  position:relative;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen .wordle-battle-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  width:100%;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen .wordle-battle-actions .secondary{
+  width:100%;
+  height:44px;
+  min-height:44px;
+  max-height:44px;
+  padding:0 12px;
+  border-radius:14px;
+  font-size:14px;
+  line-height:1.2;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #resultScreen.wordle-result-substate{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  min-height:0;
+  padding:12px;
+  overflow:auto;
+  overscroll-behavior:contain;
+  display:grid;
+  align-items:start;
+  justify-items:stretch;
+  background:rgba(8,17,31,.96);
+}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #resultScreen.wordle-result-substate[hidden]{display:none!important}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #resultScreen.wordle-result-substate .arcade-panel{
+  width:min(100%,700px);
+  min-height:0;
+  margin:auto;
+  align-content:start;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #resultScreen.wordle-result-substate .result-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #resultScreen.wordle-result-substate .result-actions button{
+  width:100%;
+  height:44px;
+  min-height:44px;
+  max-height:44px;
+  padding:0 12px;
+  border-radius:14px;
+  font-size:14px;
+  line-height:1.2;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen .wordle-leave-modal{
+  position:absolute;
+  inset:0;
+  z-index:40;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #battleScreen .wordle-leave-actions button{
+  min-height:44px;
+  height:44px;
+  border-radius:14px;
+  font-size:14px;
+  line-height:1.2;
+  white-space:nowrap;
+}
+
+@media (max-height:650px) and (min-width:700px) {
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-panel{
+    grid-template-rows:48px 34px 44px minmax(0,1fr);
+  }
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"][data-screen="battle"] #battleScreen .board-wrap{
+    grid-column:1;
+    grid-row:1/5;
+  }
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-top{
+    grid-column:2;
+    grid-row:1;
+  }
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessage{
+    grid-column:2;
+    grid-row:2;
+  }
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-battle-actions{
+    grid-column:2;
+    grid-row:3;
+  }
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"][data-screen="battle"] #battleScreen #controls{
+    grid-column:2;
+    grid-row:4;
+    align-self:end;
+  }
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #resultScreen.wordle-result-substate{
+    padding:8px 12px;
+  }
+  html[data-wp-shared-interface="7"] body[data-game-id="wordle"] #resultScreen.wordle-result-substate .arcade-panel{
+    margin-block:0 auto;
+  }
+}

@@ -1,4 +1,4 @@
-/* One complete locale owner for Tide Tally v8. */
+/* One complete locale owner for Tide Tally v9. */
 window.ANIMAL_TIDE_TALLY_LOCALES = {
   "en": {
     "loading": "Counting the tide…",

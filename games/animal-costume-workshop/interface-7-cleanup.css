@@ -1,0 +1,285 @@
+/*
+ * Animal Costume Workshop — Interface 7 source cleanup.
+ * Scoped shared-screen corrections only; gameplay styling remains in index.html.
+ */
+body[data-wp-game-id="animal-costume-workshop"] {
+  --reserve: var(--wp-ad-reserve-height, 0px);
+}
+
+/* Main: keep the shared title, poster, concise summary, progress/options and one Start Game action. */
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen .card.main-grid {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen .eyebrow,
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen h1[data-copy="title"],
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen .facts,
+body[data-wp-game-id="animal-costume-workshop"] #guideButton {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen .main-grid > div:last-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen .lede {
+  order: 1;
+  margin-top: 0;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #mainProgress {
+  order: 2;
+  min-height: 40px;
+  margin-top: 12px;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen .mode-picker {
+  order: 3;
+  margin-top: 8px;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #mainScreen .actions:not(.mode-picker) {
+  order: 4;
+  display: block;
+  margin-top: 12px;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #startButton {
+  display: grid;
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  place-items: center;
+  padding: 0 16px;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] .guide-card {
+  border-radius: var(--wp-ui-radius, 16px);
+}
+
+@media (max-width: 699px) {
+  body[data-wp-game-id="animal-costume-workshop"] #mainScreen .poster {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-costume-workshop"] #mainScreen .main-grid {
+    grid-template-columns: 420px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  body[data-wp-game-id="animal-costume-workshop"] #mainScreen .main-grid > .poster {
+    width: 420px;
+    min-width: 420px;
+    max-width: 420px;
+    height: 420px;
+  }
+}
+
+/* Battle: one full-height Canvas, 48px title-free top track, permanent left return. */
+body[data-wp-game-id="animal-costume-workshop"] #battleScreen.active {
+  width: min(100vw, 920px);
+  height: calc(100dvh - var(--wp-ad-reserve-height, 0px));
+  padding: 12px;
+  overflow: hidden;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #battleScreen.active > .card {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  grid-template-rows: 48px auto minmax(0, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #battleScreen .battle-head {
+  grid-row: 1;
+  display: grid;
+  min-height: 48px;
+  max-height: 48px;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 8px;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #battleScreen .battle-head > div {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #battleBack {
+  grid-column: 1;
+  grid-row: 1;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #battleTitle {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #roundLabel {
+  margin: 0;
+  overflow: hidden;
+  color: var(--wp-ui-muted, #cbd5e1);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #brief.battle-brief {
+  grid-row: 2;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--wp-ui-border, rgba(255,255,255,.16));
+  border-radius: 14px;
+  background: var(--wp-ui-surface, rgba(15,29,49,.92));
+  color: var(--wp-ui-text, #f8fafc);
+  line-height: 1.35;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #battleScreen .workspace {
+  grid-row: 3;
+  min-height: 0;
+  margin: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] .battle-ad-reserve {
+  height: var(--wp-ad-reserve-height, 0px);
+  border: 0;
+  background: transparent;
+}
+
+/* Result remains a Battle substate and blocks the covered play layer. */
+body[data-wp-game-id="animal-costume-workshop"] #resultCard:not([hidden]) {
+  position: absolute;
+  z-index: 6;
+  inset: 56px 0 0;
+  margin: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: 16px;
+  background: var(--wp-ui-surface, rgba(15,29,49,.98));
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #resultCard .actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] #resultCard .actions > button {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Battle-owned leave confirmation. */
+body[data-wp-game-id="animal-costume-workshop"] .costume-leave-dialog[hidden] {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] .costume-leave-dialog {
+  position: absolute;
+  z-index: 12;
+  inset: 56px 0 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(4, 12, 24, .78);
+}
+
+body[data-wp-game-id="animal-costume-workshop"] .costume-leave-card {
+  display: grid;
+  width: min(100%, 420px);
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--wp-ui-border, rgba(255,255,255,.16));
+  border-radius: 16px;
+  background: var(--wp-ui-surface, rgba(15,29,49,.98));
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+
+body[data-wp-game-id="animal-costume-workshop"] .costume-leave-card h2,
+body[data-wp-game-id="animal-costume-workshop"] .costume-leave-card p {
+  margin: 0;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] .costume-leave-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+body[data-wp-game-id="animal-costume-workshop"] .costume-leave-actions button {
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+@media (min-width: 700px) {
+  body[data-wp-game-id="animal-costume-workshop"] #battleScreen.active {
+    padding: 16px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  body[data-wp-game-id="animal-costume-workshop"] #battleScreen.active {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  body[data-wp-game-id="animal-costume-workshop"] #resultCard:not([hidden]),
+  body[data-wp-game-id="animal-costume-workshop"] .costume-leave-dialog {
+    inset: 56px 0 0;
+  }
+}

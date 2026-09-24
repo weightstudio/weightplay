@@ -1,0 +1,264 @@
+/* Animal Cratebound — Interface 7 scoped compatibility cleanup.
+   Shared frame / Stage selector / Battle Canvas remain the component owners. */
+body[data-wp-game-id="animal-cratebound"]{
+  --wp-cratebound-play-top:48px;
+  --wp-cratebound-stage-nav:56px;
+}
+
+/* Main: remove the legacy card-within-card chrome and duplicate title/kicker. */
+body[data-wp-game-id="animal-cratebound"] #mainScreen .main-header{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+body[data-wp-game-id="animal-cratebound"] #mainScreen .main-header>.locale-control{
+  display:none!important;
+}
+body[data-wp-game-id="animal-cratebound"] #mainScreen .hero{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+body[data-wp-game-id="animal-cratebound"] #mainScreen .hero-copy>small,
+body[data-wp-game-id="animal-cratebound"] #mainScreen .hero-copy>h1{
+  display:none!important;
+}
+body[data-wp-game-id="animal-cratebound"] #mainScreen #poster{
+  width:min(100%,420px)!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  object-fit:cover!important;
+  margin-inline:auto!important;
+}
+body[data-wp-game-id="animal-cratebound"] #mainScreen #start{
+  width:100%!important;
+  min-height:52px!important;
+  height:52px!important;
+}
+
+/* Stage: Interface 7 owns a 48px title-free play top, flexible rail, and
+   a separate 56px three-slot navigation track. */
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-canvas{
+  grid-template-rows:var(--wp-cratebound-play-top) minmax(0,1fr) var(--wp-cratebound-stage-nav)!important;
+  gap:0!important;
+  padding:12px!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-header{
+  height:var(--wp-cratebound-play-top)!important;
+  min-height:var(--wp-cratebound-play-top)!important;
+  max-height:var(--wp-cratebound-play-top)!important;
+  grid-template-columns:48px minmax(0,1fr) 48px!important;
+  grid-template-rows:48px!important;
+  gap:8px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-header>#stageBack{
+  grid-column:1!important;
+  grid-row:1!important;
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-header>div{
+  grid-column:2!important;
+  grid-row:1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:0!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-header>div>strong,
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-header>.stage-badge{
+  display:none!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen #stageSummary{
+  display:block!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:100%!important;
+  font-size:14px!important;
+  line-height:1.2!important;
+  white-space:nowrap!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-header>.wp-shell-settings,
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-header>.wp-frame-utility{
+  grid-column:3!important;
+  grid-row:1!important;
+  justify-self:end!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen #stageRail{
+  align-self:start!important;
+  position:relative!important;
+  top:max(103px,38%)!important;
+  transform:translateY(-50%)!important;
+  min-height:190px!important;
+  padding-inline:calc(50% - 132px)!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen #stageRail .stage-card{
+  width:264px!important;
+  min-width:264px!important;
+  max-width:264px!important;
+  flex:0 0 264px!important;
+  height:190px!important;
+  min-height:190px!important;
+  max-height:190px!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-footer{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  align-items:center!important;
+  gap:8px!important;
+  height:var(--wp-cratebound-stage-nav)!important;
+  min-height:var(--wp-cratebound-stage-nav)!important;
+  max-height:var(--wp-cratebound-stage-nav)!important;
+  margin:0!important;
+  padding:6px!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-tabs{
+  grid-column:2!important;
+  width:100%!important;
+  display:block!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-tabs button{
+  width:100%!important;
+  min-width:0!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  border-radius:14px!important;
+  padding:0 10px!important;
+  font-size:14px!important;
+  line-height:1.2!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+}
+body[data-wp-game-id="animal-cratebound"] #stageScreen #stageHint{
+  display:none!important;
+}
+
+/* Battle: keep only action-relevant HUD/utilities in a protected 48px track. */
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-canvas{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-live{
+  grid-template-rows:var(--wp-cratebound-play-top) 36px minmax(0,1fr) auto!important;
+  gap:8px!important;
+  padding:12px!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-header{
+  height:var(--wp-cratebound-play-top)!important;
+  min-height:var(--wp-cratebound-play-top)!important;
+  max-height:var(--wp-cratebound-play-top)!important;
+  grid-template-columns:48px minmax(0,1fr) minmax(118px,1.4fr) 44px 48px!important;
+  grid-template-rows:48px!important;
+  gap:4px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen #battleBack{
+  grid-column:1!important;
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-title{
+  grid-column:2!important;
+  min-width:0!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-title small{
+  font-size:11px!important;
+  line-height:1.1!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-title strong{
+  font-size:14px!important;
+  line-height:1.1!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-stats{
+  grid-column:3!important;
+  min-width:0!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-stats span{
+  min-width:0!important;
+  padding:0!important;
+  background:transparent!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-stats b{
+  font-size:9px!important;
+  line-height:1.05!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-stats strong{
+  font-size:12px!important;
+  line-height:1.1!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen #battleHelp{
+  grid-column:4!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  font-size:20px!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-header>.wp-shell-settings,
+body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-header>.wp-frame-utility{
+  grid-column:5!important;
+  grid-row:1!important;
+  justify-self:end!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen .ad-reserve{
+  border:0!important;
+  background:transparent!important;
+}
+
+@media(min-width:700px){
+  body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-canvas,
+  body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-live{
+    padding:16px!important;
+  }
+}
+
+@media(max-width:520px){
+  body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-header{
+    grid-template-columns:48px minmax(0,1fr) 112px 44px 48px!important;
+  }
+  body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-title strong{
+    display:none!important;
+  }
+}
+
+@media(max-height:500px) and (min-aspect-ratio:3/2){
+  body[data-wp-game-id="animal-cratebound"] #mainScreen.main-canvas{
+    min-height:100dvh!important;
+  }
+  body[data-wp-game-id="animal-cratebound"] #stageScreen .stage-canvas{
+    grid-template-rows:48px minmax(0,1fr) 56px!important;
+  }
+  body[data-wp-game-id="animal-cratebound"] #stageScreen #stageRail{
+    top:max(103px,38%)!important;
+  }
+  body[data-wp-game-id="animal-cratebound"] #stageScreen #stageRail .stage-card{
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+  }
+  body[data-wp-game-id="animal-cratebound"] #battleScreen .battle-live{
+    grid-template-rows:48px 30px minmax(0,1fr)!important;
+  }
+}

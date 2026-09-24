@@ -1,0 +1,158 @@
+/* Beast Guardian — Interface 7 source cleanup.
+   This file only removes game-local shell geometry that competes with the
+   shared frame/Stage/Battle owners. Gameplay rules and data remain in game.js. */
+
+body[data-wp-game-id="beast-tactician"] {
+  --beast-interface7-stage-top: 48px;
+  --beast-interface7-stage-nav: 56px;
+}
+
+/* Main: the shared frame owns the outer surface and title. Keep only the
+   poster, concise summary/progress and one Start Game action in game content. */
+body[data-wp-game-id="beast-tactician"]:not(.guardian-playing):not(.guardian-stage) #menuPanel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-wp-game-id="beast-tactician"] #releaseBadge,
+body[data-wp-game-id="beast-tactician"] [data-wp-frame-content="main"] #menuTitle {
+  display: none !important;
+}
+
+body[data-wp-game-id="beast-tactician"] #startBtn {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+}
+
+/* Stage: after mountSlots(), Interface 7 owns the permanent 48px header and
+   56px navigation track. The old header becomes content context; retire its
+   generic Stages title and the duplicate Best Stage strip. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage #stagePanel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  background-color: #17243a !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage .wp-frame-stage-context #stageTitle,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage #stagePage > .stage-progress {
+  display: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage .wp-frame-stage-context {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+/* mountSlots intentionally removes inert placeholder DOM. Place the two real
+   controls explicitly so the absent Team slot remains empty instead of
+   shifting Stages left. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage #stageTabs {
+  box-sizing: border-box !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage #stageTabBtn {
+  grid-column: 2 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage #equipmentTabBtn {
+  grid-column: 3 !important;
+}
+
+/* The shared Stage selector owns 264×190 cards, drag/snap and the nine-card
+   bounded pool. Remove local sizing pressure without creating a second rail. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage #stagePage,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage #stageRail {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* Battle: the shared frame supplies the only 48px play-top. The legacy HUD is
+   gameplay information below that header, not a second title bar. Keep all
+   useful Stage/Core/Coins/Wave/Intel/Speed data while removing its old Back
+   column assumptions and fixed 96px header ownership. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-playing #gamePanel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-playing #gamePanel .wp-frame-play-content > .hud-row {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) 44px !important;
+  grid-template-rows: 44px 34px !important;
+  gap: 4px !important;
+  padding: 4px 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-playing #gamePanel .wp-frame-play-content > .hud-row > div:first-of-type {
+  grid-column: 1 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-playing #gamePanel .wp-frame-play-content > .hud-row > div:not(.wave-intel-panel) {
+  grid-row: 1 !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-playing #gamePanel .wp-frame-play-content > .hud-row > #speedBtn {
+  grid-column: 5 !important;
+  grid-row: 1 !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+}
+
+html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-playing #gamePanel .wp-frame-play-content > .hud-row > .wave-intel-panel {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  min-height: 30px !important;
+  height: 30px !important;
+  padding: 3px 8px !important;
+}
+
+/* Result already lives inside Battle. Preserve the stable three-slot recovery
+   geometry even when Next Stage is unavailable; game.js keeps it present and
+   disabled on fail/final stage. */
+body[data-wp-game-id="beast-tactician"] #resultPanel .result-nav-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+body[data-wp-game-id="beast-tactician"] #resultMenuBtn { grid-column: 1 !important; }
+body[data-wp-game-id="beast-tactician"] #nextStageBtn { grid-column: 2 !important; }
+body[data-wp-game-id="beast-tactician"] #retryBtn { grid-column: 3 !important; }
+
+/* bannerAds:false: no local strip, border or minimum track may survive. */
+html[data-wp-banner-ads="false"] body[data-wp-game-id="beast-tactician"] .battle-ad-reserve {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}

@@ -11,6 +11,30 @@
   $('mainGroup').style.minHeight = '0';
   const stage = root.querySelector('.stage-canvas'), battle = $('battleLive');
   const select = $('localeSelect');
+  // Keep runtime locale switching aligned with the exact public titles registered
+  // for this game. SEO comparison prose must not invent transliterated aliases.
+  const exactTitleReplacements = {
+    ja: ['アローエスケープ', 'アロー・エスケープ'],
+    ko: ['애로우 이스케이프', '화살표 탈출'],
+    fr: ['Arrow Escape', 'Évasion des flèches'],
+    de: ['Arrow Escape', 'Pfeilflucht'],
+    it: ['Fuga delle Frecce', 'Fuga delle frecce'],
+    hi: ['एरो एस्केप', 'तीरों से बचाव'],
+  };
+  const normalizeExactOwnedTitle = () => {
+    const locale = select.value || document.documentElement.lang;
+    const replacement = exactTitleReplacements[locale];
+    if (!replacement) return;
+    const [alias, exact] = replacement;
+    document.querySelectorAll('[data-arrow-compare="body"], [data-arrow-compare="disclaimer"]').forEach(node => {
+      if (node.textContent.includes(alias)) node.textContent = node.textContent.split(alias).join(exact);
+    });
+    [document.querySelector('.poster'), document.querySelector('#resultModal img')].forEach(img => {
+      if (img?.alt?.includes(alias)) img.alt = img.alt.split(alias).join(exact);
+    });
+  };
+  select.addEventListener('change', () => queueMicrotask(normalizeExactOwnedTitle));
+  queueMicrotask(normalizeExactOwnedTitle);
   // Retain IDs used by the original sound state handler without displaying
   // a second preferences UI. The shared sound component uses WeightPlayAudio.
   select.hidden = true;

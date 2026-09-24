@@ -123,8 +123,6 @@
   function showScreen(screen) {
     state.screen = screen;
     document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
-    // Stage and Battle are fixed canvases; clear the document flow offset that
-    // a focused Main action can leave behind when the Main tree is hidden.
     window.scrollTo(0, 0);
   }
   function renderStage() {
@@ -223,4 +221,26 @@
 
   applyCopy();
   window.setTimeout(() => { $("loading-screen").hidden = true; showScreen("main"); }, 120);
+
+  const installInterfaceSevenRuntime = () => {
+    if (document.querySelector('link[href*="interface-7-cleanup.css"]')) return;
+    const stage = $("stageScreen");
+    const battle = $("battleScreen");
+    stage?.setAttribute("data-wp-logical-stage-canvas", "");
+    stage?.setAttribute("data-wp-canvas-max-width", "920");
+    battle?.setAttribute("data-wp-logical-battle-canvas", "");
+    battle?.setAttribute("data-wp-canvas-max-width", "920");
+    const markup = [
+      '<link rel="stylesheet" href="/src/stage-selector-standard.css" data-wp-stage-standard>',
+      '<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">',
+      '<link rel="stylesheet" href="/games/animal-ring-garden/interface-7-cleanup.css?v=20260923-ring-i7-cleanup2">',
+      '<script src="/src/stage-selector-standard.js" data-wp-stage-standard></script>',
+      '<script src="/src/battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1" data-wp-battle-standard></script>',
+      '<script src="/games/animal-ring-garden/interface-7-compat.js?v=20260923-ring-i7-cleanup2"></script>',
+      '<script src="/games/animal-ring-garden/interface-7-followup.js?v=20260923-ring-i7-cleanup2"></script>',
+      '<script src="/src/game-screen-frame.js?v=20260921-interface7-single-frame-v2&wp-audio=1.0.0"></script>',
+    ].join("");
+    if (document.readyState === "loading") document.write(markup);
+  };
+  installInterfaceSevenRuntime();
 })();

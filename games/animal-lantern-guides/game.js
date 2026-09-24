@@ -122,6 +122,7 @@
     $("guideChoices").setAttribute("aria-labelledby", "guideHeading");
     $("guideChoices").setAttribute("aria-describedby", "guideTask guideRule");
     setText("bestLine", text("bestMenu", { n: best, total: STAGES.length }));
+    window.applyLanternGuidesMarketComparison?.(locale);
     if (!screens.stage.hidden) renderStage();
     if (!screens.battle.hidden) renderBattle();
     if (!screens.result.hidden) renderResult();

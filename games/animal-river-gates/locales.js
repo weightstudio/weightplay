@@ -54,5 +54,44 @@
     arc: "الفصل {arc} · {name}", stageDemand: "توصيل الحديقة أ {a} · الحديقة ب {b}", stageReserve: "احتفظ في الخزان ≥ {value} · الهدر ≤ {waste}",
     solved: "مكتملة", locked: "مقفلة", open: "متاحة"
   });
+
+  Object.assign(locales.ar, {
+    title: "حراس بوابات النهر", loading: "يستيقظ النهر…", kicker: "لغز تدفّق هادئ", world: "محطة نهر الصفصاف",
+    intro: "حرّك الماء الظاهر عبر الشبكة، واحمِ الاحتياطي، ولبِّ احتياج كل حديقة.", start: "افتح المرحلة الأولى", choose: "اختر مرحلة", chapter: "دفتر النهر", round: "مرحلة الشبكة",
+    check: "أكّد النقل", reset: "أعد اللوحة", undo: "تراجع عن الحركة الأخيرة", close: "إغلاق", settings: "الإعدادات", sound: "الصوت", language: "اللغة", on: "تشغيل", off: "إيقاف", back: "رجوع", next: "المرحلة التالية",
+    finished: "استقرّ النهر", resultTitle: "نجحت خطة حارس النهر", resultLevel: "استقرّت المرحلة", progress: "المراحل {current} / {total}", best: "أفضل عدد حركات للحملة: {best}",
+    prompt: "اختر قناة ظاهرة، وعاين أثر النقل، ثم أكّده.", wait: "انتظر نبضة مدّ واحدة", waiting: "تقدّم المدّ إلى النبضة {beat}.",
+    correct: "وصل الماء إلى كل حديقة مطلوبة وبقي الاحتياطي آمنًا.", wrong: "النقل مسموح، لكن شروط استقرار النهر لم تكتمل بعد.", impossible: "لا يمكن استقرار اللوحة الحالية: {reason}. تراجع أو أعد البدء.", noUndo: "لا توجد حركة للتراجع عنها.",
+    selected: "{label}؛ {detail}", actionAccessible: "{label}؛ {detail}.", disabledActionAccessible: "{label}. غير متاح: {reason}.",
+    actionPreview: "المعاينة: من {from} إلى {to} · {amount} وحدة", actionReady: "جاهز للتأكيد", disabled: "غير متاح: {reason}",
+    waitDescription: "النبضة {beat} · {phase}", evenTideBeats: "مدّ زوجي", oddTideBeats: "مدّ فردي", anyTideBeat: "أي طور للمدّ", riverGates: "بوابات النهر",
+    settlementGardens: "الحديقة أ {a}/{aDemand}، الحديقة ب {b}/{bDemand}", settlementReserve: "الخزان {current}/{required}", settlementWaste: "الهدر {current}/{maximum}",
+    settlementOrder: "ترتيب التوصيل", settlementHabitat: "الموطن المحمي", settlementWindow: "فاتت نافذة زيارة المشتل", settlementCheckpoint: "شرط نقطة التحقق",
+    source: "مصدر النهر", cistern: "الخزان", gardenA: "الحديقة أ", gardenB: "الحديقة ب", waste: "مصرف الهدر", water: "الماء", demand: "الاحتياج", reserve: "الاحتياطي", tide: "نبضة المدّ",
+    arc: "الفصل {arc} · {name}", checkpoint: "نقطة التحقق", checkpointRule: "نقطة التحقق: {rule}", solved: "مكتملة", locked: "مقفلة", unlock: "أكمل المرحلة السابقة بنفسك لفتح هذه المرحلة.",
+    dry: "المصدر جاف", full: "الوجهة ممتلئة", phase: "القناة تعمل في {phase} فقط", once: "استُخدمت القناة ذات الاستخدام الواحد", prerequisite: "لم يتم التوصيل المطلوب من المنبع بعد", order: "ترتيب التوصيل المعروض غير جاهز", cutoff: "أُغلق المدخل بعد النبضة المحددة", bridge: "الجسر مغلق",
+    repair: "أصلح القناة المسدودة (التكلفة: وحدة واحدة من الخزان)", repairDone: "أعاد فريق الإصلاح فتح القناة.", noRepair: "يتطلب الإصلاح وحدة واحدة مخزنة في الخزان.", overflow: "سينقل الماء الوجهة إلى ما فوق سعتها", capacity: "بلغ المسار سعته القصوى", noTarget: "لا توجد وجهة مفتوحة للقناة",
+    stageDemand: "أوصل إلى أ {a} · ب {b}", stageReserve: "أبقِ في الخزان ≥ {value} · الهدر ≤ {waste}", noMoves: "لم يبقَ أي إجراء قانوني. تراجع أو أعد البدء.", action: "نقل", waitAction: "انتظار", used: "مُستَخدمة", open: "مفتوحة", closed: "مغلقة",
+    actionLabels: {
+      "A after ferry": "التوصيل إلى أ بعد العبّارة", "A crossing": "معبر أ", "A habitat-safe outlet": "مخرج أ الآمن للموطن", "A on even": "إرسال إلى أ في المدّ الزوجي", "A outlet": "مخرج أ", "A second outlet": "المخرج الثاني إلى أ", "A shelter outlet": "مخرج الملجأ إلى أ",
+      "B crossing": "معبر ب", "B detour": "تحويلة ب", "B on odd": "إرسال إلى ب في المدّ الفردي", "B outlet": "مخرج ب", "B shelter outlet": "مخرج الملجأ إلى ب",
+      "Bridge A": "الجسر إلى أ", "Bridge B": "الجسر إلى ب", "Bridge spill": "تصريف الجسر", "Cistern to A": "من الخزان إلى أ", "Cistern to B": "من الخزان إلى ب",
+      "Closed tide": "تصريف عند انحسار المدّ", "Cross-current spill": "تصريف التيار المعاكس", "Cutoff spill": "تصريف بعد الإغلاق", "Delayed intake": "مدخل مؤجّل", "Detour A": "تحويلة أ", "Detour to B": "تحويلة إلى ب", "Direct A": "مباشرةً إلى أ", "Direct B": "مباشرةً إلى ب", "Direct orchard": "مباشرةً إلى البستان",
+      "Downstream A": "المجرى السفلي إلى أ", "Downstream B": "المجرى السفلي إلى ب", "Dry marsh": "تصريف المستنقع الجاف", "Dry side channel": "القناة الجانبية الجافة", "Ebb spill": "تصريف عند الجَزر", "Emergency A": "مسار طوارئ إلى أ", "Emergency B": "مسار طوارئ إلى ب", "Emergency orchard": "مسار طوارئ إلى البستان",
+      "Even A outlet": "مخرج أ في المدّ الزوجي", "Even B outlet": "مخرج ب في المدّ الزوجي", "Even intake": "مدخل في النبضة الزوجية", "Even-beat intake": "مدخل النبضة الزوجية", "False outlet": "المخرج الخاطئ", "Ferry spill": "تصريف العبّارة", "Festival intake": "مدخل المهرجان", "Festival orchard B": "بستان المهرجان ب", "Festival orchard": "بستان المهرجان", "Festival spill": "تصريف المهرجان", "Festival waste": "هدر المهرجان",
+      "Fill bridge basin": "املأ حوض الجسر", "Fill cistern": "املأ الخزان", "Fill detour pond": "املأ بركة التحويلة", "Fill ferry basin": "املأ حوض العبّارة", "Fill festival pond": "املأ بركة المهرجان", "Fill habitat basin": "املأ حوض الموطن", "Fill holding pond": "املأ بركة التخزين", "Fill lantern reserve": "املأ احتياطي الفوانيس", "Fill latch basin": "املأ حوض المزلاج", "Fill lock": "املأ القفل", "Fill nursery pond": "املأ بركة المشتل", "Fill ordered pond": "املأ البركة المرتبة", "Fill pond": "املأ البركة", "Fill repair basin": "املأ حوض الإصلاح", "Fill reservoir": "املأ الخزان الكبير", "Fill two-bank pond": "املأ بركة الضفتين", "Fill upper pond": "املأ البركة العلوية",
+      "Final bridge": "الجسر الأخير", "Final orchard": "البستان الأخير", "First fill": "الملء الأول", "First lantern A": "الفانوس الأول إلى أ", "First lantern B": "الفانوس الأول إلى ب", "First orchard": "البستان الأول", "Habitat channel": "قناة الموطن", "Habitat spill": "تصريف الموطن", "Heron first": "مالك الحزين أولًا", "Lantern spill": "تصريف الفانوس", "Last ferry bridge": "جسر العبّارة الأخير", "Locked B outlet": "مخرج ب المقفل", "Long direct A": "المسار المباشر الطويل إلى أ", "Lost water": "الماء المفقود", "Main orchard": "البستان الرئيسي", "Marsh leak": "تسرّب المستنقع", "Moon ferry B": "العبّارة القمرية إلى ب", "Moon spill": "تصريف القمر", "Nursery route": "مسار المشتل",
+      "Odd intake": "مدخل في النبضة الفردية", "Odd-beat intake": "مدخل النبضة الفردية", "One-use bridge B": "جسر ب للاستخدام مرة واحدة", "One-use bridge to A": "جسر إلى أ للاستخدام مرة واحدة", "One-use bridge": "جسر للاستخدام مرة واحدة", "One-use direct B": "مسار مباشر إلى ب للاستخدام مرة واحدة", "One-use shortcut": "اختصار للاستخدام مرة واحدة", "Open nursery A": "افتح المشتل إلى أ", "Open nursery": "افتح المشتل", "Orchard outlet": "مخرج البستان", "Orchard second": "البستان ثانيًا", "Overflow spill": "تصريف الفائض", "Overflow": "فيضان", "Pond to A": "من البركة إلى أ", "Pond to B": "من البركة إلى ب", "Preload pond": "املأ البركة مسبقًا",
+      "Repair blocked route": "أصلح المسار المسدود", "Repaired A": "أ إلى المسار المُصلح", "Restore marsh": "استعد المستنقع", "Restored orchard": "البستان المستعاد", "Return to A": "عودة إلى أ", "Return to B": "عودة إلى ب", "Save bridge for B": "احتفظ بالجسر لب", "Save habitat water": "احتفظ بماء الموطن", "Second fill": "الملء الثاني", "Second lantern A": "الفانوس الثاني إلى أ", "Second lantern B": "الفانوس الثاني إلى ب", "Second orchard": "البستان ثانيًا", "Second preload": "الملء المسبق الثاني", "Serve A first": "زوّد أ أولًا", "Short A": "المسار القصير إلى أ", "Spill to waste": "صرّف الماء إلى المصرف", "Tide spill": "تصريف المدّ", "Timed nursery visit": "زيارة المشتل في موعدها", "Two-bank spill": "تصريف الضفتين", "Unreachable spill": "تصريف المسار البعيد", "Unsafe direct A": "المسار المباشر غير الآمن إلى أ", "Wake nursery": "أيقظ المشتل", "Waste outlet": "مخرج الهدر", "Wetland spill": "تصريف الأراضي الرطبة", "Wrong branch": "الفرع الخاطئ", "Wrong-order direct": "المسار المباشر بترتيب خاطئ"
+    },
+    checkpointRules: {
+      "keep the marked habitat channel dry": "أبقِ قناة الموطن المحددة جافة",
+      "both gardens filled while one pond unit remains": "املأ الحديقتين مع إبقاء وحدة ماء واحدة في البركة",
+      "deliver to B before A": "أوصل الماء إلى ب قبل أ",
+      "deliver B during the moon-ferry window": "أوصل الماء إلى ب خلال نافذة العبّارة القمرية",
+      "leave two habitat units in the basin": "أبقِ وحدتي ماء للموطن في الحوض",
+      "meet the timed nursery visit and leave the habitat reserve": "أتمّ زيارة المشتل في موعدها وأبقِ احتياطي الموطن"
+    }
+  });
   window.RIVER_GATES_LOCALES = locales;
 }());

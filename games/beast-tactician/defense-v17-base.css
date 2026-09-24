@@ -1,0 +1,3389 @@
+:root {
+  color-scheme: dark;
+  --bg: #08111b;
+  --panel: rgba(15, 29, 40, 0.92);
+  --panel-2: rgba(24, 46, 60, 0.94);
+  --line: rgba(255, 221, 146, 0.24);
+  --text: #fff8e6;
+  --muted: #cbd6cf;
+  --gold: #ffd166;
+  --green: #7dd87d;
+  --blue: #74d7ff;
+  --red: #ff7a7a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--text);
+  font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    linear-gradient(140deg, rgba(4, 11, 18, 0.94), rgba(10, 35, 28, 0.9)),
+    url("../../assets/beast-tactician-battle-bg.webp") center / cover fixed,
+    var(--bg);
+}
+
+/* Short landscape keeps the complete first-session poster and Start action in
+   the initial viewport. This is a compact form of the same two-track Main
+   composition, not an independently reflowed or cropped child layout. */
+
+button,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 44px;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.guardian-app {
+  min-height: 100vh;
+}
+
+.battle-ad-reserve {
+  display: none;
+}
+
+body.guardian-playing {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+body.guardian-playing .guardian-topbar, body.guardian-playing .game-page-info {
+  display: none !important;
+}
+
+body.guardian-stage .game-page-info {
+  display: none !important;
+}
+
+body.guardian-stage .locale-box {
+  display: none !important;
+}
+
+body.guardian-playing .guardian-app {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+}
+
+body.guardian-playing .game-panel {
+  position: fixed;
+  z-index: 50;
+  left: var(--guardian-left, 0);
+  top: var(--guardian-top, 0);
+  width: 390px;
+  height: 788px;
+  min-height: 788px;
+  margin: 0;
+  transform: scale(var(--guardian-scale, 1));
+  transform-origin: top left;
+  grid-template-rows: 96px minmax(0, 1fr) 54px;
+  gap: 8px;
+  overflow: hidden;
+}
+
+body.guardian-playing .battle-ad-reserve {
+  position: fixed;
+  z-index: 49;
+  left: var(--guardian-left, 0);
+  top: calc(var(--guardian-top, 0px) + var(--guardian-content-height, 0px));
+  display: block;
+  width: var(--guardian-width, 100vw);
+  height: var(--wp-ad-reserve-height, 0px);
+  pointer-events: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(4, 10, 16, 0.72);
+}
+
+body.guardian-playing #menuBtn {
+  width: 48px;
+  min-width: 48px;
+  padding: 0;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 24px;
+}
+
+/* The shared shell adopts the Battle return into a generated header. Keep that
+   header inside the logical canvas at the HUD's top-left instead of allowing it
+   to become an extra grid row below the command bar. */
+
+body.guardian-playing .hud-row {
+  display: grid;
+  grid-template-columns: 48px repeat(4, minmax(42px, 1fr)) 44px;
+  grid-template-rows: 42px 38px;
+  gap: 4px;
+  padding: 6px;
+}
+
+body.guardian-playing .hud-row > div:first-of-type {
+  grid-column: 2;
+}
+
+body.guardian-playing .hud-row > div {
+  min-width: 0;
+  text-align: center;
+}
+
+body.guardian-playing .hud-row span {
+  font-size: 0.62rem;
+}
+
+body.guardian-playing .hud-row strong {
+  font-size: 0.78rem;
+}
+
+body.guardian-playing .wave-intel-panel {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 34px;
+  padding: 4px 8px;
+  overflow: hidden;
+  text-align: left;
+}
+
+body.guardian-playing .wave-intel-panel strong {
+  overflow: hidden;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+body.guardian-playing .battle-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 350px minmax(0, 1fr);
+}
+
+body.guardian-playing .canvas-shell {
+  grid-row: 1;
+}
+
+body.guardian-playing .build-panel {
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: auto 112px 76px;
+  align-content: start;
+  overflow: hidden;
+  padding: 8px;
+}
+
+body.guardian-playing .build-panel h3 {
+  margin-bottom: 4px;
+}
+
+body.guardian-playing .build-cards {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 132px;
+  grid-template-columns: none;
+  gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  scroll-snap-type: none;
+}
+
+body.guardian-playing .build-cards::-webkit-scrollbar {
+  display: none;
+}
+
+body.guardian-playing .build-card {
+  min-height: 104px;
+  grid-template-columns: 42px 1fr;
+  gap: 5px;
+  scroll-snap-align: start;
+}
+
+body.guardian-playing .build-card img {
+  width: 42px;
+  height: 44px;
+}
+
+body.guardian-playing .build-card span {
+  font-size: 0.7rem;
+}
+
+body.guardian-playing .selected-info {
+  max-height: 76px;
+  min-height: 48px;
+  margin-top: 5px;
+  padding: 6px 8px;
+  overflow: hidden;
+}
+
+body.guardian-playing .selected-info span {
+  display: inline;
+  margin-right: 8px;
+  font-size: 0.7rem;
+}
+
+body.guardian-playing .command-row {
+  display: grid;
+  grid-template-columns: 1.35fr repeat(3, 1fr);
+  gap: 5px;
+  padding: 5px;
+}
+
+body.guardian-playing .command-row button {
+  min-width: 0;
+  padding: 5px;
+  font-size: 0.72rem;
+  line-height: 1.05;
+  white-space: normal;
+}
+
+.hud-row, .boss-panel, .command-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.locale-box, .secondary-btn, .primary-btn {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  font-weight: 900;
+}
+
+.secondary-btn {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.brand-lockup span,
+.locale-box span,
+.hud-row span,
+.profile-grid span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.brand-lockup h1 {
+  margin: 0;
+  font-size: clamp(1.1rem, 3vw, 1.7rem);
+}
+
+.locale-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.locale-box select {
+  max-width: 144px;
+  color: var(--text);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-weight: 800;
+}
+
+.guardian-app:not(.is-playing) .locale-box {
+  display: flex !important;
+  visibility: visible !important;
+}
+
+.guardian-app:not(.is-playing) .locale-box select {
+  display: block !important;
+  visibility: visible !important;
+  min-width: 88px;
+}
+
+.locale-box option {
+  color: #111827;
+}
+
+.sound-btn {
+  min-width: 96px;
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+
+.secondary-btn[aria-pressed="true"] {
+  color: #122018;
+  background: linear-gradient(180deg, #dfffe4, var(--green));
+  border-color: rgba(125, 216, 125, 0.7);
+}
+
+.menu-panel,
+.stage-panel {
+  width: min(1120px, calc(100% - 28px));
+  margin: 22px auto;
+}
+
+.menu-panel {
+  display: grid;
+  grid-template-columns: minmax(240px, 420px) 1fr;
+  gap: clamp(18px, 4vw, 38px);
+  align-items: center;
+  padding: clamp(18px, 4vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--panel);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.36);
+}
+
+.poster-frame {
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.poster-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.release-badge {
+  width: fit-content;
+  margin: 0 0 12px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #1b1608;
+  background: linear-gradient(180deg, #fff2bd, var(--gold));
+  font-weight: 950;
+}
+
+.menu-copy h2 {
+  margin: 0 0 12px;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.05;
+}
+
+.menu-hint,
+.hold-notice,
+.modal-card p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.profile-grid,
+.tech-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.profile-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 20px 0;
+}
+
+.profile-grid div, .tech-card, .build-card, .selected-info {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stage-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.profile-grid div {
+  padding: 13px;
+}
+
+.profile-grid strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1.25rem;
+}
+
+.menu-actions,
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+[data-cosmetic-id="goldenFrame"] {
+  min-width: 220px;
+  max-width: 100%;
+}
+
+.primary-btn {
+  color: #1b1608;
+  background: linear-gradient(180deg, #fff0aa, var(--gold));
+}
+
+.stage-panel {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+}
+
+.stage-header h2 {
+  margin: 0;
+}
+
+.stage-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(270px, 30%);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: 8px;
+  scrollbar-width: thin;
+}
+
+.tech-card, .build-card {
+  padding: 12px;
+  text-align: left;
+}
+
+.stage-card {
+  padding: 12px;
+  text-align: left;
+}
+
+.stage-card {
+  cursor: pointer;
+  scroll-margin-inline: 8px;
+}
+
+.stage-card[aria-current="true"] {
+  outline: 2px solid var(--gold);
+  box-shadow:
+    0 0 0 4px rgba(255, 209, 102, 0.2),
+    0 0 20px rgba(255, 209, 102, 0.48);
+}
+
+.stage-card[aria-disabled="true"] {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.stage-card .stage-status {
+  font-weight: 900;
+  color: #f6d879;
+}
+
+.stage-card .stage-intel,
+.stage-card .stage-reward {
+  margin-top: 6px;
+  font-size: 0.82rem;
+}
+
+html[lang="ko"] body.guardian-stage .stage-card .stage-intel,
+html[lang="ko"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+html[lang="pt-BR"] body.guardian-stage .stage-card .stage-intel,
+html[lang="pt-BR"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
+html[lang="fr"] body.guardian-stage .stage-card .stage-intel,
+html[lang="fr"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
+html[lang="de"] body.guardian-stage .stage-card .stage-intel,
+html[lang="de"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
+html[lang="it"] body.guardian-stage .stage-card .stage-intel,
+html[lang="it"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
+html[lang="ru"] body.guardian-stage .stage-card .stage-intel,
+html[lang="ru"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
+.stage-card .stage-intel b,
+.stage-card .stage-plan b,
+.stage-card .stage-reward b {
+  color: #dff6df;
+}
+
+.stage-card strong,
+.build-card strong,
+.tech-card strong {
+  display: block;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.game-panel {
+  width: min(1240px, calc(100% - 18px));
+  height: calc(100vh - 104px);
+  min-height: 620px;
+  margin: 10px auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+}
+
+.hud-row {
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.hud-row > div {
+  min-width: 78px;
+}
+
+.hud-row strong {
+  display: block;
+}
+
+.boss-panel {
+  min-height: 46px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 122, 122, 0.36);
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(86, 16, 31, 0.72), rgba(18, 35, 45, 0.9));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.boss-panel span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.boss-panel strong {
+  display: block;
+  color: #ffe1a3;
+  line-height: 1.1;
+}
+
+.boss-meter {
+  flex: 1 1 240px;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.boss-meter div {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff7a7a, #ffd166);
+  transition: width 0.2s ease;
+}
+
+#bossHpText {
+  min-width: 46px;
+  color: #ffe1a3;
+  text-align: right;
+}
+
+#bossHintText {
+  max-width: 220px;
+}
+
+.wave-intel-panel {
+  flex: 1 1 270px;
+  min-width: 240px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 1px solid rgba(136, 220, 178, 0.28);
+  border-radius: 14px;
+  background: rgba(9, 24, 22, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.wave-intel-panel span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.wave-intel-panel strong {
+  min-width: 0;
+  color: #dff6df;
+  font-size: 0.94rem;
+  line-height: 1.25;
+}
+
+.battle-layout {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 10px;
+}
+
+.build-panel {
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.build-panel h3 {
+  margin: 0 0 10px;
+}
+
+.build-cards {
+  display: grid;
+  gap: 8px;
+}
+
+.build-card {
+  min-height: 82px;
+  color: var(--text);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 9px;
+  align-items: center;
+}
+
+.build-card.is-selected {
+  outline: 2px solid var(--gold);
+}
+
+.build-card.is-unaffordable {
+  border-color: rgba(255, 122, 122, 0.42);
+  background: rgba(42, 18, 20, 0.74);
+}
+
+.build-card.is-unaffordable img,
+.build-card.is-unaffordable strong,
+.build-card.is-unaffordable span:not(.build-affordability) {
+  opacity: 0.58;
+}
+
+.build-card img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  display: block;
+}
+
+.build-card span,
+.stage-card span,
+.tech-card span {
+  display: block;
+  color: var(--muted);
+  line-height: 1.35;
+  font-size: 0.88rem;
+}
+
+.build-card .build-affordability {
+  margin-top: 2px;
+  color: #9fe3ae;
+  font-weight: 950;
+}
+
+.build-card.is-unaffordable .build-affordability {
+  color: #ff9a9a;
+  opacity: 1;
+}
+
+.selected-info {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.selected-info span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.selected-info .route-placement-cue {
+  display: block;
+  margin-bottom: 4px;
+  color: #d9f99d;
+  font-size: 0.84rem;
+  line-height: 1.25;
+}
+
+.canvas-shell {
+  position: relative;
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(3, 10, 12, 0.86);
+}
+
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+#gameCanvas:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -6px;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  max-width: min(560px, 90%);
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: #1b1608;
+  background: linear-gradient(180deg, #fff6cc, var(--gold));
+  font-weight: 950;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
+}
+
+.command-row {
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.modal-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  overflow: auto;
+  background: rgba(4, 10, 16, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.modal-card {
+  width: min(760px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  padding: clamp(18px, 4vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel-2);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.42);
+}
+
+.result-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.result-card h2,
+.result-card p {
+  margin: 0;
+}
+
+body.guardian-playing #resultPanel.modal-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+  overflow: auto;
+}
+
+body.guardian-playing #resultPanel .modal-card {
+  max-height: 100%;
+}
+
+body.guardian-playing #pauseDecisionPanel.modal-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 110;
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+  overflow: auto;
+}
+
+.pause-decision-card {
+  width: min(460px, 100%);
+  max-height: 100%;
+  text-align: center;
+}
+
+.pause-decision-card h2,
+.pause-decision-card p {
+  margin: 0;
+}
+
+.pause-decision-card p {
+  margin-top: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.pause-decision-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.pause-decision-actions button {
+  min-height: 48px;
+}
+
+body.guardian-result .game-panel > .hud-row,
+body.guardian-result .game-panel > .boss-panel,
+body.guardian-result .game-panel > .battle-layout,
+body.guardian-result .game-panel > .command-row {
+  pointer-events: none;
+}
+
+.result-card img {
+  width: 96px;
+  height: 96px;
+  justify-self: center;
+  object-fit: contain;
+}
+
+.result-plan {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.result-stars {
+  margin: 8px 0;
+  color: var(--gold);
+  font-size: 1.25rem;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.result-reward {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 209, 102, 0.24);
+  border-radius: 10px;
+  color: #ffe7a3;
+  background: rgba(255, 209, 102, 0.08);
+  font-weight: 850;
+}
+
+.result-progress,
+.result-unlock {
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(116, 215, 255, 0.09);
+  color: #c8f1ff;
+  font-weight: 850;
+}
+
+.result-progress {
+  height: 64px;
+  min-height: 64px;
+  max-height: 64px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.result-unlock {
+  border: 1px solid rgba(125, 216, 125, 0.28);
+  background: rgba(125, 216, 125, 0.09);
+  color: #bdf3bd;
+}
+
+.result-card .result-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+.result-reward-actions,
+.result-nav-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.result-reward-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.result-nav-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.result-card .result-actions button {
+  width: 100%;
+  min-height: 52px;
+}
+
+.result-card .result-actions button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+#rerollRewardBtn.is-confirming,
+#reviveBtn.is-confirming {
+  border-color: var(--gold);
+  background: rgba(255, 209, 102, 0.18);
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.16);
+}
+
+.result-stars:empty,
+.result-reward:empty,
+.result-progress:empty,
+.result-unlock:empty {
+  display: none;
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  body.guardian-playing #resultPanel .result-card {
+    width: min(1760px, 96%);
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 28px;
+    padding: 28px 36px;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  body.guardian-playing #resultPanel .result-card > img {
+    width: 220px;
+    height: 220px;
+  }
+
+  body.guardian-playing #resultPanel .result-card > div {
+    min-width: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  body.guardian-playing #resultPanel .result-card h2 {
+    font-size: 42px;
+    line-height: 1.1;
+  }
+
+  body.guardian-playing #resultPanel .result-card p {
+    font-size: 28px;
+    line-height: 1.22;
+  }
+
+  body.guardian-playing #resultPanel .result-actions button {
+    min-height: 104px;
+    font-size: 30px;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 780px) {
+
+  .brand-lockup span {
+    display: none;
+  }
+
+  .locale-box span {
+    display: none;
+  }
+
+  .menu-panel {
+    grid-template-columns: 1fr;
+    width: calc(100% - 16px);
+    margin: 8px auto;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .poster-frame {
+    width: min(100%, 300px);
+    justify-self: center;
+  }
+
+  .menu-copy h2 {
+    margin-bottom: 6px;
+    font-size: 1.65rem;
+  }
+
+  .menu-hint {
+    margin: 4px 0;
+    line-height: 1.35;
+  }
+
+  .profile-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 8px 0;
+    gap: 6px;
+  }
+
+  .profile-grid div {
+    min-width: 0;
+    padding: 7px;
+  }
+
+  .stage-panel {
+    padding: 14px;
+  }
+
+  .stage-rail {
+    grid-auto-columns: minmax(258px, 82%);
+  }
+
+  .game-panel {
+    width: calc(100% - 10px);
+    max-width: calc(100vw - 10px);
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  body.guardian-playing .game-panel {
+    width: 390px;
+    max-width: none;
+    height: 788px;
+    min-height: 788px;
+  }
+
+  .hud-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  body.guardian-playing .hud-row {
+    display: grid;
+    overflow: hidden;
+  }
+
+  body.guardian-playing .hud-row > div {
+    min-width: 62px;
+  }
+
+  body.guardian-playing .wave-intel-panel {
+    flex: 1 1 auto;
+    min-width: 190px;
+  }
+
+  .boss-panel {
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .boss-panel > div:first-child {
+    min-width: 112px;
+  }
+
+  #bossHintText {
+    display: none;
+  }
+
+  .wave-intel-panel {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .battle-layout {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body.guardian-playing .battle-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .build-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    max-height: 148px;
+  }
+
+  body.guardian-playing .build-panel {
+    max-height: none;
+  }
+
+  .build-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.guardian-playing .build-cards {
+    grid-template-columns: none;
+  }
+
+  .canvas-shell {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    aspect-ratio: 3 / 2;
+  }
+
+  body.guardian-playing .canvas-shell {
+    width: auto;
+    max-width: none;
+    aspect-ratio: auto;
+  }
+
+  .command-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .result-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* Main and Stage share one invariant logical canvas on phone and desktop. */
+body:not(.guardian-playing) .guardian-app {
+  width: min(100%, 390px);
+  margin-inline: auto;
+}
+
+body:not(.guardian-playing) .brand-lockup h1 {
+  font-size: 1.35rem;
+}
+
+body:not(.guardian-playing) .brand-lockup span,
+body:not(.guardian-playing) .locale-box span {
+  display: none;
+}
+
+body:not(.guardian-playing) .locale-box {
+  width: 112px;
+  min-width: 112px;
+  height: 48px;
+  padding: 6px 8px;
+}
+
+body:not(.guardian-playing) .sound-btn {
+  display: none;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
+  min-width: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .brand-lockup h1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .sound-btn {
+  display: block;
+  width: 112px;
+  min-width: 112px;
+  height: 48px;
+  padding: 6px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 599px) {
+
+  body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
+    grid-column: 2 / 4;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .locale-box {
+    grid-column: 2;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .sound-btn {
+    grid-column: 3;
+  }
+}
+
+body:not(.guardian-playing) .menu-panel {
+  grid-template-columns: 1fr;
+  width: 374px;
+  max-width: calc(100% - 16px);
+  margin: 8px auto;
+  padding: 12px;
+  gap: 10px;
+}
+
+body:not(.guardian-playing) .poster-frame {
+  width: 300px;
+  max-width: 100%;
+  height: 300px;
+  aspect-ratio: auto;
+  justify-self: center;
+}
+
+body:not(.guardian-playing) .menu-copy h2 {
+  margin-bottom: 6px;
+  font-size: 1.65rem;
+  line-height: 1.15;
+}
+
+body:not(.guardian-playing) .menu-hint {
+  margin: 4px 0;
+  line-height: 1.35;
+}
+
+body:not(.guardian-playing) .profile-grid {
+  grid-template-columns: repeat(3, 112px);
+  margin: 8px 0;
+  gap: 6px;
+}
+
+body:not(.guardian-playing) .profile-grid div {
+  width: 112px;
+  min-width: 112px;
+  height: 72px;
+  padding: 7px;
+  overflow: hidden;
+}
+
+/* Main is an entry point: one title in the header, one primary action, then
+   concise progress.  The full game guide remains in normal document flow. */
+body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+  width: min(920px, calc(100% - 24px));
+  max-width: none;
+  padding: clamp(12px, 2.4vw, 22px);
+  gap: 14px;
+  align-items: start;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .guardian-app {
+  width: min(100%, 920px);
+  max-width: none;
+  margin-inline: auto;
+  min-height: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+  width: min(100%, 720px);
+  max-width: none;
+  aspect-ratio: 1;
+  height: auto;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .release-badge,
+body:not(.guardian-playing):not(.guardian-stage) #menuTitle,
+body:not(.guardian-playing):not(.guardian-stage) #menuHint,
+body:not(.guardian-playing):not(.guardian-stage) #holdNotice {
+  display: none;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-copy {
+  display: grid;
+  gap: 12px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) #startBtn {
+  min-height: 52px;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 560px) {
+  body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+    width: calc(100% - 16px);
+    padding: 12px;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+}
+
+body.guardian-stage .stage-progress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  height: 64px;
+}
+
+body.guardian-stage .stage-progress .profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  gap: 6px;
+}
+
+body.guardian-stage .stage-progress .profile-grid div {
+  min-width: 0;
+  padding: 6px 8px;
+  text-align: center;
+}
+
+body.guardian-stage .stage-progress .profile-grid span {
+  display: block;
+  overflow: hidden;
+  font-size: 0.62rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.guardian-stage .stage-progress .profile-grid strong {
+  margin-top: 1px;
+  font-size: 1rem;
+}
+
+body.guardian-stage .stage-progress #techBtn {
+  width: 96px;
+  min-width: 96px;
+  min-height: 64px;
+  padding: 8px;
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
+body.guardian-stage .guardian-app {
+  width: min(100%, 390px);
+  min-height: min(788px, 100dvh);
+  margin-inline: auto;
+}
+
+body.guardian-stage .stage-panel {
+  width: 382px;
+  max-width: calc(100% - 8px);
+  min-height: min(732px, calc(100dvh - var(--wp-ad-reserve-height, 0px)));
+  margin: 4px auto 0;
+  padding: 14px;
+}
+
+body.guardian-stage .stage-header h2 {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+body.guardian-stage .stage-header #stageBackBtn {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+body.guardian-stage .stage-rail {
+  width: 354px;
+  max-width: 100%;
+  grid-auto-columns: 264px;
+  cursor: grab;
+  scrollbar-width: none;
+}
+
+body.guardian-stage .stage-rail::-webkit-scrollbar {
+  display: none;
+}
+
+body.guardian-stage .stage-rail.is-mouse-dragging {
+  cursor: grabbing;
+}
+
+body.guardian-stage .stage-card {
+  overflow: hidden;
+}
+
+/* Battle artwork can expand, but persistent HUD and commands keep fixed geometry. */
+body.guardian-playing .hud-row,
+body.guardian-playing .command-row {
+  width: 370px;
+  max-width: 100%;
+  justify-self: center;
+}
+
+body.guardian-playing .hud-row {
+  grid-template-columns: 48px repeat(4, minmax(0, 1fr)) 40px;
+}
+
+body.guardian-playing #speedBtn {
+  width: 40px;
+  min-width: 40px;
+  padding: 0;
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+body.guardian-playing .command-row {
+  grid-template-columns: 110px repeat(3, 77px);
+}
+
+/* Keep the scene-first defense board dominant over the shared compound-game auto track. */
+html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout {
+  grid-template-rows: 350px minmax(0, 1fr) !important;
+}
+
+html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout > .canvas-shell {
+  width: 100% !important;
+  height: 350px !important;
+  aspect-ratio: auto !important;
+  align-self: stretch !important;
+}
+
+/* Stage occupies the shared responsive envelope; it must not inherit the
+   old 390px phone column on a desktop viewport. */
+body.guardian-stage {
+  background: linear-gradient(140deg, rgba(4, 11, 18, 0.94), rgba(10, 35, 28, 0.9)), url("../../assets/beast-tactician-battle-bg.webp") center / cover fixed, var(--bg);
+}
+
+body.guardian-stage .guardian-app {
+  width: 100%;
+  max-width: none;
+  min-height: calc(100dvh - var(--wp-ad-reserve-height, 0px));
+  margin: 0;
+}
+
+body.guardian-stage .stage-panel {
+  position: fixed;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px);
+  display: grid;
+  grid-template-rows: 62px minmax(0, 1fr);
+  width: min(100%, 920px);
+  max-width: 920px;
+  min-height: 0;
+  height: auto;
+  margin: 0 auto;
+  padding: 14px;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+body.guardian-stage .stage-rail {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  grid-auto-columns: minmax(280px, 38%);
+  align-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Desktop build cards form a deliberate horizontal rail.  The inset selected
+   state survives the rail mask, and wheel or mouse drag can reach every role. */
+body.guardian-playing .build-cards {
+  padding: 3px;
+  scroll-padding-inline: 3px;
+  overscroll-behavior-inline: contain;
+  cursor: grab;
+}
+
+body.guardian-playing .build-cards:active,
+body.guardian-playing .build-cards.is-dragging { cursor: grabbing; }
+
+body.guardian-playing .build-card.is-selected {
+  outline: 0;
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 2px var(--gold), 0 0 0 1px rgba(255, 209, 102, 0.32);
+}
+
+@media (min-width: 700px) and (min-height: 600px) {
+  html body.wp-logical-battle-active.guardian-playing .hud-row,
+  html body.wp-logical-battle-active.guardian-playing .command-row {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.guardian-playing .build-panel {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  body.guardian-playing .build-cards {
+    grid-auto-columns: 154px;
+    min-height: 112px;
+  }
+
+  body.guardian-playing .build-card {
+    min-height: 106px;
+  }
+}
+
+@media (max-width: 560px) {
+  body.guardian-stage .stage-panel {
+    width: 100%;
+    padding: 8px;
+  }
+
+  body.guardian-stage .stage-rail {
+    grid-auto-columns: 272px;
+  }
+}
+
+/* 2026-07-26 canonical Main / Stage component kit. */
+:root {
+  --wp-ui-accent: #ffd166;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+body:not(.guardian-playing) .guardian-app {
+  width: min(100%, 920px);
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .stage-return {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+}
+
+body:not(.guardian-playing) .stage-return {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  font-size: 24px;
+}
+
+body:not(.guardian-playing) .brand-lockup {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+body:not(.guardian-playing) .brand-lockup h1 {
+  margin: 0;
+  overflow: hidden;
+  color: var(--wp-ui-text);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-utilities {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+  min-width: 0;
+}
+
+.audio-control {
+  position: relative;
+}
+
+.header-icon-btn {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+  cursor: pointer;
+}
+
+.header-icon-btn svg,
+.locale-box svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.header-icon-btn.is-muted svg {
+  opacity: .48;
+}
+
+.audio-popover {
+  position: absolute;
+  z-index: 90;
+  top: 52px;
+  right: 0;
+  width: 220px;
+  padding: 8px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .42);
+}
+
+.audio-setting-row {
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 12px;
+  color: var(--wp-ui-text);
+  background: rgba(255, 255, 255, .08);
+  text-align: left;
+  cursor: pointer;
+}
+
+.audio-row-icon {
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.audio-switch {
+  position: relative;
+  width: 36px;
+  height: 22px;
+  border-radius: 999px;
+  background: #64748b;
+}
+
+.audio-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .16s ease;
+}
+
+.audio-setting-row[aria-pressed="true"] .audio-switch {
+  background: #2fbf8f;
+}
+
+.audio-setting-row[aria-pressed="true"] .audio-switch::after {
+  transform: translateX(14px);
+}
+
+body:not(.guardian-playing) .locale-box {
+  width: 96px;
+  height: 44px;
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+}
+
+body:not(.guardian-playing) .locale-box svg {
+  width: 18px;
+  height: 18px;
+}
+
+body:not(.guardian-playing) .locale-box select,
+body:not(.guardian-playing) .guardian-app:not(.is-playing) .locale-box select {
+  display: block !important;
+  visibility: visible !important;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 42px;
+  padding: 0;
+  overflow: hidden;
+  color: #1f2937;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+}
+
+body.guardian-stage .guardian-app:not(.is-playing) .locale-box {
+  display: none !important;
+}
+
+body.guardian-stage .brand-lockup {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+body.guardian-stage .header-utilities {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+body:not(.guardian-playing) .primary-btn {
+  border-radius: 14px;
+  color: var(--wp-ui-primary-text);
+  background: var(--wp-ui-primary);
+}
+
+body:not(.guardian-playing) button:active {
+  transform: translateY(2px);
+  filter: brightness(.92);
+}
+
+body:not(.guardian-playing) button:focus-visible,
+body:not(.guardian-playing) a:focus-visible,
+body:not(.guardian-playing) select:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Main: one responsive poster/copy composition above the complete guide. */
+body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+  width: calc(100% - 32px);
+  max-width: 888px;
+  min-height: 0;
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  margin: 16px auto;
+  padding: 0;
+  border-radius: 18px;
+  background: var(--wp-ui-surface);
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+  width: 420px;
+  height: 420px;
+  max-width: none;
+  aspect-ratio: 1;
+  border-radius: 18px 0 0 18px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-copy {
+  align-self: stretch;
+  align-content: center;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 20px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .release-badge,
+body:not(.guardian-playing):not(.guardian-stage) #menuTitle,
+body:not(.guardian-playing):not(.guardian-stage) #holdNotice {
+  display: none;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) #menuHint {
+  display: block;
+  margin: 0;
+  overflow: visible;
+  color: var(--wp-ui-text);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.main-progress {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 14px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 999px;
+  color: var(--wp-ui-muted);
+  background: rgba(255, 255, 255, .08);
+  font-weight: 800;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-actions {
+  display: block;
+  margin: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) #startBtn {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* Stage: shared header, bounded workspace, fixed [empty][Stages][Equipment]. */
+
+body.guardian-stage .guardian-app {
+  width: 100%;
+  max-width: none;
+  min-height: calc(100dvh - var(--wp-ad-reserve-height, 0px));
+}
+
+body.guardian-stage .stage-panel {
+  position: fixed;
+  inset: 0 0 var(--wp-ad-reserve-height, 0px);
+  width: min(100%, 920px);
+  max-width: 920px;
+  height: auto;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 56px;
+  gap: 8px;
+  margin: 0 auto;
+  padding: 76px 16px 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(rgba(9, 20, 35, .76), rgba(9, 20, 35, .88)),
+    url("../../assets/beast-tactician-cover.webp") center / cover no-repeat,
+    var(--wp-ui-shell);
+}
+
+.stage-workspace {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stage-page {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+#stagePage {
+  display: grid;
+  grid-template-rows: 44px minmax(0, 1fr);
+  gap: 8px;
+}
+
+body.guardian-stage .stage-progress {
+  width: min(100%, 360px);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  justify-self: center;
+  padding: 0 14px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-text);
+  background: var(--wp-ui-surface);
+}
+
+body.guardian-stage .stage-progress span {
+  color: var(--wp-ui-muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+body.guardian-stage .stage-progress strong {
+  color: var(--wp-ui-text);
+  font-size: 15px;
+}
+
+body.guardian-stage .stage-rail {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 264px;
+  align-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+body.guardian-stage .stage-card {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  align-content: start;
+  gap: 4px;
+  padding: 14px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: rgba(15, 29, 49, .94);
+}
+
+body.guardian-stage .stage-card .stage-intel {
+  display: grid;
+  gap: 2px;
+  margin: 2px 0 0;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+body.guardian-stage .stage-card :is(.stage-threat, .stage-plan) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+body.guardian-stage .stage-card .stage-meta,
+body.guardian-stage .stage-card .stage-reward {
+  margin: 0;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage-tabs {
+  width: 100%;
+  height: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px 14px 0 0;
+  background: var(--wp-ui-surface);
+}
+
+.stage-tab-empty {
+  grid-column: 1;
+}
+
+.stage-tab {
+  height: 44px;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 8px;
+  overflow: hidden;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 12px;
+  color: var(--wp-ui-text);
+  background: rgba(255, 255, 255, .08);
+  font-size: 14px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#stageTabBtn {
+  grid-column: 2;
+}
+
+#equipmentTabBtn {
+  grid-column: 3;
+}
+
+.stage-tab.is-active {
+  color: var(--wp-ui-primary-text);
+  border-color: var(--wp-ui-accent);
+  background: var(--wp-ui-primary);
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, .22), 0 0 18px rgba(255, 209, 102, .38);
+}
+
+.equipment-page {
+  display: grid;
+  grid-template-rows: 44px auto minmax(0, 1fr);
+  gap: 8px;
+  overflow: hidden;
+}
+
+.equipment-summary {
+  width: min(100%, 420px);
+  height: 44px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-self: center;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
+}
+
+.equipment-summary > div {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+}
+
+.equipment-summary > div + div {
+  border-left: 1px solid var(--wp-ui-border);
+}
+
+.equipment-summary span {
+  overflow: hidden;
+  color: var(--wp-ui-muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipment-summary strong {
+  color: var(--wp-ui-text);
+}
+
+.equipment-intro {
+  padding: 10px 14px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
+}
+
+.equipment-intro h2,
+.equipment-intro p {
+  margin: 0;
+}
+
+.equipment-intro h2 {
+  font-size: 18px;
+}
+
+.equipment-intro p {
+  margin-top: 4px;
+  color: var(--wp-ui-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+body.guardian-stage .tech-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 8px;
+  overflow: auto;
+  padding: 2px;
+}
+
+body.guardian-stage .tech-card {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
+}
+
+body.guardian-stage .battle-ad-reserve {
+  left: 0;
+  width: 100%;
+  transform: none;
+}
+
+@media (max-width: 699px) and (min-height: 501px) {
+
+  body:not(.guardian-playing) .brand-lockup {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  body:not(.guardian-playing) .brand-lockup h1 {
+    font-size: 20px;
+  }
+
+  .header-utilities {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+    width: min(calc(100% - 24px), 420px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin: 12px auto;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 18px 18px 0 0;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .menu-copy {
+    padding: 12px;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) #menuHint {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  body.guardian-stage .stage-panel {
+    padding: 68px 12px 0;
+  }
+
+  body.guardian-stage .tech-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+    grid-template-columns: 360px minmax(0, 1fr);
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+    width: 360px;
+    height: 360px;
+  }
+
+  body.guardian-stage .stage-panel {
+    padding-top: 68px;
+  }
+
+  .equipment-intro {
+    display: none;
+  }
+
+  .equipment-page {
+    grid-template-rows: 44px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 699px) and (min-height: 501px) {
+
+  body.guardian-stage .brand-lockup {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body.guardian-stage .header-utilities {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  body.guardian-stage .stage-panel {
+    padding-top: 68px;
+  }
+}
+
+/* Header edge ownership: return stays left, utilities stay right at every width. */
+
+body:not(.guardian-playing):not(.guardian-stage) .stage-return {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 12px;
+  grid-column: auto;
+  grid-row: auto;
+  margin: 0;
+}
+
+body:not(.guardian-playing) .header-utilities {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 12px;
+  grid-column: auto;
+  grid-row: auto;
+  margin: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(360px, calc(100% - 360px));
+  transform: translate(-50%, -50%);
+  grid-column: auto;
+  grid-row: auto;
+  margin: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 699px) and (min-height: 501px) {
+
+  body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
+    top: 64px;
+    width: calc(100% - 24px);
+    transform: translateX(-50%);
+  }
+}
+
+/* Settings owns sound and locale; the single gear mirrors the return control. */
+body:not(.guardian-playing):not(.guardian-stage) .header-utilities {
+  width: 48px;
+  height: 48px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .settings-menu-btn {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+}
+
+body.guardian-stage .header-utilities,
+body.guardian-stage .settings-menu-btn {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+}
+
+.settings-control {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.settings-popover {
+  top: 62px;
+  right: 0;
+  width: min(280px, calc(100vw - 24px));
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.settings-title {
+  display: block;
+  color: var(--wp-ui-text);
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.settings-popover .audio-setting-row {
+  height: 44px;
+  min-height: 44px;
+}
+
+body:not(.guardian-playing) .settings-popover .locale-box,
+body.guardian-stage .guardian-app:not(.is-playing) .settings-popover .locale-box {
+  width: 100%;
+  height: 56px;
+  display: grid !important;
+  visibility: visible !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+  grid-template-columns: 24px minmax(0, 1fr) 112px;
+  justify-self: stretch;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--wp-ui-text);
+  background: rgba(255, 255, 255, .08);
+}
+
+body:not(.guardian-playing) .settings-popover .locale-box svg {
+  width: 22px;
+  height: 22px;
+  color: var(--wp-ui-text);
+}
+
+body:not(.guardian-playing) .settings-popover .locale-box #languageLabel {
+  width: auto;
+  min-width: 0;
+  height: auto;
+  display: block;
+  padding: 0;
+  color: var(--wp-ui-text);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: none;
+}
+
+body:not(.guardian-playing) .settings-popover .locale-box select {
+  width: 112px;
+  min-width: 112px;
+  height: 44px !important;
+  padding: 0 8px !important;
+  color: #1f2937 !important;
+  border-radius: 9px !important;
+  background: var(--wp-ui-control) !important;
+  font-size: 12px !important;
+}
+
+body.guardian-stage .settings-popover {
+  top: 58px;
+}
+
+@media (max-width: 699px) and (min-height: 501px) {
+  body:not(.guardian-playing):not(.guardian-stage) .settings-popover {
+    top: 94px;
+  }
+}
+
+/* v14: authored Stage ownership and block-forward combat language. */
+body.guardian-stage .guardian-topbar {
+  display: none !important;
+}
+
+body.guardian-stage .stage-panel:has(> .stage-header) {
+  grid-template-rows: 64px minmax(0, 1fr) 56px !important;
+  gap: 8px !important;
+  padding: 8px 12px 0 !important;
+  background:
+    linear-gradient(rgba(9, 20, 35, .76), rgba(9, 20, 35, .9)),
+    url("../../assets/wonder-crash-related-beast-tactician-cover-block-v1.webp") center / cover no-repeat,
+    var(--wp-ui-shell);
+}
+
+body.guardian-stage .stage-header[data-wp-shell-header="stage"] {
+  width: 100%;
+  height: 64px;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: rgba(15, 29, 49, .88);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+}
+
+body.guardian-stage .stage-header .play-return {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 12px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+}
+
+body.guardian-stage .stage-header-copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  align-content: center;
+}
+
+body.guardian-stage .stage-header-copy strong {
+  overflow: hidden;
+  color: var(--wp-ui-text);
+  font-size: clamp(17px, 2.4vw, 22px);
+  font-weight: 950;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.guardian-stage .stage-header-copy span {
+  color: var(--wp-ui-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+body.guardian-stage .stage-workspace[data-wp-stage-workspace] {
+  min-width: 0;
+  min-height: 0;
+}
+
+body.guardian-playing .rally-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 209, 102, .58);
+  border-radius: 999px;
+  color: #fff0ad;
+  background: rgba(255, 209, 102, .12);
+  font-weight: 900;
+}
+
+body.guardian-playing #rallyBtn {
+  border-color: rgba(255, 209, 102, .62);
+  color: #fff0ad;
+  background: linear-gradient(180deg, rgba(119, 82, 37, .92), rgba(58, 42, 30, .96));
+}
+
+body.guardian-playing #rallyBtn:not(:disabled):hover,
+body.guardian-playing #rallyBtn.is-rallying {
+  border-color: #ffe59a;
+  background: linear-gradient(180deg, rgba(184, 132, 49, .98), rgba(101, 64, 31, .98));
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, .18), 0 6px 16px rgba(255, 170, 55, .2);
+}
+
+body.guardian-playing .build-card img,
+body.guardian-playing .result-card > img {
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .14), rgba(0, 0, 0, .18));
+  object-fit: contain;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .cover {
+  object-fit: cover;
+  image-rendering: auto;
+}
+
+/* Game-owned arena/build composition inside the single shared Battle slot. */
+html body #gamePanel [data-wp-frame-content="battle"] .battle-layout {
+  display:grid!important;flex:1!important;min-height:0!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(100px,2fr) minmax(80px,1fr)!important;
+  overflow:hidden!important;
+}
+html body #gamePanel [data-wp-frame-content="battle"] .canvas-shell {
+  grid-row:1!important;grid-column:1!important;height:100%!important;min-height:0!important;
+}
+html body #gamePanel [data-wp-frame-content="battle"] .build-panel {
+  grid-row:2!important;grid-column:1!important;min-height:0!important;overflow:auto!important;
+}
+@media (orientation:landscape) {
+  html body #gamePanel [data-wp-frame-content="battle"] .battle-layout {
+    grid-template-columns:minmax(0,1fr) minmax(180px,32%)!important;
+    grid-template-rows:minmax(0,1fr)!important;
+  }
+  html body #gamePanel [data-wp-frame-content="battle"] .build-panel {
+    grid-column:2!important;grid-row:1!important;
+  }
+}
+
+/* v14 short-landscape composition: keep the shared 760x334 envelope fully
+   playable by putting the arena beside the compact build rail. */
+@media (orientation: landscape) and (max-height: 560px) {
+  html body.wp-logical-battle-active.guardian-playing #gamePanel.game-panel {
+    grid-template-rows: 72px minmax(0, 1fr) 48px !important;
+    gap: 5px !important;
+    padding: 6px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .hud-row {
+    grid-template-columns: 48px repeat(4, minmax(42px, 1fr)) 44px !important;
+    grid-template-rows: 34px 28px !important;
+    gap: 4px !important;
+    padding: 4px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout {
+    grid-template-columns: minmax(0, 1fr) 248px !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 6px !important;
+    min-height: 0 !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout > .canvas-shell {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-rows: auto minmax(0, 1fr) 52px !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 6px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-cards {
+    grid-auto-columns: 104px !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    gap: 5px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-card {
+    min-height: 68px !important;
+    grid-template-columns: 32px minmax(0, 1fr) !important;
+    gap: 4px !important;
+    padding: 4px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-card img {
+    width: 32px !important;
+    height: 34px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-card span {
+    font-size: 0.58rem !important;
+    line-height: 1.1 !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .selected-info {
+    min-height: 0 !important;
+    max-height: 52px !important;
+    margin-top: 4px !important;
+    padding: 4px 6px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .selected-info span {
+    font-size: 0.58rem !important;
+    line-height: 1.15 !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .command-row {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    width: 366px !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 3px !important;
+  }
+}
+
+/* v17 Battle polish: the shared frame keeps navigation/settings, while the
+   live HUD owns stage context.  The board is intentionally a little larger
+   than a narrow phone viewport so players can drag across the route instead
+   of reading a tiny full-map thumbnail. */
+html body[data-game-id="beast-tactician"] [data-wp-battle-no-title] .wp-frame-header [data-wp-frame-title] {
+  display: none !important;
+}
+
+html body[data-game-id="beast-tactician"] body.guardian-playing .canvas-shell,
+html body[data-game-id="beast-tactician"].guardian-playing .canvas-shell {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body[data-game-id="beast-tactician"].guardian-playing .canvas-shell::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body[data-game-id="beast-tactician"].guardian-playing #gameCanvas {
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .battle-layout {
+    grid-template-rows: 338px minmax(0, 1fr) !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .canvas-shell {
+    height: 338px !important;
+    min-height: 338px !important;
+    max-height: 338px !important;
+    justify-content: flex-start !important;
+    padding: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel #gameCanvas {
+    width: max(480px, 100%) !important;
+    min-width: 480px !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 320px !important;
+    max-height: none !important;
+    aspect-ratio: 3 / 2 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-panel {
+    grid-template-rows: auto 104px 44px !important;
+    gap: 4px !important;
+    padding: 6px 8px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, 50px) !important;
+    gap: 4px !important;
+    height: 104px !important;
+    min-height: 104px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card {
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    gap: 4px !important;
+    min-height: 50px !important;
+    height: 50px !important;
+    padding: 4px !important;
+    align-items: center !important;
+    border-radius: 10px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card img {
+    width: 28px !important;
+    height: 30px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div {
+    min-width: 0 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div > span {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card strong {
+    display: -webkit-box !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    color: var(--gold) !important;
+    font-size: 0.68rem !important;
+    line-height: 1.08 !important;
+    text-overflow: ellipsis !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info {
+    display: grid !important;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 8px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    margin: 0 !important;
+    padding: 4px 8px !important;
+    align-items: center !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info .route-placement-cue,
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:nth-of-type(n + 2) {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > strong:not(.route-placement-cue) {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    max-width: 92px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 0.72rem !important;
+    line-height: 1.05 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:first-of-type {
+    grid-column: 2 !important;
+    grid-row: 1 / span 2 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 0.68rem !important;
+    line-height: 1.1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .command-row {
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 3px !important;
+    gap: 5px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .command-row button {
+    min-height: 42px !important;
+    padding: 4px !important;
+    font-size: 0.72rem !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  /* Reclaim the short-landscape header band for the direct-play surface. The
+     shared frame still owns the header; these are its declared compact tokens. */
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .hud-row {
+    min-height: 54px !important;
+    grid-template-rows: 30px 24px !important;
+    gap: 3px !important;
+    padding: 3px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .battle-layout {
+    min-height: 0 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .battle-layout > .canvas-shell {
+    height: 100% !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+    justify-content: center !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel #gameCanvas {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 3 / 2 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-panel {
+    grid-template-rows: 20px minmax(0, 1fr) 30px !important;
+    gap: 3px !important;
+    padding: 4px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-panel h3 {
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3px !important;
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card {
+    grid-template-columns: 1fr !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 2px !important;
+    place-items: center !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card img {
+    width: 28px !important;
+    height: 30px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 3px 6px !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info .route-placement-cue,
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:nth-of-type(n + 2) {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > strong:not(.route-placement-cue),
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:first-of-type {
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* v17: exact shared-frame acceptance for Main, Stage, Guide, and Battle. */
+html body[data-game-id="beast-tactician"] #mainProgress[data-wp-main-progress] {
+  height: 44px !important;
+  min-height: 44px !important;
+  box-sizing: border-box !important;
+}
+
+html body[data-game-id="beast-tactician"] #gamePanel .build-cards {
+  display: grid !important;
+  grid-auto-flow: row !important;
+  grid-auto-columns: auto !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-rows: repeat(3, minmax(44px, 1fr)) !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+html body[data-game-id="beast-tactician"] #gamePanel .build-card {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 44px !important;
+  overflow: hidden !important;
+}
+
+@media (min-width: 700px) and (min-height: 600px) {
+  html body[data-game-id="beast-tactician"] #gamePanel .build-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card {
+    min-height: 0 !important;
+    grid-template-columns: 1fr !important;
+    place-items: center !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div {
+    display: none !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    grid-template-rows: 26px minmax(0, 1fr) 0 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .selected-info {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-card {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    place-items: center !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 4px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-card > div {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-card img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-stage #stagePage {
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-stage .stage-progress {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-stage .stage-rail {
+    box-sizing: border-box !important;
+  }
+}
+
+/* Final v17 Battle cascade: these rules intentionally come after the
+   generated V6 acceptance cascade so the mobile composition has one owner. */
+@media (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .battle-layout {
+    grid-template-rows: 338px minmax(0, 1fr) !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .canvas-shell {
+    height: 338px !important;
+    min-height: 338px !important;
+    max-height: 338px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel #gameCanvas {
+    width: max(480px, 100%) !important;
+    min-width: 480px !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 320px !important;
+    max-height: none !important;
+    aspect-ratio: 3 / 2 !important;
+    flex: 0 0 auto !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-panel {
+    grid-template-rows: auto 104px 44px !important;
+    gap: 4px !important;
+    padding: 6px 8px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, 50px) !important;
+    gap: 4px !important;
+    height: 104px !important;
+    min-height: 104px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card {
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    min-height: 50px !important;
+    height: 50px !important;
+    padding: 4px !important;
+    align-items: center !important;
+    border-radius: 10px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card img {
+    width: 28px !important;
+    height: 30px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div {
+    display: block !important;
+    min-width: 0 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div > span {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card strong {
+    display: -webkit-box !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 0.68rem !important;
+    line-height: 1.08 !important;
+    text-overflow: ellipsis !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info {
+    display: grid !important;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 8px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    margin: 0 !important;
+    padding: 4px 8px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info .route-placement-cue,
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:nth-of-type(n + 2) {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > strong:not(.route-placement-cue) {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    max-width: 92px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 0.72rem !important;
+    line-height: 1.05 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:first-of-type {
+    grid-column: 2 !important;
+    grid-row: 1 / span 2 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 0.68rem !important;
+    line-height: 1.1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .hud-row {
+    min-height: 54px !important;
+    grid-template-rows: 30px 24px !important;
+    gap: 3px !important;
+    padding: 3px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .battle-layout > .canvas-shell {
+    height: 100% !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel #gameCanvas {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 3 / 2 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-panel {
+    grid-template-rows: 20px minmax(0, 1fr) 30px !important;
+    gap: 3px !important;
+    padding: 4px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-panel h3 {
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3px !important;
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card {
+    grid-template-columns: 1fr !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 2px !important;
+    place-items: center !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card img {
+    width: 28px !important;
+    height: 30px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 3px 6px !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info .route-placement-cue,
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:nth-of-type(n + 2) {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > strong:not(.route-placement-cue),
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info > span:first-of-type {
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Keep the compact selection readout alive after the shared V6 landscape
+   acceptance rules.  It is deliberately one line so selecting a defender
+   never pushes the command row or shrinks the playable board unexpectedly. */
+@media (orientation: landscape) and (max-height: 560px) {
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    grid-template-rows: 20px minmax(0, 1fr) 30px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-panel h3 {
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-card > div {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-card img {
+    width: 24px !important;
+    height: 26px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .selected-info {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 3px 6px !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .selected-info .route-placement-cue,
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .selected-info > span:nth-of-type(n + 2) {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .selected-info > strong:not(.route-placement-cue),
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .selected-info > span:first-of-type {
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* v17 Result recovery: the shared short-landscape Battle envelope is only
+   760x334 logical pixels.  Keep the terminal Result in that same reserved
+   Canvas instead of inheriting the legacy 220px artwork / 104px action
+   treatment, which can place Stages, Next Stage, and Retry below the viewport.
+   The portrait Result keeps its existing readable stacked composition. */
+@media (orientation: landscape) and (max-height: 560px) {
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel.modal-panel {
+    display: grid !important;
+    place-items: center !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card {
+    box-sizing: border-box !important;
+    width: min(748px, 100%) !important;
+    height: min(322px, 100%) !important;
+    max-height: 100% !important;
+    grid-template-columns: 112px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    padding: 10px 12px !important;
+    overflow: hidden !important;
+    text-align: left !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card > img {
+    width: 104px !important;
+    height: 104px !important;
+    align-self: center !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card > div {
+    min-width: 0 !important;
+    display: grid !important;
+    align-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card h2 {
+    font-size: 22px !important;
+    line-height: 1.05 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card p {
+    max-width: none !important;
+    font-size: 12px !important;
+    line-height: 1.18 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-stars {
+    margin: 0 !important;
+    font-size: 15px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card :is(.result-reward, .result-progress, .result-unlock) {
+    margin: 0 !important;
+    padding: 4px 6px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: 32px !important;
+    overflow: hidden !important;
+    line-height: 1.15 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-progress {
+    display: block !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-actions {
+    gap: 4px !important;
+    margin-top: 2px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-reward-actions,
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-nav-actions {
+    gap: 4px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-actions button {
+    min-height: 44px !important;
+    height: 44px !important;
+    padding: 3px 6px !important;
+    font-size: 11px !important;
+    line-height: 1.05 !important;
+    white-space: normal !important;
+  }
+}
+
+/* The guide is public Main content, not a legacy white document block. Keep
+   the frame contract explicit on the canonical source route even when the
+   runtime guide replaces the static preview after load. */
+
+/* v17 follow-up: Stage and Battle use the shared V6 frame, but active-play
+   headers carry local context rather than repeating the public game name. */
+
+/* The current card is the selection target. Put it in a predictable top
+   reading zone instead of vertically centring it in a mostly empty rail. */
+@media (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-stage .stage-rail {
+    align-content: start !important;
+    align-items: start !important;
+    grid-auto-rows: max-content !important;
+    background: linear-gradient(180deg, rgba(8, 22, 35, .5), rgba(8, 22, 35, .16)) !important;
+    border: 1px solid rgba(255, 255, 255, .1) !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* A closer board view: the complete route remains available through the
+   existing pointer/touch pan handler, while the phone shows a readable local
+   section instead of a tiny full-map thumbnail. */
+@media (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .canvas-shell {
+    direction: ltr !important;
+    align-items: flex-start !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel #gameCanvas {
+    width: 620px !important;
+    min-width: 620px !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 3 / 2 !important;
+    flex: 0 0 auto !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+}
+
+/* Give the 612px portrait envelope the same balanced top/bottom anchors as
+   the board and build panel; the narrow-phone rules keep their compact grid. */
+@media (min-width: 500px) and (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel :is(.hud-row, .command-row) {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .command-row {
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Desktop Battle ratio repair: the shared play-content slot is already the
+   flexible track between the HUD and command row.  Keep the arena/build row
+   on one track so a legacy portrait row cannot leave a dead band below the
+   board, and use the full in-frame width while retaining the shared 920px
+   outer envelope. */
+@media (min-width: 700px) and (min-height: 600px) {
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .battle-layout {
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .battle-layout > .canvas-shell,
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    grid-template-rows: 30px minmax(0, 1fr) auto !important;
+    align-content: stretch !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-cards {
+    height: auto !important;
+    min-height: 0 !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  }
+}

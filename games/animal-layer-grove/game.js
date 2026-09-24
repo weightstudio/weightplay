@@ -1,10 +1,10 @@
-/* Owner-requested gameplay revision: occlusion-v1, 2026-09-22.
+/* Owner-requested v13: deduction tools, finite motion and guide retention, 2026-09-23.
    One game controller. Shared frame, Stage virtualizer and Canvas still own
    navigation geometry. No target permutation is displayed or checked. */
 (() => {
   'use strict';
   const gameURL = document.currentScript.src;
-  const revision = '20260922-occlusion1';
+  const revision = '20260923-layer-v13';
   const root = document.body;
   const abort = new AbortController();
   const listen = (node, event, fn, options = {}) => node?.addEventListener(event, fn, { ...options, signal: abort.signal });
@@ -39,7 +39,8 @@
   Promise.all([
     load('puzzle-engine.js', () => Boolean(window.LayerGrovePuzzle)),
     load('puzzle-copy.js', () => Boolean(window.LayerGroveCopy)),
-  ]).then(boot).catch(error => {
+    load('motion.js', () => Boolean(window.LayerGroveMotion)),
+  ]).then(() => load('guide-extension.js', () => Boolean(window.LayerGroveCopy?.en?.guideFaqTitle))).then(boot).catch(error => {
     if (abort.signal.aborted) return;
     console.error('Layer Grove initialization failed', error);
     const locale = document.documentElement.lang;
@@ -49,6 +50,7 @@
   function boot() {
     if (abort.signal.aborted) return;
     const E = window.LayerGrovePuzzle, catalogs = window.LayerGroveCopy, oldLocales = window.ANIMAL_LAYER_GROVE_LOCALES || {};
+    const motion = window.LayerGroveMotion.create();
     const levels = E.levels, symbols = ['▲', '●', '◆', '✚', '★'];
     const saveKey = 'weightplay-animal-layer-grove-occlusion-v1';
     let record = { schema: 1, completed: 0, best: {}, stars: {} };
@@ -71,6 +73,7 @@
     };
     const state = { locale: pickLocale(), screen: 'main', scene: 0, puzzle: E.initial(levels[0]), moves: 0, hints: 0, selected: 0 };
     let generation = 0, focusFrame = 0, leaveOpen = false, history = [], inspected = false, checked = null, hintCells = [];
+    let clueFocus = -1;
     let stageController = null, stagePromise = null, entering = false;
     const main = $('mainScreen'), stage = $('stageScreen'), battle = $('battleScreen');
     const stageCanvas = stage.querySelector('.stage-canvas'), canvas = battle.querySelector('.battle-canvas');
@@ -107,9 +110,12 @@
     };
     document.documentElement.dataset.wpSharedInterface = '7';
     root.dataset.wpGameplayRevision = 'occlusion-v1';
+    root.dataset.wpMotionRevision = 'v13';
     rail.classList.add('stage-rail'); rail.dataset.wpStageCenterObserver = 'manual';
     rail.removeAttribute('data-wp-stage-v6-auto');
     stageCanvas.style.setProperty('--wp-stage-art', `url("${new URL('assets/animal-layer-grove-cover.png', gameURL).href}")`);
+    stageCanvas.dataset.wpStageArt = new URL('assets/animal-layer-grove-cover.png', gameURL).pathname;
+    stageCanvas.dataset.wpStageLandscapeWidth = '760'; stageCanvas.dataset.wpStageLandscapeHeight = '390';
     // Same shared scaler; declare enough logical height for five 44px rows.
     canvas.dataset.wpBattleMinHeight = '844'; canvas.dataset.wpBattleLandscapeWidth = '760'; canvas.dataset.wpBattleLandscapeHeight = '390';
     content.innerHTML = '<section class="puzzle-scene"><h3 data-puzzle-copy="scene"></h3><div class="puzzle-board-wrap"><div id="puzzleBoard" class="puzzle-board" dir="ltr"></div></div></section><section class="puzzle-layers"><div class="puzzle-heading"><h3 data-puzzle-copy="layers"></h3><small data-puzzle-copy="frontBack"></small></div><div id="layerList" class="puzzle-layer-list"></div></section><section class="puzzle-goals"><h3 data-puzzle-copy="clues"></h3><ol id="clueList"></ol><p id="battleStatus" role="status" aria-live="polite"></p></section><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-puzzle-copy="check"></button><button id="undoBtn" class="order-btn" type="button">↶</button><button id="hintBtn" class="order-btn" type="button">?</button><button id="resetBtn" class="order-btn" type="button">⟲</button></div>';
@@ -133,7 +139,7 @@
       const node = document.createElement(x < 0 || y < 0 ? 'span' : 'button');
       if (x < 0 || y < 0) { node.className = 'puzzle-coordinate'; node.textContent = y < 0 ? (x < 0 ? '' : 'ABCD'[x]) : String(y + 1); node.setAttribute('aria-hidden', 'true'); }
       else {
-        const p = y * 4 + x; node.type = 'button'; node.className = 'puzzle-cell'; node.dataset.cell = coord(p); cells.push(node);
+        const p = y * 4 + x; node.type = 'button'; node.className = 'puzzle-cell'; node.innerHTML = '<span class="cell-face" aria-hidden="true"></span>';  node.dataset.cell = coord(p); cells.push(node);
         listen(node, 'click', () => { if (!canPlay()) return; const i = E.compose(current(), state.puzzle)[p]; if (i >= 0) select(i); });
       }
       $('puzzleBoard').append(node);
@@ -150,18 +156,35 @@
       listen(turn, 'click', () => change({ type: 'rotate', index: state.puzzle.order[index] }));
       $('layerList').append(row); return row;
     });
-    const clueNodes = Array.from({ length: 4 }, () => {
-      const li = document.createElement('li'); li.innerHTML = '<span class="clue-state" aria-hidden="true">○</span><span class="clue-text"></span>';
+    const clueNodes = Array.from({ length: 4 }, (_, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = '<button class="clue-action" type="button" aria-pressed="false"><span class="clue-state" aria-hidden="true">○</span><span class="clue-text"></span></button>';
+      listen(li.firstElementChild, 'click', () => {
+        if (!canPlay() || !current().clues[index]) return;
+        clueFocus = clueFocus === index ? -1 : index;
+        draw(); motion.pulse(cells.filter(cell => cell.classList.contains('is-clue')).map(cell => cell.firstElementChild));
+        if (clueFocus >= 0) feedback(description(current().clues[clueFocus]));
+      });
       $('clueList').append(li); return li;
     });
     // Replace obsolete target-order/arc advice once; guide stays Main's sibling.
     const guideSections = guide?.querySelector('.game-info-sections');
     if (guideSections) {
-      guideSections.replaceChildren();
-      for (const [title, text] of [['howTitle', 'guideControls'], ['rulesTitle', 'guideRules'], ['progressTitle', 'guideProgression'], ['saveTitle', 'guideSave'], ['tipsTitle', 'guideTips']]) {
+      // Initial HTML owns its full Guide. Repair only a missing core section.
+      for (const [title, text] of [['howTitle', 'guideControls'], ['rulesTitle', 'guideRules'], ['progressTitle', 'guideProgression'], ['saveTitle', 'guideSave'], ['tipsTitle', 'guideTips'], ['guideToolsTitle', 'guideTools'], ['guideDesignTitle', 'guideDesign']]) {
+        if (guideSections.querySelector(`[data-puzzle-copy="${text}"]`)) continue;
         const article = document.createElement('article'); article.className = 'game-info-section';
         const h3 = document.createElement('h3'), p = document.createElement('p'); h3.dataset.puzzleCopy = title; p.dataset.puzzleCopy = text; article.append(h3, p); guideSections.append(article);
       }
+    }
+    if (guideSections && !guideSections.querySelector('[data-puzzle-faq]')) {
+      const article = document.createElement('article'); article.className = 'game-info-section'; article.dataset.puzzleFaq = '';
+      const heading = document.createElement('h3'); heading.dataset.puzzleCopy = 'guideFaqTitle'; article.append(heading);
+      for (let i = 1; i <= 4; i += 1) {
+        const h4 = document.createElement('h4'), p = document.createElement('p');
+        h4.dataset.puzzleCopy = `faq${i}q`; p.dataset.puzzleCopy = `faq${i}a`; article.append(h4, p);
+      }
+      guideSections.append(article);
     }
     const canPlay = () => state.screen === 'battle' && !leaveOpen && !entering;
     function renderMain() {
@@ -170,12 +193,16 @@
       main.querySelectorAll('.wp-standard-main-progress').forEach(n => { n.textContent = text; });
       main.querySelectorAll('.wp-standard-main-summary,[data-copy="intro"]').forEach(n => { n.textContent = t('intro'); });
     }
-    function draw() {
+    function draw(effect = null) {
       const level = current(), evaluated = E.evaluate(level, state.puzzle);
+      content.style.setProperty('--grove-layer-count', String(level.masks.length));
       const footprint = E.maskAt(level.masks[state.selected], state.puzzle.turns[state.selected]);
-      const highlighted = new Set(checked ? checked.checks.filter(c => !c.met).flatMap(c => scope(c.rule)) : hintCells);
+      const highlighted = new Set(clueFocus >= 0 ? scope(level.clues[clueFocus]) : checked ? checked.checks.filter(c => !c.met).flatMap(c => scope(c.rule)) : hintCells);
+      const changedFaces = [];
       cells.forEach((cell, p) => {
-        const i = evaluated.board[p]; cell.dataset.layer = String(i); cell.textContent = icon(i);
+        const i = evaluated.board[p], changed = cell.dataset.layer !== String(i);
+        cell.dataset.layer = String(i); cell.firstElementChild.textContent = icon(i);
+        if (effect && changed) changedFaces.push(cell.firstElementChild);
         cell.classList.toggle('is-inspected', inspected && Boolean(footprint & (1 << p)));
         cell.classList.toggle('is-clue', highlighted.has(p));
         cell.setAttribute('aria-label', t('boardCell', { cell: coord(p), symbol: i < 0 ? t('empty') : icon(i) }));
@@ -196,51 +223,65 @@
         const rule = level.clues[i]; li.hidden = !rule;
         if (!rule) return;
         li.querySelector('.clue-text').textContent = description(rule);
+        const button = li.firstElementChild;
+        button.setAttribute('aria-pressed', String(clueFocus === i));
+        button.setAttribute('aria-label', `${t('clues')} ${i + 1}: ${description(rule)}`);
         li.querySelector('.clue-state').textContent = checked ? (checked.checks[i].met ? '✓' : '×') : '○';
         li.dataset.met = checked ? String(checked.checks[i].met) : '';
       });
       $('groveLabel').textContent = t('stage', { n: state.scene + 1, total: levels.length });
       $('moveCount').textContent = t('moves', { n: state.moves });
       $('undoBtn').disabled = history.length === 0;
+      if (effect) {
+        motion.changed(changedFaces, effect.direction || 1);
+        if (effect.type === 'rotate') motion.rotate(rows.find(row => Number(row.dataset.layerId) === effect.index)?.querySelector('.layer-mini'));
+        else motion.pulse(rows.filter(row => !row.hidden).map(row => row.querySelector('.layer-symbol')));
+      }
     }
-    function select(id) { if (!Number.isInteger(id) || id < 0 || id >= current().masks.length) return; state.selected = id; inspected = true; draw(); feedback(t('inspectText', { symbol: icon(id) })); }
+    function select(id) { if (!Number.isInteger(id) || id < 0 || id >= current().masks.length) return; state.selected = id; inspected = true; draw(); motion.pulse(cells.filter(cell => cell.classList.contains('is-inspected')).map(cell => cell.firstElementChild)); feedback(t('inspectText', { symbol: icon(id) })); }
     function remember() { history.push(E.copy(state.puzzle)); if (history.length > 128) history.shift(); }
     function change(action) {
       if (!canPlay()) return;
       const next = E.act(current(), state.puzzle, action); if (!next) return;
       remember(); state.puzzle = next; state.moves += 1; checked = null; hintCells = [];
-      draw(); feedback(t('changed')); play('board.move'); track('layer_move', { moves: state.moves, action: action.type });
+      draw(action); feedback(t('changed')); play('board.move'); track('layer_move', { moves: state.moves, action: action.type });
     }
-    function undo() { if (!canPlay() || !history.length) return; state.puzzle = history.pop(); checked = null; hintCells = []; draw(); feedback(t('changed')); play('board.move'); }
+    function undo() { if (!canPlay() || !history.length) return; state.puzzle = history.pop(); checked = null; hintCells = []; draw({ type: 'undo', direction: -1 }); feedback(t('changed')); play('board.move'); }
     function resetLayers() {
       if (!canPlay()) return;
       const initial = E.initial(current());
       if (JSON.stringify(initial) === JSON.stringify(state.puzzle)) return;
-      remember(); state.puzzle = initial; state.moves += 1; checked = null; hintCells = []; draw(); feedback(t('ready')); track('layer_reset');
+      remember(); state.puzzle = initial; state.moves += 1; checked = null; hintCells = []; draw({ type: 'reset' }); feedback(t('ready')); play('board.move'); track('layer_reset');
     }
     function hint() {
       if (!canPlay()) return;
       const evaluated = E.evaluate(current(), state.puzzle), unmet = evaluated.checks.filter(c => !c.met);
       if (!unmet.length) { feedback(t('changed')); return; }
       state.hints += 1; const clue = unmet[(state.hints - 1) % unmet.length];
-      checked = null; hintCells = scope(clue.rule);
+      checked = null; clueFocus = -1; hintCells = scope(clue.rule);
       draw(); feedback(`${description(clue.rule)}. ${t('hintText')}`); track('puzzle_hint', { hints: state.hints });
     }
     function checkWindow() {
       if (!canPlay()) return;
-      checked = E.evaluate(current(), state.puzzle); draw();
+      clueFocus = -1; checked = E.evaluate(current(), state.puzzle); draw();
+      motion.pulse(clueNodes.filter(node => !node.hidden).map(node => node.querySelector('.clue-state')));
       if (!checked.solved) { feedback(t('wrong', { n: checked.checks.filter(c => !c.met).length }), 'wrong'); play('feedback.error'); track('window_check', { result: 'wrong' }); return; }
       const stars = state.hints ? 1 : state.moves <= current().par + 2 ? 3 : 2;
       record.completed = Math.max(record.completed, state.scene + 1);
       record.best[state.scene] = Math.min(record.best[state.scene] || Infinity, state.moves);
       record.stars[state.scene] = Math.max(record.stars[state.scene] || 0, stars); save();
       track('window_check', { result: 'correct', moves: state.moves, hints: state.hints, stars }); play('feedback.success');
-      show('result'); renderResult(stars);
+      show('result'); renderResult(stars); motion.reveal([...medal.children, result.querySelector('.keeper-result')].filter(Boolean));
     }
     function renderResult(stars) {
       $('resultTitle').textContent = t('resultTitle');
       $('resultText').textContent = t('resultText', { moves: state.moves, hints: state.hints, best: record.best[state.scene] });
-      medal.textContent = `${t('grade', { stars: stars ?? (state.hints ? 1 : state.moves <= current().par + 2 ? 3 : 2) })} · ★★★ ≤ ${current().par + 2}`;
+      const earned = stars ?? (state.hints ? 1 : state.moves <= current().par + 2 ? 3 : 2);
+      medal.setAttribute('aria-label', `${t('grade', { stars: earned })} · ★★★ ≤ ${current().par + 2}`);
+      medal.replaceChildren(...Array.from({ length: 3 }, (_, index) => {
+        const star = document.createElement('span'); star.textContent = index < earned ? '★' : '☆'; star.setAttribute('aria-hidden', 'true'); return star;
+      }));
+      const threshold = document.createElement('small'); threshold.textContent = ` · ★★★ ≤ ${current().par + 2}`; threshold.setAttribute('aria-hidden', 'true'); medal.append(threshold);
       skillTitle.textContent = t('skillReportTitle');
       skillNames.textContent = t('skillsValue');
       encouragement.textContent = t('resultEncouragement');
@@ -252,19 +293,22 @@
     function startScene(index) {
       if (!Number.isInteger(index) || index < 0 || index >= levels.length || index > record.completed) return;
       state.scene = index; state.puzzle = E.initial(current()); state.moves = 0; state.hints = 0; state.selected = state.puzzle.order[0];
-      history = []; inspected = false; checked = null; hintCells = [];
+      history = []; inspected = false; checked = null; hintCells = []; clueFocus = -1;
       show('battle'); draw(); feedback(t('ready')); track('scene_start', { stageId: current().id });
     }
     function syncShared() { window.dispatchEvent(new Event('weightplay:stage-sync')); window.dispatchEvent(new Event('weightplay:shell-sync')); }
     function show(screen) {
-      const ticket = ++generation; cancelAnimationFrame(focusFrame);
+      const ticket = ++generation; cancelAnimationFrame(focusFrame); motion.clear();
       state.screen = screen; leaveOpen = false; leave.hidden = true; leave.inert = true; battleSettings.close();
       const owner = screen === 'result' ? 'battle' : screen;
       for (const [name, node] of Object.entries({ main, stage, battle })) { node.hidden = name !== owner; node.inert = name !== owner; node.setAttribute('aria-hidden', String(name !== owner)); }
       root.dataset.screen = owner; canvas.dataset.substate = screen === 'result' ? 'result' : 'play';
       const settled = screen === 'result'; result.hidden = !settled; result.inert = !settled; content.hidden = settled; content.inert = settled; header.hidden = settled; header.inert = settled;
       if (guide) { guide.hidden = owner !== 'main'; guide.inert = owner !== 'main'; }
-      if (owner === 'main') renderMain(); syncShared(); header.hidden = settled; header.inert = settled;
+      if (owner === 'main') renderMain();
+      syncShared();
+      motion.reveal(screen === 'result' ? [result.querySelector('.result-card')] : screen === 'battle' ? [...content.querySelectorAll(':scope > section')] : screen === 'stage' ? [...rail.querySelectorAll('[data-wp-item-content]')] : [main.querySelector('.cover')].filter(Boolean));
+      header.hidden = settled; header.inert = settled;
       if (screen === 'battle') window.dispatchEvent(new Event('weightplay:battle-open'));
       focusFrame = requestAnimationFrame(() => { if (ticket !== generation) return; if (screen === 'stage') stageController?.center(frontier()); (screen === 'main' ? $('startBtn') : screen === 'stage' ? rail.querySelector('[aria-current="true"]') : settled ? $('resultMapBtn') : $('battleBackBtn'))?.focus({ preventScroll: true }); });
     }
@@ -299,10 +343,10 @@
         if (state.screen === 'main') $('mainProgress').textContent = t('loadError'); else if (leaveOpen) $('leaveText').textContent = t('loadError'); else $('resultText').textContent = t('loadError');
       } finally { entering = false; $('startBtn').disabled = false; }
     }
-    function continuePlaying() { if (!leaveOpen || entering) return; leaveOpen = false; leave.hidden = true; leave.inert = true; content.inert = false; header.inert = false; $('battleBackBtn').focus({ preventScroll: true }); }
+    function continuePlaying() { if (!leaveOpen || entering) return; motion.clear(); leaveOpen = false; leave.hidden = true; leave.inert = true; content.inert = false; header.inert = false; $('battleBackBtn').focus({ preventScroll: true }); }
     function askLeave() {
-      if (!canPlay()) return; leaveOpen = true; battleSettings.close();
-      $('leaveText').textContent = t('leaveBody', { n: state.scene + 1 }); leave.hidden = false; leave.inert = false; content.inert = true; header.inert = true; $('continueBtn').focus({ preventScroll: true });
+      if (!canPlay()) return; motion.clear(); leaveOpen = true; battleSettings.close();
+      $('leaveText').textContent = t('leaveBody', { n: state.scene + 1 }); leave.hidden = false; leave.inert = false; content.inert = true; header.inert = true; $('continueBtn').focus({ preventScroll: true }); motion.reveal([leave.querySelector('.leave-card')]);
     }
     function trap(event, panel) {
       if (event.key !== 'Tab') return;
@@ -311,6 +355,7 @@
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     }
     function applyLocale() {
+      motion.clear();
       document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === 'ar' ? 'rtl' : 'ltr';
       const overrides = { intro: t('intro'), start: t('start'), groves: t('map'), guideSummary: t('intro'), gameplayValue: t('rulesTitle'), guideTitle: t('howTitle') };
       document.querySelectorAll('[data-copy]').forEach(node => {
@@ -338,11 +383,29 @@
     listen($('localeSelect'), 'change', event => { if (!catalogs[event.target.value]) return; state.locale = event.target.value; try { localStorage.setItem('weightPlayLocale', state.locale); } catch { /* Session locale still changes. */ } applyLocale(); syncShared(); });
     listen(window, 'weightplay:audio-volume-change', () => battleSettings.refresh());
     listen($('soundBtn'), 'click', () => window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio.isMuted()));
-    listen(window, 'pagehide', event => { if (event.persisted) return; ++generation; cancelAnimationFrame(focusFrame); stageController?.destroy(); battleSettings.destroy(); abort.abort(); });
+    listen(document, 'visibilitychange', () => { if (document.hidden) motion.clear(); });
+    // Shared popovers retain their own position/scale; only opacity is animated.
+    listen(document, 'click', event => {
+      const trigger = event.target.closest?.('[data-wp-settings],.wp-shell-settings-button');
+      if (!trigger) return;
+      const ticket = generation;
+      queueMicrotask(() => {
+        if (ticket !== generation || abort.signal.aborted || document.hidden) return;
+        const active = state.screen === 'main' ? main : state.screen === 'stage' ? stage : battle;
+        const panel = [...active.querySelectorAll('.wp-frame-popover,.wp-shell-settings-popover')].find(node => !node.hidden && node.getClientRects().length);
+        if (panel) motion.reveal([panel]);
+      });
+    });
+    listen(window, 'pagehide', event => {
+      ++generation; cancelAnimationFrame(focusFrame); motion.clear();
+      if (event.persisted) return;
+      stageController?.destroy(); battleSettings.destroy(); motion.destroy(); abort.abort();
+    });
+    listen(window, 'pageshow', event => { if (event.persisted) syncShared(); });
     applyLocale(); show('main'); $('startBtn').disabled = false; $('loadingScreen').classList.add('is-ready');
     window.__ANIMAL_LAYER_GROVE_TEST__ = Object.freeze({
-      levels, startScene, moveLayer: (index, direction) => change({ type: 'swap', index, direction }), rotateLayer: index => change({ type: 'rotate', index }), resetLayers, undo, checkWindow,
-      getState: () => ({ locale: state.locale, screen: state.screen, scene: state.scene, moves: state.moves, hints: state.hints, leaveOpen, completed: record.completed, historyLength: history.length, order: [...state.puzzle.order], turns: [...state.puzzle.turns] }),
+      levels, startScene, motionCount: () => motion.size, moveLayer: (index, direction) => change({ type: 'swap', index, direction }), rotateLayer: index => change({ type: 'rotate', index }), resetLayers, undo, checkWindow,
+      getState: () => ({ locale: state.locale, screen: state.screen, scene: state.scene, moves: state.moves, hints: state.hints, clueFocus, leaveOpen, completed: record.completed, historyLength: history.length, order: [...state.puzzle.order], turns: [...state.puzzle.turns] }),
     });
   }
 })();

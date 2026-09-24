@@ -12,7 +12,7 @@
   const BEST_KEY = "weightplay-animal-river-gates-best-v7";
   const nodes = ["source", "cistern", "gardenA", "gardenB", "waste"];
   const nodeLabels = { source: "Source", cistern: "Cistern", gardenA: "Garden A", gardenB: "Garden B", waste: "Waste" };
-  const phaseName = (phase) => phase === "even" ? "even tide beats" : phase === "odd" ? "odd tide beats" : "any tide beat";
+  const phaseName = (phase) => copy(phase === "even" ? "evenTideBeats" : phase === "odd" ? "oddTideBeats" : "anyTideBeat");
   const fallback = {
     title: "River Gates",
     loading: "Waking the river…",
@@ -47,9 +47,23 @@
     impossible: "The current board cannot settle: {reason}. Undo or restart.",
     noUndo: "Nothing to undo.",
     selected: "{label}; {detail}",
-    actionPreview: "Preview: {from} → {to} · {amount} unit",
+    actionAccessible: "{label}; {detail}.",
+    disabledActionAccessible: "{label}. Unavailable: {reason}.",
+    actionPreview: "Preview: from {from} to {to} · {amount} unit",
     actionReady: "Ready to confirm",
     disabled: "Unavailable: {reason}",
+    waitDescription: "{phase} · Tide beat {beat}",
+    evenTideBeats: "even tide beats",
+    oddTideBeats: "odd tide beats",
+    anyTideBeat: "any tide beat",
+    riverGates: "River gates",
+    settlementGardens: "Garden A {a}/{aDemand}, Garden B {b}/{bDemand}",
+    settlementReserve: "Cistern {current}/{required}",
+    settlementWaste: "Waste {current}/{maximum}",
+    settlementOrder: "The delivery order",
+    settlementHabitat: "The protected habitat",
+    settlementWindow: "The nursery visit window was missed",
+    settlementCheckpoint: "The checkpoint condition",
     source: "Source",
     cistern: "Cistern",
     gardenA: "Garden A",
@@ -94,7 +108,6 @@
     const value = catalog[key] || fallback[key] || key;
     return Object.entries(vars).reduce((out, [name, val]) => out.replaceAll(`{${name}}`, String(val)), value);
   };
-  const localize = (value) => value || "";
   const stage = (id, title, arc, mechanic, config) => ({ id, title, arc, mechanic, titleKey: `stage${id}Title`, arcKey: `arc${Math.ceil(id / 5)}`, mechanicKey: `mechanic_${mechanic.replaceAll("-", "_")}`, ...config, checkpoint: id % 5 === 0 });
   const stageText = (plan, field) => {
     const key = field === "title" ? plan.titleKey : field === "arc" ? plan.arcKey : plan.mechanicKey;
@@ -353,7 +366,11 @@
   const persist = () => safeStorage.set(STORE_KEY, JSON.stringify({ solved: [...solved].sort((a, b) => a - b), updatedAt: new Date().toISOString() }));
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `animal_river_gates_${name}`, stage: currentStage().id, beat: state?.beat || 0, ...data }); };
   const nodeLabel = (key) => copy(key, {}) !== key ? copy(key) : nodeLabels[key];
-  const copyAction = (action) => action.label || `${nodeLabel(action.from)} → ${nodeLabel(action.to)}`;
+  const copyAction = (action) => {
+    const label = action.label || `${nodeLabel(action.from)} → ${nodeLabel(action.to)}`;
+    return locales[locale]?.actionLabels?.[label] || label;
+  };
+  const checkpointRule = (rule) => locales[locale]?.checkpointRules?.[rule] || rule;
   const deliveredCount = (node) => state.delivered.filter((item) => item === node).length;
   const capacity = (node) => currentStage().capacities?.[node] ?? (node === "gardenA" || node === "gardenB" ? currentStage().demands[node === "gardenA" ? 0 : 1] : 99);
   const phaseReady = (action) => !action.phase || action.phase === (state.beat % 2 === 0 ? "even" : "odd");
@@ -383,13 +400,13 @@
   const availableActions = () => currentStage().edges.filter((action) => actionAvailable(action));
   const settlementReason = () => {
     const plan = currentStage();
-    if (state.water[2] < plan.demands[0] || state.water[3] < plan.demands[1]) return `A ${state.water[2]}/${plan.demands[0]}, B ${state.water[3]}/${plan.demands[1]}`;
-    if (state.water[1] < plan.reserve) return `cistern ${state.water[1]}/${plan.reserve}`;
-    if (state.water[4] > (plan.wasteMax ?? 0)) return `waste ${state.water[4]}/${plan.wasteMax ?? 0}`;
-    if (plan.order && plan.order.some((node, index) => state.delivered.indexOf(node) > state.delivered.indexOf(plan.order[index + 1]))) return "delivery order";
-    if (plan.protected && state.water[4] > 0) return "protected habitat";
-    if (plan.window && state.delivered.includes(plan.window.node) && state.beat > plan.window.to) return "missed nursery window";
-    return "the checkpoint condition";
+    if (state.water[2] < plan.demands[0] || state.water[3] < plan.demands[1]) return copy("settlementGardens", { a: state.water[2], aDemand: plan.demands[0], b: state.water[3], bDemand: plan.demands[1] });
+    if (state.water[1] < plan.reserve) return copy("settlementReserve", { current: state.water[1], required: plan.reserve });
+    if (state.water[4] > (plan.wasteMax ?? 0)) return copy("settlementWaste", { current: state.water[4], maximum: plan.wasteMax ?? 0 });
+    if (plan.order && plan.order.some((node, index) => state.delivered.indexOf(node) > state.delivered.indexOf(plan.order[index + 1]))) return copy("settlementOrder");
+    if (plan.protected && state.water[4] > 0) return copy("settlementHabitat");
+    if (plan.window && state.delivered.includes(plan.window.node) && state.beat > plan.window.to) return copy("settlementWindow");
+    return copy("settlementCheckpoint");
   };
   const won = () => {
     const plan = currentStage();
@@ -534,6 +551,7 @@
     ["backBtn", "stageBack", "battleBackBtn"].forEach((id) => $(id)?.setAttribute("aria-label", copy("back")));
     ["settingsBtn", "stageUtilityBtn", "battleUtilityBtn"].forEach((id) => $(id)?.setAttribute("aria-label", copy("settings")));
     $("closeSettings")?.setAttribute("aria-label", copy("close")); $("localeSelect")?.setAttribute("aria-label", copy("language"));
+    $("gateGrid")?.setAttribute("aria-label", copy("riverGates"));
     if ($("soundBtn")) { $("soundBtn").textContent = sound ? copy("on") : copy("off"); $("soundBtn").setAttribute("aria-pressed", String(sound)); }
     if ($("best")) { const best = Number(safeStorage.get(BEST_KEY, "0")); $("best").textContent = copy("best", { best: best || "—" }); }
     if ($("stageNavigation")) { $("stageNavigation").setAttribute("aria-label", copy("stages")); $("stageList")?.setAttribute("aria-label", copy("choose")); }
@@ -567,17 +585,22 @@
   };
   const actionButton = (action) => {
     const button = document.createElement("button"); button.type = "button"; button.className = "gate action-card"; const reason = reasonFor(action); const selected = selectedAction?.id === action.id;
-    button.disabled = Boolean(reason); button.setAttribute("aria-pressed", String(selected)); button.setAttribute("aria-label", reason ? copy("disabled", { reason }) : copy("selected", { label: copyAction(action), detail: copy("actionReady") }));
-    button.innerHTML = `<span class="gate-icon" aria-hidden="true">${action.repair ? "⚒" : action.to === "waste" ? "↘" : "≈"}</span><strong>${localize(copyAction(action))}</strong><small>${reason ? copy("disabled", { reason }) : copy("actionPreview", { from: nodeLabel(action.from), to: nodeLabel(action.to), amount: 1 })}</small>`;
+    const label = copyAction(action);
+    button.disabled = Boolean(reason); button.setAttribute("aria-pressed", String(selected));
+    button.setAttribute("aria-label", reason ? copy("disabledActionAccessible", { label, reason }) : copy("actionAccessible", { label, detail: copy("actionReady") }));
+    button.innerHTML = `<span class="gate-icon" aria-hidden="true">${action.repair ? "⚒" : action.to === "waste" ? "↘" : "≈"}</span><strong>${label}</strong><small>${reason ? copy("disabled", { reason }) : copy("actionPreview", { from: nodeLabel(action.from), to: nodeLabel(action.to), amount: 1 })}</small>`;
     if (!reason) button.addEventListener("click", () => { selectedAction = action; feedback = ""; renderBattle(); });
     return button;
   };
   const renderBattle = () => {
     if (!$('gateGrid') || currentScreen !== "battle" || !state) return; const plan = currentStage();
     $("planTitle").textContent = `${plan.id}. ${stageText(plan, "title")}`; $("progressPill").textContent = `${plan.id} / ${STAGES.length}`;
-    $("prompt").textContent = copy("prompt"); $("rule").textContent = `${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 })}${plan.checkpointRule ? ` · ${copy("checkpointRule", { rule: plan.checkpointRule })}` : ""}`;
+    $("prompt").textContent = copy("prompt"); $("rule").textContent = `${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 })}${plan.checkpointRule ? ` · ${copy("checkpointRule", { rule: checkpointRule(plan.checkpointRule) })}` : ""}`;
     const root = $("gateGrid"); root.replaceChildren(); currentStage().edges.forEach((action) => root.appendChild(actionButton(action)));
-    const wait = document.createElement("button"); wait.type = "button"; wait.className = "gate action-card wait-card"; wait.innerHTML = `<span class="gate-icon" aria-hidden="true">⌛</span><strong>${copy("waitAction")}</strong><small>${phaseName("even")} / ${copy("tide")} ${state.beat}</small>`; wait.addEventListener("click", waitAction); wait.disabled = state.beat >= plan.beats; root.appendChild(wait);
+    const wait = document.createElement("button"); wait.type = "button"; wait.className = "gate action-card wait-card";
+    const waitPhase = phaseName(state.beat % 2 === 0 ? "even" : "odd"); const waitDetail = copy("waitDescription", { phase: waitPhase, beat: state.beat });
+    wait.disabled = state.beat >= plan.beats; wait.setAttribute("aria-label", wait.disabled ? copy("disabledActionAccessible", { label: copy("waitAction"), reason: copy("noMoves") }) : copy("actionAccessible", { label: copy("waitAction"), detail: waitDetail }));
+    wait.innerHTML = `<span class="gate-icon" aria-hidden="true">⌛</span><strong>${copy("waitAction")}</strong><small>${waitDetail}</small>`; wait.addEventListener("click", waitAction); root.appendChild(wait);
     const waterText = nodes.map((node, index) => `${nodeLabel(node)} ${state.water[index]}`).join(" · "); $("flow").textContent = `${copy("water")}: ${waterText} · ${copy("tide")}: ${state.beat}/${plan.beats}`;
     $("checkBtn").disabled = !selectedAction || Boolean(reasonFor(selectedAction)); $("undoBtn") && ($("undoBtn").disabled = undoStack.length === 0); $("status").textContent = feedback === "impossible" ? copy("impossible", { reason: settlementReason() }) : feedback === "waiting" ? copy("waiting", { beat: state.beat }) : feedback ? copy(feedback) : (selectedAction ? `${copy("actionReady")}: ${copyAction(selectedAction)}` : ""); $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" || feedback === "impossible" ? "status try" : "status";
   };

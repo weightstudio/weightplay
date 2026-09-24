@@ -1,0 +1,190 @@
+/* Dungeon Venture (animal-crystal-survivor) — Interface 7 source cleanup.
+   Shared frame, shared Settings, Battle Canvas and the authored v31 game runtime
+   remain the owners. Formal metadata stays Interface 6 until independent QA. */
+
+html[data-wp-shared-interface="7"] {
+  --crystal-i7-stage-card-width: 264px;
+  --crystal-i7-stage-card-height: 190px;
+}
+
+/* Main: keep one square poster, concise progress and one 52px Start Game. */
+html[data-wp-shared-interface="7"] body #menuPanel [data-wp-frame-poster] {
+  display: block !important;
+  width: min(420px, 100%) !important;
+  max-width: 420px !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  margin-inline: auto !important;
+}
+html[data-wp-shared-interface="7"] body #startBtn {
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+}
+
+/* bannerAds=false means the old physical reserve may not keep a hidden 56px row.
+   The Stage/Battle scene itself owns the complete safe-height root. */
+html[data-wp-shared-interface="7"] body.crystal-stage-select .crystal-app,
+html[data-wp-shared-interface="7"] body.crystal-playing .crystal-app {
+  grid-template-rows: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+html[data-wp-shared-interface="7"] body #stageAdReserve,
+html[data-wp-shared-interface="7"] body #battleAdReserve {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+html[data-wp-shared-interface="7"] body.crystal-playing #upgradePanel.upgrade-panel {
+  inset: 4px !important;
+}
+
+/* Full-width capped Stage/Battle envelope; retire the legacy 612×788 phone card.
+   Shared frame/theme still owns scene border, radius, header, Settings and tabs. */
+html[data-wp-shared-interface="7"] body.crystal-stage-select #stagePanel,
+html[data-wp-shared-interface="7"] body.crystal-playing #gamePanel {
+  width: min(100%, 920px) !important;
+  max-width: 920px !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* Stage: shared frame owns the 48px title-free header and 56px three-slot nav.
+   Game-local CSS only lays out the bounded workspace and its 264×190 selector. */
+html[data-wp-shared-interface="7"] body #stagePanel [data-wp-frame-content="stage"] {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+html[data-wp-shared-interface="7"] body #stagePage {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+html[data-wp-shared-interface="7"] body #stagePage .stage-intro {
+  position: absolute !important;
+  z-index: 3 !important;
+  top: 8px !important;
+  left: 8px !important;
+  right: 8px !important;
+  display: block !important;
+  pointer-events: none !important;
+}
+html[data-wp-shared-interface="7"] body #stageSetupText,
+html[data-wp-shared-interface="7"] body #stagePage .stage-legend {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body #stageCheckpointText {
+  width: fit-content !important;
+  max-width: min(100%, 560px) !important;
+  margin-inline: auto !important;
+}
+html[data-wp-shared-interface="7"] body #stageRail {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: clamp(
+    calc(var(--crystal-i7-stage-card-height) / 2 + 8px),
+    38%,
+    calc(100% - var(--crystal-i7-stage-card-height) / 2 - 8px)
+  ) !important;
+  width: 100% !important;
+  height: var(--crystal-i7-stage-card-height) !important;
+  min-height: var(--crystal-i7-stage-card-height) !important;
+  max-height: var(--crystal-i7-stage-card-height) !important;
+  margin: 0 !important;
+  padding: 0 max(20px, calc((100% - var(--crystal-i7-stage-card-width)) / 2)) !important;
+  transform: translateY(-50%) !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  scrollbar-width: none !important;
+  overscroll-behavior-inline: contain !important;
+  touch-action: none !important;
+}
+html[data-wp-shared-interface="7"] body #stageRail::-webkit-scrollbar {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body #stageRail > .stage-card {
+  flex: 0 0 var(--crystal-i7-stage-card-width) !important;
+  width: var(--crystal-i7-stage-card-width) !important;
+  min-width: var(--crystal-i7-stage-card-width) !important;
+  max-width: var(--crystal-i7-stage-card-width) !important;
+  height: var(--crystal-i7-stage-card-height) !important;
+  min-height: var(--crystal-i7-stage-card-height) !important;
+  max-height: var(--crystal-i7-stage-card-height) !important;
+  scroll-snap-align: center !important;
+  scroll-snap-stop: always !important;
+}
+html[data-wp-shared-interface="7"] body #equipmentPage {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+/* Battle: shared frame owns the 48px title-free header, Back and Settings.
+   Keep only game-content containment here and do not restyle shared controls. */
+html[data-wp-shared-interface="7"] body #gamePanel [data-wp-frame-content="battle"] {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Result stays inside the existing Battle canvas. The same three game-owned
+   action nodes occupy fixed Stages → Next Stage → Retry tracks at every outcome. */
+html[data-wp-shared-interface="7"] body #resultPanel .wp-i7-result-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+html[data-wp-shared-interface="7"] body #resultPanel .wp-i7-result-actions > button {
+  grid-column: auto !important;
+  grid-row: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+}
+html[data-wp-shared-interface="7"] body #resultPanel #nextStageBtn:disabled {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+}
+html[data-wp-shared-interface="7"] body #gamePanel[data-wp-battle-substate="result"] #battleLive {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  html[data-wp-shared-interface="7"] body #resultPanel .wp-i7-result-actions {
+    align-self: end !important;
+  }
+}

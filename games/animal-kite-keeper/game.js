@@ -1,6 +1,44 @@
 (function () {
   "use strict";
   const $ = (id) => document.getElementById(id);
+  const interface7Base = new URL(".", document.currentScript?.src || new URL("game.js", document.baseURI));
+  function waitForInterface7Assets() {
+    const stylesheetReady = new Promise((resolve) => {
+      let link = document.querySelector('link[href*="interface-7-cleanup.css"]');
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = new URL("interface-7-cleanup.css?v=20260923-kite-i7-review2", interface7Base).href;
+        document.head.appendChild(link);
+      }
+      if (link.sheet) { resolve(); return; }
+      link.addEventListener("load", resolve, { once: true });
+      link.addEventListener("error", () => {
+        document.documentElement.dataset.wpKiteKeeperI7AssetError = "css";
+        resolve();
+      }, { once: true });
+    });
+
+    const compatReady = new Promise((resolve) => {
+      if (window.__wpKiteKeeperI7CompatReady) { resolve(); return; }
+      window.addEventListener("weightplay:kite-keeper-i7-ready", resolve, { once: true });
+      let script = document.querySelector('script[src*="interface-7-compat.js"]');
+      if (!script) {
+        script = document.createElement("script");
+        script.src = new URL("interface-7-compat.js?v=20260923-kite-i7-review2", interface7Base).href;
+        script.async = false;
+        script.addEventListener("error", () => {
+          document.documentElement.dataset.wpKiteKeeperI7AssetError = "js";
+          resolve();
+        }, { once: true });
+        document.head.appendChild(script);
+      } else if (window.__wpKiteKeeperI7CompatReady) {
+        resolve();
+      }
+    });
+
+    return Promise.all([stylesheetReady, compatReady]);
+  }
   const locales = window.KITE_KEEPER_LOCALES || { en: {
     title: "Kite Keeper", subtitle: "Choose the wind. Find the lantern dock.", guideTitle: "How to play", guide: "Choose one wind card at a time. Reach the lantern dock in exactly three gusts.", start: "Start a sky route", map: "Sky routes", settings: "Settings", close: "Close settings", language: "Language", sound: "Sound", on: "On", off: "Off", best: "Best checks: {count}", route1: "Meadow Lift", route2: "Reef Breeze", route3: "Snow Lantern", hint1: "East, north, east", hint2: "North, west, north", hint3: "East, south, east", routePrompt: "Read the dock marker, then choose the next wind.", dock: "Lantern dock", wind: "Wind cards", north: "North", east: "East", south: "South", west: "West", position: "Kite position: {x}, {y}", gusts: "Gusts: {count} / 3", choose: "Choose a wind card", selected: "Wind chosen: {name}", wrong: "That gust drifts away from the dock. Try the route again.", correct: "Perfect flight! The kite reached the lantern dock.", reset: "Reset route", resultTitle: "Route complete", resultText: "You guided the kite with {checks} checks.", next: "Next route", finished: "All sky routes complete", back: "Back to General lobby", ariaKite: "Kite flight board"
   } };
@@ -223,6 +261,16 @@
     $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-kite-keeper-locale", locale); applyLocale(); });
     $("backBtn").addEventListener("click", goLobby); $("homeBtn").addEventListener("click", goLobby);
   }
-  function boot() { bind(); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); applyLocale(); announce("loaded"); }
+  async function boot() {
+    await waitForInterface7Assets();
+    bind();
+    $("localeSelect").value = locale;
+    $("loading").hidden = true;
+    $("app").hidden = false;
+    show("main");
+    applyLocale();
+    $("localeSelect").dispatchEvent(new Event("change", { bubbles: true }));
+    announce("loaded");
+  }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

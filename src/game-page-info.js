@@ -1,4 +1,6 @@
 (function () {
+  // Opt-in for native Guide owners: reuse comparison delivery without metadata, frame or asset side effects.
+  const comparisonOnly = Boolean(document.currentScript?.hasAttribute?.("data-wp-comparison-only"));
   // Localized entry generation already resolves related artwork from the lobby
   // catalog. Preserve it before Guide hydration replaces the static cards;
   // otherwise the legacy fallback map below can resurrect retired artwork.
@@ -17,27 +19,27 @@
     } catch (_) { /* Invalid legacy markup retains the existing fallback. */ }
   });
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
-  if (!document.querySelector('link[href*="stage-selector-standard.css"]')) {
+  if (!comparisonOnly && !document.querySelector('link[href*="stage-selector-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation3", sharedAssetBase).href;
     link.dataset.wpStageStandard = "true";
     document.head.appendChild(link);
   }
-  if (!document.querySelector('script[src*="stage-selector-standard.js"]')) {
+  if (!comparisonOnly && !document.querySelector('script[src*="stage-selector-standard.js"]')) {
     const script = document.createElement("script");
     script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation3", sharedAssetBase).href;
     script.dataset.wpStageStandard = "true";
     document.head.appendChild(script);
   }
-  if (document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('link[href*="battle-canvas-standard.css"]')) {
+  if (!comparisonOnly && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('link[href*="battle-canvas-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = new URL("battle-canvas-standard.css", sharedAssetBase).href;
     link.dataset.wpBattleStandard = "true";
     document.head.appendChild(link);
   }
-  if (document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js"]')) {
+  if (!comparisonOnly && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js"]')) {
     const script = document.createElement("script");
     script.src = new URL("battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
@@ -10002,6 +10004,9 @@
   }
 
   function localizedGameContent(id) {
+    if (id === "animal-rune-tactics" && window.WeightPlayRuneTacticsGuideCopy?.[locale()]) {
+      return {...games[id], ...window.WeightPlayRuneTacticsGuideCopy[locale()]};
+    }
     const base = games[id];
     if (!base) return null;
     const activeLocale = locale();
@@ -10201,7 +10206,8 @@
   function relatedCard(gameId) {
     const game = localizedGame(gameId);
     if (!game) return "";
-    const cardCopy = localizedRelatedCardCopy?.[locale()]?.[gameId] || {};
+    const nativeRelated = currentGameId() === "animal-rune-tactics" ? window.WeightPlayRuneTacticsGuideCopy?.[locale()]?.relatedSummaries?.[gameId] : null;
+    const cardCopy = nativeRelated ? {intro:nativeRelated} : localizedRelatedCardCopy?.[locale()]?.[gameId] || {};
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     const cardGame = cardCopy.intro ? { ...game, intro: cardCopy.intro } : game;
     const imageName = games[currentGameId()]?.relatedCoverMap?.[gameId] || coverImages[gameId] || "weightplay-logo.png";
@@ -10215,7 +10221,7 @@
         <img src="${escapeHtml(entryImage || assetHref(imageName))}"${fallbackAttrs} alt="" width="320" height="320" loading="eager" decoding="async" />
         <span class="game-info-related-copy">
           <strong data-runtime-localize="off">${escapeHtml(officialTitle || cardCopy.title || game.title)}</strong>
-          <span>${escapeHtml(shortDescription(cardGame))}</span>
+          <span>${escapeHtml(nativeRelated || shortDescription(cardGame))}</span>
         </span>
       </a>
     `;
@@ -10302,6 +10308,7 @@
   }
 
   function installStageArtworkSync() {
+    if (comparisonOnly) return;
     document.body.dataset.wpGameId = currentGameId();
     const metrics = window.__weightPlayLayoutMetrics ||= {};
     metrics.stageArtworkSyncs ||= 0;
@@ -10375,7 +10382,7 @@
       ? String(game.title).replace("Escuadrón animales Automático", "Escuadrón Animal Automático")
       : game.title;
     const title = document.documentElement.hasAttribute('data-wp-official-name') ? `${localizedTitle} | WeightPlay` : `${localizedTitle} - ${identity.suffix} | WeightPlay`;
-    const description = compactMetaDescription(game.intro);
+    const description = game.metaDescription || compactMetaDescription(game.intro);
     document.documentElement.lang = activeLocale;
     if (activeLocale !== "en") document.querySelector("title")?.setAttribute("data-runtime-localize", "off");
     document.title = title;
@@ -10409,6 +10416,7 @@
   }
 
   function render() {
+    if (comparisonOnly) return;
     if (document.body?.hasAttribute("data-wp-game-owned-guide")) {
       // Retain Signal's existing Guide shell registration during native screen
       // changes without rehydrating obsolete text or rewriting its metadata.
@@ -10419,7 +10427,7 @@
       return;
     }
     const activeLocale = locale();
-    if (activeLocale !== "en" && !window.WeightPlayGameRuntimeLocales?.[activeLocale] && !runtimeGuideResourceFailures.has(activeLocale)) {
+    if (currentGameId() !== "animal-rune-tactics" && activeLocale !== "en" && !window.WeightPlayGameRuntimeLocales?.[activeLocale] && !runtimeGuideResourceFailures.has(activeLocale)) {
       ensureRuntimeGuideResource(activeLocale).then(render);
       return;
     }
@@ -12692,6 +12700,7 @@
 
   window.addEventListener("wonder:locale-change", render);
   document.addEventListener("change", (event) => {
+    if (comparisonOnly) return;
     if (event.target?.id === "localeSelect") {
       // Putt normalizes its legacy option value in its native target handler.
       // Read that canonical language before the shared compatibility observer restores the old one.
@@ -13298,6 +13307,180 @@
     gameplay: "七片空间拼图",
   };
   localizedGameplayProfiles["zh-Hans"]["animal-tangram"] = { gameplay: "七片空间拼图", genre: ["益智", "空间", "动物"] };
+  // Text Growth 1.3.0: visible original-name comparison; not SEO identity.
+  gameplayProfiles["animal-tangram"] ||= {};
+  gameplayProfiles["animal-tangram"].marketComparison = {
+    "name": "Tangoes Animals",
+    "source": "https://www.smartgames.eu/uk/one-player-games/tangoes-animals",
+    "locales": {
+      "en": {
+        "heading": "Similar tangram gameplay reference",
+        "body": "SmartGames Tangoes Animals and Panko's Tangram Trail both ask the player to recreate animal pictures with all seven tangram pieces, so piece orientation and spatial fit are the core decisions. SmartGames' physical magnetic game provides 48 challenges with solutions and one solution for each challenge. WeightPlay's browser game instead offers 30 authored animal silhouettes, drag-and-drop pieces, 45-degree rotation, center-and-angle snap validation, an unlimited Hint that places one unresolved piece, Reset, replayable stages, and browser-local progress.",
+        "disclaimer": "Panko's Tangram Trail is an independent WeightPlay original, not an official Tangoes Animals version. WeightPlay and SmartGames are not affiliated, endorsed, licensed, or jointly developed.",
+        "sourceLabel": "Official source: SmartGames — Tangoes Animals"
+      },
+      "zh-Hant": {
+        "heading": "相似七巧板玩法參考",
+        "body": "SmartGames 的 Tangoes Animals 與《潘可的七巧板小徑》都要求玩家使用完整七片七巧板重現動物圖形，因此板片方向與空間吻合是主要判斷。SmartGames 的實體磁吸遊戲提供 48 個挑戰與解答，而且每題有一個解法；WeightPlay 的瀏覽器遊戲則提供 30 個人工設計的動物輪廓、拖放板片、45 度旋轉、中心與角度雙重吸附判定、可不限次數放好一片未完成板片的提示、重設、關卡重玩與瀏覽器本機進度。",
+        "disclaimer": "《潘可的七巧板小徑》是 WeightPlay 的獨立原創作品，並非 Tangoes Animals 官方版本。WeightPlay 與 SmartGames 沒有隸屬、背書、授權或共同開發關係。",
+        "sourceLabel": "官方來源：SmartGames — Tangoes Animals"
+      },
+      "zh-Hans": {
+        "heading": "相似七巧板玩法参考",
+        "body": "SmartGames 的 Tangoes Animals 与《潘可的七巧板小径》都要求玩家使用完整七片七巧板重现动物图形，因此板片方向与空间吻合是主要判断。SmartGames 的实体磁吸游戏提供 48 个挑战与解答，而且每题有一个解法；WeightPlay 的浏览器游戏则提供 30 个经过设计的动物轮廓、拖放板片、45 度旋转、中心与角度双重吸附判定、可不限次数放好一片未完成板片的提示、重置、关卡重玩与浏览器本地进度。",
+        "disclaimer": "《潘可的七巧板小径》是 WeightPlay 的独立原创作品，并非 Tangoes Animals 官方版本。WeightPlay 与 SmartGames 没有隶属、背书、授权或共同开发关系。",
+        "sourceLabel": "官方来源：SmartGames — Tangoes Animals"
+      },
+      "ja": {
+        "heading": "似たタングラム遊びの参考",
+        "body": "SmartGames の Tangoes Animals と「Panko’s Tangram Trail」は、どちらも7枚すべてのタングラムピースで動物の形を再現するため、向きと空間への収まり方を考えることが中心です。SmartGames の磁石式実物ゲームには解答付きの48問があり、各問題の解答は1つです。WeightPlay のブラウザーゲームは、30個の手作り動物シルエット、ドラッグ操作、45度回転、中心位置と角度の両方を確認するスナップ判定、未完成の1枚を正しく置く回数制限なしのヒント、リセット、再挑戦、ブラウザー内の進行保存を備えています。",
+        "disclaimer": "Panko’s Tangram Trail は WeightPlay の独立したオリジナル作品で、Tangoes Animals の公式版ではありません。WeightPlay と SmartGames に提携、推薦、ライセンス、共同開発の関係はありません。",
+        "sourceLabel": "公式情報：SmartGames — Tangoes Animals"
+      },
+      "ko": {
+        "heading": "비슷한 탱그램 게임 참고",
+        "body": "SmartGames의 Tangoes Animals와 Panko’s Tangram Trail은 모두 일곱 개의 탱그램 조각을 전부 사용해 동물 그림을 재현하므로 조각의 방향과 공간 맞추기가 핵심 판단입니다. SmartGames의 자석식 실물 게임은 해답이 포함된 48개 도전과 각 도전의 한 가지 해답을 제공합니다. WeightPlay의 브라우저 게임은 직접 설계한 동물 실루엣 30개, 드래그 앤 드롭, 45도 회전, 중심과 각도를 함께 확인하는 스냅 판정, 미완성 조각 하나를 올바르게 놓아 주는 횟수 제한 없는 힌트, 초기화, 다시 플레이, 브라우저 로컬 진행 저장을 제공합니다.",
+        "disclaimer": "Panko’s Tangram Trail은 WeightPlay의 독립 오리지널 작품이며 Tangoes Animals의 공식 버전이 아닙니다. WeightPlay와 SmartGames는 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+        "sourceLabel": "공식 출처: SmartGames — Tangoes Animals"
+      },
+      "es": {
+        "heading": "Referencia de juego tangram similar",
+        "body": "Tangoes Animals de SmartGames y Panko’s Tangram Trail piden recrear figuras de animales usando las siete piezas del tangram, así que la orientación y el encaje espacial son las decisiones principales. El juego físico magnético de SmartGames incluye 48 desafíos con soluciones y una única solución por desafío. El juego de navegador de WeightPlay ofrece 30 siluetas de animales diseñadas, arrastrar y soltar, giros de 45 grados, ajuste que comprueba centro y ángulo, Pista ilimitada que coloca una pieza pendiente, Reiniciar, fases rejugables y progreso local del navegador.",
+        "disclaimer": "Panko’s Tangram Trail es una obra original e independiente de WeightPlay, no una versión oficial de Tangoes Animals. WeightPlay y SmartGames no tienen relación de afiliación, respaldo, licencia ni desarrollo conjunto.",
+        "sourceLabel": "Fuente oficial: SmartGames — Tangoes Animals"
+      },
+      "pt-BR": {
+        "heading": "Referência de jogabilidade tangram semelhante",
+        "body": "Tangoes Animals, da SmartGames, e Panko’s Tangram Trail pedem que o jogador recrie figuras de animais usando as sete peças do tangram, então orientação e encaixe espacial são as decisões centrais. O jogo físico magnético da SmartGames traz 48 desafios com soluções e uma solução para cada desafio. O jogo de navegador da WeightPlay oferece 30 silhuetas de animais autorais, arrastar e soltar, rotação de 45 graus, encaixe que confere centro e ângulo, Dica ilimitada que posiciona uma peça ainda não resolvida, Reiniciar, fases rejogáveis e progresso salvo localmente no navegador.",
+        "disclaimer": "Panko’s Tangram Trail é uma obra original e independente da WeightPlay, não uma versão oficial de Tangoes Animals. WeightPlay e SmartGames não têm vínculo, endosso, licença nem desenvolvimento conjunto.",
+        "sourceLabel": "Fonte oficial: SmartGames — Tangoes Animals"
+      },
+      "fr": {
+        "heading": "Référence de jeu tangram similaire",
+        "body": "Tangoes Animals de SmartGames et Panko’s Tangram Trail demandent tous deux de recréer des animaux avec les sept pièces du tangram : l’orientation et l’ajustement spatial sont donc les décisions essentielles. Le jeu magnétique physique de SmartGames propose 48 défis avec leurs solutions et une solution par défi. Le jeu navigateur de WeightPlay propose 30 silhouettes animales conçues à l’avance, le glisser-déposer, des rotations de 45 degrés, un verrouillage qui vérifie le centre et l’angle, un indice illimité qui place une pièce non résolue, la réinitialisation, la rejouabilité et une progression enregistrée localement dans le navigateur.",
+        "disclaimer": "Panko’s Tangram Trail est une création originale et indépendante de WeightPlay, et non une version officielle de Tangoes Animals. WeightPlay et SmartGames ne sont ni affiliés, ni partenaires, ni liés par une licence ou un développement commun.",
+        "sourceLabel": "Source officielle : SmartGames — Tangoes Animals"
+      },
+      "de": {
+        "heading": "Referenz für ähnliches Tangram-Spielprinzip",
+        "body": "SmartGames Tangoes Animals und Panko’s Tangram Trail lassen beide Tierbilder mit allen sieben Tangram-Teilen nachlegen; Ausrichtung und räumliche Passung sind daher die zentralen Entscheidungen. Das magnetische Brettspiel von SmartGames bietet 48 Aufgaben mit Lösungen und genau eine Lösung pro Aufgabe. Das Browser-Spiel von WeightPlay bietet 30 entworfene Tiersilhouetten, Ziehen und Ablegen, 45-Grad-Drehungen, eine Einrastprüfung für Mittelpunkt und Winkel, unbegrenzte Hinweise, die ein noch ungelöstes Teil korrekt platzieren, Zurücksetzen, wiederholbare Stufen und lokal im Browser gespeicherten Fortschritt.",
+        "disclaimer": "Panko’s Tangram Trail ist ein unabhängiges Original von WeightPlay und keine offizielle Version von Tangoes Animals. Zwischen WeightPlay und SmartGames bestehen keine Zugehörigkeit, Empfehlung, Lizenz oder gemeinsame Entwicklung.",
+        "sourceLabel": "Offizielle Quelle: SmartGames — Tangoes Animals"
+      },
+      "it": {
+        "heading": "Riferimento per un gameplay tangram simile",
+        "body": "Tangoes Animals di SmartGames e Panko’s Tangram Trail chiedono entrambi di ricreare figure di animali usando tutti e sette i pezzi del tangram, quindi orientamento e incastro spaziale sono le decisioni principali. Il gioco fisico magnetico di SmartGames offre 48 sfide con soluzioni e una sola soluzione per ogni sfida. Il gioco browser di WeightPlay offre 30 sagome animali progettate, trascinamento, rotazioni di 45 gradi, aggancio che controlla centro e angolo, un Suggerimento illimitato che sistema un pezzo non ancora risolto, Ripristina, livelli rigiocabili e progressi salvati localmente nel browser.",
+        "disclaimer": "Panko’s Tangram Trail è un’opera originale e indipendente di WeightPlay, non una versione ufficiale di Tangoes Animals. WeightPlay e SmartGames non hanno rapporti di affiliazione, approvazione, licenza o sviluppo congiunto.",
+        "sourceLabel": "Fonte ufficiale: SmartGames — Tangoes Animals"
+      },
+      "ru": {
+        "heading": "Ссылка на похожую механику танграма",
+        "body": "В Tangoes Animals от SmartGames и Panko’s Tangram Trail нужно воссоздавать изображения животных всеми семью деталями танграма, поэтому главные решения связаны с ориентацией деталей и их пространственным совпадением. Магнитная настольная игра SmartGames содержит 48 заданий с ответами и по одному решению для каждого задания. Браузерная игра WeightPlay предлагает 30 заранее созданных силуэтов животных, перетаскивание деталей, поворот на 45 градусов, фиксацию с проверкой центра и угла, неограниченную подсказку, которая ставит одну нерешённую деталь на место, сброс, повторное прохождение и локальное сохранение прогресса в браузере.",
+        "disclaimer": "Panko’s Tangram Trail — самостоятельная оригинальная игра WeightPlay, а не официальная версия Tangoes Animals. WeightPlay и SmartGames не связаны аффилированностью, одобрением, лицензией или совместной разработкой.",
+        "sourceLabel": "Официальный источник: SmartGames — Tangoes Animals"
+      },
+      "hi": {
+        "heading": "मिलते-जुलते टैनग्राम गेमप्ले का संदर्भ",
+        "body": "SmartGames का Tangoes Animals और Panko’s Tangram Trail दोनों ही सातों टैनग्राम टुकड़ों से जानवर की आकृति दोबारा बनाने को कहते हैं, इसलिए टुकड़े की दिशा और स्थान में सही बैठना मुख्य फैसले हैं। SmartGames के भौतिक चुंबकीय गेम में समाधान सहित 48 चुनौतियाँ हैं और हर चुनौती का एक समाधान है। WeightPlay का ब्राउज़र गेम 30 पहले से डिजाइन की गई पशु आकृतियाँ, ड्रैग-एंड-ड्रॉप, 45-डिग्री घुमाव, केंद्र और कोण दोनों जाँचने वाला स्नैप, किसी एक अधूरे टुकड़े को सही जगह रखने वाली असीमित Hint, Reset, दोबारा खेले जा सकने वाले चरण और ब्राउज़र में स्थानीय प्रगति देता है।",
+        "disclaimer": "Panko’s Tangram Trail, WeightPlay की स्वतंत्र मूल रचना है और Tangoes Animals का आधिकारिक संस्करण नहीं है। WeightPlay और SmartGames के बीच संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास का संबंध नहीं है।",
+        "sourceLabel": "आधिकारिक स्रोत: SmartGames — Tangoes Animals"
+      },
+      "ar": {
+        "heading": "مرجع للعب تانغرام مشابه",
+        "body": "تطلب Tangoes Animals من SmartGames وPanko’s Tangram Trail إعادة تكوين صور حيوانات باستخدام قطع التانغرام السبع كلها، لذلك يمثل اتجاه القطعة وملاءمتها المكانية جوهر القرار. توفر لعبة SmartGames المغناطيسية المادية 48 تحديًا مع حلول، ولكل تحدٍ حل واحد. أما لعبة WeightPlay على المتصفح فتقدم 30 هيئة حيوان مصممة مسبقًا، والسحب والإفلات، والدوران بزاوية 45 درجة، والتحقق من المركز والزاوية عند التثبيت، وتلميحًا غير محدود يضع قطعة غير محلولة في مكانها الصحيح، وإعادة الضبط، وإعادة لعب المراحل، وحفظ التقدم محليًا في المتصفح.",
+        "disclaimer": "Panko’s Tangram Trail عمل أصلي مستقل من WeightPlay وليست نسخة رسمية من Tangoes Animals. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وSmartGames.",
+        "sourceLabel": "المصدر الرسمي: SmartGames — Tangoes Animals"
+      }
+    }
+  };
+
+  // Text Growth 1.3.0: visible original-name comparison; not SEO identity.
+  gameplayProfiles["animal-prism-garden"] ||= {};
+  gameplayProfiles["animal-prism-garden"].marketComparison = {
+  "name": "Flow Free",
+  "source": "https://www.bigduckgames.com/flowfree",
+  "locales": {
+    "en": {
+      "heading": "Similar route-puzzle reference",
+      "body": "Flow Free and Prism Route Garden both ask you to connect matching colors with orthogonal paths, complete every pair, fill the board, and avoid crossing or overlapping routes. Big Duck Games describes Flow Free with more than 2,000 puzzles plus Free Play and Time Trial modes. This WeightPlay browser game instead uses 30 authored gardens that grow from 7×7 to 10×10 across six chapters, adds color-locked prism gates, and provides Undo, Hint, Reset, replayable stages, and browser-local progress without a time-trial mode.",
+      "disclaimer": "Prism Route Garden is an independent WeightPlay original, not an official Flow Free version. WeightPlay and Big Duck Games are not affiliated, endorsed, licensed, or jointly developed.",
+      "sourceLabel": "Official source: Big Duck Games — Flow Free"
+    },
+    "zh-Hant": {
+      "heading": "相似連線益智玩法參考",
+      "body": "Flow Free 與《幻彩連線庭園》都要求玩家用上下左右的路線連接同色端點、完成全部配對、填滿棋盤，並避免路線交叉或重疊。Big Duck Games 官方介紹 Flow Free 擁有超過 2,000 個謎題，並提供 Free Play 與 Time Trial 模式。這款 WeightPlay 瀏覽器遊戲則是 30 個固定設計的庭園，盤面由 7×7 擴展到 10×10、分成六章，另加入只能讓指定顏色通過的幻彩閘門，以及復原、提示、重設、關卡重玩與瀏覽器本機進度，沒有計時競速模式。",
+      "disclaimer": "《幻彩連線庭園》是 WeightPlay 的獨立原創作品，並非 Flow Free 官方版本。WeightPlay 與 Big Duck Games 沒有隸屬、背書、授權或共同開發關係。",
+      "sourceLabel": "官方來源：Big Duck Games — Flow Free"
+    },
+    "zh-Hans": {
+      "heading": "相似连线益智玩法参考",
+      "body": "Flow Free 与《幻彩连线庭园》都要求玩家用上下左右的路线连接同色端点、完成全部配对、填满棋盘，并避免路线交叉或重叠。Big Duck Games 官方介绍 Flow Free 拥有超过 2,000 个谜题，并提供 Free Play 与 Time Trial 模式。这款 WeightPlay 浏览器游戏则有 30 个固定设计的庭园，棋盘从 7×7 扩展到 10×10、分为六章，另外加入只能让指定颜色通过的幻彩闸门，以及撤销、提示、重置、关卡重玩和浏览器本地进度，没有计时竞速模式。",
+      "disclaimer": "《幻彩连线庭园》是 WeightPlay 的独立原创作品，并非 Flow Free 官方版本。WeightPlay 与 Big Duck Games 没有隶属、背书、授权或共同开发关系。",
+      "sourceLabel": "官方来源：Big Duck Games — Flow Free"
+    },
+    "ja": {
+      "heading": "似たルートパズルの参考",
+      "body": "Flow Free と「プリズム・ルートガーデン」は、同じ色の端点を上下左右の経路で結び、すべてのペアを完成させ、盤面を埋めつつ経路の交差や重なりを避ける点が共通しています。Big Duck Games の公式説明では、Flow Free は2,000問以上のパズルと Free Play、Time Trial モードを備えています。WeightPlay のブラウザーゲームは、7×7から10×10へ広がる30個の固定庭園を6章で用意し、指定色だけが通れるプリズムゲート、元に戻す、ヒント、リセット、再挑戦、ブラウザー内の進行保存を加え、タイムトライアル方式ではありません。",
+      "disclaimer": "プリズム・ルートガーデンは WeightPlay の独立したオリジナル作品で、Flow Free の公式版ではありません。WeightPlay と Big Duck Games に提携、推薦、ライセンス、共同開発の関係はありません。",
+      "sourceLabel": "公式情報：Big Duck Games — Flow Free"
+    },
+    "ko": {
+      "heading": "비슷한 경로 퍼즐 참고",
+      "body": "Flow Free와 프리즘 루트 가든은 같은 색의 끝점을 상하좌우 경로로 연결하고, 모든 쌍을 완성하고, 보드를 채우면서 경로가 교차하거나 겹치지 않게 해야 한다는 점이 같습니다. Big Duck Games 공식 설명에 따르면 Flow Free에는 2,000개가 넘는 퍼즐과 Free Play, Time Trial 모드가 있습니다. WeightPlay 브라우저 게임은 7×7에서 10×10까지 커지는 30개의 설계된 정원을 6개 챕터로 제공하고, 지정 색만 통과할 수 있는 프리즘 게이트, 실행 취소, 힌트, 초기화, 다시 플레이, 브라우저 로컬 진행 저장을 더했으며 타임 트라이얼 모드는 없습니다.",
+      "disclaimer": "프리즘 루트 가든은 WeightPlay의 독립 오리지널 작품이며 Flow Free의 공식 버전이 아닙니다. WeightPlay와 Big Duck Games는 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+      "sourceLabel": "공식 출처: Big Duck Games — Flow Free"
+    },
+    "es": {
+      "heading": "Referencia de un puzle de rutas similar",
+      "body": "Flow Free y Prism Route Garden comparten la idea de unir extremos del mismo color con rutas ortogonales, completar todas las parejas, llenar el tablero y evitar cruces o solapamientos. Big Duck Games describe Flow Free con más de 2.000 puzles y modos Free Play y Time Trial. El juego de navegador de WeightPlay ofrece en cambio 30 jardines diseñados que crecen de 7×7 a 10×10 a lo largo de seis capítulos, puertas de prisma que solo admiten un color concreto, Deshacer, Pista, Reiniciar, fases rejugables y progreso local del navegador, sin modo contrarreloj.",
+      "disclaimer": "Prism Route Garden es una obra original e independiente de WeightPlay, no una versión oficial de Flow Free. WeightPlay y Big Duck Games no tienen relación de afiliación, respaldo, licencia ni desarrollo conjunto.",
+      "sourceLabel": "Fuente oficial: Big Duck Games — Flow Free"
+    },
+    "pt-BR": {
+      "heading": "Referência de quebra-cabeça de rotas semelhante",
+      "body": "Flow Free e Prism Route Garden compartilham a ideia de ligar pontas da mesma cor com caminhos ortogonais, completar todos os pares, preencher o tabuleiro e evitar cruzamentos ou sobreposições. A Big Duck Games descreve Flow Free com mais de 2.000 quebra-cabeças e modos Free Play e Time Trial. O jogo de navegador da WeightPlay oferece 30 jardins projetados que crescem de 7×7 a 10×10 em seis capítulos, portões de prisma que aceitam apenas uma cor específica, Desfazer, Dica, Reiniciar, fases rejogáveis e progresso salvo localmente no navegador, sem modo de corrida contra o tempo.",
+      "disclaimer": "Prism Route Garden é uma obra original e independente da WeightPlay, não uma versão oficial de Flow Free. WeightPlay e Big Duck Games não têm vínculo, endosso, licença nem desenvolvimento conjunto.",
+      "sourceLabel": "Fonte oficial: Big Duck Games — Flow Free"
+    },
+    "fr": {
+      "heading": "Référence de puzzle de chemins similaire",
+      "body": "Flow Free et Prism Route Garden demandent tous deux de relier des extrémités de même couleur avec des chemins orthogonaux, de compléter toutes les paires, de remplir le plateau et d’éviter tout croisement ou chevauchement. Big Duck Games présente Flow Free avec plus de 2 000 puzzles ainsi que les modes Free Play et Time Trial. Le jeu navigateur de WeightPlay propose à la place 30 jardins conçus à l’avance, de 7×7 à 10×10 sur six chapitres, des portes prismatiques réservées à une couleur, Annuler, Indice, Réinitialiser, des niveaux rejouables et une progression locale dans le navigateur, sans mode contre-la-montre.",
+      "disclaimer": "Prism Route Garden est une création originale et indépendante de WeightPlay, et non une version officielle de Flow Free. WeightPlay et Big Duck Games ne sont ni affiliés, ni partenaires, ni liés par une licence ou un développement commun.",
+      "sourceLabel": "Source officielle : Big Duck Games — Flow Free"
+    },
+    "de": {
+      "heading": "Referenz für ein ähnliches Wegepuzzle",
+      "body": "Flow Free und Prism Route Garden verbinden beide gleichfarbige Endpunkte mit waagerechten und senkrechten Wegen, verlangen alle Paare, ein vollständig belegtes Feld und Wege ohne Kreuzung oder Überlappung. Big Duck Games beschreibt Flow Free mit mehr als 2.000 Rätseln sowie Free-Play- und Time-Trial-Modi. Das WeightPlay-Browserspiel bietet stattdessen 30 entworfene Gärten von 7×7 bis 10×10 in sechs Kapiteln, farbgebundene Prismatore sowie Rückgängig, Hinweis, Zurücksetzen, wiederholbare Stufen und lokal im Browser gespeicherten Fortschritt, jedoch keinen Zeitrennen-Modus.",
+      "disclaimer": "Prism Route Garden ist ein unabhängiges Original von WeightPlay und keine offizielle Version von Flow Free. Zwischen WeightPlay und Big Duck Games bestehen keine Zugehörigkeit, Empfehlung, Lizenz oder gemeinsame Entwicklung.",
+      "sourceLabel": "Offizielle Quelle: Big Duck Games — Flow Free"
+    },
+    "it": {
+      "heading": "Riferimento per un rompicapo di percorsi simile",
+      "body": "Flow Free e Prism Route Garden chiedono entrambi di collegare estremi dello stesso colore con percorsi ortogonali, completare tutte le coppie, riempire il tabellone ed evitare incroci o sovrapposizioni. Big Duck Games descrive Flow Free con oltre 2.000 rompicapi e le modalità Free Play e Time Trial. Il gioco browser di WeightPlay propone invece 30 giardini progettati che crescono da 7×7 a 10×10 in sei capitoli, cancelli prismatici attraversabili solo dal colore indicato, Annulla, Suggerimento, Ripristina, livelli rigiocabili e progressi locali nel browser, senza modalità a tempo.",
+      "disclaimer": "Prism Route Garden è un’opera originale e indipendente di WeightPlay, non una versione ufficiale di Flow Free. WeightPlay e Big Duck Games non hanno rapporti di affiliazione, approvazione, licenza o sviluppo congiunto.",
+      "sourceLabel": "Fonte ufficiale: Big Duck Games — Flow Free"
+    },
+    "ru": {
+      "heading": "Ссылка на похожую головоломку с маршрутами",
+      "body": "Flow Free и Prism Route Garden объединяет задача соединять одинаковые цвета ортогональными маршрутами, завершать все пары, заполнять поле и не допускать пересечений или наложений путей. Big Duck Games указывает, что Flow Free содержит более 2 000 головоломок и режимы Free Play и Time Trial. Браузерная игра WeightPlay вместо этого предлагает 30 заранее созданных садов от 7×7 до 10×10 в шести главах, призматические ворота только для заданного цвета, отмену, подсказку, сброс, повторное прохождение и локальное сохранение прогресса в браузере, без режима на время.",
+      "disclaimer": "Prism Route Garden — самостоятельная оригинальная игра WeightPlay, а не официальная версия Flow Free. WeightPlay и Big Duck Games не связаны аффилированностью, одобрением, лицензией или совместной разработкой.",
+      "sourceLabel": "Официальный источник: Big Duck Games — Flow Free"
+    },
+    "hi": {
+      "heading": "मिलते-जुलते रूट पज़ल का संदर्भ",
+      "body": "Flow Free और Prism Route Garden दोनों में समान रंग के सिरों को ऊपर-नीचे या दाएँ-बाएँ रास्तों से जोड़ना, सभी जोड़ पूरे करना, पूरा बोर्ड भरना और रास्तों को एक-दूसरे से काटने या ओवरलैप होने से बचाना होता है। Big Duck Games के आधिकारिक विवरण में Flow Free के 2,000 से अधिक पज़ल और Free Play व Time Trial मोड बताए गए हैं। WeightPlay का ब्राउज़र गेम इसके बजाय छह अध्यायों में 7×7 से 10×10 तक बढ़ने वाले 30 तैयार किए गए बगीचे, केवल तय रंग को गुजरने देने वाले प्रिज़्म गेट, Undo, Hint, Reset, दोबारा खेले जा सकने वाले चरण और ब्राउज़र में स्थानीय प्रगति देता है; इसमें टाइम-ट्रायल मोड नहीं है।",
+      "disclaimer": "Prism Route Garden, WeightPlay की स्वतंत्र मूल रचना है और Flow Free का आधिकारिक संस्करण नहीं है। WeightPlay और Big Duck Games के बीच संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास का संबंध नहीं है।",
+      "sourceLabel": "आधिकारिक स्रोत: Big Duck Games — Flow Free"
+    },
+    "ar": {
+      "heading": "مرجع لأحجية مسارات مشابهة",
+      "body": "تشترك Flow Free وPrism Route Garden في ربط الأطراف المتطابقة لونيًا بمسارات أفقية وعمودية، وإكمال جميع الأزواج، وملء اللوحة، ومنع تقاطع المسارات أو تداخلها. يذكر الوصف الرسمي من Big Duck Games أن Flow Free تضم أكثر من 2000 لغز، مع وضعي Free Play وTime Trial. أما لعبة WeightPlay على المتصفح فتقدم 30 حديقة مصممة مسبقًا تتوسع من 7×7 إلى 10×10 عبر ستة فصول، وبوابات منشورية لا تسمح إلا باللون المحدد، مع التراجع والتلميح وإعادة الضبط وإعادة لعب المراحل وحفظ التقدم محليًا في المتصفح، من دون وضع سباق زمني.",
+      "disclaimer": "Prism Route Garden عمل أصلي مستقل من WeightPlay وليست نسخة رسمية من Flow Free. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وBig Duck Games.",
+      "sourceLabel": "المصدر الرسمي: Big Duck Games — Flow Free"
+    }
+  }
+};
+
   games["animal-color-springs"] = {
     title: "Animal Color Springs", age: "9+", difficulty: "Easy to Challenging", time: "2-6 minutes per stage", gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Problem Solving", "Focus"],
     intro: "Animal Color Springs is a thirty-stage sorting puzzle. Move the complete top group of matching spring orbs into an empty vessel or onto the same color, then finish with every non-empty vessel holding one color.",
@@ -23254,6 +23437,113 @@
   for (const [gameId, reference] of Object.entries(restoredKidsMarketComparisons)) {
     gameplayProfiles[gameId].marketComparison = reference;
   }
+
+  // Bamboo Waterway WP Text Growth 1.3.0: sole authored comparison profile.
+  gameplayProfiles["animal-bamboo-pipes"].marketComparison = {
+  "name": "Water Pipes",
+  "source": "https://mobiloids.com/portfolio/water-pipes/",
+  "locales": {
+    "en": {
+      "heading": "Similar pipe-puzzle reference",
+      "body": "Water Pipes by Mobiloids and Panko's Bamboo Waterway both ask you to rotate pipes and plan a connected water route, with hints available when a junction is difficult. Mobiloids describes a valve-to-container goal, experience-based pack unlocks and daily challenges. This WeightPlay game instead offers 30 fixed 5×5 waterways from a spring to a flower basin, six chapters, Undo, manual hint-assisted rotation and browser-local best turn counts. Connecting every unused pipe is not required.",
+      "disclaimer": "Panko's Bamboo Waterway is an independent WeightPlay game, not an official version of Water Pipes. WeightPlay is not affiliated with, endorsed by or partnered with Mobiloids.",
+      "sourceLabel": "Mobiloids: official Water Pipes description"
+    },
+    "zh-Hant": {
+      "heading": "相似接管玩法參考",
+      "body": "Mobiloids 的 Water Pipes 與胖達竹水道，都需要旋轉管線、規劃連續水路，遇到難判斷的接頭時可使用提示。Mobiloids 官方說明包含從閥門接到容器、透過經驗解鎖關卡包，以及每日挑戰。這款 WeightPlay 遊戲則提供 30 個固定的 5×5 竹管盤面，從泉源接到花圃，分成六章，搭配復原、仍須親自旋轉的提示，以及瀏覽器本機最佳次數紀錄；不要求接通所有未使用的竹管。",
+      "disclaimer": "胖達竹水道是 WeightPlay 的獨立作品，並非 Water Pipes 官方版本。WeightPlay 與 Mobiloids 沒有隸屬、背書或合作關係。",
+      "sourceLabel": "Mobiloids：Water Pipes 官方玩法說明"
+    },
+    "zh-Hans": {
+      "heading": "相似接管玩法参考",
+      "body": "Mobiloids 的 Water Pipes 与胖达竹水道，都需要旋转管线、规划连续水路，遇到难判断的接头时可使用提示。Mobiloids 官方说明包含从阀门接到容器、通过经验解锁关卡包，以及每日挑战。这款 WeightPlay 游戏则提供 30 个固定的 5×5 竹管棋盘，从泉源接到花圃，分成六章，搭配撤销、仍须亲自旋转的提示，以及浏览器本地最佳次数记录；不要求接通所有未使用的竹管。",
+      "disclaimer": "胖达竹水道是 WeightPlay 的独立作品，并非 Water Pipes 官方版本。WeightPlay 与 Mobiloids 没有隶属、背书或合作关系。",
+      "sourceLabel": "Mobiloids：Water Pipes 官方玩法说明"
+    },
+    "ja": {
+      "heading": "似ている配管パズルとの比較",
+      "body": "Mobiloids の Water Pipes とパンコの竹水路は、管を回して連続した水の道を考え、難しい接続ではヒントを使える点が共通しています。Mobiloids の公式説明には、バルブから容器への接続、経験値によるパックの解放、毎日のチャレンジがあります。一方、この WeightPlay のゲームは、泉から花壇へつなぐ固定の5×5パズル30問を6章で進めます。取り消し、自分で回す必要があるヒント、ブラウザー内の最少回転記録があり、使わない管まですべてつなぐ必要はありません。",
+      "disclaimer": "パンコの竹水路は WeightPlay の独立作品であり、Water Pipes の公式版ではありません。WeightPlay と Mobiloids に所属・推薦・提携の関係はありません。",
+      "sourceLabel": "Mobiloids：Water Pipes の公式説明"
+    },
+    "ko": {
+      "heading": "비슷한 관 연결 퍼즐과 비교",
+      "body": "Mobiloids의 Water Pipes와 판코의 대나무 수로는 관을 돌려 이어지는 물길을 계획하고, 어려운 연결에서 힌트를 사용할 수 있다는 공통점이 있습니다. Mobiloids의 공식 설명에는 밸브에서 용기로 물 보내기, 경험치에 따른 묶음 해제와 일일 도전이 나옵니다. 이 WeightPlay 게임은 샘에서 화단으로 이어지는 고정된 5×5 퍼즐 30개를 여섯 장으로 제공합니다. 실행 취소, 직접 회전해야 하는 힌트와 브라우저의 최소 회전 기록을 지원하며, 사용하지 않는 관을 모두 연결할 필요는 없습니다.",
+      "disclaimer": "판코의 대나무 수로는 WeightPlay의 독립 작품이며 Water Pipes의 공식 버전이 아닙니다. WeightPlay는 Mobiloids와 소속, 보증 또는 협력 관계가 없습니다.",
+      "sourceLabel": "Mobiloids의 Water Pipes 공식 설명"
+    },
+    "es": {
+      "heading": "Referencia de un puzle de tuberías similar",
+      "body": "Water Pipes, de Mobiloids, y Canal de bambú de Panko comparten la rotación de tubos, la planificación de un recorrido continuo y las pistas para conexiones difíciles. Mobiloids describe un objetivo de válvula a recipiente, paquetes desbloqueados con experiencia y desafíos diarios. Este juego de WeightPlay ofrece, en cambio, 30 puzles fijos de 5×5 del manantial al jardín, seis capítulos, Deshacer, pistas que requieren girar manualmente y mejores registros locales de giros. No exige conectar todos los tubos que no utilizas.",
+      "disclaimer": "Canal de bambú de Panko es una obra independiente de WeightPlay, no una versión oficial de Water Pipes. WeightPlay no está afiliado a Mobiloids ni cuenta con su respaldo o colaboración.",
+      "sourceLabel": "Mobiloids: descripción oficial de Water Pipes"
+    },
+    "pt-BR": {
+      "heading": "Referência de um quebra-cabeça de tubos semelhante",
+      "body": "Water Pipes, da Mobiloids, e Canal de Bambu do Panko compartilham a rotação de tubos e o planejamento de um caminho contínuo, com dicas para ligações difíceis. A Mobiloids descreve uma meta da válvula ao recipiente, pacotes liberados com experiência e desafios diários. Já este jogo do WeightPlay oferece 30 quebra-cabeças fixos de 5×5 da nascente ao canteiro, seis capítulos, Desfazer, dicas que exigem rotação manual e recordes de giros guardados no navegador. Não é necessário ligar todos os tubos não utilizados.",
+      "disclaimer": "Canal de Bambu do Panko é uma obra independente do WeightPlay, não uma versão oficial de Water Pipes. O WeightPlay não possui vínculo, endosso ou parceria com a Mobiloids.",
+      "sourceLabel": "Mobiloids: descrição oficial de Water Pipes"
+    },
+    "fr": {
+      "heading": "Référence à un puzzle de tuyaux similaire",
+      "body": "Water Pipes, de Mobiloids, et Canal de bambou de Panko demandent tous deux de tourner des tuyaux et de prévoir un trajet continu, avec des indices pour les raccords difficiles. Mobiloids décrit un objectif allant d’une vanne à un récipient, des packs débloqués par l’expérience et des défis quotidiens. Ce jeu WeightPlay propose plutôt 30 puzzles fixes de 5×5 entre une source et un parterre, six chapitres, l’annulation, des indices laissant la rotation au joueur et des records locaux de rotations. Raccorder tous les tuyaux inutilisés n’est pas nécessaire.",
+      "disclaimer": "Canal de bambou de Panko est une œuvre indépendante de WeightPlay, et non une version officielle de Water Pipes. WeightPlay n’a aucun lien d’affiliation, de soutien officiel ou de partenariat avec Mobiloids.",
+      "sourceLabel": "Mobiloids : présentation officielle de Water Pipes"
+    },
+    "de": {
+      "heading": "Vergleich mit einem ähnlichen Rohrrätsel",
+      "body": "Water Pipes von Mobiloids und Pankos Bambus-Wasserweg verbinden das Drehen von Rohren mit der Planung eines durchgehenden Wasserwegs; bei schwierigen Anschlüssen helfen Hinweise. Mobiloids beschreibt einen Weg vom Ventil zum Behälter, durch Erfahrung freigeschaltete Pakete und tägliche Herausforderungen. Dieses WeightPlay-Spiel bietet dagegen 30 feste 5×5-Rätsel von der Quelle zum Blumenbeet, sechs Kapitel, Rückgängig, Hinweise mit manueller Drehung und lokal gespeicherte Drehungsrekorde. Nicht alle unbenutzten Rohre müssen verbunden werden.",
+      "disclaimer": "Pankos Bambus-Wasserweg ist ein eigenständiges WeightPlay-Spiel und keine offizielle Version von Water Pipes. WeightPlay gehört nicht zu Mobiloids und wird von Mobiloids weder unterstützt noch als Partner geführt.",
+      "sourceLabel": "Mobiloids: offizielle Beschreibung von Water Pipes"
+    },
+    "it": {
+      "heading": "Riferimento a un rompicapo di tubi simile",
+      "body": "Water Pipes di Mobiloids e Canale di bambù di Panko richiedono entrambi di ruotare tubi e pianificare un percorso continuo, con suggerimenti per i raccordi difficili. Mobiloids descrive un obiettivo dalla valvola al recipiente, pacchetti sbloccati con l’esperienza e sfide giornaliere. Questo gioco WeightPlay propone invece 30 rompicapi fissi di 5×5 dalla sorgente all’aiuola, sei capitoli, Annulla, suggerimenti che lasciano al giocatore la rotazione e record di rotazioni salvati nel browser. Non occorre collegare tutti i tubi inutilizzati.",
+      "disclaimer": "Canale di bambù di Panko è un’opera indipendente di WeightPlay, non una versione ufficiale di Water Pipes. WeightPlay non è affiliato, approvato o associato a Mobiloids.",
+      "sourceLabel": "Mobiloids: descrizione ufficiale di Water Pipes"
+    },
+    "ru": {
+      "heading": "Сравнение с похожей головоломкой о трубах",
+      "body": "В Water Pipes от Mobiloids и игре «Бамбуковый канал Панко» нужно поворачивать трубы и планировать непрерывный путь воды; для сложных стыков доступны подсказки. Mobiloids описывает путь от вентиля к ёмкости, открытие наборов за опыт и ежедневные испытания. Эта игра WeightPlay предлагает 30 фиксированных задач 5×5 от источника к клумбе, шесть глав, отмену, подсказки без автоматического поворота и рекорды числа поворотов в браузере. Соединять все неиспользуемые трубы не нужно.",
+      "disclaimer": "«Бамбуковый канал Панко» — самостоятельная игра WeightPlay, а не официальная версия Water Pipes. WeightPlay не входит в Mobiloids, не одобрен этой компанией и не сотрудничает с ней.",
+      "sourceLabel": "Mobiloids: официальное описание Water Pipes"
+    },
+    "hi": {
+      "heading": "मिलती-जुलती नली पहेली से तुलना",
+      "body": "Mobiloids का Water Pipes और पैंको की बाँस नहर, दोनों में नलियाँ घुमाकर लगातार जलमार्ग की योजना बनाते हैं और कठिन जोड़ पर संकेत ले सकते हैं। Mobiloids का आधिकारिक विवरण वाल्व से पात्र तक पानी पहुँचाने, अनुभव से नए पैक खोलने और रोज़ की चुनौतियों का ज़िक्र करता है। इसके बजाय इस WeightPlay खेल में झरने से क्यारी तक की 30 निश्चित 5×5 पहेलियाँ, छह अध्याय, घुमाव वापस करने का विकल्प, खुद घुमाने वाले संकेत और ब्राउज़र में न्यूनतम घुमावों के रिकॉर्ड हैं। सभी गैरज़रूरी नलियाँ जोड़ना आवश्यक नहीं है।",
+      "disclaimer": "पैंको की बाँस नहर WeightPlay का स्वतंत्र खेल है, Water Pipes का आधिकारिक संस्करण नहीं। WeightPlay का Mobiloids से संबद्धता, समर्थन या साझेदारी का संबंध नहीं है।",
+      "sourceLabel": "Mobiloids: Water Pipes का आधिकारिक विवरण"
+    },
+    "ar": {
+      "heading": "مقارنة بلغز أنابيب مشابه",
+      "body": "تشترك Water Pipes من Mobiloids ومجرى بانكو الخيزراني في تدوير الأنابيب وتخطيط طريق ماء متصل، مع تلميحات للوصلات الصعبة. تصف Mobiloids هدفًا من الصمام إلى الوعاء، وحزمًا تُفتح بالخبرة، وتحديات يومية. أما لعبة WeightPlay هذه فتقدم 30 لغزًا ثابتًا بحجم 5×5 من النبع إلى الزهور، وستة فصول، وتراجعًا، وتلميحات تتطلب التدوير يدويًا، وأفضل أعداد تدوير محفوظة في المتصفح. لا يلزم توصيل جميع الأنابيب غير المستخدمة.",
+      "disclaimer": "مجرى بانكو الخيزراني عمل مستقل من WeightPlay وليس إصدارًا رسميًا من Water Pipes. لا توجد علاقة انتساب أو تأييد أو شراكة بين WeightPlay وMobiloids.",
+      "sourceLabel": "Mobiloids: الوصف الرسمي للعبة Water Pipes"
+    }
+  }
+};
+
+
+  // Canonical Rune v25 data is reapplied after legacy resources by both live and static owners.
+  function applyRuneTacticsGuideCorrections() {
+    const copies = window.WeightPlayRuneTacticsGuideCopy;
+    if (!copies) return;
+    const id = "animal-rune-tactics";
+    games[id] = {...games[id], ...copies.en};
+    for (const [code, copy] of Object.entries(copies)) {
+      localizedGames[code] ||= {};
+      localizedGames[code][id] = {...copy};
+      localizedGameplayProfiles[code] ||= {};
+      localizedGameplayProfiles[code][id] = {...copy};
+    }
+    gameplayProfiles[id].marketComparison = {
+      name: "Into the Breach", source: "https://subsetgames.com/itb.html",
+      locales: Object.fromEntries(Object.entries(copies).map(([code, copy]) => [code, copy.comparison]))
+    };
+  }
+  applyRuneTacticsGuideCorrections();
+  window.WeightPlayGameInfo.applyRuneTacticsGuideCorrections = applyRuneTacticsGuideCorrections;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", installMarketComparisonSync, { once: true });

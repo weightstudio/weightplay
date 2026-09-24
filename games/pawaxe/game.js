@@ -64,7 +64,7 @@ function localize(){
   $('#stageHint').textContent=t('stageHint');
   $('#allyDescription').textContent=cc().rosterHint;
   const sections=[[t('companion'),cc().rosterHint],[t('equipment'),`${t('dropRate')}: 2.5% → 7% · ${t('boss')}: 18%.`],[t('journey'),t('leaveText')]];
-  $('#guideDetails').replaceChildren(...sections.map(([h,p])=>{const s=document.createElement('section');const title=document.createElement('h3');title.textContent=h;const text=document.createElement('p');text.textContent=p;s.append(title,text);return s;}));
+  $('#guideDetails')?.replaceChildren(...sections.map(([h,p])=>{const s=document.createElement('section');const title=document.createElement('h3');title.textContent=h;const text=document.createElement('p');text.textContent=p;s.append(title,text);return s;}));
   frame.refresh();renderEquipment();renderCompanions();if(rail)rail.refresh();
 }
 function renderStage(){
@@ -289,7 +289,7 @@ document.addEventListener('keydown',e=>{
 });
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
 window.addEventListener('resize',fit);visualViewport?.addEventListener('resize',fit);
-window.addEventListener('pagehide',()=>{disposeRun();audio?.close();audio=null;});
+window.addEventListener('pagehide',()=>{disposeRun();});
 window.addEventListener('pageshow',e=>{if(e.persisted)show('main');});
 // Read-only local diagnostics: never grant progress or alter the simulation.
 if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.PawaxeDiagnostics=Object.freeze({snapshot:()=>({screen,state,modal:modalKind,stage:selected,node,hp:combat?.hp,energy:combat?.energy,time:combat?.time,auto:save.autoAttack,slashes:combat?.slashes,kills:runKills,drops:runDrops,progress:journey?.progress,completed:journey?.completed,unlocked:save.unlocked,coins:save.coins,raf:Boolean(raf),renderer:renderer?.metrics()||null,targets:combat?.alive().map(e=>({id:e.id,hp:e.hp,shield:e.shield,t:e.t,warn:e.warn,reflect:e.reflect}))||[]}),setBiome:index=>renderer?.setRegion(index)});

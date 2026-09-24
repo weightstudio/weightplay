@@ -115,3 +115,30 @@ button,a,select{font:inherit}
 #stageScreen .stage-card[aria-disabled="true"]{opacity:.6;cursor:not-allowed}
 #stageScreen .stage-tabs>button{height:44px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-active);color:var(--wp-ui-text);font-weight:700}
 @media(prefers-reduced-motion:reduce){#battleScreen .puzzle-cell{transition:none}}
+
+/* v13: visual children animate, control rectangles never do. */
+#battleScreen .puzzle-cell{overflow:hidden;position:relative;transition:none}
+#battleScreen .cell-face{display:grid;place-items:center;width:100%;height:100%;pointer-events:none}
+#battleScreen .battle-content{grid-template-rows:minmax(250px,1fr) calc(30px + var(--grove-layer-count,5) * 46px) 160px 52px}
+#battleScreen .puzzle-goals{grid-template-rows:18px 92px minmax(0,1fr);gap:4px}
+#battleScreen #clueList{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,44px);gap:4px}
+#battleScreen #clueList li{height:44px;min-height:0;display:block}
+#battleScreen .clue-action{display:flex;align-items:center;justify-content:center;gap:4px;box-sizing:border-box;width:100%;height:44px;min-width:44px;margin:0;padding:2px 4px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);color:inherit;font:600 13px/1.2 system-ui;cursor:pointer;touch-action:manipulation}
+#battleScreen .clue-action[aria-pressed="true"]{border-color:var(--wp-ui-gold);box-shadow:inset 0 0 0 1px var(--wp-ui-gold)}
+#battleScreen .clue-text{white-space:normal;overflow-wrap:anywhere}
+#battleScreen .layer-symbol,#battleScreen .clue-state,#battleScreen #resultGrade>span{display:inline-block}
+#battleScreen #resultGrade>span{color:var(--wp-ui-gold);font-size:26px;margin-inline:4px}
+@container grove-battle (min-width:580px) and (max-width:719px){
+ #battleScreen .battle-content{grid-template-rows:minmax(270px,1fr) 160px 52px}
+}
+@container grove-battle (min-width:720px){
+ #battleScreen .battle-content{grid-template-rows:minmax(0,1fr) 52px}
+ #battleScreen .puzzle-goals{grid-template-rows:18px 188px minmax(0,1fr)}
+ #battleScreen #clueList{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(4,44px)}
+}
+@media(prefers-reduced-motion:reduce){#battleScreen .cell-face,#battleScreen .layer-mini{animation:none!important;transition:none!important}}
+
+/* A ratio-sensitive board fills its declared logical play track. */
+#battleScreen .puzzle-board-wrap{container-type:size}
+#battleScreen .puzzle-board{width:min(100cqw,100cqh);height:min(100cqw,100cqh);max-height:none;flex:none}
+#battleScreen .puzzle-layer-list{grid-template-rows:repeat(var(--grove-layer-count,5),44px)}

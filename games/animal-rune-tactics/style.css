@@ -2813,3 +2813,52 @@ html body.wp-logical-battle-active.is-rune-playing .selected-card:focus-visible 
 @keyframes rune-chain-fade { 0% {opacity:1;} 55% {opacity:.9;} 100% {opacity:0;} }
 @media (prefers-reduced-motion:reduce) { .rune-chain-link { animation-duration:.12s; } }
 html body.wp-logical-battle-active.is-rune-playing .turn-roster { padding:0 !important; border:0 !important; }
+
+/* v24: game content only. Header, return, settings, Main and Stage nav use the shared frame. */
+#runeBattleScene { position:absolute; inset:0; width:100%; height:100%; overflow:hidden; }
+html body .rune-app #runeBattleScene > #gamePanel.game-panel {
+  position:relative!important; inset:auto!important; grid-row:2!important; width:100%!important; height:100%!important;
+  grid-template-columns:minmax(0,1fr)!important; grid-template-rows:34px 28px minmax(0,1fr) 188px!important;
+  padding:0!important; margin:0!important; gap:6px!important; container-type:size;
+}
+html body .rune-app #runeBattleScene .battle-shell { grid-column:1!important; grid-row:3!important; width:min(100%,calc((100cqh - 268px)*var(--board-ratio,.8)))!important; height:auto!important; align-self:center!important; justify-self:center!important; }
+html body .rune-app #runeBattleScene .battle-info { grid-column:1!important; grid-row:4!important; width:100%!important; height:188px!important; grid-template-rows:48px minmax(0,1fr) 54px!important; }
+html body .rune-app #runeBattleScene .turn-roster,html body .rune-app #runeBattleScene .turn-roster > div { height:48px!important; max-height:48px!important; }
+html body .rune-app #runeBattleScene .actions { height:54px!important; max-height:54px!important; grid-template-columns:repeat(4,minmax(0,1fr))!important; }
+html body .rune-app #runeBattleScene .actions button { height:54px!important; min-height:54px!important; max-height:54px!important; font-size:14px!important; }
+html body .rune-app #runeBattleScene .battle-status-row { display:flex!important; grid-row:2!important; grid-column:1!important; }
+html body .rune-app #runeBattleScene .game-panel > .hud { grid-row:1!important; grid-column:1!important; }
+html body .rune-app #runeBattleScene :is(.pause-panel,.result-panel,.reward-panel) { position:absolute!important; inset:0!important; width:100%!important; height:100%!important; max-width:none!important; max-height:none!important; transform:none!important; }
+html body .rune-app [data-wp-frame-copy] > [hidden] { display:none!important; }
+html body #stagePanel .mission-list { display:block!important; position:relative!important; width:100%!important; height:100%!important; padding:0!important; overflow:hidden!important; }
+html body #stagePanel .mission-grid { position:absolute!important; top:38%!important; transform:translateY(-50%)!important; width:100%!important; height:190px!important; min-height:190px!important; max-height:190px!important; padding-inline:max(0px,calc((100% - 264px)/2))!important; }
+html body #stagePanel .mission-card { flex-basis:264px!important; width:264px!important; min-width:264px!important; max-width:264px!important; height:190px!important; min-height:190px!important; max-height:190px!important; }
+html body #stagePanel .mission-briefing { position:absolute; inset:calc(38% + 110px) 12px 8px; min-height:0!important; overflow:auto!important; }
+html body #stagePanel .rune-stage-tabs { direction:ltr; }
+html body #stagePanel .rune-stage-tabs button { direction:inherit; }
+html body #runeBattleScene .damage-preview { position:absolute; inset:4px 4px auto auto; padding:2px 5px; border-radius:4px; background:#122c25; color:#ffe9a2; font:bold 12px/1.2 system-ui; pointer-events:none; }
+@media (min-width:700px) {
+  html body .rune-app #runeBattleScene > #gamePanel.game-panel { grid-template-columns:minmax(0,1fr) minmax(230px, .8fr)!important; grid-template-rows:34px 28px minmax(0,1fr)!important; }
+  html body .rune-app #runeBattleScene .battle-shell { grid-column:1!important; grid-row:1/4!important; width:min(100%,calc((100cqh - 16px)*var(--board-ratio,.8)))!important; }
+  html body .rune-app #runeBattleScene .game-panel > .hud { grid-column:2!important; }
+  html body .rune-app #runeBattleScene .battle-status-row { grid-column:2!important; }
+  html body .rune-app #runeBattleScene .battle-info { grid-column:2!important; grid-row:3!important; height:100%!important; grid-template-rows:68px minmax(0,1fr) 116px!important; }
+  html body .rune-app #runeBattleScene .turn-roster,html body .rune-app #runeBattleScene .turn-roster > div { height:68px!important; max-height:68px!important; }
+  html body .rune-app #runeBattleScene .actions { grid-template-columns:repeat(2,minmax(0,1fr))!important; height:116px!important; max-height:116px!important; }
+}
+@media (max-height:560px) and (orientation:landscape) {
+  html body .rune-app #runeBattleScene .battle-info { grid-template-rows:44px minmax(0,1fr) 98px!important; }
+  html body .rune-app #runeBattleScene .turn-roster,html body .rune-app #runeBattleScene .turn-roster > div { height:44px!important; max-height:44px!important; }
+  html body .rune-app #runeBattleScene .turn-roster-item { grid-template-columns:28px minmax(0,1fr)!important; padding:2px!important; }
+  html body .rune-app #runeBattleScene .turn-roster-item img { width:28px!important; height:28px!important; }
+  html body .rune-app #runeBattleScene .turn-roster-item :is(strong,small) { font-size:12px!important; line-height:14px!important; }
+  html body .rune-app #runeBattleScene .selected-card,html body .rune-app #runeBattleScene .selected-card :is(strong,span,b,i,small),html body .rune-app #runeBattleScene .enemy-trait-guide { font-size:13px!important; line-height:16px!important; }
+  html body .rune-app #runeBattleScene .actions { height:98px!important; max-height:98px!important; gap:4px!important; }
+  html body .rune-app #runeBattleScene .actions button { height:46px!important; min-height:46px!important; max-height:46px!important; }
+  html body .rune-app #runeBattleScene .terrain-mark { font-size:9px!important; }
+  html body #stagePanel .mission-grid { top:40%!important; }
+  html body #stagePanel .mission-briefing { display:none!important; }
+}
+@media (prefers-reduced-motion:reduce) { .rune-app *, .rune-app *::before, .rune-app *::after { scroll-behavior:auto!important; } }
+
+html body .rune-app #runeBattleScene > .overlay-panel { position:absolute!important; inset:0!important; width:100%!important; height:100%!important; max-width:none!important; max-height:none!important; transform:none!important; }
