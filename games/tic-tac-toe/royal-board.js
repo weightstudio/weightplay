@@ -2,7 +2,7 @@
 (function(){
  'use strict';
  const root=document.querySelector('#battleScreen .board');if(!root)return;
- document.body.classList.add('tic-royal-board');document.body.dataset.gameVersion='v23';
+ document.body.classList.add('tic-royal-board');document.body.dataset.gameVersion='v24';
  let previous=[];
  function decorate(){
   const cells=[...root.querySelectorAll('.tic-cell')],current=cells.map(cell=>cell.textContent.trim());

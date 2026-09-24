@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v23";
+  document.body.dataset.gameVersion = "v24";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main", settings: "Settings" },
@@ -142,7 +142,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       border: 0;
       border-radius: 0;
       background: transparent;
-      color: #0b3f63;
+      color: var(--wp-ui-text);
       box-shadow: none;
     }
     .tic-tac-toe-guide-details > summary {
