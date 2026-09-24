@@ -13167,6 +13167,182 @@
   gameplayProfiles["campus-dash"] ||= {};
   gameplayProfiles["campus-dash"].marketComparison = { name: "Subway Surfers", source: "https://sybogames.com/", locales: campusDashMarketComparisonCopy };
 
+  // Text Growth 1.3.0: Habitat Builder market comparison start
+  const habitatBuilderMarketComparisonCopy = {
+  "en": {
+    "heading": "Similar tile-placement landscape puzzle reference",
+    "tagsLabel": "Gameplay tags:",
+    "tags": [
+      "Strategic tile placement",
+      "Grid planning",
+      "Adjacency rules",
+      "Landscape puzzle"
+    ],
+    "body": "Both games center on placing landscape tiles thoughtfully. Toukana describes Dorfromantik as a peaceful building strategy and puzzle game where hexagonal tiles form an ever-growing village landscape, with varied biomes, unlockable tiles, and quests. Habitat Builder instead uses fixed 4×5 reserves with four tile types—water, meadow, forest, and shelter—and asks you to satisfy exact tile counts plus visible connectivity, edge, or adjacency rules. Blocked cells and a placement budget add constraints across 30 authored stages. It is a stage-based rule puzzle rather than an ever-expanding hex landscape with Dorfromantik's quests and high-score loop.",
+    "disclaimer": "Habitat Builder is an independent WeightPlay game. WeightPlay is not affiliated with, endorsed by, licensed by, or co-developing this game with Toukana Interactive or Dorfromantik.",
+    "sourceLabel": "Official Dorfromantik page by Toukana Interactive"
+  },
+  "zh-Hant": {
+    "heading": "相似地景鋪磚益智玩法參考",
+    "tagsLabel": "玩法標籤：",
+    "tags": [
+      "策略鋪磚",
+      "網格規劃",
+      "相鄰規則",
+      "地景益智"
+    ],
+    "body": "兩款遊戲都以有計畫地放置地景板塊為核心。Toukana 官方頁面將 Dorfromantik 描述為寧靜的建造策略與益智遊戲，用六角板塊逐步組成不斷延伸的村落地景，並包含多種生態區、可解鎖板塊與任務。本作則使用固定 4×5 保護區，只有水域、草地、森林、庇護所四種板塊；每關要同時符合精確數量與畫面明示的連通、邊緣或相鄰規則，後期還加入封鎖格與放置步數預算，共 30 個固定設計關卡。它是逐關驗證小型保護區的規則益智，不是持續擴張的六角地景，也沒有 Dorfromantik 的任務與高分循環。",
+    "disclaimer": "棲地建造師 是 WeightPlay 的獨立遊戲。WeightPlay 與 Toukana Interactive 或 Dorfromantik 沒有隸屬、背書、授權或共同開發關係。",
+    "sourceLabel": "Toukana Interactive 官方 Dorfromantik 頁面"
+  },
+  "zh-Hans": {
+    "heading": "相似景观铺砖益智玩法参考",
+    "tagsLabel": "玩法标签：",
+    "tags": [
+      "策略铺砖",
+      "网格规划",
+      "相邻规则",
+      "景观益智"
+    ],
+    "body": "两款游戏都以有计划地放置景观板块为核心。Toukana 官方页面将 Dorfromantik 描述为宁静的建造策略与益智游戏，用六角板块逐步组成不断延伸的村落景观，并包含多种生态区、可解锁板块和任务。本作则使用固定 4×5 保护区，只有水域、草地、森林和庇护所四种板块；每关要同时满足精确数量以及画面明确显示的连通、边缘或相邻规则，后期还会加入封锁格和放置步数预算，共 30 个固定设计关卡。它是逐关验证小型保护区的规则益智，并非持续扩张的六角景观，也没有 Dorfromantik 的任务与高分循环。",
+    "disclaimer": "栖地建造师 是 WeightPlay 的独立游戏。WeightPlay 与 Toukana Interactive 或 Dorfromantik 不存在隶属、背书、授权或共同开发关系。",
+    "sourceLabel": "Toukana Interactive 官方 Dorfromantik 页面"
+  },
+  "ja": {
+    "heading": "似た地形タイル配置パズルの参考",
+    "tagsLabel": "ゲームプレイタグ：",
+    "tags": [
+      "戦略的タイル配置",
+      "グリッド計画",
+      "隣接ルール",
+      "景観パズル"
+    ],
+    "body": "どちらも地形タイルを考えて配置することが中心です。Toukana の公式ページでは Dorfromantik を、六角形タイルで成長し続ける村の景観を作り、多様なバイオーム、アンロックできるタイル、クエストを楽しむ穏やかな建築ストラテジー／パズルと説明しています。本作は固定の4×5保護区を使い、水・草地・森・シェルターの4種類を配置して、正確な枚数と画面に示された連結・端・隣接条件を同時に満たします。後半では配置不可マスと手数上限も加わり、全30ステージです。広がり続ける六角形の景観やクエスト／ハイスコアを追う形式ではなく、小さな保護区をステージごとの規則で完成させるゲームです。",
+    "disclaimer": "ハビタット・ビルダー は WeightPlay の独立作品です。WeightPlay は Toukana Interactive または Dorfromantik と提携、推薦、許諾、共同開発の関係にありません。",
+    "sourceLabel": "Toukana Interactive 公式 Dorfromantik ページ"
+  },
+  "ko": {
+    "heading": "비슷한 지형 타일 배치 퍼즐 참고",
+    "tagsLabel": "게임플레이 태그:",
+    "tags": [
+      "전략적 타일 배치",
+      "격자 계획",
+      "인접 규칙",
+      "풍경 퍼즐"
+    ],
+    "body": "두 게임 모두 지형 타일을 계획해서 배치하는 것이 핵심입니다. Toukana 공식 페이지는 Dorfromantik를 육각형 타일로 계속 확장되는 마을 풍경을 만들고, 다양한 생물군계와 해금 타일, 퀘스트를 즐기는 평화로운 건설 전략·퍼즐 게임으로 설명합니다. 이 게임은 고정된 4×5 보호구역에서 물, 초원, 숲, 쉼터 네 종류의 타일을 사용하며 정확한 수량과 화면에 표시된 연결·가장자리·인접 조건을 함께 충족해야 합니다. 후반에는 막힌 칸과 배치 횟수 제한도 더해지며 총 30개의 고정 스테이지로 구성됩니다. 끝없이 확장되는 육각형 풍경이나 퀘스트·고득점 순환이 아니라, 작은 보호구역을 스테이지 규칙에 맞춰 완성하는 퍼즐입니다.",
+    "disclaimer": "서식지 빌더는 WeightPlay의 독립 게임입니다. WeightPlay는 Toukana Interactive 또는 Dorfromantik와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "sourceLabel": "Toukana Interactive 공식 Dorfromantik 페이지"
+  },
+  "es": {
+    "heading": "Referencia de un puzle similar de colocación de losetas de paisaje",
+    "tagsLabel": "Etiquetas de juego:",
+    "tags": [
+      "Colocación estratégica",
+      "Planificación en cuadrícula",
+      "Reglas de adyacencia",
+      "Puzle de paisaje"
+    ],
+    "body": "Ambos juegos giran en torno a colocar piezas de paisaje con planificación. La página oficial de Toukana describe Dorfromantik como un juego tranquilo de estrategia de construcción y puzles en el que losetas hexagonales forman un paisaje de aldea que crece sin parar, con biomas variados, nuevas losetas desbloqueables y misiones. Constructor de Hábitats usa en cambio reservas fijas de 4×5 con cuatro tipos de loseta —agua, pradera, bosque y refugio— y exige cumplir cantidades exactas junto con reglas visibles de conexión, borde o adyacencia. Las casillas bloqueadas y un presupuesto de colocaciones añaden restricciones a lo largo de 30 niveles diseñados. Es un puzle por niveles con reglas concretas, no un paisaje hexagonal en expansión con las misiones y la búsqueda de puntuación de Dorfromantik.",
+    "disclaimer": "Constructor de Hábitats es un juego independiente de WeightPlay. WeightPlay no está afiliado, respaldado, autorizado ni desarrollado conjuntamente con Toukana Interactive o Dorfromantik.",
+    "sourceLabel": "Página oficial de Dorfromantik de Toukana Interactive"
+  },
+  "pt-BR": {
+    "heading": "Referência de quebra-cabeça semelhante de colocação de peças de paisagem",
+    "tagsLabel": "Tags de jogabilidade:",
+    "tags": [
+      "Colocação estratégica",
+      "Planejamento em grade",
+      "Regras de adjacência",
+      "Quebra-cabeça de paisagem"
+    ],
+    "body": "Os dois jogos giram em torno de colocar peças de paisagem com planejamento. A página oficial da Toukana descreve Dorfromantik como um jogo tranquilo de estratégia de construção e quebra-cabeça em que peças hexagonais formam uma paisagem de vila que cresce continuamente, com biomas variados, novas peças desbloqueáveis e missões. Construtor de Habitats usa reservas fixas de 4×5 com quatro tipos de peça —água, campo, floresta e abrigo— e exige quantidades exatas junto de regras visíveis de conexão, borda ou adjacência. Casas bloqueadas e um limite de colocações acrescentam restrições ao longo de 30 fases projetadas. É um quebra-cabeça por fases com regras específicas, e não uma paisagem hexagonal em expansão com as missões e a busca por pontuação de Dorfromantik.",
+    "disclaimer": "Construtor de Habitats é um jogo independente da WeightPlay. A WeightPlay não é afiliada, endossada, licenciada nem co-desenvolvedora com a Toukana Interactive ou Dorfromantik.",
+    "sourceLabel": "Página oficial de Dorfromantik da Toukana Interactive"
+  },
+  "fr": {
+    "heading": "Référence d’un puzzle proche de placement de tuiles paysagères",
+    "tagsLabel": "Tags de gameplay :",
+    "tags": [
+      "Placement stratégique",
+      "Planification sur grille",
+      "Règles d’adjacence",
+      "Puzzle paysager"
+    ],
+    "body": "Les deux jeux reposent sur le placement réfléchi de tuiles de paysage. La page officielle de Toukana décrit Dorfromantik comme un jeu paisible de stratégie de construction et de puzzle où des tuiles hexagonales composent un paysage de village qui s’étend continuellement, avec plusieurs biomes, des tuiles à débloquer et des quêtes. Bâtisseur d’Habitats utilise plutôt des réserves fixes de 4×5 avec quatre types de tuiles —eau, prairie, forêt et abri— et demande de respecter des quantités précises ainsi que des règles visibles de connexion, de bord ou d’adjacence. Des cases bloquées et un budget de placements ajoutent des contraintes sur 30 niveaux conçus. Il s’agit d’un puzzle à règles par niveau, et non d’un paysage hexagonal en expansion avec les quêtes et la recherche de score de Dorfromantik.",
+    "disclaimer": "Bâtisseur d’Habitats est un jeu indépendant de WeightPlay. WeightPlay n’est ni affilié à Toukana Interactive ou Dorfromantik, ni approuvé ou licencié par eux, et il n’existe aucun développement conjoint.",
+    "sourceLabel": "Page officielle de Dorfromantik par Toukana Interactive"
+  },
+  "de": {
+    "heading": "Referenz für ein ähnliches Landschafts-Plättchenpuzzle",
+    "tagsLabel": "Gameplay-Tags:",
+    "tags": [
+      "Strategisches Plättchenlegen",
+      "Rasterplanung",
+      "Nachbarschaftsregeln",
+      "Landschaftspuzzle"
+    ],
+    "body": "In beiden Spielen steht das planvolle Platzieren von Landschaftsplättchen im Mittelpunkt. Toukana beschreibt Dorfromantik auf der offiziellen Seite als friedliches Aufbau- und Puzzlespiel, in dem sechseckige Plättchen eine ständig wachsende Dorflandschaft bilden; dazu kommen unterschiedliche Biome, freischaltbare Plättchen und Aufgaben. Lebensraum-Baumeister nutzt dagegen feste 4×5-Reservate mit vier Plättchentypen —Wasser, Wiese, Wald und Unterschlupf— und verlangt exakte Mengen sowie sichtbare Regeln zu Verbindung, Randlage oder Nachbarschaft. Gesperrte Felder und ein Platzierungsbudget erhöhen die Einschränkungen in 30 gestalteten Stufen. Es ist ein stufenbasiertes Regelpuzzle statt einer fortlaufend wachsenden Hex-Landschaft mit Dorfromantiks Aufgaben- und Highscore-Schleife.",
+    "disclaimer": "Lebensraum-Baumeister ist ein unabhängiges WeightPlay-Spiel. WeightPlay ist weder mit Toukana Interactive oder Dorfromantik verbunden noch von ihnen unterstützt, lizenziert oder gemeinsam entwickelt.",
+    "sourceLabel": "Offizielle Dorfromantik-Seite von Toukana Interactive"
+  },
+  "it": {
+    "heading": "Riferimento a un puzzle simile di tessere paesaggistiche",
+    "tagsLabel": "Tag di gioco:",
+    "tags": [
+      "Posizionamento strategico",
+      "Pianificazione su griglia",
+      "Regole di adiacenza",
+      "Puzzle paesaggistico"
+    ],
+    "body": "Entrambi i giochi ruotano attorno al posizionamento ragionato di tessere paesaggistiche. La pagina ufficiale di Toukana descrive Dorfromantik come un tranquillo gioco di strategia costruttiva e puzzle in cui tessere esagonali formano un paesaggio di villaggio in continua crescita, con biomi diversi, nuove tessere sbloccabili e missioni. Costruttore di Habitat usa invece riserve fisse 4×5 con quattro tipi di tessera —acqua, prato, foresta e rifugio— e richiede quantità esatte insieme a regole visibili di connessione, bordo o adiacenza. Celle bloccate e un limite di posizionamenti aggiungono vincoli in 30 livelli progettati. È un puzzle a regole per livelli, non un paesaggio esagonale in espansione con le missioni e la ricerca del punteggio di Dorfromantik.",
+    "disclaimer": "Costruttore di Habitat è un gioco indipendente di WeightPlay. WeightPlay non è affiliata, approvata, autorizzata o coinvolta in uno sviluppo congiunto con Toukana Interactive o Dorfromantik.",
+    "sourceLabel": "Pagina ufficiale di Dorfromantik di Toukana Interactive"
+  },
+  "ru": {
+    "heading": "Сравнение с похожей головоломкой про размещение ландшафтных плиток",
+    "tagsLabel": "Теги игрового процесса:",
+    "tags": [
+      "Стратегическое размещение",
+      "Планирование сетки",
+      "Правила соседства",
+      "Ландшафтная головоломка"
+    ],
+    "body": "Обе игры строятся вокруг продуманного размещения элементов ландшафта. На официальной странице Toukana Dorfromantik описывается как спокойная строительная стратегия и головоломка, где шестиугольные плитки образуют постоянно растущий деревенский пейзаж, а игрок открывает новые плитки, биомы и выполняет задания. Строитель среды вместо этого использует фиксированные заповедники 4×5 с четырьмя типами плиток —вода, луг, лес и укрытие— и требует одновременно выполнить точные количества и видимые правила связности, края или соседства. Заблокированные клетки и лимит размещений добавляют ограничения на протяжении 30 созданных уровней. Это поуровневая головоломка с явными правилами, а не бесконечно расширяющийся шестиугольный пейзаж с заданиями и погоней за очками Dorfromantik.",
+    "disclaimer": "Строитель среды — независимая игра WeightPlay. WeightPlay не связана с Toukana Interactive или Dorfromantik отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+    "sourceLabel": "Официальная страница Dorfromantik от Toukana Interactive"
+  },
+  "hi": {
+    "heading": "मिलते-जुलते लैंडस्केप टाइल-प्लेसमेंट पज़ल का संदर्भ",
+    "tagsLabel": "गेमप्ले टैग:",
+    "tags": [
+      "रणनीतिक टाइल प्लेसमेंट",
+      "ग्रिड योजना",
+      "सन्निकटता नियम",
+      "लैंडस्केप पज़ल"
+    ],
+    "body": "दोनों खेल सोच-समझकर लैंडस्केप टाइल रखने पर केंद्रित हैं। Toukana की आधिकारिक साइट Dorfromantik को एक शांत निर्माण-रणनीति और पज़ल खेल बताती है, जिसमें षट्कोणीय टाइलों से लगातार बढ़ता गाँव का दृश्य बनता है और अलग-अलग बायोम, अनलॉक होने वाली टाइलें तथा क्वेस्ट मिलते हैं। हैबिटैट बिल्डर इसके बजाय तय 4×5 रिज़र्व में पानी, घास का मैदान, जंगल और आश्रय—इन चार टाइल प्रकारों का उपयोग करता है और सटीक संख्या के साथ दिखाए गए कनेक्टिविटी, किनारे या सन्निकटता नियम पूरे करने होते हैं। बंद खाने और प्लेसमेंट सीमा 30 बनाए गए स्तरों में अतिरिक्त बाधाएँ जोड़ते हैं। यह स्तर-आधारित नियम पज़ल है, Dorfromantik जैसा लगातार फैलता षट्कोणीय लैंडस्केप, क्वेस्ट और हाई-स्कोर चक्र नहीं।",
+    "disclaimer": "हैबिटैट बिल्डर, WeightPlay का स्वतंत्र खेल है। WeightPlay का Toukana Interactive या Dorfromantik के साथ कोई संबद्धता, समर्थन, लाइसेंस या सह-विकास संबंध नहीं है।",
+    "sourceLabel": "Toukana Interactive का आधिकारिक Dorfromantik पृष्ठ"
+  },
+  "ar": {
+    "heading": "مرجع للعبة ألغاز مشابهة تعتمد على وضع بلاطات المناظر",
+    "tagsLabel": "وسوم أسلوب اللعب:",
+    "tags": [
+      "وضع البلاطات استراتيجياً",
+      "تخطيط الشبكة",
+      "قواعد التجاور",
+      "ألغاز المناظر"
+    ],
+    "body": "تتمحور اللعبتان حول وضع بلاطات المناظر بتخطيط مسبق. تصف صفحة Toukana الرسمية لعبة Dorfromantik بأنها لعبة هادئة تجمع بين البناء والاستراتيجية والألغاز، حيث تكوّن البلاطات السداسية منظراً قروياً يتوسع باستمرار، مع مناطق حيوية متنوعة وبلاطات قابلة للفتح ومهام. أما باني المواطن فيستخدم محميات ثابتة بحجم 4×5 وأربعة أنواع من البلاطات: الماء والمرج والغابة والمأوى، ويطلب تحقيق أعداد دقيقة إلى جانب قواعد ظاهرة للاتصال أو الحواف أو التجاور. تضيف الخانات المحجوبة وحدّ مرات الوضع قيوداً عبر 30 مرحلة مصممة. إنها أحجية مراحل بقواعد محددة، وليست منظراً سداسياً متوسعاً مع مهام Dorfromantik ودورة السعي إلى النقاط العالية.",
+    "disclaimer": "باني المواطن لعبة مستقلة من WeightPlay. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وToukana Interactive أو Dorfromantik.",
+    "sourceLabel": "صفحة Dorfromantik الرسمية من Toukana Interactive"
+  }
+};
+  gameplayProfiles["animal-habitat-builder"] ||= {};
+  gameplayProfiles["animal-habitat-builder"].marketComparison = { name: "Dorfromantik", source: "https://www.toukana.com/dorfromantik", locales: habitatBuilderMarketComparisonCopy };
+  // Text Growth 1.3.0: Habitat Builder market comparison end
+
   function installMarketComparisonSync() {
     if (marketComparisonObserver || !gameplayProfiles[currentGameId()]?.marketComparison ||
         !document.body || typeof MutationObserver === "undefined") return;
