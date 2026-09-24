@@ -67,14 +67,41 @@ body.wp-stage-select-active #stageBackBtn{width:54px!important;min-width:54px!im
   .anchor-example span{font-size:8px}
 }
 
-@media (min-width:700px) and (max-height:480px) and (orientation:landscape){
-  body .main-screen .wp-standard-main-composition>.wp-standard-main-poster{
+@media (min-width:700px){
+  body[data-game-id="animal-honey-shield"] .main-hero,
+  body[data-game-id="animal-honey-shield"] .wp-standard-main-composition{
+    grid-template-columns:420px minmax(0,1fr)!important;
+  }
+  body[data-game-id="animal-honey-shield"] .main-poster,
+  body[data-game-id="animal-honey-shield"] .wp-standard-main-poster,
+  body[data-game-id="animal-honey-shield"] .wp-standard-main-poster-media,
+  body[data-game-id="animal-honey-shield"] .wp-standard-main-poster-media>img,
+  body[data-game-id="animal-honey-shield"] .wp-standard-main-poster>img{
+    box-sizing:border-box!important;
     width:420px!important;
     min-width:420px!important;
     max-width:420px!important;
     height:420px!important;
     min-height:420px!important;
     max-height:420px!important;
-    align-self:center;
+    aspect-ratio:1!important;
   }
+  body[data-game-id="animal-honey-shield"] .wp-standard-main-copy{
+    height:420px!important;
+    min-height:420px!important;
+    max-height:420px!important;
+  }
+}
+
+body[data-game-id="animal-honey-shield"] .main-progress,
+body[data-game-id="animal-honey-shield"] .wp-standard-main-progress{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  height:42px!important;
+  min-height:42px!important;
+  max-height:42px!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
 }

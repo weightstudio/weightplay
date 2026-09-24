@@ -1,0 +1,118 @@
+/* Animal Lantern Guides — Interface 7 game-local cleanup.
+ * Shared frame/header/Stage/Battle/Result geometry stays owned by /src.
+ * This file only removes legacy duplicate content, styles Lantern-specific
+ * Stage-card internals, and owns the Battle leave confirmation surface.
+ */
+
+@layer wp-game-compat {
+  body[data-wp-game-id="animal-lantern-guides"] #mainScreen #eyebrow,
+  body[data-wp-game-id="animal-lantern-guides"] #mainScreen .guide-badge,
+  body[data-wp-game-id="animal-lantern-guides"] #mainScreen .solo-note,
+  body[data-wp-game-id="animal-lantern-guides"] #mainScreen + .promise-grid,
+  body[data-wp-game-id="animal-lantern-guides"] #mainScreen .promise-grid,
+  body[data-wp-game-id="animal-lantern-guides"] #bestLine,
+  body[data-wp-game-id="animal-lantern-guides"] #footer,
+  body[data-wp-game-id="animal-lantern-guides"] #stageScreen .stage-head > div,
+  body[data-wp-game-id="animal-lantern-guides"] #stageScreen .stage-summary,
+  body[data-wp-game-id="animal-lantern-guides"] #battleScreen .panel-head > div:nth-child(2) {
+    display: none !important;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] #mainScreen .hero-card {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-stage-chapter {
+    color: #52786d;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-stage-number {
+    display: grid;
+    place-items: center;
+    gap: 4px;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-stage-number strong {
+    font-size: 34px;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-stage-number span {
+    font-size: 12px;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-stage-rule {
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-dialog[hidden] {
+    display: none !important;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-dialog {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    background: rgba(7, 23, 38, .72);
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-card {
+    box-sizing: border-box;
+    width: min(480px, 100%);
+    max-height: calc(100% - 16px);
+    overflow: auto;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 18px;
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, .28);
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-card h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    line-height: 1.25;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-card p {
+    margin: 6px 0;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-actions button {
+    min-width: 0;
+    min-height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ink);
+    font-weight: 900;
+  }
+
+  body[data-wp-game-id="animal-lantern-guides"] .wp-lantern-leave-actions [data-leave-confirm] {
+    background: var(--night);
+    color: #fff;
+  }
+}

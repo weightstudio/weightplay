@@ -73,10 +73,6 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="road-crosser"] .game-in
    exact current acceptance issue while remaining scoped to that game. */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-balance-grove"] .game-page-info,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-balance-grove"] .game-info-section {border-radius:var(--wp-ui-radius)!important}
-/* Hollow Fit v6/I6 preserves the framed Guide radius required by its
-   exact current acceptance issue while remaining scoped to that game. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .game-page-info,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .game-info-section {border-radius:18px!important}
 /* Moonlight Workshop v7/I6 restores the framed Guide and its structured
    single-column sections after the shared Interface 7 contract is applied. */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-moonlight-workshop"] .game-page-info,
