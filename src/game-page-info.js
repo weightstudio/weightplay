@@ -12816,6 +12816,357 @@
   gameplayProfiles["tiny-weather-rescue"].marketComparison = { name: "Pepi Doctor", source: "https://www.pepiplay.com/pepi-doctor/", locales: helperQuestMarketComparisonCopy };
   // Text Growth 1.3.0: Helper Quest market comparison end
 
+  // Text Growth 1.3.0: Hidden Safari market comparison start
+  const hiddenSafariMarketComparisonCopy = {
+  "en": {
+    "heading": "Similar seek-and-find gameplay reference",
+    "tagsLabel": "Gameplay tags:",
+    "tags": [
+      "Seek and find",
+      "Visual scanning",
+      "Target-list matching",
+      "Animal puzzle"
+    ],
+    "body": "Both games ask you to scan a busy scene for hidden targets and use a target list to decide what still needs to be found. The official listing describes hand-drawn interactive miniature landscapes, 32 areas, 300+ targets and target hints. This WeightPlay game instead uses 30 fixed animal habitats with six picture targets per habitat, then adds Ranger Order, animal pairs, deeper camouflage, off-list visitors and moving patrols. Each habitat has two compass hints, stars and a browser-local best visible search time, with no countdown failure.",
+    "disclaimer": "Hidden Safari is an independent WeightPlay game. It is not affiliated with, endorsed by, licensed by, or co-developed with Hidden Folks B.V. or Hidden Folks.",
+    "sourceLabel": "Official Hidden Folks App Store listing"
+  },
+  "zh-Hant": {
+    "heading": "相似找找看玩法參考",
+    "tagsLabel": "玩法標籤：",
+    "tags": [
+      "找找看",
+      "視覺掃描",
+      "清單配對",
+      "動物益智"
+    ],
+    "body": "兩款遊戲都要在資訊豐富的場景中掃描隱藏目標，並依目標清單判斷還缺哪些項目。官方商店頁說明 Hidden Folks 使用手繪、可互動的微型場景，包含 32 個區域、300 多個目標與目標提示。本作則使用 30 個固定設計的動物棲地，每關有六張圖片目標，之後逐步加入巡護順序、動物雙雙、深層偽裝、清單外訪客與移動巡遊。每關有兩次羅盤提示、星星與瀏覽器本機最佳搜尋時間，而且沒有倒數失敗。",
+    "disclaimer": "本遊戲是 WeightPlay 的獨立作品，與 Hidden Folks B.V. 或 Hidden Folks 沒有隸屬、背書、授權或共同開發關係。",
+    "sourceLabel": "Hidden Folks 官方 App Store 頁面"
+  },
+  "zh-Hans": {
+    "heading": "相似寻物玩法参考",
+    "tagsLabel": "玩法标签：",
+    "tags": [
+      "寻物",
+      "视觉扫描",
+      "清单配对",
+      "动物益智"
+    ],
+    "body": "两款游戏都需要在信息丰富的场景中扫描隐藏目标，并根据目标清单判断还有哪些项目没有找到。官方商店页面说明 Hidden Folks 使用手绘、可互动的微型场景，包含 32 个区域、300 多个目标与目标提示。本作则使用 30 个固定设计的动物栖息地，每关有六张图片目标，之后逐步加入巡护顺序、成对动物、更深伪装、清单外访客和移动巡游。每关有两次罗盘提示、星级与浏览器本地最佳搜索时间，而且没有倒计时失败。",
+    "disclaimer": "本游戏是 WeightPlay 的独立作品，与 Hidden Folks B.V. 或 Hidden Folks 不存在隶属、背书、授权或共同开发关系。",
+    "sourceLabel": "Hidden Folks 官方 App Store 页面"
+  },
+  "ja": {
+    "heading": "似た探しものゲームの参考",
+    "tagsLabel": "ゲームプレイタグ：",
+    "tags": [
+      "探しもの",
+      "視覚スキャン",
+      "リスト照合",
+      "動物パズル"
+    ],
+    "body": "どちらも情報量の多い場面を見渡して隠れた対象を探し、ターゲット一覧から残りを判断する遊びです。公式ストア説明では Hidden Folks は手描きで操作できるミニチュア風景を使い、32エリア、300以上の対象、ターゲットのヒントを収録しています。本作は30個の固定された動物の生息地で、各ステージに6枚の画像ターゲットがあり、レンジャー順、同種ペア、深いカモフラージュ、リスト外の訪問動物、移動する巡回対象が段階的に加わります。各ステージにはコンパスヒントが2回、星評価とブラウザー内の自己ベスト時間があり、時間切れによる失敗はありません。",
+    "disclaimer": "本作は WeightPlay の独立作品です。Hidden Folks B.V. または Hidden Folks の公式作品ではなく、提携、推薦、許諾、共同開発の関係もありません。",
+    "sourceLabel": "Hidden Folks 公式 App Store 掲載ページ"
+  },
+  "ko": {
+    "heading": "비슷한 숨은 대상 찾기 게임 참고",
+    "tagsLabel": "게임플레이 태그:",
+    "tags": [
+      "숨은 대상 찾기",
+      "시각 탐색",
+      "목록 대조",
+      "동물 퍼즐"
+    ],
+    "body": "두 게임 모두 정보가 많은 장면을 훑어 숨은 목표를 찾고, 목표 목록을 보며 무엇이 남았는지 판단합니다. 공식 스토어 설명에 따르면 Hidden Folks는 손으로 그린 상호작용형 미니어처 풍경, 32개 구역, 300개 이상의 목표와 목표 힌트를 제공합니다. 이 WeightPlay 게임은 30개의 고정 동물 서식지에서 스테이지마다 사진 목표 6개를 찾으며, 순서 찾기, 같은 동물 쌍, 더 짙은 위장, 목록 밖 방문 동물, 움직이는 순찰 목표가 차례로 추가됩니다. 각 서식지에는 나침반 힌트 2회, 별 평가, 브라우저 로컬 최고 탐색 시간이 있고 시간 초과 실패는 없습니다.",
+    "disclaimer": "이 게임은 WeightPlay의 독립 작품입니다. Hidden Folks B.V. 또는 Hidden Folks와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "sourceLabel": "Hidden Folks 공식 App Store 페이지"
+  },
+  "es": {
+    "heading": "Referencia de juego de buscar y encontrar similar",
+    "tagsLabel": "Etiquetas de juego:",
+    "tags": [
+      "Buscar y encontrar",
+      "Exploración visual",
+      "Comparación con lista",
+      "Puzle de animales"
+    ],
+    "body": "Ambos juegos piden recorrer visualmente una escena llena de detalles para localizar objetivos ocultos y consultar una lista para saber cuáles faltan. La ficha oficial describe Hidden Folks como paisajes en miniatura dibujados a mano e interactivos, con 32 zonas, más de 300 objetivos y pistas para los objetivos. Este juego de WeightPlay usa 30 hábitats de animales fijos con seis objetivos fotográficos por hábitat y añade de forma gradual orden de búsqueda, parejas de animales, camuflaje más intenso, visitantes fuera de la lista y patrullas móviles. Cada hábitat ofrece dos pistas de brújula, estrellas y mejor tiempo local del navegador, sin derrota por cuenta atrás.",
+    "disclaimer": "Este juego es una obra independiente de WeightPlay. No está afiliado a Hidden Folks B.V. ni a Hidden Folks, ni cuenta con su respaldo o licencia, ni se ha desarrollado en colaboración con ellos.",
+    "sourceLabel": "Ficha oficial de Hidden Folks en App Store"
+  },
+  "pt-BR": {
+    "heading": "Referência de jogabilidade semelhante de procurar e encontrar",
+    "tagsLabel": "Tags de jogabilidade:",
+    "tags": [
+      "Procurar e encontrar",
+      "Varredura visual",
+      "Comparação com lista",
+      "Quebra-cabeça de animais"
+    ],
+    "body": "Os dois jogos pedem para examinar uma cena cheia de detalhes em busca de alvos escondidos e consultar uma lista para saber o que ainda falta. A página oficial descreve Hidden Folks como paisagens em miniatura desenhadas à mão e interativas, com 32 áreas, mais de 300 alvos e dicas de alvo. Este jogo da WeightPlay usa 30 habitats fixos de animais com seis alvos fotográficos por habitat e acrescenta aos poucos ordem de guarda, pares de animais, camuflagem mais profunda, visitantes fora da lista e patrulhas móveis. Cada habitat oferece duas dicas de bússola, estrelas e melhor tempo local do navegador, sem derrota por contagem regressiva.",
+    "disclaimer": "Este jogo é uma criação independente da WeightPlay. Não tem afiliação, endosso, licença ou desenvolvimento conjunto com Hidden Folks B.V. ou Hidden Folks.",
+    "sourceLabel": "Página oficial de Hidden Folks na App Store"
+  },
+  "fr": {
+    "heading": "Référence de cherche-et-trouve au gameplay proche",
+    "tagsLabel": "Tags de gameplay :",
+    "tags": [
+      "Cherche-et-trouve",
+      "Balayage visuel",
+      "Comparaison de liste",
+      "Puzzle d’animaux"
+    ],
+    "body": "Les deux jeux demandent de parcourir une scène riche en détails pour repérer des cibles cachées et de consulter une liste afin de savoir ce qu’il reste à trouver. La fiche officielle décrit Hidden Folks comme des paysages miniatures dessinés à la main et interactifs, avec 32 zones, plus de 300 cibles et des indices liés aux cibles. Ce jeu WeightPlay propose plutôt 30 habitats d’animaux fixes avec six cibles photo par habitat, puis ajoute progressivement un ordre de recherche, des paires d’animaux, un camouflage renforcé, des visiteurs hors liste et des patrouilles mobiles. Chaque habitat offre deux indices de boussole, des étoiles et un meilleur temps local au navigateur, sans échec sur compte à rebours.",
+    "disclaimer": "Ce jeu est une création indépendante de WeightPlay. Aucune affiliation, approbation, licence ou collaboration de développement ne lie ce jeu à Hidden Folks B.V. ou à Hidden Folks.",
+    "sourceLabel": "Fiche officielle de Hidden Folks sur l’App Store"
+  },
+  "de": {
+    "heading": "Referenz für ein ähnliches Suchspiel",
+    "tagsLabel": "Gameplay-Tags:",
+    "tags": [
+      "Suchen und Finden",
+      "Visuelles Absuchen",
+      "Listenabgleich",
+      "Tierpuzzle"
+    ],
+    "body": "In beiden Spielen wird eine detailreiche Szene nach versteckten Zielen abgesucht; eine Zielliste zeigt, was noch fehlt. Der offizielle Store-Eintrag beschreibt Hidden Folks als handgezeichnete, interaktive Miniaturlandschaften mit 32 Gebieten, mehr als 300 Zielen und Zielhinweisen. Dieses WeightPlay-Spiel verwendet stattdessen 30 fest entworfene Tierlebensräume mit sechs Bildzielen pro Lebensraum und ergänzt schrittweise Ranger-Reihenfolge, Tierpaare, stärkere Tarnung, Besucher außerhalb der Liste und bewegliche Patrouillen. Jeder Lebensraum bietet zwei Kompasshinweise, Sterne und eine browserlokale Bestzeit für die sichtbare Suche; ein Countdown kann keinen Fehlschlag auslösen.",
+    "disclaimer": "Dieses Spiel ist ein eigenständiges Werk von WeightPlay. Es besteht keine geschäftliche Verbindung zu Hidden Folks B.V. oder Hidden Folks; das Spiel wurde weder von ihnen unterstützt oder lizenziert noch gemeinsam mit ihnen entwickelt.",
+    "sourceLabel": "Offizieller Hidden-Folks-Eintrag im App Store"
+  },
+  "it": {
+    "heading": "Riferimento a un cerca-e-trova con gameplay simile",
+    "tagsLabel": "Tag di gioco:",
+    "tags": [
+      "Cerca e trova",
+      "Scansione visiva",
+      "Confronto con elenco",
+      "Rompicapo di animali"
+    ],
+    "body": "Entrambi i giochi chiedono di esaminare una scena ricca di dettagli per trovare obiettivi nascosti e di consultare un elenco per capire cosa manca. La scheda ufficiale descrive Hidden Folks come paesaggi in miniatura disegnati a mano e interattivi, con 32 aree, oltre 300 obiettivi e suggerimenti per gli obiettivi. Questo gioco WeightPlay usa invece 30 habitat animali fissi con sei obiettivi fotografici per habitat e aggiunge gradualmente ordine di ricerca, coppie di animali, mimetizzazione più profonda, visitatori fuori elenco e pattuglie mobili. Ogni habitat offre due suggerimenti bussola, stelle e miglior tempo locale del browser, senza sconfitta per conto alla rovescia.",
+    "disclaimer": "Questo gioco è un’opera indipendente di WeightPlay. Non è affiliato a Hidden Folks B.V. o Hidden Folks, non gode della loro approvazione o licenza e non è stato sviluppato in collaborazione con loro.",
+    "sourceLabel": "Pagina ufficiale di Hidden Folks sull’App Store"
+  },
+  "ru": {
+    "heading": "Сравнение с похожей игрой на поиск объектов",
+    "tagsLabel": "Метки игрового процесса:",
+    "tags": [
+      "Поиск объектов",
+      "Визуальное сканирование",
+      "Сверка со списком",
+      "Головоломка с животными"
+    ],
+    "body": "В обеих играх нужно внимательно осматривать насыщенную деталями сцену, искать скрытые цели и сверяться со списком оставшихся объектов. В официальном описании Hidden Folks указаны нарисованные от руки интерактивные миниатюрные пейзажи, 32 области, более 300 целей и подсказки к целям. Эта игра WeightPlay использует 30 фиксированных мест обитания животных с шестью фотозадачами в каждом и постепенно добавляет обязательный порядок, пары животных, более глубокую маскировку, посетителей вне списка и движущиеся патрули. На каждой локации есть две подсказки-компаса, звёзды и локальное лучшее время поиска; проигрыша по таймеру нет.",
+    "disclaimer": "Это самостоятельная игра WeightPlay. Она не связана с Hidden Folks B.V. или Hidden Folks, не одобрена и не лицензирована ими и не разработана совместно с ними.",
+    "sourceLabel": "Официальная страница Hidden Folks в App Store"
+  },
+  "hi": {
+    "heading": "मिलते-जुलते खोजो-और-पाओ गेम का संदर्भ",
+    "tagsLabel": "गेमप्ले टैग:",
+    "tags": [
+      "खोजो और पाओ",
+      "दृश्य स्कैनिंग",
+      "सूची मिलान",
+      "पशु पहेली"
+    ],
+    "body": "दोनों खेलों में विवरण से भरे दृश्य को ध्यान से देखकर छिपे लक्ष्य खोजने होते हैं और लक्ष्य-सूची से पता चलता है कि क्या बाकी है। आधिकारिक स्टोर विवरण में Hidden Folks को हाथ से बनाए गए इंटरैक्टिव लघु दृश्यों वाला खेल बताया गया है, जिसमें 32 क्षेत्र, 300 से अधिक लक्ष्य और लक्ष्य-संकेत हैं। यह WeightPlay खेल इसके बजाय 30 तय पशु आवासों में हर चरण पर छह चित्र-लक्ष्य देता है और आगे चलकर तय खोज-क्रम, पशु जोड़ियाँ, गहरा छद्मावरण, सूची से बाहर आगंतुक और चलती गश्त जोड़ता है। हर आवास में दो कम्पास संकेत, सितारे और ब्राउज़र में रखा सबसे कम खोज समय है; उलटी गिनती से हार नहीं होती।",
+    "disclaimer": "यह WeightPlay का स्वतंत्र खेल है। इसका Hidden Folks B.V. या Hidden Folks से कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+    "sourceLabel": "Hidden Folks की आधिकारिक App Store सूची"
+  },
+  "ar": {
+    "heading": "مرجع للعب بحث وعثور مشابه",
+    "tagsLabel": "وسوم أسلوب اللعب:",
+    "tags": [
+      "البحث والعثور",
+      "المسح البصري",
+      "مطابقة القائمة",
+      "لغز الحيوانات"
+    ],
+    "body": "تطلب اللعبتان تفحّص مشهد غني بالتفاصيل للعثور على أهداف مخفية، مع استخدام قائمة الأهداف لمعرفة ما تبقّى. يصف إدراج المتجر الرسمي Hidden Folks بأنه مناظر مصغرة تفاعلية مرسومة يدويًا، وفيه 32 منطقة وأكثر من 300 هدف وتلميحات للأهداف. أما لعبة WeightPlay هذه فتستخدم 30 موطنًا ثابت التصميم للحيوانات، وفي كل موطن ستة أهداف مصورة، ثم تضيف تدريجيًا ترتيب الحارس وأزواج الحيوانات وتمويهًا أعمق وزوارًا خارج القائمة ودوريات متحركة. لكل موطن تلميحا بوصلة ونجوم وأفضل وقت بحث محفوظ محليًا في المتصفح، ولا توجد خسارة بسبب عد تنازلي.",
+    "disclaimer": "هذه اللعبة عمل مستقل من WeightPlay، ولا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك مع Hidden Folks B.V. أو Hidden Folks.",
+    "sourceLabel": "إدراج Hidden Folks الرسمي في App Store"
+  }
+};
+  gameplayProfiles["animal-hidden-safari"] ||= {};
+  gameplayProfiles["animal-hidden-safari"].marketComparison = { name: "Hidden Folks", source: "https://apps.apple.com/us/app/hidden-folks/id1133544923", locales: hiddenSafariMarketComparisonCopy };
+  // Text Growth 1.3.0: Hidden Safari market comparison end
+
+  // Text Growth 1.3.0: Safari Dash comparison, source-owned and statically generated.
+  const campusDashMarketComparisonCopy = {
+  "en": {
+    "heading": "Similar three-lane runner reference",
+    "tagsLabel": "Gameplay tags:",
+    "tags": [
+      "Three-lane running",
+      "Swipe lane changes",
+      "Obstacle dodging",
+      "Collect-and-combo scoring"
+    ],
+    "disclaimer": "Safari Dash is an independent WeightPlay game and is not affiliated with, endorsed by, authorized by, or co-developed with SYBO or Subway Surfers.",
+    "body": "Subway Surfers is a useful named reference because both games center on quick lane changes, dodging incoming hazards, and collecting items while a run stays in motion. SYBO describes Subway Surfers as an endless runner where players escape the guard, avoid oncoming trains, and collect special hunt tokens. Safari Dash is not an endless chase: it uses 30 authored timed routes across six safari regions, five objective families, star-combo scoring, two-lane gates, sticky mud, fixed Guardian patterns, local Top 5 scores, and route-by-route browser progress.",
+    "sourceLabel": "Official source: SYBO — Subway Surfers"
+  },
+  "zh-Hant": {
+    "heading": "相似三線跑酷玩法參考",
+    "tagsLabel": "玩法標籤：",
+    "tags": [
+      "三線跑酷",
+      "滑動換道",
+      "障礙閃避",
+      "收集與連擊計分"
+    ],
+    "disclaimer": "草原閃電跑是 WeightPlay 的獨立作品，與 SYBO 或 Subway Surfers 沒有隸屬、背書、授權或共同開發關係。",
+    "body": "《Subway Surfers》可作為具名玩法參考，因為兩款遊戲都要求快速換道、閃避迎面障礙，並在持續前進時收集物件。SYBO 官方將 Subway Surfers 說明為無盡跑酷：玩家要逃離守衛、避開迎面火車並收集特殊活動代幣。草原閃電跑並不是無盡追逐；它有六大草原區域、30 條固定設計的計時路線、五種目標、星星連擊計分、雙路障礙門、黏滑泥漥、固定守護者陣型、本機前 5 名與逐關瀏覽器進度。",
+    "sourceLabel": "官方來源：SYBO — Subway Surfers"
+  },
+  "zh-Hans": {
+    "heading": "相似三线跑酷玩法参考",
+    "tagsLabel": "玩法标签：",
+    "tags": [
+      "三线跑酷",
+      "滑动换道",
+      "障碍闪避",
+      "收集与连击计分"
+    ],
+    "disclaimer": "草原闪电跑是 WeightPlay 的独立作品，与 SYBO 或 Subway Surfers 没有隶属、背书、授权或共同开发关系。",
+    "body": "《Subway Surfers》可作为具名玩法参考，因为两款游戏都要求快速换道、躲避迎面障碍，并在持续前进时收集物件。SYBO 官方将 Subway Surfers 说明为无尽跑酷：玩家要逃离守卫、避开迎面火车并收集特殊活动代币。草原闪电跑并不是无尽追逐；它有六大草原区域、30 条固定设计的计时路线、五种目标、星星连击计分、双路障碍门、黏滑泥地、固定守护者阵型、本机前 5 名与逐关浏览器进度。",
+    "sourceLabel": "官方来源：SYBO — Subway Surfers"
+  },
+  "ja": {
+    "heading": "類似する3レーンランナーの参考作品",
+    "tagsLabel": "ゲームプレイタグ：",
+    "tags": [
+      "3レーンラン",
+      "スワイプでレーン移動",
+      "障害物回避",
+      "収集とコンボ得点"
+    ],
+    "disclaimer": "「キャンパス・サファリダッシュ」は WeightPlay の独立作品であり、SYBO または Subway Surfers との提携、推奨、許諾、共同開発関係はありません。",
+    "body": "Subway Surfers は、走行中に素早くレーンを変え、迫る障害物を避け、アイテムを集める点で共通するため、具体的な比較対象になります。SYBO は Subway Surfers を、ガードから逃げ、向かってくる列車を避け、特別なハントトークンを集めるエンドレスランナーとして紹介しています。「キャンパス・サファリダッシュ」はエンドレスチェイスではなく、6つのサファリ地域に30本の手作りタイム制ルート、5種類の目標、スターコンボ得点、2レーンゲート、粘る泥、固定のガーディアンパターン、端末内の上位5件の記録、ルート単位のブラウザ進行を備えています。",
+    "sourceLabel": "公式情報：SYBO — Subway Surfers"
+  },
+  "ko": {
+    "heading": "유사한 3레인 러너 참고작",
+    "tagsLabel": "게임플레이 태그:",
+    "tags": [
+      "3레인 러닝",
+      "스와이프 차선 변경",
+      "장애물 회피",
+      "수집·콤보 점수"
+    ],
+    "disclaimer": "사파리 대시는 WeightPlay의 독립 게임이며 SYBO 또는 Subway Surfers와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+    "body": "Subway Surfers는 달리는 동안 빠르게 차선을 바꾸고, 다가오는 장애물을 피하며, 아이템을 모은다는 공통점 때문에 구체적인 비교 참고작입니다. SYBO는 Subway Surfers를 경비원을 피해 달리고, 마주 오는 기차를 피하며, 특별한 헌트 토큰을 모으는 엔드리스 러너로 설명합니다. 사파리 대시는 끝없는 추격전이 아니라 6개 사파리 지역의 30개 설계된 제한시간 루트, 5가지 목표 유형, 별 콤보 점수, 2차선 게이트, 끈적한 진흙, 고정 수호자 패턴, 기기 내 상위 5개 점수와 루트별 브라우저 진행을 사용합니다.",
+    "sourceLabel": "공식 출처: SYBO — Subway Surfers"
+  },
+  "es": {
+    "heading": "Referencia de runner de tres carriles similar",
+    "tagsLabel": "Etiquetas de jugabilidad:",
+    "tags": [
+      "Carrera de tres carriles",
+      "Cambio de carril por deslizamiento",
+      "Esquiva de obstáculos",
+      "Colección y combos"
+    ],
+    "disclaimer": "Carrera Relámpago Animal es un juego independiente de WeightPlay y no está afiliado, respaldado, autorizado ni codesarrollado por SYBO o Subway Surfers.",
+    "body": "Subway Surfers sirve como referencia concreta porque ambos juegos se centran en cambiar de carril con rapidez, esquivar peligros que llegan de frente y recoger objetos sin dejar de correr. SYBO describe Subway Surfers como un juego de carrera sin fin en el que se huye del guardia, se evitan trenes que vienen de frente y se recogen fichas especiales de caza. Carrera Relámpago Animal no es una persecución infinita: ofrece 30 rutas cronometradas diseñadas a mano en seis regiones de safari, cinco tipos de objetivo, puntuación por combos de estrellas, puertas de dos carriles, barro pegajoso, patrones fijos de los guardianes, una clasificación local de cinco puestos y progreso por ruta guardado en el navegador.",
+    "sourceLabel": "Fuente oficial: SYBO — Subway Surfers"
+  },
+  "pt-BR": {
+    "heading": "Referência de corrida semelhante em três faixas",
+    "tagsLabel": "Tags de jogabilidade:",
+    "tags": [
+      "Corrida em três faixas",
+      "Troca de faixa por deslize",
+      "Desvio de obstáculos",
+      "Coleta e combos"
+    ],
+    "disclaimer": "Safari Dash é um jogo independente da WeightPlay e não é afiliado, endossado, autorizado nem codesenvolvido pela SYBO ou por Subway Surfers.",
+    "body": "Subway Surfers é uma referência concreta porque os dois jogos giram em torno de trocar de faixa rapidamente, desviar de perigos que vêm pela frente e coletar itens sem parar a corrida. A SYBO descreve Subway Surfers como um jogo de corrida sem fim em que o jogador foge do guarda, evita trens em sentido contrário e coleta fichas especiais de caça. Safari Dash não é uma perseguição infinita: ele usa 30 rotas cronometradas autorais em seis regiões de safári, cinco tipos de objetivo, pontuação por combos de estrelas, portões de duas faixas, lama pegajosa, padrões fixos dos guardiões, cinco melhores pontuações locais e progresso por rota salvo no navegador.",
+    "sourceLabel": "Fonte oficial: SYBO — Subway Surfers"
+  },
+  "fr": {
+    "heading": "Référence de runner similaire à trois voies",
+    "tagsLabel": "Tags de gameplay :",
+    "tags": [
+      "Course à trois voies",
+      "Changement de voie par balayage",
+      "Esquive d’obstacles",
+      "Collecte et combos"
+    ],
+    "disclaimer": "Safari Dash est un jeu indépendant de WeightPlay, sans affiliation, approbation, autorisation ni codéveloppement avec SYBO ou Subway Surfers.",
+    "body": "Subway Surfers constitue une référence concrète car les deux jeux reposent sur des changements de voie rapides, l’esquive de dangers arrivant de face et la collecte d’objets pendant la course. SYBO présente Subway Surfers comme un jeu de course sans fin où il faut fuir le gardien, éviter les trains qui arrivent et ramasser des jetons de chasse spéciaux. Safari Dash n’est pas une poursuite sans fin : il propose 30 parcours chronométrés conçus à la main dans six régions de safari, cinq familles d’objectifs, des combos d’étoiles, des portiques bloquant deux voies, de la boue collante, des configurations fixes des gardiens, un classement local des cinq meilleurs scores et une progression par parcours enregistrée dans le navigateur.",
+    "sourceLabel": "Source officielle : SYBO — Subway Surfers"
+  },
+  "de": {
+    "heading": "Referenz für ähnliche Drei-Spuren-Runner",
+    "tagsLabel": "Gameplay-Tags:",
+    "tags": [
+      "Drei-Spuren-Lauf",
+      "Spurwechsel per Wischgeste",
+      "Hindernissen ausweichen",
+      "Sammel- und Kombowertung"
+    ],
+    "disclaimer": "Safari Dash ist ein eigenständiges Spiel von WeightPlay. Es besteht keine geschäftliche Verbindung zu SYBO oder Subway Surfers. Das Spiel wurde weder von SYBO unterstützt oder lizenziert noch gemeinsam mit SYBO entwickelt.",
+    "body": "Subway Surfers ist eine konkrete Vergleichsreferenz, weil beide Spiele schnelle Spurwechsel, das Ausweichen vor entgegenkommenden Gefahren und das Sammeln von Objekten während des Laufens verbinden. SYBO beschreibt Subway Surfers als Endless Runner, in dem man vor dem Wachmann flieht, entgegenkommenden Zügen ausweicht und besondere Hunt-Tokens sammelt. Safari Dash ist keine endlose Verfolgung: Es bietet 30 handgestaltete Zeitrouten in sechs Safari-Regionen, fünf Zielfamilien, Stern-Combo-Wertung, Zwei-Spuren-Tore, klebrigen Schlamm, feste Wächter-Muster, eine lokale Bestenliste mit fünf Einträgen und routenweisen Browser-Fortschritt.",
+    "sourceLabel": "Offizielle Quelle: SYBO — Subway Surfers"
+  },
+  "it": {
+    "heading": "Riferimento per runner simili a tre corsie",
+    "tagsLabel": "Tag di gameplay:",
+    "tags": [
+      "Corsa su tre corsie",
+      "Cambio corsia con scorrimento",
+      "Schivata degli ostacoli",
+      "Raccolta e combo"
+    ],
+    "disclaimer": "Safari Dash è un gioco indipendente di WeightPlay e non è affiliato, approvato, autorizzato o sviluppato congiuntamente da SYBO o Subway Surfers.",
+    "body": "Subway Surfers è un riferimento concreto perché entrambi i giochi ruotano attorno a rapidi cambi di corsia, ostacoli in arrivo da evitare e oggetti da raccogliere mentre la corsa continua. SYBO descrive Subway Surfers come un gioco di corsa senza fine in cui si fugge dalla guardia, si evitano i treni in arrivo e si raccolgono speciali gettoni della caccia. Safari Dash non è un inseguimento infinito: usa 30 percorsi a tempo progettati a mano in sei regioni safari, cinque famiglie di obiettivi, punteggio combo con stelle, varchi che bloccano due corsie, fango appiccicoso, schemi fissi dei guardiani, cinque migliori punteggi locali e progressi per percorso salvati nel browser.",
+    "sourceLabel": "Fonte ufficiale: SYBO — Subway Surfers"
+  },
+  "ru": {
+    "heading": "Похожий ориентир для раннера по трём дорожкам",
+    "tagsLabel": "Теги геймплея:",
+    "tags": [
+      "Бег по трём дорожкам",
+      "Смена дорожки свайпом",
+      "Уклонение от препятствий",
+      "Сбор и комбо"
+    ],
+    "disclaimer": "Сафари Дэш — независимая игра WeightPlay; она не связана с SYBO или Subway Surfers отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+    "body": "Subway Surfers подходит как конкретный ориентир: в обеих играх нужно быстро менять дорожки, уворачиваться от приближающихся препятствий и собирать предметы на ходу. SYBO описывает Subway Surfers как бесконечный раннер, где игрок убегает от охранника, избегает встречных поездов и собирает специальные жетоны охоты. Сафари Дэш — не бесконечная погоня: здесь есть 30 авторских маршрутов на время в шести регионах сафари, пять типов целей, комбо за звёзды, ворота на две дорожки, липкая грязь, фиксированные схемы стражей, пять лучших локальных результатов и сохранение прогресса по маршрутам в браузере.",
+    "sourceLabel": "Официальный источник: SYBO — Subway Surfers"
+  },
+  "hi": {
+    "heading": "समान तीन-लेन रनर का संदर्भ",
+    "tagsLabel": "गेमप्ले टैग:",
+    "tags": [
+      "तीन-लेन रनिंग",
+      "स्वाइप से लेन बदलना",
+      "बाधाओं से बचना",
+      "संग्रह और कॉम्बो स्कोर"
+    ],
+    "disclaimer": "सफ़ारी डैश, WeightPlay का स्वतंत्र खेल है और इसका SYBO या Subway Surfers से कोई संबद्धता, समर्थन, अनुमति या सह-विकास संबंध नहीं है।",
+    "body": "Subway Surfers एक ठोस संदर्भ है क्योंकि दोनों खेल तेज़ी से लेन बदलने, सामने आने वाली बाधाओं से बचने और दौड़ जारी रखते हुए वस्तुएँ इकट्ठी करने पर केंद्रित हैं। SYBO Subway Surfers को एक अंतहीन दौड़ वाला खेल के रूप में बताता है जिसमें खिलाड़ी गार्ड से बचता है, सामने आती ट्रेनों को चकमा देता है और विशेष आयोजन के टोकन इकट्ठे करता है। सफ़ारी डैश अंतहीन पीछा नहीं है: इसमें छह सफारी क्षेत्रों में 30 हाथ से बनाए समयबद्ध रूट, पाँच लक्ष्य प्रकार, स्टार-कॉम्बो स्कोरिंग, दो-लेन गेट, चिपचिपी मिट्टी, संरक्षकों के तय अवरोध क्रम, स्थानीय पाँच सर्वश्रेष्ठ अंक और हर रूट की ब्राउज़र प्रगति है।",
+    "sourceLabel": "आधिकारिक स्रोत: SYBO — Subway Surfers"
+  },
+  "ar": {
+    "heading": "مرجع للعبة جري مشابهة بثلاثة مسارات",
+    "tagsLabel": "وسوم أسلوب اللعب:",
+    "tags": [
+      "جري بثلاثة مسارات",
+      "تبديل المسار بالسحب",
+      "تفادي العوائق",
+      "الجمع ونقاط السلاسل"
+    ],
+    "disclaimer": "سفاري داش لعبة مستقلة من WeightPlay ولا ترتبط بـ SYBO أو Subway Surfers بعلاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك.",
+    "body": "تُعد Subway Surfers مرجعًا محددًا للمقارنة لأن اللعبتين تعتمدان على تبديل المسارات بسرعة، وتفادي الأخطار القادمة، وجمع العناصر أثناء استمرار الجري. تصف SYBO لعبة Subway Surfers بأنها لعبة جري لا نهائية يهرب فيها اللاعب من الحارس، ويتفادى القطارات القادمة، ويجمع رموز المطاردة الخاصة. أما سفاري داش فليست مطاردة لا نهائية؛ فهي تضم 30 مسارًا مؤقتًا مصممًا يدويًا عبر ست مناطق سفاري، وخمسة أنواع من الأهداف، ونقاط سلاسل للنجوم، وبوابات تغلق مسارين، وطينًا لزجًا، وأنماط ثابتة للحراس، وقائمة محلية بأفضل خمس نتائج، وتقدمًا محفوظًا لكل مسار داخل المتصفح.",
+    "sourceLabel": "المصدر الرسمي: SYBO — Subway Surfers"
+  }
+};
+  gameplayProfiles["campus-dash"] ||= {};
+  gameplayProfiles["campus-dash"].marketComparison = { name: "Subway Surfers", source: "https://sybogames.com/", locales: campusDashMarketComparisonCopy };
+
   function installMarketComparisonSync() {
     if (marketComparisonObserver || !gameplayProfiles[currentGameId()]?.marketComparison ||
         !document.body || typeof MutationObserver === "undefined") return;

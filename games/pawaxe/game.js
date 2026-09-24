@@ -1,4 +1,5 @@
-import { RUNTIME_COPY, syncPawaxeGuide, routeLocale } from './public-guide.mjs?v=1';
+import { RUNTIME_COPY, syncPawaxeGuide, routeLocale } from './public-guide.mjs?v=2';
+import { formatSeconds, localePath } from './locale-text.mjs';
 import { stages,gear } from './campaign.js?v=4';
 import { Combat } from './combat.js?v=6';
 import { LOCALES,copy } from './locales.js?v=5';
@@ -20,7 +21,7 @@ let selected=save.unlocked, combat=null,renderer=null,raf=0,last=0,acc=0,node=0,
 let state='idle',screen='main',runGeneration=0,transitionRemaining=0,modalKind='',resumeAction=null;
 let feedbackUntil=0,feedbackText='',rendererModule=null;
 let journey=null,runKit=null,runReward=0,runKills=0,runDrops=0,runCombo=0;
-const t=k=>RUNTIME_COPY[save.locale]?.[k]||expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
+const t=k=>k==='title'?(window.WEIGHTPLAY_GAME_TITLES?.pawaxe?.[save.locale]||copy[save.locale].title):RUNTIME_COPY[save.locale]?.[k]||expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
 const cc=()=>collectionCopy[save.locale]||collectionCopy.en;
 const pc=()=>playerCopy[save.locale]||playerCopy.en;
 const name=e=>typeof e.id==='number'?pc().stageNames[e.id]:(pc().enemyNames[e.id]||e.name);
@@ -73,6 +74,8 @@ function localize(){
   $('#progress').textContent=`${t('stages')} ${save.unlocked} / 30`;
   $('#stageHint').textContent=t('stageHint');
   $('#allyDescription').textContent=cc().rosterHint;
+  document.title=`${t('title')} | WeightPlay`;
+  for(const el of $$('meta[property="og:title"],meta[name="twitter:title"]'))el.content=document.title;
   syncPawaxeGuide(save.locale);
   frame.refresh();renderEquipment();renderCompanions();if(rail)rail.refresh();
 }
@@ -184,7 +187,7 @@ function loop(now){
         const n=document.createElement('strong'),point=e.type==='hurt'?{x:50,y:74}:renderer.impactPoint(e.uid);
         n.dataset.target=key;n.dataset.until=now+(e.critical?850:600);n.className=e.type==='hurt'?'hurt':e.critical?'critical':'';
         n.style.left=`${point.x}%`;n.style.top=`${point.y}%`;
-        const amount=e.type==='hurt'?`−${e.amount} HP`:e.amount>0?`${e.amount}`:`${t('shield')} −${e.shield}`;
+        const amount=e.type==='hurt'?`−${e.amount} ${t('healthShort')}`:e.amount>0?`${e.amount}`:`${t('shield')} −${e.shield}`;
         if(e.critical){const label=document.createElement('small');label.textContent=t('critical');n.append(label,document.createTextNode(amount));}else n.textContent=amount;
         box.append(n);while(box.children.length>4)box.firstElementChild.remove();
       }
@@ -221,8 +224,8 @@ function updateHud(){
     b.querySelector('.enemy-clock').value=e.warned?1-Math.max(0,e.t)/e.warn:0;
   });
   const threat=enemies.filter(e=>e.warned).sort((a,b)=>a.t-b.t)[0];
-  $('#warning').textContent=threat?`${name(threat)} · ${t('incoming')} ${Math.max(0,threat.t).toFixed(1)} s`:t('tap');
-  $('#status').textContent=[combat.barrier>0?`${cc().status[0]} ${Math.ceil(combat.barrier)}`:'',...Object.entries(combat.status).filter(([,v])=>v>0).map(([k,v])=>`${k==='crack'?t('crack'):cc().status[k==='burn'?1:2]} ${v.toFixed(1)}s`)].filter(Boolean).join(' · ');
+  $('#warning').textContent=threat?`${name(threat)} · ${t('incoming')} ${formatSeconds(Math.max(0,threat.t),save.locale)}`:t('tap');
+  $('#status').textContent=[combat.barrier>0?`${cc().status[0]} ${Math.ceil(combat.barrier)}`:'',...Object.entries(combat.status).filter(([,v])=>v>0).map(([k,v])=>`${k==='crack'?t('crack'):cc().status[k==='burn'?1:2]} ${formatSeconds(v,save.locale)}`)].filter(Boolean).join(' · ');
   if(performance.now()>feedbackUntil)$('#feedback').textContent='';else $('#feedback').textContent=feedbackText;
 }
 function encounterWon(){
@@ -280,7 +283,7 @@ $('#attack').onclick=()=>action('attack');$('#ally').onclick=()=>action('ally');
 $('#auto').onclick=()=>{if(modalKind||screen!=='battle'||!['live','transition'].includes(state)||document.querySelector('.wp-frame-popover:not([hidden])'))return;save.autoAttack=!save.autoAttack;combat.autoAttack=save.autoAttack;persist();updateHud();};
 $('#claim').onclick=()=>{if(journey?.completed&&!modalKind)finish(true);};
 $$('.tabs button').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
-locale.onchange=()=>{save.locale=locale.value;try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();};
+locale.onchange=()=>{save.locale=locale.value;try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();const route=localePath(save.locale,location.search,location.hash);if(location.pathname+location.search+location.hash!==route)location.assign(route);};
 $('#canvas').tabIndex=0;
 $('#canvas').addEventListener('pointerdown',e=>{if(state!=='live'||modalKind||e.button!==0)return;const uid=renderer.pick(e.clientX,e.clientY);const i=combat.alive().findIndex(x=>x.uid===uid);if(i>=0)combat.target=i;action('attack');});
 $('#canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();if(screen!=='battle'||!renderer)return;stopLoop();state='error';dialog(t('graphicsInterrupted'),t('restartGraphics'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');});

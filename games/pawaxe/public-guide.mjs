@@ -1,7 +1,8 @@
 import { GUIDE_COPY } from './guide-data.mjs?v=1';
+import { localeText } from './locale-text.mjs';
 export { GUIDE_COPY };
 export const LOCALE_ROUTES = Object.freeze({en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'});
-export const RUNTIME_COPY = Object.fromEntries(Object.entries(GUIDE_COPY).map(([locale,c])=>[locale,Object.freeze({summary:c.summary,maxRank:c.maxRank})]));
+export const RUNTIME_COPY = Object.fromEntries(Object.entries(GUIDE_COPY).map(([locale,c])=>[locale,Object.freeze({...localeText[locale],summary:c.summary,maxRank:c.maxRank})]));
 export function routeLocale(pathname){return LOCALE_ROUTES[/^\/([^/]+)\/games\/pawaxe(?:\/(?:index\.html)?)?$/.exec(pathname)?.[1]]||null;}
 export function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 export function decodeHtml(value){return String(value).replace(/&(#x[\da-f]+|#\d+|amp|lt|gt|quot|apos);/gi,(all,entity)=>entity[0]==='#'?String.fromCodePoint(entity[1].toLowerCase()==='x'?parseInt(entity.slice(2),16):parseInt(entity.slice(1),10)):({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[entity.toLowerCase()]||all));}

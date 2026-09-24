@@ -1,0 +1,238 @@
+/*
+ * Pocket Post — Interface 7 game-content cleanup.
+ *
+ * Shared headers, returns/settings, Stage tab-bar geometry, Canvas envelope,
+ * reserve behavior and common control dimensions belong to game-screen-frame.
+ * This file only normalizes Pocket Post-owned content inside those slots.
+ */
+
+/* Main content: one title owner, one visible play CTA and one square poster. */
+body[data-wp-game-id="animal-pocket-post"] #mainScreen .cover-badge,
+body[data-wp-game-id="animal-pocket-post"] #mainScreen .main-panel > .eyebrow,
+body[data-wp-game-id="animal-pocket-post"] #mainScreen #mainHeading,
+body[data-wp-game-id="animal-pocket-post"] #mainScreen #mapBtn,
+body[data-wp-game-id="animal-pocket-post"] #mainScreen #best {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #mainScreen .main-actions {
+  width: 100%;
+  margin-top: 12px;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #mainScreen #startBtn {
+  width: 100%;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #mainScreen .main-poster-frame {
+  width: min(420px, 100%);
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #mainScreen .main-poster {
+  width: 100%;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+/* Retained only as the locale/audio state source adopted by the shared frame. */
+body[data-wp-game-id="animal-pocket-post"] #settingsPanel.legacy-settings-source {
+  display: none !important;
+}
+
+/* Stage content only. Shared frame owns the surrounding 48px / flexible / 56px tracks. */
+body[data-wp-game-id="animal-pocket-post"] .stage-workspace {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #stageList.stage-rail {
+  position: absolute;
+  z-index: 2;
+  top: clamp(8px, calc(38% - 95px), calc(100% - 198px));
+  right: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 190px;
+  margin: 0;
+  padding: 0 max(16px, calc(50% - 132px));
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(16px, calc(50% - 132px));
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  touch-action: pan-y;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #stageList.stage-rail::-webkit-scrollbar {
+  display: none;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #stageList .stage-card {
+  flex: 0 0 264px;
+  width: 264px;
+  min-width: 264px;
+  max-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+  margin: 0;
+  padding: 16px;
+  scroll-snap-align: center;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #stageList .stage-card[aria-current="true"] {
+  border-color: var(--wp-ui-accent, #63e6be);
+  outline: 2px solid var(--wp-ui-accent, #63e6be);
+  outline-offset: -2px;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--wp-ui-accent, #63e6be) 38%, transparent),
+    0 0 20px color-mix(in srgb, var(--wp-ui-accent, #63e6be) 58%, transparent);
+}
+
+body[data-wp-game-id="animal-pocket-post"] #stageList .stage-state {
+  font-weight: 800;
+}
+
+/* Battle-owned play content. Shared frame owns the Battle Canvas and permanent header. */
+body[data-wp-game-id="animal-pocket-post"] #battlePlay {
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+body[data-wp-game-id="animal-pocket-post"] .battle-context {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 16px;
+  background: rgba(255,253,245,.94);
+}
+
+body[data-wp-game-id="animal-pocket-post"] .battle-context .eyebrow {
+  margin-top: 0;
+}
+
+body[data-wp-game-id="animal-pocket-post"] .battle-context h2 {
+  margin: 0;
+  color: #1d3c4d;
+}
+
+body[data-wp-game-id="animal-pocket-post"] .battle-actions > button,
+body[data-wp-game-id="animal-pocket-post"] .mail-card {
+  min-height: 44px;
+}
+
+/* Result is Battle-owned content with stable three-action tracks. */
+body[data-wp-game-id="animal-pocket-post"] #resultScreen.result-panel {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  place-items: center;
+  padding: 16px;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #resultScreen.result-panel:not([hidden]) {
+  display: grid;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #resultScreen .result-card {
+  width: min(640px, 100%);
+}
+
+body[data-wp-game-id="animal-pocket-post"] #resultScreen .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 20px;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #resultScreen .result-actions > button {
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #resultScreen .result-actions > button:disabled {
+  cursor: default;
+  opacity: .48;
+}
+
+/* Battle-owned leave confirmation. The game owns its consequence copy/state;
+   the shared frame keeps permanent Battle chrome outside this local overlay. */
+body[data-wp-game-id="animal-pocket-post"] #leaveDialog.leave-dialog {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  place-items: center;
+  padding: 16px;
+  background: rgba(7,21,37,.78);
+}
+
+body[data-wp-game-id="animal-pocket-post"] #leaveDialog.leave-dialog:not([hidden]) {
+  display: grid;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #leaveDialog .leave-card {
+  width: min(420px, 100%);
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 20px;
+  background: #fffdf5;
+  color: #1d3c4d;
+  box-shadow: 0 20px 60px rgba(7,21,37,.34);
+}
+
+body[data-wp-game-id="animal-pocket-post"] #leaveDialog .leave-card h2 {
+  margin: 0 0 8px;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #leaveDialog .leave-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #leaveDialog .leave-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+body[data-wp-game-id="animal-pocket-post"] #leaveDialog .leave-actions > button {
+  min-height: 44px;
+}
+
+@media (max-width: 520px) {
+  body[data-wp-game-id="animal-pocket-post"] #resultScreen .result-actions {
+    gap: 6px;
+  }
+
+  body[data-wp-game-id="animal-pocket-post"] #resultScreen .result-actions > button {
+    padding-inline: 8px;
+    font-size: .82rem;
+  }
+
+  body[data-wp-game-id="animal-pocket-post"] #leaveDialog .leave-actions {
+    grid-template-columns: 1fr;
+  }
+}
