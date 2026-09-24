@@ -22,22 +22,32 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-lantern-lattice/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-id" content="animal-lantern-lattice">
+  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-interface-version" content="7">
   <title>شبكة الفوانيس | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="interface-overrides.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <meta name="description" content="اقرأ ثلاث تلميحات للحراس، صِل الفوانيس الصحيحة وأضئ ممراً آمناً في ليل المرج." />
+  <link rel="stylesheet" href="style.css?v=20260923-lantern-lattice-v9-i7">
+  <link rel="stylesheet" href="interface-overrides.css?v=20260924-lantern-lattice-v9-i7-skill-report-metadata">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <script src="../../src/stage-virtualization-standard.js?v=20260923-stage-v6-bounded-data-v1"></script>
+  <script src="../../src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <meta name="description" content="اقرأ ثلاث تلميحات للحارس، وصِل الفوانيس الصحيحة وأضئ ممراً آمناً في الليل." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="شبكة الفوانيس | WeightPlay" />
-    <meta property="og:description" content="اقرأ ثلاث تلميحات للحراس، صِل الفوانيس الصحيحة وأضئ ممراً آمناً في ليل المرج." />
+    <meta property="og:description" content="اقرأ ثلاث تلميحات للحارس، وصِل الفوانيس الصحيحة وأضئ ممراً آمناً في الليل." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-lantern-lattice/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="شبكة الفوانيس | WeightPlay" />
-    <meta name="twitter:description" content="اقرأ ثلاث تلميحات للحراس، صِل الفوانيس الصحيحة وأضئ ممراً آمناً في ليل المرج." />
+    <meta name="twitter:description" content="اقرأ ثلاث تلميحات للحارس، وصِل الفوانيس الصحيحة وأضئ ممراً آمناً في الليل." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <script type="application/ld+json">
 {
@@ -47,7 +57,7 @@
   "alternateName": "Lantern Lattice",
   "url": "https://weightplay.com/ar/games/animal-lantern-lattice/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp",
-  "description": "اقرأ ثلاث تلميحات للحراس، صِل الفوانيس الصحيحة وأضئ ممراً آمناً في ليل المرج.",
+  "description": "اقرأ ثلاث تلميحات للحارس، وصِل الفوانيس الصحيحة وأضئ ممراً آمناً في الليل.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -71,36 +81,53 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v7" data-wp-interface-version="6" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v9" data-wp-interface-version="7" data-wp-game-owned-guide data-wp-frame-tutorial="true" class="has-game-page-info" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Waking the lantern meadow…</strong><div class="loading-track"><i></i></div></div></section>
-  <main id="mainScreen" class="screen main-screen" hidden>
-    <header class="topbar wp-main-shell-header"><a class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a><strong class="wp-shell-main-title" data-copy="title">Lantern Lattice</strong><div class="utilities"><button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button></div></header>
-    <section class="hero-grid"><div class="cover-wrap"><img class="cover main-poster" src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="شعار WeightPlay"></div><div class="hero-copy"><img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map"><p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p><h1 data-copy="title">شبكة الفوانيس</h1><p class="intro main-summary" data-copy="intro">Read the keeper clues, then connect the right lanterns into a safe night path.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong data-copy="progressTitle">30 paths across six arcs</strong><span data-copy="progressBody">1 of 30 stages unlocked. Clear one to light the next.</span></div><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start a night path</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="paths">Choose a path</button></div><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></section>
-  </main>
-  <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة شبكة الفوانيس">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>شبكة الفوانيس</h2><p>اقرأ ثلاث تلميحات للحراس، صِل الفوانيس الصحيحة وأضئ ممراً آمناً في ليل المرج.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لغز المسار بالقيود</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألغاز · منطق · تخطيط · عائلية · حيوانات</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اقرأ أدلة الحارس الثلاثة للمسار الليلي المختار.</li><li>اضغط على ثلاثة فوانيس بالترتيب الذي تصفه الأدلة.</li><li>تحقق من السلسلة؛ سيُذكر أول رابط خاطئ ولا يوجد مؤقت أو أرواح.</li></ol></div>
-
-
-
-
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يُحفظ التقدم؟</dt><dd>نعم، في هذا المتصفح فقط.</dd></div></dl></div>
-
-    </div>
-  </section>
-  <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden><strong data-copy="settings">Settings</strong><button id="soundBtn" class="setting-row" type="button" data-sound-toggle="true">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
-  <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading"><div class="stage-canvas" data-wp-standard-stage-screen style="--wp-stage-art:url('assets/animal-lantern-lattice-cover-voxel-v1.png')"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="backShort">Back</button><h2 id="stageHeading" data-copy="paths">Choose a path</h2><button id="stageSettingsBtn" class="utility-button" type="button" aria-label="Settings">⚙</button></header><div class="stage-tabs" role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-copy="stageAll">All night paths</button></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
-  <section id="battleScreen" class="screen panel-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-labelledby="battleHeading"><div class="battle-canvas" style="--wp-battle-art:url('assets/animal-lantern-lattice-background-voxel-v1.png')"><img class="battle-backdrop" src="assets/animal-lantern-lattice-background-voxel-v1.png" width="1536" height="1024" alt="" aria-hidden="true"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="backShort">Back</button><div><h2 id="battleHeading">Night path</h2><p id="roundLabel" class="round-label"></p></div><div class="battle-header-tools"><span class="check-pill"><span data-copy="checks">Checks</span> <b id="sessionChecks">0</b></span><button id="battleSettingsBtn" class="utility-button" data-wp-battle-utility type="button" aria-label="Settings">⚙</button></div></header><div class="battle-content"><div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div><div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div><div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div><div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
-  <section id="resultScreen" class="screen panel-screen" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="paths">Night map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
-  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260921-lantern-lattice-v7-block-art-v1"></script><script src="game.js?v=20260921-lantern-lattice-v7-block-art-v1"></script>
+  <div id="app" data-wp-frame-root hidden>
+    <main id="mainScreen" class="main-screen" data-screen="main" data-wp-standard-main-screen hidden>
+      <header id="mainHeader" class="topbar wp-main-shell-header" data-wp-shell-header="main">
+        <a id="mainBackBtn" class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a>
+        <h1 data-copy="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">شبكة الفوانيس</h1>
+      </header>
+      <div id="mainContent" class="main-content" data-wp-frame-content="main">
+        <img class="cover main-poster" data-wp-frame-poster src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="شعار WeightPlay">
+        <div class="hero-copy" data-wp-frame-copy>
+          <img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map">
+          <p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p>
+          <p class="intro main-summary" data-copy="intro" data-wp-frame-summary>Read the keeper clues, then connect the right lanterns into a safe night path.</p>
+          <div class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite"><span id="progressBody">Stage 1 / 30</span></div>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-frame-action="primary" data-copy="start">Start Game</button><button id="mapBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary" data-copy="paths">Choose a path</button></div>
+          <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p>
+        </div>
+      </div>
+    </main>
+    <section id="stageScreen" class="stage-canvas wp-stage-art-shell" data-screen="stage" data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png')" hidden aria-label="Choose a night path">
+      <header id="stageHeader" class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="stageContent" class="stage-content" data-wp-frame-content="stage"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div>
+      <nav class="stage-tabs" data-wp-frame-nav data-wp-frame-stage-nav role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-copy="stageAll">All night paths</button></nav>
+      <div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+    </section>
+    <section id="battleScreen" class="battle-canvas wp-stage-art-shell" data-screen="battle" data-wp-logical-battle-canvas data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png')" hidden aria-label="Night path puzzle">
+      <header id="battleHeader" class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="battleContent" class="battle-content" data-wp-frame-content="battle">
+        <div id="battleHeaderInfo" class="battle-header-info" data-runtime-localize="off">
+          <div class="battle-info-field"><small data-copy="pathLabel">Path</small><strong id="roundLabel"></strong></div>
+          <div class="battle-info-field"><small data-copy="checks">Checks</small><strong id="sessionChecks">0</strong></div>
+        </div>
+        <div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div>
+        <div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div>
+        <div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div>
+        <div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div>
+        <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div>
+      </div>
+      <section id="resultScreen" class="result-card result-panel" hidden aria-labelledby="resultHeading"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="skill-report" aria-live="polite"><strong data-copy="skillReportLabel">Skill Report</strong><span id="skillReport"></span></div><div class="result-actions"><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Stages</button><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="replay">Replay</button></div></section>
+      <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    </section>
+    <div id="localeSource" hidden aria-hidden="true"><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></div>
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" data-runtime-localize="off" aria-label="شبكة الفوانيس game guide"><div id="guideHero" class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>شبكة الفوانيس</h2><p>اقرأ أدلة الحارس، ثم صِل الفوانيس الصحيحة في مسار ليلي آمن.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>العمر الموصى به</span><strong>9+</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب التقديري</span><strong>١–٣ دقائق لكل مرحلة</strong></div><div class="game-info-fact"><span>المهارات</span><strong>المنطق · القراءة · حل المشكلات</strong></div></div></div><div id="guideSections" class="game-info-sections"><article class="game-info-section"><h3>المرج والهدف</h3><p>شبكة الفوانيس لغز منطقي هادئ في مرج مضاء بالقمر. تترك أورلا، حارسة الفوانيس، أدلة عن العلاقات بين ستة حيوانات: البومة والثعلب وثعلب الماء والأرنب والسلحفاة والباندا. صِلها بالترتيب الآمن في كل مسار ليلي. اقرأ الأدلة، وابنِ الترتيب بأزرار الفوانيس، ثم تحقّق من السلسلة. لا يوجد عدّ تنازلي أو أرواح أو خصم يجبرك على التخمين بسرعة. قارن اختياراتك بالأدلة، وامسح السلسلة، وحاول مرة أخرى. يكمن التحدي في فهم العلاقات وملاحظة كيف تغيّر القاعدة الجديدة الطريق.</p></article><article class="game-info-section"><h3>خطوات إكمال المسار</h3><p>اختر «ابدأ اللعبة» لتتابع الفصول بالترتيب، أو «المراحل» لاختيار مسار مفتوح. يحتوي كل مسار على ثلاثة إلى ستة مواضع.</p><ol><li>اقرأ كل أدلة الحارسة قبل اختيار فانوس. يحدد الدليل الأول نقطة البداية، وتشرح الأدلة التالية ما يأتي بعدها.</li><li>اضغط الفوانيس وفق ذلك الترتيب. تبقى السلسلة الحالية ظاهرة لتقارنها بالأدلة.</li><li>عند اكتمال السلسلة اختر «تحقق من المسار». إذا نقصت الاختيارات فسيظهر عددها؛ وإذا أخطأت فسيُذكر أول رابط غير صحيح أو طُعم العثة.</li><li>استخدم «إعادة ضبط المسار» لمسح اختياراتك وتجربة المسار نفسه. تدخل عمليات التحقق الخاطئة في أفضل عدد لذلك المسار، لكنها لا تخصم أرواحاً ولا تمحو المراحل المفتوحة.</li><li>يضيء إكمال المسار الطريق التالي ويُحفظ تقدمك في هذا المتصفح. في النتيجة، تفتح «المرحلة التالية» المعركة التالية مباشرة، وتعرض «المراحل» الخريطة، بينما تعيد «أعد اللعب» المسار المكتمل.</li><li>غيّر اللغة أو الصوت من الإعدادات المشتركة. يعيد سهم الرجوع الشاشة السابقة؛ ولا تعتمد أي معلومة لازمة للحل على الصوت.</li></ol></article><article class="game-info-section"><h3>تغيّر قواعد الأدلة</h3><p>يعلم الفصل الأول الترتيب المباشر: اتبع العلاقات من العش إلى البوابة. تضيف مسارات طُعم العثة فانوساً مغرياً يجب أن يبقى مطفأً وخارج السلسلة. في مسارات الصدى يظهر الفانوس المحدد في موضعين، وكلاهما جزء من الحل. تعكس مسارات انعطاف الريح اتجاه القراءة؛ ابدأ من الفانوس الأخير واتبع الأدلة عائداً إلى الأول. تجمع الفصول اللاحقة هذه القواعد، وقد تطلب منك القراءة بالعكس وتكرار الصدى وترك الطُعم مطفأً في المسار نفسه. تبقى الأدلة ظاهرة أثناء بناء السلسلة. يوضح المسار غير المكتمل عدد الاختيارات الناقصة؛ أما السلسلة المكتملة الخاطئة فتشير إلى أول اختلاف لتعرف ما ينبغي مراجعته.</p></article><article class="game-info-section"><h3>الحملة ونقاط التحقق</h3><p>تضم الرحلة 30 مساراً ليلياً مصمماً ضمن ستة فصول، ونقاط التحقق عند المسارات 5 و10 و15 و20 و25 و30. تقدم المسارات 1–5 الحيوانات والترتيب الأساسي؛ وتضيف 6–10 طُعوم العثة؛ وتقدم 11–15 الصدى؛ وتركز 16–20 على انعطاف الريح؛ وتجمع 21–25 الصدى والطُعم؛ أما 26–30 فتضم القواعد كلها. يفتح إكمال المسار المسار التالي. تحتفظ الخريطة بالمسارات المفتوحة، لذلك لا يؤدي تكرار مسار قصير إلى محو التقدم اللاحق. تشير شارات نقاط التحقق إلى نهاية كل فصل، بينما تظل الخطوات الأساسية هي القراءة والربط والتحقق.</p></article><article class="game-info-section"><h3>نصائح للحل</h3><p>اقرأ الأدلة كلها أولاً وحوّل كل جملة إلى علاقة مثل «A يأتي قبل B». حل رابطاً واحداً كل مرة بدلاً من تخمين الترتيب كاملاً من دليل واحد. في انعطاف الريح، حدد الترتيب العادي ثم اعكسه. في الصدى، اترك موضعين للفانوس المذكور. أبقِ طُعم العثة خارج السلسلة حتى إن بدا اختياراً محتملاً. إذا أشار التحقق إلى موضع، فأعد قراءة الدليل المرتبط به قبل إعادة الضبط. لا يوجد مؤقت، لذا فالمقارنة المتأنية أنفع من الاستعجال.</p></article><article class="game-info-section"><h3>تصميم اللغز</h3><p>تبقى الأدلة قرب الفوانيس كي يجتمع النظر والاستنتاج في شاشة واحدة. وتساعد أضواء الحيوانات الستة والسلسلة المرقمة على مراجعة الترتيب الحالي. بدلاً من رسالة خطأ عامة، يحدد اللعب أول رابط غير صحيح. يقدم كل فصل قاعدة واضحة، ثم تجمع المسارات اللاحقة قواعد مألوفة لتتدرج الصعوبة من دون تغيير أدوات التحكم الأساسية. المرج المضاء بالقمر عالم خيالي للغز، وليس وصفاً لسلوك الحيوانات في الطبيعة. صُمم الإيقاع ليكون هادئاً، والصوت اختياري.</p></article><article class="game-info-section"><h3>معلومات اللاعب والحفظ</h3><p>استخدم اللمس أو الفأرة أو تركيز لوحة المفاتيح مع Enter أو المسافة لتشغيل الأزرار. تتيح الإعدادات تغيير اللغة والصوت في القائمة وأثناء اللعب. تُحفظ المسارات المكتملة والمفتوحة وأفضل عدد من عمليات التحقق محلياً في هذا المتصفح عند توفر التخزين. لا يوجد تزامن مع حساب أو نقل تلقائي إلى جهاز آخر. قد يؤدي مسح بيانات الموقع أو التصفح الخاص أو حظر التخزين إلى حذف السجل المحلي أو منع حفظه. يمكنك اللعب دون تخزين، لكن قد لا يبقى التقدم بعد إغلاق الصفحة.</p></article><article class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يوجد وقت محدد أو أرواح؟</dt><dd>لا. اقرأ الأدلة بهدوء وأعد ضبط السلسلة متى شئت.</dd></div><div><dt>لماذا لا أستطيع اختيار الفانوس مرتين؟</dt><dd>لا يتكرر الفانوس المحدد إلا في مسارات الصدى.</dd></div><div><dt>ماذا أفعل بطُعم العثة؟</dt><dd>اتركه مطفأً ولا تضمه إلى السلسلة.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>نعم. تُحفظ المسارات المكتملة والمفتوحة في هذا المتصفح عند توفر التخزين، ولا تتم مزامنتها.</dd></div></dl></article></div></section>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260924-lantern-lattice-v9-i7-child-metadata-skill-report"></script><script src="guide-copy.js?v=20260924-lantern-lattice-v9-i7-public-metadata"></script><script src="game.js?v=20260924-lantern-lattice-v9-i7-skill-report"></script><script src="../../src/tutorial.js?v=20260826-first-session-tutorial-v36"></script>
 </body>
 </html>

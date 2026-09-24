@@ -22,9 +22,9 @@
 <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-interface-version" content="7">
 <title>Axe &amp; Ally | WeightPlay</title>
 <script src="../../src/game-layout-config.js"></script><script src="../../src/site-config.js"></script>
-<link rel="stylesheet" href="style.css?v=6"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
+<link rel="stylesheet" href="style.css?v=7"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2?wp-audio=1.0.0" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
   <meta name="description" content="شق طريقك بالفأس في الغابة واجمع أربعة رفاق ومعدات خاصة وتحدَّ الزعماء." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -64,35 +64,10 @@
 }
     </script>
   </head><body data-game-id="pawaxe" data-wp-game-id="pawaxe" data-screen="main" data-has-stage="true"><div id="frame" data-wp-frame-root>
-<section id="main" class="scene main-scene">
-<header><a href="/" data-wp-return="main" aria-label="返回 WeightPlay">← W</a><h1 data-wp-frame-title data-runtime-localize="off">Axe &amp; Ally</h1></header>
-<div class="hero"><img src="art/cover-v1.png" alt="شعار WeightPlay"><div class="hero-copy"><p data-i18n="summary"></p><p id="progress"></p><button id="start" class="primary" data-i18n="start">開始遊戲</button></div></div>
-<section id="gameGuide" class="guide" data-wp-guide-complete="true"><h2 data-i18n="guide"></h2><p data-i18n="guideText"></p><div id="guideDetails"></div></section>
-</section>
-<section id="stage" class="scene play-scene" hidden data-wp-standard-stage-screen data-wp-stage-art="art/cover-v1.png" style="--wp-stage-art:url('art/cover-v1.png')">
-<header><button data-wp-return="stage" id="stageBack" aria-label="返回主畫面">←</button><span data-wp-frame-title hidden></span></header>
-<div class="workspace">
-<div id="stageInfo" data-wp-frame-info><span class="stage-count"><b id="stageNum">1/30</b></span></div>
-<div id="stagePanel" class="panel"><div id="rail" class="rail" data-wp-stage-rail aria-label="關卡"></div><p id="stageHint" class="stage-hint"></p></div>
-<div id="allyPanel" class="panel management" hidden><h2 data-i18n="companion"></h2><p id="allyDescription"></p><div id="companions" class="equipment"></div></div>
-<div id="equipPanel" class="panel management" hidden><h2 data-i18n="equipment"></h2><p id="coins"></p><div id="equipment" class="equipment"></div></div>
-</div>
-<nav class="tabs" data-wp-frame-stage-nav><button data-tab="ally" data-i18n="companion"></button><button data-tab="stage" data-wp-frame-stage-slot="stages" class="active" data-i18n="stages"></button><button data-tab="equip" data-wp-frame-stage-slot="equipment" data-i18n="equipment"></button></nav>
-</section>
-<section id="battle" class="scene play-scene" hidden>
-<header><button data-wp-return="battle" id="battleBack" aria-label="返回關卡">←</button><span data-wp-frame-title hidden></span></header>
-<main class="battle-area">
-<div id="battleInfo" data-wp-frame-info><span class="stage-count"><b id="hudStage">1/30</b></span><span class="player-health" title="生命"><span class="health-caption" aria-hidden="true">HP</span><progress id="playerHp" max="130" value="130" aria-label="Player health"></progress><span id="hp" class="health-value" aria-live="polite">130/130</span><span id="barrierStatus" class="barrier-status" aria-live="polite"></span></span></div>
-<div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0" aria-label="Journey progress"></progress><strong id="routePercent">0%</strong></div><button id="claim" disabled aria-label="Settle expedition">—</button></div>
-<div class="arena"><canvas id="canvas" aria-label="森林戰場"></canvas><div id="targets" class="targets" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><img id="lootIcon" class="object-icon" alt="" width="44" height="44"><span id="lootText"></span></div></div>
-<div id="feedback" class="feedback" aria-live="polite"></div>
-<div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack"><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span class="ally-heading"><img id="allyPortrait" alt="" width="18" height="18"><span id="allyName" data-i18n="ally"></span></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
+<main id="main" class="scene main-scene">
+<header class="main-header"><a href="/" data-wp-return="main" data-i18n-aria="returnHome" aria-label="返回 WeightPlay">← W</a><h1 data-wp-frame-title data-runtime-localize="off">Axe &amp; Ally</h1></header>
+<div class="hero"><img class="main-cover" src="art/cover-v1.png" data-i18n-alt="coverAlt" alt="شعار WeightPlay"><div class="hero-copy"><p class="main-summary" data-i18n="summary"></p><p id="progress" class="main-progress" data-wp-main-progress></p><button id="start" class="primary" data-wp-main-start data-i18n="start">開始遊戲</button></div></div>
 </main>
-<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
-</section>
-</div><select hidden id="locale" aria-label="Language"></select><script type="module" src="game.js?v=6&amp;wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة Axe &amp; Ally">
 
     <div class="game-info-hero">
@@ -112,4 +87,28 @@
 
     </div>
   </section>
+<section id="stage" class="scene play-scene" hidden data-wp-standard-stage-screen data-wp-stage-art="art/cover-v1.png" style="--wp-stage-art:url('art/cover-v1.png')">
+<header><button data-wp-return="stage" id="stageBack" data-i18n-aria="returnHome" aria-label="返回主畫面">←</button><span data-wp-frame-title hidden></span></header>
+<div class="workspace">
+<div id="stageInfo" data-wp-frame-info><span class="stage-count"><b id="stageNum">1/30</b></span></div>
+<div id="stagePanel" class="panel"><div id="rail" class="rail" data-wp-stage-rail data-i18n-aria="stages" aria-label="關卡"></div><p id="stageHint" class="stage-hint"></p></div>
+<div id="allyPanel" class="panel management" hidden><h2 data-i18n="companion"></h2><p id="allyDescription"></p><div id="companions" class="equipment"></div></div>
+<div id="equipPanel" class="panel management" hidden><h2 data-i18n="equipment"></h2><p id="coins"></p><div id="equipment" class="equipment"></div></div>
+</div>
+<nav class="tabs" data-wp-frame-stage-nav data-wp-stage-management-nav><button data-tab="ally" data-i18n="companion"></button><button data-tab="stage" data-wp-frame-stage-slot="stages" class="active" data-i18n="stages"></button><button data-tab="equip" data-wp-frame-stage-slot="equipment" data-i18n="equipment"></button></nav>
+</section>
+<section id="battle" class="scene play-scene" hidden data-wp-logical-battle-canvas>
+<header><button data-wp-return="battle" id="battleBack" data-i18n-aria="returnStages" aria-label="返回關卡">←</button><span data-wp-frame-title hidden></span></header>
+<main class="battle-area">
+<div id="battleInfo" data-wp-frame-info><span class="stage-count"><b id="hudStage">1/30</b></span><span class="player-health" data-i18n-title="playerHealth" title="生命"><span class="health-caption" aria-hidden="true">HP</span><progress id="playerHp" max="130" value="130" data-i18n-aria="playerHealth" aria-label="玩家生命"></progress><span id="hp" class="health-value" aria-live="polite">130/130</span><span id="barrierStatus" class="barrier-status" aria-live="polite"></span></span></div>
+<div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0" data-i18n-aria="journeyProgress" aria-label="探險進度"></progress><strong id="routePercent">0%</strong></div><button id="claim" disabled data-i18n-aria="settleExpedition" aria-label="結算探險">—</button></div>
+<div class="arena"><canvas id="canvas" data-i18n-aria="battlefield" aria-label="森林戰場"></canvas><div id="targets" class="targets" data-i18n-aria="targetSelection" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><img id="lootIcon" class="object-icon" alt="" width="44" height="44"><span id="lootText"></span></div></div>
+<div id="feedback" class="feedback" aria-live="polite"></div>
+<div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto"></span><small id="autoValue"></small></button><button id="attack" data-wp-primary-action><span data-i18n="attack"></span><small id="attackValue"></small></button><button id="ally"><span class="ally-heading"><img id="allyPortrait" alt="" width="18" height="18"><span id="allyName" data-i18n="ally"></span></span><small id="energy"></small><progress id="allyMeter" max="100" value="100"></progress></button></div>
+</main>
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
+</section>
+</div><select hidden id="locale" data-i18n-aria="language" aria-label="語言"></select><script type="module" src="game.js?v=10&amp;wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>

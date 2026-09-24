@@ -30,7 +30,7 @@
   if (!document.querySelector('link[href*="interface-7-cleanup.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "interface-7-cleanup.css?v=20260923-cloudhook-i7-cleanup2";
+    link.href = "interface-7-cleanup.css?v=20260924-cloudhook-compact-controls-v21";
     document.head.append(link);
   }
 
@@ -243,7 +243,7 @@
 
   const bootCompat = () => {
     if (document.body?.dataset.wpGameId !== GAME_ID) return;
-    for (const id of ["soundBtn", "stageSoundBtn", "battleSoundBtn"]) {
+    for (const id of ["soundBtn", "stageSoundBtn"]) {
       const control = document.getElementById(id);
       if (!control) continue;
       control.hidden = true;

@@ -10,10 +10,10 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-glyph-garden" />
-  <meta name="weightplay-game-version" content="v2" />
+  <meta name="weightplay-game-version" content="v4" />
   <meta name="weightplay-interface-version" content="6" />
   <meta name="theme-color" content="#17434b" />
-  <meta name="description" content="Leggi ogni richiesta, scegli il glifo con entrambi gli indizi corretti e pianta tre aiuole tranquille." />
+  <meta name="description" content="Leggi regole di forma, colore e sequenza in trenta livelli da giardino creati a mano." />
   <title>Giardino dei Glifi | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/it/games/animal-glyph-garden/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-glyph-garden/" />
@@ -34,14 +34,9 @@
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260830-glyph-v2" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260830-glyph-v2" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260903-glyph-v2-short-landscape-battle" />
+  <link rel="stylesheet" href="style.css?v=20260923-glyph-v4-depth" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
   <style data-wp-glyph-garden-issue-fix>
-    @media (min-width:700px) and (max-height:560px) {
-      body[data-wp-game-id="animal-glyph-garden"] .wp-standard-main-composition {
-        --wp-main-landscape-poster-size: 300px;
-      }
-    }
     #resultScreen[hidden] {
       display: none !important;
       pointer-events: none !important;
@@ -51,12 +46,12 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Giardino dei Glifi | WeightPlay" />
-    <meta property="og:description" content="Leggi ogni richiesta, scegli il glifo con entrambi gli indizi corretti e pianta tre aiuole tranquille." />
+    <meta property="og:description" content="Leggi regole di forma, colore e sequenza in trenta livelli da giardino creati a mano." />
     <meta property="og:url" content="https://weightplay.com/it/games/animal-glyph-garden/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-glyph-garden.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Giardino dei Glifi | WeightPlay" />
-    <meta name="twitter:description" content="Leggi ogni richiesta, scegli il glifo con entrambi gli indizi corretti e pianta tre aiuole tranquille." />
+    <meta name="twitter:description" content="Leggi regole di forma, colore e sequenza in trenta livelli da giardino creati a mano." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-glyph-garden.webp" />
     <script type="application/ld+json">
 {
@@ -66,7 +61,7 @@
   "alternateName": "Glyph Garden",
   "url": "https://weightplay.com/it/games/animal-glyph-garden/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-glyph-garden.webp",
-  "description": "Leggi ogni richiesta, scegli il glifo con entrambi gli indizi corretti e pianta tre aiuole tranquille.",
+  "description": "Leggi regole di forma, colore e sequenza in trenta livelli da giardino creati a mano.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -90,29 +85,29 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-glyph-garden" data-runtime-localize="off">
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-glyph-garden" data-runtime-localize="off" data-sound-toggle="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Giardino dei Glifi</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="screen main" data-screen="main">
       <header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">Giardino dei Glifi</strong><button id="settingsButton" class="settings-button" type="button" data-wp-settings aria-label="Settings">⚙</button></header>
-      <section class="hero"><div class="poster-frame"><img class="main-poster" src="assets/animal-glyph-garden-cover.svg" width="900" height="900" alt="" /></div><div class="main-copy"><small class="eyebrow" data-i18n="kicker">Mosslight garden</small><h1 data-runtime-localize="off">Giardino dei Glifi</h1><p class="summary" data-i18n="intro">Match each garden request by finding the one tile with both the right shape and colour.</p><div class="facts"><span data-i18n="fact1">3 gentle plots</span><span data-i18n="fact2">Shape + colour</span><span data-i18n="fact3">Calm retry</span></div><p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Start Game</button></div></section>
+      <section class="hero"><div class="poster-frame"><img class="main-poster" src="assets/animal-glyph-garden-cover.svg" width="900" height="900" alt="" /></div><div class="main-copy"><small class="eyebrow" data-i18n="kicker">Mosslight garden</small><h1 data-runtime-localize="off">Giardino dei Glifi</h1><p class="summary" data-i18n="intro">Read shape, colour, and sequence rules across thirty authored mosslight plots.</p><div class="facts"><span data-i18n="fact1">30 garden stages</span><span data-i18n="fact2">Shape + colour</span><span data-i18n="fact3">Calm retry</span></div><p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Start Game</button></div></section>
     </main>
     <section class="game-page-info game-page-info-static" aria-label="Informazioni su Giardino dei Glifi">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Giardino dei Glifi</h2><p>Leggi ogni richiesta, scegli il glifo con entrambi gli indizi corretti e pianta tre aiuole tranquille.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Puzzle di forme e colori</strong></div><div class="game-info-fact"><span>Genere</span><strong>Puzzle · Logica visiva · Abbinamento di forme · Famiglia · Animali</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Giardino dei Glifi</h2><p>Leggi regole di forma, colore e sequenza in trenta livelli da giardino creati a mano.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Puzzle di forme e colori</strong></div><div class="game-info-fact"><span>Genere</span><strong>Puzzle · Logica visiva · Abbinamento di forme · Famiglia · Animali</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Gentle to mastery</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>1–4 minutes per stage</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante aiuole ci sono?</dt><dd>Ci sono tre aiuole, ognuna con una corrispondenza esatta di forma e colore.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>The mosslight beds have lost their planting pattern before the evening festival. Each stage is one authored plot with a visible request, six tactile glyph choices, and one or more planting steps. Help Taro restore the beds in order. Every fifth plot is a checkpoint that changes the decision rather than merely adding more tiles, and Stage 30 is the festival finale that asks for the full garden vocabulary.</p></div>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>A request always names the active matching rule. Paired Sprouts asks for both shape and colour. Shape Beds ignores colour, so several tempting colour matches can be wrong. Colour Wells reverses that priority and ignores shape. Sequence Arbor asks for two or three complete matches in order. Switching Paths alternates shape-only and colour-only decisions. Festival Mastery combines all three rule families in longer sequences. A wrong choice never removes progress or spends currency; it produces an immediate explanation and leaves the player free to compare again.</p></div>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Apri un&#39;aiuola e leggi la richiesta di forma e colore.</li><li>Scegli una tessera, piantala e ricevi un feedback chiaro.</li><li>Usa il risultato per continuare, rigiocare o scegliere un&#39;altra aiuola.</li><li>Select a tile and activate Plant this glyph. A correct sequence step advances to the next request; a wrong choice remains safely retryable.</li><li>Complete the final step to save the clear, unlock the next stage, and open Result with Next Stage, Stages, and Replay actions.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Confronta insieme forma e colore.</li><li>Cancella la scelta per ripensarci.</li><li>Rigioca ogni aiuola senza timer.</li><li>Replay checkpoints 5, 10, 15, 20, 25, and 30 to practise the exact transition introduced by each arc.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>Stages 1–5 teach exact two-attribute matching and end with a two-step checkpoint. Stages 6–10 isolate shape, while 11–15 isolate colour, teaching the player to ignore a persuasive but irrelevant clue. Stages 16–20 introduce ordered exact-match sequences. Stages 21–25 switch between shape, colour, and exact rules inside one plot. Stages 26–30 are mastery beds with three- and four-step routes; the final Mosslight Festival combines exact, shape-only, colour-only, and exact matching in that order. Clearing a stage unlocks the next one locally, while every cleared card remains replayable.</p></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>The campaign uses one logical layout across phone, landscape, and desktop sizes. Large native buttons, text labels beside every glyph, visible selected state, rule copy, and non-colour shape silhouettes keep the puzzle understandable without relying on hue alone. The block-style Taro and glyph images carry object identity; CSS supplies layout and selection framing rather than replacing gameplay art.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>I progressi restano solo in questo browser. Il gioco è gratuito, senza account e non è un test formale di abilità.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quanti livelli ci sono?</dt><dd>Ci sono trenta livelli in sei archi, con un checkpoint che cambia le regole ogni cinque livelli.</dd></div></dl></div>
 
     </div>
   </section>
@@ -121,6 +116,6 @@
   <main id="battleScreen" class="screen battle-shell" data-screen="battle" data-wp-canvas-max-width="920" data-wp-battle-min-height="620" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden><div class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-height="620" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334"><header class="battle-header"><button id="battleBackBtn" class="back" type="button" data-wp-return="battle" data-wp-battle-utility aria-label="Back">←</button><div><small class="eyebrow" data-i18n="round">Plot</small><h2 id="battleTitle"></h2></div><span id="progressPill" class="pill"></span></header><p id="prompt" class="prompt" aria-live="polite"></p><section class="request-card"><span data-i18n="request">Garden request</span><div id="targetGlyph" class="glyph target" aria-hidden="true"></div><strong id="targetText"></strong></section><div id="optionGrid" class="option-grid" role="list" aria-label="Garden tiles"></div><p id="selection" class="selection" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary" type="button" data-wp-primary-action data-i18n="check">Plant this tile</button><button id="clearBtn" class="secondary" type="button" data-i18n="reset">Clear choice</button></div><p id="status" class="status" role="status" aria-live="polite"></p><section id="resultScreen" class="result-panel" data-screen="result" data-wp-result-audit hidden role="dialog" aria-modal="true"><div class="result-icon">✦</div><p class="eyebrow" data-i18n="finished">Plot planted</p><h2 id="resultTitle" data-i18n="resultTitle">A bright little match!</h2><p id="resultText" class="summary"></p><div class="result-actions"><button id="stagesBtn" class="secondary" type="button" data-i18n="choose">Choose a plot</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plot</button><button id="replayBtn" class="secondary" type="button" data-i18n="replay">Replay</button></div></section></div><div class="battle-ad-reserve" aria-hidden="true"></div></main>
   <section id="settingsPanel" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   <script src="../../src/site-config.js"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="locales.js?v=20260901-glyph-garden-route-locale-v3"></script><script src="game.js?v=20260901-glyph-garden-route-locale-v3"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260830-glyph-v2" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260830-glyph-v2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="locales.js?v=20260923-glyph-v4-depth"></script><script src="game.js?v=20260923-glyph-v4-depth"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260830-glyph-v2" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260830-glyph-v2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 </body>
 </html>

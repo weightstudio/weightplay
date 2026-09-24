@@ -23,11 +23,11 @@
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-game-version" content="v12">
   <meta name="description" content="拖曳兩顆月石到草甸停靠點，看著相連月石回應。" />
   <title>磁力草甸 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260921-magnet-meadow-v9-settings-owner">
+  <link rel="stylesheet" href="style.css?v=20260924-magnet-meadow-v12-guide">
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -71,7 +71,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-magnet-meadow" data-wp-game-version="v9" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-magnet-meadow" data-wp-game-version="v12" data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
       <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
@@ -103,15 +103,18 @@
     <section id="guideScreen" class="guide game-page-info" data-wp-game-guide hidden aria-labelledby="guideHeading">
       <h2 id="guideHeading" data-copy="guideTitle">玩法</h2>
       <div class="guide-grid">
-        <article><b data-copy="guideOneTitle">1. 選一顆月石</b><p data-copy="guideOne">點選月石，再把它拖向停靠點。</p></article>
-        <article><b data-copy="guideTwoTitle">2. 看著連結</b><p data-copy="guideTwo">另一顆月石會依照拉力或推力一起移動。</p></article>
-        <article><b data-copy="guideThreeTitle">3. 檢查一對月石</b><p data-copy="guideThree">兩顆月石都要停在發光停靠點。錯誤嘗試會留在畫面上。</p></article>
+        <article><h3 data-copy="guideOneTitle">1. 選一顆月石</h3><p data-copy="guideOne">點選月石，再把它拖向停靠點。</p></article>
+        <article><h3 data-copy="guideTwoTitle">2. 看著連結</h3><p data-copy="guideTwo">另一顆月石會依照拉力或推力一起移動。</p></article>
+        <article><h3 data-copy="guideThreeTitle">3. 檢查一對月石</h3><p data-copy="guideThree">兩顆月石都要停在發光停靠點。錯誤嘗試會留在畫面上。</p></article>
+        <article><h3 data-copy="guideCampaignTitle">閱讀整座草甸</h3><p data-copy="guideCampaign">草甸共有三十座手工設計的停靠點，分成六個篇章，並在第 5、10、15、20、25、30 關設置檢查點。先閱讀目標與連結規則，再移動月石；完成後會解鎖下一關，也能重玩已完成的關卡。進度只保存在此瀏覽器，沒有計時、生命、排名或懲罰。</p></article>
+        <article><h3 data-copy="guideMechanicsTitle">規劃會改變的連結</h3><p data-copy="guideMechanics">前段教導拉力與推力，後段加入極性切換、固定錨點、封鎖停靠點與三石連鎖。固定石不會移動，封鎖點不能停靠；拖曳前先比較目前位置與目標。阿拉伯文介面中的編號軌道仍維持由左至右，因此每種語言的停靠點編號一致。</p></article>
+        <article><h3 data-copy="guideProgressTitle">檢查、復原與精進</h3><p data-copy="guideProgress">所有位置符合目標後再按檢查。錯誤排列會留在畫面上，方便比較；重設可回到起始狀態。成功後可前往下一關、地圖或主畫面。最佳總步數只作為自我挑戰，不會阻擋進度。</p></article>
       </div>
     </section>
 
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">返回</button><h2 data-copy="stages">草甸地圖</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-legacy-control" hidden type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-hidden="true" tabindex="-1" aria-label="設定"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">設定</span></button></header>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy-aria-label="back" aria-label="返回"><span aria-hidden="true">←</span></button><h2 data-copy="stages">草甸地圖</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-legacy-control" hidden type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-hidden="true" tabindex="-1" aria-label="設定"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">設定</span></button></header>
         <p class="panel-intro" data-copy="mapIntro">每座停靠都會教你一次連結月石如何改變。</p>
         <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div>
         <nav class="stage-tabs" aria-label="Meadow map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">草甸地圖</button><span aria-hidden="true"></span></nav>
@@ -121,13 +124,13 @@
 
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="back">返回</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="音效">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy-aria-label="back" aria-label="返回"><span aria-hidden="true">←</span></button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="音效">♫</button></header>
         <div id="battlePanel">
           <div class="mission-row"><div><p class="eyebrow" data-copy="dockKicker">草甸停靠</p><p id="roundHint" class="panel-intro"></p></div><span id="relationBadge" class="relation-badge"></span></div>
           <div class="target-card"><span data-copy="target">停靠圖樣</span><strong id="targetText"></strong><span id="moveText" class="move-text"></span></div>
           <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
-          <div id="magnetTrack" class="magnet-track" aria-label="Magnet meadow board">
-            <div id="slotGrid" class="slot-grid"></div>
+          <div id="magnetTrack" class="magnet-track" dir="ltr" aria-label="Magnet meadow board">
+            <div id="slotGrid" class="slot-grid" dir="ltr"></div>
             <div id="stoneLayer" class="stone-layer"></div>
           </div>
           <div id="legend" class="legend"><span class="legend-stone stone-a" data-copy="stoneA">月石 A</span><span class="legend-stone stone-b" data-copy="stoneB">月石 B</span></div>
@@ -146,8 +149,8 @@
     </section>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260921-magnet-meadow-v9-settings-owner"></script>
-  <script src="game.js?v=20260921-magnet-meadow-v9-settings-owner"></script>
+  <script src="locales.js?v=20260924-magnet-meadow-v12-guide"></script>
+  <script src="game.js?v=20260924-magnet-meadow-v12-guide"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>

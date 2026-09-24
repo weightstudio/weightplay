@@ -28,7 +28,7 @@
   (__wpNotifyMeasurement(), resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock"));
 
   const GAME_ID = "beast-deck";
-  document.body.dataset.gameVersion = 'v21';
+  document.body.dataset.gameVersion = 'v22';
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();
@@ -50,6 +50,7 @@
   const maxGearRank = 3;
   const maxEquippedCards = 6;
   const maxMission = 30;
+  const handRefillTarget = 3;
   const STAGE_CARD_POOL_SIZE = 9;
   let amuletConfirmPending = false;
   let amuletConfirmTimer = 0;
@@ -501,7 +502,7 @@
       card_iron_tortoise: "Iron Tortoise",
       card_iron_tortoise_desc: "Gain 15 Block.",
       card_mist_curse: "Mist Curse",
-      card_mist_curse_desc: "Costs 1 Energy to clear. If held when ending the turn, take 2 damage.",
+      card_mist_curse_desc: "Costs 1 Energy to clear. Take 2 damage at each turn end while it remains in your hand.",
       gear_mist_cloak: "Mist Cloak",
       gear_mist_cloak_desc: "+6 Max HP.",
       gear_hunter_charm: "Hunter Charm",
@@ -539,7 +540,7 @@
       log_enemy_turn: "Enemy turn: {action}.",
       log_enemy_blocked: "{enemy}'s Block absorbed {blocked} damage.",
       log_enemy_damage_after_block: "{enemy}'s Block absorbed {blocked}. {damage} damage went through.",
-      log_player_turn: "Your turn. Drew {count} cards. Energy restored to {energy}.",
+      log_player_turn: "Your turn. Kept {retained} card(s), drew {count}; hand {hand}. Energy restored to {energy}.",
       log_player_block: "You gained {amount} Block. It will absorb enemy attack damage this turn.",
       log_enemy_block_fade: "{enemy}'s remaining Block faded.",
       log_draft_added: "{card} joined this mission deck and is guaranteed in this opening hand.",
@@ -716,7 +717,7 @@
       card_iron_tortoise: "鐵甲龜",
       card_iron_tortoise_desc: "獲得 15 點格擋。",
       card_mist_curse: "迷霧詛咒",
-      card_mist_curse_desc: "消耗 1 點能量清除；若回合結束仍留在手中，受到 2 點傷害。",
+      card_mist_curse_desc: "消耗 1 點能量清除；每次回合結束仍留在手中，都會受到 2 點傷害。",
       gear_mist_cloak: "迷霧披風",
       gear_mist_cloak_desc: "生命上限 +6。",
       gear_hunter_charm: "獵手護符",
@@ -754,7 +755,7 @@
       log_enemy_turn: "敵方回合：{action}。",
       log_enemy_blocked: "{enemy} 的格擋吸收了 {blocked} 點傷害。",
       log_enemy_damage_after_block: "{enemy} 的格擋吸收 {blocked} 點，仍受到 {damage} 點傷害。",
-      log_player_turn: "你的回合，抽 {count} 張牌，能量恢復為 {energy}。",
+      log_player_turn: "你的回合：保留 {retained} 張手牌，補抽 {count} 張，目前共 {hand} 張；能量恢復至 {energy}。",
       log_player_block: "你獲得 {amount} 點格擋，可吸收本回合敵方攻擊。",
       log_enemy_block_fade: "{enemy} 剩餘的格擋消退了。",
       log_draft_added: "{card} 已加入本次任務牌組，並保證出現在這場開手牌。",
@@ -944,7 +945,7 @@
     card_iron_tortoise: "Tortuga de Hierro",
     card_iron_tortoise_desc: "Obtén 15 de bloqueo.",
     card_mist_curse: "Maldición de Niebla",
-    card_mist_curse_desc: "Cuesta 1 de energía eliminarla. Si la conservas al terminar el turno, recibes 2 de daño.",
+    card_mist_curse_desc: "Cuesta 1 de energía eliminarla. Recibes 2 de daño al final de cada turno que la conserves.",
     gear_mist_cloak: "Capa de Niebla",
     gear_mist_cloak_desc: "+6 PV máximos.",
     gear_hunter_charm: "Talismán del Cazador",
@@ -982,7 +983,7 @@
     log_enemy_turn: "Turno enemigo: {action}.",
     log_enemy_blocked: "El bloqueo de {enemy} absorbió {blocked} de daño.",
     log_enemy_damage_after_block: "El bloqueo de {enemy} absorbió {blocked}. Pasaron {damage} de daño.",
-    log_player_turn: "Tu turno. Robaste {count} cartas. Energía restaurada a {energy}.",
+    log_player_turn: "Tu turno. Conservas {retained} cartas y robas {count}; tienes {hand}. Energía restaurada a {energy}.",
     log_player_block: "Obtuviste {amount} de bloqueo. Absorberá daño enemigo este turno.",
     log_enemy_block_fade: "El bloqueo restante de {enemy} desapareció.",
     log_draft_added: "{card} se unió al mazo de esta misión y aparecerá en la mano inicial.",
@@ -1151,7 +1152,7 @@
     card_iron_tortoise: "السلحفاة الحديدية",
     card_iron_tortoise_desc: "اكسب 15 من الدرع.",
     card_mist_curse: "لعنة الضباب",
-    card_mist_curse_desc: "إزالتها تكلف نقطة طاقة. إذا بقيت عند إنهاء الدور، تتلقى ضررين.",
+    card_mist_curse_desc: "تكلف نقطة طاقة لإزالتها. تتلقى ضررين في نهاية كل دور تظل فيه بيدك.",
     gear_mist_cloak: "عباءة الضباب",
     gear_mist_cloak_desc: "+6 إلى أقصى الصحة.",
     gear_hunter_charm: "تميمة الصياد",
@@ -1189,7 +1190,7 @@
     log_enemy_turn: "دور العدو: {action}.",
     log_enemy_blocked: "امتص درع {enemy} ضررًا مقداره {blocked}.",
     log_enemy_damage_after_block: "امتص درع {enemy} {blocked}، ونفذ {damage} من الضرر.",
-    log_player_turn: "دورك. سحبت {count} بطاقات. عادت الطاقة إلى {energy}.",
+    log_player_turn: "دورك. احتفظت بـ {retained} بطاقات وسحبت {count}؛ لديك {hand}. عادت الطاقة إلى {energy}.",
     log_player_block: "كسبت {amount} من الدرع. سيمتص ضرر هجوم العدو هذا الدور.",
     log_enemy_block_fade: "تلاشى الدرع المتبقي لدى {enemy}.",
     log_draft_added: "انضمت {card} إلى مجموعة المهمة وستظهر في اليد الافتتاحية.",
@@ -2700,6 +2701,7 @@
   }
 
   function drawCards(count) {
+    let drawn = 0;
     for (let i = 0; i < count; i++) {
       if (state.drawPile.length === 0) {
         if (state.discardPile.length === 0) break;
@@ -2709,7 +2711,9 @@
         log(t("log_reshuffle"), "system");
       }
       state.hand.push(state.drawPile.pop());
+      drawn += 1;
     }
+    return drawn;
   }
 
   function applyEnemyDamage(amount) {
@@ -2901,8 +2905,6 @@
     resolveEndTurnHazards();
     state.exhaustCardId = null;
     state.intentHidden = false;
-    state.discardPile.push(...state.hand);
-    state.hand = [];
     renderStats();
     renderHand();
     if (state.playerHp <= 0) scheduleBattleTransition(() => endGame(false), 500);
@@ -3044,8 +3046,14 @@
       log(t("log_player_block", { amount: state.gearBlock }), "system");
     }
     state.attacksPlayedThisTurn = 0;
-    drawCards(3);
-    log(t("log_player_turn", { count: 3, energy: state.energy }), "player");
+    const retainedCards = state.hand.length;
+    const drawnCards = drawCards(Math.max(0, handRefillTarget - retainedCards));
+    log(t("log_player_turn", {
+      retained: retainedCards,
+      count: drawnCards,
+      hand: state.hand.length,
+      energy: state.energy,
+    }), "player");
     displayIntent(state.enemy.intents[state.enemyIntentIndex]);
     renderStats();
     renderHand();

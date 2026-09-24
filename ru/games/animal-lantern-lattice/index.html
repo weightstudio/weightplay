@@ -22,22 +22,32 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-lantern-lattice/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-id" content="animal-lantern-lattice">
+  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-interface-version" content="7">
   <title>Фонарная сеть | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="interface-overrides.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <meta name="description" content="Прочитайте три подсказки хранителей, соедините нужные фонари и осветите безопасную тропу." />
+  <link rel="stylesheet" href="style.css?v=20260923-lantern-lattice-v9-i7">
+  <link rel="stylesheet" href="interface-overrides.css?v=20260924-lantern-lattice-v9-i7-skill-report-metadata">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <script src="../../src/stage-virtualization-standard.js?v=20260923-stage-v6-bounded-data-v1"></script>
+  <script src="../../src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <meta name="description" content="Прочитайте три подсказки хранителя, соедините нужные фонари и осветите безопасный путь ночью." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Фонарная сеть | WeightPlay" />
-    <meta property="og:description" content="Прочитайте три подсказки хранителей, соедините нужные фонари и осветите безопасную тропу." />
+    <meta property="og:description" content="Прочитайте три подсказки хранителя, соедините нужные фонари и осветите безопасный путь ночью." />
     <meta property="og:url" content="https://weightplay.com/ru/games/animal-lantern-lattice/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Фонарная сеть | WeightPlay" />
-    <meta name="twitter:description" content="Прочитайте три подсказки хранителей, соедините нужные фонари и осветите безопасную тропу." />
+    <meta name="twitter:description" content="Прочитайте три подсказки хранителя, соедините нужные фонари и осветите безопасный путь ночью." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <script type="application/ld+json">
 {
@@ -47,7 +57,7 @@
   "alternateName": "Lantern Lattice",
   "url": "https://weightplay.com/ru/games/animal-lantern-lattice/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp",
-  "description": "Прочитайте три подсказки хранителей, соедините нужные фонари и осветите безопасную тропу.",
+  "description": "Прочитайте три подсказки хранителя, соедините нужные фонари и осветите безопасный путь ночью.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -71,36 +81,53 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v7" data-wp-interface-version="6" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v9" data-wp-interface-version="7" data-wp-game-owned-guide data-wp-frame-tutorial="true" class="has-game-page-info" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Waking the lantern meadow…</strong><div class="loading-track"><i></i></div></div></section>
-  <main id="mainScreen" class="screen main-screen" hidden>
-    <header class="topbar wp-main-shell-header"><a class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a><strong class="wp-shell-main-title" data-copy="title">Lantern Lattice</strong><div class="utilities"><button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button></div></header>
-    <section class="hero-grid"><div class="cover-wrap"><img class="cover main-poster" src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="Изображение игры «Фонарная сеть»"></div><div class="hero-copy"><img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map"><p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p><h1 data-copy="title">Фонарная сеть</h1><p class="intro main-summary" data-copy="intro">Read the keeper clues, then connect the right lanterns into a safe night path.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong data-copy="progressTitle">30 paths across six arcs</strong><span data-copy="progressBody">1 of 30 stages unlocked. Clear one to light the next.</span></div><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start a night path</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="paths">Choose a path</button></div><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></section>
-  </main>
-  <section class="game-page-info game-page-info-static" aria-label="Информация об игре Фонарная сеть">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Фонарная сеть</h2><p>Прочитайте три подсказки хранителей, соедините нужные фонари и осветите безопасную тропу.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Пазл пути с ограничениями</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Головоломка · Логика · Планирование · Семейная · Животные</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>Как играть</h3><ol><li>Прочитайте три подсказки хранителя для выбранного ночного пути.</li><li>Нажмите три фонаря в порядке, указанном подсказками.</li><li>Проверьте цепь: первая ошибка будет указана, таймера и жизней нет.</li></ol></div>
-
-
-
-
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Сохраняется ли прогресс?</dt><dd>Да, только в этом браузере.</dd></div></dl></div>
-
-    </div>
-  </section>
-  <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden><strong data-copy="settings">Settings</strong><button id="soundBtn" class="setting-row" type="button" data-sound-toggle="true">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
-  <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading"><div class="stage-canvas" data-wp-standard-stage-screen style="--wp-stage-art:url('assets/animal-lantern-lattice-cover-voxel-v1.png')"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="backShort">Back</button><h2 id="stageHeading" data-copy="paths">Choose a path</h2><button id="stageSettingsBtn" class="utility-button" type="button" aria-label="Settings">⚙</button></header><div class="stage-tabs" role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-copy="stageAll">All night paths</button></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
-  <section id="battleScreen" class="screen panel-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-labelledby="battleHeading"><div class="battle-canvas" style="--wp-battle-art:url('assets/animal-lantern-lattice-background-voxel-v1.png')"><img class="battle-backdrop" src="assets/animal-lantern-lattice-background-voxel-v1.png" width="1536" height="1024" alt="" aria-hidden="true"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="backShort">Back</button><div><h2 id="battleHeading">Night path</h2><p id="roundLabel" class="round-label"></p></div><div class="battle-header-tools"><span class="check-pill"><span data-copy="checks">Checks</span> <b id="sessionChecks">0</b></span><button id="battleSettingsBtn" class="utility-button" data-wp-battle-utility type="button" aria-label="Settings">⚙</button></div></header><div class="battle-content"><div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div><div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div><div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div><div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
-  <section id="resultScreen" class="screen panel-screen" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="paths">Night map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
-  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260921-lantern-lattice-v7-block-art-v1"></script><script src="game.js?v=20260921-lantern-lattice-v7-block-art-v1"></script>
+  <div id="app" data-wp-frame-root hidden>
+    <main id="mainScreen" class="main-screen" data-screen="main" data-wp-standard-main-screen hidden>
+      <header id="mainHeader" class="topbar wp-main-shell-header" data-wp-shell-header="main">
+        <a id="mainBackBtn" class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a>
+        <h1 data-copy="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">Фонарная сеть</h1>
+      </header>
+      <div id="mainContent" class="main-content" data-wp-frame-content="main">
+        <img class="cover main-poster" data-wp-frame-poster src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="Изображение игры «Фонарная сеть»">
+        <div class="hero-copy" data-wp-frame-copy>
+          <img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map">
+          <p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p>
+          <p class="intro main-summary" data-copy="intro" data-wp-frame-summary>Read the keeper clues, then connect the right lanterns into a safe night path.</p>
+          <div class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite"><span id="progressBody">Stage 1 / 30</span></div>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-frame-action="primary" data-copy="start">Start Game</button><button id="mapBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary" data-copy="paths">Choose a path</button></div>
+          <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p>
+        </div>
+      </div>
+    </main>
+    <section id="stageScreen" class="stage-canvas wp-stage-art-shell" data-screen="stage" data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png')" hidden aria-label="Choose a night path">
+      <header id="stageHeader" class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="stageContent" class="stage-content" data-wp-frame-content="stage"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div>
+      <nav class="stage-tabs" data-wp-frame-nav data-wp-frame-stage-nav role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-copy="stageAll">All night paths</button></nav>
+      <div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+    </section>
+    <section id="battleScreen" class="battle-canvas wp-stage-art-shell" data-screen="battle" data-wp-logical-battle-canvas data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png')" hidden aria-label="Night path puzzle">
+      <header id="battleHeader" class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="battleContent" class="battle-content" data-wp-frame-content="battle">
+        <div id="battleHeaderInfo" class="battle-header-info" data-runtime-localize="off">
+          <div class="battle-info-field"><small data-copy="pathLabel">Path</small><strong id="roundLabel"></strong></div>
+          <div class="battle-info-field"><small data-copy="checks">Checks</small><strong id="sessionChecks">0</strong></div>
+        </div>
+        <div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div>
+        <div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div>
+        <div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div>
+        <div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div>
+        <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div>
+      </div>
+      <section id="resultScreen" class="result-card result-panel" hidden aria-labelledby="resultHeading"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="skill-report" aria-live="polite"><strong data-copy="skillReportLabel">Skill Report</strong><span id="skillReport"></span></div><div class="result-actions"><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Stages</button><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="replay">Replay</button></div></section>
+      <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    </section>
+    <div id="localeSource" hidden aria-hidden="true"><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></div>
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" data-runtime-localize="off" aria-label="Фонарная решётка game guide"><div id="guideHero" class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Фонарная решётка</h2><p>Прочитайте подсказки хранителя и соедините нужные фонари в безопасный ночной путь.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Рекомендуемый возраст</span><strong>9+</strong></div><div class="game-info-fact"><span>Сложность</span><strong>От лёгкого к сложному</strong></div><div class="game-info-fact"><span>Примерное время игры</span><strong>1–3 мин на этап</strong></div><div class="game-info-fact"><span>Развиваемые навыки</span><strong>Логика · чтение · решение задач</strong></div></div></div><div id="guideSections" class="game-info-sections"><article class="game-info-section"><h3>Поляна и цель</h3><p>«Фонарная решётка» — спокойная логическая головоломка на залитой луной поляне. Хранительница фонарей Орла оставляет подсказки о связях между шестью животными: совой, лисой, выдрой, кроликом, черепахой и пандой. Соедините их в безопасном порядке каждого ночного пути. Прочитайте подсказки, составьте последовательность кнопками-фонарями и проверьте цепочку. Здесь нет обратного отсчёта, жизней и соперника, который заставлял бы спешить. Можно спокойно сравнить выбор с подсказками, очистить цепочку и попробовать снова. Задача — понять связи и заметить, как новые правила меняют маршрут.</p></article><article class="game-info-section"><h3>Как пройти ночной путь</h3><p>Нажмите «Начать игру», чтобы идти по главам по порядку, или «Этапы», чтобы выбрать открытый путь. В маршруте от трёх до шести позиций.</p><ol><li>Прочитайте все подсказки хранителя до выбора фонаря. Первая указывает старт, следующие описывают, что идёт после него.</li><li>Нажимайте фонари в этом порядке. Текущая цепочка остаётся видимой, чтобы сравнить её с подсказками.</li><li>Когда цепочка готова, выберите «Проверить путь». Если выборов не хватает, появится нужное число; ошибка укажет первое неверное звено или приманку мотылька.</li><li>Кнопка «Сбросить путь» очищает цепочку, чтобы пройти тот же маршрут ещё раз. Ошибочные проверки входят в лучший счёт этого пути, но не отнимают жизни и открытый прогресс.</li><li>После прохождения открывается следующий путь, а прогресс сохраняется в этом браузере. На экране результата «Следующий этап» сразу запускает следующий бой, «Этапы» открывает карту, а «Повторить» начинает пройденный путь заново.</li><li>В настройках можно изменить язык и звук. Стрелка возврата ведёт на предыдущий экран; для решения звуковые подсказки не нужны.</li></ol></article><article class="game-info-section"><h3>Как меняются подсказки</h3><p>В первой главе изучается прямой порядок: следуйте связям от гнезда к воротам. На путях с мотыльком есть заманчивый фонарь, который должен оставаться погашенным и вне цепочки. На путях эха названный фонарь появляется в двух позициях; оба появления нужны в ответе. Поворот ветра меняет направление чтения: начните с последнего фонаря и двигайтесь по подсказкам к первому. В поздних главах правила сочетаются: иногда нужно читать в обратном порядке, повторить эхо и одновременно не зажечь приманку. Подсказки остаются на экране, пока вы строите цепочку. Неполная цепочка сообщает, сколько выборов не хватает; полная, но неверная указывает первое расхождение.</p></article><article class="game-info-section"><h3>Кампания и контрольные точки</h3><p>В путешествии 30 разработанных ночных путей в шести главах; контрольные точки находятся на путях 5, 10, 15, 20, 25 и 30. Пути 1–5 знакомят с животными и обычным порядком; 6–10 добавляют приманки мотылька; 11–15 вводят эхо; 16–20 учат повороту ветра; 21–25 объединяют эхо и приманки; 26–30 собирают все правила. Пройденный путь открывает следующий. На карте остаются доступные маршруты, поэтому повтор короткого пути не стирает дальнейший прогресс. Значки контрольных точек отмечают конец главы, а основное действие не меняется: прочитать, соединить, проверить.</p></article><article class="game-info-section"><h3>Советы по решению</h3><p>Сначала прочитайте все подсказки и превратите каждую в отношение вроде «A раньше B». Решайте по одному звену, а не угадывайте весь порядок по одной фразе. На повороте ветра сначала найдите обычный порядок, затем прочитайте его с конца. На пути эха оставьте названному фонарю место в обеих позициях. Не включайте приманку мотылька, даже если она кажется подходящей. Если проверка показывает позицию, перечитайте связанную с ней подсказку до сброса. Таймера нет, поэтому внимательно сравнивать полезнее, чем торопиться с догадкой.</p></article><article class="game-info-section"><h3>Замысел головоломки</h3><p>Подсказки расположены рядом с фонарями, чтобы наблюдение и выводы оставались в одном месте. Шесть животных и пронумерованная цепочка помогают проверять текущий порядок. Вместо общей ошибки игра показывает первое неверное звено. Каждая глава вводит заметное правило, а поздние пути сочетают знакомые правила, постепенно усложняя задачу без смены основных команд. Лунная поляна — вымышленная сцена головоломки, а не описание поведения животных в природе. Темп намеренно спокойный; звук можно отключить.</p></article><article class="game-info-section"><h3>Информация об игроке и сохранении</h3><p>Нажимайте кнопки касанием, мышью или клавиатурой после фокусировки, используя Enter или пробел. Настройки позволяют менять язык и звук в меню и во время игры. Пройденные пути, открытия и лучший счёт проверок сохраняются в этом браузере, если доступно локальное хранилище. Синхронизации аккаунта и автоматического переноса на другое устройство нет. Очистка данных сайта, приватный режим или блокировка хранилища могут удалить запись или помешать сохранению. Играть можно и без хранилища, но после закрытия страницы прогресс может не сохраниться.</p></article><article class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Есть ли ограничение времени или жизни?</dt><dd>Нет. Перечитывайте подсказки и сбрасывайте цепочку, когда захотите.</dd></div><div><dt>Почему нельзя выбрать фонарь дважды?</dt><dd>Повторять названный фонарь разрешено только на путях с эхом.</dd></div><div><dt>Что делать с приманкой мотылька?</dt><dd>Оставьте её погашенной и не включайте в цепочку.</dd></div><div><dt>Сохраняется ли прогресс?</dt><dd>Да. Пройденные и открытые пути хранятся в этом браузере, если доступно хранилище; синхронизации нет.</dd></div></dl></article></div></section>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260924-lantern-lattice-v9-i7-child-metadata-skill-report"></script><script src="guide-copy.js?v=20260924-lantern-lattice-v9-i7-public-metadata"></script><script src="game.js?v=20260924-lantern-lattice-v9-i7-skill-report"></script><script src="../../src/tutorial.js?v=20260826-first-session-tutorial-v36"></script>
 </body>
 </html>

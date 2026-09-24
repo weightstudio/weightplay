@@ -22,22 +22,32 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-lantern-lattice/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-id" content="animal-lantern-lattice">
+  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-interface-version" content="7">
   <title>लालटेन जाल | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="interface-overrides.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <meta name="description" content="तीन रखवालों के संकेत पढ़कर सही लालटेन जोड़ें और सुरक्षित पगडंडी जगाएँ।" />
+  <link rel="stylesheet" href="style.css?v=20260923-lantern-lattice-v9-i7">
+  <link rel="stylesheet" href="interface-overrides.css?v=20260924-lantern-lattice-v9-i7-skill-report-metadata">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <script src="../../src/stage-virtualization-standard.js?v=20260923-stage-v6-bounded-data-v1"></script>
+  <script src="../../src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <meta name="description" content="रक्षक के तीन संकेत पढ़ें, सही लालटेन जोड़ें और रात में सुरक्षित रास्ता जगाएँ।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="लालटेन जाल | WeightPlay" />
-    <meta property="og:description" content="तीन रखवालों के संकेत पढ़कर सही लालटेन जोड़ें और सुरक्षित पगडंडी जगाएँ।" />
+    <meta property="og:description" content="रक्षक के तीन संकेत पढ़ें, सही लालटेन जोड़ें और रात में सुरक्षित रास्ता जगाएँ।" />
     <meta property="og:url" content="https://weightplay.com/hi/games/animal-lantern-lattice/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="लालटेन जाल | WeightPlay" />
-    <meta name="twitter:description" content="तीन रखवालों के संकेत पढ़कर सही लालटेन जोड़ें और सुरक्षित पगडंडी जगाएँ।" />
+    <meta name="twitter:description" content="रक्षक के तीन संकेत पढ़ें, सही लालटेन जोड़ें और रात में सुरक्षित रास्ता जगाएँ।" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <script type="application/ld+json">
 {
@@ -47,7 +57,7 @@
   "alternateName": "Lantern Lattice",
   "url": "https://weightplay.com/hi/games/animal-lantern-lattice/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp",
-  "description": "तीन रखवालों के संकेत पढ़कर सही लालटेन जोड़ें और सुरक्षित पगडंडी जगाएँ।",
+  "description": "रक्षक के तीन संकेत पढ़ें, सही लालटेन जोड़ें और रात में सुरक्षित रास्ता जगाएँ।",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -71,36 +81,53 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v7" data-wp-interface-version="6" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v9" data-wp-interface-version="7" data-wp-game-owned-guide data-wp-frame-tutorial="true" class="has-game-page-info" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Waking the lantern meadow…</strong><div class="loading-track"><i></i></div></div></section>
-  <main id="mainScreen" class="screen main-screen" hidden>
-    <header class="topbar wp-main-shell-header"><a class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a><strong class="wp-shell-main-title" data-copy="title">Lantern Lattice</strong><div class="utilities"><button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button></div></header>
-    <section class="hero-grid"><div class="cover-wrap"><img class="cover main-poster" src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="लालटेन जाल game artwork"></div><div class="hero-copy"><img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map"><p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p><h1 data-copy="title">लालटेन जाल</h1><p class="intro main-summary" data-copy="intro">Read the keeper clues, then connect the right lanterns into a safe night path.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong data-copy="progressTitle">30 paths across six arcs</strong><span data-copy="progressBody">1 of 30 stages unlocked. Clear one to light the next.</span></div><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start a night path</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="paths">Choose a path</button></div><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></section>
-  </main>
-  <section class="game-page-info game-page-info-static" aria-label="लालटेन जाल गेम की जानकारी">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>लालटेन जाल</h2><p>तीन रखवालों के संकेत पढ़कर सही लालटेन जोड़ें और सुरक्षित पगडंडी जगाएँ।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>बाधा-पथ पहेली</strong></div><div class="game-info-fact"><span>शैली</span><strong>पहेली · तर्क · योजना · परिवार · जानवर</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>चुने गए रात के रास्ते के तीन रक्षक संकेत पढ़ें।</li><li>संकेतों में बताए क्रम में तीन लालटेन चुनें।</li><li>श्रृंखला जाँचें; पहली गलत कड़ी बताई जाएगी और कोई टाइमर या जीवन नहीं है।</li></ol></div>
-
-
-
-
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></div>
-
-    </div>
-  </section>
-  <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden><strong data-copy="settings">Settings</strong><button id="soundBtn" class="setting-row" type="button" data-sound-toggle="true">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
-  <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading"><div class="stage-canvas" data-wp-standard-stage-screen style="--wp-stage-art:url('assets/animal-lantern-lattice-cover-voxel-v1.png')"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="backShort">Back</button><h2 id="stageHeading" data-copy="paths">Choose a path</h2><button id="stageSettingsBtn" class="utility-button" type="button" aria-label="Settings">⚙</button></header><div class="stage-tabs" role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-copy="stageAll">All night paths</button></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
-  <section id="battleScreen" class="screen panel-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-labelledby="battleHeading"><div class="battle-canvas" style="--wp-battle-art:url('assets/animal-lantern-lattice-background-voxel-v1.png')"><img class="battle-backdrop" src="assets/animal-lantern-lattice-background-voxel-v1.png" width="1536" height="1024" alt="" aria-hidden="true"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="backShort">Back</button><div><h2 id="battleHeading">Night path</h2><p id="roundLabel" class="round-label"></p></div><div class="battle-header-tools"><span class="check-pill"><span data-copy="checks">Checks</span> <b id="sessionChecks">0</b></span><button id="battleSettingsBtn" class="utility-button" data-wp-battle-utility type="button" aria-label="Settings">⚙</button></div></header><div class="battle-content"><div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div><div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div><div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div><div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
-  <section id="resultScreen" class="screen panel-screen" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="paths">Night map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
-  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260921-lantern-lattice-v7-block-art-v1"></script><script src="game.js?v=20260921-lantern-lattice-v7-block-art-v1"></script>
+  <div id="app" data-wp-frame-root hidden>
+    <main id="mainScreen" class="main-screen" data-screen="main" data-wp-standard-main-screen hidden>
+      <header id="mainHeader" class="topbar wp-main-shell-header" data-wp-shell-header="main">
+        <a id="mainBackBtn" class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a>
+        <h1 data-copy="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">लालटेन जाल</h1>
+      </header>
+      <div id="mainContent" class="main-content" data-wp-frame-content="main">
+        <img class="cover main-poster" data-wp-frame-poster src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="लालटेन जाल game artwork">
+        <div class="hero-copy" data-wp-frame-copy>
+          <img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map">
+          <p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p>
+          <p class="intro main-summary" data-copy="intro" data-wp-frame-summary>Read the keeper clues, then connect the right lanterns into a safe night path.</p>
+          <div class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite"><span id="progressBody">Stage 1 / 30</span></div>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-frame-action="primary" data-copy="start">Start Game</button><button id="mapBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary" data-copy="paths">Choose a path</button></div>
+          <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p>
+        </div>
+      </div>
+    </main>
+    <section id="stageScreen" class="stage-canvas wp-stage-art-shell" data-screen="stage" data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png')" hidden aria-label="Choose a night path">
+      <header id="stageHeader" class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="stageContent" class="stage-content" data-wp-frame-content="stage"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div>
+      <nav class="stage-tabs" data-wp-frame-nav data-wp-frame-stage-nav role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-copy="stageAll">All night paths</button></nav>
+      <div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+    </section>
+    <section id="battleScreen" class="battle-canvas wp-stage-art-shell" data-screen="battle" data-wp-logical-battle-canvas data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png')" hidden aria-label="Night path puzzle">
+      <header id="battleHeader" class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="battleContent" class="battle-content" data-wp-frame-content="battle">
+        <div id="battleHeaderInfo" class="battle-header-info" data-runtime-localize="off">
+          <div class="battle-info-field"><small data-copy="pathLabel">Path</small><strong id="roundLabel"></strong></div>
+          <div class="battle-info-field"><small data-copy="checks">Checks</small><strong id="sessionChecks">0</strong></div>
+        </div>
+        <div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div>
+        <div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div>
+        <div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div>
+        <div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div>
+        <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div>
+      </div>
+      <section id="resultScreen" class="result-card result-panel" hidden aria-labelledby="resultHeading"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="skill-report" aria-live="polite"><strong data-copy="skillReportLabel">Skill Report</strong><span id="skillReport"></span></div><div class="result-actions"><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Stages</button><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="replay">Replay</button></div></section>
+      <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    </section>
+    <div id="localeSource" hidden aria-hidden="true"><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></div>
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" data-runtime-localize="off" aria-label="लालटेन जाल game guide"><div id="guideHero" class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>लालटेन जाल</h2><p>रक्षक के संकेत पढ़ें और सही लालटेनों को सुरक्षित रात के रास्ते में जोड़ें।</p></div><div class="game-info-facts"><div class="game-info-fact"><span>अनुशंसित आयु</span><strong>9+</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>आसान से चुनौतीपूर्ण</strong></div><div class="game-info-fact"><span>अनुमानित खेलने का समय</span><strong>प्रति चरण 1–3 मिनट</strong></div><div class="game-info-fact"><span>अभ्यास किए जाने वाले कौशल</span><strong>तर्क · पढ़ना · समस्या समाधान</strong></div></div></div><div id="guideSections" class="game-info-sections"><article class="game-info-section"><h3>मैदान और लक्ष्य</h3><p>लालटेन जाल चाँदनी में नहाए मैदान की शांत तर्क-पहेली है। लालटेन रक्षक ओर्ला छह जानवरों—उल्लू, लोमड़ी, ऊदबिलाव, खरगोश, कछुआ और पांडा—के संबंधों के संकेत छोड़ती है। आपका काम हर रात के रास्ते में उन्हें सुरक्षित क्रम से जोड़ना है। संकेत पढ़ें, लालटेन बटनों से क्रम बनाएँ और पूरी श्रृंखला जाँचें। उलटी गिनती, जीवन या प्रतिद्वंद्वी नहीं है, इसलिए जल्दी अनुमान लगाने की जरूरत नहीं। संकेतों और चुनावों की तुलना करें, श्रृंखला मिटाएँ और फिर प्रयास करें। चुनौती संबंध समझने और नए नियम से रास्ता कैसे बदलता है, यह पहचानने में है।</p></article><article class="game-info-section"><h3>रास्ता पूरा करने के चरण</h3><p>“खेल शुरू करें” चुनकर अध्याय क्रम से खेलें या “चरण” खोलकर उपलब्ध रास्ता चुनें। हर रास्ते में तीन से छह स्थान होते हैं।</p><ol><li>लालटेन चुनने से पहले रक्षक के सभी संकेत पढ़ें। पहला संकेत शुरुआत बताता है; आगे के संकेत बताते हैं कि उसके बाद कौन आएगा।</li><li>संकेतों के क्रम में लालटेन चुनें। बनती हुई श्रृंखला दिखती रहती है, ताकि आप उसे संकेतों से मिला सकें।</li><li>श्रृंखला पूरी होने पर “रास्ता जाँचें” चुनें। चुनाव कम हों तो बाकी संख्या दिखती है; गलती पर पहली गलत कड़ी या पतंगे का चारा बताया जाता है।</li><li>“रास्ता रीसेट करें” से चुनाव मिटाकर वही रास्ता फिर हल करें। गलत जाँचें उस रास्ते के सर्वश्रेष्ठ जाँच-रिकॉर्ड में गिनी जाती हैं, लेकिन जीवन या खुली प्रगति नहीं घटती।</li><li>रास्ता पूरा होने पर अगला खुलता है और प्रगति इसी ब्राउज़र में सहेजी जाती है। नतीजे पर “अगला चरण” सीधे अगली लड़ाई खोलता है, “चरण” नक्शा दिखाता है और “फिर खेलें” उसी रास्ते को दोबारा शुरू करता है।</li><li>सेटिंग में भाषा या ध्वनि बदलें। वापस तीर पिछली स्क्रीन पर ले जाता है; हल के लिए ध्वनि जरूरी नहीं है।</li></ol></article><article class="game-info-section"><h3>संकेतों के बदलते नियम</h3><p>पहला अध्याय घोंसले से द्वार तक सीधा क्रम सिखाता है। पतंगे के चारे वाले रास्ते में एक लुभावनी लालटेन बुझी रखनी और श्रृंखला से बाहर रखनी होती है। प्रतिध्वनि वाले रास्ते में बताई गई लालटेन दो स्थानों पर आती है; दोनों सही उत्तर का हिस्सा हैं। हवा-मोड़ रास्ता पढ़ने की दिशा उलट देता है: आखिरी लालटेन से शुरू करके संकेतों से पहली तक लौटें। आगे के अध्याय नियम मिलाते हैं; एक ही रास्ते में उलटा पढ़ना, प्रतिध्वनि दोहराना और चारे को न जलाना पड़ सकता है। श्रृंखला बनाते समय संकेत दिखते रहते हैं। अधूरी श्रृंखला बताएगी कि कितने चुनाव बाकी हैं; पूरी लेकिन गलत श्रृंखला पहली असंगति दिखाती है।</p></article><article class="game-info-section"><h3>अभियान और पड़ाव</h3><p>यात्रा में छह अध्यायों के 30 बनाए गए रात के रास्ते हैं। पड़ाव रास्ते 5, 10, 15, 20, 25 और 30 पर हैं। रास्ते 1–5 जानवरों और सीधे क्रम का परिचय देते हैं; 6–10 पतंगे का चारा जोड़ते हैं; 11–15 प्रतिध्वनि सिखाते हैं; 16–20 हवा-मोड़ का अभ्यास कराते हैं; 21–25 प्रतिध्वनि और चारे को मिलाते हैं; 26–30 सभी नियम साथ लाते हैं। रास्ता पूरा करने पर अगला खुलता है। नक्शा खुले रास्तों को बनाए रखता है, इसलिए छोटा रास्ता दोहराने से आगे की प्रगति नहीं मिटती। पड़ाव के बैज अध्याय का अंत दिखाते हैं; मूल काम पढ़ना, जोड़ना और जाँचना ही रहता है।</p></article><article class="game-info-section"><h3>हल करने के सुझाव</h3><p>पहले सारे संकेत पढ़ें और हर वाक्य को “A, B से पहले आता है” जैसे संबंध में बदलें। एक संकेत से पूरा क्रम अनुमानने के बजाय एक कड़ी करके हल करें। हवा-मोड़ में पहले सामान्य क्रम निकालें, फिर उसे उलटें। प्रतिध्वनि में बताई लालटेन के दोनों स्थानों की योजना बनाएँ। पतंगे का चारा संभावित लगे तब भी श्रृंखला से बाहर रखें। जाँच किसी स्थान को बताए तो रीसेट करने से पहले उस जगह का संकेत फिर पढ़ें। समय सीमा नहीं है, इसलिए ध्यान से तुलना करना जल्द अनुमान लगाने से बेहतर है।</p></article><article class="game-info-section"><h3>पहेली की रचना</h3><p>संकेत लालटेन के पास रहते हैं, जिससे देखना और तर्क करना एक ही जगह होता है। छह जानवरों की रोशनियाँ और क्रमांकित श्रृंखला मौजूदा क्रम जाँचना आसान बनाती हैं। सामान्य हार संदेश की जगह खेल पहली गलत कड़ी बताता है। हर अध्याय नया नियम सिखाता है और बाद के रास्ते जाने-पहचाने नियम मिलाते हैं; इससे मूल नियंत्रण बदले बिना चुनौती बढ़ती है। चाँदनी वाला मैदान काल्पनिक पहेली-दृश्य है, असली जानवरों के व्यवहार का दावा नहीं। गति शांत रखी गई है और ध्वनि वैकल्पिक है।</p></article><article class="game-info-section"><h3>खिलाड़ी और सेव जानकारी</h3><p>बटन चलाने के लिए टच, माउस या कीबोर्ड फोकस के बाद Enter/Space इस्तेमाल करें। सेटिंग में मेनू और खेल के दौरान भाषा व ध्वनि बदल सकते हैं। पूरे रास्ते, खुली प्रगति और सबसे कम जाँच की संख्या उपलब्ध होने पर इसी ब्राउज़र के स्थानीय भंडारण में सहेजी जाती है। खाता-सिंक या दूसरे उपकरण पर अपने-आप स्थानांतरण नहीं होता। साइट डेटा मिटाने, निजी ब्राउज़िंग या भंडारण रोकने से रिकॉर्ड हट सकता है या सहेजा नहीं जा सकता। भंडारण के बिना भी खेल सकते हैं, लेकिन पृष्ठ बंद करने पर प्रगति बची न रहे।</p></article><article class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>क्या समय या जीवन की सीमा है?</dt><dd>नहीं। संकेत आराम से पढ़ें और श्रृंखला कभी भी रीसेट करें।</dd></div><div><dt>एक लालटेन दो बार क्यों नहीं चुन सकते?</dt><dd>केवल प्रतिध्वनि वाले रास्ते में बताई गई लालटेन दो बार आती है।</dd></div><div><dt>पतंगे के चारे का क्या करें?</dt><dd>उसे बुझा रखें और श्रृंखला में शामिल न करें।</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ। पूरे और खुले रास्ते उपलब्ध होने पर इसी ब्राउज़र में सहेजे जाते हैं; उपकरणों के बीच सिंक नहीं होते।</dd></div></dl></article></div></section>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260924-lantern-lattice-v9-i7-child-metadata-skill-report"></script><script src="guide-copy.js?v=20260924-lantern-lattice-v9-i7-public-metadata"></script><script src="game.js?v=20260924-lantern-lattice-v9-i7-skill-report"></script><script src="../../src/tutorial.js?v=20260826-first-session-tutorial-v36"></script>
 </body>
 </html>

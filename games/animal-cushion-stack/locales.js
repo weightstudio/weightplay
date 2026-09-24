@@ -6,7 +6,7 @@
       intro: "Choose the next soft block and build a safe little lookout for Taro.",
       summary: "Three calm towers where each choice must rest safely on the last.",
       progress: "Progress: 3 lookouts · no timer",
-      start: "Start stacking",
+      start: "Start Game",
       stages: "Choose a lookout",
       guideTitle: "How to play",
       guideOneTitle: "1. Read the shelf",

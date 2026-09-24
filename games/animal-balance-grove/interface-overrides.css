@@ -145,3 +145,19 @@ html.wp-active-play,body.wp-active-play{height:100%;overflow:hidden;overscroll-b
   #stageScreen .stage-rail{max-height:calc(100% - 104px)!important}
   #battleScreen .battle-content{inset:48px 16px 10px!important}
 }
+
+/* v9: the current shared Interface 7 frame owns the common corner token.
+   Keep the public Guide and its content cards on that token instead of the
+   retired 18px game-local radius, and expose the required structured grid. */
+html[data-wp-shared-interface="7"] body.has-game-page-info[data-wp-game-id="animal-balance-grove"] .game-page-info{
+  border-radius:var(--wp-ui-radius)!important;
+}
+html[data-wp-shared-interface="7"] body.has-game-page-info[data-wp-game-id="animal-balance-grove"] .game-page-info .game-info-sections{
+  display:grid!important;
+  gap:16px!important;
+}
+html[data-wp-shared-interface="7"] body.has-game-page-info[data-wp-game-id="animal-balance-grove"] .game-page-info .game-info-section{
+  padding:16px!important;
+  border-radius:var(--wp-ui-radius)!important;
+  background:var(--wp-ui-surface-raised,rgba(255,255,255,.06))!important;
+}

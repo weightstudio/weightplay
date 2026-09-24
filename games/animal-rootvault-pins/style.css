@@ -330,7 +330,7 @@ a:focus-visible {
   padding: 3px 0;
 }
 .stage-tabs button {
-  min-height: 42px;
+  min-height: 44px;
 }
 .stage-tabs button.active {
   border-color: #ffe482;
@@ -892,7 +892,7 @@ a:focus-visible {
   .stage-canvas {
     position: relative;
     grid-template-columns: minmax(0, 1fr) 300px;
-    grid-template-rows: 58px minmax(0, 1fr) 44px;
+    grid-template-rows: 58px minmax(0, 1fr) 50px;
     padding: 8px;
   }
   .stage-header {

@@ -70,7 +70,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="road-crosser"] .game-in
 /* Balance Grove v7/I6 preserves the framed Guide radius required by its
    exact current acceptance issue while remaining scoped to that game. */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-balance-grove"] .game-page-info,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-balance-grove"] .game-info-section {border-radius:18px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-balance-grove"] .game-info-section {border-radius:var(--wp-ui-radius)!important}
 /* Hollow Fit v6/I6 preserves the framed Guide radius required by its
    exact current acceptance issue while remaining scoped to that game. */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] .game-page-info,
@@ -898,11 +898,10 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     grid-template-rows: 58px 44px minmax(0, 1fr) !important;
   }
 
-  /* Maze Chase uses the shared standard Main composition after its native
-     classic shell is normalized. Keep its compact landscape poster column at
-     the exact Interface 6 acceptance size without changing other chase games. */
+  /* Maze Chase uses the same canonical 420px wide-layout Main poster as the
+     current screen-flow contract, including compact landscape. */
   body[data-game-id="maze-chase"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 
   /* Snake uses the shared Main composition after the legacy arcade shell is

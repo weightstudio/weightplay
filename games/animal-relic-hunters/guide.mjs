@@ -30,17 +30,50 @@ const faqCopy = {
  hi: ['अक्सर पूछे गए प्रश्न', 'हार के बाद क्या होता है?', 'आप अभियान को फिर से आज़मा सकते हैं या तैयारी पर लौट सकते हैं; नया अभियान नए स्वास्थ्य और अस्थायी अवशेष प्रभावों के साथ शुरू होता है।'],
  ar: ['الأسئلة الشائعة', 'ماذا يحدث بعد الهزيمة؟', 'يمكنك إعادة المحاولة في الرحلة أو العودة إلى الاستعداد؛ وتبدأ الرحلة الجديدة بصحة وتأثيرات آثار مؤقتة جديدة.'],
 };
+const reworkSummary = {
+ en: 'Explore ruins, dodge attacks and unleash a relic pulse against nearby threats.',
+ 'zh-Hant': '探索遺跡、閃避攻擊，釋放遺物脈衝重擊周圍威脅。',
+ 'zh-Hans': '探索遗迹、闪避攻击，释放遗物脉冲重击周围威胁。',
+ ja: '遺跡を探索し、攻撃をかわして遺物パルスで周囲の敵を吹き飛ばそう。',
+ ko: '유적을 탐험하고 공격을 피하며 유물 파동으로 주변 적을 날려 보내세요.',
+ es: 'Explora ruinas, esquiva ataques y desata un pulso de reliquia contra enemigos cercanos.',
+ 'pt-BR': 'Explore ruínas, desvie de ataques e libere um pulso de relíquia contra inimigos próximos.',
+ fr: 'Explorez les ruines, esquivez les attaques et libérez une impulsion de relique contre les ennemis proches.',
+ de: 'Erkunde Ruinen, weiche Angriffen aus und entfessle einen Reliktimpuls gegen Gegner in der Nähe.',
+ it: 'Esplora le rovine, schiva gli attacchi e scatena un impulso reliquia contro i nemici vicini.',
+ ru: 'Исследуйте руины, уклоняйтесь от атак и поражайте близких врагов импульсом реликвии.',
+ hi: 'खंडहर खोजें, हमलों से बचें और अवशेष तरंग से पास के दुश्मनों को पीछे हटाएँ।',
+ ar: 'استكشف الأطلال وتفادَ الهجمات وأطلق نبضة أثر لصد الأعداء القريبين.',
+};
+const pulseGuideCopy = {
+ en: 'Press Space or tap the canvas Relic Pulse control to damage nearby enemies, push them back, and clear enemy shots. Relic Damage increases its hit; Relic Speed shortens its 12-second cooldown by one second per stack, down to 7 seconds.',
+ 'zh-Hant': '按空白鍵或點擊畫面右下角的遺物脈衝，對附近敵人造成傷害、擊退敵人並清除敵方彈幕。每層「傷害遺物」提高脈衝傷害；每層「速度遺物」縮短 1 秒冷卻，最短 7 秒。',
+ 'zh-Hans': '按空格键或点击画面右下角的遗物脉冲，对附近敌人造成伤害、击退敌人并清除敌方弹幕。每层“伤害遗物”提高脉冲伤害；每层“速度遗物”缩短 1 秒冷却，最短 7 秒。',
+ ja: 'スペースキーまたは画面右下の遺物パルスをタップすると、近くの敵にダメージを与えて押し戻し、敵弾を消せます。「水晶の牙」は威力を高め、「ランタンの閃光」は重ねるごとに再充填を1秒短縮します（最短7秒）。',
+ ko: '스페이스바를 누르거나 화면 오른쪽 아래의 유물 파동을 탭하면 주변 적에게 피해를 주고 밀쳐내며 적 탄환을 지웁니다. 수정 송곳니는 파동 피해를 높이고, 등불 폭발은 중첩마다 재충전 시간을 1초 줄입니다(최소 7초).',
+ es: 'Pulsa Espacio o toca el control Pulso reliquia abajo a la derecha: daña y empuja a los enemigos cercanos y elimina sus disparos. Colmillo de Cristal aumenta el daño; Estallido de Linterna reduce la recarga 1 s por acumulación, hasta 7 s.',
+ 'pt-BR': 'Pressione Espaço ou toque no controle Pulso Relíquia no canto inferior direito: ele causa dano, empurra inimigos próximos e limpa disparos inimigos. Presa de Cristal aumenta o dano; Explosão de Lanterna reduz a recarga em 1 s por acúmulo, até 7 s.',
+ fr: 'Appuyez sur Espace ou touchez Impulsion relique en bas à droite : elle blesse et repousse les ennemis proches et dissipe leurs tirs. Croc de cristal augmente ses dégâts ; Éclat de lanterne réduit la recharge d’1 s par cumul, jusqu’à 7 s.',
+ de: 'Drücke die Leertaste oder tippe unten rechts auf Reliktimpuls: Er schädigt und stößt nahe Gegner zurück und beseitigt feindliche Schüsse. Kristallzahn erhöht den Schaden; Laternenstoß verkürzt die Aufladung pro Stapel um 1 s, bis auf 7 s.',
+ it: 'Premi Spazio o tocca Impulso reliquia in basso a destra: danneggia e respinge i nemici vicini e disperde i loro colpi. Zanna di cristallo aumenta i danni; Scatto di lanterna riduce la ricarica di 1 s per accumulo, fino a 7 s.',
+ ru: 'Нажмите пробел или коснитесь импульса реликвии внизу справа: он ранит и отбрасывает близких врагов, а также рассеивает вражеские снаряды. Кристальный клык усиливает урон; Вспышка фонаря сокращает зарядку на 1 с за уровень, минимум до 7 с.',
+ hi: 'पास के दुश्मनों को नुकसान पहुँचाने व पीछे धकेलने और उनके गोले हटाने के लिए Space दबाएँ या नीचे दाईं ओर अवशेष तरंग टैप करें। क्रिस्टल फेंग इसका नुकसान बढ़ाता है; लालटेन बर्स्ट हर स्टैक पर रीचार्ज 1 सेकंड घटाता है, न्यूनतम 7 सेकंड तक।',
+ ar: 'اضغط Space أو المس زر نبضة الأثر أسفل اليمين لإصابة الأعداء القريبين ودفعهم وإزالة طلقاتهم. يزيد ناب الكريستال ضررها، وتقلّل ومضة الفانوس إعادة الشحن ثانية واحدة لكل تكديس، حتى 7 ثوانٍ.',
+};
 const escape = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 export function replaceRelicGuide(html, locale = 'en') {
  const copy = guideCopy[locale];
  if (!copy) throw new Error(`Missing Relic guide locale: ${locale}`);
+ const summaryCopy = reworkSummary[locale];
+ const separator = ['zh-Hant', 'zh-Hans', 'ja'].includes(locale) ? '' : ' ';
+ const moveCopy = `${copy[2]}${separator}${pulseGuideCopy[locale]}`;
  const summary = /<p\b[^>]*data-ui="menuHint"[^>]*>[\s\S]*?<\/p>/;
  if (!summary.test(html)) throw new Error('Relic Main summary missing');
- html = html.replace(summary, () => `<p class="menu-hint main-summary" data-ui="menuHint" data-relic-authored-summary="true" data-runtime-localize="off">${escape(copy[0])}</p>`);
+ html = html.replace(summary, () => `<p class="menu-hint main-summary" data-ui="menuHint" data-relic-authored-summary="true" data-runtime-localize="off">${escape(summaryCopy)}</p>`);
  const pattern = /<section\b[^>]*class="game-page-info game-page-info-static"[^>]*>[\s\S]*?<\/section>/;
  const title = html.match(pattern)?.[0].match(/<h2\b[^>]*>([\s\S]*?)<\/h2>/)?.[1];
  if (!title) throw new Error('Relic guide title missing');
  html = html.replace(/<body\b(?![^>]*data-wp-game-owned-guide)/, '<body data-wp-game-owned-guide="true"');
  const faq = faqCopy[locale] || faqCopy.en;
- return html.replace(pattern, () => `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>${title}</h2><p>${escape(copy[0])}</p></div></div><div class="game-info-sections">${[1,3,5].map(i => `<div class="game-info-section"><h3>${escape(copy[i])}</h3><p>${escape(copy[i+1])}</p></div>`).join('')}<div class="game-info-section"><h3>${escape(copy[7])}</h3><p>${escape(copy[8])}</p></div><div class="game-info-section"><h3>${escape(faq[0])}</h3><dl><div><dt>${escape(faq[1])}</dt><dd>${escape(faq[2])}</dd></div></dl></div></div></section>`);
+ return html.replace(pattern, () => `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>${title}</h2><p>${escape(summaryCopy)}</p></div></div><div class="game-info-sections">${[1,3,5].map(i => `<div class="game-info-section"><h3>${escape(copy[i])}</h3><p>${escape(i === 1 ? moveCopy : copy[i+1])}</p></div>`).join('')}<div class="game-info-section"><h3>${escape(copy[7])}</h3><p>${escape(copy[8])}</p></div><div class="game-info-section"><h3>${escape(faq[0])}</h3><dl><div><dt>${escape(faq[1])}</dt><dd>${escape(faq[2])}</dd></div></dl></div></div></section>`);
 }

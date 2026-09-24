@@ -328,6 +328,9 @@
   if (!locales[locale] && locale !== "en") locale = "en";
   let sound = safeStorage.get("weightplay-animal-river-gates-sound", "on") !== "off";
   let stageIndex = 0;
+  let stageRailController = null;
+  let sharedFrameController = null;
+  let battleHeaderInfo = null;
   let state = null;
   let undoStack = [];
   let selectedAction = null;
@@ -429,7 +432,101 @@
     }
   };
   const stageUnlocked = (index) => index === 0 || solved.has(STAGES[index - 1].id);
-  const show = (screen) => { currentScreen = screen; document.body.dataset.screen = screen; document.querySelectorAll("[data-screen]:not(body)").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); if ($("settingsPanel")) $("settingsPanel").hidden = true; if ($("backBtn")) $("backBtn").hidden = screen !== "main"; };
+  const highestUnlockedStage = () => {
+    let highest = 0;
+    while (highest + 1 < STAGES.length && stageUnlocked(highest + 1)) highest += 1;
+    return highest;
+  };
+  const show = (screen) => {
+    currentScreen = screen; document.body.dataset.screen = screen;
+    const guide = $("app")?.querySelector(".game-page-info-static");
+    if (guide) guide.hidden = screen !== "main";
+    document.querySelectorAll("[data-screen]:not(body)").forEach((node) => {
+      node.hidden = node.id === "battleScreen" ? !["battle", "result"].includes(screen)
+        : node.id === "resultScreen" ? screen !== "result" : node.dataset.screen !== screen;
+    });
+    if ($("battlePlayWorkspace")) $("battlePlayWorkspace").hidden = screen === "result";
+    if ($("settingsPanel")) $("settingsPanel").hidden = true;
+    if ($("backBtn")) $("backBtn").hidden = screen !== "main";
+    if (sharedFrameController) {
+      const scene = screen === "result" ? "battle" : screen;
+      sharedFrameController.activate(scene, { covered: screen === "result" });
+    }
+  };
+  const prepareStageWorkspace = () => {
+    const screen = $("stageScreen"); const rail = $("stageList"); const header = screen?.querySelector(".stage-header"); const back = $("stageBack");
+    if (!screen || !rail || !header || !back || screen.querySelector("#stageNavigation")) return;
+    [...header.children].forEach((node) => { if (node !== back) node.remove(); });
+    header.className = "stage-header";
+    const workspace = document.createElement("div"); workspace.className = "stage-workspace"; workspace.dataset.wpFrameContent = "stage";
+    rail.removeAttribute("role"); rail.removeAttribute("data-wp-stage-management-nav"); rail.setAttribute("role", "group");
+    workspace.append(rail); screen.insertBefore(workspace, header.nextSibling);
+    const navigation = document.createElement("nav"); navigation.id = "stageNavigation"; navigation.className = "stage-bottom-nav";
+    navigation.dataset.wpFrameStageNav = "";
+    navigation.setAttribute("role", "tablist"); navigation.setAttribute("aria-label", copy("stages"));
+    const stagesTab = document.createElement("button"); stagesTab.type = "button"; stagesTab.className = "stage-nav-tab";
+    stagesTab.dataset.wpFrameStageSlot = "stages"; stagesTab.dataset.riverI18n = "stages";
+    stagesTab.setAttribute("role", "tab"); stagesTab.setAttribute("aria-selected", "true"); stagesTab.setAttribute("aria-current", "page");
+    stagesTab.tabIndex = 0; stagesTab.textContent = copy("stages"); navigation.append(stagesTab); screen.append(navigation);
+  };
+  const prepareExplicitFrame = () => {
+    const app = $("app"); const main = $("mainScreen"); const battle = $("battleScreen");
+    if (!app || !main || !battle || !window.WeightPlayScreenFrame) return;
+    app.dataset.wpFrameRoot = "";
+    const stage = $("stageScreen");
+    if (stage) {
+      stage.dataset.wpStageLandscapeWidth = "760";
+      stage.dataset.wpStageLandscapeHeight = "334";
+    }
+    battle.dataset.wpBattleLandscapeWidth = "760";
+    battle.dataset.wpBattleLandscapeHeight = "334";
+    main.querySelector(".topbar")?.setAttribute("data-wp-shell-header", "main");
+    main.querySelector(".topbar [data-wp-game-title]")?.setAttribute("data-wp-frame-title", "");
+    main.querySelector(".main-poster")?.setAttribute("data-wp-frame-poster", "");
+    main.querySelector(".main-summary")?.setAttribute("data-wp-frame-summary", "");
+    main.querySelector("#mainProgress")?.setAttribute("data-wp-frame-progress", "");
+    main.querySelector("#startBtn")?.setAttribute("data-wp-frame-action", "primary");
+    main.querySelector(".guide-art")?.setAttribute("hidden", "");
+    main.querySelector(".eyebrow")?.setAttribute("hidden", "");
+    main.querySelector("h1[data-wp-game-title]")?.setAttribute("hidden", "");
+    $("stageScreen")?.querySelector(".stage-header")?.setAttribute("data-wp-shell-header", "stage");
+
+    const battleHeader = battle.querySelector(".battle-header");
+    const planTitle = $("planTitle"); const progress = $("progressPill");
+    const result = $("resultScreen");
+    if (!battleHeader || !planTitle || !progress || !result || battle.querySelector("#battleWorkspace")) return;
+    const headerInfo = document.createElement("div"); headerInfo.className = "battle-header-info";
+    const planField = document.createElement("div"); planField.className = "battle-info-field";
+    const planLabel = document.createElement("small"); planLabel.dataset.riverI18n = "planLabel";
+    planField.append(planLabel, planTitle);
+    const progressField = document.createElement("div"); progressField.className = "battle-info-field";
+    const progressLabel = document.createElement("small"); progressLabel.dataset.riverI18n = "progressLabel";
+    progressField.append(progressLabel, progress);
+    headerInfo.append(planField, progressField); battleHeaderInfo = headerInfo;
+    const back = $("battleBackBtn"); battleHeader.replaceChildren(back);
+    battleHeader.setAttribute("data-wp-shell-header", "battle");
+    const workspace = document.createElement("div"); workspace.id = "battleWorkspace";
+    workspace.className = "battle-workspace"; workspace.dataset.wpShellContent = "battle";
+    const play = document.createElement("div"); play.id = "battlePlayWorkspace"; play.className = "battle-play-workspace";
+    play.append(headerInfo);
+    [...battle.children].forEach((node) => { if (node !== battleHeader) play.append(node); });
+    workspace.append(play, result); battle.append(workspace);
+  };
+  const mountExplicitFrame = () => {
+    if (sharedFrameController || !window.WeightPlayScreenFrame || !battleHeaderInfo) return;
+    const frame = window.WeightPlayScreenFrame;
+    frame.mountSlots({
+      root: $("app"), main: $("mainScreen"), stage: $("stageScreen"),
+      battle: { root: $("battleScreen"), headerInfo: battleHeaderInfo },
+    });
+    sharedFrameController = frame.mount({
+      root: $("app"), localeSelect: $("localeSelect"), scenes: {
+        main: { root: $("mainScreen"), header: $("mainScreen").querySelector(":scope > .wp-frame-header"), content: $("mainScreen").querySelector(":scope > [data-wp-frame-content='main']") },
+        stage: { root: $("stageScreen"), header: $("stageScreen").querySelector(":scope > .wp-frame-header"), content: $("stageScreen").querySelector(":scope > [data-wp-frame-content='stage']") },
+        battle: { root: $("battleScreen"), header: $("battleScreen").querySelector(":scope > .wp-frame-header"), content: $("battleScreen").querySelector(":scope > [data-wp-frame-content='battle']"), headerInfo: battleHeaderInfo },
+      },
+    });
+  };
   const renderStatic = () => {
     document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.body.dataset.locale = locale;
     document.querySelectorAll("[data-river-i18n]").forEach((node) => { node.textContent = copy(node.dataset.riverI18n); });
@@ -439,16 +536,34 @@
     $("closeSettings")?.setAttribute("aria-label", copy("close")); $("localeSelect")?.setAttribute("aria-label", copy("language"));
     if ($("soundBtn")) { $("soundBtn").textContent = sound ? copy("on") : copy("off"); $("soundBtn").setAttribute("aria-pressed", String(sound)); }
     if ($("best")) { const best = Number(safeStorage.get(BEST_KEY, "0")); $("best").textContent = copy("best", { best: best || "—" }); }
+    if ($("stageNavigation")) { $("stageNavigation").setAttribute("aria-label", copy("stages")); $("stageList")?.setAttribute("aria-label", copy("choose")); }
     renderStages(); renderBattle(); renderResult();
   };
   const renderStages = () => {
-    const root = $("stageList"); if (!root) return; root.replaceChildren();
-    STAGES.forEach((plan, index) => {
-      const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(index === stageIndex));
-      const locked = !stageUnlocked(index); const status = solved.has(plan.id) ? copy("solved") : locked ? copy("locked") : copy("open");
-      button.disabled = locked; button.innerHTML = `<span><strong>${plan.id}. ${stageText(plan, "title")}</strong><small>${copy("arc", { arc: stageText(plan, "arc"), name: stageText(plan, "mechanic") })}</small><small>${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 })}</small></span><span class="arrow" aria-label="${status}">${solved.has(plan.id) ? "✓" : locked ? "🔒" : "→"}</span>`;
-      button.addEventListener("click", () => startStage(index)); root.appendChild(button);
-    });
+    const root = $("stageList"); if (!root) return;
+    if (!stageRailController && window.WeightPlayStageV6?.install) {
+      stageRailController = window.WeightPlayStageV6.install(root, {
+        total: STAGES.length,
+        poolSize: 9,
+        initialIndex: highestUnlockedStage,
+        bind: (card, index) => {
+          const plan = STAGES[index];
+          const locked = !stageUnlocked(index); const cleared = solved.has(plan.id);
+          const status = cleared ? copy("solved") : locked ? copy("locked") : copy("open");
+          const arc = copy("arc", { arc: stageText(plan, "arc"), name: stageText(plan, "mechanic") });
+          const demand = copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] });
+          const reserve = copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 });
+          card.type = "button"; card.className = "stage-card"; card.disabled = false;
+          card.setAttribute("aria-disabled", String(locked));
+          card.setAttribute("aria-label", `${plan.id}. ${stageText(plan, "title")}. ${arc}. ${demand}. ${reserve}. ${status}`);
+          card.innerHTML = `<span class="stage-card-content" data-wp-item-content><strong>${plan.id}. ${stageText(plan, "title")}</strong><small>${arc}</small><small>${demand} · ${reserve}</small></span><span class="arrow" aria-hidden="true">${cleared ? "✓" : locked ? "🔒" : "→"}</span>`;
+        },
+        activate: (index) => { if (stageUnlocked(index)) startStage(index); },
+      });
+    } else if (stageRailController) {
+      stageRailController.refresh();
+      stageRailController.center(highestUnlockedStage());
+    }
   };
   const actionButton = (action) => {
     const button = document.createElement("button"); button.type = "button"; button.className = "gate action-card"; const reason = reasonFor(action); const selected = selectedAction?.id === action.id;
@@ -467,13 +582,14 @@
     $("checkBtn").disabled = !selectedAction || Boolean(reasonFor(selectedAction)); $("undoBtn") && ($("undoBtn").disabled = undoStack.length === 0); $("status").textContent = feedback === "impossible" ? copy("impossible", { reason: settlementReason() }) : feedback === "waiting" ? copy("waiting", { beat: state.beat }) : feedback ? copy(feedback) : (selectedAction ? `${copy("actionReady")}: ${copyAction(selectedAction)}` : ""); $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" || feedback === "impossible" ? "status try" : "status";
   };
   const renderResult = () => {
-    if (!$('resultText')) return; const complete = solved.size === STAGES.length; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel"); $("resultText").textContent = `${copy("progress", { current: solved.size, total: STAGES.length })} · ${complete ? copy("resultTitle") : copy("next")}`; $("nextBtn").hidden = complete; $("resultMapBtn").hidden = false;
+    if (!$('resultText')) return; const complete = solved.size === STAGES.length; const next = stageIndex + 1; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel"); $("resultText").textContent = `${copy("progress", { current: solved.size, total: STAGES.length })} · ${complete ? copy("resultTitle") : copy("next")}`; $("nextBtn").hidden = false; $("nextBtn").disabled = next >= STAGES.length || !stageUnlocked(next); $("resultMapBtn").hidden = false; $("replayBtn").hidden = false;
   };
   const startStage = (index) => { if (!stageUnlocked(index)) return; stageIndex = index; state = makeState(currentStage()); undoStack = []; selectedAction = null; feedback = ""; show("battle"); renderBattle(); announce("start"); };
   const goBack = () => { if (currentScreen === "battle") { show("stage"); renderStages(); } else if (currentScreen === "stage" || currentScreen === "result") { show("main"); renderStatic(); } };
   const bind = () => {
     $("startBtn")?.addEventListener("click", () => { show("stage"); renderStages(); }); $("mapBtn")?.addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn")?.addEventListener("click", () => { show("stage"); renderStages(); });
-    $("nextBtn")?.addEventListener("click", () => { const next = Math.min(STAGES.length - 1, stageIndex + 1); if (stageUnlocked(next)) startStage(next); else { show("stage"); renderStages(); } });
+    $("nextBtn")?.addEventListener("click", () => { const next = stageIndex + 1; if (next < STAGES.length && stageUnlocked(next)) startStage(next); });
+    $("replayBtn")?.addEventListener("click", () => startStage(stageIndex));
     $("checkBtn")?.addEventListener("click", () => { if (selectedAction) applyAction(selectedAction); checkSettlement(); });
     $("resetBtn")?.addEventListener("click", () => { state = makeState(currentStage()); undoStack = []; selectedAction = null; feedback = ""; renderBattle(); announce("reset"); });
     $("undoBtn")?.addEventListener("click", () => { if (!undoStack.length) { feedback = "noUndo"; renderBattle(); return; } state = undoStack.pop(); selectedAction = null; feedback = ""; renderBattle(); announce("undo"); });
@@ -482,7 +598,7 @@
     $("soundBtn")?.addEventListener("click", () => { sound = !sound; safeStorage.set("weightplay-animal-river-gates-sound", sound ? "on" : "off"); renderStatic(); }); $("localeSelect")?.addEventListener("change", (event) => { locale = event.target.value; safeStorage.set("weightPlayLocale", locale); safeStorage.set("weightplay-animal-river-gates-locale", locale); renderStatic(); });
   };
   const enforceRouteLocale = () => { const requested = queryLocale || pathLocale; if (requested && (requested !== locale || document.documentElement.lang !== requested || document.documentElement.dir !== (requested === "ar" ? "rtl" : "ltr"))) { locale = requested; safeStorage.set("weightPlayLocale", locale); if ($("localeSelect")) $("localeSelect").value = locale; renderStatic(); } };
-  const boot = () => { document.querySelectorAll("[data-i18n]").forEach((node) => { node.dataset.riverI18n = node.dataset.i18n; node.removeAttribute("data-i18n"); }); bind(); if ($("localeSelect")) $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); enforceRouteLocale(); announce("loaded"); };
+  const boot = () => { document.querySelectorAll("[data-i18n]").forEach((node) => { node.dataset.riverI18n = node.dataset.i18n; node.removeAttribute("data-i18n"); }); prepareStageWorkspace(); prepareExplicitFrame(); bind(); if ($("localeSelect")) $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; mountExplicitFrame(); show("main"); renderStatic(); enforceRouteLocale(); announce("loaded"); };
   window.__ANIMAL_RIVER_GATES_TEST__ = { stages: STAGES, startStage, applyAction, waitAction, getState: () => ({ stage: currentStage().id, state: cloneState(state), solved: [...solved], screen: currentScreen }), solution: (index) => STAGES[index]?.solution || [] };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

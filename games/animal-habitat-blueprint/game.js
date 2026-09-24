@@ -88,7 +88,6 @@
   let locale = routeLocale || safeStorage.get("weightPlayLocale", "") || safeStorage.get("weightplay-habitat-blueprint-locale", "") || "en";
   locale = normalizeLocale(locale);
   if (!locales[locale]) locale = "en";
-  let sound = safeStorage.get("weightplay-habitat-blueprint-sound", "on") !== "off";
   const savedSolved = safeStorage.get("weightplay-habitat-blueprint-solved-v8", "").split(",").map((value) => value.trim()).filter(Boolean).map(Number).filter((value) => Number.isInteger(value) && value >= 0 && value < plans.length);
   let planIndex = 0;
   let tiles = [];
@@ -390,8 +389,9 @@
     $("localeSelect")?.setAttribute("aria-label", copy("language"));
     if ($("localeSelect")) $("localeSelect").value = locale;
     if ($("soundBtn")) {
-      $("soundBtn").textContent = sound ? copy("on") : copy("off");
-      $("soundBtn").setAttribute("aria-pressed", String(sound));
+      const soundEnabled = !Boolean(window.WeightPlayAudio?.isMuted?.());
+      $("soundBtn").textContent = soundEnabled ? copy("on") : copy("off");
+      $("soundBtn").setAttribute("aria-pressed", String(soundEnabled));
     }
     if ($("best")) $("best").textContent = copy("best", { best: bestValue() });
     renderStages();
@@ -411,6 +411,7 @@
     if (index === 0 || fromStage) sessionSwaps = 0;
     show("battle");
     renderBattle();
+    window.WeightPlayAudio?.play?.("game.start");
     announce("start");
   }
   function renderRules() {
@@ -540,10 +541,10 @@
     $("settingsBtn")?.addEventListener("click", () => { $("settingsPanel").hidden = false; });
     $("closeSettings")?.addEventListener("click", () => { $("settingsPanel").hidden = true; });
     $("soundBtn")?.addEventListener("click", () => {
-      sound = !sound;
-      safeStorage.set("weightplay-habitat-blueprint-sound", sound ? "on" : "off");
+      window.WeightPlayAudio?.setMuted?.(!Boolean(window.WeightPlayAudio?.isMuted?.()));
       renderStatic();
     });
+    window.addEventListener("weightplay:audio-volume-change", renderStatic);
     $("localeSelect")?.addEventListener("change", (event) => {
       locale = normalizeLocale(event.target.value);
       safeStorage.set("weightPlayLocale", locale);

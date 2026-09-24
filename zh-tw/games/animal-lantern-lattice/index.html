@@ -22,22 +22,32 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-lantern-lattice/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-id" content="animal-lantern-lattice">
+  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-interface-version" content="7">
   <title>燈影連線 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="interface-overrides.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-lantern-lattice-v7-block-art-v1">
-  <meta name="description" content="閱讀三位守燈人的線索，連起正確燈影，為夜晚草地喚醒安全路徑。" />
+  <link rel="stylesheet" href="style.css?v=20260923-lantern-lattice-v9-i7">
+  <link rel="stylesheet" href="interface-overrides.css?v=20260924-lantern-lattice-v9-i7-skill-report-metadata">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <script src="../../src/stage-virtualization-standard.js?v=20260923-stage-v6-bounded-data-v1"></script>
+  <script src="../../src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <meta name="description" content="閱讀守燈人的三條線索，連起正確燈影，為夜晚草地點亮安全路徑。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="燈影連線 | WeightPlay" />
-    <meta property="og:description" content="閱讀三位守燈人的線索，連起正確燈影，為夜晚草地喚醒安全路徑。" />
+    <meta property="og:description" content="閱讀守燈人的三條線索，連起正確燈影，為夜晚草地點亮安全路徑。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-lantern-lattice/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="燈影連線 | WeightPlay" />
-    <meta name="twitter:description" content="閱讀三位守燈人的線索，連起正確燈影，為夜晚草地喚醒安全路徑。" />
+    <meta name="twitter:description" content="閱讀守燈人的三條線索，連起正確燈影，為夜晚草地點亮安全路徑。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp" />
     <script type="application/ld+json">
 {
@@ -47,7 +57,7 @@
   "alternateName": "Lantern Lattice",
   "url": "https://weightplay.com/zh-tw/games/animal-lantern-lattice/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-lantern-lattice.webp",
-  "description": "閱讀三位守燈人的線索，連起正確燈影，為夜晚草地喚醒安全路徑。",
+  "description": "閱讀守燈人的三條線索，連起正確燈影，為夜晚草地點亮安全路徑。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -71,36 +81,53 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v7" data-wp-interface-version="6" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-lantern-lattice" data-wp-game-version="v9" data-wp-interface-version="7" data-wp-game-owned-guide data-wp-frame-tutorial="true" class="has-game-page-info" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Waking the lantern meadow…</strong><div class="loading-track"><i></i></div></div></section>
-  <main id="mainScreen" class="screen main-screen" hidden>
-    <header class="topbar wp-main-shell-header"><a class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a><strong class="wp-shell-main-title" data-copy="title">Lantern Lattice</strong><div class="utilities"><button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button></div></header>
-    <section class="hero-grid"><div class="cover-wrap"><img class="cover main-poster" src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="《燈影連線》遊戲圖片"></div><div class="hero-copy"><img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map"><p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p><h1 data-copy="title">燈影連線</h1><p class="intro main-summary" data-copy="intro">Read the keeper clues, then connect the right lanterns into a safe night path.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong data-copy="progressTitle">30 paths across six arcs</strong><span data-copy="progressBody">1 of 30 stages unlocked. Clear one to light the next.</span></div><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start a night path</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="paths">Choose a path</button></div><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></section>
-  </main>
-  <section class="game-page-info game-page-info-static" aria-label="燈影連線 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>燈影連線</h2><p>閱讀三位守燈人的線索，連起正確燈影，為夜晚草地喚醒安全路徑。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>約束路徑益智</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 邏輯 · 規劃 · 家庭 · 動物</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>閱讀所選夜路的三個守燈線索。</li><li>依線索描述的順序點選三盞燈。</li><li>檢查連線；第一個錯誤連結會被指出，沒有計時或生命。</li></ol></div>
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度會保存嗎？</dt><dd>會，只保存在這個瀏覽器中。</dd></div></dl></div>
-
-    </div>
-  </section>
-  <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden><strong data-copy="settings">Settings</strong><button id="soundBtn" class="setting-row" type="button" data-sound-toggle="true">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
-  <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading"><div class="stage-canvas" data-wp-standard-stage-screen style="--wp-stage-art:url('assets/animal-lantern-lattice-cover-voxel-v1.png')"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="backShort">Back</button><h2 id="stageHeading" data-copy="paths">Choose a path</h2><button id="stageSettingsBtn" class="utility-button" type="button" aria-label="Settings">⚙</button></header><div class="stage-tabs" role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-copy="stageAll">All night paths</button></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
-  <section id="battleScreen" class="screen panel-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-labelledby="battleHeading"><div class="battle-canvas" style="--wp-battle-art:url('assets/animal-lantern-lattice-background-voxel-v1.png')"><img class="battle-backdrop" src="assets/animal-lantern-lattice-background-voxel-v1.png" width="1536" height="1024" alt="" aria-hidden="true"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="backShort">Back</button><div><h2 id="battleHeading">Night path</h2><p id="roundLabel" class="round-label"></p></div><div class="battle-header-tools"><span class="check-pill"><span data-copy="checks">Checks</span> <b id="sessionChecks">0</b></span><button id="battleSettingsBtn" class="utility-button" data-wp-battle-utility type="button" aria-label="Settings">⚙</button></div></header><div class="battle-content"><div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div><div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div><div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div><div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
-  <section id="resultScreen" class="screen panel-screen" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="paths">Night map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
-  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260921-lantern-lattice-v7-block-art-v1"></script><script src="game.js?v=20260921-lantern-lattice-v7-block-art-v1"></script>
+  <div id="app" data-wp-frame-root hidden>
+    <main id="mainScreen" class="main-screen" data-screen="main" data-wp-standard-main-screen hidden>
+      <header id="mainHeader" class="topbar wp-main-shell-header" data-wp-shell-header="main">
+        <a id="mainBackBtn" class="wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a>
+        <h1 data-copy="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">燈影連線</h1>
+      </header>
+      <div id="mainContent" class="main-content" data-wp-frame-content="main">
+        <img class="cover main-poster" data-wp-frame-poster src="assets/animal-lantern-lattice-cover-voxel-v1.png" width="1254" height="1254" alt="《燈影連線》遊戲圖片">
+        <div class="hero-copy" data-wp-frame-copy>
+          <img class="orla-guide" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla holding a lantern map">
+          <p class="kicker" data-copy="kicker">A calm clue-chain puzzle</p>
+          <p class="intro main-summary" data-copy="intro" data-wp-frame-summary>Read the keeper clues, then connect the right lanterns into a safe night path.</p>
+          <div class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite"><span id="progressBody">Stage 1 / 30</span></div>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-frame-action="primary" data-copy="start">Start Game</button><button id="mapBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary" data-copy="paths">Choose a path</button></div>
+          <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p>
+        </div>
+      </div>
+    </main>
+    <section id="stageScreen" class="stage-canvas wp-stage-art-shell" data-screen="stage" data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png')" hidden aria-label="Choose a night path">
+      <header id="stageHeader" class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="stageContent" class="stage-content" data-wp-frame-content="stage"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div></div>
+      <nav class="stage-tabs" data-wp-frame-nav data-wp-frame-stage-nav role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-copy="stageAll">All night paths</button></nav>
+      <div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+    </section>
+    <section id="battleScreen" class="battle-canvas wp-stage-art-shell" data-screen="battle" data-wp-logical-battle-canvas data-wp-stage-art="/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png" style="--wp-stage-art:url('/games/animal-lantern-lattice/assets/animal-lantern-lattice-background-voxel-v1.png')" hidden aria-label="Night path puzzle">
+      <header id="battleHeader" class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="battleContent" class="battle-content" data-wp-frame-content="battle">
+        <div id="battleHeaderInfo" class="battle-header-info" data-runtime-localize="off">
+          <div class="battle-info-field"><small data-copy="pathLabel">Path</small><strong id="roundLabel"></strong></div>
+          <div class="battle-info-field"><small data-copy="checks">Checks</small><strong id="sessionChecks">0</strong></div>
+        </div>
+        <div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div>
+        <div class="battle-copy"><p id="battleRule" class="battle-rule"></p><p id="battleHint" class="battle-hint"></p></div>
+        <div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div>
+        <div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div>
+        <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div>
+      </div>
+      <section id="resultScreen" class="result-card result-panel" hidden aria-labelledby="resultHeading"><img class="result-orla" src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1254" height="1254" alt="Block-built Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="skill-report" aria-live="polite"><strong data-copy="skillReportLabel">Skill Report</strong><span id="skillReport"></span></div><div class="result-actions"><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Stages</button><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="replay">Replay</button></div></section>
+      <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    </section>
+    <div id="localeSource" hidden aria-hidden="true"><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></div>
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" data-runtime-localize="off" aria-label="燈影連線 game guide"><div id="guideHero" class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>燈影連線</h2><p>閱讀守燈人的線索，將正確燈影連成安全的夜間路徑。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>建議年齡</span><strong>9 歲以上</strong></div><div class="game-info-fact"><span>難度</span><strong>由簡入難</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關約 1–3 分鐘</strong></div><div class="game-info-fact"><span>練習技能</span><strong>邏輯・閱讀・問題解決</strong></div></div></div><div id="guideSections" class="game-info-sections"><article class="game-info-section"><h3>草地與目標</h3><p>《燈影連線》是一款以月夜草地為背景的邏輯益智遊戲。守燈人歐拉留下描述動物燈影關係的線索，幫助你把六種動物排成安全路徑。每條夜路都有確定的順序；你要讀懂線索、依序點選燈影，再檢查整條連線。遊戲沒有倒數、生命值、對手，也不會因為慢慢思考而受到懲罰。你可以停下來比對線索與選擇、清空連線並重新嘗試。挑戰來自理解先後關係，以及看懂新增規則如何改變路徑，不是比誰點得快。</p></article><article class="game-info-section"><h3>一步步完成夜路</h3><p>選擇「開始遊戲」依序探索篇章，或打開「關卡」挑選已解鎖夜路。每條路徑可能有三到六個燈影位置。</p><ol><li>點選前先讀完守燈線索。第一條指出起點，後續線索說明接下來是哪一盞燈。</li><li>依線索順序點選燈影；目前連線會一直顯示，方便你逐一比對。</li><li>連線完成後選擇「檢查路徑」。選得不夠時會提醒還差幾盞；順序錯誤時會指出第一個錯誤位置或飛蛾誘餌。</li><li>選擇「重設路徑」可清空選擇並重解同一關。錯誤檢查會計入該關最佳檢查次數，但不會扣生命或收回已解鎖進度。</li><li>完成後會點亮下一條路並保存於目前瀏覽器。結算可選「下一關」直接開戰、「關卡」挑路，或「重玩」已完成的路徑。</li><li>使用共用設定切換語言或音效。返回箭頭會回到上一個畫面；關閉音效也不會影響解謎所需資訊。</li></ol></article><article class="game-info-section"><h3>線索規則如何變化</h3><p>第一篇教你依一般順序排列：從巢穴沿著關係線索走向門口。飛蛾誘餌關會加入一盞容易誤選的燈，必須讓它熄滅並排除在連線之外。回聲關會要求同一盞指定燈影在兩個位置出現；第二次出現是答案的一部分。風轉關會反轉閱讀方向，要從最後一盞燈開始，沿線索往回推到起點。後續篇章會組合這些規則，有時同時要求倒序、重複回聲，以及避開熄滅的誘餌。連線時線索會留在畫面上；若選擇不夠，遊戲會提醒補齊，若完整順序不對則指出最早錯誤的位置，讓你知道要重讀哪裡。</p></article><article class="game-info-section"><h3>篇章與檢查點</h3><p>旅程共有六個相連篇章與 30 條設計好的夜路，檢查點在第 5、10、15、20、25、30 關。第 1–5 關介紹動物燈影與直接順序；第 6–10 關加入飛蛾誘餌；第 11–15 關加入回聲；第 16–20 關專注於風轉倒序；第 21–25 關結合回聲與誘餌；第 26–30 關則把規則組合起來。完成夜路會解鎖下一關並記錄完成狀態。關卡地圖保留已解鎖路徑，重玩不會清除後續進度。每個檢查點徽章標記一個篇章的終點，但核心流程始終相同：閱讀、連線、檢查。</p></article><article class="game-info-section"><h3>解題小技巧</h3><p>點選前先讀完整份線索，再把每句話轉成「甲在乙之前」這類關係。一次推理一個連結，比只看一條線索就猜完整順序可靠。遇到風轉時，先整理一般順序再倒過來讀，能把規則理解與方向分開。遇到回聲時，依線索把指定燈影保留在兩個位置。飛蛾誘餌即使出現在選項裡，也不要放進路徑。檢查結果若指出某個位置，先重讀與該位置相關的線索，不必立刻重置。遊戲沒有時間限制，耐心比猜測更有用。</p></article><article class="game-info-section"><h3>設計理念</h3><p>線索會留在燈影選項旁，讓觀察與推理集中在同一畫面。六種動物燈影彼此不同，編號連線也方便檢查目前順序。回饋會指出第一個錯誤連結，而不是只顯示籠統的失敗訊息。每個篇章先加入一個容易辨認的新規則，後續再組合熟悉規則，因此旅程逐步加深，但基本操作不變。月夜草地是虛構的益智舞台，不代表真實野生動物行為。遊戲刻意採用平靜節奏，音效可以關閉；靜音後仍能完整遊玩。</p></article><article class="game-info-section"><h3>玩家與資料保存</h3><p>可用觸控、滑鼠，或以鍵盤焦點搭配 Enter／Space 操作按鈕。主畫面與遊戲畫面的共用設定都能切換語言與音效。完成路徑、解鎖進度與最佳檢查次數會在可用時存到本機瀏覽器。紀錄只屬於這台裝置上的這個瀏覽器，不會同步到帳號，也不會自動轉移到其他裝置。清除網站資料、使用無痕模式或封鎖儲存功能，都可能讓本機紀錄消失或無法保存。即使儲存不可用仍可遊玩，但關閉頁面後進度可能不會保留。</p></article><article class="game-info-section"><h3>常見問題</h3><dl><div><dt>有計時或生命限制嗎？</dt><dd>沒有。你可以慢慢讀線索，並隨時重設連線。</dd></div><div><dt>為什麼有時不能重複選燈？</dt><dd>只有回聲路徑能重複指定的燈影，其他路徑不可重複。</dd></div><div><dt>飛蛾誘餌要怎麼處理？</dt><dd>讓誘餌燈保持熄滅，不要把它放進連線。檢查時會說明是否選到了它。</dd></div><div><dt>進度會保存嗎？</dt><dd>會。完成與解鎖進度只保存在此瀏覽器；若儲存可用，不會跨裝置同步。</dd></div></dl></article></div></section>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260924-lantern-lattice-v9-i7-child-metadata-skill-report"></script><script src="guide-copy.js?v=20260924-lantern-lattice-v9-i7-public-metadata"></script><script src="game.js?v=20260924-lantern-lattice-v9-i7-skill-report"></script><script src="../../src/tutorial.js?v=20260826-first-session-tutorial-v36"></script>
 </body>
 </html>

@@ -4,8 +4,8 @@
   const COPY = window.WPCloudhookLocales.locales;
   const LOCALE_ORDER = window.WPCloudhookLocales.order;
   const GAME_ID = "animal-cloudhook-courier";
-  const GAME_VERSION = "v15";
-  const INTERFACE_VERSION = 6;
+  const GAME_VERSION = "v19";
+  const INTERFACE_VERSION = 7;
   const LEAVE_COPY = {
     en: { title: "Keep this flight?", body: "Continue keeps the current flight. Returning to Stages ends this attempt.", continue: "Continue flight", leave: "Stages" },
     "zh-Hant": { title: "要保留這次飛行嗎？", body: "繼續會保留目前飛行；返回關卡會結束這次嘗試。", continue: "繼續飛行", leave: "返回關卡" },
@@ -53,7 +53,7 @@
   cloudhookProps.decoding = "async";
   cloudhookProps.src = "cloudhook-props-block-v1.webp";
   const authoredStages = [
-    { arc: 0, wind: 0, anchors: [[210,300],[370,230],[530,330],[690,210]], parcels: [[300,410],[600,360]], spikes: [] },
+    { arc: 0, wind: 0, anchors: [[210,300],[370,230],[530,330],[690,210]], parcels: [[300,410],[600,290]], spikes: [] },
     { arc: 0, wind: 8, anchors: [[205,290],[360,190],[500,315],[665,180],[790,300]], parcels: [[300,150],[575,190],[735,130]], spikes: [] },
     { arc: 0, wind: -12, anchors: [[210,300],[360,170],[510,300],[650,150],[805,260]], parcels: [[300,125],[560,110],[745,175]], spikes: [[390,425,72,22]] },
     { arc: 0, wind: 16, anchors: [[210,300],[350,210],[490,130],[630,285],[770,150],[850,285]], parcels: [[300,155],[540,90],[740,100]], spikes: [[300,430,72,22],[600,430,86,22]] },
@@ -260,6 +260,7 @@
       battleScreen.classList.remove("result-open", "leave-open");
     }
     document.body.dataset.screen = screen;
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
   };
   const isBattleActive = () => document.body.dataset.screen === "battle" && !resultOpen && !leaveOpen;
   const formatTime = (value) => `${Math.max(0, value).toFixed(1)}s`;

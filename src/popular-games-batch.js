@@ -133,7 +133,7 @@
     ar: { tagline: "مباراة كاملة بقرارات حقيقية في كل دور.", objective: "التقط كل قطع الخصم أو اتركه بلا حركة قانونية.", main: "اختر قطعة ذهبية ثم مربعاً قطرياً مميزاً. الأخذ إجباري وتستمر القفزات المتعددة.", yourTurn: "دورك: اختر قطعة ذهبية.", choose: "اختر وجهة مميزة.", capture: "هناك أخذ متاح ويجب تنفيذه.", continueCapture: "تابع سلسلة الأخذ بالقطعة نفسها.", aiTurn: "الخصم يختار حركة…", invalid: "هذا المربع ليس حركة قانونية.", selected: "تم اختيار القطعة. اختر الوجهة.", captured: "تم أخذ قطعة؛ تابع إن توفرت قفزة أخرى.", promoted: "وصلت قطعتك إلى الصف الأخير وأصبحت ملكاً.", aiMoved: "تحرك الخصم. دورك الآن.", hint: "تلميح: اختر القطعة النابضة ثم الوجهة المميزة.", winTitle: "فزت!", lossTitle: "فاز الخصم", drawTitle: "تعادل", winCopy: "لم يبق للخصم قطع أو حركات قانونية.", lossCopy: "لم يبق لديك قطع أو حركات قانونية.", drawCopy: "تم بلوغ حد الحركات.", board: "لوحة الداما", human: "قطعتك", humanKing: "ملكك", ai: "قطعة الخصم", aiKing: "ملك الخصم", empty: "فارغ", target: "وجهة قانونية", selectable: "قابل للاختيار" },
   };
   const CHECKERS_GAME_VERSION = "v21";
-  const TIC_TAC_TOE_GAME_VERSION = "v14";
+  const TIC_TAC_TOE_GAME_VERSION = "v23";
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const WORDLE_CELL_COPY = {
     en: { board: "Guess board", hit: "Correct position", near: "Present elsewhere", miss: "Not in word", format: (row, column, letter, state) => `Row ${row}, position ${column}: ${letter ? `letter ${letter}, ${state}` : "empty"}` },
@@ -327,6 +327,45 @@
     ar: { summary: "اقرأ المسار المستهدف، حرّك المضرب ثم أرسل.", progress: "30 مرحلة · 6 مسارات.", stageKicker: "اختيار المرحلة", stageTitle: "اختر مرحلة", stageHint: "اختر مرحلة لبدء الحملة.", stageLabel: (n) => `المرحلة ${n}`, stageProgress: (n) => `المرحلة ${n} من 30`, stages: "المراحل", back: "العودة إلى الرئيسية" },
   };
   const breakoutMainCopy = (locale) => BREAKOUT_MAIN_COPY[locale] || BREAKOUT_MAIN_COPY.en;
+  const BREAKOUT_CAMPAIGN_KEY = "weightplay_breakout_campaign_v18";
+  const BREAKOUT_FLOW_COPY = {
+    en: { ready: "Ready", locked: "Locked", cleared: "Cleared", progress: (stage, unlocked) => `Stage ${stage} of ${BREAKOUT_STAGE_TOTAL} · ${unlocked} unlocked`, lockedHint: "Clear the previous stage to unlock this one.", resultWin: "Stage cleared", resultLoss: "Stage ended", stages: "Stages", next: "Next stage", replay: "Replay", leaveTitle: "Leave this stage?", leaveText: (stage, shots, score) => `Stage ${stage} · ${shots} shots · ${score} points. Leaving ends this run; progress is saved only when you clear a stage.`, continue: "Continue playing", returnStages: "Return to Stages" },
+    "zh-Hant": { ready: "可開始", locked: "未解鎖", cleared: "已通關", progress: (stage, unlocked) => `第 ${stage} / ${BREAKOUT_STAGE_TOTAL} 關・已解鎖 ${unlocked} 關`, lockedHint: "先通過前一關即可解鎖。", resultWin: "關卡完成", resultLoss: "本局結束", stages: "關卡", next: "下一關", replay: "再玩一次", leaveTitle: "要離開此關嗎？", leaveText: (stage, shots, score) => `第 ${stage} 關・已發球 ${shots} 次・${score} 分。離開會結束本局；通關後才會保存進度。`, continue: "繼續遊玩", returnStages: "返回關卡" },
+    "zh-Hans": { ready: "可开始", locked: "未解锁", cleared: "已通关", progress: (stage, unlocked) => `第 ${stage} / ${BREAKOUT_STAGE_TOTAL} 关・已解锁 ${unlocked} 关`, lockedHint: "先通过上一关即可解锁。", resultWin: "关卡完成", resultLoss: "本局结束", stages: "关卡", next: "下一关", replay: "再玩一次", leaveTitle: "要离开此关吗？", leaveText: (stage, shots, score) => `第 ${stage} 关・已发球 ${shots} 次・${score} 分。离开会结束本局；通关后才会保存进度。`, continue: "继续游玩", returnStages: "返回关卡" },
+    ja: { ready: "挑戦可能", locked: "未解放", cleared: "クリア済み", progress: (stage, unlocked) => `ステージ ${stage} / ${BREAKOUT_STAGE_TOTAL}・${unlocked} 解放`, lockedHint: "前のステージをクリアすると解放されます。", resultWin: "ステージクリア", resultLoss: "プレイ終了", stages: "ステージ", next: "次のステージ", replay: "もう一度", leaveTitle: "このステージを離れますか？", leaveText: (stage, shots, score) => `ステージ ${stage}・サーブ ${shots} 回・${score} 点。このプレイは終了します。クリア時のみ進行状況が保存されます。`, continue: "プレイを続ける", returnStages: "ステージ選択へ" },
+    ko: { ready: "도전 가능", locked: "잠김", cleared: "완료", progress: (stage, unlocked) => `스테이지 ${stage} / ${BREAKOUT_STAGE_TOTAL} · ${unlocked}개 해제`, lockedHint: "이전 스테이지를 완료하면 열립니다.", resultWin: "스테이지 완료", resultLoss: "플레이 종료", stages: "스테이지", next: "다음 스테이지", replay: "다시 하기", leaveTitle: "스테이지를 나갈까요?", leaveText: (stage, shots, score) => `스테이지 ${stage} · 서브 ${shots}회 · ${score}점. 나가면 이번 플레이가 끝나며, 완료한 스테이지만 진행 상황에 저장됩니다.`, continue: "계속 플레이", returnStages: "스테이지로 돌아가기" },
+    es: { ready: "Disponible", locked: "Bloqueada", cleared: "Superada", progress: (stage, unlocked) => `Fase ${stage} de ${BREAKOUT_STAGE_TOTAL} · ${unlocked} desbloqueadas`, lockedHint: "Supera la fase anterior para desbloquearla.", resultWin: "Fase superada", resultLoss: "Partida terminada", stages: "Fases", next: "Siguiente fase", replay: "Repetir", leaveTitle: "¿Salir de esta fase?", leaveText: (stage, shots, score) => `Fase ${stage} · ${shots} saques · ${score} puntos. Al salir termina la partida; el progreso se guarda al superar una fase.`, continue: "Seguir jugando", returnStages: "Volver a las fases" },
+    "pt-BR": { ready: "Disponível", locked: "Bloqueada", cleared: "Concluída", progress: (stage, unlocked) => `Fase ${stage} de ${BREAKOUT_STAGE_TOTAL} · ${unlocked} desbloqueadas`, lockedHint: "Conclua a fase anterior para desbloquear esta.", resultWin: "Fase concluída", resultLoss: "Partida encerrada", stages: "Fases", next: "Próxima fase", replay: "Jogar novamente", leaveTitle: "Sair desta fase?", leaveText: (stage, shots, score) => `Fase ${stage} · ${shots} saques · ${score} pontos. Sair encerra esta partida; o progresso é salvo ao concluir uma fase.`, continue: "Continuar jogando", returnStages: "Voltar às fases" },
+    fr: { ready: "Disponible", locked: "Verrouillé", cleared: "Terminé", progress: (stage, unlocked) => `Stage ${stage} sur ${BREAKOUT_STAGE_TOTAL} · ${unlocked} débloqués`, lockedHint: "Terminez le stage précédent pour le débloquer.", resultWin: "Stage terminé", resultLoss: "Partie terminée", stages: "Stages", next: "Stage suivant", replay: "Rejouer", leaveTitle: "Quitter ce stage ?", leaveText: (stage, shots, score) => `Stage ${stage} · ${shots} services · ${score} points. Quitter termine la partie ; la progression est enregistrée après un stage réussi.`, continue: "Continuer à jouer", returnStages: "Retour aux stages" },
+    de: { ready: "Bereit", locked: "Gesperrt", cleared: "Geschafft", progress: (stage, unlocked) => `Stufe ${stage} von ${BREAKOUT_STAGE_TOTAL} · ${unlocked} freigeschaltet`, lockedHint: "Schließe die vorherige Stufe ab, um sie freizuschalten.", resultWin: "Stufe geschafft", resultLoss: "Runde beendet", stages: "Stufen", next: "Nächste Stufe", replay: "Erneut spielen", leaveTitle: "Diese Stufe verlassen?", leaveText: (stage, shots, score) => `Stufe ${stage} · ${shots} Aufschläge · ${score} Punkte. Beim Verlassen endet diese Runde; Fortschritt wird nach einem Abschluss gespeichert.`, continue: "Weiterspielen", returnStages: "Zurück zu den Stufen" },
+    it: { ready: "Disponibile", locked: "Bloccato", cleared: "Completato", progress: (stage, unlocked) => `Livello ${stage} di ${BREAKOUT_STAGE_TOTAL} · ${unlocked} sbloccati`, lockedHint: "Completa il livello precedente per sbloccarlo.", resultWin: "Livello completato", resultLoss: "Partita terminata", stages: "Livelli", next: "Livello successivo", replay: "Rigioca", leaveTitle: "Vuoi lasciare questo livello?", leaveText: (stage, shots, score) => `Livello ${stage} · ${shots} servizi · ${score} punti. Uscendo la partita termina; i progressi si salvano completando un livello.`, continue: "Continua a giocare", returnStages: "Torna ai livelli" },
+    ru: { ready: "Доступен", locked: "Закрыт", cleared: "Пройден", progress: (stage, unlocked) => `Этап ${stage} из ${BREAKOUT_STAGE_TOTAL} · открыто: ${unlocked}`, lockedHint: "Пройдите предыдущий этап, чтобы открыть этот.", resultWin: "Этап пройден", resultLoss: "Игра завершена", stages: "Этапы", next: "Следующий этап", replay: "Сыграть снова", leaveTitle: "Покинуть этот этап?", leaveText: (stage, shots, score) => `Этап ${stage} · подач: ${shots} · очки: ${score}. Выход завершит игру; прогресс сохраняется после прохождения этапа.`, continue: "Продолжить игру", returnStages: "К этапам" },
+    hi: { ready: "उपलब्ध", locked: "बंद", cleared: "पूरा", progress: (stage, unlocked) => `चरण ${stage} / ${BREAKOUT_STAGE_TOTAL} · ${unlocked} खुले`, lockedHint: "इसे खोलने के लिए पिछला चरण पूरा करें।", resultWin: "चरण पूरा", resultLoss: "खेल समाप्त", stages: "चरण", next: "अगला चरण", replay: "फिर खेलें", leaveTitle: "इस चरण से बाहर जाएँ?", leaveText: (stage, shots, score) => `चरण ${stage} · ${shots} सर्व · ${score} अंक। बाहर जाने पर यह खेल समाप्त होगा; प्रगति चरण पूरा करने पर सहेजी जाती है।`, continue: "खेल जारी रखें", returnStages: "चरणों पर लौटें" },
+    ar: { ready: "متاحة", locked: "مقفلة", cleared: "مكتملة", progress: (stage, unlocked) => `المرحلة ${stage} من ${BREAKOUT_STAGE_TOTAL} · المفتوح ${unlocked}`, lockedHint: "أكمل المرحلة السابقة لفتح هذه المرحلة.", resultWin: "اكتملت المرحلة", resultLoss: "انتهت الجولة", stages: "المراحل", next: "المرحلة التالية", replay: "العب مجدداً", leaveTitle: "هل تريد مغادرة هذه المرحلة؟", leaveText: (stage, shots, score) => `المرحلة ${stage} · الإرسال ${shots} · النقاط ${score}. المغادرة تنهي الجولة؛ يُحفظ التقدم بعد إكمال المرحلة.`, continue: "تابع اللعب", returnStages: "العودة إلى المراحل" },
+  };
+  const breakoutFlowCopy = (locale) => BREAKOUT_FLOW_COPY[locale] || BREAKOUT_FLOW_COPY.en;
+  const BREAKOUT_SHOTS_LABEL = { en: "Shots", "zh-Hant": "發球次數", "zh-Hans": "发球次数", ja: "サーブ回数", ko: "서브 횟수", es: "Saques", "pt-BR": "Saques", fr: "Services", de: "Aufschläge", it: "Servizi", ru: "Подачи", hi: "सर्व", ar: "الإرسالات" };
+  const breakoutShotsLabel = (locale) => BREAKOUT_SHOTS_LABEL[locale] || BREAKOUT_SHOTS_LABEL.en;
+  const readBreakoutProgress = () => {
+    let progress = { highestUnlocked: 1, cleared: [] };
+    try {
+      const saved = JSON.parse(localStorage.getItem(BREAKOUT_CAMPAIGN_KEY) || "null");
+      if (saved && typeof saved === "object") {
+        const highest = Number(saved.highestUnlocked);
+        const cleared = Array.isArray(saved.cleared) ? saved.cleared.map(Number).filter((stage) => Number.isInteger(stage) && stage >= 1 && stage <= BREAKOUT_STAGE_TOTAL) : [];
+        progress = { highestUnlocked: Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number.isInteger(highest) ? highest : 1)), cleared: [...new Set(cleared)].sort((a, b) => a - b) };
+      }
+    } catch {}
+    return progress;
+  };
+  const saveBreakoutClear = (stage) => {
+    const progress = readBreakoutProgress();
+    const cleared = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(stage) || 1));
+    progress.cleared = [...new Set([...progress.cleared, cleared])].sort((a, b) => a - b);
+    progress.highestUnlocked = Math.max(progress.highestUnlocked, Math.min(BREAKOUT_STAGE_TOTAL, cleared + 1));
+    try { localStorage.setItem(BREAKOUT_CAMPAIGN_KEY, JSON.stringify(progress)); } catch {}
+    return progress;
+  };
   const BREAKOUT_BRICK_LABEL = {
     en: "bricks", "zh-Hant": "磚塊", "zh-Hans": "砖块", ja: "ブロック", ko: "벽돌", es: "ladrillos", "pt-BR": "blocos", fr: "briques", de: "Steine", it: "mattoni", ru: "блоков", hi: "ईंटें", ar: "لبنات",
   };
@@ -1245,8 +1284,8 @@
     document.addEventListener("keydown", noteInput, { capture: true });
     const els = {
       title: document.querySelector("#gameTitle"), tagline: document.querySelector("#gameTagline"), eyebrow: document.querySelector("#eyebrow"), locale: document.querySelector("#localeSelect"),
-      main: document.querySelector("#mainScreen"), stage: document.querySelector("#stageScreen"), stageRail: document.querySelector("#stageRail"), stageBack: document.querySelector("#stageBackBtn"), stageTitle: document.querySelector("#stageScreen h2"), stageHint: document.querySelector("#stageScreen .stage-browse-hint"), stageProgress: document.querySelector("#stageProgressText"), battle: document.querySelector("#battleScreen"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
-      message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"), leaveModal: document.querySelector("#leaveModal"), leaveTitle: document.querySelector("#leaveTitle"), leaveText: document.querySelector("#leaveText"), leaveContinue: document.querySelector("#leaveContinue"), leaveMain: document.querySelector("#leaveMain"),
+      main: document.querySelector("#mainScreen"), stage: document.querySelector("#stageScreen"), stageRail: document.querySelector("#stageRail"), stageBack: document.querySelector("#stageBackBtn"), stageTitle: document.querySelector("#stageTitle"), stageHint: document.querySelector("#stageScreen .stage-browse-hint"), stageProgress: document.querySelector("#stageProgressText"), battle: document.querySelector("#battleScreen"), battlePanel: document.querySelector("#battleScreen .battle-panel"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
+      message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"), resultStages: document.querySelector("#resultStagesBtn"), nextStage: document.querySelector("#nextStageBtn"), breakoutLeaveDialog: document.querySelector("#breakoutLeaveDialog"), breakoutLeaveTitle: document.querySelector("#breakoutLeaveTitle"), breakoutLeaveText: document.querySelector("#breakoutLeaveText"), breakoutLeaveContinue: document.querySelector("#breakoutLeaveContinue"), breakoutLeaveStages: document.querySelector("#breakoutLeaveStages"), leaveModal: document.querySelector("#leaveModal"), leaveTitle: document.querySelector("#leaveTitle"), leaveText: document.querySelector("#leaveText"), leaveContinue: document.querySelector("#leaveContinue"), leaveMain: document.querySelector("#leaveMain"),
       round: document.querySelector("#roundLabel"), start: document.querySelector("#startBtn"), retry: document.querySelector("#retryBtn"), mastery: document.querySelector("#masteryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
     };
     if (game.type === "mahjong") {
@@ -1746,7 +1785,33 @@
     };
     els.locale.addEventListener("change", persistLocale);
     const announce = (message, tone = "", messageKey = "") => { state.message = message; state.tone = tone; state.messageKey = messageKey; els.message.textContent = message; els.message.dataset.tone = tone; };
-    const show = (screen) => { els.main.hidden = screen !== "main"; if (els.stage) els.stage.hidden = screen !== "stage"; els.battle.hidden = screen !== "battle"; (__wpNotifyMeasurement(), els.result.hidden = screen !== "result"); document.body.dataset.screen = screen; if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; }); document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main"); document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    const renderBreakoutResult = () => {
+      if (game.type !== "breakout") return;
+      const flow = breakoutFlowCopy(locale);
+      const ui = breakoutMainCopy(locale);
+      const stage = state.stage || 1;
+      const progress = readBreakoutProgress();
+      const best = Number(localStorage.getItem(key(gameId)) || 0);
+      els.resultTitle.textContent = `${ui.stageLabel(stage)} · ${state.success ? flow.resultWin : flow.resultLoss}`;
+      els.resultCopy.textContent = copy(locale, state.success ? "successCopy" : "failureCopy");
+      els.result.dataset.outcome = state.success ? "win" : "loss";
+      els.resultStats.innerHTML = [[copy(locale, "score"), state.score], [breakoutShotsLabel(locale), state.shots], [copy(locale, "best"), Math.max(best, state.score)]]
+        .map(([label, value]) => `<span class="stat breakout-result-stat"><span class="stat-label">${label}</span><strong>${value}</strong></span>`).join("");
+      if (els.resultGoal) {
+        els.resultGoal.hidden = false;
+        els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.shots, stage);
+      }
+      if (els.resultStages) { els.resultStages.hidden = false; els.resultStages.textContent = flow.stages; }
+      if (els.nextStage) {
+        els.nextStage.hidden = false;
+        els.nextStage.textContent = flow.next;
+        els.nextStage.disabled = stage >= BREAKOUT_STAGE_TOTAL || stage + 1 > progress.highestUnlocked;
+        els.nextStage.setAttribute("aria-disabled", String(els.nextStage.disabled));
+      }
+      if (els.retry) { els.retry.hidden = false; els.retry.textContent = flow.replay; }
+      if (els.home) els.home.hidden = true;
+    };
+    const show = (screen) => { const breakoutResult = game.type === "breakout" && screen === "result"; els.main.hidden = screen !== "main"; if (els.stage) els.stage.hidden = screen !== "stage"; els.battle.hidden = screen !== "battle" && !breakoutResult; (__wpNotifyMeasurement(), els.result.hidden = screen !== "result"); if (game.type === "breakout") { if (els.battlePanel) els.battlePanel.hidden = breakoutResult; document.body.toggleAttribute("data-wp-result-active", breakoutResult); if (breakoutResult && state.success) saveBreakoutClear(state.stage); if (breakoutResult) renderBreakoutResult(); } document.body.dataset.screen = breakoutResult ? "battle" : screen; if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; }); document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main"); document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -1770,55 +1835,49 @@
     };
     const snakeTickMs = () => Math.max(180, SNAKE_TICK_MS - state.food * 20);
     const snakeGoalLabel = () => state.milestoneReached ? snakeCopy(locale, "nextGoal", state.goalFood + 2) : snakeCopy(locale, "goal", state.goalFood);
+    let breakoutLeaveReturnFocus = null;
+    const closeBreakoutLeaveDialog = (restoreFocus = true) => {
+      if (els.breakoutLeaveDialog?.open) els.breakoutLeaveDialog.close();
+      if (els.battlePanel) els.battlePanel.inert = false;
+      if (restoreFocus) breakoutLeaveReturnFocus?.focus({ preventScroll: true });
+      breakoutLeaveReturnFocus = null;
+    };
+    const openBreakoutLeaveDialog = () => {
+      if (game.type !== "breakout" || state.done || !els.breakoutLeaveDialog || els.breakoutLeaveDialog.open) return;
+      const ui = breakoutFlowCopy(locale);
+      if (els.breakoutLeaveTitle) els.breakoutLeaveTitle.textContent = ui.leaveTitle;
+      if (els.breakoutLeaveText) els.breakoutLeaveText.textContent = ui.leaveText(state.stage || 1, state.shots || 0, state.score || 0);
+      if (els.breakoutLeaveContinue) els.breakoutLeaveContinue.textContent = ui.continue;
+      if (els.breakoutLeaveStages) els.breakoutLeaveStages.textContent = ui.returnStages;
+      breakoutLeaveReturnFocus = document.activeElement;
+      if (els.battlePanel) els.battlePanel.inert = true;
+      els.breakoutLeaveDialog.showModal();
+      els.breakoutLeaveContinue?.focus({ preventScroll: true });
+    };
     const startBreakoutStage = (stage = 1) => {
+      const requestedStage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(stage) || 1));
+      if (requestedStage > readBreakoutProgress().highestUnlocked) {
+        announce(breakoutFlowCopy(locale).lockedHint, "", "breakoutStageLocked");
+        openBreakoutStages();
+        return false;
+      }
       stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer();
       state = makeState("breakout");
-      state.stage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(stage) || 1));
+      state.stage = requestedStage;
       state.pattern = breakoutPatternForStage(state.stage);
       state.brickCount = breakoutBrickCountForStage(state.stage);
       state.bricks = breakoutBricksForStage(state.stage);
       show("battle");
+      __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
       announce(breakoutStateCopy(locale, state), "", "breakoutAim");
       render();
-    };
-    const ensureBreakoutStageSettings = () => {
-      if (game.type !== "breakout" || !els.stage) return;
-      const header = els.stage.querySelector(".stage-header");
-      if (!header || header.querySelector(".breakout-stage-settings")) return;
-      const shellCopy = WORDLE_SHELL_COPY[locale] || WORDLE_SHELL_COPY.en;
-      const host = document.createElement("div");
-      host.className = "breakout-stage-settings";
-      const options = [...(els.locale?.options || [])].map((option) => `<option value="${option.value}">${option.textContent}</option>`).join("");
-      host.innerHTML = `<button type="button" class="breakout-stage-settings-button" data-wp-settings aria-expanded="false" aria-label="${shellCopy.settings}">⚙</button><div class="wp-shell-settings-popover breakout-stage-settings-popover" role="group" aria-label="${shellCopy.settings}" hidden><strong class="wp-shell-settings-title">${shellCopy.settings}</strong><button type="button" class="wp-shell-combined-sound-toggle" data-sound-toggle="true">${shellCopy.sound}</button><label class="wp-shell-settings-row"><span>${shellCopy.language}</span><select data-wp-language aria-label="${shellCopy.language}">${options}</select></label></div>`;
-      header.append(host);
-      const button = host.querySelector(".breakout-stage-settings-button");
-      const popover = host.querySelector(".breakout-stage-settings-popover");
-      const setOpen = (open) => {
-        popover.hidden = !open;
-        button.setAttribute("aria-expanded", String(open));
-      };
-      button.addEventListener("click", () => setOpen(popover.hidden));
-      host.querySelector("[data-wp-language]")?.addEventListener("change", (event) => {
-        if (!els.locale) return;
-        els.locale.value = event.target.value;
-        persistLocale();
-      });
-      host.querySelector("[data-sound-toggle]")?.addEventListener("click", () => document.querySelector("#soundBtn")?.click());
-      document.addEventListener("pointerdown", (event) => {
-        if (!popover.hidden && !host.contains(event.target)) setOpen(false);
-      });
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && !popover.hidden) {
-          setOpen(false);
-          button.focus({ preventScroll: true });
-        }
-      });
+      els.message?.focus({ preventScroll: true });
+      return true;
     };
     const openBreakoutStages = () => {
       stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer();
       state = makeState("breakout");
-      state.stage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(state.stage) || 1));
-      ensureBreakoutStageSettings();
+      state.stage = readBreakoutProgress().highestUnlocked;
       show("stage");
       renderStage();
       render();
@@ -2127,41 +2186,65 @@
       } else if (game.type === "breakout") { const targetIndex = breakoutTargetIndex(state); const targetColumn = state.paddle; const aimCopy = targetIndex >= 0 ? breakoutAimCopy(locale, targetColumn + 1) : breakoutStateCopy(locale, state); const routeIndex = targetIndex >= 0 ? -1 : breakoutRouteTargetIndex(state); const brickCount = state.brickCount || breakoutBrickCountForStage(state.stage); els.board.innerHTML = `<div class="brick-board" data-stage="${state.stage || 1}" data-stage-total="${BREAKOUT_STAGE_TOTAL}" data-stage-pattern="${state.pattern || breakoutPatternForStage(state.stage)}" data-brick-count="${brickCount}" data-shot-column="${targetColumn + 1}" data-shot-count="${state.shots}" data-lane-state="${targetIndex >= 0 ? "armed" : "clear"}" data-route-target-column="${routeIndex >= 0 ? (routeIndex % 6) + 1 : ""}">${state.bricks.map((brick, index) => `<span class="brick ${brick ? "" : "cleared"} ${index === targetIndex ? "target" : ""}" data-index="${index}"${index === targetIndex ? ` data-shot-target="true" aria-label="${aimCopy}"` : ""}></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
       } else if (game.type === "pong") { const targetPosition = pongLanePosition(state.pongTarget); const settledRally = ["pongHit", "pongMiss"].includes(state.messageKey); const visibleRally = settledRally ? state.rallies : Math.min(state.rallies + 1, 5); els.board.innerHTML = `<div class="pong-board" data-pong-rally="${visibleRally}" data-pong-target-lane="${state.pongTarget}" data-pong-paddle-lane="${state.paddle}"><span class="pong-ball" style="left:${targetPosition}%" aria-hidden="true"></span><span class="pong-paddle" style="left:${pongLanePosition(state.paddle)}%" aria-hidden="true"></span></div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "serve"), "serve", "primary")}${button(copy(locale, "right"), "right")}</div>`; }
     };
+    let breakoutStageController = null;
+    const breakoutStageContext = { ui: null, flow: null, progress: null, selected: 1 };
+    const bindBreakoutStageCard = (card, index) => {
+      const { ui, flow, progress, selected } = breakoutStageContext;
+      const stage = index + 1;
+      const unlocked = stage <= progress.highestUnlocked;
+      const cleared = progress.cleared.includes(stage);
+      const selectedCard = stage === selected;
+      const rows = breakoutRowsForStage(stage);
+      const pattern = breakoutPatternForStage(stage);
+      const bricks = breakoutBrickCountForStage(stage);
+      const status = cleared ? flow.cleared : unlocked ? flow.ready : flow.locked;
+      const facts = `${rows} × 6 · ${bricks} ${breakoutBrickLabel(locale)}`;
+      card.type = "button";
+      card.className = `stage-card${selectedCard ? " is-selected" : ""}${!unlocked ? " is-locked" : ""}${cleared ? " is-cleared" : ""}`;
+      Object.assign(card.dataset, { action: "stage", stageIndex: String(stage), stage: String(stage), stagePattern: pattern, brickCount: String(bricks), wpStageCard: "true", stageAvailability: cleared ? "cleared" : unlocked ? "ready" : "locked" });
+      card.setAttribute("aria-current", selectedCard ? "page" : "false");
+      card.setAttribute("aria-disabled", String(!unlocked));
+      card.setAttribute("aria-label", `${ui.stageLabel(stage)}, ${status}, ${facts}${unlocked ? "" : `, ${flow.lockedHint}`}`);
+      card.innerHTML = `<span class="stage-card-content" data-wp-item-content><span class="stage-card-number">${stage}</span><strong>${ui.stageLabel(stage)}</strong><span class="stage-card-status" data-stage-status="${cleared ? "cleared" : unlocked ? "ready" : "locked"}">${status}</span><small>${facts}</small></span>`;
+    };
     const renderStage = () => {
       if (game.type !== "breakout" || !els.stageRail) return;
       const ui = breakoutMainCopy(locale);
-      const stageKicker = els.stage?.querySelector(".stage-kicker");
-      if (stageKicker) stageKicker.textContent = ui.stageKicker;
+      const flow = breakoutFlowCopy(locale);
+      const progress = readBreakoutProgress();
+      const selected = Math.max(1, Math.min(progress.highestUnlocked, Number(state.stage) || progress.highestUnlocked));
+      Object.assign(breakoutStageContext, { ui, flow, progress, selected });
+      state.stage = selected;
       if (els.stageTitle) els.stageTitle.textContent = ui.stageTitle;
       if (els.stageHint) els.stageHint.textContent = ui.stageHint;
-      if (els.stageProgress) els.stageProgress.textContent = ui.stageProgress(state.stage || 1);
+      if (els.stageProgress) els.stageProgress.textContent = flow.progress(selected, progress.highestUnlocked);
       els.stageRail.setAttribute("aria-label", ui.stages);
-      els.stageRail.innerHTML = Array.from({ length: BREAKOUT_STAGE_TOTAL }, (_, index) => {
-        const stage = index + 1;
-        const selected = stage === (state.stage || 1);
-        const rows = breakoutRowsForStage(stage);
-        const pattern = breakoutPatternForStage(stage);
-        const brickCount = breakoutBrickCountForStage(stage);
-        return `<button type="button" class="stage-card${selected ? " is-selected" : ""}" data-action="stage" data-stage-index="${stage}" data-stage="${stage}" data-stage-pattern="${pattern}" data-brick-count="${brickCount}" data-wp-stage-card="true" aria-current="${selected ? "page" : "false"}" aria-label="${ui.stageLabel(stage)}"><span class="stage-card-number">${stage}</span><strong>${ui.stageLabel(stage)}</strong><small>${rows} × 6 · ${brickCount} ${breakoutBrickLabel(locale)}</small></button>`;
-      }).join("");
-      syncBreakoutStageAvailability();
-      requestAnimationFrame(syncBreakoutStageAvailability);
-    };
-    const syncBreakoutStageAvailability = () => {
-      if (game.type !== "breakout" || !els.stageRail) return;
-      const railRect = els.stageRail.getBoundingClientRect();
-      [...els.stageRail.querySelectorAll(".stage-card")].forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        const inRail = center >= railRect.left && center <= railRect.right;
-        if (inRail) {
-          card.removeAttribute("aria-disabled");
-          card.tabIndex = 0;
-        } else {
-          card.setAttribute("aria-disabled", "true");
-          card.tabIndex = -1;
-        }
-      });
+      els.stageRail.removeAttribute("data-wp-stage-v6-auto");
+      if (!breakoutStageController) {
+        if (!window.WeightPlayStageV6?.install) throw new Error("Breakout requires the shared Stage V6 runtime.");
+        breakoutStageController = window.WeightPlayStageV6.install(els.stageRail, {
+          total: BREAKOUT_STAGE_TOTAL,
+          poolSize: 9,
+          initialIndex: () => breakoutStageContext.selected - 1,
+          bind: bindBreakoutStageCard,
+          activate: (index) => {
+            const stage = index + 1;
+            if (stage <= readBreakoutProgress().highestUnlocked) startBreakoutStage(stage);
+          },
+          onChange: (index, detail) => {
+            if (document.body.dataset.screen !== "stage") return;
+            breakoutStageContext.selected = index + 1;
+            state.stage = index + 1;
+            if (els.stageProgress) els.stageProgress.textContent = breakoutStageContext.flow.progress(index + 1, readBreakoutProgress().highestUnlocked);
+            detail.pool.forEach((card) => {
+              const current = Number(card.dataset.wpStageVirtualIndex) === index;
+              card.classList.toggle("is-selected", current);
+              card.setAttribute("aria-current", current ? "page" : "false");
+            });
+          },
+        });
+      } else breakoutStageController.refresh();
+      breakoutStageController?.center(selected - 1);
     };
     let snakePointerActionUntil = 0;
     const runActionNode = (node) => { if (!node || node.disabled) return; if (node.dataset.action === "hint") { hint(); return; } const value = node.dataset.action === "letter" ? node.dataset.value : node.dataset.value === undefined ? undefined : Number(node.dataset.value); action(node.dataset.action, value); };
@@ -2181,15 +2264,6 @@
     });
     els.controls.addEventListener("click", handleActionClick);
     els.board.addEventListener("click", handleActionClick);
-    els.stageRail?.addEventListener("click", (event) => {
-      if (game.type !== "breakout") return;
-      const card = event.target?.closest?.("[data-action='stage']");
-      if (!card || !els.stageRail.contains(card)) return;
-      const stage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(card.dataset.stageIndex || card.dataset.stage) || 1));
-      startBreakoutStage(stage);
-    });
-    els.stageRail?.addEventListener("scroll", syncBreakoutStageAvailability, { passive: true });
-    window.addEventListener("resize", syncBreakoutStageAvailability);
     const syncTetrisShellChrome = () => {
       if (game.type !== "tetris") return;
       const ui = tetrisText();
@@ -2214,10 +2288,38 @@
     };
     const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
     els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else __wpReplayStart(() => start("retry")); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : __wpReplayStart(() => start("restart")));
+    els.breakoutLeaveDialog?.addEventListener("cancel", (event) => { event.preventDefault(); closeBreakoutLeaveDialog(); });
+    els.breakoutLeaveContinue?.addEventListener("click", () => closeBreakoutLeaveDialog());
+    els.breakoutLeaveStages?.addEventListener("click", () => {
+      closeBreakoutLeaveDialog(false);
+      openBreakoutStages();
+      els.stageRail?.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });
+    });
+    els.resultStages?.addEventListener("click", () => {
+      if (game.type !== "breakout") return;
+      openBreakoutStages();
+      els.stageRail?.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });
+    });
+    els.nextStage?.addEventListener("click", () => {
+      if (game.type === "breakout" && !els.nextStage.disabled) startBreakoutStage((state.stage || 1) + 1);
+    });
     els.leaveContinue?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); render(); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); });
     els.leaveMain?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); show("main"); state = makeState(game.type); render(); els.start?.focus({ preventScroll: true }); });
-    document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle") return; if (game.type === "wordle" && els.leaveModal && !els.leaveModal.hidden && event.key === "Escape") { event.preventDefault(); (__wpNotifyMeasurement(), els.leaveModal.hidden = true); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); return; } if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
+    document.addEventListener("keydown", (event) => {
+      if (game.type !== "breakout" || document.body.dataset.screen !== "battle" || els.breakoutLeaveDialog?.open || ![" ", "Enter"].includes(event.key)) return;
+      const focusedControl = event.target?.closest?.("button, a, input, select, textarea, [role='button']");
+      if (focusedControl?.getClientRects().length) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      action("fire");
+    });
+    document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle" || (game.type === "breakout" && els.breakoutLeaveDialog?.open)) return; if (game.type === "wordle" && els.leaveModal && !els.leaveModal.hidden && event.key === "Escape") { event.preventDefault(); (__wpNotifyMeasurement(), els.leaveModal.hidden = true); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); return; } if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
+    if (game.type === "breakout") battleBack?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openBreakoutLeaveDialog();
+    }, true);
     battleBack?.addEventListener("click", (event) => { if (game.type === "wordle" && !state.done && els.leaveModal) { event.preventDefault(); event.stopImmediatePropagation(); (__wpNotifyMeasurement(), els.leaveModal.hidden = false); syncWordleLeaveDialog(); els.leaveContinue?.focus({ preventScroll: true }); return; } trackCheckers("main_return", { from: "battle" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } });
     els.stageBack?.addEventListener("click", () => { if (game.type !== "breakout") return; stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); show("main"); state = makeState(game.type); render(); });
     if (game.type === "tetris") {

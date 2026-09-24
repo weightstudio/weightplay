@@ -61,9 +61,23 @@
   const stageBestKey = "weightplay-animal-lantern-lattice-stage-best-v1";
   const state = {
     locale: routeLocale || "en", path: 0, chain: [], sessionChecks: 0, checks: 0,
-    sound: true, screen: "main", campaignRun: false, lastResultCampaign: false,
+    screen: "main", campaignRun: false, lastResultCampaign: false,
   };
   const $ = (id) => document.getElementById(id);
+  const setBattleStatus = (message, feedback = "neutral") => {
+    const status = $("battleStatus");
+    status.textContent = message;
+    status.dataset.feedback = feedback;
+  };
+  const app = $("app");
+  let sharedFrame = null;
+  let stageRailController = null;
+  let stageBrowseIndex = 0;
+  let stageRailResizeObserver = null;
+  let stageProgressSnapshot = null;
+  const centerStageAfterViewportChange = () => {
+    if (state.screen === "stage") requestAnimationFrame(() => stageRailController?.center(stageBrowseIndex));
+  };
   const t = (key, vars = {}) => {
     const table = copy[state.locale] || copy.en || {};
     let value = table[key] || copy.en?.[key] || key;
@@ -145,37 +159,36 @@
     if (best) best.textContent = readBest() || t("noBest");
   };
   const show = (screen) => {
-    const previous = state.screen;
     state.screen = screen;
-    ["main", "stage", "battle", "result"].forEach((name) => { $(`${name}Screen`).hidden = name !== screen; });
-    const guide = document.querySelector("[data-wp-game-guide]");
-    if (guide) {
-      const visible = screen === "main";
-      guide.hidden = !visible;
-      guide.setAttribute("aria-hidden", String(!visible));
-    }
-    $("stageSettingsBtn")?.setAttribute("aria-label", t("settings"));
-    $("battleSettingsBtn")?.setAttribute("aria-label", t("settings"));
-    if (previous !== screen) {
-      $("settingsPanel").hidden = true;
-      $("settingsBtn").setAttribute("aria-expanded", "false");
-    }
+    app.hidden = false;
+    $("mainScreen").hidden = screen !== "main";
+    $("stageScreen").hidden = screen !== "stage";
+    $("battleScreen").hidden = screen !== "battle" && screen !== "result";
+    $("battleContent").hidden = screen === "result";
+    $("resultScreen").hidden = screen !== "result";
+    const guide = $("gameGuide");
+    guide.hidden = screen !== "main";
+    guide.setAttribute("aria-hidden", String(screen !== "main"));
     document.body.dataset.screen = screen;
+    if (sharedFrame) sharedFrame.activate(screen === "result" ? "battle" : screen, { covered: screen === "result" });
   };
-  const renderStages = () => {
-    const progress = readProgress();
-    $("stageList").replaceChildren(...paths.map((item, index) => {
-      const unlocked = index + 1 <= progress.highestUnlocked;
-      const button = document.createElement("button");
+  const renderStages = ({ entry = false } = {}) => {
+    const rail = $("stageList");
+    const progress = stageProgressSnapshot = readProgress();
+    if (entry) stageBrowseIndex = progress.highestUnlocked - 1;
+    rail.setAttribute("aria-label", `${t("stageAll")} · ${t("progressBody", { unlocked: progress.highestUnlocked, total: paths.length })}`);
+    // The shared rail skin enables smooth scrolling for legacy CSS snap rails.
+    // This data-backed controller owns frame-by-frame movement and must not
+    // have the browser animate each scrollLeft assignment behind its state.
+    rail.style.setProperty("scroll-behavior", "auto", "important");
+    const bindCard = (button, index) => {
+      const item = paths[index];
+      const unlocked = index + 1 <= stageProgressSnapshot.highestUnlocked;
       button.type = "button";
       button.className = `stage-card${unlocked ? "" : " locked"}`;
       button.dataset.index = String(index);
       button.dataset.stageIndex = String(index);
-      button.setAttribute("aria-posinset", String(index + 1));
-      button.setAttribute("aria-setsize", String(paths.length));
       button.setAttribute("aria-disabled", String(!unlocked));
-      if (index + 1 === progress.highestUnlocked) button.setAttribute("aria-current", "true");
-      if (!unlocked) button.disabled = true;
       const title = document.createElement("strong");
       title.textContent = t("stageRound", { n: index + 1, total: paths.length });
       const name = document.createElement("span");
@@ -189,10 +202,30 @@
         preview.append(icon(lanterns.find((lantern) => lantern.id === id), "stage-lantern-icon"));
       });
       button.setAttribute("aria-label", `${title.textContent}: ${name.textContent}${unlocked ? "" : `, ${t("locked")}`}`);
-      button.append(title, name, meta, preview);
-      button.addEventListener("click", () => startPath(index));
-      return button;
-    }));
+      button.disabled = false;
+      button.replaceChildren(title, name, meta, preview);
+    };
+    if (!stageRailController) {
+      if (!window.WeightPlayStageV6?.install) throw new Error("Lantern Lattice requires the shared Stage V6 controller.");
+      stageRailController = window.WeightPlayStageV6.install(rail, {
+        total: paths.length,
+        poolSize: 9,
+        initialIndex: () => stageBrowseIndex,
+        bind: bindCard,
+        activate: (index) => {
+          if (index + 1 <= readProgress().highestUnlocked) startPath(index);
+        },
+        onChange: (index) => { stageBrowseIndex = index; },
+      });
+      if (!stageRailController) throw new Error("The shared Stage V6 controller could not initialize the Lantern Lattice rail.");
+      if (typeof ResizeObserver === "function") {
+        stageRailResizeObserver = new ResizeObserver(() => {
+          if (state.screen === "stage") stageRailController?.center(stageBrowseIndex);
+        });
+        stageRailResizeObserver.observe(rail);
+      }
+    } else stageRailController.refresh();
+    stageRailController.center(stageBrowseIndex);
   };
   const ruleVars = (item) => ({
     name: t(item.echoId || item.decoy || "owl"),
@@ -202,7 +235,6 @@
   const renderBattle = () => {
     const item = paths[state.path];
     const target = expectedTarget(item);
-    $("battleHeading").textContent = t(item.titleKey);
     $("roundLabel").textContent = t("stageRound", { n: state.path + 1, total: paths.length });
     $("battleRule").textContent = t(item.ruleKey, ruleVars(item));
     $("battleHint").textContent = t("campaignBattleHint", { count: target.length });
@@ -244,31 +276,52 @@
       ? t("campaignFinishText", { n: state.sessionChecks, best: readBest() || state.sessionChecks, reward: t(item.rewardKey) })
       : finalStage
         ? t("stageFinishText", { stage: state.path + 1, checks: state.checks, best: readStageBest(state.path + 1) || state.checks })
-      : t(item.checkpoint ? "checkpointClear" : "stageClear", resultVars);
-    $("resultPrimaryBtn").textContent = finalStage ? t("map") : t("nextStage");
+        : t(item.checkpoint ? "checkpointClear" : "stageClear", resultVars);
+    $("skillReport").textContent = t("skillReportText");
+    const nextButton = $("resultPrimaryBtn");
+    nextButton.textContent = t("nextStage");
+    nextButton.disabled = finalStage;
     $("resultMapBtn").hidden = false;
-    $("resultPrimaryBtn").onclick = finalStage
-      ? () => { show("stage"); renderStages(); }
-      : () => startPath(state.path + 1);
+    $("resultHomeBtn").textContent = t("replay");
+    nextButton.onclick = () => startPath(state.path + 1);
+  };
+  const guideCopy = window.ANIMAL_LANTERN_LATTICE_GUIDE_COPY || {};
+  const buildGuide = () => guideCopy[state.locale] || guideCopy.en;
+  const renderGuide = () => {
+    const guide=buildGuide(), hero=$("guideHero"), sections=$("guideSections");
+    if(!hero||!sections)return;
+    hero.replaceChildren();
+    const title=document.createElement("div");title.className="game-info-title";
+    const kicker=document.createElement("span");kicker.className="game-info-kicker";kicker.textContent=t("guideTitle");
+    const h2=document.createElement("h2");h2.textContent=t("title");
+    const summary=document.createElement("p");summary.textContent=t("intro");title.append(kicker,h2,summary);
+    const facts=document.createElement("div");facts.className="game-info-facts";
+    guide.facts.forEach((label,index)=>{const fact=document.createElement("div");fact.className="game-info-fact";fact.append(Object.assign(document.createElement("span"),{textContent:label}),Object.assign(document.createElement("strong"),{textContent:guide.values[index]}));facts.append(fact);});
+    hero.append(title,facts);
+    const bodies=[guide.overview,"",guide.rules,guide.progression,guide.tips,guide.design,guide.saved,""];
+    sections.replaceChildren(...guide.headings.map((heading,index)=>{
+      const article=document.createElement("article");article.className="game-info-section";
+      article.append(Object.assign(document.createElement("h3"),{textContent:heading}));
+      if(index===1){article.append(Object.assign(document.createElement("p"),{textContent:guide.stepIntro}));const steps=document.createElement("ol");guide.steps.forEach(step=>steps.append(Object.assign(document.createElement("li"),{textContent:step})));article.append(steps);}
+      else if(index===7){const dl=document.createElement("dl");guide.faq.forEach(([q,a])=>{const row=document.createElement("div");row.append(Object.assign(document.createElement("dt"),{textContent:q}),Object.assign(document.createElement("dd"),{textContent:a}));dl.append(row);});article.append(dl);}
+      else article.append(Object.assign(document.createElement("p"),{textContent:bodies[index]}));
+      return article;
+    }));
   };
   const applyLocale = () => {
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    const campaignGuideCopy = { guideOne: "campaignGuideOne", guideTwo: "campaignGuideTwo", guideThree: "campaignGuideThree" };
-    Object.entries(campaignGuideCopy).forEach(([legacyKey, campaignKey]) => {
-      document.querySelectorAll(`[data-copy="${legacyKey}"]`).forEach((node) => { node.textContent = t(campaignKey); });
-    });
     $("localeSelect").value = state.locale;
-    $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
-    $("settingsBtn").setAttribute("aria-label", t("settings"));
-    $("stageSettingsBtn")?.setAttribute("aria-label", t("settings"));
-    $("battleSettingsBtn")?.setAttribute("aria-label", t("settings"));
     $("localeSelect").setAttribute("aria-label", t("language"));
+    $("stageBackBtn").setAttribute("aria-label", t("backShort"));
+    $("battleBackBtn").setAttribute("aria-label", t("backShort"));
     renderProgress();
+    renderGuide();
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
     if (state.screen === "result") renderResult();
+    sharedFrame?.refresh();
   };
   const startSession = () => {
     state.sessionChecks = 0;
@@ -277,7 +330,7 @@
     state.campaignRun = true;
     state.lastResultCampaign = false;
     show("stage");
-    renderStages();
+    renderStages({ entry: true });
     track("session_start");
   };
   const startPath = (index) => {
@@ -296,13 +349,14 @@
     const canEcho = item.echoId === id && used === 1;
     if (state.chain.length >= expectedTarget(item).length || (used > 0 && !canEcho)) return;
     state.chain.push(id);
+    setBattleStatus("", "neutral");
     renderBattle();
     track("lantern_choose", { path: state.path + 1, position: state.chain.length, lantern: id });
   };
   const resetChain = () => {
     state.chain = [];
     renderBattle();
-    $("battleStatus").textContent = t("ready");
+    setBattleStatus(t("ready"));
     track("reset", { path: state.path + 1 });
   };
   const checkPath = () => {
@@ -311,7 +365,7 @@
     state.checks += 1;
     state.sessionChecks += 1;
     if (state.chain.length < target.length) {
-      $("battleStatus").textContent = t("campaignNeedMore", { count: target.length });
+      setBattleStatus(t("campaignNeedMore", { count: target.length }), "error");
       track("check", { path: state.path + 1, checks: state.sessionChecks, correct: false, reason: "incomplete" });
       return;
     }
@@ -319,14 +373,14 @@
     const decoyChosen = item.decoy && state.chain.includes(item.decoy);
     track("check", { path: state.path + 1, checks: state.sessionChecks, correct: firstMismatch < 0 && !decoyChosen });
     if (decoyChosen) {
-      $("battleStatus").textContent = t("decoyWrong", { name: t(item.decoy) });
+      setBattleStatus(t("decoyWrong", { name: t(item.decoy) }), "error");
       return;
     }
     if (firstMismatch >= 0) {
-      $("battleStatus").textContent = t("wrong", { n: firstMismatch + 1 });
+      setBattleStatus(t("wrong", { n: firstMismatch + 1 }), "error");
       return;
     }
-    $("battleStatus").textContent = t("correct");
+    setBattleStatus(t("correct"), "success");
     clearStage(state.path);
     writeStageBest(state.path + 1, state.checks);
     const progress = readProgress();
@@ -340,25 +394,17 @@
     show("result");
     renderResult();
   };
-  const toggleSettings = () => {
-    const panel = $("settingsPanel");
-    panel.hidden = !panel.hidden;
-    $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden));
-    [$(`stageSettingsBtn`), $(`battleSettingsBtn`)].forEach((button) => button?.setAttribute("aria-expanded", String(!panel.hidden)));
-  };
-
   $("startBtn").addEventListener("click", startSession);
-  $("mapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages(); track("path_map"); });
+  $("mapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages({ entry: true }); track("path_map"); });
   $("stageBackBtn").addEventListener("click", () => show("main"));
-  $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); });
-  $("resultMapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages(); });
-  $("resultHomeBtn").addEventListener("click", () => show("main"));
+  $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages({ entry: true }); });
+  $("resultMapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages({ entry: true }); });
+  $("resultHomeBtn").addEventListener("click", () => {
+    state.campaignRun = false;
+    startPath(state.path);
+  });
   $("checkBtn").addEventListener("click", checkPath);
   $("resetBtn").addEventListener("click", resetChain);
-  $("settingsBtn").addEventListener("click", toggleSettings);
-  $("stageSettingsBtn").addEventListener("click", toggleSettings);
-  $("battleSettingsBtn").addEventListener("click", toggleSettings);
-  $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); });
   $("localeSelect").addEventListener("change", (event) => {
     state.locale = copy[event.target.value] ? event.target.value : "en";
     try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {}
@@ -369,6 +415,24 @@
     const saved = localStorage.getItem("weightplayLocale");
     if (!routeLocale && saved && copy[saved]) state.locale = saved;
   } catch (_) {}
+  $("localeSelect").value = state.locale;
+  sharedFrame = window.WeightPlayScreenFrame.mount({
+    root: app,
+    localeSelect: $("localeSelect"),
+    scenes: {
+      main: { root: $("mainScreen"), header: $("mainHeader"), content: $("mainContent") },
+      stage: { root: $("stageScreen"), header: $("stageHeader"), content: $("stageContent") },
+      battle: { root: $("battleScreen"), header: $("battleHeader"), content: $("battleContent"), headerInfo: $("battleHeaderInfo") },
+    },
+  });
+  window.addEventListener("resize", centerStageAfterViewportChange);
+  window.addEventListener("pagehide", (event) => {
+    if (event.persisted) return;
+    window.removeEventListener("resize", centerStageAfterViewportChange);
+    stageRailResizeObserver?.disconnect();
+    stageRailController?.destroy();
+    stageRailController = null;
+  });
   window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready"); }, 260);
   window.__ANIMAL_LANTERN_LATTICE_TEST__ = {
     paths,

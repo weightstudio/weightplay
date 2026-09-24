@@ -1,10 +1,11 @@
 import { stages,gear } from './campaign.js?v=4';
 import { Combat } from './combat.js?v=6';
-import { LOCALES,copy } from './locales.js?v=4';
+import { LOCALES,copy } from './locales.js?v=5';
 import { loadSave,storeSave } from './save.js?v=4';
 import { Expedition } from './expedition.js?v=4';
 import { rollLoot,collectGear,promoteGear,shardsNeeded,MAX_RANK,dropChance,tier } from './loot.js?v=4';
 import { expeditionCopy } from './expedition-copy.js?v=4';
+import { playerCopy } from './player-copy.js?v=1';
 import { companions,rollCompanion,collectCompanion,promoteCompanion } from './companions.js?v=4';
 import { collectionCopy } from './collection-copy.js?v=4';
 
@@ -16,14 +17,13 @@ let selected=save.unlocked, combat=null,renderer=null,raf=0,last=0,acc=0,node=0,
 let state='idle',screen='main',runGeneration=0,transitionRemaining=0,modalKind='',resumeAction=null;
 let feedbackUntil=0,feedbackText='',rendererModule=null;
 let journey=null,runKit=null,runReward=0,runKills=0,runDrops=0,runCombo=0;
-const t=k=>expeditionCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
-const zh=()=>save.locale==='zh-Hant'||save.locale==='zh-Hans';
+const t=k=>expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
 const cc=()=>collectionCopy[save.locale]||collectionCopy.en;
-const msg=(en,tw)=>zh()?tw:en;
-const name=e=>zh()?(e.zh||e.name):e.name;
-function persist(){if(!storeSave(save))feedback(msg('Storage unavailable: keep this tab open.','無法儲存，請保留此分頁。'),5);}
+const pc=()=>playerCopy[save.locale]||playerCopy.en;
+const name=e=>typeof e.id==='number'?pc().stageNames[e.id]:(pc().enemyNames[e.id]||e.name);
+function persist(){if(!storeSave(save))feedback(t('storageError'),5);}
 const locale=$('#locale');
-locale.innerHTML=LOCALES.map(l=>`<option value="${l}">${({'zh-Hant':'繁體中文','zh-Hans':'简体中文',en:'English',ja:'日本語',ko:'한국어',ar:'العربية'})[l]||l}</option>`).join('');
+locale.innerHTML=LOCALES.map(l=>`<option value="${l}">${({'zh-Hant':'繁體中文','zh-Hans':'简体中文',en:'English',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'})[l]}</option>`).join('');
 locale.value=save.locale;
 const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:locale,scenes:{
   main:{root:$('#main'),header:$('#main header'),content:$('.hero')},
@@ -37,6 +37,7 @@ function fit(){
   const scale=Math.min(w/390,h/780);
   const root=$('#'+screen);
   Object.assign(root.style,{width:`${w/scale}px`,height:`${h/scale}px`,left:`${((vv?.width||innerWidth)-w)/2+(vv?.offsetLeft||0)}px`,top:`${vv?.offsetTop||0}px`,transform:`scale(${scale})`});
+  root.style.setProperty(`--wp-${screen}-canvas-scale`,String(scale));
   if(screen==='stage')rail?.center();
   renderer?.resize();
 }
@@ -56,8 +57,11 @@ function show(id){
 function localize(){
   document.documentElement.lang=save.locale;document.documentElement.dir=save.locale==='ar'?'rtl':'ltr';
   $$('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+  $$('[data-i18n-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.i18nAria)));
+  $$('[data-i18n-title]').forEach(el=>el.setAttribute('title',t(el.dataset.i18nTitle)));
+  $$('[data-i18n-alt]').forEach(el=>el.setAttribute('alt',t(el.dataset.i18nAlt)));
   $('#progress').textContent=`${t('stages')} ${save.unlocked} / 30`;
-  $('#stageHint').textContent=msg('Drag to explore · tap a stage to play','左右拖曳探索 · 點選關卡開始');
+  $('#stageHint').textContent=t('stageHint');
   $('#allyDescription').textContent=cc().rosterHint;
   const sections=[[t('companion'),cc().rosterHint],[t('equipment'),`${t('dropRate')}: 2.5% → 7% · ${t('boss')}: 18%.`],[t('journey'),t('leaveText')]];
   $('#guideDetails').replaceChildren(...sections.map(([h,p])=>{const s=document.createElement('section');const title=document.createElement('h3');title.textContent=h;const text=document.createElement('p');text.textContent=p;s.append(title,text);return s;}));
@@ -89,14 +93,13 @@ function renderCompanions(){
     d.append(objectImage(c.id),title,ability,stat,shards,equip,upgrade);return d;
   }));
 }
-const gearZh=['旅途斧','破盾斧','輕快斧','旅途兜帽','稜鏡面罩','斥候背心','樹皮護甲','旅途手套','鐵護腕','旅途靴','沼澤靴','橡果護符','月光護符','銅戒','節拍環'];
 function renderEquipment(){
   $('#coins').textContent=`${t('collection')} ${Object.keys(save.collection).length} / ${gear.length}`;
   $('#equipment').replaceChildren(...gear.map(g=>{
     const d=document.createElement('div');d.className='gear';const i=gear.indexOf(g),equipped=save.loadout.includes(g.id),item=save.collection[g.id],level=item?.rank||0;
     d.dataset.gear=g.id;d.dataset.tier=tier(g);d.classList.toggle('unowned',!item);
     const icon=objectImage(g.id);
-    const b=document.createElement('b');b.textContent=zh()?gearZh[i]:g.name;
+    const b=document.createElement('b');b.textContent=pc().gearNames[g.id]||g.name;
     const p=document.createElement('p');
     const power=Math.round(((g.slot==='axe'?.12:.025)*level+(g.slot==='axe'?.15:.035)*tier(g))*100);
     const weaponBase={'trail-axe':24,'breaker-axe':28,'quick-axe':18},healthBase=g.id==='bark-vest'?25:g.id==='scout-vest'?10:0;
@@ -120,14 +123,14 @@ async function startRun(){
   disposeRun();node=0;runHp=0;runEnergy=100;runReward=0;runKills=0;runDrops=0;runCombo=0;
   journey=new Expedition(stages[selected-1]);runKit=JSON.parse(JSON.stringify({loadout:save.loadout,mode:save.mode,collection:save.collection,companion:save.companion,companions:save.companions}));show('battle');state='loading';
   lootQueue.length=0;$('#lootToast').hidden=true;$('#damageNumbers').replaceChildren();updateProgress();
-  const generation=runGeneration;dialog(t('title'),msg('Preparing the forest…','正在準備森林…'),[], 'loading');
+  const generation=runGeneration;dialog(t('title'),t('preparing'),[], 'loading');
   try{
-    if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=4'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
+    if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=6'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
     if(generation!==runGeneration||screen!=='battle')return;
     renderer=new rendererModule.PawRenderer($('#canvas'));renderer.setCompanion(runKit.companion);renderer.setRegion(Math.floor((selected-1)/5));
     closeDialog();startEncounter();
     if(!save.tutorial){dialog(t('guide'),t('guideText'),[[t('continue'),()=>{save.tutorial=true;persist();resume();}]],'tutorial');}
-  }catch(error){if(generation!==runGeneration)return;renderer?.dispose();renderer=null;state='error';dialog(msg('Forest unavailable','森林載入失敗'),msg('This game needs WebGL 2. Retry, or return to stages.','此遊戲需要 WebGL 2。你可以重試或返回關卡。'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
+  }catch(error){if(generation!==runGeneration)return;renderer?.dispose();renderer=null;state='error';dialog(t('forestUnavailable'),t('webglRequired'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
 }
 function startEncounter(){
   const stage={...stages[selected-1],encounters:[journey.encounter()]};
@@ -162,7 +165,7 @@ function loop(now){
         const companionId=e.summon?null:rollCompanion(selected,e.boss);
         if(companionId){const item=collectCompanion(save,companionId);runDrops++;persist();showLoot(item);}
       }
-      const labels={perfect:msg('Perfect guard! Counter now.','完美格擋！趁隙反擊'),block:msg('Blocked · counter window','格擋成功 · 反擊窗口'),break:msg('Shield broken!','護盾破碎！'),counter:msg('Counter strike!','反擊重擊！'),interrupt:msg('Cast interrupted','施法已打斷'),reflect:msg('Reflected! Use Nibs first.','亮面反彈！先用栗栗解除'),exhausted:msg('Stamina empty — recover','耐力耗盡 · 解除守勢恢復'),phase:msg('Guardian changes phase','首領進入下一階段'),heal:msg('Health restored','生命恢復')};
+      const labels={perfect:t('perfect'),block:t('blocked'),break:t('shieldBroken'),counter:t('counter'),interrupt:t('interrupted'),reflect:t('reflected'),exhausted:t('energyEmpty'),phase:t('phase'),heal:t('healed')};
       if(labels[e.type])feedback(labels[e.type]);
       if(e.type==='dodge')feedback(cc().status[4]);
       if(e.type==='absorb')feedback(`${cc().status[5]} ${e.amount}`);
@@ -172,7 +175,7 @@ function loop(now){
         const n=document.createElement('strong'),point=e.type==='hurt'?{x:50,y:74}:renderer.impactPoint(e.uid);
         n.dataset.target=key;n.dataset.until=now+(e.critical?850:600);n.className=e.type==='hurt'?'hurt':e.critical?'critical':'';
         n.style.left=`${point.x}%`;n.style.top=`${point.y}%`;
-        const amount=e.type==='hurt'?`−${e.amount} HP`:e.amount>0?`${e.amount}`:`${msg('Shield','盾')} −${e.shield}`;
+        const amount=e.type==='hurt'?`−${e.amount} HP`:e.amount>0?`${e.amount}`:`${t('shield')} −${e.shield}`;
         if(e.critical){const label=document.createElement('small');label.textContent=t('critical');n.append(label,document.createTextNode(amount));}else n.textContent=amount;
         box.append(n);while(box.children.length>4)box.firstElementChild.remove();
       }
@@ -196,18 +199,21 @@ function updateHud(){
   for(const b of [...box.children])if(!enemies.some(e=>e.uid===+b.dataset.uid))b.remove();
   enemies.forEach((e,i)=>{
     let b=box.querySelector(`[data-uid="${e.uid}"]`);
-    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><span class="enemy-health-row"><progress class="enemy-hp" aria-label="Enemy health"></progress><span class="enemy-health-value"></span></span><progress class="enemy-shield" max="1" aria-label="Enemy shield"></progress><small></small><progress class="enemy-clock" max="1" aria-label="Enemy attack warning"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
+    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><span class="enemy-health-row"><progress class="enemy-hp"></progress><span class="enemy-health-value"></span></span><progress class="enemy-shield" max="1"></progress><small></small><progress class="enemy-clock" max="1"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
+    b.querySelector('.enemy-hp').setAttribute('aria-label',t('enemyHealth'));
+    b.querySelector('.enemy-shield').setAttribute('aria-label',t('enemyShield'));
+    b.querySelector('.enemy-clock').setAttribute('aria-label',t('enemyWarning'));
     b.style.gridColumn=String(e.slot>=3?e.slot-2:e.slot+1);b.style.gridRow=e.slot>=3?'2':'1';
     b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.classList.toggle('boss',e.boss);b.querySelector('strong').textContent=`${e.boss?`${t('boss')} · `:''}${name(e)}`;
     const healthBar=b.querySelector('.enemy-hp');healthBar.max=e.maxHp;healthBar.value=e.hp;b.querySelector('.enemy-health-value').textContent=`${Math.ceil(e.hp)}/${Math.ceil(e.maxHp)}`;
     const shieldBar=b.querySelector('.enemy-shield');shieldBar.max=Math.max(1,e.maxShield||1);shieldBar.value=e.shield;shieldBar.hidden=e.shield<=0;
     const protectedBySupport=e.boss&&enemies.some(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
-    b.querySelector('small').textContent=protectedBySupport?msg('Destroy support first','先擊破支援目標'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?msg('Core opens after attack','出招後心核會暴露'):e.reflect>0?msg('Mirror armor','鏡面護甲'):e.opening>0?msg('Opening!','破綻！'):e.shield>0?msg('Shield active','護盾中'):'';
+    b.querySelector('small').textContent=protectedBySupport?t('destroySupport'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?t('coreOpening'):e.reflect>0?t('mirrorArmor'):e.opening>0?t('opening'):e.shield>0?t('shieldActive'):'';
     b.querySelector('.enemy-clock').value=e.warned?1-Math.max(0,e.t)/e.warn:0;
   });
   const threat=enemies.filter(e=>e.warned).sort((a,b)=>a.t-b.t)[0];
-  $('#warning').textContent=threat?`${name(threat)} · ${msg('Incoming','即將出手')} ${Math.max(0,threat.t).toFixed(1)} s`:t('tap');
-  $('#status').textContent=[combat.barrier>0?`${cc().status[0]} ${Math.ceil(combat.barrier)}`:'',...Object.entries(combat.status).filter(([,v])=>v>0).map(([k,v])=>`${k==='crack'?msg('Crack','裂痕'):cc().status[k==='burn'?1:2]} ${v.toFixed(1)}s`)].filter(Boolean).join(' · ');
+  $('#warning').textContent=threat?`${name(threat)} · ${t('incoming')} ${Math.max(0,threat.t).toFixed(1)} s`:t('tap');
+  $('#status').textContent=[combat.barrier>0?`${cc().status[0]} ${Math.ceil(combat.barrier)}`:'',...Object.entries(combat.status).filter(([,v])=>v>0).map(([k,v])=>`${k==='crack'?t('crack'):cc().status[k==='burn'?1:2]} ${v.toFixed(1)}s`)].filter(Boolean).join(' · ');
   if(performance.now()>feedbackUntil)$('#feedback').textContent='';else $('#feedback').textContent=feedbackText;
 }
 function encounterWon(){
@@ -224,7 +230,7 @@ function encounterWon(){
 }
 function updateProgress(){
   const percent=Math.round((journey?.progress||0)*100),complete=journey?.completed===true;
-  $('#routeProgress').value=percent;$('#routeProgress').setAttribute('aria-label',t('journey'));
+  $('#routeProgress').value=percent;$('#routeProgress').setAttribute('aria-label',t('journeyProgress'));
   $('#routeLabel').textContent=complete?t('farm'):`${t('journey')} ${Math.min(journey?.cleared||0,journey?.length||12)}/${journey?.length||12}`;
   $('#routePercent').textContent=`${percent}%`;
   $('#claim').disabled=!complete;$('#claim').textContent=complete?`✓ ${t('claim')}`:'—';
@@ -233,9 +239,9 @@ function updateProgress(){
 let lootUntil=0;const lootQueue=[];
 function showLoot(item){
   if(!$('#lootToast').hidden){lootQueue.push(item);if(lootQueue.length>8)lootQueue.shift();return;}
-  const g=gear.find(g=>g.id===item.id),index=gear.indexOf(g);
+  const g=gear.find(g=>g.id===item.id);
   $('#lootIcon').src=`art/objects/${item.id}.png`;
-  const title=item.kind==='companion'?cc().names[companions.findIndex(c=>c.id===item.id)]:zh()?gearZh[index]:g.name;
+  const title=item.kind==='companion'?cc().names[companions.findIndex(c=>c.id===item.id)]:pc().gearNames[g.id]||g.name;
   const label=item.kind==='companion'?(item.fresh?cc().newAlly:cc().allyShard):(item.fresh?t('newItem'):t('loot'));
   $('#lootText').textContent=`${label} · ${title}${item.fresh?'':` · ${item.shards}/${shardsNeeded(item.rank)}`}`;
   $('#lootToast').hidden=false;lootUntil=performance.now()+1800;
@@ -250,7 +256,7 @@ function closeDialog(){
 }
 function dialog(title,text,actions,kind='pause'){
   stopLoop();modalKind=kind;$('#modalTitle').textContent=title;$('#modalText').textContent=text;$('#modalActions').replaceChildren();
-  for(const [label,fn,disabled=false] of actions){const b=document.createElement('button');b.textContent=label;b.disabled=disabled;b.onclick=()=>{closeDialog();fn();};$('#modalActions').append(b);}
+  for(const [label,fn,disabled=false] of actions){const b=document.createElement('button');b.textContent=label;b.disabled=disabled;if(kind==='tutorial')b.dataset.wpTutorialNext='';b.onclick=()=>{closeDialog();fn();};$('#modalActions').append(b);}
   $('.battle-area').inert=true;frame.activate('battle',{covered:true});$('#modal').hidden=false;
   $('#modalActions button:not(:disabled)')?.focus();
 }
@@ -268,7 +274,7 @@ $$('.tabs button').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
 locale.onchange=()=>{save.locale=locale.value;try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();};
 $('#canvas').tabIndex=0;
 $('#canvas').addEventListener('pointerdown',e=>{if(state!=='live'||modalKind||e.button!==0)return;const uid=renderer.pick(e.clientX,e.clientY);const i=combat.alive().findIndex(x=>x.uid===uid);if(i>=0)combat.target=i;action('attack');});
-$('#canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();if(screen!=='battle'||!renderer)return;stopLoop();state='error';dialog(msg('Graphics interrupted','畫面暫時中斷'),msg('Restart this run safely, or return to stages.','可以安全重試本關，或返回關卡。'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');});
+$('#canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();if(screen!=='battle'||!renderer)return;stopLoop();state='error';dialog(t('graphicsInterrupted'),t('restartGraphics'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');});
 document.addEventListener('keydown',e=>{
   if(e.defaultPrevented)return;
   if(modalKind){
@@ -286,5 +292,5 @@ window.addEventListener('resize',fit);visualViewport?.addEventListener('resize',
 window.addEventListener('pagehide',()=>{disposeRun();audio?.close();audio=null;});
 window.addEventListener('pageshow',e=>{if(e.persisted)show('main');});
 // Read-only local diagnostics: never grant progress or alter the simulation.
-if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.PawaxeDiagnostics=Object.freeze({snapshot:()=>({screen,state,modal:modalKind,stage:selected,node,hp:combat?.hp,energy:combat?.energy,time:combat?.time,auto:save.autoAttack,slashes:combat?.slashes,kills:runKills,drops:runDrops,progress:journey?.progress,completed:journey?.completed,unlocked:save.unlocked,coins:save.coins,raf:Boolean(raf),renderer:renderer?.metrics()||null,targets:combat?.alive().map(e=>({id:e.id,hp:e.hp,shield:e.shield,t:e.t,warn:e.warn,reflect:e.reflect}))||[]})});
+if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.PawaxeDiagnostics=Object.freeze({snapshot:()=>({screen,state,modal:modalKind,stage:selected,node,hp:combat?.hp,energy:combat?.energy,time:combat?.time,auto:save.autoAttack,slashes:combat?.slashes,kills:runKills,drops:runDrops,progress:journey?.progress,completed:journey?.completed,unlocked:save.unlocked,coins:save.coins,raf:Boolean(raf),renderer:renderer?.metrics()||null,targets:combat?.alive().map(e=>({id:e.id,hp:e.hp,shield:e.shield,t:e.t,warn:e.warn,reflect:e.reflect}))||[]}),setBiome:index=>renderer?.setRegion(index)});
 localize();show('main');

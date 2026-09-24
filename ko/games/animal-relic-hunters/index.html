@@ -103,7 +103,7 @@
             </div>
             <div class="menu-copy">
             <h1 class="menu-title" data-ui="menuTitle">고대 유적을 탐험하세요.</h1>
-            <p class="menu-hint main-summary" data-ui="menuHint" data-relic-authored-summary="true" data-runtime-localize="off">유적을 탐험하고 적을 피하며 장비와 유물을 조합하세요.</p>
+            <p class="menu-hint main-summary" data-ui="menuHint" data-relic-authored-summary="true" data-runtime-localize="off">유적을 탐험하고 공격을 피하며 유물 파동으로 주변 적을 날려 보내세요.</p>
             <div class="goals-card">
               <h3 data-ui="prototypeGoalsTitle">원정 목표</h3>
               <p data-ui="prototypeGoalsText">30번의 세 방 원정에서 유적의 위협을 배우고 영구 훈련과 장비로 성장하며 여섯 지역 수호자를 물리치세요.</p>
@@ -209,7 +209,7 @@
 
             <!-- Canvas viewport -->
             <div class="canvas-container">
-              <canvas id="gameCanvas" data-wp-primary-action width="800" height="1000" tabindex="0" aria-keyshortcuts="w a s d ArrowUp ArrowDown ArrowLeft ArrowRight"></canvas>
+              <canvas id="gameCanvas" data-wp-primary-action width="800" height="1000" tabindex="0" aria-keyshortcuts="w a s d ArrowUp ArrowDown ArrowLeft ArrowRight Space"></canvas>
             </div>
           </div>
 
@@ -334,7 +334,7 @@
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>Animal Relic Hunters</h2><p>유적을 탐험하고 적을 피하며 장비와 유물을 조합하세요.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>이동과 생존</h3><p>목적지를 누르거나 드래그해 이동하세요. PC에서는 WASD 또는 방향키를 사용합니다. 무기는 자동 공격하므로 적을 연타할 필요가 없습니다. 공격 범위를 피하며 싸우세요.</p></div><div class="game-info-section"><h3>탐험과 장비</h3><p>방의 목표를 따라 열쇠를 모으고 상자를 여세요. 새 장비를 비교한 뒤 장착하거나 기존 장비를 유지하세요. 유물 선택은 이번 원정을 강화하고 훈련과 장비는 다음 원정을 준비합니다.</p></div><div class="game-info-section"><h3>진행과 저장</h3><p>스테이지에서 원정을 선택하세요. 패배하면 재도전하거나 준비 화면으로 돌아가고, 승리하면 열린 경로를 진행하세요. 새 원정에서는 체력과 임시 유물 효과가 초기화됩니다.</p></div><div class="game-info-section"><h3>진행 상황이 저장되나요?</h3><p>해금 진행, 금화, 훈련, 장비는 현재 브라우저에 저장됩니다. 사이트 데이터를 지우면 사라질 수 있으며 다른 기기와의 동기화는 보장되지 않습니다.</p></div><div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>패배하면 어떻게 되나요?</dt><dd>원정을 다시 시도하거나 준비 화면으로 돌아갈 수 있습니다. 새 원정은 체력과 임시 유물 효과가 새로 시작됩니다.</dd></div></dl></div></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>Animal Relic Hunters</h2><p>유적을 탐험하고 공격을 피하며 유물 파동으로 주변 적을 날려 보내세요.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>이동과 생존</h3><p>목적지를 누르거나 드래그해 이동하세요. PC에서는 WASD 또는 방향키를 사용합니다. 무기는 자동 공격하므로 적을 연타할 필요가 없습니다. 공격 범위를 피하며 싸우세요. 스페이스바를 누르거나 화면 오른쪽 아래의 유물 파동을 탭하면 주변 적에게 피해를 주고 밀쳐내며 적 탄환을 지웁니다. 수정 송곳니는 파동 피해를 높이고, 등불 폭발은 중첩마다 재충전 시간을 1초 줄입니다(최소 7초).</p></div><div class="game-info-section"><h3>탐험과 장비</h3><p>방의 목표를 따라 열쇠를 모으고 상자를 여세요. 새 장비를 비교한 뒤 장착하거나 기존 장비를 유지하세요. 유물 선택은 이번 원정을 강화하고 훈련과 장비는 다음 원정을 준비합니다.</p></div><div class="game-info-section"><h3>진행과 저장</h3><p>스테이지에서 원정을 선택하세요. 패배하면 재도전하거나 준비 화면으로 돌아가고, 승리하면 열린 경로를 진행하세요. 새 원정에서는 체력과 임시 유물 효과가 초기화됩니다.</p></div><div class="game-info-section"><h3>진행 상황이 저장되나요?</h3><p>해금 진행, 금화, 훈련, 장비는 현재 브라우저에 저장됩니다. 사이트 데이터를 지우면 사라질 수 있으며 다른 기기와의 동기화는 보장되지 않습니다.</p></div><div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>패배하면 어떻게 되나요?</dt><dd>원정을 다시 시도하거나 준비 화면으로 돌아갈 수 있습니다. 새 원정은 체력과 임시 유물 효과가 새로 시작됩니다.</dd></div></dl></div></div></section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
     <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
@@ -342,6 +342,6 @@
     <link rel="stylesheet" href="frame-content.css" />
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js"></script>
-    <script src="game.js?v=20260919-block-frame-v26&wp-audio=1.0.0"></script>
+    <script src="game.js?v=20260923-relic-pulse-v28&wp-audio=1.0.0"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v19";
+  document.body.dataset.gameVersion = "v23";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main", settings: "Settings" },
@@ -39,6 +39,22 @@ window.WPPopularArcade?.mount("tic-tac-toe");
     ru: "Открыть полное руководство",
     hi: "पूरी गाइड पढ़ें",
     ar: "اقرأ الدليل الكامل",
+  };
+
+  const mainGoalLabels = {
+    en: "Place X, read O's reply, and make three in a row.",
+    "zh-Hant": "放下 X，讀懂 O 的回應，連成三格。",
+    "zh-Hans": "放下 X，读懂 O 的回应，连成三格。",
+    ja: "Xを置き、Oの応手を読み、先に3つ並べましょう。",
+    ko: "X를 놓고 O의 응수를 읽어 세 칸을 먼저 이으세요.",
+    es: "Coloca X, lee la respuesta de O y alinea tres.",
+    "pt-BR": "Coloque X, leia a resposta de O e alinhe três.",
+    fr: "Placez X, lisez la réponse de O et alignez trois symboles.",
+    de: "Setze X, lies Os Antwort und bringe drei in eine Reihe.",
+    it: "Posiziona X, leggi la risposta di O e allineane tre.",
+    ru: "Ставьте X, читайте ответ O и выстройте три в ряд.",
+    hi: "X रखें, O की चाल पढ़ें और तीन को एक पंक्ति में जोड़ें।",
+    ar: "ضع X، اقرأ رد O واجمع ثلاث علامات في صف واحد.",
   };
 
   const compactGuide = (section) => {
@@ -98,11 +114,14 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   shell?.append(reserve);
 
   const applyLabels = () => {
-    const copy = labels[document.documentElement.lang] || labels.en;
+    const locale = document.documentElement.lang || "en";
+    const copy = labels[locale] || labels.en;
     mainReturn.setAttribute("aria-label", copy.lobby);
     battleReturn.setAttribute("aria-label", copy.battle);
     battleSettings.setAttribute("aria-label", copy.settings);
     battleSettings.title = copy.settings;
+    const mainSummary = document.querySelector("#gameTagline");
+    if (mainSummary) mainSummary.textContent = mainGoalLabels[locale] || mainGoalLabels.en;
   };
   applyLabels();
   document.querySelector("#localeSelect")?.addEventListener("change", applyLabels);
@@ -318,7 +337,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
     }
     @media (min-width: 700px) and (max-height: 560px) {
       body[data-game-id='tic-tac-toe'] .wp-standard-main-composition {
-        --wp-main-landscape-poster-size: 300px;
+        --wp-main-landscape-poster-size: 420px;
       }
     }
     html.popular-tic-tac-toe-active #battleScreen .board {

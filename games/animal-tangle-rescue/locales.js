@@ -65,6 +65,30 @@
   ];
   arBoardTitles.forEach((value, index) => { locales.ar[`boardTitle${index + 1}`] = value; });
   arBoardHints.forEach((value, index) => { locales.ar[`boardHint${index + 1}`] = value; });
+  // v9: every supported non-English locale owns all 30 campaign labels. The
+  // board number keeps each title unique, while the localized arc name and
+  // five recurring decision cues describe the actual endpoint, locked-row,
+  // and decoy-shelter rules without falling back to English source strings.
+  const campaignLocalization = {
+    "zh-Hant": { board: "棋盤", arcs: ["溪流交織", "五端路線", "隱藏棲所", "六端交會", "棲所換位", "最終救援"], hints: ["先讀完所有藤蔓端點，再進行第一次交換。", "比較端點與棲所的位置，規劃不同的交換順序。", "先保留已正確連線的安全列，再解開其餘路徑。", "若棲所標籤隱藏，請從剩餘動物與路線推理目標。", "檢查每條路徑；鎖定列不能交換，其他端點仍可調整。"] },
+    "zh-Hans": { board: "棋盘", arcs: ["溪流交织", "五端路线", "隐藏栖所", "六端交会", "栖所换位", "最终救援"], hints: ["先读完所有藤蔓端点，再进行第一次交换。", "比较端点与栖所的位置，规划不同的交换顺序。", "先保留已经正确连接的安全行，再解开其余路径。", "如果栖所标签隐藏，请从剩余动物与路线推理目标。", "检查每条路径；锁定行不能交换，其他端点仍可调整。"] },
+    ja: { board: "盤面", arcs: ["小川の編み目", "5つの端点", "隠れたすみか", "6方向の交差", "すみかの入れ替え", "最後の救助"], hints: ["最初にすべてのつるの端を読み、それから交換を始めましょう。", "端点とすみかの位置を比べ、別の交換順を考えましょう。", "すでに正しい安全な列を残し、ほかの道をほどきましょう。", "すみかの表示が隠れているときは、残った動物と道から推理します。", "すべての道を確認しましょう。固定された列は交換できません。"] },
+    ko: { board: "보드", arcs: ["개울 매듭", "다섯 끝점", "숨은 보금자리", "여섯 갈래 교차", "보금자리 바꾸기", "마지막 구조"], hints: ["첫 교환 전에 모든 덩굴 끝점을 먼저 읽으세요.", "끝점과 보금자리 위치를 비교해 다른 교환 순서를 계획하세요.", "이미 연결된 안전한 줄은 그대로 두고 나머지 경로를 푸세요.", "보금자리 이름이 숨겨지면 남은 동물과 경로로 목표를 추론하세요.", "모든 경로를 확인하세요. 잠긴 줄은 바꿀 수 없고 나머지는 조정할 수 있어요."] },
+    es: { board: "Tablero", arcs: ["Trenza del arroyo", "Cinco extremos", "Refugios ocultos", "Cruce de seis", "Cambio de refugios", "Rescate final"], hints: ["Lee todos los extremos de liana antes de hacer el primer intercambio.", "Compara extremos y refugios para planear un orden de cambios diferente.", "Conserva las filas seguras ya conectadas y desenreda las rutas restantes.", "Si falta una etiqueta de refugio, deduce el objetivo con los animales y caminos restantes.", "Comprueba cada camino; las filas bloqueadas no se cambian y los demás extremos sí."] },
+    "pt-BR": { board: "Tabuleiro", arcs: ["Trança do riacho", "Cinco pontas", "Abrigos ocultos", "Cruzamento de seis", "Troca de abrigos", "Resgate final"], hints: ["Leia todas as pontas do cipó antes de fazer a primeira troca.", "Compare pontas e abrigos para planejar uma ordem diferente de trocas.", "Mantenha as fileiras seguras já ligadas e desembarace as rotas restantes.", "Se o rótulo de um abrigo estiver oculto, deduza o alvo pelos animais e caminhos restantes.", "Confira cada caminho; fileiras travadas não podem ser trocadas, mas as outras pontas podem."] },
+    fr: { board: "Plateau", arcs: ["Tresse du ruisseau", "Cinq extrémités", "Refuges cachés", "Croisement à six", "Échange de refuges", "Sauvetage final"], hints: ["Lisez toutes les extrémités avant d’effectuer le premier échange.", "Comparez extrémités et refuges pour préparer un autre ordre d’échanges.", "Gardez les lignes sûres déjà reliées et démêlez les chemins restants.", "Si un refuge est masqué, déduisez sa cible avec les animaux et chemins restants.", "Vérifiez chaque chemin ; les lignes verrouillées ne bougent pas, les autres extrémités si."] },
+    de: { board: "Tafel", arcs: ["Bachgeflecht", "Fünf Enden", "Verborgene Verstecke", "Sechsfach-Kreuzung", "Verstecktausch", "Letzte Rettung"], hints: ["Lies vor dem ersten Tausch alle Rankenenden.", "Vergleiche Enden und Verstecke und plane eine andere Tauschfolge.", "Lass bereits verbundene sichere Reihen stehen und entwirre die übrigen Wege.", "Ist ein Versteck verdeckt, erschließe sein Ziel aus den übrigen Tieren und Wegen.", "Prüfe jeden Weg; gesperrte Reihen bleiben fest, die anderen Enden lassen sich tauschen."] },
+    it: { board: "Tavola", arcs: ["Intreccio del ruscello", "Cinque estremità", "Rifugi nascosti", "Incrocio a sei", "Scambio dei rifugi", "Soccorso finale"], hints: ["Leggi tutte le estremità prima di effettuare il primo scambio.", "Confronta estremità e rifugi per pianificare un ordine diverso di scambi.", "Conserva le righe sicure già collegate e sciogli i percorsi rimanenti.", "Se l’etichetta di un rifugio è nascosta, deduci l’obiettivo dagli animali e dai percorsi rimasti.", "Controlla ogni percorso; le righe bloccate non si scambiano, le altre estremità sì."] },
+    ru: { board: "Поле", arcs: ["Переплетение у ручья", "Пять концов", "Скрытые убежища", "Шесть пересечений", "Перестановка убежищ", "Финальное спасение"], hints: ["Перед первым обменом прочитайте все концы лоз.", "Сравните концы и убежища и спланируйте другой порядок обменов.", "Оставьте уже соединённые безопасные ряды и распутайте остальные пути.", "Если подпись убежища скрыта, определите цель по оставшимся животным и путям.", "Проверьте каждый путь: заблокированные ряды нельзя менять, остальные концы можно."] },
+    hi: { board: "बोर्ड", arcs: ["झरना गाँठ", "पाँच सिरे", "छिपे आश्रय", "छह रास्तों का पार", "आश्रय अदला-बदली", "अंतिम बचाव"], hints: ["पहली अदला-बदली से पहले बेल के सभी सिरों को पढ़ें।", "सिरों और आश्रयों की जगह मिलाकर अलग अदला-बदली क्रम बनाएँ।", "पहले से जुड़े सुरक्षित खानों को रहने दें और बाकी रास्ते सुलझाएँ।", "आश्रय का नाम छिपा हो तो बचे जानवरों और रास्तों से लक्ष्य समझें।", "हर रास्ता जाँचें; बंद पंक्तियाँ नहीं बदलतीं, बाकी सिरों को बदला जा सकता है।"] }
+  };
+  Object.entries(campaignLocalization).forEach(([locale, localized]) => {
+    for (let index = 0; index < 30; index += 1) {
+      const arc = localized.arcs[Math.floor(index / 5)];
+      locales[locale][`boardTitle${index + 1}`] = `${localized.board} ${index + 1} · ${arc}`;
+      locales[locale][`boardHint${index + 1}`] = localized.hints[index % localized.hints.length];
+    }
+  });
   Object.values(locales).forEach((dictionary) => {
     dictionary.stages = dictionary.map;
     dictionary.nextStage = dictionary.next;

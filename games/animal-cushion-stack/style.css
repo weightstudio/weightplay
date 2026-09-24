@@ -118,3 +118,11 @@
     grid-template-columns:48px minmax(0,1fr) auto!important;
   }
 }
+
+/* The shared shell retires the authored Settings launcher after adopting its
+   language control. Game button layout rules must not override the native
+   hidden state or leave a duplicate, nameless gear in the header. */
+#mainScreen .wp-shell-legacy-control[hidden],
+#mainScreen #settingsBtn[hidden]{
+  display:none!important;
+}

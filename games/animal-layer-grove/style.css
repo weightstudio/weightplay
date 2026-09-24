@@ -73,13 +73,30 @@ button,a,select{font:inherit}
 }
 /* Existing Battle-owned dialogs and three persistent Result destinations. */
 #battleScreen :is(.result-panel,.leave-panel){position:absolute;z-index:300;inset:0;display:flex;overflow:auto;padding:16px;background:var(--wp-ui-surface);touch-action:pan-y;overscroll-behavior:contain}
+#battleScreen :is(.result-panel,.leave-panel)[hidden]{display:none!important}
 #battleScreen :is(.result-card,.leave-card){flex:0 0 auto;width:100%;max-width:620px;margin:auto;padding:16px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);color:var(--wp-ui-text);text-align:center}
 #battleScreen :is(.result-card,.leave-card) h2{margin:8px 0;font-size:24px;line-height:1.3}
 #battleScreen :is(.result-card,.leave-card) p{margin:12px 0;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
+#battleScreen .result-skill-report{margin:8px 0;padding:6px 8px;border-top:1px solid var(--wp-ui-line)}
+#battleScreen .result-skill-report h3{margin:0 0 4px;font-size:16px;line-height:1.25}
+#battleScreen .result-skill-report p{margin:4px 0}
+#battleScreen .result-skill-report .result-skill-disclaimer{font-size:12px;line-height:1.3}
 #battleScreen .result-card>span{display:none}
 #battleScreen .result-actions{display:grid;grid-template-rows:44px 52px 44px;gap:12px;margin-top:16px}
 #battleScreen .leave-actions{display:grid;grid-template-rows:52px 44px;gap:12px;margin-top:16px}
 #battleScreen .battle-canvas[data-substate="result"]>.panel-head{visibility:hidden;pointer-events:none}
+@media(max-height:480px){
+ #battleScreen :is(.result-panel,.leave-panel){padding:8px}
+ #battleScreen :is(.result-card,.leave-card){padding:8px}
+ #battleScreen .result-card>.keeper-result{display:block;width:auto;height:min(68px,17vh);max-width:100%;margin:0 auto;object-fit:contain}
+ #battleScreen :is(.result-card,.leave-card) h2{margin:2px 0;font-size:20px;line-height:1.15}
+ #battleScreen :is(.result-card,.leave-card) p{margin:4px 0;font-size:13px;line-height:1.2}
+ #battleScreen .result-skill-report{margin:4px 0;padding:4px 0}
+ #battleScreen .result-skill-report h3{margin:0;font-size:14px}
+ #battleScreen .result-skill-report .result-skill-disclaimer{font-size:11px;line-height:1.15}
+ #battleScreen .result-actions{grid-template-rows:44px 52px 44px;gap:8px;margin-top:8px}
+ #battleScreen .leave-actions{grid-template-rows:52px 44px;gap:8px;margin-top:8px}
+}
 #battleScreen button:focus-visible{outline:2px solid var(--wp-ui-gold);outline-offset:2px}
 .loading-screen{position:fixed;inset:0;z-index:500;display:grid;place-content:center;gap:8px;background:var(--wp-ui-background);color:var(--wp-ui-text)}
 .loading-screen.is-ready{display:none}

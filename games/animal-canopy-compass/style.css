@@ -331,7 +331,6 @@ html[dir="rtl"] .wp-shell-settings-popover { right: auto; left: -4px; }
    claiming a full Interface 7 migration. */
 body[data-wp-game-id="animal-canopy-compass"] #mapBtn,
 body[data-wp-game-id="animal-canopy-compass"] #stageHelp,
-body[data-wp-game-id="animal-canopy-compass"] #battleSound,
 body[data-wp-game-id="animal-canopy-compass"] #stageHeading,
 body[data-wp-game-id="animal-canopy-compass"] #battleHeading {
   display: none !important;

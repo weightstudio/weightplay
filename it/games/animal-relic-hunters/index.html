@@ -103,7 +103,7 @@
             </div>
             <div class="menu-copy">
             <h1 class="menu-title" data-ui="menuTitle">Esplora le rovine antiche.</h1>
-            <p class="menu-hint main-summary" data-ui="menuHint" data-relic-authored-summary="true" data-runtime-localize="off">Esplora rovine, schiva i nemici e combina equipaggiamento e reliquie.</p>
+            <p class="menu-hint main-summary" data-ui="menuHint" data-relic-authored-summary="true" data-runtime-localize="off">Esplora le rovine, schiva gli attacchi e scatena un impulso reliquia contro i nemici vicini.</p>
             <div class="goals-card">
               <h3 data-ui="prototypeGoalsTitle">Obiettivo della spedizione</h3>
               <p data-ui="prototypeGoalsText">Completa 30 spedizioni di tre stanze, impara le minacce di ogni rovina e sconfiggi sei Guardiani regionali crescendo con addestramento ed equipaggiamento permanenti.</p>
@@ -209,7 +209,7 @@
 
             <!-- Canvas viewport -->
             <div class="canvas-container">
-              <canvas id="gameCanvas" data-wp-primary-action width="800" height="1000" tabindex="0" aria-keyshortcuts="w a s d ArrowUp ArrowDown ArrowLeft ArrowRight"></canvas>
+              <canvas id="gameCanvas" data-wp-primary-action width="800" height="1000" tabindex="0" aria-keyshortcuts="w a s d ArrowUp ArrowDown ArrowLeft ArrowRight Space"></canvas>
             </div>
           </div>
 
@@ -334,7 +334,7 @@
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>Animal Relic Hunters</h2><p>Esplora rovine, schiva i nemici e combina equipaggiamento e reliquie.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Movimento e sopravvivenza</h3><p>Tocca una destinazione o trascina per muoverti; sul computer usa WASD o le frecce. L’arma attacca automaticamente. Evita le aree di attacco invece di restare fermo a scambiare colpi.</p></div><div class="game-info-section"><h3>Esplorazione ed equipaggiamento</h3><p>Segui l’obiettivo della stanza, raccogli chiavi e apri forzieri. Confronta il bottino prima di equipaggiarlo o tenere quello attuale. Le reliquie potenziano questa spedizione; allenamento ed equipaggiamento preparano la prossima.</p></div><div class="game-info-section"><h3>Progressi e salvataggio</h3><p>Scegli una spedizione nella schermata dei livelli. Dopo una sconfitta, riprova o torna ai preparativi; dopo una vittoria, segui il percorso sbloccato. Salute ed effetti temporanei delle reliquie ripartono con ogni nuova spedizione.</p></div><div class="game-info-section"><h3>I progressi vengono salvati?</h3><p>Sblocchi, oro, allenamento ed equipaggiamento restano in questo browser. Cancellare i dati del sito può eliminarli; la sincronizzazione tra dispositivi non è garantita.</p></div><div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Cosa succede dopo una sconfitta?</dt><dd>Puoi riprovare la spedizione o tornare alla preparazione; una nuova spedizione inizia con salute ed effetti temporanei delle reliquie rinnovati.</dd></div></dl></div></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>Animal Relic Hunters</h2><p>Esplora le rovine, schiva gli attacchi e scatena un impulso reliquia contro i nemici vicini.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Movimento e sopravvivenza</h3><p>Tocca una destinazione o trascina per muoverti; sul computer usa WASD o le frecce. L’arma attacca automaticamente. Evita le aree di attacco invece di restare fermo a scambiare colpi. Premi Spazio o tocca Impulso reliquia in basso a destra: danneggia e respinge i nemici vicini e disperde i loro colpi. Zanna di cristallo aumenta i danni; Scatto di lanterna riduce la ricarica di 1 s per accumulo, fino a 7 s.</p></div><div class="game-info-section"><h3>Esplorazione ed equipaggiamento</h3><p>Segui l’obiettivo della stanza, raccogli chiavi e apri forzieri. Confronta il bottino prima di equipaggiarlo o tenere quello attuale. Le reliquie potenziano questa spedizione; allenamento ed equipaggiamento preparano la prossima.</p></div><div class="game-info-section"><h3>Progressi e salvataggio</h3><p>Scegli una spedizione nella schermata dei livelli. Dopo una sconfitta, riprova o torna ai preparativi; dopo una vittoria, segui il percorso sbloccato. Salute ed effetti temporanei delle reliquie ripartono con ogni nuova spedizione.</p></div><div class="game-info-section"><h3>I progressi vengono salvati?</h3><p>Sblocchi, oro, allenamento ed equipaggiamento restano in questo browser. Cancellare i dati del sito può eliminarli; la sincronizzazione tra dispositivi non è garantita.</p></div><div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Cosa succede dopo una sconfitta?</dt><dd>Puoi riprovare la spedizione o tornare alla preparazione; una nuova spedizione inizia con salute ed effetti temporanei delle reliquie rinnovati.</dd></div></dl></div></div></section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
     <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
@@ -342,6 +342,6 @@
     <link rel="stylesheet" href="frame-content.css" />
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js"></script>
-    <script src="game.js?v=20260919-block-frame-v26&wp-audio=1.0.0"></script>
+    <script src="game.js?v=20260923-relic-pulse-v28&wp-audio=1.0.0"></script>
 </body>
 </html>

@@ -54,7 +54,7 @@
       const facts = guide.querySelectorAll(".game-info-fact");
       if (facts[0]) { const label = facts[0].querySelector("span"); const value = facts[0].querySelector("strong"); if (label) label.textContent = guideCopy.gameplayLabel; if (value) value.textContent = guideCopy.gameplay; }
       if (facts[1]) { const label = facts[1].querySelector("span"); const value = facts[1].querySelector("strong"); if (label) label.textContent = guideCopy.genreLabel; if (value) value.textContent = guideCopy.genre; }
-      const faq = guide.querySelector(".game-info-section"); if (faq) { const heading = faq.querySelector("h3"); const question = faq.querySelector("dt"); const answer = faq.querySelector("dd"); if (heading) heading.textContent = guideCopy.faqTitle; if (question) question.textContent = guideCopy.faqQuestion; if (answer) answer.textContent = guideCopy.faqAnswer; }
+      const faq = guide.querySelector(".game-info-faq"); if (faq) { const heading = faq.querySelector("h3"); const question = faq.querySelector("dt"); const answer = faq.querySelector("dd"); if (heading) heading.textContent = guideCopy.faqTitle; if (question) question.textContent = guideCopy.faqQuestion; if (answer) answer.textContent = guideCopy.faqAnswer; }
     }
     const atlas = document.querySelector(".block-atlas"); const caption = document.querySelector(".block-atlas-figure figcaption");
     if (atlas) atlas.alt = guideCopy.atlasAlt; if (caption) caption.textContent = guideCopy.atlasCaption;
@@ -88,20 +88,24 @@
   const goHome = () => { show("main"); applyLocale(); track("home"); };
   const toggleSettings = () => {
     const panel = $("settingsPanel");
+    // This authored trigger is retained for the maintained Cushion Stack
+    // smoke/keyboard path, while the shared shell owns the actual language and
+    // sound controls. Delegate to the shared button so pointer, keyboard, and
+    // audit activation all use its single open/close state machine. Keep the
+    // legacy panel as a collapsed compatibility proxy so RTL never paints two
+    // overlapping settings surfaces.
+    const generatedHost = document.querySelector(".wp-shell-settings");
+    const generatedButton = generatedHost?.querySelector(".wp-shell-settings-button");
+    if (generatedButton && generatedButton !== $("settingsBtn")) {
+      panel.classList.add("cushion-settings-proxy");
+      panel.hidden = true;
+      generatedButton.click();
+      $("settingsBtn").setAttribute("aria-expanded", generatedButton.getAttribute("aria-expanded") || "false");
+      return;
+    }
     const hidden = panel.hidden;
     panel.hidden = !hidden;
     $("settingsBtn").setAttribute("aria-expanded", String(hidden));
-    // This authored trigger is retained for the maintained Cushion Stack
-    // smoke/keyboard path, while the shared shell owns the actual language and
-    // sound controls. Mirror the trigger to that one visible popover and keep
-    // the legacy panel as a collapsed compatibility proxy so RTL never paints
-    // two overlapping settings surfaces.
-    const generatedPopover = document.querySelector(".wp-shell-settings-popover");
-    if (generatedPopover) {
-      generatedPopover.hidden = !hidden;
-      generatedPopover.querySelector(".wp-shell-settings-button")?.setAttribute("aria-expanded", String(hidden));
-      panel.classList.add("cushion-settings-proxy");
-    }
   };
 
   const ensureLocaleOptions = () => { const options = supportedLocales.map((locale) => { const option = document.createElement("option"); option.value = locale; option.textContent = localeLabels[locale]; return option; }); $("localeSelect").replaceChildren(...options); const legacy = $("cushionDialect"); if (legacy) legacy.replaceChildren(...options.map((option) => option.cloneNode(true))); };

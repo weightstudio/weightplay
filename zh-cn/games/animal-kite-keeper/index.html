@@ -23,10 +23,10 @@
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="weightplay-game-version" content="v6">
+  <meta name="weightplay-game-version" content="v10">
   <meta name="weightplay-interface-version" content="6">
   <title>风筝守护员 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260911-kite-keeper-v6-interface-repair">
+  <link rel="stylesheet" href="style.css?v=20260924-kite-keeper-v10-stage-management">
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260911-kite-keeper-v6-interface-repair" />
     <meta name="description" content="选择每阵风向，带领塔罗的风筝穿过三扇天空窗并抵达灯塔码头。" />
@@ -72,7 +72,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-battle-settings="visible" data-wp-game-id="animal-kite-keeper" data-wp-game-version="v6" data-wp-audience="general" data-wp-battle-settings="visible">
+<body data-runtime-localize="off" data-wp-battle-settings="visible" data-wp-game-id="animal-kite-keeper" data-wp-game-version="v10" data-wp-audience="general" data-wp-battle-settings="visible">
   <div id="loading" class="loading" role="status">Loading Kite Keeper…</div>
   <main id="app" hidden>
     <section id="mainScreen" data-screen="main" class="screen main-screen">
@@ -84,34 +84,31 @@
       <p class="kicker">6+ · FAMILY · ORIGINAL PROTOTYPE</p>
       <h1 data-runtime-localize="off">风筝守护员</h1>
       <p class="subtitle main-summary" data-i18n="subtitle">Choose the wind. Find the lantern dock.</p>
-      <p id="mainProgress" class="main-progress" data-wp-main-progress>3 sky routes · 3 gusts each</p>
-      <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Start a sky route</button><button id="mapBtn" class="secondary" type="button" data-i18n="map">Sky routes</button></div>
+      <p id="mainProgress" class="main-progress" data-wp-main-progress>30 sky routes · 3 gusts each</p>
+      <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Start Game</button><button id="mapBtn" class="secondary" type="button" data-i18n="map">Sky routes</button></div>
       <p id="best" class="best" data-i18n="best" data-i18n-vars="count">Best checks: —</p>
     </section>
 
-    <section class="game-page-info game-page-info-static" aria-label="风筝守护员 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>风筝守护员</h2><p>选择每阵风向，带领塔罗的风筝穿过三扇天空窗并抵达灯塔码头。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>风向路线益智</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 路线规划 · 空间推理 · 家庭 · 动物</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>进度会保存吗？</dt><dd>是，只保存在此浏览器中。</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="guide-card game-page-info game-page-info-static" data-wp-game-guide aria-label="Kite Keeper game guide">
+      <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="Moss Shell Taro holding a kite spool" width="1024" height="1536"><div><h2 data-i18n="guideTitle">How to play</h2><p data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p></div></div>
+      <div id="guideSections" class="game-info-sections">
+        <div class="game-info-section"><h3>Read the flight plan</h3><p>Each of the thirty routes begins with the kite on a marked grid square and a lantern dock on another square. The route card names three wind directions that form the safe flight plan. Read the start, dock, and direction sequence before choosing a card. A direction moves the kite by one square: north moves up, east moves right, south moves down, and west moves left. The goal is not speed. The goal is to understand how every gust changes the two coordinates and to arrive exactly on the dock after the third choice.</p></div>
+        <div class="game-info-section"><h3>Choose one gust at a time</h3><p>Open Sky routes, choose any numbered route, and use the four large Wind cards in Battle. After every choice, the kite marker moves immediately and the position line reports the new coordinates. Compare that position with the lantern dock before continuing. The progress pill shows the current route and the gust counter shows how many of the three moves have been used. You remain in control of every move; the game never chooses or corrects a direction automatically. If the route still matches the plan, select the next named gust and watch the board respond.</p></div>
+        <div class="game-info-section"><h3>Recover from a drift</h3><p>A wind that leaves the board, or a three-gust sequence that misses the dock, produces a clear drift message and locks the current attempt. Use Reset route to return the kite to that route's starting square with an empty gust history. Nothing is lost, there is no timer, and there are no lives. Treat a drift as information: compare the last position with the target, identify which coordinate changed in the wrong direction, and try the authored sequence again. This calm reset loop is the main way the campaign teaches vector reading without punishing experimentation.</p></div>
+        <div class="game-info-section"><h3>Progress through thirty routes</h3><p>The campaign contains thirty selectable stages arranged as ten flights in each of three visual route families. Early routes use familiar turns near the centre of the board. Middle routes mix horizontal and vertical corrections, while later routes ask you to read less obvious starts and targets before committing. A check mark appears on every route you complete during the visit. Result offers Next route for continuous play, Sky routes for a different stage, and Back to General lobby when you are finished. Completing all thirty changes the Result heading to confirm that every sky route is complete.</p></div>
+        <div class="game-info-section"><h3>Use the board and controls</h3><p>The kite and lantern are the two important markers. The compass, wind lines, background art, and route title support orientation but never hide the coordinates or determine the answer. Wind cards are buttons and can be reached by keyboard navigation as well as pointer or touch. The Stage list uses tab semantics with arrow-key movement, Home, and End. Settings provides all thirteen supported languages and the shared sound preference. Sound is feedback only: the board position, selected direction, status text, and Result always communicate the same state when audio is muted.</p></div>
+        <div class="game-info-section"><h3>Strategy, saves, and design note</h3><p>For a reliable flight, say the coordinate change aloud before pressing a Wind card, then verify the marker after it moves. When the target is to the right, east increases the first coordinate; when it is above, north decreases the second. The best-check total is stored only in this browser after the full campaign is completed, so clearing storage removes it and private browsing may keep it only for the visit. Kite Keeper is an original WeightPlay spatial-planning puzzle designed for short, calm sessions. Its fixed three-gust routes make mistakes explainable while the thirty-stage catalog supplies enough varied practice for repeat play.</p></div>
+      </div>
+    </section>
 
     <section id="stageScreen" data-screen="stage" class="screen stage-screen stage-canvas" hidden>
       <header class="screen-heading stage-heading"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back to main">←</button><div><p class="eyebrow">STAGE MAP</p><h1 data-i18n="map">Sky routes</h1></div></header>
       <p class="subtitle" data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p>
+      <nav id="routeFamilyNav" class="route-family-nav" data-wp-stage-management-nav aria-label="Sky route families">
+        <button type="button" data-route-family="0" data-i18n="route1">Meadow Lift</button>
+        <button type="button" data-route-family="1" data-i18n="route2">Reef Breeze</button>
+        <button type="button" data-route-family="2" data-i18n="route3">Snow Lantern</button>
+      </nav>
       <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="tablist" aria-label="Sky routes"></div>
     </section>
 
@@ -139,7 +136,7 @@
     <aside id="settingsPanel" class="settings" role="dialog" aria-modal="true" hidden aria-labelledby="settingsTitle"><div class="settings-inner"><button id="closeSettings" class="close-btn" type="button" aria-label="Close settings">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label for="localeSelect" data-i18n="language">Language</label><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select><button id="soundBtn" class="secondary wp-shell-sound-row" type="button" aria-pressed="true"><span data-i18n="sound">Sound</span>: <span id="soundState">On</span></button></div></aside>
     <div id="battleAdReserve" class="battle-ad-reserve" data-wp-ad-reserve hidden aria-hidden="true"></div>
   </main>
-  <script src="locales.js?v=20260911-kite-keeper-v6-interface-repair"></script><script src="game.js?v=20260911-kite-keeper-v6-interface-repair"></script>
+  <script src="locales.js?v=20260924-kite-keeper-v10-stage-management"></script><script src="game.js?v=20260924-kite-keeper-v10-stage-management"></script>
   <script id="kite-keeper-block-asset-upgrade-v1">
     (() => {
       const poster = document.querySelector('.main-poster');

@@ -11,7 +11,7 @@
     foxB: { copy: "animalFox", color: "#3c79b8", suffix: " B" },
     badgerB: { copy: "animalBadger", color: "#a45a49", suffix: " B" },
   };
-  // Authored v6 campaign: six arcs and five boards per arc. The later arcs
+  // Authored 30-board campaign: six arcs and five boards per arc. The later arcs
   // deliberately use repeated animal families with A/B endpoint identities so
   // the six-endpoint permutation remains readable in every existing locale.
   const boards = [
@@ -52,7 +52,6 @@
     { arc: 6, checkpoint: true, title: "Taro's rescue finale", hint: "Connect every endpoint and open all six shelters.", decoyRows: [1, 4], target: ["foxB", "badgerB", "otterA", "foxA", "hareA", "badgerA"], start: ["badgerA", "foxA", "foxB", "badgerB", "otterA", "hareA"] },
   ];
   const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: !window.WeightPlayAudio.isMuted(), best: {}, statusKey: "ready", statusVars: {}, statusError: false };
-  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
@@ -74,25 +73,57 @@
   const lockedRows = (board = boards[state.board]) => board.lockedRows || [];
   const decoyRows = (board = boards[state.board]) => board.decoyRows || [];
   const analytics = (eventName, details = {}) => {
-    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v6", ...details }); } catch (_error) {}
+    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v10", ...details }); } catch (_error) {}
     window.__tangleRescueEvents = window.__tangleRescueEvents || [];
     window.__tangleRescueEvents.push({ eventName, ...details });
   };
   const playTone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   const showToast = (message) => { $("toast").textContent = message; $("toast").classList.add("visible"); window.clearTimeout(showToast.timer); showToast.timer = window.setTimeout(() => $("toast").classList.remove("visible"), 1800); };
+  const mountResultSubstate = () => {
+    const battleCanvas = document.querySelector("#battleScreen .battle-canvas");
+    const resultScreen = $("resultScreen");
+    if (!battleCanvas || !resultScreen) return;
+    if (resultScreen.parentElement !== battleCanvas) battleCanvas.append(resultScreen);
+    if ($("battlePlayLayer")) return;
+
+    const playLayer = document.createElement("div");
+    playLayer.id = "battlePlayLayer";
+    playLayer.className = "battle-play-layer";
+    Array.from(battleCanvas.childNodes).forEach((node) => {
+      if (node !== resultScreen) playLayer.append(node);
+    });
+    battleCanvas.prepend(playLayer);
+  };
   const setScreen = (screen) => {
     state.screen = screen;
-    document.body.dataset.screen = screen;
-    ["main", "stage", "battle", "result"].forEach((name) => {
+    const activeScreen = screen === "result" ? "battle" : screen;
+    const showingResult = screen === "result";
+    document.body.dataset.screen = activeScreen;
+    ["main", "stage", "battle"].forEach((name) => {
       const element = $(name + "Screen");
       if (!element) return;
-      element.hidden = name !== screen;
-      element.classList.toggle("active", name === screen);
+      element.hidden = name !== activeScreen;
+      element.classList.toggle("active", name === activeScreen);
     });
-    $("guideScreen").hidden = screen !== "main";
-    if (screen === "main") applyText();
-    if (screen === "stage") renderStages();
+    const playLayer = $("battlePlayLayer");
+    const resultScreen = $("resultScreen");
+    if (playLayer) {
+      playLayer.hidden = showingResult;
+      playLayer.inert = showingResult;
+      playLayer.setAttribute("aria-hidden", String(showingResult));
+    }
+    if (resultScreen) {
+      resultScreen.hidden = !showingResult;
+      resultScreen.classList.toggle("active", showingResult);
+    }
+    $("guideScreen").hidden = activeScreen !== "main";
+    if (activeScreen === "main") applyText();
+    if (activeScreen === "stage") renderStages();
     if (screen === "battle") renderBattle();
+    if (showingResult) {
+      if (resultScreen) resultScreen.scrollTop = 0;
+      $("resultHeading").focus({ preventScroll: true });
+    }
     window.scrollTo(0, 0);
   };
   const routeColor = (animalKey) => tokenMeta[animalKey]?.color || "#5c9ccc";
@@ -138,7 +169,7 @@
       const localizedHint = copy(hintKey);
       const title = localizedTitle === titleKey ? board.title : localizedTitle;
       const hint = localizedHint === hintKey ? board.hint : localizedHint;
-      return `<button class="stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span><strong>${copy("arcLabel", { number: board.arc })} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></button>`;
+      return `<button class="stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-card-content" data-wp-item-content><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span class="stage-card-copy"><strong>${copy("arcLabel", { number: board.arc })} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></span></button>`;
     }).join("");
     $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startBoard(Number(button.dataset.stage))));
   };
@@ -225,17 +256,24 @@
   };
   const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle(); };
   const startBoard = (index) => { state.board = Math.max(0, Math.min(boards.length - 1, index)); state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_started", { board: state.board }); setScreen("battle"); };
+  const syncSoundControls = () => {
+    $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff");
+    $("soundBtn").setAttribute("aria-pressed", String(state.sound));
+    $("battleSoundBtn").setAttribute("aria-label", state.sound ? copy("soundOn") : copy("soundOff"));
+    $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
+  };
   const applyText = () => {
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
-    $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff");
-    $("soundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("battleSoundBtn").setAttribute("aria-label", copy("soundOn"));
-    $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
+    syncSoundControls();
     $("mainProgress").textContent = copy("progress", { count: state.completed.length, total: boards.length });
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
   };
+  window.addEventListener("weightplay:audio-volume-change", () => {
+    state.sound = !window.WeightPlayAudio.isMuted();
+    syncSoundControls();
+  });
   const ensureGuideContract = () => {
     const guide = $("guideScreen");
     if (!guide) return;
@@ -281,12 +319,13 @@
       const highestUnlocked = Math.max(0, ...state.completed.filter((index) => index >= 0 && index < boards.length));
       $("stageList").querySelector(`[data-stage="${highestUnlocked}"]`)?.focus();
     });
-    [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); safeSet("weightplay-animal-tangle-rescue-sound", state.sound ? "on" : "off"); applyText(); }));
+    [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(window.WeightPlayAudio.isMuted()); applyText(); }));
     $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
   };
   const init = () => {
     try { const saved = JSON.parse(safeGet("weightplay-animal-tangle-rescue-completed", "[]")); state.completed = Array.isArray(saved) ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < boards.length) : []; } catch (_error) { state.completed = []; }
-    state.sound = window.WeightPlayAudio.setEnabled(safeGet("weightplay-animal-tangle-rescue-sound", "on") !== "off");
+    state.sound = !window.WeightPlayAudio.isMuted();
+    mountResultSubstate();
     bind();
     ensureGuideContract();
     window.addEventListener("wonder:locale-change", (event) => applyLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));

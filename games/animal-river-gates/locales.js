@@ -26,6 +26,17 @@
   };
   const locales = Object.fromEntries(Object.entries(overrides).map(([key, value]) => [key, { ...en, ...value }]));
   locales.en = en;
+  const stagesLabels = { en: "Stages", "zh-Hant": "關卡", "zh-Hans": "关卡", ja: "ステージ", ko: "스테이지", es: "Etapas", "pt-BR": "Fases", fr: "Niveaux", de: "Level", it: "Livelli", ru: "Этапы", hi: "चरण", ar: "المراحل" };
+  Object.entries(stagesLabels).forEach(([key, value]) => { locales[key].stages = value; });
+  const replayLabels = { en: "Replay", "zh-Hant": "重玩", "zh-Hans": "重玩", ja: "もう一度プレイ", ko: "다시 플레이", es: "Volver a jugar", "pt-BR": "Jogar novamente", fr: "Rejouer", de: "Erneut spielen", it: "Rigioca", ru: "Повторить", hi: "फिर खेलें", ar: "أعد اللعب" };
+  Object.entries(replayLabels).forEach(([key, value]) => { locales[key].replay = value; });
+  const frameLabels = {
+    en: ["Plan", "Progress"], "zh-Hant": ["計畫", "進度"], "zh-Hans": ["计划", "进度"],
+    ja: ["計画", "進行状況"], ko: ["계획", "진행"], es: ["Plan", "Progreso"],
+    "pt-BR": ["Plano", "Progresso"], fr: ["Plan", "Progression"], de: ["Plan", "Fortschritt"],
+    it: ["Piano", "Progressi"], ru: ["План", "Прогресс"], hi: ["योजना", "प्रगति"], ar: ["الخطة", "التقدم"],
+  };
+  Object.entries(frameLabels).forEach(([key, [plan, progress]]) => Object.assign(locales[key], { planLabel: plan, progressLabel: progress }));
   Object.assign(locales.ar, {
     stage1Title: "التفرّع الأول", stage2Title: "منعطف العودة", stage3Title: "القناة الجانبية الجافة", stage4Title: "المساران المتوازيان", stage5Title: "تفقد القندس",
     stage6Title: "بركة الاحتجاز", stage7Title: "القفل الضيق", stage8Title: "البركتان", stage9Title: "إغلاق الخزان", stage10Title: "خزان ثعلب الماء",

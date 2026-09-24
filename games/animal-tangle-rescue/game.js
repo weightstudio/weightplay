@@ -1,5 +1,5 @@
 /*
- * Tangle Rescue v6 / Interface 6 compatibility bootstrap.
+ * Tangle Rescue v10 / Interface 7 compatibility bootstrap.
  *
  * Localized route shells still declare legacy frame-root markers even though
  * this game does not call the explicit WeightPlayScreenFrame mount API. Keep
@@ -15,7 +15,7 @@
   if (!document.querySelector('link[href*="interface-compat.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = assetUrl("interface-compat.css?v=20260922-interface7-cleanup-1");
+    link.href = assetUrl("interface-compat.css?v=20260924-tangle-rescue-v10-result-scroll-reset");
     link.dataset.wpTangleInterfaceCompat = "true";
     document.head.append(link);
   }
@@ -51,7 +51,7 @@
   window.__tangleRescueCoreRequested = true;
 
   const core = document.createElement("script");
-  core.src = assetUrl("game-core.js?v=20260922-interface7-cleanup-1");
+  core.src = assetUrl("game-core.js?v=20260924-tangle-rescue-v10-result-scroll-reset");
   core.async = false;
   core.dataset.wpTangleGameCore = "true";
   core.addEventListener("load", () => {

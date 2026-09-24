@@ -65,6 +65,19 @@ body.wp-shell-battle-active .topbar {
   font-weight: 800;
 }
 
+@layer wp-frame-contract {
+  html body [data-wp-frame="2"] #mainProgress {
+    box-sizing: border-box !important;
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+
+  html body [data-wp-frame="2"] [data-wp-frame-summary] {
+    align-self: center !important;
+    height: auto !important;
+  }
+}
+
 /* Main has one canonical start action. The direct-map shortcut duplicated the
    Stage route and is retired from presentation without changing saved state. */
 #mainScreen #mapBtn {
@@ -217,10 +230,11 @@ body.wp-shell-battle-active .topbar {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    gap: 6px !important;
-    height: 100dvh !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    height: 100% !important;
     min-height: 0 !important;
-    max-height: 100dvh !important;
+    max-height: 100% !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
     padding: 8px !important;
@@ -229,13 +243,38 @@ body.wp-shell-battle-active .topbar {
   }
 
   body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .result-guide-art {
-    width: min(100%, 120px) !important;
-    max-height: 110px !important;
+    width: min(100%, 88px) !important;
+    max-height: 76px !important;
     margin-top: 0 !important;
   }
 
   body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .result-icon {
-    font-size: 2rem !important;
+    font-size: 1.25rem !important;
+    line-height: 1 !important;
+  }
+
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .eyebrow {
+    margin: 0 !important;
+    font-size: .65rem !important;
+    line-height: 1.1 !important;
+  }
+
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) #resultTitle {
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-size: 1.2rem !important;
+    line-height: 1.12 !important;
+  }
+
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) #resultText {
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-size: .82rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .result-actions {
+    margin-top: 0 !important;
   }
 
   body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .main-actions {

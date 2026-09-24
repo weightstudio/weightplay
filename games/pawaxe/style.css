@@ -73,3 +73,7 @@
 #battle .enemy-health-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px;min-width:0}
 #battle .target .enemy-hp{height:8px;margin:3px 0}
 #battle .enemy-health-value{color:#dcefd8;font-size:10px;font-variant-numeric:tabular-nums;line-height:1;white-space:nowrap}
+.main-progress{min-height:40px;display:flex;align-items:center}
+.guide.game-page-info{max-width:896px;margin:20px auto 0;border:1px solid #557871;border-radius:var(--wp-ui-radius,12px)}
+body:not([data-screen="main"]) #gameGuide{display:none}
+.tabs button{min-height:48px}

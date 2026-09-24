@@ -1,18 +1,25 @@
 /*
- * Tangle Rescue — scoped Interface 7 compatibility cleanup.
+ * Tangle Rescue — scoped Interface 7 compatibility for current v10.
  *
- * The game remains authored as v6 / Interface 6. This file only removes
- * legacy chrome that conflicts with docs/game-screen-flow-standard.md while
- * the shared route bootstrap supplies the catalog frame/selector runtime.
+ * This file removes legacy chrome that conflicts with
+ * docs/game-screen-flow-standard.md while the shared route bootstrap supplies
+ * the catalog frame/selector runtime and preserves the Tangle Guide's ink.
  */
 
 body[data-wp-game-id="animal-tangle-rescue"] #mainSettingsBtn,
 body[data-wp-game-id="animal-tangle-rescue"] #mapBtn,
-body[data-wp-game-id="animal-tangle-rescue"] #stageInfoBtn,
-body[data-wp-game-id="animal-tangle-rescue"] #battleSoundBtn {
+body[data-wp-game-id="animal-tangle-rescue"] #stageInfoBtn {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+/* Interface 7 applies light HUD ink to shared Guide descendants. This game
+   keeps a light-paper Guide, so preserve the designed high-contrast reading
+   color on each authored step title and instruction. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tangle-rescue"] #guideScreen .guide-grid h3,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tangle-rescue"] #guideScreen .guide-grid p {
+  color: #173844 !important;
 }
 
 /* Shared play surfaces use the catalog outer inset rather than the legacy
@@ -74,9 +81,8 @@ body[data-wp-game-id="animal-tangle-rescue"] #stageScreen .stage-tabs {
   margin-top: 0 !important;
 }
 
-/* Battle keeps Board n / 30 because that is concise current-state HUD, but
-   retires the old standalone sound control and restores the 48px play top at
-   every viewport, including the legacy compact-landscape branch. */
+/* Battle keeps Board n / 30 because that is concise current-state HUD and
+   retains its single shared sound utility at every viewport. */
 body[data-wp-game-id="animal-tangle-rescue"] #battleScreen .panel-head,
 body[data-wp-game-id="animal-tangle-rescue"] .wp-battle-shell-header {
   box-sizing: border-box !important;

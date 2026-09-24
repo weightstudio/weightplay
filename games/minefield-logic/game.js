@@ -1,14 +1,14 @@
-/* Minefield v15: one explicit Interface 7 owner, shared by all localized entries. */
+/* Minefield v17: authored 30-stage campaign inside the existing Interface 7 owner. */
 (() => {
   'use strict';
   const root = document.querySelector('#logicApp');
   if (!root || root.dataset.mfBooting) return;
-  root.dataset.mfBooting = '15';
+  root.dataset.mfBooting = '17';
   // Claim declared slots synchronously: the shared bootstrap must not start its
   // legacy DOM-discovery controller while the module graph is loading.
   root.setAttribute('data-wp-frame-root', '');
   const base = new URL('.', document.currentScript.src);
-  const version = '20260923-minefield-v15-interface7';
+  const version = '20260924-minefield-v17-campaign30-stage-center14';
   const asset = name => new URL(`/src/${name}`, location.origin).href;
   document.querySelectorAll('link[rel="stylesheet"][href*="classic-logic-lab.css"]').forEach(link => link.remove());
   function style(url) {
@@ -39,6 +39,7 @@
     style(`${asset('game-screen-frame.css')}?v=${version}`),
     style(new URL(`game.css?v=${version}`, base).href),
     script('game-screen-frame.js', () => window.WeightPlayScreenFrame?.version === 7),
+    script('stage-selector-standard.js', () => typeof window.__weightPlayLayoutMetrics?.stageObserverFlushes === 'number'),
     script('battle-canvas-standard.js', () => typeof window.WeightPlayBattleCanvas?.sync === 'function'),
   ]).then(() => import(new URL(`interface.mjs?v=${version}`, base).href))
     .then(module => module.mountMinefield())

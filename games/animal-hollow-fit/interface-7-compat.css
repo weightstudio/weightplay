@@ -1,10 +1,7 @@
 @layer wp-hollow-fit-interface7-compat {
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-hollow-fit"] :is(
     #main-settings,
-    #guide-button,
-    #battle-sound,
-    #result-settings,
-    #settings-dialog
+    #guide-button
   ) {
     display: none !important;
   }

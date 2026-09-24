@@ -10,10 +10,10 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-glyph-garden" />
-  <meta name="weightplay-game-version" content="v2" />
+  <meta name="weightplay-game-version" content="v4" />
   <meta name="weightplay-interface-version" content="6" />
   <meta name="theme-color" content="#17434b" />
-  <meta name="description" content="정원 요청을 읽고 모양과 색 단서가 모두 맞는 글리프를 골라 세 화단을 차분히 완성해요." />
+  <meta name="description" content="30개의 이끼빛 정원 스테이지에서 모양, 색, 순서 규칙을 읽어 보세요." />
   <title>글리프 정원 | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/ko/games/animal-glyph-garden/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-glyph-garden/" />
@@ -34,14 +34,9 @@
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260830-glyph-v2" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260830-glyph-v2" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260903-glyph-v2-short-landscape-battle" />
+  <link rel="stylesheet" href="style.css?v=20260923-glyph-v4-depth" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
   <style data-wp-glyph-garden-issue-fix>
-    @media (min-width:700px) and (max-height:560px) {
-      body[data-wp-game-id="animal-glyph-garden"] .wp-standard-main-composition {
-        --wp-main-landscape-poster-size: 300px;
-      }
-    }
     #resultScreen[hidden] {
       display: none !important;
       pointer-events: none !important;
@@ -51,12 +46,12 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="글리프 정원 | WeightPlay" />
-    <meta property="og:description" content="정원 요청을 읽고 모양과 색 단서가 모두 맞는 글리프를 골라 세 화단을 차분히 완성해요." />
+    <meta property="og:description" content="30개의 이끼빛 정원 스테이지에서 모양, 색, 순서 규칙을 읽어 보세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/animal-glyph-garden/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-glyph-garden.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="글리프 정원 | WeightPlay" />
-    <meta name="twitter:description" content="정원 요청을 읽고 모양과 색 단서가 모두 맞는 글리프를 골라 세 화단을 차분히 완성해요." />
+    <meta name="twitter:description" content="30개의 이끼빛 정원 스테이지에서 모양, 색, 순서 규칙을 읽어 보세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-glyph-garden.webp" />
     <script type="application/ld+json">
 {
@@ -66,7 +61,7 @@
   "alternateName": "Glyph Garden",
   "url": "https://weightplay.com/ko/games/animal-glyph-garden/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-glyph-garden.webp",
-  "description": "정원 요청을 읽고 모양과 색 단서가 모두 맞는 글리프를 골라 세 화단을 차분히 완성해요.",
+  "description": "30개의 이끼빛 정원 스테이지에서 모양, 색, 순서 규칙을 읽어 보세요.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -90,29 +85,29 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-glyph-garden" data-runtime-localize="off">
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-glyph-garden" data-runtime-localize="off" data-sound-toggle="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>글리프 정원</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="screen main" data-screen="main">
       <header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">글리프 정원</strong><button id="settingsButton" class="settings-button" type="button" data-wp-settings aria-label="Settings">⚙</button></header>
-      <section class="hero"><div class="poster-frame"><img class="main-poster" src="assets/animal-glyph-garden-cover.svg" width="900" height="900" alt="" /></div><div class="main-copy"><small class="eyebrow" data-i18n="kicker">Mosslight garden</small><h1 data-runtime-localize="off">글리프 정원</h1><p class="summary" data-i18n="intro">Match each garden request by finding the one tile with both the right shape and colour.</p><div class="facts"><span data-i18n="fact1">3 gentle plots</span><span data-i18n="fact2">Shape + colour</span><span data-i18n="fact3">Calm retry</span></div><p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Start Game</button></div></section>
+      <section class="hero"><div class="poster-frame"><img class="main-poster" src="assets/animal-glyph-garden-cover.svg" width="900" height="900" alt="" /></div><div class="main-copy"><small class="eyebrow" data-i18n="kicker">Mosslight garden</small><h1 data-runtime-localize="off">글리프 정원</h1><p class="summary" data-i18n="intro">Read shape, colour, and sequence rules across thirty authored mosslight plots.</p><div class="facts"><span data-i18n="fact1">30 garden stages</span><span data-i18n="fact2">Shape + colour</span><span data-i18n="fact3">Calm retry</span></div><p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Start Game</button></div></section>
     </main>
     <section class="game-page-info game-page-info-static" aria-label="글리프 정원 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>글리프 정원</h2><p>정원 요청을 읽고 모양과 색 단서가 모두 맞는 글리프를 골라 세 화단을 차분히 완성해요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>모양과 색 맞추기 퍼즐</strong></div><div class="game-info-fact"><span>장르</span><strong>퍼즐 · 시각 논리 · 모양 맞추기 · 가족 · 동물</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>글리프 정원</h2><p>30개의 이끼빛 정원 스테이지에서 모양, 색, 순서 규칙을 읽어 보세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>모양과 색 맞추기 퍼즐</strong></div><div class="game-info-fact"><span>장르</span><strong>퍼즐 · 시각 논리 · 모양 맞추기 · 가족 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>Gentle to mastery</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>1–4 minutes per stage</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>화단은 몇 개인가요?</dt><dd>세 화단이 있고 각각 모양과 색이 정확히 맞는 타일이 하나 있습니다.</dd></div></dl></div>
+      <div class="game-info-section"><h3>세계와 목표</h3><p>The mosslight beds have lost their planting pattern before the evening festival. Each stage is one authored plot with a visible request, six tactile glyph choices, and one or more planting steps. Help Taro restore the beds in order. Every fifth plot is a checkpoint that changes the decision rather than merely adding more tiles, and Stage 30 is the festival finale that asks for the full garden vocabulary.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>A request always names the active matching rule. Paired Sprouts asks for both shape and colour. Shape Beds ignores colour, so several tempting colour matches can be wrong. Colour Wells reverses that priority and ignores shape. Sequence Arbor asks for two or three complete matches in order. Switching Paths alternates shape-only and colour-only decisions. Festival Mastery combines all three rule families in longer sequences. A wrong choice never removes progress or spends currency; it produces an immediate explanation and leaves the player free to compare again.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>화단을 열고 모양과 색 요청을 읽으세요.</li><li>타일을 선택해 심고 정확한 피드백을 확인하세요.</li><li>결과 버튼으로 계속하거나 다시 하거나 다른 화단을 고르세요.</li><li>Select a tile and activate Plant this glyph. A correct sequence step advances to the next request; a wrong choice remains safely retryable.</li><li>Complete the final step to save the clear, unlock the next stage, and open Result with Next Stage, Stages, and Replay actions.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>한 단서만 보지 말고 모양과 색을 함께 비교하세요.</li><li>다시 생각하려면 선택 지우기를 누르세요.</li><li>시간 제한 없이 완료한 화단을 다시 플레이할 수 있어요.</li><li>Replay checkpoints 5, 10, 15, 20, 25, and 30 to practise the exact transition introduced by each arc.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>Stages 1–5 teach exact two-attribute matching and end with a two-step checkpoint. Stages 6–10 isolate shape, while 11–15 isolate colour, teaching the player to ignore a persuasive but irrelevant clue. Stages 16–20 introduce ordered exact-match sequences. Stages 21–25 switch between shape, colour, and exact rules inside one plot. Stages 26–30 are mastery beds with three- and four-step routes; the final Mosslight Festival combines exact, shape-only, colour-only, and exact matching in that order. Clearing a stage unlocks the next one locally, while every cleared card remains replayable.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>The campaign uses one logical layout across phone, landscape, and desktop sizes. Large native buttons, text labels beside every glyph, visible selected state, rule copy, and non-colour shape silhouettes keep the puzzle understandable without relying on hue alone. The block-style Taro and glyph images carry object identity; CSS supplies layout and selection framing rather than replacing gameplay art.</p></div>
+      <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>진행과 최고 확인 횟수는 이 브라우저에만 저장됩니다. 무료이며 계정이 필요 없고 공식 능력 검사가 아닙니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>스테이지는 몇 개인가요?</dt><dd>6개 장에 30개 스테이지가 있으며 5번째마다 규칙이 바뀌는 체크포인트가 있습니다.</dd></div></dl></div>
 
     </div>
   </section>
@@ -121,6 +116,6 @@
   <main id="battleScreen" class="screen battle-shell" data-screen="battle" data-wp-canvas-max-width="920" data-wp-battle-min-height="620" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden><div class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-height="620" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334"><header class="battle-header"><button id="battleBackBtn" class="back" type="button" data-wp-return="battle" data-wp-battle-utility aria-label="Back">←</button><div><small class="eyebrow" data-i18n="round">Plot</small><h2 id="battleTitle"></h2></div><span id="progressPill" class="pill"></span></header><p id="prompt" class="prompt" aria-live="polite"></p><section class="request-card"><span data-i18n="request">Garden request</span><div id="targetGlyph" class="glyph target" aria-hidden="true"></div><strong id="targetText"></strong></section><div id="optionGrid" class="option-grid" role="list" aria-label="Garden tiles"></div><p id="selection" class="selection" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary" type="button" data-wp-primary-action data-i18n="check">Plant this tile</button><button id="clearBtn" class="secondary" type="button" data-i18n="reset">Clear choice</button></div><p id="status" class="status" role="status" aria-live="polite"></p><section id="resultScreen" class="result-panel" data-screen="result" data-wp-result-audit hidden role="dialog" aria-modal="true"><div class="result-icon">✦</div><p class="eyebrow" data-i18n="finished">Plot planted</p><h2 id="resultTitle" data-i18n="resultTitle">A bright little match!</h2><p id="resultText" class="summary"></p><div class="result-actions"><button id="stagesBtn" class="secondary" type="button" data-i18n="choose">Choose a plot</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plot</button><button id="replayBtn" class="secondary" type="button" data-i18n="replay">Replay</button></div></section></div><div class="battle-ad-reserve" aria-hidden="true"></div></main>
   <section id="settingsPanel" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   <script src="../../src/site-config.js"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="locales.js?v=20260901-glyph-garden-route-locale-v3"></script><script src="game.js?v=20260901-glyph-garden-route-locale-v3"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260830-glyph-v2" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260830-glyph-v2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="locales.js?v=20260923-glyph-v4-depth"></script><script src="game.js?v=20260923-glyph-v4-depth"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260830-glyph-v2" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260830-glyph-v2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@
 <script src="../../src/game-layout-config.js"></script><script src="../../src/site-config.js"></script>
 <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2?wp-audio=1.0.0" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
   <meta name="description" content="Führe einen Roten Panda durch 30 Waldmissionen: Sammle Holz, rette Freunde und stelle dich acht Wächtertypen." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -62,23 +62,10 @@
   }
 }
     </script>
-  </head><body data-game-id="animal-wildwood-raid" data-wp-game-id="animal-wildwood-raid" data-screen="main" data-has-stage="true"><div id="frame" data-wp-frame-root>
+  </head><body data-game-id="animal-wildwood-raid" data-wp-game-id="animal-wildwood-raid" data-screen="main" data-has-stage="true" data-wp-game-owned-guide="true"><div id="frame" data-wp-frame-root>
 <main id="main" class="scene main-scene"><header><a href="/" data-wp-return="main">← W</a><h1 data-wp-frame-title data-runtime-localize="off">Waldexpedition</h1></header>
-<div class="hero"><img src="art/cover-v1.webp" alt="Spielgrafik zu Waldexpedition"><div class="hero-copy"><p data-i18n="choose"></p><p id="progress"></p><button id="start" class="primary" data-i18n="start"></button></div></div>
-<section class="guide" data-wp-guide-complete="true"><h2 data-i18n="guide"></h2><div id="guide"></div></section></main>
-<section id="stage" class="scene play-scene" hidden data-wp-standard-stage-screen data-wp-stage-art="art/cover-v1.webp" style="--wp-stage-art:url('art/cover-v1.webp')"><header><button id="stageBack" data-wp-return="stage">←</button><span data-wp-frame-title hidden></span></header>
-<div class="workspace"><div id="stageInfo" data-wp-frame-info><span id="stageProgress"></span></div><div id="stagePanel" class="panel"><div id="rail" class="rail" data-wp-stage-rail></div><p class="stage-hint" data-i18n="drag"></p></div>
-<div id="equipPanel" class="panel management" hidden><h2 data-i18n="loadout"></h2><p data-i18n="equipmentHelp"></p><div id="equipment" class="equipment"></div></div><div id="recordPanel" class="panel management" hidden><h2 data-i18n="ranger"></h2><div id="growthStats" class="growth-stats"></div><p data-i18n="regenGuide"></p><h3 data-i18n="rank"></h3><div id="records" class="equipment"></div></div></div>
-<nav class="tabs" data-wp-frame-stage-nav><button data-tab="records" data-wp-frame-stage-slot="team" data-i18n="ranger"></button><button data-tab="stages" data-wp-frame-stage-slot="stages" data-i18n="stages"></button><button data-tab="loadout" data-wp-frame-stage-slot="equipment" data-i18n="loadout"></button></nav></section>
-<section id="battle" class="scene play-scene" hidden><header><button id="battleBack" data-wp-return="battle">←</button><span data-wp-frame-title hidden></span></header>
-<main class="battle-area"><div id="battleInfo" data-wp-frame-info><span id="hudStage"></span><span id="runTime"></span></div>
-<div id="objective" class="objective" aria-live="polite"></div><div class="arena"><canvas id="arena" tabindex="0"></canvas><canvas id="minimap" width="112" height="132" aria-hidden="true"></canvas><div id="worldLabels"></div><div id="bossBar" hidden><span id="bossName"></span><progress id="bossHp" max="100" value="100"></progress></div><div id="joystick" hidden aria-hidden="true"><i></i></div><div id="damage" aria-hidden="true"></div></div>
-<div id="feedback" class="feedback" aria-live="polite"></div><div id="actions" class="actions"></div></main>
-<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
-</section></div><select id="localeSelect" hidden aria-label="Language"></select><script type="module" src="game.js?wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informationen zu Waldexpedition">
+<div class="hero"><img class="main-cover" src="art/cover-v1.webp" alt="Spielgrafik zu Waldexpedition"><div class="hero-copy"><p class="main-summary" data-i18n="choose"></p><p id="progress" class="main-progress" data-wp-main-progress></p><button id="start" class="primary" data-wp-main-start data-i18n="start"></button></div></div>
+</main><section class="game-page-info game-page-info-static" aria-label="Informationen zu Waldexpedition">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Waldexpedition</h2><p>Führe einen Roten Panda durch 30 Waldmissionen: Sammle Holz, rette Freunde und stelle dich acht Wächtertypen.</p></div>
@@ -97,4 +84,16 @@
 
     </div>
   </section>
+<section id="stage" class="scene play-scene" data-screen="stage" hidden data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="art/cover-v1.webp" style="--wp-stage-art:url('art/cover-v1.webp')"><header><button id="stageBack" data-wp-return="stage">←</button><span data-wp-frame-title hidden></span></header>
+<div class="workspace"><div id="stageInfo" data-wp-frame-info><span id="stageProgress"></span></div><div id="stagePanel" class="panel"><div id="rail" class="rail" data-wp-stage-rail></div><p class="stage-hint" data-i18n="drag"></p></div>
+<div id="equipPanel" class="panel management" hidden><h2 data-i18n="loadout"></h2><p data-i18n="equipmentHelp"></p><div id="equipment" class="equipment"></div></div><div id="recordPanel" class="panel management" hidden><h2 data-i18n="ranger"></h2><div id="growthStats" class="growth-stats"></div><p data-i18n="regenGuide"></p><h3 data-i18n="rank"></h3><div id="records" class="equipment"></div></div></div>
+<nav class="tabs stage-tabs" data-wp-frame-stage-nav><button data-tab="records" data-wp-frame-stage-slot="team" data-i18n="ranger"></button><button data-tab="stages" data-wp-frame-stage-slot="stages" data-i18n="stages"></button><button data-tab="loadout" data-wp-frame-stage-slot="equipment" data-i18n="loadout"></button></nav></section>
+<section id="battle" class="scene play-scene" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><header><button id="battleBack" data-wp-return="battle">←</button><span data-wp-frame-title hidden></span></header>
+<main class="battle-area"><div id="battleInfo" data-wp-frame-info><span id="hudStage"></span><span id="runTime"></span></div>
+<div id="objective" class="objective" aria-live="polite"></div><div class="arena"><canvas id="arena" tabindex="0"></canvas><canvas id="minimap" width="112" height="132" aria-hidden="true"></canvas><div id="worldLabels"></div><div id="bossBar" hidden><span id="bossName"></span><progress id="bossHp" max="100" value="100"></progress></div><div id="joystick" hidden aria-hidden="true"><i></i></div><div id="damage" aria-hidden="true"></div></div>
+<div id="feedback" class="feedback" aria-live="polite"></div><div id="actions" class="actions"></div></main>
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
+</section></div><select id="localeSelect" hidden aria-label="Language"></select><script type="module" src="game.js?v=20260924-wildwood-material-v9&wp-audio=1.0.0"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>

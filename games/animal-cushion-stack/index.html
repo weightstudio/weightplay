@@ -23,11 +23,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#e9f1ff">
-  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-game-version" content="v6">
   <title>Cushion Stack | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260921-cushion-stack-v4-guide-radius-contract">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260924-cushion-stack-v6-guide-settings">
+  <link rel="stylesheet" href="style.css?v=20260924-cushion-stack-v6-guide-settings">
 </head>
-<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v4" data-screen="main" data-runtime-localize="off">
+<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v6" data-screen="main" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><span class="loading-orb" aria-hidden="true">✦</span><strong data-copy="loading">Fluffing the lookout…</strong><div class="loading-track"><i></i></div></div>
   </section>
@@ -53,14 +54,25 @@
         <p class="intro" data-copy="intro">Choose the next soft block and build a safe little lookout for Taro.</p>
         <p class="summary" data-copy="summary">Three calm towers where each choice must rest safely on the last.</p>
         <p id="mainProgress" class="progress" data-wp-main-progress role="status" aria-live="polite" data-copy="progress">Progress: 3 lookouts · no timer</p>
-        <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start stacking</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Choose a lookout</button></div>
+        <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start Game</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Choose a lookout</button></div>
         <p class="best-line"><span data-copy="best">Best picks</span>: <strong id="bestValue">Not yet</strong></p>
       </div>
     </section>
   </main>
-  <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle">
-    <h2 id="guideTitle" data-copy="guideTitle">How to play</h2>
-    <div class="guide-grid"><article><b data-copy="guideOneTitle">1. Read the shelf</b><p data-copy="guideOne">The soft block should fit on the support below.</p></article><article><b data-copy="guideTwoTitle">2. Pick and check</b><p data-copy="guideTwo">Choose one block, then check whether the stack stays steady.</p></article><article><b data-copy="guideThreeTitle">3. Try again calmly</b><p data-copy="guideThree">A wobbly pick is safe to retry. There is no timer or life loss.</p></article></div>
+  <section class="guide-card game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" aria-labelledby="guideTitle">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 id="guideTitle">Cushion Stack</h2><p>Build three calm lookout towers for Taro by reading each support, comparing three soft blocks, and checking one deliberate choice at a time.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Stability Stack Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Construction · Spatial Planning · Family · Animal</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>1. Understand the lookout</h3><p>Each lookout is a short three-layer construction puzzle. The tower area shows the support that is already in place, while the tray offers three possible cushions for the next layer. Your goal is not to build as quickly as possible. Instead, read the support width, compare the choices, and place a cushion that can sit safely inside the support below it. A correct cushion becomes part of the tower and reveals the next decision. Complete all three layers to finish that lookout.</p><p>The three lookout cards lead to Meadow, Pond, and Moon towers. They use the same clear rule but different support widths and cushion combinations, so each route asks you to check the current evidence rather than memorize one answer for every tower.</p></div>
+      <div class="game-info-section"><h3>2. Read support and cushion widths</h3><p>The support width appears in the Battle hint. Every choice also shows its own width. A safe cushion is narrower than the support and leaves a sensible margin on both sides. A cushion that is wider than the support would overhang, while the smallest option may be too narrow to create the intended stable layer. Compare the numbers first, then use the cushion name, color, and visible size as a second check.</p><p>The tower illustration updates only after a successful check. This keeps the settled layers distinct from the choice you are considering. If the support changes from one layer to the next, read the new value again before choosing; the block that worked on the floor is not automatically right for the middle or top.</p></div>
+      <div class="game-info-section"><h3>3. Choose, check, and recover</h3><p>Select a cushion in the tray, then press <strong>Check stability</strong>. The selected state and status text confirm which cushion is active before the check. A steady choice plays positive feedback and adds the cushion to the tower. A wobbly choice gives calm error feedback, clears the selection, and leaves the current layer unchanged. You lose no life, time, or completed layer, so use the response as information and try another option.</p><p><strong>Clear choice</strong> removes a selection before checking if you change your mind. The lookout map remains available during play, and returning to it does not invent a win. When all three layers are steady, the next-lookout action advances through the authored route until the Result summarizes your total picks.</p></div>
+      <div class="game-info-section"><h3>4. Improve your fewest-picks result</h3><p>Your total picks count every checked choice, including wobbly attempts. The best result therefore comes from making each comparison before pressing Check. Start with the support width, rule out the obvious overhang, and then compare the remaining cushions. The best local score records the fewest picks used to complete the full three-lookout journey; there is no speed bonus and no reason to rush.</p><p>On a replay, look for the decision that caused an extra pick rather than racing through every action. Meadow teaches the basic margin, Pond asks you to keep several soft shapes centered, and Moon finishes with a smaller decorative top. This progression rewards careful reading and memory without turning a wrong answer into punishment.</p></div>
+      <div class="game-info-section"><h3>5. Controls, sound, and language</h3><p>All primary actions are ordinary buttons that work with touch, mouse, and keyboard. Keyboard players can move focus with Tab and activate the focused control with Enter or Space. The permanent arrow returns from Battle to the lookout map, while the Main return leads back to the General WeightPlay lobby. The Settings button on Main contains one language selector and one combined Sound switch.</p><p>The language choice supports all thirteen WeightPlay locales, including Arabic right-to-left layout. Sound is optional and mirrors the shared WeightPlay audio preference. Visual selected states, status text, widths, and tower changes continue to communicate the result when sound is muted. If browser storage is unavailable, the game remains playable; only the local best may last for the current visit.</p></div>
+      <div class="game-info-section"><h3>6. Strategy and fair-play notes</h3><p>A reliable strategy is: read the current support, compare every visible width, choose the cushion with a safe centered margin, and check only after the selected label matches your intention. Do not assume that the largest remaining cushion is always correct. Some layers use a snug rectangular cushion, while others use cloud, leaf, moon, or flag shapes with different safe widths.</p><p>Cushion Stack has no timer, life loss, ranking, purchases, ads inside the game canvas, or account requirement. Every puzzle is deterministic, so the same lookout presents the same fair evidence on a replay. The game does not require guessing hidden physics; the displayed support and choice widths are the decision tools. Stop after any lookout or replay the full journey when you want to improve the fewest-picks result.</p></div>
+      <div class="game-info-section game-info-faq"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes. The fewest-picks best is saved only in this browser when storage is available.</dd></div><div><dt>What happens after a wobbly choice?</dt><dd>The current layer stays safe, the selection clears, and you may immediately choose again.</dd></div><div><dt>Do I need to finish quickly?</dt><dd>No. There is no timer; careful comparison is the intended way to play.</dd></div></dl></div>
+    </div>
     <figure class="block-atlas-figure"><img class="block-atlas" src="assets/animal-cushion-stack-block-atlas-v2.png" alt="Seven soft block shapes: wide, snug, tiny, cloud, leaf, moon, and flag" width="1254" height="1254" loading="lazy" decoding="async"><figcaption>Seven soft shapes to build with.</figcaption></figure>
   </section>
 
@@ -97,6 +109,6 @@
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
   <script src="locales.js?v=20260903-cushion-stack-v3-localization"></script>
-  <script src="game.js?v=20260903-cushion-stack-v3-localization&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20260924-cushion-stack-v6-guide-settings&wp-audio=1.0.0"></script>
 </body>
 </html>

@@ -39,6 +39,12 @@ body[data-screen="battle"] > .game-page-info-static, body[data-screen="result"] 
 .view#battleView.is-result > :not(#resultView) { display: none !important; }
 .view#battleView.is-result { overflow: auto; }
 .view[hidden] { display: none; }
+
+/* The shared Main settings host stays mounted in its authored header. Keep it
+   inert when this game's nested Battle/Result scene owns the viewport. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"]:not([data-screen="main"]) .wp-shell-settings {
+  display: none !important;
+}
 .brand-line { display: flex; align-items: center; gap: 8px; color: var(--deep-leaf); font-weight: 800; letter-spacing: .04em; }
 .brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--sun); color: #fff; }
 .internal-badge { margin-left: 4px; padding: 4px 8px; border: 1px solid #c9d7bb; border-radius: 999px; color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
@@ -143,7 +149,6 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] .control-card,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] .help-card,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView .screen-heading h2,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView #battleSoundToggle,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-meadow-difference"] #battleView.is-result .brand-line {
   display: none;
 }

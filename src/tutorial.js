@@ -130,6 +130,41 @@
     ar: ["استعد التاج", "اهزم الحراس المطلوبين ثم وصل إلى التاج.", "أزل الدعامات", "اضغط مجموعة متصلة من لون واحد، راجع المسار ثم أكد.", "احسب أولًا", "يجب أن تتجاوز قوتك قوة العدو. خطط لترتيب الجمع والضرب؛ الأشواك تسبب الخسارة."]
   };
   const tutorials = {
+    "animal-lantern-lattice": {
+      title: Object.fromEntries(Object.entries({
+        en: { title: "Build a safe night path", steps: [["Read the clues", "Each clue tells which lantern comes before another."], ["Tap lanterns in order", "Choose the lights in order. Echo paths may repeat their named lantern."], ["Check the path", "A clear lights the next path. A wrong link shows what to retry; there is no timer or lives."]] },
+        "zh-Hant": { title: "連起安全夜路", steps: [["閱讀線索", "每條線索都會說明哪盞燈排在另一盞燈前面。"], ["依序點選燈影", "按順序選燈；回聲路徑會重複出現指定燈影。"], ["檢查路徑", "答對會點亮下一條路；答錯會指出重試位置，沒有計時或生命限制。"]] },
+        "zh-Hans": { title: "连起安全夜路", steps: [["阅读线索", "每条线索都会说明哪盏灯排在另一盏灯前面。"], ["依序点选灯影", "按顺序选灯；回声路径会重复出现指定灯影。"], ["检查路径", "答对会点亮下一条路；答错会指出重试位置，没有计时或生命限制。"]] },
+        ja: { title: "安全な夜道をつなごう", steps: [["手がかりを読む", "それぞれの手がかりは、どの灯りが先かを示します。"], ["灯りを順にタップ", "順番に選びます。エコーの道では指定された灯りを繰り返します。"], ["道を確認する", "正解すると次の道が灯ります。間違いは見直す場所を示します。時間やライフの制限はありません。"]] },
+        ko: { title: "안전한 밤길을 연결하세요", steps: [["단서 읽기", "각 단서는 어떤 등불이 먼저 오는지 알려 줍니다."], ["등불을 순서대로 탭하기", "순서대로 고르세요. 메아리 길에서는 지정된 등불을 다시 고릅니다."], ["길 확인하기", "맞히면 다음 길이 열립니다. 틀리면 다시 볼 곳을 알려 줍니다. 시간이나 목숨 제한은 없습니다."]] },
+        es: { title: "Conecta un camino nocturno seguro", steps: [["Lee las pistas", "Cada pista indica qué farol va antes que otro."], ["Toca los faroles en orden", "Elige las luces en orden. En los caminos eco se repite el farol indicado."], ["Comprueba el camino", "Si aciertas, se ilumina el siguiente. Un error indica qué revisar; no hay tiempo ni vidas."]] },
+        "pt-BR": { title: "Conecte um caminho noturno seguro", steps: [["Leia as pistas", "Cada pista indica qual lanterna vem antes de outra."], ["Toque as lanternas em ordem", "Escolha as luzes na ordem. Nos caminhos de eco, a lanterna indicada se repete."], ["Confira o caminho", "Se acertar, o próximo caminho se acende. Um erro indica o que rever; não há tempo nem vidas."]] },
+        fr: { title: "Reliez un chemin nocturne sûr", steps: [["Lisez les indices", "Chaque indice indique quelle lanterne vient avant une autre."], ["Touchez les lanternes dans l’ordre", "Choisissez les lumières dans l’ordre. Sur les chemins d’écho, la lanterne indiquée revient."], ["Vérifiez le chemin", "Une bonne réponse éclaire le suivant. Une erreur indique quoi revoir ; il n’y a ni temps ni vies."]] },
+        de: { title: "Verbinde einen sicheren Nachtpfad", steps: [["Lies die Hinweise", "Jeder Hinweis sagt, welche Laterne vor einer anderen kommt."], ["Tippe die Laternen der Reihe nach an", "Wähle die Lichter in Reihenfolge. Auf Echopfaden kommt die genannte Laterne erneut."], ["Prüfe den Pfad", "Bei einer richtigen Lösung leuchtet der nächste Pfad. Ein Fehler zeigt, was du prüfen kannst; es gibt weder Zeitlimit noch Leben."]] },
+        it: { title: "Collega un sentiero notturno sicuro", steps: [["Leggi gli indizi", "Ogni indizio dice quale lanterna viene prima di un’altra."], ["Tocca le lanterne in ordine", "Scegli le luci nell’ordine. Nei percorsi eco la lanterna indicata si ripete."], ["Controlla il percorso", "Se è corretto si illumina il percorso successivo. Un errore indica cosa rivedere; non ci sono tempo o vite."]] },
+        ru: { title: "Соберите безопасный ночной путь", steps: [["Прочитайте подсказки", "Каждая подсказка указывает, какой фонарь идёт раньше другого."], ["Нажимайте фонари по порядку", "Выбирайте огни по порядку. На путях эха указанный фонарь повторяется."], ["Проверьте путь", "Верный ответ открывает следующий путь. Ошибка подскажет, что проверить; таймера и жизней нет."]] },
+        hi: { title: "सुरक्षित रात का रास्ता जोड़ें", steps: [["संकेत पढ़ें", "हर संकेत बताता है कि कौन-सी लालटेन पहले आती है।"], ["लालटेन क्रम से चुनें", "रोशनियाँ क्रम में चुनें। प्रतिध्वनि वाले रास्ते में बताई गई लालटेन दोबारा आती है।"], ["रास्ता जाँचें", "सही होने पर अगला रास्ता जगमगाता है। गलती बताएगी कि क्या फिर देखें; समय या जीवन सीमा नहीं है।"]] },
+        ar: { title: "صِل مساراً ليلياً آمناً", steps: [["اقرأ الأدلة", "يوضح كل دليل أي فانوس يسبق الآخر."], ["اضغط الفوانيس بالترتيب", "اختر الأضواء بالترتيب. في مسارات الصدى يتكرر الفانوس المحدد."], ["تحقق من المسار", "تضيء الإجابة الصحيحة المسار التالي. يوضح الخطأ ما يجب مراجعته؛ لا يوجد وقت أو عدد أرواح."]] }
+      }).map(([locale, copy]) => [locale, copy.title])),
+      steps: [0, 1, 2].map((index) => ({
+        icon: String(index + 1),
+        ...Object.fromEntries(Object.entries({
+          en: [["Read the clues", "Each clue tells which lantern comes before another."], ["Tap lanterns in order", "Choose the lights in order. Echo paths may repeat their named lantern."], ["Check the path", "A clear lights the next path. A wrong link shows what to retry; there is no timer or lives."]],
+          "zh-Hant": [["閱讀線索", "每條線索都會說明哪盞燈排在另一盞燈前面。"], ["依序點選燈影", "按順序選燈；回聲路徑會重複出現指定燈影。"], ["檢查路徑", "答對會點亮下一條路；答錯會指出重試位置，沒有計時或生命限制。"]],
+          "zh-Hans": [["阅读线索", "每条线索都会说明哪盏灯排在另一盏灯前面。"], ["依序点选灯影", "按顺序选灯；回声路径会重复出现指定灯影。"], ["检查路径", "答对会点亮下一条路；答错会指出重试位置，没有计时或生命限制。"]],
+          ja: [["手がかりを読む", "それぞれの手がかりは、どの灯りが先かを示します。"], ["灯りを順にタップ", "順番に選びます。エコーの道では指定された灯りを繰り返します。"], ["道を確認する", "正解すると次の道が灯ります。間違いは見直す場所を示します。時間やライフの制限はありません。"]],
+          ko: [["단서 읽기", "각 단서는 어떤 등불이 먼저 오는지 알려 줍니다."], ["등불을 순서대로 탭하기", "순서대로 고르세요. 메아리 길에서는 지정된 등불을 다시 고릅니다."], ["길 확인하기", "맞히면 다음 길이 열립니다. 틀리면 다시 볼 곳을 알려 줍니다. 시간이나 목숨 제한은 없습니다."]],
+          es: [["Lee las pistas", "Cada pista indica qué farol va antes que otro."], ["Toca los faroles en orden", "Elige las luces en orden. En los caminos eco se repite el farol indicado."], ["Comprueba el camino", "Si aciertas, se ilumina el siguiente. Un error indica qué revisar; no hay tiempo ni vidas."]],
+          "pt-BR": [["Leia as pistas", "Cada pista indica qual lanterna vem antes de outra."], ["Toque as lanternas em ordem", "Escolha as luzes na ordem. Nos caminhos de eco, a lanterna indicada se repete."], ["Confira o caminho", "Se acertar, o próximo caminho se acende. Um erro indica o que rever; não há tempo nem vidas."]],
+          fr: [["Lisez les indices", "Chaque indice indique quelle lanterne vient avant une autre."], ["Touchez les lanternes dans l’ordre", "Choisissez les lumières dans l’ordre. Sur les chemins d’écho, la lanterne indiquée revient."], ["Vérifiez le chemin", "Une bonne réponse éclaire le suivant. Une erreur indique quoi revoir ; il n’y a ni temps ni vies."]],
+          de: [["Lies die Hinweise", "Jeder Hinweis sagt, welche Laterne vor einer anderen kommt."], ["Tippe die Laternen der Reihe nach an", "Wähle die Lichter in Reihenfolge. Auf Echopfaden kommt die genannte Laterne erneut."], ["Prüfe den Pfad", "Bei einer richtigen Lösung leuchtet der nächste Pfad. Ein Fehler zeigt, was du prüfen kannst; es gibt weder Zeitlimit noch Leben."]],
+          it: [["Leggi gli indizi", "Ogni indizio dice quale lanterna viene prima di un’altra."], ["Tocca le lanterne in ordine", "Scegli le luci nell’ordine. Nei percorsi eco la lanterna indicata si ripete."], ["Controlla il percorso", "Se è corretto si illumina il percorso successivo. Un errore indica cosa rivedere; non ci sono tempo o vite."]],
+          ru: [["Прочитайте подсказки", "Каждая подсказка указывает, какой фонарь идёт раньше другого."], ["Нажимайте фонари по порядку", "Выбирайте огни по порядку. На путях эха указанный фонарь повторяется."], ["Проверьте путь", "Верный ответ открывает следующий путь. Ошибка подскажет, что проверить; таймера и жизней нет."]],
+          hi: [["संकेत पढ़ें", "हर संकेत बताता है कि कौन-सी लालटेन पहले आती है."], ["लालटेन क्रम से चुनें", "रोशनियाँ क्रम में चुनें। प्रतिध्वनि वाले रास्ते में बताई गई लालटेन दोबारा आती है."], ["रास्ता जाँचें", "सही होने पर अगला रास्ता जगमगाता है। गलती बताएगी कि क्या फिर देखें; समय या जीवन सीमा नहीं है."]],
+          ar: [["اقرأ الأدلة", "يوضح كل دليل أي فانوس يسبق الآخر."], ["اضغط الفوانيس بالترتيب", "اختر الأضواء بالترتيب. في مسارات الصدى يتكرر الفانوس المحدد."], ["تحقق من المسار", "تضيء الإجابة الصحيحة المسار التالي. يوضح الخطأ ما يجب مراجعته؛ لا يوجد وقت أو عدد أرواح."]]
+        }).map(([locale, steps]) => [locale, steps[index]]))
+      }))
+    },
     "animal-crownfall": {
       title: Object.fromEntries(Object.entries(crownfallCopy).map(([lang, copy]) => [lang, copy[0]])),
       steps: [0, 1, 2].map(index => ({ icon: String(index + 1), ...Object.fromEntries(Object.entries(crownfallCopy).map(([lang, copy]) => [lang, copy.slice(index * 2, index * 2 + 2)])) }))
@@ -376,11 +411,11 @@
       ],
     },
     "animal-guard-yard": {
-      title: { en: "Guard the yard.", "zh-Hant": "\u5b88\u8b77\u5ead\u9662\u3002" },
+      title: { en: "Guard the yard.", "zh-Hant": "守護庭院。", "zh-Hans": "守护庭院。", ja: "庭を守ろう。", ko: "마당을 지키세요.", es: "Defiende el patio.", "pt-BR": "Defenda o quintal.", fr: "Défendez la cour.", de: "Verteidige den Hof.", it: "Difendi il cortile.", ru: "Защитите двор.", hi: "आँगन की रक्षा करें।", ar: "احمِ الساحة." },
       steps: [
-        { icon: "1", en: ["Collect Sun", "Tap sun drops to gain energy for animal guards."], "zh-Hant": ["\u6536\u96c6\u967d\u5149", "\u9ede\u967d\u5149\u9053\u5177\uff0c\u7372\u5f97\u653e\u7f6e\u52d5\u7269\u5b88\u885b\u7684\u80fd\u91cf\u3002"] },
-        { icon: "2", en: ["Place Guards", "Choose an animal, then tap a grass tile to place it."], "zh-Hant": ["\u653e\u7f6e\u5b88\u885b", "\u9078\u64c7\u52d5\u7269\uff0c\u518d\u9ede\u8349\u5730\u683c\u5b50\u653e\u4e0b\u5b83\u3002"] },
-        { icon: "3", en: ["Stop Enemies", "Animals attack enemies in their lanes. Do not let enemies enter the yard."], "zh-Hant": ["\u64cb\u4f4f\u6575\u4eba", "\u52d5\u7269\u6703\u653b\u64ca\u540c\u8def\u7dda\u7684\u6575\u4eba\uff0c\u5225\u8b93\u6575\u4eba\u9032\u5165\u5ead\u9662\u3002"] },
+        { icon: "1", en: ["Automatic Energy", "Recover 8 energy each combat second. Preparation and pause stop recovery."], "zh-Hant": ["自動恢復能量", "每個戰鬥秒恢復 8 點能量；準備與暫停期間不會恢復。"], "zh-Hans": ["自动恢复能量", "每个战斗秒恢复 8 点能量；准备与暂停期间不会恢复。"], ja: ["エネルギーは自動回復", "戦闘中は毎秒8回復します。準備中と一時停止中は回復しません。"], ko: ["에너지 자동 회복", "전투 중 매초 에너지 8을 회복합니다. 준비와 일시정지 중에는 회복하지 않습니다."], es: ["Energía automática", "Recuperas 8 de energía por segundo de combate. La preparación y la pausa detienen la recuperación."], "pt-BR": ["Energia automática", "Recupere 8 de energia por segundo de combate. Preparação e pausa interrompem a recuperação."], fr: ["Énergie automatique", "Récupérez 8 énergies par seconde de combat. La préparation et la pause arrêtent la récupération."], de: ["Automatische Energie", "Im Kampf erhältst du 8 Energie pro Sekunde. Vorbereitung und Pause stoppen die Erholung."], it: ["Energia automatica", "Recuperi 8 energia per secondo di battaglia. Preparazione e pausa fermano il recupero."], ru: ["Автоэнергия", "В бою восстанавливается 8 энергии в секунду. Подготовка и пауза останавливают восстановление."], hi: ["ऊर्जा अपने आप लौटती है", "युद्ध में हर सेकंड 8 ऊर्जा मिलती है। तैयारी और विराम में ऊर्जा नहीं लौटती।"], ar: ["طاقة تلقائية", "تستعيد 8 طاقة في كل ثانية قتال. يتوقف الاسترداد أثناء التحضير والإيقاف المؤقت."] },
+        { icon: "2", en: ["Place Guards", "Choose an animal, then tap a grass tile to place it."], "zh-Hant": ["放置守衛", "選擇動物，再點草地格子放下牠。"], "zh-Hans": ["放置守卫", "选择动物，再点草地格子放下它。"], ja: ["ガードを配置", "動物を選び、草地のマスをタップして配置します。"], ko: ["수호자 배치", "동물을 고른 뒤 잔디 칸을 눌러 배치하세요."], es: ["Coloca guardianes", "Elige un animal y toca una casilla de césped para colocarlo."], "pt-BR": ["Posicione guardas", "Escolha um animal e toque num espaço de grama para posicioná-lo."], fr: ["Placez les gardiens", "Choisissez un animal, puis touchez une case d’herbe pour le placer."], de: ["Wächter platzieren", "Wähle ein Tier und tippe auf ein Grasfeld, um es zu platzieren."], it: ["Posiziona le guardie", "Scegli un animale, poi tocca una casella d’erba per posizionarlo."], ru: ["Расставьте защитников", "Выберите животное и нажмите клетку с травой, чтобы разместить его."], hi: ["रक्षक रखें", "जानवर चुनें, फिर उसे रखने के लिए घास वाले खाने पर टैप करें।"], ar: ["ضع الحراس", "اختر حيوانًا ثم اضغط مربعًا عشبيًا لوضعه."] },
+        { icon: "3", en: ["Stop Enemies", "Animals attack enemies in their lanes. Do not let enemies enter the yard."], "zh-Hant": ["擋住敵人", "動物會攻擊同路線的敵人，別讓敵人進入庭院。"], "zh-Hans": ["挡住敌人", "动物会攻击同路线的敌人，别让敌人进入庭院。"], ja: ["敵を止める", "動物は同じレーンの敵を攻撃します。敵を庭に入れないでください。"], ko: ["적 막기", "동물은 같은 길의 적을 공격합니다. 적이 마당에 들어오지 못하게 하세요."], es: ["Detén a los enemigos", "Los animales atacan a los enemigos de su carril. No dejes que entren al patio."], "pt-BR": ["Detenha os inimigos", "Os animais atacam inimigos na mesma rota. Não deixe ninguém entrar no quintal."], fr: ["Arrêtez les ennemis", "Les animaux attaquent les ennemis de leur voie. Ne les laissez pas entrer dans la cour."], de: ["Feinde aufhalten", "Tiere greifen Feinde in ihrer Spur an. Lass sie nicht in den Hof gelangen."], it: ["Ferma i nemici", "Gli animali attaccano i nemici nella loro corsia. Non lasciarli entrare nel cortile."], ru: ["Остановите врагов", "Животные атакуют врагов на своей линии. Не дайте им войти во двор."], hi: ["दुश्मनों को रोकें", "जानवर अपनी लेन के दुश्मनों पर हमला करते हैं। उन्हें आँगन में न आने दें।"], ar: ["أوقف الأعداء", "تهاجم الحيوانات أعداء المسار نفسه. لا تدعهم يدخلون الساحة."] },
       ],
     },
     "animal-hidden-safari": {
@@ -482,9 +517,77 @@
         }
       ]
     },
+    "animal-layer-grove": {
+      title: {
+        en: "Build the right layer stack",
+        "zh-Hant": "排出正確的圖層",
+        "zh-Hans": "排出正确的图层",
+        ja: "正しいレイヤー順を作ろう",
+        ko: "올바른 레이어 순서를 만들어요",
+        es: "Ordena las capas",
+        "pt-BR": "Ordene as camadas",
+        fr: "Ordonnez les couches",
+        de: "Ordne die Ebenen",
+        it: "Ordina i livelli",
+        ru: "Соберите правильный порядок слоёв",
+        hi: "परतों का सही क्रम बनाएँ",
+        ar: "رتّب الطبقات بالشكل الصحيح",
+      },
+      steps: [
+        {
+          icon: "◇",
+          en: ["Read the clues", "Order the layers so every visible clue fits. Each clue limits only part of the scene."],
+          "zh-Hant": ["讀懂線索", "排出讓所有可見線索成立的圖層順序。每條線索只限制場景的一部分。"],
+          "zh-Hans": ["读懂线索", "排出让所有可见线索成立的图层顺序。每条线索只约束场景的一部分。"],
+          ja: ["手がかりを読む", "見えるすべての手がかりが成り立つ重なり順を考えます。各手がかりは場面の一部を示します。"],
+          ko: ["단서 읽기", "보이는 모든 단서가 맞도록 레이어 순서를 생각하세요. 각 단서는 장면의 일부를 알려 줘요."],
+          es: ["Lee las pistas", "Ordena las capas para que se cumplan todas las pistas visibles. Cada pista limita una parte de la escena."],
+          "pt-BR": ["Leia as pistas", "Ordene as camadas para cumprir todas as pistas visíveis. Cada pista limita uma parte da cena."],
+          fr: ["Lisez les indices", "Ordonnez les couches pour respecter tous les indices visibles. Chacun limite une partie de la scène."],
+          de: ["Lies die Hinweise", "Ordne die Ebenen so, dass alle sichtbaren Hinweise stimmen. Jeder Hinweis begrenzt einen Teil der Szene."],
+          it: ["Leggi gli indizi", "Ordina i livelli perché tutti gli indizi visibili siano rispettati. Ogni indizio limita una parte della scena."],
+          ru: ["Прочитайте подсказки", "Расположите слои так, чтобы совпали все видимые подсказки. Каждая ограничивает часть сцены."],
+          hi: ["संकेत पढ़ें", "परतों को ऐसे सजाएँ कि सभी दिखने वाले संकेत सही हों। हर संकेत दृश्य के एक हिस्से को सीमित करता है।"],
+          ar: ["اقرأ الأدلة", "رتّب الطبقات لتطابق جميع الأدلة الظاهرة. يقيّد كل دليل جزءاً من المشهد فقط."],
+        },
+        {
+          icon: "↕",
+          en: ["Change the order", "Tap a layer, use ↑/↓ to move it front to back, or ↻ to turn a marked layer."],
+          "zh-Hant": ["調整圖層", "點選圖層，再用 ↑/↓ 調整前後；標記的圖層可按 ↻ 旋轉。"],
+          "zh-Hans": ["调整图层", "点选图层，再用 ↑/↓ 调整前后；标记的图层可按 ↻ 旋转。"],
+          ja: ["順番を変える", "レイヤーをタップし、↑/↓で前後を入れ替えます。印のあるレイヤーは↻で回転できます。"],
+          ko: ["순서 바꾸기", "레이어를 누르고 ↑/↓로 앞뒤를 바꾸세요. 표시된 레이어는 ↻로 회전할 수 있어요."],
+          es: ["Cambia el orden", "Toca una capa y usa ↑/↓ para moverla delante o detrás; ↻ gira las capas marcadas."],
+          "pt-BR": ["Mude a ordem", "Toque numa camada e use ↑/↓ para movê-la; ↻ gira as camadas marcadas."],
+          fr: ["Changez l’ordre", "Touchez une couche et utilisez ↑/↓ pour la déplacer ; ↻ fait pivoter les couches marquées."],
+          de: ["Ändere die Reihenfolge", "Tippe eine Ebene an und verschiebe sie mit ↑/↓. Markierte Ebenen drehst du mit ↻."],
+          it: ["Cambia l’ordine", "Tocca un livello e usa ↑/↓ per spostarlo; ↻ ruota i livelli contrassegnati."],
+          ru: ["Измените порядок", "Нажмите слой и перемещайте его кнопками ↑/↓; кнопка ↻ вращает отмеченные слои."],
+          hi: ["क्रम बदलें", "परत चुनें और आगे-पीछे करने के लिए ↑/↓ दबाएँ; चिह्नित परत को ↻ से घुमाएँ।"],
+          ar: ["غيّر الترتيب", "اضغط طبقة واستخدم ↑/↓ لتحريكها أماماً أو خلفاً؛ ↻ يدير الطبقات المحددة."],
+        },
+        {
+          icon: "✓",
+          en: ["Check and retry", "Tap Check when every clue fits. Unmet clues show what to revisit; there are no lives or timer."],
+          "zh-Hant": ["檢查並再試", "所有線索吻合時按「檢查」修復棲地；未吻合的線索會指出要重看的地方，沒有生命或計時限制。"],
+          "zh-Hans": ["检查并重试", "所有线索吻合时按“检查”修复栖地；未吻合的线索会指出要重看的地方，没有生命或计时限制。"],
+          ja: ["確認して再挑戦", "すべての手がかりが合ったら確認をタップして生息地を復元します。不一致の手がかりが見直す場所を示します。時間やライフの制限はありません。"],
+          ko: ["확인하고 다시 시도", "모든 단서가 맞으면 확인을 눌러 서식지를 복원하세요. 맞지 않는 단서가 다시 볼 곳을 알려 줘요. 시간이나 목숨 제한은 없어요."],
+          es: ["Comprueba e inténtalo de nuevo", "Cuando coincidan todas las pistas, toca Comprobar para restaurar el hábitat. Las pistas pendientes indican qué revisar; no hay vidas ni tiempo límite."],
+          "pt-BR": ["Confira e tente de novo", "Quando todas as pistas coincidirem, toque em Conferir para restaurar o habitat. As pistas pendentes mostram o que rever; não há vidas nem cronômetro."],
+          fr: ["Vérifiez et réessayez", "Quand tous les indices concordent, touchez Vérifier pour restaurer l’habitat. Les indices non résolus indiquent quoi revoir ; sans vies ni chronomètre."],
+          de: ["Prüfe und versuche es erneut", "Wenn alle Hinweise stimmen, tippe auf Prüfen, um den Lebensraum wiederherzustellen. Offene Hinweise zeigen, was du ändern kannst; es gibt weder Leben noch Zeitlimit."],
+          it: ["Controlla e riprova", "Quando tutti gli indizi coincidono, tocca Controlla per ripristinare l’habitat. Quelli irrisolti indicano cosa rivedere; non ci sono vite né timer."],
+          ru: ["Проверьте и попробуйте снова", "Когда все подсказки совпадут, нажмите «Проверить», чтобы восстановить среду. Несовпавшие подскажут, что пересмотреть; жизней и таймера нет."],
+          hi: ["जाँचें और फिर कोशिश करें", "सभी संकेत मेल खाने पर जाँचें दबाकर आवास बहाल करें। अधूरे संकेत बताते हैं कि क्या फिर देखना है; समय या जीवन सीमा नहीं है।"],
+          ar: ["تحقق وحاول مجدداً", "عندما تتطابق الأدلة اضغط تحقق لاستعادة الموطن. توضح الأدلة غير المطابقة ما يجب مراجعته؛ لا يوجد مؤقت أو أرواح."],
+        },
+      ],
+    },
   };
 
   const battleTutorialGames = new Set([
+    "animal-layer-grove",
     "animal-crownfall",
     "freecell-solitaire",
     "pyramid-solitaire",

@@ -23,11 +23,11 @@
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-game-version" content="v12">
   <meta name="description" content="Trascina due pietre lunari nei loro attracchi e osserva la pietra collegata." />
   <title>Prato Magnetico | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260921-magnet-meadow-v9-settings-owner">
+  <link rel="stylesheet" href="style.css?v=20260924-magnet-meadow-v12-guide">
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -71,7 +71,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-magnet-meadow" data-wp-game-version="v9" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-magnet-meadow" data-wp-game-version="v12" data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
       <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
@@ -103,15 +103,18 @@
     <section id="guideScreen" class="guide game-page-info" data-wp-game-guide hidden aria-labelledby="guideHeading">
       <h2 id="guideHeading" data-copy="guideTitle">Come si gioca</h2>
       <div class="guide-grid">
-        <article><b data-copy="guideOneTitle">1. Scegli una pietra</b><p data-copy="guideOne">Scegli una pietra e trascinala verso un attracco.</p></article>
-        <article><b data-copy="guideTwoTitle">2. Osserva il legame</b><p data-copy="guideTwo">L’altra pietra si muove per attrazione o repulsione.</p></article>
-        <article><b data-copy="guideThreeTitle">3. Controlla la coppia</b><p data-copy="guideThree">Metti entrambe le pietre negli attracchi luminosi.</p></article>
+        <article><h3 data-copy="guideOneTitle">1. Scegli una pietra</h3><p data-copy="guideOne">Scegli una pietra e trascinala verso un attracco.</p></article>
+        <article><h3 data-copy="guideTwoTitle">2. Osserva il legame</h3><p data-copy="guideTwo">L’altra pietra si muove per attrazione o repulsione.</p></article>
+        <article><h3 data-copy="guideThreeTitle">3. Controlla la coppia</h3><p data-copy="guideThree">Metti entrambe le pietre negli attracchi luminosi.</p></article>
+        <article><h3 data-copy="guideCampaignTitle">Leggi tutto il prato</h3><p data-copy="guideCampaign">Trenta attracchi creati a mano formano sei archi, con traguardi al 5, 10, 15, 20, 25 e 30. Leggi bersaglio e legame prima di muovere. Ogni vittoria apre l’attracco seguente e quelli completati restano rigiocabili. I progressi restano in questo browser; niente tempo, vite, classifica o penalità.</p></article>
+        <article><h3 data-copy="guideMechanicsTitle">Pianifica legami variabili</h3><p data-copy="guideMechanics">All’inizio impari attrazione e repulsione; poi arrivano cambio di polarità, ancore fisse, attracchi bloccati e catene di tre pietre. Una pietra ancorata non si muove e un attracco bloccato non accetta pezzi. La guida numerata mantiene lo stesso ordine fisico in ogni lingua.</p></article>
+        <article><h3 data-copy="guideProgressTitle">Controlla, recupera e migliora</h3><p data-copy="guideProgress">Controlla quando tutte le posizioni coincidono con il bersaglio. Un errore resta visibile per il confronto e Azzera ripristina l’inizio. Dopo la vittoria scegli il prossimo attracco, la mappa o l’inizio. Il miglior totale aiuta ad allenarsi senza bloccare i progressi.</p></article>
       </div>
     </section>
 
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">Indietro</button><h2 data-copy="stages">Mappa del prato</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-legacy-control" hidden type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-hidden="true" tabindex="-1" aria-label="Impostazioni"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Impostazioni</span></button></header>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy-aria-label="back" aria-label="Indietro"><span aria-hidden="true">←</span></button><h2 data-copy="stages">Mappa del prato</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-legacy-control" hidden type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-hidden="true" tabindex="-1" aria-label="Impostazioni"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Impostazioni</span></button></header>
         <p class="panel-intro" data-copy="mapIntro">Ogni attracco insegna come una mossa cambia la coppia collegata.</p>
         <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div>
         <nav class="stage-tabs" aria-label="Meadow map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Mappa del prato</button><span aria-hidden="true"></span></nav>
@@ -121,13 +124,13 @@
 
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="back">Indietro</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="Audio">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy-aria-label="back" aria-label="Indietro"><span aria-hidden="true">←</span></button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="Audio">♫</button></header>
         <div id="battlePanel">
           <div class="mission-row"><div><p class="eyebrow" data-copy="dockKicker">ATTRACCO DEL PRATO</p><p id="roundHint" class="panel-intro"></p></div><span id="relationBadge" class="relation-badge"></span></div>
           <div class="target-card"><span data-copy="target">Schema dell’attracco</span><strong id="targetText"></strong><span id="moveText" class="move-text"></span></div>
           <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
-          <div id="magnetTrack" class="magnet-track" aria-label="Magnet meadow board">
-            <div id="slotGrid" class="slot-grid"></div>
+          <div id="magnetTrack" class="magnet-track" dir="ltr" aria-label="Magnet meadow board">
+            <div id="slotGrid" class="slot-grid" dir="ltr"></div>
             <div id="stoneLayer" class="stone-layer"></div>
           </div>
           <div id="legend" class="legend"><span class="legend-stone stone-a" data-copy="stoneA">Pietra lunare A</span><span class="legend-stone stone-b" data-copy="stoneB">Pietra lunare B</span></div>
@@ -146,8 +149,8 @@
     </section>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260921-magnet-meadow-v9-settings-owner"></script>
-  <script src="game.js?v=20260921-magnet-meadow-v9-settings-owner"></script>
+  <script src="locales.js?v=20260924-magnet-meadow-v12-guide"></script>
+  <script src="game.js?v=20260924-magnet-meadow-v12-guide"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>

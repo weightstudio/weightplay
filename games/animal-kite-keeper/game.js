@@ -4,29 +4,45 @@
   const locales = window.KITE_KEEPER_LOCALES || { en: {
     title: "Kite Keeper", subtitle: "Choose the wind. Find the lantern dock.", guideTitle: "How to play", guide: "Choose one wind card at a time. Reach the lantern dock in exactly three gusts.", start: "Start a sky route", map: "Sky routes", settings: "Settings", close: "Close settings", language: "Language", sound: "Sound", on: "On", off: "Off", best: "Best checks: {count}", route1: "Meadow Lift", route2: "Reef Breeze", route3: "Snow Lantern", hint1: "East, north, east", hint2: "North, west, north", hint3: "East, south, east", routePrompt: "Read the dock marker, then choose the next wind.", dock: "Lantern dock", wind: "Wind cards", north: "North", east: "East", south: "South", west: "West", position: "Kite position: {x}, {y}", gusts: "Gusts: {count} / 3", choose: "Choose a wind card", selected: "Wind chosen: {name}", wrong: "That gust drifts away from the dock. Try the route again.", correct: "Perfect flight! The kite reached the lantern dock.", reset: "Reset route", resultTitle: "Route complete", resultText: "You guided the kite with {checks} checks.", next: "Next route", finished: "All sky routes complete", back: "Back to General lobby", ariaKite: "Kite flight board"
   } };
-  const routes = [
-    { id: 1, name: "route1", hint: "hint1", start: [0, 2], target: [2, 1], sequence: ["east", "north", "east"] },
-    { id: 2, name: "route2", hint: "hint2", start: [3, 2], target: [2, 0], sequence: ["north", "west", "north"] },
-    { id: 3, name: "route3", hint: "hint3", start: [0, 0], target: [2, 1], sequence: ["east", "south", "east"] },
-  ];
   const vectors = { north: [0, -1], east: [1, 0], south: [0, 1], west: [-1, 0] };
+  const directionSets = [
+    ["east", "north", "east"], ["north", "west", "north"], ["east", "south", "east"],
+    ["west", "north", "east"], ["north", "east", "south"], ["south", "west", "north"],
+    ["east", "east", "north"], ["west", "south", "east"], ["north", "north", "west"], ["south", "east", "north"],
+  ];
+  const starts = [[0, 2], [3, 2], [0, 0], [2, 2], [1, 1], [2, 0], [0, 1], [3, 0], [3, 2], [1, 0]];
+  const routes = Array.from({ length: 30 }, (_, index) => {
+    const family = index % 3;
+    const sequence = directionSets[Math.floor(index / 3)];
+    const preferred = starts[Math.floor(index / 3)];
+    const candidates = [preferred, ...Array.from({ length: 12 }, (_, value) => [value % 4, Math.floor(value / 4)])];
+    const start = [...candidates.find((candidate) => {
+      let point = [...candidate];
+      return sequence.every((direction) => {
+        point = [point[0] + vectors[direction][0], point[1] + vectors[direction][1]];
+        return point[0] >= 0 && point[0] <= 3 && point[1] >= 0 && point[1] <= 2;
+      });
+    })];
+    const resolvedTarget = sequence.reduce((point, direction) => [point[0] + vectors[direction][0], point[1] + vectors[direction][1]], start);
+    return { id: index + 1, name: `route${family + 1}`, start, target: resolvedTarget, sequence };
+  });
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = window.__WEIGHTPLAY_ROUTE_LOCALE__ || routeLocaleMap[routeSegment] || "";
   const shellCopy = {
-    en: { brand: "GENERAL", progress: "3 sky routes · 3 gusts each", stage: "STAGE MAP", battle: "BATTLE", result: "RESULT" },
-    "zh-Hant": { brand: "一般", progress: "3 條天空路線 · 每條 3 陣風", stage: "天空路線", battle: "對戰", result: "結果" },
-    "zh-Hans": { brand: "一般", progress: "3 条天空路线 · 每条 3 阵风", stage: "天空路线", battle: "对战", result: "结果" },
-    ja: { brand: "一般", progress: "天空ルート3本 · 各3回の風", stage: "空のルート", battle: "バトル", result: "結果" },
-    ko: { brand: "일반", progress: "하늘 경로 3개 · 각 3번의 바람", stage: "하늘 경로", battle: "배틀", result: "결과" },
-    es: { brand: "GENERAL", progress: "3 rutas celestes · 3 ráfagas cada una", stage: "RUTAS CELESTES", battle: "BATALLA", result: "RESULTADO" },
-    "pt-BR": { brand: "GERAL", progress: "3 rotas celestes · 3 rajadas cada", stage: "ROTAS CELESTES", battle: "BATALHA", result: "RESULTADO" },
-    fr: { brand: "GÉNÉRAL", progress: "3 routes célestes · 3 rafales chacune", stage: "ROUTES CÉLESTES", battle: "BATAILLE", result: "RÉSULTAT" },
-    de: { brand: "ALLGEMEIN", progress: "3 Himmelsrouten · je 3 Böen", stage: "HIMMELSROUTEN", battle: "BATTLE", result: "ERGEBNIS" },
-    it: { brand: "GENERALE", progress: "3 rotte celesti · 3 raffiche ciascuna", stage: "ROTTE CELESTI", battle: "BATTAGLIA", result: "RISULTATO" },
-    ru: { brand: "ОБЩИЕ", progress: "3 небесных маршрута · по 3 порыва", stage: "НЕБЕСНЫЕ МАРШРУТЫ", battle: "БИТВА", result: "РЕЗУЛЬТАТ" },
-    hi: { brand: "सामान्य", progress: "3 आकाश मार्ग · हर एक में 3 झोंके", stage: "आकाश मार्ग", battle: "बैटल", result: "परिणाम" },
-    ar: { brand: "عام", progress: "3 مسارات سماوية · 3 هبات لكل مسار", stage: "المسارات السماوية", battle: "المعركة", result: "النتيجة" },
+    en: { brand: "GENERAL", progress: "30 sky routes · 3 gusts each", stage: "STAGE MAP", battle: "BATTLE", result: "RESULT" },
+    "zh-Hant": { brand: "一般", progress: "30 條天空路線 · 每條 3 陣風", stage: "天空路線", battle: "對戰", result: "結果" },
+    "zh-Hans": { brand: "一般", progress: "30 条天空路线 · 每条 3 阵风", stage: "天空路线", battle: "对战", result: "结果" },
+    ja: { brand: "一般", progress: "天空ルート30本 · 各3回の風", stage: "空のルート", battle: "バトル", result: "結果" },
+    ko: { brand: "일반", progress: "하늘 경로 30개 · 각 3번의 바람", stage: "하늘 경로", battle: "배틀", result: "결과" },
+    es: { brand: "GENERAL", progress: "30 rutas celestes · 3 ráfagas cada una", stage: "RUTAS CELESTES", battle: "BATALLA", result: "RESULTADO" },
+    "pt-BR": { brand: "GERAL", progress: "30 rotas celestes · 3 rajadas cada", stage: "ROTAS CELESTES", battle: "BATALHA", result: "RESULTADO" },
+    fr: { brand: "GÉNÉRAL", progress: "30 routes célestes · 3 rafales chacune", stage: "ROUTES CÉLESTES", battle: "BATAILLE", result: "RÉSULTAT" },
+    de: { brand: "ALLGEMEIN", progress: "30 Himmelsrouten · je 3 Böen", stage: "HIMMELSROUTEN", battle: "BATTLE", result: "ERGEBNIS" },
+    it: { brand: "GENERALE", progress: "30 rotte celesti · 3 raffiche ciascuna", stage: "ROTTE CELESTI", battle: "BATTAGLIA", result: "RISULTATO" },
+    ru: { brand: "ОБЩИЕ", progress: "30 небесных маршрутов · по 3 порыва", stage: "НЕБЕСНЫЕ МАРШРУТЫ", battle: "БИТВА", result: "РЕЗУЛЬТАТ" },
+    hi: { brand: "सामान्य", progress: "30 आकाश मार्ग · हर एक में 3 झोंके", stage: "आकाश मार्ग", battle: "बैटल", result: "परिणाम" },
+    ar: { brand: "عام", progress: "30 مسارًا سماويًا · 3 هبات لكل مسار", stage: "المسارات السماوية", battle: "المعركة", result: "النتيجة" },
   };
   const metadataCopy = {
     en: { kicker: "6+ · FAMILY · ORIGINAL PROTOTYPE", posterAlt: "Kite Keeper game artwork", guideAlt: "Moss Shell Taro holding a kite spool", guideLabel: "Kite Keeper game guide", resultAlt: "Moss Shell Taro celebrating with his kite" },
@@ -56,18 +72,22 @@
   let locked = false;
 
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
+  const routeLabel = (route) => `${copy(route.name)} ${route.id}`;
+  const routeHint = (route) => route.sequence.map((direction) => copy(direction)).join(" · ");
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `kite_keeper_${name}`, route: routeIndex + 1, gust: path.length, ...data }); };
   const bestValue = () => Number(localStorage.getItem("weightplay-kite-keeper-best-v1") || 0);
   const bestText = () => bestValue() || "—";
   function show(screen) {
+    const resultActive = screen === "result";
     document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
     $("settingsPanel").hidden = true;
     $("backBtn").hidden = screen !== "main";
     if ($("stageBack")) $("stageBack").hidden = screen !== "stage";
     document.querySelectorAll(".game-page-info,[data-wp-game-guide]").forEach((node) => { node.hidden = screen !== "main"; });
     if ($("battleAdReserve")) {
-      $("battleAdReserve").hidden = screen !== "battle";
-      $("battleAdReserve").setAttribute("aria-hidden", String(screen !== "battle"));
+      const reserveActive = screen === "battle" || resultActive;
+      $("battleAdReserve").hidden = !reserveActive;
+      $("battleAdReserve").setAttribute("aria-hidden", String(!reserveActive));
     }
   }
   function applyLocale() {
@@ -108,8 +128,8 @@
       const button = document.createElement("button");
       button.className = "stage-card"; button.type = "button";
       button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(index === routeIndex)); button.setAttribute("aria-controls", "battleScreen"); button.tabIndex = index === routeIndex ? 0 : -1;
-      button.setAttribute("aria-label", `${copy(route.name)}. ${copy(route.hint)}`);
-      button.innerHTML = `<span><strong>${copy(route.name)}</strong><small>${copy(route.hint)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`;
+      button.setAttribute("aria-label", `${routeLabel(route)}. ${routeHint(route)}`);
+      button.innerHTML = `<span><strong>${routeLabel(route)}</strong><small>${routeHint(route)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`;
       button.addEventListener("click", () => startRoute(index));
       root.appendChild(button);
     });
@@ -120,6 +140,14 @@
     const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? cards.length - 1 : delta ? (current + delta + cards.length) % cards.length : -1;
     if (nextIndex < 0 || !cards[nextIndex]) return;
     event.preventDefault(); cards.forEach((card, index) => { card.tabIndex = index === nextIndex ? 0 : -1; }); cards[nextIndex].focus();
+  }
+  function focusRouteFamily(family) {
+    const cards = [...document.querySelectorAll("#stageList .stage-card")];
+    const target = cards[Number(family)];
+    if (!target) return;
+    cards.forEach((card) => { card.tabIndex = card === target ? 0 : -1; });
+    target.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    target.focus({ preventScroll: true });
   }
   function startRoute(index) {
     routeIndex = index; const route = routes[index];
@@ -133,8 +161,8 @@
   }
   function renderBattle() {
     const route = routes[routeIndex]; if (!route || !$("windGrid")) return;
-    $("routeTitle").textContent = copy(route.name); $("progressPill").textContent = `${routeIndex + 1} / ${routes.length}`;
-    $("prompt").textContent = `${copy(route.hint)} · ${copy("routePrompt")}`;
+    $("routeTitle").textContent = routeLabel(route); $("progressPill").textContent = `${routeIndex + 1} / ${routes.length}`;
+    $("prompt").textContent = `${routeHint(route)} · ${copy("routePrompt")}`;
     $("dockTarget").textContent = `${route.target[0]}, ${route.target[1]}`;
     $("position").textContent = copy("position", { x: position[0], y: position[1] });
     $("gusts").textContent = copy("gusts", { count: path.length });
@@ -187,6 +215,7 @@
   function goLobby() { window.location.href = "../../index.html"; }
   function bind() {
     $("startBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("stageList").addEventListener("keydown", handleStageKeydown);
+    document.querySelectorAll("#routeFamilyNav [data-route-family]").forEach((button) => button.addEventListener("click", () => focusRouteFamily(button.dataset.routeFamily)));
     $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRoute);
     $("resetBtn").addEventListener("click", resetRoute); $("battleBack").addEventListener("click", () => { show("stage"); renderStages(); }); $("stageBack").addEventListener("click", () => { show("main"); });
     $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; });

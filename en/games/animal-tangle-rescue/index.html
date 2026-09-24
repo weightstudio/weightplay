@@ -24,11 +24,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v6">
+  <meta name="weightplay-game-version" content="v10">
+  <meta name="weightplay-interface-version" content="7">
   <meta name="description" content="Swap two vine endpoints until every rescue trail reaches the matching animal shelter." />
   <title>Tangle Rescue | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-tangle-rescue-feedback-envelope-v2">
-    <link rel="stylesheet" href="style.css?v=20260921-tangle-rescue-v6-direct-gap-repair">
+    <link rel="stylesheet" href="style.css?v=20260924-tangle-rescue-v10-webp-assets-landscape-rtl-fit">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Tangle Rescue | WeightPlay" />
@@ -70,7 +71,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v6" data-wp-battle-layout="native" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v10" data-wp-battle-layout="native" data-screen="main">
   <div id="loadingScreen" class="loading-screen" role="status" aria-live="polite">
     <div class="loading-mark" aria-hidden="true">✦</div>
     <p data-copy="loading">Preparing the rescue map…</p>
@@ -84,7 +85,7 @@
           <button id="mainSettingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" data-wp-settings data-copy-aria-label="settings" aria-label="Settings"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Settings</span></button>
         </header>
         <section class="hero-card">
-          <img class="cover-art main-poster" src="assets/animal-tangle-rescue-cover.png" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
+          <img class="cover-art main-poster" src="assets/animal-tangle-rescue-cover.webp" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
           <div class="hero-copy">
             <p class="eyebrow" data-copy="kicker">Moss Shell Taro’s rescue map</p>
             <h1 data-copy="title">Tangle Rescue</h1>
@@ -117,8 +118,8 @@
     </details>
 
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
-      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 data-copy="map">Rescue map</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button" type="button" data-copy-aria-label="help" aria-label="How to play">i</button></header>
+      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.webp" style="--wp-stage-art:url('/games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.webp')" data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy-aria-label="back" aria-label="Back"><span aria-hidden="true">←</span></button><h2 data-copy="map">Rescue map</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button" type="button" data-copy-aria-label="help" aria-label="How to play">i</button></header>
         <p class="panel-intro" data-copy="mapIntro">Each board adds one more endpoint decision.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
         <nav class="stage-tabs" data-copy-aria-label="map" aria-label="Rescue map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="map">Rescue map</button><span aria-hidden="true"></span></nav>
@@ -128,21 +129,22 @@
 
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="map">Rescue map</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="Sound">♫</button></header>
+        <div id="battlePlayLayer" class="battle-play-layer">
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy-aria-label="map" aria-label="Rescue map"><span aria-hidden="true">←</span></button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="Sound">♫</button></header>
         <div class="mission-row"><div><p class="eyebrow" data-copy="boardKicker">RESCUE BOARD</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
         <section class="tangle-board" aria-labelledby="boardTitle"><h3 id="boardTitle" class="sr-only" data-copy="boardTitle">Vine endpoint board</h3><div class="board-labels"><span data-copy="endpoints">Vine ends</span><span data-copy="shelters">Shelters</span></div><div id="boardDiagram" class="board-diagram"></div></section>
         <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
         <p class="move-hint" data-copy="moveHint">Select two vine ends to swap them. There is no timer.</p>
         <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the rescue</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset board</button><button id="leaveBtn" class="text-btn" type="button" data-copy="leave">Leave board</button></div>
+        </div>
+        <section id="resultScreen" class="result-state" data-screen="result" hidden>
+          <div class="result-canvas">
+            <header class="panel-head"><span class="panel-utility" aria-hidden="true"></span><h2 data-copy="resultKicker">Rescue result</h2><span class="panel-utility" aria-hidden="true">✦</span></header>
+            <div class="result-card"><div class="result-character" aria-hidden="true"><img src="assets/animal-tangle-rescue-guide.webp?v=20260924-tangle-v10-guide-webp-768" alt="" width="768" height="1152"></div><p class="eyebrow" data-copy="successKicker">TRAIL CONNECTED</p><h1 id="resultHeading" tabindex="-1"></h1><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultStagesBtn" class="secondary-btn" type="button" data-copy="stages">Rescue map</button><button id="nextStageBtn" class="primary-btn" type="button" data-copy="nextStage">Next board</button><button id="retryBtn" class="text-btn" type="button" data-copy="replay">Replay board</button></div></div>
+          </div>
+        </section>
       </div>
       <div class="battle-ad-reserve game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-    </section>
-
-    <section id="resultScreen" class="screen" data-screen="result" hidden>
-      <div class="result-canvas" data-wp-logical-result-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><span class="panel-utility" aria-hidden="true"></span><h2 data-copy="resultKicker">Rescue result</h2><span class="panel-utility" aria-hidden="true">✦</span></header>
-        <div class="result-card"><div class="result-character" aria-hidden="true"><img src="assets/animal-tangle-rescue-guide.png" alt="" width="1024" height="1536"></div><p class="eyebrow" data-copy="successKicker">TRAIL CONNECTED</p><h1 id="resultHeading"></h1><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultStagesBtn" class="secondary-btn" type="button" data-copy="stages">Rescue map</button><button id="nextStageBtn" class="primary-btn" type="button" data-copy="nextStage">Next board</button><button id="retryBtn" class="text-btn" type="button" data-copy="replay">Replay board</button></div></div>
-      </div>
     </section>
   </div>
   <div id="leaveDialog" class="dialog-backdrop" hidden><div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this board?</h2><p data-copy="leaveText">Your current swaps will be cleared, but completed boards stay saved.</p><div class="dialog-actions"><button id="cancelLeaveBtn" class="secondary-btn" type="button" data-copy="stay">Stay</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="leaveConfirm">Leave board</button></div></div></div>
@@ -150,7 +152,7 @@
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260904-tangle-rescue-locale-state-v3"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260904-tangle-rescue-locale-state-v3"></script>
-  <script src="locales.js?v=20260921-tangle-rescue-v6-direct-gap-repair"></script>
-  <script src="game.js?v=20260921-tangle-rescue-v6-direct-gap-repair"></script>
+  <script src="locales.js?v=20260924-tangle-rescue-v9-campaign-locales"></script>
+  <script src="game.js?v=20260924-tangle-rescue-v10-result-scroll-reset"></script>
 </body>
 </html>

@@ -17765,6 +17765,12 @@
     localizedGames[localeCode] ||= {};
     localizedGames[localeCode]["tic-tac-toe"] = { ...games["tic-tac-toe"], ...copy, ...(ticTacToeGuideDetails[localeCode] || {}) };
   }
+  // English has no localized override, so register its base facts with the
+  // profile merger instead of letting the Guide fallback erase the genre.
+  gameplayProfiles["tic-tac-toe"] = {
+    gameplay: games["tic-tac-toe"].gameplay,
+    genre: games["tic-tac-toe"].genre,
+  };
   // v7 guide repair: the runtime Snake no longer has a fixed six-food finish.
   // Keep the public Guide, metadata, and every locale aligned with continuous
   // movement so players are not taught a rule the current build does not use.

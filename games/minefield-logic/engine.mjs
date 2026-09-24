@@ -61,22 +61,42 @@ export function deduce(view) {
 
 export class Minefield {
   #mines = null;
+  #fixedMines = null;
+  #fixedStart = 0;
   #opened = new Set();
   #flags = new Set();
   #history = [];
   #random;
-  constructor(level = 'easy', random = Math.random) {
+  constructor(level = 'easy', random = Math.random, authoredLayout = null) {
     if (!Object.hasOwn(LEVELS, level) || typeof random !== 'function') throw new TypeError('Invalid minefield configuration');
     this.level = level;
     Object.assign(this, LEVELS[level]);
     this.total = this.mines;
     delete this.mines;
+    if (authoredLayout !== null) {
+      if (!authoredLayout || !Array.isArray(authoredLayout.mines)) throw new TypeError('Invalid authored minefield layout');
+      const mines = authoredLayout.mines;
+      const start = authoredLayout.start ?? 0;
+      if (mines.length === 0 || mines.length >= this.rows * this.cols || new Set(mines).size !== mines.length ||
+          mines.some(i => !Number.isInteger(i) || i < 0 || i >= this.rows * this.cols) ||
+          !Number.isInteger(start) || start < 0 || start >= this.rows * this.cols || mines.includes(start) ||
+          neighbours(start, this.rows, this.cols).some(i => mines.includes(i))) {
+        throw new TypeError('Authored layout requires unique mines and a safe zero opening');
+      }
+      this.#fixedMines = new Set(mines);
+      this.#fixedStart = start;
+      this.total = mines.length;
+    }
     this.status = 'ready'; this.moves = 0; this.assisted = false;
     this.#random = random;
   }
   #valid(i) { return Number.isInteger(i) && i >= 0 && i < this.rows * this.cols; }
   #count(i) { return neighbours(i, this.rows, this.cols).filter(n => this.#mines?.has(n)).length; }
   #generate(first) {
+    if (this.#fixedMines) {
+      this.#mines = new Set(this.#fixedMines);
+      return;
+    }
     const excluded = new Set([first, ...neighbours(first, this.rows, this.cols)]);
     const candidates = Array.from({ length: this.rows * this.cols }, (_, i) => i).filter(i => !excluded.has(i));
     // Partial Fisher-Yates: finite work even for a degenerate random source.
@@ -87,6 +107,15 @@ export class Minefield {
       [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
     }
     this.#mines = new Set(candidates.slice(0, this.total));
+  }
+  /** Prepare the fixed, visibly-safe opening for an authored campaign stage. */
+  prepareAuthoredOpening() {
+    if (!this.#fixedMines || this.status !== 'ready' || this.#mines) return false;
+    this.#mines = new Set(this.#fixedMines);
+    this.status = 'playing';
+    this.#flood([this.#fixedStart]);
+    this.moves = 0;
+    return this.status === 'playing';
   }
   #save() {
     this.#history.push({ opened: [...this.#opened], flags: [...this.#flags], mines: this.#mines ? [...this.#mines] : null, status: this.status, moves: this.moves });

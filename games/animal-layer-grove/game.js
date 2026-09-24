@@ -120,8 +120,14 @@
     leave.setAttribute('role', 'dialog'); leave.setAttribute('aria-modal', 'true'); leave.setAttribute('aria-labelledby', 'leaveTitle'); leave.setAttribute('aria-describedby', 'leaveText');
     leave.innerHTML = '<div class="leave-card"><h2 id="leaveTitle" data-puzzle-copy="leaveTitle"></h2><p id="leaveText"></p><div class="leave-actions"><button id="continueBtn" class="primary-btn" type="button" data-puzzle-copy="continuePlay"></button><button id="leaveBtn" class="secondary-btn" type="button" data-puzzle-copy="map"></button></div></div>';
     canvas.append(leave);
-    result.setAttribute('role', 'dialog'); result.setAttribute('aria-modal', 'true'); result.setAttribute('aria-labelledby', 'resultTitle'); result.setAttribute('aria-describedby', 'resultText');
+    result.setAttribute('role', 'dialog'); result.setAttribute('aria-modal', 'true'); result.setAttribute('aria-labelledby', 'resultTitle'); result.setAttribute('aria-describedby', 'resultText resultGrade resultSkillReport');
     const medal = document.createElement('p'); medal.id = 'resultGrade'; $('resultText').after(medal);
+    const skillReport = document.createElement('section'); skillReport.id = 'resultSkillReport'; skillReport.className = 'result-skill-report'; skillReport.setAttribute('role', 'group'); skillReport.setAttribute('aria-labelledby', 'resultSkillTitle');
+    const skillTitle = document.createElement('h3'); skillTitle.id = 'resultSkillTitle';
+    const skillNames = document.createElement('p'); skillNames.id = 'resultSkillNames';
+    const encouragement = document.createElement('p'); encouragement.id = 'resultEncouragement';
+    const skillDisclaimer = document.createElement('p'); skillDisclaimer.id = 'resultDisclaimer'; skillDisclaimer.className = 'result-skill-disclaimer';
+    skillReport.append(skillTitle, skillNames, encouragement, skillDisclaimer); medal.after(skillReport);
     const cells = [];
     for (let y = -1; y < 4; y += 1) for (let x = -1; x < 4; x += 1) {
       const node = document.createElement(x < 0 || y < 0 ? 'span' : 'button');
@@ -235,6 +241,10 @@
       $('resultTitle').textContent = t('resultTitle');
       $('resultText').textContent = t('resultText', { moves: state.moves, hints: state.hints, best: record.best[state.scene] });
       medal.textContent = `${t('grade', { stars: stars ?? (state.hints ? 1 : state.moves <= current().par + 2 ? 3 : 2) })} · ★★★ ≤ ${current().par + 2}`;
+      skillTitle.textContent = t('skillReportTitle');
+      skillNames.textContent = t('skillsValue');
+      encouragement.textContent = t('resultEncouragement');
+      skillDisclaimer.textContent = t('resultDisclaimer');
       $('resultMapBtn').textContent = t('map'); $('resultMapBtn').hidden = false;
       $('resultPrimaryBtn').textContent = t('next'); $('resultPrimaryBtn').disabled = state.scene >= levels.length - 1 || state.scene + 1 > record.completed;
       $('resultHomeBtn').textContent = t('replay');
@@ -255,6 +265,7 @@
       const settled = screen === 'result'; result.hidden = !settled; result.inert = !settled; content.hidden = settled; content.inert = settled; header.hidden = settled; header.inert = settled;
       if (guide) { guide.hidden = owner !== 'main'; guide.inert = owner !== 'main'; }
       if (owner === 'main') renderMain(); syncShared(); header.hidden = settled; header.inert = settled;
+      if (screen === 'battle') window.dispatchEvent(new Event('weightplay:battle-open'));
       focusFrame = requestAnimationFrame(() => { if (ticket !== generation) return; if (screen === 'stage') stageController?.center(frontier()); (screen === 'main' ? $('startBtn') : screen === 'stage' ? rail.querySelector('[aria-current="true"]') : settled ? $('resultMapBtn') : $('battleBackBtn'))?.focus({ preventScroll: true }); });
     }
     function bindStage(button, index) {

@@ -54,6 +54,8 @@ body[data-wp-game-id="animal-crownfall"] .wp-tutorial-button{width:44px;height:4
 body[data-wp-game-id="animal-crownfall"] .wp-tutorial-close{width:48px;height:48px;min-width:48px;min-height:48px;flex-shrink:0}
 .wp-tutorial-backdrop[data-game-id="animal-crownfall"]{z-index:200}
 body[data-screen="battle"] .wp-tutorial-button{top:70px}
+/* The floating help control must not sit above a shared Settings popover. */
+body[data-wp-game-id="animal-crownfall"]:has(.wp-shell-settings-popover:not([hidden])) .wp-tutorial-button{display:none}
 body[data-screen="stage"] .wp-tutorial-button{display:none}
 #stageContent{position:relative;display:block}
 #stageSummary{display:none}

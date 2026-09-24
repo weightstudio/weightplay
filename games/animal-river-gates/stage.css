@@ -1,0 +1,239 @@
+/* River Gates' game-owned Stage content inside the shared Stage frame. */
+#stageScreen > .stage-workspace {
+  position: relative;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#stageScreen #stageList.stage-rail {
+  position: absolute;
+  inset-inline: 0;
+  top: max(99px, min(38%, calc(100% - 99px)));
+  width: 100%;
+  height: 198px;
+  min-height: 198px !important;
+  transform: translateY(-50%);
+}
+
+#stageScreen #stageList > .stage-card {
+  align-items: center;
+  border: 2px solid var(--wp-ui-line, #c7dedb);
+  border-radius: 14px;
+  background: #fff;
+  color: #183546;
+  padding: 14px;
+  text-align: left;
+}
+
+#stageScreen #stageList > .stage-card[aria-current="true"] {
+  border-color: var(--wp-ui-active, #54d5ff);
+  outline: 2px solid var(--wp-ui-active, #54d5ff);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgb(84 213 255 / 28%), 0 0 22px rgb(84 213 255 / 46%);
+}
+
+#stageScreen #stageList > .stage-card[aria-disabled="true"] {
+  opacity: .68;
+}
+
+#stageScreen #stageList > .stage-card:focus-visible {
+  outline: 3px solid #ffd36c;
+  outline-offset: 5px;
+}
+
+#stageScreen .stage-card-content {
+  flex: 1 1 auto;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+
+#stageScreen .stage-card-content strong {
+  color: inherit;
+  line-height: 1.2;
+}
+
+#stageScreen .stage-card-content small {
+  width: 100%;
+  color: var(--muted, #5e7480);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+#stageScreen .stage-card-content small + small {
+  margin-top: 5px;
+}
+
+#stageScreen .stage-bottom-nav [role="tab"] {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  border: 2px solid var(--wp-ui-active, #54d5ff);
+  border-radius: var(--wp-ui-radius, 10px);
+  background: var(--wp-ui-active, #54d5ff);
+  color: var(--wp-ui-text, #17243a);
+  font: 700 14px/1.2 system-ui, sans-serif;
+}
+
+#battleScreen .battle-workspace {
+  grid-row: 2;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The six authored gate choices and all Battle controls must stay inside the
+   shared logical canvas on short landscape screens. */
+@media (orientation: landscape) and (max-height: 460px) {
+  #battleScreen .battle-play-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto 88px auto 44px auto;
+    align-content: start;
+    gap: 3px;
+    padding: 4px 8px;
+    overflow: hidden;
+  }
+
+  #battleScreen .battle-play-workspace > :is(.prompt, .rule, .flow, .status) {
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  #battleScreen .battle-play-workspace > .gate-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+    height: 88px;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+  }
+
+  #battleScreen .battle-play-workspace .gate {
+    box-sizing: border-box;
+    width: 100%;
+    height: 88px;
+    min-width: 0;
+    min-height: 0;
+    gap: 2px;
+    padding: 3px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  #battleScreen .battle-play-workspace .gate-icon {
+    width: 40px;
+    height: 26px;
+    margin: 0 auto;
+  }
+
+  #battleScreen .battle-play-workspace .gate strong {
+    min-width: 0;
+    font-size: 11px;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  #battleScreen .battle-play-workspace .gate small {
+    display: -webkit-box;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    font-size: 9px;
+    line-height: 1.1;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  #battleScreen .battle-play-workspace > .flow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #battleScreen .battle-play-workspace > .battle-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 4px;
+    min-width: 0;
+    min-height: 44px;
+    margin: 0;
+  }
+
+  #battleScreen .battle-play-workspace > .battle-actions > button {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 2px 4px;
+    font-size: 12px;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+}
+
+#battleScreen .battle-play-workspace {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px 14px;
+}
+
+@media (orientation: landscape) and (max-height: 460px) {
+  #battleScreen .battle-play-workspace {
+    overflow: hidden;
+    padding: 4px 8px;
+  }
+}
+
+#battleScreen #resultScreen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: auto;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+#battleScreen #resultScreen .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
+  margin: 8px 0 0;
+}
+
+#battleScreen #resultScreen .result-actions > button {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 4px;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.1;
+}

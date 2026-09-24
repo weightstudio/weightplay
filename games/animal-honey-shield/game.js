@@ -22,7 +22,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v56";
+  const GAME_VERSION="v59";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -482,6 +482,30 @@
     const dx=b.x-a.x,dy=b.y-a.y,len=dx*dx+dy*dy||1,t=Math.max(0,Math.min(1,((px-a.x)*dx+(py-a.y)*dy)/len));
     const x=a.x+dx*t,y=a.y+dy*t;return{x,y,d:Math.hypot(px-x,py-y),nx:-dy/Math.sqrt(len),ny:dx/Math.sqrt(len)};
   }
+  function segmentDistanceSquared(px,py,a,b){
+    const dx=b.x-a.x,dy=b.y-a.y,lengthSquared=dx*dx+dy*dy||1;
+    const t=Math.max(0,Math.min(1,((px-a.x)*dx+(py-a.y)*dy)/lengthSquared));
+    const x=a.x+dx*t-px,y=a.y+dy*t-py;
+    return x*x+y*y;
+  }
+  function strokeGridMask(strokes,minDistance=0,maxDistance=30){
+    const cell=20,cols=50,rows=31,mask=new Uint8Array(cols*rows),minSquared=minDistance*minDistance,maxSquared=maxDistance*maxDistance;
+    for(const stroke of strokes){
+      for(let segment=1;segment<stroke.points.length;segment++){
+        const a=stroke.points[segment-1],b=stroke.points[segment];
+        const minCol=Math.max(0,Math.ceil((Math.min(a.x,b.x)-maxDistance-cell/2)/cell));
+        const maxCol=Math.min(cols-1,Math.floor((Math.max(a.x,b.x)+maxDistance-cell/2)/cell));
+        const minRow=Math.max(0,Math.ceil((Math.min(a.y,b.y)-maxDistance-cell/2)/cell));
+        const maxRow=Math.min(rows-1,Math.floor((Math.max(a.y,b.y)+maxDistance-cell/2)/cell));
+        for(let row=minRow;row<=maxRow;row++)for(let col=minCol;col<=maxCol;col++){
+          const index=row*cols+col;if(mask[index])continue;
+          const distanceSquared=segmentDistanceSquared(col*cell+cell/2,row*cell+cell/2,a,b);
+          if(distanceSquared<=maxSquared&&distanceSquared>=minSquared)mask[index]=1;
+        }
+      }
+    }
+    return mask;
+  }
   function pointHitsSolid(point,solid,margin=0){
     if(solid.kind==="platform")return point.x>=solid.x-margin&&point.x<=solid.x+solid.w+margin&&point.y>=solid.y-margin&&point.y<=solid.y+solid.h+margin;
     return Math.hypot(point.x-solid.x,point.y-solid.y)<=solid.r+margin;
@@ -500,6 +524,32 @@
       }
     }
     return samples;
+  }
+  function sampledStrokeMorph(points,pointWeights,closed=false){
+    const path=points.map(point=>point),weights=pointWeights.slice();
+    if(closed&&path.length>1){path[path.length-1]=path[0];weights[weights.length-1]=weights[0]}
+    const samples=[],sampleWeights=[];
+    for(let i=0;i<path.length;i++){
+      samples.push(path[i]);sampleWeights.push(weights[i]);
+      if(!i)continue;
+      const a=path[i-1],b=path[i],distance=Math.hypot(b.x-a.x,b.y-a.y),steps=Math.ceil(distance/12);
+      for(let step=1;step<steps;step++){
+        const t=step/steps;
+        samples.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
+        sampleWeights.push(weights[i-1]+(weights[i]-weights[i-1])*t);
+      }
+    }
+    return{samples,weights:sampleWeights};
+  }
+  function weightedPenetrationScore(samples,weights,direction,fraction,spec){
+    const margin=10;
+    let score=0;
+    for(const solid of spec.solids)for(let index=0;index<samples.length;index++){
+      const point=samples[index],weight=weights[index]*fraction;
+      const penetration=solidPenetration({x:point.x+direction.x*weight,y:point.y+direction.y*weight},solid,margin);
+      score+=penetration*penetration;
+    }
+    return score;
   }
   function solidPenetration(point,solid,margin){
     if(solid.kind==="platform"){
@@ -521,10 +571,14 @@
   function penetrationScoreForPoints(points,spec,dx=0,dy=0){
     return penetrationScoreForSamples(sampledStrokePoints(points),spec,dx,dy);
   }
-  function canTranslateStroke(stroke,dx,dy,spec){
+  function strokeMotionGeometry(stroke,spec){
+    const samples=sampledStrokePoints(stroke.points),before=penetrationScoreForSamples(samples,spec);
+    return{samples,before,tolerance:Math.max(.05,before*.002)};
+  }
+  function canTranslateStroke(stroke,dx,dy,spec,motion=null){
     if(stroke.anchored)return false;
-    const samples=sampledStrokePoints(stroke.points),before=penetrationScoreForSamples(samples,spec),tolerance=Math.max(.05,before*.002),steps=Math.max(1,Math.ceil(Math.hypot(dx,dy)/3));
-    for(let step=1;step<=steps;step++)if(penetrationScoreForSamples(samples,spec,dx*step/steps,dy*step/steps)>before+tolerance)return false;
+    const geometry=motion||strokeMotionGeometry(stroke,spec),steps=Math.max(1,Math.ceil(Math.hypot(dx,dy)/3));
+    for(let step=1;step<=steps;step++)if(penetrationScoreForSamples(geometry.samples,spec,dx*step/steps,dy*step/steps)>geometry.before+geometry.tolerance)return false;
     return true;
   }
   function availableStrokeMoves(stroke,spec,distance=10){
@@ -540,15 +594,15 @@
       return alignment>best.alignment?{index,alignment}:best;
     },{index:0,alignment:-Infinity}).index;
   }
-  function escapePushDirectionIndex(stroke,spec,excludedIndex=-1){
-    const before=strokePenetrationScore(stroke,spec),preferred=preferredPushDirectionIndex(stroke,spec);
+  function escapePushDirectionIndex(stroke,spec,excludedIndex=-1,motion=null){
+    const geometry=motion||strokeMotionGeometry(stroke,spec),before=geometry.before,preferred=preferredPushDirectionIndex(stroke,spec);
     const xs=stroke.points.map(point=>point.x),ys=stroke.points.map(point=>point.y),span={x:Math.max(...xs)-Math.min(...xs),y:Math.max(...ys)-Math.min(...ys)};
     const candidates=PUSH_DIRECTIONS.map((direction,index)=>({direction,index}))
-      .filter(candidate=>candidate.index!==excludedIndex&&canTranslateStroke(stroke,candidate.direction.x*8,candidate.direction.y*8,spec))
+      .filter(candidate=>candidate.index!==excludedIndex&&canTranslateStroke(stroke,candidate.direction.x*8,candidate.direction.y*8,spec,geometry))
       .map(candidate=>({
         ...candidate,
         edgeEscape:Math.abs(candidate.direction.x)*span.x+Math.abs(candidate.direction.y)*span.y,
-        score:before-strokePenetrationScore(stroke,spec,candidate.direction.x*8,candidate.direction.y*8)+(candidate.index===preferred?100000:0),
+        score:before-penetrationScoreForSamples(geometry.samples,spec,candidate.direction.x*8,candidate.direction.y*8)+(candidate.index===preferred?100000:0),
       }))
       .sort((a,b)=>{
         if(a.edgeEscape!==b.edgeEscape)return b.edgeEscape-a.edgeEscape;
@@ -556,10 +610,11 @@
       });
     return candidates[0]?.index??-1;
   }
-  function spanningWallEscapeDirectionIndex(stroke,spec){
+  function spanningWallEscapeDirectionIndex(stroke,spec,motion=null){
+    const geometry=motion||strokeMotionGeometry(stroke,spec);
     const xs=stroke.points.map(point=>point.x),ys=stroke.points.map(point=>point.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),spanX=maxX-minX,spanY=maxY-minY;
     const indexes=spanX>=600&&spanX>spanY*2?[2,3]:spanY>=380&&spanY>spanX*2?[0,1]:[];
-    const candidates=indexes.filter(index=>canTranslateStroke(stroke,PUSH_DIRECTIONS[index].x*8,PUSH_DIRECTIONS[index].y*8,spec))
+    const candidates=indexes.filter(index=>canTranslateStroke(stroke,PUSH_DIRECTIONS[index].x*8,PUSH_DIRECTIONS[index].y*8,spec,geometry))
       .map(index=>({index,distance:index===2
         ?Math.max(0,maxX-976)+Math.min(...spec.hives.map(hive=>1000-hive.x))
         :index===3?Math.max(0,24-minX)+Math.min(...spec.hives.map(hive=>hive.x))
@@ -654,14 +709,15 @@
     stroke.anchored=strokeHasShapeLock(stroke,spec);
     return stroke.anchored;
   }
-  function tryMoveStroke(stroke,dx,dy,spec){
+  function tryMoveStroke(stroke,dx,dy,spec,motion=null){
     if(stroke.anchored){stroke.blockedFlash=.3;return false}
+    const geometry=motion||strokeMotionGeometry(stroke,spec);
     let fraction=1;
-    if(!canTranslateStroke(stroke,dx,dy,spec)){
+    if(!canTranslateStroke(stroke,dx,dy,spec,geometry)){
       let low=0,high=1;
       for(let attempt=0;attempt<8;attempt++){
         const middle=(low+high)/2;
-        if(canTranslateStroke(stroke,dx*middle,dy*middle,spec))low=middle;else high=middle;
+        if(canTranslateStroke(stroke,dx*middle,dy*middle,spec,geometry))low=middle;else high=middle;
       }
       fraction=low;
       if(Math.hypot(dx*fraction,dy*fraction)<.2){stroke.blockedFlash=.3;return false}
@@ -678,25 +734,23 @@
     const pushDistance=Math.hypot(pushX,pushY);if(pushDistance<.2)return 0;
     const closed=stroke.points.length>3&&Math.hypot(stroke.points[0].x-stroke.points.at(-1).x,stroke.points[0].y-stroke.points.at(-1).y)<=34;
     const before=penetrationScoreForPoints(stroke.points,spec),tolerance=Math.max(.05,before*.002);
+    const pointWeights=stroke.points.map(point=>{
+      const distance=Math.hypot(point.x-contact.x,point.y-contact.y);
+      return .08+.92*Math.exp(-(distance*distance)/(2*165*165));
+    });
+    const morph=sampledStrokeMorph(stroke.points,pointWeights,closed);
     const preferredAngle=Number.isFinite(stroke.flexAngle)?stroke.flexAngle:Math.atan2(pushY,pushX);
     const directions=[{x:pushX,y:pushY},...MOVE_DIRECTIONS.map(direction=>({x:direction.x*pushDistance,y:direction.y*pushDistance}))]
       .sort((a,b)=>Math.cos(Math.atan2(b.y,b.x)-preferredAngle)-Math.cos(Math.atan2(a.y,a.x)-preferredAngle));
     for(const direction of directions){
-      const displaced=fraction=>{
-      const points=stroke.points.map(point=>{
-        const distance=Math.hypot(point.x-contact.x,point.y-contact.y),weight=.08+.92*Math.exp(-(distance*distance)/(2*165*165));
-          return{x:point.x+direction.x*weight*fraction,y:point.y+direction.y*weight*fraction};
-      });
-      if(closed)points[points.length-1]={...points[0]};
-      return points;
-      };
       let low=0,high=1;
       for(let attempt=0;attempt<8;attempt++){
         const middle=(low+high)/2;
-        if(penetrationScoreForPoints(displaced(middle),spec)<=before+tolerance)low=middle;else high=middle;
+        if(weightedPenetrationScore(morph.samples,morph.weights,direction,middle,spec)<=before+tolerance)low=middle;else high=middle;
       }
       if(pushDistance*low<.2)continue;
-      stroke.points=displaced(low);
+      stroke.points=stroke.points.map((point,index)=>({x:point.x+direction.x*pointWeights[index]*low,y:point.y+direction.y*pointWeights[index]*low}));
+      if(closed)stroke.points[stroke.points.length-1]={...stroke.points[0]};
       const movement=pushDistance*low;stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;noteWallMove(stroke,movement,"flex");
       stroke.flexAngle=Math.atan2(direction.y,direction.x);
       if(state.wallFirstMovedAt===null)state.wallFirstMovedAt=state.elapsed;
@@ -737,9 +791,23 @@
       return{x:center.x+x*cosine-y*sine,y:center.y+x*sine+y*cosine};
     });
   }
-  function canRotateStroke(stroke,center,angle,spec){
-    const samples=sampledStrokePoints(stroke.points),before=penetrationScoreForSamples(samples,spec),tolerance=Math.max(.05,before*.002),radius=Math.max(1,...samples.map(point=>Math.hypot(point.x-center.x,point.y-center.y))),steps=Math.max(1,Math.ceil(radius*Math.abs(angle)/3));
-    for(let step=1;step<=steps;step++)if(penetrationScoreForSamples(rotatedPoints(samples,center,angle*step/steps),spec)>before+tolerance)return false;
+  function rotationPenetrationScore(samples,center,angle,spec){
+    const cosine=Math.cos(angle),sine=Math.sin(angle),margin=10;
+    let score=0;
+    for(const solid of spec.solids)for(const point of samples){
+      const x=point.x-center.x,y=point.y-center.y;
+      const penetration=solidPenetration({x:center.x+x*cosine-y*sine,y:center.y+x*sine+y*cosine},solid,margin);
+      score+=penetration*penetration;
+    }
+    return score;
+  }
+  function canRotateStroke(stroke,center,angle,spec,motion=null){
+    const geometry=motion||(()=>{
+      const samples=sampledStrokePoints(stroke.points),before=penetrationScoreForSamples(samples,spec);
+      return{samples,before,tolerance:Math.max(.05,before*.002),radius:Math.max(1,...samples.map(point=>Math.hypot(point.x-center.x,point.y-center.y)))};
+    })();
+    const steps=Math.max(1,Math.ceil(geometry.radius*Math.abs(angle)/3));
+    for(let step=1;step<=steps;step++)if(rotationPenetrationScore(geometry.samples,center,angle*step/steps,spec)>geometry.before+geometry.tolerance)return false;
     return true;
   }
   function rotateStrokeFromImpact(stroke,contact,pushX,pushY,spec){
@@ -750,12 +818,13 @@
     const maxAngle=Math.min(.065,8/radius);
     let angle=Math.max(-maxAngle,Math.min(maxAngle,torque/(radius*impulse)*.065));
     if(Math.abs(angle)<.002)return 0;
+    const samples=sampledStrokePoints(stroke.points),before=penetrationScoreForSamples(samples,spec),rotationGeometry={samples,before,tolerance:Math.max(.05,before*.002),radius:Math.max(1,...samples.map(point=>Math.hypot(point.x-center.x,point.y-center.y)))};
     let fraction=1;
-    if(!canRotateStroke(stroke,center,angle,spec)){
+    if(!canRotateStroke(stroke,center,angle,spec,rotationGeometry)){
       let low=0,high=1;
       for(let attempt=0;attempt<8;attempt++){
         const middle=(low+high)/2;
-        if(canRotateStroke(stroke,center,angle*middle,spec))low=middle;else high=middle;
+        if(canRotateStroke(stroke,center,angle*middle,spec,rotationGeometry))low=middle;else high=middle;
       }
       fraction=low;
       if(radius*Math.abs(angle*fraction)<.2){stroke.blockedFlash=.2;return 0}
@@ -820,27 +889,21 @@
     const length=Math.sqrt(lengthSquared),perpX=-dy/length,perpY=dx/length,clearance=solid.r+54;
     return{x:solid.x+perpX*clearance*bee.route+dx/length*24,y:solid.y+perpY*clearance*bee.route+dy/length*24};
   }
-  function pointHitsStroke(point,stroke,margin=22){
-    for(let index=1;index<stroke.points.length;index++){
-      if(nearestOnSegment(point.x,point.y,stroke.points[index-1],stroke.points[index]).d<=margin)return true;
-    }
-    return false;
-  }
   function buildNavigationField(spec,goalPoint=spec.dog,goalPredicate=null){
     const cell=20,cols=50,rows=31,total=cols*rows,blocked=new Uint8Array(total),distance=new Int16Array(total);
     distance.fill(-1);
     const strokes=state.strokes;
+    const strokeBlocked=strokeGridMask(strokes,0,30);
     for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){
       const x=col*cell+cell/2,y=row*cell+cell/2,index=row*cols+col;
       const solidBlocked=spec.solids.some(solid=>pointHitsSolid({x,y},solid,19));
-      const lineBlocked=strokes.some(stroke=>pointHitsStroke({x,y},stroke,30));
-      blocked[index]=solidBlocked||lineBlocked?1:0;
+      blocked[index]=solidBlocked||strokeBlocked[index]?1:0;
     }
     const queue=new Int16Array(total);let head=0,tail=0,reachable=0;
     if(goalPredicate){
       for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){
         const index=row*cols+col,point={x:col*cell+cell/2,y:row*cell+cell/2};
-        if(blocked[index]||!goalPredicate(point))continue;
+        if(blocked[index]||!goalPredicate(point,index))continue;
         queue[tail++]=index;distance[index]=0;
       }
     }else{
@@ -980,19 +1043,20 @@
         const supporters=activeWallSupport(stroke);state.wallSupportContributions+=Math.max(0,supporters.length-1);
         const beforeContacts=new Map(supporters.map(supporter=>[supporter,closestStrokePoint(stroke,supporter)]));
         const pushDistance=Math.min(4.2,(82+Math.min(5,supporters.length)*12)*Math.max(.012,Math.min(.034,dt)));
+        const pushGeometry=strokeMotionGeometry(stroke,spec);
         if(!Number.isInteger(stroke.pushDirectionIndex)){
-          const escapeIndex=spanningWallEscapeDirectionIndex(stroke,spec);
+          const escapeIndex=spanningWallEscapeDirectionIndex(stroke,spec,pushGeometry);
           const preferredIndex=preferredPushDirectionIndex(stroke,spec);
           commitStrokePushDirection(stroke,escapeIndex>=0?escapeIndex:preferredIndex);
         }
         let pushDirection=PUSH_DIRECTIONS[stroke.pushDirectionIndex],pushX=pushDirection.x*pushDistance,pushY=pushDirection.y*pushDistance;
         let flexed=0;
-        let moved=!bee.routeOpen&&!stroke.anchored&&tryMoveStroke(stroke,pushX,pushY,spec);
+        let moved=!bee.routeOpen&&!stroke.anchored&&tryMoveStroke(stroke,pushX,pushY,spec,pushGeometry);
         if(!bee.routeOpen&&!stroke.anchored&&!moved){
-          const escapeIndex=escapePushDirectionIndex(stroke,spec,stroke.pushDirectionIndex);
+          const escapeIndex=escapePushDirectionIndex(stroke,spec,stroke.pushDirectionIndex,pushGeometry);
           if(escapeIndex>=0){
             commitStrokePushDirection(stroke,escapeIndex);pushDirection=PUSH_DIRECTIONS[escapeIndex];pushX=pushDirection.x*pushDistance;pushY=pushDirection.y*pushDistance;
-            moved=tryMoveStroke(stroke,pushX,pushY,spec);
+            moved=tryMoveStroke(stroke,pushX,pushY,spec,pushGeometry);
           }
         }
         if(!bee.routeOpen&&!stroke.anchored&&!moved){
@@ -1077,7 +1141,8 @@
           wallTarget=ownContact;state.directWallTargets++;
         }else{
           if(!state.wallNav||state.wallNavClock<=0){
-            state.wallNav=buildNavigationField(spec,null,point=>looseStrokes.some(stroke=>closestStrokePoint(stroke,point).d<=30));state.wallNavClock=.14;state.wallNavBuilds++;
+            const wallTargets=strokeGridMask(looseStrokes,30,52);
+            state.wallNav=buildNavigationField(spec,null,(_point,index)=>Boolean(wallTargets[index]));state.wallNavClock=.14;state.wallNavBuilds++;
           }
           wallTarget=navigationDirection(state.wallNav,bee.x,bee.y);
         }
@@ -1242,17 +1307,42 @@
     ctx.strokeStyle=material.edge;ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,Math.max(0,w-2),Math.max(0,h-2));
     ctx.restore();
   }
+  function drawBlockWaterZone(zone){
+    const bounds=canvas.getBoundingClientRect();
+    const scaleX=Math.max(.0001,bounds.width/1000),scaleY=Math.max(.0001,bounds.height/620);
+    const tileW=36,tileH=tileW*scaleX/scaleY;
+    const colors=["rgba(26,112,145,.78)","rgba(42,143,164,.74)","rgba(29,125,154,.8)","rgba(57,155,171,.7)"];
+    ctx.save();ctx.beginPath();ctx.rect(zone.x,zone.y,zone.w,zone.h);ctx.clip();
+    ctx.fillStyle="rgba(17,91,123,.82)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);
+    for(let row=0,ty=zone.y;ty<zone.y+zone.h;row++,ty+=tileH){
+      for(let col=0,tx=zone.x;tx<zone.x+zone.w;col++,tx+=tileW){
+        const tileHeight=Math.min(tileH,zone.y+zone.h-ty),tileWidth=Math.min(tileW,zone.x+zone.w-tx);
+        const shade=(col*3+row*5+stageIndex)%colors.length;
+        ctx.fillStyle=colors[shade];ctx.fillRect(tx+1,ty+1,Math.max(0,tileWidth-2),Math.max(0,tileHeight-2));
+        // A short square glint and shaded lower edge make each water tile
+        // read as a flat block facet instead of a painted wave or picture.
+        ctx.fillStyle="rgba(194,237,215,.38)";
+        ctx.fillRect(tx+tileWidth*.16,ty+tileHeight*.16,tileWidth*.34,Math.max(2,tileHeight*.07));
+        ctx.fillStyle="rgba(7,74,101,.26)";
+        ctx.fillRect(tx+tileWidth*.9,ty+tileHeight*.13,tileWidth*.1,tileHeight*.78);
+      }
+    }
+    ctx.restore();
+    ctx.fillStyle="rgba(8,74,101,.8)";
+    ctx.fillRect(zone.x,zone.y,zone.w,4);ctx.fillRect(zone.x,zone.y+zone.h-4,zone.w,4);
+    ctx.fillRect(zone.x,zone.y,4,zone.h);ctx.fillRect(zone.x+zone.w-4,zone.y,4,zone.h);
+    ctx.fillStyle="rgba(195,238,216,.5)";
+    ctx.fillRect(zone.x+5,zone.y+5,Math.max(0,zone.w-10),3);
+  }
   function drawTerrain(spec){
     ctx.save();ctx.globalCompositeOperation="soft-light";ctx.globalAlpha=.12;ctx.fillStyle=spec.theme.sky;ctx.fillRect(0,0,1000,620);ctx.restore();
     for(const zone of spec.zones){
       // Meadow flowers were decorative only (no physics effect). The new
       // painted meadow already supplies them; do not overlay a dotted panel.
       if(zone.kind==="flowers")continue;
+      if(zone.kind==="water"){drawBlockWaterZone(zone);continue}
       ctx.save();ctx.beginPath();ctx.roundRect(zone.x,zone.y,zone.w,zone.h,28);ctx.clip();
-      if(zone.kind==="water"){
-        ctx.fillStyle="rgba(37,169,214,.38)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);ctx.strokeStyle="rgba(191,247,255,.72)";ctx.lineWidth=5;
-        for(let y=zone.y+18;y<zone.y+zone.h;y+=32){ctx.beginPath();for(let x=zone.x-20;x<=zone.x+zone.w+20;x+=28){const waveY=y+Math.sin((x+y)*.045)*5;x===zone.x-20?ctx.moveTo(x,waveY):ctx.lineTo(x,waveY)}ctx.stroke()}
-      }else if(zone.kind==="wind"){
+      if(zone.kind==="wind"){
         ctx.fillStyle="rgba(166,224,255,.12)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);ctx.strokeStyle="rgba(220,250,255,.55)";ctx.lineWidth=4;const horizontal=Math.abs(zone.dx||0)>=Math.abs(zone.dy||0);
         for(let offset=24;offset<(horizontal?zone.h:zone.w);offset+=42){ctx.beginPath();if(horizontal){const from=zone.dx>=0?zone.x+18:zone.x+zone.w-18,to=zone.dx>=0?zone.x+zone.w-18:zone.x+18;ctx.moveTo(from,zone.y+offset);ctx.lineTo(to,zone.y+offset)}else{const from=zone.dy>=0?zone.y+18:zone.y+zone.h-18,to=zone.dy>=0?zone.y+zone.h-18:zone.y+18;ctx.moveTo(zone.x+offset,from);ctx.lineTo(zone.x+offset,to)}ctx.stroke()}
       }else if(zone.kind==="bramble"){

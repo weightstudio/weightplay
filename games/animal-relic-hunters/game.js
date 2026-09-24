@@ -25,13 +25,20 @@
 
   const ARENA_WIDTH = 800;
   const ARENA_HEIGHT = 1000;
+  const SIMULATION_STEP_MS = 1000 / 60;
+  const MAX_CATCH_UP_STEPS = 8;
+  const PULSE_RADIUS = 220;
+  const PULSE_COOLDOWN_TICKS = 60 * 12;
+  const PULSE_MIN_COOLDOWN_TICKS = 60 * 7;
+  const PULSE_EFFECT_MS = 420;
+  const PULSE_BUTTON = { x: 704, y: 914, radius: 68 };
   const ROOM_ENTRY_GRACE_MS = 1500;
   const EXPEDITION_COUNT = 30;
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 25;
-  const INTERFACE_VERSION = 6;
+  const GAME_VERSION = 28;
+  const INTERFACE_VERSION = 7;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
   const localeKey = "weightPlayLocale";
@@ -1028,6 +1035,39 @@
     nextExpedition: "المهمة التالية",
   });
 
+  const pulseText = {
+    en: { pulseLabel: "RELIC PULSE", pulseReady: "READY", pulseCooldown: "COOLDOWN {seconds}s", pulseHit: "Relic Pulse! Nearby enemies staggered.", pulseWard: "The relic pulse struck an enemy ward.", pulseWait: "Relic Pulse recharges in {seconds}s.", pulseUsage: "Press Space or tap Relic Pulse to damage nearby enemies and clear enemy shots." },
+    "zh-Hant": { pulseLabel: "遺物脈衝", pulseReady: "就緒", pulseCooldown: "冷卻 {seconds} 秒", pulseHit: "遺物脈衝！周圍敵人受到震擊。", pulseWard: "遺物脈衝擊中了敵方護盾。", pulseWait: "遺物脈衝還需 {seconds} 秒充能。", pulseUsage: "按空白鍵或點擊「遺物脈衝」，傷害附近敵人並清除敵方彈幕。" },
+    "zh-Hans": { pulseLabel: "遗物脉冲", pulseReady: "就绪", pulseCooldown: "冷却 {seconds} 秒", pulseHit: "遗物脉冲！周围敌人受到震击。", pulseWard: "遗物脉冲击中了敌方护盾。", pulseWait: "遗物脉冲还需 {seconds} 秒充能。", pulseUsage: "按空格键或点击“遗物脉冲”，伤害附近敌人并清除敌方弹幕。" },
+    ja: { pulseLabel: "遺物パルス", pulseReady: "使用可能", pulseCooldown: "再充填 {seconds}秒", pulseHit: "遺物パルス！周囲の敵をひるませた。", pulseWard: "遺物パルスが敵の障壁に当たった。", pulseWait: "遺物パルスの再充填まであと{seconds}秒。", pulseUsage: "スペースキーまたは遺物パルスをタップして、周囲の敵にダメージを与え、敵弾を消そう。" },
+    ko: { pulseLabel: "유물 파동", pulseReady: "사용 가능", pulseCooldown: "재충전 {seconds}초", pulseHit: "유물 파동! 주변 적이 휘청입니다.", pulseWard: "유물 파동이 적의 보호막에 막혔습니다.", pulseWait: "유물 파동 재충전까지 {seconds}초 남았습니다.", pulseUsage: "스페이스바를 누르거나 유물 파동을 탭해 주변 적에게 피해를 주고 적 탄환을 지우세요." },
+    es: { pulseLabel: "PULSO RELIQUIA", pulseReady: "LISTO", pulseCooldown: "RECARGA {seconds}s", pulseHit: "¡Pulso de reliquia! Los enemigos cercanos se tambalean.", pulseWard: "El pulso de reliquia golpeó una barrera enemiga.", pulseWait: "El pulso de reliquia se recarga en {seconds}s.", pulseUsage: "Pulsa Espacio o toca Pulso reliquia para dañar a enemigos cercanos y despejar sus proyectiles." },
+    "pt-BR": { pulseLabel: "PULSO RELÍQUIA", pulseReady: "PRONTO", pulseCooldown: "RECARGA {seconds}s", pulseHit: "Pulso de relíquia! Inimigos próximos cambalearam.", pulseWard: "O pulso de relíquia atingiu uma barreira inimiga.", pulseWait: "O pulso de relíquia recarrega em {seconds}s.", pulseUsage: "Pressione Espaço ou toque em Pulso Relíquia para ferir inimigos próximos e limpar disparos inimigos." },
+    fr: { pulseLabel: "IMPULSION RELIQUE", pulseReady: "PRÊT", pulseCooldown: "RECHARGE {seconds}s", pulseHit: "Impulsion de relique ! Les ennemis proches vacillent.", pulseWard: "L’impulsion de relique a frappé une barrière ennemie.", pulseWait: "L’impulsion de relique recharge dans {seconds}s.", pulseUsage: "Appuyez sur Espace ou touchez Impulsion relique pour blesser les ennemis proches et dissiper leurs tirs." },
+    de: { pulseLabel: "RELIKTIMPULS", pulseReady: "BEREIT", pulseCooldown: "AUFLADEN {seconds}s", pulseHit: "Reliktimpuls! Gegner in der Nähe geraten ins Taumeln.", pulseWard: "Der Reliktimpuls traf einen gegnerischen Schutzschild.", pulseWait: "Der Reliktimpuls lädt in {seconds}s wieder auf.", pulseUsage: "Drücke die Leertaste oder tippe auf Reliktimpuls, um nahe Gegner zu treffen und feindliche Schüsse zu beseitigen." },
+    it: { pulseLabel: "IMPULSO RELIQUIA", pulseReady: "PRONTO", pulseCooldown: "RICARICA {seconds}s", pulseHit: "Impulso reliquia! I nemici vicini barcollano.", pulseWard: "L’impulso reliquia ha colpito una barriera nemica.", pulseWait: "L’impulso reliquia si ricarica in {seconds}s.", pulseUsage: "Premi Spazio o tocca Impulso reliquia per danneggiare i nemici vicini e disperdere i loro colpi." },
+    ru: { pulseLabel: "ИМПУЛЬС РЕЛИКВИИ", pulseReady: "ГОТОВ", pulseCooldown: "ЗАРЯДКА {seconds} с", pulseHit: "Импульс реликвии! Близкие враги ошеломлены.", pulseWard: "Импульс реликвии ударил по вражескому щиту.", pulseWait: "Импульс реликвии зарядится через {seconds} с.", pulseUsage: "Нажмите пробел или коснитесь «Импульс реликвии», чтобы ранить близких врагов и очистить вражеские снаряды." },
+    hi: { pulseLabel: "अवशेष तरंग", pulseReady: "तैयार", pulseCooldown: "रीचार्ज {seconds} सेकंड", pulseHit: "अवशेष तरंग! पास के दुश्मन लड़खड़ा गए।", pulseWard: "अवशेष तरंग दुश्मन की ढाल से टकराई।", pulseWait: "अवशेष तरंग {seconds} सेकंड में तैयार होगी।", pulseUsage: "पास के दुश्मनों को नुकसान पहुँचाने और दुश्मन के गोले हटाने के लिए Space दबाएँ या अवशेष तरंग टैप करें।" },
+    ar: { pulseLabel: "نبضة الأثر", pulseReady: "جاهزة", pulseCooldown: "إعادة الشحن {seconds} ث", pulseHit: "نبضة الأثر! ترنّح الأعداء القريبون.", pulseWard: "اصطدمت نبضة الأثر بحاجز عدو.", pulseWait: "تُشحن نبضة الأثر خلال {seconds} ث.", pulseUsage: "اضغط Space أو المس نبضة الأثر لإصابة الأعداء القريبين وإزالة طلقات الأعداء." },
+  };
+  const pulseRelicDescriptions = {
+    en: { relic_speed_desc: "Decrease bullet firing interval by 20%; shorten Relic Pulse cooldown by 1 second per stack (min 7 seconds).", relic_damage_desc: "Increase bullet damage by 20%; add 15% Relic Pulse damage per stack." },
+    "zh-Hant": { relic_speed_desc: "武器自動射擊間隔縮短 20%；每層速度遺物縮短脈衝冷卻 1 秒（最短 7 秒）。", relic_damage_desc: "子彈傷害提高 20%；每層傷害遺物另使脈衝傷害提高 15%。" },
+    "zh-Hans": { relic_speed_desc: "武器自动射击间隔缩短 20%；每层速度遗物缩短脉冲冷却 1 秒（最短 7 秒）。", relic_damage_desc: "子弹伤害提高 20%；每层伤害遗物另使脉冲伤害提高 15%。" },
+    ja: { relic_speed_desc: "武器の発射間隔が20%短縮。遺物パルスの再充填も重ねるごとに1秒短縮（最短7秒）。", relic_damage_desc: "弾丸のダメージが20%増加。重ねるごとに遺物パルスのダメージも15%増加。" },
+    ko: { relic_speed_desc: "무기 발사 간격이 20% 줄고 유물 파동 재충전이 중첩마다 1초 줄어듭니다(최소 7초).", relic_damage_desc: "탄환 피해가 20% 증가하고, 중첩마다 유물 파동 피해가 15% 증가합니다." },
+    es: { relic_speed_desc: "Reduce un 20 % el intervalo de disparo y 1 s la recarga del Pulso reliquia por acumulación (mínimo 7 s).", relic_damage_desc: "Aumenta un 20 % el daño de proyectil y un 15 % el del Pulso reliquia por acumulación." },
+    "pt-BR": { relic_speed_desc: "Reduz o intervalo dos disparos em 20% e a recarga do Pulso Relíquia em 1 s por acúmulo (mínimo 7 s).", relic_damage_desc: "Aumenta o dano dos projéteis em 20% e o do Pulso Relíquia em 15% por acúmulo." },
+    fr: { relic_speed_desc: "Réduit de 20 % l’intervalle de tir et la recharge de l’Impulsion relique d’1 s par cumul (minimum 7 s).", relic_damage_desc: "Augmente de 20 % les dégâts des projectiles et de 15 % ceux de l’Impulsion relique par cumul." },
+    de: { relic_speed_desc: "Verringert den Schussabstand um 20 % und lädt den Reliktimpuls pro Stapel 1 s schneller auf (mindestens 7 s).", relic_damage_desc: "Erhöht den Projektilschaden um 20 % und den Schaden des Reliktimpulses pro Stapel um 15 %." },
+    it: { relic_speed_desc: "Riduce del 20% l’intervallo di tiro e di 1 s per accumulo la ricarica dell’Impulso reliquia (minimo 7 s).", relic_damage_desc: "Aumenta del 20% i danni dei proiettili e del 15% quelli dell’Impulso reliquia per accumulo." },
+    ru: { relic_speed_desc: "Сокращает интервал выстрелов на 20% и зарядку импульса реликвии на 1 с за уровень (минимум 7 с).", relic_damage_desc: "Увеличивает урон снарядов на 20%, а урон импульса реликвии — на 15% за уровень." },
+    hi: { relic_speed_desc: "गोली चलाने का अंतर 20% घटता है; अवशेष तरंग रीचार्ज हर स्टैक पर 1 सेकंड कम होता है (न्यूनतम 7 सेकंड)।", relic_damage_desc: "गोली का नुकसान 20% बढ़ता है; हर स्टैक पर अवशेष तरंग का नुकसान 15% बढ़ता है।" },
+    ar: { relic_speed_desc: "قلّل الفاصل بين الطلقات 20٪، وقلّل إعادة شحن نبضة الأثر ثانية واحدة لكل تكديس (الحد الأدنى 7 ثوانٍ).", relic_damage_desc: "زد ضرر الطلقات 20٪، وضرر نبضة الأثر 15٪ لكل تكديس." },
+  };
+  Object.entries(pulseRelicDescriptions).forEach(([locale, copy]) => Object.assign(text[locale], copy));
+  Object.entries(pulseText).forEach(([locale, copy]) => Object.assign(text[locale], copy));
+
   // Textures and Sprites
   const assets = {
     bg: new Image(),
@@ -1251,6 +1291,8 @@
     runKeys: 0,
     gameActive: false,
     gameLoopId: null,
+    pulseCooldownTicks: 0,
+    pulseEffectUntil: 0,
 
     // Stats
     baseDamage: 10,
@@ -1309,6 +1351,8 @@
   let manualPauseActive = false;
   let pauseDialogMode = "pause";
   let windowFocused = document.hasFocus();
+  let lastSimulationFrame = 0;
+  let simulationAccumulator = 0;
 
   function clearEliteSpawnTimer() {
     window.clearTimeout(eliteSpawnTimer);
@@ -1316,6 +1360,13 @@
     eliteSpawnDueAt = 0;
     eliteSpawnCallback = null;
     eliteSpawnRemaining = 0;
+  }
+
+  function startGameLoop() {
+    cancelAnimationFrame(state.gameLoopId);
+    simulationAccumulator = 0;
+    lastSimulationFrame = 0;
+    state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
   function armEliteSpawn(callback, delay) {
@@ -1360,11 +1411,11 @@
     state.enemies.forEach((enemy) => {
       if (enemy.lastHitAt > 0) enemy.lastHitAt += elapsed;
       if (enemy.hitFlashUntil > 0) enemy.hitFlashUntil += elapsed;
+      if (enemy.pulseStaggerUntil > 0) enemy.pulseStaggerUntil += elapsed;
     });
     if (eliteSpawnCallback && !eliteSpawnTimer) armEliteSpawn(eliteSpawnCallback, eliteSpawnRemaining);
     if (backgroundBattleSuspended && state.gameActive) {
-      cancelAnimationFrame(state.gameLoopId);
-      state.gameLoopId = requestAnimationFrame(updateGameEngine);
+      startGameLoop();
     }
     backgroundBattleSuspended = false;
   }
@@ -1564,11 +1615,11 @@
     }
   }
 
-  function markEnemyImpact(enemy, { damage = 0, blocked = false, visualKey = "default" } = {}) {
+  function markEnemyImpact(enemy, { damage = 0, blocked = false, visualKey = "default", showFeedback = true } = {}) {
     if (!enemy) return;
     enemy.hitFlashUntil = performance.now() + 260;
     enemy.hitVisualKey = visualKey;
-    showCombatFeedback(blocked ? "combatWard" : "combatHit", blocked ? {} : { damage: Math.max(1, Math.round(Number(damage) || 0)) });
+    if (showFeedback) showCombatFeedback(blocked ? "combatWard" : "combatHit", blocked ? {} : { damage: Math.max(1, Math.round(Number(damage) || 0)) });
   }
 
   function markPlayerImpact() {
@@ -1615,6 +1666,18 @@
     hi: { lobby: "लॉबी पर लौटें", language: "भाषा चयनकर्ता", stageBack: "मुख्य पृष्ठ पर लौटें", regions: "खंडहर क्षेत्र", battleBack: "तैयारी पर लौटें", arena: "युद्ध क्षेत्र। चलने के लिए टैप या ड्रैग करें; WASD और तीर कुंजियाँ भी काम करती हैं।" },
     ar: { lobby: "العودة إلى الردهة", language: "محدد اللغة", stageBack: "العودة إلى الرئيسية", regions: "مناطق الآثار", battleBack: "العودة إلى التحضير", arena: "ساحة المعركة. المس أو اسحب للتحرك، ويمكنك أيضًا استخدام WASD ومفاتيح الأسهم." },
   });
+
+  let lastPulseAriaLabel = "";
+  function syncPulseAriaLabel() {
+    const labels = ariaText[getLocale()] || ariaText.en;
+    const status = state.pulseCooldownTicks > 0
+      ? t("pulseCooldown", { seconds: Math.ceil(state.pulseCooldownTicks / 60) })
+      : t("pulseReady");
+    const label = `${labels.arena} ${t("pulseUsage")} ${status}`;
+    if (label === lastPulseAriaLabel) return;
+    lastPulseAriaLabel = label;
+    nodes.gameCanvas.setAttribute("aria-label", label);
+  }
 
   const pauseText = {
     en: {
@@ -1701,8 +1764,8 @@
     nodes.stageBackBtn.setAttribute("aria-label", labels.stageBack);
     nodes.expeditionRail.setAttribute("aria-label", labels.regions);
     nodes.backToStageBtn.setAttribute("aria-label", labels.battleBack);
-    nodes.gameCanvas.setAttribute("aria-label", labels.arena);
-    nodes.gameCanvas.setAttribute("aria-keyshortcuts", "w a s d ArrowUp ArrowDown ArrowLeft ArrowRight");
+    syncPulseAriaLabel();
+    nodes.gameCanvas.setAttribute("aria-keyshortcuts", "w a s d ArrowUp ArrowDown ArrowLeft ArrowRight Space");
   }
 
   const trainingDefs = [
@@ -2682,6 +2745,10 @@
     state.orbs = [];
     state.pickups = [];
     state.particleSystems = [];
+    state.pulseCooldownTicks = 0;
+    state.pulseEffectUntil = 0;
+    shootTimer = 0;
+    particleSparksList = [];
     state.slowUntil = 0;
     state.silencedUntil = 0;
     state.playerHitUntil = 0;
@@ -2716,8 +2783,7 @@
     updateHUDText();
     window.WeightPlayAudio?.play("game.start");
     
-    cancelAnimationFrame(state.gameLoopId);
-    state.gameLoopId = requestAnimationFrame(updateGameEngine);
+    startGameLoop();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -3067,7 +3133,8 @@
     saveProfile();
     window.WeightPlayAudio?.play("feedback.success");
 
-    // Pause game loop
+    // Pause the simulation clock while the level-up choice is open.
+    suspendBackgroundBattle();
     state.gameActive = false;
     clearMovementInput();
 
@@ -3096,7 +3163,7 @@
     renderStatsPanel();
     updateHUDText();
     setDraftModalActive(false);
-    state.gameLoopId = requestAnimationFrame(updateGameEngine);
+    resumeBackgroundBattle();
   }
 
   function renderDraftChoices(keepCurrent = false) {
@@ -3278,6 +3345,7 @@
   }
 
   function triggerChestLoot() {
+    suspendBackgroundBattle();
     state.gameActive = false;
     clearMovementInput();
     window.WeightPlayAudio?.play("reward.upgrade");
@@ -3306,7 +3374,7 @@
     renderStatsPanel();
     renderEquippedGear();
     updateHUDText();
-    state.gameLoopId = requestAnimationFrame(updateGameEngine);
+    resumeBackgroundBattle();
   }
 
   function equippedGearSummary() {
@@ -3504,6 +3572,7 @@
   }
 
   function moveEnemyByBehavior(enemy, dx, dy, dist) {
+    if ((enemy.pulseStaggerUntil || 0) > performance.now()) return;
     enemy.abilityTimer = (enemy.abilityTimer || 0) + 1;
     enemy.shotTimer = Math.max(0, (enemy.shotTimer || 0) - 1);
     updateGuardianPhases(enemy);
@@ -3562,21 +3631,143 @@
         state.enemyShots.splice(index, 1);
         window.WeightPlayAudio?.play("player.hurt");
         renderStatsPanel();
-        if (state.playerHp <= 0) endGame(false);
+        if (state.playerHp <= 0) {
+          endGame(false);
+          return;
+        }
       } else if (shot.life <= 0 || shot.x < -30 || shot.x > ARENA_WIDTH + 30 || shot.y < -30 || shot.y > ARENA_HEIGHT + 30) {
         state.enemyShots.splice(index, 1);
       }
     }
   }
 
-  // Update Game Physics & Canvas rendering
-  function updateGameEngine() {
+  function defeatThreat(enemy) {
+    const enemyIndex = state.enemies.indexOf(enemy);
+    if (enemyIndex < 0) return;
+    state.enemies.splice(enemyIndex, 1);
+    if (enemy.behavior === "splitter") summonThreats(enemy, "rusher", 2);
+    window.WeightPlayAudio?.play("enemy.defeat");
+
+    const orbCount = enemy.isElite ? 10 : 3;
+    for (let index = 0; index < orbCount; index += 1) {
+      state.orbs.push({
+        x: enemy.x + (Math.random() * 20 - 10),
+        y: enemy.y + (Math.random() * 20 - 10),
+        value: enemy.isElite ? 20 : 10,
+      });
+    }
+
+    const goldCount = enemy.isElite ? 5 : 2;
+    for (let index = 0; index < goldCount; index += 1) {
+      state.pickups.push({
+        x: enemy.x + (Math.random() * 28 - 14),
+        y: enemy.y + (Math.random() * 28 - 14),
+        type: "gold",
+        value: enemy.isElite ? 12 : 5,
+      });
+    }
+
+    if (enemy.isElite) {
+      if (state.room === ROOMS_PER_EXPEDITION) {
+        endGame(true);
+      } else {
+        state.pickups.push({ x: enemy.x, y: enemy.y, type: "key" });
+      }
+    }
+  }
+
+  function activateRelicPulse() {
+    if (!state.gameActive || manualPauseActive || !nodes.draftPanel.classList.contains("hidden") || !nodes.lootPanel.classList.contains("hidden")) return false;
+    if (state.pulseCooldownTicks > 0) {
+      showCombatFeedback("pulseWait", { seconds: Math.ceil(state.pulseCooldownTicks / 60) });
+      return false;
+    }
+
+    const now = performance.now();
+    const stats = getStats();
+    state.pulseCooldownTicks = Math.max(PULSE_MIN_COOLDOWN_TICKS, PULSE_COOLDOWN_TICKS - state.relicRateCount * 60);
+    syncPulseAriaLabel();
+    state.pulseEffectUntil = now + PULSE_EFFECT_MS;
+    window.WeightPlayAudio?.play("magic.cast");
+
+    for (let index = state.enemyShots.length - 1; index >= 0; index -= 1) {
+      const shot = state.enemyShots[index];
+      if (Math.hypot(shot.x - state.playerX, shot.y - state.playerY) <= PULSE_RADIUS) {
+        state.enemyShots.splice(index, 1);
+      }
+    }
+
+    const pulseDamage = Math.max(1, Math.round(stats.dmg * (1.4 + state.relicDamageCount * 0.15)));
+    let damagedEnemy = false;
+    let blockedByWard = false;
+    let brokeWard = false;
+    for (let index = state.enemies.length - 1; index >= 0; index -= 1) {
+      const enemy = state.enemies[index];
+      const dx = enemy.x - state.playerX;
+      const dy = enemy.y - state.playerY;
+      const distance = Math.hypot(dx, dy);
+      if (distance > PULSE_RADIUS + enemy.size * 0.25) continue;
+
+      enemy.pulseStaggerUntil = now + PULSE_EFFECT_MS;
+      const directionX = distance > 0 ? dx / distance : 1;
+      const directionY = distance > 0 ? dy / distance : 0;
+      enemy.x = Math.max(20, Math.min(ARENA_WIDTH - 20, enemy.x + directionX * 62));
+      enemy.y = Math.max(20, Math.min(ARENA_HEIGHT - 20, enemy.y + directionY * 62));
+      if (enemy.shieldHits > 0) {
+        enemy.shieldHits -= 1;
+        blockedByWard = true;
+        brokeWard ||= enemy.shieldHits === 0;
+        markEnemyImpact(enemy, { blocked: true, visualKey: "pulse", showFeedback: false });
+        createDamageSparks(enemy.x, enemy.y, 0);
+        continue;
+      }
+
+      enemy.hp -= pulseDamage;
+      enemy.lastHitAt = now;
+      damagedEnemy = true;
+      markEnemyImpact(enemy, { damage: pulseDamage, visualKey: "pulse", showFeedback: false });
+      createDamageSparks(enemy.x, enemy.y, pulseDamage);
+      if (enemy.hp <= 0) defeatThreat(enemy);
+      if (!state.gameActive) break;
+    }
+
+    if (damagedEnemy) {
+      window.WeightPlayAudio?.play("magic.hit");
+      showCombatFeedback("pulseHit");
+    }
+    if (blockedByWard) window.WeightPlayAudio?.play(brokeWard ? "combat.shield.break" : "combat.block");
+    if (blockedByWard && !damagedEnemy) showCombatFeedback("pulseWard");
+    return true;
+  }
+
+  // Rendering may follow the display refresh rate; simulation always advances
+  // in the same 60 Hz steps so movement and combat do not speed up on 120 Hz screens.
+  function updateGameEngine(timestamp = performance.now()) {
     if (!state.gameActive) return;
     if (document.hidden) {
       suspendBackgroundBattle();
       return;
     }
+    if (!lastSimulationFrame) lastSimulationFrame = timestamp;
+    const elapsed = Math.max(0, Math.min(timestamp - lastSimulationFrame, SIMULATION_STEP_MS * MAX_CATCH_UP_STEPS));
+    lastSimulationFrame = timestamp;
+    simulationAccumulator = Math.min(simulationAccumulator + elapsed, SIMULATION_STEP_MS * MAX_CATCH_UP_STEPS);
+    let steps = 0;
+    while (simulationAccumulator >= SIMULATION_STEP_MS && steps < MAX_CATCH_UP_STEPS && state.gameActive) {
+      simulateGameTick();
+      updateDamageSparks();
+      simulationAccumulator -= SIMULATION_STEP_MS;
+      steps += 1;
+    }
+    if (combatFeedbackText && combatFeedbackUntil <= performance.now()) updateRoomObjective();
+    drawCanvasFrame();
+    if (state.gameActive) state.gameLoopId = requestAnimationFrame(updateGameEngine);
+  }
+
+  function simulateGameTick() {
+    if (!state.gameActive) return;
     const roomInGrace = performance.now() < state.roomGraceUntil;
+    if (state.pulseCooldownTicks > 0) state.pulseCooldownTicks -= 1;
 
     // 1. Move Player
     const stats = getStats();
@@ -3627,7 +3818,8 @@
     }
 
     // 3. Move & Check Bullets
-    state.bullets.forEach((bullet, index) => {
+    for (let index = state.bullets.length - 1; index >= 0; index -= 1) {
+      const bullet = state.bullets[index];
       bullet.trail.push({ x: bullet.x, y: bullet.y });
       if (bullet.trail.length > 10) bullet.trail.shift();
       bullet.x += bullet.vx;
@@ -3637,10 +3829,11 @@
       if (bullet.x < -10 || bullet.x > ARENA_WIDTH + 10 || bullet.y < -10 || bullet.y > ARENA_HEIGHT + 10) {
         state.bullets.splice(index, 1);
       }
-    });
+    }
 
     // 4. Move & Check Enemies
-    state.enemies.forEach((enemy, eIndex) => {
+    for (let eIndex = state.enemies.length - 1; eIndex >= 0; eIndex -= 1) {
+      const enemy = state.enemies[eIndex];
       // Every threat family owns a real movement or attack rule rather than
       // sharing one chase loop with larger numbers.
       const dx = state.playerX - enemy.x;
@@ -3649,7 +3842,7 @@
       if (!roomInGrace) moveEnemyByBehavior(enemy, dx, dy, dist);
 
       // Check player contact damage
-      if (!roomInGrace && dist < enemy.size + 15) {
+      if (!roomInGrace && performance.now() >= (enemy.pulseStaggerUntil || 0) && dist < enemy.size + 15) {
         const contactDamage = enemy.isBoss ? 0.24 : enemy.behavior === "rusher" ? 0.2 : 0.15;
         state.playerHp = Math.max(0, state.playerHp - contactDamage);
         markPlayerImpact();
@@ -3667,7 +3860,8 @@
       }
 
       // Bullet collision check
-      state.bullets.forEach((bullet, bIndex) => {
+      for (let bIndex = state.bullets.length - 1; bIndex >= 0; bIndex -= 1) {
+        const bullet = state.bullets[bIndex];
         const bdx = bullet.x - enemy.x;
         const bdy = bullet.y - enemy.y;
         const bdist = Math.sqrt(bdx * bdx + bdy * bdy);
@@ -3678,7 +3872,7 @@
             state.bullets.splice(bIndex, 1);
             markEnemyImpact(enemy, { blocked: true, visualKey: bullet.visualKey });
             createDamageSparks(bullet.x, bullet.y, 0);
-            return;
+            continue;
           }
           enemy.hp -= bullet.dmg;
           enemy.lastHitAt = performance.now();
@@ -3690,58 +3884,25 @@
 
           // Enemy Defeated
           if (enemy.hp <= 0) {
-            state.enemies.splice(eIndex, 1);
-            if (enemy.behavior === "splitter") summonThreats(enemy, "rusher", 2);
-            window.WeightPlayAudio?.play("enemy.defeat");
-
-            // Drop Relic Orbs
-            const orbCount = enemy.isElite ? 10 : 3;
-            for (let k = 0; k < orbCount; k++) {
-              state.orbs.push({
-                x: enemy.x + (Math.random() * 20 - 10),
-                y: enemy.y + (Math.random() * 20 - 10),
-                value: enemy.isElite ? 20 : 10,
-              });
-            }
-
-            // Drop gold for equipment upgrades.
-            const goldCount = enemy.isElite ? 5 : 2;
-            for (let k = 0; k < goldCount; k++) {
-              state.pickups.push({
-                x: enemy.x + (Math.random() * 28 - 14),
-                y: enemy.y + (Math.random() * 28 - 14),
-                type: "gold",
-                value: enemy.isElite ? 12 : 5,
-              });
-            }
-
-            // Drop key if Elite
-            if (enemy.isElite) {
-              if (state.room === ROOMS_PER_EXPEDITION) {
-                // Boss defeated -> clear game!
-                endGame(true);
-              } else {
-                state.pickups.push({
-                  x: enemy.x,
-                  y: enemy.y,
-                  type: "key",
-                });
-              }
-            }
+            defeatThreat(enemy);
+            break;
           }
         }
-      });
-    });
+      }
+      if (!state.gameActive) return;
+    }
 
     if (!roomInGrace) updateEnemyShots();
+    if (!state.gameActive) return;
 
     // 5. Relic Orbs Magnet Collection Check
-    state.orbs.forEach((orb, oIndex) => {
+    for (let oIndex = state.orbs.length - 1; oIndex >= 0; oIndex -= 1) {
+      const orb = state.orbs[oIndex];
       const odx = state.playerX - orb.x;
       const ody = state.playerY - orb.y;
       const odist = Math.sqrt(odx * odx + ody * ody);
 
-      if (odist < stats.magnet) {
+      if (odist < stats.magnet && odist > 0) {
         // Move towards player
         orb.x += (odx / odist) * 5;
         orb.y += (ody / odist) * 5;
@@ -3755,12 +3916,14 @@
 
         if (state.gameActive && state.exp >= state.expNeed) {
           handleLevelUp();
+          return;
         }
       }
-    });
+    }
 
     // 6. Check keys and Chest/Portal Pickups
-    state.pickups.forEach((pickup, pIndex) => {
+    for (let pIndex = state.pickups.length - 1; pIndex >= 0; pIndex -= 1) {
+      const pickup = state.pickups[pIndex];
       const pdx = state.playerX - pickup.x;
       const pdy = state.playerY - pickup.y;
       const pdist = Math.sqrt(pdx * pdx + pdy * pdy);
@@ -3789,19 +3952,16 @@
             trackGrowthEvent("chest_open", { keys_remaining: state.keys });
             updateHUDText();
             triggerChestLoot();
+            return;
           }
         } else if (pickup.type === "portal") {
           state.pickups.splice(pIndex, 1);
           enterNextRoom();
+          return;
         }
       }
-    });
+    }
 
-    // Draw frame canvas
-    if (combatFeedbackText && combatFeedbackUntil <= performance.now()) updateRoomObjective();
-    drawCanvasFrame();
-
-    state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
   // Draw Arena textures
@@ -4154,8 +4314,73 @@
     }
     ctx.restore();
 
-    // 7. Draw Sparks particles
-    updateDamageSparks(ctx);
+    drawRelicPulse(ctx);
+    drawDamageSparks(ctx);
+  }
+
+  function drawRelicPulse(ctx) {
+    syncPulseAriaLabel();
+    const now = performance.now();
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
+    const effectRemaining = state.pulseEffectUntil - now;
+    if (effectRemaining > 0) {
+      const progress = 1 - effectRemaining / PULSE_EFFECT_MS;
+      const radius = reducedMotion ? PULSE_RADIUS * 0.72 : 64 + progress * (PULSE_RADIUS - 64);
+      ctx.save();
+      ctx.globalAlpha = reducedMotion ? 0.22 : Math.max(0, 0.58 * (1 - progress));
+      ctx.strokeStyle = "#5eead4";
+      ctx.shadowColor = "#2dd4bf";
+      ctx.shadowBlur = 24;
+      ctx.lineWidth = reducedMotion ? 8 : 12 - progress * 8;
+      ctx.beginPath();
+      ctx.arc(state.playerX, state.playerY, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    const { x, y, radius } = PULSE_BUTTON;
+    const ready = state.pulseCooldownTicks <= 0;
+    const cooldownTicks = Math.max(PULSE_MIN_COOLDOWN_TICKS, PULSE_COOLDOWN_TICKS - state.relicRateCount * 60);
+    const cooldownProgress = ready ? 1 : 1 - Math.min(1, state.pulseCooldownTicks / cooldownTicks);
+    ctx.save();
+    ctx.shadowColor = ready ? "rgba(45, 212, 191, 0.65)" : "rgba(15, 23, 42, 0.45)";
+    ctx.shadowBlur = ready ? 18 : 8;
+    ctx.fillStyle = ready ? "rgba(8, 54, 58, 0.94)" : "rgba(15, 23, 42, 0.92)";
+    ctx.strokeStyle = ready ? "#5eead4" : "#94a3b8";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    if (!ready) {
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = "#fbbf24";
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.arc(x, y, radius - 5, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * cooldownProgress);
+      ctx.stroke();
+    }
+
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = ready ? "#ccfbf1" : "#cbd5e1";
+    ctx.beginPath();
+    ctx.moveTo(x, y - 24);
+    ctx.lineTo(x + 14, y - 10);
+    ctx.lineTo(x, y + 4);
+    ctx.lineTo(x - 14, y - 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.direction = document.documentElement.dir === "rtl" ? "rtl" : "ltr";
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "bold 14px Outfit, sans-serif";
+    ctx.fillText(t("pulseLabel"), x, y + 20, radius * 1.72);
+    ctx.fillStyle = ready ? "#99f6e4" : "#fde68a";
+    ctx.font = "bold 12px Outfit, sans-serif";
+    const status = ready ? t("pulseReady") : t("pulseCooldown", { seconds: Math.ceil(state.pulseCooldownTicks / 60) });
+    ctx.fillText(status, x, y + 42, radius * 1.72);
+    ctx.restore();
   }
 
   function drawImageCover(ctx, image, width, height) {
@@ -4194,13 +4419,19 @@
     }
   }
 
-  function updateDamageSparks(ctx) {
+  function updateDamageSparks() {
     for (let index = particleSparksList.length - 1; index >= 0; index--) {
       const p = particleSparksList[index];
       p.x += p.vx;
       p.y += p.vy;
       p.life--;
 
+      if (p.life <= 0) particleSparksList.splice(index, 1);
+    }
+  }
+
+  function drawDamageSparks(ctx) {
+    for (const p of particleSparksList) {
       if (p.type === "damage-label") {
         const alpha = Math.max(0, p.life / p.maxLife);
         ctx.save();
@@ -4216,10 +4447,6 @@
       } else {
         ctx.fillStyle = p.color;
         ctx.fillRect(p.x, p.y, 2, 2);
-      }
-
-      if (p.life <= 0) {
-        particleSparksList.splice(index, 1);
       }
     }
   }
@@ -4252,6 +4479,14 @@
         return;
       }
       if (!state.gameActive) return;
+      if (e.code === "Space" || e.key === " ") {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const interactiveTarget = e.target?.closest?.("button, a, input, select, textarea, [contenteditable='true']");
+        if (interactiveTarget && e.target !== nodes.gameCanvas) return;
+        e.preventDefault();
+        if (!e.repeat) activateRelicPulse();
+        return;
+      }
       keysPressed[e.key] = true;
       if (["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) e.preventDefault();
     });
@@ -4286,10 +4521,20 @@
       };
     }
 
-    // Crystal Survivor-style movement: tap a destination or keep dragging to
-    // continuously update it. Keyboard input remains an equivalent override.
+    // Tap a destination or drag to continuously update movement; keyboard
+    // input remains an equivalent override.
     nodes.gameCanvas.addEventListener("pointerdown", (event) => {
       if (!state.gameActive || event.isPrimary === false || movePointerId !== null || (event.button !== undefined && event.button !== 0)) return;
+      const rect = nodes.gameCanvas.getBoundingClientRect();
+      const point = {
+        x: ((event.clientX - rect.left) / rect.width) * ARENA_WIDTH,
+        y: ((event.clientY - rect.top) / rect.height) * ARENA_HEIGHT,
+      };
+      if (Math.hypot(point.x - PULSE_BUTTON.x, point.y - PULSE_BUTTON.y) <= PULSE_BUTTON.radius + 10) {
+        activateRelicPulse();
+        event.preventDefault();
+        return;
+      }
       movePointerId = event.pointerId;
       nodes.gameCanvas.setPointerCapture?.(event.pointerId);
       updateMoveTarget(event);

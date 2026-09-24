@@ -26,7 +26,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-habitat-blueprint" />
-  <meta name="weightplay-game-version" content="v10" />
+  <meta name="weightplay-game-version" content="v13" />
   <meta name="weightplay-scene-controls" content="immutable" />
   <meta name="theme-color" content="#294a55" />
   <title>आवास टाइल पहेली | WeightPlay</title>
@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
   <link rel="stylesheet" href="art.css?v=20260901-habitat-blueprint-v4-art-pack" />
   <link rel="stylesheet" href="style.css?v=20260911-habitat-blueprint-v10-arabic-progress" />
-  <link rel="stylesheet" href="interface-7-cleanup.css?v=20260923-habitat-blueprint-interface7-cleanup2" /><script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="interface-7-cleanup.css?v=20260923-habitat-blueprint-v12-audio-lifecycle2" /><script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
   <meta name="description" content="चार आवास टाइल बदलकर हर पड़ोसी संकेत पूरा करें और जानवरों का जुड़ा हुआ घर बनाएँ।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -52,7 +52,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-runtime-localize="off" data-wp-game-id="animal-habitat-blueprint" data-wp-game-version="v10" data-wp-audience="general" data-screen="main">
+<body data-runtime-localize="off" data-wp-game-id="animal-habitat-blueprint" data-wp-game-version="v13" data-wp-audience="general" data-screen="main">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">⌂</div><p data-i18n="loading">आवास की योजनाएँ खोली जा रही हैं…</p></div>
   <main id="app" hidden>
     <header id="topbar" class="topbar" data-wp-shell-header="main"><button id="backBtn" class="icon-btn" type="button" data-wp-return="main" aria-label="Back"><span aria-hidden="true">←</span></button><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">आवास टाइल पहेली</strong></header>
@@ -83,18 +83,22 @@
         <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">गेमप्ले</span><strong data-copy="guideGameplayValue">आवास शर्त पहेली</strong></div><div class="game-info-fact"><span data-copy="guideGenre">शैली</span><strong data-copy="guideGenreValue">पहेली · तर्क · स्थानिक योजना · परिवार · जानवर</strong></div></div>
       </div>
       <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-copy="guidePlansTitle">आवास योजनाएँ</h3><ol><li data-copy="guideHow1">तीन फील्ड नोट पढ़ें।</li><li data-copy="guideHow2">दो टाइलें चुनकर उन्हें बदलें।</li><li data-copy="guideHow3">व्यवस्था सही न हो तो सुरक्षित रूप से रीसेट करें।</li></ol></article>
-        <article class="game-info-section"><h3 data-copy="guideResultsTitle">परिणाम और सेव</h3><p data-copy="guideResults">तीन छोटी योजनाएँ एक शांत सत्र बनाती हैं। आपकी सबसे अच्छी अदला-बदली इसी ब्राउज़र में रहती है।</p></article>
-        <article class="game-info-section"><h3 data-copy="guideTipsTitle">व्यावहारिक संकेत</h3><p data-copy="guideTips">साथ, अलग और ऊपर-नीचे वाले संकेतों को मिलाकर देखें; हर योजना फिर से ठीक की जा सकती है।</p></article>
-        <article class="game-info-section"><h3 data-copy="faqTitle">अक्सर पूछे गए प्रश्न</h3><dl><div><dt data-copy="faqProgressQuestion">क्या प्रगति सहेजी जाती है?</dt><dd data-copy="faqProgressAnswer">हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></article>
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">आवास योजनाएँ</h3><p data-copy="guidePlansIntro">चार आवास टाइलों को बदलकर पड़ोसी संकेत पूरे करें और जानवरों के लिए शांत, जुड़े हुए घर बनाएँ। साथ, अलग और ऊपर-नीचे वाले संकेतों को मिलाकर देखें; हर योजना फिर से ठीक की जा सकती है।</p><ol><li data-copy="guideHow1">तीन फील्ड नोट पढ़ें।</li><li data-copy="guideHow2">दो टाइलें चुनकर उन्हें बदलें।</li><li data-copy="guideHow3">व्यवस्था सही न हो तो सुरक्षित रूप से रीसेट करें।</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideCluesTitle">फील्ड नोट समझें</h3><p data-copy="guideCluesBody">साथ, अलग और ऊपर-नीचे वाले संकेतों को मिलाकर देखें; हर योजना फिर से ठीक की जा सकती है।</p></article>
+        <article class="game-info-section"><h3 data-copy="guideCampaignTitle">छह अध्यायों में 30 चरण</h3><p data-copy="guideCampaignBody">30 चरण · 6 अध्याय</p></article>
+        <article class="game-info-section"><h3 data-copy="guideStrategyTitle">भरोसेमंद हल विधि</h3><p data-copy="guideStrategyBody">साथ, अलग और ऊपर-नीचे वाले संकेतों को मिलाकर देखें; हर योजना फिर से ठीक की जा सकती है।</p><p data-copy="guideStrategyBody2">व्यवस्था सही न हो तो सुरक्षित रूप से रीसेट करें।</p></article>
+        <article class="game-info-section"><h3 data-copy="guideControlsTitle">नियंत्रण, प्रतिक्रिया और वापसी</h3><p data-copy="guideControlsBody">तीन फील्ड नोट पढ़ें। दो टाइलें चुनकर उन्हें बदलें। व्यवस्था सही न हो तो सुरक्षित रूप से रीसेट करें।</p></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">परिणाम और सेव</h3><p data-copy="guideResults">30 चरण · 6 अध्याय. हाँ, केवल इसी ब्राउज़र में।</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">व्यावहारिक संकेत</h3><ul><li data-copy="guideTip1">तीन फील्ड नोट पढ़ें।</li><li data-copy="guideTip2">दो टाइलें चुनकर उन्हें बदलें।</li><li data-copy="guideTip3">साथ, अलग और ऊपर-नीचे वाले संकेतों को मिलाकर देखें; हर योजना फिर से ठीक की जा सकती है।</li><li data-copy="guideTip4">व्यवस्था सही न हो तो सुरक्षित रूप से रीसेट करें।</li><li data-copy="guideTip5">हाँ, केवल इसी ब्राउज़र में।</li></ul></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">अक्सर पूछे गए प्रश्न</h3><dl><div><dt data-copy="faqProgressQuestion">क्या प्रगति सहेजी जाती है?</dt><dd data-copy="faqProgressAnswer">हाँ, केवल इसी ब्राउज़र में।</dd></div><div><dt data-copy="faqMistakeQuestion">क्या गलत अदला-बदली से चरण समाप्त होता है?</dt><dd data-copy="faqMistakeAnswer">नहीं। व्यवस्था जारी रखें या शुरुआती रूप पर रीसेट करें।</dd></div><div><dt data-copy="faqTouchQuestion">क्या केवल कोना छूना पड़ोसी माना जाता है?</dt><dd data-copy="faqTouchAnswer">नहीं। दोनों आवासों की पूरी किनारी साझा होनी चाहिए।</dd></div><div><dt data-copy="faqChaptersQuestion">बाद के अध्यायों में क्या बदलता है?</dt><dd data-copy="faqChaptersAnswer">अदला-बदली सीमाएँ, तिरछी चाल, स्थिर आवास और चार चाल की सीमा जुड़ती हैं।</dd></div></dl></article>
       </div>
     </section>
   </main>
-  <script src="locales.js?v=20260911-habitat-blueprint-v10-arabic-progress"></script>
+  <script src="locales.js?v=20260924-habitat-blueprint-v13-guide-depth"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260923-habitat-blueprint-interface7-cleanup2" data-wp-battle-standard></script>
   <script src="../../src/stage-virtualization-standard.js?v=20260923-habitat-blueprint-interface7-cleanup2"></script>
-  <script src="game.js?v=20260923-habitat-blueprint-interface7-cleanup2"></script>
+  <script src="game.js?v=20260923-habitat-blueprint-v12-audio-lifecycle2"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
