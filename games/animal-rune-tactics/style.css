@@ -2856,9 +2856,18 @@ html body #runeBattleScene .damage-preview { position:absolute; inset:4px 4px au
   html body .rune-app #runeBattleScene .actions { height:98px!important; max-height:98px!important; gap:4px!important; }
   html body .rune-app #runeBattleScene .actions button { height:46px!important; min-height:46px!important; max-height:46px!important; }
   html body .rune-app #runeBattleScene .terrain-mark { font-size:9px!important; }
-  html body #stagePanel .mission-grid { top:40%!important; }
+  html body #stagePanel #rune-stage-view-missions { grid-template-rows:minmax(0,1fr)!important; }
+  html body #stagePanel .mission-grid { top:50%!important; }
   html body #stagePanel .mission-briefing { display:none!important; }
 }
 @media (prefers-reduced-motion:reduce) { .rune-app *, .rune-app *::before, .rune-app *::after { scroll-behavior:auto!important; } }
 
 html body .rune-app #runeBattleScene > .overlay-panel { position:absolute!important; inset:0!important; width:100%!important; height:100%!important; max-width:none!important; max-height:none!important; transform:none!important; }
+
+/* Keep the game-owned shared Main progress slot within the compact frame contract. */
+html body[data-screen="main"] [data-wp-frame-scene="main"] [data-wp-frame-progress] {
+  box-sizing: border-box !important;
+  height: 42px !important;
+  min-height: 40px !important;
+  max-height: 44px !important;
+}

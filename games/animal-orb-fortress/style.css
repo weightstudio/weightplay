@@ -2388,3 +2388,24 @@ html body.orb-fortress-playing #resultPanel .result-actions button {
 @media (prefers-reduced-motion: reduce) {
   .modal-panel.is-revealing > *, .result-panel.is-revealing > * { animation: none; }
 }
+
+/* v47: the shared Stage frame reparents the profile summary into its header.
+   Retire the empty compact-landscape row, place the active panel in the full
+   remaining track, and keep RTL Raid/Workshop tabs on that same Canvas. */
+@media (max-height: 560px) and (orientation: landscape) {
+  body[data-game-id="animal-orb-fortress"].wp-stage-select-active.orb-fortress-playing
+    #stagePanel.stage-panel .stage-content {
+    grid-template-rows: 0 minmax(0, 1fr) !important;
+  }
+
+  body[data-game-id="animal-orb-fortress"].wp-stage-select-active.orb-fortress-playing
+    #stagePanel.stage-panel .stage-view-panel.is-active {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  html[dir="rtl"] body[data-game-id="animal-orb-fortress"].wp-stage-select-active.orb-fortress-playing
+    #stagePanel.stage-panel .stage-content {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
