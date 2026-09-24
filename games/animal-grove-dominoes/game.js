@@ -3,7 +3,7 @@
 
   const locales = window.GROVE_CHAIN_LOCALES;
   const localeKeys = locales.__localeKeys;
-  const GAME_VERSION = "v6";
+  const GAME_VERSION = "v8";
   let advanceTimer = null;
   let advanceDeadline = 0;
   let pausedAdvanceRemaining = null;
@@ -179,10 +179,11 @@
     const tile = state.rack[index]; if (!tile) return;
     state.picks += 1; track("tile_selected", { round: state.roundIndex + 1, left: tile[0], right: tile[1], correct: tile[0] === state.currentEnd });
     const reversed=flipMode&&tile.reversible,result=play(chainState,tile.id,{reverse:reversed});
-    if(!result.accepted){button.classList.add('is-wrong');$('battleStatus').textContent=t('wrong');setFeedbackState('wrong');playTone("feedback.error");return;}
+    if(!result.accepted){const message=t('wrong');button.classList.add('is-wrong');$('battleStatus').textContent=message;$('appStatus').textContent=message;setFeedbackState('wrong');playTone("feedback.error");return;}
     chainState=result.state;
-    button.disabled = true; button.classList.add("is-correct"); state.placed.push(reversed?[tile[1],tile[0]]:tile); state.rack[index] = null; state.currentEnd = chainState.end; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("board.move"); renderRound(); setFeedbackState("matched");
-    if(outcome(chainState)==='dead-end'){$('battleStatus').textContent=(recoveryCopy[state.locale]||recoveryCopy.en)[1];setFeedbackState('wrong');}
+    const deadEnd=outcome(chainState)==='dead-end';
+    const message=deadEnd?(recoveryCopy[state.locale]||recoveryCopy.en)[1]:t("right");
+    button.disabled = true; button.classList.add("is-correct"); state.placed.push(reversed?[tile[1],tile[0]]:tile); state.rack[index] = null; state.currentEnd = chainState.end; state.solved += 1; $("battleStatus").textContent = message; $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = message; playTone("board.move"); renderRound(); setFeedbackState(deadEnd?"wrong":"matched");
     if (outcome(chainState)==='complete') { recordCompletion(); scheduleAdvance(420); }
   }
   function startRound() { cancelAdvance();flipMode=false; const round = rounds[state.roundIndex];chainState=createChain(campaign[state.roundIndex]); state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles);rackOrder=[...state.rack]; $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
@@ -190,9 +191,9 @@
     if(!chainState?.path.length)return;cancelAdvance();chainState=undo(chainState);
     state.placed.pop();state.solved=Math.max(0,state.solved-1);state.currentEnd=chainState.end;
     state.rack=rackOrder.map(tile=>chainState.path.includes(tile.id)?null:tile);
-    $('battleStatus').textContent='';setFeedbackState('idle');renderRound();
+    $('battleStatus').textContent='';$('appStatus').textContent=t('end',{habitat:habitat(state.currentEnd)});setFeedbackState('idle');playTone('board.undo');renderRound();
   }
-  function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;completionReceipt=null;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1}); showView("battleView"); startRound(); }
+  function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;completionReceipt=null;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1});playTone('game.start'); showView("battleView"); startRound(); }
   function openStages(){showView('stageView');stageView.refresh({resetSelection:true});}
   function recordCompletion(){
     if(completionReceipt)return completionReceipt;
