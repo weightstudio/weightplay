@@ -39,8 +39,8 @@
     flag: { x: 680, y: 818, w: 554, h: 420 },
   };
   const campaignPlans = [
-    { base: 118, shapes: ["wide", "leaf", "cloud", "flag"], shrink: [13, 12, 11, 10] },
-    { base: 122, shapes: ["wide", "moon", "cloud", "leaf", "flag"], shrink: [13, 12, 11, 10, 9] },
+    { base: 118, shapes: ["wide", "leaf", "cloud", "flag"], shrink: [13, 12, 11, 10], braceAt: [1], braceShape: "moon" },
+    { base: 122, shapes: ["wide", "moon", "cloud", "leaf", "flag"], shrink: [13, 12, 11, 10, 9], braceAt: [2], braceShape: "tiny" },
     { base: 126, shapes: ["wide", "snug", "tiny", "moon", "flag"], shrink: [14, 12, 11, 10, 9], braceAt: [2], braceShape: "cloud" },
     { base: 120, shapes: ["wide", "cloud", "flag", "moon"], shrink: [12, 10, 12, 9] },
     { base: 124, shapes: ["wide", "leaf", "moon", "cloud", "flag"], shrink: [13, 12, 10, 10, 9] },
@@ -133,7 +133,8 @@
         if (Number.isFinite(legacyBest) && legacyBest > 0) {
           const cleared = Array(stages.length).fill(false);
           cleared.fill(true, 0, 3);
-          return { unlocked: 4, cleared, cloudCharges: 0 };
+          localStorage.setItem(campaignSaveKey, JSON.stringify({ version: 1, unlocked: 4, cleared, cloudCharges: 1, cloudGrantVersion: 1 }));
+          return { unlocked: 4, cleared, cloudCharges: 1 };
         }
         return blank;
       }
@@ -142,7 +143,10 @@
       const clearedPrefix = cleared.findIndex((value) => !value);
       const sequentialUnlock = clearedPrefix < 0 ? stages.length : Math.min(stages.length, clearedPrefix + 1);
       const unlocked = Math.max(1, Math.min(sequentialUnlock, Math.trunc(Number(saved.unlocked) || 1)));
-      return { unlocked, cleared, cloudCharges: Number(saved.cloudCharges) > 0 ? 1 : 0 };
+      const cloudCharges = Number(saved.cloudCharges) > 0 ? 1 : 0;
+      const chapterChargeMigration = saved.cloudGrantVersion !== 1 && cleared[2] && unlocked >= 4 && cloudCharges === 0;
+      if (chapterChargeMigration) localStorage.setItem(campaignSaveKey, JSON.stringify({ ...saved, unlocked, cleared, cloudCharges: 1, cloudGrantVersion: 1 }));
+      return { unlocked, cleared, cloudCharges: cloudCharges || Number(chapterChargeMigration) };
     } catch (error) {
       if (error instanceof SyntaxError) return blank;
       state.storage = false;
@@ -152,7 +156,7 @@
   state.campaign = readCampaign();
   const saveCampaign = () => {
     try {
-      localStorage.setItem(campaignSaveKey, JSON.stringify({ version: 1, unlocked: state.campaign.unlocked, cleared: state.campaign.cleared, cloudCharges: state.campaign.cloudCharges }));
+      localStorage.setItem(campaignSaveKey, JSON.stringify({ version: 1, unlocked: state.campaign.unlocked, cleared: state.campaign.cleared, cloudCharges: state.campaign.cloudCharges, cloudGrantVersion: 1 }));
     } catch (error) { state.storage = false; }
   };
   const staticGuideCopy = {
@@ -209,7 +213,7 @@
   const renderResult = () => { $("resultHeading").textContent = t("lookoutReady"); $("resultText").textContent = `${t("round", { n: stages.length, total: stages.length })} · ${t("picks")}: ${state.totalPicks}`; $("resultPrimaryBtn").textContent = t("replayLookout"); $("bestValue").textContent = readBest() || t("noBest"); };
   const startStage = (index, continuing = false) => { if (index < 0 || index >= state.campaign.unlocked) return; if (!continuing) { state.totalPicks = 0; state.runStartStage = index; } state.stage = index; state.stageBrowseIndex = index; state.step = 0; state.placed = []; state.selected = null; state.stagePicks = 0; state.finished = false; state.braceActive = false; state.status = ""; show("battle"); applyLocale(); track("start", { stage: index + 1 }); };
   const selectChoice = (key) => { state.selected = key; const choice = stages[state.stage].placements[state.step].options.find((option) => option.key === key); state.status = t("selected", { name: t(choice?.name || key) }); beep("board.move"); renderBattle(); };
-  const checkChoice = () => { const placement = stages[state.stage].placements[state.step]; if (!state.selected) { state.status = t("ready"); renderBattle(); return; } state.totalPicks += 1; state.stagePicks += 1; const option = placement.options.find((item) => item.key === state.selected); const assisted = state.braceActive && state.campaign.cloudCharges > 0 && state.selected === placement.assistedCorrect; if (state.selected !== placement.correct && !assisted) { state.status = t("wobbly"); state.selected = null; state.braceActive = false; beep("feedback.error"); track("wobbly", { stage: state.stage + 1, step: state.step + 1 }); renderBattle(); return; } if (assisted) { state.campaign.cloudCharges = 0; saveCampaign(); } state.braceActive = false; state.placed.push({ ...option, key: option.key, role: placement.role }); state.step += 1; state.selected = null; state.status = t("steady"); beep("feedback.success"); track("steady", { stage: state.stage + 1, step: state.step }); if (state.step >= stages[state.stage].placements.length) { state.finished = true; state.status = t("lookoutReady"); const completed = state.stage + 1; state.campaign.cleared[state.stage] = true; state.campaign.unlocked = Math.max(state.campaign.unlocked, Math.min(stages.length, completed + 1)); if (stages[state.stage].checkpoint) state.campaign.cloudCharges = 1; saveCampaign(); } renderBattle(); };
+  const checkChoice = () => { const placement = stages[state.stage].placements[state.step]; if (!state.selected) { state.status = t("ready"); renderBattle(); return; } state.totalPicks += 1; state.stagePicks += 1; const option = placement.options.find((item) => item.key === state.selected); const assisted = state.braceActive && state.campaign.cloudCharges > 0 && state.selected === placement.assistedCorrect; if (state.selected !== placement.correct && !assisted) { state.status = t("wobbly"); state.selected = null; state.braceActive = false; beep("feedback.error"); track("wobbly", { stage: state.stage + 1, step: state.step + 1 }); renderBattle(); return; } if (assisted) { state.campaign.cloudCharges = 0; saveCampaign(); } state.braceActive = false; state.placed.push({ ...option, key: option.key, role: placement.role }); state.step += 1; state.selected = null; state.status = t("steady"); beep("feedback.success"); track("steady", { stage: state.stage + 1, step: state.step }); if (state.step >= stages[state.stage].placements.length) { state.finished = true; state.status = t("lookoutReady"); const completed = state.stage + 1; state.campaign.cleared[state.stage] = true; state.campaign.unlocked = Math.max(state.campaign.unlocked, Math.min(stages.length, completed + 1)); if (completed === 3 || stages[state.stage].checkpoint) state.campaign.cloudCharges = 1; saveCampaign(); } renderBattle(); };
   const advance = () => { if (!state.finished) return; if (state.stage < stages.length - 1) { startStage(state.stage + 1, true); return; } if (state.runStartStage === 0 && state.campaign.cleared.every(Boolean)) writeBest(state.totalPicks); show("result"); applyLocale(); track("complete", { picks: state.totalPicks, fullCampaign: state.runStartStage === 0 }); };
   const clearChoice = () => { state.selected = null; state.status = t("ready"); renderBattle(); };
   const toggleCloudBrace = () => { if (state.campaign.cloudCharges < 1 || state.finished) return; state.braceActive = !state.braceActive; state.status = state.braceActive ? t("selected", { name: t("cloud") }) : t("ready"); beep("ui.click"); renderBattle(); };
