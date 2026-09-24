@@ -4,7 +4,7 @@
  * Interface 7 compatibility cleanup for Cozy Camp.
  * Keep game-specific puzzle visuals in styles-v6-base.css; this layer only
  * removes legacy Main/Battle chrome that conflicts with the shared contract.
- * The recorded game interface version remains 6 until normal migration/QA.
+ * Runtime presentation is aligned to Interface 7; formal independent QA remains separate.
  */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #mainScreen .main-content > .eyebrow,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #mainScreen .main-content > h1,
@@ -140,4 +140,25 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data
     padding: 7px 8px;
     font-size: 14px;
   }
+}
+
+/* v9 motion pass: feedback must be visible without making reduced-motion users wait. */
+@keyframes cozy-fire-breathe { 0%,100%{transform:translateY(0) scale(.96);filter:brightness(.95)} 50%{transform:translateY(-3px) scale(1.08);filter:brightness(1.18)} }
+@keyframes cozy-stars-drift { 0%,100%{transform:translateX(-5px);opacity:.55} 50%{transform:translateX(5px);opacity:1} }
+@keyframes cozy-card-in { from{opacity:0;transform:translateY(10px) scale(.97)} to{opacity:1;transform:none} }
+@keyframes cozy-correct { 0%{transform:scale(1)} 45%{transform:scale(1.015)} 100%{transform:scale(1)} }
+@keyframes cozy-wrong { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .campfire{animation:cozy-fire-breathe 1.45s ease-in-out infinite;transform-origin:50% 85%}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .scene-stars{animation:cozy-stars-drift 3.2s ease-in-out infinite}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card{animation:cozy-card-in .28s ease both;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card:nth-child(2){animation-delay:.05s}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card:nth-child(3){animation-delay:.1s}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card:is(:hover,:focus-visible){transform:translateY(-3px)}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card.is-selected{transform:translateY(-4px) scale(1.015)}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen.is-correct .battle-content{animation:cozy-correct .48s ease}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen.is-wrong .layout-card.is-selected{animation:cozy-wrong .28s ease}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] button{transition:transform .16s ease,filter .16s ease}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] button:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] :is(.campfire,.scene-stars,.layout-card,#battleScreen.is-correct .battle-content,#battleScreen.is-wrong .layout-card.is-selected){animation:none!important;transition:none!important}
 }
