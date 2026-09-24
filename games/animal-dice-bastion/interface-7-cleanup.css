@@ -1,0 +1,70 @@
+/* Dice Bastion — Interface 7 content-only cleanup.
+   The shared game-screen frame owns headers, Back/Settings controls, Stage tab
+   geometry, Canvas shell, Result controls and responsive frame dimensions. */
+
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace {
+  position: relative !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Stage cards already contain the chapter/threat/plan/reward decision data.
+   Remove the old I6 summary strips so the active workspace receives the full
+   flexible track beneath the shared 48px play header. */
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace > #stageSummary,
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace > .chapter-panel {
+  display: none !important;
+}
+
+/* Stage-owned selector content follows the I7 264×190 / 38% composition.
+   Drag/snap/recycling remain owned by the game's existing 9-node controller. */
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace > #stageRail:not([hidden]) {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: clamp(103px, 38%, calc(100% - 103px)) !important;
+  width: 100% !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  padding-block: 0 !important;
+  padding-inline: max(0px, calc((100% - 264px) / 2)) !important;
+  gap: 12px !important;
+  transform: translateY(-50%) !important;
+  align-items: stretch !important;
+  overflow-y: hidden !important;
+  box-sizing: border-box !important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace > #stageRail[hidden] {
+  display: none !important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace > #stageRail > .stage-card {
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  box-sizing: border-box !important;
+}
+
+/* Team and Equipment are legitimate Stage-owned management pages. They reuse
+   the same bounded workspace instead of creating alternate scene geometry. */
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace > .prep-panel:not([hidden]) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: auto !important;
+  box-sizing: border-box !important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-dice-bastion"] #stageWorkspace > .prep-panel[hidden] {
+  display: none !important;
+}
