@@ -1128,7 +1128,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "버블 사파리",
     "es": "Safari de Burbujas",
     "pt-BR": "Safari de bolhas",
-    "fr": "Safari à bulles d'",
+    "fr": "Safari à bulles",
     "de": "Tierblasensafari",
     "it": "Safari con le bolle",
     "ru": "Сафари с пузырьками животных",
