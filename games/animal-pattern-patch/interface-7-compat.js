@@ -23,4 +23,21 @@
   Object.entries(genericStartLabels).forEach(([locale, label]) => {
     if (locales[locale]) locales[locale].start = label;
   });
+
+  // Interface 7 keeps Result inside the permanent Battle Canvas. Some v12
+  // route shells still carry the legacy data-screen="result" marker, so
+  // normalize that legacy source before DOMContentLoaded-owned shared/runtime
+  // scene discovery runs. Presentation classes stay intact.
+  function normalizeResultSubstate() {
+    const battle = document.getElementById("battleView");
+    const result = document.getElementById("resultView");
+    if (!battle || !result || !battle.contains(result)) return;
+    result.removeAttribute("data-screen");
+    result.dataset.wpBattleSubstate = "result";
+  }
+
+  normalizeResultSubstate();
+  if (!document.getElementById("resultView")) {
+    document.addEventListener("DOMContentLoaded", normalizeResultSubstate, { once: true });
+  }
 })();

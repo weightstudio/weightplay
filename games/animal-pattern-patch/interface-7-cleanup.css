@@ -1,6 +1,7 @@
-/* Animal Pattern Patch — bounded Interface 7 shared-screen cleanup.
-   This stylesheet is loaded only by this game route; keep gameplay/puzzle
-   presentation intact and retire only legacy shared chrome. */
+/* Animal Pattern Patch — scoped Interface 7 content cleanup.
+   Shared frame/header/return/settings/reserve geometry is owned by the
+   repository Interface 7 runtime. This file only retires legacy game-local
+   chrome and styles Pattern Patch content inside those shared slots. */
 
 #mainView .hero-card {
   background: transparent !important;
@@ -23,72 +24,25 @@
   white-space: nowrap !important;
 }
 
-#battleView {
-  padding: 0 12px 12px !important;
-}
-
-#battleView .battle-header {
-  width: 100% !important;
-  min-height: 48px !important;
-  height: 48px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 0 !important;
-  margin: 0 auto !important;
-}
-
+/* Retire only duplicated legacy Battle chrome. The shared Interface 7 frame
+   owns the permanent title-free top track, Back geometry and Settings/audio. */
 #battleView .battle-header .header-title,
 #battleSoundToggle,
 #battleView #leaveBtn {
   display: none !important;
 }
 
-#battleView #homeFromBattle {
-  width: 48px !important;
-  min-width: 48px !important;
-  height: 48px !important;
-  min-height: 48px !important;
-}
-
 #battleView .battle-content {
   padding-top: 12px;
 }
 
-.general-reserve[data-wp-ad-reserve] {
-  height: var(--wp-ad-reserve-height, 0px) !important;
-  min-height: 0 !important;
-  margin: 0 auto !important;
-}
-
 @media (min-width: 700px) {
-  #battleView {
-    padding-inline: 16px !important;
-    padding-bottom: 16px !important;
-  }
-
   #battleView .battle-content {
     padding-top: 16px;
   }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
-  #battleView .battle-header,
-  #battleView #homeFromBattle {
-    min-width: 48px !important;
-    height: 48px !important;
-    min-height: 48px !important;
-  }
-
-  #battleView .battle-header {
-    width: 100% !important;
-  }
-
-  #battleView #homeFromBattle {
-    width: 48px !important;
-    max-width: 48px !important;
-  }
-
   #battleView .battle-content {
     padding-top: 4px;
   }
