@@ -4,6 +4,10 @@
   const locales = window.ACORN_AUCTION_LOCALES || {};
   const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const routeLocales = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const returnLabels = {
+    lobby: { en: "Back to lobby", "zh-Hant": "返回大廳", "zh-Hans": "返回大厅", ja: "ロビーに戻る", ko: "로비로 돌아가기", es: "Volver al vestíbulo", "pt-BR": "Voltar ao lobby", fr: "Retour au lobby", de: "Zur Lobby", it: "Torna alla lobby", ru: "Вернуться в лобби", hi: "लॉबी में वापस जाएँ", ar: "العودة إلى الردهة" },
+    back: { en: "Back", "zh-Hant": "返回", "zh-Hans": "返回", ja: "戻る", ko: "뒤로", es: "Volver", "pt-BR": "Voltar", fr: "Retour", de: "Zurück", it: "Indietro", ru: "Назад", hi: "वापस जाएँ", ar: "رجوع" },
+  };
   const guideInfoCopy = {
     en: { kicker: "WeightPlay Original Game Guide", gameplay: "Gameplay", gameplayValue: "Quantity and budget choice puzzle", genre: "Genre", genreValue: "Puzzle · Logic · Planning · Family · Animal", faq: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser.", guideAria: "Acorn Auction game information" },
     "zh-Hant": { kicker: "WeightPlay 原創遊戲指南", gameplay: "玩法", gameplayValue: "數量與預算選擇益智", genre: "類型", genreValue: "益智 · 邏輯 · 規劃 · 家庭 · 動物", faq: "常見問題", faqQuestion: "進度會保存嗎？", faqAnswer: "會，只保存在這個瀏覽器中。", guideAria: "橡果拍賣遊戲資訊" },
@@ -59,13 +63,13 @@
     setText(faqSection?.querySelector("dt"), guideCopy.faqQuestion);
     setText(faqSection?.querySelector("dd"), guideCopy.faqAnswer);
   }
-  function show(screen) { phase = screen; const battleVisible = ["battle", "choose", "retry", "complete", "result"].includes(screen); document.querySelectorAll("[data-screen]").forEach((node) => { if (node.id === "battleScreen") node.hidden = !battleVisible; else node.hidden = node.dataset.screen !== screen; }); $("battleContent").hidden = screen === "result"; $("settingsPanel").hidden = true; $("backBtn").hidden = false; const guide = guideElement(); if (guide) guide.hidden = screen !== "main"; $("stageReserve").hidden = screen !== "stage"; $("battleReserve").hidden = !battleVisible; }
+  function show(screen) { phase = screen; const battleVisible = ["battle", "choose", "retry", "complete", "result"].includes(screen); document.querySelectorAll("[data-screen]").forEach((node) => { if (node.id === "battleScreen") node.hidden = !battleVisible; else node.hidden = node.dataset.screen !== screen; }); $("battleContent").hidden = screen === "result"; $("settingsPanel").hidden = true; $("backBtn").hidden = screen !== "main"; const guide = guideElement(); if (guide) guide.hidden = screen !== "main"; $("stageReserve").hidden = screen !== "stage"; $("battleReserve").hidden = !battleVisible; }
   function renderStatic() {
     const guideCopy = guideInfoCopy[locale] || guideInfoCopy.en;
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); });
-    document.querySelectorAll(".wp-shell-return").forEach((node) => node.setAttribute("aria-label", copy("close")));
+    document.querySelectorAll(".wp-shell-return").forEach((node) => node.setAttribute("aria-label", returnLabels[node.dataset.wpReturn === "main" ? "lobby" : "back"][locale] || returnLabels[node.dataset.wpReturn === "main" ? "lobby" : "back"].en));
     document.querySelectorAll("[data-wp-settings]").forEach((node) => node.setAttribute("aria-label", copy("settings")));
     $("closeSettings").setAttribute("aria-label", copy("close"));
     $("localeSelect").setAttribute("aria-label", copy("language"));
@@ -75,7 +79,7 @@
     applyGuideLocale();
     renderStages(); renderBattle(); renderResult();
   }
-  function renderStages() { const root = $("stageList"); if (!root) return; root.setAttribute("aria-label", copy("rounds")); root.replaceChildren(); rounds.forEach((round, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.dataset.roundIndex = String(index); button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(roundIndex === index)); button.setAttribute("aria-controls", "battleScreen"); button.innerHTML = `<span><strong>${copy(round.name)}</strong><small>${copy(round.hint)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`; button.addEventListener("click", () => startRound(index, true)); root.appendChild(button); }); }
+  function renderStages() { const root = $("stageList"); if (!root) return; root.setAttribute("aria-label", copy("rounds")); root.replaceChildren(); rounds.forEach((round, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.dataset.roundIndex = String(index); button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(roundIndex === index)); button.setAttribute("aria-current", String(roundIndex === index)); button.dataset.wpStageRecommended = String(roundIndex === index); button.setAttribute("aria-controls", "battleScreen"); button.innerHTML = `<span><strong>${copy(round.name)}</strong><small>${copy(round.hint)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`; button.addEventListener("click", () => startRound(index, true)); root.appendChild(button); }); }
   function clearTimer() { if (timer) clearTimeout(timer); timer = null; timerDue = 0; timerCallback = null; }
   function scheduleTimer(callback, delay) { clearTimer(); timerCallback = callback; timerDue = performance.now() + delay; timer = setTimeout(() => { const run = timerCallback; timer = null; timerDue = 0; timerCallback = null; run?.(); }, delay); }
   function pauseTimer() { if (!timer || !timerCallback) return null; const paused = { callback: timerCallback, remaining: Math.max(0, timerDue - performance.now()) }; clearTimeout(timer); timer = null; timerDue = 0; timerCallback = null; return paused; }
@@ -100,7 +104,7 @@
     }
   }
   function nextRound() { const next = roundIndex + 1; if (next < rounds.length) startRound(next); else { show("stage"); renderStages(); } }
-  function goBack() { clearTimer(); if (["battle", "choose", "retry", "complete", "result"].includes(phase)) { show("stage"); renderStages(); } else if (phase === "stage") show("main"); }
+  function goBack() { clearTimer(); if (phase === "main") { const routePrefix = Object.keys(routeLocales).find((prefix) => routeLocales[prefix] === locale) || "en"; window.location.assign(`/${routePrefix}/`); return; } if (["battle", "choose", "retry", "complete", "result"].includes(phase)) { show("stage"); renderStages(); } else if (phase === "stage") show("main"); }
   function bind() { $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRound); $("resetBtn").addEventListener("click", () => startRound(roundIndex)); $("backMarketBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("backBtn").addEventListener("click", goBack); $("stageBackBtn").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); const openSettings = () => { $("settingsPanel").hidden = false; }; ["settingsBtn", "stageSettingsBtn", "battleUtilityBtn"].forEach((id) => { const button = $(id); if (button) button.addEventListener("click", openSettings); }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundBtn").addEventListener("click", () => { sound = !sound; storage.setItem("weightplay-acorn-auction-sound", sound ? "on" : "off"); renderStatic(); }); $("localeSelect").addEventListener("change", (event) => { locale = normalizeLocale(event.target.value); storage.setItem("weightplay-acorn-auction-locale", locale); renderStatic(); }); }
   function boot() { bind(); $("resultReplayBtn").addEventListener("click", () => startRound(roundIndex, true)); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
   window.__ACORN_AUCTION_INTERFACE_BRIDGE__ = { pausePending: pauseTimer, resumePending: resumeTimer, getState: () => ({ roundIndex, phase, solved: [...solved], picks }) };
