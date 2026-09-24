@@ -196,7 +196,7 @@
   installBattleLeaveGuard();
 
   import("/src/stage-selector-standard.js");
-  import("./game-v4-base.js").then(() => {
+  import("./game-v4-base.js?v=20260924-acorn-auction-v6-i7-issue-repair").then(() => {
     ensureStageNav();
     retireLegacyExtras();
     installBattleLeaveGuard();

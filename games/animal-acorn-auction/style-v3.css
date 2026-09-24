@@ -17,3 +17,90 @@
 /* Interface 7 recheck: Stage title cleanup must not hide the shared Settings host
    that auto-mount appends as a direct child of the legacy stage header. */
 body.wp-shell-stage-active #stageScreen .stage-header>.wp-shell-settings:not([hidden]){display:block!important}
+
+/* Reserve the feedback track before a choice so neither success nor retry
+   copy can push the lot cards away from the player's pointer. */
+#battleScreen .feedback-row {
+  box-sizing: border-box !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  max-height: 58px !important;
+  overflow: hidden !important;
+}
+#battleScreen .feedback-row .prompt {
+  min-width: 0 !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  font-size: 13px !important;
+  line-height: 16px !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 3 !important;
+}
+
+/* Results are a bounded Battle substate; the shared 48px header stays put. */
+#resultScreen:not([hidden]) {
+  position: absolute !important;
+  inset: 48px 0 0 !important;
+  z-index: 2 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: center !important;
+  justify-items: center !important;
+  gap: 8px !important;
+  box-sizing: border-box !important;
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  overflow: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#resultScreen .result-art-wrap {
+  margin: 0 auto !important;
+}
+#resultScreen .result-art {
+  height: clamp(88px, 18vh, 142px) !important;
+}
+#resultScreen .result-icon {
+  font-size: 28px !important;
+  line-height: 1 !important;
+}
+#resultScreen .eyebrow,
+#resultScreen h2,
+#resultScreen #resultText {
+  margin: 0 !important;
+  text-align: center !important;
+}
+#resultScreen h2 {
+  font-size: clamp(20px, 3vw, 28px) !important;
+}
+#resultScreen #resultText {
+  max-width: 60ch !important;
+}
+#resultScreen .main-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+#resultScreen .main-actions > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 4px !important;
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+}

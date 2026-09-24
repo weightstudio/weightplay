@@ -169,9 +169,11 @@
   gap: 8px !important;
 }
 #battleScreen .battle-header .eyebrow,
-#battleScreen #battleUtilityBtn,
 #battleScreen #backMarketBtn {
   display: none !important;
+}
+#battleScreen .battle-header #battleUtilityBtn {
+  display: flex !important;
 }
 #stageScreen,
 #battleScreen {

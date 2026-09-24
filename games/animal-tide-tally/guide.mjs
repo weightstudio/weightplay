@@ -49,6 +49,12 @@ export function applyTideGuide(html, locale) {
   html=html.replace(/<script\b[^>]*data-tide-faq[^>]*>[\s\S]*?<\/script>\n?/gi,'');
   const json=JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',inLanguage:locale,mainEntity:d.faq.map(([name,text])=>({'@type':'Question',name,acceptedAnswer:{'@type':'Answer',text}}))}).replaceAll('<','\\u003c');
   html=html.replace('</head>',`<script type="application/ld+json" data-tide-faq>${json}</script>\n</head>`);
+  // The shared Interface 7 poster rule is in the named wp-frame-contract layer.
+  // Keep this game's square entrance image cropped consistently in that same
+  // layer, after the linked shared stylesheet has declared its base rules.
+  const posterContract = '<style data-tide-poster-contract>@layer wp-frame-contract { html body[data-wp-game-id="animal-tide-tally"] [data-wp-frame="2"] [data-wp-frame-poster] { object-fit:cover!important; } }</style>\n';
+  html = html.replace(/<style\b[^>]*data-tide-poster-contract[^>]*>[\s\S]*?<\/style>\n?/gi, '');
+  html = html.replace('</head>',`${posterContract}</head>`);
   html=html.replace(/(<html\b[^>]*)(>)/i,(_,attrs,end)=>attrs.replace(/\sdir=["'][^"']*["']/i,'')+` dir="${locale==='ar'?'rtl':'ltr'}"`+end);
   // Localize existing source text before first paint, not through a fallback overlay.
   html=html.replace(/<([a-z][\w-]*)\b([^>]*\bdata-i18n=["']([^"']+)["'][^>]*)>([^<]*)<\/\1>/gi,(all,tag,attrs,key)=>{
