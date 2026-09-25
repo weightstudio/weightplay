@@ -48,7 +48,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "Burrow Shape Match",
     "direction": "ltr",
     "intro": "Restore woodland shelters by reading block silhouettes, rotating and mirroring pieces, and filling missing openings. A calm spatial puzzle with safe retries and saved stars.",
-    "coverAlt": "A friendly hedgehog and rabbit beside a moonlit woodland burrow",
+    "coverAlt": "A block-style woodland animal holding a wooden shape beside a burrow entrance",
     "chapters": [
       "Fern entrance",
       "Turning tunnels",
@@ -141,7 +141,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "洞穴圖形配對",
     "direction": "ltr",
     "intro": "觀察方塊輪廓，旋轉、鏡射拼片，補好森林洞穴的缺口。沒有倒數計時，可以安心重試，並保留每個洞穴的最佳星數。",
-    "coverAlt": "刺蝟與兔子站在月光下的森林洞穴旁",
+    "coverAlt": "方塊風格的森林動物拿著木製圖形，站在洞穴入口旁",
     "chapters": [
       "蕨葉入口",
       "旋轉隧道",
@@ -234,7 +234,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "洞穴图形配对",
     "direction": "ltr",
     "intro": "观察方块轮廓，旋转、镜像拼片，补好森林洞穴的缺口。没有倒计时，可以安心重试，并保留每个洞穴的最佳星数。",
-    "coverAlt": "刺猬与兔子站在月光下的森林洞穴旁",
+    "coverAlt": "方块风格的森林动物拿着木制图形，站在洞穴入口旁",
     "chapters": [
       "蕨叶入口",
       "旋转隧道",
@@ -327,7 +327,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "巣穴のかたち合わせ",
     "direction": "ltr",
     "intro": "ブロックの輪郭を観察し、回転や反転で森の巣穴を修復しましょう。時間制限はなく、何度でも試せて、巣穴ごとの最高の星を保存できます。",
-    "coverAlt": "月明かりの森の巣穴のそばにいるハリネズミとウサギ",
+    "coverAlt": "巣穴の入り口で木製の図形を持つ、ブロック風の森の動物",
     "chapters": [
       "シダの入り口",
       "回転トンネル",
@@ -420,7 +420,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "굴 모양 맞추기",
     "direction": "ltr",
     "intro": "블록의 윤곽을 살피고 조각을 회전하거나 반전해 숲속 굴을 복원하세요. 시간제한 없이 다시 도전하고 굴마다 최고의 별 기록을 남기는 공간 퍼즐이에요.",
-    "coverAlt": "달빛 아래 숲속 굴 옆에 있는 고슴도치와 토끼",
+    "coverAlt": "굴 입구 옆에서 나무 도형을 들고 있는 블록 스타일의 숲속 동물",
     "chapters": [
       "고사리 입구",
       "회전 터널",
@@ -513,7 +513,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "Formas de Madriguera",
     "direction": "ltr",
     "intro": "Restaura refugios del bosque comparando siluetas de bloques, girando y reflejando piezas para completar sus huecos. Un puzle tranquilo con reintentos y estrellas guardadas.",
-    "coverAlt": "Un erizo y un conejo junto a una madriguera del bosque bajo la luna",
+    "coverAlt": "Un animal del bosque de estilo cúbico sostiene una pieza de madera junto a la entrada de una madriguera.",
     "chapters": [
       "Entrada del helecho",
       "Túneles giratorios",
@@ -606,7 +606,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "Formas da Toca",
     "direction": "ltr",
     "intro": "Restaure abrigos da floresta comparando silhuetas de blocos, girando e espelhando peças para preencher aberturas. Um quebra-cabeça tranquilo com novas tentativas e estrelas salvas.",
-    "coverAlt": "Um ouriço e um coelho ao lado de uma toca na floresta ao luar",
+    "coverAlt": "Um animal da floresta em estilo de blocos segura uma peça de madeira ao lado da entrada de uma toca.",
     "chapters": [
       "Entrada de samambaias",
       "Túneis giratórios",
@@ -699,7 +699,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "Formes de terriers",
     "direction": "ltr",
     "intro": "Restaurez les abris de la forêt en comparant des silhouettes de blocs, en tournant les pièces et en les réfléchissant. Un puzzle calme, sans compte à rebours, avec essais libres et étoiles sauvegardées.",
-    "coverAlt": "Un hérisson et un lapin près d’un terrier forestier au clair de lune",
+    "coverAlt": "Un animal de la forêt au style cubique tient une forme en bois près de l’entrée d’un terrier.",
     "chapters": [
       "Entrée des fougères",
       "Tunnels tournants",
@@ -792,7 +792,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "Höhlenformen zuordnen",
     "direction": "ltr",
     "intro": "Stelle Waldhöhlen wieder her: Vergleiche Blockumrisse, drehe und spiegle Teile und fülle fehlende Stellen. Ein ruhiges Denkspiel mit freien Wiederholungen und gespeicherten Sternen.",
-    "coverAlt": "Ein Igel und ein Kaninchen neben einer Waldhöhle im Mondlicht",
+    "coverAlt": "Ein Waldtier im Blockstil hält eine Holzform neben einem Höhleneingang.",
     "chapters": [
       "Farneingang",
       "Drehtunnel",
@@ -885,7 +885,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "Forme della Tana",
     "direction": "ltr",
     "intro": "Ripara i rifugi del bosco osservando sagome di blocchi, ruotando e specchiando i pezzi per riempire le aperture. Un rompicapo tranquillo con tentativi liberi e stelle salvate.",
-    "coverAlt": "Un riccio e un coniglio accanto a una tana nel bosco al chiaro di luna",
+    "coverAlt": "Un animale del bosco in stile a blocchi tiene una forma di legno accanto all’ingresso di una tana.",
     "chapters": [
       "Ingresso delle felci",
       "Tunnel rotanti",
@@ -978,7 +978,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "Формы для норки",
     "direction": "ltr",
     "intro": "Восстанавливайте лесные укрытия: сравнивайте силуэты из клеток, поворачивайте и отражайте детали, заполняйте отверстия. Спокойная головоломка без таймера, с повторными попытками и сохранением звёзд.",
-    "coverAlt": "Ёж и кролик рядом с лесной норкой при лунном свете",
+    "coverAlt": "Лесной зверёк в блочном стиле держит деревянную фигуру у входа в нору.",
     "chapters": [
       "Папоротниковый вход",
       "Поворотные туннели",
@@ -1071,7 +1071,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "बिल के आकार मिलाएँ",
     "direction": "ltr",
     "intro": "ब्लॉक की आकृतियाँ देखकर, टुकड़ों को घुमाकर और प्रतिबिंबित करके जंगल के आश्रय ठीक करें। यह बिना समय-सीमा की स्थानिक पहेली है, जिसमें दोबारा कोशिश और सहेजे गए सितारे मिलते हैं।",
-    "coverAlt": "चाँदनी वाले जंगल में बिल के पास एक हेजहॉग और खरगोश",
+    "coverAlt": "बिल के प्रवेश द्वार के पास लकड़ी की आकृति पकड़े हुए ब्लॉक शैली का एक वन्य जीव",
     "chapters": [
       "फर्न का प्रवेश",
       "घूमती सुरंगें",
@@ -1164,7 +1164,7 @@ window.ANIMAL_HOLLOW_FIT_LOCALES = {
     "title": "مطابقة أشكال الجحور",
     "direction": "rtl",
     "intro": "رمّم ملاجئ الغابة بمقارنة أشكال المكعبات وتدوير القطع وعكسها لملء الفتحات. لغز هادئ بلا عدّ تنازلي، مع إعادة المحاولة وحفظ أفضل النجوم.",
-    "coverAlt": "قنفذ وأرنب بجوار جحر في الغابة تحت ضوء القمر",
+    "coverAlt": "حيوان غابة بتصميم مكعبات يحمل شكلاً خشبياً بجوار مدخل جحر",
     "chapters": [
       "مدخل السرخس",
       "أنفاق الدوران",

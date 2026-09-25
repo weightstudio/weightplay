@@ -74,8 +74,8 @@
     card.className = "stage-card infinite-stage-card unlocked";
     card.dataset.index = String(INFINITE_INDEX);
     card.setAttribute("aria-disabled", "false");
-    card.setAttribute("aria-label", text("infiniteMode"));
-    card.innerHTML = `<small><span>${text("infiniteMode")}</span><span>∞</span></small><strong>${text("endlessCardGoal")}</strong><span>${text("endlessCardBest", {score:endlessBest()})}</span>`;
+    card.setAttribute("aria-label", `${text("challengeMode")}: ${text("infiniteMode")}`);
+    card.innerHTML = `<small><span>${text("challengeMode")}</span><span>∞</span></small><strong>${text("infiniteMode")}</strong><span>${text("endlessCardBest", {score:endlessBest()})}</span>`;
   };
   stageApi.install = (rail, options = {}) => {
     if (rail?.id !== "stageRail" || typeof options.bind !== "function") return originalInstall(rail, options);
@@ -95,7 +95,7 @@
       activate: (index, source, card, event) => {
         const total = authoredTotal();
         if (!isChallengeView() && index === total) {
-          window.__animal2048Smoke?.startStage?.(INFINITE_INDEX, "stage_select");
+          window.Animal2048Navigation?.enterInfiniteForest?.();
           return;
         }
         originalActivate?.(index, source, card, event);

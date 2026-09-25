@@ -45,3 +45,12 @@
   }
   window.BlockTrilogyStageRenderer={render(nextApi){api=nextApi;const rail=api.rail;if(!cards.length||cards.some(card=>card.parentElement!==rail)){rail.innerHTML="";cards=Array.from({length:POOL},createCard);cards.forEach(card=>rail.append(card));windowStart=desired(api.getCentered());cards.forEach((card,index)=>bind(card,windowStart+index));rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(POOL);rail.dataset.wpStageTotal=String(TOTAL);rail.dataset.wpStageRecycleCount="0";installDrag()}select(api.getCentered());return true}};
 })();
+
+document.addEventListener("click",event=>{
+  const button=event.target.closest?.("[data-prism-stage-focus]");
+  if(!button||document.getElementById("stageScreen")?.hidden)return;
+  const selected=document.querySelector("#stageRail .stage-card.centered")||document.querySelector('#stageRail .stage-card[aria-current="true"]');
+  if(!selected)return;
+  selected.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+  selected.focus({preventScroll:true});
+});

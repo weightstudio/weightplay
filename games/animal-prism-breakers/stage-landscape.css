@@ -250,3 +250,96 @@
     height: 34px;
   }
 }
+
+/* Keep Stage content and its one truthful navigation action in separate rows. */
+body[data-wp-game-id="animal-prism-breakers"] #stageScreen.active-screen:not([hidden]) {
+  isolation: isolate;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] [data-wp-logical-stage-canvas] {
+  padding: 8px 8px calc(88px / var(--wp-stage-canvas-scale, 1) + 8px) !important;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #stageScreen > .stage-tabs {
+  position: fixed !important;
+  inset: auto auto 0 50% !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  width: min(100vw, 920px) !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  padding: 6px 8px !important;
+  border-top: 1px solid var(--line);
+  background: #061225;
+  z-index: 90;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #stageScreen > .stage-tabs button {
+  box-sizing: border-box;
+  min-width: min(100%, 180px);
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #0d3353;
+  color: #fff;
+  font-weight: 900;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] .wp-stage-shell-header > :is(h1, h2, strong),
+body[data-wp-game-id="animal-prism-breakers"] .stage-header > div > strong,
+body[data-wp-game-id="animal-prism-breakers"] .wp-stage-shell-header > .stage-badge {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #stageHint {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 60px;
+  margin: 0 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #07172ded;
+  text-align: center;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #stageHeading {
+  color: #fff;
+  font-size: clamp(15px, 4vw, 18px);
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #stageHintCopy {
+  color: #dcefff;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-header.wp-battle-shell-header {
+  --wp-frame-control-size: 52px;
+}
+
+@media (min-height: 501px) {
+  body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-live {
+    grid-template-rows: 68px 36px minmax(0, 1fr) auto 42px !important;
+  }
+}
+
+@media (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
+  body[data-wp-game-id="animal-prism-breakers"] #stageHint { margin: 0 8px !important; }
+}
+
+@media (min-height: 501px) and (max-width: 699px) {
+  body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-live {
+    grid-template-rows: 64px 34px minmax(0, 1fr) auto 42px !important;
+  }
+}

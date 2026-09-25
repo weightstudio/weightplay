@@ -33,7 +33,7 @@
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_ID="animal-2048",GAME_VERSION="v26",INTERFACE_VERSION="7";
+  const GAME_ID="animal-2048",GAME_VERSION="v28",INTERFACE_VERSION="7";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
@@ -305,6 +305,9 @@ if(battleDecisionBlocked())return;const restartCount=restarts+1,startIndex=stage
   window.addEventListener("pageshow",()=>{if(resultWindowFocused&&!document.hidden)resumeResultReveal();});
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendResultReveal();else if(resultWindowFocused)resumeResultReveal();});
 
+  window.Animal2048Navigation=Object.freeze({
+    enterInfiniteForest:()=>startStage(INFINITE_INDEX,"stage_select")
+  });
   window.__animal2048Smoke={
     levels:levels.map(level=>({index:level.index,type:level.type,target:level.target,limit:level.limit,blocked:[...level.blocked],start:[...level.start],seed:level.seed>>>0,checkpoint:level.checkpoint||null})),
     infiniteIndex:INFINITE_INDEX,

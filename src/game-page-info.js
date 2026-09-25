@@ -14291,8 +14291,8 @@
 
   const publicKidsBatch = {
     "animal-block-grove": {
-      title: "Animal Block Grove", difficulty: "Easy to Challenging", time: "2-6 minutes per mission", gameplay: "8×8 Block Placement Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Spatial Reasoning", "Sequencing"],
-      intro: "Animal Block Grove is a thirty-mission placement puzzle starring Moss Shell Taro and Rainbow Hop Mimi. Choose from three block groups, fit every cell onto the 8×8 forest board, and complete full rows or columns to clear habitat space.",
+      title: "Block Grove", difficulty: "Easy to Challenging", time: "2-6 minutes per mission", gameplay: "8×8 Block Placement Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Spatial Reasoning", "Sequencing"], relatedIds: ["animal-color-link", "animal-tangram"],
+      intro: "Block Grove is a thirty-mission placement puzzle starring Moss Shell Taro and Rainbow Hop Mimi. Choose from three block groups, fit every cell onto the 8×8 forest board, and complete full rows or columns to clear habitat space.",
       story: ["A storm scattered the grove into leaf, flower, ripple, paw, acorn, and moss-stone fragments. Taro and Mimi rebuild each habitat by reconnecting complete lines. Every cleared mission restores another part of the forest; Infinite Grove continues the same repair work without a move limit."],
       systems: ["Each tray contains three pieces that may be used in any order. A piece must fit entirely inside empty cells. Full rows and columns clear together, opening space and adding score. A fresh tray arrives only after all three pieces are placed.", "Campaign missions use authored boards, placement limits, and goals such as lines, score, paws, acorns, moss stones, or crossing clears. Undo restores the exact state before the last placement, while Hint highlights a legal safer option without playing it."],
       how: ["Choose one of the three block groups.", "Drag it onto empty cells, or tap the piece and then a board cell.", "Complete a full row or column to clear it.", "Finish the displayed mission goal before the placement limit."],
@@ -14612,6 +14612,809 @@
     faq: [["共有多少題？", "共有六章三十題固定謎題。"], ["木板為什麼會落下？", "固定該木板的所有孔都沒有螺絲時就會落下。"], ["上鎖螺絲是什麼？", "卸下足夠的上層木板後才會變成可移動。"], ["提示會直接移動嗎？", "不會，只會標出一組安全的螺絲與目的孔。"], ["復原會恢復什麼？", "會恢復上一步前的螺絲、木板與步數。"], ["進度會保存嗎？", "會，但只保存在目前瀏覽器。"], ["需要帳號嗎？", "不需要。"], ["遊戲有廣告嗎？", "沒有，Kids 遊戲維持無廣告。"]]
   };
   for (const id of Object.keys(publicKidsBatch)) localizedGames["zh-Hans"][id] = { ...localizedGames["zh-Hant"][id] };
+  // WP_BLOCK_GROVE_130_START — owner-authorized Text Growth 1.3.0 locale ownership.
+  const blockGrove130Locales = {
+  "zh-Hant": {
+    "title": "方塊森林",
+    "difficulty": "簡單到具挑戰性",
+    "time": "每個任務約 2～6 分鐘",
+    "gameplay": "8×8 方塊配置解謎",
+    "genre": [
+      "益智",
+      "邏輯",
+      "動物"
+    ],
+    "skills": [
+      "空間規劃",
+      "順序判斷",
+      "問題解決"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "《方塊森林》共有 30 個森林任務。從三組可用方塊中安排位置，在 8×8 棋盤填滿整排或整列，並在步數上限前完成不同棲地目標。",
+    "story": [
+      "《方塊森林》共有 30 個森林任務。從三組可用方塊中安排位置，在 8×8 棋盤填滿整排或整列，並在步數上限前完成不同棲地目標。"
+    ],
+    "systems": [
+      "從下方三組方塊選一組。 拖到棋盤，或先點方塊再點格子。 填滿整排或整列即可消除。",
+      "完成關卡顯示的爪印、橡實、苔石、交叉或分數目標。 目前三組方塊全部用完後，才會補上新的三組。 無限森林沒有放置步數上限，直到剩餘方塊都無法放置為止，最高分只保存在本機。"
+    ],
+    "how": [
+      "從下方三組方塊選一組。",
+      "拖到棋盤，或先點方塊再點格子。",
+      "填滿整排或整列即可消除。",
+      "完成關卡顯示的爪印、橡實、苔石、交叉或分數目標。"
+    ],
+    "strategyTips": [
+      "先查看三組方塊，再決定第一組放哪裡。",
+      "保留不同形狀的空位，不要只留下狹長缺口。",
+      "一次交叉消除可以同時清掉一排與一列；苔石則要等所在完整線被清除才會消失。"
+    ],
+    "progression": [
+      "第 1～5 關練習整排與整列消除；6～10 關加入爪印；11～15 關加入橡實；16～20 關加入苔石；21～25 關要求交叉消除；26～30 關混合全部規則。無限森林沒有步數上限，直到剩餘方塊都放不下為止。"
+    ],
+    "designNote": "拖曳與點選都使用相同放置規則。提示只標示一個合法且較安全的位置，不會代替玩家落子；復原會完整回到上一次放置前。",
+    "parent": "不需要帳號或付費。任務進度、星星、最高分與無限森林紀錄只留在目前瀏覽器。空間規劃只是遊戲中的練習，不是正式能力評估。",
+    "faq": [
+      [
+        "三組方塊一定要依序使用嗎？",
+        "不用，可以先放最適合的一組；三組用完才會補上新的一批。"
+      ],
+      [
+        "提示會直接替我放置嗎？",
+        "不會，只會標出目前較安全的位置。"
+      ],
+      [
+        "復原會回到哪一步？",
+        "會完整回到上一次放置前，包含棋盤、目標與方塊列。"
+      ],
+      [
+        "什麼時候會補上新方塊？",
+        "目前三組方塊全部用完後，才會補上新的三組。"
+      ],
+      [
+        "無限森林和任務有什麼不同？",
+        "無限森林沒有放置步數上限，直到剩餘方塊都無法放置為止，最高分只保存在本機。"
+      ]
+    ]
+  },
+  "zh-Hans": {
+    "title": "方块森林",
+    "difficulty": "简单到具挑战性",
+    "time": "每个任务约 2～6 分钟",
+    "gameplay": "8×8 方块配置解谜",
+    "genre": [
+      "益智",
+      "逻辑",
+      "动物"
+    ],
+    "skills": [
+      "空间规划",
+      "顺序判断",
+      "问题解决"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "《方块森林》共有 30 个森林任务。从三组可用方块中安排位置，在 8×8 棋盘填满整行或整列，并在步数上限前完成不同栖息地目标。",
+    "story": [
+      "《方块森林》共有 30 个森林任务。从三组可用方块中安排位置，在 8×8 棋盘填满整行或整列，并在步数上限前完成不同栖息地目标。"
+    ],
+    "systems": [
+      "从下方三组方块选择一组。 拖到棋盘，或先点方块再点格子。 填满整行或整列即可消除。",
+      "完成爪印、橡果、苔石、交叉或分数目标。 当前三组方块全部用完后，才会补充新的三组。 无限森林没有放置步数上限，直到剩余方块都无法放置为止，最高分只保存在本机。"
+    ],
+    "how": [
+      "从下方三组方块选择一组。",
+      "拖到棋盘，或先点方块再点格子。",
+      "填满整行或整列即可消除。",
+      "完成爪印、橡果、苔石、交叉或分数目标。"
+    ],
+    "strategyTips": [
+      "先查看三组方块，再决定第一组放在哪里。",
+      "保留不同形状的空位，不要只留下狭长缺口。",
+      "一次交叉消除可以同时清掉一行和一列；苔石则要等所在完整线被清除才会消失。"
+    ],
+    "progression": [
+      "第 1～5 关练习整行与整列消除；6～10 关加入爪印；11～15 关加入橡果；16～20 关加入苔石；21～25 关要求交叉消除；26～30 关混合全部规则。无限森林没有步数上限，直到剩余方块都放不下。"
+    ],
+    "designNote": "拖动与点选都使用相同放置规则。提示只标出一个合法且较安全的位置，不会代替玩家落子；撤销会完整回到上一次放置前。",
+    "parent": "不需要账号或付费。任务进度、星星、最高分和无限森林记录只留在当前浏览器。空间规划只是游戏练习，不是正式能力评估。",
+    "faq": [
+      [
+        "必须按顺序使用三组方块吗？",
+        "不用，可以先放最合适的一组；三组用完才会补充。"
+      ],
+      [
+        "提示会替我放置吗？",
+        "不会，只会标出较安全的位置。"
+      ],
+      [
+        "撤销会恢复什么？",
+        "会完整恢复上一次放置前的状态。"
+      ],
+      [
+        "什么时候会补充新方块？",
+        "当前三组方块全部用完后，才会补充新的三组。"
+      ],
+      [
+        "无限森林与任务有什么不同？",
+        "无限森林没有放置步数上限，直到剩余方块都无法放置为止，最高分只保存在本机。"
+      ]
+    ]
+  },
+  "ja": {
+    "title": "Animal Block Grove",
+    "difficulty": "やさしい～歯ごたえあり",
+    "time": "1ミッション約2～6分",
+    "gameplay": "8×8ブロック配置パズル",
+    "genre": [
+      "パズル",
+      "ロジック",
+      "どうぶつ"
+    ],
+    "skills": [
+      "空間計画",
+      "順序判断",
+      "問題解決"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "『Animal Block Grove』は30の森ミッションを収録したブロックパズルです。3つの候補から形を選び、8×8盤面で行や列を完成させ、配置回数内に生息地の目標を達成します。",
+    "story": [
+      "『Animal Block Grove』は30の森ミッションを収録したブロックパズルです。3つの候補から形を選び、8×8盤面で行や列を完成させ、配置回数内に生息地の目標を達成します。"
+    ],
+    "systems": [
+      "3つからブロックを選びます。 盤面へドラッグ、またはブロックとマスを順にタップします。 たて・よこ一列で消えます。",
+      "表示された目標を達成します。 現在の3つをすべて使い切ると、新しい3つが補充されます。 配置回数制限がなく、残ったピースがどれも置けなくなるまで続きます。ベストスコアはローカル保存です。"
+    ],
+    "how": [
+      "3つからブロックを選びます。",
+      "盤面へドラッグ、またはブロックとマスを順にタップします。",
+      "たて・よこ一列で消えます。",
+      "表示された目標を達成します。"
+    ],
+    "strategyTips": [
+      "最初の1個を置く前に3つすべての形を確認します。",
+      "細い隙間だけを残さず、複数の形が入る空間を確保します。",
+      "交差消去なら1回で行と列を消せます。苔石は完成した行か列に含まれたときだけ消えます。"
+    ],
+    "progression": [
+      "ミッション1～5はライン消去、6～10は足跡、11～15はどんぐり、16～20は苔石、21～25は交差消去、26～30は全ルールを組み合わせます。無限の森は配置回数制限がなく、残ったピースがどれも置けなくなると終了します。"
+    ],
+    "designNote": "ドラッグとタップは同じ配置ルールです。ヒントは合法で比較的安全な位置を示すだけで自動配置せず、元に戻すは直前の配置前の状態を復元します。",
+    "parent": "アカウントや購入は不要です。ミッション進行、星、ベストスコア、無限の森の記録はこのブラウザだけに保存されます。空間計画は遊びとしての練習で、正式な能力評価ではありません。",
+    "faq": [
+      [
+        "順番どおりに置く必要は？",
+        "ありません。好きなものから置けます。"
+      ],
+      [
+        "ヒントが自動で置きますか？",
+        "いいえ、安全な候補を示すだけです。"
+      ],
+      [
+        "もどすで何が戻りますか？",
+        "直前に置く前の状態すべてです。"
+      ],
+      [
+        "新しいピースはいつ補充されますか？",
+        "現在の3つをすべて使い切ると、新しい3つが補充されます。"
+      ],
+      [
+        "無限の森はミッションと何が違いますか？",
+        "配置回数制限がなく、残ったピースがどれも置けなくなるまで続きます。ベストスコアはローカル保存です。"
+      ]
+    ]
+  },
+  "ko": {
+    "title": "Animal Block Grove",
+    "difficulty": "쉬움~도전적",
+    "time": "미션당 약 2~6분",
+    "gameplay": "8×8 블록 배치 퍼즐",
+    "genre": [
+      "퍼즐",
+      "논리",
+      "동물"
+    ],
+    "skills": [
+      "공간 계획",
+      "순서 판단",
+      "문제 해결"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Animal Block Grove에는 30개의 숲 미션이 있습니다. 세 블록 후보를 8×8 보드에 배치해 행이나 열을 완성하고, 배치 제한 안에서 서식지 목표를 달성합니다.",
+    "story": [
+      "Animal Block Grove에는 30개의 숲 미션이 있습니다. 세 블록 후보를 8×8 보드에 배치해 행이나 열을 완성하고, 배치 제한 안에서 서식지 목표를 달성합니다."
+    ],
+    "systems": [
+      "세 블록 중 하나를 고르세요. 보드로 드래그하거나 블록과 칸을 차례로 누르세요. 가로나 세로 한 줄을 채우면 사라집니다.",
+      "표시된 목표를 완료하세요. 현재 세 블록을 모두 사용한 뒤 새 세트가 나옵니다. 배치 제한이 없고 남은 블록을 놓을 수 없을 때까지 계속됩니다. 최고 점수는 로컬에 저장됩니다."
+    ],
+    "how": [
+      "세 블록 중 하나를 고르세요.",
+      "보드로 드래그하거나 블록과 칸을 차례로 누르세요.",
+      "가로나 세로 한 줄을 채우면 사라집니다.",
+      "표시된 목표를 완료하세요."
+    ],
+    "strategyTips": [
+      "첫 블록을 놓기 전에 세 모양을 모두 확인하세요.",
+      "좁은 틈 하나만 남기지 말고 여러 모양이 들어갈 공간을 유지하세요.",
+      "교차 제거는 한 번에 행과 열을 지울 수 있고, 이끼 돌은 완성된 줄에 포함될 때만 사라집니다."
+    ],
+    "progression": [
+      "1~5 미션은 줄 제거, 6~10은 발자국, 11~15는 도토리, 16~20은 이끼 돌, 21~25는 교차 제거, 26~30은 모든 규칙을 결합합니다. 무한 숲은 배치 제한이 없으며 남은 블록을 더 놓을 수 없을 때 끝납니다."
+    ],
+    "designNote": "드래그와 탭은 같은 배치 규칙을 사용합니다. 힌트는 합법적이고 비교적 안전한 위치만 표시하며 자동으로 놓지 않고, 실행 취소는 직전 배치 전 상태를 완전히 복원합니다.",
+    "parent": "계정이나 구매가 필요하지 않습니다. 미션 진행, 별, 최고 점수와 무한 숲 기록은 이 브라우저에만 저장됩니다. 공간 계획은 놀이 연습이며 공식 능력 평가가 아닙니다.",
+    "faq": [
+      [
+        "순서대로 놓아야 하나요?",
+        "아니요. 원하는 블록부터 놓을 수 있습니다."
+      ],
+      [
+        "힌트가 대신 놓나요?",
+        "아니요. 안전한 후보만 보여 줍니다."
+      ],
+      [
+        "되돌리기는 무엇을 복구하나요?",
+        "마지막 배치 전 전체 상태입니다."
+      ],
+      [
+        "새 블록은 언제 나오나요?",
+        "현재 세 블록을 모두 사용한 뒤 새 세트가 나옵니다."
+      ],
+      [
+        "무한 숲은 미션과 무엇이 다른가요?",
+        "배치 제한이 없고 남은 블록을 놓을 수 없을 때까지 계속됩니다. 최고 점수는 로컬에 저장됩니다."
+      ]
+    ]
+  },
+  "es": {
+    "title": "Bosque de Bloques",
+    "difficulty": "Fácil a desafiante",
+    "time": "2–6 minutos por misión",
+    "gameplay": "Puzzle de bloques 8×8",
+    "genre": [
+      "Puzzle",
+      "Lógica",
+      "Animales"
+    ],
+    "skills": [
+      "Planificación espacial",
+      "Secuenciación",
+      "Resolución de problemas"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Bosque de Bloques incluye 30 misiones de bosque. Coloca tres piezas disponibles en un tablero 8×8, completa filas o columnas y cumple el objetivo del hábitat antes de agotar el límite de colocaciones.",
+    "story": [
+      "Bosque de Bloques incluye 30 misiones de bosque. Coloca tres piezas disponibles en un tablero 8×8, completa filas o columnas y cumple el objetivo del hábitat antes de agotar el límite de colocaciones."
+    ],
+    "systems": [
+      "Elige uno de los tres grupos. Arrástralo al tablero o toca la pieza y una casilla. Completa una fila o columna para borrarla.",
+      "Cumple el objetivo mostrado. Aparece un nuevo grupo de tres después de usar las tres piezas actuales. No tiene límite de colocaciones y continúa hasta que ninguna pieza restante cabe. La mejor puntuación se guarda localmente."
+    ],
+    "how": [
+      "Elige uno de los tres grupos.",
+      "Arrástralo al tablero o toca la pieza y una casilla.",
+      "Completa una fila o columna para borrarla.",
+      "Cumple el objetivo mostrado."
+    ],
+    "strategyTips": [
+      "Revisa las tres piezas antes de colocar la primera.",
+      "Conserva huecos de varias formas en vez de dejar un único espacio estrecho.",
+      "Un despeje cruzado puede borrar una fila y una columna a la vez; las piedras de musgo desaparecen solo al completar su línea."
+    ],
+    "progression": [
+      "Las misiones 1–5 enseñan líneas; 6–10 añaden huellas; 11–15, bellotas; 16–20, piedras de musgo; 21–25 exigen cruces; 26–30 combinan todas las reglas. Bosque Infinito elimina el límite y termina cuando ninguna pieza restante cabe."
+    ],
+    "designNote": "Arrastrar y tocar usan las mismas reglas. Pista solo marca una posición legal más segura y no coloca piezas; Deshacer restaura todo el estado anterior a la última colocación.",
+    "parent": "No se necesita cuenta ni compra. El progreso, las estrellas, las mejores puntuaciones y Bosque Infinito se guardan solo en este navegador. La planificación espacial es práctica lúdica, no una evaluación formal.",
+    "faq": [
+      [
+        "¿Debo usar las piezas en orden?",
+        "No. Usa cualquier pieza disponible."
+      ],
+      [
+        "¿La pista coloca una pieza?",
+        "No, solo marca una posición segura."
+      ],
+      [
+        "¿Qué restaura Deshacer?",
+        "Todo el estado anterior a la última colocación."
+      ],
+      [
+        "¿Cuándo aparecen piezas nuevas?",
+        "Aparece un nuevo grupo de tres después de usar las tres piezas actuales."
+      ],
+      [
+        "¿En qué se diferencia Bosque Infinito?",
+        "No tiene límite de colocaciones y continúa hasta que ninguna pieza restante cabe. La mejor puntuación se guarda localmente."
+      ]
+    ]
+  },
+  "pt-BR": {
+    "title": "Block Grove",
+    "difficulty": "Fácil a desafiador",
+    "time": "2–6 minutos por missão",
+    "gameplay": "Quebra-cabeça de blocos 8×8",
+    "genre": [
+      "Quebra-cabeça",
+      "Lógica",
+      "Animais"
+    ],
+    "skills": [
+      "Planejamento espacial",
+      "Sequenciamento",
+      "Resolução de problemas"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Block Grove tem 30 missões na floresta. Posicione três peças disponíveis no tabuleiro 8×8, complete linhas ou colunas e cumpra o objetivo do habitat antes do limite de jogadas.",
+    "story": [
+      "Block Grove tem 30 missões na floresta. Posicione três peças disponíveis no tabuleiro 8×8, complete linhas ou colunas e cumpra o objetivo do habitat antes do limite de jogadas."
+    ],
+    "systems": [
+      "Escolha um dos três blocos. Arraste para o tabuleiro ou toque na peça e em uma casa. Complete uma linha ou coluna para limpar.",
+      "Conclua o objetivo exibido. Um novo grupo de três aparece depois que as três peças atuais forem usadas. Não há limite de colocações; ele continua até nenhuma peça restante caber. O recorde fica salvo localmente."
+    ],
+    "how": [
+      "Escolha um dos três blocos.",
+      "Arraste para o tabuleiro ou toque na peça e em uma casa.",
+      "Complete uma linha ou coluna para limpar.",
+      "Conclua o objetivo exibido."
+    ],
+    "strategyTips": [
+      "Confira as três peças antes de colocar a primeira.",
+      "Mantenha espaços de formatos diferentes em vez de deixar apenas uma fresta estreita.",
+      "Uma limpeza cruzada pode remover linha e coluna juntas; pedras de musgo somem apenas quando sua linha é completada."
+    ],
+    "progression": [
+      "As missões 1–5 ensinam limpezas de linha; 6–10 adicionam pegadas; 11–15, bolotas; 16–20, pedras de musgo; 21–25 exigem cruzamentos; 26–30 combinam todas as regras. Bosque Infinito remove o limite e termina quando nenhuma peça restante cabe."
+    ],
+    "designNote": "Arrastar e tocar seguem as mesmas regras. Dica apenas marca uma posição válida mais segura e não joga por você; Desfazer restaura todo o estado antes da última colocação.",
+    "parent": "Não é preciso conta nem compra. Progresso, estrelas, recordes e Bosque Infinito ficam apenas neste navegador. Planejamento espacial é uma prática lúdica, não uma avaliação formal.",
+    "faq": [
+      [
+        "Preciso usar as peças em ordem?",
+        "Não. Use qualquer peça disponível."
+      ],
+      [
+        "A dica coloca a peça?",
+        "Não, ela apenas mostra uma posição segura."
+      ],
+      [
+        "O que Desfazer restaura?",
+        "Todo o estado antes da última jogada."
+      ],
+      [
+        "Quando aparecem novas peças?",
+        "Um novo grupo de três aparece depois que as três peças atuais forem usadas."
+      ],
+      [
+        "Como Bosque Infinito é diferente?",
+        "Não há limite de colocações; ele continua até nenhuma peça restante caber. O recorde fica salvo localmente."
+      ]
+    ]
+  },
+  "fr": {
+    "title": "Block Grove",
+    "difficulty": "Facile à difficile",
+    "time": "2 à 6 minutes par mission",
+    "gameplay": "Puzzle de blocs 8×8",
+    "genre": [
+      "Puzzle",
+      "Logique",
+      "Animaux"
+    ],
+    "skills": [
+      "Planification spatiale",
+      "Séquencement",
+      "Résolution de problèmes"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Block Grove propose 30 missions forestières. Placez trois pièces disponibles sur une grille 8×8, complétez lignes ou colonnes et atteignez l’objectif avant la limite de placements.",
+    "story": [
+      "Block Grove propose 30 missions forestières. Placez trois pièces disponibles sur une grille 8×8, complétez lignes ou colonnes et atteignez l’objectif avant la limite de placements."
+    ],
+    "systems": [
+      "Choisis l’un des trois groupes de blocs. Fais-le glisser sur la grille ou touche la pièce puis une case. Complète une ligne ou une colonne pour l’effacer.",
+      "Atteins l’objectif de pattes, glands, pierres, croisements ou score. Un nouveau groupe de trois apparaît après l’utilisation des trois pièces actuelles. Il n’y a pas de limite de placements ; la partie continue jusqu’à ce qu’aucune pièce restante ne tienne. Le meilleur score est sauvegardé localement."
+    ],
+    "how": [
+      "Choisis l’un des trois groupes de blocs.",
+      "Fais-le glisser sur la grille ou touche la pièce puis une case.",
+      "Complète une ligne ou une colonne pour l’effacer.",
+      "Atteins l’objectif de pattes, glands, pierres, croisements ou score."
+    ],
+    "strategyTips": [
+      "Examinez les trois pièces avant de poser la première.",
+      "Gardez des espaces de plusieurs formes au lieu de ne laisser qu’une fente étroite.",
+      "Un effacement croisé peut supprimer une ligne et une colonne à la fois ; les pierres moussues ne disparaissent que lorsque leur ligne est complétée."
+    ],
+    "progression": [
+      "Les missions 1–5 enseignent les lignes ; 6–10 ajoutent les empreintes ; 11–15 les glands ; 16–20 les pierres moussues ; 21–25 les croisements ; 26–30 combinent toutes les règles. Bosquet infini retire la limite et se termine quand aucune pièce restante ne tient."
+    ],
+    "designNote": "Glisser et toucher suivent les mêmes règles. Indice signale seulement un emplacement légal plus sûr et ne joue pas à votre place ; Annuler restaure l’état complet avant le dernier placement.",
+    "parent": "Aucun compte ni achat n’est requis. Progression, étoiles, meilleurs scores et Bosquet infini restent dans ce navigateur. La planification spatiale est un exercice ludique, pas une évaluation formelle.",
+    "faq": [
+      [
+        "Dois-je utiliser les pièces dans l’ordre ?",
+        "Non. Utilise n’importe quelle pièce disponible ; une nouvelle série apparaît après les trois."
+      ],
+      [
+        "L’indice place-t-il une pièce ?",
+        "Non. Il indique seulement une position plus sûre."
+      ],
+      [
+        "Que restaure Annuler ?",
+        "Tout l’état précédant le dernier placement."
+      ],
+      [
+        "Quand de nouvelles pièces apparaissent-elles ?",
+        "Un nouveau groupe de trois apparaît après l’utilisation des trois pièces actuelles."
+      ],
+      [
+        "Quelle est la différence avec Bosquet infini ?",
+        "Il n’y a pas de limite de placements ; la partie continue jusqu’à ce qu’aucune pièce restante ne tienne. Le meilleur score est sauvegardé localement."
+      ]
+    ]
+  },
+  "de": {
+    "title": "Animal Block Grove",
+    "difficulty": "Leicht bis anspruchsvoll",
+    "time": "2–6 Minuten pro Mission",
+    "gameplay": "8×8-Blocksetz-Puzzle",
+    "genre": [
+      "Puzzle",
+      "Logik",
+      "Tiere"
+    ],
+    "skills": [
+      "Räumliche Planung",
+      "Reihenfolge",
+      "Problemlösen"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Animal Block Grove bietet 30 Waldmissionen. Setze drei verfügbare Formen auf das 8×8-Brett, vervollständige Reihen oder Spalten und erfülle das Habitat-Ziel innerhalb des Zuglimits.",
+    "story": [
+      "Animal Block Grove bietet 30 Waldmissionen. Setze drei verfügbare Formen auf das 8×8-Brett, vervollständige Reihen oder Spalten und erfülle das Habitat-Ziel innerhalb des Zuglimits."
+    ],
+    "systems": [
+      "Wähle eine der drei Blockgruppen. Ziehe sie aufs Brett oder tippe erst den Block und dann ein Feld. Eine volle Reihe oder Spalte wird entfernt.",
+      "Erfülle das angezeigte Ziel. Ein neues Dreierset erscheint erst, nachdem alle drei aktuellen Teile verwendet wurden. Es gibt kein Setzlimit; gespielt wird, bis kein verbleibendes Teil passt. Der Bestwert wird lokal gespeichert."
+    ],
+    "how": [
+      "Wähle eine der drei Blockgruppen.",
+      "Ziehe sie aufs Brett oder tippe erst den Block und dann ein Feld.",
+      "Eine volle Reihe oder Spalte wird entfernt.",
+      "Erfülle das angezeigte Ziel."
+    ],
+    "strategyTips": [
+      "Prüfe alle drei Teile, bevor du das erste setzt.",
+      "Halte Freiräume in mehreren Formen offen, statt nur einen schmalen Spalt zu lassen.",
+      "Eine Kreuzlöschung kann Reihe und Spalte gleichzeitig entfernen; Moossteine verschwinden nur mit einer vollständigen Linie."
+    ],
+    "progression": [
+      "Missionen 1–5 lehren Linien; 6–10 fügen Pfoten hinzu; 11–15 Eicheln; 16–20 Moossteine; 21–25 Kreuzlöschungen; 26–30 kombinieren alle Regeln. Endloser Hain hat kein Setzlimit und endet, wenn kein verbleibendes Teil mehr passt."
+    ],
+    "designNote": "Ziehen und Tippen verwenden dieselben Regeln. Hinweis markiert nur eine gültige, sichere Position und setzt nicht automatisch; Rückgängig stellt den vollständigen Zustand vor dem letzten Setzen wieder her.",
+    "parent": "Konto und Kauf sind nicht nötig. Fortschritt, Sterne, Bestwerte und Endloser Hain bleiben nur in diesem Browser. Räumliche Planung ist spielerische Übung und keine formale Leistungsbewertung.",
+    "faq": [
+      [
+        "Muss ich die Blöcke der Reihe nach nutzen?",
+        "Nein. Nutze jeden verfügbaren Block."
+      ],
+      [
+        "Setzt der Tipp einen Block?",
+        "Nein, er markiert nur eine sichere Position."
+      ],
+      [
+        "Was stellt Rückgängig wieder her?",
+        "Den gesamten Stand vor dem letzten Zug."
+      ],
+      [
+        "Wann erscheinen neue Teile?",
+        "Ein neues Dreierset erscheint erst, nachdem alle drei aktuellen Teile verwendet wurden."
+      ],
+      [
+        "Wie unterscheidet sich Endloser Hain?",
+        "Es gibt kein Setzlimit; gespielt wird, bis kein verbleibendes Teil passt. Der Bestwert wird lokal gespeichert."
+      ]
+    ]
+  },
+  "it": {
+    "title": "Animal Block Grove",
+    "difficulty": "Facile a impegnativo",
+    "time": "2–6 minuti per missione",
+    "gameplay": "Puzzle di blocchi 8×8",
+    "genre": [
+      "Puzzle",
+      "Logica",
+      "Animali"
+    ],
+    "skills": [
+      "Pianificazione spaziale",
+      "Sequenza",
+      "Risoluzione di problemi"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Animal Block Grove contiene 30 missioni nella foresta. Disponi tre pezzi disponibili sulla griglia 8×8, completa righe o colonne e raggiungi l’obiettivo dell’habitat entro il limite di mosse.",
+    "story": [
+      "Animal Block Grove contiene 30 missioni nella foresta. Disponi tre pezzi disponibili sulla griglia 8×8, completa righe o colonne e raggiungi l’obiettivo dell’habitat entro il limite di mosse."
+    ],
+    "systems": [
+      "Scegli uno dei tre gruppi di blocchi. Trascinalo sulla griglia oppure tocca il pezzo e poi una casella. Completa una riga o colonna per cancellarla.",
+      "Raggiungi l’obiettivo di impronte, ghiande, pietre, incroci o punti. Un nuovo gruppo di tre appare dopo aver usato tutti e tre i pezzi correnti. Non ha limite di pose e continua finché nessun pezzo rimasto entra. Il record viene salvato localmente."
+    ],
+    "how": [
+      "Scegli uno dei tre gruppi di blocchi.",
+      "Trascinalo sulla griglia oppure tocca il pezzo e poi una casella.",
+      "Completa una riga o colonna per cancellarla.",
+      "Raggiungi l’obiettivo di impronte, ghiande, pietre, incroci o punti."
+    ],
+    "strategyTips": [
+      "Controlla tutti e tre i pezzi prima di posare il primo.",
+      "Mantieni spazi di forme diverse invece di lasciare una sola fessura stretta.",
+      "Una cancellazione incrociata può eliminare riga e colonna insieme; le pietre muschiate spariscono solo con una linea completa."
+    ],
+    "progression": [
+      "Le missioni 1–5 insegnano le linee; 6–10 aggiungono impronte; 11–15 ghiande; 16–20 pietre muschiate; 21–25 richiedono incroci; 26–30 combinano tutte le regole. Bosco infinito rimuove il limite e termina quando nessun pezzo rimasto entra."
+    ],
+    "designNote": "Trascinamento e tocco seguono le stesse regole. Suggerimento indica solo una posizione valida più sicura e non posa il pezzo; Annulla ripristina lo stato completo prima dell’ultima posa.",
+    "parent": "Non servono account o acquisti. Progressi, stelle, record e Bosco infinito restano solo in questo browser. La pianificazione spaziale è pratica ludica, non una valutazione formale.",
+    "faq": [
+      [
+        "Devo usare i pezzi in ordine?",
+        "No. Usa qualsiasi pezzo disponibile; dopo tutti e tre arriva un nuovo gruppo."
+      ],
+      [
+        "Il suggerimento posiziona un pezzo?",
+        "No. Evidenzia soltanto una posizione più sicura."
+      ],
+      [
+        "Che cosa ripristina Annulla?",
+        "L’intero stato precedente all’ultima mossa."
+      ],
+      [
+        "Quando arrivano nuovi pezzi?",
+        "Un nuovo gruppo di tre appare dopo aver usato tutti e tre i pezzi correnti."
+      ],
+      [
+        "In cosa differisce Bosco infinito?",
+        "Non ha limite di pose e continua finché nessun pezzo rimasto entra. Il record viene salvato localmente."
+      ]
+    ]
+  },
+  "ru": {
+    "title": "Animal Block Grove",
+    "difficulty": "От простого к сложному",
+    "time": "2–6 минут на миссию",
+    "gameplay": "Блочная головоломка 8×8",
+    "genre": [
+      "Головоломка",
+      "Логика",
+      "Животные"
+    ],
+    "skills": [
+      "Пространственное планирование",
+      "Последовательность",
+      "Решение задач"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Animal Block Grove содержит 30 лесных миссий. Размещайте три доступные фигуры на поле 8×8, заполняйте ряды или столбцы и выполняйте цель до исчерпания лимита размещений.",
+    "story": [
+      "Animal Block Grove содержит 30 лесных миссий. Размещайте три доступные фигуры на поле 8×8, заполняйте ряды или столбцы и выполняйте цель до исчерпания лимита размещений."
+    ],
+    "systems": [
+      "Выбери одну из трёх групп блоков. Перетащи её на поле или нажми на фигуру, затем на клетку. Заполни ряд или столбец, чтобы очистить его.",
+      "Выполни цель с лапами, желудями, камнями, пересечениями или очками. Новая тройка появляется только после использования всех трёх текущих фигур. В ней нет лимита размещений; игра идёт, пока ни одна оставшаяся фигура не помещается. Рекорд хранится локально."
+    ],
+    "how": [
+      "Выбери одну из трёх групп блоков.",
+      "Перетащи её на поле или нажми на фигуру, затем на клетку.",
+      "Заполни ряд или столбец, чтобы очистить его.",
+      "Выполни цель с лапами, желудями, камнями, пересечениями или очками."
+    ],
+    "strategyTips": [
+      "Сначала оцените все три фигуры и только потом ставьте первую.",
+      "Сохраняйте свободные области разных форм, а не один узкий зазор.",
+      "Перекрёстная очистка убирает ряд и столбец одним ходом; мшистые камни исчезают только вместе с полной линией."
+    ],
+    "progression": [
+      "Миссии 1–5 обучают линиям; 6–10 добавляют следы лап; 11–15 жёлуди; 16–20 мшистые камни; 21–25 перекрёстные очистки; 26–30 объединяют правила. Бесконечная роща не ограничивает число размещений и заканчивается, когда ни одна оставшаяся фигура не помещается."
+    ],
+    "designNote": "Перетаскивание и касание используют одинаковые правила. Подсказка только отмечает допустимое более безопасное место и не делает ход; Отмена полностью восстанавливает состояние до последнего размещения.",
+    "parent": "Аккаунт и покупка не нужны. Прогресс, звёзды, рекорды и Бесконечная роща хранятся только в этом браузере. Пространственное планирование — игровая практика, а не формальная оценка способностей.",
+    "faq": [
+      [
+        "Нужно использовать фигуры по порядку?",
+        "Нет. Выбирай любую доступную; новая тройка появится после всех трёх."
+      ],
+      [
+        "Подсказка сама ставит фигуру?",
+        "Нет. Она только отмечает более безопасное место."
+      ],
+      [
+        "Что возвращает отмена?",
+        "Полное состояние до последнего хода."
+      ],
+      [
+        "Когда появляются новые фигуры?",
+        "Новая тройка появляется только после использования всех трёх текущих фигур."
+      ],
+      [
+        "Чем отличается Бесконечная роща?",
+        "В ней нет лимита размещений; игра идёт, пока ни одна оставшаяся фигура не помещается. Рекорд хранится локально."
+      ]
+    ]
+  },
+  "hi": {
+    "title": "Animal Block Grove",
+    "difficulty": "आसान से चुनौतीपूर्ण",
+    "time": "प्रति मिशन लगभग 2–6 मिनट",
+    "gameplay": "8×8 ब्लॉक प्लेसमेंट पहेली",
+    "genre": [
+      "पहेली",
+      "तर्क",
+      "जानवर"
+    ],
+    "skills": [
+      "स्थानिक योजना",
+      "क्रम निर्धारण",
+      "समस्या समाधान"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "Animal Block Grove में 30 जंगल मिशन हैं। तीन उपलब्ध आकृतियों को 8×8 बोर्ड पर रखें, पंक्ति या स्तंभ पूरा करें और प्लेसमेंट सीमा से पहले आवास लक्ष्य पूरा करें।",
+    "story": [
+      "Animal Block Grove में 30 जंगल मिशन हैं। तीन उपलब्ध आकृतियों को 8×8 बोर्ड पर रखें, पंक्ति या स्तंभ पूरा करें और प्लेसमेंट सीमा से पहले आवास लक्ष्य पूरा करें।"
+    ],
+    "systems": [
+      "तीन ब्लॉक समूहों में से एक चुनें। उसे बोर्ड पर खींचें, या टुकड़ा और फिर खाना टैप करें। पंक्ति या स्तंभ पूरा करके उसे साफ़ करें।",
+      "पंजा, बलूत, पत्थर, क्रॉस या अंक का लक्ष्य पूरा करें। मौजूदा तीनों टुकड़े इस्तेमाल होने के बाद नया तीन-टुकड़ा समूह आता है। इसमें प्लेसमेंट सीमा नहीं है और तब तक चलता है जब तक कोई बचा टुकड़ा फिट न हो। सर्वश्रेष्ठ स्कोर स्थानीय रूप से सहेजा जाता है।"
+    ],
+    "how": [
+      "तीन ब्लॉक समूहों में से एक चुनें।",
+      "उसे बोर्ड पर खींचें, या टुकड़ा और फिर खाना टैप करें।",
+      "पंक्ति या स्तंभ पूरा करके उसे साफ़ करें।",
+      "पंजा, बलूत, पत्थर, क्रॉस या अंक का लक्ष्य पूरा करें।"
+    ],
+    "strategyTips": [
+      "पहला टुकड़ा रखने से पहले तीनों आकृतियाँ देख लें।",
+      "सिर्फ एक पतली जगह छोड़ने के बजाय अलग-अलग आकार की खाली जगहें बनाए रखें।",
+      "क्रॉस क्लियर एक चाल में पंक्ति और स्तंभ दोनों मिटा सकता है; काई वाले पत्थर पूरी लाइन साफ होने पर ही हटते हैं।"
+    ],
+    "progression": [
+      "मिशन 1–5 लाइन क्लियर सिखाते हैं; 6–10 पंजे, 11–15 बलूत, 16–20 काई पत्थर, 21–25 क्रॉस क्लियर जोड़ते हैं; 26–30 सभी नियम मिलाते हैं। Infinite Grove में प्लेसमेंट सीमा नहीं है और तब खत्म होता है जब कोई बचा टुकड़ा फिट न हो।"
+    ],
+    "designNote": "ड्रैग और टैप दोनों में वही नियम हैं। Hint केवल एक वैध, अपेक्षाकृत सुरक्षित जगह दिखाता है और टुकड़ा खुद नहीं रखता; Undo पिछली प्लेसमेंट से पहले की पूरी स्थिति लौटाता है।",
+    "parent": "खाता या खरीद जरूरी नहीं है। मिशन प्रगति, तारे, सर्वश्रेष्ठ स्कोर और Infinite Grove रिकॉर्ड इसी ब्राउज़र में रहते हैं। स्थानिक योजना खेल का अभ्यास है, औपचारिक क्षमता मूल्यांकन नहीं।",
+    "faq": [
+      [
+        "क्या टुकड़े क्रम से लगाने होंगे?",
+        "नहीं। कोई भी उपलब्ध टुकड़ा लगाएँ; तीनों के बाद नया समूह आता है।"
+      ],
+      [
+        "क्या संकेत टुकड़ा लगा देता है?",
+        "नहीं। वह केवल सुरक्षित स्थान दिखाता है।"
+      ],
+      [
+        "वापस करें क्या लौटाता है?",
+        "पिछली चाल से पहले की पूरी स्थिति।"
+      ],
+      [
+        "नए टुकड़े कब आते हैं?",
+        "मौजूदा तीनों टुकड़े इस्तेमाल होने के बाद नया तीन-टुकड़ा समूह आता है।"
+      ],
+      [
+        "Infinite Grove अलग कैसे है?",
+        "इसमें प्लेसमेंट सीमा नहीं है और तब तक चलता है जब तक कोई बचा टुकड़ा फिट न हो। सर्वश्रेष्ठ स्कोर स्थानीय रूप से सहेजा जाता है।"
+      ]
+    ]
+  },
+  "ar": {
+    "title": "Animal Block Grove",
+    "difficulty": "من السهل إلى المتحدي",
+    "time": "نحو 2–6 دقائق لكل مهمة",
+    "gameplay": "لغز وضع كتل 8×8",
+    "genre": [
+      "ألغاز",
+      "منطق",
+      "حيوانات"
+    ],
+    "skills": [
+      "التخطيط المكاني",
+      "ترتيب الخطوات",
+      "حل المشكلات"
+    ],
+    "relatedIds": [
+      "animal-color-link",
+      "animal-tangram"
+    ],
+    "intro": "تضم Animal Block Grove ثلاثين مهمة في الغابة. ضع الأشكال الثلاثة المتاحة على لوحة 8×8، وأكمل صفاً أو عموداً وحقق هدف الموطن قبل نفاد حد الوضع.",
+    "story": [
+      "تضم Animal Block Grove ثلاثين مهمة في الغابة. ضع الأشكال الثلاثة المتاحة على لوحة 8×8، وأكمل صفاً أو عموداً وحقق هدف الموطن قبل نفاد حد الوضع."
+    ],
+    "systems": [
+      "اختر واحدة من مجموعات المكعبات الثلاث. اسحبها إلى اللوحة، أو المس القطعة ثم خانة. أكمل صفًا أو عمودًا لمسحه.",
+      "حقق هدف الآثار أو الجوز أو الحجارة أو التقاطعات أو النقاط. تظهر مجموعة جديدة من ثلاث قطع بعد استخدام القطع الثلاث الحالية كلها. لا يوجد حد لعدد مرات الوضع، ويستمر حتى لا تناسب أي قطعة متبقية. تُحفظ أفضل نتيجة محلياً."
+    ],
+    "how": [
+      "اختر واحدة من مجموعات المكعبات الثلاث.",
+      "اسحبها إلى اللوحة، أو المس القطعة ثم خانة.",
+      "أكمل صفًا أو عمودًا لمسحه.",
+      "حقق هدف الآثار أو الجوز أو الحجارة أو التقاطعات أو النقاط."
+    ],
+    "strategyTips": [
+      "افحص الأشكال الثلاثة قبل وضع الأول.",
+      "حافظ على مساحات فارغة بأشكال مختلفة بدلاً من ترك فجوة ضيقة واحدة.",
+      "يمكن لمسح التقاطع إزالة صف وعمود معاً، ولا تختفي أحجار الطحلب إلا عند اكتمال خطها."
+    ],
+    "progression": [
+      "تعلم المهمات 1–5 مسح الخطوط؛ وتضيف 6–10 آثار الأقدام؛ و11–15 الجوز؛ و16–20 أحجار الطحلب؛ وتتطلب 21–25 مسح التقاطع؛ وتجمع 26–30 كل القواعد. يزيل البستان اللامتناهي حد الوضع وينتهي عندما لا تناسب أي قطعة متبقية."
+    ],
+    "designNote": "يستخدم السحب واللمس قواعد الوضع نفسها. يحدد التلميح موضعاً قانونياً أكثر أماناً فقط ولا يضع القطعة تلقائياً؛ ويعيد التراجع الحالة كاملة إلى ما قبل آخر وضع.",
+    "parent": "لا يلزم حساب أو شراء. يبقى تقدم المهمات والنجوم وأفضل النتائج وسجل البستان اللامتناهي في هذا المتصفح فقط. التخطيط المكاني تدريب ترفيهي وليس تقييماً رسمياً للقدرات.",
+    "faq": [
+      [
+        "هل يجب استعمال القطع بالترتيب؟",
+        "لا. استخدم أي قطعة متاحة؛ تظهر مجموعة جديدة بعد استعمال الثلاث."
+      ],
+      [
+        "هل يضع التلميح قطعة بدلًا مني؟",
+        "لا. يحدد فقط موضعًا أكثر أمانًا."
+      ],
+      [
+        "ماذا يعيد التراجع؟",
+        "يعيد الحالة كاملة قبل آخر وضع."
+      ],
+      [
+        "متى تظهر قطع جديدة؟",
+        "تظهر مجموعة جديدة من ثلاث قطع بعد استخدام القطع الثلاث الحالية كلها."
+      ],
+      [
+        "كيف يختلف البستان اللامتناهي؟",
+        "لا يوجد حد لعدد مرات الوضع، ويستمر حتى لا تناسب أي قطعة متبقية. تُحفظ أفضل نتيجة محلياً."
+      ]
+    ]
+  }
+};
+  for (const [localeCode, copy] of Object.entries(blockGrove130Locales)) {
+    localizedGames[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGames[localeCode]["animal-block-grove"] = { ...publicKidsBatch["animal-block-grove"], ...copy };
+    localizedGameplayProfiles[localeCode]["animal-block-grove"] = { gameplay: copy.gameplay, genre: copy.genre, skills: copy.skills };
+  }
+  // WP_BLOCK_GROVE_130_END
+
 
   games["animal-skyport-dispatch"] = {
     title: "Animal Skyport Dispatch", age: "13+", difficulty: "Medium to Challenging", time: "4-7 minutes per shift",
@@ -19593,15 +20396,15 @@
     hideSkillsFact: true,
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
-    intro: "Twin Switchyard is an original synchronized platform puzzle. Guide an otter and a mountain goat through split lanes, flip signal gates, and gather every relay shard together.",
+    intro: "Twin Switchyard is an original synchronized platform puzzle. Guide an otter and a mountain goat through split platform lanes, coordinate their shared moves, collect every shard, activate each switch, and reach their paired lantern exits.",
     story: ["Two route keepers share one signal line: the otter handles the low lane while the mountain goat takes the high lane. Each switchyard asks both travelers to move through the same moment without leaving one behind."],
-    systems: ["The two characters advance from one shared input. Left and Right move both travelers across their separate lanes, while Jump gives both a timed hop. A gate can open one lane and close the other, so the useful route is always a coordination problem rather than a solo run.", "Relay shards are collected only when the correct traveler reaches them. A hazard collision resets the current stage attempt, while a clean route through every shard and the exit advances to Result. Stage progress and local best move counts stay in this browser."],
-    how: ["Choose an unlocked stage from Stage; read the lane rule and hazard preview before entering Battle.", "Use Left and Right or the on-screen controls to line up both travelers, then use Jump to clear a marked hazard.", "Watch the gate color and keep both travelers moving toward their own relay shards; one character can be safe while the other is still exposed.", "Collect every shard and reach the paired exit. A collision restarts the attempt, while a clear opens Result and the next stage."],
-    strategyTips: ["Plan the next two positions for both lanes before pressing Jump; a safe landing for one traveler can create a hazard for the other.", "Use short direction taps near gates instead of holding a lane change through the whole switchyard.", "Read the upper and lower lane markers together. The most obvious shard is not always the next safe pickup.", "When a stage fails, identify which traveler reached the danger first and adjust the shared timing rather than changing every move."],
-    progression: ["Six authored stages begin with one clear split and a forgiving jump. Later stages add alternating gates, moving hazards, staggered shards, narrower landing windows, and combinations that require both travelers to arrive at the exit together."],
+    systems: ["The two characters advance from one shared input. Left and Right move both travelers across their separate lanes, and Jump gives both the same hop. Platforms, floor heights, fixed switches, shards, and static hazards create different route decisions. Both lantern gates open together after every switch in the stage has been reached.", "A shard is collected only when its assigned traveler reaches it. A hazard collision or missed fall resets the current stage attempt; collecting every shard and activating every switch lets both travelers finish at their paired exits. Stage progress and best move counts stay in this browser."],
+    how: ["Choose any unlocked stage from Stage; each card shows its stage number and best move count when available.", "Use Left and Right or the on-screen controls to line up both travelers, then use Jump to clear a platform gap or fixed hazard.", "Collect each shard with the traveler in its lane. If switches are present, reach all of them; both lantern gates open together.", "Guide both travelers to their paired exits. A collision or missed fall restarts the current attempt; a clear opens Result and normally unlocks the next stage."],
+    strategyTips: ["Plan both landing positions before pressing Jump; the same hop can clear one lane and land the other on a different shelf.", "Use short direction presses near pickups and hazards so both travelers do not drift past a safe position.", "Read the upper and lower platform, shard, switch, and hazard positions together. The nearest shard is not always the safest next pickup.", "When a stage fails, note which lane reached a fixed hazard first and adjust the shared timing instead of changing every move."],
+    progression: ["Thirty authored stages form six five-stage arcs. Checkpoint puzzles at Stages 5, 10, 15, 20, 25, and 30 combine the same documented rules: shared movement and jumps, offset platforms and shards, fixed switches, static hazards, and paired exits. No alternating gate, moving-hazard, or moving-platform rule is used."],
     designNote: "Twin Switchyard keeps one logical play space across phone, landscape, and desktop. Its shared movement, lane-specific hazards, touch buttons, mouse activation, and keyboard controls resolve to the same state, while Main, Stage, Battle, and Result remain separate screens with direct returns.",
     parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Stage clears, best move counts, language, sound, and preferences stay in the current browser profile and may reset when site data is cleared.",
-    faq: [["Can the two travelers move independently?", "No. Each input moves the pair together, so the puzzle is about shared timing and lane planning."], ["What does a gate change?", "The visible gate rule changes which lane is open or safe at that moment; read it before committing to a jump."], ["What causes a failed stage?", "A traveler touching a marked hazard or leaving the playable route resets the current attempt."], ["Does progress save?", "Cleared stages and local best move counts are saved in this browser."]]
+    faq: [["Can the two travelers move independently?", "No. Each input moves the pair together, so the puzzle is about shared timing and lane planning."], ["When do the gates open?", "Both lantern gates open together after every switch in that stage has been reached; stages without switches start with both open."], ["What causes a failed stage?", "A traveler touching a fixed hazard or falling off the playable route resets the current attempt."], ["Does progress save?", "Cleared stages and local best move counts are saved in this browser. Thirty authored stages are arranged in six five-stage arcs."]]
   };
   gameplayProfiles["animal-twin-switchyard"] = { gameplay: "Synchronized Platform Puzzle", genre: ["Puzzle", "Platform", "Animal"] };
   localizedGames["ar"] ||= {};
@@ -19616,34 +20419,34 @@
     skills: ["التنسيق", "التخطيط", "التوقيت"],
     guideKicker: "دليل ألعاب WeightPlay الأصلية",
     guideTitleSuffix: "دليل اللعبة",
-    intro: "ساحة تبديل التوأمين لغز منصات متزامنة أصلي. وجّه قضاعة وماعزًا جبليًا عبر مسارين منفصلين، وبدّل بوابات الإشارة، واجمع كل شظايا التتابع معًا.",
+    intro: "ساحة تبديل التوأمين لغز منصات متزامنة أصلي. وجّه قضاعة وماعزًا جبليًا عبر مسارين منفصلين، ونسّق حركتهما المشتركة، واجمع الشظايا، وفعّل المفاتيح، وبلغا مخرجي الفانوس المتقابلين.",
     story: [
       "يشترك حارسا المسار في خط إشارة واحد: تسلك القضاعة المسار المنخفض بينما يأخذ الماعز الجبلي المسار المرتفع. تطلب كل ساحة من المسافرين التقدم في اللحظة نفسها من دون ترك أحدهما خلف الآخر.",
     ],
     systems: [
-      "يتقدم الحيوانان بإدخال مشترك واحد. تحرك الأسهم اليسرى واليمنى المسافرين معًا في مساريهما، بينما تمنحهما القفزة وثبة موقوتة. قد تفتح البوابة مسارًا وتغلق الآخر، لذلك يعتمد الطريق المفيد على التنسيق لا على حركة منفردة.",
-      "لا تُجمع شظايا التتابع إلا عندما يصل إليها المسافر الصحيح. يعيد الاصطدام بالخطر محاولة المرحلة الحالية، بينما يفتح المرور النظيف عبر كل الشظايا والمخرج شاشة النتيجة. يُحفظ تقدم المراحل وأفضل عدد للحركات في هذا المتصفح.",
+      "يتقدم الحيوانان بإدخال مشترك واحد. تحرك الأسهم المسافرين معًا، ويقفز كلاهما بالقفزة نفسها. تصنع المنصات وارتفاع الأرض والمفاتيح والشظايا والمخاطر الثابتة قرارات مختلفة للمسارين. تُفتح بوابتا الفانوس معًا بعد الوصول إلى كل مفاتيح المرحلة.",
+      "تُجمع كل شظية عندما يصل إليها المسافر في مسارها. يعيد الاصطدام بخطر ثابت أو السقوط محاولة المرحلة الحالية؛ وبعد جمع الشظايا وتفعيل المفاتيح يصل المسافران إلى مخرجيهما. يُحفظ التقدم وأفضل عدد للحركات في هذا المتصفح.",
     ],
     how: [
-      "اختر مرحلة مفتوحة من قائمة المراحل، واقرأ قاعدة المسارين ومعاينة المخاطر قبل بدء اللعب.",
-      "استخدم السهمين الأيسر والأيمن أو أزرار الشاشة لمحاذاة المسافرين، ثم استخدم القفز لتجاوز الخطر المحدد.",
-      "راقب لون البوابة وحافظ على تقدم المسافرين نحو شظايا التتابع الخاصة بهما؛ قد يكون أحدهما آمنًا بينما لا يزال الآخر مكشوفًا.",
+      "اختر مرحلة مفتوحة من القائمة؛ يعرض كل مربع رقمها وأفضل عدد للحركات إن توفر.",
+      "استخدم السهمين أو أزرار الشاشة لمحاذاة المسافرين، ثم استخدم القفز لتجاوز فجوة أو خطر ثابت.",
+      "اجمع كل شظية مع المسافر الموجود في مسارها. إذا وُجدت مفاتيح، فصِل إلى جميعها؛ تُفتح البوابتان معًا.",
       "اجمع كل الشظايا وبلغ المخرج المزدوج. يعيد الاصطدام المحاولة، بينما يفتح النجاح شاشة النتيجة والمرحلة التالية.",
     ],
     strategyTips: [
       "خطط للموقعين التاليين في المسارين قبل الضغط على القفز؛ فقد يهبط أحد المسافرين بأمان بينما يعرّض ذلك الآخر للخطر.",
-      "استخدم نقرات اتجاه قصيرة قرب البوابات بدل الاستمرار في تغيير المسار طوال الساحة.",
+      "استخدم نقرات اتجاه قصيرة قرب الشظايا والمخاطر كيلا يتجاوز المسافران موضعًا آمنًا.",
       "اقرأ علامات المسار العلوي والسفلي معًا. ليست الشظية الأوضح دائمًا هي الهدف الآمن التالي.",
       "عند فشل مرحلة، حدد أي مسافر وصل إلى الخطر أولًا وعدّل التوقيت المشترك بدل تغيير كل حركة.",
     ],
     progression: [
-      "تبدأ المراحل الست بانقسام واضح وقفزة ميسّرة، ثم تضيف البوابات المتناوبة والمخاطر المتحركة والشظايا المتباعدة ونوافذ الهبوط الأضيق، إلى أن يتطلب المسار وصول المسافرين معًا إلى المخرج.",
+      "تضم الحملة 30 مرحلة أصلية في ست مجموعات من خمس مراحل. تجمع مراحل المحطة 5 و10 و15 و20 و25 و30 القواعد نفسها: الحركة والقفز المشتركان، والمنصات والشظايا المتباعدة، والمفاتيح الثابتة، والمخاطر الثابتة، والمخرجان المتقابلان؛ لا توجد بوابات متناوبة أو مخاطر أو منصات متحركة.",
     ],
     designNote: "تحافظ ساحة تبديل التوأمين على مساحة لعب منطقية واحدة عبر الهاتف والوضع الأفقي وسطح المكتب. تتحول الحركة المشتركة ومخاطر المسارين وأزرار اللمس والفأرة ولوحة المفاتيح إلى الحالة نفسها، بينما تبقى الشاشة الرئيسية والمراحل واللعب والنتيجة شاشات منفصلة مع عودة مباشرة.",
     parent: "هذه لعبة متصفح عامة لا تتضمن حسابًا أو شراءً أو محادثة أو قائمة متصدرين أو إعلانات. تُحفظ إنجازات المراحل وأفضل عدد للحركات واللغة والصوت والتفضيلات في ملف هذا المتصفح، وقد تُعاد عند مسح بيانات الموقع.",
     faq: [
       ["هل يستطيع المسافران التحرك بشكل مستقل؟", "لا. يحرك كل إدخال الزوج معًا، لذلك يعتمد اللغز على التوقيت المشترك وتخطيط المسارين."],
-      ["ماذا تغيّر البوابة؟", "تغيّر قاعدة البوابة الظاهرة أي مسار مفتوح أو آمن في تلك اللحظة؛ اقرأها قبل الالتزام بالقفز."],
+      ["متى تُفتح البوابات؟", "تُفتح البوابتان معًا بعد الوصول إلى كل مفاتيح المرحلة؛ وتبدأ المراحل التي بلا مفاتيح والبوابتان مفتوحتان."],
       ["ما الذي يسبب فشل المرحلة؟", "يعيد لمس الخطر المحدد أو مغادرة المسار القابل للعب المحاولة الحالية."],
       ["هل يُحفظ التقدم؟", "نعم، تُحفظ المراحل المفتوحة وأفضل أعداد الحركات في هذا المتصفح."],
     ],
@@ -20699,34 +21502,34 @@
     gameplay: "同步平台益智",
     genre: ["益智", "平台", "動物"],
     skills: ["協調", "規劃", "時機"],
-    intro: "引導水獺與山羊穿過分道、切換訊號門，並一起收集所有中繼碎片的同步平台益智遊戲。",
+    intro: "引導水獺與山羊穿越雙路平台，以共同輸入協調移動、收集所有光片、觸發開關並抵達各自的燈籠出口。",
     story: [
       "兩位路線守護者共用一條訊號線：水獺負責低道，山羊走高道。每座燈場都要求兩名旅者在同一個節奏中前進，不能留下任何一位。",
     ],
     systems: [
-      "兩名角色共用同一組輸入。左右鍵讓他們在各自分道前進，跳躍則讓兩人一起越過定時障礙；訊號門可能開啟一條路、關閉另一條路。",
-      "只有正確的角色抵達碎片時才會收集成功。撞到障礙會重置目前嘗試，穿過所有碎片與出口後才會進入結果畫面。",
+      "兩名角色共用同一組輸入。左右鍵讓他們在各自分道前進，跳躍也會同步發生。平台、高低差、固定開關、光片與靜態危險會形成不同路線決策；抵達本關所有開關後，兩座燈籠門會一起開啟。",
+      "每片光片只會由所屬分道的旅者收集。碰到固定危險或墜出路線會重置目前嘗試；收集所有光片並觸發開關後，帶兩位旅者抵達各自出口。",
     ],
     how: [
-      "從關卡列選擇已解鎖的關卡，先閱讀分道規則與障礙預覽。",
-      "使用左右鍵或畫面控制對齊兩名旅者，再用跳躍越過標記的障礙。",
-      "觀察訊號門顏色，讓兩名旅者各自靠近自己的中繼碎片。",
+      "從關卡列選擇已解鎖關卡；卡片會顯示關卡編號與可用的最佳步數。",
+      "使用左右鍵或畫面控制對齊兩名旅者，再用跳躍越過平台間隙或固定危險。",
+      "由正確分道的旅者收集各片光片；若本關有開關，先抵達全部開關，兩座門會一起開啟。",
       "收集所有碎片並抵達成對出口；碰撞會重開嘗試，成功則進入結果並解鎖下一關。",
     ],
     strategyTips: [
       "按下跳躍前先規劃兩條分道的下一個位置；一人安全落地不代表另一人也安全。",
-      "接近訊號門時使用短促方向輸入，避免長按讓兩人一起滑過安全位置。",
+      "接近光片與危險時使用短促方向輸入，避免長按讓兩人一起越過安全位置。",
       "同時閱讀上下分道標記，最醒目的碎片不一定是下一個安全目標。",
     ],
     progression: [
-      "六座關卡會從清楚的分道與寬鬆跳躍開始，逐步加入交替訊號門、移動障礙、錯開碎片與更窄的落點，最後要求兩名旅者同步抵達出口。",
+      "30 個原創關卡分為六組、每組五關。第 5、10、15、20、25、30 關的檢查點會綜合相同規則：同步移動與跳躍、高低錯開的平台與光片、固定開關、靜態危險及雙出口；沒有交替門、移動危險或移動平台。",
     ],
     designNote: "雙獸燈場在手機、橫向與桌面維持同一個邏輯遊戲空間；同步移動、分道危險、觸控、滑鼠與鍵盤都解析到相同狀態，而主頁、關卡、戰鬥與結果是分開且可直接返回的畫面。",
     noteTitle: "玩家與存檔資訊",
     parent: "這款一般向瀏覽器遊戲沒有帳號、購買、聊天、排行榜或廣告流程。關卡進度與最佳步數只保存在目前瀏覽器；清除網站資料、使用無痕模式或更換裝置可能會產生另一份存檔。",
     faq: [
       ["兩名旅者可以分開移動嗎？", "不行。每次輸入都會同時移動兩人，因此解法重點是共用時機與分道規劃。"],
-      ["訊號門會改變什麼？", "畫面上的門規則會改變當下哪一條分道開啟或安全，跳躍前要先讀清楚。"],
+      ["燈籠門何時開啟？", "本關所有開關都觸發後，兩座燈籠門會一起開啟；沒有開關的關卡一開始就會開門。"],
       ["什麼情況會讓關卡失敗？", "任一旅者碰到標記障礙或離開可玩路線，就會重置目前嘗試。"],
       ["進度會保存嗎？", "已解鎖關卡與最佳步數會保存在這個瀏覽器中。"],
     ],
@@ -24506,6 +25309,186 @@
     gameplayProfiles[gameId].marketComparison = reference;
   }
 
+
+  // Text Growth 1.3.0: Moonlight Heist market comparison start
+  gameplayProfiles["animal-moonlight-heist"] ||= {};
+  gameplayProfiles["animal-moonlight-heist"].marketComparison = {
+    "name": "Robbery Bob - King of Sneak",
+    "source": "https://apps.apple.com/us/app/robbery-bob-king-of-sneak/id503869041",
+    "locales": {
+      "en": {
+        "tagsLabel": "Gameplay tags:",
+        "tags": [
+          "stealth route planning",
+          "patrol avoidance",
+          "risk-and-reward collection",
+          "extraction missions"
+        ],
+        "heading": "Similar stealth-route gameplay reference",
+        "body": "Robbery Bob - King of Sneak and this WeightPlay game both ask players to avoid detection, read safe routes around patrols and hazards, and decide whether extra pickups are worth the risk. Deca Games’ official listing describes more than 100 burglary-themed levels with security guards, residents, sleeping bulldogs, traps, loot, abilities, utilities and costumes. Moonlight Heist is instead a 30-mission browser stealth-extraction campaign: Spark Paw Fia previews one route at a time, manages a visible Alert meter and sight circles, recovers an archive object, then reaches extraction. Its six five-mission wings add shadow shelters, bell pulses, live marker swaps, clockwork slow/surge phases, treasure-first seals and archive guardians; Lightning Dash, Star Decoy and Smoke Leaf are mission gadgets, while optional treasure affects the third medal and local progress.",
+        "disclaimer": "Moonlight Heist is an independent WeightPlay original. WeightPlay is not affiliated with, endorsed by, licensed by, or jointly developed with Deca Games EOOD or Robbery Bob - King of Sneak.",
+        "sourceLabel": "Official Robbery Bob - King of Sneak App Store listing"
+      },
+      "zh-Hant": {
+        "tagsLabel": "玩法標籤：",
+        "tags": [
+          "潛行路線規劃",
+          "巡邏偵測迴避",
+          "風險報酬收集",
+          "撤離任務"
+        ],
+        "heading": "相似潛行路線玩法參考",
+        "body": "《Robbery Bob - King of Sneak》和這款 WeightPlay 遊戲都要求玩家避開偵測、閱讀巡邏與障礙之間的安全路線，並判斷額外收集物是否值得冒險。Deca Games 的官方說明列出超過 100 個竊盜主題關卡，包含警衛、居民、熟睡的鬥牛犬、陷阱、戰利品、能力、工具與服裝。《月影潛行隊》則是 30 個固定設計的瀏覽器潛行撤離任務：閃爪菲亞每次先預覽一段路線，管理可見的警戒值與視野圈，回收檔案物件後抵達撤離點。六個五任務章節依序加入陰影掩護、鐘聲脈衝、標記交換、發條慢速／加速階段、寶藏優先封印與檔案守衛；Lightning Dash、Star Decoy、Smoke Leaf 是任務道具，額外寶藏則影響第三枚獎章與本機進度。",
+        "disclaimer": "《月影潛行隊》是 WeightPlay 獨立原創作品。WeightPlay 與 Deca Games EOOD 或《Robbery Bob - King of Sneak》沒有隸屬、背書、授權或共同開發關係。",
+        "sourceLabel": "Robbery Bob - King of Sneak 官方 App Store 說明"
+      },
+      "zh-Hans": {
+        "tagsLabel": "玩法标签：",
+        "tags": [
+          "潜行路线规划",
+          "巡逻侦测躲避",
+          "风险回报收集",
+          "撤离任务"
+        ],
+        "heading": "相似潜行路线玩法参考",
+        "body": "《Robbery Bob - King of Sneak》和这款 WeightPlay 游戏都要求玩家避开侦测、判断巡逻与障碍之间的安全路线，并决定额外收集物是否值得冒险。Deca Games 的官方说明列出超过 100 个盗窃主题关卡，包括警卫、居民、熟睡的斗牛犬、陷阱、战利品、能力、工具与服装。《月影潜行队》则是 30 个固定设计的浏览器潜行撤离任务：闪爪菲亚每次先预览一段路线，管理可见的警戒值与视野圈，回收档案物件后抵达撤离点。六个五任务章节依次加入阴影掩护、钟声脉冲、标记交换、发条慢速／加速阶段、宝藏优先封印与档案守卫；Lightning Dash、Star Decoy、Smoke Leaf 是任务道具，额外宝藏则影响第三枚奖章与本地进度。",
+        "disclaimer": "《月影潜行队》是 WeightPlay 独立原创作品。WeightPlay 与 Deca Games EOOD 或《Robbery Bob - King of Sneak》没有隶属、背书、授权或共同开发关系。",
+        "sourceLabel": "Robbery Bob - King of Sneak 官方 App Store 说明"
+      },
+      "ja": {
+        "tagsLabel": "ゲームプレイタグ：",
+        "tags": [
+          "ステルス経路計画",
+          "巡回回避",
+          "リスク報酬収集",
+          "脱出ミッション"
+        ],
+        "heading": "似たステルス経路ゲームの参考",
+        "body": "Robbery Bob - King of Sneak とこの WeightPlay ゲームは、発見を避け、巡回者や障害物の間で安全な経路を読み、追加の収集物を狙うリスクを判断する点が共通しています。Deca Games の公式説明では、警備員、住民、眠っているブルドッグ、罠、戦利品、能力、道具、衣装が登場する100以上の強盗テーマのレベルが紹介されています。Moonlight Heist は別の設計で、30の固定ミッションからなるブラウザ向けステルス脱出ゲームです。Spark Paw Fia は一度に一つの経路をプレビューし、見える Alert メーターと視界円を管理し、アーカイブの対象物を回収して脱出地点へ向かいます。6つの5ミッション章では、影の避難所、鐘のパルス、マーカー交換、時計仕掛けの低速／加速、宝物を先に取る封印、アーカイブ守護者が順に加わります。Lightning Dash、Star Decoy、Smoke Leaf はミッション用ガジェットで、任意の宝物は3枚目のメダルとローカル進行に関わります。",
+        "disclaimer": "Moonlight Heist は WeightPlay の独立したオリジナル作品です。WeightPlay は Deca Games EOOD または Robbery Bob - King of Sneak と提携、推奨、ライセンス、共同開発の関係にありません。",
+        "sourceLabel": "Robbery Bob - King of Sneak 公式 App Store 掲載"
+      },
+      "ko": {
+        "tagsLabel": "게임플레이 태그:",
+        "tags": [
+          "잠입 경로 계획",
+          "순찰 회피",
+          "위험 보상 수집",
+          "탈출 임무"
+        ],
+        "heading": "비슷한 잠입 경로 게임 참고",
+        "body": "Robbery Bob - King of Sneak과 이 WeightPlay 게임은 발각을 피하고 순찰자와 장애물 사이의 안전한 경로를 읽으며 추가 수집물을 노릴 가치가 있는지 판단한다는 공통점이 있습니다. Deca Games의 공식 설명에는 경비원, 주민, 잠든 불도그, 함정, 전리품, 능력, 도구와 의상이 등장하는 100개 이상의 절도 테마 레벨이 소개됩니다. Moonlight Heist는 별도의 설계로 만든 30개 고정 임무의 브라우저 잠입·탈출 캠페인입니다. Spark Paw Fia는 한 번에 한 경로를 미리 보고, 보이는 Alert 게이지와 시야 원을 관리하며, 기록물 목표를 회수한 뒤 탈출 지점에 도달합니다. 5개 임무씩 구성된 6개 구역에는 그림자 은신처, 종소리 파동, 실시간 표식 교환, 시계 장치의 저속／가속 단계, 보물 우선 봉인, 기록 보관소 수호자가 차례로 추가됩니다. Lightning Dash, Star Decoy, Smoke Leaf는 임무 도구이며 선택 보물은 세 번째 메달과 로컬 진행에 영향을 줍니다.",
+        "disclaimer": "Moonlight Heist는 WeightPlay의 독립 오리지널 작품입니다. WeightPlay는 Deca Games EOOD 또는 Robbery Bob - King of Sneak과 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+        "sourceLabel": "Robbery Bob - King of Sneak 공식 App Store 페이지"
+      },
+      "es": {
+        "tagsLabel": "Etiquetas de juego:",
+        "tags": [
+          "planificación de rutas sigilosas",
+          "evasión de patrullas",
+          "colección con riesgo y recompensa",
+          "misiones de extracción"
+        ],
+        "heading": "Referencia de juego de rutas sigilosas similar",
+        "body": "Robbery Bob - King of Sneak y este juego de WeightPlay comparten la idea de evitar la detección, leer rutas seguras entre patrullas y peligros y decidir si merece la pena arriesgarse por objetos opcionales. La ficha oficial de Deca Games describe más de 100 niveles con temática de robos, guardias, residentes, bulldogs dormidos, trampas, botín, habilidades, utilidades y disfraces. Moonlight Heist es, en cambio, una campaña de sigilo y extracción para navegador con 30 misiones diseñadas: Spark Paw Fia previsualiza una ruta cada vez, gestiona un medidor de Alerta y círculos de visión visibles, recupera un objeto del archivo y después llega a la salida. Sus seis bloques de cinco misiones añaden refugios de sombra, pulsos de campana, intercambio de marcadores, fases mecánicas lentas y rápidas, sellos que exigen el tesoro primero y guardianes del archivo. Lightning Dash, Star Decoy y Smoke Leaf son dispositivos de misión; el tesoro opcional afecta a la tercera medalla y al progreso local.",
+        "disclaimer": "Moonlight Heist es una obra original e independiente de WeightPlay. WeightPlay no está afiliado, respaldado, licenciado ni desarrollado conjuntamente con Deca Games EOOD ni con Robbery Bob - King of Sneak.",
+        "sourceLabel": "Ficha oficial de Robbery Bob - King of Sneak en App Store"
+      },
+      "pt-BR": {
+        "tagsLabel": "Tags de jogabilidade:",
+        "tags": [
+          "planejamento de rota furtiva",
+          "desvio de patrulhas",
+          "coleta de risco e recompensa",
+          "missões de extração"
+        ],
+        "heading": "Referência de jogabilidade furtiva por rotas",
+        "body": "Robbery Bob - King of Sneak e este jogo da WeightPlay compartilham a ideia de evitar detecção, ler rotas seguras entre patrulhas e perigos e decidir se itens extras valem o risco. A página oficial da Deca Games descreve mais de 100 fases com tema de roubo, seguranças, moradores, buldogues dormindo, armadilhas, saque, habilidades, utilidades e trajes. Moonlight Heist segue outro formato: uma campanha de furtividade e extração no navegador com 30 missões planejadas. Spark Paw Fia visualiza uma rota por vez, administra um medidor de Alerta e círculos de visão visíveis, recupera um objeto do arquivo e então alcança a extração. Os seis blocos de cinco missões adicionam abrigos de sombra, pulsos de sino, troca de marcadores, fases mecânicas lentas e aceleradas, selos que exigem o tesouro primeiro e guardiões do arquivo. Lightning Dash, Star Decoy e Smoke Leaf são dispositivos de missão; o tesouro opcional afeta a terceira medalha e o progresso local.",
+        "disclaimer": "Moonlight Heist é uma obra original e independente da WeightPlay. A WeightPlay não é afiliada, endossada, licenciada nem desenvolvida em conjunto com a Deca Games EOOD ou Robbery Bob - King of Sneak.",
+        "sourceLabel": "Página oficial de Robbery Bob - King of Sneak na App Store"
+      },
+      "fr": {
+        "tagsLabel": "Tags de gameplay :",
+        "tags": [
+          "planification d’itinéraire furtif",
+          "évitement des patrouilles",
+          "collecte risque-récompense",
+          "missions d’extraction"
+        ],
+        "heading": "Référence de gameplay furtif par itinéraire",
+        "body": "Robbery Bob - King of Sneak et ce jeu WeightPlay ont en commun l’évitement de la détection, la lecture d’itinéraires sûrs entre patrouilles et dangers, ainsi que le choix de prendre ou non un risque pour des objets facultatifs. La fiche officielle de Deca Games décrit plus de 100 niveaux sur le thème du cambriolage avec gardes, habitants, bouledogues endormis, pièges, butin, capacités, outils et costumes. Moonlight Heist adopte une autre structure : une campagne de furtivité et d’extraction dans le navigateur avec 30 missions conçues à l’avance. Spark Paw Fia prévisualise un trajet à la fois, gère une jauge d’Alerte et des cercles de vision visibles, récupère un objet d’archive puis rejoint l’extraction. Les six groupes de cinq missions ajoutent abris d’ombre, impulsions de cloche, échange de marqueurs, phases mécaniques lentes/rapides, sceaux exigeant d’abord le trésor et gardiens d’archive. Lightning Dash, Star Decoy et Smoke Leaf sont des gadgets de mission ; le trésor facultatif influence la troisième médaille et la progression locale.",
+        "disclaimer": "Moonlight Heist est une création originale et indépendante de WeightPlay. WeightPlay n’est ni affilié, ni approuvé, ni licencié, ni codéveloppé avec Deca Games EOOD ou Robbery Bob - King of Sneak.",
+        "sourceLabel": "Fiche App Store officielle de Robbery Bob - King of Sneak"
+      },
+      "de": {
+        "tagsLabel": "Gameplay-Tags:",
+        "tags": [
+          "Stealth-Routenplanung",
+          "Patrouillen ausweichen",
+          "Risiko-und-Belohnung-Sammeln",
+          "Extraktionsmissionen"
+        ],
+        "heading": "Referenz für ähnliches Stealth-Routen-Gameplay",
+        "body": "Robbery Bob - King of Sneak und dieses WeightPlay-Spiel teilen die Idee, Entdeckung zu vermeiden, sichere Wege zwischen Patrouillen und Gefahren zu lesen und abzuwägen, ob optionale Sammelobjekte das Risiko wert sind. Die offizielle Beschreibung von Deca Games nennt mehr als 100 Einbruchs-Level mit Wachen, Bewohnern, schlafenden Bulldoggen, Fallen, Beute, Fähigkeiten, Hilfsmitteln und Kostümen. Moonlight Heist ist dagegen eine Browser-Stealth-Extraktionskampagne mit 30 fest entworfenen Missionen: Spark Paw Fia zeigt jeweils eine Route vorab, verwaltet eine sichtbare Alarmanzeige und Sichtkreise, birgt ein Archivobjekt und erreicht danach den Ausgang. Sechs Abschnitte mit je fünf Missionen ergänzen Schattenverstecke, Glockenimpulse, Marker-Tausch, langsame/schnelle Uhrwerkphasen, Schatz-zuerst-Siegel und Archivwächter. Lightning Dash, Star Decoy und Smoke Leaf sind Missionsgadgets; optionale Schätze beeinflussen die dritte Medaille und den lokalen Fortschritt.",
+        "disclaimer": "Moonlight Heist ist ein unabhängiges WeightPlay-Original. WeightPlay ist weder mit Deca Games EOOD oder Robbery Bob - King of Sneak verbunden noch von ihnen unterstützt, lizenziert oder gemeinsam entwickelt.",
+        "sourceLabel": "Offizieller App-Store-Eintrag von Robbery Bob - King of Sneak"
+      },
+      "it": {
+        "tagsLabel": "Tag di gioco:",
+        "tags": [
+          "pianificazione furtiva del percorso",
+          "elusione delle pattuglie",
+          "raccolta rischio-ricompensa",
+          "missioni di estrazione"
+        ],
+        "heading": "Riferimento a un gameplay furtivo su percorsi",
+        "body": "Robbery Bob - King of Sneak e questo gioco WeightPlay condividono l’obiettivo di evitare il rilevamento, leggere percorsi sicuri tra pattuglie e pericoli e decidere se gli oggetti extra valgono il rischio. La scheda ufficiale di Deca Games descrive più di 100 livelli a tema furto con guardie, residenti, bulldog addormentati, trappole, bottino, abilità, strumenti e costumi. Moonlight Heist ha invece una struttura diversa: una campagna browser di furtività ed estrazione con 30 missioni progettate. Spark Paw Fia visualizza un percorso alla volta, gestisce un indicatore di Allerta e cerchi visivi, recupera un oggetto d’archivio e poi raggiunge l’estrazione. I sei gruppi da cinque missioni aggiungono rifugi d’ombra, impulsi di campana, scambio di indicatori, fasi meccaniche lente/veloci, sigilli che richiedono prima il tesoro e guardiani dell’archivio. Lightning Dash, Star Decoy e Smoke Leaf sono gadget di missione; il tesoro opzionale influisce sulla terza medaglia e sui progressi locali.",
+        "disclaimer": "Moonlight Heist è un’opera originale e indipendente di WeightPlay. WeightPlay non è affiliata, approvata, licenziata né sviluppata congiuntamente con Deca Games EOOD o Robbery Bob - King of Sneak.",
+        "sourceLabel": "Scheda App Store ufficiale di Robbery Bob - King of Sneak"
+      },
+      "ru": {
+        "tagsLabel": "Метки геймплея:",
+        "tags": [
+          "планирование скрытного маршрута",
+          "уклонение от патрулей",
+          "сбор с оценкой риска",
+          "миссии с эвакуацией"
+        ],
+        "heading": "Ориентир похожей игры со скрытными маршрутами",
+        "body": "Robbery Bob - King of Sneak и эта игра WeightPlay похожи тем, что нужно избегать обнаружения, читать безопасные маршруты между патрулями и опасностями и решать, стоит ли рисковать ради необязательных предметов. Официальное описание Deca Games указывает более 100 уровней на тему ограблений с охранниками, жителями, спящими бульдогами, ловушками, добычей, способностями, приспособлениями и костюмами. Moonlight Heist устроена иначе: это браузерная кампания скрытного проникновения и эвакуации из 30 заранее созданных миссий. Spark Paw Fia предварительно намечает по одному маршруту, следит за видимой шкалой тревоги и кругами обзора, забирает архивный объект и затем достигает точки эвакуации. Шесть блоков по пять миссий добавляют теневые укрытия, импульсы колокола, обмен маркеров, медленные/ускоренные фазы механизмов, печати с обязательным первым сокровищем и архивных стражей. Lightning Dash, Star Decoy и Smoke Leaf — гаджеты миссии; необязательное сокровище влияет на третью медаль и локальный прогресс.",
+        "disclaimer": "Moonlight Heist — независимая оригинальная работа WeightPlay. WeightPlay не аффилирована с Deca Games EOOD или Robbery Bob - King of Sneak и не имеет отношений одобрения, лицензирования или совместной разработки.",
+        "sourceLabel": "Официальная страница Robbery Bob - King of Sneak в App Store"
+      },
+      "hi": {
+        "tagsLabel": "गेमप्ले टैग:",
+        "tags": [
+          "स्टेल्थ मार्ग योजना",
+          "गश्त से बचाव",
+          "जोखिम-लाभ संग्रह",
+          "निकासी मिशन"
+        ],
+        "heading": "मिलते-जुलते स्टेल्थ मार्ग गेम का संदर्भ",
+        "body": "Robbery Bob - King of Sneak और यह WeightPlay गेम दोनों में खिलाड़ी पहचान से बचते हैं, गश्त और खतरों के बीच सुरक्षित रास्ते पढ़ते हैं और तय करते हैं कि अतिरिक्त वस्तु के लिए जोखिम लेना उचित है या नहीं। Deca Games की आधिकारिक सूची 100 से अधिक चोरी-विषयक स्तरों का वर्णन करती है, जिनमें सुरक्षा गार्ड, निवासी, सोते हुए बुलडॉग, जाल, लूट, क्षमताएँ, उपयोगी साधन और पोशाकें शामिल हैं। Moonlight Heist अलग संरचना वाला 30 तैयार मिशनों का ब्राउज़र स्टेल्थ-निकासी अभियान है। Spark Paw Fia एक बार में एक मार्ग का पूर्वावलोकन करती है, दिखाई देने वाले Alert मीटर और दृष्टि-वृत्त संभालती है, अभिलेख वस्तु वापस लेकर निकासी बिंदु तक पहुँचती है। पाँच-पाँच मिशनों के छह खंडों में छाया आश्रय, घंटी तरंग, सक्रिय मार्कर अदला-बदली, घड़ी-तंत्र के धीमे/तेज़ चरण, पहले खजाना लेने वाली मुहरें और अभिलेख रक्षक जुड़ते हैं। Lightning Dash, Star Decoy और Smoke Leaf मिशन गैजेट हैं; वैकल्पिक खजाना तीसरे पदक और स्थानीय प्रगति को प्रभावित करता है।",
+        "disclaimer": "Moonlight Heist, WeightPlay की स्वतंत्र मौलिक रचना है। WeightPlay का Deca Games EOOD या Robbery Bob - King of Sneak से कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+        "sourceLabel": "Robbery Bob - King of Sneak की आधिकारिक App Store सूची"
+      },
+      "ar": {
+        "tagsLabel": "وسوم أسلوب اللعب:",
+        "tags": [
+          "تخطيط مسار التسلل",
+          "تفادي الدوريات",
+          "جمع قائم على المخاطرة والمكافأة",
+          "مهام الاستخراج"
+        ],
+        "heading": "مرجع لأسلوب لعب مشابه قائم على مسارات التسلل",
+        "body": "تشترك Robbery Bob - King of Sneak وهذه اللعبة من WeightPlay في تفادي الاكتشاف وقراءة المسارات الآمنة بين الدوريات والمخاطر وتقدير ما إذا كانت المقتنيات الاختيارية تستحق المجازفة. يصف الإدراج الرسمي من Deca Games أكثر من 100 مستوى بطابع السرقة مع حراس وسكان وكلاب بولدوغ نائمة وفخاخ وغنائم وقدرات وأدوات وأزياء. أما Moonlight Heist فهي حملة متصفح مستقلة من 30 مهمة تسلل واستخراج مصممة مسبقًا: تعاين Spark Paw Fia مسارًا واحدًا في كل مرة، وتدير مقياس Alert ودوائر الرؤية الظاهرة، وتستعيد غرضًا من الأرشيف ثم تصل إلى نقطة الاستخراج. وتضيف المجموعات الست المكوّنة من خمس مهام ملاجئ الظل ونبضات الجرس وتبديل العلامات ومراحل الآلات البطيئة/المتسارعة وأختامًا تتطلب الكنز أولًا وحراس الأرشيف. Lightning Dash وStar Decoy وSmoke Leaf أدوات للمهمة، بينما يؤثر الكنز الاختياري في الميدالية الثالثة والتقدم المحلي.",
+        "disclaimer": "Moonlight Heist عمل أصلي مستقل من WeightPlay. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وDeca Games EOOD أو Robbery Bob - King of Sneak.",
+        "sourceLabel": "إدراج Robbery Bob - King of Sneak الرسمي في App Store"
+      }
+    }
+  };
+  // Text Growth 1.3.0: Moonlight Heist market comparison end
+
   // Bamboo Waterway WP Text Growth 1.3.0: sole authored comparison profile.
   gameplayProfiles["animal-bamboo-pipes"].marketComparison = {
   "name": "Water Pipes",
@@ -24592,6 +25575,362 @@
   }
 };
 
+
+  // Text Growth 1.3.0: sourced Cribbage Daily comparison; protected SEO identity stays untouched.
+  gameplayProfiles["cribbage"] ||= {};
+  gameplayProfiles["cribbage"].marketComparison = {
+  "name": "Cribbage Daily",
+  "source": "https://www.mobilityware.com/cribbage-daily/",
+  "locales": {
+    "en": {
+      "tagsLabel": "Gameplay tags:",
+      "tags": [
+        "Crib discard strategy",
+        "Pegging to 31",
+        "Hand scoring combos",
+        "Race to 121"
+      ],
+      "heading": "Similar Cribbage gameplay reference",
+      "body": "Cribbage Daily and WeightPlay Cribbage share the traditional 121-point race built around crib discards, pegging, a scoring board, and point-making card combinations. MobilityWare’s official page adds unlimited hints, skunk and double-skunk framing, league play, and rewards. WeightPlay instead keeps a focused single-player browser table against the computer: six cards are dealt, exactly two go to the crib, the dealer alternates, pegging scores 15 and 31 plus pairs and runs, and hand and crib scoring counts fifteens, pairs, runs, flushes, and nobs. There is no league or reward progression; completed results and preferences stay local to the browser.",
+      "disclaimer": "WeightPlay Cribbage is an independent browser implementation of the traditional Cribbage card game, not an official version of Cribbage Daily. WeightPlay has no affiliation, endorsement, license, or co-development relationship with MobilityWare.",
+      "sourceLabel": "MobilityWare: official Cribbage Daily game page"
+    },
+    "zh-Hant": {
+      "tagsLabel": "玩法標籤：",
+      "tags": [
+        "Crib 棄牌策略",
+        "Pegging 到 31",
+        "手牌組合計分",
+        "121 分競賽"
+      ],
+      "heading": "相似克里比奇玩法參考",
+      "body": "Cribbage Daily 與 WeightPlay 克里比奇牌戲都以傳統的 121 分競賽為核心，包含把牌放進 crib、pegging、計分板與各種得分組合。MobilityWare 官方頁面另外提供無限提示、skunk／double skunk、聯賽競賽與獎勵。WeightPlay 則專注單人瀏覽器牌桌與電腦對戰：每輪發六張牌，正好兩張進 crib，莊家輪替；pegging 會計算 15、31、對子與順子，手牌與 crib 則計算十五點、對子、順子、同花與同花 J。本站沒有聯賽或獎勵進程，完成牌局的結果與偏好只保存在目前瀏覽器。",
+      "disclaimer": "WeightPlay 克里比奇牌戲是獨立製作的傳統 Cribbage 瀏覽器版本，不是 Cribbage Daily 官方版本。WeightPlay 與 MobilityWare 沒有隸屬、背書、授權或共同開發關係。",
+      "sourceLabel": "MobilityWare：Cribbage Daily 官方遊戲頁面"
+    },
+    "zh-Hans": {
+      "tagsLabel": "玩法标签：",
+      "tags": [
+        "Crib 弃牌策略",
+        "Pegging 到 31",
+        "手牌组合计分",
+        "121 分竞赛"
+      ],
+      "heading": "相似克里比奇玩法参考",
+      "body": "Cribbage Daily 与 WeightPlay 克里比奇都以传统的 121 分竞赛为核心，包含把牌放进 crib、pegging、计分板与各种得分组合。MobilityWare 官方页面另外提供无限提示、skunk／double skunk、联赛竞赛与奖励。WeightPlay 则专注单人浏览器牌桌与电脑对战：每轮发六张牌，正好两张进入 crib，庄家轮换；pegging 会计算 15、31、对子与顺子，手牌与 crib 则计算十五点、对子、顺子、同花与同花 J。本站没有联赛或奖励进程，完成牌局的结果与偏好只保存在当前浏览器。",
+      "disclaimer": "WeightPlay 克里比奇是独立制作的传统 Cribbage 浏览器版本，不是 Cribbage Daily 官方版本。WeightPlay 与 MobilityWare 没有隶属、背书、授权或共同开发关系。",
+      "sourceLabel": "MobilityWare：Cribbage Daily 官方游戏页面"
+    },
+    "ja": {
+      "tagsLabel": "ゲームプレイタグ：",
+      "tags": [
+        "クリブへの2枚捨て",
+        "31までのペギング",
+        "手札コンボ得点",
+        "121点レース"
+      ],
+      "heading": "似たクリベッジとのゲームプレイ比較",
+      "body": "Cribbage Daily と WeightPlay のクリベッジは、クリブへの捨て札、ペギング、スコアボード、得点になるカードの組み合わせを使って121点を目指す伝統的な流れを共有します。MobilityWare の公式ページには、無制限ヒント、スカンク／ダブルスカンク、リーグ戦、報酬も記載されています。WeightPlay はコンピューターと戦う1人用ブラウザ卓に絞り、毎ラウンド6枚を配って2枚をクリブへ送り、ディーラーを交替します。ペギングでは15・31・ペア・ラン、手札とクリブでは15・ペア・ラン・フラッシュ・ノブを数えます。リーグや報酬の進行はなく、完了結果と設定はこのブラウザ内だけに保存されます。",
+      "disclaimer": "WeightPlay のクリベッジは伝統的な Cribbage を独自にブラウザ向け実装したもので、Cribbage Daily の公式版ではありません。WeightPlay と MobilityWare の間に提携、推奨、ライセンス、共同開発の関係はありません。",
+      "sourceLabel": "MobilityWare：Cribbage Daily 公式ゲームページ"
+    },
+    "ko": {
+      "tagsLabel": "게임플레이 태그:",
+      "tags": [
+        "크립에 두 장 버리기",
+        "31까지 페깅",
+        "손패 조합 점수",
+        "121점 경주"
+      ],
+      "heading": "비슷한 크리비지 플레이 참고",
+      "body": "Cribbage Daily와 WeightPlay 크리비지는 크립에 카드를 버리고 페깅을 하며 점수판과 여러 카드 조합으로 121점을 향해 가는 전통적인 흐름을 공유합니다. MobilityWare 공식 페이지에는 무제한 힌트, 스컹크와 더블 스컹크, 리그 플레이, 보상도 소개됩니다. WeightPlay는 컴퓨터와 겨루는 1인용 브라우저 테이블에 집중합니다. 매 라운드 여섯 장을 받고 정확히 두 장을 크립에 보내며 딜러가 번갈아 바뀝니다. 페깅은 15와 31, 페어와 런을 계산하고, 손패와 크립은 15, 페어, 런, 플러시, 노브를 계산합니다. 리그나 보상 진행은 없고 완료 결과와 설정은 현재 브라우저에만 저장됩니다.",
+      "disclaimer": "WeightPlay 크리비지는 전통적인 Cribbage를 독립적으로 브라우저에 구현한 게임이며 Cribbage Daily의 공식 버전이 아닙니다. WeightPlay와 MobilityWare 사이에는 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+      "sourceLabel": "MobilityWare: Cribbage Daily 공식 게임 페이지"
+    },
+    "es": {
+      "tagsLabel": "Etiquetas de juego:",
+      "tags": [
+        "Descarte al crib",
+        "Pegging hasta 31",
+        "Combinaciones de puntuación",
+        "Carrera a 121"
+      ],
+      "heading": "Referencia de un Cribbage con mecánicas similares",
+      "body": "Cribbage Daily y Cribbage de WeightPlay comparten la carrera tradicional a 121 puntos basada en descartes al crib, pegging, tablero de puntuación y combinaciones que suman puntos. La página oficial de MobilityWare añade pistas ilimitadas, skunk y double skunk, juego de liga y recompensas. WeightPlay se centra en una mesa de navegador para una persona contra el ordenador: se reparten seis cartas, exactamente dos van al crib, el repartidor alterna, el pegging puntúa 15 y 31 además de parejas y escaleras, y la mano y el crib cuentan quinces, parejas, escaleras, color y nobs. No hay liga ni progreso por recompensas; los resultados terminados y las preferencias quedan guardados localmente en el navegador.",
+      "disclaimer": "Cribbage de WeightPlay es una implementación independiente para navegador del juego tradicional Cribbage, no una versión oficial de Cribbage Daily. WeightPlay no tiene afiliación, respaldo, licencia ni relación de desarrollo conjunto con MobilityWare.",
+      "sourceLabel": "MobilityWare: página oficial de Cribbage Daily"
+    },
+    "pt-BR": {
+      "tagsLabel": "Tags de gameplay:",
+      "tags": [
+        "Descarte para o crib",
+        "Pegging até 31",
+        "Combinações de pontuação",
+        "Corrida até 121"
+      ],
+      "heading": "Referência de Cribbage com jogabilidade semelhante",
+      "body": "Cribbage Daily e o Cribbage da WeightPlay compartilham a corrida tradicional até 121 pontos baseada em descartes para o crib, pegging, tabuleiro de pontuação e combinações que rendem pontos. A página oficial da MobilityWare acrescenta dicas ilimitadas, skunk e double skunk, jogo em ligas e recompensas. A WeightPlay mantém uma mesa de navegador para um jogador contra o computador: são dadas seis cartas, exatamente duas vão para o crib, o dealer alterna, o pegging pontua 15 e 31 além de pares e sequências, e a mão e o crib contam quinzes, pares, sequências, flushes e nobs. Não há liga nem progressão por recompensas; resultados concluídos e preferências ficam salvos localmente no navegador.",
+      "disclaimer": "O Cribbage da WeightPlay é uma implementação independente para navegador do jogo tradicional Cribbage, não uma versão oficial de Cribbage Daily. A WeightPlay não possui afiliação, endosso, licença nem relação de desenvolvimento conjunto com a MobilityWare.",
+      "sourceLabel": "MobilityWare: página oficial de Cribbage Daily"
+    },
+    "fr": {
+      "tagsLabel": "Tags de gameplay :",
+      "tags": [
+        "Défausse au crib",
+        "Pegging jusqu’à 31",
+        "Combinaisons de score",
+        "Course à 121"
+      ],
+      "heading": "Référence de Cribbage au gameplay similaire",
+      "body": "Cribbage Daily et le Cribbage de WeightPlay partagent la course traditionnelle vers 121 points fondée sur la défausse au crib, le pegging, un tableau de score et des combinaisons de cartes qui rapportent des points. La page officielle de MobilityWare ajoute des indices illimités, les notions de skunk et double skunk, des ligues et des récompenses. WeightPlay se concentre sur une table de navigateur en solo contre l’ordinateur : six cartes sont distribuées, exactement deux vont au crib, le donneur alterne, le pegging compte 15 et 31 ainsi que les paires et suites, puis la main et le crib comptent les quinze, paires, suites, couleurs et nobs. Il n’y a ni ligue ni progression par récompenses ; les résultats terminés et les préférences restent enregistrés localement dans le navigateur.",
+      "disclaimer": "Le Cribbage de WeightPlay est une implémentation indépendante sur navigateur du jeu traditionnel Cribbage, et non une version officielle de Cribbage Daily. WeightPlay n’a aucun lien d’affiliation, d’approbation, de licence ou de codéveloppement avec MobilityWare.",
+      "sourceLabel": "MobilityWare : page officielle de Cribbage Daily"
+    },
+    "de": {
+      "tagsLabel": "Gameplay-Tags:",
+      "tags": [
+        "Zwei Karten in den Crib",
+        "Pegging bis 31",
+        "Wertungskombinationen",
+        "Rennen auf 121"
+      ],
+      "heading": "Referenz für ähnliches Cribbage-Gameplay",
+      "body": "Cribbage Daily und WeightPlay Cribbage teilen das traditionelle Rennen auf 121 Punkte mit Ablagen in den Crib, Pegging, Wertungsbrett und punktbringenden Kartenkombinationen. Die offizielle MobilityWare-Seite nennt zusätzlich unbegrenzte Hinweise, Skunk und Double Skunk, Ligaspiel und Belohnungen. WeightPlay konzentriert sich dagegen auf einen Einzelspieler-Browsertisch gegen den Computer: Es werden sechs Karten gegeben, genau zwei kommen in den Crib, der Geber wechselt, beim Pegging zählen 15 und 31 sowie Paare und Folgen, und Hand und Crib werten Fünfzehner, Paare, Folgen, Flushes und Nobs. Es gibt keine Liga- oder Belohnungsprogression; abgeschlossene Ergebnisse und Einstellungen bleiben lokal im Browser.",
+      "disclaimer": "WeightPlay Cribbage ist eine unabhängige Browser-Umsetzung des traditionellen Kartenspiels Cribbage und keine offizielle Version von Cribbage Daily. Zwischen WeightPlay und MobilityWare besteht keine Zugehörigkeit, Empfehlung, Lizenz- oder gemeinsame Entwicklungsbeziehung.",
+      "sourceLabel": "MobilityWare: offizielle Cribbage-Daily-Spielseite"
+    },
+    "it": {
+      "tagsLabel": "Tag di gameplay:",
+      "tags": [
+        "Scarto nel crib",
+        "Pegging fino a 31",
+        "Combinazioni di punteggio",
+        "Corsa a 121"
+      ],
+      "heading": "Riferimento a un Cribbage con gameplay simile",
+      "body": "Cribbage Daily e Cribbage di WeightPlay condividono la tradizionale corsa a 121 punti basata sugli scarti nel crib, sul pegging, sul tabellone segnapunti e sulle combinazioni che danno punti. La pagina ufficiale di MobilityWare aggiunge suggerimenti illimitati, skunk e double skunk, gioco in lega e ricompense. WeightPlay si concentra invece su un tavolo browser in singolo contro il computer: vengono distribuite sei carte, esattamente due vanno nel crib, il mazziere si alterna, il pegging assegna punti per 15 e 31 oltre a coppie e scale, mentre mano e crib contano quindici, coppie, scale, flush e nobs. Non ci sono leghe o progressione tramite ricompense; risultati completati e preferenze restano salvati localmente nel browser.",
+      "disclaimer": "Cribbage di WeightPlay è un’implementazione indipendente per browser del tradizionale gioco Cribbage, non una versione ufficiale di Cribbage Daily. WeightPlay non ha rapporti di affiliazione, approvazione, licenza o sviluppo congiunto con MobilityWare.",
+      "sourceLabel": "MobilityWare: pagina ufficiale di Cribbage Daily"
+    },
+    "ru": {
+      "tagsLabel": "Теги игрового процесса:",
+      "tags": [
+        "Две карты в криб",
+        "Пеггинг до 31",
+        "Комбинации для очков",
+        "Гонка до 121"
+      ],
+      "heading": "Похожий вариант игры в криббедж",
+      "body": "Cribbage Daily и криббедж WeightPlay используют традиционную гонку до 121 очка с отправкой карт в криб, пеггингом, доской счёта и комбинациями, приносящими очки. На официальной странице MobilityWare дополнительно указаны неограниченные подсказки, skunk и double skunk, лиги и награды. WeightPlay сосредоточен на одиночной партии в браузере против компьютера: раздаётся шесть карт, ровно две отправляются в криб, сдающий меняется, в пеггинге очки дают 15 и 31, пары и последовательности, а при подсчёте руки и криба учитываются пятнадцать, пары, последовательности, флеши и nobs. Лиг и прогрессии наград нет; завершённые результаты и настройки хранятся локально в браузере.",
+      "disclaimer": "Криббедж WeightPlay — независимая браузерная реализация традиционной игры Cribbage, а не официальная версия Cribbage Daily. WeightPlay не связан с MobilityWare отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
+      "sourceLabel": "MobilityWare: официальная страница Cribbage Daily"
+    },
+    "hi": {
+      "tagsLabel": "गेमप्ले टैग:",
+      "tags": [
+        "क्रिब में दो कार्ड",
+        "31 तक पेगिंग",
+        "स्कोरिंग संयोजन",
+        "121 अंकों की दौड़"
+      ],
+      "heading": "मिलते-जुलते क्रिबेज गेमप्ले का संदर्भ",
+      "body": "Cribbage Daily और WeightPlay Cribbage दोनों में पारंपरिक 121 अंकों की दौड़ है, जिसमें दो कार्ड क्रिब में देना, पेगिंग, स्कोर बोर्ड और अंक देने वाले कार्ड संयोजन शामिल हैं। MobilityWare के आधिकारिक पेज में इसके साथ असीमित संकेत, skunk और double skunk, लीग खेल तथा पुरस्कार भी बताए गए हैं। WeightPlay कंप्यूटर के विरुद्ध एकल ब्राउज़र टेबल पर केंद्रित है: छह कार्ड मिलते हैं, ठीक दो क्रिब में जाते हैं, डीलर हर राउंड बदलता है, पेगिंग में 15 और 31 के साथ जोड़ी और रन अंक देते हैं, जबकि हाथ और क्रिब में पंद्रह, जोड़ी, रन, फ्लश और nobs गिने जाते हैं। यहाँ लीग या पुरस्कार प्रगति नहीं है; पूरे हुए परिणाम और पसंद इसी ब्राउज़र में स्थानीय रूप से रहती हैं।",
+      "disclaimer": "WeightPlay Cribbage पारंपरिक Cribbage का स्वतंत्र ब्राउज़र रूप है, Cribbage Daily का आधिकारिक संस्करण नहीं। WeightPlay का MobilityWare के साथ कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+      "sourceLabel": "MobilityWare: Cribbage Daily का आधिकारिक गेम पेज"
+    },
+    "ar": {
+      "tagsLabel": "وسوم أسلوب اللعب:",
+      "tags": [
+        "ورقتان إلى الـ crib",
+        "الـ pegging حتى 31",
+        "توليفات احتساب النقاط",
+        "سباق إلى 121"
+      ],
+      "heading": "مرجع لأسلوب Cribbage مشابه",
+      "body": "تشترك Cribbage Daily وCribbage من WeightPlay في السباق التقليدي إلى 121 نقطة المبني على إرسال أوراق إلى الـ crib، والـ pegging، ولوحة النقاط، وتوليفات الأوراق التي تمنح نقاطًا. وتضيف صفحة MobilityWare الرسمية تلميحات غير محدودة، وskunk وdouble skunk، واللعب في الدوريات، والمكافآت. أما WeightPlay فتركز على طاولة متصفح فردية ضد الكمبيوتر: توزّع ست أوراق، وتذهب ورقتان بالضبط إلى الـ crib، ويتناوب الموزع، ويمنح الـ pegging نقاطًا عند 15 و31 وللأزواج والتتابعات، بينما يحسب اليد والـ crib مجموعات 15 والأزواج والتتابعات والـ flush وnobs. لا توجد دوريات أو مسيرة مكافآت، وتبقى النتائج المكتملة والتفضيلات محفوظة محليًا في المتصفح.",
+      "disclaimer": "Cribbage من WeightPlay تنفيذ مستقل في المتصفح للعبة Cribbage التقليدية وليست نسخة رسمية من Cribbage Daily. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وMobilityWare.",
+      "sourceLabel": "MobilityWare: الصفحة الرسمية للعبة Cribbage Daily"
+    }
+  }
+};
+
+  // Text Growth 1.3.0: sourced Go Fish comparison; protected SEO identity stays untouched.
+  gameplayProfiles["go-fish"] ||= {};
+  gameplayProfiles["go-fish"].marketComparison = {
+  "name": "Go Fish Cards",
+  "source": "https://apps.apple.com/au/app/go-fish-cards/id6785675219",
+  "locales": {
+    "en": {
+      "tagsLabel": "Gameplay tags:",
+      "tags": [
+        "Rank asking",
+        "Four-of-a-kind books",
+        "Turn memory",
+        "Card strategy"
+      ],
+      "heading": "Similar rank-asking card game reference",
+      "body": "It uses the same core loop: ask an opponent for a rank you already hold, receive that rank when they have it or draw after being told to go fish, and collect four of a kind as books. Its App Store listing also offers solo play against one to three opponents with Easy, Normal or Hard difficulty, plus pass-and-play and nearby-device multiplayer. WeightPlay instead keeps one browser table with two, three or four seats, records up to three recent asks, and can carry a replay goal into a fresh deal; it has no difficulty selector, pass-and-play mode or nearby-device mode.",
+      "disclaimer": "This is WeightPlay’s independent browser implementation of the traditional Go Fish card game, not an official version of Go Fish Cards. WeightPlay is not affiliated with, endorsed by, licensed by or co-developed with Making Odd Edit AB.",
+      "sourceLabel": "Making Odd Edit AB: official Go Fish Cards App Store listing"
+    },
+    "zh-Hant": {
+      "tagsLabel": "玩法標籤：",
+      "tags": [
+        "點數詢問",
+        "四張集牌",
+        "回合記憶",
+        "紙牌策略"
+      ],
+      "heading": "相似的點數詢問紙牌遊戲參考",
+      "body": "兩者採用相同核心流程：向對手詢問自己手上已有的點數；對方有牌就交出該點數，沒有就要你 Go Fish 並抽牌；集滿四張同點數牌會成為一組牌。其 App Store 說明另外提供單人對一至三名對手的 Easy、Normal、Hard 難度，以及同機輪流與鄰近裝置多人玩法。WeightPlay 則維持單一瀏覽器牌桌，可選二、三或四個座位，會記錄最近三次詢問，並可把重玩目標帶到新牌局；沒有難度選擇、同機輪流或鄰近裝置模式。",
+      "disclaimer": "這是 WeightPlay 對傳統 Go Fish 紙牌玩法的獨立瀏覽器實作，不是 Go Fish Cards 官方版本。WeightPlay 與 Making Odd Edit AB 沒有隸屬、背書、授權或共同開發關係。",
+      "sourceLabel": "Making Odd Edit AB：Go Fish Cards 官方 App Store 說明"
+    },
+    "zh-Hans": {
+      "tagsLabel": "玩法标签：",
+      "tags": [
+        "点数询问",
+        "四张集牌",
+        "回合记忆",
+        "纸牌策略"
+      ],
+      "heading": "相似的点数询问纸牌游戏参考",
+      "body": "两者采用相同核心流程：向对手询问自己手上已有的点数；对方有牌就交出该点数，没有就让你 Go Fish 并抽牌；集满四张同点数牌会成为一组牌。其 App Store 说明还提供单人对一至三名对手的 Easy、Normal、Hard 难度，以及同机轮流和邻近设备多人玩法。WeightPlay 则维持单一浏览器牌桌，可选二、三或四个座位，会记录最近三次询问，并可把重玩目标带到新牌局；没有难度选择、同机轮流或邻近设备模式。",
+      "disclaimer": "这是 WeightPlay 对传统 Go Fish 纸牌玩法的独立浏览器实现，不是 Go Fish Cards 官方版本。WeightPlay 与 Making Odd Edit AB 没有隶属、背书、授权或共同开发关系。",
+      "sourceLabel": "Making Odd Edit AB：Go Fish Cards 官方 App Store 说明"
+    },
+    "ja": {
+      "tagsLabel": "ゲームプレイタグ：",
+      "tags": [
+        "ランク質問",
+        "4枚セット集め",
+        "手番記憶",
+        "カード戦略"
+      ],
+      "heading": "似たランク質問カードゲームの参考",
+      "body": "どちらも、手札にあるランクを相手に尋ね、持っていればそのランクを受け取り、なければ Go Fish と言われて引き、同じランク4枚をブックとして集めます。公式 App Store では1～3人の相手とのソロプレイに Easy・Normal・Hard があり、1台を回すパス＆プレイと近くの端末同士のマルチプレイも案内されています。WeightPlay は1つのブラウザー卓で2・3・4席を選び、直近3回の質問を記録し、新しいディールへリプレイ目標を持ち越せますが、難易度選択、パス＆プレイ、近距離端末モードはありません。",
+      "disclaimer": "これは伝統的な Go Fish を WeightPlay が独自にブラウザー実装したもので、Go Fish Cards の公式版ではありません。WeightPlay は Making Odd Edit AB と提携・推奨・ライセンス・共同開発の関係にありません。",
+      "sourceLabel": "Making Odd Edit AB：Go Fish Cards 公式 App Store ページ"
+    },
+    "ko": {
+      "tagsLabel": "플레이 태그:",
+      "tags": [
+        "랭크 질문",
+        "네 장 세트 수집",
+        "턴 기억",
+        "카드 전략"
+      ],
+      "heading": "비슷한 랭크 질문 카드 게임 참고",
+      "body": "두 게임 모두 손에 있는 랭크를 상대에게 묻고, 상대가 가지고 있으면 그 랭크를 모두 받고, 없으면 Go Fish라는 답과 함께 카드를 뽑으며, 같은 랭크 네 장을 모아 책을 완성합니다. 공식 App Store 설명에는 1~3명의 상대와 하는 솔로 플레이에 Easy·Normal·Hard 난이도가 있고, 한 기기를 돌려 쓰는 패스 앤 플레이와 가까운 기기끼리의 멀티플레이도 있습니다. WeightPlay는 한 브라우저 테이블에서 2·3·4석을 선택하고 최근 세 번의 질문을 기록하며 새 딜에 다시 하기 목표를 이어 갈 수 있지만, 난이도 선택이나 패스 앤 플레이, 근거리 기기 모드는 없습니다.",
+      "disclaimer": "이 게임은 전통적인 Go Fish를 WeightPlay가 독립적으로 브라우저에 구현한 것이며 Go Fish Cards의 공식 버전이 아닙니다. WeightPlay는 Making Odd Edit AB와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
+      "sourceLabel": "Making Odd Edit AB: Go Fish Cards 공식 App Store 페이지"
+    },
+    "es": {
+      "tagsLabel": "Etiquetas de juego:",
+      "tags": [
+        "Preguntas de rango",
+        "Grupos de cuatro",
+        "Memoria de turnos",
+        "Estrategia de cartas"
+      ],
+      "heading": "Referencia de un juego similar de pedir rangos",
+      "body": "Ambos comparten el núcleo: pedir a un rival un rango que ya tienes, recibir todas sus cartas de ese rango si las posee o robar cuando te dice Go Fish, y reunir cuatro iguales para completar un grupo. Su ficha oficial de App Store también ofrece juego en solitario contra uno, dos o tres rivales con dificultad Easy, Normal o Hard, además de pasar el dispositivo y multijugador entre dispositivos cercanos. WeightPlay mantiene una sola mesa de navegador con dos, tres o cuatro asientos, registra las tres preguntas más recientes y puede llevar una meta de repetición a una partida nueva; no incluye selector de dificultad, modo de pasar el dispositivo ni juego entre dispositivos cercanos.",
+      "disclaimer": "Esta es una implementación independiente de WeightPlay del juego tradicional Go Fish para navegador, no una versión oficial de Go Fish Cards. WeightPlay no está afiliado, respaldado, licenciado ni desarrollado conjuntamente con Making Odd Edit AB.",
+      "sourceLabel": "Making Odd Edit AB: ficha oficial de Go Fish Cards en App Store"
+    },
+    "pt-BR": {
+      "tagsLabel": "Tags de jogabilidade:",
+      "tags": [
+        "Pedir valores",
+        "Quadras de cartas",
+        "Memória de turnos",
+        "Estratégia de cartas"
+      ],
+      "heading": "Referência de jogo de cartas semelhante de pedir valores",
+      "body": "Os dois compartilham o núcleo: pedir a um oponente um valor que você já tem, receber todas as cartas desse valor se ele tiver ou comprar quando ouvir Go Fish, e juntar quatro cartas iguais para formar um grupo. A página oficial na App Store também oferece jogo solo contra um, dois ou três oponentes em Easy, Normal ou Hard, além de passar o aparelho entre jogadores e multiplayer entre dispositivos próximos. O WeightPlay mantém uma única mesa no navegador com dois, três ou quatro lugares, registra as três perguntas mais recentes e pode levar uma meta de replay para uma nova rodada; não há seletor de dificuldade, modo de passar o aparelho nem jogo entre dispositivos próximos.",
+      "disclaimer": "Esta é uma implementação independente do WeightPlay do jogo tradicional Go Fish no navegador, não uma versão oficial de Go Fish Cards. O WeightPlay não é afiliado, endossado, licenciado nem desenvolvido em conjunto com a Making Odd Edit AB.",
+      "sourceLabel": "Making Odd Edit AB: página oficial de Go Fish Cards na App Store"
+    },
+    "fr": {
+      "tagsLabel": "Tags de gameplay :",
+      "tags": [
+        "Demande de rang",
+        "Carrés de cartes",
+        "Mémoire des tours",
+        "Stratégie de cartes"
+      ],
+      "heading": "Référence à un jeu de cartes similaire basé sur les demandes de rang",
+      "body": "Les deux reprennent le même principe : demander à un adversaire un rang déjà présent dans sa main, recevoir toutes ses cartes de ce rang s’il en possède ou piocher après un Go Fish, puis réunir quatre cartes identiques pour former une famille. Sa fiche officielle App Store propose aussi du solo contre un à trois adversaires en difficulté Easy, Normal ou Hard, ainsi que du pass-and-play sur un appareil et du multijoueur entre appareils proches. WeightPlay garde une seule table dans le navigateur avec deux, trois ou quatre places, mémorise les trois dernières demandes et peut reporter un objectif de revanche sur une nouvelle donne ; il n’y a ni choix de difficulté, ni pass-and-play, ni mode entre appareils proches.",
+      "disclaimer": "Il s’agit d’une adaptation indépendante par WeightPlay du jeu traditionnel Go Fish dans le navigateur, et non d’une version officielle de Go Fish Cards. WeightPlay n’est ni affilié à Making Odd Edit AB, ni approuvé, licencié ou codéveloppé par cette société.",
+      "sourceLabel": "Making Odd Edit AB : fiche officielle de Go Fish Cards sur l’App Store"
+    },
+    "de": {
+      "tagsLabel": "Gameplay-Tags:",
+      "tags": [
+        "Rangfragen",
+        "Vierer-Sätze",
+        "Zuggedächtnis",
+        "Kartenstrategie"
+      ],
+      "heading": "Vergleich mit einem ähnlichen Kartenfragespiel",
+      "body": "Beide nutzen denselben Kern: Frage einen Gegner nach einem Rang, den du selbst hältst; besitzt er ihn, gibt er alle Karten dieses Rangs ab, sonst heißt es Go Fish und du ziehst. Vier gleiche Ränge bilden einen Satz. Der offizielle App-Store-Eintrag bietet außerdem Solo-Partien gegen ein bis drei Gegner auf Easy, Normal oder Hard sowie Pass-and-Play auf einem Gerät und Mehrspieler mit Geräten in der Nähe. WeightPlay bleibt bei einem Browser-Tisch mit zwei, drei oder vier Plätzen, merkt sich die letzten drei Fragen und kann ein Wiederholungsziel in eine neue Runde übernehmen; eine Schwierigkeitswahl, Pass-and-Play oder einen Nahgeräte-Modus gibt es nicht.",
+      "disclaimer": "Dies ist WeightPlays unabhängige Browser-Umsetzung des traditionellen Go-Fish-Kartenspiels und keine offizielle Version von Go Fish Cards. WeightPlay ist nicht mit Making Odd Edit AB verbunden, von ihr unterstützt, lizenziert oder gemeinsam entwickelt.",
+      "sourceLabel": "Making Odd Edit AB: offizieller App-Store-Eintrag zu Go Fish Cards"
+    },
+    "it": {
+      "tagsLabel": "Tag di gioco:",
+      "tags": [
+        "Richiesta di valore",
+        "Quartetti",
+        "Memoria dei turni",
+        "Strategia di carte"
+      ],
+      "heading": "Riferimento a un gioco di carte simile basato sulle richieste di valore",
+      "body": "Entrambi condividono il nucleo: chiedere a un avversario un valore già presente nella propria mano, ricevere tutte le sue carte di quel valore se le possiede oppure pescare dopo un Go Fish, e raccogliere quattro carte uguali per completare un gruppo. La scheda ufficiale App Store offre anche partite in solitaria contro uno, due o tre avversari con difficoltà Easy, Normal o Hard, oltre al pass-and-play su un dispositivo e al multigiocatore tra dispositivi vicini. WeightPlay mantiene un solo tavolo nel browser con due, tre o quattro posti, registra le ultime tre richieste e può portare un obiettivo replay in una nuova partita; non include selezione della difficoltà, pass-and-play o modalità tra dispositivi vicini.",
+      "disclaimer": "Questa è un’implementazione indipendente di WeightPlay del tradizionale Go Fish nel browser, non una versione ufficiale di Go Fish Cards. WeightPlay non è affiliato, approvato, autorizzato o sviluppato congiuntamente con Making Odd Edit AB.",
+      "sourceLabel": "Making Odd Edit AB: scheda ufficiale di Go Fish Cards su App Store"
+    },
+    "ru": {
+      "tagsLabel": "Теги игрового процесса:",
+      "tags": [
+        "Запрос ранга",
+        "Четвёрки карт",
+        "Память ходов",
+        "Карточная стратегия"
+      ],
+      "heading": "Сравнение с похожей карточной игрой на запрос ранга",
+      "body": "Обе игры используют один основной цикл: спросить соперника о ранге, который уже есть у вас; если такие карты у него есть, получить их все, а если нет — услышать Go Fish и взять карту; четыре одинаковых ранга образуют комплект. Официальная страница App Store также предлагает одиночную игру против одного, двух или трёх соперников на Easy, Normal или Hard, передачу одного устройства между игроками и мультиплеер между находящимися рядом устройствами. WeightPlay оставляет один браузерный стол на два, три или четыре места, показывает три последних запроса и может перенести цель повтора в новую раздачу; выбора сложности, передачи устройства и режима между соседними устройствами нет.",
+      "disclaimer": "Это независимая браузерная реализация традиционной игры Go Fish от WeightPlay, а не официальная версия Go Fish Cards. WeightPlay не связан с Making Odd Edit AB, не поддерживается и не лицензируется ею и не участвует с ней в совместной разработке.",
+      "sourceLabel": "Making Odd Edit AB: официальная страница Go Fish Cards в App Store"
+    },
+    "hi": {
+      "tagsLabel": "गेमप्ले टैग:",
+      "tags": [
+        "रैंक पूछना",
+        "चार-पत्तों के सेट",
+        "चाल स्मृति",
+        "कार्ड रणनीति"
+      ],
+      "heading": "समान रैंक-पूछने वाले कार्ड गेम का संदर्भ",
+      "body": "दोनों में वही मुख्य क्रम है: जिस रैंक का पत्ता आपके हाथ में है उसे किसी प्रतिद्वंद्वी से माँगें; उसके पास हो तो उस रैंक के सभी पत्ते लें, नहीं हो तो Go Fish सुनकर पत्ता खींचें; एक ही रैंक के चार पत्ते मिलकर एक सेट बनाते हैं। आधिकारिक App Store विवरण में एक से तीन विरोधियों के विरुद्ध Easy, Normal या Hard एकल खेल, एक ही डिवाइस को पास करके खेलना और पास के डिवाइसों के बीच मल्टीप्लेयर भी है। WeightPlay एक ही ब्राउज़र टेबल पर दो, तीन या चार सीट देता है, पिछली तीन माँगें दर्ज करता है और नए खेल में दोबारा खेलने का लक्ष्य ले जा सकता है; इसमें कठिनाई चयन, पास-एंड-प्ले या पास के डिवाइस वाला मोड नहीं है।",
+      "disclaimer": "यह पारंपरिक Go Fish का WeightPlay द्वारा स्वतंत्र ब्राउज़र रूपांतरण है, Go Fish Cards का आधिकारिक संस्करण नहीं। WeightPlay का Making Odd Edit AB से कोई संबद्धता, समर्थन, लाइसेंस या संयुक्त विकास संबंध नहीं है।",
+      "sourceLabel": "Making Odd Edit AB: Go Fish Cards की आधिकारिक App Store सूची"
+    },
+    "ar": {
+      "tagsLabel": "وسوم أسلوب اللعب:",
+      "tags": [
+        "طلب الرتبة",
+        "مجموعات أربع بطاقات",
+        "تذكّر الأدوار",
+        "استراتيجية البطاقات"
+      ],
+      "heading": "مرجع للعبة بطاقات مشابهة تعتمد على طلب الرتب",
+      "body": "تشترك اللعبتان في الحلقة الأساسية نفسها: اطلب من خصم رتبة موجودة لديك، وخذ كل بطاقات تلك الرتبة إذا كانت لديه، أو اسحب بطاقة عندما يجيبك Go Fish، واجمع أربع بطاقات من الرتبة نفسها لتكوين مجموعة. وتذكر صفحة App Store الرسمية اللعب الفردي ضد خصم أو اثنين أو ثلاثة بمستويات Easy وNormal وHard، إضافة إلى تمرير جهاز واحد بين اللاعبين واللعب بين أجهزة قريبة. أما WeightPlay فيحافظ على طاولة واحدة في المتصفح بمقعدين أو ثلاثة أو أربعة، ويسجل آخر ثلاثة طلبات، ويمكنه نقل هدف الإعادة إلى توزيع جديد؛ ولا يقدم اختيار الصعوبة أو تمرير الجهاز أو وضع الأجهزة القريبة.",
+      "disclaimer": "هذه نسخة مستقلة من WeightPlay للعبة Go Fish التقليدية في المتصفح، وليست إصدارًا رسميًا من Go Fish Cards. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وMaking Odd Edit AB.",
+      "sourceLabel": "Making Odd Edit AB: صفحة Go Fish Cards الرسمية في App Store"
+    }
+  }
+};
 
   // Canonical Rune v25 data is reapplied after legacy resources by both live and static owners.
   function applyRuneTacticsGuideCorrections() {

@@ -27,15 +27,29 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-firefly-folio">
-  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-game-version" content="v10">
   <meta name="weightplay-interface-version" content="6">
   <meta name="weightplay-scene-controls" content="immutable">
   <title>Коды направлений светлячков | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="style.css?v=20260923-firefly-folio-v9-freeze"><meta name="description" content="Расшифруйте 30 заметок в шести главах и проложите каждый точный путь к фонарю." />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3">
+  <link rel="stylesheet" href="style.css?v=20260925-firefly-folio-v10-result-actions"><style data-wp-firefly-result-landscape>
+@media(max-height:520px) and (orientation:landscape){
+  .panel-screen[data-screen="result"]{display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:8px}
+  .panel-screen[data-screen="result"]>.result-card{width:min(100%,800px);margin:0;padding:12px;display:grid;grid-template-columns:88px minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:2px 12px;text-align:left}
+  .panel-screen[data-screen="result"] .result-guide-art{grid-column:1;grid-row:1/3;width:72px;height:96px;margin:0 auto}
+  .panel-screen[data-screen="result"] .result-card>span{grid-column:1;grid-row:3;align-self:center;text-align:center;font-size:1.5rem;line-height:1}
+  .panel-screen[data-screen="result"] .result-card h2{grid-column:2;grid-row:1;align-self:end;margin:0}
+  .panel-screen[data-screen="result"] .result-card p{grid-column:2;grid-row:2;align-self:start;margin:0}
+  .panel-screen[data-screen="result"] .result-actions{grid-column:1/-1;grid-row:4;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+  .panel-screen[data-screen="result"] .result-actions button{min-width:0;min-height:44px;padding:6px 8px;overflow-wrap:anywhere}
+  .panel-screen[data-screen="result"] .result-actions button:disabled{opacity:.5;cursor:not-allowed}
+}
+</style>
+<style data-wp-result-disabled-state>#resultPrimaryBtn:disabled{opacity:.5;cursor:not-allowed}</style>
+  <meta name="description" content="Расшифруйте 30 заметок в шести главах и проложите каждый точный путь к фонарю." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Коды направлений светлячков | WeightPlay" />
@@ -62,7 +76,7 @@
   <section id="stageScreen" class="screen panel-screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="assets/animal-firefly-folio-cover-voxel-v1.png" style="--wp-stage-art:url('assets/animal-firefly-folio-cover-voxel-v1.png')" hidden><header class="panel-head stage-header"><button id="stageBackBtn" class="back-btn wp-shell-return" type="button" data-wp-return="stage" data-copy-aria="back" aria-label="Back"><span aria-hidden="true">←</span></button><h2 data-copy="stages">Folio pages</h2></header><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="list" data-copy-aria="pageSelector" aria-label="Folio page selector"></div><nav class="stage-tabs" data-copy-aria="sectionSelector" aria-label="Folio sections"><button type="button" role="tab" aria-selected="true" data-copy="stages">Folio pages</button></nav></section>
   <section id="battleScreen" class="screen panel-screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden><header class="panel-head battle-header"><button id="battleBackBtn" class="back-btn wp-shell-return" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="Back"><span aria-hidden="true">←</span></button><div><h2 id="roundName">Bramble Page</h2><p id="roundLabel" class="round-label"></p></div><div class="battle-utility"><span class="check-pill" id="turnCount"></span><button id="battleSettingsBtn" class="icon-btn battle-settings" type="button" data-wp-battle-utility data-wp-settings data-copy-aria="settings" aria-label="Settings">⚙</button></div></header><main class="battle-content"><p id="routeNote" class="route-note"></p><div class="route-card"><h3 data-copy="routeLabel">Your route</h3><div id="route" class="route" aria-live="polite"></div></div><div class="direction-grid" id="directionGrid" role="group" data-copy-aria="directionChoices" aria-label="Direction choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check route</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear route</button></div></main></section>
   <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
-  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden><div class="result-card"><img class="result-guide-art" src="assets/animal-firefly-folio-mica-guide-voxel-v1.png" width="1145" height="1374" alt=""><span aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Folio pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
+  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden><div class="result-card"><img class="result-guide-art" src="assets/animal-firefly-folio-mica-guide-voxel-v1.png" width="1145" height="1374" alt=""><span aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Folio pages</button><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultReplayBtn" class="secondary-btn" type="button" data-copy="replay">Replay</button></div></div></section>
   <div id="settingsPanel" class="settings-panel" role="group" hidden><strong data-copy="settings">Settings</strong><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
   <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Информация об игре «Альбом светлячка»">
     <div class="game-info-hero">
@@ -77,6 +91,6 @@
     </div>
   </section>
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script><script src="locales.js?v=20260923-firefly-folio-v9-freeze"></script><script src="game.js?v=20260923-firefly-folio-v9-freeze"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script><script src="locales.js?v=20260925-firefly-folio-v10-result-actions"></script><script src="game.js?v=20260925-firefly-folio-v10-result-actions"></script>
 </body>
 </html>

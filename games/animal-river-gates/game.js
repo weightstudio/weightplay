@@ -10,11 +10,12 @@
   };
   const STORE_KEY = "weightplay-animal-river-gates-v7-campaign-v1";
   const BEST_KEY = "weightplay-animal-river-gates-best-v7";
-  const nodes = ["source", "cistern", "gardenA", "gardenB", "waste"];
-  const nodeLabels = { source: "Source", cistern: "Cistern", gardenA: "Garden A", gardenB: "Garden B", waste: "Waste" };
+  const nodes = ["source", "cistern", "gardenA", "gardenB", "waste", "lowerPond"];
+  const nodeLabels = { source: "Source", cistern: "Cistern", gardenA: "Garden A", gardenB: "Garden B", waste: "Waste", upperPond: "Upper pond", lowerPond: "Lower pond" };
   const phaseName = (phase) => copy(phase === "even" ? "evenTideBeats" : phase === "odd" ? "oddTideBeats" : "anyTideBeat");
   const fallback = {
     title: "River Gates",
+    posterAlt: "A riverkeeper and beaver beside a gated river under lantern light at sunset.",
     loading: "Waking the river…",
     kicker: "Causal flow puzzle",
     world: "Willow river station",
@@ -34,6 +35,7 @@
     off: "Off",
     back: "Back",
     next: "Next stage",
+    nextStageAction: "Next Stage",
     finished: "River settled",
     resultTitle: "The riverkeeper’s plan holds",
     resultLevel: "Stage settled",
@@ -94,7 +96,11 @@
     capacity: "the route capacity is full",
     noTarget: "the channel has no open destination",
     stageDemand: "Deliver A {a} · B {b}",
-    stageReserve: "Keep cistern ≥ {value} · waste ≤ {waste}",
+    stageReserve: "Keep {label} ≥ {value} · waste ≤ {waste}",
+    settlementReserve: "Reserve in {label}: {current}/{required}",
+    incomplete: "Transfer accepted; the river is not settled yet.",
+    upperPond: "Upper pond",
+    lowerPond: "Lower pond",
     noMoves: "No legal action remains. Undo or restart.",
     action: "Transfer",
     waitAction: "Wait",
@@ -167,13 +173,13 @@
       { id: "direct-b", from: "source", to: "gardenB", label: "Direct B" },
       { id: "waste", from: "source", to: "waste", label: "Wrong branch" }
     ], solution: ["fill", "a", "direct-b"] }),
-    stage(8, "Two Ponds", "Holding Pond", "two-ponds", { start: 3, demands: [1, 1], reserve: 1, wasteMax: 0, beats: 8, capacities: { cistern: 2, gardenA: 1, gardenB: 1 }, edges: [
-      { id: "fill", from: "source", to: "cistern", label: "Fill upper pond" },
-      { id: "down-a", from: "cistern", to: "gardenA", label: "Downstream A" },
-      { id: "down-b", from: "cistern", to: "gardenB", label: "Downstream B" },
-      { id: "direct", from: "source", to: "gardenB", label: "Emergency B" },
-      { id: "spill", from: "source", to: "waste", label: "Wetland spill" }
-    ], solution: ["fill", "fill", "down-a", "direct"] }),
+    stage(8, "Two Ponds", "Holding Pond", "two-ponds", { start: 4, demands: [2, 1], reserve: 1, wasteMax: 0, beats: 9, capacities: { cistern: 3, lowerPond: 1 }, nodeLabels: { cistern: "upperPond" }, flowNodes: ["source", "cistern", "lowerPond", "gardenA", "gardenB"], edges: [
+      { id: "fill-upper", from: "source", to: "cistern", label: "Fill upper pond" },
+      { id: "fill-lower", from: "source", to: "lowerPond", label: "Fill lower pond" },
+      { id: "upper-a", from: "cistern", to: "gardenA", label: "Upper pond to A", phase: "even" },
+      { id: "upper-b", from: "cistern", to: "gardenB", label: "Upper pond to B", phase: "odd" },
+      { id: "lower-b", from: "lowerPond", to: "gardenB", label: "Lower pond to B", phase: "odd" }
+    ], solution: ["fill-upper", "fill-upper", "fill-upper", "fill-lower", "upper-a", "lower-b", "upper-a"] }),
     stage(9, "Reservoir Cutoff", "Holding Pond", "cutoff", { start: 3, demands: [1, 1], reserve: 0, wasteMax: 0, beats: 6, cutoffBeat: 3, capacities: { cistern: 2 }, edges: [
       { id: "fill-1", from: "source", to: "cistern", label: "Preload pond" },
       { id: "fill-2", from: "source", to: "cistern", label: "Second preload", beforeBeat: 3 },
@@ -350,9 +356,18 @@
   let feedback = "";
   let currentScreen = "main";
   let solved = new Set();
+  let unlockedThrough = 1;
+  let campaignMigrationPending = false;
   try {
     const raw = JSON.parse(safeStorage.get(STORE_KEY, "{}"));
     if (Array.isArray(raw.solved)) raw.solved.filter((value) => Number.isInteger(value) && value >= 1 && value <= STAGES.length).forEach((value) => solved.add(value));
+    const storedFrontier = Number.isInteger(raw.unlockedThrough) ? raw.unlockedThrough : 1;
+    const solvedFrontier = [...solved].reduce((highest, id) => Math.max(highest, id + 1), 1);
+    unlockedThrough = Math.min(STAGES.length, Math.max(1, storedFrontier, solvedFrontier));
+    if (raw.campaignRevision !== 2 && Array.isArray(raw.solved) && raw.solved.length) {
+      solved.delete(8);
+      campaignMigrationPending = true;
+    }
   } catch {}
 
   try {
@@ -361,11 +376,16 @@
   } catch {}
 
   const currentStage = () => STAGES[stageIndex];
-  const makeState = (plan) => ({ water: [plan.start, 0, 0, 0, 0], beat: 0, used: [], closed: [], flags: [], delivered: [], history: [] });
+  const makeState = (plan) => ({ water: [plan.start, 0, 0, 0, 0, 0], beat: 0, used: [], closed: [], flags: [], delivered: [], history: [] });
   const cloneState = (value) => JSON.parse(JSON.stringify(value));
-  const persist = () => safeStorage.set(STORE_KEY, JSON.stringify({ solved: [...solved].sort((a, b) => a - b), updatedAt: new Date().toISOString() }));
+  const persist = () => safeStorage.set(STORE_KEY, JSON.stringify({ solved: [...solved].sort((a, b) => a - b), unlockedThrough, campaignRevision: 2, updatedAt: new Date().toISOString() }));
+  if (campaignMigrationPending) persist();
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `animal_river_gates_${name}`, stage: currentStage().id, beat: state?.beat || 0, ...data }); };
-  const nodeLabel = (key) => copy(key, {}) !== key ? copy(key) : nodeLabels[key];
+  const nodeLabel = (key, plan = currentStage()) => {
+    const labelKey = plan.nodeLabels?.[key] || key;
+    const translated = copy(labelKey);
+    return translated !== labelKey ? translated : nodeLabels[labelKey] || nodeLabels[key];
+  };
   const copyAction = (action) => {
     const label = action.label || `${nodeLabel(action.from)} → ${nodeLabel(action.to)}`;
     return locales[locale]?.actionLabels?.[label] || label;
@@ -401,7 +421,7 @@
   const settlementReason = () => {
     const plan = currentStage();
     if (state.water[2] < plan.demands[0] || state.water[3] < plan.demands[1]) return copy("settlementGardens", { a: state.water[2], aDemand: plan.demands[0], b: state.water[3], bDemand: plan.demands[1] });
-    if (state.water[1] < plan.reserve) return copy("settlementReserve", { current: state.water[1], required: plan.reserve });
+    if (state.water[1] < plan.reserve) return copy("settlementReserve", { label: nodeLabel(plan.nodeLabels?.cistern || "cistern"), current: state.water[1], required: plan.reserve });
     if (state.water[4] > (plan.wasteMax ?? 0)) return copy("settlementWaste", { current: state.water[4], maximum: plan.wasteMax ?? 0 });
     if (plan.order && plan.order.some((node, index) => state.delivered.indexOf(node) > state.delivered.indexOf(plan.order[index + 1]))) return copy("settlementOrder");
     if (plan.protected && state.water[4] > 0) return copy("settlementHabitat");
@@ -443,17 +463,13 @@
   };
   const checkSettlement = () => {
     if (won()) {
-      solved.add(currentStage().id); persist(); feedback = "correct"; announce("complete", { solved: solved.size }); renderBattle(); setTimeout(() => { show("result"); renderResult(); }, 240);
+      solved.add(currentStage().id); unlockedThrough = Math.min(STAGES.length, Math.max(unlockedThrough, currentStage().id + 1)); persist(); feedback = "correct"; announce("complete", { solved: solved.size }); renderBattle(); setTimeout(() => { show("result"); renderResult(); }, 240);
     } else {
-      feedback = availableActions().length ? "wrong" : "impossible"; announce("check", { success: false }); renderBattle();
+      feedback = availableActions().length ? "incomplete" : "impossible"; announce("check", { success: false }); renderBattle();
     }
   };
-  const stageUnlocked = (index) => index === 0 || solved.has(STAGES[index - 1].id);
-  const highestUnlockedStage = () => {
-    let highest = 0;
-    while (highest + 1 < STAGES.length && stageUnlocked(highest + 1)) highest += 1;
-    return highest;
-  };
+  const stageUnlocked = (index) => Boolean(STAGES[index] && STAGES[index].id <= unlockedThrough);
+  const highestUnlockedStage = () => Math.max(0, Math.min(STAGES.length, unlockedThrough) - 1);
   const show = (screen) => {
     currentScreen = screen; document.body.dataset.screen = screen;
     const guide = $("app")?.querySelector(".game-page-info-static");
@@ -509,17 +525,15 @@
     $("stageScreen")?.querySelector(".stage-header")?.setAttribute("data-wp-shell-header", "stage");
 
     const battleHeader = battle.querySelector(".battle-header");
-    const planTitle = $("planTitle"); const progress = $("progressPill");
+    const progress = $("progressPill");
     const result = $("resultScreen");
-    if (!battleHeader || !planTitle || !progress || !result || battle.querySelector("#battleWorkspace")) return;
+    if (!battleHeader || !progress || !result || battle.querySelector("#battleWorkspace")) return;
     const headerInfo = document.createElement("div"); headerInfo.className = "battle-header-info";
-    const planField = document.createElement("div"); planField.className = "battle-info-field";
-    const planLabel = document.createElement("small"); planLabel.dataset.riverI18n = "planLabel";
-    planField.append(planLabel, planTitle);
     const progressField = document.createElement("div"); progressField.className = "battle-info-field";
-    const progressLabel = document.createElement("small"); progressLabel.dataset.riverI18n = "progressLabel";
+    const progressLabel = document.createElement("span"); progressLabel.dataset.riverI18n = "progressLabel";
     progressField.append(progressLabel, progress);
-    headerInfo.append(planField, progressField); battleHeaderInfo = headerInfo;
+    progress.className = "battle-progress-value";
+    headerInfo.append(progressField); battleHeaderInfo = headerInfo;
     const back = $("battleBackBtn"); battleHeader.replaceChildren(back);
     battleHeader.setAttribute("data-wp-shell-header", "battle");
     const workspace = document.createElement("div"); workspace.id = "battleWorkspace";
@@ -546,6 +560,7 @@
   };
   const renderStatic = () => {
     document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.body.dataset.locale = locale;
+    if ($("mainPoster")) $("mainPoster").alt = copy("posterAlt");
     document.querySelectorAll("[data-river-i18n]").forEach((node) => { node.textContent = copy(node.dataset.riverI18n); });
     if ($("mainProgress")) $("mainProgress").textContent = copy("progress", { current: Math.min(STAGES.length, solved.size + 1), total: STAGES.length });
     ["backBtn", "stageBack", "battleBackBtn"].forEach((id) => $(id)?.setAttribute("aria-label", copy("back")));
@@ -570,7 +585,7 @@
           const status = cleared ? copy("solved") : locked ? copy("locked") : copy("open");
           const arc = copy("arc", { arc: stageText(plan, "arc"), name: stageText(plan, "mechanic") });
           const demand = copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] });
-          const reserve = copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 });
+          const reserve = copy("stageReserve", { label: nodeLabel(plan.nodeLabels?.cistern || "cistern", plan), value: plan.reserve, waste: plan.wasteMax ?? 0 });
           card.type = "button"; card.className = "stage-card"; card.disabled = false;
           card.setAttribute("aria-disabled", String(locked));
           card.setAttribute("aria-label", `${plan.id}. ${stageText(plan, "title")}. ${arc}. ${demand}. ${reserve}. ${status}`);
@@ -594,14 +609,16 @@
   };
   const renderBattle = () => {
     if (!$('gateGrid') || currentScreen !== "battle" || !state) return; const plan = currentStage();
-    $("planTitle").textContent = `${plan.id}. ${stageText(plan, "title")}`; $("progressPill").textContent = `${plan.id} / ${STAGES.length}`;
-    $("prompt").textContent = copy("prompt"); $("rule").textContent = `${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { value: plan.reserve, waste: plan.wasteMax ?? 0 })}${plan.checkpointRule ? ` · ${copy("checkpointRule", { rule: checkpointRule(plan.checkpointRule) })}` : ""}`;
+    const planTitle = $("planTitle"); if (planTitle) planTitle.textContent = `${plan.id}. ${stageText(plan, "title")}`;
+    $("progressPill").textContent = `${plan.id} / ${STAGES.length}`;
+    $("prompt").textContent = copy("prompt"); $("rule").textContent = `${copy("stageDemand", { a: plan.demands[0], b: plan.demands[1] })} · ${copy("stageReserve", { label: nodeLabel(plan.nodeLabels?.cistern || "cistern"), value: plan.reserve, waste: plan.wasteMax ?? 0 })}${plan.checkpointRule ? ` · ${copy("checkpointRule", { rule: checkpointRule(plan.checkpointRule) })}` : ""}`;
     const root = $("gateGrid"); root.replaceChildren(); currentStage().edges.forEach((action) => root.appendChild(actionButton(action)));
     const wait = document.createElement("button"); wait.type = "button"; wait.className = "gate action-card wait-card";
     const waitPhase = phaseName(state.beat % 2 === 0 ? "even" : "odd"); const waitDetail = copy("waitDescription", { phase: waitPhase, beat: state.beat });
     wait.disabled = state.beat >= plan.beats; wait.setAttribute("aria-label", wait.disabled ? copy("disabledActionAccessible", { label: copy("waitAction"), reason: copy("noMoves") }) : copy("actionAccessible", { label: copy("waitAction"), detail: waitDetail }));
     wait.innerHTML = `<span class="gate-icon" aria-hidden="true">⌛</span><strong>${copy("waitAction")}</strong><small>${waitDetail}</small>`; wait.addEventListener("click", waitAction); root.appendChild(wait);
-    const waterText = nodes.map((node, index) => `${nodeLabel(node)} ${state.water[index]}`).join(" · "); $("flow").textContent = `${copy("water")}: ${waterText} · ${copy("tide")}: ${state.beat}/${plan.beats}`;
+    const flowNodes = plan.flowNodes || nodes.slice(0, 5);
+    const waterText = flowNodes.map((node) => `${nodeLabel(node)} ${state.water[nodes.indexOf(node)]}`).join(" · "); $("flow").textContent = `${copy("water")}: ${waterText} · ${copy("tide")}: ${state.beat}/${plan.beats}`;
     $("checkBtn").disabled = !selectedAction || Boolean(reasonFor(selectedAction)); $("undoBtn") && ($("undoBtn").disabled = undoStack.length === 0); $("status").textContent = feedback === "impossible" ? copy("impossible", { reason: settlementReason() }) : feedback === "waiting" ? copy("waiting", { beat: state.beat }) : feedback ? copy(feedback) : (selectedAction ? `${copy("actionReady")}: ${copyAction(selectedAction)}` : ""); $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" || feedback === "impossible" ? "status try" : "status";
   };
   const renderResult = () => {

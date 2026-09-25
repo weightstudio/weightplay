@@ -222,8 +222,22 @@ body.wp-shell-battle-active .topbar {
   }
 }
 
+/* The badge overlays the bright poster; keep its label readable in every locale. */
+#mainScreen .cover-badge {
+  color: #fff !important;
+  background: #143746 !important;
+  border: 1px solid rgb(255 255 255 / 76%);
+  box-shadow: 0 2px 8px rgb(6 20 25 / 42%);
+  font-weight: 700;
+  text-shadow: none !important;
+}
+
 /* Keep Result reachable in compact landscape while the shared Battle shell
    continues to lock the document edge. */
+body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) #resultTitle {
+  color: var(--ink);
+}
+
 @media (orientation: landscape) and (max-height: 460px) {
   body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) {
     display: flex !important;

@@ -75,7 +75,22 @@
     hi:{objectives:["शुरुआती क्रिस्टल संरचना तोड़ें।","कॉम्बो बनाकर प्रकाश गोले को बाँटें और अलग रास्ते साफ करें।","चलती क्रिस्टल पट्टियों का पीछा करके गोले को उनके अंतराल में लौटाएँ।","स्थायी दर्पणों से गोले को सुरक्षित क्रिस्टलों की ओर मोड़ें।","दीवार आगे बढ़कर नए क्रिस्टल लाए उससे पहले सबसे नीचे के क्रिस्टल हटाएँ।","शून्य बारूदी सुरंग को छुए बिना सभी क्रिस्टल तोड़ें।"],advance:"क्रिस्टल दीवार आगे बढ़ी — {n} बढ़त बाकी।",pressureFail:"क्रिस्टल दीवार खतरे की रेखा पार कर गई।",hazardFail:"प्रकाश गोला शून्य बारूदी सुरंग से टकराया।"},
     ar:{objectives:["حطّم تشكيل البلورات الافتتاحي.","ابنِ سلاسل ضربات لتقسيم كرة الضوء وتنظيف المسارات المنفصلة.","تتبّع صفوف البلورات المتحركة وأعد الكرة عبر فتحاتها.","استخدم المرايا الدائمة لعكس الكرة نحو البلورات المحمية.","حطّم البلورات السفلية قبل أن يتقدم الجدار وتظهر بلورات جديدة.","حطّم كل البلورات من دون لمس لغم الفراغ."],advance:"تقدّم جدار البلورات — بقيت {n} دفعات.",pressureFail:"تجاوز جدار البلورات خط الخطر.",hazardFail:"اصطدمت كرة ضوء بلغم الفراغ."}
   };
-  const locale=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||"en",copy=copies[locale]||copies.en;
+  const stageUiCopies={
+    en:{heading:"Choose a Formation",hint:"Drag the rail. The centred glowing card is selected.",nav:"Stages",navLabel:"Stage navigation"},
+    "zh-Hant":{heading:"選擇陣型",hint:"拖曳關卡列。中央發光卡片即為所選關卡。",nav:"關卡",navLabel:"關卡導覽"},
+    "zh-Hans":{heading:"选择阵型",hint:"拖动关卡列。中央发光卡片为当前选中关卡。",nav:"关卡",navLabel:"关卡导航"},
+    ja:{heading:"フォーメーションを選択",hint:"レールをドラッグしてください。中央で光るカードが選択中です。",nav:"ステージ",navLabel:"ステージナビゲーション"},
+    ko:{heading:"진형 선택",hint:"레일을 드래그하세요. 가운데 빛나는 카드가 선택된 단계입니다.",nav:"스테이지",navLabel:"스테이지 탐색"},
+    es:{heading:"Elige una formación",hint:"Arrastra la lista. La tarjeta iluminada del centro está seleccionada.",nav:"Fases",navLabel:"Navegación de fases"},
+    "pt-BR":{heading:"Escolha uma formação",hint:"Arraste a faixa. O cartão iluminado ao centro está selecionado.",nav:"Fases",navLabel:"Navegação das fases"},
+    fr:{heading:"Choisir une formation",hint:"Faites glisser la piste. La carte lumineuse au centre est sélectionnée.",nav:"Niveaux",navLabel:"Navigation des niveaux"},
+    de:{heading:"Formation wählen",hint:"Ziehe die Leiste. Die leuchtende Karte in der Mitte ist ausgewählt.",nav:"Stufen",navLabel:"Stufennavigation"},
+    it:{heading:"Scegli una formazione",hint:"Trascina la fila. La scheda luminosa al centro è selezionata.",nav:"Fasi",navLabel:"Navigazione delle fasi"},
+    ru:{heading:"Выберите построение",hint:"Перетаскивайте ленту. Выбрана светящаяся карточка в центре.",nav:"Этапы",navLabel:"Навигация по этапам"},
+    hi:{heading:"विन्यास चुनें",hint:"रेल को खींचें। बीच का चमकता कार्ड चुना गया है।",nav:"चरण",navLabel:"चरण नेविगेशन"},
+    ar:{heading:"اختر تشكيلًا",hint:"اسحب المسار. البطاقة المضيئة في الوسط هي المحددة.",nav:"المراحل",navLabel:"التنقل بين المراحل"}
+  };
+  const locale=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||"en",copy=copies[locale]||copies.en,stageUi=stageUiCopies[locale]||stageUiCopies.en;
   const shared=value=>window.WeightPlayGameRuntimeLocalizer?.translate?.(value)??value;
   const exact=new Map([["Charging the prism arena…",copy.loading],["Launch",copy.launch],["Orb lost. Launch the next light orb.",copy.lost],["Split Spectrum created another light orb!",copy.split],["All three light orbs fell. Read the return angle and try again.",copy.fail]]);
   const arabicGuide={
@@ -116,7 +131,13 @@
     exact.set(shared(chapter),translated);
   });
   [...exact.values()].forEach(value=>{if(typeof value==="string"&&value)exact.set(value,value)});
+  exact.set("Choose a Formation",stageUi.heading);exact.set(stageUi.heading,stageUi.heading);exact.set("Drag the rail. The centred glowing card is selected.",stageUi.hint);exact.set(stageUi.hint,stageUi.hint);exact.set("Stages",stageUi.nav);exact.set(stageUi.nav,stageUi.nav);exact.set("Stage navigation",stageUi.navLabel);exact.set(stageUi.navLabel,stageUi.navLabel);
   const translate=value=>{if(typeof value!=="string"||!value)return value;if(exact.has(value))return exact.get(value);const stage=value.match(/^Stage (\d+)$/u);return stage?copy.stage.replace("{n}",stage[1]):shared(value)};
+  const stageHeading=document.getElementById("stageHeading"),stageHintCopy=document.getElementById("stageHintCopy"),stageTabs=document.querySelector("#stageScreen .stage-tabs"),stageTab=stageTabs?.querySelector("[data-prism-stage-focus]");
+  if(stageHeading)stageHeading.textContent=stageUi.heading;
+  if(stageHintCopy)stageHintCopy.textContent=stageUi.hint;
+  if(stageTabs)stageTabs.setAttribute("aria-label",stageUi.navLabel);
+  if(stageTab)stageTab.textContent=stageUi.nav;
   const C=window.BlockTrilogyConfig;
   const genericKeys=["title","posterAlt","pitch","guideTitle","guideIntro","growth","objective","help","win"],originals={};
   if(C){genericKeys.forEach(key=>{originals[key]=C[key];C[key]=translate(C[key])});originals.how=[...C.how];C.how=C.how.map(translate);C.fail=copy.fail;C.chapters=[...copy.chapters];const rules=ruleCopies[locale];if(rules){C.ruleObjectives=[...rules.objectives];C.pressureAdvance=rules.advance;C.pressureFail=rules.pressureFail;C.hazardFail=rules.hazardFail}else{C.ruleObjectives=(C.ruleObjectives||[]).map(translate);for(const key of ["pressureAdvance","pressureFail","hazardFail"])C[key]=translate(C[key])}}

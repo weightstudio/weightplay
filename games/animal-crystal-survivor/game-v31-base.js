@@ -26,7 +26,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v31";
+  const GAME_VERSION = "v33";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -1811,7 +1811,6 @@
 
   function stageRule(config) {
     if (config.bossImage) return bossLesson(config);
-    if (config.number === 1) return enemyLesson(config);
     const rule = config.ruleLocaleOwned?.[locale] || (locale === "zh-Hant" ? config.ruleZh : locale === "es" ? config.ruleEs : config.ruleEn);
     if (locale === "zh-Hant") return rule.replace(/普通影狐|影獸|黑豹|野豬|飛蛾/g, "骷髏戰士");
     if (locale === "zh-Hans") return rule.replace(/普通影狐|影兽|黑豹|野猪|飞蛾/g, "骷髅战士");

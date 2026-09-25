@@ -282,15 +282,17 @@
     nextButton.onclick = () => startPath(state.path + 1);
   };
   const guideCopy = window.ANIMAL_LANTERN_LATTICE_GUIDE_COPY || {};
+  const seoComparison = window.ANIMAL_LANTERN_LATTICE_SEO_COMPARISON || {};
   const buildGuide = () => guideCopy[state.locale] || guideCopy.en;
   const renderGuide = () => {
-    const guide=buildGuide(), hero=$("guideHero"), sections=$("guideSections");
+    const guide=buildGuide(), seo=seoComparison[state.locale]||seoComparison.en, hero=$("guideHero"), sections=$("guideSections");
     if(!hero||!sections)return;
     hero.replaceChildren();
     const title=document.createElement("div");title.className="game-info-title";
     const kicker=document.createElement("span");kicker.className="game-info-kicker";kicker.textContent=t("guideTitle");
     const h2=document.createElement("h2");h2.textContent=t("title");
     const summary=document.createElement("p");summary.textContent=t("intro");title.append(kicker,h2,summary);
+    if(seo){const tags=document.createElement("div");tags.className="game-info-tags";tags.dataset.wpGameplayTags="1.3.0";seo.tags.forEach((value)=>tags.append(Object.assign(document.createElement("span"),{textContent:value})));title.append(tags);}
     const facts=document.createElement("div");facts.className="game-info-facts";
     guide.facts.forEach((label,index)=>{const fact=document.createElement("div");fact.className="game-info-fact";fact.append(Object.assign(document.createElement("span"),{textContent:label}),Object.assign(document.createElement("strong"),{textContent:guide.values[index]}));facts.append(fact);});
     hero.append(title,facts);
@@ -303,6 +305,7 @@
       else article.append(Object.assign(document.createElement("p"),{textContent:bodies[index]}));
       return article;
     }));
+    if(seo){const article=document.createElement("article");article.className="game-info-section";article.dataset.wpMarketComparison="1.3.0";article.dataset.comparisonLocale=state.locale;article.dataset.runtimeLocalize="off";article.append(Object.assign(document.createElement("h3"),{textContent:seo.heading}));const brandTags=document.createElement("div");brandTags.className="game-info-tags";const brand=document.createElement("span");const bdi=document.createElement("bdi");bdi.textContent="Logic Puzzles - Clue Game";brand.append(bdi);brandTags.append(brand);article.append(brandTags,Object.assign(document.createElement("p"),{textContent:seo.comparison}),Object.assign(document.createElement("p"),{textContent:seo.independence}));const sourceP=document.createElement("p");const link=document.createElement("a");link.href="https://apps.apple.com/us/app/logic-puzzles-clue-game/id1641732564";link.rel="noopener noreferrer";link.textContent=seo.sourceLabel;sourceP.append(link);article.append(sourceP);sections.append(article);}
   };
   const applyLocale = () => {
     document.documentElement.lang = state.locale;

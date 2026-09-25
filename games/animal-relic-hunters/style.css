@@ -592,6 +592,15 @@ body > .battle-ad-reserve { display: none; height: var(--wp-ad-reserve-height, 0
   line-height: 1.35;
 }
 
+/* Keep this game's Main progress slot inside the shared 40–44px contract. */
+#menuPanel #campaignProgress {
+  display: grid !important;
+  place-items: center !important;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  min-height: 40px !important;
+}
+
 .primary-btn {
   background: linear-gradient(135deg, #d4af37 0%, #aa841c 100%);
   color: #0c0e17;

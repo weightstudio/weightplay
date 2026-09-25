@@ -8,7 +8,7 @@
       if (!link) {
         link = document.createElement("link");
         link.rel = "stylesheet";
-        link.href = new URL("interface-7-cleanup.css?v=20260923-kite-i7-review2", interface7Base).href;
+        link.href = new URL("interface-7-cleanup.css?v=20260925-kite-keeper-v11-issue-repair", interface7Base).href;
         document.head.appendChild(link);
       }
       if (link.sheet) { resolve(); return; }
@@ -25,7 +25,7 @@
       let script = document.querySelector('script[src*="interface-7-compat.js"]');
       if (!script) {
         script = document.createElement("script");
-        script.src = new URL("interface-7-compat.js?v=20260923-kite-i7-review2", interface7Base).href;
+        script.src = new URL("interface-7-compat.js?v=20260925-kite-keeper-v11-issue-repair", interface7Base).href;
         script.async = false;
         script.addEventListener("error", () => {
           document.documentElement.dataset.wpKiteKeeperI7AssetError = "js";
@@ -43,26 +43,41 @@
     title: "Kite Keeper", subtitle: "Choose the wind. Find the lantern dock.", guideTitle: "How to play", guide: "Choose one wind card at a time. Reach the lantern dock in exactly three gusts.", start: "Start a sky route", map: "Sky routes", settings: "Settings", close: "Close settings", language: "Language", sound: "Sound", on: "On", off: "Off", best: "Best checks: {count}", route1: "Meadow Lift", route2: "Reef Breeze", route3: "Snow Lantern", hint1: "East, north, east", hint2: "North, west, north", hint3: "East, south, east", routePrompt: "Read the dock marker, then choose the next wind.", dock: "Lantern dock", wind: "Wind cards", north: "North", east: "East", south: "South", west: "West", position: "Kite position: {x}, {y}", gusts: "Gusts: {count} / 3", choose: "Choose a wind card", selected: "Wind chosen: {name}", wrong: "That gust drifts away from the dock. Try the route again.", correct: "Perfect flight! The kite reached the lantern dock.", reset: "Reset route", resultTitle: "Route complete", resultText: "You guided the kite with {checks} checks.", next: "Next route", finished: "All sky routes complete", back: "Back to General lobby", ariaKite: "Kite flight board"
   } };
   const vectors = { north: [0, -1], east: [1, 0], south: [0, 1], west: [-1, 0] };
-  const directionSets = [
-    ["east", "north", "east"], ["north", "west", "north"], ["east", "south", "east"],
-    ["west", "north", "east"], ["north", "east", "south"], ["south", "west", "north"],
-    ["east", "east", "north"], ["west", "south", "east"], ["north", "north", "west"], ["south", "east", "north"],
+  const routeFixtures = [
+    { start: [0, 2], sequence: ["east", "north", "east"] },
+    { start: [3, 2], sequence: ["north", "west", "north"] },
+    { start: [0, 0], sequence: ["east", "south", "east"] },
+    { start: [2, 2], sequence: ["west", "north", "east"] },
+    { start: [1, 1], sequence: ["north", "east", "south"] },
+    { start: [2, 0], sequence: ["south", "west", "north"] },
+    { start: [0, 1], sequence: ["east", "east", "north"] },
+    { start: [3, 0], sequence: ["west", "south", "east"] },
+    { start: [3, 2], sequence: ["north", "north", "west"] },
+    { start: [1, 0], sequence: ["south", "east", "north"] },
+    { start: [0, 2], sequence: ["east", "north", "south"] },
+    { start: [0, 2], sequence: ["east", "north", "west"] },
+    { start: [0, 0], sequence: ["east", "south", "north"] },
+    { start: [0, 1], sequence: ["east", "south", "west"] },
+    { start: [1, 1], sequence: ["east", "west", "north"] },
+    { start: [2, 0], sequence: ["east", "west", "south"] },
+    { start: [0, 1], sequence: ["north", "east", "west"] },
+    { start: [0, 2], sequence: ["north", "south", "east"] },
+    { start: [3, 2], sequence: ["north", "south", "west"] },
+    { start: [1, 2], sequence: ["north", "west", "east"] },
+    { start: [1, 2], sequence: ["north", "west", "south"] },
+    { start: [0, 1], sequence: ["south", "east", "west"] },
+    { start: [0, 0], sequence: ["south", "north", "east"] },
+    { start: [1, 1], sequence: ["south", "north", "west"] },
+    { start: [1, 1], sequence: ["south", "west", "east"] },
+    { start: [1, 2], sequence: ["west", "east", "north"] },
+    { start: [1, 1], sequence: ["west", "east", "south"] },
+    { start: [1, 2], sequence: ["west", "north", "south"] },
+    { start: [1, 1], sequence: ["west", "south", "north"] },
+    { start: [1, 0], sequence: ["east", "west", "east"] },
   ];
-  const starts = [[0, 2], [3, 2], [0, 0], [2, 2], [1, 1], [2, 0], [0, 1], [3, 0], [3, 2], [1, 0]];
-  const routes = Array.from({ length: 30 }, (_, index) => {
-    const family = index % 3;
-    const sequence = directionSets[Math.floor(index / 3)];
-    const preferred = starts[Math.floor(index / 3)];
-    const candidates = [preferred, ...Array.from({ length: 12 }, (_, value) => [value % 4, Math.floor(value / 4)])];
-    const start = [...candidates.find((candidate) => {
-      let point = [...candidate];
-      return sequence.every((direction) => {
-        point = [point[0] + vectors[direction][0], point[1] + vectors[direction][1]];
-        return point[0] >= 0 && point[0] <= 3 && point[1] >= 0 && point[1] <= 2;
-      });
-    })];
-    const resolvedTarget = sequence.reduce((point, direction) => [point[0] + vectors[direction][0], point[1] + vectors[direction][1]], start);
-    return { id: index + 1, name: `route${family + 1}`, start, target: resolvedTarget, sequence };
+  const routes = routeFixtures.map(({ start, sequence }, index) => {
+    const target = sequence.reduce((point, direction) => [point[0] + vectors[direction][0], point[1] + vectors[direction][1]], [...start]);
+    return { id: index + 1, name: `route${(index % 3) + 1}`, start, target, sequence };
   });
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -105,7 +120,17 @@
   let path = [];
   let checks = 0;
   let runChecks = 0;
-  let solved = new Set();
+  const solvedStorageKey = "weightplay-kite-keeper-solved-v1";
+  function readSolvedRouteIds() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(solvedStorageKey) || "[]");
+      return new Set(Array.isArray(stored) ? stored.filter((id) => Number.isInteger(id) && id >= 1 && id <= routes.length) : []);
+    } catch { return new Set(); }
+  }
+  function saveSolvedRouteIds() {
+    try { localStorage.setItem(solvedStorageKey, JSON.stringify([...solved].sort((a, b) => a - b))); } catch {}
+  }
+  let solved = readSolvedRouteIds();
   let complete = false;
   let locked = false;
 
@@ -167,7 +192,7 @@
       button.className = "stage-card"; button.type = "button";
       button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(index === routeIndex)); button.setAttribute("aria-controls", "battleScreen"); button.tabIndex = index === routeIndex ? 0 : -1;
       button.setAttribute("aria-label", `${routeLabel(route)}. ${routeHint(route)}`);
-      button.innerHTML = `<span><strong>${routeLabel(route)}</strong><small>${routeHint(route)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`;
+      button.innerHTML = `<span><strong>${routeLabel(route)}</strong><small>${routeHint(route)}</small></span><span class="arrow">${solved.has(route.id) ? "✓" : "→"}</span>`;
       button.addEventListener("click", () => startRoute(index));
       root.appendChild(button);
     });
@@ -211,8 +236,8 @@
     ["north", "east", "south", "west"].forEach((direction) => {
       const button = document.createElement("button"); button.type = "button"; button.className = "wind-card";
       button.setAttribute("data-wp-primary-action", "wind");
-      button.setAttribute("role", "listitem"); button.disabled = locked || path.length >= 3;
-      button.setAttribute("aria-selected", String(path.at(-1) === direction));
+      button.disabled = locked || path.length >= 3;
+      button.setAttribute("aria-pressed", String(path.at(-1) === direction));
       button.innerHTML = `<span>${direction === "north" ? "↑" : direction === "east" ? "→" : direction === "south" ? "↓" : "←"}</span><small>${copy(direction)}</small>`;
       button.addEventListener("click", () => chooseWind(direction)); root.appendChild(button);
     });
@@ -229,7 +254,7 @@
     }
     renderBattle();
     if (path.length === 3) {
-      locked = true; solved.add(routeIndex); $("status").textContent = copy("correct"); $("status").className = "status good"; announce("correct", { checks });
+      locked = true; solved.add(routes[routeIndex].id); saveSolvedRouteIds(); $("status").textContent = copy("correct"); $("status").className = "status good"; announce("correct", { checks });
       window.setTimeout(() => { show("result"); renderResult(); }, 360);
     }
   }

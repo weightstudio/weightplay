@@ -181,12 +181,15 @@
     }));
   };
   const renderResult = () => {
-    const complete = state.page >= pages.length - 1;
-    $("resultTitle").textContent = complete ? t("resultTitle") : t("resultPartial");
+    const hasNext = state.page < pages.length - 1 && state.page + 1 < state.unlocked;
+    $("resultTitle").textContent = state.page >= pages.length - 1 ? t("resultTitle") : t("resultPartial");
     $("resultText").textContent = t("resultText", { count: Math.min(state.page + 1, pages.length), total: pages.length, turns: state.sessionTurns });
-    $("resultPrimaryBtn").textContent = complete ? t("map") : t("next");
-    $("resultPrimaryBtn").onclick = complete ? () => { show("stage"); renderStages(); } : () => startPage(state.page + 1);
-    $("resultMapBtn").hidden = complete;
+    $("resultPrimaryBtn").textContent = t("next");
+    $("resultPrimaryBtn").disabled = !hasNext;
+    $("resultPrimaryBtn").onclick = () => startPage(state.page + 1);
+    $("resultMapBtn").hidden = false;
+    $("resultReplayBtn").textContent = t("replay");
+    $("resultReplayBtn").onclick = () => startPage(state.page);
   };
   const startPage = (index) => {
     if (index < 0 || index >= pages.length || index >= state.unlocked) return;
@@ -244,7 +247,6 @@
   $("stageBackBtn").addEventListener("click", () => show("main"));
   $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); });
   $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
-  $("resultHomeBtn").addEventListener("click", () => show("main"));
   $("checkBtn").addEventListener("click", checkRoute);
   $("clearBtn").addEventListener("click", clearRoute);
   $("localeSelect").addEventListener("change", (event) => {

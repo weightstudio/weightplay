@@ -78,7 +78,10 @@
     });
     const abort = new AbortController();
     const syncSound = () => {
-      view.audio.setEnabled(!window.WeightPlayAudio.isMuted());
+      // The shared audio event is already the source of truth. Mirror it into
+      // the card adapter without writing the same preference back and
+      // recursively dispatching this event again.
+      view.audio.enabled = !window.WeightPlayAudio.isMuted();
       view.refreshSound?.();
     };
     window.addEventListener('weightplay:audio-volume-change',syncSound,{signal:abort.signal});

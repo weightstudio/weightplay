@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   const mount = () => {
-    document.body.dataset.gameVersion = 'v22';
+    document.body.dataset.gameVersion = 'v24';
     document.body.dataset.cardDeck = 'klondike';
     const mainReturn = document.querySelector(".main-return");
     if (mainReturn && !mainReturn.querySelector("img")) {

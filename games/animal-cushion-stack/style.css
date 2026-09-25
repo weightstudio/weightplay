@@ -1,5 +1,11 @@
 @import url("./style-v4-base.css");
 
+/* Interface 6's shared dark text token inherits onto the light Result card.
+   Keep the terminal heading readable on that game-owned surface. */
+#resultScreen .result-card h2 {
+  color: var(--ink);
+}
+
 .stage-list {
   justify-content: flex-start;
   align-items: center;

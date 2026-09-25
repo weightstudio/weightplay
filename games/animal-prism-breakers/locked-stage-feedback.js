@@ -19,14 +19,29 @@
   new MutationObserver(enhanceLockedCards).observe(rail,{childList:true});
   enhanceLockedCards();
 
+  const publishLockedFeedback=card=>{
+    const message=[...card.querySelectorAll("small,strong,span")]
+      .map(node=>node.textContent.trim())
+      .filter(Boolean)
+      .join(" · ");
+    const hintCopy=status.querySelector("#stageHintCopy");
+    if(hintCopy)hintCopy.textContent=message;else status.textContent=message;
+  };
+
   rail.addEventListener("click",event=>{
     const card=event.target.closest(".stage-card.locked.centered");
     if(!card)return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    status.textContent=[...card.querySelectorAll("small,strong,span")]
-      .map(node=>node.textContent.trim())
-      .filter(Boolean)
-      .join(" · ");
+    publishLockedFeedback(card);
+  },{capture:true});
+
+  document.addEventListener("keydown",event=>{
+    if(event.key!=="Enter"&&event.key!==" ")return;
+    const card=event.target.closest?.("#stageRail .stage-card.locked.centered");
+    if(!card)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    publishLockedFeedback(card);
   },{capture:true});
 })();

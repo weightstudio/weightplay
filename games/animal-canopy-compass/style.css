@@ -262,6 +262,10 @@ body[data-screen="main"] .game-page-info-static { display: block; }
 .result-panel { max-width: 560px; margin: 22px auto 0; padding: 22px; border: 1px solid #d9e5db; border-radius: 22px; background: #fffdf8; scroll-margin-block: 12px 24px; }
 .result-identity { display: flex; justify-content: center; height: 120px; margin: -8px 0 4px; overflow: hidden; }
 .result-identity img { width: auto; height: 100%; max-width: 100%; object-fit: contain; object-position: center bottom; }
+.badge-reward { display: flex; align-items: center; gap: 12px; min-height: 80px; margin: 10px 0; padding: 8px 12px; border: 1px solid #e6d4af; border-radius: 16px; background: #fff8e9; color: #3f5967; font-weight: 900; }
+.badge-reward[hidden] { display: none; }
+.badge-reward img { display: block; flex: 0 0 64px; width: 64px; height: 64px; object-fit: contain; }
+.badge-reward span { min-width: 0; }
 .result-panel h2 { margin: 5px 0 8px; color: #29485a; }
 .result-panel p { color: #647589; }
 .stats { padding: 12px; border-radius: 12px; background: #dceee2; color: #39724f; font-weight: 900; }
@@ -333,6 +337,8 @@ body[data-screen="main"] .game-page-info-static { display: block; }
     max-width:none; margin:0; padding:8px; overflow:hidden;
   }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-identity { height:48px; margin:-4px 0 0; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .badge-reward { gap:6px; min-height:38px; margin:3px 0; padding:2px 6px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .badge-reward img { flex-basis:34px; width:34px; height:34px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-panel h2 { margin:2px 0 4px; font-size:1.15rem; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-panel p { margin:4px 0; line-height:1.2; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .stats { padding:6px; }

@@ -5,7 +5,7 @@
   const $ = id => document.getElementById(id);
   const KEY = 'weightplay-animal-hollow-fit-expedition-v10';
   const ROUTES = {en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es','pt-BR':'pt-br',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
-  const NAMES = ['English','繁體中文','简体中文','日本語','한국어','Español','Português (Brasil)','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];
+  const NAMES = ['English','繁體中文','简体中文','日本語','한국어','Español','Português','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];
   const abort = new AbortController(), motions = new Set(), effects = new Set();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const audio = window.WeightPlayAudio?.createScope?.();

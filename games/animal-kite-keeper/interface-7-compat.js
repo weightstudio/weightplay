@@ -48,7 +48,17 @@
     let resultWasOpen = false;
     let pendingResult = false;
     let suppressStaleSettlement = false;
-    const sessionSolved = new Set();
+    const solvedRouteStorageKey = 'weightplay-kite-keeper-solved-v1';
+    function readSolvedRoutes() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(solvedRouteStorageKey) || '[]');
+        return new Set(Array.isArray(stored) ? stored.filter((id) => Number.isInteger(id) && id >= 1 && id <= 30) : []);
+      } catch { return new Set(); }
+    }
+    function saveSolvedRoutes() {
+      try { localStorage.setItem(solvedRouteStorageKey, JSON.stringify([...solvedRoutes].sort((a, b) => a - b))); } catch {}
+    }
+    const solvedRoutes = readSolvedRoutes();
     const leaveInerted = new Set();
 
     const locale = () => UI[localeSelect?.value] ? localeSelect.value : 'en';
@@ -145,11 +155,11 @@
       const node = $('mainProgress');
       if (!node) return;
       const l = locale();
-      const n = sessionSolved.size;
+      const n = solvedRoutes.size;
       const labels = {
-        en:`${n} / 3 stages`, 'zh-Hant':`${n} / 3 關`, 'zh-Hans':`${n} / 3 关`, ja:`${n} / 3 ステージ`, ko:`${n} / 3 스테이지`,
-        es:`${n} / 3 niveles`, 'pt-BR':`${n} / 3 fases`, fr:`${n} / 3 niveaux`, de:`${n} / 3 Level`, it:`${n} / 3 livelli`,
-        ru:`${n} / 3 уровня`, hi:`${n} / 3 स्तर`, ar:`${n} / 3 مراحل`
+        en:`${n} / 30 routes`, 'zh-Hant':`${n} / 30 條路線`, 'zh-Hans':`${n} / 30 条路线`, ja:`${n} / 30 ルート`, ko:`${n} / 30개 경로`,
+        es:`${n} / 30 rutas`, 'pt-BR':`${n} / 30 rotas`, fr:`${n} / 30 routes`, de:`${n} / 30 Routen`, it:`${n} / 30 rotte`,
+        ru:`${n} / 30 маршрутов`, hi:`${n} / 30 मार्ग`, ar:`${n} / 30 مسارًا`
       };
       node.textContent = labels[l] || labels.en;
     }
@@ -180,13 +190,8 @@
       if (stage.hidden) return;
       const cards = [...stageList.querySelectorAll('.stage-card')]
         .filter((card) => !card.disabled && card.getAttribute('aria-disabled') !== 'true');
-      const target = cards.at(-1);
+      const target = stageList.querySelector('.stage-card[aria-selected="true"]:not([disabled])') || cards[0];
       if (!target) return;
-      [...stageList.querySelectorAll('.stage-card')].forEach((card) => {
-        const selected = card === target;
-        card.setAttribute('aria-selected', String(selected));
-        card.tabIndex = selected ? 0 : -1;
-      });
       target.scrollIntoView({ block:'nearest', inline:'center', behavior:'auto' });
     }
 
@@ -220,7 +225,10 @@
         if (heading) heading.inert = true;
         if (!resultWasOpen) {
           const n = currentStageNumber();
-          if (n) sessionSolved.add(n);
+          if (n && !solvedRoutes.has(n)) {
+            solvedRoutes.add(n);
+            saveSolvedRoutes();
+          }
         }
         const next = $('nextBtn');
         if (next) {

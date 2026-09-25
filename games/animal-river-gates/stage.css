@@ -232,8 +232,9 @@
   min-width: 0;
   height: 44px;
   min-height: 44px;
-  padding: 0 4px;
-  overflow-wrap: anywhere;
-  font-size: 13px;
+    padding: 0 4px;
+    overflow-wrap: anywhere;
+    white-space: nowrap;
+    font-size: 13px;
   line-height: 1.1;
 }

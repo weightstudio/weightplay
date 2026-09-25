@@ -93,5 +93,53 @@
       "meet the timed nursery visit and leave the habitat reserve": "أتمّ زيارة المشتل في موعدها وأبقِ احتياطي الموطن"
     }
   });
+
+  const twoPondGameplayCopy = {
+    en: { wrong: "That transfer is unavailable; choose an open channel.", incomplete: "Transfer accepted; the river is not settled yet.", upperPond: "Upper pond", lowerPond: "Lower pond", stageReserve: "Keep {label} ≥ {value} · waste ≤ {waste}", settlementReserve: "Reserve in {label}: {current}/{required}", actionLabels: { "Fill upper pond": "Fill upper pond", "Fill lower pond": "Fill lower pond", "Upper pond to A": "Upper pond to A", "Upper pond to B": "Upper pond to B", "Lower pond to B": "Lower pond to B" } },
+    "zh-Hant": { wrong: "這條水道目前無法使用，請選擇開啟的水道。", incomplete: "水量已轉移，但河道條件尚未達成。", upperPond: "上游池", lowerPond: "下游池", stageReserve: "保留{label} ≥ {value} · 浪費 ≤ {waste}", settlementReserve: "{label}保留量：{current}/{required}", actionLabels: { "Fill upper pond": "注水至上游池", "Fill lower pond": "注水至下游池", "Upper pond to A": "上游池送往花園 A", "Upper pond to B": "上游池送往花園 B", "Lower pond to B": "下游池送往花園 B" } },
+    "zh-Hans": { wrong: "这条水道目前无法使用，请选择已开启的水道。", incomplete: "水量已转移，但河道条件尚未达成。", upperPond: "上游池", lowerPond: "下游池", stageReserve: "保留{label} ≥ {value} · 浪费 ≤ {waste}", settlementReserve: "{label}保留量：{current}/{required}", actionLabels: { "Fill upper pond": "注水至上游池", "Fill lower pond": "注水至下游池", "Upper pond to A": "上游池送往花园 A", "Upper pond to B": "上游池送往花园 B", "Lower pond to B": "下游池送往花园 B" } },
+    ja: { wrong: "この水路は使えません。開いている水路を選んでください。", incomplete: "水は移されましたが、川の条件はまだ整っていません。", upperPond: "上の池", lowerPond: "下の池", stageReserve: "{label}に ≥ {value} を残す · 浪費 ≤ {waste}", settlementReserve: "{label}の残量：{current}/{required}", actionLabels: { "Fill upper pond": "上の池に水を入れる", "Fill lower pond": "下の池に水を入れる", "Upper pond to A": "上の池から庭園Aへ", "Upper pond to B": "上の池から庭園Bへ", "Lower pond to B": "下の池から庭園Bへ" } },
+    ko: { wrong: "이 물길은 사용할 수 없어요. 열린 물길을 선택하세요.", incomplete: "물이 이동했지만 강의 조건은 아직 갖춰지지 않았어요.", upperPond: "위쪽 연못", lowerPond: "아래쪽 연못", stageReserve: "{label}에 ≥ {value} 남기기 · 낭비 ≤ {waste}", settlementReserve: "{label} 저장량: {current}/{required}", actionLabels: { "Fill upper pond": "위쪽 연못 채우기", "Fill lower pond": "아래쪽 연못 채우기", "Upper pond to A": "위쪽 연못에서 정원 A로", "Upper pond to B": "위쪽 연못에서 정원 B로", "Lower pond to B": "아래쪽 연못에서 정원 B로" } },
+    es: { wrong: "Ese canal no está disponible; elige uno abierto.", incomplete: "Traslado aceptado; el río aún no está estabilizado.", upperPond: "Estanque superior", lowerPond: "Estanque inferior", stageReserve: "Conserva ≥ {value} en {label} · desperdicio ≤ {waste}", settlementReserve: "Reserva en {label}: {current}/{required}", actionLabels: { "Fill upper pond": "Llenar estanque superior", "Fill lower pond": "Llenar estanque inferior", "Upper pond to A": "Estanque superior hacia jardín A", "Upper pond to B": "Estanque superior hacia jardín B", "Lower pond to B": "Estanque inferior hacia jardín B" } },
+    "pt-BR": { wrong: "Esse canal não está disponível; escolha um canal aberto.", incomplete: "Transferência aceita; o rio ainda não está estabilizado.", upperPond: "Lago superior", lowerPond: "Lago inferior", stageReserve: "Mantenha ≥ {value} no {label} · desperdício ≤ {waste}", settlementReserve: "Reserva no {label}: {current}/{required}", actionLabels: { "Fill upper pond": "Encher lago superior", "Fill lower pond": "Encher lago inferior", "Upper pond to A": "Lago superior para jardim A", "Upper pond to B": "Lago superior para jardim B", "Lower pond to B": "Lago inferior para jardim B" } },
+    fr: { wrong: "Ce canal est indisponible ; choisissez un canal ouvert.", incomplete: "Transfert accepté ; la rivière n’est pas encore stabilisée.", upperPond: "Bassin supérieur", lowerPond: "Bassin inférieur", stageReserve: "Gardez ≥ {value} dans le {label} · gaspillage ≤ {waste}", settlementReserve: "Réserve dans le {label} : {current}/{required}", actionLabels: { "Fill upper pond": "Remplir le bassin supérieur", "Fill lower pond": "Remplir le bassin inférieur", "Upper pond to A": "Bassin supérieur vers le jardin A", "Upper pond to B": "Bassin supérieur vers le jardin B", "Lower pond to B": "Bassin inférieur vers le jardin B" } },
+    de: { wrong: "Dieser Wasserweg ist nicht verfügbar. Wähle einen offenen Wasserweg.", incomplete: "Transfer angenommen; der Fluss ist noch nicht ausgeglichen.", upperPond: "Oberes Becken", lowerPond: "Unteres Becken", stageReserve: "Mindestens {value} im {label} behalten · Abfluss ≤ {waste}", settlementReserve: "Reserve im {label}: {current}/{required}", actionLabels: { "Fill upper pond": "Oberes Becken füllen", "Fill lower pond": "Unteres Becken füllen", "Upper pond to A": "Oberes Becken zu Garten A", "Upper pond to B": "Oberes Becken zu Garten B", "Lower pond to B": "Unteres Becken zu Garten B" } },
+    it: { wrong: "Questo canale non è disponibile; scegli un canale aperto.", incomplete: "Trasferimento accettato; il fiume non è ancora stabilizzato.", upperPond: "Bacino superiore", lowerPond: "Bacino inferiore", stageReserve: "Mantieni ≥ {value} nel {label} · spreco ≤ {waste}", settlementReserve: "Riserva nel {label}: {current}/{required}", actionLabels: { "Fill upper pond": "Riempi il bacino superiore", "Fill lower pond": "Riempi il bacino inferiore", "Upper pond to A": "Dal bacino superiore al giardino A", "Upper pond to B": "Dal bacino superiore al giardino B", "Lower pond to B": "Dal bacino inferiore al giardino B" } },
+    ru: { wrong: "Этот канал недоступен; выберите открытый канал.", incomplete: "Перемещение выполнено, но поток ещё не стабилизирован.", upperPond: "Верхний пруд", lowerPond: "Нижний пруд", stageReserve: "Оставьте в узле «{label}» ≥ {value} · потери ≤ {waste}", settlementReserve: "Резерв в узле «{label}»: {current}/{required}", actionLabels: { "Fill upper pond": "Наполнить верхний пруд", "Fill lower pond": "Наполнить нижний пруд", "Upper pond to A": "Из верхнего пруда в сад A", "Upper pond to B": "Из верхнего пруда в сад B", "Lower pond to B": "Из нижнего пруда в сад B" } },
+    hi: { wrong: "यह जलमार्ग उपलब्ध नहीं है; खुला जलमार्ग चुनें।", incomplete: "पानी स्थानांतरित हुआ, लेकिन नदी की शर्तें अभी पूरी नहीं हुईं।", upperPond: "ऊपरी तालाब", lowerPond: "निचला तालाब", stageReserve: "{label} में ≥ {value} बचाएँ · बर्बादी ≤ {waste}", settlementReserve: "{label} का भंडार: {current}/{required}", actionLabels: { "Fill upper pond": "ऊपरी तालाब भरें", "Fill lower pond": "निचला तालाब भरें", "Upper pond to A": "ऊपरी तालाब से बगीचा A तक", "Upper pond to B": "ऊपरी तालाब से बगीचा B तक", "Lower pond to B": "निचले तालाब से बगीचा B तक" } },
+    ar: { wrong: "هذا المسار غير متاح؛ اختر قناة مفتوحة.", incomplete: "تم نقل الماء، لكن شروط استقرار النهر لم تكتمل بعد.", upperPond: "البركة العلوية", lowerPond: "البركة السفلية", stageReserve: "أبقِ في {label} ≥ {value} · الهدر ≤ {waste}", settlementReserve: "احتياطي {label}: {current}/{required}", actionLabels: { "Fill upper pond": "املأ البركة العلوية", "Fill lower pond": "املأ البركة السفلية", "Upper pond to A": "من البركة العلوية إلى الحديقة أ", "Upper pond to B": "من البركة العلوية إلى الحديقة ب", "Lower pond to B": "من البركة السفلية إلى الحديقة ب" } }
+  };
+  Object.entries(twoPondGameplayCopy).forEach(([locale, additions]) => {
+    const current = locales[locale] || {};
+    locales[locale] = { ...current, ...additions, actionLabels: { ...(current.actionLabels || {}), ...(additions.actionLabels || {}) } };
+  });
+
+  const resultActionCopy = {
+    en: "Next Stage", "zh-Hant": "下一關", "zh-Hans": "下一关", ja: "次のステージ", ko: "다음 단계",
+    es: "Siguiente", "pt-BR": "Próxima", fr: "Suivante", de: "Weiter", it: "Avanti", ru: "Далее",
+    hi: "अगला चरण", ar: "التالي"
+  };
+  Object.entries(resultActionCopy).forEach(([locale, nextStageAction]) => {
+    locales[locale] = { ...(locales[locale] || {}), nextStageAction };
+  });
+  const posterAltCopy = {
+    en: "A riverkeeper and beaver beside a gated river under lantern light at sunset.",
+    "zh-Hant": "夕陽下，河流守門員與河狸站在有水閘的河道旁。",
+    "zh-Hans": "夕阳下，河流守门员与河狸站在有水闸的河道旁。",
+    ja: "夕暮れの水門のそばに立つ川の守り人とビーバー。",
+    ko: "해 질 무렵 수문 옆에 선 강 지킴이와 비버.",
+    es: "Un guardián del río y un castor junto a una compuerta al atardecer.",
+    "pt-BR": "Um guardião do rio e um castor ao lado de uma comporta ao entardecer.",
+    fr: "Un gardien de rivière et un castor près d’une écluse au coucher du soleil.",
+    de: "Ein Flusswächter und ein Biber an einem Flusstor bei Sonnenuntergang.",
+    it: "Un custode del fiume e un castoro accanto a una chiusa al tramonto.",
+    ru: "Хранитель реки и бобр у речного шлюза в свете фонарей на закате.",
+    hi: "सूर्यास्त में जल-द्वार के पास एक नदी रक्षक और ऊदबिलाव।",
+    ar: "حارس النهر وقندس بجوار بوابة مائية تحت ضوء الفوانيس عند الغروب."
+  };
+  Object.entries(posterAltCopy).forEach(([locale, posterAlt]) => {
+    locales[locale] = { ...(locales[locale] || {}), posterAlt };
+  });
+
   window.RIVER_GATES_LOCALES = locales;
 }());

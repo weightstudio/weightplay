@@ -39,7 +39,22 @@
     document.head.append(link);
   };
   ensureStylesheet();
-  const rounds = [{ angle: 42 }, { angle: 188 }, { angle: 306 }];
+  const motionStyle = document.createElement("style");
+  motionStyle.textContent = `
+    .orbit-card{transition:transform .22s ease,box-shadow .22s ease}
+    .orbit-card:hover,.orbit-card:focus-visible{transform:translateY(-5px);box-shadow:0 12px 24px rgba(20,70,85,.18)}
+    .beacon{transition:filter .18s ease;will-change:transform}.seed{will-change:transform}
+    .battle-status{transition:transform .2s ease,opacity .2s ease}
+    .primary-btn,.secondary-btn{transition:transform .14s ease,filter .14s ease}
+    .primary-btn:active,.secondary-btn:active{transform:scale(.97)}
+    @media (prefers-reduced-motion:reduce){.orbit-card,.battle-status,.primary-btn,.secondary-btn{transition:none!important}}
+  `;
+  document.head.append(motionStyle);
+  const rounds = [
+    { angle: 42, tolerance: 18, wind: 0, motion: 0 },
+    { angle: 188, tolerance: 14, wind: 0, motion: 12 },
+    { angle: 306, tolerance: 11, wind: 28, motion: 18 },
+  ];
   const roundNames = {
     en: ["Dew Beacon", "Moon Apple", "Star Pear"],
     "zh-Hant": ["露珠信標", "月光蘋果", "星星梨"],
@@ -56,7 +71,9 @@
     ar: ["منارة الندى", "تفاحة القمر", "كمثرى النجمة"],
   };
   const routeMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
-  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), round: 0, angle: 0, releases: 0, selected: 0 };
+  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), round: 0, angle: 0, releases: 0, selected: 0, locked: false, targetOffset: 0 };
+  let motionFrame = 0;
+  let motionStart = 0;
   window.addEventListener("weightplay:audio-volume-change", () => {
     state.sound = !window.WeightPlayAudio.isMuted();
     if (document.readyState !== "loading") applyLocale();
@@ -146,10 +163,35 @@
   }
   function renderStage() { if (!$('stageScreen') || $('stageScreen').hidden) return; const list = $("orbitList"); const names = roundNames[state.locale] || roundNames.en; list.replaceChildren(...rounds.map((item, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "orbit-card"; button.innerHTML = `<strong>${t("orbit", { current: index + 1, total: rounds.length })}</strong><span>${names[index]}</span><em>${t("target", { angle: item.angle })}</em>`; button.addEventListener("click", () => { state.round = index; startRound(); }); return button; })); window.dispatchEvent(new Event("weightplay:stage-sync")); }
   function resetBattleStatus() { $("battleStatus").textContent = t("ready"); $("battleStatus").className = "battle-status"; }
-  function cancelPendingAdvance() { if (pendingAdvanceTimer) window.clearTimeout(pendingAdvanceTimer); pendingAdvanceTimer = 0; pendingAdvance = false; }
+  function cancelPendingAdvance() { if (pendingAdvanceTimer) window.clearTimeout(pendingAdvanceTimer); pendingAdvanceTimer = 0; pendingAdvance = false; state.locked = false; }
+  function effectiveTarget() { return (rounds[state.round].angle + state.targetOffset + 360) % 360; }
+  function stopMotion() { if (motionFrame) cancelAnimationFrame(motionFrame); motionFrame = 0; motionStart = 0; state.targetOffset = 0; }
+  function startMotion() {
+    stopMotion();
+    const span = rounds[state.round].motion || 0;
+    if (!span || window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+    const tick = (now) => {
+      if (!motionStart) motionStart = now;
+      state.targetOffset = Math.sin((now - motionStart) / 850) * span;
+      const beacon = $("beacon");
+      if (beacon && !$("battleScreen").hidden && $("resultScreen")?.hidden) {
+        beacon.style.transform = `rotate(${effectiveTarget()}deg) translateX(105px)`;
+        motionFrame = requestAnimationFrame(tick);
+      } else stopMotion();
+    };
+    motionFrame = requestAnimationFrame(tick);
+  }
+  function burst(kind) {
+    const dial = $("orbitDial");
+    if (!dial?.animate) return;
+    const frames = kind === "good"
+      ? [{ transform:"scale(1)" }, { transform:"scale(1.045)" }, { transform:"scale(1)" }]
+      : [{ transform:"translateX(0)" }, { transform:"translateX(-7px)" }, { transform:"translateX(7px)" }, { transform:"translateX(0)" }];
+    dial.animate(frames, { duration: kind === "good" ? 360 : 260, easing:"cubic-bezier(.2,.8,.2,1)" });
+  }
   function start() { cancelPendingAdvance(); state.round = 0; state.releases = 0; resetBattleStatus(); openMap(); }
-  function startRound() { cancelPendingAdvance(); closeLeave({ resume: false, focus: false }); state.angle = 0; resetBattleStatus(); show("battleScreen"); renderBattle(); $("angleInput").focus(); }
-  function renderBattle() { const item = rounds[state.round]; $("roundLabel").textContent = t("orbit", { current: state.round + 1, total: rounds.length }); $("targetLabel").textContent = t("target", { angle: item.angle }); $("releaseCount").textContent = String(state.releases); $("angleInput").value = String(state.angle); $("angleReadout").textContent = `${state.angle}°`; $("beacon").style.transform = `rotate(${item.angle}deg) translateX(105px)`; $("seed").style.transform = `rotate(${state.angle}deg) translateX(78px)`; if (!$('battleStatus').textContent) $('battleStatus').textContent = t("ready"); }
+  function startRound() { cancelPendingAdvance(); stopMotion(); closeLeave({ resume: false, focus: false }); state.angle = 0; state.targetOffset = 0; resetBattleStatus(); show("battleScreen"); renderBattle(); startMotion(); $("angleInput").focus(); }
+  function renderBattle() { const item = rounds[state.round]; const target = effectiveTarget(); $("roundLabel").textContent = t("orbit", { current: state.round + 1, total: rounds.length }); $("targetLabel").textContent = `${t("target", { angle: Math.round(target) })}${item.wind ? ` · ↻ +${item.wind}°` : ""}`; $("releaseCount").textContent = String(state.releases); $("angleInput").value = String(state.angle); $("angleReadout").textContent = item.wind ? `${state.angle}° → ${(state.angle + item.wind) % 360}°` : `${state.angle}°`; $("beacon").style.transform = `rotate(${target}deg) translateX(105px)`; $("seed").style.transform = `rotate(${state.angle}deg) translateX(78px)`; $("releaseBtn").disabled = state.locked; $("clearBtn").disabled = state.locked; $("angleInput").disabled = state.locked; if (!$("battleStatus").textContent) $("battleStatus").textContent = t("ready"); }
   function shortestDelta(a, b) { const d = Math.abs(a - b) % 360; return Math.min(d, 360 - d); }
   function completeSuccessfulRelease() {
     pendingAdvanceTimer = 0;
@@ -160,6 +202,7 @@
       $("battleStatus").textContent = t("ready");
       $("battleStatus").className = "battle-status";
       renderBattle();
+      startMotion();
       $("angleInput").focus();
     } else finish();
   }
@@ -168,7 +211,31 @@
     pendingAdvance = true;
     pendingAdvanceTimer = window.setTimeout(completeSuccessfulRelease, 360);
   }
-  function release() { state.releases += 1; $("releaseCount").textContent = String(state.releases); const target = rounds[state.round].angle; const delta = shortestDelta(state.angle, target); if (delta <= 16) { $("battleStatus").textContent = t("close"); $("battleStatus").className = "battle-status is-good"; tone("good"); scheduleSuccessfulRelease(); return; } const side = ((state.angle - target + 360) % 360) < 180 ? "ahead" : "behind"; $("battleStatus").textContent = `${t("miss", { delta })} ${t(side)}`; $("battleStatus").className = "battle-status is-miss"; tone("miss"); }
+  function release() {
+    if (state.locked) return;
+    state.locked = true;
+    const target = effectiveTarget();
+    stopMotion();
+    state.releases += 1;
+    $("releaseCount").textContent = String(state.releases);
+    const item = rounds[state.round];
+    const landing = (state.angle + (item.wind || 0)) % 360;
+    const delta = shortestDelta(landing, target);
+    $("seed")?.animate?.(
+      [{ transform:`rotate(${state.angle}deg) translateX(78px) scale(1)` }, { transform:`rotate(${landing}deg) translateX(105px) scale(.82)` }],
+      { duration:320, easing:"cubic-bezier(.2,.75,.25,1)" }
+    );
+    if (delta <= item.tolerance) {
+      $("battleStatus").textContent = t("close");
+      $("battleStatus").className = "battle-status is-good";
+      burst("good"); tone("good"); scheduleSuccessfulRelease(); return;
+    }
+    const side = ((landing - target + 360) % 360) < 180 ? "ahead" : "behind";
+    $("battleStatus").textContent = `${t("miss", { delta: Math.round(delta) })} ${t(side)}`;
+    $("battleStatus").className = "battle-status is-miss";
+    burst("miss"); tone("miss");
+    window.setTimeout(() => { state.locked = false; renderBattle(); startMotion(); }, 340);
+  }
   function finish() { cancelPendingAdvance(); const key = "weightplay-orbit-orchard-best-releases"; const prior = Number(storage.get(key)); if (!prior || state.releases < prior) storage.set(key, String(state.releases)); $("resultText").textContent = t("finishText", { releases: state.releases }); $("bestValue").textContent = storage.get(key) || String(state.releases); $("resultNextBtn").disabled = state.round >= rounds.length - 1; show("resultScreen"); }
   function closeLeave({ resume = true, focus = true } = {}) {
     const dialog = $("orbitLeaveDialog");
@@ -199,8 +266,8 @@
     closeLeave({ resume: false, focus: false });
     openMap();
   }
-  function goHome() { cancelPendingAdvance(); closeLeave({ resume: false, focus: false }); show("mainScreen"); applyLocale(); }
-  function openMap() { cancelPendingAdvance(); closeLeave({ resume: false, focus: false }); show("stageScreen"); renderStage(); }
+  function goHome() { cancelPendingAdvance(); stopMotion(); closeLeave({ resume: false, focus: false }); show("mainScreen"); applyLocale(); }
+  function openMap() { cancelPendingAdvance(); stopMotion(); closeLeave({ resume: false, focus: false }); show("stageScreen"); renderStage(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => {
@@ -216,8 +283,8 @@
     $("stageBackBtn").addEventListener("click", goHome);
     $("battleBackBtn").addEventListener("click", openLeave);
     $("releaseBtn").addEventListener("click", release);
-    $("clearBtn").addEventListener("click", () => { state.angle = 0; resetBattleStatus(); renderBattle(); });
-    $("angleInput").addEventListener("input", (event) => { state.angle = Number(event.target.value); renderBattle(); });
+    $("clearBtn").addEventListener("click", () => { if (state.locked) return; state.angle = 0; resetBattleStatus(); renderBattle(); });
+    $("angleInput").addEventListener("input", (event) => { if (state.locked) return; state.angle = Number(event.target.value); renderBattle(); });
     $("settingsBtn").addEventListener("click", toggleSettings);
     $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("settingsBtn").setAttribute("aria-expanded", "false"); });
     $("soundBtn").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); });

@@ -316,5 +316,21 @@
     notes.forEach((value, index) => { table[`note${index + 1}`] = value; });
     Object.assign(table, campaignCopy[locale] || campaignCopy.en);
   });
+  const resultActionCopy = {
+    en: "Replay",
+    "zh-Hant": "重玩本頁",
+    "zh-Hans": "重玩本页",
+    ja: "ページを再プレイ",
+    ko: "페이지 다시 플레이",
+    es: "Repetir página",
+    "pt-BR": "Repetir página",
+    fr: "Rejouer la page",
+    de: "Seite erneut spielen",
+    it: "Rigioca pagina",
+    ru: "Сыграть страницу снова",
+    hi: "पन्ना फिर से खेलें",
+    ar: "أعد لعب الصفحة",
+  };
+  Object.entries(resultActionCopy).forEach(([locale, label]) => { tables[locale].replay = label; });
   window.ANIMAL_FIREFLY_FOLIO_LOCALES = tables;
 })();

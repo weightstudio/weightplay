@@ -21,7 +21,9 @@ for(const [locale,segment]of Object.entries(ROUTES))test(`${locale}: complete na
  assert(page.includes('content="noindex,nofollow"'));assert(page.includes('/games/pawflow/preview-gate.js'));
  assert(page.indexOf('/src/weightplay-audio.js')<page.indexOf('/src/site-config.js'));
  assert(!page.includes('/src/sound.js'));assert(page.includes(COPY[locale].title));
- assert(page.includes('flow-related-card'));assert(page.includes('weightplay-game-version" content="3"'));
+ assert(page.includes('flow-related-card'));assert(page.includes('weightplay-game-version" content="4"'));
+ assert(page.includes('style.css?v=4'));assert(page.includes('boot.js?v=4'));
+ assert(page.includes('id="mainProgress" class="wp-standard-main-progress" data-wp-frame-progress'));
 });
 test('preview gate cannot enable gameplay through missing or misleading query values',()=>{
  for(const search of ['', '?preview=0','?preview=true','?trial=1','?preview=1']){
