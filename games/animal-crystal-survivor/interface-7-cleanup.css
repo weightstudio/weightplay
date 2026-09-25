@@ -68,7 +68,10 @@ html[data-wp-shared-interface="7"] body #stagePanel [data-wp-frame-content="stag
   min-height: 0 !important;
   overflow: hidden !important;
 }
-html[data-wp-shared-interface="7"] body #stagePage {
+/* Keep the ID-specific Stage layout only while selected. Without :not(.hidden),
+   this important display rule outranks the shared .hidden class and leaves the
+   Stage rail on screen behind the Rune Workshop page. */
+html[data-wp-shared-interface="7"] body #stagePage:not(.hidden) {
   position: relative !important;
   display: block !important;
   width: 100% !important;

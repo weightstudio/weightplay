@@ -1,4 +1,4 @@
 /* Dungeon Venture v31 source preservation + Interface 7 compatibility cleanup.
    The authored v31 stylesheet is kept byte-for-byte in style-v31-base.css. */
 @import url("./style-v31-base.css?v=20260924-interface7-base");
-@import url("./interface-7-cleanup.css?v=20260924-interface7-cleanup");
+@import url("./interface-7-cleanup.css?v=20260926-rune-workshop-visibility-v36");
