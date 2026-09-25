@@ -1,4 +1,7 @@
 (() => {
+  // Cafe Rush owns its complete static Guide; preserve localized Text Growth copy after load.
+  document.body?.setAttribute("data-wp-game-owned-guide", "true");
+
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -179,21 +182,31 @@
     if(chapter===5) rules=day===26?["sequence","vip"]:day===27?["sequence","table"]:day===28?["vip","table"]:day===29?["vip","variety"]:["sequence","vip","table","variety"];
     return { id:`day-${day}`, day, chapter, label:chapterRules[chapter][0]||"basics", titleEn:dayTitles[index][0], titleZh:dayTitles[index][1], titleEs:dayTitlesEs[index], titleJa:dayTitlesJa[index], checkpoint, rules, priorityEvery:chapter>=2?2:4, flatBonus:chapter, orders:chapterOrders[chapter] };
   });
-  const requestedLocale = window.WonderI18n?.locale?.() || readStorage(localeKey) || "zh-Hant";
-  let locale = copy[requestedLocale] ? requestedLocale : "en";
+  const supportedLocales = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);
+  const normalizeLocale = (value) => supportedLocales.has(value) ? value : "en";
+  const requestedLocale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || readStorage(localeKey) || document.documentElement.lang || "en";
+  let locale = normalizeLocale(requestedLocale);
+  const runtimeTranslate = (value) => {
+    if (locale === "en" || typeof value !== "string") return value;
+    return window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
+  };
   dayModes.forEach((mode, index) => Object.defineProperty(mode, "titleEn", {
     configurable: true,
-    get: () => locale === "es" ? dayTitlesEs[index] : locale === "ja" ? dayTitlesJa[index] : dayTitles[index][0],
+    get: () => locale === "es" ? dayTitlesEs[index] : locale === "ja" ? dayTitlesJa[index] : locale === "zh-Hant" ? dayTitles[index][1] : runtimeTranslate(dayTitles[index][0]),
   }));
   let profile = load(); let run = null; let selectedDay = Math.max(1, Math.min(CAMPAIGN_DAYS, profile.day || 1)); let runTimersSuspended = document.hidden || !document.hasFocus(); let leaveOpen = false; let centeredDayFrame = 0;
-  function t(key, vars={}) { return Object.entries(vars).reduce((text,[name,value]) => text.replace(`{${name}}`, value), flowCopy[locale]?.[key] || copy[locale]?.[key] || copy.en[key] || key); }
+  function t(key, vars={}) {
+    const localized = flowCopy[locale]?.[key] || copy[locale]?.[key];
+    const english = flowCopy.en[key] || copy.en[key] || key;
+    const value = localized || runtimeTranslate(english);
+    return Object.entries(vars).reduce((text,[name,item]) => text.replaceAll(`{${name}}`, item), value);
+  }
   function wholeNumber(value, minimum, maximum, fallback) { const number=typeof value==="string"&&value.trim()?Number(value):value; return Number.isSafeInteger(number)?Math.min(maximum,Math.max(minimum,number)):fallback; }
   function normalizeProfile(raw) { const source=raw&&typeof raw==="object"&&!Array.isArray(raw)?raw:{}; const upgrades=source.upgrades&&typeof source.upgrades==="object"&&!Array.isArray(source.upgrades)?source.upgrades:{}; return { day:wholeNumber(source.day,1,CAMPAIGN_DAYS,1), coins:wholeNumber(source.coins,0,Number.MAX_SAFE_INTEGER,0), best:wholeNumber(source.best,0,8,0), upgrades:{ speed:wholeNumber(upgrades.speed,0,3,0), capacity:wholeNumber(upgrades.capacity,0,3,0), comfort:wholeNumber(upgrades.comfort,0,3,0) } }; }
   function load() { let stored={}; try { stored=JSON.parse(readStorage(saveKey)||"{}"); } catch { stored={}; } const normalized=normalizeProfile(stored); writeStorage(saveKey,JSON.stringify(normalized)); return normalized; }
   function save() { writeStorage(saveKey, JSON.stringify(profile)); }
   function applyLocale() {
     document.documentElement.lang = locale;
-    document.title = `${(copy[locale] || copy.en).title} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => node.textContent = t(node.dataset.ui));
     stageTabs?.refresh();
     const releaseCopy = locale === "zh-Hant"
@@ -202,7 +215,7 @@
         ? { internal: "Café abierto", menuHint: "Elige la comida que aparece en el pedido y toca al cliente para servirla." }
         : locale === "ja"
           ? { internal: "カフェ営業中", menuHint: "注文に描かれた料理を選び、そのお客さんをタップして届けよう。" }
-        : { internal: "Cafe open", menuHint: "Pick the food shown in a customer's bubble, then tap that customer to serve." };
+          : { internal: runtimeTranslate("Cafe open"), menuHint: runtimeTranslate("Pick the food shown in a customer's bubble, then tap that customer to serve.") };
     document.querySelector('[data-ui="internal"]').textContent = releaseCopy.internal;
     document.querySelector('[data-ui="menuHint"]').textContent = releaseCopy.menuHint;
     renderMenu();
@@ -270,7 +283,7 @@
   window.addEventListener("blur",suspendRunTimers); window.addEventListener("focus",resumeRunTimers); window.addEventListener("pagehide",suspendRunTimers); window.addEventListener("pageshow",resumeRunTimers); document.addEventListener("visibilitychange",()=>{ if(document.hidden) suspendRunTimers(); else resumeRunTimers(); });
   window.addEventListener?.("resize",updateCafeBattleScale,{passive:true}); window.addEventListener?.("orientationchange",updateCafeBattleScale,{passive:true}); window.visualViewport?.addEventListener("resize",updateCafeBattleScale,{passive:true});
   if(new URLSearchParams(location.search).has("test")) window.__AnimalCafeRushTest={ definitions(){ return dayModes.map((mode)=>({day:mode.day,titleEn:mode.titleEn,titleZh:mode.titleZh,checkpoint:mode.checkpoint,rules:[...mode.rules],goal:dayGoal(mode.day),orders:mode.orders.map((order)=>[...order])})); }, prepareDay(day){ profile.day=CAMPAIGN_DAYS; selectedDay=Math.max(1,Math.min(CAMPAIGN_DAYS,Number(day)||1)); startDay(selectedDay); return this.snapshot(); }, setSelectedFoods(items=[]){ if(!run) return null; run.selectedFoods=[...items]; renderPlay(); return this.snapshot(); }, setLastServedAnimal(id=""){ if(!run) return null; run.lastServedAnimal=id; renderPlay(); return this.snapshot(); }, serveIndex(index=0){ const customer=run?.queue[index]; if(customer) serve(customer.uid); return { message:nodes.message.textContent, ...this.snapshot() }; }, ruleDecision(index=0){ const customer=run?.queue[index]; return customer?{customer:{id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order]},block:serviceBlock(customer),rules:[...activeRules()],tableTurn:run.tableTurn,lastServedAnimal:run.lastServedAnimal}:null; }, forceComplete(){ if(!run) return null; run.served=run.goal; run.coins=run.goal*3; finishDay(); return { served:run.served, goal:run.goal, finishing:run.finishing, resultVisible:!nodes.result.classList.contains("is-hidden"), profile:JSON.parse(readStorage(saveKey)||"{}") }; }, snapshot(){ return { selectedDay, run:run?{ day:run.day, mode:run.mode.id, modeLabel:t(run.mode.label), ruleSummary:ruleSummary(), rules:[...activeRules()], checkpoint:run.mode.checkpoint, served:run.served, goal:run.goal, finishing:run.finishing, tableTurn:run.tableTurn, lastServedAnimal:run.lastServedAnimal, queue:run.queue.map((customer)=>({id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order],leaving:customer.leaving})), firstOrder:[...(run.queue[0]?.order||[])], firstOrderBonus:run.queue[0]?orderBonus(run.queue[0].order):0 }:null, profile:JSON.parse(readStorage(saveKey)||"{}") }; } };
-  nodes.locale.addEventListener("change",()=>{ const requested=nodes.locale.value; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; writeStorage(localeKey,requested); applyLocale(); });
+  nodes.locale.addEventListener("change",()=>{ const requested=nodes.locale.value; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested; locale=normalizeLocale(resolved); writeStorage(localeKey,requested); applyLocale(); });
   nodes.mainStart.addEventListener("click",()=>{ stageTabs?.set("stages"); showStage(selectedDay); updateCafeBattleScale(); });
   nodes.stageBack.addEventListener("click",showMain);
   nodes.start.addEventListener("click",()=>startDay(selectedDay));

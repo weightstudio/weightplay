@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  document.body?.setAttribute("data-wp-game-owned-guide", "true");
+
   const detachGuideFromMain = () => {
     const main = document.querySelector("#mainScreen");
     const guide = main?.querySelector(".game-page-info");
@@ -10,6 +12,15 @@
   detachGuideFromMain();
   window.WPCardGamesNext?.mount({ id: "speed" });
   window.setTimeout(detachGuideFromMain, 0);
+
+  const localeRoutes = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const localeSelect = document.getElementById("localeSelect");
+  localeSelect?.addEventListener("change", () => {
+    const segment = localeRoutes[localeSelect.value];
+    if (!segment) return;
+    const target = "/" + segment + "/games/speed/" + location.search + location.hash;
+    if (location.pathname !== "/" + segment + "/games/speed/") location.href = target;
+  });
 
   const shellCopy = {
     en: { start: "Start Game", restart: "Restart", newGame: "New Game", close: "Close", howTo: "How to play" },
