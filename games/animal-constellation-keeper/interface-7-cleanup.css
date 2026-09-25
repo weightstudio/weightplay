@@ -17,6 +17,14 @@
     block-size: auto !important;
   }
 
+  @media (max-width: 699px) {
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .cover,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] [data-wp-frame-poster] {
+      inline-size: 100% !important;
+      max-inline-size: none !important;
+    }
+  }
+
   /* Stage content: shared frame owns header/footer geometry; this file only
      positions the selector workspace and authored cards inside the content slot. */
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .ck-stage-workspace {
@@ -72,16 +80,6 @@
     background: rgb(8 22 43 / 82%);
   }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .ck-battle-context :is(h2, p) { margin: 0 !important; }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .battle-actions {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 52px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .ck-battle-help {
-    inline-size: 52px !important;
-    min-inline-size: 52px !important;
-    min-block-size: 44px !important;
-    padding-inline: 0 !important;
-  }
-
   /* Result is a Battle substate with one stable three-slot recovery row. */
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] #resultScreen[data-wp-battle-substate="result"] {
     position: absolute !important;

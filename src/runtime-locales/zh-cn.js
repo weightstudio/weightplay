@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只有颜色和徽章在可见时机窗口内对齐，脉冲才会成功。",
   "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["zh-Hans"], {
+  "Numbered-Node Route Puzzle": "编号节点航线谜题",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "依序连接所有编号节点、避开红色封锁航线，抵达醒目的目标码头。",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "在云际天空港，每个班次都是一道航线谜题：引导动物飞船抵达标示的码头。",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "有效航线必须依序通过所有编号节点、抵达醒目的目标码头、避开红色封锁航线，而且不能与自身交叉。",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "游戏只判定你画出的线；漏掉节点、穿越封锁线或与自己的航线交叉，都会让提交的路线无效。",
+  "Choose an unlocked shift and read its flight goal.": "选择已解锁班次并查看飞行目标。",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "从飞船起点拖曳一条连续航线，依序通过所有编号节点并连接到醒目的目标码头，然后松开。",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "完成飞行目标。每次无效路线会增加一个错误；累计三个错误后班次结束，并提供免费重试。",
+  "Trace the whole path first; the visible line is the route the game checks.": "先在心中走完整条路线；画面上可见的线就是游戏判定的路线。",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "依序通过节点，并避开封锁线和自己的航线。",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "30 个班次逐步加入最多四个依序通过的节点、最多三条封锁航线、五种布局、变化的目标码头和逐渐提高的飞行目标。",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "路线判定会遵循画面上取样后的实际路径，不会把玩家画出的路线替换成看不见的直线。",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "这是一款航线谜题：没有机组人员、燃料、维修零件、拥堵、风暴，也没有靠港后的服务步骤。",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "漏掉或错序通过节点、穿越红色航线，或与自己的路线交叉，都会让提交的路线无效并增加一个错误。",
+  "The shift ends and offers a free Retry.": "班次会结束，并提供免费重试。",
+  "There are 30 shifts.": "共有 30 个班次。",
+  "What makes a route valid?": "怎样才算有效航线？",
+  "What causes an Error?": "什么情况会增加错误？",
+  "What happens after three Errors?": "累计三个错误后会怎样？",
+  "How many shifts are there?": "共有多少个班次？"
+});

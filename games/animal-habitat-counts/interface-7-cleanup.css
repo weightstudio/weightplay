@@ -1,9 +1,9 @@
 /*
  * Scoped Interface 7 compatibility cleanup for Habitat Counts.
  *
- * The game remains declared Interface 6 until a formal migration/acceptance
- * cycle. These rules only remove legacy Main/Stage/Battle chrome that conflicts
- * with the current shared frame contract.
+ * Owner-directed 2026-09-25 migration declares Interface 7. These scoped rules
+ * keep Habitat Counts aligned with the current shared Main/Stage/Battle frame
+ * while preserving game-owned habitat visuals and gameplay cards.
  */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] #mapBtn {
   display: none !important;
@@ -82,4 +82,17 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
   height: var(--wp-ad-reserve-height, 0px) !important;
   min-height: var(--wp-ad-reserve-height, 0px) !important;
   max-height: var(--wp-ad-reserve-height, 0px) !important;
+}
+
+
+/* v12 motion feedback stays on game-owned content and never moves shared hit boxes. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .cell,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-card,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .result-panel {
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] :is(.cell,.stage-card,.result-panel) {
+    scroll-behavior: auto !important;
+  }
 }

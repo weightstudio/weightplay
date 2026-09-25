@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "ينجح النبض فقط عندما يتطابق اللون والشعار داخل نافذة التوقيت المرئية.",
   "The nearest marker did not match both required properties inside the window.": "لم يتطابق المؤشر الأقرب مع الخاصيتين المطلوبتين داخل النافذة."
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["ar"], {
+  "Numbered-Node Route Puzzle": "لغز مسارات بعقد مرقمة",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "صِل كل العقد المرقمة بالترتيب، وتجنب الممرات الجوية المحظورة باللون الأحمر، ثم أصل إلى الرصيف المميز.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "في Cloudline Skyport، كل مناوبة لغز مسارات: وجّه منطادًا حيوانيًا إلى الرصيف المميز له.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "المسار الصحيح يمر بجميع العقد المرقمة بالترتيب، ويصل إلى الرصيف المميز، ويتجنب الممرات الحمراء المحظورة ولا يتقاطع مع نفسه.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "اللعبة تتحقق من الخط الذي ترسمه فقط؛ تخطي عقدة أو عبور خط محظور أو تقاطع المسار مع نفسه يجعل المسار المرسل غير صالح.",
+  "Choose an unlocked shift and read its flight goal.": "اختر مناوبة مفتوحة واقرأ هدف الرحلة.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "اسحب مسارًا متصلًا واحدًا من المنطاد، مرورًا بكل العقد المرقمة بالترتيب، حتى الرصيف المميز، ثم ارفع إصبعك.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "أكمل هدف الرحلة. يضيف كل مسار غير صالح خطأً واحدًا؛ وعند ثلاثة أخطاء تنتهي المناوبة وتُتاح إعادة المحاولة مجانًا.",
+  "Trace the whole path first; the visible line is the route the game checks.": "خطط للمسار كاملًا أولًا؛ فالخط الظاهر هو المسار الذي تتحقق منه اللعبة.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "مرّ بالعقد بالترتيب وابتعد عن الخطوط المحظورة وعن مسارك نفسه.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "على مدى 30 مناوبة، تزداد التحديات تدريجيًا لتشمل حتى أربع عقد مرتبة، وثلاثة ممرات محظورة، وخمسة تخطيطات، وأرصفة مستهدفة وأهداف رحلات متغيرة.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "يتبع التحقق المسار المرئي المأخوذ منه نقاط متتابعة؛ ولا يستبدل أبدًا ما رسمته بخط مستقيم مخفي.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "هذه لعبة ألغاز مسارات؛ لا يوجد طاقم أو وقود أو قطع إصلاح أو ازدحام أو عواصف أو خطوات خدمة بعد الرسو.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "تخطي عقدة أو المرور بها بترتيب خاطئ أو عبور خط أحمر أو تقاطع المسار مع نفسه يجعل المسار المرسل غير صالح ويضيف خطأً واحدًا.",
+  "The shift ends and offers a free Retry.": "تنتهي المناوبة وتُتاح إعادة المحاولة مجانًا.",
+  "There are 30 shifts.": "هناك 30 مناوبة.",
+  "What makes a route valid?": "ما شروط المسار الصحيح؟",
+  "What causes an Error?": "ما الذي يضيف خطأً؟",
+  "What happens after three Errors?": "ماذا يحدث عند ثلاثة أخطاء؟",
+  "How many shifts are there?": "كم عدد المناوبات؟"
+});

@@ -170,5 +170,17 @@
   Object.assign(it,{settings:"Impostazioni",soundOn:"Audio attivo",soundOff:"Audio disattivato"});
   Object.assign(ru,{settings:"Настройки",soundOn:"Звук включён",soundOff:"Звук выключен"});
   Object.assign(ar,{settings:"الإعدادات",soundOn:"الصوت مفعّل",soundOff:"الصوت متوقف"});
+  Object.assign(en,{stageReady:"Ready"});
+  Object.assign(zhHant,{stageReady:"可挑戰"});
+  Object.assign(zhHans,{stageReady:"可挑战"});
+  Object.assign(ja,{stageReady:"挑戦可能"});
+  Object.assign(ko,{stageReady:"도전 가능"});
+  Object.assign(es,{stageReady:"Disponible"});
+  Object.assign(pt,{stageReady:"Disponível"});
+  Object.assign(fr,{stageReady:"Disponible"});
+  Object.assign(de,{stageReady:"Bereit"});
+  Object.assign(it,{stageReady:"Disponibile"});
+  Object.assign(ru,{stageReady:"Доступна"});
+  Object.assign(ar,{stageReady:"متاح"});
   window.SKYDROP_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,ar};
 })();

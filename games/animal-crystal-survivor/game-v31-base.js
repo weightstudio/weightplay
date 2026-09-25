@@ -26,7 +26,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v33";
+  const GAME_VERSION = "v35";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -251,6 +251,16 @@
     patrolRankFill: $("patrolRankFill"),
     resultRankText: $("resultRankText"),
   };
+
+  // The shared frame relocates the Stage navigation node during mounting.
+  // Delegate from the persistent frame root so clicks survive reparenting or
+  // rebuilding either tab button by a later frame adapter.
+  const stageInteractionRoot = nodes.stagePanel?.closest("[data-wp-frame-root]") || nodes.stagePanel;
+  stageInteractionRoot?.addEventListener("click", (event) => {
+    const tab = event.target?.closest?.("#stageTabBtn, #equipmentTabBtn");
+    if (!tab || !stageInteractionRoot.contains(tab)) return;
+    setStagePage(tab.id === "equipmentTabBtn" ? "equipment" : "stages");
+  }, true);
 
   const screenFrame = window.WeightPlayScreenFrame.mount({
     root: document.querySelector('[data-wp-frame-root]'),
@@ -3698,8 +3708,6 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.startBtn.addEventListener("click", () => showStageSelection(true));
-  nodes.stageTabBtn?.addEventListener("click", () => setStagePage("stages"));
-  nodes.equipmentTabBtn?.addEventListener("click", () => setStagePage("equipment"));
   nodes.stageBackBtn.addEventListener("click", () => {
     track("return_session", { from_screen: "stage" });
     state.mode = "menu";

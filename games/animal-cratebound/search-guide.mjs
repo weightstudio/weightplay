@@ -157,29 +157,241 @@ export const searchCopy = {
     "answer": "يجب أن يقف روكس بجوار الصندوق وأن تكون خلفه خانة فارغة للتراجع. ويحتاج كل صندوق متحرك أيضاً إلى وجهة صالحة. قد يمنع الحركة جدار أو بوابة مغلقة أو صندوق آخر. الشحنة لا تزيل العوائق؛ تراجع عن الحركة الخاطئة أو أعد المستودع لتجربة طريق آخر."
   }
 };
-export const howToPlayLabels = {"en": "How to play", "zh-Hant": "玩法說明", "zh-Hans": "玩法说明", "ja": "遊び方", "ko": "플레이 방법", "es": "Cómo jugar", "pt-BR": "Como jogar", "fr": "Comment jouer", "de": "Spielanleitung", "it": "Come giocare", "ru": "Как играть", "hi": "कैसे खेलें", "ar": "كيف تلعب"};
+export const baseGuideCopy = {
+  "en": {
+    "ariaLabel": "Game guide",
+    "eyebrow": "Original WeightPlay block puzzle",
+    "title": "Plan the warehouse before the first push.",
+    "intro": "Every crate and device is deterministic. Read the route, preserve turning room, and use magnetic pulls only when they recover a stranded cargo block.",
+    "howTitle": "How to play",
+    "how": [
+      "Move one square with arrows, WASD, swipe or the direction pad.",
+      "Push cargo into open cells and match every glowing dock.",
+      "Hold Shift or choose Pull to spend a magnetic charge."
+    ],
+    "growthTitle": "Thirty warehouses",
+    "growth": "Six chapters introduce ice rails, signal gates, magnets, linked crates and one-way belts."
+  },
+  "zh-Hant": {
+    "ariaLabel": "遊戲指南",
+    "eyebrow": "WeightPlay 原創推箱解謎",
+    "title": "推第一個貨箱前，先規劃整座倉庫。",
+    "intro": "每個貨箱與機關都依固定規則運作。先讀完整路線、保留轉身空間，只在能救回卡住貨箱時使用磁力拉取。",
+    "howTitle": "玩法說明",
+    "how": [
+      "使用方向鍵、WASD、滑動或方向控制，每次移動一格。",
+      "把貨箱推進空格，讓每個貨箱對準發光碼頭。",
+      "按住 Shift 或選擇「拉取」，消耗一次磁力次數。"
+    ],
+    "growthTitle": "三十座倉庫",
+    "growth": "六個章節會逐步加入冰軌、訊號門、磁力、連結貨箱與單向風暴輸送帶。"
+  },
+  "zh-Hans": {
+    "ariaLabel": "游戏指南",
+    "eyebrow": "WeightPlay 原创推箱解谜",
+    "title": "推第一个货箱前，先规划整座仓库。",
+    "intro": "每个货箱与机关都按固定规则运作。先读完整路线、保留转身空间，只在能救回卡住货箱时使用磁力拉取。",
+    "howTitle": "玩法说明",
+    "how": [
+      "使用方向键、WASD、滑动或方向控制，每次移动一格。",
+      "把货箱推进空格，让每个货箱对准发光码头。",
+      "按住 Shift 或选择“拉取”，消耗一次磁力次数。"
+    ],
+    "growthTitle": "三十座仓库",
+    "growth": "六个章节会逐步加入冰轨、信号门、磁力、联动货箱与单向风暴传送带。"
+  },
+  "ja": {
+    "ariaLabel": "ゲームガイド",
+    "eyebrow": "WeightPlay オリジナルの箱押しパズル",
+    "title": "最初の箱を押す前に、倉庫全体のルートを考えよう。",
+    "intro": "すべての箱と仕掛けは決まったルールで動きます。ルートを読み、向きを変える空間を残し、動けなくなった箱を救えるときだけ磁力で引き寄せましょう。",
+    "howTitle": "遊び方",
+    "how": [
+      "矢印キー、WASD、スワイプ、または方向パッドで1マスずつ移動します。",
+      "箱を空いているマスへ押し、すべての箱を光るドックに合わせます。",
+      "Shift を押しながら操作するか「引く」を選び、磁力を1回消費します。"
+    ],
+    "growthTitle": "30の倉庫",
+    "growth": "6つの章で、氷のレール、信号ゲート、磁力、連結した箱、一方向のストームベルトが順に登場します。"
+  },
+  "ko": {
+    "ariaLabel": "게임 가이드",
+    "eyebrow": "WeightPlay 오리지널 상자 밀기 퍼즐",
+    "title": "첫 상자를 밀기 전에 창고 전체의 경로를 계획하세요.",
+    "intro": "모든 상자와 장치는 정해진 규칙대로 움직입니다. 경로를 읽고 방향을 바꿀 공간을 남기며, 고립된 상자를 구할 때만 자기력 당기기를 사용하세요.",
+    "howTitle": "플레이 방법",
+    "how": [
+      "방향키, WASD, 스와이프 또는 방향 패드로 한 칸씩 이동합니다.",
+      "상자를 빈 칸으로 밀어 모든 상자를 빛나는 도크에 맞춥니다.",
+      "Shift를 누른 채 움직이거나 ‘당기기’를 선택해 자기력 1회를 사용합니다."
+    ],
+    "growthTitle": "30개의 창고",
+    "growth": "6개 챕터에서 얼음 레일, 신호 게이트, 자석, 연결된 상자와 단방향 폭풍 컨베이어가 차례로 등장합니다."
+  },
+  "es": {
+    "ariaLabel": "Guía del juego",
+    "eyebrow": "Puzle original de WeightPlay de empujar cajas",
+    "title": "Planifica el almacén antes de empujar la primera caja.",
+    "intro": "Cada caja y mecanismo sigue reglas fijas. Lee la ruta, conserva espacio para girar y usa el tirón magnético solo cuando pueda rescatar una caja atascada.",
+    "howTitle": "Cómo jugar",
+    "how": [
+      "Muévete una casilla con las flechas, WASD, un deslizamiento o el pad de dirección.",
+      "Empuja las cajas a casillas libres y coloca todas sobre los muelles luminosos.",
+      "Mantén Shift o elige Tirar para gastar una carga magnética."
+    ],
+    "growthTitle": "Treinta almacenes",
+    "growth": "Seis capítulos introducen raíles de hielo, puertas de señal, imanes, cajas enlazadas y cintas de tormenta de un solo sentido."
+  },
+  "pt-BR": {
+    "ariaLabel": "Guia do jogo",
+    "eyebrow": "Quebra-cabeça original da WeightPlay de empurrar caixas",
+    "title": "Planeje o armazém antes de empurrar a primeira caixa.",
+    "intro": "Cada caixa e mecanismo segue regras fixas. Leia a rota, preserve espaço para virar e use a atração magnética apenas quando ela puder recuperar uma caixa presa.",
+    "howTitle": "Como jogar",
+    "how": [
+      "Mova uma casa com as setas, WASD, gesto de deslizar ou o direcional.",
+      "Empurre as caixas para casas livres e coloque todas nas docas brilhantes.",
+      "Segure Shift ou escolha Puxar para gastar uma carga magnética."
+    ],
+    "growthTitle": "Trinta armazéns",
+    "growth": "Seis capítulos introduzem trilhos de gelo, portões de sinal, ímãs, caixas conectadas e esteiras de tempestade de mão única."
+  },
+  "fr": {
+    "ariaLabel": "Guide du jeu",
+    "eyebrow": "Puzzle original WeightPlay de poussée de caisses",
+    "title": "Planifiez l’entrepôt avant de pousser la première caisse.",
+    "intro": "Chaque caisse et chaque mécanisme suit des règles fixes. Lisez le trajet, gardez de la place pour vous retourner et utilisez la traction magnétique seulement lorsqu’elle peut récupérer une caisse bloquée.",
+    "howTitle": "Comment jouer",
+    "how": [
+      "Déplacez-vous d’une case avec les flèches, WASD, un balayage ou le pavé directionnel.",
+      "Poussez les caisses vers des cases libres et placez-les toutes sur les quais lumineux.",
+      "Maintenez Shift ou choisissez Tirer pour dépenser une charge magnétique."
+    ],
+    "growthTitle": "Trente entrepôts",
+    "growth": "Six chapitres introduisent des rails de glace, des portes à signal, des aimants, des caisses liées et des tapis de tempête à sens unique."
+  },
+  "de": {
+    "ariaLabel": "Spielanleitung",
+    "eyebrow": "Originales WeightPlay-Kistenschiebepuzzle",
+    "title": "Plane das Lager, bevor du die erste Kiste schiebst.",
+    "intro": "Jede Kiste und jeder Mechanismus folgt festen Regeln. Lies die Route, halte Platz zum Wenden frei und nutze den Magnetzug nur, wenn du damit eine festgesetzte Kiste retten kannst.",
+    "howTitle": "Spielanleitung",
+    "how": [
+      "Bewege dich mit Pfeiltasten, WASD, Wischen oder dem Steuerkreuz jeweils ein Feld.",
+      "Schiebe Kisten auf freie Felder und bringe jede Kiste auf ein leuchtendes Dock.",
+      "Halte Shift gedrückt oder wähle Ziehen, um eine Magnetladung zu verbrauchen."
+    ],
+    "growthTitle": "Dreißig Lager",
+    "growth": "Sechs Kapitel führen Eisbahnen, Signaltore, Magnete, verbundene Kisten und Einweg-Sturmbänder ein."
+  },
+  "it": {
+    "ariaLabel": "Guida al gioco",
+    "eyebrow": "Rompicapo originale WeightPlay di casse da spingere",
+    "title": "Pianifica il magazzino prima di spingere la prima cassa.",
+    "intro": "Ogni cassa e ogni meccanismo segue regole fisse. Leggi il percorso, conserva spazio per girarti e usa la trazione magnetica solo quando può recuperare una cassa bloccata.",
+    "howTitle": "Come giocare",
+    "how": [
+      "Muoviti di una casella con le frecce, WASD, uno swipe o il pad direzionale.",
+      "Spingi le casse nelle caselle libere e porta ogni cassa su un molo luminoso.",
+      "Tieni premuto Shift o scegli Tira per consumare una carica magnetica."
+    ],
+    "growthTitle": "Trenta magazzini",
+    "growth": "Sei capitoli introducono binari di ghiaccio, cancelli a segnale, magneti, casse collegate e nastri della tempesta a senso unico."
+  },
+  "ru": {
+    "ariaLabel": "Руководство по игре",
+    "eyebrow": "Оригинальная головоломка WeightPlay с ящиками",
+    "title": "Спланируйте склад до первого толчка.",
+    "intro": "Каждый ящик и механизм работает по фиксированным правилам. Изучите маршрут, оставляйте место для разворота и используйте магнитное притягивание только тогда, когда оно помогает вернуть застрявший ящик.",
+    "howTitle": "Как играть",
+    "how": [
+      "Перемещайтесь на одну клетку стрелками, WASD, свайпом или экранной крестовиной.",
+      "Толкайте ящики на свободные клетки и поставьте каждый на светящийся причал.",
+      "Удерживайте Shift или выберите «Тянуть», чтобы потратить один магнитный заряд."
+    ],
+    "growthTitle": "Тридцать складов",
+    "growth": "В шести главах появляются ледяные рельсы, сигнальные ворота, магниты, связанные ящики и односторонние штормовые ленты."
+  },
+  "hi": {
+    "ariaLabel": "गेम गाइड",
+    "eyebrow": "WeightPlay की मौलिक बॉक्स-पुशिंग पहेली",
+    "title": "पहला बक्सा धकेलने से पहले पूरे गोदाम का रास्ता तय करें।",
+    "intro": "हर बक्सा और उपकरण तय नियमों से चलता है। रास्ता पहले पढ़ें, मुड़ने के लिए जगह बचाएँ और चुंबकीय खिंचाव केवल तब इस्तेमाल करें जब उससे फँसा हुआ बक्सा बच सके।",
+    "howTitle": "कैसे खेलें",
+    "how": [
+      "तीर कुंजियों, WASD, स्वाइप या दिशा-पैड से एक बार में एक खाना चलें।",
+      "बक्सों को खाली खानों में धकेलें और हर बक्से को चमकते डॉक पर पहुँचाएँ।",
+      "Shift दबाकर रखें या ‘खींचें’ चुनकर एक चुंबकीय चार्ज खर्च करें।"
+    ],
+    "growthTitle": "तीस गोदाम",
+    "growth": "छह अध्यायों में बर्फ़ की पटरियाँ, सिग्नल गेट, चुंबक, जुड़े हुए बक्से और एकतरफ़ा तूफ़ानी बेल्ट आते हैं।"
+  },
+  "ar": {
+    "ariaLabel": "دليل اللعبة",
+    "eyebrow": "لغز أصلي من WeightPlay لدفع الصناديق",
+    "title": "خطط للمستودع قبل دفع أول صندوق.",
+    "intro": "كل صندوق وآلية يعملان وفق قواعد ثابتة. اقرأ المسار، واترك مساحة لتغيير الاتجاه، واستخدم السحب المغناطيسي فقط عندما يساعدك على إنقاذ صندوق عالق.",
+    "howTitle": "كيف تلعب",
+    "how": [
+      "تحرك خانة واحدة باستخدام الأسهم أو WASD أو السحب بالإصبع أو لوحة الاتجاهات.",
+      "ادفع الصناديق إلى الخانات الفارغة وضع كل صندوق على رصيف متوهج.",
+      "اضغط مطولاً على Shift أو اختر «سحب» لاستهلاك شحنة مغناطيسية واحدة."
+    ],
+    "growthTitle": "ثلاثون مستودعاً",
+    "growth": "تقدم ستة فصول سكك الجليد وبوابات الإشارة والمغناطيس والصناديق المترابطة وأحزمة العاصفة أحادية الاتجاه."
+  }
+};
+export const howToPlayLabels = Object.fromEntries(Object.entries(baseGuideCopy).map(([locale, copy]) => [locale, copy.howTitle]));
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const localeDir = locale => locale === 'ar' ? 'rtl' : 'ltr';
+export function renderCrateBaseGuide(locale) {
+  const copy = baseGuideCopy[locale];
+  if (!copy) throw new Error(`Cratebound base guide missing locale: ${locale}`);
+  return `<section class="guide" aria-label="${escape(copy.ariaLabel)}" lang="${escape(locale)}" dir="${localeDir(locale)}" data-crate-base-guide="1" data-runtime-localize="off"><small>${escape(copy.eyebrow)}</small><h2 id="guideTitle">${escape(copy.title)}</h2><p id="guideIntro">${escape(copy.intro)}</p><div class="guide-grid"><article><h3 data-runtime-localize="off">${escape(copy.howTitle)}</h3><ol id="howList">${copy.how.map(t => `<li>${escape(t)}</li>`).join('')}</ol></article><article><h3>${escape(copy.growthTitle)}</h3><p id="growth">${escape(copy.growth)}</p></article></div></section>`;
+}
 export function renderCrateSearch(locale) {
   const copy = searchCopy[locale];
   if (!copy) throw new Error(`Cratebound search guide missing locale: ${locale}`);
-  return `<section id="crateSearchGuide" class="guide" lang="${escape(locale)}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" data-runtime-localize="off" aria-labelledby="crateSearchHeading"><h2 id="crateSearchHeading">${escape(copy.heading)}</h2><p>${escape(copy.intro)}</p><div class="guide-grid"><article><h3>${escape(copy.tipsTitle)}</h3><ol>${copy.tips.map(t => `<li>${escape(t)}</li>`).join('')}</ol></article><article><h3>${escape(copy.question)}</h3><p>${escape(copy.answer)}</p></article></div></section>`;
+  return `<section id="crateSearchGuide" class="guide" lang="${escape(locale)}" dir="${localeDir(locale)}" data-runtime-localize="off" aria-labelledby="crateSearchHeading"><h2 id="crateSearchHeading">${escape(copy.heading)}</h2><p>${escape(copy.intro)}</p><div class="guide-grid"><article><h3>${escape(copy.tipsTitle)}</h3><ol>${copy.tips.map(t => `<li>${escape(t)}</li>`).join('')}</ol></article><article><h3>${escape(copy.question)}</h3><p>${escape(copy.answer)}</p></article></div></section>`;
 }
 export function applyCrateSearch(html, locale) {
+  if (!baseGuideCopy[locale] || !searchCopy[locale]) throw new Error(`Cratebound guide missing locale: ${locale}`);
   const without = html.replace(/<section id="crateSearchGuide"[\s\S]*?<\/section>/g, '');
-  const anchor = /(<section class="guide"[^>]*>[\s\S]*?<\/section>)/;
+  const anchor = /<section class="guide"[^>]*>[\s\S]*?<\/section>/;
   if (!anchor.test(without)) throw new Error('Cratebound Main guide anchor missing');
-  return without.replace(anchor, match => match.replace(/<h3[^>]*>[^<]*<\/h3>(?=<ol id="howList">)/, `<h3 data-runtime-localize="off">${escape(howToPlayLabels[locale])}</h3>`) + renderCrateSearch(locale));
+  return without.replace(anchor, renderCrateBaseGuide(locale) + renderCrateSearch(locale));
+}
+function applyBaseGuideToDocument(locale) {
+  const copy = baseGuideCopy[locale];
+  const title = document.getElementById('guideTitle');
+  const section = title?.closest('section.guide');
+  if (!copy || !section) return;
+  section.setAttribute('aria-label', copy.ariaLabel);
+  section.setAttribute('lang', locale);
+  section.setAttribute('dir', localeDir(locale));
+  section.setAttribute('data-crate-base-guide', '1');
+  section.setAttribute('data-runtime-localize', 'off');
+  const eyebrow = section.querySelector('small');
+  if (eyebrow) eyebrow.textContent = copy.eyebrow;
+  title.textContent = copy.title;
+  const intro = document.getElementById('guideIntro');
+  if (intro) intro.textContent = copy.intro;
+  const howList = document.getElementById('howList');
+  const howHeading = howList?.previousElementSibling;
+  if (howHeading?.tagName === 'H3') { howHeading.textContent = copy.howTitle; howHeading.dataset.runtimeLocalize = 'off'; }
+  if (howList) howList.innerHTML = copy.how.map(item => `<li>${escape(item)}</li>`).join('');
+  const growth = document.getElementById('growth');
+  const growthHeading = growth?.previousElementSibling;
+  if (growthHeading?.tagName === 'H3') growthHeading.textContent = copy.growthTitle;
+  if (growth) growth.textContent = copy.growth;
 }
 if (typeof document !== 'undefined') {
-  // Route-owned changes must navigate before legacy in-place name/Arabic
-  // handlers race the old route's title observers. Use the shared navigator;
-  // do not change titles, storage keys, route definitions or game state here.
   document.addEventListener('change', event => {
     const select = event.target;
     const i18n = window.WonderI18n;
     if (document.body?.dataset.wpGameId !== 'animal-cratebound'
         || !(select instanceof HTMLSelectElement) || select.id !== 'localeSelect'
-        || !searchCopy[select.value] || !i18n?.setLocale
+        || !searchCopy[select.value] || !baseGuideCopy[select.value] || !i18n?.setLocale
         || select.value === i18n.actualLocale?.()
         || window.WONDER_SITE?.localization?.useLocaleRoutes === false
         || !/^https?:$/.test(location.protocol)) return;
@@ -189,9 +401,8 @@ if (typeof document !== 'undefined') {
   const refresh = () => {
     if (document.body?.dataset.wpGameId !== 'animal-cratebound') return;
     const locale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang;
-    if (!searchCopy[locale]) return;
-    const howHeading = document.getElementById("howList")?.previousElementSibling;
-    if (howHeading?.tagName === "H3") { howHeading.textContent = howToPlayLabels[locale]; howHeading.dataset.runtimeLocalize = "off"; }
+    if (!searchCopy[locale] || !baseGuideCopy[locale]) return;
+    applyBaseGuideToDocument(locale);
     const group = document.getElementById('mainGroup');
     if (!group) return;
     const current = document.getElementById('crateSearchGuide');

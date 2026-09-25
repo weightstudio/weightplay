@@ -53,7 +53,15 @@
     const select = $("localeSelect");
     localeKeys.forEach((key) => { const option = document.createElement("option"); option.value = key; option.textContent = locales.en.languageNames[key]; select.append(option); });
     select.value = state.locale;
-    select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-pattern-locale", state.locale); applyLocale(); });
+    select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-pattern-locale", state.locale); applyLocale(); syncSharedLocale(); });
+  }
+  function syncSharedLocale() {
+    const wonderI18n = window.WonderI18n;
+    if (typeof wonderI18n?.setLocale === "function" && wonderI18n.actualLocale?.() !== state.locale) {
+      wonderI18n.setLocale(state.locale, { navigate: false });
+      return;
+    }
+    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale: state.locale } }));
   }
   function playTone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function setGameplayInert(inert) {

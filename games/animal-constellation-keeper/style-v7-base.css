@@ -17,9 +17,9 @@
 
 /* Preserve the authored Guide frame under Interface 7's layered skin. */
 @layer wp-frame-contract {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .game-page-info { border-radius: 24px !important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .game-page-info { border-radius: var(--wp-ui-radius) !important; }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .game-page-info .game-info-sections { display: grid !important; }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .game-page-info .game-info-section { border-radius: 16px !important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-constellation-keeper"] .game-page-info .game-info-section { border-radius: var(--wp-ui-radius) !important; }
 }
 
 /* The four-map selector must keep every card centre inside the logical

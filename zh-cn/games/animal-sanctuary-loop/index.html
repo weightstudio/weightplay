@@ -25,6 +25,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-interface-version" content="7">
   <meta name="theme-color" content="#07152a">
   <title>圣域光环 | WeightPlay</title>
   <meta name="description" content="引导星爪狐离开安全领地，在暗影切断光轨前完成封环，修复 30 个规则持续变化的圣域任务。" />
@@ -42,29 +43,30 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
-  <link rel="stylesheet" href="style.css?v=20260904-sanctuary-interface-repair-v17">
+  <link rel="stylesheet" href="style.css?v=20260925-sanctuary-interface7-v19">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3"><meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-sanctuary-loop.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-screen="loading" data-game-id="animal-sanctuary-loop" data-sound-toggle="off" data-wp-game-owned-guide>
+<body data-screen="loading" data-game-id="animal-sanctuary-loop" data-wp-interface-version="7" data-sound-toggle="off" data-wp-game-owned-guide>
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-t="title" data-wp-game-title data-runtime-localize="off">圣域光环</strong><span data-t="loading">正在唤醒圣域……</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
+  <div id="frameRoot" data-wp-frame-root>
   <div id="mainGroup" class="main-group" hidden>
-    <main class="main-screen">
-      <header class="main-header">
+    <main id="mainScreen" class="main-screen" data-wp-frame-scene="main">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">圣域光环</h1>
+      <header id="mainHeader" class="main-header">
         <a id="lobbyReturn" class="lobby-return" href="/en/" aria-label="Back to WeightPlay" data-wp-return="main" data-ta="backLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <strong data-t="title" data-wp-game-title data-runtime-localize="off">圣域光环</strong>
-        <label class="locale-control"><span class="sr-only" data-t="language">语言</span><select id="locale" aria-label="Language" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+        <strong data-t="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">圣域光环</strong>
       </header>
-      <section class="main-hero">
-        <img class="poster" src="../../assets/animal-sanctuary-loop/cover.webp" alt="《圣域光环》游戏图片" data-ta="posterAlt">
-        <div class="main-copy"><small data-t="kicker">即时圈地冒险</small><h1 data-t="title" data-wp-game-title data-runtime-localize="off">圣域光环</h1><p data-t="pitch">离开安全领地画出光轨，在暗影切断前重新接回。修复栖地即可完成任务。</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">开始游戏</button></div>
+      <section class="main-hero" data-wp-frame-content="main">
+        <img class="poster" src="../../assets/animal-sanctuary-loop/cover.webp" alt="《圣域光环》游戏图片" data-ta="posterAlt" data-wp-frame-poster>
+        <div class="main-copy" data-wp-frame-copy><small data-t="kicker">即时圈地冒险</small><p data-t="pitch" data-wp-frame-summary>离开安全领地画出光轨，在暗影切断前重新接回。修复栖地即可完成任务。</p><span id="mainProgress" data-wp-frame-progress></span><button id="start" class="primary" type="button" data-t="start" data-wp-frame-action="primary">开始游戏</button></div>
       </section>
     </main>
-      <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel">
+      <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel" data-wp-game-guide data-wp-guide-complete="true">
       <small data-t="guideKicker">原创 WEIGHTPLAY 街机冒险</small><h2 data-t="guideTitle">光轨越长，收复的圣域越大。</h2><p data-t="guideIntro">星爪狐在已修复领地内安全；离开后，闪电光轨会暴露。请在猎手碰到光轨前接回。</p>
       <div class="game-info-facts"><div class="game-info-fact"><span data-t="factGameplay">玩法</span><strong data-t="factGameplayValue">即时领地光环</strong></div><div class="game-info-fact"><span data-t="factGenre">类型</span><strong data-t="factGenreValue">街机 · 策略 · 动物</strong></div><div class="game-info-fact"><span data-t="factSession">游玩时间</span><strong data-t="factSessionValue">每个任务 2–6 分钟</strong></div></div>
       <div class="guide-grid"><article><h3 data-t="howTitle">玩法</h3><ol><li data-t="how1">滑动、拖曳或使用方向键控制星爪狐。</li><li data-t="how2">离开已修复领地，在腐化区画出封闭光环。</li><li data-t="how3">在猎手碰到未封闭光轨前重新接回领地。</li></ol></article><article><h3 data-t="campaignTitle">30 个手工任务</h3><p data-t="campaignText">六个章节加入救援信标、风暴带、顺序封印、缩小边界、对手占领与守护者追猎。</p></article></div>
@@ -75,19 +77,23 @@
   </div>
 
   <section id="stage" class="active-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-sanctuary-loop/arena.webp" style="--wp-stage-art:url('../../assets/animal-sanctuary-loop/arena.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseMission">选择圣域任务</strong><span id="stageProgress"></span></div><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""></header>
-      <nav class="stage-tabs" aria-label="Sanctuary preparation" data-ta="stageTabs"><button class="active" data-tab="missions" data-t="missions">任务</button><button data-tab="atelier" data-t="atelier">光轨工坊</button></nav>
-      <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" role="status" aria-live="polite" aria-atomic="true" data-t="stageHint">拖动轨道，选择已解锁任务。</p></section>
-      <section id="atelierTab" class="tab-panel atelier-tab" hidden><div class="atelier-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="atelierTitle">光轨工坊</h2><p data-t="atelierIntro">选择已保存的光轨样式；外观不会影响任务平衡。</p></div></div><div id="trailStyles" class="trail-styles"></div><p id="atelierFeedback" aria-live="polite"></p></section>
+    <div id="stageCanvas" class="stage-canvas wp-stage-art-shell" data-wp-frame-scene="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-sanctuary-loop/arena.webp" style="--wp-stage-art:url('../../assets/animal-sanctuary-loop/arena.webp')">
+      <header id="stageHeader" class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><strong data-t="chooseMission" data-wp-frame-title>选择圣域任务</strong></header>
+      <div id="stageContent" class="stage-content" data-wp-frame-content="stage">
+        <p id="stageProgress" class="stage-progress" role="status" aria-live="polite" data-ta="missions"></p>
+        <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" role="status" aria-live="polite" aria-atomic="true" data-t="stageHint">拖动轨道，选择已解锁任务。</p></section>
+        <section id="atelierTab" class="tab-panel atelier-tab" hidden><div class="atelier-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="atelierTitle">光轨工坊</h2><p data-t="atelierIntro">选择已保存的光轨样式；外观不会影响任务平衡。</p></div></div><div id="trailStyles" class="trail-styles"></div><p id="atelierFeedback" aria-live="polite"></p></section>
+      </div>
+      <nav class="stage-tabs" data-wp-frame-stage-nav role="tablist" aria-label="Sanctuary preparation" data-ta="stageTabs"><button class="active" data-tab="missions" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-t="missions">任务</button><button data-tab="atelier" data-wp-frame-action="tab" data-wp-frame-stage-slot="equipment" data-t="atelier">光轨工坊</button></nav>
     </div>
   </section>
 
   <section id="battle" class="active-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><div class="progress-block"><small id="missionLabel"></small><strong id="progressValue">0%</strong></div><div class="battle-status"><span><b data-t="hearts">生命</b><strong id="heartsValue">3</strong></span><span><b data-t="time">时间</b><strong id="timeValue">90</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-wp-battle-utility="true" data-ta="help">?</button></header>
-        <div class="objective-row"><span id="objective"></span><small id="missionTwist"></small></div>
+    <div id="battleCanvas" class="battle-canvas" data-wp-frame-scene="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header id="battleHeader" class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><strong data-wp-frame-title data-wp-game-title>圣域光环</strong></header>
+      <div id="battleLive" class="battle-live" data-wp-frame-content="battle">
+        <div id="battleInfo" class="battle-info" aria-label="Battle status"><div><span data-t="missions">任务</span><strong id="missionLabel"></strong><b id="progressValue">0%</b></div><div><span data-t="hearts">生命</span><strong id="heartsValue">3</strong></div><div><span data-t="time">时间</span><strong id="timeValue">90</strong></div></div>
+        <div class="objective-row"><div class="objective-copy"><span id="objective"></span><small id="missionTwist"></small></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-wp-battle-utility="true" data-ta="help">?</button></div>
         <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="768" height="768" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D" aria-label="Sanctuary territory arena" data-ta="arenaLabel"></canvas><div id="touchPad" class="touch-pad" aria-label="Direction controls" data-ta="directionControls"><button data-dir="up" aria-label="Up" data-ta="up">↑</button><button data-dir="left" aria-label="Left" data-ta="left">←</button><button data-dir="down" aria-label="Down" data-ta="down">↓</button><button data-dir="right" aria-label="Right" data-ta="right">→</button></div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
@@ -97,8 +103,10 @@
     </div><div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="locales.js?v=20260824-main-stage-localization-v14"></script><script src="game.js?v=20260905-sanctuary-progress-refresh-v18&wp-audio=1.0.0"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script>
+  <select id="locale" hidden tabindex="-1" aria-hidden="true"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
+  </div>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="locales.js?v=20260824-main-stage-localization-v14"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script><script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script><script src="game.js?v=20260925-sanctuary-interface7-v19&amp;wp-audio=1.0.0"></script>
 </body>
 </html>

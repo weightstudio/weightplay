@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Un impulso riesce solo quando colore ed emblema si allineano entro la finestra di sincronizzazione visibile.",
   "The nearest marker did not match both required properties inside the window.": "Il marcatore più vicino non coincideva con entrambe le proprietà richieste nella finestra."
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["it"], {
+  "Numbered-Node Route Puzzle": "Rompicapo di percorsi con nodi numerati",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Collega tutti i nodi numerati nell’ordine, evita le rotte aeree bloccate in rosso e raggiungi il molo evidenziato.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "A Cloudline Skyport ogni turno è un rompicapo di percorsi: guida un dirigibile animale al molo evidenziato.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "Un percorso valido passa da tutti i nodi numerati nell’ordine, raggiunge il molo evidenziato, evita le rotte aeree bloccate in rosso e non si incrocia mai.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "Viene controllata solo la linea che disegni; saltare un nodo, attraversare una linea bloccata o incrociare il proprio percorso rende non valido il percorso inviato.",
+  "Choose an unlocked shift and read its flight goal.": "Scegli un turno sbloccato e leggi l’obiettivo del volo.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "Traccia un unico percorso continuo dall’aeronave, attraversa tutti i nodi numerati nell’ordine fino al molo evidenziato, poi rilascia.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "Completa l’obiettivo del volo. Ogni percorso non valido aggiunge un errore; al terzo errore il turno termina e viene offerto un nuovo tentativo gratuito.",
+  "Trace the whole path first; the visible line is the route the game checks.": "Pianifica prima l’intero percorso: la linea visibile è quella che il gioco controlla.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "Raggiungi i nodi nell’ordine ed evita le linee bloccate e il tuo stesso percorso.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "Nei 30 turni le sfide introducono fino a quattro nodi in ordine, tre rotte aeree bloccate, cinque disposizioni, moli-obiettivo variabili e obiettivi di volo sempre più impegnativi.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "Il controllo segue il percorso visibile campionato e non sostituisce mai ciò che hai disegnato con una linea retta nascosta.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "È un rompicapo di percorsi: non ci sono equipaggio, carburante, pezzi di ricambio, congestione, tempeste né operazioni di servizio dopo l’attracco.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "Saltare un nodo o visitarlo nell’ordine sbagliato, attraversare una linea rossa o incrociare il proprio percorso rende non valido il tracciato inviato e aggiunge un errore.",
+  "The shift ends and offers a free Retry.": "Il turno termina e offre un nuovo tentativo gratuito.",
+  "There are 30 shifts.": "Ci sono 30 turni.",
+  "What makes a route valid?": "Quando è valido un percorso?",
+  "What causes an Error?": "Che cosa aggiunge un errore?",
+  "What happens after three Errors?": "Che cosa succede dopo tre errori?",
+  "How many shifts are there?": "Quanti turni ci sono?"
+});

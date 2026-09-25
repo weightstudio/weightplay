@@ -9446,3 +9446,25 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Un pulso tiene éxito solo cuando el color y el emblema se alinean dentro de la ventana de sincronización visible.",
   "The nearest marker did not match both required properties inside the window.": "El marcador más cercano no coincidió con las dos propiedades requeridas dentro de la ventana."
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["es"], {
+  "Numbered-Node Route Puzzle": "Rompecabezas de rutas con nodos numerados",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Conecta todos los nodos numerados en orden, evita las rutas aéreas bloqueadas en rojo y llega al muelle resaltado.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "En Cloudline Skyport, cada turno es un rompecabezas de rutas: guía una aeronave animal hasta el muelle resaltado.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "Una ruta válida pasa por todos los nodos numerados en orden, llega al muelle resaltado, evita las rutas aéreas bloqueadas en rojo y nunca se cruza consigo misma.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "Solo se comprueba la línea que dibujas; saltarse un nodo, cruzar una línea bloqueada o cruzar tu propia ruta invalida la ruta enviada.",
+  "Choose an unlocked shift and read its flight goal.": "Elige un turno desbloqueado y lee su objetivo de vuelo.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "Arrastra una única ruta continua desde la aeronave, pasa por todos los nodos numerados en orden hasta el muelle resaltado y suelta.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "Completa el objetivo de vuelo. Cada ruta inválida añade un Error; tres errores terminan el turno y ofrecen un reintento gratis.",
+  "Trace the whole path first; the visible line is the route the game checks.": "Traza primero el recorrido completo; la línea visible es la ruta que comprueba el juego.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "Pasa por los nodos en orden y mantente lejos de las líneas bloqueadas y de tu propia ruta.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "A lo largo de 30 turnos, los retos incorporan hasta cuatro nodos en orden, tres rutas bloqueadas, cinco diseños, muelles objetivo cambiantes y objetivos de vuelo cada vez mayores.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "El validador sigue el recorrido visible muestreado; nunca sustituye lo que dibujaste por una línea recta oculta.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "Es un rompecabezas de rutas: no hay tripulación, combustible, piezas de reparación, congestión, tormentas ni tareas de servicio tras atracar.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "Saltarse un nodo o pasarlo en otro orden, cruzar una línea roja o cruzar tu propia ruta invalida el recorrido enviado y añade un Error.",
+  "The shift ends and offers a free Retry.": "El turno termina y ofrece un reintento gratis.",
+  "There are 30 shifts.": "Hay 30 turnos.",
+  "What makes a route valid?": "¿Qué hace que una ruta sea válida?",
+  "What causes an Error?": "¿Qué provoca un Error?",
+  "What happens after three Errors?": "¿Qué ocurre después de tres errores?",
+  "How many shifts are there?": "¿Cuántos turnos hay?"
+});

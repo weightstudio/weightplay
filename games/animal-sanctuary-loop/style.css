@@ -90,3 +90,21 @@
 /* Interface v4 keeps Result decisions in fixed equal tracks at every size. */
 .result-card .modal-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
 .modal-actions button:disabled{cursor:not-allowed;opacity:.5}
+
+/* Animal Sanctuary Loop's explicit Interface 7 frame owns shared chrome;
+   these scoped rules retain only the game's content and Canvas layout. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .main-group{min-height:0;background:none}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .main-screen{width:100%;height:auto;min-height:0;padding:0;grid-template-rows:auto auto;gap:12px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .main-hero{background:none;border:0;border-radius:0;padding:0;overflow:visible;gap:12px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .main-copy{gap:12px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .active-screen{background:none}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .stage-canvas{grid-template-rows:48px minmax(0,1fr) 56px;gap:8px;padding:0}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .stage-content{display:grid;grid-template-rows:auto minmax(0,1fr);gap:8px;min-height:0;padding:8px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .stage-progress{margin:0;padding:4px;text-align:center;color:var(--wp-ui-muted);font-size:13px;font-weight:700}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .stage-tabs button{min-height:44px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .stage-card{align-content:center}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .battle-live{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:8px;padding:8px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .objective-row{display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;gap:8px;min-height:44px;white-space:normal;overflow:visible;text-overflow:clip}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .objective-copy{display:grid;gap:2px;min-width:0;line-height:1.25}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .objective-copy :is(span,small){max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .help-action{width:44px;height:44px;min-width:44px;min-height:44px;border:2px solid var(--wp-ui-line);border-radius:14px;background:var(--wp-ui-control);color:var(--wp-ui-control-text);font-weight:900}

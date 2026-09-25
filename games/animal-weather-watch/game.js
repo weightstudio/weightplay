@@ -57,6 +57,8 @@
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.body.dir = locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); });
+    document.querySelector(".main-return")?.setAttribute("aria-label", copy("returnToWeightPlay"));
+    document.querySelector(".stage-tabs")?.setAttribute("aria-label", copy("forecastSections"));
     $("backBtn").setAttribute("aria-label", copy("back"));
     $("stageBackBtn").setAttribute("aria-label", copy("back"));
     $("settingsBtn").setAttribute("aria-label", copy("settings"));

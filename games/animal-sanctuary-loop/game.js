@@ -22,6 +22,15 @@
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
   const GAME_VERSION = "v14";
+  const screenFrame = window.WeightPlayScreenFrame.mount({
+    root: $("frameRoot"),
+    localeSelect: $("locale"),
+    scenes: {
+      main: { root: $("mainScreen"), header: $("mainHeader"), content: document.querySelector(".main-hero") },
+      stage: { root: $("stageCanvas"), header: $("stageHeader"), content: $("stageContent") },
+      battle: { root: $("battleCanvas"), header: $("battleHeader"), content: $("battleLive"), headerInfo: $("battleInfo") },
+    },
+  });
   const interfaceValidator = new URLSearchParams(location.search).get("qa") === "interface-validator";
   const localePack = window.AnimalSanctuaryLoopLocales;
   const localeCodes = localePack.codes;
@@ -291,6 +300,7 @@
     $("mainGroup").hidden = name !== "main";
     $("stage").hidden = name !== "stage";
     $("battle").hidden = name !== "battle";
+    screenFrame.activate(name);
     if (name !== "battle") stopLoop();
     if (name === "stage") {
       if (previousScreen !== "stage") selectedStageIndex = Math.min(save.unlocked, stages.length) - 1;
@@ -320,7 +330,7 @@
     button.type = "button";
     button.className = "stage-card";
     button.dataset.wpStagePoolNode = String(poolIndex + 1);
-    button.innerHTML = '<small></small><strong></strong><span></span><small class="stage-twist"></small><small class="stage-stars"></small>';
+    button.innerHTML = '<span class="stage-card-content" data-wp-item-content><small></small><strong></strong><span></span><small class="stage-twist"></small><small class="stage-stars"></small></span>';
     button.addEventListener("click", (event) => {
       if (heldScreenTransition === "main") return;
       const index = Number(button.dataset.stageIndex);
@@ -1421,12 +1431,14 @@
     stopLoop();
     (__wpNotifyMeasurement(), modal.hidden = false);
     $("battleLive").inert = true;
+    screenFrame.activate("battle", { covered: true });
     requestAnimationFrame(() => (focusTarget || modalButtons(modal)[0])?.focus());
   }
 
   function closeModal(modal, restoreFocus = true) {
     (__wpNotifyMeasurement(), modal.hidden = true);
     $("battleLive").inert = false;
+    screenFrame.activate("battle");
     if (run && !run.finished && !lifecycleSuspended) {
       (__wpNotifyMeasurement(), run.paused = false);
       ensureVisibleTick();
@@ -1508,6 +1520,7 @@
     (__wpNotifyMeasurement(), $("result").hidden = false);
     $("battleLive").hidden = true;
     $("battleLive").inert = true;
+    screenFrame.activate("battle", { covered: true });
     requestAnimationFrame(() => primaryAction.focus());
     window.WeightPlayAudio?.play?.(won ? "result.win" : "result.lose");
 

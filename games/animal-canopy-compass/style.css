@@ -377,11 +377,6 @@ body[data-wp-game-id="animal-canopy-compass"] :is(#stageScreen,#battleScreen) .b
   overflow: hidden;
   font-size: 0;
 }
-body[data-wp-game-id="animal-canopy-compass"] :is(#stageScreen,#battleScreen) .back-btn::before {
-  content: "←";
-  font-size: 1.25rem;
-  line-height: 1;
-}
 body[data-wp-game-id="animal-canopy-compass"] :is(#stageScreen,#battleScreen) .panel-head-actions {
   gap: 8px;
 }

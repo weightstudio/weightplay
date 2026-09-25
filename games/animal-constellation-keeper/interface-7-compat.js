@@ -81,14 +81,9 @@
       content.prepend(context);
     }
 
-    const help = $("battleSettingsBtn");
-    const actions = battle.querySelector(".battle-actions");
-    if (help && actions && !help.classList.contains("ck-battle-help")) {
-      help.className = "secondary-btn ck-battle-help";
-      help.removeAttribute("data-wp-battle-utility");
-      help.textContent = "?";
-      actions.append(help);
-    }
+    // The shared frame owns Battle utility controls. Preserve the authored
+    // utility node and its data marker in the Battle header so the frame can
+    // size and contain it at every logical Canvas viewport.
   }
 
   let resultOpen = false;

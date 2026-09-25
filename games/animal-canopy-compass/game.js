@@ -189,7 +189,7 @@
   const battleCanvas = () => document.querySelector(".battle-canvas");
   const battleContent = () => document.querySelector(".battle-content");
   const battleHeader = () => $("battleBack")?.closest("header");
-  const setBattleCovered = (active, hideContent = false) => {
+  const setBattleCovered = (active, hideContent = false, keepSettingsReachable = false) => {
     const content = battleContent();
     if (content) {
       content.inert = active;
@@ -197,12 +197,13 @@
       if (!active) content.hidden = false;
     }
     const header = battleHeader();
-    if (header) header.inert = active;
+    if (header) header.inert = active && !keepSettingsReachable;
     if ($("battleBack")) $("battleBack").disabled = active;
   };
   const setResultActive = (active) => {
     document.body.toggleAttribute("data-wp-canopy-result", active);
-    setBattleCovered(active, true);
+    // Keep the Battle Settings utility reachable in Result while its return is disabled.
+    setBattleCovered(active, true, active);
     if (!active && $("result")) $("result").hidden = true;
   };
 
@@ -479,6 +480,7 @@
     if (round.checkpoint && !state.badges.includes(round.id)) state.badges = [...state.badges, round.id];
     saveCampaign();
     updateProgress();
+    $("badge").textContent = `${state.completed.length}/${rounds.length}`;
     stageRailController?.refresh();
     $("status").textContent = t("correct");
     $("checkBtn").disabled = true;

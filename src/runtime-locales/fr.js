@@ -9450,3 +9450,25 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "The nearest marker did not match both required properties inside the window.": "Le marqueur le plus proche ne correspondait pas aux deux propriétés requises dans la fenêtre.",
   "Nouvelle partie": "Nouvelle partie"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["fr"], {
+  "Numbered-Node Route Puzzle": "Puzzle de parcours à nœuds numérotés",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Reliez tous les nœuds numérotés dans l’ordre, évitez les couloirs aériens bloqués en rouge et atteignez le quai indiqué.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "À Cloudline Skyport, chaque service est un puzzle de parcours : guidez un dirigeable animalier jusqu’au quai indiqué.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "Un parcours valide passe par tous les nœuds numérotés dans l’ordre, atteint le quai indiqué, évite les couloirs aériens bloqués en rouge et ne se croise jamais lui-même.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "Seule la ligne que vous tracez est vérifiée ; sauter un nœud, franchir une ligne bloquée ou croiser votre propre parcours invalide le trajet envoyé.",
+  "Choose an unlocked shift and read its flight goal.": "Choisissez un service déverrouillé et lisez son objectif de vol.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "Tracez un seul parcours continu depuis le dirigeable, passez par tous les nœuds numérotés dans l’ordre jusqu’au quai indiqué, puis relâchez.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "Atteignez l’objectif de vol. Chaque parcours invalide ajoute une erreur ; trois erreurs terminent le service et proposent une nouvelle tentative gratuite.",
+  "Trace the whole path first; the visible line is the route the game checks.": "Repérez d’abord tout le parcours ; la ligne visible est celle que le jeu vérifie.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "Passez par les nœuds dans l’ordre et évitez les lignes bloquées ainsi que votre propre parcours.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "Au fil des 30 services, les défis ajoutent jusqu’à quatre nœuds à relier dans l’ordre, trois couloirs bloqués, cinq configurations, des quais cibles variables et des objectifs de vol croissants.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "La validation suit le tracé visible échantillonné ; elle ne remplace jamais votre dessin par une ligne droite invisible.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "C’est un puzzle de parcours : il n’y a ni équipage, ni carburant, ni pièces de réparation, ni embouteillages, ni tempêtes, ni opération de service après l’amarrage.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "Sauter un nœud ou le visiter dans le désordre, franchir une ligne rouge ou croiser votre parcours invalide le trajet envoyé et ajoute une erreur.",
+  "The shift ends and offers a free Retry.": "Le service se termine et propose une nouvelle tentative gratuite.",
+  "There are 30 shifts.": "Il y a 30 services.",
+  "What makes a route valid?": "Qu’est-ce qui rend un parcours valide ?",
+  "What causes an Error?": "Qu’est-ce qui ajoute une erreur ?",
+  "What happens after three Errors?": "Que se passe-t-il après trois erreurs ?",
+  "How many shifts are there?": "Combien y a-t-il de services ?"
+});

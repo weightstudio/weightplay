@@ -10868,6 +10868,18 @@
       ["كم عدد المراحل؟", "هناك 30 لغزاً شبكياً أصلياً موزعة على ستة فصول من خمس مراحل."]
     ]
   };
+  const skyportDispatchArabicGuideOverride = {
+    gameplay: "لغز مسارات بعقد مرقمة", genre: ["ألغاز", "استراتيجية", "حيوانات"], skills: ["التخطيط", "التسلسل", "الاستدلال المكاني", "حل المشكلات"],
+    intro: "صِل كل العقد المرقمة بالترتيب، وتجنب الممرات الجوية المحظورة باللون الأحمر، ثم أصل إلى الرصيف المميز.",
+    story: ["في Cloudline Skyport، كل مناوبة لغز مسارات: وجّه منطادًا حيوانيًا إلى الرصيف المميز له."],
+    systems: ["المسار الصحيح يمر بجميع العقد المرقمة بالترتيب، ويصل إلى الرصيف المميز، ويتجنب الممرات الحمراء المحظورة ولا يتقاطع مع نفسه.", "اللعبة تتحقق من الخط الذي ترسمه فقط؛ تخطي عقدة أو عبور خط محظور أو تقاطع المسار مع نفسه يجعل المسار المرسل غير صالح."],
+    how: ["اختر مناوبة مفتوحة واقرأ هدف الرحلة.", "اسحب مسارًا متصلًا واحدًا من المنطاد، مرورًا بكل العقد المرقمة بالترتيب، حتى الرصيف المميز، ثم ارفع إصبعك.", "أكمل هدف الرحلة. يضيف كل مسار غير صالح خطأً واحدًا؛ وعند ثلاثة أخطاء تنتهي المناوبة وتُتاح إعادة المحاولة مجانًا."],
+    strategyTips: ["خطط للمسار كاملًا أولًا؛ فالخط الظاهر هو المسار الذي تتحقق منه اللعبة.", "مرّ بالعقد بالترتيب وابتعد عن الخطوط المحظورة وعن مسارك نفسه."],
+    progression: ["على مدى 30 مناوبة، تزداد التحديات تدريجيًا لتشمل حتى أربع عقد مرتبة، وثلاثة ممرات محظورة، وخمسة تخطيطات، وأرصفة مستهدفة وأهداف رحلات متغيرة."],
+    designNote: "يتبع التحقق المسار المرئي المأخوذ منه نقاط متتابعة؛ ولا يستبدل أبدًا ما رسمته بخط مستقيم مخفي.",
+    parent: "هذه لعبة ألغاز مسارات؛ لا يوجد طاقم أو وقود أو قطع إصلاح أو ازدحام أو عواصف أو خطوات خدمة بعد الرسو.",
+    faq: [["ما شروط المسار الصحيح؟", "المسار الصحيح يمر بجميع العقد المرقمة بالترتيب، ويصل إلى الرصيف المميز، ويتجنب الممرات الحمراء المحظورة ولا يتقاطع مع نفسه."], ["ما الذي يضيف خطأً؟", "تخطي عقدة أو المرور بها بترتيب خاطئ أو عبور خط أحمر أو تقاطع المسار مع نفسه يجعل المسار المرسل غير صالح ويضيف خطأً واحدًا."], ["ماذا يحدث عند ثلاثة أخطاء؟", "تنتهي المناوبة وتُتاح إعادة المحاولة مجانًا."], ["كم عدد المناوبات؟", "هناك 30 مناوبة."]]
+  };
   Object.assign(localizedGames["ar"]["animal-one-line"], {
     systems: [
       "تبدأ المحاولة الصحيحة من خلية المخلب المتوهج. تقود كل حركة إلى خلية مفتوحة أعلى الخلية الحالية أو أسفلها أو يمينها أو يسارها؛ لا يُسمح بالقفز القطري أو تكرار الخلايا.",
@@ -10980,7 +10992,7 @@
     },
     "animal-skyport-dispatch": {
       title: "Диспетчер небесного порта",
-      intro: "«Диспетчер небесного порта» — стратегическая игра о прокладке маршрутов в порту Небесной Линии. Направляйте прибывающие дирижабли к подходящим причалам и не допускайте заторов."
+      intro: "«Диспетчер небесного порта» — головоломка с маршрутами: проведите дирижабль через все пронумерованные узлы по порядку к выделенному причалу, избегая закрытых воздушных путей."
     }
   };
 
@@ -15418,18 +15430,18 @@
 
   games["animal-skyport-dispatch"] = {
     title: "Animal Skyport Dispatch", age: "13+", difficulty: "Medium to Challenging", time: "4-7 minutes per shift",
-    gameplay: "Airship Route Management", genre: ["Strategy", "Management", "Simulation", "Animal"], skills: ["Planning", "Prioritization", "Spatial Reasoning", "Resource Management"],
-    intro: "Animal Skyport Dispatch is a 30-shift route-management strategy game set at Cloudline Skyport. Read each arriving animal airship, draw a safe numbered-node route to a compatible dock, and complete all six dispatch chapters before the campaign ends.",
-    story: ["Moon Cap Orla runs the dispatch tower while Gear Horn Rux maintains cargo, passenger, and repair docks. Bubble Fin Nori handles urgent courier and rescue flights. Together they keep the Cloudline district moving through ordinary arrivals, cargo crossings, storms, repair windows, and a final festival rush.", "A shift succeeds by serving its required flights and reputation target. Matching specialist docks, drawing efficient routes, and completing optional mastery goals earn medals without making perfect play mandatory."],
-    systems: ["Tap a waiting flight, then drag from its holding marker to an open compatible dock. The visible curved route and the collision logic use the same sampled points, so the line under the pointer is the route the airship follows.", "Cargo Dock A serves freight efficiently, Passenger Dock B handles passenger and courier work, and Repair Dock C is best for damaged flights. A non-specialist dock costs extra time or crew; incompatible red states cannot be confirmed.", "Crossing active traffic creates an amber conflict and raises congestion. Storm cells slow routes and may damage flights unless a weather beacon protects the segment. Congestion recovers when traffic flows safely.", "Crew, fuel, and repair parts are limited during each shift. Serviced flights return crew, efficient routes save fuel, and repair parts should be reserved for damaged aircraft. Three unserved flights or full congestion ends the attempt with a free retry."],
-    how: ["Select an incoming animal airship and read its dock, patience, cargo or passenger need, and damage state.", "Drag from the holding marker to a compatible open dock while avoiding active routes, storms, and closed maintenance lanes.", "Release on the dock to confirm the route, then choose the required service action after docking.", "Serve the shift target, protect the three-flight miss budget, and use Next Shift or Shift Select from Result."],
-    strategyTips: ["Keep one dock and one approach lane available for urgent arrivals.", "Prefer specialist docks when patience is low, but accept a slower safe dock when a conflict would cost more congestion.", "Reserve repair parts for flights that cannot finish safely without them.", "Redraw before release when the preview crosses a storm or occupied route; the route line is authoritative."],
-    progression: ["Shifts 1-2 teach the numbered-node route and matching docks. Shift 3 introduces the first blocked airway, and later chapters add more nodes and blocked-airway combinations across the 30-shift, six-chapter campaign."],
-    designNote: "The game is active dispatch rather than idle automation: every flight needs a route and a service decision. Main, Stage, Battle, and Result preserve the shared responsive Canvas rules, with the Battle field using the full safe width up to 920 pixels and the General 56-pixel reserve kept outside the Canvas. Touch and mouse use the same sampled route geometry so the drawn line stays aligned with the finger or pointer.",
-    parent: "No account is required. Thirty shift unlocks across six dispatch chapters, medals, reputation, upgrades, logbook discoveries, tutorial state, and settings remain in this browser. Optional Diamond actions require confirmation and are never required to finish all 30 shifts.",
-    faq: [["How many shifts are included?", "There are 30 authored shifts across six dispatch chapters; early shifts teach the route rule and later shifts add blocked airways and more numbered nodes."], ["How do I draw a route?", "Drag from the selected flight's holding marker through the numbered nodes to a compatible open dock and release on the dock."], ["Why is a route amber?", "It crosses active traffic and will raise congestion while both flights occupy the conflict."], ["What causes failure?", "The shift ends at full congestion or after three flights leave unserved."], ["Is retry free?", "Yes. A failed shift always offers a free retry first."], ["What is saved?", "Shift progress, medals, reputation, upgrades, discoveries, tutorial state, and settings stay in this browser."], ["Are Diamonds required?", "No. Optional contract rerolls and insurance require confirmation and are not needed for completion."], ["What happens after Shift 30?", "Result returns to Shift Select after the 30-shift campaign; there is no nonexistent Shift 31."]]
+    gameplay: "Numbered-Node Route Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Planning", "Sequencing", "Spatial Reasoning", "Problem Solving"],
+    intro: "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.",
+    story: ["At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock."],
+    systems: ["A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.", "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid."],
+    how: ["Choose an unlocked shift and read its flight goal.", "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.", "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry."],
+    strategyTips: ["Trace the whole path first; the visible line is the route the game checks.", "Visit nodes in order and keep clear of blocked lines and your own route."],
+    progression: ["Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals."],
+    designNote: "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.",
+    parent: "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.",
+    faq: [["What makes a route valid?", "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself."], ["What causes an Error?", "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error."], ["What happens after three Errors?", "The shift ends and offers a free Retry."], ["How many shifts are there?", "There are 30 shifts."]]
   };
-  gameplayProfiles["animal-skyport-dispatch"] = { gameplay: "Airship Route Management", genre: ["Strategy", "Management", "Simulation", "Animal"] };
+  gameplayProfiles["animal-skyport-dispatch"] = { gameplay: "Numbered-Node Route Puzzle", genre: ["Puzzle", "Strategy", "Animal"] };
   localizedGames["zh-Hant"]["animal-skyport-dispatch"] = {
     ...games["animal-skyport-dispatch"], title: "動物天空港調度隊", age: "13+", difficulty: "中等至具挑戰性", time: "每班約 4 至 7 分鐘", gameplay: "飛船航線調度", genre: ["策略", "管理", "模擬", "動物"], skills: ["規劃", "優先順序", "空間推理", "資源管理"],
     intro: "《動物天空港調度隊》是以雲際天空港為舞台的 30 班次航線管理策略遊戲。閱讀每艘動物飛船的需求，依序通過編號節點畫出通往相容碼頭的安全路線，完成六個調度章節。",
@@ -15442,9 +15454,33 @@
     parent: "不需要帳號。六個調度章節的 30 班次解鎖、勳章、聲望、升級、圖鑑、教學與設定只保存在目前瀏覽器。可選鑽石操作都要先確認，而且完成全部 30 班次不需要使用鑽石。",
     faq: [["共有幾個班次？", "共有六章、30 個人工設計班次；前期教導航線規則，後期加入封鎖航線與更多編號節點。"], ["怎麼畫航線？", "從已選飛船的等待標記依序通過編號節點，拖到相容空碼頭並在碼頭上放開。"], ["航線為什麼變成琥珀色？", "它穿越使用中的交通，兩艘飛船同時通過時會提高壅塞。"], ["什麼情況會失敗？", "壅塞全滿或有三艘飛船未服務離場時，班次就會結束。"], ["重試免費嗎？", "是，失敗後會優先提供免費重試。"], ["哪些資料會保存？", "班次、勳章、聲望、升級、圖鑑、教學與設定會留在目前瀏覽器。"], ["一定要用鑽石嗎？", "不用；合約重抽與保險都要確認，也不是通關必要條件。"], ["30 班次之後呢？", "完成 30 班次後，結算會返回班次選擇，不會出現不存在的第 31 班。"]]
   };
-  localizedGameplayProfiles["zh-Hant"]["animal-skyport-dispatch"] = { gameplay: "飛船航線調度", genre: ["策略", "管理", "模擬", "動物"] };
-  localizedGames["zh-Hans"]["animal-skyport-dispatch"] = { ...localizedGames["zh-Hant"]["animal-skyport-dispatch"], title: "动物天空港调度队", gameplay: "飞船航线调度" };
-  localizedGameplayProfiles["zh-Hans"]["animal-skyport-dispatch"] = { gameplay: "飞船航线调度", genre: ["策略", "管理", "模拟", "动物"] };
+  localizedGameplayProfiles["zh-Hant"]["animal-skyport-dispatch"] = { gameplay: "編號節點航線謎題", genre: ["益智", "策略", "動物"] };
+  localizedGames["zh-Hans"]["animal-skyport-dispatch"] = { ...localizedGames["zh-Hant"]["animal-skyport-dispatch"], title: "动物天空港调度队", gameplay: "编号节点航线谜题" };
+  localizedGameplayProfiles["zh-Hans"]["animal-skyport-dispatch"] = { gameplay: "编号节点航线谜题", genre: ["益智", "策略", "动物"] };
+  Object.assign(localizedGames["zh-Hant"]["animal-skyport-dispatch"], {
+    gameplay: "編號節點航線謎題", genre: ["益智", "策略", "動物"], skills: ["規劃", "順序判斷", "空間推理", "解決問題"],
+    intro: "依序連接所有編號節點、避開紅色封鎖航線，抵達醒目的目標碼頭。",
+    story: ["在雲際天空港，每個班次都是一道航線謎題：引導動物飛船抵達標示的碼頭。"],
+    systems: ["有效航線必須依序通過所有編號節點、抵達醒目的目標碼頭、避開紅色封鎖航線，而且不能與自身交叉。", "遊戲只判定你畫出的線；漏掉節點、穿越封鎖線或與自己的航線交叉，都會讓送出的路線無效。"],
+    how: ["選擇已解鎖班次並查看飛行目標。", "從飛船起點拖曳一條連續航線，依序通過所有編號節點並連到醒目的目標碼頭，再放開。", "完成飛行目標。每次無效路線會增加一個 Error；累積三個 Error 後班次結束，並提供免費 Retry。"],
+    strategyTips: ["先在心中走完整條路；畫面上看得到的線就是遊戲判定的路線。", "依序通過節點，並避開封鎖線與自己的航線。"],
+    progression: ["30 個班次逐步加入最多四個依序通過的節點、最多三條封鎖航線、五種版型、變化的目標碼頭與逐漸提高的飛行目標。"],
+    designNote: "路線判定會依照畫面上取樣後的實際路徑進行，不會把玩家畫出的路線偷換成看不見的直線。",
+    parent: "這是一款航線謎題：沒有組員、燃料、維修零件、壅塞、暴風，也沒有靠港後的服務步驟。",
+    faq: [["怎樣才算有效航線？", "有效航線必須依序通過所有編號節點、抵達醒目的目標碼頭、避開紅色封鎖航線，而且不能與自身交叉。"], ["什麼情況會增加 Error？", "漏掉或錯序通過節點、穿越紅色航線，或與自己的路線交叉，都會讓送出的路線無效並增加一個 Error。"], ["累積三個 Error 後會怎樣？", "班次會結束，並提供免費 Retry。"], ["共有幾個班次？", "共有 30 個班次。"]]
+  });
+  Object.assign(localizedGames["zh-Hans"]["animal-skyport-dispatch"], {
+    gameplay: "编号节点航线谜题", genre: ["益智", "策略", "动物"], skills: ["规划", "顺序判断", "空间推理", "解决问题"],
+    intro: "依序连接所有编号节点、避开红色封锁航线，抵达醒目的目标码头。",
+    story: ["在云际天空港，每个班次都是一道航线谜题：引导动物飞船抵达标示的码头。"],
+    systems: ["有效航线必须依序通过所有编号节点、抵达醒目的目标码头、避开红色封锁航线，而且不能与自身交叉。", "游戏只判定你画出的线；漏掉节点、穿越封锁线或与自己的航线交叉，都会让提交的路线无效。"],
+    how: ["选择已解锁班次并查看飞行目标。", "从飞船起点拖曳一条连续航线，依序通过所有编号节点并连接到醒目的目标码头，然后松开。", "完成飞行目标。每次无效路线会增加一个 Error；累计三个 Error 后班次结束，并提供免费 Retry。"],
+    strategyTips: ["先在心中走完整条路线；画面上可见的线就是游戏判定的路线。", "依序通过节点，并避开封锁线和自己的航线。"],
+    progression: ["30 个班次逐步加入最多四个依序通过的节点、最多三条封锁航线、五种布局、变化的目标码头和逐渐提高的飞行目标。"],
+    designNote: "路线判定会遵循画面上取样后的实际路径，不会把玩家画出的路线替换成看不见的直线。",
+    parent: "这是一款航线谜题：没有机组人员、燃料、维修零件、拥堵、风暴，也没有靠港后的服务步骤。",
+    faq: [["怎样才算有效航线？", "有效航线必须依序通过所有编号节点、抵达醒目的目标码头、避开红色封锁航线，而且不能与自身交叉。"], ["什么情况会增加 Error？", "漏掉或错序通过节点、穿越红色航线，或与自己的路线交叉，都会让提交的路线无效并增加一个 Error。"], ["累计三个 Error 后会怎样？", "班次会结束，并提供免费 Retry。"], ["共有多少个班次？", "共有 30 个班次。"]]
+  });
 
   games["animal-color-springs"] = {
     title: "Animal Color Springs", difficulty: "Easy to Challenging", time: "2-6 minutes per stage", gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Problem Solving", "Focus"], relatedIds: ["animal-block-grove", "animal-screw-workshop", "animal-parking-patrol"],
@@ -18759,6 +18795,7 @@
       localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
     }
   }
+  Object.assign(localizedGames["ar"]["animal-skyport-dispatch"], skyportDispatchArabicGuideOverride);
   const spiderRelatedCardLocaleCopy = {
     "zh-Hant": {
       "klondike-solitaire": { title: "克朗代克接龍", intro: "經典 52 張牌玩法：把四個花色從 A 排到 K，同時管理牌桌、牌庫與棄牌堆。" },

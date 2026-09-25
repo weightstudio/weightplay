@@ -9448,3 +9448,25 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Импульс срабатывает только при совпадении цвета и эмблемы в видимом временном окне.",
   "The nearest marker did not match both required properties inside the window.": "Ближайший маркер не совпал с обоими требуемыми свойствами в пределах окна."
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["ru"], {
+  "Numbered-Node Route Puzzle": "Головоломка с маршрутами по пронумерованным узлам",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Соедините все пронумерованные узлы по порядку, обходите красные закрытые воздушные пути и достигните выделенного причала.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "В Cloudline Skyport каждая смена — это головоломка с маршрутами: проведите дирижабль с животными к выделенному причалу.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "Правильный маршрут проходит через все пронумерованные узлы по порядку, достигает выделенного причала, обходит красные закрытые воздушные пути и не пересекает сам себя.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "Проверяется только нарисованная вами линия: пропуск узла, пересечение закрытой линии или собственного маршрута делает отправленный путь недействительным.",
+  "Choose an unlocked shift and read its flight goal.": "Выберите открытую смену и изучите цель рейса.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "Проложите непрерывный маршрут от дирижабля через все пронумерованные узлы по порядку к выделенному причалу, затем отпустите.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "Выполните цель рейса. Каждый неверный маршрут добавляет одну ошибку; три ошибки завершают смену и предлагают бесплатную повторную попытку.",
+  "Trace the whole path first; the visible line is the route the game checks.": "Сначала продумайте весь путь: игра проверяет именно видимую линию маршрута.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "Проходите узлы по порядку, не пересекая закрытые линии и собственный маршрут.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "За 30 смен сложность растёт: до четырёх узлов по порядку, до трёх закрытых воздушных путей, пять схем, меняющиеся целевые причалы и более сложные цели рейсов.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "Проверка следует видимому маршруту, построенному по точкам, и никогда не подменяет ваш рисунок скрытой прямой линией.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "Это головоломка с маршрутами: здесь нет экипажа, топлива, запчастей, заторов, штормов или обслуживания после стыковки.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "Пропуск узла, нарушение порядка, пересечение красной линии или собственного маршрута делает отправленный путь недействительным и добавляет одну ошибку.",
+  "The shift ends and offers a free Retry.": "Смена завершается и предлагает бесплатную повторную попытку.",
+  "There are 30 shifts.": "Всего 30 смен.",
+  "What makes a route valid?": "Каким должен быть правильный маршрут?",
+  "What causes an Error?": "Что добавляет ошибку?",
+  "What happens after three Errors?": "Что произойдёт после трёх ошибок?",
+  "How many shifts are there?": "Сколько всего смен?"
+});

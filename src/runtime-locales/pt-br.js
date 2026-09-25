@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Um pulso é bem-sucedido apenas quando a cor e o emblema se alinham dentro da janela de tempo visível.",
   "The nearest marker did not match both required properties inside the window.": "O marcador mais próximo não correspondeu às duas propriedades necessárias dentro da janela."
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["pt-BR"], {
+  "Numbered-Node Route Puzzle": "Quebra-cabeça de rotas com nós numerados",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Conecte todos os nós numerados em ordem, evite as rotas aéreas bloqueadas em vermelho e chegue ao píer destacado.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "No Cloudline Skyport, cada turno é um quebra-cabeça de rotas: guie uma aeronave animal até o píer destacado.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "Uma rota válida passa por todos os nós numerados em ordem, chega ao píer destacado, evita as rotas aéreas bloqueadas em vermelho e nunca cruza a si mesma.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "Somente a linha que você desenha é verificada; pular um nó, cruzar uma rota bloqueada ou cruzar seu próprio trajeto invalida a rota enviada.",
+  "Choose an unlocked shift and read its flight goal.": "Escolha um turno desbloqueado e leia o objetivo do voo.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "Arraste uma única rota contínua a partir da aeronave, passe por todos os nós numerados em ordem até o píer destacado e solte.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "Conclua o objetivo do voo. Cada rota inválida acrescenta um Erro; três erros encerram o turno e oferecem uma nova tentativa grátis.",
+  "Trace the whole path first; the visible line is the route the game checks.": "Planeje o trajeto inteiro primeiro; a linha visível é a rota verificada pelo jogo.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "Passe pelos nós em ordem e mantenha distância das linhas bloqueadas e da sua própria rota.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "Ao longo de 30 turnos, os desafios aumentam para até quatro nós em ordem, três rotas aéreas bloqueadas, cinco layouts, píeres-alvo variados e objetivos de voo crescentes.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "A validação acompanha o trajeto visível amostrado; nunca substitui o que você desenhou por uma linha reta oculta.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "Este é um quebra-cabeça de rotas: não há tripulação, combustível, peças de reparo, congestionamento, tempestades nem etapas de serviço após a atracação.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "Pular um nó ou visitá-lo fora de ordem, cruzar uma linha vermelha ou cruzar a própria rota invalida o trajeto enviado e acrescenta um Erro.",
+  "The shift ends and offers a free Retry.": "O turno termina e oferece uma nova tentativa grátis.",
+  "There are 30 shifts.": "São 30 turnos.",
+  "What makes a route valid?": "O que torna uma rota válida?",
+  "What causes an Error?": "O que causa um Erro?",
+  "What happens after three Errors?": "O que acontece após três erros?",
+  "How many shifts are there?": "Quantos turnos existem?"
+});

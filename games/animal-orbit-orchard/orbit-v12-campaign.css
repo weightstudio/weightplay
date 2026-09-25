@@ -177,6 +177,34 @@ body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .pattern-card li {
   padding: 7px 10px;
   border-radius: 8px;
   background: rgb(255 255 255 / 8%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .pattern-orbit-marker {
+  position: relative;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgb(224 233 255 / 70%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #d9e9ff 0 2px, transparent 3px), rgb(255 255 255 / 6%);
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .pattern-orbit-marker::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffe391;
+  box-shadow: 0 0 8px #ffe391;
+  content: "";
+  transform: rotate(var(--pattern-angle)) translateX(10px);
+  transform-origin: 0 0;
 }
 
 body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .pattern-card button {
@@ -217,4 +245,43 @@ body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .pattern-card button 
   body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .campaign-choice-row {
     flex-wrap: wrap;
   }
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .campaign-progress {
+  margin: 0 18px 8px;
+  padding: 7px 11px;
+  border: 1px solid rgb(40 127 121 / 22%);
+  border-radius: 10px;
+  background: #eff8f4;
+  color: #155e63;
+  font-size: .88rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .campaign-stage-card {
+  min-height: 158px;
+  gap: 7px;
+  padding: 14px;
+  border-color: #b8d8d1;
+  box-shadow: 0 5px 14px rgb(28 81 90 / 9%);
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .campaign-stage-number {
+  color: #287f79;
+  font-size: .78rem;
+  font-weight: 900;
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .campaign-stage-card.is-checkpoint {
+  border-color: #d9a946;
+  box-shadow: inset 0 0 0 1px rgb(239 189 92 / 40%), 0 5px 14px rgb(28 81 90 / 9%);
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .campaign-stage-card.is-cleared {
+  background: linear-gradient(145deg, #f7fff9, #e7f5ed);
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .campaign-stage-card:disabled {
+  filter: saturate(.58);
 }

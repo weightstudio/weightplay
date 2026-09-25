@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Ein Impuls gelingt nur, wenn Farbe und Emblem innerhalb des sichtbaren Zeitfensters ausgerichtet sind.",
   "The nearest marker did not match both required properties inside the window.": "Die nächste Markierung stimmte innerhalb des Fensters nicht mit beiden erforderlichen Eigenschaften überein."
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["de"], {
+  "Numbered-Node Route Puzzle": "Routenrätsel mit nummerierten Knoten",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Verbinde alle nummerierten Knoten der Reihe nach, meide rot markierte gesperrte Luftwege und erreiche das hervorgehobene Dock.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "Am Cloudline Skyport ist jede Schicht ein Routenrätsel: Führe ein Tierluftschiff zum hervorgehobenen Dock.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "Eine gültige Route führt der Reihe nach durch alle nummerierten Knoten zum hervorgehobenen Dock, meidet rot markierte gesperrte Luftwege und kreuzt sich nicht selbst.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "Geprüft wird nur die gezeichnete Linie. Einen Knoten auszulassen, eine gesperrte Linie zu kreuzen oder die eigene Route zu überqueren, macht die eingereichte Route ungültig.",
+  "Choose an unlocked shift and read its flight goal.": "Wähle eine freigeschaltete Schicht und lies das Flugziel.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "Ziehe eine durchgehende Route vom Luftschiff durch alle nummerierten Knoten der Reihe nach bis zum hervorgehobenen Dock und lasse dann los.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "Erreiche das Flugziel. Jede ungültige Route zählt einen Fehler; beim dritten Fehler endet die Schicht und ein kostenloser neuer Versuch wird angeboten.",
+  "Trace the whole path first; the visible line is the route the game checks.": "Plane zuerst den ganzen Weg. Die sichtbare Linie ist die Route, die das Spiel prüft.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "Besuche die Knoten der Reihe nach und meide gesperrte Linien sowie deine eigene Route.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "In 30 Schichten steigen die Anforderungen: bis zu vier Knoten in Reihenfolge, drei gesperrte Luftwege, fünf Layouts, wechselnde Zieldocks und anspruchsvollere Flugziele.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "Die Routenprüfung folgt dem sichtbaren, abgetasteten Weg und ersetzt deine Zeichnung nie durch eine unsichtbare Gerade.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "Dies ist ein Routenrätsel: Es gibt keine Besatzung, keinen Treibstoff, keine Ersatzteile, keinen Stau, keine Stürme und keine Bedienung nach dem Andocken.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "Einen Knoten auszulassen oder in falscher Reihenfolge zu besuchen, eine rote Linie oder die eigene Route zu kreuzen, macht den eingereichten Weg ungültig und zählt einen Fehler.",
+  "The shift ends and offers a free Retry.": "Die Schicht endet und bietet einen kostenlosen neuen Versuch.",
+  "There are 30 shifts.": "Es gibt 30 Schichten.",
+  "What makes a route valid?": "Wann ist eine Route gültig?",
+  "What causes an Error?": "Was zählt als Fehler?",
+  "What happens after three Errors?": "Was passiert nach drei Fehlern?",
+  "How many shifts are there?": "Wie viele Schichten gibt es?"
+});

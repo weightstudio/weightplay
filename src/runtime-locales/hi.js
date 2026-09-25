@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "पल्स तभी सफल होता है जब दिखाई देने वाली समय विंडो में रंग और प्रतीक मेल खाते हैं।",
   "The nearest marker did not match both required properties inside the window.": "सबसे निकटतम मार्कर विंडो के भीतर दोनों आवश्यक गुणों से मेल नहीं खाता था।"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["hi"], {
+  "Numbered-Node Route Puzzle": "क्रमांकित नोडों वाली मार्ग-पहेली",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "सभी क्रमांकित नोड सही क्रम में जोड़ें, लाल रंग के बंद हवाई मार्गों से बचें और हाइलाइट किए गए डॉक तक पहुँचें।",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "Cloudline Skyport में हर शिफ्ट एक मार्ग-पहेली है: पशु हवाई जहाज़ को उसके हाइलाइट किए गए डॉक तक पहुँचाएँ।",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "सही मार्ग में सभी क्रमांकित नोड क्रम से आते हैं, वह हाइलाइट किए गए डॉक तक पहुँचता है, लाल बंद हवाई मार्गों से बचता है और खुद को कभी नहीं काटता।",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "जाँची केवल वही रेखा जाती है जो आप बनाते हैं; कोई नोड छोड़ना, बंद रेखा पार करना या अपने मार्ग को काटना भेजे गए मार्ग को अमान्य बनाता है।",
+  "Choose an unlocked shift and read its flight goal.": "खुली हुई शिफ्ट चुनें और उसका उड़ान लक्ष्य पढ़ें।",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "हवाई जहाज़ से एक लगातार मार्ग खींचें, सभी क्रमांकित नोड क्रम से पार करें, हाइलाइट किए गए डॉक तक जाएँ और फिर छोड़ दें।",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "उड़ान लक्ष्य पूरा करें। हर अमान्य मार्ग से एक त्रुटि जुड़ती है; तीन त्रुटियों पर शिफ्ट समाप्त होती है और मुफ़्त पुनः प्रयास मिलता है।",
+  "Trace the whole path first; the visible line is the route the game checks.": "पहले पूरा रास्ता सोच लें; दिखाई देने वाली रेखा ही वह मार्ग है जिसकी खेल जाँच करता है।",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "नोड क्रम से पार करें और बंद रेखाओं तथा अपने ही मार्ग से दूर रहें।",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "30 शिफ्टों में चुनौती बढ़ती है: क्रम से पार करने के लिए अधिकतम चार नोड, अधिकतम तीन बंद हवाई मार्ग, पाँच लेआउट, बदलते लक्ष्य-डॉक और बढ़ते उड़ान लक्ष्य।",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "मार्ग-जाँच दिखाई देने वाले नमूना-पथ का अनुसरण करती है; आपके बनाए मार्ग की जगह कभी कोई छिपी सीधी रेखा नहीं रखती।",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "यह मार्ग-पहेली है: इसमें चालक दल, ईंधन, मरम्मत के पुर्ज़े, भीड़, तूफ़ान या डॉक पर पहुँचने के बाद सेवा के चरण नहीं हैं।",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "नोड छोड़ने या गलत क्रम में जाने, लाल रेखा पार करने या अपने मार्ग को काटने से भेजा गया रास्ता अमान्य होता है और एक त्रुटि जुड़ती है।",
+  "The shift ends and offers a free Retry.": "शिफ्ट समाप्त होती है और मुफ़्त पुनः प्रयास मिलता है।",
+  "There are 30 shifts.": "कुल 30 शिफ्टें हैं।",
+  "What makes a route valid?": "सही मार्ग के लिए क्या ज़रूरी है?",
+  "What causes an Error?": "त्रुटि किससे जुड़ती है?",
+  "What happens after three Errors?": "तीन त्रुटियों के बाद क्या होता है?",
+  "How many shifts are there?": "कुल कितनी शिफ्टें हैं?"
+});

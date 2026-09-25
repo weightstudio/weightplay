@@ -363,3 +363,56 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
     width: 100% !important;
   }
 }
+
+/* v12 authored campaign: dynamic board sizes, sanctuary clues, and bitmap props. */
+.stage-list.stage-rail { align-items:center; }
+.stage-card { justify-content:flex-start; }
+.stage-card strong { line-height:1.25; }
+.stage-card span { font-size:.92rem; }
+.stage-card.checkpoint b { color:#9a5c17; }
+.battle-content { grid-template-columns:minmax(0,1fr) minmax(0,1fr); row-gap:10px; }
+.battle-content > .mission-row, .battle-content > #zoneCard, .battle-content > #ruleList { grid-column:1 / -1; }
+.zone-card { min-width:0; }
+.zone-clues { display:flex; flex-wrap:wrap; gap:8px; }
+.zone-clue { min-height:38px; display:flex; align-items:center; padding:7px 10px; border:1px solid var(--line); border-radius:12px; background:#f3f0df; color:var(--deep-leaf); font-size:.84rem; font-weight:850; }
+.zone-clue.is-mismatch { border-color:var(--coral); background:#ffe4d9; color:#a94c40; }
+#lensCount { gap:7px; white-space:normal; }
+#lensCount img, .lens-use img { width:26px; height:26px; object-fit:contain; }
+.lens-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px; }
+.lens-use { min-height:44px; display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--deep-leaf); font-weight:850; }
+.lens-use:disabled { cursor:not-allowed; opacity:.58; }
+.lens-note { flex-basis:100%; margin:0; color:var(--muted); font-size:.82rem; }
+.habitat-grid { grid-template-columns:repeat(var(--board-size,3),minmax(0,1fr)); }
+.cell { position:relative; min-height:0; padding:2px; overflow:hidden; }
+.cell.is-stone { display:grid; place-items:center; background:#dedfd3; border-color:#96998d; cursor:not-allowed; }
+.cell.is-stone img { width:78%; height:78%; object-fit:contain; }
+.zone-marker { position:absolute; inset-block-start:2px; inset-inline-start:3px; z-index:1; min-width:15px; height:15px; display:grid; place-items:center; padding:0 3px; border-radius:99px; background:#fff5cb; color:#5a6730; font-size:10px; font-weight:950; line-height:1; }
+.route-marker { position:absolute; inset-block-end:1px; inset-inline-end:3px; z-index:1; min-width:15px; height:15px; display:grid; place-items:center; border-radius:99px; background:#fff; color:#664789; box-shadow:0 1px 3px #26374655; font-size:10px; font-weight:950; line-height:1; }
+.cell[data-route="0"], .cell[data-route="2"] { box-shadow:inset 0 0 0 2px #8566a4; }
+.cell[data-route="3"] { border-style:dashed; }
+.rule-list { grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:6px 18px; margin:0; padding:2px 18px 8px 32px; color:var(--muted); font-size:.82rem; line-height:1.4; }
+.checkpoint-reward { padding:10px 12px; border-radius:12px; background:#fff5d3; color:#72521b !important; font-weight:900; }
+.visually-hidden { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important; }
+@media (max-width:700px) {
+  .battle-content { grid-template-columns:minmax(0,1fr); }
+  .battle-content > .mission-row, .battle-content > #zoneCard, .battle-content > #ruleList { grid-column:1; }
+  .clue-card, .grid-card { padding:12px; }
+  .clue-list { grid-template-columns:repeat(var(--board-size,5),minmax(0,1fr)); }
+  .habitat-grid { width:min(390px,100%); gap:5px; }
+  .cell { min-height:38px; border-radius:10px; font-size:clamp(1.1rem,5vw,1.7rem); }
+  .rule-list { padding-inline-start:24px; }
+}
+@media (min-width:701px) {
+  .zone-clues { gap:10px; }
+  .zone-clue { min-width:120px; }
+}
+.mission-row { padding:8px 12px; border:1px solid rgba(79,125,94,.23); border-radius:16px; background:rgba(255,253,247,.95); box-shadow:0 8px 20px rgba(49,91,73,.1); }
+.cell.is-stone::before { content:none !important; }
+@media (max-width:700px) {
+  .battle-content[data-board-size="3"] { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+  .battle-content[data-board-size="3"] > .mission-row,
+  .battle-content[data-board-size="3"] > #zoneCard,
+  .battle-content[data-board-size="3"] > #ruleList { grid-column:1 / -1; }
+  .battle-content[data-board-size="3"] > .clue-card { grid-column:1; grid-row:2; }
+  .battle-content[data-board-size="3"] > .grid-card { grid-column:2; grid-row:2; }
+}

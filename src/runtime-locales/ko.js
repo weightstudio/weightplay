@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "보이는 타이밍 창 안에서 색상과 엠블럼이 모두 맞아야 펄스가 성공합니다.",
   "The nearest marker did not match both required properties inside the window.": "가장 가까운 마커는 창 안에서 필요한 두 속성을 모두 충족하지 못했습니다."
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["ko"], {
+  "Numbered-Node Route Puzzle": "번호 노드 경로 퍼즐",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "모든 번호 노드를 순서대로 지나고 빨간 차단 항로를 피해 강조된 도크에 도착하세요.",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "Cloudline Skyport의 각 교대는 항로 퍼즐입니다. 동물 비행선을 강조된 도크까지 안내하세요.",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "유효한 항로는 모든 번호 노드를 순서대로 지나 강조된 도크에 도착하고, 빨간 차단 항로와 자기 교차를 피해야 합니다.",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "그린 선만 판정됩니다. 노드를 건너뛰거나 차단선을 가로지르거나 자신의 항로와 교차하면 제출한 경로가 무효입니다.",
+  "Choose an unlocked shift and read its flight goal.": "해제된 교대를 선택하고 비행 목표를 확인하세요.",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "비행선에서 하나의 연속된 경로를 드래그해 모든 번호 노드를 순서대로 지나 강조된 도크까지 연결한 뒤 놓으세요.",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "비행 목표를 완료하세요. 무효 경로마다 Error가 1씩 추가되고 3개가 되면 교대가 끝나며 무료 Retry가 제공됩니다.",
+  "Trace the whole path first; the visible line is the route the game checks.": "먼저 전체 경로를 계획하세요. 화면에 보이는 선이 게임에서 판정하는 경로입니다.",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "노드를 순서대로 지나고 차단선과 자신의 경로를 피하세요.",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "30개 교대에 걸쳐 순서대로 지나야 할 노드는 최대 4개, 차단 항로는 최대 3개, 레이아웃은 5종으로 늘어나며 도크와 비행 목표도 달라집니다.",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "경로 판정은 화면에 표시된 샘플 경로를 따르며, 플레이어가 그린 선을 보이지 않는 직선으로 바꾸지 않습니다.",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "이 게임은 항로 퍼즐입니다. 승무원, 연료, 수리 부품, 혼잡, 폭풍, 도킹 후 정비 단계는 없습니다.",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "노드를 건너뛰거나 순서를 틀리거나 빨간 선 또는 자신의 경로를 가로지르면 제출한 경로가 무효가 되고 Error가 1 추가됩니다.",
+  "The shift ends and offers a free Retry.": "교대가 끝나고 무료 Retry가 제공됩니다.",
+  "There are 30 shifts.": "교대는 총 30개입니다.",
+  "What makes a route valid?": "유효한 경로는 어떤 조건을 충족해야 하나요?",
+  "What causes an Error?": "무엇이 Error를 추가하나요?",
+  "What happens after three Errors?": "Error가 3개가 되면 어떻게 되나요?",
+  "How many shifts are there?": "교대는 몇 개 있나요?"
+});

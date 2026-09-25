@@ -9447,3 +9447,25 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "見えるタイミングウィンドウ内で色とエンブレムが揃うと、パルスが成功します。",
   "The nearest marker did not match both required properties inside the window.": "最も近いマーカーはウィンドウ内で必要な2つの属性に一致しませんでした。"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales["ja"], {
+  "Numbered-Node Route Puzzle": "番号ノードのルートパズル",
+  "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "すべての番号付きノードを順番に通り、赤い通行禁止空域を避け、ハイライトされたドックに到達します。",
+  "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "Cloudline Skyportでは、各シフトが航路パズルです。動物飛行船をハイライトされたドックまで導きます。",
+  "A valid route visits every numbered node in order, reaches the highlighted dock, avoids red blocked airways, and never crosses itself.": "有効な航路は、すべての番号付きノードを順番に通り、ハイライトされたドックに到達し、赤い通行禁止空域を避け、自分自身と交差しません。",
+  "Only the line you draw is checked; skipping a node, crossing a blocked line, or crossing your own route makes the submitted route invalid.": "描いた線だけが判定されます。ノードを飛ばす、封鎖線を横切る、自分の航路と交差する場合、提出した航路は無効です。",
+  "Choose an unlocked shift and read its flight goal.": "解放済みのシフトを選び、フライト目標を確認します。",
+  "Drag one continuous route from the airship through every numbered node in order to the highlighted dock, then release.": "飛行船から一本の連続した航路をドラッグし、すべての番号付きノードを順番に通ってハイライトされたドックまでつなぎ、指を離します。",
+  "Complete the flight goal. Each invalid route adds one Error; three Errors end the shift and offer a free Retry.": "フライト目標を達成します。無効な航路ごとにErrorが1つ増え、3つでシフト終了となり、無料のRetryが提示されます。",
+  "Trace the whole path first; the visible line is the route the game checks.": "まず全体の経路を考えましょう。画面に見える線が判定される航路です。",
+  "Visit nodes in order and keep clear of blocked lines and your own route.": "ノードを順番に通り、封鎖線と自分の航路を避けます。",
+  "Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals.": "30シフトを通して、順番に通るノードは最大4つ、封鎖空域は最大3つ、レイアウトは5種類となり、目標ドックやフライト目標も変化します。",
+  "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.": "航路判定は画面上のサンプル済み経路に従い、描いた線を見えない直線に置き換えることはありません。",
+  "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps.": "これは航路パズルです。乗組員、燃料、修理部品、渋滞、嵐、着岸後の整備はありません。",
+  "Skipping or misordering a node, crossing a red line, or crossing your own route makes a submitted path invalid and adds one Error.": "ノードを飛ばす、順番を間違える、赤い線を横切る、または自分の航路と交差すると、提出した経路は無効となりErrorが1つ増えます。",
+  "The shift ends and offers a free Retry.": "シフトが終了し、無料のRetryが提示されます。",
+  "There are 30 shifts.": "シフトは30個あります。",
+  "What makes a route valid?": "有効な航路の条件は？",
+  "What causes an Error?": "何がErrorになりますか？",
+  "What happens after three Errors?": "Errorが3つになるとどうなりますか？",
+  "How many shifts are there?": "シフトはいくつありますか？"
+});

@@ -1,0 +1,62 @@
+/* Rootvault-owned content only. Do not size/transform shared screen frames. */
+body[data-wp-game-id="animal-rootvault-pins"] .channel.rv-route {
+  height: 6px;
+  background: linear-gradient(90deg, #62efc2, #ffd45f);
+  box-shadow: 0 0 0 1px #eaffd9, 0 0 12px #62efc288;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .channel.rv-route::after {
+  content: "";
+  position: absolute;
+  left: 72%;
+  top: -4px;
+  border-block: 7px solid transparent;
+  border-left: 10px solid #ffe08b;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room[data-rv-route-role="source"] {
+  outline: 2px dashed #a3ffe3;
+  outline-offset: 3px;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room[data-rv-route-role="target"] {
+  outline: 3px solid #ffe08b;
+  outline-offset: 3px;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room-label {
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .moving-piece {
+  transition: none;
+  will-change: transform;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .rv-particle {
+  position: absolute;
+  z-index: 10;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: #e5ffff;
+  pointer-events: none;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .rv-particle.ward { background: #62efc2; }
+body[data-wp-game-id="animal-rootvault-pins"] .rv-particle.win { background: #ffd45f; }
+body[data-wp-game-id="animal-rootvault-pins"] .rv-particle.fail { background: #d8adff; }
+body[data-wp-game-id="animal-rootvault-pins"] .room .piece.taro {
+  animation: rv-breathe 2.8s ease-in-out infinite;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room .piece:is(.water,.shadow,.core) {
+  animation: rv-float 2.6s ease-in-out infinite;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room .piece.shadow { animation-delay: -.7s; }
+body[data-wp-game-id="animal-rootvault-pins"] .room .piece.core { animation-delay: -1.2s; }
+body[data-wp-game-id="animal-rootvault-pins"] .chamber-board[data-rv-paused="true"] .piece {
+  animation-play-state: paused;
+}
+@keyframes rv-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+@keyframes rv-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) {
+  body[data-wp-game-id="animal-rootvault-pins"] .chamber-board .piece,
+  body[data-wp-game-id="animal-rootvault-pins"] .chamber-board .effect {
+    animation: none !important;
+    transition: none !important;
+  }
+}
