@@ -1,0 +1,60 @@
+/* Keep the Result inside the logical Battle viewport rather than in its
+   flex-flow. Portrait actions stack so all localized labels remain contained. */
+#battle-screen { position: relative !important; }
+
+#battle-screen #result-screen:not([hidden]) {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 5 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: clamp(12px, 3vw, 28px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+#battle-screen #result-screen[hidden] { display: none !important; }
+
+#battle-screen #result-screen > :is(h2, p) {
+  max-width: 42ch;
+  margin: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+#battle-screen #result-screen .result-actions {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  width: min(100%, 360px);
+  min-width: 0;
+  margin: 0 auto;
+}
+
+#battle-screen #result-screen .result-actions > button {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 12px;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 700px) and (orientation: landscape) {
+  #battle-screen #result-screen .result-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: min(100%, 720px);
+  }
+}

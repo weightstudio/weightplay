@@ -49,7 +49,7 @@
   ]);
   const asset = name => new URL('../../assets/'+name,base).href;
   if (!document.querySelector('link[href*="/games/pong/pong.css"]')) {
-    const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=20260926-interface7-pong-v11',base); document.head.append(style);
+    const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=20260927-pong-compact-landscape-scaler-wip1',base); document.head.append(style);
   }
   const artStyle=document.createElement('link'); artStyle.rel='stylesheet'; artStyle.href=new URL('art.css?v=20260921-pong-block-scene-v1',base); document.head.append(artStyle);
   let locale=Object.keys(ROUTES).find(key=>location.pathname.startsWith('/'+ROUTES[key]+'/'))||document.documentElement.lang;
@@ -84,7 +84,7 @@
   </section>
   <section id="publicGuide" class="pw-main pw-guide game-page-info" data-wp-game-guide></section>
   <section id="battleScreen" class="pw-battle" data-wp-scene="battle" hidden>
-    <div class="pw-canvas" data-wp-logical-battle-canvas>
+    <div class="pw-canvas" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
       <header class="pw-hud"><button id="battleBackBtn" data-wp-return="battle">←</button><strong data-wp-frame-title aria-hidden="true"></strong></header>
       <div id="livePanel" data-wp-frame-content="battle">
         <div id="score" class="pw-score" data-wp-frame-info dir="ltr"></div>

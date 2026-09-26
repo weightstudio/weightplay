@@ -23,7 +23,7 @@
   heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
   const propArt = new Image();
   propArt.src = "assets/animal-trap-trail-props.png";
-  const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, roomTwoJumpIntent: 0, roomTwoJumpQueued: false, roomTwoLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
+  const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, roomTwoLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
   const localeAliases = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const localeCopy = {
     en: { stageTitle: "Trap Chapters", stageSections: "Stages", backMain: "Back to Main", backStages: "Back to Stages", chapter: "Chapter {n}", room: "Room {n}", deaths: "Deaths {n}", battleStatus: "Arrow keys move · Space jumps · E reveals a brief clue.", touchControls: "Touch controls", jump: "JUMP", pulse: "PULSE", touchHint: "Find the lantern. Traps reset only the current room.", canvasAria: "Moonlit Trap Trail play area", chapters: "Chapters", nextRoom: "Next Room", nextChapter: "Next Chapter", replayChapter: "Replay Chapter", retryRoom: "Retry Room", trailClear: "Trail clear", chapterClear: "Chapter clear", roomClear: "Room clear", resultCopy: "Chapter {chapter}, room {room} complete · Deaths {deaths}", gapDeath: "A gap opened — the path resets.", hazardDeath: "A hidden trap sprang — read the cue and retry.", pulseFeedback: "Moon pulse: the next trap cue is highlighted.", readPath: "READ THE PATH", moveLeft: "Move left", moveRight: "Move right", backToWeight: "Back to WeightPlay", loading: "Preparing the moonlit route…", progress: "Best room: {bestRoom} · Deaths: {deaths}", descriptions: ["learn the tells", "watch the delay", "read the reversal", "mixed rule finale"] },
@@ -344,7 +344,7 @@
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, grounded: false };
     state.keys.clear(); state.tap = null;
-    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; state.firstRoomLandingSeen = false; state.roomTwoJumpIntent = 0; state.roomTwoJumpQueued = false; state.roomTwoLandingSeen = false; state.timingCue = guidedTimingKey();
+    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; state.firstRoomLandingSeen = false; state.roomTwoLandingSeen = false; state.timingCue = guidedTimingKey();
     updateBattleText();
   }
   function startStage(stageId = 1) {
@@ -380,11 +380,6 @@
     const t = trapData();
     if (state.player.x >= t.gap - 54 && state.player.x < t.fake + 34) { state.firstRoomJumpIntent = 360; state.firstRoomJumpQueued = true; }
   }
-  function armRoomTwoJumpIntent() {
-    if (state.chapter !== 1 || state.room < 2 || state.room > 3 || !state.player) return;
-    const t = trapData();
-    if (state.player.x >= t.gap - 54 && state.player.x < t.fake + 34) state.roomTwoJumpIntent = 360;
-  }
   function finish() {
     state.bestRoom = Math.max(state.bestRoom, state.stage);
     localStorage.setItem("wp-trail-best-room", String(state.bestRoom));
@@ -407,7 +402,6 @@
     const jumpTap = state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW";
     const jumpRequested = jumpHeld || jumpTap;
     if (firstRoom && jumpRequested) armFirstRoomJumpIntent();
-    if (roomTwo && jumpRequested) armRoomTwoJumpIntent();
     if (inputStarted && state.statusKey) state.statusKey = "";
     if (state.tap) {
       if (state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW") {
@@ -423,21 +417,17 @@
     if (jumpHeld) state.jumpBuffer = guidedRoom ? 30 : 12;
     if (state.jumpBuffer > 0) state.jumpBuffer = Math.max(0, state.jumpBuffer - dt);
     if (state.firstRoomJumpIntent > 0) state.firstRoomJumpIntent = Math.max(0, state.firstRoomJumpIntent - dt);
-    if (state.roomTwoJumpIntent > 0) state.roomTwoJumpIntent = Math.max(0, state.roomTwoJumpIntent - dt);
     p.vy += .46 * dt; p.y += p.vy * dt; p.x = Math.max(30, Math.min(920, p.x));
     const floor = solidAt(p.x) ? 418 : 540;
     if (p.y >= floor - 28) { p.y = floor - 28; p.vy = 0; p.grounded = true; } else p.grounded = false;
     if (state.chapter === 1 && state.room === 1 && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) { state.firstRoomLandingSeen = true; state.firstRoomJumpQueued = true; }
-    if (roomTwo && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) { state.roomTwoLandingSeen = true; state.roomTwoJumpQueued = true; }
-    if (roomTwo && p.grounded && p.x >= t.spike + 52 && p.x < t.fake + 34) state.roomTwoJumpQueued = true;
+    if (roomTwo && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) state.roomTwoLandingSeen = true;
     const firstRoomAssistReady = firstRoom && p.grounded && (state.firstRoomJumpIntent > 0 || state.firstRoomJumpQueued || state.firstRoomLandingSeen) && p.x >= t.gap + 64 && p.x < t.fake + 34;
-    const roomTwoAssistReady = roomTwo && p.grounded && (state.roomTwoJumpIntent > 0 || state.roomTwoJumpQueued || state.roomTwoLandingSeen) && p.x >= t.gap + 64 && p.x < t.fake + 34;
-    if ((state.jumpBuffer > 0 || firstRoomAssistReady || roomTwoAssistReady) && p.grounded) {
+    if ((state.jumpBuffer > 0 || firstRoomAssistReady) && p.grounded) {
       p.vy = guidedRoom ? -11.5 : -10.5;
       p.grounded = false;
       state.jumpBuffer = 0;
       if (firstRoomAssistReady && p.x >= t.fake - 42) { state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; }
-      if (roomTwoAssistReady && p.x >= t.fake - 42) { state.roomTwoJumpIntent = 0; state.roomTwoJumpQueued = false; }
     }
     if (p.y > 560) return die("gap");
     if (hazardAt(p.x, p.y) && (p.grounded || (t.ceiling && p.y < 210))) return die("hazard");
@@ -504,7 +494,7 @@
   function pressKey(key, active) {
     if (active) {
       state.keys.add(key);
-      if (key === "Space" || key === "ArrowUp" || key === "KeyW") { armFirstRoomJumpIntent(); armRoomTwoJumpIntent(); }
+      if (key === "Space" || key === "ArrowUp" || key === "KeyW") armFirstRoomJumpIntent();
     } else state.keys.delete(key);
   }
   window.addEventListener("keydown", (e) => { const key = e.code === "Space" ? "Space" : e.code; if (["ArrowLeft","ArrowRight","ArrowUp","Space","KeyA","KeyD","KeyW","KeyE"].includes(key)) { e.preventDefault(); if (key === "KeyE") pulse(); else pressKey(key,true); } });
