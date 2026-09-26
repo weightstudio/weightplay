@@ -18,7 +18,7 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "animal-abyss-diver";
-  const GAME_VERSION = 24;
+  const GAME_VERSION = 25;
   const tactics=window.AbyssDiverTactics, motion=window.AbyssDiverMotion;
   const INTERFACE_VERSION = "7";
   document.body.dataset.wpCombinedSound = "true";
@@ -656,7 +656,7 @@
   const xpNeeded = () => 18 + save.level * 12;
   const pips = value => `<span class="pips" aria-hidden="true">${[1,2,3].map(n=>`<i class="${n<=value?"is-on":""}"></i>`).join("")}</span>`;
   const estimateMarkup = outcome => `<span class="metric">${icon("salvage")}<em>${t("shortLoot")}</em>${pips(outcome.intel.loot)}</span><span class="metric">${icon("danger")}<em>${t("shortDanger")}</em>${pips(outcome.intel.danger)}</span><span class="metric metric-oxygen">${icon("oxygen")}<em>${t("shortOxygen")}</em><b>${outcome.intel.cost}</b></span>`;
-  const combatDiver=document.createElement("div");combatDiver.className="combat-diver";combatDiver.innerHTML='<img src="../../assets/animal-abyss-diver-nori.png" alt="Nori">';$("fishEncounter").prepend(combatDiver);
+  const combatDiver=document.createElement("div");combatDiver.className="combat-diver";combatDiver.innerHTML='<img src="art/nori.webp" alt="Nori">';$("fishEncounter").prepend(combatDiver);
   const upgradePanel=document.createElement("section");upgradePanel.id="upgradePanel";upgradePanel.className="upgrade-panel hidden";upgradePanel.setAttribute("role","dialog");upgradePanel.setAttribute("aria-modal","true");upgradePanel.setAttribute("aria-labelledby","upgradeTitle");upgradePanel.setAttribute("aria-describedby","upgradeSummary");upgradePanel.innerHTML='<h2 id="upgradeTitle"></h2><strong id="upgradePoints"></strong><output id="upgradeSummary" aria-live="polite" aria-atomic="true"></output><div><button id="upgradeHp" type="button"></button><button id="upgradeAttack" type="button"></button><button id="upgradeOxygen" type="button"></button></div><button id="upgradeDone" class="primary" type="button"></button>';$("diveField").append(upgradePanel);
   const quitPanel=document.createElement("section");quitPanel.id="quitPanel";quitPanel.className="quit-panel hidden";(__wpNotifyMeasurement(), quitPanel.setAttribute("role","dialog"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-modal","true"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-labelledby","quitTitle"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-describedby","quitCopy"));quitPanel.innerHTML='<div class="quit-card"><h2 id="quitTitle"></h2><p id="quitCopy"></p><div><button id="quitKeep" class="primary" type="button"></button><button id="quitLeave" class="secondary" type="button"></button></div></div>';document.querySelector(".battle-canvas").append(quitPanel);
   const quitStylesheet=document.createElement("link");quitStylesheet.rel="stylesheet";quitStylesheet.href="quit-confirmation.css";document.head.append(quitStylesheet);
@@ -671,7 +671,7 @@
   function renderCoach(){
     $("coachStep1").innerHTML=`<div>${estimateMarkup(outcomes.relic)}</div><small>${t("coachVisual1")}</small>`;$("coachStep1").setAttribute("aria-label",t("coachStep1"));
     $("coachStep2").innerHTML=`<div><span>${icon("sonar")}<b>2</b></span><span>${icon("shield")}<b>1</b></span><span>${icon("pulse")}<b>1</b></span><em>=</em><span>${icon("power")}<b>4</b></span></div><small>${t("coachVisual2")}</small>`;$("coachStep2").setAttribute("aria-label",t("coachStep2"));
-    $("coachStep3").innerHTML=`<div><b class="coach-arrow">←</b><img class="coach-nori" src="../../assets/animal-abyss-diver-nori.png" alt=""><b class="coach-arrow">→</b><em>→</em>${icon("surface")}</div><small>${t("coachVisual3")}</small>`;$("coachStep3").setAttribute("aria-label",t("coachStep3"));
+    $("coachStep3").innerHTML=`<div><b class="coach-arrow">←</b><img class="coach-nori" src="art/nori.webp" alt=""><b class="coach-arrow">→</b><em>→</em>${icon("surface")}</div><small>${t("coachVisual3")}</small>`;$("coachStep3").setAttribute("aria-label",t("coachStep3"));
   }
   const wallet = () => window.WeightPlayWallet?.read?.().diamonds ?? 0, persist = () => writeStorage(saveKey,JSON.stringify(save));
   let resultPrimaryAction=$("nextBtn"),resultDecisionCommitted=false;
@@ -766,7 +766,7 @@
   function routeConfig(){return routes[state.route-1];}
   function encounter(direction){const pair=routeConfig().encounters[state.zone-1];return outcomes[pair[direction==="left"?0:1]];}
   function sonarMessage(){return t("sonarRead",{left:t(encounter("left").label),right:t(encounter("right").label)});}
-  const artFor = outcome => outcome.safe ? "../../assets/animal-abyss-diver-relics.png" : "../../assets/animal-abyss-diver-hazards.png";
+  const artFor = outcome => "art/" + (outcome === outcomes.oxygen ? "oxygen" : outcome === outcomes.current ? "current" : outcome.safe ? "relic" : "hazard") + ".webp";
   function syncProgressbar(id,label,current,maximum){
     const meter=$(id),now=Math.max(0,Math.min(maximum,Math.ceil(current)));
     meter.setAttribute("role","progressbar");
@@ -818,7 +818,7 @@
       gate.setAttribute("role","button");gate.tabIndex=blocked?-1:0;gate.setAttribute("aria-disabled",blocked?"true":"false");gate.onclick=()=>{if(!blocked)move(direction);};
       gate.querySelector("strong").innerHTML=`${direction==="left"?"←":"→"}<em>${t(direction==="left"?"shortLeft":"shortRight")}</em>`;
       gate.querySelector("small").innerHTML=state.sonar?`<span class="exact-result">${outcome.salvage?`${icon("salvage")}<b>+${outcome.salvage}</b>`:""}${icon("oxygen")}<b>${outcome.oxygen>0?"+":""}${outcome.oxygen}</b></span>`:estimateMarkup(outcome);
-      image.src=revealed?artFor(outcome):"../../assets/animal-abyss-diver-fx.png";
+      image.src=revealed?artFor(outcome):"art/unknown.webp";
       gate.classList.toggle("is-revealed",revealed);
       gate.classList.toggle("is-safe",revealed&&outcome.safe);
       gate.classList.toggle("is-risk",revealed&&!outcome.safe);
@@ -939,6 +939,7 @@
   function renderFish(){
     const fish=fishProfile(),blocked=!!state.fishBusy;
     $("fishEncounter").dataset.enemy=fish.name;
+    const enemyKind=(routeConfig().fishTier??1)>=5?"shark":"reef";$("fishEncounter").dataset.blockEnemy=enemyKind;$("fishSprite").querySelector("img").src="art/"+(enemyKind==="shark"?"shark":"fish")+".webp";
     $("fishTitle").innerHTML=`${icon("danger")}<span>${t("fishBattle")}</span>`;$("fishTitle").setAttribute("aria-label",`${t("fishBattle")}: ${fish.name}`);
     const escapeCost=routeConfig().escapeCost??8;
     $("fishTell").innerHTML=`<strong>${fish.name}</strong><small>${levelText(state.route+state.zone)} · ${t("attackAction")} ${diverAttack()} → ${t("fishStrikes")} · ${t("escapeAction")} -${escapeCost} ${t("shortOxygen")}</small>`;

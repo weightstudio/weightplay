@@ -76,6 +76,7 @@
     tween(ring,[{transform:"translate(-50%,-50%) scale(.15)",opacity:.8},{transform:"translate(-50%,-50%) scale(1.4)",opacity:0}],{duration:kind==="sonar"?720:480},"pulse");
   }
   function event(name,details={}){
+    window.AbyssBlockArt?.event?.(name,details);
     if(media.matches)return;
     const diver=document.querySelector(".combat-diver img"),fish=$("fishSprite");
     if(name==="strike"){

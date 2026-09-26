@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "game": "animal-sanctuary-loop",
+  "gameVersion": "v21",
+  "style": "WeightPlay Block Animals",
+  "poster": "assets/interface7-redrawn/animal-sanctuary-loop.webp",
+  "characters": {
+    "player": {
+      "runtime": "assets/animal-sanctuary-loop/player-block-v1.webp",
+      "source": "Assets/weightplay-character-spark-paw-fox-block-v1.webp",
+      "sha256": "3420c29eb955a27e172818a345c60bbadfbf26f12eae368701e0c8d7b222afc1"
+    },
+    "orla": {
+      "runtime": "assets/animal-sanctuary-loop/orla-block-v1.webp",
+      "source": "Assets/weightplay-character-moon-cap-owl-block-v1.webp",
+      "sha256": "ae419dc54fe24cfce253db95ab2c4a929980e467a224d68f5444696d19fbadb8"
+    },
+    "prowler": {
+      "runtime": "assets/animal-sanctuary-loop/prowler-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-enemy-wolf-block-v1.webp",
+      "sha256": "1ee7b012feea448db06c27f5cc293f772d1fc04f4de6b9828492e336a9a05dda"
+    },
+    "runner": {
+      "runtime": "assets/animal-sanctuary-loop/runner-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-enemy-mirror-wolf-block-v1.webp",
+      "sha256": "f15402f017dc83afc216bf626b60ae0907748c52fd1dac6545521677232649ca"
+    },
+    "tank": {
+      "runtime": "assets/animal-sanctuary-loop/tank-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-enemy-ram-block-v1.webp",
+      "sha256": "4e5b96c7a68af147244d256a1cf6ce56f811214880a505a71ccb61f74c356f88"
+    },
+    "sentry": {
+      "runtime": "assets/animal-sanctuary-loop/sentry-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-enemy-rune-fox-block-v1.webp",
+      "sha256": "474e9eaa51be714e077c4ff92bb20adb7fe7955f409aa5d4933b837ca7bd7838"
+    },
+    "root": {
+      "runtime": "assets/animal-sanctuary-loop/root-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-boss-ironroot-rhino-block-v1.webp",
+      "sha256": "f1a03edcfbf6ee4e5b9d25d2ec29658ea4cf308647cdc659a2af6dd6bb82f942"
+    },
+    "boar": {
+      "runtime": "assets/animal-sanctuary-loop/boar-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-enemy-boar-block-v1.webp",
+      "sha256": "38f8a1b7cfc0507968dbb1c47ad26b1a2f5cddce187dfa6ac1e09d94bda5014a"
+    },
+    "roc": {
+      "runtime": "assets/animal-sanctuary-loop/roc-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-enemy-raven-block-v1.webp",
+      "sha256": "49c39858f0f69b042c19a126eed70a8535c97b1f5b2f9eb9ff7a8459b0fc3a92"
+    },
+    "cinder": {
+      "runtime": "assets/animal-sanctuary-loop/cinder-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-boss-embermane-lion-block-v1.webp",
+      "sha256": "202f17e79c47f3aa3f11e6eee5449ed51411375c58db718f6802a06d67dd0f46"
+    },
+    "moth": {
+      "runtime": "assets/animal-sanctuary-loop/moth-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-enemy-moth-block-v1.webp",
+      "sha256": "aca812ca701ada3f7cc2b32d188f6e206e97a27ac59ebbb0546fb6c7c504d890"
+    },
+    "eclipse": {
+      "runtime": "assets/animal-sanctuary-loop/eclipse-block-v1.webp",
+      "source": "Assets/animal-rune-tactics-boss-rune-crown-chimera-block-v1.webp",
+      "sha256": "e6e8c991307fc886153533f552ee3c4dd45adaf948b573170d79b7bf9bbb72a3"
+    }
+  }
+}

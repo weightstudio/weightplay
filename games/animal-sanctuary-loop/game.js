@@ -21,7 +21,7 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v21";
   const motion = window.SanctuaryLoopMotion.create();
   const screenFrame = window.WeightPlayScreenFrame.mount({
     root: $("frameRoot"),
@@ -749,17 +749,17 @@
   landCanvas.height = canvas.height;
   const images = {};
   const imageSources = {
-    player: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
-    prowler: "../../assets/animal-crystal-survivor-shadow-basic.webp",
-    runner: "../../assets/animal-crystal-survivor-shadow-runner.webp",
-    tank: "../../assets/animal-crystal-survivor-shadow-tank.webp",
-    sentry: "../../assets/animal-crystal-survivor-shadow-fox-v2.webp",
-    root: "../../assets/animal-crystal-survivor-boss-root-stalker.webp",
-    boar: "../../assets/animal-crystal-survivor-boss-briar-boar-king.webp",
-    roc: "../../assets/animal-crystal-survivor-boss-tempest-roc.webp",
-    cinder: "../../assets/animal-crystal-survivor-boss-cinder-panther.webp",
-    moth: "../../assets/animal-crystal-survivor-boss-prism-moth-queen.webp",
-    eclipse: "../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp",
+    player: "../../assets/animal-sanctuary-loop/player-block-v1.webp",
+    prowler: "../../assets/animal-sanctuary-loop/prowler-block-v1.webp",
+    runner: "../../assets/animal-sanctuary-loop/runner-block-v1.webp",
+    tank: "../../assets/animal-sanctuary-loop/tank-block-v1.webp",
+    sentry: "../../assets/animal-sanctuary-loop/sentry-block-v1.webp",
+    root: "../../assets/animal-sanctuary-loop/root-block-v1.webp",
+    boar: "../../assets/animal-sanctuary-loop/boar-block-v1.webp",
+    roc: "../../assets/animal-sanctuary-loop/roc-block-v1.webp",
+    cinder: "../../assets/animal-sanctuary-loop/cinder-block-v1.webp",
+    moth: "../../assets/animal-sanctuary-loop/moth-block-v1.webp",
+    eclipse: "../../assets/animal-sanctuary-loop/eclipse-block-v1.webp",
     beacon: "../../assets/animal-moonlight-heist-marker-objective.webp",
     seal: "../../assets/animal-crystal-survivor-xp-crystal.webp",
   };
