@@ -517,6 +517,11 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
    below the shared touch-size floor after the v14 layout was applied. */
 @media (orientation:landscape) and (max-height:500px) {
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] > .mission-row {
+    padding:4px 8px !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
     .battle-canvas > .battle-content[data-board-size="4"] {
     width:min(760px,100%) !important;
   }
