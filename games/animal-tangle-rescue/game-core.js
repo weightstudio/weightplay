@@ -4,12 +4,12 @@
   const localeMap = window.TANGLE_RESCUE_LOCALES || {};
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const tokenMeta = {
-    foxA: { copy: "animalFox", color: "#5c9ccc", suffix: " A" },
-    badgerA: { copy: "animalBadger", color: "#ca7b62", suffix: " A" },
-    otterA: { copy: "animalOtter", color: "#6ca878", suffix: " A" },
-    hareA: { copy: "animalHare", color: "#a56eae", suffix: " A" },
-    foxB: { copy: "animalFox", color: "#3c79b8", suffix: " B" },
-    badgerB: { copy: "animalBadger", color: "#a45a49", suffix: " B" },
+    foxA: { copy: "animalFox", color: "#5c9ccc", suffix: " A", marker: "●", dash: "" },
+    badgerA: { copy: "animalBadger", color: "#ca7b62", suffix: " A", marker: "■", dash: "12 5" },
+    otterA: { copy: "animalOtter", color: "#6ca878", suffix: " A", marker: "▲", dash: "2 5" },
+    hareA: { copy: "animalHare", color: "#a56eae", suffix: " A", marker: "◆", dash: "12 3 2 3" },
+    foxB: { copy: "animalFox", color: "#3c79b8", suffix: " B", marker: "★", dash: "5 3" },
+    badgerB: { copy: "animalBadger", color: "#a45a49", suffix: " B", marker: "✚", dash: "2 3 9 3" },
   };
   // Authored 30-board campaign: six arcs and five boards per arc. The later arcs
   // deliberately use repeated animal families with A/B endpoint identities so
@@ -51,7 +51,7 @@
     { arc: 6, checkpoint: false, title: "Last moon turn", hint: "A final locked row narrows the valid rescue sequence.", lockedRows: [1], target: ["hareA", "foxA", "badgerB", "foxB", "badgerA", "otterA"], start: ["badgerA", "foxA", "hareA", "otterA", "foxB", "badgerB"] },
     { arc: 6, checkpoint: true, title: "Taro's rescue finale", hint: "Connect every endpoint and open all six shelters.", decoyRows: [1, 4], target: ["foxB", "badgerB", "otterA", "foxA", "hareA", "badgerA"], start: ["badgerA", "foxA", "foxB", "badgerB", "otterA", "hareA"] },
   ];
-  const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: !window.WeightPlayAudio.isMuted(), best: {}, statusKey: "ready", statusVars: {}, statusError: false };
+  const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], errorRows: [], sound: !window.WeightPlayAudio.isMuted(), best: {}, statusKey: "ready", statusVars: {}, statusError: false };
   // A fixed larger pool covers the seven-card maximum at compact landscape
   // width while keeping at least three prepared nodes beyond either edge.
   // Pool construction remains independent of campaign length (30, 60, 90…).
@@ -79,7 +79,7 @@
   const lockedRows = (board = boards[state.board]) => board.lockedRows || [];
   const decoyRows = (board = boards[state.board]) => board.decoyRows || [];
   const analytics = (eventName, details = {}) => {
-    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v10", ...details }); } catch (_error) {}
+    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: document.querySelector('meta[name="weightplay-game-version"]')?.content || "unknown", ...details }); } catch (_error) {}
     window.__tangleRescueEvents = window.__tangleRescueEvents || [];
     window.__tangleRescueEvents.push({ eventName, ...details });
   };
@@ -149,18 +149,24 @@
     diagram.style.minHeight = height + "px";
     const paths = state.current.map((animalKey, row) => {
       const targetRow = board.target.indexOf(animalKey);
-      return `<path d="${routePath(row, targetRow, width, height)}" stroke="${routeColor(animalKey)}"></path>`;
+      const dash = tokenMeta[animalKey]?.dash;
+      return `<path d="${routePath(row, targetRow, width, height)}" stroke="${routeColor(animalKey)}"${dash ? ` stroke-dasharray="${dash}"` : ""}></path>`;
     }).join("");
     const rows = state.current.map((animalKey, row) => {
       const animalIndex = Math.max(0, indexForAnimal(animalKey));
+      const animalMarker = tokenMeta[animalKey]?.marker || "●";
       const selected = state.selected === row;
       const targetKey = board.target[row];
+      const targetMarker = tokenMeta[targetKey]?.marker || "●";
       const locked = lockedRows(board).includes(row);
       const decoy = decoyRows(board).includes(row);
+      const needsRecheck = state.errorRows.includes(row);
       const shelter = decoy
-        ? `<span><strong>?</strong><small>${copy("shelter", { number: row + 1 })}</small></span>`
-        : `<span><strong>${titleForAnimal(targetKey)}</strong><small>${copy("shelter", { number: row + 1 })}</small></span>`;
-      return `<div class="board-row${locked ? " locked-row" : ""}"><button class="endpoint-card${selected ? " selected" : ""}${locked ? " locked" : ""}" type="button" data-endpoint="${row}" aria-pressed="${selected}" aria-label="${copy("swapName", { number: row + 1 })}: ${titleForAnimal(animalKey)}${locked ? " — locked" : ""}${selected ? " — " + copy("selected") : ""}"${locked ? " disabled aria-disabled=\"true\"" : ""}><span class="paw-chip paw-${animalIndex}">●</span><span><strong>${titleForAnimal(animalKey)}</strong><small>${locked ? "LOCKED" : copy("current")}</small></span></button><span class="board-dot" aria-hidden="true"></span><div class="shelter-card${decoy ? " decoy" : ""}">${shelter}<span class="shelter-icon" aria-hidden="true">${decoy ? "?" : "⌂"}</span></div></div>`;
+        ? `<span><strong>?</strong><small>${copy("shelter", { number: row + 1 })}</small></span><span class="shelter-route-cue" role="img" aria-label="${copy("decoyTrailCue", { number: row + 1 })}" style="--tangle-route-color:${routeColor(targetKey)}">${targetMarker}</span>`
+        : `<span><strong>${titleForAnimal(targetKey)}</strong><small>${copy("shelter", { number: row + 1 })}</small></span><span class="shelter-icon" aria-hidden="true">⌂</span>`;
+      const rowClass = `board-row${locked ? " locked-row" : ""}${needsRecheck ? " needs-recheck" : ""}`;
+      const invalidAttrs = needsRecheck ? ' aria-invalid="true" aria-describedby="battleStatus"' : "";
+      return `<div class="${rowClass}"><button class="endpoint-card${selected ? " selected" : ""}${locked ? " locked" : ""}" type="button" data-endpoint="${row}" aria-pressed="${selected}" aria-label="${copy("swapName", { number: row + 1 })}: ${titleForAnimal(animalKey)}${locked ? " — locked" : ""}${selected ? " — " + copy("selected") : ""}"${invalidAttrs}${locked ? " disabled aria-disabled=\"true\"" : ""}><span class="paw-chip paw-${animalIndex}">${animalMarker}</span><span><strong>${titleForAnimal(animalKey)}</strong><small>${locked ? "LOCKED" : copy("current")}</small></span></button><span class="board-dot" aria-hidden="true"></span><div class="shelter-card${decoy ? " decoy" : ""}">${shelter}</div></div>`;
     }).join("");
     diagram.innerHTML = `<svg class="route-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">${paths}</svg>${rows}`;
     diagram.querySelectorAll("[data-endpoint]").forEach((button) => button.addEventListener("click", () => selectEndpoint(Number(button.dataset.endpoint))));
@@ -257,6 +263,7 @@
     if (lockedRows().includes(row)) return;
     if (state.selected < 0) {
       state.selected = row;
+      state.errorRows = [];
       state.statusKey = "selectSecond";
       state.statusVars = {};
       state.statusError = false;
@@ -278,6 +285,7 @@
     [state.current[first], state.current[row]] = [state.current[row], state.current[first]];
     state.selected = -1;
     state.swaps += 1;
+    state.errorRows = [];
     state.statusKey = "swapped";
     state.statusVars = { first: firstName, second: secondName };
     state.statusError = false;
@@ -290,6 +298,7 @@
   const checkBoard = () => {
     const board = boards[state.board];
     if (state.current.every((value, index) => value === board.target[index])) {
+      state.errorRows = [];
       if (!state.completed.includes(state.board)) state.completed.push(state.board);
       safeSet("weightplay-animal-tangle-rescue-completed", JSON.stringify(state.completed));
       analytics("tangle_board_completed", { board: state.board, swaps: state.swaps });
@@ -298,15 +307,16 @@
       return;
     }
     analytics("tangle_board_checked", { board: state.board, correct: false, swaps: state.swaps });
-    state.statusKey = "incorrect";
-    state.statusVars = {};
+    state.errorRows = board.target
+      .map((target, row) => state.current[row] === target ? -1 : row)
+      .filter((row) => row >= 0);
+    state.statusKey = "incorrectRows";
+    state.statusVars = { rows: state.errorRows.map((row) => row + 1).join(", ") };
     state.statusError = true;
-    $("battleStatus").textContent = copy(state.statusKey);
-    $("battleStatus").classList.add("error");
-    showToast(copy("incorrect"));
+    renderBattle();
   };
-  const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle(); };
-  const startBoard = (index) => { state.board = Math.max(0, Math.min(boards.length - 1, index)); state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_started", { board: state.board }); setScreen("battle"); };
+  const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.errorRows = []; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle(); };
+  const startBoard = (index) => { state.board = Math.max(0, Math.min(boards.length - 1, index)); state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.errorRows = []; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_started", { board: state.board }); setScreen("battle"); };
   const syncSoundControls = () => {
     $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff");
     $("soundBtn").setAttribute("aria-pressed", String(state.sound));

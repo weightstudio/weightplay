@@ -95,5 +95,21 @@
     if (typeof dictionary.progress === "string") dictionary.progress = dictionary.progress.replace(/\b3\b/g, "{total}");
     if (typeof dictionary.progressBadge === "string") dictionary.progressBadge = dictionary.progressBadge.replace(/\b3\b/g, "{total}");
   });
+  const suggestionCopy = {
+    en: { incorrectRows: "Shelters {rows} still need a different match. Use the trail symbols to review each route.", decoyTrailCue: "Hidden shelter {number}. Match this symbol to the same symbol on an animal endpoint." },
+    "zh-Hant": { incorrectRows: "棲所 {rows} 尚未配對正確。請比對路徑符號，重新檢查每條路線。", decoyTrailCue: "隱藏棲所 {number}。請將此路徑符號與動物端點的相同符號配對。" },
+    "zh-Hans": { incorrectRows: "栖所 {rows} 尚未配对正确。请比对路径符号，重新检查每条路线。", decoyTrailCue: "隐藏栖所 {number}。请将此路径符号与动物端点的相同符号配对。" },
+    ja: { incorrectRows: "シェルター{rows}はまだ正しくつながっていません。ルート記号を照合して各道を確認してください。", decoyTrailCue: "隠れたシェルター{number}。このルート記号を動物の端点にある同じ記号と照合してください。" },
+    ko: { incorrectRows: "보금자리 {rows}의 연결이 아직 맞지 않아요. 경로 기호를 비교해 각 길을 다시 확인하세요.", decoyTrailCue: "숨겨진 보금자리 {number}입니다. 이 경로 기호를 동물 끝점의 같은 기호와 맞춰 보세요." },
+    es: { incorrectRows: "Los refugios {rows} aún necesitan otra combinación. Compara los símbolos de ruta para revisar cada camino.", decoyTrailCue: "Refugio oculto {number}. Compara este símbolo de ruta con el mismo símbolo en un extremo animal." },
+    "pt-BR": { incorrectRows: "Os abrigos {rows} ainda precisam de outra combinação. Compare os símbolos das trilhas para revisar cada caminho.", decoyTrailCue: "Abrigo oculto {number}. Compare este símbolo da trilha com o mesmo símbolo em uma ponta animal." },
+    fr: { incorrectRows: "Les abris {rows} ne sont pas encore associés correctement. Comparez les symboles des sentiers pour vérifier chaque trajet.", decoyTrailCue: "Abri caché {number}. Associez ce symbole de sentier au même symbole sur une extrémité animale." },
+    de: { incorrectRows: "Die Unterschlüpfe {rows} sind noch nicht richtig zugeordnet. Vergleiche die Pfadsymbole, um jede Route zu prüfen.", decoyTrailCue: "Versteckter Unterschlupf {number}. Ordne dieses Pfadsymbol dem gleichen Symbol an einem Tier-Endpunkt zu." },
+    it: { incorrectRows: "I rifugi {rows} non sono ancora abbinati correttamente. Confronta i simboli dei sentieri per controllare ogni percorso.", decoyTrailCue: "Rifugio nascosto {number}. Abbina questo simbolo del sentiero allo stesso simbolo su un'estremità animale." },
+    ru: { incorrectRows: "Убежища {rows} пока не сопоставлены. Сверьте символы троп, чтобы проверить каждый маршрут.", decoyTrailCue: "Скрытое убежище {number}. Сопоставьте этот символ тропы с таким же символом на конце с животным." },
+    hi: { incorrectRows: "आश्रय {rows} का मिलान अभी सही नहीं है। हर रास्ते को जाँचने के लिए पथ-चिह्न मिलाएँ।", decoyTrailCue: "छिपा आश्रय {number}। इस पथ-चिह्न का मिलान पशु-अंत बिंदु के समान चिह्न से करें।" },
+    ar: { incorrectRows: "الملاجئ {rows} لم تُطابق بعد. قارن رموز المسارات لمراجعة كل طريق.", decoyTrailCue: "المأوى المخفي {number}. طابق رمز المسار هذا مع الرمز نفسه عند أحد أطراف الحيوانات." },
+  };
+  Object.entries(suggestionCopy).forEach(([locale, additions]) => Object.assign(locales[locale], additions));
   window.TANGLE_RESCUE_LOCALES = locales;
 }());

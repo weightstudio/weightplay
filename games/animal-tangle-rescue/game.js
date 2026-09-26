@@ -51,7 +51,7 @@
   window.__tangleRescueCoreRequested = true;
 
   const core = document.createElement("script");
-  core.src = assetUrl("game-core.js?v=20260924-tangle-rescue-v11-bounded-stage-pool");
+  core.src = assetUrl("game-core.js?v=20260927-tangle-rescue-suggestion-repair-wip1");
   core.async = false;
   core.dataset.wpTangleGameCore = "true";
   core.addEventListener("load", () => {
