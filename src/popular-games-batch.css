@@ -1904,8 +1904,8 @@ body[data-game-id="hangman"][data-screen="result"] .game-page-info-static { disp
 body[data-game-id="hangman"][data-screen="battle"] .popular-arcade,
 body[data-game-id="hangman"][data-screen="result"] .popular-arcade { padding: 0 !important; }
 
-/* Snake v27 registers the legacy Battle section as the logical Canvas and
-   gives it the same physical 56px General reserve as the newer shell. The
+/* Snake registers the legacy Battle section as the logical Canvas and keeps
+   its physical reserve tied to the shared banner policy. The
    narrow layout keeps the run heading, board, feedback, and direction row in
    separate tracks; wider viewports use one shared-scale board column. */
 html:has(body[data-game-id="snake"][data-screen="battle"]),
@@ -1929,7 +1929,7 @@ body[data-game-id="snake"][data-screen="result"] .popular-arcade {
   margin: 0 auto;
   padding: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 56px;
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 0px);
   gap: 0;
 }
 body[data-game-id="snake"][data-screen="battle"] .arcade-header,

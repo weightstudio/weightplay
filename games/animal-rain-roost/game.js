@@ -42,17 +42,26 @@
     { target: 6, objects: [[.52, "rain", 0], [.2, "rain", .35], [.78, "leaf", .7], [.35, "rain", 1.04], [.88, "rain", 1.42], [.56, "leaf", 1.8], [.13, "rain", 2.16], [.69, "rain", 2.54], [.4, "leaf", 2.9], [.82, "rain", 3.27]] }
   ];
   const $ = (id) => document.getElementById(id);
-  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), round: 0, caught: 0, best: 0, basket: .5, objects: [], elapsed: 0, running: false, raf: 0, lastTime: 0 };
-  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
+  const state = { locale: "en", round: 0, caught: 0, best: 0, basket: .5, objects: [], elapsed: 0, running: false, raf: 0, lastTime: 0 };
+  let frame = null;
+  let leaveResumeRunning = false;
+  let sceneGeneration = 0;
+  let transitionTimer = 0;
+  let transitionAction = null;
+  let transitionRemaining = 0;
+  let transitionDue = 0;
   const canvas = $("rainCanvas");
   const ctx = canvas.getContext("2d");
   const art = { background: new Image(), nori: new Image(), weather: new Image() };
   art.background.src = "/games/animal-rain-roost/assets/animal-rain-roost-background-v2.png";
   art.nori.src = "/games/animal-rain-roost/assets/animal-rain-roost-nori.png";
   art.weather.src = "/games/animal-rain-roost/assets/animal-rain-roost-weather-atlas-v2.png";
-  art.background.addEventListener("load", () => draw());
-  art.nori.addEventListener("load", () => draw());
-  art.weather.addEventListener("load", () => draw());
+  const drawIfBattleActive = () => {
+    if (document.body.dataset.rainRoostState === "battle") draw();
+  };
+  art.background.addEventListener("load", drawIfBattleActive);
+  art.nori.addEventListener("load", drawIfBattleActive);
+  art.weather.addEventListener("load", drawIfBattleActive);
   const storage = { get(key) { try { return localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { localStorage.setItem(key, value); } catch (_) {} } };
   const routeMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
 
@@ -78,14 +87,11 @@
     const current = copy[state.locale] || copy.en;
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+    document.body.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = current[node.dataset.copy] || copy.en[node.dataset.copy] || node.dataset.copy; });
-    $("mainSettingsBtn").setAttribute("aria-label", t("language"));
-    $("soundToggle").textContent = state.sound ? t("soundOn") : t("soundOff");
-    $("soundToggle").setAttribute("aria-pressed", String(state.sound));
-    $("battleSoundToggle").textContent = state.sound ? "♪" : "×";
-    $("battleSoundToggle").setAttribute("aria-label", state.sound ? t("soundOn") : t("soundOff"));
-    $("battleSoundToggle").setAttribute("aria-pressed", String(state.sound));
+    if ($("localeSelect")) $("localeSelect").value = state.locale;
     updateScore();
+    frame?.refresh();
   }
   function populateLocales() {
     const select = $("localeSelect");
@@ -95,17 +101,66 @@
   }
   function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function showView(view) {
-    $("mainScreen").hidden = view !== "main";
+    const scene = view === "result" ? "battle" : view;
+    const isResult = view === "result";
+    $("mainScreen").hidden = scene !== "main";
     $("mainView").hidden = false;
-    $("battleView").hidden = view !== "battle";
-    $("resultView").hidden = view !== "result";
-    $("gameGuide").hidden = view !== "main";
-    document.body.classList.toggle("wp-shell-main-active", view === "main");
-    document.body.classList.toggle("wp-shell-battle-active", view === "battle");
-    document.body.classList.toggle("wp-shell-result-active", view === "result");
-    document.body.dataset.screen = view;
+    $("battleView").hidden = scene !== "battle";
+    $("gameGuide").hidden = scene !== "main";
+    $("resultView").hidden = !isResult;
+    $("resultView").inert = !isResult;
+    $("rainBattleLive").hidden = isResult;
+    $("rainBattleLive").inert = isResult;
+    document.body.classList.toggle("wp-shell-main-active", scene === "main");
+    document.body.classList.toggle("wp-shell-battle-active", scene === "battle");
+    document.body.classList.remove("wp-shell-result-active");
+    document.body.dataset.screen = scene;
+    document.body.dataset.rainRoostState = view;
+    frame?.activate(scene, { covered: isResult });
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
     window.scrollTo(0, 0);
+  }
+  function mountInterface7() {
+    if (!window.WeightPlayScreenFrame?.mount) throw new Error("Interface 7 shared frame unavailable");
+    const root = $("app");
+    const mainRoot = $("mainScreen");
+    const mainHeader = mainRoot.querySelector("header");
+    const mainTitle = mainHeader.querySelector("[data-wp-game-title]");
+    mainTitle.dataset.wpFrameTitle = "";
+    const poster = mainRoot.querySelector(".main-poster");
+    poster.dataset.wpFramePoster = "";
+    const summary = mainRoot.querySelector(".main-summary");
+    summary.dataset.wpFrameSummary = "";
+    mainRoot.querySelector(".hero-copy").dataset.wpFrameCopy = "";
+    $("startButton").dataset.wpFrameAction = "primary";
+
+    const localeSelect = $("localeSelect");
+    const retained = document.createElement("div");
+    retained.hidden = true;
+    retained.setAttribute("aria-hidden", "true");
+    retained.append(localeSelect);
+    root.append(retained);
+    $("settingsPanel")?.remove();
+
+    const battleRoot = $("battleView");
+    const battleHeader = battleRoot.querySelector("header");
+    const battleTitle = battleHeader.querySelector("[data-wp-frame-title]");
+    battleTitle.textContent = t("title");
+    battleTitle.hidden = true;
+    const live = $("rainBattleLive");
+    const result = $("resultView");
+    result.dataset.wpBattleSubstate = "result";
+    result.hidden = true;
+    result.inert = true;
+
+    frame = window.WeightPlayScreenFrame.mount({
+      root,
+      scenes: {
+        main: { root: mainRoot, header: mainHeader, content: $("mainView") },
+        battle: { root: battleRoot, header: battleHeader, content: live, headerInfo: $("rainBattleInfo") }
+      },
+      localeSelect
+    });
   }
   function updateScore() {
     const round = rounds[state.round] || rounds[0];
@@ -113,11 +168,48 @@
     $("catchLabel").textContent = t("caught", { current: state.caught, target: round.target });
     $("bestLabel").textContent = t("best", { value: state.best });
   }
+  function cancelTransition() {
+    if (transitionTimer) window.clearTimeout(transitionTimer);
+    transitionTimer = 0;
+    transitionAction = null;
+    transitionRemaining = 0;
+    transitionDue = 0;
+  }
+  function armTransition(action, delay) {
+    if (transitionTimer) window.clearTimeout(transitionTimer);
+    const generation = sceneGeneration;
+    transitionAction = action;
+    transitionRemaining = Math.max(0, delay);
+    transitionDue = performance.now() + transitionRemaining;
+    transitionTimer = window.setTimeout(() => {
+      transitionTimer = 0;
+      if (generation !== sceneGeneration || document.body.dataset.rainRoostState !== "battle" || !$("leaveDialog").hidden) return;
+      const next = transitionAction;
+      transitionAction = null;
+      transitionRemaining = 0;
+      transitionDue = 0;
+      next?.();
+    }, transitionRemaining);
+  }
+  function pauseTransition() {
+    if (!transitionTimer || !transitionAction) return;
+    transitionRemaining = Math.max(0, transitionDue - performance.now());
+    window.clearTimeout(transitionTimer);
+    transitionTimer = 0;
+  }
+  function resumeTransition() {
+    if (!transitionAction || transitionTimer) return;
+    const action = transitionAction;
+    armTransition(action, transitionRemaining);
+  }
   function start() {
+    sceneGeneration += 1;
+    cancelTransition();
     state.round = 0; state.best = 0; state.caught = 0; state.basket = .5; state.running = false;
     showView("battle"); startRound();
   }
   function startRound() {
+    cancelTransition();
     const round = rounds[state.round];
     state.caught = 0; state.elapsed = 0; state.lastTime = performance.now(); state.objects = round.objects.map(([x, type, spawn]) => ({ x, type, spawn, visible: false, done: false, y: -20 })); state.running = true;
     $("feedback").textContent = ""; $("feedback").className = "feedback"; updateScore(); resizeCanvas(); cancelAnimationFrame(state.raf); state.raf = requestAnimationFrame(tick);
@@ -126,7 +218,8 @@
     state.running = false; const goal = rounds[state.round].target;
     if (state.caught < goal) { $("feedback").textContent = t("showerFail"); $("feedback").className = "feedback is-wrong"; tone("result.lose"); return; }
     $("feedback").textContent = t("roundClear"); $("feedback").className = "feedback is-good"; tone("feedback.success");
-    if (state.round < rounds.length - 1) window.setTimeout(() => { state.round += 1; startRound(); }, 760); else window.setTimeout(finish, 760);
+    if (state.round < rounds.length - 1) armTransition(() => { state.round += 1; startRound(); }, 760);
+    else armTransition(finish, 760);
   }
   function finish() {
     state.best = Math.max(state.best, state.caught);
@@ -201,18 +294,82 @@
       ctx.fillStyle = "rgba(255,255,255,.72)"; ctx.font = "700 13px system-ui"; ctx.textAlign = "center"; ctx.fillText(state.locale === "ar" ? "نوري" : "Nori", basketX, basketY + 20);
     }
   }
-  function openLeave() { $("leaveDialog").hidden = false; $("continueButton").focus(); }
-  function closeLeave() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }
-  function goHome() { state.running = false; cancelAnimationFrame(state.raf); $("leaveDialog").hidden = true; showView("main"); applyLocale(); }
-  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
+  function openLeave() {
+    if (document.body.dataset.rainRoostState !== "battle" || !$("leaveDialog").hidden) return;
+    leaveResumeRunning = state.running;
+    if (leaveResumeRunning) {
+      state.running = false;
+      cancelAnimationFrame(state.raf);
+    }
+    pauseTransition();
+    $("rainBattleLive").inert = true;
+    $("leaveDialog").hidden = false;
+    frame?.activate("battle", { covered: true });
+    $("continueButton").focus({ preventScroll: true });
+  }
+  function closeLeave() {
+    if ($("leaveDialog").hidden) return;
+    $("leaveDialog").hidden = true;
+    $("rainBattleLive").inert = false;
+    frame?.activate("battle");
+    if (leaveResumeRunning) {
+      leaveResumeRunning = false;
+      state.running = true;
+      state.lastTime = performance.now();
+      state.raf = requestAnimationFrame(tick);
+    }
+    resumeTransition();
+    $("homeFromBattle").focus({ preventScroll: true });
+  }
+  function goHome() {
+    sceneGeneration += 1;
+    cancelTransition();
+    leaveResumeRunning = false;
+    state.running = false;
+    cancelAnimationFrame(state.raf);
+    $("leaveDialog").hidden = true;
+    $("rainBattleLive").inert = false;
+    showView("main");
+    applyLocale();
+  }
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => {
-    populateLocales(); applyLocale(); window.addEventListener("resize", resizeCanvas);
-    $("startButton").addEventListener("click", start); $("replayButton").addEventListener("click", start); $("resetButton").addEventListener("click", startRound);
-    $("homeFromBattle").addEventListener("click", openLeave); $("continueButton").addEventListener("click", closeLeave); $("confirmLeaveButton").addEventListener("click", goHome); $("homeFromResult").addEventListener("click", goHome);
-    $("mainSettingsBtn").addEventListener("click", () => { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); });
-    $("soundToggle").addEventListener("click", toggleSound); $("battleSoundToggle").addEventListener("click", toggleSound);
-    canvas.addEventListener("pointerdown", (event) => { canvas.setPointerCapture?.(event.pointerId); positionFromEvent(event); }); canvas.addEventListener("pointermove", (event) => { if (event.buttons || event.pressure) positionFromEvent(event); }); canvas.addEventListener("keydown", (event) => { if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return; event.preventDefault(); state.basket = Math.max(.09, Math.min(.91, state.basket + (event.key === "ArrowLeft" ? -.08 : .08))); draw(); });
+    populateLocales();
+    applyLocale();
+    mountInterface7();
+    showView("main");
+    window.addEventListener("resize", () => {
+      if (document.body.dataset.rainRoostState === "battle") resizeCanvas();
+    });
+    $("startButton").addEventListener("click", start);
+    $("replayButton").addEventListener("click", start);
+    $("resetButton").addEventListener("click", startRound);
+    $("homeFromBattle").addEventListener("click", openLeave);
+    $("continueButton").addEventListener("click", closeLeave);
+    $("confirmLeaveButton").addEventListener("click", goHome);
+    $("homeFromResult").addEventListener("click", goHome);
+    document.addEventListener("keydown", (event) => {
+      if ($("leaveDialog").hidden) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeLeave();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const actions = [$("continueButton"), $("confirmLeaveButton")].filter((node) => node && !node.disabled && !node.hidden);
+      const first = actions[0], last = actions[actions.length - 1];
+      if (!actions.includes(document.activeElement)) { event.preventDefault(); first?.focus(); }
+      else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    });
+    canvas.addEventListener("pointerdown", (event) => { canvas.setPointerCapture?.(event.pointerId); positionFromEvent(event); });
+    canvas.addEventListener("pointermove", (event) => { if (event.buttons || event.pressure) positionFromEvent(event); });
+    canvas.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      state.basket = Math.max(.09, Math.min(.91, state.basket + (event.key === "ArrowLeft" ? -.08 : .08)));
+      draw();
+    });
   });
   window.RAIN_ROOST_TEST = { rounds, state, start, startRound, setBasket, applyLocale };
 })();

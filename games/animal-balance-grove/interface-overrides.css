@@ -35,8 +35,9 @@ html.wp-active-play,body.wp-active-play{height:100%;overflow:hidden;overscroll-b
 }
 .taro-guide{display:block;width:clamp(100px,18vw,180px);height:auto;max-height:180px;margin:4px 0 -18px auto;object-fit:contain}
 .result-taro{display:block;width:min(200px,46vw);height:auto;margin:-18px 0 -8px;object-fit:contain}
-.token-icon,.placed-token{color:transparent!important;background-color:transparent!important;background-image:url('assets/animal-balance-grove-stones.png')!important;background-repeat:no-repeat!important;background-size:600% 100%!important}
-.token-icon-0,.placed-token-0{background-position:0 50%!important}.token-icon-1,.placed-token-1{background-position:20% 50%!important}.token-icon-2,.placed-token-2{background-position:40% 50%!important}.token-icon-3,.placed-token-3{background-position:60% 50%!important}.token-icon-4,.placed-token-4{background-position:80% 50%!important}.token-icon-5,.placed-token-5{background-position:100% 50%!important}
+.token-icon,.placed-token{position:relative;overflow:hidden;color:transparent!important;background-color:transparent!important;background-image:none!important}
+.token-icon::before,.placed-token::before{content:"";position:absolute;top:0;left:50%;width:50%;height:100%;transform:translateX(-50%);background-image:url('assets/animal-balance-grove-stones.png')!important;background-repeat:no-repeat!important;background-size:600% 100%!important;background-position:var(--stone-sheet-position,0%) 50%!important}
+.token-icon-0::before,.placed-token-0::before{--stone-sheet-position:0%}.token-icon-1::before,.placed-token-1::before{--stone-sheet-position:20%}.token-icon-2::before,.placed-token-2::before{--stone-sheet-position:40%}.token-icon-3::before,.placed-token-3::before{--stone-sheet-position:60%}.token-icon-4::before,.placed-token-4::before{--stone-sheet-position:80%}.token-icon-5::before,.placed-token-5::before{--stone-sheet-position:100%}
 @media(max-height:520px) and (orientation:landscape){
   #mainScreen .hero-grid{grid-template-columns:420px minmax(0,1fr)}
   #mainScreen .cover-wrap{width:420px}

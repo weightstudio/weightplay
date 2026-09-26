@@ -1,0 +1,85 @@
+/* Checkers game-owned presentation only. Shared Interface 7 code owns frame, header/return, Canvas, and reserve geometry. */
+body[data-game-id="checkers"] #mainScreen .preview-art {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+  min-height: 0;
+  justify-self: center;
+}
+body[data-game-id="checkers"] #mainScreen .preview-art img {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+body[data-game-id="checkers"] #battleScreen .battle-canvas {
+  position: relative;
+}
+body[data-game-id="checkers"] #battleScreen .battle-top > .round-label {
+  justify-self: end;
+  text-align: end;
+}
+body[data-game-id="checkers"] .checkers-battle-actions {
+  justify-content: center;
+}
+body[data-game-id="checkers"] #resultScreen.result-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 20px;
+  background: rgba(4, 13, 26, .82);
+  backdrop-filter: blur(8px);
+}
+body[data-game-id="checkers"] #resultScreen.result-panel[hidden] {
+  display: none !important;
+}
+body[data-game-id="checkers"] #resultScreen .arcade-panel {
+  width: min(460px, 100%);
+  min-height: 0;
+  padding: 24px;
+}
+body[data-game-id="checkers"] #resultScreen .result-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+body[data-game-id="checkers"] .checkers-leave-dialog {
+  width: min(520px, calc(100% - 32px));
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--arcade-text);
+}
+body[data-game-id="checkers"] .checkers-leave-dialog::backdrop {
+  background: rgba(4, 13, 26, .82);
+  backdrop-filter: blur(8px);
+}
+body[data-game-id="checkers"] .checkers-leave-card {
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+  border: 1px solid var(--arcade-line);
+  border-radius: 18px;
+  background: #10243d;
+  box-shadow: 0 18px 44px rgba(0,0,0,.35);
+  text-align: center;
+}
+body[data-game-id="checkers"] .checkers-leave-card p {
+  color: var(--arcade-muted);
+  line-height: 1.55;
+}
+body[data-game-id="checkers"] .checkers-leave-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 650px) {
+  body[data-game-id="checkers"] #resultScreen .result-actions,
+  body[data-game-id="checkers"] .checkers-leave-actions {
+    grid-template-columns: 1fr;
+  }
+}

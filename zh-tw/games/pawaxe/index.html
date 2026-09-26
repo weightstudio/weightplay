@@ -21,9 +21,13 @@
 <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-interface-version" content="7">
 <title>斧刃夥伴 | WeightPlay</title>
 <script src="../../src/game-layout-config.js"></script><script src="../../src/site-config.js"></script>
-<link rel="stylesheet" href="style.css?v=7"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
+<link rel="stylesheet" href="style.css?v=12"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3"><link rel="stylesheet" href="../../src/stage-selector-standard.css">
+<script src="/src/edge-guard.js" defer data-wp-pawaxe-edge-guard></script>
+<script src="/src/tutorial.js" defer data-wp-pawaxe-tutorial></script>
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 <script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3" defer></script><script src="../../src/stage-virtualization-standard.js" defer></script>
+<link rel="stylesheet" href="/src/loading-screen.css" data-wp-pawaxe-loading-css>
+<link rel="stylesheet" href="/src/tutorial.css" data-wp-pawaxe-tutorial-css>
 <meta name="description" content="點擊揮斧闖過 30 條森林路線，收集 4 位夥伴與 15 件裝備，將重複掉落化為升階碎片。" />
 <meta property="og:site_name" content="WeightPlay" />
 <meta property="og:type" content="website" />
@@ -37,7 +41,8 @@
 <meta name="twitter:image" content="https://weightplay.com/games/pawaxe/art/cover-v1.png" />
 <script id="pawaxe-guide-faq" type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"zh-Hant","mainEntity":[{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"進度達到 100% 時，該路線即記錄為通關並解鎖下一條；第 30 條之後沒有下一關。點完成按鈕可開啟結算，也可繼續戰鬥刷掉落。之後落敗或離開，不會抹除已通關的路線。"},"name":"進度到 100% 會怎樣？"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"共有 15 件裝備，依目前路線與機率掉落；達到解鎖路線不代表必定取得。重複裝備會轉為碎片，第一次升階需要 10 片，後續需求會增加。請在關卡畫面更換或升階，再開始下一次探險。"},"name":"為什麼重複掉落沒有多一件裝備？"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"進入路線前，從已收集的夥伴中選擇一位出戰；能量全滿時可發動其技能。收齊四位夥伴並不代表四位能同時上場。"},"name":"四位夥伴可以一起出戰嗎？"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"瀏覽器允許儲存時，已通關路線、收集的裝備與夥伴、升階和偏好會保存在目前瀏覽器。重新整理不會接續未完成的戰鬥。清除網站資料、換瀏覽器，或使用封鎖／暫時性儲存，都可能使進度遺失；沒有雲端存檔轉移。"},"name":"重新整理後可以接續戰鬥嗎？"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","alternateName":"Axe & Ally","audience":{"@type":"PeopleAudience","audienceType":"一般玩家"},"description":"點擊揮斧闖過 30 條森林路線，收集 4 位夥伴與 15 件裝備，將重複掉落化為升階碎片。","genre":["動作","冒險","動物遊戲"],"image":"https://weightplay.com/games/pawaxe/art/cover-v1.png","inLanguage":"zh-Hant","isAccessibleForFree":true,"name":"斧刃夥伴","operatingSystem":"網頁瀏覽器","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"url":"https://weightplay.com/zh-tw/games/pawaxe/"}</script>
-</head><body data-game-id="pawaxe" data-wp-game-id="pawaxe" data-screen="main" data-has-stage="true"><div id="frame" data-wp-frame-root>
+</head><body data-game-id="pawaxe" data-wp-game-id="pawaxe" data-screen="main" data-has-stage="true">
+<section id="loadingPanel" class="loading-panel" role="status" aria-live="polite"><div class="loading-card"><strong data-i18n="loadingTitle">準備開始探險</strong><span data-i18n="loadingMessage">正在載入森林並整理裝備……</span><div class="loading-track pawaxe-loading-track"><i id="loadingFill"></i></div></div></section><div id="frame" data-wp-frame-root>
 <main id="main" class="scene main-scene">
 <header class="main-header"><a href="/" data-wp-return="main" data-i18n-aria="returnHome" aria-label="返回 WeightPlay">← W</a><h1 data-wp-frame-title data-i18n="title" data-runtime-localize="off">斧刃夥伴</h1></header>
 <div class="hero"><img class="main-cover" src="art/cover-v1.png" data-i18n-alt="coverAlt" alt="菲雅與栗栗在發光的森林中迎戰"><div class="hero-copy"><p class="main-summary" data-i18n="summary">點擊揮斧闖過 30 條森林路線，收集 4 位夥伴與 15 件裝備，將重複掉落化為升階碎片。</p><p id="progress" class="main-progress" data-wp-main-progress></p><button id="start" class="primary" data-wp-main-start data-i18n="start">開始遊戲</button></div></div>
@@ -57,12 +62,12 @@
 <header><button data-wp-return="battle" id="battleBack" data-i18n-aria="returnStages" aria-label="返回關卡">←</button><span data-wp-frame-title hidden></span></header>
 <main class="battle-area">
 <div id="battleInfo" data-wp-frame-info><span class="stage-count"><b id="hudStage">1/30</b></span><span class="player-health" data-i18n-title="playerHealth" title="玩家生命"><span class="health-caption" data-i18n="healthShort" aria-hidden="true">生命</span><progress id="playerHp" max="130" value="130" data-i18n-aria="playerHealth" aria-label="玩家生命"></progress><span id="hp" class="health-value" aria-live="polite">130/130</span><span id="barrierStatus" class="barrier-status" aria-live="polite"></span></span></div>
-<div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0" data-i18n-aria="journeyProgress" aria-label="探險進度"></progress><strong id="routePercent">0%</strong></div><button id="claim" disabled data-i18n-aria="settleExpedition" aria-label="結算探險">—</button></div>
+<div class="route"><div class="route-track"><span id="routeLabel"></span><progress id="routeProgress" max="100" value="0" data-i18n-aria="journeyProgress" aria-label="探險進度"></progress><strong id="routePercent">0%</strong></div><button id="claim" disabled data-i18n-aria="settleExpedition" aria-label="結算探險"></button></div>
 <div class="arena"><canvas id="canvas" data-i18n-aria="battlefield" aria-label="森林戰場"></canvas><div id="targets" class="targets" data-i18n-aria="targetSelection" aria-label="選擇目標"></div><div id="warning" class="warning"></div><div id="damageNumbers" class="damage-numbers" aria-hidden="true"></div><div id="status" class="status"></div><div id="lootToast" class="loot-toast" role="status" hidden><img id="lootIcon" class="object-icon" alt="" width="44" height="44"><span id="lootText"></span></div></div>
 <div id="feedback" class="feedback" aria-live="polite"></div>
 <div class="actions"><button id="auto" aria-pressed="false"><span data-i18n="auto">自動</span><small id="autoValue"></small></button><button id="attack" data-wp-primary-action><span data-i18n="attack">揮斧</span><small id="attackValue"></small></button><button id="ally"><span class="ally-heading"><img id="allyPortrait" alt="" width="18" height="18"><span id="allyName" data-i18n="ally">夥伴</span></span><small id="energy"></small><progress id="allyMeter" max="100" value="100" data-i18n-aria="allyEnergy" aria-label="夥伴能量"></progress></button></div>
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
 </section>
-</div><select hidden id="locale" data-i18n-aria="language" aria-label="語言"></select><script type="module" src="game.js?v=10&amp;wp-audio=1.0.0&amp;wp-text=pawaxe-20260924-2"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+</div><select hidden id="locale" data-i18n-aria="language" aria-label="語言"></select><script type="module" src="game.js?v=16&amp;wp-audio=1.0.0&amp;wp-text=pawaxe-20260926-ux-2"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   </body></html>

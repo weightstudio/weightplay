@@ -129,6 +129,201 @@
   const initialLocale = [routeLocale, queryLocale, storedLocale].find((value) => value && copy[value]) || "en";
   const state = { locale: initialLocale, holeIndex: 0, stagePage: 0, strokes: 0, totalStrokes: 0, totalAcorns: 0, sessionHoles: new Set(), sessionScores: {}, sessionAcorns: {}, ball: { x: 0, y: 0, vx: 0, vy: 0 }, aiming: false, keyboardAim: false, pointer: null, rolling: false, sound: true, progress: loadProgress() };
 
+
+  let stageController = null;
+  let stageBrowseIndex = 0;
+  let leaveOpen = false;
+  let leaveFocus = null;
+  let leaveWasRolling = false;
+
+  const PUTT_LEAVE_COPY = {
+    en: ["Leave this hole?", "Your current ball position and {strokes} stroke(s) on Hole {hole} will be discarded. Cleared holes and saved best scores stay saved.", "Continue playing", "Return to Stages"],
+    "zh-tw": ["離開這一洞？", "第 {hole} 洞目前的球位與 {strokes} 桿會被放棄；已完成關卡與已儲存最佳成績會保留。", "繼續遊戲", "返回關卡"],
+    "zh-cn": ["离开这一洞？", "第 {hole} 洞当前的球位与 {strokes} 杆会被放弃；已完成关卡与已保存最佳成绩会保留。", "继续游戏", "返回关卡"],
+    ja: ["このホールを離れますか？", "ホール {hole} の現在のボール位置と {strokes} 打は破棄されます。クリア済みホールと保存済みベストは残ります。", "プレイを続ける", "ステージへ戻る"],
+    ko: ["이 홀을 나갈까요?", "{hole}번 홀의 현재 공 위치와 {strokes}타는 사라집니다. 완료한 홀과 저장된 최고 기록은 유지됩니다.", "계속 플레이", "스테이지로 돌아가기"],
+    es: ["¿Salir de este hoyo?", "Se descartarán la posición actual de la bola y {strokes} golpe(s) del hoyo {hole}. Los hoyos completados y los mejores resultados guardados se conservan.", "Seguir jugando", "Volver a niveles"],
+    "pt-br": ["Sair deste buraco?", "A posição atual da bola e {strokes} tacada(s) do buraco {hole} serão descartadas. Buracos concluídos e melhores resultados salvos serão mantidos.", "Continuar jogando", "Voltar às fases"],
+    fr: ["Quitter ce trou ?", "La position actuelle de la balle et {strokes} coup(s) du trou {hole} seront abandonnés. Les trous terminés et les meilleurs scores enregistrés restent sauvegardés.", "Continuer à jouer", "Retour aux niveaux"],
+    de: ["Dieses Loch verlassen?", "Die aktuelle Ballposition und {strokes} Schlag/Schläge auf Loch {hole} werden verworfen. Abgeschlossene Löcher und gespeicherte Bestwerte bleiben erhalten.", "Weiterspielen", "Zurück zu den Leveln"],
+    it: ["Uscire da questa buca?", "La posizione attuale della palla e {strokes} colpo/i della buca {hole} verranno annullati. Le buche completate e i migliori risultati salvati restano memorizzati.", "Continua a giocare", "Torna ai livelli"],
+    ru: ["Выйти из этой лунки?", "Текущее положение мяча и {strokes} удар(а/ов) на лунке {hole} будут сброшены. Пройденные лунки и сохранённые рекорды останутся.", "Продолжить игру", "Вернуться к уровням"],
+    hi: ["इस होल से बाहर जाएँ?", "होल {hole} की मौजूदा गेंद की स्थिति और {strokes} स्ट्रोक हट जाएँगे। पूरे किए गए होल और सहेजे गए सर्वश्रेष्ठ स्कोर बने रहेंगे।", "खेल जारी रखें", "स्तरों पर लौटें"],
+    ar: ["مغادرة هذه الحفرة؟", "سيتم تجاهل موضع الكرة الحالي و{strokes} ضربة في الحفرة {hole}. ستبقى الحفر المكتملة وأفضل النتائج المحفوظة.", "متابعة اللعب", "العودة إلى المراحل"]
+  };
+
+  function stageCardCopy(card, index) {
+    const hole = holes[index];
+    const available = index < unlockedHoleCount();
+    const checkpoint = (index + 1) % 5 === 0;
+    const marker = index === holes.length - 1 ? " · " + t("finale") + " · " + t("checkpoint") : checkpoint ? " · " + t("checkpoint") : "";
+    const names = t("holeNames");
+    const tips = t("holeTips");
+    const name = Array.isArray(names) && names[index] ? names[index] : t("trail") + " " + (index + 1);
+    const tip = Array.isArray(tips) && tips[index] ? tips[index] : t("aim");
+    const best = state.progress["hole" + (index + 1)];
+    card.type = "button";
+    card.className = "stage-card" + (available ? "" : " locked");
+    card.dataset.stage = String(index);
+    card.setAttribute("aria-disabled", String(!available));
+    card.setAttribute("aria-label", (index + 1) + ". " + name);
+    card.innerHTML = "<strong>" + (index + 1) + ". " + name + marker + "</strong><span>" +
+      (available ? t("par") + " " + hole.par + " · " + tip : "🔒 " + t("stages") + " " + (index + 1)) +
+      "</span><span>" + (best ? t("best") + ": " + best : t("best") + ": —") + "</span>";
+    if (index === Math.max(0, unlockedHoleCount() - 1)) card.dataset.wpStageRecommended = "true";
+    else delete card.dataset.wpStageRecommended;
+  }
+
+  function ensureStageController(centerRecommended = false) {
+    const rail = document.querySelector("#stageList");
+    if (!rail || !window.WeightPlayStageV6?.install) return null;
+    if (centerRecommended) stageBrowseIndex = Math.max(0, unlockedHoleCount() - 1);
+    if (!stageController) {
+      stageController = window.WeightPlayStageV6.install(rail, {
+        total: () => holes.length,
+        poolSize: 9,
+        initialIndex: () => stageBrowseIndex,
+        bind: stageCardCopy,
+        activate: (index) => { if (index < unlockedHoleCount()) startHole(index); },
+        onChange: (index) => { stageBrowseIndex = index; }
+      });
+    } else {
+      stageController.refresh?.();
+    }
+    if (centerRecommended) stageController?.center?.(stageBrowseIndex);
+    return stageController;
+  }
+
+  function enterStage() {
+    closeLeave(false, false);
+    closeResultState();
+    state.suspended = false;
+    stageBrowseIndex = Math.max(0, unlockedHoleCount() - 1);
+    showScreen("stage");
+    renderStageList(true);
+  }
+
+  function renderLeaveCopy() {
+    const layer = document.querySelector("#puttLeaveDialog");
+    if (!layer) return;
+    const pack = PUTT_LEAVE_COPY[state.locale] || PUTT_LEAVE_COPY.en;
+    const fill = (value) => value.replaceAll("{hole}", String(state.holeIndex + 1)).replaceAll("{strokes}", String(state.strokes));
+    layer.querySelector("#puttLeaveTitle").textContent = fill(pack[0]);
+    layer.querySelector("#puttLeaveText").textContent = fill(pack[1]);
+    layer.querySelector("#puttLeaveContinue").textContent = pack[2];
+    layer.querySelector("#puttLeaveStages").textContent = pack[3];
+  }
+
+  function syncBattleCoverage() {
+    const result = document.querySelector("#resultCard");
+    const resultActive = Boolean(result && !result.hidden);
+    const live = document.querySelector("#puttBattleLive");
+    const header = document.querySelector("#battleScreen .battle-head");
+    document.body.classList.toggle("wp-putt-result-active", resultActive);
+    if (live) {
+      live.hidden = resultActive;
+      live.inert = leaveOpen || resultActive;
+    }
+    if (header) header.inert = leaveOpen || resultActive;
+    if (result) result.inert = leaveOpen || !resultActive;
+  }
+
+  function openResultState() {
+    const result = document.querySelector("#resultCard");
+    if (!result) return;
+    result.hidden = false;
+    syncBattleCoverage();
+    document.querySelector("#mapButton")?.focus({ preventScroll: true });
+  }
+
+  function closeResultState() {
+    const result = document.querySelector("#resultCard");
+    if (result) result.hidden = true;
+    document.body.classList.remove("wp-putt-result-active");
+    syncBattleCoverage();
+  }
+
+  function battleMutable() {
+    return state.strokes > 0 || state.aiming || state.rolling || state.result === "water" || state.result === "stopped";
+  }
+
+  function openLeave() {
+    const layer = document.querySelector("#puttLeaveDialog");
+    const result = document.querySelector("#resultCard");
+    if (leaveOpen || document.body.dataset.screen !== "battle" || !layer || !result?.hidden) return;
+    renderLeaveCopy();
+    leaveFocus = document.activeElement;
+    leaveOpen = true;
+    leaveWasRolling = state.rolling;
+    state.suspended = true;
+    state.rolling = false;
+    layer.hidden = false;
+    syncBattleCoverage();
+    layer.querySelector("#puttLeaveContinue")?.focus({ preventScroll: true });
+  }
+
+  function closeLeave(restoreFocus = true, resume = true) {
+    if (!leaveOpen) return;
+    const layer = document.querySelector("#puttLeaveDialog");
+    leaveOpen = false;
+    if (layer) layer.hidden = true;
+    state.suspended = false;
+    const shouldResume = resume && leaveWasRolling;
+    leaveWasRolling = false;
+    if (shouldResume) {
+      state.rolling = true;
+      requestAnimationFrame(step);
+    }
+    syncBattleCoverage();
+    if (restoreFocus) document.querySelector("#battleBack")?.focus({ preventScroll: true });
+    else if (leaveFocus instanceof HTMLElement && leaveFocus.isConnected) leaveFocus.blur();
+    leaveFocus = null;
+  }
+
+  function handleBattleBack() {
+    const result = document.querySelector("#resultCard");
+    if (result && !result.hidden) {
+      enterStage();
+      return;
+    }
+    if (!battleMutable()) {
+      enterStage();
+      return;
+    }
+    openLeave();
+  }
+
+  function handleInterface7Keydown(event) {
+    const layer = document.querySelector("#puttLeaveDialog");
+    if (leaveOpen) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeLeave(true, true);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const actions = [layer?.querySelector("#puttLeaveContinue"), layer?.querySelector("#puttLeaveStages")].filter((node) => node && !node.disabled && !node.hidden);
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (!actions.includes(document.activeElement)) {
+        event.preventDefault();
+        first?.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+      return;
+    }
+    if (event.key === "Escape" && document.body.dataset.screen === "battle" && document.querySelector("#resultCard")?.hidden) {
+      event.preventDefault();
+      if (battleMutable()) openLeave();
+      else enterStage();
+    }
+  }
+
   function t(key) { if (key === "loading") return loadingLabels[state.locale] || loadingLabels.en; return (copy[state.locale] || copy.en)[key] || copy.en[key] || key; }
   function aria(key) { return ariaLabels[state.locale]?.[key] || ariaLabels.en[key] || key; }
   function syncSoundControls() {
@@ -151,7 +346,7 @@
     document.querySelectorAll("[data-aria]").forEach((node) => { node.setAttribute("aria-label", aria(node.dataset.aria)); });
     syncSoundControls();
     document.querySelector("#aimAction")?.setAttribute("aria-label", t("aim"));
-    renderStageList(); renderMainProgress(); updateHoleLabels(); updateHelp();
+    renderStageList(); renderMainProgress(); updateHoleLabels(); updateHelp(); renderLeaveCopy();
   }
   function showScreen(name) { Object.entries(screens).forEach(([key, node]) => { const active = key === name; node.classList.toggle("active", active); node.hidden = !active; }); document.body.dataset.screen = name;
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
@@ -161,61 +356,47 @@
 }
   function renderMainProgress() { const completed = holes.reduce((count, _, index) => count + (Number.isFinite(Number(state.progress[`hole${index + 1}`])) ? 1 : 0), 0); const best = state.progress.bestTotal || "—"; document.querySelector("#mainProgress").textContent = `${t("trail")}: ${completed}/${holes.length} ${t("hole")} · ${t("best")}: ${best} ${t("strokes")}`; }
   function unlockedHoleCount() { let count = 1; while (count < holes.length && Number.isFinite(Number(state.progress[`hole${count}`]))) count += 1; return count; }
-  function renderStageList() {
-    const list = document.querySelector("#stageList");
-    const pageStart = state.stagePage * 3;
-    list.replaceChildren(...holes.slice(pageStart, pageStart + 3).map((hole, pageIndex) => {
-      const index = pageStart + pageIndex;
-      const available = index < unlockedHoleCount();
-      const checkpoint = (index + 1) % 5 === 0;
-      const marker = index === holes.length - 1 ? ` · ${t("finale")} · ${t("checkpoint")}` : checkpoint ? ` · ${t("checkpoint")}` : "";
-      const button = document.createElement("button"); button.type = "button"; button.className = `stage-choice${available ? "" : " locked"}`; button.setAttribute("role", "tab"); button.setAttribute("aria-selected", "false"); button.setAttribute("data-wp-stage-card", ""); button.setAttribute("aria-disabled", String(!available)); button.disabled = !available; if (available) button.setAttribute("data-wp-enter-battle", "");
-      const best = state.progress[`hole${index + 1}`];
-      button.innerHTML = `<strong>${index + 1}. ${t("holeNames")[index]}${marker}</strong><span>${available ? `${t("par")} ${hole.par} · ${t("holeTips")[index]}` : `🔒 ${t("stages")} ${index + 1}`}</span><span>${best ? `${t("best")}: ${best}` : `${t("best")}: —`}</span>`;
-      if (available) button.addEventListener("click", () => startHole(index));
-      return button;
-    }));
-    const pageBack = document.querySelector("#stagePageBack");
-    const pageNext = document.querySelector("#stagePageNext");
-    pageBack.hidden = state.stagePage === 0;
-    pageNext.hidden = pageStart + 3 >= holes.length;
-    pageBack.setAttribute("aria-label", `${t("back")} ${t("trail")}`);
-    pageNext.setAttribute("aria-label", `${t("next")} ${t("trail")}`);
-    document.querySelector("#stageBest").textContent = state.progress.bestTotal ? `${t("best")}: ${state.progress.bestTotal} ${t("strokes")}` : "";
+  function renderStageList(centerRecommended = false) {
+    const tab = document.querySelector("#stagesTab");
+    if (tab) {
+      tab.textContent = t("stages");
+      tab.setAttribute("aria-label", t("stages"));
+    }
+    document.querySelector("#stageList")?.setAttribute("aria-label", t("stages"));
+    ensureStageController(centerRecommended);
   }
-  function startHole(index) { if (index < 0 || index >= holes.length || index >= unlockedHoleCount()) return; state.holeIndex = index; state.stagePage = Math.floor(index / 3); state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; (__wpNotifyMeasurement(), document.querySelector("#resultCard").hidden = true); showScreen("battle"); updateHoleLabels(); updateHelp(); draw();
+  function startHole(index) { if (index < 0 || index >= holes.length || index >= unlockedHoleCount()) return; closeLeave(false, false); closeResultState(); state.suspended = false; state.holeIndex = index; state.stagePage = Math.floor(index / 3); state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; __wpNotifyMeasurement(); closeResultState(); showScreen("battle"); updateHoleLabels(); updateHelp(); draw();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function updateHoleLabels() { const hole = holes[state.holeIndex]; const stage = state.holeIndex + 1; const marker = stage === holes.length ? ` · ${t("finale")} · ${t("checkpoint")}` : stage % 5 === 0 ? ` · ${t("checkpoint")}` : ""; document.querySelector("#holeTitle").textContent = `${t("holeNames")[state.holeIndex]}${marker}`; document.querySelector("#parLabel").textContent = `${t("par")} ${hole.par}`; document.querySelector("#strokeLabel").textContent = `${t("strokes")} ${state.strokes}`; document.querySelector("#acornLabel").textContent = `${t("acorns")} ${Math.max(0, hole.par + 1 - state.strokes)}`; }
   function updateHelp() { const help = document.querySelector("#battleHelp"); help.textContent = state.result === "clear" ? t("clear") : state.rolling ? t("rolling") : state.keyboardAim ? (keyboardAimLabels[state.locale] || keyboardAimLabels.en) : t("aim"); }
   function pointerPosition(event) { const rect = canvas.getBoundingClientRect(); return { x: (event.clientX - rect.left) * canvas.width / rect.width, y: (event.clientY - rect.top) * canvas.height / rect.height }; }
-  function beginAim(event) { if (state.rolling || !document.querySelector("#resultCard").hidden) return; const p = pointerPosition(event); if (Math.hypot(p.x - state.ball.x, p.y - state.ball.y) > 48) return; state.aiming = true; state.keyboardAim = false; state.pointer = p; canvas.setPointerCapture?.(event.pointerId); updateHelp(); draw(); }
+  function beginAim(event) { if (state.rolling || state.suspended || leaveOpen || !document.querySelector("#resultCard").hidden) return; const p = pointerPosition(event); if (Math.hypot(p.x - state.ball.x, p.y - state.ball.y) > 48) return; state.aiming = true; state.keyboardAim = false; state.pointer = p; canvas.setPointerCapture?.(event.pointerId); updateHelp(); draw(); }
   function updateAim(event) { if (!state.aiming) return; state.pointer = pointerPosition(event); draw(); }
   function launchAim(pointer) { if (!state.aiming) return; state.pointer = pointer; const dx = state.ball.x - state.pointer.x; const dy = state.ball.y - state.pointer.y; const distance = Math.min(210, Math.hypot(dx, dy)); if (distance < 12) { state.aiming = false; state.keyboardAim = false; updateHelp(); draw(); return; } const angle = Math.atan2(dy, dx); const power = Math.min(9.2, distance / 21); state.ball.vx = Math.cos(angle) * power; state.ball.vy = Math.sin(angle) * power; state.aiming = false; state.keyboardAim = false; state.rolling = true; state.strokes += 1; state.totalStrokes += 1; updateHoleLabels(); updateHelp(); window.WonderAnalytics?.track?.("putt_shot", { game_id: "animal-putt-trails", hole: state.holeIndex + 1, stroke: state.strokes, power: Math.round(power * 10) / 10 }); requestAnimationFrame(step); }
   function releaseAim(event) { if (!state.aiming) return; launchAim(pointerPosition(event)); }
-  function handleKeyboardAim(event) { if (state.rolling || !document.querySelector("#resultCard").hidden) return; const directionKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]; if (directionKeys.includes(event.key)) { event.preventDefault(); event.stopPropagation(); if (!state.aiming) { state.aiming = true; state.keyboardAim = true; state.pointer = { x: state.ball.x, y: state.ball.y }; } const step = 24; const next = { ...state.pointer }; if (event.key === "ArrowLeft") next.x -= step; if (event.key === "ArrowRight") next.x += step; if (event.key === "ArrowUp") next.y -= step; if (event.key === "ArrowDown") next.y += step; const dx = next.x - state.ball.x; const dy = next.y - state.ball.y; const distance = Math.hypot(dx, dy); if (distance > 210) { next.x = state.ball.x + dx * 210 / distance; next.y = state.ball.y + dy * 210 / distance; } state.pointer = next; updateHelp(); draw(); return; } if ((event.key === "Enter" || event.key === " ") && state.aiming) { event.preventDefault(); event.stopPropagation(); launchAim(state.pointer); return; } if (event.key === "Escape" && state.aiming) { event.preventDefault(); event.stopPropagation(); state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); } }
+  function handleKeyboardAim(event) { if (state.rolling || state.suspended || leaveOpen || !document.querySelector("#resultCard").hidden) return; const directionKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]; if (directionKeys.includes(event.key)) { event.preventDefault(); event.stopPropagation(); if (!state.aiming) { state.aiming = true; state.keyboardAim = true; state.pointer = { x: state.ball.x, y: state.ball.y }; } const step = 24; const next = { ...state.pointer }; if (event.key === "ArrowLeft") next.x -= step; if (event.key === "ArrowRight") next.x += step; if (event.key === "ArrowUp") next.y -= step; if (event.key === "ArrowDown") next.y += step; const dx = next.x - state.ball.x; const dy = next.y - state.ball.y; const distance = Math.hypot(dx, dy); if (distance > 210) { next.x = state.ball.x + dx * 210 / distance; next.y = state.ball.y + dy * 210 / distance; } state.pointer = next; updateHelp(); draw(); return; } if ((event.key === "Enter" || event.key === " ") && state.aiming) { event.preventDefault(); event.stopPropagation(); launchAim(state.pointer); return; } if (event.key === "Escape" && state.aiming) { event.preventDefault(); event.stopPropagation(); state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); } }
   function insideRect(x, y, rect, radius = 12) { return x > rect[0] - radius && x < rect[0] + rect[2] + radius && y > rect[1] - radius && y < rect[1] + rect[3] + radius; }
-  function step() { if (!state.rolling) return; const hole = holes[state.holeIndex]; let nx = state.ball.x + state.ball.vx; let ny = state.ball.y + state.ball.vy; if (nx < 34 || nx > canvas.width - 34) { state.ball.vx *= -0.72; nx = Math.max(34, Math.min(canvas.width - 34, nx)); } if (ny < 34 || ny > canvas.height - 34) { state.ball.vy *= -0.72; ny = Math.max(34, Math.min(canvas.height - 34, ny)); } for (const wall of hole.walls) { if (insideRect(nx, ny, wall)) { const horizontal = wall[2] > wall[3]; if (horizontal) state.ball.vy *= -0.72; else state.ball.vx *= -0.72; nx = state.ball.x; ny = state.ball.y; } } state.ball.x = nx; state.ball.y = ny; if (hole.water && insideRect(state.ball.x, state.ball.y, hole.water, 9)) { state.ball.x = hole.start[0]; state.ball.y = hole.start[1]; state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; state.result = "water"; updateHelp(); document.querySelector("#battleHelp").textContent = `${t("water")} — ${t("retry")}`; draw(); return; } const cupDistance = Math.hypot(state.ball.x - hole.cup[0], state.ball.y - hole.cup[1]); if (cupDistance < 23 && Math.hypot(state.ball.vx, state.ball.vy) < 3.5) { state.ball.x = hole.cup[0]; state.ball.y = hole.cup[1]; state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; finishHole(); return; } state.ball.vx *= 0.972; state.ball.vy *= 0.972; if (Math.hypot(state.ball.vx, state.ball.vy) < 0.08) { state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; state.result = "stopped"; updateHelp(); draw(); return; } draw(); requestAnimationFrame(step); }
-  function finishHole() { const hole = holes[state.holeIndex]; const score = state.strokes; const acorns = Math.max(0, hole.par + 1 - score); state.sessionHoles.add(state.holeIndex); const previousSessionScore = state.sessionScores[state.holeIndex]; const sessionScore = Number.isFinite(previousSessionScore) ? Math.min(previousSessionScore, score) : score; state.sessionScores[state.holeIndex] = sessionScore; state.sessionAcorns[state.holeIndex] = Math.max(0, hole.par + 1 - sessionScore); const totals = summarizeSession(state.sessionScores, state.sessionAcorns); state.totalStrokes = totals.totalStrokes; state.totalAcorns = totals.totalAcorns; state.progress[`hole${state.holeIndex + 1}`] = state.progress[`hole${state.holeIndex + 1}`] ? Math.min(state.progress[`hole${state.holeIndex + 1}`], score) : score; saveProgress(); const resultCopy = score < hole.par ? `${score - hole.par} ${t("under")}` : score > hole.par ? `${score - hole.par} ${t("over")}` : t("even"); const isCampaignComplete = state.sessionHoles.size === holes.length; document.querySelector("#resultTitle").textContent = isCampaignComplete ? t("complete") : t("clear"); document.querySelector("#resultCopy").textContent = isCampaignComplete ? format(t("completeCopy"), { acorns: state.totalAcorns }) : `${t("strokes")} ${score} · ${resultCopy}`; state.result = "clear"; updateHelp(); document.querySelector("#nextButton").hidden = state.holeIndex === holes.length - 1; (__wpNotifyMeasurement(), document.querySelector("#resultCard").hidden = false); window.WonderAnalytics?.track?.("putt_hole_complete", { game_id: "animal-putt-trails", hole: state.holeIndex + 1, strokes: score, acorns }); if (isCampaignComplete) { state.progress.bestTotal = state.progress.bestTotal ? Math.min(state.progress.bestTotal, state.totalStrokes) : state.totalStrokes; saveProgress(); window.WonderAnalytics?.track?.("putt_campaign_complete", { game_id: "animal-putt-trails", strokes: state.totalStrokes, acorns: state.totalAcorns }); } draw();
+  function step() { if (!state.rolling || state.suspended) return; const hole = holes[state.holeIndex]; let nx = state.ball.x + state.ball.vx; let ny = state.ball.y + state.ball.vy; if (nx < 34 || nx > canvas.width - 34) { state.ball.vx *= -0.72; nx = Math.max(34, Math.min(canvas.width - 34, nx)); } if (ny < 34 || ny > canvas.height - 34) { state.ball.vy *= -0.72; ny = Math.max(34, Math.min(canvas.height - 34, ny)); } for (const wall of hole.walls) { if (insideRect(nx, ny, wall)) { const horizontal = wall[2] > wall[3]; if (horizontal) state.ball.vy *= -0.72; else state.ball.vx *= -0.72; nx = state.ball.x; ny = state.ball.y; } } state.ball.x = nx; state.ball.y = ny; if (hole.water && insideRect(state.ball.x, state.ball.y, hole.water, 9)) { state.ball.x = hole.start[0]; state.ball.y = hole.start[1]; state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; state.result = "water"; updateHelp(); document.querySelector("#battleHelp").textContent = `${t("water")} — ${t("retry")}`; draw(); return; } const cupDistance = Math.hypot(state.ball.x - hole.cup[0], state.ball.y - hole.cup[1]); if (cupDistance < 23 && Math.hypot(state.ball.vx, state.ball.vy) < 3.5) { state.ball.x = hole.cup[0]; state.ball.y = hole.cup[1]; state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; finishHole(); return; } state.ball.vx *= 0.972; state.ball.vy *= 0.972; if (Math.hypot(state.ball.vx, state.ball.vy) < 0.08) { state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; state.result = "stopped"; updateHelp(); draw(); return; } draw(); requestAnimationFrame(step); }
+  function finishHole() { const hole = holes[state.holeIndex]; const score = state.strokes; const acorns = Math.max(0, hole.par + 1 - score); state.sessionHoles.add(state.holeIndex); const previousSessionScore = state.sessionScores[state.holeIndex]; const sessionScore = Number.isFinite(previousSessionScore) ? Math.min(previousSessionScore, score) : score; state.sessionScores[state.holeIndex] = sessionScore; state.sessionAcorns[state.holeIndex] = Math.max(0, hole.par + 1 - sessionScore); const totals = summarizeSession(state.sessionScores, state.sessionAcorns); state.totalStrokes = totals.totalStrokes; state.totalAcorns = totals.totalAcorns; state.progress[`hole${state.holeIndex + 1}`] = state.progress[`hole${state.holeIndex + 1}`] ? Math.min(state.progress[`hole${state.holeIndex + 1}`], score) : score; saveProgress(); const resultCopy = score < hole.par ? `${score - hole.par} ${t("under")}` : score > hole.par ? `${score - hole.par} ${t("over")}` : t("even"); const isCampaignComplete = state.sessionHoles.size === holes.length; document.querySelector("#resultTitle").textContent = isCampaignComplete ? t("complete") : t("clear"); document.querySelector("#resultCopy").textContent = isCampaignComplete ? format(t("completeCopy"), { acorns: state.totalAcorns }) : `${t("strokes")} ${score} · ${resultCopy}`; state.result = "clear"; updateHelp(); const nextButton = document.querySelector("#nextButton"); const terminal = state.holeIndex === holes.length - 1; nextButton.hidden = false; nextButton.disabled = terminal; nextButton.setAttribute("aria-disabled", String(terminal)); __wpNotifyMeasurement(); openResultState(); window.WonderAnalytics?.track?.("putt_hole_complete", { game_id: "animal-putt-trails", hole: state.holeIndex + 1, strokes: score, acorns }); if (isCampaignComplete) { state.progress.bestTotal = state.progress.bestTotal ? Math.min(state.progress.bestTotal, state.totalStrokes) : state.totalStrokes; saveProgress(); window.WonderAnalytics?.track?.("putt_campaign_complete", { game_id: "animal-putt-trails", strokes: state.totalStrokes, acorns: state.totalAcorns }); } draw();
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function draw() { const hole = holes[state.holeIndex]; ctx.clearRect(0, 0, canvas.width, canvas.height); if (courseBackdrop.complete && courseBackdrop.naturalWidth) { ctx.drawImage(courseBackdrop, 0, 0, canvas.width, canvas.height); } else { ctx.fillStyle = hole.tint; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "rgba(255,255,255,.16)"; for (let i = 0; i < 8; i += 1) { ctx.beginPath(); ctx.arc(90 + i * 125, 90 + (i % 2) * 70, 28, 0, Math.PI * 2); ctx.fill(); } ctx.fillStyle = "#8bbf90"; ctx.fillRect(24, 24, canvas.width - 48, canvas.height - 48); } ctx.strokeStyle = "rgba(233,244,210,.8)"; ctx.lineWidth = 6; ctx.strokeRect(26, 26, canvas.width - 52, canvas.height - 52); if (hole.water) { ctx.fillStyle = "rgba(99,185,203,.78)"; ctx.beginPath(); ctx.roundRect(hole.water[0], hole.water[1], hole.water[2], hole.water[3], 24); ctx.fill(); ctx.fillStyle = "rgba(255,255,255,.52)"; ctx.fillRect(hole.water[0] + 18, hole.water[1] + 22, hole.water[2] - 36, 5); } for (const wall of hole.walls) { ctx.fillStyle = "#54785d"; ctx.beginPath(); ctx.roundRect(...wall, 10); ctx.fill(); ctx.fillStyle = "rgba(255,255,255,.28)"; ctx.fillRect(wall[0] + 8, wall[1] + 5, Math.max(8, wall[2] - 16), 4); } ctx.strokeStyle = "#f6d47a"; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(hole.cup[0], hole.cup[1]); ctx.lineTo(hole.cup[0], hole.cup[1] - 72); ctx.stroke(); ctx.fillStyle = "#e8755d"; ctx.beginPath(); ctx.moveTo(hole.cup[0], hole.cup[1] - 70); ctx.lineTo(hole.cup[0] + 52, hole.cup[1] - 52); ctx.lineTo(hole.cup[0], hole.cup[1] - 34); ctx.closePath(); ctx.fill(); ctx.fillStyle = "#2b5445"; ctx.beginPath(); ctx.arc(hole.cup[0], hole.cup[1], 18, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#172c2a"; ctx.beginPath(); ctx.arc(state.ball.x, state.ball.y + 8, 15, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#fffdf3"; ctx.beginPath(); ctx.arc(state.ball.x, state.ball.y, 14, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#c8d7d0"; ctx.beginPath(); ctx.arc(state.ball.x - 4, state.ball.y - 5, 4, 0, Math.PI * 2); ctx.fill(); if (state.aiming && state.pointer) { const dx = state.ball.x - state.pointer.x; const dy = state.ball.y - state.pointer.y; const distance = Math.min(210, Math.hypot(dx, dy)); const angle = Math.atan2(dy, dx); ctx.strokeStyle = "#fff1ae"; ctx.lineWidth = 7; ctx.setLineDash([14, 10]); ctx.beginPath(); ctx.moveTo(state.ball.x, state.ball.y); ctx.lineTo(state.ball.x + Math.cos(angle) * distance, state.ball.y + Math.sin(angle) * distance); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = "#fff1ae"; ctx.font = "700 22px system-ui"; ctx.fillText(`${Math.round(distance / 21)}`, state.ball.x + 18, state.ball.y - 18); } }
 
-  document.querySelector("#startButton").addEventListener("click", () => { state.totalStrokes = 0; state.totalAcorns = 0; state.sessionHoles.clear(); state.sessionScores = {}; state.sessionAcorns = {}; state.stagePage = 0; renderStageList(); showScreen("stage"); window.WonderAnalytics?.track?.("putt_start", { game_id: "animal-putt-trails" }); });
-  document.querySelector("#stagePageBack").addEventListener("click", () => { state.stagePage = Math.max(0, state.stagePage - 1); renderStageList(); });
-  document.querySelector("#stagePageNext").addEventListener("click", () => { state.stagePage = Math.min(Math.floor((holes.length - 1) / 3), state.stagePage + 1); renderStageList(); });
+  document.querySelector("#startButton").addEventListener("click", () => { state.totalStrokes = 0; state.totalAcorns = 0; state.sessionHoles.clear(); state.sessionScores = {}; state.sessionAcorns = {}; enterStage(); window.WonderAnalytics?.track?.("putt_start", { game_id: "animal-putt-trails" }); });
   document.querySelector("#stageBack").addEventListener("click", () => { renderMainProgress(); showScreen("main"); });
-  document.querySelector("#battleBack").addEventListener("click", () => { if (!state.rolling) { renderStageList(); showScreen("stage"); } });
+  document.querySelector("#battleBack").addEventListener("click", handleBattleBack);
   document.querySelector("#retryButton").addEventListener("click", () => __wpReplayStart(() => startHole(state.holeIndex)));
-  document.querySelector("#nextButton").addEventListener("click", () => startHole(state.holeIndex + 1));
-  document.querySelector("#mapButton").addEventListener("click", () => { (__wpNotifyMeasurement(), document.querySelector("#resultCard").hidden = true); renderStageList(); showScreen("stage"); });
-  document.querySelector("#soundButton").addEventListener("click", () => { state.sound = !state.sound; syncSoundControls(); });
+  document.querySelector("#nextButton").addEventListener("click", () => { if (!document.querySelector("#nextButton").disabled) startHole(state.holeIndex + 1); });
+  document.querySelector("#mapButton").addEventListener("click", enterStage);
   document.querySelector("#settingsButton").addEventListener("click", () => { const button = document.querySelector("#settingsButton"); const popover = document.querySelector("#settingsPopover"); const open = popover.hidden; popover.hidden = !open; button.setAttribute("aria-expanded", String(open)); });
   document.querySelector("#settingsSoundButton").addEventListener("click", () => { state.sound = !state.sound; syncSoundControls(); });
-  document.querySelector("#aimAction").addEventListener("click", () => { canvas.focus?.({ preventScroll: true }); updateHelp(); });
+  document.querySelector("#puttLeaveContinue").addEventListener("click", () => closeLeave(true, true));
+  document.querySelector("#puttLeaveStages").addEventListener("click", () => { state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; closeLeave(false, false); enterStage(); });
+  document.querySelector("#aimAction").addEventListener("click", () => { if (leaveOpen || state.suspended) return; canvas.focus?.({ preventScroll: true }); updateHelp(); });
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));
-  canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);
-  window.addEventListener("keydown", (event) => { if (event.key === "Escape" && !state.rolling && !state.aiming) showScreen("stage"); });
+  canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { if (leaveOpen) return; state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);
+  window.addEventListener("keydown", handleInterface7Keydown);
   setLocale(state.locale); renderMainProgress(); draw();
   const hideLoading = () => document.querySelector("#loadingPanel")?.remove();
   courseBackdrop.addEventListener("load", () => { draw(); hideLoading(); }, { once: true });

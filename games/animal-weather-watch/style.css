@@ -29,12 +29,6 @@ button, select { font: inherit; }
 button { cursor: pointer; }
 [hidden] { display: none !important; }
 
-.screen {
-  width: min(100%, 920px);
-  margin: 0 auto;
-  padding: clamp(16px, 4vw, 40px);
-}
-
 .loading-screen {
   min-height: 100vh;
   display: grid;
@@ -54,52 +48,7 @@ button { cursor: pointer; }
 
 .main-screen { min-height: 0; }
 
-.main-header {
-  width: 100%;
-  min-height: 64px;
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) 48px;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.main-header strong {
-  min-width: 0;
-  overflow: hidden;
-  color: var(--ink);
-  font-size: 1.1rem;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.main-return {
-  width: 58px;
-  height: 48px;
-  display: grid;
-  grid-template-columns: 16px 28px;
-  place-items: center;
-  gap: 4px;
-  border: 0;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #fff8d8, #ffba58);
-  color: #4a2918;
-  box-shadow: 0 7px 0 #9d5626, 0 12px 20px rgb(86 45 20 / 22%);
-  font-size: 22px;
-  font-weight: 950;
-  line-height: 1;
-  text-decoration: none;
-  overflow: hidden;
-}
-
-.main-return img { width: 28px; height: 28px; object-fit: contain; }
-
-.icon-btn, .close-btn {
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
-  min-height: 48px;
+.close-btn {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: #ffffffb8;
@@ -176,76 +125,16 @@ h3 { margin: 1.2rem 0 .5rem; }
   font-weight: 700;
 }
 
-#startBtn { min-height: 52px; }
 .primary { background: var(--accent); color: #fff; }
 .secondary { border-color: var(--line); background: #fff; color: var(--ink); }
 button:disabled { opacity: .48; cursor: not-allowed; }
 .best { margin-top: 20px; color: var(--muted); }
 
-[data-wp-standard-stage-screen] {
-  padding: 14px 18px 12px;
-  background: linear-gradient(180deg, #edf8f5, #d8ece8);
-  color: var(--ink);
-}
-
-.stage-header, .battle-header {
-  min-height: 48px;
-  display: grid;
-  grid-template-columns: 48px 48px;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0;
-}
-.stage-utility { width: 48px; height: 48px; }
-
-.stage-tabs {
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px auto 2px;
-}
-
-.stage-tabs span {
-  min-height: 48px;
-  display: inline-grid;
-  place-items: center;
-  padding: 8px 18px;
-  border: 1px solid #b9d9d5;
-  border-radius: 999px;
-  background: #ffffffb8;
-  color: var(--accent);
-  font-weight: 800;
-}
 
 .stage-list { margin-top: 4px; }
 .stage-card { color: var(--ink); text-align: start; }
 .stage-card small { display: block; margin-top: 8px; color: var(--muted); line-height: 1.35; }
 .arrow { color: var(--accent); font-size: 1.5rem; }
-
-/* Keep the previous card's hit point inside the clipped rail after the
-   shared scaler centers the recommended final forecast. */
-body[data-wp-game-id="animal-weather-watch"].wp-stage-select-active [data-wp-stage-rail] > .stage-card {
-  flex-basis: 252px !important;
-  width: 252px !important;
-  min-width: 252px !important;
-  max-width: 252px !important;
-}
-
-body[data-wp-game-id="animal-weather-watch"].wp-stage-select-active [data-wp-stage-rail] {
-  gap: 0 !important;
-}
-
-@media (min-width: 1400px) and (min-height: 900px) {
-  body[data-wp-game-id="animal-weather-watch"].wp-stage-select-active [data-wp-stage-rail] {
-    padding-inline: 0 !important;
-  }
-}
-
-[data-wp-logical-battle-canvas] {
-  padding: 14px 18px 18px;
-  background-color: #e9f5f1;
-}
 
 .battle-screen { color: var(--ink); }
 .pill { justify-self: end; display: block; width: max-content; margin: 8px 0 0 auto; padding: 8px 12px; border-radius: 999px; background: #e5f1ef; color: var(--accent); font-weight: 700; white-space: nowrap; }
@@ -264,17 +153,6 @@ body[data-wp-game-id="animal-weather-watch"].wp-stage-select-active [data-wp-sta
 .status { min-height: 1.7em; margin: 18px 0 0; font-weight: 700; }
 .status.good { color: var(--good); }
 .status.try { color: var(--try); }
-
-.battle-ad-reserve { display: none; height: var(--wp-ad-reserve-height, 0px); }
-body[data-screen="battle"] .battle-ad-reserve {
-  display: block;
-  position: fixed;
-  inset: auto 0 0;
-  width: 100%;
-  height: var(--wp-ad-reserve-height, 0px);
-  min-height: var(--wp-ad-reserve-height, 0px);
-  pointer-events: none;
-}
 
 .result-panel {
   position: relative;
@@ -327,17 +205,29 @@ body[data-wp-game-id="animal-weather-watch"][data-weather-state="result"] #battl
 select { min-height: 44px; max-width: 62%; border: 1px solid var(--line); border-radius: 12px; padding: 8px; background: #fff; color: var(--ink); }
 
 @media (max-width: 700px) {
-  .screen { border-radius: 22px; }
   .choice-grid { gap: 8px; }
   .choice { min-height: 88px; }
 }
 
 @media (max-width: 480px) {
-  .screen { padding: 18px 14px; }
-  .main-header { gap: 8px; }
   .sequence { gap: 6px; }
   .sign { min-width: calc(25% - 5px); padding: 7px; }
   .sign-icon { font-size: 1.8rem; }
   .main-actions, .battle-actions { flex-direction: column; }
   .primary, .secondary { width: 100%; }
 }
+
+
+/* Interface 7 cleanup: shared frame owns scene geometry and chrome. */
+body[data-wp-game-id="animal-weather-watch"] #stageScreen[data-wp-frame-scene]{background:linear-gradient(#17243ad9,#17243ae8),var(--wp-stage-art) center/cover;color:var(--wp-ui-text)}
+.stage-workspace{position:relative;min-width:0;min-height:0;overflow:hidden}
+.stage-tabs[data-wp-frame-stage-nav]{margin:0}
+.weather-battle-live{min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;padding:12px}
+.result-panel .main-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.result-panel .main-actions button{width:100%;min-height:44px;margin:0}
+.weather-leave-layer{position:absolute;inset:0;z-index:40;display:grid;place-items:center;padding:12px;background:#0b1724e8}
+.weather-leave-layer[hidden]{display:none!important}
+.weather-leave-card{width:min(100%,520px);max-height:100%;overflow:auto;padding:18px;border:2px solid var(--wp-ui-border);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);text-align:center}
+.weather-leave-card h2{margin:0 0 10px}
+.weather-leave-card p{margin:0;line-height:1.45}
+.weather-leave-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}

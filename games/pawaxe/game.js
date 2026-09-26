@@ -6,7 +6,7 @@ import { LOCALES,copy } from './locales.js?v=5';
 import { loadSave,storeSave } from './save.js?v=4';
 import { Expedition } from './expedition.js?v=4';
 import { rollLoot,collectGear,promoteGear,shardsNeeded,MAX_RANK,dropChance,tier } from './loot.js?v=4';
-import { expeditionCopy } from './expedition-copy.js?v=4';
+import { expeditionCopy } from './expedition-copy.js?v=6';
 import { playerCopy } from './player-copy.js?v=1';
 import { companions,rollCompanion,collectCompanion,promoteCompanion } from './companions.js?v=4';
 import { collectionCopy } from './collection-copy.js?v=4';
@@ -20,7 +20,7 @@ if(!LOCALES.includes(save.locale))save.locale='zh-Hant';
 let selected=save.unlocked, combat=null,renderer=null,raf=0,last=0,acc=0,node=0,runHp=0,runEnergy=100;
 let state='idle',screen='main',runGeneration=0,transitionRemaining=0,modalKind='',resumeAction=null;
 let feedbackUntil=0,feedbackText='',rendererModule=null;
-let journey=null,runKit=null,runReward=0,runKills=0,runDrops=0,runCombo=0;
+let journey=null,runKit=null,runKills=0,runDrops=0,runCombo=0;
 const t=k=>k==='title'?(window.WEIGHTPLAY_GAME_TITLES?.pawaxe?.[save.locale]||copy[save.locale].title):RUNTIME_COPY[save.locale]?.[k]||expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
 const cc=()=>collectionCopy[save.locale]||collectionCopy.en;
 const pc=()=>playerCopy[save.locale]||playerCopy.en;
@@ -34,8 +34,6 @@ const healthSummary=document.createElement('div');
 healthSummary.className='health-summary';
 healthSummary.append($('#battleInfo .health-caption'),$('#barrierStatus'),$('#hp'));
 $('#battleInfo .player-health').prepend(healthSummary);
-// The percentage belongs to the settlement control, never on top of the meter.
-$('#claim').replaceChildren($('#routePercent'));
 const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:locale,scenes:{
   main:{root:$('#main'),header:$('#main header'),content:$('.hero')},
   stage:{root:$('#stage'),header:$('#stage header'),content:$('.workspace'),headerInfo:$('#stageInfo')},
@@ -55,8 +53,14 @@ function fit(){
 function stopLoop(){cancelAnimationFrame(raf);raf=0;}
 function startLoop(){stopLoop();last=performance.now();acc=0;raf=requestAnimationFrame(loop);}
 function disposeRun(){runGeneration++;stopLoop();renderer?.dispose();renderer=null;combat=null;state='idle';}
+function setLoading(active,progress=0){
+  const panel=$('#loadingPanel');if(!panel)return;
+  panel.classList.toggle('hidden',!active);
+  const fill=$('#loadingFill');if(fill)fill.style.width=`${active?progress:100}%`;
+}
 function show(id){
   if(id!=='battle')disposeRun();
+  if(id!=='battle')setLoading(false);
   screen=id;['main','stage','battle'].forEach(x=>$('#'+x).hidden=x!==id);
   document.body.dataset.screen=id;document.documentElement.classList.toggle('playing',id!=='main');
   document.documentElement.style.overflow=id==='main'?'':'hidden';document.documentElement.style.overscrollBehavior=id==='main'?'contain':'none';
@@ -91,13 +95,20 @@ function renderStage(){
   renderCompanions();
 }
 function objectImage(id){const img=document.createElement('img');img.className='object-icon';img.src=`art/objects/${id}.png`;img.alt='';img.width=80;img.height=80;return img;}
+function setShardCount(container,item,rank,emptyLabel){
+  container.className=item?'shards has-shards':'shards';container.replaceChildren();
+  if(!item){container.textContent=emptyLabel;return;}
+  const icon=objectImage('upgrade-shard');icon.className='shard-icon';icon.width=24;icon.height=24;
+  const count=document.createElement('span');count.textContent=`${t('shards')} ${item.shards}/${shardsNeeded(rank)}`;
+  container.append(icon,count);
+}
 function renderCompanions(){
   $('#companions').replaceChildren(...companions.map((c,i)=>{
     const d=document.createElement('article'),item=save.companions[c.id],rank=item?.rank||0;d.className='gear companion';d.dataset.companion=c.id;d.classList.toggle('unowned',!item);
     const title=document.createElement('b');title.textContent=cc().names[i];
     const ability=document.createElement('p');ability.className='ability';ability.textContent=`${cc().skills[i]} · ${cc().descriptions[i]}`;
     const stat=document.createElement('p');stat.textContent=`${t('rank')} ${rank+1} · +${rank*8}%`;
-    const shards=document.createElement('p');shards.className='shards';shards.textContent=item?`${t('shards')} ${item.shards}/${shardsNeeded(rank)}`:`${t('dropFrom')} ${c.unlock}`;
+    const shards=document.createElement('p');setShardCount(shards,item,rank,`${t('dropFrom')} ${c.unlock}`);
     const equip=document.createElement('button');equip.textContent=save.companion===c.id?t('equipped'):t('equip');equip.disabled=!item||save.companion===c.id;
     equip.onclick=()=>{save.companion=c.id;persist();renderCompanions();};
     const upgrade=document.createElement('button');upgrade.textContent=rank===MAX_RANK?t('maxRank'):t('promote');upgrade.disabled=!item||rank===MAX_RANK||item.shards<shardsNeeded(rank);
@@ -116,7 +127,7 @@ function renderEquipment(){
     const power=Math.round(((g.slot==='axe'?.12:.025)*level+(g.slot==='axe'?.15:.035)*tier(g))*100);
     const weaponBase={'trail-axe':24,'breaker-axe':28,'quick-axe':18},healthBase=g.id==='bark-vest'?25:g.id==='scout-vest'?10:0;
     p.textContent=`${t('rank')} ${level+1} · ${t('attackPower')} ${g.slot==='axe'?Math.round(weaponBase[g.id]*(1+power/100)):`+${power}%`}${g.slot==='axe'?'':` · ${t('healthPower')} +${healthBase+level*6+tier(g)*8}`}`;
-    const shards=document.createElement('p');shards.className='shards';shards.textContent=item?`${t('shards')} ${item.shards}/${shardsNeeded(level)}`:`${t('dropFrom')} ${Math.max(1,g.unlock)}`;
+    const shards=document.createElement('p');setShardCount(shards,item,level,`${t('dropFrom')} ${Math.max(1,g.unlock)}`);
     const ability=document.createElement('p');ability.className='ability';ability.textContent=cc().abilities[i];
     d.append(icon,b,ability,p,shards);
     const equip=document.createElement('button');equip.textContent=equipped?t('equipped'):t('equip');equip.disabled=equipped||!item;
@@ -132,17 +143,17 @@ function sound(kind,strong=false){
 }
 function feedback(text,seconds=1.4){feedbackText=text;feedbackUntil=performance.now()+seconds*1000;$('#feedback').textContent=text;}
 async function startRun(){
-  disposeRun();node=0;runHp=0;runEnergy=100;runReward=0;runKills=0;runDrops=0;runCombo=0;
-  journey=new Expedition(stages[selected-1]);runKit=JSON.parse(JSON.stringify({loadout:save.loadout,mode:save.mode,collection:save.collection,companion:save.companion,companions:save.companions}));show('battle');state='loading';
+  disposeRun();node=0;runHp=0;runEnergy=100;runKills=0;runDrops=0;runCombo=0;
+  journey=new Expedition(stages[selected-1]);runKit=JSON.parse(JSON.stringify({loadout:save.loadout,mode:save.mode,collection:save.collection,companion:save.companion,companions:save.companions}));show('battle');state='loading';setLoading(true,28);
   lootQueue.length=0;$('#lootToast').hidden=true;$('#damageNumbers').replaceChildren();updateProgress();
-  const generation=runGeneration;dialog(t('title'),t('preparing'),[], 'loading');
+  const generation=runGeneration;
   try{
     if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=6'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
     if(generation!==runGeneration||screen!=='battle')return;
+    setLoading(true,74);
     renderer=new rendererModule.PawRenderer($('#canvas'));renderer.setCompanion(runKit.companion);renderer.setRegion(Math.floor((selected-1)/5));
-    closeDialog();startEncounter();
-    if(!save.tutorial){dialog(t('guide'),t('guideText'),[[t('continue'),()=>{save.tutorial=true;persist();resume();}]],'tutorial');}
-  }catch(error){if(generation!==runGeneration)return;renderer?.dispose();renderer=null;state='error';dialog(t('forestUnavailable'),t('webglRequired'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
+    closeDialog();startEncounter();setLoading(false);
+  }catch(error){if(generation!==runGeneration)return;setLoading(false);renderer?.dispose();renderer=null;state='error';dialog(t('forestUnavailable'),t('webglRequired'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
 }
 function startEncounter(){
   const stage={...stages[selected-1],encounters:[journey.encounter()]};
@@ -230,13 +241,13 @@ function updateHud(){
 }
 function encounterWon(){
   stopLoop();
-  // A cleared wave gives a small breather, while keeping early-stage farming
-  // meaningful instead of restoring a full bar after every encounter.
-  runHp=Math.min(combat.maxHp,combat.hp+combat.maxHp*.05);runEnergy=Math.min(100,combat.energy+18);runCombo=combat.slashes;
+  // The first two routes stay generous; the shield and boss checkpoint routes
+  // build enough attrition that Auto does not erase the need to farm or heal.
+  const breather=selected>=3&&selected<=5 ? 0.03 : 0.05;
+  runHp=Math.min(combat.maxHp,combat.hp+combat.maxHp*breather);runEnergy=Math.min(100,combat.energy+18);runCombo=combat.slashes;
   if(journey.clear()){
     const first=!save.cleared.includes(selected);
-    runReward=first?stages[selected-1].reward*(stages[selected-1].checkpoint?2:1):5;
-    if(first)save.cleared.push(selected);save.coins=Math.min(999999,save.coins+runReward);save.unlocked=Math.max(save.unlocked,Math.min(30,selected+1));persist();
+    if(first)save.cleared.push(selected);save.unlocked=Math.max(save.unlocked,Math.min(30,selected+1));persist();
   }
   updateProgress();state='transition';transitionRemaining=.9;feedback(t('moving'),.9);startLoop();
 }
@@ -244,7 +255,8 @@ function updateProgress(){
   const percent=Math.round((journey?.progress||0)*100),complete=journey?.completed===true;
   $('#routeProgress').value=percent;$('#routeProgress').setAttribute('aria-label',t('journeyProgress'));
   $('#routeLabel').textContent=complete?t('farm'):`${t('journey')} ${Math.min(journey?.cleared||0,journey?.length||12)}/${journey?.length||12}`;
-  $('#routePercent').textContent=`${complete?'✓ ':''}${percent}%`;
+  $('#routePercent').textContent=`${percent}%`;
+  $('#claim').textContent=complete?'✓':'';
   $('#claim').disabled=!complete;
   $('#claim').classList.toggle('complete',complete);
 }
@@ -252,7 +264,7 @@ let lootUntil=0;const lootQueue=[];
 function showLoot(item){
   if(!$('#lootToast').hidden){lootQueue.push(item);if(lootQueue.length>8)lootQueue.shift();return;}
   const g=gear.find(g=>g.id===item.id);
-  $('#lootIcon').src=`art/objects/${item.id}.png`;
+  $('#lootIcon').src=`art/objects/${item.fresh?item.id:'upgrade-shard'}.png`;
   const title=item.kind==='companion'?cc().names[companions.findIndex(c=>c.id===item.id)]:pc().gearNames[g.id]||g.name;
   const label=item.kind==='companion'?(item.fresh?cc().newAlly:cc().allyShard):(item.fresh?t('newItem'):t('loot'));
   $('#lootText').textContent=`${label} · ${title}${item.fresh?'':` · ${item.shards}/${shardsNeeded(item.rank)}`}`;
@@ -260,7 +272,7 @@ function showLoot(item){
 }
 function finish(win){
   stopLoop();state='result';win=win||journey.completed;
-  const text=win?`${name(stages[selected-1])}\n${t('reward')} +${runReward} · ${t('kills')} ${runKills} · ${cc().lootTotal} ${runDrops}`:t('failText');
+  const text=win?`${name(stages[selected-1])} · ${t('kills')} ${runKills} · ${cc().lootTotal} ${runDrops}`:t('failText');
   dialog(win?t('victory'):t('fail'),text,[[t('returnStages'),()=>show('stage')],[t('next'),()=>{selected++;startRun();},!win||selected===30],[t('replay'),startRun]],'result');
 }
 function closeDialog(){
@@ -275,10 +287,11 @@ function dialog(title,text,actions,kind='pause'){
 function pause(){
   if(screen!=='battle'||!['live','transition'].includes(state)||modalKind)return;
   const before=state;resumeAction=()=>{closeDialog();state=before;startLoop();};
-  dialog(t('leaveTitle'),`${t('stages')} ${selected} · ${t('leaveText')}`,[[t('continue'),resumeAction],[t('returnStages'),()=>show('stage')]],'pause');
+  dialog(t('leaveTitle'),`${selected}/${stages.length} · ${t('leaveText')}`,[[t('continue'),resumeAction],[t('returnStages'),()=>show('stage')]],'pause');
 }
 function action(kind){if(screen!=='battle'||state!=='live'||modalKind||document.querySelector('.wp-frame-popover:not([hidden])'))return;combat[kind]();updateHud();}
 $('#start').onclick=()=>show('stage');$('#stageBack').onclick=()=>show('main');$('#battleBack').onclick=pause;
+window.addEventListener('weightplay:tutorial-start',event=>{if(event.detail?.gameId==='pawaxe'&&screen==='main')show('stage');});
 $('#attack').onclick=()=>action('attack');$('#ally').onclick=()=>action('ally');
 $('#auto').onclick=()=>{if(modalKind||screen!=='battle'||!['live','transition'].includes(state)||document.querySelector('.wp-frame-popover:not([hidden])'))return;save.autoAttack=!save.autoAttack;combat.autoAttack=save.autoAttack;persist();updateHud();};
 $('#claim').onclick=()=>{if(journey?.completed&&!modalKind)finish(true);};

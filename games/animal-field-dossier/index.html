@@ -9,11 +9,12 @@
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-field-dossier">
   <meta name="weightplay-game-version" content="v5">
-  <meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-interface-version" content="7">
   <meta name="description" content="A calm WeightPlay deduction prototype about choosing an expedition plan from visible animal-world facts.">
   <title>Field Dossier | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css?v=20260907-animal-field-dossier-v5-locale-runtime">
+  <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
 </head>
 <body data-wp-game-id="animal-field-dossier" data-wp-audience="general" data-runtime-localize="off" data-screen="main">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
@@ -63,12 +64,13 @@
     <section id="battleScreen" class="battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden aria-labelledby="caseTitle">
       <header class="battle-header">
         <button id="battleBack" class="back-button" type="button" data-wp-return="battle" aria-label="Back">←</button>
-        <div class="battle-heading"><p id="caseLabel" class="eyebrow" data-copy="caseLabel">Case 1 / 3</p><h2 id="caseTitle"></h2></div>
+        <div class="battle-header-state" aria-hidden="true"></div>
         <button id="helpButton" class="utility-button" type="button" data-wp-battle-utility aria-expanded="false" aria-controls="helpPopover" aria-label="Help">?</button>
         <p id="helpPopover" class="help-popover" role="note" hidden></p>
       </header>
 
       <div class="case-shell">
+        <div class="battle-heading"><p id="caseLabel" class="eyebrow">Case 1 / 3</p><h2 id="caseTitle"></h2></div>
         <div class="case-intro"><p id="caseSetting" class="case-setting"></p><p id="casePrompt" class="case-prompt"></p></div>
         <div class="section-heading"><h3 data-copy="clueLabel">Field facts</h3><span id="selectionLabel"></span></div>
         <div id="evidenceGrid" class="evidence-grid" role="group" aria-label="Field facts"></div>
@@ -78,23 +80,22 @@
         <button id="leaveButton" class="text-button" type="button" data-copy="leave">Leave case</button>
       </div>
 
-      <section id="leavePrompt" class="overlay-card" role="dialog" aria-modal="true" hidden>
-        <h2 data-copy="confirmTitle">Leave this case?</h2><p data-copy="confirmBody">Your pinned facts will be cleared, but your journal stays safe.</p>
+      <section id="leavePrompt" class="overlay-card" data-wp-battle-substate="leave-confirm" role="dialog" aria-modal="true" aria-labelledby="leavePromptTitle" hidden>
+        <h2 id="leavePromptTitle" data-copy="confirmTitle">Leave this case?</h2><p id="leavePromptBody" data-copy="confirmBody">Your pinned facts will be cleared, but your journal stays safe.</p>
         <div class="overlay-actions"><button id="stayButton" class="primary" type="button" data-copy="stay">Stay</button><button id="leaveConfirm" class="secondary" type="button" data-copy="leaveConfirm">Leave case</button></div>
       </section>
 
-      <section id="resultOverlay" class="overlay-card result-overlay" role="dialog" aria-modal="true" hidden>
+      <section id="resultOverlay" class="overlay-card result-overlay" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
         <p class="eyebrow" data-copy="resultBadge">Journal updated</p><h2 id="resultTitle"></h2><p id="resultBody"></p><p id="resultBest" class="result-best"></p>
         <div class="overlay-actions"><button id="replayButton" class="primary" type="button" data-copy="replay">Review cases</button><button id="homeButton" class="secondary" type="button" data-copy="home">Back to menu</button></div>
       </section>
     </section>
-    <div id="battleReserve" class="battle-ad-reserve" aria-hidden="true" hidden></div>
-  </main>
+</main>
   <script src="../../src/site-config.js?v=20260721-locale13-1"></script>
   <script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script>
   <script src="../../src/i18n.js?v=20260818-upcoming-count1"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
   <script src="analytics-ownership.js?v=20260831-animal-field-dossier-v2-arabic-a11y"></script>
-  <script src="game.js?v=20260907-field-dossier-locale-runtime-v5"></script>
+  <script src="game.js?v=20260925-field-dossier-interface7"></script>
 </body>
 </html>

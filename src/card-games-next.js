@@ -2042,6 +2042,16 @@
       actions.parentElement?.insertBefore(actionSlot, actions);
       battle.append(actions);
     }
+    // Casino's action row stays in a reserved Canvas slot, while the real
+    // controls sit directly under Battle so the physical reserve remains the
+    // actual bottom boundary at every viewport size.
+    if (id === "casino" && actions && battle) {
+      const actionSlot = document.createElement("div");
+      actionSlot.className = "casino-action-slot";
+      actionSlot.setAttribute("aria-hidden", "true");
+      actions.parentElement?.insertBefore(actionSlot, actions);
+      battle.append(actions);
+    }
     const guideContent = () => {
       const heartsShell = id === "hearts" ? heartsShellCopy() : null;
       const warBattle = id === "war" ? warBattleCopy() : null;

@@ -1,0 +1,3 @@
+/* Chess source-level Interface 7 cleanup.
+   Shared game-screen-frame owns common frame geometry. */
+body[data-wp-game-id="chess"] #result{overscroll-behavior:contain}

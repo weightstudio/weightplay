@@ -896,15 +896,73 @@
       const progress = sliding ? readSlidingProgress() : readCodeProgress();
       const copy = sliding ? slidingCampaignCopy : codeCampaignCopy;
       app.stageProgress.textContent = fillTemplate(text(copy.progress), { stage: Math.min(progress.highestUnlocked, total), cleared: progress.cleared.length });
+      if (sliding) {
+        const controller = window.WeightPlayStageV6;
+        if (!controller?.install) {
+          app.stageStatus.textContent = text(copy.saved);
+          return;
+        }
+        const bindSlidingCard = (card, index) => {
+          const stage = index + 1;
+          const liveProgress = readSlidingProgress();
+          const data = slidingStageData(stage);
+          const unlocked = stage <= liveProgress.highestUnlocked;
+          const cleared = liveProgress.cleared.includes(stage);
+          card.type = "button";
+          card.className = `stage-card sliding-15-stage-card ${unlocked ? "" : "is-locked"} ${cleared ? "is-cleared" : ""}`.trim();
+          card.dataset.stage = String(stage);
+          card.dataset.stageIndex = String(index);
+          card.dataset.wpStageIndex = String(index);
+          card.dataset.wpStageTitle = text(data.arc.title);
+          if (stage === liveProgress.highestUnlocked) {
+            card.dataset.wpStageRecommended = "true";
+            card.dataset.wpStageRecommendation = "last";
+          } else {
+            delete card.dataset.wpStageRecommended;
+            delete card.dataset.wpStageRecommendation;
+          }
+          card.setAttribute("aria-disabled", String(!unlocked));
+          const number = document.createElement("span"); number.className = "stage-number"; number.textContent = String(stage).padStart(2, "0");
+          const heading = document.createElement("strong"); heading.textContent = fillTemplate(text(slidingCampaignCopy.stageTitle), { stage, arc: text(data.arc.title) });
+          const arc = document.createElement("span"); arc.className = "stage-card-arc"; arc.textContent = text(data.arc.title);
+          const objective = document.createElement("small"); objective.className = "stage-card-objective"; objective.textContent = `${text(slidingCampaignCopy.goal)} · ${text(data.modeLabel)}${data.anchorIndex === null ? "" : ` · ${fillTemplate(text(slidingCampaignCopy.anchor), { tile: data.goal[data.anchorIndex] })}`}`;
+          const state = document.createElement("span"); state.className = "stage-card-state"; state.textContent = cleared ? text(copy.cleared) : unlocked ? fillTemplate(text(copy.ready), { stage }) : text(copy.locked);
+          card.replaceChildren(number, heading, arc, objective, state);
+        };
+        if (!app.slidingStageVirtualizer) {
+          app.stageRail.replaceChildren();
+          app.slidingStageVirtualizer = controller.install(app.stageRail, {
+            total: SLIDING_TOTAL_STAGES,
+            poolSize: 9,
+            initialIndex: () => Math.max(0, readSlidingProgress().highestUnlocked - 1),
+            bind: bindSlidingCard,
+            activate: index => {
+              const stage = index + 1;
+              const liveProgress = readSlidingProgress();
+              if (stage > liveProgress.highestUnlocked) {
+                app.stageStatus.textContent = text(copy.locked);
+                return;
+              }
+              startGame(stage);
+            },
+          });
+        } else {
+          app.slidingStageVirtualizer.refresh();
+        }
+        app.slidingStageVirtualizer?.center(Math.max(0, readSlidingProgress().highestUnlocked - 1));
+        app.stageStatus.textContent = text(copy.saved);
+        window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+        return;
+      }
       app.stageRail.replaceChildren();
       for (let stage = 1; stage <= total; stage += 1) {
-        const data = sliding ? slidingStageData(stage) : codeStageData(stage); const unlocked = stage <= progress.highestUnlocked; const cleared = progress.cleared.includes(stage); const card = document.createElement("button");
-        card.type = "button"; card.className = `stage-card ${sliding ? "sliding-15-stage-card" : "code-breaker-stage-card"} ${unlocked ? "" : "is-locked"} ${cleared ? "is-cleared" : ""}`; card.dataset.stage = String(stage); card.dataset.stageIndex = String(stage - 1); card.dataset.wpStageIndex = String(stage - 1); card.setAttribute("aria-disabled", String(!unlocked)); card.setAttribute("aria-posinset", String(stage)); card.setAttribute("aria-setsize", String(total)); card.setAttribute("aria-current", stage === progress.highestUnlocked ? "true" : "false"); card.dataset.wpStageTitle = text(data.arc.title);
+        const data = codeStageData(stage); const unlocked = stage <= progress.highestUnlocked; const cleared = progress.cleared.includes(stage); const card = document.createElement("button");
+        card.type = "button"; card.className = `stage-card code-breaker-stage-card ${unlocked ? "" : "is-locked"} ${cleared ? "is-cleared" : ""}`; card.dataset.stage = String(stage); card.dataset.stageIndex = String(stage - 1); card.dataset.wpStageIndex = String(stage - 1); card.setAttribute("aria-disabled", String(!unlocked)); card.setAttribute("aria-posinset", String(stage)); card.setAttribute("aria-setsize", String(total)); card.setAttribute("aria-current", stage === progress.highestUnlocked ? "true" : "false"); card.dataset.wpStageTitle = text(data.arc.title);
         if (stage === progress.highestUnlocked) { card.dataset.wpStageRecommended = "true"; card.dataset.wpStageRecommendation = "last"; }
         const number = document.createElement("span"); number.className = "stage-number"; number.textContent = String(stage).padStart(2, "0");
-        const heading = document.createElement("strong"); heading.textContent = sliding ? fillTemplate(text(slidingCampaignCopy.stageTitle), { stage, arc: text(data.arc.title) }) : fillTemplate(text(codeCampaignCopy.stageCard), { stage });
+        const heading = document.createElement("strong"); heading.textContent = fillTemplate(text(codeCampaignCopy.stageCard), { stage });
         const arc = document.createElement("span"); arc.className = "stage-card-arc"; arc.textContent = text(data.arc.title);
-        const objective = document.createElement("small"); objective.className = "stage-card-objective"; objective.textContent = sliding ? `${text(slidingCampaignCopy.goal)} · ${text(data.modeLabel)}${data.anchorIndex === null ? "" : ` · ${fillTemplate(text(slidingCampaignCopy.anchor), { tile: data.goal[data.anchorIndex] })}`}` : `${text(codeCampaignCopy.objective)} · ${text(data.arc.rule)}`;
+        const objective = document.createElement("small"); objective.className = "stage-card-objective"; objective.textContent = `${text(codeCampaignCopy.objective)} · ${text(data.arc.rule)}`;
         const state = document.createElement("span"); state.className = "stage-card-state"; state.textContent = cleared ? text(copy.cleared) : unlocked ? fillTemplate(text(copy.ready), { stage }) : text(copy.locked);
         card.append(number, heading, arc, objective, state);
         card.addEventListener("click", () => { if (!unlocked) { app.stageStatus.textContent = text(copy.locked); return; } startGame(stage); });
@@ -943,7 +1001,9 @@
       app.resultTitle.textContent = won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : t("lose");
       app.resultText.textContent = detail || (won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : fillTemplate(text(campaignCopy.stageLoss), { stage }));
       (__wpNotifyMeasurement(), app.root.querySelector("#resultStages").hidden = false);
-      (__wpNotifyMeasurement(), app.root.querySelector("#resultNext").hidden = !(won && stage < total && stage + 1 <= progress.highestUnlocked));
+      const nextStage = app.root.querySelector("#resultNext"); const canNextStage = won && stage < total && stage + 1 <= progress.highestUnlocked;
+      if (sliding) { (__wpNotifyMeasurement(), nextStage.hidden = false); nextStage.disabled = !canNextStage; nextStage.setAttribute("aria-disabled", String(!canNextStage)); }
+      else { (__wpNotifyMeasurement(), nextStage.hidden = !canNextStage); nextStage.disabled = false; nextStage.removeAttribute("aria-disabled"); }
       (__wpNotifyMeasurement(), app.root.querySelector("#resultReplay").hidden = false);
       (__wpNotifyMeasurement(), app.root.querySelector("#resultMenu").hidden = true);
       (__wpNotifyMeasurement(), app.root.querySelector("#resultClose").hidden = true);

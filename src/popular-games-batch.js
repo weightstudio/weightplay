@@ -111,7 +111,7 @@
   };
   const BREAKOUT_GAME_VERSION = "v15";
   const TETRIS_GAME_VERSION = "v20";
-  const SNAKE_GAME_VERSION = "v30";
+  const SNAKE_GAME_VERSION = "v32";
   const WORDLE_GAME_VERSION = "v16";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
@@ -723,19 +723,19 @@
     ar: { status: "ظهر طعام جديد — خطط لمنعطفك الأول.", cell: "هدف طعام جديد — خطط لمنعطفك الأول." },
   };
   const SNAKE_SHELL_COPY = {
-    en: { battleBack: "Back to main", mainBack: "Back to WeightPlay" },
-    "zh-Hant": { battleBack: "返回主頁", mainBack: "返回 WeightPlay" },
-    "zh-Hans": { battleBack: "返回主页", mainBack: "返回 WeightPlay" },
-    ja: { battleBack: "メインへ戻る", mainBack: "WeightPlayへ戻る" },
-    ko: { battleBack: "메인으로", mainBack: "WeightPlay로 돌아가기" },
-    es: { battleBack: "Volver al inicio", mainBack: "Volver a WeightPlay" },
-    "pt-BR": { battleBack: "Voltar ao início", mainBack: "Voltar ao WeightPlay" },
-    fr: { battleBack: "Retour à l’accueil", mainBack: "Retour à WeightPlay" },
-    de: { battleBack: "Zur Startseite", mainBack: "Zurück zu WeightPlay" },
-    it: { battleBack: "Torna alla home", mainBack: "Torna a WeightPlay" },
-    ru: { battleBack: "На главную", mainBack: "Вернуться в WeightPlay" },
-    hi: { battleBack: "मुख्य पृष्ठ", mainBack: "WeightPlay पर वापस जाएँ" },
-    ar: { battleBack: "العودة إلى الرئيسية", mainBack: "العودة إلى WeightPlay" },
+    en: { battleBack: "Back to main", mainBack: "Back to WeightPlay", leaveTitle: "Leave this run?", leaveText: "Leaving ends the current run. Your saved Best score stays on this device.", continueRun: "Continue playing", returnMain: "Return to Main" },
+    "zh-Hant": { battleBack: "返回主頁", mainBack: "返回 WeightPlay", leaveTitle: "要離開這場遊戲嗎？", leaveText: "離開後會結束目前這一局；此裝置已保存的最佳分數會保留。", continueRun: "繼續遊玩", returnMain: "返回主頁" },
+    "zh-Hans": { battleBack: "返回主页", mainBack: "返回 WeightPlay", leaveTitle: "要离开这场游戏吗？", leaveText: "离开后会结束当前这一局；此设备已保存的最佳分数会保留。", continueRun: "继续游戏", returnMain: "返回主页" },
+    ja: { battleBack: "メインへ戻る", mainBack: "WeightPlayへ戻る", leaveTitle: "このランを終了しますか？", leaveText: "終了すると現在のランは終わります。この端末に保存されたベストスコアは残ります。", continueRun: "プレイを続ける", returnMain: "メインに戻る" },
+    ko: { battleBack: "메인으로", mainBack: "WeightPlay로 돌아가기", leaveTitle: "이 플레이를 종료할까요?", leaveText: "나가면 현재 플레이가 종료됩니다. 이 기기에 저장된 최고 점수는 유지됩니다.", continueRun: "계속 플레이", returnMain: "메인으로 돌아가기" },
+    es: { battleBack: "Volver al inicio", mainBack: "Volver a WeightPlay", leaveTitle: "¿Salir de esta partida?", leaveText: "Al salir terminará la partida actual. Tu mejor puntuación guardada seguirá en este dispositivo.", continueRun: "Seguir jugando", returnMain: "Volver al inicio" },
+    "pt-BR": { battleBack: "Voltar ao início", mainBack: "Voltar ao WeightPlay", leaveTitle: "Sair desta partida?", leaveText: "Ao sair, a partida atual terminará. Sua melhor pontuação salva continuará neste dispositivo.", continueRun: "Continuar jogando", returnMain: "Voltar ao início" },
+    fr: { battleBack: "Retour à l’accueil", mainBack: "Retour à WeightPlay", leaveTitle: "Quitter cette partie ?", leaveText: "Quitter mettra fin à la partie en cours. Votre meilleur score enregistré restera sur cet appareil.", continueRun: "Continuer à jouer", returnMain: "Retourner à l’accueil" },
+    de: { battleBack: "Zur Startseite", mainBack: "Zurück zu WeightPlay", leaveTitle: "Dieses Spiel verlassen?", leaveText: "Beim Verlassen endet der aktuelle Lauf. Dein gespeicherter Bestwert bleibt auf diesem Gerät erhalten.", continueRun: "Weiterspielen", returnMain: "Zum Hauptmenü" },
+    it: { battleBack: "Torna alla home", mainBack: "Torna a WeightPlay", leaveTitle: "Vuoi lasciare questa partita?", leaveText: "Uscendo, la partita attuale terminerà. Il tuo record salvato resterà su questo dispositivo.", continueRun: "Continua a giocare", returnMain: "Torna al menu" },
+    ru: { battleBack: "На главную", mainBack: "Вернуться в WeightPlay", leaveTitle: "Выйти из этой игры?", leaveText: "Выход завершит текущую игру. Сохранённый рекорд останется на этом устройстве.", continueRun: "Продолжить игру", returnMain: "На главную" },
+    hi: { battleBack: "मुख्य पृष्ठ", mainBack: "WeightPlay पर वापस जाएँ", leaveTitle: "क्या इस खेल से बाहर जाएँ?", leaveText: "बाहर जाने पर मौजूदा खेल समाप्त हो जाएगा। इस डिवाइस पर सहेजा गया सर्वश्रेष्ठ स्कोर बना रहेगा।", continueRun: "खेल जारी रखें", returnMain: "मुख्य पृष्ठ पर लौटें" },
+    ar: { battleBack: "العودة إلى الرئيسية", mainBack: "العودة إلى WeightPlay", leaveTitle: "هل تريد مغادرة هذه الجولة؟", leaveText: "ستُنهي المغادرة الجولة الحالية. ستبقى أفضل نتيجة محفوظة على هذا الجهاز.", continueRun: "متابعة اللعب", returnMain: "العودة إلى الرئيسية" },
   };
   const PONG_SHELL_COPY = {
     en: { battleBack: "Back to main", mainBack: "Back to WeightPlay", settings: "Settings", objective: "Objective", sound: "Sound", soundOn: "On", soundOff: "Off", progress: "Win five rallies with deliberate moves." },
@@ -1242,7 +1242,22 @@
     let hangmanRoundIndex = 0;
     let mahjongRoundIndex = 0;
     let wordleRoundIndex = 0;
-    const CHECKERS_INTERFACE_VERSION = "6";
+    const CHECKERS_LEAVE_COPY = {
+      en: { title: "Leave this match?", text: "Your current board position, move history, and unfinished match will be discarded. Saved best scores are not affected.", continue: "Continue Playing", main: "Return to Main" },
+      "zh-Hant": { title: "要離開這場對局嗎？", text: "目前棋盤、走棋紀錄與未完成對局會被捨棄；已儲存的最佳成績不受影響。", continue: "繼續遊玩", main: "返回主畫面" },
+      "zh-Hans": { title: "要离开这场对局吗？", text: "当前棋盘、走棋记录与未完成对局会被丢弃；已保存的最佳成绩不受影响。", continue: "继续游戏", main: "返回主界面" },
+      ja: { title: "この対局を終了しますか？", text: "現在の盤面、手順履歴、未完了の対局は破棄されます。保存済みのベストスコアには影響しません。", continue: "プレイを続ける", main: "メインへ戻る" },
+      ko: { title: "이 대국에서 나갈까요?", text: "현재 보드 위치, 수 기록, 완료되지 않은 대국이 사라집니다. 저장된 최고 점수는 유지됩니다.", continue: "계속 플레이", main: "메인으로 돌아가기" },
+      es: { title: "¿Salir de esta partida?", text: "Se descartarán la posición actual, el historial de movimientos y la partida sin terminar. Tus mejores puntuaciones guardadas no cambiarán.", continue: "Seguir jugando", main: "Volver al inicio" },
+      "pt-BR": { title: "Sair desta partida?", text: "A posição atual, o histórico de jogadas e a partida inacabada serão descartados. As melhores pontuações salvas não serão alteradas.", continue: "Continuar jogando", main: "Voltar ao início" },
+      fr: { title: "Quitter cette partie ?", text: "La position actuelle, l’historique des coups et la partie inachevée seront perdus. Les meilleurs scores enregistrés restent inchangés.", continue: "Continuer à jouer", main: "Retour à l’accueil" },
+      de: { title: "Diese Partie verlassen?", text: "Die aktuelle Stellung, der Zugverlauf und die unfertige Partie werden verworfen. Gespeicherte Bestwerte bleiben erhalten.", continue: "Weiterspielen", main: "Zurück zum Hauptmenü" },
+      it: { title: "Uscire da questa partita?", text: "La posizione attuale, la cronologia delle mosse e la partita incompleta verranno scartate. I record salvati non cambieranno.", continue: "Continua a giocare", main: "Torna alla schermata principale" },
+      ru: { title: "Выйти из этой партии?", text: "Текущая позиция, история ходов и незавершённая партия будут сброшены. Сохранённые рекорды не изменятся.", continue: "Продолжить игру", main: "На главный экран" },
+      hi: { title: "इस मैच से बाहर जाएँ?", text: "मौजूदा बोर्ड स्थिति, चालों का इतिहास और अधूरा मैच हटा दिए जाएँगे। सहेजे गए सर्वश्रेष्ठ स्कोर बने रहेंगे।", continue: "खेल जारी रखें", main: "मुख्य स्क्रीन पर लौटें" },
+      ar: { title: "هل تريد مغادرة هذه المباراة؟", text: "سيتم تجاهل وضع اللوحة الحالي وسجل النقلات والمباراة غير المكتملة، بينما تبقى أفضل النتائج المحفوظة كما هي.", continue: "متابعة اللعب", main: "العودة إلى الرئيسية" },
+    };
+    const CHECKERS_INTERFACE_VERSION = "7";
     let checkersAiTimer = null;
     let lastInputType = "unknown";
     const viewportBucket = () => {
@@ -1282,10 +1297,38 @@
     };
     document.addEventListener("pointerdown", noteInput, { capture: true });
     document.addEventListener("keydown", noteInput, { capture: true });
+    const createSnakeLeaveDialog = () => {
+      if (game.type !== "snake") return null;
+      const dialog = document.createElement("dialog");
+      dialog.id = "snakeLeaveDialog";
+      dialog.className = "snake-leave-dialog";
+      dialog.setAttribute("aria-labelledby", "snakeLeaveTitle");
+      dialog.setAttribute("aria-describedby", "snakeLeaveText");
+      dialog.dataset.wpBattleSubstate = "leave-confirmation";
+      const title = document.createElement("h2");
+      title.id = "snakeLeaveTitle";
+      const text = document.createElement("p");
+      text.id = "snakeLeaveText";
+      const actions = document.createElement("div");
+      actions.className = "snake-leave-actions";
+      const continueButton = document.createElement("button");
+      continueButton.id = "snakeLeaveContinue";
+      continueButton.type = "button";
+      continueButton.className = "primary";
+      const mainButton = document.createElement("button");
+      mainButton.id = "snakeLeaveMain";
+      mainButton.type = "button";
+      mainButton.className = "secondary";
+      actions.append(continueButton, mainButton);
+      dialog.append(title, text, actions);
+      (document.querySelector("#battleScreen") || document.body).append(dialog);
+      return { dialog, title, text, continueButton, mainButton };
+    };
+    const snakeLeave = createSnakeLeaveDialog();
     const els = {
       title: document.querySelector("#gameTitle"), tagline: document.querySelector("#gameTagline"), eyebrow: document.querySelector("#eyebrow"), locale: document.querySelector("#localeSelect"),
       main: document.querySelector("#mainScreen"), stage: document.querySelector("#stageScreen"), stageRail: document.querySelector("#stageRail"), stageBack: document.querySelector("#stageBackBtn"), stageTitle: document.querySelector("#stageTitle"), stageHint: document.querySelector("#stageScreen .stage-browse-hint"), stageProgress: document.querySelector("#stageProgressText"), battle: document.querySelector("#battleScreen"), battlePanel: document.querySelector("#battleScreen .battle-panel"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
-      message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"), resultStages: document.querySelector("#resultStagesBtn"), nextStage: document.querySelector("#nextStageBtn"), breakoutLeaveDialog: document.querySelector("#breakoutLeaveDialog"), breakoutLeaveTitle: document.querySelector("#breakoutLeaveTitle"), breakoutLeaveText: document.querySelector("#breakoutLeaveText"), breakoutLeaveContinue: document.querySelector("#breakoutLeaveContinue"), breakoutLeaveStages: document.querySelector("#breakoutLeaveStages"), leaveModal: document.querySelector("#leaveModal"), leaveTitle: document.querySelector("#leaveTitle"), leaveText: document.querySelector("#leaveText"), leaveContinue: document.querySelector("#leaveContinue"), leaveMain: document.querySelector("#leaveMain"),
+      message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"), resultStages: document.querySelector("#resultStagesBtn"), nextStage: document.querySelector("#nextStageBtn"), breakoutLeaveDialog: document.querySelector("#breakoutLeaveDialog"), breakoutLeaveTitle: document.querySelector("#breakoutLeaveTitle"), breakoutLeaveText: document.querySelector("#breakoutLeaveText"), breakoutLeaveContinue: document.querySelector("#breakoutLeaveContinue"), breakoutLeaveStages: document.querySelector("#breakoutLeaveStages"), leaveModal: document.querySelector("#leaveModal"), leaveTitle: document.querySelector("#leaveTitle"), leaveText: document.querySelector("#leaveText"), leaveContinue: document.querySelector("#leaveContinue"), leaveMain: document.querySelector("#leaveMain"), snakeLeave,
       round: document.querySelector("#roundLabel"), start: document.querySelector("#startBtn"), retry: document.querySelector("#retryBtn"), mastery: document.querySelector("#masteryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
     };
     if (game.type === "mahjong") {
@@ -1811,18 +1854,105 @@
       if (els.retry) { els.retry.hidden = false; els.retry.textContent = flow.replay; }
       if (els.home) els.home.hidden = true;
     };
-    const show = (screen) => { const breakoutResult = game.type === "breakout" && screen === "result"; els.main.hidden = screen !== "main"; if (els.stage) els.stage.hidden = screen !== "stage"; els.battle.hidden = screen !== "battle" && !breakoutResult; (__wpNotifyMeasurement(), els.result.hidden = screen !== "result"); if (game.type === "breakout") { if (els.battlePanel) els.battlePanel.hidden = breakoutResult; document.body.toggleAttribute("data-wp-result-active", breakoutResult); if (breakoutResult && state.success) saveBreakoutClear(state.stage); if (breakoutResult) renderBreakoutResult(); } document.body.dataset.screen = breakoutResult ? "battle" : screen; if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; }); document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main"); document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
-      if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
-      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
-      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-};
+    const show = (screen) => {
+      const breakoutResult = game.type === "breakout" && screen === "result";
+      const checkersResult = game.type === "checkers" && screen === "result";
+      const battleResult = breakoutResult || checkersResult;
+      els.main.hidden = screen !== "main";
+      if (els.stage) els.stage.hidden = screen !== "stage";
+      els.battle.hidden = screen !== "battle" && !battleResult;
+      (__wpNotifyMeasurement(), els.result.hidden = screen !== "result");
+      if (game.type === "breakout") {
+        if (els.battlePanel) els.battlePanel.hidden = breakoutResult;
+        document.body.toggleAttribute("data-wp-result-active", breakoutResult);
+        if (breakoutResult && state.success) saveBreakoutClear(state.stage);
+        if (breakoutResult) renderBreakoutResult();
+      }
+      if (game.type === "checkers") {
+        els.result?.setAttribute("data-wp-battle-substate", "result");
+        if (els.battlePanel) {
+          els.battlePanel.hidden = checkersResult;
+          els.battlePanel.inert = checkersResult;
+        }
+        document.body.toggleAttribute("data-wp-result-active", checkersResult);
+      }
+      document.body.dataset.screen = battleResult ? "battle" : screen;
+      if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; });
+      document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main");
+      document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main");
+      document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main");
+      document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main");
+      window.dispatchEvent(new Event("weightplay:shell-sync"));
+      if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle"})[screen] ?? null;
+        if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+        else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
+        __wpMeasurement.screen = __wpNextScreen; __wpNotifyMeasurement(); }
+    };
     let snakeTimer = null;
     let ticResultTimer = null;
     let ticReplyTimer = null;
     const stopCheckersAiTimer = () => { if (checkersAiTimer) { window.clearTimeout(checkersAiTimer); checkersAiTimer = null; } };
     const stopTicResultTimer = () => { if (ticResultTimer) { window.clearTimeout(ticResultTimer); ticResultTimer = null; } };
     const stopTicReplyTimer = () => { if (ticReplyTimer) { window.clearTimeout(ticReplyTimer); ticReplyTimer = null; } };
+    let checkersLeaveDialog = null;
+    let checkersLeaveReturnFocus = null;
+    let checkersResumeAi = false;
+    const checkersLeaveUi = () => CHECKERS_LEAVE_COPY[locale] || CHECKERS_LEAVE_COPY.en;
+    const closeCheckersLeaveDialog = (restoreFocus = true, resumeAi = true) => {
+      if (!checkersLeaveDialog?.open) return;
+      checkersLeaveDialog.close();
+      if (els.battlePanel) els.battlePanel.inert = false;
+      const shouldResumeAi = checkersResumeAi && resumeAi && !state.done;
+      checkersResumeAi = false;
+      if (restoreFocus) checkersLeaveReturnFocus?.focus({ preventScroll: true });
+      checkersLeaveReturnFocus = null;
+      if (shouldResumeAi) runCheckersAi();
+    };
+    const openCheckersLeaveDialog = () => {
+      if (game.type !== "checkers" || state.done || checkersLeaveDialog?.open) return;
+      const ui = checkersLeaveUi();
+      checkersResumeAi = Boolean(checkersAiTimer);
+      stopCheckersAiTimer();
+      if (!checkersLeaveDialog) {
+        checkersLeaveDialog = document.createElement("dialog");
+        checkersLeaveDialog.className = "checkers-leave-dialog";
+        checkersLeaveDialog.dataset.wpBattleSubstate = "leave-confirm";
+        checkersLeaveDialog.setAttribute("aria-labelledby", "checkersLeaveTitle");
+        checkersLeaveDialog.innerHTML = '<div class="checkers-leave-card"><h2 id="checkersLeaveTitle"></h2><p data-checkers-leave-copy></p><div class="checkers-leave-actions"><button type="button" class="primary" data-checkers-continue></button><button type="button" class="secondary" data-checkers-main></button></div></div>';
+        els.battle.querySelector(".battle-canvas")?.append(checkersLeaveDialog);
+        checkersLeaveDialog.addEventListener("cancel", (event) => {
+          event.preventDefault();
+          closeCheckersLeaveDialog(true, true);
+        });
+        checkersLeaveDialog.querySelector("[data-checkers-continue]")?.addEventListener("click", () => closeCheckersLeaveDialog(true, true));
+        checkersLeaveDialog.querySelector("[data-checkers-main]")?.addEventListener("click", () => {
+          closeCheckersLeaveDialog(false, false);
+          trackCheckers("main_return", { from: "battle_confirmed" });
+          show("main");
+          state = makeState(game.type);
+          render();
+          els.start?.focus({ preventScroll: true });
+        });
+        checkersLeaveDialog.addEventListener("keydown", (event) => {
+          if (event.key !== "Tab") return;
+          const buttons = [...checkersLeaveDialog.querySelectorAll("button:not(:disabled)")];
+          if (!buttons.length) return;
+          const first = buttons[0], last = buttons[buttons.length - 1];
+          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        });
+      }
+      checkersLeaveDialog.querySelector("#checkersLeaveTitle").textContent = ui.title;
+      checkersLeaveDialog.querySelector("[data-checkers-leave-copy]").textContent = ui.text;
+      checkersLeaveDialog.querySelector("[data-checkers-continue]").textContent = ui.continue;
+      checkersLeaveDialog.querySelector("[data-checkers-main]").textContent = ui.main;
+      checkersLeaveReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      if (els.battlePanel) els.battlePanel.inert = true;
+      checkersLeaveDialog.showModal();
+      checkersLeaveDialog.querySelector("[data-checkers-continue]")?.focus({ preventScroll: true });
+    };
     let snakeFlashTimer = null;
     let snakeRouteCueTimer = null;
     let snakeMilestoneTimer = null;
@@ -2286,7 +2416,40 @@
       if (els.leaveContinue) els.leaveContinue.textContent = c.continue;
       if (els.leaveMain) els.leaveMain.textContent = c.leave;
     };
-    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
+    const syncSnakeLeaveDialog = () => {
+      if (game.type !== "snake" || !els.snakeLeave) return;
+      const c = SNAKE_SHELL_COPY[locale] || SNAKE_SHELL_COPY.en;
+      els.snakeLeave.title.textContent = c.leaveTitle;
+      els.snakeLeave.text.textContent = c.leaveText;
+      els.snakeLeave.continueButton.textContent = c.continueRun;
+      els.snakeLeave.mainButton.textContent = c.returnMain;
+    };
+    const openSnakeLeaveDialog = () => {
+      if (game.type !== "snake" || state.done || !state.started || state.moves <= 0 || !els.snakeLeave?.dialog) return false;
+      if (snakeTimer) { window.clearTimeout(snakeTimer); snakeTimer = null; }
+      __wpNotifyMeasurement();
+      syncSnakeLeaveDialog();
+      if (!els.snakeLeave.dialog.open) els.snakeLeave.dialog.showModal();
+      els.snakeLeave.continueButton.focus({ preventScroll: true });
+      return true;
+    };
+    const resumeSnakeRun = () => {
+      if (els.snakeLeave?.dialog.open) els.snakeLeave.dialog.close();
+      __wpNotifyMeasurement();
+      render();
+      if (game.type === "snake" && state.started && !state.done) scheduleSnakeTick();
+      document.querySelector('[data-wp-return="battle"]')?.focus({ preventScroll: true });
+    };
+    const returnSnakeToMain = () => {
+      if (els.snakeLeave?.dialog.open) els.snakeLeave.dialog.close();
+      stopSnakeTimer();
+      __wpNotifyMeasurement();
+      show("main");
+      state = makeState(game.type);
+      render();
+      els.start?.focus({ preventScroll: true });
+    };
+    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncSnakeLeaveDialog(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
     els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else __wpReplayStart(() => start("retry")); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : __wpReplayStart(() => start("restart")));
     els.breakoutLeaveDialog?.addEventListener("cancel", (event) => { event.preventDefault(); closeBreakoutLeaveDialog(); });
     els.breakoutLeaveContinue?.addEventListener("click", () => closeBreakoutLeaveDialog());
@@ -2305,6 +2468,9 @@
     });
     els.leaveContinue?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); render(); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); });
     els.leaveMain?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); show("main"); state = makeState(game.type); render(); els.start?.focus({ preventScroll: true }); });
+    els.snakeLeave?.dialog.addEventListener("cancel", (event) => { event.preventDefault(); resumeSnakeRun(); });
+    els.snakeLeave?.continueButton.addEventListener("click", resumeSnakeRun);
+    els.snakeLeave?.mainButton.addEventListener("click", returnSnakeToMain);
     document.addEventListener("keydown", (event) => {
       if (game.type !== "breakout" || document.body.dataset.screen !== "battle" || els.breakoutLeaveDialog?.open || ![" ", "Enter"].includes(event.key)) return;
       const focusedControl = event.target?.closest?.("button, a, input, select, textarea, [role='button']");
@@ -2315,12 +2481,33 @@
     });
     document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle" || (game.type === "breakout" && els.breakoutLeaveDialog?.open)) return; if (game.type === "wordle" && els.leaveModal && !els.leaveModal.hidden && event.key === "Escape") { event.preventDefault(); (__wpNotifyMeasurement(), els.leaveModal.hidden = true); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); return; } if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
+    if (game.type === "snake") battleBack?.addEventListener("click", (event) => {
+      if (state.done || !state.started || state.moves <= 0 || typeof els.snakeLeave?.dialog?.showModal !== "function") return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openSnakeLeaveDialog();
+    }, true);
     if (game.type === "breakout") battleBack?.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
       openBreakoutLeaveDialog();
     }, true);
-    battleBack?.addEventListener("click", (event) => { if (game.type === "wordle" && !state.done && els.leaveModal) { event.preventDefault(); event.stopImmediatePropagation(); (__wpNotifyMeasurement(), els.leaveModal.hidden = false); syncWordleLeaveDialog(); els.leaveContinue?.focus({ preventScroll: true }); return; } trackCheckers("main_return", { from: "battle" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } });
+    battleBack?.addEventListener("click", (event) => {
+      if (game.type === "wordle" && !state.done && els.leaveModal) {
+        event.preventDefault(); event.stopImmediatePropagation();
+        (__wpNotifyMeasurement(), els.leaveModal.hidden = false);
+        syncWordleLeaveDialog(); els.leaveContinue?.focus({ preventScroll: true }); return;
+      }
+      if (game.type === "checkers" && !state.done && (state.moves > 0 || state.step > 0 || checkersAiTimer)) {
+        event.preventDefault(); event.stopImmediatePropagation();
+        openCheckersLeaveDialog();
+        return;
+      }
+      trackCheckers("main_return", { from: "battle" });
+      stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer();
+      if (game.type === "breakout") { show("stage"); renderStage(); render(); }
+      else { show("main"); state = makeState(game.type); render(); }
+    });
     els.stageBack?.addEventListener("click", () => { if (game.type !== "breakout") return; stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); show("main"); state = makeState(game.type); render(); });
     if (game.type === "tetris") {
       window.addEventListener("weightplay:shell-sync", scheduleTetris);

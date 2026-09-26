@@ -266,7 +266,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/interface7-redrawn/animal-peach-oath.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-peach-oath.webp",
   "/assets/interface7-redrawn/animal-penalty-cup.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-penalty-cup.webp",
   "/assets/interface7-redrawn/animal-pocket-post.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-pocket-post.webp",
-  "/assets/interface7-redrawn/animal-postcard-crop.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-postcard-crop.webp",
+  "/games/animal-postcard-crop/assets/animal-postcard-crop-cover-v2.webp": "/games/animal-postcard-crop/assets/animal-postcard-crop-cover-v2.webp",
   "/assets/interface7-redrawn/animal-prism-battalion.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-prism-battalion.webp",
   "/assets/interface7-redrawn/animal-prism-breakers.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-prism-breakers.webp",
   "/assets/interface7-redrawn/animal-prism-garden.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-prism-garden.webp",

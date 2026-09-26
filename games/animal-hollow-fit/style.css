@@ -27,3 +27,13 @@
  .wide .piece-card .shape-grid{height:100%;max-height:120px}
  .wide #battle-status{min-height:28px;font-size:12px}
 }
+
+
+/* v11 Stage: 30 campaign stages, each owning five Battle rooms. */
+#stageScreen{position:relative;width:min(100%,920px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - var(--wp-ad-reserve-height,0px));margin-inline:auto;color:#f5f1e4}
+#stageContent{min-width:0;min-height:0;display:grid;grid-template-rows:auto minmax(198px,1fr) auto;gap:12px;padding:14px 0 18px;overflow:hidden;background:linear-gradient(180deg,#071923b8,#142c2bd6)}
+.stage-copy{display:grid;gap:5px;padding:0 18px;text-align:center}.stage-copy>strong{font-size:22px;color:#f7d786}.stage-copy>span{font-weight:850}.stage-copy>small{font-size:13px;line-height:1.4;color:#e8e0cb}
+#stageRail{width:100%;min-width:0;align-self:center}.stage-card{padding:0;border:2px solid #6b857d;border-radius:8px;background:linear-gradient(180deg,#264544f2,#152d31f5);color:#f5f1e4;box-shadow:0 5px 0 #07171e;cursor:pointer}.stage-card:not(:disabled):focus-visible,.stage-card[aria-current=true]{border-color:#f3d18c;box-shadow:0 5px 0 #07171e,0 0 0 2px #f3d18c66}.stage-card:disabled{background:#16292de8;color:#9eaaa5;filter:saturate(.45)}
+.stage-card [data-wp-item-content]{height:100%;gap:9px;padding:16px}.stage-card strong{font-size:24px;color:#f7d786}.stage-card span:not(.stage-card-dots){font-size:14px;font-weight:750}.stage-card small{font-size:12px;line-height:1.35}.stage-card-dots{display:flex;gap:7px}.stage-card-dots i{display:block;width:24px;height:7px;border-radius:2px;background:#496267}.stage-card-dots i.done{background:#e3bc61;box-shadow:0 0 7px #f5d98c55}
+.stage-legend{display:flex;justify-content:space-between;gap:12px;padding:0 18px;font-size:12px;color:#e8e0cb}.stage-legend span:last-child{text-align:end}
+@media(max-height:480px) and (orientation:landscape){#stageContent{grid-template-rows:auto minmax(190px,1fr) auto;padding-block:6px;gap:5px}.stage-copy{grid-template-columns:auto auto;align-items:center}.stage-copy>strong{font-size:17px}.stage-copy>small{grid-column:1/-1;font-size:11px}.stage-card [data-wp-item-content]{padding:10px;gap:6px}.stage-card strong{font-size:20px}}

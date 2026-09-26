@@ -5,6 +5,7 @@
     en: {
       summary: "Read the sun mark, apply the wind rule, and guide the night animals through 30 lookouts.",
       progress: "Progress: {count}/30 stages · unlocked through {unlocked}",
+      resultProgress: "Chapter progress: {count}/{total}",
       mapIntro: "Swipe the compass rail to browse. Clear a stage to unlock the next; cleared stages can be replayed.",
       stageObjective: "Ordered compass clues: {count}.", phaseProgress: "Clue {current} of {total}",
       ruleDirect: "The sun mark is {mark}. Face that way.",
@@ -21,6 +22,7 @@
     "zh-Hant": {
       summary: "依照太陽標記與風向規則，帶領夜行動物走過 30 個樹冠瞭望點。",
       progress: "進度：{count}/30 站 · 已解鎖至第 {unlocked} 站",
+      resultProgress: "章節進度：{count}/{total}",
       mapIntro: "滑動羅盤卡片瀏覽；通過一站即可解鎖下一站，已完成的站點可重玩。",
       stageObjective: "依序解開 {count} 條羅盤線索。", phaseProgress: "線索 {current}/{total}",
       ruleDirect: "太陽標記在{mark}，面向該方向。", ruleClockwise: "太陽標記在{mark}，順時針轉一格。",
@@ -34,6 +36,7 @@
     "zh-Hans": {
       summary: "依照太阳标记与风向规则，带领夜行动物走过 30 个树冠瞭望点。",
       progress: "进度：{count}/30 站 · 已解锁至第 {unlocked} 站",
+      resultProgress: "章节进度：{count}/{total}",
       mapIntro: "滑动罗盘卡片浏览；通过一站即可解锁下一站，已完成的站点可重玩。",
       stageObjective: "按顺序解开 {count} 条罗盘线索。", phaseProgress: "线索 {current}/{total}",
       ruleDirect: "太阳标记在{mark}，面向该方向。", ruleClockwise: "太阳标记在{mark}，顺时针转一格。",
@@ -47,6 +50,7 @@
     ja: {
       summary: "太陽の印と風のルールを読み、夜行性の動物たちを30か所の見張り台へ導こう。",
       progress: "進行状況：{count}/30 · 第{unlocked}ステージまで解放",
+      resultProgress: "チャプター進行状況：{count}/{total}",
       mapIntro: "羅針盤レールをスワイプして選択。クリアすると次が解放され、クリア済みは再プレイできます。",
       stageObjective: "羅針盤の手がかりを{count}つ順番に解こう。", phaseProgress: "手がかり {current}/{total}",
       ruleDirect: "太陽の印は{mark}。その方向を向こう。", ruleClockwise: "太陽の印は{mark}。時計回りに一目盛り回そう。",
@@ -58,6 +62,7 @@
     ko: {
       summary: "태양 표식과 바람 규칙을 읽고 밤 동물들을 30개의 전망대로 안내하세요.",
       progress: "진행: {count}/30 · {unlocked}단계까지 해금",
+      resultProgress: "챕터 진행: {count}/{total}",
       mapIntro: "나침반 레일을 밀어 둘러보세요. 단계를 깨면 다음 단계가 열리고, 완료한 단계는 다시 할 수 있습니다.",
       stageObjective: "나침반 단서 {count}개를 순서대로 풀어 보세요.", phaseProgress: "단서 {current}/{total}",
       ruleDirect: "태양 표식은 {mark}입니다. 그쪽을 향하세요.", ruleClockwise: "태양 표식은 {mark}입니다. 시계 방향으로 한 칸 돌리세요.",
@@ -69,6 +74,7 @@
     es: {
       summary: "Lee la marca del sol, aplica la regla del viento y guía a los animales nocturnos por 30 miradores.",
       progress: "Progreso: {count}/30 · desbloqueado hasta el nivel {unlocked}",
+      resultProgress: "Progreso del capítulo: {count}/{total}",
       mapIntro: "Desliza la brújula para explorar. Supera un nivel para desbloquear el siguiente; puedes repetir los superados.",
       stageObjective: "Resuelve {count} pistas de brújula en orden.", phaseProgress: "Pista {current} de {total}",
       ruleDirect: "La marca del sol está al {mark}. Mira hacia allí.", ruleClockwise: "La marca del sol está al {mark}. Gira un paso en sentido horario.",
@@ -80,6 +86,7 @@
     "pt-BR": {
       summary: "Leia a marca do sol, aplique a regra do vento e guie os animais noturnos por 30 mirantes.",
       progress: "Progresso: {count}/30 · liberado até a fase {unlocked}",
+      resultProgress: "Progresso do capítulo: {count}/{total}",
       mapIntro: "Deslize a bússola para explorar. Vença uma fase para liberar a próxima; fases concluídas podem ser repetidas.",
       stageObjective: "Resolva {count} pistas de bússola em ordem.", phaseProgress: "Pista {current} de {total}",
       ruleDirect: "A marca do sol está em {mark}. Aponte nessa direção.", ruleClockwise: "A marca do sol está em {mark}. Gire um passo no sentido horário.",
@@ -91,6 +98,7 @@
     fr: {
       summary: "Lis le repère du soleil, applique la règle du vent et guide les animaux nocturnes à travers 30 observatoires.",
       progress: "Progression : {count}/30 · débloqué jusqu'au niveau {unlocked}",
+      resultProgress: "Progression du chapitre : {count}/{total}",
       mapIntro: "Fais glisser le rail de la boussole. Termine un niveau pour débloquer le suivant ; les niveaux terminés sont rejouables.",
       stageObjective: "Résous {count} indice(s) de boussole dans l'ordre.", phaseProgress: "Indice {current} sur {total}",
       ruleDirect: "Le repère solaire est au {mark}. Oriente-toi dans cette direction.", ruleClockwise: "Le repère solaire est au {mark}. Tourne d'un cran dans le sens horaire.",
@@ -102,6 +110,7 @@
     de: {
       summary: "Lies die Sonnenmarkierung, wende die Windregel an und führe die nachtaktiven Tiere durch 30 Baumkronenstationen.",
       progress: "Fortschritt: {count}/30 · bis Station {unlocked} freigeschaltet",
+      resultProgress: "Kapitel-Fortschritt: {count}/{total}",
       mapIntro: "Wische über die Kompassleiste. Schließe eine Station ab, um die nächste freizuschalten; erledigte Stationen sind wiederholbar.",
       stageObjective: "Löse {count} Kompasshinweis(e) der Reihe nach.", phaseProgress: "Hinweis {current} von {total}",
       ruleDirect: "Die Sonnenmarkierung liegt bei {mark}. Richte dich dorthin aus.", ruleClockwise: "Die Sonnenmarkierung liegt bei {mark}. Drehe einen Schritt im Uhrzeigersinn.",
@@ -113,6 +122,7 @@
     it: {
       summary: "Leggi il segno del sole, applica la regola del vento e guida gli animali notturni attraverso 30 belvedere.",
       progress: "Progresso: {count}/30 · sbloccato fino alla tappa {unlocked}",
+      resultProgress: "Progresso del capitolo: {count}/{total}",
       mapIntro: "Scorri la bussola per esplorare. Completa una tappa per sbloccare la successiva; quelle completate si possono ripetere.",
       stageObjective: "Risolvi {count} indizio/i della bussola in ordine.", phaseProgress: "Indizio {current} di {total}",
       ruleDirect: "Il segno del sole è a {mark}. Rivolgiti in quella direzione.", ruleClockwise: "Il segno del sole è a {mark}. Gira di un passo in senso orario.",
@@ -124,6 +134,7 @@
     ru: {
       summary: "Найди солнечную отметку, примени правило ветра и проведи ночных животных через 30 площадок.",
       progress: "Прогресс: {count}/30 · открыто до этапа {unlocked}",
+      resultProgress: "Прогресс главы: {count}/{total}",
       mapIntro: "Прокручивай компасную ленту. Пройди этап, чтобы открыть следующий; пройденные этапы можно повторять.",
       stageObjective: "Реши по порядку подсказки компаса: {count}.", phaseProgress: "Подсказка {current} из {total}",
       ruleDirect: "Солнечная отметка — {mark}. Повернись туда.", ruleClockwise: "Солнечная отметка — {mark}. Поверни на один шаг по часовой стрелке.",
@@ -135,6 +146,7 @@
     hi: {
       summary: "सूर्य-चिह्न पढ़ें, हवा का नियम लागू करें और रात के जानवरों को 30 चौकियों तक पहुँचाएँ।",
       progress: "प्रगति: {count}/30 चरण · चरण {unlocked} तक खुले",
+      resultProgress: "अध्याय की प्रगति: {count}/{total}",
       mapIntro: "कम्पास रेल पर स्वाइप करके देखें। अगला चरण खोलने के लिए एक चरण पूरा करें; पूरे किए चरण फिर खेल सकते हैं।",
       stageObjective: "कम्पास के {count} संकेत क्रम से हल करें।", phaseProgress: "संकेत {current}/{total}",
       ruleDirect: "सूर्य-चिह्न {mark} पर है। उसी ओर मुख करें।", ruleClockwise: "सूर्य-चिह्न {mark} पर है। घड़ी की दिशा में एक कदम घूमें।",
@@ -146,6 +158,7 @@
     ar: {
       summary: "اقرأ علامة الشمس، وطبّق قاعدة الرياح، وساعد حيوانات الليل عبر 30 نقطة مراقبة.",
       progress: "التقدم: {count}/30 · مفتوح حتى المرحلة {unlocked}",
+      resultProgress: "تقدم الفصل: {count}/{total}",
       mapIntro: "مرّر شريط البوصلة للتصفح. أكمل مرحلة لفتح التالية؛ ويمكن إعادة المراحل المكتملة.",
       stageObjective: "حلّ أدلة البوصلة وعددها {count} بالترتيب.", phaseProgress: "الدليل {current} من {total}",
       ruleDirect: "علامة الشمس عند {mark}. واجه ذلك الاتجاه.", ruleClockwise: "علامة الشمس عند {mark}. أدر خطوة واحدة مع عقارب الساعة.",
@@ -157,6 +170,8 @@
       badge1: "فانوس الفجر", badge2: "جرس الرياح", badge3: "عثة المرآة", badge4: "مالك الحزين الصدّاح", badge5: "طائرة الغصن العالي", badge6: "مرشد المظلة القمرية",
     },
   };
+
+  Object.entries({"en":{"loading":"Opening the canopy route…","language":"Language","back":"Back","lobbyReturn":"Return to WeightPlay","directionChoices":"Direction choices","compassLabel":"Compass dial","stageSections":"Lookout sections","clueTitle":"Lookout clue","round":"Lookout {number}/{total}","facing":"Facing {direction}","ready":"Choose the safe facing, then check the perch.","changed":"Compass now faces {direction}.","resultKicker":"LOOKOUT RESULT","stats":"{turns} turns · Best {best}","complete":"Complete","readyStage":"Ready","replay":"Replay stage","keyboardHint":"Arrow keys choose a facing. Focus the compass and press Enter or Space to check.","stageControllerUnavailable":"The stage rail could not load. Return to the start and try again.","masteryGoal":"Replay goal: solve every clue without a wrong check. There is no timer.","north":"North","east":"East","south":"South","west":"West"},"zh-Hant":{"loading":"正在開啟樹冠路線…","language":"語言","back":"返回","lobbyReturn":"返回 WeightPlay","directionChoices":"方向選擇","compassLabel":"羅盤","stageSections":"瞭望點分區","clueTitle":"瞭望點線索","round":"瞭望點 {number}/{total}","facing":"面向{direction}","ready":"選擇安全方向，再檢查瞭望點。","changed":"羅盤目前朝向{direction}。","resultKicker":"瞭望點結果","stats":"操作 {turns} 次 · 最佳 {best} 次","complete":"已完成","readyStage":"可挑戰","replay":"重玩本關","keyboardHint":"方向鍵選擇朝向；將焦點移到羅盤後，按 Enter 或空白鍵檢查。","stageControllerUnavailable":"關卡卡片未能載入，請返回開始畫面後重試。","masteryGoal":"重玩目標：每條線索都一次答對，全程不計時。","north":"北","east":"東","south":"南","west":"西"},"zh-Hans":{"loading":"正在开启树冠路线…","language":"语言","back":"返回","lobbyReturn":"返回 WeightPlay","directionChoices":"方向选择","compassLabel":"罗盘","stageSections":"瞭望点分区","clueTitle":"瞭望点线索","round":"瞭望点 {number}/{total}","facing":"面向{direction}","ready":"选择安全方向，再检查瞭望点。","changed":"罗盘目前朝向{direction}。","resultKicker":"瞭望点结果","stats":"操作 {turns} 次 · 最佳 {best} 次","complete":"已完成","readyStage":"可挑战","replay":"重玩本关","keyboardHint":"方向键选择朝向；将焦点移到罗盘后，按 Enter 或空格键检查。","stageControllerUnavailable":"关卡卡片未能加载，请返回开始画面后重试。","masteryGoal":"重玩目标：每条线索都一次答对，全程不计时。","north":"北","east":"东","south":"南","west":"西"},"ja":{"loading":"樹冠のルートを開いています…","language":"言語","back":"戻る","lobbyReturn":"WeightPlay に戻る","directionChoices":"方向の選択","compassLabel":"コンパス","stageSections":"見張り台の区分","clueTitle":"見張り台の手がかり","round":"見張り台 {number}/{total}","facing":"{direction}を向いています","ready":"安全な方向を選んでから、見張り台を確認しましょう。","changed":"コンパスは{direction}を向いています。","resultKicker":"見張り台の結果","stats":"操作 {turns} 回 · ベスト {best} 回","complete":"クリア済み","readyStage":"挑戦可能","replay":"このステージを再プレイ","keyboardHint":"矢印キーで方向を選びます。コンパスにフォーカスを合わせ、Enter またはスペースで確認します。","stageControllerUnavailable":"ステージ一覧を読み込めませんでした。開始画面に戻って再試行してください。","masteryGoal":"再挑戦の目標：すべての手がかりを一度で正解しましょう。制限時間はありません。","north":"北","east":"東","south":"南","west":"西"},"ko":{"loading":"수관 경로를 여는 중…","language":"언어","back":"뒤로","lobbyReturn":"WeightPlay로 돌아가기","directionChoices":"방향 선택","compassLabel":"나침반","stageSections":"전망대 구역","clueTitle":"전망대 단서","round":"전망대 {number}/{total}","facing":"{direction}쪽을 향하는 중","ready":"안전한 방향을 선택한 다음 전망대를 확인하세요.","changed":"나침반이 {direction}쪽을 향합니다.","resultKicker":"전망대 결과","stats":"조작 {turns}회 · 최고 {best}회","complete":"완료","readyStage":"도전 가능","replay":"이 단계 다시 하기","keyboardHint":"방향키로 방향을 선택하세요. 나침반에 포커스를 두고 Enter 또는 스페이스바로 확인하세요.","stageControllerUnavailable":"단계 목록을 불러오지 못했습니다. 시작 화면으로 돌아가 다시 시도하세요.","masteryGoal":"재도전 목표: 모든 단서를 한 번에 맞혀 보세요. 시간제한은 없습니다.","north":"북","east":"동","south":"남","west":"서"},"es":{"loading":"Abriendo la ruta del dosel…","language":"Idioma","back":"Volver","lobbyReturn":"Volver a WeightPlay","directionChoices":"Opciones de dirección","compassLabel":"Brújula","stageSections":"Secciones de miradores","clueTitle":"Pista del mirador","round":"Mirador {number}/{total}","facing":"Orientación: {direction}","ready":"Elige la dirección segura y comprueba el mirador.","changed":"La brújula apunta al {direction}.","resultKicker":"RESULTADO DEL MIRADOR","stats":"{turns} acciones · Récord {best}","complete":"Completado","readyStage":"Disponible","replay":"Repetir etapa","keyboardHint":"Las flechas eligen la dirección. Enfoca la brújula y pulsa Intro o Espacio para comprobar.","stageControllerUnavailable":"No se pudo cargar la lista de etapas. Vuelve al inicio e inténtalo de nuevo.","masteryGoal":"Objetivo al repetir: resolver todas las pistas sin fallar una comprobación. No hay límite de tiempo.","north":"Norte","east":"Este","south":"Sur","west":"Oeste"},"pt-BR":{"loading":"Abrindo a rota da copa…","language":"Idioma","back":"Voltar","lobbyReturn":"Voltar ao WeightPlay","directionChoices":"Opções de direção","compassLabel":"Bússola","stageSections":"Seções de mirantes","clueTitle":"Pista do mirante","round":"Mirante {number}/{total}","facing":"Direção: {direction}","ready":"Escolha a direção segura e confira o mirante.","changed":"A bússola aponta para {direction}.","resultKicker":"RESULTADO DO MIRANTE","stats":"{turns} ações · Recorde {best}","complete":"Concluído","readyStage":"Disponível","replay":"Repetir etapa","keyboardHint":"Use as setas para escolher a direção. Dê foco à bússola e pressione Enter ou Espaço para conferir.","stageControllerUnavailable":"Não foi possível carregar a lista de etapas. Volte ao início e tente novamente.","masteryGoal":"Objetivo da repetição: resolver todas as pistas sem uma verificação errada. Não há limite de tempo.","north":"Norte","east":"Leste","south":"Sul","west":"Oeste"},"fr":{"loading":"Ouverture du parcours de la canopée…","language":"Langue","back":"Retour","lobbyReturn":"Retour à WeightPlay","directionChoices":"Choix de direction","compassLabel":"Boussole","stageSections":"Sections des postes","clueTitle":"Indice du poste","round":"Poste {number}/{total}","facing":"Direction : {direction}","ready":"Choisissez la bonne direction, puis vérifiez le poste.","changed":"La boussole pointe vers {direction}.","resultKicker":"RÉSULTAT DU POSTE","stats":"{turns} actions · Record {best}","complete":"Terminé","readyStage":"Disponible","replay":"Rejouer ce niveau","keyboardHint":"Les flèches choisissent la direction. Placez le focus sur la boussole, puis appuyez sur Entrée ou Espace pour vérifier.","stageControllerUnavailable":"La liste des niveaux n’a pas pu être chargée. Revenez au début et réessayez.","masteryGoal":"Objectif en rejouant : résoudre tous les indices sans mauvaise vérification. Il n’y a pas de limite de temps.","north":"Nord","east":"Est","south":"Sud","west":"Ouest"},"de":{"loading":"Der Kronenpfad wird geöffnet…","language":"Sprache","back":"Zurück","lobbyReturn":"Zurück zu WeightPlay","directionChoices":"Richtungsauswahl","compassLabel":"Kompass","stageSections":"Abschnitte der Aussichtspunkte","clueTitle":"Hinweis am Aussichtspunkt","round":"Aussichtspunkt {number}/{total}","facing":"Blickrichtung: {direction}","ready":"Wähle die sichere Richtung und prüfe den Aussichtspunkt.","changed":"Der Kompass zeigt nach {direction}.","resultKicker":"ERGEBNIS","stats":"{turns} Aktionen · Bestwert {best}","complete":"Abgeschlossen","readyStage":"Verfügbar","replay":"Stufe wiederholen","keyboardHint":"Wähle mit den Pfeiltasten eine Richtung. Fokussiere den Kompass und drücke Enter oder die Leertaste zum Prüfen.","stageControllerUnavailable":"Die Stufenliste konnte nicht geladen werden. Kehre zum Start zurück und versuche es erneut.","masteryGoal":"Wiederholungsziel: Löse alle Hinweise ohne falsche Prüfung. Es gibt kein Zeitlimit.","north":"Norden","east":"Osten","south":"Süden","west":"Westen"},"it":{"loading":"Apertura del percorso nella chioma…","language":"Lingua","back":"Indietro","lobbyReturn":"Torna a WeightPlay","directionChoices":"Scelte di direzione","compassLabel":"Bussola","stageSections":"Sezioni dei punti di osservazione","clueTitle":"Indizio del punto di osservazione","round":"Punto di osservazione {number}/{total}","facing":"Direzione: {direction}","ready":"Scegli la direzione sicura, poi controlla il punto di osservazione.","changed":"La bussola punta verso {direction}.","resultKicker":"RISULTATO","stats":"{turns} azioni · Record {best}","complete":"Completato","readyStage":"Disponibile","replay":"Ripeti il livello","keyboardHint":"Le frecce scelgono la direzione. Porta il focus sulla bussola e premi Invio o Spazio per controllare.","stageControllerUnavailable":"Impossibile caricare l’elenco dei livelli. Torna all’inizio e riprova.","masteryGoal":"Obiettivo della ripetizione: risolvere tutti gli indizi senza controlli errati. Non c’è un limite di tempo.","north":"Nord","east":"Est","south":"Sud","west":"Ovest"},"ru":{"loading":"Открывается маршрут по кронам…","language":"Язык","back":"Назад","lobbyReturn":"Вернуться в WeightPlay","directionChoices":"Выбор направления","compassLabel":"Компас","stageSections":"Разделы смотровых площадок","clueTitle":"Подсказка площадки","round":"Площадка {number}/{total}","facing":"Направление: {direction}","ready":"Выберите безопасное направление и проверьте площадку.","changed":"Компас указывает на {direction}.","resultKicker":"РЕЗУЛЬТАТ ПЛОЩАДКИ","stats":"Действия: {turns} · Рекорд: {best}","complete":"Пройдено","readyStage":"Доступно","replay":"Повторить этап","keyboardHint":"Стрелки выбирают направление. Переведите фокус на компас и нажмите Enter или пробел для проверки.","stageControllerUnavailable":"Не удалось загрузить список этапов. Вернитесь к началу и повторите попытку.","masteryGoal":"Цель повторного прохождения: решить все подсказки без ошибочных проверок. Ограничения времени нет.","north":"Север","east":"Восток","south":"Юг","west":"Запад"},"hi":{"loading":"पेड़ों की छतरी का मार्ग खुल रहा है…","language":"भाषा","back":"वापस","lobbyReturn":"WeightPlay पर लौटें","directionChoices":"दिशा के विकल्प","compassLabel":"कम्पास","stageSections":"चौकियों के खंड","clueTitle":"चौकी का संकेत","round":"चौकी {number}/{total}","facing":"दिशा: {direction}","ready":"सुरक्षित दिशा चुनें, फिर चौकी की जाँच करें।","changed":"कम्पास अब {direction} की ओर है।","resultKicker":"चौकी का परिणाम","stats":"{turns} क्रियाएँ · सर्वश्रेष्ठ {best}","complete":"पूरा","readyStage":"उपलब्ध","replay":"यह चरण फिर खेलें","keyboardHint":"तीर वाली कुंजियों से दिशा चुनें। कम्पास पर फ़ोकस लाएँ और जाँच के लिए Enter या स्पेस दबाएँ।","stageControllerUnavailable":"चरणों की सूची लोड नहीं हो सकी। शुरुआत पर लौटकर फिर प्रयास करें।","masteryGoal":"दोबारा खेलने का लक्ष्य: हर संकेत बिना गलत जाँच के हल करें। कोई समय सीमा नहीं है।","north":"उत्तर","east":"पूर्व","south":"दक्षिण","west":"पश्चिम"},"ar":{"loading":"جارٍ فتح مسار أعالي الغابة…","language":"اللغة","back":"رجوع","lobbyReturn":"العودة إلى WeightPlay","directionChoices":"اختيارات الاتجاه","compassLabel":"قرص البوصلة","stageSections":"أقسام نقاط المراقبة","clueTitle":"دليل نقطة المراقبة","round":"نقطة المراقبة {number}/{total}","facing":"الاتجاه: {direction}","ready":"اختر الاتجاه الآمن ثم تحقق من نقطة المراقبة.","changed":"تشير البوصلة الآن إلى {direction}.","resultKicker":"نتيجة نقطة المراقبة","stats":"الحركات: {turns} · الأفضل: {best}","complete":"مكتملة","readyStage":"متاحة","replay":"إعادة المرحلة","keyboardHint":"اختر الاتجاه بمفاتيح الأسهم. انقل التركيز إلى البوصلة واضغط Enter أو المسافة للتحقق.","stageControllerUnavailable":"تعذّر تحميل قائمة المراحل. عُد إلى البداية وحاول مجددًا.","masteryGoal":"هدف الإعادة: حلّ كل الأدلة دون تحقق خاطئ. لا يوجد حد زمني.","north":"الشمال","east":"الشرق","south":"الجنوب","west":"الغرب"}}).forEach(([locale, values]) => Object.assign(dictionaries[locale] || (dictionaries[locale] = {}), values));
 
   const copies = window.CANOPY_COMPASS_LOCALES || {};
   Object.entries(copies).forEach(([locale, copy]) => Object.assign(copy, dictionaries[locale] || dictionaries.en));

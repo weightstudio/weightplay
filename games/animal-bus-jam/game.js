@@ -23,7 +23,7 @@
   const palette = ["#ef6b62", "#4da8e8", "#f0bb4d", "#9a7ae9"];
   const routeCodes = ["A", "B", "C", "D"];
   const GAME_ID = "animal-bus-jam";
-  const GAME_VERSION = 16;
+  const GAME_VERSION = 18;
   const INTERFACE_VERSION = 7;
   const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}-block-v16.webp`);
   const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}-block-v16.webp`);
@@ -166,6 +166,11 @@
     write(progressKey, JSON.stringify(progress));
   }
 
+  function renderMainProgress() {
+    const slot = $("mainProgress");
+    if (slot) slot.textContent = t("progress", { done: progress.filter(Boolean).length });
+  }
+
   function snapshot() {
     return {
       queues: state.queues.map((queue) => queue.slice()),
@@ -199,6 +204,7 @@
       element.alt = t(element.dataset.tAlt);
     });
     $("locale").value = locale;
+    renderMainProgress();
     renderStage();
     if (screen === "battle" && state) render();
     renderFeedback();
@@ -227,6 +233,7 @@
     document.body.dataset.screen = name;
     document.body.dataset.gameView = name;
     screen = name;
+    if (name === "main") renderMainProgress();
     window.syncBusJamFrame?.();
     window.scrollTo(0, 0);
     const sync = () => {
@@ -664,6 +671,7 @@
     $("deadlock").close();
     (__wpNotifyMeasurement(), $("leaveBattle").close());
     show("battle");
+    window.WeightPlayAudio?.play("game.start");
     render();
     feedbackKey = "status";
     feedbackTone = "neutral";
@@ -692,6 +700,7 @@
     if (!nextState) return;
     state = nextState;
     moves += 1;
+    window.WeightPlayAudio?.play("board.move");
     trackFunnel("dispatch", {
       queue: queueIndex + 1,
       route: color,
@@ -729,6 +738,7 @@
     }
     if (engine.isDeadlocked(level, state)) {
       trackFunnel("deadlock", { move_count: moves, holding_count: state.waiting.length });
+      window.WeightPlayAudio?.play("result.lose");
       (__wpNotifyMeasurement(), $("deadlock").showModal());
     }
   }
@@ -737,6 +747,8 @@
     if (!state || !engine.isComplete(levels[levelIndex], state) || $("result").open) return;
     progress[levelIndex] = true;
     save();
+    renderMainProgress();
+    window.WeightPlayAudio?.play("result.win");
     $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
     resultActionClaimed = false;
     $("resultStages").disabled = false;
@@ -764,6 +776,7 @@
     departureRemaining = 0;
     departingBusIndexes = [];
     restore(saved);
+    window.WeightPlayAudio?.play("board.undo");
     render();
     announceFeedback("undone", "undo");
     trackFunnel("undo", { move_count: moves });
@@ -784,6 +797,7 @@
         queue: queueIndex + 1,
         color: t("colors")[Number(button.dataset.color)],
       });
+      window.WeightPlayAudio?.play("feedback.hint");
     }
     trackFunnel("hint", { recommended_queue: queueIndex >= 0 ? queueIndex + 1 : null });
     button?.focus();

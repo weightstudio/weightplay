@@ -19,7 +19,7 @@
   let appliedStageRootStyleSignature = "";
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
-  const nativeStageScalers = new Set(["campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels", "animal-canopy-compass"]);
+  const nativeStageScalers = new Set(["campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels"]);
   // Habitat Builder uses the same wide, short-landscape envelope as its
   // Battle surface. Keep the Stage header and rail controls at their
   // authored touch size instead of scaling the portrait shell down to ~20px
@@ -27,6 +27,9 @@
   const stageLandscapeEnvelopeByGame = {
     "animal-rune-tactics": [760, 334],
     "animal-habitat-builder": [788, 334],
+    // Canopy keeps its 264x190 authored cards at touch size in short
+    // landscape instead of scaling its portrait shell into a narrow column.
+    "animal-canopy-compass": [844, 334],
     // Gust Garden keeps Stage navigation at authored touch size in compact
     // landscape instead of shrinking the portrait envelope.
     "animal-gust-garden": [760, 334],

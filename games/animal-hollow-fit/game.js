@@ -1,9 +1,9 @@
-/* Burrow Shape Match v10 / shared Interface 7. No private frame or sound engine. */
+/* Burrow Shape Match v11 / 30 stages × 5 rooms / shared Interface 7. */
 (() => {
   'use strict';
   const P = window.HollowPuzzles, L = window.ANIMAL_HOLLOW_FIT_LOCALES;
   const $ = id => document.getElementById(id);
-  const KEY = 'weightplay-animal-hollow-fit-expedition-v10';
+  const KEY = 'weightplay-animal-hollow-fit-expedition-v11';
   const ROUTES = {en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es','pt-BR':'pt-br',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
   const NAMES = ['English','繁體中文','简体中文','日本語','한국어','Español','Português','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];
   const abort = new AbortController(), motions = new Set(), effects = new Set();
@@ -16,6 +16,12 @@
   const listen = (target, event, fn, options = {}) => target.addEventListener(event, fn, {...options, signal:abort.signal});
   const sound = id => audio?.play(id);
   const starTotal = () => progress.stars.reduce((sum, value) => sum + value, 0);
+  const stageStart = stage => stage * P.ROOMS_PER_STAGE;
+  const stageStars = stage => progress.stars.slice(stageStart(stage), stageStart(stage) + P.ROOMS_PER_STAGE);
+  const stageComplete = stage => stageStars(stage).every(Boolean);
+  const completedStages = () => Array.from({length:P.STAGE_TOTAL},(_,stage)=>stageComplete(stage)).filter(Boolean).length;
+  const firstOpenStage = () => { const i=Array.from({length:P.STAGE_TOTAL},(_,stage)=>stage).find(stage=>!stageComplete(stage)); return i ?? 0; };
+  const firstOpenRoom = stage => { const start=stageStart(stage), offset=stageStars(stage).findIndex(v=>v===0); return start + (offset<0?0:offset); };
   const pattern = () => state.selected === null ? Array(25).fill(0) : P.transform(round.options[state.selected], state.turns, state.flipped);
   function motion(node, frames, duration = 240) {
     if (!node || destroyed || reduced.matches || typeof node.animate !== 'function') return Promise.resolve();
@@ -32,9 +38,32 @@
     updateProgress();
   }
   function updateProgress() {
-    $('main-progress').textContent = t('progressText', {done:progress.stars.filter(Boolean).length,total:P.TOTAL,stars:starTotal()});
+    $('main-progress').textContent = t('progressText', {done:completedStages(),total:P.STAGE_TOTAL,stars:starTotal()});
     $('star-count').textContent = String(starTotal());
     document.querySelectorAll('[data-storage-warning]').forEach(node => {node.hidden = storageOK; node.textContent = t('storageWarning');});
+  }
+  function renderStages() {
+    const rail=$('stageRail'), current=firstOpenStage();
+    rail.replaceChildren(...Array.from({length:P.STAGE_TOTAL},(_,stage)=>{
+      const complete=stageComplete(stage), unlocked=stage===0||stageComplete(stage-1)||complete;
+      const stars=stageStars(stage), done=stars.filter(Boolean).length, totalStars=stars.reduce((a,b)=>a+b,0);
+      const button=document.createElement('button');button.type='button';button.className='stage-card';button.dataset.stageIndex=String(stage);button.dataset.index=String(stage);
+      button.disabled=!unlocked;button.classList.toggle('is-locked',!unlocked);button.dataset.wpStageRecommended=String(stage===current);button.setAttribute('aria-current',String(stage===current));
+      button.setAttribute('aria-label',t('stageCardAria',{stage:stage+1,done,total:P.ROOMS_PER_STAGE,stars:totalStars}));
+      const content=document.createElement('span');content.setAttribute('data-wp-item-content','');
+      const number=document.createElement('strong');number.textContent=t('stageNumber',{stage:stage+1});
+      const mechanic=document.createElement('span');mechanic.textContent=L[state.locale].chapters[Math.floor(stage/P.CHAPTER_SIZE)];
+      const dots=document.createElement('span');dots.className='stage-card-dots';dots.setAttribute('aria-hidden','true');dots.replaceChildren(...stars.map(value=>{const dot=document.createElement('i');if(value)dot.className='done';return dot;}));
+      const score=document.createElement('small');score.textContent=t('stageCardProgress',{done,total:P.ROOMS_PER_STAGE,stars:totalStars});
+      content.append(number,mechanic,dots,score);button.append(content);return button;
+    }));
+    $('stage-progress').textContent=t('stageProgress',{done:completedStages(),total:P.STAGE_TOTAL});
+  }
+  function showStage() {
+    ++epoch;clearMotion();state.view='stage';state.phase='idle';state.selected=null;
+    $('mainScreen').hidden=true;$('gameGuide').hidden=true;$('battleScreen').hidden=true;$('stageScreen').hidden=false;
+    renderStages();frame.activate('stage');updateProgress();
+    requestAnimationFrame(()=>document.querySelector('#stageRail [data-wp-stage-recommended="true"]')?.scrollIntoView({block:'nearest',inline:'center'}));
   }
   function applyLocale() {
     const copy = L[state.locale];
@@ -46,7 +75,7 @@
     $('locale-select').value = state.locale;
     document.querySelector('[data-wp-return="main"]').href = `/${ROUTES[state.locale]}/`;
     document.querySelectorAll('[data-related-game]').forEach(node => {node.href=`/${ROUTES[state.locale]}/games/${node.dataset.relatedGame}/`;});
-    updateProgress(); frame?.refresh();
+    updateProgress(); if(state.view==='stage')renderStages(); frame?.refresh();
   }
   function chooseLocale() {
     const route = location.pathname.split('/').filter(Boolean)[0];
@@ -127,12 +156,12 @@
   function loadRound(index) {
     ++epoch;clearMotion();state.index=index;state.selected=null;state.turns=0;state.flipped=false;state.attempts=0;state.hinted=false;state.phase='play';
     round=P.make(index,(state.seed+index*2654435761)>>>0);
-    $('room-count').textContent=`${index+1} / ${P.TOTAL}`;$('check-count').textContent='0';
+    $('room-count').textContent=`${round.stage+1} / ${P.STAGE_TOTAL}`;$('sublevel-count').textContent=`${round.sublevel+1} / ${P.ROOMS_PER_STAGE}`;$('check-count').textContent='0';
     $('chapter-title').textContent=L[state.locale].chapters[round.chapter];
     $('chapter-rule').textContent=L[state.locale].rules[round.chapter];
     $('target-hint').textContent=t(round.patch?'patchHint':'targetHint');
     $('fixed-legend').hidden=!round.patch;$('rotate-button').hidden=!round.rotate;$('mirror-button').hidden=!round.mirror;$('reset-button').hidden=!round.rotate&&!round.mirror;$('reset-button').parentElement.hidden=!round.rotate&&!round.mirror;
-    $('chapter-progress').replaceChildren(...Array.from({length:5},(_,i)=>{const n=document.createElement('span');n.className=i<index%5?'done':i===index%5?'current':'';return n;}));
+    $('chapter-progress').replaceChildren(...Array.from({length:P.ROOMS_PER_STAGE},(_,i)=>{const n=document.createElement('span');n.className=i<round.sublevel?'done':i===round.sublevel?'current':'';return n;}));
     drawGrid($('target-grid'),round.target,true);
     $('piece-options').replaceChildren(...round.options.map((p,i)=>{
       const node=document.createElement('button');node.type='button';node.className='piece-card';node.dataset.piece=String(i);node.setAttribute('aria-pressed','false');
@@ -146,12 +175,13 @@
     [...$('piece-options').children].forEach(node=>motion(node.querySelector('.shape-grid'),[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],300));
     $('chapter-title').focus({preventScroll:true});
   }
-  function start(index) {
+  function start(stage) {
     if(state.view==='battle'&&state.phase!=='result')return;
-    const next=Number.isInteger(index)?index:progress.stars.findIndex(v=>v===0);
+    const targetStage=Number.isInteger(stage)?Math.max(0,Math.min(P.STAGE_TOTAL-1,stage)):firstOpenStage();
+    const next=firstOpenRoom(targetStage);
     const seed=new Uint32Array(1);crypto.getRandomValues(seed);state.seed=seed[0];
-    state.view='battle';$('mainScreen').hidden=true;$('gameGuide').hidden=true;$('battleScreen').hidden=false;
-    loadRound(next<0?0:next);sound('game.start');
+    state.view='battle';$('mainScreen').hidden=true;$('gameGuide').hidden=true;$('stageScreen').hidden=true;$('battleScreen').hidden=false;
+    loadRound(next);sound('game.start');
   }
   async function settle() {
     const source=$('piece-options').children[state.selected].querySelector('.shape-grid'),target=$('target-grid');
@@ -166,10 +196,10 @@
     ghost.remove();effects.delete(ghost);
   }
   function advance() {
-    if(state.index%5===4){
+    if(round.sublevel===P.ROOMS_PER_STAGE-1){
       state.phase='result';$('resultPanel').hidden=false;$('battleViewport').inert=true;frame.activate('battle',{covered:true});
-      const start=round.chapter*5, stars=progress.stars.slice(start,start+5).reduce((a,b)=>a+b,0);
-      $('result-text').textContent=t('resultText',{chapter:round.chapter+1,stars});$('continue-button').hidden=state.index===P.TOTAL-1;
+      const start=stageStart(round.stage), stars=progress.stars.slice(start,start+P.ROOMS_PER_STAGE).reduce((a,b)=>a+b,0);
+      $('result-text').textContent=t('resultText',{stage:round.stage+1,stars});$('continue-button').hidden=round.stage===P.STAGE_TOTAL-1;
       updateProgress();motion($('resultPanel').querySelector('.overlay-card'),[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],320);
       sound(state.index===P.TOTAL-1?'result.win':'game.checkpoint');$('result-title').focus({preventScroll:true});
     }else loadRound(state.index+1);
@@ -201,11 +231,15 @@
     if(state.beforeLeave==='settling'){advance();return;}
     state.phase='play';enableControls();lastFocus?.focus({preventScroll:true});
   }
-  function home() {
+  function stageHome() {
     ++epoch;clearMotion();audio?.stop();state.view='main';state.phase='idle';state.selected=null;
+    $('stageScreen').hidden=true;$('battleScreen').hidden=true;$('mainScreen').hidden=false;$('gameGuide').hidden=false;frame.activate('main');applyLocale();
+    $('start-button').focus({preventScroll:true});
+  }
+  function home() {
+    ++epoch;clearMotion();audio?.stop();state.phase='idle';state.selected=null;
     $('resultPanel').hidden=true;$('leavePanel').hidden=true;$('battleViewport').inert=false;
-    $('battleScreen').hidden=true;$('mainScreen').hidden=false;$('gameGuide').hidden=false;frame.activate('main');applyLocale();
-    $('start-button').focus({preventScroll:true});motion($('mainContent'),[{opacity:.4},{opacity:1}],220);
+    $('battleScreen').hidden=true;showStage();
   }
   function trap(event) {
     if(event.defaultPrevented||state.view!=='battle')return;
@@ -225,6 +259,7 @@
   applyLocale();
   frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('locale-select'),scenes:{
     main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},
+    stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageContent')},
     battle:{root:$('battleScreen'),header:$('battleHeader'),content:$('battleViewport'),headerInfo:$('battleHud')}
   }});
   frame.activate('main');
@@ -234,13 +269,15 @@
     // Navigate to real authored localized HTML so metadata and content remain aligned.
     const url=new URL(`/${ROUTES[next]}/games/animal-hollow-fit/`,location.origin);location.assign(url.href);
   });
-  listen($('start-button'),'click',()=>start());
+  listen($('start-button'),'click',showStage);
+  listen($('stage-home'),'click',stageHome);
+  listen($('stageRail'),'click',e=>{const card=e.target.closest('[data-stage-index]');if(card&&!card.disabled)start(Number(card.dataset.stageIndex));});
   listen($('guide-button'),'click',()=>{$('gameGuide').scrollIntoView({behavior:reduced.matches?'instant':'smooth'});});
   listen($('piece-options'),'click',e=>{const node=e.target.closest('[data-piece]');if(node)select(Number(node.dataset.piece));});
   listen($('rotate-button'),'click',()=>changePiece('rotate'));listen($('mirror-button'),'click',()=>changePiece('mirror'));listen($('reset-button'),'click',()=>changePiece('reset'));
   listen($('check-button'),'click',check);listen($('hint-button'),'click',hint);listen($('battle-home'),'click',requestLeave);listen($('stay-button'),'click',stay);listen($('leave-button'),'click',home);listen($('result-home'),'click',home);
-  listen($('continue-button'),'click',()=>{if(state.phase==='result'&&state.index<P.TOTAL-1)start(state.index+1);});
-  listen($('replay-button'),'click',()=>{if(state.phase==='result')start(Math.floor(state.index/5)*5);});
+  listen($('continue-button'),'click',()=>{if(state.phase==='result'&&round.stage<P.STAGE_TOTAL-1){showStage();requestAnimationFrame(()=>start(round.stage+1));}});
+  listen($('replay-button'),'click',()=>{if(state.phase==='result')start(round.stage);});
   listen(document,'keydown',trap);
   const observer=new ResizeObserver(fit);observer.observe($('battleViewport'));
   listen(window,'resize',()=>{clearMotion();fit();});

@@ -24,6 +24,8 @@
 <meta name="robots" content="index,follow">
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
+<meta name="weightplay-game-version" content="v21">
+<meta name="weightplay-interface-version" content="7">
 <meta name="description" content="Play a complete Checkers match with mandatory captures, multi-jumps, kings, and a responsive 8×8 board.">
 <title>Checkers | WeightPlay</title>
 <style>
@@ -34,7 +36,7 @@
 <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260909-checkers-feedback-v21">
 <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-checkers-feedback-v21">
 </head>
-<body data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body data-runtime-localize="off" data-wp-game-owned-guide="true" data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -50,16 +52,17 @@
   <section id="battleScreen" class="screen battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
+      <div class="control-row checkers-battle-actions"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div>
     </div>
+    <section id="resultScreen" class="screen result-panel" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="homeBtn" class="secondary"></button><button id="retryBtn" class="primary"></button></div></div>
+    </section>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-  </section>
-  <section id="resultScreen" class="screen" hidden>
-    <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div>
   </section>
   <footer class="arcade-footer" id="footerText"></footer>
 </main>

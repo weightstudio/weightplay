@@ -8,7 +8,7 @@
   const announceLocked=card=>{const hint=document.getElementById("stageHint");if(hint)hint.textContent=copy("lockedHint",[...card.querySelectorAll("small,strong,span")].map(node=>node.textContent.trim()).filter(Boolean).join(" · "))};
   function createCard(){
     const button=document.createElement("button");
-    button.type="button";button.className="stage-card";button.innerHTML="<small></small><strong></strong><span></span>";
+    button.type="button";button.className="stage-card";button.innerHTML="<div data-wp-item-content><small></small><strong></strong><span></span></div>";
     button.addEventListener("click",()=>{const stage=Number(button.dataset.stage);if(!stage)return;if(stage!==api.getCentered()){select(stage,true);return}if(stage>api.save.unlocked){announceLocked(button);return}api.enter(stage)});
     return button;
   }

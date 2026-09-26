@@ -3,6 +3,10 @@
   const GUTTER = 0;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
+    // Canopy's shared-frame Battle uses the complete responsive envelope;
+    // preserve authored touch controls instead of retaining its old native
+    // top offset and portrait compression in short landscape.
+    "animal-canopy-compass": ["#battleScreen", 390, 788, 844, 334],
     // Nest Weigh-In's comparison and answer lanes need the complete wide
     // short-landscape envelope so Battle controls retain their physical
     // touch target size instead of inheriting the portrait scaler.

@@ -364,7 +364,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
   }
 }
 
-/* v12 authored campaign: dynamic board sizes, sanctuary clues, and bitmap props. */
+/* v13: keep 3x3 sanctuary and line clues in separate responsive tracks. */
 .stage-list.stage-rail { align-items:center; }
 .stage-card { justify-content:flex-start; }
 .stage-card strong { line-height:1.25; }
@@ -413,6 +413,101 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
   .battle-content[data-board-size="3"] > .mission-row,
   .battle-content[data-board-size="3"] > #zoneCard,
   .battle-content[data-board-size="3"] > #ruleList { grid-column:1 / -1; }
-  .battle-content[data-board-size="3"] > .clue-card { grid-column:1; grid-row:2; }
-  .battle-content[data-board-size="3"] > .grid-card { grid-column:2; grid-row:2; }
+  .battle-content[data-board-size="3"] > #zoneCard { grid-row:2; }
+  .battle-content[data-board-size="3"] > .clue-card:not(.zone-card) { grid-column:1; grid-row:3; }
+  .battle-content[data-board-size="3"] > .grid-card { grid-column:2; grid-row:3; }
+}
+
+/* Keep Stage 6's complete clue context beside the active 4x4 board in short
+   landscape, instead of making players scroll between the clues and cells. */
+@media (orientation:landscape) and (max-height:500px) {
+  .battle-content[data-board-size="4"] {
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    column-gap:8px;
+    row-gap:3px;
+    padding:2px 6px 4px;
+  }
+  .battle-content[data-board-size="4"] > .mission-row {
+    grid-column:1 / -1;
+    grid-row:1;
+    margin-bottom:1px;
+  }
+  .battle-content[data-board-size="4"] > #zoneCard {
+    grid-column:1;
+    grid-row:2;
+    padding:7px;
+    margin:0;
+  }
+  .battle-content[data-board-size="4"] > .clue-card:not(.zone-card) {
+    grid-column:1;
+    grid-row:3;
+    padding:7px;
+    margin:0;
+  }
+  .battle-content[data-board-size="4"] > .grid-card {
+    grid-column:2;
+    grid-row:2 / span 2;
+    align-self:stretch;
+    padding:6px;
+  }
+  .battle-content[data-board-size="4"] > #ruleList {
+    grid-column:1;
+    grid-row:4;
+    margin:1px 2px 0;
+    padding:0 4px;
+    gap:3px 10px;
+    font-size:.58rem;
+    line-height:1.15;
+  }
+  .battle-content[data-board-size="4"] .clue-card h3,
+  .battle-content[data-board-size="4"] .grid-card h3 {
+    margin-bottom:2px;
+    font-size:.82rem;
+  }
+  .battle-content[data-board-size="4"] .clue-card p {
+    margin-bottom:4px;
+    font-size:.66rem;
+    line-height:1.2;
+  }
+  .battle-content[data-board-size="4"] .clue-legend {
+    gap:3px;
+    margin-bottom:2px;
+    font-size:.56rem;
+  }
+  .battle-content[data-board-size="4"] .clue-list {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:3px;
+    margin-top:3px;
+  }
+  .battle-content[data-board-size="4"] .clue {
+    min-width:0;
+    padding:3px 2px;
+    border-radius:7px;
+    font-size:.6rem;
+    line-height:1.1;
+    overflow-wrap:anywhere;
+  }
+  .battle-content[data-board-size="4"] #zoneCard .section-heading {
+    margin-bottom:3px;
+  }
+  .battle-content[data-board-size="4"] #zoneCard .zone-clues {
+    gap:4px;
+  }
+  .battle-content[data-board-size="4"] #zoneCard .zone-clue {
+    min-height:28px;
+    padding:4px 6px;
+    font-size:.66rem;
+  }
+  .battle-content[data-board-size="4"] #zoneCard .lens-controls {
+    gap:4px;
+    margin-top:4px;
+  }
+  .battle-content[data-board-size="4"] #zoneCard .lens-use {
+    min-height:34px;
+    padding:4px 7px;
+    font-size:.68rem;
+  }
+  .battle-content[data-board-size="4"] .grid-card .habitat-grid {
+    width:168px;
+  }
 }

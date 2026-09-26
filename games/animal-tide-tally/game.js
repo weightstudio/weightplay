@@ -1,4 +1,4 @@
-/* Tide Tally v9 owner review, 2026-09-24.
+/* Tide Tally v10 owner presentation repair, 2026-09-26.
  * One shared Interface 7 frame; the game owns only content and puzzle state.
  * This file is also importable by the focused Node regression tests.
  */
@@ -158,14 +158,14 @@
   }
   function sheet(name) {
     if ([...document.querySelectorAll('link[rel="stylesheet"]')].some(n=>n.href.split('?')[0].endsWith('/'+name))) return;
-    const link=own('link');link.rel='stylesheet';link.href='/src/'+name+'?v=20260924-tide-v9';document.head.append(link);
+    const link=own('link');link.rel='stylesheet';link.href='/src/'+name+'?v=20260926-tide-v10';document.head.append(link);
   }
   function script(name, ready, base = '/src/') {
     if (ready?.()) return Promise.resolve();
     return new Promise((resolve,reject)=>{
       let node=[...document.scripts].find(n=>n.src.split('?')[0].endsWith('/'+name));
       const fresh=!node;
-      if(fresh){node=own('script');node.src=base+name+'?v=20260924-tide-v9';}
+      if(fresh){node=own('script');node.src=base+name+'?v=20260926-tide-v10';}
       const timeout=setTimeout(()=>finish(Error('Dependency timeout: '+name)),15000);
       function finish(error){clearTimeout(timeout);node.removeEventListener('load',loaded);node.removeEventListener('error',failed);error?reject(error):resolve();}
       function loaded(){finish(ready&&!ready()?Error('Missing API: '+name):null);}
@@ -278,12 +278,18 @@
     closeModal(false);motion.cancel();visualToken++;busy=false;scene=name;document.body.dataset.screen=name;
     for(const [key,node] of Object.entries(sceneRoots)){node.hidden=key!==name;node.inert=key!==name;}
     $('gameGuide').hidden=name!=='main';frame.activate(name);syncSettingsContract();updateProgress();
-    if(name==='stage') {stageController.refresh();stageController.center(unlocked(progress));$('stageBackBtn').focus({preventScroll:true});}
-    if(name==='main'){$('startBtn').focus({preventScroll:true});for(const node of [app.querySelector('[data-wp-frame-poster]'),app.querySelector('[data-wp-frame-summary]')])motion.animate(node,[{opacity:.2},{opacity:1}],{duration:420});}
+    if(name==='stage') {stageController.refresh();stageController.center(unlocked(progress));$('stageBackBtn').focus({preventScroll:true});
+      // Fade content only: shared drag targets, positions and recycled cards never tween.
+      for(const item of $('stageList').querySelectorAll('.tide-stage-item'))motion.animate(item,[{opacity:.35},{opacity:1}],{duration:280});}
+    if(name==='main'){$('startBtn').focus({preventScroll:true});for(const node of [app.querySelector('[data-wp-frame-poster]'),app.querySelector('[data-wp-frame-summary]'),$('startBtn')])motion.animate(node,[{opacity:.2},{opacity:1}],{duration:420});}
     syncMotionPause();
   }
   function stageBind(card,index) {
     const note=notes[index], locked=index>unlocked(progress), stars=progress.best[index];
+    // Rewrite every recycled-card datum, including false states.
+    card.dataset.tideNote=String(index+1);card.dataset.tideArc=String(note.arc);
+    card.dataset.tideState=locked?'locked':stars?'cleared':'ready';
+    card.dataset.tideCheckpoint=String(note.checkpoint);
     card.type='button';card.className='stage-card'+(locked?' locked':'');card.disabled=false;card.setAttribute('aria-disabled',String(locked));
     card.replaceChildren();
     const title=own('strong'), state=own('span'), objective=own('small'), facts=own('small');
@@ -291,7 +297,9 @@
     objective.textContent=text('mode_'+note.mode);
     facts.textContent=(note.checkpoint?text('checkpoint')+' · ':'')+text('stars',{value:stars});
     const group=own('div',null,'tide-stage-item');group.dataset.wpItemContent='';
-    group.append(title,state,objective,facts);card.append(group);
+    const emblem=own('span',null,'tide-stage-emblem');emblem.setAttribute('aria-hidden','true');emblem.append(own('span',null,'tide-shell'));
+    state.className='tide-stage-state';objective.className='tide-stage-objective';facts.className='tide-stage-facts';
+    group.append(emblem,title,state,objective,facts);card.append(group);
     if(index===unlocked(progress))card.dataset.wpStageRecommended='true';else delete card.dataset.wpStageRecommended;
   }
   function startNote(index, freshNumbers=false) {
@@ -342,8 +350,9 @@
     busy=!motion.reduced;
     const token=visualToken;
     const outgoing=['depart','crab'].includes(step.kind);
-    $('tideVisual').dataset.wave=outgoing?'out':'in';
-    motion.enter(pools.querySelectorAll('.tide-shell,.tide-unknown'),outgoing?-1:1).then(()=>{
+    $('tideVisual').dataset.wave=outgoing?'out':'in';$('tideVisual').dataset.clue=step.kind;
+    motion.animate($('tideEvent'),[{opacity:.25},{opacity:1}],{duration:260});
+    motion.clue(pools.querySelectorAll('.tide-shell,.tide-unknown'),watching?step.kind:'start').then(()=>{
       if(token!==visualToken||scene!=='battle')return;
       busy=false;renderBattle();
     });
@@ -376,6 +385,7 @@
     if(kind==='leave')motion.pause('leave');else motion.cancel();
     syncMotionPause();
     const result=kind==='result', actions=$('tideModalActions');actions.replaceChildren();
+    if(result)motion.animate($('tideModal').firstElementChild,[{opacity:.25},{opacity:1}],{duration:260});
     $('tideModalTitle').textContent=text(result?(progress.best.every(Boolean)?'resultTitle':'resultLevel'):'leaveTitle');
     $('tideModalText').textContent=result?text('stars',{value:4-run.checks})+' · '+text('checks',{value:run.checks}):`${text('round')} ${run.note.id} · ${text('leaveText')}`;
     $('tideSolution').textContent=result?solution(run.note):'';$('tideSolution').dir='ltr';

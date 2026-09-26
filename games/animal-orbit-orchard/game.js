@@ -249,6 +249,7 @@
     angle: 0, targetAngle: 0, releases: 0, stageReleases: 0, selectedBeacon: "",
     lane: "", routeStep: 0, missCount: 0, clampArmed: false, clampUsed: false,
     memoryTest: false, locked: false, targetOffset: 0,
+    statusKey: "ready", statusVars: {}, statusClass: "",
   };
   let motionFrame = 0;
   let motionStart = 0;
@@ -338,7 +339,7 @@
     const steps = stage.drift?.steps || [];
     let driftStep = 0;
     if (steps.length) {
-      const stepIndex = stage.drift.pattern === "byTarget" ? targetIndex : Math.min(Math.max(0, Number(missCount) || 0), steps.length - 1);
+      const stepIndex = stage.drift.pattern === "byTarget" ? targetIndex : Math.max(0, Number(missCount) || 0) % steps.length;
       driftStep = Number(steps[stepIndex]) || 0;
       if (stage.drift.pattern === "clockwise") driftStep = Math.abs(driftStep);
       if (stage.drift.pattern === "counterclockwise") driftStep = -Math.abs(driftStep);
@@ -354,7 +355,15 @@
     };
   }
   const t = (key, vars = {}) => { const copy = locales[state.locale] || locales.en; return String(copy[key] || locales.en[key] || key).replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")); };
-  function queryLocale() { const q = new URLSearchParams(location.search).get("lang"); if (q && locales[q]) return q; const segment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(); return routeMap[segment] || storage.get("weightplay-orbit-locale") || "en"; }
+  function queryLocale() {
+    const route = routeMap[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()];
+    if (route) return route;
+    const query = new URLSearchParams(location.search).get("lang") || "";
+    const requested = routeMap[query.toLowerCase()] || query;
+    const saved = storage.get("weightplay-orbit-locale");
+    return locales.__localeKeys.includes(requested) ? requested : locales.__localeKeys.includes(saved) ? saved : "en";
+  }
+
   function tone(kind) { return window.WeightPlayAudio?.play(kind === "good" ? "feedback.success" : "feedback.error"); }
   function applyLeaveCopy() {
     const dialog = $("orbitLeaveDialog");
@@ -365,7 +374,27 @@
     $("orbitLeaveContinue").textContent = copy[2];
     $("orbitLeaveStages").textContent = copy[3];
   }
-  function applyLocale() { const copy = locales[state.locale] || locales.en; document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale; document.documentElement.dir = copy.direction || "ltr"; document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria-label]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)); }); $("settingsBtn").setAttribute("aria-label", t("settings")); $("settingsPanel").setAttribute("aria-label", t("settings")); $("soundBtn").textContent = t(state.sound ? "soundOn" : "soundOff"); $("angleInput").setAttribute("aria-label", t("dial")); $("orbitDial").setAttribute("aria-label", t("dial")); const progress = $("mainScreen")?.querySelector("[data-wp-main-progress]"); if (progress) progress.textContent = t("facts", { cleared: campaign.cleared.length, total: rounds.length }); applyLeaveCopy(); renderStage(); if (!$('battleScreen').hidden) renderBattle(); }
+  function applyLocale() {
+    const copy = locales[state.locale] || locales.en;
+    document.documentElement.lang = state.locale;
+    document.documentElement.dir = copy.direction || "ltr";
+    document.querySelectorAll("[data-copy]").forEach((node) => {
+      node.textContent = t(node.dataset.copy, { cleared: campaign.cleared.length, total: rounds.length });
+    });
+    document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)));
+    $("settingsBtn").setAttribute("aria-label", t("settings"));
+    $("settingsPanel").setAttribute("aria-label", t("settings"));
+    $("soundBtn").textContent = t(state.sound ? "soundOn" : "soundOff");
+    $("angleInput").setAttribute("aria-label", t("dial"));
+    $("orbitDial").setAttribute("aria-label", t("dial"));
+    $("targetChoice").setAttribute("aria-label", t("targetChoice"));
+    $("laneChoice").setAttribute("aria-label", t("laneChoice"));
+    applyLeaveCopy(); renderStage(); refreshBattleStatus();
+    if (!$("battleScreen").hidden) renderBattle();
+    if (!$("resultScreen").hidden) renderResult();
+    if (!$("patternDialog").hidden) openPattern();
+  }
+
   function populateLocales() { const select = $("localeSelect"); locales.__localeKeys.forEach((key) => { const option = document.createElement("option"); option.value = key; option.textContent = locales.en.languageNames[key] || key; select.append(option); }); select.value = state.locale; select.addEventListener("change", () => { state.locale = select.value; storage.set("weightplay-orbit-locale", state.locale); applyLocale(); }); }
   function installBattleSubstates() {
     const battle = $("battleScreen");
@@ -376,6 +405,8 @@
       result.hidden = true;
       shell.append(result);
     }
+    const pattern = $("patternDialog");
+    if (shell && pattern && pattern.parentElement !== shell) shell.append(pattern);
     const mapButton = $("mapBtn");
     if (mapButton) {
       mapButton.hidden = true;
@@ -460,8 +491,58 @@
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     list.querySelector(`[data-stage-id="${unlocked}"]`)?.scrollIntoView?.({ block: "center", inline: "nearest" });
   }
-  function resetBattleStatus() { $("battleStatus").textContent = t("ready"); $("battleStatus").className = "battle-status"; }
-  function cancelPendingAdvance() { if (pendingAdvanceTimer) window.clearTimeout(pendingAdvanceTimer); pendingAdvanceTimer = 0; pendingAdvance = false; state.locked = false; }
+  function setBattleStatus(key, vars = {}, className = "") {
+    state.statusKey = key; state.statusVars = vars; state.statusClass = className;
+    refreshBattleStatus();
+  }
+  function refreshBattleStatus() {
+    $("battleStatus").textContent = t(state.statusKey, state.statusVars);
+    $("battleStatus").className = `battle-status ${state.statusClass}`.trim();
+  }
+  function resetBattleStatus() { setBattleStatus("ready"); }
+  function canPlay() {
+    return !document.hidden && !$("battleScreen").hidden && $("resultScreen").hidden &&
+      $("orbitLeaveDialog")?.hidden !== false && $("patternDialog")?.hidden !== false;
+  }
+  function syncBattleControls() {
+    const blocked = state.locked || !canPlay();
+    ["releaseBtn", "clearBtn", "angleInput", "targetChoice", "laneChoice", "patternBtn"].forEach((id) => { $(id).disabled = blocked; });
+    $("clampBtn").disabled = blocked || state.clampUsed;
+  }
+  let transitionKind = null;
+  let transitionRemaining = 0;
+  let transitionDeadline = 0;
+  function pauseTransition() {
+    if (pendingAdvanceTimer) {
+      transitionRemaining = Math.max(0, transitionDeadline - performance.now());
+      window.clearTimeout(pendingAdvanceTimer); pendingAdvanceTimer = 0;
+    }
+    syncBattleControls();
+  }
+  function resumeTransition() {
+    if (pendingAdvanceTimer || !transitionKind || !canPlay()) return;
+    transitionDeadline = performance.now() + transitionRemaining;
+    pendingAdvanceTimer = window.setTimeout(() => {
+      pendingAdvanceTimer = 0;
+      if (!canPlay()) { transitionRemaining = 0; return; }
+      const kind = transitionKind; transitionKind = null; pendingAdvance = false;
+      if (kind === "success") completeSuccessfulRelease();
+      else { state.locked = false; renderBattle(); startMotion(); }
+    }, transitionRemaining);
+  }
+  function scheduleTransition(kind, duration) {
+    if (pendingAdvanceTimer) window.clearTimeout(pendingAdvanceTimer);
+    pendingAdvanceTimer = 0; transitionKind = kind; transitionRemaining = duration; pendingAdvance = true;
+    resumeTransition();
+  }
+
+  function cancelPendingAdvance() {
+    if (pendingAdvanceTimer) window.clearTimeout(pendingAdvanceTimer);
+    pendingAdvanceTimer = 0; pendingAdvance = false; transitionKind = null; transitionRemaining = 0;
+    state.locked = false; pendingAction = null;
+    [$("seed"), $("orbitDial")].forEach((node) => node?.getAnimations?.().forEach((animation) => animation.cancel()));
+  }
+
   function effectiveTarget() { return wrapAngle(state.targetAngle + state.targetOffset); }
   function stopMotion() { if (motionFrame) cancelAnimationFrame(motionFrame); motionFrame = 0; motionStart = 0; state.targetOffset = 0; }
   function startMotion() {
@@ -473,7 +554,7 @@
       state.targetOffset = Math.sin((now - motionStart) / 850) * span;
       const beacon = $("beacon");
       if (beacon && !$("battleScreen").hidden && $("resultScreen")?.hidden) {
-        beacon.style.transform = `rotate(${effectiveTarget()}deg) translateX(105px)`;
+        beacon.style.transform = `rotate(${effectiveTarget()}deg) translateX(var(--orbit-beacon-radius, 105px))`;
         motionFrame = requestAnimationFrame(tick);
       } else stopMotion();
     };
@@ -481,7 +562,7 @@
   }
   function burst(kind) {
     const dial = $("orbitDial");
-    if (!dial?.animate) return;
+    if (!dial?.animate || window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
     const frames = kind === "good"
       ? [{ transform:"scale(1)" }, { transform:"scale(1.045)" }, { transform:"scale(1)" }]
       : [{ transform:"translateX(0)" }, { transform:"translateX(-7px)" }, { transform:"translateX(7px)" }, { transform:"translateX(0)" }];
@@ -524,7 +605,7 @@
     const laneSelect = $("laneChoice"); laneSelect.replaceChildren();
     const blocked = blockedLane(stage, state.targetIndex, state.routeStep);
     if (state.lane === blocked) state.lane = "";
-    const laneBlank = document.createElement("option"); laneBlank.value = ""; laneBlank.textContent = t("laneRequired"); laneSelect.append(laneBlank);
+    const laneBlank = document.createElement("option"); laneBlank.value = ""; laneBlank.textContent = t("lanePrompt"); laneSelect.append(laneBlank);
     [["clockwise", t("clockwise")], ["counterclockwise", t("counterclockwise")]].forEach(([value, label]) => {
       const node = document.createElement("option"); node.value = value;
       node.textContent = value === blocked ? `${label} · ${t("laneWrong")}` : label;
@@ -533,10 +614,9 @@
     laneSelect.value = state.lane;
     const routeHint = $("routeHint");
     routeHint.hidden = !needsLaneChoice(stage);
-    routeHint.textContent = stage.laneSetupDegrees || (stage.openBothLanesOnFinal && state.targetIndex === stage.targets.length - 1)
-      ? t("laneOpenBoth")
-      : t("laneRequired");
-    const patternBtn = $("patternBtn"); patternBtn.hidden = !stage.memory; patternBtn.textContent = t("patternTitle");
+    routeHint.textContent = stage.openBothLanesOnFinal && state.targetIndex === stage.targets.length - 1
+      ? t("laneFinal") : stage.laneSetupDegrees ? t("laneOpenBoth") : t("laneRequired");
+    const patternBtn = $("patternBtn"); patternBtn.hidden = !stage.memory; patternBtn.textContent = t("patternAction");
     const clampBtn = $("clampBtn");
     clampBtn.hidden = !(campaign.clampUnlocked && stage.id >= 6);
     clampBtn.disabled = state.clampUsed || state.locked;
@@ -547,10 +627,11 @@
     const decoyBeacon = $("decoyBeacon");
     decoyBeacon.hidden = !decoy;
     if (decoy) {
-      decoyBeacon.style.transform = `rotate(${decoy.angle}deg) translateX(105px)`;
+      decoyBeacon.style.transform = `rotate(${decoy.angle}deg) translateX(var(--orbit-beacon-radius, 105px))`;
       decoyBeacon.setAttribute("aria-label", t(decoy.beacon));
     }
     $("orbitDial").classList.toggle("is-memory-test", state.memoryTest);
+    syncBattleControls();
   }
   function renderBattle() {
     const stage = rounds[state.round];
@@ -564,10 +645,10 @@
     $("releaseCount").textContent = String(state.releases);
     $("angleInput").value = String(state.angle);
     $("angleReadout").textContent = `${state.angle}°`;
-    $("beacon").style.transform = `rotate(${target}deg) translateX(105px)`;
-    $("seed").style.transform = `rotate(${state.angle}deg) translateX(78px)`;
+    $("beacon").style.transform = `rotate(${target}deg) translateX(var(--orbit-beacon-radius, 105px))`;
+    $("seed").style.transform = `rotate(${state.angle}deg) translateX(var(--orbit-seed-radius, 78px))`;
     renderChoices(stage);
-    $("releaseBtn").disabled = state.locked; $("clearBtn").disabled = state.locked; $("angleInput").disabled = state.locked;
+    syncBattleControls();
     if (!$("battleStatus").textContent) $("battleStatus").textContent = t("ready");
   }
   function shortestDelta(a, b) { const d = Math.abs(a - b) % 360; return Math.min(d, 360 - d); }
@@ -575,6 +656,7 @@
   function completeSuccessfulRelease() {
     pendingAdvanceTimer = 0;
     pendingAdvance = false;
+    state.locked = false;
     const stage = rounds[state.round];
     if (state.targetIndex < stage.targets.length - 1) {
       state.targetIndex += 1;
@@ -582,20 +664,16 @@
       state.angle = pendingAction?.nextStartAngle || 0;
       state.selectedBeacon = ""; state.lane = ""; state.missCount = 0;
       pendingAction = null;
-      $("battleStatus").textContent = t("ready");
-      $("battleStatus").className = "battle-status";
+      resetBattleStatus();
       renderBattle();
       startMotion();
       $("angleInput").focus();
     } else finishStage();
   }
-  function scheduleSuccessfulRelease() {
-    if (pendingAdvanceTimer) window.clearTimeout(pendingAdvanceTimer);
-    pendingAdvance = true;
-    pendingAdvanceTimer = window.setTimeout(completeSuccessfulRelease, 360);
-  }
+  function scheduleSuccessfulRelease() { scheduleTransition("success", 360); }
+
   function release() {
-    if (state.locked) return;
+    if (state.locked || !canPlay()) return;
     const stage = rounds[state.round];
     const action = resolveStageAction({
       stage, targetIndex: state.targetIndex, angle: state.angle, currentAngle: effectiveTarget(),
@@ -604,8 +682,7 @@
     });
     if (!action.success && !action.miss) {
       const feedback = action.reason === "wrongLane" ? "laneWrong" : action.reason === "targetRequired" || action.reason === "wrongTarget" ? "targetWrong" : "laneRequired";
-      $("battleStatus").textContent = t(feedback);
-      $("battleStatus").className = "battle-status is-miss";
+      setBattleStatus(feedback, {}, "is-miss");
       return;
     }
     state.locked = true;
@@ -618,13 +695,12 @@
     $("targetChoice").disabled = true; $("laneChoice").disabled = true; $("clampBtn").disabled = true; $("patternBtn").disabled = true;
     const landing = wrapAngle(state.angle);
     const delta = shortestDelta(landing, target);
-    $("seed")?.animate?.(
-      [{ transform:`rotate(${state.angle}deg) translateX(78px) scale(1)` }, { transform:`rotate(${landing}deg) translateX(105px) scale(.82)` }],
+    if (!window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) $("seed")?.animate?.(
+      [{ transform:`rotate(${state.angle}deg) translateX(var(--orbit-seed-radius, 78px)) scale(1)` }, { transform:`rotate(${landing}deg) translateX(var(--orbit-beacon-radius, 105px)) scale(.82)` }],
       { duration:320, easing:"cubic-bezier(.2,.75,.25,1)" }
     );
     if (action.success) {
-      $("battleStatus").textContent = t("close");
-      $("battleStatus").className = "battle-status is-good";
+      setBattleStatus("close", {}, "is-good");
       state.routeStep = action.nextRouteStep ?? state.routeStep;
       pendingAction = action;
       burst("good"); tone("good"); scheduleSuccessfulRelease(); return;
@@ -633,14 +709,13 @@
     state.targetAngle = action.nextAngle;
     state.routeStep = action.nextRouteStep ?? state.routeStep;
     if (action.clampConsumed) { state.clampUsed = true; state.clampArmed = false; }
-    const feedbackKey = action.driftDirection === "clockwise" ? "driftClockwise" : action.driftDirection === "counterclockwise" ? "driftCounterclockwise" : "miss";
-    $("battleStatus").textContent = feedbackKey === "miss"
-      ? `${t("miss", { delta: Math.round(delta) })} ${t(((landing - target + 360) % 360) < 180 ? "ahead" : "behind")}`
-      : t(feedbackKey, { angle: Math.round(state.targetAngle) });
-    $("battleStatus").className = "battle-status is-miss";
+    if (action.clampConsumed) setBattleStatus("clampUsed", {}, "is-miss");
+    else if (action.driftStep) setBattleStatus(action.driftStep > 0 ? "driftClockwise" : "driftCounterclockwise", { angle: Math.round(state.targetAngle) }, "is-miss");
+    else setBattleStatus("miss", { delta: Math.round(delta) }, "is-miss");
     burst("miss"); tone("miss");
-    window.setTimeout(() => { state.locked = false; renderBattle(); startMotion(); }, 340);
+    scheduleTransition("miss", 340);
   }
+
   function finishStage() {
     cancelPendingAdvance();
     const stage = rounds[state.round];
@@ -648,36 +723,33 @@
     if (!previousBest || state.stageReleases < previousBest) campaign.bestByStage[stage.id] = state.stageReleases;
     campaign.cleared = [...campaign.cleared, stage.id];
     saveCampaign();
+    show("resultScreen"); renderResult();
+  }
+  function renderResult() {
+    const stage = rounds[state.round];
     const resultKey = stage.id === rounds.length ? "campaignFinish" : "stageFinish";
     $("resultText").textContent = `${t(resultKey, { id: stage.id, releases: state.stageReleases })}${stage.id === 5 ? ` ${t("clampReward")}` : ""}`;
     $("bestValue").textContent = String(campaign.bestByStage[stage.id] || state.stageReleases);
     $("resultNextBtn").disabled = stage.id >= rounds.length || campaign.highestUnlocked < stage.id + 1;
-    show("resultScreen");
   }
+
   function closeLeave({ resume = true, focus = true } = {}) {
-    const dialog = $("orbitLeaveDialog");
-    if (!dialog || dialog.hidden) return;
+    const dialog = $("orbitLeaveDialog"); if (!dialog || dialog.hidden) return;
     dialog.hidden = true;
-    const battleContent = $("battleScreen")?.querySelector(".battle-content");
-    if (battleContent && !$("resultScreen")?.hidden) battleContent.inert = true;
-    else if (battleContent) battleContent.inert = false;
-    if (resume && pendingAdvance && !pendingAdvanceTimer) scheduleSuccessfulRelease();
+    $("battleScreen").querySelector(".battle-content").inert = !$("resultScreen").hidden || !$("patternDialog").hidden;
+    syncBattleControls();
+    if (resume) resumeTransition();
     if (focus) $("battleBackBtn")?.focus();
   }
+
   function openLeave() {
-    if ($("battleScreen")?.hidden || !$("resultScreen")?.hidden) return;
-    const dialog = $("orbitLeaveDialog");
-    if (!dialog) return;
-    if (pendingAdvanceTimer) {
-      window.clearTimeout(pendingAdvanceTimer);
-      pendingAdvanceTimer = 0;
-    }
-    applyLeaveCopy();
-    dialog.hidden = false;
-    const battleContent = $("battleScreen")?.querySelector(".battle-content");
-    if (battleContent) battleContent.inert = true;
-    $("orbitLeaveContinue")?.focus();
+    if ($("battleScreen").hidden || !$("resultScreen").hidden || !$("patternDialog").hidden) return;
+    const dialog = $("orbitLeaveDialog"); if (!dialog) return;
+    applyLeaveCopy(); dialog.hidden = false;
+    $("battleScreen").querySelector(".battle-content").inert = true;
+    pauseTransition(); $("orbitLeaveContinue")?.focus();
   }
+
   function confirmLeave() {
     cancelPendingAdvance();
     closeLeave({ resume: false, focus: false });
@@ -689,7 +761,7 @@
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
   function openPattern() {
     const stage = rounds[state.round];
-    if (!stage.memory) return;
+    if (!stage.memory || state.locked) return;
     const dialog = $("patternDialog");
     const sequence = $("patternSequence");
     $("patternTitle").textContent = `${t("patternTitle")} · ${t("orbit", { current: stage.id, total: rounds.length })}`;
@@ -701,9 +773,16 @@
     }));
     $("patternContinue").textContent = t("patternReady");
     dialog.hidden = false;
-    $("patternContinue").focus();
+    $("battleScreen").querySelector(".battle-content").inert = true;
+    pauseTransition(); $("patternContinue").focus();
   }
-  function closePattern() { const dialog = $("patternDialog"); if (!dialog || dialog.hidden) return; dialog.hidden = true; $("angleInput")?.focus(); }
+  function closePattern() {
+    const dialog = $("patternDialog"); if (!dialog || dialog.hidden) return;
+    dialog.hidden = true;
+    $("battleScreen").querySelector(".battle-content").inert = !$("resultScreen").hidden || !$("orbitLeaveDialog").hidden;
+    syncBattleControls(); resumeTransition(); $("angleInput")?.focus();
+  }
+
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => {
     installBattleSubstates();
@@ -720,16 +799,22 @@
     $("releaseBtn").addEventListener("click", release);
     $("clearBtn").addEventListener("click", () => { if (state.locked) return; state.angle = 0; resetBattleStatus(); renderBattle(); });
     $("angleInput").addEventListener("input", (event) => { if (state.locked) return; state.angle = Number(event.target.value); renderBattle(); });
-    $("targetChoice").addEventListener("change", (event) => { state.selectedBeacon = event.target.value; });
-    $("laneChoice").addEventListener("change", (event) => { state.lane = event.target.value; renderChoices(rounds[state.round]); });
+    $("targetChoice").addEventListener("change", (event) => { if (!state.locked && canPlay()) state.selectedBeacon = event.target.value; });
+    $("laneChoice").addEventListener("change", (event) => { if (state.locked || !canPlay()) return; state.lane = event.target.value; renderChoices(rounds[state.round]); });
     $("clampBtn").addEventListener("click", () => {
-      if (state.clampUsed || !campaign.clampUnlocked || rounds[state.round].id < 6) return;
+      if (state.locked || !canPlay() || state.clampUsed || !campaign.clampUnlocked || rounds[state.round].id < 6) return;
       state.clampArmed = !state.clampArmed; renderChoices(rounds[state.round]);
-      $("battleStatus").textContent = t(state.clampArmed ? "clampArmed" : "ready");
+      setBattleStatus(state.clampArmed ? "clampArmed" : "ready");
     });
     $("patternBtn").addEventListener("click", openPattern);
     $("patternContinue").addEventListener("click", closePattern);
-    $("patternDialog").addEventListener("keydown", (event) => { if (event.key === "Escape") { event.preventDefault(); closePattern(); } });
+    $("patternDialog").addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); closePattern(); }
+      if (event.key === "Tab") { event.preventDefault(); $("patternContinue").focus(); }
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) pauseTransition(); else { syncBattleControls(); resumeTransition(); }
+    });
     $("settingsBtn").addEventListener("click", toggleSettings);
     $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("settingsBtn").setAttribute("aria-expanded", "false"); });
     $("soundBtn").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); });

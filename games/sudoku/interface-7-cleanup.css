@@ -1,0 +1,77 @@
+/* Sudoku game-owned presentation only.
+   Interface 7 shared code owns Main/Battle envelopes, header controls,
+   logical Canvas sizing, and ad-reserve geometry. */
+
+body[data-logic-game="sudoku"] .logic-poster img {
+  object-fit: contain;
+}
+
+body[data-logic-game="sudoku"] #logicMain .logic-hero {
+  align-items: center;
+}
+
+body[data-logic-game="sudoku"] #logicBattle #battleChip {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body[data-logic-game="sudoku"] #logicLeave,
+body[data-logic-game="sudoku"] #logicResult {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 10, 24, .78);
+  backdrop-filter: blur(8px);
+}
+
+body[data-logic-game="sudoku"] #logicLeave[hidden],
+body[data-logic-game="sudoku"] #logicResult[hidden] {
+  display: none !important;
+}
+
+body[data-logic-game="sudoku"] #logicLeave .logic-leave-card,
+body[data-logic-game="sudoku"] #logicResult .logic-result-card {
+  width: min(460px, 100%);
+  padding: 24px;
+  border: 1px solid var(--logic-line);
+  border-radius: 22px;
+  background: #102d54;
+  box-shadow: var(--logic-shadow);
+  text-align: center;
+}
+
+body[data-logic-game="sudoku"] #logicLeave .logic-leave-card h2 {
+  margin: 0 0 8px;
+}
+
+body[data-logic-game="sudoku"] #logicLeave .logic-leave-card p {
+  margin: 0 0 16px;
+  color: var(--logic-muted);
+  line-height: 1.5;
+}
+
+body[data-logic-game="sudoku"] #logicLeave .logic-result-actions,
+body[data-logic-game="sudoku"] #logicResult .logic-result-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body[data-logic-game="sudoku"] #resultMenu { order: 1; }
+body[data-logic-game="sudoku"] #resultReplay { order: 2; }
+body[data-logic-game="sudoku"] #resultStages,
+body[data-logic-game="sudoku"] #resultNext,
+body[data-logic-game="sudoku"] #resultClose {
+  display: none !important;
+}
+
+@media (max-width: 660px) {
+  body[data-logic-game="sudoku"] #logicLeave .logic-result-actions,
+  body[data-logic-game="sudoku"] #logicResult .logic-result-actions {
+    grid-template-columns: 1fr;
+  }
+}

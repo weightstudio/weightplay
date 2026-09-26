@@ -1,3 +1,5 @@
+const pawaxeLobbyReleaseStatus = "playable";
+
 window.WONDER_LOBBY = {
   platform: {
     name: "WeightPlay",
@@ -78,12 +80,14 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "games/animal-wildwood-raid/art/cover-v1.webp", hideHero: true },
     },
     {
-      id: "pawaxe", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "index.html?trial=1",
+      id: "pawaxe", audience: "general", status: pawaxeLobbyReleaseStatus,
+      internalOnly: pawaxeLobbyReleaseStatus !== "playable",
+      ...(pawaxeLobbyReleaseStatus === "planned" ? { internalTrial: "index.html?trial=1" } : {}),
+      ...(pawaxeLobbyReleaseStatus === "playable" ? { previewVideo: "assets/previews/pawaxe-battle.webm" } : {}),
       title: { en: "Axe & Ally", "zh-Hant": "斧刃夥伴" },
       type: { en: "Loot Adventure", "zh-Hant": "刷寶探險", "zh-Hans": "刷宝探险", ja: "収集冒険", ko: "수집 모험", es: "Aventura y botín", "pt-BR": "Aventura e saques", fr: "Aventure et butin", de: "Beuteabenteuer", it: "Avventura e bottino", ru: "Приключение и добыча", hi: "लूट का रोमांच", ar: "مغامرة الغنائم" },
       description: { en: "Slash through a long forest expedition, collect four allies and build around special equipment abilities.", "zh-Hant": "一路揮斧探索森林，收集四種能力夥伴與特殊裝備，挑戰首領並持續刷寶。", "zh-Hans": "一路挥斧探索森林，收集四种能力伙伴与特殊装备，挑战首领并持续刷宝。", ja: "斧で森を進み、4種類の仲間と特殊装備を集めてボスに挑もう。", ko: "도끼로 숲을 탐험하고 네 종류의 동료와 특수 장비를 모아 보스에 도전하세요.", es: "Recorre el bosque a hachazos, reúne cuatro aliados y equipo especial y desafía a los jefes.", "pt-BR": "Explore a floresta com seu machado, reúna quatro aliados e equipamentos especiais e enfrente chefes.", fr: "Traversez la forêt à la hache, collectionnez quatre alliés et des équipements spéciaux et défiez les boss.", de: "Erkunde den Wald mit deiner Axt, sammle vier Begleiter und Spezialausrüstung und fordere Bosse heraus.", it: "Esplora la foresta con l’ascia, raccogli quattro alleati ed equipaggiamento speciale e sfida i boss.", ru: "Прокладывайте путь топором, собирайте четырёх спутников и особое снаряжение и побеждайте боссов.", hi: "कुल्हाड़ी से वन में आगे बढ़ें, चार साथी और विशेष उपकरण जुटाएँ और बॉस को चुनौती दें।", ar: "شق طريقك بالفأس في الغابة واجمع أربعة رفاق ومعدات خاصة وتحدَّ الزعماء." },
-      categories: ["Action", "Adventure", "Animal Games"], skills: ["Timing", "Focus"], ages: ["general"],
+      categories: ["Action", "Adventure", "Animal Games"], skills: ["Focus", "Reaction"], ages: ["general"],
       href: "games/pawaxe/", meta: { en: ["30 Stages", "4 Allies"], "zh-Hant": ["30 關", "4 種夥伴"], "zh-Hans": ["30 关", "4 种伙伴"], ja: ["30 ステージ", "4 種の仲間"], ko: ["30 스테이지", "동료 4종"], es: ["30 etapas", "4 aliados"], "pt-BR": ["30 fases", "4 aliados"], fr: ["30 étapes", "4 alliés"], de: ["30 Etappen", "4 Begleiter"], it: ["30 tappe", "4 alleati"], ru: ["30 этапов", "4 спутника"], hi: ["30 चरण", "4 साथी"], ar: ["30 مرحلة", "4 رفاق"] },
       art: { kind: "image", background: "games/pawaxe/art/cover-v1.png", hideHero: true },
     },
@@ -2949,7 +2953,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-postcard-crop/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-postcard-crop/assets/animal-postcard-crop-cover.webp", hideHero: true }
+    art: { kind: "image", background: "games/animal-postcard-crop/assets/animal-postcard-crop-cover-v2.webp", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3079,18 +3083,18 @@ for (const game of window.WONDER_LOBBY.games) {
     id: "animal-canopy-compass",
     audience: "general",
     status: "planned",
-    title: localize(["Canopy Compass", "樹冠羅盤", "树冠罗盘", "キャノピー・コンパス", "숲관 나침반", "Brújula del Dosel", "Bússola da Copa", "Boussole de la Canopée", "Kronen-Kompass", "Bussola della Chioma", "Компас кроны", "कैनोपी कम्पास", "بوصلة الغابة العليا"]),
+    title: localize(["Canopy Compass Logic", "樹冠羅盤推理", "树冠罗盘推理", "樹上コンパス推理", "나무 위 나침반 추리", "Lógica de la Brújula", "Lógica da Bússola", "Logique de la boussole", "Baumkronen-Kompassrätsel", "Logica della Bussola", "Загадки лесного компаса", "जंगल के कंपास की पहेली", "ألغاز بوصلة الأشجار"]),
     statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
     type: localize(["Orientation Clue Puzzle", "風向線索益智", "风向线索益智", "方位手がかりパズル", "방향 단서 퍼즐", "Puzzle de orientación", "Puzzle de orientação", "Puzzle d’orientation", "Orientierungs-Puzzle", "Puzzle d’orientamento", "Пазл ориентации", "दिशा संकेत पहेली", "لغز دلائل الاتجاه"]),
-    description: localize(["Read two canopy clues, turn a compass, and align three safe lookouts for the night animals.", "閱讀兩條樹冠線索，轉動羅盤，為夜行動物對準三座安全瞭望台。", "阅读两条树冠线索，转动罗盘，为夜行动物对准三座安全瞭望台。", "2つの手がかりを読み、コンパスを回して夜の動物の見張り台を合わせよう。", "단서를 읽고 나침반을 돌려 밤 동물의 안전한 전망대 세 곳을 맞춰요.", "Lee dos pistas, gira la brújula y alinea tres miradores seguros.", "Leia duas pistas, gire a bússola e alinhe três mirantes seguros.", "Lis deux indices, tourne la boussole et aligne trois postes sûrs.", "Lies zwei Hinweise, drehe den Kompass und richte drei sichere Ausgucke aus.", "Leggi due indizi, ruota la bussola e allinea tre vedette sicure.", "Прочитайте две подсказки, поверните компас и выровняйте три безопасные площадки.", "दो संकेत पढ़ें, कम्पास घुमाएँ और तीन सुरक्षित चौकियाँ मिलाएँ।", "اقرأ دليلين، أدر البوصلة وحاذِ ثلاث منصات آمنة."]),
-    meta: localize([["3 Lookouts", "Compass Turns", "Calm Retry"], ["3 座瞭望台", "羅盤轉向", "平靜重試"], ["3 座瞭望台", "罗盘转向", "平静重试"], ["3つの見張り台", "コンパス回転", "穏やかな再挑戦"], ["전망대 3개", "나침반 회전", "차분한 재시도"], ["3 miradores", "Giros de brújula", "Reintento sereno"], ["3 mirantes", "Giros da bússola", "Nova tentativa calma"], ["3 postes", "Tours de boussole", "Reprise sereine"], ["3 Ausgucke", "Kompass drehen", "Ruhiger Versuch"], ["3 vedette", "Giri di bussola", "Riprova calma"], ["3 площадки", "Повороты компаса", "Спокойный повтор"], ["3 चौकियाँ", "कम्पास मोड़", "शांत पुनः प्रयास"], ["3 منصات", "دورات البوصلة", "محاولة هادئة"]]),
+    description: localize(["Read sun marks and wind rules across 30 canopy lookouts, then turn the compass to the safe direction.", "閱讀太陽標記與風向規則，挑戰 30 個樹冠瞭望點，再把羅盤轉向安全方向。", "阅读太阳标记与风向规则，挑战 30 个树冠瞭望点，再把罗盘转向安全方向。", "太陽の印と風のルールを読み、30か所の見張り台でコンパスを安全な方向へ向けます。", "태양 표식과 바람 규칙을 읽고 30개 전망대에서 나침반을 안전한 방향으로 돌리세요.", "Lee las marcas solares y las reglas del viento en 30 miradores y orienta la brújula hacia la dirección segura.", "Leia as marcas solares e as regras do vento em 30 mirantes e aponte a bússola para a direção segura.", "Lisez les repères solaires et les règles du vent sur 30 postes, puis orientez la boussole vers la direction sûre.", "Lies Sonnenmarkierungen und Windregeln an 30 Aussichtspunkten und richte den Kompass sicher aus.", "Leggi i segni del sole e le regole del vento in 30 punti di osservazione e orienta la bussola nella direzione sicura.", "Читайте солнечные отметки и правила ветра на 30 площадках и поворачивайте компас в безопасную сторону.", "30 चौकियों पर सूर्य-चिह्न और हवा के नियम पढ़ें, फिर कम्पास को सुरक्षित दिशा में मोड़ें।", "اقرأ علامات الشمس وقواعد الرياح عبر 30 نقطة مراقبة، ثم وجّه البوصلة نحو الاتجاه الآمن."]),
+    meta: localize([["30 Lookouts", "6 Wind Arcs", "Calm Retry"], ["30 個瞭望點", "6 段風向章節", "平靜重試"], ["30 个瞭望点", "6 段风向章节", "平静重试"], ["30の見張り台", "6つの風の章", "穏やかな再挑戦"], ["전망대 30개", "바람 장 6개", "차분한 재도전"], ["30 miradores", "6 arcos de viento", "Reintento sereno"], ["30 mirantes", "6 arcos de vento", "Nova tentativa calma"], ["30 postes", "6 arcs de vent", "Reprise sereine"], ["30 Aussichtspunkte", "6 Windbögen", "Ruhiger Versuch"], ["30 punti", "6 archi del vento", "Riprova calma"], ["30 площадок", "6 ветровых глав", "Спокойный повтор"], ["30 चौकियाँ", "6 हवा अध्याय", "शांत पुनः प्रयास"], ["30 نقطة مراقبة", "6 فصول للرياح", "محاولة هادئة"]]),
     categories: ["Puzzle", "Orientation", "Logic", "Family", "Animal"],
     skills: ["Spatial Reasoning", "Observation", "Planning"],
     ages: ["6", "family"],
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-canopy-compass/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-canopy-compass/assets/animal-canopy-compass-cover.svg", hideHero: true },
+    art: { kind: "image", background: "games/animal-canopy-compass/assets/animal-canopy-compass-cover.png", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);

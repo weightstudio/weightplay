@@ -110,6 +110,11 @@ button { cursor: pointer; }
   font-weight: 950;
   box-shadow: 0 10px 30px #e6a52f2d;
 }
+.main-progress {
+  color: #d7e3e9;
+  font-size: .82rem;
+  font-weight: 850;
+}
 .guide {
   margin: 8px 0 30px;
   padding: 24px;

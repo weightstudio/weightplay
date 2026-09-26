@@ -26,7 +26,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-hollow-fit">
-  <meta name="weightplay-game-version" content="v10">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="weightplay-interface-version" content="7">
   <title>洞穴图形配对 | WeightPlay</title>
   <meta name="description" content="观察方块轮廓，旋转、镜像拼片，补好森林洞穴的缺口。没有倒计时，可以安心重试，并保留每个洞穴的最佳星数。" />
@@ -42,25 +42,33 @@
   <meta name="twitter:image" content="https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"洞穴图形配对","description":"观察方块轮廓，旋转、镜像拼片，补好森林洞穴的缺口。没有倒计时，可以安心重试，并保留每个洞穴的最佳星数。","url":"https://weightplay.com/zh-cn/games/animal-hollow-fit/","image":"https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp","inLanguage":"zh-Hans","genre":["空间解谜","图形配对"],"isAccessibleForFree":true,"operatingSystem":"Web","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"alternateName":"Burrow Shape Match"}</script>
 
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260924-hollow-fit-v10" data-wp-game-guide>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260926-hollow-fit-v11-stage30x5" data-wp-game-guide>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3">
-  <link rel="stylesheet" href="style.css?v=20260924-hollow-fit-v10"><script src="/src/shared-interface-bootstrap.js?v=20260925-main-progress-40-v3" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260910-stage-workspace1">\n  <link rel="stylesheet" href="style.css?v=20260926-hollow-fit-v11-stage30x5"><script src="/src/shared-interface-bootstrap.js?v=20260925-main-progress-40-v3" data-wp-shared-interface="7"></script>
 <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v10" data-wp-interface-version="7" data-wp-battle-layout="native" data-runtime-localize="off" data-sound-toggle="off">
+<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v11" data-wp-interface-version="7" data-wp-battle-layout="native" data-runtime-localize="off" data-sound-toggle="off">
 <div id="app" data-wp-frame-root>
   <main id="mainScreen" data-screen="main">
     <header id="mainHeader"><a href="/en/" data-wp-return="main" data-copy-aria="mainBack" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span></a><h1 data-copy="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">洞穴图形配对</h1></header>
     <div id="mainContent">
       <img data-wp-frame-poster src="/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp" data-copy-alt="coverAlt" alt="方块风格的森林动物拿着木制图形，站在洞穴入口旁" width="1024" height="1024" fetchpriority="high" draggable="false">
-      <div data-wp-frame-copy><p data-copy="planned" >预览版 · 敬请期待</p><p data-copy="intro" data-wp-frame-summary>观察方块轮廓，旋转、镜像拼片，补好森林洞穴的缺口。没有倒计时，可以安心重试，并保留每个洞穴的最佳星数。</p><p id="main-progress" data-wp-frame-progress>已修复 0 / 30 个洞穴 · 0 颗星</p><button data-copy="start" id="start-button" type="button" data-wp-main-start data-wp-frame-action="primary">开始游戏</button><button data-copy="guide" id="guide-button" type="button" data-wp-frame-action="secondary">玩法说明</button><p class="storage-warning" data-storage-warning hidden></p></div>
+      <div data-wp-frame-copy><p data-copy="planned" >预览版 · 敬请期待</p><p data-copy="intro" data-wp-frame-summary>观察方块轮廓，旋转、镜像拼片，补好森林洞穴的缺口。没有倒计时，可以安心重试，并保留每个洞穴的最佳星数。</p><p id="main-progress" data-wp-frame-progress>已完成 0 / 30 关 · 0 颗星</p><button data-copy="start" id="start-button" type="button" data-wp-main-start data-wp-frame-action="primary">开始游戏</button><button data-copy="guide" id="guide-button" type="button" data-wp-frame-action="secondary">玩法说明</button><p class="storage-warning" data-storage-warning hidden></p></div>
     </div>
   </main>
+  <section id="stageScreen" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp" style="--wp-stage-art:url('/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp')" hidden>
+    <header id="stageHeader"><button id="stage-home" type="button" data-wp-return="stage" data-copy-aria="stageBack" aria-label="返回菜单"><span aria-hidden="true">←</span></button><strong data-copy="stageSelect" data-wp-frame-title>关卡</strong></header>
+    <div id="stageContent" data-wp-stage-content>
+      <div class="stage-copy"><strong data-copy="stageSelect">关卡</strong><span id="stage-progress" aria-live="polite"></span><small data-copy="stageHint">每个大关包含 5 个小关，完成全部 5 个小关才算通过 1 个大关。</small></div>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" aria-label="Stage selection"></div>
+      <div class="stage-legend"><span data-copy="stageSwipe">↔ 滑动浏览</span><span data-copy="stageTap">点击已解锁关卡开始游戏</span></div>
+    </div>
+  </section>
   <section id="battleScreen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-    <header id="battleHeader"><button id="battle-home" type="button" data-wp-return="battle" data-copy-aria="battleBack" aria-label="返回菜单"><span aria-hidden="true">←</span></button><strong data-copy="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">洞穴图形配对</strong></header>
+    <header id="battleHeader"><button id="battle-home" type="button" data-wp-return="battle" data-copy-aria="battleBack" aria-label="返回关卡"><span aria-hidden="true">←</span></button><strong data-copy="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">洞穴图形配对</strong></header>
     <div id="battleViewport">
-      <div id="battleHud"><div><span data-copy="room" >洞穴</span><strong id="room-count">1 / 30</strong></div><div><span data-copy="stars" >星星</span><strong id="star-count">0</strong></div><div><span data-copy="checks" >确认</span><strong id="check-count">0</strong></div></div>
+      <div id="battleHud"><div><span data-copy="stageLabel">关卡</span><strong id="room-count">1 / 30</strong></div><div><span data-copy="sublevelLabel">小关</span><strong id="sublevel-count">1 / 5</strong></div><div><span data-copy="stars">星星</span><strong id="star-count">0</strong></div><div><span data-copy="checks">确认</span><strong id="check-count">0</strong></div></div>
       <div id="logicalCanvas" data-wp-frame-logical-actions="battle">
         <div class="cave-heading"><h1 id="chapter-title" tabindex="-1"></h1><p id="chapter-rule"></p><div id="chapter-progress" class="chapter-progress" aria-hidden="true"></div></div>
         <section class="target-area" aria-labelledby="target-title"><h2 data-copy="targetTitle" id="target-title">洞穴开口</h2><p id="target-hint"></p><div class="target-stage"><div id="target-grid" class="shape-grid target-grid" role="img"></div><div id="match-effects" aria-hidden="true"></div></div><div class="legend"><span><i class="opening-key" aria-hidden="true"></i><span data-copy="legendTarget" >待补开口</span></span><span id="fixed-legend"><i class="fixed-key" aria-hidden="true"></i><span data-copy="legendFixed" >固定石块</span></span></div></section>
@@ -87,9 +95,9 @@
 <article class="game-info-section"><h3 data-copy="relatedTitle" >相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-related-game="animal-tangram" href="/zh-cn/games/animal-tangram/"><img src="/games/animal-hollow-fit/assets/related-animal-tangram-cover.png" alt="" width="96" height="96" loading="lazy"><span class="game-info-related-copy"><strong data-copy="related1Title" >潘可的七巧板小径</strong><span data-copy="related1Reason" >改试用多块几何拼片组合图案，而不是只挑出一块补片。</span></span></a><a class="game-info-related-card" data-related-game="shape-train" href="/zh-cn/games/shape-train/"><img src="/games/animal-hollow-fit/assets/related-shape-train-cover.png" alt="" width="96" height="96" loading="lazy"><span class="game-info-related-copy"><strong data-copy="related2Title" >形状小火车</strong><span data-copy="related2Reason" >换成火车情境，识别与分类较简单的形状。</span></span></a></div></article></div></section>
 <select id="locale-select" hidden aria-hidden="true" tabindex="-1"></select>
 <script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script>
-<script src="locales.js?v=20260925-hollow-fit-v10-poster-alt"></script>
-<script src="puzzles.js?v=20260924-hollow-fit-v10"></script>
-<script src="game.js?v=20260924-hollow-fit-v10"></script>
+<script src="locales.js?v=20260926-hollow-fit-v11-stage30x5"></script>
+<script src="puzzles.js?v=20260926-hollow-fit-v11-stage30x5"></script>
+<script src="game.js?v=20260926-hollow-fit-v11-stage30x5"></script>\n<script src="/src/stage-selector-standard.js?v=20260910-stage-workspace1"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>

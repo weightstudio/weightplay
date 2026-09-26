@@ -1,5 +1,6 @@
 (() => {
   "use strict";
+  document.querySelector('link[href*="interface-7-cleanup.css"]')?.remove();
 
   const $ = id => document.getElementById(id);
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -18,6 +19,33 @@
   let feedbackText = "";
   let busy = false;
   let soundOn = true;
+  let settlementTimer = 0;
+  let settlementDeadline = 0;
+  let settlementRemaining = 0;
+  let settlementAction = null;
+  let leaveReturnFocus = null;
+
+  const START_GAME_COPY = {
+    en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲームを開始",
+    ko: "게임 시작", es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Commencer",
+    de: "Spiel starten", it: "Inizia gioco", ru: "Начать игру", hi: "खेल शुरू करें", ar: "ابدأ اللعبة"
+  };
+
+  const LEAVE_BODY_COPY = {
+    en: "Your pinned facts and current position in this three-case run will reset. Unlocked journal pages stay saved.",
+    "zh-Hant": "目前釘選的事實與這次三案件流程的位置都會重設；已解鎖的日誌頁會保留。",
+    "zh-Hans": "当前钉选的事实与这次三案件流程的位置都会重置；已解锁的日志页会保留。",
+    ja: "選んだ事実と、この3件の進行位置はリセットされます。開いた日誌ページは保存されます。",
+    ko: "고정한 사실과 이번 3개 사건 진행 위치는 초기화됩니다. 해제한 일지 페이지는 저장됩니다.",
+    es: "Se reiniciarán los hechos fijados y tu posición en esta serie de tres casos. Las páginas del diario desbloqueadas se conservan.",
+    "pt-BR": "Os fatos fixados e sua posição nesta sequência de três casos serão reiniciados. As páginas do diário desbloqueadas continuam salvas.",
+    fr: "Les faits épinglés et votre position dans cette série de trois dossiers seront réinitialisés. Les pages de journal débloquées restent enregistrées.",
+    de: "Angeheftete Fakten und deine Position in diesem Drei-Fälle-Durchlauf werden zurückgesetzt. Freigeschaltete Tagebuchseiten bleiben gespeichert.",
+    it: "I fatti fissati e la posizione in questa serie di tre casi verranno azzerati. Le pagine del diario sbloccate restano salvate.",
+    ru: "Закреплённые факты и позиция в серии из трёх дел будут сброшены. Открытые страницы журнала сохранятся.",
+    hi: "पिन किए तथ्य और इस तीन-मामले की दौड़ में आपकी मौजूदा स्थिति रीसेट होगी। अनलॉक की गई जर्नल पेज सहेजी रहेंगी।",
+    ar: "ستُعاد تهيئة الحقائق المثبتة وموضعك الحالي في سلسلة القضايا الثلاث، بينما تبقى صفحات اليوميات المفتوحة محفوظة."
+  };
 
   const COPY = {
     en: { title: "Field Dossier", loading: "Preparing the field notes…", eyebrow: "Moonlit expedition · 9+", mainHeading: "Read the facts. Choose the only plan that fits.", summary: "Pin two or three visible clues, then choose an expedition plan. Wrong plans explain the conflict and let you try again.", start: "Open the dossier", guideTitle: "How to play", guideBody: "Pin the clues that matter. Compare their facts, choose a plan, and learn from a calm conflict note. Three cases unlock three journal pages.", stepOne: "Pin two or three facts.", stepTwo: "Choose the plan with no conflict.", stepThree: "Record the case and continue.", language: "Language", settings: "Settings", soundOn: "Sound: on", soundOff: "Sound: off", progress: "Journal pages: {n} / 3", footer: "Internal prototype · no public lobby or sitemap entry", caseLabel: "Case {n} / 3", clueLabel: "Field facts", choosePlan: "Choose an expedition plan", pinHint: "Tap facts to pin them", selected: "{n} facts pinned", planHint: "Choose the plan that fits all pinned facts.", correct: "Plan fits. The journal records this route.", needFacts: "Pin at least two facts before choosing a plan.", replay: "Review cases", home: "Back to menu", leave: "Leave case", confirmTitle: "Leave this case?", confirmBody: "Your pinned facts will be cleared, but your journal stays safe.", stay: "Stay", leaveConfirm: "Leave case", help: "Compare the water, weather, shelter, and food clues. A good plan leaves no fact behind.", helpClose: "Close help", resultBadge: "Journal updated", resultTitle: "The field notes are clear.", resultBody: "You resolved {n} cases and unlocked {pages} journal pages. The next expedition can add a new habitat.", best: "Best journal: {n} pages", back: "Back" },
@@ -83,7 +111,7 @@
     } }
   ];
 
-  const screens = { main: $("mainScreen"), battle: $("battleScreen"), guide: document.querySelector("[data-wp-game-guide]"), note: document.querySelector(".prototype-note"), reserve: $("battleReserve") };
+  const screens = { main: $("mainScreen"), battle: $("battleScreen"), guide: document.querySelector("[data-wp-game-guide]"), note: document.querySelector(".prototype-note") };
   const readProgress = () => {
     try {
       const value = JSON.parse(localStorage.getItem("animalFieldDossierProgress") || "{}");
@@ -104,13 +132,13 @@
     screens.guide.hidden = screen !== "main";
     screens.note.hidden = screen !== "main";
     screens.battle.hidden = screen !== "battle";
-    screens.reserve.hidden = screen !== "battle";
     document.body.dataset.screen = screen;
   };
   const applyCopy = () => {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach(node => { node.textContent = t(node.dataset.copy); });
+    $("startButton").textContent = START_GAME_COPY[locale] || START_GAME_COPY.en;
     $("localeSelect").value = locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
     $("settingsButton").setAttribute("aria-label", t("settings"));
@@ -124,6 +152,72 @@
   const renderMain = () => { $("mainProgress").textContent = t("progress", { n: journal.size }); };
   const setFeedback = (text, key = "") => { feedbackText = text; feedbackKey = key; };
   const createText = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; node.textContent = text; return node; };
+  const setBattleLayerInert = inert => {
+    const header = document.querySelector("#battleScreen > .battle-header");
+    const shell = document.querySelector("#battleScreen > .case-shell");
+    if (header) header.inert = inert;
+    if (shell) shell.inert = inert;
+  };
+  const cancelSettlement = () => {
+    if (settlementTimer) window.clearTimeout(settlementTimer);
+    settlementTimer = 0; settlementDeadline = 0; settlementRemaining = 0; settlementAction = null;
+  };
+  const runSettlement = () => {
+    const action = settlementAction;
+    settlementTimer = 0; settlementDeadline = 0; settlementRemaining = 0; settlementAction = null;
+    action?.();
+  };
+  const scheduleSettlement = (action, delay) => {
+    cancelSettlement();
+    settlementAction = action;
+    settlementRemaining = delay;
+    settlementDeadline = Date.now() + delay;
+    settlementTimer = window.setTimeout(runSettlement, delay);
+  };
+  const pauseSettlement = () => {
+    if (!settlementTimer) return;
+    settlementRemaining = Math.max(0, settlementDeadline - Date.now());
+    window.clearTimeout(settlementTimer);
+    settlementTimer = 0;
+  };
+  const resumeSettlement = () => {
+    if (!settlementAction || settlementTimer) return;
+    settlementDeadline = Date.now() + settlementRemaining;
+    settlementTimer = window.setTimeout(runSettlement, settlementRemaining);
+  };
+  const setResultState = active => {
+    $("resultOverlay").hidden = !active;
+    screens.battle.classList.toggle("is-result", active);
+    setBattleLayerInert(active);
+  };
+  const hasMutableBattleState = () => currentCase > 0 || selectedFacts.length > 0 || Boolean(feedbackKey) || busy;
+  const openLeavePrompt = source => {
+    if (!$("resultOverlay").hidden) return;
+    pauseSettlement();
+    leaveReturnFocus = source;
+    $("helpPopover").hidden = true;
+    $("helpButton").setAttribute("aria-expanded", "false");
+    $("leavePromptBody").textContent = `${t("caseLabel", { n: currentCase + 1 })} — ${LEAVE_BODY_COPY[locale] || LEAVE_BODY_COPY.en}`;
+    $("leavePrompt").hidden = false;
+    setBattleLayerInert(true);
+    $("stayButton").focus();
+  };
+  const closeLeavePrompt = () => {
+    $("leavePrompt").hidden = true;
+    setBattleLayerInert(!$("resultOverlay").hidden);
+    resumeSettlement();
+    (leaveReturnFocus || $("battleBack")).focus();
+    leaveReturnFocus = null;
+  };
+  const trapDialogFocus = (event, dialog) => {
+    if (event.key !== "Tab" || dialog.hidden) return false;
+    const focusable = [...dialog.querySelectorAll("button:not([disabled]), [href], select:not([disabled]), [tabindex]:not([tabindex='-1'])")].filter(node => !node.hidden);
+    if (!focusable.length) return false;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); return true; }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); return true; }
+    return false;
+  };
   const renderBattle = () => {
     const item = CASES[currentCase];
     const copy = caseText(item);
@@ -169,7 +263,7 @@
       track("plan_conflict", { caseId: item.id, planId: id }); renderBattle(); return;
     }
     busy = true; journal.add(item.id); best = Math.max(best, journal.size); saveProgress(); setFeedback(t("correct"), "good"); track("case_resolved", { caseId: item.id, planId: id, journalPages: journal.size }); renderBattle();
-    window.setTimeout(() => {
+    scheduleSettlement(() => {
       busy = false; currentCase += 1; selectedFacts = []; feedbackText = ""; feedbackKey = "";
       if (currentCase >= CASES.length) showResult(); else { screens.battle.scrollTop = 0; renderBattle(); }
     }, 320);
@@ -178,23 +272,32 @@
     $("resultTitle").textContent = t("resultTitle");
     $("resultBody").textContent = t("resultBody", { n: journal.size, pages: journal.size });
     $("resultBest").textContent = t("best", { n: best });
-    $("resultOverlay").hidden = false; $("leavePrompt").hidden = true; track("dossier_complete", { resolvedCases: journal.size, journalPages: journal.size });
+    $("leavePrompt").hidden = true;
+    setResultState(true);
+    track("dossier_complete", { resolvedCases: journal.size, journalPages: journal.size });
     $("replayButton").focus();
   };
-  const start = () => { currentCase = 0; selectedFacts = []; feedbackText = ""; feedbackKey = ""; busy = false; show("battle"); screens.battle.scrollTop = 0; renderBattle(); track("dossier_start"); window.setTimeout(() => $("evidenceGrid").querySelector("button")?.focus(), 40); };
-  const showMain = () => { $("settingsPopover").hidden = true; $("settingsButton").setAttribute("aria-expanded", "false"); $("helpPopover").hidden = true; $("leavePrompt").hidden = true; $("resultOverlay").hidden = true; show("main"); renderMain(); $("startButton").focus(); track("return_main"); };
+  const start = () => { cancelSettlement(); setResultState(false); currentCase = 0; selectedFacts = []; feedbackText = ""; feedbackKey = ""; busy = false; show("battle"); screens.battle.scrollTop = 0; renderBattle(); track("dossier_start"); $("evidenceGrid").querySelector("button")?.focus({ preventScroll:true }); };
+  const showMain = () => { cancelSettlement(); $("settingsPopover").hidden = true; $("settingsButton").setAttribute("aria-expanded", "false"); $("helpPopover").hidden = true; $("leavePrompt").hidden = true; setResultState(false); setBattleLayerInert(false); show("main"); renderMain(); $("startButton").focus(); track("return_main"); };
   $("startButton").addEventListener("click", start);
-  $("replayButton").addEventListener("click", () => { $("resultOverlay").hidden = true; start(); track("result_replay"); });
+  $("replayButton").addEventListener("click", () => { start(); track("result_replay"); });
   $("homeButton").addEventListener("click", showMain);
-  $("battleBack").addEventListener("click", () => { $("leavePrompt").hidden = false; $("resultOverlay").hidden = true; $("stayButton").focus(); });
-  $("leaveButton").addEventListener("click", () => { $("leavePrompt").hidden = false; $("stayButton").focus(); });
-  $("stayButton").addEventListener("click", () => { $("leavePrompt").hidden = true; $("leaveButton").focus(); });
-  $("leaveConfirm").addEventListener("click", showMain);
+  $("battleBack").addEventListener("click", () => { if (hasMutableBattleState()) openLeavePrompt($("battleBack")); else showMain(); });
+  $("leaveButton").addEventListener("click", () => openLeavePrompt($("leaveButton")));
+  $("stayButton").addEventListener("click", closeLeavePrompt);
+  $("leaveConfirm").addEventListener("click", () => { cancelSettlement(); busy = false; $("leavePrompt").hidden = true; setBattleLayerInert(false); showMain(); });
   $("settingsButton").addEventListener("click", () => { const open = $("settingsPopover").hidden; $("settingsPopover").hidden = !open; $("settingsButton").setAttribute("aria-expanded", String(open)); if (open) $("localeSelect").focus(); });
   $("soundButton").addEventListener("click", () => { soundOn = !soundOn; applyCopy(); track("sound_toggle", { enabled: soundOn }); });
   $("localeSelect").addEventListener("change", event => { locale = event.target.value; applyCopy(); if (!screens.battle.hidden) renderBattle(); if (!$("resultOverlay").hidden) showResult(); });
   $("helpButton").addEventListener("click", () => { const open = $("helpPopover").hidden; $("helpPopover").hidden = !open; $("helpButton").setAttribute("aria-expanded", String(open)); });
-  document.addEventListener("keydown", event => { if (event.key !== "Escape") return; if (!$("helpPopover").hidden) { $("helpPopover").hidden = true; $("helpButton").focus(); } else if (!$("settingsPopover").hidden) { $("settingsPopover").hidden = true; $("settingsButton").setAttribute("aria-expanded", "false"); $("settingsButton").focus(); } else if (!$("leavePrompt").hidden) { $("leavePrompt").hidden = true; $("stayButton").focus(); } });
+  document.addEventListener("keydown", event => {
+    if (trapDialogFocus(event, $("leavePrompt")) || trapDialogFocus(event, $("resultOverlay"))) return;
+    if (event.key !== "Escape") return;
+    if (!$("leavePrompt").hidden) { event.preventDefault(); closeLeavePrompt(); return; }
+    if (!$("resultOverlay").hidden) return;
+    if (!$("helpPopover").hidden) { $("helpPopover").hidden = true; $("helpButton").setAttribute("aria-expanded", "false"); $("helpButton").focus(); }
+    else if (!$("settingsPopover").hidden) { $("settingsPopover").hidden = true; $("settingsButton").setAttribute("aria-expanded", "false"); $("settingsButton").focus(); }
+  });
   applyCopy();
   window.setTimeout(() => { $("loadingPanel").hidden = true; track("loading_ready"); }, 140);
 })();

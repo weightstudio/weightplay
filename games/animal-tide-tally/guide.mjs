@@ -28,7 +28,11 @@ function guide(locale) {
     // The route generator rebuilds each locale tree in catalog order, so a
     // related page may not exist on disk yet while this Guide is rendered.
     // The playable catalog entry is the publication boundary for these links.
-    const image=posters[id]||'/'+game.art.background.replace(/^\//,'');
+    // Verified existing assets: the registry's two redrawn URLs are absent.
+    // Keep the official names/routes; do not create fake artwork or alter peers.
+    const image=id==='animal-nest-weigh'
+      ? '/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp'
+      : '/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png';
     return `<a class="game-info-related-card" href="/${segments[locale]}/games/${id}/"><img src="${esc(image)}" alt="" loading="lazy" width="240" height="240"><span class="game-info-related-copy"><strong>${esc(title)}</strong><span>${esc(d.related[index])}</span></span></a>`;
   }).join('');
   const faq=d.faq.map(([q,a])=>`<div><dt>${esc(q)}</dt><dd>${esc(a)}</dd></div>`).join('');
@@ -76,16 +80,16 @@ export function applyTideGuide(html, locale) {
   html=html.replace(/(<button\b[^>]*\bid=["']battleSoundBtn["'][^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.sound)}$2`);
   html=html.replace(/(<button\b[^>]*\bid=["']closeSettings["'][^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.close)}$2`);
   html=html.replace(/(<(?:nav|div)\b[^>]*(?:class=["']stage-tabs["']|id=["'](?:stageChoices|answerGrid)["'])[^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.stages)}$2`);
-  html=html.replace(/(name=["']weightplay-game-version["']\s+content=["'])v\d+/i,'$1v9').replace(/data-wp-game-version=["']v\d+["']/g,'data-wp-game-version="v9"');
+  html=html.replace(/(name=["']weightplay-game-version["']\s+content=["'])v\d+/i,'$1v10').replace(/data-wp-game-version=["']v\d+["']/g,'data-wp-game-version="v10"');
   html=html.replace(/(name=["']weightplay-interface-version["']\s+content=["'])\d+/i,(_,prefix)=>prefix+'7').replace(/data-wp-interface-version=["']\d+["']/g,'data-wp-interface-version="7"');
-  html=html.replace(/((?:style\.css|game\.js|locales\.js)\?v=)[^"']+/g,(_,prefix)=>prefix+'20260924-tide-v9');
+  html=html.replace(/((?:style\.css|game\.js|locales\.js)\?v=)[^"']+/g,(_,prefix)=>prefix+'20260926-tide-v10');
   html=html.replace(/(<div\b[^>]*\bid=["']app["'])([^>]*>)/i,(_,a,b)=>a+b.replace(/\sdata-wp-frame-root(?:=["'][^"']*["'])?/g,'').replace('>',' data-wp-frame-root>'));
   html=html.replace(/<div\b([^>]*\bdata-wp-standard-stage-screen[^>]*)>/i,(_,attrs)=>{
     attrs=attrs.replace(/\sdata-wp-stage-art=["'][^"']*["']/g,'').replace(/\sstyle=["'][\s\S]*?["'](?=\s|$)/g,'');
     return `<div${attrs} data-wp-stage-art="/assets/interface7-redrawn/animal-tide-tally.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-tide-tally.webp')">`;
   });
   if(!/<link\b[^>]*href=["'][^"']*game-screen-frame\.css(?:\?[^"']*)?["']/i.test(html)){
-    html=html.replace(/(<script\b[^>]*src=["'][^"']*shared-interface-bootstrap\.js[^>]*>)/i,'<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260924-tide-v9">\n$1');
+    html=html.replace(/(<script\b[^>]*src=["'][^"']*shared-interface-bootstrap\.js[^>]*>)/i,'<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260926-tide-v10">\n$1');
   }
   // Structured genres describe this game in the route locale. Keep SEO identity intact.
   html=html.replace(/(<script\b[^>]*type=["']application\/ld\+json["'][^>]*>)([\s\S]*?)(<\/script>)/gi,(all,a,raw,b)=>{

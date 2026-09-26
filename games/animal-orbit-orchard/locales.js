@@ -64,3 +64,120 @@
   window.ORBIT_ORCHARD_LOCALES = Object.fromEntries(keys.map((key) => [key, localized[key]]));
   window.ORBIT_ORCHARD_LOCALES.__localeKeys = keys;
 })();
+
+// Owner defect repair: explicit 13-locale labels and guide coverage.
+(function () {
+  const patches = {
+  "en": {
+    "closeDialog": "Close",
+    "releaseCountLabel": "Releases",
+    "twinDew": "Twin Dew",
+    "guideFocusTitle": "Read each stage",
+    "guideFinishTitle": "Complete the campaign",
+    "guideFocus": "The ring wraps from 359 degrees to zero. Follow the named beacon; when angles are hidden, use its position. In stages with decoys or shade, choose the correct light and an open lane before releasing. A drift rule moves the target only after a miss. The Prism Clamp prevents one such move per stage, not a blocked lane. Review ordered lights with the sequence button.",
+    "guideThree": "A miss is safe to retry: there is no timer or life loss. Reset returns your aim to zero without leaving the stage. Some stages move the beacon after a miss or change which lane is open; read the new cue before trying again."
+  },
+  "zh-Hant": {
+    "closeDialog": "關閉",
+    "releaseCountLabel": "放手次數",
+    "twinDew": "雙露信標",
+    "guideFocusTitle": "觀察每一關",
+    "guideFinishTitle": "完成果園旅程",
+    "guideFocus": "圓環的 359 度會接回 0 度。先確認指定信標；角度隱藏時，觀察光點位置。有誘餌或陰影的關卡，須先選對信標和開放通道。漂移規則只在失誤後移動目標，稜鏡夾每關可阻止一次漂移，但不能打開受阻通道。遇到依序信標時，可用順序按鈕重新查看。"
+  },
+  "zh-Hans": {
+    "closeDialog": "关闭",
+    "releaseCountLabel": "释放次数",
+    "twinDew": "双露信标",
+    "guideFocusTitle": "观察每一关",
+    "guideFinishTitle": "完成果园旅程",
+    "guideFocus": "圆环的 359 度会接回 0 度。先确认指定信标；角度隐藏时，观察光点位置。有诱饵或阴影的关卡，须先选对信标和开放通道。漂移规则只在失误后移动目标，棱镜夹每关可阻止一次漂移，但不能打开受阻通道。遇到依序信标时，可用顺序按钮重新查看。"
+  },
+  "ja": {
+    "closeDialog": "閉じる",
+    "releaseCountLabel": "リリース回数",
+    "twinDew": "双子の露",
+    "guideFocusTitle": "ステージを観察",
+    "guideFinishTitle": "果樹園の旅を完了",
+    "guideFocus": "円は359度から0度につながります。指定された灯りを確認し、角度が隠れているときは位置を見ます。おとりや影がある場合は、正しい灯りと開いている道を選んでから放します。漂流は失敗した後だけ起こります。プリズムクランプは各ステージで一度だけ漂流を防ぎますが、閉じた道は開けません。順番ボタンで灯りの並びを確認できます。"
+  },
+  "ko": {
+    "closeDialog": "닫기",
+    "releaseCountLabel": "발사 횟수",
+    "twinDew": "쌍둥이 이슬",
+    "guideFocusTitle": "스테이지 살펴보기",
+    "guideFinishTitle": "과수원 여정 완료",
+    "guideFocus": "원은 359도에서 0도로 이어집니다. 지정된 신호를 확인하고 각도가 숨겨지면 빛의 위치를 보세요. 미끼나 그늘이 있으면 올바른 빛과 열린 경로를 고른 뒤 발사하세요. 표류는 빗나간 뒤에만 발생합니다. 프리즘 클램프는 스테이지마다 한 번 표류를 막지만 막힌 길을 열지는 않습니다. 순서 버튼으로 빛의 배열을 다시 확인할 수 있습니다."
+  },
+  "es": {
+    "closeDialog": "Cerrar",
+    "releaseCountLabel": "Lanzamientos",
+    "twinDew": "Rocío gemelo",
+    "guideFocusTitle": "Observa cada nivel",
+    "guideFinishTitle": "Completa el recorrido",
+    "guideFocus": "El círculo pasa de 359 grados a cero. Sigue la baliza indicada y usa su posición cuando el ángulo esté oculto. Ante señuelos o sombras, elige la luz correcta y una vía abierta antes de lanzar. La deriva ocurre después de un fallo. La Pinza Prisma evita un desplazamiento por nivel, pero no abre vías bloqueadas. El botón de secuencia permite revisar el orden de las luces."
+  },
+  "pt-BR": {
+    "closeDialog": "Fechar",
+    "releaseCountLabel": "Lançamentos",
+    "twinDew": "Orvalho gêmeo",
+    "guideFocusTitle": "Observe cada fase",
+    "guideFinishTitle": "Complete o percurso",
+    "guideFocus": "O círculo passa de 359 graus para zero. Siga o farol indicado e observe sua posição quando o ângulo estiver oculto. Com iscas ou sombras, escolha a luz correta e uma rota aberta antes de lançar. A deriva ocorre após um erro. O Grampo Prisma evita um deslocamento por fase, mas não abre rotas bloqueadas. O botão de sequência permite rever a ordem das luzes."
+  },
+  "fr": {
+    "closeDialog": "Fermer",
+    "releaseCountLabel": "Lâchers",
+    "twinDew": "Rosée jumelle",
+    "guideFocusTitle": "Observer chaque niveau",
+    "guideFinishTitle": "Terminer le parcours",
+    "guideFocus": "Le cercle passe de 359 degrés à zéro. Suivez la balise nommée et observez sa position lorsque son angle est caché. Face aux leurres ou aux ombres, choisissez la bonne lumière et une voie ouverte avant de lâcher. La dérive survient après un échec. La Pince Prisma empêche un déplacement par niveau, mais ne dégage pas une voie bloquée. Le bouton de séquence permet de revoir l’ordre des lumières."
+  },
+  "de": {
+    "closeDialog": "Schließen",
+    "releaseCountLabel": "Freigaben",
+    "twinDew": "Zwillingstau",
+    "guideFocusTitle": "Jede Stufe beobachten",
+    "guideFinishTitle": "Den Parcours abschließen",
+    "guideFocus": "Der Kreis geht von 359 Grad zu null über. Folge dem benannten Licht und nutze bei verborgenen Winkeln seine Position. Wähle bei Ködern oder Schatten das richtige Licht und einen offenen Weg, bevor du loslässt. Drift tritt nach einem Fehlversuch auf. Die Prismenklemme verhindert eine Verschiebung pro Stufe, öffnet aber keinen versperrten Weg. Mit der Reihenfolge-Taste kannst du die Lichterfolge erneut ansehen."
+  },
+  "it": {
+    "closeDialog": "Chiudi",
+    "releaseCountLabel": "Rilasci",
+    "twinDew": "Rugiada gemella",
+    "guideFocusTitle": "Osserva ogni livello",
+    "guideFinishTitle": "Completa il percorso",
+    "guideFocus": "Il cerchio passa da 359 gradi a zero. Segui il faro indicato e osserva la posizione quando l’angolo è nascosto. Con esche o ombre, scegli la luce corretta e una corsia aperta prima di rilasciare. La deriva avviene dopo un errore. La Pinza Prisma impedisce uno spostamento per livello, ma non apre corsie bloccate. Il pulsante della sequenza permette di rivedere l’ordine delle luci."
+  },
+  "ru": {
+    "closeDialog": "Закрыть",
+    "releaseCountLabel": "Запуски",
+    "twinDew": "Парная роса",
+    "guideFocusTitle": "Изучите каждый этап",
+    "guideFinishTitle": "Завершите маршрут",
+    "guideFocus": "Круг переходит от 359 градусов к нулю. Следуйте указанному маяку, а при скрытом угле смотрите на его положение. Если есть ложные огни или тень, перед запуском выберите нужный свет и открытый путь. Смещение происходит после промаха. Призматический зажим предотвращает одно смещение за этап, но не открывает закрытый путь. Кнопка последовательности позволяет снова посмотреть порядок огней."
+  },
+  "hi": {
+    "closeDialog": "बंद करें",
+    "releaseCountLabel": "छोड़ने की संख्या",
+    "twinDew": "जुड़वाँ ओस",
+    "guideFocusTitle": "हर स्तर को समझें",
+    "guideFinishTitle": "बाग़ की यात्रा पूरी करें",
+    "guideFocus": "घेरा 359 डिग्री से शून्य पर लौटता है। बताए गए संकेतक को पहचानें; कोण छिपा हो तो रोशनी की जगह देखें। भ्रामक रोशनी या छाया होने पर बीज छोड़ने से पहले सही संकेतक और खुला मार्ग चुनें। चूक के बाद ही लक्ष्य खिसकता है। प्रिज़्म क्लैंप हर स्तर में एक बार यह खिसकना रोकता है, लेकिन बंद मार्ग नहीं खोलता। क्रम वाले बटन से रोशनियों का क्रम फिर देख सकते हैं।"
+  },
+  "ar": {
+    "closeDialog": "إغلاق",
+    "releaseCountLabel": "مرات الإطلاق",
+    "twinDew": "الندى المزدوج",
+    "guideFocusTitle": "راقب كل مرحلة",
+    "guideFinishTitle": "أكمل رحلة البستان",
+    "guideFocus": "تعود الدائرة من 359 درجة إلى الصفر. اتبع المنارة المسماة، واستدل بموقع الضوء عندما تكون الزاوية مخفية. عند وجود أضواء مضللة أو ظل، اختر الضوء الصحيح ومسارًا مفتوحًا قبل الإطلاق. يحدث الانجراف بعد الإخفاق. يمنع مشبك المنشور حركة واحدة في كل مرحلة، لكنه لا يفتح مسارًا مسدودًا. يتيح زر التسلسل مراجعة ترتيب الأضواء."
+  }
+};
+  for (const [locale, patch] of Object.entries(patches)) Object.assign(window.ORBIT_ORCHARD_LOCALES[locale], patch);
+})();
+
+(function () {
+  const rows = {"en": ["Sequence", "Both lanes are open. Choose either lane.", "Choose lane"], "zh-Hant": ["信標順序", "兩條通道皆開放，任選一條即可。", "選擇通道"], "zh-Hans": ["信标顺序", "两条通道皆开放，任选一条即可。", "选择通道"], "ja": ["灯りの順番", "両方の道が開いています。どちらかを選びます。", "道を選択"], "ko": ["신호 순서", "두 경로 모두 열려 있습니다. 하나를 고르세요.", "경로 선택"], "es": ["Secuencia", "Ambas vías están abiertas. Elige una.", "Elige vía"], "pt-BR": ["Sequência", "As duas rotas estão abertas. Escolha uma.", "Escolha a rota"], "fr": ["Séquence", "Les deux voies sont ouvertes. Choisissez-en une.", "Choisir la voie"], "de": ["Reihenfolge", "Beide Wege sind offen. Wähle einen.", "Weg wählen"], "it": ["Sequenza", "Entrambe le corsie sono aperte. Scegline una.", "Scegli corsia"], "ru": ["Порядок", "Оба пути открыты. Выберите любой.", "Выбрать путь"], "hi": ["रोशनी का क्रम", "दोनों मार्ग खुले हैं। कोई एक चुनें।", "मार्ग चुनें"], "ar": ["التسلسل", "كلا المسارين مفتوح. اختر أحدهما.", "اختر مسارًا"]};
+  for (const [locale, row] of Object.entries(rows)) Object.assign(window.ORBIT_ORCHARD_LOCALES[locale], {patternAction: row[0], laneFinal: row[1], lanePrompt: row[2]});
+})();

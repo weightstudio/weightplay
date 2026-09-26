@@ -27,8 +27,10 @@
     <meta name="weightplay-game-id" content="animal-weather-watch" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-interface-version" content="7" />
     <title>مرصد الطقس | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260911-weather-watch-v6-main-best-refresh" />
+    <link rel="stylesheet" href="style.css?v=20260926-weather-watch-interface7" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3" />
     <link rel="stylesheet" href="art.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
@@ -76,62 +78,66 @@
 }
     </script>
   </head>
-<body data-wp-game-id="animal-weather-watch" data-runtime-localize="off">
+<body data-wp-game-id="animal-weather-watch" data-wp-interface-version="7" data-runtime-localize="off">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">☁</div><p data-i18n="loading">Reading the sky log…</p></div>
-  <main id="app" hidden>
-    <section id="mainScreen" class="screen panel main-screen" data-screen="main">
+  <main id="app" hidden data-wp-frame-root>
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">مرصد الطقس</h1>
+    <select id="localeSelect" aria-label="Language" hidden>
+      <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
+      <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option>
+      <option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option>
+      <option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
+    </select>
+    <section id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen>
       <header class="main-header">
         <a class="main-return" data-wp-return="main" href="../../" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="120" height="120" /></a>
-        <strong data-runtime-localize="off" class="main-title" data-wp-game-title>مرصد الطقس</strong>
-        <button id="settingsBtn" class="icon-btn" type="button" data-wp-settings aria-label="Settings">⚙</button>
+        <strong data-runtime-localize="off" class="main-title" data-wp-game-title data-wp-frame-title>مرصد الطقس</strong>
       </header>
       <div class="main-copy">
-        <div class="cover-wrap"><picture><source srcset="assets/animal-weather-watch-cover-art.webp" type="image/webp" /><img class="main-cover" src="assets/animal-weather-watch-cover-art.png" alt="" width="1254" height="1254" /></picture><span class="cover-badge" data-i18n="kicker">A calm forecast puzzle</span></div>
-        <p class="eyebrow" data-i18n="world">Willow weather station</p>
-        <h1 data-i18n="title">مرصد الطقس</h1>
-        <p class="main-summary intro" data-i18n="intro">Read three sky signs, predict the next one, and open a safe shelter window for each animal.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite" data-i18n="progress">Three forecasts · three shelter windows</p>
-        <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Read the first forecast</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div>
-        <p id="best" class="best"></p>
+        <div class="cover-wrap"><picture><source srcset="assets/animal-weather-watch-cover-art.webp" type="image/webp" /><img class="main-cover" data-wp-frame-poster src="assets/animal-weather-watch-cover-art.png" alt="" width="1254" height="1254" /></picture></div>
+        <p class="main-summary intro" data-i18n="intro" data-wp-frame-summary>Read three sky signs, predict the next one, and open a safe shelter window for each animal.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-i18n="progress">Three forecasts · three shelter windows</p>
+        <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary">Start Game</button></div>
       </div>
     </section>
 
     <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
       <header class="stage-header">
         <button id="stageBackBtn" class="icon-btn scene-return" type="button" data-wp-return="stage" aria-label="Back">←</button>
-        <button id="stageUtilityBtn" class="icon-btn stage-utility" type="button" data-wp-settings aria-label="Settings">⚙</button>
+        <strong data-wp-frame-title hidden aria-hidden="true">Weather Watch</strong>
       </header>
-      <nav class="stage-tabs" role="tablist" aria-label="Forecast sections"><span role="tab" aria-selected="true" data-i18n="forecastTab">Forecasts</span></nav>
-      <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-center-observer="manual"></div>
+      <div id="stageWorkspace" class="stage-workspace">
+        <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-center-observer="manual"></div>
+      </div>
+      <nav class="stage-tabs" data-wp-frame-stage-nav role="tablist" aria-label="Stages"><button id="stagesTab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages">Stages</button></nav>
     </section>
 
     <section id="battleScreen" class="screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" hidden>
       <header class="battle-header">
         <button id="backBtn" class="icon-btn scene-return" type="button" data-wp-return="battle" aria-label="Back">←</button>
-        <button id="battleUtilityBtn" class="icon-btn" type="button" data-wp-battle-utility aria-label="Settings">⚙</button>
+        <strong data-wp-frame-title hidden aria-hidden="true">Weather Watch</strong>
       </header>
+      <div id="weatherBattleLive" class="weather-battle-live">
       <span id="progressPill" class="pill">1 / 3</span>
       <p id="prompt" class="prompt"></p><p id="rule" class="rule"></p>
       <div id="sequence" class="sequence" role="list" aria-label="Weather signs"></div>
       <p id="selection" class="selection" aria-live="polite"></p><div id="choiceGrid" class="choice-grid" role="group" aria-label="Next weather sign"></div>
       <div class="battle-actions"><button id="checkBtn" class="primary" type="button" data-wp-primary-action data-i18n="check" disabled>Check forecast</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset forecast</button></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
+      </div>
 
-      <section id="resultScreen" class="result-panel" hidden>
+      <section id="resultScreen" class="result-panel" data-wp-battle-substate="result" hidden>
         <div class="result-icon result-guide-wrap"><img class="result-guide" src="assets/animal-weather-watch-guide.png" alt="" width="1024" height="1536" aria-hidden="true" /></div>
         <p class="eyebrow" data-i18n="finished">Forecast settled</p><h2 id="resultTitle" data-i18n="resultTitle">The shelter window is clear!</h2><p id="resultText" class="intro"></p>
-        <div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div>
-      </section>
-    </section>
-    <div class="battle-ad-reserve" aria-hidden="true"></div>
-
-    <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" data-sound-toggle type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
+        <div class="main-actions"><button id="resultMapBtn" class="secondary" type="button">Stages</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="replayBtn" class="secondary" type="button">Replay</button></div></section>
   </main>
 
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="مراقبة الطقس game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">دليل لعبة WeightPlay الأصلية</span><h2>مراقبة الطقس</h2><p>مراقبة الطقس لغز هادئ من ثلاثة تنبؤات. اقرأ إشارات السماء، وتوقّع التالية، وافتح مأوى آمناً لكل حيوان.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لغز أنماط التنبؤ</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألغاز · منطق · تعرّف على الأنماط · عائلية · حيوانات</strong></div><div class="game-info-fact"><span>التنبؤات</span><strong>3 تنبؤات مصممة</strong></div><div class="game-info-fact"><span>الجلسة</span><strong>2–5 دقائق</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>محطة طقس الصفصاف</h3><p>يضم دفتر تنبؤات محطة طقس الصفصاف ثلاثة تنبؤات مسماة: مرج الفجر، منخفض المطر، وبستان المساء. يعرض كل تنبؤ ثلاث إشارات في السماء وقصة قصيرة عن المأوى، ثم يسأل عن الإشارة التالية.</p><p>لا تحتاج إلى ملاحقة طقس يتغير لحظة بلحظة. اقرأ تسلسلاً ثابتاً وعادلاً وافتح مأوى هادئاً لكل حيوان. تفتح الإجابة الصحيحة خطوة Result التالية، وتنتهي الزيارة بعد استقرار التنبؤات الثلاثة.</p></div><div class="game-info-section"><h3>كيف تعمل أنظمة التنبؤ</h3><p>يتناوب مرج الفجر بين الشمس والسحاب، لذا تأتي السحابة بعد شمس · سحاب · شمس. يعيد منخفض المطر الإشارة الأولى بعد إشارتين: يأتي المطر بعد مطر · سحاب · سحاب. يكرر بستان المساء الشمس والمطر والسحاب بالترتيب، لذا تأتي الشمس بعد شمس · مطر · سحاب.</p><p>يعرض مشهد التنبؤ القواعد الثلاث مباشرة. اختيار إشارة يجهّز الإجابة فقط؛ أما التحقق من التنبؤ فيسجل محاولة ويعرض نتيجة واضحة أو إعادة محاولة آمنة.</p></div><div class="game-info-section"><h3>طريقة اللعب</h3><p>اضغط اقرأ التنبؤ الأول في Main أو اختر تنبؤاً من الدفتر.</p><p>اقرأ الإشارات الثلاث ونص القاعدة والسؤال عن الإشارة التالية.</p><p>اختر الشمس أو السحاب أو المطر ثم اضغط تحقق من التنبؤ. يستخدم اللمس والماوس الأزرار نفسها.</p><p>إذا أخطأت، أعد قراءة الإيقاع واختر إشارة أخرى وتحقق من جديد. تعيد إعادة الضبط مسح الاختيار الحالي فقط.</p><p>بعد الإجابة الصحيحة اضغط التنبؤ التالي. بعد إكمال الثلاثة يعيد اختيار تنبؤ إلى الدفتر لإعادة اللعب.</p></div><div class="game-info-section"><h3>نصائح استراتيجية</h3><p>سمِّ القاعدة قبل الاختيار: تناوب، عودة بعد إشارتين، أو دورة من ثلاث إشارات.</p><p>لا تنظر إلى آخر رمزين فقط؛ يعتمد التنبؤ الثاني على عودة الإشارة الأولى بعد موضعين.</p><p>استخدم القاعدة والإشارة الظاهرتين معاً. تزيد الخطوة الخاطئة عدد المحاولات لكنها لا تقفل التنبؤ ولا تحذف التقدم المحلي.</p><p>عند الإعادة لا تتغير الإجابات الثلاث، فحاول خفض عدد عمليات التحقق في الزيارة الكاملة.</p></div><div class="game-info-section"><h3>التقدم وإعادة اللعب</h3><p>تمر الزيارة بمرج الفجر ومنخفض المطر وبستان المساء، من التناوب إلى العودة المتأخرة ثم دورة الإشارات الثلاث. لا يظهر تنبؤ رابع؛ فالحملة المصممة تنتهي عند ثلاثة.</p><p>تبقى كل تنبؤاتك المستقرة متاحة في الدفتر. يعرض Result عدد التنبؤات المكتملة ومحاولات الزيارة وأفضل عدد محفوظ في المتصفح.</p></div><div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تستخدم مراقبة الطقس قواعد صغيرة ثابتة حتى يأتي التحدي من قراءة الأنماط لا من السرعة أو الحظ. تحافظ Main والدفتر وBattle وResult على الأدلة أمام اللاعب، وتعمل عناصر التحكم المتجاوبة نفسها على الهاتف واللوحي وسطح المكتب. تجعل التغذية الهادئة الخطأ محاولة تالية مفهومة.</p></div><div class="game-info-section"><h3>معلومات اللاعب والحفظ</h3><p>لا يلزم حساب أو شراء أو دردشة أو ترتيب أو ملف شخصي عبر الإنترنت. تُحفظ أفضل المحاولات وتفضيل الصوت في هذا المتصفح فقط؛ وقد يؤدي حذف بيانات الموقع أو التصفح الخاص أو تغيير المتصفح أو الجهاز إلى نتيجة منفصلة أو إزالة الحفظ المحلي. عدد المحاولات تغذية راجعة للعب وليس تقييماً رسمياً للقدرة.</p></div><div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>ما قواعد التنبؤات الثلاثة؟</dt><dd>يتناوب مرج الفجر بين الشمس والسحاب، ويعيد منخفض المطر الإشارة الأولى بعد إشارتين، ويكرر بستان المساء الشمس والمطر والسحاب.</dd></div><div><dt>ماذا يحدث بعد التنبؤ الخاطئ؟</dt><dd>يبقى التنبؤ مفتوحاً. أعد قراءة التسلسل واختر إشارة أخرى وتحقق من جديد؛ تمسح إعادة الضبط الاختيار الحالي فقط.</dd></div><div><dt>كم عدد التنبؤات؟</dt><dd>هناك ثلاثة تنبؤات مصممة، وتبقى التنبؤات المستقرة في الدفتر لإعادة اللعب.</dd></div><div><dt>ماذا يقيس الأفضل؟</dt><dd>إنه أقل عدد من عمليات التحقق في زيارة مكتملة من ثلاثة تنبؤات. إنه سجل لعب محلي وليس تقييماً.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>تُحفظ أفضل المحاولات والصوت في هذا المتصفح فقط، ولا يلزم حساب.</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>ألعاب ذات صلة</h3><p>إذا كنت تستمتع بقراءة قاعدة ظاهرة والتخطيط للحركة التالية، فجرّب ألغاز WeightPlay العامة هذه.</p><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مجرى بانكو الخيزراني</strong><span>أدر أنابيب بانكو الخيزرانية وأوصل الماء إلى كل جزء ليزهر البستان.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مستودع</strong><span>تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا.</span></span></a></div></div></div></section>
 
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="locales.js?v=20260904-weather-watch-v4-route-locale-overflow-v1"></script>
-  <script src="game.js?v=20260926-weather-watch-v8-battle-render"></script>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="locales.js?v=20260904-weather-watch-v4-route-locale-overflow-v1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script>
+  <script src="game.js?v=20260926-weather-watch-interface7"></script>
   <script src="../../src/stage-selector-standard.js?v=20260904-weather-watch-v4-route-locale-overflow-v1" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260904-weather-watch-v4-route-locale-overflow-v1" data-wp-battle-standard></script>
 </body>

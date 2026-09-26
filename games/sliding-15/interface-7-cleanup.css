@@ -1,0 +1,85 @@
+/* Sliding 15 — Interface 7 content-only cleanup.
+   Cross-game Main/Stage/Battle frame, header, tab, Canvas and reserve geometry
+   belong to the shared Interface 7 implementation. This file styles only
+   Sliding 15 content and Battle-owned overlays. */
+
+body[data-logic-game="sliding-15"] #logicStage .sliding-15-stage-card.is-centered {
+  border-color: #7cc7ff;
+  box-shadow: 0 0 0 3px rgba(124,199,255,.24), 0 0 24px rgba(124,199,255,.28), 0 16px 34px rgba(0,0,0,.3);
+}
+
+body[data-logic-game="sliding-15"] #stageStatus {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+}
+
+body[data-logic-game="sliding-15"] #logicLeave,
+body[data-logic-game="sliding-15"] #logicResult {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(2,10,24,.78);
+  backdrop-filter: blur(8px);
+}
+
+body[data-logic-game="sliding-15"] #logicLeave:not([hidden]),
+body[data-logic-game="sliding-15"] #logicResult:not([hidden]) {
+  display: grid;
+  place-items: center;
+}
+
+body[data-logic-game="sliding-15"] #logicLeave .logic-leave-card {
+  width: min(420px,100%);
+  padding: 24px;
+  border: 1px solid var(--logic-line);
+  border-radius: 22px;
+  background: #102d54;
+  box-shadow: var(--logic-shadow);
+  text-align: center;
+}
+
+body[data-logic-game="sliding-15"] #logicLeave .logic-leave-card h2 {
+  margin: 0 0 8px;
+}
+
+body[data-logic-game="sliding-15"] #logicLeave .logic-leave-card p {
+  margin: 0 0 16px;
+  color: var(--logic-muted);
+}
+
+body[data-logic-game="sliding-15"] #logicResult .logic-result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+body[data-logic-game="sliding-15"] #resultMenu,
+body[data-logic-game="sliding-15"] #resultClose {
+  display: none !important;
+}
+
+body[data-logic-game="sliding-15"] #resultNext[disabled] {
+  opacity: .45;
+  cursor: not-allowed;
+  filter: grayscale(.35);
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  body[data-logic-game="sliding-15"] #logicLeave:not([hidden]),
+  body[data-logic-game="sliding-15"] #logicResult:not([hidden]) {
+    place-items: start center;
+  }
+}

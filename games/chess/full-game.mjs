@@ -51,15 +51,9 @@ $('battle').insertBefore(battleCanvas,battleReserve);
 $('hint').dataset.wpPrimaryAction='';
 function fitBattle(){
  if($('battle').hidden)return;
- const vv=window.visualViewport,css=getComputedStyle($('battle'));
- const inset=edge=>parseFloat(css.getPropertyValue(`--safe-${edge}`))||0;
- const safeWidth=Math.max(1,(vv?.width||innerWidth)-inset('left')-inset('right'));
- const width=Math.min(920,safeWidth),height=Math.max(57,(vv?.height||innerHeight)-inset('top')-inset('bottom'));
- const scale=Math.min(width/390,Math.max(1,height-56)/480);
- Object.assign($('battle').style,{width:`${width}px`,height:`${height}px`,left:`${(vv?.offsetLeft||0)+inset('left')+(safeWidth-width)/2}px`,top:`${(vv?.offsetTop||0)+inset('top')}px`});
- Object.assign(battleCanvas.style,{width:`${width/scale}px`,height:`${Math.max(1,height-56)/scale}px`,transform:`scale(${scale})`});
- battleCanvas.style.setProperty('--wp-battle-canvas-scale',String(scale));
+ window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
 }
+function setBattleLiveInert(value){for(const node of [$('arena'),$('controls'),$('saved'),$('battle').querySelector('.topbar')])if(node)node.inert=value;}
 function showScene(name){
  const result=name==='result',scene=result?'battle':name;
  for(const [type,id] of Object.entries({main:'mainScene',stage:'stages',battle:'battle'})){
@@ -87,13 +81,13 @@ function localize(){
  $('locale').setAttribute('aria-label',boardLocales[locale].language);
  document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
  $('exit').href=lobbyHref(locale,location.href);
- for(const id of ['title','stageTitle'])$(id).dataset.runtimeLocalize='off';
+ $('title').dataset.runtimeLocalize='off';
  for(const [id,key] of Object.entries({title:'title',start:'start',resume:'resume',intro:'intro',guideTitle:'guide',undo:'undo',restart:'restart',hint:'hint',again:'start',resultBack:'back',promoteTitle:'promote',confirmText:'confirm',confirmYes:'start',confirmNo:'cancel',errorText:'unavailable',errorRetry:'retry',errorBack:'back'}))$(id).textContent=text(key);
  // Return artwork is permanent. Localization owns its accessible name only.
  $('back').setAttribute('aria-label',text('back'));$('back').setAttribute('title',text('back'));
  $('arena').setAttribute('aria-label',`${text('title')}. ${text('help')}`);
  document.title=text('title');renderRulesReference($('guide'),locale);updateMain();nextButton.textContent=text('next');
- $('stageTitle').textContent=text('title');$('stageBack').setAttribute('aria-label',text('back'));$('stageList').setAttribute('aria-label',text('select'));
+ $('stageBack').setAttribute('aria-label',text('back'));$('stageList').setAttribute('aria-label',text('select'));
  if(!$('stages').hidden)renderStages();
  if(!$('result').hidden&&outcomeKey){$('outcome').textContent=text(outcomeKey);$('again').textContent=text(currentChallenge?'retry':'start');}
  if(active)render();
@@ -125,17 +119,8 @@ function renderStages(){
 }
 function fitStage(){
  if($('stages').hidden)return;
- const root=$('stages'),canvas=$('stageCanvas'),vv=window.visualViewport,css=getComputedStyle(root);
- const inset=edge=>parseFloat(css.getPropertyValue(`--safe-${edge}`))||0;
- const width=Math.min(920,Math.max(1,(vv?.width||innerWidth)-inset('left')-inset('right')));
- const height=Math.max(57,(vv?.height||innerHeight)-inset('top')-inset('bottom'));
- const scale=Math.min(width/390,(height-56)/480);
- Object.assign(root.style,{width:`${width}px`,height:`${height}px`,left:`${(vv?.offsetLeft||0)+inset('left')+((vv?.width||innerWidth)-inset('left')-inset('right')-width)/2}px`,top:`${(vv?.offsetTop||0)+inset('top')}px`});
- Object.assign(canvas.style,{width:`${width/scale}px`,height:`${(height-56)/scale}px`,transform:`scale(${scale})`});
- canvas.dataset.wpLogicalStageCanvas='';
- canvas.style.setProperty('--wp-stage-canvas-scale',String(scale));
- $('stageReserve').dataset.wpAdReserve='';
- root.dataset.scale=String(scale);stageRail?.center();
+ window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
+ stageRail?.center();
 }
 function stages(){$('resume').hidden=!saved();active=false;stop();showScene('stage');fitStage();renderStages();}
 function settleChallenge(move){
@@ -213,7 +198,7 @@ $('arena').onkeydown=e=>{if(!active||$('promotion').open)return;const delta={Arr
 let confirmationAction=null;
 function askConfirmation(action){
  if(!active||$('confirmation').open)return;
- active=false;epoch++;ai.cancel();busy=false;view?.finishAnimation();view?.render();
+ active=false;epoch++;ai.cancel();busy=false;view?.finishAnimation();view?.render();setBattleLiveInert(true);
  confirmationAction=action;
  const copy=leaveLocales[locale];
  $('confirmText').textContent=action==='restart'?text('confirm'):currentChallenge?`${currentChallenge.id}. ${text(currentChallenge.kind)} — ${copy[2]}`:saved()?.fen===session.fen?copy[3]:copy[4];
@@ -224,7 +209,7 @@ function askConfirmation(action){
 function cancelConfirmation(){
  if(!confirmationAction)return;
  const target=confirmationAction==='leave'?'back':'restart';
- confirmationAction=null;(__wpNotifyMeasurement(), $('confirmation').close());active=true;render();reply();$(target).focus();
+ confirmationAction=null;(__wpNotifyMeasurement(), $('confirmation').close());setBattleLiveInert(false);active=true;render();reply();$(target).focus();
 }
 $('confirmation').addEventListener('keydown',event=>{
  if(event.key!=='Tab')return;
@@ -233,7 +218,7 @@ $('confirmation').addEventListener('keydown',event=>{
 });
 $('start').onclick=()=>begin();$('resume').onclick=()=>begin(true);$('back').onclick=()=>active?askConfirmation('leave'):stages();$('resultBack').onclick=stages;$('again').onclick=()=>__wpReplayStart(() => begin(false,currentChallenge?.id));
 $('undo').onclick=()=>{epoch++;ai.cancel();busy=false;selected=null;session.undoTurn();persist();render();};
-$('restart').onclick=()=>askConfirmation('restart');$('confirmNo').onclick=cancelConfirmation;$('confirmation').addEventListener('cancel',event=>{event.preventDefault();cancelConfirmation();});$('confirmYes').onclick=()=>{const action=confirmationAction;if(!action)return;confirmationAction=null;(__wpNotifyMeasurement(), $('confirmation').close());if(action==='leave')stages();else begin(false,currentChallenge?.id);};
+$('restart').onclick=()=>askConfirmation('restart');$('confirmNo').onclick=cancelConfirmation;$('confirmation').addEventListener('cancel',event=>{event.preventDefault();cancelConfirmation();});$('confirmYes').onclick=()=>{const action=confirmationAction;if(!action)return;confirmationAction=null;(__wpNotifyMeasurement(), $('confirmation').close());setBattleLiveInert(false);if(action==='leave')stages();else begin(false,currentChallenge?.id);};
 $('hint').onclick=async()=>{
  if(busy||session.turn!=='w')return;
  if(currentChallenge&&!currentChallenge.computer){

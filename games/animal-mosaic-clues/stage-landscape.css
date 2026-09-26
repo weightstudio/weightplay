@@ -81,6 +81,17 @@ body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-rail {
   min-height: 0 !important;
 }
 
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-card {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+}
+
+body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-card > [data-wp-item-content] {
+  flex: 1 1 auto;
+  gap: 6px;
+}
+
 /* The existing Mosaic tab is the fixed centre slot of the shared 56px Stage
    navigation. It stays a real control; no fake left/right actions are added. */
 body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tabs {

@@ -1,11 +1,11 @@
-/* Burrow Shape Match v10: pure, bounded puzzle generation; no DOM or storage. */
+/* Burrow Shape Match v11: 30 stages × 5 rooms; pure bounded puzzle generation. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.HollowPuzzles = api;
 })(typeof globalThis === 'object' ? globalThis : this, function () {
   'use strict';
-  const SIZE = 5, TOTAL = 30, CHAPTER_SIZE = 5;
+  const SIZE = 5, STAGE_TOTAL = 30, ROOMS_PER_STAGE = 5, TOTAL = STAGE_TOTAL * ROOMS_PER_STAGE, CHAPTER_SIZE = 5;
   // Authored silhouettes. One row is always one physical left-to-right grid row.
   const SHAPES = [
     '00000/01100/00100/00110/00000', '00000/00100/01110/00100/00000',
@@ -45,8 +45,10 @@
     return seen.size === count(p);
   }
   function rules(index) {
-    const chapter = Math.floor(index / CHAPTER_SIZE);
-    return { chapter, rotate: chapter === 1 || chapter >= 4, mirror: chapter === 2 || chapter >= 4, patch: chapter === 3 || chapter === 5 };
+    const stage = Math.floor(index / ROOMS_PER_STAGE);
+    const sublevel = index % ROOMS_PER_STAGE;
+    const chapter = Math.floor(stage / CHAPTER_SIZE);
+    return { stage, sublevel, chapter, rotate: chapter === 1 || chapter >= 4, mirror: chapter === 2 || chapter >= 4, patch: chapter === 3 || chapter === 5 };
   }
   function variants(p, rule) {
     const out = new Map();
@@ -78,7 +80,7 @@
   }
   function make(index, seed) {
     if (!Number.isInteger(index) || index < 0 || index >= TOTAL) throw new RangeError('HOLLOW_ROOM_RANGE');
-    const random = rng(seed), rule = rules(index), target = [...SHAPES[index]];
+    const random = rng(seed), rule = rules(index), shapeIndex = (rule.stage * 7 + rule.sublevel * 11) % SHAPES.length, target = [...SHAPES[shapeIndex]];
     const required = rule.patch ? patchOf(target, index) : target;
     const fixed = target.map((v, i) => v && !required[i] ? 1 : 0);
     const equivalent = new Set(variants(required, rule).map(key));
@@ -104,9 +106,9 @@
   function readProgress(raw) {
     try {
       const data = JSON.parse(raw);
-      if (data?.schema !== 10 || !Array.isArray(data.stars) || data.stars.length !== TOTAL || !data.stars.every(v => Number.isInteger(v) && v >= 0 && v <= 3)) throw new Error('invalid');
-      return { schema: 10, stars: [...data.stars] };
-    } catch { return { schema: 10, stars: Array(TOTAL).fill(0) }; }
+      if (data?.schema !== 11 || !Array.isArray(data.stars) || data.stars.length !== TOTAL || !data.stars.every(v => Number.isInteger(v) && v >= 0 && v <= 3)) throw new Error('invalid');
+      return { schema: 11, stars: [...data.stars] };
+    } catch { return { schema: 11, stars: Array(TOTAL).fill(0) }; }
   }
-  return Object.freeze({ SIZE, TOTAL, CHAPTER_SIZE, SHAPES: Object.freeze(SHAPES), count, equal, rotate, mirror, transform, connected, rules, variants, make, solve, stars, readProgress });
+  return Object.freeze({ SIZE, STAGE_TOTAL, ROOMS_PER_STAGE, TOTAL, CHAPTER_SIZE, SHAPES: Object.freeze(SHAPES), count, equal, rotate, mirror, transform, connected, rules, variants, make, solve, stars, readProgress });
 });

@@ -7,3 +7,43 @@ body[data-game-id="snake"] #battleScreen {
 body[data-game-id="snake"] #battleScreen .arcade-panel {
   background: rgba(7, 29, 38, .78);
 }
+
+body[data-game-id="snake"] .snake-leave-dialog {
+  width: min(460px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  margin: auto;
+  padding: clamp(20px, 4vw, 28px);
+  border: 1px solid rgba(181, 216, 232, .35);
+  border-radius: 20px;
+  color: var(--arcade-text, #eef7fb);
+  background: rgba(7, 25, 35, .98);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, .55);
+}
+
+body[data-game-id="snake"] .snake-leave-dialog::backdrop {
+  background: rgba(2, 9, 15, .74);
+}
+
+body[data-game-id="snake"] .snake-leave-dialog h2 {
+  margin: 0;
+  color: var(--arcade-accent, #8ee4b4);
+  font-size: clamp(1.25rem, 4vw, 1.6rem);
+  line-height: 1.2;
+}
+
+body[data-game-id="snake"] .snake-leave-dialog p {
+  margin: 12px 0 0;
+  line-height: 1.5;
+}
+
+body[data-game-id="snake"] .snake-leave-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+body[data-game-id="snake"] .snake-leave-actions button {
+  min-height: 44px;
+}

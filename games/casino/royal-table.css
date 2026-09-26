@@ -15,6 +15,23 @@ body.casino-royal-table .card-build small {color:#ffedb6;font-weight:800;}
 body.casino-royal-table #cardGameActions button {min-height:44px;border:1px solid #cbb376;border-radius:10px;background:linear-gradient(140deg,#20483b,#08271f);color:#fff0ca;padding:8px 12px;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;}
 body.casino-royal-table #cardGameActions button.primary-btn {background:linear-gradient(135deg,#ffe4a0,#e6bc5b);color:#183329;}
 body.casino-royal-table #cardGameActions button:disabled {opacity:.45;cursor:default;}
+/* Keep the gameplay row in a stable Canvas track, but anchor its real controls
+   outside that transform and immediately above the physical General reserve. */
+body[data-wp-card-game="casino"] .casino-action-slot {min-height:116px;}
+body[data-wp-card-game="casino"] #battleScreen > #cardGameActions {
+ box-sizing:border-box;position:fixed!important;z-index:120;inset:auto auto 56px 50%!important;
+ width:min(100vw,920px)!important;max-width:min(100vw,920px)!important;min-height:116px;
+ padding:8px 12px;transform:translateX(-50%);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:6px;align-items:center;background:linear-gradient(180deg,rgba(8,42,39,.08),rgba(8,42,39,.96) 28%);
+ pointer-events:auto;
+}
+body[data-wp-card-game="casino"] #battleScreen > #cardGameActions .card-game-quick-guide {
+ grid-column:1/-1;width:auto;min-width:0;padding:5px 8px;font-size:11px;line-height:1.2;
+}
+body[data-wp-card-game="casino"] #battleScreen > #cardGameActions button {width:100%;min-width:0;}
+body[data-wp-card-game="casino"]:has(> .result-overlay:not([hidden])) #battleScreen > #cardGameActions {
+ visibility:hidden;pointer-events:none;
+}
 body.casino-royal-table .card-choice-summary {border-color:#b99b60;background:#0b342c;color:#fff0cf;}
 body.casino-royal-table .casino-card-arrival {animation:casino-card-arrival 180ms ease-out;}
 body.casino-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#254d42,#071e22);border-color:#d7b96f;}

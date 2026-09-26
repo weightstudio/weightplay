@@ -58,39 +58,135 @@
     {rounds:[r(["berries","lanterns"]),r(["acorns","berries"],true)]},{rounds:[r(["lanterns","acorns"],false,"orla","stock"),r(["berries","lanterns"],true)]},{rounds:[r(["acorns","berries"],true,"rux","stock"),r(["lanterns","acorns"])]},{rounds:[r(["berries","acorns"],false,"orla","checkout"),r(["acorns","lanterns"],true,"rux","checkout")]},{rounds:[r(["lanterns","berries"],true),r(["berries","acorns"],true,"orla","stock")]},
     {rounds:[r(["berries","lanterns"],true),r(["lanterns","acorns"],false,"rux","stock"),r(["acorns","berries"],true,"orla","checkout")]},{rounds:[r(["acorns","lanterns"],false,"orla","stock"),r(["berries","acorns"],true),r(["lanterns","berries"],true,"rux","checkout")]},{rounds:[r(["lanterns","berries"],true,"rux","stock"),r(["acorns","lanterns"]),r(["berries","acorns"],true,"orla","stock")]},{rounds:[r(["berries","acorns"],true,"orla","checkout"),r(["lanterns","berries"],true,"rux","checkout"),r(["acorns","lanterns"],false,"orla","stock")]},{rounds:[r(["berries","lanterns"],true,"orla","stock"),r(["acorns","berries"],true,"rux","stock"),r(["lanterns","acorns"],true,"orla","checkout"),r(["berries","acorns"],true,"rux","checkout")]}
   ];
-  const $=s=>document.querySelector(s); const canvas=$("#marketCanvas"),ctx=canvas.getContext("2d");
-  $("#battleScreen").setAttribute("data-wp-battle-return-only","");
+  const $=s=>document.querySelector(s);
+  const canvas=$("#marketCanvas"),ctx=canvas.getContext("2d");
+  const STAGE_POOL_SIZE=9;
+  const START_LABELS={
+    en:"Start Game","zh-Hant":"開始遊戲","zh-Hans":"开始游戏",ja:"ゲーム開始",ko:"게임 시작",es:"Iniciar juego","pt-BR":"Iniciar jogo",fr:"Démarrer le jeu",de:"Spiel starten",it:"Avvia gioco",ru:"Начать игру",hi:"खेल शुरू करें",ar:"ابدأ اللعبة"
+  };
+  const LEAVE_COPY={
+    en:["Leave this stage?","Your current shelf plan and round progress for Stage {stage} will be discarded. Saved cleared stages stay saved.","Continue playing","Return to stages"],
+    "zh-Hant":["離開這個關卡？","第 {stage} 關目前的貨架規劃與本輪進度會被放棄；已儲存的通關進度會保留。","繼續遊戲","返回關卡"],
+    "zh-Hans":["离开这个关卡？","第 {stage} 关当前的货架规划和本轮进度会被放弃；已保存的通关进度会保留。","继续游戏","返回关卡"],
+    ja:["このステージを離れますか？","ステージ {stage} の現在の棚計画とラウンド進行は破棄されます。保存済みのクリア状況は残ります。","プレイを続ける","ステージへ戻る"],
+    ko:["이 스테이지를 나갈까요?","스테이지 {stage}의 현재 선반 계획과 라운드 진행은 사라집니다. 저장된 완료 기록은 유지됩니다.","계속 플레이","스테이지로 돌아가기"],
+    es:["¿Salir de esta etapa?","Se descartarán el plan actual y el progreso de la ronda de la etapa {stage}. Las etapas superadas guardadas se conservarán.","Seguir jugando","Volver a etapas"],
+    "pt-BR":["Sair desta fase?","O plano atual e o progresso da rodada da fase {stage} serão descartados. As fases concluídas e salvas serão mantidas.","Continuar jogando","Voltar às fases"],
+    fr:["Quitter ce niveau ?","Le plan actuel et la progression de la manche du niveau {stage} seront abandonnés. Les niveaux terminés déjà enregistrés restent sauvegardés.","Continuer à jouer","Retour aux niveaux"],
+    de:["Diese Stufe verlassen?","Der aktuelle Regalplan und der Rundenfortschritt von Stufe {stage} werden verworfen. Gespeicherte Abschlüsse bleiben erhalten.","Weiterspielen","Zurück zu den Stufen"],
+    it:["Uscire da questo livello?","Il piano attuale e i progressi del turno del livello {stage} verranno annullati. I livelli completati già salvati resteranno memorizzati.","Continua a giocare","Torna ai livelli"],
+    ru:["Выйти из уровня?","Текущий план полок и прогресс раунда уровня {stage} будут сброшены. Уже сохранённые пройденные уровни останутся.","Продолжить игру","Вернуться к уровням"],
+    hi:["इस चरण से बाहर जाएँ?","चरण {stage} की मौजूदा शेल्फ़ योजना और दौर की प्रगति हट जाएगी। पहले से सहेजे गए पूरे चरण सुरक्षित रहेंगे।","खेल जारी रखें","चरणों पर लौटें"],
+    ar:["مغادرة هذه المرحلة؟","سيتم تجاهل خطة الرفوف الحالية وتقدم الجولة في المرحلة {stage}. ستبقى المراحل المكتملة المحفوظة كما هي.","متابعة اللعب","العودة إلى المراحل"]
+  };
+
   $("#stageScreen").setAttribute("data-wp-logical-stage-canvas","");
   $("#stageBack").setAttribute("data-wp-return","stage");
-  const stageTabs=document.createElement("div");stageTabs.className="stage-tabs";stageTabs.setAttribute("role","tablist");stageTabs.innerHTML='<button type="button" role="tab" aria-selected="true" data-copy="stages">Stages</button>';$("#stageGrid").before(stageTabs);
-  const backgroundImage=new Image(); backgroundImage.addEventListener("load",draw); backgroundImage.src="assets/animal-moon-market-night-market-v1.png";
+  $("#battleBack").setAttribute("data-wp-return","battle");
   $("#startButton").setAttribute("data-runtime-localize","off");
-  const queryLocale=new URLSearchParams(location.search).get("lang"); const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(); const routeLocale=window.__WEIGHTPLAY_ROUTE_LOCALE__||ROUTE_LOCALE_MAP[routeSegment]||"en"; const initialLocale=LOCALES.includes(queryLocale)?queryLocale:(LOCALES.includes(routeLocale)?routeLocale:"en");
+
+  const backgroundImage=new Image();backgroundImage.addEventListener("load",draw);backgroundImage.src="assets/animal-moon-market-night-market-v1.png";
+  const queryLocale=new URLSearchParams(location.search).get("lang"),routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(),routeLocale=window.__WEIGHTPLAY_ROUTE_LOCALE__||ROUTE_LOCALE_MAP[routeSegment]||"en",initialLocale=LOCALES.includes(queryLocale)?queryLocale:(LOCALES.includes(routeLocale)?routeLocale:"en");
   const readNumber=(key,fallback)=>{const value=Number(localStorage.getItem(key));return Number.isFinite(value)?value:fallback;};
   const readCleared=()=>{try{return new Set(JSON.parse(localStorage.getItem("weightplay-moon-market-cleared-v15")||"[]").filter(n=>Number.isInteger(n)&&n>=0&&n<30));}catch{return new Set();}};
   const state={locale:initialLocale,stage:0,round:0,shelf:["berries","acorns"],jobs:{orla:"stock",rux:"checkout"},sound:!window.WeightPlayAudio.isMuted(),unlocked:Math.max(1,Math.min(30,readNumber("weightplay-moon-market-unlocked-v15",1))),cleared:readCleared()};
+  let stageRail=null,resultMode="none",lastBattleFocus=null;
   window.addEventListener("weightplay:audio-volume-change",()=>{state.sound=!window.WeightPlayAudio.isMuted();applyCopy();});
-  const t=k=>COPY[state.locale][k]||COPY.en[k]||k;
-  const currentRound=()=>STAGES[state.stage].rounds[state.round];
-  const fill=(text,values)=>Object.entries(values).reduce((out,[key,value])=>out.replaceAll(`{${key}}`,String(value)),text);
-  function installPlanReadiness(){const forecast=$("#forecast");if(!forecast||$("#planStatus"))return;const status=document.createElement("p");status.id="planStatus";status.className="status";status.setAttribute("aria-live","polite");forecast.insertAdjacentElement("afterend",status);}
-  installPlanReadiness();
+  const t=k=>COPY[state.locale][k]||COPY.en[k]||k,currentRound=()=>STAGES[state.stage].rounds[state.round],fill=(text,values)=>Object.entries(values).reduce((out,[key,value])=>out.replaceAll(`{${key}}`,String(value)),text);
   const track=(name,payload)=>window.WonderAnalytics?.track?.(name,{game_id:"animal-moon-market",game_version:"v15",interface_version:6,...payload});
-  function setScreen(name){for(const screen of ["main","stage","battle"])$("#"+screen+"Screen").classList.toggle("active",name===screen);const g=$("[data-wp-game-guide]");if(g)g.hidden=name!=="main";const ad=$(".battle-ad-reserve");if(ad)ad.hidden=name!=="battle";document.body.dataset.screen=name;if(name!=="battle")window.scrollTo(0,0);if(name==="stage")renderStages();draw();}
-  function applyCopy(){const shell=SHELL_COPY[state.locale]||SHELL_COPY.en;document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";$("#locale").value=state.locale;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));$("#mainProgress").textContent=fill(t("ready"),{cleared:state.cleared.size,unlocked:state.unlocked});$("#soundButton").textContent=state.sound?t("soundOn").split(":").pop().trim():t("soundOff").split(":").pop().trim();$("#soundButton").setAttribute("aria-pressed",String(state.sound));$(".wp-shell-return").setAttribute("aria-label",shell.mainBack);$("#settingsButton").setAttribute("aria-label",shell.settings);$("#settingsPopover").setAttribute("aria-label",shell.settings);$("#settingsTitle").textContent=shell.settings;$("#languageLabel").textContent=shell.language;$("#soundLabel").textContent=t("soundOn").split(":")[0];$("#locale").setAttribute("aria-label",shell.language);$("#posterImage").alt=t("artAlt");$("#orlaGuide").alt=t("orlaAlt");$("#propsAtlas").alt=t("propsAlt");$("#stageBack").setAttribute("aria-label",t("back"));$("#battleBack").setAttribute("aria-label",t("stages"));$("#shelfOneChoices").setAttribute("aria-label",t("shelfOne"));$("#shelfTwoChoices").setAttribute("aria-label",t("shelfTwo"));$("#helperGrid").setAttribute("aria-label",t("helpers"));$("#marketCanvas").setAttribute("aria-label",shell.canvas);renderStages();render();window.dispatchEvent(new Event("wonder:locale-change"));}
-  function ruleText(round){const helper=round.jobs?Object.keys(round.jobs)[0]:"";const key=round.ordered?(round.jobs?"ruleBoth":"ruleOrder"):(round.jobs?"ruleJobs":"ruleAny");return fill(t(key),{helper:helper?t(helper==="orla"?"helperOrla":"helperRux"):"",task:helper?t(round.jobs[helper]):""});}
-  function renderStages(){const grid=$("#stageGrid");if(!grid)return;grid.innerHTML="";STAGES.forEach((stage,index)=>{const b=document.createElement("button");b.type="button";b.className="stage-button";b.disabled=index>=state.unlocked;b.classList.toggle("cleared",state.cleared.has(index));b.classList.toggle("current",index===state.stage);b.innerHTML=`<strong>${t("stage")} ${index+1}</strong><small>${index>=state.unlocked?t("locked"):(state.cleared.has(index)?"✓ "+t("cleared"):`${stage.rounds.length} ${t("round")}`)}</small>`;b.addEventListener("click",()=>startStage(index));grid.appendChild(b);});const chapter=Math.floor(state.stage/5);$("#chapterLabel").textContent=`${t("chapter")} ${chapter+1} · ${t("chapterNames")[chapter]}`;$("#stageProgress").textContent=fill(t("ready"),{cleared:state.cleared.size,unlocked:state.unlocked});}
-  function render(){const current=currentRound();$("#shiftLabel").textContent=`${t("stage")} ${state.stage+1} / 30`;$("#roundLabel").textContent=`${t("round")} ${state.round+1} / ${STAGES[state.stage].rounds.length}`;$("#forecast").textContent=`${t("demand")}: ${current.demand.map(g=>t(g)).join(" + ")}`;$("#ruleText").textContent=ruleText(current);const matchedGoods=new Set(state.shelf.filter(product=>current.demand.includes(product))).size;const coveredJobs=new Set(Object.values(state.jobs));$("#planStatus").textContent=t("planStatus").replace("{shelves}",String(matchedGoods)).replace("{jobs}",String(coveredJobs.has("stock")&&coveredJobs.has("checkout")?2:coveredJobs.size));renderChoices("#shelfOneChoices",0);renderChoices("#shelfTwoChoices",1);const grid=$("#helperGrid");grid.innerHTML="";HELPERS.forEach(h=>{const card=document.createElement("div");card.className="helper-card";card.innerHTML=`<img class="helper-art" src="${h.art}" alt="${t(h.alt)}"><div class="helper-name">${t(h.copy)}</div><div class="helper-actions"><button type="button" data-helper="${h.id}" data-task="stock">${t("stock")}</button><button type="button" data-helper="${h.id}" data-task="checkout">${t("checkout")}</button></div>`;card.querySelectorAll("button").forEach(b=>{const sync=()=>{b.classList.toggle("selected",state.jobs[h.id]===b.dataset.task);b.setAttribute("aria-pressed",String(state.jobs[h.id]===b.dataset.task));};sync();b.addEventListener("click",()=>{state.jobs[h.id]=b.dataset.task;render();});});grid.appendChild(card);});draw();}
+
+  function installPlanReadiness(){const forecast=$("#forecast");if(!forecast||$("#planStatus"))return;const status=document.createElement("p");status.id="planStatus";status.className="status";status.setAttribute("aria-live","polite");forecast.insertAdjacentElement("afterend",status);}
+  function setCovered(covered){const live=$("#battleLive");live.inert=Boolean(covered);if(covered)live.setAttribute("aria-hidden","true");else live.removeAttribute("aria-hidden");}
+  function closeBattleOverlays(){resultMode="none";$("#resultCard").hidden=true;$("#leaveModal").hidden=true;setCovered(false);}
+  function setScreen(name){
+    for(const scene of ["main","stage","battle"]){const root=$("#"+scene+"Screen"),active=name===scene;root.classList.toggle("active",active);root.hidden=!active;root.inert=!active;}
+    const guide=$("[data-wp-game-guide]");if(guide)guide.hidden=name!=="main";
+    document.body.dataset.screen=name;if(name!=="battle"){closeBattleOverlays();window.scrollTo(0,0);}if(name==="stage")renderStages({center:true});
+    window.WeightPlayScreenFrame?.autoMountDocument?.();window.WeightPlayBattleCanvas?.sync?.();draw();
+  }
+
+  function bindStageCard(button,index){
+    const stage=STAGES[index],locked=index>=state.unlocked,cleared=state.cleared.has(index);
+    if(!button.children.length) button.innerHTML="<strong></strong><small></small>";
+    button.className="stage-button";
+    button.dataset.index=String(index);
+    button.classList.toggle("locked",locked);
+    button.classList.toggle("cleared",cleared);
+    button.setAttribute("aria-selected",String(index===state.stage));
+    button.setAttribute("aria-disabled",String(locked));
+    button.querySelector("strong").textContent=`${t("stage")} ${index+1}`;
+    button.querySelector("small").textContent=locked?t("locked"):(cleared?"✓ "+t("cleared"):`${stage.rounds.length} ${t("round")}`);
+  }
+  function ensureStageRail(){
+    const grid=$("#stageGrid");
+    if(stageRail) return stageRail;
+    if(!window.WeightPlayStageV6) throw new Error("STAGE_V6_REQUIRED");
+    stageRail=window.WeightPlayStageV6.install(grid,{
+      total:STAGES.length,
+      poolSize:STAGE_POOL_SIZE,
+      initialIndex:()=>Math.max(0,Math.min(STAGES.length-1,state.stage)),
+      bind:bindStageCard,
+      onChange:index=>{
+        state.stage=index;
+        const chapter=Math.floor(index/5);
+        $("#chapterLabel").textContent=`${t("chapter")} ${chapter+1} · ${t("chapterNames")[chapter]}`;
+        $("#stageProgress").textContent=fill(t("ready"),{cleared:state.cleared.size,unlocked:state.unlocked});
+      },
+      activate:index=>{
+        state.stage=index;
+        renderStages({center:true});
+        if(index<state.unlocked) startStage(index);
+      }
+    });
+    return stageRail;
+  }
+  function renderStages({center=false}={}){
+    const rail=ensureStageRail();
+    rail.refresh();
+    if(center&&$("#stageScreen").classList.contains("active")) rail.center(state.stage);
+  }
+  function enterStageSelection(){state.stage=Math.max(0,state.unlocked-1);setScreen("stage");renderStages({center:true});}
+
+  function applyCopy(){
+    const shell=SHELL_COPY[state.locale]||SHELL_COPY.en;document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";$("#locale").value=state.locale;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));$("#startButton").textContent=START_LABELS[state.locale]||START_LABELS.en;$("#mainProgress").textContent=fill(t("ready"),{cleared:state.cleared.size,unlocked:state.unlocked});$("#soundButton").textContent=state.sound?t("soundOn").split(":").pop().trim():t("soundOff").split(":").pop().trim();$("#soundButton").setAttribute("aria-pressed",String(state.sound));$(".wp-shell-return").setAttribute("aria-label",shell.mainBack);$("#settingsButton").setAttribute("aria-label",shell.settings);$("#settingsPopover").setAttribute("aria-label",shell.settings);$("#settingsTitle").textContent=shell.settings;$("#languageLabel").textContent=shell.language;$("#soundLabel").textContent=t("soundOn").split(":")[0];$("#locale").setAttribute("aria-label",shell.language);$("#posterImage").alt=t("artAlt");$("#orlaGuide").alt=t("orlaAlt");$("#propsAtlas").alt=t("propsAlt");$("#stageBack").setAttribute("aria-label",t("back"));$("#battleBack").setAttribute("aria-label",t("stages"));$("#shelfOneChoices").setAttribute("aria-label",t("shelfOne"));$("#shelfTwoChoices").setAttribute("aria-label",t("shelfTwo"));$("#helperGrid").setAttribute("aria-label",t("helpers"));$("#marketCanvas").setAttribute("aria-label",shell.canvas);renderStages({center:$("#stageScreen").classList.contains("active")});render();syncLeaveCopy();syncResultActions();window.dispatchEvent(new Event("wonder:locale-change"));
+  }
+
+  function ruleText(round){const helper=round.jobs?Object.keys(round.jobs)[0]:"",key=round.ordered?(round.jobs?"ruleBoth":"ruleOrder"):(round.jobs?"ruleJobs":"ruleAny");return fill(t(key),{helper:helper?t(helper==="orla"?"helperOrla":"helperRux"):"",task:helper?t(round.jobs[helper]):""});}
+  function render(){
+    const current=currentRound();$("#shiftLabel").textContent=`${t("stage")} ${state.stage+1} / 30`;$("#roundLabel").textContent=`${t("round")} ${state.round+1} / ${STAGES[state.stage].rounds.length}`;$("#forecast").textContent=`${t("demand")}: ${current.demand.map(g=>t(g)).join(" + ")}`;$("#ruleText").textContent=ruleText(current);const matchedGoods=new Set(state.shelf.filter(product=>current.demand.includes(product))).size,coveredJobs=new Set(Object.values(state.jobs));$("#planStatus").textContent=t("planStatus").replace("{shelves}",String(matchedGoods)).replace("{jobs}",String(coveredJobs.has("stock")&&coveredJobs.has("checkout")?2:coveredJobs.size));renderChoices("#shelfOneChoices",0);renderChoices("#shelfTwoChoices",1);const grid=$("#helperGrid");grid.innerHTML="";HELPERS.forEach(h=>{const card=document.createElement("div");card.className="helper-card";card.innerHTML=`<img class="helper-art" src="${h.art}" alt="${t(h.alt)}"><div class="helper-name">${t(h.copy)}</div><div class="helper-actions"><button type="button" data-helper="${h.id}" data-task="stock">${t("stock")}</button><button type="button" data-helper="${h.id}" data-task="checkout">${t("checkout")}</button></div>`;card.querySelectorAll("button").forEach(b=>{const sync=()=>{b.classList.toggle("selected",state.jobs[h.id]===b.dataset.task);b.setAttribute("aria-pressed",String(state.jobs[h.id]===b.dataset.task));};sync();b.addEventListener("click",()=>{state.jobs[h.id]=b.dataset.task;render();});});grid.appendChild(card);});draw();
+  }
   function renderChoices(selector,index){const holder=$(selector);holder.innerHTML="";GOODS.forEach(g=>{const b=document.createElement("button");b.type="button";b.className="choice";b.dataset.product=g;b.textContent=t(g);const selected=state.shelf[index]===g;b.classList.toggle("selected",selected);b.setAttribute("aria-pressed",String(selected));b.addEventListener("click",()=>{state.shelf[index]=g;render();});holder.appendChild(b);});}
   function draw(){if(!ctx||!$("#battleScreen").classList.contains("active"))return;const current=currentRound();ctx.clearRect(0,0,900,700);if(backgroundImage.complete&&backgroundImage.naturalWidth)ctx.drawImage(backgroundImage,0,0,900,700);else{ctx.fillStyle="#132944";ctx.fillRect(0,0,900,700);}ctx.fillStyle="#091426aa";ctx.fillRect(0,0,900,700);ctx.fillStyle="#fff7e8";ctx.font="800 34px system-ui";ctx.textAlign="center";ctx.fillText(`${t("stage")} ${state.stage+1} · ${t("round")} ${state.round+1}`,450,118);ctx.font="700 24px system-ui";ctx.fillText(current.demand.map(g=>t(g)).join(" · "),450,174);ctx.fillStyle="#d19b61dd";ctx.fillRect(170,360,560,170);ctx.strokeStyle="#f0c878";ctx.lineWidth=12;ctx.strokeRect(170,360,560,170);ctx.fillStyle="#fff7e8";ctx.font="800 25px system-ui";ctx.fillText(t(state.shelf[0]),310,445);ctx.fillText(t(state.shelf[1]),590,445);ctx.fillStyle="#78d0b0";ctx.fillRect(0,560,900,12);}
-  function resetPlan(){const current=currentRound();state.shelf=[current.demand[0],GOODS.find(g=>!current.demand.includes(g))||current.demand[1]];state.jobs={orla:"stock",rux:"checkout"};$("#resultCard").hidden=true;render();}
-  function startStage(index){if(index>=state.unlocked)return;state.stage=index;state.round=0;resetPlan();setScreen("battle");window.WeightPlayAudio.play("game.start");track("market_stage_start",{stage:index+1});}
+  function resetPlan(){const current=currentRound();state.shelf=[current.demand[0],GOODS.find(g=>!current.demand.includes(g))||current.demand[1]];state.jobs={orla:"stock",rux:"checkout"};resultMode="none";$("#resultCard").hidden=true;setCovered(false);render();}
+  function startStage(index){if(index>=state.unlocked)return;state.stage=index;state.round=0;closeBattleOverlays();resetPlan();setScreen("battle");window.WeightPlayAudio?.play?.("game.start");$("#battleBack").focus({preventScroll:true});track("market_stage_start",{stage:index+1});}
   function saveProgress(){localStorage.setItem("weightplay-moon-market-unlocked-v15",String(state.unlocked));localStorage.setItem("weightplay-moon-market-cleared-v15",JSON.stringify([...state.cleared].sort((a,b)=>a-b)));}
-  function evaluate(){const current=currentRound();const goodsMatch=state.shelf.length===2&&state.shelf[0]!==state.shelf[1]&&current.demand.every(g=>state.shelf.includes(g));const orderMatch=!current.ordered||(state.shelf[0]===current.demand[0]&&state.shelf[1]===current.demand[1]);const jobs=new Set(Object.values(state.jobs));const splitJobs=jobs.has("stock")&&jobs.has("checkout");const assignedMatch=!current.jobs||Object.entries(current.jobs).every(([helper,task])=>state.jobs[helper]===task);const good=goodsMatch&&orderMatch&&splitJobs&&assignedMatch;const lastRound=state.round===STAGES[state.stage].rounds.length-1;const stageDone=good&&lastRound;$("#resultCard").hidden=false;$("#resultCard").classList.toggle("success",good);$("#resultCard").classList.toggle("fail",!good);$("#resultEyebrow").textContent=good?t("planReady"):t("bad");$("#resultTitle").textContent=good?(stageDone?(state.stage===29?t("campaignDone"):t("stageGood")):t("good")):t("bad");$("#resultCopy").textContent=good?(stageDone?t("stageGood"):t("roundGood")):(!goodsMatch?t("badGoods"):(!orderMatch?t("badOrder"):t("badJobs")));$("#nextButton").textContent=t("nextRound");$("#nextButton").hidden=!good||lastRound;$("#nextStageButton").textContent=t("nextStage");$("#nextStageButton").hidden=!stageDone||state.stage===29;$("#retryButton").hidden=good;$("#replayButton").hidden=!stageDone;$("#stagesButton").hidden=!stageDone;if(stageDone){state.cleared.add(state.stage);state.unlocked=Math.max(state.unlocked,Math.min(30,state.stage+2));saveProgress();applyCopy();$("#resultCard").hidden=false;}track(good?"market_round_complete":"market_round_retry",{stage:state.stage+1,round:state.round+1,shelves:state.shelf.slice(),jobs:{...state.jobs}});}
+
+  function syncResultActions(){if($("#resultCard").hidden)return;$("#stagesButton").hidden=false;$("#nextButton").hidden=false;$("#replayButton").hidden=false;$("#stagesButton").textContent=t("stages");$("#nextButton").textContent=t("nextStage");$("#replayButton").textContent=t("replay");$("#nextButton").disabled=!(resultMode==="stage"&&state.stage<29&&state.stage+1<state.unlocked);}
+  function showResult(mode,good,copy){resultMode=mode;$("#resultCard").hidden=false;$("#resultCard").classList.toggle("success",good);$("#resultCard").classList.toggle("fail",!good);$("#resultEyebrow").textContent=good?t("planReady"):t("bad");$("#resultTitle").textContent=copy.title;$("#resultCopy").textContent=copy.body;syncResultActions();setCovered(true);($("#nextButton").disabled?$("#stagesButton"):$("#nextButton")).focus({preventScroll:true});}
+  function evaluate(){
+    const current=currentRound(),goodsMatch=state.shelf.length===2&&state.shelf[0]!==state.shelf[1]&&current.demand.every(g=>state.shelf.includes(g)),orderMatch=!current.ordered||(state.shelf[0]===current.demand[0]&&state.shelf[1]===current.demand[1]),jobs=new Set(Object.values(state.jobs)),splitJobs=jobs.has("stock")&&jobs.has("checkout"),assignedMatch=!current.jobs||Object.entries(current.jobs).every(([helper,task])=>state.jobs[helper]===task),good=goodsMatch&&orderMatch&&splitJobs&&assignedMatch,lastRound=state.round===STAGES[state.stage].rounds.length-1,stageDone=good&&lastRound;
+    if(good&&!lastRound){track("market_round_complete",{stage:state.stage+1,round:state.round+1,shelves:state.shelf.slice(),jobs:{...state.jobs}});nextRound();return;}
+    const body=stageDone?t("stageGood"):(!goodsMatch?t("badGoods"):(!orderMatch?t("badOrder"):t("badJobs"))),title=stageDone?(state.stage===29?t("campaignDone"):t("stageGood")):t("bad");
+    if(stageDone){state.cleared.add(state.stage);state.unlocked=Math.max(state.unlocked,Math.min(30,state.stage+2));saveProgress();applyCopy();}
+    showResult(stageDone?"stage":"fail",stageDone,{title,body});track(stageDone?"market_round_complete":"market_round_retry",{stage:state.stage+1,round:state.round+1,shelves:state.shelf.slice(),jobs:{...state.jobs}});
+  }
   function nextRound(){if(state.round>=STAGES[state.stage].rounds.length-1)return;state.round+=1;resetPlan();track("market_round_start",{stage:state.stage+1,round:state.round+1});}
-  function retry(){$("#resultCard").hidden=true;render();}
   function replay(){startStage(state.stage);}
-  function goNextStage(){if(state.stage<29)startStage(state.stage+1);}
-  $("#startButton").addEventListener("click",()=>setScreen("stage"));$("#guideButton").addEventListener("click",()=>$('[data-wp-game-guide]')?.scrollIntoView({behavior:"smooth",block:"center"}));$("#settingsButton").addEventListener("click",()=>{const p=$("#settingsPopover"),open=p.hidden;p.hidden=!open;$("#settingsButton").setAttribute("aria-expanded",String(open));});$("#soundButton").addEventListener("click",()=>{state.sound=window.WeightPlayAudio.setEnabled(!state.sound);applyCopy();});$("#stageBack").addEventListener("click",()=>setScreen("main"));$("#battleBack").addEventListener("click",()=>setScreen("stage"));$("#openButton").addEventListener("click",evaluate);$("#resetButton").addEventListener("click",resetPlan);$("#nextButton").addEventListener("click",nextRound);$("#nextStageButton").addEventListener("click",goNextStage);$("#retryButton").addEventListener("click",retry);$("#replayButton").addEventListener("click",replay);$("#stagesButton").addEventListener("click",()=>setScreen("stage"));$("#homeButton").addEventListener("click",()=>setScreen("main"));$("#locale").addEventListener("change",e=>{state.locale=e.target.value;localStorage.setItem("weightPlayLocale",state.locale);applyCopy();});document.addEventListener("DOMContentLoaded",()=>{document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";window.dispatchEvent(new Event("wonder:locale-change"));},{once:true});applyCopy();
+  function advanceResult(){if(resultMode==="stage"&&state.stage<29&&state.stage+1<state.unlocked)startStage(state.stage+1);}
+
+  function syncLeaveCopy(){const copy=LEAVE_COPY[state.locale]||LEAVE_COPY.en;$("#leaveTitle").textContent=copy[0];$("#leaveCopy").textContent=copy[1].replace("{stage}",String(state.stage+1));$("#leaveContinue").textContent=copy[2];$("#leaveStages").textContent=copy[3];}
+  function openLeave(){if(!$("#battleScreen").classList.contains("active")||!$("#leaveModal").hidden||!$("#resultCard").hidden)return;lastBattleFocus=document.activeElement;syncLeaveCopy();setCovered(true);$("#leaveModal").hidden=false;$("#leaveContinue").focus({preventScroll:true});}
+  function continueBattle(){if($("#leaveModal").hidden)return;$("#leaveModal").hidden=true;setCovered(false);(lastBattleFocus?.isConnected?lastBattleFocus:$("#battleBack")).focus({preventScroll:true});}
+  function leaveToStages(){if($("#leaveModal").hidden)return;$("#leaveModal").hidden=true;setCovered(false);enterStageSelection();}
+  function trapDialogFocus(dialog,event){if(event.key!=="Tab")return;const items=[...dialog.querySelectorAll("button:not([hidden]):not([disabled])")];if(!items.length)return;const first=items[0],last=items.at(-1),active=document.activeElement;if(event.shiftKey&&(active===first||!dialog.contains(active))){event.preventDefault();last.focus();}else if(!event.shiftKey&&active===last){event.preventDefault();first.focus();}}
+
+  installPlanReadiness();ensureStageRail();
+$("#startButton").addEventListener("click",enterStageSelection);$("#settingsButton").addEventListener("click",()=>{const p=$("#settingsPopover"),open=p.hidden;p.hidden=!open;$("#settingsButton").setAttribute("aria-expanded",String(open));});$("#soundButton").addEventListener("click",()=>{state.sound=window.WeightPlayAudio.setEnabled(!state.sound);applyCopy();});
+  $("#stageBack").addEventListener("click",()=>setScreen("main"));$("#battleBack").addEventListener("click",openLeave);$("#openButton").addEventListener("click",evaluate);$("#resetButton").addEventListener("click",resetPlan);$("#nextButton").addEventListener("click",advanceResult);$("#replayButton").addEventListener("click",replay);$("#stagesButton").addEventListener("click",enterStageSelection);$("#leaveContinue").addEventListener("click",continueBattle);$("#leaveStages").addEventListener("click",leaveToStages);
+  for(const dialog of [$("#leaveModal"),$("#resultCard")])dialog.addEventListener("keydown",event=>trapDialogFocus(dialog,event));
+  window.addEventListener("keydown",event=>{if(event.key!=="Escape"||!$("#battleScreen").classList.contains("active"))return;if(!$("#leaveModal").hidden){event.preventDefault();continueBattle();}else if($("#resultCard").hidden){event.preventDefault();openLeave();}});
+  $("#locale").addEventListener("change",e=>{state.locale=e.target.value;localStorage.setItem("weightPlayLocale",state.locale);applyCopy();});
+  document.addEventListener("DOMContentLoaded",()=>{document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";window.dispatchEvent(new Event("wonder:locale-change"));},{once:true});
+  applyCopy();setScreen("main");
 })();
 document.querySelector(".lede")?.classList.add("main-summary");

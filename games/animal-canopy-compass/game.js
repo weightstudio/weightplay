@@ -84,6 +84,8 @@
   let leaveExit = null;
   let pendingBattleFrame = 0;
   let resultFocusFrame = 0;
+  let sharedFrame = null;
+  const app = $("app");
 
   const t = (key, vars = {}) => {
     let value = (copy[state.locale] || copy.en || {})[key] || (copy.en || {})[key] || key;
@@ -107,85 +109,6 @@
     ar: { title: "مغادرة نقطة المراقبة؟", body: "نقطة {round} · الصدى {phase}/{total}: ستؤدي المغادرة إلى إلغاء هذا التقدم المؤقت و{turns} حركة. تبقى النقاط المكتملة وأفضل النتائج والشارات محفوظة.", keep: "متابعة اللعب", leave: "العودة إلى الخريطة" },
   };
 
-  const ensureInterface7ContentContract = () => {
-    if (!document.querySelector('link[data-wp-canopy-stage-standard]')) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "/src/stage-selector-standard.css?v=20260924-canopy-v13-i7";
-      link.dataset.wpCanopyStageStandard = "";
-      document.head.append(link);
-    }
-    if (!document.querySelector("style[data-wp-canopy-i7-content]")) {
-      const style = document.createElement("style");
-      style.dataset.wpCanopyI7Content = "";
-      style.textContent = `
-        body[data-wp-game-id="animal-canopy-compass"] .result-actions {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-        body[data-wp-game-id="animal-canopy-compass"] .result-actions > button {
-          min-width: 0;
-          padding-inline: 8px;
-        }
-        .wp-canopy-leave {
-          position: absolute;
-          inset: 0;
-          z-index: 90;
-          display: grid;
-          place-items: center;
-          padding: 16px;
-          background: rgb(15 29 49 / 78%);
-          backdrop-filter: blur(3px);
-        }
-        .wp-canopy-leave[hidden] { display: none !important; }
-        .wp-canopy-leave-card {
-          width: min(100%, 460px);
-          max-height: calc(100% - 24px);
-          overflow: auto;
-          padding: 20px;
-          border: 2px solid #d6e1d9;
-          border-radius: 14px;
-          background: #fffdf8;
-          color: #29485a;
-          box-shadow: 0 18px 44px rgb(24 42 55 / 28%);
-        }
-        .wp-canopy-leave-card h2 { margin: 0 0 8px; font-size: 1.3rem; }
-        .wp-canopy-leave-card p { margin: 0; color: #566d7e; }
-        .wp-canopy-leave-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; }
-        .wp-canopy-leave-actions button { min-height: 48px; }
-        @media (max-width: 520px) {
-          .wp-canopy-leave-actions { grid-template-columns: 1fr; }
-          body[data-wp-game-id="animal-canopy-compass"] .result-actions > button { font-size: .78rem; padding-inline: 4px; }
-        }
-        body[data-wp-game-id="animal-canopy-compass"] .compass { transition: transform 240ms cubic-bezier(.2,.8,.2,1), filter 180ms ease; }
-        body[data-wp-game-id="animal-canopy-compass"] .direction { transition: transform 150ms ease, box-shadow 180ms ease, background 180ms ease; }
-        body[data-wp-game-id="animal-canopy-compass"] .direction:active { transform: scale(.96); }
-        body[data-wp-game-id="animal-canopy-compass"] .wp-canopy-wrong .compass { animation: wpCanopyWrong 240ms ease; filter: saturate(.72); }
-        body[data-wp-game-id="animal-canopy-compass"] .wp-canopy-correct .compass { animation: wpCanopyCorrect 340ms ease; }
-        body[data-wp-game-id="animal-canopy-compass"] .result-panel:not([hidden]) { animation: wpCanopyResult 320ms cubic-bezier(.2,.8,.2,1); }
-        @keyframes wpCanopyWrong { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-        @keyframes wpCanopyCorrect { 50% { transform: scale(1.045); filter: brightness(1.08); } }
-        @keyframes wpCanopyResult { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: none; } }
-        @media (prefers-reduced-motion: reduce) { body[data-wp-game-id="animal-canopy-compass"] .compass, body[data-wp-game-id="animal-canopy-compass"] .direction { transition: none; } body[data-wp-game-id="animal-canopy-compass"] .wp-canopy-wrong .compass, body[data-wp-game-id="animal-canopy-compass"] .wp-canopy-correct .compass, body[data-wp-game-id="animal-canopy-compass"] .result-panel:not([hidden]) { animation: none; } }
-      `;
-      document.head.append(style);
-    }
-    ["mapBtn", "stageHelp", "stageHeading", "battleHeading", "battleSound", "battleMap"].forEach((id) => {
-      const node = $(id);
-      if (node) node.hidden = true;
-    });
-    const stageCanvas = document.querySelector(".stage-canvas");
-    if (stageCanvas) stageCanvas.dataset.wpStageArt = "/games/animal-canopy-compass/assets/animal-canopy-compass-cover.png";
-    const result = $("result");
-    const battleCanvas = document.querySelector(".battle-canvas");
-    if (result && battleCanvas && result.parentElement !== battleCanvas) battleCanvas.append(result);
-    const actions = result?.querySelector(".result-actions");
-    if (actions && $("resultMap") && $("resultPrimary") && $("resultHome")) {
-      actions.append($("resultMap"), $("resultPrimary"), $("resultHome"));
-      $("resultHome").dataset.copy = "replay";
-    }
-  };
-  ensureInterface7ContentContract();
-
   const battleCanvas = () => document.querySelector(".battle-canvas");
   const battleContent = () => document.querySelector(".battle-content");
   const battleHeader = () => $("battleBack")?.closest("header");
@@ -202,8 +125,8 @@
   };
   const setResultActive = (active) => {
     document.body.toggleAttribute("data-wp-canopy-result", active);
-    // Keep the Battle Settings utility reachable in Result while its return is disabled.
     setBattleCovered(active, true, active);
+    sharedFrame?.activate("battle", { covered: active });
     if (!active && $("result")) $("result").hidden = true;
   };
 
@@ -295,12 +218,20 @@
     if (leaveDialogOpen) closeLeaveDialog(false);
     if (state.screen === "battle" && name !== "battle") setResultActive(false);
     state.screen = name;
+    app.hidden = false;
     document.body.dataset.screen = name;
     ["main", "stage", "battle"].forEach((screen) => { $(`${screen}Screen`).hidden = screen !== name; });
-    $("settingsPanel").hidden = true;
-    $("settingsBtn").setAttribute("aria-expanded", "false");
-    if (name === "stage") renderStages();
-    if (name === "battle") renderBattle();
+    $("gameGuide").hidden = name !== "main";
+    $("gameGuide").setAttribute("aria-hidden", String(name !== "main"));
+    sharedFrame?.activate(name);
+    if (name === "stage") {
+      renderStages();
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    if (name === "battle") {
+      renderBattle();
+      window.WeightPlayBattleCanvas?.sync?.();
+    }
     if (name === "main") applyLocale();
     window.scrollTo(0, 0);
   };
@@ -308,26 +239,22 @@
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    $("settingsBtn").setAttribute("aria-label", t("settings"));
-    $("settingsPanel").setAttribute("aria-label", t("settings"));
     $("localeSelect").setAttribute("aria-label", t("language"));
     $("localeSelect").value = state.locale;
-    $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
-    $("soundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("battleSound")?.setAttribute("aria-label", state.sound ? t("soundOn") : t("soundOff"));
-    $("battleSound")?.setAttribute("title", state.sound ? t("soundOn") : t("soundOff"));
-    $("stageHelp")?.setAttribute("aria-label", t("help"));
-    $("stageHelp")?.setAttribute("title", t("help"));
-    $("stageHeading")?.setAttribute("aria-label", t("map"));
-    $("battleMap")?.setAttribute("aria-label", t("map"));
+    $("stageBack").setAttribute("aria-label", t("back"));
+    $("battleBack").setAttribute("aria-label", t("back"));
     $("stageScreen").setAttribute("aria-label", t("map"));
+    $("battleScreen").setAttribute("aria-label", t("title"));
     $("directionRack").setAttribute("aria-label", t("directionChoices"));
-    updateProgress();
-    document.querySelector(".wp-shell-return")?.setAttribute("aria-label", t("lobbyReturn"));
+    $("mainBack").setAttribute("aria-label", t("lobbyReturn"));
+    const route = { en:"en", "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" }[state.locale] || "en";
+    $("mainBack").href = `/${route}/`;
     document.querySelector(".stage-tabs")?.setAttribute("aria-label", t("stageSections"));
+    updateProgress();
     if ($("resultHome")) $("resultHome").textContent = t("replay");
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle" && state.phase < rounds[state.round].phases.length) renderBattle();
+    sharedFrame?.refresh();
   };
   const unlockedCount = () => {
     let count = 1;
@@ -416,7 +343,6 @@
     const canvas = battleCanvas();
     const preservedScrollTop = canvas?.scrollTop || 0;
     setResultActive(false);
-    $("battleHeading").textContent = t("title");
     $("roundLabel").textContent = t("round", { number: round.id, total: rounds.length });
     $("hint").textContent = t("arc" + round.arc) + " · " + t("phaseProgress", { current: state.phase + 1, total: round.phases.length });
     $("badge").textContent = `${state.completed.length}/${rounds.length}`;
@@ -488,6 +414,7 @@
     const final = round.finale === true;
     $("resultTitle").textContent = final ? t("finaleTitle") : round.checkpoint ? t("checkpoint") + " · " + t("complete") : t("complete");
     $("resultText").textContent = final ? t("finaleText") : t("stageClear");
+    $("resultProgress").textContent = t("resultProgress", { count: state.completed.length, total: rounds.length });
     renderBadgeReward(round.checkpoint || (final ? 6 : 0));
     $("stats").textContent = t("stats", { turns: state.turns, best: state.bests[round.id] ?? state.turns }) + ` · ${state.mistakes === 0 ? "★" : "✦"} ${state.mistakes}`;
     $("resultPrimary").textContent = t("nextStage");
@@ -501,24 +428,21 @@
   };
 
   $("startBtn").addEventListener("click", startSession);
-  $("mapBtn")?.addEventListener("click", () => setScreen("stage"));
   $("stageBack").addEventListener("click", () => setScreen("main"));
-  $("stageHelp")?.addEventListener("click", () => showToast(t("mapIntro")));
   $("battleBack").addEventListener("click", () => {
     if (!$("result").hidden) return;
     if (state.turns > 0 || state.phase > 0) openLeaveDialog();
     else setScreen("stage");
   });
-  $("battleMap")?.addEventListener("click", () => setScreen("stage"));
   $("checkBtn").addEventListener("click", check);
   $("resetBtn").addEventListener("click", () => { state.direction = 0; state.turns += 1; renderBattle(); $("status").textContent = t("ready"); });
   $("resultMap").addEventListener("click", () => setScreen("stage"));
   $("resultHome").addEventListener("click", () => startRound(state.round));
-  $("settingsBtn").addEventListener("click", () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden)); });
-  $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; set("weightplay-canopy-compass-sound", state.sound ? "on" : "off"); applyLocale(); });
-  $("battleSound")?.addEventListener("click", () => { state.sound = !state.sound; set("weightplay-canopy-compass-sound", state.sound ? "on" : "off"); applyLocale(); });
-  $("closeSettings")?.addEventListener("click", () => { $("settingsPanel").hidden = true; $("settingsBtn").setAttribute("aria-expanded", "false"); });
-  $("localeSelect").addEventListener("change", (event) => { state.locale = normalizeLocale(event.target.value); set("weightPlayLocale", state.locale); set("weightplayLocale", state.locale); set("wp-locale", state.locale); applyLocale(); });
+  $("localeSelect").addEventListener("change", (event) => {
+    state.locale = normalizeLocale(event.target.value);
+    set("weightPlayLocale", state.locale); set("weightplayLocale", state.locale); set("wp-locale", state.locale);
+    applyLocale();
+  });
   document.addEventListener("keydown", (event) => {
     if (leaveDialogOpen) {
       if (event.key === "Escape") {
@@ -551,6 +475,14 @@
     cancelAnimationFrame(pendingBattleFrame);
     cancelAnimationFrame(resultFocusFrame);
   }, { once: true });
-  state.sound = get("weightplay-canopy-compass-sound", "on") !== "off";
-  setTimeout(() => { $("loadingPanel").hidden = true; $("mainScreen").hidden = false; applyLocale(); }, 280);
+  sharedFrame = window.WeightPlayScreenFrame?.mount?.({
+    root: app,
+    localeSelect: $("localeSelect"),
+    scenes: {
+      main: { root: $("mainScreen"), header: $("mainHeader"), content: $("mainContent") },
+      stage: { root: $("stageScreen"), header: $("stageHeader"), content: $("stageContent") },
+      battle: { root: $("battleScreen"), header: $("battleHeader"), content: $("battleContent"), headerInfo: $("battleHeaderInfo") },
+    },
+  }) || null;
+  setTimeout(() => { $("loadingPanel").hidden = true; setScreen("main"); applyLocale(); }, 120);
 }());

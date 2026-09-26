@@ -60,46 +60,31 @@
   window.addEventListener("weightplay:shell-sync", syncHandLabel);
 
   const mainCopy = document.querySelector("#mainScreen .main-copy");
-  if (mainCopy && !mainCopy.querySelector("[data-wp-main-progress]")) {
-    const progress = document.createElement("div");
-    progress.className = "main-progress";
-    progress.dataset.wpMainProgress = "true";
-    progress.setAttribute("role", "status");
-    progress.setAttribute("aria-live", "polite");
-    const [progressLabel, progressText] = mainProgressCopy[document.documentElement.lang] || mainProgressCopy.en;
-    const label = document.createElement("strong");
-    label.textContent = progressLabel;
-    label.setAttribute("data-runtime-localize", "off");
-    const copy = document.createElement("span");
-    copy.textContent = progressText;
-    copy.setAttribute("data-runtime-localize", "off");
-    progress.append(label, copy);
-    mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
-  }
+  // Interface 7 Main keeps one shared title owner, one concise summary, and
+  // exactly one dominant Start Game action. Old Maid has no Stage progression,
+  // so its former blind-draw coaching card is not Main progress.
+  mainCopy?.querySelector(".eyebrow")?.remove();
+  mainCopy?.querySelector("h1[data-wp-game-title]")?.remove();
+  ["#restartBtn", "#newGameBtn"].forEach((selector) => document.querySelector(selector)?.remove());
 
-  const topbar = document.querySelector("#battleScreen .card-game-topbar");
-  // Localized static routes may still contain a translated back label. Establish
-  // the same single shared arrow node before shell or runtime localization runs.
-  const battleReturn = document.querySelector("#battleBackBtn");
-  if (battleReturn) {
-    const arrow = document.createElement("span");
-    arrow.className = "wp-shell-return-arrow";
-    arrow.textContent = "←";
-    arrow.setAttribute("aria-hidden", "true");
-    arrow.setAttribute("data-runtime-localize", "off");
-    battleReturn.replaceChildren(arrow);
+  const pairHudLabels = {
+    en: "Matched pairs", "zh-Hant": "已配對", "zh-Hans": "已配对", ja: "ペア数",
+    ko: "맞춘 짝", es: "Parejas", "pt-BR": "Pares", fr: "Paires",
+    de: "Paare", it: "Coppie", ru: "Пары", hi: "जोड़े", ar: "الأزواج",
+  };
+  const battlePhase = document.querySelector("#cardGamePhase");
+  if (battlePhase) {
+    battlePhase.hidden = true;
+    battlePhase.setAttribute("aria-hidden", "true");
   }
-  if (topbar && !topbar.querySelector("[data-wp-battle-utility]")) {
-    const utility = document.createElement("button");
-    utility.id = "battleUtilityBtn";
-    utility.className = "battle-utility header-icon-btn";
-    utility.type = "button";
-    utility.dataset.wpBattleUtility = "true";
-    utility.setAttribute("aria-label", "Settings");
-    utility.title = "Settings";
-    utility.textContent = "⚙";
-    topbar.append(utility);
-  }
+  const syncBattleHudLabel = () => {
+    const stat = document.querySelector("#cardGameScore")?.closest(".card-stat");
+    if (!stat) return;
+    const locale = document.documentElement.lang || "en";
+    stat.setAttribute("aria-label", pairHudLabels[locale] || pairHudLabels.en);
+  };
+  window.addEventListener("wonder:locale-change", syncBattleHudLabel);
+  window.addEventListener("weightplay:shell-sync", syncBattleHudLabel);
 
   // Old Maid pairs automatically: only face-down opponent cards are inputs.
   // The shared card renderer also serves games where the player's hand is
@@ -141,6 +126,27 @@
   };
   const canvas = document.querySelector("#battleScreen .battle-canvas");
   const table = canvas.querySelector(".card-table-ui");
+  const resultOverlay = document.querySelector("#resultOverlay");
+  if (resultOverlay && resultOverlay.parentElement !== canvas) canvas.append(resultOverlay);
+  if (resultOverlay) resultOverlay.dataset.wpBattleSubstate = "result";
+  const syncResultSubstate = () => {
+    if (!resultOverlay || !table) return;
+    const active = !resultOverlay.hidden;
+    table.inert = active;
+    if (active) {
+      table.setAttribute("aria-hidden", "true");
+      canvas.dataset.wpBattleSubstateActive = "result";
+      resultOverlay.querySelector("button:not([disabled])")?.focus({ preventScroll: true });
+    } else {
+      table.removeAttribute("aria-hidden");
+      delete canvas.dataset.wpBattleSubstateActive;
+    }
+  };
+  if (resultOverlay) {
+    new MutationObserver(syncResultSubstate).observe(resultOverlay, { attributes: true, attributeFilter: ["hidden"] });
+    syncResultSubstate();
+  }
+
   const panel = document.createElement("section");
   panel.id = "oldMaidLeavePanel";
   panel.hidden = true;
@@ -190,6 +196,6 @@
   } });
   makeHandReadOnly();
   syncHandLabel();
-  window.setTimeout(syncHandLabel, 0);
-  window.setTimeout(syncHandLabel, 400);
+  syncBattleHudLabel();
+  syncResultSubstate();
 })();

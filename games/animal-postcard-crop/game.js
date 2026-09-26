@@ -1,4 +1,4 @@
-/* v6: shared Stage selection and generated-guide-safe scene transitions. */
+/* v7: measured atlas windows; shared Stage/flow and original artwork preserved. */
 (() => {
   'use strict';
   const E=window.PostcardCropEngine, cards=window.PostcardCropCards;
@@ -167,7 +167,7 @@
     $('chapterName').textContent=L.chapters[card.chapter];$('cardCount').textContent=`${index+1}/${cards.length}`;$('parCount').textContent=String(state.par);
     $('targetText').textContent=card.targets.map(i=>L.scenes[i]).join(' · ');$('avoidText').textContent=card.avoid.map(i=>L.scenes[i]).join(' · ');
     $('cornerText').textContent=card.corner===null?'':t('corner',{name:L.scenes[card.corner]});
-    tiles.forEach((n,i)=>{const v=card.cells[i];n.style.backgroundPosition=`${(v%4)*100/3}% ${Math.floor(v/4)*50}%`;n.firstChild.textContent=L.scenes[v];n.setAttribute('aria-label',L.scenes[v]);n.classList.remove('pc-wrong');});
+    tiles.forEach((n,i)=>{const v=card.cells[i];window.PostcardCropAtlas.apply(n,v);n.firstChild.textContent=L.scenes[v];n.setAttribute('aria-label',L.scenes[v]);n.classList.remove('pc-wrong');});
     $('sceneGrid').setAttribute('aria-label',`${t('card')} ${index+1}. ${$('targetText').textContent}. ${$('avoidText').textContent}`);
     $('battleStatus').textContent=t('ready');renderPosition();fitBoard();
     tween($('tileLayer'),[{opacity:.3,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],320);

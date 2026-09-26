@@ -27,8 +27,10 @@
     <meta name="weightplay-game-id" content="animal-weather-watch" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-interface-version" content="7" />
     <title>Observatório do Tempo | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260911-weather-watch-v6-main-best-refresh" />
+    <link rel="stylesheet" href="style.css?v=20260926-weather-watch-interface7" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3" />
     <link rel="stylesheet" href="art.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
@@ -76,62 +78,66 @@
 }
     </script>
   </head>
-<body data-wp-game-id="animal-weather-watch" data-runtime-localize="off">
+<body data-wp-game-id="animal-weather-watch" data-wp-interface-version="7" data-runtime-localize="off">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">☁</div><p data-i18n="loading">Reading the sky log…</p></div>
-  <main id="app" hidden>
-    <section id="mainScreen" class="screen panel main-screen" data-screen="main">
+  <main id="app" hidden data-wp-frame-root>
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Observatório do Tempo</h1>
+    <select id="localeSelect" aria-label="Language" hidden>
+      <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
+      <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option>
+      <option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option>
+      <option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
+    </select>
+    <section id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen>
       <header class="main-header">
         <a class="main-return" data-wp-return="main" href="../../" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="120" height="120" /></a>
-        <strong data-runtime-localize="off" class="main-title" data-wp-game-title>Observatório do Tempo</strong>
-        <button id="settingsBtn" class="icon-btn" type="button" data-wp-settings aria-label="Settings">⚙</button>
+        <strong data-runtime-localize="off" class="main-title" data-wp-game-title data-wp-frame-title>Observatório do Tempo</strong>
       </header>
       <div class="main-copy">
-        <div class="cover-wrap"><picture><source srcset="assets/animal-weather-watch-cover-art.webp" type="image/webp" /><img class="main-cover" src="assets/animal-weather-watch-cover-art.png" alt="" width="1254" height="1254" /></picture><span class="cover-badge" data-i18n="kicker">A calm forecast puzzle</span></div>
-        <p class="eyebrow" data-i18n="world">Willow weather station</p>
-        <h1 data-i18n="title">Observatório do Tempo</h1>
-        <p class="main-summary intro" data-i18n="intro">Read three sky signs, predict the next one, and open a safe shelter window for each animal.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite" data-i18n="progress">Three forecasts · three shelter windows</p>
-        <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Read the first forecast</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div>
-        <p id="best" class="best"></p>
+        <div class="cover-wrap"><picture><source srcset="assets/animal-weather-watch-cover-art.webp" type="image/webp" /><img class="main-cover" data-wp-frame-poster src="assets/animal-weather-watch-cover-art.png" alt="" width="1254" height="1254" /></picture></div>
+        <p class="main-summary intro" data-i18n="intro" data-wp-frame-summary>Read three sky signs, predict the next one, and open a safe shelter window for each animal.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-i18n="progress">Three forecasts · three shelter windows</p>
+        <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary">Start Game</button></div>
       </div>
     </section>
 
     <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
       <header class="stage-header">
         <button id="stageBackBtn" class="icon-btn scene-return" type="button" data-wp-return="stage" aria-label="Back">←</button>
-        <button id="stageUtilityBtn" class="icon-btn stage-utility" type="button" data-wp-settings aria-label="Settings">⚙</button>
+        <strong data-wp-frame-title hidden aria-hidden="true">Weather Watch</strong>
       </header>
-      <nav class="stage-tabs" role="tablist" aria-label="Forecast sections"><span role="tab" aria-selected="true" data-i18n="forecastTab">Forecasts</span></nav>
-      <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-center-observer="manual"></div>
+      <div id="stageWorkspace" class="stage-workspace">
+        <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-center-observer="manual"></div>
+      </div>
+      <nav class="stage-tabs" data-wp-frame-stage-nav role="tablist" aria-label="Stages"><button id="stagesTab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages">Stages</button></nav>
     </section>
 
     <section id="battleScreen" class="screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" hidden>
       <header class="battle-header">
         <button id="backBtn" class="icon-btn scene-return" type="button" data-wp-return="battle" aria-label="Back">←</button>
-        <button id="battleUtilityBtn" class="icon-btn" type="button" data-wp-battle-utility aria-label="Settings">⚙</button>
+        <strong data-wp-frame-title hidden aria-hidden="true">Weather Watch</strong>
       </header>
+      <div id="weatherBattleLive" class="weather-battle-live">
       <span id="progressPill" class="pill">1 / 3</span>
       <p id="prompt" class="prompt"></p><p id="rule" class="rule"></p>
       <div id="sequence" class="sequence" role="list" aria-label="Weather signs"></div>
       <p id="selection" class="selection" aria-live="polite"></p><div id="choiceGrid" class="choice-grid" role="group" aria-label="Next weather sign"></div>
       <div class="battle-actions"><button id="checkBtn" class="primary" type="button" data-wp-primary-action data-i18n="check" disabled>Check forecast</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset forecast</button></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
+      </div>
 
-      <section id="resultScreen" class="result-panel" hidden>
+      <section id="resultScreen" class="result-panel" data-wp-battle-substate="result" hidden>
         <div class="result-icon result-guide-wrap"><img class="result-guide" src="assets/animal-weather-watch-guide.png" alt="" width="1024" height="1536" aria-hidden="true" /></div>
         <p class="eyebrow" data-i18n="finished">Forecast settled</p><h2 id="resultTitle" data-i18n="resultTitle">The shelter window is clear!</h2><p id="resultText" class="intro"></p>
-        <div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div>
-      </section>
-    </section>
-    <div class="battle-ad-reserve" aria-hidden="true"></div>
-
-    <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" data-sound-toggle type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
+        <div class="main-actions"><button id="resultMapBtn" class="secondary" type="button">Stages</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="replayBtn" class="secondary" type="button">Replay</button></div></section>
   </main>
 
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Observatório do Tempo game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">GUIA DO JOGO ORIGINAL WEIGHTPLAY</span><h2>Observatório do Tempo</h2><p>Observatório do Tempo é um quebra-cabeça tranquilo com três previsões. Leia os sinais do céu, preveja o próximo e abra um abrigo seguro para cada animal.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Quebra-cabeça de padrões do tempo</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Quebra-cabeça · Lógica · Reconhecimento de padrões · Família · Animais</strong></div><div class="game-info-fact"><span>Previsões</span><strong>3 previsões criadas</strong></div><div class="game-info-fact"><span>Sessão</span><strong>2–5 minutos</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>A estação dos salgueiros</h3><p>O caderno da estação meteorológica dos salgueiros traz três previsões com nome: Prado da alvorada, Baixada chuvosa e Bosque do entardecer. Cada uma mostra três sinais do céu e uma pequena história de abrigo antes de perguntar qual sinal vem a seguir.</p><p>O objetivo não é reagir a um clima que muda em tempo real, mas ler uma sequência fixa e justa para abrir um abrigo tranquilo para cada animal. Um acerto abre o próximo Result; a visita termina quando as três previsões são resolvidas.</p></div><div class="game-info-section"><h3>Como funcionam as previsões</h3><p>Prado da alvorada alterna Sol e Nuvem, então Sol · Nuvem · Sol continua com Nuvem. Baixada chuvosa repete o primeiro sinal depois de dois: Chuva · Nuvem · Nuvem continua com Chuva. Bosque do entardecer repete Sol, Chuva e Nuvem nessa ordem, então Sol · Chuva · Nuvem continua com Sol.</p><p>A tela da previsão mostra as três regras. Escolher um sinal apenas prepara a resposta; Conferir previsão registra uma tentativa e mostra um resultado claro ou uma nova tentativa segura.</p></div><div class="game-info-section"><h3>Como jogar</h3><p>Toque em Ler a primeira previsão na Main ou escolha uma no caderno.</p><p>Leia os três sinais, a regra e a pergunta sobre o próximo sinal.</p><p>Escolha Sol, Nuvem ou Chuva e toque em Conferir previsão. Toque e mouse usam os mesmos botões.</p><p>Se errar, releia o ritmo, escolha outro sinal e confira novamente. Redefinir previsão limpa apenas a escolha atual.</p><p>Depois de acertar, toque em Próxima previsão. Ao concluir as três, Escolher uma previsão retorna ao caderno para jogar de novo.</p></div><div class="game-info-section"><h3>Dicas de estratégia</h3><p>Diga a regra antes de escolher: alternância, retorno depois de dois sinais ou ciclo de três.</p><p>Não olhe apenas os dois últimos símbolos; a segunda previsão depende do primeiro sinal voltar depois de duas posições.</p><p>Use a regra e a dica visíveis juntas. Um erro aumenta a tentativa, mas não bloqueia a previsão nem apaga o progresso local.</p><p>Na repetição, as três respostas são determinísticas: tente reduzir suas conferências na visita completa.</p></div><div class="game-info-section"><h3>Progresso e replay</h3><p>A visita passa por Prado da alvorada, Baixada chuvosa e Bosque do entardecer, ampliando a leitura da alternância ao retorno atrasado e ao ciclo de três sinais. Não existe uma quarta previsão: a campanha criada termina em três.</p><p>Cada previsão resolvida continua disponível no caderno. Result mostra quantas foram concluídas, quantas tentativas você usou nesta visita e o melhor número salvo pelo navegador.</p></div><div class="game-info-section"><h3>Nota de design</h3><p>Observatório do Tempo usa regras pequenas e fixas para que o desafio seja ler padrões, não correr ou depender da sorte. Main, caderno, Battle e Result mantêm as pistas visíveis, e os mesmos controles responsivos funcionam no celular, tablet e computador. O feedback tranquilo transforma um erro em uma próxima tentativa compreensível.</p></div><div class="game-info-section"><h3>Informações do jogador e do salvamento</h3><p>Não é preciso conta, compra, chat, ranking ou perfil online. Melhores tentativas e som ficam somente neste navegador; limpar dados, usar navegação privada, trocar de navegador ou dispositivo pode criar outro resultado ou remover o salvamento local. Tentativas são feedback do jogo, não uma avaliação formal de habilidade.</p></div><div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quais são as três regras?</dt><dd>Prado da alvorada alterna Sol e Nuvem, Baixada chuvosa devolve o primeiro sinal depois de dois e Bosque do entardecer repete Sol, Chuva e Nuvem.</dd></div><div><dt>O que acontece se eu errar?</dt><dd>A previsão continua aberta. Leia a sequência novamente, escolha outro sinal e confira outra vez; Redefinir limpa apenas a escolha atual.</dd></div><div><dt>Quantas previsões existem?</dt><dd>São três previsões criadas, e as resolvidas ficam no caderno para replay.</dd></div><div><dt>O que Melhor mede?</dt><dd>É o menor número de conferências em uma visita completa de três previsões. É um registro local, não uma avaliação.</dd></div><div><dt>O progresso é salvo?</dt><dd>Melhores tentativas e som são salvos apenas neste navegador. Não é preciso conta.</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><p>Se você gosta de ler uma regra visível e planejar o próximo movimento, experimente estes quebra-cabeças públicos da WeightPlay.</p><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de Bambu do Panko</strong><span>Gire os tubos de bambu do Panko, leve água por cada trecho e reviva o bosque.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Arca de Carga</strong><span>Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.</span></span></a></div></div></div></section>
 
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="locales.js?v=20260904-weather-watch-v4-route-locale-overflow-v1"></script>
-  <script src="game.js?v=20260926-weather-watch-v8-battle-render"></script>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="locales.js?v=20260904-weather-watch-v4-route-locale-overflow-v1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script>
+  <script src="game.js?v=20260926-weather-watch-interface7"></script>
   <script src="../../src/stage-selector-standard.js?v=20260904-weather-watch-v4-route-locale-overflow-v1" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260904-weather-watch-v4-route-locale-overflow-v1" data-wp-battle-standard></script>
 </body>

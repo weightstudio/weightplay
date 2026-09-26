@@ -19,7 +19,7 @@
   __wpNotifyMeasurement();
 
 
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v21";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -917,7 +917,7 @@
       const title=localizedValue(definition.titleEn,definition.titleZh,definition.titleEs,definition.titleAr);
       const rule=localizedPair(region.rule);
       const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
-      button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba", "التجربة")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
+      button.innerHTML = `<div class="stage-card-content" data-wp-item-content><img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba", "التجربة")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span></div>`;
       button.tabIndex = stage === Math.min(TRIAL_COUNT, unlocked) ? 0 : -1;
       button.onclick = () => stage <= unlocked && startTrial(stage);
       rail.append(button);
