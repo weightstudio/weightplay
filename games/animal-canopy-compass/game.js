@@ -492,6 +492,7 @@
     $("stats").textContent = t("stats", { turns: state.turns, best: state.bests[round.id] ?? state.turns }) + ` · ${state.mistakes === 0 ? "★" : "✦"} ${state.mistakes}`;
     $("resultPrimary").textContent = t("nextStage");
     $("resultPrimary").disabled = final;
+    $("resultPrimary").hidden = final;
     $("resultPrimary").onclick = final ? null : () => startRound(state.round + 1);
     $("resultHome").textContent = t("replay");
     $("result").hidden = false;
