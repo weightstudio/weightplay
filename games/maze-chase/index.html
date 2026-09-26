@@ -56,7 +56,10 @@
       }
       body.is-game-playing #battleScreen.has-result #resultScreen .result-copy {
         grid-area: copy;
-        max-width: 720px;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: anywhere;
         margin: 2px 0 0;
         font-size: 20px;
         line-height: 1.25;
