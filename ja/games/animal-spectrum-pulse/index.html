@@ -40,7 +40,7 @@
     <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260927-spectrum-v20">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3"><meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
@@ -67,7 +67,7 @@
         </div>
       </section>
     </main>
-      <section class="public-guide game-page-info" aria-labelledby="guideTitle">
+      <section class="public-guide game-page-info wp-spectrum-guide" aria-labelledby="guideTitle">
       <small data-t="guideKicker">ゲームガイド</small>
       <h2 id="guideTitle" data-t="guideTitle">リズムを感じ、ゲートを読む</h2>
       <p data-t="guideIntro">ゲートを読み、一度ずつパルスする遊び方を覚えて、30の手作りオーロラ塔をすべて修復しよう。</p>
@@ -96,8 +96,8 @@
   </div>
 
   <section id="stageScreen" class="active-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-spectrum-pulse/cover.webp" style="--wp-stage-art:url('../../assets/animal-spectrum-pulse/cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">パルス塔を選ぶ</strong><span id="stageSummary"></span></div><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""></header>
+    <div class="stage-canvas wp-stage-art-shell wp-spectrum-block-shell" data-wp-standard-stage-screen data-wp-shell-content="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-spectrum-pulse/cover.webp" style="--wp-stage-art:url('../../assets/animal-spectrum-pulse/cover.webp')">
+      <header class="stage-header" data-wp-shell-header="stage"><button id="stageBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">パルス塔を選ぶ</strong><span id="stageSummary"></span></div><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""></header>
       <nav class="stage-tabs"><button id="towersTab" class="active" type="button" aria-pressed="true" data-t="towers">塔</button><button id="studioTab" type="button" aria-pressed="false" data-t="studio">共鳴スタジオ</button></nav>
       <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="パルス塔セレクター" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">レールをドラッグして解除済みの塔を選択。</p></section>
       <section id="studioPanel" class="tab-panel studio-panel" hidden>
@@ -110,9 +110,9 @@
   </section>
 
   <section id="battleScreen" class="active-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+    <div class="battle-canvas wp-spectrum-block-shell" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-shell-content="battle">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">ゲート</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">共鳴</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">ガード</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="遊び方" data-t-aria="help" data-wp-battle-utility>?</button></header>
+        <header class="battle-header" data-wp-shell-header="battle"><button id="battleBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">ゲート</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">共鳴</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">ガード</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="遊び方" data-t-aria="help" data-wp-battle-utility>?</button></header>
         <div class="identity-row"><span data-t="currentIdentity">現在</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span></div>
         <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="スペクトラムパルス塔" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">スキャン</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">どこでもタップ · Space／Enter／↑</div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
@@ -133,7 +133,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20260910-responsive-locale-v17"></script>
   <script src="../../src/wallet.js"></script>
-  <script src="game.js?v=20260925-spectrum-repair-v19"></script>
+  <script src="game.js?v=20260927-spectrum-v20"></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
