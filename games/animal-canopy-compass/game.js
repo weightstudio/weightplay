@@ -125,9 +125,13 @@
   };
   const setResultActive = (active) => {
     document.body.toggleAttribute("data-wp-canopy-result", active);
+    const result = $("result");
+    if (result) {
+      result.hidden = !active;
+      result.classList.toggle("hidden", !active);
+    }
     setBattleCovered(active, true, active);
     sharedFrame?.activate("battle", { covered: active });
-    if (!active && $("result")) $("result").hidden = true;
   };
 
   const ensureLeaveDialog = () => {
