@@ -1,51 +1,115 @@
-(()=>{
+(() => {
   "use strict";
-  const TOTAL=30,POOL=9,clamp=(value,min=1,max=TOTAL)=>Math.max(min,Math.min(max,value));
-  let api=null,cards=[],windowStart=1,settleRaf=0,restore=()=>{};
-  const desired=stage=>clamp(stage-Math.floor(POOL/2),1,TOTAL-POOL+1);
-  function createCard(poolIndex){const button=document.createElement("button");button.type="button";button.className="stage-card";button.dataset.wpStagePoolNode=String(poolIndex+1);button.innerHTML="<span></span><strong></strong><b></b><small></small>";return button}
-  function bind(button,stageNumber){
-    const stage=api.stages[stageNumber-1],locked=stageNumber>api.save.unlocked,stars=Number(api.save.stars[stageNumber])||0,selected=stageNumber===api.getSelected();
-    button.dataset.stage=String(stageNumber);button.dataset.index=String(stageNumber-1);button.dataset.stageIndex=String(stageNumber-1);button.setAttribute("aria-posinset",String(stageNumber));button.setAttribute("aria-setsize",String(TOTAL));button.setAttribute("aria-disabled",String(locked));
-    button.classList.toggle("locked",locked);button.classList.toggle("centered",selected);button.classList.toggle("wp-stage-centered",selected);button.tabIndex=selected?0:-1;if(selected)button.setAttribute("aria-current","true");else button.removeAttribute("aria-current");
-    button.querySelector("span").textContent=locked?api.t("lockedBadge"):api.chapterName(stage);button.querySelector("strong").textContent=String(stageNumber);button.querySelector("b").textContent=`${stage.boss?"\u{1F451} ":""}${api.t("waveLabel",{wave:0,total:stage.waves})}`;button.querySelector("small").textContent=`${"\u2605".repeat(stars)}${"\u2606".repeat(3-stars)}`;
-  }
-  const sync=()=>cards.forEach(card=>bind(card,Number(card.dataset.stage)));
-  // DOMRect/pointer distances are physical pixels; scrollLeft is in unscaled CSS pixels.
-  const renderScale=()=>{const rail=api.rail,width=rail.getBoundingClientRect().width,logicalWidth=rail.offsetWidth||rail.clientWidth;return width>0&&logicalWidth>0?width/logicalWidth:1};
-  function moveWindow(next){const rail=api.rail,target=clamp(next,1,TOTAL-POOL+1);let recycled=0;while(windowStart<target){const card=rail.firstElementChild,anchor=card?.nextElementSibling,before=anchor?.getBoundingClientRect().left;windowStart++;rail.append(card);bind(card,windowStart+POOL-1);const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=(after-before)/renderScale();recycled++}while(windowStart>target){const card=rail.lastElementChild,anchor=card?.previousElementSibling,before=anchor?.getBoundingClientRect().left;windowStart--;rail.prepend(card);bind(card,windowStart);const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=(after-before)/renderScale();recycled++}cards=[...rail.children];rail.dataset.wpStageWindowStart=String(windowStart);rail.dataset.wpStageWindowEnd=String(windowStart+POOL-1);if(recycled)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);return recycled}
-  function geometry(){const rail=api.rail,first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),box=rail.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0;return{rail,center:box.left+box.width/2,pitch:Math.abs(delta)||(first?.width||264)+16,orientation:Math.sign(delta)||1}}
-  function nearest(){const center=geometry().center;return cards.reduce((best,card)=>{const box=card.getBoundingClientRect(),distance=Math.abs(box.left+box.width/2-center);return!best||distance<best.distance?{card,distance}:best},null)?.card}
-  function logical(){const card=nearest();if(!card)return api.getSelected();const stage=Number(card.dataset.stage),box=card.getBoundingClientRect(),g=geometry();return clamp(stage+(g.center-(box.left+box.width/2))/(g.pitch*g.orientation))}
-  function position(value){const logicalStage=clamp(value),anchor=Math.round(logicalStage);if(moveWindow(desired(anchor)))sync();const card=api.rail.querySelector(`[data-stage="${anchor}"]`);if(!card)return logicalStage;card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});const g=geometry(),fraction=logicalStage-anchor;if(Math.abs(fraction)>.0001)g.rail.scrollLeft+=fraction*g.orientation*g.pitch/renderScale();g.rail.dataset.wpStageDragLogical=logicalStage.toFixed(4);return logicalStage}
-  function select(stage,focus=false){stage=clamp(stage);api.setSelected(stage);moveWindow(desired(stage));sync();position(stage);sync();if(focus)api.rail.querySelector(`[data-stage="${stage}"]`)?.focus({preventScroll:true})}
-  function install(){
-    const rail=api.rail;if(rail.dataset.wpStageVirtualDrag==="true")return;rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";let pointerId=null,startX=0,lastX=0,dragLogical=1,moved=false,suppressClick=false,suppressClickTimer=0;
-    const restoreRail=()=>{delete rail.dataset.wpStageSettling;delete rail.dataset.wpDragDown;rail.classList.remove("wp-stage-dragging");rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type")};restore=()=>{pointerId=null;moved=false;suppressClick=false;clearTimeout(suppressClickTimer);suppressClickTimer=0;restoreRail()};
-    rail.addEventListener("pointerdown",event=>{if(pointerId!==null||event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(settleRaf);settleRaf=0;pointerId=event.pointerId;startX=lastX=event.clientX;dragLogical=logical();moved=false;rail.dataset.wpDragDown="1";rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");event.stopImmediatePropagation()},true);
-    document.addEventListener("pointermove",event=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging")}if(moved){if(event.cancelable)event.preventDefault();const g=geometry();dragLogical=position(dragLogical-delta/(g.pitch*g.orientation))}event.stopImmediatePropagation()},true);
-    const finish=event=>{if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;pointerId=null;delete rail.dataset.wpDragDown;if(moved){if(event.cancelable)event.preventDefault();const from=dragLogical,target=clamp(Math.round(from)),started=performance.now(),duration=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches?0:(Number(rail.dataset.wpStageSettleDuration)||340);api.setSelected(target);sync();rail.dataset.wpStageSettling="true";const settle=now=>{const progress=clamp((now-started)/duration,0,1),eased=progress*progress*(3-2*progress);position(from+(target-from)*eased);if(progress<1)settleRaf=requestAnimationFrame(settle);else{settleRaf=0;position(target);sync();restoreRail()}};if(duration===0){position(target);sync();restoreRail()}else settleRaf=requestAnimationFrame(settle);suppressClick=true;clearTimeout(suppressClickTimer);suppressClickTimer=setTimeout(()=>{suppressClick=false;suppressClickTimer=0},0)}else restoreRail();moved=false;event.stopImmediatePropagation()};document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);
-    rail.addEventListener("click",event=>{const card=event.target.closest?.(".stage-card"),stage=Number(card?.dataset.stage);if(!stage)return;event.preventDefault();event.stopImmediatePropagation();if(suppressClick){suppressClick=false;return}select(stage,true);if(stage>api.save.unlocked){api.announce();return}api.enter(stage,event)},true);
-    rail.addEventListener("keydown",event=>{const current=api.getSelected(),rtl=getComputedStyle(rail).direction==="rtl",step=event.key==="ArrowRight"?(rtl?-1:1):event.key==="ArrowLeft"?(rtl?1:-1):0,target=step?clamp(current+step):event.key==="Home"?1:event.key==="End"?TOTAL:0;if(!target)return;event.preventDefault();event.stopImmediatePropagation();select(target,true)},true);
-  }
-  function cancel(){cancelAnimationFrame(settleRaf);settleRaf=0;restore()}
-  window.addEventListener("blur",cancel);
-  window.addEventListener("pagehide",cancel);
-  document.addEventListener("visibilitychange",()=>{if(document.hidden)cancel()});
-  window.PrismBattalionStageRenderer={render(nextApi){api=nextApi;const rail=api.rail;if(!cards.length||cards.some(card=>card.parentElement!==rail)){rail.replaceChildren();cards=Array.from({length:POOL},(_,index)=>createCard(index));cards.forEach(card=>rail.append(card));windowStart=desired(api.getSelected());cards.forEach((card,index)=>bind(card,windowStart+index));rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(POOL);rail.dataset.wpStageTotal=String(TOTAL);rail.dataset.wpStageRecycleCount="0";install()}select(api.getSelected());return true},select,cancel};
+
+  const TOTAL = 30;
+  const POOL = 9;
+  const clampIndex = (value) => Math.max(0, Math.min(TOTAL - 1, Number(value) || 0));
+  let api = null;
+  let controller = null;
+  let rail = null;
+
+  const bind = (button, index) => {
+    const stage = api.stages[index];
+    const locked = stage.n > api.save.unlocked;
+    const stars = Number(api.save.stars[stage.n]) || 0;
+    const selected = index === clampIndex(api.getSelected() - 1);
+
+    button.type = "button";
+    button.className = `stage-card${locked ? " locked" : ""}${selected ? " centered wp-stage-centered" : ""}`;
+    button.dataset.stage = String(stage.n);
+    button.dataset.index = String(index);
+    button.dataset.stageIndex = String(index);
+    button.setAttribute("aria-posinset", String(stage.n));
+    button.setAttribute("aria-setsize", String(TOTAL));
+    button.setAttribute("aria-disabled", String(locked));
+    button.tabIndex = selected ? 0 : -1;
+    if (selected) button.setAttribute("aria-current", "true");
+    else button.removeAttribute("aria-current");
+
+    button.replaceChildren();
+    const chapter = document.createElement("span");
+    const number = document.createElement("strong");
+    const wave = document.createElement("b");
+    const rating = document.createElement("small");
+    chapter.textContent = locked ? api.t("lockedBadge") : api.chapterName(stage);
+    number.textContent = String(stage.n);
+    wave.textContent = `${stage.boss ? "◆ " : ""}${api.t("waveLabel", { wave: 0, total: stage.waves })}`;
+    rating.textContent = `${"★".repeat(stars)}${"☆".repeat(3 - stars)}`;
+    button.append(chapter, number, wave, rating);
+  };
+
+  const install = () => {
+    if (!window.WeightPlayStageV6?.install) {
+      throw new Error("STAGE_V6_REQUIRED");
+    }
+    controller = window.WeightPlayStageV6.install(api.rail, {
+      total: TOTAL,
+      poolSize: POOL,
+      bind,
+      initialIndex: () => clampIndex(api.getSelected() - 1),
+      onFocus: (index) => api.setSelected(index + 1),
+      onSettle: (index) => api.setSelected(index + 1),
+      activate: (index, event) => {
+        const stage = api.stages[index];
+        api.setSelected(index + 1);
+        if (!stage || stage.n > api.save.unlocked) {
+          api.announce();
+          return false;
+        }
+        api.enter(stage.n, event);
+        return true;
+      },
+    });
+    if (!controller) throw new Error("STAGE_V6_INSTALL_FAILED");
+    rail = api.rail;
+    rail.dataset.wpStageVirtualized = "shared-v6-bounded";
+    rail.dataset.wpStagePoolSize = String(POOL);
+    rail.dataset.wpStageTotal = String(TOTAL);
+  };
+
+  const renderer = {
+    render(nextApi) {
+      api = nextApi;
+      if (!controller || rail !== api.rail) install();
+      else controller.refresh();
+      controller.center(clampIndex(api.getSelected() - 1));
+      return true;
+    },
+    select(stageNumber, focus = false) {
+      if (!api || !controller) return;
+      const index = clampIndex(Number(stageNumber) - 1);
+      api.setSelected(index + 1);
+      controller.refresh();
+      controller.center(index);
+      if (focus) {
+        requestAnimationFrame(() => api.rail.querySelector(`[data-stage-index="${index}"]`)?.focus({ preventScroll: true }));
+      }
+    },
+    cancel() {
+      controller?.cancel?.();
+    },
+    dispose() {
+      controller?.destroy?.();
+      controller = null;
+      rail = null;
+    },
+  };
+
+  window.PrismBattalionStageRenderer = renderer;
+  window.addEventListener("pagehide", renderer.dispose, { once: true });
 })();
 
 /* Game-owned content motion only. The shared Interface 7 frame still owns
    navigation, geometry, focus, preferences and every scene root. Bundling here
    keeps the same optional presentation behavior on all existing locale routes. */
-(()=>{
+(() => {
   "use strict";
-  const body=document.body;
-  if(body?.dataset.gameId!=="animal-prism-battalion"||window.PrismBattalionMotion)return;
-  const preference=window.matchMedia?.("(prefers-reduced-motion: reduce)");
-  const style=document.createElement("style");
-  style.dataset.wpPrismMotion="content-only";
-  style.textContent=`
+  const body = document.body;
+  if (body?.dataset.gameId !== "animal-prism-battalion" || window.PrismBattalionMotion) return;
+  const preference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+  const style = document.createElement("style");
+  style.dataset.wpPrismMotion = "content-only";
+  style.textContent = `
     @keyframes prism-content-reveal{from{opacity:.72}to{opacity:1}}
     @keyframes prism-charge-aura{0%,100%{box-shadow:0 0 12px #ffd55c66}50%{box-shadow:0 0 24px #ffd55caa}}
     body[data-game-id="animal-prism-battalion"] #mainGroup:not([hidden]) :is(.poster,.main-copy),
@@ -64,52 +128,62 @@
     }
   `;
   document.head.append(style);
-  const active=new Map(),watched=["coreValue","feedback","labFeedback"].map(id=>document.getElementById(id)).filter(Boolean);
-  const previous=new Map(watched.map(node=>[node,node.textContent]));
-  let disposed=false;
-  const visible=node=>!document.hidden&&!preference?.matches&&!node.closest("[hidden],[inert]");
-  function cancelActive(){for(const animation of active.values())animation.cancel();active.clear()}
-  function play(node,keyframes){
-    if(disposed||!node?.animate||!visible(node))return;
+  const active = new Map();
+  const watched = ["coreValue", "feedback", "labFeedback"].map((id) => document.getElementById(id)).filter(Boolean);
+  const previous = new Map(watched.map((node) => [node, node.textContent]));
+  let disposed = false;
+  const visible = (node) => !document.hidden && !preference?.matches && !node.closest("[hidden],[inert]");
+  function cancelActive() {
+    for (const animation of active.values()) animation.cancel();
+    active.clear();
+  }
+  function play(node, keyframes) {
+    if (disposed || !node?.animate || !visible(node)) return;
     active.get(node)?.cancel();
-    const animation=node.animate(keyframes,{duration:240,easing:"ease-out"});
-    active.set(node,animation);
-    const release=()=>{if(active.get(node)===animation)active.delete(node)};
-    animation.finished.then(release,release);
+    const animation = node.animate(keyframes, { duration: 240, easing: "ease-out" });
+    active.set(node, animation);
+    const release = () => { if (active.get(node) === animation) active.delete(node); };
+    animation.finished.then(release, release);
   }
   // Observe only three small, locale-owned status nodes, never the game tree.
-  const observer=new MutationObserver(()=>{
-    for(const node of watched){
-      const value=node.textContent,before=previous.get(node);
-      if(value===before)continue;
-      previous.set(node,value);
-      if(!value||!visible(node))continue;
-      if(node.id==="coreValue"){
-        const health=Number(value.split("/")[0]),oldHealth=Number(String(before).split("/")[0]);
-        if(Number.isFinite(health)&&Number.isFinite(oldHealth)&&health<oldHealth)
-          play(node.parentElement,[{boxShadow:"inset 0 0 0 2px #ff647e"},{boxShadow:"inset 0 0 0 0px transparent"}]);
-      }else play(node,[{opacity:.65},{opacity:1}]);
+  const observer = new MutationObserver(() => {
+    for (const node of watched) {
+      const value = node.textContent;
+      const before = previous.get(node);
+      if (value === before) continue;
+      previous.set(node, value);
+      if (!value || !visible(node)) continue;
+      if (node.id === "coreValue") {
+        const health = Number(value.split("/")[0]);
+        const oldHealth = Number(String(before).split("/")[0]);
+        if (Number.isFinite(health) && Number.isFinite(oldHealth) && health < oldHealth) {
+          play(node.parentElement, [{ boxShadow: "inset 0 0 0 2px #ff647e" }, { boxShadow: "inset 0 0 0 0px transparent" }]);
+        }
+      } else play(node, [{ opacity: 0.65 }, { opacity: 1 }]);
     }
   });
-  for(const node of watched)observer.observe(node,{childList:true,characterData:true,subtree:true});
-  function syncVisibility(){
-    body.toggleAttribute("data-prism-motion-paused",document.hidden||Boolean(preference?.matches));
-    if(document.hidden||preference?.matches)cancelActive();
+  for (const node of watched) observer.observe(node, { childList: true, characterData: true, subtree: true });
+  function syncVisibility() {
+    body.toggleAttribute("data-prism-motion-paused", document.hidden || Boolean(preference?.matches));
+    if (document.hidden || preference?.matches) cancelActive();
   }
-  function dispose(){
-    if(disposed)return;
-    disposed=true;observer.disconnect();cancelActive();style.remove();
+  function dispose() {
+    if (disposed) return;
+    disposed = true;
+    observer.disconnect();
+    cancelActive();
+    style.remove();
     body.removeAttribute("data-prism-motion-paused");
-    document.removeEventListener("visibilitychange",syncVisibility);
-    window.removeEventListener("weightplay:shell-sync",cancelActive);
-    window.removeEventListener("pagehide",cancelActive);
-    preference?.removeEventListener?.("change",syncVisibility);
+    document.removeEventListener("visibilitychange", syncVisibility);
+    window.removeEventListener("weightplay:shell-sync", cancelActive);
+    window.removeEventListener("pagehide", cancelActive);
+    preference?.removeEventListener?.("change", syncVisibility);
     delete window.PrismBattalionMotion;
   }
-  document.addEventListener("visibilitychange",syncVisibility);
-  window.addEventListener("weightplay:shell-sync",cancelActive);
-  window.addEventListener("pagehide",cancelActive);
-  preference?.addEventListener?.("change",syncVisibility);
-  window.PrismBattalionMotion={dispose};
+  document.addEventListener("visibilitychange", syncVisibility);
+  window.addEventListener("weightplay:shell-sync", cancelActive);
+  window.addEventListener("pagehide", cancelActive);
+  preference?.addEventListener?.("change", syncVisibility);
+  window.PrismBattalionMotion = { dispose };
   syncVisibility();
 })();

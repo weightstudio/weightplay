@@ -68,6 +68,28 @@
   };
   const progress = loadProgress();
   const state = { locale: initialLocale, page: 0, route: [], turns: 0, sessionTurns: 0, screen: "main", statusKey: "waiting", cleared: progress.cleared, unlocked: progress.unlocked };
+  let stageController = null;
+  let stageBrowseIndex = Math.max(0, state.unlocked - 1);
+  let leaveOpen = false;
+  const startLabels = {
+    en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始", ko: "게임 시작", es: "Iniciar juego",
+    "pt-BR": "Iniciar jogo", fr: "Commencer", de: "Spiel starten", it: "Inizia partita", ru: "Начать игру", hi: "खेल शुरू करें", ar: "ابدأ اللعبة",
+  };
+  const leaveLabels = {
+    en: ["Leave this page?", "Your unfinished route choices on this page will be discarded. Cleared pages and saved progress stay.", "Continue playing", "Return to Folio pages"],
+    "zh-Hant": ["離開這一頁？", "這一頁尚未完成的路線選擇會被捨棄；已完成頁面與已儲存進度會保留。", "繼續遊戲", "返回筆記頁面"],
+    "zh-Hans": ["离开这一页？", "这一页尚未完成的路线选择会被放弃；已完成页面与已保存进度会保留。", "继续游戏", "返回笔记页面"],
+    ja: ["このページを離れますか？", "このページの未完了のルート選択は破棄されます。完了済みページと保存済み進行は残ります。", "続ける", "ページ一覧へ"],
+    ko: ["이 페이지를 나갈까요?", "이 페이지의 미완성 경로 선택은 사라집니다. 완료한 페이지와 저장된 진행은 유지됩니다.", "계속 플레이", "기록 페이지로"],
+    es: ["¿Salir de esta página?", "Se descartarán las elecciones de ruta sin terminar de esta página. Las páginas completadas y el progreso guardado se conservan.", "Seguir jugando", "Volver a Páginas"],
+    "pt-BR": ["Sair desta página?", "As escolhas de rota inacabadas desta página serão descartadas. Páginas concluídas e progresso salvo serão mantidos.", "Continuar jogando", "Voltar às Páginas"],
+    fr: ["Quitter cette page ?", "Les choix de trajet inachevés de cette page seront abandonnés. Les pages terminées et la progression enregistrée restent.", "Continuer", "Retour aux Pages"],
+    de: ["Diese Seite verlassen?", "Unfertige Routenentscheidungen auf dieser Seite werden verworfen. Abgeschlossene Seiten und gespeicherter Fortschritt bleiben erhalten.", "Weiterspielen", "Zurück zu den Seiten"],
+    it: ["Uscire da questa pagina?", "Le scelte di percorso non completate di questa pagina verranno eliminate. Le pagine completate e i progressi salvati restano.", "Continua a giocare", "Torna alle Pagine"],
+    ru: ["Покинуть эту страницу?", "Незавершённый маршрут на этой странице будет сброшен. Пройденные страницы и сохранённый прогресс останутся.", "Продолжить", "К страницам"],
+    hi: ["इस पन्ने से बाहर जाएँ?", "इस पन्ने की अधूरी राह की पसंदें मिट जाएँगी। पूरे पन्ने और सहेजी प्रगति बनी रहेगी।", "खेल जारी रखें", "पन्नों पर लौटें"],
+    ar: ["مغادرة هذه الصفحة؟", "ستُلغى اختيارات المسار غير المكتملة في هذه الصفحة. ستبقى الصفحات المكتملة والتقدم المحفوظ.", "متابعة اللعب", "العودة إلى الصفحات"],
+  };
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => {
     const table = locales[state.locale] || locales.en || {};
@@ -96,7 +118,8 @@
   };
   const renderMain = () => {
     $("mainProgress").textContent = `${t("stages")}: ${Math.min(state.unlocked, pages.length)} / ${pages.length}`;
-    $("bestValue").textContent = readBest() || t("noBest");
+    const bestValue = $("bestValue");
+    if (bestValue) bestValue.textContent = readBest() || t("noBest");
   };
   const localizedOr = (key, fallback) => {
     const value = t(key);
@@ -123,10 +146,106 @@
     if (page.mechanic === "no-backtrack") return `Trail rule: never reverse the last turn. Route: ${route}.`;
     return `Trace the lantern route: ${route}.`;
   };
+  const normalizeInterface7 = () => {
+    const battle = $("battleScreen");
+    const result = $("resultScreen");
+    if (battle && result && !battle.contains(result)) {
+      result.removeAttribute("data-screen");
+      result.dataset.wpBattleSubstate = "result";
+      battle.append(result);
+    } else if (result) {
+      result.removeAttribute("data-screen");
+      result.dataset.wpBattleSubstate = "result";
+    }
+    document.querySelectorAll(".battle-ad-reserve").forEach((node) => node.remove());
+  };
+  const battleLayers = () => {
+    const battle = $("battleScreen");
+    if (!battle) return [];
+    const result = $("resultScreen");
+    const dialog = $("fireflyLeaveDialog");
+    return [...battle.children].filter((node) => node !== result && node !== dialog);
+  };
+  const setBattleCovered = (covered) => {
+    battleLayers().forEach((node) => { node.inert = covered; });
+  };
+  const ensureLeaveDialog = () => {
+    let dialog = $("fireflyLeaveDialog");
+    if (dialog) return dialog;
+    dialog = document.createElement("section");
+    dialog.id = "fireflyLeaveDialog";
+    dialog.className = "firefly-leave-dialog";
+    dialog.hidden = true;
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute("aria-labelledby", "fireflyLeaveTitle");
+    dialog.setAttribute("aria-describedby", "fireflyLeaveText");
+    dialog.innerHTML = '<div class="firefly-leave-card"><h2 id="fireflyLeaveTitle"></h2><p id="fireflyLeaveText"></p><div class="firefly-leave-actions"><button id="fireflyStayBtn" class="primary-btn" type="button"></button><button id="fireflyLeaveBtn" class="secondary-btn" type="button"></button></div></div>';
+    $("battleScreen").append(dialog);
+    $("fireflyStayBtn").addEventListener("click", () => closeLeave(true));
+    $("fireflyLeaveBtn").addEventListener("click", () => {
+      state.route = [];
+      closeLeave(false);
+      show("stage");
+      renderStages();
+    });
+    return dialog;
+  };
+  const refreshLeaveCopy = () => {
+    const labels = leaveLabels[state.locale] || leaveLabels.en;
+    const title = $("fireflyLeaveTitle");
+    if (!title) return;
+    title.textContent = labels[0];
+    $("fireflyLeaveText").textContent = `${t("round", { n: state.page + 1, total: pages.length })}: ${labels[1]}`;
+    $("fireflyStayBtn").textContent = labels[2];
+    $("fireflyLeaveBtn").textContent = labels[3];
+  };
+  const openLeave = () => {
+    if (leaveOpen || state.screen !== "battle") return;
+    leaveOpen = true;
+    const dialog = ensureLeaveDialog();
+    refreshLeaveCopy();
+    setBattleCovered(true);
+    dialog.hidden = false;
+    dialog.inert = false;
+    $("fireflyStayBtn").focus({ preventScroll: true });
+  };
+  const closeLeave = (restoreFocus = true) => {
+    const dialog = $("fireflyLeaveDialog");
+    leaveOpen = false;
+    if (dialog) {
+      dialog.hidden = true;
+      dialog.inert = true;
+    }
+    if (state.screen === "battle") setBattleCovered(false);
+    if (restoreFocus && state.screen === "battle") $("battleBackBtn")?.focus({ preventScroll: true });
+  };
   const show = (screen) => {
+    if (leaveOpen) closeLeave(false);
     state.screen = screen;
-    document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
-    document.body.dataset.screen = screen;
+    const owner = screen === "result" ? "battle" : screen;
+    for (const [name, id] of [["main", "mainScreen"], ["stage", "stageScreen"], ["battle", "battleScreen"]]) {
+      const node = $(id);
+      const active = name === owner;
+      node.hidden = !active;
+      node.inert = !active;
+      node.setAttribute("aria-hidden", String(!active));
+    }
+    const result = $("resultScreen");
+    if (result) {
+      const activeResult = screen === "result";
+      result.hidden = !activeResult;
+      result.inert = !activeResult;
+      result.setAttribute("aria-hidden", String(!activeResult));
+    }
+    const battle = $("battleScreen");
+    const live = battle?.querySelector(".battle-content, [data-wp-frame-content='battle'], .wp-frame-play-content");
+    const header = battle?.querySelector(".battle-header, [data-wp-frame-header='battle'], .wp-frame-header");
+    if (live && live !== result) { live.hidden = screen === "result"; live.inert = screen === "result"; }
+    if (header) { header.hidden = screen === "result"; header.inert = screen === "result"; }
+    const guide = document.querySelector("[data-wp-game-guide]");
+    if (guide) guide.hidden = owner !== "main";
+    document.body.dataset.screen = owner;
     if (screen === "main") renderMain();
   };
   const announce = (key) => { state.statusKey = key; $("battleStatus").textContent = t(key); };
@@ -138,23 +257,55 @@
     document.querySelectorAll("[data-copy-alt]").forEach((node) => node.setAttribute("alt", t(node.dataset.copyAlt)));
     $("localeSelect").value = state.locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
+    $("startBtn").textContent = startLabels[state.locale] || startLabels.en;
+    if (leaveOpen) refreshLeaveCopy();
     renderMain();
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") { renderBattle(); announce(state.statusKey); }
     if (state.screen === "result") renderResult();
   };
-  const renderStages = () => {
-    $("stageList").replaceChildren(...pages.map((page, index) => {
-      const button = document.createElement("button");
-      const isLocked = index >= state.unlocked;
-      button.type = "button";
-      button.className = `stage-card${isLocked ? " is-locked" : ""}${page.checkpoint ? " is-checkpoint" : ""}`;
-      button.setAttribute("role", "listitem");
-      button.disabled = isLocked;
-      button.innerHTML = `<strong>${t("round", { n: index + 1, total: pages.length })}</strong><span>${pageTitle(page, index)}</span><small>${state.cleared.includes(index) ? t("complete") : isLocked ? t("locked") : t("open")}${page.checkpoint ? ` · ${t("checkpoint")}` : ""}</small>`;
-      if (!isLocked) button.addEventListener("click", () => startPage(index));
-      return button;
-    }));
+  const bindStage = (button, index) => {
+    const page = pages[index];
+    const isLocked = index >= state.unlocked;
+    button.type = "button";
+    button.className = `stage-card${isLocked ? " is-locked" : ""}${page.checkpoint ? " is-checkpoint" : ""}`;
+    button.disabled = false;
+    button.setAttribute("aria-disabled", String(isLocked));
+    button.dataset.stageIndex = String(index);
+    button.replaceChildren();
+    const title = document.createElement("strong");
+    const name = document.createElement("span");
+    const status = document.createElement("small");
+    title.textContent = t("round", { n: index + 1, total: pages.length });
+    name.textContent = pageTitle(page, index);
+    status.textContent = `${state.cleared.includes(index) ? t("complete") : isLocked ? t("locked") : t("open")}${page.checkpoint ? ` · ${t("checkpoint")}` : ""}`;
+    button.append(title, name, status);
+    if (index === Math.max(0, state.unlocked - 1)) button.dataset.wpStageRecommended = "true";
+    else delete button.dataset.wpStageRecommended;
+  };
+  const highestUnlockedIndex = () => Math.max(0, Math.min(pages.length - 1, state.unlocked - 1));
+  const renderStages = ({ selectHighest = false } = {}) => {
+    if (selectHighest) stageBrowseIndex = highestUnlockedIndex();
+    if (!stageController) {
+      stageController = window.WeightPlayStageV6?.install?.($("stageList"), {
+        total: pages.length,
+        poolSize: 9,
+        bind: bindStage,
+        initialIndex: () => stageBrowseIndex,
+        onFocus: (index) => { stageBrowseIndex = index; },
+        onSettle: (index) => { stageBrowseIndex = index; },
+        activate: (index) => {
+          stageBrowseIndex = index;
+          if (index >= state.unlocked) return false;
+          startPage(index);
+          return true;
+        },
+      }) || null;
+      if (!stageController) throw new Error("Stage controller unavailable");
+    } else {
+      stageController.refresh();
+    }
+    stageController.center(stageBrowseIndex);
   };
   const renderBattle = () => {
     const page = pages[state.page];
@@ -242,11 +393,13 @@
     show("result");
     renderResult();
   };
-  $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); });
-  $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
+  $("startBtn").addEventListener("click", () => { show("stage"); renderStages({ selectHighest: true }); });
   $("stageBackBtn").addEventListener("click", () => show("main"));
-  $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); });
-  $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
+  $("battleBackBtn").addEventListener("click", () => {
+    if (state.route.length) openLeave();
+    else { show("stage"); renderStages(); }
+  });
+  $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages({ selectHighest: true }); });
   $("checkBtn").addEventListener("click", checkRoute);
   $("clearBtn").addEventListener("click", clearRoute);
   $("localeSelect").addEventListener("change", (event) => {
@@ -264,8 +417,36 @@
       applyLocale();
     }
   });
-  $("battleSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; });
 
+  document.addEventListener("keydown", (event) => {
+    if (leaveOpen) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeLeave(true);
+        return;
+      }
+      if (event.key === "Tab") {
+        const buttons = [...$("fireflyLeaveDialog").querySelectorAll("button:not(:disabled)")];
+        const first = buttons[0], last = buttons.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+        else if (!$("fireflyLeaveDialog").contains(document.activeElement)) { event.preventDefault(); first?.focus(); }
+      }
+      return;
+    }
+    if (event.key === "Escape" && state.screen === "battle") {
+      event.preventDefault();
+      if (state.route.length) openLeave();
+      else { show("stage"); renderStages(); }
+    }
+  });
+
+  window.addEventListener("pagehide", () => {
+    stageController?.destroy();
+    stageController = null;
+  }, { once: true });
+
+  normalizeInterface7();
   applyLocale();
   show("main");
   window.__ANIMAL_FIREFLY_FOLIO_TEST__ = { pages, startPage, chooseDirection, checkRoute, getState: () => ({ ...state, route: [...state.route], cleared: [...state.cleared] }) };

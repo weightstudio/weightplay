@@ -81,12 +81,12 @@
     document.title=`${t("title")} | WeightPlay`;
     renderMain();renderStage();renderLab();if(run)updateHud(true);
   }
-  function showScreen(name){
+  function showScreen(name,{preserveStage=false}={}){
     if(name!=="stage")window.PrismBattalionStageRenderer?.cancel?.();
     currentScreen=name;document.body.dataset.screen=name;
     for(const [scene,node] of [["main",$("mainGroup")],["stage",$("stage")],["battle",$("battle")]]){const active=scene===name;node.hidden=!active;node.inert=!active;node.setAttribute("aria-hidden",String(!active))}
     if(name==="main"){$("start").focus();scrollTo(0,0)}
-    if(name==="stage"){selectedStageIndex=Math.min(save.unlocked-1,29);renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(selectedStageIndex))}
+    if(name==="stage"){if(!preserveStage)selectedStageIndex=Math.min(save.unlocked-1,29);renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(selectedStageIndex))}
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:name}}));
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:name}}));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:name}}));
@@ -342,7 +342,7 @@
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function commitResultDecision(action){if(resultDecisionCommitted||$("result").hidden)return false;resultDecisionCommitted=true;[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>{button.disabled=true});action();return true}
-  $("battleBack").addEventListener("click",openLeave);$("battleHelp").addEventListener("click",openTutorial);$("continueBattle").addEventListener("click",()=>closeModal($("leave")));$("leaveStage").addEventListener("click",()=>{(__wpNotifyMeasurement(), $("leave").hidden=true);$("battleLive").inert=false;trackFunnel("result_stage",{stage:run?.stage.n,source:"leave"});run=null;showScreen("stage")});$("retry").addEventListener("click",()=>commitResultDecision(()=>{trackFunnel("result_retry",{stage:run.stage.n});__wpReplayStart(() => startBattle(run.stageIndex))}));$("resultStage").addEventListener("click",()=>commitResultDecision(()=>{trackFunnel("result_stage",{stage:run.stage.n,source:"result"});(__wpNotifyMeasurement(), $("result").hidden=true);$("battleLive").inert=false;run=null;showScreen("stage")}));$("nextMission").addEventListener("click",()=>commitResultDecision(()=>{trackFunnel("result_next",{stage:run.stage.n,next_stage:Math.min(30,run.stage.n+1)});startBattle(Math.min(29,run.stageIndex+1))}));
+  $("battleBack").addEventListener("click",openLeave);$("battleHelp").addEventListener("click",openTutorial);$("continueBattle").addEventListener("click",()=>closeModal($("leave")));$("leaveStage").addEventListener("click",()=>{(__wpNotifyMeasurement(), $("leave").hidden=true);$("battleLive").inert=false;trackFunnel("result_stage",{stage:run?.stage.n,source:"leave"});run=null;showScreen("stage",{preserveStage:true})});$("retry").addEventListener("click",()=>commitResultDecision(()=>{trackFunnel("result_retry",{stage:run.stage.n});__wpReplayStart(() => startBattle(run.stageIndex))}));$("resultStage").addEventListener("click",()=>commitResultDecision(()=>{trackFunnel("result_stage",{stage:run.stage.n,source:"result"});(__wpNotifyMeasurement(), $("result").hidden=true);$("battleLive").inert=false;run=null;showScreen("stage")}));$("nextMission").addEventListener("click",()=>commitResultDecision(()=>{trackFunnel("result_next",{stage:run.stage.n,next_stage:Math.min(30,run.stage.n+1)});startBattle(Math.min(29,run.stageIndex+1))}));
   function loadImages(){return Promise.all(Object.entries(imageSources).map(([key,src])=>new Promise((resolve)=>{const image=new Image();images[key]=image;image.onload=image.onerror=resolve;image.src=src})))}
   Promise.all([loadImages(),new Promise((resolve)=>setTimeout(resolve,350))]).then(()=>{$("loadingFill").style.width="100%";setTimeout(()=>{$("loading").hidden=true;showScreen("main")},160)});
   applyLocale();

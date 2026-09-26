@@ -1,0 +1,135 @@
+/* Prism Battalion Interface 7 slot mapping.
+   The shared frame owns Main/Stage/Battle headers, Settings, Canvas scaling,
+   and reserve policy. This file only maps Prism's permanent game-owned
+   Stage/Battle content into those shared tracks. */
+
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] .active-screen{
+  grid-template-rows:minmax(0,1fr)!important;
+}
+
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage .stage-canvas{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:48px minmax(0,1fr) 56px!important;
+  gap:8px!important;
+  padding:0 8px 8px!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage .stage-header{
+  grid-column:1!important;
+  grid-row:1!important;
+  grid-template-columns:48px minmax(0,1fr) 48px!important;
+  align-items:center!important;
+  width:100%!important;
+  height:48px!important;
+  min-height:48px!important;
+  margin:0!important;
+  padding:0 4px!important;
+  gap:8px!important;
+  border:0!important;
+  background:var(--wp-ui-header-image,#0b202b)!important;
+  box-shadow:none!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage .stage-header>div{
+  grid-column:2!important;
+  min-width:0!important;
+  display:grid!important;
+  place-items:center!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage #stageProgress{
+  display:block!important;
+  max-width:100%!important;
+  padding:0 6px!important;
+  color:var(--wp-ui-text,#f8fafc)!important;
+  font:800 14px/1.2 system-ui,sans-serif!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage>.stage-canvas>:is(#missionsTab,#labTab){
+  grid-column:1!important;
+  grid-row:2!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage>.stage-canvas>#labTab:not([hidden]){
+  overflow:auto!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage .stage-tabs{
+  grid-column:1!important;
+  grid-row:3!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  align-items:center!important;
+  gap:8px!important;
+  width:100%!important;
+  height:56px!important;
+  min-height:56px!important;
+  margin:0!important;
+  padding:6px!important;
+  border:0!important;
+  border-top:1px solid var(--wp-ui-line,rgba(255,255,255,.16))!important;
+  border-radius:0!important;
+  background:var(--wp-ui-surface,rgba(15,29,49,.92))!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage .stage-tabs>button{
+  box-sizing:border-box!important;
+  height:44px!important;
+  min-height:44px!important;
+  margin:0!important;
+  padding:0 10px!important;
+  border-radius:var(--wp-ui-radius,3px)!important;
+  font:700 14px/1.2 system-ui,sans-serif!important;
+  white-space:nowrap!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage .stage-tabs>button[data-tab="missions"]{grid-column:2!important}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #stage .stage-tabs>button[data-tab="lab"]{grid-column:3!important}
+
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .battle-live{
+  grid-template-rows:48px 32px minmax(0,1fr) 24px!important;
+  gap:4px!important;
+  padding:4px!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .battle-header-center{
+  min-width:0!important;
+  width:100%!important;
+  height:100%!important;
+  grid-template-columns:minmax(0,1fr) minmax(112px,30%)!important;
+  gap:4px!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .mission-block{
+  min-width:0!important;
+  gap:1px!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .mission-block small{
+  font:700 10px/1.1 system-ui,sans-serif!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .mission-block strong{
+  font:800 14px/1.1 system-ui,sans-serif!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .battle-status{gap:3px!important}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .battle-status span{
+  min-width:0!important;
+  padding:1px!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .battle-status b{font-size:9px!important}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .battle-status strong{
+  font-size:12px!important;
+  line-height:1.1!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .objective-row{
+  min-height:32px!important;
+  padding:4px 8px!important;
+}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] #battle .feedback{
+  min-height:24px!important;
+  padding:2px 6px!important;
+}
