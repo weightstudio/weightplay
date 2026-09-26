@@ -90,7 +90,7 @@
 }
   function renderBattle() {
     if (!$("choiceGrid") || currentScreen !== "battle") return;
-    const plan = plans[planIndex]; $("planTitle").textContent = copy(plan.name); $("progressPill").textContent = `${planIndex + 1} / ${plans.length}`; $("prompt").textContent = copy("prompt"); $("rule").textContent = copy(plan.rule);
+    const plan = plans[planIndex]; $("progressPill").textContent = `${planIndex + 1} / ${plans.length}`; $("prompt").textContent = copy("prompt"); $("rule").textContent = copy(plan.rule);
     const sequence = $("sequence"); sequence.replaceChildren();
     plan.sequence.forEach((type) => { const item = document.createElement("div"); item.className = "sign"; item.setAttribute("role", "listitem"); item.innerHTML = `<span class="sign-icon ${signArtClass(type)}" aria-hidden="true">${signs[type]}</span><strong>${signName(type)}</strong>`; sequence.appendChild(item); });
     const next = document.createElement("div"); next.className = "sign next"; next.setAttribute("role", "listitem"); next.innerHTML = `<span class="sign-icon" aria-hidden="true">?</span><small aria-hidden="true">?</small>`; sequence.appendChild(next);
