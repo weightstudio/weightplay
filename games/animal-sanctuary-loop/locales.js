@@ -2,7 +2,7 @@
   "use strict";
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru"];
   const rows={
-    title:["Animal Sanctuary Loop","動物聖域光環","动物圣域光环","アニマル・サンクチュアリ・ループ","동물 성역 루프","Bucle del Santuario Animal","Laço do Santuário Animal","Boucle du Sanctuaire Animal","Tierische Zufluchtsschleife","Anello del Santuario Animale","Кольцо звериного святилища"],
+    title:["Sanctuary Loop","聖域光環","圣域光环","サンクチュアリ・ループ","성역 루프","Bucle del Santuario","Laço do Santuário","Boucle du Sanctuaire","Zufluchtsschleife","Anello del Santuario","Кольцо звериного святилища"],
     loading:["Awakening the sanctuary…","喚醒聖域中……","正在唤醒圣域……","聖域を目覚めさせています…","성역을 깨우는 중…","Despertando el santuario…","Despertando o santuário…","Éveil du sanctuaire…","Das Schutzgebiet erwacht…","Risveglio del santuario…","Пробуждаем святилище…"],
     language:["Language","語言","语言","言語","언어","Idioma","Idioma","Langue","Sprache","Lingua","Язык"],
     backLobby:["Back to WeightPlay","返回 WeightPlay","返回 WeightPlay","WeightPlayへ戻る","WeightPlay로 돌아가기","Volver a WeightPlay","Voltar ao WeightPlay","Retour à WeightPlay","Zurück zu WeightPlay","Torna a WeightPlay","Назад в WeightPlay"],
@@ -19,7 +19,7 @@
     factGenre:["Genre","類型","类型","ジャンル","장르","Género","Gênero","Genre","Genre","Genere","Жанр"],
     factGenreValue:["Arcade · Strategy · Animal","街機 · 策略 · 動物","街机 · 策略 · 动物","アーケード・戦略・動物","아케이드 · 전략 · 동물","Arcade · Estrategia · Animales","Arcade · Estratégia · Animais","Arcade · Stratégie · Animaux","Arcade · Strategie · Tiere","Arcade · Strategia · Animali","Аркада · Стратегия · Животные"],
     factSession:["Session","遊玩時間","游玩时间","プレイ時間","플레이 시간","Sesión","Sessão","Session","Spielzeit","Sessione","Сеанс"],
-    factSessionValue:["2–6 minutes per mission","每個任務 2–6 分鐘","每个任务 2–6 分钟","1任務 2〜6分","임무당 2~6분","2–6 minutos por misión","2–6 minutos por missão","2 à 6 minutes par mission","2–6 Minuten pro Mission","2–6 minuti per missione","2–6 минут на миссию"],
+    factSessionValue:["96–112-second time limit","限時 96–112 秒","限时 96–112 秒","制限時間96〜112秒","제한 시간 96~112초","Límite de 96–112 segundos","Limite de 96–112 segundos","Limite de 96 à 112 secondes","Zeitlimit: 96–112 Sekunden","Limite di 96–112 secondi","Лимит времени: 96–112 секунд"],
     worldTitle:["World and mission","世界與任務","世界与任务","世界とミッション","세계와 임무","Mundo y misión","Mundo e missão","Monde et mission","Welt und Mission","Mondo e missione","Мир и миссия"],
     worldText:["Six sanctuary regions have been swallowed by corruption. Fia restores each habitat by enclosing territory, rescuing beacons, and surviving the changing rules of thirty authored missions.","六個聖域區域被腐化吞噬。菲亞要圈回領地、救援信標，並在 30 個原創任務的變化規則中修復每個棲地。","六个圣域区域被腐化吞噬。菲亚要圈回领地、救援信标，并在 30 个原创任务的变化规则中修复每个栖地。","6つの聖域が腐食にのみ込まれました。フィアは領地を囲み、ビーコンを救い、30の手作りミッションの変化するルールを生き抜いて生息地を戻します。","여섯 성역 지역이 타락에 잠겼습니다. 피아는 영역을 둘러싸고 신호를 구하며 30개 제작 임무의 변화하는 규칙 속에서 서식지를 복원합니다.","Seis regiones del santuario han sido devoradas por la corrupción. Fia restaura cada hábitat al encerrar territorio, rescatar balizas y superar las reglas cambiantes de 30 misiones creadas.","Seis regiões do santuário foram tomadas pela corrupção. Fia restaura cada habitat cercando território, resgatando sinais e sobrevivendo às regras mutáveis de 30 missões criadas.","Six régions du sanctuaire ont été englouties par la corruption. Fia restaure chaque habitat en encerclant le territoire, en sauvant les balises et en affrontant les règles changeantes de 30 missions conçues.","Sechs Schutzgebiete sind von Verderbnis verschlungen. Fia stellt jeden Lebensraum wieder her, indem sie Gebiet einschließt, Signale rettet und die wechselnden Regeln von 30 gestalteten Missionen meistert.","Sei regioni del santuario sono state inghiottite dalla corruzione. Fia ripristina ogni habitat circondando il territorio, salvando i fari e superando le regole mutevoli di 30 missioni progettate.","Шесть областей святилища поглотила порча. Фия восстанавливает среду, окружая территорию, спасая маяки и проходя меняющиеся правила 30 авторских миссий."],
     systemsTitle:["Game systems","遊戲系統","游戏系统","ゲームシステム","게임 시스템","Sistemas de juego","Sistemas do jogo","Systèmes de jeu","Spielsysteme","Sistemi di gioco","Игровые системы"],
@@ -43,9 +43,9 @@
     faqA4:["Yes. Mission progress and stars are saved locally in this browser.","會，任務進度與星等會儲存在這個瀏覽器。","会，任务进度与星级会保存在此浏览器。","はい。ミッションの進行状況とスターはこのブラウザにローカル保存されます。","예. 임무 진행과 별은 이 브라우저에 로컬로 저장됩니다.","Sí. El progreso y las estrellas se guardan localmente en este navegador.","Sim. O progresso e as estrelas são salvos localmente neste navegador.","Oui. La progression et les étoiles sont sauvegardées localement dans ce navigateur.","Ja. Missionsfortschritt und Sterne werden lokal in diesem Browser gespeichert.","Sì. Progressi e stelle vengono salvati localmente in questo browser.","Да. Прогресс миссий и звёзды сохраняются локально в этом браузере."],
     relatedTitle:["Related games","相關遊戲","相关游戏","関連ゲーム","관련 게임","Juegos relacionados","Jogos relacionados","Jeux associés","Ähnliche Spiele","Giochi correlati","Похожие игры"],
     relatedIntro:["Try another route-planning challenge from WeightPlay.","試試 WeightPlay 的另一款路線規劃挑戰。","试试 WeightPlay 的另一款路线规划挑战。","WeightPlayの別のルート計画にも挑戦しましょう。","WeightPlay의 다른 경로 계획 도전도 해 보세요.","Prueba otro desafío de planificación de rutas de WeightPlay.","Experimente outro desafio de planejamento de rotas da WeightPlay.","Essayez un autre défi de planification d’itinéraire WeightPlay.","Probiere eine weitere Routenplanung von WeightPlay.","Prova un’altra sfida di pianificazione dei percorsi di WeightPlay.","Попробуйте ещё одну задачу WeightPlay на планирование маршрута."],
-    relatedOneTitle:["One Line","One Line 一筆到底","One Line 一笔到底","One Line","One Line","One Line","One Line","One Line","One Line","One Line","One Line"],
+    relatedOneTitle:["One Line","One Line 一筆到底","One Line 一笔到底","One Line","One Line","One Line","One Line","One Line","One Line","One Line","Одна линия"],
     relatedOneText:["Plan one continuous route through authored trails while avoiding walls and moving shadows.","規劃一條連續路線通過原創路線，同時避開牆壁與移動暗影。","规划一条连续路线通过原创路线，同时避开墙壁与移动暗影。","壁と動く影を避けながら、手作りの道を1本の線で進みます。","벽과 움직이는 그림자를 피하며 제작된 길을 하나의 선으로 통과하세요.","Planifica una ruta continua por recorridos creados evitando muros y sombras móviles.","Planeje uma rota contínua por trilhas criadas evitando paredes e sombras móveis.","Planifiez une route continue dans des parcours conçus en évitant murs et ombres mobiles.","Plane eine durchgehende Route durch gestaltete Wege und meide Wände und bewegliche Schatten.","Pianifica un percorso continuo tra tracciati creati evitando muri e ombre mobili.","Планируйте непрерывный маршрут по авторским трассам, избегая стен и движущихся теней."],
-    relatedTwoTitle:["Animal Rootvault Pins","動物根脈機關","动物根脉机关","どうぶつルートヴォルト・ピン","동물 뿌리금고 핀","Clavijas de la Cámara Animal","Pinos do Cofre Animal","Goupilles du Caveau Animal","Tierische Wurzelgewölbe-Stifte","Perni della Cripta Animale","Звери: Штифты корневого хранилища"],
+    relatedTwoTitle:["Rootvault Pins","根脈機關","根脉机关","ルートヴォルト・ピン","뿌리금고 핀","Clavijas de la Cámara","Pinos do Cofre","Goupilles du Caveau","Wurzelgewölbe-Stifte","Perni della Cripta","Звери: Штифты корневого хранилища"],
     relatedTwoText:["Plan safe pin pulls through 30 deterministic chambers with visible material reactions and rune locks.","規劃安全的拉針順序，處理 30 個確定解的機關室、可見材質反應與符文鎖。","规划安全的拉针顺序，处理 30 个确定解的机关室、可见材质反应与符文锁。","安全なピンの順序を計画し、見える素材反応とルーン錠がある30の決定論的なチャンバーを攻略します。","안전한 핀 순서를 계획하고 보이는 재료 반응과 룬 잠금이 있는 30개 결정론적 챔버를 해결하세요.","Planifica tirones seguros en 30 cámaras deterministas con reacciones materiales visibles y cerraduras rúnicas.","Planeje puxões seguros em 30 câmaras determinísticas com reações de materiais visíveis e fechaduras rúnicas.","Planifiez des tirages sûrs dans 30 chambres déterministes avec réactions de matériaux visibles et serrures runiques.","Plane sichere Züge durch 30 deterministische Kammern mit sichtbaren Materialreaktionen und Runenschlössern.","Pianifica estrazioni sicure in 30 camere deterministiche con reazioni dei materiali visibili e serrature runiche.","Планируйте безопасный порядок вытягивания в 30 детерминированных камерах с видимыми реакциями материалов и руническими замками."],
     howTitle:["How to play","玩法","玩法","遊び方","플레이 방법","Cómo jugar","Como jogar","Comment jouer","Spielweise","Come giocare","Как играть"],
     how1:["Swipe, drag, or use arrows to steer Fia.","滑動、拖曳或使用方向鍵控制星爪狐。","滑动、拖曳或使用方向键控制星爪狐。","スワイプ、ドラッグ、方向キーでフィアを操作します。","스와이프, 드래그 또는 방향키로 피아를 조종하세요.","Desliza, arrastra o usa las flechas para dirigir a Fia.","Deslize, arraste ou use as setas para guiar Fia.","Balayez, faites glisser ou utilisez les flèches pour diriger Fia.","Steuere Fia durch Wischen, Ziehen oder mit den Pfeiltasten.","Scorri, trascina o usa le frecce per guidare Fia.","Проведите пальцем, перетащите или используйте стрелки для управления Фией."],
@@ -108,8 +108,141 @@
     borderShrunk:["The eclipse consumed the sanctuary edge!","月蝕吞噬了聖域外圍！","月蚀吞噬了圣域外围！","蝕が聖域の外縁を奪った！","월식이 성역 가장자리를 삼켰습니다!","¡El eclipse consumió el borde del santuario!","O eclipse consumiu a borda do santuário!","L’éclipse a dévoré la lisière du sanctuaire !","Die Finsternis hat den Rand verschlungen!","L’eclissi ha divorato il bordo del santuario!","Затмение поглотило край святилища!"],
   });
   Object.assign(rows, { trailStarted:["Trail started — turn back before a hunter reaches it.","光軌已展開，獵手靠近前快點折返。","光轨已展开，猎手靠近前快点折返。","光跡開始！ハンターが来る前に戻ろう。","궤적 시작! 사냥꾼이 오기 전에 돌아가세요.","¡Rastro iniciado! Regresa antes de que llegue un cazador.","Trilha iniciada! Volte antes que um caçador chegue.","Piste ouverte ! Revenez avant l'arrivée d'un chasseur.","Spur gestartet! Kehre um, bevor ein Jäger sie erreicht.","Scia iniziata! Torna indietro prima che arrivi un cacciatore.","След начат! Возвращайтесь, пока охотник не добрался до него."] });
+  // v20: source-owned mission counters, complete compound objectives and gameplay tags.
+  Object.assign(rows, {
+  "battleStatus": [
+    "Mission status",
+    "任務狀態",
+    "任务状态",
+    "ミッション状況",
+    "임무 상태",
+    "Estado de la misión",
+    "Estado da missão",
+    "État de la mission",
+    "Missionsstatus",
+    "Stato della missione",
+    "Состояние миссии"
+  ],
+  "beaconsLabel": [
+    "Beacons",
+    "救援信標",
+    "救援信标",
+    "救援ビーコン",
+    "구조 신호",
+    "Balizas",
+    "Sinalizadores",
+    "Balises",
+    "Rettungssignale",
+    "Segnali",
+    "Маяки"
+  ],
+  "sealsLabel": [
+    "Seals",
+    "順序封印",
+    "顺序封印",
+    "順序の封印",
+    "순서 봉인",
+    "Sellos",
+    "Selos",
+    "Sceaux",
+    "Siegel",
+    "Sigilli",
+    "Печати"
+  ],
+  "objectivesDone": [
+    "Objectives",
+    "完成目標",
+    "完成目标",
+    "達成目標",
+    "달성 목표",
+    "Objetivos",
+    "Objetivos",
+    "Objectifs",
+    "Ziele",
+    "Obiettivi",
+    "Цели"
+  ],
+  "clearedBadge": [
+    "Cleared",
+    "已通關",
+    "已通关",
+    "クリア済み",
+    "클리어",
+    "Completada",
+    "Concluída",
+    "Terminée",
+    "Geschafft",
+    "Completata",
+    "Пройдено"
+  ],
+  "objectiveCombined": [
+    "Restore {percent}%, rescue {rescue} beacon, and awaken {seals} seals in order.",
+    "修復 {percent}% 領地、救援 {rescue} 個信標，並依序喚醒 {seals} 個封印。",
+    "修复 {percent}% 领地、救援 {rescue} 个信标，并依序唤醒 {seals} 个封印。",
+    "領地を{percent}%再生し、救援ビーコン{rescue}個と封印{seals}個を順に取り戻そう。",
+    "영역 {percent}%를 복원하고 구조 신호 {rescue}개와 봉인 {seals}개를 순서대로 되찾으세요.",
+    "Restaura el {percent}%, rescata {rescue} baliza y activa {seals} sellos en orden.",
+    "Restaure {percent}%, resgate {rescue} sinalizador e ative {seals} selos em ordem.",
+    "Restaurez {percent} %, sauvez {rescue} balise et activez {seals} sceaux dans l’ordre.",
+    "Stelle {percent}% wieder her, rette {rescue} Signal und aktiviere {seals} Siegel der Reihe nach.",
+    "Ripristina il {percent}%, salva {rescue} segnale e attiva {seals} sigilli in ordine.",
+    "Восстановите {percent}%, спасите {rescue} маяк и активируйте {seals} печати по порядку."
+  ],
+  "gameplayTags": [
+    "Gameplay tags",
+    "玩法標籤",
+    "玩法标签",
+    "遊び方のタグ",
+    "플레이 태그",
+    "Etiquetas de juego",
+    "Marcadores de jogo",
+    "Types de jeu",
+    "Spielmerkmale",
+    "Tipi di gioco",
+    "Особенности игры"
+  ],
+  "tagTerritory": [
+    "Territory capture",
+    "圈地佔領",
+    "圈地占领",
+    "陣取り",
+    "영역 점령",
+    "Conquista territorial",
+    "Conquista de território",
+    "Conquête de territoire",
+    "Gebietseroberung",
+    "Conquista del territorio",
+    "Захват территории"
+  ],
+  "tagArcade": [
+    "Arcade",
+    "街機",
+    "街机",
+    "アーケード",
+    "아케이드",
+    "Arcade",
+    "Arcade",
+    "Arcade",
+    "Arcade",
+    "Arcade",
+    "Аркада"
+  ],
+  "tagStrategy": [
+    "Strategy",
+    "策略",
+    "策略",
+    "戦略",
+    "전략",
+    "Estrategia",
+    "Estratégia",
+    "Stratégie",
+    "Strategie",
+    "Strategia",
+    "Стратегия"
+  ]
+});
   const dictionaries={};
-  codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});});
+  codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index];});});
   const supplemental={
     hi:{
       title:"पशु अभयारण्य चक्र",language:"भाषा",backLobby:"WeightPlay पर लौटें",posterAlt:"फिया चमकता हुआ अभयारण्य चक्र पूरा करती है",kicker:"रियल-टाइम क्षेत्र आर्केड",pitch:"सुरक्षित भूमि छोड़ें, चमकता रास्ता बनाएँ और छाया के काटने से पहले वापस जुड़ें। मिशन पूरा करने के लिए हर आवास को पुनर्स्थापित करें।",start:"खेल शुरू करें",
@@ -118,8 +251,8 @@
       hearts:"दिल",time:"समय",arenaLabel:"अभयारण्य क्षेत्र",directionControls:"दिशा नियंत्रण",
       up:"ऊपर",left:"बाएँ",down:"नीचे",right:"दाएँ",help:"कैसे खेलें",back:"वापस",
       guideIntro:"फिया पुनर्स्थापित भूमि पर सुरक्षित है। बाहर उसकी बिजली की रेखा असुरक्षित रहती है। शिकारी के खुली रेखा तक पहुँचने से पहले दोबारा जुड़ें।",
-      factGameplay:"गेमप्ले",factGameplayValue:"रियल-टाइम क्षेत्र चक्र",factGenre:"शैली",factGenreValue:"आर्केड · रणनीति · पशु",factSession:"सत्र",factSessionValue:"प्रति मिशन 2–6 मिनट",
-      worldTitle:"दुनिया और मिशन",worldText:"छह अभयारण्य क्षेत्र भ्रष्टाचार में डूब गए हैं। फिया क्षेत्र घेरकर, बीकन बचाकर और तीस मौलिक मिशनों के बदलते नियमों के बीच हर आवास को पुनर्स्थापित करती है।",systemsTitle:"गेम सिस्टम",systemsText:"पुनर्स्थापित भूमि पर फिया सुरक्षित रहती है। बाहर खुला रास्ता शिकारी काट सकता है; वापस जुड़ने पर घिरा क्षेत्र आपका हो जाता है। Battle में दिल, लक्ष्य क्षेत्र, मिशन नियम और दुश्मन के रास्ते दिखाई देते हैं।",
+      factGameplay:"गेमप्ले",factGameplayValue:"रियल-टाइम क्षेत्र चक्र",factGenre:"शैली",factGenreValue:"आर्केड · रणनीति · पशु",factSession:"सत्र",factSessionValue:"समय सीमा: 96–112 सेकंड",
+      worldTitle:"दुनिया और मिशन",worldText:"छह अभयारण्य क्षेत्र भ्रष्टाचार में डूब गए हैं। फिया क्षेत्र घेरकर, बीकन बचाकर और तीस मौलिक मिशनों के बदलते नियमों के बीच हर आवास को पुनर्स्थापित करती है।",systemsTitle:"गेम सिस्टम",systemsText:"पुनर्स्थापित भूमि पर फिया सुरक्षित रहती है। बाहर खुला रास्ता शिकारी काट सकता है; वापस जुड़ने पर घिरा क्षेत्र आपका हो जाता है। खेल में दिल, लक्ष्य क्षेत्र, मिशन नियम और दुश्मन के रास्ते दिखाई देते हैं।",
       strategyTitle:"रणनीति सुझाव",strategy1:"शिकारी का रास्ता सीखते समय छोटे चक्र बनाएँ।",strategy2:"पास के दुश्मन दूर जा रहे हों तभी लंबे चक्र शुरू करें।",strategy3:"पहले क्षेत्र, बीकन या मुहर में क्या करना है, यह तय करने से पहले अध्याय का नियम पढ़ें।",progressTitle:"प्रगति",progressText:"मिशन 1–5 क्षेत्र चक्र सिखाते हैं। अध्याय 2–6 मिशन 30 तक बीकन, तूफ़ानी गलियाँ, क्रमबद्ध मुहरें, सिकुड़ती सीमाएँ, प्रतिद्वंद्वी क्षेत्र और रक्षक संयोजन जोड़ते हैं।",designTitle:"डिज़ाइन नोट",designText:"हर जोखिम को स्पष्ट रखते हुए गति तत्काल रहती है। टच, माउस और कीबोर्ड एक ही गति मॉडल साझा करते हैं, इसलिए दिखने वाला रास्ता वही है जिसे नियम जाँचते हैं।",
       faqTitle:"अक्सर पूछे जाने वाले प्रश्न",faqQ1:"कितने मिशन शामिल हैं?",faqA1:"छह नियम अध्यायों में 30 मौलिक मिशन हैं।",faqQ2:"फिया कब सुरक्षित रहती है?",faqA2:"जब वह पुनर्स्थापित क्षेत्र को छूती है।",faqQ3:"नुकसान किससे होता है?",faqA3:"शिकारी के फिया या उसके खुले असुरक्षित रास्ते को छूने पर एक दिल कम होता है।",faqQ4:"क्या प्रगति सहेजी जाती है?",faqA4:"हाँ। मिशन प्रगति और सितारे इसी ब्राउज़र में स्थानीय रूप से सहेजे जाते हैं।",
       relatedTitle:"संबंधित गेम",relatedIntro:"WeightPlay की एक और रास्ता-योजना चुनौती आज़माएँ।",relatedOneTitle:"One Line",relatedOneText:"दीवारों और चलती छायाओं से बचते हुए मौलिक रास्तों में एक लगातार रेखा की योजना बनाएँ।",relatedTwoTitle:"पशु रूटवॉल्ट पिन",relatedTwoText:"दिखाई देने वाली सामग्री प्रतिक्रियाओं और रूण तालों वाले 30 निश्चित कक्षों में पिन खींचने का सुरक्षित क्रम बनाएँ।",
@@ -144,7 +277,7 @@
       restored:"تمت الاستعادة",stars:"النجوم",tutorialTitle:"أغلق الحلقة",tutorial1:"تحرك من الأرض المستعادة إلى المنطقة الفاسدة.",tutorial2:"عد إلى أرضك لتستعيد المنطقة المحاطة.",tutorial3:"ملامسة الظل لمسارك المفتوح تكلفك قلبًا.",tutorialDone:"ابدأ الاستعادة",
       leaveTitle:"مغادرة هذه المهمة؟",leaveText:"تُبقي المتابعة الحلقة الحالية كما هي. العودة إلى المهمات تنهي هذه المحاولة.",
       guideIntro:"تكون فيا آمنة على الأرض المستعادة. خارجها يصبح مسار البرق مكشوفًا. أعد الاتصال قبل أن يصل صياد إلى الخط المفتوح.",
-      factGameplay:"طريقة اللعب",factGameplayValue:"حلقة السيطرة على الأراضي في الوقت الحقيقي",factGenre:"النوع",factGenreValue:"أركيد · استراتيجية · حيوانات",factSession:"الجولة",factSessionValue:"2–6 دقائق لكل مهمة",
+      factGameplay:"طريقة اللعب",factGameplayValue:"حلقة السيطرة على الأراضي في الوقت الحقيقي",factGenre:"النوع",factGenreValue:"أركيد · استراتيجية · حيوانات",factSession:"الجولة",factSessionValue:"الوقت المحدد: 96–112 ثانية",
       worldTitle:"العالم والمهمة",worldText:"ابتلع الفساد ست مناطق من المحمية. تستعيد فيا كل موطن بإحاطة الأرض وإنقاذ المنارات ومواجهة القواعد المتغيرة خلال ثلاثين مهمة أصلية.",systemsTitle:"أنظمة اللعبة",systemsText:"تكون فيا آمنة على الأرض المستعادة. خارجها يستطيع الصياد قطع المسار المفتوح؛ وعند إعادة الاتصال تصبح المنطقة المحاطة ملكًا لك. تبقى القلوب ومنطقة الهدف وقواعد المهمة ومسارات الأعداء واضحة في المعركة.",
       strategyTitle:"نصائح استراتيجية",strategy1:"استخدم حلقات قصيرة أثناء تعلم مسار الصياد.",strategy2:"ابدأ الحلقات الطويلة عندما تبتعد الأعداء القريبة فقط.",strategy3:"اقرأ قاعدة الفصل قبل تقرير ما إذا كانت الأرض أو المنارات أو الأختام تأتي أولًا.",progressTitle:"التقدم",progressText:"تعلم المهمات 1–5 حلقات الأرض. وتضيف الفصول 2–6 المنارات وممرات العاصفة والأختام المرتبة والحدود المتقلصة والمناطق المتنافسة ومجموعات الحارس حتى المهمة 30.",designTitle:"ملاحظة التصميم",designText:"تحافظ الحركة على استجابتها مع إبقاء كل خطر واضحًا. تستخدم اللمسة والماوس ولوحة المفاتيح نموذج حركة واحدًا، لذلك يطابق المسار المرئي ما تفحصه القواعد.",
       faqTitle:"الأسئلة الشائعة",faqQ1:"كم عدد المهمات المتاحة؟",faqA1:"هناك 30 مهمة أصلية عبر ستة فصول من القواعد.",faqQ2:"متى تكون فيا آمنة؟",faqA2:"تكون آمنة عندما تلمس الأرض المستعادة.",faqQ3:"ما الذي يسبب الضرر؟",faqA3:"يؤدي لمس الصياد لفيا أو لمسارها المفتوح المكشوف إلى فقدان قلب.",faqQ4:"هل يُحفظ التقدم؟",faqA4:"نعم. يُحفظ تقدم المهمات والنجوم محليًا في هذا المتصفح.",
@@ -164,7 +297,56 @@
   supplemental.hi.trailStarted="पहला रास्ता शुरू — शिकारी के पहुँचने से पहले लौटें।";
   supplemental.ar.trailStarted="بدأ المسار — عُد قبل أن يصل الصياد إليه.";
   codes.push("hi","ar");
-  dictionaries.hi={...dictionaries.en,...supplemental.hi};
-  dictionaries.ar={...dictionaries.en,...supplemental.ar};
+  Object.assign(supplemental.hi, {
+  "loading": "अभयारण्य जाग रहा है…",
+  "leaveTitle": "क्या इस मिशन से बाहर जाना है?",
+  "leaveText": "जारी रखने पर वर्तमान चक्र वैसा ही रहेगा। मिशन चयन पर लौटने से यह प्रयास समाप्त हो जाएगा।",
+  "styleOwned": "खरीदा हुआ",
+  "styleSelected": "चुना हुआ",
+  "noDiamonds": "पर्याप्त हीरे नहीं हैं।",
+  "tutorialTitle": "चक्र पूरा करें",
+  "tutorial1": "बहाल भूमि से दूषित क्षेत्र की ओर बढ़ें।",
+  "tutorial2": "घेरा हुआ क्षेत्र पाने के लिए अपनी भूमि से दोबारा जुड़ें।",
+  "tutorial3": "खुले रास्ते को छूने वाली छाया एक दिल कम कर देती है।",
+  "tutorialDone": "बहाल करना शुरू करें",
+  "enemyRunner": "क्रिस्टल धावक",
+  "battleStatus": "मिशन की स्थिति",
+  "beaconsLabel": "बचाव बीकन",
+  "sealsLabel": "क्रमबद्ध मुहरें",
+  "objectivesDone": "पूरे लक्ष्य",
+  "clearedBadge": "पूर्ण",
+  "objectiveCombined": "{percent}% भूमि बहाल करें, {rescue} बीकन बचाएँ और {seals} मुहरें क्रम से जगाएँ।",
+  "factSessionValue": "समय सीमा: 96–112 सेकंड",
+  "gameplayTags": "गेमप्ले टैग",
+  "tagTerritory": "क्षेत्र पर कब्ज़ा",
+  "tagArcade": "आर्केड",
+  "tagStrategy": "रणनीति",
+  "title": "अभयारण्य चक्र",
+  "relatedOneTitle": "एक पंक्ति",
+  "relatedTwoTitle": "रूटवॉल्ट पिन"
+});
+  dictionaries.hi={...supplemental.hi};
+  Object.assign(supplemental.ar, {
+  "loading": "تستيقظ المحمية…",
+  "styleOwned": "مملوك",
+  "styleSelected": "محدد",
+  "noDiamonds": "الألماس غير كافٍ.",
+  "enemyRunner": "عدّاء البلور",
+  "battleStatus": "حالة المهمة",
+  "beaconsLabel": "منارات الإنقاذ",
+  "sealsLabel": "الأختام المرتبة",
+  "objectivesDone": "الأهداف المكتملة",
+  "clearedBadge": "مكتملة",
+  "objectiveCombined": "استعد {percent}%، وأنقذ {rescue} منارة، وفعّل {seals} أختام بالترتيب.",
+  "factSessionValue": "الوقت المحدد: 96–112 ثانية",
+  "gameplayTags": "وسوم طريقة اللعب",
+  "tagTerritory": "السيطرة على الأراضي",
+  "tagArcade": "أركيد",
+  "tagStrategy": "استراتيجية",
+  "title": "حلقة محمية",
+  "relatedOneTitle": "خط واحد",
+  "relatedTwoTitle": "دبابيس روتفولت الحيوانية"
+});
+  dictionaries.ar={...supplemental.ar};
   window.AnimalSanctuaryLoopLocales={codes,dictionaries};
 })();

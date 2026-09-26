@@ -1,0 +1,36 @@
+/* v24: animate decoration, never shared logical frames or button hit targets. */
+#diveField{isolation:isolate;container-type:size}
+#abyssMotes{position:absolute;inset:0;overflow:hidden;z-index:1;pointer-events:none}
+#abyssMotes i{position:absolute;bottom:-20px;width:7px;height:7px;border:1px solid #a6f4ff99;border-radius:50%;opacity:0;box-shadow:0 0 9px #57d8f644;pointer-events:none}
+#abyssPulse{position:absolute;left:50%;top:48%;width:240px;height:240px;border:3px solid #8ce9ff;border-radius:50%;box-shadow:0 0 24px #53cce955,inset 0 0 24px #53cce944;opacity:0;z-index:5;pointer-events:none}
+#abyssPulse[data-kind="shield"]{border-color:#b6e9a6;box-shadow:0 0 28px #8acf7655}
+#battleShell .fish-encounter.is-hit,#battleShell .fish-encounter.is-countering .combat-diver{animation:none}
+#battleShell .fish-encounter{max-height:calc(100% - 12px);overflow:auto;overscroll-behavior:contain;inset:6px 5% auto;grid-template-rows:auto minmax(48px,118px) auto auto auto}
+#fishEncounter .fish-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#fishEncounter .fish-actions button{display:grid;grid-template-columns:24px minmax(0,1fr);align-content:center;justify-items:center;min-width:0;min-height:60px;padding:5px 4px;gap:3px}
+#fishEncounter .fish-actions button .ui-icon{width:24px;height:24px;grid-row:1}
+#fishEncounter .fish-actions button>span{grid-column:1/-1;grid-row:2;font-size:12px;line-height:1.2;overflow-wrap:anywhere;text-align:center}
+#fishEncounter .fish-actions button>b{grid-column:2;grid-row:1;font-size:15px;white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+#fishEncounter #dodgeRightBtn{background:#a5e4d2;color:#082e32}
+#fishEncounter #pulseBtn{background:#204e68;color:#eefaff;border:1px solid #84bed1}
+#fishEncounter .fish-actions button:disabled{opacity:.45;cursor:not-allowed}
+#fishTell{flex-wrap:wrap;justify-content:center;align-items:center;line-height:1.2}
+#fishTell>small{font-size:12px;white-space:normal}
+#fishTimerBar,#fishGuardBar,#depthProgress{transition:width 300ms cubic-bezier(.2,.8,.2,1)}
+#battleShell button:focus-visible,#leftGate:focus-visible,#rightGate:focus-visible{outline:3px solid #fff1a4;outline-offset:2px}
+#battleShell .combat-diver img{max-height:100%;min-height:0}
+body[data-abyss-paused="true"] #diveField *,body[data-abyss-paused="true"] #diveField *::before,body[data-abyss-paused="true"] #diveField *::after{animation-play-state:paused!important}
+/* Use available playing-field height, not a viewport guess, for short frames. */
+@container (max-height:340px){
+ #battleShell .fish-encounter{grid-template-rows:auto 48px auto auto auto!important;gap:3px 8px!important;padding:6px!important}
+ #battleShell .combat-diver img{height:48px}
+ #battleShell .fish-sprite{height:44px;max-width:100%}
+ #fishEncounter .fish-actions button{min-height:48px;padding:3px}
+ #fishEncounter .fish-actions button>span{font-size:11px}
+ #fishTell{margin:0;min-height:0;gap:3px}
+ #fishTell>strong{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ #abyssMotes,#abyssPulse{display:none!important}
+ #mainScreen *,#stageScreen *,#battleShell *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}

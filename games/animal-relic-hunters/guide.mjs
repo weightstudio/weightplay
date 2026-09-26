@@ -1,3 +1,4 @@
+import { applyRelicTextGrowth } from "./search-guide.mjs";
 // Game-owned instructions; presentation belongs to the shared guide/frame CSS.
 // Keep campaign totals out of prose: the live Stage screen owns that number.
 export const guideCopy = {
@@ -75,5 +76,6 @@ export function replaceRelicGuide(html, locale = 'en') {
  if (!title) throw new Error('Relic guide title missing');
  html = html.replace(/<body\b(?![^>]*data-wp-game-owned-guide)/, '<body data-wp-game-owned-guide="true"');
  const faq = faqCopy[locale] || faqCopy.en;
- return html.replace(pattern, () => `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>${title}</h2><p>${escape(summaryCopy)}</p></div></div><div class="game-info-sections">${[1,3,5].map(i => `<div class="game-info-section"><h3>${escape(copy[i])}</h3><p>${escape(i === 1 ? moveCopy : copy[i+1])}</p></div>`).join('')}<div class="game-info-section"><h3>${escape(copy[7])}</h3><p>${escape(copy[8])}</p></div><div class="game-info-section"><h3>${escape(faq[0])}</h3><dl><div><dt>${escape(faq[1])}</dt><dd>${escape(faq[2])}</dd></div></dl></div></div></section>`);
+ const base = html.replace(pattern, () => `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>${title}</h2><p>${escape(summaryCopy)}</p></div></div><div class="game-info-sections">${[1,3,5].map(i => `<div class="game-info-section"><h3>${escape(copy[i])}</h3><p>${escape(i === 1 ? moveCopy : copy[i+1])}</p></div>`).join('')}<div class="game-info-section"><h3>${escape(copy[7])}</h3><p>${escape(copy[8])}</p></div><div class="game-info-section"><h3>${escape(faq[0])}</h3><dl><div><dt>${escape(faq[1])}</dt><dd>${escape(faq[2])}</dd></div></dl></div></div></section>`);
+ return applyRelicTextGrowth(base, locale);
 }

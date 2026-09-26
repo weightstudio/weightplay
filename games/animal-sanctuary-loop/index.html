@@ -2,6 +2,8 @@
 <html lang="en" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-sanctuary-loop/"+location.search+location.hash)}catch{location.replace("/en/games/animal-sanctuary-loop/"+location.search+location.hash)}})();</script>
+  <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v20">
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
@@ -20,8 +22,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-sanctuary-loop/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-sanctuary-loop/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-sanctuary-loop/" />
-    <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-interface-version" content="7">
@@ -42,16 +43,16 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
-  <link rel="stylesheet" href="style.css?v=20260925-sanctuary-interface7-v19">
+  <link rel="stylesheet" href="style.css?v=20260926-sanctuary-v20">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3">
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="loading" data-game-id="animal-sanctuary-loop" data-wp-interface-version="7" data-sound-toggle="off" data-wp-game-owned-guide>
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+  <section id="loadingPanel" data-runtime-localize="off" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-t="title" data-wp-game-title data-runtime-localize="off">Sanctuary Loop</strong><span data-t="loading">Awakening the sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
-  <div id="frameRoot" data-wp-frame-root>
+  <div id="frameRoot" data-runtime-localize="off" data-wp-frame-root>
   <div id="mainGroup" class="main-group" hidden>
     <main id="mainScreen" class="main-screen" data-wp-frame-scene="main">
       <header id="mainHeader" class="main-header">
@@ -65,7 +66,8 @@
     </main>
       <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel" data-wp-game-guide data-wp-guide-complete="true">
       <small data-t="guideKicker">AN ORIGINAL WEIGHTPLAY ARCADE ADVENTURE</small><h2 data-t="guideTitle">Risk a longer trail. Restore a larger sanctuary.</h2><p data-t="guideIntro">Fia is safe on restored land. The moment she crosses into corruption, her lightning trail becomes vulnerable. Reconnect it to claim the enclosed area before a hunter reaches the open line.</p>
-      <div class="game-info-facts"><div class="game-info-fact"><span data-t="factGameplay">Gameplay</span><strong data-t="factGameplayValue">Real-time territory loop</strong></div><div class="game-info-fact"><span data-t="factGenre">Genre</span><strong data-t="factGenreValue">Arcade · Strategy · Animal</strong></div><div class="game-info-fact"><span data-t="factSession">Session</span><strong data-t="factSessionValue">2–6 minutes per mission</strong></div></div>
+      <div class="game-info-tags" role="group" aria-label="Gameplay tags" data-ta="gameplayTags"><span data-t="tagTerritory">Territory capture</span><span data-t="tagArcade">Arcade</span><span data-t="tagStrategy">Strategy</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span data-t="factGameplay">Gameplay</span><strong data-t="factGameplayValue">Real-time territory loop</strong></div><div class="game-info-fact"><span data-t="factGenre">Genre</span><strong data-t="factGenreValue">Arcade · Strategy · Animal</strong></div><div class="game-info-fact"><span data-t="factSession">Session</span><strong data-t="factSessionValue">96–112-second time limit</strong></div></div>
       <div class="guide-grid"><article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Swipe, drag, or use arrows to steer Fia.</li><li data-t="how2">Leave restored land and form a loop through corruption.</li><li data-t="how3">Reconnect before a hunter touches the open trail.</li></ol></article><article><h3 data-t="campaignTitle">Thirty authored missions</h3><p data-t="campaignText">Six chapters add rescue beacons, storm lanes, ordered seals, shrinking borders, rival claims, and Guardian hunts.</p></article></div>
       <div class="guide-grid"><article><h3 data-t="worldTitle">World and mission</h3><p data-t="worldText">Six sanctuary regions have been swallowed by corruption. Fia restores each habitat by enclosing territory, rescuing beacons, and surviving the changing rules of thirty authored missions.</p><h3 data-t="systemsTitle">Game systems</h3><p data-t="systemsText">Fia is safe on restored land. Outside it, an open trail can be cut by a hunter; reconnecting claims the enclosed area. Hearts, target area, mission modifiers, and enemy routes remain visible in Battle.</p></article><article><h3 data-t="strategyTitle">Strategy tips</h3><ol><li data-t="strategy1">Use short loops while learning a hunter’s route.</li><li data-t="strategy2">Start long loops only when nearby enemies are moving away.</li><li data-t="strategy3">Read the chapter modifier before deciding whether area, beacons, or seals come first.</li></ol><h3 data-t="progressTitle">Progression</h3><p data-t="progressText">Missions 1–5 teach territory loops. Chapters 2–6 add beacons, storm lanes, ordered seals, shrinking borders, rival territory, and Guardian combinations through Mission 30.</p></article></div>
       <div class="guide-grid"><article><h3 data-t="designTitle">Design note</h3><p data-t="designText">Movement stays responsive while every risk remains visible. Touch, mouse, and keyboard share one movement model, so the route you see is the route the rules evaluate.</p></article><article><h3 data-t="saveTitle">Local save</h3><p data-t="saveText">Unlocked missions, best stars, and chosen trail styles stay in this browser. No account is required.</p></article></div>
@@ -89,9 +91,9 @@
     <div id="battleCanvas" class="battle-canvas" data-wp-frame-scene="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <header id="battleHeader" class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><strong data-wp-frame-title data-wp-game-title>Sanctuary Loop</strong></header>
       <div id="battleLive" class="battle-live" data-wp-frame-content="battle">
-        <div id="battleInfo" class="battle-info" aria-label="Battle status"><div><span data-t="missions">Missions</span><strong id="missionLabel"></strong><b id="progressValue">0%</b></div><div><span data-t="hearts">Hearts</span><strong id="heartsValue">3</strong></div><div><span data-t="time">Time</span><strong id="timeValue">90</strong></div></div>
+        <div id="battleInfo" class="battle-info" aria-label="Mission status" data-ta="battleStatus"><div data-ta="missions" aria-label="Missions"><span id="missionLabel"></span><strong id="progressValue">0%</strong></div><div><span data-t="hearts">Hearts</span><strong id="heartsValue">3</strong></div><div><span data-t="time">Time</span><strong id="timeValue">90</strong></div></div>
         <div class="objective-row"><div class="objective-copy"><span id="objective"></span><small id="missionTwist"></small></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-wp-battle-utility="true" data-ta="help">?</button></div>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="768" height="768" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D" aria-label="Sanctuary territory arena" data-ta="arenaLabel"></canvas><div id="touchPad" class="touch-pad" aria-label="Direction controls" data-ta="directionControls"><button data-dir="up" aria-label="Up" data-ta="up">↑</button><button data-dir="left" aria-label="Left" data-ta="left">←</button><button data-dir="down" aria-label="Down" data-ta="down">↓</button><button data-dir="right" aria-label="Right" data-ta="right">→</button></div></div>
+        <div id="arenaWrap" class="arena-wrap"><div id="arenaBoard" class="arena-board"><canvas id="arena" width="768" height="768" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D" aria-label="Sanctuary territory arena" data-ta="arenaLabel"></canvas></div><div id="touchPad" class="touch-pad" aria-label="Direction controls" data-ta="directionControls"><button data-dir="up" aria-label="Up" data-ta="up">↑</button><button data-dir="left" aria-label="Left" data-ta="left">←</button><button data-dir="down" aria-label="Down" data-ta="down">↓</button><button data-dir="right" aria-label="Right" data-ta="right">→</button></div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
       <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this mission?</h2><p data-t="leaveText">Continue keeps the exact current loop. Returning to Stage ends this attempt.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">Continue</button><button id="leaveStage" data-t="returnStage">Return to Stage</button></div></div></section>
@@ -103,6 +105,6 @@
   <select id="locale" hidden tabindex="-1" aria-hidden="true"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
   </div>
 
-  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="locales.js?v=20260824-main-stage-localization-v14"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script><script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script><script src="game.js?v=20260925-sanctuary-interface7-v19&amp;wp-audio=1.0.0"></script>
+  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="locales.js?v=20260926-sanctuary-v20"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script><script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script><script src="motion.js?v=20260926-sanctuary-v20"></script><script src="game.js?v=20260926-sanctuary-v20&amp;wp-audio=1.0.0"></script>
 </body>
 </html>

@@ -140,7 +140,7 @@
     runtimeLoaded = true;
     const runtime = document.createElement("script");
     runtime.async = false;
-    runtime.src = new URL("./game-v5-base.js?v=20260923-interface7-bounded1", current?.src || location.href).href;
+    runtime.src = new URL("./game-v5-base.js?v=20260926-color-springs-locale13-v1", current?.src || location.href).href;
     runtime.dataset.wpColorSpringsRuntime = "v5-base";
     if (current?.parentNode) current.after(runtime);
     else document.body.append(runtime);

@@ -1,10 +1,10 @@
-import { Minefield, LEVELS } from './engine.mjs?v=17';
-import { CAMPAIGN_STAGES } from './campaign.mjs?v=17';
-import { COPY, LOCALES, ROUTES, LANGUAGES } from './copy.mjs?v=17';
+import { Minefield, LEVELS } from './engine.mjs?v=18';
+import { CAMPAIGN_STAGES } from './campaign.mjs?v=18';
+import { COPY, LOCALES, ROUTES, LANGUAGES } from './copy.mjs?v=18';
 
 export function mountMinefield() {
   const root = document.querySelector('#logicApp');
-  if (!root || root.dataset.mfMounted === '17') return;
+  if (!root || root.dataset.mfMounted === '18') return;
   const segment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
   const locale = LOCALES[ROUTES.indexOf(segment)] || (LOCALES.includes(document.documentElement.lang) ? document.documentElement.lang : 'en');
   const copy = COPY[locale];
@@ -41,10 +41,10 @@ export function mountMinefield() {
   const formatTime = seconds => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`;
   const applyTemplate = (value, data) => value.replace(/\{(\w+)\}/g, (_, key) => String(data[key] ?? ''));
   document.documentElement.lang = locale; document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
-  document.body.dataset.logicGame = 'minefield-logic'; document.body.dataset.gameVersion = 'v17';
+  document.body.dataset.logicGame = 'minefield-logic'; document.body.dataset.gameVersion = 'v18';
   document.body.dataset.runtimeLocalize = 'off';
   document.body.dataset.wpGameId = 'minefield-logic';
-  root.dataset.wpFrameRoot = ''; root.dataset.mfNative = ''; root.dataset.mfMounted = '17';
+  root.dataset.wpFrameRoot = ''; root.dataset.mfNative = ''; root.dataset.mfMounted = '18';
   root.setAttribute('data-runtime-localize', 'off');
   document.body.querySelector(':scope > h1')?.remove();
   root.replaceChildren();

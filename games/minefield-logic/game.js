@@ -1,14 +1,14 @@
-/* Minefield v17: authored 30-stage campaign inside the existing Interface 7 owner. */
+/* Minefield v18: authored 30-stage campaign inside the existing Interface 7 owner. */
 (() => {
   'use strict';
   const root = document.querySelector('#logicApp');
   if (!root || root.dataset.mfBooting) return;
-  root.dataset.mfBooting = '17';
+  root.dataset.mfBooting = '18';
   // Claim declared slots synchronously: the shared bootstrap must not start its
   // legacy DOM-discovery controller while the module graph is loading.
   root.setAttribute('data-wp-frame-root', '');
   const base = new URL('.', document.currentScript.src);
-  const version = '20260924-minefield-v17-campaign30-stage-center14';
+  const version = '20260926-minefield-v18-board-motion1';
   const asset = name => new URL(`/src/${name}`, location.origin).href;
   document.querySelectorAll('link[rel="stylesheet"][href*="classic-logic-lab.css"]').forEach(link => link.remove());
   function style(url) {
@@ -42,7 +42,13 @@
     script('stage-selector-standard.js', () => typeof window.__weightPlayLayoutMetrics?.stageObserverFlushes === 'number'),
     script('battle-canvas-standard.js', () => typeof window.WeightPlayBattleCanvas?.sync === 'function'),
   ]).then(() => import(new URL(`interface.mjs?v=${version}`, base).href))
-    .then(module => module.mountMinefield())
+    .then(module => {
+      module.mountMinefield();
+      // Cosmetic failure must not replace an otherwise playable game.
+      return import(new URL(`presentation.mjs?v=${version}`, base).href)
+        .then(presentation => presentation.mountMinefieldPresentation(root))
+        .catch(error => console.warn('Minefield presentation unavailable', error));
+    })
     .catch(error => {
       console.error('Minefield startup failed', error);
       const errors = {

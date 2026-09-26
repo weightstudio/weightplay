@@ -23,7 +23,7 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=26, INTERFACE_VERSION=6;
+  const GAME_VERSION=28, INTERFACE_VERSION=7;
   const routeLocales=Object.fromEntries(Object.entries(routeSegments).map(([key,value])=>[value,key]));
   const memoryStorage=new Map();
   const storage={
@@ -203,7 +203,7 @@
     clearArenaPointer();
     (__wpNotifyMeasurement(), lifecyclePaused=false);
     const maxCore=100+save.upgrades.armor*20,encounters=makeEncounters(stage);
-    run={stageIndex,stage,time:stage.time,core:maxCore,maxCore,wave:1,totalWaves:stage.waves,bossDefeated:false,lane:1,laneMask:1<<1,laneSwitchCount:0,aimX:laneCenters[1],attack:6+save.upgrades.power*2,weapon:"single",units:[],encounters,gates:encounters,enemies:encounters.filter(entry=>entry.kind==="enemy"),particles:[],texts:[],fireClock:0,charge:0,overdrive:0,feedbackLock:0,midwavePayoffCooldown:0,priorityReasonText:"",imminentBreachShown:false,readyCueShown:false,readyTargetLane:null,readyTargetCount:0,lastReadyUsed:false,overdriveReadyCount:0,overdriveActivationCount:0,overdriveActivationLane:null,overdriveActivationWave:null,peak:6+save.upgrades.power*2,coreHits:0,laneDamage:[0,0,0],resolved:0,paused:false,finished:false,lastGateMessage:"",lastTrackedWave:1};
+    run={stageIndex,stage,time:stage.time,core:maxCore,maxCore,wave:1,totalWaves:stage.waves,bossDefeated:false,lane:1,laneMask:1<<1,laneSwitchCount:0,aimX:laneCenters[1],visualAimX:laneCenters[1],laneTweenFrom:laneCenters[1],laneTweenElapsed:.18,laneTweenDuration:.18,attack:6+save.upgrades.power*2,weapon:"single",units:[],encounters,gates:encounters,enemies:encounters.filter(entry=>entry.kind==="enemy"),particles:[],texts:[],fireClock:0,charge:0,overdrive:0,feedbackLock:0,midwavePayoffCooldown:0,priorityReasonText:"",imminentBreachShown:false,readyCueShown:false,readyTargetLane:null,readyTargetCount:0,lastReadyUsed:false,overdriveReadyCount:0,overdriveActivationCount:0,overdriveActivationLane:null,overdriveActivationWave:null,peak:6+save.upgrades.power*2,coreHits:0,laneDamage:[0,0,0],resolved:0,paused:false,finished:false,lastGateMessage:"",lastTrackedWave:1};
     trackFunnel("mission_start",{stage:stage.n});trackFunnel("game_start",{stage:stage.n});
     (__wpNotifyMeasurement(), $("leave").hidden=true);(__wpNotifyMeasurement(), $("tutorial").hidden=true);(__wpNotifyMeasurement(), $("result").hidden=true);$("battleLive").hidden=false;$("battleLive").inert=false;$("feedback").classList.remove("ready-cue");$("overdrive").removeAttribute("aria-label");showScreen("battle");canvas.focus({preventScroll:true});updateHud(true);$("feedback").textContent="";run.priorityReasonText="";showPriorityReason();lastTime=performance.now();stopLoop();(__wpNotifyMeasurement(), lifecyclePaused=document.hidden);(__wpNotifyMeasurement(), run.paused=lifecyclePaused);ensureVisibleTick();if(!lifecyclePaused)raf=requestAnimationFrame(frame);window.WeightPlayAudio?.play?.("game.start");if(!save.tutorialSeen)requestAnimationFrame(()=>openTutorial())
 
@@ -239,12 +239,15 @@
   }
   function update(dt){
     if(!run||run.paused||run.finished)return;
-    run.time-=dt;run.fireClock+=dt;if(run.overdrive>0)run.overdrive=Math.max(0,run.overdrive-dt);if(run.feedbackLock>0){run.feedbackLock=Math.max(0,run.feedbackLock-dt);$("feedback").textContent=t("overdriveUsed")}if(run.midwavePayoffCooldown>0)run.midwavePayoffCooldown=Math.max(0,run.midwavePayoffCooldown-dt)
+    run.time-=dt;run.fireClock+=dt;run.laneTweenElapsed=Math.min(run.laneTweenDuration,run.laneTweenElapsed+dt);{const p=run.laneTweenDuration>0?Math.min(1,run.laneTweenElapsed/run.laneTweenDuration):1,e=1-Math.pow(1-p,3);run.visualAimX=run.laneTweenFrom+(run.aimX-run.laneTweenFrom)*e}if(run.overdrive>0)run.overdrive=Math.max(0,run.overdrive-dt);if(run.feedbackLock>0){run.feedbackLock=Math.max(0,run.feedbackLock-dt);$("feedback").textContent=t("overdriveUsed")}if(run.midwavePayoffCooldown>0)run.midwavePayoffCooldown=Math.max(0,run.midwavePayoffCooldown-dt)
     const interval=fireInterval();while(run.fireClock>=interval&&run.units.length<80)launch();
     for(const entry of run.encounters)if(!entry.resolved){if(entry.collecting){entry.y+=(1.15+(.84-entry.y)*1.8)*dt;entry.x+=(run.aimX-entry.x)*Math.min(1,dt*8)}else{const advanceFactor=entry.boss&&entry.y>=.1?.18:1;entry.y+=run.stage.layout.speed*dt*advanceFactor;entry.x=laneCenters[entry.lane]}}
     for(const unit of run.units){
-      unit.y+=unit.vy*dt;let hit=null,best=.055;
-      for(const entry of run.encounters)if(!entry.resolved&&entry.lane===unit.lane&&!unit.passed?.includes(entry.id)&&entry.y<unit.y&&entry.y>.04&&unit.y-entry.y<best){best=unit.y-entry.y;hit=entry}
+      const previousY=unit.y;unit.y+=unit.vy*dt;let hit=null,best=Infinity;
+      for(const entry of run.encounters)if(!entry.resolved&&entry.lane===unit.lane&&!unit.passed?.includes(entry.id)&&entry.y>.04){
+        const crossed=entry.y<=previousY+.055&&entry.y>=unit.y-.055;
+        if(crossed){const distance=Math.abs(previousY-entry.y);if(distance<best){best=distance;hit=entry}}
+      }
       if(hit)hitEncounter(unit,hit);else if(unit.y<=.035)unit.dead=true
     }
     for(const entry of run.encounters)if(!entry.resolved&&entry.y>=.835)resolveEncounter(entry);
@@ -285,13 +288,13 @@
     for(const unit of run.units){const x=px(unit.x),y=py(unit.y),size=Math.max(14,d*.028),cell=spiritCells[unit.sprite%spiritCells.length],drawn=drawAtlasCell(images.spirits,cell[0],cell[1],x,y,size,unit.hue===48?"#ffe369":"#64ebff");if(!drawn){ctx.fillStyle="#baf8ff";ctx.beginPath();ctx.arc(x,y,size*.22,0,Math.PI*2);ctx.fill()}}
     for(const particle of run.particles){ctx.globalAlpha=Math.max(0,particle.life);ctx.fillStyle=particle.color;ctx.beginPath();ctx.arc(px(particle.x),py(particle.y),Math.max(2,d*.006*particle.life),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
     for(const text of run.texts){ctx.globalAlpha=Math.max(0,text.life);ctx.fillStyle=text.color;ctx.font=`900 ${Math.max(13,d*.026)}px sans-serif`;ctx.textAlign="center";ctx.fillText(text.text,px(text.x),py(text.y))}ctx.globalAlpha=1;
-    const lx=px(run.aimX),ly=py(.91);drawAtlasCell(images.spirits,0,0,lx,ly,Math.max(60,d*.17),run.overdrive>0?"#ffe273":"#58e8ff");drawImageCentered(images.fox,lx-Math.max(34,d*.09),ly+d*.012,Math.max(34,d*.085),"#ffd66b");ctx.fillStyle="#fff";ctx.strokeStyle="#061225";ctx.lineWidth=Math.max(3,d*.006);ctx.font=`900 ${Math.max(15,d*.026)}px sans-serif`;ctx.textAlign="center";ctx.strokeText(`${t("attackPower")} ${Math.round(run.attack)}`,lx,ly-d*.12);ctx.fillText(`${t("attackPower")} ${Math.round(run.attack)}`,lx,ly-d*.12);
+    const lx=px(Number.isFinite(run.visualAimX)?run.visualAimX:run.aimX),ly=py(.91);drawAtlasCell(images.spirits,0,0,lx,ly,Math.max(60,d*.17),run.overdrive>0?"#ffe273":"#58e8ff");drawImageCentered(images.fox,lx-Math.max(34,d*.09),ly+d*.012,Math.max(34,d*.085),"#ffd66b");ctx.fillStyle="#fff";ctx.strokeStyle="#061225";ctx.lineWidth=Math.max(3,d*.006);ctx.font=`900 ${Math.max(15,d*.026)}px sans-serif`;ctx.textAlign="center";ctx.strokeText(`${t("attackPower")} ${Math.round(run.attack)}`,lx,ly-d*.12);ctx.fillText(`${t("attackPower")} ${Math.round(run.attack)}`,lx,ly-d*.12);
   }
   function ensureVisibleTick(){if(visibleTick)return;visibleTick=setInterval(()=>{if(!run||run.finished||run.paused||document.hidden||currentScreen!=="battle"||activeModal())return;const now=performance.now(),elapsed=now-lastTime;if(elapsed<200)return;lastTime=now;update(Math.min(1,elapsed/1000||0));draw();if(!run.finished&&!run.paused&&!raf)raf=requestAnimationFrame(frame)},250)}
   function frame(now){raf=0;if(!run||run.finished||run.paused)return;if(document.hidden){suspendForLifecycle();return}const dt=Math.min(.04,(now-lastTime)/1000||0);lastTime=now;update(dt);draw();if(!run.finished&&!run.paused)raf=requestAnimationFrame(frame)}
   function resizeCanvas(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(2,devicePixelRatio||1),width=Math.max(1,Math.round(rect.width*dpr)),height=Math.max(1,Math.round(rect.height*dpr));if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;draw()}}
   new ResizeObserver(resizeCanvas).observe(canvas);
-  function setLane(value,announce=false){if(!run||run.paused||run.finished)return false;const lane=Math.max(0,Math.min(2,Math.round(Number(value))));if(lane===run.lane)return true;const fromLane=run.lane;run.lane=lane;run.laneMask|=1<<lane;run.laneSwitchCount+=1;run.aimX=laneCenters[lane];addBurst(run.aimX,.86,"#72f4d8",10);trackFunnel("lane_switch",{from_lane:fromLane+1,to_lane:lane+1,switch_count:run.laneSwitchCount,distinct_lanes:distinctLaneCount()});if(announce)$("feedback").textContent=t("laneReady",{lane:lane+1});updateHud(true);draw();return true}
+  function setLane(value,announce=false){if(!run||run.paused||run.finished)return false;const lane=Math.max(0,Math.min(2,Math.round(Number(value))));if(lane===run.lane)return true;const fromLane=run.lane;run.lane=lane;run.laneMask|=1<<lane;run.laneSwitchCount+=1;run.laneTweenFrom=Number.isFinite(run.visualAimX)?run.visualAimX:run.aimX;run.laneTweenElapsed=0;run.aimX=laneCenters[lane];addBurst(run.aimX,.86,"#72f4d8",10);trackFunnel("lane_switch",{from_lane:fromLane+1,to_lane:lane+1,switch_count:run.laneSwitchCount,distinct_lanes:distinctLaneCount()});if(announce)$("feedback").textContent=t("laneReady",{lane:lane+1});updateHud(true);draw();return true}
   function aimFromEvent(event){if(!run||run.paused||run.finished)return;const rect=canvas.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width,lane=laneCenters.reduce((best,center,index)=>Math.abs(center-x)<Math.abs(laneCenters[best]-x)?index:best,0);setLane(lane,true)}
   let arenaPointerId=null;
   function clearArenaPointer(){

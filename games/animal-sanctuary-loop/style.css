@@ -108,3 +108,53 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"]
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .objective-copy{display:grid;gap:2px;min-width:0;line-height:1.25}
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .objective-copy :is(span,small){max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .help-action{width:44px;height:44px;min-width:44px;min-height:44px;border:2px solid var(--wp-ui-line);border-radius:14px;background:var(--wp-ui-control);color:var(--wp-ui-control-text);font-weight:900}
+
+/* v20 authored content skin. Shared I7 frame, controls and rail geometry stay owned by the kit. */
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail > .stage-card{
+  --sanctuary-accent:#7cf0c9;
+  padding:12px 14px;
+  color:#f4fff9!important;
+  background:radial-gradient(ellipse at 85% 0%,#397f6870,transparent 65%),linear-gradient(155deg,#102d32f5,#071825f8),url('../../assets/animal-sanctuary-loop/arena.webp') center/cover!important;
+  border-color:#4c8d8a;
+  transition:border-color 160ms ease,box-shadow 160ms ease,filter 160ms ease;
+}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail > [data-chapter="1"]{--sanctuary-accent:#8edbff;background:linear-gradient(155deg,#173e59f5,#092236f8)!important}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail > [data-chapter="2"]{--sanctuary-accent:#c8b6ff;background:linear-gradient(155deg,#3a315ff5,#13223ef8)!important}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail > [data-chapter="3"]{--sanctuary-accent:#ffc99a;background:linear-gradient(155deg,#493247f5,#1c2138f8)!important}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail > [data-chapter="4"]{--sanctuary-accent:#e1d1ff;background:linear-gradient(155deg,#40385ff5,#192039f8)!important}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail > [data-chapter="5"]{--sanctuary-accent:#ffe58c;background:linear-gradient(155deg,#41433af5,#102638f8)!important}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail > .stage-card:is(.centered,.wp-stage-centered){border-color:var(--sanctuary-accent);box-shadow:0 0 0 2px var(--sanctuary-accent),0 0 24px #78efd95c}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail .stage-card-content{display:grid;grid-template-rows:auto 34px minmax(30px,auto) auto auto;gap:4px;align-content:center;width:100%;height:100%;min-width:0;text-align:center}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail .stage-card-content>small{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;line-height:1.25;color:var(--sanctuary-accent)}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail .stage-card-content>strong{font-size:30px;line-height:34px;color:#f4fff9}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail .stage-objective{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13px;line-height:1.25;color:#e2f7f2}
+body[data-wp-game-id="animal-sanctuary-loop"] #stageRail .stage-card-content>.stage-stars{font-size:17px;color:#ffe58c;letter-spacing:3px}
+body[data-wp-game-id="animal-sanctuary-loop"] .trail-style{transition:border-color 160ms ease,box-shadow 160ms ease;background:linear-gradient(155deg,#153643,#0a1d31)}
+body[data-wp-game-id="animal-sanctuary-loop"] .trail-style:active{box-shadow:inset 0 0 0 2px #7cf0c9}
+/* A square board plus a separate control dock: no touch target obscures a legal cell. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #arenaWrap{display:grid;grid-template-columns:minmax(0,1fr) 144px;grid-template-rows:minmax(0,1fr);gap:8px;padding:6px;align-items:stretch;justify-items:stretch}
+body[data-wp-game-id="animal-sanctuary-loop"] #arenaBoard{position:relative;grid-row:1;grid-column:1;min-width:0;min-height:0;container-type:size;display:grid;place-items:center}
+body[data-wp-game-id="animal-sanctuary-loop"] #arenaBoard #arena{display:block;grid-row:1;grid-column:1;width:min(100cqw,100cqh);height:min(100cqw,100cqh);max-width:100%;max-height:100%;aspect-ratio:1;background:linear-gradient(#09233c55,#09233c55);border-radius:10px;outline-offset:-4px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #touchPad{position:relative;inset:auto;grid-column:2;grid-row:1;width:140px;height:92px;grid-template:repeat(2,44px)/repeat(3,44px);gap:4px;align-self:center;justify-self:center;opacity:1;direction:ltr}
+body[data-wp-game-id="animal-sanctuary-loop"] #touchPad button{width:44px;height:44px;min-width:44px;min-height:44px;padding:0;transition:background-color 120ms ease,box-shadow 120ms ease}
+body[data-wp-game-id="animal-sanctuary-loop"] #touchPad button:active{background:#285d68;box-shadow:inset 0 0 0 2px #8effe4}
+body[data-wp-game-id="animal-sanctuary-loop"] #feedback{min-height:25px;line-height:1.25}
+body[data-wp-game-id="animal-sanctuary-loop"] #timeValue[data-urgent="true"]{color:#ffd08e!important}
+body[data-wp-game-id="animal-sanctuary-loop"] .result-stats strong{font-variant-numeric:tabular-nums}
+@media(max-width:599px){
+ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #arenaWrap{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 92px;gap:6px;padding:5px}
+ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #touchPad{grid-column:1;grid-row:2}
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-wp-game-id="animal-sanctuary-loop"] :is(.stage-card,.trail-style,#touchPad button){transition:none!important}
+}
+
+/* v20: reset legacy landscape row/column placement inside the shared v7 frame.
+   The board owns the flexible second row; old grid-row:3/5 must not create
+   implicit tracks that inflate the objective and shrink the playfield. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #battleLive > .objective-row{grid-column:1;grid-row:1}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #battleLive > #arenaWrap{grid-column:1;grid-row:2}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #battleLive > #feedback{grid-column:1;grid-row:3}
+@media(max-height:500px) and (min-width:700px){
+ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #battleLive{gap:4px;padding:4px}
+}

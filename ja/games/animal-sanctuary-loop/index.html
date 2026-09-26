@@ -4,6 +4,8 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-sanctuary-loop/" />
+  <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v20">
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-sanctuary-loop/" />
@@ -21,8 +23,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-sanctuary-loop/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-sanctuary-loop/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-sanctuary-loop/" />
-    <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-interface-version" content="7">
@@ -43,17 +44,17 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
-  <link rel="stylesheet" href="style.css?v=20260925-sanctuary-interface7-v19">
+  <link rel="stylesheet" href="style.css?v=20260926-sanctuary-v20">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260925-main-progress-40-v3"><meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-sanctuary-loop.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="loading" data-game-id="animal-sanctuary-loop" data-wp-interface-version="7" data-sound-toggle="off" data-wp-game-owned-guide>
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+  <section id="loadingPanel" data-runtime-localize="off" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-t="title" data-wp-game-title data-runtime-localize="off">サンクチュアリ・ループ</strong><span data-t="loading">聖域を目覚めさせています…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
-  <div id="frameRoot" data-wp-frame-root>
+  <div id="frameRoot" data-runtime-localize="off" data-wp-frame-root>
   <div id="mainGroup" class="main-group" hidden>
     <main id="mainScreen" class="main-screen" data-wp-frame-scene="main">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">サンクチュアリ・ループ</h1>
@@ -68,11 +69,12 @@
     </main>
       <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel" data-wp-game-guide data-wp-guide-complete="true">
       <small data-t="guideKicker">WEIGHTPLAYオリジナル・アーケード冒険</small><h2 data-t="guideTitle">長い光跡に挑み、より大きな聖域を再生しよう。</h2><p data-t="guideIntro">再生した土地では安全ですが、外では稲妻の跡が無防備です。ハンターに触れられる前に戻りましょう。</p>
-      <div class="game-info-facts"><div class="game-info-fact"><span data-t="factGameplay">遊び方</span><strong data-t="factGameplayValue">リアルタイム陣取りループ</strong></div><div class="game-info-fact"><span data-t="factGenre">ジャンル</span><strong data-t="factGenreValue">アーケード・戦略・動物</strong></div><div class="game-info-fact"><span data-t="factSession">プレイ時間</span><strong data-t="factSessionValue">1任務 2〜6分</strong></div></div>
+      <div class="game-info-tags" role="group" aria-label="Gameplay tags" data-ta="gameplayTags"><span data-t="tagTerritory">陣取り</span><span data-t="tagArcade">アーケード</span><span data-t="tagStrategy">戦略</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span data-t="factGameplay">遊び方</span><strong data-t="factGameplayValue">リアルタイム陣取りループ</strong></div><div class="game-info-fact"><span data-t="factGenre">ジャンル</span><strong data-t="factGenreValue">アーケード・戦略・動物</strong></div><div class="game-info-fact"><span data-t="factSession">プレイ時間</span><strong data-t="factSessionValue">制限時間96〜112秒</strong></div></div>
       <div class="guide-grid"><article><h3 data-t="howTitle">遊び方</h3><ol><li data-t="how1">スワイプ、ドラッグ、方向キーでフィアを操作します。</li><li data-t="how2">再生地を離れ、汚染地に輪を描きます。</li><li data-t="how3">ハンターが開いた光跡に触れる前に戻ります。</li></ol></article><article><h3 data-t="campaignTitle">30の手作りミッション</h3><p data-t="campaignText">6章で救助ビーコン、嵐の道、順序封印、縮小境界、敵の占領、守護者狩りが加わります。</p></article></div>
       <div class="guide-grid"><article><h3 data-t="worldTitle">世界とミッション</h3><p data-t="worldText">6つの聖域が腐食にのみ込まれました。フィアは領地を囲み、ビーコンを救い、30の手作りミッションの変化するルールを生き抜いて生息地を戻します。</p><h3 data-t="systemsTitle">ゲームシステム</h3><p data-t="systemsText">フィアは再生した土地で安全です。外では開いた軌跡をハンターに切られることがあり、戻ってつなぐと囲んだ区域を取り戻せます。バトル中はハート、目標面積、ミッション条件、敵のルートが見えます。</p></article><article><h3 data-t="strategyTitle">攻略のヒント</h3><ol><li data-t="strategy1">ハンターのルートを覚える間は短い輪を使います。</li><li data-t="strategy2">近くの敵が離れている時だけ長い輪を始めます。</li><li data-t="strategy3">章の条件を読んでから、区域・ビーコン・封印の優先順を決めます。</li></ol><h3 data-t="progressTitle">進行</h3><p data-t="progressText">ミッション1〜5で陣取りの輪を学びます。2〜6章ではビーコン、嵐の道、順序封印、縮む境界、敵の領地、守護者の組み合わせが30まで加わります。</p></article></div>
       <div class="guide-grid"><article><h3 data-t="designTitle">デザインメモ</h3><p data-t="designText">動きは軽快なまま、危険はすべて見えるようにしています。タッチ、マウス、キーボードは同じ移動モデルを使うため、見えるルートがそのまま判定されます。</p></article><article><h3 data-t="saveTitle">ローカル保存</h3><p data-t="saveText">解放した任務と最高スターはこのブラウザに保存され、アカウントは不要です。</p></article></div>
-      <div class="guide-grid"><article><h3 data-t="faqTitle">よくある質問</h3><dl><div><dt data-t="faqQ1">ミッションはいくつありますか？</dt><dd data-t="faqA1">6つのルール章に30の手作りミッションがあります。</dd></div><div><dt data-t="faqQ2">フィアが安全なのはいつですか？</dt><dd data-t="faqA2">再生した領地に触れている間は安全です。</dd></div><div><dt data-t="faqQ3">ダメージを受ける原因は？</dt><dd data-t="faqA3">ハンターがフィアまたは無防備な開いた跡に触れるとハートを1つ失います。</dd></div><div><dt data-t="faqQ4">進行状況は保存されますか？</dt><dd data-t="faqA4">はい。ミッションの進行状況とスターはこのブラウザにローカル保存されます。</dd></div></dl></article><article><h3 data-t="relatedTitle">関連ゲーム</h3><p data-t="relatedIntro">WeightPlayの別のルート計画にも挑戦しましょう。</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-one-line/" data-wp-related-id="animal-one-line"><span class="game-info-related-copy"><strong data-t="relatedOneTitle">One Line</strong><span data-t="relatedOneText">壁と動く影を避けながら、手作りの道を1本の線で進みます。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-rootvault-pins/" data-wp-related-id="animal-rootvault-pins"><span class="game-info-related-copy"><strong data-t="relatedTwoTitle">どうぶつルートヴォルト・ピン</strong><span data-t="relatedTwoText">安全なピンの順序を計画し、見える素材反応とルーン錠がある30の決定論的なチャンバーを攻略します。</span></span></a></div></article></div>
+      <div class="guide-grid"><article><h3 data-t="faqTitle">よくある質問</h3><dl><div><dt data-t="faqQ1">ミッションはいくつありますか？</dt><dd data-t="faqA1">6つのルール章に30の手作りミッションがあります。</dd></div><div><dt data-t="faqQ2">フィアが安全なのはいつですか？</dt><dd data-t="faqA2">再生した領地に触れている間は安全です。</dd></div><div><dt data-t="faqQ3">ダメージを受ける原因は？</dt><dd data-t="faqA3">ハンターがフィアまたは無防備な開いた跡に触れるとハートを1つ失います。</dd></div><div><dt data-t="faqQ4">進行状況は保存されますか？</dt><dd data-t="faqA4">はい。ミッションの進行状況とスターはこのブラウザにローカル保存されます。</dd></div></dl></article><article><h3 data-t="relatedTitle">関連ゲーム</h3><p data-t="relatedIntro">WeightPlayの別のルート計画にも挑戦しましょう。</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-one-line/" data-wp-related-id="animal-one-line"><span class="game-info-related-copy"><strong data-t="relatedOneTitle">One Line</strong><span data-t="relatedOneText">壁と動く影を避けながら、手作りの道を1本の線で進みます。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-rootvault-pins/" data-wp-related-id="animal-rootvault-pins"><span class="game-info-related-copy"><strong data-t="relatedTwoTitle">ルートヴォルト・ピン</strong><span data-t="relatedTwoText">安全なピンの順序を計画し、見える素材反応とルーン錠がある30の決定論的なチャンバーを攻略します。</span></span></a></div></article></div>
     <article class="game-info-section" data-wp-market-comparison="1.3.0" data-comparison-locale="ja" data-runtime-localize="off"><h3>似た遊び方の作品</h3><div class="game-info-tags"><span><bdi>QIX</bdi></span></div><p>QIXと本作は、危険にさらされた軌跡をつなぎ直して領地を囲む点が共通しています。大きく囲むほど、途中で軌跡を攻撃される危険も高まります。QIXではMarkerを動かしてQIXとSparxを避け、画面の75%以上を確保します。本作ではFiaが六章、計30の制限時間付きミッションに挑み、各面の領地目標は12%から35%です。先へ進むと救助ビーコン、嵐の通路、順番に解く封印、守護者の追跡が加わります。星や軌跡の外見をブラウザーに保存し、個別の目標に挑みたい人向けで、元のアーケード版のルールや面を再現した作品ではありません。</p><p>別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。</p><p><a href="https://www.arcadearchives.com/en/title/aca-198/" rel="noopener noreferrer">参照作品の公式情報</a></p></article></section>
   </div>
 
@@ -92,9 +94,9 @@
     <div id="battleCanvas" class="battle-canvas" data-wp-frame-scene="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <header id="battleHeader" class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><strong data-wp-frame-title data-wp-game-title>サンクチュアリ・ループ</strong></header>
       <div id="battleLive" class="battle-live" data-wp-frame-content="battle">
-        <div id="battleInfo" class="battle-info" aria-label="Battle status"><div><span data-t="missions">ミッション</span><strong id="missionLabel"></strong><b id="progressValue">0%</b></div><div><span data-t="hearts">ハート</span><strong id="heartsValue">3</strong></div><div><span data-t="time">時間</span><strong id="timeValue">90</strong></div></div>
+        <div id="battleInfo" class="battle-info" aria-label="Mission status" data-ta="battleStatus"><div data-ta="missions" aria-label="Missions"><span id="missionLabel"></span><strong id="progressValue">0%</strong></div><div><span data-t="hearts">ハート</span><strong id="heartsValue">3</strong></div><div><span data-t="time">時間</span><strong id="timeValue">90</strong></div></div>
         <div class="objective-row"><div class="objective-copy"><span id="objective"></span><small id="missionTwist"></small></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-wp-battle-utility="true" data-ta="help">?</button></div>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="768" height="768" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D" aria-label="Sanctuary territory arena" data-ta="arenaLabel"></canvas><div id="touchPad" class="touch-pad" aria-label="Direction controls" data-ta="directionControls"><button data-dir="up" aria-label="Up" data-ta="up">↑</button><button data-dir="left" aria-label="Left" data-ta="left">←</button><button data-dir="down" aria-label="Down" data-ta="down">↓</button><button data-dir="right" aria-label="Right" data-ta="right">→</button></div></div>
+        <div id="arenaWrap" class="arena-wrap"><div id="arenaBoard" class="arena-board"><canvas id="arena" width="768" height="768" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D" aria-label="Sanctuary territory arena" data-ta="arenaLabel"></canvas></div><div id="touchPad" class="touch-pad" aria-label="Direction controls" data-ta="directionControls"><button data-dir="up" aria-label="Up" data-ta="up">↑</button><button data-dir="left" aria-label="Left" data-ta="left">←</button><button data-dir="down" aria-label="Down" data-ta="down">↓</button><button data-dir="right" aria-label="Right" data-ta="right">→</button></div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
       <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">任務を離れますか？</h2><p data-t="leaveText">続行なら現在の状態を保持し、ステージへ戻ると挑戦を終了します。</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">続ける</button><button id="leaveStage" data-t="returnStage">Stageへ戻る</button></div></div></section>
@@ -108,7 +110,7 @@
 
   <script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="locales.js?v=20260824-main-stage-localization-v14"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script><script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script><script src="game.js?v=20260925-sanctuary-interface7-v19&amp;wp-audio=1.0.0"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="locales.js?v=20260926-sanctuary-v20"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script><script src="../../src/game-screen-frame.js?v=20260925-main-progress-40-v3"></script><script src="motion.js?v=20260926-sanctuary-v20"></script><script src="game.js?v=20260926-sanctuary-v20&amp;wp-audio=1.0.0"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="サンクチュアリ・ループ";document.title="サンクチュアリ・ループ | WeightPlay";},{once:true});</script>
 </body>
 </html>

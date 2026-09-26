@@ -1,13 +1,24 @@
 {
   "schemaVersion": 1,
   "gameId": "animal-tideglass",
-  "interfaceVersion": 6,
+  "interfaceVersion": 7,
   "audience": "general",
-  "flow": "MAIN_BATTLE",
-  "stage": { "enabled": false },
-  "battle": { "enabled": true },
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": {
+    "enabled": true,
+    "total": 30,
+    "readingsPerStage": 5,
+    "controller": "WeightPlayStageV6",
+    "poolSize": 9
+  },
+  "battle": {
+    "enabled": true
+  },
   "result": "BATTLE_SUBSTATE",
-  "reserve": "GENERAL_56PX",
-  "status": "internal-noindex-prototype",
-  "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY"
+  "reserve": "SHARED_GAME_LAYOUT_CONFIG",
+  "status": "internal-noindex-v4-pending-rendered-acceptance",
+  "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY",
+  "implementedGameVersion": "v4",
+  "textGrowthTarget": "1.3.0",
+  "evidence": "docs/game-qa/animal-tideglass-v4-owner-20260926.md"
 }

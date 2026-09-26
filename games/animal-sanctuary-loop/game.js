@@ -21,7 +21,8 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v20";
+  const motion = window.SanctuaryLoopMotion.create();
   const screenFrame = window.WeightPlayScreenFrame.mount({
     root: $("frameRoot"),
     localeSelect: $("locale"),
@@ -75,7 +76,6 @@
 
   const routeLocale = routeLocales[location.pathname.split("/").filter(Boolean)[0]];
   let locale = canonicalLocale(routeLocale || storage.get("wonderLocale") || navigator.language);
-  const runtimeLocales = new Set(["hi", "ar"]);
   function viewportBucket() {
     const width = Math.min(window.innerWidth || 0, window.innerHeight || 0);
     if (width <= 480) return "phone";
@@ -105,7 +105,7 @@
   function t(key, vars = {}) {
     const source = String(localePack.dictionaries[locale]?.[key] || localePack.dictionaries.en[key] || key)
       .replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
-    return runtimeLocales.has(locale) ? window.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source : source;
+    return source; // Every supported locale owns this catalog; no second-pass translation.
   }
 
   for (const [value, label] of [["hi", "हिन्दी"], ["ar", "العربية"]]) {
@@ -217,6 +217,7 @@
   let run = null;
   let currentScreen = "loading";
   let resultDecisionCommitted = false;
+  let settingsPaused = false;
   const STAGE_CARD_POOL_SIZE = 9;
   const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
   let stageCardPool = [];
@@ -232,6 +233,7 @@
   }
 
   function objectiveFor(stage) {
+    if (stage.seals && stage.rescue) return t("objectiveCombined", { percent: stage.target, rescue: stage.rescue, seals: stage.seals });
     if (stage.seals) return t("objectiveSeals", { percent: stage.target, count: stage.seals });
     if (stage.rescue) return t("objectiveRescue", { percent: stage.target, count: stage.rescue });
     return t("objectiveRestore", { percent: stage.target });
@@ -250,7 +252,7 @@
     $("locale").value = locale;
     $("lobbyReturn").href = `/${routeSegments[locale]}/`;
     staticText.forEach((element) => { element.textContent = t(element.dataset.t); });
-    assistiveText.forEach((element) => element.setAttribute("aria-label", t(element.dataset.ta)));
+    assistiveText.forEach((element) => element.setAttribute(element.tagName === "IMG" ? "alt" : "aria-label", t(element.dataset.ta)));
     const resultActions = $("resultStage").parentElement;
     resultActions.append($("resultStage"), $("nextMission"), $("retry"));
     $("resultStage").textContent = t("missions");
@@ -268,32 +270,34 @@
   }
 
   let mainFocusSettlementToken = 0;
+  let mainFocusTimers = [];
+  let mainFocusRaf = 0;
+  function stopMainFocusHandoff() {
+    mainFocusSettlementToken += 1;
+    mainFocusTimers.forEach((id) => window.clearTimeout(id));
+    mainFocusTimers = [];
+    cancelAnimationFrame(mainFocusRaf);
+    mainFocusRaf = 0;
+  }
   function restoreMainStartFocus() {
-    const token = ++mainFocusSettlementToken;
-    let observer = null;
-    let stopTimer = 0;
+    stopMainFocusHandoff();
+    const token = mainFocusSettlementToken;
     const focusStart = () => {
-      if (token !== mainFocusSettlementToken || currentScreen !== "main" || $("mainGroup").hidden) {
-        observer?.disconnect();
-        window.clearTimeout(stopTimer);
-        return;
-      }
+      if (token !== mainFocusSettlementToken || currentScreen !== "main" || $("mainGroup").hidden) return;
       const active = document.activeElement;
-      const visibleOwner = active && active !== document.body && active.getClientRects().length > 0;
-      if (visibleOwner && active !== $("start")) return;
+      if (active && active !== document.body && active !== $("start") && active.getClientRects().length) return;
       $("start").focus({ preventScroll: true });
     };
     focusStart();
-    requestAnimationFrame(focusStart);
-    observer = new MutationObserver(focusStart);
-    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
-    for (const delay of [80, 400, 1000]) window.setTimeout(focusStart, delay);
-    stopTimer = window.setTimeout(() => observer.disconnect(), 1600);
+    mainFocusRaf = requestAnimationFrame(() => { mainFocusRaf = 0; focusStart(); });
+    mainFocusTimers = [80, 400, 1000].map((delay) => window.setTimeout(focusStart, delay));
   }
 
   function showScreen(name, restoreFocus = true) {
     if (name !== "stage" && currentScreen === "stage") cancelStageMotion();
+    stopMainFocusHandoff();
     const previousScreen = currentScreen;
+    motion.cancelUI();
     currentScreen = name;
     if (name === "main" && previousScreen !== "loading") track("return_session", { from: previousScreen });
     document.body.dataset.screen = name;
@@ -301,9 +305,15 @@
     $("stage").hidden = name !== "stage";
     $("battle").hidden = name !== "battle";
     screenFrame.activate(name);
-    if (name !== "battle") stopLoop();
+    if (name === "main") { motion.reveal(document.querySelector(".poster")); motion.reveal(document.querySelector(".main-copy"), 50); }
+    if (name === "stage") motion.reveal($("stageContent"));
+    if (name === "battle") motion.reveal($("arenaWrap"));
+    if (name !== "battle") { settingsPaused = false; stopLoop(); }
     if (name === "stage") {
-      if (previousScreen !== "stage") selectedStageIndex = Math.min(save.unlocked, stages.length) - 1;
+      if (previousScreen !== "stage") {
+        selectedStageIndex = Math.min(save.unlocked, stages.length) - 1;
+        activateStageTab(stageTabButtons.find((button) => button.dataset.tab === "missions"));
+      }
       renderStage();
       requestAnimationFrame(() => centerCurrentStage(restoreFocus));
     } else if (name === "main") {
@@ -330,7 +340,7 @@
     button.type = "button";
     button.className = "stage-card";
     button.dataset.wpStagePoolNode = String(poolIndex + 1);
-    button.innerHTML = '<span class="stage-card-content" data-wp-item-content><small></small><strong></strong><span></span><small class="stage-twist"></small><small class="stage-stars"></small></span>';
+    button.innerHTML = '<span class="stage-card-content" data-wp-item-content><small></small><strong></strong><span class="stage-objective"></span><small class="stage-twist"></small><small class="stage-stars"></small></span>';
     button.addEventListener("click", (event) => {
       if (heldScreenTransition === "main") return;
       const index = Number(button.dataset.stageIndex);
@@ -361,6 +371,7 @@
     const rule = objectiveFor(stage);
     const earned = Number(save.stars[stage.n]) || 0;
     button.dataset.stage = String(stage.n);
+    button.dataset.chapter = String(stage.chapter);
     button.dataset.index = String(index);
     button.dataset.stageIndex = String(index);
     button.setAttribute("aria-posinset", String(index + 1));
@@ -368,9 +379,9 @@
     button.setAttribute("aria-disabled", locked ? "true" : "false");
     button.setAttribute("aria-label", `${locked ? `${t("lockedBadge")}. ${t("stageLocked")} ` : ""}${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
     button.classList.toggle("locked", locked);
-    button.querySelector("small").textContent = locked ? t("lockedBadge") : t(chapters[stage.chapter]);
+    button.querySelector("small").textContent = locked ? t("lockedBadge") : earned ? `${t(chapters[stage.chapter])} · ${t("clearedBadge")}` : t(chapters[stage.chapter]);
     button.querySelector("strong").textContent = String(stage.n);
-    button.querySelector("span").textContent = rule;
+    button.querySelector(".stage-objective").textContent = rule;
     button.querySelector(".stage-twist").textContent = describeStage(stage);
     button.querySelector(".stage-stars").textContent = `${"★".repeat(earned)}${"☆".repeat(3 - earned)}`;
   }
@@ -421,7 +432,7 @@
       bindStageCard(recycled, stageWindowStart + stageCardPool.length - 1);
       recycledCount += 1;
       const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += after - before;
+      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += (after - before) * (rail.clientWidth / rail.getBoundingClientRect().width || 1);
     }
     while (stageWindowStart > target) {
       const recycled = rail.lastElementChild;
@@ -432,7 +443,7 @@
       bindStageCard(recycled, stageWindowStart);
       recycledCount += 1;
       const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += after - before;
+      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += (after - before) * (rail.clientWidth / rail.getBoundingClientRect().width || 1);
     }
     stageCardPool = [...rail.children];
     rail.dataset.wpStageWindowStart = String(stageWindowStart);
@@ -455,7 +466,8 @@
     const second = cards[1]?.getBoundingClientRect();
     const delta = first && second ? (second.left + second.width / 2) - (first.left + first.width / 2) : 0;
     const fallback = (first?.width || 264) + (parseFloat(getComputedStyle(rail).columnGap) || 12);
-    return { rail, center: railRect.left + railRect.width / 2, pitch: Math.abs(delta) || fallback, orientation: Math.sign(delta) || 1 };
+    const pitch = Math.abs(delta) || fallback;
+    return { rail, center: railRect.left + railRect.width / 2, pitch, cssPitch: pitch * (rail.clientWidth / railRect.width || 1), orientation: Math.sign(delta) || 1 };
   }
 
   function nearestStageCard() {
@@ -488,7 +500,7 @@
     card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
     const geometry = stageRailGeometry();
     const fraction = logical - anchorIndex;
-    if (Math.abs(fraction) > 0.0001) geometry.rail.scrollLeft += fraction * geometry.orientation * geometry.pitch;
+    if (Math.abs(fraction) > 0.0001) geometry.rail.scrollLeft += fraction * geometry.orientation * geometry.cssPitch;
     geometry.rail.dataset.wpStageDragLogical = logical.toFixed(4);
     return logical;
   }
@@ -521,7 +533,7 @@
       delete rail.dataset.wpDragDown;
       rail.classList.remove("wp-stage-dragging");
     };
-    restoreStageRailBehavior = restoreRailBehavior;
+    restoreStageRailBehavior = () => { pointerId = null; moved = false; suppressClick = false; restoreRailBehavior(); };
     rail.addEventListener("pointerdown", (event) => {
       if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
       cancelAnimationFrame(stageSettleRaf);
@@ -544,11 +556,9 @@
         rail.classList.add("wp-stage-dragging");
       }
       if (moved) {
-        const rect = rail.getBoundingClientRect();
-        const scale = rect.width ? rail.clientWidth / rect.width : 1;
-        const pitch = stageRailGeometry().pitch;
+        const { pitch, orientation } = stageRailGeometry();
         if (event.cancelable) event.preventDefault();
-        dragLogical = positionStageRail(dragLogical - delta * scale / pitch);
+        dragLogical = positionStageRail(dragLogical - delta / (pitch * orientation));
       }
       event.stopImmediatePropagation();
     }, true);
@@ -561,14 +571,14 @@
         if (event.cancelable) event.preventDefault();
         const from = dragLogical;
         const index = clamp(Math.round(from), 0, stages.length - 1);
-        const duration = Number(rail.dataset.wpStageSettleDuration) || 340;
+        const duration = motion.reduced ? 0 : Number(rail.dataset.wpStageSettleDuration) || 340;
         const start = performance.now();
         selectedStageIndex = index;
         syncStageCards();
         positionStageRail(from);
         rail.dataset.wpStageSettling = "true";
         const settle = (now) => {
-          const progress = clamp((now - start) / duration, 0, 1);
+          const progress = duration === 0 ? 1 : clamp((now - start) / duration, 0, 1);
           const eased = progress * progress * (3 - 2 * progress);
           positionStageRail(from + (index - from) * eased);
           if (progress < 1) stageSettleRaf = requestAnimationFrame(settle);
@@ -600,7 +610,7 @@
     if (!stageCardPool.length) buildStageCardPool();
     ensureStageWindow(selectedStageIndex);
     installVirtualStageDrag();
-    $("stageProgress").textContent = `${save.unlocked} / 30`;
+    $("stageProgress").textContent = `${Object.keys(save.stars).length} / 30`;
   }
 
   function centerCurrentStage(restoreFocus = true) {
@@ -668,6 +678,7 @@
     });
     $("missionsTab").hidden = button.dataset.tab !== "missions";
     $("atelierTab").hidden = button.dataset.tab !== "atelier";
+    motion.reveal($(button.dataset.tab === "missions" ? "missionsTab" : "atelierTab"));
     if (restoreFocus) button.focus({ preventScroll: true });
   }
   document.querySelector(".stage-tabs")?.setAttribute("role", "tablist");
@@ -687,7 +698,7 @@
         ? 0
         : event.key === "End"
           ? stageTabButtons.length - 1
-          : (index + (event.key === "ArrowRight" ? 1 : -1) + stageTabButtons.length) % stageTabButtons.length;
+          : (index + (event.key === "ArrowRight" ? 1 : -1) * (document.documentElement.dir === "rtl" ? -1 : 1) + stageTabButtons.length) % stageTabButtons.length;
       activateStageTab(stageTabButtons[next], true);
     });
   });
@@ -705,7 +716,7 @@
   $("start").addEventListener("keydown", ownScreenTransition("main"));
   $("stageBack").addEventListener("keydown", ownScreenTransition("stage"));
   document.addEventListener("keyup", releaseScreenTransition);
-  window.addEventListener("blur", () => { heldScreenTransition = ""; });
+  window.addEventListener("blur", () => { heldScreenTransition = ""; cancelStageMotion(); });
   $("start").addEventListener("click", () => {
     if (heldScreenTransition === "stage") return;
     showScreen("stage");
@@ -838,6 +849,7 @@
   }
 
   function startBattle(index, event) {
+    settingsPaused = false;
     reclaimVisibleForeground(event);
     (__wpNotifyMeasurement(), lifecycleSuspended = false);
     const stageIndex = Math.max(0, Math.min(29, Math.trunc(index)));
@@ -861,7 +873,8 @@
       owned,
       blocked,
       trail: new Set(),
-      player: { ...spawn, dx: 0, dy: 0 },
+      player: { ...spawn, dx: 0, dy: 0, visualAngle: Math.PI / 2 },
+      visual: motion.field(),
       anchor: { ...spawn },
       hearts: 3,
       time: stage.time,
@@ -876,6 +889,7 @@
       rivalClock: 0,
       shrinkClock: 0,
       rivalMarks: [],
+      rivalMarkedAt: -10,
     };
     (__wpNotifyMeasurement(), $("leave").hidden = true);
     (__wpNotifyMeasurement(), $("tutorial").hidden = true);
@@ -902,6 +916,8 @@
   function stopLoop() {
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
+    if (visibleTick) clearInterval(visibleTick);
+    visibleTick = 0;
   }
 
   function resumeLoop() {
@@ -941,7 +957,7 @@
   function resumeFromLifecycle() {
     if (!lifecycleSuspended || document.hidden) return;
     (__wpNotifyMeasurement(), lifecycleSuspended = false);
-    if (currentScreen !== "battle" || !run || run.finished || activeModal()) return;
+    if (currentScreen !== "battle" || !run || run.finished || activeModal() || sharedSettingsOpen()) return;
     (__wpNotifyMeasurement(), run.paused = false);
     ensureVisibleTick();
     resumeLoop();
@@ -966,10 +982,11 @@
     windowFocused = true;
     resumeFromLifecycle();
   });
-  window.addEventListener("pagehide", suspendForLifecycle);
+  window.addEventListener("pagehide", () => { motion.cancelUI(); cancelStageMotion(); stopMainFocusHandoff(); suspendForLifecycle(); stopLoop(); });
   window.addEventListener("pageshow", resumeFromLifecycle);
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) suspendForLifecycle();
+    motion.pauseUI(document.hidden);
+    if (document.hidden) { cancelStageMotion(); suspendForLifecycle(); }
     else resumeFromLifecycle();
   });
   $("battle").addEventListener("pointerdown", reclaimVisibleForeground, true);
@@ -981,12 +998,17 @@
     const key = `${run.hearts}|${Math.ceil(run.time)}|${restored}|${locale}|${run.rescued}|${run.seals}`;
     if (!force && key === lastHud) return;
     lastHud = key;
-    $("missionLabel").textContent = `${t(chapters[run.stage.chapter])} · ${run.stage.n}/30`;
+    $("missionLabel").textContent = `${run.stage.n}/30`;
     $("progressValue").textContent = `${restored}%`;
     $("heartsValue").textContent = "♥".repeat(run.hearts);
     $("timeValue").textContent = Math.max(0, Math.ceil(run.time));
-    $("objective").textContent = objectiveFor(run.stage);
-    $("missionTwist").textContent = describeStage(run.stage);
+    $("objective").textContent = t("objectiveRestore", { percent: run.stage.target });
+    const objectives = [];
+    if (run.stage.rescue) objectives.push(`${t("beaconsLabel")} ${run.rescued}/${run.stage.rescue}`);
+    if (run.stage.seals) objectives.push(`${t("sealsLabel")} ${run.seals}/${run.stage.seals}`);
+    $("missionTwist").textContent = objectives.length ? objectives.join(" · ") : describeStage(run.stage);
+    $("objective").title = objectiveFor(run.stage);
+    $("timeValue").dataset.urgent = run.time <= 15 ? "true" : "false";
   }
 
   function redrawLand() {
@@ -1013,6 +1035,7 @@
         marker.done = true;
         run.rescued += 1;
       }
+      motion.emit(run.visual, "marker", marker.x, marker.y, run.elapsed);
     }
   }
 
@@ -1046,11 +1069,13 @@
       components.push({ items, touchesEdge });
     }
     let filled = 0;
+    const newlyOwned = [];
     for (const component of components) {
       if (component.touchesEdge) continue;
       for (const index of component.items) {
         if (!run.owned[index] && !run.blocked[index]) {
           run.owned[index] = 1;
+          newlyOwned.push(index);
           filled += 1;
         }
       }
@@ -1058,6 +1083,7 @@
     for (const index of run.trail) {
       if (!run.owned[index] && !run.blocked[index]) {
         run.owned[index] = 1;
+        newlyOwned.push(index);
         filled += 1;
       }
     }
@@ -1065,7 +1091,10 @@
     run.anchor = { x: run.player.x, y: run.player.y };
     checkMarkers();
     redrawLand();
+    motion.emit(run.visual, "capture", run.player.x, run.player.y, run.elapsed, { cells: newlyOwned, amount: `+${(filled / TOTAL * 100).toLocaleString(locale, { maximumFractionDigits: 1 })}%` });
+    motion.reveal($("progressValue"));
     $("feedback").textContent = t("loopClosed");
+    motion.reveal($("feedback"));
     track("loop_close", { mission: run.stage.n, filled, restored: Math.round(territoryPercent()) });
     window.WeightPlayAudio?.play?.("feedback.success");
     return filled;
@@ -1074,6 +1103,9 @@
   function cutTrail() {
     if (!run || !run.trail.size || run.finished) return false;
     run.hearts -= 1;
+    motion.emit(run.visual, "hurt", run.player.x, run.player.y, run.elapsed);
+    motion.emit(run.visual, "marker", run.anchor.x, run.anchor.y, run.elapsed);
+    motion.reveal($("heartsValue"));
     run.trail.clear();
     run.player.x = run.anchor.x;
     run.player.y = run.anchor.y;
@@ -1095,6 +1127,7 @@
       if ((x - 24) ** 2 + (y - 24) ** 2 > 18 && Math.hypot(x - run.player.x, y - run.player.y) > 3 && Math.hypot(x - run.anchor.x, y - run.anchor.y) > 2) candidates.push(index);
     }
     run.rivalMarks = [];
+    run.rivalMarkedAt = run.elapsed;
     for (let count = 0; count < Math.min(18, candidates.length); count += 1) {
       const slot = Math.floor(Math.random() * candidates.length);
       const index = candidates.splice(slot, 1)[0];
@@ -1115,6 +1148,7 @@
     }
     const amount = Math.min(10 + run.stage.chapter, candidates.length);
     run.rivalMarks = [];
+    run.rivalMarkedAt = run.elapsed;
     for (let count = 0; count < amount; count += 1) {
       const slot = (Math.floor(run.elapsed * 13) + count * 17) % candidates.length;
       const index = candidates.splice(slot, 1)[0];
@@ -1161,12 +1195,13 @@
           track("trail_start", { mission: run.stage.n });
         }
       }
-      else if (run.trail.size > 1) enclosedFill();
+      else if (run.trail.size) enclosedFill();
     }
 
     if (run.stage.storm && run.stormClock > (run.stage.stormEvery || 3.4)) {
       run.stormClock = 0;
-      const turn = Math.sin(run.elapsed * 1.7) >= 0 ? 0.22 : -0.22;
+      // Gusts bend an existing route; they never start movement without input.
+      const turn = (player.dx || player.dy) ? (Math.sin(run.elapsed * 1.7) >= 0 ? 0.22 : -0.22) : 0;
       const dx = player.dx + turn;
       const dy = player.dy - turn;
       const length = Math.hypot(dx, dy) || 1;
@@ -1235,6 +1270,7 @@
       && run.rescued >= run.stage.rescue
       && run.seals >= run.stage.seals
     ) finish(true);
+    motion.updateFacing(run, dt);
     updateBattleHud();
   }
 
@@ -1276,11 +1312,13 @@
 
     if (run.stage.storm) {
       ctx.fillStyle = "rgba(67,205,255,.12)";
-      const offset = (performance.now() / 40) % 120;
+      const offset = motion.reduced ? 0 : (run.elapsed * 25) % 120;
+      const warning = run.stormClock / (run.stage.stormEvery || 3.4);
+      ctx.fillStyle = warning > 0.78 ? "rgba(110,225,255,.25)" : "rgba(67,205,255,.10)";
       for (let x = -120; x < width + 120; x += 120) ctx.fillRect(x + offset, 0, 24, height);
     }
-    if (run.rivalMarks.length) {
-      ctx.fillStyle = "rgba(255,74,107,.32)";
+    if (run.rivalMarks.length && run.elapsed - run.rivalMarkedAt < 1) {
+      ctx.fillStyle = `rgba(255,110,140,${0.4 * (1 - (run.elapsed - run.rivalMarkedAt))})`;
       for (const index of run.rivalMarks) {
         const point = pointFor(index);
         ctx.fillRect(point.x * size, point.y * size, size, size);
@@ -1308,8 +1346,15 @@
       }
       ctx.stroke();
       ctx.shadowBlur = 0;
+      if (!motion.reduced) {
+        ctx.strokeStyle = "#fffde0"; ctx.lineWidth = 3;
+        ctx.setLineDash([size * 0.6, size * 1.4]); ctx.lineDashOffset = -run.elapsed * 44;
+        ctx.stroke(); ctx.setLineDash([]); ctx.lineDashOffset = 0;
+      }
     }
 
+    motion.drawEffects(ctx, run.visual, run.elapsed, size, GRID);
+    motion.drawSignals(ctx, run, size);
     const seals = run.markers.filter((marker) => marker.type === "seal");
     for (const marker of run.markers) {
       if (marker.done) continue;
@@ -1343,7 +1388,7 @@
         hunter.x * size,
         hunter.y * size,
         hunter.size * size,
-        hunter.angle + Math.PI / 2,
+        hunter.visualAngle ?? hunter.angle + Math.PI / 2,
         hunter.guardian ? "#ff4b7d" : hunter.type === "runner" ? "#36d8ff" : hunter.type === "tank" ? "#ffb85c" : hunter.type === "sentry" ? "#ffe36c" : "#9d62ff",
       );
     }
@@ -1352,7 +1397,7 @@
       run.player.x * size,
       run.player.y * size,
       4.4 * size,
-      Math.atan2(run.player.dy, run.player.dx) + Math.PI / 2,
+      run.player.visualAngle,
       "#64f9df",
     );
   }
@@ -1414,9 +1459,34 @@
       event.preventDefault();
       setDirection(...dirs[button.dataset.dir]);
     });
+    button.addEventListener("click", () => setDirection(...dirs[button.dataset.dir]));
   });
 
   let modalReturnFocus = null;
+  function sharedSettingsOpen() {
+    return Boolean($("battleHeader").querySelector(".wp-frame-popover:not([hidden])"));
+  }
+
+  // The shared settings popover covers Battle; gameplay must pause with it.
+  window.addEventListener("weightplay:interaction-state", () => {
+    if (!run || run.finished || currentScreen !== "battle") return;
+    if (sharedSettingsOpen()) {
+      settingsPaused = true;
+      run.paused = true;
+      motion.pauseUI(true);
+      stopLoop();
+    } else if (settingsPaused) {
+      settingsPaused = false;
+      if (!activeModal() && !lifecycleSuspended && !document.hidden) {
+        run.paused = false;
+        motion.pauseUI(false);
+        ensureVisibleTick();
+        resumeLoop();
+      }
+    }
+    __wpNotifyMeasurement();
+  });
+
   function activeModal() {
     return [$("leave"), $("tutorial"), $("result")].find((modal) => !modal.hidden) || null;
   }
@@ -1430,6 +1500,7 @@
     if (run) (__wpNotifyMeasurement(), run.paused = true);
     stopLoop();
     (__wpNotifyMeasurement(), modal.hidden = false);
+    motion.reveal(modal.firstElementChild);
     $("battleLive").inert = true;
     screenFrame.activate("battle", { covered: true });
     requestAnimationFrame(() => (focusTarget || modalButtons(modal)[0])?.focus());
@@ -1439,7 +1510,7 @@
     (__wpNotifyMeasurement(), modal.hidden = true);
     $("battleLive").inert = false;
     screenFrame.activate("battle");
-    if (run && !run.finished && !lifecycleSuspended) {
+    if (run && !run.finished && !lifecycleSuspended && !sharedSettingsOpen()) {
       (__wpNotifyMeasurement(), run.paused = false);
       ensureVisibleTick();
       resumeLoop();
@@ -1512,12 +1583,14 @@
     $("resultKicker").textContent = won ? `${t("restored")} ${restored}%` : t("missionFailedKicker");
     $("resultTitle").textContent = t(won ? "missionComplete" : "missionFailed");
     $("resultText").textContent = objectiveFor(run.stage);
-    $("resultStats").innerHTML = `<span><b>${t("restored")}</b><strong>${restored}%</strong></span><span><b>${t("rescued")}</b><strong>${run.rescued + run.seals}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3 - stars)}</strong></span>`;
+    $("resultStats").innerHTML = `<span><b>${t("restored")}</b><strong>${restored}%</strong></span><span><b>${t("objectivesDone")}</b><strong>${run.rescued + run.seals}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3 - stars)}</strong></span>`;
     $("nextMission").hidden = false;
     $("nextMission").disabled = !won || run.stage.n >= 30;
     const primaryAction = $("nextMission").disabled ? $("resultStage") : $("nextMission");
     for (const action of [$("retry"), $("resultStage"), $("nextMission")]) action.classList.toggle("primary", action === primaryAction);
     (__wpNotifyMeasurement(), $("result").hidden = false);
+    motion.reveal($("result").firstElementChild);
+    [...$("resultStats").children].forEach((item, index) => motion.reveal(item, index * 50));
     $("battleLive").hidden = true;
     $("battleLive").inert = true;
     screenFrame.activate("battle", { covered: true });
@@ -1625,6 +1698,9 @@
         windowFocused,
         lifecycleSuspended,
         rafActive: Boolean(raf),
+        fallbackTimerActive: Boolean(visibleTick),
+        gameVersion: GAME_VERSION,
+        reducedMotion: motion.reduced,
         save: JSON.parse(JSON.stringify(save)),
         run: run && {
           stageIndex: run.stageIndex,
@@ -1635,6 +1711,7 @@
           rescued: run.rescued,
           seals: run.seals,
           trail: [...run.trail],
+          effectCount: run.visual.effects.length,
           restored: territoryCount(),
           blocked: Array.from(run.blocked).reduce((sum, value) => sum + value, 0),
           playerOwned: Boolean(run.owned[indexFor(run.player.x, run.player.y)]),

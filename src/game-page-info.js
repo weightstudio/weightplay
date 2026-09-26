@@ -9996,6 +9996,7 @@
 
   function localizedGame(id) {
     let game = localizedGameContent(id);
+    if(id==="animal-abyss-diver"&&game&&window.AbyssDiverTactics)game=window.AbyssDiverTactics.applyGuide(game,locale());
     if (id === "animal-2048" && game) game = { ...game, systems: [...(game.systems || []), forestCheckpointGuide[locale()] || forestCheckpointGuide.en] };
     if (id === "wonder-crash" && game && window.LionTalents) game = { ...game, ...window.LionTalents.guide(locale()) };
     if (id === "animal-crystal-survivor" && game) game = { ...game, ...(crystalCombatGuides[locale()] || crystalCombatGuides.en) };

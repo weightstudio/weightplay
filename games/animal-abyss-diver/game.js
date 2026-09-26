@@ -18,7 +18,8 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "animal-abyss-diver";
-  const GAME_VERSION = 22;
+  const GAME_VERSION = 24;
+  const tactics=window.AbyssDiverTactics, motion=window.AbyssDiverMotion;
   const INTERFACE_VERSION = "7";
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
@@ -449,6 +450,7 @@
   function beaconRestoreTarget(){return Math.ceil(maxOxygen()*.3);}
   function beaconCanRestore(){return !!state.route&&!state.beaconUsed&&state.oxygen<beaconRestoreTarget();}
   function cancelDiveAsync(){
+    motion.clear();
     clearBeaconConfirmation();
     diveSession+=1;
     diveSuspended=false;
@@ -471,7 +473,8 @@
   }
   function suspendDiveAsync(){
     suspendBeaconConfirmation();
-    if(diveSuspended||!diveTimers.size||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden"))return;
+    if(diveSuspended||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden"))return;
+    motion.hold("dive",true);
     diveSuspended=true;
     const now=performance.now();
     diveTimers.forEach(task=>{
@@ -484,6 +487,7 @@
   function resumeDiveAsync(){
     if(document.hidden||!windowFocused||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden")||!$("quitPanel").classList.contains("hidden")||!$("diveCoach").classList.contains("hidden"))return;
     resumeBeaconConfirmation();
+    motion.hold("dive",false);
     if(!diveSuspended)return;
     diveSuspended=false;
     diveTimers.forEach(task=>{if(task.session===diveSession&&task.generation===sceneGeneration&&!task.timer)armDiveTask(task);});
@@ -620,6 +624,12 @@
     Object.assign(pack,labels);
   }
   const dictionaries={en,"zh-Hant":zhHant,"zh-Hans":zhHans,...localePacks};
+  for(const key of supportedLocales){
+    if(!tactics?.COPY[key]||!dictionaries[key])throw new Error(`Missing Abyss v24 locale: ${key}`);
+    Object.assign(dictionaries[key],tactics.COPY[key]);
+    const official=window.WEIGHTPLAY_GAME_TITLES?.[GAME_ID]?.[key];
+    if(official)dictionaries[key].title=official;
+  }
   const routeText=(route,key)=>{
     const index=Math.max(0,routes.indexOf(route));
     if(!isChinese()&&localePacks[locale]){
@@ -689,7 +699,7 @@
     }
     return replay;
   }
-  function commitResultDecision(action){if(resultDecisionCommitted||$("result").classList.contains("hidden"))return;resultDecisionCommitted=true;action();}
+  function commitResultDecision(action,button){if(resultDecisionCommitted||activeScene!=="battle"||$("result").classList.contains("hidden")||button?.disabled)return;resultDecisionCommitted=true;action();}
   function resultAnalyticsPayload(){
     const config=routeConfig();
     return{gameId:"animal-abyss-diver",game_version:GAME_VERSION,stage:state.route,mode:"mission",result:state.resultOutcome,won:state.resultOutcome==="clear",salvage:state.salvage,target:config.target,zones:config.zones,oxygen:state.oxygen,coins_earned:state.resultEarned};
@@ -700,7 +710,7 @@
   function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)sceneFrame("battle",()=>{if(!$('result').classList.contains('hidden'))resultPrimaryAction?.focus({preventScroll:true});});}
   function syncSoundToggle(activeViewport){const toggle=document.querySelector("button[data-sound-toggle]");if(toggle)toggle.style.setProperty("display",activeViewport?"none":"grid","important");}
   function syncSceneNode(id,visible){const node=$(id);if(!node)return;node.classList.toggle("hidden",!visible);node.hidden=!visible;if(visible)node.removeAttribute("aria-hidden");else node.setAttribute("aria-hidden","true");}
-  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));window.WeightPlayBattleCanvas?.sync?.();
+  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));window.WeightPlayBattleCanvas?.sync?.();motion.scene(scene,resultActive);
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","mainScreen":"main","stageScreen":"stage","battleShell":"battle"})[id] ?? null;
       if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -817,7 +827,7 @@
     $("sonarBtn").disabled=sonarJammed||state.battery<sonarCost||!!state.busy||!!state.fishActive;
     $("shieldBtn").disabled=state.battery<shieldCost||state.shieldArmed||!!state.busy||!!state.fishActive;
     $("surfaceBtn").disabled=!surfaceReady||!!state.busy||!!state.fishActive;
-    $("beaconBtn").disabled=!beaconUseful||!!state.busy;
+    $("beaconBtn").disabled=!beaconUseful||!!state.busy||!!state.fishBusy;
   }
   let coachReturnFocus=null;
   function coachBackgroundNodes(){return [...document.querySelectorAll("#battleShell .battle-hud, #battleShell .objective, #battleShell .controls, #diveField > :not(#diveCoach)")];}
@@ -843,6 +853,7 @@
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function finish(mode){
+    if(activeScene!=="battle"||state.resultOutcome)return;
     cancelDiveAsync();
     const config=routeConfig(),clear=mode==="clear",finalClear=clear&&state.route>=routes.length;
     const canAdvance=clear&&!finalClear,replayBtn=ensureResultActions();
@@ -902,9 +913,13 @@
       scheduleDive(()=>$("diveField").classList.remove("is-advancing"),420);
     },520);
   }
+  function canDiveAct(fish=false){
+    return activeScene==="battle"&&!state.resultOutcome&&!diveSuspended&&!state.busy&&!state.fishBusy
+      &&Boolean(state.fishActive)===fish&&["quitPanel","diveCoach","upgradePanel"].every(id=>$(id).classList.contains("hidden"));
+  }
   function move(direction){
+    if(!["left","right"].includes(direction)||!canDiveAct())return;
     clearBeaconConfirmation();
-    if(state.busy)return;
     const config=routeConfig(),outcome=encounter(direction);
     track("lane_choice",{...routeEventPayload(config),lane:direction,outcome:outcome.label,outcome_safe:outcome.safe,oxygen_before:state.oxygen,power_before:state.battery,sonar_used:Boolean(state.sonar),shield_armed:Boolean(state.shieldArmed)});
     state.busy=true;
@@ -935,12 +950,18 @@
     syncProgressbar("fishTimerText",t("diverHp"),state.playerHp,maxHealth());
     $("dodgeLeftBtn").innerHTML=`${icon("danger")}<span>${t("attackAction")}</span><b>${diverAttack()}</b>`;$("dodgeLeftBtn").ariaLabel=`${t("attackAction")} ${diverAttack()}`;
     $("pulseBtn").innerHTML=`${icon("surface")}<span>${t("escapeAction")}</span>`;$("pulseBtn").ariaLabel=t("escapeAction");
-    $("dodgeRightBtn").classList.add("hidden");$("dodgeLeftBtn").disabled=blocked;$("pulseBtn").disabled=blocked;
+    const guard=tactics.plan({mode:"guard",attack:diverAttack(),enemyAttack:fish.attack,battery:Math.max(1,state.battery)});
+    const guardButton=$("dodgeRightBtn");guardButton.classList.remove("hidden");
+    guardButton.innerHTML=`${icon("shield")}<span>${t("guardAction")}</span><b>${guard.damage} · ${icon("power")}1</b>`;
+    guardButton.setAttribute("aria-label",state.battery<1?t("guardEmpty"):t("guardDetails",{damage:guard.damage,retaliation:state.fishHp<=guard.damage?0:guard.retaliation}));
+    guardButton.title=t("combatGuide");guardButton.disabled=blocked||state.battery<1;
+    $("dodgeLeftBtn").disabled=blocked;$("pulseBtn").disabled=blocked;
+    $("fishTell").querySelector("small").textContent=`${t("counterPreview",{n:state.fishHp<=diverAttack()?0:fish.attack})} · ${t("escapeAction")} −${escapeCost} ${t("shortOxygen")}`;
   }
   function startFishEncounter(){
     const fish=fishProfile();state.fishActive=true;state.fishBusy=false;state.fishHp=fish.maxHp;state.fishMaxHp=fish.maxHp;
     track("fish_start",{...routeEventPayload(routeConfig()),fish_name:fish.name,fish_hp:fish.maxHp,fish_attack:fish.attack});
-    $("fishEncounter").classList.remove("hidden");renderFish();renderBattle();setFeedback(`${icon("danger")}<b>!</b>`,`${t("fishBattle")}: ${fish.name}`);
+    $("fishEncounter").classList.remove("hidden");renderFish();renderBattle();motion.event("fish");setFeedback(`${icon("danger")}<b>!</b>`,`${t("fishBattle")}: ${fish.name}`);
     sceneFrame("battle",() => $("dodgeLeftBtn").focus({preventScroll:true}));
   }
   function awardFishXp(amount){save.xp+=amount;let gained=0;while(save.xp>=xpNeeded()){save.xp-=xpNeeded();save.level+=1;save.statPoints+=1;gained+=1;}persist();return gained;}
@@ -960,7 +981,9 @@
   }
   function upgradeBackgroundNodes(){return [...document.querySelectorAll("#battleShell .battle-hud, #battleShell .objective, #battleShell .controls, #diveField > :not(#upgradePanel)")];}
   function setUpgradeModal(open,focusPrimary=true){
+    motion.hold("upgrade",open);
     $("upgradePanel").classList.toggle("hidden",!open);
+    if(open)motion.event("upgrade");
     upgradeBackgroundNodes().forEach(node=>{node.inert=open;if(open)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});
     if(open&&focusPrimary)sceneFrame("battle",()=>{if(!$("upgradePanel").classList.contains("hidden"))$("upgradePanel").querySelector("button:not(:disabled)")?.focus({preventScroll:true});});
     if(!open&&focusPrimary)sceneFrame("battle",()=>{if($("upgradePanel").classList.contains("hidden"))$("leftGate").getAttribute("aria-disabled")!=="true"?$("leftGate").focus({preventScroll:true}):$("helpBtn").focus({preventScroll:true});});
@@ -968,22 +991,37 @@
   function openUpgrade(){lastUpgrade=null;renderUpgrade();setUpgradeModal(true);}
   function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen(),before=statValue(stat);save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);lastUpgrade={stat,before,after:statValue(stat)};persist();track("upgrade_allocated",{...routeEventPayload(routeConfig()),stat,before,after:statValue(stat),level:save.level,points_remaining:save.statPoints});renderUpgrade();renderBattle();if(save.statPoints===0)$("upgradeDone").focus({preventScroll:true});}
   function winFish(){const fish=fishProfile(),config=routeConfig(),levels=awardFishXp(fish.xp),salvageGain=1+(config.fishBonus??0);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=salvageGain;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+${salvageGain}</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${routeText(config,"rule")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();else sceneFrame("battle",() => $("leftGate").focus({preventScroll:true}));}
-  function attackFish(){
-    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();const fish=fishProfile(),damage=diverAttack(),fishHpBefore=state.fishHp,playerHpBefore=state.playerHp;state.fishBusy=true;state.fishHp-=damage;track("fish_attack",{...routeEventPayload(routeConfig()),fish_name:fish.name,damage,fish_hp_before:fishHpBefore,fish_hp_after:Math.max(0,state.fishHp),player_hp_before:playerHpBefore});renderBattle();$("fishEncounter").classList.add("is-hit");setFeedback(`${icon("danger")}<b>-${damage}</b>`,t("attackAction"));renderFish();
-    scheduleDive(()=>{$("fishEncounter").classList.remove("is-hit");if(state.fishHp<=0){winFish();return;}const fish=fishProfile();state.playerHp=Math.max(0,state.playerHp-fish.attack);$("fishEncounter").classList.add("is-countering");setFeedback(`<b>-${fish.attack}</b>`,t("fishStrikes"));renderFish();scheduleDive(()=>{$("fishEncounter").classList.remove("is-countering");if(state.playerHp<=0){finish("combat");return;}state.fishBusy=false;renderFish();},700);},650);
+  function attackFish(mode="attack"){
+    if(!canDiveAct(true))return;
+    const fish=fishProfile(),plan=tactics.plan({mode,attack:diverAttack(),enemyAttack:fish.attack,battery:state.battery});
+    if(!plan){setFeedback(`${icon("power")}<b>0</b>`,t("guardEmpty"));return;}
+    clearBeaconConfirmation();
+    const fishHpBefore=state.fishHp,playerHpBefore=state.playerHp;
+    state.fishBusy=true;state.battery-=plan.cost;state.fishHp=Math.max(0,state.fishHp-plan.damage);
+    track("fish_attack",{...routeEventPayload(routeConfig()),fish_name:fish.name,mode,damage:plan.damage,power_cost:plan.cost,fish_hp_before:fishHpBefore,fish_hp_after:state.fishHp,player_hp_before:playerHpBefore});
+    renderBattle();renderFish();motion.event("strike",{guard:mode==="guard"});playSound("combat.strike");
+    setFeedback(`${icon(mode==="guard"?"shield":"danger")}<b>−${plan.damage}</b>`,mode==="guard"?t("guardDetails",{damage:plan.damage,retaliation:state.fishHp<=0?0:plan.retaliation}):t("attackAction"));
+    scheduleDive(()=>{
+      if(state.fishHp<=0){winFish();motion.event("reward");return;}
+      state.playerHp=Math.max(0,state.playerHp-plan.retaliation);
+      motion.event("counter");playSound(mode==="guard"?"combat.block":"combat.strike");
+      setFeedback(`${icon(mode==="guard"?"shield":"danger")}<b>−${plan.retaliation}</b>`,t("fishStrikes"));renderFish();
+      scheduleDive(()=>{if(state.playerHp<=0){finish("combat");return;}state.fishBusy=false;renderFish();renderBattle();},700);
+    },650);
   }
   function escapeFish(){
-    if(!state.fishActive||state.fishBusy)return;
+    if(!canDiveAct(true))return;
+    state.busy=true;state.fishBusy=true;renderFish();
     clearBeaconConfirmation();
     const config=routeConfig(),cost=config.escapeCost??8,oxygenBefore=state.oxygen;
     state.oxygen=Math.max(0,state.oxygen-cost);
     track("fish_escape",{...routeEventPayload(config),oxygen_before:oxygenBefore,oxygen_after:state.oxygen,escape_cost:cost,fish_hp:state.fishHp});
     state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");
     setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));
-    scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");else sceneFrame("battle", () => $("leftGate").focus({preventScroll:true}));},700);
+    scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");state.busy=false;state.fishBusy=false;renderBattle();if(state.oxygen<=0)finish("fail");else sceneFrame("battle", () => $("leftGate").focus({preventScroll:true}));},700);
   }
   function useBeacon(){
-    if(state.beaconUsed)return;
+    if(state.beaconUsed||!canDiveAct(Boolean(state.fishActive)))return;
     const restored=beaconRestoreTarget();
     if(state.oxygen>=restored){clearBeaconConfirmation();setFeedback(`${icon("beacon")}<b>${restored}</b>`,t("beaconUnavailable"));renderBattle();focusCurrentDiveDecision();return;}
     const balance=wallet();
@@ -1007,10 +1045,14 @@
     focusCurrentDiveDecision();
   }
   function renderMainProgress(){$("progress").textContent=`${t("route",{n:save.unlocked})} / ${routes.length}`;$("routesTab").textContent=t("routeSelect");}
-  function localize(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} - WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
-  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;writeStorage("weightPlayLocale",locale);localize();};
-  $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;track("sonar_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
-  $("shieldBtn").onclick=()=>{const config=routeConfig(),cost=config.shieldCost??1;if(state.shieldArmed)return;if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("shieldNeed").replace("1",String(cost)));return;}state.battery-=cost;state.shieldArmed=true;track("shield_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};
+  function localize(){
+    document.querySelector("#mainScreen .cover").alt=t("coverAlt");
+    $("localeSelect").setAttribute("aria-label",t("language"));
+    $("loadingPanel").querySelector("span").textContent=t("loading");
+    document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
+  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=()=>attackFish("attack");$("dodgeRightBtn").onclick=()=>attackFish("guard");$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>{if(canDiveAct()&&(!routeConfig().surfaceZones||routeConfig().surfaceZones.includes(state.zone)))finish("surface");};$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;writeStorage("weightPlayLocale",locale);localize();};
+  $("sonarBtn").onclick=()=>{if(!canDiveAct())return;const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;motion.event("sonar");playSound("feedback.hint");track("sonar_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
+  $("shieldBtn").onclick=()=>{if(!canDiveAct())return;const config=routeConfig(),cost=config.shieldCost??1;if(state.shieldArmed)return;if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("shieldNeed").replace("1",String(cost)));return;}state.battery-=cost;state.shieldArmed=true;motion.event("shield");playSound("magic.shield");track("shield_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};
   let mainEntryKeyboardKey="";
   const screenDecisionKeyboardKeys=new Set();
   document.addEventListener("keydown",event=>{if(event.repeat&&screenDecisionKeyboardKeys.has(event.key)){event.preventDefault();event.stopImmediatePropagation();}},true);
@@ -1022,9 +1064,9 @@
   $("quitKeep").onclick=()=>setQuit(false,{resume:true});
   $("quitLeave").onclick=leaveDive;
   ensureResultActions();
-  $("menuBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_result_menu",resultAnalyticsPayload());track("routes_return",{...routeEventPayload(),from_result:state.resultOutcome,return_target:"route_map"});leaveDive();});
-  $("nextBtn").onclick=()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextRoute=Math.min(routes.length,state.route+1);window.WonderAnalytics?.track?.("game_next_stage",{...payload,next_stage:nextRoute});track("next_route",{...routeEventPayload(),from_route:state.route,next_route:nextRoute,trigger:"result_next"});start(nextRoute,"next_route");});
-  $("replayBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_restart",{...resultAnalyticsPayload(),source:"result"});__wpReplayStart(() => start(state.route,"replay"));});
+  $("menuBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_result_menu",resultAnalyticsPayload());track("routes_return",{...routeEventPayload(),from_result:state.resultOutcome,return_target:"route_map"});leaveDive();},$("menuBtn"));
+  $("nextBtn").onclick=()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextRoute=Math.min(routes.length,state.route+1);window.WonderAnalytics?.track?.("game_next_stage",{...payload,next_stage:nextRoute});track("next_route",{...routeEventPayload(),from_route:state.route,next_route:nextRoute,trigger:"result_next"});start(nextRoute,"next_route");},$("nextBtn"));
+  $("replayBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_restart",{...resultAnalyticsPayload(),source:"result"});__wpReplayStart(() => start(state.route,"replay"));},$("replayBtn"));
   window.addEventListener("blur",()=>{windowFocused=false;suspendDiveAsync();});
   window.addEventListener("focus",()=>{windowFocused=true;resumeDiveAsync();});
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else if(windowFocused)resumeDiveAsync();});
@@ -1055,19 +1097,20 @@
   routeRail.dataset.wpStageVirtualDrag="true";routeRail.dataset.wpStageCenterObserver="manual";
   routeRail.addEventListener("pointerdown",event=>{if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(routeSettle);routeSettle=0;routeDrag={id:event.pointerId,startX:event.clientX,lastX:event.clientX,logical:selectedRoute,moved:false};routeRail.setPointerCapture?.(event.pointerId);routeRail.style.setProperty("scroll-snap-type","none","important");event.stopImmediatePropagation();},true);
   document.addEventListener("pointermove",event=>{if(event.pointerId!==routeDrag?.id)return;const delta=event.clientX-routeDrag.lastX;routeDrag.lastX=event.clientX;if(!routeDrag.moved&&Math.abs(event.clientX-routeDrag.startX)>4)routeDrag.moved=true;if(routeDrag.moved){event.preventDefault();const rtl=document.documentElement.dir==="rtl"?-1:1;routeDrag.logical=positionRouteLogical(routeDrag.logical-delta*rtl/276);}event.stopImmediatePropagation();},true);
-  const finishRouteDrag=event=>{if(event.pointerId!==routeDrag?.id)return;const drag=routeDrag;routeDrag=null;if(routeRail.hasPointerCapture?.(event.pointerId))routeRail.releasePointerCapture(event.pointerId);if(!drag.moved){routeRail.style.removeProperty("scroll-snap-type");const card=document.elementFromPoint(event.clientX,event.clientY)?.closest?.(".route-card"),n=Number(card?.dataset.route);if(card&&n<=save.unlocked){suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);start(n);}return;}event.preventDefault();const from=drag.logical,target=Math.round(from),started=performance.now();routeRail.dataset.wpStageSettling="true";const settle=now=>{const progress=Math.min(1,(now-started)/340),eased=progress*progress*(3-2*progress);positionRouteLogical(from+(target-from)*eased);if(progress<1)routeSettle=requestAnimationFrame(settle);else{routeSettle=0;selectRoute(target,{center:true});routeRail.style.removeProperty("scroll-snap-type");delete routeRail.dataset.wpStageSettling;}};routeSettle=requestAnimationFrame(settle);suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);event.stopImmediatePropagation();};
+  const finishRouteDrag=event=>{if(event.pointerId!==routeDrag?.id)return;const drag=routeDrag;routeDrag=null;if(routeRail.hasPointerCapture?.(event.pointerId))routeRail.releasePointerCapture(event.pointerId);if(!drag.moved){routeRail.style.removeProperty("scroll-snap-type");const card=document.elementFromPoint(event.clientX,event.clientY)?.closest?.(".route-card"),n=Number(card?.dataset.route);if(card&&n<=save.unlocked){suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);start(n);}return;}event.preventDefault();const from=drag.logical,target=Math.round(from),started=performance.now();routeRail.dataset.wpStageSettling="true";const generation=sceneGeneration;const settle=now=>{if(activeScene!=="stage"||sceneGeneration!==generation){routeSettle=0;routeRail.style.removeProperty("scroll-snap-type");delete routeRail.dataset.wpStageSettling;return;}const progress=motion.reduced?1:Math.min(1,(now-started)/340),eased=progress*progress*(3-2*progress);positionRouteLogical(from+(target-from)*eased);if(progress<1)routeSettle=requestAnimationFrame(settle);else{routeSettle=0;selectRoute(target,{center:true});routeRail.style.removeProperty("scroll-snap-type");delete routeRail.dataset.wpStageSettling;}};routeSettle=requestAnimationFrame(settle);suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);event.stopImmediatePropagation();};
   document.addEventListener("pointerup",finishRouteDrag,true);document.addEventListener("pointercancel",finishRouteDrag,true);
   routeRail.addEventListener("click",event=>{const card=event.target.closest(".route-card");if(!card)return;if(suppressRouteClick){suppressRouteClick=false;event.preventDefault();event.stopImmediatePropagation();return;}const n=Number(card.dataset.route);if(n<=save.unlocked){event.preventDefault();event.stopImmediatePropagation();start(n);}},true);
   for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
   (__wpNotifyMeasurement(), $("result")?.setAttribute("aria-describedby","resultCopy resultCompletionHint"));
   if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();},beaconState(){return{pending:!!state?.beaconPending,remaining:beaconConfirmRemaining,wallet:wallet()};},seedProgress(patch={}){if(!patch||typeof patch!=="object")return;save=normalizeSave({...save,...patch,stats:{...save.stats,...(patch.stats||{})}});persist();renderMainProgress();}};
-  localize();
+  $("fishEncounter").querySelector(".fish-actions").append($("dodgeLeftBtn"),$("dodgeRightBtn"),$("pulseBtn"));
+  localize();motion.scene("main");
   if(window.__AbyssDiverSmoke)Object.assign(window.__AbyssDiverSmoke,{
     catalog(){return routes.map((route,index)=>({number:index+1,name:route.name,zhName:route.zhName,relic:route.relic,zhRelic:route.zhRelic,rule:route.rule,zhRule:route.zhRule,zones:route.zones,target:route.target,fishZones:[...route.fishZones],encounters:route.encounters.map(pair=>[...pair]),mechanics:Object.fromEntries(Object.entries(route).filter(([key])=>!["name","zhName","relic","zhRelic","rule","zhRule","zones","target","risk","fishZones","fishTier","escapeCost","encounters"].includes(key)))}));},
     startRoute(number){start(Math.max(1,Math.min(routes.length,Math.trunc(number))));},
     setZone(number){if(!state.route)return;state.zone=Math.max(1,Math.min(routeConfig().zones,Math.trunc(number)));state.sonar=false;state.busy=false;renderBattle();},
     setSalvage(number){if(!state.route)return;state.salvage=Math.max(0,Math.trunc(number));renderBattle();},
-    snapshot(){return{route:state.route,zone:state.zone,salvage:state.salvage,oxygen:state.oxygen,battery:state.battery,sonar:state.sonar,shieldArmed:state.shieldArmed,safeStreak:state.safeStreak};}
+    snapshot(){return{route:state.route,zone:state.zone,salvage:state.salvage,oxygen:state.oxygen,battery:state.battery,sonar:state.sonar,shieldArmed:state.shieldArmed,safeStreak:state.safeStreak,fishActive:state.fishActive,fishBusy:state.fishBusy,fishHp:state.fishHp,playerHp:state.playerHp,busy:state.busy,paused:diveSuspended,result:state.resultOutcome,unlocked:save.unlocked,coins:save.coins,timers:diveTimers.size};}
   });
   const lobbyLabels = {
     en: "Back to lobby",
@@ -1085,9 +1128,9 @@
     ar: u("\\u0627\\u0644\\u0639\\u0648\\u062f\\u0629 \\u0625\\u0644\\u0649 \\u0631\\u062f\\u0647\\u0629 WeightPlay")
   };
   function syncMetadata() {
-    document.title = `${t("title")} - WeightPlay`;
+    document.title = `${t("title")} | WeightPlay`;
     $("homeLink").ariaLabel = lobbyLabels[locale] || runtimeTranslate(lobbyLabels.en);
-    document.querySelector("#pageDescription").content = t("intro");
+    if(locale!=="en")document.querySelector("#pageDescription").content=tactics.COPY[locale].description;
   }
   syncMetadata();
   $("localeSelect").addEventListener("change", () => window.setTimeout(syncMetadata, 0));

@@ -9,14 +9,11 @@ html body[data-wp-game-id="minefield-logic"] #logicApp[data-mf-native] .mf-main-
   box-sizing: border-box;
   background: linear-gradient(rgba(5,16,33,.78),rgba(5,16,33,.86)), url('assets/minefield-logic-board-block-v1.png') center/cover;
 }
-#logicApp[data-mf-native] .mf-play { display: grid; grid-template-rows: auto minmax(0,1fr) auto auto; gap: 8px; overflow: hidden; }
+#logicApp[data-mf-native] .mf-play { display: grid; grid-template-rows: auto minmax(0,1fr) auto auto; gap: 8px; min-width: 0; min-height: 0; overflow: hidden; }
 #logicApp[data-mf-native] .mf-tools, #logicApp[data-mf-native] .mf-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; min-width: 0; }
 #logicApp[data-mf-native] .mf-tools.is-stage { grid-template-columns: repeat(2,minmax(0,1fr)); }
-#logicApp[data-mf-native] .mf-stage-label {
-  min-width: 0; margin: 0; color: var(--wp-ui-muted); font-size: 12px; line-height: 1.2;
-  text-align: center; justify-self: center;
-}
-#logicApp[data-mf-native] .mf-play.is-stage { grid-template-rows: auto auto minmax(0,1fr) auto auto; }
+/* The shared frame adopts .mf-hud into headerInfo. The remaining four
+   children are tools / flexible board / fixed feedback / actions in BOTH modes. */
 #logicApp[data-mf-native] #logicStages .mf-stage-content {
   display: grid; grid-template-rows: auto auto minmax(198px,1fr); gap: 8px;
   min-width: 0; min-height: 0; overflow: hidden; overscroll-behavior: contain;
@@ -39,31 +36,33 @@ html body[data-wp-game-id="minefield-logic"] #logicApp[data-mf-native] .mf-main-
 #logicApp[data-mf-native] .mf-stage-mines, #logicApp[data-mf-native] .mf-stage-state { color: var(--wp-ui-muted); font-size: 13px; line-height: 1.25; }
 #logicApp[data-mf-native] .mf-stage-card[data-stage-state="unlocked"] .mf-stage-state { color: var(--wp-ui-gold); }
 #logicApp[data-mf-native] .mf-stage-card[data-stage-state="cleared"] .mf-stage-state { color: var(--wp-ui-text); }
-#logicApp[data-mf-native] .mf-stage-card[data-checkpoint="true"] { border-color: var(--wp-ui-gold); }
+#logicApp[data-mf-native] .mf-stage-card[data-checkpoint] { border-color: var(--wp-ui-gold); }
 #logicApp[data-mf-native] .mf-stage-card:is(.selected,.centered,.is-centered,.wp-stage-centered) { border-color: var(--wp-ui-gold); box-shadow: 0 0 0 2px var(--wp-ui-gold), 0 10px 30px rgb(0 0 0 / 38%); }
 #logicApp[data-mf-native] .mf-stage-card[data-stage-state="locked"] { filter: saturate(.55) brightness(.78); }
 #logicApp[data-mf-native] .mf-stage-card:focus-visible { outline: 3px solid white; outline-offset: 1px; }
 #logicApp[data-mf-native] .mf-stage-tabs > .mf-stage-tab { width: 100%; }
 #logicApp[data-mf-native] .mf-stage-tab[aria-current="page"] { border-color: var(--wp-ui-gold) !important; background: var(--wp-ui-active) !important; }
 #logicApp[data-mf-native] .mf-difficulty {
-  box-sizing: border-box; width: 100%; min-width: 0; min-height: calc(44px / var(--wp-battle-canvas-scale,1));
+  box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px;
   border: 2px solid var(--wp-ui-line); border-radius: var(--wp-ui-radius);
-  background: var(--wp-ui-surface); color: var(--wp-ui-text); font: 600 calc(14px / var(--wp-battle-canvas-scale,1))/1.2 system-ui;
+  background: var(--wp-ui-surface); color: var(--wp-ui-text); font: 600 14px/1.2 system-ui;
   padding: 0 8px; touch-action: manipulation;
 }
 #logicApp[data-mf-native] .mf-viewport {
+  display: flex; align-items: flex-start; justify-content: flex-start;
   min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; touch-action: pan-x pan-y;
   background: var(--wp-ui-surface); border: 1px solid var(--wp-ui-line); scrollbar-gutter: stable;
 }
-#logicApp[data-mf-native] .mf-viewport.is-stage { display: flex; align-items: center; justify-content: center; }
-#logicApp[data-mf-native] .mf-board { --mf-cell: calc(40px / var(--wp-battle-canvas-scale,1)); width: max-content; margin: auto; padding: 4px; direction: ltr; }
+/* Auto margins center a fitting board, but collapse to zero on overflow:
+   the first row/column of a large board must remain reachable by scrolling. */
+#logicApp[data-mf-native] .mf-board { --mf-cell: 40px; flex: 0 0 auto; width: max-content; margin: auto; padding: 4px; direction: ltr; }
 #logicApp[data-mf-native] .mf-row { display: grid; grid-template-columns: repeat(var(--mf-cols),var(--mf-cell)); }
 #logicApp[data-mf-native] .mf-cell {
   box-sizing: border-box; width: var(--mf-cell); height: var(--mf-cell); min-width: 0; min-height: 0;
   display: grid; place-items: center; padding: 0; margin: 0; border: 1px solid var(--wp-ui-line); border-radius: 0;
   background: var(--wp-ui-button-image); color: var(--wp-ui-text); cursor: pointer;
   box-shadow: inset 0 2px 0 var(--wp-ui-highlight),inset -2px -2px 0 var(--wp-ui-shadow);
-  font: 800 calc(18px / var(--wp-battle-canvas-scale,1))/1 system-ui; user-select: none; -webkit-user-select: none;
+  font: 800 clamp(16px,calc(var(--mf-cell) * .43),30px)/1 system-ui; user-select: none; -webkit-user-select: none;
 }
 #logicApp[data-mf-native] .mf-cell.is-open { background: var(--wp-ui-background); box-shadow: none; }
 #logicApp[data-mf-native] .mf-cell[data-count="1"] { color: #8acfff; }
@@ -75,7 +74,7 @@ html body[data-wp-game-id="minefield-logic"] #logicApp[data-mf-native] .mf-main-
 #logicApp[data-mf-native] .mf-cell.is-hint { outline: 3px solid var(--wp-ui-gold); outline-offset: -3px; }
 #logicApp[data-mf-native] .mf-cell.is-clue { box-shadow: inset 0 0 0 2px var(--wp-ui-muted); }
 #logicApp[data-mf-native] .mf-cell:focus-visible { outline: 3px solid white; outline-offset: -3px; position: relative; z-index: 1; }
-#logicApp[data-mf-native] .mf-status { margin: 0; min-height: 2.8em; max-height: 6em; overflow: auto; color: var(--wp-ui-text); font-size: calc(14px / var(--wp-battle-canvas-scale,1)); line-height: 1.4; }
+#logicApp[data-mf-native] .mf-status { margin: 0; box-sizing: border-box; height: 4.2em; min-height: 4.2em; max-height: 4.2em; overflow: auto; color: var(--wp-ui-text); font-size: 14px; line-height: 1.4; }
 #logicApp[data-mf-native] .mf-actions button:disabled { opacity: .5; cursor: not-allowed; }
 #logicApp[data-mf-native] .mf-overlay { position: absolute; inset: 0; z-index: 120; display: grid; place-items: center; padding: 16px; box-sizing: border-box; background: rgba(0,0,0,.8); }
 #logicApp[data-mf-native] .mf-overlay[hidden] { display: none; }
@@ -89,16 +88,20 @@ html body[data-wp-game-id="minefield-logic"] #logicApp[data-mf-native] .mf-main-
   #logicApp[data-mf-native] #logicStages .mf-stage-intro { display: none; }
   #logicApp[data-mf-native] .mf-play { grid-template-columns: minmax(0,1fr) 280px; grid-template-rows: auto minmax(0,1fr) auto; }
   #logicApp[data-mf-native] .mf-viewport { grid-column: 1; grid-row: 1 / -1; }
-  #logicApp[data-mf-native] .mf-board { --mf-cell: calc(34px / var(--wp-battle-canvas-scale,1)); }
-  #logicApp[data-mf-native] .mf-play.is-stage .mf-board { --mf-cell: calc(28px / var(--wp-battle-canvas-scale,1)); }
   #logicApp[data-mf-native] .mf-tools { grid-column: 2; grid-row: 1; }
-  #logicApp[data-mf-native] .mf-status { grid-column: 2; grid-row: 2; max-height: 100%; }
+  #logicApp[data-mf-native] .mf-status { grid-column: 2; grid-row: 2; height: auto; min-height: 0; max-height: 100%; }
   #logicApp[data-mf-native] .mf-actions { grid-column: 2; grid-row: 3; }
-  #logicApp[data-mf-native] .mf-play.is-stage { grid-template-rows: auto auto minmax(0,1fr) auto; }
-  #logicApp[data-mf-native] .mf-stage-label { grid-column: 2; grid-row: 1; }
-  #logicApp[data-mf-native] .mf-play.is-stage .mf-tools { grid-column: 2; grid-row: 2; }
-  #logicApp[data-mf-native] .mf-play.is-stage .mf-status { grid-column: 2; grid-row: 3; }
-  #logicApp[data-mf-native] .mf-play.is-stage .mf-actions { grid-column: 2; grid-row: 4; }
+
 }
 
 body[data-logic-game="minefield-logic"] .game-page-info-static[hidden] { display: none !important; }
+
+/* Visible-neighbour cues never encode a hidden mine or change cell geometry. */
+#logicApp[data-mf-native] .mf-cell[data-mf-adjacent] { outline: 2px solid var(--wp-ui-muted); outline-offset: -3px; }
+#logicApp[data-mf-native] .mf-cell[data-mf-origin] { outline: 3px solid var(--wp-ui-gold); outline-offset: -3px; }
+#logicApp[data-mf-native] .mf-cell:is(.is-hint,:focus-visible) { outline-width: 3px; outline-color: var(--wp-ui-gold); }
+#logicApp[data-mf-native] .mf-stage-card { transition: border-color 180ms ease, box-shadow 180ms ease; }
+#logicApp[data-mf-native] .mf-tools button { transition: background-color 150ms ease, box-shadow 150ms ease; }
+@media (prefers-reduced-motion: reduce) {
+  #logicApp[data-mf-native] .mf-stage-card, #logicApp[data-mf-native] .mf-tools button { transition: none; }
+}
