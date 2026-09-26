@@ -508,6 +508,62 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
     font-size:.68rem;
   }
   .battle-content[data-board-size="4"] .grid-card .habitat-grid {
-    width:168px;
+    width:188px;
+  }
+}
+
+/* v15: keep the compact 4x4 Battle usable without scrolling. The final
+   Interface 7 compatibility rules had reduced its cells and action targets
+   below the shared touch-size floor after the v14 layout was applied. */
+@media (orientation:landscape) and (max-height:500px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-canvas > .battle-content[data-board-size="4"] {
+    width:min(760px,100%) !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] .grid-card {
+    grid-template-columns:188px minmax(0,1fr) !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] .grid-card .habitat-grid {
+    width:188px !important;
+    grid-template-columns:repeat(4,44px) !important;
+    gap:4px !important;
+    margin:0 !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] .grid-card .cell {
+    width:44px !important;
+    height:44px !important;
+    min-width:44px !important;
+    min-height:44px !important;
+    font-size:1.1rem !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] .grid-card .battle-actions .primary-btn,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] .grid-card .battle-actions .secondary-btn {
+    min-height:44px !important;
+    padding:4px 8px !important;
+    font-size:14px !important;
+    line-height:1.2 !important;
+    overflow-wrap:anywhere;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] #zoneCard .lens-use {
+    min-height:44px !important;
+    font-size:14px !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] .clue-card:not(.zone-card) .clue,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
+    .battle-content[data-board-size="4"] #zoneCard .zone-clue {
+    font-size:.75rem !important;
   }
 }

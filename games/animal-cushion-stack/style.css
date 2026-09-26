@@ -306,19 +306,24 @@
 #battleScreen .battle-status-stable::-webkit-scrollbar{display:none}
 
 /* A seven-layer Stage 30 stack used to grow out of its short-landscape board.
-   Fit the stack into a known 108px board and retire the empty choice UI once
-   that Stage is complete; retain the tower, live status and result actions. */
+   Keep the active puzzle compact enough to expose its 44px actions without
+   scrolling; give the completed stack its own taller board after choices end. */
 @media(max-height:600px) and (orientation:landscape){
   #battleScreen .battle-content{padding:6px 12px}
   #battleScreen .battle-hint{margin:0 0 4px}
   #battleScreen .tower{
     box-sizing:border-box;
-    height:108px;
-    min-height:108px;
-    flex:0 0 108px;
+    height:94px;
+    min-height:94px;
+    flex:0 0 94px;
     margin:0 auto 6px;
     padding:4px 10px;
     gap:1px;
+  }
+  #battleScreen[data-wp-stage-finished] .tower{
+    height:108px;
+    min-height:108px;
+    flex-basis:108px;
   }
   #battleScreen .tower-block{
     box-sizing:border-box;
@@ -339,10 +344,10 @@
   #battleScreen .choice-name{font-size:.72rem}
   #battleScreen .choice-size{font-size:.65rem}
   #battleScreen .battle-status-stable{
-    height:48px;
-    min-height:48px;
-    max-height:48px;
-    margin:4px 0 2px;
+    height:28px;
+    min-height:28px;
+    max-height:28px;
+    margin:2px 0;
     font-size:.72rem;
   }
   #battleScreen .battle-actions{gap:6px}
