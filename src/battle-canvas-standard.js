@@ -61,6 +61,9 @@
     "animal-meadow-difference": ["#battleView", 390, 788, 760, 334],
     "arrow-escape": [".battle-canvas", 390, 788, 760, 334],
     "block-blast": [".battle-canvas", 390, 788, 760, 334],
+    // Castle Cascade's 9×9 board needs the wide logical envelope in short
+    // landscape so shared scaling does not shrink its touch targets.
+    "castle-cascade": ["#battle", 390, 788, 760, 334],
     "hexa-sort": [".battle-canvas", 390, 788, 760, 334],
     "animal-block-grove": [".block-grove-battle-canvas", 390, 844],
     "animal-color-springs": [".battle-canvas", 390, 788, 760, 334],

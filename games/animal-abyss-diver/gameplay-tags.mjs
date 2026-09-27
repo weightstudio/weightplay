@@ -1,0 +1,15 @@
+export const GAMEPLAY_TAGS = Object.freeze({
+  en: ["underwater route strategy", "oxygen management", "sonar decisions", "turn-based fish encounters"],
+  "zh-Hant": ["深海路線策略", "氧氣管理", "聲納判斷", "回合制魚群遭遇"],
+  "zh-Hans": ["深海路线策略", "氧气管理", "声呐判断", "回合制鱼类遭遇"],
+  ja: ["海中ルート戦略", "酸素管理", "ソナー判断", "ターン制の魚戦"],
+  ko: ["수중 경로 전략", "산소 관리", "소나 판단", "턴제 물고기 조우"],
+  es: ["estrategia de rutas submarinas", "gestión de oxígeno", "decisiones de sonar", "encuentros por turnos"],
+  "pt-BR": ["estratégia de rotas submarinas", "gestão de oxigênio", "decisões de sonar", "encontros por turnos"],
+  fr: ["stratégie de routes sous-marines", "gestion de l’oxygène", "décisions au sonar", "rencontres au tour par tour"],
+  de: ["Unterwasser-Routenstrategie", "Sauerstoffmanagement", "Sonar-Entscheidungen", "rundenbasierte Fischbegegnungen"],
+  it: ["strategia di rotte subacquee", "gestione dell’ossigeno", "decisioni sonar", "incontri a turni"],
+  ru: ["стратегия подводных маршрутов", "управление кислородом", "решения с сонаром", "пошаговые встречи с рыбами"],
+  hi: ["पानी के भीतर मार्ग रणनीति", "ऑक्सीजन प्रबंधन", "सोनार निर्णय", "बारी-आधारित मछली मुकाबले"],
+  ar: ["استراتيجية المسارات تحت الماء", "إدارة الأكسجين", "قرارات السونار", "مواجهات أسماك قائمة على الأدوار"],
+});
