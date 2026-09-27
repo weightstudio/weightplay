@@ -101,6 +101,45 @@
         ["Blossom pattern", "花朵圖樣", "花朵图样", "花の模様", "꽃 무늬", "Patrón floral", "Padrão floral", "Motif floral", "Blütenmuster", "Motivo floreale", "Цветочный узор", "फूल पैटर्न", "نمط الأزهار"],
         ["Water pattern", "水波圖樣", "水波图样", "水の模様", "물결 무늬", "Patrón de agua", "Padrão de água", "Motif aquatique", "Wassermuster", "Motivo acqua", "Узор воды", "पानी पैटर्न", "نمط الماء"],
       ],
+      comparisonHeading: ["Similar gameplay reference:", "相似玩法參考：", "相似玩法参考：", "似た遊び方の参考：", "비슷한 플레이 참고:", "Referencia de jugabilidad similar:", "Referência de jogabilidade semelhante:", "Référence de gameplay similaire :", "Ähnliche Gameplay-Referenz:", "Riferimento di gameplay simile:", "Похожий игровой ориентир:", "मिलती-जुलती गेमप्ले संदर्भ:", "مرجع لعب مشابه:"],
+      comparisonTagsLabel: ["Gameplay tags:", "玩法標籤：", "玩法标签：", "ゲームプレイタグ：", "게임플레이 태그:", "Etiquetas de jugabilidad:", "Tags de jogabilidade:", "Tags de gameplay :", "Gameplay-Tags:", "Tag di gameplay:", "Теги геймплея:", "गेमप्ले टैग:", "وسوم أسلوب اللعب:"],
+      comparisonTags: [
+        ["color-pattern memory", "色彩圖樣記憶", "色彩图样记忆", "色と模様の記憶", "색상·무늬 기억", "memoria de color y patrón", "memória de cores e padrões", "mémoire couleurs-motifs", "Farb- und Mustergedächtnis", "memoria di colori e motivi", "память на цвет и узор", "रंग-पैटर्न स्मृति", "ذاكرة اللون والنمط"],
+        ["texture matching", "紋理配對", "纹理配对", "テクスチャ照合", "질감 맞추기", "emparejado de texturas", "combinação de texturas", "association de textures", "Texturzuordnung", "abbinamento texture", "сопоставление текстур", "टेक्सचर मिलान", "مطابقة الخامة"],
+        ["sequence recall", "序列回想", "序列记忆", "順序記憶", "순서 기억", "recuerdo de secuencias", "memória de sequência", "mémoire de séquence", "Sequenzgedächtnis", "memoria di sequenza", "запоминание последовательностей", "क्रम याद करना", "تذكّر التسلسل"],
+        ["timed puzzle", "限時益智", "限时益智", "時間制パズル", "시간제 퍼즐", "puzle contrarreloj", "quebra-cabeça cronometrado", "puzzle chronométré", "Zeitpuzzle", "rompicapo a tempo", "головоломка на время", "समयबद्ध पहेली", "لغز موقّت"]
+      ],
+      comparisonSummary: [
+        "Hasbro describes Simon Game as watching random light sequences and repeating them on colored pads in order as sequences grow longer. {title} also tests observe–remember–repeat decisions, but pairs colors with habitat textures and uses a 30-stage campaign with shuffled positions, reverse recall, three-group sequences, and shorter scan windows.",
+        "Hasbro 介紹 Simon Game：觀看隨機燈光序列，再依順序按彩色按鍵重現，序列會逐步加長。{title} 同樣考驗觀察、記憶與重現，但要把顏色和棲地紋理配成一組，並在 30 關戰役中面對位置洗牌、逆序回想、三組序列與更短掃描時間。",
+        "Hasbro 介绍 Simon Game：观看随机灯光序列，再按顺序按彩色按键重现，序列会逐步变长。{title} 同样考验观察、记忆与重现，但要把颜色和栖地纹理配成一组，并在 30 关战役中面对位置洗牌、逆序记忆、三组序列与更短扫描时间。",
+        "Hasbro は Simon Game を、ランダムな光の並びを見て色付きパッドで順番どおり再現し、徐々に長くなるゲームと説明しています。{title} も観察・記憶・再現を使いますが、色と生息地テクスチャを組で覚え、30ステージで位置変更、逆順、3組シーケンス、短い走査時間へ進みます。",
+        "Hasbro는 Simon Game을 무작위 불빛 순서를 보고 색상 패드로 같은 순서대로 재현하며 점점 길어지는 게임으로 설명합니다. {title}도 관찰·기억·재현을 쓰지만 색상과 서식지 질감을 짝으로 기억하고 30개 스테이지에서 위치 섞기, 역순, 3그룹 순서, 짧은 스캔 시간을 다룹니다.",
+        "Hasbro describe Simon Game como observar secuencias aleatorias de luces y repetirlas en los botones de color mientras se alargan. {title} también usa observar, recordar y repetir, pero empareja color con textura de hábitat y desarrolla 30 fases con posiciones mezcladas, orden inverso, secuencias de tres grupos y menos tiempo de escaneo.",
+        "A Hasbro descreve Simon Game como observar sequências aleatórias de luzes e repeti-las nos botões coloridos enquanto ficam mais longas. {title} também usa observar, lembrar e repetir, mas combina cor com textura de habitat e avança por 30 fases com posições embaralhadas, ordem inversa, sequências de três grupos e menos tempo de varredura.",
+        "Hasbro décrit Simon Game comme l’observation de séquences lumineuses aléatoires à reproduire sur des touches colorées alors qu’elles s’allongent. {title} repose aussi sur observer, mémoriser et reproduire, mais associe couleur et texture d’habitat dans 30 niveaux avec positions mélangées, ordre inversé, séquences de trois groupes et scans plus courts.",
+        "Hasbro beschreibt Simon Game als zufällige Lichtfolgen, die auf farbigen Feldern in derselben Reihenfolge wiederholt werden und immer länger werden. {title} nutzt ebenfalls Beobachten, Merken und Wiederholen, kombiniert aber Farbe und Habitat-Textur in 30 Stufen mit gemischten Positionen, Rückwärtsfolgen, Dreiersequenzen und kürzeren Scans.",
+        "Hasbro descrive Simon Game come sequenze casuali di luci da ripetere sui tasti colorati mentre diventano più lunghe. {title} usa anch’esso osservazione, memoria e ripetizione, ma abbina colore e texture dell’habitat in 30 livelli con posizioni mescolate, ordine inverso, sequenze di tre gruppi e scansioni più brevi.",
+        "Hasbro описывает Simon Game как случайные световые последовательности, которые нужно повторять на цветных панелях в правильном порядке по мере их удлинения. {title} тоже использует наблюдение, память и повторение, но связывает цвет с текстурой среды в 30 этапах с перемешиванием позиций, обратным порядком, сериями из трёх групп и более коротким сканированием.",
+        "Hasbro Simon Game को यादृच्छिक रोशनी के क्रम को देखकर रंगीन पैड पर सही क्रम में दोहराने वाला खेल बताता है, जिसमें क्रम लंबा होता जाता है। {title} भी देखो-याद रखो-दोहराओ पर आधारित है, लेकिन रंग को आवास की टेक्सचर से जोड़ता है और 30 चरणों में स्थान बदलना, उल्टा क्रम, तीन-समूह क्रम और कम स्कैन समय जोड़ता है।",
+        "تصف Hasbro لعبة Simon Game بأنها تسلسلات ضوئية عشوائية تُعاد بالترتيب على الأزرار الملوّنة وتطول تدريجياً. تستخدم {title} أيضاً الملاحظة والتذكّر وإعادة التسلسل، لكنها تربط اللون بخامة الموطن عبر 30 مرحلة تضيف تبديل المواقع والترتيب العكسي وتسلسلات من ثلاث مجموعات ووقت مسح أقصر."
+      ],
+      comparisonIndependence: [
+        "{title} is an independent WeightPlay game with no official affiliation, endorsement, or license from Simon Game or Hasbro.",
+        "{title} 是 WeightPlay 的獨立遊戲，與 Simon Game 或 Hasbro 沒有官方隸屬、授權或推薦關係。",
+        "{title} 是 WeightPlay 的独立游戏，与 Simon Game 或 Hasbro 没有官方隶属、授权或推荐关系。",
+        "{title} は WeightPlay の独立作品で、Simon Game または Hasbro との公式な提携・推奨・ライセンス関係はありません。",
+        "{title}은 WeightPlay의 독립 게임이며 Simon Game 또는 Hasbro와 공식 제휴·추천·라이선스 관계가 없습니다.",
+        "{title} es un juego independiente de WeightPlay, sin afiliación, respaldo ni licencia oficial con Simon Game o Hasbro.",
+        "{title} é um jogo independente da WeightPlay, sem afiliação, endosso ou licença oficial com Simon Game ou Hasbro.",
+        "{title} est un jeu WeightPlay indépendant, sans affiliation, approbation ni licence officielle avec Simon Game ou Hasbro.",
+        "{title} ist ein unabhängiges WeightPlay-Spiel ohne offizielle Verbindung, Empfehlung oder Lizenz von Simon Game oder Hasbro.",
+        "{title} è un gioco indipendente di WeightPlay, senza affiliazione, approvazione o licenza ufficiale con Simon Game o Hasbro.",
+        "{title} — независимая игра WeightPlay без официальной связи, одобрения или лицензии от Simon Game или Hasbro.",
+        "{title} WeightPlay का स्वतंत्र खेल है और Simon Game या Hasbro से इसका कोई आधिकारिक संबंध, समर्थन या लाइसेंस नहीं है।",
+        "{title} لعبة مستقلة من WeightPlay ولا تربطها علاقة رسمية أو اعتماد أو ترخيص مع Simon Game أو Hasbro."
+      ],
+      comparisonSource: ["Official Simon Game page", "Simon Game 官方頁面", "Simon Game 官方页面", "Simon Game 公式ページ", "Simon Game 공식 페이지", "Página oficial de Simon Game", "Página oficial de Simon Game", "Page officielle de Simon Game", "Offizielle Simon-Game-Seite", "Pagina ufficiale di Simon Game", "Официальная страница Simon Game", "Simon Game का आधिकारिक पेज", "الصفحة الرسمية لـ Simon Game"],
       stageNames: blendStageNames,
       arcNames: blendArcNames,
       checkpoint: ["Checkpoint", "檢查點", "检查点", "チェックポイント", "체크포인트", "Punto de control", "Ponto de controle", "Point de contrôle", "Kontrollpunkt", "Punto di controllo", "Контрольная точка", "चेकपॉइंट", "نقطة تفتيش"],
@@ -139,6 +178,16 @@
     document.querySelectorAll("[data-m5-aria='backStages']").forEach((node) => node.setAttribute("aria-label", c()[4]));
     document.querySelectorAll("[data-m5-aria='battleUtility']").forEach((node) => node.setAttribute("aria-label", c()[22]));
     const select = document.getElementById("localeSelect"); if (select) select.value = locale;
+    if (game.comparisonSummary) {
+      const own = (value) => String(value || "").replaceAll("{title}", title);
+      document.querySelectorAll("[data-wp-comparison-heading]").forEach((node) => { node.textContent = at(game.comparisonHeading); });
+      document.querySelectorAll("[data-wp-tags-label]").forEach((node) => { node.textContent = at(game.comparisonTagsLabel); });
+      const tags = game.comparisonTags.map(at);
+      document.querySelectorAll("[data-wp-tag]").forEach((node) => { node.textContent = tags[Number(node.dataset.wpTag)] || ""; });
+      document.querySelectorAll("[data-wp-comparison-summary]").forEach((node) => { node.textContent = own(at(game.comparisonSummary)); });
+      document.querySelectorAll("[data-wp-comparison-independence]").forEach((node) => { node.textContent = own(at(game.comparisonIndependence)); });
+      document.querySelectorAll("[data-wp-comparison-source]").forEach((node) => { node.textContent = at(game.comparisonSource); });
+    }
     window.dispatchEvent(new CustomEvent("weightplay:market-locale-change", { detail: { locale } }));
   }
   function setLocale(next) {

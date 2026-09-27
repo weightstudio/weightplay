@@ -311,9 +311,17 @@
   const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); resetRound(); setScreen("battle");
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
-  const applyLocale = (locale) => {
+  const localeRouteSegments = { "en": "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", "ja": "ja", "ko": "ko", "es": "es", "pt-BR": "pt-br", "fr": "fr", "de": "de", "it": "it", "ru": "ru", "hi": "hi", "ar": "ar" };
+  const localizedRoutePattern = /^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/animal-nest-weigh\//;
+  const applyLocale = (locale, navigateToRoute = false) => {
     state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en";
     safeSet("weightplay-locale", state.locale);
+    const currentSegment = location.pathname.match(localizedRoutePattern)?.[1] || "";
+    const targetSegment = localeRouteSegments[state.locale] || "en";
+    if (navigateToRoute && currentSegment !== targetSegment) {
+      location.assign(`/${targetSegment}/games/animal-nest-weigh/${location.search}${location.hash}`);
+      return;
+    }
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     $("languageSelect").value = state.locale;
@@ -334,7 +342,7 @@
     $("resultMapBtn").addEventListener("click", () => setScreen("stage"));
     $("resultHomeBtn").addEventListener("click", () => setScreen("main"));
     [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-nest-weigh-sound", state.sound ? "on" : "off"); applyText(); }));
-    $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value));
+    $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value, true));
   };
   const initialLocale = () => {
     const queryLocale = new URLSearchParams(location.search).get("lang");

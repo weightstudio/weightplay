@@ -445,6 +445,7 @@
     if (raw.startsWith("pt")) return "pt-BR";
     return localeCodes.find((code) => code.toLowerCase() === raw) || "en";
   }
+  const localeRoutePrefixes = Object.freeze({en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"});
   const routeLocale = document.documentElement.lang;
   let locale = canonicalLocale(routeLocale || readStorage("weightPlayLocale") || window.WonderI18n?.locale?.() || "en");
   const savedHero = readStorage("aht-selected-hero");
@@ -1827,8 +1828,14 @@
   localeSelect.onchange = (event) => {
     const requested = canonicalLocale(event.target.value);
     window.WonderI18n?.setLocale?.(requested);
-    locale = requested;
     writeStorage("weightPlayLocale", requested);
+    const prefix = localeRoutePrefixes[requested] || "en";
+    const targetPath = `/${prefix}/games/animal-hero-trials/`;
+    if (location.pathname !== targetPath) {
+      window.location.assign(targetPath + location.search + location.hash);
+      return;
+    }
+    locale = requested;
     if (!ownedLocales.has(requested) && window.WeightPlayGameRuntimeLocalizer?.locale !== requested) {
       window.location.reload();
       return;

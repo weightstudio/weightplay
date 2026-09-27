@@ -40,6 +40,178 @@
       faqItems: [["كيف أثبّت الجسر؟", "اختر أحجارًا يساوي مجموع أوزانها الهدف المعروض، ثم اختر فحص التوازن."], ["هل يمكنني إعادة محاولة إجابة خاطئة؟", "نعم. يمكن مسح التركيبة الخاطئة بأمان، وإعادة تجربة الغابة الحالية دون فقدان التقدم."], ["هل يوجد مؤقت؟", "لا. صُممت الغابات الثلاث للمقارنة الهادئة وتخطيط المجموعات."], ["هل يُحفظ التقدم؟", "يُحفظ التقدم المفتوح وأفضل عدد من الفحوص في هذا المتصفح فقط."]]
     },
   };
+  const marketComparisonCopy = {
+    "en": {
+      "heading": "Similar gameplay reference:",
+      "tagLabel": "Gameplay tags:",
+      "tags": [
+        "Subset-sum logic",
+        "Balance puzzle",
+        "Visible-weight planning",
+        "Three-grove campaign"
+      ],
+      "summary": "Ravensburger's official ThinkFun page describes Balance Beans as placing colorful beans in the correct spaces on a balance board until it sits level, with 40 increasingly challenging puzzles. Balance Grove shares the observe-plan-balance loop, but uses visible stone weights and subset sums instead of lever positions: choose any non-empty set whose total matches the grove target, then check the balance. Its three authored groves use targets 5, 7, and 9, expand the tray from four to six named stones, allow calm clearing and retrying, and keep best-check progress only in this browser.",
+      "independence": "Balance Grove is an independent WeightPlay game and is not affiliated with, endorsed by, or licensed by Balance Beans, ThinkFun, or Ravensburger.",
+      "sourceLabel": "Official Balance Beans page"
+    },
+    "zh-Hant": {
+      "heading": "相似玩法參考：",
+      "tagLabel": "玩法標籤：",
+      "tags": [
+        "子集合加總",
+        "平衡益智",
+        "可見重量推理",
+        "三林地關卡"
+      ],
+      "summary": "Ravensburger 的 ThinkFun 官方頁面介紹 Balance Beans：把彩色豆豆放到平衡板的正確位置，直到板面保持水平，並提供 40 道逐步變難的挑戰。Balance Grove 同樣要求先觀察、規劃再取得平衡，但改用清楚顯示的石頭重量與子集合加總：選出總和等於林地目標的非空石頭組合，再檢查平衡。三個手工設計的林地目標依序為 5、7、9，石頭由四顆增加到六顆，可隨時清空重試，最佳檢查次數只保存在目前瀏覽器。",
+      "independence": "Balance Grove 是 WeightPlay 的獨立遊戲，與 Balance Beans、ThinkFun 或 Ravensburger 沒有官方隸屬、授權或推薦關係。",
+      "sourceLabel": "Balance Beans 官方頁面"
+    },
+    "zh-Hans": {
+      "heading": "相似玩法参考：",
+      "tagLabel": "玩法标签：",
+      "tags": [
+        "子集求和",
+        "平衡益智",
+        "可见重量推理",
+        "三林地关卡"
+      ],
+      "summary": "Ravensburger 的 ThinkFun 官方页面介绍 Balance Beans：把彩色豆豆放到平衡板的正确位置，直到板面保持水平，并提供 40 道逐步变难的挑战。Balance Grove 同样要求先观察、规划再取得平衡，但改用清楚显示的石头重量与子集求和：选出总和等于林地目标的非空石头组合，再检查平衡。三个手工设计的林地目标依次为 5、7、9，石头从四颗增加到六颗，可随时清空重试，最佳检查次数只保存在当前浏览器。",
+      "independence": "Balance Grove 是 WeightPlay 的独立游戏，与 Balance Beans、ThinkFun 或 Ravensburger 没有官方隶属、授权或推荐关系。",
+      "sourceLabel": "Balance Beans 官方页面"
+    },
+    "ja": {
+      "heading": "似た遊び方の参考：",
+      "tagLabel": "ゲームプレイタグ：",
+      "tags": [
+        "部分和ロジック",
+        "バランスパズル",
+        "重さ比較",
+        "3つの森チャレンジ"
+      ],
+      "summary": "Ravensburger の ThinkFun 公式ページでは、Balance Beans はカラフルな豆をバランスボードの正しい位置に置いて水平にし、40問の段階的に難しくなるチャレンジに挑むゲームと説明されています。Balance Grove も観察して計画し、つり合いを作る流れは共通しますが、てこの位置ではなく見えている石の重さと部分和を使います。表示された森の目標と合計が一致する空でない石の組み合わせを選び、バランスを確認します。3つの手作りステージは目標が5、7、9と変化し、石は4個から6個へ増え、いつでもクリアして落ち着いて再挑戦できます。",
+      "independence": "Balance Grove は WeightPlay の独立作品で、Balance Beans、ThinkFun、Ravensburger との公式な提携・推奨・ライセンス関係はありません。",
+      "sourceLabel": "Balance Beans 公式ページ"
+    },
+    "ko": {
+      "heading": "비슷한 플레이 참고:",
+      "tagLabel": "게임플레이 태그:",
+      "tags": [
+        "부분합 논리",
+        "균형 퍼즐",
+        "무게 비교 추론",
+        "3개 숲 캠페인"
+      ],
+      "summary": "Ravensburger의 ThinkFun 공식 페이지는 Balance Beans를 색색의 콩을 균형판의 알맞은 자리에 놓아 판을 수평으로 만들고, 점점 어려워지는 40개 퍼즐에 도전하는 게임으로 설명합니다. Balance Grove도 관찰하고 계획해 균형을 맞추는 흐름은 비슷하지만, 지렛대 위치 대신 화면에 보이는 돌의 무게와 부분합을 사용합니다. 숲의 목표값과 합이 같은 비어 있지 않은 돌 조합을 고른 뒤 균형을 확인합니다. 세 개의 설계된 숲은 목표가 5, 7, 9로 바뀌고 돌은 4개에서 6개까지 늘어나며 언제든 비우고 다시 시도할 수 있습니다.",
+      "independence": "Balance Grove는 WeightPlay의 독립 게임이며 Balance Beans, ThinkFun 또는 Ravensburger와 공식 제휴·추천·라이선스 관계가 없습니다.",
+      "sourceLabel": "Balance Beans 공식 페이지"
+    },
+    "es": {
+      "heading": "Referencia de jugabilidad similar:",
+      "tagLabel": "Etiquetas de jugabilidad:",
+      "tags": [
+        "Lógica de suma de subconjuntos",
+        "Puzle de equilibrio",
+        "Comparación de pesos",
+        "Campaña de tres bosques"
+      ],
+      "summary": "La página oficial de ThinkFun en Ravensburger describe Balance Beans como un juego en el que colocas judías de colores en los espacios correctos de una balanza hasta dejarla nivelada, con 40 retos de dificultad creciente. Balance Grove comparte el ciclo de observar, planear y equilibrar, pero usa pesos visibles y sumas de subconjuntos: elige un conjunto no vacío cuyo total coincida con el objetivo del bosque y después comprueba el equilibrio. Sus tres bosques tienen objetivos 5, 7 y 9 y amplían la bandeja de cuatro a seis piedras con nombre.",
+      "independence": "Balance Grove es un juego independiente de WeightPlay y no está afiliado, respaldado ni licenciado por Balance Beans, ThinkFun o Ravensburger.",
+      "sourceLabel": "Página oficial de Balance Beans"
+    },
+    "pt-BR": {
+      "heading": "Referência de jogabilidade semelhante:",
+      "tagLabel": "Tags de jogabilidade:",
+      "tags": [
+        "Lógica de soma de subconjuntos",
+        "Quebra-cabeça de equilíbrio",
+        "Comparação de pesos",
+        "Campanha de três bosques"
+      ],
+      "summary": "A página oficial da ThinkFun na Ravensburger descreve Balance Beans como um jogo em que você coloca feijões coloridos nos espaços corretos de uma prancha de equilíbrio até deixá-la nivelada, com 40 desafios de dificuldade crescente. Balance Grove compartilha o ciclo de observar, planejar e equilibrar, mas usa pesos visíveis e somas de subconjuntos: escolha um conjunto não vazio cuja soma corresponda ao alvo do bosque e depois verifique o equilíbrio. Os três bosques usam alvos 5, 7 e 9 e ampliam a bandeja de quatro para seis pedras nomeadas.",
+      "independence": "Balance Grove é um jogo independente da WeightPlay e não possui afiliação, endosso ou licença oficial de Balance Beans, ThinkFun ou Ravensburger.",
+      "sourceLabel": "Página oficial de Balance Beans"
+    },
+    "fr": {
+      "heading": "Référence de gameplay similaire :",
+      "tagLabel": "Tags de gameplay :",
+      "tags": [
+        "Logique de somme de sous-ensembles",
+        "Puzzle d’équilibre",
+        "Comparaison des poids",
+        "Campagne de trois bosquets"
+      ],
+      "summary": "La page officielle ThinkFun de Ravensburger décrit Balance Beans comme un jeu où l’on place des haricots colorés aux bons endroits sur une planche d’équilibre jusqu’à la mettre à niveau, avec 40 défis de difficulté croissante. Balance Grove partage la boucle observer-planifier-équilibrer, mais utilise des poids de pierres visibles et des sommes de sous-ensembles : choisissez un ensemble non vide dont le total correspond à l’objectif du bosquet, puis vérifiez l’équilibre. Les trois bosquets ont pour objectifs 5, 7 et 9 et font passer le plateau de quatre à six pierres nommées.",
+      "independence": "Balance Grove est un jeu WeightPlay indépendant, sans affiliation, approbation ni licence officielle de Balance Beans, ThinkFun ou Ravensburger.",
+      "sourceLabel": "Page officielle de Balance Beans"
+    },
+    "de": {
+      "heading": "Ähnliche Gameplay-Referenz:",
+      "tagLabel": "Gameplay-Tags:",
+      "tags": [
+        "Teilmengen-Summenlogik",
+        "Balance-Rätsel",
+        "Gewichtsvergleich",
+        "Drei-Haine-Kampagne"
+      ],
+      "summary": "Die offizielle ThinkFun-Seite von Ravensburger beschreibt Balance Beans als Spiel, bei dem bunte Bohnen an die richtigen Stellen eines Balancebretts gesetzt werden, bis es waagerecht steht; enthalten sind 40 zunehmend schwierigere Aufgaben. Balance Grove teilt den Ablauf aus Beobachten, Planen und Ausbalancieren, nutzt aber sichtbare Steingewichte und Teilmengensummen: Wähle eine nicht leere Steingruppe, deren Summe dem Hain-Ziel entspricht, und prüfe dann die Balance. Die drei gestalteten Haine haben die Ziele 5, 7 und 9 und erweitern das Angebot von vier auf sechs benannte Steine.",
+      "independence": "Balance Grove ist ein unabhängiges WeightPlay-Spiel und steht in keiner offiziellen Verbindung, Empfehlung oder Lizenzbeziehung zu Balance Beans, ThinkFun oder Ravensburger.",
+      "sourceLabel": "Offizielle Balance-Beans-Seite"
+    },
+    "it": {
+      "heading": "Riferimento di gioco simile:",
+      "tagLabel": "Tag di gioco:",
+      "tags": [
+        "Logica di somma dei sottoinsiemi",
+        "Puzzle di equilibrio",
+        "Confronto dei pesi",
+        "Campagna di tre boschi"
+      ],
+      "summary": "La pagina ufficiale ThinkFun di Ravensburger descrive Balance Beans come un gioco in cui si posizionano fagioli colorati negli spazi corretti di una tavola basculante finché resta in equilibrio, con 40 sfide di difficoltà crescente. Balance Grove condivide il ciclo osserva-pianifica-bilancia, ma usa pesi delle pietre visibili e somme di sottoinsiemi: scegli un insieme non vuoto il cui totale corrisponda all’obiettivo del bosco, poi controlla l’equilibrio. I tre boschi hanno obiettivi 5, 7 e 9 e ampliano il vassoio da quattro a sei pietre con nome.",
+      "independence": "Balance Grove è un gioco indipendente di WeightPlay e non è affiliato, approvato o concesso in licenza da Balance Beans, ThinkFun o Ravensburger.",
+      "sourceLabel": "Pagina ufficiale di Balance Beans"
+    },
+    "ru": {
+      "heading": "Похожий игровой ориентир:",
+      "tagLabel": "Теги геймплея:",
+      "tags": [
+        "Логика суммы подмножеств",
+        "Головоломка на баланс",
+        "Сравнение весов",
+        "Кампания из трёх рощ"
+      ],
+      "summary": "На официальной странице ThinkFun у Ravensburger Balance Beans описывается как игра, где цветные бобы нужно поставить в правильные места на балансировочной доске, чтобы выровнять её; в наборе 40 задач с растущей сложностью. Balance Grove тоже строится на наблюдении, планировании и достижении равновесия, но использует видимые веса камней и суммы подмножеств: выберите непустой набор, сумма которого равна цели рощи, затем проверьте баланс. Три созданные вручную рощи имеют цели 5, 7 и 9 и увеличивают набор с четырёх до шести именованных камней.",
+      "independence": "Balance Grove — независимая игра WeightPlay и не имеет официальной связи, одобрения или лицензии от Balance Beans, ThinkFun или Ravensburger.",
+      "sourceLabel": "Официальная страница Balance Beans"
+    },
+    "hi": {
+      "heading": "समान खेल संदर्भ:",
+      "tagLabel": "खेल टैग:",
+      "tags": [
+        "योग तर्क",
+        "संतुलन पहेली",
+        "भार तुलना",
+        "तीन वन"
+      ],
+      "summary": "Ravensburger की ThinkFun जानकारी के अनुसार Balance Beans में रंगीन बीन्स को बैलेंस बोर्ड पर रखकर उसे समतल किया जाता है और 40 बढ़ती कठिनाई वाली पहेलियाँ हैं। Balance Grove में पत्थरों के दिखने वाले भार जोड़कर वन के लक्ष्य 5, 7 या 9 से मिलाए जाते हैं। तीन वनों में पत्थरों की संख्या चार से छह तक बढ़ती है और गलत चयन को साफ़ करके फिर कोशिश की जा सकती है।",
+      "independence": "Balance Grove, WeightPlay का स्वतंत्र खेल है और इन कंपनियों से आधिकारिक संबंध नहीं रखता।",
+      "sourceLabel": "Balance Beans की आधिकारिक जानकारी"
+    },
+    "ar": {
+      "heading": "مرجع لعب مشابه:",
+      "tagLabel": "وسوم أسلوب اللعب:",
+      "tags": [
+        "منطق مجموع المجموعات الجزئية",
+        "لغز توازن",
+        "مقارنة الأوزان الظاهرة",
+        "حملة من ثلاث غابات"
+      ],
+      "summary": "تصف صفحة ThinkFun الرسمية لدى Ravensburger لعبة Balance Beans بأنها لعبة تضع فيها حبوبًا ملوّنة في المواضع الصحيحة على لوح توازن حتى يصبح مستويًا، مع 40 تحديًا تزداد صعوبتها تدريجيًا. تشترك Balance Grove في الملاحظة والتخطيط وتحقيق التوازن، لكنها تستخدم أوزان أحجار ظاهرة ومجاميع مجموعات جزئية بدل مواضع الرافعة. اختر مجموعة غير فارغة يساوي مجموعها هدف الغابة ثم افحص التوازن. تستخدم الغابات الثلاث أهداف 5 و7 و9، وتزيد صينية الأحجار من أربعة إلى ستة أحجار مسمّاة.",
+      "independence": "Balance Grove لعبة مستقلة من WeightPlay ولا تربطها علاقة رسمية أو اعتماد أو ترخيص مع Balance Beans أو ThinkFun أو Ravensburger.",
+      "sourceLabel": "الصفحة الرسمية لـ Balance Beans"
+    }
+  };
+
   const normalizeLocale = (value) => {
     if (value === "zh-TW") return "zh-Hant";
     if (value === "zh-CN") return "zh-Hans";
@@ -156,6 +328,17 @@
     setText(faqSection?.querySelector("h3"), guideCopy.faq);
     const faqItems = guideCopy.faqItems || [[guideCopy.faqQuestion, guideCopy.faqAnswer]];
     faqSection?.querySelectorAll("dl > div").forEach((item, index) => { const pair = faqItems[index]; if (!pair) return; setText(item.querySelector("dt"), pair[0]); setText(item.querySelector("dd"), pair[1]); });
+    const comparisonSection = guide.querySelector('[data-wp-market-comparison="1.3.0"]');
+    const comparisonCopy = marketComparisonCopy[state.locale] || marketComparisonCopy.en;
+    if (comparisonSection && comparisonCopy) {
+      comparisonSection.setAttribute("data-comparison-locale", state.locale);
+      setText(comparisonSection.querySelector("[data-wp-comparison-heading]"), comparisonCopy.heading);
+      setText(comparisonSection.querySelector("[data-wp-tags-label]"), comparisonCopy.tagLabel);
+      comparisonSection.querySelectorAll("[data-wp-tag]").forEach((node, index) => setText(node, comparisonCopy.tags[index] || ""));
+      setText(comparisonSection.querySelector("[data-wp-comparison-summary]"), comparisonCopy.summary);
+      setText(comparisonSection.querySelector("[data-wp-comparison-independence]"), comparisonCopy.independence);
+      setText(comparisonSection.querySelector("[data-wp-comparison-source]"), comparisonCopy.sourceLabel);
+    }
   };
   const setLocale = (locale) => { state.locale = normalizeLocale(locale); try { localStorage.setItem("weightPlayLocale", state.locale); localStorage.setItem("weightplayLocale", state.locale); } catch (error) { state.storage = false; } applyLocale(); track("locale", { locale: state.locale }); };
   const beep = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
