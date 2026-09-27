@@ -22,7 +22,7 @@
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
-  const GAME_VERSION = "v26";
+  const GAME_VERSION = "v27";
   const INTERFACE_VERSION = "7";
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
@@ -130,9 +130,17 @@
   function solvedPorts(tile) {
     return tile.target ? [0,1,2,3] : ports({ ...tile, rot: tile.solved });
   }
+  function hintNeedsCorrection(tile) {
+    if (tile.sluice) return (tile.sluiceBaseExit + tile.rot) % 4 !== (tile.sluiceBaseExit + tile.solved) % 4;
+    return ports(tile).slice().sort().join(",") !== solvedPorts(tile).slice().sort().join(",");
+  }
+  function hintTargetIndex(tiles) {
+    return tiles.findIndex(tile => tile.required && hintNeedsCorrection(tile));
+  }
   function hintRouteNeighbor(index) {
     if (!run || index < 0 || !run.tiles[index]) return -1;
-    const row = Math.floor(index / 5), col = index % 5, routePorts = solvedPorts(run.tiles[index]), candidates = [];
+    const tile = run.tiles[index], row = Math.floor(index / 5), col = index % 5;
+    const routePorts = tile.sluice ? [(tile.sluiceBaseExit + tile.solved) % 4] : solvedPorts(tile), candidates = [];
     DIRS.forEach(([dr, dc, direction, reverse]) => {
       const nextRow = row + dr, nextCol = col + dc;
       if (nextRow < 0 || nextRow > 4 || nextCol < 0 || nextCol > 4) return;
@@ -663,7 +671,7 @@
   $("restart").onclick = () => { if (run && !run.completed) track("restart_used", { turns_before: run.moves }); __wpReplayStart(() => startStage("restart")); };
   $("hint").onclick = () => {
     if (run?.completed) return;
-    hintedPipeIndex = run.tiles.findIndex(item => item.required && ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(","));
+    hintedPipeIndex = hintTargetIndex(run.tiles);
     if (hintedPipeIndex < 0) return;
     run.hintUsed = true;
     track("hint_used", { pipe: hintedPipeIndex + 1, turns: run.moves });

@@ -1,4 +1,4 @@
-// Branch preview guide: facts describe implemented systems, not release claims.
+// Planned internal game guide: facts describe implemented systems, not release claims.
 export const GUIDES={
  en:{headings:['The race','Driving and objectives','A changing campaign','Racing tips','Design notes','Devices and saving','Questions'],
  intro:'You drive a compact kart through closed, three-dimensional circuits with block-animal opponents. The goal is not simply to hold the accelerator: choose where to turn in, judge the next corner, and decide when a drift is worth the speed you lose. The visible road, its shoulders and the guardrail form the driving space. Gold rings, marked boost pads, wet road patches and orange cones are real gameplay objects. The floating gold arrow points to your next required checkpoint. A finished lap counts only after those checkpoints have been crossed in order.',

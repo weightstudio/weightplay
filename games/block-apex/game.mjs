@@ -7,7 +7,12 @@ import {CATALOG, LOCALE_ORDER, LOCALE_NAMES, detectLocale, translate} from './lo
 import {renderGuide} from './guide.mjs';
 
 const $ = id => document.getElementById(id);
-const POSTER_URL = new URL('../../assets/block-apex-poster.webp', import.meta.url).href;
+const POSTER_URL = new URL('../../Assets/block-apex-poster.webp', import.meta.url).href;
+const UPGRADE_ICON_URLS = Object.freeze({
+  engine:new URL('../../Assets/block-apex-engine-upgrade.webp',import.meta.url).href,
+  tires:new URL('../../Assets/block-apex-tire-upgrade.webp',import.meta.url).href,
+  tank:new URL('../../Assets/block-apex-nitro-upgrade.webp',import.meta.url).href,
+});
 const life = new AbortController();
 const listen = (node, type, fn, options={}) => node.addEventListener(type, fn, {...options, signal:life.signal});
 const store = new SaveStore();
@@ -116,23 +121,24 @@ function renderManagement() {
     card.type='button';card.className='apex-item';card.dataset.upgrade=key;
     card.setAttribute('aria-disabled',String(level>=5||store.data.coins<cost));
     const content=document.createElement('div');content.dataset.wpItemContent='';
+    const icon=new Image();icon.src=UPGRADE_ICON_URLS[key];icon.alt='';icon.width=64;icon.height=64;icon.className='apex-upgrade-icon';icon.setAttribute('aria-hidden','true');
     const meter=document.createElement('meter');meter.min=0;meter.max=5;meter.value=level;meter.setAttribute('aria-label',t(key));
-    content.append(text('strong',t(key)),meter,text('span',`${level} / 5`),text('small',level===5?t('maximum'):`${t('upgrade')} · ${cost} ${t('coins')}`));
+    content.append(icon,text('strong',t(key)),meter,text('span',`${level} / 5`),text('small',level===5?t('maximum'):`${t('upgrade')} · ${cost} ${t('coins')}`));
     card.append(content);return card;
   }));
 }
 async function prepareArt() {
   const token=generation;
+  $('poster').src=POSTER_URL;$('poster').hidden=false;$('artStatus').hidden=true;
+  $('stageScreen').dataset.wpStageArt=POSTER_URL;$('stageScreen').style.setProperty('--wp-stage-art',`url("${POSTER_URL}")`);
   try {
     const {renderArtwork}=await engine();if(disposed||generation!==token||screen==='battle')return;
     for(let index=0;index<VEHICLES.length;index++) {
       if(!art.has(index))art.set(index,renderArtwork(createRace(1,{vehicle:index,tuning:{}}),256));
     }
-    $('poster').src=POSTER_URL;$('poster').hidden=false;$('artStatus').hidden=true;
-    $('stageScreen').dataset.wpStageArt=POSTER_URL;$('stageScreen').style.setProperty('--wp-stage-art',`url("${POSTER_URL}")`);
     renderManagement();
   } catch(error) {
-    $('artStatus').textContent=t('error');document.body.dataset.apexArtError=error.name||'Error';
+    $('artStatus').textContent=t('error');$('artStatus').hidden=false;document.body.dataset.apexArtError=error.name||'Error';
   }
 }
 function stopLoop() {cancelAnimationFrame(raf);raf=0;lastFrame=0;accumulator=0;}

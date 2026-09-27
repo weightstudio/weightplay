@@ -6,6 +6,8 @@ const result=(extra={})=>({runId:'one',stageId:1,success:true,stars:3,time:30,ra
 
 test('30 authored stages reference seven circuits and valid goal budgets',()=>{
   assert.equal(STAGES.length,30);assert.equal(TRACKS.length,7);assert.equal(VEHICLES.length,4);
+  assert.deepEqual(VEHICLES.map(v=>v.characterId),['spark-paw-fox','rainbow-hop-rabbit','drum-belly-panda','bubble-fin-otter']);
+  assert.deepEqual(VEHICLES.map(v=>v.id),['fox','hare','panda','penguin']);
   assert.equal(new Set(STAGES.map(s=>s.track)).size,7);
   for(const [i,s]of STAGES.entries()){
     assert.equal(s.id,i+1);assert.ok(TRACKS[s.track]);assert.ok(s.ace<s.par&&s.par<s.limit);
