@@ -224,17 +224,20 @@
     return dynamic === value ? value : value.replace(trimmed, dynamic);
   }
   function apply(root = document) {
-    rebuildMap();
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    const [title] = currentCopy();
-    document.title = `${title} | WeightPlay`;
+    const fullDocument = root === document;
+    if (fullDocument) {
+      rebuildMap();
+      document.documentElement.lang = locale;
+      document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+      const [title] = currentCopy();
+      document.title = `${title} | WeightPlay`;
+    }
     root.querySelectorAll?.("[data-five-copy]").forEach((element) => {
       const key = element.dataset.fiveCopy;
       const values = common[locale] || common.en;
       const copy = currentCopy();
       const map = { title: copy[0], lede: copy[1], guideBody: copy[2], guideSummary: copy[3], start: values.start, howTo: values.howTo, language: values.language };
-      if (map[key] !== undefined) element.textContent = map[key];
+      if (map[key] !== undefined && element.textContent !== map[key]) element.textContent = map[key];
     });
     root.querySelectorAll?.("[data-five-aria]").forEach((element) => {
       const values = common[locale] || common.en;
@@ -264,7 +267,6 @@
     apply(document);
   }
   function start() {
-    rebuildMap();
     apply(document);
     document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => setLocale(select.value)));
     const observer = new MutationObserver((records) => records.forEach((record) => {
