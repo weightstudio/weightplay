@@ -260,15 +260,16 @@ body[data-wp-game-id="animal-prism-breakers"] [data-wp-logical-stage-canvas] {
   padding: 8px 8px calc(88px / var(--wp-stage-canvas-scale, 1) + 8px) !important;
 }
 
-body[data-wp-game-id="animal-prism-breakers"] #stageScreen > .stage-tabs {
-  position: fixed !important;
-  inset: auto auto 0 50% !important;
-  transform: translateX(-50%) !important;
+body[data-wp-game-id="animal-prism-breakers"] .stage-canvas > .stage-tabs {
+  position: absolute !important;
+  inset: auto 0 0 !important;
+  transform: none !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   box-sizing: border-box !important;
-  width: min(100vw, 920px) !important;
+  width: auto !important;
+  max-width: none !important;
   height: 56px !important;
   min-height: 56px !important;
   margin: 0 !important;
@@ -278,7 +279,7 @@ body[data-wp-game-id="animal-prism-breakers"] #stageScreen > .stage-tabs {
   z-index: 90;
 }
 
-body[data-wp-game-id="animal-prism-breakers"] #stageScreen > .stage-tabs button {
+body[data-wp-game-id="animal-prism-breakers"] .stage-canvas > .stage-tabs button {
   box-sizing: border-box;
   min-width: min(100%, 180px);
   min-height: 44px;

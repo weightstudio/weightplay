@@ -8,8 +8,8 @@ export class WildwoodWorld {
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   this.scene=new THREE.Scene();this.cues=new GroundCues(this.scene);this.scene.background=new THREE.Color(0x173d3c);
-  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-v1.webp',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(2,2);
-  this.materialAtlas=new THREE.TextureLoader().load(new URL('./art/material-atlas-v1.png',import.meta.url).href);this.materialAtlas.colorSpace=THREE.SRGBColorSpace;this.materialAtlas.wrapS=this.materialAtlas.wrapT=THREE.ClampToEdgeWrapping;
+  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-block-v2.webp',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(1,1);
+  this.materialAtlas=new THREE.TextureLoader().load(new URL('./art/material-atlas-block-v2.png',import.meta.url).href);this.materialAtlas.colorSpace=THREE.SRGBColorSpace;this.materialAtlas.wrapS=this.materialAtlas.wrapT=THREE.ClampToEdgeWrapping;
   this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,20,16);this.camera.lookAt(0,0,0);
   const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
   this.geometry=new THREE.ExtrudeGeometry(shape,{depth:.92,bevelEnabled:true,bevelSize:.04,bevelThickness:.04,bevelSegments:2,steps:1});this.geometry.translate(0,0,-.46);
