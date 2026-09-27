@@ -1,0 +1,15 @@
+export const GAMEPLAY_TAGS = {
+  en: ["Region fill", "Freehand brush", "Animal coloring", "Local gallery"],
+  "zh-Hant": ["區域填色", "自由畫筆", "動物著色", "本機作品集"],
+  "zh-Hans": ["区域填色", "自由画笔", "动物涂色", "本地作品集"],
+  ja: ["領域の塗りつぶし", "フリーハンドブラシ", "動物のぬり絵", "端末内ギャラリー"],
+  ko: ["영역 채우기", "자유 브러시", "동물 색칠", "기기 내 갤러리"],
+  es: ["Relleno por regiones", "Pincel libre", "Colorear animales", "Galería local"],
+  "pt-BR": ["Preenchimento por áreas", "Pincel livre", "Colorir animais", "Galeria local"],
+  fr: ["Remplissage par zone", "Pinceau libre", "Coloriage d’animaux", "Galerie locale"],
+  de: ["Flächenfüllung", "Freihandpinsel", "Tiere ausmalen", "Lokale Galerie"],
+  it: ["Riempimento delle aree", "Pennello libero", "Colorare animali", "Galleria locale"],
+  ru: ["Заливка областей", "Свободная кисть", "Раскраски с животными", "Локальная галерея"],
+  hi: ["क्षेत्र भरना", "फ्रीहैंड ब्रश", "जानवरों की रंगाई", "स्थानीय गैलरी"],
+  ar: ["تعبئة المناطق", "فرشاة حرة", "تلوين الحيوانات", "معرض محلي"],
+};

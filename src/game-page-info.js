@@ -12529,8 +12529,11 @@
   }
 
 
-  // Optional editorial comparison in the existing Guide. No metadata or game-state writes.
+  // Text Growth 1.3.0 owner policy: public Guides use own-gameplay tags only.
+  // Keep historical comparison profiles internal, but do not render or generate them.
+  const publicMarketComparisonsEnabled = false;
   function marketComparisonHtml(gameId, localeCode) {
+    if (!publicMarketComparisonsEnabled) return "";
     const reference = gameplayProfiles[gameId]?.marketComparison;
     const copy = reference?.locales?.[localeCode];
     if (!copy) return "";
