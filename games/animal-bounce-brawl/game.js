@@ -99,6 +99,9 @@
     ar: { title: "ساحة الرغوة", subtitle: "ساحة اختبار فيزياء الألعاب" },
   }[locale] || { title: "FOAM ZONE", subtitle: "A toy physics test arena" };
   const state = { screen: "main", arena: 1, best: Number(localStorage.getItem("wp-brawl-best") || 0), keys: new Set(), player: null, rival: null, tool: 0, raf: 0, last: 0, attack: 0, flash: 0, elapsed: 0, jumpQueued: false };
+  let observedPlayer = null;
+  let observedPlayerHealth = 100;
+  let hurtSoundCooldown = 0;
   const text = (value) => window.wpFiveText ? window.wpFiveText(value) : value;
   function ensureBattleStatusControls() { const status = $("battle-status"); if (!status) return; let message = $("battle-status-copy"); let selected = $("selected-tool-label"); let approach = $("approach-cue"); if (!message || !selected || !approach) { const initial = message?.textContent || status.textContent.trim(); status.replaceChildren(); message = document.createElement("span"); message.id = "battle-status-copy"; message.textContent = initial; selected = document.createElement("span"); selected.id = "selected-tool-label"; selected.className = "selected-tool-label"; approach = document.createElement("span"); approach.id = "approach-cue"; approach.className = "approach-cue"; approach.setAttribute("role", "status"); approach.setAttribute("aria-live", "polite"); status.append(message, selected, approach); } }
   function setStatus(value) { ensureBattleStatusControls(); const message = $("battle-status-copy"); if (message) message.textContent = value; }
@@ -118,10 +121,64 @@
 }
   function selectTool(index) { state.tool = Math.max(0, Math.min(tools.length - 1, Number(index))); document.querySelectorAll("[data-tool]").forEach((b) => b.classList.toggle("selected", Number(b.dataset.tool) === state.tool)); canvas.dataset.selectedTool = tools[state.tool].name; localizeBattleControls(); setStatus(`${copy.selected} ${copy[tools[state.tool].name]}`); }
   function strike() { if (state.attack > 0 || state.screen !== "battle") return; const p = state.player, r = state.rival, kit = tools[state.tool]; state.attack = kit.cooldown; const d = Math.hypot(p.x-r.x,p.y-r.y); if (d < 170) { r.hp -= kit.damage; r.vx += p.x < r.x ? kit.force : -kit.force; r.vy = -4.8; state.flash = 8; window.dispatchEvent(new CustomEvent("weightplay:bounce-impact", { detail: { tool: state.tool } })); setStatus(`${copy[kit.name]} · ${copy.hint}`); } else { setStatus(copy.tooFar); } }
-  function update(dt) { const p=state.player,r=state.rival; const left=state.keys.has("ArrowLeft")||state.keys.has("KeyA"); const right=state.keys.has("ArrowRight")||state.keys.has("KeyD"); if(left)p.vx-=.42*dt;if(right)p.vx+=.42*dt;p.vx*=.92;if(state.jumpQueued&&p.y>=389){p.y=390;p.vy=-8.5;state.jumpQueued=false;}p.x+=p.vx*dt;p.vy+=.42*dt;p.y+=p.vy*dt;if(p.y>390){p.y=390;p.vy=0;}
-    const approach = p.x > r.x ? -1 : 1; r.vx += approach * (.08 + state.arena * .012) * dt; r.vx *= .96; r.x += r.vx * dt; r.vy += .42 * dt; r.y += r.vy * dt; if(r.y>390){r.y=390;r.vy=-Math.abs(r.vy)*.48;r.vy=Math.max(r.vy,-5)}
-    if(Math.abs(p.x-r.x)<118){r.vx+=(r.x>p.x?.14:-.14)*dt;p.hp-= (.018 + state.arena*.004)*dt;} p.x=Math.max(70,Math.min(890,p.x));r.x=Math.max(70,Math.min(890,r.x)); state.attack=Math.max(0,state.attack-dt);state.flash=Math.max(0,state.flash-dt);state.elapsed += dt/60; $("health-label").textContent=`${healthCopy.you} ${Math.max(0,Math.ceil(p.hp))} · ${healthCopy.rival} ${Math.max(0,Math.ceil(r.hp))}`; updateApproachCue(); if(r.hp<=0)finish(true);else if(p.hp<=0 || state.elapsed>35)finish(false); }
-  function finish(win) { const resultCopy = RESULT_COPY[document.documentElement.lang] || RESULT_COPY.en; const energy = Math.max(0, Math.ceil(state.player.hp)); state.best = win ? Math.max(state.best,state.arena) : state.best; if(win)localStorage.setItem("wp-brawl-best",String(state.best)); $("result-title").textContent=win?resultCopy.winTitle:resultCopy.loseTitle; $("result-copy").textContent=(win?resultCopy.winCopy:resultCopy.loseCopy).replace("{arena}",String(state.arena)).replace("{energy}",String(energy)); $("to-stages").textContent=resultCopy.arenas; $("next").textContent=state.arena>=6?resultCopy.replay:resultCopy.next; $("retry").textContent=resultCopy.retry; $("result-screen").dataset.outcome = win ? "success" : "failure"; $("result-screen").dataset.arena = String(state.arena); show("result");
+  function observePlayerDamage(dt) {
+    const player = state.player;
+    const visibleHealth = Math.max(0, Math.ceil(player.hp));
+    if (player !== observedPlayer || visibleHealth > observedPlayerHealth) {
+      observedPlayer = player;
+      observedPlayerHealth = visibleHealth;
+      hurtSoundCooldown = 0;
+      return;
+    }
+    if (visibleHealth < observedPlayerHealth) {
+      state.flash = Math.max(state.flash, 8);
+      if (hurtSoundCooldown <= 0) {
+        window.WeightPlayAudio?.play("player.hurt");
+        hurtSoundCooldown = 90;
+      }
+    }
+    observedPlayerHealth = visibleHealth;
+    hurtSoundCooldown = Math.max(0, hurtSoundCooldown - dt);
+  }
+  function update(dt) {
+    const p = state.player, r = state.rival;
+    const left = state.keys.has("ArrowLeft") || state.keys.has("KeyA");
+    const right = state.keys.has("ArrowRight") || state.keys.has("KeyD");
+    if (left) p.vx -= .42 * dt;
+    if (right) p.vx += .42 * dt;
+    p.vx *= .92;
+    if (state.jumpQueued && p.y >= 389) { p.y = 390; p.vy = -8.5; state.jumpQueued = false; }
+    p.x += p.vx * dt;
+    p.vy += .42 * dt;
+    p.y += p.vy * dt;
+    if (p.y > 390) { p.y = 390; p.vy = 0; }
+
+    const approach = p.x > r.x ? -1 : 1;
+    r.vx += approach * (.08 + state.arena * .012) * dt;
+    r.vx *= .96;
+    r.x += r.vx * dt;
+    r.vy += .42 * dt;
+    r.y += r.vy * dt;
+    if (r.y > 390) { r.y = 390; r.vy = -Math.abs(r.vy) * .48; r.vy = Math.max(r.vy, -5); }
+
+    if (Math.abs(p.x - r.x) < 118) {
+      r.vx += (r.x > p.x ? .14 : -.14) * dt;
+      p.hp -= (.018 + state.arena * .004) * dt;
+    }
+    p.x = Math.max(70, Math.min(890, p.x));
+    r.x = Math.max(70, Math.min(890, r.x));
+    state.attack = Math.max(0, state.attack - dt);
+    state.flash = Math.max(0, state.flash - dt);
+    state.elapsed += dt / 60;
+    $("health-label").textContent = `${healthCopy.you} ${Math.max(0, Math.ceil(p.hp))} · ${healthCopy.rival} ${Math.max(0, Math.ceil(r.hp))}`;
+    observePlayerDamage(dt);
+    updateApproachCue();
+    if (r.hp <= 0) finish(true);
+    else if (p.hp <= 0 || state.elapsed > 35) finish(false);
+  }
+  function finish(win) {
+    window.WeightPlayAudio?.play(win ? "enemy.defeat" : "result.lose");
+    const resultCopy = RESULT_COPY[document.documentElement.lang] || RESULT_COPY.en; const energy = Math.max(0, Math.ceil(state.player.hp)); state.best = win ? Math.max(state.best,state.arena) : state.best; if(win)localStorage.setItem("wp-brawl-best",String(state.best)); $("result-title").textContent=win?resultCopy.winTitle:resultCopy.loseTitle; $("result-copy").textContent=(win?resultCopy.winCopy:resultCopy.loseCopy).replace("{arena}",String(state.arena)).replace("{energy}",String(energy)); $("to-stages").textContent=resultCopy.arenas; $("next").textContent=state.arena>=6?resultCopy.replay:resultCopy.next; $("retry").textContent=resultCopy.retry; $("result-screen").dataset.outcome = win ? "success" : "failure"; $("result-screen").dataset.arena = String(state.arena); show("result");
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function draw() { ctx.clearRect(0,0,960,540);const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,"#3d2b59");g.addColorStop(1,"#171122");ctx.fillStyle=g;ctx.fillRect(0,0,960,540);ctx.fillStyle="#e77e9a";ctx.fillRect(0,435,960,105);ctx.fillStyle="#6e4b92";ctx.fillRect(0,430,960,8);ctx.fillStyle="#ffd36b";ctx.font="bold 18px system-ui";ctx.fillText(arenaCopy.title,24,34);ctx.fillStyle="#cbb7d9";ctx.font="15px system-ui";ctx.fillText(arenaCopy.subtitle,24,58);const pads=[[190,330,150,16],[610,330,160,16],[400,250,150,16]];pads.forEach(([x,y,w,h])=>{ctx.fillStyle="#9e77bd";ctx.fillRect(x,y,w,h)});if(state.player&&state.rival){actor(state.player,heroArt,"#9ee9e0","#2a1b3b",[10,5,620,620],healthCopy.you);actor(state.rival,rivalArt,"#ffb36b","#3c2131",[650,55,580,530],healthCopy.rival);if(propArt.complete&&propArt.naturalWidth){const kit=tools[state.tool];ctx.drawImage(propArt,kit.crop[0],kit.crop[1],kit.crop[2],kit.crop[3],state.player.x+28,state.player.y-112,72,56);}if(state.attack>0){ctx.strokeStyle="#ffd36b";ctx.lineWidth=12;ctx.beginPath();ctx.arc(state.player.x+(state.player.x<state.rival.x?48:-48),state.player.y-12,42,-.8,.8);ctx.stroke()}if(state.flash>0){if(propArt.complete&&propArt.naturalWidth){ctx.drawImage(propArt,1470,350,700,374,(state.player.x+state.rival.x)/2-48,(state.player.y+state.rival.y)/2-48,96,96);}else{ctx.fillStyle="#fff2a1";ctx.beginPath();ctx.arc((state.player.x+state.rival.x)/2,(state.player.y+state.rival.y)/2,18+state.flash,0,Math.PI*2);ctx.fill();}}canvas.dataset.actorWidth="168";canvas.dataset.playerX=String(Math.round(state.player.x));canvas.dataset.rivalX=String(Math.round(state.rival.x));} }
@@ -135,6 +192,10 @@
     ["pointerup","pointercancel"].forEach((ev)=>window.addEventListener(ev,release,true));
     window.addEventListener("blur",release);
   }
+  window.addEventListener("weightplay:bounce-impact", (event) => {
+    const kit = tools[Number(event.detail?.tool)];
+    if (kit) window.WeightPlayAudio?.play(kit.name === "PAD" ? "combat.critical" : "combat.strike");
+  });
   document.querySelectorAll("[data-key]").forEach((b)=>bindHeldControl(b,b.dataset.key)); document.querySelectorAll("[data-tool]").forEach((b)=>b.addEventListener("click",()=>selectTool(b.dataset.tool))); $("battle-help")?.addEventListener("click", toggleBattleHelp);
   $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>__wpReplayStart(() => startArena(state.arena)));$("next").addEventListener("click",()=>startArena(state.arena>=6?1:state.arena+1));$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});$("main-progress").textContent=copy.bestWins.replace("{best}", state.best);localizeBattleControls();stageCards();draw();
 })();

@@ -25,11 +25,11 @@
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-bounce-brawl" /><meta name="weightplay-game-version" content="v16" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Cronometra i rimbalzi, scegli gli strumenti di schiuma e fai perdere l&#39;equilibrio al rivale in una giocosa arena di fisica." />
     <title>Rissa rimbalzante | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260830-sound-toggle-v15" />
+    <link rel="stylesheet" href="style.css?v=20260927-bounce-brawl-v19" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(26,18,42,.22),rgba(26,18,42,.70)),url("assets/animal-bounce-brawl-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-    <script defer src="game.js?v=20260830-sound-toggle-v15"></script>
+    <script defer src="game.js?v=20260927-bounce-brawl-v19"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Rissa rimbalzante | WeightPlay" />
@@ -86,7 +86,7 @@
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button id="stage-tab" type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button id="battle-back" class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span><button id="battle-help" class="utility-button battle-utility" type="button" data-wp-battle-utility aria-label="Battle help" title="Battle help" aria-expanded="false" aria-controls="battle-help-popover">?</button></header>
+        <header class="battle-header"><button id="battle-back" class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><div class="battle-readout"><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span></div><button id="battle-help" class="utility-button battle-utility" type="button" data-wp-battle-utility aria-label="Battle help" title="Battle help" aria-expanded="false" aria-controls="battle-help-popover">?</button></header>
         <p id="battle-help-popover" class="battle-help-popover" role="note" hidden></p>
         <p id="battle-status" class="battle-status">Move with arrows. Press SPACE to bounce-strike.</p>
         <div class="arena-frame"><canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas></div>

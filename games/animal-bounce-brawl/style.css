@@ -60,3 +60,31 @@ body[data-wp-game-id="animal-bounce-brawl"] #stage-screen .stage-tabs{
     min-height:48px;
   }
 }
+
+/* Keep the arena name and live health as separate, readable HUD fields in the
+   shared battle header's return/help control track. */
+body[data-wp-game-id="animal-bounce-brawl"] .battle-readout{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  width:100%;
+  min-width:0;
+  padding-inline:4px;
+}
+body[data-wp-game-id="animal-bounce-brawl"] .battle-readout #arena-label{
+  flex:0 0 auto;
+  width:auto;
+  max-width:44%;
+  overflow:hidden;
+  text-align:start;
+  text-overflow:ellipsis;
+}
+body[data-wp-game-id="animal-bounce-brawl"] .battle-readout #health-label{
+  flex:0 1 auto;
+  width:auto;
+  min-width:0;
+  margin-inline-start:0;
+  font-size:clamp(.62rem,2.8vw,.9rem);
+  text-align:end;
+}
