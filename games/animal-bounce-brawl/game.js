@@ -74,9 +74,25 @@
     hi: { winTitle: "अखाड़ा पूरा", loseTitle: "आप बाहर उछल गए", winCopy: "अखाड़ा {arena} जीत लिया; {energy} ऊर्जा शेष है।", loseCopy: "अखाड़ा {arena} हार गए। प्रतिद्वंद्वी की चाल समझें और फिर कोशिश करें।", next: "अगला अखाड़ा", replay: "अखाड़ा फिर खेलें", retry: "अखाड़ा दोबारा खेलें", arenas: "अखाड़े" },
     ar: { winTitle: "اكتملت الساحة", loseTitle: "قُذفت خارج الساحة", winCopy: "فزت في الساحة {arena} وبقيت {energy} من الطاقة.", loseCopy: "خسرت الساحة {arena}. اقرأ أسلوب الخصم وحاول مجدداً.", next: "الساحة التالية", replay: "إعادة لعب الساحة", retry: "إعادة محاولة الساحة", arenas: "الساحات" }
   };
+  const BATTLE_LEAVE_COPY = {
+    en: { title: "Leave this arena?", body: "Leaving will discard this round. Current state:", continueLabel: "Continue battle", leaveLabel: "Leave arena" },
+    "zh-Hant": { title: "要離開這座競技場嗎？", body: "離開後將捨棄本回合進度。目前狀態：", continueLabel: "繼續戰鬥", leaveLabel: "離開競技場" },
+    "zh-Hans": { title: "要离开这座竞技场吗？", body: "离开后将丢弃本回合进度。当前状态：", continueLabel: "继续战斗", leaveLabel: "离开竞技场" },
+    ja: { title: "アリーナを離れますか？", body: "このラウンドの進行状況は失われます。現在の状態：", continueLabel: "バトルを続ける", leaveLabel: "アリーナを離れる" },
+    ko: { title: "아레나를 떠날까요?", body: "현재 라운드 진행 상황이 사라집니다. 현재 상태:", continueLabel: "배틀 계속하기", leaveLabel: "아레나 나가기" },
+    es: { title: "¿Salir de esta arena?", body: "Perderás el progreso de esta ronda. Estado actual:", continueLabel: "Continuar combate", leaveLabel: "Salir de la arena" },
+    "pt-BR": { title: "Sair desta arena?", body: "Seu progresso nesta rodada será perdido. Estado atual:", continueLabel: "Continuar batalha", leaveLabel: "Sair da arena" },
+    fr: { title: "Quitter cette arène ?", body: "La progression de cette manche sera perdue. État actuel :", continueLabel: "Continuer le combat", leaveLabel: "Quitter l’arène" },
+    de: { title: "Diese Arena verlassen?", body: "Der Fortschritt dieser Runde geht verloren. Aktueller Stand:", continueLabel: "Kampf fortsetzen", leaveLabel: "Arena verlassen" },
+    it: { title: "Uscire da questa arena?", body: "I progressi del round andranno persi. Stato attuale:", continueLabel: "Continua la battaglia", leaveLabel: "Esci dall’arena" },
+    ru: { title: "Покинуть арену?", body: "Прогресс этого раунда будет потерян. Текущее состояние:", continueLabel: "Продолжить бой", leaveLabel: "Покинуть арену" },
+    hi: { title: "इस अखाड़े से बाहर जाएँ?", body: "इस राउंड की प्रगति मिट जाएगी। मौजूदा स्थिति:", continueLabel: "लड़ाई जारी रखें", leaveLabel: "अखाड़ा छोड़ें" },
+    ar: { title: "مغادرة هذه الساحة؟", body: "ستُفقد تقدّم هذه الجولة. الحالة الحالية:", continueLabel: "متابعة القتال", leaveLabel: "مغادرة الساحة" },
+  };
   const locale = document.documentElement.lang || "en";
   const copy = COPY[locale] || COPY.en;
   const stageCopy = STAGE_COPY[locale] || STAGE_COPY.en;
+  const battleLeaveCopy = BATTLE_LEAVE_COPY[locale] || BATTLE_LEAVE_COPY.en;
   const healthCopy = {
     en: { you: "You", rival: "Rival" }, "zh-Hant": { you: "我方", rival: "對手" }, "zh-Hans": { you: "我方", rival: "对手" },
     ja: { you: "自分", rival: "相手" }, ko: { you: "나", rival: "상대" }, es: { you: "Tú", rival: "Rival" },
@@ -98,7 +114,36 @@
     hi: { title: "फोम अखाड़ा", subtitle: "खिलौना भौतिकी अभ्यास अखाड़ा" },
     ar: { title: "ساحة الرغوة", subtitle: "ساحة اختبار فيزياء الألعاب" },
   }[locale] || { title: "FOAM ZONE", subtitle: "A toy physics test arena" };
-  const state = { screen: "main", arena: 1, best: Number(localStorage.getItem("wp-brawl-best") || 0), keys: new Set(), player: null, rival: null, tool: 0, raf: 0, last: 0, attack: 0, flash: 0, elapsed: 0, jumpQueued: false, practice: null };
+  const state = { screen: "main", arena: 1, best: Number(localStorage.getItem("wp-brawl-best") || 0), keys: new Set(), player: null, rival: null, tool: 0, raf: 0, last: 0, attack: 0, flash: 0, elapsed: 0, jumpQueued: false, practice: null, paused: false };
+  function openBattleLeave() {
+    const dialog = $("battle-leave-dialog");
+    if (!dialog || state.screen !== "battle" || !state.player || !state.rival) return;
+    state.keys.clear();
+    state.paused = true;
+    cancelAnimationFrame(state.raf);
+    state.raf = 0;
+    $("battle-leave-title").textContent = battleLeaveCopy.title;
+    $("battle-leave-description").textContent = battleLeaveCopy.body;
+    $("battle-leave-continue").textContent = battleLeaveCopy.continueLabel;
+    $("battle-leave-confirm").textContent = battleLeaveCopy.leaveLabel;
+    $("battle-leave-progress").textContent = [$("arena-label")?.textContent, $("health-label")?.textContent, $("approach-cue")?.textContent]
+      .map((value) => value?.trim()).filter(Boolean).join(" · ");
+    dialog.hidden = false;
+    $("battle-leave-continue").focus();
+    __wpNotifyMeasurement();
+  }
+  function closeBattleLeave(resume = true) {
+    const dialog = $("battle-leave-dialog");
+    if (!dialog || dialog.hidden) return;
+    dialog.hidden = true;
+    state.paused = false;
+    if (resume && state.screen === "battle") {
+      state.last = performance.now();
+      state.raf = requestAnimationFrame(frame);
+      $("battle-back")?.focus();
+    }
+    __wpNotifyMeasurement();
+  }
   let observedPlayer = null;
   let observedPlayerHealth = 100;
   let hurtSoundCooldown = 0;
@@ -241,8 +286,8 @@
     }
   }
   function actor(o,art,body,ink,crop,label){ctx.save();const width=168,height=Math.max(126,Math.round(width*crop[3]/crop[2]));ctx.translate(o.x,o.y+40);ctx.rotate(o.vx*.03);if(art.complete&&art.naturalWidth){ctx.drawImage(art,crop[0],crop[1],crop[2],crop[3],-width/2,-height,width,height);}else{ctx.fillStyle=body;ctx.beginPath();ctx.arc(0,-height+36,38,0,Math.PI*2);ctx.fill();ctx.fillRect(-31,-height+68,62,72);ctx.fillStyle=ink;ctx.fillRect(-18,-height+28,9,9);ctx.fillRect(9,-height+28,9,9);}ctx.rotate(-o.vx*.03);ctx.fillStyle="rgba(18,12,30,.82)";ctx.fillRect(-48,-height-29,96,24);ctx.fillStyle="#fffaff";ctx.textAlign="center";ctx.font="bold 16px system-ui";ctx.fillText(label,0,-height-11);ctx.restore();}
-  function frame(now){if(state.screen!=="battle")return;const dt=Math.min((now-state.last)/16.67,2);state.last=now;update(dt);if(state.screen==="battle"){draw();state.raf=requestAnimationFrame(frame)}}
-  window.addEventListener("keydown",(e)=>{const k=e.code==="Space"?"Space":e.code;const digit=k[0]==="D"&&k.length===6;if(["ArrowLeft","ArrowRight","KeyA","KeyD","ArrowUp","KeyW","Space"].includes(k)||digit){e.preventDefault();if(k==="Space")strike();else if(digit)selectTool(Number(k.slice(-1))-1);else if((k==="ArrowUp"||k==="KeyW")&&!e.repeat)state.jumpQueued=true;else state.keys.add(k)}}); window.addEventListener("keyup",(e)=>state.keys.delete(e.code==="Space"?"Space":e.code));
+  function frame(now){if(state.screen!=="battle"||state.paused)return;const dt=Math.min((now-state.last)/16.67,2);state.last=now;update(dt);if(state.screen==="battle"&&!state.paused){draw();state.raf=requestAnimationFrame(frame)}}
+  window.addEventListener("keydown",(e)=>{if(!$("battle-leave-dialog")?.hidden)return;const k=e.code==="Space"?"Space":e.code;const digit=k[0]==="D"&&k.length===6;if(["ArrowLeft","ArrowRight","KeyA","KeyD","ArrowUp","KeyW","Space"].includes(k)||digit){e.preventDefault();if(k==="Space")strike();else if(digit)selectTool(Number(k.slice(-1))-1);else if((k==="ArrowUp"||k==="KeyW")&&!e.repeat)state.jumpQueued=true;else state.keys.add(k)}}); window.addEventListener("keyup",(e)=>state.keys.delete(e.code==="Space"?"Space":e.code));
   function bindHeldControl(button,k){
     const release=(e)=>{if(e?.pointerId!=null&&button.hasPointerCapture?.(e.pointerId))button.releasePointerCapture(e.pointerId);state.keys.delete(k);button.classList.remove("pressed");button.dataset.pressed="false"};
     button.addEventListener("pointerdown",(e)=>{e.preventDefault();if(e.pointerId!=null)button.setPointerCapture?.(e.pointerId);button.classList.add("pressed");button.dataset.pressed="true";if(k==="Space")strike();else if(k==="ArrowUp"){state.jumpQueued=true;setStatus(copy.HOP);}else{state.keys.add(k);setStatus(`${button.textContent.trim()} · ${copy.close}`)}});
@@ -257,7 +302,10 @@
   document.querySelectorAll("[data-key]").forEach((b)=>bindHeldControl(b,b.dataset.key)); document.querySelectorAll("[data-tool]").forEach((b)=>b.addEventListener("click",()=>selectTool(b.dataset.tool))); $("battle-help")?.addEventListener("click", toggleBattleHelp);
   $("start-game").addEventListener("click",()=>{show("stage");stageCards()});
   $("practice-start").addEventListener("click",startPractice);
-  document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(state.practice?.active){state.practice=null;window.BounceBrawlTutorial?.clear();}show(b.dataset.back)}));
+  document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",(event)=>{if(b.id==="battle-back"&&state.screen==="battle"){event.preventDefault();event.stopImmediatePropagation();openBattleLeave();return}if(state.practice?.active){state.practice=null;window.BounceBrawlTutorial?.clear();}show(b.dataset.back)}));
+  $("battle-leave-continue").addEventListener("click",()=>closeBattleLeave(true));
+  $("battle-leave-confirm").addEventListener("click",()=>{closeBattleLeave(false);if(state.practice?.active){state.practice=null;window.BounceBrawlTutorial?.clear()}show("stage");stageCards()});
+  document.addEventListener("keydown",(event)=>{const dialog=$("battle-leave-dialog");if(!dialog||dialog.hidden)return;if(event.key==="Escape"){event.preventDefault();closeBattleLeave(true);return}if(event.key!=="Tab")return;const first=$("battle-leave-continue"),last=$("battle-leave-confirm");if(!dialog.contains(document.activeElement)){event.preventDefault();first.focus()}else if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}});
   $("retry").addEventListener("click",()=>__wpReplayStart(() => startArena(state.arena)));
   $("next").addEventListener("click",()=>startArena(state.arena>=6?1:state.arena+1));
   $("to-stages").addEventListener("click",()=>{state.practice=null;window.BounceBrawlTutorial?.clear();show("stage");stageCards()});

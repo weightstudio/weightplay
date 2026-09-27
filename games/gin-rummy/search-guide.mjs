@@ -1,5 +1,5 @@
-// Text Growth 1.3.0 source for Gin Rummy market-comparison copy.
-// Localized route generation consumes this source; protected SEO identity stays outside this module.
+// Historical Text Growth 1.3.0 comparison copy remains internal; the shared route writer keeps factual own-game tags.
+
 export const GIN_RUMMY_MARKET_COMPARISON = Object.freeze({
   "en": {
     "heading": "Similar Gin Rummy gameplay reference",
@@ -181,12 +181,9 @@ export function renderGinRummyComparison(locale) {
   return '<article class="game-info-section game-info-comparison" data-wp-market-comparison="1.3.0" data-comparison-locale="'+escapeHtml(locale)+'" data-runtime-localize="off"><h3>'+escapeHtml(row.heading)+'</h3><p><strong data-wp-gameplay-tags-label>'+escapeHtml(row.label)+'</strong></p><div class="game-info-tags" data-wp-gameplay-tags="1.3.0">'+row.tags.map(tag => '<span>'+escapeHtml(tag)+'</span>').join('')+'</div><p><strong><bdi>Gin Rummy Classic•</bdi>:</strong> <span data-wp-comparison-shared>'+escapeHtml(row.body)+'</span></p><p>'+escapeHtml(row.disclaimer)+'</p><p><a href="'+sourceUrl+'" rel="nofollow noopener noreferrer">'+escapeHtml(row.sourceLabel)+'</a></p></article>';
 }
 
-export function applyGinRummyTextGrowth(html, locale) {
-  const comparison = renderGinRummyComparison(locale);
-  let next = html.replace(/<article\\b[^>]*data-wp-market-comparison=[\"'][^\"']+[\"'][^>]*>[\\s\\S]*?<\\/article>/g, '');
-  const anchor = '</section></main><section id="battleScreen"';
-  if (!next.includes(anchor)) throw new Error('Missing Gin Rummy Guide insertion anchor: ' + locale);
-  next = next.replace(anchor, comparison + '</section></main><section id="battleScreen"');
-  next = next.replace(/(<body\\b[^>]*)(>)/i, (whole, opening, closing) => /\\bdata-wp-game-owned-guide=[\"']true[\"']/i.test(opening) ? whole : opening + ' data-wp-game-owned-guide="true"' + closing);
-  return next;
+export function applyGinRummyTextGrowth(html) {
+  return html.replace(/<body\b[^>]*>/iu, (opening) =>
+    /\bdata-wp-game-owned-guide=["']true["']/iu.test(opening)
+      ? opening
+      : opening.replace(/>$/u, ' data-wp-game-owned-guide="true">'));
 }

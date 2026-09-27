@@ -96,3 +96,21 @@ body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode .sele
 body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode .approach-cue{display:none}
 body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode .battle-status{white-space:normal;overflow:visible}
 @media (orientation:landscape) and (max-height:560px){body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode{grid-template-rows:52px 48px minmax(0,1fr) 24px}}
+
+@media (orientation:landscape) and (max-height:560px){
+  body[data-wp-game-id="animal-bounce-brawl"] #stage-screen .stage-list{gap:6px}
+  body[data-wp-game-id="animal-bounce-brawl"] #stage-screen .stage-list button{min-height:54px;padding:6px 10px}
+  body[data-wp-game-id="animal-bounce-brawl"] #stage-screen #practice-start{position:relative;z-index:2}
+  body[data-wp-game-id="animal-bounce-brawl"] #stage-screen .stage-tabs{position:relative;z-index:1}
+}
+
+body[data-wp-game-id="animal-bounce-brawl"] .battle-screen{position:relative}
+.battle-leave-dialog{position:absolute;inset:0;z-index:40;display:grid;place-items:center;padding:12px;background:rgba(14,10,24,.9)}
+.battle-leave-dialog[hidden]{display:none!important}
+.battle-leave-card{width:min(100%,440px);max-height:100%;overflow:auto;padding:clamp(14px,3vw,24px);border:2px solid var(--gold);border-radius:18px;background:#312249;color:var(--ink);box-shadow:0 12px 36px #0009;text-align:center}
+.battle-leave-card h2{margin:0 0 10px;color:var(--gold);font-size:clamp(1.1rem,3vw,1.5rem)}
+.battle-leave-card p{margin:8px 0;line-height:1.4}
+.battle-leave-progress{padding:10px;border:1px solid var(--line);border-radius:10px;color:var(--mint);overflow-wrap:anywhere}
+.battle-leave-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+.battle-leave-actions button{min-width:0;min-height:48px;padding:8px}
+@media(max-width:480px){.battle-leave-actions{grid-template-columns:1fr}}
