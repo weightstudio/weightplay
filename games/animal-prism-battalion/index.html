@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-prism-battalion-main-v26">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260927-prism-v29-stage-root-canvas">
+  <link rel="stylesheet" href="style.css?v=20260927-prism-v30-block-motion">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="interface-7-cleanup.css?v=20260927-prism-v29-stage-root-canvas"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
@@ -55,7 +55,7 @@
       </header>
     <main class="main-screen">
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-prism-battalion/cover.webp" alt="Fox commander leads a three-lane prism battalion assault" data-ta="lanePosterAlt" data-wp-frame-poster="">
+        <img class="poster" src="../../assets/animal-prism-battalion/cover-block-v1.webp" alt="Fox commander leads a three-lane prism battalion assault" data-ta="lanePosterAlt" data-wp-frame-poster="">
         <div class="main-copy" data-wp-frame-copy=""><p class="wp-standard-main-summary" data-t="laneGuideIntro" data-wp-frame-summary="">Switch Captain Fia between three lanes. Break threats, collect power cores, and protect the crystal.</p><span id="mainProgress" class="wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress=""></span><button id="start" class="primary wp-standard-main-start" type="button" data-wp-main-start data-t="start" data-wp-frame-action="primary">Start Game</button></div>
       </section>
 <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel">
@@ -65,13 +65,13 @@
       </main>
   </div>
 
-  <section id="stage" class="active-screen wp-stage-art-shell" hidden data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334"  data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
+  <section id="stage" class="active-screen wp-stage-art-shell" hidden data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334"  data-wp-stage-art="../../assets/animal-prism-battalion/arena-block-v1.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena-block-v1.webp')">
     <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><span data-wp-frame-title hidden></span></header>
-<div class="stage-canvas" data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
+<div class="stage-canvas" data-wp-stage-art="../../assets/animal-prism-battalion/arena-block-v1.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena-block-v1.webp')">
       <div id="stageInfo" data-wp-frame-info><span id="stageProgress"></span></div>
       <div id="stageWorkspace" class="stage-workspace">
         <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked assault.</p></section>
-        <section id="labTab" class="tab-panel lab-tab" hidden><div class="lab-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="labTitle">Prism Lab</h2><p data-t="labIntro">Spend earned shards on permanent launcher upgrades.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><p id="labFeedback" aria-live="polite"></p></section>
+        <section id="labTab" class="tab-panel lab-tab" hidden><div class="lab-intro"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.png" alt=""><div><h2 data-t="labTitle">Prism Lab</h2><p data-t="labIntro">Spend earned shards on permanent launcher upgrades.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><p id="labFeedback" aria-live="polite"></p></section>
       </div>
     </div>
     <nav class="stage-tabs" aria-label="Battalion preparation" data-ta="stageTabs" role="tablist" data-wp-frame-stage-nav=""><button class="active" data-tab="missions" data-t="missions" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" aria-pressed="true">Missions</button><button data-tab="lab" data-t="lab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" aria-pressed="false">Prism Lab</button></nav>
@@ -90,7 +90,7 @@
       </div>
       <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this assault?</h2><p data-t="leaveText">Continue preserves this exact battle. Return to Stage ends the attempt.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">Continue</button><button id="leaveStage" data-t="returnStage">Return to Stage</button></div></div></section>
       <section id="tutorial" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="laneTutorialTitle">Command three crystal lanes</h2><ol><li data-t="laneTutorial1">Tap a lane or press Left and Right to switch. Your battalion fires automatically.</li><li data-t="laneTutorial2">Power cores store every hit. Break blue shields before collecting their attack reward.</li><li data-t="laneTutorial3">Bombs always deal their remaining value. A monster in your lane deals its remaining health; an avoided monster still deals 1.</li></ol><div class="modal-actions"><button id="tutorialDone" class="primary" data-t="tutorialDone">Begin assault</button></div></div></section>
-      <section id="result" class="modal-layer" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="modal-actions"><button id="resultStage" data-t="missions">Missions</button><button id="nextMission" class="primary" data-t="nextMission">Next Mission</button><button id="retry" data-t="retry">Retry</button></div></div></section>
+      <section id="result" class="modal-layer" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-spark-paw-fox-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="modal-actions"><button id="resultStage" data-t="missions">Missions</button><button id="nextMission" class="primary" data-t="nextMission">Next Mission</button><button id="retry" data-t="retry">Retry</button></div></div></section>
     </div>
   </section>
 </div><!-- gameFrame -->
@@ -107,6 +107,6 @@
 <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 <script src="locales.js?v=20260909-prism-battalion-main-v26"></script>
 <script src="stage-virtualization.js?v=20260927-prism-v29-stage-root-canvas"></script>
-<script src="game.js?v=20260927-prism-v29-stage-root-canvas&amp;wp-audio=1.0.0"></script>
+<script src="game.js?v=20260927-prism-v30-block-motion&amp;wp-audio=1.0.0"></script>
 </body>
 </html>

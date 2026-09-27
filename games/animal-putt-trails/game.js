@@ -167,9 +167,9 @@
     card.dataset.stage = String(index);
     card.setAttribute("aria-disabled", String(!available));
     card.setAttribute("aria-label", (index + 1) + ". " + name);
-    card.innerHTML = "<strong>" + (index + 1) + ". " + name + marker + "</strong><span>" +
+    card.innerHTML = "<span data-wp-item-content><strong>" + (index + 1) + ". " + name + marker + "</strong><span>" +
       (available ? t("par") + " " + hole.par + " · " + tip : "🔒 " + t("stages") + " " + (index + 1)) +
-      "</span><span>" + (best ? t("best") + ": " + best : t("best") + ": —") + "</span>";
+      "</span><span>" + (best ? t("best") + ": " + best : t("best") + ": —") + "</span></span>";
     if (index === Math.max(0, unlockedHoleCount() - 1)) card.dataset.wpStageRecommended = "true";
     else delete card.dataset.wpStageRecommended;
   }
