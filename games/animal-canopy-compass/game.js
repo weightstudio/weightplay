@@ -84,6 +84,7 @@
   let leaveExit = null;
   let pendingBattleFrame = 0;
   let resultFocusFrame = 0;
+  let battleFeedbackTimer = 0;
   let sharedFrame = null;
   const app = $("app");
 
@@ -110,6 +111,21 @@
   };
 
   const battleCanvas = () => document.querySelector(".battle-canvas");
+  const clearBattleFeedback = () => {
+    if (battleFeedbackTimer) window.clearTimeout(battleFeedbackTimer);
+    battleFeedbackTimer = 0;
+    battleCanvas()?.classList.remove("wp-canopy-correct", "wp-canopy-wrong");
+  };
+  const showBattleFeedback = (className, duration) => {
+    clearBattleFeedback();
+    const canvas = battleCanvas();
+    if (!canvas) return;
+    canvas.classList.add(className);
+    battleFeedbackTimer = window.setTimeout(() => {
+      battleFeedbackTimer = 0;
+      canvas.classList.remove(className);
+    }, duration);
+  };
   const battleContent = () => document.querySelector(".battle-content");
   const battleHeader = () => $("battleBack")?.closest("header");
   const setBattleCovered = (active, hideContent = false, keepSettingsReachable = false) => {
@@ -124,6 +140,7 @@
     if ($("battleBack")) $("battleBack").disabled = active;
   };
   const setResultActive = (active) => {
+    clearBattleFeedback();
     document.body.toggleAttribute("data-wp-canopy-result", active);
     const result = $("result");
     if (result) {
@@ -382,9 +399,7 @@
     if (state.direction !== target) {
       state.mistakes += 1;
       $("status").textContent = t("wrong");
-      battleCanvas()?.classList.remove("wp-canopy-correct");
-      battleCanvas()?.classList.add("wp-canopy-wrong");
-      setTimeout(() => battleCanvas()?.classList.remove("wp-canopy-wrong"), 260);
+      showBattleFeedback("wp-canopy-wrong", 260);
       if (document.activeElement === $("checkBtn")) $("checkBtn").blur();
       if (canvas) {
         canvas.scrollTop = preservedScrollTop;
@@ -399,8 +414,7 @@
     state.phase += 1;
     if (state.phase < round.phases.length) {
       renderBattle();
-      battleCanvas()?.classList.add("wp-canopy-correct");
-      setTimeout(() => battleCanvas()?.classList.remove("wp-canopy-correct"), 360);
+      showBattleFeedback("wp-canopy-correct", 360);
       $("status").textContent = t("correct");
       return;
     }

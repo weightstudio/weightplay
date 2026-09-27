@@ -24,7 +24,7 @@
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const GAME_VERSION=29, INTERFACE_VERSION=7;
-  const frame=window.WeightPlayScreenFrame.mount({
+  const screenFrame=window.WeightPlayScreenFrame.mount({
     root:$('gameFrame'),localeSelect:$('locale'),
     scenes:{
       main:{root:$('mainGroup'),header:document.querySelector('#mainGroup > .main-header'),content:document.querySelector('#mainGroup > .main-screen')},
@@ -87,13 +87,13 @@
     $("nextMission").textContent=t("nextMission");
     $("retry").textContent=resultReplayLabels[locale]||resultReplayLabels.en;
     document.title=`${t("title")} | WeightPlay`;
-    renderMain();renderStage();renderLab();if(run)updateHud(true);frame.refresh();
+    renderMain();renderStage();renderLab();if(run)updateHud(true);screenFrame.refresh();
   }
   function showScreen(name,{preserveStage=false}={}){
     if(name!=="stage")window.PrismBattalionStageRenderer?.cancel?.();
     currentScreen=name;document.body.dataset.screen=name;
     for(const [scene,node] of [["main",$("mainGroup")],["stage",$("stage")],["battle",$("battle")]]){const active=scene===name;node.hidden=!active;node.inert=!active;node.setAttribute("aria-hidden",String(!active))}
-    frame.activate(name);
+    screenFrame.activate(name);
     if(name==="main"){$("start").focus();scrollTo(0,0)}
     if(name==="stage"){if(!preserveStage)selectedStageIndex=Math.min(save.unlocked-1,29);renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(selectedStageIndex))}
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:name}}));

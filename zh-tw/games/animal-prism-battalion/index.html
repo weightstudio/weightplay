@@ -35,9 +35,9 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-prism-battalion-main-v26">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260927-prism-v29-stage-frame">
+  <link rel="stylesheet" href="style.css?v=20260927-prism-v29-stage-root-canvas">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="/games/animal-prism-battalion/interface-7-cleanup.css?v=20260927-prism-v29-stage-frame"><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="/games/animal-prism-battalion/interface-7-cleanup.css?v=20260927-prism-v29-stage-root-canvas"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="稜光軍團 | WeightPlay" />
     <meta property="og:description" content="在三條路線之間切換一座自動稜光砲台，摧毀來襲編隊，收集稀有攻擊核心，並讓所有存活的怪物遠離水晶核心。" />
@@ -93,9 +93,9 @@
       </main>
   </div>
 
-  <section id="stage" class="active-screen wp-stage-art-shell" hidden data-screen="stage" data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
+  <section id="stage" class="active-screen wp-stage-art-shell" hidden data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334"  data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
     <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><span data-wp-frame-title hidden></span></header>
-<div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
+<div class="stage-canvas" data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
       <div id="stageInfo" data-wp-frame-info><span id="stageProgress"></span></div>
       <div id="stageWorkspace" class="stage-workspace">
         <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked assault.</p></section>
@@ -105,9 +105,9 @@
     <nav class="stage-tabs" aria-label="Battalion preparation" data-ta="stageTabs" role="tablist" data-wp-frame-stage-nav=""><button class="active" data-tab="missions" data-t="missions" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" aria-pressed="true">Missions</button><button data-tab="lab" data-t="lab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" aria-pressed="false">Prism Lab</button></nav>
   </section>
 
-<section id="battle" class="active-screen" hidden data-screen="battle">
+<section id="battle" class="active-screen" hidden data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
     <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><span data-wp-frame-title hidden></span></header>
-<div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+<div class="battle-canvas">
       <div class="battle-header-center" id="battleInfo" data-wp-frame-info=""><div class="mission-block"><small id="missionLabel"></small><strong id="fortressValue">100%</strong></div><div class="battle-status"><span><b data-t="core">Core</b><strong id="coreValue">♥♥♥</strong></span><span><b data-t="time">Time</b><strong id="timeValue">60</strong></span></div></div>
       
       <div id="battleLive" class="battle-live">
@@ -132,11 +132,11 @@
 <script src="../../src/analytics.js"></script>
 <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
 <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-<script src="../../src/stage-virtualization-standard.js?v=20260927-prism-v29-stage-frame" data-wp-stage-virtualization-standard></script>
-<script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
+<script src="../../src/stage-virtualization-standard.js?v=20260927-prism-v29-stage-root-canvas" data-wp-stage-virtualization-standard></script>
+<script src="../../src/battle-canvas-standard.js?v=20260927-prism-v29-stage-root-canvas" data-wp-battle-standard></script>
 <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 <script src="locales.js?v=20260909-prism-battalion-main-v26"></script>
-<script src="stage-virtualization.js?v=20260927-prism-v29-stage-frame"></script>
-<script src="game.js?v=20260927-prism-v29-stage-frame"></script>
+<script src="stage-virtualization.js?v=20260927-prism-v29-stage-root-canvas"></script>
+<script src="game.js?v=20260927-prism-v29-stage-root-canvas"></script>
 </body>
 </html>

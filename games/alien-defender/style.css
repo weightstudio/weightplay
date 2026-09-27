@@ -241,3 +241,99 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
     max-width:calc(100vw - 16px)!important;
   }
 }
+
+/* v60 Stage-selector repair: keep the shared 48px return/title/settings track
+   separate from campaign status and browsing guidance. The shared shell fixes
+   its header height, so game-owned Stage information must live below it. */
+.stage-screen .stage-header{
+  grid-template-columns:48px minmax(0,1fr) 48px!important;
+  grid-template-rows:48px!important;
+}
+.stage-screen .stage-header>button{
+  grid-column:1!important;
+  grid-row:1!important;
+}
+.stage-screen .stage-header>h2{
+  box-sizing:border-box;
+  grid-column:2!important;
+  grid-row:1!important;
+  justify-self:start!important;
+  align-self:center!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0!important;
+  overflow:hidden;
+  pointer-events:none;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.stage-screen .stage-header>.wp-shell-settings{
+  grid-column:3!important;
+  grid-row:1!important;
+}
+.stage-selector-overview{
+  display:grid;
+  gap:6px;
+  min-width:0;
+  padding-inline:4px;
+}
+.stage-selector-overview .stage-header-meta{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center;
+  justify-items:start;
+  gap:8px;
+  min-width:0;
+}
+.stage-selector-overview .stage-header-meta>strong{
+  grid-column:1;
+  grid-row:1;
+  min-width:0;
+  color:var(--gold);
+  font-size:.8rem;
+  white-space:nowrap;
+}
+.stage-selector-overview .stage-header-meta .stage-credits{
+  grid-column:2;
+  grid-row:1;
+}
+.stage-selector-overview .stage-header-meta #shopBtn{
+  grid-column:3;
+  grid-row:1;
+  justify-self:end;
+  min-height:44px;
+}
+.stage-selector-overview .stage-browse-hint{
+  margin:0;
+}
+@media(max-width:620px){
+  .stage-selector-overview .stage-header-meta{
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:auto auto;
+    gap:4px 8px;
+  }
+  .stage-selector-overview .stage-header-meta>strong{
+    grid-column:1;
+    grid-row:1;
+  }
+  .stage-selector-overview .stage-header-meta .stage-credits{
+    grid-column:1;
+    grid-row:2;
+  }
+  .stage-selector-overview .stage-header-meta #shopBtn{
+    grid-column:2;
+    grid-row:1/span 2;
+  }
+}
+@media(max-height:500px) and (min-width:621px){
+  .stage-selector-overview{
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    gap:12px;
+  }
+  .stage-selector-overview .stage-header-meta{
+    grid-template-columns:minmax(0,1fr) auto auto;
+    gap:8px;
+  }
+}

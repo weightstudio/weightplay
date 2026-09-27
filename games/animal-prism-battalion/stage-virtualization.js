@@ -27,6 +27,8 @@
     else button.removeAttribute("aria-current");
 
     button.replaceChildren();
+    const content = document.createElement("span");
+    content.dataset.wpItemContent = "";
     const chapter = document.createElement("span");
     const number = document.createElement("strong");
     const wave = document.createElement("b");
@@ -35,7 +37,8 @@
     number.textContent = String(stage.n);
     wave.textContent = `${stage.boss ? "◆ " : ""}${api.t("waveLabel", { wave: 0, total: stage.waves })}`;
     rating.textContent = `${"★".repeat(stars)}${"☆".repeat(3 - stars)}`;
-    button.append(chapter, number, wave, rating);
+    content.append(chapter, number, wave, rating);
+    button.append(content);
   };
 
   const install = () => {

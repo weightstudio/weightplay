@@ -80,7 +80,9 @@
     // Sunbeam Garden's authored 6x6 board needs the complete wide envelope
     // in short landscape so mirror buttons retain a confident touch size.
     "animal-sunbeam-garden": ["#battle", 390, 788, 760, 334],
-    "animal-prism-battalion": [".battle-canvas", 390, 788, 760, 334],
+    // Interface 7 owns the outer Battle scene; scale that scene so the shared
+    // header and play-content track stay inside the same responsive Canvas.
+    "animal-prism-battalion": ["#battle", 390, 788, 760, 334],
     "animal-prism-breakers": [".battle-canvas", 390, 788, 760, 334],
     "animal-mosaic-clues": [".battle-canvas", 390, 788, 760, 334],
     "animal-prism-garden": ["#battle", 390, 788, 760, 334],
