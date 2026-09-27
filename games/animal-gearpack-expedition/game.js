@@ -29,7 +29,7 @@
   const SAVE_KEY = "weightplayGearpackProgressV1";
   const RUN_KEY = "weightplayGearpackRunV1";
   const GAME_ID = "animal-gearpack-expedition";
-  const GAME_VERSION = 22;
+  const GAME_VERSION = 23;
   const INTERFACE_VERSION = 7;
   const copy = {
     en: { title:"Animal Gearpack Expedition",internal:"Internal Trial",pitch:"Pack equipment, build adjacency combos, and guide Rux through the Gearwood route.",start:"Start Game",chooseRegion:"Choose Region",packmaster:"Packmaster Rux",region1:"Gearwood Trail",region1Meta:"5 rooms · Root Guardian",region2:"Moonlit Quarry",region3:"Clockwork Hollow",locked:"Locked",backpack:"Gearpack 11 x 7",rotate:"Rotate",sell:"Sell",fight:"Start Encounter",strike:"Resolve Clash",room:"Room",armor:"Armor",objective:"Arrange gear, then defeat the route guardian.",workshop:"Workshop",discoveries:"Discoveries",gold:"Gold",diamonds:"Diamonds",items:"items",selected:"Selected",placed:"Placed",blocked:"That shape does not fit there.",rotated:"Item rotated.",needGear:"Place at least one item before fighting.",victory:"Route Cleared",defeat:"Caravan Broken",continue:"Continue",retry:"Retry Route",regions:"Back to Regions",chooseLoot:"Choose one item",merchant:"Orla's Caravan Shop",buy:"Buy",leave:"Leave Shop",refresh:"Refresh for 3 Diamonds",confirmRefresh:"Spend 3 Diamonds to refresh Orla's stock?",notEnough:"Not enough currency.",boss:"Root Guardian",scout:"Shadow Fox Scout",boar:"Armored Boar",crow:"Crystal Crow",reward:"Reward",saved:"Workshop progress saved.",full:"Your pack has no room for that item.",pickedUp:"Returned to tray",sold:"Sold" },

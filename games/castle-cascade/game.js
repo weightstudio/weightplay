@@ -31,6 +31,8 @@ let renderer = null;
 let canvas = document.querySelector("#sceneCanvas");
 let lastRendererStats = null;
 let boardAvailable = false;
+let pendingResultStatus = null;
+let leaveReturnFocus = null;
 
 function readStorage(key) {
   try { return localStorage.getItem(key); } catch { return null; }
@@ -125,6 +127,9 @@ function screen(id) {
   }
   document.body.dataset.screen = id;
   document.querySelector("#result").hidden = true;
+  document.querySelector("#leaveConfirm").hidden = true;
+  pendingResultStatus = null;
+  leaveReturnFocus = null;
   document.dispatchEvent(new Event("weightplay:shell-sync"));
   document.dispatchEvent(new Event("weightplay:stage-sync"));
   document.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -244,7 +249,7 @@ function renderBattleHud() {
   document.querySelector("#movesLabel").textContent = text("movesLeft", { count: number(gameState.moves) });
 }
 
-function tileDescription(tile) {
+function tileDescription(tile, index) {
   const content = [];
   if (tile.c !== null && tile.c >= 0 && copy?.gemNames?.[tile.c]) content.push(copy.gemNames[tile.c]);
   if (tile.p) content.push(copy?.powerNames?.[tile.p] || tile.p);
@@ -255,7 +260,7 @@ function tileDescription(tile) {
     else if (key === "stone" && tile.stone > 1) content.push(`${name} ${tile.stone}`);
     else content.push(name);
   }
-  if (selectedCell === focusCell) content.push(text("selectedCell"));
+  if (selectedCell === index) content.push(text("selectedCell"));
   return content.join(copy?.objectiveJoin || " · ") || text("cellEmpty");
 }
 
@@ -275,7 +280,7 @@ function renderAccessibleBoard() {
     button.dataset.index = String(index);
     button.tabIndex = index === focusCell ? 0 : -1;
     button.setAttribute("role", "gridcell");
-    button.setAttribute("aria-label", text("cellLabel", { row: number(row), col: number(col), content: tileDescription(tile) }));
+    button.setAttribute("aria-label", text("cellLabel", { row: number(row), col: number(col), content: tileDescription(tile, index) }));
     button.setAttribute("aria-selected", String(index === selectedCell));
     button.setAttribute("aria-disabled", String(!canSwap(gameState.board, index)));
     button.addEventListener("click", () => handleCell(index));
@@ -292,6 +297,11 @@ function focusBoardCell(index) {
 }
 
 function showResult(status) {
+  if (!document.querySelector("#leaveConfirm").hidden) {
+    pendingResultStatus = status;
+    return;
+  }
+  pendingResultStatus = null;
   const layer = document.querySelector("#result");
   const title = document.querySelector("#resultTitle");
   const body = document.querySelector("#resultBody");
@@ -333,6 +343,9 @@ function startStage(index) {
   busy = false;
   boardAvailable = false;
   document.querySelector("#result").hidden = true;
+  document.querySelector("#leaveConfirm").hidden = true;
+  pendingResultStatus = null;
+  leaveReturnFocus = null;
   document.querySelector("#status").textContent = "";
   if (document.querySelector("#battle").hidden) {
     screen("battle");
@@ -379,9 +392,9 @@ async function animateTurn(result, turnToken) {
     writeStorage(SAVE_KEY, String(unlocked));
     renderStageList();
   }
-  document.querySelector("#status").textContent = gameState.status === "playing"
-    ? ""
-    : gameState.status === "won" ? text("win") : gameState.status === "lost" ? text("lose") : text("stuck");
+  if (gameState.status === "won") document.querySelector("#status").textContent = text("win");
+  else if (gameState.status === "lost") document.querySelector("#status").textContent = text("lose");
+  else if (gameState.status === "stuck") document.querySelector("#status").textContent = text("stuck");
   if (["won", "lost", "stuck"].includes(gameState.status)) showResult(gameState.status);
 }
 
@@ -396,7 +409,9 @@ function act(result, cue) {
     return;
   }
   busy = true;
-  document.querySelector("#status").textContent = text("reshuffling");
+  const announcements = [cue === "match" ? text("matchAccepted") : text("powerAccepted")];
+  if (result.reshuffled) announcements.push(text("reshuffling"));
+  document.querySelector("#status").textContent = announcements.join(" ");
   renderBattleHud();
   renderAccessibleBoard();
   if (cue === "match") {
@@ -455,6 +470,29 @@ function handleCell(index) {
 }
 
 function handleKeydown(event) {
+  const leaveDialog = document.querySelector("#leaveConfirm");
+  if (!leaveDialog.hidden) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeLeaveConfirmation();
+      return;
+    }
+    if (event.key === "Tab") {
+      const actions = [...leaveDialog.querySelectorAll("button:not([disabled])")];
+      const activeIndex = actions.indexOf(document.activeElement);
+      if (event.shiftKey && activeIndex <= 0) {
+        event.preventDefault();
+        actions.at(-1)?.focus({ preventScroll: true });
+      } else if (!event.shiftKey && activeIndex === actions.length - 1) {
+        event.preventDefault();
+        actions[0]?.focus({ preventScroll: true });
+      } else if (activeIndex < 0) {
+        event.preventDefault();
+        actions[0]?.focus({ preventScroll: true });
+      }
+    }
+    return;
+  }
   const target = event.target.closest?.(".grid-cell");
   if (!target || !gameState) return;
   let next = focusCell;
@@ -469,6 +507,42 @@ function handleKeydown(event) {
   if (next !== focusCell) focusBoardCell(next);
 }
 
+function requestLeaveBattle() {
+  if (!gameState || gameState.status !== "playing" || !document.querySelector("#result").hidden) {
+    screen("stage");
+    renderStageList();
+    return;
+  }
+  const dialog = document.querySelector("#leaveConfirm");
+  if (!dialog.hidden) return;
+  leaveReturnFocus = document.activeElement;
+  dialog.hidden = false;
+  document.querySelector("#continueBattle").focus({ preventScroll: true });
+}
+
+function closeLeaveConfirmation() {
+  const dialog = document.querySelector("#leaveConfirm");
+  if (dialog.hidden) return;
+  dialog.hidden = true;
+  const pending = pendingResultStatus;
+  pendingResultStatus = null;
+  const returnFocus = leaveReturnFocus;
+  leaveReturnFocus = null;
+  if (pending && gameState) {
+    showResult(pending);
+    return;
+  }
+  if (returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
+}
+
+function returnToStageMap() {
+  playSound("ui.click");
+  pendingResultStatus = null;
+  leaveReturnFocus = null;
+  screen("stage");
+  renderStageList();
+}
+
 function scrollChapter(direction) {
   const targetStage = Math.max(0, Math.min(LEVELS.length - 1, selectedStage + direction * 5));
   selectedStage = targetStage;
@@ -479,15 +553,17 @@ function scrollChapter(direction) {
 function bindControls() {
   document.querySelector("#start").addEventListener("click", () => { playSound("ui.click"); screen("stage"); });
   document.querySelector("#stage [data-back]").addEventListener("click", () => { playSound("ui.click"); screen("main"); });
-  document.querySelector("#battle [data-back]").addEventListener("click", () => { playSound("ui.click"); screen("stage"); });
+  document.querySelector("#battle [data-back]").addEventListener("click", requestLeaveBattle);
   document.querySelector("#prevGroup").addEventListener("click", () => { playSound("ui.click"); scrollChapter(-1); });
   document.querySelector("#nextGroup").addEventListener("click", () => { playSound("ui.click"); scrollChapter(1); });
   document.querySelector("#toStages").addEventListener("click", () => { playSound("ui.click"); screen("stage"); renderStageList(); });
   document.querySelector("#retry").addEventListener("click", () => { playSound("ui.click"); startStage(selectedStage); });
+  document.querySelector("#continueBattle").addEventListener("click", () => { playSound("ui.click"); closeLeaveConfirmation(); });
+  document.querySelector("#returnToMap").addEventListener("click", returnToStageMap);
   document.querySelector("#next").addEventListener("click", () => {
     if (selectedStage + 1 < unlocked && selectedStage + 1 < LEVELS.length) startStage(selectedStage + 1);
   });
-  document.querySelector("#board").addEventListener("keydown", handleKeydown);
+  document.addEventListener("keydown", handleKeydown);
 }
 
 function deepFreeze(value) {

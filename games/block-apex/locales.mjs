@@ -33,19 +33,19 @@ const details={
  ar:{pitch:'اختر خط السباق واجمع القوة بالانجراف ثم تجاوز بالنيترو في 30 تحديًا مع سائقي الحيوانات المكعبة.',leaveText:'مغادرة المرحلة {n}؟ سينتهي السباق الحالي ومكافأته غير المحفوظة. ستبقى النجوم والعملات والترقيات المحفوظة.',error:'تعذّر استمرار المشهد ثلاثي الأبعاد. أعد المحاولة لإنشاء السباق من جديد أو عُد للمراحل. يلزم دعم WebGL 2.',finishGoal:'أكمل {n} لفات',placeGoal:'المركز {n} أو أفضل',driftGoal:'انجرف {n} ثوانٍ',ringGoal:'اجمع {n} حلقات',cleanGoal:'بحد أقصى {n} اصطدامات',timeGoal:'خلال {n} ثانية',storage:'الحفظ غير متاح. ستبقى التقدّمات في هذه الجلسة فقط.',helpText:'التسارع تلقائي. A/D أو ←/→ للتوجيه وS/↓ للفرامل. اضغط Space أثناء الانعطاف للانجراف ثم اتركه للتسارع. Shift/X للنيترو. R يعيدك لآخر نقطة تحقق ويضيف 3 ثوانٍ. اللمس يدعم عدة أصابع. P/Escape للإيقاف المؤقت.',progress:'تم فتح {n} / 30',unlocks:'يُفتح عند {n} نجوم',summary:'المركز {rank} · {time} ثانية · {stars} ★',tuningHelp:'خمسة مستويات لكل ترقية. يضيف المستوى 0.65 م/ث للمحرك أو 0.3 للتماسك أو 10% لسعة النيترو.',resultHelp:'يجب تحقيق كل الأهداف. تحصل على نجمة للإكمال وأخرى للوقت القياسي وثالثة لوقت الخبير دون استعادة.',final:'اكتمل الفصل. أعد أي مرحلة لتحسين النجوم والأوقات.'},
 };
 const names={
- en:['Harbor','Hills','Canyon','Switchbacks','Coast','Summit','Neon','Fox','Hare','Panda','Penguin','Reverse'],
- 'zh-Hant':['港灣','丘陵','峽谷','連續彎道','海岸','山巔','霓虹','狐狸','野兔','熊貓','企鵝','逆向'],
- 'zh-Hans':['港湾','丘陵','峡谷','连续弯道','海岸','山巅','霓虹','狐狸','野兔','熊猫','企鹅','逆向'],
- ja:['港','丘陵','渓谷','連続カーブ','海岸','山頂','ネオン','キツネ','ウサギ','パンダ','ペンギン','逆走コース'],
- ko:['항구','언덕','협곡','연속 커브','해안','정상','네온','여우','토끼','판다','펭귄','역방향'],
- es:['Puerto','Colinas','Cañón','Curvas','Costa','Cumbre','Neón','Zorro','Liebre','Panda','Pingüino','Inverso'],
- 'pt-BR':['Porto','Colinas','Cânion','Curvas','Costa','Cume','Neon','Raposa','Lebre','Panda','Pinguim','Inverso'],
- fr:['Port','Collines','Canyon','Lacets','Côte','Sommet','Néon','Renard','Lièvre','Panda','Manchot','Sens inverse'],
- de:['Hafen','Hügel','Schlucht','Serpentinen','Küste','Gipfel','Neon','Fuchs','Hase','Panda','Pinguin','Rückwärtskurs'],
- it:['Porto','Colline','Canyon','Tornanti','Costa','Vetta','Neon','Volpe','Lepre','Panda','Pinguino','Inverso'],
- ru:['Гавань','Холмы','Каньон','Серпантин','Побережье','Вершина','Неон','Лиса','Заяц','Панда','Пингвин','Обратная трасса'],
- hi:['बंदरगाह','पहाड़ियाँ','घाटी','घुमाव','तट','शिखर','नियॉन','लोमड़ी','खरगोश','पांडा','पेंगुइन','उलटी दिशा'],
- ar:['الميناء','التلال','الوادي','المنعطفات','الساحل','القمة','النيون','ثعلب','أرنب','باندا','بطريق','الاتجاه العكسي'],
+ en:['Harbor','Hills','Canyon','Switchbacks','Coast','Summit','Neon','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','Reverse'],
+ 'zh-Hant':['港灣','丘陵','峽谷','連續彎道','海岸','山巔','霓虹','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','逆向'],
+ 'zh-Hans':['港湾','丘陵','峡谷','连续弯道','海岸','山巅','霓虹','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','逆向'],
+ ja:['港','丘陵','渓谷','連続カーブ','海岸','山頂','ネオン','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','逆走コース'],
+ ko:['항구','언덕','협곡','연속 커브','해안','정상','네온','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','역방향'],
+ es:['Puerto','Colinas','Cañón','Curvas','Costa','Cumbre','Neón','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','Inverso'],
+ 'pt-BR':['Porto','Colinas','Cânion','Curvas','Costa','Cume','Neon','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','Inverso'],
+ fr:['Port','Collines','Canyon','Lacets','Côte','Sommet','Néon','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','Sens inverse'],
+ de:['Hafen','Hügel','Schlucht','Serpentinen','Küste','Gipfel','Neon','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','Rückwärtskurs'],
+ it:['Porto','Colline','Canyon','Tornanti','Costa','Vetta','Neon','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','Inverso'],
+ ru:['Гавань','Холмы','Каньон','Серпантин','Побережье','Вершина','Неон','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','Обратная трасса'],
+ hi:['बंदरगाह','पहाड़ियाँ','घाटी','घुमाव','तट','शिखर','नियॉन','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','उलटी दिशा'],
+ ar:['الميناء','التلال','الوادي','المنعطفات','الساحل','القمة','النيون','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','الاتجاه العكسي'],
 };
 export const CATALOG=Object.fromEntries(LOCALE_ORDER.map(locale=>{
  const cells=rows[locale].split('|');if(cells.length!==KEYS.length)throw new Error(`LOCALE_ROW_LENGTH:${locale}:${cells.length}/${KEYS.length}`);

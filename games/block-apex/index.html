@@ -10,9 +10,9 @@
   <meta name="description" content="Branch preview of Block Apex: real-time 3D block-animal kart racing with thirty authored challenges.">
   <meta name="theme-color" content="#17243a">
   <title>Block Apex | WeightPlay</title>
+  <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <!-- Branch preview must not create production analytics sessions. -->
   <script>window.__weightPlayAnalyticsRequested=true;</script>
-  <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js"></script>
   <script src="../../src/site-config.js"></script>
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
@@ -42,8 +42,7 @@
         </div>
       </div>
     </main>
-    <!-- The real 3D square render supplies both Stage art attributes in game.mjs.
-         Approved static production poster and registry entry remain release-held. -->
+    <!-- The registered square poster supplies the shared Stage watermark. -->
     <section id="stageScreen" class="wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
       <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back to Main">←</button><strong data-wp-frame-title hidden>Block Apex</strong></header>
       <div id="stageContent" class="apex-workspace">

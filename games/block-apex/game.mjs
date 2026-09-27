@@ -7,6 +7,7 @@ import {CATALOG, LOCALE_ORDER, LOCALE_NAMES, detectLocale, translate} from './lo
 import {renderGuide} from './guide.mjs';
 
 const $ = id => document.getElementById(id);
+const POSTER_URL = new URL('../../assets/block-apex-poster.webp', import.meta.url).href;
 const life = new AbortController();
 const listen = (node, type, fn, options={}) => node.addEventListener(type, fn, {...options, signal:life.signal});
 const store = new SaveStore();
@@ -125,10 +126,10 @@ async function prepareArt() {
   try {
     const {renderArtwork}=await engine();if(disposed||generation!==token||screen==='battle')return;
     for(let index=0;index<VEHICLES.length;index++) {
-      if(!art.has(index))art.set(index,renderArtwork(createRace(1,{vehicle:index,tuning:{}}),index===0?640:256));
+      if(!art.has(index))art.set(index,renderArtwork(createRace(1,{vehicle:index,tuning:{}}),256));
     }
-    const source=art.get(0);$('poster').src=source;$('poster').hidden=false;$('artStatus').hidden=true;
-    $('stageScreen').dataset.wpStageArt=source;$('stageScreen').style.setProperty('--wp-stage-art',`url("${source}")`);
+    $('poster').src=POSTER_URL;$('poster').hidden=false;$('artStatus').hidden=true;
+    $('stageScreen').dataset.wpStageArt=POSTER_URL;$('stageScreen').style.setProperty('--wp-stage-art',`url("${POSTER_URL}")`);
     renderManagement();
   } catch(error) {
     $('artStatus').textContent=t('error');document.body.dataset.apexArtError=error.name||'Error';

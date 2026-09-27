@@ -33,7 +33,7 @@ export class RaceRenderer{
       this.wheelGeometry=this.own(new THREE.CylinderGeometry(.45,.45,.35,10));
       this.shadowGeometry=this.own(new THREE.CircleGeometry(1,16));
       this.buildTrack();this.buildScenery();this.buildObjects();
-      this.karts=race.cars.map(car=>this.buildKart(car.stats.id,car.id===0?car.stats.color:VEHICLES[(car.id+race.stage.arc)%4].color));
+      this.karts=race.cars.map(car=>this.buildKart(car.stats.characterId||car.stats.id,car.id===0?car.stats.color:VEHICLES[(car.id+race.stage.arc)%4].color));
       this.karts.forEach(kart=>this.scene.add(kart.root));
       this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(canvas.parentElement||canvas);
       canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();if(!this.disposed)onContextLost();},{signal:this.abort.signal});
@@ -145,22 +145,63 @@ export class RaceRenderer{
       const wheel=new THREE.Mesh(this.wheelGeometry,black);wheel.position.set(x,.46,z);wheel.rotation.z=Math.PI/2;body.add(wheel);wheels.push(wheel);
       this.boxPart(body,steel,x*1.18,.46,z,.04,.35,.35);
     }
-    // Designed block driver: box muzzle, paired eyes, suit and distinctive ears/beak.
-    const animal=id==='fox'?0xe58c43:id==='hare'?0xe4d6bd:id==='panda'?0xeee8da:0x273d58;
+    // The roster keeps its old save IDs, while each kart now carries a core-cast identity.
+    const isFia=id==='spark-paw-fox'||id==='fox';
+    const isMimi=id==='rainbow-hop-rabbit'||id==='hare';
+    const isPanko=id==='drum-belly-panda'||id==='panda';
+    const isNori=id==='bubble-fin-otter'||id==='penguin';
+    const animal=isFia?0xe58c43:isMimi?0xe4d6bd:isPanko?0xeee8da:0x8c5a43;
     const fur=this.mat(animal),driver=new THREE.Group();driver.position.set(0,1.05,-.25);body.add(driver);
     this.boxPart(driver,paint,0,.15,0,.65,.6,.52);
     this.boxPart(driver,fur,0,.75,0,.87,.8,.73);
-    if(id==='hare')for(const s of [-1,1])this.boxPart(driver,fur,s*.27,1.49,-.1,.23,.8,.26);
-    else if(id!=='penguin')for(const s of [-1,1])this.boxPart(driver,id==='panda'?black:fur,s*.34,1.22,-.08,.3,.3,.34);
-    if(id==='fox')this.boxPart(driver,white,0,.57,.39,.65,.3,.25);
-    else if(id==='penguin')this.boxPart(driver,this.mat(0xf5bf4a),0,.6,.43,.35,.2,.34);
-    else this.boxPart(driver,white,0,.52,.4,.43,.22,.2);
+    if(isMimi){
+      const bands=[0xef718f,0xf4a34c,0xf5d34d,0x68bc82];
+      for(const s of [-1,1])for(let i=0;i<bands.length;i++)
+        this.boxPart(driver,this.mat(bands[i]),s*(.27+i*.018),1.27+i*.17,-.1,.24,.18,.25);
+    }else if(isFia){
+      for(const s of [-1,1]){
+        this.boxPart(driver,fur,s*.34,1.32,-.08,.3,.42,.32);
+        this.boxPart(driver,this.mat(0xffcf83),s*.34,1.35,.09,.13,.23,.035);
+      }
+    }else if(isPanko){
+      for(const s of [-1,1])this.boxPart(driver,black,s*.34,1.22,-.08,.3,.3,.34);
+    }else{
+      for(const s of [-1,1])this.boxPart(driver,fur,s*.36,1.18,-.08,.25,.25,.3);
+    }
+    this.boxPart(driver,white,0,isFia ? .57 : .52,.4,isFia ? .65 : .48,isFia ? .3 : .22,isFia ? .25 : .2);
     for(const s of [-1,1]){
-      if(id==='panda')this.boxPart(driver,black,s*.25,.8,.376,.29,.28,.04);
-      this.boxPart(driver,id==='panda'?white:black,s*.23,.83,.411,.11,.12,.04);
+      if(isPanko)this.boxPart(driver,black,s*.25,.8,.376,.29,.28,.04);
+      this.boxPart(driver,isPanko?white:black,s*.23,.83,.411,.11,.12,.04);
       this.boxPart(driver,fur,s*.49,.15,.37,.23,.23,.6);
     }
     this.boxPart(driver,black,0,.64,.54,.16,.12,.1);
+    const gold=this.mat(0xffd35d,.3,.26);
+    if(isFia){
+      const boltTop=this.boxPart(driver,gold,0,1.22,.39,.16,.21,.07);boltTop.rotation.z=-.28;
+      const boltMid=this.boxPart(driver,gold,.07,1.13,.4,.15,.13,.07);boltMid.rotation.z=.28;
+      this.boxPart(driver,this.mat(0x20b9d8,.32),0,.38,-.34,1.02,.14,.18);
+      this.boxPart(driver,this.mat(0x20b9d8,.32),-.38,.39,-.63,.19,.13,.45);
+      this.boxPart(driver,gold,-.38,.42,-.61,.16,.16,.08);
+    }else if(isMimi){
+      this.boxPart(driver,this.mat(0x168e9e,.35),.45,.4,-.34,.34,.42,.25);
+      const star=this.boxPart(driver,gold,.48,.46,-.19,.22,.22,.08);star.rotation.z=Math.PI/4;
+    }else if(isPanko){
+      this.boxPart(driver,this.mat(0xb93637,.36),0,.32,.48,.44,.36,.15);
+      this.boxPart(driver,gold,0,.32,.57,.38,.3,.05);
+      this.boxPart(driver,this.mat(0xf4c64f,.3),0,.32,.61,.16,.16,.035);
+      for(const s of [-1,1]){
+        const stick=this.boxPart(driver,this.mat(0x75b45c,.4),s*.39,1.3,-.24,.075,.54,.075);
+        stick.rotation.z=s*.34;
+      }
+    }else if(isNori){
+      const frame=this.mat(0xe7bf58,.3,.25),glass=this.mat(0x68d9ed,.17,.12);
+      for(const s of [-1,1]){
+        this.boxPart(driver,frame,s*.23,1.22,.4,.31,.24,.075);
+        this.boxPart(driver,glass,s*.23,1.22,.445,.21,.14,.035);
+        this.boxPart(driver,this.mat(0x88eaff,.22),s*.64,1.44,-.08,.15,.15,.15);
+      }
+      this.boxPart(driver,this.mat(0xef7661,.42),.43,.28,-.04,.13,.16,.13);
+    }
     // Two side rails of the racing visor preserve the animal's square silhouette.
     this.boxPart(driver,dark,0,1.04,.06,.94,.16,.83);
     this.boxPart(driver,this.mat(0x63d9df,.17,.3),0,.96,.465,.75,.12,.05);

@@ -661,9 +661,10 @@ function resolveCascade(state, initialDirect, initialPower, special = null, forc
   return batches;
 }
 
-function actionResult(state, accepted, reason, batches = []) {
+function actionResult(state, accepted, reason, batches = [], reshufflesBefore = state.reshuffles) {
   if (accepted) finishState(state);
-  return { accepted, reason, status: state.status, batches, objectives: objectiveCounts(state.board), moves: state.moves, reshuffles: state.reshuffles };
+  const reshuffled = state.reshuffles > reshufflesBefore;
+  return { accepted, reason, status: state.status, batches, objectives: objectiveCounts(state.board), moves: state.moves, reshuffles: state.reshuffles, reshuffled };
 }
 
 export function activatePower(state, index) {
@@ -671,12 +672,13 @@ export function activatePower(state, index) {
   if (state.status !== "playing" || !tile?.p || !canSwap(state.board, index) || state.moves <= 0) {
     return actionResult(state, false, "invalid");
   }
+  const reshufflesBefore = state.reshuffles;
   state.moves -= 1;
   const direct = new Set([index]);
   const powerSet = new Set([index]);
   expandTriggeredPowers(state.board, direct, powerSet);
   const batches = resolveCascade(state, direct, powerSet);
-  return actionResult(state, true, "power", batches);
+  return actionResult(state, true, "power", batches, reshufflesBefore);
 }
 
 export function playSwap(state, a, b) {
@@ -685,6 +687,7 @@ export function playSwap(state, a, b) {
       || !adjacent(a, b) || !canSwap(state.board, a) || !canSwap(state.board, b)) {
     return actionResult(state, false, "invalid");
   }
+  const reshufflesBefore = state.reshuffles;
   const powerA = state.board[a].p;
   const powerB = state.board[b].p;
   if (powerA || powerB) {
@@ -692,7 +695,7 @@ export function playSwap(state, a, b) {
     state.moves -= 1;
     const effect = comboEffect(state, a, b);
     const batches = resolveCascade(state, effect.direct, effect.powerSet, null, effect.forceGate);
-    return actionResult(state, true, "power-combo", batches);
+    return actionResult(state, true, "power-combo", batches, reshufflesBefore);
   }
 
   swapPieces(state.board, a, b);
@@ -710,7 +713,7 @@ export function playSwap(state, a, b) {
   expandTriggeredPowers(state.board, direct, powerSet);
   if (special) direct.add(special.at);
   const batches = resolveCascade(state, direct, powerSet, special);
-  return actionResult(state, true, "match", batches);
+  return actionResult(state, true, "match", batches, reshufflesBefore);
 }
 
 export function getLegalMoveCount(board) {

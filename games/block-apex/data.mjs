@@ -5,10 +5,11 @@ export const SAVE_KEY = 'weightplay:block-apex:v1';
 export const STEP = 1 / 120;
 export const GATE_COUNT = 16;
 export const VEHICLES = Object.freeze([
-  { id: 'fox', stars: 0, speed: 31, acceleration: 12, grip: 7.0, drift: 1, mass: 1, color: 0xef7438 },
-  { id: 'hare', stars: 6, speed: 34, acceleration: 10.5, grip: 6.2, drift: 1, mass: .9, color: 0x58d8c9 },
-  { id: 'panda', stars: 18, speed: 29.5, acceleration: 11, grip: 8.5, drift: .9, mass: 1.3, color: 0xf3ce56 },
-  { id: 'penguin', stars: 36, speed: 32, acceleration: 11.5, grip: 6.7, drift: 1.3, mass: 1, color: 0x769cf9 },
+  // Keep the original vehicle IDs and order so existing selected-car saves stay valid.
+  { id: 'fox', characterId: 'spark-paw-fox', stars: 0, speed: 31, acceleration: 12, grip: 7.0, drift: 1, mass: 1, color: 0xef7438 },
+  { id: 'hare', characterId: 'rainbow-hop-rabbit', stars: 6, speed: 34, acceleration: 10.5, grip: 6.2, drift: 1, mass: .9, color: 0x58d8c9 },
+  { id: 'panda', characterId: 'drum-belly-panda', stars: 18, speed: 29.5, acceleration: 11, grip: 8.5, drift: .9, mass: 1.3, color: 0xf3ce56 },
+  { id: 'penguin', characterId: 'bubble-fin-otter', stars: 36, speed: 32, acceleration: 11.5, grip: 6.7, drift: 1.3, mass: 1, color: 0x769cf9 },
 ]);
 export const UPGRADE_KEYS = Object.freeze(['engine', 'tires', 'tank']);
 export const UPGRADE_COSTS = Object.freeze([80, 140, 220, 320, 440]);

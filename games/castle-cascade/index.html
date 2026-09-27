@@ -94,7 +94,12 @@
     </section>
     <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
       <div class="modal-card"><p class="eyebrow" data-t="complete">Stage complete</p><h2 id="resultTitle"></h2><p id="resultBody"></p>
-        <div class="result-actions"><button id="toStages" data-t="toStages">Stages</button><button id="retry" data-t="retry">Retry</button><button id="next" class="primary" data-t="next">Next stage</button></div>
+        <div class="result-actions"><button id="toStages" data-t="toStages">Stages</button><button id="next" class="primary" data-t="nextStage">Next Stage</button><button id="retry" data-t="replay">Replay</button></div>
+      </div>
+    </section>
+    <section id="leaveConfirm" class="modal-layer leave-confirm" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveBody" hidden>
+      <div class="modal-card"><p class="eyebrow" data-t="leaveTitle">Leave this board?</p><p id="leaveBody" data-t="leaveBody">Your board and remaining moves stay here if you continue. Return to the map to leave this stage.</p>
+        <div class="leave-actions"><button id="continueBattle" class="primary" data-t="continueBattle">Continue</button><button id="returnToMap" data-t="returnToMap">Return to Map</button></div>
       </div>
     </section>
   </main>
