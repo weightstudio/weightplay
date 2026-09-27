@@ -1,7 +1,7 @@
 {
   "version": 1,
   "game": "animal-sanctuary-loop",
-  "gameVersion": "v21",
+  "gameVersion": "v22",
   "style": "WeightPlay Block Animals",
   "poster": "assets/interface7-redrawn/animal-sanctuary-loop.webp",
   "characters": {
@@ -65,5 +65,15 @@
       "source": "Assets/animal-rune-tactics-boss-rune-crown-chimera-block-v1.webp",
       "sha256": "e6e8c991307fc886153533f552ee3c4dd45adaf948b573170d79b7bf9bbb72a3"
     }
+  },
+  "world": {
+    "rendering": "HYBRID_3D",
+    "source": "games/animal-sanctuary-loop/block-world.js",
+    "driver": "games/animal-sanctuary-loop/block-three.mjs",
+    "engine": "three@0.180.0, existing MIT distribution",
+    "geometry": "Authored cuboid terrain, tiered trees, gate, lamps, crystals, restored cells, obstacles, rescue beacons and ordered seals.",
+    "characters": "Unchanged approved upright Block Animals cutouts; not fully modeled characters.",
+    "fallback": "Cached projection of the same cuboids; never the old arena illustration.",
+    "simulation": "Original 48x48 grid and all original rules remain authoritative."
   }
 }

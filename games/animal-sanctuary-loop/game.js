@@ -21,7 +21,7 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
-  const GAME_VERSION = "v21";
+  const GAME_VERSION = "v22";
   const motion = window.SanctuaryLoopMotion.create();
   const screenFrame = window.WeightPlayScreenFrame.mount({
     root: $("frameRoot"),
@@ -308,7 +308,7 @@
     if (name === "main") { motion.reveal(document.querySelector(".poster")); motion.reveal(document.querySelector(".main-copy"), 50); }
     if (name === "stage") motion.reveal($("stageContent"));
     if (name === "battle") motion.reveal($("arenaWrap"));
-    if (name !== "battle") { settingsPaused = false; stopLoop(); }
+    if (name !== "battle") { settingsPaused = false; stopLoop(); blockView.release(); }
     if (name === "stage") {
       if (previousScreen !== "stage") {
         selectedStageIndex = Math.min(save.unlocked, stages.length) - 1;
@@ -743,10 +743,7 @@
   const TOTAL = GRID * GRID;
   const canvas = $("arena");
   const ctx = canvas.getContext("2d");
-  const landCanvas = document.createElement("canvas");
-  const landCtx = landCanvas.getContext("2d");
-  landCanvas.width = canvas.width;
-  landCanvas.height = canvas.height;
+  const blockView = window.SanctuaryBlockWorld.create(canvas);
   const images = {};
   const imageSources = {
     player: "../../assets/animal-sanctuary-loop/player-block-v1.webp",
@@ -760,8 +757,6 @@
     cinder: "../../assets/animal-sanctuary-loop/cinder-block-v1.webp",
     moth: "../../assets/animal-sanctuary-loop/moth-block-v1.webp",
     eclipse: "../../assets/animal-sanctuary-loop/eclipse-block-v1.webp",
-    beacon: "../../assets/animal-moonlight-heist-marker-objective.webp",
-    seal: "../../assets/animal-crystal-survivor-xp-crystal.webp",
   };
   let raf = 0;
   let lastTime = 0;
@@ -1011,17 +1006,7 @@
     $("timeValue").dataset.urgent = run.time <= 15 ? "true" : "false";
   }
 
-  function redrawLand() {
-    if (!run) return;
-    const size = landCanvas.width / GRID;
-    landCtx.clearRect(0, 0, landCanvas.width, landCanvas.height);
-    landCtx.fillStyle = "#25cba6a6";
-    for (let index = 0; index < TOTAL; index += 1) {
-      if (!run.owned[index]) continue;
-      const { x, y } = pointFor(index);
-      landCtx.fillRect(x * size, y * size, size + 0.5, size + 0.5);
-    }
-  }
+  function redrawLand() { blockView.invalidate(); }
 
   function checkMarkers() {
     const seals = run.markers.filter((marker) => marker.type === "seal");
@@ -1274,132 +1259,8 @@
     updateBattleHud();
   }
 
-  function drawImageCentered(image, x, y, size, rotation = 0, glow = "") {
-    if (!image?.complete || !image.naturalWidth) return;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rotation);
-    if (glow) {
-      ctx.shadowColor = glow;
-      ctx.shadowBlur = Math.max(10, size * 0.42);
-    }
-    const ratio = image.naturalWidth / image.naturalHeight || 1;
-    const drawWidth = ratio >= 1 ? size : size * ratio;
-    const drawHeight = ratio >= 1 ? size / ratio : size;
-    ctx.drawImage(image, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
-    ctx.restore();
-  }
-
   function draw() {
-    if (!run) return;
-    const width = canvas.width;
-    const height = canvas.height;
-    const size = width / GRID;
-    ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(landCanvas, 0, 0);
-
-    if (run.blocked.some(Boolean)) {
-      ctx.fillStyle = "rgba(18,12,38,.86)";
-      ctx.strokeStyle = "rgba(162,122,255,.72)";
-      ctx.lineWidth = Math.max(1, size * 0.14);
-      for (let index = 0; index < TOTAL; index += 1) {
-        if (!run.blocked[index]) continue;
-        const point = pointFor(index);
-        ctx.fillRect(point.x * size, point.y * size, size + 0.4, size + 0.4);
-        if ((point.x + point.y) % 2 === 0) ctx.strokeRect(point.x * size + size * 0.15, point.y * size + size * 0.15, size * 0.7, size * 0.7);
-      }
-    }
-
-    if (run.stage.storm) {
-      ctx.fillStyle = "rgba(67,205,255,.12)";
-      const offset = motion.reduced ? 0 : (run.elapsed * 25) % 120;
-      const warning = run.stormClock / (run.stage.stormEvery || 3.4);
-      ctx.fillStyle = warning > 0.78 ? "rgba(110,225,255,.25)" : "rgba(67,205,255,.10)";
-      for (let x = -120; x < width + 120; x += 120) ctx.fillRect(x + offset, 0, 24, height);
-    }
-    if (run.rivalMarks.length && run.elapsed - run.rivalMarkedAt < 1) {
-      ctx.fillStyle = `rgba(255,110,140,${0.4 * (1 - (run.elapsed - run.rivalMarkedAt))})`;
-      for (const index of run.rivalMarks) {
-        const point = pointFor(index);
-        ctx.fillRect(point.x * size, point.y * size, size, size);
-      }
-    }
-
-    const colors = styleData[save.selectedStyle].colors;
-    if (run.trail.size) {
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.strokeStyle = colors[0];
-      ctx.shadowColor = colors[1];
-      ctx.shadowBlur = 18;
-      ctx.lineWidth = 11;
-      ctx.beginPath();
-      let first = true;
-      for (const index of run.trail) {
-        const point = pointFor(index);
-        const x = (point.x + 0.5) * size;
-        const y = (point.y + 0.5) * size;
-        if (first) {
-          ctx.moveTo(x, y);
-          first = false;
-        } else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-      if (!motion.reduced) {
-        ctx.strokeStyle = "#fffde0"; ctx.lineWidth = 3;
-        ctx.setLineDash([size * 0.6, size * 1.4]); ctx.lineDashOffset = -run.elapsed * 44;
-        ctx.stroke(); ctx.setLineDash([]); ctx.lineDashOffset = 0;
-      }
-    }
-
-    motion.drawEffects(ctx, run.visual, run.elapsed, size, GRID);
-    motion.drawSignals(ctx, run, size);
-    const seals = run.markers.filter((marker) => marker.type === "seal");
-    for (const marker of run.markers) {
-      if (marker.done) continue;
-      const active = marker.type !== "seal" || seals.find((candidate) => !candidate.done) === marker;
-      ctx.globalAlpha = active ? 1 : 0.42;
-      drawImageCentered(
-        marker.type === "seal" ? images.seal : images.beacon,
-        marker.x * size,
-        marker.y * size,
-        3.1 * size,
-      );
-      ctx.globalAlpha = 1;
-      if (marker.type === "seal") {
-        ctx.fillStyle = "#fff";
-        ctx.font = `900 ${Math.max(12, size)}px sans-serif`;
-        ctx.textAlign = "center";
-        ctx.fillText(String(seals.indexOf(marker) + 1), marker.x * size, (marker.y + 0.4) * size);
-      }
-    }
-
-    for (const hunter of run.hunters) {
-      if (hunter.burst) {
-        ctx.strokeStyle = "#76f6ff";
-        ctx.lineWidth = Math.max(2, size * 0.22);
-        ctx.beginPath();
-        ctx.arc(hunter.x * size, hunter.y * size, hunter.size * size * 0.62, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      drawImageCentered(
-        images[hunter.imageKey],
-        hunter.x * size,
-        hunter.y * size,
-        hunter.size * size,
-        hunter.visualAngle ?? hunter.angle + Math.PI / 2,
-        hunter.guardian ? "#ff4b7d" : hunter.type === "runner" ? "#36d8ff" : hunter.type === "tank" ? "#ffb85c" : hunter.type === "sentry" ? "#ffe36c" : "#9d62ff",
-      );
-    }
-    drawImageCentered(
-      images.player,
-      run.player.x * size,
-      run.player.y * size,
-      4.4 * size,
-      run.player.visualAngle,
-      "#64f9df",
-    );
+    if (run) blockView.draw(run, images, styleData[save.selectedStyle].colors, motion.reduced);
   }
 
   function frame(now) {
@@ -1426,8 +1287,7 @@
   function pointDirection(event) {
     if (!run) return;
     const rect = canvas.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width * GRID;
-    const y = (event.clientY - rect.top) / rect.height * GRID;
+    const { x, y } = blockView.point(event);
     setDirection(x - run.player.x, y - run.player.y);
   }
 
@@ -1655,7 +1515,11 @@
   applyLocale();
   track("game_view");
 
+  window.addEventListener("pagehide", () => blockView.release());
+
   window.__animalSanctuaryLoopTest = {
+    rendererStats: () => blockView.stats(),
+    projectWorld: (x, y) => blockView.project(x, y),
     stages,
     startBattle,
     setDirection,

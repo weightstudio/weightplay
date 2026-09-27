@@ -472,7 +472,7 @@
 .fish-actions button{min-height:54px;font-size:.86rem}
 .fish-encounter.is-countering .combat-diver{animation:fish-hit .24s ease 2 alternate}
 .fish-encounter.is-escaping{animation:fish-dodged .7s ease forwards}
-.upgrade-panel{position:absolute;z-index:8;inset:8%;display:grid;align-content:center;gap:12px;padding:18px;border:2px solid #ffe083;border-radius:18px;background:#06283ef5;text-align:center;box-shadow:0 18px 40px #00131fdd}
+.upgrade-panel{position:absolute;z-index:8;inset:8%;display:grid;align-content:center;gap:12px;padding:18px;border:2px solid #ffe083;border-radius:18px;background:#06283e;opacity:1;text-align:center;box-shadow:0 18px 40px #00131fdd}
 .upgrade-panel h2,.upgrade-panel strong,.upgrade-panel output{margin:0}.upgrade-panel output{display:block;min-height:1.35em;color:#d9f7ff;font-weight:700}.upgrade-panel>div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.upgrade-panel button{min-height:52px;border:0;border-radius:10px;background:#e8c45f;color:#142134;font-weight:900}.upgrade-panel button:disabled{opacity:.45}
 
 /* The 30 authored missions keep their name, relic, and rule readable inside
@@ -493,3 +493,16 @@
 .route-card small{display:block;line-height:1.25}
 .route-card small b{display:-webkit-box;margin-top:4px;overflow:hidden;color:#f4dc88;font-weight:700;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .route-card em{font-size:.78rem;font-style:normal;font-weight:800}
+
+/* The upgrade is a bounded opaque Battle substate, including short landscapes. */
+#upgradePanel { min-width:0; min-height:0; align-content:safe center; overflow-x:hidden; overflow-y:auto; }
+#upgradePanel>div { grid-template-columns:repeat(3,minmax(0,1fr)); }
+#upgradePanel button { min-width:0; padding:6px; overflow-wrap:anywhere; }
+@container (max-height:340px) and (min-width:500px) {
+  #upgradePanel { inset:6px 5%; padding:8px 14px; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px 12px; }
+  #upgradeTitle { font-size:20px; line-height:1.2; align-self:center; }
+  #upgradePoints { font-size:14px; line-height:1.2; align-self:center; }
+  #upgradeSummary, #upgradePanel>div, #upgradeDone { grid-column:1/-1; }
+  #upgradeSummary { font-size:14px; line-height:1.2; }
+  #upgradePanel button { min-height:48px; }
+}

@@ -2,19 +2,22 @@
 (() => {
   "use strict";
   const media=window.matchMedia("(prefers-reduced-motion: reduce)");
-  const owned=new Set(), heldNative=new Set(), reasons=new Set();
+  const owned=new Set(), heldNative=new Set(), reasons=new Set(), channels=new WeakMap();
   let sceneKey="", previousEffects=new Map();
   const $=id=>document.getElementById(id);
-  const running=()=>!media.matches&&!reasons.size&&!document.hidden;
-  function forget(animation){owned.delete(animation);heldNative.delete(animation);}
+  // Upgrade holds the dive, not its own presentation. Background/focus/other
+  // modal holds still pause every channel. Never fade the readable panel.
+  const running=(channel="effect")=>!media.matches&&!document.hidden
+    &&[...reasons].every(reason=>channel==="modal"&&reason==="upgrade");
+  function forget(animation){owned.delete(animation);heldNative.delete(animation);channels.delete(animation);}
   function tween(node,frames,options={},channel="effect") {
     if(!node?.animate||media.matches) return null;
     const key=`${node.id||node.dataset.abyssMotionId||"decoration"}:${channel}`;
     previousEffects.get(key)?.cancel();
     const animation=node.animate(frames,{duration:360,easing:"cubic-bezier(.2,.8,.2,1)",...options});
-    owned.add(animation);previousEffects.set(key,animation);
+    owned.add(animation);channels.set(animation,channel);previousEffects.set(key,animation);
     animation.onfinish=animation.oncancel=()=>{forget(animation);if(previousEffects.get(key)===animation)previousEffects.delete(key);};
-    if(!running())animation.pause();
+    if(!running(channel))animation.pause();
     return animation;
   }
   function clear(){
@@ -24,6 +27,9 @@
   }
   function hold(reason,value){
     if(value)reasons.add(reason);else reasons.delete(reason);
+    if(reason==="upgrade"&&!value){
+      for(const animation of [...owned])if(channels.get(animation)==="modal")animation.cancel();
+    }
     const paused=!running();
     document.body.dataset.abyssPaused=String(paused);
     // Capture native CSS transitions too; do not disturb shared Canvas transforms.
@@ -31,10 +37,14 @@
       for(const animation of $("diveField")?.getAnimations?.({subtree:true})||[]){
         if(animation.playState==="running"&&!owned.has(animation)){heldNative.add(animation);animation.pause();}
       }
-      for(const animation of owned)if(animation.playState==="running")animation.pause();
+
     } else {
-      for(const animation of [...owned,...heldNative])if(animation.playState==="paused")animation.play();
+      for(const animation of heldNative)if(animation.playState==="paused")animation.play();
       heldNative.clear();
+    }
+    for(const animation of owned){
+      if(running(channels.get(animation))){if(animation.playState==="paused")animation.play();}
+      else if(animation.playState==="running")animation.pause();
     }
   }
   function bubbles(){
@@ -88,7 +98,7 @@
       tween(diver,[{opacity:1},{opacity:.5,offset:.45},{opacity:1}],{duration:350},"combat");
     } else if(name==="sonar"||name==="shield")pulse(name);
     else if(name==="reward")tween($("salvageText"),[{opacity:.35},{opacity:1}],{duration:480},"reward");
-    else if(name==="upgrade")tween($("upgradePanel"),[{opacity:.2},{opacity:1}],{duration:240},"entrance");
+    else if(name==="upgrade")tween($("upgradeTitle"),[{transform:"translateY(6px)"},{transform:"translateY(0)"}],{duration:240},"modal");
     else if(name==="fish"){
       tween(fish,[{opacity:0,transform:"translateX(35px)"},{opacity:1,transform:"translateX(0)"}],{duration:400},"combat");
     }
