@@ -840,12 +840,6 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
       minmax(0, 1fr) !important;
   }
 
-  /* Casino v26 follows the current 420px wide-layout Main poster contract,
-     including the compact 844x390 viewport. */
-  body[data-wp-card-game="casino"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 420px;
-  }
-
   /* Crazy Eights' v12 Main uses the same canonical wide-layout poster
      column, keeping its 844x390 composition at exactly 300px. */
   body[data-wp-card-game="crazy-eights"] .wp-standard-main-composition {

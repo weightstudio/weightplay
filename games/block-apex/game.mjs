@@ -22,11 +22,60 @@ let generation = 0, raf = 0, lastFrame = 0, accumulator = 0, disposed = false;
 let settingsPaused = false, feedbackUntil = 0, selectedStage = 1;
 let tutorialWaitTimer = 0, waitingForTutorial = false, tutorialWasOpened = false, tutorialPausedRace = false;
 let enginePromise = null, busy = false, hudClock = 0, lastCountdown = null;
+let analyticsRunStarted = false, analyticsRestartPending = false;
 const art = new Map(), tracks = new Map();
 const t = (key, values={}) => translate(locale, key, values);
 const text = (tag, value, className='') => { const node=document.createElement(tag); node.textContent=value; if(className)node.className=className; return node; };
 const trackFor = stage => {const key=`${stage.track}:${stage.reverse}`;if(!tracks.has(key))tracks.set(key,buildTrack(stage.track,stage.reverse));return tracks.get(key);};
 const stageTitle = stage => `${stage.id} · ${CATALOG[locale].names[stage.track]}${stage.reverse ? ` · ${CATALOG[locale].names[11]}` : ''}`;
+const analyticsKeys = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','A','d','D','s','S',' ','Shift','x','X','r','R','p','P'];
+function gameAnalytics() {
+  try {
+    const api=window.WonderAnalytics?.game;if(!api)return null;
+    api.configure?.({locale,keyboardKeys:analyticsKeys});return api;
+  } catch {/* Analytics is optional and must not affect play. */ return null;}
+}
+function analyticsCall(method,...args) {
+  try{const api=gameAnalytics();return api?.[method]?.(...args);}catch{/* Analytics is optional and must not affect play. */ return null;}
+}
+function updateAnalyticsScreen(name=screen) {
+  analyticsCall('screen',name,{locale,node:$(name+'Screen')});
+}
+function beginAnalyticsRace({resumed=false}={}) {
+  const api=gameAnalytics();if(!api||!race||busy||waitingForTutorial||race.result)return;
+  analyticsCall('screen','battle',{locale,node:$('battleScreen')});
+  if(analyticsRunStarted){analyticsCall('resume','game');return;}
+  if(analyticsRestartPending)analyticsCall('restart');
+  else analyticsCall('start',resumed?{resumed:true}:{});
+  analyticsRunStarted=true;analyticsRestartPending=false;
+  if(modalKind)analyticsCall('pause','game');if(settingsPaused)analyticsCall('pause','settings');
+}
+function pauseAnalytics(reason='game') {if(analyticsRunStarted)analyticsCall('pause',reason);}
+function resumeAnalytics(reason='game') {if(analyticsRunStarted)analyticsCall('resume',reason);}
+function endAnalytics(outcome='abandon') {
+  if(analyticsRunStarted)analyticsCall('end',outcome);
+  analyticsRunStarted=false;
+}
+function finishAnalytics(result) {
+  if(!analyticsRunStarted)return;
+  if(result.success&&race?.stage.id===STAGES.length) {
+    analyticsCall('complete');
+    try{window.WonderAnalytics?.trackPrivacySafe?.('game_complete',{game_id:'block-apex',game_version:'v5',interface_version:'7',locale});}catch{/* Analytics is optional and must not affect play. */}
+  } else analyticsCall('end',result.success?'success':'fail');
+  analyticsRunStarted=false;
+}
+function syncAnalytics() {
+  const api=gameAnalytics();if(!api)return;
+  analyticsCall('screen',screen,{locale,node:$(screen+'Screen')});
+  if(!analyticsRunStarted) {
+    if(race&&!busy&&!waitingForTutorial&&!race.result)beginAnalyticsRace({resumed:true});
+    return;
+  }
+  if(!race){endAnalytics('abandon');return;}
+  if(race.result){finishAnalytics(race.result);return;}
+  if(modalKind||busy)analyticsCall('pause','game');else analyticsCall('resume','game');
+  if(settingsPaused)analyticsCall('pause','settings');else analyticsCall('resume','settings');
+}
 function goals(stage) {
   return [['finish',t('finishGoal',{n:stage.laps})],
     ...(stage.rivals ? [['position',t('placeGoal',{n:stage.place})]] : []),
@@ -58,6 +107,7 @@ function localize() {
   for(const node of document.querySelectorAll('[data-i18n-aria]'))node.setAttribute('aria-label',t(node.dataset.i18nAria));
   $('poster').alt=t('title');$('localeSelect').value=locale;
   renderGuide($('guide'),locale,t);syncStorage();
+  gameAnalytics();
   if(rail)rail.refresh();renderManagement();frame?.refresh();
 }
 function activate(name) {
@@ -65,6 +115,7 @@ function activate(name) {
   for(const key of ['main','stage','battle'])$(key+'Screen').hidden=key!==name;
   $('guide').hidden=name!=='main';
   frame.activate(name,{covered:name==='battle'&&modalKind!==null});
+  updateAnalyticsScreen(name);
   window.dispatchEvent(new Event('resize'));
 }
 function selectTab(name, focus=false) {
@@ -149,7 +200,7 @@ function disposeView() {
   renderer.dispose();renderer=null;
 }
 function endRace() {
-  generation++;busy=false;clearTutorialWait();stopLoop();input.setEnabled(false);
+  generation++;busy=false;clearTutorialWait();endAnalytics('abandon');analyticsRestartPending=false;stopLoop();input.setEnabled(false);
   sound?.destroy();sound=null;disposeView();race=null;settingsPaused=false;
   hideModal();
 }
@@ -160,6 +211,7 @@ function hideModal() {
 }
 function showModal(kind,title,description) {
   modalKind=kind;input.setEnabled(false);stopLoop();sound?.silence();pauseRace(race);
+  if(kind==='pause'||kind==='error')pauseAnalytics('game');
   $('modalTitle').textContent=title;$('modalText').textContent=description;$('modalDetails').replaceChildren();
   for(const group of ['pause','result','error'])$(group+'Actions').hidden=group!==kind;
   $('battleOverlay').hidden=false;$('battleContent').inert=true;frame.activate('battle',{covered:true});
@@ -172,6 +224,7 @@ function pause() {
 function continueRace() {
   if(!race||race.result||busy)return;
   hideModal();settingsPaused=false;resumeRace(race);input.setEnabled(true);
+  beginAnalyticsRace();
   sound?.unlock();$('arena').focus({preventScroll:true});scheduleLoop();
 }
 function clearTutorialWait() {
@@ -197,7 +250,7 @@ function onSharedTutorialOpen(event) {
     return;
   }
   if(modalKind||busy||settingsPaused||race.result)return;
-  tutorialPausedRace=true;input.setEnabled(false);stopLoop();sound?.silence();pauseRace(race);
+  tutorialPausedRace=true;input.setEnabled(false);stopLoop();sound?.silence();pauseRace(race);pauseAnalytics('tutorial');
 }
 function onSharedTutorialClose(event) {
   if(event.detail?.gameId!=='block-apex')return;
@@ -207,6 +260,7 @@ function onSharedTutorialClose(event) {
   }
   if(!tutorialPausedRace)return;
   tutorialPausedRace=false;
+  resumeAnalytics('tutorial');
   if(screen==='battle'&&race&&!race.result&&!busy&&!modalKind&&!settingsPaused)continueRace();
 }
 function failed(error,token) {
@@ -214,9 +268,9 @@ function failed(error,token) {
   busy=false;disposeView();document.body.dataset.apexError=error?.message||'RENDER_FAILED';
   showModal('error',t('retry'),t('error'));
 }
-async function startRace(id) {
+async function startRace(id,{restart=false}={}) {
   if(busy||!Number.isInteger(id)||id<1||id>store.data.unlocked||!STAGES[id-1])return;
-  endRace();const token=generation;selectedStage=id;busy=true;
+  endRace();analyticsRestartPending=restart;const token=generation;selectedStage=id;busy=true;
   race=createRace(id,store.data);sound=new RaceAudio();sound.unlock();
   activate('battle');showModal('loading',t('loading'),stageTitle(race.stage));
   $('errorActions').hidden=false;$('errorRetry').disabled=true;
@@ -245,6 +299,7 @@ async function startRace(id) {
 function showResult() {
   if(!race?.result||modalKind==='result')return;
   const result=race.result,reward=store.settle(result);syncStorage();
+  finishAnalytics(result);
   showModal('result',t(result.success?'win':'lose'),t('summary',{rank:result.rank,time:result.time.toFixed(1),stars:result.stars}));
   const list=document.createElement('ul');list.className='apex-goal-results';
   for(const [key,label]of goals(race.stage)){const li=text('li',`${result.goals[key]?'✓':'✕'} ${label}`);li.dataset.met=String(result.goals[key]);list.append(li);}
@@ -320,7 +375,7 @@ function boot() {
   listen($('continue'),'click',continueRace);listen($('leave'),'click',toStages);
   listen($('resultStages'),'click',toStages);listen($('errorStages'),'click',toStages);
   listen($('resultNext'),'click',()=>{if(!$('resultNext').disabled)void startRace(selectedStage+1);});
-  listen($('resultReplay'),'click',()=>void startRace(selectedStage));listen($('errorRetry'),'click',()=>void startRace(selectedStage));
+  listen($('resultReplay'),'click',()=>void startRace(selectedStage,{restart:true}));listen($('errorRetry'),'click',()=>void startRace(selectedStage,{restart:true}));
   listen($('localeSelect'),'change',event=>{
     const chosen=event.target.value;if(!CATALOG[chosen]||screen!=='main')return;
     locale=chosen;try{localStorage.setItem('weightPlayLocale',locale);}catch{/* Session language remains usable. */}
@@ -329,11 +384,12 @@ function boot() {
   });
   listen(window,'weightplay:tutorial-open',onSharedTutorialOpen);
   listen(window,'weightplay:tutorial-close',onSharedTutorialClose);
+  listen(window,'weightplay:analytics-ready',syncAnalytics);
   listen(window,'weightplay:interaction-state',()=>{
     if(screen!=='battle'||!race||modalKind||busy||race.result)return;
     const open=Boolean($('battleHeader').querySelector('.wp-frame-popover:not([hidden])'));
-    if(open&&!settingsPaused){settingsPaused=true;pauseRace(race);input.setEnabled(false);stopLoop();sound?.silence();}
-    else if(!open&&settingsPaused){settingsPaused=false;resumeRace(race);input.setEnabled(true);scheduleLoop();}
+    if(open&&!settingsPaused){settingsPaused=true;pauseRace(race);input.setEnabled(false);stopLoop();sound?.silence();pauseAnalytics('settings');}
+    else if(!open&&settingsPaused){settingsPaused=false;resumeRace(race);input.setEnabled(true);resumeAnalytics('settings');scheduleLoop();}
   });
   listen(document,'keydown',event=>{
     if(!modalKind||event.defaultPrevented)return;
@@ -350,7 +406,7 @@ function boot() {
   listen(window,'blur',background);listen(document,'visibilitychange',()=>{if(document.hidden)background();});
   listen(window,'pagehide',event=>{if(event.persisted){background();return;}destroy();});
   listen(window,'pageshow',event=>{if(event.persisted&&!disposed)frame.activate(screen,{covered:!!modalKind});});
-  activate('main');renderManagement();document.body.dataset.apexBooted='true';document.body.dataset.apexVersion=GAME_VERSION;
+  activate('main');syncAnalytics();renderManagement();document.body.dataset.apexBooted='true';document.body.dataset.apexVersion=GAME_VERSION;
   window.BlockApex=Object.freeze({snapshot:()=>({version:GAME_VERSION,screen,modal:modalKind,stage:race?.stage.id,status:race?.status,time:race?.time,unlocked:store.data.unlocked,
     player:race?{x:race.player.x,z:race.player.z,speed:race.player.speed,gates:race.player.gates,lap:race.player.completedLaps}:null,
     resources:renderer?.metrics()||{renderer:false},raf:!!raf,pool:$('stageRail').children.length})});

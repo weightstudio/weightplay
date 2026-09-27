@@ -7016,6 +7016,39 @@ for (const game of window.WONDER_LOBBY.games) if (window.WONDER_LOBBY.officialTi
 window.WONDER_LOBBY.games.push({"id":"pawflow","audience":"general","status":"planned","internalOnly":true,"internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Pawflow","zh-Hant":"彩爪流轉","zh-Hans":"彩爪流转","ja":"いろ爪ループ","ko":"색발자국 루프","es":"Patas en órbita","pt-BR":"Patas em órbita","fr":"Pattes en boucle","de":"Pfoten im Kreis","it":"Zampe in orbita","ru":"Лапки по кругу","hi":"रंगीन पंजों का चक्र","ar":"حلقة الكفوف الملونة"},"description":{"__localizedExact":true,"en":"Send color couriers around the conveyor, clear matching pixels, and keep the waiting slots from filling.","zh-Hant":"派出色彩信使沿環帶前進，清除同色像素，別讓候補位置塞滿。","zh-Hans":"派出色彩信使沿环带前进，清除同色像素，别让候补位置塞满。","ja":"色の配達員をベルトに送り、同色ピクセルを消そう。待機枠を満杯にしないで！","ko":"색 배달원을 벨트로 보내 같은 색 픽셀을 지우세요. 대기 칸을 가득 채우지 마세요.","es":"Envía mensajeros por la cinta, elimina píxeles del mismo color y evita llenar las plazas de espera.","pt-BR":"Envie entregadores pela esteira, remova pixels da mesma cor e não deixe as vagas de espera lotarem.","fr":"Envoyez les coursiers sur le tapis, effacez les pixels assortis et gardez des places libres.","de":"Schicke Farbkurierfüchse aufs Band, entferne passende Pixel und halte Warteplätze frei.","it":"Invia i corrieri sul nastro, elimina i pixel dello stesso colore e lascia liberi i posti d’attesa.","ru":"Отправляйте цветных курьеров по ленте, убирайте подходящие пиксели и оставляйте свободные места ожидания.","hi":"रंगीन संदेशवाहक भेजें, उसी रंग के पिक्सेल हटाएँ और प्रतीक्षा की जगहें खाली रखें।","ar":"أرسل رسل الألوان على السير، وأزل البكسلات المطابقة، واترك أماكن انتظار شاغرة."},"type":{"en":"Conveyor Puzzle","zh-Hant":"傳送帶解謎"},"categories":["Puzzle","Strategy","Animal Games"],"skills":["Planning","Logic"],"ages":["general"],"href":"games/pawflow/","art":{"kind":"image","background":"games/pawflow/assets/poster.webp","hideHero":true}});
 window.WONDER_LOBBY.audiences.generalGameIds.push("pawflow");
 
+const blockApexSeoDescription = {
+  en: "Real-time 3D kart racing. Drift, boost and race through 30 original challenges with block-animal rivals.",
+  "zh-Hant": "即時 3D 方塊賽車。掌握甩尾與加速，和方塊動物夥伴挑戰 30 場原創賽事。",
+  "zh-Hans": "即时 3D 方块赛车。掌握甩尾与加速，和方块动物伙伴挑战 30 场原创赛事。",
+  ja: "リアルタイム3Dカートレース。ドリフトとブーストを使い、ブロック動物たちと30のオリジナルレースに挑もう。",
+  ko: "실시간 3D 카트 레이싱. 드리프트와 부스트를 활용해 블록 동물들과 30개의 오리지널 레이스에 도전하세요.",
+  es: "Carreras de karts 3D en tiempo real. Derrapa y acelera para superar 30 desafíos originales con rivales de bloques.",
+  "pt-BR": "Corridas de kart 3D em tempo real. Derrape e acelere em 30 desafios originais contra animais em blocos.",
+  fr: "Courses de karts 3D en temps réel. Driffez et accélérez dans 30 défis originaux face aux animaux cubiques.",
+  de: "Echtzeit-3D-Kart-Rennen. Drifte und beschleunige in 30 originellen Herausforderungen gegen Blocktiere.",
+  it: "Corse di kart 3D in tempo reale. Derapa e accelera in 30 sfide originali contro rivali a blocchi.",
+  ru: "Гонки на картах в реальном времени. Дрифтуйте и ускоряйтесь в 30 оригинальных заездах с кубическими соперниками.",
+  hi: "रीयल-टाइम 3D कार्ट रेसिंग। ब्लॉक जानवरों के साथ 30 मौलिक चुनौतियों में ड्रिफ्ट करें और बूस्ट लें।",
+  ar: "سباقات عربات ثلاثية الأبعاد في الوقت الفعلي. انجرف واستخدم التعزيز في 30 تحديًا أصليًا مع منافسين مكعبين.",
+};
+const blockApexPlayerNote = {
+  en: "Progress stays in this browser. You can play without an account or payment.",
+  "zh-Hant": "進度只保存在這個瀏覽器；不需要帳號或付款。",
+  "zh-Hans": "进度只保存在这个浏览器；不需要账号或付款。",
+  ja: "進行状況はこのブラウザーに保存され、アカウントや支払いは不要です。",
+  ko: "진행 상황은 이 브라우저에 저장되며, 계정이나 결제는 필요하지 않아요.",
+  es: "El progreso se guarda en este navegador. No necesitas una cuenta ni pagar.",
+  "pt-BR": "O progresso fica salvo neste navegador. Não é preciso criar conta nem pagar.",
+  fr: "La progression reste dans ce navigateur. Aucun compte ni paiement n’est nécessaire.",
+  de: "Der Fortschritt bleibt in diesem Browser. Ein Konto oder eine Zahlung ist nicht erforderlich.",
+  it: "I progressi restano in questo browser. Non servono account né pagamenti.",
+  ru: "Прогресс хранится в этом браузере. Учётная запись и оплата не нужны.",
+  hi: "प्रगति इसी ब्राउज़र में रहती है। खाते या भुगतान की ज़रूरत नहीं है।",
+  ar: "يبقى التقدم في هذا المتصفح. لا يلزم حساب أو دفع.",
+};
+Object.defineProperty(blockApexSeoDescription, "__localizedExact", { value: true, enumerable: false });
+Object.defineProperty(blockApexPlayerNote, "__localizedExact", { value: true, enumerable: false });
+
 // Owner-requested Block Apex planned identity. Keep it internal until its release gates pass.
 window.WONDER_LOBBY.games.push({
   id: "block-apex", audience: "general", status: "planned", internalOnly: true,
@@ -7023,7 +7056,12 @@ window.WONDER_LOBBY.games.push({
   title: { __localizedExact: true, en: "Block Apex", "zh-Hant": "方塊極速", "zh-Hans": "方块极速", ja: "ブロック・アペックス", ko: "블록 에이펙스", es: "Apex de Bloques", "pt-BR": "Apex de Blocos", fr: "Apex des Blocs", de: "Block-Apex", it: "Apex a Blocchi", ru: "Блочный апекс", hi: "ब्लॉक एपेक्स", ar: "قمة المكعبات" },
   type: { __localizedExact: true, en: "3D Kart Racing", "zh-Hant": "3D 方塊賽車", "zh-Hans": "3D 方块赛车", ja: "3Dカートレース", ko: "3D 카트 레이싱", es: "Carreras de karts 3D", "pt-BR": "Corrida de kart 3D", fr: "Course de kart 3D", de: "3D-Kart-Rennen", it: "Corse di kart 3D", ru: "3D-гонки на картах", hi: "3D कार्ट रेसिंग", ar: "سباق عربات ثلاثي الأبعاد" },
   description: { __localizedExact: true, en: "Drift, boost, and race across 30 authored 3D kart challenges with the WeightPlay block-animal cast.", "zh-Hant": "駕駛方塊賽車挑戰 30 場 3D 賽事，抓準甩尾與加速時機，和方塊動物夥伴一較高下。", "zh-Hans": "驾驶方块赛车挑战 30 场 3D 赛事，抓准甩尾与加速时机，和方块动物伙伴一较高下。", ja: "ドリフトとブーストを使いこなし、ブロック動物たちと30の3Dカートレースに挑もう。", ko: "드리프트와 부스트를 활용해 블록 동물들과 30개의 3D 카트 레이스에 도전하세요.", es: "Derrapa, acelera con nitro y compite en 30 desafíos de kart 3D con animales de bloques.", "pt-BR": "Derrape, use o nitro e dispute 30 desafios de kart 3D com animais em blocos.", fr: "Driffez, déclenchez le turbo et disputez 30 courses de kart 3D avec des animaux cubiques.", de: "Drifte, zünde den Turbo und fahre 30 3D-Kart-Herausforderungen mit Blocktieren.", it: "Derapa, usa il turbo e affronta 30 sfide di kart 3D con animali a blocchi.", ru: "Дрифтуйте, ускоряйтесь и проходите 30 гоночных испытаний в 3D с кубическими зверятами.", hi: "ब्लॉक जानवरों के साथ 30 3D कार्ट रेस में ड्रिफ्ट करें और नाइट्रो बूस्ट चलाएँ.", ar: "انجرف واستخدم تعزيز النيترو لخوض 30 تحديًا لسباقات عربات ثلاثية الأبعاد مع حيوانات مكعبة." },
-  categories: ["Action", "Arcade", "Animal Games"], skills: ["Timing", "Focus"], ages: ["general"],
+  categories: ["Action", "Arcade", "Animal Games"], skills: ["Reaction", "Focus", "Hand-Eye Coordination"], ages: ["general"], ageTags: ["general"],
+  recommendedAge: "13+", difficulty: "Medium", estimatedPlayTime: "1-3 minutes per race",
+  seoDescription: blockApexSeoDescription, playerNote: blockApexPlayerNote,
+  // This arcade racer reports race times/stars, not age-normed learning scores.
+  scoreBandsByAge: {},
+  relatedGameRules: { gameIds: ["snake", "space-rocks"], requirePlayable: true, basis: ["Reaction", "Focus"] },
   href: "games/block-apex/",
   meta: { en: ["30 Stages", "Drift & Boost"], "zh-Hant": ["30 場賽事", "甩尾加速"], "zh-Hans": ["30 场赛事", "甩尾加速"], ja: ["全30レース", "ドリフト＆ブースト"], ko: ["30개 레이스", "드리프트와 부스트"], es: ["30 carreras", "Derrape y nitro"], "pt-BR": ["30 corridas", "Derrapagem e nitro"], fr: ["30 courses", "Drift et turbo"], de: ["30 Rennen", "Drift und Turbo"], it: ["30 gare", "Derapata e turbo"], ru: ["30 гонок", "Дрифт и ускорение"], hi: ["30 रेस", "ड्रिफ्ट और नाइट्रो"], ar: ["30 سباقًا", "انجراف وتعزيز"] },
   art: { kind: "image", background: "Assets/block-apex-poster.webp", hideHero: true },

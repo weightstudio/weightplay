@@ -11,8 +11,17 @@
   <meta name="theme-color" content="#17243a">
   <title>Block Apex | WeightPlay</title>
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <!-- Planned internal game must not create production analytics sessions. -->
-  <script>window.__weightPlayAnalyticsRequested=true;</script>
+  <!-- Planned routes stay out of production collection; the trial route uses the shared local/test-safe collector. -->
+  <script>
+    window.__weightPlayAnalyticsRequested=true;
+    if(/^https?:$/.test(location.protocol)&&new URLSearchParams(location.search).has('trial')) {
+      const analyticsLoader=document.createElement('script');
+      analyticsLoader.src=new URL('../../src/analytics.js',location.href).href;
+      analyticsLoader.async=true;
+      analyticsLoader.dataset.wpAnalyticsLoader='true';
+      document.head.append(analyticsLoader);
+    }
+  </script>
   <script src="../../src/game-layout-config.js"></script>
   <script src="../../src/site-config.js"></script>
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
@@ -105,6 +114,6 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/tutorial.js?v=20260928-block-apex-tutorial1"></script>
   <script>window.addEventListener('error',function(){if(!document.body.dataset.apexBooted)document.getElementById('bootError').hidden=false;});</script>
-  <script type="module" src="game.mjs?v=20260928-shared-tutorial1"></script>
+  <script type="module" src="game.mjs?v=20260928-v5-analytics-guide"></script>
 </body>
 </html>

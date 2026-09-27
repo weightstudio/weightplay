@@ -21,14 +21,101 @@ export const GUIDES={
  hi:{headings:['रेस का उद्देश्य','चलाना और लक्ष्य','बदलता अभियान','रेस के सुझाव','डिज़ाइन','डिवाइस और सहेजना','प्रश्न'],intro:'बंद त्रि-आयामी ट्रैक पर छोटा कार्ट चलाएँ और ब्लॉक जानवरों से मुकाबला करें। मोड़ में प्रवेश और ड्रिफ्ट का समय चुनें। सड़क, किनारे और बैरियर चलने की जगह तय करते हैं। सुनहरे छल्ले, गति बढ़ाने वाली पट्टियाँ, गीली सड़क और कोन सच में असर डालते हैं। सुनहरा तीर अगले अनिवार्य जाँच बिंदु को दिखाता है। सभी बिंदुओं को क्रम में पार करने पर ही चक्कर गिना जाता है।',loop:'शुरू करने से पहले शर्तें पढ़ें। स्थान, ड्रिफ्ट समय, छल्ले, समय सीमा और टक्कर की सीमा एक साथ माँगी जा सकती हैं; सभी पूरी करें। सीधी सड़क पर प्रतिद्वंद्वी के पीछे चलकर हवा का लाभ लें, फिर बाहर निकलकर आगे जाएँ। पर्याप्त ड्रिफ्ट जमा करके छोड़ने पर बढ़त मिलती है। नाइट्रो अलग संसाधन है। बचत वाली रेस में चलने, छल्लों और ड्रिफ्ट से यह नहीं भरता, लेकिन सड़क की पट्टियाँ काम करती हैं।',progression:'तीस चरण सात बनाए गए ट्रैक और उलटी दिशाओं को पाँच-पाँच के छह भागों में इस्तेमाल करते हैं। बंदरगाह मोड़ और आगे निकलना सिखाता है, घाटी लंबे ड्रिफ्ट। पानी पकड़ घटाता है। तट पर छल्ले छोटे रास्ते से बाहर हैं; शिखर ऊँचाई और झंडों से दिखने वाली बगल की हवा लाता है। बाद में सीमित नाइट्रो और कम टक्कर की शर्तें मिलती हैं। हर पाँचवाँ चरण संयुक्त परीक्षा है। सफलता अगला खोलती है और पुराने फिर खेले जा सकते हैं।',tips:'तीखे मोड़ से पहले ब्रेक लगाएँ। जगह रखते हुए ड्रिफ्ट शुरू करें और निकास खुलने पर छोड़ें। नाइट्रो सीधी सड़क के लिए बचाएँ और अंत से पहले छल्ले जाँचें। वापस रखने से नाइट्रो खाली होता है और तीन सेकंड जुड़ते हैं; जाँच बिंदु नहीं छूटते। प्रतिद्वंद्वी, कोन और किनारे टक्कर में गिने जाते हैं, पर एक लगातार चोट हर फ़्रेम दोबारा नहीं गिनी जाती।',design:'यह आर्केड नियंत्रण है, वास्तविक ड्राइविंग सिमुलेशन नहीं। खिलाड़ी और AI समान निश्चित समय कदमों से चलते हैं; प्रतिद्वंद्वी मुड़ते हैं, अचानक आगे नहीं पहुँचते। ज़मीन, कार, रोशनी और कैमरा वास्तविक समय में 3D हैं। वाहन गति, त्वरण और पकड़ में अलग हैं। अपग्रेड जाँच नियम नहीं बदलते। इस संस्करण में मल्टीप्लेयर, ऑनलाइन रैंकिंग, दैनिक कार्यक्रम या घोस्ट नहीं है।',saving:'WebGL 2 चाहिए। कीबोर्ड, कई उँगलियों का टच या मानक गेमपैड चलाएँ: बायाँ स्टिक या दिशा पैड मोड़ता है, नीचे वाला बटन ड्रिफ्ट, दायाँ बटन या दायाँ ट्रिगर नाइट्रो, बायाँ ट्रिगर ब्रेक और Start विराम देता है। खाता या भुगतान नहीं चाहिए। प्रगति इसी ब्राउज़र में है, क्लाउड में नहीं; डेटा मिटाने से हट सकती है। सहेजने की गलती पर चेतावनी आती है। फ़ोकस हटने पर रेस रुकती है और लौटने पर समय आगे नहीं कूदता।',faq:[['पूरा करके भी असफल क्यों?','स्थान, ड्रिफ्ट, छल्ले, टक्कर या समय का अधूरा लक्ष्य देखें।'],['वाहन कैसे खुलते हैं?','खरगोश, पांडा और पेंगुइन के लिए 6, 18 और 36 सितारे चाहिए; फिर चुनना मुफ़्त है।'],['इनाम दो बार मिलेगा?','हर रेस का भुगतान एक बार है। फिर खेलना नई रेस शुरू करता है।'],['3D विफल हो तो?','सिमुलेशन रुकता है। फिर कोशिश करें या सहेजी प्रगति के साथ चरणों पर लौटें।']]},
  ar:{headings:['السباق','القيادة والأهداف','حملة متنوعة','نصائح','التصميم','الأجهزة والحفظ','أسئلة'],intro:'قد سيارة كارت في حلبات مغلقة ثلاثية الأبعاد ضد حيوانات مكعبة. اختر نقطة دخول المنعطف ووقت الانجراف. الطريق والأكتاف والحواجز تحدد مساحة القيادة. الحلقات الذهبية ومنصات التسارع والطريق المبتل والأقماع لها تأثير حقيقي. يشير السهم الذهبي إلى نقطة التحقق التالية المطلوبة. لا تُحسب اللفة إلا بعد عبورها جميعًا بالترتيب.',loop:'اقرأ الشروط قبل الانطلاق. قد تُطلب مرتبة ومدة انجراف وحلقات وحد زمني وحد اصطدامات معًا، ويجب تحقيقها كلها. اتبع منافسًا على مستقيم للاستفادة من تياره الهوائي ثم اخرج للتجاوز. إطلاق انجراف مشحون يمنح دفعة. النيترو مورد مستقل. في سباقات التوفير لا تعيد القيادة والحلقات والانجراف تعبئته، لكن منصات الطريق تظل فعالة.',progression:'تستخدم ثلاثون مرحلة سبع حلبات مصممة واتجاهات عكسية ضمن ست مجموعات من خمس. الميناء يعلّم التوجيه والتجاوز والوادي يختبر الانجراف الطويل. الماء يقلل التماسك. على الساحل تبتعد الحلقات عن أقصر خط، وتضيف القمة ارتفاعات ورياحًا جانبية معلّمة بالأعلام. لاحقًا تجتمع قيود النيترو والقيادة النظيفة. كل مرحلة خامسة اختبار مركب. النجاح يفتح التالية وتبقى السابقة قابلة للإعادة.',tips:'اكبح قبل المنعطف الحاد. ابدأ الانجراف مع مساحة كافية وأطلقه حين ينفتح المخرج. احتفظ بالنيترو للمستقيم وتحقق من الحلقات قبل النهاية. الاستعادة تفرغ النيترو وتضيف ثلاث ثوانٍ دون تخطي نقاط التحقق. المنافسون والأقماع والحدود تُحسب اصطدامات، مع مهلة قصيرة كي لا تُحسب الضربة المستمرة كل إطار.',design:'القيادة بأسلوب أركيد وليست محاكاة قيادة حقيقية. يستخدم اللاعب والذكاء الاصطناعي خطوات حركة زمنية ثابتة متطابقة؛ المنافسون ينعطفون ولا ينتقلون فجأة. الأرض والسيارات والإضاءة والكاميرا ثلاثية الأبعاد آنيًا. تختلف المركبات في السرعة والتسارع والتماسك. الترقيات لا تغيّر قواعد نقاط التحقق. لا تتضمن هذه النسخة لعبًا جماعيًا أو ترتيبًا بعيدًا أو أحداثًا يومية أو سيارة شبح.',saving:'يلزم WebGL 2. استخدم لوحة مفاتيح أو لمسًا متعددًا أو يد تحكم قياسية: العصا اليسرى أو الاتجاهات للتوجيه، الزر السفلي للانجراف، الأيمن أو الزناد الأيمن للنيترو، الزناد الأيسر للفرامل وStart للإيقاف. لا يلزم حساب أو دفع. التقدم في هذا المتصفح وليس السحابة؛ حذف البيانات قد يزيله. يظهر تحذير عند فشل الحفظ. فقدان التركيز يوقف السباق ولا يقفز الوقت عند العودة.',faq:[['لماذا أخفقت بعد إنهاء اللفات؟','راجع الهدف الناقص للمركز أو الانجراف أو الحلقات أو الاصطدامات أو الوقت.'],['كيف أفتح المركبات؟','الأرنب والباندا والبطريق تحتاج 6 و18 و36 نجمة ثم يمكن اختيارها مجانًا.'],['هل أستلم المكافأة مرتين؟','تُسوّى كل رئاسة مرة واحدة. الإعادة تبدأ سباقًا جديدًا.'],['ماذا عند فشل العرض؟','تتوقف المحاكاة. أعد المحاولة أو ارجع للمراحل مع الاحتفاظ بالتقدم المحفوظ.']]},
 };
+const PAGE_FACTS={
+ en:[["Recommended Age","13+"],["Difficulty","Medium"],["Estimated Play Time","1–3 minutes per race (estimate)"],["Skills Trained","Reaction, Focus, Hand-Eye Coordination"]],
+ "zh-Hant":[["建議年齡","13 歲以上"],["難度","中等"],["估計遊玩時間","每場賽事約 1–3 分鐘（估計）"],["訓練技能","反應、專注、手眼協調"]],
+ "zh-Hans":[["建议年龄","13 岁以上"],["难度","中等"],["预计游玩时间","每场赛事约 1–3 分钟（估计）"],["训练技能","反应、专注、手眼协调"]],
+ ja:[["推奨年齢","13歳以上"],["難易度","中級"],["推定プレイ時間","1レース約1～3分（目安）"],["練習できるスキル","反応、集中、目と手の協調"]],
+ ko:[["권장 연령","13세 이상"],["난이도","보통"],["예상 플레이 시간","레이스당 약 1~3분(예상)"],["연습 기술","반응, 집중, 눈-손 협응"]],
+ es:[["Edad recomendada","13+"],["Dificultad","Media"],["Tiempo de juego estimado","1–3 min por carrera (estimación)"],["Habilidades practicadas","Reacción, concentración, coordinación ojo-mano"]],
+ "pt-BR":[["Idade recomendada","13+"],["Dificuldade","Média"],["Tempo estimado de jogo","1–3 min por corrida (estimativa)"],["Habilidades praticadas","Reação, foco, coordenação olho-mão"]],
+ fr:[["Âge recommandé","13 ans et plus"],["Difficulté","Moyenne"],["Durée de jeu estimée","1 à 3 min par course (estimation)"],["Compétences pratiquées","Réaction, concentration, coordination œil-main"]],
+ de:[["Empfohlenes Alter","ab 13 Jahren"],["Schwierigkeit","Mittel"],["Geschätzte Spielzeit","1–3 Minuten je Rennen (Schätzung)"],["Geübte Fähigkeiten","Reaktion, Fokus, Hand-Auge-Koordination"]],
+ it:[["Età consigliata","13+"],["Difficoltà","Media"],["Tempo di gioco stimato","1–3 min per gara (stima)"],["Abilità esercitate","Reazione, concentrazione, coordinazione occhio-mano"]],
+ ru:[["Рекомендуемый возраст","13+"],["Сложность","Средняя"],["Расчётное время игры","1–3 минуты за заезд (оценка)"],["Развиваемые навыки","Реакция, внимание, зрительно-моторная координация"]],
+ hi:[["अनुशंसित आयु","13+"],["कठिनाई","मध्यम"],["अनुमानित खेल समय","प्रति रेस लगभग 1–3 मिनट (अनुमान)"],["अभ्यास कौशल","प्रतिक्रिया, ध्यान, आँख-हाथ समन्वय"]],
+ ar:[["العمر الموصى به","13+"],["الصعوبة","متوسطة"],["وقت اللعب التقديري","1–3 دقائق لكل سباق (تقدير)"],["المهارات التي تتدرب عليها","رد الفعل، التركيز، التناسق بين العين واليد"]],
+};
+const PLAYER_SAVE_HEADINGS={
+  en:"Player and Save Information","zh-Hant":"玩家與存檔資訊","zh-Hans":"玩家与存档信息",ja:"プレイヤーと保存情報",ko:"플레이어 및 저장 정보",es:"Información del jugador y de guardado","pt-BR":"Informações do jogador e do salvamento",fr:"Informations sur le joueur et la sauvegarde",de:"Spieler- und Speicherinformationen",it:"Informazioni sul giocatore e sui salvataggi",ru:"Информация об игроке и сохранении",hi:"खिलाड़ी और सहेजी गई प्रगति की जानकारी",ar:"معلومات اللاعب والحفظ",
+};
+const RELATED_GAMES={
+ en:{title:"Related Games",intro:"Try another quick arcade challenge:",cards:[
+  {id:"snake",title:"Snake",copy:"Guide a growing serpent through a grid and keep its path clear."},
+  {id:"space-rocks",title:"Space Rocks",copy:"Steer through drifting asteroids, aim, and stay in motion."},
+ ]},
+ "zh-Hant":{title:"相關遊戲",intro:"想再玩一場考驗反應與操控的街機遊戲，可以試試：",cards:[
+  {id:"snake",title:"貪食蛇",copy:"在格線中帶領不斷變長的蛇，保持前方路線暢通。"},
+  {id:"space-rocks",title:"星礦漂流",copy:"駕駛太空船閃避漂流岩塊，在移動中瞄準。"},
+ ]},
+ "zh-Hans":{title:"相关游戏",intro:"想再玩一场考验反应与操控的街机游戏，可以试试：",cards:[
+  {id:"snake",title:"贪吃蛇",copy:"在格线中带领不断变长的蛇，保持前方路线畅通。"},
+  {id:"space-rocks",title:"星矿漂流",copy:"驾驶太空船躲开漂流岩块，在移动中瞄准。"},
+ ]},
+ ja:{title:"関連ゲーム",intro:"素早い判断を楽しめるアーケードゲームもどうぞ：",cards:[
+  {id:"snake",title:"スネーク",copy:"成長するヘビをグリッドで導き、進路を保ちましょう。"},
+  {id:"space-rocks",title:"スペース・ロックス",copy:"漂う小惑星を避けて狙いを定め、動き続けましょう。"},
+ ]},
+ ko:{title:"관련 게임",intro:"빠른 판단을 즐길 수 있는 아케이드 게임도 해보세요:",cards:[
+  {id:"snake",title:"스네이크",copy:"점점 길어지는 뱀을 격자에서 조종하며 길을 확보하세요."},
+  {id:"space-rocks",title:"스페이스 록스",copy:"떠다니는 소행성을 피하고 조준하며 계속 움직이세요."},
+ ]},
+ es:{title:"Juegos relacionados",intro:"Prueba otro desafío arcade para poner a prueba tus reflejos:",cards:[
+  {id:"snake",title:"Serpiente",copy:"Guía una serpiente que crece por una cuadrícula y mantén libre su camino."},
+  {id:"space-rocks",title:"Rocas Espaciales",copy:"Esquiva asteroides, apunta y mantén la nave en movimiento."},
+ ]},
+ "pt-BR":{title:"Jogos relacionados",intro:"Experimente outro desafio arcade para testar seus reflexos:",cards:[
+  {id:"snake",title:"Snake",copy:"Guie uma serpente que cresce pela grade e mantenha o caminho livre."},
+  {id:"space-rocks",title:"Rochas Espaciais",copy:"Desvie dos asteroides, mire e mantenha a nave em movimento."},
+ ]},
+ fr:{title:"Jeux associés",intro:"Essayez un autre défi d’arcade pour tester vos réflexes :",cards:[
+  {id:"snake",title:"Serpent",copy:"Guidez un serpent qui grandit sur une grille et gardez sa route libre."},
+  {id:"space-rocks",title:"Roches Spatiales",copy:"Évitez les astéroïdes, visez et gardez le vaisseau en mouvement."},
+ ]},
+ de:{title:"Ähnliche Spiele",intro:"Probiere eine weitere Arcade-Herausforderung für deine Reaktion:",cards:[
+  {id:"snake",title:"Schlange",copy:"Führe eine wachsende Schlange durchs Raster und halte ihren Weg frei."},
+  {id:"space-rocks",title:"Weltraumfelsen",copy:"Weiche Asteroiden aus, ziele und halte das Raumschiff in Bewegung."},
+ ]},
+ it:{title:"Giochi correlati",intro:"Prova un’altra sfida arcade per mettere alla prova i riflessi:",cards:[
+  {id:"snake",title:"Snake",copy:"Guida un serpente che cresce sulla griglia e mantieni libera la sua strada."},
+  {id:"space-rocks",title:"Rocce Spaziali",copy:"Evita gli asteroidi, mira e mantieni l’astronave in movimento."},
+ ]},
+ ru:{title:"Похожие игры",intro:"Попробуйте ещё одну аркаду на скорость реакции:",cards:[
+  {id:"snake",title:"Змейка",copy:"Проведите растущую змейку по сетке и сохраняйте свободный путь."},
+  {id:"space-rocks",title:"Космические глыбы",copy:"Уклоняйтесь от астероидов, цельтесь и не прекращайте движение."},
+ ]},
+ hi:{title:"संबंधित गेम",intro:"तेज़ प्रतिक्रिया का एक और आर्केड खेल आज़माएँ:",cards:[
+  {id:"snake",title:"साँप",copy:"बढ़ते साँप को ग्रिड में चलाएँ और आगे का रास्ता खुला रखें।"},
+  {id:"space-rocks",title:"अंतरिक्ष शिलाखंड",copy:"क्षुद्रग्रहों से बचें, निशाना साधें और अंतरिक्षयान चलाते रहें।"},
+ ]},
+ ar:{title:"ألعاب ذات صلة",intro:"جرّب تحديًا أركيديًا آخر لاختبار سرعة استجابتك:",cards:[
+  {id:"snake",title:"الثعبان",copy:"وجّه ثعبانًا يكبر عبر شبكة وأبقِ طريقه مفتوحًا."},
+  {id:"space-rocks",title:"صخور الفضاء",copy:"تفادَ الكويكبات وصوّب وأبقِ المركبة الفضائية في حركة."},
+ ]},
+};
 export function renderGuide(node,locale,t){
   const guide=GUIDES[locale];if(!guide)throw new Error(`MISSING_GUIDE:${locale}`);
   node.replaceChildren();
   const top=document.createElement('div');top.className='game-info-title';const title=document.createElement('h2');title.textContent=`${t('title')} — ${t('guide')}`;top.append(title);node.append(top);
+  const facts=document.createElement('div');facts.className='game-info-facts';
+  for(const [label,value] of PAGE_FACTS[locale]){const fact=document.createElement('div');fact.className='game-info-fact';const caption=document.createElement('span'),content=document.createElement('strong');caption.textContent=label;content.textContent=value;fact.append(caption,content);facts.append(fact);}
+  top.append(facts);
   const sections=document.createElement('div');sections.className='game-info-sections';
   const texts=[guide.intro,`${t('helpText')} ${guide.loop}`,guide.progression,guide.tips,guide.design,guide.saving];
-  texts.forEach((text,index)=>{const section=document.createElement('section');section.className='game-info-section';const h=document.createElement('h3');h.textContent=guide.headings[index];const p=document.createElement('p');p.textContent=text;section.append(h,p);sections.append(section);});
+  texts.forEach((text,index)=>{const section=document.createElement('section');section.className='game-info-section';const h=document.createElement('h3');h.textContent=index===5?PLAYER_SAVE_HEADINGS[locale]:guide.headings[index];const p=document.createElement('p');p.textContent=text;section.append(h,p);sections.append(section);});
   const faq=document.createElement('section');faq.className='game-info-section';const head=document.createElement('h3');head.textContent=guide.headings[6];faq.append(head);
   for(const [question,answer]of guide.faq){const detail=document.createElement('details'),summary=document.createElement('summary'),p=document.createElement('p');summary.textContent=question;p.textContent=answer;detail.append(summary,p);faq.append(detail);}
   sections.append(faq);node.append(sections);
+  const related=RELATED_GAMES[locale];if(!related)throw new Error(`MISSING_RELATED_GAMES:${locale}`);
+  const recommendations=document.createElement('section');recommendations.className='game-info-section game-info-related-section';
+  const heading=document.createElement('h3');heading.textContent=related.title;
+  const intro=document.createElement('p');intro.textContent=related.intro;
+  const cards=document.createElement('div');cards.className='game-info-related';
+  for(const item of related.cards){
+    const card=document.createElement('a');card.className='game-info-related-card';card.href=`/games/${item.id}/`;
+    const copy=document.createElement('span');copy.className='game-info-related-copy';
+    const title=document.createElement('strong'),description=document.createElement('span');title.textContent=item.title;description.textContent=item.copy;
+    copy.append(title,description);card.append(copy);cards.append(card);
+  }
+  recommendations.append(heading,intro,cards);node.append(recommendations);
 }

@@ -37,6 +37,7 @@ body.casino-royal-table .casino-card-arrival {animation:casino-card-arrival 180m
 body.casino-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#254d42,#071e22);border-color:#d7b96f;}
 @keyframes casino-card-arrival {from{opacity:.4;filter:brightness(1.6);}to{opacity:1;filter:none;}}
 @media(orientation:landscape) and (max-height:560px){
+ body[data-wp-card-game="casino"] .wp-standard-main-composition {--wp-main-landscape-poster-size:420px;}
  body.casino-royal-table #cardGameBoard {grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:32px minmax(0,1fr);grid-template-areas:'opponents opponents' 'table player';gap:4px;}
  body.casino-royal-table #cardGameOpponents {grid-area:opponents;}
  body.casino-royal-table .opponent-card {height:32px;min-height:0;box-sizing:border-box;padding:3px 8px;display:flex;align-items:center;gap:10px;}

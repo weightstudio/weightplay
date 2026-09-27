@@ -42,12 +42,19 @@ try{
       assert.doesNotMatch(translate(locale,key,{n:3,rank:2,time:35,stars:1}),/\{\w+\}/);
     }
     const root=new Element('article');renderGuide(root,locale,(key,values)=>translate(locale,key,values));
-    assert.equal(root.children.length,2);assert.equal(root.children[1].children.length,7);
+    assert.equal(root.children.length,3);assert.equal(root.children[1].children.length,7);
     for(const section of root.children[1].children)assert.ok(section.children.length>=2,`Empty guide section: ${locale}`);
+    const related=root.children[2];assert.equal(related.className,'game-info-section game-info-related-section');
+    assert.equal(related.children.length,3);assert.equal(related.children[2].children.length,2);
+    for(const card of related.children[2].children){
+      assert.match(card.href,/^\/games\/(?:snake|space-rocks)\/$/);
+      assert.equal(card.children[0].children.length,2);
+      assert.ok(card.children[0].children.every(child=>child.textContent.trim()),`Incomplete related card: ${locale}`);
+    }
   }
 }finally{if(previous===undefined)delete globalThis.document;else globalThis.document=previous;}
 const catalogText=readFileSync(new URL('../../docs/audio-catalog.md',game),'utf8');
 for(const id of new Set(Object.values(RACE_SOUNDS)))assert.ok(catalogText.includes('`'+id+'`'),`Unregistered SFX: ${id}`);
 const audioSource=readFileSync(new URL('audio.mjs',game),'utf8');
 assert.doesNotMatch(audioSource,/new\s+(?:window\.)?(?:AudioContext|Audio)\s*\(|createOscillator\s*\(|WonderSound/);
-console.log(JSON.stringify({modules:modules.length,locales:LOCALE_ORDER.length,guideSectionsPerLocale:7,status:'static-only',formalAcceptance:false}));
+console.log(JSON.stringify({modules:modules.length,locales:LOCALE_ORDER.length,guideSectionsPerLocale:7,relatedCardsPerLocale:2,status:'static-only',formalAcceptance:false}));
