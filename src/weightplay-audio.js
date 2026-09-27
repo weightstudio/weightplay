@@ -53,6 +53,7 @@
   PROFILES["animal-crownfall"] = [...new Set([...(PROFILES["animal-crownfall"] || []), "feedback.success"])]
   PROFILES["pawflow"] = ["board.move", "board.undo", "feedback.error", "feedback.hint", "game.start", "impact.soft", "puzzle.match", "result.lose", "result.win", "reward.unlock", "ui.click"]
   PROFILES["animal-bus-jam"] = ["board.move", "board.undo", "feedback.hint", "game.start", "result.lose", "result.win", "ui.click"]
+  PROFILES["animal-prism-breakers"] = ["game.start", "impact.glass", "impact.soft", "result.lose", "result.win", "sport.bounce", "ui.click"]
   PROFILES["animal-grove-dominoes"] = [...new Set([...(PROFILES["animal-grove-dominoes"] || []), "board.undo"])]
   /* AUDIO_PROFILES_END */
   const scriptURL = new URL(document.currentScript?.src || 'src/weightplay-audio.js', document.baseURI);

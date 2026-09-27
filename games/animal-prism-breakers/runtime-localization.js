@@ -91,6 +91,7 @@
     ar:{heading:"اختر تشكيلًا",hint:"اسحب المسار. البطاقة المضيئة في الوسط هي المحددة.",nav:"المراحل",navLabel:"التنقل بين المراحل"}
   };
   const locale=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||"en",copy=copies[locale]||copies.en,stageUi=stageUiCopies[locale]||stageUiCopies.en;
+  if(locale==="ar")["mainProgress","stageSummary"].forEach(id=>document.getElementById(id)?.setAttribute("dir","ltr"));
   const shared=value=>window.WeightPlayGameRuntimeLocalizer?.translate?.(value)??value;
   const exact=new Map([["Charging the prism arena…",copy.loading],["Launch",copy.launch],["Orb lost. Launch the next light orb.",copy.lost],["Split Spectrum created another light orb!",copy.split],["All three light orbs fell. Read the return angle and try again.",copy.fail]]);
   const arabicGuide={
@@ -115,11 +116,15 @@
     "Stage Complete":"اكتملت المرحلة",
     "Next Stage":"المرحلة التالية",
     "Retry":"إعادة المحاولة",
-    "Stage Map":"خريطة المراحل"
+    "Stage Map":"خريطة المراحل",
+    "Leave this formation?":"مغادرة هذا التشكيل؟",
+    "Your completed progress is safe. This attempt will restart.":"تقدمك المكتمل محفوظ. ستبدأ هذه المحاولة من جديد.",
+    "Continue":"متابعة"
   };
   if(locale==="ar")Object.entries(arabicGuide).forEach(([source,translated])=>exact.set(source,translated));
   const contextual={
-    it:{Score:"Punteggio",Blocks:"Blocchi",Orbs:"Sfere",Combo:"Serie","Stage Map":"Elenco fasi"},
+    it:{Score:"Punteggio",Blocks:"Blocchi",Orbs:"Sfere",Combo:"Serie","Stage Map":"Elenco fasi",Restart:"Ricominciare"},
+    fr:{Score:"Score",Blocks:"Cristaux",Orbs:"Orbes",Combo:"Combo","Stage Map":"Carte de la scène",Restart:"Redémarrer"},
     ar:{Score:"النقاط",Blocks:"البلورات",Orbs:"كرات الضوء",Combo:"سلسلة","Stage Map":"خريطة المراحل"}
   }[locale];
   if(contextual)Object.entries(contextual).forEach(([source,translated])=>exact.set(source,translated));

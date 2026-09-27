@@ -13748,8 +13748,6 @@
   }
 
   window.WeightPlayGameInfo = {
-    marketComparisonHtml,
-    syncMarketComparison,
     render,
     get(gameId) {
       const game = games[gameId];
@@ -25990,10 +25988,5 @@
   applyRuneTacticsGuideCorrections();
   window.WeightPlayGameInfo.applyRuneTacticsGuideCorrections = applyRuneTacticsGuideCorrections;
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installMarketComparisonSync, { once: true });
-  } else {
-    installMarketComparisonSync();
-  }
   render();
 })();

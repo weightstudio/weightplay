@@ -441,8 +441,7 @@
       + section('guideOverviewTitle', paragraph('guideOverview')) + section('guideRulesTitle', core)
       + section('guideProgressTitle', paragraph('guideProgress')) + section('guideDesignTitle', paragraph('guideDesign'))
       + section('guideSaveTitle', paragraph('guideSave')) + section('faqTitle', '<dl>' + faq + '</dl>')
-      + section('relatedTitle', paragraph('relatedIntro') + '<div class="game-info-related">' + related + '</div>') + '</div>'
-      + (window.WeightPlayGameInfo?.marketComparisonHtml?.('animal-bamboo-pipes', code) || '');
+      + section('relatedTitle', paragraph('relatedIntro') + '<div class="game-info-related">' + related + '</div>') + '</div>';
   }
   function html(code) {
     if (!copy[code]) return '';

@@ -22,7 +22,7 @@
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
-  const GAME_VERSION = "v25";
+  const GAME_VERSION = "v26";
   const INTERFACE_VERSION = "7";
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
@@ -406,6 +406,7 @@
     $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
     $("stageName").textContent = text("waterway", { n: selected + 1 });
     show("battle"); renderBoard(boardFocusIndex);
+    window.WeightPlayAudio?.play?.("game.start");
     track("game_start", { stage: selected + 1, entry });
     track("waterway_started", { entry });
     requestAnimationFrame(() => $("board").children[boardFocusIndex]?.focus({ preventScroll: true }));
