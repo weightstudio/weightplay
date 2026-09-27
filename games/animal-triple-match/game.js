@@ -186,7 +186,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 25;
+  const GAME_VERSION = 27;
   const INTERFACE_VERSION = 7;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -1055,11 +1055,32 @@
     const cap = run.config.trayCap;
     const pendingIds = pendingPieceIds();
     const slots = Array.from({ length: 7 }, (_, i) => {
-      if (i >= cap) return `<div class="tray-slot" aria-hidden="true" style="background:#341929;border-color:#a54867">×</div>`;
+      if (i >= cap) {
+        const unavailable = document.createElement("div");
+        unavailable.className = "tray-slot";
+        unavailable.setAttribute("aria-hidden", "true");
+        unavailable.style.cssText = "background:#341929;border-color:#a54867";
+        unavailable.textContent = "×";
+        return unavailable;
+      }
       const piece = run.tray[i];
-      return piece ? `<div class="tray-piece${pendingIds.has(piece.id) ? " matching" : ""}${run.lastTrayId === piece.id ? " tray-new" : ""}" data-tray="${piece.id}" style="${spriteStyle(piece.type)}" aria-label="${trayAriaLabel(piece, i + 1)}"></div>` : `<div class="tray-slot"></div>`;
+      if (!piece) {
+        const empty = document.createElement("div");
+        empty.className = "tray-slot";
+        return empty;
+      }
+      const node = document.createElement("div");
+      node.className = "tray-piece"
+        + (pendingIds.has(piece.id) ? " matching" : "")
+        + (run.lastTrayId === piece.id ? " tray-new" : "");
+      node.dataset.tray = String(piece.id);
+      // Assign through the DOM API so spriteStyle's CSS quotes cannot
+      // terminate a quoted HTML style attribute and discard the image URL.
+      node.style.cssText = spriteStyle(piece.type);
+      node.setAttribute("aria-label", trayAriaLabel(piece, i + 1));
+      return node;
     });
-    els.tray.innerHTML = slots.join("");
+    els.tray.replaceChildren(...slots);
     run.lastTrayId = null;
   }
   function renderTools() {

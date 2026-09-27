@@ -23,7 +23,15 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=28, INTERFACE_VERSION=7;
+  const GAME_VERSION=29, INTERFACE_VERSION=7;
+  const frame=window.WeightPlayScreenFrame.mount({
+    root:$('gameFrame'),localeSelect:$('locale'),
+    scenes:{
+      main:{root:$('mainGroup'),header:document.querySelector('#mainGroup > .main-header'),content:document.querySelector('#mainGroup > .main-screen')},
+      stage:{root:$('stage'),header:document.querySelector('#stage > .stage-header'),content:document.querySelector('#stage > .stage-canvas'),headerInfo:$('stageInfo')},
+      battle:{root:$('battle'),header:document.querySelector('#battle > .battle-header'),content:document.querySelector('#battle > .battle-canvas'),headerInfo:$('battleInfo')},
+    },
+  });
   const routeLocales=Object.fromEntries(Object.entries(routeSegments).map(([key,value])=>[value,key]));
   const memoryStorage=new Map();
   const storage={
@@ -79,12 +87,13 @@
     $("nextMission").textContent=t("nextMission");
     $("retry").textContent=resultReplayLabels[locale]||resultReplayLabels.en;
     document.title=`${t("title")} | WeightPlay`;
-    renderMain();renderStage();renderLab();if(run)updateHud(true);
+    renderMain();renderStage();renderLab();if(run)updateHud(true);frame.refresh();
   }
   function showScreen(name,{preserveStage=false}={}){
     if(name!=="stage")window.PrismBattalionStageRenderer?.cancel?.();
     currentScreen=name;document.body.dataset.screen=name;
     for(const [scene,node] of [["main",$("mainGroup")],["stage",$("stage")],["battle",$("battle")]]){const active=scene===name;node.hidden=!active;node.inert=!active;node.setAttribute("aria-hidden",String(!active))}
+    frame.activate(name);
     if(name==="main"){$("start").focus();scrollTo(0,0)}
     if(name==="stage"){if(!preserveStage)selectedStageIndex=Math.min(save.unlocked-1,29);renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(selectedStageIndex))}
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:name}}));
@@ -138,6 +147,7 @@
       const active=button.dataset.tab===name;
       button.classList.toggle("active",active);
       button.setAttribute("aria-selected",active?"true":"false");
+      button.setAttribute("aria-pressed",active?"true":"false");
       button.tabIndex=active?0:-1;
     });
     $("missionsTab").hidden=name!=="missions";

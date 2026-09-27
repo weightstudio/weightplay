@@ -25,6 +25,10 @@
 
   const ARENA_WIDTH = 800;
   const ARENA_HEIGHT = 1000;
+  const BATTLE_CAMERA_ZOOM = 1.6;
+  const BATTLE_CAMERA_VIEW_WIDTH = ARENA_WIDTH / BATTLE_CAMERA_ZOOM;
+  const BATTLE_CAMERA_VIEW_HEIGHT = ARENA_HEIGHT / BATTLE_CAMERA_ZOOM;
+  const BATTLE_CAMERA_FOLLOW_SPEED = 8;
   const SIMULATION_STEP_MS = 1000 / 60;
   const MAX_CATCH_UP_STEPS = 8;
   const PULSE_RADIUS = 220;
@@ -37,7 +41,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 29;
+  const GAME_VERSION = 30;
   const INTERFACE_VERSION = 7;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -1326,6 +1330,48 @@
     playerHitUntil: 0,
     roomGraceUntil: 0,
   };
+
+  let battleCamera = { x: ARENA_WIDTH / 2, y: ARENA_HEIGHT / 2 };
+  let battleCameraLastFrame = 0;
+  let battleCameraInitialized = false;
+
+  function getBattleCameraTarget() {
+    const halfWidth = BATTLE_CAMERA_VIEW_WIDTH / 2;
+    const halfHeight = BATTLE_CAMERA_VIEW_HEIGHT / 2;
+    return {
+      x: Math.max(halfWidth, Math.min(ARENA_WIDTH - halfWidth, state.playerX)),
+      y: Math.max(halfHeight, Math.min(ARENA_HEIGHT - halfHeight, state.playerY)),
+    };
+  }
+
+  function resetBattleCamera() {
+    battleCamera = getBattleCameraTarget();
+    battleCameraInitialized = true;
+    battleCameraLastFrame = performance.now();
+  }
+
+  function updateBattleCamera(now = performance.now()) {
+    const target = getBattleCameraTarget();
+    if (!battleCameraInitialized || now < battleCameraLastFrame) {
+      battleCamera = target;
+      battleCameraInitialized = true;
+    } else {
+      const dt = Math.min(0.12, Math.max(0, (now - battleCameraLastFrame) / 1000));
+      const blend = 1 - Math.exp(-BATTLE_CAMERA_FOLLOW_SPEED * dt);
+      battleCamera.x += (target.x - battleCamera.x) * blend;
+      battleCamera.y += (target.y - battleCamera.y) * blend;
+    }
+    battleCameraLastFrame = now;
+    return battleCamera;
+  }
+
+  function battleCanvasPointToWorld(x, y) {
+    const camera = battleCameraInitialized ? battleCamera : getBattleCameraTarget();
+    return {
+      x: Math.max(20, Math.min(ARENA_WIDTH - 20, camera.x + (x - ARENA_WIDTH / 2) / BATTLE_CAMERA_ZOOM)),
+      y: Math.max(20, Math.min(ARENA_HEIGHT - 20, camera.y + (y - ARENA_HEIGHT / 2) / BATTLE_CAMERA_ZOOM)),
+    };
+  }
 
   let profile = createDefaultProfile();
   let selectedExpedition = 1;
@@ -2733,6 +2779,7 @@
     state.playerHp = state.playerMaxHp;
     state.playerX = 400;
     state.playerY = ARENA_HEIGHT / 2;
+    resetBattleCamera();
     state.room = 1;
     state.expedition = selectedExpedition;
     state.keys = 0;
@@ -3489,6 +3536,7 @@
     state.keys = 0;
     state.playerX = 100;
     state.playerY = ARENA_HEIGHT / 2;
+    resetBattleCamera();
     
     // Heal player slightly between rooms
     const stats = getStats();
@@ -3968,6 +4016,16 @@
   function drawCanvasFrame() {
     const ctx = nodes.gameCanvas.getContext("2d");
     ctx.clearRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
+    const camera = updateBattleCamera();
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
+    ctx.clip();
+    ctx.translate(
+      ARENA_WIDTH / 2 - camera.x * BATTLE_CAMERA_ZOOM,
+      ARENA_HEIGHT / 2 - camera.y * BATTLE_CAMERA_ZOOM,
+    );
+    ctx.scale(BATTLE_CAMERA_ZOOM, BATTLE_CAMERA_ZOOM);
 
     // 1. Ruin Room background
     if (assets.bg.complete && assets.bg.naturalWidth > 0) {
@@ -3975,21 +4033,6 @@
     } else {
       ctx.fillStyle = "#111827";
       ctx.fillRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
-    }
-
-    if (state.bossWarningUntil > performance.now()) {
-      ctx.save();
-      ctx.fillStyle = "rgba(10, 20, 18, 0.78)";
-      ctx.strokeStyle = "rgba(253, 230, 138, 0.85)";
-      ctx.lineWidth = 2;
-      ctx.roundRect(230, 18, 340, 46, 14);
-      ctx.fill();
-      ctx.stroke();
-      ctx.fillStyle = "#fde68a";
-      ctx.font = "bold 20px Outfit";
-      ctx.textAlign = "center";
-      ctx.fillText(t("bossWarning"), 400, 48);
-      ctx.restore();
     }
 
     // 2. Draw Chests, Keys, Portals
@@ -4314,11 +4357,30 @@
     }
     ctx.restore();
 
-    drawRelicPulse(ctx);
+    drawRelicPulseEffect(ctx);
     drawDamageSparks(ctx);
+    ctx.restore();
+    drawBossWarning(ctx);
+    drawRelicPulseControl(ctx);
   }
 
-  function drawRelicPulse(ctx) {
+  function drawBossWarning(ctx) {
+    if (state.bossWarningUntil <= performance.now()) return;
+    ctx.save();
+    ctx.fillStyle = "rgba(10, 20, 18, 0.78)";
+    ctx.strokeStyle = "rgba(253, 230, 138, 0.85)";
+    ctx.lineWidth = 2;
+    ctx.roundRect(230, 18, 340, 46, 14);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#fde68a";
+    ctx.font = "bold 20px Outfit";
+    ctx.textAlign = "center";
+    ctx.fillText(t("bossWarning"), 400, 48);
+    ctx.restore();
+  }
+
+  function drawRelicPulseEffect(ctx) {
     syncPulseAriaLabel();
     const now = performance.now();
     const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
@@ -4337,7 +4399,9 @@
       ctx.stroke();
       ctx.restore();
     }
+  }
 
+  function drawRelicPulseControl(ctx) {
     const { x, y, radius } = PULSE_BUTTON;
     const ready = state.pulseCooldownTicks <= 0;
     const cooldownTicks = Math.max(PULSE_MIN_COOLDOWN_TICKS, PULSE_COOLDOWN_TICKS - state.relicRateCount * 60);
@@ -4515,10 +4579,9 @@
     function updateMoveTarget(event) {
       const rect = nodes.gameCanvas.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
-      moveTarget = {
-        x: Math.max(20, Math.min(780, ((event.clientX - rect.left) / rect.width) * nodes.gameCanvas.width)),
-        y: Math.max(20, Math.min(ARENA_HEIGHT - 20, ((event.clientY - rect.top) / rect.height) * nodes.gameCanvas.height)),
-      };
+      const screenX = ((event.clientX - rect.left) / rect.width) * nodes.gameCanvas.width;
+      const screenY = ((event.clientY - rect.top) / rect.height) * nodes.gameCanvas.height;
+      moveTarget = battleCanvasPointToWorld(screenX, screenY);
     }
 
     // Tap a destination or drag to continuously update movement; keyboard

@@ -230,8 +230,8 @@
     sharedFrame?.activate(name);
     if (name === "stage") {
       renderStages();
-      window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
     if (name === "battle") {
       renderBattle();
       window.WeightPlayBattleCanvas?.sync?.();

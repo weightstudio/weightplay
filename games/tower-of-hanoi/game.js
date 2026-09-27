@@ -1,8 +1,14 @@
 const towerOfHanoiArtLink = document.createElement("link");
 towerOfHanoiArtLink.rel = "stylesheet";
-towerOfHanoiArtLink.href = "art.css?v=20260921-tower-of-hanoi-block-scene-v1";
+towerOfHanoiArtLink.href = "art.css?v=20260927-tower-of-hanoi-landscape-canvas-v4";
 document.head.appendChild(towerOfHanoiArtLink);
 window.WPClassicLogic?.mount("tower-of-hanoi");
+
+const towerOfHanoiBattle = document.querySelector("#logicBattle");
+if (towerOfHanoiBattle) {
+  towerOfHanoiBattle.dataset.wpBattleLandscapeWidth = "760";
+  towerOfHanoiBattle.dataset.wpBattleLandscapeHeight = "350";
+}
 
 function reconcileTowerGuide() {
   const guide = document.querySelector(".logic-guide");

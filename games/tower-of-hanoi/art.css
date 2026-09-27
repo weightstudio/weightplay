@@ -6,3 +6,15 @@ body[data-logic-game="tower-of-hanoi"] .logic-battle-screen {
 body[data-logic-game="tower-of-hanoi"] .logic-board-panel {
   background: linear-gradient(160deg, rgba(17, 50, 92, .7), rgba(8, 23, 46, .8)), url("assets/tower-of-hanoi-board-block-v1.png") center / cover no-repeat;
 }
+
+body[data-logic-game="tower-of-hanoi"] .logic-action-row button {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Reserve a compact-landscape footer gap after the wider Canvas is applied. */
+@media (max-height: 560px) and (orientation: landscape) {
+  body[data-logic-game="tower-of-hanoi"] .logic-battle-wrap {
+    height: calc(100% - 58px);
+  }
+}
