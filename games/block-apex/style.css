@@ -1,0 +1,65 @@
+/* Game content only. Frame, guide, header and settings belong to shared CSS. */
+[hidden]{display:none!important}
+.apex-art{aspect-ratio:1;display:grid;place-items:center;overflow:hidden;background:var(--wp-ui-surface)}
+.apex-art img{display:block;width:100%;height:100%;object-fit:contain}
+.apex-art p{padding:16px;text-align:center}
+.apex-workspace{min-width:0;min-height:0;overflow:hidden;position:relative}
+.apex-track-page{height:100%;min-width:0;min-height:0;display:grid;align-items:center}
+.apex-track-map{display:block;width:80px;height:40px;max-width:100%;object-fit:contain}
+.apex-stage-card{padding:6px;background:var(--wp-ui-surface);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line);font:inherit}
+.apex-stage-card [data-wp-item-content]{gap:3px}
+.apex-stage-card strong{font-size:16px;line-height:1.2;overflow-wrap:anywhere}
+.apex-stage-card span{font-size:13px;line-height:1.2}
+.apex-stage-card small{font-size:12px;line-height:1.25;overflow-wrap:anywhere;max-width:240px}
+.apex-stage-card.locked canvas{opacity:.55}
+.apex-management{height:100%;overflow:auto;overscroll-behavior:contain;padding:12px;box-sizing:border-box}
+.apex-resource-summary,.apex-tuning-help{margin:0 0 12px}
+.apex-collection{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-content:start}
+.apex-item{min-height:180px;min-width:0;padding:12px;border:2px solid var(--wp-ui-line);background:var(--wp-ui-surface);color:var(--wp-ui-text);font:inherit;cursor:pointer;box-sizing:border-box}
+.apex-item [data-wp-item-content]{height:100%;gap:8px}
+.apex-item [data-wp-item-content] img{width:128px;height:128px;object-fit:contain}
+.apex-item[aria-pressed="true"]{border-color:var(--wp-ui-gold)}
+.apex-item[aria-disabled="true"]{opacity:.65;cursor:default}
+.apex-item strong,.apex-item small{display:block;overflow-wrap:anywhere}
+.apex-item meter{width:100%;height:16px}
+.apex-race-live{height:100%;min-height:0;min-width:0;display:grid;grid-template-rows:minmax(0,1fr) auto;overflow:hidden}
+.apex-arena{position:relative;min-width:0;min-height:0;overflow:hidden;background:#17243a}
+#arena{display:block;width:100%;height:100%;touch-action:none;outline-offset:-3px}
+.apex-objective{position:absolute;top:8px;inset-inline-start:8px;margin:0;padding:8px;max-width:calc(100% - 160px);background:rgba(10,23,34,.82);color:#fff;font-size:13px;pointer-events:none}
+#minimap{position:absolute;top:8px;inset-inline-end:8px;width:128px;height:96px;border-radius:4px;background:rgba(10,23,34,.8);pointer-events:none}
+.apex-meter-panel{position:absolute;bottom:8px;inset-inline-start:8px;display:grid;gap:4px;max-width:calc(100% - 16px);padding:8px;background:rgba(10,23,34,.85);color:#fff;pointer-events:none;font-size:12px;box-sizing:border-box}
+.apex-meter-panel>strong{font-size:24px;line-height:1}
+.apex-meter-panel>strong small{font-size:12px}
+.apex-meter-panel>span:not(:last-child){display:grid;grid-template-columns:70px 120px;gap:8px;align-items:center}
+.apex-meter-panel meter{width:120px;height:12px}
+.apex-countdown{position:absolute;inset:35% 0 auto;text-align:center;color:#fff;font-size:72px;text-shadow:0 3px 2px #17243a;pointer-events:none}
+.apex-feedback{position:absolute;inset-inline:8px;top:35%;margin:0;text-align:center;color:#fff;font-size:22px;font-weight:bold;text-shadow:0 2px 4px #13263a;pointer-events:none}
+.apex-drive-controls{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:8px;background:var(--wp-ui-background);touch-action:none}
+.apex-drive-controls button{min-width:0;min-height:52px;box-sizing:border-box;overflow-wrap:anywhere;touch-action:none;user-select:none;font-weight:bold;font-size:14px;background:var(--wp-ui-button-image);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line)}
+.apex-drive-controls button.held{background:var(--wp-ui-active);color:var(--wp-ui-text)}
+.apex-overlay{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:12px;background:rgba(8,18,30,.82);box-sizing:border-box}
+.apex-modal{max-width:620px;width:100%;max-height:100%;overflow:auto;overscroll-behavior:contain;box-sizing:border-box;padding:16px;background:var(--wp-ui-background);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line)}
+.apex-modal h2{margin:0 0 12px;font-size:24px;overflow-wrap:anywhere}
+.apex-modal p{margin:0 0 12px;line-height:1.45;overflow-wrap:anywhere}
+.apex-modal-actions{position:sticky;bottom:-16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px 0;background:var(--wp-ui-background)}
+.apex-three-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+.apex-modal-actions button{min-width:0;min-height:52px;padding:8px;font-size:14px;font-weight:bold;overflow-wrap:anywhere;color:var(--wp-ui-text);background:var(--wp-ui-active);border:2px solid var(--wp-ui-line);cursor:pointer}
+.apex-modal-actions button:disabled{opacity:.4;cursor:default}
+.apex-goal-results{margin:0 0 12px;padding-inline-start:24px;font-size:14px;line-height:1.55}
+.apex-goal-results [data-met="false"]{font-weight:bold;text-decoration:underline}
+.apex-notice{font-size:13px;line-height:1.4}
+.apex-stage-storage-warning{position:absolute;bottom:0;inset-inline:8px;margin:0;padding:4px 8px;background:var(--wp-ui-surface);color:var(--wp-ui-text);font-size:12px;z-index:2;pointer-events:none}
+.apex-boot-error{position:fixed;bottom:12px;inset-inline:12px;z-index:100;background:#17243a;color:#fff;padding:16px;border:2px solid #f5c84c}
+.apex-boot-error a{color:#f5c84c}
+@media(orientation:landscape) and (max-height:540px){
+ .apex-meter-panel{grid-template-columns:repeat(3,auto);align-items:center;gap:8px;padding:4px 8px}
+ .apex-meter-panel>span:not(:last-child){grid-template-columns:auto 70px;gap:4px}
+ .apex-meter-panel meter{width:70px}
+ .apex-meter-panel>strong{font-size:20px}
+ .apex-meter-panel>span:last-child{grid-column:1/-1}
+ #minimap{width:104px;height:78px}
+ .apex-drive-controls{padding:4px 8px}
+ .apex-modal h2{font-size:20px;margin-bottom:8px}
+ .apex-modal p,.apex-goal-results{font-size:13px;margin-bottom:8px}
+}
+@media(prefers-reduced-motion:reduce){.apex-drive-controls button{transition:none}}

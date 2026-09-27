@@ -449,6 +449,10 @@
       "date": "2026-09-11T16:47:51.441Z",
       "evidence": "canonical-public-catalog"
     },
+    "pawaxe": {
+      "date": "2026-09-27T15:59:36.430Z",
+      "evidence": "canonical-public-catalog"
+    },
     "peg-solitaire": {
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"

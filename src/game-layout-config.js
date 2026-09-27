@@ -3,6 +3,7 @@
   'use strict';
   if (window.WeightPlayLayout) return;
   const games = Object.freeze({
+    "block-apex": Object.freeze({ bannerAds: false }),
     "pawflow": Object.freeze({ bannerAds: false }),
     "fusekeep": Object.freeze({ bannerAds: false }),
     "pawaxe": Object.freeze({ bannerAds: false }),

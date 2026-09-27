@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-wp-shared-interface="7">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-interface-version" content="7">
+  <meta name="weightplay-scene-controls" content="immutable">
+  <meta name="description" content="Branch preview of Block Apex: real-time 3D block-animal kart racing with thirty authored challenges.">
+  <meta name="theme-color" content="#17243a">
+  <title>Block Apex | WeightPlay</title>
+  <!-- Branch preview must not create production analytics sessions. -->
+  <script>window.__weightPlayAnalyticsRequested=true;</script>
+  <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+  <script src="../../src/game-layout-config.js"></script>
+  <script src="../../src/site-config.js"></script>
+  <link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="style.css?v=0.1.0">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css">
+</head>
+<body data-wp-game-id="block-apex" data-screen="main" data-sound-toggle="off" data-runtime-localize="off" data-wp-game-owned-guide>
+  <div id="app" data-wp-frame-root>
+    <main id="mainScreen">
+      <header id="mainHeader">
+        <a href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay"><span>←</span></a>
+        <h1 data-wp-frame-title data-i18n="title">Block Apex</h1>
+      </header>
+      <div id="mainContent">
+        <div class="apex-art" data-wp-frame-poster>
+          <img id="poster" width="640" height="640" alt="Block-animal kart on its 3D circuit" hidden>
+          <p id="artStatus" data-i18n="loading">Loading circuit…</p>
+        </div>
+        <div data-wp-frame-copy>
+          <p data-wp-frame-summary data-i18n="pitch">Take the racing line, drift through the apex and boost past block-animal rivals across 30 authored challenges.</p>
+          <p id="mainProgress" data-wp-frame-progress>1 / 30</p>
+          <button id="start" type="button" data-wp-frame-action="primary" data-i18n="start">Start Game</button>
+          <p id="storageWarning" class="apex-notice" role="status" hidden data-i18n="storage"></p>
+        </div>
+      </div>
+    </main>
+    <!-- The real 3D square render supplies both Stage art attributes in game.mjs.
+         Approved static production poster and registry entry remain release-held. -->
+    <section id="stageScreen" class="wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
+      <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back to Main">←</button><strong data-wp-frame-title hidden>Block Apex</strong></header>
+      <div id="stageContent" class="apex-workspace">
+        <section id="stagesPanel" class="apex-track-page" role="tabpanel" aria-labelledby="stagesTab">
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stages" aria-label="Stages"></div>
+        </section>
+        <section id="garagePanel" class="apex-management" role="tabpanel" aria-labelledby="garageTab" data-wp-scroll-owner hidden>
+          <p id="garageSummary" class="apex-resource-summary"></p><div id="vehicles" class="apex-collection"></div>
+        </section>
+        <section id="tuningPanel" class="apex-management" role="tabpanel" aria-labelledby="tuningTab" data-wp-scroll-owner hidden>
+          <p id="tuningSummary" class="apex-resource-summary"></p><p class="apex-tuning-help" data-i18n="tuningHelp"></p><div id="upgrades" class="apex-collection"></div>
+        </section>
+        <p id="stageStorageWarning" class="apex-stage-storage-warning" role="status" hidden data-i18n="storage"></p>
+      </div>
+      <nav class="stage-tabs" data-wp-frame-stage-nav role="tablist" data-i18n-aria="stages" aria-label="Stages">
+        <button id="garageTab" type="button" data-tab="garage" data-wp-frame-action="tab" data-wp-frame-stage-slot="team" role="tab" aria-controls="garagePanel" aria-selected="false" tabindex="-1" data-i18n="garage">Garage</button>
+        <button id="stagesTab" type="button" data-tab="stages" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" role="tab" aria-controls="stagesPanel" aria-selected="true" data-i18n="stages">Stages</button>
+        <button id="tuningTab" type="button" data-tab="tuning" data-wp-frame-action="tab" data-wp-frame-stage-slot="equipment" role="tab" aria-controls="tuningPanel" aria-selected="false" tabindex="-1" data-i18n="tuning">Tuning</button>
+      </nav>
+    </section>
+    <section id="battleScreen" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+      <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back to Stages">←</button><strong data-wp-frame-title hidden>Block Apex</strong></header>
+      <div id="battleContent" class="apex-race-live">
+        <div id="hudStats" data-wp-frame-info><div><span data-i18n="rank">Position</span><b id="rankValue">1 / 1</b></div><div><span data-i18n="lap">Lap</span><b id="lapValue">1 / 1</b></div><div><span data-i18n="time">Time</span><b id="timeValue">0.0</b></div></div>
+        <div id="arenaWrap" class="apex-arena">
+          <canvas id="arena" tabindex="0" data-i18n-aria="arena" aria-label="3D racing circuit" aria-keyshortcuts="ArrowLeft ArrowRight A D S Space Shift X R P Escape"></canvas>
+          <p id="raceObjective" class="apex-objective"></p>
+          <canvas id="minimap" width="160" height="120" aria-hidden="true"></canvas>
+          <div class="apex-meter-panel" aria-live="off"><strong><span id="speedValue">0</span><small> km/h</small></strong><span><b data-i18n="nitro">Nitro</b><meter id="nitroMeter" aria-label="Nitro" data-i18n-aria="nitro" min="0" max="1" value="1"></meter></span><span><b data-i18n="drift">Drift</b><meter id="driftMeter" aria-label="Drift" data-i18n-aria="drift" min="0" max="2.4" value="0"></meter></span><span id="raceTargets"></span></div>
+          <strong id="countdown" class="apex-countdown" aria-live="polite" hidden></strong>
+          <p id="feedback" class="apex-feedback" role="status" aria-live="polite"></p>
+        </div>
+        <div id="driveControls" class="apex-drive-controls" data-wp-frame-logical-actions="battle" dir="ltr">
+          <button type="button" data-drive="left" data-i18n-aria="left" aria-label="Left">←</button>
+          <button type="button" data-drive="right" data-i18n-aria="right" aria-label="Right">→</button>
+          <button type="button" data-drive="brake" data-i18n="brake">Brake</button>
+          <button type="button" data-drive="drift" data-i18n="drift">Drift</button>
+          <button type="button" data-drive="boost" data-i18n="nitro">Nitro</button>
+          <button id="recover" type="button" data-i18n-aria="recover" aria-label="Recover">↺</button>
+        </div>
+      </div>
+      <div id="battleOverlay" class="apex-overlay" hidden>
+        <section id="modal" class="apex-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalText" tabindex="-1" data-wp-scroll-owner>
+          <h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalDetails"></div>
+          <div id="pauseActions" class="apex-modal-actions" data-wp-frame-logical-actions="battle" hidden><button id="continue" type="button" data-wp-tutorial-next data-i18n="continue">Continue</button><button id="leave" type="button" data-i18n="backStages">Back to Stages</button></div>
+          <div id="resultActions" class="apex-modal-actions apex-three-actions" data-wp-frame-logical-actions="battle" hidden><button id="resultStages" type="button" data-i18n="stages">Stages</button><button id="resultNext" type="button" data-i18n="next">Next</button><button id="resultReplay" type="button" data-i18n="replay">Replay</button></div>
+          <div id="errorActions" class="apex-modal-actions" data-wp-frame-logical-actions="battle" hidden><button id="errorRetry" type="button" data-i18n="retry">Retry</button><button id="errorStages" type="button" data-i18n="stages">Stages</button></div>
+        </section>
+      </div>
+    </section>
+    <select id="localeSelect" hidden aria-label="Language"></select>
+  </div>
+  <article id="guide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"></article>
+  <p id="bootError" class="apex-boot-error" role="alert" hidden>Game initialization failed. <a href="">Reload this preview</a> or <a href="/">return to WeightPlay</a>. No saved progress was intentionally removed.</p>
+  <noscript><p>This game requires JavaScript and WebGL 2.</p></noscript>
+  <script src="../../src/game-screen-frame.js"></script>
+  <script src="../../src/stage-virtualization-standard.js"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script>window.addEventListener('error',function(){if(!document.body.dataset.apexBooted)document.getElementById('bootError').hidden=false;});</script>
+  <script type="module" src="game.mjs?v=0.1.0"></script>
+</body>
+</html>
