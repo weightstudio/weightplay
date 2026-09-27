@@ -651,9 +651,77 @@
         },
       ],
     },
+    "block-apex": {
+      title: {
+        en: "Race controls",
+        "zh-Hant": "賽車操作",
+        "zh-Hans": "赛车操作",
+        ja: "レース操作",
+        ko: "레이스 조작",
+        es: "Controles de carrera",
+        "pt-BR": "Controles da corrida",
+        fr: "Commandes de course",
+        de: "Rennsteuerung",
+        it: "Comandi di gara",
+        ru: "Управление гонкой",
+        hi: "रेस नियंत्रण",
+        ar: "عناصر التحكم بالسباق",
+      },
+      steps: [
+        {
+          icon: "↔",
+          en: ["Steer and brake", "The kart accelerates automatically. Use A/D or ←/→ to steer and S/↓ to brake. Touch controls support multiple fingers."],
+          "zh-Hant": ["轉向與煞車", "賽車會自動加速。用 A/D 或 ←/→ 轉向，S/↓ 煞車；觸控按鈕可多指同時操作。"],
+          "zh-Hans": ["转向与刹车", "赛车会自动加速。用 A/D 或 ←/→ 转向，S/↓ 刹车；触控按钮支持多指同时操作。"],
+          ja: ["操舵とブレーキ", "カートは自動で加速します。A/Dまたは←/→で操舵し、S/↓でブレーキ。タッチ操作は複数指に対応します。"],
+          ko: ["조향과 제동", "카트는 자동으로 가속합니다. A/D 또는 ←/→로 조향하고 S/↓로 제동하세요. 터치 조작은 여러 손가락을 지원합니다."],
+          es: ["Gira y frena", "El kart acelera automáticamente. Usa A/D o ←/→ para girar y S/↓ para frenar. Los controles táctiles admiten varios dedos."],
+          "pt-BR": ["Vire e freie", "O kart acelera automaticamente. Use A/D ou ←/→ para virar e S/↓ para frear. Os controles de toque aceitam vários dedos."],
+          fr: ["Dirigez et freinez", "Le kart accélère automatiquement. Utilisez A/D ou ←/→ pour tourner et S/↓ pour freiner. Le tactile accepte plusieurs doigts."],
+          de: ["Lenken und bremsen", "Das Kart beschleunigt automatisch. Mit A/D oder ←/→ lenkst du, mit S/↓ bremst du. Die Touchsteuerung unterstützt mehrere Finger."],
+          it: ["Sterza e frena", "Il kart accelera automaticamente. Usa A/D o ←/→ per sterzare e S/↓ per frenare. I comandi touch supportano più dita."],
+          ru: ["Поворот и тормоз", "Карт разгоняется автоматически. Поворачивайте клавишами A/D или ←/→, тормозите S/↓. Сенсорные кнопки поддерживают несколько пальцев."],
+          hi: ["मोड़ें और ब्रेक लगाएँ", "कार अपने आप तेज़ होती है। मोड़ने के लिए A/D या ←/→ और ब्रेक के लिए S/↓ दबाएँ। टच नियंत्रण कई उँगलियों को समर्थन देते हैं।"],
+          ar: ["التوجيه والفرامل", "تتسارع العربة تلقائياً. استخدم A/D أو ←/→ للتوجيه وS/↓ للفرامل. تدعم أزرار اللمس استخدام عدة أصابع."],
+        },
+        {
+          icon: "↗",
+          en: ["Drift and use nitro", "Hold Space while steering to drift, then release for a boost. Press Shift/X to use nitro."],
+          "zh-Hant": ["甩尾與氮氣", "按住空白鍵並轉向可甩尾，放開後加速。按 Shift/X 使用氮氣。"],
+          "zh-Hans": ["漂移与氮气", "按住空格键并转向可漂移，松开后加速。按 Shift/X 使用氮气。"],
+          ja: ["ドリフトとニトロ", "Spaceを押しながら曲がるとドリフトし、離すと加速します。Shift/Xでニトロを使います。"],
+          ko: ["드리프트와 니트로", "Space를 누른 채 조향하면 드리프트하고 놓으면 가속합니다. Shift/X로 니트로를 사용하세요."],
+          es: ["Derrapa y usa nitro", "Mantén Espacio mientras giras para derrapar y suéltalo para acelerar. Pulsa Shift/X para usar nitro."],
+          "pt-BR": ["Derrape e use nitro", "Segure Espaço enquanto vira para derrapar e solte para acelerar. Pressione Shift/X para usar nitro."],
+          fr: ["Dérapez et utilisez le nitro", "Maintenez Espace en tournant pour déraper, puis relâchez pour accélérer. Appuyez sur Shift/X pour utiliser le nitro."],
+          de: ["Driften und Nitro nutzen", "Halte beim Lenken die Leertaste zum Driften und lasse sie für Schub los. Mit Shift/X nutzt du Nitro."],
+          it: ["Derapa e usa il nitro", "Tieni premuto Spazio mentre sterzi e rilascialo per accelerare. Premi Shift/X per usare il nitro."],
+          ru: ["Дрифт и нитро", "Удерживайте пробел в повороте для дрифта и отпустите для ускорения. Нажмите Shift/X, чтобы использовать нитро."],
+          hi: ["ड्रिफ्ट और नाइट्रो", "मोड़ते समय Space दबाकर रखें और बढ़त पाने के लिए छोड़ें। नाइट्रो चलाने के लिए Shift/X दबाएँ।"],
+          ar: ["الانجراف والنيترو", "اضغط Space أثناء الانعطاف للانجراف ثم اتركه للتسارع. اضغط Shift/X لاستخدام النيترو."],
+        },
+        {
+          icon: "✓",
+          en: ["Meet every stage goal", "Each stage has its own goals. Meet all listed goals to clear it. R returns to the last checkpoint and adds 3 seconds; P/Escape pauses."],
+          "zh-Hant": ["完成賽段目標", "每個賽段都有自己的目標；達成所有列出目標才能通關。R 回到最後檢查點並加 3 秒；P/Escape 暫停。"],
+          "zh-Hans": ["完成赛段目标", "每个赛段都有自己的目标；达成所有列出的目标才能通关。R 返回最后检查点并加 3 秒；P/Escape 暂停。"],
+          ja: ["ステージ目標を達成", "目標はステージごとに異なります。表示された目標をすべて達成するとクリアです。Rで最後のチェック地点へ戻り3秒加算。P/Escapeで一時停止。"],
+          ko: ["스테이지 목표 달성", "스테이지마다 목표가 다릅니다. 표시된 목표를 모두 달성해야 클리어합니다. R은 마지막 체크 지점으로 돌아가고 3초가 추가됩니다. P/Escape는 일시 정지입니다."],
+          es: ["Cumple los objetivos", "Cada etapa tiene sus propios objetivos. Cumple todos los que aparecen para superarla. R vuelve al último control y añade 3 s; P/Escape pausa."],
+          "pt-BR": ["Cumpra as metas", "Cada fase tem suas próprias metas. Cumpra todas as metas exibidas para concluí-la. R volta ao último ponto e adiciona 3 s; P/Escape pausa."],
+          fr: ["Atteignez tous les objectifs", "Chaque étape a ses objectifs. Atteignez-les tous pour la réussir. R revient au dernier point de contrôle et ajoute 3 s ; P/Escape met en pause."],
+          de: ["Erreiche alle Etappenziele", "Jede Etappe hat eigene Ziele. Erreiche alle angezeigten Ziele, um sie abzuschließen. R setzt zum letzten Kontrollpunkt zurück und addiert 3 s; P/Escape pausiert."],
+          it: ["Completa tutti gli obiettivi", "Ogni tappa ha obiettivi diversi. Raggiungili tutti per superarla. R torna all’ultimo controllo e aggiunge 3 s; P/Escape mette in pausa."],
+          ru: ["Выполните все цели этапа", "У каждого этапа свои цели. Выполните все показанные цели, чтобы пройти его. R возвращает к последней отметке и добавляет 3 с; P/Escape ставит на паузу."],
+          hi: ["चरण के सभी लक्ष्य पूरे करें", "हर चरण के लक्ष्य अलग हैं। उसे पूरा करने के लिए दिखाए गए सभी लक्ष्य हासिल करें। R अंतिम जाँच बिंदु पर लौटाता है और 3 सेकंड जोड़ता है; P/Escape रोकता है."],
+          ar: ["أكمل كل أهداف المرحلة", "لكل مرحلة أهدافها. أكمل جميع الأهداف المعروضة لاجتيازها. يعيدك R إلى آخر نقطة تحقق ويضيف 3 ثوانٍ؛ يوقف P/Escape السباق مؤقتاً."],
+        },
+      ],
+    },
   };
 
   const battleTutorialGames = new Set([
+    "block-apex",
     "animal-layer-grove",
     "animal-crownfall",
     "freecell-solitaire",
@@ -732,6 +800,7 @@
       if (startRequested) {
         window.dispatchEvent(new CustomEvent("weightplay:tutorial-start", { detail: { gameId } }));
       }
+      window.dispatchEvent(new CustomEvent("weightplay:tutorial-close", { detail: { gameId, fromButton, startRequested } }));
       window.WonderAnalytics?.track?.("tutorial_close", { game_id: gameId, from_button: fromButton });
     };
     backdrop.querySelector(".wp-tutorial-close").addEventListener("click", () => close(false));
@@ -752,6 +821,7 @@
       if (event.target === backdrop) backdrop.querySelector(".wp-tutorial-close")?.click();
     });
     document.body.append(backdrop);
+    window.dispatchEvent(new CustomEvent("weightplay:tutorial-open", { detail: { gameId, fromButton } }));
     window.WonderAnalytics?.track?.("tutorial_show", { game_id: gameId, from_button: fromButton });
   }
 

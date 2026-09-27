@@ -20,6 +20,7 @@ let locale = detectLocale(), screen = 'main', tab = 'stages', modalKind = null;
 let frame, rail, race = null, renderer = null, sound = null, input;
 let generation = 0, raf = 0, lastFrame = 0, accumulator = 0, disposed = false;
 let settingsPaused = false, feedbackUntil = 0, selectedStage = 1;
+let tutorialWaitTimer = 0, waitingForTutorial = false, tutorialWasOpened = false, tutorialPausedRace = false;
 let enginePromise = null, busy = false, hudClock = 0, lastCountdown = null;
 const art = new Map(), tracks = new Map();
 const t = (key, values={}) => translate(locale, key, values);
@@ -148,7 +149,7 @@ function disposeView() {
   renderer.dispose();renderer=null;
 }
 function endRace() {
-  generation++;busy=false;stopLoop();input.setEnabled(false);
+  generation++;busy=false;clearTutorialWait();stopLoop();input.setEnabled(false);
   sound?.destroy();sound=null;disposeView();race=null;settingsPaused=false;
   hideModal();
 }
@@ -173,6 +174,41 @@ function continueRace() {
   hideModal();settingsPaused=false;resumeRace(race);input.setEnabled(true);
   sound?.unlock();$('arena').focus({preventScroll:true});scheduleLoop();
 }
+function clearTutorialWait() {
+  if(tutorialWaitTimer)window.clearTimeout(tutorialWaitTimer);
+  tutorialWaitTimer=0;waitingForTutorial=false;tutorialWasOpened=false;tutorialPausedRace=false;
+}
+function hasSeenSharedTutorial() {
+  try{return localStorage.getItem('weightplay_tutorial_seen_block-apex_v1')==='1';}catch{return false;}
+}
+function isTutorialAutomationRun() {
+  const params=new URLSearchParams(location.search);
+  return ['smoke','qa','test'].some(key=>params.has(key));
+}
+function markTutorialSeen() {
+  store.data.tutorial=true;store.persist();syncStorage();
+}
+function onSharedTutorialOpen(event) {
+  if(event.detail?.gameId!=='block-apex'||screen!=='battle'||!race)return;
+  if(waitingForTutorial) {
+    tutorialWasOpened=true;
+    if(tutorialWaitTimer)window.clearTimeout(tutorialWaitTimer);
+    tutorialWaitTimer=0;
+    return;
+  }
+  if(modalKind||busy||settingsPaused||race.result)return;
+  tutorialPausedRace=true;input.setEnabled(false);stopLoop();sound?.silence();pauseRace(race);
+}
+function onSharedTutorialClose(event) {
+  if(event.detail?.gameId!=='block-apex')return;
+  if(waitingForTutorial&&tutorialWasOpened) {
+    clearTutorialWait();markTutorialSeen();continueRace();
+    return;
+  }
+  if(!tutorialPausedRace)return;
+  tutorialPausedRace=false;
+  if(screen==='battle'&&race&&!race.result&&!busy&&!modalKind&&!settingsPaused)continueRace();
+}
 function failed(error,token) {
   if(disposed||token!==generation||screen!=='battle')return;
   busy=false;disposeView();document.body.dataset.apexError=error?.message||'RENDER_FAILED';
@@ -191,10 +227,19 @@ async function startRace(id) {
     if(token!==generation||!renderer)return;
     renderer.render(race,0,1);busy=false;$('errorRetry').disabled=false;
     updateHud();
-    if(!store.data.tutorial) {
-      showModal('pause',t('help'),t('helpText'));
-      store.data.tutorial=true;store.persist();syncStorage();
-    } else continueRace();
+    if(!store.data.tutorial&&!hasSeenSharedTutorial()&&!isTutorialAutomationRun()) {
+      waitingForTutorial=true;tutorialWasOpened=false;hideModal();
+      window.dispatchEvent(new Event('weightplay:battle-open'));
+      tutorialWaitTimer=window.setTimeout(()=>{
+        tutorialWaitTimer=0;
+        if(disposed||token!==generation||!waitingForTutorial)return;
+        waitingForTutorial=false;tutorialWasOpened=false;markTutorialSeen();
+        showModal('pause',t('help'),t('helpText'));
+      },1500);
+    } else {
+      if(store.data.tutorial||hasSeenSharedTutorial())markTutorialSeen();
+      continueRace();
+    }
   }catch(error){$('errorRetry').disabled=false;failed(error,token);}
 }
 function showResult() {
@@ -282,6 +327,8 @@ function boot() {
     const url=new URL(location.href);url.searchParams.set('lang',locale);history.replaceState(null,'',url);
     localize();window.dispatchEvent(new CustomEvent('wonder:locale-change',{detail:{locale}}));
   });
+  listen(window,'weightplay:tutorial-open',onSharedTutorialOpen);
+  listen(window,'weightplay:tutorial-close',onSharedTutorialClose);
   listen(window,'weightplay:interaction-state',()=>{
     if(screen!=='battle'||!race||modalKind||busy||race.result)return;
     const open=Boolean($('battleHeader').querySelector('.wp-frame-popover:not([hidden])'));

@@ -2814,5 +2814,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Лапки по кругу",
     "hi": "रंगीन पंजों का चक्र",
     "ar": "حلقة الكفوف الملونة"
+  },
+  "block-apex": {
+    "__localizedExact": true,
+    "en": "Block Apex",
+    "zh-Hant": "方塊極速",
+    "zh-Hans": "方块极速",
+    "ja": "ブロック・アペックス",
+    "ko": "블록 에이펙스",
+    "es": "Apex de Bloques",
+    "pt-BR": "Apex de Blocos",
+    "fr": "Apex des Blocs",
+    "de": "Block-Apex",
+    "it": "Apex a Blocchi",
+    "ru": "Блочный апекс",
+    "hi": "ब्लॉक एपेक्स",
+    "ar": "قمة المكعبات"
   }
 };
