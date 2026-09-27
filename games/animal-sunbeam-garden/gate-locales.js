@@ -110,6 +110,7 @@
   };
   const chapterHeadings={en:"Chapter paths:","zh-Hant":"六章路線：","zh-Hans":"六章路线：",ja:"六つの章：",ko:"여섯 장의 이름:",es:"Nombres de los seis capítulos:","pt-BR":"Nomes dos seis capítulos:",fr:"Noms des six chapitres :",de:"Namen der sechs Kapitel:",it:"Nomi dei sei capitoli:",ru:"Названия шести глав:",hi:"छह अध्यायों के नाम:",ar:"أسماء الفصول الستة:"};
   for(const [code,names] of Object.entries(chapterNames)){names.forEach((name,index)=>copy[code].ui["chapterArc"+(index+1)]=name);copy[code].progression+=" "+chapterHeadings[code]+" "+names.map((name,index)=>(index+1)+": "+name).join(" · ")}
+  window.SUNBEAM_CHAPTER_NAMES=chapterNames;window.SUNBEAM_CHAPTER_HEADINGS=chapterHeadings;
   const publicCopies = Object.fromEntries(Object.entries(copy).map(([code,entry])=>[code,{system:entry.system,how:entry.how,progression:entry.progression,faq:entry.faq}]));
   window.SUNBEAM_GATE_LOCALES=Object.fromEntries(Object.entries(copy).map(([code,entry])=>[code,entry.ui]));
   for(const [code,entry] of Object.entries(copy))if(window.SUNBEAM_LOCALES?.[code])Object.assign(window.SUNBEAM_LOCALES[code],entry.ui);

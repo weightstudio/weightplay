@@ -8,7 +8,7 @@
     const root = byId('gameFrame');
     const localeSelect = byId('locale');
     const main = byId('main'), stage = byId('stage'), battle = byId('battle');
-    battle.querySelector('.battle-actions').append(byId('battleUtilityBtn'));
+    battle.querySelector('.battle-hud').append(byId('battleUtilityBtn'));
     if (!root || !localeSelect?.options.length) throw new Error('ZHAO_FRAME_NOT_READY');
     localeSelect.hidden = true;
     const oldLocaleLabel = localeSelect.closest('label');

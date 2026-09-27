@@ -46,6 +46,18 @@
   // language switch.
   document.querySelector('main#main [data-bamboo-t="summary"]')?.classList.add("main-summary");
   const text = (key, data = {}) => String((window.BAMBOO_LOCALES[locale] || BASE)[key] || BASE[key] || key).replace(/\{(\w+)\}/g, (_, name) => data[name] ?? "");
+  function beaconProgress(tiles, wet) {
+    let got = 0, total = 0;
+    tiles.forEach((tile, index) => {
+      if (!tile.beacon) return;
+      total++;
+      if (wet.has(index)) got++;
+    });
+    return { got, total };
+  }
+  // The inline arrow is authored facing south; convert north/east/south/west
+  // direction IDs into the quarter turns needed by that visual baseline.
+  function sluiceArrowRotation(exit) { return (exit + 2) % 4; }
   const screens = { main: $("main"), stage: $("stage"), battle: $("battle") };
   let sharedFrame = null;
   $("battle").append($("leaveDialogTemplate").content.cloneNode(true));
@@ -335,7 +347,7 @@
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
       if (tile.sluice) {
         const exit = (tile.sluiceBaseExit + tile.rot) % 4;
-        pipe.style.setProperty("--sluice-rotation", `${exit * 90}deg`);
+        pipe.style.setProperty("--sluice-rotation", `${sluiceArrowRotation(exit) * 90}deg`);
       } else pipe.style.removeProperty("--sluice-rotation");
       pipe.style.setProperty("--flow-delay", `${Math.min(run.flowDistance?.[index] ?? 0, 14) * 0.055}s`);
       pipe.dataset.rotation = String(tile.rot);
@@ -375,14 +387,13 @@
       };
     });
     $("moves").textContent = text("moves", { n: run.moves });
-    const bloomCount = run.tiles.filter(tile => tile.beacon).length;
-    const bloomed = run.tiles.reduce((count, tile, index) => count + Number(tile.beacon && wet.has(index)), 0);
+    const bloom = beaconProgress(run.tiles, wet);
     const hasSluice = run.tiles.some(tile => tile.sluice);
     $("cue").textContent = hintedPipeIndex >= 0
       ? text("hintRoute", { pipe: hintLabel(hintedPipeIndex), next: hintLabel(hintNeighborIndex) })
-      : hasSluice && bloomCount ? text("mixedCue", { got: bloomed, total: bloomCount })
+      : hasSluice && bloom.total ? text("mixedCue", bloom)
         : hasSluice ? text("sluiceCue")
-          : bloomCount ? text("bloomCue", { got: bloomed, total: bloomCount })
+          : bloom.total ? text("bloomCue", bloom)
             : text("cue");
     if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
@@ -414,9 +425,7 @@
     track("waterway_restored", { turns: run.moves, hint_used: Boolean(run.hintUsed), undo_used: Boolean(run.undoUsed) });
     updateMainProgress();
     $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
-    const finalWater = water(), totalBeacons = run.tiles.filter(tile => tile.beacon).length;
-    const bloomedBeacons = run.tiles.reduce((count, tile, index) => count + Number(tile.beacon && finalWater.has(index)), 0);
-    $("resultMastery").textContent = `${text("replayGoal", { moves: save.best[selected] })}${totalBeacons ? text("bloomResult", { got: bloomedBeacons, total: totalBeacons }) : ""}`;
+    $("resultMastery").textContent = masteryText();
     $("resultPreview").textContent = selected < LEVELS.length - 1
       ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
       : "";
@@ -429,6 +438,10 @@
     $("board").classList.add("celebrating");
     $("battle").classList.add("celebrating");
     scheduleCompletionReveal(primaryAction,900);
+  }
+  function masteryText() {
+    const bloom = beaconProgress(run.tiles, water());
+    return `${text("replayGoal", { moves: save.best[selected] ?? run.moves })}${bloom.total ? text("bloomResult", bloom) : ""}`;
   }
   function cancelCompletionReveal() {
     clearTimeout(completionTimer);
@@ -524,9 +537,7 @@
       $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
       $("stageName").textContent = text("waterway", { n: selected + 1 });
       $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
-      $("resultMastery").textContent = run.completed
-        ? text("replayGoal", { moves: save.best?.[selected] ?? run.moves })
-        : "";
+      $("resultMastery").textContent = run.completed ? masteryText() : "";
       $("resultPreview").textContent = run?.completed && selected < LEVELS.length - 1
         ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
         : "";

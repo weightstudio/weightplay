@@ -28,7 +28,7 @@
  const gateLocaleMap={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
  for(const [routeCode,localeCode] of Object.entries(gateLocaleMap)){
   const gateRule=window.SUNBEAM_GATE_LOCALES?.[localeCode]?.guideBody;
-  if(gateRule&&window.SUNBEAM_GUIDE_LOCALES[routeCode])window.SUNBEAM_GUIDE_LOCALES[routeCode].gateRule=gateRule;
+  if(gateRule&&window.SUNBEAM_GUIDE_LOCALES[routeCode]){const guide=window.SUNBEAM_GUIDE_LOCALES[routeCode];guide.gateRule=gateRule;guide.rule3+=" "+gateRule;const names=window.SUNBEAM_CHAPTER_NAMES?.[localeCode];const heading=window.SUNBEAM_CHAPTER_HEADINGS?.[localeCode];if(names&&heading)guide.recovery+=" "+heading+" "+names.join(" · ")+"."}
  }
  window.SUNBEAM_GUIDE_OWNER=Object.freeze({reviewedSource:'WeightPlayGeneralReviewedGuides',hideRelatedGamesLocales:Object.freeze(reviewedLocales)});
 })();

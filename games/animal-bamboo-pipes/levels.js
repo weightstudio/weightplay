@@ -28,22 +28,6 @@
     if(index<25)return{sluices:3,beacons:2};
     return{sluices:index===29?4:3,beacons:index===29?3:2};
   }
-  function pathTo(links,start,end){
-    const parent=Array(25).fill(-1),queue=[start];parent[start]=start;
-    while(queue.length){
-      const current=queue.shift();
-      if(current===end)break;
-      links[current].forEach(direction=>{
-        const [dr,dc]=directions[direction],row=Math.floor(current/size)+dr,col=current%size+dc,next=row*size+col;
-        if(parent[next]!==-1)return;
-        parent[next]=current;queue.push(next);
-      });
-    }
-    if(parent[end]===-1)return[];
-    const path=[];let current=end;
-    while(current!==start){path.push(current);current=parent[current]}
-    path.push(start);return path.reverse();
-  }
   function snake(vertical=false){
     const route=[];
     for(let major=0;major<size;major++)for(let minor=0;minor<size;minor++){
