@@ -90,7 +90,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #s
   gap: 8px;
   background: #071d2ed9;
 }
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #stageScreen .stage-heading > div,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #stageScreen .stage-heading > div:not(.wp-shell-settings),
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #stageScreen > .subtitle { display:none !important; }
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #stageBack,
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #battleBack {
@@ -190,7 +190,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #b
   min-height: var(--wp-kite-top);
   margin: 0;
   padding: 0 8px;
-  display: grid;
+  display: grid !important;
   grid-template-columns: 48px minmax(0,1fr) 48px;
   align-items: center;
   gap: 8px;
@@ -198,7 +198,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #b
   border-radius: 0;
   background: #071d2e;
 }
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #battleScreen .battle-heading > div { display:none !important; }
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #battleScreen .battle-heading > div:not(.wp-shell-settings) { display:none !important; }
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #progressPill {
   grid-column: 2;
   justify-self: center;

@@ -8,7 +8,7 @@
       if (!link) {
         link = document.createElement("link");
         link.rel = "stylesheet";
-        link.href = new URL("interface-7-cleanup.css?v=20260925-kite-keeper-v11-issue-repair", interface7Base).href;
+        link.href = new URL("interface-7-cleanup.css?v=20260928-kite-keeper-v12-stage-utilities", interface7Base).href;
         document.head.appendChild(link);
       }
       if (link.sheet) { resolve(); return; }
@@ -25,7 +25,7 @@
       let script = document.querySelector('script[src*="interface-7-compat.js"]');
       if (!script) {
         script = document.createElement("script");
-        script.src = new URL("interface-7-compat.js?v=20260925-kite-keeper-v11-issue-repair", interface7Base).href;
+        script.src = new URL("interface-7-compat.js?v=20260928-kite-keeper-v12-stage-utilities", interface7Base).href;
         script.async = false;
         script.addEventListener("error", () => {
           document.documentElement.dataset.wpKiteKeeperI7AssetError = "js";

@@ -68,6 +68,7 @@
       stage.setAttribute('data-wp-standard-stage-screen', '');
       stage.setAttribute('data-wp-stage-art', 'assets/animal-kite-keeper-cover-block-v1.webp');
       stage.style.setProperty('--wp-stage-art', "url('assets/animal-kite-keeper-cover-block-v1.webp')");
+      stageList.dataset.wpStageCenterObserver = 'manual';
 
       let workspace = stage.querySelector('.wp-i7-stage-workspace');
       if (!workspace) {
@@ -196,7 +197,7 @@
     }
 
     function queueStageRecommendation() {
-      queueMicrotask(recommendHighestAvailableStage);
+      requestAnimationFrame(() => requestAnimationFrame(recommendHighestAvailableStage));
     }
 
     function setResultState() {
