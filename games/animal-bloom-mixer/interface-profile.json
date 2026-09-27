@@ -1,13 +1,19 @@
 {
   "schemaVersion": 1,
   "gameId": "animal-bloom-mixer",
-  "interfaceVersion": 6,
+  "interfaceVersion": 7,
   "audience": "general",
-  "flow": "MAIN_BATTLE",
-  "stage": { "enabled": false },
-  "battle": { "enabled": true },
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": {
+    "enabled": true,
+    "total": 3,
+    "selector": "SHARED_HORIZONTAL_RAIL"
+  },
+  "battle": {
+    "enabled": true
+  },
   "result": "BATTLE_SUBSTATE",
-  "reserve": "GENERAL_56PX",
+  "reserve": "NONE_BANNER_ADS_FALSE",
   "status": "internal-noindex-prototype",
   "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY"
 }

@@ -39,23 +39,42 @@
     hi:{settings:"सेटिंग",shellReturn:"WeightPlay पर लौटें",beatStations:"ताल स्टेशन"},
     ar:{settings:"الإعدادات",shellReturn:"العودة إلى WeightPlay",beatStations:"محطات الإيقاع"},
   };
+  const START_GAME = {
+    en:"Start Game","zh-Hant":"開始遊戲","zh-Hans":"开始游戏",ja:"ゲーム開始",ko:"게임 시작",es:"Iniciar juego","pt-BR":"Iniciar jogo",fr:"Démarrer le jeu",de:"Spiel starten",it:"Inizia il gioco",ru:"Начать игру",hi:"गेम शुरू करें",ar:"ابدأ اللعب"
+  };
+  const LEAVE_COPY = {
+    en:["Leave this relay?","Your unfinished station run will be discarded. Your saved best relay stays safe.","Continue Playing","Return to Main"],
+    "zh-Hant":["離開這次接力？","尚未完成的站點接力會被捨棄；已儲存的最佳紀錄會保留。","繼續遊玩","返回主畫面"],
+    "zh-Hans":["离开这次接力？","尚未完成的站点接力会被放弃；已保存的最佳纪录会保留。","继续游玩","返回主画面"],
+    ja:["このリレーを離れますか？","未完了のステーション進行は破棄されます。保存済みのベスト記録は残ります。","プレイを続ける","メインへ戻る"],
+    ko:["이 릴레이를 나갈까요?","완료하지 않은 스테이션 진행은 사라집니다. 저장된 최고 기록은 유지됩니다.","계속 플레이","메인으로 돌아가기"],
+    es:["¿Salir de este relevo?","Se descartará el recorrido de estaciones sin terminar. Tu mejor marca guardada se conservará.","Seguir jugando","Volver al inicio"],
+    "pt-BR":["Sair deste revezamento?","O percurso de estações inacabado será descartado. Seu melhor resultado salvo será mantido.","Continuar jogando","Voltar ao início"],
+    fr:["Quitter ce relais ?","Le parcours de stations inachevé sera abandonné. Ton meilleur score enregistré restera intact.","Continuer à jouer","Retour à l’accueil"],
+    de:["Diese Staffel verlassen?","Der unfertige Stationslauf wird verworfen. Dein gespeicherter Bestwert bleibt erhalten.","Weiterspielen","Zur Startseite"],
+    it:["Uscire da questa staffetta?","Il percorso incompleto delle stazioni verrà annullato. Il miglior risultato salvato resterà intatto.","Continua a giocare","Torna alla schermata iniziale"],
+    ru:["Выйти из эстафеты?","Незавершённый проход станций будет сброшен. Сохранённый лучший результат останется.","Продолжить игру","На главный экран"],
+    hi:["इस रिले से बाहर जाएँ?","अधूरी स्टेशन रिले छोड़ दी जाएगी। सेव किया गया सर्वश्रेष्ठ परिणाम सुरक्षित रहेगा।","खेल जारी रखें","मुख्य स्क्रीन पर लौटें"],
+    ar:["مغادرة هذا التتابع؟","سيتم تجاهل مسار المحطات غير المكتمل، وستبقى أفضل نتيجة محفوظة.","متابعة اللعب","العودة إلى الرئيسية"]
+  };
   const normalizeLocale = (value) => LOCALES.includes(value) ? value : "en";
   const readInitialLocale = () => {
     let saved = "";
     try { saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale") || ""; } catch (_) { /* session-safe */ }
     return normalizeLocale(window.WonderI18n?.actualLocale?.() || saved || document.documentElement.lang);
   };
-  let locale = readInitialLocale(), station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = !window.WeightPlayAudio.isMuted(), ready = false, liveStatusKey = "timingTip", liveStatusGood = false;
+  let locale = readInitialLocale(), station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = !window.WeightPlayAudio.isMuted(), ready = false, liveStatusKey = "timingTip", liveStatusGood = false, relayPaused = false, pausedAt = 0, finishTimer = 0, finishPending = false, finishRemaining = 0, finishDueAt = 0;
   window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
   const t = (key, vars = {}) => { const source = key === "completeBody" ? (COMPLETE_BODY[locale] || COMPLETE_BODY.en) : ((COPY[locale] || COPY.en)[key] || COPY.en[key] || key); const normalized = source.replaceAll(" / 4", " / 4"); return Object.entries(vars).reduce((value, [name, replacement]) => value.replaceAll(`{${name}}`, replacement), normalized); };
   const a11y = (key) => (ACCESSIBLE_LABELS[locale] || ACCESSIBLE_LABELS.en)[key];
   const track = (event, details = {}) => {
-    const payload = { game_id:"animal-rhythm-relay", game_version:"v6", interface_version:"6", locale, ...details };
+    const payload = { game_id:"animal-rhythm-relay", game_version:"v7", interface_version:"7", locale, ...details };
     window.WonderAnalytics?.track?.(event, payload);
     window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { event, ...payload } }));
   };
   function readBest() { try { return Number(localStorage.getItem("animalRhythmRelayBest") || 0); } catch { return 0; } }
   function saveBest(value) { try { localStorage.setItem("animalRhythmRelayBest", String(value)); } catch { /* session-safe */ } }
+  function syncSharedFrame() { window.dispatchEvent(new CustomEvent("weightplay:shell-sync")); }
   function announce(key, good = false) { liveStatusKey = key; liveStatusGood = Boolean(good); $("battleStatus").textContent = t(key); $("battleStatus").style.color = good ? "#ffe59b" : "#fff"; }
   function setSound(next) { sound = window.WeightPlayAudio.setEnabled(Boolean(next)); document.querySelectorAll("[data-sound-toggle]").forEach((button) => { button.textContent = t(sound ? "soundOn" : "soundOff"); button.setAttribute("aria-pressed", String(sound)); }); }
   function beep(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
@@ -67,7 +86,7 @@
   function applyCopy() {
     document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    $("localeSelect").value = locale; $("localeSelect").setAttribute("aria-label", t("language")); $("settingsButton").setAttribute("aria-label", a11y("settings")); document.querySelector("[data-wp-return=\"main\"]")?.setAttribute("aria-label", a11y("shellReturn")); $("battleBack").setAttribute("aria-label", t("back")); $("relayField").setAttribute("aria-label", a11y("beatStations")); setSound(sound); renderMainProgress(); renderBattle(); renderResult(); if (!$("battleScreen").hidden) announce(liveStatusKey, liveStatusGood);
+    $("localeSelect").value = locale; $("localeSelect").setAttribute("aria-label", t("language")); document.querySelector("[data-wp-return=\"main\"]")?.setAttribute("aria-label", a11y("shellReturn")); $("battleBack").setAttribute("aria-label", t("back")); $("relayField").setAttribute("aria-label", a11y("beatStations")); $("startButton").textContent = START_GAME[locale] || START_GAME.en; const leave = LEAVE_COPY[locale] || LEAVE_COPY.en; $("leaveTitle").textContent = leave[0]; $("leaveBody").textContent = leave[1]; $("leaveContinue").textContent = leave[2]; $("leaveMain").textContent = leave[3]; setSound(sound); renderMainProgress(); renderBattle(); renderResult(); if (!$("battleScreen").hidden && $("leaveCard").hidden) announce(liveStatusKey, liveStatusGood);
   }
   function renderMainProgress() { $("mainProgress").textContent = best ? t("best", { n: best }) : t("best", { n: 0 }); }
   function renderBattle() {
@@ -76,21 +95,83 @@
     document.querySelectorAll("[data-station]").forEach((button) => { const index = Number(button.dataset.station); const name = (STATIONS[locale] || STATIONS.en)[index]; button.classList.toggle("is-target", index === station && station < 4); button.setAttribute("aria-label", `${name} — ${t("tapHere")}`); const label = button.querySelector("[data-station-name]"); if (label) label.textContent = name; });
     if (station < 4) $("battleTip").textContent = t("timingTip");
   }
-  function showMain(focus = true) { clearInterval(ticker); $("mainScreen").hidden = false; $("battleScreen").hidden = true; $("resultCard").hidden = true; document.body.dataset.screen = "main"; renderMainProgress(); if (focus) $("startButton").focus({ preventScroll:true }); window.scrollTo(0, 0); }
-  function startRelay() { if (!ready) return; station = 0; combo = 0; startedAt = performance.now(); $("mainScreen").hidden = true; $("battleScreen").hidden = false; $("resultCard").hidden = true; document.body.dataset.screen = "battle"; window.scrollTo(0, 0); renderBattle(); announce("timingTip"); ticker = window.setInterval(renderBattle, 120); window.dispatchEvent(new CustomEvent("weightplay:battle-open")); track("game_start"); }
-  function finishRelay() { clearInterval(ticker); best = Math.max(best, combo); saveBest(best); $("resultCard").hidden = false; renderResult(); $("badgeLabel").textContent = t("badge", { n: 1 }); $("retryButton").focus(); track("game_complete", { combo, best }); }
+  function clearPendingFinish() {
+    if (finishTimer) window.clearTimeout(finishTimer);
+    finishTimer = 0; finishPending = false; finishRemaining = 0; finishDueAt = 0;
+  }
+  function scheduleFinish(delay = 260) {
+    if (finishTimer) window.clearTimeout(finishTimer);
+    finishPending = true; finishRemaining = Math.max(0, Number(delay) || 0); finishDueAt = performance.now() + finishRemaining;
+    finishTimer = window.setTimeout(() => { finishTimer = 0; finishPending = false; finishRemaining = 0; finishRelay(); }, finishRemaining);
+  }
+  function pausePendingFinish() {
+    if (!finishPending) return;
+    if (finishTimer) window.clearTimeout(finishTimer);
+    finishTimer = 0; finishRemaining = Math.max(0, finishDueAt - performance.now());
+  }
+  function setBattleCovered(covered) {
+    const live = $("battleLive");
+    if (live) live.inert = Boolean(covered);
+  }
+  function hideLeave() { $("leaveCard").hidden = true; document.body.classList.remove("wp-rhythm-leave-open"); }
+  function showMain(focus = true) {
+    clearInterval(ticker); ticker = 0; clearPendingFinish(); relayPaused = false; hideLeave(); setBattleCovered(false);
+    $("mainScreen").hidden = false; $("battleScreen").hidden = true; $("resultCard").hidden = true; document.body.dataset.screen = "main"; delete document.body.dataset.wpBattleSubstate;
+    syncSharedFrame(); renderMainProgress(); if (focus) $("startButton").focus({ preventScroll:true }); window.scrollTo(0, 0);
+  }
+  function startRelay() {
+    if (!ready) return;
+    clearInterval(ticker); ticker = 0; clearPendingFinish(); relayPaused = false; hideLeave(); setBattleCovered(false);
+    station = 0; combo = 0; startedAt = performance.now(); $("mainScreen").hidden = true; $("battleScreen").hidden = false; $("resultCard").hidden = true; document.body.dataset.screen = "battle"; delete document.body.dataset.wpBattleSubstate;
+    syncSharedFrame(); window.scrollTo(0, 0); renderBattle(); announce("timingTip"); ticker = window.setInterval(renderBattle, 120); window.dispatchEvent(new CustomEvent("weightplay:battle-open")); track("game_start");
+  }
+  function finishRelay() {
+    clearInterval(ticker); ticker = 0; clearPendingFinish(); relayPaused = false; best = Math.max(best, combo); saveBest(best);
+    setBattleCovered(true); $("resultCard").hidden = false; document.body.dataset.wpBattleSubstate = "result"; syncSharedFrame(); renderResult(); $("badgeLabel").textContent = t("badge", { n: 1 }); $("retryButton").focus(); track("game_complete", { combo, best });
+  }
+  function openLeave() {
+    if ($("battleScreen").hidden || !$("resultCard").hidden || !$("leaveCard").hidden) return;
+    relayPaused = true; pausedAt = performance.now(); clearInterval(ticker); ticker = 0; pausePendingFinish();
+    setBattleCovered(true); $("leaveCard").hidden = false; document.body.classList.add("wp-rhythm-leave-open"); $("leaveContinue").focus({ preventScroll:true });
+  }
+  function continueRelay() {
+    if ($("leaveCard").hidden) return;
+    const pausedFor = Math.max(0, performance.now() - pausedAt); startedAt += pausedFor; relayPaused = false; hideLeave(); setBattleCovered(false);
+    if (station < 4) ticker = window.setInterval(renderBattle, 120);
+    else if (finishPending) scheduleFinish(finishRemaining);
+    $("battleBack").focus({ preventScroll:true });
+  }
+  function leaveRelay() {
+    clearInterval(ticker); ticker = 0; clearPendingFinish(); relayPaused = false; hideLeave(); setBattleCovered(false); showMain();
+  }
   function tap(index) {
-    if ($("battleScreen").hidden || station >= 4) return;
+    if ($("battleScreen").hidden || relayPaused || !$("resultCard").hidden || station >= 4) return;
     if (index !== station) { combo = 0; announce("wrong"); beep("feedback.error"); renderBattle(); return; }
     const phase = ((performance.now() - startedAt) % 1600) / 1600; const accurate = phase > .36 && phase < .64;
     combo += accurate ? 1 : 0; announce(accurate ? "good" : phase <= .36 ? "early" : "late", accurate); beep(accurate ? "feedback.success" : "feedback.error"); station += 1; renderBattle(); track("relay_tap", { station, accurate, timing: accurate ? "good" : phase <= .36 ? "early" : "late" });
-    if (station >= 4) window.setTimeout(finishRelay, 260);
+    if (station >= 4) scheduleFinish(260);
   }
-  $("startButton").addEventListener("click", startRelay); $("retryButton").addEventListener("click", startRelay); $("homeButton").addEventListener("click", showMain); $("battleBack").addEventListener("click", showMain);
+  $("startButton").addEventListener("click", startRelay); $("retryButton").addEventListener("click", startRelay); $("homeButton").addEventListener("click", showMain); $("battleBack").addEventListener("click", openLeave);
+  $("leaveContinue").addEventListener("click", continueRelay); $("leaveMain").addEventListener("click", leaveRelay);
+  $("leaveCard").addEventListener("keydown", (event) => {
+    if (event.key === "Escape") { event.preventDefault(); continueRelay(); return; }
+    if (event.key !== "Tab") return;
+    const controls = [...$("leaveCard").querySelectorAll("button:not([disabled])")];
+    if (!controls.length) return;
+    const first = controls[0], last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  $("resultCard").addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const controls = [...$("resultCard").querySelectorAll("button:not([disabled])")];
+    if (!controls.length) return;
+    const first = controls[0], last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
   window.addEventListener("weightplay:tutorial-start", (event) => { if (event.detail?.gameId === "animal-rhythm-relay") startRelay(); });
   document.querySelectorAll("[data-station]").forEach((button) => button.addEventListener("click", () => tap(Number(button.dataset.station))));
-  $("settingsButton").addEventListener("click", () => { const open = $("settingsPopover").hidden; $("settingsPopover").hidden = !open; $("settingsButton").setAttribute("aria-expanded", String(open)); if (open) $("localeSelect").focus(); });
-  document.querySelectorAll("[data-sound-toggle]").forEach((button) => button.addEventListener("click", () => setSound(!sound)));
   $("localeSelect").addEventListener("change", (event) => { locale = normalizeLocale(event.target.value); try { localStorage.setItem("weightPlayLocale", locale); } catch (_) { /* session-safe */ } applyCopy(); });
   $("localeSelect").innerHTML = LOCALES.map((code) => `<option value="${code}">${LABELS[code]}</option>`).join("");
   applyCopy(); showMain(false);
