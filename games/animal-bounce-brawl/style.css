@@ -88,3 +88,11 @@ body[data-wp-game-id="animal-bounce-brawl"] .battle-readout #health-label{
   font-size:clamp(.62rem,2.8vw,.9rem);
   text-align:end;
 }
+
+body[data-wp-five-game="animal-bounce-brawl"] .stage-screen #practice-start{margin-top:12px;min-height:48px;border-color:var(--gold);font-weight:800}
+.tutorial-panel:not([hidden]){flex:1 0 100%;color:var(--gold);font-weight:800;white-space:normal;line-height:1.25}
+body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode #battle-status-copy,
+body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode .selected-tool-label,
+body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode .approach-cue{display:none}
+body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode .battle-status{white-space:normal;overflow:visible}
+@media (orientation:landscape) and (max-height:560px){body[data-wp-five-game="animal-bounce-brawl"] .battle-screen.practice-mode{grid-template-rows:52px 48px minmax(0,1fr) 24px}}

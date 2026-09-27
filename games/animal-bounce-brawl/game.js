@@ -98,29 +98,30 @@
     hi: { title: "फोम अखाड़ा", subtitle: "खिलौना भौतिकी अभ्यास अखाड़ा" },
     ar: { title: "ساحة الرغوة", subtitle: "ساحة اختبار فيزياء الألعاب" },
   }[locale] || { title: "FOAM ZONE", subtitle: "A toy physics test arena" };
-  const state = { screen: "main", arena: 1, best: Number(localStorage.getItem("wp-brawl-best") || 0), keys: new Set(), player: null, rival: null, tool: 0, raf: 0, last: 0, attack: 0, flash: 0, elapsed: 0, jumpQueued: false };
+  const state = { screen: "main", arena: 1, best: Number(localStorage.getItem("wp-brawl-best") || 0), keys: new Set(), player: null, rival: null, tool: 0, raf: 0, last: 0, attack: 0, flash: 0, elapsed: 0, jumpQueued: false, practice: null };
   let observedPlayer = null;
   let observedPlayerHealth = 100;
   let hurtSoundCooldown = 0;
   const text = (value) => window.wpFiveText ? window.wpFiveText(value) : value;
-  function ensureBattleStatusControls() { const status = $("battle-status"); if (!status) return; let message = $("battle-status-copy"); let selected = $("selected-tool-label"); let approach = $("approach-cue"); if (!message || !selected || !approach) { const initial = message?.textContent || status.textContent.trim(); status.replaceChildren(); message = document.createElement("span"); message.id = "battle-status-copy"; message.textContent = initial; selected = document.createElement("span"); selected.id = "selected-tool-label"; selected.className = "selected-tool-label"; approach = document.createElement("span"); approach.id = "approach-cue"; approach.className = "approach-cue"; approach.setAttribute("role", "status"); approach.setAttribute("aria-live", "polite"); status.append(message, selected, approach); } }
+  function ensureBattleStatusControls() { const status = $("battle-status"); if (!status) return; let message = $("battle-status-copy"); let selected = $("selected-tool-label"); let approach = $("approach-cue"); let tutorialPanel = $("tutorialPanel"); if (!message) { message = document.createElement("span"); message.id = "battle-status-copy"; message.textContent = status.textContent.trim(); status.replaceChildren(message); } if (!selected) { selected = document.createElement("span"); selected.id = "selected-tool-label"; selected.className = "selected-tool-label"; status.append(selected); } if (!approach) { approach = document.createElement("span"); approach.id = "approach-cue"; approach.className = "approach-cue"; approach.setAttribute("role", "status"); approach.setAttribute("aria-live", "polite"); status.append(approach); } if (!tutorialPanel) { tutorialPanel = document.createElement("span"); tutorialPanel.id = "tutorialPanel"; tutorialPanel.className = "tutorial-panel"; tutorialPanel.setAttribute("role", "status"); tutorialPanel.setAttribute("aria-live", "polite"); tutorialPanel.hidden = true; status.append(tutorialPanel); } }
   function setStatus(value) { ensureBattleStatusControls(); const message = $("battle-status-copy"); if (message) message.textContent = value; }
   function updateApproachCue() { ensureBattleStatusControls(); const cue = $("approach-cue"); if (!cue || !state.player || !state.rival) return; const distance = Math.round(Math.abs(state.player.x - state.rival.x)); const stateLabel = distance < 170 ? copy.ready : copy.close; cue.textContent = copy.approach.replace("{distance}", String(distance)).replace("{state}", stateLabel); }
   function localizeBattleControls() { ensureBattleStatusControls(); const kit = tools[state.tool]; const selected = $("selected-tool-label"); if (selected) selected.textContent = `${copy.selected} ${copy[kit.name]} · ♥−${kit.damage} · ↔${kit.force}`; const bounce = document.querySelector('[data-key="Space"]'); if (bounce) { bounce.textContent = copy.BOUNCE; bounce.setAttribute("aria-label", copy.BOUNCE); } const hop = document.querySelector('[data-key="ArrowUp"]'); if (hop) { hop.textContent = copy.HOP; hop.setAttribute("aria-label", copy.HOP); } const touchHint = document.querySelector(".touch-hint"); if (touchHint) touchHint.textContent = copy.hint; const battleHelp = $("battle-help"); if (battleHelp) { battleHelp.setAttribute("aria-label", copy.help); battleHelp.title = copy.help; } const helpPopover = $("battle-help-popover"); if (helpPopover) helpPopover.textContent = copy.hint; document.querySelectorAll("[data-tool]").forEach((button) => { const tool = tools[Number(button.dataset.tool)]; button.textContent = `${copy[tool.name]}\n♥−${tool.damage} · ↔${tool.force}`; button.setAttribute("aria-pressed", String(tool === kit)); }); updateApproachCue(); }
   function toggleBattleHelp() { const button = $("battle-help"); const panel = $("battle-help-popover"); if (!button || !panel) return; const open = panel.hidden; panel.hidden = !open; button.setAttribute("aria-expanded", String(open)); if (open) panel.textContent = copy.hint; }
-  function show(name) { state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
+  function show(name) { state.screen = name; $("battle-screen")?.classList.toggle("practice-mode", name === "battle" && Boolean(state.practice?.active)); document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function localizeStageSurface() { $("stage-title").textContent = stageCopy.title; $("stage-status").textContent = stageCopy.status; $("stage-tab").textContent = stageCopy.tab; document.querySelector(".stage-tabs")?.setAttribute("aria-label", stageCopy.nav); $("stage-back").setAttribute("aria-label", stageCopy.stageBack); $("battle-back").setAttribute("aria-label", stageCopy.battleBack); }
+  function localizeStageSurface() { $("stage-title").textContent = stageCopy.title; $("stage-status").textContent = stageCopy.status; $("stage-tab").textContent = stageCopy.tab; $("practice-start").textContent = window.BounceBrawlTutorial?.copy.practice || "Guided Practice"; document.querySelector(".stage-tabs")?.setAttribute("aria-label", stageCopy.nav); $("stage-back").setAttribute("aria-label", stageCopy.stageBack); $("battle-back").setAttribute("aria-label", stageCopy.battleBack); }
   function stageCards() { localizeStageSurface(); $("stage-list").innerHTML = stageCopy.cards.map((card, index) => `<button data-wp-stage-card aria-disabled="false" data-arena="${index + 1}" aria-label="${card[0]}: ${card[1]}">${card[0]}<br><small>${card[1]}</small></button>`).join(""); $("stage-list").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => startArena(Number(b.dataset.arena)))); }
-  function startArena(arena = 1) { state.arena = arena; state.player = { x: 230, y: 390, vx: 0, vy: 0, hp: 100 }; state.rival = { x: 720, y: 390, vx: 0, vy: 0, hp: 90 + arena * 10 }; state.tool = 0; state.attack = 0; state.flash = 0; state.elapsed = 0; state.jumpQueued = false; (__wpNotifyMeasurement(), $("result-screen")?.removeAttribute("data-outcome")); (__wpNotifyMeasurement(), $("result-screen")?.removeAttribute("data-arena")); const helpPopover = $("battle-help-popover"); const helpButton = $("battle-help"); if (helpPopover) (__wpNotifyMeasurement(), helpPopover.hidden = true); if (helpButton) helpButton.setAttribute("aria-expanded", "false"); $("arena-label").textContent = `${stageCopy.cards[arena - 1]?.[0] || `Arena ${arena}`} / 6`; $("health-label").textContent = `${healthCopy.you} 100 · ${healthCopy.rival} ${state.rival.hp}`; localizeBattleControls(); setStatus(copy.hint); show("battle");
+  function startArena(arena = 1) { state.practice = null; window.BounceBrawlTutorial?.clear(); state.arena = arena; state.player = { x: 230, y: 390, vx: 0, vy: 0, hp: 100 }; state.rival = { x: 720, y: 390, vx: 0, vy: 0, hp: 90 + arena * 10 }; state.tool = 0; state.attack = 0; state.flash = 0; state.elapsed = 0; state.jumpQueued = false; (__wpNotifyMeasurement(), $("result-screen")?.removeAttribute("data-outcome")); (__wpNotifyMeasurement(), $("result-screen")?.removeAttribute("data-arena")); const helpPopover = $("battle-help-popover"); const helpButton = $("battle-help"); if (helpPopover) (__wpNotifyMeasurement(), helpPopover.hidden = true); if (helpButton) helpButton.setAttribute("aria-expanded", "false"); $("arena-label").textContent = `${stageCopy.cards[arena - 1]?.[0] || `Arena ${arena}`} / 6`; $("health-label").textContent = `${healthCopy.you} 100 · ${healthCopy.rival} ${state.rival.hp}`; localizeBattleControls(); setStatus(copy.hint); show("battle");
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-  function selectTool(index) { state.tool = Math.max(0, Math.min(tools.length - 1, Number(index))); document.querySelectorAll("[data-tool]").forEach((b) => b.classList.toggle("selected", Number(b.dataset.tool) === state.tool)); canvas.dataset.selectedTool = tools[state.tool].name; localizeBattleControls(); setStatus(`${copy.selected} ${copy[tools[state.tool].name]}`); }
-  function strike() { if (state.attack > 0 || state.screen !== "battle") return; const p = state.player, r = state.rival, kit = tools[state.tool]; state.attack = kit.cooldown; const d = Math.hypot(p.x-r.x,p.y-r.y); if (d < 170) { r.hp -= kit.damage; r.vx += p.x < r.x ? kit.force : -kit.force; r.vy = -4.8; state.flash = 8; window.dispatchEvent(new CustomEvent("weightplay:bounce-impact", { detail: { tool: state.tool } })); setStatus(`${copy[kit.name]} · ${copy.hint}`); } else { setStatus(copy.tooFar); } }
+  function startPractice() { state.practice = { active: true, step: 0, wallBroken: false, padUsed: false }; state.player = { x: 230, y: 390, vx: 0, vy: 0, hp: 100 }; state.rival = { x: 790, y: 390, vx: 0, vy: 0, hp: 100 }; state.tool = 0; state.attack = 0; state.flash = 0; state.elapsed = 0; state.jumpQueued = false; state.keys.clear(); $("arena-label").textContent = window.BounceBrawlTutorial.copy.practice; $("health-label").textContent = `${healthCopy.you} 100 · ${window.BounceBrawlTutorial.copy.target} 100`; localizeBattleControls(); setStatus(window.BounceBrawlTutorial.copy.move); window.BounceBrawlTutorial.render(0, state.tool); show("battle"); }
+  function selectTool(index) { state.tool = Math.max(0, Math.min(tools.length - 1, Number(index))); document.querySelectorAll("[data-tool]").forEach((b) => b.classList.toggle("selected", Number(b.dataset.tool) === state.tool)); canvas.dataset.selectedTool = tools[state.tool].name; localizeBattleControls(); setStatus(`${copy.selected} ${copy[tools[state.tool].name]}`); if (state.practice?.active) window.BounceBrawlTutorial?.render(state.practice.step, state.tool); }
+  function strike() { if (state.attack > 0 || state.screen !== "battle") return; const p = state.player, r = state.rival, kit = tools[state.tool]; state.attack = kit.cooldown; const d = Math.hypot(p.x-r.x,p.y-r.y); if (state.practice?.active) { const practice = state.practice; if (practice.step === 1 && state.tool === 0) { practice.wallBroken = true; practice.step = 2; state.flash = 10; setStatus(window.BounceBrawlTutorial.copy.springNeed); window.dispatchEvent(new CustomEvent("weightplay:bounce-impact", { detail: { tool: state.tool } })); window.BounceBrawlTutorial.render(practice.step, state.tool); } else if (practice.step === 3 && state.tool === 2 && d < 170) { r.hp -= kit.damage; r.vx += p.x < r.x ? kit.force : -kit.force; r.vy = -4.8; state.flash = 10; practice.step = 4; setStatus(`${copy.PAD} · ${window.BounceBrawlTutorial.copy.done}`); window.dispatchEvent(new CustomEvent("weightplay:bounce-impact", { detail: { tool: state.tool } })); window.BounceBrawlTutorial.render(practice.step, state.tool); } else if (practice.step === 3 && d >= 170) setStatus(copy.tooFar); else if (practice.step === 1) setStatus(window.BounceBrawlTutorial.copy.wall); return; } if (d < 170) { r.hp -= kit.damage; r.vx += p.x < r.x ? kit.force : -kit.force; r.vy = -4.8; state.flash = 8; window.dispatchEvent(new CustomEvent("weightplay:bounce-impact", { detail: { tool: state.tool } })); setStatus(`${copy[kit.name]} · ${copy.hint}`); } else { setStatus(copy.tooFar); } }
   function observePlayerDamage(dt) {
     const player = state.player;
     const visibleHealth = Math.max(0, Math.ceil(player.hp));
@@ -142,6 +143,7 @@
   }
   function update(dt) {
     const p = state.player, r = state.rival;
+    const practice = state.practice?.active ? state.practice : null;
     const left = state.keys.has("ArrowLeft") || state.keys.has("KeyA");
     const right = state.keys.has("ArrowRight") || state.keys.has("KeyD");
     if (left) p.vx -= .42 * dt;
@@ -153,15 +155,33 @@
     p.y += p.vy * dt;
     if (p.y > 390) { p.y = 390; p.vy = 0; }
 
-    const approach = p.x > r.x ? -1 : 1;
-    r.vx += approach * (.08 + state.arena * .012) * dt;
-    r.vx *= .96;
-    r.x += r.vx * dt;
-    r.vy += .42 * dt;
-    r.y += r.vy * dt;
-    if (r.y > 390) { r.y = 390; r.vy = -Math.abs(r.vy) * .48; r.vy = Math.max(r.vy, -5); }
+    if (practice && !practice.wallBroken && p.x > 430) { p.x = 430; p.vx = 0; }
+    if (practice && practice.step === 3 && p.x > 700) { p.x = 700; p.vx = 0; }
+    if (practice && practice.step === 0 && p.x >= 390) { practice.step = 1; window.BounceBrawlTutorial.render(practice.step, state.tool); }
+    if (practice && practice.step === 2 && !practice.padUsed && p.x >= 570 && p.x <= 710 && p.y >= 380 && state.tool === 1) {
+      practice.padUsed = true;
+      practice.step = 3;
+      p.y = 389;
+      p.vy = -13;
+      state.flash = 10;
+      window.BounceBrawlTutorial.render(practice.step, state.tool);
+    }
 
-    if (Math.abs(p.x - r.x) < 118) {
+    if (practice && practice.step < 4) {
+      r.x = 790; r.y = 390; r.vx = 0; r.vy = 0;
+    } else {
+      if (!practice) {
+        const approach = p.x > r.x ? 1 : -1;
+        r.vx += approach * (.08 + state.arena * .012) * dt;
+      }
+      r.vx *= practice ? .92 : .96;
+      r.x += r.vx * dt;
+      r.vy += .42 * dt;
+      r.y += r.vy * dt;
+      if (r.y > 390) { r.y = 390; r.vy = -Math.abs(r.vy) * .48; r.vy = Math.max(r.vy, -5); }
+    }
+
+    if (!practice && Math.abs(p.x - r.x) < 118) {
       r.vx += (r.x > p.x ? .14 : -.14) * dt;
       p.hp -= (.018 + state.arena * .004) * dt;
     }
@@ -169,19 +189,55 @@
     r.x = Math.max(70, Math.min(890, r.x));
     state.attack = Math.max(0, state.attack - dt);
     state.flash = Math.max(0, state.flash - dt);
-    state.elapsed += dt / 60;
-    $("health-label").textContent = `${healthCopy.you} ${Math.max(0, Math.ceil(p.hp))} · ${healthCopy.rival} ${Math.max(0, Math.ceil(r.hp))}`;
+    if (!practice) state.elapsed += dt / 60;
+    $("health-label").textContent = `${healthCopy.you} ${Math.max(0, Math.ceil(p.hp))} · ${practice ? window.BounceBrawlTutorial.copy.target : healthCopy.rival} ${Math.max(0, Math.ceil(r.hp))}`;
     observePlayerDamage(dt);
     updateApproachCue();
-    if (r.hp <= 0) finish(true);
-    else if (p.hp <= 0 || state.elapsed > 35) finish(false);
+    if (!practice && r.hp <= 0) finish(true);
+    else if (!practice && (p.hp <= 0 || state.elapsed > 35)) finish(false);
   }
   function finish(win) {
     window.WeightPlayAudio?.play(win ? "enemy.defeat" : "result.lose");
     const resultCopy = RESULT_COPY[document.documentElement.lang] || RESULT_COPY.en; const energy = Math.max(0, Math.ceil(state.player.hp)); state.best = win ? Math.max(state.best,state.arena) : state.best; if(win)localStorage.setItem("wp-brawl-best",String(state.best)); $("result-title").textContent=win?resultCopy.winTitle:resultCopy.loseTitle; $("result-copy").textContent=(win?resultCopy.winCopy:resultCopy.loseCopy).replace("{arena}",String(state.arena)).replace("{energy}",String(energy)); $("to-stages").textContent=resultCopy.arenas; $("next").textContent=state.arena>=6?resultCopy.replay:resultCopy.next; $("retry").textContent=resultCopy.retry; $("result-screen").dataset.outcome = win ? "success" : "failure"; $("result-screen").dataset.arena = String(state.arena); show("result");
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
-  function draw() { ctx.clearRect(0,0,960,540);const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,"#3d2b59");g.addColorStop(1,"#171122");ctx.fillStyle=g;ctx.fillRect(0,0,960,540);ctx.fillStyle="#e77e9a";ctx.fillRect(0,435,960,105);ctx.fillStyle="#6e4b92";ctx.fillRect(0,430,960,8);ctx.fillStyle="#ffd36b";ctx.font="bold 18px system-ui";ctx.fillText(arenaCopy.title,24,34);ctx.fillStyle="#cbb7d9";ctx.font="15px system-ui";ctx.fillText(arenaCopy.subtitle,24,58);const pads=[[190,330,150,16],[610,330,160,16],[400,250,150,16]];pads.forEach(([x,y,w,h])=>{ctx.fillStyle="#9e77bd";ctx.fillRect(x,y,w,h)});if(state.player&&state.rival){actor(state.player,heroArt,"#9ee9e0","#2a1b3b",[10,5,620,620],healthCopy.you);actor(state.rival,rivalArt,"#ffb36b","#3c2131",[650,55,580,530],healthCopy.rival);if(propArt.complete&&propArt.naturalWidth){const kit=tools[state.tool];ctx.drawImage(propArt,kit.crop[0],kit.crop[1],kit.crop[2],kit.crop[3],state.player.x+28,state.player.y-112,72,56);}if(state.attack>0){ctx.strokeStyle="#ffd36b";ctx.lineWidth=12;ctx.beginPath();ctx.arc(state.player.x+(state.player.x<state.rival.x?48:-48),state.player.y-12,42,-.8,.8);ctx.stroke()}if(state.flash>0){if(propArt.complete&&propArt.naturalWidth){ctx.drawImage(propArt,1470,350,700,374,(state.player.x+state.rival.x)/2-48,(state.player.y+state.rival.y)/2-48,96,96);}else{ctx.fillStyle="#fff2a1";ctx.beginPath();ctx.arc((state.player.x+state.rival.x)/2,(state.player.y+state.rival.y)/2,18+state.flash,0,Math.PI*2);ctx.fill();}}canvas.dataset.actorWidth="168";canvas.dataset.playerX=String(Math.round(state.player.x));canvas.dataset.rivalX=String(Math.round(state.rival.x));} }
+  function draw() {
+    ctx.clearRect(0, 0, 960, 540);
+    const gradient = ctx.createLinearGradient(0, 0, 0, 540);
+    gradient.addColorStop(0, "#3d2b59"); gradient.addColorStop(1, "#171122");
+    ctx.fillStyle = gradient; ctx.fillRect(0, 0, 960, 540);
+    ctx.fillStyle = "#e77e9a"; ctx.fillRect(0, 435, 960, 105);
+    ctx.fillStyle = "#6e4b92"; ctx.fillRect(0, 430, 960, 8);
+    ctx.fillStyle = "#ffd36b"; ctx.font = "bold 18px system-ui"; ctx.fillText(arenaCopy.title, 24, 34);
+    ctx.fillStyle = "#cbb7d9"; ctx.font = "15px system-ui"; ctx.fillText(arenaCopy.subtitle, 24, 58);
+    [[190, 330, 150, 16], [610, 330, 160, 16], [400, 250, 150, 16]].forEach(([x, y, w, h]) => { ctx.fillStyle = "#9e77bd"; ctx.fillRect(x, y, w, h); });
+    if (state.practice?.active) {
+      if (!state.practice.wallBroken) {
+        ctx.fillStyle = "#8de3d4"; ctx.fillRect(463, 300, 34, 130);
+        ctx.fillStyle = "#d7fff4"; for (let y = 308; y < 426; y += 24) ctx.fillRect(467, y, 26, 8);
+        ctx.fillStyle = "#fffaff"; ctx.font = "bold 14px system-ui"; ctx.textAlign = "center";
+        ctx.fillText(window.BounceBrawlTutorial.copy.wallLabel, 480, 286); ctx.textAlign = "left";
+      }
+      ctx.fillStyle = state.practice.padUsed ? "#8de3d4" : "#ffd36b"; ctx.fillRect(570, 418, 140, 12);
+      ctx.fillStyle = "#fff2a1"; for (let x = 580; x < 700; x += 20) { ctx.beginPath(); ctx.moveTo(x, 418); ctx.lineTo(x + 7, 407); ctx.lineTo(x + 14, 418); ctx.strokeStyle = "#fff2a1"; ctx.lineWidth = 3; ctx.stroke(); }
+      ctx.fillStyle = "#fffaff"; ctx.font = "bold 14px system-ui"; ctx.textAlign = "center";
+      ctx.fillText(window.BounceBrawlTutorial.copy.padLabel, 640, 400); ctx.textAlign = "left";
+      if (state.practice.step === 3) { ctx.strokeStyle = "#ffd36b"; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(state.rival.x, 340, 70, 0, Math.PI * 2); ctx.stroke(); }
+    }
+    if (state.player && state.rival) {
+      actor(state.player, heroArt, "#9ee9e0", "#2a1b3b", [10, 5, 620, 620], healthCopy.you);
+      actor(state.rival, rivalArt, "#ffb36b", "#3c2131", [650, 55, 580, 530], state.practice?.active ? window.BounceBrawlTutorial.copy.target : healthCopy.rival);
+      if (propArt.complete && propArt.naturalWidth) { const kit = tools[state.tool]; ctx.drawImage(propArt, kit.crop[0], kit.crop[1], kit.crop[2], kit.crop[3], state.player.x + 28, state.player.y - 112, 72, 56); }
+      if (state.attack > 0) { ctx.strokeStyle = "#ffd36b"; ctx.lineWidth = 12; ctx.beginPath(); ctx.arc(state.player.x + (state.player.x < state.rival.x ? 48 : -48), state.player.y - 12, 42, -.8, .8); ctx.stroke(); }
+      if (state.flash > 0) {
+        if (propArt.complete && propArt.naturalWidth) ctx.drawImage(propArt, 1470, 350, 700, 374, (state.player.x + state.rival.x) / 2 - 48, (state.player.y + state.rival.y) / 2 - 48, 96, 96);
+        else { ctx.fillStyle = "#fff2a1"; ctx.beginPath(); ctx.arc((state.player.x + state.rival.x) / 2, (state.player.y + state.rival.y) / 2, 18 + state.flash, 0, Math.PI * 2); ctx.fill(); }
+      }
+      canvas.dataset.actorWidth = "168"; canvas.dataset.playerX = String(Math.round(state.player.x)); canvas.dataset.rivalX = String(Math.round(state.rival.x));
+      if (state.practice?.active) { canvas.dataset.practiceStep = String(state.practice.step); canvas.dataset.practiceWallBroken = String(state.practice.wallBroken); canvas.dataset.practicePadUsed = String(state.practice.padUsed); }
+      else { delete canvas.dataset.practiceStep; delete canvas.dataset.practiceWallBroken; delete canvas.dataset.practicePadUsed; }
+    }
+  }
   function actor(o,art,body,ink,crop,label){ctx.save();const width=168,height=Math.max(126,Math.round(width*crop[3]/crop[2]));ctx.translate(o.x,o.y+40);ctx.rotate(o.vx*.03);if(art.complete&&art.naturalWidth){ctx.drawImage(art,crop[0],crop[1],crop[2],crop[3],-width/2,-height,width,height);}else{ctx.fillStyle=body;ctx.beginPath();ctx.arc(0,-height+36,38,0,Math.PI*2);ctx.fill();ctx.fillRect(-31,-height+68,62,72);ctx.fillStyle=ink;ctx.fillRect(-18,-height+28,9,9);ctx.fillRect(9,-height+28,9,9);}ctx.rotate(-o.vx*.03);ctx.fillStyle="rgba(18,12,30,.82)";ctx.fillRect(-48,-height-29,96,24);ctx.fillStyle="#fffaff";ctx.textAlign="center";ctx.font="bold 16px system-ui";ctx.fillText(label,0,-height-11);ctx.restore();}
   function frame(now){if(state.screen!=="battle")return;const dt=Math.min((now-state.last)/16.67,2);state.last=now;update(dt);if(state.screen==="battle"){draw();state.raf=requestAnimationFrame(frame)}}
   window.addEventListener("keydown",(e)=>{const k=e.code==="Space"?"Space":e.code;const digit=k[0]==="D"&&k.length===6;if(["ArrowLeft","ArrowRight","KeyA","KeyD","ArrowUp","KeyW","Space"].includes(k)||digit){e.preventDefault();if(k==="Space")strike();else if(digit)selectTool(Number(k.slice(-1))-1);else if((k==="ArrowUp"||k==="KeyW")&&!e.repeat)state.jumpQueued=true;else state.keys.add(k)}}); window.addEventListener("keyup",(e)=>state.keys.delete(e.code==="Space"?"Space":e.code));
@@ -197,5 +253,11 @@
     if (kit) window.WeightPlayAudio?.play(kit.name === "PAD" ? "combat.critical" : "combat.strike");
   });
   document.querySelectorAll("[data-key]").forEach((b)=>bindHeldControl(b,b.dataset.key)); document.querySelectorAll("[data-tool]").forEach((b)=>b.addEventListener("click",()=>selectTool(b.dataset.tool))); $("battle-help")?.addEventListener("click", toggleBattleHelp);
-  $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>__wpReplayStart(() => startArena(state.arena)));$("next").addEventListener("click",()=>startArena(state.arena>=6?1:state.arena+1));$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});$("main-progress").textContent=copy.bestWins.replace("{best}", state.best);localizeBattleControls();stageCards();draw();
+  $("start-game").addEventListener("click",()=>{show("stage");stageCards()});
+  $("practice-start").addEventListener("click",startPractice);
+  document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(state.practice?.active){state.practice=null;window.BounceBrawlTutorial?.clear();}show(b.dataset.back)}));
+  $("retry").addEventListener("click",()=>__wpReplayStart(() => startArena(state.arena)));
+  $("next").addEventListener("click",()=>startArena(state.arena>=6?1:state.arena+1));
+  $("to-stages").addEventListener("click",()=>{state.practice=null;window.BounceBrawlTutorial?.clear();show("stage");stageCards()});
+  $("main-progress").textContent=copy.bestWins.replace("{best}", state.best);localizeBattleControls();stageCards();draw();
 })();

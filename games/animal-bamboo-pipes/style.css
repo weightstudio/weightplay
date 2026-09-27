@@ -167,3 +167,44 @@
   .main .hero{align-content:start}
   .main .hero>img{width:min(100%,342px);max-width:none;height:auto;aspect-ratio:1;object-fit:cover;object-position:center}
 }
+
+/* Game-owned motion stays inside the shared frame's content slots. */
+@keyframes bambooSceneArrive{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes bambooToolsArrive{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bambooResultArrive{from{opacity:0;transform:scale(.975)}to{opacity:1;transform:scale(1)}}
+body[data-screen="main"] #main .hero>img{animation:bambooSceneArrive .48s cubic-bezier(.2,.8,.2,1) both}
+body[data-screen="main"] #main .hero>div{animation:bambooSceneArrive .48s .08s cubic-bezier(.2,.8,.2,1) both}
+body[data-screen="stage"] #rail{animation:bambooSceneArrive .38s cubic-bezier(.2,.8,.2,1) both}
+body[data-screen="battle"] #battle .battle-objective{animation:bambooSceneArrive .32s cubic-bezier(.2,.8,.2,1) both}
+body[data-screen="battle"] #battle .bamboo-board-space .board{animation:bambooSceneArrive .42s .04s cubic-bezier(.2,.8,.2,1) both}
+body[data-screen="battle"] #battle .tools{animation:bambooToolsArrive .34s .08s cubic-bezier(.2,.8,.2,1) both}
+#result:not([hidden]){animation:bambooResultArrive .38s cubic-bezier(.2,.8,.2,1) both}
+.leave-panel:not([hidden]){animation:bambooResultArrive .28s cubic-bezier(.2,.8,.2,1) both}
+.pipe::before{transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.pipe .flow-current path{animation-delay:var(--flow-delay,0s)}
+.pipe .flow-goal .flow-current path{animation-duration:.72s}
+.pipe .sluice-mark{position:absolute;z-index:4;top:50%;left:50%;display:grid;width:22px;height:22px;place-items:center;border:1px solid #fff2bb;border-radius:50%;background:#463515dd;box-shadow:0 1px 5px #0008;pointer-events:none;transform:translate(-50%,-50%) rotate(var(--sluice-rotation,0deg));transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.pipe .sluice-mark svg{width:15px;height:15px;overflow:visible;fill:none;stroke:#ffe17a;stroke-linecap:round;stroke-linejoin:round;stroke-width:12}
+.pipe.beacon{outline:2px solid #ffe38a;outline-offset:-3px}
+.pipe .beacon-mark{position:absolute;z-index:5;top:4px;right:4px;display:grid;width:19px;height:19px;place-items:center;border:1px solid #fff0b5;border-radius:50%;background:#f4c64fe8;box-shadow:0 1px 5px #001b19aa;pointer-events:none}
+.pipe .beacon-mark svg{width:13px;height:13px;fill:#fff4bd;stroke:#67491a;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5}
+.pipe.beacon.wet .beacon-mark{background:#5be1bc;box-shadow:0 0 12px #aaffd6}
+.stage-card,.stage-tab,#main #start,.battle .tools button,#result button{transition:filter .18s ease,box-shadow .18s ease,background-color .18s ease}
+.stage-card:hover:not(.locked),.stage-card:focus-visible:not(.locked),.stage-tab:hover,#main #start:hover,.battle .tools button:hover,#result button:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 0 0 3px #ffe17a88,0 8px 22px #001b1988}
+.pipe:not(:disabled):hover{filter:brightness(1.12)}
+.pipe:not(:disabled):focus-visible{outline:3px solid #ffe17a;outline-offset:-4px;box-shadow:inset 0 0 0 2px #173f38,0 0 16px #ffe17aaa}
+@media(prefers-reduced-motion:reduce){
+  body[data-screen="main"] #main .hero>img,
+  body[data-screen="main"] #main .hero>div,
+  body[data-screen="stage"] #rail,
+  body[data-screen="battle"] #battle .battle-objective,
+  body[data-screen="battle"] #battle .bamboo-board-space .board,
+  body[data-screen="battle"] #battle .tools,
+  #result:not([hidden]),.leave-panel:not([hidden]),
+  .pipe .flow-current path,.pipe.wet::after,.board.celebrating,
+  .board.celebrating .pipe.wet::after,.board.celebrating .pipe.target::before,
+  .board.celebrating .pipe.target::after,.pipe.hint-target::after{animation:none!important}
+  .pipe::before,.pipe .sluice-mark,.stage-card,.stage-tab,#main #start,
+  .battle .tools button,#result button{transition:none!important}
+  .board.celebrating .pipe.target::before{filter:brightness(1.5) drop-shadow(0 0 16px #fff5a8) drop-shadow(0 0 24px #73ffd0)}
+}

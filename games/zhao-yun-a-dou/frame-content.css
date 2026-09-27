@@ -25,11 +25,11 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 #gameFrame .game-dialog :is(h2,p,strong,span) { color: var(--wp-ui-text); }
 #gameFrame .game-dialog button:disabled { opacity: .4; cursor: not-allowed; filter: grayscale(1); }
 /* v32: one road and a permanent deployment dock. Shared frame owns navigation. */
-#battle .battle-content {position:relative;display:grid;height:100%;min-height:0;grid-template-columns:minmax(0,1fr);grid-template-rows:30px 24px minmax(0,1fr) 134px 18px;gap:4px;}
+#battle .battle-content {position:relative;display:grid;height:100%;min-height:0;grid-template-columns:minmax(0,1fr);grid-template-rows:24px 24px minmax(0,1fr) 134px 18px;gap:4px;}
 #battle .battle-guide {display:none;}
-#battle .battle-hud {grid-row:1;display:flex;justify-content:center;}
-#battle .buns-hud {width:auto;min-width:108px;justify-content:center;}
-#battle .hud-card {min-height:30px;padding:2px 5px;border-radius:6px;font-size:10px;gap:4px;background:#17363a;}
+#battle .battle-hud {grid-row:1;display:flex;justify-content:center;align-items:center;height:24px;}
+#battle .buns-hud {width:max-content;min-width:0;height:24px;min-height:24px;justify-content:center;padding:0 8px;border-radius:999px;}
+#battle .hud-card {height:24px;min-height:24px;padding:0 8px;border-radius:999px;font-size:10px;gap:4px;background:#17363a;}
 #battle .hud-card strong {font-size:12px;white-space:nowrap;}
 #battle .pressure-cue {grid-row:2;margin:0;height:24px;padding:2px 6px;font:600 11px/20px system-ui;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:4px;}
 #battle .battle-field {grid-row:3;position:relative;isolation:isolate;overflow:hidden;height:100%;min-height:0;max-height:none;box-sizing:border-box;background:#799e9a;border:1px solid #729e8e;border-radius:10px;}
@@ -67,7 +67,7 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 #result .result-stats {max-width:none;grid-template-columns:64px minmax(0,1fr);align-items:center;}
 #result #resultTime {font-size:16px;}
 @media (orientation:landscape) and (max-height:600px) {
- #battle .battle-content {grid-template-columns:minmax(0,1fr);grid-template-rows:28px minmax(0,1fr) 66px;gap:4px;}
+ #battle .battle-content {grid-template-columns:minmax(0,1fr);grid-template-rows:24px minmax(0,1fr) 66px;gap:4px;}
  #battle .battle-hud {grid-row:1;}
  #battle .battle-field {grid-row:2;}
  #battle .pressure-cue,#battle .status-line {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}

@@ -22,7 +22,7 @@
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
-  const GAME_VERSION = "v23";
+  const GAME_VERSION = "v25";
   const INTERFACE_VERSION = "7";
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
@@ -98,9 +98,16 @@
     const name = tile.target ? text("basinLabel") : text("pipeLabel", { n: index + 1 });
     const shape = text(pipeShapeKey(tile));
     const flow = text(isWet ? "pipeFlowing" : "pipeDry");
-    return tile.target
+    const base = tile.target
       ? text("pipeTargetState", { name, shape, flow })
       : text("pipeState", { name, shape, orientation: text("pipeOrientation", { n: tile.rot + 1 }), flow });
+    const sluice = tile.sluice
+      ? text("sluiceState", { direction: text(["directionNorth", "directionEast", "directionSouth", "directionWest"][(tile.sluiceBaseExit + tile.rot) % 4]) })
+      : "";
+    const beacon = tile.beacon
+      ? text("beaconState", { state: text(isWet ? "beaconWet" : "beaconDry") })
+      : "";
+    return [base, sluice, beacon].filter(Boolean).join(", ");
   }
   function targetIndex(level) {
     return level.target;
@@ -138,6 +145,8 @@
     }).join("");
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.classList.add("flow"); svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("aria-hidden", "true");
+    const depth = run.flowDistance?.[index] ?? 0;
+    svg.style.setProperty("--flow-delay", `${Math.min(depth, 14) * 0.055}s`);
     svg.innerHTML = `<g class="flow-channel">${paths}</g><g class="flow-current">${paths}</g>`;
     if (tile.shape === "source") svg.classList.add("flow-source");
     if (tile.shape === "goal") svg.classList.add("flow-goal");
@@ -146,13 +155,24 @@
   function water() {
     const source = run.tiles.findIndex(tile => tile.shape === "source");
     const queue = [[Math.floor(source / 5), source % 5]], wet = new Set([source]);
+    run.flowDistance = Array(run.tiles.length).fill(-1);
+    run.flowDistance[source] = 0;
     while (queue.length) {
       const [row, col] = queue.shift(), current = run.tiles[row * 5 + col];
+      const openings = ports(current);
+      const exits = current.sluice
+        ? [((current.sluiceBaseExit + current.rot) % 4 + 4) % 4]
+        : openings;
       DIRS.forEach(([dr, dc, direction, reverse]) => {
+        if (!exits.includes(direction) || !openings.includes(direction)) return;
         const nextRow = row + dr, nextCol = col + dc, nextIndex = nextRow * 5 + nextCol;
         if (nextRow < 0 || nextRow > 4 || nextCol < 0 || nextCol > 4 || wet.has(nextIndex)) return;
         const next = run.tiles[nextIndex];
-        if (ports(current).includes(direction) && ports(next).includes(reverse)) { wet.add(nextIndex); queue.push([nextRow, nextCol]); }
+        if (ports(next).includes(reverse)) {
+          wet.add(nextIndex);
+          run.flowDistance[nextIndex] = run.flowDistance[row * 5 + col] + 1;
+          queue.push([nextRow, nextCol]);
+        }
       });
     }
     return wet;
@@ -169,7 +189,12 @@
     card.dataset.index = String(index); card.dataset.stageIndex = String(index);
     card.setAttribute("aria-posinset", String(index + 1)); card.setAttribute("aria-setsize", String(LEVELS.length));
     card.setAttribute("aria-disabled", locked ? "true" : "false"); card.classList.toggle("locked", locked);
-    card.innerHTML = `<small>${text("chapter", { n: Math.floor(index / 5) + 1 })}</small><h3>${text("waterway", { n: index + 1 })}</h3><p>${locked ? text("locked") : save.done[index] ? text("restored") : text("objective")}</p>`;
+    const level = LEVELS[index], sluices = level.sluices?.length || 0, beacons = level.beacons?.length || 0;
+    const feature = sluices && beacons ? text("featureMixed")
+      : sluices ? text("featureSluice")
+        : beacons ? text("featureBloom", { n: beacons })
+          : text("objective");
+    card.innerHTML = `<small>${text("chapter", { n: Math.floor(index / 5) + 1 })}</small><h3>${text("waterway", { n: index + 1 })}</h3><p>${locked ? text("locked") : save.done[index] ? text("restored") : feature}</p>`;
   }
   function syncStageCards() { stageCardPool.forEach(card => { const index = Number(card.dataset.index), active = index === selected; bindStageCard(card, index); card.tabIndex = active ? 0 : -1; card.classList.toggle("selected", active); card.classList.toggle("centered", active); card.setAttribute("aria-current", active ? "true" : "false"); }); }
   function buildStagePool() {
@@ -289,36 +314,82 @@
     if (index < save.unlocked) { event.preventDefault(); event.stopImmediatePropagation(); selectStage(index, false); startStage(); }
   }, true);
   function renderBoard(focusIndex = -1) {
-    const wet = water(), board = $("board"); board.innerHTML = "";
+    const wet = water(), board = $("board"), stageKey = String(selected);
+    const canReuse = board.dataset.stageIndex === stageKey && board.children.length === run.tiles.length;
+    if (!canReuse) {
+      board.replaceChildren(...run.tiles.map(() => {
+        const pipe = document.createElement("button");
+        pipe.type = "button";
+        return pipe;
+      }));
+      board.dataset.stageIndex = stageKey;
+    }
     const hintNeighborIndex = hintRouteNeighbor(hintedPipeIndex);
-    const enabledIndexes = run.tiles.map((tile, index) => tile.target || run.completed ? -1 : index).filter(index => index >= 0);
+    const enabledIndexes = run.tiles.map((tile, index) => tile.target || tile.anchored || run.completed ? -1 : index).filter(index => index >= 0);
     if (!enabledIndexes.includes(boardFocusIndex)) boardFocusIndex = enabledIndexes[0] ?? 0;
     run.tiles.forEach((tile, index) => {
-      const pipe = document.createElement("button");
-      pipe.className = `pipe${wet.has(index) ? " wet" : ""}${index === hintedPipeIndex ? " hint-target" : ""}${index === hintNeighborIndex ? " hint-neighbor" : ""}`;
+      const pipe = board.children[index], isWet = wet.has(index);
+      pipe.className = `pipe${isWet ? " wet" : ""}${tile.beacon ? " beacon" : ""}${tile.sluice ? " sluice" : ""}${tile.anchored ? " anchored" : ""}${index === hintedPipeIndex ? " hint-target" : ""}${index === hintNeighborIndex ? " hint-neighbor" : ""}`;
       if (tile.target) pipe.classList.add("target");
       pipe.dataset.shape = tile.shape;
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
+      if (tile.sluice) {
+        const exit = (tile.sluiceBaseExit + tile.rot) % 4;
+        pipe.style.setProperty("--sluice-rotation", `${exit * 90}deg`);
+      } else pipe.style.removeProperty("--sluice-rotation");
+      pipe.style.setProperty("--flow-delay", `${Math.min(run.flowDistance?.[index] ?? 0, 14) * 0.055}s`);
       pipe.dataset.rotation = String(tile.rot);
-      pipe.setAttribute("aria-label", pipeAccessibleLabel(tile, index, wet.has(index)));
-      pipe.disabled = tile.target || run.completed;
+      pipe.setAttribute("aria-label", pipeAccessibleLabel(tile, index, isWet));
+      pipe.disabled = tile.target || tile.anchored || run.completed;
+      let sluiceMark = pipe.querySelector(".sluice-mark");
+      if (tile.sluice && !sluiceMark) {
+        sluiceMark = document.createElement("span");
+        sluiceMark.className = "sluice-mark";
+        sluiceMark.setAttribute("aria-hidden", "true");
+        sluiceMark.innerHTML = '<svg viewBox="0 0 100 100" focusable="false"><path d="M50 12v65M30 57l20 21 20-21"/></svg>';
+        pipe.append(sluiceMark);
+      } else if (!tile.sluice) sluiceMark?.remove();
+      let beaconMark = pipe.querySelector(".beacon-mark");
+      if (tile.beacon && !beaconMark) {
+        beaconMark = document.createElement("span");
+        beaconMark.className = "beacon-mark";
+        beaconMark.setAttribute("aria-hidden", "true");
+        beaconMark.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="M12 2.5c-3.7 4.2-6 7.1-6 10.4a6 6 0 0 0 12 0c0-3.3-2.3-6.2-6-10.4Z"/><path d="M9.2 13.5a2.8 2.8 0 0 0 2.8 2.8"/></svg>';
+        pipe.append(beaconMark);
+      } else if (!tile.beacon) beaconMark?.remove();
       if (!pipe.disabled && index === boardFocusIndex) pipe.dataset.wpPrimaryAction = "true";
+      else pipe.removeAttribute("data-wp-primary-action");
       pipe.tabIndex = !pipe.disabled && index === boardFocusIndex ? 0 : -1;
-      const flow = flowSvg(tile, index, wet.has(index));
-      if (flow) pipe.append(flow);
-      if (!tile.target) pipe.onclick = event => { if(run.completed)return;hintedPipeIndex=-1;boardFocusIndex=index;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(event.detail === 0 ? index : -1); if (winReady()) complete(); };
-      board.append(pipe);
+      let flow = pipe.querySelector(".flow");
+      if (isWet && !tile.target && !flow) pipe.append(flowSvg(tile, index, true));
+      else if ((!isWet || tile.target) && flow) flow.remove();
+      pipe.onclick = tile.target || tile.anchored ? null : event => {
+        if (run.completed) return;
+        hintedPipeIndex = -1;
+        boardFocusIndex = index;
+        run.history.push(run.tiles.map(item => item.rot));
+        tile.rot = (tile.rot + 1) % 4;
+        run.moves++;
+        renderBoard(event.detail === 0 ? index : -1);
+        if (winReady()) complete();
+      };
     });
     $("moves").textContent = text("moves", { n: run.moves });
+    const bloomCount = run.tiles.filter(tile => tile.beacon).length;
+    const bloomed = run.tiles.reduce((count, tile, index) => count + Number(tile.beacon && wet.has(index)), 0);
+    const hasSluice = run.tiles.some(tile => tile.sluice);
     $("cue").textContent = hintedPipeIndex >= 0
       ? text("hintRoute", { pipe: hintLabel(hintedPipeIndex), next: hintLabel(hintNeighborIndex) })
-      : text("cue");
+      : hasSluice && bloomCount ? text("mixedCue", { got: bloomed, total: bloomCount })
+        : hasSluice ? text("sluiceCue")
+          : bloomCount ? text("bloomCue", { got: bloomed, total: bloomCount })
+            : text("cue");
     if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
   function startStage(entry = "stage") {
     cancelCompletionReveal();
     setResultOpen(false);
-    run = { tiles: stageData(selected), history: [], moves: 0, completed: false, hintUsed: false, undoUsed: false };
+    run = { tiles: stageData(selected), history: [], moves: 0, completed: false, hintUsed: false, undoUsed: false, flowDistance: [] };
     hintedPipeIndex = -1;
     boardFocusIndex = run.tiles.findIndex(tile => !tile.target);
     $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
@@ -343,7 +414,9 @@
     track("waterway_restored", { turns: run.moves, hint_used: Boolean(run.hintUsed), undo_used: Boolean(run.undoUsed) });
     updateMainProgress();
     $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
-    $("resultMastery").textContent = text("replayGoal", { moves: save.best[selected] });
+    const finalWater = water(), totalBeacons = run.tiles.filter(tile => tile.beacon).length;
+    const bloomedBeacons = run.tiles.reduce((count, tile, index) => count + Number(tile.beacon && finalWater.has(index)), 0);
+    $("resultMastery").textContent = `${text("replayGoal", { moves: save.best[selected] })}${totalBeacons ? text("bloomResult", { got: bloomedBeacons, total: totalBeacons }) : ""}`;
     $("resultPreview").textContent = selected < LEVELS.length - 1
       ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
       : "";

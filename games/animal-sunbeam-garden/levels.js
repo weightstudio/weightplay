@@ -30,9 +30,34 @@
     10,10,10,11,10,
     10,11,11,10,10
   ];
+  const campaignGateCounts=[
+    0,0,0,0,1,
+    1,1,1,1,2,
+    1,1,1,1,2,
+    2,2,2,2,3,
+    2,2,2,2,3,
+    3,3,3,3,4
+  ];
   const decoyOrder=[14,21,7,28,8,27,13,22,15,20,9,26,19,16,10,25,3,32,4,31];
   const rc=i=>[Math.floor(i/6),i%6];
   const dir=(a,b)=>{const[ar,ac]=rc(a),[br,bc]=rc(b);return br<ar?0:bc>ac?1:br>ar?2:3};
+  function chooseGateCells(routes,count,mirrorMap,sources,goal){
+    if(!count)return[];
+    const occupied=new Set([...mirrorMap.keys(),...sources.map(source=>source.cell),goal]);
+    const lanes=routes.map(route=>route.filter((cell,index)=>index>0&&index<route.length-1&&dir(route[index-1],cell)===dir(cell,route[index+1])&&!occupied.has(cell)));
+    const selected=[];
+    lanes.forEach((cells,laneIndex)=>{
+      const quota=Math.floor(count/routes.length)+(laneIndex<count%routes.length?1:0);
+      for(let slot=0;slot<quota;slot++){
+        const ideal=Math.floor((slot+1)*cells.length/(quota+1));
+        const candidates=cells.map((cell,index)=>({cell,index,distance:Math.abs(index-ideal)})).sort((a,b)=>a.distance-b.distance||a.index-b.index);
+        const choice=candidates.find(candidate=>!occupied.has(candidate.cell));
+        if(choice){occupied.add(choice.cell);selected.push(choice.cell)}
+      }
+    });
+    if(selected.length!==count)throw new Error(`Garden ${routes[0][0]} has too few straight cells for ${count} Sun Gates`);
+    return selected;
+  }
   const reflect=(incoming,outgoing)=>incoming===0&&outgoing===1||incoming===1&&outgoing===0||incoming===2&&outgoing===3||incoming===3&&outgoing===2?0:1;
   function transform(cell,variant){
     const [row,col]=rc(cell);
@@ -86,16 +111,18 @@
         mirrors.push({cell,solution,rot:solution,essential:false});
       });
     const sources=routes.map(route=>({cell:route[0],startDir:dir(route[0],route[1])}));
+    const gates=chooseGateCells(routes,campaignGateCounts[campaignIndex],mirrorMap,sources,goal).map(cell=>({cell,kind:"gate",open:false,essential:true}));
     return{
       index:campaignIndex,
       source:sources[0].cell,
       startDir:sources[0].startDir,
       sources,
       goal,
-      par:campaignPar[campaignIndex],
+      par:campaignPar[campaignIndex]+gates.length,
       difficulty:Math.floor(campaignIndex/5)+1,
       topology:routes.map(route=>route.join("-")).join("|"),
-      mirrors
+      mirrors,
+      gates
     };
   }
   const levels=Array.from({length:30},(_,i)=>build(i));

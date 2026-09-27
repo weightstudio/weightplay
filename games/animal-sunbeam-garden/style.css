@@ -4,6 +4,21 @@ body #stage{grid-template-rows:76px minmax(0,1fr);background:linear-gradient(#24
 .board{background-image:none}.cell,.cell.mirror{background-color:transparent;background-image:url("../../assets/animal-sunbeam-garden-cell-block-v14.webp");background-position:center;background-repeat:no-repeat;background-size:100% 100%}
 @media(max-height:500px) and (orientation:landscape){body #battle .board{width:min(264px,calc(100svh - 126px))}}
 
+/* v17: a tactile, cuboid Sun Gate plus brief scene and result motion. */
+.cell.gate{z-index:4;isolation:isolate;background:transparent}
+.cell.gate::before{content:"";position:absolute;z-index:2;inset:13%;background:linear-gradient(145deg,#e1f3a5 0 24%,#9dc86c 24% 62%,#5f914c 62%);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);filter:drop-shadow(0 3px 2px #25463466);transition:filter .28s ease,transform .28s cubic-bezier(.2,.85,.25,1.15)}
+.cell.gate::after{content:"";position:absolute;z-index:3;left:18%;right:18%;top:41%;height:18%;border-radius:2px;background:linear-gradient(180deg,#fff8b3,#f5ca45 42%,#a87332 76%,#fff2a0);box-shadow:0 0 6px #fff2a077;transition:transform .28s cubic-bezier(.2,.85,.25,1.15),opacity .28s ease}
+.cell.gate[data-open="true"]::after{transform:scaleY(.2);opacity:.62}
+.cell.gate.turning[data-open="false"]::after{transform:scaleY(.2);opacity:.62}
+.cell.gate.turning[data-open="true"]::after{transform:scaleY(1.45);opacity:1}
+dialog[open]{animation:sunbeamDialogIn .28s cubic-bezier(.2,.8,.25,1) both}
+dialog[open]::backdrop{animation:sunbeamBackdropIn .24s ease-out both}
+#result[open] .result-character{transform-origin:50% 85%;animation:sunbeamCharacterIn .48s cubic-bezier(.16,1.25,.32,1) both}
+@keyframes sunbeamDialogIn{from{opacity:0;transform:translateY(11px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes sunbeamBackdropIn{from{opacity:0}to{opacity:1}}
+@keyframes sunbeamCharacterIn{from{opacity:0;transform:translateY(10px) scale(.72)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){dialog[open],dialog[open]::backdrop,#result[open] .result-character{animation:none!important}.cell.gate::before,.cell.gate::after,.cell.mirror::after,.beam-layer{transition:none!important}}
+
 /* Interface v4: one shared shell, centered stage tabs, and a readable garden board. */
 body #stage{grid-template-rows:76px minmax(0,1fr) 62px}
 #stage .scene-header{position:relative}

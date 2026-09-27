@@ -18,7 +18,7 @@
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 
-  document.body.dataset.gameVersion="v16";
+  document.body.dataset.gameVersion="v17";
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],segments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"},levels=window.SUNBEAM_LEVELS.levels;
   const $=s=>document.querySelector(s),screens=[...document.querySelectorAll(".screen")],key="wp-animal-sunbeam-v1",roots=Object.freeze({main:$("#main"),stage:$("#stage"),battle:$("#battle")}),returns=Object.freeze({main:$("[data-wp-return='main']"),stage:$("[data-wp-return='stage']"),battle:$("[data-wp-return='battle']")}),mainFlow=Object.freeze({poster:$("#main .hero img"),summary:$("#main .hero [data-t='summary']"),progress:$("#mainProgress"),start:$("#start")}),lifecycleIdentity=new Map([...Object.entries(roots),...Object.entries(returns).map(([name,node])=>[`${name}Return`,node]),...Object.entries(mainFlow)]),mainGuide=()=>$(".game-page-info");
   Object.assign(roots.battle.dataset,{wpBattleLandscapeWidth:"760",wpBattleLandscapeHeight:"400"});
@@ -38,7 +38,7 @@
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
   function desiredStageWindow(index){return Math.max(0,Math.min(30-STAGE_POOL_SIZE,index-Math.floor(STAGE_POOL_SIZE/2)))}
-  function bindStageCard(card,index){const locked=index+1>unlocked,active=index===selected;card.dataset.index=index;card.dataset.stageIndex=index;card.dataset.chapter=Math.floor(index/5)+1;card.className="stage-card"+(active?" selected centered":"")+(locked?" locked":"");card.style.setProperty("--stage-card-position",`${18+(index%5)*16}% ${28+(index%3)*19}%`);card.tabIndex=active?0:-1;card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");card.setAttribute("aria-disabled",String(locked));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize","30");if(active)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");card.innerHTML="<strong>"+t("garden",{n:index+1})+"</strong><span>"+(locked?t("locked"):t("chapter",{n:Math.floor(index/5)+1}))+"</span>"}
+  function bindStageCard(card,index){const locked=index+1>unlocked,active=index===selected;card.dataset.index=index;card.dataset.stageIndex=index;card.dataset.chapter=Math.floor(index/5)+1;card.className="stage-card"+(active?" selected centered":"")+(locked?" locked":"");card.style.setProperty("--stage-card-position",`${18+(index%5)*16}% ${28+(index%3)*19}%`);card.tabIndex=active?0:-1;card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");card.setAttribute("aria-disabled",String(locked));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize","30");if(active)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");const chapter=Math.floor(index/5)+1;const subtitle=locked?t("locked"):t("chapter",{n:chapter})+" · "+t("chapterArc"+chapter);card.innerHTML="<strong>"+t("garden",{n:index+1})+"</strong><span>"+subtitle+"</span>"}
   function createStageCard(poolId){const card=document.createElement("button");card.dataset.wpStagePoolId=poolId;card.onclick=()=>{const index=Number(card.dataset.index),locked=card.getAttribute("aria-disabled")==="true";selectStage(index,true,true);if(!locked)startLevel(index)};return card}
   function buildStagePool(){const rail=$("#stageGrid");rail.replaceChildren();stageWindowStart=desiredStageWindow(selected);stageCards=Array.from({length:STAGE_POOL_SIZE},(_,offset)=>{const card=createStageCard(String(offset));bindStageCard(card,stageWindowStart+offset);rail.append(card);return card});Object.assign(rail.dataset,{wpStageVirtualized:"bounded-recycle",wpStagePoolSize:String(STAGE_POOL_SIZE),wpStageTotal:"30",wpStageRecycleCount:"0"})}
   function moveStageWindow(targetStart){const rail=$("#stageGrid"),target=Math.max(0,Math.min(30-STAGE_POOL_SIZE,targetStart));let recycled=0;while(stageWindowStart<target){const card=rail.firstElementChild;stageWindowStart++;rail.append(card);bindStageCard(card,stageWindowStart+STAGE_POOL_SIZE-1);recycled++}while(stageWindowStart>target){const card=rail.lastElementChild;stageWindowStart--;rail.prepend(card);bindStageCard(card,stageWindowStart);recycled++}stageCards=[...rail.children];Object.assign(rail.dataset,{wpStageWindowStart:String(stageWindowStart),wpStageWindowEnd:String(stageWindowStart+STAGE_POOL_SIZE-1)});if(recycled)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);return recycled}
@@ -65,5 +65,102 @@
   function undo(){if(rotationLocked||!history.length||$("#result").open)return;clearTimeout(resultRevealTimer);resultRevealTimer=0;const previous=history.pop();mirrors.forEach((m,i)=>m.rot=previous.angles[i]);moves=previous.moves;hintedCell=null;renderBoard()}
   function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=t("title")+" | WeightPlay";document.querySelectorAll("[data-t]").forEach(node=>node.textContent=t(node.dataset.t));document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));$("#locale").value=locale;if(!$("#stage").hidden)renderStages();if(!$("#battle").hidden)renderBoard()}
   codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.SUNBEAM_LOCALES[code].label;$("#locale").append(option)});$("#locale").onchange=e=>{locale=e.target.value;write("wp-locale",locale);write("weightPlayLocale",locale);if(/^https?:$/.test(location.protocol)){const target=`/${segments[locale]}/games/animal-sunbeam-garden/`;if(location.pathname!==target){location.assign(target);return}}try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()};
-  document.body.dataset.wpSceneWriter="sunbeam-game-v6";$("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>(__wpNotifyMeasurement(), $("#tutorialPanel").showModal());$("#tutorialClose").onclick=()=>(__wpNotifyMeasurement(), $("#tutorialPanel").close());$("#stageGrid").addEventListener("wonder:stage-snap",event=>{if($("#stageGrid").dataset.wpStageCenterObserver==="manual")return;const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=()=>show("main");$("#battle [data-back]").onclick=()=>(__wpNotifyMeasurement(), $("#leave").showModal());$("#leaveContinue").onclick=()=>(__wpNotifyMeasurement(), $("#leave").close());$("#leaveStage").onclick=()=>show("stage");$("#hint").onclick=hint;$("#undo").onclick=undo;$("#reset").onclick=()=>{if(!rotationLocked)__wpReplayStart(() => startLevel(selected))};$("#resultStages").onclick=()=>claimResultAction(()=>{selected=Math.min(29,selected+1);show("stage")});$("#retry").onclick=()=>claimResultAction(()=>__wpReplayStart(() => startLevel(selected)));$("#next").onclick=()=>claimResultAction(()=>startLevel(selected+1));applyLocale();show("main");
+  document.body.dataset.wpSceneWriter="sunbeam-game-v7";$("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>(__wpNotifyMeasurement(), $("#tutorialPanel").showModal());$("#tutorialClose").onclick=()=>(__wpNotifyMeasurement(), $("#tutorialPanel").close());$("#stageGrid").addEventListener("wonder:stage-snap",event=>{if($("#stageGrid").dataset.wpStageCenterObserver==="manual")return;const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=()=>show("main");$("#battle [data-back]").onclick=()=>(__wpNotifyMeasurement(), $("#leave").showModal());$("#leaveContinue").onclick=()=>(__wpNotifyMeasurement(), $("#leave").close());$("#leaveStage").onclick=()=>show("stage");$("#hint").onclick=hint;$("#undo").onclick=undo;$("#reset").onclick=()=>{if(!rotationLocked)__wpReplayStart(() => startLevel(selected))};$("#resultStages").onclick=()=>claimResultAction(()=>{selected=Math.min(29,selected+1);show("stage")});$("#retry").onclick=()=>claimResultAction(()=>__wpReplayStart(() => startLevel(selected)));$("#next").onclick=()=>claimResultAction(()=>startLevel(selected+1));applyLocale();show("main");
+  // v17 adds Sun Gates and a small, reduced-motion-aware tween layer without
+  // changing the existing Interface 7 frame, route ownership, or save keys.
+  let gates=[],gateLevelRef=null;
+  const prefersReducedMotion=()=>window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
+  function tween(target,keyframes,options={}){
+    if(!target||prefersReducedMotion()||typeof target.animate!=="function")return null;
+    for(const animation of target.getAnimations())animation.cancel();
+    return target.animate(keyframes,{duration:options.duration??280,delay:options.delay??0,easing:options.easing??"cubic-bezier(.2,.8,.25,1)",fill:"none"});
+  }
+  const __sunbeamTrace=trace;
+  trace=function(){
+    if(!level)return __sunbeamTrace();
+    const paths=(level.sources||[{cell:level.source,startDir:level.startDir}]).map(source=>{
+      const beam=[],seen=new Set();let cell=source.cell,direction=source.startDir,hit=false;
+      for(let step=0;step<80;step++){
+        const marker=cell+":"+direction;if(seen.has(marker))break;seen.add(marker);beam.push(cell);
+        if(cell===level.goal){hit=true;break}
+        if(gates.some(gate=>gate.cell===cell&&!gate.open))break;
+        const mirror=mirrors.find(item=>item.cell===cell);if(mirror)direction=reflect(direction,mirror.rot);
+        const row=Math.floor(cell/6),col=cell%6,nr=row+[-1,0,1,0][direction],nc=col+[0,1,0,-1][direction];
+        if(nr<0||nr>5||nc<0||nc>5)break;cell=nr*6+nc;
+      }
+      return{beam,hit};
+    });
+    return{paths,beam:[...new Set(paths.flatMap(path=>path.beam))],hit:paths.every(path=>path.hit)&&gates.every(gate=>gate.open)};
+  };
+  const __sunbeamDrawBeam=drawBeam;
+  drawBeam=function(result){
+    __sunbeamDrawBeam(result);
+    if(prefersReducedMotion())return;
+    const lines=[...$("#board").querySelectorAll(".beam-layer polyline")];
+    lines.forEach((line,index)=>{
+      let length=0;try{length=line.getTotalLength()}catch{return}
+      if(!Number.isFinite(length)||length<=0)return;
+      line.style.strokeDasharray=String(length);line.style.strokeDashoffset=String(length);
+      const animation=tween(line,[{strokeDashoffset:length},{strokeDashoffset:0}],{duration:Math.min(900,Math.max(280,length*.72)),delay:Math.floor(index/2)*80,easing:"linear"});
+      if(animation)animation.onfinish=()=>{line.style.strokeDashoffset="0";animation.cancel()};
+      else line.style.strokeDashoffset="0";
+    });
+  };
+  const __sunbeamRenderBoard=renderBoard;
+  renderBoard=function(){
+    if(level&&gateLevelRef!==level){gates=(level.gates||[]).map(gate=>({...gate}));gateLevelRef=level}
+    __sunbeamRenderBoard();
+    if(!level||!gates.length)return;
+    const result=trace(),board=$("#board");
+    for(const gate of gates){
+      const old=board.querySelector(`[data-cell="${gate.cell}"]`);if(!old)continue;
+      const row=Math.floor(gate.cell/6)+1,col=gate.cell%6+1,cell=document.createElement("button");
+      cell.type="button";cell.className="cell gate"+(result.beam.includes(gate.cell)?" beam":"")+(hintedCell===gate.cell?" hint-target":"");
+      cell.dataset.cell=gate.cell;cell.dataset.open=String(gate.open);cell.dataset.kind="sun-gate";
+      cell.setAttribute("role","gridcell");cell.setAttribute("aria-rowindex",String(row));cell.setAttribute("aria-colindex",String(col));
+      cell.setAttribute("aria-label",t(gate.open?"gateLabelOpen":"gateLabelClosed",{row,col}));cell.setAttribute("aria-pressed",String(gate.open));
+      if(hintedCell===gate.cell)cell.setAttribute("aria-describedby","status");
+      cell.onclick=event=>rotateMirror(gate,cell,undefined,event.detail===0?gate.cell:null);old.replaceWith(cell);
+    }
+    const gateHint=gates.find(gate=>gate.cell===hintedCell);
+    const closedGate=gates.find(gate=>!gate.open&&result.beam.includes(gate.cell));
+    if(gateHint){$("#status").textContent=t("gateHint",{row:Math.floor(gateHint.cell/6)+1,col:gateHint.cell%6+1})}
+    else if(closedGate){$("#status").textContent=t("gateBlocked")}
+    else $("#status").textContent=t("gateInstruction");
+  };
+  const __sunbeamRotateMirror=rotateMirror;
+  rotateMirror=function(control,cell,target,focusCell=null){
+    if(control.kind!=="gate")return __sunbeamRotateMirror(control,cell,target,focusCell);
+    const next=target===undefined?!control.open:Boolean(target);if(rotationLocked||control.open===next)return;
+    const generation=sceneGeneration;rotationLocked=true;cell.classList.add("turning");cell.setAttribute("aria-disabled","true");$("#board").classList.add("is-turning");$("#status").textContent=t("beam");
+    setTimeout(()=>{
+      if(generation!==sceneGeneration||document.body.dataset.screen!=="battle")return;
+      history.push({angles:mirrors.map(item=>item.rot),gateStates:gates.map(item=>item.open),moves});if(history.length>256)history.shift();
+      hintedCell=null;control.open=next;moves++;rotationLocked=false;const completed=trace().hit;renderBoard();checkComplete();
+      if(focusCell!==null&&!completed)requestAnimationFrame(()=>{if(generation===sceneGeneration&&document.body.dataset.screen==="battle")$("#board").querySelector(`[data-cell="${focusCell}"]`)?.focus({preventScroll:true})});
+    },300);
+  };
+  const __sunbeamUndo=undo;
+  undo=function(){
+    const previous=history.at(-1);if(!previous?.gateStates)return __sunbeamUndo();
+    if(rotationLocked||!history.length||$("#result").open)return;
+    clearTimeout(resultRevealTimer);resultRevealTimer=0;history.pop();mirrors.forEach((mirror,index)=>mirror.rot=previous.angles[index]);
+    gates.forEach((gate,index)=>gate.open=previous.gateStates[index]);moves=previous.moves;hintedCell=null;renderBoard();
+  };
+  const __sunbeamHint=hint;
+  hint=function(){
+    if(rotationLocked||trace().hit)return;
+    const path=trace().beam,gate=gates.find(item=>!item.open&&path.includes(item.cell))||gates.find(item=>!item.open);
+    if(gate){hintedCell=gate.cell;hintUses++;renderBoard();return}
+    return __sunbeamHint();
+  };
+  const __sunbeamShow=show;
+  show=function(id){
+    __sunbeamShow(id);
+    const targets=({main:[$("#main .hero")],stage:[$("#stageGrid"),$("#stage .stage-tabs")],battle:[$("#battle .garden-panel")]})[id]||[];
+    targets.forEach((target,index)=>tween(target,[{opacity:0,transform:"translateY(9px) scale(.99)"},{opacity:1,transform:"translateY(0) scale(1)"}],{duration:300,delay:index*55}));
+  };
+  window.sunbeamSnapshot=()=>({selected,moves,angles:mirrors.map(mirror=>mirror.rot),gates:gates.map(gate=>({cell:gate.cell,open:gate.open})),hintedCell,hintUses,history:history.length,unlocked,screen:document.body.dataset.screen,paths:level?trace().paths:[]});
+  document.body.dataset.wpSceneWriter="sunbeam-game-v7";
+  tween($("#main .hero"),[{opacity:0,transform:"translateY(9px) scale(.99)"},{opacity:1,transform:"translateY(0) scale(1)"}],{duration:300});
 })();

@@ -16,6 +16,34 @@
     }
     return links;
   }
+  function directionBetween(from,to){
+    const row=Math.floor(from/size),col=from%size,nextRow=Math.floor(to/size),nextCol=to%size;
+    return nextRow<row?0:nextCol>col?1:nextRow>row?2:3;
+  }
+  function chapterRules(index){
+    if(index<5)return{sluices:0,beacons:index===4?1:0};
+    if(index<10)return{sluices:index===9?2:1,beacons:0};
+    if(index<15)return{sluices:1,beacons:index===14?2:1};
+    if(index<20)return{sluices:index===19?3:2,beacons:index===19?2:1};
+    if(index<25)return{sluices:3,beacons:2};
+    return{sluices:index===29?4:3,beacons:index===29?3:2};
+  }
+  function pathTo(links,start,end){
+    const parent=Array(25).fill(-1),queue=[start];parent[start]=start;
+    while(queue.length){
+      const current=queue.shift();
+      if(current===end)break;
+      links[current].forEach(direction=>{
+        const [dr,dc]=directions[direction],row=Math.floor(current/size)+dr,col=current%size+dc,next=row*size+col;
+        if(parent[next]!==-1)return;
+        parent[next]=current;queue.push(next);
+      });
+    }
+    if(parent[end]===-1)return[];
+    const path=[];let current=end;
+    while(current!==start){path.push(current);current=parent[current]}
+    path.push(start);return path.reverse();
+  }
   function snake(vertical=false){
     const route=[];
     for(let major=0;major<size;major++)for(let minor=0;minor<size;minor++){
@@ -94,9 +122,32 @@
         const [dr,dc]=directions[direction],next=(Math.floor(i/size)+dr)*size+i%size+dc;
         return requiredSet.has(next);
       });
-      return{...tile,required:requiredSet.has(i),blockedPort:blockedPort??null};
+      return{...tile,degree:set.size,required:requiredSet.has(i),blockedPort:blockedPort??null};
     });
     return{index,size,source,target,required,decoys:25-required.length,tiles};
+  }
+  function applyStagePlan(level,stageIndex){
+    const rules=chapterRules(stageIndex),mainPath=level.required.slice().reverse();
+    const beaconCandidates=level.tiles.map((tile,index)=>({tile,index}))
+      .filter(({tile,index})=>index!==level.source&&index!==level.target&&!tile.required)
+      .sort((a,b)=>a.tile.degree-b.tile.degree||((a.index*31+stageIndex*17)%97)-((b.index*31+stageIndex*17)%97));
+    level.beacons=beaconCandidates.slice(0,rules.beacons).map(item=>item.index);
+    level.beacons.forEach(index=>{level.tiles[index].beacon=true});
+    const sluiceCandidates=mainPath.slice(1,-1)
+      .filter(i=>level.tiles[i].shape!=="x"&&level.tiles[i].shape!=="source"&&level.tiles[i].shape!=="goal")
+      .sort((a,b)=>(level.tiles[a].shape==="s"?0:1)-(level.tiles[b].shape==="s"?0:1)||a-b);
+    level.sluices=sluiceCandidates.slice(0,rules.sluices);
+    level.sluices.forEach(indexOnPath=>{
+      const position=mainPath.indexOf(indexOnPath),next=mainPath[position+1];
+      const exit=directionBetween(indexOnPath,next);
+      level.tiles[indexOnPath].sluice=true;
+      level.tiles[indexOnPath].sluiceBaseExit=mod(exit-level.tiles[indexOnPath].solved);
+    });
+    level.checkpoint=(stageIndex+1)%5===0;
+    level.chapter=Math.floor(stageIndex/5)+1;
+    level.plan=rules;
+    level.index=stageIndex;
+    return level;
   }
   function structureScore(level){
     return level.tiles.reduce((score,tile)=>score+(tile.shape==="t"?1:tile.shape==="x"?2:0),0);
@@ -106,10 +157,11 @@
     ...authored.slice(0,3),
     ...authored.slice(3).sort((a,b)=>a.decoys-b.decoys||structureScore(a)-structureScore(b)||a.index-b.index)
   ];
+  ordered.forEach((level,index)=>applyStagePlan(level,index));
   const budgets=Array(30),pieceBudgets=Array(30);let nextTurns=Infinity,nextPieces=Infinity;
   for(let index=29;index>=0;index--){
     const level=ordered[index],candidates=level.tiles.filter((tile,tileIndex)=>tile.required&&tileIndex!==level.target&&tile.shape!=="x");
-    const turnCapacity=candidates.reduce((total,tile)=>total+(tile.shape==="s"?1:3),0);
+    const turnCapacity=candidates.reduce((total,tile)=>total+(tile.shape==="s"?(tile.sluice?2:1):3),0);
     budgets[index]=Math.min(index+2,turnCapacity,nextTurns);
     pieceBudgets[index]=Math.min(2+Math.floor(index/2),candidates.length,nextPieces);
     nextTurns=budgets[index];nextPieces=pieceBudgets[index];
@@ -121,7 +173,8 @@
     branches:structureScore(level)
   }}));
   function createStageTiles(level,index,target){
-    const tiles=level.tiles.map((tile,tileIndex)=>({...tile,target:tileIndex===target,rot:tile.solved}));
+    const targetSet=new Set(level.targets||[target]);
+    const tiles=level.tiles.map((tile,tileIndex)=>({...tile,target:targetSet.has(tileIndex),rot:tile.solved}));
     tiles.forEach((tile,tileIndex)=>{
       if(tile.required||tile.target)return;
       const rank=(((tileIndex+1)*1664525+(index+1)*1013904223)>>>0);
@@ -133,8 +186,8 @@
       .map((tile,tileIndex)=>({tile,tileIndex,rank:((tileIndex+1)*1103515245+(index+1)*12345)>>>0}))
       .filter(({tile})=>tile.required&&tile.shape!=="x"&&!tile.target)
       .sort((a,b)=>{
-        const aCap=a.tile.shape==="s"?1:3,bCap=b.tile.shape==="s"?1:3;
-        return bCap-aCap||a.rank-b.rank||a.tileIndex-b.tileIndex;
+        const aCap=a.tile.shape==="s"?(a.tile.sluice?2:1):3,bCap=b.tile.shape==="s"?(b.tile.sluice?2:1):3;
+        return Number(b.tile.sluice)-Number(a.tile.sluice)||bCap-aCap||a.rank-b.rank||a.tileIndex-b.tileIndex;
       })
       .slice(0,level.difficulty.pieces);
     const required=new Map(candidates.map(({tileIndex})=>[tileIndex,1]));
@@ -142,7 +195,7 @@
     while(remaining>0){
       let advanced=false;
       for(const {tile,tileIndex} of candidates){
-        const cap=tile.shape==="s"?1:3,current=required.get(tileIndex);
+        const cap=tile.shape==="s"?(tile.sluice?2:1):3,current=required.get(tileIndex);
         if(current>=cap)continue;
         required.set(tileIndex,current+1);
         remaining--;
@@ -152,7 +205,7 @@
       if(!advanced)throw new Error(`Waterway ${index+1} cannot satisfy its difficulty budget`);
     }
     required.forEach((turns,tileIndex)=>{
-      const period=tiles[tileIndex].shape==="s"?2:4;
+      const period=tiles[tileIndex].shape==="s"&&!tiles[tileIndex].sluice?2:4;
       tiles[tileIndex].rot=mod(tiles[tileIndex].solved+period-(turns%period));
     });
     return tiles;

@@ -22,14 +22,15 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-bounce-brawl/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-bounce-brawl" /><meta name="weightplay-game-version" content="v16" /><meta name="weightplay-scene-controls" content="immutable" />
+    <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-bounce-brawl" /><meta name="weightplay-game-version" content="v20" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Рассчитывайте свои отскоки, выбирайте пенопластовые инструменты и выбивайте соперника из равновесия на игровой арене, основанной на физике." />
     <title>Прыгучая схватка | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260927-bounce-brawl-v19" />
+    <link rel="stylesheet" href="style.css?v=20260927-bounce-brawl-v20-practice" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(26,18,42,.22),rgba(26,18,42,.70)),url("assets/animal-bounce-brawl-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-    <script defer src="game.js?v=20260927-bounce-brawl-v19"></script>
+    <script defer src="tutorial.js?v=20260927-bounce-brawl-v20-practice"></script>
+    <script defer src="game.js?v=20260927-bounce-brawl-v20-practice"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Прыгучая схватка | WeightPlay" />
@@ -84,11 +85,12 @@
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
         <header class="stage-header"><button id="stage-back" class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2 id="stage-title">Foam Arenas</h2></header><p id="stage-status" class="stage-status">Choose one of six foam arenas.</p>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button id="stage-tab" type="button" aria-current="page">Stages</button></nav>
+        <button id="practice-start" type="button" data-wp-guided-practice>Guided Practice</button>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button id="battle-back" class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><div class="battle-readout"><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span></div><button id="battle-help" class="utility-button battle-utility" type="button" data-wp-battle-utility aria-label="Battle help" title="Battle help" aria-expanded="false" aria-controls="battle-help-popover">?</button></header>
         <p id="battle-help-popover" class="battle-help-popover" role="note" hidden></p>
-        <p id="battle-status" class="battle-status">Move with arrows. Press SPACE to bounce-strike.</p>
+        <p id="battle-status" class="battle-status"><span id="battle-status-copy">Move with arrows. Press SPACE to bounce-strike.</span><span id="selected-tool-label" class="selected-tool-label"></span><span id="approach-cue" class="approach-cue" role="status" aria-live="polite"></span><span id="tutorialPanel" class="tutorial-panel" role="status" aria-live="polite" hidden></span></p>
         <div class="arena-frame"><canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas></div>
         <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="ArrowUp" class="hop">HOP</button><button data-key="Space" class="jump" data-wp-primary-action>BOUNCE</button></div>
         <div class="tool-controls" aria-label="Foam tools"><button data-tool="0" class="selected">BUMP</button><button data-tool="1">SPRING</button><button data-tool="2">PAD</button></div>
