@@ -24,7 +24,7 @@
   <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v20">
+  <meta name="weightplay-game-version" content="v21">
   <meta name="weightplay-interface-version" content="7">
   <title>Animal Putt Trails | WeightPlay</title>
   <meta name="description" content="Read the trail, choose a gentle line, and guide the ball to the flag in a calm animal putting challenge.">
@@ -74,7 +74,7 @@
     .stage-card { margin-top:18px; padding:clamp(18px,4vw,34px); }
     .stage-head, .battle-head { display:flex; align-items:center; gap:12px; }
     .stage-head { justify-content:space-between; }
-    .guide-art { width:clamp(64px,12vw,112px); height:clamp(92px,18vw,156px); object-fit:contain; object-position:center bottom; flex:0 0 auto; filter:drop-shadow(0 10px 12px rgba(35,55,68,.2)); }
+    .guide-art { width:80px; height:120px; object-fit:contain; object-position:center bottom; flex:0 0 auto; filter:drop-shadow(0 10px 12px rgba(35,55,68,.2)); }
     .stage-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:22px; }
     .stage-choice { text-align:start; min-height:148px; padding:18px; border-radius:20px; background:#f7f2df; color:var(--ink); border:2px solid transparent; }
     .stage-choice:disabled { cursor:not-allowed; opacity:.62; background:#e8eadf; }
@@ -117,6 +117,7 @@
   
     /* Interface 7: game content only; the shared frame owns screen geometry. */
     #stageScreen .putt-stage-workspace { position:relative; min-width:0; min-height:0; overflow:hidden; }
+    #stageScreen .putt-stage-guide-art { position:absolute; z-index:2; inset-inline-end:12px; bottom:12px; pointer-events:none; }
     #stageScreen #stageList { position:absolute; inset-inline:0; top:38%; height:198px; min-height:198px; margin:0; transform:translateY(-50%); }
     #stageScreen #stageList > .stage-card { margin:0; padding:16px; border:2px solid rgba(255,255,255,.28); border-radius:18px; background:rgba(247,242,223,.96); color:var(--ink); text-align:start; box-shadow:0 10px 24px rgba(0,0,0,.22); }
     #stageScreen #stageList > .stage-card:is(.centered,.is-centered) { border-color:var(--gold); box-shadow:0 0 0 3px rgba(47,125,98,.7),0 12px 28px rgba(0,0,0,.28); }
@@ -136,6 +137,7 @@
     #battleScreen .putt-leave-card p { margin:0; line-height:1.5; }
     #battleScreen .putt-leave-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:16px; }
     #battleScreen .putt-leave-actions > button { min-width:0; min-height:44px; }
+    @media (max-height:500px) and (orientation:landscape) { #stageScreen .putt-stage-guide-art { display:none; } }
 </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
 </head>
@@ -167,7 +169,7 @@
       </section>
       <section id="stageScreen" class="screen stage-canvas wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-putt-trails-cover-v2.png" style="--wp-stage-art:url('assets/animal-putt-trails-cover-v2.png')" hidden>
         <header class="stage-head"><button id="stageBack" class="back" type="button" data-wp-return="stage" data-aria="back" aria-label="Back">←</button></header>
-        <div id="puttStageWorkspace" class="putt-stage-workspace"><div id="stageList" class="stage-rail" data-wp-stage-rail aria-label="Trail map"></div></div>
+        <div id="puttStageWorkspace" class="putt-stage-workspace"><div id="stageList" class="stage-rail" data-wp-stage-rail aria-label="Trail map"></div><img class="guide-art putt-stage-guide-art" src="/games/animal-putt-trails/assets/animal-putt-trails-orla-guide-v1.png" alt="" aria-hidden="true" width="80" height="120" loading="lazy" decoding="async"></div>
         <nav class="putt-stage-nav" data-wp-frame-stage-nav role="tablist" aria-label="Trail map"><button id="stagesTab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-copy="stages">Trail map</button></nav>
       </section>
 

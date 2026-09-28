@@ -124,3 +124,17 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .w
   .battle-screen .battle-actions .secondary{min-height:44px;height:44px;padding:6px 10px;font-size:.78rem}
   .battle-screen .status{grid-column:2;grid-row:4;width:auto;min-height:18px;margin:0;align-self:center;font-size:.7rem;line-height:1.1}
 }
+
+/* The atlas is a 2×2 sheet of 3:2 cells. Keep the square markers as stable
+   position anchors, but render each 3:2 frame at its source proportions. */
+.atlas-kite,
+.atlas-dock {
+  align-self: center;
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
+
+.atlas-compass {
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
