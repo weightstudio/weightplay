@@ -8,7 +8,7 @@
       if (!link) {
         link = document.createElement("link");
         link.rel = "stylesheet";
-        link.href = new URL("interface-7-cleanup.css?v=20260928-kite-keeper-v12-stage-utilities", interface7Base).href;
+        link.href = new URL("interface-7-cleanup.css?v=20260928-kite-keeper-v13-stage-v6", interface7Base).href;
         document.head.appendChild(link);
       }
       if (link.sheet) { resolve(); return; }
@@ -25,7 +25,7 @@
       let script = document.querySelector('script[src*="interface-7-compat.js"]');
       if (!script) {
         script = document.createElement("script");
-        script.src = new URL("interface-7-compat.js?v=20260928-kite-keeper-v12-stage-utilities", interface7Base).href;
+        script.src = new URL("interface-7-compat.js?v=20260928-kite-keeper-v13-stage-v6", interface7Base).href;
         script.async = false;
         script.addEventListener("error", () => {
           document.documentElement.dataset.wpKiteKeeperI7AssetError = "js";
@@ -116,6 +116,8 @@
   if (!locales[locale]) locale = "en";
   let sound = localStorage.getItem("weightplay-kite-keeper-sound") !== "off";
   let routeIndex = 0;
+  let stageBrowseIndex = 0;
+  let stageController = null;
   let position = [0, 0];
   let path = [];
   let checks = 0;
@@ -186,34 +188,53 @@
   function renderStages() {
     const root = $("stageList"); if (!root) return;
     root.setAttribute("role", "tablist"); root.setAttribute("aria-label", copy("map"));
-    root.replaceChildren();
-    routes.forEach((route, index) => {
-      const button = document.createElement("button");
-      button.className = "stage-card"; button.type = "button";
-      button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(index === routeIndex)); button.setAttribute("aria-controls", "battleScreen"); button.tabIndex = index === routeIndex ? 0 : -1;
-      button.setAttribute("aria-label", `${routeLabel(route)}. ${routeHint(route)}`);
-      button.innerHTML = `<span><strong>${routeLabel(route)}</strong><small>${routeHint(route)}</small></span><span class="arrow">${solved.has(route.id) ? "✓" : "→"}</span>`;
-      button.addEventListener("click", () => startRoute(index));
-      root.appendChild(button);
-    });
-  }
-  function handleStageKeydown(event) {
-    const cards = [...document.querySelectorAll("#stageList .stage-card")]; const current = cards.indexOf(document.activeElement); if (current < 0) return;
-    const delta = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0;
-    const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? cards.length - 1 : delta ? (current + delta + cards.length) % cards.length : -1;
-    if (nextIndex < 0 || !cards[nextIndex]) return;
-    event.preventDefault(); cards.forEach((card, index) => { card.tabIndex = index === nextIndex ? 0 : -1; }); cards[nextIndex].focus();
+    if (!stageController) {
+      if (!window.WeightPlayStageV6?.install) throw new Error("Shared Stage V6 runtime is unavailable");
+      stageController = window.WeightPlayStageV6.install(root, {
+        total: routes.length,
+        poolSize: 9,
+        cardSelector: ".stage-card",
+        initialIndex: () => stageBrowseIndex,
+        bind(button, index) {
+          const route = routes[index];
+          if (!route) return;
+          button.className = "stage-card";
+          button.type = "button";
+          button.setAttribute("role", "tab");
+          button.setAttribute("aria-controls", "battleScreen");
+          button.setAttribute("aria-label", `${routeLabel(route)}. ${routeHint(route)}`);
+          const label = document.createElement("span");
+          const title = document.createElement("strong");
+          const hint = document.createElement("small");
+          title.textContent = routeLabel(route);
+          hint.textContent = routeHint(route);
+          label.append(title, hint);
+          const arrow = document.createElement("span");
+          arrow.className = "arrow";
+          arrow.setAttribute("aria-hidden", "true");
+          arrow.textContent = solved.has(route.id) ? "✓" : "→";
+          button.replaceChildren(label, arrow);
+        },
+        activate(index) { startRoute(index); },
+        onChange(index, { pool }) {
+          stageBrowseIndex = index;
+          pool.forEach((button) => button.setAttribute("aria-selected", String(Number(button.dataset.wpStageVirtualIndex) === index)));
+        },
+      });
+      if (!stageController) throw new Error("Shared Stage V6 runtime could not initialize");
+    } else {
+      stageController.refresh();
+      stageController.center(stageBrowseIndex);
+    }
   }
   function focusRouteFamily(family) {
-    const cards = [...document.querySelectorAll("#stageList .stage-card")];
-    const target = cards[Number(family)];
-    if (!target) return;
-    cards.forEach((card) => { card.tabIndex = card === target ? 0 : -1; });
-    target.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    target.focus({ preventScroll: true });
+    const index = Number(family);
+    if (!Number.isInteger(index) || index < 0 || index >= routes.length || !stageController) return;
+    stageController.center(index);
+    document.querySelector(`#stageList .stage-card[data-wp-stage-virtual-index="${index}"]`)?.focus({ preventScroll: true });
   }
   function startRoute(index) {
-    routeIndex = index; const route = routes[index];
+    routeIndex = index; stageBrowseIndex = index; const route = routes[index];
     position = [...route.start]; path = []; checks = 0; locked = false;
     show("battle"); renderBattle(); $("status").textContent = ""; $("status").className = "status";
     announce("start");
@@ -277,7 +298,7 @@
   function nextRoute() { const next = routeIndex + 1; if (next < routes.length) startRoute(next); else { show("stage"); renderStages(); } }
   function goLobby() { window.location.href = "../../index.html"; }
   function bind() {
-    $("startBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("stageList").addEventListener("keydown", handleStageKeydown);
+    $("startBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } });
     document.querySelectorAll("#routeFamilyNav [data-route-family]").forEach((button) => button.addEventListener("click", () => focusRouteFamily(button.dataset.routeFamily)));
     $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRoute);
     $("resetBtn").addEventListener("click", resetRoute); $("battleBack").addEventListener("click", () => { show("stage"); renderStages(); }); $("stageBack").addEventListener("click", () => { show("main"); });
@@ -285,6 +306,7 @@
     $("soundBtn").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-kite-keeper-sound", sound ? "on" : "off"); applyLocale(); });
     $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-kite-keeper-locale", locale); applyLocale(); });
     $("backBtn").addEventListener("click", goLobby); $("homeBtn").addEventListener("click", goLobby);
+    window.addEventListener("pagehide", () => stageController?.destroy(), { once: true });
   }
   async function boot() {
     await waitForInterface7Assets();

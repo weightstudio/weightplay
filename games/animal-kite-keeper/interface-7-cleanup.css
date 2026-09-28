@@ -145,7 +145,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #s
   border-radius: var(--wp-ui-radius,18px);
   background: #fffffff0;
 }
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #stageList .stage-card[aria-selected="true"] {
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] #stageList .stage-card.is-centered {
   border-color: #e6c36b !important;
   box-shadow: 0 0 0 3px #e6c36b66, 0 0 24px #e6c36b88 !important;
 }
