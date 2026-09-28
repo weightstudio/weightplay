@@ -171,15 +171,11 @@ const characterShowcaseTitle = document.querySelector("#characterShowcaseTitle")
 const characterShowcaseReason = document.querySelector("#characterShowcaseReason");
 const skillPathsTitle = document.querySelector("#skillPathsTitle");
 const skillPathsReason = document.querySelector("#skillPathsReason");
-const dailyReward = document.querySelector("#dailyReward");
 const gameSearch = document.querySelector("#gameSearch");
 const quickPickBtn = document.querySelector("#quickPickBtn");
 const i18n = window.WonderI18n;
 const favoritesKey = "weightplayFavoriteGames";
 const recentGamesKey = "weightplayRecentGames";
-const dailyRewardKey = "weightplayDailyReward";
-const walletBar = document.querySelector("#walletBar");
-const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
 const recentlyUpdatedGameIds = new Set(["animal-relic-hunters", "animal-zoo-idle", "bubble-bakery", "fruit-merge"]);
 const mobilePickGameIds = ["animal-guard-yard", "animal-reef-fisher", "animal-auto-squad", "fruit-merge"];
@@ -1282,7 +1278,6 @@ function renderLobby({ historyMode = "replace" } = {}) {
   renderCatalogDirectory();
   platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
   platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : "general.site.subtitle");
-  renderWallet();
 
   const totalGameCount = gamesInHall().length;
   const lobbyVisitsTotal = Number(gameStats.totals?.lobbyVisitsTotal);
@@ -1292,7 +1287,6 @@ function renderLobby({ historyMode = "replace" } = {}) {
     <div><strong>${hasLobbyVisitTotal ? formatCount(lobbyVisitsTotal) : "..."}</strong><span>${i18n.t("stats.lobby_visits_total_short")}</span></div>
   `;
 
-  renderDailyReward();
 
   if (isKidsLobby) {
     const featured = lobby.games.find((game) => game.id === lobby.featuredGameId);
@@ -1361,123 +1355,6 @@ function renderContinuePlaying() {
   document.body.classList.toggle("has-recent-games", cards.length > 0);
   continuePlaying.replaceChildren(...cards);
 }
-
-function getLocalDateKey(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function dayNumber(dateKey) {
-  if (!dateKey) return 0;
-  const [year, month, day] = dateKey.split("-").map(Number);
-  return Math.floor(Date.UTC(year, month - 1, day) / 86400000);
-}
-
-function readDailyReward() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(dailyRewardKey) || "{}");
-    return {
-      lastClaimDate: typeof saved.lastClaimDate === "string" ? saved.lastClaimDate : "",
-      streak: Math.max(0, Number(saved.streak) || 0),
-      totalClaims: Math.max(0, Number(saved.totalClaims) || 0),
-    };
-  } catch {
-    return { lastClaimDate: "", streak: 0, totalClaims: 0 };
-  }
-}
-
-function getDailyRewardState() {
-  const saved = readDailyReward();
-  const today = getLocalDateKey();
-  const yesterdayNumber = dayNumber(today) - 1;
-  const lastNumber = dayNumber(saved.lastClaimDate);
-  const claimedToday = saved.lastClaimDate === today;
-  const streak = claimedToday ? saved.streak : lastNumber === yesterdayNumber ? saved.streak + 1 : 1;
-  const dayIndex = (Math.max(1, streak) - 1) % dailyRewardTrack.length;
-  const baseReward = dailyRewardTrack[dayIndex];
-  const castleBonus = Math.max(0, Number(window.WeightPlayCastle?.dailyDiamondBonus?.()) || 0);
-  return { ...saved, today, claimedToday, streak, dayIndex, baseReward, castleBonus, reward: baseReward + castleBonus };
-}
-
-function renderDailyReward() {
-  if (!dailyReward) return;
-  const reward = getDailyRewardState();
-  const claimLabel = reward.claimedToday ? i18n.t("daily.claimed") : i18n.t("daily.claim");
-  const rewardCards = dailyRewardTrack
-    .map((coins, index) => {
-      const isCurrent = index === reward.dayIndex;
-      const isPast = reward.claimedToday ? index <= reward.dayIndex : index < reward.dayIndex;
-      const canClaim = isCurrent && !reward.claimedToday;
-      const className = ["daily-day", isCurrent ? "current" : "", isPast ? "claimed" : "", canClaim ? "claimable" : ""].filter(Boolean).join(" ");
-      const dayLabel = i18n.t("daily.day", { day: index + 1 });
-      const statusLabel = isCurrent ? claimLabel : i18n.t(isPast ? "daily.done" : "daily.next");
-      const totalDiamonds = coins + reward.castleBonus;
-      const ariaLabel = `${dayLabel}, +${totalDiamonds} ${i18n.t("wallet.diamonds")}, ${statusLabel}`;
-      return `
-        <button class="${className}" type="button" aria-label="${ariaLabel}" ${canClaim ? 'data-daily-claim="true"' : "disabled"}>
-          <span>${dayLabel}</span>
-          <b>+${totalDiamonds}</b>
-          <small>${statusLabel}</small>
-        </button>
-      `;
-    })
-    .join("");
-  dailyReward.innerHTML = `
-    <div class="daily-reward-copy">
-      <span>${i18n.t("daily.kicker")}</span>
-      <strong>${i18n.t("daily.title")}</strong>
-      <small>${i18n.t("daily.desc", { count: reward.streak, day: reward.dayIndex + 1, diamonds: reward.reward })}</small>
-    </div>
-    <div class="daily-track">${rewardCards}</div>
-  `;
-  dailyReward.querySelector("[data-daily-claim]")?.addEventListener("click", claimDailyReward);
-}
-
-function claimDailyReward() {
-  const reward = getDailyRewardState();
-  if (reward.claimedToday) {
-    showToast(i18n.t("daily.toast_claimed"));
-    return;
-  }
-  window.WeightPlayWallet?.addDiamonds(reward.reward);
-  localStorage.setItem(
-    dailyRewardKey,
-    JSON.stringify({
-      lastClaimDate: reward.today,
-      streak: reward.streak,
-      totalClaims: reward.totalClaims + 1,
-    }),
-  );
-  window.WeightPlayAudio?.play("feedback.success");
-  window.WonderAnalytics?.track("daily_reward_claim", {
-    reward_type: "diamonds",
-    reward_amount: reward.reward,
-    base_reward: reward.baseReward,
-    castle_bonus: reward.castleBonus,
-    streak: reward.streak,
-    locale: i18n.locale(),
-  });
-  renderWallet();
-  renderDailyReward();
-  showToast(i18n.t("daily.toast", { diamonds: reward.reward, count: reward.streak }));
-}
-
-function renderWallet() {
-  if (!walletBar) return;
-  const wallet = window.WeightPlayWallet?.read?.() || { diamonds: 0 };
-  walletBar.innerHTML = `
-    <span>${i18n.t("wallet.diamonds")}</span>
-    <strong><img src="assets/weightplay-diamond.svg" alt="" />${wallet.diamonds}</strong>
-  `;
-}
-
-window.addEventListener("weightplay:castle-ready", () => {
-  renderDailyReward();
-  renderWallet();
-});
-window.addEventListener("weightplay:castle-updated", renderDailyReward);
 
 function discoveryCards(games, { popular = false } = {}) {
   return games
@@ -2115,7 +1992,6 @@ function applyStaticTranslations() {
     "[data-library-tab]",
     "[data-topic-filter]",
     "[data-availability-filter]",
-    "#lobbyAccountStrip",
     "#lobbyStats",
     "#gameGrid",
   ].join(",")).forEach((node) => node.setAttribute("data-runtime-localize-attributes", "off"));
@@ -2124,9 +2000,7 @@ function applyStaticTranslations() {
   quickPickBtn?.setAttribute("aria-label", i18n.t("quick_pick.label"));
   const ariaLabels = {
     "#localeSelect": "language.label",
-    "#lobbyAccountStrip": "aria.player_status",
     "#lobbyStats": "aria.platform_status",
-    "#dailyReward": "aria.daily_reward",
     ".parent-trust-points": "aria.parent_trust_highlights",
     ".site-footer nav": "aria.site_links",
   };

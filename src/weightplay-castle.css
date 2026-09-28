@@ -1,4 +1,5 @@
 .wp-castle-panel {
+  order: 16;
   --castle-ink: #f2f6e9;
   --castle-muted: #afc9ce;
   --castle-line: #416c78;
@@ -14,6 +15,14 @@
 }
 .wp-castle-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .wp-castle-heading > div:first-child { min-width: 0; }
+.wp-castle-daily { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--castle-line); border-radius: 3px; background: #10333e; }
+.wp-castle-wallet, .wp-castle-income { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-width: 0; font-size: 14px; }
+.wp-castle-wallet strong { color: #d9f4f8; font-size: 20px; overflow-wrap: anywhere; }
+.wp-castle-income { color: var(--castle-muted); }
+.wp-castle-income strong { color: var(--castle-gold); font-size: 20px; }
+.wp-castle-claim { margin-inline-start: auto; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.wp-castle-claim-status { flex-basis: 100%; margin: 0; font-size: 13px; color: #d9f4f8; }
+.wp-castle-claim-status:empty { display: none; }
 .wp-castle-heading h2 { margin: 2px 0 4px; color: var(--castle-ink); font-size: clamp(23px, 3vw, 32px); line-height: 1.1; }
 .wp-castle-heading p { margin: 0; color: var(--castle-muted); font-size: 14px; line-height: 1.35; }
 .wp-castle-kicker { color: #f4c76b; font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
@@ -69,6 +78,9 @@ html[dir="rtl"] .wp-castle-heading, html[dir="rtl"] .wp-castle-footer { directio
   .wp-castle-heading { align-items: center; gap: 8px; }
   .wp-castle-heading h2 { font-size: clamp(22px, 6vw, 27px); }
   .wp-castle-heading p { max-width: 32ch; font-size: 13px; }
+  .wp-castle-daily { gap: 8px 14px; padding: 9px; margin-top: 10px; }
+  .wp-castle-wallet, .wp-castle-income { font-size: 13px; }
+  .wp-castle-claim { flex: 1 0 100%; margin-inline-start: 0; }
   .wp-castle-balance { grid-template-columns: auto auto; padding: 7px 9px; }
   .wp-castle-layout { width: 100%; grid-template-columns: minmax(0, 1fr); align-items: stretch; gap: 9px; margin-top: 10px; }
   .wp-castle-scene { width: 100%; aspect-ratio: 1.8; }
