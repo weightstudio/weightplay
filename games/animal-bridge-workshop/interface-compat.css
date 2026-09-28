@@ -125,6 +125,23 @@ body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .workspace {
   margin-top: 12px;
 }
 
+/* Keep the live construction board and Result actions inside the shared
+   short-height Canvas instead of clipping the recovery buttons below it. */
+@media (min-width: 700px) and (max-height: 760px) {
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .materials,
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .workspace {
+    margin-top: 8px;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .result-card {
+    margin-top: 8px;
+  }
+}
+
 body[data-wp-game-id="animal-bridge-workshop"] #battleSettingsPopover {
   position: absolute;
   z-index: 50;
