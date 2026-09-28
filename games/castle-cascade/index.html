@@ -1,13 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script data-wp-locale-route>if(/^https?:$/.test(location.protocol)&&!/^(127\.0\.0\.1|localhost)$/.test(location.hostname))(function(){try{const m={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const l=localStorage.getItem("wp-locale")||"en";location.replace("/"+(m[l]||"en")+"/games/castle-cascade/"+location.search+location.hash)}catch{location.replace("/en/games/castle-cascade/")}})();</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/castle-cascade/"+location.search+location.hash)}catch{location.replace("/en/games/castle-cascade/"+location.search+location.hash)}})();</script>
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-interface-version" content="7">
   <meta name="theme-color" content="#30184d">
   <title>Castle Cascade | WeightPlay</title>
   <meta name="description" content="Play Castle Cascade, an original free match-three puzzle with 30 castle stages and combinable power pieces.">
@@ -15,32 +17,34 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Castle Cascade | WeightPlay">
   <meta property="og:description" content="Swap royal gems, combine power pieces and clear 30 castle puzzles.">
+  <meta property="og:image" content="https://weightplay.com/assets/castle-cascade-poster.webp">
   <meta property="og:url" content="https://weightplay.com/en/games/castle-cascade/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Castle Cascade | WeightPlay">
   <meta name="twitter:description" content="An original 30-stage match-three castle puzzle.">
-  <link rel="canonical" href="https://weightplay.com/en/games/castle-cascade/">
-  <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/castle-cascade/">
-  <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/castle-cascade/">
-  <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/castle-cascade/">
-  <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/castle-cascade/">
-  <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/castle-cascade/">
-  <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/castle-cascade/">
-  <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/castle-cascade/">
-  <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/castle-cascade/">
-  <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/castle-cascade/">
-  <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/castle-cascade/">
-  <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/castle-cascade/">
-  <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/castle-cascade/">
-  <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/castle-cascade/">
-  <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/castle-cascade/">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Castle Cascade","description":"An original match-three castle puzzle with 30 stages and combinable power pieces.","url":"https://weightplay.com/en/games/castle-cascade/","applicationCategory":"Game","operatingSystem":"Web browser","inLanguage":"en","isAccessibleForFree":true,"genre":["Match 3","Puzzle","Casual"],"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"}}</script>
+  <link rel="canonical" href="https://weightplay.com/en/games/castle-cascade/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/castle-cascade/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/castle-cascade/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/castle-cascade/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/castle-cascade/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/castle-cascade/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/castle-cascade/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/castle-cascade/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/castle-cascade/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/castle-cascade/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/castle-cascade/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/castle-cascade/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/castle-cascade/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/castle-cascade/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/castle-cascade/" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Castle Cascade","description":"An original match-three castle puzzle with 30 stages and combinable power pieces.","url":"https://weightplay.com/en/games/castle-cascade/","image":"https://weightplay.com/assets/castle-cascade-poster.webp","applicationCategory":"Game","operatingSystem":"Web browser","inLanguage":"en","isAccessibleForFree":true,"genre":["Match 3","Puzzle","Casual"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9},"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"}}</script>
   <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
 </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-combined-sound="true" data-runtime-localize="off">
+<body class="has-game-page-info" data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-game-version="v4" data-wp-interface-version="7" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true">
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" data-t-aria="backToMain" aria-label="Return to main menu">←</a>
@@ -51,8 +55,14 @@
       <div class="hero-character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="Boom Mane Leo guards the castle gate." data-t-alt="heroAlt"><p data-t="heroCaption">Meet Boom Mane Leo</p></div>
       <div class="hero-copy"><p class="eyebrow" data-t="kicker">A ROYAL MATCH-THREE PUZZLE</p><h2 data-t="title">Castle Cascade</h2><p class="wp-standard-main-summary" data-t="summary">Match bright gems, build clever power pieces, and open a path through the castle.</p><button id="start" class="primary" data-wp-main-start data-t="start">Start Game</button></div>
     </section>
-    <section class="game-page-info game-page-info-static" aria-labelledby="guideTitle">
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="guideTitle">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">WeightPlay Original Game Guide</span><h2 id="guideTitle" data-t="title">Castle Cascade</h2><p data-t="summary">Match bright gems, build clever power pieces, and open a path through the castle.</p></div></div>
+      <div class="game-info-facts">
+        <div class="game-info-fact"><span data-t="ageLabel">Recommended Age</span><strong data-t="ageValue">9+</strong></div>
+        <div class="game-info-fact"><span data-t="difficultyLabel">Difficulty</span><strong data-t="difficultyValue">Medium</strong></div>
+        <div class="game-info-fact"><span data-t="timeLabel">Estimated Play Time</span><strong data-t="timeValue">3–5 minutes per stage</strong></div>
+        <div class="game-info-fact"><span data-t="skillsLabel">Skills Trained</span><strong data-t="skillsValue">Pattern Recognition · Planning · Focus</strong></div>
+      </div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="howTitle">How to Play</h3><p data-t="howBody"></p></div>
         <div class="game-info-section"><h3 data-t="powerTitle">Power Pieces</h3><p data-t="powerBody"></p></div>
@@ -63,6 +73,14 @@
           <div><dt data-t="faqShuffle"></dt><dd data-t="faqShuffleAnswer"></dd></div>
           <div><dt data-t="faqOriginal"></dt><dd data-t="faqOriginalAnswer"></dd></div>
         </dl></div>
+        <div class="game-info-section game-info-parent"><h3 data-t="parentTitle">Player and Parent Note</h3><p data-t="parentBody">Progress and sound preferences stay in this browser. No account or payment is required. The game is designed for players aged 9 and up.</p></div>
+        <div class="game-info-section game-info-related-section">
+          <h3 data-t="relatedTitle">Related Games</h3><p data-t="relatedIntro">Try another free WeightPlay puzzle that rewards careful planning.</p>
+          <div class="game-info-related">
+            <a class="game-info-related-card" href="/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedColorLink">Animal Color Link</strong><span data-t="relatedColorLinkDesc">Connect matching colors with a clear route.</span></span></a>
+            <a class="game-info-related-card" href="/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-t="relatedBlockBlast">Block Blast</strong><span data-t="relatedBlockBlastDesc">Place shapes and clear full rows and columns.</span></span></a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -107,11 +125,12 @@
   <script src="../../src/site-config.js"></script>
   <script src="../../src/i18n.js"></script>
   <script src="../../src/analytics.js"></script>
-  <script src="locales.js"></script>
-  <script type="module" src="game.js"></script>
+  <script src="locales.js?v=20260928-castle-cascade-v4-owner-guide"></script>
+  <script src="../../src/tutorial.js?v=20260928-castle-cascade-tutorial1"></script>
+  <script type="module" src="game.js?v=20260928-castle-cascade-v4-guide-tutorial"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20260928-castle-cascade-v4-ar-logo-root"></script>
 </body>
 </html>

@@ -10,6 +10,7 @@ import { CastleCascade3D } from "./castle-cascade-3d.js";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
+const LION_POSTER_URL = new URL("../../assets/weightplay-character-boom-mane-lion-block-v1.webp", import.meta.url).href;
 const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 const SEGMENT_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
 const ARC_START = [0, 5, 10, 15, 20, 25];
@@ -147,6 +148,9 @@ function screen(id) {
     window.WeightPlayBattleCanvas?.sync?.();
     window.WeightPlayScreenFrame?.sync?.();
   });
+  if (id === "battle") {
+    window.dispatchEvent(new CustomEvent("weightplay:battle-open", { detail: { screen: id, gameId: GAME_ID } }));
+  }
 }
 
 function disposeRenderer() {
@@ -222,7 +226,7 @@ function renderStageList() {
     const title = document.createElement("strong");
     title.textContent = stageText;
     const art = document.createElement("img");
-    art.src = "../../assets/weightplay-character-boom-mane-lion-block-v1.webp";
+    art.src = LION_POSTER_URL;
     art.alt = "";
     art.setAttribute("aria-hidden", "true");
     const chapter = document.createElement("span");

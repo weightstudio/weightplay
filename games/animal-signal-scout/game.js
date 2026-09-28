@@ -20,6 +20,7 @@
   try { const old=JSON.parse(localStorage.getItem(saveKey)||'null'); if(old) progress={unlocked:Math.max(1,Math.min(30,Math.floor(Number(old.unlocked)||1))),stars:old.stars&&typeof old.stars==='object'?old.stars:{}}; } catch {}
   const state={locale:locales[document.documentElement.lang]?document.documentElement.lang:'en',patrol:0,code:[],checks:0,sessionChecks:0,screen:'main',clue:true,hints:0,feedback:''};
   const START_COPY={en:'Start Game','zh-Hant':'開始遊戲','zh-Hans':'开始游戏',ja:'ゲーム開始',ko:'게임 시작',es:'Iniciar juego','pt-BR':'Iniciar jogo',fr:'Commencer le jeu',de:'Spiel starten',it:'Avvia gioco',ru:'Начать игру',hi:'खेल शुरू करें',ar:'ابدأ اللعبة'};
+  const LOADING_COPY={en:'Preparing patrol…','zh-Hant':'正在準備巡邏…','zh-Hans':'正在准备巡逻…',ja:'巡回を準備中…',ko:'순찰 준비 중…',es:'Preparando la patrulla…','pt-BR':'Preparando a patrulha…',fr:'Préparation de la patrouille…',de:'Patrouille wird vorbereitet…',it:'Preparazione della pattuglia…',ru:'Подготовка патруля…',hi:'गश्त तैयार हो रही है…',ar:'جارٍ تجهيز الدورية…'};
   let stageController=null;
   const t=(key,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,String(v)),String(copy[state.locale]?.[key]??locales[state.locale]?.[key]??copy.en[key]??locales.en[key]??key));
   const art=(i,cls='animal-icon')=>`<img class="${cls}" src="${portraits[i]}" alt="" draggable="false">`;
@@ -102,11 +103,12 @@
   }
   function applyLocale(){document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==='ar'?'rtl':'ltr';document.querySelectorAll('[data-copy]').forEach(n=>n.textContent=t(n.dataset.copy));document.querySelectorAll('[data-copy-aria]').forEach(n=>n.setAttribute('aria-label',t(n.dataset.copyAria)));$('startBtn').textContent=START_COPY[state.locale]||START_COPY.en;$('localeSelect').value=state.locale;$('signalGrid').setAttribute('aria-label',t('signalChoices'));renderMain();if(state.screen==='battle')renderBattle();if(state.screen==='stage')renderStages();if(state.screen==='result')renderResult();window.dispatchEvent(new CustomEvent('wonder:locale-change',{detail:{locale:state.locale}}));}
   $('startBtn').onclick=openPatrolMap;$('mapBtn').onclick=openPatrolMap;$('stageBackBtn').onclick=()=>{show('main');applyLocale();};$('battleBackBtn').onclick=requestBattleLeave;$('leaveContinue').onclick=continueBattle;$('leaveStage').onclick=confirmBattleLeave;$('resultMapBtn').onclick=openPatrolMap;$('resultHomeBtn').onclick=()=>{show('main');applyLocale();};$('checkBtn').onclick=checkCode;$('clearBtn').onclick=clearCode;
+  window.addEventListener('weightplay:tutorial-start',event=>{if(event.detail?.gameId==='animal-signal-scout'&&state.screen==='main')openPatrolMap();});
   $('memoryBtn').onclick=()=>{if(!state.clue)state.hints++;state.clue=!state.clue;renderBattle();};
   $('battleUtilityBtn').onclick=()=>document.querySelector('[data-wp-settings]')?.click();
   $('localeSelect').onchange=e=>{state.locale=locales[e.target.value]?e.target.value:'en';try{localStorage.setItem('weightplayLocale',state.locale);}catch{}applyLocale();};
   window.addEventListener('wp:block-pick',e=>chooseSignal(animals[e.detail.index]));window.addEventListener('wp:block-ready',scene);
-  applyLocale();show('main');
+  applyLocale();show('main');$('loadingText').textContent=LOADING_COPY[state.locale]||LOADING_COPY.en;$('loadingPanel')?.classList.add('hidden');
   const mapObserver=new MutationObserver(()=>{const host=document.querySelector('.wp-standard-main-copy');if(host&&!host.contains($('mapBtn'))){host.append($('mapBtn'));mapObserver.disconnect();}});
   mapObserver.observe(document.body,{childList:true,subtree:true});
   window.__ANIMAL_SIGNAL_SCOUT_TEST__={patrols,startPatrol,chooseSignal,checkCode,clearCode,getState:()=>({...state,code:[...state.code],progress:structuredClone(progress)})};

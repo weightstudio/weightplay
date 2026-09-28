@@ -2830,5 +2830,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Блочный апекс",
     "hi": "ब्लॉक एपेक्स",
     "ar": "قمة المكعبات"
+  },
+  "castle-cascade": {
+    "__localizedExact": true,
+    "en": "Castle Cascade",
+    "zh-Hant": "王城連鎖",
+    "zh-Hans": "王城连锁",
+    "ja": "キャッスル・カスケード",
+    "ko": "캐슬 캐스케이드",
+    "es": "Castle Cascade",
+    "pt-BR": "Castle Cascade",
+    "fr": "Castle Cascade",
+    "de": "Castle Cascade",
+    "it": "Castle Cascade",
+    "ru": "Castle Cascade",
+    "hi": "Castle Cascade",
+    "ar": "Castle Cascade"
   }
 };

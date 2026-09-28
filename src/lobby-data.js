@@ -7187,7 +7187,7 @@ window.WONDER_LOBBY.games.push({
   relatedGameRules: { gameIds: ["animal-color-link", "block-blast"], requirePlayable: true, basis: ["Pattern Recognition", "Planning"] },
   href: "games/castle-cascade/",
   meta: castleCascadeMeta,
-  art: { kind: "image", background: "assets/weightplay-character-boom-mane-lion-block-v1.webp", hideHero: true },
+  art: { kind: "image", background: "assets/castle-cascade-poster.webp", hideHero: true },
 });
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes("castle-cascade")) {
   window.WONDER_LOBBY.audiences.generalGameIds.push("castle-cascade");

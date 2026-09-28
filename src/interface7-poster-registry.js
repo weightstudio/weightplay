@@ -130,6 +130,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "bubble-bakery": "/assets/bubble-bakery/cover-block-v1.png",
   "campus-dash": "/assets/campus-dash/cover-block-v1.png",
   "casino": "/assets/interface7-redrawn/casino.webp",
+  "castle-cascade": "/assets/castle-cascade-poster.webp",
   "cat-color-sudoku": "/assets/interface7-redrawn/cat-color-sudoku.webp",
   "checkers": "/assets/interface7-redrawn/checkers.webp",
   "chess": "/assets/interface7-redrawn/chess.webp",
@@ -186,6 +187,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/fusekeep/poster.webp": "/assets/lobby-thumbs/w480/assets__fusekeep__poster.webp",
+  "/assets/castle-cascade-poster.webp": "/assets/lobby-thumbs/w480/assets__castle-cascade-poster.webp",
   "/assets/animal-dice-bastion/cover-block-v1.png": "/assets/animal-dice-bastion/cover-block-v1.png",
   "/assets/interface7-redrawn/alien-defender.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__alien-defender.webp",
   "/assets/interface7-redrawn/animal-2048.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-2048.webp",

@@ -974,7 +974,7 @@
       control.querySelectorAll(":scope > img").forEach((image) => image.remove());
     } else if (!control.querySelector(":scope > img")) {
       const logo = document.createElement("img");
-      logo.src = "../../assets/weightplay-logo.png";
+      logo.src = lobbyLogoUrl;
       logo.alt = "";
       control.append(logo);
     }
