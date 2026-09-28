@@ -138,3 +138,113 @@ body[data-wp-game-id="animal-rootvault-pins"] .result-card > .modal-actions > bu
     padding-block: 2px;
   }
 }
+
+/* Keep Rootvault's Guide on the shared Interface 7 reading surface. */
+body[data-wp-game-id="animal-rootvault-pins"] .public-guide.guide > small {
+  color: var(--wp-ui-accent, #62efc2);
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .public-guide.guide .guide-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .public-guide.guide .guide-grid > article {
+  color: #17362d;
+}
+
+/* The v7 rail is 264x190. Let every localized card label reflow inside it. */
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 16px !important;
+  text-align: center;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card > small,
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card > strong,
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card > span {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card > small:first-child {
+  color: #d8eee5;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card > strong {
+  margin: 0 !important;
+  font-size: 16px;
+  line-height: 1.15;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card > span {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card > small:last-child {
+  color: #d8eee5;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+/* Keep room contents on a stable grid instead of overlapping by negative
+   margins. Dense rooms adapt without changing the room or board geometry. */
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces {
+  position: absolute;
+  inset: 14px 4px 4px;
+  display: grid;
+  grid-template-columns: repeat(2, 30px);
+  grid-auto-rows: 30px;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  gap: 0;
+  width: auto;
+  height: auto;
+  padding: 0;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="1"] {
+  grid-template-columns: 30px;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="3"] > .piece:last-child {
+  grid-column: 1 / -1;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="5"],
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="6"],
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="7"],
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="8"],
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="9"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces > .piece {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+}
+
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="5"] > .piece,
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="6"] > .piece,
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="7"] > .piece,
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="8"] > .piece,
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="9"] > .piece {
+  width: 20px;
+  height: 20px;
+}
