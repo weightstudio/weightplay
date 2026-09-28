@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-bridge-workshop">
-  <meta name="weightplay-game-version" content="v8">
+  <meta name="weightplay-game-version" content="v9">
   <meta name="description" content="Build a safe bridge for a friendly animal crew across three forest crossings.">
   <title>Bridge Workshop | WeightPlay</title>
   <style>
@@ -34,7 +34,7 @@
     .settings-popover { position:absolute; z-index:30; right:0; top:52px; display:flex; align-items:center; gap:8px; padding:10px; border:1px solid var(--line); border-radius:14px; background:var(--panel); box-shadow:0 14px 30px #030a1688; }
     .settings-popover[hidden] { display:none; }
     .progress { min-height:40px; margin-top:14px; padding:10px 12px; border:1px solid #365778; border-radius:12px; color:var(--muted); background:#0d1c31; }
-    .guide-card { margin-top:16px; padding:16px; border:1px solid var(--line); border-radius:18px; background:#10213a; }
+    .guide-card { margin-top:16px; padding:16px; border:1px solid var(--line); border-radius:var(--wp-ui-radius); background:#10213a; }
     .guide-card p { margin-top:8px; color:var(--muted); line-height:1.5; }
     #battleScreen.active { position:fixed; top:0; left:50%; right:auto; transform:translateX(-50%); z-index:10; width:min(100vw,920px); height:calc(100vh - var(--reserve)); overflow:auto; padding:0; background:#091426; }
     #battleScreen.active .card { width:min(100%,920px); min-height:100%; margin:0 auto; border-radius:0; }
@@ -92,7 +92,7 @@
     }
   </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
-  <link rel="stylesheet" href="interface-compat.css?v=20260928-bridge-issue-0442-v8">
+  <link rel="stylesheet" href="interface-compat.css?v=20260928-bridge-issue-0442-v9">
 </head>
 <body data-wp-game-id="animal-bridge-workshop" data-wp-audience="general" data-wp-battle-settings="visible">
   <div class="shell">
@@ -136,7 +136,7 @@
     </main>
   </div>
   <script src="locales.js?v=20260830-bridge-workshop-v6-live-locale"></script>
-  <script src="game.js?v=20260928-bridge-workshop-v8-issue-0442"></script>
+  <script src="game.js?v=20260928-bridge-workshop-v9-issue-0442-guide-radius"></script>
   <script src="interface-compat.js?v=20260921-bridge-interface-review-1"></script>
 </body>
 </html>

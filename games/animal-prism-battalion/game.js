@@ -23,7 +23,7 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=31, INTERFACE_VERSION=7;
+  const GAME_VERSION=32, INTERFACE_VERSION=7;
   const prefersReducedMotion=Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const screenFrame=window.WeightPlayScreenFrame.mount({
     root:$('gameFrame'),localeSelect:$('locale'),
@@ -350,7 +350,7 @@
   function openLeave(){if(!run||run.finished||activeModal())return;openModal($("leave"),$("continueBattle"))}
   function finish(won){
     if(!run||run.finished)return;clearArenaPointer();run.finished=true;run.won=Boolean(won);(__wpNotifyMeasurement(), run.paused=true);resultDecisionCommitted=false;trackFunnel(won?"mission_complete":"mission_fail",{stage:run.stage.n,wave:run.wave,core:Math.max(0,Math.ceil(run.core)),result:won?"success":"failure"});stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
-    if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist()}
+    if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist();window.WonderAnalytics?.completeStage?.(`mission-${run.stage.n}`)}
     const decisiveLane=run.laneDamage.reduce((best,damage,index)=>damage>run.laneDamage[best]?index:best,0),failureRecap=run.coreHits>0?t("failureRecapLane",{lane:decisiveLane+1,damage:run.laneDamage[decisiveLane]}):t("failureRecapTimeout",{wave:run.wave}),overdriveRecap=run.readyCueShown&&!run.lastReadyUsed?t("overdriveResultUnused",{lane:(run.readyTargetLane??run.lane)+1}):run.overdriveActivationCount>0?t("overdriveResultUsed",{lane:(run.overdriveActivationLane??run.lane)+1,wave:run.overdriveActivationWave??run.wave}):"";
     $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailedKicker");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=won?t("victoryText"):`${failureRecap}${overdriveRecap?` ${overdriveRecap}`:""}`;$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${Math.max(0,Math.ceil(run.core))}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>{button.disabled=false;button.classList.remove("primary")});$("nextMission").hidden=false;$("nextMission").disabled=!won||run.stage.n>=30;const primary=$("nextMission").disabled?$("resultStage"):$("nextMission");primary.classList.add("primary");(__wpNotifyMeasurement(), $("result").hidden=false);$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>primary.focus());window.WeightPlayAudio?.play?.(won ? "result.win" : "result.lose")
     const replayTarget=won?(stars<3?t("replayTargetStars",{stars:stars+1}):run.overdriveActivationCount===0?t("replayTargetOverdrive"):t("replayTargetPeak",{peak:run.peak+1})):t("replayTargetClear");
