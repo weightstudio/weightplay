@@ -7084,3 +7084,111 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "Assets/block-apex-poster.webp", hideHero: true },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("block-apex");
+
+// Owner-requested Castle Cascade publication opening identity. Keep the exact
+// game internal and planned until its versioned acceptance and release gates pass.
+const castleCascadeStatusText = {
+  __localizedExact: true,
+  en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
+  ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
+  de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+};
+const castleCascadeTitle = {
+  __localizedExact: true,
+  en: "Castle Cascade", "zh-Hant": "王城連鎖", "zh-Hans": "王城连锁",
+  ja: "キャッスル・カスケード", ko: "캐슬 캐스케이드", es: "Castle Cascade",
+  "pt-BR": "Castle Cascade", fr: "Castle Cascade", de: "Castle Cascade",
+  it: "Castle Cascade", ru: "Castle Cascade", hi: "Castle Cascade", ar: "Castle Cascade",
+};
+const castleCascadeType = {
+  __localizedExact: true,
+  en: "Match-3 Puzzle", "zh-Hant": "三消益智", "zh-Hans": "三消益智",
+  ja: "マッチ3パズル", ko: "매치 3 퍼즐", es: "Rompecabezas de combinaciones",
+  "pt-BR": "Quebra-cabeça de combinações", fr: "Puzzle de combinaisons",
+  de: "Kombinationsrätsel", it: "Puzzle di abbinamenti", ru: "Головоломка «три в ряд»",
+  hi: "मैच-3 पहेली", ar: "لغز مطابقة الجواهر",
+};
+const castleCascadeDescription = {
+  __localizedExact: true,
+  en: "Match bright gems, build clever power pieces, and open a path through the castle.",
+  "zh-Hant": "交換璀璨寶石，組合強力棋子，打開城堡中的前進道路。",
+  "zh-Hans": "交换璀璨宝石，组合强力棋子，打开城堡里的前进道路。",
+  ja: "宝石を入れ替え、パワーピースを作り、城への道を開こう。",
+  ko: "보석을 바꾸고 파워 피스를 만들어 성으로 가는 길을 여세요.",
+  es: "Intercambia gemas, crea piezas de poder y abre el camino por el castillo.",
+  "pt-BR": "Troque gemas, crie peças de poder e abra caminho pelo castelo.",
+  fr: "Échangez des gemmes, créez des pièces spéciales et ouvrez la voie du château.",
+  de: "Tausche Edelsteine, erschaffe Kraftsteine und öffne den Weg durch die Burg.",
+  it: "Scambia gemme, crea pezzi speciali e apri la strada nel castello.",
+  ru: "Меняйте самоцветы местами, создавайте усилители и открывайте путь в замок.",
+  hi: "रत्न बदलें, पावर पीस बनाएँ और किले का रास्ता खोलें।",
+  ar: "بدّل الجواهر واصنع قطع القوة وافتح الطريق عبر القلعة.",
+};
+const castleCascadePlayerNote = {
+  __localizedExact: true,
+  en: "Progress is saved in this browser. No account or payment is required.",
+  "zh-Hant": "遊戲進度只保存在這個瀏覽器，不需要帳號或付費。",
+  "zh-Hans": "游戏进度只保存在这个浏览器，无需账号或付费。",
+  ja: "進行状況はこのブラウザーに保存されます。アカウントや支払いは不要です。",
+  ko: "진행 상황은 이 브라우저에 저장됩니다. 계정이나 결제는 필요하지 않습니다.",
+  es: "El progreso se guarda en este navegador. No hace falta una cuenta ni pagar.",
+  "pt-BR": "O progresso fica salvo neste navegador. Não é preciso conta nem pagamento.",
+  fr: "La progression est enregistrée dans ce navigateur. Aucun compte ni paiement n’est nécessaire.",
+  de: "Der Fortschritt wird in diesem Browser gespeichert. Ein Konto oder eine Zahlung ist nicht erforderlich.",
+  it: "I progressi sono salvati in questo browser. Non servono account né pagamenti.",
+  ru: "Прогресс сохраняется в этом браузере. Учётная запись и оплата не нужны.",
+  hi: "प्रगति इसी ब्राउज़र में सहेजी जाती है। खाते या भुगतान की ज़रूरत नहीं है।",
+  ar: "يُحفظ التقدم في هذا المتصفح. لا حاجة إلى حساب أو دفع.",
+};
+const castleCascadeSeoDescription = {
+  __localizedExact: true,
+  en: "Ages 9+. Match gems and plan each move through 30 original castle puzzle stages. Practice pattern recognition, planning, and focus; progress stays in this browser.",
+  "zh-Hant": "適合 9 歲以上玩家。交換寶石、規劃步數，挑戰 30 個原創王城益智關卡，練習圖樣辨識、規劃與專注；進度只保存在本機瀏覽器。",
+  "zh-Hans": "适合 9 岁以上玩家。交换宝石、规划步数，挑战 30 个原创王城益智关卡，练习图样识别、规划与专注；进度只保存在本地浏览器。",
+  ja: "9歳以上向け。宝石を入れ替えて手順を考え、全30のオリジナル城パズルに挑戦。図形認識、計画、集中力を練習でき、進行状況はこのブラウザーに保存されます。",
+  ko: "9세 이상 권장. 보석을 바꾸고 수를 계획해 30개의 오리지널 성 퍼즐에 도전하세요. 패턴 인식, 계획, 집중력을 연습하며 진행 상황은 이 브라우저에 저장됩니다.",
+  es: "Recomendado para mayores de 9 años. Combina gemas y planifica cada movimiento en 30 fases originales. Practica patrones, planificación y concentración; el progreso se guarda en este navegador.",
+  "pt-BR": "Recomendado para maiores de 9 anos. Combine gemas e planeje movimentos em 30 fases originais. Pratique reconhecimento de padrões, planejamento e foco; o progresso fica neste navegador.",
+  fr: "Conseillé dès 9 ans. Assemblez des gemmes et planifiez vos coups dans 30 niveaux originaux. Exercez observation, planification et concentration ; la progression reste dans ce navigateur.",
+  de: "Empfohlen ab 9 Jahren. Kombiniere Edelsteine und plane Züge in 30 originellen Burg-Rätseln. Fördert Mustererkennung, Planung und Konzentration; der Fortschritt bleibt in diesem Browser.",
+  it: "Consigliato dai 9 anni. Abbina gemme e pianifica le mosse in 30 livelli originali. Allena riconoscimento di schemi, pianificazione e attenzione; i progressi restano in questo browser.",
+  ru: "Рекомендуется с 9 лет. Соединяйте самоцветы и планируйте ходы в 30 оригинальных замковых уровнях. Развивайте распознавание шаблонов, планирование и внимание; прогресс хранится в браузере.",
+  hi: "9 वर्ष से अधिक आयु के लिए सुझाया गया। रत्न मिलाएँ और 30 मौलिक किले वाली पहेलियों में चालें सोचें। पैटर्न पहचान, योजना और ध्यान का अभ्यास करें; प्रगति इसी ब्राउज़र में रहती है।",
+  ar: "موصى بها لمن تجاوزوا 9 سنوات. طابق الجواهر وخطط لكل حركة عبر 30 مرحلة ألغاز أصلية في القلعة. تدرب على تمييز الأنماط والتخطيط والتركيز؛ ويُحفظ التقدم في هذا المتصفح.",
+};
+const castleCascadeMeta = {
+  en: ["30 Stages", "6 Chapters", "Power-piece Combos"],
+  "zh-Hant": ["30 關", "六大篇章", "強力棋子連鎖"],
+  "zh-Hans": ["30 关", "六大篇章", "强力棋子连锁"],
+  ja: ["全30ステージ", "6章", "パワーピース連鎖"],
+  ko: ["30개 스테이지", "6개 챕터", "파워 피스 연계"],
+  es: ["30 fases", "6 capítulos", "Combos de poder"],
+  "pt-BR": ["30 fases", "6 capítulos", "Combos de poder"],
+  fr: ["30 niveaux", "6 chapitres", "Combos spéciaux"],
+  de: ["30 Stufen", "6 Kapitel", "Kraftstein-Kombos"],
+  it: ["30 livelli", "6 capitoli", "Combo speciali"],
+  ru: ["30 уровней", "6 глав", "Комбинации усилителей"],
+  hi: ["30 चरण", "6 अध्याय", "पावर पीस कॉम्बो"],
+  ar: ["30 مرحلة", "6 فصول", "تركيبات قطع القوة"],
+};
+window.WONDER_LOBBY.games.push({
+  id: "castle-cascade", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "/games/castle-cascade/index.html?trial=1",
+  title: castleCascadeTitle,
+  statusText: castleCascadeStatusText,
+  type: castleCascadeType,
+  categories: ["Puzzle", "Strategy", "Family"],
+  skills: ["Pattern Recognition", "Planning", "Focus"],
+  ages: ["9", "family"], ageTags: ["9", "family"], ageLabel: "9+",
+  recommendedAge: "9+", difficulty: "Medium", estimatedPlayTime: "3-5 minutes per stage",
+  description: castleCascadeDescription, seoDescription: castleCascadeSeoDescription,
+  playerNote: castleCascadePlayerNote,
+  scoreBandsByAge: {},
+  relatedGameRules: { gameIds: ["animal-color-link", "block-blast"], requirePlayable: true, basis: ["Pattern Recognition", "Planning"] },
+  href: "games/castle-cascade/",
+  meta: castleCascadeMeta,
+  art: { kind: "image", background: "assets/weightplay-character-boom-mane-lion-block-v1.webp", hideHero: true },
+});
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes("castle-cascade")) {
+  window.WONDER_LOBBY.audiences.generalGameIds.push("castle-cascade");
+}

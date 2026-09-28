@@ -153,6 +153,14 @@ body[data-wp-game-id="animal-rootvault-pins"] .public-guide.guide .guide-grid > 
   color: #17362d;
 }
 
+/* The shared game-info skin colors h3/p descendants with !important inside
+   wp-frame-contract. Reopen that layer and override the white-card text there. */
+@layer wp-frame-contract {
+  body[data-wp-game-id="animal-rootvault-pins"] .public-guide.game-page-info.guide .guide-grid > article :is(h3, p, li, dd, strong) {
+    color: #17362d !important;
+  }
+}
+
 /* The v7 rail is 264x190. Let every localized card label reflow inside it. */
 body[data-wp-game-id="animal-rootvault-pins"] .stage-card {
   display: flex;

@@ -325,6 +325,15 @@ body[data-wp-game-id="animal-prism-breakers"] #stageHintCopy {
   line-height: 1.3;
 }
 
+#loadingPanel .prism-loading-art {
+  display: block;
+  width: 150px;
+  height: 150px;
+  margin-inline: auto;
+  border-radius: 24px;
+  object-fit: cover;
+}
+
 body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-header.wp-battle-shell-header {
   --wp-frame-control-size: 52px;
 }

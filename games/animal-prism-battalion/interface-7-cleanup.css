@@ -2,6 +2,7 @@
    scene root, header, Stage navigation slot, control size, and canvas edge. */
 html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"]
   #mainGroup[data-wp-frame-scene="main"] {
+  min-height: 0 !important;
   grid-template-rows: 60px auto !important;
   align-content: start !important;
 }

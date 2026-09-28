@@ -1,5 +1,20 @@
 const KEYS={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowDown:'brake',KeyS:'brake',Space:'drift',ShiftLeft:'boost',ShiftRight:'boost',KeyX:'boost'};
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+
+export function actionsFromKeys(keys){return new Set([...keys].map(key=>KEYS[key]||key.replace('button:','')));}
+
+// The follow camera looks along +Z from behind the kart. In this view, +X is screen-left,
+// so left-side controls must produce positive yaw and right-side controls negative yaw.
+export function steerFromActions(actions){return Number(actions.has('left'))-Number(actions.has('right'));}
+
+export function steerFromGamepad(pad){
+  const axis=pad.axes[0]||0,dead=.16;
+  let steer=Math.abs(axis)>dead?-clamp((Math.abs(axis)-dead)/(1-dead),0,1)*Math.sign(axis):0;
+  if(pad.buttons[14]?.pressed)steer=1;
+  if(pad.buttons[15]?.pressed)steer=-1;
+  return steer;
+}
+
 export class RaceInput{
   constructor(root,{pause=()=>{},recover=()=>{},gesture=()=>{}}={}){
     this.root=root;this.enabled=false;this.keys=new Set();this.pointers=new Map();this.abort=new AbortController();this.lastButtons=[];this.actions={pause,recover,gesture};
@@ -31,15 +46,13 @@ export class RaceInput{
   }
   read(){
     if(!this.enabled)return {steer:0,throttle:0,brake:0,drift:false,boost:false};
-    const active=new Set([...this.keys].map(key=>KEYS[key]||key.replace('button:','')));
+    const active=actionsFromKeys(this.keys);
     for(const value of this.pointers.values())active.add(value.action);
-    let steer=Number(active.has('right'))-Number(active.has('left')),brake=Number(active.has('brake')),drift=active.has('drift'),boost=active.has('boost');
+    let steer=steerFromActions(active),brake=Number(active.has('brake')),drift=active.has('drift'),boost=active.has('boost');
     try{
       const pad=[...(navigator.getGamepads?.()||[])].find(p=>p?.connected&&p.mapping==='standard');
       if(pad){
-        const axis=pad.axes[0]||0,dead=.16;
-        if(Math.abs(axis)>dead)steer=clamp((Math.abs(axis)-dead)/(1-dead),0,1)*Math.sign(axis);
-        if(pad.buttons[14]?.pressed)steer=-1;if(pad.buttons[15]?.pressed)steer=1;
+        const padSteer=steerFromGamepad(pad);if(padSteer!==0)steer=padSteer;
         brake=Math.max(brake,pad.buttons[6]?.value||0);drift||=Boolean(pad.buttons[0]?.pressed);boost||=Boolean(pad.buttons[1]?.pressed||pad.buttons[7]?.pressed);
         const buttons=pad.buttons.map(b=>b.pressed);
         if(buttons[9]&&!this.lastButtons[9])this.actions.pause();

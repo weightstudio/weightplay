@@ -87,7 +87,7 @@
     return value;
   };
   const directionCopy = (direction) => ((COPY[locale] || COPY.en).directions || COPY.en.directions)[direction];
-  function announce(name, data = {}) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `gust_garden_${name}`, game_id: "animal-gust-garden", game_version: "v13", interface_version: 6, stage: stageIndex + 1, ...data }); }
+  function announce(name, data = {}) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `gust_garden_${name}`, game_id: "animal-gust-garden", game_version: "v14", interface_version: 6, stage: stageIndex + 1, ...data }); }
   function best() { const value = Number(localStorage.getItem("weightplay-animal-gust-garden-best-v1") || 0); return value > 0 ? value : null; }
   function show(screen) { document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); const guide = document.querySelector("[data-wp-game-guide], .game-page-info.game-page-info-static"); if (guide) guide.hidden = screen !== "main"; $("settingsPanel").hidden = true; document.body.dataset.wpActiveScreen = screen; window.dispatchEvent(new CustomEvent("weightplay:shell-sync")); window.scrollTo(0, 0);
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
@@ -183,7 +183,7 @@
     const focus = root.querySelector(`[data-stage-index="${unlocked + 1}"]`); if (focus) window.setTimeout(() => focus.scrollIntoView({ block: "center", inline: "nearest" }), 0);
   }
   function cloneStage(index) { const source = STAGES[index]; return { ...source, seeds: source.seeds.map((seed) => ({ ...seed, locked: false })), drafts: (source.drafts || []).map((item) => ({ ...item })), gates: (source.gates || []).map((item) => ({ ...item })), portals: (source.portals || []).map((item) => ({ ...item })) }; }
-  function startStage(index) { if (index > highestUnlocked()) { announce("locked", { requestedStage: index + 1 }); return; } stageIndex = index; stageState = cloneStage(index); selectedSeed = 0; selectedDirection = null; lastChecks = 0; show("battle"); announce("start"); renderBattle();
+  function startStage(index) { if (index > highestUnlocked()) { announce("locked", { requestedStage: index + 1 }); return; } stageIndex = index; stageState = cloneStage(index); selectedSeed = 0; selectedDirection = null; lastChecks = 0; show("battle"); window.WeightPlayAudio?.play("game.start"); announce("start"); renderBattle();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function cellKey(x, y) { return `${x}:${y}`; }
