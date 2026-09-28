@@ -141,6 +141,10 @@
   function settleNavigationFocus(screen,targetSelector,recoverableSelector=targetSelector){
     const token=++settlementToken;
     let observer=null,stopTimer=0;
+    if(document.body.dataset.screen===screen){
+      window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+      window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+    }
     const settle=()=>{
       if(token!==settlementToken||document.body.dataset.screen!==screen){
         observer?.disconnect();clearTimeout(stopTimer);return;
