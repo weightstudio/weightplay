@@ -45,6 +45,7 @@
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>Mosaic Clues | WeightPlay</title><meta name="description" content="Read every row and column clue to uncover a hidden animal portrait." /><meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" /><meta property="og:title" content="Mosaic Clues | WeightPlay" /><meta property="og:description" content="Read every row and column clue to uncover a hidden animal portrait." /><meta property="og:url" content="https://weightplay.com/en/games/animal-mosaic-clues/" /><meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-mosaic-clues.webp" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Mosaic Clues | WeightPlay" /><meta name="twitter:description" content="Read every row and column clue to uncover a hidden animal portrait." /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard><link rel="stylesheet" href="../../src/block-trilogy-game.css?v=20260722-1"><link rel="stylesheet" href="/games/animal-mosaic-clues/stage-landscape.css?v=20260926-mosaic-v23-interface7"><style>:root{--accent:#b894ff;--accent2:#ffd96b;--line:#725da6}</style>  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <meta name="weightplay-scene-controls" content="immutable"><link rel="stylesheet" href="/games/animal-mosaic-clues/stage-landscape.css?v=20260926-mosaic-v23-interface7">
   <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-mosaic-clues.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
@@ -58,4 +59,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script defer src="/games/animal-mosaic-clues/stage-virtualization.js?v=20260926-mosaic-v23-interface7"></script>
   <script defer src="/games/animal-mosaic-clues/interface-v5.js?v=20260802-interface-v5-1"></script>
+  <script>
+    window.addEventListener("weightplay:tutorial-start", (event) => {
+      if (event.detail?.gameId !== "animal-mosaic-clues" || document.body.dataset.screen !== "main") return;
+      document.querySelector("#start")?.click();
+    });
+  </script>
+  <script src="../../src/tutorial.js"></script>
 </body></html>

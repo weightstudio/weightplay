@@ -153,7 +153,7 @@
     node.classList.add("is-correct"); node.disabled = true; state.solved += 1; $("feedback").classList.remove("is-wrong"); setFeedback("correct", "completion"); $("appStatus").textContent = t("correct"); playTone("feedback.success");
     schedulePending(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; renderRound(); } else finish(); }, 460);
   }
-  function start() { clearPendingTimers(); state.roundIndex = 0; state.checks = 0; state.solved = 0; showView("battleView"); renderRound(); }
+  function start() { clearPendingTimers(); state.roundIndex = 0; state.checks = 0; state.solved = 0; window.WeightPlayAudio.play("game.start"); showView("battleView"); renderRound(); }
   function finish() { clearPendingTimers(); const key = "weightplay-pattern-patch-best-checks"; const prior = Number(safeStorage.get(key)); if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks)); $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView"); }
   function goHome() { clearPendingTimers(); showView("mainView"); applyLocale(); }
   function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
