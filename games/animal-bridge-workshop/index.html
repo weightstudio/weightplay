@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-bridge-workshop">
-  <meta name="weightplay-game-version" content="v10">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="description" content="Build a safe bridge for a friendly animal crew across three forest crossings.">
   <title>Bridge Workshop | WeightPlay</title>
   <style>
@@ -37,7 +37,7 @@
     .guide-card { margin-top:16px; padding:16px; border:1px solid var(--line); border-radius:var(--wp-ui-radius); background:#10213a; }
     .guide-card p { margin-top:8px; color:var(--muted); line-height:1.5; }
     #battleScreen.active { position:fixed; top:0; left:50%; right:auto; transform:translateX(-50%); z-index:10; width:min(100vw,920px); height:calc(100vh - var(--reserve)); overflow:auto; padding:0; background:#091426; }
-    #battleScreen.active .card { width:min(100%,920px); min-height:100%; margin:0 auto; border-radius:0; }
+    #battleScreen.active .card { width:100%; min-height:100%; margin:0 auto; border-radius:0; }
     .battle-ad-reserve { position:fixed; z-index:11; left:50%; transform:translateX(-50%); bottom:0; width:min(100vw,920px); height:var(--reserve); background:#07101f; }
     .battle-ad-reserve[aria-hidden="true"] { pointer-events:none; }
     .tools { display:flex; align-items:center; gap:8px; }
@@ -92,7 +92,7 @@
     }
   </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
-  <link rel="stylesheet" href="interface-compat.css?v=20260929-bridge-issue-0442-result-actions-v10">
+  <link rel="stylesheet" href="interface-compat.css?v=20260929-bridge-issue-0442-result-canvas-v11">
 </head>
 <body data-wp-game-id="animal-bridge-workshop" data-wp-audience="general" data-wp-battle-settings="visible">
   <div class="shell">
@@ -117,7 +117,7 @@
         </div>
       </section>
       <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle"><h2 id="guideTitle" data-copy="guideButton">How to play</h2><p data-copy="guide">Tap two anchors, choose a beam, rope, or pad, and place the link. Test when the path is connected. If a joint is weak, repair that joint and try again.</p></section>
-      <section id="battleScreen" class="screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="viewport">
+      <section id="battleScreen" class="screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="viewport" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="334">
         <div class="card">
           <header class="battle-head wp-battle-shell-header"><div><div class="eyebrow" id="chapterLabel">Crossing 1 / 3</div><h2 id="stageTitle">Triangle support</h2><p id="stageGoal" class="status">Connect the three anchors for Pip's crossing.</p></div><button id="battleBack" class="secondary" type="button" data-wp-return="battle" aria-label="Back to Main">←</button></header>
           <div class="workspace">
@@ -136,7 +136,7 @@
     </main>
   </div>
   <script src="locales.js?v=20260830-bridge-workshop-v6-live-locale"></script>
-  <script src="game.js?v=20260929-bridge-workshop-v10-issue-0442-result-actions"></script>
+  <script src="game.js?v=20260929-bridge-workshop-v11-issue-0442-result-canvas"></script>
   <script src="interface-compat.js?v=20260921-bridge-interface-review-1"></script>
 </body>
 </html>

@@ -26,7 +26,7 @@ body[data-wp-game-id="animal-bridge-workshop"] #battleScreen.active {
 }
 
 body[data-wp-game-id="animal-bridge-workshop"] #battleScreen.active > .card {
-  width: min(100%, 920px);
+  width: 100%;
   min-height: 100%;
   margin: 0 auto;
   padding: 0 12px 16px;
@@ -125,6 +125,14 @@ body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .workspace {
   margin-top: 12px;
 }
 
+/* A settled Result replaces mutable play: keep the crossing identity and the
+   Result actions, but remove the now-inert board, stock, and construction HUD
+   from the active Canvas. This gives recovery/continuation controls a stable,
+   reachable Result layout at portrait, landscape, and desktop sizes. */
+body[data-wp-game-id="animal-bridge-workshop"] #battleScreen:has(#resultCard:not([hidden])) .workspace {
+  display: none;
+}
+
 /* Keep the live construction board and Result actions inside the shared
    short-height Canvas instead of clipping the recovery buttons below it. */
 @media (min-width: 700px) and (max-height: 760px) {
@@ -139,6 +147,72 @@ body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .workspace {
 
   body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .result-card {
     margin-top: 8px;
+  }
+}
+
+/* Compact landscape uses its own shared-Canvas reference envelope. Preserve
+   a playable board beside compact two-column tools instead of scaling the
+   portrait Battle until its controls become clipped or too small. */
+@media (min-width: 700px) and (max-height: 500px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen.active > .card {
+    padding-bottom: 0;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen #stageTitle {
+    margin-top: 2px;
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen #stageGoal {
+    margin-top: 2px;
+    font-size: .78rem;
+    line-height: 1.2;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .workspace {
+    grid-template-columns: minmax(0, .34fr) minmax(0, .66fr);
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .legend {
+    gap: 4px;
+    font-size: .7rem;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .hint,
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .status {
+    font-size: .78rem;
+    line-height: 1.2;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .status {
+    min-height: 0;
+    margin-top: 4px;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .materials,
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .material {
+    min-height: 48px;
+    padding: 5px 8px;
+    font-size: .82rem;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .material small {
+    margin-top: 1px;
+    font-size: .7rem;
+  }
+
+  body[data-wp-game-id="animal-bridge-workshop"] #battleScreen .controls button {
+    min-height: 40px;
+    padding: 5px 7px;
+    font-size: .82rem;
   }
 }
 
