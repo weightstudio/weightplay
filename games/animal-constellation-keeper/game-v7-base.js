@@ -72,11 +72,12 @@
     split: [[[0, 1, 0], [1, 1, 1], [2, 1, 2]], [[2, 0, 0], [1, 1, 1], [0, 0, 2]], [[0, 0, 0], [2, 0, 1], [1, 1, 0]]],
   };
   const makeStars = (layout, animals, variant) => (layoutVariants[layout]?.[variant] || layoutVariants.horizontal[variant]).map(([animalIndex, row, col]) => ({ animal: animals[animalIndex], row, col }));
-  const maps = arcDefinitions.flatMap((arc) => arc.stages.map((stage, index) => ({ ...stage, arc: arc.arc, arcKey: arc.arcKey, mechanicKey: arc.mechanicKey, stageInArc: index + 1 }))).map((stage, index) => {
+  const authoredMaps = arcDefinitions.flatMap((arc) => arc.stages.map((stage, index) => ({ ...stage, arc: arc.arc, arcKey: arc.arcKey, mechanicKey: arc.mechanicKey, stageInArc: index + 1 }))).map((stage, index) => {
     const number = index + 1;
     const options = [0, 1, 2].map((variant) => ({ id: `stage-${number}-option-${variant + 1}`, slot: variant + 1, stars: makeStars(stage.layout, stage.animals, variant) }));
     return { ...stage, number, nameKey: `stage${number}Name`, introKey: `stage${number}Intro`, correctId: options[0].id, options };
   });
+  const maps = window.AnimalConstellationKeeperAnswerSlots.assignBalancedAnswerSlots(authoredMaps);
   const correctIds = maps.map((map) => map.correctId);
   const PROGRESS_KEY = "weightplay-animal-constellation-keeper-progress-v5";
   const BEST_KEY = "weightplay-animal-constellation-keeper-best-v5";
