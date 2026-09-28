@@ -1,342 +1,103 @@
-(function () {
-  "use strict";
+(function(){
+"use strict";
+if(window.WeightPlayCastle?.builderVersion===2)return;
+const STORE="weightplayCastleV1",BUILD="weightplayCastleBuilderV1",DAILY="weightplayDailyReward";
+const REWARD=1,LEGACY=5,BOARD=6,MAXY=8,MAXBLOCKS=256;
+const buildings=[{id:"gate",cost:12},{id:"bridge",cost:24},{id:"garden",cost:42},{id:"tower",cost:72},{id:"observatory",cost:120}];
+const daily=[5,8,12,18,25,35];
+const L={
+en:{title:"Starlight Castle",intro:"Clear stages, collect blocks, and build your own castle.",blocks:"Blocks",daily:"Daily",claim:"Claim {n} diamonds",claimed:"Claimed today",next:"Next building",build:"Build",need:"Need {n} more",free:"Free Build",stone:"Stone",roof:"Roof",wood:"Wood",glass:"Glass",place:"Place",remove:"Remove",layer:"Layer",rotate:"Drag to rotate · wheel/pinch to zoom",clear:"Stage reward! +{n} block",visit:"Open castle",badges:"Game badges",full:"Block limit reached",occupied:"That space is occupied",support:"Build from the ground up",save:"Unable to save",done:"Built",level:"Castle Lv.{n}"},
+"zh-Hant":{title:"星光城堡",intro:"闖關收集方塊，在方塊地板上打造自己的城堡。",blocks:"方塊",daily:"每日可領",claim:"領取 {n} 顆鑽石",claimed:"今日已領",next:"下一座建築",build:"建造",need:"還差 {n}",free:"自由建造",stone:"石材",roof:"屋瓦",wood:"木材",glass:"玻璃",place:"放置",remove:"回收",layer:"高度",rotate:"拖曳旋轉 · 滾輪／雙指縮放",clear:"關卡獎勵！獲得 {n} 個方塊",visit:"前往城堡",badges:"遊戲徽章",full:"方塊數量已達上限",occupied:"這個位置已被占用",support:"請由地面往上堆疊",save:"無法儲存",done:"已建造",level:"城堡 Lv.{n}"},
+"zh-Hans":{title:"星光城堡",intro:"闯关收集方块，在方块地板上打造自己的城堡。",blocks:"方块",daily:"每日可领",claim:"领取 {n} 颗钻石",claimed:"今日已领",next:"下一座建筑",build:"建造",need:"还差 {n}",free:"自由建造",stone:"石材",roof:"屋瓦",wood:"木材",glass:"玻璃",place:"放置",remove:"回收",layer:"高度",rotate:"拖动旋转 · 滚轮／双指缩放",clear:"关卡奖励！获得 {n} 个方块",visit:"前往城堡",badges:"游戏徽章",full:"方块数量已达上限",occupied:"这个位置已被占用",support:"请从地面向上堆叠",save:"无法保存",done:"已建造",level:"城堡 Lv.{n}"},
+ja:{title:"星明かりのお城",intro:"ステージでブロックを集め、自分だけのお城を作ろう。",blocks:"ブロック",daily:"毎日",claim:"ダイヤを{n}個受け取る",claimed:"今日は受取済み",next:"次の建物",build:"建てる",need:"あと{n}",free:"自由建築",stone:"石",roof:"屋根",wood:"木",glass:"ガラス",place:"置く",remove:"回収",layer:"高さ",rotate:"ドラッグで回転・ホイール/ピンチでズーム",clear:"ステージ報酬！ブロック +{n}",visit:"お城を見る",badges:"ゲームバッジ",full:"ブロック上限です",occupied:"その場所は使用中です",support:"地面から積んでください",save:"保存できません",done:"完成",level:"お城 Lv.{n}"},
+ko:{title:"별빛 성",intro:"스테이지에서 블록을 모아 나만의 성을 지으세요.",blocks:"블록",daily:"매일",claim:"다이아 {n}개 받기",claimed:"오늘 받음",next:"다음 건물",build:"건설",need:"{n}개 더 필요",free:"자유 건설",stone:"석재",roof:"지붕",wood:"목재",glass:"유리",place:"놓기",remove:"회수",layer:"높이",rotate:"드래그 회전 · 휠/핀치 줌",clear:"스테이지 보상! 블록 +{n}",visit:"성 보기",badges:"게임 배지",full:"블록 한도입니다",occupied:"이미 사용 중인 칸입니다",support:"바닥부터 쌓아 주세요",save:"저장할 수 없습니다",done:"완성",level:"성 Lv.{n}"},
+es:{title:"Castillo Estelar",intro:"Supera fases, consigue bloques y construye tu castillo.",blocks:"Bloques",daily:"Diario",claim:"Recibir {n} diamantes",claimed:"Recibido hoy",next:"Siguiente edificio",build:"Construir",need:"Faltan {n}",free:"Construcción libre",stone:"Piedra",roof:"Tejado",wood:"Madera",glass:"Vidrio",place:"Colocar",remove:"Reciclar",layer:"Altura",rotate:"Arrastra para girar · rueda/pellizco para zoom",clear:"¡Recompensa! +{n} bloque",visit:"Ver castillo",badges:"Insignias",full:"Límite de bloques",occupied:"Ese espacio está ocupado",support:"Construye desde el suelo",save:"No se pudo guardar",done:"Construido",level:"Castillo Nv.{n}"},
+"pt-BR":{title:"Castelo Estelar",intro:"Vença fases, junte blocos e construa seu castelo.",blocks:"Blocos",daily:"Diário",claim:"Receber {n} diamantes",claimed:"Recebido hoje",next:"Próxima construção",build:"Construir",need:"Faltam {n}",free:"Construção livre",stone:"Pedra",roof:"Telhado",wood:"Madeira",glass:"Vidro",place:"Colocar",remove:"Reciclar",layer:"Altura",rotate:"Arraste para girar · roda/pinça para zoom",clear:"Recompensa! +{n} bloco",visit:"Ver castelo",badges:"Emblemas",full:"Limite de blocos",occupied:"Esse espaço está ocupado",support:"Construa a partir do chão",save:"Não foi possível salvar",done:"Construído",level:"Castelo Nv.{n}"},
+fr:{title:"Château des Étoiles",intro:"Terminez des niveaux, gagnez des blocs et construisez votre château.",blocks:"Blocs",daily:"Quotidien",claim:"Recevoir {n} diamants",claimed:"Reçu aujourd’hui",next:"Prochain bâtiment",build:"Construire",need:"Encore {n}",free:"Construction libre",stone:"Pierre",roof:"Toit",wood:"Bois",glass:"Verre",place:"Placer",remove:"Recycler",layer:"Hauteur",rotate:"Glissez pour tourner · molette/pincement pour zoomer",clear:"Récompense ! +{n} bloc",visit:"Voir le château",badges:"Badges",full:"Limite de blocs",occupied:"Cet espace est occupé",support:"Construisez depuis le sol",save:"Enregistrement impossible",done:"Construit",level:"Château Niv.{n}"},
+de:{title:"Sternenlichtschloss",intro:"Schließe Level ab, sammle Blöcke und baue dein Schloss.",blocks:"Blöcke",daily:"Täglich",claim:"{n} Diamanten abholen",claimed:"Heute abgeholt",next:"Nächstes Gebäude",build:"Bauen",need:"Noch {n}",free:"Freies Bauen",stone:"Stein",roof:"Dach",wood:"Holz",glass:"Glas",place:"Platzieren",remove:"Recyceln",layer:"Höhe",rotate:"Ziehen zum Drehen · Rad/Pinch zum Zoomen",clear:"Levelbelohnung! +{n} Block",visit:"Schloss ansehen",badges:"Abzeichen",full:"Blocklimit erreicht",occupied:"Dieser Platz ist belegt",support:"Vom Boden aus bauen",save:"Speichern nicht möglich",done:"Gebaut",level:"Schloss Lv.{n}"},
+it:{title:"Castello Stellato",intro:"Completa i livelli, raccogli blocchi e costruisci il tuo castello.",blocks:"Blocchi",daily:"Giornaliero",claim:"Ricevi {n} diamanti",claimed:"Già ricevuto",next:"Prossimo edificio",build:"Costruisci",need:"Ne mancano {n}",free:"Costruzione libera",stone:"Pietra",roof:"Tetto",wood:"Legno",glass:"Vetro",place:"Posiziona",remove:"Ricicla",layer:"Altezza",rotate:"Trascina per ruotare · rotella/pizzico per zoom",clear:"Premio! +{n} blocco",visit:"Visita il castello",badges:"Distintivi",full:"Limite blocchi",occupied:"Spazio occupato",support:"Costruisci dal terreno",save:"Impossibile salvare",done:"Costruito",level:"Castello Lv.{n}"},
+ru:{title:"Звёздный замок",intro:"Проходи уровни, собирай блоки и строй свой замок.",blocks:"Блоки",daily:"Ежедневно",claim:"Получить {n} алмазов",claimed:"Сегодня получено",next:"Следующая постройка",build:"Построить",need:"Нужно ещё {n}",free:"Свободная стройка",stone:"Камень",roof:"Крыша",wood:"Дерево",glass:"Стекло",place:"Поставить",remove:"Вернуть",layer:"Высота",rotate:"Тяните для вращения · колесо/щипок для масштаба",clear:"Награда! +{n} блок",visit:"Открыть замок",badges:"Значки",full:"Лимит блоков",occupied:"Место занято",support:"Стройте от земли",save:"Не удалось сохранить",done:"Построено",level:"Замок ур.{n}"},
+hi:{title:"तारों का किला",intro:"स्तर पूरे करें, ब्लॉक जुटाएँ और अपना किला बनाएँ।",blocks:"ब्लॉक",daily:"रोज़",claim:"{n} हीरे लें",claimed:"आज ले लिए",next:"अगली इमारत",build:"बनाएँ",need:"{n} और चाहिए",free:"मुक्त निर्माण",stone:"पत्थर",roof:"छत",wood:"लकड़ी",glass:"काँच",place:"रखें",remove:"वापस लें",layer:"ऊँचाई",rotate:"खींचकर घुमाएँ · व्हील/पिंच से ज़ूम",clear:"इनाम! +{n} ब्लॉक",visit:"किला देखें",badges:"बैज",full:"ब्लॉक सीमा पूरी",occupied:"यह जगह भरी है",support:"ज़मीन से ऊपर बनाएँ",save:"सहेजा नहीं जा सका",done:"बन गया",level:"किला स्तर {n}"},
+ar:{title:"قلعة النجوم",intro:"أكمل المراحل واجمع المكعبات وابنِ قلعتك الخاصة.",blocks:"مكعبات",daily:"يومي",claim:"استلم {n} ألماسة",claimed:"تم الاستلام اليوم",next:"المبنى التالي",build:"ابنِ",need:"ينقصك {n}",free:"بناء حر",stone:"حجر",roof:"سقف",wood:"خشب",glass:"زجاج",place:"ضع",remove:"استرجع",layer:"الارتفاع",rotate:"اسحب للتدوير · عجلة/ضم للتكبير",clear:"مكافأة! +{n} مكعب",visit:"افتح القلعة",badges:"الشارات",full:"بلغت حد المكعبات",occupied:"المكان مشغول",support:"ابنِ من الأرض",save:"تعذّر الحفظ",done:"مبني",level:"القلعة، المستوى {n}"}};
+const alias={"zh-tw":"zh-Hant","zh-hant":"zh-Hant","zh-cn":"zh-Hans","zh-hans":"zh-Hans","pt-br":"pt-BR"};
+const seg={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
+function loc(){const x=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||"en";return L[x]?x:(alias[String(x).toLowerCase()]||"en")}
+function t(k,v={}){return (L[loc()][k]||L.en[k]||k).replace(/\{(\w+)\}/g,(_,n)=>String(v[n]??""))}
+const clean=n=>Math.max(0,Math.floor(Number(n)||0));
+function empty(){return{version:2,castleMaterials:0,completions:{},badges:[],buildings:["hall"]}}
+function normBuildings(v,legacy=false){const a=Array.isArray(v)?v:[];if(legacy){const old=["tower","garden","library","observatory","gate"].filter(x=>a.includes(x)).length;return["hall",...buildings.slice(0,old).map(x=>x.id)]}const s=new Set(a.map(x=>x==="library"?"bridge":x));return["hall",...buildings.map(x=>x.id).filter(x=>s.has(x))]}
+function read(){try{const s=JSON.parse(localStorage.getItem(STORE)||"null");if(!s||![1,2].includes(s.version))return empty();return{version:2,castleMaterials:s.castleMaterials==null?Math.floor(clean(s.starSand)/LEGACY):clean(s.castleMaterials),completions:s.completions&&typeof s.completions==="object"&&!Array.isArray(s.completions)?{...s.completions}:{},badges:Array.isArray(s.badges)?[...new Set(s.badges.filter(x=>typeof x==="string"))]:[],buildings:normBuildings(s.buildings,s.version===1)}}catch{return empty()}}
+function save(s){try{localStorage.setItem(STORE,JSON.stringify(s));window.dispatchEvent(new Event("weightplay:castle-updated"));return true}catch{return false}}
+function readBuild(){try{const x=JSON.parse(localStorage.getItem(BUILD)||"null");const arr=Array.isArray(x?.blocks)?x.blocks:[];const seen=new Set();return{version:1,blocks:arr.filter(b=>b&&["stone","roof","wood","glass"].includes(b.type)&&[b.x,b.y,b.z].every(Number.isInteger)&&Math.abs(b.x)<=BOARD&&Math.abs(b.z)<=BOARD&&b.y>=0&&b.y<MAXY&&!seen.has(`${b.x},${b.y},${b.z}`)&&seen.add(`${b.x},${b.y},${b.z}`)).slice(0,MAXBLOCKS)}}catch{return{version:1,blocks:[]}}}
+function saveBuild(b){try{localStorage.setItem(BUILD,JSON.stringify(b));window.dispatchEvent(new Event("weightplay:castle-updated"));return true}catch{return false}}
+function creditFirstClear(gameId,completionId="first-completion"){const g=String(gameId||"").trim(),c=String(completionId||"first-completion").trim();if(!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(g)||!/^[a-z0-9][a-z0-9._-]{0,63}$/i.test(c))return{credited:false,reason:"invalid"};if(["stage-endless","stage-infinite","stage-survival","endless","infinite","survival"].includes(c.toLowerCase()))return{credited:false,reason:"non-stage-clear"};const s=read(),key=`${g}:${c}`;if(s.completions[key])return{credited:false,reason:"already-claimed",store:s};s.completions[key]=Date.now();if(!s.badges.includes(g))s.badges.push(g);s.castleMaterials+=REWARD;if(!save(s))return{credited:false,reason:"storage-unavailable"};window.WonderAnalytics?.track?.("castle_first_clear_reward",{game_id:g,completion_id:c,reward_amount:1,reward_type:"castle_block"});window.dispatchEvent(new CustomEvent("weightplay:castle-reward",{detail:{gameId:g,completionId:c,amount:1,currency:"castle-block"}}));return{credited:true,amount:1,currency:"castle-block",store:s}}
+function build(id){const b=buildings.find(x=>x.id===id);if(!b)return{built:false,reason:"unknown-building"};const s=read();if(s.buildings.includes(id))return{built:false,reason:"already-built",store:s};if(s.castleMaterials<b.cost)return{built:false,reason:"not-enough",store:s,cost:b.cost};s.castleMaterials-=b.cost;s.buildings.push(id);return save(s)?{built:true,store:s}:{built:false,reason:"storage-unavailable"}}
+function place(type,x,y,z){if(!["stone","roof","wood","glass"].includes(type)||![x,y,z].every(Number.isInteger)||Math.abs(x)>BOARD||Math.abs(z)>BOARD||y<0||y>=MAXY)return{placed:false,reason:"invalid"};const b=readBuild();if(b.blocks.length>=MAXBLOCKS)return{placed:false,reason:"full"};if(b.blocks.some(q=>q.x===x&&q.y===y&&q.z===z))return{placed:false,reason:"occupied"};if(y>0&&!b.blocks.some(q=>q.x===x&&q.y===y-1&&q.z===z))return{placed:false,reason:"support"};const s=read();if(s.castleMaterials<1)return{placed:false,reason:"not-enough"};b.blocks.push({type,x,y,z});s.castleMaterials--;try{localStorage.setItem(BUILD,JSON.stringify(b));localStorage.setItem(STORE,JSON.stringify(s));window.dispatchEvent(new Event("weightplay:castle-updated"));return{placed:true,store:s,builder:b}}catch{return{placed:false,reason:"storage-unavailable"}}}
+function remove(x,y,z){const b=readBuild(),i=b.blocks.findIndex(q=>q.x===x&&q.y===y&&q.z===z);if(i<0)return{removed:false,reason:"invalid"};if(b.blocks.some(q=>q.x===x&&q.z===z&&q.y>y))return{removed:false,reason:"support"};const s=read();b.blocks.splice(i,1);s.castleMaterials++;try{localStorage.setItem(BUILD,JSON.stringify(b));localStorage.setItem(STORE,JSON.stringify(s));window.dispatchEvent(new Event("weightplay:castle-updated"));return{removed:true}}catch{return{removed:false,reason:"storage-unavailable"}}}
+function dailyDiamonds(s=read()){return daily[Math.max(0,Math.min(5,s.buildings.length-1))]}
+function dailyDiamondBonus(s=read()){return dailyDiamonds(s)-daily[0]}
+function dailyRewardState(){const d=new Date(),today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;try{const old=localStorage.getItem(DAILY),s=JSON.parse(old||"{}")||{};return{today,old,s,claimedToday:s.lastClaimDate===today,available:true,amount:dailyDiamonds()}}catch{return{today,claimedToday:false,available:false,amount:dailyDiamonds()}}}
+function claimNow(){const r=dailyRewardState();if(r.claimedToday)return{claimed:false,reason:"already-claimed"};if(!r.available||!window.WeightPlayWallet?.addDiamonds)return{claimed:false,reason:"storage-unavailable"};try{localStorage.setItem(DAILY,JSON.stringify({...r.s,lastClaimDate:r.today,totalClaims:clean(r.s.totalClaims)+1}));window.WeightPlayWallet.addDiamonds(r.amount)}catch{try{r.old==null?localStorage.removeItem(DAILY):localStorage.setItem(DAILY,r.old)}catch{}return{claimed:false,reason:"storage-unavailable"}}window.WeightPlayAudio?.play?.("feedback.success");render();return{claimed:true,amount:r.amount}}
+async function claimDailyReward(){try{return navigator.locks?.request?await navigator.locks.request("weightplay-daily-reward",claimNow):claimNow()}catch{return{claimed:false,reason:"storage-unavailable"}}}
+const api=Object.freeze({key:STORE,builderKey:BUILD,builderVersion:2,rewardPerClear:1,read,readBuilder:readBuild,creditFirstClear,build,placeBlock:place,removeBlock:remove,dailyDiamondBonus,dailyDiamonds,dailyRewardState,claimDailyReward,refresh:()=>render()});window.WeightPlayCastle=api;
 
-  const STORE_KEY = "weightplayCastleV1";
-  const REWARD_PER_CLEAR = 1;
-  const LEGACY_STAR_SAND_PER_CLEAR = 5;
-  const DAILY_REWARD_KEY = "weightplayDailyReward";
-  const DAILY_DIAMONDS = [5, 8, 12, 18, 25, 35];
-  const buildings = [
-    { id: "gate", cost: 12 },
-    { id: "bridge", cost: 24 },
-    { id: "garden", cost: 42 },
-    { id: "tower", cost: 72 },
-    { id: "observatory", cost: 120 },
-  ];
-  const copy = {
-    en: { title: "Starlight Castle", intro: "Clear stages. Earn Star Sand. Grow your castle.", balance: "Star Sand", progress: "Castle progress", badges: "Game badges", build: "Build", built: "Built", need: "Need {count} more", next: "Next structure", clear: "Stage reward! +{count} Star Sand", visit: "Open castle", hall: "Castle Hall", tower: "Sun Tower", garden: "Moon Garden", library: "Story Library", observatory: "Sky Observatory", gate: "Welcome Gate", empty: "Finish a game stage to earn your first Star Sand.", accessibility: "Your growing castle" },
-    "zh-Hant": { title: "星光城堡", intro: "闖關拿星砂，升級城堡。", balance: "星砂", progress: "城堡進度", badges: "遊戲徽章", build: "建造", built: "已建造", need: "還差 {count}", next: "下一座建築", clear: "關卡獎勵！獲得 {count} 星砂", visit: "前往城堡", hall: "城堡大廳", tower: "日光塔", garden: "月光花園", library: "故事圖書館", observatory: "觀星台", gate: "迎賓城門", empty: "完成一個遊戲關卡，領取第一份星砂。", accessibility: "逐漸成長的城堡" },
-    "zh-Hans": { title: "星光城堡", intro: "通关拿星砂，升级城堡。", balance: "星砂", progress: "城堡进度", badges: "游戏徽章", build: "建造", built: "已建造", need: "还差 {count}", next: "下一座建筑", clear: "关卡奖励！获得 {count} 星砂", visit: "前往城堡", hall: "城堡大厅", tower: "日光塔", garden: "月光花园", library: "故事图书馆", observatory: "观星台", gate: "迎宾城门", empty: "完成一个游戏关卡，领取第一份星砂。", accessibility: "逐渐成长的城堡" },
-    ja: { title: "星明かりのお城", intro: "ステージをクリアして星の砂を集め、お城を育てよう。", balance: "星の砂", progress: "お城の進み具合", badges: "ゲームバッジ", build: "建てる", built: "完成", need: "あと {count}", next: "次の建物", clear: "ステージ報酬！星の砂 +{count}", visit: "お城を見る", hall: "城の広間", tower: "陽光の塔", garden: "月明かりの庭", library: "物語の図書館", observatory: "星見台", gate: "歓迎の門", empty: "ゲームのステージをクリアして、星の砂を集めましょう。", accessibility: "成長するお城" },
-    ko: { title: "별빛 성", intro: "스테이지를 깨고 별모래를 모아 성을 키우세요.", balance: "별모래", progress: "성 진행도", badges: "게임 배지", build: "건설", built: "완성", need: "{count}개 더 필요", next: "다음 건물", clear: "스테이지 보상! 별모래 +{count}", visit: "성 보기", hall: "성의 홀", tower: "햇빛 탑", garden: "달빛 정원", library: "이야기 도서관", observatory: "별 관측대", gate: "환영의 문", empty: "게임 스테이지를 완료하고 첫 별모래를 모아 보세요.", accessibility: "점점 자라는 성" },
-    es: { title: "Castillo Estelar", intro: "Supera fases, reúne arena estelar y mejora tu castillo.", balance: "Arena estelar", progress: "Progreso del castillo", badges: "Insignias de juego", build: "Construir", built: "Construido", need: "Faltan {count}", next: "Siguiente edificio", clear: "¡Recompensa de fase! +{count} de arena estelar", visit: "Ver castillo", hall: "Gran Salón", tower: "Torre del Sol", garden: "Jardín Lunar", library: "Biblioteca de Historias", observatory: "Observatorio", gate: "Puerta de Bienvenida", empty: "Completa una fase para conseguir tu primera arena estelar.", accessibility: "Tu castillo en crecimiento" },
-    "pt-BR": { title: "Castelo Estelar", intro: "Vença fases, junte areia estelar e amplie seu castelo.", balance: "Areia estelar", progress: "Progresso do castelo", badges: "Emblemas de jogos", build: "Construir", built: "Construído", need: "Faltam {count}", next: "Próxima construção", clear: "Recompensa da fase! +{count} de areia estelar", visit: "Ver castelo", hall: "Salão do Castelo", tower: "Torre do Sol", garden: "Jardim Lunar", library: "Biblioteca de Histórias", observatory: "Observatório Celeste", gate: "Portão de Boas-vindas", empty: "Conclua uma fase para ganhar sua primeira areia estelar.", accessibility: "Seu castelo em crescimento" },
-    fr: { title: "Château des Étoiles", intro: "Terminez des niveaux, récoltez le sable étoilé et agrandissez le château.", balance: "Sable étoilé", progress: "Progression du château", badges: "Badges de jeu", build: "Construire", built: "Construit", need: "Encore {count}", next: "Prochain bâtiment", clear: "Récompense du niveau ! +{count} sable étoilé", visit: "Voir le château", hall: "Grande salle", tower: "Tour du Soleil", garden: "Jardin lunaire", library: "Bibliothèque des récits", observatory: "Observatoire", gate: "Porte d’accueil", empty: "Terminez un niveau pour gagner votre premier sable étoilé.", accessibility: "Votre château grandit" },
-    de: { title: "Sternenlichtschloss", intro: "Schließe Level ab, sammle Sternensand und baue dein Schloss aus.", balance: "Sternensand", progress: "Schlossfortschritt", badges: "Spielabzeichen", build: "Bauen", built: "Gebaut", need: "Es fehlen {count}", next: "Nächstes Gebäude", clear: "Levelbelohnung! +{count} Sternensand", visit: "Schloss ansehen", hall: "Schlosshalle", tower: "Sonnenturm", garden: "Mondgarten", library: "Geschichtenbibliothek", observatory: "Sternwarte", gate: "Willkommenstor", empty: "Schließe ein Level ab und verdiene deinen ersten Sternensand.", accessibility: "Dein wachsendes Schloss" },
-    it: { title: "Castello Stellato", intro: "Completa i livelli, raccogli sabbia stellare e fai crescere il castello.", balance: "Sabbia stellare", progress: "Progresso del castello", badges: "Distintivi di gioco", build: "Costruisci", built: "Costruito", need: "Ne mancano {count}", next: "Prossimo edificio", clear: "Premio del livello! +{count} sabbia stellare", visit: "Visita il castello", hall: "Sala del Castello", tower: "Torre del Sole", garden: "Giardino Lunare", library: "Biblioteca delle Storie", observatory: "Osservatorio", gate: "Porta di Benvenuto", empty: "Completa un livello per ottenere la tua prima sabbia stellare.", accessibility: "Il tuo castello cresce" },
-    ru: { title: "Звёздный замок", intro: "Проходи уровни, собирай звёздный песок и развивай замок.", balance: "Звёздный песок", progress: "Развитие замка", badges: "Игровые значки", build: "Построить", built: "Построено", need: "Не хватает {count}", next: "Следующая постройка", clear: "Награда за уровень! +{count} звёздного песка", visit: "Открыть замок", hall: "Большой зал", tower: "Солнечная башня", garden: "Лунный сад", library: "Библиотека историй", observatory: "Обсерватория", gate: "Приветственные ворота", empty: "Пройди уровень и получи первый звёздный песок.", accessibility: "Твой растущий замок" },
-    hi: { title: "तारों का किला", intro: "स्तर पूरे करें, तारों की रेत पाएँ और किला बढ़ाएँ।", balance: "तारों की रेत", progress: "किले की प्रगति", badges: "खेल बैज", build: "बनाएँ", built: "बन गया", need: "{count} और चाहिए", next: "अगली इमारत", clear: "स्तर का इनाम! +{count} तारों की रेत", visit: "किला देखें", hall: "किले का सभागार", tower: "सूर्य मीनार", garden: "चाँद का बगीचा", library: "कहानी पुस्तकालय", observatory: "तारा वेधशाला", gate: "स्वागत द्वार", empty: "पहली तारों की रेत पाने के लिए कोई स्तर पूरा करें।", accessibility: "आपका बढ़ता हुआ किला" },
-    ar: { title: "قلعة النجوم", intro: "أكمل المراحل، واجمع رمال النجوم، وطوّر قلعتك.", balance: "رمال النجوم", progress: "تقدم القلعة", badges: "شارات الألعاب", build: "ابنِ", built: "مبني", need: "ينقصك {count}", next: "المبنى التالي", clear: "مكافأة المرحلة! +{count} من رمال النجوم", visit: "افتح القلعة", hall: "قاعة القلعة", tower: "برج الشمس", garden: "حديقة القمر", library: "مكتبة الحكايات", observatory: "مرصد النجوم", gate: "بوابة الترحيب", empty: "أكمل مرحلة لتحصل على أول رمال النجوم.", accessibility: "قلعتك وهي تنمو" },
-  };
+const CUBE='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 72"><path fill="#8a612f" d="M32 4 60 19v33L32 68 4 52V19z"/><path fill="#ffe39a" d="m32 4 28 15-28 16L4 19z"/><path fill="#e8b65a" d="m4 19 28 16v33L4 52z"/><path fill="#b67b36" d="m32 35 28-16v33L32 68z"/></svg>');
+const css=`
+#weightplayCastle.wpb{order:16;margin:16px 0;padding:16px;border:2px solid #668f95;border-radius:10px;color:#f5f7ec;background:linear-gradient(145deg,#173f49,#0c2934);box-shadow:0 8px 0 #071d26}
+.wpb *{box-sizing:border-box}.wpb-head,.wpb-row,.wpb-actions,.wpb-buildbar,.wpb-daily{display:flex;align-items:center;gap:10px}.wpb-head{justify-content:space-between}.wpb-title h2{margin:2px 0;font-size:clamp(26px,4vw,40px)}.wpb-title p{margin:4px 0;color:#b7d0d3}.wpb-balance{display:flex;align-items:center;gap:8px;padding:9px 13px;border:2px solid #ffe39a;border-radius:10px;color:#352710;background:linear-gradient(#ffe38a,#e8aa43);box-shadow:0 4px 0 #81541f}.wpb-balance img{width:34px}.wpb-balance strong{font-size:23px}
+.wpb-daily{margin-top:12px;padding:10px 12px;border:1px solid #426c77;border-radius:8px;background:#10343e;flex-wrap:wrap}.wpb-gem{width:24px}.wpb-daily button{margin-inline-start:auto}
+.wpb-main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,.55fr);gap:12px;margin-top:12px}.wpb-scene{position:relative;min-height:420px;border:2px solid #527b84;border-radius:10px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#2b6169,#143944 65%,#0b2731)}.wpb-scene canvas{display:block;width:100%;height:100%;min-height:420px;touch-action:none}.wpb-overlay{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:7px;flex-wrap:wrap;justify-content:center;pointer-events:none}.wpb-overlay button{pointer-events:auto}.wpb-note{position:absolute;top:10px;left:10px;padding:5px 8px;border-radius:6px;background:#071f29aa;color:#e7f4ef;font-size:12px}
+.wpb-side{display:flex;flex-direction:column;gap:10px}.wpb-card{padding:13px;border:2px solid #456f79;border-radius:10px;background:linear-gradient(145deg,#214c56,#153640);box-shadow:0 4px 0 #071f29}.wpb-card h3{margin:0 0 8px;color:#ffd36c}.wpb-price{display:flex;align-items:center;gap:7px;font-weight:900;color:#ffe09a}.wpb-price img{width:25px}.wpb-progress{height:9px;border-radius:8px;background:#0b2730;overflow:hidden;margin:10px 0}.wpb-progress i{display:block;height:100%;background:linear-gradient(90deg,#f0b749,#ffe18b)}
+.wpb-btn{min-height:42px;padding:8px 12px;border:2px solid #ffe4a0;border-radius:8px;color:#352510;background:linear-gradient(#ffdd7e,#e6a23d);box-shadow:0 3px 0 #80521c;font:inherit;font-weight:900;cursor:pointer}.wpb-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.wpb-btn.alt{border-color:#72949b;color:#eaf4f1;background:#173c46;box-shadow:0 3px 0 #071f29}.wpb-btn.sel{outline:3px solid #ffd36c}
+.wpb-builder{display:grid;gap:8px}.wpb-mats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.wpb-mats button{padding:7px 4px}.wpb-cursor{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.wpb-cursor .blank{visibility:hidden}.wpb-coord{text-align:center;color:#ffe09a;font-weight:800}.wpb-status{min-height:20px;color:#ffd988;font-weight:700}.wpb-badges{margin-top:12px;padding-top:10px;border-top:1px solid #456f79;color:#bad0d4}
+.wpb-toast{position:fixed;z-index:10020;left:50%;bottom:max(80px,calc(env(safe-area-inset-bottom) + 80px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;width:min(520px,calc(100% - 28px));padding:12px;border:2px solid #e2bd63;border-radius:10px;background:#fff2c9;color:#352b1b;box-shadow:0 10px 35px #0005;font-weight:900}.wpb-toast img{width:38px}.wpb-toast a{margin-inline-start:auto;color:#315b50}
+@media(max-width:760px){#weightplayCastle.wpb{padding:11px}.wpb-main{grid-template-columns:1fr}.wpb-scene,.wpb-scene canvas{min-height:330px}.wpb-head{align-items:flex-start}.wpb-title h2{font-size:27px}.wpb-balance{padding:7px 9px}.wpb-mats{grid-template-columns:repeat(2,1fr)}}@media(max-width:390px){.wpb-scene,.wpb-scene canvas{min-height:280px}.wpb-overlay{gap:4px}.wpb-btn{padding:7px 9px;font-size:13px}}
+`;const st=document.createElement("style");st.textContent=css;document.head.append(st);
 
-  const extraCopy = {
-    en: { bridge: "Starlight Bridge", dailyBonus: "Daily diamonds +{count}/day", dailyBonusChange: "Daily diamonds {current} → {next}" },
-    "zh-Hant": { bridge: "星光石橋", dailyBonus: "每日鑽石 +{count}／日", dailyBonusChange: "每日鑽石 {current} → {next}" },
-    "zh-Hans": { bridge: "星光石桥", dailyBonus: "每日钻石 +{count}/天", dailyBonusChange: "每日钻石 {current} → {next}" },
-    ja: { bridge: "星明かりの橋", dailyBonus: "毎日のダイヤ +{count}個", dailyBonusChange: "毎日のダイヤ {current} → {next}" },
-    ko: { bridge: "별빛 다리", dailyBonus: "매일 다이아 +{count}개", dailyBonusChange: "일일 다이아 {current} → {next}" },
-    es: { bridge: "Puente Estelar", dailyBonus: "Diamantes al día: +{count}", dailyBonusChange: "Diamantes diarios {current} → {next}" },
-    "pt-BR": { bridge: "Ponte Estelar", dailyBonus: "Diamantes por dia: +{count}", dailyBonusChange: "Diamantes por dia {current} → {next}" },
-    fr: { bridge: "Pont des étoiles", dailyBonus: "Diamants par jour : +{count}", dailyBonusChange: "Diamants par jour {current} → {next}" },
-    de: { bridge: "Sternenbrücke", dailyBonus: "Tägliche Diamanten: +{count}", dailyBonusChange: "Diamanten pro Tag {current} → {next}" },
-    it: { bridge: "Ponte stellato", dailyBonus: "Diamanti al giorno: +{count}", dailyBonusChange: "Diamanti giornalieri {current} → {next}" },
-    ru: { bridge: "Звёздный мост", dailyBonus: "Алмазы в день: +{count}", dailyBonusChange: "Алмазы в день: {current} → {next}" },
-    hi: { bridge: "तारों का पुल", dailyBonus: "रोज़ के हीरे: +{count}", dailyBonusChange: "रोज़ हीरे {current} → {next}" },
-    ar: { bridge: "جسر النجوم", dailyBonus: "الألماس اليومي: +{count}", dailyBonusChange: "الألماس اليومي {current} → {next}" },
-  };
+function mat4(){return new Float32Array(16)}function ident(o){o.fill(0);o[0]=o[5]=o[10]=o[15]=1;return o}
+function mul(o,a,b){const r=new Float32Array(16);for(let c=0;c<4;c++)for(let r0=0;r0<4;r0++)r[c*4+r0]=a[r0]*b[c*4]+a[4+r0]*b[c*4+1]+a[8+r0]*b[c*4+2]+a[12+r0]*b[c*4+3];o.set(r);return o}
+function perspective(o,fovy,asp,n,f){const q=1/Math.tan(fovy/2);o.fill(0);o[0]=q/asp;o[5]=q;o[10]=(f+n)/(n-f);o[11]=-1;o[14]=2*f*n/(n-f);return o}
+function look(o,e,c,u=[0,1,0]){let zx=e[0]-c[0],zy=e[1]-c[1],zz=e[2]-c[2],zl=Math.hypot(zx,zy,zz);zx/=zl;zy/=zl;zz/=zl;let xx=u[1]*zz-u[2]*zy,xy=u[2]*zx-u[0]*zz,xz=u[0]*zy-u[1]*zx,xl=Math.hypot(xx,xy,xz);xx/=xl;xy/=xl;xz/=xl;const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;ident(o);o[0]=xx;o[1]=yx;o[2]=zx;o[4]=xy;o[5]=yy;o[6]=zy;o[8]=xz;o[9]=yz;o[10]=zz;o[12]=-(xx*e[0]+xy*e[1]+xz*e[2]);o[13]=-(yx*e[0]+yy*e[1]+yz*e[2]);o[14]=-(zx*e[0]+zy*e[1]+zz*e[2]);return o}
+const faces=[[[0,0,1],[0,0,1],[1,0,1],[1,1,1],[0,0,1],[1,1,1],[0,1,1]],[[0,0,-1],[1,0,0],[0,0,0],[0,1,0],[1,0,0],[0,1,0],[1,1,0]],[[1,0,0],[1,0,1],[1,0,0],[1,1,0],[1,0,1],[1,1,0],[1,1,1]],[[-1,0,0],[0,0,0],[0,0,1],[0,1,1],[0,0,0],[0,1,1],[0,1,0]],[[0,1,0],[0,1,1],[1,1,1],[1,1,0],[0,1,1],[1,1,0],[0,1,0]],[[0,-1,0],[0,0,0],[1,0,0],[1,0,1],[0,0,0],[1,0,1],[0,0,1]]];
+function color(hex){return[((hex>>16)&255)/255,((hex>>8)&255)/255,(hex&255)/255]}
+class Scene{
+constructor(canvas){this.c=canvas;this.gl=canvas.getContext("webgl",{antialias:true,alpha:true});if(!this.gl)throw Error("WebGL");this.yaw=.72;this.pitch=.72;this.zoom=24;this.ptr=new Map();this.init();this.bind();this.draw()}
+shader(t,s){const g=this.gl,x=g.createShader(t);g.shaderSource(x,s);g.compileShader(x);if(!g.getShaderParameter(x,g.COMPILE_STATUS))throw Error(g.getShaderInfoLog(x));return x}
+init(){const g=this.gl,v=this.shader(g.VERTEX_SHADER,'attribute vec3 p,n,c;uniform mat4 m;varying vec3 vc;void main(){float d=.48+.52*max(dot(normalize(n),normalize(vec3(.5,1.,.35))),0.);vc=c*d;gl_Position=m*vec4(p,1.);}'),f=this.shader(g.FRAGMENT_SHADER,'precision mediump float;varying vec3 vc;void main(){gl_FragColor=vec4(vc,1.);}');this.pr=g.createProgram();g.attachShader(this.pr,v);g.attachShader(this.pr,f);g.linkProgram(this.pr);this.buf=g.createBuffer();this.ap=g.getAttribLocation(this.pr,"p");this.an=g.getAttribLocation(this.pr,"n");this.ac=g.getAttribLocation(this.pr,"c");this.um=g.getUniformLocation(this.pr,"m");g.enable(g.DEPTH_TEST);g.enable(g.CULL_FACE);g.clearColor(0,0,0,0)}
+cube(a,x,y,z,w,h,d,col){for(const F of faces){const n=F[0],pts=F.slice(1);for(const P of pts){a.push(x+(P[0]-.5)*w,y+(P[1]-.5)*h,z+(P[2]-.5)*d,n[0],n[1],n[2],...col)}}}
+geometry(){const a=[];const tileA=color(0x386b66),tileB=color(0x2d5a56);for(let x=-BOARD;x<=BOARD;x++)for(let z=-BOARD;z<=BOARD;z++)this.cube(a,x,-.23,z,.94,.22,.94,(x+z)&1?tileA:tileB);this.cube(a,0,-.55,0,14,.45,14,color(0x805d35));const s=read();this.buildings(a,s);for(const b of readBuild().blocks){const cols={stone:0xb9aa91,roof:0x247b78,wood:0x9a6136,glass:0x74d8e6};this.cube(a,b.x,b.y+.36,b.z,.82,.72,.82,color(cols[b.type]))}if(UI?.edit)this.cube(a,UI.cx,UI.cy+.39,UI.cz,.88,.78,.88,color(0xffd55f));return new Float32Array(a)}
+buildings(a,s){const wall=color(0xc7baa0),dark=color(0x8b7d66),roof=color(0x257b78),gold=color(0xe2b75b),wood=color(0x70452c),green=color(0x4b8f61),glass=color(0x65cddd);
+const tower=(x,z,h=3)=>{this.cube(a,x,h/2,z,1.5,h,1.5,wall);this.cube(a,x,h+.35,z,1.8,.55,1.8,roof)};
+this.cube(a,0,.8,-2,4.8,1.6,4.2,wall);tower(-1.7,-2,2.7);tower(1.7,-2,2.7);this.cube(a,0,2.1,-2,2.1,1.2,2.0,wall);this.cube(a,0,3.0,-2,2.5,.6,2.4,roof);this.cube(a,0,.75,.05,1.1,1.3,.18,wood);
+if(s.buildings.includes("gate")){tower(-1.5,4.7,2.5);tower(1.5,4.7,2.5);this.cube(a,0,2.1,4.7,1.6,.7,1.2,gold)}
+if(s.buildings.includes("bridge")){for(let z=1;z<=4;z++)this.cube(a,-4.8,.1,z,.9,.2,.9,dark);this.cube(a,-4.8,.55,2.5,.25,.9,4,wood)}
+if(s.buildings.includes("garden")){for(const [x,z] of [[4.2,3.5],[5.2,4.5],[4.2,5.2]]){this.cube(a,x,.5,z,.35,1,.35,wood);this.cube(a,x,1.2,z,1,1,1,green)}}
+if(s.buildings.includes("tower")){tower(4.6,-3,5);this.cube(a,4.6,5.8,-3,2.1,.7,2.1,roof)}
+if(s.buildings.includes("observatory")){tower(-4.5,-4,3.7);this.cube(a,-4.5,4.5,-4,2.4,.7,2.4,glass);this.cube(a,-4.5,5.1,-4,.25,1.1,.25,gold)}
+}
+resize(){const g=this.gl,d=Math.min(devicePixelRatio||1,1.7),w=Math.max(1,Math.floor(this.c.clientWidth*d)),h=Math.max(1,Math.floor(this.c.clientHeight*d));if(this.c.width!==w||this.c.height!==h){this.c.width=w;this.c.height=h}g.viewport(0,0,w,h)}
+draw(){const g=this.gl;this.resize();const ar=this.c.width/this.c.height,cp=Math.cos(this.pitch),eye=[Math.sin(this.yaw)*cp*this.zoom,Math.sin(this.pitch)*this.zoom+5,Math.cos(this.yaw)*cp*this.zoom],P=mat4(),V=mat4(),M=mat4();perspective(P,.78,ar,.1,100);look(V,eye,[0,1.6,0]);mul(M,P,V);const data=this.geometry();g.bindBuffer(g.ARRAY_BUFFER,this.buf);g.bufferData(g.ARRAY_BUFFER,data,g.DYNAMIC_DRAW);g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);g.useProgram(this.pr);const S=36;for(const [loc,off] of [[this.ap,0],[this.an,3],[this.ac,6]]){g.enableVertexAttribArray(loc);g.vertexAttribPointer(loc,3,g.FLOAT,false,S,off*4)}g.uniformMatrix4fv(this.um,false,M);g.drawArrays(g.TRIANGLES,0,data.length/9)}
+bind(){const c=this.c;c.addEventListener("pointerdown",e=>{c.setPointerCapture(e.pointerId);this.ptr.set(e.pointerId,{x:e.clientX,y:e.clientY})});c.addEventListener("pointermove",e=>{if(!this.ptr.has(e.pointerId))return;const old=this.ptr.get(e.pointerId),now={x:e.clientX,y:e.clientY};this.ptr.set(e.pointerId,now);if(this.ptr.size===1){this.yaw-=(now.x-old.x)*.008;this.pitch=Math.max(.2,Math.min(1.15,this.pitch+(now.y-old.y)*.006))}else if(this.ptr.size===2){const p=[...this.ptr.values()],d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);if(this.lastPinch)this.zoom=Math.max(12,Math.min(38,this.zoom*this.lastPinch/d));this.lastPinch=d}this.draw()});const end=e=>{this.ptr.delete(e.pointerId);if(this.ptr.size<2)this.lastPinch=0};c.addEventListener("pointerup",end);c.addEventListener("pointercancel",end);c.addEventListener("wheel",e=>{e.preventDefault();this.zoom=Math.max(12,Math.min(38,this.zoom+Math.sign(e.deltaY)*1.3));this.draw()},{passive:false})}
+dispose(){try{this.gl.deleteBuffer(this.buf);this.gl.deleteProgram(this.pr)}catch{}}
+}
 
-  const castleCopy = {
-    en: { level: "Castle Lv.{level}", daily: "Daily diamonds", claim: "Claim {count} diamonds", claimed: "Claimed today", received: "+{count} diamonds received", unavailable: "Unable to save. Please try again.", diamonds: "Diamonds" },
-    "zh-Hant": { level: "城堡 Lv.{level}", daily: "每日可領", claim: "領取 {count} 顆鑽石", claimed: "今日已領", received: "已獲得 {count} 顆鑽石", unavailable: "無法儲存，請稍後再試。", diamonds: "鑽石" },
-    "zh-Hans": { level: "城堡 Lv.{level}", daily: "每日可领", claim: "领取 {count} 颗钻石", claimed: "今日已领", received: "已获得 {count} 颗钻石", unavailable: "无法保存，请稍后再试。", diamonds: "钻石" },
-    ja: { level: "お城 Lv.{level}", daily: "毎日の報酬", claim: "ダイヤを{count}個受け取る", claimed: "今日は受取済み", received: "ダイヤを{count}個獲得", unavailable: "保存できません。もう一度お試しください。", diamonds: "ダイヤ" },
-    ko: { level: "성 Lv.{level}", daily: "매일 받는 보상", claim: "다이아 {count}개 받기", claimed: "오늘 받음", received: "다이아 {count}개 획득", unavailable: "저장할 수 없습니다. 다시 시도해 주세요.", diamonds: "다이아" },
-    es: { level: "Castillo Nv.{level}", daily: "Diamantes diarios", claim: "Recibir {count} diamantes", claimed: "Recibido hoy", received: "Has recibido {count} diamantes", unavailable: "No se pudo guardar. Inténtalo de nuevo.", diamonds: "Diamantes" },
-    "pt-BR": { level: "Castelo Nv.{level}", daily: "Diamantes por dia", claim: "Receber {count} diamantes", claimed: "Recebido hoje", received: "Você recebeu {count} diamantes", unavailable: "Não foi possível salvar. Tente novamente.", diamonds: "Diamantes" },
-    fr: { level: "Château Niv.{level}", daily: "Diamants par jour", claim: "Recevoir {count} diamants", claimed: "Reçu aujourd’hui", received: "Vous avez reçu {count} diamants", unavailable: "Enregistrement impossible. Réessayez.", diamonds: "Diamants" },
-    de: { level: "Schloss Lv.{level}", daily: "Tägliche Diamanten", claim: "{count} Diamanten abholen", claimed: "Heute abgeholt", received: "{count} Diamanten erhalten", unavailable: "Speichern nicht möglich. Bitte erneut versuchen.", diamonds: "Diamanten" },
-    it: { level: "Castello Lv.{level}", daily: "Diamanti al giorno", claim: "Ricevi {count} diamanti", claimed: "Già ricevuto oggi", received: "Hai ricevuto {count} diamanti", unavailable: "Impossibile salvare. Riprova.", diamonds: "Diamanti" },
-    ru: { level: "Замок ур.{level}", daily: "Алмазы каждый день", claim: "Получить {count} алмазов", claimed: "Сегодня получено", received: "Получено {count} алмазов", unavailable: "Не удалось сохранить. Попробуйте снова.", diamonds: "Алмазы" },
-    hi: { level: "किला स्तर {level}", daily: "रोज़ के हीरे", claim: "{count} हीरे लें", claimed: "आज ले लिए", received: "{count} हीरे मिले", unavailable: "सहेजा नहीं जा सका। फिर कोशिश करें।", diamonds: "हीरे" },
-    ar: { level: "القلعة، المستوى {level}", daily: "ألماس يومي", claim: "استلم {count} ألماسة", claimed: "تم الاستلام اليوم", received: "حصلت على {count} ألماسة", unavailable: "تعذّر الحفظ. حاول مجددًا.", diamonds: "ألماس" },
-  };
-
-  const stylesheet = document.createElement("link");
-  stylesheet.rel = "stylesheet";
-  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v7", document.currentScript?.src || location.href).href;
-  document.head.append(stylesheet);
-
-  const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
-  const localeRoutes = Object.fromEntries(Object.entries(localeSegments).map(([locale, route]) => [route, locale]));
-  const locale = () => {
-    const selected = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
-    return copy[selected] ? selected : "en";
-  };
-  const t = (key, vars = {}) => (castleCopy[locale()]?.[key] || copy[locale()][key] || extraCopy[locale()]?.[key] || copy.en[key] || extraCopy.en[key] || key).replace(/\{(\w+)\}/g, (_match, name) => String(vars[name] ?? ""));
-  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
-  const emptyStore = () => ({ version: 2, castleMaterials: 0, completions: {}, badges: [], buildings: ["hall"] });
-  function normalizeBuildings(value, legacy = false) {
-    const previous = Array.isArray(value) ? value : [];
-    if (legacy) {
-      const oldOrder = ["tower", "garden", "library", "observatory", "gate"];
-      const oldLevel = Math.min(buildings.length, oldOrder.filter((id) => previous.includes(id)).length);
-      return ["hall", ...buildings.slice(0, oldLevel).map((building) => building.id)];
-    }
-    const migrated = new Set(previous.map((id) => id === "library" ? "bridge" : id));
-    return ["hall", ...buildings.map((building) => building.id).filter((id) => migrated.has(id))];
-  }
-  function read() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
-      if (!saved || ![1, 2].includes(saved.version)) return emptyStore();
-      const legacySand = Math.max(0, Math.floor(Number(saved.starSand) || 0));
-      const castleMaterials = saved.castleMaterials == null
-        ? Math.floor(legacySand / LEGACY_STAR_SAND_PER_CLEAR)
-        : Math.max(0, Math.floor(Number(saved.castleMaterials) || 0));
-      return {
-        version: 2,
-        castleMaterials,
-        completions: saved.completions && typeof saved.completions === "object" && !Array.isArray(saved.completions) ? saved.completions : {},
-        badges: Array.isArray(saved.badges) ? [...new Set(saved.badges.filter((id) => typeof id === "string"))] : [],
-        buildings: normalizeBuildings(saved.buildings, saved.version === 1),
-      };
-    } catch { return emptyStore(); }
-  }
-  function save(store) {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify(store));
-      window.dispatchEvent(new Event("weightplay:castle-updated"));
-      return true;
-    } catch { return false; }
-  }
-  function creditFirstClear(gameId, completionId = "first-completion") {
-    const game = String(gameId || "").trim();
-    const stage = String(completionId || "first-completion").trim();
-    if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(game) || !/^[a-z0-9][a-z0-9._-]{0,63}$/i.test(stage)) return { credited: false, reason: "invalid" };
-    if (["stage-endless", "stage-infinite", "stage-survival", "endless", "infinite", "survival"].includes(stage.toLowerCase())) return { credited: false, reason: "non-stage-clear" };
-    const store = read();
-    const key = `${game}:${stage}`;
-    if (store.completions[key]) return { credited: false, reason: "already-claimed", store };
-    store.completions[key] = Date.now();
-    if (!store.badges.includes(game)) store.badges.push(game);
-    store.castleMaterials += REWARD_PER_CLEAR;
-    if (!save(store)) return { credited: false, reason: "storage-unavailable" };
-    window.WonderAnalytics?.track?.("castle_first_clear_reward", { game_id: game, completion_id: stage, reward_amount: REWARD_PER_CLEAR, reward_type: "castle_material" });
-    window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId: game, completionId: stage, amount: REWARD_PER_CLEAR, currency: "castle-material" } }));
-    return { credited: true, amount: REWARD_PER_CLEAR, currency: "castle-material", store };
-  }
-  function dailyDiamondBonus(store = read()) {
-    return dailyDiamonds(store) - DAILY_DIAMONDS[0];
-  }
-  function dailyDiamonds(store = read()) {
-    return DAILY_DIAMONDS[Math.max(0, Math.min(DAILY_DIAMONDS.length - 1, store.buildings.length - 1))];
-  }
-  function dailyRewardState() {
-    const now = new Date();
-    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-    try {
-      const previous = localStorage.getItem(DAILY_REWARD_KEY);
-      const saved = JSON.parse(previous || "{}");
-      return { today, previous, saved, claimedToday: saved?.lastClaimDate === today, available: true, amount: dailyDiamonds() };
-    } catch {
-      return { today, claimedToday: false, available: false, amount: dailyDiamonds() };
-    }
-  }
-  function claimDailyRewardUnlocked() {
-    const reward = dailyRewardState();
-    if (reward.claimedToday) return { claimed: false, reason: "already-claimed" };
-    if (!reward.available || !window.WeightPlayWallet?.addDiamonds) return { claimed: false, reason: "storage-unavailable" };
-    // Preserve the old daily claim key so switching systems cannot pay twice today.
-    // Reserve today's claim before crediting; restore it if the wallet write fails.
-    try {
-      localStorage.setItem(DAILY_REWARD_KEY, JSON.stringify({ ...reward.saved, lastClaimDate: reward.today, totalClaims: Math.max(0, Number(reward.saved?.totalClaims) || 0) + 1 }));
-      window.WeightPlayWallet.addDiamonds(reward.amount);
-    } catch {
-      try {
-        if (reward.previous == null) localStorage.removeItem(DAILY_REWARD_KEY);
-        else localStorage.setItem(DAILY_REWARD_KEY, reward.previous);
-      } catch { /* Keep the claim reserved if storage cannot restore it. */ }
-      return { claimed: false, reason: "storage-unavailable" };
-    }
-    window.WeightPlayAudio?.play?.("feedback.success");
-    window.WonderAnalytics?.track?.("daily_reward_claim", { reward_type: "diamonds", reward_amount: reward.amount, castle_level: read().buildings.length, locale: locale() });
-    render();
-    return { claimed: true, amount: reward.amount };
-  }
-  async function claimDailyReward() {
-    try {
-      if (window.navigator?.locks?.request) return await window.navigator.locks.request("weightplay-daily-reward", claimDailyRewardUnlocked);
-      return claimDailyRewardUnlocked();
-    } catch {
-      return { claimed: false, reason: "storage-unavailable" };
-    }
-  }
-  function build(buildingId) {
-    const building = buildings.find((entry) => entry.id === buildingId);
-    if (!building) return { built: false, reason: "unknown-building" };
-    const store = read();
-    if (store.buildings.includes(building.id)) return { built: false, reason: "already-built", store };
-    if (store.castleMaterials < building.cost) return { built: false, reason: "not-enough", store, cost: building.cost };
-    store.castleMaterials -= building.cost;
-    store.buildings.push(building.id);
-    if (!save(store)) return { built: false, reason: "storage-unavailable" };
-    window.WonderAnalytics?.track?.("castle_building_unlocked", {
-      building_id: building.id,
-      castle_level: store.buildings.length,
-      daily_diamond_bonus: dailyDiamondBonus(store),
-      remaining_materials: store.castleMaterials,
-    });
-    return { built: true, store };
-  }
-
-  const api = Object.freeze({ key: STORE_KEY, rewardPerClear: REWARD_PER_CLEAR, read, creditFirstClear, build, dailyDiamondBonus, dailyDiamonds, dailyRewardState, claimDailyReward, refresh: render });
-  window.WeightPlayCastle = api;
-
-  function render() {
-    const mount = document.querySelector("#weightplayCastle");
-    if (!mount) return;
-    const store = read();
-    const next = buildings.find((building) => !store.buildings.includes(building.id));
-    const buildingName = (id) => t(id);
-    const level = store.buildings.length;
-    const currentReward = dailyDiamonds(store);
-    const nextReward = DAILY_DIAMONDS[Math.min(level, DAILY_DIAMONDS.length - 1)];
-    const reward = dailyRewardState();
-    const wallet = window.WeightPlayWallet?.read?.() || { diamonds: 0 };
-    const frameIndex = level - 1;
-    const frameColumn = frameIndex % 3;
-    const frameRow = Math.floor(frameIndex / 3);
-    const frameShift = -((frameColumn + 0.5) / 3) * 100;
-    mount.innerHTML = `
-      <div class="wp-castle-heading">
-        <div><span class="wp-castle-kicker">${t("level", { level })}</span><h2 id="wpCastleTitle">${t("title")}</h2><p>${t("intro")}</p></div>
-        <div class="wp-castle-balance" aria-label="${t("balance")}: ${store.castleMaterials}"><span aria-hidden="true">✦</span><strong>${store.castleMaterials}</strong><small>${t("balance")}</small></div>
-      </div>
-      <div class="wp-castle-daily">
-        <div class="wp-castle-wallet"><span class="wp-castle-gem" aria-hidden="true"></span><span>${t("diamonds")}</span><strong>${wallet.diamonds}</strong></div>
-        <div class="wp-castle-income"><span>${t("daily")}</span><strong>+${currentReward}</strong></div>
-        <button class="wp-castle-build wp-castle-claim" type="button" data-castle-claim ${reward.claimedToday || !reward.available || !window.WeightPlayWallet ? "disabled" : ""}>${reward.claimedToday ? t("claimed") : t("claim", { count: currentReward })}</button>
-        <p class="wp-castle-claim-status" role="status" aria-live="polite">${!reward.available ? t("unavailable") : ""}</p>
-      </div>
-      <div class="wp-castle-layout">
-        <div class="wp-castle-scene" role="img" aria-label="${t("accessibility")}" data-castle-level="${level}">
-          <img class="wp-castle-art" src="/assets/weightplay-castle-estate-levels-block-v1.png" alt="" width="1152" height="768" decoding="async" style="--castle-shift:${frameShift}%;--castle-top:${frameRow ? "-120%" : "0%"};">
-        </div>
-        <div class="wp-castle-next">
-          <span class="wp-castle-kicker">${next ? t("next") : t("progress")}</span>
-          <h3>${next ? buildingName(next.id) : t("title")}</h3>
-          <div class="wp-castle-daily-bonus">
-            <span class="wp-castle-gem" aria-hidden="true"></span>
-            <span>${next ? t("dailyBonusChange", { current: currentReward, next: nextReward }) : t("dailyBonus", { count: currentReward })}</span>
-          </div>
-          ${next ? `<div class="wp-castle-actions"><div class="wp-castle-price"><span aria-hidden="true">✦</span>${next.cost} ${t("balance")}</div><button class="wp-castle-build" type="button" data-castle-build="${next.id}" ${store.castleMaterials < next.cost ? "disabled" : ""}>${t("build")}</button>${store.castleMaterials < next.cost ? `<small class="wp-castle-need">${t("need", { count: next.cost - store.castleMaterials })}</small>` : ""}</div>` : `<p class="wp-castle-complete">${t("built")}</p>`}
-        </div>
-      </div>
-      <div class="wp-castle-footer"><span>${t("badges")}</span><strong>${store.badges.length}</strong></div>
-      <div class="wp-castle-collection"><h3>${t("badges")}</h3>${store.badges.length ? `<div class="wp-castle-badges">${store.badges.map((gameId) => {
-        const game = window.WONDER_LOBBY?.games?.find((entry) => entry.id === gameId);
-        const names = window.WEIGHTPLAY_GAME_TITLES?.[gameId] || game?.title;
-        const localizedName = typeof names === "string" ? names : names?.[locale()] || window.WonderI18n?.getLocalized?.(names);
-        const title = typeof localizedName === "string" && localizedName ? localizedName : gameId;
-        const path = game?.href ? new URL(game.href, document.baseURI).pathname : "";
-        const href = path ? (window.WonderI18n?.localizedPath?.(locale(), path) || path) : "#weightplayCastle";
-        const art = game?.art?.background || game?.art?.hero || "";
-        return `<a class="wp-castle-badge" href="${escapeHtml(href)}" title="${escapeHtml(title)}" data-runtime-localize="off">${art ? `<img src="${escapeHtml(art)}" alt="" loading="lazy" decoding="async">` : `<span aria-hidden="true">✦</span>`}<strong>${escapeHtml(title)}</strong></a>`;
-      }).join("")}</div>` : `<p class="wp-castle-empty">${t("empty")}</p>`}</div>`;
-    mount.querySelector("[data-castle-claim]")?.addEventListener("click", async (event) => {
-      event.currentTarget.disabled = true;
-      const result = await claimDailyReward();
-      render();
-      const status = mount.querySelector(".wp-castle-claim-status");
-      if (status) status.textContent = result.claimed ? t("received", { count: result.amount }) : t(result.reason === "already-claimed" ? "claimed" : "unavailable");
-    });
-    const castleArt = mount.querySelector(".wp-castle-art");
-    castleArt?.addEventListener("error", () => {
-      if (castleArt.dataset.fallback === "true") {
-        castleArt.hidden = true;
-        castleArt.style.display = "none";
-        return;
-      }
-      castleArt.dataset.fallback = "true";
-      castleArt.classList.add("is-fallback");
-      castleArt.src = "/assets/weightplay-castle-star-citadel-block-v1.webp";
-    });
-    mount.querySelector("[data-castle-build]")?.addEventListener("click", (event) => {
-      const result = build(event.currentTarget.dataset.castleBuild);
-      if (!result.built) return;
-      window.WeightPlayAudio?.play?.("feedback.success");
-      render();
-      const scene = mount.querySelector(".wp-castle-scene");
-      scene?.classList.add("is-upgrading");
-      window.setTimeout(() => scene?.classList.remove("is-upgrading"), 900);
-    });
-    mount.querySelectorAll("[data-castle-level]").forEach((piece) => {
-      piece.classList.toggle("is-unlocked", level >= Number(piece.dataset.castleLevel));
-    });
-  }
-
-  let dailyRefreshTimer;
-  function scheduleDailyRefresh() {
-    window.clearTimeout(dailyRefreshTimer);
-    if (!document.querySelector("#weightplayCastle")) return;
-    const now = new Date();
-    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    dailyRefreshTimer = window.setTimeout(() => { render(); scheduleDailyRefresh(); }, midnight.getTime() - now.getTime() + 100);
-  }
-  function mountLobby() {
-    const existing = document.querySelector("#weightplayCastle");
-    const daily = document.querySelector("#dailyReward");
-    if (!existing && !daily) return;
-    const section = existing || document.createElement("section");
-    if (!existing) {
-      section.id = "weightplayCastle";
-      section.className = "wp-castle-panel";
-      section.setAttribute("aria-labelledby", "wpCastleTitle");
-      daily.after(section);
-    }
-    document.querySelector("#lobbyAccountStrip")?.remove();
-    daily?.remove();
-    render();
-    scheduleDailyRefresh();
-    window.WonderAnalytics?.track?.("castle_view", { locale: locale() });
-    if (window.location.hash === "#castle") section.scrollIntoView({ block: "start" });
-  }
-
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mountLobby, { once: true });
-  else mountLobby();
-  window.addEventListener("weightplay:castle-updated", render);
-  window.addEventListener("weightplay:game-completed", (event) => {
-    const detail = event.detail || {};
-    const outcome = String(detail.outcome || "").toLowerCase();
-    if (detail.cleared === false || detail.success === false || detail.won === false || ["fail", "failed", "loss", "lose", "defeat"].includes(outcome)) return;
-    const gameId = detail.gameId || location.pathname.match(/\/games\/([^/]+)/)?.[1];
-    if (!gameId) return;
-    const rawStage = detail.stageId ?? detail.stage_id ?? detail.levelId ?? detail.level_id ?? detail.roomId ?? detail.room_id ?? detail.floorId ?? detail.floor_id ?? detail.chapterId ?? detail.chapter_id ?? detail.stage ?? detail.level;
-    const rawText = typeof rawStage === "string" || typeof rawStage === "number" ? String(rawStage).trim() : "";
-    const normalizedStage = rawText ? (rawText.toLowerCase().startsWith("stage-") ? rawText : `stage-${rawText.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54)}`) : "first-completion";
-    const completionId = detail.completionId ?? normalizedStage;
-    creditFirstClear(gameId, completionId);
-  });
-  window.addEventListener("weightplay:castle-reward", (event) => {
-    if (document.querySelector("#weightplayCastle")) return;
-    document.querySelectorAll(".wp-castle-reward-toast").forEach((toast) => toast.remove());
-    const message = t("clear", { count: event.detail?.amount || REWARD_PER_CLEAR });
-    const toast = document.createElement("div");
-    toast.className = "wp-castle-reward-toast";
-    toast.setAttribute("role", "status");
-    toast.setAttribute("aria-live", "polite");
-    toast.innerHTML = `<span class="wp-castle-reward-item" aria-hidden="true"></span><span class="wp-castle-reward-copy">${escapeHtml(message)}</span><span class="wp-castle-reward-flight" aria-hidden="true"><i></i><i></i><i></i></span><a href="/${localeSegments[locale()]}/#castle">${escapeHtml(t("visit"))}</a>`;
-    document.body.append(toast);
-    window.setTimeout(() => toast.remove(), 7000);
-  });
-  window.addEventListener("wonder:locale-change", render);
-  window.addEventListener("focus", render);
-  window.addEventListener("pagehide", () => window.clearTimeout(dailyRefreshTimer));
-  window.addEventListener("pageshow", () => { render(); scheduleDailyRefresh(); });
-  window.addEventListener("storage", (event) => {
-    if ([STORE_KEY, DAILY_REWARD_KEY, "weightplayWallet"].includes(event.key) || event.key == null) render();
-  });
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) render(); });
-  window.addEventListener("weightplay:castle-ready", render);
-  window.dispatchEvent(new Event("weightplay:castle-ready"));
+let UI=null,scene=null,midnight;
+function icon(){return `<img src="${CUBE}" alt="">`}
+function render(){const m=document.querySelector("#weightplayCastle");if(!m)return;if(!UI){UI={type:"stone",cx:0,cy:0,cz:2,edit:false,status:""};m.className="wpb"}const s=read(),b=readBuild(),r=dailyRewardState(),w=window.WeightPlayWallet?.read?.()||{diamonds:0},next=buildings.find(x=>!s.buildings.includes(x.id));m.dir=loc()==="ar"?"rtl":"ltr";
+m.innerHTML=`<div class="wpb-head"><div class="wpb-title"><small>WEIGHTPLAY</small><h2 id="wpCastleTitle">${t("title")}</h2><p>${t("intro")}</p></div><div class="wpb-balance">${icon()}<div><strong>${s.castleMaterials}</strong><div>${t("blocks")}</div></div></div></div>
+<div class="wpb-daily"><img class="wpb-gem" src="/assets/weightplay-diamond.svg" alt=""><span>${w.diamonds}</span><span>${t("daily")} +${r.amount}</span><button class="wpb-btn" data-a="claim" ${r.claimedToday||!r.available||!window.WeightPlayWallet?"disabled":""}>${r.claimedToday?t("claimed"):t("claim",{n:r.amount})}</button></div>
+<div class="wpb-main"><div class="wpb-scene"><canvas aria-label="${t("title")}" tabindex="0"></canvas><div class="wpb-note">${t("level",{n:s.buildings.length})} · ${t("rotate")}</div><div class="wpb-overlay"><button class="wpb-btn alt" data-a="left">◀</button><button class="wpb-btn alt" data-a="right">▶</button><button class="wpb-btn alt" data-a="out">−</button><button class="wpb-btn alt" data-a="in">＋</button><button class="wpb-btn alt" data-a="reset">↺</button></div></div>
+<div class="wpb-side"><section class="wpb-card"><h3>${t("next")}</h3>${next?`<strong>${next.id.toUpperCase()}</strong><div class="wpb-price">${icon()}<span>${next.cost} ${t("blocks")}</span></div><div class="wpb-progress"><i style="width:${Math.min(100,s.castleMaterials/next.cost*100)}%"></i></div><small>${s.castleMaterials<next.cost?t("need",{n:next.cost-s.castleMaterials}):""}</small><div class="wpb-actions"><button class="wpb-btn" data-a="build" data-id="${next.id}" ${s.castleMaterials<next.cost?"disabled":""}>${t("build")}</button></div>`:`<strong>${t("done")}</strong>`}</section>
+<section class="wpb-card wpb-builder"><h3>${t("free")}</h3><div class="wpb-mats">${["stone","roof","wood","glass"].map(x=>`<button class="wpb-btn alt ${UI.type===x?"sel":""}" data-a="mat" data-type="${x}">${t(x)}</button>`).join("")}</div><div class="wpb-coord">X ${UI.cx} · Z ${UI.cz} · ${t("layer")} ${UI.cy+1}</div><div class="wpb-cursor"><span class="blank"></span><button class="wpb-btn alt" data-a="north">↑</button><span class="blank"></span><button class="wpb-btn alt" data-a="west">←</button><button class="wpb-btn alt" data-a="layer">⇅</button><button class="wpb-btn alt" data-a="east">→</button><span class="blank"></span><button class="wpb-btn alt" data-a="south">↓</button><span class="blank"></span></div><div class="wpb-buildbar"><button class="wpb-btn" data-a="place">${t("place")}</button><button class="wpb-btn alt" data-a="remove">${t("remove")}</button></div><div class="wpb-status">${UI.status||""}</div></section></div></div><div class="wpb-badges">${t("badges")}: <strong>${s.badges.length}</strong> · ${b.blocks.length}/${MAXBLOCKS}</div>`;
+scene?.dispose();try{scene=new Scene(m.querySelector("canvas"))}catch{scene=null}
+m.onclick=async e=>{const q=e.target.closest("[data-a]");if(!q)return;const a=q.dataset.a;if(a==="claim"){const z=await claimDailyReward();UI.status=z.claimed?"✓":t("save");render();return}if(a==="build"){const z=build(q.dataset.id);UI.status=z.built?"✓":t(z.reason==="not-enough"?"need":"save",{n:z.cost-(z.store?.castleMaterials||0)});render();return}if(a==="mat"){UI.type=q.dataset.type;render();return}if(a==="north")UI.cz=Math.max(-BOARD,UI.cz-1);if(a==="south")UI.cz=Math.min(BOARD,UI.cz+1);if(a==="west")UI.cx=Math.max(-BOARD,UI.cx-1);if(a==="east")UI.cx=Math.min(BOARD,UI.cx+1);if(a==="layer")UI.cy=(UI.cy+1)%MAXY;if(a==="place"){const z=place(UI.type,UI.cx,UI.cy,UI.cz);UI.status=z.placed?"✓":t(z.reason==="full"?"full":z.reason==="occupied"?"occupied":z.reason==="support"?"support":z.reason==="not-enough"?"need":"save",{n:1})}if(a==="remove"){const z=remove(UI.cx,UI.cy,UI.cz);UI.status=z.removed?"✓":t(z.reason==="support"?"support":"occupied")}if(scene){if(a==="left")scene.yaw-=.25;if(a==="right")scene.yaw+=.25;if(a==="in")scene.zoom=Math.max(12,scene.zoom-2);if(a==="out")scene.zoom=Math.min(38,scene.zoom+2);if(a==="reset"){scene.yaw=.72;scene.pitch=.72;scene.zoom=24}scene.draw()}if(["north","south","west","east","layer","place","remove"].includes(a))render()}
+}
+function schedule(){clearTimeout(midnight);if(!document.querySelector("#weightplayCastle"))return;const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1);midnight=setTimeout(()=>{render();schedule()},d-n+150)}
+function mount(){const old=document.querySelector("#weightplayCastle"),dailyNode=document.querySelector("#dailyReward");if(!old&&!dailyNode)return;const m=old||document.createElement("section");if(!old){m.id="weightplayCastle";dailyNode.after(m)}document.querySelector("#lobbyAccountStrip")?.remove();dailyNode?.remove();render();schedule();if(location.hash==="#castle")m.scrollIntoView({block:"start"})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",mount,{once:true});else mount();
+window.addEventListener("weightplay:castle-updated",()=>{if(document.querySelector("#weightplayCastle"))render()});
+window.addEventListener("weightplay:game-completed",e=>{const d=e.detail||{},o=String(d.outcome||"").toLowerCase();if(d.cleared===false||d.success===false||d.won===false||["fail","failed","loss","lose","defeat"].includes(o))return;const g=d.gameId||location.pathname.match(/\/games\/([^/]+)/)?.[1];if(!g)return;const raw=d.stageId??d.stage_id??d.levelId??d.level_id??d.stage??d.level,txt=(typeof raw==="string"||typeof raw==="number")?String(raw).trim():"",id=d.completionId??(txt?(txt.toLowerCase().startsWith("stage-")?txt:`stage-${txt.toLowerCase().replace(/[^a-z0-9._-]+/g,"-").slice(0,54)}`):"first-completion");creditFirstClear(g,id)});
+window.addEventListener("weightplay:castle-reward",e=>{if(document.querySelector("#weightplayCastle"))return;document.querySelectorAll(".wpb-toast").forEach(x=>x.remove());const n=document.createElement("div");n.className="wpb-toast";n.setAttribute("role","status");n.innerHTML=`${icon()}<span>${t("clear",{n:e.detail?.amount||1})}</span><a href="/${seg[loc()]}/#castle">${t("visit")}</a>`;document.body.append(n);setTimeout(()=>n.remove(),6500)});
+window.addEventListener("wonder:locale-change",()=>render());window.addEventListener("storage",e=>{if([STORE,BUILD,DAILY,"weightplayWallet"].includes(e.key)||e.key==null)render()});window.addEventListener("pagehide",()=>{scene?.dispose();scene=null;clearTimeout(midnight)});window.addEventListener("pageshow",()=>{render();schedule()});
+window.dispatchEvent(new Event("weightplay:castle-ready"));
 })();
