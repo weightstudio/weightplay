@@ -28,7 +28,7 @@
 
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v1", document.currentScript?.src || location.href).href;
+  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v2", document.currentScript?.src || location.href).href;
   document.head.append(stylesheet);
 
   const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -38,6 +38,7 @@
     return copy[selected] ? selected : "en";
   };
   const t = (key, vars = {}) => (copy[locale()][key] || copy.en[key] || key).replace(/\{(\w+)\}/g, (_match, name) => String(vars[name] ?? ""));
+  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const emptyStore = () => ({ version: 1, starSand: 0, completions: {}, badges: [], buildings: ["hall"] });
   function read() {
     try {
@@ -99,9 +100,17 @@
     const level = store.buildings.length;
     mount.innerHTML = `
       <div class="wp-castle-heading"><div><span class="wp-castle-kicker">${t("progress")}</span><h2 id="wpCastleTitle">${t("title")}</h2><p>${t("intro")}</p></div><div class="wp-castle-balance" aria-label="${t("balance")}"><span aria-hidden="true">✦</span><strong>${store.starSand}</strong><small>${t("balance")}</small></div></div>
-      <div class="wp-castle-layout"><div class="wp-castle-scene" role="img" aria-label="${t("accessibility")}"><svg viewBox="0 0 360 210" aria-hidden="true"><path class="wp-castle-hill" d="M0 176Q82 128 157 169t203-8v49H0Z"/><rect class="wp-castle-shadow" x="85" y="166" width="190" height="12" rx="6"/><rect class="wp-castle-wall" x="112" y="102" width="136" height="68"/><rect class="wp-castle-wall-light" x="112" y="102" width="136" height="9"/><path class="wp-castle-roof" d="M102 103 126 72h34v31Zm93 0 25-31h34v31Z"/><rect class="wp-castle-tower" x="143" y="54" width="32" height="116"/><path class="wp-castle-roof" d="m139 55 20-31 20 31Z"/><rect class="wp-castle-door" x="164" y="135" width="32" height="35" rx="16 16 0 0"/><rect class="wp-castle-window" x="151" y="79" width="12" height="17" rx="6"/><rect class="wp-castle-window" x="223" y="122" width="12" height="17" rx="6"/><rect class="wp-castle-window" x="125" y="122" width="12" height="17" rx="6"/><g class="wp-castle-unlock" data-castle-level="2"><path d="m270 162 18-47 18 47Z"/><rect x="279" y="162" width="18" height="20"/></g><g class="wp-castle-unlock" data-castle-level="3"><rect x="51" y="160" width="17" height="20"/><circle cx="59" cy="148" r="18"/></g><path class="wp-castle-stars" d="m80 47 3 8 9 1-7 5 2 9-7-5-7 5 2-9-7-5 9-1Zm194-20 2 6 7 1-5 4 2 7-6-4-5 4 1-7-5-4 7-1Zm-48-6 2 5 6 1-5 3 1 6-4-3-5 3 1-6-4-3 6-1Z"/></svg></div>
+      <div class="wp-castle-layout"><div class="wp-castle-scene" role="img" aria-label="${t("accessibility")}"><img class="wp-castle-art" src="/assets/weightplay-castle-star-citadel-block-v1.webp" alt="" width="1200" height="676" decoding="async"></div>
       <div class="wp-castle-next"><span class="wp-castle-kicker">${next ? t("next") : t("badges")}</span><h3>${next ? buildingName(next.id) : t("title")}</h3><p>${store.badges.length} ${t("badges")}</p>${next ? `<div class="wp-castle-price"><span aria-hidden="true">✦</span>${next.cost} ${t("balance")}</div><button class="wp-castle-build" type="button" data-castle-build="${next.id}" ${store.starSand < next.cost ? "disabled" : ""}>${store.buildings.includes(next.id) ? t("built") : t("build")}</button>${store.starSand < next.cost ? `<small class="wp-castle-need">${t("need", { count: next.cost - store.starSand })}</small>` : ""}` : `<p class="wp-castle-complete">${t("built")}</p>`}</div></div>
-      <div class="wp-castle-footer"><span>${t("badges")}</span><strong>${store.badges.length}</strong><span>${t("progress")}</span><strong>${level}/${buildings.length + 1}</strong></div>`;
+      <div class="wp-castle-footer"><span>${t("badges")}</span><strong>${store.badges.length}</strong><span>${t("progress")}</span><strong>${level}/${buildings.length + 1}</strong></div>
+      <div class="wp-castle-collection"><h3>${t("badges")}</h3>${store.badges.length ? `<div class="wp-castle-badges">${store.badges.map((gameId) => {
+        const game = window.WONDER_LOBBY?.games?.find((entry) => entry.id === gameId);
+        const title = game?.title || gameId;
+        const path = game?.href ? new URL(game.href, document.baseURI).pathname : "";
+        const href = path ? (window.WonderI18n?.localizedPath?.(locale(), path) || path) : "#weightplayCastle";
+        const art = game?.art?.background || game?.art?.hero || "";
+        return `<a class="wp-castle-badge" href="${escapeHtml(href)}" title="${escapeHtml(title)}">${art ? `<img src="${escapeHtml(art)}" alt="" loading="lazy" decoding="async">` : `<span aria-hidden="true">✦</span>`}<strong>${escapeHtml(title)}</strong></a>`;
+      }).join("")}</div>` : `<p class="wp-castle-empty">${t("empty")}</p>`}</div>`;
     mount.querySelector("[data-castle-build]")?.addEventListener("click", (event) => {
       const result = build(event.currentTarget.dataset.castleBuild);
       if (!result.built) return;

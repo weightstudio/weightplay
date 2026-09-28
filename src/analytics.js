@@ -42,6 +42,35 @@
       if (debug) console.info("[WonderAnalytics]", name, payload);
     } catch { /* Analytics must never interrupt a game. */ }
   }
+  function creditCastleFirstClear(params = {}) {
+    const outcome = String(params.outcome || "").toLowerCase();
+    if (params.cleared === false || params.success === false || params.won === false || ["fail", "failed", "loss", "lose", "defeat"].includes(outcome)) return;
+    const gameId = String(params.game_id || params.gameId || window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "").trim();
+    if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(gameId)) return;
+    const rawStage = params.stage_id ?? params.level_id ?? params.stage ?? params.level;
+    const completionId = rawStage === undefined || rawStage === null || rawStage === ""
+      ? "first-completion"
+      : `stage-${String(rawStage).trim().toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54)}`;
+    if (["stage-", "stage-endless", "stage-infinite"].includes(completionId)) return;
+    if (window.WeightPlayCastle?.creditFirstClear) {
+      window.WeightPlayCastle.creditFirstClear(gameId, completionId);
+      return;
+    }
+    try {
+      const key = "weightplayCastleV1";
+      const saved = JSON.parse(localStorage.getItem(key) || "null");
+      const store = saved?.version === 1 && saved.completions && typeof saved.completions === "object"
+        ? { ...saved, completions: saved.completions, badges: Array.isArray(saved.badges) ? saved.badges : [], buildings: Array.isArray(saved.buildings) ? saved.buildings : ["hall"], starSand: Math.max(0, Math.floor(Number(saved.starSand) || 0)) }
+        : { version: 1, starSand: 0, completions: {}, badges: [], buildings: ["hall"] };
+      const completionKey = `${gameId}:${completionId}`;
+      if (store.completions[completionKey]) return;
+      store.completions[completionKey] = Date.now();
+      if (!store.badges.includes(gameId)) store.badges.push(gameId);
+      store.starSand += 5;
+      localStorage.setItem(key, JSON.stringify(store));
+      window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId, completionId, amount: 5 } }));
+    } catch { /* Local progression is optional and must never interrupt a game. */ }
+  }
   function loadGoogleAnalytics() {
     if (!googleAnalyticsEnabled() || document.querySelector("[data-wonder-ga]")) return;
     try {
@@ -56,14 +85,26 @@
       document.head.append(script);
     } catch { /* Blocking the Google tag must not prevent the public game from loading. */ }
   }
+  function loadCastleRuntime() {
+    if (!/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname) || window.WeightPlayCastle || document.querySelector("[data-weightplay-castle-runtime]")) return;
+    try {
+      const script = document.createElement("script");
+      script.src = "/src/weightplay-castle.js?v=20260928-castle-v1";
+      script.async = true;
+      script.dataset.weightplayCastleRuntime = "true";
+      document.head.append(script);
+    } catch { /* The optional castle feature must not interrupt game startup. */ }
+  }
   function track(name, params = {}) {
     if (lifecycleOwner && ["game_start", "game_restart", "game_end"].includes(name) && !params.tracking_version) return;
+    if (name === "game_complete") creditCastleFirstClear(params);
     // Do not replace GA4's native session_id with a tab-local random identifier.
     emit(name, { page_path: location.pathname, page_title: document.title, ...params });
   }
   function trackPrivacySafe(name, params = {}) {
     if (lifecycleOwner && ["game_start", "game_restart", "game_end"].includes(name) && !params.tracking_version) return;
     if (!/^[a-z][a-z0-9_]{0,63}$/.test(name)) return;
+    if (name === "game_complete") creditCastleFirstClear(params);
     const payload = {};
     for (const [key, value] of Object.entries(params || {})) {
       if (!privacySafeKeys.has(key)) continue;
@@ -342,6 +383,7 @@
   }
 
   loadGoogleAnalytics();
+  loadCastleRuntime();
   const game = createGameTracking();
   window.WonderAnalytics = {
     track, trackPrivacySafe, counts: loadCounts, hasGoogleAnalytics: googleAnalyticsEnabled, game,

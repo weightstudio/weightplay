@@ -3881,6 +3881,36 @@ const chessPublic = window.WONDER_LOBBY.games.find((game) => game.id === "chess"
 if (chessPublic) {
   chessPublic.status = "playable";
   chessPublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  chessPublic.description = classicOwnerPreviewLocalized([
+    "Play a complete Chess match against the computer, or solve 30 original tactical challenges.",
+    "與電腦進行完整西洋棋對局，或挑戰 30 道原創戰術題。",
+    "与电脑进行完整国际象棋对局，或挑战 30 道原创战术题。",
+    "コンピューターと本格チェスを対局するか、30問のオリジナル戦術課題に挑戦。",
+    "컴퓨터와 전체 체스 대국을 하거나 30개의 오리지널 전술 도전에 도전하세요.",
+    "Juega una partida completa de ajedrez contra la computadora o resuelve 30 retos tácticos originales.",
+    "Jogue uma partida completa de xadrez contra o computador ou resolva 30 desafios táticos originais.",
+    "Jouez une partie complète contre l’ordinateur ou relevez 30 défis tactiques originaux.",
+    "Spiele eine vollständige Schachpartie gegen den Computer oder löse 30 originelle Taktikaufgaben.",
+    "Gioca una partita completa contro il computer o risolvi 30 sfide tattiche originali.",
+    "Сыграйте полноценную шахматную партию против компьютера или решите 30 авторских тактических задач.",
+    "कंप्यूटर के विरुद्ध पूरी शतरंज बाज़ी खेलें या 30 मौलिक रणनीतिक चुनौतियाँ हल करें।",
+    "العب مباراة شطرنج كاملة ضد الكمبيوتر أو حلّ 30 تحديًا تكتيكيًا أصليًا.",
+  ]);
+  chessPublic.searchAliases = [
+    "chess tactics", "chess puzzle", "checkmate", "castling", "en passant", "pawn promotion",
+    "西洋棋戰術", "西洋棋謎題", "將死", "王車易位", "吃過路兵", "兵升變",
+    "国际象棋战术", "国际象棋谜题", "将死", "王车易位", "吃过路兵", "兵升变",
+    "チェス戦術", "チェスの問題", "チェックメイト", "キャスリング", "アンパッサン", "ポーン昇格",
+    "체스 전술", "체스 퍼즐", "체크메이트", "캐슬링", "앙파상", "폰 승격",
+    "tácticas de ajedrez", "problemas de ajedrez", "jaque mate", "enroque", "captura al paso", "promoción de peón",
+    "táticas de xadrez", "problemas de xadrez", "xeque-mate", "roque", "captura en passant", "promoção de peão",
+    "tactiques d’échecs", "problèmes d’échecs", "échec et mat", "roque", "prise en passant", "promotion du pion",
+    "Schachtaktik", "Schachrätsel", "Schachmatt", "Rochade", "Schlagen en passant", "Bauernumwandlung",
+    "tattiche di scacchi", "problemi di scacchi", "scacco matto", "arrocco", "cattura en passant", "promozione del pedone",
+    "шахматная тактика", "шахматные задачи", "мат", "рокировка", "взятие на проходе", "превращение пешки",
+    "शतरंज की रणनीति", "शतरंज की पहेलियाँ", "शह और मात", "कैसलिंग", "एन पासां", "प्यादे का प्रमोशन",
+    "تكتيكات الشطرنج", "ألغاز الشطرنج", "كش مات", "التبييت", "الأخذ بالتجاوز", "ترقية البيدق",
+  ];
   delete chessPublic.internalTrial;
 }
 

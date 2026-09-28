@@ -1,51 +1,50 @@
 .wp-castle-panel {
-  --castle-ink: #183544;
-  --castle-muted: #58717b;
-  --castle-line: #b6c9bd;
-  --castle-gold: #9a5c11;
+  --castle-ink: #f2f6e9;
+  --castle-muted: #afc9ce;
+  --castle-line: #416c78;
+  --castle-gold: #ffd36c;
   margin: 22px 0;
   padding: clamp(18px, 3vw, 30px);
   color: var(--castle-ink);
-  border: 2px solid var(--castle-line);
-  border-radius: 8px;
-  background: linear-gradient(145deg, #fffdf5 0%, #edf7e9 100%);
-  box-shadow: 0 8px 0 #d4e1d4;
+  border: 2px solid #648f95;
+  border-radius: 4px;
+  background: linear-gradient(145deg, #173f49 0%, #0d2d38 100%);
+  box-shadow: 0 8px 0 #071f29, inset 0 1px 0 #b6e0d538;
   scroll-margin-top: 20px;
 }
 .wp-castle-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-.wp-castle-heading h2 { margin: 2px 0 5px; font-size: clamp(23px, 4vw, 34px); line-height: 1.1; }
+.wp-castle-heading h2 { margin: 2px 0 5px; color: var(--castle-ink); font-size: clamp(23px, 4vw, 34px); line-height: 1.1; }
 .wp-castle-heading p { margin: 0; color: var(--castle-muted); }
-.wp-castle-kicker { color: var(--castle-gold); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-.wp-castle-balance { display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 7px; padding: 10px 14px; border: 2px solid #e3bf69; border-radius: 6px; color: #69430d; background: #fff2c8; white-space: nowrap; }
-.wp-castle-balance > span { grid-row: span 2; color: #c47b1a; font-size: 25px; }
+.wp-castle-kicker { color: #f4c76b; font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.wp-castle-balance { display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 7px; padding: 10px 14px; border: 2px solid #ffe4a0; border-radius: 4px; color: #3a2a12; background: linear-gradient(180deg, #ffdf88, #e7a843); box-shadow: 0 4px 0 #80521c; white-space: nowrap; }
+.wp-castle-balance > span { grid-row: span 2; color: #a96116; font-size: 25px; }
 .wp-castle-balance strong { font-size: 20px; line-height: 1; }
 .wp-castle-balance small { font-size: 11px; font-weight: 700; }
 .wp-castle-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(190px, .65fr); align-items: stretch; gap: 16px; margin-top: 20px; }
-.wp-castle-scene { display: grid; place-items: center; min-height: 190px; overflow: hidden; border: 2px solid #bdd2b6; border-radius: 7px; background: linear-gradient(#e9f8f8 0 56%, #cfe8d0 56%); }
-.wp-castle-scene svg { display: block; width: min(100%, 430px); height: auto; }
-.wp-castle-hill { fill: #8fbf8a; }
-.wp-castle-shadow { fill: #659269; }
-.wp-castle-wall { fill: #e9c787; stroke: #986b3d; stroke-width: 3; }
-.wp-castle-wall-light { fill: #f7dfa9; }
-.wp-castle-roof { fill: #bf6752; stroke: #784544; stroke-width: 3; stroke-linejoin: round; }
-.wp-castle-tower { fill: #f3d89c; stroke: #986b3d; stroke-width: 3; }
-.wp-castle-door { fill: #774c42; }
-.wp-castle-window { fill: #70bac1; stroke: #fff1b2; stroke-width: 3; }
-.wp-castle-stars { fill: #e5a72f; }
-.wp-castle-unlock { opacity: .24; fill: #6d9e72; stroke: #466e53; stroke-width: 3; transition: opacity .25s ease; }
-.wp-castle-unlock.is-unlocked { opacity: 1; }
-.wp-castle-next { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 17px; border: 2px solid #c9d7c4; border-radius: 7px; background: #fffefa; }
-.wp-castle-next h3 { margin: 3px 0 6px; font-size: 21px; }
+.wp-castle-scene { display: grid; place-items: center; min-height: 220px; overflow: hidden; border: 2px solid #527b84; border-radius: 4px; background: radial-gradient(ellipse at center, #2b5e67 0%, #1b4652 58%, #12343f 100%); box-shadow: inset 0 0 0 4px #0f303a, inset 0 0 25px #071c25; }
+.wp-castle-art { display: block; width: min(100%, 620px); max-height: 278px; object-fit: contain; filter: drop-shadow(0 7px 0 #06182070); }
+.wp-castle-next { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 17px; border: 2px solid #416c78; border-radius: 4px; color: var(--castle-ink); background: linear-gradient(145deg, #214b56, #163844); box-shadow: inset 0 1px 0 #b6e0d51f, 0 5px 0 #071f29; }
+.wp-castle-next h3 { margin: 3px 0 6px; color: var(--castle-ink); font-size: 21px; }
 .wp-castle-next p { margin: 0 0 10px; color: var(--castle-muted); }
-.wp-castle-price { margin: 0 0 12px; color: var(--castle-gold); font-weight: 800; }
-.wp-castle-build { min-height: 44px; padding: 8px 17px; border: 0; border-radius: 5px; color: #fff; background: #315b50; font: inherit; font-weight: 850; cursor: pointer; }
-.wp-castle-build:hover:not(:disabled) { background: #23473e; }
+.wp-castle-price { margin: 0 0 15px; padding: 7px 9px; border: 1px solid #9e742f; border-radius: 3px; color: #ffe09a; background: #153641; font-weight: 850; }
+.wp-castle-build { min-height: 44px; padding: 8px 17px; border: 2px solid #ffe5a5; border-radius: 3px; color: #352510; background: linear-gradient(180deg, #ffdc7d, #e4a23d); box-shadow: 0 4px 0 #80521c; font: inherit; font-weight: 900; cursor: pointer; }
+.wp-castle-build:hover:not(:disabled) { background: linear-gradient(180deg, #ffe69a, #edb34f); transform: translateY(1px); box-shadow: 0 3px 0 #80521c; }
 .wp-castle-build:focus-visible { outline: 3px solid #d19631; outline-offset: 3px; }
-.wp-castle-build:disabled { color: #69777a; background: #e0e6df; cursor: not-allowed; }
+.wp-castle-build:disabled { border-color: #53727b; color: #afc3c6; background: #354f57; box-shadow: none; cursor: not-allowed; }
 .wp-castle-need { margin-top: 7px; color: var(--castle-muted); }
-.wp-castle-complete { color: #315b50; font-weight: 800; }
+.wp-castle-complete { color: #b2ebc4; font-weight: 800; }
 .wp-castle-footer { display: flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--castle-muted); font-size: 13px; }
-.wp-castle-footer strong { margin-right: 14px; color: var(--castle-ink); }
+.wp-castle-footer strong { margin-right: 14px; color: #fff0ba; }
+.wp-castle-collection { margin-top: 17px; padding-top: 14px; border-top: 1px solid var(--castle-line); }
+.wp-castle-collection h3 { margin: 0 0 10px; color: var(--castle-ink); font-size: 16px; }
+.wp-castle-empty { margin: 0; color: var(--castle-muted); }
+.wp-castle-badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(126px, 1fr)); gap: 8px; }
+.wp-castle-badge { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 7px; border: 1px solid var(--castle-line); border-radius: 3px; color: var(--castle-ink); background: #1a414b; text-decoration: none; }
+.wp-castle-badge:hover { border-color: #d3ad57; background: #24535d; }
+.wp-castle-badge:focus-visible { outline: 3px solid #d19631; outline-offset: 2px; }
+.wp-castle-badge img, .wp-castle-badge > span { flex: 0 0 34px; width: 34px; height: 34px; object-fit: cover; border-radius: 4px; }
+.wp-castle-badge > span { display: grid; place-items: center; color: #c47b1a; background: #fff2c8; }
+.wp-castle-badge strong { overflow: hidden; font-size: 12px; line-height: 1.3; text-overflow: ellipsis; }
 .wp-castle-reward-toast { position: fixed; z-index: 10020; inset-inline: 16px; bottom: max(18px, env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-between; gap: 14px; width: min(520px, calc(100% - 32px)); margin-inline: auto; padding: 13px 16px; border: 2px solid #e3bf69; border-radius: 7px; color: #342a18; background: #fff6dc; box-shadow: 0 8px 28px #132c3540; font-weight: 800; }
 .wp-castle-reward-toast a { color: #315b50; white-space: nowrap; }
 html[dir="rtl"] .wp-castle-heading, html[dir="rtl"] .wp-castle-footer { direction: rtl; }
@@ -54,7 +53,8 @@ html[dir="rtl"] .wp-castle-heading, html[dir="rtl"] .wp-castle-footer { directio
   .wp-castle-heading p { max-width: 31ch; }
   .wp-castle-balance { grid-template-columns: auto auto; padding: 8px 9px; }
   .wp-castle-layout { grid-template-columns: 1fr; }
-  .wp-castle-scene { min-height: 150px; }
+  .wp-castle-scene { min-height: 198px; }
+  .wp-castle-art { width: min(100%, 440px); max-height: 218px; }
   .wp-castle-next { min-height: 190px; }
 }
 @media (prefers-reduced-motion: reduce) { .wp-castle-unlock { transition: none; } }
