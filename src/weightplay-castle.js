@@ -28,7 +28,7 @@
 
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v2", document.currentScript?.src || location.href).href;
+  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v3", document.currentScript?.src || location.href).href;
   document.head.append(stylesheet);
 
   const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };

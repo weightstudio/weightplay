@@ -49,6 +49,7 @@
 .wp-castle-reward-toast a { color: #315b50; white-space: nowrap; }
 html[dir="rtl"] .wp-castle-heading, html[dir="rtl"] .wp-castle-footer { direction: rtl; }
 @media (max-width: 680px) {
+  .wp-castle-panel { scroll-margin-top: 96px; }
   .wp-castle-heading { align-items: flex-start; }
   .wp-castle-heading p { max-width: 31ch; }
   .wp-castle-balance { grid-template-columns: auto auto; padding: 8px 9px; }
