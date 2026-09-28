@@ -130,6 +130,63 @@
     ar: ["استعد التاج", "اهزم الحراس المطلوبين ثم وصل إلى التاج.", "أزل الدعامات", "اضغط مجموعة متصلة من لون واحد، راجع المسار ثم أكد.", "احسب أولًا", "يجب أن تتجاوز قوتك قوة العدو. خطط لترتيب الجمع والضرب؛ الأشواك تسبب الخسارة."]
   };
   const tutorials = {
+    snake: {
+      title: {
+        en: "Chart a safe path.", "zh-Hant": "規劃安全路線", "zh-Hans": "规划安全路线", ja: "安全な道を描こう", ko: "안전한 길을 계획해요",
+        es: "Traza una ruta segura", "pt-BR": "Trace uma rota segura", fr: "Tracez un trajet sûr", de: "Plane einen sicheren Weg", it: "Pianifica un percorso sicuro",
+        ru: "Проложите безопасный путь", hi: "सुरक्षित रास्ता बनाएँ", ar: "خطط لمسار آمن",
+      },
+      steps: [
+        {
+          icon: "1",
+          en: ["Read the next turns", "Keep a turning lane open as your trail grows; marked obstacle cells are blocked."],
+          "zh-Hant": ["先看接下來的轉彎", "蛇身變長時要留好轉向空間；標示出的障礙格不能通過。"],
+          "zh-Hans": ["先看接下来的转弯", "蛇身变长时要留好转向空间；标出的障碍格不能通过。"],
+          ja: ["次の曲がり角を読む", "しっぽが伸びても曲がれる道を残しましょう。印のある障害マスには入れません。"],
+          ko: ["다음 방향을 살펴봐요", "꼬리가 길어져도 돌 수 있는 길을 남기세요. 표시된 장애물 칸은 통과할 수 없어요."],
+          es: ["Mira los próximos giros", "Deja espacio para girar mientras crece la cola; las casillas con obstáculos están bloqueadas."],
+          "pt-BR": ["Observe as próximas curvas", "Deixe espaço para virar enquanto a cauda cresce; casas com obstáculos estão bloqueadas."],
+          fr: ["Anticipez les prochains virages", "Gardez un espace pour tourner quand la traîne grandit ; les cases d’obstacle sont bloquées."],
+          de: ["Plane die nächsten Kurven", "Lass Platz zum Abbiegen, wenn der Schweif wächst; markierte Hindernisfelder sind gesperrt."],
+          it: ["Prevedi le prossime svolte", "Lascia spazio per girare mentre la coda cresce; le caselle con ostacoli sono bloccate."],
+          ru: ["Продумывайте повороты", "Оставляйте место для поворота, пока хвост растёт; клетки с препятствиями закрыты."],
+          hi: ["अगले मोड़ पहले देखें", "पूँछ बढ़ने पर मुड़ने की जगह रखें; निशान वाले बाधा-खाने बंद हैं।"],
+          ar: ["خطط للمنعطفات التالية", "اترك مساحة للالتفاف مع نمو الذيل؛ الخانات المعلّمة بالعوائق مغلقة."],
+        },
+        {
+          icon: "2",
+          en: ["Steer the serpent", "Use arrows or WASD, the on-screen buttons, or a swipe. A reverse turn is ignored."],
+          "zh-Hant": ["操控星蛇前進", "使用方向鍵或 WASD、畫面按鈕，也可滑動；反方向轉彎會被忽略。"],
+          "zh-Hans": ["操控星蛇前进", "使用方向键或 WASD、屏幕按钮，也可滑动；反方向转弯会被忽略。"],
+          ja: ["ヘビを操作する", "矢印キーや WASD、画面ボタン、スワイプで進みます。逆方向への操作は無視されます。"],
+          ko: ["뱀을 조종해요", "방향키나 WASD, 화면 버튼 또는 스와이프로 움직여요. 반대 방향 입력은 무시돼요."],
+          es: ["Guía a la serpiente", "Usa las flechas o WASD, los botones de pantalla o desliza. Se ignoran los giros en sentido contrario."],
+          "pt-BR": ["Guie a serpente", "Use as setas ou WASD, os botões na tela ou deslize. A direção oposta é ignorada."],
+          fr: ["Guidez le serpent", "Utilisez les flèches ou WASD, les boutons à l’écran ou un glissement. Le demi-tour est ignoré."],
+          de: ["Steuere die Schlange", "Nutze Pfeiltasten oder WASD, die Bildschirmknöpfe oder Wischen. Eine Kehrtwende wird ignoriert."],
+          it: ["Guida il serpente", "Usa le frecce o WASD, i pulsanti sullo schermo oppure scorri. La direzione opposta viene ignorata."],
+          ru: ["Управляйте змеёй", "Используйте стрелки или WASD, кнопки на экране либо свайп. Разворот в обратную сторону игнорируется."],
+          hi: ["साँप को दिशा दें", "तीर-कुंजियाँ या WASD, स्क्रीन बटन अथवा स्वाइप करें। उलटी दिशा वाला मोड़ अनदेखा होगा।"],
+          ar: ["وجّه الثعبان", "استخدم الأسهم أو WASD أو أزرار الشاشة أو اسحب. يتم تجاهل الانعطاف إلى الاتجاه المعاكس."],
+        },
+        {
+          icon: "3",
+          en: ["Collect and survive", "Food sparks grow your trail and score. A wall, obstacle, or your trail ends the run; Retry starts a new board."],
+          "zh-Hant": ["收集食物並持續生存", "收集食物光點可讓蛇身變長並增加分數。撞牆、障礙或自己的蛇身就會結束；再玩一次會開新棋盤。"],
+          "zh-Hans": ["收集食物并持续生存", "收集食物光点会让蛇身变长并增加分数。撞墙、障碍或自己的蛇身都会结束本局；再玩一次会开启新棋盘。"],
+          ja: ["食べて生き残る", "光るエサで体とスコアが増えます。壁・障害物・自分のしっぽに当たると終了し、再挑戦で新しい盤面になります。"],
+          ko: ["먹이를 모으며 살아남아요", "먹이를 먹으면 몸길이와 점수가 늘어요. 벽, 장애물, 몸에 부딪히면 끝나고 다시 하기를 누르면 새 보드가 시작돼요."],
+          es: ["Come y sobrevive", "Las chispas de comida alargan tu rastro y suman puntos. Un muro, obstáculo o tu rastro termina la partida; Reintentar crea otro tablero."],
+          "pt-BR": ["Coma e sobreviva", "As faíscas de comida aumentam a cauda e a pontuação. Parede, obstáculo ou sua cauda encerram a rodada; Tentar novamente cria outro tabuleiro."],
+          fr: ["Mangez et survivez", "Les étincelles allongent votre traîne et ajoutent des points. Un mur, un obstacle ou votre traîne termine la partie ; Réessayer crée un autre plateau."],
+          de: ["Sammle und überlebe", "Futterfunken verlängern den Schweif und bringen Punkte. Wand, Hindernis oder Schweif beenden den Lauf; Erneut spielen startet ein neues Feld."],
+          it: ["Raccogli e sopravvivi", "Le scintille di cibo allungano la coda e aumentano il punteggio. Un muro, un ostacolo o la coda terminano la partita; Riprova crea una nuova griglia."],
+          ru: ["Собирайте и выживайте", "Искры еды удлиняют хвост и дают очки. Стена, препятствие или собственный хвост завершают забег; повторный старт создаёт новое поле."],
+          hi: ["खाना जुटाएँ और बचें", "खाने की चमक पूँछ बढ़ाती और अंक देती है। दीवार, बाधा या अपनी पूँछ से टकराने पर दौड़ खत्म होती है; फिर से खेलने पर नया बोर्ड मिलता है।"],
+          ar: ["اجمع الطعام وابقَ بأمان", "تطيل شرارات الطعام ذيلك وتزيد نقاطك. ينتهي اللعب عند الاصطدام بجدار أو عائق أو بذيلك؛ وتبدأ إعادة المحاولة لوحة جديدة."],
+        },
+      ],
+    },
     "animal-lantern-lattice": {
       title: Object.fromEntries(Object.entries({
         en: { title: "Build a safe night path", steps: [["Read the clues", "Each clue tells which lantern comes before another."], ["Tap lanterns in order", "Choose the lights in order. Echo paths may repeat their named lantern."], ["Check the path", "A clear lights the next path. A wrong link shows what to retry; there is no timer or lives."]] },
