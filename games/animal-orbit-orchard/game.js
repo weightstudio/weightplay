@@ -613,7 +613,7 @@
     });
     laneSelect.value = state.lane;
     const routeHint = $("routeHint");
-    routeHint.hidden = !needsLaneChoice(stage);
+    routeHint.hidden = !needsLaneChoice(stage) || Boolean(state.lane);
     routeHint.textContent = stage.openBothLanesOnFinal && state.targetIndex === stage.targets.length - 1
       ? t("laneFinal") : stage.laneSetupDegrees ? t("laneOpenBoth") : t("laneRequired");
     const patternBtn = $("patternBtn"); patternBtn.hidden = !stage.memory; patternBtn.textContent = t("patternAction");

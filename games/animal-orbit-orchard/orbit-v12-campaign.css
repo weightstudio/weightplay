@@ -86,17 +86,31 @@ body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .clamp-btn {
 }
 
 body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .clamp-btn {
-  width: 44px;
-  height: 44px;
-  padding: 4px;
+  width: 66px;
+  height: 66px;
+  min-width: 66px;
+  min-height: 66px;
+  padding: 5px;
   overflow: hidden;
 }
 
 body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .clamp-btn img {
   display: block;
-  width: 34px;
-  height: 34px;
+  width: 54px;
+  height: 54px;
   object-fit: contain;
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .logical-shell:has(> #resultScreen.battle-result-substate:not([hidden])) > .panel-head {
+  visibility: hidden;
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #battleScreen #resultScreen.battle-result-substate {
+  background: #f3faff !important;
+}
+
+body[data-wp-game-id="animal-orbit-orchard"] #battleScreen #resultScreen #resultTitle {
+  color: #155e63;
 }
 
 body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .clamp-btn:disabled {
