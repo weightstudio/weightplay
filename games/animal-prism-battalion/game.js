@@ -50,6 +50,7 @@
   function trackFunnel(event,data={}){if(!run){track(event,data);return}track(event,{stage:run.stage.n,wave:run.wave,lane_switch_count:run.laneSwitchCount,distinct_lane_count:distinctLaneCount(),overdrive_ready_count:run.overdriveReadyCount,overdrive_activation_count:run.overdriveActivationCount,...data})}
 
   LANE_COPY.laneGuideIntro="Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.";
+  LANE_COPY.laneMainSummary="Switch lanes, stop shadow waves, collect power cores, and protect the crystal.";
   const SAVE_KEY="animalPrismBattalionSaveV1";
   const defaultSave=()=>({unlocked:1,stars:{},shards:0,upgrades:{rate:0,power:0,armor:0},tutorialSeen:false});
   function normalizeSave(raw){
