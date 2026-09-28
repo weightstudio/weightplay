@@ -6,7 +6,7 @@ import {
   objectiveCounts,
   playSwap,
 } from "./cascade-core.js";
-import { CastleCascade3D } from "./castle-cascade-3d.js";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20260928-castle-cascade-v5";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
@@ -167,7 +167,7 @@ function mountRenderer() {
   if (renderer || !gameState) return boardAvailable;
   canvas = document.querySelector("#sceneCanvas");
   try {
-    renderer = new CastleCascade3D(canvas, handleCell, handleRendererFailure);
+    renderer = new CastleCascade2D(canvas, handleCell, handleRendererFailure);
     renderer.setBoard(gameState.board, selectedCell, focusCell);
     boardAvailable = true;
     document.querySelector("#result").hidden = true;
@@ -183,9 +183,9 @@ function mountRenderer() {
 }
 
 function handleRendererFailure(reason) {
-  if (reason !== "context-lost" || !gameState) return;
+  if (!gameState) return;
   boardAvailable = false;
-  showResult("context-lost");
+  showResult(reason === "context-lost" ? "context-lost" : "renderer-error");
 }
 
 function objectiveSummary(level) {

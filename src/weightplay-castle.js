@@ -1,0 +1,151 @@
+(function () {
+  "use strict";
+
+  const STORE_KEY = "weightplayCastleV1";
+  const REWARD_PER_CLEAR = 5;
+  const buildings = [
+    { id: "tower", cost: 20 },
+    { id: "garden", cost: 30 },
+    { id: "library", cost: 45 },
+    { id: "observatory", cost: 60 },
+    { id: "gate", cost: 80 },
+  ];
+  const copy = {
+    en: { title: "Starlight Castle", intro: "Every first clear adds a little more to your home.", balance: "Star Sand", progress: "Castle progress", badges: "Game badges", build: "Build", built: "Built", need: "Need {count} more", next: "Next structure", clear: "First clear! +{count} Star Sand", visit: "Open castle", hall: "Castle Hall", tower: "Sun Tower", garden: "Moon Garden", library: "Story Library", observatory: "Sky Observatory", gate: "Welcome Gate", empty: "Finish a game stage to earn your first Star Sand.", accessibility: "Your growing castle" },
+    "zh-Hant": { title: "星光城堡", intro: "每次首次通關，都能讓你的家園再添一點新景色。", balance: "星砂", progress: "城堡進度", badges: "遊戲徽章", build: "建造", built: "已建造", need: "還差 {count}", next: "下一座建築", clear: "首次通關！獲得 {count} 星砂", visit: "前往城堡", hall: "城堡大廳", tower: "日光塔", garden: "月光花園", library: "故事圖書館", observatory: "觀星台", gate: "迎賓城門", empty: "完成一個遊戲關卡，領取第一份星砂。", accessibility: "逐漸成長的城堡" },
+    "zh-Hans": { title: "星光城堡", intro: "每次首次通关，都能为你的家园添上一点新景色。", balance: "星砂", progress: "城堡进度", badges: "游戏徽章", build: "建造", built: "已建造", need: "还差 {count}", next: "下一座建筑", clear: "首次通关！获得 {count} 星砂", visit: "前往城堡", hall: "城堡大厅", tower: "日光塔", garden: "月光花园", library: "故事图书馆", observatory: "观星台", gate: "迎宾城门", empty: "完成一个游戏关卡，领取第一份星砂。", accessibility: "逐渐成长的城堡" },
+    ja: { title: "星明かりのお城", intro: "初めてクリアするたびに、あなたの城が少しずつ育ちます。", balance: "星の砂", progress: "お城の進み具合", badges: "ゲームバッジ", build: "建てる", built: "完成", need: "あと {count}", next: "次の建物", clear: "初クリア！星の砂 +{count}", visit: "お城を見る", hall: "城の広間", tower: "陽光の塔", garden: "月明かりの庭", library: "物語の図書館", observatory: "星見台", gate: "歓迎の門", empty: "ゲームのステージをクリアして、星の砂を集めましょう。", accessibility: "成長するお城" },
+    ko: { title: "별빛 성", intro: "게임을 처음 완료할 때마다 나만의 공간이 조금씩 자라나요.", balance: "별모래", progress: "성 진행도", badges: "게임 배지", build: "건설", built: "완성", need: "{count}개 더 필요", next: "다음 건물", clear: "첫 완료! 별모래 +{count}", visit: "성 보기", hall: "성의 홀", tower: "햇빛 탑", garden: "달빛 정원", library: "이야기 도서관", observatory: "별 관측대", gate: "환영의 문", empty: "게임 스테이지를 완료하고 첫 별모래를 모아 보세요.", accessibility: "점점 자라는 성" },
+    es: { title: "Castillo Estelar", intro: "Cada primera victoria añade algo nuevo a tu hogar.", balance: "Arena estelar", progress: "Progreso del castillo", badges: "Insignias de juego", build: "Construir", built: "Construido", need: "Faltan {count}", next: "Siguiente edificio", clear: "¡Primera victoria! +{count} de arena", visit: "Ver castillo", hall: "Gran Salón", tower: "Torre del Sol", garden: "Jardín Lunar", library: "Biblioteca de Historias", observatory: "Observatorio", gate: "Puerta de Bienvenida", empty: "Completa una fase para conseguir tu primera arena estelar.", accessibility: "Tu castillo en crecimiento" },
+    "pt-BR": { title: "Castelo Estelar", intro: "Cada primeira vitória acrescenta algo novo à sua casa.", balance: "Areia estelar", progress: "Progresso do castelo", badges: "Emblemas de jogos", build: "Construir", built: "Construído", need: "Faltam {count}", next: "Próxima construção", clear: "Primeira vitória! +{count} de areia", visit: "Ver castelo", hall: "Salão do Castelo", tower: "Torre do Sol", garden: "Jardim Lunar", library: "Biblioteca de Histórias", observatory: "Observatório Celeste", gate: "Portão de Boas-vindas", empty: "Conclua uma fase para ganhar sua primeira areia estelar.", accessibility: "Seu castelo em crescimento" },
+    fr: { title: "Château des Étoiles", intro: "Chaque première victoire apporte une nouveauté à votre refuge.", balance: "Sable étoilé", progress: "Progression du château", badges: "Badges de jeu", build: "Construire", built: "Construit", need: "Encore {count}", next: "Prochain bâtiment", clear: "Première victoire ! +{count} sable", visit: "Voir le château", hall: "Grande salle", tower: "Tour du Soleil", garden: "Jardin lunaire", library: "Bibliothèque des récits", observatory: "Observatoire", gate: "Porte d’accueil", empty: "Terminez un niveau pour gagner votre premier sable étoilé.", accessibility: "Votre château grandit" },
+    de: { title: "Sternenlichtschloss", intro: "Jeder erste Sieg bringt etwas Neues in dein Zuhause.", balance: "Sternensand", progress: "Schlossfortschritt", badges: "Spielabzeichen", build: "Bauen", built: "Gebaut", need: "Es fehlen {count}", next: "Nächstes Gebäude", clear: "Erster Sieg! +{count} Sternensand", visit: "Schloss ansehen", hall: "Schlosshalle", tower: "Sonnenturm", garden: "Mondgarten", library: "Geschichtenbibliothek", observatory: "Sternwarte", gate: "Willkommenstor", empty: "Schließe ein Level ab und verdiene deinen ersten Sternensand.", accessibility: "Dein wachsendes Schloss" },
+    it: { title: "Castello Stellato", intro: "Ogni prima vittoria aggiunge qualcosa alla tua casa.", balance: "Sabbia stellare", progress: "Progresso del castello", badges: "Distintivi di gioco", build: "Costruisci", built: "Costruito", need: "Ne mancano {count}", next: "Prossimo edificio", clear: "Prima vittoria! +{count} sabbia", visit: "Visita il castello", hall: "Sala del Castello", tower: "Torre del Sole", garden: "Giardino Lunare", library: "Biblioteca delle Storie", observatory: "Osservatorio", gate: "Porta di Benvenuto", empty: "Completa un livello per ottenere la tua prima sabbia stellare.", accessibility: "Il tuo castello cresce" },
+    ru: { title: "Звёздный замок", intro: "Каждая первая победа приносит что-то новое в твой дом.", balance: "Звёздный песок", progress: "Развитие замка", badges: "Игровые значки", build: "Построить", built: "Построено", need: "Не хватает {count}", next: "Следующая постройка", clear: "Первое прохождение! +{count} песка", visit: "Открыть замок", hall: "Большой зал", tower: "Солнечная башня", garden: "Лунный сад", library: "Библиотека историй", observatory: "Обсерватория", gate: "Приветственные ворота", empty: "Пройди уровень и получи первый звёздный песок.", accessibility: "Твой растущий замок" },
+    hi: { title: "तारों का किला", intro: "हर पहली जीत से आपका घर थोड़ा और सँवरता है।", balance: "तारों की रेत", progress: "किले की प्रगति", badges: "खेल बैज", build: "बनाएँ", built: "बन गया", need: "{count} और चाहिए", next: "अगली इमारत", clear: "पहली जीत! +{count} तारों की रेत", visit: "किला देखें", hall: "किले का सभागार", tower: "सूर्य मीनार", garden: "चाँद का बगीचा", library: "कहानी पुस्तकालय", observatory: "तारा वेधशाला", gate: "स्वागत द्वार", empty: "पहली तारों की रेत पाने के लिए कोई स्तर पूरा करें।", accessibility: "आपका बढ़ता हुआ किला" },
+    ar: { title: "قلعة النجوم", intro: "كل فوز أول يضيف شيئاً جديداً إلى موطنك.", balance: "رمال النجوم", progress: "تقدم القلعة", badges: "شارات الألعاب", build: "ابنِ", built: "مبني", need: "ينقصك {count}", next: "المبنى التالي", clear: "إكمال أول! +{count} من رمال النجوم", visit: "افتح القلعة", hall: "قاعة القلعة", tower: "برج الشمس", garden: "حديقة القمر", library: "مكتبة الحكايات", observatory: "مرصد النجوم", gate: "بوابة الترحيب", empty: "أكمل مرحلة لتحصل على أول رمال النجوم.", accessibility: "قلعتك وهي تنمو" },
+  };
+
+  const stylesheet = document.createElement("link");
+  stylesheet.rel = "stylesheet";
+  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v1", document.currentScript?.src || location.href).href;
+  document.head.append(stylesheet);
+
+  const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const localeRoutes = Object.fromEntries(Object.entries(localeSegments).map(([locale, route]) => [route, locale]));
+  const locale = () => {
+    const selected = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
+    return copy[selected] ? selected : "en";
+  };
+  const t = (key, vars = {}) => (copy[locale()][key] || copy.en[key] || key).replace(/\{(\w+)\}/g, (_match, name) => String(vars[name] ?? ""));
+  const emptyStore = () => ({ version: 1, starSand: 0, completions: {}, badges: [], buildings: ["hall"] });
+  function read() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+      if (!saved || saved.version !== 1) return emptyStore();
+      return {
+        version: 1,
+        starSand: Math.max(0, Math.floor(Number(saved.starSand) || 0)),
+        completions: saved.completions && typeof saved.completions === "object" ? saved.completions : {},
+        badges: Array.isArray(saved.badges) ? [...new Set(saved.badges.filter((id) => typeof id === "string"))] : [],
+        buildings: Array.isArray(saved.buildings) ? [...new Set(["hall", ...saved.buildings.filter((id) => ["tower", "garden", "library", "observatory", "gate"].includes(id))])] : ["hall"],
+      };
+    } catch { return emptyStore(); }
+  }
+  function save(store) {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+      window.dispatchEvent(new Event("weightplay:castle-updated"));
+      return true;
+    } catch { return false; }
+  }
+  function creditFirstClear(gameId, completionId = "first-completion") {
+    const game = String(gameId || "").trim();
+    const stage = String(completionId || "first-completion").trim();
+    if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(game) || !/^[a-z0-9][a-z0-9._-]{0,63}$/i.test(stage)) return { credited: false, reason: "invalid" };
+    const store = read();
+    const key = `${game}:${stage}`;
+    if (store.completions[key]) return { credited: false, reason: "already-claimed", store };
+    store.completions[key] = Date.now();
+    if (!store.badges.includes(game)) store.badges.push(game);
+    store.starSand += REWARD_PER_CLEAR;
+    if (!save(store)) return { credited: false, reason: "storage-unavailable" };
+    window.WonderAnalytics?.track?.("castle_first_clear_reward", { game_id: game, completion_id: stage, reward_amount: REWARD_PER_CLEAR });
+    window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId: game, completionId: stage, amount: REWARD_PER_CLEAR } }));
+    return { credited: true, amount: REWARD_PER_CLEAR, store };
+  }
+  function build(buildingId) {
+    const building = buildings.find((entry) => entry.id === buildingId);
+    if (!building) return { built: false, reason: "unknown-building" };
+    const store = read();
+    if (store.buildings.includes(building.id)) return { built: false, reason: "already-built", store };
+    if (store.starSand < building.cost) return { built: false, reason: "not-enough", store, cost: building.cost };
+    store.starSand -= building.cost;
+    store.buildings.push(building.id);
+    if (!save(store)) return { built: false, reason: "storage-unavailable" };
+    window.WonderAnalytics?.track?.("castle_building_unlocked", { building_id: building.id, remaining_star_sand: store.starSand });
+    return { built: true, store };
+  }
+
+  const api = Object.freeze({ key: STORE_KEY, rewardPerClear: REWARD_PER_CLEAR, read, creditFirstClear, build });
+  window.WeightPlayCastle = api;
+
+  function render() {
+    const mount = document.querySelector("#weightplayCastle");
+    if (!mount) return;
+    const store = read();
+    const next = buildings.find((building) => !store.buildings.includes(building.id));
+    const buildingName = (id) => t(id);
+    const level = store.buildings.length;
+    mount.innerHTML = `
+      <div class="wp-castle-heading"><div><span class="wp-castle-kicker">${t("progress")}</span><h2 id="wpCastleTitle">${t("title")}</h2><p>${t("intro")}</p></div><div class="wp-castle-balance" aria-label="${t("balance")}"><span aria-hidden="true">✦</span><strong>${store.starSand}</strong><small>${t("balance")}</small></div></div>
+      <div class="wp-castle-layout"><div class="wp-castle-scene" role="img" aria-label="${t("accessibility")}"><svg viewBox="0 0 360 210" aria-hidden="true"><path class="wp-castle-hill" d="M0 176Q82 128 157 169t203-8v49H0Z"/><rect class="wp-castle-shadow" x="85" y="166" width="190" height="12" rx="6"/><rect class="wp-castle-wall" x="112" y="102" width="136" height="68"/><rect class="wp-castle-wall-light" x="112" y="102" width="136" height="9"/><path class="wp-castle-roof" d="M102 103 126 72h34v31Zm93 0 25-31h34v31Z"/><rect class="wp-castle-tower" x="143" y="54" width="32" height="116"/><path class="wp-castle-roof" d="m139 55 20-31 20 31Z"/><rect class="wp-castle-door" x="164" y="135" width="32" height="35" rx="16 16 0 0"/><rect class="wp-castle-window" x="151" y="79" width="12" height="17" rx="6"/><rect class="wp-castle-window" x="223" y="122" width="12" height="17" rx="6"/><rect class="wp-castle-window" x="125" y="122" width="12" height="17" rx="6"/><g class="wp-castle-unlock" data-castle-level="2"><path d="m270 162 18-47 18 47Z"/><rect x="279" y="162" width="18" height="20"/></g><g class="wp-castle-unlock" data-castle-level="3"><rect x="51" y="160" width="17" height="20"/><circle cx="59" cy="148" r="18"/></g><path class="wp-castle-stars" d="m80 47 3 8 9 1-7 5 2 9-7-5-7 5 2-9-7-5 9-1Zm194-20 2 6 7 1-5 4 2 7-6-4-5 4 1-7-5-4 7-1Zm-48-6 2 5 6 1-5 3 1 6-4-3-5 3 1-6-4-3 6-1Z"/></svg></div>
+      <div class="wp-castle-next"><span class="wp-castle-kicker">${next ? t("next") : t("badges")}</span><h3>${next ? buildingName(next.id) : t("title")}</h3><p>${store.badges.length} ${t("badges")}</p>${next ? `<div class="wp-castle-price"><span aria-hidden="true">✦</span>${next.cost} ${t("balance")}</div><button class="wp-castle-build" type="button" data-castle-build="${next.id}" ${store.starSand < next.cost ? "disabled" : ""}>${store.buildings.includes(next.id) ? t("built") : t("build")}</button>${store.starSand < next.cost ? `<small class="wp-castle-need">${t("need", { count: next.cost - store.starSand })}</small>` : ""}` : `<p class="wp-castle-complete">${t("built")}</p>`}</div></div>
+      <div class="wp-castle-footer"><span>${t("badges")}</span><strong>${store.badges.length}</strong><span>${t("progress")}</span><strong>${level}/${buildings.length + 1}</strong></div>`;
+    mount.querySelector("[data-castle-build]")?.addEventListener("click", (event) => {
+      const result = build(event.currentTarget.dataset.castleBuild);
+      if (!result.built) return;
+      window.WeightPlayAudio?.play?.("feedback.success");
+      render();
+    });
+    mount.querySelectorAll("[data-castle-level]").forEach((piece) => {
+      piece.classList.toggle("is-unlocked", level >= Number(piece.dataset.castleLevel));
+    });
+  }
+
+  function mountLobby() {
+    const daily = document.querySelector("#dailyReward");
+    if (!daily || document.querySelector("#weightplayCastle")) return;
+    const section = document.createElement("section");
+    section.id = "weightplayCastle";
+    section.className = "wp-castle-panel";
+    section.setAttribute("aria-labelledby", "wpCastleTitle");
+    daily.after(section);
+    render();
+    window.WonderAnalytics?.track?.("castle_view", { locale: locale() });
+    if (window.location.hash === "#castle") section.scrollIntoView({ block: "start" });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mountLobby, { once: true });
+  else mountLobby();
+  window.addEventListener("weightplay:castle-updated", render);
+  window.addEventListener("weightplay:game-completed", (event) => {
+    const detail = event.detail || {};
+    const gameId = detail.gameId || location.pathname.match(/\/games\/([^/]+)/)?.[1];
+    if (!gameId) return;
+    creditFirstClear(gameId, detail.completionId || "first-completion");
+  });
+  window.addEventListener("weightplay:castle-reward", (event) => {
+    if (document.querySelector("#weightplayCastle")) return;
+    const message = t("clear", { count: event.detail?.amount || REWARD_PER_CLEAR });
+    const toast = document.createElement("div");
+    toast.className = "wp-castle-reward-toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    toast.innerHTML = `<span>${message}</span><a href="/${localeSegments[locale()]}/#castle">${t("visit")}</a>`;
+    document.body.append(toast);
+    window.setTimeout(() => toast.remove(), 7000);
+  });
+  window.addEventListener("wonder:locale-change", render);
+  window.addEventListener("weightplay:castle-ready", render);
+})();

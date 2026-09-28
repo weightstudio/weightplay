@@ -1,0 +1,60 @@
+.wp-castle-panel {
+  --castle-ink: #183544;
+  --castle-muted: #58717b;
+  --castle-line: #b6c9bd;
+  --castle-gold: #9a5c11;
+  margin: 22px 0;
+  padding: clamp(18px, 3vw, 30px);
+  color: var(--castle-ink);
+  border: 2px solid var(--castle-line);
+  border-radius: 8px;
+  background: linear-gradient(145deg, #fffdf5 0%, #edf7e9 100%);
+  box-shadow: 0 8px 0 #d4e1d4;
+  scroll-margin-top: 20px;
+}
+.wp-castle-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.wp-castle-heading h2 { margin: 2px 0 5px; font-size: clamp(23px, 4vw, 34px); line-height: 1.1; }
+.wp-castle-heading p { margin: 0; color: var(--castle-muted); }
+.wp-castle-kicker { color: var(--castle-gold); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.wp-castle-balance { display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 7px; padding: 10px 14px; border: 2px solid #e3bf69; border-radius: 6px; color: #69430d; background: #fff2c8; white-space: nowrap; }
+.wp-castle-balance > span { grid-row: span 2; color: #c47b1a; font-size: 25px; }
+.wp-castle-balance strong { font-size: 20px; line-height: 1; }
+.wp-castle-balance small { font-size: 11px; font-weight: 700; }
+.wp-castle-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(190px, .65fr); align-items: stretch; gap: 16px; margin-top: 20px; }
+.wp-castle-scene { display: grid; place-items: center; min-height: 190px; overflow: hidden; border: 2px solid #bdd2b6; border-radius: 7px; background: linear-gradient(#e9f8f8 0 56%, #cfe8d0 56%); }
+.wp-castle-scene svg { display: block; width: min(100%, 430px); height: auto; }
+.wp-castle-hill { fill: #8fbf8a; }
+.wp-castle-shadow { fill: #659269; }
+.wp-castle-wall { fill: #e9c787; stroke: #986b3d; stroke-width: 3; }
+.wp-castle-wall-light { fill: #f7dfa9; }
+.wp-castle-roof { fill: #bf6752; stroke: #784544; stroke-width: 3; stroke-linejoin: round; }
+.wp-castle-tower { fill: #f3d89c; stroke: #986b3d; stroke-width: 3; }
+.wp-castle-door { fill: #774c42; }
+.wp-castle-window { fill: #70bac1; stroke: #fff1b2; stroke-width: 3; }
+.wp-castle-stars { fill: #e5a72f; }
+.wp-castle-unlock { opacity: .24; fill: #6d9e72; stroke: #466e53; stroke-width: 3; transition: opacity .25s ease; }
+.wp-castle-unlock.is-unlocked { opacity: 1; }
+.wp-castle-next { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 17px; border: 2px solid #c9d7c4; border-radius: 7px; background: #fffefa; }
+.wp-castle-next h3 { margin: 3px 0 6px; font-size: 21px; }
+.wp-castle-next p { margin: 0 0 10px; color: var(--castle-muted); }
+.wp-castle-price { margin: 0 0 12px; color: var(--castle-gold); font-weight: 800; }
+.wp-castle-build { min-height: 44px; padding: 8px 17px; border: 0; border-radius: 5px; color: #fff; background: #315b50; font: inherit; font-weight: 850; cursor: pointer; }
+.wp-castle-build:hover:not(:disabled) { background: #23473e; }
+.wp-castle-build:focus-visible { outline: 3px solid #d19631; outline-offset: 3px; }
+.wp-castle-build:disabled { color: #69777a; background: #e0e6df; cursor: not-allowed; }
+.wp-castle-need { margin-top: 7px; color: var(--castle-muted); }
+.wp-castle-complete { color: #315b50; font-weight: 800; }
+.wp-castle-footer { display: flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--castle-muted); font-size: 13px; }
+.wp-castle-footer strong { margin-right: 14px; color: var(--castle-ink); }
+.wp-castle-reward-toast { position: fixed; z-index: 10020; inset-inline: 16px; bottom: max(18px, env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-between; gap: 14px; width: min(520px, calc(100% - 32px)); margin-inline: auto; padding: 13px 16px; border: 2px solid #e3bf69; border-radius: 7px; color: #342a18; background: #fff6dc; box-shadow: 0 8px 28px #132c3540; font-weight: 800; }
+.wp-castle-reward-toast a { color: #315b50; white-space: nowrap; }
+html[dir="rtl"] .wp-castle-heading, html[dir="rtl"] .wp-castle-footer { direction: rtl; }
+@media (max-width: 680px) {
+  .wp-castle-heading { align-items: flex-start; }
+  .wp-castle-heading p { max-width: 31ch; }
+  .wp-castle-balance { grid-template-columns: auto auto; padding: 8px 9px; }
+  .wp-castle-layout { grid-template-columns: 1fr; }
+  .wp-castle-scene { min-height: 150px; }
+  .wp-castle-next { min-height: 190px; }
+}
+@media (prefers-reduced-motion: reduce) { .wp-castle-unlock { transition: none; } }
