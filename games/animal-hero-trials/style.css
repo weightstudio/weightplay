@@ -150,28 +150,6 @@ body.wp-stage-select-active #stageView .stage-rail {
   box-shadow: 0 0 0 2px #ffd45f66;
 }
 
-/* Keep the platform-created Stage reserve and the explicit semantic reserve
-   on the same physical 56px boundary; only the latter is queried by the
-   validator, while the former supplies the shared shell background. */
-#stageAd {
-  display: none;
-  position: fixed;
-  z-index: 38;
-  top: var(--wp-stage-reserve-top, calc(100dvh - var(--wp-ad-reserve-height, 0px)));
-  left: var(--wp-stage-canvas-left, 0px);
-  right: auto;
-  width: var(--wp-stage-canvas-rendered-width, 100vw);
-  max-width: 920px;
-  height: 56px;
-  min-height: 56px;
-  background: #17243a;
-  border-top: 1px solid rgb(255 255 255 / 12%);
-  pointer-events: none;
-}
-body[data-screen="stage"] #stageAd {
-  display: block;
-}
-
 /* Battle exposes a distinct utility beside the enabled hero skill. The
    utility gives the player a non-destructive help surface without changing
    the existing movement/skill loop. */
@@ -200,12 +178,5 @@ body[data-screen="stage"] #stageAd {
   outline: 3px solid #ffd45f;
   outline-offset: 2px;
 }
-body.wp-logical-battle-active #battleAd {
-  display: block;
-}
-body:not([data-screen="battle"]) #battleAd {
-  display: none;
-}
-
 /* v20: the governed wide-layout Main poster stays at the canonical 420px
    column even in short landscape. Phone sizing remains fluid and square. */

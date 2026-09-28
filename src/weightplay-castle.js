@@ -2,13 +2,14 @@
   "use strict";
 
   const STORE_KEY = "weightplayCastleV1";
-  const REWARD_PER_CLEAR = 5;
+  const REWARD_PER_CLEAR = 1;
+  const LEGACY_STAR_SAND_PER_CLEAR = 5;
   const buildings = [
-    { id: "tower", cost: 20 },
-    { id: "garden", cost: 30 },
-    { id: "library", cost: 45 },
-    { id: "observatory", cost: 60 },
-    { id: "gate", cost: 80 },
+    { id: "gate", cost: 12 },
+    { id: "bridge", cost: 24 },
+    { id: "garden", cost: 42 },
+    { id: "tower", cost: 72 },
+    { id: "observatory", cost: 120 },
   ];
   const copy = {
     en: { title: "Starlight Castle", intro: "Every first clear adds a little more to your home.", balance: "Star Sand", progress: "Castle progress", badges: "Game badges", build: "Build", built: "Built", need: "Need {count} more", next: "Next structure", clear: "First clear! +{count} Star Sand", visit: "Open castle", hall: "Castle Hall", tower: "Sun Tower", garden: "Moon Garden", library: "Story Library", observatory: "Sky Observatory", gate: "Welcome Gate", empty: "Finish a game stage to earn your first Star Sand.", accessibility: "Your growing castle" },
@@ -26,9 +27,25 @@
     ar: { title: "قلعة النجوم", intro: "كل فوز أول يضيف شيئاً جديداً إلى موطنك.", balance: "رمال النجوم", progress: "تقدم القلعة", badges: "شارات الألعاب", build: "ابنِ", built: "مبني", need: "ينقصك {count}", next: "المبنى التالي", clear: "إكمال أول! +{count} من رمال النجوم", visit: "افتح القلعة", hall: "قاعة القلعة", tower: "برج الشمس", garden: "حديقة القمر", library: "مكتبة الحكايات", observatory: "مرصد النجوم", gate: "بوابة الترحيب", empty: "أكمل مرحلة لتحصل على أول رمال النجوم.", accessibility: "قلعتك وهي تنمو" },
   };
 
+  const extraCopy = {
+    en: { bridge: "Starlight Bridge", dailyBonus: "+{count} diamonds each day" },
+    "zh-Hant": { bridge: "星光石橋", dailyBonus: "每日額外獲得 {count} 顆鑽石" },
+    "zh-Hans": { bridge: "星光石桥", dailyBonus: "每日额外获得 {count} 颗钻石" },
+    ja: { bridge: "星明かりの橋", dailyBonus: "毎日ダイヤ +{count} 個" },
+    ko: { bridge: "별빛 다리", dailyBonus: "매일 다이아 +{count}개" },
+    es: { bridge: "Puente Estelar", dailyBonus: "+{count} diamantes al día" },
+    "pt-BR": { bridge: "Ponte Estelar", dailyBonus: "+{count} diamantes por dia" },
+    fr: { bridge: "Pont des étoiles", dailyBonus: "+{count} diamants par jour" },
+    de: { bridge: "Sternenbrücke", dailyBonus: "+{count} Diamanten täglich" },
+    it: { bridge: "Ponte stellato", dailyBonus: "+{count} diamanti al giorno" },
+    ru: { bridge: "Звёздный мост", dailyBonus: "+{count} алмазов в день" },
+    hi: { bridge: "तारों का पुल", dailyBonus: "हर दिन +{count} हीरे" },
+    ar: { bridge: "جسر النجوم", dailyBonus: "+{count} من الألماس يوميًا" },
+  };
+
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v3", document.currentScript?.src || location.href).href;
+  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v4", document.currentScript?.src || location.href).href;
   document.head.append(stylesheet);
 
   const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -37,19 +54,33 @@
     const selected = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
     return copy[selected] ? selected : "en";
   };
-  const t = (key, vars = {}) => (copy[locale()][key] || copy.en[key] || key).replace(/\{(\w+)\}/g, (_match, name) => String(vars[name] ?? ""));
+  const t = (key, vars = {}) => (copy[locale()][key] || extraCopy[locale()]?.[key] || copy.en[key] || extraCopy.en[key] || key).replace(/\{(\w+)\}/g, (_match, name) => String(vars[name] ?? ""));
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
-  const emptyStore = () => ({ version: 1, starSand: 0, completions: {}, badges: [], buildings: ["hall"] });
+  const emptyStore = () => ({ version: 2, castleMaterials: 0, completions: {}, badges: [], buildings: ["hall"] });
+  function normalizeBuildings(value, legacy = false) {
+    const previous = Array.isArray(value) ? value : [];
+    if (legacy) {
+      const oldOrder = ["tower", "garden", "library", "observatory", "gate"];
+      const oldLevel = Math.min(buildings.length, oldOrder.filter((id) => previous.includes(id)).length);
+      return ["hall", ...buildings.slice(0, oldLevel).map((building) => building.id)];
+    }
+    const migrated = new Set(previous.map((id) => id === "library" ? "bridge" : id));
+    return ["hall", ...buildings.map((building) => building.id).filter((id) => migrated.has(id))];
+  }
   function read() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
-      if (!saved || saved.version !== 1) return emptyStore();
+      if (!saved || ![1, 2].includes(saved.version)) return emptyStore();
+      const legacySand = Math.max(0, Math.floor(Number(saved.starSand) || 0));
+      const castleMaterials = saved.castleMaterials == null
+        ? Math.floor(legacySand / LEGACY_STAR_SAND_PER_CLEAR)
+        : Math.max(0, Math.floor(Number(saved.castleMaterials) || 0));
       return {
-        version: 1,
-        starSand: Math.max(0, Math.floor(Number(saved.starSand) || 0)),
-        completions: saved.completions && typeof saved.completions === "object" ? saved.completions : {},
+        version: 2,
+        castleMaterials,
+        completions: saved.completions && typeof saved.completions === "object" && !Array.isArray(saved.completions) ? saved.completions : {},
         badges: Array.isArray(saved.badges) ? [...new Set(saved.badges.filter((id) => typeof id === "string"))] : [],
-        buildings: Array.isArray(saved.buildings) ? [...new Set(["hall", ...saved.buildings.filter((id) => ["tower", "garden", "library", "observatory", "gate"].includes(id))])] : ["hall"],
+        buildings: normalizeBuildings(saved.buildings, saved.version === 1),
       };
     } catch { return emptyStore(); }
   }
@@ -69,27 +100,36 @@
     if (store.completions[key]) return { credited: false, reason: "already-claimed", store };
     store.completions[key] = Date.now();
     if (!store.badges.includes(game)) store.badges.push(game);
-    store.starSand += REWARD_PER_CLEAR;
+    store.castleMaterials += REWARD_PER_CLEAR;
     if (!save(store)) return { credited: false, reason: "storage-unavailable" };
-    window.WonderAnalytics?.track?.("castle_first_clear_reward", { game_id: game, completion_id: stage, reward_amount: REWARD_PER_CLEAR });
-    window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId: game, completionId: stage, amount: REWARD_PER_CLEAR } }));
-    return { credited: true, amount: REWARD_PER_CLEAR, store };
+    window.WonderAnalytics?.track?.("castle_first_clear_reward", { game_id: game, completion_id: stage, reward_amount: REWARD_PER_CLEAR, reward_type: "castle_material" });
+    window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId: game, completionId: stage, amount: REWARD_PER_CLEAR, currency: "castle-material" } }));
+    return { credited: true, amount: REWARD_PER_CLEAR, currency: "castle-material", store };
+  }
+  function dailyDiamondBonus(store = read()) {
+    return Math.max(0, store.buildings.length - 1);
   }
   function build(buildingId) {
     const building = buildings.find((entry) => entry.id === buildingId);
     if (!building) return { built: false, reason: "unknown-building" };
     const store = read();
     if (store.buildings.includes(building.id)) return { built: false, reason: "already-built", store };
-    if (store.starSand < building.cost) return { built: false, reason: "not-enough", store, cost: building.cost };
-    store.starSand -= building.cost;
+    if (store.castleMaterials < building.cost) return { built: false, reason: "not-enough", store, cost: building.cost };
+    store.castleMaterials -= building.cost;
     store.buildings.push(building.id);
     if (!save(store)) return { built: false, reason: "storage-unavailable" };
-    window.WonderAnalytics?.track?.("castle_building_unlocked", { building_id: building.id, remaining_star_sand: store.starSand });
+    window.WonderAnalytics?.track?.("castle_building_unlocked", {
+      building_id: building.id,
+      castle_level: store.buildings.length,
+      daily_diamond_bonus: dailyDiamondBonus(store),
+      remaining_materials: store.castleMaterials,
+    });
     return { built: true, store };
   }
 
-  const api = Object.freeze({ key: STORE_KEY, rewardPerClear: REWARD_PER_CLEAR, read, creditFirstClear, build });
+  const api = Object.freeze({ key: STORE_KEY, rewardPerClear: REWARD_PER_CLEAR, read, creditFirstClear, build, dailyDiamondBonus });
   window.WeightPlayCastle = api;
+  window.dispatchEvent(new Event("weightplay:castle-ready"));
 
   function render() {
     const mount = document.querySelector("#weightplayCastle");
@@ -98,11 +138,32 @@
     const next = buildings.find((building) => !store.buildings.includes(building.id));
     const buildingName = (id) => t(id);
     const level = store.buildings.length;
+    const maxLevel = buildings.length + 1;
+    const currentBonus = dailyDiamondBonus(store);
+    const frameIndex = level - 1;
+    const frameLeft = -((frameIndex % 3) * 100);
+    const frameTop = -(Math.floor(frameIndex / 3) * 100);
     mount.innerHTML = `
-      <div class="wp-castle-heading"><div><span class="wp-castle-kicker">${t("progress")}</span><h2 id="wpCastleTitle">${t("title")}</h2><p>${t("intro")}</p></div><div class="wp-castle-balance" aria-label="${t("balance")}"><span aria-hidden="true">✦</span><strong>${store.starSand}</strong><small>${t("balance")}</small></div></div>
-      <div class="wp-castle-layout"><div class="wp-castle-scene" role="img" aria-label="${t("accessibility")}"><img class="wp-castle-art" src="/assets/weightplay-castle-star-citadel-block-v1.webp" alt="" width="1200" height="676" decoding="async"></div>
-      <div class="wp-castle-next"><span class="wp-castle-kicker">${next ? t("next") : t("badges")}</span><h3>${next ? buildingName(next.id) : t("title")}</h3><p>${store.badges.length} ${t("badges")}</p>${next ? `<div class="wp-castle-price"><span aria-hidden="true">✦</span>${next.cost} ${t("balance")}</div><button class="wp-castle-build" type="button" data-castle-build="${next.id}" ${store.starSand < next.cost ? "disabled" : ""}>${store.buildings.includes(next.id) ? t("built") : t("build")}</button>${store.starSand < next.cost ? `<small class="wp-castle-need">${t("need", { count: next.cost - store.starSand })}</small>` : ""}` : `<p class="wp-castle-complete">${t("built")}</p>`}</div></div>
-      <div class="wp-castle-footer"><span>${t("badges")}</span><strong>${store.badges.length}</strong><span>${t("progress")}</span><strong>${level}/${buildings.length + 1}</strong></div>
+      <div class="wp-castle-heading">
+        <div><span class="wp-castle-kicker">${t("progress")}</span><h2 id="wpCastleTitle">${t("title")}</h2><p>${t("intro")}</p></div>
+        <div class="wp-castle-balance" aria-label="${t("balance")}"><span aria-hidden="true">✦</span><strong>${store.castleMaterials}</strong><small>${t("balance")}</small></div>
+      </div>
+      <div class="wp-castle-layout">
+        <div class="wp-castle-scene" role="img" aria-label="${t("accessibility")}" data-castle-level="${level}">
+          <img class="wp-castle-art" src="/Assets/weightplay-castle-estate-levels-block-v1.png" alt="" width="1152" height="768" decoding="async" style="--castle-left:${frameLeft}%;--castle-top:${frameTop}%;">
+        </div>
+        <div class="wp-castle-next">
+          <span class="wp-castle-kicker">${next ? t("next") : t("progress")}</span>
+          <h3>${next ? buildingName(next.id) : t("title")}</h3>
+          <p>${store.badges.length} ${t("badges")}</p>
+          <div class="wp-castle-daily-bonus">
+            <span><img src="/assets/weightplay-diamond.svg" alt="">${t("dailyBonus", { count: currentBonus })}</span>
+            ${next ? `<small><img src="/assets/weightplay-diamond.svg" alt="">→ ${t("dailyBonus", { count: currentBonus + 1 })}</small>` : ""}
+          </div>
+          ${next ? `<div class="wp-castle-price"><span aria-hidden="true">✦</span>${next.cost} ${t("balance")}</div><button class="wp-castle-build" type="button" data-castle-build="${next.id}" ${store.castleMaterials < next.cost ? "disabled" : ""}>${t("build")}</button>${store.castleMaterials < next.cost ? `<small class="wp-castle-need">${t("need", { count: next.cost - store.castleMaterials })}</small>` : ""}` : `<p class="wp-castle-complete">${t("built")}</p>`}
+        </div>
+      </div>
+      <div class="wp-castle-footer"><span>${t("badges")}</span><strong>${store.badges.length}</strong><span>${t("progress")}</span><strong>${level}/${maxLevel}</strong><span>${t("dailyBonus", { count: currentBonus })}</span></div>
       <div class="wp-castle-collection"><h3>${t("badges")}</h3>${store.badges.length ? `<div class="wp-castle-badges">${store.badges.map((gameId) => {
         const game = window.WONDER_LOBBY?.games?.find((entry) => entry.id === gameId);
         const title = game?.title || gameId;
@@ -116,6 +177,9 @@
       if (!result.built) return;
       window.WeightPlayAudio?.play?.("feedback.success");
       render();
+      const scene = mount.querySelector(".wp-castle-scene");
+      scene?.classList.add("is-upgrading");
+      window.setTimeout(() => scene?.classList.remove("is-upgrading"), 900);
     });
     mount.querySelectorAll("[data-castle-level]").forEach((piece) => {
       piece.classList.toggle("is-unlocked", level >= Number(piece.dataset.castleLevel));

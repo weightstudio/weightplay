@@ -1396,8 +1396,9 @@ function getDailyRewardState() {
   const claimedToday = saved.lastClaimDate === today;
   const streak = claimedToday ? saved.streak : lastNumber === yesterdayNumber ? saved.streak + 1 : 1;
   const dayIndex = (Math.max(1, streak) - 1) % dailyRewardTrack.length;
-  const reward = dailyRewardTrack[dayIndex];
-  return { ...saved, today, claimedToday, streak, dayIndex, reward };
+  const baseReward = dailyRewardTrack[dayIndex];
+  const castleBonus = Math.max(0, Number(window.WeightPlayCastle?.dailyDiamondBonus?.()) || 0);
+  return { ...saved, today, claimedToday, streak, dayIndex, baseReward, castleBonus, reward: baseReward + castleBonus };
 }
 
 function renderDailyReward() {
@@ -1412,11 +1413,12 @@ function renderDailyReward() {
       const className = ["daily-day", isCurrent ? "current" : "", isPast ? "claimed" : "", canClaim ? "claimable" : ""].filter(Boolean).join(" ");
       const dayLabel = i18n.t("daily.day", { day: index + 1 });
       const statusLabel = isCurrent ? claimLabel : i18n.t(isPast ? "daily.done" : "daily.next");
-      const ariaLabel = `${dayLabel}, +${coins} ${i18n.t("wallet.diamonds")}, ${statusLabel}`;
+      const totalDiamonds = coins + reward.castleBonus;
+      const ariaLabel = `${dayLabel}, +${totalDiamonds} ${i18n.t("wallet.diamonds")}, ${statusLabel}`;
       return `
         <button class="${className}" type="button" aria-label="${ariaLabel}" ${canClaim ? 'data-daily-claim="true"' : "disabled"}>
           <span>${dayLabel}</span>
-          <b>+${coins}</b>
+          <b>+${totalDiamonds}</b>
           <small>${statusLabel}</small>
         </button>
       `;
@@ -1452,6 +1454,8 @@ function claimDailyReward() {
   window.WonderAnalytics?.track("daily_reward_claim", {
     reward_type: "diamonds",
     reward_amount: reward.reward,
+    base_reward: reward.baseReward,
+    castle_bonus: reward.castleBonus,
     streak: reward.streak,
     locale: i18n.locale(),
   });
@@ -1468,6 +1472,12 @@ function renderWallet() {
     <strong><img src="assets/weightplay-diamond.svg" alt="" />${wallet.diamonds}</strong>
   `;
 }
+
+window.addEventListener("weightplay:castle-ready", () => {
+  renderDailyReward();
+  renderWallet();
+});
+window.addEventListener("weightplay:castle-updated", renderDailyReward);
 
 function discoveryCards(games, { popular = false } = {}) {
   return games

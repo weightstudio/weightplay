@@ -47,11 +47,12 @@
     if (params.cleared === false || params.success === false || params.won === false || ["fail", "failed", "loss", "lose", "defeat"].includes(outcome)) return;
     const gameId = String(params.game_id || params.gameId || window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "").trim();
     if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(gameId)) return;
-    const rawStage = params.stage_id ?? params.level_id ?? params.stage ?? params.level;
-    const completionId = rawStage === undefined || rawStage === null || rawStage === ""
-      ? "first-completion"
-      : `stage-${String(rawStage).trim().toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54)}`;
-    if (["stage-", "stage-endless", "stage-infinite"].includes(completionId)) return;
+    const rawStage = params.stage_id ?? params.level_id ?? params.stage ?? params.level ?? params.room_id ?? params.room ?? params.floor_id ?? params.floor ?? params.chapter_id ?? params.chapter;
+    const stageText = typeof rawStage === "string" || typeof rawStage === "number" ? String(rawStage).trim() : "";
+    const completionId = stageText
+      ? `stage-${stageText.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54)}`
+      : "first-completion";
+    if (["stage-", "stage-endless", "stage-infinite", "stage-survival"].includes(completionId)) return;
     if (window.WeightPlayCastle?.creditFirstClear) {
       window.WeightPlayCastle.creditFirstClear(gameId, completionId);
       return;
@@ -59,16 +60,26 @@
     try {
       const key = "weightplayCastleV1";
       const saved = JSON.parse(localStorage.getItem(key) || "null");
-      const store = saved?.version === 1 && saved.completions && typeof saved.completions === "object"
-        ? { ...saved, completions: saved.completions, badges: Array.isArray(saved.badges) ? saved.badges : [], buildings: Array.isArray(saved.buildings) ? saved.buildings : ["hall"], starSand: Math.max(0, Math.floor(Number(saved.starSand) || 0)) }
-        : { version: 1, starSand: 0, completions: {}, badges: [], buildings: ["hall"] };
+      const validSaved = saved && [1, 2].includes(saved.version);
+      const legacySand = Math.max(0, Math.floor(Number(saved?.starSand) || 0));
+      const savedBuildings = validSaved && Array.isArray(saved.buildings) ? saved.buildings : ["hall"];
+      const buildings = saved?.version === 1
+        ? ["hall", ...["gate", "bridge", "garden", "tower", "observatory"].slice(0, ["tower", "garden", "library", "observatory", "gate"].filter((id) => savedBuildings.includes(id)).length)]
+        : savedBuildings;
+      const store = {
+        version: 2,
+        castleMaterials: saved?.castleMaterials == null ? Math.floor(legacySand / 5) : Math.max(0, Math.floor(Number(saved.castleMaterials) || 0)),
+        completions: validSaved && saved.completions && typeof saved.completions === "object" && !Array.isArray(saved.completions) ? saved.completions : {},
+        badges: validSaved && Array.isArray(saved.badges) ? saved.badges : [],
+        buildings,
+      };
       const completionKey = `${gameId}:${completionId}`;
       if (store.completions[completionKey]) return;
       store.completions[completionKey] = Date.now();
       if (!store.badges.includes(gameId)) store.badges.push(gameId);
-      store.starSand += 5;
+      store.castleMaterials += 1;
       localStorage.setItem(key, JSON.stringify(store));
-      window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId, completionId, amount: 5 } }));
+      window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId, completionId, amount: 1, currency: "castle-material" } }));
     } catch { /* Local progression is optional and must never interrupt a game. */ }
   }
   function loadGoogleAnalytics() {
@@ -89,7 +100,7 @@
     if (!/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname) || window.WeightPlayCastle || document.querySelector("[data-weightplay-castle-runtime]")) return;
     try {
       const script = document.createElement("script");
-      script.src = "/src/weightplay-castle.js?v=20260928-castle-v1";
+      script.src = "/src/weightplay-castle.js?v=20260928-castle-v4";
       script.async = true;
       script.dataset.weightplayCastleRuntime = "true";
       document.head.append(script);
