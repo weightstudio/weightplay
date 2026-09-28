@@ -16,6 +16,9 @@
   const debug = config.debug !== false;
   const countKey = "wonderAnalyticsCounts";
   let lifecycleOwner = false;
+  let roundClearReported = false;
+  let activeStageId = null;
+  let pendingStageId = null;
   const privacySafeKeys = new Set([
     "game_id", "game_version", "interface_version", "locale", "viewport_bucket", "input_type",
     "screen", "arena", "from", "entry", "action", "tool", "outcome", "to_locale", "snapshot",
@@ -42,20 +45,50 @@
       if (debug) console.info("[WonderAnalytics]", name, payload);
     } catch { /* Analytics must never interrupt a game. */ }
   }
+  function announceCastleReward(detail) {
+    const notify = () => window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail }));
+    notify();
+    if (!window.WeightPlayCastle) window.addEventListener("weightplay:castle-ready", notify, { once: true });
+  }
+  function reportedStageId(params = {}) {
+    return params.stage_id ?? params.level_id ?? params.stage ?? params.level ?? params.room_id ?? params.room ?? params.floor_id ?? params.floor ?? params.chapter_id ?? params.chapter ?? params.start_stage;
+  }
+  function rememberStageId(params = {}) {
+    const stageId = reportedStageId(params);
+    if ((typeof stageId === "string" || typeof stageId === "number") && String(stageId).trim()) {
+      activeStageId = stageId;
+      if (!params.tracking_version) pendingStageId = stageId;
+    }
+  }
+  function beginReportedRound(name, params = {}) {
+    roundClearReported = false;
+    const stageId = reportedStageId(params);
+    if ((typeof stageId === "string" || typeof stageId === "number") && String(stageId).trim()) rememberStageId(params);
+    else if (name === "game_start" && !params.tracking_version) { activeStageId = null; pendingStageId = null; }
+  }
+  function isSuccessfulOutcome(outcome) {
+    return ["complete", "win", "won", "success", "victory", "clear"].includes(String(outcome || "").toLowerCase());
+  }
+  function awardCompletedRound(params = {}) {
+    if (roundClearReported) return { credited: false, reason: "already-reported-this-round" };
+    roundClearReported = true;
+    const stageId = reportedStageId(params);
+    return creditCastleFirstClear(stageId == null && activeStageId != null ? { ...params, stage_id: activeStageId } : params);
+  }
   function creditCastleFirstClear(params = {}) {
     const outcome = String(params.outcome || "").toLowerCase();
-    if (params.cleared === false || params.success === false || params.won === false || ["fail", "failed", "loss", "lose", "defeat"].includes(outcome)) return;
+    if (params.cleared === false || params.success === false || params.won === false || ["fail", "failed", "loss", "lose", "defeat"].includes(outcome)) return { credited: false, reason: "not-cleared" };
     const gameId = String(params.game_id || params.gameId || window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "").trim();
-    if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(gameId)) return;
-    const rawStage = params.stage_id ?? params.level_id ?? params.stage ?? params.level ?? params.room_id ?? params.room ?? params.floor_id ?? params.floor ?? params.chapter_id ?? params.chapter;
+    if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(gameId)) return { credited: false, reason: "invalid-game" };
+    const rawStage = reportedStageId(params);
     const stageText = typeof rawStage === "string" || typeof rawStage === "number" ? String(rawStage).trim() : "";
+    const normalizedStage = stageText.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54);
     const completionId = stageText
-      ? `stage-${stageText.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54)}`
+      ? (normalizedStage.startsWith("stage-") ? normalizedStage : `stage-${normalizedStage}`)
       : "first-completion";
-    if (["stage-", "stage-endless", "stage-infinite", "stage-survival"].includes(completionId)) return;
+    if (["stage-", "stage-endless", "stage-infinite", "stage-survival"].includes(completionId)) return { credited: false, reason: "non-stage-clear" };
     if (window.WeightPlayCastle?.creditFirstClear) {
-      window.WeightPlayCastle.creditFirstClear(gameId, completionId);
-      return;
+      return window.WeightPlayCastle.creditFirstClear(gameId, completionId);
     }
     try {
       const key = "weightplayCastleV1";
@@ -74,13 +107,14 @@
         buildings,
       };
       const completionKey = `${gameId}:${completionId}`;
-      if (store.completions[completionKey]) return;
+      if (store.completions[completionKey]) return { credited: false, reason: "already-claimed" };
       store.completions[completionKey] = Date.now();
       if (!store.badges.includes(gameId)) store.badges.push(gameId);
       store.castleMaterials += 1;
       localStorage.setItem(key, JSON.stringify(store));
-      window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail: { gameId, completionId, amount: 1, currency: "castle-material" } }));
-    } catch { /* Local progression is optional and must never interrupt a game. */ }
+      announceCastleReward({ gameId, completionId, amount: 1, currency: "castle-material" });
+      return { credited: true, amount: 1, currency: "castle-material" };
+    } catch { return { credited: false, reason: "storage-unavailable" }; /* Local progression is optional and must never interrupt a game. */ }
   }
   function loadGoogleAnalytics() {
     if (!googleAnalyticsEnabled() || document.querySelector("[data-wonder-ga]")) return;
@@ -100,7 +134,7 @@
     if (!/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname) || window.WeightPlayCastle || document.querySelector("[data-weightplay-castle-runtime]")) return;
     try {
       const script = document.createElement("script");
-      script.src = "/src/weightplay-castle.js?v=20260928-castle-v4";
+      script.src = "/src/weightplay-castle.js?v=20260928-castle-v5";
       script.async = true;
       script.dataset.weightplayCastleRuntime = "true";
       document.head.append(script);
@@ -108,14 +142,21 @@
   }
   function track(name, params = {}) {
     if (lifecycleOwner && ["game_start", "game_restart", "game_end"].includes(name) && !params.tracking_version) return;
-    if (name === "game_complete") creditCastleFirstClear(params);
+    if (["game_start", "game_restart", "stage_start", "level_start", "mission_start"].includes(name)) beginReportedRound(name, params);
+    let rewardResult;
+    if (name === "game_complete") rewardResult = awardCompletedRound(params);
+    else if (name === "game_end" && isSuccessfulOutcome(params.outcome)) rewardResult = awardCompletedRound(params);
     // Do not replace GA4's native session_id with a tab-local random identifier.
     emit(name, { page_path: location.pathname, page_title: document.title, ...params });
+    return rewardResult;
   }
   function trackPrivacySafe(name, params = {}) {
     if (lifecycleOwner && ["game_start", "game_restart", "game_end"].includes(name) && !params.tracking_version) return;
     if (!/^[a-z][a-z0-9_]{0,63}$/.test(name)) return;
-    if (name === "game_complete") creditCastleFirstClear(params);
+    if (["game_start", "game_restart", "stage_start", "level_start", "mission_start"].includes(name)) beginReportedRound(name, params);
+    let rewardResult;
+    if (name === "game_complete") rewardResult = awardCompletedRound(params);
+    else if (name === "game_end" && isSuccessfulOutcome(params.outcome)) rewardResult = awardCompletedRound(params);
     const payload = {};
     for (const [key, value] of Object.entries(params || {})) {
       if (!privacySafeKeys.has(key)) continue;
@@ -126,6 +167,13 @@
       } else if (typeof value === "string" && privacySafeToken.test(value)) payload[key] = value;
     }
     emit(name, payload);
+    return rewardResult;
+  }
+  function completeStage(stageId) {
+    if ((typeof stageId !== "string" && typeof stageId !== "number") || !String(stageId).trim()) return { credited: false, reason: "missing-stage-id" };
+    const gameId = window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";
+    if (!gameId) return { credited: false, reason: "invalid-game" };
+    return track("game_complete", { game_id: gameId, stage_id: String(stageId).trim() });
   }
 
   // All per-game timers and transport stay here. Scene/engine owners only notify.
@@ -206,9 +254,15 @@
       screenNode = options.node || null;
       enter(); schedule();
     }
-    function end(outcome = "abandon") {
+    function end(outcome = "abandon", completedStageId = null) {
       if (round === null || destroyed) return false;
       flush();
+      if (isSuccessfulOutcome(outcome) && !roundClearReported) {
+        const params = { game_id: gameId };
+        const stageId = (typeof completedStageId === "string" || typeof completedStageId === "number") ? completedStageId : activeStageId;
+        if (stageId != null) params.stage_id = stageId;
+        awardCompletedRound(params);
+      }
       send("game_end", { screen: "battle", outcome: privacySafeToken.test(outcome) ? outcome : "unknown" });
       round = null; pauses.clear();
       return true;
@@ -220,6 +274,11 @@
       if (round !== null) end("replaced");
       flush();
       round = key ?? ++nextRound;
+      roundClearReported = false;
+      if (pendingStageId != null) activeStageId = pendingStageId;
+      else if (options.stageId != null && (typeof options.stageId === "string" || typeof options.stageId === "number")) activeStageId = options.stageId;
+      else activeStageId = null;
+      pendingStageId = null;
       pauses.clear(); lastInput = now();
       send(options.resumed === true ? "game_resume" : "game_start", { screen: "battle" });
       return round;
@@ -285,6 +344,11 @@
           const value = stateReader();
           if (!value || (value.screen !== null && !screens.has(value.screen))) throw new Error("INVALID_GAME_MEASUREMENT_STATE");
           const key = value.roundKey ?? null;
+          const stateStageId = value.stageId ?? value.stage_id ?? value.levelId ?? value.level_id ?? value.roomId ?? value.room_id ?? value.floorId ?? value.floor_id ?? value.chapterId ?? value.chapter_id ?? value.stage ?? value.level ?? value.room ?? value.floor ?? value.chapter;
+          if ((typeof stateStageId === "string" || typeof stateStageId === "number") && String(stateStageId).trim()) {
+            activeStageId = stateStageId;
+            pendingStageId = stateStageId;
+          }
           if (!stateReady && value.screen === null && key === null && !value.started) return;
           stateReady = true;
           configure({ locale: value.locale || getLocale(), activityMode: value.activityMode || "input", idleSeconds: value.idleSeconds ?? 300, keyboardKeys: value.keyboardKeys || [] });
@@ -307,7 +371,8 @@
           }
           restartRequested = false;
           if (value.ended && key !== null) {
-            end(value.outcome || "complete");
+            const completedStageId = value.stageId ?? value.stage_id ?? value.levelId ?? value.level_id ?? value.roomId ?? value.room_id ?? value.floorId ?? value.floor_id ?? value.chapterId ?? value.chapter_id ?? value.stage ?? value.level ?? value.room ?? value.floor ?? value.chapter;
+            end(value.outcome || "complete", completedStageId);
             observedEnded = true;
           } else if (key === null || value.started === false) {
             end("abandon");
@@ -397,7 +462,7 @@
   loadCastleRuntime();
   const game = createGameTracking();
   window.WonderAnalytics = {
-    track, trackPrivacySafe, counts: loadCounts, hasGoogleAnalytics: googleAnalyticsEnabled, game,
+    track, trackPrivacySafe, completeStage, counts: loadCounts, hasGoogleAnalytics: googleAnalyticsEnabled, game,
     setEnabled(enabled) {
       analyticsEnabled = enabled === true;
       if (analyticsEnabled) loadGoogleAnalytics();

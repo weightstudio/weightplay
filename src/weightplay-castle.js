@@ -45,7 +45,7 @@
 
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v4", document.currentScript?.src || location.href).href;
+  stylesheet.href = new URL("weightplay-castle.css?v=20260928-castle-v5", document.currentScript?.src || location.href).href;
   document.head.append(stylesheet);
 
   const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -95,6 +95,7 @@
     const game = String(gameId || "").trim();
     const stage = String(completionId || "first-completion").trim();
     if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(game) || !/^[a-z0-9][a-z0-9._-]{0,63}$/i.test(stage)) return { credited: false, reason: "invalid" };
+    if (["stage-endless", "stage-infinite", "stage-survival", "endless", "infinite", "survival"].includes(stage.toLowerCase())) return { credited: false, reason: "non-stage-clear" };
     const store = read();
     const key = `${game}:${stage}`;
     if (store.completions[key]) return { credited: false, reason: "already-claimed", store };
@@ -129,7 +130,6 @@
 
   const api = Object.freeze({ key: STORE_KEY, rewardPerClear: REWARD_PER_CLEAR, read, creditFirstClear, build, dailyDiamondBonus });
   window.WeightPlayCastle = api;
-  window.dispatchEvent(new Event("weightplay:castle-ready"));
 
   function render() {
     const mount = document.querySelector("#weightplayCastle");
@@ -141,8 +141,9 @@
     const maxLevel = buildings.length + 1;
     const currentBonus = dailyDiamondBonus(store);
     const frameIndex = level - 1;
-    const frameLeft = -((frameIndex % 3) * 100);
-    const frameTop = -(Math.floor(frameIndex / 3) * 100);
+    const frameColumn = frameIndex % 3;
+    const frameRow = Math.floor(frameIndex / 3);
+    const frameShift = -((frameColumn + 0.5) / 3) * 100;
     mount.innerHTML = `
       <div class="wp-castle-heading">
         <div><span class="wp-castle-kicker">${t("progress")}</span><h2 id="wpCastleTitle">${t("title")}</h2><p>${t("intro")}</p></div>
@@ -150,7 +151,7 @@
       </div>
       <div class="wp-castle-layout">
         <div class="wp-castle-scene" role="img" aria-label="${t("accessibility")}" data-castle-level="${level}">
-          <img class="wp-castle-art" src="/Assets/weightplay-castle-estate-levels-block-v1.png" alt="" width="1152" height="768" decoding="async" style="--castle-left:${frameLeft}%;--castle-top:${frameTop}%;">
+          <img class="wp-castle-art" src="/Assets/weightplay-castle-estate-levels-block-v1.png" alt="" width="1152" height="768" decoding="async" style="--castle-shift:${frameShift}%;--castle-top:${frameRow ? "-100%" : "0%"};">
         </div>
         <div class="wp-castle-next">
           <span class="wp-castle-kicker">${next ? t("next") : t("progress")}</span>
@@ -204,21 +205,29 @@
   window.addEventListener("weightplay:castle-updated", render);
   window.addEventListener("weightplay:game-completed", (event) => {
     const detail = event.detail || {};
+    const outcome = String(detail.outcome || "").toLowerCase();
+    if (detail.cleared === false || detail.success === false || detail.won === false || ["fail", "failed", "loss", "lose", "defeat"].includes(outcome)) return;
     const gameId = detail.gameId || location.pathname.match(/\/games\/([^/]+)/)?.[1];
     if (!gameId) return;
-    creditFirstClear(gameId, detail.completionId || "first-completion");
+    const rawStage = detail.stageId ?? detail.stage_id ?? detail.levelId ?? detail.level_id ?? detail.roomId ?? detail.room_id ?? detail.floorId ?? detail.floor_id ?? detail.chapterId ?? detail.chapter_id ?? detail.stage ?? detail.level;
+    const rawText = typeof rawStage === "string" || typeof rawStage === "number" ? String(rawStage).trim() : "";
+    const normalizedStage = rawText ? (rawText.toLowerCase().startsWith("stage-") ? rawText : `stage-${rawText.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54)}`) : "first-completion";
+    const completionId = detail.completionId ?? normalizedStage;
+    creditFirstClear(gameId, completionId);
   });
   window.addEventListener("weightplay:castle-reward", (event) => {
     if (document.querySelector("#weightplayCastle")) return;
+    document.querySelectorAll(".wp-castle-reward-toast").forEach((toast) => toast.remove());
     const message = t("clear", { count: event.detail?.amount || REWARD_PER_CLEAR });
     const toast = document.createElement("div");
     toast.className = "wp-castle-reward-toast";
     toast.setAttribute("role", "status");
     toast.setAttribute("aria-live", "polite");
-    toast.innerHTML = `<span>${message}</span><a href="/${localeSegments[locale()]}/#castle">${t("visit")}</a>`;
+    toast.innerHTML = `<span class="wp-castle-reward-item" aria-hidden="true"></span><span class="wp-castle-reward-copy">${escapeHtml(message)}</span><span class="wp-castle-reward-flight" aria-hidden="true"><i></i><i></i><i></i></span><a href="/${localeSegments[locale()]}/#castle">${escapeHtml(t("visit"))}</a>`;
     document.body.append(toast);
     window.setTimeout(() => toast.remove(), 7000);
   });
   window.addEventListener("wonder:locale-change", render);
   window.addEventListener("weightplay:castle-ready", render);
+  window.dispatchEvent(new Event("weightplay:castle-ready"));
 })();
