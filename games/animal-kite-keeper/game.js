@@ -8,7 +8,7 @@
       if (!link) {
         link = document.createElement("link");
         link.rel = "stylesheet";
-        link.href = new URL("interface-7-cleanup.css?v=20260928-kite-keeper-v13-stage-v6", interface7Base).href;
+        link.href = new URL("interface-7-cleanup.css?v=20260929-kite-keeper-v14-result-lifecycle", interface7Base).href;
         document.head.appendChild(link);
       }
       if (link.sheet) { resolve(); return; }
@@ -25,7 +25,7 @@
       let script = document.querySelector('script[src*="interface-7-compat.js"]');
       if (!script) {
         script = document.createElement("script");
-        script.src = new URL("interface-7-compat.js?v=20260928-kite-keeper-v13-stage-v6", interface7Base).href;
+        script.src = new URL("interface-7-compat.js?v=20260929-kite-keeper-v14-result-lifecycle", interface7Base).href;
         script.async = false;
         script.addEventListener("error", () => {
           document.documentElement.dataset.wpKiteKeeperI7AssetError = "js";
@@ -135,6 +135,7 @@
   let solved = readSolvedRouteIds();
   let complete = false;
   let locked = false;
+  let resultTimer = 0;
 
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const routeLabel = (route) => `${copy(route.name)} ${route.id}`;
@@ -143,6 +144,10 @@
   const bestValue = () => Number(localStorage.getItem("weightplay-kite-keeper-best-v1") || 0);
   const bestText = () => bestValue() || "—";
   function show(screen) {
+    if (screen !== "result" && resultTimer) {
+      window.clearTimeout(resultTimer);
+      resultTimer = 0;
+    }
     const resultActive = screen === "result";
     document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
     $("settingsPanel").hidden = true;
@@ -236,6 +241,7 @@
   function startRoute(index) {
     routeIndex = index; stageBrowseIndex = index; const route = routes[index];
     position = [...route.start]; path = []; checks = 0; locked = false;
+    window.dispatchEvent(new Event("weightplay:kite-keeper-route-start"));
     show("battle"); renderBattle(); $("status").textContent = ""; $("status").className = "status";
     announce("start");
   }
@@ -276,7 +282,10 @@
     renderBattle();
     if (path.length === 3) {
       locked = true; solved.add(routes[routeIndex].id); saveSolvedRouteIds(); $("status").textContent = copy("correct"); $("status").className = "status good"; announce("correct", { checks });
-      window.setTimeout(() => { show("result"); renderResult(); }, 360);
+      resultTimer = window.setTimeout(() => {
+        resultTimer = 0;
+        show("result"); renderResult();
+      }, 360);
     }
   }
   function resetRoute() {

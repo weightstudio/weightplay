@@ -332,6 +332,13 @@
     }
 
     function bindFlowGuards() {
+      window.addEventListener('weightplay:kite-keeper-route-start', () => {
+        dirty = false;
+        pendingResult = false;
+        suppressStaleSettlement = false;
+        resultWasOpen = false;
+      });
+
       stageList.addEventListener('click', (event) => {
         if (!event.target.closest('.stage-card')) return;
         dirty = false;

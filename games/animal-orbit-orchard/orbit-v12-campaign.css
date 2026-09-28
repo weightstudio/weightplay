@@ -303,7 +303,7 @@ body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .campaign-stage-card:d
 /* v13: explicit tracks stop explanatory text from collapsing live choices. */
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .campaign-choice-row {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 66px !important;
   grid-template-areas: "target lane clamp" "hint hint hint" "pattern pattern pattern" !important;
   gap: 6px 8px !important;
   align-items: end !important;
@@ -346,7 +346,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] 
   }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .campaign-choice-row {
     grid-area: choices !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 100px 44px !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 100px 66px !important;
     grid-template-areas: "target lane pattern clamp" "hint hint hint hint" !important;
     margin: 0 !important; gap: 3px 6px !important;
   }
