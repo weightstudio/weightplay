@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="ارسم خطوط الرحيق وأصلحها أثناء موجات النحل لحماية بيب عبر 30 مرحلة أصلية." />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">درع العسل الحيواني</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">اللغة</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="اللغة">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="بيب محمي بخط مضيء مع اقتراب النحل" alt="شعار WeightPlay" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="بيب محمي بخط مضيء مع اقتراب النحل" />
         <div class="main-copy">
           <small data-i18n="eyebrow">ألغاز إنقاذ مرج ضوء البرسيم</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">درع العسل الحيواني</h1>
@@ -95,23 +95,27 @@
         <span class="game-info-kicker" data-i18n="guideKicker">دليل لعبة WeightPlay الأصلية</span>
         <h2 data-wp-game-title data-runtime-localize="off">درع العسل الحيواني</h2>
         <p data-i18n="guideIntro">اقترب بيب من خلايا مرج ضوء البرسيم. ارسم الحواجز أثناء طيران النحل وعزّز الفتحات قبل وصوله إلى الجرو.</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>دفاع بالرسم المباشر</span><span>إصلاح مباشر</span><span>نجوم للخطوط القصيرة</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>دفاع بالرسم</span><span>تثبيت بنقطتين</span><span>إدارة الرحيق</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">طريقة اللعب</h3><ol>
           <li data-i18n="how1">اسحب عبر المرج لرسم حاجز رحيق مضيء.</li>
-          <li data-i18n="how2">ينتظر النحل حتى تنتهي من الرسم. تبدأ الموجة عند إفلات أول خط صالح، ويمكنك تدعيمه بعد ذلك.</li>
+          <li data-i18n="how2">أفلت أول خط صالح لتبدأ النحلات بالحركة. بعد ذلك، لا يوقف رسم خطوط إضافية الموجة.</li>
           <li data-i18n="how3">اصمد حتى يصل المؤقت إلى الصفر من دون أن تلمس نحلة بيب.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">القواعد والنتائج</h3><p data-i18n="rulesText">الخطوط لا تنكسر. إذا وُجد مسار تسلكه النحلات أولاً، وإذا انغلق الطريق تدفع الجدار الحر وتلفّه وتثنيه. الدائرة حول حجر واحد مجرد محور، فيشدها السرب حول الحجر. لا يصبح الجدار ذهبياً وثابتاً إلا إذا تعلّق الخط نفسه بنقطتين متباعدتين من التضاريس.</p><p data-i18n="guideExtra">قبل الرسم حدّد الخلية وبيب ونقطتي تثبيت منفصلتين في التضاريس. يبدأ النحل مع أول خط صالح؛ احتفظ ببعض الرحيق لإغلاق ممر بخط قصير. إذا لمس النحل بيب، أعد المحاولة بشكل مختلف.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">مسارات المرج</h3><p data-i18n="progressText">تغيّر المسارات التالية مواقع الخلايا والتضاريس والرياح. يفتح كل نجاح المسار التالي.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">القواعد والنتائج</h3><p data-i18n="rulesText">الخطوط لا تنكسر. تسلك النحلات أي طريق مفتوح إلى بيب. وعندما تنسد جميع الطرق، تدفع الجدران الحرة وتلفها حتى تظهر فجوة. يجب أن يتعلق الخط نفسه بنقطتين متباعدتين من التضاريس كي يثبت ويصبح ذهبياً. وقد يبقى طريق مفتوح حول الجدار الثابت.</p><p data-i18n="guideExtra">قبل الرسم حدّد الخلية وبيب ونقطتي تثبيت منفصلتين في التضاريس. يبدأ النحل مع أول خط صالح؛ احتفظ ببعض الرحيق لإغلاق ممر بخط قصير. إذا لمس النحل بيب، أعد المحاولة بشكل مختلف.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">مسارات المرج</h3><p data-i18n="progressText">تتوزع المراحل الثلاثون على ستة فصول، في كل منها خمس مراحل. تغيّر الفصول اللاحقة مواقع الخلايا والتضاريس والرياح. احمِ بيب حتى انتهاء الوقت لفتح المرحلة التالية، أو أعد مرحلة سابقة لتحسين نجومها.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">نصائح عملية</h3><p data-i18n="tipsText">الجسر المستقيم والدائرة حول حجر واحد كلاهما متحرك. استخدم لفتين أو خطافين متعاكسين أو شقاً حقيقياً في التضاريس.</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">الحفظ والخصوصية</h3><p data-i18n="saveText">تبقى المراحل المفتوحة وأفضل النجوم في هذا المتصفح فقط. لا يلزم حساب أو معلومات شخصية.</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">لماذا يهم موضع الخط</h3><p data-i18n="designText">يستهلك الجدار الأطول رحيقاً أكثر، لكنه لا يغلق الطريق بالضرورة. حدّد نقطتي تثبيت وانتبه إلى الأماكن التي قد تلتف منها النحلات. قد يغلق حاجز قصير إضافي الفجوة، لكن رحيقه يدخل أيضاً في حساب النجوم.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">الحفظ والخصوصية</h3><p data-i18n="saveText">تُحفظ المراحل المفتوحة والانتصارات وأفضل النجوم في هذا المتصفح. لا يلزم حساب. مسح بيانات الموقع من المتصفح يمحو التقدم، ولا ينتقل تلقائياً إلى متصفح أو جهاز آخر.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">الأسئلة الشائعة</h3><dl>
-          <div><dt data-i18n="faq1q">هل يمكنني الرسم بعد انطلاق النحل؟</dt><dd data-i18n="faq1a">نعم. أضف خطًا أو صِل جدارًا حرًا بالتضاريس ما دام الرحيق متاحًا.</dd></div>
-          <div><dt data-i18n="faq2q">هل يتأذى النحل؟</dt><dd data-i18n="faq2a">لا. تعيده حواجز الرحيق برفق نحو الأزهار.</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">هل يمكنني الرسم بعد انطلاق النحل؟</dt><dd data-i18n="faq1a">نعم، ما دام الرحيق متاحاً. أضف خطاً قصيراً لإغلاق طريق مفتوح. تواصل النحلات الحركة أثناء الرسم.</dd></div>
+          <div><dt data-i18n="faq2q">لماذا يتحرك خطي بدلاً من أن يصبح ذهبياً؟</dt><dd data-i18n="faq2a">يبقى الجسر المستقيم أو الالتفاف حول حجر واحد قابلاً للحركة. لفّ الخط نفسه أو علّقه بنقطتين متباعدتين من التضاريس. مجرد ملامسة حجر واحد لا يكفي.</dd></div>
+
+          <div><dt data-i18n="faq3q">هل يمكن أن أخسر رغم وجود جدار ذهبي؟</dt><dd data-i18n="faq3a">نعم. يعني اللون الذهبي أن الجدار ثابت، لا أن بيب محاط تماماً. تستخدم النحلات أي طريق متبقٍ. افحص الفجوات قبل إنفاق بقية الرحيق.</dd></div>
+          <div><dt data-i18n="faq4q">كيف تُمنح النجوم؟</dt><dd data-i18n="faq4a">احمِ بيب أولاً حتى ينتهي الوقت. يمنحك الفوز مع إنفاق 45 من الرحيق أو أقل ثلاث نجوم، وأكثر من 45 وحتى 72 نجمتين، وأكثر من 72 نجمة واحدة. لا تمنح المحاولة الخاسرة نجوماً.</dd></div>
+          <div><dt data-i18n="faq5q">هل تمحو إعادة اللعب أفضل نتيجة لي؟</dt><dd data-i18n="faq5a">لا. قد يرفع الفوز عدد النجوم المحفوظة، لكن النتيجة الأضعف لا تستبدلها. وتبقى المراحل المفتوحة متاحة في المتصفح نفسه.</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">ألعاب ذات صلة</h3><p data-i18n="relatedIntro">إذا كنت تحب رسم دفاع تحت الضغط، فجرّب هذه الألعاب التالية:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ar/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">كتيبة بريزم الحيوان</strong><span data-i18n="relatedPrismDescription">بدّل بطارية بريزم آلية بين ثلاثة مسارات واحمِ نواة بلورية من تشكيلات متغيرة.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ar/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">كتيبة بريزم الحيوان</strong><span data-i18n="relatedPrismDescription">تنقّل بين ثلاثة مسارات لتركيز النيران التلقائية على الوحوش والقنابل القادمة وحماية البلورة.</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ar/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">افتح طريقاً في الغابة، وزّع المدافعين، وحافظ على نواة بلورية آمنة وفق ست قواعد للزعماء.</span></span></a>
         </div></article>
       </div>
@@ -202,7 +206,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="Zeichne und repariere Nektarlinien während der Bienenwellen und beschütze Pip in 30 originalen Stufen." />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Honigschild</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">Sprache</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="Sprache">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="Pip hinter einer leuchtenden Linie, während Bienen näherkommen" alt="Spielgrafik zu Honigschild" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="Pip hinter einer leuchtenden Linie, während Bienen näherkommen" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Rettungsrätsel auf der Kleelicht-Wiese</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Honigschild</h1>
@@ -95,24 +95,28 @@
         <span class="game-info-kicker" data-i18n="guideKicker">Originale WeightPlay-Spielanleitung</span>
         <h2 data-wp-game-title data-runtime-localize="off">Honigschild</h2>
         <p data-i18n="guideIntro">Pip ist den Bienenstöcken der Kleelicht-Wiese zu nahe gekommen. Zeichne Barrieren, während die Bienen fliegen, und schließe Lücken rechtzeitig.</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Live-Zeichenverteidigung</span><span>Live-Reparaturen</span><span>Sterne für kurze Linien</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Zeichenverteidigung</span><span>Zweipunkt-Verankerung</span><span>Nektarverwaltung</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">So wird gespielt</h3><ol>
           <li data-i18n="how1">Ziehe über die Wiese, um eine leuchtende Nektarbarriere zu zeichnen.</li>
-          <li data-i18n="how2">Die Bienen warten beim Zeichnen. Beim Loslassen der ersten gültigen Linie startet die Welle; danach kannst du nachbessern.</li>
+          <li data-i18n="how2">Lass die erste gültige Linie los, um die Bienen zu starten. Danach hält das Zeichnen weiterer Linien die Welle nicht an.</li>
           <li data-i18n="how3">Halte bis zum Ablauf der Zeit durch, ohne dass eine Biene Pip berührt.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regeln und Ergebnis</h3><p data-i18n="rulesText">Linien brechen nicht. Gibt es einen Weg, nehmen ihn die Bienen zuerst; sonst schieben, drehen und biegen sie die Wand. Ein Kreis um nur einen Stein ist bloß ein Drehpunkt und wird vom Schwarm eng um den Stein geschält. Erst dieselbe Linie an zwei getrennten Geländepunkten wird golden und fest.</p><p data-i18n="guideExtra">Suche vor dem Zeichnen den Bienenstock, Pip und zwei getrennte Geländeanker. Die erste gültige Linie setzt die Bienen in Bewegung. Spare Nektar, um einen Umweg mit einer kurzen Linie zu schließen; wird Pip berührt, versuche eine andere Form.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Wiesenrouten</h3><p data-i18n="progressText">Spätere Routen verändern Bienenstöcke, Gelände und Wind. Jeder Sieg schaltet die nächste Route frei.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regeln und Ergebnis</h3><p data-i18n="rulesText">Linien reißen nicht. Die Bienen nehmen jeden offenen Weg zu Pip. Erst wenn alle Wege versperrt sind, schieben und verdrehen sie lose Wände, bis eine Lücke entsteht. Derselbe Strich muss sich an zwei getrennten Geländepunkten verhaken, damit er fest und golden wird. Um die feste Wand herum kann trotzdem ein Weg offen bleiben.</p><p data-i18n="guideExtra">Suche vor dem Zeichnen den Bienenstock, Pip und zwei getrennte Geländeanker. Die erste gültige Linie setzt die Bienen in Bewegung. Spare Nektar, um einen Umweg mit einer kurzen Linie zu schließen; wird Pip berührt, versuche eine andere Form.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Wiesenrouten</h3><p data-i18n="progressText">Die 30 Stufen bilden sechs Kapitel mit je fünf Stufen. Spätere Kapitel verändern Bienenstöcke, Gelände und Wind. Halte Pip bis zum Ende des Timers sicher, um die nächste Stufe zu öffnen, oder verbessere beim Wiederholen deine Sterne.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Praktische Tipps</h3><p data-i18n="tipsText">Eine gerade Brücke und ein Kreis um einen Stein bleiben beweglich. Nutze zwei Schlingen, entgegengesetzte Haken oder eine echte Geländerinne.</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">Speichern und Datenschutz</h3><p data-i18n="saveText">Stufen und Beststerne bleiben nur in diesem Browser. Konto und persönliche Daten sind nicht nötig.</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">Warum die Lage der Linie zählt</h3><p data-i18n="designText">Eine längere Wand verbraucht mehr Nektar, schließt aber nicht unbedingt den Weg. Entscheidend sind zwei Ankerpunkte und mögliche Umwege für die Bienen. Eine kurze zusätzliche Barriere kann die Lücke schließen; ihr Nektar zählt jedoch bei der Sternebewertung mit.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Speichern und Datenschutz</h3><p data-i18n="saveText">Freigeschaltete und abgeschlossene Stufen sowie die besten Sterne werden in diesem Browser gespeichert. Ein Konto ist nicht nötig. Das Löschen der Websitedaten entfernt diesen Fortschritt; andere Browser oder Geräte übernehmen ihn nicht automatisch.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
-          <div><dt data-i18n="faq1q">Kann ich nach dem Start der Bienen zeichnen?</dt><dd data-i18n="faq1a">Ja. Zeichne eine weitere Linie oder verbinde eine freie Wand mit dem Gelände, solange Nektar bleibt.</dd></div>
-          <div><dt data-i18n="faq2q">Werden die Bienen verletzt?</dt><dd data-i18n="faq2a">Nein. Die Barrieren lenken sie sanft zurück zu den Blumen.</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">Kann ich nach dem Start der Bienen zeichnen?</dt><dd data-i18n="faq1a">Ja, solange Nektar übrig ist. Zeichne eine kurze Linie, um einen offenen Weg zu schließen. Die Bienen bewegen sich dabei weiter.</dd></div>
+          <div><dt data-i18n="faq2q">Warum bewegt sich meine Linie, statt golden zu werden?</dt><dd data-i18n="faq2a">Eine gerade Brücke oder eine Schlinge um nur einen Stein bleibt beweglich. Führe denselben Strich um zwei getrennte Geländepunkte oder hake ihn dort ein. Einen einzelnen Stein zu berühren reicht nicht.</dd></div>
+
+          <div><dt data-i18n="faq3q">Kann ich trotz einer goldenen Wand verlieren?</dt><dd data-i18n="faq3a">Ja. Gold bedeutet, dass die Wand fest ist, nicht dass Pip vollständig eingeschlossen ist. Die Bienen nutzen verbleibende Wege. Suche nach Lücken, bevor du den restlichen Nektar verbrauchst.</dd></div>
+          <div><dt data-i18n="faq4q">Wie werden die Sterne vergeben?</dt><dd data-i18n="faq4a">Schütze Pip zuerst bis zum Ende des Timers. Ein Sieg mit höchstens 45 verbrauchtem Nektar bringt drei Sterne, mit mehr als 45 und höchstens 72 zwei, mit mehr als 72 einen. Ein gescheiterter Versuch bringt keine Sterne.</dd></div>
+          <div><dt data-i18n="faq5q">Löscht ein neuer Versuch mein bestes Ergebnis?</dt><dd data-i18n="faq5a">Nein. Ein Sieg kann die gespeicherten Sterne verbessern, aber ein schlechteres Ergebnis ersetzt sie nicht. Freigeschaltete Stufen bleiben im selben Browser verfügbar.</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Ähnliche Spiele</h3><p data-i18n="relatedIntro">Wenn du gern unter Druck eine Verteidigung zeichnest, probiere diese Spiele:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/de/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Tierisches Prismabataillon</strong><span data-i18n="relatedPrismDescription">Schalte eine automatische Prismenbatterie zwischen drei Bahnen um und schütze einen Kristallkern vor wechselnden Formationen.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/de/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Öffne einen Waldweg, positioniere Verteidiger und halte einen Kristallkern unter sechs Bossregeln sicher.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/de/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Prismabataillon</strong><span data-i18n="relatedPrismDescription">Wechsle zwischen drei Spuren, richte das automatische Feuer auf anrückende Monster und Bomben und schütze den Kristall.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/de/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Bestienwächter</strong><span data-i18n="relatedBeastDescription">Öffne einen Waldweg, positioniere Verteidiger und halte einen Kristallkern unter sechs Bossregeln sicher.</span></span></a>
         </div></article>
       </div>
     </section>
@@ -202,7 +206,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

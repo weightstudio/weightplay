@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="Draw and repair nectar lines during live bee waves to protect Clover Pup Pip across 30 original meadow stages." />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Honey Shield</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">Language</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="Language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="Honey Shield game artwork" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="Pip sheltered by a glowing line as bees approach" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Honey Shield</h1>
@@ -95,23 +95,27 @@
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Original Game Guide</span>
         <h2 data-wp-game-title data-runtime-localize="off">Honey Shield</h2>
         <p data-i18n="guideIntro">Pip has wandered beside Cloverlight Meadow&#39;s hives. Draw barriers while the startled bees fly, then reinforce openings before they reach the puppy.</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Live Drawing Defense</span><span>Live Repairs</span><span>Short-Line Stars</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Drawing defense</span><span>Two-point anchoring</span><span>Nectar management</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">How to play</h3><ol>
           <li data-i18n="how1">Drag across the meadow to draw a glowing nectar barrier.</li>
-          <li data-i18n="how2">The bees wait while you draw. Releasing your first valid line starts the wave; keep drawing repairs during it.</li>
+          <li data-i18n="how2">Release your first valid line to start the bees. After that, drawing more lines does not pause the wave.</li>
           <li data-i18n="how3">Survive until the timer reaches zero without letting a bee touch Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Lines never break. Bees use any open route first. With no route they push, twist, and flex a loose wall. A loop on one stone is only a pivot: the swarm peels it tight around that stone. Only one stroke hooked around two separated terrain points turns gold and holds.</p><p data-i18n="guideExtra">Before drawing, locate the hive, Pip and two separate terrain anchors. The first valid line starts the bees; keep some nectar for a short barrier that closes an escape route. If Pip is touched, replay and try a different shape.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Meadow routes</h3><p data-i18n="progressText">Later routes change hive positions, terrain and wind. Each clear unlocks the next route.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Lines do not break. Bees take any open path to Pip. When every path is blocked, they push and twist loose walls until a gap opens. The same stroke must hook around two separate terrain points to lock and glow gold. A fixed wall can still leave a path around it.</p><p data-i18n="guideExtra">Before drawing, locate the hive, Pip and two separate terrain anchors. The first valid line starts the bees; keep some nectar for a short barrier that closes an escape route. If Pip is touched, replay and try a different shape.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Meadow routes</h3><p data-i18n="progressText">The 30 stages form six chapters of five. Later chapters change the hive positions, terrain and wind. Survive a stage to unlock the next one; replay an earlier stage to improve its stars.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">A straight bridge and a one-stone circle are both loose. Use two separated wraps, opposite hooks, or a real terrain slot.</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked stages and best stars stay only in this browser. No account, upload, or personal information is required.</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">Why line placement matters</h3><p data-i18n="designText">A longer wall uses more nectar without necessarily closing the route. The useful decision is where to place two anchors and where bees could go around the line. A short extra barrier can close that gap, but it also counts toward the nectar used for stars.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked stages, cleared stages and best stars are saved in this browser. No account is needed. Clearing this site’s browser data removes that progress; another browser or device does not automatically share it.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
-          <div><dt data-i18n="faq1q">Can I draw after the bees start?</dt><dd data-i18n="faq1a">Yes. Add another line or connect a loose wall to terrain while nectar remains.</dd></div>
-          <div><dt data-i18n="faq2q">Do bees get hurt?</dt><dd data-i18n="faq2a">No. Nectar barriers gently bounce the startled bees back toward the flowers.</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">Can I draw after the bees start?</dt><dd data-i18n="faq1a">Yes, while nectar remains. Add a short line to block an open path. The bees keep moving while you draw.</dd></div>
+          <div><dt data-i18n="faq2q">Why does my line move instead of turning gold?</dt><dd data-i18n="faq2a">A straight bridge or a loop around one stone is still loose. Wrap or hook the same stroke around two separated terrain points. Simply touching one stone is not enough.</dd></div>
+
+          <div><dt data-i18n="faq3q">Can I lose even with a gold wall?</dt><dd data-i18n="faq3a">Yes. Gold means the wall is fixed, not that Pip is fully enclosed. Bees use any remaining path around it. Check the gaps before spending your remaining nectar.</dd></div>
+          <div><dt data-i18n="faq4q">How are stars awarded?</dt><dd data-i18n="faq4a">First keep Pip safe until the timer ends. A clear using at most 45 nectar earns three stars; more than 45 and at most 72 earns two; more than 72 earns one. A failed attempt earns no stars.</dd></div>
+          <div><dt data-i18n="faq5q">Will replaying erase my best result?</dt><dd data-i18n="faq5a">No. A clear can improve the saved best stars, but a worse result does not replace them. Unlocked stages also remain available in the same browser.</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Related Games</h3><p data-i18n="relatedIntro">If you like drawing a defense under pressure, try these next:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/en/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Animal Prism Battalion</strong><span data-i18n="relatedPrismDescription">Switch one automatic prism battery between three lanes and protect a crystal core from changing formations.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/en/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Prism Battalion</strong><span data-i18n="relatedPrismDescription">Switch between three lanes to focus automatic fire on incoming monsters and bombs, keeping the crystal safe.</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/en/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Build an open forest route, position defenders, and keep a crystal core safe through six Boss rules.</span></span></a>
         </div></article>
       </div>
@@ -201,7 +205,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

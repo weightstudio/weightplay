@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="在即時蜂群波次中畫線並修補花蜜防線，於 30 個原創草原關卡保護苜蓿小犬皮普。" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">蜂蜜盾</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">語言</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="語言">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="蜜蜂接近時，皮普躲在發光防線後方" alt="《蜂蜜盾》遊戲圖片" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="蜜蜂接近時，皮普躲在發光防線後方" />
         <div class="main-copy">
           <small data-i18n="eyebrow">苜蓿光原救援解謎</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">蜂蜜盾</h1>
@@ -95,23 +95,27 @@
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 原創遊戲指南</span>
         <h2 data-wp-game-title data-runtime-localize="off">蜂蜜盾</h2>
         <p data-i18n="guideIntro">皮普走到苜蓿光原的蜂巢旁。蜂群飛行時畫出屏障，並在牠們碰到小犬前修補缺口。</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>即時畫線防守</span><span>即時修補</span><span>短線星級</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>畫線防守</span><span>雙點固定</span><span>花蜜管理</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">遊玩方式</h3><ol>
           <li data-i18n="how1">在草原上拖曳，畫出發光花蜜屏障。</li>
-          <li data-i18n="how2">蜜蜂會等你畫完。放開第一條有效防線才會開始波次；之後仍可繼續修補。</li>
+          <li data-i18n="how2">放開第一條有效防線後，蜂群才會出發。之後補畫其他線條時，波次不會暫停。</li>
           <li data-i18n="how3">在倒數結束前，不讓任何蜜蜂碰到皮普。</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">規則與結果</h3><p data-i18n="rulesText">線條不會斷裂。蜜蜂會優先走任何可達皮普的路；沒有路時，牠們會一起推動、扭轉並壓彎鬆動的牆。只繞一顆石頭只是支點，蜂群會沿石頭把牆剝開。必須讓同一條線勾住兩個分開的地形點，才會變成金色固定牆。</p><p data-i18n="guideExtra">畫線前先找出蜂巢、皮普與兩個分開的地形錨點。第一條有效防線會啟動蜂群；留些花蜜，用短線封住繞行缺口。皮普被碰到就重試，改用不同的防線形狀。</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">草原路線</h3><p data-i18n="progressText">後續路線會改變蜂巢位置、地形與風勢；每次過關解鎖下一條路線。</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">規則與結果</h3><p data-i18n="rulesText">線條不會斷裂。只要有路能到皮普身邊，蜜蜂就會沿路繞行；所有路線都被封住時，牠們才會推動、扭轉鬆動的牆，直到出現缺口。同一條線必須勾住兩個分開的地形點，才會固定並變成金色。牆固定了，周圍仍可能留有通路。</p><p data-i18n="guideExtra">畫線前先找出蜂巢、皮普與兩個分開的地形錨點。第一條有效防線會啟動蜂群；留些花蜜，用短線封住繞行缺口。皮普被碰到就重試，改用不同的防線形狀。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">草原路線</h3><p data-i18n="progressText">30 個關卡分成六章，每章五關。後面的章節會改變蜂巢位置、地形與風勢。守到倒數結束便能解鎖下一關，也能重玩已解鎖關卡，挑戰更高星級。</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">實用提示</h3><p data-i18n="tipsText">直線架在兩顆石頭之間、或只繞一顆石頭，都仍可移動。請使用兩個分開的繞點、相反勾角或真正的地形凹槽。</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">儲存與隱私</h3><p data-i18n="saveText">解鎖關卡與最佳星級只保存在這個瀏覽器，不需帳號、上傳或個人資料。</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">防線的位置為什麼重要</h3><p data-i18n="designText">線畫得更長會多花花蜜，卻不一定能封住路。真正要判斷的是兩個固定點的位置，以及蜜蜂能否繞過防線。短短一條補線可能就能堵住缺口，但它也會算進星級評分的花蜜消耗。</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">儲存與隱私</h3><p data-i18n="saveText">解鎖關卡、過關紀錄與最佳星級保存在這個瀏覽器，不需帳號。清除此網站的瀏覽器資料會移除進度；其他瀏覽器或裝置不會自動共用存檔。</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">常見問題</h3><dl>
-          <div><dt data-i18n="faq1q">蜜蜂出發後還能畫線嗎？</dt><dd data-i18n="faq1a">可以。花蜜足夠時，可補畫另一條線，或把未固定的牆接到地形。</dd></div>
-          <div><dt data-i18n="faq2q">蜜蜂會受傷嗎？</dt><dd data-i18n="faq2a">不會。花蜜屏障只會溫柔地把受驚蜂群彈回花朵方向。</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">蜜蜂出發後還能畫線嗎？</dt><dd data-i18n="faq1a">可以，只要還有花蜜，就能補畫短線封住通路。補畫時蜜蜂仍會繼續移動。</dd></div>
+          <div><dt data-i18n="faq2q">為什麼防線會移動，沒有變成金色？</dt><dd data-i18n="faq2a">直線架在兩顆石頭之間，或只繞住一顆石頭，防線都還是鬆動的。要用同一條線繞住或勾住兩個分開的地形點；只碰到一顆石頭並不足夠。</dd></div>
+
+          <div><dt data-i18n="faq3q">防線變成金色後，還會失敗嗎？</dt><dd data-i18n="faq3a">會。金色只表示牆已固定，不代表皮普周圍已完全封住。蜜蜂仍會走剩下的通路；花完花蜜前，先檢查兩側是否留有缺口。</dd></div>
+          <div><dt data-i18n="faq4q">星級如何計算？</dt><dd data-i18n="faq4a">先保護皮普到倒數結束。過關時消耗不超過 45 花蜜可得三星；超過 45、但不超過 72 可得兩星；超過 72 則得一星。失敗的嘗試不會獲得星星。</dd></div>
+          <div><dt data-i18n="faq5q">重玩會覆蓋最佳成績嗎？</dt><dd data-i18n="faq5a">不會。過關可以提高已保存的最佳星級，較差的結果不會取代它。已解鎖關卡也會在同一個瀏覽器中保留。</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">相關遊戲</h3><p data-i18n="relatedIntro">如果你喜歡在壓力下畫出防線，可以接著挑戰：</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">動物稜光軍團</strong><span data-i18n="relatedPrismDescription">在三條路線間切換自動稜光電池，抵禦變化中的敵陣並保護水晶核心。</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">稜光軍團</strong><span data-i18n="relatedPrismDescription">在三條路線間切換，把自動火力集中到來襲的怪物或炸彈，守住水晶。</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/zh-tw/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">獸王守衛</strong><span data-i18n="relatedBeastDescription">建立保持暢通的森林路線、安排防守者，在六種首領規則下守住水晶核心。</span></span></a>
         </div></article>
       </div>
@@ -202,7 +206,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

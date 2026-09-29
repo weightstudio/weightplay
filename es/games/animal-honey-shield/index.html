@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="Dibuja y repara líneas de néctar durante oleadas de abejas para proteger a Pip en 30 niveles originales." />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Escudo de Miel</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">Idioma</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="Idioma">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="Pip protegido por una línea brillante mientras se acercan abejas" alt="Imagen del juego Escudo de Miel" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="Pip protegido por una línea brillante mientras se acercan abejas" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Rescates del Prado Trébol Luz</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Escudo de Miel</h1>
@@ -95,23 +95,27 @@
         <span class="game-info-kicker" data-i18n="guideKicker">Guía del juego original de WeightPlay</span>
         <h2 data-wp-game-title data-runtime-localize="off">Escudo de Miel</h2>
         <p data-i18n="guideIntro">Pip se acercó a las colmenas del Prado Trébol Luz. Dibuja barreras mientras vuelan las abejas y refuerza las aberturas antes de que alcancen al cachorro.</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Defensa de dibujo en vivo</span><span>Reparación en vivo</span><span>Estrellas por líneas cortas</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Defensa con dibujo</span><span>Anclaje en dos puntos</span><span>Gestión del néctar</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">Cómo jugar</h3><ol>
           <li data-i18n="how1">Arrastra por el prado para dibujar una barrera luminosa de néctar.</li>
-          <li data-i18n="how2">Las abejas esperan mientras dibujas. Al soltar la primera línea válida empieza la oleada; después puedes repararla.</li>
+          <li data-i18n="how2">Suelta la primera línea válida para poner en marcha a las abejas. Después, dibujar más líneas no detiene la oleada.</li>
           <li data-i18n="how3">Resiste hasta que el tiempo llegue a cero sin que una abeja toque a Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Reglas y resultados</h3><p data-i18n="rulesText">Las líneas no se rompen. Si hay una ruta, las abejas la usan primero; si no, empujan, giran y flexionan el muro. Un círculo en una sola piedra es solo un pivote y el enjambre lo pela alrededor de ella. Solo una línea enganchada a dos puntos de terreno separados queda dorada y fija.</p><p data-i18n="guideExtra">Antes de dibujar, localiza la colmena, a Pip y dos anclajes separados del terreno. La primera línea válida pone en marcha a las abejas; reserva néctar para cerrar un paso con una línea corta. Si tocan a Pip, vuelve a intentarlo con otra forma.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Rutas del prado</h3><p data-i18n="progressText">Las siguientes rutas cambian las colmenas, el terreno y el viento. Cada victoria desbloquea la siguiente ruta.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Reglas y resultados</h3><p data-i18n="rulesText">Las líneas no se rompen. Las abejas usan cualquier camino abierto hasta Pip. Solo cuando todos están cerrados empujan y retuercen los muros sueltos hasta abrir un hueco. El mismo trazo debe engancharse a dos puntos separados del terreno para quedar fijo y dorado. Aun así, puede quedar un camino alrededor.</p><p data-i18n="guideExtra">Antes de dibujar, localiza la colmena, a Pip y dos anclajes separados del terreno. La primera línea válida pone en marcha a las abejas; reserva néctar para cerrar un paso con una línea corta. Si tocan a Pip, vuelve a intentarlo con otra forma.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Rutas del prado</h3><p data-i18n="progressText">Los 30 niveles se reparten en seis capítulos de cinco. Los capítulos posteriores cambian las colmenas, el terreno y el viento. Protege a Pip hasta que termine el tiempo para abrir el siguiente nivel, o repite uno anterior para mejorar sus estrellas.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Consejos prácticos</h3><p data-i18n="tipsText">Un puente recto y un círculo de una piedra siguen sueltos. Usa dos vueltas, ganchos opuestos o una ranura real del terreno.</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">Guardado y privacidad</h3><p data-i18n="saveText">Los niveles y mejores estrellas se guardan solo en este navegador. No se necesita cuenta ni información personal.</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">Por qué importa dónde trazas la línea</h3><p data-i18n="designText">Un muro más largo consume más néctar, pero no siempre cierra el camino. Decide dónde colocar dos anclajes y por dónde podrían rodearlo las abejas. Una barrera corta adicional puede tapar el hueco, aunque su néctar también cuenta para las estrellas.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Guardado y privacidad</h3><p data-i18n="saveText">Los niveles abiertos, las victorias y las mejores estrellas se guardan en este navegador. No necesitas cuenta. Borrar los datos del sitio elimina ese progreso; otro navegador o dispositivo no lo comparte automáticamente.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">Preguntas frecuentes</h3><dl>
-          <div><dt data-i18n="faq1q">¿Puedo dibujar cuando las abejas ya vuelan?</dt><dd data-i18n="faq1a">Sí. Añade otra línea o conecta un muro suelto al terreno mientras quede néctar.</dd></div>
-          <div><dt data-i18n="faq2q">¿Las abejas se lastiman?</dt><dd data-i18n="faq2a">No. Las barreras las hacen rebotar suavemente hacia las flores.</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">¿Puedo dibujar cuando las abejas ya vuelan?</dt><dd data-i18n="faq1a">Sí, mientras quede néctar. Añade una línea corta para cerrar un camino abierto. Las abejas siguen moviéndose mientras dibujas.</dd></div>
+          <div><dt data-i18n="faq2q">¿Por qué se mueve mi línea en vez de ponerse dorada?</dt><dd data-i18n="faq2a">Un puente recto o un círculo alrededor de una sola piedra sigue suelto. Rodea o engancha dos puntos separados del terreno con el mismo trazo. Tocar una sola piedra no basta.</dd></div>
+
+          <div><dt data-i18n="faq3q">¿Puedo perder aunque tenga un muro dorado?</dt><dd data-i18n="faq3a">Sí. El dorado indica que el muro está fijo, no que Pip esté totalmente rodeado. Las abejas usan cualquier camino restante. Revisa los huecos antes de gastar el néctar que te queda.</dd></div>
+          <div><dt data-i18n="faq4q">¿Cómo se consiguen las estrellas?</dt><dd data-i18n="faq4a">Primero protege a Pip hasta que termine el tiempo. Ganar usando como máximo 45 de néctar da tres estrellas; más de 45 y hasta 72 da dos; más de 72 da una. Un intento fallido no da estrellas.</dd></div>
+          <div><dt data-i18n="faq5q">¿Repetir un nivel borra mi mejor resultado?</dt><dd data-i18n="faq5a">No. Una victoria puede mejorar las estrellas guardadas, pero un resultado inferior no las sustituye. Los niveles abiertos también se conservan en el mismo navegador.</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Juegos relacionados</h3><p data-i18n="relatedIntro">Si te gusta dibujar una defensa bajo presión, prueba estos juegos:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/es/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Batallón de Prismas Animales</strong><span data-i18n="relatedPrismDescription">Cambia una batería de prismas automática entre tres carriles y protege un núcleo de cristal de formaciones cambiantes.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/es/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Batallón de Prismas</strong><span data-i18n="relatedPrismDescription">Cambia entre tres carriles para concentrar el fuego automático en monstruos y bombas y proteger el cristal.</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/es/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Guardián de Bestias</strong><span data-i18n="relatedBeastDescription">Abre una ruta en el bosque, coloca defensores y protege un núcleo de cristal ante seis reglas de jefe.</span></span></a>
         </div></article>
       </div>
@@ -202,7 +206,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

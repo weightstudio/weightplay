@@ -9680,7 +9680,7 @@
   const crystalCombatGuides = {
   "en": {
     "intro": "Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.",
-    "metaDescription": "Play a 30-stage action-survival campaign: survive the timer, clear waves or defeat each stage boss. Collect XP crystals, choose spells and shape a permanent talent build.",
+    "metaDescription": "30-stage action survival: survive the timer, clear waves or defeat stage bosses. Collect XP crystals, choose spells and build lasting talents.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9705,7 +9705,7 @@
   },
   "zh-Hant": {
     "intro": "挑戰生存、波次或首領。收集經驗水晶升級，魔法自動施放。",
-    "metaDescription": "挑戰 30 關動作生存戰役：依關卡目標撐過倒數、清除波次或擊敗首領。收集經驗水晶選擇法術，再打造可重置的永久天賦路線。",
+    "metaDescription": "30 關動作生存戰役：撐過倒數、清除波次或擊敗首領。收集經驗水晶選擇法術，培養可重置的天賦路線。",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9730,7 +9730,7 @@
   },
   "zh-Hans": {
     "intro": "挑战生存、波次或首领。收集经验水晶升级，魔法自动施放。",
-    "metaDescription": "挑战 30 关动作生存战役：按关卡目标撑过倒计时、清除波次或击败首领。收集经验水晶选择法术，并培养可重置的永久天赋路线。",
+    "metaDescription": "30 关动作生存战役：撑过倒计时、清除波次或击败首领。收集经验水晶选择法术，培养可重置的天赋路线。",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9755,7 +9755,7 @@
   },
   "ja": {
     "intro": "生存、ウェーブ、ボスに挑戦。経験結晶で強化し、魔法は自動発射。",
-    "metaDescription": "全30ステージのアクションサバイバル。制限時間を生き延びる、ウェーブを突破する、ボスを倒すなど、各ステージの目標に挑戦。経験値クリスタルで魔法を選び、才能ルートを育てよう。",
+    "metaDescription": "全30ステージのアクションサバイバル。時間まで生存、ウェーブ突破、ボス撃破に挑戦。経験値クリスタルで魔法を選び、才能を育てよう。",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9780,7 +9780,7 @@
   },
   "ko": {
     "intro": "생존, 웨이브, 보스에 도전하세요. 경험 수정으로 강화하며 마법은 자동 발사됩니다.",
-    "metaDescription": "30단계 액션 생존 캠페인에서 제한 시간 생존, 웨이브 돌파 또는 보스 격파에 도전하세요. XP 크리스털을 모아 마법을 선택하고 영구 특성 경로를 키워 보세요.",
+    "metaDescription": "30단계 액션 생존 캠페인: 시간 생존, 웨이브 돌파, 보스 처치에 도전하세요. XP 크리스털을 모아 마법을 선택하고 특성을 키워 보세요.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9805,7 +9805,7 @@
   },
   "es": {
     "intro": "Sobrevive, supera oleadas o vence al jefe. Recoge cristales de XP; la magia es automática.",
-    "metaDescription": "Juega una campaña de acción y supervivencia de 30 niveles: resiste el tiempo, supera oleadas o derrota al jefe. Recoge cristales de XP, elige hechizos y desarrolla talentos permanentes.",
+    "metaDescription": "Campaña de acción y supervivencia de 30 niveles: resiste, supera oleadas o derrota al jefe. Recoge cristales de XP, elige hechizos y mejora talentos.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9830,7 +9830,7 @@
   },
   "pt-BR": {
     "intro": "Sobreviva, vença ondas ou derrote o chefe. Colete cristais de XP; a magia é automática.",
-    "metaDescription": "Encare uma campanha de ação e sobrevivência com 30 fases: sobreviva ao tempo, vença as ondas ou derrote o chefe. Colete cristais de XP, escolha magias e desenvolva talentos permanentes.",
+    "metaDescription": "Ação e sobrevivência em 30 fases: sobreviva ao tempo, vença ondas ou derrote o chefe. Colete cristais de XP, escolha magias e evolua talentos.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9855,7 +9855,7 @@
   },
   "fr": {
     "intro": "Survivez, terminez les vagues ou battez le boss. Ramassez les cristaux XP ; la magie est automatique.",
-    "metaDescription": "Jouez une campagne d’action-survie de 30 niveaux : tenez jusqu’au bout, terminez les vagues ou battez le boss. Récoltez des cristaux d’XP, choisissez des sorts et développez des talents permanents.",
+    "metaDescription": "Action-survie en 30 niveaux : survivez, terminez les vagues ou battez les boss. Récoltez des cristaux d’XP, choisissez des sorts et développez vos talents.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9880,7 +9880,7 @@
   },
   "de": {
     "intro": "Überlebe, schaffe Wellen oder besiege den Boss. Sammle EP-Kristalle; Magie feuert automatisch.",
-    "metaDescription": "Spiele eine Action-Survival-Kampagne mit 30 Stufen: Überlebe den Timer, bezwinge Wellen oder besiege den Boss. Sammle EP-Kristalle, wähle Zauber und entwickle dauerhafte Talente.",
+    "metaDescription": "Action-Survival mit 30 Stufen: Überlebe den Timer, schaffe Wellen oder besiege Bosse. Sammle EP-Kristalle, wähle Zauber und entwickle Talente.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9905,7 +9905,7 @@
   },
   "it": {
     "intro": "Sopravvivi, supera ondate o sconfiggi il boss. Raccogli cristalli XP; la magia è automatica.",
-    "metaDescription": "Affronta una campagna action-survival di 30 livelli: sopravvivi al tempo, supera le ondate o sconfiggi il boss. Raccogli cristalli XP, scegli magie e sviluppa talenti permanenti.",
+    "metaDescription": "Campagna action-survival di 30 livelli: sopravvivi, supera le ondate o sconfiggi i boss. Raccogli cristalli XP, scegli magie e sviluppa talenti.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9930,7 +9930,7 @@
   },
   "ru": {
     "intro": "Выживите, пройдите волны или победите босса. Собирайте кристаллы опыта; магия автоматическая.",
-    "metaDescription": "Пройдите кампанию из 30 этапов: выживите до конца таймера, пройдите волны или победите босса. Собирайте кристаллы опыта, выбирайте заклинания и развивайте постоянные таланты.",
+    "metaDescription": "Кампания на 30 этапов: выживайте до конца таймера, проходите волны или побеждайте боссов. Собирайте кристаллы опыта, выбирайте заклинания и таланты.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9955,7 +9955,7 @@
   },
   "hi": {
     "intro": "जीवित रहें, लहरें पार करें या बॉस हराएँ। XP क्रिस्टल लें; जादू अपने आप चलता है।",
-    "metaDescription": "30 चरणों के एक्शन-सर्वाइवल अभियान में समय तक टिकें, लहरें पार करें या बॉस को हराएँ। XP क्रिस्टल इकट्ठा करें, जादू चुनें और स्थायी प्रतिभाएँ विकसित करें।",
+    "metaDescription": "30 चरणों के एक्शन-सर्वाइवल अभियान में टिकें, लहरें पार करें या बॉस हराएँ। XP क्रिस्टल लें, जादू चुनें और प्रतिभाएँ विकसित करें।",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9980,7 +9980,7 @@
   },
   "ar": {
     "intro": "اصمد أو أكمل الموجات أو اهزم الزعيم. اجمع بلورات الخبرة؛ السحر تلقائي.",
-    "metaDescription": "خض حملة من 30 مرحلة تجمع بين الحركة والبقاء: اصمد حتى نهاية الوقت، أو أكمل الموجات، أو اهزم الزعيم. اجمع بلورات الخبرة واختر السحر وطوّر المواهب الدائمة.",
+    "metaDescription": "حملة حركة وبقاء من 30 مرحلة: اصمد حتى انتهاء الوقت، أو أكمل الموجات، أو اهزم الزعيم. اجمع بلورات الخبرة واختر السحر وطوّر المواهب.",
     "time": "45–180 s",
     "story": [],
     "systems": [

@@ -203,6 +203,13 @@
     document.querySelectorAll("[data-i18n-alt]").forEach(node=>node.setAttribute("alt",fmt(node.dataset.i18nAlt)));
     const gameplayTags=fmt("gameplayTags"),gameplayTagBox=document.querySelector("[data-wp-gameplay-tags]");
     if(gameplayTagBox&&Array.isArray(gameplayTags)){gameplayTagBox.replaceChildren(...gameplayTags.map(value=>Object.assign(document.createElement("span"),{textContent:value})));gameplayTagBox.dataset.wpGameplayTags="1.4.0";}
+    // Honey Text Growth 1.4.0: keep owned Guide names and links in the active locale.
+    const relatedSegment=({"zh-Hant":"zh-tw","zh-Hans":"zh-cn","pt-BR":"pt-br"})[locale]||locale;
+    document.querySelectorAll(".game-page-info [data-wp-related-id]").forEach(node=>{
+      const id=node.dataset.wpRelatedId;
+      if(id==="animal-prism-battalion"||id==="beast-tactician")node.setAttribute("href",`/${relatedSegment}/games/${id}/`);
+    });
+    document.querySelectorAll(".game-page-info [data-wp-game-title]").forEach(node=>node.textContent=fmt("title"));
     updateMainProgress();renderStages();updateStageChapter();updateHud();updateAnchorCoach();if(state.result)renderResultInsight();
     if(state.repairCueKey&&state.repairCueUntil>state.elapsed)announce(state.repairCueKey);
     window.dispatchEvent(new CustomEvent("wonder:locale-change",{detail:{locale}}));

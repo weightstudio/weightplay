@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="飛んでくるハチを見ながら蜜の線を描き直し、30の草原ステージで子犬ピップを守ります。" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">ハニーシールド</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">言語</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="言語">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="ハチが近づく中、光る線に守られるピップ" alt="ハニーシールドのゲーム画像" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="ハチが近づく中、光る線に守られるピップ" />
         <div class="main-copy">
           <small data-i18n="eyebrow">クローバーライト草原の救助パズル</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">ハニーシールド</h1>
@@ -95,23 +95,27 @@
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay オリジナルゲームガイド</span>
         <h2 data-wp-game-title data-runtime-localize="off">ハニーシールド</h2>
         <p data-i18n="guideIntro">ピップはクローバーライト草原の巣のそばに迷い込みました。ハチが飛んでいる間に壁を描き、子犬に届く前に隙間を補強します。</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>リアルタイム描画防衛</span><span>リアルタイム修理</span><span>短い線で星</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>描画防衛</span><span>二点固定</span><span>蜜の管理</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
           <li data-i18n="how1">草原をドラッグして光る蜜のバリアを描きます。</li>
-          <li data-i18n="how2">ハチは描き終えるまで待ちます。最初の有効な線を離すとウェーブが始まり、その後も修復できます。</li>
+          <li data-i18n="how2">最初の有効な線を描いて指やマウスを離すと、ハチが動き出します。その後に線を描き足しても、ハチは止まりません。</li>
           <li data-i18n="how3">ハチをピップに触れさせず、タイマーがゼロになるまで守ります。</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">線は切れません。道があればハチは先に回り道を使い、道がなければ緩い壁を皆で押し、ひねり、曲げます。石ひとつを囲むだけでは支点にすぎず、壁は石の周りへはがされます。同じ線を離れた二つの地形に掛けた時だけ金色に固定されます。</p><p data-i18n="guideExtra">描く前に巣、ピップ、離れた二つの地形の支点を確認しましょう。最初の有効な線でハチが動き出します。回り道を短い線で塞げるよう蜜を残し、ピップに触れられたら別の形で再挑戦しましょう。</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">草原のルート</h3><p data-i18n="progressText">先のルートでは巣の位置、地形、風が変わります。クリアすると次のルートが開きます。</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">線は切れません。ピップへの道があれば、ハチはそこを通ります。すべての道が塞がれたときだけ、動く壁を押したりねじったりして隙間を開けます。同じ一本の線を離れた二つの地形に引っ掛けると、金色になって固定されます。固定した壁の周りにも通り道は残ることがあります。</p><p data-i18n="guideExtra">描く前に巣、ピップ、離れた二つの地形の支点を確認しましょう。最初の有効な線でハチが動き出します。回り道を短い線で塞げるよう蜜を残し、ピップに触れられたら別の形で再挑戦しましょう。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">草原のルート</h3><p data-i18n="progressText">全30ステージは、5ステージずつの6章に分かれています。先の章では巣の位置、地形、風が変わります。時間切れまでピップを守ると次のステージが開き、以前のステージで星を増やすこともできます。</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">実用ヒント</h3><p data-i18n="tipsText">石二つの間の直線も、石ひとつの円も動きます。二つの巻き付き、反対向きのフック、または地形の溝を使いましょう。</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">保存とプライバシー</h3><p data-i18n="saveText">解放ステージと最高の星はこのブラウザーだけに保存されます。アカウントや個人情報は不要です。</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">線を置く場所が大切な理由</h3><p data-i18n="designText">長い壁は蜜を多く使いますが、必ずしも道を塞げるとは限りません。二つの固定点と、ハチが回り込める場所を見極めましょう。短い追加の線で隙間を閉じられても、その蜜は星の判定に使う消費量に加わります。</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">保存とプライバシー</h3><p data-i18n="saveText">解放したステージ、クリア記録、最高の星はこのブラウザーに保存されます。アカウントは不要です。このサイトのブラウザーデータを消すと進捗も消え、別のブラウザーや端末には自動で引き継がれません。</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">よくある質問</h3><dl>
-          <div><dt data-i18n="faq1q">ハチが飛び始めた後も描けますか？</dt><dd data-i18n="faq1a">はい。蜜が残っていれば、線を追加したり自由な壁を地形につないだりできます。</dd></div>
-          <div><dt data-i18n="faq2q">ハチは傷つきますか？</dt><dd data-i18n="faq2a">いいえ。蜜のバリアは驚いたハチを花の方向へ優しく跳ね返します。</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">ハチが飛び始めた後も描けますか？</dt><dd data-i18n="faq1a">はい。蜜が残っていれば、短い線を描き足して通り道を塞げます。描いている間もハチは動き続けます。</dd></div>
+          <div><dt data-i18n="faq2q">線が金色にならず、動いてしまうのはなぜですか？</dt><dd data-i18n="faq2a">石の間を直線で結んだだけの壁や、一つの石だけを囲んだ壁は動きます。同じ一本の線を、離れた二つの地形に巻き付けるか引っ掛けてください。一つの石に触れるだけでは固定できません。</dd></div>
+
+          <div><dt data-i18n="faq3q">金色の壁があっても失敗しますか？</dt><dd data-i18n="faq3a">はい。金色は壁が固定された印で、ピップの周りがすべて塞がった印ではありません。ハチは残った道を通るので、蜜を使い切る前に隙間を確認しましょう。</dd></div>
+          <div><dt data-i18n="faq4q">星はどう決まりますか？</dt><dd data-i18n="faq4a">まずタイマーが終わるまでピップを守ります。クリア時の蜜の消費が45以下なら星3つ、45を超えて72以下なら星2つ、72を超えたら星1つです。失敗した挑戦では星は付きません。</dd></div>
+          <div><dt data-i18n="faq5q">再挑戦すると最高記録は消えますか？</dt><dd data-i18n="faq5a">いいえ。より多くの星を取ると最高記録が更新され、低い結果では上書きされません。解放済みステージも同じブラウザーに残ります。</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">関連ゲーム</h3><p data-i18n="relatedIntro">プレッシャーの中で防衛線を描くのが好きなら、次はこちら：</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ja/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">アニマル・プリズム・バタリオン</strong><span data-i18n="relatedPrismDescription">3つのレーンで自動プリズム砲を切り替え、変化する敵編成からクリスタルコアを守ります。</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ja/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">プリズム・バタリオン</strong><span data-i18n="relatedPrismDescription">3本のレーンを切り替えて、迫るモンスターや爆弾に自動射撃を集中させ、クリスタルを守ります。</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ja/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">ビースト戦術家</strong><span data-i18n="relatedBeastDescription">森のルートを開き、防衛役を配置して、6種類のボスルールからクリスタルコアを守ります。</span></span></a>
         </div></article>
       </div>
@@ -203,7 +207,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

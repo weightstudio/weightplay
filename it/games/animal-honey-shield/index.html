@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="Disegna e ripara linee di nettare durante le ondate di api e proteggi Pip in 30 livelli originali." />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Scudo di Miele</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">Lingua</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="Lingua">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="Pip protetto da una linea luminosa mentre arrivano le api" alt="Immagine del gioco Scudo di Miele" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="Pip protetto da una linea luminosa mentre arrivano le api" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Salvataggi del Prato Trifoglio Luce</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Scudo di Miele</h1>
@@ -95,23 +95,27 @@
         <span class="game-info-kicker" data-i18n="guideKicker">Guida al gioco originale WeightPlay</span>
         <h2 data-wp-game-title data-runtime-localize="off">Scudo di Miele</h2>
         <p data-i18n="guideIntro">Pip si è avvicinato agli alveari del Prato Trifoglio Luce. Disegna barriere mentre le api volano e rinforza le aperture prima che raggiungano il cucciolo.</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Difesa a disegno in tempo reale</span><span>Riparazioni in tempo reale</span><span>Stelle per linee corte</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Difesa con disegno</span><span>Ancoraggio a due punti</span><span>Gestione del nettare</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">Come giocare</h3><ol>
           <li data-i18n="how1">Trascina sul prato per disegnare una barriera luminosa di nettare.</li>
-          <li data-i18n="how2">Le api aspettano mentre disegni. Rilascia la prima linea valida per avviare l&#39;ondata, poi continua a rinforzarla.</li>
+          <li data-i18n="how2">Rilascia la prima linea valida per far partire le api. Da quel momento, disegnare altre linee non mette in pausa l’ondata.</li>
           <li data-i18n="how3">Resisti fino allo zero senza lasciare che un&#39;ape tocchi Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regole e risultati</h3><p data-i18n="rulesText">Le linee non si rompono. Se esiste un percorso, le api lo usano prima; altrimenti spingono, torcono e flettono il muro. Un cerchio su una sola pietra è solo un perno e lo sciame lo stringe attorno alla pietra. Solo la stessa linea agganciata a due punti separati diventa dorata e fissa.</p><p data-i18n="guideExtra">Prima di disegnare, individua l&#39;alveare, Pip e due ancoraggi distinti nel terreno. La prima linea valida fa partire le api: conserva nettare per chiudere un passaggio con un tratto corto. Se toccano Pip, riprova con un&#39;altra forma.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Percorsi del prato</h3><p data-i18n="progressText">I percorsi successivi cambiano alveari, terreno e vento. Ogni vittoria sblocca il percorso seguente.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regole e risultati</h3><p data-i18n="rulesText">Le linee non si spezzano. Le api usano qualsiasi percorso aperto verso Pip. Solo quando tutti i percorsi sono chiusi spingono e torcono i muri liberi finché si apre un varco. Lo stesso tratto deve agganciarsi a due punti separati del terreno per fissarsi e diventare dorato. Può comunque restare un passaggio attorno al muro.</p><p data-i18n="guideExtra">Prima di disegnare, individua l&#39;alveare, Pip e due ancoraggi distinti nel terreno. La prima linea valida fa partire le api: conserva nettare per chiudere un passaggio con un tratto corto. Se toccano Pip, riprova con un&#39;altra forma.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Percorsi del prato</h3><p data-i18n="progressText">I 30 livelli formano sei capitoli da cinque. Nei capitoli successivi cambiano gli alveari, il terreno e il vento. Proteggi Pip fino alla fine del conto alla rovescia per aprire il livello seguente, oppure ripeti un livello per migliorare le stelle.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Consigli pratici</h3><p data-i18n="tipsText">Un ponte diritto e un cerchio su una pietra restano mobili. Usa due avvolgimenti, ganci opposti o una vera scanalatura del terreno.</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">Salvataggio e privacy</h3><p data-i18n="saveText">Livelli e stelle migliori restano solo in questo browser. Non servono account o dati personali.</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">Perché conta dove tracci la linea</h3><p data-i18n="designText">Un muro più lungo consuma più nettare senza necessariamente chiudere il percorso. Individua due ancoraggi e i punti da cui le api possono aggirare la linea. Una piccola barriera aggiuntiva può chiudere il varco, ma il suo nettare conta anche per le stelle.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Salvataggio e privacy</h3><p data-i18n="saveText">Livelli aperti, vittorie e migliori stelle vengono salvati in questo browser. Non serve un account. Cancellare i dati del sito elimina i progressi, che non passano automaticamente a un altro browser o dispositivo.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">Domande frequenti</h3><dl>
-          <div><dt data-i18n="faq1q">Posso disegnare dopo la partenza delle api?</dt><dd data-i18n="faq1a">Sì. Aggiungi una linea o collega un muro libero al terreno finché resta nettare.</dd></div>
-          <div><dt data-i18n="faq2q">Le api si fanno male?</dt><dd data-i18n="faq2a">No. Le barriere le fanno rimbalzare dolcemente verso i fiori.</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">Posso disegnare dopo la partenza delle api?</dt><dd data-i18n="faq1a">Sì, finché rimane nettare. Aggiungi una linea corta per chiudere un passaggio. Le api continuano a muoversi mentre disegni.</dd></div>
+          <div><dt data-i18n="faq2q">Perché la linea si muove invece di diventare dorata?</dt><dd data-i18n="faq2a">Un ponte diritto o un anello attorno a una sola pietra resta mobile. Avvolgi o aggancia due punti separati del terreno con lo stesso tratto. Toccare una sola pietra non basta.</dd></div>
+
+          <div><dt data-i18n="faq3q">Posso perdere anche con un muro dorato?</dt><dd data-i18n="faq3a">Sì. Il colore dorato indica che il muro è fissato, non che Pip sia completamente circondato. Le api usano i percorsi rimasti. Controlla i varchi prima di consumare tutto il nettare.</dd></div>
+          <div><dt data-i18n="faq4q">Come vengono assegnate le stelle?</dt><dd data-i18n="faq4a">Prima proteggi Pip fino alla fine del tempo. Una vittoria con al massimo 45 di nettare consumato dà tre stelle; oltre 45 e fino a 72 dà due stelle; oltre 72 ne dà una. Un tentativo fallito non assegna stelle.</dd></div>
+          <div><dt data-i18n="faq5q">Rigiocare cancella il mio miglior risultato?</dt><dd data-i18n="faq5a">No. Una vittoria può migliorare le stelle salvate, ma un risultato peggiore non le sostituisce. Anche i livelli aperti restano disponibili nello stesso browser.</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Giochi correlati</h3><p data-i18n="relatedIntro">Se ti piace disegnare una difesa sotto pressione, prova questi giochi:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/it/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Battaglione Prismi Animali</strong><span data-i18n="relatedPrismDescription">Sposta una batteria di prismi automatica tra tre corsie e proteggi un nucleo di cristallo da formazioni mutevoli.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/it/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Battaglione Prismi</strong><span data-i18n="relatedPrismDescription">Passa fra tre corsie per concentrare il fuoco automatico su mostri e bombe e proteggere il cristallo.</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/it/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Apri un percorso nella foresta, posiziona i difensori e proteggi un nucleo di cristallo attraverso sei regole dei boss.</span></span></a>
         </div></article>
       </div>
@@ -202,7 +206,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

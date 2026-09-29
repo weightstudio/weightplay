@@ -27,7 +27,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#153f35" />
-  <title data-runtime-localize="off">Animal Honey Shield | WeightPlay</title>
+
   <meta name="description" content="Рисуйте и чините нектарные линии во время пчелиных волн, защищая Пипа на 30 этапах." />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
@@ -67,7 +67,7 @@
         <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">медовый щит</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">Язык</span>
-          <select id="localeSelect" data-i18n-aria="language">
+          <select id="localeSelect" data-i18n-aria="language" aria-label="Язык">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
             <option value="ko">한국어</option><option value="es">Español</option>
@@ -79,7 +79,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="Пип под защитой светящейся линии, пока приближаются пчёлы" alt="Изображение игры «медовый щит»" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="Пип под защитой светящейся линии, пока приближаются пчёлы" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Спасательные головоломки Клеверного луга</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">медовый щит</h1>
@@ -95,23 +95,27 @@
         <span class="game-info-kicker" data-i18n="guideKicker">Руководство к оригинальной игре WeightPlay</span>
         <h2 data-wp-game-title data-runtime-localize="off">медовый щит</h2>
         <p data-i18n="guideIntro">Пип подошёл к ульям Клеверного луга. Рисуйте преграды во время полёта пчёл и укрепляйте проходы, пока они не достигли щенка.</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Защита рисованием</span><span>Ремонт в реальном времени</span><span>Звёзды за короткие линии</span></div></div>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Защита рисованием</span><span>Крепление в двух точках</span><span>Управление нектаром</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">Как играть</h3><ol>
           <li data-i18n="how1">Проведите по лугу, чтобы нарисовать светящуюся нектарную преграду.</li>
-          <li data-i18n="how2">Пчёлы ждут, пока вы рисуете. Отпустите первую подходящую линию, чтобы начать волну; затем можно укреплять защиту.</li>
+          <li data-i18n="how2">Отпустите первую допустимую линию, чтобы пчёлы начали двигаться. После этого рисование новых линий не останавливает волну.</li>
           <li data-i18n="how3">Дождитесь нуля на таймере, не позволив пчеле коснуться Пипа.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Правила и результат</h3><p data-i18n="rulesText">Линии не рвутся. Если путь открыт, пчёлы сразу летят по нему; иначе они толкают, крутят и гнут стену. Круг вокруг одного камня — лишь шарнир: рой стягивает стену к камню. Золотой становится только одна линия, зацепленная за две разнесённые точки рельефа.</p><p data-i18n="guideExtra">Перед рисованием найдите улей, Пипа и две отдельные опоры на местности. Первая подходящая линия запускает пчёл; оставьте нектар, чтобы закрыть обход короткой линией. Если Пипа коснутся, попробуйте другую форму.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Маршруты луга</h3><p data-i18n="progressText">На следующих маршрутах меняются ульи, местность и ветер. Каждая победа открывает следующий маршрут.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Правила и результат</h3><p data-i18n="rulesText">Линии не рвутся. Пчёлы используют любой открытый путь к Пипу. Только когда все пути перекрыты, они толкают и поворачивают свободные стены, пока не появится проход. Один и тот же штрих нужно зацепить за две разнесённые точки рельефа, чтобы он закрепился и стал золотым. Вокруг закреплённой стены всё ещё может оставаться путь.</p><p data-i18n="guideExtra">Перед рисованием найдите улей, Пипа и две отдельные опоры на местности. Первая подходящая линия запускает пчёл; оставьте нектар, чтобы закрыть обход короткой линией. Если Пипа коснутся, попробуйте другую форму.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Маршруты луга</h3><p data-i18n="progressText">30 этапов разделены на шесть глав по пять. В следующих главах меняются ульи, рельеф и ветер. Защитите Пипа до конца таймера, чтобы открыть следующий этап, или повторите пройденный ради большего числа звёзд.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Полезные советы</h3><p data-i18n="tipsText">Прямой мост и круг вокруг одного камня остаются подвижными. Нужны две петли, встречные крюки или настоящая выемка рельефа.</p></article>
-        <article class="game-info-section"><h3 data-i18n="saveTitle">Сохранение и конфиденциальность</h3><p data-i18n="saveText">Открытые этапы и лучшие звёзды хранятся только в браузере. Учётная запись и личные данные не нужны.</p></article>
+        <article class="game-info-section" data-wp-honey-design-note><h3 data-i18n="designTitle">Почему важно расположение линии</h3><p data-i18n="designText">Длинная стена расходует больше нектара, но не обязательно перекрывает путь. Выбирайте две опоры и проверяйте, где пчёлы могут облететь линию. Короткая дополнительная преграда способна закрыть проход, однако потраченный на неё нектар тоже влияет на звёзды.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Сохранение и конфиденциальность</h3><p data-i18n="saveText">Открытые этапы, победы и лучшие звёзды сохраняются в этом браузере. Учётная запись не нужна. Удаление данных сайта стирает прогресс; другой браузер или устройство не получает его автоматически.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">Вопросы</h3><dl>
-          <div><dt data-i18n="faq1q">Можно рисовать после вылета пчёл?</dt><dd data-i18n="faq1a">Да. Пока есть нектар, добавьте линию или соедините свободную стену с рельефом.</dd></div>
-          <div><dt data-i18n="faq2q">Пчёлы получают вред?</dt><dd data-i18n="faq2a">Нет. Преграды мягко направляют их обратно к цветам.</dd></div>
-        </dl></article>
+          <div><dt data-i18n="faq1q">Можно рисовать после вылета пчёл?</dt><dd data-i18n="faq1a">Да, пока остаётся нектар. Добавьте короткую линию, чтобы перекрыть проход. Во время рисования пчёлы продолжают двигаться.</dd></div>
+          <div><dt data-i18n="faq2q">Почему линия двигается, а не становится золотой?</dt><dd data-i18n="faq2a">Прямой мост или петля вокруг одного камня остаётся подвижной. Обведите или зацепите одним штрихом две разнесённые точки рельефа. Простого касания одного камня недостаточно.</dd></div>
+
+          <div><dt data-i18n="faq3q">Можно ли проиграть с золотой стеной?</dt><dd data-i18n="faq3a">Да. Золотой цвет означает, что стена закреплена, а не что Пип полностью окружён. Пчёлы используют оставшиеся пути. Проверьте зазоры, прежде чем потратить весь нектар.</dd></div>
+          <div><dt data-i18n="faq4q">Как начисляются звёзды?</dt><dd data-i18n="faq4a">Сначала защитите Пипа до конца таймера. Победа с расходом не более 45 нектара даёт три звезды, более 45 и не более 72 — две, более 72 — одну. Неудачная попытка звёзд не приносит.</dd></div>
+          <div><dt data-i18n="faq5q">Повторная игра удалит мой лучший результат?</dt><dd data-i18n="faq5a">Нет. Победа может повысить сохранённое число звёзд, но худший результат его не заменяет. Открытые этапы тоже остаются доступными в том же браузере.</dd></div></dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Похожие игры</h3><p data-i18n="relatedIntro">Если вам нравится рисовать защиту под давлением, попробуйте эти игры:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ru/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Батальон Животных Призм</strong><span data-i18n="relatedPrismDescription">Переключайте автоматическую призменную батарею между тремя линиями и защищайте кристальное ядро от меняющихся построений.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ru/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Батальон Животных Призм</strong><span data-i18n="relatedPrismDescription">Переключайтесь между тремя полосами, направляйте автоматический огонь на приближающихся монстров и бомбы и защищайте кристалл.</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ru/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Прокладывайте открытый лесной маршрут, расставляйте защитников и берегите кристальное ядро по шести правилам боссов.</span></span></a>
         </div></article>
       </div>
@@ -202,7 +206,7 @@
   <script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-block-frame-v53"></script>
-  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55"></script><script src="game.js?v=20260928-honey-shield-game-start-v61"></script>
+  <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20260928-honey-shield-game-start-v61&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
