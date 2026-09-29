@@ -26,7 +26,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v35";
+  const GAME_VERSION = "v38";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -140,7 +140,7 @@
     rendererDialog = dialog;
     (__wpNotifyMeasurement(), dialog.showModal());
   }
-  const INTERFACE_VERSION = 6;
+  const INTERFACE_VERSION = 8;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
   const W = 1024;
@@ -1883,7 +1883,11 @@
     const objective = modeObjective(config);
     card.dataset.mode = config.mode;
     card.innerHTML = `<em>${modeLabels()[config.mode === "waves" ? 1 : config.mode === "boss" ? 2 : 0]} · ${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+    card.dataset.wpGetGameId = GAME_ID;
+    card.dataset.wpGetIndex = String(index);
+    card.dataset.wpGetState = cleared ? "collected" : "not-collected";
     card.setAttribute("aria-label", `${regionName}. ${stageName(config)}. ${stageRule(config)}. ${objective}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
+    window.ShowGet?.(GAME_ID, index);
   }
 
   function createStageCard(poolIndex) {
@@ -1907,6 +1911,7 @@
       const card = createStageCard(offset);
       bindStageCard(card, stageWindowStart + offset);
       nodes.stageRail.append(card);
+      window.ShowGet?.(GAME_ID, stageWindowStart + offset);
       return card;
     });
     Object.assign(nodes.stageRail.dataset, { wpStageVirtualized: "bounded-recycle", wpStagePoolSize: String(STAGE_CARD_POOL_SIZE), wpStageTotal: String(STAGE_COUNT), wpStageWindowStart: String(stageWindowStart), wpStageWindowEnd: String(stageWindowStart + STAGE_CARD_POOL_SIZE - 1), wpStageRecycleCount: "0" });
@@ -2981,6 +2986,7 @@
     resultReadyAt = performance.now() + 450;
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
+    window.ShowResultGet?.(GAME_ID, stageCleared);
     const primaryAction = stageCleared && state.stage < STAGE_COUNT
       ? nodes.nextStageBtn
       : stageCleared

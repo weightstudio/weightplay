@@ -142,6 +142,12 @@ html[data-wp-shared-interface="7"] body #equipmentPage {
   overscroll-behavior: contain !important;
 }
 
+/* Interface 8 replaces the cleared-card star with the shared cube marker. */
+html[data-wp-shared-interface="7"] body .stage-card.is-cleared::after {
+  content: none !important;
+  display: none !important;
+}
+
 /* Battle: shared frame owns the 48px title-free header, Back and Settings.
    Keep only game-content containment here and do not restyle shared controls. */
 html[data-wp-shared-interface="7"] body #gamePanel [data-wp-frame-content="battle"] {
