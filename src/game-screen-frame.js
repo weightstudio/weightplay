@@ -1,7 +1,7 @@
 /* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
-  const BLOCK_CUBE_URL = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-stable-v4';
+  const BLOCK_CUBE_URL = '/Assets/weightplay-block-world-cube-v1.svg?v=20260929-block-world-cube-v1';
   function setItemCollectionStatus(itemRoot, { itemId, state, labels, placement = 'inline' } = {}) {
     const allowedStates = new Set(['collected', 'not-collected', 'unknown']);
     const allowedPlacements = new Set(['inline', 'top-left', 'top-right']);

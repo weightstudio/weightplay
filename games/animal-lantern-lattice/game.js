@@ -50,9 +50,11 @@
   const progressKey = "weightplay-animal-lantern-lattice-progress-v2";
   const campaignBestKey = "weightplay-animal-lantern-lattice-best-v2";
   const legacyCampaignBestKey = "weightplay-animal-lantern-lattice-best-v1";
-  const stageBestKey = "weightplay-animal-lantern-lattice-stage-best-v1";
+  // v1 counted incomplete prompts as checks. Keep it in storage, but start a
+  // clean record for the new complete-chain-only score so star ranks are fair.
+  const stageBestKey = "weightplay-animal-lantern-lattice-stage-best-v2";
   const state = {
-    locale: routeLocale || "en", path: 0, chain: [], sessionChecks: 0, checks: 0,
+    locale: routeLocale || "en", path: 0, chain: [], motionSlot: null, sessionChecks: 0, checks: 0,
     screen: "main", campaignRun: false, lastResultCampaign: false,
   };
   const $ = (id) => document.getElementById(id);
@@ -143,6 +145,26 @@
     writeProgress(progress);
   };
   const expectedTarget = (item) => item.reverse ? [...item.target].reverse() : item.target;
+  const routeClues = (item, seed) => {
+    const clues = item.target.slice(1).map((name, index) => ({ previous: item.target[index], name }));
+    let value = (seed + 1) * 2654435761 >>> 0;
+    const random = () => {
+      value ^= value << 13;
+      value ^= value >>> 17;
+      value ^= value << 5;
+      return (value >>> 0) / 4294967296;
+    };
+    for (let index = clues.length - 1; index > 0; index -= 1) {
+      const swap = Math.floor(random() * (index + 1));
+      [clues[index], clues[swap]] = [clues[swap], clues[index]];
+    }
+    if (clues.length > 1 && clues.every((clue, index) => clue.previous === item.target[index] && clue.name === item.target[index + 1])) {
+      clues.push(clues.shift());
+    }
+    return clues;
+  };
+  const starCountForChecks = (checks) => Math.max(1, Math.min(3, 4 - Number(checks)));
+  const starMarks = (count) => `${"★".repeat(count)}${"☆".repeat(3 - count)}`;
   const renderProgress = () => {
     const progress = readProgress();
     const node = document.querySelector('[data-copy="progressBody"]');
@@ -162,12 +184,14 @@
     guide.hidden = screen !== "main";
     guide.setAttribute("aria-hidden", String(screen !== "main"));
     document.body.dataset.screen = screen;
+    if (screen === "main") renderProgress();
     if (sharedFrame) sharedFrame.activate(screen === "result" ? "battle" : screen, { covered: screen === "result" });
   };
   const renderStages = ({ entry = false } = {}) => {
     const rail = $("stageList");
     const progress = stageProgressSnapshot = readProgress();
-    if (entry) stageBrowseIndex = progress.highestUnlocked - 1;
+    const stageBests = readStageBests();
+    if (entry) stageBrowseIndex = state.campaignRun ? 0 : progress.highestUnlocked - 1;
     rail.setAttribute("aria-label", `${t("stageAll")} · ${t("progressBody", { unlocked: progress.highestUnlocked, total: paths.length })}`);
     // The shared rail skin enables smooth scrolling for legacy CSS snap rails.
     // This data-backed controller owns frame-by-frame movement and must not
@@ -191,11 +215,22 @@
       meta.className = "stage-card-meta";
       meta.textContent = `${t(item.arcKey)}${item.checkpoint ? ` · ${t("checkpoint")}` : ""}`;
       const preview = document.createElement("small");
-      expectedTarget(item).forEach((id, targetIndex) => {
-        if (targetIndex) preview.append(document.createTextNode(" → "));
-        preview.append(icon(lanterns.find((lantern) => lantern.id === id), "stage-lantern-icon"));
-      });
-      button.setAttribute("aria-label", `${title.textContent}: ${name.textContent}${unlocked ? "" : `, ${t("locked")}`}`);
+      preview.className = "stage-card-summary";
+      const length = document.createElement("span");
+      length.className = "stage-card-length";
+      length.textContent = t("stageLength", { count: item.target.length });
+      const pips = document.createElement("span");
+      pips.className = "stage-route-pips";
+      pips.setAttribute("aria-hidden", "true");
+      for (let spot = 0; spot < item.target.length; spot += 1) pips.append(document.createElement("i"));
+      const best = document.createElement("span");
+      best.className = "stage-card-best";
+      const bestChecks = stageBests[String(index + 1)];
+      best.textContent = bestChecks
+        ? t("stageBest", { count: bestChecks, stars: starMarks(starCountForChecks(bestChecks)) })
+        : t("noBest");
+      preview.append(length, pips, best);
+      button.setAttribute("aria-label", `${title.textContent}: ${name.textContent}${unlocked ? `, ${length.textContent}, ${best.textContent}` : `, ${t("locked")}`}`);
       button.disabled = false;
       button.replaceChildren(title, name, meta, preview);
     };
@@ -207,7 +242,7 @@
         initialIndex: () => stageBrowseIndex,
         bind: bindCard,
         activate: (index) => {
-          if (index + 1 <= readProgress().highestUnlocked) startPath(index);
+          if (index + 1 <= readProgress().highestUnlocked) startPath(index, { campaign: state.campaignRun, resetSession: !state.campaignRun });
         },
         onChange: (index) => { stageBrowseIndex = index; },
       });
@@ -234,21 +269,39 @@
     $("battleRule").textContent = t(item.ruleKey, ruleVars(item));
     $("battleHint").textContent = t("campaignBattleHint", { count: target.length });
     $("sessionChecks").textContent = String(state.sessionChecks);
-    $("clueList").replaceChildren(...target.map((id, index) => {
-      const li = document.createElement("li");
-      const name = t(lanterns.find((lantern) => lantern.id === id).key);
-      li.textContent = index === 0
-        ? t(item.reverse ? "reverseClueStart" : "clueStart", { name })
-        : t("clueFollow", { name, previous: t(lanterns.find((lantern) => lantern.id === target[index - 1]).key) });
-      return li;
+    const clueList = $("clueList");
+    const clueDeckKey = `${state.path}:${state.locale}`;
+    if (clueList.dataset.deck !== clueDeckKey) {
+      clueList.replaceChildren(...routeClues(item, state.path).map(({ previous, name }) => {
+        const li = document.createElement("li");
+        li.textContent = t("clueFollow", {
+          name: t(lanterns.find((lantern) => lantern.id === name).key),
+          previous: t(lanterns.find((lantern) => lantern.id === previous).key),
+        });
+        return li;
+      }));
+      clueList.dataset.deck = clueDeckKey;
+    }
+    const chainList = $("chainList");
+    chainList.setAttribute("aria-label", t("chainProgress", { count: state.chain.length, total: target.length }));
+    chainList.replaceChildren(...Array.from({ length: target.length }, (_, index) => {
+      const id = state.chain[index];
+      const lantern = id && lanterns.find((entry) => entry.id === id);
+      const slot = document.createElement(lantern ? "button" : "span");
+      slot.className = `chain-slot${lantern ? " has-light" : ""}${state.motionSlot === index ? " is-entering" : ""}`;
+      slot.dataset.chainSlot = String(index);
+      if (lantern) {
+        slot.type = "button";
+        slot.setAttribute("aria-label", t("undoLantern", { position: index + 1, name: t(lantern.key) }));
+        slot.append(icon(lantern, "chain-icon"), Object.assign(document.createElement("span"), { className: "chain-position", textContent: String(index + 1) }));
+        slot.addEventListener("click", () => rewindChain(index));
+      } else {
+        slot.setAttribute("aria-hidden", "true");
+        slot.append(Object.assign(document.createElement("span"), { className: "chain-position", textContent: String(index + 1) }));
+      }
+      return slot;
     }));
-    $("chainList").replaceChildren(...(state.chain.length ? state.chain.map((id, index) => {
-      const lantern = lanterns.find((entry) => entry.id === id);
-      const span = document.createElement("span");
-      span.className = "chain-light";
-      span.append(icon(lantern, "chain-icon"), document.createTextNode(`${index + 1}. ${t(lantern.key)}`));
-      return span;
-    }) : [Object.assign(document.createElement("span"), { className: "chain-empty", textContent: t("empty") })]));
+    state.motionSlot = null;
     $("lanternGrid").replaceChildren(...lanterns.map((lantern) => {
       const button = document.createElement("button");
       const used = state.chain.filter((id) => id === lantern.id).length;
@@ -273,17 +326,30 @@
         ? t("stageFinishText", { stage: state.path + 1, checks: state.checks, best: readStageBest(state.path + 1) || state.checks })
         : t(item.checkpoint ? "checkpointClear" : "stageClear", resultVars);
     $("skillReport").textContent = t("skillReportText");
+    const stars = starCountForChecks(state.checks);
+    const rating = $("resultRating");
+    rating.textContent = starMarks(stars);
+    rating.setAttribute("aria-label", t("starRating", { stars }));
     const nextButton = $("resultPrimaryBtn");
     nextButton.textContent = t("nextStage");
     nextButton.disabled = finalStage;
     $("resultMapBtn").hidden = false;
     const replayButton = $("resultReplayBtn") || $("resultHomeBtn");
     if (replayButton) replayButton.textContent = t("replay");
-    nextButton.onclick = () => startPath(state.path + 1);
+    nextButton.onclick = () => startPath(state.path + 1, { campaign: state.campaignRun });
   };
   const guideCopy = window.ANIMAL_LANTERN_LATTICE_GUIDE_COPY || {};
   const seoComparison = window.ANIMAL_LANTERN_LATTICE_SEO_COMPARISON || {};
-  const buildGuide = () => guideCopy[state.locale] || guideCopy.en;
+  const buildGuide = () => {
+    const guide = guideCopy[state.locale] || guideCopy.en;
+    return {
+      ...guide,
+      stepIntro: t("guideStepIntro"),
+      steps: ["guideStepRead", "guideStepBuild", "guideStepUndo", "guideStepClear"].map((key) => t(key)),
+      rules: t("guideRules"),
+      tips: t("guideTips"),
+    };
+  };
   const renderGuide = () => {
     const guide=buildGuide(), seo=seoComparison[state.locale]||seoComparison.en, hero=$("guideHero"), sections=$("guideSections");
     if(!hero||!sections)return;
@@ -331,12 +397,15 @@
     renderStages({ entry: true });
     track("session_start");
   };
-  const startPath = (index) => {
+  const startPath = (index, { campaign = false, resetSession = false } = {}) => {
     if (index < 0 || index >= paths.length || index + 1 > readProgress().highestUnlocked) return;
     state.path = index;
     state.chain = [];
+    state.motionSlot = null;
     state.checks = 0;
+    state.campaignRun = campaign;
     state.lastResultCampaign = false;
+    if (resetSession) state.sessionChecks = 0;
     show("battle");
     renderBattle();
     track("path_start", { path: state.path + 1, arc: paths[state.path].arcKey });
@@ -347,12 +416,23 @@
     const canEcho = item.echoId === id && used === 1;
     if (state.chain.length >= expectedTarget(item).length || (used > 0 && !canEcho)) return;
     state.chain.push(id);
+    state.motionSlot = state.chain.length - 1;
     setBattleStatus("", "neutral");
     renderBattle();
     track("lantern_choose", { path: state.path + 1, position: state.chain.length, lantern: id });
   };
+  const rewindChain = (index) => {
+    if (index < 0 || index >= state.chain.length) return;
+    const removed = state.chain.length - index;
+    state.chain = state.chain.slice(0, index);
+    state.motionSlot = null;
+    setBattleStatus("", "neutral");
+    renderBattle();
+    track("rewind", { path: state.path + 1, from: index + 1, removed });
+  };
   const resetChain = () => {
     state.chain = [];
+    state.motionSlot = null;
     renderBattle();
     setBattleStatus(t("ready"));
     track("reset", { path: state.path + 1 });
@@ -360,13 +440,13 @@
   const checkPath = () => {
     const item = paths[state.path];
     const target = expectedTarget(item);
-    state.checks += 1;
-    state.sessionChecks += 1;
     if (state.chain.length < target.length) {
-      setBattleStatus(t("campaignNeedMore", { count: target.length }), "error");
+      setBattleStatus(t("campaignNeedMore", { count: target.length - state.chain.length }), "neutral");
       track("check", { path: state.path + 1, checks: state.sessionChecks, correct: false, reason: "incomplete" });
       return;
     }
+    state.checks += 1;
+    state.sessionChecks += 1;
     const firstMismatch = target.findIndex((id, index) => id !== state.chain[index]);
     const decoyChosen = item.decoy && state.chain.includes(item.decoy);
     track("check", { path: state.path + 1, checks: state.sessionChecks, correct: firstMismatch < 0 && !decoyChosen });
@@ -394,12 +474,12 @@
   };
   $("startBtn").addEventListener("click", startSession);
   $("mapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages({ entry: true }); track("path_map"); });
-  $("stageBackBtn").addEventListener("click", () => show("main"));
-  $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages({ entry: true }); });
+  $("stageBackBtn").addEventListener("click", () => { state.campaignRun = false; show("main"); });
+  $("battleBackBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages({ entry: true }); });
   $("resultMapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages({ entry: true }); });
   $("resultHomeBtn").addEventListener("click", () => {
     state.campaignRun = false;
-    startPath(state.path);
+    startPath(state.path, { resetSession: true });
   });
   $("checkBtn").addEventListener("click", checkPath);
   $("resetBtn").addEventListener("click", resetChain);
