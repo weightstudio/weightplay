@@ -22,7 +22,7 @@
     button.dataset.stageIndex = String(index);
     button.dataset.wpGetGameId = api.gameId;
     button.dataset.wpGetIndex = String(index);
-    button.dataset.wpGetState = getState;
+    if (button.dataset.wpGetState !== getState) button.dataset.wpGetState = getState;
     button.setAttribute("aria-posinset", String(stage.n));
     button.setAttribute("aria-setsize", String(TOTAL));
     button.setAttribute("aria-disabled", String(locked));

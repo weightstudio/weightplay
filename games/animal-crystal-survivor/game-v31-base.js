@@ -26,7 +26,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v38";
+  const GAME_VERSION = "v39";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -1885,7 +1885,8 @@
     card.innerHTML = `<em>${modeLabels()[config.mode === "waves" ? 1 : config.mode === "boss" ? 2 : 0]} · ${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
     card.dataset.wpGetGameId = GAME_ID;
     card.dataset.wpGetIndex = String(index);
-    card.dataset.wpGetState = cleared ? "collected" : "not-collected";
+    const getState = cleared ? "collected" : "not-collected";
+    if (card.dataset.wpGetState !== getState) card.dataset.wpGetState = getState;
     card.setAttribute("aria-label", `${regionName}. ${stageName(config)}. ${stageRule(config)}. ${objective}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
     window.ShowGet?.(GAME_ID, index);
   }

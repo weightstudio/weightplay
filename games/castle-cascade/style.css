@@ -1,16 +1,16 @@
 :root {
   color-scheme: light;
   font-family: Inter, "Noto Sans", system-ui, sans-serif;
-  --ink: #241638;
-  --cream: #fff8ea;
-  --gold: #ffc94a;
-  --violet: #4b246d;
-  --sky: #a8e5f7;
+  --ink: #28243b;
+  --cream: #fff8e9;
+  --gold: #f5c447;
+  --violet: #392952;
+  --sky: #a8deef;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; overflow-x: hidden; }
-body { color: var(--ink); background: linear-gradient(180deg, #c8f2ff 0%, #92d8ef 48%, #574365 100%); }
+body { color: var(--ink); background: #e6e5df; }
 button, select { font: inherit; }
 button { color: inherit; }
 .screen[hidden] { display: none !important; }
@@ -152,6 +152,84 @@ button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid
 .result-actions .primary, .leave-actions .primary { background: var(--gold); box-shadow: 0 4px 0 #b97518; }
 .result-actions button:disabled, .leave-actions button:disabled { opacity: .5; cursor: not-allowed; }
 
+/* v6 / Interface 8: a clean, illustrated 2D shell with movement kept in the board renderer. */
+body { background: #e6e5df; }
+.main-screen { color: #28243b; }
+.main-header, .scene-header { color: #fffaf0; }
+.main-header > [data-wp-frame-title], .main-frame-title { color: inherit; }
+.return, .icon-button { border-radius: 12px; background: #fff8e9; color: #3c3154; box-shadow: 0 3px 0 #b9b5ac; }
+.locale select { border: 2px solid #594b68; border-radius: 9px; }
+.hero {
+  border: 2px solid #574867;
+  border-radius: 22px;
+  background: #fff8e9;
+  box-shadow: 0 5px 0 #b8b0a3;
+}
+.hero-character img { filter: none; }
+.eyebrow { color: #76514a; }
+.primary { border: 2px solid #574867; border-radius: 12px; background: #f5c447; color: #30253e; box-shadow: 0 3px 0 #b3862d; }
+.primary:active, .stage-tabs button:active, .result-actions button:active, .leave-actions button:active { transform: translateY(2px); box-shadow: none; }
+.canvas { color: #fffaf0; background: #28223c; }
+.scene-header, .stage-tabs { background: #382a50; }
+.stage-card {
+  min-height: 292px;
+  grid-template-rows: auto 64px auto minmax(58px, auto);
+  border: 2px solid #665873;
+  border-radius: 17px;
+  background: #fff8e9;
+  box-shadow: 0 4px 0 #161328;
+}
+.stage-card.selected { border-color: #d4a52c; box-shadow: 0 0 0 2px #f5c447, 0 4px 0 #161328; }
+.stage-card img { border-radius: 10px; background: #d8e8dd; }
+.stage-card .stage-objective {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  align-items: center;
+  gap: 4px 9px;
+  overflow: hidden;
+  font-size: .72rem;
+  line-height: 1.2;
+}
+.objective-icons { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3px 7px; }
+.objective-chip { display: inline-flex; align-items: center; gap: 2px; min-width: 31px; color: #2d263c; font-weight: 900; line-height: 1; }
+.objective-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  background-image: url("./assets/castle-cascade-board-sprites-v2.webp");
+  background-repeat: no-repeat;
+  background-size: 500% 400%;
+  background-position: var(--sprite-x) var(--sprite-y);
+}
+.objective-count { min-width: 1.2em; font-size: .76rem; text-align: center; }
+.stage-objective-icons { justify-content: flex-start; }
+.stage-objective-icons .objective-icon { width: 26px; height: 26px; }
+.stage-moves { flex: 0 0 100%; color: #5a4c67; font-weight: 800; }
+.battle-hud { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: clamp(4px, 1.4vw, 12px); padding-inline: 8px; font-size: .78rem; }
+.battle-hud b { color: #fffaf0; }
+.battle-objective-indicators { min-width: 0; max-width: 100%; }
+.battle-objective-indicators .objective-icons { flex-wrap: nowrap; overflow: hidden; }
+.battle-objective-indicators .objective-chip { gap: 0; color: #fffaf0; }
+.battle-objective-indicators .objective-icon { width: clamp(23px, 4.8vw, 32px); height: clamp(23px, 4.8vw, 32px); }
+.battle-objective-indicators .objective-count { min-width: .95em; font-size: .74rem; }
+.sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+.battle-content { gap: 7px; }
+.instructions { color: #fff8e9; text-shadow: none; }
+#status { color: #fff8e9; text-shadow: none; }
+.board-viewport { border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.modal-layer { background: #1d1930b8; }
+.modal-card { border: 2px solid #5b4c67; border-radius: 18px; background: #fff8e9; box-shadow: 0 8px 0 #171326; }
+.result-actions button, .leave-actions button { border-radius: 10px; background: #e5ddef; box-shadow: 0 2px 0 #b6a9c4; }
+.result-actions .primary, .leave-actions .primary { background: #f5c447; box-shadow: 0 3px 0 #b3862d; }
+.stage:not([hidden]), .battle:not([hidden]) { animation: scene-arrive 170ms ease-out both; }
+.stage-card.selected { animation: card-select 220ms ease-out both; }
+.objective-chip { animation: objective-pop 200ms ease-out both; }
+@keyframes scene-arrive { from { opacity: .65; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes card-select { from { transform: scale(.985); } to { transform: scale(1); } }
+@keyframes objective-pop { from { opacity: .55; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
+
 @media (max-width: 680px) {
   .main-screen { padding-inline: 12px; gap: 14px; }
   .main-header { grid-template-columns: 50px minmax(0, 1fr) 104px; }
@@ -162,7 +240,7 @@ button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid
   .game-info-sections { grid-template-columns: 1fr; }
   .stage-hud { font-size: .78rem; }
   .battle-hud { font-size: .7rem; }
-  .board-viewport { width: min(100%, calc(100svh - 148px), 760px); border-radius: 15px; }
+  .board-viewport { width: min(100%, calc(100svh - 148px), 760px); border-radius: 0; }
 }
 @media (max-height: 500px) and (orientation: landscape) {
   .battle-content { gap: 0; grid-template-rows: auto minmax(0, 1fr) auto; }

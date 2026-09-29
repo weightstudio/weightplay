@@ -1,6 +1,7 @@
 /* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
+  const BLOCK_CUBE_URL = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-stable-v3';
   function setItemCollectionStatus(itemRoot, { itemId, state, labels, placement = 'inline' } = {}) {
     const allowedStates = new Set(['collected', 'not-collected', 'unknown']);
     const allowedPlacements = new Set(['inline', 'top-left', 'top-right']);
@@ -39,19 +40,20 @@
       .find((item) => item.dataset.wpGetGameId === normalizedGameId && Number(item.dataset.wpGetIndex) === itemIndex);
     if (!itemRoot) return null;
     const state = itemRoot.dataset.wpGetState === 'collected' ? 'collected' : 'not-collected';
-    itemRoot.dataset.wpGetState = state;
-    const icon = itemRoot.querySelector(':scope > [data-wp-get-icon]') || document.createElement('img');
-    icon.dataset.wpGetIcon = '';
-    icon.dataset.wpGetState = state;
-    icon.src = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-cache-v2';
-    icon.alt = '';
-    icon.setAttribute('aria-hidden', 'true');
-    icon.draggable = false;
-    if (!icon.isConnected) itemRoot.append(icon);
-    if (itemRoot.isConnected && window.getComputedStyle?.(itemRoot).position === 'static') {
-      itemRoot.dataset.wpGetAnchor = 'true';
+    if (itemRoot.dataset.wpGetState !== state) itemRoot.dataset.wpGetState = state;
+
+    // Stage cards are recycled and their child content may be replaced on every
+    // rebind. Keep the marker on the Item itself so it survives that operation
+    // without creating/reloading an <img> during a swipe.
+    itemRoot.querySelector(':scope > img[data-wp-get-icon]')?.remove();
+    if (itemRoot.dataset.wpGetIcon !== 'true') itemRoot.dataset.wpGetIcon = 'true';
+    if (itemRoot.dataset.wpGetAnchorChecked !== 'true') {
+      if (itemRoot.isConnected && window.getComputedStyle?.(itemRoot).position === 'static') {
+        itemRoot.dataset.wpGetAnchor = 'true';
+      }
+      itemRoot.dataset.wpGetAnchorChecked = 'true';
     }
-    return icon;
+    return itemRoot;
   }
   function showResultGet(gameId, obtained) {
     const normalizedGameId = String(gameId ?? '').trim();
@@ -81,7 +83,7 @@
     }
     const icon = existingIcon || document.createElement('img');
     icon.dataset.wpResultGetIcon = '';
-    icon.src = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-cache-v2';
+    if (icon.getAttribute('src') !== BLOCK_CUBE_URL) icon.setAttribute('src', BLOCK_CUBE_URL);
     icon.alt = '';
     icon.setAttribute('aria-hidden', 'true');
     icon.draggable = false;

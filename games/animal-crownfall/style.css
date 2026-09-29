@@ -78,5 +78,11 @@ body[data-screen="stage"] .wp-tutorial-button{display:none}
 #mainGuide .crown-related-card span{overflow-wrap:anywhere;line-height:1.5}
 #mainGuide .crown-related-card:focus-visible{outline:3px solid #edb74e;outline-offset:3px}
 @media(min-width:700px){#mainGuide{padding-inline:24px}}
+/* Keep Crownfall's shared 52px Main action fully in the first fold on short landscape screens. */
+@media (min-width: 700px) and (max-height: 430px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-crownfall"] .wp-standard-main-composition {
+    padding-top: 12px !important;
+  }
+}
 .wp-tutorial-backdrop[data-game-id="animal-crownfall"]{grid-template-columns:minmax(0,1fr);overflow:auto;overscroll-behavior:contain}
 .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-card{max-width:100%;overscroll-behavior:contain}

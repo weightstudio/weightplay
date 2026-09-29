@@ -1474,13 +1474,21 @@ html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp
 /* Stage Item pickup marker: one lobby-matched cube image overlays the card;
    only the icon changes state, so Stage text and carousel geometry stay fixed. */
 html[data-wp-shared-interface="7"] body :is([data-wp-get-anchor="true"],[data-wp-result-get-anchor="true"]) {position:relative!important}
-html[data-wp-shared-interface="7"] body :is([data-wp-get-icon],[data-wp-result-get-icon]) {
+/* Stage cube belongs to the Item root, not its recyclable children. The shared
+   CSS pseudo-element keeps the lobby asset mounted while a virtual rail rebinds. */
+html[data-wp-shared-interface="7"] body [data-wp-get-icon="true"]::before {
+  content:""!important;position:absolute!important;z-index:4!important;inset-block-start:8px!important;inset-inline-end:8px!important;
+  display:block!important;box-sizing:border-box!important;width:30px!important;height:34px!important;min-width:30px!important;min-height:34px!important;
+  background-image:url("../Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-stable-v3")!important;
+  background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important;
+  pointer-events:none!important;user-select:none!important;filter:none!important;transition:none!important;animation:none!important;
+}
+html[data-wp-shared-interface="7"] body [data-wp-get-icon="true"][data-wp-get-state="not-collected"]::before {filter:grayscale(1)!important;opacity:.62!important}
+html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {
   position:absolute!important;z-index:4!important;inset-block-start:8px!important;inset-inline-end:8px!important;
   display:block!important;box-sizing:border-box!important;width:30px!important;height:34px!important;min-width:30px!important;min-height:34px!important;
-  object-fit:contain!important;pointer-events:none!important;user-select:none!important;filter:none!important;
-  transition:filter 160ms ease-out,transform 160ms ease-out!important;
+  object-fit:contain!important;pointer-events:none!important;user-select:none!important;filter:none!important;transition:none!important;
 }
-html[data-wp-shared-interface="7"] body [data-wp-get-icon][data-wp-get-state="not-collected"] {filter:grayscale(1)!important;opacity:.62!important}
 @keyframes wp-result-get-enter {from{opacity:.25;transform:translateY(5px) scale(.86)}to{opacity:1;transform:translateY(0) scale(1)}}
 html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:wp-result-get-enter 220ms ease-out both}
 @media (prefers-reduced-motion:reduce) {

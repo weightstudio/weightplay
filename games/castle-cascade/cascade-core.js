@@ -325,31 +325,41 @@ function addArea(set, index, radius, powerSet) {
   }
 }
 
-function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets) {
+function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects = []) {
   direct.add(index);
   powerSet.add(index);
-  if (power === "arrowH") addRow(direct, index, powerSet);
-  else if (power === "arrowV") addColumn(direct, index, powerSet);
-  else if (power === "bomb") addArea(direct, index, 2, powerSet);
-  else if (power === "bird") {
+  if (power === "arrowH") {
+    addRow(direct, index, powerSet);
+    visualEffects.push({ type: "arrow", index, axis: "h" });
+  } else if (power === "arrowV") {
+    addColumn(direct, index, powerSet);
+    visualEffects.push({ type: "arrow", index, axis: "v" });
+  } else if (power === "bomb") {
+    addArea(direct, index, 2, powerSet);
+    visualEffects.push({ type: "bomb", index, radius: 2 });
+  } else if (power === "bird") {
     const target = bestTarget(board, excludedBirdTargets);
     if (target >= 0) {
       direct.add(target);
       powerSet.add(target);
       excludedBirdTargets.add(target);
+      visualEffects.push({ type: "bird", index, target });
     }
   } else if (power === "prism") {
     const color = board[index].c;
+    const targets = [];
     board.forEach((tile, target) => {
       if (tile.c === color) {
         direct.add(target);
         powerSet.add(target);
+        targets.push(target);
       }
     });
+    visualEffects.push({ type: "prism", index, color, targets });
   }
 }
 
-function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set()) {
+function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set(), visualEffects = []) {
   const queue = [...direct].filter((index) => board[index]?.p && !suppressed.has(index));
   const activated = new Set();
   const excludedBirdTargets = new Set(direct);
@@ -360,11 +370,12 @@ function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set()) 
     const power = board[index]?.p;
     if (!power) continue;
     const before = new Set(direct);
-    addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets);
+    addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects);
     for (const hit of direct) {
       if (!before.has(hit) && board[hit]?.p && !activated.has(hit) && !suppressed.has(hit)) queue.push(hit);
     }
   }
+  return visualEffects;
 }
 
 function addAdjacentHitCells(direct) {
@@ -408,7 +419,7 @@ function addStats(stats, values) {
   for (const key of Object.keys(values)) if (values[key]) stats[key] += 1;
 }
 
-function resolveOneBatch(state, direct, powerSet, special = null, forceGate = false) {
+function resolveOneBatch(state, direct, powerSet, special = null, forceGate = false, visualEffects = []) {
   const board = state.board;
   const before = cloneBoard(board);
   const directHits = [...direct].sort((a, b) => a - b);
@@ -460,14 +471,29 @@ function resolveOneBatch(state, direct, powerSet, special = null, forceGate = fa
     tile.p = null;
   }
 
-  dropAndRefill(state);
-  stats.key += deliverKeys(board);
-  return { before, after: cloneBoard(board), directHits, adjacentHits, powerHits: [...powerSet].sort((a, b) => a - b), stats };
+  const cleared = cloneBoard(board);
+  const movements = dropAndRefill(state);
+  const deliveredKeys = deliverKeys(board);
+  stats.key += deliveredKeys.length;
+  return {
+    before,
+    cleared,
+    after: cloneBoard(board),
+    directHits,
+    adjacentHits,
+    powerHits: [...powerSet].sort((a, b) => a - b),
+    visualEffects,
+    createdSpecial: special,
+    movements,
+    deliveredKeys,
+    stats,
+  };
 }
 
 function dropAndRefill(state) {
   const board = state.board;
   const level = LEVELS[state.stage];
+  const movements = [];
   for (let col = 0; col < BOARD_WIDTH; col += 1) {
     let bottom = BOARD_HEIGHT - 1;
     while (bottom >= 0) {
@@ -481,34 +507,59 @@ function dropAndRefill(state) {
       const payloads = [];
       for (let row = segmentBottom; row >= segmentTop; row -= 1) {
         const tile = board[row * BOARD_WIDTH + col];
-        if (tile.c !== null || tile.p || tile.key) payloads.push({ c: tile.c, p: tile.p, key: tile.key });
+        if (tile.c !== null || tile.p || tile.key) {
+          payloads.push({ fromIndex: row * BOARD_WIDTH + col, payload: { c: tile.c, p: tile.p, key: tile.key } });
+        }
       }
       let payloadIndex = 0;
+      let spawnCount = 0;
       for (let row = segmentBottom; row >= segmentTop; row -= 1) {
         const index = row * BOARD_WIDTH + col;
         const tile = board[index];
-        const payload = payloads[payloadIndex++];
-        if (payload) {
-          tile.c = payload.c;
-          tile.p = payload.p;
-          tile.key = payload.key;
+        const entry = payloads[payloadIndex++];
+        if (entry) {
+          tile.c = entry.payload.c;
+          tile.p = entry.payload.p;
+          tile.key = entry.payload.key;
+          if (entry.fromIndex !== index) {
+            movements.push({
+              fromIndex: entry.fromIndex,
+              toIndex: index,
+              fromRow: Math.floor(entry.fromIndex / BOARD_WIDTH),
+              toRow: row,
+              col,
+              payload: entry.payload,
+            });
+          }
         } else {
           tile.c = Math.floor(nextRandom(state) * level.colors);
           tile.p = null;
           tile.key = 0;
+          movements.push({
+            fromIndex: null,
+            toIndex: index,
+            fromRow: segmentTop === 0 ? -1 : segmentTop - 0.5,
+            toRow: row,
+            col,
+            spawnOrder: spawnCount,
+            payload: { c: tile.c, p: tile.p, key: tile.key },
+            isNew: true,
+          });
+          spawnCount += 1;
         }
       }
     }
   }
+  return movements;
 }
 
 function deliverKeys(board) {
-  let delivered = 0;
+  const delivered = [];
   for (let col = 0; col < BOARD_WIDTH; col += 1) {
     const exitIndex = board.findLastIndex((tile, index) => index % BOARD_WIDTH === col && tile.exit);
     if (exitIndex < 0 || !board[exitIndex].key) continue;
     board[exitIndex].key = 0;
-    delivered += 1;
+    delivered.push(exitIndex);
   }
   return delivered;
 }
@@ -545,16 +596,26 @@ function comboEffect(state, a, b) {
   const direct = new Set([a, b]);
   const powerSet = new Set([a, b]);
   const suppressed = new Set();
+  const visualEffects = [];
   let forceGate = false;
   const isArrow = (power) => typeof power === "string" && power.startsWith("arrow");
 
   if (powerA === "prism" || powerB === "prism") {
-    const result = colorPowerCombo(state, powerA === "prism" ? a : b, powerA === "prism" ? b : a, direct, powerSet, suppressed);
+    const prismIndex = powerA === "prism" ? a : b;
+    const otherIndex = prismIndex === a ? b : a;
+    const otherPower = board[otherIndex].p;
+    const color = board[otherIndex].c;
+    const targets = otherPower === "prism"
+      ? board.map((_, index) => index)
+      : board.map((tile, index) => tile.c === color ? index : -1).filter((index) => index >= 0);
+    const result = colorPowerCombo(state, prismIndex, otherIndex, direct, powerSet, suppressed);
     forceGate = result.forceGate;
+    visualEffects.push({ type: otherPower === "prism" ? "spectrum" : "prism-combo", index: prismIndex, target: otherIndex, color, power: otherPower, targets });
   } else if (powerA === "bomb" && powerB === "bomb") {
     addArea(direct, b, 3, powerSet);
     suppressed.add(a);
     suppressed.add(b);
+    visualEffects.push({ type: "nova", index: b, radius: 3 });
   } else if ((powerA === "bomb" && isArrow(powerB)) || (powerB === "bomb" && isArrow(powerA))) {
     const center = b;
     const row = Math.floor(center / BOARD_WIDTH);
@@ -567,43 +628,51 @@ function comboEffect(state, a, b) {
     }
     suppressed.add(a);
     suppressed.add(b);
+    visualEffects.push({ type: "siege", index: center });
   } else if (isArrow(powerA) && isArrow(powerB)) {
     addRow(direct, b, powerSet);
     addColumn(direct, b, powerSet);
     suppressed.add(a);
     suppressed.add(b);
+    visualEffects.push({ type: "cross", index: b });
   } else if (powerA === "bird" && powerB === "bird") {
     const excluded = new Set([a, b]);
+    const targets = [];
     for (let count = 0; count < 2; count += 1) {
       const target = bestTarget(board, excluded);
       if (target >= 0) {
         direct.add(target);
         powerSet.add(target);
         excluded.add(target);
+        targets.push(target);
       }
     }
     suppressed.add(a);
     suppressed.add(b);
+    visualEffects.push({ type: "flock", origins: [a, b], targets });
   } else if (powerA === "bird" || powerB === "bird") {
     const bird = powerA === "bird" ? a : b;
     const partnerIndex = bird === a ? b : a;
     const partnerPower = board[partnerIndex].p;
     if (partnerPower) {
       const target = bestTarget(board, new Set([a, b]));
-      if (target >= 0) addPowerEffect(board, target, partnerPower, direct, powerSet, new Set([target]));
+      if (target >= 0) {
+        visualEffects.push({ type: "bird-carry", index: bird, target, power: partnerPower });
+        addPowerEffect(board, target, partnerPower, direct, powerSet, new Set([target]), visualEffects);
+      }
     } else {
       const excluded = new Set([a, b]);
-      addPowerEffect(board, bird, "bird", direct, powerSet, excluded);
+      addPowerEffect(board, bird, "bird", direct, powerSet, excluded, visualEffects);
     }
     suppressed.add(a);
     suppressed.add(b);
   } else {
-    addPowerEffect(board, a, powerA, direct, powerSet, new Set([a, b]));
-    addPowerEffect(board, b, powerB, direct, powerSet, new Set([a, b]));
+    addPowerEffect(board, a, powerA, direct, powerSet, new Set([a, b]), visualEffects);
+    addPowerEffect(board, b, powerB, direct, powerSet, new Set([a, b]), visualEffects);
   }
 
-  expandTriggeredPowers(board, direct, powerSet, suppressed);
-  return { direct, powerSet, forceGate };
+  expandTriggeredPowers(board, direct, powerSet, suppressed, visualEffects);
+  return { direct, powerSet, forceGate, visualEffects };
 }
 
 function finishState(state) {
@@ -640,14 +709,15 @@ export function reshuffle(state) {
   return false;
 }
 
-function resolveCascade(state, initialDirect, initialPower, special = null, forceGate = false) {
+function resolveCascade(state, initialDirect, initialPower, special = null, forceGate = false, initialVisualEffects = []) {
   const batches = [];
   let direct = new Set(initialDirect);
   let powerSet = new Set(initialPower);
   let specialToPlace = special;
   let forceGateNow = forceGate;
+  let visualEffects = initialVisualEffects;
   for (let batchIndex = 0; batchIndex < 40; batchIndex += 1) {
-    const batch = resolveOneBatch(state, direct, powerSet, specialToPlace, forceGateNow);
+    const batch = resolveOneBatch(state, direct, powerSet, specialToPlace, forceGateNow, visualEffects);
     batches.push(batch);
     const match = matchGroups(state.board);
     if (!match.cells.size) break;
@@ -656,7 +726,7 @@ function resolveCascade(state, initialDirect, initialPower, special = null, forc
     powerSet = new Set();
     specialToPlace = nextSpecial;
     forceGateNow = false;
-    expandTriggeredPowers(state.board, direct, powerSet);
+    visualEffects = expandTriggeredPowers(state.board, direct, powerSet);
   }
   return batches;
 }
@@ -676,8 +746,8 @@ export function activatePower(state, index) {
   state.moves -= 1;
   const direct = new Set([index]);
   const powerSet = new Set([index]);
-  expandTriggeredPowers(state.board, direct, powerSet);
-  const batches = resolveCascade(state, direct, powerSet);
+  const visualEffects = expandTriggeredPowers(state.board, direct, powerSet);
+  const batches = resolveCascade(state, direct, powerSet, null, false, visualEffects);
   return actionResult(state, true, "power", batches, reshufflesBefore);
 }
 
@@ -694,7 +764,7 @@ export function playSwap(state, a, b) {
     swapPieces(state.board, a, b);
     state.moves -= 1;
     const effect = comboEffect(state, a, b);
-    const batches = resolveCascade(state, effect.direct, effect.powerSet, null, effect.forceGate);
+    const batches = resolveCascade(state, effect.direct, effect.powerSet, null, effect.forceGate, effect.visualEffects);
     return actionResult(state, true, "power-combo", batches, reshufflesBefore);
   }
 
