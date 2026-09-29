@@ -339,7 +339,7 @@ body.general-lobby-page[data-game-hall="tabletop"] .game-hall-switch button.acti
 body.general-lobby-page .game-hall-switch button:active { transform: translateY(3px); box-shadow: inset 0 2px 0 #698e81, 0 2px 0 #071923; }
 body.general-lobby-page .game-hall-switch small { color: #aec9c6; }
 body.general-lobby-page .game-hall-switch button.active small { color: #d6f0d3; }
-body.general-lobby-page .game-hall-switch button::before { content: ""; width: 26px; height: 30px; top: 19px; background: url('../Assets/weightplay-block-cube-v1.svg') center / contain no-repeat; }
+body.general-lobby-page .game-hall-switch button::before { content: ""; width: 26px; height: 30px; top: 19px; background: url('../Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-cache-v2') center / contain no-repeat; }
 body.general-lobby-page .game-hall-switch button[data-hall-tab="tabletop"]::before { content: ""; height: 26px; top: 21px; background: conic-gradient(#f7d69c 25%,#846044 0 50%,#f7d69c 0 75%,#846044 0) 0 0 / 13px 13px; clip-path: none; border: 2px solid #f1be68; box-shadow: 2px 3px 0 #0b202a; }
 
 body.general-lobby-page .lobby-search-row { margin-bottom: 17px; }

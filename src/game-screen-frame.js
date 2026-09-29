@@ -43,7 +43,7 @@
     const icon = itemRoot.querySelector(':scope > [data-wp-get-icon]') || document.createElement('img');
     icon.dataset.wpGetIcon = '';
     icon.dataset.wpGetState = state;
-    icon.src = '/Assets/weightplay-block-cube-v1.svg';
+    icon.src = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-cache-v2';
     icon.alt = '';
     icon.setAttribute('aria-hidden', 'true');
     icon.draggable = false;
@@ -81,7 +81,7 @@
     }
     const icon = existingIcon || document.createElement('img');
     icon.dataset.wpResultGetIcon = '';
-    icon.src = '/Assets/weightplay-block-cube-v1.svg';
+    icon.src = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-cache-v2';
     icon.alt = '';
     icon.setAttribute('aria-hidden', 'true');
     icon.draggable = false;

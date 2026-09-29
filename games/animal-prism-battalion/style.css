@@ -82,3 +82,64 @@ button:not(:disabled):active{transform:scale(.975)}
 
 /* Short-landscape Result keeps all recovery actions visible in the Battle Canvas. */
 @media(max-height:500px) and (min-aspect-ratio:3/2){#result{padding:4px}.result-card{width:min(780px,100%);max-height:calc(100% - 8px);grid-template-columns:82px minmax(0,1fr);grid-template-rows:auto auto auto auto auto;align-content:center;gap:2px 8px;padding:6px}.result-card>img{width:82px;height:82px;grid-row:1/5}.result-card small{font-size:11px}.result-card h2{font-size:22px;line-height:1;margin:2px}.result-card p{font-size:12px;line-height:1.2;margin:2px 0}.result-card .result-stats{grid-column:2;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.result-card .result-stats span{padding:4px;font-size:11px}.result-card .modal-actions{grid-column:1/-1;gap:4px;margin-top:2px}.result-card .modal-actions button{min-height:40px;height:40px;padding:2px 4px;font-size:12px;line-height:1.1}}
+
+/* Prism Lab adapts its upgrade columns to the available shared Stage canvas. */
+body[data-game-id="animal-prism-battalion"] #labTab {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+body[data-game-id="animal-prism-battalion"] #labTab .lab-intro {
+  grid-template-columns: minmax(0, 96px) minmax(0, 1fr);
+  min-width: 0;
+}
+body[data-game-id="animal-prism-battalion"] #labTab .lab-intro > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+body[data-game-id="animal-prism-battalion"] #labTab .lab-intro img {
+  width: min(100%, 96px);
+  height: auto;
+  aspect-ratio: 1;
+}
+body[data-game-id="animal-prism-battalion"] #labTab .upgrades {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  align-items: stretch;
+}
+body[data-game-id="animal-prism-battalion"] #labTab .upgrade {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+body[data-game-id="animal-prism-battalion"] #labTab .upgrade > :is(strong, small) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+body[data-game-id="animal-prism-battalion"] #labTab #labFeedback {
+  min-height: 1.35em;
+  margin: 10px 2px 0;
+}
+@media (max-height: 500px) and (min-aspect-ratio: 3/2) {
+  body[data-game-id="animal-prism-battalion"] #labTab { padding: 8px; }
+  body[data-game-id="animal-prism-battalion"] #labTab .lab-intro {
+    grid-template-columns: 70px minmax(0, 1fr);
+    padding: 8px;
+  }
+  body[data-game-id="animal-prism-battalion"] #labTab .lab-intro img {
+    width: 64px;
+  }
+  body[data-game-id="animal-prism-battalion"] #labTab .upgrades {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+  body[data-game-id="animal-prism-battalion"] #labTab .upgrade {
+    min-height: 110px;
+    padding: 8px;
+    gap: 5px;
+  }
+}
