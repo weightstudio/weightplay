@@ -6,9 +6,9 @@
   const compat = new URL("interface-7-compat.js?v=20260922-interface7-compat", current).href;
   const reviewFix = new URL("interface-7-review-fix.js?v=20260923-interface7-recheck", current).href;
 
-  // Preserve the authored v4 script's parser-blocking execution order, then
-  // apply the scoped Interface 7 compatibility layer and this review correction
-  // before DOMContentLoaded.
+  // Preserve the authored v4 gameplay source's parser-blocking order, then
+  // apply the v5 WeightPlayAudio integration, Interface 7 compatibility layer,
+  // and review correction before DOMContentLoaded.
   document.write('<script src="' + base + '"></scr' + 'ipt>');
   document.write('<script src="' + compat + '"></scr' + 'ipt>');
   document.write('<script src="' + reviewFix + '"></scr' + 'ipt>');
