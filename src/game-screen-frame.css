@@ -322,12 +322,12 @@ body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):
 
 .wp-shell-return[data-wp-return="main"],
 .wp-shell-return[data-wp-return="main"] > .wp-shell-return-arrow {
-  color: var(--wp-main-return-arrow-color, var(--wp-ui-text, #f6f2dd)) !important;
+  color: var(--wp-main-return-arrow-color, var(--wp-ui-text, #176a9d)) !important;
   opacity: 1 !important;
 }
 
 .wp-stage-shell-header > [data-wp-return="stage"] > .wp-shell-return-arrow {
-  color: var(--wp-stage-return-arrow-color, var(--wp-ui-text, #f6f2dd)) !important;
+  color: var(--wp-stage-return-arrow-color, var(--wp-ui-text, #176a9d)) !important;
   opacity: 1 !important;
 }
 
@@ -335,7 +335,7 @@ body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):
 .wp-shell-return[data-wp-return="stage"] > .wp-shell-return-arrow,
 .wp-shell-return[data-wp-return="battle"],
 .wp-shell-return[data-wp-return="battle"] > .wp-shell-return-arrow {
-  color: var(--wp-scene-return-arrow-color, var(--wp-ui-text, #f6f2dd)) !important;
+  color: var(--wp-scene-return-arrow-color, var(--wp-ui-text, #176a9d)) !important;
   opacity: 1 !important;
 }
 
@@ -775,10 +775,10 @@ body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start] {
   cursor: pointer;
 }
 
-body:not(.wp-kids-audience) .wp-standard-main-start:hover,
-body:not(.wp-kids-audience) .wp-standard-main-start:focus-visible,
-body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:hover,
-body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:focus-visible {
+body.wp-shell-main-active:not(.wp-kids-audience) .wp-standard-main-start:hover,
+body.wp-shell-main-active:not(.wp-kids-audience) .wp-standard-main-start:focus-visible,
+body.wp-shell-main-active:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:hover,
+body.wp-shell-main-active:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:focus-visible {
   filter: brightness(1.04);
   outline: 3px solid rgba(255, 234, 160, .42);
   outline-offset: 2px;
@@ -1469,4 +1469,21 @@ html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement^="top-"] [data-wp-item-collection-label] {
   position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;
   clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;
+}
+
+/* Stage Item pickup marker: one lobby-matched cube image overlays the card;
+   only the icon changes state, so Stage text and carousel geometry stay fixed. */
+html[data-wp-shared-interface="7"] body :is([data-wp-get-anchor="true"],[data-wp-result-get-anchor="true"]) {position:relative!important}
+html[data-wp-shared-interface="7"] body :is([data-wp-get-icon],[data-wp-result-get-icon]) {
+  position:absolute!important;z-index:4!important;inset-block-start:8px!important;inset-inline-end:8px!important;
+  display:block!important;box-sizing:border-box!important;width:30px!important;height:34px!important;min-width:30px!important;min-height:34px!important;
+  object-fit:contain!important;pointer-events:none!important;user-select:none!important;filter:none!important;
+  transition:filter 160ms ease-out,transform 160ms ease-out!important;
+}
+html[data-wp-shared-interface="7"] body [data-wp-get-icon][data-wp-get-state="not-collected"] {filter:grayscale(1)!important;opacity:.62!important}
+@keyframes wp-result-get-enter {from{opacity:.25;transform:translateY(5px) scale(.86)}to{opacity:1;transform:translateY(0) scale(1)}}
+html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:wp-result-get-enter 220ms ease-out both}
+@media (prefers-reduced-motion:reduce) {
+  html[data-wp-shared-interface="7"] body :is([data-wp-get-icon],[data-wp-result-get-icon]) {transition:none!important}
+  html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:none!important}
 }

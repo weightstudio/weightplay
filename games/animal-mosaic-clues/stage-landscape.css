@@ -253,3 +253,14 @@ body[data-wp-game-id="animal-mosaic-clues"] #battleScreen [data-wp-battle-utilit
   border-radius: 24px;
   object-fit: cover;
 }
+/* The shared frame's historical blue fallback is low-contrast on Mosaic's
+   dark shell. Keep the readable arrow treatment local to this game's route. */
+body[data-wp-game-id="animal-mosaic-clues"] .wp-shell-return[data-wp-return="main"],
+body[data-wp-game-id="animal-mosaic-clues"] .wp-shell-return[data-wp-return="main"] > .wp-shell-return-arrow,
+body[data-wp-game-id="animal-mosaic-clues"] .wp-shell-return[data-wp-return="stage"],
+body[data-wp-game-id="animal-mosaic-clues"] .wp-shell-return[data-wp-return="stage"] > .wp-shell-return-arrow,
+body[data-wp-game-id="animal-mosaic-clues"] .wp-shell-return[data-wp-return="battle"],
+body[data-wp-game-id="animal-mosaic-clues"] .wp-shell-return[data-wp-return="battle"] > .wp-shell-return-arrow {
+  color: var(--wp-ui-text, #f6f2dd) !important;
+  opacity: 1 !important;
+}

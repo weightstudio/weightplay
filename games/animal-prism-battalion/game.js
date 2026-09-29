@@ -23,7 +23,7 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=35, INTERFACE_VERSION=7;
+  const GAME_VERSION=37, INTERFACE_VERSION=7;
   const prefersReducedMotion=Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const screenFrame=window.WeightPlayScreenFrame.mount({
     root:$('gameFrame'),localeSelect:$('locale'),
@@ -52,21 +52,20 @@
   LANE_COPY.laneGuideIntro="Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.";
   LANE_COPY.laneMainSummary="Switch lanes, stop shadow waves, collect power cores, and protect the crystal.";
   const SAVE_KEY="animalPrismBattalionSaveV1";
-  const defaultSave=()=>({unlocked:1,stars:{},shards:0,upgrades:{rate:0,power:0,armor:0},itemCollectionHistory:{"prism-power-core-block":false},tutorialSeen:false});
+  const defaultSave=()=>({unlocked:1,stars:{},shards:0,upgrades:{rate:0,power:0,armor:0},itemCollectionHistory:{},tutorialSeen:false});
   function normalizeSave(raw){
     const source=raw&&typeof raw==="object"?raw:{};
     const stars={};
     if(source.stars&&typeof source.stars==="object")for(const [key,value] of Object.entries(source.stars)){const stage=Math.trunc(Number(key));const score=Math.max(0,Math.min(3,Math.trunc(Number(value))));if(Number.isFinite(stage)&&stage>=1&&stage<=30&&score)stars[stage]=score}
     const upgrades={};
     for(const id of ["rate","power","armor"])upgrades[id]=Math.max(0,Math.min(5,Math.trunc(Number(source.upgrades?.[id]))||0));
-    const itemCollectionHistory=raw&&typeof raw==="object"?{}:{"prism-power-core-block":false};
+    const itemCollectionHistory={};
     if(source.itemCollectionHistory&&typeof source.itemCollectionHistory==="object"&&!Array.isArray(source.itemCollectionHistory))for(const [id,collected] of Object.entries(source.itemCollectionHistory))if(/^[a-z0-9][a-z0-9._:-]*$/i.test(id)&&typeof collected==="boolean")itemCollectionHistory[id]=collected;
     return{unlocked:Math.max(1,Math.min(30,Math.trunc(Number(source.unlocked))||1)),stars,shards:Math.max(0,Math.min(9999,Math.trunc(Number(source.shards))||0)),upgrades,itemCollectionHistory,tutorialSeen:source.tutorialSeen===true};
   }
   function readSave(){try{return normalizeSave(JSON.parse(storage.get(SAVE_KEY)||"null"))}catch{return defaultSave()}}
   let save=readSave();
   const persist=()=>storage.set(SAVE_KEY,JSON.stringify(save));
-  function itemCollectionState(itemId){return Object.prototype.hasOwnProperty.call(save.itemCollectionHistory,itemId)?(save.itemCollectionHistory[itemId]?"collected":"not-collected"):"unknown"}
   function recordItemCollection(itemId){if(save.itemCollectionHistory[itemId]===true)return false;save.itemCollectionHistory[itemId]=true;persist();return true}
   const chapters=["chapter1","chapter2","chapter3","chapter4","chapter5","chapter6"];
   const stages=Array.from({length:30},(_,index)=>{
@@ -116,14 +115,16 @@
   function renderStage(){
     if(!$("stageRail"))return;
     $("stageProgress").textContent=`${save.unlocked} / 30`;
-    if(window.PrismBattalionStageRenderer){window.PrismBattalionStageRenderer.render({rail:$("stageRail"),stages,save,t,chapterName,getSelected:()=>selectedStageIndex+1,setSelected:value=>{selectedStageIndex=Math.max(0,Math.min(29,Number(value)-1))},announce:()=>{$("stageHint").textContent=t("stageLocked")},enter:(stage,event)=>startBattle(stage-1,event)});return}
-    $("stageRail").replaceChildren(...stages.map((stage,index)=>{
+    if(window.PrismBattalionStageRenderer){window.PrismBattalionStageRenderer.render({rail:$("stageRail"),gameId:"animal-prism-battalion",stages,save,t,chapterName,getItemGetState:(index)=>save.itemCollectionHistory[`prism-power-core-block:stage-${index+1}`]===true?"collected":"not-collected",getSelected:()=>selectedStageIndex+1,setSelected:value=>{selectedStageIndex=Math.max(0,Math.min(29,Number(value)-1))},announce:()=>{$("stageHint").textContent=t("stageLocked")},enter:(stage,event)=>startBattle(stage-1,event)});return}
+    const items=stages.map((stage,index)=>{
       const locked=stage.n>save.unlocked,button=document.createElement("button");
-      button.type="button";button.className=`stage-card${locked?" locked":""}`;button.dataset.stage=String(stage.n);button.dataset.index=String(index);button.setAttribute("aria-disabled",locked?"true":"false");
+      button.type="button";button.className=`stage-card${locked?" locked":""}`;button.dataset.stage=String(stage.n);button.dataset.index=String(index);button.dataset.wpGetGameId="animal-prism-battalion";button.dataset.wpGetIndex=String(index);button.dataset.wpGetState=save.itemCollectionHistory[`prism-power-core-block:stage-${stage.n}`]===true?"collected":"not-collected";button.setAttribute("aria-disabled",locked?"true":"false");
       button.innerHTML=`<span>${locked?t("lockedBadge"):chapterName(stage)}</span><strong>${stage.n}</strong><b>${stage.boss?"◆ ":""}${t("waveLabel",{wave:0,total:stage.waves})}</b><small>${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}</small>`;
       button.addEventListener("click",(event)=>{if(locked){$("stageHint").textContent=t("stageLocked");return}startBattle(index,event)});
       return button;
-    }));
+    });
+    $("stageRail").replaceChildren(...items);
+    items.forEach((_,index)=>window.ShowGet?.("animal-prism-battalion",index));
   }
   function markCentered(index){
     if(window.PrismBattalionStageRenderer){selectedStageIndex=Math.max(0,Math.min(29,Number(index)||0));window.PrismBattalionStageRenderer.select(selectedStageIndex+1,false);return}
@@ -138,7 +139,6 @@
   let labPurchaseKeyboardKey=null;
   function renderLab(focusUpgrade=""){
     $("shardCount").textContent=t("shards",{count:save.shards});
-    window.WeightPlayScreenFrame.setItemCollectionStatus($("powerCoreRecord"),{itemId:"prism-power-core-block",state:itemCollectionState("prism-power-core-block"),placement:"top-right",labels:{collected:t("itemCollectedBefore"),"not-collected":t("itemNotCollectedYet"),unknown:t("itemCollectionUnknown")}});
     $("upgrades").replaceChildren(...Object.entries(upgradeData).map(([id,data])=>{
       const level=save.upgrades[id],button=document.createElement("button");button.type="button";button.className=`upgrade${level>=5?" maxed":""}`;button.dataset.upgrade=id;button.disabled=level>=5;
       button.innerHTML=`<span class="upgrade-icon">${data.icon}</span><strong>${t(data.name)}</strong><small>${t(data.desc)}</small><b>${t("level",{level})}</b><em>${level>=5?t("maxed"):t("upgradeCost",{cost:upgradeCost(level)})}</em>`;
@@ -230,7 +230,7 @@
     clearArenaPointer();
     (__wpNotifyMeasurement(), lifecyclePaused=false);
     const maxCore=100+save.upgrades.armor*20,encounters=makeEncounters(stage);
-    run={stageIndex,stage,time:stage.time,core:maxCore,maxCore,wave:1,totalWaves:stage.waves,bossDefeated:false,lane:1,laneMask:1<<1,laneSwitchCount:0,aimX:laneCenters[1],visualAimX:laneCenters[1],laneTweenFrom:laneCenters[1],laneTweenElapsed:.18,laneTweenDuration:.18,attack:6+save.upgrades.power*2,weapon:"single",units:[],encounters,gates:encounters,enemies:encounters.filter(entry=>entry.kind==="enemy"),particles:[],texts:[],fireClock:0,charge:0,overdrive:0,feedbackLock:0,midwavePayoffCooldown:0,priorityReasonText:"",imminentBreachShown:false,readyCueShown:false,readyTargetLane:null,readyTargetCount:0,lastReadyUsed:false,overdriveReadyCount:0,overdriveActivationCount:0,overdriveActivationLane:null,overdriveActivationWave:null,peak:6+save.upgrades.power*2,coreHits:0,laneDamage:[0,0,0],resolved:0,paused:false,finished:false,lastGateMessage:"",lastTrackedWave:1};
+    run={stageIndex,stage,time:stage.time,core:maxCore,maxCore,wave:1,totalWaves:stage.waves,bossDefeated:false,lane:1,laneMask:1<<1,laneSwitchCount:0,aimX:laneCenters[1],visualAimX:laneCenters[1],laneTweenFrom:laneCenters[1],laneTweenElapsed:.18,laneTweenDuration:.18,attack:6+save.upgrades.power*2,weapon:"single",units:[],encounters,gates:encounters,enemies:encounters.filter(entry=>entry.kind==="enemy"),particles:[],texts:[],fireClock:0,charge:0,overdrive:0,feedbackLock:0,midwavePayoffCooldown:0,priorityReasonText:"",imminentBreachShown:false,readyCueShown:false,gotPowerCore:false,readyTargetLane:null,readyTargetCount:0,lastReadyUsed:false,overdriveReadyCount:0,overdriveActivationCount:0,overdriveActivationLane:null,overdriveActivationWave:null,peak:6+save.upgrades.power*2,coreHits:0,laneDamage:[0,0,0],resolved:0,paused:false,finished:false,lastGateMessage:"",lastTrackedWave:1};
     trackFunnel("mission_start",{stage:stage.n});trackFunnel("game_start",{stage:stage.n});
     (__wpNotifyMeasurement(), $("leave").hidden=true);(__wpNotifyMeasurement(), $("tutorial").hidden=true);(__wpNotifyMeasurement(), $("result").hidden=true);$("battleLive").hidden=false;$("battleLive").inert=false;$("feedback").classList.remove("ready-cue");$("overdrive").removeAttribute("aria-label");showScreen("battle");canvas.focus({preventScroll:true});updateHud(true);$("feedback").textContent="";run.priorityReasonText="";showPriorityReason();lastTime=performance.now();stopLoop();(__wpNotifyMeasurement(), lifecyclePaused=document.hidden);(__wpNotifyMeasurement(), run.paused=lifecyclePaused);ensureVisibleTick();if(!lifecyclePaused)raf=requestAnimationFrame(frame);window.WeightPlayAudio?.play?.("game.start");if(!save.tutorialSeen)requestAnimationFrame(()=>openTutorial())
 
@@ -259,7 +259,7 @@
   }
   function resolveEncounter(entry){
     if(entry.resolved)return;entry.resolved=true;run.resolved+=1;const same=entry.lane===run.lane;
-    if(entry.kind==="power"&&same){recordItemCollection("prism-power-core-block");const gain=Math.max(1,entry.stored);run.attack=Math.min(999,run.attack+gain);run.charge=Math.min(100,run.charge+gain);run.weapon=run.attack>=42?"rapid":run.attack>=20?"double":"single";announceMidwavePayoff("core",{lane:entry.lane+1,count:gain});addBurst(entry.x,.84,"#63ffd8",20)}
+    if(entry.kind==="power"&&same){run.gotPowerCore=true;recordItemCollection(`prism-power-core-block:stage-${run.stage.n}`);const gain=Math.max(1,entry.stored);run.attack=Math.min(999,run.attack+gain);run.charge=Math.min(100,run.charge+gain);run.weapon=run.attack>=42?"rapid":run.attack>=20?"double":"single";announceMidwavePayoff("core",{lane:entry.lane+1,count:gain});addBurst(entry.x,.84,"#63ffd8",20)}
     else if(entry.kind==="shield"&&(same||entry.collecting)){if(entry.shield<=0){run.attack=Math.min(999,run.attack+entry.reward);run.charge=Math.min(100,run.charge+entry.reward);run.weapon=run.attack>=42?"rapid":run.attack>=20?"double":"single";announceMidwavePayoff("core",{lane:entry.lane+1,count:entry.reward});addBurst(entry.x,.84,"#6ceaff",20)}else{const loss=Math.ceil(entry.shield);recordCoreDamage(loss,entry.lane,"shield");$("feedback").textContent=t("enemyCollision",{count:loss});addBurst(entry.x,.84,"#ff637e",18)}}
     else if(entry.kind==="bomb"){const loss=Math.ceil(entry.hp);if(loss>0){recordCoreDamage(loss,entry.lane,"bomb");$("feedback").textContent=t("bombDamage",{count:loss});addBurst(entry.x,.84,"#ff9e45",24)}}
     else if(entry.kind==="enemy"){const loss=entry.boss?run.core:same?Math.max(2,Math.ceil(entry.hp)):Math.max(3,Math.ceil(entry.hp*.42));recordCoreDamage(loss,entry.lane,same?"lane_hit":"lane_leak");$("feedback").textContent=t(same?"enemyCollision":"enemyLeak",{count:loss});addBurst(entry.x,.84,"#ff637e",entry.boss?34:18)}
@@ -358,10 +358,12 @@
     if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist();window.WonderAnalytics?.completeStage?.(`mission-${run.stage.n}`)}
     const decisiveLane=run.laneDamage.reduce((best,damage,index)=>damage>run.laneDamage[best]?index:best,0),failureRecap=run.coreHits>0?t("failureRecapLane",{lane:decisiveLane+1,damage:run.laneDamage[decisiveLane]}):t("failureRecapTimeout",{wave:run.wave}),overdriveRecap=run.readyCueShown&&!run.lastReadyUsed?t("overdriveResultUnused",{lane:(run.readyTargetLane??run.lane)+1}):run.overdriveActivationCount>0?t("overdriveResultUsed",{lane:(run.overdriveActivationLane??run.lane)+1,wave:run.overdriveActivationWave??run.wave}):"";
     $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailedKicker");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=won?t("victoryText"):`${failureRecap}${overdriveRecap?` ${overdriveRecap}`:""}`;$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${Math.max(0,Math.ceil(run.core))}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>{button.disabled=false;button.classList.remove("primary")});$("nextMission").hidden=false;$("nextMission").disabled=!won||run.stage.n>=30;const primary=$("nextMission").disabled?$("resultStage"):$("nextMission");primary.classList.add("primary");(__wpNotifyMeasurement(), $("result").hidden=false);$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>primary.focus());window.WeightPlayAudio?.play?.(won ? "result.win" : "result.lose")
+    window.ShowResultGet?.("animal-prism-battalion",run.gotPowerCore);
     const replayTarget=won?(stars<3?t("replayTargetStars",{stars:stars+1}):run.overdriveActivationCount===0?t("replayTargetOverdrive"):t("replayTargetPeak",{peak:run.peak+1})):t("replayTargetClear");
     const successContinuation=won?(run.stage.n<30?t("successContinuation",{next:run.stage.n+1,shards:earned}):t("successCampaignComplete",{shards:earned})):"";
     $("resultText").textContent=`${$("resultText").textContent}${successContinuation?` ${successContinuation}`:""} ${replayTarget}`;
 
+    window.ShowResultGet?.("animal-prism-battalion",run.gotPowerCore);
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function commitResultDecision(action){if(resultDecisionCommitted||$("result").hidden)return false;resultDecisionCommitted=true;[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>{button.disabled=true});action();return true}

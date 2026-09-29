@@ -31,10 +31,78 @@
     label.textContent = copy;
     return status;
   }
+  function showGet(gameId, index) {
+    const normalizedGameId = String(gameId ?? '').trim();
+    const itemIndex = Number(index);
+    if (!normalizedGameId || !Number.isSafeInteger(itemIndex) || itemIndex < 0) return null;
+    const itemRoot = Array.from(document.querySelectorAll('[data-wp-get-game-id][data-wp-get-index]'))
+      .find((item) => item.dataset.wpGetGameId === normalizedGameId && Number(item.dataset.wpGetIndex) === itemIndex);
+    if (!itemRoot) return null;
+    const state = itemRoot.dataset.wpGetState === 'collected' ? 'collected' : 'not-collected';
+    itemRoot.dataset.wpGetState = state;
+    const icon = itemRoot.querySelector(':scope > [data-wp-get-icon]') || document.createElement('img');
+    icon.dataset.wpGetIcon = '';
+    icon.dataset.wpGetState = state;
+    icon.src = '/Assets/weightplay-block-cube-v1.svg';
+    icon.alt = '';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.draggable = false;
+    if (!icon.isConnected) itemRoot.append(icon);
+    if (itemRoot.isConnected && window.getComputedStyle?.(itemRoot).position === 'static') {
+      itemRoot.dataset.wpGetAnchor = 'true';
+    }
+    return icon;
+  }
+  function showResultGet(gameId, obtained) {
+    const normalizedGameId = String(gameId ?? '').trim();
+    if (!normalizedGameId) return null;
+    const resultSelectors = [
+      '#result', '#resultScreen', '#resultPanel', '[data-wp-result-screen]',
+      "[data-wp-battle-substate='result']", "[data-screen='result']", '.result-screen',
+    ];
+    let resultRoot = null;
+    for (const selector of resultSelectors) {
+      resultRoot = Array.from(document.querySelectorAll(selector)).find((candidate) => {
+        for (let node = candidate; node && node !== document; node = node.parentElement) {
+          if (node.hidden) return false;
+          const style = window.getComputedStyle?.(node);
+          if (style?.display === 'none' || style?.visibility === 'hidden') return false;
+        }
+        return true;
+      }) || null;
+      if (resultRoot) break;
+    }
+    if (!resultRoot) return null;
+    const resultCard = resultRoot.querySelector('.result-card, [data-wp-result-card]') || resultRoot;
+    const existingIcon = resultCard.querySelector(':scope > [data-wp-result-get-icon]');
+    if (obtained !== true) {
+      existingIcon?.remove();
+      return null;
+    }
+    const icon = existingIcon || document.createElement('img');
+    icon.dataset.wpResultGetIcon = '';
+    icon.src = '/Assets/weightplay-block-cube-v1.svg';
+    icon.alt = '';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.draggable = false;
+    if (!icon.isConnected) resultCard.append(icon);
+    if (resultCard.isConnected && window.getComputedStyle?.(resultCard).position === 'static') {
+      resultCard.dataset.wpResultGetAnchor = 'true';
+    }
+    return icon;
+  }
+  window.ShowGet = showGet;
+  window.ShowResultGet = showResultGet;
   if (window.WeightPlayScreenFrame?.version === 7) {
     const current = window.WeightPlayScreenFrame;
     if (typeof current.setItemCollectionStatus !== 'function') {
       window.WeightPlayScreenFrame = Object.freeze({ ...current, setItemCollectionStatus });
+    }
+    if (typeof window.WeightPlayScreenFrame.showGet !== 'function') {
+      window.WeightPlayScreenFrame = Object.freeze({ ...window.WeightPlayScreenFrame, showGet });
+    }
+    if (typeof window.WeightPlayScreenFrame.showResultGet !== 'function') {
+      window.WeightPlayScreenFrame = Object.freeze({ ...window.WeightPlayScreenFrame, showResultGet });
     }
     window.WeightPlayScreenFrame.autoMountDocument?.();
     return;
@@ -1687,6 +1755,6 @@
   setTimeout(begin, 0);
   if (document.readyState !== "loading") begin();
   }
-  window.WeightPlayScreenFrame = Object.freeze({ version: 7, mount, mountSlots, autoMountDocument, createSettings, setItemCollectionStatus });
+  window.WeightPlayScreenFrame = Object.freeze({ version: 7, mount, mountSlots, autoMountDocument, createSettings, setItemCollectionStatus, showGet, showResultGet });
   queueMicrotask(autoMountDocument);
 })();

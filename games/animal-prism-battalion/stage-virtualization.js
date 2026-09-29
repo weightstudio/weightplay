@@ -12,6 +12,7 @@
     const stage = api.stages[index];
     const locked = stage.n > api.save.unlocked;
     const stars = Number(api.save.stars[stage.n]) || 0;
+    const getState = api.getItemGetState?.(index) === "collected" ? "collected" : "not-collected";
     const selected = index === clampIndex(api.getSelected() - 1);
 
     button.type = "button";
@@ -19,6 +20,9 @@
     button.dataset.stage = String(stage.n);
     button.dataset.index = String(index);
     button.dataset.stageIndex = String(index);
+    button.dataset.wpGetGameId = api.gameId;
+    button.dataset.wpGetIndex = String(index);
+    button.dataset.wpGetState = getState;
     button.setAttribute("aria-posinset", String(stage.n));
     button.setAttribute("aria-setsize", String(TOTAL));
     button.setAttribute("aria-disabled", String(locked));
@@ -39,6 +43,7 @@
     rating.textContent = `${"★".repeat(stars)}${"☆".repeat(3 - stars)}`;
     content.append(chapter, number, wave, rating);
     button.append(content);
+    window.ShowGet?.(api.gameId, index);
   };
 
   const install = () => {
