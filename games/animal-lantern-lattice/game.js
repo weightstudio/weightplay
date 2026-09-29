@@ -48,8 +48,7 @@
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = routeLocaleMap[routeSegment] || null;
   const progressKey = "weightplay-animal-lantern-lattice-progress-v2";
-  const campaignBestKey = "weightplay-animal-lantern-lattice-best-v2";
-  const legacyCampaignBestKey = "weightplay-animal-lantern-lattice-best-v1";
+  const campaignBestKey = "weightplay-animal-lantern-lattice-best-v3";
   // v1 counted incomplete prompts as checks. Keep it in storage, but start a
   // clean record for the new complete-chain-only score so star ranks are fair.
   const stageBestKey = "weightplay-animal-lantern-lattice-stage-best-v2";
@@ -94,7 +93,7 @@
   };
   const readBest = () => {
     try {
-      const value = Number(localStorage.getItem(campaignBestKey) || localStorage.getItem(legacyCampaignBestKey));
+      const value = Number(localStorage.getItem(campaignBestKey));
       return Number.isFinite(value) && value > 0 ? value : null;
     } catch (_) { return null; }
   };
@@ -345,7 +344,11 @@
     return {
       ...guide,
       stepIntro: t("guideStepIntro"),
-      steps: ["guideStepRead", "guideStepBuild", "guideStepUndo", "guideStepClear"].map((key) => t(key)),
+      steps: [
+        ...["guideStepRead", "guideStepBuild", "guideStepUndo", "guideStepClear"].map((key) => t(key)),
+        guide.steps[4],
+        guide.steps[5],
+      ],
       rules: t("guideRules"),
       tips: t("guideTips"),
     };

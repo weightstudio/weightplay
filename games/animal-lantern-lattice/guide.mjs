@@ -22,7 +22,22 @@ const escapeHtml = (value) => String(value).replaceAll("&", "&amp;").replaceAll(
 
 export function renderLanternGuide(locale = "en") {
   const key = guideByLocale[locale] ? locale : "en";
-  const guide = guideByLocale[key];
+  const baseGuide = guideByLocale[key];
+  const runtimeCopy = localeCopy[key];
+  const guide = {
+    ...baseGuide,
+    stepIntro: runtimeCopy.guideStepIntro,
+    steps: [
+      runtimeCopy.guideStepRead,
+      runtimeCopy.guideStepBuild,
+      runtimeCopy.guideStepUndo,
+      runtimeCopy.guideStepClear,
+      baseGuide.steps[4],
+      baseGuide.steps[5],
+    ],
+    rules: runtimeCopy.guideRules,
+    tips: runtimeCopy.guideTips,
+  };
   const title = localeCopy[key].title;
   const seo = seoByLocale[key] || seoByLocale.en;
   const section = (heading, body) => `<article class="game-info-section"><h3>${escapeHtml(heading)}</h3>${body}</article>`;
