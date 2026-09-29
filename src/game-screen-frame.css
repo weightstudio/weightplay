@@ -322,12 +322,12 @@ body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):
 
 .wp-shell-return[data-wp-return="main"],
 .wp-shell-return[data-wp-return="main"] > .wp-shell-return-arrow {
-  color: var(--wp-main-return-arrow-color, #176a9d) !important;
+  color: var(--wp-main-return-arrow-color, var(--wp-ui-text, #f6f2dd)) !important;
   opacity: 1 !important;
 }
 
 .wp-stage-shell-header > [data-wp-return="stage"] > .wp-shell-return-arrow {
-  color: var(--wp-stage-return-arrow-color, #176a9d) !important;
+  color: var(--wp-stage-return-arrow-color, var(--wp-ui-text, #f6f2dd)) !important;
   opacity: 1 !important;
 }
 
@@ -335,7 +335,7 @@ body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):
 .wp-shell-return[data-wp-return="stage"] > .wp-shell-return-arrow,
 .wp-shell-return[data-wp-return="battle"],
 .wp-shell-return[data-wp-return="battle"] > .wp-shell-return-arrow {
-  color: var(--wp-scene-return-arrow-color, #176a9d) !important;
+  color: var(--wp-scene-return-arrow-color, var(--wp-ui-text, #f6f2dd)) !important;
   opacity: 1 !important;
 }
 
@@ -1457,3 +1457,16 @@ html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp
 }
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-state="not-collected"] {opacity:.78}
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-state="unknown"] {border-style:dashed!important}
+/* Optional corner presentation keeps the reserved status slot attached to the
+   Item while the game owns its artwork and collected/not-collected appearance. */
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement^="top-"] {
+  position:absolute!important;z-index:2!important;display:grid!important;place-items:center!important;gap:0!important;
+  width:22px!important;min-width:22px!important;height:22px!important;min-height:22px!important;max-height:22px!important;
+  margin:0!important;padding:0!important;border-radius:50%!important;overflow:visible!important;
+}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement="top-left"] {top:5px!important;left:5px!important}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement="top-right"] {top:5px!important;right:5px!important}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement^="top-"] [data-wp-item-collection-label] {
+  position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;
+}

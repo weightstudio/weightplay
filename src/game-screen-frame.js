@@ -1,14 +1,16 @@
 /* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
-  function setItemCollectionStatus(itemRoot, { itemId, state, labels } = {}) {
+  function setItemCollectionStatus(itemRoot, { itemId, state, labels, placement = 'inline' } = {}) {
     const allowedStates = new Set(['collected', 'not-collected', 'unknown']);
+    const allowedPlacements = new Set(['inline', 'top-left', 'top-right']);
     const normalizedItemId = String(itemId ?? '').trim();
     if (!itemRoot || typeof itemRoot.querySelector !== 'function' || !itemRoot.dataset) {
       throw new TypeError('setItemCollectionStatus requires an item root element.');
     }
     if (!normalizedItemId) throw new TypeError('setItemCollectionStatus requires a stable itemId.');
     if (!allowedStates.has(state)) throw new RangeError(`Unsupported item collection state: ${state}`);
+    if (!allowedPlacements.has(placement)) throw new RangeError(`Unsupported item collection placement: ${placement}`);
     const status = itemRoot.querySelector('[data-wp-item-collection-status]');
     const icon = status?.querySelector('[data-wp-item-collection-icon]');
     const label = status?.querySelector('[data-wp-item-collection-label]');
@@ -22,7 +24,9 @@
 
     itemRoot.dataset.wpItemId = normalizedItemId;
     itemRoot.dataset.wpItemCollectionState = state;
+    itemRoot.dataset.wpItemCollectionPlacement = placement;
     status.dataset.wpItemCollectionState = state;
+    status.dataset.wpItemCollectionPlacement = placement;
     icon.textContent = state === 'collected' ? '✓' : state === 'not-collected' ? '□' : '?';
     label.textContent = copy;
     return status;

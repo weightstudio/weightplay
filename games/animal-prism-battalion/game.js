@@ -23,7 +23,7 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=34, INTERFACE_VERSION=7;
+  const GAME_VERSION=35, INTERFACE_VERSION=7;
   const prefersReducedMotion=Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const screenFrame=window.WeightPlayScreenFrame.mount({
     root:$('gameFrame'),localeSelect:$('locale'),
@@ -138,7 +138,7 @@
   let labPurchaseKeyboardKey=null;
   function renderLab(focusUpgrade=""){
     $("shardCount").textContent=t("shards",{count:save.shards});
-    window.WeightPlayScreenFrame.setItemCollectionStatus($("powerCoreRecord"),{itemId:"prism-power-core-block",state:itemCollectionState("prism-power-core-block"),labels:{collected:t("itemCollectedBefore"),"not-collected":t("itemNotCollectedYet"),unknown:t("itemCollectionUnknown")}});
+    window.WeightPlayScreenFrame.setItemCollectionStatus($("powerCoreRecord"),{itemId:"prism-power-core-block",state:itemCollectionState("prism-power-core-block"),placement:"top-right",labels:{collected:t("itemCollectedBefore"),"not-collected":t("itemNotCollectedYet"),unknown:t("itemCollectionUnknown")}});
     $("upgrades").replaceChildren(...Object.entries(upgradeData).map(([id,data])=>{
       const level=save.upgrades[id],button=document.createElement("button");button.type="button";button.className=`upgrade${level>=5?" maxed":""}`;button.dataset.upgrade=id;button.disabled=level>=5;
       button.innerHTML=`<span class="upgrade-icon">${data.icon}</span><strong>${t(data.name)}</strong><small>${t(data.desc)}</small><b>${t("level",{level})}</b><em>${level>=5?t("maxed"):t("upgradeCost",{cost:upgradeCost(level)})}</em>`;
