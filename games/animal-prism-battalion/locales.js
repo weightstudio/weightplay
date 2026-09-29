@@ -342,6 +342,12 @@
     }
   };
   rows.laneMainSummary=["Switch lanes, stop shadow waves, collect power cores, and protect the crystal.","切換路線，擊退暗影波次，收集能量核心，守護水晶。","切换路线，击退暗影波次，收集能量核心，守护水晶。","レーンを切り替え、影の波を退け、エネルギーコアを集めて結晶を守ろう。","레인을 바꾸고 그림자 웨이브를 막아 에너지 코어를 모아 수정을 지키세요.","Cambia de carril, detén las oleadas sombrías, reúne núcleos de energía y protege el cristal.","Alterne de faixa, detenha as ondas sombrias, colete núcleos de energia e proteja o cristal.","Changez de voie, repoussez les vagues d’ombre, récoltez des noyaux d’énergie et protégez le cristal.","Wechsle die Spur, stoppe Schattenwellen, sammle Energiekristalle und schütze den Kristall.","Cambia corsia, ferma le ondate d’ombra, raccogli nuclei di energia e proteggi il cristallo.","Меняйте линию, остановите волны тьмы, собирайте энергетические ядра и защитите кристалл.","लेन बदलें, छाया लहरों को रोकें, ऊर्जा कोर जुटाएँ और क्रिस्टल की रक्षा करें।","بدّل المسار، وصدّ موجات الظل، واجمع نوى الطاقة، واحمِ البلورة."];
+  Object.assign(rows,{
+    powerCoreItem:["Prism Core Block","稜光核心方塊","棱光核心方块","プリズムコアブロック","프리즘 코어 블록","Bloque de núcleo prismático","Bloco de núcleo prismático","Bloc noyau prismatique","Prisma-Kernblock","Blocco del nucleo prismatico","Блок призменного ядра","प्रिज़्म कोर ब्लॉक","كتلة نواة المنشور"],
+    itemCollectedBefore:["Collected before","曾經取得","曾经获得","取得済み","획득한 적 있음","Ya se obtuvo","Já obtido","Déjà obtenu","Schon eingesammelt","Già raccolto","Уже получен","पहले प्राप्त किया","تم جمعه من قبل"],
+    itemNotCollectedYet:["Not collected yet","尚未取得","尚未获得","未取得","아직 획득하지 않음","Aún no se ha obtenido","Ainda não obtido","Pas encore obtenu","Noch nicht eingesammelt","Non ancora raccolto","Ещё не получен","अभी तक प्राप्त नहीं","لم يُجمع بعد"],
+    itemCollectionUnknown:["No history in this save","舊存檔無紀錄","旧存档无记录","このセーブに記録なし","이 저장 데이터에는 기록 없음","Sin registro en esta partida","Sem registro neste salvamento","Aucun historique dans cette sauvegarde","Kein Eintrag in diesem Spielstand","Nessun dato in questo salvataggio","В сохранении нет записи","इस सेव में रिकॉर्ड नहीं","لا يوجد سجل في هذا الحفظ"],
+  });
   const dictionaries={};
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});if(requiredLocaleCatalogs[code])Object.assign(dictionaries[code],requiredLocaleCatalogs[code]);});
   const guideCopy=window.PrismBattalionGuideCopy;

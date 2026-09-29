@@ -1436,3 +1436,24 @@ html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generate
 
 /* Play names are Main-owned; explicitly declared live HUD fields remain visible. */
 html[data-wp-shared-interface="7"] body :is(.wp-stage-shell-header,.wp-battle-shell-header) :is([data-wp-game-title],.wp-shell-main-title,.wp-generated-main-title):not([data-wp-frame-info]):not([data-wp-frame-stat]) {display:none!important}
+
+/* Fixed collectible Items reserve this slot at creation; state updates only
+   replace its icon and localized label, never the surrounding geometry. */
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status] {
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;
+  width:100%!important;min-width:0!important;height:28px!important;min-height:28px!important;max-height:28px!important;
+  margin:0!important;padding:2px 8px!important;border:1px solid var(--wp-ui-line,#3d92a9)!important;
+  border-radius:var(--wp-ui-radius,3px)!important;background:var(--wp-ui-background,#0b2035)!important;
+  color:var(--wp-ui-muted,#b8dbea)!important;font:700 12px/1.2 system-ui!important;white-space:nowrap!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;
+}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-icon] {
+  box-sizing:border-box!important;display:grid!important;place-items:center!important;flex:0 0 16px!important;
+  width:16px!important;height:16px!important;border:1px solid currentColor!important;color:inherit!important;
+  font:900 11px/1 system-ui!important;
+}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-state="collected"] {
+  border-color:var(--wp-ui-accent,#6cebd3)!important;color:var(--wp-ui-text,#fff)!important;
+}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-state="not-collected"] {opacity:.78}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-state="unknown"] {border-style:dashed!important}

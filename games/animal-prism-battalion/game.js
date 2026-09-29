@@ -23,7 +23,7 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=33, INTERFACE_VERSION=7;
+  const GAME_VERSION=34, INTERFACE_VERSION=7;
   const prefersReducedMotion=Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const screenFrame=window.WeightPlayScreenFrame.mount({
     root:$('gameFrame'),localeSelect:$('locale'),
@@ -52,18 +52,22 @@
   LANE_COPY.laneGuideIntro="Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.";
   LANE_COPY.laneMainSummary="Switch lanes, stop shadow waves, collect power cores, and protect the crystal.";
   const SAVE_KEY="animalPrismBattalionSaveV1";
-  const defaultSave=()=>({unlocked:1,stars:{},shards:0,upgrades:{rate:0,power:0,armor:0},tutorialSeen:false});
+  const defaultSave=()=>({unlocked:1,stars:{},shards:0,upgrades:{rate:0,power:0,armor:0},itemCollectionHistory:{"prism-power-core-block":false},tutorialSeen:false});
   function normalizeSave(raw){
     const source=raw&&typeof raw==="object"?raw:{};
     const stars={};
     if(source.stars&&typeof source.stars==="object")for(const [key,value] of Object.entries(source.stars)){const stage=Math.trunc(Number(key));const score=Math.max(0,Math.min(3,Math.trunc(Number(value))));if(Number.isFinite(stage)&&stage>=1&&stage<=30&&score)stars[stage]=score}
     const upgrades={};
     for(const id of ["rate","power","armor"])upgrades[id]=Math.max(0,Math.min(5,Math.trunc(Number(source.upgrades?.[id]))||0));
-    return{unlocked:Math.max(1,Math.min(30,Math.trunc(Number(source.unlocked))||1)),stars,shards:Math.max(0,Math.min(9999,Math.trunc(Number(source.shards))||0)),upgrades,tutorialSeen:source.tutorialSeen===true};
+    const itemCollectionHistory=raw&&typeof raw==="object"?{}:{"prism-power-core-block":false};
+    if(source.itemCollectionHistory&&typeof source.itemCollectionHistory==="object"&&!Array.isArray(source.itemCollectionHistory))for(const [id,collected] of Object.entries(source.itemCollectionHistory))if(/^[a-z0-9][a-z0-9._:-]*$/i.test(id)&&typeof collected==="boolean")itemCollectionHistory[id]=collected;
+    return{unlocked:Math.max(1,Math.min(30,Math.trunc(Number(source.unlocked))||1)),stars,shards:Math.max(0,Math.min(9999,Math.trunc(Number(source.shards))||0)),upgrades,itemCollectionHistory,tutorialSeen:source.tutorialSeen===true};
   }
   function readSave(){try{return normalizeSave(JSON.parse(storage.get(SAVE_KEY)||"null"))}catch{return defaultSave()}}
   let save=readSave();
   const persist=()=>storage.set(SAVE_KEY,JSON.stringify(save));
+  function itemCollectionState(itemId){return Object.prototype.hasOwnProperty.call(save.itemCollectionHistory,itemId)?(save.itemCollectionHistory[itemId]?"collected":"not-collected"):"unknown"}
+  function recordItemCollection(itemId){if(save.itemCollectionHistory[itemId]===true)return false;save.itemCollectionHistory[itemId]=true;persist();return true}
   const chapters=["chapter1","chapter2","chapter3","chapter4","chapter5","chapter6"];
   const stages=Array.from({length:30},(_,index)=>{
     const n=index+1,chapter=Math.floor(index/5),step=index%5;
@@ -134,6 +138,7 @@
   let labPurchaseKeyboardKey=null;
   function renderLab(focusUpgrade=""){
     $("shardCount").textContent=t("shards",{count:save.shards});
+    window.WeightPlayScreenFrame.setItemCollectionStatus($("powerCoreRecord"),{itemId:"prism-power-core-block",state:itemCollectionState("prism-power-core-block"),labels:{collected:t("itemCollectedBefore"),"not-collected":t("itemNotCollectedYet"),unknown:t("itemCollectionUnknown")}});
     $("upgrades").replaceChildren(...Object.entries(upgradeData).map(([id,data])=>{
       const level=save.upgrades[id],button=document.createElement("button");button.type="button";button.className=`upgrade${level>=5?" maxed":""}`;button.dataset.upgrade=id;button.disabled=level>=5;
       button.innerHTML=`<span class="upgrade-icon">${data.icon}</span><strong>${t(data.name)}</strong><small>${t(data.desc)}</small><b>${t("level",{level})}</b><em>${level>=5?t("maxed"):t("upgradeCost",{cost:upgradeCost(level)})}</em>`;
@@ -254,7 +259,7 @@
   }
   function resolveEncounter(entry){
     if(entry.resolved)return;entry.resolved=true;run.resolved+=1;const same=entry.lane===run.lane;
-    if(entry.kind==="power"&&same){const gain=Math.max(1,entry.stored);run.attack=Math.min(999,run.attack+gain);run.charge=Math.min(100,run.charge+gain);run.weapon=run.attack>=42?"rapid":run.attack>=20?"double":"single";announceMidwavePayoff("core",{lane:entry.lane+1,count:gain});addBurst(entry.x,.84,"#63ffd8",20)}
+    if(entry.kind==="power"&&same){recordItemCollection("prism-power-core-block");const gain=Math.max(1,entry.stored);run.attack=Math.min(999,run.attack+gain);run.charge=Math.min(100,run.charge+gain);run.weapon=run.attack>=42?"rapid":run.attack>=20?"double":"single";announceMidwavePayoff("core",{lane:entry.lane+1,count:gain});addBurst(entry.x,.84,"#63ffd8",20)}
     else if(entry.kind==="shield"&&(same||entry.collecting)){if(entry.shield<=0){run.attack=Math.min(999,run.attack+entry.reward);run.charge=Math.min(100,run.charge+entry.reward);run.weapon=run.attack>=42?"rapid":run.attack>=20?"double":"single";announceMidwavePayoff("core",{lane:entry.lane+1,count:entry.reward});addBurst(entry.x,.84,"#6ceaff",20)}else{const loss=Math.ceil(entry.shield);recordCoreDamage(loss,entry.lane,"shield");$("feedback").textContent=t("enemyCollision",{count:loss});addBurst(entry.x,.84,"#ff637e",18)}}
     else if(entry.kind==="bomb"){const loss=Math.ceil(entry.hp);if(loss>0){recordCoreDamage(loss,entry.lane,"bomb");$("feedback").textContent=t("bombDamage",{count:loss});addBurst(entry.x,.84,"#ff9e45",24)}}
     else if(entry.kind==="enemy"){const loss=entry.boss?run.core:same?Math.max(2,Math.ceil(entry.hp)):Math.max(3,Math.ceil(entry.hp*.42));recordCoreDamage(loss,entry.lane,same?"lane_hit":"lane_leak");$("feedback").textContent=t(same?"enemyCollision":"enemyLeak",{count:loss});addBurst(entry.x,.84,"#ff637e",entry.boss?34:18)}

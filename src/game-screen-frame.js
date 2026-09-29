@@ -1,7 +1,40 @@
 /* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
-  if (window.WeightPlayScreenFrame?.version === 7) { window.WeightPlayScreenFrame.autoMountDocument?.(); return; }
+  function setItemCollectionStatus(itemRoot, { itemId, state, labels } = {}) {
+    const allowedStates = new Set(['collected', 'not-collected', 'unknown']);
+    const normalizedItemId = String(itemId ?? '').trim();
+    if (!itemRoot || typeof itemRoot.querySelector !== 'function' || !itemRoot.dataset) {
+      throw new TypeError('setItemCollectionStatus requires an item root element.');
+    }
+    if (!normalizedItemId) throw new TypeError('setItemCollectionStatus requires a stable itemId.');
+    if (!allowedStates.has(state)) throw new RangeError(`Unsupported item collection state: ${state}`);
+    const status = itemRoot.querySelector('[data-wp-item-collection-status]');
+    const icon = status?.querySelector('[data-wp-item-collection-icon]');
+    const label = status?.querySelector('[data-wp-item-collection-label]');
+    if (!status || !icon || !label || !status.dataset) {
+      throw new Error(`Item "${normalizedItemId}" must reserve its shared collection-status slot before rendering.`);
+    }
+    const copy = labels?.[state];
+    if (typeof copy !== 'string' || !copy.trim()) {
+      throw new TypeError(`Item "${normalizedItemId}" requires a localized label for state "${state}".`);
+    }
+
+    itemRoot.dataset.wpItemId = normalizedItemId;
+    itemRoot.dataset.wpItemCollectionState = state;
+    status.dataset.wpItemCollectionState = state;
+    icon.textContent = state === 'collected' ? '✓' : state === 'not-collected' ? '□' : '?';
+    label.textContent = copy;
+    return status;
+  }
+  if (window.WeightPlayScreenFrame?.version === 7) {
+    const current = window.WeightPlayScreenFrame;
+    if (typeof current.setItemCollectionStatus !== 'function') {
+      window.WeightPlayScreenFrame = Object.freeze({ ...current, setItemCollectionStatus });
+    }
+    window.WeightPlayScreenFrame.autoMountDocument?.();
+    return;
+  }
   const frameScriptUrl = document.currentScript?.src || new URL('/src/game-screen-frame.js', location.origin).href;
   const mounts = new WeakMap();
   const slotMounts = new WeakMap();
@@ -1650,6 +1683,6 @@
   setTimeout(begin, 0);
   if (document.readyState !== "loading") begin();
   }
-  window.WeightPlayScreenFrame = Object.freeze({ version: 7, mount, mountSlots, autoMountDocument, createSettings });
+  window.WeightPlayScreenFrame = Object.freeze({ version: 7, mount, mountSlots, autoMountDocument, createSettings, setItemCollectionStatus });
   queueMicrotask(autoMountDocument);
 })();

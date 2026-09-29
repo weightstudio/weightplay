@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-prism-battalion-main-v26">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260928-prism-v31-square-ui4">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="style.css?v=20260929-prism-v34-item-status">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260929-item-collection-status-v1">
   <link rel="stylesheet" href="/games/animal-prism-battalion/interface-7-cleanup.css?v=20260929-prism-v33-main-routes"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="프리즘 대대 | WeightPlay" />
@@ -100,7 +100,7 @@
       <div id="stageInfo" data-wp-frame-info><span id="stageProgress"></span></div>
       <div id="stageWorkspace" class="stage-workspace">
         <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked assault.</p></section>
-        <section id="labTab" class="tab-panel lab-tab" hidden><div class="lab-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="labTitle">Prism Lab</h2><p data-t="labIntro">Spend earned shards on permanent launcher upgrades.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><p id="labFeedback" aria-live="polite"></p></section>
+        <section id="labTab" class="tab-panel lab-tab" hidden><div class="lab-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="labTitle">Prism Lab</h2><p data-t="labIntro">Spend earned shards on permanent launcher upgrades.</p><strong id="shardCount"></strong></div></div><article id="powerCoreRecord" class="prism-core-record" data-wp-item-id="prism-power-core-block"><div data-wp-item-content><span class="prism-core-record-icon" aria-hidden="true"></span><strong id="powerCoreItemTitle" data-t="powerCoreItem">Prism Core Block</strong><span data-wp-item-collection-status data-wp-item-collection-state="unknown"><span data-wp-item-collection-icon aria-hidden="true">?</span><span data-wp-item-collection-label data-t="itemCollectionUnknown">No history in this save</span></span></div></article><div id="upgrades" class="upgrades"></div><p id="labFeedback" aria-live="polite"></p></section>
       </div>
     </div>
     <nav class="stage-tabs" aria-label="Battalion preparation" data-ta="stageTabs" role="tablist" data-wp-frame-stage-nav=""><button class="active" data-tab="missions" data-t="missions" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" aria-pressed="true">Missions</button><button data-tab="lab" data-t="lab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" aria-pressed="false">Prism Lab</button></nav>
@@ -130,15 +130,15 @@
 <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
 <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <script src="../../src/wallet.js"></script>
-<script src="../../src/analytics.js?v=20260929-block-world-v1"></script>
+<script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
 <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
 <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
 <script src="../../src/stage-virtualization-standard.js?v=20260927-prism-v29-stage-root-canvas" data-wp-stage-virtualization-standard></script>
 <script src="../../src/battle-canvas-standard.js?v=20260927-prism-v29-stage-root-canvas" data-wp-battle-standard></script>
-<script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+<script src="../../src/game-screen-frame.js?v=20260929-item-collection-status-v1"></script>
 <script src="../../../games/animal-prism-battalion/guide-copy.js?v=20260929-text140"></script>
-<script src="locales.js?v=20260929-text140"></script>
+<script src="locales.js?v=20260929-prism-v34-item-status"></script>
 <script src="stage-virtualization.js?v=20260927-prism-v29-stage-root-canvas"></script>
-<script src="game.js?v=20260929-prism-v33-main-routes"></script>
+<script src="game.js?v=20260929-prism-v34-item-status"></script>
 </body>
 </html>
