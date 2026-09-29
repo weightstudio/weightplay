@@ -361,20 +361,16 @@
         const active = desired.has(node);
         node.hidden = !active;
       });
-      if (screen === "battle") {
-        const battle = nodes.find((node) => node.matches('[data-screen="battle"]'));
-        if (battle && !battle.hidden) {
-          const opacity = battle.style.getPropertyValue("opacity");
-          const priority = battle.style.getPropertyPriority("opacity");
-          battle.style.setProperty("opacity", "0.03", "important");
-          window.WeightPlayBattleCanvas?.sync?.();
-          if (opacity) battle.style.setProperty("opacity", opacity, priority);
-          else battle.style.removeProperty("opacity");
-        }
-      }
+      if (screen === "battle") window.WeightPlayBattleCanvas?.sync?.();
       for (const node of desired) {
         if (entering.includes(node) || initialEntry) {
-          animateSceneNode(node, [{ opacity: 0 }, { opacity: 1 }], 160, token);
+          if (node.matches('[data-screen="battle"]')) {
+            [...node.children].filter((child) => !child.hidden
+              && !child.matches("#resultScreen,#wpKiteLeaveDialog"))
+              .forEach((child) => animateSceneNode(child, [{ opacity: 0 }, { opacity: 1 }], 160, token));
+          } else {
+            animateSceneNode(node, [{ opacity: 0 }, { opacity: 1 }], 160, token);
+          }
         } else {
           node.getAnimations().forEach((animation) => animation.cancel());
         }

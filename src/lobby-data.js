@@ -1363,7 +1363,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-auto-squad/",
       description: {
         en: "Train and position ten animal heroes across 30 five-wave stages, six regions, and six unique boss battles.",
-        "zh-Hant": "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。"
+        "zh-Hant": "培養並配置十名動物英雄，穿越六個區域的 30 個五波關卡，迎戰六名區域首領。"
       },
       meta: { en: ["Formation Strategy", "30 Stages", "Six Bosses"], "zh-Hant": ["編成策略", "30 關", "六名 Boss"] },
       art: { kind: "image", background: "assets/animal-auto-squad-cover-block-v2.webp", hideHero: true },
@@ -1380,7 +1380,7 @@ window.WONDER_LOBBY = {
       href: "games/beast-tactician/",
       description: {
         en: "Shape enemy routes and command animal soldiers and WeightPlay heroes through 30 stages, six regions, and six distinct Boss battles.",
-        "zh-Hant": "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。"
+        "zh-Hant": "改變敵人行進路線，配置動物士兵和 WeightPlay 英雄，守住六個區域的 30 關，迎戰各有打法的首領。"
       },
       meta: { en: ["Tower Defense", "30 Stages", "Six Bosses"], "zh-Hant": ["塔防", "30 關", "六名 Boss"] },
       art: { kind: "image", background: "assets/beast-tactician-cover.webp", hideHero: true },
@@ -1567,7 +1567,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-spectrum-pulse/",
       description: {
         en: "Pulse Panko's spectrum spirit through rotating emblem gates and restore 30 deterministic aurora towers.",
-        "zh-Hant": "用脈衝引導 Panko 的光譜精靈穿越旋轉紋章星門，修復 30 座固定設計的極光塔。",
+        "zh-Hant": "用脈衝引導 Panko 的光譜精靈穿越旋轉紋章星門，完成 30 座極光塔的修復。",
         "zh-Hans": "用脉冲引导 Panko 的光谱精灵穿越旋转纹章星门，修复 30 座固定设计的极光塔。",
         ja: "パンクの精霊をパルスで回転紋章ゲートへ導き、設計された30のオーロラ塔を修復しよう。",
         ko: "판코의 스펙트럼 정령을 회전 문양 관문 사이로 펄스해 설계된 오로라 탑 30개를 복원하세요.",
@@ -2011,7 +2011,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-bubble-safari/",
       description: {
         en: "Aim through 30 rescue levels with reactive blockers, wind, moving rows, and four power bubbles.",
-        "zh-Hant": "挑戰 30 個救援關卡，運用反應式障礙、風、移動列與四種力量泡泡。",
+        "zh-Hant": "瞄準泡泡穿過會變化的障礙，利用風向與四種力量泡泡，完成 30 個救援關卡。",
       },
       meta: { en: ["30 Levels", "Four Power Bubbles", "Bank Shots"], "zh-Hant": ["30 關", "四種力量泡泡", "反彈射擊"] },
       previewVideo: "assets/previews/animal-bubble-safari-battle.webm",
@@ -2233,7 +2233,7 @@ for (const game of window.WONDER_LOBBY.games) {
     game.title["zh-Hant"] = "動物遺跡獵人";
     game.statusText["zh-Hant"] = "可遊玩";
     game.type["zh-Hant"] = "房間動作 Roguelike";
-    game.description["zh-Hant"] = "探索古代遺跡房間，收集遺跡能量球，開啟寶箱並穿戴強力裝備，最終擊敗 Boss。";
+    game.description["zh-Hant"] = "探索遺跡、收集能量球、開啟寶箱並替英雄裝備戰利品，最後挑戰首領。";
     game.meta["zh-Hant"] = ["動作 Roguelike", "3 個房間", "裝備欄位"];
     game.art.background = "assets/animal-relic-hunters-cover.webp";
   }
@@ -2284,7 +2284,7 @@ id:"animal-tide-tally",audience:"general",status:"planned",href:"games/animal-ti
   title:{en:"Animal Tide Tally","zh-Hant":"動物潮汐總管","zh-Hans":"动物潮汐总管",ja:"どうぶつ潮汐カウント",ko:"애니멀 조수 세기",es:"Conteo de Mareas Animal","pt-BR":"Contagem de Marés Animal",fr:"Compte des Marées Animales",de:"Tierische Gezeitenzählung",it:"Conteggio delle Maree Animali",ru:"Звериный счёт прилива",hi:"पशु ज्वार गिनती",ar:"عدّ مدّ الحيوانات"},
   statusText:{en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待",ja:"近日公開",ko:"출시 예정",es:"Próximamente","pt-BR":"Em breve",fr:"Bientôt disponible",de:"Demnächst",it:"Prossimamente",ru:"Скоро",hi:"जल्द आ रहा है",ar:"قريبًا"},
   type:{en:"Tide counting puzzle","zh-Hant":"潮汐計數謎題","zh-Hans":"潮汐计数谜题",ja:"潮汐カウントパズル",ko:"조수 세기 퍼즐",es:"Rompecabezas de mareas","pt-BR":"Quebra-cabeça de marés",fr:"Puzzle de comptage des marées",de:"Gezeiten-Zählpuzzle",it:"Puzzle del conteggio delle maree",ru:"Головоломка о приливе",hi:"ज्वार गिनती पहेली",ar:"لغز عدّ المدّ"},
-  description:{en:"Count shells arriving and leaving at Shell Cove, then choose the tide total that remains.","zh-Hant":"數數貝殼灣進出潮水的貝殼，選出最後留下的潮汐總數。","zh-Hans":"数数贝壳湾进出潮水的贝壳，选出最后留下的潮汐总数。",ja:"貝殻湾に出入りする貝を数え、残った潮の合計を選ぼう。",ko:"조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요.",es:"Cuenta las conchas que llegan y se van, y elige el total que queda.","pt-BR":"Conte as conchas que chegam e saem e escolha o total que fica.",fr:"Comptez les coquillages qui arrivent et repartent, puis choisissez le total restant.",de:"Zähle ankommende und fortgetragene Muscheln und wähle die verbleibende Zahl.",it:"Conta le conchiglie che arrivano e partono, poi scegli il totale rimasto.",ru:"Считайте прибывшие и ушедшие ракушки и выберите оставшееся число.",hi:"आने और जाने वाले सीप गिनें और बची संख्या चुनें।",ar:"عُدّ الأصداف التي تصل وتغادر ثم اختر العدد المتبقي."},
+  description:{en:"Count shells arriving and leaving at Shell Cove, then choose the tide total that remains.","zh-Hant":"數出進出貝殼灣的貝殼，算出最後留在海灣的數量。","zh-Hans":"数数贝壳湾进出潮水的贝壳，选出最后留下的潮汐总数。",ja:"貝殻湾に出入りする貝を数え、残った潮の合計を選ぼう。",ko:"조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요.",es:"Cuenta las conchas que llegan y se van, y elige el total que queda.","pt-BR":"Conte as conchas que chegam e saem e escolha o total que fica.",fr:"Comptez les coquillages qui arrivent et repartent, puis choisissez le total restant.",de:"Zähle ankommende und fortgetragene Muscheln und wähle die verbleibende Zahl.",it:"Conta le conchiglie che arrivano e partono, poi scegli il totale rimasto.",ru:"Считайте прибывшие и ушедшие ракушки и выберите оставшееся число.",hi:"आने और जाने वाले सीप गिनें और बची संख्या चुनें।",ar:"عُدّ الأصداف التي تصل وتغادر ثم اختر العدد المتبقي."},
   meta:{en:["3 Tide Notes","Count In + Out","Calm Retry"],"zh-Hant":["3 張潮汐筆記","計算進出","平靜重試"],"zh-Hans":["3 张潮汐笔记","计算进出","平静重试"],ja:["3つの潮汐メモ","出入りを計算","落ち着いて再挑戦"],ko:["조수 노트 3개","들고남 계산","차분한 재도전"],es:["3 notas de marea","Cuenta entradas y salidas","Reintento tranquilo"],"pt-BR":["3 notas de maré","Conte entradas e saídas","Nova tentativa calma"],fr:["3 notes de marée","Compter entrées et sorties","Reprise sereine"],de:["3 Gezeiten-Notizen","Rein und raus zählen","Ruhiger Versuch"],it:["3 note di marea","Conta entrate e uscite","Riprova sereno"],ru:["3 заметки о приливе","Счёт входа и выхода","Спокойная попытка"],hi:["3 ज्वार नोट","आना-जाना गिनें","शांत पुनः प्रयास"],ar:["3 ملاحظات للمدّ","عُدّ الدخول والخروج","محاولة هادئة"]}
 });
 
@@ -2828,14 +2828,14 @@ const cleanZhLobbyCopy = {
     title: "動物自走小隊",
     statusText: "可遊玩",
     type: "自走棋策略",
-    description: "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。",
+    description: "培養並配置十名動物英雄，穿越六個區域的 30 個五波關卡，迎戰六名區域首領。",
     meta: ["編成策略", "30 關", "六名 Boss"],
   },
   "beast-tactician": {
     title: "獸王守衛",
     statusText: "可遊玩",
     type: "英雄塔防",
-    description: "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。",
+    description: "改變敵人行進路線，配置動物士兵和 WeightPlay 英雄，守住六個區域的 30 關，迎戰各有打法的首領。",
     meta: ["塔防", "30 關", "六名 Boss"],
   },
   "shadow-wolf": {
@@ -2869,7 +2869,7 @@ const animalRuneReelsV3 = window.WONDER_LOBBY.games.find((game) => game.id === "
 if (animalRuneReelsV3) {
   animalRuneReelsV3.description = {
     en: "Build a summoned animal team, spin ten kinds of downward-moving runes, complete doubled lines, and unleash separate pet attacks while shared defense and healing protect the summoner.",
-    "zh-Hant": "組成召喚動物隊伍，轉動十種向下滾動的符石；完成連線讓效果加倍，寵物各自攻擊，全隊防禦與治療共同保護召喚師。",
+    "zh-Hant": "召集動物夥伴，轉動十種符石形成連線來加倍效果；夥伴會自動攻擊，防禦與治療則保護召喚師。",
     "zh-Hans": "组成召唤动物队伍，转动十种向下滚动的符石；完成连线让效果加倍，宠物各自攻击，全队防御与治疗共同保护召唤师。",
     ja: "召喚した動物チームを編成し、下へ回る10種類のルーンでラインを完成。各ペットが個別に攻撃し、合計防御と回復で召喚師を守ります。",
     ko: "소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다.",
@@ -2894,7 +2894,7 @@ const beastGuardianPublicCopy = {
   title: "獸王守衛",
   statusText: "可遊玩",
   type: "英雄塔防",
-  description: "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。",
+  description: "改變敵人行進路線，配置動物士兵和 WeightPlay 英雄，守住六個區域的 30 關，迎戰各有打法的首領。",
   meta: ["塔防", "30 關", "六名 Boss"],
 };
 const beastGuardian = window.WONDER_LOBBY.games.find((game) => game.id === "beast-tactician");
@@ -3773,7 +3773,7 @@ const animalPeachOathOwnerPreview = {
   href: "games/animal-peach-oath/",
   description: {
     en: "Lead an oath-bound animal squad through auto battles, hero growth, equipment, troop counters, and boss stages.",
-    "zh-Hant": "率領結義動物武將自動迎戰，培養隊伍、整備兵裝、運用兵種克制，挑戰層層 Boss 關卡。",
+    "zh-Hant": "率領結義動物武將自動迎戰，培養隊伍、整備兵裝並利用兵種相剋，挑戰層層首領關卡。",
     "zh-Hans": "率领结义动物武将自动迎战，培养队伍、整备兵装、运用兵种克制，挑战层层 Boss 关卡。",
     ja: "盟誓を結んだ動物武将を率い、自動戦闘と育成、装備、兵種相性でボス戦に挑みます。",
     ko: "맹세한 동물 장수들을 이끌고 자동 전투, 성장, 장비와 병종 상성으로 보스전에 도전하세요.",
@@ -4682,7 +4682,7 @@ const animalFireflyFolioPlanned = {
   status: "planned",
   statusText: { ...ownerPreviewStatusText },
   type: marketFiveLocalized(["Route-Code Direction Puzzle", "路線密碼方向益智", "路线密码方向益智", "道順コードパズル", "경로 코드 방향 퍼즐", "Puzle de código y direcciones", "Puzzle de código e direções", "Puzzle de code directionnel", "Richtungs-Code-Puzzle", "Puzzle del codice direzionale", "Пазл маршрута и направлений", "दिशा-कोड पहेली", "لغز رمز الاتجاهات"]),
-  description: marketFiveLocalized(["Decode 30 field notes across six arcs and trace each exact route to the firefly lantern.", "解讀六段共 30 張田野筆記，畫出每條通往螢火蟲燈盞的精確路線。", "解读六段共 30 张田野笔记，画出每条通往萤火虫灯盏的精确路线。", "6つの章にある30枚の野帳を解読し、ホタルの灯りまで正確な道順をたどろう。", "여섯 구간의 현장 기록 30개를 해독하고 반딧불 등불까지 정확한 경로를 그리세요.", "Descifra 30 notas en seis arcos y traza cada ruta exacta hasta la linterna.", "Decifre 30 notas em seis arcos e trace cada rota exata até a lanterna.", "Décode 30 notes en six arcs et trace chaque trajet exact jusqu’à la lanterne.", "Entschlüssle 30 Feldnotizen in sechs Abschnitten und zeichne jede genaue Route zur Laterne.", "Decifra 30 note in sei archi e traccia ogni percorso esatto fino alla lanterna.", "Расшифруйте 30 заметок в шести главах и проложите каждый точный путь к фонарю.", "छह अध्यायों की 30 मैदानी टिप्पणियाँ समझें और हर सही रास्ता लालटेन तक बनाएँ।", "فك رموز 30 ملاحظة ضمن ستة أقواس وارسم كل مسار دقيق إلى الفانوس."]),
+  description: marketFiveLocalized(["Decode 30 field notes across six arcs and trace each exact route to the firefly lantern.", "閱讀田野筆記中的線索，畫出通往螢火蟲燈盞的路線，完成 30 道路徑謎題。", "解读六段共 30 张田野笔记，画出每条通往萤火虫灯盏的精确路线。", "6つの章にある30枚の野帳を解読し、ホタルの灯りまで正確な道順をたどろう。", "여섯 구간의 현장 기록 30개를 해독하고 반딧불 등불까지 정확한 경로를 그리세요.", "Descifra 30 notas en seis arcos y traza cada ruta exacta hasta la linterna.", "Decifre 30 notas em seis arcos e trace cada rota exata até a lanterna.", "Décode 30 notes en six arcs et trace chaque trajet exact jusqu’à la lanterne.", "Entschlüssle 30 Feldnotizen in sechs Abschnitten und zeichne jede genaue Route zur Laterne.", "Decifra 30 note in sei archi e traccia ogni percorso esatto fino alla lanterna.", "Расшифруйте 30 заметок в шести главах и проложите каждый точный путь к фонарю.", "छह अध्यायों की 30 मैदानी टिप्पणियाँ समझें और हर सही रास्ता लालटेन तक बनाएँ।", "فك رموز 30 ملاحظة ضمن ستة أقواس وارسم كل مسار دقيق إلى الفانوس."]),
   meta: marketFiveLocalized([["30 Folio Pages", "Six Rule Arcs", "Calm Retry"], ["30 張筆記", "六段規則", "平靜重試"], ["30 张笔记", "六段规则", "平静重试"], ["30ページ", "6つのルール章", "穏やかな再挑戦"], ["기록 30개", "규칙 6구간", "차분한 재시도"], ["30 páginas", "Seis arcos", "Reintento tranquilo"], ["30 páginas", "Seis arcos", "Nova tentativa calma"], ["30 pages", "Six arcs", "Reprise calme"], ["30 Seiten", "Sechs Abschnitte", "Ruhiger Neustart"], ["30 pagine", "Sei archi", "Riprova calma"], ["30 страниц", "Шесть глав", "Спокойный повтор"], ["30 पन्ने", "छह अध्याय", "शांत पुनःप्रयास"], ["30 صفحة", "ستة أقواس", "محاولة هادئة"]]),
   categories: ["Puzzle", "Logic", "Route Planning", "Family", "Animal"],
   skills: ["Planning", "Spatial Reasoning", "Focus"],
@@ -4722,7 +4722,7 @@ const animalSilhouetteScoutPlanned = {
   status: "planned",
   statusText: { ...ownerPreviewStatusText },
   type: marketFiveLocalized(["Outline Recognition Puzzle", "動物輪廓辨識益智", "动物轮廓辨识益智", "輪郭認識パズル", "실루엣 인식 퍼즐", "Puzle de reconocimiento de siluetas", "Puzzle de reconhecimento de silhuetas", "Puzzle de reconnaissance de silhouettes", "Silhouetten-Erkennungspuzzle", "Puzzle di riconoscimento sagome", "Пазл распознавания силуэтов", "सिल्हूट पहचान पहेली", "لغز تمييز الظلال"]),
-  description: marketFiveLocalized(["Explore thirty authored dawn lookouts and match each animal outline to its full-colour card.", "探索三十座作者設計的黎明瞭望台，把每個動物輪廓配對到彩色卡片。", "探索三十座作者设计的黎明瞭望台，把每个动物轮廓配对到彩色卡片。", "30の夜明けの見張り台を巡り、動物の輪郭を色付きカードと合わせます。", "서른 개의 새벽 전망대를 탐험하며 동물 실루엣을 색 카드와 맞춰 보세요.", "Explora treinta miradores del amanecer y combina cada silueta con su tarjeta a color.", "Explore trinta mirantes do amanhecer e combine cada silhueta com seu cartão colorido.", "Explore trente belvédères de l’aube et associe chaque silhouette à sa carte en couleur.", "Erkunde dreißig Dämmerungs-Ausgucke und ordne jede Silhouette ihrer Farbkarte zu.", "Esplora trenta vedette dell’alba e abbina ogni sagoma alla carta colorata.", "Исследуйте тридцать рассветных вышек и сопоставляйте силуэты с цветными карточками.", "भोर की तीस चौकियों का अन्वेषण करें और हर सिल्हूट को रंगीन कार्ड से मिलाएँ।", "استكشف ثلاثين نقطة مراقبة عند الفجر وطابق كل ظل مع بطاقته الملوّنة."]),
+  description: marketFiveLocalized(["Explore thirty authored dawn lookouts and match each animal outline to its full-colour card.", "在 30 座黎明瞭望台找出動物輪廓，將牠們配對到正確的彩色卡片。", "探索三十座作者设计的黎明瞭望台，把每个动物轮廓配对到彩色卡片。", "30の夜明けの見張り台を巡り、動物の輪郭を色付きカードと合わせます。", "서른 개의 새벽 전망대를 탐험하며 동물 실루엣을 색 카드와 맞춰 보세요.", "Explora treinta miradores del amanecer y combina cada silueta con su tarjeta a color.", "Explore trinta mirantes do amanhecer e combine cada silhueta com seu cartão colorido.", "Explore trente belvédères de l’aube et associe chaque silhouette à sa carte en couleur.", "Erkunde dreißig Dämmerungs-Ausgucke und ordne jede Silhouette ihrer Farbkarte zu.", "Esplora trenta vedette dell’alba e abbina ogni sagoma alla carta colorata.", "Исследуйте тридцать рассветных вышек и сопоставляйте силуэты с цветными карточками.", "भोर की तीस चौकियों का अन्वेषण करें और हर सिल्हूट को रंगीन कार्ड से मिलाएँ।", "استكشف ثلاثين نقطة مراقبة عند الفجر وطابق كل ظل مع بطاقته الملوّنة."]),
   meta: marketFiveLocalized([["30 Lookouts", "See + Match", "Calm Retry"], ["30 座瞭望台", "觀察＋配對", "平靜重試"], ["30 座瞭望台", "观察＋配对", "平静重试"], ["30の見張り台", "見て合わせる", "穏やかな再挑戦"], ["전망대 30개", "보고 맞추기", "차분한 재시도"], ["30 miradores", "Mira y combina", "Reintento tranquilo"], ["30 mirantes", "Veja e associe", "Nova tentativa calma"], ["30 belvédères", "Observe et associe", "Reprise sereine"], ["30 Ausgucke", "Sehen + Zuordnen", "Ruhiger Versuch"], ["30 vedette", "Guarda e abbina", "Riprova calma"], ["30 вышек", "Смотри и сопоставляй", "Спокойный повтор"], ["30 चौकियाँ", "देखें और मिलाएँ", "शांत पुनः प्रयास"], ["30 نقاط مراقبة", "انظر وطابق", "محاولة هادئة"]]),
   categories: ["Puzzle", "Observation", "Visual Recognition", "Family", "Animal"],
   skills: ["Observation", "Focus", "Visual Reasoning"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
@@ -5465,7 +5465,7 @@ if (animalHeroTrialsPublicCopy) {
   animalHeroTrialsPublicCopy.title = { en:"Animal Hero Trials", "zh-Hant":"動物英雄試煉", "zh-Hans":"动物英雄试炼" };
   animalHeroTrialsPublicCopy.statusText = { en:"Play Now", "zh-Hant":"立即遊玩", "zh-Hans":"立即游玩" };
   animalHeroTrialsPublicCopy.type = { en:"Hero Action Roguelite", "zh-Hant":"英雄動作 Roguelite", "zh-Hans":"英雄动作 Roguelite" };
-  animalHeroTrialsPublicCopy.description = { en:"Choose one of four heroes for 30 three-room trials with five enemy families, saved mastery, and six distinct Bosses.", "zh-Hant":"選擇四位英雄之一，挑戰 30 個三房間試煉、五種敵人、永久精通與六個不同 Boss。", "zh-Hans":"从四位英雄中选择一位，完成 30 个三房间试炼，面对五类敌人、保存精通成长并击败六个不同 Boss。" };
+  animalHeroTrialsPublicCopy.description = { en:"Choose one of four heroes for 30 three-room trials with five enemy families, saved mastery, and six distinct Bosses.", "zh-Hant":"選擇四位英雄之一，挑戰 30 個三房間試煉，熟悉五種敵人、累積永久精通，並擊敗六名首領。", "zh-Hans":"从四位英雄中选择一位，完成 30 个三房间试炼，面对五类敌人、保存精通成长并击败六个不同 Boss。" };
   animalHeroTrialsPublicCopy.meta = { en:["30 Trials","Six Boss Counters","Saved Mastery"], "zh-Hant":["30 個試煉","六種 Boss 反制","存檔精通"], "zh-Hans":["30 个试炼","六种 Boss 对策","保存精通"] };
   delete animalHeroTrialsPublicCopy.ages;
   delete animalHeroTrialsPublicCopy.ageLabel;
@@ -5488,7 +5488,7 @@ const orbFortress = window.WONDER_LOBBY.games.find((game) => game.id === "animal
 if (orbFortress) {
   delete orbFortress.ageLabel;
   orbFortress.description.en = "Plan wall and mirror-pylon bank shots through 30 routes, counter five special enemy rules, and defeat six unique fortress Bosses.";
-  orbFortress.description["zh-Hant"] = "規劃牆面與鏡柱反彈，挑戰 30 關、五種特殊敵人規則與六名獨特要塞 Boss。";
+  orbFortress.description["zh-Hant"] = "調整牆面和鏡柱，利用反彈擊退敵人；挑戰 30 條路線與六場首領戰。";
   orbFortress.meta.en = ["30 Routes", "Mirror Pylons", "Six Bosses"];
   orbFortress.meta["zh-Hant"] = ["30 關", "鏡面柱", "六名 Boss"];
 }
@@ -5544,21 +5544,21 @@ const verifiedCleanZhLobbyCopy = {
     title: "動物遺跡獵人",
     statusText: "可遊玩",
     type: "房間動作 Roguelike",
-    description: "探索古代遺跡房間，收集遺跡能量球，開啟寶箱並穿戴強力裝備，最終擊敗 Boss。",
+    description: "探索遺跡、收集能量球、開啟寶箱並替英雄裝備戰利品，最後挑戰首領。",
     meta: ["動作 Roguelike", "3 個房間", "裝備系統"],
   },
   "animal-auto-squad": {
     title: "動物自走小隊",
     statusText: "可遊玩",
     type: "自走棋策略",
-    description: "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。",
+    description: "培養並配置十名動物英雄，穿越六個區域的 30 個五波關卡，迎戰六名區域首領。",
     meta: ["編成策略", "30 關", "六名 Boss"],
   },
   "beast-tactician": {
     title: "獸王守衛",
     statusText: "可遊玩",
     type: "英雄塔防",
-    description: "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。",
+    description: "改變敵人行進路線，配置動物士兵和 WeightPlay 英雄，守住六個區域的 30 關，迎戰各有打法的首領。",
     meta: ["塔防", "30 關", "六名 Boss"],
   },
   "shadow-wolf": {
@@ -5585,6 +5585,15 @@ for (const game of window.WONDER_LOBBY.games) {
   game.type["zh-Hant"] = clean.type;
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
+}
+
+const plainLanguageCardDescriptions = {
+  spades: "和電腦隊友一起叫牌，再用黑桃王牌完成合約。",
+  speed: "和電腦玩家同步競速，搶先打出中央牌高一或低一的牌，不必等待回合。",
+};
+for (const [gameId, description] of Object.entries(plainLanguageCardDescriptions)) {
+  const game = window.WONDER_LOBBY.games.find((entry) => entry.id === gameId);
+  if (game) game.description["zh-Hant"] = description;
 }
 
 const campusDash = window.WONDER_LOBBY.games.find((game) => game.id === "campus-dash");

@@ -48,38 +48,38 @@
     <main class="lobby-shell">
       <aside class="desktop-filter-rail kids-desktop-filter-rail" aria-label="Game filters">
         <div class="desktop-filter-rail-heading">
-          <span data-i18n="kids.play.kicker">Choose your age</span>
-          <h2 data-i18n="kids.play.title">Pick a game and play!</h2>
+          <span data-i18n="kids.play.kicker">先選年齡</span>
+          <h2 data-i18n="kids.play.title">挑一款遊戲開始玩</h2>
         </div>
 
         <section class="rail-library library-tabs" aria-label="Game library tabs">
-          <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
-          <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
-          <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+          <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">全部遊戲</button>
+          <button type="button" data-library-tab="recent" data-i18n="library.recent">最近玩過</button>
+          <button type="button" data-library-tab="favorites" data-i18n="library.favorites">我的最愛</button>
         </section>
 
         <section class="desktop-filter-group" aria-label="Age filters">
-          <h3 data-i18n="filter.all_ages">All Ages</h3>
+          <h3 data-i18n="filter.all_ages">所有年齡</h3>
           <div class="desktop-filter-grid age-filter">
-            <button class="active" type="button" data-age-filter="all" data-i18n="filter.all_ages">All Ages</button>
+            <button class="active" type="button" data-age-filter="all" data-i18n="filter.all_ages">所有年齡</button>
             <button type="button" data-age-filter="3" data-i18n="filter.age_3">3+</button>
             <button type="button" data-age-filter="6" data-i18n="filter.age_6">6+</button>
             <button type="button" data-age-filter="9" data-i18n="filter.age_9">9+</button>
           </div>
         </section>
 
-        <section class="desktop-filter-group" aria-label="Topic filters">
-          <h3 data-i18n="filter.all_topics">All Topics</h3>
+        <section class="desktop-filter-group" aria-label="主題篩選">
+          <h3 data-i18n="filter.all_topics">所有主題</h3>
           <div class="desktop-filter-grid topic-filter">
-            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
-            <button type="button" data-topic-filter="Education" data-i18n="topic.education">Education</button>
+            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">所有主題</button>
+            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">精選</button>
+            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">益智</button>
+            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">街機</button>
+            <button type="button" data-topic-filter="Education" data-i18n="topic.education">教育</button>
           </div>
         </section>
 
-        <button class="desktop-filter-reset" type="button" data-reset-discovery data-i18n="status.clear_filters">Clear filters</button>
+        <button class="desktop-filter-reset" type="button" data-reset-discovery data-i18n="status.clear_filters">清除篩選</button>
       </aside>
 
       <header class="lobby-hero kids-lobby-hero">
@@ -149,59 +149,59 @@
 
       <div class="kids-play-heading">
         <span data-i18n="kids.play.kicker">先選年齡</span>
-        <h2 data-i18n="kids.play.title">Pick a game and play!</h2>
+        <h2 data-i18n="kids.play.title">挑一款遊戲開始玩</h2>
       </div>
 
       <section class="vibe-strip kids-skill-strip" aria-labelledby="kidsSkillStripTitle">
         <h3 id="kidsSkillStripTitle" data-i18n="kids.skill_path.title">想玩哪種挑戰？</h3>
         <div class="vibe-options">
-          <button type="button" data-skill-filter="Memory" data-i18n="skill.Memory">Memory</button>
-          <button type="button" data-skill-filter="Logic" data-i18n="skill.Logic">Logic</button>
-          <button type="button" data-skill-filter="Focus" data-i18n="skill.Focus">Focus</button>
-          <button type="button" data-skill-filter="Problem Solving" data-i18n="skill.Problem Solving">Problem Solving</button>
-          <button type="button" data-skill-filter="Animal Knowledge" data-i18n="skill.Animal Knowledge">Animal Knowledge</button>
+          <button type="button" data-skill-filter="Memory" data-i18n="skill.Memory">記憶</button>
+          <button type="button" data-skill-filter="Logic" data-i18n="skill.Logic">邏輯</button>
+          <button type="button" data-skill-filter="Focus" data-i18n="skill.Focus">專注</button>
+          <button type="button" data-skill-filter="Problem Solving" data-i18n="skill.Problem Solving">解決問題</button>
+          <button type="button" data-skill-filter="Animal Knowledge" data-i18n="skill.Animal Knowledge">動物知識</button>
         </div>
       </section>
 
       <div class="lobby-search-row">
         <label class="lobby-search" for="gameSearch">
-          <span data-i18n="search.label">Search games</span>
+          <span data-i18n="search.label">搜尋遊戲</span>
           <input id="gameSearch" type="search" autocomplete="off" data-i18n-placeholder="kids.search.placeholder" placeholder="搜尋遊戲名稱或玩法……" />
         </label>
-        <button id="quickPickBtn" class="quick-pick-btn" type="button" data-i18n="quick_pick.action">Pick for me</button>
+        <button id="quickPickBtn" class="quick-pick-btn" type="button" data-i18n="quick_pick.action">幫我挑一款</button>
       </div>
 
       <section class="age-filter kids-age-filter" aria-label="Age filters">
-        <button class="active" type="button" data-age-filter="all" data-i18n="filter.all_ages">All Ages</button>
+        <button class="active" type="button" data-age-filter="all" data-i18n="filter.all_ages">所有年齡</button>
         <button type="button" data-age-filter="3" data-i18n="filter.age_3">3+</button>
         <button type="button" data-age-filter="6" data-i18n="filter.age_6">6+</button>
         <button type="button" data-age-filter="9" data-i18n="filter.age_9">9+</button>
       </section>
 
       <section class="library-tabs" aria-label="Game library tabs">
-        <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
-        <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
-        <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+        <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">全部遊戲</button>
+        <button type="button" data-library-tab="recent" data-i18n="library.recent">最近玩過</button>
+        <button type="button" data-library-tab="favorites" data-i18n="library.favorites">我的最愛</button>
       </section>
 
       <details id="advancedFilters" class="advanced-filters">
-        <summary><span data-i18n="filter.more_filters">More filters</span><b id="advancedFilterCount" class="advanced-filter-count" aria-live="polite">0</b></summary>
+        <summary><span data-i18n="filter.more_filters">更多篩選</span><b id="advancedFilterCount" class="advanced-filter-count" aria-live="polite">0</b></summary>
         <div class="advanced-filter-groups">
-          <section class="topic-filter" aria-label="Topic filters">
-            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
-            <button type="button" data-topic-filter="Education" data-i18n="topic.education">Education</button>
+          <section class="topic-filter" aria-label="主題篩選">
+            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">所有主題</button>
+            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">精選</button>
+            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">益智</button>
+            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">街機</button>
+            <button type="button" data-topic-filter="Education" data-i18n="topic.education">教育</button>
           </section>
           <section class="skill-filter" aria-label="Skill filters">
-            <button class="active" type="button" data-skill-filter="all" data-i18n="filter.all_skills">All Skills</button>
-            <button type="button" data-skill-filter="Memory" data-i18n="skill.Memory">Memory</button>
-            <button type="button" data-skill-filter="Logic" data-i18n="skill.Logic">Logic</button>
-            <button type="button" data-skill-filter="Reaction" data-i18n="skill.Reaction">Reaction</button>
-            <button type="button" data-skill-filter="Focus" data-i18n="skill.Focus">Focus</button>
-            <button type="button" data-skill-filter="Problem Solving" data-i18n="skill.Problem Solving">Problem Solving</button>
-            <button type="button" data-skill-filter="Animal Knowledge" data-i18n="skill.Animal Knowledge">Animal Knowledge</button>
+            <button class="active" type="button" data-skill-filter="all" data-i18n="filter.all_skills">所有能力</button>
+            <button type="button" data-skill-filter="Memory" data-i18n="skill.Memory">記憶</button>
+            <button type="button" data-skill-filter="Logic" data-i18n="skill.Logic">邏輯</button>
+            <button type="button" data-skill-filter="Reaction" data-i18n="skill.Reaction">反應</button>
+            <button type="button" data-skill-filter="Focus" data-i18n="skill.Focus">專注</button>
+            <button type="button" data-skill-filter="Problem Solving" data-i18n="skill.Problem Solving">解決問題</button>
+            <button type="button" data-skill-filter="Animal Knowledge" data-i18n="skill.Animal Knowledge">動物知識</button>
           </section>
         </div>
       </details>
@@ -428,7 +428,7 @@
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-bubble-safari.webp" alt="泡泡探險 兒童遊戲" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
       <h2 data-runtime-localize="off">泡泡探險</h2>
-      <p>挑戰 30 個救援關卡，運用反應式障礙、風、移動列與四種力量泡泡。</p>
+      <p>瞄準泡泡穿過會變化的障礙，利用風向與四種力量泡泡，完成 30 個救援關卡。</p>
       <span class="game-card-static-age">6+</span>
 
     </div>
@@ -513,9 +513,9 @@
 
       <footer class="site-footer">
         <nav aria-label="Site links">
-          <a href="about.html" data-i18n="footer.about">About</a><a href="privacy.html" data-i18n="footer.privacy">Privacy</a><a href="contact.html" data-i18n="footer.contact">Contact</a><a href="terms.html" data-i18n="footer.terms">Terms</a><a href="advertising.html" data-i18n="footer.advertising">Advertising</a><a href="/blog/">部落格</a>
+          <a href="about.html" data-i18n="footer.about">關於我們</a><a href="privacy.html" data-i18n="footer.privacy">隱私權</a><a href="contact.html" data-i18n="footer.contact">聯絡我們</a><a href="terms.html" data-i18n="footer.terms">使用條款</a><a href="advertising.html" data-i18n="footer.advertising">廣告資訊</a><a href="/blog/">部落格</a>
         </nav>
-        <p data-i18n="footer.copyright">Copyright 2026 WeightStudio. All rights reserved.</p>
+        <p data-i18n="footer.copyright">© 2026 WeightStudio。保留所有權利。</p>
       </footer>
     </main>
     <div id="lobbyToast" class="lobby-toast hidden" role="status" aria-live="polite"></div>
