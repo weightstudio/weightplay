@@ -450,6 +450,7 @@
     }
     state.checks += 1;
     state.sessionChecks += 1;
+    renderBattle();
     const firstMismatch = target.findIndex((id, index) => id !== state.chain[index]);
     const decoyChosen = item.decoy && state.chain.includes(item.decoy);
     track("check", { path: state.path + 1, checks: state.sessionChecks, correct: firstMismatch < 0 && !decoyChosen });
