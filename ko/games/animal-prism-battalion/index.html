@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v31">
+  <meta name="weightplay-game-version" content="v33">
   <meta name="weightplay-interface-version" content="7">
   <meta name="theme-color" content="#07152b">
   <title>프리즘 대대 | WeightPlay</title>
@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="style.css?v=20260928-prism-v31-square-ui4">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="/games/animal-prism-battalion/interface-7-cleanup.css?v=20260928-prism-v31-square-ui4"><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="/games/animal-prism-battalion/interface-7-cleanup.css?v=20260929-prism-v33-main-routes"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="프리즘 대대 | WeightPlay" />
     <meta property="og:description" content="세 차선 사이에서 자동 프리즘 포대를 전환하고, 몰려오는 편대를 파괴하며, 희귀 공격 코어를 모아 살아남은 괴물이 크리스털 코어에 닿지 않게 하세요." />
@@ -63,11 +63,12 @@
         <label class="locale-control" hidden><span class="sr-only" data-t="language">Language</span><select id="locale" aria-label="Language" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
     <main class="main-screen">
-      <section class="main-hero">
-        <img class="poster" src="../../assets/interface7-redrawn/animal-prism-battalion.webp" alt="프리즘 대대 게임 이미지" data-ta="lanePosterAlt" data-wp-frame-poster="">
-        <div class="main-copy" data-wp-frame-copy=""><small data-t="laneKicker">THREE-LANE BATTALION STRATEGY</small><h1 data-t="title" data-wp-game-title data-runtime-localize="off">프리즘 대대</h1><p data-t="laneGuideIntro" data-wp-frame-summary="">Switch Captain Fia between three lanes. Break threats, collect power cores, and protect the crystal.</p><span id="mainProgress" data-wp-frame-progress=""></span><button id="start" class="primary" type="button" data-t="start" data-wp-frame-action="primary">Start Game</button></div>
-      </section>
-<section class="game-page-info game-page-info-static" aria-label="프리즘 대대 게임 정보">
+      <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-t="title" data-wp-game-title data-runtime-localize="off">프리즘 대대</h1>
+      <img class="poster main-poster" src="../../assets/interface7-redrawn/animal-prism-battalion.webp" alt="프리즘 대대 게임 이미지" data-ta="lanePosterAlt" data-wp-frame-poster="">
+      <div class="main-copy" data-wp-frame-copy=""><p class="wp-standard-main-summary" data-t="laneMainSummary" data-wp-frame-summary="">Switch lanes, stop shadow waves, collect power cores, and protect the crystal.</p><span id="mainProgress" class="wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress=""></span><button id="start" class="primary wp-standard-main-start" type="button" data-wp-main-start data-t="start" data-wp-frame-action="primary">Start Game</button></div>
+</main>
+  </div>
+<section class="public-guide game-page-info game-page-info-static" aria-label="프리즘 대대 게임 정보">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">프리즘 대대</h2><p>포탑은 자동으로 발사합니다. 당신은 세 레인 중 지금 어디를 지킬지 결정하세요. 다가오는 적을 막을지, 폭탄을 제거할지, 공격력을 높일 코어를 모을지 선택해야 합니다.</p></div>
@@ -92,8 +93,6 @@
       <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-skyspire-drop/"><img src="/assets/interface7-redrawn/animal-skyspire-drop.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>하늘첨탑 드롭</strong><span>크리스털 링 타워를 회전해 피아를 30개의 스카이스파이어로 이끄세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-spectrum-pulse/"><img src="/assets/interface7-redrawn/animal-spectrum-pulse.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>스펙트럼 펄스</strong><span>판코의 스펙트럼 정령을 회전 문양 관문 사이로 펄스해 설계된 오로라 탑 30개를 복원하세요.</span></span></a></div></div>
     </div>
   </section>
-      </main>
-  </div>
 
   <section id="stage" class="active-screen wp-stage-art-shell" hidden data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334"  data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
     <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><span data-wp-frame-title hidden></span></header>
@@ -131,7 +130,7 @@
 <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
 <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <script src="../../src/wallet.js"></script>
-<script src="../../src/analytics.js?v=20260929-castle-touch-v1"></script>
+<script src="../../src/analytics.js?v=20260929-castle-starwish-v1"></script>
 <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
 <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
 <script src="../../src/stage-virtualization-standard.js?v=20260927-prism-v29-stage-root-canvas" data-wp-stage-virtualization-standard></script>
@@ -140,6 +139,6 @@
 <script src="../../../games/animal-prism-battalion/guide-copy.js?v=20260929-text140"></script>
 <script src="locales.js?v=20260929-text140"></script>
 <script src="stage-virtualization.js?v=20260927-prism-v29-stage-root-canvas"></script>
-<script src="game.js?v=20260928-prism-v32-star-sand"></script>
+<script src="game.js?v=20260929-prism-v33-main-routes"></script>
 </body>
 </html>

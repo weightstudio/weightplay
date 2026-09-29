@@ -259,7 +259,22 @@
     ]
   ]
 };
-  const combat = locale => { const r = combatRows[locale] || combatRows.en; return {defeats:r[0],intro:r[1],record:r[2],result:r[3],alchemy:r[4],alchemyDesc:r[5],bosses:r[6]}; };
+  const combatSeoDescriptions = {
+    en: "Play a 30-stage action-survival campaign: survive the timer, clear waves or defeat each stage boss. Collect XP crystals, choose spells and shape a permanent talent build.",
+    "zh-Hant": "挑戰 30 關動作生存戰役：依關卡目標撐過倒數、清除波次或擊敗首領。收集經驗水晶選擇法術，再打造可重置的永久天賦路線。",
+    "zh-Hans": "挑战 30 关动作生存战役：按关卡目标撑过倒计时、清除波次或击败首领。收集经验水晶选择法术，并培养可重置的永久天赋路线。",
+    ja: "全30ステージのアクションサバイバル。制限時間を生き延びる、ウェーブを突破する、ボスを倒すなど、各ステージの目標に挑戦。経験値クリスタルで魔法を選び、才能ルートを育てよう。",
+    ko: "30단계 액션 생존 캠페인에서 제한 시간 생존, 웨이브 돌파 또는 보스 격파에 도전하세요. XP 크리스털을 모아 마법을 선택하고 영구 특성 경로를 키워 보세요.",
+    es: "Juega una campaña de acción y supervivencia de 30 niveles: resiste el tiempo, supera oleadas o derrota al jefe. Recoge cristales de XP, elige hechizos y desarrolla talentos permanentes.",
+    "pt-BR": "Encare uma campanha de ação e sobrevivência com 30 fases: sobreviva ao tempo, vença as ondas ou derrote o chefe. Colete cristais de XP, escolha magias e desenvolva talentos permanentes.",
+    fr: "Jouez une campagne d’action-survie de 30 niveaux : tenez jusqu’au bout, terminez les vagues ou battez le boss. Récoltez des cristaux d’XP, choisissez des sorts et développez des talents permanents.",
+    de: "Spiele eine Action-Survival-Kampagne mit 30 Stufen: Überlebe den Timer, bezwinge Wellen oder besiege den Boss. Sammle EP-Kristalle, wähle Zauber und entwickle dauerhafte Talente.",
+    it: "Affronta una campagna action-survival di 30 livelli: sopravvivi al tempo, supera le ondate o sconfiggi il boss. Raccogli cristalli XP, scegli magie e sviluppa talenti permanenti.",
+    ru: "Пройдите кампанию из 30 этапов: выживите до конца таймера, пройдите волны или победите босса. Собирайте кристаллы опыта, выбирайте заклинания и развивайте постоянные таланты.",
+    hi: "30 चरणों के एक्शन-सर्वाइवल अभियान में समय तक टिकें, लहरें पार करें या बॉस को हराएँ। XP क्रिस्टल इकट्ठा करें, जादू चुनें और स्थायी प्रतिभाएँ विकसित करें।",
+    ar: "خض حملة من 30 مرحلة تجمع بين الحركة والبقاء: اصمد حتى نهاية الوقت، أو أكمل الموجات، أو اهزم الزعيم. اجمع بلورات الخبرة واختر السحر وطوّر المواهب الدائمة.",
+  };
+  const combat = locale => { const r = combatRows[locale] || combatRows.en; return {defeats:r[0],intro:r[1],record:r[2],result:r[3],alchemy:r[4],alchemyDesc:r[5],bosses:r[6],seoDescription:combatSeoDescriptions[locale] || combatSeoDescriptions.en}; };
   window.CrystalTalents = { combat, ids, icons, costs: [4,6,8,10], cap: id => id === 'rhythm' ? 2 : 3,
     copy(locale) { const language = rows[locale] ? locale : 'en'; return { reroll: rerolls[language], ...Object.fromEntries(keys.map((key,i) => [key,rows[language][i]])), names: {...Object.fromEntries(ids.map((id,i) => [id,names[language][i]])), alchemy:combat(language).alchemy}, descriptions: {...Object.fromEntries(ids.map((id,i) => [id,desc[language][i]])), alchemy:combat(language).alchemyDesc} }; }
   };

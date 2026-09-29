@@ -9680,6 +9680,7 @@
   const crystalCombatGuides = {
   "en": {
     "intro": "Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.",
+    "metaDescription": "Play a 30-stage action-survival campaign: survive the timer, clear waves or defeat each stage boss. Collect XP crystals, choose spells and shape a permanent talent build.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9704,6 +9705,7 @@
   },
   "zh-Hant": {
     "intro": "挑戰生存、波次或首領。收集經驗水晶升級，魔法自動施放。",
+    "metaDescription": "挑戰 30 關動作生存戰役：依關卡目標撐過倒數、清除波次或擊敗首領。收集經驗水晶選擇法術，再打造可重置的永久天賦路線。",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9728,6 +9730,7 @@
   },
   "zh-Hans": {
     "intro": "挑战生存、波次或首领。收集经验水晶升级，魔法自动施放。",
+    "metaDescription": "挑战 30 关动作生存战役：按关卡目标撑过倒计时、清除波次或击败首领。收集经验水晶选择法术，并培养可重置的永久天赋路线。",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9752,6 +9755,7 @@
   },
   "ja": {
     "intro": "生存、ウェーブ、ボスに挑戦。経験結晶で強化し、魔法は自動発射。",
+    "metaDescription": "全30ステージのアクションサバイバル。制限時間を生き延びる、ウェーブを突破する、ボスを倒すなど、各ステージの目標に挑戦。経験値クリスタルで魔法を選び、才能ルートを育てよう。",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9776,6 +9780,7 @@
   },
   "ko": {
     "intro": "생존, 웨이브, 보스에 도전하세요. 경험 수정으로 강화하며 마법은 자동 발사됩니다.",
+    "metaDescription": "30단계 액션 생존 캠페인에서 제한 시간 생존, 웨이브 돌파 또는 보스 격파에 도전하세요. XP 크리스털을 모아 마법을 선택하고 영구 특성 경로를 키워 보세요.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9800,6 +9805,7 @@
   },
   "es": {
     "intro": "Sobrevive, supera oleadas o vence al jefe. Recoge cristales de XP; la magia es automática.",
+    "metaDescription": "Juega una campaña de acción y supervivencia de 30 niveles: resiste el tiempo, supera oleadas o derrota al jefe. Recoge cristales de XP, elige hechizos y desarrolla talentos permanentes.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9824,6 +9830,7 @@
   },
   "pt-BR": {
     "intro": "Sobreviva, vença ondas ou derrote o chefe. Colete cristais de XP; a magia é automática.",
+    "metaDescription": "Encare uma campanha de ação e sobrevivência com 30 fases: sobreviva ao tempo, vença as ondas ou derrote o chefe. Colete cristais de XP, escolha magias e desenvolva talentos permanentes.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9848,6 +9855,7 @@
   },
   "fr": {
     "intro": "Survivez, terminez les vagues ou battez le boss. Ramassez les cristaux XP ; la magie est automatique.",
+    "metaDescription": "Jouez une campagne d’action-survie de 30 niveaux : tenez jusqu’au bout, terminez les vagues ou battez le boss. Récoltez des cristaux d’XP, choisissez des sorts et développez des talents permanents.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9872,6 +9880,7 @@
   },
   "de": {
     "intro": "Überlebe, schaffe Wellen oder besiege den Boss. Sammle EP-Kristalle; Magie feuert automatisch.",
+    "metaDescription": "Spiele eine Action-Survival-Kampagne mit 30 Stufen: Überlebe den Timer, bezwinge Wellen oder besiege den Boss. Sammle EP-Kristalle, wähle Zauber und entwickle dauerhafte Talente.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9896,6 +9905,7 @@
   },
   "it": {
     "intro": "Sopravvivi, supera ondate o sconfiggi il boss. Raccogli cristalli XP; la magia è automatica.",
+    "metaDescription": "Affronta una campagna action-survival di 30 livelli: sopravvivi al tempo, supera le ondate o sconfiggi il boss. Raccogli cristalli XP, scegli magie e sviluppa talenti permanenti.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9920,6 +9930,7 @@
   },
   "ru": {
     "intro": "Выживите, пройдите волны или победите босса. Собирайте кристаллы опыта; магия автоматическая.",
+    "metaDescription": "Пройдите кампанию из 30 этапов: выживите до конца таймера, пройдите волны или победите босса. Собирайте кристаллы опыта, выбирайте заклинания и развивайте постоянные таланты.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9944,6 +9955,7 @@
   },
   "hi": {
     "intro": "जीवित रहें, लहरें पार करें या बॉस हराएँ। XP क्रिस्टल लें; जादू अपने आप चलता है।",
+    "metaDescription": "30 चरणों के एक्शन-सर्वाइवल अभियान में समय तक टिकें, लहरें पार करें या बॉस को हराएँ। XP क्रिस्टल इकट्ठा करें, जादू चुनें और स्थायी प्रतिभाएँ विकसित करें।",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9968,6 +9980,7 @@
   },
   "ar": {
     "intro": "اصمد أو أكمل الموجات أو اهزم الزعيم. اجمع بلورات الخبرة؛ السحر تلقائي.",
+    "metaDescription": "خض حملة من 30 مرحلة تجمع بين الحركة والبقاء: اصمد حتى نهاية الوقت، أو أكمل الموجات، أو اهزم الزعيم. اجمع بلورات الخبرة واختر السحر وطوّر المواهب الدائمة.",
     "time": "45–180 s",
     "story": [],
     "systems": [
@@ -9993,6 +10006,77 @@
 };
 
   const forestCheckpointGuide={"en":"Every fifth mission is a checkpoint: complete the main goal and the extra condition shown above the board. Open cells must remain available at victory; the pairs condition records your best number of separate merges in one move. Undo also restores this progress. Merge effects do not award a score multiplier.","zh-Hant":"每五關有一個章末檢定：完成主要目標，並達成棋盤上方的額外條件。空格條件必須在過關時維持；合併組數記錄單一步內最多完成幾組合併。復原也會還原這項進度。合併特效不會增加分數倍率。","zh-Hans":"每五关有一个章末检定：完成主要目标，并达成棋盘上方的额外条件。空格条件必须在过关时维持；合并组数记录单一步内最多完成几组合并。撤销也会还原这项进度。合并特效不会增加分数倍率。","ja":"5ミッションごとに到達テストがあります。主目標と盤面上部の追加条件を両方達成しましょう。空きマスはクリア時に必要です。合体数の条件は1手で合体した組数の最高記録です。元に戻すとこの進捗も戻ります。合体演出に得点倍率はありません。","ko":"다섯 번째 미션마다 점검 도전이 있습니다. 주 목표와 보드 위 추가 조건을 모두 달성하세요. 빈칸은 성공 시점에 남아 있어야 하며, 합친 쌍 조건은 한 번의 이동에서 달성한 최고 기록입니다. 되돌리기는 이 진행도도 복원합니다. 합체 효과는 점수 배율을 추가하지 않습니다.","es":"Cada quinta misión es un punto de control: cumple el objetivo principal y la condición adicional sobre el tablero. Las casillas libres deben conservarse al ganar; la condición de parejas registra el máximo de fusiones separadas en un movimiento. Deshacer también restaura este progreso. Los efectos no multiplican la puntuación.","pt-BR":"A cada cinco missões há um desafio de conclusão: cumpra o objetivo principal e a condição acima do tabuleiro. Os espaços livres devem existir na vitória; a condição de pares registra o máximo de fusões em um movimento. Desfazer também restaura esse progresso. Os efeitos não multiplicam os pontos.","de":"Jede fünfte Mission ist eine Prüfung: Erfülle das Hauptziel und die Zusatzbedingung über dem Brett. Freie Felder müssen beim Sieg vorhanden sein; die Paarbedingung zählt die meisten getrennten Verschmelzungen in einem Zug. Rückgängig stellt auch diesen Fortschritt wieder her. Effekte geben keinen Punktemultiplikator.","fr":"Chaque cinquième mission est une épreuve : remplissez l’objectif principal et la condition au-dessus du plateau. Les cases libres doivent rester disponibles à la victoire ; la condition de paires retient le maximum de fusions distinctes en un coup. Annuler restaure aussi ce progrès. Les effets ne multiplient pas le score.","it":"Ogni quinta missione è una prova: completa l’obiettivo principale e la condizione sopra il tabellone. Le celle libere devono esserci alla vittoria; la condizione delle coppie registra il massimo di fusioni separate in una mossa. Annulla ripristina anche questo progresso. Gli effetti non moltiplicano il punteggio.","ru":"Каждое пятое задание — проверка: выполните основную цель и условие над полем. Свободные клетки нужны в момент победы; условие пар учитывает максимум отдельных объединений за один ход. Отмена восстанавливает и этот прогресс. Эффекты не умножают очки.","hi":"हर पाँचवाँ मिशन एक परीक्षा है: मुख्य लक्ष्य और बोर्ड के ऊपर की अतिरिक्त शर्त दोनों पूरी करें। जीत के समय खाली खाने बचे होने चाहिए; जोड़ों की शर्त एक चाल में हुए अलग-अलग विलयों का सर्वश्रेष्ठ आँकड़ा रखती है। पूर्ववत करने पर यह प्रगति भी लौटती है। प्रभाव स्कोर का गुणक नहीं बढ़ाते।","ar":"كل مهمة خامسة هي اختبار: حقق الهدف الرئيسي والشرط الإضافي فوق اللوحة. يجب أن تبقى الخانات الفارغة متاحة عند الفوز؛ ويسجّل شرط الأزواج أكبر عدد من عمليات الدمج المنفصلة في حركة واحدة. يعيد التراجع هذا التقدم أيضاً. لا تضيف المؤثرات مضاعفاً للنقاط."};
+
+  const crystalSeoFaqs = {
+    en: [
+      ["What are the stage objectives?", "Each stage shows a goal: survive until the timer ends, clear 3 or 5 waves, or defeat the boss before time runs out. Stage 1 lasts 45 seconds; stages are capped at 3 minutes."],
+      ["Does magic attack automatically?", "Yes. Move to avoid threats and collect XP crystals; choose a spell when you level up while attacks target enemies automatically."],
+      ["Is progress saved?", "Stage progress and talents are saved in this browser. Clearing browser data removes the save."],
+    ],
+    "zh-Hant": [
+      ["每一關的目標是什麼？", "關卡會顯示目標：撐到倒數結束、清除 3 或 5 波，或在時間結束前擊敗首領。第一關 45 秒，每關最長 3 分鐘。"],
+      ["魔法會自動攻擊嗎？", "會。移動閃避並收集經驗水晶；升級時選擇法術，魔法會自動鎖定敵人攻擊。"],
+      ["進度會保存嗎？", "關卡進度與天賦會保存在此瀏覽器；清除瀏覽器資料會移除存檔。"],
+    ],
+    "zh-Hans": [
+      ["每一关的目标是什么？", "关卡会显示目标：撑到倒计时结束、清除 3 或 5 波，或在时间结束前击败首领。第一关 45 秒，每关最长 3 分钟。"],
+      ["魔法会自动攻击吗？", "会。移动躲避并收集经验水晶；升级时选择法术，魔法会自动锁定敌人攻击。"],
+      ["进度会保存吗？", "关卡进度与天赋会保存在此浏览器；清除浏览器数据会移除存档。"],
+    ],
+    ja: [
+      ["各ステージの目標は何ですか？", "ステージごとに、タイマー終了まで生存、3または5ウェーブの突破、時間内のボス撃破のいずれかが表示されます。ステージ1は45秒、各ステージの上限は3分です。"],
+      ["魔法は自動で攻撃しますか？", "はい。危険を避けて経験値クリスタルを集め、レベルアップ時に魔法を選びます。攻撃は敵を自動で狙います。"],
+      ["進行状況は保存されますか？", "ステージの進行状況と才能はこのブラウザーに保存されます。ブラウザーのデータを消去するとセーブも削除されます。"],
+    ],
+    ko: [
+      ["스테이지 목표는 무엇인가요?", "각 스테이지에는 타이머 종료까지 생존, 3 또는 5개 웨이브 완료, 제한 시간 내 보스 처치 중 하나의 목표가 표시됩니다. 1단계는 45초이며 각 스테이지는 최대 3분입니다."],
+      ["마법은 자동으로 공격하나요?", "네. 위협을 피하고 XP 크리스털을 모은 뒤 레벨 업 시 마법을 선택하세요. 공격은 적을 자동으로 겨냥합니다."],
+      ["진행 상황이 저장되나요?", "스테이지 진행과 특성은 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면 저장 내용도 삭제됩니다."],
+    ],
+    es: [
+      ["¿Cuáles son los objetivos de cada nivel?", "Cada nivel muestra un objetivo: resistir hasta que termine el tiempo, superar 3 o 5 oleadas o derrotar al jefe antes del límite. El nivel 1 dura 45 segundos; cada nivel dura como máximo 3 minutos."],
+      ["¿La magia ataca automáticamente?", "Sí. Muévete para evitar peligros y recoge cristales de XP; elige un hechizo al subir de nivel y los ataques apuntarán automáticamente a los enemigos."],
+      ["¿Se guarda el progreso?", "El progreso de los niveles y los talentos se guardan en este navegador. Si borras los datos del navegador, se elimina la partida guardada."],
+    ],
+    "pt-BR": [
+      ["Quais são os objetivos das fases?", "Cada fase mostra um objetivo: sobreviver até o fim do tempo, concluir 3 ou 5 ondas ou derrotar o chefe antes do limite. A fase 1 dura 45 segundos; cada fase tem no máximo 3 minutos."],
+      ["A magia ataca automaticamente?", "Sim. Mova-se para evitar ameaças e colete cristais de XP; escolha uma magia ao subir de nível e os ataques mirarão os inimigos automaticamente."],
+      ["O progresso fica salvo?", "O progresso das fases e os talentos ficam salvos neste navegador. Apagar os dados do navegador remove o salvamento."],
+    ],
+    fr: [
+      ["Quels sont les objectifs des niveaux ?", "Chaque niveau affiche un objectif : survivre jusqu’à la fin du compte à rebours, terminer 3 ou 5 vagues, ou battre le boss avant la limite. Le niveau 1 dure 45 secondes ; chaque niveau est limité à 3 minutes."],
+      ["La magie attaque-t-elle automatiquement ?", "Oui. Déplacez-vous pour éviter les dangers et récolter des cristaux d’XP ; choisissez un sort à chaque niveau gagné, puis les attaques ciblent automatiquement les ennemis."],
+      ["La progression est-elle sauvegardée ?", "La progression des niveaux et les talents sont sauvegardés dans ce navigateur. Effacer ses données supprime la sauvegarde."],
+    ],
+    de: [
+      ["Welche Ziele gibt es in den Stufen?", "Jede Stufe zeigt ein Ziel: bis zum Timerende überleben, 3 oder 5 Wellen schaffen oder den Boss vor Ablauf der Zeit besiegen. Stufe 1 dauert 45 Sekunden; jede Stufe ist auf 3 Minuten begrenzt."],
+      ["Greift Magie automatisch an?", "Ja. Weiche Gefahren aus und sammle EP-Kristalle; wähle beim Aufstieg einen Zauber, während Angriffe automatisch Gegner anvisieren."],
+      ["Wird der Fortschritt gespeichert?", "Stufenfortschritt und Talente werden in diesem Browser gespeichert. Beim Löschen der Browserdaten geht der Spielstand verloren."],
+    ],
+    it: [
+      ["Quali sono gli obiettivi dei livelli?", "Ogni livello mostra un obiettivo: sopravvivere fino allo scadere del timer, completare 3 o 5 ondate oppure sconfiggere il boss prima del limite. Il livello 1 dura 45 secondi; ogni livello dura al massimo 3 minuti."],
+      ["La magia attacca automaticamente?", "Sì. Muoviti per evitare i pericoli e raccogli cristalli XP; scegli una magia quando sali di livello e gli attacchi punteranno automaticamente i nemici."],
+      ["I progressi vengono salvati?", "I progressi dei livelli e i talenti vengono salvati in questo browser. Cancellare i dati del browser elimina il salvataggio."],
+    ],
+    ru: [
+      ["Какие цели есть на этапах?", "На каждом этапе указана цель: выжить до конца таймера, пройти 3 или 5 волн либо победить босса до истечения времени. Первый этап длится 45 секунд, каждый этап — не более 3 минут."],
+      ["Магия атакует автоматически?", "Да. Уклоняйтесь от опасностей и собирайте кристаллы опыта; при повышении уровня выбирайте заклинание, а атаки сами наводятся на врагов."],
+      ["Сохраняется ли прогресс?", "Прогресс этапов и таланты сохраняются в этом браузере. Очистка данных браузера удалит сохранение."],
+    ],
+    hi: [
+      ["चरणों के लक्ष्य क्या हैं?", "हर चरण में एक लक्ष्य दिखता है: समय समाप्त होने तक टिकें, 3 या 5 लहरें पार करें, या समय सीमा से पहले बॉस को हराएँ। पहला चरण 45 सेकंड का है; हर चरण अधिकतम 3 मिनट का है।"],
+      ["क्या जादू अपने आप हमला करता है?", "हाँ। खतरों से बचने के लिए चलें और XP क्रिस्टल लें; स्तर बढ़ने पर जादू चुनें, फिर हमले अपने आप दुश्मनों को निशाना बनाते हैं।"],
+      ["क्या प्रगति सहेजी जाती है?", "चरणों की प्रगति और प्रतिभाएँ इसी ब्राउज़र में सहेजी जाती हैं। ब्राउज़र डेटा मिटाने पर सेव हट जाता है।"],
+    ],
+    ar: [
+      ["ما أهداف المراحل؟", "تعرض كل مرحلة هدفًا: الصمود حتى انتهاء المؤقت، أو إكمال 3 أو 5 موجات، أو هزيمة الزعيم قبل انتهاء الوقت. تدوم المرحلة الأولى 45 ثانية، ولا تتجاوز أي مرحلة 3 دقائق."],
+      ["هل يهاجم السحر تلقائيًا؟", "نعم. تحرك لتفادي الأخطار واجمع بلورات الخبرة؛ اختر تعويذة عند رفع المستوى، وتستهدف الهجمات الأعداء تلقائيًا."],
+      ["هل يُحفظ التقدم؟", "يُحفظ تقدم المراحل والمواهب في هذا المتصفح. يؤدي مسح بيانات المتصفح إلى حذف الحفظ."],
+    ],
+  };
+  for (const [code, faq] of Object.entries(crystalSeoFaqs)) {
+    crystalCombatGuides[code].faq = faq;
+  }
 
   function localizedGame(id) {
     let game = localizedGameContent(id);

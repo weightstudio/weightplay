@@ -1307,7 +1307,7 @@
   function t(key, data = {}) {
     if (combatTextLocale !== locale) {
       const copy = window.CrystalTalents.combat(locale);
-      combatTextOverrides = { title: window.WEIGHTPLAY_GAME_TITLES?.[GAME_ID]?.[locale], menuHint:copy.intro, playHint:copy.intro, pageDescription:copy.intro, ogDescription:copy.intro,
+      combatTextOverrides = { title: window.WEIGHTPLAY_GAME_TITLES?.[GAME_ID]?.[locale], menuHint:copy.intro, playHint:copy.intro, pageDescription:copy.seoDescription || copy.intro, ogDescription:copy.seoDescription || copy.intro,
       resultLine:copy.result, expeditionRecordText:copy.record, resultPlanStrong:copy.intro,
       improved:`${copy.defeats} ↑`,
       patrolRankProgress:`${copy.defeats} {current} / {target}`, patrolRankComplete:`${copy.defeats} {current}`,

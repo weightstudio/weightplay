@@ -134,7 +134,7 @@
     if (!/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname) || window.WeightPlayCastle || document.querySelector("[data-weightplay-castle-runtime]")) return;
     try {
       const script = document.createElement("script");
-      script.src = "/src/weightplay-castle.js?v=20260929-castle-touch-v1";
+      script.src = "/src/weightplay-castle.js?v=20260929-castle-starwish-v1";
       script.async = true;
       script.dataset.weightplayCastleRuntime = "true";
       document.head.append(script);

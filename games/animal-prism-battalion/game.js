@@ -23,7 +23,7 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=32, INTERFACE_VERSION=7;
+  const GAME_VERSION=33, INTERFACE_VERSION=7;
   const prefersReducedMotion=Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const screenFrame=window.WeightPlayScreenFrame.mount({
     root:$('gameFrame'),localeSelect:$('locale'),

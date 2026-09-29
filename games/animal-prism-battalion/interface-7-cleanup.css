@@ -125,3 +125,24 @@ html body.wp-frame-main-active[data-game-id="animal-prism-battalion"] .public-gu
     grid-template-rows: minmax(0, 1fr) !important;
   }
 }
+
+/* Preserve first-fold access to Start on short phones. */
+@layer wp-frame-contract {
+  @media (max-width:699px) and (max-height:640px) {
+    body[data-game-id="animal-prism-battalion"]
+      .main-screen[data-wp-frame-content="main"] > [data-wp-frame-poster] {
+      width: min(100%, 310px) !important;
+      min-width: 0 !important;
+      max-width: 310px !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      aspect-ratio: 1 !important;
+      margin-inline: auto !important;
+    }
+  }
+}
+
+body[data-game-id="animal-prism-battalion"] .wp-standard-main-start {
+  border-radius: 3px !important;
+}
