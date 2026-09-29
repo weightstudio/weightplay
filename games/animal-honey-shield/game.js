@@ -201,6 +201,8 @@
     document.querySelectorAll("[data-i18n]").forEach(node=>node.textContent=fmt(node.dataset.i18n));
     document.querySelectorAll("[data-i18n-aria]").forEach(node=>node.setAttribute("aria-label",fmt(node.dataset.i18nAria)));
     document.querySelectorAll("[data-i18n-alt]").forEach(node=>node.setAttribute("alt",fmt(node.dataset.i18nAlt)));
+    const gameplayTags=fmt("gameplayTags"),gameplayTagBox=document.querySelector("[data-wp-gameplay-tags]");
+    if(gameplayTagBox&&Array.isArray(gameplayTags)){gameplayTagBox.replaceChildren(...gameplayTags.map(value=>Object.assign(document.createElement("span"),{textContent:value})));gameplayTagBox.dataset.wpGameplayTags="1.4.0";}
     updateMainProgress();renderStages();updateStageChapter();updateHud();updateAnchorCoach();if(state.result)renderResultInsight();
     if(state.repairCueKey&&state.repairCueUntil>state.elapsed)announce(state.repairCueKey);
     window.dispatchEvent(new CustomEvent("wonder:locale-change",{detail:{locale}}));
