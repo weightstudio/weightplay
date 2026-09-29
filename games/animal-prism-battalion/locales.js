@@ -344,5 +344,14 @@
   rows.laneMainSummary=["Switch lanes, stop shadow waves, collect power cores, and protect the crystal.","切換路線，擊退暗影波次，收集能量核心，守護水晶。","切换路线，击退暗影波次，收集能量核心，守护水晶。","レーンを切り替え、影の波を退け、エネルギーコアを集めて結晶を守ろう。","레인을 바꾸고 그림자 웨이브를 막아 에너지 코어를 모아 수정을 지키세요.","Cambia de carril, detén las oleadas sombrías, reúne núcleos de energía y protege el cristal.","Alterne de faixa, detenha as ondas sombrias, colete núcleos de energia e proteja o cristal.","Changez de voie, repoussez les vagues d’ombre, récoltez des noyaux d’énergie et protégez le cristal.","Wechsle die Spur, stoppe Schattenwellen, sammle Energiekristalle und schütze den Kristall.","Cambia corsia, ferma le ondate d’ombra, raccogli nuclei di energia e proteggi il cristallo.","Меняйте линию, остановите волны тьмы, собирайте энергетические ядра и защитите кристалл.","लेन बदलें, छाया लहरों को रोकें, ऊर्जा कोर जुटाएँ और क्रिस्टल की रक्षा करें।","بدّل المسار، وصدّ موجات الظل، واجمع نوى الطاقة، واحمِ البلورة."];
   const dictionaries={};
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});if(requiredLocaleCatalogs[code])Object.assign(dictionaries[code],requiredLocaleCatalogs[code]);});
+  const guideCopy=window.PrismBattalionGuideCopy;
+  if(guideCopy)codes.forEach((code)=>{
+    const copy=guideCopy[code];
+    if(copy)Object.assign(dictionaries[code],{
+      laneGuideIntro:copy.intro,laneHow2:copy.core,laneHow3:copy.damage,
+      laneCampaign:copy.progression,laneGuideOverdrive:copy.overdrive,
+      laneGuideTip:copy.tip,laneGuideQuestion:copy.question,laneGuideAnswer:copy.answer
+    });
+  });
   window.AnimalPrismBattalionLocales={codes,dictionaries};
 })();

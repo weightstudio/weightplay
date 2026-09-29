@@ -25991,5 +25991,17 @@
   applyRuneTacticsGuideCorrections();
   window.WeightPlayGameInfo.applyRuneTacticsGuideCorrections = applyRuneTacticsGuideCorrections;
 
+  // One game-owned copy source for initial HTML and its native locale guide.
+  for (const [code, copy] of Object.entries(window.PrismBattalionGuideCopy || {})) {
+    const base=code==="en"?games["animal-prism-battalion"]:localizedGames[code]?.["animal-prism-battalion"];
+    if(!base)continue;
+    const updated={...base,intro:copy.intro,
+      systems:[base.systems[0],copy.core,copy.damage,base.systems[3],copy.overdrive],
+      progression:[copy.progression],
+      strategyTips:[base.strategyTips[0],copy.tip],
+      faq:base.faq.map((item,index)=>index===1?[item[0],copy.core]:index===2?[item[0],copy.damage]:item).concat([[copy.question,copy.answer]])};
+    if(code==="en")games["animal-prism-battalion"]=updated;
+    else localizedGames[code]["animal-prism-battalion"]=updated;
+  }
   render();
 })();
