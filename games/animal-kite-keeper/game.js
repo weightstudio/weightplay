@@ -39,6 +39,36 @@
 
     return Promise.all([stylesheetReady, compatReady]);
   }
+  function waitForBattleCanvasRuntime() {
+    if (typeof window.WeightPlayBattleCanvas?.sync === "function") return Promise.resolve(true);
+    return new Promise((resolve) => {
+      let settled = false;
+      let timer = 0;
+      let observedScript = null;
+      let observer;
+      const finish = (ready, reason = "") => {
+        if (settled) return;
+        settled = true;
+        observer?.disconnect();
+        window.clearTimeout(timer);
+        if (!ready) document.documentElement.dataset.wpKiteKeeperBattleCanvasError = reason || "unavailable";
+        resolve(ready);
+      };
+      const inspect = () => {
+        if (typeof window.WeightPlayBattleCanvas?.sync === "function") { finish(true); return; }
+        const script = [...document.scripts].find((node) => node.src.includes("battle-canvas-standard.js"));
+        if (script && script !== observedScript) {
+          observedScript = script;
+          script.addEventListener("load", inspect, { once: true });
+          script.addEventListener("error", () => finish(false, "script-error"), { once: true });
+        }
+      };
+      observer = new MutationObserver(inspect);
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+      timer = window.setTimeout(() => finish(false, "timeout"), 5000);
+      inspect();
+    });
+  }
   const locales = window.KITE_KEEPER_LOCALES || { en: {
     title: "Kite Keeper", subtitle: "Choose the wind. Find the lantern dock.", guideTitle: "How to play", guide: "Choose one wind card at a time. Reach the lantern dock in exactly three gusts.", start: "Start a sky route", map: "Sky routes", settings: "Settings", close: "Close settings", language: "Language", sound: "Sound", on: "On", off: "Off", best: "Best checks: {count}", route1: "Meadow Lift", route2: "Reef Breeze", route3: "Snow Lantern", hint1: "East, north, east", hint2: "North, west, north", hint3: "East, south, east", routePrompt: "Read the dock marker, then choose the next wind.", dock: "Lantern dock", wind: "Wind cards", north: "North", east: "East", south: "South", west: "West", position: "Kite position: {x}, {y}", gusts: "Gusts: {count} / 3", choose: "Choose a wind card", selected: "Wind chosen: {name}", wrong: "That gust drifts away from the dock. Try the route again.", correct: "Perfect flight! The kite reached the lantern dock.", reset: "Reset route", resultTitle: "Route complete", resultText: "You guided the kite with {checks} checks.", next: "Next route", finished: "All sky routes complete", back: "Back to General lobby", ariaKite: "Kite flight board"
   } };
@@ -143,17 +173,220 @@
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `kite_keeper_${name}`, route: routeIndex + 1, gust: path.length, ...data }); };
   const bestValue = () => Number(localStorage.getItem("weightplay-kite-keeper-best-v1") || 0);
   const bestText = () => bestValue() || "—";
+  const motionDuration = (duration) => reducedMotionRequested() ? 80 : duration;
+  let feedbackReady = false;
+  let sceneInitialized = false;
+  let sceneTransitionToken = 0;
+  const sceneProxies = new Set();
+  const sceneProxyStyles = new WeakMap();
+  const overlayMotionOpen = new WeakSet();
+  const overlayMotionClosing = new WeakSet();
+  const overlayMotionTokens = new WeakMap();
+  const reducedMotionRequested = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+  function animateFeedback(node, duration = 140) {
+    if (!feedbackReady || !node?.animate || node.closest("[hidden],[inert],[data-kite-scene-proxy]")) return;
+    node.getAnimations().forEach((animation) => animation.cancel());
+    node.animate([{ opacity: 0.58 }, { opacity: 1 }], {
+      duration: motionDuration(duration),
+      easing: "ease-out",
+    });
+  }
+  function setFeedbackText(node, value) {
+    if (!node) return;
+    const next = String(value ?? "");
+    if (node.textContent === next) return;
+    const wasVisible = Boolean(node.textContent);
+    node.textContent = next;
+    if (!feedbackReady) return;
+    if (!next && wasVisible && node.animate) {
+      node.getAnimations().forEach((animation) => animation.cancel());
+      node.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: motionDuration(120),
+        easing: "ease-in",
+      });
+    } else if (next) {
+      animateFeedback(node);
+    }
+  }
+  function acknowledgeKiteMovement() {
+    if (!reducedMotionRequested()) return;
+    const marker = $("kiteMarker");
+    if (!marker?.animate) return;
+    marker.getAnimations().forEach((animation) => animation.cancel());
+    marker.animate([{ opacity: 0.58 }, { opacity: 1 }], { duration: 80, easing: "ease-out" });
+  }
+  function clearSceneProxies() {
+    sceneProxies.forEach((node) => {
+      node.getAnimations().forEach((animation) => animation.cancel());
+      node.remove();
+      sceneProxyStyles.get(node)?.remove();
+    });
+    sceneProxies.clear();
+  }
+  function createSceneProxy(source) {
+    const rect = source.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2 || rect.bottom <= 0 || rect.top >= window.innerHeight
+      || rect.right <= 0 || rect.left >= window.innerWidth) return null;
+    const proxy = source.cloneNode(true);
+    proxy.removeAttribute("data-screen");
+    proxy.setAttribute("aria-hidden", "true");
+    proxy.inert = true;
+    const proxyStyle = document.createElement("style");
+    proxyStyle.dataset.kiteSceneSnapshot = "true";
+    document.head.appendChild(proxyStyle);
+    const sourceNodes = [source, ...source.querySelectorAll("*")];
+    const proxyNodes = [proxy, ...proxy.querySelectorAll("*")];
+    sourceNodes.forEach((sourceNode, index) => {
+      const proxyNode = proxyNodes[index];
+      proxyNode.removeAttribute("id");
+      proxyNode.removeAttribute("class");
+      [...proxyNode.attributes].forEach((attribute) => {
+        if (attribute.name.startsWith("data-")) proxyNode.removeAttribute(attribute.name);
+      });
+      const key = `${sceneTransitionToken}-${sceneProxies.size}-${index}`;
+      proxyNode.dataset.kiteSceneSnapshot = key;
+      const copyStyle = (computed, destination) => {
+        for (let i = 0; i < computed.length; i += 1) {
+          const property = computed.item(i);
+          destination.setProperty(property, computed.getPropertyValue(property), computed.getPropertyPriority(property));
+        }
+      };
+      copyStyle(getComputedStyle(sourceNode), proxyNode.style);
+      for (const pseudo of ["::before", "::after"]) {
+        const computed = getComputedStyle(sourceNode, pseudo);
+        const content = computed.getPropertyValue("content");
+        if (!content || content === "none" || content === "normal") continue;
+        proxyStyle.sheet.insertRule(`[data-kite-scene-snapshot="${key}"]${pseudo} {}`, proxyStyle.sheet.cssRules.length);
+        copyStyle(computed, proxyStyle.sheet.cssRules[proxyStyle.sheet.cssRules.length - 1].style);
+      }
+    });
+    proxy.className = "kite-scene-proxy";
+    proxy.dataset.kiteSceneProxy = "true";
+    Object.assign(proxy.style, {
+      position: "fixed", inset: "auto", top: `${rect.top}px`, left: `${rect.left}px`,
+      width: `${rect.width}px`, height: `${rect.height}px`, margin: "0", zIndex: "1000",
+      pointerEvents: "none", overflow: "hidden", opacity: "1",
+    });
+    document.body.appendChild(proxy);
+    sceneProxies.add(proxy);
+    sceneProxyStyles.set(proxy, proxyStyle);
+    return proxy;
+  }
+  function sceneNodes() {
+    const screens = [...document.querySelectorAll("[data-screen]")];
+    const mainInfo = [...new Set(document.querySelectorAll(".game-page-info,[data-wp-game-guide]"))];
+    return [...new Set([...screens, ...mainInfo])];
+  }
+  function animateSceneNode(node, frames, duration, token, onFinish) {
+    if (!node?.animate) { onFinish?.(); return; }
+    node.getAnimations().forEach((animation) => animation.cancel());
+    const animation = node.animate(frames, { duration: motionDuration(duration), easing: "ease-out", fill: "both" });
+    animation.onfinish = () => {
+      if (token === sceneTransitionToken) onFinish?.();
+      animation.cancel();
+    };
+  }
+  function animateOverlay(node, opening) {
+    const inner = node.querySelector(".settings-inner,.wp-i7-leave-card,.wp-frame-popover-card");
+    node.getAnimations().forEach((animation) => animation.cancel());
+    inner?.getAnimations().forEach((animation) => animation.cancel());
+    const token = (overlayMotionTokens.get(node) || 0) + 1;
+    overlayMotionTokens.set(node, token);
+    if (opening) {
+      if (overlayMotionClosing.has(node)) return;
+      overlayMotionOpen.add(node);
+      node.inert = false;
+      node.removeAttribute("aria-hidden");
+      node.style.removeProperty("pointer-events");
+      if (node.animate) node.animate([{ opacity: 0 }, { opacity: 1 }], { duration: motionDuration(140), easing: "ease-out" });
+      if (inner?.animate && !reducedMotionRequested()) inner.animate(
+        [{ opacity: 0.82, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }],
+        { duration: 140, easing: "ease-out" },
+      );
+      return;
+    }
+    if (!overlayMotionOpen.has(node) || !node.animate) return;
+    overlayMotionClosing.add(node);
+    node.inert = true;
+    node.setAttribute("aria-hidden", "true");
+    node.style.pointerEvents = "none";
+    node.hidden = false;
+    const animations = [node.animate([{ opacity: 1 }, { opacity: 0 }], { duration: motionDuration(140), easing: "ease-in", fill: "forwards" })];
+    if (inner?.animate && !reducedMotionRequested()) animations.push(inner.animate(
+      [{ opacity: 1, transform: "none" }, { opacity: 0.82, transform: "translateY(6px)" }],
+      { duration: 140, easing: "ease-in", fill: "forwards" },
+    ));
+    Promise.all(animations.map((animation) => animation.finished.catch(() => undefined))).then(() => {
+      if (overlayMotionTokens.get(node) !== token) return;
+      node.hidden = true;
+      node.inert = false;
+      node.removeAttribute("aria-hidden");
+      node.style.removeProperty("pointer-events");
+      overlayMotionOpen.delete(node);
+      overlayMotionClosing.delete(node);
+    });
+  }
+  function installOverlayMotion() {
+    const selector = "#settingsPanel,.wp-shell-settings-popover,.wp-i7-leave-dialog,.wp-i7-battle-result,[data-wp-settings-popover]";
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        const node = record.target;
+        if (!(node instanceof HTMLElement) || !node.matches(selector)) continue;
+        if (node.hidden) animateOverlay(node, false);
+        else if (!overlayMotionClosing.has(node)) animateOverlay(node, true);
+      }
+    });
+    observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["hidden"] });
+    return observer;
+  }
   function show(screen) {
     if (screen !== "result" && resultTimer) {
       window.clearTimeout(resultTimer);
       resultTimer = 0;
     }
     const resultActive = screen === "result";
-    document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
+    const nodes = sceneNodes();
+    const desired = new Set(nodes.filter((node) => node.dataset.screen === screen
+      || (screen === "main" && node.matches(".game-page-info,[data-wp-game-guide]"))));
+    const visibleBefore = nodes.filter((node) => !node.hidden);
+    const outgoing = visibleBefore.filter((node) => !desired.has(node));
+    const entering = [...desired].filter((node) => node.hidden);
+    const initialEntry = !sceneInitialized;
+    const transition = initialEntry || outgoing.length > 0 || entering.length > 0;
+    const token = ++sceneTransitionToken;
+    clearSceneProxies();
+    if (transition) {
+      outgoing.forEach((node) => createSceneProxy(node));
+      nodes.forEach((node) => {
+        const active = desired.has(node);
+        node.hidden = !active;
+      });
+      if (screen === "battle") {
+        const battle = nodes.find((node) => node.matches('[data-screen="battle"]'));
+        if (battle && !battle.hidden) {
+          const opacity = battle.style.getPropertyValue("opacity");
+          const priority = battle.style.getPropertyPriority("opacity");
+          battle.style.setProperty("opacity", "0.03", "important");
+          window.WeightPlayBattleCanvas?.sync?.();
+          if (opacity) battle.style.setProperty("opacity", opacity, priority);
+          else battle.style.removeProperty("opacity");
+        }
+      }
+      for (const node of desired) {
+        if (entering.includes(node) || initialEntry) {
+          animateSceneNode(node, [{ opacity: 0 }, { opacity: 1 }], 160, token);
+        } else {
+          node.getAnimations().forEach((animation) => animation.cancel());
+        }
+      }
+      sceneProxies.forEach((proxy) => animateSceneNode(proxy, [{ opacity: 1 }, { opacity: 0 }], 160, token, () => {
+        proxy.remove(); sceneProxyStyles.get(proxy)?.remove(); sceneProxies.delete(proxy);
+      }));
+    }
+    sceneInitialized = true;
     $("settingsPanel").hidden = true;
     $("backBtn").hidden = screen !== "main";
     if ($("stageBack")) $("stageBack").hidden = screen !== "stage";
-    document.querySelectorAll(".game-page-info,[data-wp-game-guide]").forEach((node) => { node.hidden = screen !== "main"; });
     if ($("battleAdReserve")) {
       const reserveActive = screen === "battle" || resultActive;
       $("battleAdReserve").hidden = !reserveActive;
@@ -165,20 +398,20 @@
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     const shell = shellCopy[locale] || shellCopy.en;
     const metadata = metadataCopy[locale] || metadataCopy.en;
-    document.querySelector(".brand .eyebrow")?.replaceChildren(document.createTextNode(`WEIGHTPLAY · ${shell.brand}`));
-    document.querySelector("#mainScreen .kicker")?.replaceChildren(document.createTextNode(metadata.kicker));
+    setFeedbackText(document.querySelector(".brand .eyebrow"), `WEIGHTPLAY · ${shell.brand}`);
+    setFeedbackText(document.querySelector("#mainScreen .kicker"), metadata.kicker);
     document.querySelector(".main-poster")?.setAttribute("alt", metadata.posterAlt);
     document.querySelector(".guide-character")?.setAttribute("alt", metadata.guideAlt);
     document.querySelector("#gameGuide")?.setAttribute("aria-label", metadata.guideLabel);
     document.querySelector(".result-character")?.setAttribute("alt", metadata.resultAlt);
-    $("mainProgress") && ($("mainProgress").textContent = shell.progress);
-    document.querySelector("#mainScreen h1")?.replaceChildren(document.createTextNode(copy("title")));
-    document.querySelectorAll("#stageScreen .screen-heading .eyebrow").forEach((node) => { node.textContent = shell.stage; });
-    document.querySelectorAll("#battleScreen .screen-heading .eyebrow").forEach((node) => { node.textContent = shell.battle; });
-    document.querySelectorAll("#resultScreen .screen-heading .eyebrow, #resultScreen > .eyebrow").forEach((node) => { node.textContent = shell.result; });
+    setFeedbackText($("mainProgress"), shell.progress);
+    setFeedbackText(document.querySelector("#mainScreen h1"), copy("title"));
+    document.querySelectorAll("#stageScreen .screen-heading .eyebrow").forEach((node) => setFeedbackText(node, shell.stage));
+    document.querySelectorAll("#battleScreen .screen-heading .eyebrow").forEach((node) => setFeedbackText(node, shell.battle));
+    document.querySelectorAll("#resultScreen .screen-heading .eyebrow, #resultScreen > .eyebrow").forEach((node) => setFeedbackText(node, shell.result));
     document.querySelectorAll("[data-i18n]").forEach((node) => {
-      if (node.dataset.i18n === "best") node.textContent = copy("best", { count: bestText() });
-      else node.textContent = copy(node.dataset.i18n);
+      if (node.dataset.i18n === "best") setFeedbackText(node, copy("best", { count: bestText() }));
+      else setFeedbackText(node, copy(node.dataset.i18n));
     });
     $("backBtn").setAttribute("aria-label", copy("back"));
     if ($("stageBack")) $("stageBack").setAttribute("aria-label", copy("back"));
@@ -187,7 +420,7 @@
     $("closeSettings").setAttribute("aria-label", copy("close"));
     $("localeSelect").setAttribute("aria-label", copy("language"));
     $("soundBtn").setAttribute("aria-pressed", String(sound));
-    $("soundState").textContent = sound ? copy("on") : copy("off");
+    setFeedbackText($("soundState"), sound ? copy("on") : copy("off"));
     renderStages(); renderBattle(); renderResult();
   }
   function renderStages() {
@@ -219,6 +452,7 @@
           arrow.setAttribute("aria-hidden", "true");
           arrow.textContent = solved.has(route.id) ? "✓" : "→";
           button.replaceChildren(label, arrow);
+          animateFeedback(button, 120);
         },
         activate(index) { startRoute(index); },
         onChange(index, { pool }) {
@@ -242,7 +476,7 @@
     routeIndex = index; stageBrowseIndex = index; const route = routes[index];
     position = [...route.start]; path = []; checks = 0; locked = false;
     window.dispatchEvent(new Event("weightplay:kite-keeper-route-start"));
-    show("battle"); renderBattle(); $("status").textContent = ""; $("status").className = "status";
+    show("battle"); renderBattle(); setFeedbackText($("status"), ""); $("status").className = "status";
     announce("start");
   }
   function markerPosition(coords) {
@@ -251,11 +485,12 @@
   }
   function renderBattle() {
     const route = routes[routeIndex]; if (!route || !$("windGrid")) return;
-    $("routeTitle").textContent = routeLabel(route); $("progressPill").textContent = `${routeIndex + 1} / ${routes.length}`;
-    $("prompt").textContent = `${routeHint(route)} · ${copy("routePrompt")}`;
-    $("dockTarget").textContent = `${route.target[0]}, ${route.target[1]}`;
-    $("position").textContent = copy("position", { x: position[0], y: position[1] });
-    $("gusts").textContent = copy("gusts", { count: path.length });
+    setFeedbackText($("routeTitle"), routeLabel(route));
+    setFeedbackText($("progressPill"), `${routeIndex + 1} / ${routes.length}`);
+    setFeedbackText($("prompt"), `${routeHint(route)} · ${copy("routePrompt")}`);
+    setFeedbackText($("dockTarget"), `${route.target[0]}, ${route.target[1]}`);
+    setFeedbackText($("position"), copy("position", { x: position[0], y: position[1] }));
+    setFeedbackText($("gusts"), copy("gusts", { count: path.length }));
     $("flightBoard").setAttribute("aria-label", `${copy("ariaKite")}. ${copy("position", { x: position[0], y: position[1] })}`);
     const kite = markerPosition(position); $("kiteMarker").style.left = kite.left; $("kiteMarker").style.top = kite.top;
     const dock = markerPosition(route.target); $("dockMarker").style.left = dock.left; $("dockMarker").style.top = dock.top;
@@ -268,7 +503,7 @@
       button.innerHTML = `<span>${direction === "north" ? "↑" : direction === "east" ? "→" : direction === "south" ? "↓" : "←"}</span><small>${copy(direction)}</small>`;
       button.addEventListener("click", () => chooseWind(direction)); root.appendChild(button);
     });
-    $("selection").textContent = path.length ? copy("selected", { name: copy(path.at(-1)) }) : copy("choose");
+    setFeedbackText($("selection"), path.length ? copy("selected", { name: copy(path.at(-1)) }) : copy("choose"));
   }
   function chooseWind(direction) {
     if (locked || path.length >= 3) return;
@@ -277,11 +512,11 @@
     const inBounds = position[0] >= 0 && position[0] <= 3 && position[1] >= 0 && position[1] <= 2;
     announce("gust", { direction, inBounds });
     if (!inBounds || (path.length === 3 && (position[0] !== routes[routeIndex].target[0] || position[1] !== routes[routeIndex].target[1]))) {
-      locked = true; renderBattle(); $("status").textContent = copy("wrong"); $("status").className = "status try"; announce("wrong"); return;
+      locked = true; renderBattle(); setFeedbackText($("status"), copy("wrong")); $("status").className = "status try"; acknowledgeKiteMovement(); announce("wrong"); return;
     }
-    renderBattle();
+    renderBattle(); acknowledgeKiteMovement();
     if (path.length === 3) {
-      locked = true; solved.add(routes[routeIndex].id); saveSolvedRouteIds(); $("status").textContent = copy("correct"); $("status").className = "status good"; announce("correct", { checks });
+      locked = true; solved.add(routes[routeIndex].id); saveSolvedRouteIds(); setFeedbackText($("status"), copy("correct")); $("status").className = "status good"; announce("correct", { checks });
       resultTimer = window.setTimeout(() => {
         resultTimer = 0;
         show("result"); renderResult();
@@ -290,18 +525,18 @@
   }
   function resetRoute() {
     const route = routes[routeIndex]; position = [...route.start]; path = []; checks = 0; locked = false;
-    renderBattle(); $("status").textContent = ""; $("status").className = "status"; announce("reset");
+    renderBattle(); acknowledgeKiteMovement(); setFeedbackText($("status"), ""); $("status").className = "status"; announce("reset");
   }
   function renderResult() {
     if (!$("resultText")) return;
     complete = solved.size === routes.length;
-    $("resultTitle").textContent = complete ? copy("finished") : copy("resultTitle");
-    $("resultText").textContent = copy("resultText", { checks });
+    setFeedbackText($("resultTitle"), complete ? copy("finished") : copy("resultTitle"));
+    setFeedbackText($("resultText"), copy("resultText", { checks }));
     $("nextBtn").hidden = complete;
     $("resultMapBtn").hidden = false;
     if (complete) {
       const old = bestValue(); if (!old || runChecks < old) localStorage.setItem("weightplay-kite-keeper-best-v1", String(runChecks));
-      $("best").textContent = copy("best", { count: bestText() });
+      setFeedbackText($("best"), copy("best", { count: bestText() }));
     }
   }
   function nextRoute() { const next = routeIndex + 1; if (next < routes.length) startRoute(next); else { show("stage"); renderStages(); } }
@@ -315,10 +550,18 @@
     $("soundBtn").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-kite-keeper-sound", sound ? "on" : "off"); applyLocale(); });
     $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-kite-keeper-locale", locale); applyLocale(); });
     $("backBtn").addEventListener("click", goLobby); $("homeBtn").addEventListener("click", goLobby);
-    window.addEventListener("pagehide", () => stageController?.destroy(), { once: true });
+    const overlayMotionObserver = installOverlayMotion();
+    window.addEventListener("pagehide", () => {
+      clearSceneProxies(); overlayMotionObserver.disconnect(); stageController?.destroy();
+    }, { once: true });
   }
   async function boot() {
     await waitForInterface7Assets();
+    if (!await waitForBattleCanvasRuntime()) {
+      $("loading").textContent = "Kite Keeper could not load its game layout. Please reload to try again.";
+      $("loading").setAttribute("role", "alert");
+      return;
+    }
     bind();
     $("localeSelect").value = locale;
     $("loading").hidden = true;
@@ -326,6 +569,7 @@
     show("main");
     applyLocale();
     $("localeSelect").dispatchEvent(new Event("change", { bubbles: true }));
+    feedbackReady = true;
     announce("loaded");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();

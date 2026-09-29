@@ -138,3 +138,59 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .w
   height: auto;
   aspect-ratio: 3 / 2;
 }
+
+/* Scene changes use a short, non-interactive visual snapshot of the outgoing
+   scene while the destination fades in; the live DOM changes immediately. */
+.kite-scene-proxy,
+.kite-scene-proxy *,
+.kite-scene-proxy *::before,
+.kite-scene-proxy *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.kite-scene-proxy {
+  pointer-events: none !important;
+  user-select: none;
+}
+
+button,
+select,
+.stage-card,
+.wind-card {
+  transition: color 120ms ease-out, background-color 120ms ease-out,
+    border-color 120ms ease-out, box-shadow 120ms ease-out, filter 100ms ease-out;
+}
+button:active:not(:disabled),
+select:active {
+  filter: brightness(.94);
+}
+.stage-card:active:not(:disabled),
+.wind-card:active:not(:disabled) {
+  filter: brightness(.94);
+}
+
+.dock-marker,
+.kite-marker {
+  transition: left 180ms cubic-bezier(.2,.7,.25,1),
+    top 180ms cubic-bezier(.2,.7,.25,1);
+}
+
+#settingsPanel:not([hidden]),
+.wp-shell-settings-popover:not([hidden]),
+.wp-i7-leave-dialog:not([hidden]),
+.wp-i7-battle-result:not([hidden]) {
+  will-change: opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock-marker,
+  .kite-marker {
+    transition: none !important;
+  }
+  button:active:not(:disabled),
+  select:active,
+  .stage-card:active:not(:disabled),
+  .wind-card:active:not(:disabled) {
+    filter: none;
+  }
+}

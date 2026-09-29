@@ -1704,8 +1704,8 @@ function renderSkillPaths() {
       return card;
     });
 
-  skillPathsTitle.textContent = i18n.t("skill_path.title");
-  skillPathsReason.textContent = i18n.t("skill_path.reason");
+  skillPathsTitle.textContent = i18n.t(isKidsLobby ? "kids.skill_path.title" : "general.skill_path.title");
+  skillPathsReason.textContent = i18n.t(isKidsLobby ? "kids.skill_path.reason" : "general.skill_path.reason");
   skillPathsSection.classList.toggle("hidden", cards.length === 0);
   skillPaths.replaceChildren(...cards);
 }
@@ -1959,7 +1959,7 @@ function applyStaticTranslations() {
     });
   }
   if (lobbyKicker) lobbyKicker.textContent = i18n.t(isKidsLobby ? "kids.site.kicker" : "general.site.kicker");
-  featuredLabel.textContent = i18n.t(isKidsLobby ? "site.featured" : "kids.portal.kicker");
+  featuredLabel.textContent = i18n.t("site.featured");
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
   heroGamesTitle.textContent = i18n.t("section.hero_games");
@@ -1975,8 +1975,8 @@ function applyStaticTranslations() {
   if (freshUpdatesReason) freshUpdatesReason.textContent = i18n.t("fresh_updates.reason");
   if (challengeSpotlightTitle) challengeSpotlightTitle.textContent = i18n.t(isKidsLobby ? "kids.challenge.title" : "general.challenge.title");
   if (challengeSpotlightReason) challengeSpotlightReason.textContent = i18n.t("challenge_spotlight.reason");
-  if (skillPathsTitle) skillPathsTitle.textContent = i18n.t("skill_path.title");
-  if (skillPathsReason) skillPathsReason.textContent = i18n.t("skill_path.reason");
+  if (skillPathsTitle) skillPathsTitle.textContent = i18n.t(isKidsLobby ? "kids.skill_path.title" : "general.skill_path.title");
+  if (skillPathsReason) skillPathsReason.textContent = i18n.t(isKidsLobby ? "kids.skill_path.reason" : "general.skill_path.reason");
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = i18n.t(element.dataset.i18n);
   });

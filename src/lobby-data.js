@@ -7,12 +7,12 @@ window.WONDER_LOBBY = {
     name: "WeightPlay",
     company: "WeightStudio",
     tagline: {
-      en: "Play animal games made for every age.",
-      "zh-Hant": "為每個年齡打造的動物遊戲世界。",
+      en: "Explore block-style games across adventures, puzzles, action, and strategy.",
+      "zh-Hant": "走進 WeightPlay 方塊世界，挑一款喜歡的遊戲開始。",
     },
     subtitle: {
-      en: "A growing animal browser game world for kids, families, and casual players.",
-      "zh-Hant": "持續成長的動物瀏覽器遊戲平台，適合孩子、親子與休閒玩家。",
+      en: "Play block-style adventures, puzzles, action, and strategy games in your browser.",
+      "zh-Hant": "方塊風格的冒險、益智、動作與策略遊戲，打開瀏覽器就能玩。",
     },
     defaultLocale: "en",
   },
@@ -130,7 +130,7 @@ window.WONDER_LOBBY = {
       previewVideo: "assets/previews/animal-carnival-claw-battle.webm",
       description: {
         en: "Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions.",
-        "zh-Hant": "在 30 個原創嘉年華任務中瞄準、抓準時機並穩定公平技巧爪，取回指定收藏物。",
+        "zh-Hant": "看準時機放下爪子，抓回指定收藏品，完成 30 個嘉年華挑戰。",
         "zh-Hans": "在 30 个原创嘉年华任务中瞄准、抓准时机并稳定公平技巧爪，取回指定收藏物。",
         ja: "30のオリジナルミッションで狙い、タイミングを合わせ、クローを安定させて目標チャームを集めよう。",
         ko: "30개의 오리지널 카니발 미션에서 조준하고 타이밍을 맞추며 집게를 안정시켜 목표 장식을 모으세요.",
@@ -183,7 +183,7 @@ window.WONDER_LOBBY = {
       previewVideo: "assets/previews/animal-honey-shield-battle.webm",
       description: {
         en: "Draw and repair nectar lines during live bee waves to protect Clover Pup Pip across 30 original meadow stages.",
-        "zh-Hant": "在即時蜂群波次中畫線並修補花蜜防線，於 30 個原創草原關卡保護苜蓿小犬皮普。",
+        "zh-Hant": "畫線修補花蜜防線，保護苜蓿小犬皮普，闖過 30 個草原關卡。",
         "zh-Hans": "在实时蜂群波次中画线并修补花蜜防线，于 30 个原创草原关卡保护苜蓿小犬皮普。",
         ja: "飛んでくるハチを見ながら蜜の線を描き直し、30の草原ステージで子犬ピップを守ります。",
         ko: "실시간 벌 떼를 보며 꿀빛 선을 그리고 고쳐 30개 초원 스테이지에서 강아지 핍을 지키세요.",
@@ -237,7 +237,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: {
         en: "Summon random animal guardians, merge matching ranks, and command tactical orders through 30 original fortress defenses.",
-        "zh-Hant": "召喚隨機動物守護者、合成相同階級，並運用戰術指令守住 30 場原創堡壘防線。",
+        "zh-Hant": "召喚動物守衛、合併相同階級，再下達戰術指令，守住 30 波攻勢。",
         "zh-Hans": "召唤随机动物守护者、合成相同等级，并运用战术指令守住 30 场原创堡垒防线。",
         ja: "ランダムな動物ガーディアンを召喚し、同ランクを合成して、30のオリジナル砦防衛に挑もう。",
         ko: "무작위 동물 수호자를 소환하고 같은 등급을 합성해 30개의 오리지널 요새 방어를 지키세요.",
@@ -642,7 +642,7 @@ window.WONDER_LOBBY = {
       previewVideo: "assets/previews/animal-number-match-battle.webm",
       description: {
         en: "Clear pairs that add to ten, opening sight lines across 30 calm groves.",
-        "zh-Hant": "消除相加等於 10 的數字配對，在 30 座悠閒花園中打開配對視線。",
+        "zh-Hant": "消除總和為 10 的數字配對，完成 30 座花園挑戰。",
         "zh-Hans": "消除相加等于 10 的数字配对，在 30 座悠闲花园中打开配对视线。",
         ja: "合計10になるペアを消し、30の森で見通しを開こう。",
         ko: "합이 10인 짝을 지워 30개 숲의 길을 여세요.",
@@ -951,7 +951,7 @@ window.WONDER_LOBBY = {
       href: "games/color-lunchbox/",
       description: {
         en: "Sort five foods per level across 30 picture-led lunchbox challenges and six friendly Guardian checks.",
-        "zh-Hant": "在 30 個圖片便當盒關卡分類食物，並完成六位友善守護員的顏色檢查。",
+        "zh-Hant": "看圖把食物放進對應顏色的便當盒，完成 30 道分類挑戰。",
       },
       meta: { en: ["Picture Match", "30 Levels", "Six Guardians"], "zh-Hant": ["圖片配對", "30 關", "六位守護員"] },
       previewVideo: "assets/previews/color-lunchbox-battle.webm",
@@ -970,9 +970,9 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       description: {
         en: "Plan connected animal-bubble clears across 30 recipe puzzles, multi-tray orders, and friendly Panko checkpoints.",
-        "zh-Hant": "規劃相連動物泡泡的消除順序，完成 30 關食譜、多托盤訂單與友善的 Panko 檢核關。",
+        "zh-Hant": "安排泡泡消除順序，完成 30 張食譜訂單；托盤變多時，更要先想好下一步。",
       },
-      meta: { en: ["30 Stages", "Recipe Rules", "Panko Checks"], "zh-Hant": ["30 關", "食譜規則", "Panko 檢核"] },
+      meta: { en: ["30 Stages", "Recipe Rules", "Multi-Tray Orders"], "zh-Hant": ["30 關", "食譜規則", "多托盤訂單"] },
       previewVideo: "assets/previews/bubble-bakery-battle.webm",
       art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hideHero: true },
     },
@@ -989,9 +989,9 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       description: {
         en: "Guide fruit through 30 physics rescues with moving baskets, layered winds, double bounces, and Panko checkpoints.",
-        "zh-Hant": "引導水果通過 30 關物理救援，挑戰移動籃、分層風、雙重彈跳與 Panko 檢核。",
+        "zh-Hant": "把水果送過 30 道物理關卡，利用移動籃、風向與彈跳找到安全路線。",
       },
-      meta: { en: ["30 Stages", "Physics Routes", "Panko Checks"], "zh-Hant": ["30 關", "物理路線", "Panko 檢核"] },
+      meta: { en: ["30 Stages", "Physics Routes", "Moving Baskets"], "zh-Hant": ["30 關", "物理路線", "移動籃"] },
       previewVideo: "assets/previews/animal-rope-rescue-battle.webm",
       art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hideHero: true },
     },
@@ -1008,9 +1008,9 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       description: {
         en: "Build a friendly animal park through 30 saved challenges with care choices, habitat arranging, facilities, and six park reviews.",
-        "zh-Hant": "完成 30 個有存檔的樂園挑戰，選擇照顧方式、安排棲地、升級設施，並通過六次友善審查。",
+        "zh-Hant": "照顧動物、安排棲地和升級設施，慢慢打造自己的樂園，完成 30 個挑戰。",
       },
-      meta: { en: ["30 Challenges", "Park Care", "Six Reviews"], "zh-Hant": ["30 個挑戰", "樂園照顧", "六次審查"] },
+      meta: { en: ["30 Challenges", "Park Care", "Habitat Upgrades"], "zh-Hant": ["30 個挑戰", "照顧樂園", "棲地升級"] },
       previewVideo: "assets/previews/animal-zoo-idle-battle.webm",
       art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hideHero: true },
     },
@@ -1027,9 +1027,9 @@ window.WONDER_LOBBY = {
       ageLabel: "6+",
       description: {
         en: "Repair the Animal Star Map across 30 saved stages with previews, moon shuffles, ordered pairs, and rotating constellations.",
-        "zh-Hant": "完成 30 個有存檔的動物星圖關卡，面對預覽、月光洗牌、順序配對與星座移位。",
+        "zh-Hant": "記住動物星圖的排列，再找出正確配對；薄霧、洗牌和移動星位會讓 30 個關卡越來越有挑戰。",
       },
-      meta: { en: ["30 Stages", "Memory Rules", "Six Keeper Checks"], "zh-Hant": ["30 關", "記憶規則", "六次守護者檢查"] },
+      meta: { en: ["30 Stages", "Memory Rules", "Shifting Star Maps"], "zh-Hant": ["30 關", "記憶挑戰", "變化星圖"] },
       previewVideo: "assets/previews/star-memory-battle.webm",
       art: { kind: "image", background: "assets/memory-cover.webp", hideHero: true },
     },
@@ -1067,7 +1067,7 @@ window.WONDER_LOBBY = {
         en: "Match animal snacks, use every move, clear collection goals, and chase your best score.",
         "zh-Hant": "消除動物零食方塊，用有限步數完成收集目標並挑戰最佳分數。",
       },
-      meta: { en: ["30 Stages", "Six Goal Families", "Six Checkpoints"], "zh-Hant": ["30 關", "六種目標", "六個檢查關"] },
+      meta: { en: ["30 Routes", "Five Goal Types", "Two-Lane Obstacles"], "zh-Hant": ["30 條路線", "五種目標", "雙路障礙"] },
       previewVideo: "assets/previews/snack-blocks-battle.webm",
       art: { kind: "image", background: "assets/snack-blocks-cover.webp", hideHero: true },
     },
@@ -1086,7 +1086,7 @@ window.WONDER_LOBBY = {
         en: "Clear 30 saved physics challenges with narrow aim windows, river wind, heavy gravity, fixed queues, and six Festival Checkpoints.",
         "zh-Hant": "落下動物球並合成相同動物，一路挑戰到獅王球與最佳分數。",
       },
-      meta: { en: ["30 Challenges", "Five Physics Rules", "Six Checkpoints"], "zh-Hant": ["30 個挑戰", "五種物理規則", "六個檢查關"] },
+      meta: { en: ["30 Challenges", "Five Physics Rules", "Festival Goals"], "zh-Hant": ["30 個挑戰", "五種物理規則", "祭典目標"] },
       previewVideo: "assets/previews/fruit-merge-battle.webm",
       art: { kind: "image", background: "assets/fruit-merge-cover.webp", hideHero: true },
     },
@@ -1120,7 +1120,7 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "Family", "zh-Hant": "親子" },
       description: {
         en: "Clear 30 no-timer memory challenges with previews, mist, moving cards, and six Garden Checkpoints.",
-        "zh-Hant": "完成 30 個無倒數的記憶挑戰，應對預覽、薄霧、移動卡牌與 6 個花園檢查點。",
+        "zh-Hant": "記住牌面位置，翻開移動卡片找出配對。挑戰 30 個無倒數關卡，留意薄霧帶來的變化。",
       },
       meta: { en: ["30 Challenges", "Four Memory Rules", "No Timer"], "zh-Hant": ["30 個挑戰", "4 種記憶規則", "無倒數"] },
       previewVideo: "assets/previews/garden-tiles-battle.webm",
@@ -1139,7 +1139,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-rescue/",
       description: {
         en: "Guide animals through 30 routes with fruit, mud, keys, gates, fragile paths, and six Rescue Checkpoints.",
-        "zh-Hant": "引導動物完成 30 條路線，應對水果、黏泥、鑰匙門、脆弱小路與 6 個救援檢查點。",
+        "zh-Hant": "安排動物的移動路線，避開黏泥和脆弱地面，善用水果與鑰匙門，完成 30 次救援。",
       },
       meta: { en: ["30 Trails", "Four Route Rules", "No Timer"], "zh-Hant": ["30 條路線", "4 種路線規則", "無倒數"] },
       previewVideo: "assets/previews/animal-rescue-battle.webm",
@@ -1158,7 +1158,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-hidden-safari/",
       description: {
         en: "Search 30 habitats with ordered targets, animal pairs, camouflage, visitors, moving patrols, and six checkpoints.",
-        "zh-Hant": "搜尋 30 個棲地，應對指定順序、動物雙雙、偽裝、訪客、移動巡遊與六個檢查點。",
+        "zh-Hant": "在 30 個棲地中找出藏起來的動物，留意線索順序、偽裝和移動中的訪客。",
       },
       meta: { en: ["30 Habitats", "Six Search Rules", "No Timer Failure"], "zh-Hant": ["30 個棲地", "6 種搜尋規則", "無倒數失敗"] },
       previewVideo: "assets/previews/animal-hidden-safari-battle.webm",
@@ -1177,7 +1177,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-guard-yard/",
       description: {
         en: "Defend 30 garden stages with animal guards, readable special beasts, saved training, and six distinct Boss encounters.",
-        "zh-Hant": "配置動物守衛，挑戰 30 個花園關卡、可判斷的特殊野獸與六場獨立首領戰。",
+        "zh-Hant": "安排動物守衛守住庭院，熟悉特殊野獸的攻勢，迎戰六場各有特色的首領戰。",
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
       previewVideo: "assets/previews/animal-guard-yard-battle.webm",
@@ -1195,7 +1195,7 @@ window.WONDER_LOBBY = {
       previewVideo: "assets/previews/animal-crystal-survivor-battle.webm",
       description: {
         en: "Patrol 30 three-minute Crystal Grove routes, collect each stage's keys, choose upgrades, read changing hazards, and defeat six original animal Bosses.",
-        "zh-Hant": "巡邏 30 條三分鐘水晶林地路線，完成各關金鑰目標、選擇升級、判讀變化危險，並擊敗六隻原創動物首領。",
+        "zh-Hant": "探索 30 個三分鐘水晶林地關卡，完成每關目標、挑選升級，並擊敗六名首領。",
       },
       meta: {
         en: ["30 Stages", "6 Bosses", "Auto Combat"],
@@ -1241,7 +1241,7 @@ window.WONDER_LOBBY = {
         en: "Complete 30 gentle zoo shifts with picture tools, care categories, memory requests, and ordered routines.",
         "zh-Hant": "完成 30 個溫和動物園班次，練習圖片道具、照顧分類、記住需求與順序照顧。",
       },
-      meta: { en: ["30 Shifts", "6 Keeper Checks", "Picture Care"], "zh-Hant": ["30 關", "6 次檢核", "圖片照顧"] },
+      meta: { en: ["30 Shifts", "Picture Items", "Care Routines"], "zh-Hant": ["30 個班次", "圖片道具", "照顧任務"] },
       previewVideo: "assets/previews/zoo-helper-day-battle.webm",
       art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hideHero: true },
     },
@@ -1260,7 +1260,7 @@ window.WONDER_LOBBY = {
         en: "Board six shape friends across 30 routes with outline, moving, memory, and Boarding Pass rules.",
         "zh-Hant": "讓六種形狀朋友完成 30 條路線，挑戰輪廓、移動、記憶與驗票規則。",
       },
-      meta: { en: ["30 Routes", "6 Checks", "Shape Memory"], "zh-Hant": ["30 路線", "6 次檢查", "形狀記憶"] },
+      meta: { en: ["30 Routes", "Shape Matching", "Memory Challenges"], "zh-Hant": ["30 條路線", "形狀配對", "記憶挑戰"] },
       previewVideo: "assets/previews/shape-train-battle.webm",
       art: { kind: "image", background: "assets/shape-train-cover.webp", hideHero: true },
     },
@@ -1279,7 +1279,7 @@ window.WONDER_LOBBY = {
         en: "Solve 30 animal-help missions with picture tools, paired clues, memory needs, and changing trays.",
         "zh-Hant": "完成 30 個動物幫忙任務，挑戰圖片道具、雙線索、記憶需求與換位工具。",
       },
-      meta: { en: ["30 Missions", "6 Helper Checks", "Scene Clues"], "zh-Hant": ["30 任務", "6 次幫手檢查", "情境線索"] },
+      meta: { en: ["30 Missions", "Picture Items", "Scene Clues"], "zh-Hant": ["30 個任務", "圖片道具", "情境線索"] },
       previewVideo: "assets/previews/tiny-weather-rescue-battle.webm",
       art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hideHero: true },
     },
@@ -1711,7 +1711,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-sanctuary-loop/",
       description: {
         en: "Guide Fia beyond safe land, close glowing loops before shadows cut the trail, and restore 30 rule-changing sanctuary missions.",
-        "zh-Hant": "引導星爪狐離開安全領地，在暗影切斷光軌前完成封環，修復 30 個規則持續變化的聖域任務。",
+        "zh-Hant": "引導星爪狐沿光軌連成完整封環，避開切斷路線的暗影，完成 30 個規則各異的關卡。",
         "zh-Hans": "引导星爪狐离开安全领地，在暗影切断光轨前完成封环，修复 30 个规则持续变化的圣域任务。",
         ja: "安全地帯の外へフィアを導き、影に光跡を断たれる前に輪を閉じ、ルールが変化する30の聖域ミッションを再生しよう。",
         ko: "피아를 안전지대 밖으로 이끌고 그림자가 빛의 궤적을 끊기 전에 고리를 닫아, 규칙이 달라지는 30개 성역 임무를 복원하세요.",
@@ -1760,7 +1760,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: {
         en: "Aim Fia's prism stream through multiplier gates, grow a spirit battalion, and break 30 evolving shadow fortresses.",
-        "zh-Hant": "瞄準菲亞的稜光軍流，穿越倍率門增殖光靈軍團，擊破 30 座規則持續進化的暗影要塞。",
+        "zh-Hant": "帶領菲亞的光靈穿越倍率門，擴大隊伍並攻下 30 座暗影要塞。",
         "zh-Hans": "瞄准菲亚的棱光军流，穿越倍率门增殖光灵军团，击破 30 座规则持续进化的暗影要塞。",
         ja: "フィアの精霊流を倍率ゲートへ導き、大隊を増やして進化する30の影要塞を破壊しよう。",
         ko: "피아의 정령 흐름을 배율 관문으로 조준해 대대를 키우고 진화하는 30개 그림자 요새를 격파하세요.",
@@ -1902,7 +1902,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: {
         en: "Guide Orla's lunar recovery ring through thirty astral zones, collect small debris to grow, rescue cores, outpace rivals, and reclaim crown wreckage.",
-        "zh-Hant": "引導奧拉的月輪挑戰 30 個星界區域，先回收小型殘骸成長，再救援核心、超越對手並收回王冠遺物。",
+        "zh-Hant": "探索 30 個星界區域，收集殘骸強化月輪、救回核心、超越對手，並取回王冠遺物。",
         "zh-Hans": "引导奥拉的月轮挑战 30 个星界区域，先回收小型残骸成长，再救援核心、超越对手并收回王冠遗物。",
         ja: "オーラの月輪を導き、30の星界区域で小さな残骸から成長し、救助コアを回収してライバルを追い越そう。",
         ko: "오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요.",
@@ -1956,7 +1956,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-starlight-trails/",
       description: {
         en: "Trace every constellation trail exactly once across 30 original puzzles with start seals, comet arrows, numbered stars, keys, and gates.",
-        "zh-Hant": "在 30 個原創星座謎題中，運用起點星印、彗星箭路、編號星星、鑰匙與星門，一筆走完每條星路。"
+        "zh-Hant": "依照星印、箭頭與編號連起星星，解開 30 幅星座路線謎題。"
       },
       meta: { en: ["30 Stages", "One-Stroke Routes", "Six Rule Families"], "zh-Hant": ["30 關", "一筆星路", "六種規則"] },
       art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp", hideHero: true },
@@ -1975,7 +1975,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-one-line/",
       description: {
         en: "Hold one continuous line through 30 original trails, avoid walls and moving shadows, and guide Mimi to the paw portal.",
-        "zh-Hant": "按住一筆通過 30 條原創路線，避開牆壁與移動影子，帶領米米抵達腳印門。",
+        "zh-Hant": "用一筆畫出路線，避開牆壁與移動影子，帶米米抵達終點。挑戰 30 條路線。",
         "zh-Hans": "按住一笔通过 30 条原创路线，避开墙壁与移动影子，带领米米抵达脚印门。"
       },
       meta: { en: ["30 Trails", "One Continuous Hold", "Moving Shadows"], "zh-Hant": ["30 條路線", "全程按住", "移動影子"], "zh-Hans": ["30 条路线", "全程按住", "移动影子"] },
@@ -2013,7 +2013,7 @@ window.WONDER_LOBBY = {
         en: "Aim through 30 rescue levels with reactive blockers, wind, moving rows, and four power bubbles.",
         "zh-Hant": "挑戰 30 個救援關卡，運用反應式障礙、風、移動列與四種力量泡泡。",
       },
-      meta: { en: ["30 Levels", "6 Safari Checks", "Bank & Power Shots"], "zh-Hant": ["30 關", "6 次草原檢查", "反彈與力量泡泡"] },
+      meta: { en: ["30 Levels", "Four Power Bubbles", "Bank Shots"], "zh-Hant": ["30 關", "四種力量泡泡", "反彈射擊"] },
       previewVideo: "assets/previews/animal-bubble-safari-battle.webm",
       art: { kind: "image", background: "assets/animal-bubble-safari-cover.webp", hideHero: true },
     },
@@ -2079,7 +2079,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-screw-workshop/",
       description: {
         en: "Move brass screws into open holes, release layered wooden animal plates, and restore 30 original forest-workshop puzzles.",
-        "zh-Hant": "把黃銅螺絲移到空孔，拆解重疊的動物木板，完成 30 個原創森林工坊謎題。",
+        "zh-Hant": "把黃銅螺絲移到空孔，逐片拆開重疊木板，完成 30 道森林工坊謎題。",
         "zh-Hans": "把黄铜螺丝移到空孔，拆解重叠的动物木板，完成 30 个原创森林工坊谜题。",
         es: "Mueve tornillos de latón, libera placas animales superpuestas y repara 30 rompecabezas originales.",
         ja: "真鍮のネジを空き穴へ移し、重なるどうぶつ木板を外して30の工房パズルを修復します。",
@@ -2117,7 +2117,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-parking-patrol/",
       description: {
         en: "Read four-way animal cart traffic, clear signals and convoys, and solve 30 original forest-plaza patrol routes.",
-        "zh-Hant": "觀察四向動物木車，依序解除號誌與車隊阻擋，完成 30 條原創森林廣場巡邏路線。",
+        "zh-Hant": "觀察四向移動的動物木車，依序解開號誌和車隊阻擋，完成 30 條巡邏路線。",
         "zh-Hans": "观察四向动物木车，依序解除信号与车队阻挡，完成 30 条原创森林广场巡逻路线。",
         es: "Lee el tráfico de carros animales, despeja señales y convoyes, y resuelve 30 rutas originales.",
         ja: "四方向のどうぶつ車を読み、信号と車列を解いて30の森のルートをクリアします。",
@@ -2470,8 +2470,8 @@ window.WONDER_LOBBY.games.push({
   ageLabel: { en: "6+", "zh-Hant": "6+" },
   href: "games/animal-cafe-rush/",
   description: {
-    en: "Run 30 cafe days with picture orders, numbered recipes, VIP priority, alternating tables, and six Cafe Reviews.",
-    "zh-Hant": "\u7d93\u71df 30 \u500b\u5496\u5561\u9928\u71df\u696d\u65e5\uff0c\u6311\u6230\u5716\u50cf\u8a02\u55ae\u3001\u6578\u5b57\u98df\u8b5c\u3001VIP \u512a\u5148\u3001\u96d9\u684c\u8f2a\u66ff\u8207\u516d\u6b21\u5be9\u67e5\u3002",
+    en: "Run a cafe through 30 busy days: fill picture orders, follow number recipes, serve VIPs first, and switch between two tables.",
+    "zh-Hant": "經營 30 天咖啡館，處理圖像訂單和數字食譜，安排 VIP 順序，並在兩張桌子間靈活調度。",
   },
   meta: {
     en: ["30 Cafe Days", "Six Rule Chapters", "Saved Upgrades"],
@@ -3462,7 +3462,7 @@ const animalLanternGuidesPlanned = {
   status: "playable",
   statusText: { ...animalLanternGuidesStatusText },
   type: animalLanternGuidesLocalized(["Asymmetric Co-op Puzzle", "非對稱合作益智", "非对称合作益智", "非対称協力パズル", "비대칭 협동 퍼즐", "Puzzle cooperativo asimétrico", "Quebra-cabeça cooperativo assimétrico", "Puzzle coopératif asymétrique", "Asymmetrisches Koop-Puzzle", "Puzzle cooperativo asimmetrico", "Асимметричная кооперативная головоломка", "असममित सहयोगी पहेली", "لغز تعاوني غير متماثل"]),
-  description: animalLanternGuidesLocalized(["Reveal safe lanterns, share the clue, and place matching trail markers together.", "找出安全提燈、分享提示，和夥伴一起放下相同的森林路標。", "找出安全提灯、分享提示，和伙伴一起放下相同的森林路标。", "安全なランタンを見つけ、手がかりを伝えて同じ道しるべを置こう。", "안전한 랜턴을 찾고 단서를 나누며 같은 길표를 함께 놓아요.", "Revela linternas seguras, comparte la pista y coloca juntos las señales correspondientes.", "Revele lanternas seguras, compartilhe a pista e coloquem juntos os marcadores correspondentes.", "Révèle les lanternes sûres, partage l’indice et posez ensemble les balises correspondantes.", "Enthülle sichere Laternen, teile den Hinweis und setzt gemeinsam passende Wegzeichen.", "Rivela le lanterne sicure, condividi l’indizio e posate insieme i segnavia corrispondenti.", "Открывайте безопасные фонари, передавайте подсказку и вместе ставьте подходящие знаки.", "सुरक्षित लालटेन दिखाएँ, संकेत साझा करें और मिलते रास्ते के निशान साथ रखें।", "اكشفا الفوانيس الآمنة، شاركا الدليل وضَعا علامات الطريق المطابقة معاً."]),
+  description: animalLanternGuidesLocalized(["Find safe lanterns from the clues and work together to mark a safe route.", "依線索找出安全提燈，和夥伴協力標記正確路線。", "依线索找出安全提灯，和伙伴协力标记正确路线。", "手がかりから安全なランタンを見つけ、協力して安全な道を示そう。", "단서로 안전한 랜턴을 찾고 함께 안전한 길을 표시하세요.", "Encuentra linternas seguras siguiendo las pistas y marca una ruta segura en equipo.", "Encontre lanternas seguras pelas pistas e marquem juntos um caminho seguro.", "Repérez les lanternes sûres grâce aux indices et balisez ensemble un chemin sûr.", "Findet mithilfe der Hinweise sichere Laternen und markiert gemeinsam einen sicheren Weg.", "Trova le lanterne sicure seguendo gli indizi e segna insieme un percorso sicuro.", "Подсказки помогут найти безопасные фонари и вместе отметить безопасный путь.", "संकेतों से सुरक्षित लालटेन खोजें और मिलकर सुरक्षित रास्ता चिह्नित करें।", "اعثروا على الفوانيس الآمنة من خلال الأدلة وحددوا طريقاً آمناً معاً."]),
   meta: animalLanternGuidesLocalized([["3 Night Scenes", "Scout + Guide", "Calm Recovery"], ["3 個夜林場景", "偵察員＋引路員", "平靜恢復"], ["3 个夜林场景", "侦察员＋引路员", "平静恢复"], ["3つの夜の場面", "スカウト＋ガイド", "穏やかな回復"], ["밤 장면 3개", "정찰자 + 안내자", "차분한 회복"], ["3 escenas nocturnas", "Explorador + Guía", "Recuperación serena"], ["3 cenas noturnas", "Batedor + Guia", "Recuperação calma"], ["3 scènes nocturnes", "Éclaireur + Guide", "Reprise sereine"], ["3 Nachtszenen", "Späher + Lotse", "Ruhige Erholung"], ["3 scene notturne", "Esploratore + Guida", "Recupero calmo"], ["3 ночные сцены", "Разведчик + Проводник", "Спокойное восстановление"], ["3 रात के दृश्य", "खोजी + मार्गदर्शक", "शांत वापसी"], ["3 مشاهد ليلية", "الكشّاف + المرشد", "تعافٍ هادئ"]]),
   categories: ["Puzzle", "Co-op", "Logic", "Family", "Animal"],
   skills: ["Communication", "Pattern Recognition", "Focus"],
@@ -3831,7 +3831,7 @@ const classicOwnerPreviewType = classicOwnerPreviewLocalized([
 ]);
 const classicOwnerPreviewDescription = classicOwnerPreviewLocalized([
   "A complete classic game currently finishing its release checks.",
-  "正在完成發佈檢查的完整經典遊戲。",
+  "用球反彈擊落磚塊，調整擋板接住回彈，清空關卡並挑戰更高分數。",
   "正在完成发布检查的完整经典游戏。",
   "公開前チェックを進めている完成済みのクラシックゲームです。",
   "출시 전 검사를 마무리 중인 완성된 클래식 게임입니다.",
@@ -3883,7 +3883,7 @@ if (chessPublic) {
   chessPublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
   chessPublic.description = classicOwnerPreviewLocalized([
     "Play a complete Chess match against the computer, or solve 30 original tactical challenges.",
-    "與電腦進行完整西洋棋對局，或挑戰 30 道原創戰術題。",
+    "與電腦進行西洋棋對局，或挑戰 30 道逐步進階的戰術題。",
     "与电脑进行完整国际象棋对局，或挑战 30 道原创战术题。",
     "コンピューターと本格チェスを対局するか、30問のオリジナル戦術課題に挑戦。",
     "컴퓨터와 전체 체스 대국을 하거나 30개의 오리지널 전술 도전에 도전하세요.",
@@ -4744,7 +4744,7 @@ window.WONDER_LOBBY.games.push(
     type: { en: "Timing Crossing Arcade", "zh-Hant": "時機穿越街機", "zh-Hans": "时机穿越街机", ja: "タイミング横断アーケード", ko: "타이밍 횡단 아케이드", es: "Arcade de cruces y tiempo", "pt-BR": "Arcade de travessia e ritmo", fr: "Arcade de traversée rythmée", de: "Timing-Querungs-Arcade", it: "Arcade di attraversamento", ru: "Аркада перехода по времени", hi: "समय-आधारित पारपथ आर्केड", ar: "أركيد عبور بالتوقيت" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Timing", "Focus", "Adaptation"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
     href: "games/road-crosser/", previewVideo: "assets/previews/road-crosser-battle.webm",
-    description: { en: "Read traffic and river timing, then guide the Star Runner through three original crossings.", "zh-Hant": "讀懂車流與河流時機，帶領星行者完成三段原創穿越。", "zh-Hans": "读懂车流与河流时机，带领星行者完成三段原创穿越。", ja: "車と川のタイミングを読み、スターランナーを3つのオリジナル横断へ導きます。", ko: "차량과 강물의 타이밍을 읽고 별 주자를 세 번의 오리지널 횡단으로 이끄세요.", es: "Lee el tráfico y el río para guiar al Corredor Estelar por tres cruces originales.", "pt-BR": "Leia o trânsito e o rio para guiar o Corredor Estelar por três travessias originais.", fr: "Lis le trafic et la rivière pour guider le Coureur Stellaire à travers trois traversées originales.", de: "Lies Verkehr und Flussrhythmus und führe den Sternläufer durch drei originale Querungen.", it: "Leggi traffico e corrente e guida il Corridore Stellare in tre attraversamenti originali.", ru: "Читай ритм машин и реки и проведи Звёздного бегуна через три оригинальных перехода.", hi: "यातायात और नदी की लय समझकर स्टार रनर को तीन मौलिक पारपथों से ले जाएँ।", ar: "اقرأ توقيت السيارات والنهر وقد الشخصية النجمية عبر ثلاث مراحل أصلية." },
+    description: { en: "Read traffic and river timing, then guide the Star Runner across three routes.", "zh-Hant": "看準車流與河水時機，帶領星行者安全通過三段路線。", "zh-Hans": "读准车流与河水时机，带领星行者安全通过三段路线。", ja: "車と川のタイミングを読み、スターランナーを3つのルートへ導きます。", ko: "차량과 강물의 타이밍을 읽고 별 주자를 세 개의 길로 안내하세요.", es: "Lee el tráfico y el río para guiar al Corredor Estelar por tres rutas.", "pt-BR": "Leia o trânsito e o rio para guiar o Corredor Estelar por três rotas.", fr: "Lis le trafic et la rivière pour guider le Coureur Stellaire sur trois itinéraires.", de: "Lies Verkehr und Flussrhythmus und führe den Sternläufer über drei Routen.", it: "Leggi il ritmo di auto e fiume e guida il Corridore Stellare lungo tre percorsi.", ru: "Следи за движением машин и реки, чтобы провести Звёздного бегуна по трём маршрутам.", hi: "यातायात और नदी की लय समझकर स्टार रनर को तीन रास्तों से ले जाएँ।", ar: "اقرأ توقيت السيارات والنهر وقد عدّاء النجوم عبر ثلاثة مسارات." },
     meta: { en: ["Three Crossings", "Traffic + River", "Timing Play"], "zh-Hant": ["三段穿越", "車流與河流", "時機玩法"], "zh-Hans": ["三段穿越", "车流与河流", "时机玩法"], ja: ["3つの横断", "車と川", "タイミング"], ko: ["세 번의 횡단", "차량과 강물", "타이밍"], es: ["Tres cruces", "Tráfico y río", "Ritmo"], "pt-BR": ["Três travessias", "Trânsito e rio", "Ritmo"], fr: ["Trois traversées", "Trafic et rivière", "Timing"], de: ["Drei Querungen", "Verkehr + Fluss", "Timing"], it: ["Tre attraversamenti", "Traffico e fiume", "Tempismo"], ru: ["Три перехода", "Машины и река", "Ритм"], hi: ["तीन पारपथ", "यातायात और नदी", "समय"], ar: ["ثلاث مراحل", "سيارات ونهر", "توقيت"] },
     searchAliases: [
       "cross the road", "crossing", "traffic", "river", "safe gap", "timing arcade", "runner",
@@ -4766,7 +4766,7 @@ window.WONDER_LOBBY.games.push(
     type: { en: "Wave Survival Shooter", "zh-Hant": "波次生存射擊", "zh-Hans": "波次生存射击", ja: "ウェーブ生存シューティング", ko: "웨이브 생존 슈팅", es: "Disparos de supervivencia por oleadas", "pt-BR": "Tiro de sobrevivência por ondas", fr: "Tir de survie par vagues", de: "Wellen-Survival-Shooter", it: "Shooter di sopravvivenza a ondate", ru: "Шутер на выживание по волнам", hi: "लहर सर्वाइवल शूटर", ar: "لعبة إطلاق نار للبقاء" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Aim", "Movement", "Reaction"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
     href: "games/alien-defender/", previewVideo: "assets/previews/alien-defender-battle.webm",
-    description: { en: "Move, fire, and read three original alien formations while protecting the signal station.", "zh-Hant": "移動、射擊並讀懂三種原創外星編隊，守護訊號站。", "zh-Hans": "移动、射击并读懂三种原创外星编队，守护信号站。", ja: "動いて撃ち、3つのオリジナル編隊から信号ステーションを守ります。", ko: "움직이고 발사하며 세 가지 오리지널 외계인 대형에서 신호 기지를 지키세요.", es: "Muévete, dispara y lee tres formaciones alienígenas originales para proteger la estación.", "pt-BR": "Mova, atire e leia três formações alienígenas originais para proteger a estação.", fr: "Bouge, tire et lis trois formations aliens originales pour protéger la station.", de: "Bewege dich, schieße und lies drei originale Alien-Formationen zum Schutz der Station.", it: "Muoviti, spara e leggi tre formazioni aliene originali per difendere la stazione.", ru: "Двигайся, стреляй и читай три оригинальных строя, защищая сигнальную станцию.", hi: "चलें, गोली चलाएँ और तीन मौलिक एलियन गठन से सिग्नल स्टेशन बचाएँ।", ar: "تحرك وأطلق النار واقرأ ثلاثة تشكيلات أصلية لحماية محطة الإشارة." },
+    description: { en: "Move, fire, and read three alien formations while protecting the signal station.", "zh-Hant": "移動並射擊，觀察三種外星編隊的攻勢，守住訊號站。", "zh-Hans": "移动并射击，观察三种外星编队的攻势，守住信号站。", ja: "動いて撃ち、3つの編隊から信号ステーションを守ります。", ko: "움직이고 발사하며 세 가지 외계인 대형에서 신호 기지를 지키세요.", es: "Muévete, dispara y lee tres formaciones alienígenas para proteger la estación.", "pt-BR": "Mova, atire e leia três formações alienígenas para proteger a estação.", fr: "Bouge, tire et lis trois formations aliens pour protéger la station.", de: "Bewege dich, schieße und lies drei Alien-Formationen zum Schutz der Station.", it: "Muoviti, spara e leggi tre formazioni aliene per difendere la stazione.", ru: "Двигайся, стреляй и читай три строя, защищая сигнальную станцию.", hi: "चलें, गोली चलाएँ और तीन एलियन गठन से सिग्नल स्टेशन बचाएँ।", ar: "تحرك وأطلق النار واقرأ ثلاثة تشكيلات فضائية لحماية محطة الإشارة." },
     meta: { en: ["Three Waves", "Move + Fire", "Shield Windows"], "zh-Hant": ["三波敵潮", "移動與射擊", "護盾窗口"], "zh-Hans": ["三波敌潮", "移动与射击", "护盾窗口"], ja: ["3ウェーブ", "移動と射撃", "シールド時間"], ko: ["세 웨이브", "이동 + 발사", "실드 시간"], es: ["Tres oleadas", "Mover y disparar", "Escudos"], "pt-BR": ["Três ondas", "Mover e atirar", "Escudos"], fr: ["Trois vagues", "Bouger et tirer", "Boucliers"], de: ["Drei Wellen", "Bewegen + Schießen", "Schildfenster"], it: ["Tre ondate", "Muovi e spara", "Scudi"], ru: ["Три волны", "Двигайся и стреляй", "Щиты"], hi: ["तीन लहरें", "चलें और गोली चलाएँ", "ढाल समय"], ar: ["ثلاث موجات", "تحرك وأطلق", "نوافذ الدرع"] },
     art: { kind: "image", background: "assets/alien-defender-cover.webp", hideHero: true },
   },
@@ -5516,22 +5516,22 @@ const verifiedCleanZhLobbyCopy = {
     title: "動物合成塔",
     statusText: "可遊玩",
     type: "物理合成挑戰",
-    description: "挑戰 30 個可存檔物理關卡，運用窄窗、河風、重力、固定隊列與六個祭典檢查關完成合成目標。",
-    meta: ["30 個挑戰", "五種物理規則", "六個檢查關"],
+    description: "把物品合成並送往目標區，留意窄小落點、河風和重力，完成 30 個關卡。",
+    meta: ["30 個挑戰", "五種物理規則", "合成目標"],
   },
   "snack-blocks": {
     title: "動物零食方塊",
     statusText: "可遊玩",
     type: "三消關卡益智",
-    description: "規劃 30 個可存檔關卡，挑戰分數、收集、雙零食、連鎖、大消除與六個雙目標檢查關。",
-    meta: ["30 關", "六種目標", "六個檢查關"],
+    description: "清除零食方塊，完成得分、收集和連鎖消除目標，闖過 30 個各有不同目標的關卡。",
+    meta: ["30 關", "六種目標", "連鎖消除"],
   },
   "campus-dash": {
     title: "\u8349\u539f\u9583\u96fb\u8dd1",
     statusText: "\u53ef\u904a\u73a9",
     type: "\u8def\u7dda\u9583\u907f\u8dd1\u9177",
-    description: "\u6311\u6230 30 \u689d\u53ef\u5b58\u6a94\u8349\u539f\u8def\u7dda\uff0c\u904b\u7528\u661f\u661f\u8ecc\u8de1\u3001\u96d9\u8def\u969c\u7919\u9580\u3001\u9ecf\u6ed1\u6ce5\u6f25\u3001\u4e94\u7a2e\u76ee\u6a19\u8207\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
-    meta: ["30 \u689d\u8def\u7dda", "\u4e94\u7a2e\u898f\u5247", "\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5"],
+    description: "在 30 條草原跑道上閃避障礙，掌握雙路障礙門、泥坑和星星軌跡，完成不同目標。",
+    meta: ["30 條路線", "五種目標", "雙路障礙"],
   },
   "beast-deck": {
     title: "獸王牌組：迷霧森林",
@@ -5589,14 +5589,14 @@ for (const game of window.WONDER_LOBBY.games) {
 
 const campusDash = window.WONDER_LOBBY.games.find((game) => game.id === "campus-dash");
 if (campusDash) {
-  campusDash.description.en = "Clear 30 saved safari routes with star trails, two-lane gates, sticky mud, five objective types, and six Guardian Checks.";
-  campusDash.meta.en = ["30 Routes", "Five Rule Families", "Six Guardian Checks"];
+  campusDash.description.en = "Run 30 grassland routes, follow star trails, and switch lanes to dodge gates and sticky mud.";
+  campusDash.meta.en = ["30 Routes", "Five Goal Types", "Two-Lane Gates"];
 }
 
 const snackBlocks = window.WONDER_LOBBY.games.find((game) => game.id === "snack-blocks");
 if (snackBlocks) {
-  snackBlocks.description.en = "Plan 30 saved stages with score, collection, pair, cascade, big-match, and dual checkpoint goals.";
-  snackBlocks.meta.en = ["30 Stages", "Six Goal Families", "Six Checkpoints"];
+  snackBlocks.description.en = "Clear snack blocks, complete score and collection goals, and trigger cascades across 30 stages.";
+  snackBlocks.meta.en = ["30 Stages", "Six Goal Types", "Chain Combos"];
 }
 
 const pyramidSolitairePublic = window.WONDER_LOBBY.games.find((game) => game.id === "pyramid-solitaire");

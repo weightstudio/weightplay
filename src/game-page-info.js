@@ -10083,7 +10083,17 @@
     if(id==="animal-abyss-diver"&&game&&window.AbyssDiverTactics)game=window.AbyssDiverTactics.applyGuide(game,locale());
     if (id === "animal-2048" && game) game = { ...game, systems: [...(game.systems || []), forestCheckpointGuide[locale()] || forestCheckpointGuide.en] };
     if (id === "wonder-crash" && game && window.LionTalents) game = { ...game, ...window.LionTalents.guide(locale()) };
-    if (id === "animal-crystal-survivor" && game) game = { ...game, ...(crystalCombatGuides[locale()] || crystalCombatGuides.en) };
+    if (id === "animal-crystal-survivor" && game) {
+      const guide = crystalCombatGuides[locale()] || crystalCombatGuides.en;
+      game = {
+        ...game,
+        ...guide,
+        strategyTips: guide.tips || [],
+        progression: [],
+        designNote: "",
+        parent: guide.note || "",
+      };
+    }
     const official = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale()];
     return game && official && document.documentElement.hasAttribute?.('data-wp-official-name') ? { ...game, title: official } : game;
   }
