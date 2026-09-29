@@ -6,8 +6,8 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js";
-import { CastleCascade2D } from "./castle-cascade-2d.js?v=20260929-castle-cascade-v6-i8";
+} from "./cascade-core.js?v=20260929-castle-cascade-v7-i8";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20260929-castle-cascade-v7-i8";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
@@ -497,20 +497,19 @@ function handleCell(index) {
       renderAccessibleBoard();
       return;
     }
-    if (tile.p) {
-      selectedCell = -1;
-      const result = activatePower(gameState, index);
-      act(result, "power");
-      return;
-    }
     selectedCell = index;
-    document.querySelector("#status").textContent = text("selected");
+    document.querySelector("#status").textContent = tile.p ? text("chooseSecond") : text("selected");
     renderer?.setBoard(gameState.board, selectedCell, focusCell);
     renderAccessibleBoard();
     return;
   }
   if (selectedCell === index) {
     selectedCell = -1;
+    if (tile.p) {
+      const result = activatePower(gameState, index);
+      act(result, "power");
+      return;
+    }
     document.querySelector("#status").textContent = "";
     renderer?.setBoard(gameState.board, selectedCell, focusCell);
     renderAccessibleBoard();

@@ -1,7 +1,7 @@
 /* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
-  const BLOCK_CUBE_URL = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-stable-v3';
+  const BLOCK_CUBE_URL = '/Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-stable-v4';
   function setItemCollectionStatus(itemRoot, { itemId, state, labels, placement = 'inline' } = {}) {
     const allowedStates = new Set(['collected', 'not-collected', 'unknown']);
     const allowedPlacements = new Set(['inline', 'top-left', 'top-right']);
@@ -42,18 +42,29 @@
     const state = itemRoot.dataset.wpGetState === 'collected' ? 'collected' : 'not-collected';
     if (itemRoot.dataset.wpGetState !== state) itemRoot.dataset.wpGetState = state;
 
-    // Stage cards are recycled and their child content may be replaced on every
-    // rebind. Keep the marker on the Item itself so it survives that operation
-    // without creating/reloading an <img> during a swipe.
-    itemRoot.querySelector(':scope > img[data-wp-get-icon]')?.remove();
-    if (itemRoot.dataset.wpGetIcon !== 'true') itemRoot.dataset.wpGetIcon = 'true';
+    // Render the lobby cube as a real image child. Keep one node per recycled
+    // Item and never rewrite its URL during a swipe; Stage binders must update
+    // only their data-content wrapper so this shared image remains attached.
+    let icon = itemRoot.querySelector(':scope > img[data-wp-get-icon]');
+    if (!icon) {
+      icon = document.createElement('img');
+      icon.dataset.wpGetIcon = '';
+      icon.alt = '';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.draggable = false;
+      icon.setAttribute('src', BLOCK_CUBE_URL);
+      itemRoot.append(icon);
+    } else if (icon.getAttribute('src') !== BLOCK_CUBE_URL) {
+      icon.setAttribute('src', BLOCK_CUBE_URL);
+    }
+    if (icon.dataset.wpGetState !== state) icon.dataset.wpGetState = state;
     if (itemRoot.dataset.wpGetAnchorChecked !== 'true') {
       if (itemRoot.isConnected && window.getComputedStyle?.(itemRoot).position === 'static') {
         itemRoot.dataset.wpGetAnchor = 'true';
       }
       itemRoot.dataset.wpGetAnchorChecked = 'true';
     }
-    return itemRoot;
+    return icon;
   }
   function showResultGet(gameId, obtained) {
     const normalizedGameId = String(gameId ?? '').trim();

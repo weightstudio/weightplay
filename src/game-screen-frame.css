@@ -1474,16 +1474,15 @@ html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp
 /* Stage Item pickup marker: one lobby-matched cube image overlays the card;
    only the icon changes state, so Stage text and carousel geometry stay fixed. */
 html[data-wp-shared-interface="7"] body :is([data-wp-get-anchor="true"],[data-wp-result-get-anchor="true"]) {position:relative!important}
-/* Stage cube belongs to the Item root, not its recyclable children. The shared
-   CSS pseudo-element keeps the lobby asset mounted while a virtual rail rebinds. */
-html[data-wp-shared-interface="7"] body [data-wp-get-icon="true"]::before {
-  content:""!important;position:absolute!important;z-index:4!important;inset-block-start:8px!important;inset-inline-end:8px!important;
-  display:block!important;box-sizing:border-box!important;width:30px!important;height:34px!important;min-width:30px!important;min-height:34px!important;
-  background-image:url("../Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-stable-v3")!important;
-  background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important;
-  pointer-events:none!important;user-select:none!important;filter:none!important;transition:none!important;animation:none!important;
+/* Stage uses one shared, real lobby-cube image as a direct Item child. Recycled
+   binders preserve this node, so swiping never recreates or reloads it. */
+html[data-wp-shared-interface="7"] body img[data-wp-get-icon] {
+  box-sizing:border-box!important;position:absolute!important;z-index:4!important;inset-block-start:8px!important;inset-inline-end:8px!important;
+  display:block!important;width:30px!important;height:34px!important;min-width:30px!important;min-height:34px!important;max-width:30px!important;max-height:34px!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;
+  object-fit:contain!important;pointer-events:none!important;user-select:none!important;filter:none!important;opacity:1!important;transition:none!important;animation:none!important;
 }
-html[data-wp-shared-interface="7"] body [data-wp-get-icon="true"][data-wp-get-state="not-collected"]::before {filter:grayscale(1)!important;opacity:.62!important}
+html[data-wp-shared-interface="7"] body img[data-wp-get-icon][data-wp-get-state="not-collected"] {filter:grayscale(1)!important;opacity:.72!important}
 html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {
   position:absolute!important;z-index:4!important;inset-block-start:8px!important;inset-inline-end:8px!important;
   display:block!important;box-sizing:border-box!important;width:30px!important;height:34px!important;min-width:30px!important;min-height:34px!important;

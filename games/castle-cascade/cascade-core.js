@@ -672,6 +672,15 @@ function comboEffect(state, a, b) {
   }
 
   expandTriggeredPowers(board, direct, powerSet, suppressed, visualEffects);
+  if (powerA && powerB) {
+    visualEffects.push({
+      type: "combo-burst",
+      index: b,
+      origins: [a, b],
+      powers: [powerA, powerB],
+      targets: [...direct].sort((left, right) => left - right),
+    });
+  }
   return { direct, powerSet, forceGate, visualEffects };
 }
 

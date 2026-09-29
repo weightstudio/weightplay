@@ -375,6 +375,7 @@ export class CastleCascade2D {
       a,
       b,
       accepted,
+      combo: Boolean(accepted && before[a]?.p && before[b]?.p),
       duration: accepted ? 190 : 245,
     });
   }
@@ -446,32 +447,59 @@ export class CastleCascade2D {
       const scale = 1 + Math.sin(progress * Math.PI) * 0.045;
       this.drawTile(tiles[item], to[item], x, y, cell, 1, scale);
     }
+    if (motion.combo) this.drawComboLink(bounds, motion, progress, cell);
   }
 
   drawClearMotion(bounds, motion, time) {
     const { batch } = motion;
     const progress = clamp((time - motion.started) / motion.duration, 0, 1);
     const cell = bounds.size / BOARD_WIDTH;
-    const hit = new Set([...batch.directHits, ...batch.adjacentHits]);
-    for (const index of hit) {
+    const powerOrigins = new Set((batch.visualEffects || []).flatMap((effect) => [
+      ...(Number.isInteger(effect.index) ? [effect.index] : []),
+      ...(effect.origins || []),
+    ]));
+    for (const index of batch.directHits) {
       const tile = batch.before[index];
       if (!tile) continue;
       const row = Math.floor(index / BOARD_WIDTH);
       const col = index % BOARD_WIDTH;
-      const direct = batch.directHits.includes(index);
-      const alpha = direct ? 1 - progress : 1 - progress * 0.78;
-      const scale = direct ? Math.max(0.25, 1 - progress * 0.72) : 1 - progress * 0.13;
+      const alpha = 1 - progress;
+      const scale = Math.max(0.25, 1 - progress * 0.72);
       const cx = bounds.x + (col + 0.5) * cell;
       const cy = bounds.y + (row + 0.5) * cell;
       this.drawTile(tile, index, cx, cy, cell, alpha, scale);
-      if (direct) {
-        const burst = Math.sin(progress * Math.PI);
-        this.context.save();
-        this.context.globalAlpha *= (1 - progress) * 0.7;
-        this.drawSprite(SPRITE.ripple, cx, cy, cell * (0.34 + progress * 1.06), 0.9);
-        this.drawSprite(SPRITE.spark, cx, cy, cell * (0.6 + burst * 0.38), 0.58 + burst * 0.2, 0.92);
-        this.context.restore();
-      }
+      const burst = Math.sin(progress * Math.PI);
+      this.context.save();
+      this.context.globalAlpha *= (1 - progress) * 0.7;
+      this.drawSprite(SPRITE.ripple, cx, cy, cell * (0.34 + progress * 1.06), 0.9);
+      this.drawSprite(SPRITE.spark, cx, cy, cell * (0.6 + burst * 0.38), 0.58 + burst * 0.2, 0.92);
+      this.context.restore();
+      const strong = powerOrigins.has(index);
+      const count = strong ? 8 : batch.directHits.length > 24 ? 1 : 3;
+      this.drawParticleBurst(cx, cy, cell, progress, count, strong ? 1.8 : 0.78, strong ? "#fff0a6" : "#c5f7ff", index);
+    }
+    for (const index of batch.adjacentHits) {
+      const tile = batch.before[index];
+      if (!tile) continue;
+      const row = Math.floor(index / BOARD_WIDTH);
+      const col = index % BOARD_WIDTH;
+      const cx = bounds.x + (col + 0.5) * cell;
+      const cy = bounds.y + (row + 0.5) * cell;
+      const after = batch.cleared[index] || tile;
+      const boxRemoved = Boolean(tile.box && !after.box);
+      const chainRemoved = Boolean(tile.chain && !after.chain);
+      const tileWithoutHitBlockers = {
+        ...tile,
+        box: boxRemoved ? 0 : tile.box,
+        chain: chainRemoved ? 0 : tile.chain,
+      };
+      this.drawTile(tileWithoutHitBlockers, index, cx, cy, cell);
+      if (!boxRemoved && !chainRemoved) continue;
+      const fade = 1 - progress;
+      const scale = 1 + Math.sin(progress * Math.PI) * 0.14 - progress * 0.12;
+      if (boxRemoved) this.drawSprite(SPRITE.crate, cx, cy, cell * scale, 0.96, fade);
+      if (chainRemoved) this.drawSprite(SPRITE.chain, cx, cy, cell * scale, 0.96, fade);
+      this.drawParticleBurst(cx, cy, cell, progress, 4, 0.72, "#ffe3a1", index + 9);
     }
     this.drawSpecialEffects(bounds, batch.visualEffects || [], progress, cell);
     if (batch.createdSpecial) {
@@ -492,6 +520,30 @@ export class CastleCascade2D {
     }
   }
 
+  drawComboLink(bounds, motion, progress, cell) {
+    const centerOf = (index) => {
+      const row = Math.floor(index / BOARD_WIDTH);
+      const col = index % BOARD_WIDTH;
+      return {
+        x: bounds.x + (col + 0.5) * cell,
+        y: bounds.y + (row + 0.5) * cell,
+      };
+    };
+    const a = centerOf(motion.a);
+    const b = centerOf(motion.b);
+    const midpoint = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    const pulse = Math.sin(progress * Math.PI);
+    if (pulse <= 0) return;
+    this.context.save();
+    this.context.globalCompositeOperation = "lighter";
+    this.context.globalAlpha *= pulse * 0.9;
+    this.drawBeam(a.x, a.y, midpoint.x, midpoint.y, "#fff2ac", cell * 0.085, cell * 0.2);
+    this.drawBeam(b.x, b.y, midpoint.x, midpoint.y, "#91f2ff", cell * 0.085, cell * 0.2);
+    this.drawRing(midpoint.x, midpoint.y, cell * (0.14 + pulse * 0.34), pulse, "#fff8d1", cell * 0.055);
+    this.drawSprite(SPRITE.spark, midpoint.x, midpoint.y, cell * (0.34 + pulse * 0.52), 0.86, pulse);
+    this.context.restore();
+  }
+
   drawGravityMotion(bounds, motion, time) {
     const elapsed = time - motion.started;
     const cell = bounds.size / BOARD_WIDTH;
@@ -507,6 +559,13 @@ export class CastleCascade2D {
       const fade = item.isDelivery ? 1 - local : delivering && local > 0.76 ? 1 - (local - 0.76) / 0.24 : 1;
       this.drawTile(item.payload, item.toIndex, x, y, cell, fade, landing);
     }
+    motion.cleared.forEach((tile, index) => {
+      if (!tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.seal) return;
+      const row = Math.floor(index / BOARD_WIDTH);
+      const col = index % BOARD_WIDTH;
+      const overlay = { ...tile, c: null, p: null, key: 0, exit: 0 };
+      this.drawTile(overlay, index, bounds.x + (col + 0.5) * cell, bounds.y + (row + 0.5) * cell, cell);
+    });
     for (const index of motion.deliveredKeys) {
       const keyMotion = motion.movements.find((item) => item.toIndex === index && item.payload.key);
       if (!keyMotion) continue;
@@ -537,13 +596,22 @@ export class CastleCascade2D {
         const endX = horizontal ? bounds.x + bounds.size * progress : cx;
         const endY = horizontal ? cy : bounds.y + bounds.size * progress;
         this.drawBeam(startX, startY, endX, endY, "#fff0a0", cell * 0.12, cell * 0.28);
+        this.drawSprite(SPRITE.spark, endX, endY, cell * (0.42 + Math.sin(progress * Math.PI) * 0.22), 0.82, 1 - progress * 0.32);
+        this.drawParticleBurst(endX, endY, cell, progress, 5, 0.9, "#fff0a0", center);
       } else if (effect.type === "bomb" || effect.type === "nova") {
         this.drawRing(cx, cy, cell * (0.35 + progress * (effect.radius + 0.45)), 1 - progress * 0.68, "#ffbf53", cell * 0.11);
         this.drawRing(cx, cy, cell * (0.2 + progress * (effect.radius + 0.2)), 1 - progress * 0.8, "#fff4c8", cell * 0.035);
         if (effect.type === "nova") this.drawRing(cx, cy, cell * (0.3 + progress * (effect.radius + 0.8)), 1 - progress * 0.82, "#9af2ff", cell * 0.045);
+        this.drawParticleBurst(cx, cy, cell, progress, effect.type === "nova" ? 14 : 8, effect.radius + 1.4, effect.type === "nova" ? "#fff0bd" : "#ffcb68", center);
       } else if (effect.type === "bird" || effect.type === "bird-carry") {
         const target = effect.target ?? effect.index;
         this.drawBirdFlight(bounds, effect.index, target, progress, cell);
+        const hitProgress = clamp((progress - 0.62) / 0.38, 0, 1);
+        if (hitProgress > 0) {
+          const tr = Math.floor(target / BOARD_WIDTH);
+          const tc = target % BOARD_WIDTH;
+          this.drawParticleBurst(bounds.x + (tc + 0.5) * cell, bounds.y + (tr + 0.5) * cell, cell, hitProgress, 7, 1.05, "#95f4df", target);
+        }
       } else if (effect.type === "flock") {
         (effect.targets || []).forEach((target, targetIndex) => this.drawBirdFlight(bounds, effect.origins[targetIndex] ?? effect.origins[0], target, progress, cell));
       } else if (effect.type === "prism" || effect.type === "prism-combo" || effect.type === "spectrum") {
@@ -568,7 +636,64 @@ export class CastleCascade2D {
           if (lineRow >= 0 && lineRow < BOARD_HEIGHT) this.drawBeam(bounds.x, bounds.y + (lineRow + 0.5) * cell, bounds.x + bounds.size * progress, bounds.y + (lineRow + 0.5) * cell, "#ffd980", cell * 0.075, cell * 0.23);
           if (lineCol >= 0 && lineCol < BOARD_WIDTH) this.drawBeam(bounds.x + (lineCol + 0.5) * cell, bounds.y, bounds.x + (lineCol + 0.5) * cell, bounds.y + bounds.size * progress, "#b4f5ff", cell * 0.075, cell * 0.23);
         }
+      } else if (effect.type === "combo-burst") {
+        this.drawComboBurst(bounds, effect, progress, cell);
       }
+    }
+  }
+
+  drawComboBurst(bounds, effect, progress, cell) {
+    const origins = (effect.origins || []).filter((index) => Number.isInteger(index) && index >= 0 && index < BOARD_WIDTH * BOARD_HEIGHT);
+    const points = origins.length ? origins : [effect.index];
+    const centers = points.map((index) => ({
+      x: bounds.x + ((index % BOARD_WIDTH) + 0.5) * cell,
+      y: bounds.y + (Math.floor(index / BOARD_WIDTH) + 0.5) * cell,
+    }));
+    const cx = centers.reduce((sum, point) => sum + point.x, 0) / centers.length;
+    const cy = centers.reduce((sum, point) => sum + point.y, 0) / centers.length;
+    const phase = clamp(progress, 0, 1);
+    const envelope = Math.sin(Math.PI * phase);
+    if (envelope <= 0) return;
+    const isSpectrum = effect.powers?.includes("prism");
+    const firstColor = isSpectrum ? "#f0a9ff" : "#ffe28a";
+    const secondColor = isSpectrum ? "#9cf4ff" : "#9ceeff";
+    const radius = cell * (0.35 + phase * 3.9);
+    const ctx = this.context;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.globalAlpha *= envelope * 0.72;
+    this.drawRing(cx, cy, radius, 0.9, firstColor, cell * (0.11 - phase * 0.045));
+    this.drawRing(cx, cy, radius * 0.68, 0.66, secondColor, cell * 0.045);
+    ctx.lineCap = "round";
+    for (let ray = 0; ray < 12; ray += 1) {
+      const angle = ray * Math.PI / 6 + phase * 0.34;
+      const inner = radius * (0.18 + (ray % 3) * 0.035);
+      const outer = radius * (0.83 + (ray % 2) * 0.13);
+      const color = ray % 2 ? firstColor : secondColor;
+      this.drawBeam(
+        cx + Math.cos(angle) * inner,
+        cy + Math.sin(angle) * inner,
+        cx + Math.cos(angle) * outer,
+        cy + Math.sin(angle) * outer,
+        color,
+        cell * 0.055,
+        Math.min(cell * 0.24, 11),
+      );
+    }
+    ctx.restore();
+    this.drawParticleBurst(cx, cy, cell, phase, 14, 4.2, firstColor, effect.index || 0);
+    const targets = effect.targets || [];
+    const targetStride = Math.max(1, Math.ceil(targets.length / 18));
+    let shownTargets = 0;
+    for (let targetIndex = 0; targetIndex < targets.length && shownTargets < 18; targetIndex += targetStride) {
+      const target = targets[targetIndex];
+      const local = clamp((phase - 0.12 - (targetIndex % 6) * 0.035) / 0.54, 0, 1);
+      const hit = Math.sin(local * Math.PI);
+      if (!hit) continue;
+      const tr = Math.floor(target / BOARD_WIDTH);
+      const tc = target % BOARD_WIDTH;
+      this.drawRing(bounds.x + (tc + 0.5) * cell, bounds.y + (tr + 0.5) * cell, cell * (0.12 + local * 0.25), hit * 0.82, targetIndex % 2 ? firstColor : secondColor, cell * 0.032);
+      shownTargets += 1;
     }
   }
 
@@ -611,6 +736,38 @@ export class CastleCascade2D {
     ctx.beginPath();
     ctx.arc(cx, cy, Math.max(1, radius), 0, Math.PI * 2);
     ctx.stroke();
+    ctx.restore();
+  }
+
+  drawParticleBurst(cx, cy, cell, progress, count, spread, color, seed = 0) {
+    const pulse = Math.sin(clamp(progress, 0, 1) * Math.PI);
+    if (pulse <= 0.02) return;
+    const ctx = this.context;
+    const particles = Math.min(16, Math.max(0, count));
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.globalAlpha *= pulse * 0.9;
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = Math.min(cell * 0.18, 8);
+    for (let particle = 0; particle < particles; particle += 1) {
+      const angle = (particle / particles) * Math.PI * 2 + (seed % 11) * 0.13 + progress * 0.42;
+      const distance = cell * (0.2 + progress * Math.min(6, spread)) * (0.78 + (particle % 3) * 0.11);
+      const x = cx + Math.cos(angle) * distance;
+      const y = cy + Math.sin(angle) * distance;
+      const size = cell * (0.045 + (particle % 2) * 0.018) * (1 - progress * 0.32);
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle + progress * 1.8);
+      ctx.beginPath();
+      ctx.moveTo(0, -size);
+      ctx.lineTo(size * 0.68, 0);
+      ctx.lineTo(0, size);
+      ctx.lineTo(-size * 0.68, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
     ctx.restore();
   }
 

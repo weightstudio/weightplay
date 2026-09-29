@@ -30,9 +30,12 @@
     if (selected) button.setAttribute("aria-current", "true");
     else button.removeAttribute("aria-current");
 
-    button.replaceChildren();
-    const content = document.createElement("span");
-    content.dataset.wpItemContent = "";
+    let content = button.querySelector(":scope > [data-wp-item-content]");
+    if (!content) {
+      content = document.createElement("span");
+      content.dataset.wpItemContent = "";
+      button.append(content);
+    }
     const chapter = document.createElement("span");
     const number = document.createElement("strong");
     const wave = document.createElement("b");
@@ -41,8 +44,7 @@
     number.textContent = String(stage.n);
     wave.textContent = `${stage.boss ? "◆ " : ""}${api.t("waveLabel", { wave: 0, total: stage.waves })}`;
     rating.textContent = `${"★".repeat(stars)}${"☆".repeat(3 - stars)}`;
-    content.append(chapter, number, wave, rating);
-    button.append(content);
+    content.replaceChildren(chapter, number, wave, rating);
     window.ShowGet?.(api.gameId, index);
   };
 
