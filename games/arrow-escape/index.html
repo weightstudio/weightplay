@@ -61,13 +61,13 @@
         <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-i18n="title">Arrow Escape</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start" data-runtime-localize="off">Start Game</button></div>
       </section>
     </main>
-    <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="arrowGuideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Puzzle</span><span>Strategy</span></div>
+    <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="arrowGuideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Puzzle</span><span>Strategy</span></div>
       <div class="game-info-section">
         <h2 id="arrowGuideTitle" data-i18n="howTitle">How to play</h2>
         <ol>
-          <li data-i18n="how1">Tap a block to test its complete arrow path.</li>
-          <li data-i18n="how2">A clear block slides out; a blocked block shakes and reveals the blocker.</li>
-          <li data-i18n="how3">Remove every block. A hint marks exactly one safe move.</li>
+          <li data-i18n="how1">Tap a block to trace its full arrow path, including the route after a portal.</li>
+          <li data-i18n="how2">If the whole route is clear, the block escapes. If blocked, no move is spent and the first obstacle is shown.</li>
+          <li data-i18n="how3">Clear the shown blocker first. Use Hint when the next safe arrow is unclear, then remove every block to finish the stage.</li>
         </ol>
       </div>
       
@@ -84,7 +84,7 @@
       <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-i18n="title">Arrow Escape</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" data-wp-battle-utility aria-label="How to play">?</button></header>
         <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">Clear every arrow block.</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">Hint</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
-      <section id="helpModal" class="modal" hidden><div class="dialog"><h2 id="helpTitle" data-i18n="howTitle">How to play</h2><p id="helpText" data-i18n="helpText">Only a completely clear arrow path can escape. Special tiles never choose a random outcome.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>
+      <section id="helpModal" class="modal" hidden><div class="dialog"><h2 id="helpTitle" data-i18n="howTitle">How to play</h2><p id="helpText" data-i18n="helpText">Trace the complete route before tapping, especially beyond portals and one-way gates. A blocked test costs no move, so use the shown obstacle to decide what must clear first.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>
       <section id="leaveModal" class="modal" hidden><div class="dialog"><h2 data-i18n="leaveTitle">Leave this attempt?</h2><p data-i18n="leaveText">Continue keeps the exact board. Stage Map restarts this attempt later.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-i18n="continue">Continue</button><button id="leaveStage" type="button" data-i18n="stageMap">Stage Map</button></div></div></section>
       <section id="resultModal" class="modal" hidden><div class="dialog result-layout"><img src="../../assets/interface7-redrawn/arrow-escape.webp" alt="Arrow Escape"><div><small id="resultStage">STAGE 1</small><h2 data-i18n="clear">Stage Cleared!</h2><p id="resultText"></p><p id="resultPayoff" class="result-payoff" role="status" aria-live="polite"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">Stage Map</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Play Again</button></div></div></section>
     </div><div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div>

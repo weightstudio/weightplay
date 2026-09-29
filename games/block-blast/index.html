@@ -120,14 +120,14 @@
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Puzzle</span><span>Strategy</span></div>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Puzzle</span><span>Strategy</span></div>
         <h2 data-i18n="howTitle">How to play</h2>
         <div class="game-info-section"><ol>
-          <li data-i18n="how1">Drag one of three fixed shapes onto the 8×8 board.</li>
-          <li data-i18n="how2">A lifted translucent preview shows a legal landing.</li>
-          <li data-i18n="how3">Complete a row or column to clear it immediately.</li>
+          <li data-i18n="how1">Inspect all three fixed shapes before placing one on the 8×8 board.</li>
+          <li data-i18n="how2">Use the lifted preview to confirm the landing, and preserve long lanes or broad open pockets for larger shapes.</li>
+          <li data-i18n="how3">Complete rows or columns to clear them. When all three shapes are used, a new set arrives if the run can continue.</li>
         </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">Shapes cannot move or rotate after placement. Complete lines clear immediately.</p><p data-i18n="gameOver">No remaining shape can fit.</p></div>
+        <div class="game-info-section"><p data-i18n="helpText">Plan the whole three-shape set before the first placement. Fixed shapes cannot rotate; if none of the unused shapes has a legal position, the run ends.</p><p data-i18n="gameOver">No remaining shape can fit.</p></div>
       </section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
@@ -244,10 +244,7 @@
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
               <h2 data-i18n="howTitle">How to play</h2>
-              <p data-i18n="helpText">
-                Shapes cannot move or rotate after placement. Complete lines
-                clear immediately.
-              </p>
+              <p data-i18n="helpText">Plan the whole three-shape set before the first placement. Fixed shapes cannot rotate; if none of the unused shapes has a legal position, the run ends.</p>
               <button
                 id="helpClose"
                 class="primary"
