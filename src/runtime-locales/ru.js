@@ -3850,7 +3850,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "How many boards are included?": "Сколько досок в комплекте?",
   "How many Bosses are there?": "Сколько здесь боссов?",
   "How many challenges are included?": "Сколько задач включено?",
-  "How many challenges are there?": "Сколько существует проблем?",
+  "How many challenges are there?": "Сколько испытаний в игре?",
   "How many chambers are included?": "Сколько камер в комплекте?",
   "How many columns are there?": "Сколько здесь столбцов?",
   "How many days are included?": "Сколько дней включено?",

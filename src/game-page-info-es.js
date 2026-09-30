@@ -370,7 +370,7 @@ window.WeightPlayGameInfoLocales.es = {
       "faq": [
         [
           "¿Cuántos desafíos hay?",
-          "Hay 30 desafíos guardados en seis arcos, con revisiones amigables en las etapas 5, 10, 15, 20, 25 y 30."
+          "Hay 30 desafíos guardados, organizados en seis grupos de cinco. Los desafíos 5, 10, 15, 20, 25 y 30 son revisiones amistosas del parque."
         ],
         [
           "¿Por qué debo dejar la taquilla llena?",
@@ -378,7 +378,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Cuál es la diferencia entre las acciones de cuidado?",
-          "Tidy Habitat genera felicidad. Boletos premiados de Enrichment Time. Ambos comparten un breve tiempo de reutilización."
+          "Tidy Habitat mejora el bienestar de los animales y Enrichment Time otorga boletos. Ambas acciones comparten un breve tiempo de recarga."
         ],
         [
           "¿Cómo cuenta la organización del hábitat?",
@@ -390,7 +390,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Puedo volver a jugar un desafío anterior?",
-          "Sí. Cualquier etapa desbloqueada se puede volver a jugar, aunque su bonificación de ingresos única y clara se otorga una vez."
+          "Sí. Puedes volver a jugar cualquier desafío desbloqueado, aunque la bonificación única por completarlo solo se concede una vez."
         ],
         [
           "¿El juego requiere iniciar sesión o mostrar anuncios?",
@@ -407,7 +407,7 @@ window.WeightPlayGameInfoLocales.es = {
       ]
     },
     "star-memory": {
-      "title": "Memoria de estrella animal",
+      "title": "Memoria Estelar",
       "age": "6+",
       "difficulty": "Fácil de desafiar",
       "time": "2-8 minutos por etapa",
@@ -416,40 +416,40 @@ window.WeightPlayGameInfoLocales.es = {
         "Enfoque",
         "Resolución de problemas"
       ],
-      "intro": "Animal Star Memory es un viaje de 30 etapas de parejas por el cielo nocturno. Cada carta permanece en la misma posición durante toda la etapa; las vistas previas, los tableros grandes, los límites de movimientos y el orden requerido aumentan el reto. Cada quinta etapa es una prueba del guardián y la etapa 30 combina una vista previa de doce parejas con memoria ordenada.",
+      "intro": "Memoria Estelar es un recorrido de 30 niveles de parejas por el cielo nocturno. Cada carta conserva su posición durante todo el nivel; las vistas previas, los tableros más grandes, los límites de movimientos y el orden obligatorio de los animales aumentan el reto. Cada cinco niveles hay una prueba de los guardianes, y el nivel 30 combina una vista previa de doce parejas con el recuerdo en orden.",
       "story": [
-        "El Animal Star Map alguna vez ayudó a los animales de bosques, ríos, praderas y polares a encontrar el camino a casa después del atardecer. Una suave lluvia de meteoritos no destruyó el mapa, sino que separó cada luz animal en dos cartas ocultas. El jugador se convierte en el joven lector de mapas de los Guardianes y reconecta cada par para que su constelación pueda brillar nuevamente.",
+        "El Mapa Estelar Animal ayudaba a los animales del bosque, el río, la pradera y las regiones polares a encontrar el camino a casa al anochecer. Una lluvia suave de meteoritos no destruyó el mapa, pero separó cada luz animal en dos cartas ocultas. El jugador ayuda a los guardianes a encontrar cada pareja para que las constelaciones vuelvan a brillar.",
         "El gato, el oso, el búho, el león, el pingüino y el koala imparten cada uno una lección de cinco etapas. Pasar un Keeper Check repara esa parte del cielo. Completar el último Koala Grand Star Check significa que las doce constelaciones de animales han regresado a sus rutas adecuadas."
       ],
       "how": [
-        "Elija un escenario desbloqueado del riel horizontal.",
-        "Voltee dos cartas y recuerde ambas posiciones.",
-        "Un par coincidente permanece despejado; una discrepancia se oculta nuevamente después de una breve pausa visible.",
-        "Cada carta conserva su animal y posición hasta que termina la etapa, así que cada revelación ofrece información fiable.",
-        "Lea la insignia porque algunas etapas muestran una vista previa o piden una pareja concreta.",
-        "Elimina todos los pares dentro del límite de movimientos para desbloquear la siguiente etapa."
+        "Elige un nivel desbloqueado en la fila horizontal.",
+        "Da la vuelta a dos cartas y recuerda sus posiciones.",
+        "Si forman una pareja, las cartas quedan descubiertas; si no, vuelven a ocultarse tras una breve pausa.",
+        "Cada carta conserva su animal y posición hasta que termina el nivel, así que cada revelación aporta información fiable.",
+        "Lee la indicación de reglas: algunos niveles muestran una vista previa o piden una pareja concreta.",
+        "Encuentra todas las parejas dentro del límite de movimientos para desbloquear el siguiente nivel."
       ],
       "systems": [
         "Posiciones fijas: cada animal permanece en su carta original después de una vista previa, un fallo o un acierto.",
-        "Las etapas de vista previa revelan brevemente el tablero completo y luego ocultan cada tarjeta antes de que comience la entrada.",
-        "Las etapas ordenadas nombran la pareja de animales que debe eliminarse a continuación. Un par correcto que se encuentra desordenado se muestra y luego se oculta sin avanzar.",
+        "Los niveles con vista previa muestran brevemente el tablero completo y ocultan las cartas antes de permitir las jugadas.",
+        "Los niveles con objetivos en orden indican qué pareja de animales debe encontrarse a continuación. Si encuentras otra pareja, se muestra y vuelve a ocultarse sin avanzar.",
         "Los tableros grandes y los límites de movimientos aumentan la dificultad sin borrar posiciones ya aprendidas.",
         "Movimientos, parejas, mejor racha, puntuación, estrellas, desbloqueos de etapas y mejores puntuaciones proporcionan información sobre el progreso local. No se utiliza ninguna tabla de clasificación."
       ],
       "progression": [
-        "Las etapas 1 a 5 enseñan las posiciones clásicas. Las etapas 6 a 10 acortan las vistas previas mientras crece el tablero.",
-        "Las etapas 11 a 15 refuerzan el recuerdo estable. Las etapas 16 a 20 exigen el orden de animales mostrado.",
-        "Las etapas 21 a 25 llegan a doce parejas fijas. Las etapas 26 a 30 combinan vista previa y orden en tableros grandes."
+        "Los niveles 1 a 5 enseñan las posiciones clásicas. Del 6 al 10, las vistas previas se acortan mientras crece el tablero.",
+        "Los niveles 11 a 15 refuerzan el recuerdo de posiciones fijas. Del 16 al 20, se debe seguir el orden indicado de los animales.",
+        "Los niveles 21 a 25 llegan a doce parejas fijas. Del 26 al 30, se combinan las vistas previas y el orden en tableros grandes."
       ],
       "strategyTips": [
-        "Durante una vista previa, escanee en filas o grupos pequeños en lugar de intentar nombrar todo el tablero a la vez.",
-        "Confía en las posiciones recordadas: las cartas no se mueven durante una etapa.",
-        "En etapas ordenadas, localice el animal solicitado antes de gastar movimientos en otras parejas conocidas.",
-        "Utilice la pausa de discrepancia visible para comparar ambas cartas antes de que se den la vuelta.",
-        "En tableros grandes, complete una zona pequeña antes de revisar la siguiente."
+        "Durante la vista previa, explora el tablero por filas o grupos pequeños en lugar de intentar memorizarlo todo de una vez.",
+        "Confía en las posiciones que recuerdas: las cartas no se mueven durante el nivel.",
+        "En los niveles con objetivos en orden, encuentra el animal indicado antes de gastar movimientos en otras parejas conocidas.",
+        "Aprovecha la breve pausa tras un intento fallido para comparar ambas cartas antes de que se oculten.",
+        "En los tableros grandes, completa una zona antes de pasar a la siguiente."
       ],
       "designNote": "La dificultad crece con tableros estables más grandes, vistas previas breves, límites de movimientos y objetivos ordenados. Las posiciones aprendidas siempre siguen siendo fiables, por lo que el juego recompensa la atención en lugar de obligar a adivinar.",
-      "parent": "Animal Star Memory puede apoyar el recuerdo visual, la atención y el seguimiento de una secuencia corta. Los adultos pueden preguntar qué dos posiciones forman una pareja o por qué debe encontrarse primero un animal concreto. No hay combate, cuenta, clasificación pública ni publicidad.",
+      "parent": "Memoria Estelar puede ayudar a practicar el recuerdo visual, la atención y el seguimiento de secuencias cortas. Las familias pueden preguntar qué dos posiciones forman una pareja o por qué conviene encontrar primero un animal concreto. No hay combate, cuenta, clasificación pública ni publicidad.",
       "faq": [
         [
           "¿Cuántas etapas hay?",
@@ -461,7 +461,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Por qué se escondió de nuevo una pareja coincidente?",
-          "En una etapa ordenada, la retroalimentación nombra qué pareja de animales debe eliminarse a continuación."
+          "En los niveles con objetivos en orden, la retroalimentación indica qué pareja de animales debe encontrarse a continuación."
         ],
         [
           "¿Cómo aumentan la dificultad las etapas posteriores?",
@@ -759,7 +759,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Enfoque",
         "Resolución de problemas"
       ],
-      "intro": "Restaure el catálogo de imágenes emparejadas del Pet Garden Conservatory en 30 desafíos de memoria guardados sin temporizador. Seis capítulos presentan avances de apertura, primeras selecciones de corta duración, cartas en movimiento inigualables y puntos de control de jardín combinados.",
+      "intro": "Recupera el catálogo ilustrado de Fichas del Jardín Animal con 30 desafíos de memoria guardados y sin cronómetro. Seis capítulos presentan avances de apertura, primeras selecciones de corta duración, cartas en movimiento inigualables y puntos de control de jardín combinados.",
       "story": [
         "El invernadero guarda tarjetas con imágenes de cada animal, cuidador, fruta y objeto del jardín que pasa por sus puertas. Una brisa nocturna esparció las cartas boca abajo justo antes del paseo de los faroles. Como guardián de cartas junior, reconstruirás el catálogo emparejado para que las seis salas del jardín puedan reabrirse y el desfile de animales pueda encontrar su ruta.",
         "Cada par completado devuelve una imagen al registro. Superar cinco desafíos enciende una linterna de capítulo; Las etapas 5, 10, 15, 20, 25 y 30 son puntos de control que combinan los hábitos de memoria aprendidos en esa sala."
@@ -1091,7 +1091,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Conocimiento animal",
         "Resolución de problemas"
       ],
-      "intro": "Animal Hidden Safari es una tranquila campaña de búsqueda y encuentro de 30 hábitats. Seis regiones de cinco etapas pasan de búsquedas abiertas a orden de búsqueda impreso, parejas de animales, camuflaje más profundo, visitantes de hábitat fuera de la lista y patrullas que se mueven suavemente. Cada hábitat contiene seis objetivos con imágenes reales, dos pistas limitadas, estrellas guardadas y un mejor tiempo de búsqueda local sin fallas en la cuenta regresiva.",
+      "intro": "Safari Oculto es una tranquila campaña para buscar animales en 30 hábitats. Seis regiones de cinco etapas pasan de búsquedas abiertas a orden de búsqueda impreso, parejas de animales, camuflaje más profundo, visitantes de hábitat fuera de la lista y patrullas que se mueven suavemente. Cada hábitat contiene seis objetivos con imágenes reales, dos pistas limitadas, estrellas guardadas y un mejor tiempo de búsqueda local sin fallas en la cuenta regresiva.",
       "story": [
         "El Junior Ranger Lodge mantiene un censo fotográfico de animales que utilizan Sunny Grassland, River Crossing, Sunset Trees, Pond Watch, Jungle Edge y Lookout Hill. Los caminos estacionales se han abierto de inmediato, por lo que leones, elefantes, jirafas, pandas, pingüinos, koalas, conejos, zorros, ranas y búhos familiares comparten lugares donde normalmente no se los cuenta. El jugador se convierte en el observador junior del albergue y compara cada lista impresa con el hábitat visible.",
         "Terminar un hábitat confirma los seis avistamientos solicitados. Cada quinto desafío es un Punto de Control de Hábitat que revisa el hábito de búsqueda aprendido en esa región. Al completar el punto de control 30, se devuelve al albergue un censo de imágenes verificadas: los animales emparejados se han contado por separado, los visitantes inofensivos no se han confundido con la lista y la patrulla de vigilancia en movimiento se ha observado en el orden requerido."
@@ -1346,7 +1346,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Memoria",
         "leyendo"
       ],
-      "intro": "Animal Quiz es un juego gratuito de conocimiento para niños bilingüe con 30 etapas guardadas y diez animales diferentes en cada etapa. Su biblioteca de 20 animales abarca desde leones, elefantes, jirafas y cebras hasta pingüinos, ballenas, pandas, koalas, búhos, ranas, mascotas y animales de granja. Las primeras preguntas combinan un retrato claro con una pista sobre una característica corporal. Investigaciones posteriores desdibujan el retrato, lo convierten en una silueta, añaden una cuarta opción o combinan datos sobre el hábitat, el comportamiento, la dieta y la apariencia. Cada quinta etapa es una Prueba de Experto Junior que recombina ideas ya introducidas. No hay cuenta atrás y una elección equivocada nunca pone fin a la etapa.",
+      "intro": "Cuestionario es un juego bilingüe gratuito de conocimientos sobre animales para niños, con 30 niveles guardados y diez animales distintos en cada uno. Su biblioteca de 20 animales abarca desde leones, elefantes, jirafas y cebras hasta pingüinos, ballenas, pandas, koalas, búhos, ranas, mascotas y animales de granja. Las primeras preguntas combinan un retrato claro con una pista sobre una característica corporal. Investigaciones posteriores desdibujan el retrato, lo convierten en una silueta, añaden una cuarta opción o combinan datos sobre el hábitat, el comportamiento, la dieta y la apariencia. Cada quinta etapa es una Prueba de Experto Junior que recombina ideas ya introducidas. No hay cuenta atrás y una elección equivocada nunca pone fin a la etapa.",
       "story": [
         "La campaña es una investigación sobre animales más que un rescate o una batalla. El jugador es un observador que construye un cuaderno de campo, una identificación correcta a la vez. Cada retrato, nombre y pista escrita describe el mismo animal objetivo. Completar diez identificaciones cierra el capítulo actual del cuaderno, guarda el claro y desbloquea la siguiente investigación.",
         "Los hechos proporcionan la razón de cada elección. Un león puede estar conectado a través de su melena, su hogar en los pastizales africanos y su comportamiento de orgullo; un pingüino por costas frías, pescando y acurrucándose; un elefante a través de su trompa, su dieta vegetal y su comportamiento de rociado de agua. Superar la etapa 30 significa que el jugador ha completado seis grupos de lecciones y la verificación final de evidencia mixta."
@@ -3199,7 +3199,32 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     return value;
   };
   resource.games["animal-crystal-survivor"] = repairCrystalSpanish(resource.games["animal-crystal-survivor"]);
-  const titles = {"wonder-crash":"Fantasía: Defensa del León","color-lunchbox":"Lonchera de Colores Animales","bubble-bakery":"Panadería de Burbujas Animales","animal-rope-rescue":"Rescate Animal con Lianas","animal-zoo-idle":"Zoológico Animal Idle","star-memory":"Memoria Estelar Animal","campus-dash":"Safari a Toda Velocidad","snack-blocks":"Bloques de Aperitivos","fruit-merge":"Torre de Fusión Animal","garden-tiles":"Fichas del Jardín Animal","animal-rescue":"Sendero de Rescate Animal","animal-bubble-safari":"Safari de Burbujas Animales","animal-habitat-mahjong":"Mahjong de Hábitats Animales","animal-hidden-safari":"Safari Oculto de Animales","animal-guard-yard":"Guardianes del Jardín Animal","animal-crystal-survivor":"Superviviente del Cristal Animal","animal-quiz":"Cuestionario de Animales","zoo-helper-day":"Día del Ayudante del Zoológico","shape-train":"Tren de Formas Animales","tiny-weather-rescue":"Misión de Ayuda Animal","beast-deck":"Mazo de Bestias: Bosque de Niebla","animal-relic-hunters":"Cazadores de Reliquias Animales","animal-rune-tactics":"Tácticas de Runas Animales","animal-orb-fortress":"Fortaleza del Orbe Animal","animal-auto-squad":"Escuadrón Animal Automático","beast-tactician":"Guardián de Bestias","animal-reef-fisher":"Pescador del Arrecife Animal","animal-cafe-rush":"Fiebre del Café Animal","animal-hero-trials":"Pruebas de Héroes Animales","animal-gearpack-expedition":"Expedición de la Mochila Animal","shadow-wolf":"Lobo Sombrío","animal-moonlight-heist":"Golpe Animal a la Luz de la Luna","animal-color-springs":"Resortes de Colores Animales","animal-coloring-studio":"Estudio para colorear animales","animal-word-trails":"Senderos de palabras de animales"};
+  const repairStarMemorySpanish = (value) => {
+    if (typeof value === "string") return value
+      .replace(/¿Cuántas niveles/g, "¿Cuántos niveles")
+      .replace(/\bLas niveles\b/g, "Los niveles")
+      .replace(/\blas niveles\b/g, "los niveles")
+      .replace(/\bLos niveles ordenadas\b/g, "Los niveles ordenados")
+      .replace(/\blos niveles ordenadas\b/g, "los niveles ordenados")
+      .replace(/\bEn niveles ordenadas\b/g, "En niveles ordenados")
+      .replace(/\bnivel ordenada\b/g, "nivel ordenado")
+      .replace(/\bLa nivel\b/g, "El nivel")
+      .replace(/\bla nivel\b/g, "el nivel")
+      .replace(/\bUna nivel\b/g, "Un nivel")
+      .replace(/\buna nivel\b/g, "un nivel")
+      .replace(/\bla siguiente nivel\b/g, "el siguiente nivel")
+      .replace(/\bLa siguiente nivel\b/g, "El siguiente nivel")
+      .replace(/\btoda el nivel\b/g, "todo el nivel")
+      .replace(/\bCada quinta nivel\b/g, "Cada quinto nivel")
+      .replace(/\bcada quinta nivel\b/g, "cada quinto nivel")
+      .replace(/\bnivel desbloqueada\b/g, "nivel desbloqueado")
+      .replace(/\bniveles desbloqueadas\b/g, "niveles desbloqueados");
+    if (Array.isArray(value)) return value.map(repairStarMemorySpanish);
+    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, repairStarMemorySpanish(item)]));
+    return value;
+  };
+  resource.games["star-memory"] = repairStarMemorySpanish(resource.games["star-memory"]);
+  const titles = {"wonder-crash":"Fantasía: Defensa del León","color-lunchbox":"Lonchera de Colores Animales","bubble-bakery":"Panadería de Burbujas Animales","animal-rope-rescue":"Rescate Animal con Lianas","animal-zoo-idle":"Zoológico Idle","star-memory":"Memoria Estelar","campus-dash":"Safari a Toda Velocidad","snack-blocks":"Bloques de Aperitivos","fruit-merge":"Torre de Fusión Animal","garden-tiles":"Fichas del Jardín Animal","animal-rescue":"Sendero de Rescate Animal","animal-bubble-safari":"Safari de Burbujas Animales","animal-habitat-mahjong":"Mahjong de Hábitats Animales","animal-hidden-safari":"Safari Oculto","animal-guard-yard":"Guardianes del Jardín Animal","animal-crystal-survivor":"Superviviente del Cristal Animal","animal-quiz":"Cuestionario","zoo-helper-day":"Día del Ayudante del Zoológico","shape-train":"Tren de Formas Animales","tiny-weather-rescue":"Misión de Ayuda Animal","beast-deck":"Mazo de Bestias: Bosque de Niebla","animal-relic-hunters":"Cazadores de Reliquias Animales","animal-rune-tactics":"Tácticas de Runas Animales","animal-orb-fortress":"Fortaleza del Orbe Animal","animal-auto-squad":"Escuadrón Animal Automático","beast-tactician":"Guardián de Bestias","animal-reef-fisher":"Pescador del Arrecife Animal","animal-cafe-rush":"Fiebre del Café Animal","animal-hero-trials":"Pruebas de Héroes Animales","animal-gearpack-expedition":"Expedición de la Mochila Animal","shadow-wolf":"Lobo Sombrío","animal-moonlight-heist":"Golpe Animal a la Luz de la Luna","animal-color-springs":"Resortes de Colores Animales","animal-coloring-studio":"Estudio para colorear animales","animal-word-trails":"Senderos de palabras de animales"};
   const difficulties = { "Medio": "Media", "fácil": "Fácil", "Fácil a medio": "Fácil a media", "Fácil de desafiar": "Fácil a desafiante", "De gentil a experto": "De suave a experta", "duro": "Difícil", "Medio a duro": "Media a difícil" };
   resource.games["animal-color-springs"] = {
     title: titles["animal-color-springs"], difficulty: "Fácil a desafiante", time: "2-6 minutos por nivel",
