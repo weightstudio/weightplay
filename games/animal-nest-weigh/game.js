@@ -1,15 +1,623 @@
 (() => {
   "use strict";
 
-  const current = document.currentScript?.src || new URL("game.js", location.href).href;
-  const base = new URL("game-v4-base.js?v=20260922-interface7-compat", current).href;
-  const compat = new URL("interface-7-compat.js?v=20260922-interface7-compat", current).href;
-  const reviewFix = new URL("interface-7-review-fix.js?v=20260923-interface7-recheck", current).href;
+  const rounds = window.ANIMAL_NEST_WEIGH_ROUNDS || [];
+  const localeMap = window.ANIMAL_NEST_WEIGH_LOCALES || {};
+  const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const progressKey = "weightplay-animal-nest-weigh-progress";
+  const masteryKey = "weightplay-animal-nest-weigh-mastery-v6";
+  const $ = (id) => document.getElementById(id);
+  const state = {
+    locale: "en", screen: "main", round: 0, selectedPair: [], selectedTarget: null,
+    clues: [], knownPairs: new Set(), comparisons: 0, mistakes: 0, completed: [],
+    mastery: {}, phase: "compare", wrong: false, resultVisible: false, lastFeedback: "ready",
+  };
 
-  // Preserve the authored v4 gameplay source's parser-blocking order, then
-  // apply the v5 WeightPlayAudio integration, Interface 7 compatibility layer,
-  // and review correction before DOMContentLoaded.
-  document.write('<script src="' + base + '"></scr' + 'ipt>');
-  document.write('<script src="' + compat + '"></scr' + 'ipt>');
-  document.write('<script src="' + reviewFix + '"></scr' + 'ipt>');
+  const measurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const readMeasurement = () => ({
+    screen: state?.resultVisible ? null : state?.screen || null,
+    ended: Boolean(measurement.ended), outcome: measurement.outcome,
+    paused: Boolean(state?.suspended), node: document.body, activityMode: "input", idleSeconds: 300,
+  });
+  const notifyMeasurement = () => { try { window.WonderAnalytics?.game?.observeState(readMeasurement); } catch { /* Optional telemetry. */ } };
+  window.addEventListener("weightplay:analytics-ready", notifyMeasurement);
+  notifyMeasurement();
+
+  const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } };
+  const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Private browsing may deny storage. */ } };
+  const copy = (key, values = {}) => {
+    const text = (localeMap[state.locale] || localeMap.en || {})[key] || key;
+    return text.replace(/\{([^}]+)\}/g, (_match, name) => String(values[name] ?? ""));
+  };
+  const materialName = (key) => copy("material_" + key);
+  const stageName = (round, index) => {
+    if (state.locale === "zh-Hant" || state.locale === "zh-Hans") return round.nameZh;
+    if (state.locale === "ar") return round.nameAr;
+    if (state.locale === "en") return round.name;
+    return copy("round", { number: index + 1, total: rounds.length });
+  };
+  const playSound = (id) => { try { window.WeightPlayAudio?.play(id); } catch { /* Sound never controls game state. */ } };
+  const uniqueSorted = (values) => [...new Set(values)].sort((a, b) => a - b);
+
+  const loadCompleted = () => {
+    try {
+      const parsed = JSON.parse(safeGet(progressKey, "[]"));
+      return Array.isArray(parsed) ? uniqueSorted(parsed.filter((index) => Number.isInteger(index) && index >= 0 && index < rounds.length)) : [];
+    } catch { return []; }
+  };
+  const saveCompleted = () => safeSet(progressKey, JSON.stringify(uniqueSorted(state.completed)));
+  const loadMastery = () => {
+    try {
+      const value = JSON.parse(safeGet(masteryKey, "{}"));
+      return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+    } catch { return {}; }
+  };
+  const saveMastery = () => safeSet(masteryKey, JSON.stringify(state.mastery));
+  const stageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
+  const highestUnlocked = () => {
+    let index = 0;
+    while (index < rounds.length - 1 && state.completed.includes(index)) index += 1;
+    return index;
+  };
+  const bestForStage = (index) => state.mastery[String(index)] || null;
+  const targetIndex = (round) => {
+    const sorted = round.weights.map((weight, index) => ({ weight, index })).sort((a, b) => a.weight - b.weight);
+    const rank = round.targetType === "heaviest" ? sorted.length - 1
+      : round.targetType === "secondHeaviest" ? sorted.length - 2
+      : round.targetType === "secondLightest" ? 1
+      : round.targetType === "middle" ? Math.floor(sorted.length / 2)
+      : 0;
+    return sorted[Math.max(0, Math.min(sorted.length - 1, rank))].index;
+  };
+
+  let frame = null;
+  let stageController = null;
+  let renderedClueCount = -1;
+  let returnFocus = null;
+
+  function renderMain() {
+    $("mainProgress").textContent = copy("progress", { count: state.completed.length });
+  }
+
+  function ensureStageNode(card) {
+    if (card.querySelector("[data-wp-item-content]")) return;
+    const group = document.createElement("span");
+    group.className = "nest-stage-card-content";
+    group.setAttribute("data-wp-item-content", "");
+    const number = document.createElement("span");
+    number.className = "stage-number";
+    const name = document.createElement("strong");
+    name.className = "stage-name";
+    const detail = document.createElement("span");
+    detail.className = "stage-detail";
+    const status = document.createElement("b");
+    status.className = "stage-status";
+    const feathers = document.createElement("span");
+    feathers.className = "stage-feathers";
+    feathers.setAttribute("aria-hidden", "true");
+    group.append(number, name, detail, status, feathers);
+    card.replaceChildren(group);
+  }
+
+  function bindStageCard(card, index) {
+    ensureStageNode(card);
+    const round = rounds[index];
+    const unlocked = stageUnlocked(index);
+    const complete = state.completed.includes(index);
+    const record = bestForStage(index);
+    const group = card.querySelector("[data-wp-item-content]");
+    card.type = "button";
+    card.className = "stage-card nest-stage-card" + (complete ? " is-complete" : "") + (!unlocked ? " is-locked" : "");
+    card.dataset.stage = String(index);
+    card.dataset.wpStageCard = "";
+    card.setAttribute("aria-disabled", String(!unlocked));
+    card.setAttribute("aria-label", [copy("round", { number: index + 1, total: rounds.length }), stageName(round, index), complete ? copy("completed") : unlocked ? copy("readyStage") : copy("lockedStage"), record ? copy("feathers", { count: record.feathers }) : ""].filter(Boolean).join(" · "));
+    group.querySelector(".stage-number").textContent = copy("round", { number: index + 1, total: rounds.length });
+    group.querySelector(".stage-name").textContent = stageName(round, index);
+    const checkpoint = round.checkpoint ? " · " + copy("checkpoint") : "";
+    group.querySelector(".stage-detail").textContent = copy(round.request) + " · " + copy(round.mechanicKey) + checkpoint;
+    group.querySelector(".stage-status").textContent = complete ? copy("completed") : unlocked ? copy("readyStage") : copy("lockedStage");
+    group.querySelector(".stage-feathers").textContent = record ? "★".repeat(Math.max(0, Math.min(3, record.feathers))) : "";
+  }
+
+  function renderStages() {
+    if (!stageController) return;
+    stageController.refresh();
+    stageController.center(highestUnlocked());
+    $("stageProgress").textContent = copy("progress", { count: state.completed.length });
+    $("stageIntro").textContent = copy("mapIntro");
+  }
+
+  function trayMarkup(round, index) {
+    const material = round.materials[index];
+    const name = materialName(material);
+    const comparing = state.phase === "compare";
+    const selected = comparing ? state.selectedPair.includes(index) : state.selectedTarget === index;
+    const label = comparing ? copy("compareTray", { name }) : copy("answerTray", { name });
+    return '<button type="button" class="tray-card' + (selected ? " is-selected" : "") + '" data-material-tray="' + index + '" aria-label="' + label.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '" aria-pressed="' + String(selected) + '"><span class="tray-icon material-' + material + '" aria-hidden="true"></span><strong>' + name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</strong></button>';
+  }
+
+  function relationFor(round, first, second) {
+    if (round.weights[first] === round.weights[second]) return copy("equal");
+    return round.weights[first] > round.weights[second] ? copy("heavier") : copy("lighter");
+  }
+
+  function comparisonMessage() {
+    if (state.lastFeedback === "pairAlreadyKnown") return copy("pairAlreadyKnown");
+    const clue = state.clues.at(-1);
+    if (!clue) return copy("comparisonEmpty");
+    const round = rounds[state.round];
+    const first = materialName(round.materials[clue.pair[0]]);
+    const second = materialName(round.materials[clue.pair[1]]);
+    return copy("comparisonResult", { first, second, relation: relationFor(round, clue.pair[0], clue.pair[1]) });
+  }
+
+  function renderClues() {
+    const list = $("clueLog");
+    list.replaceChildren();
+    state.clues.slice(-6).forEach((clue) => {
+      const item = document.createElement("li");
+      const round = rounds[state.round];
+      const first = materialName(round.materials[clue.pair[0]]);
+      const second = materialName(round.materials[clue.pair[1]]);
+      item.textContent = copy("comparisonResult", { first, second, relation: relationFor(round, clue.pair[0], clue.pair[1]) });
+      list.append(item);
+    });
+  }
+
+  function updateBalance() {
+    const clue = state.clues.at(-1);
+    const beam = $("balanceBeam");
+    const left = $("balanceLeft");
+    const right = $("balanceRight");
+    if (!clue) {
+      left.className = "balance-pan";
+      right.className = "balance-pan";
+      left.querySelector(".balance-icon").className = "balance-icon";
+      right.querySelector(".balance-icon").className = "balance-icon";
+      left.querySelector(".balance-label").textContent = "?";
+      right.querySelector(".balance-label").textContent = "?";
+      beam.style.setProperty("--beam-tilt", "0deg");
+      $("balanceVisual").dataset.result = "unknown";
+      return;
+    }
+    const round = rounds[state.round];
+    const first = clue.pair[0];
+    const second = clue.pair[1];
+    const difference = round.weights[first] - round.weights[second];
+    const angle = Math.max(-7, Math.min(7, difference * -1.25));
+    beam.style.setProperty("--beam-tilt", angle + "deg");
+    left.querySelector(".balance-icon").className = "balance-icon tray-icon material-" + round.materials[first];
+    right.querySelector(".balance-icon").className = "balance-icon tray-icon material-" + round.materials[second];
+    left.querySelector(".balance-label").textContent = materialName(round.materials[first]);
+    right.querySelector(".balance-label").textContent = materialName(round.materials[second]);
+    const outcome = difference === 0 ? "equal" : difference > 0 ? "left" : "right";
+    $("balanceVisual").dataset.result = outcome;
+    if (renderedClueCount !== state.clues.length) {
+      renderedClueCount = state.clues.length;
+      beam.classList.remove("is-weighing");
+      void beam.offsetWidth;
+      beam.classList.add("is-weighing");
+      beam.addEventListener("animationend", () => beam.classList.remove("is-weighing"), { once: true });
+    }
+  }
+
+  function renderBattle() {
+    const round = rounds[state.round];
+    $("roundHint").textContent = copy(round.hint);
+    $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length });
+    $("requestText").textContent = copy(round.request);
+    $("comparisonCount").textContent = copy("evidenceCount", { count: state.comparisons, total: round.minimumComparisons });
+    $("materialBoard").style.setProperty("--material-count", round.materials.length);
+    $("materialBoard").setAttribute("aria-label", copy(state.phase === "compare" ? "compareTitle" : "answerTitle"));
+    $("materialBoard").innerHTML = round.materials.map((_material, index) => trayMarkup(round, index)).join("");
+    $("phaseLabel").textContent = copy(state.phase === "compare" ? "weighStep" : "chooseStep");
+    $("phaseActionBtn").textContent = copy(state.phase === "compare" ? "compare" : "check");
+    $("phaseActionBtn").disabled = state.phase === "compare" ? state.selectedPair.length !== 2 : state.selectedTarget === null;
+    $("phaseToggleBtn").hidden = state.phase === "compare" && state.comparisons < round.minimumComparisons;
+    $("phaseToggleBtn").textContent = copy(state.phase === "compare" ? "chooseAction" : "compareMore");
+    $("comparisonText").textContent = comparisonMessage();
+    $("comparisonText").classList.toggle("has-comparison", state.clues.length > 0);
+    $("comparisonText").classList.toggle("is-repeat", state.lastFeedback === "pairAlreadyKnown");
+    $("compareBtn").disabled = state.selectedPair.length !== 2;
+    $("checkBtn").disabled = state.selectedTarget === null;
+    const status = state.wrong ? copy("wrong")
+      : state.lastFeedback === "pairAlreadyKnown" ? copy("pairAlreadyKnown")
+      : state.lastFeedback === "needPair" ? copy("needPair")
+      : state.lastFeedback === "needAnswer" ? copy("needAnswer")
+      : state.comparisons < round.minimumComparisons ? (state.comparisons ? copy("needMoreComparisons", { count: round.minimumComparisons }) : copy("ready"))
+      : state.phase === "answer" ? copy("chooseAfterCompare") : copy("ready");
+    $("battleStatus").textContent = status;
+    $("battleStatus").classList.toggle("is-wrong", state.wrong);
+    $("mistakeCount").textContent = copy("mistakesCount", { count: state.mistakes });
+    renderClues();
+    updateBalance();
+    $("resultPanel").hidden = !state.resultVisible;
+    $("battlePanel").hidden = state.resultVisible;
+    if (state.resultVisible) renderResult();
+  }
+
+  function compareSelected() {
+    if (state.selectedPair.length !== 2) {
+      state.lastFeedback = "needPair";
+      $("battleStatus").textContent = copy("needPair");
+      playSound("feedback.error");
+      return;
+    }
+    const pair = uniqueSorted(state.selectedPair);
+    const key = pair.join(":");
+    state.selectedPair = [];
+    if (state.knownPairs.has(key)) {
+      state.lastFeedback = "pairAlreadyKnown";
+      state.wrong = false;
+      renderBattle();
+      return;
+    }
+    state.knownPairs.add(key);
+    state.clues.push({ pair });
+    state.comparisons = state.clues.length;
+    state.selectedTarget = null;
+    if (state.comparisons >= rounds[state.round].minimumComparisons) state.phase = "answer";
+    state.lastFeedback = "";
+    state.wrong = false;
+    playSound("feedback.hint");
+    renderBattle();
+  }
+
+  function togglePhase() {
+    if (state.phase === "compare") {
+      if (state.comparisons < rounds[state.round].minimumComparisons) return;
+      state.phase = "answer";
+      state.selectedTarget = null;
+    } else {
+      state.phase = "compare";
+      state.selectedPair = [];
+      state.selectedTarget = null;
+    }
+    state.wrong = false;
+    state.lastFeedback = "";
+    renderBattle();
+  }
+
+  function clearPair() {
+    state.selectedPair = [];
+    state.selectedTarget = null;
+    state.wrong = false;
+    if (state.lastFeedback === "pairAlreadyKnown") state.lastFeedback = "";
+    renderBattle();
+  }
+
+  function chooseRank() {
+    const extraComparisons = Math.max(0, state.comparisons - rounds[state.round].minimumComparisons);
+    if (state.mistakes === 0 && extraComparisons === 0) return 3;
+    if (state.mistakes <= 1 && extraComparisons <= 1) return 2;
+    return 1;
+  }
+
+  function recordMastery() {
+    const index = state.round;
+    const record = { feathers: chooseRank(), comparisons: state.comparisons, mistakes: state.mistakes };
+    const previous = bestForStage(index);
+    const isNewBest = !previous || record.feathers > previous.feathers
+      || (record.feathers === previous.feathers && (record.comparisons < previous.comparisons
+        || (record.comparisons === previous.comparisons && record.mistakes < previous.mistakes)));
+    if (isNewBest) {
+      state.mastery[String(index)] = record;
+      saveMastery();
+    }
+    return { record: isNewBest ? record : previous, isNewBest };
+  }
+
+  function renderResult() {
+    const round = rounds[state.round];
+    const saved = bestForStage(state.round);
+    const earned = chooseRank();
+    const final = state.round === rounds.length - 1;
+    $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle");
+    $("resultText").textContent = copy(final ? "finishText" : "resultText");
+    $("resultRank").textContent = earned === 3 ? copy("rankPerfect") : earned === 2 ? copy("rankStrong") : copy("rankGrowing");
+    $("featherStars").textContent = "★".repeat(earned) + "☆".repeat(3 - earned);
+    $("featherStars").setAttribute("aria-label", copy("feathers", { count: earned }));
+    $("resultStats").textContent = copy("stats", { comparisons: state.comparisons, best: saved ? copy("best", { count: saved.comparisons }) : copy("noBest") })
+      + " · " + copy("mistakesCount", { count: state.mistakes });
+    $("newBestBadge").hidden = !state.lastRecordIsNewBest;
+    $("resultNextBtn").disabled = final;
+    $("resultNextBtn").setAttribute("aria-disabled", String(final));
+    $("resultStageBtn").textContent = copy("stages");
+    $("resultNextBtn").textContent = copy("next");
+    $("resultReplayBtn").textContent = copy("replay");
+    $("resultPanel").dataset.checkpoint = String(Boolean(round.checkpoint));
+    $("resultPanel").classList.add("is-entering");
+    $("resultPanel").addEventListener("animationend", () => $("resultPanel").classList.remove("is-entering"), { once: true });
+  }
+
+  function showResult() {
+    const round = rounds[state.round];
+    const result = recordMastery();
+    state.lastRecordIsNewBest = result.isNewBest;
+    if (!state.completed.includes(state.round)) state.completed.push(state.round);
+    state.completed = uniqueSorted(state.completed);
+    saveCompleted();
+    state.resultVisible = true;
+    state.wrong = false;
+    state.lastFeedback = "";
+    renderBattle();
+    if (state.round === rounds.length - 1) playSound("result.win");
+    else if (round.checkpoint) playSound("game.checkpoint");
+    else playSound("feedback.success");
+    renderMain();
+    stageController?.refresh();
+    measurement.ended = true;
+    measurement.outcome = "complete";
+    measurement.screen = null;
+    notifyMeasurement();
+    frame?.activate("battle", { covered: true });
+  }
+
+  function resetRound({ replay = false } = {}) {
+    state.selectedPair = [];
+    state.selectedTarget = null;
+    state.clues = [];
+    state.knownPairs = new Set();
+    state.comparisons = 0;
+    state.mistakes = 0;
+    state.wrong = false;
+    state.resultVisible = false;
+    state.phase = "compare";
+    state.lastFeedback = "ready";
+    state.lastRecordIsNewBest = false;
+    renderedClueCount = -1;
+    if (state.screen === "battle") {
+      measurement.roundKey = {};
+      measurement.restart = Boolean(replay);
+      measurement.started = true;
+      measurement.ended = false;
+      measurement.outcome = "complete";
+      measurement.screen = "battle";
+      notifyMeasurement();
+    }
+    renderBattle();
+  }
+
+  function closeLeaveDialog({ restoreFocus = true } = {}) {
+    const dialog = $("leaveDialog");
+    if (dialog.hidden) return;
+    dialog.hidden = true;
+    $("battleContent").inert = false;
+    $("battleHeader").inert = false;
+    if (restoreFocus) returnFocus?.focus({ preventScroll: true });
+  }
+
+  function openLeaveDialog() {
+    returnFocus = document.activeElement;
+    $("leaveTitle").textContent = copy("leaveTitle");
+    $("leaveCopy").textContent = copy("leaveCopy");
+    $("leaveContinueBtn").textContent = copy("continue");
+    $("leaveStagesBtn").textContent = copy("returnStages");
+    $("battleContent").inert = true;
+    $("battleHeader").inert = true;
+    $("leaveDialog").hidden = false;
+    $("leaveContinueBtn").focus({ preventScroll: true });
+  }
+
+  function setScreen(screen) {
+    state.screen = screen;
+    document.body.dataset.screen = screen;
+    $("mainGroup").hidden = screen !== "main";
+    $("guideSection").hidden = screen !== "main";
+    $("stageScreen").hidden = screen !== "stage";
+    $("battleScreen").hidden = screen !== "battle";
+    if (screen === "battle") renderBattle();
+    if (screen === "main") renderMain();
+    frame?.activate(screen, { covered: screen === "battle" && state.resultVisible });
+    if (screen === "stage") {
+      requestAnimationFrame(() => {
+        stageController?.refresh();
+        stageController?.center(highestUnlocked());
+      });
+    }
+    if (screen === "stage" || screen === "main") {
+      if (measurement.started && !measurement.ended && measurement.screen === "battle") {
+        measurement.ended = true;
+        measurement.outcome = "abandon";
+        notifyMeasurement();
+      }
+      measurement.screen = screen;
+    }
+    if (screen === "battle") {
+      measurement.screen = state.resultVisible ? null : "battle";
+      notifyMeasurement();
+    }
+  }
+
+  function startRound(index, { replay = false } = {}) {
+    const safeIndex = Math.max(0, Math.min(rounds.length - 1, Math.trunc(index)));
+    if (!stageUnlocked(safeIndex) && safeIndex !== state.round) return false;
+    state.round = safeIndex;
+    closeLeaveDialog({ restoreFocus: false });
+    resetRound({ replay });
+    playSound("game.start");
+    setScreen("battle");
+    measurement.roundKey = {};
+    measurement.restart = Boolean(replay);
+    measurement.started = true;
+    measurement.ended = false;
+    measurement.outcome = "complete";
+    measurement.screen = "battle";
+    notifyMeasurement();
+    return true;
+  }
+
+  function checkRound() {
+    if (state.comparisons < rounds[state.round].minimumComparisons) {
+      state.lastFeedback = "needMoreComparisons";
+      $("battleStatus").textContent = copy("needMoreComparisons", { count: rounds[state.round].minimumComparisons });
+      return;
+    }
+    if (state.phase !== "answer" || state.selectedTarget === null) {
+      state.lastFeedback = "needAnswer";
+      $("battleStatus").textContent = copy("needAnswer");
+      playSound("feedback.error");
+      return;
+    }
+    if (state.selectedTarget === targetIndex(rounds[state.round])) {
+      state.wrong = false;
+      state.lastRecordIsNewBest = false;
+      state.lastFeedback = "";
+      showResult();
+      return;
+    }
+    state.wrong = true;
+    state.mistakes += 1;
+    state.lastFeedback = "";
+    playSound("feedback.error");
+    renderBattle();
+    $("materialBoard").classList.remove("is-rejected");
+    void $("materialBoard").offsetWidth;
+    $("materialBoard").classList.add("is-rejected");
+    $("materialBoard").addEventListener("animationend", () => $("materialBoard").classList.remove("is-rejected"), { once: true });
+  }
+
+  function applyText() {
+    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
+    document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
+    renderMain();
+    if (state.screen === "stage") renderStages();
+    if (state.screen === "battle") renderBattle();
+    frame?.refresh();
+  }
+
+  function applyLocale(locale, navigate = false) {
+    const selected = localeList.includes(locale) && localeMap[locale] ? locale : "en";
+    const pathLocale = location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\//)?.[1] || "";
+    const pathMap = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
+    const current = pathMap[pathLocale] || pathLocale;
+    if (navigate && current && current !== selected) {
+      location.assign("/" + localeSegments[selected] + "/games/animal-nest-weigh/" + location.search + location.hash);
+      return;
+    }
+    state.locale = selected;
+    safeSet("weightplay-locale", selected);
+    document.documentElement.lang = selected;
+    document.documentElement.dir = selected === "ar" ? "rtl" : "ltr";
+    $("localeSelect").value = selected;
+    applyText();
+    window.dispatchEvent(new Event("wonder:locale-change"));
+  }
+
+  function initialLocale() {
+    const query = new URLSearchParams(location.search).get("lang");
+    const segment = location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\//)?.[1];
+    const pathMap = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
+    return query || pathMap[segment] || segment || safeGet("weightplay-locale", "en");
+  }
+
+  function bind() {
+    $("startBtn").addEventListener("click", () => setScreen("stage"));
+    $("mainReturn").addEventListener("click", () => { setScreen("main"); });
+    $("stageBackBtn").addEventListener("click", () => setScreen("main"));
+    $("battleBackBtn").addEventListener("click", (event) => {
+      event.preventDefault();
+      if (state.resultVisible || (!state.comparisons && !state.selectedPair.length && state.selectedTarget === null && !state.mistakes)) {
+        setScreen("stage");
+      } else {
+        openLeaveDialog();
+      }
+    });
+    $("phaseActionBtn").addEventListener("click", () => state.phase === "compare" ? compareSelected() : checkRound());
+    $("phaseToggleBtn").addEventListener("click", togglePhase);
+    $("clearSelectionBtn").addEventListener("click", clearPair);
+    $("resetBtn").addEventListener("click", () => {
+      resetRound({ replay: true });
+      playSound("game.start");
+    });
+    $("materialBoard").addEventListener("click", (event) => {
+      const card = event.target.closest("[data-material-tray]");
+      if (!card) return;
+      const index = Number(card.dataset.materialTray);
+      if (state.phase === "compare") {
+        state.selectedPair = state.selectedPair.includes(index)
+          ? state.selectedPair.filter((item) => item !== index)
+          : state.selectedPair.length < 2 ? [...state.selectedPair, index] : [state.selectedPair[1], index];
+      } else {
+        state.selectedTarget = index;
+      }
+      state.lastFeedback = "";
+      state.wrong = false;
+      renderBattle();
+    });
+    $("resultStageBtn").addEventListener("click", () => {
+      state.resultVisible = false;
+      renderBattle();
+      setScreen("stage");
+    });
+    $("resultNextBtn").addEventListener("click", () => {
+      if (state.round < rounds.length - 1) startRound(state.round + 1);
+    });
+    $("resultReplayBtn").addEventListener("click", () => startRound(state.round, { replay: true }));
+    $("leaveContinueBtn").addEventListener("click", () => closeLeaveDialog());
+    $("leaveStagesBtn").addEventListener("click", () => {
+      closeLeaveDialog({ restoreFocus: false });
+      setScreen("stage");
+    });
+    $("leaveDialog").addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeLeaveDialog();
+      } else if (event.key === "Tab") {
+        const buttons = [$("leaveContinueBtn"), $("leaveStagesBtn")];
+        if (event.shiftKey && document.activeElement === buttons[0]) {
+          event.preventDefault();
+          buttons[1].focus();
+        } else if (!event.shiftKey && document.activeElement === buttons[1]) {
+          event.preventDefault();
+          buttons[0].focus();
+        }
+      }
+    });
+    $("localeSelect").addEventListener("change", (event) => applyLocale(event.target.value, true));
+    window.addEventListener("pagehide", () => stageController?.destroy(), { once: true });
+  }
+
+  function mountFrame() {
+    const root = $("gameFrame");
+    frame = window.WeightPlayScreenFrame.mount({
+      root,
+      localeSelect: $("localeSelect"),
+      scenes: {
+        main: { root: $("mainScreen"), header: $("mainHeader"), content: $("mainContent") },
+        stage: { root: $("stageCanvas"), header: $("stageHeader"), content: $("stageWorkspace") },
+        battle: { root: $("battleCanvas"), header: $("battleHeader"), content: $("battleContent") },
+      },
+    });
+  }
+
+  function mountStageController() {
+    const rail = $("stageList");
+    stageController = window.WeightPlayStageV6.install(rail, {
+      total: rounds.length,
+      poolSize: 9,
+      initialIndex: highestUnlocked,
+      bind: bindStageCard,
+      activate: (index) => {
+        if (stageUnlocked(index)) startRound(index);
+      },
+    });
+  }
+
+  function init() {
+    if (!rounds.length) throw new Error("NEST_WEIGH_CAMPAIGN_MISSING");
+    state.completed = loadCompleted();
+    state.mastery = loadMastery();
+    bind();
+    mountFrame();
+    mountStageController();
+    applyLocale(initialLocale());
+    setScreen("main");
+    renderMain();
+  }
+
+  window.__ANIMAL_NEST_WEIGH_TEST__ = { state, rounds, targetIndex, startRound, applyLocale, compareSelected, checkRound };
+  init();
 })();
