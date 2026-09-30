@@ -22,7 +22,8 @@
 
   function showTutorial(source = null) {
     if (!panel.hidden) return;
-    returnFocus = source || (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+    const active = document.activeElement;
+    returnFocus = source || (active instanceof HTMLElement && active !== document.body && active !== document.documentElement ? active : null);
     panel.hidden = false;
     panel.setAttribute("aria-hidden", "false");
     frame.inert = true;

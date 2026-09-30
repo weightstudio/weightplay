@@ -152,10 +152,12 @@ body[data-wp-game-id="animal-nest-weigh"] { min-height: 100svh; }
 }
 
 #tutorialPanel[hidden] { display: none !important; }
-#tutorialCloseBtn { width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex: 0 0 44px; }
+.nest-tutorial-card { width: min(calc(100vw - 32px), 430px); max-width: calc(100vw - 32px); box-sizing: border-box; }
+#tutorialCloseBtn { width: 48px; height: 48px; min-width: 48px; min-height: 48px; flex: 0 0 48px; }
+#tutorialStartBtn { min-height: 48px; }
 .nest-tutorial-intro { margin: 0; color: var(--wp-ui-text, #20332c); font-size: .94rem; line-height: 1.45; }
 .nest-tutorial-replay {
-  min-height: 44px;
+  min-height: 48px;
   margin: 14px 0 0;
   border: 1px solid rgba(34, 69, 50, .22);
   border-radius: 14px;
@@ -167,3 +169,32 @@ body[data-wp-game-id="animal-nest-weigh"] { min-height: 100svh; }
   cursor: pointer;
 }
 .nest-tutorial-replay:hover, .nest-tutorial-replay:focus-visible { background: #dcefd2; outline: 3px solid rgba(86, 146, 90, .25); outline-offset: 2px; }
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .wp-tutorial-backdrop { padding: calc(8px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left)); }
+  .wp-tutorial-card.nest-tutorial-card {
+    width: min(96vw, 760px);
+    max-width: 96vw;
+    max-height: calc(100svh - 16px);
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+  }
+  .nest-tutorial-card .wp-tutorial-head { gap: 8px; align-items: center; }
+  .nest-tutorial-card .wp-tutorial-head strong { font-size: clamp(1rem, 3.6vw, 1.3rem); }
+  .nest-tutorial-card .wp-tutorial-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .nest-tutorial-card .wp-tutorial-step {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 6px;
+    align-content: center;
+    text-align: center;
+  }
+  .nest-tutorial-card .wp-tutorial-icon { width: 30px; height: 30px; justify-self: center; border-radius: 10px; font-size: 1.05rem; }
+  .nest-tutorial-card .wp-tutorial-copy { gap: 2px; text-align: center; }
+  .nest-tutorial-card .wp-tutorial-copy b { font-size: .78rem; }
+  .nest-tutorial-card .wp-tutorial-copy span { font-size: .66rem; line-height: 1.12; }
+  .nest-tutorial-card .nest-tutorial-intro { font-size: .76rem; line-height: 1.2; }
+  .nest-tutorial-card .wp-tutorial-action { min-height: 48px; }
+}

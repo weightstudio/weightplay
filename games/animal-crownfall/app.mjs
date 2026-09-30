@@ -77,11 +77,6 @@ async function playMove(x,y){tracking()?.activity();const before=clone(state),re
 function undo(){if(busy||!history.length)return;pending=null;pendingRoute='';closeModal();state=history.pop();moveHistory.pop();hintCache=null;hintLevel=0;draw();runSave();$('feedback').textContent=idleFeedback();}
 function exitBattle(){tracking()?.end('abandon');loading.hidden=true;session++;renderer?.stop();if(transactionBase){state=clone(transactionBase);history.pop();moveHistory.pop();transactionBase=null;}busy=false;pending=null;pendingRoute='';settlingRoute='';paused=false;$('modal').hidden=true;$('battleContent').inert=false;runSave();changeScreen('stage');}
 $('start').addEventListener('click',()=>changeScreen('stage'));
-const entryState=window.__wpCrownfallEntry;
-if(entryState){
- entryState.ready=true;
- if(entryState.requested){entryState.requested=false;$('start').removeAttribute('aria-busy');$('start').disabled=false;changeScreen('stage');}
-}
 $('resume').addEventListener('click',()=>{const run=clone(save.run);startLevel(run.level,run);});$('stageBack').addEventListener('click',()=>changeScreen('main'));
 $('battleBack').addEventListener('click',()=>{showModal('leave',t('leave'),t('leaveText'),[[t('continue'),closeModal],[t('stages'),exitBattle]]);});
 $('undo').addEventListener('click',undo);$('retry').addEventListener('click',()=>startLevel(state.level));$('reduced').addEventListener('change',()=>{save.reduced=$('reduced').checked;persist();});
@@ -90,6 +85,11 @@ $('modal').addEventListener('keydown',e=>{if(e.key==='Tab'){const a=[...$('modal
 window.addEventListener('pagehide',e=>{runSave();if(!e.persisted){session++;renderer?.destroy();stageController?.destroy();frame.destroy();}});
 window.addEventListener('pageshow',e=>{if(e.persisted)renderer?.resize();});
 translate();changeScreen('main');
+const entryState=window.__wpCrownfallEntry;
+if(entryState){
+ entryState.ready=true;
+ if(entryState.requested){entryState.requested=false;$('start').removeAttribute('aria-busy');$('start').disabled=false;changeScreen('stage');}
+}
 // Read-only instrumentation; tests use native controls for gameplay.
 window.Crownfall=Object.freeze({get state(){return state&&clone(state);},get save(){return clone(save);},get screen(){return screen;},get busy(){return busy;},cells:()=>renderer?.cellPoints()||[],diagnostics:()=>renderer?.diagnostics()||{contexts:0},get locale(){return locale;}});
 
