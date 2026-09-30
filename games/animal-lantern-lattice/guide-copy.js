@@ -172,3 +172,215 @@
   };
   window.ANIMAL_LANTERN_LATTICE_GUIDE_COPY = copy;
 })();
+
+// Public puzzle neighbors use the approved localized Lobby titles and route copy.
+window.ANIMAL_LANTERN_LATTICE_RELATED = {
+  "en": {
+    "heading": "Related Games",
+    "segment": "en",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "Sunbeam Garden: Mirror Paths",
+        "description": "Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "Panko's Number Grove",
+        "description": "Clear pairs that add to ten, opening sight lines across 30 calm groves."
+      }
+    ]
+  },
+  "zh-Hant": {
+    "heading": "相關遊戲",
+    "segment": "zh-tw",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "陽光花園：鏡面導光",
+        "description": "旋轉鏡子，逐格追蹤真正的陽光，在 30 座花園喚醒植物。"
+      },
+      {
+        "id": "animal-number-match",
+        "title": "胖達數字花園",
+        "description": "消除總和為 10 的數字配對，完成 30 座花園挑戰。"
+      }
+    ]
+  },
+  "zh-Hans": {
+    "heading": "相关游戏",
+    "segment": "zh-cn",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "阳光花园：镜面导光",
+        "description": "旋转镜子，逐格追踪真正的阳光，在 30 座花园唤醒植物。"
+      },
+      {
+        "id": "animal-number-match",
+        "title": "胖达数字花园",
+        "description": "消除相加等于 10 的数字配对，在 30 座悠闲花园中打开配对视线。"
+      }
+    ]
+  },
+  "ja": {
+    "heading": "関連ゲーム",
+    "segment": "ja",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "陽だまりの庭：鏡の光路",
+        "description": "鏡を回して光を1マスずつ導き、30の庭の植物を目覚めさせよう。"
+      },
+      {
+        "id": "animal-number-match",
+        "title": "パンコのナンバーグローブ",
+        "description": "合計10になるペアを消し、30の森で見通しを開こう。"
+      }
+    ]
+  },
+  "ko": {
+    "heading": "관련 게임",
+    "segment": "ko",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "햇살 정원: 거울 빛길",
+        "description": "거울을 돌려 햇빛을 한 칸씩 보내고 30개 정원의 식물을 깨우세요."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "판코의 넘버 그로브",
+        "description": "합이 10인 짝을 지워 30개 숲의 길을 여세요."
+      }
+    ]
+  },
+  "es": {
+    "heading": "Juegos relacionados",
+    "segment": "es",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "Jardín Solar: Rutas de Espejos",
+        "description": "Gira espejos, traza un rayo real y despierta plantas en 30 jardines."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "Bosque numérico de Panko",
+        "description": "Elimina parejas que sumen diez y abre líneas de visión en 30 bosques tranquilos."
+      }
+    ]
+  },
+  "pt-BR": {
+    "heading": "Jogos relacionados",
+    "segment": "pt-br",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "Jardim Solar: Caminhos de Espelhos",
+        "description": "Gire espelhos, trace um raio real e acorde plantas em 30 jardins."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "Bosque Numérico do Panko",
+        "description": "Elimine pares que somem dez e abra linhas de visão em 30 bosques tranquilos."
+      }
+    ]
+  },
+  "fr": {
+    "heading": "Jeux similaires",
+    "segment": "fr",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "Jardin solaire : chemins de miroirs",
+        "description": "Tournez les miroirs, suivez un vrai rayon et réveillez les plantes de 30 jardins."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "Bosquet numérique de Panko",
+        "description": "Effacez les paires dont la somme vaut dix et ouvrez les lignes de vue dans 30 bosquets."
+      }
+    ]
+  },
+  "de": {
+    "heading": "Ähnliche Spiele",
+    "segment": "de",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "Sonnengarten: Spiegelwege",
+        "description": "Drehe Spiegel, verfolge einen echten Lichtstrahl und wecke Pflanzen in 30 Gärten."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "Pankos Zahlenhain",
+        "description": "Entferne Paare mit Summe zehn und öffne Sichtlinien in 30 ruhigen Hainen."
+      }
+    ]
+  },
+  "it": {
+    "heading": "Giochi correlati",
+    "segment": "it",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "Giardino Solare: Percorsi di Specchi",
+        "description": "Ruota gli specchi, segui un raggio vero e sveglia le piante in 30 giardini."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "Boschetto numerico di Panko",
+        "description": "Elimina le coppie che sommano dieci e apri linee visive in 30 boschetti."
+      }
+    ]
+  },
+  "ru": {
+    "heading": "Похожие игры",
+    "segment": "ru",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "Солнечный сад: пути зеркал",
+        "description": "Поворачивайте зеркала, ведите настоящий луч и будите растения в 30 садах."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "Числовая роща Панко",
+        "description": "Убирайте пары с суммой десять, открывая линии обзора в 30 спокойных рощах."
+      }
+    ]
+  },
+  "hi": {
+    "heading": "संबंधित खेल",
+    "segment": "hi",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "धूप का बगीचा: दर्पण पथ",
+        "description": "दर्पण घुमाएँ, असली किरण को एक-एक खाने चलाएँ और 30 बगीचों के पौधे जगाएँ।"
+      },
+      {
+        "id": "animal-number-match",
+        "title": "पैंको का नंबर ग्रोव",
+        "description": "30 शांत उपवनों में दस का जोड़ बनाने वाले जोड़े हटाकर दृश्य मार्ग खोलें।"
+      }
+    ]
+  },
+  "ar": {
+    "heading": "ألعاب ذات صلة",
+    "segment": "ar",
+    "games": [
+      {
+        "id": "animal-sunbeam-garden",
+        "title": "حديقة الشمس: مسارات المرايا",
+        "description": "أدر المرايا وتتبع شعاعًا حقيقيًا لإيقاظ النباتات في 30 حديقة."
+      },
+      {
+        "id": "animal-number-match",
+        "title": "بستان أرقام بانكو",
+        "description": "أزل الأزواج التي مجموعها عشرة وافتح خطوط الرؤية عبر 30 بستانًا هادئًا."
+      }
+    ]
+  }
+};

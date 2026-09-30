@@ -65,22 +65,24 @@
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">四子棋</h1><div id="logicApp"></div><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260907-four-in-a-row-public-release-v8"></script><script src="game.js?v=20260909-four-interface-v9"></script><section class="game-page-info game-page-info-static" aria-label="四子棋 遊戲資訊">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>四子棋</h2><p>四子棋是經典 7×6 重力棋盤遊戲：把棋子落入欄位，橫向、直向或斜向連成四子。</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>重力策略遊戲</span><span>經典</span><span>益智</span><span>策略</span></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>四子棋</h2><p>四子棋是經典 7×6 重力棋盤遊戲：把棋子落入欄位，橫向、直向或斜向連成四子。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>重力棋盤</span><span>四子連線</span><span>電腦對手</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>重力策略遊戲</strong></div><div class="game-info-fact"><span>類型</span><strong>經典 · 益智 · 策略 · 家庭</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單至困難</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>3–10 分鐘</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>Every disc changes both the visible threat and the future landing height of a column. A strong move creates a line while limiting the opponent&#39;s reply.</p>
-<p>The direct Battle loop keeps the board readable from the first drop to the Result. Replay resets the board so a different opening can be tested immediately.</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>The board has seven columns and six rows. A disc falls to the lowest open cell in its selected column; a full column cannot accept another disc.</p>
-<p>A round ends when a player connects four discs horizontally, vertically, or diagonally, or when the board fills. Difficulty changes the AI response, not the win rule.</p>
-<p>Hint highlights one tactical suggestion without auto-playing it; Undo restores the prior turn. Result offers Replay and Main, while local settings stay in this browser.</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇難度，再選一欄落下你的棋子。</li><li>讀懂標示出的合法走法，規劃橫向、直向或斜向連成四子。</li><li>使用提示取得一個戰術建議，但不會自動替你落子。</li><li>在電腦之前連成四子，再用再玩一次或主畫面繼續。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Prefer the center columns early because they support more horizontal and diagonal lines.</li><li>Before making a drop, check the opponent&#39;s next winning column as well as your own immediate threat.</li><li>Avoid creating a winning-looking cell that gives the opponent a forced reply on the next turn.</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>Easy, Medium, and Hard change the opponent&#39;s decision pressure while keeping the same 7x6 board and four-line win condition.</p>
-<p>Replayable rounds make progress visible through better openings, safer blocks, and fewer forced replies rather than account levels.</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>Four in a Row uses the shared Classic Logic Lab shell, a responsive 7x6 gravity board, AI-turn lock, advisory Hint, reversible Undo, Result recovery, and browser-local preferences.</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>四子棋是一般玩家可遊玩的瀏覽器策略遊戲。不需要帳號或購買；設定與可用的最佳結果只保存在這個瀏覽器。</p></div>
+      <div class="game-info-section"><h3>世界與任務</h3><p>每落下一枚棋子，都會改變可見的威脅，以及該欄下一枚棋子的落點高度。連線時也要觀察自己替電腦打開了什麼機會。</p>
+<p>一局由對戰直接進入結果畫面。選擇「重玩」會清空棋盤，讓你立即試另一種開局。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>棋盤有七欄、六列。棋子會落在所選欄位最低的空格；滿欄不能再落子。</p>
+<p>自己的四枚棋子橫向、直向或斜向連成一線即可獲勝。滿盤仍無四子連線也會結束本局。</p>
+<p>簡單隨機選未滿的欄；中等先取立即勝利，再擋你的立即勝利，否則隨機落子；困難也先檢查勝負，接著偏好靠近中央的欄位。切換難度會重設本局。</p>
+<p>提示只標記致勝、擋棋或中央欄位的建議，不會代替你落子。復原會取消尚未執行的電腦回合，並將棋盤還原到你上一手之前。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇簡單、中等或困難，開始對戰。</li><li>點選未滿的欄位落子，等待電腦完成回應。</li><li>檢查現在能落子的致勝位置與對手的直接威脅；用提示取得建議，或復原後改走另一手。</li><li>勝、負或滿盤結束後，選擇重玩開新局，或回主頁離開。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>開局可考慮中央欄位，它們參與更多可能的連線。</li><li>看清棋子實際會落在哪一格；下方仍空著的高處缺口還不是直接威脅。</li><li>落子前確認這枚棋子不會墊出對手正上方的致勝格。</li><li>若能形成兩個不同且可立即落子的致勝格，而對手不能立刻獲勝或一手封住兩處，就能製造強迫回應。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>三種難度共用相同棋盤與勝利規則，只改變電腦選欄方式。困難不會搜尋所有後續走法，也不保證無法擊敗。</p>
+<p>重玩可比較開局、封堵和威脅；切換難度會開新局，沒有帳號等級。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>四子棋使用共用的經典邏輯遊戲介面、響應式重力棋盤、電腦回合鎖定、僅供參考的提示、可還原整個回合的復原功能、結果畫面與瀏覽器本機偏好設定。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>四子棋是一般玩家可遊玩的瀏覽器策略遊戲。不需要帳號或購買；設定與可用的最佳結果只保存在這個瀏覽器，清除網站資料可能會移除它們。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>棋子如何移動？</dt><dd>選擇尚有空位的欄位，棋子會落到最低的空格。</dd></div><div><dt>如何獲勝？</dt><dd>橫向、直向或斜向連成自己的四枚棋子。</dd></div><div><dt>進度會保存嗎？</dt><dd>設定與可用的最佳結果只保存在這個瀏覽器。</dd></div><div><dt>提示有什麼作用？</dt><dd>提示會標出一個戰術建議，但不會代替你落子。</dd></div><div><dt>棋盤填滿時會怎樣？</dt><dd>如果雙方都沒有連成四子，滿盤就會結束本局；結果頁可選擇重玩或回到主頁。</dd></div><div><dt>線上四子棋要怎麼判斷真正能落子的威脅？</dt><dd>不要只數三枚同色棋子，還要看棋子會落在哪一層。高處的缺口必須先填滿下方空格才能落入。落子前也要確認：這一步會不會剛好替對手上方的致勝空格墊底？斜線缺口只有在棋子確實能落到那裡時，才是下一手的直接威脅。</dd></div><div><dt>什麼樣的雙重威脅才有用？</dt><dd>規劃兩個不同、而且已經能落子的致勝空格，最好分布在不同欄。如果對手不能立刻獲勝，也無法用一手同時封住兩處，你下一手就仍有一個機會。兩條線共用同一缺口，只算一個威脅；下方仍空著的缺口，也還不能直接使用。</dd></div><div><dt>目前版本的簡單、中等與困難差在哪裡？</dt><dd>簡單會隨機選擇未滿的欄位；中等會先找能立即獲勝的落點，再阻擋你的立即致勝落點，否則隨機選擇；困難採用相同的獲勝與防守檢查，沒有直接機會時優先選靠近中央的空欄。困難不會搜尋整盤所有後續走法，也不保證無法擊敗。切換難度會重設目前這一局。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>點擊一格與鄰近格，關掉全部燈並挑戰最少步數。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/pyramid-solitaire/"><img src="/assets/interface7-redrawn/pyramid-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>金字塔接龍</strong><span>配對總和為 13 的可用牌，清空經典金字塔，提供牌堆、提示、還原與重新開始。</span></span></a></div></div>
     </div>

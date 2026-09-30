@@ -2750,11 +2750,940 @@
       "इस संस्करण में आसान, मध्यम और कठिन में क्या अंतर है?",
       "आसान स्तर खाली जगह वाले कॉलम को यादृच्छिक ढंग से चुनता है। मध्यम पहले तुरंत जीत खोजता है, फिर आपकी तुरंत जीत रोकता है, नहीं तो यादृच्छिक चाल चलता है। कठिन भी यही जाँच करता है और फिर केंद्र के पास उपलब्ध कॉलम चुनता है। वह पूरी खेल-वृक्ष खोज नहीं करता और अजेय नहीं है। कठिनाई बदलने पर मौजूदा दौर रीसेट होता है।"
     ]
+  ],
+  "ar": [
+    ["كيف أميّز تهديدًا قابلًا للعب في لعبة أربع في صف عبر المتصفح؟", "راقب ارتفاع سقوط القرص، لا مجرد وجود ثلاثة أقراص متشابهة. لا تصل إلى فجوة مرتفعة حتى تمتلئ الخانات تحتها. قبل الإسقاط، تأكد أن قرصك لن يدعم خانة فوز للخصم فوقه مباشرة. ولا تصبح الفجوة القطرية تهديدًا فوريًا إلا إذا أمكن للقرص أن يسقط فيها فعلًا."],
+    ["متى يكون التهديد المزدوج مفيدًا؟", "حاول إنشاء خانتي فوز مختلفتين يمكن اللعب فيهما الآن، ويفضل في عمودين مختلفين. إذا لم يستطع الخصم الفوز فورًا أو إغلاقهما معًا بحركة واحدة، تبقى فرصة لدورك التالي. خطان يشتركان في الفجوة نفسها يمثلان تهديدًا واحدًا، والفجوة التي لا تجد دعمًا تحتها ليست قابلة للعب بعد."],
+    ["ما الفرق بين السهل والمتوسط والصعب في هذا الإصدار؟", "يختار السهل عمودًا متاحًا عشوائيًا. يبحث المتوسط أولًا عن فوز فوري، ثم يمنع فوزك الفوري، وإلا يختار عشوائيًا. يجري الصعب الفحوص نفسها ثم يفضل عمودًا متاحًا قريبًا من الوسط. لا يبحث في شجرة اللعبة كاملة وليس خصمًا لا يُهزم. تغيير الصعوبة يعيد ضبط الجولة الحالية."]
   ]
 };
   for (const [localeKey, faq] of Object.entries(fourInARowSearchFaq)) {
     classicGeneralLocaleCopy[localeKey]["four-in-a-row"].faq.push(...faq);
   }
+
+  // Text Growth 1.4.0: complete locale-owned classic logic Guides, checked against shipped rules.
+  const text140ClassicLogicGuides = {
+  "en": {
+    "lights-out": {
+      "story": [
+        "The 5×5 board is a compact logic puzzle. Each press changes a cross of lights, so solving one spot can change nearby work.",
+        "Every attempt starts with the same fixed pattern. Clear it, review your move count, then replay to test another route."
+      ],
+      "systems": [
+        "Pressing a tile switches that tile and its existing neighbors above, below, left, and right. Corners affect three cells, edges four, and interior tiles five.",
+        "The puzzle ends when all 25 lights are off. Hint highlights a suggested press without making it; Undo restores the board and move count from before your last press.",
+        "Start Game opens the board directly. New Puzzle and Replay restore the same opening pattern; the result offers Replay, Menu, and Close. The best move count and preferences are stored in this browser."
+      ],
+      "how": [
+        "Select Start Game to open the fixed 5×5 board.",
+        "Press a tile and check every light in the cross that changed.",
+        "Use Hint to see one suggested press, or Undo to restore your last position and move count.",
+        "Switch off every light. Check the result and replay the same opening to try fewer moves."
+      ],
+      "strategyTips": [
+        "A corner press affects three cells, an edge press four, and an interior press five. Check the whole cross before choosing.",
+        "Try clearing rows from top to bottom by pressing below lit cells. If the bottom row remains lit, change your first-row choices on the next attempt.",
+        "Pressing the same tile twice restores the light pattern but adds two moves; Undo restores the earlier move count too."
+      ],
+      "progression": [
+        "The opening pattern and 5×5 rules stay the same on every attempt; there are no random boards or unlockable levels.",
+        "Compare solved move counts to improve your route. There is no timer, account, or purchase gate."
+      ],
+      "designNote": "Lights Out uses the shared Classic Logic Lab screen flow, a responsive 5×5 board, a fixed solvable opening, advisory Hint, reversible Undo, a solved result, and browser-local settings and best moves.",
+      "parent": "Lights Out is a general-audience browser puzzle. No account or purchase is required. Preferences and the best move count stay in this browser and may disappear if site data is cleared.",
+      "text140Tags": [
+        "Switch puzzle",
+        "5×5 logic",
+        "Move planning"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "Each disc changes both the visible threats and the height of the next landing spot. Build a line while reading what your move makes possible for the computer.",
+        "The round moves directly from Battle to Result. Replay clears the board so you can try a different opening."
+      ],
+      "systems": [
+        "The 7×6 board has seven columns and six rows. A disc lands in the lowest free cell of the chosen column; full columns cannot be played.",
+        "Four of one color in a horizontal, vertical, or diagonal line wins. A full board without four ends the round.",
+        "Easy chooses a random open column. Medium takes an immediate win, then blocks an immediate loss, then chooses randomly. Hard uses the same win and block checks, then prefers a column closest to the center. Changing difficulty resets the round.",
+        "Hint marks a winning move, a blocking move, or a central column without placing a disc. Undo cancels a pending computer turn and restores the board to before your last move."
+      ],
+      "how": [
+        "Choose Easy, Medium, or Hard and start Battle.",
+        "Select an open column and wait for the computer to finish its reply.",
+        "Check for a playable winning cell or an immediate opposing threat. Use Hint for a suggestion and Undo to try another move.",
+        "After a win, loss, or a full board, choose Replay for a fresh board or Main to leave."
+      ],
+      "strategyTips": [
+        "Consider central columns early: they participate in more possible lines.",
+        "Count where a disc can land. A gap above empty cells is not yet a playable threat.",
+        "Before dropping, check whether your disc supports the opponent’s winning cell immediately above it.",
+        "Two separate playable winning cells can force a win when the opponent cannot win immediately or block both in one turn."
+      ],
+      "progression": [
+        "All three difficulties use the same board and victory rule. They change only the computer’s choice of column; Hard does not search the full game tree or guarantee an unbeatable opponent.",
+        "Replay rounds to compare openings, blocks, and threats. Changing difficulty starts a fresh round; there are no account levels."
+      ],
+      "designNote": "Four in a Row uses the shared Classic Logic Lab shell, a responsive gravity board, a lock during the computer turn, advisory Hint, turn-restoring Undo, Result recovery, and browser-local preferences.",
+      "parent": "Four in a Row is a general-audience browser strategy game. No account or purchase is required; settings and any available best result stay in this browser and may be removed when site data is cleared.",
+      "text140Tags": [
+        "Gravity board",
+        "Four in a row",
+        "Computer opponent"
+      ]
+    }
+  },
+  "zh-Hant": {
+    "lights-out": {
+      "story": [
+        "5×5 棋盤是一道精簡的邏輯題。每次按下都會改變十字範圍內的燈，因此處理一處也可能影響附近。",
+        "每次挑戰都從同一個固定燈光排列開始。清空棋盤、查看步數，再重新遊玩，試試另一條解法。"
+      ],
+      "systems": [
+        "按下一格會切換該格及棋盤上存在的上下左右鄰格。角落影響三格，邊緣影響四格，內部影響五格。",
+        "25 格燈全部熄滅即過關。提示只標記建議按下的位置，不會代你操作；復原會還原上一步之前的棋盤與步數。",
+        "「開始遊戲」直接進入棋盤。「新謎題」與「重新遊玩」都會還原同一個開局；結果畫面提供重新遊玩、選單與關閉。最佳步數和偏好設定保存在本瀏覽器。"
+      ],
+      "how": [
+        "選擇「開始遊戲」，進入固定的 5×5 棋盤。",
+        "按下一格，檢查十字範圍內每盞燈的變化。",
+        "需要建議時使用「提示」；想比較另一種走法時，用「復原」還原棋盤與步數。",
+        "熄滅所有燈光，查看結果，再從相同開局挑戰更少步數。"
+      ],
+      "strategyTips": [
+        "角落影響三格，邊緣四格，內部五格；下手前先看完整十字範圍。",
+        "可以由上往下，按下亮格正下方的格子，逐列清除。若最後一列仍亮，下次調整第一列的按法。",
+        "同一格按兩次會還原燈光排列，卻增加兩步；「復原」也會還原步數。"
+      ],
+      "progression": [
+        "每次挑戰都使用相同的開局與 5×5 規則，沒有隨機棋盤或待解鎖的關卡。",
+        "比較過關步數，逐步改進解法；沒有計時、帳號或付費門檻。"
+      ],
+      "designNote": "熄燈遊戲採用共用的 Classic Logic Lab 畫面流程、響應式 5×5 棋盤、固定且可解的開局、只提供建議的提示、可還原步數的復原功能，以及儲存在瀏覽器內的設定與最佳步數。",
+      "parent": "熄燈遊戲是適合一般玩家的瀏覽器益智遊戲，不需要帳號或購買。偏好設定與最佳步數保存在本瀏覽器；清除網站資料後可能消失。",
+      "text140Tags": [
+        "開關益智",
+        "5×5 邏輯",
+        "步數規劃"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "每落下一枚棋子，都會改變可見的威脅，以及該欄下一枚棋子的落點高度。連線時也要觀察自己替電腦打開了什麼機會。",
+        "一局由對戰直接進入結果畫面。選擇「重玩」會清空棋盤，讓你立即試另一種開局。"
+      ],
+      "systems": [
+        "棋盤有七欄、六列。棋子會落在所選欄位最低的空格；滿欄不能再落子。",
+        "自己的四枚棋子橫向、直向或斜向連成一線即可獲勝。滿盤仍無四子連線也會結束本局。",
+        "簡單隨機選未滿的欄；中等先取立即勝利，再擋你的立即勝利，否則隨機落子；困難也先檢查勝負，接著偏好靠近中央的欄位。切換難度會重設本局。",
+        "提示只標記致勝、擋棋或中央欄位的建議，不會代替你落子。復原會取消尚未執行的電腦回合，並將棋盤還原到你上一手之前。"
+      ],
+      "how": [
+        "選擇簡單、中等或困難，開始對戰。",
+        "點選未滿的欄位落子，等待電腦完成回應。",
+        "檢查現在能落子的致勝位置與對手的直接威脅；用提示取得建議，或復原後改走另一手。",
+        "勝、負或滿盤結束後，選擇重玩開新局，或回主頁離開。"
+      ],
+      "strategyTips": [
+        "開局可考慮中央欄位，它們參與更多可能的連線。",
+        "看清棋子實際會落在哪一格；下方仍空著的高處缺口還不是直接威脅。",
+        "落子前確認這枚棋子不會墊出對手正上方的致勝格。",
+        "若能形成兩個不同且可立即落子的致勝格，而對手不能立刻獲勝或一手封住兩處，就能製造強迫回應。"
+      ],
+      "progression": [
+        "三種難度共用相同棋盤與勝利規則，只改變電腦選欄方式。困難不會搜尋所有後續走法，也不保證無法擊敗。",
+        "重玩可比較開局、封堵和威脅；切換難度會開新局，沒有帳號等級。"
+      ],
+      "designNote": "四子棋使用共用的經典邏輯遊戲介面、響應式重力棋盤、電腦回合鎖定、僅供參考的提示、可還原整個回合的復原功能、結果畫面與瀏覽器本機偏好設定。",
+      "parent": "四子棋是一般玩家可遊玩的瀏覽器策略遊戲。不需要帳號或購買；設定與可用的最佳結果只保存在這個瀏覽器，清除網站資料可能會移除它們。",
+      "text140Tags": [
+        "重力棋盤",
+        "四子連線",
+        "電腦對手"
+      ]
+    }
+  },
+  "zh-Hans": {
+    "lights-out": {
+      "story": [
+        "5×5 棋盘是一道精简的逻辑题。每次点击都会改变十字范围内的灯，因此处理一处也可能影响附近。",
+        "每次挑战都从同一个固定灯光排列开始。清空棋盘、查看步数，再重新游玩，尝试另一种解法。"
+      ],
+      "systems": [
+        "点击一格会切换该格及棋盘上存在的上下左右相邻格。角落影响三格，边缘影响四格，内部影响五格。",
+        "25 格灯全部熄灭即过关。提示只标记建议点击的位置，不会替你操作；撤销会恢复上一步之前的棋盘和步数。",
+        "“开始游戏”直接进入棋盘。“新谜题”和“重新游玩”都会恢复同一个开局；结果界面提供重新游玩、菜单和关闭。最佳步数与偏好设置保存在此浏览器。"
+      ],
+      "how": [
+        "选择“开始游戏”，进入固定的 5×5 棋盘。",
+        "点击一格，检查十字范围内每盏灯的变化。",
+        "需要建议时使用“提示”；想比较另一种走法时，用“撤销”恢复棋盘与步数。",
+        "熄灭所有灯光，查看结果，再从相同开局挑战更少步数。"
+      ],
+      "strategyTips": [
+        "角落影响三格，边缘四格，内部五格；动手前先看完整十字范围。",
+        "可以从上往下，点击亮格正下方的格子，逐行清除。若最后一行仍亮，下次调整第一行的点法。",
+        "同一格点两次会恢复灯光排列，却增加两步；“撤销”也会恢复步数。"
+      ],
+      "progression": [
+        "每次挑战都使用相同的开局和 5×5 规则，没有随机棋盘或待解锁的关卡。",
+        "比较通关步数，逐步改进解法；没有计时、账号或付费门槛。"
+      ],
+      "designNote": "熄灯游戏采用共用的 Classic Logic Lab 界面流程、自适应 5×5 棋盘、固定且可解的开局、只提供建议的提示、可恢复步数的撤销功能，以及保存在浏览器内的设置和最佳步数。",
+      "parent": "熄灯游戏是适合一般玩家的浏览器益智游戏，无需账号或购买。偏好设置和最佳步数保存在此浏览器；清除网站数据后可能消失。",
+      "text140Tags": [
+        "开关益智",
+        "5×5 逻辑",
+        "步数规划"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "每落下一枚棋子，都会改变眼前的威胁，也会抬高该列下一枚棋子的落点。连线时也要留意自己给电脑创造了什么机会。",
+        "一局从对战直接进入结果画面。点击“重玩”会清空棋盘，方便立即尝试另一种开局。"
+      ],
+      "systems": [
+        "棋盘有七列、六行。棋子落到所选列最低的空格；满列不能再落子。",
+        "自己的四枚棋子横向、纵向或斜向连成一线即获胜。满盘仍无人连成四子也会结束本局。",
+        "简单随机选择未满的列；中等先争取立即获胜，再挡住你的立即获胜位置，否则随机落子；困难也先检查胜负，然后偏向靠近中央的列。切换难度会重置本局。",
+        "提示仅标记获胜、阻挡或中央列的建议，不会替你落子。撤销会取消尚未执行的电脑回合，并将棋盘还原到你上一手之前。"
+      ],
+      "how": [
+        "选择简单、中等或困难，开始对局。",
+        "选择未满的列落子，等待电脑完成回应。",
+        "检查当前能落子的获胜格与对手的直接威胁；用提示获取建议，或撤销后改走另一手。",
+        "获胜、失败或满盘结束后，选择重玩开启新局，或回主页离开。"
+      ],
+      "strategyTips": [
+        "开局可以考虑中央列，它们能参与更多可能的连线。",
+        "看清棋子实际落在哪一格；下面仍有空格的高处缺口还不是直接威胁。",
+        "落子前确认这枚棋子不会让对手正上方的获胜格变得可用。",
+        "如果形成两个不同且立即可落子的获胜格，而对手无法立刻获胜或一步挡住两处，就能迫使对手应对。"
+      ],
+      "progression": [
+        "三个难度采用同样的棋盘和获胜规则，只改变电脑的选列方式。困难不会搜索全部后续走法，也不保证不可战胜。",
+        "重玩可比较开局、阻挡和威胁；切换难度会开启新局，没有账号等级。"
+      ],
+      "designNote": "四子棋采用共享的经典逻辑游戏界面、响应式重力棋盘、电脑回合锁定、仅供参考的提示、可还原整回合的撤销功能、结果画面与浏览器本地偏好设置。",
+      "parent": "四子棋是面向一般玩家的浏览器策略游戏。无需账号或购买；设置与可用的最佳成绩只保存在此浏览器，清除网站数据可能将其移除。",
+      "text140Tags": [
+        "重力棋盘",
+        "四子连线",
+        "电脑对手"
+      ]
+    }
+  },
+  "ja": {
+    "lights-out": {
+      "story": [
+        "5×5の盤面は小さな論理パズルです。1回押すと十字形の範囲が切り替わるため、一か所を直すと周囲にも影響します。",
+        "毎回同じ固定配置から始まります。すべて消したら手数を確認し、リプレイして別の手順を試しましょう。"
+      ],
+      "systems": [
+        "マスを押すと、そのマスと盤面にある上下左右の隣のマスが切り替わります。角は3マス、辺は4マス、内側は5マスに影響します。",
+        "25マスすべての灯りが消えるとクリアです。ヒントは次に押す候補を示すだけで、操作は行いません。取り消しは直前の盤面と手数を戻します。",
+        "「ゲーム開始」からすぐ盤面に進みます。「新しいパズル」と「リプレイ」は同じ初期配置に戻ります。結果画面ではリプレイ、メニュー、閉じるを選べます。ベスト手数と設定はこのブラウザに保存されます。"
+      ],
+      "how": [
+        "「ゲーム開始」を選び、固定の5×5盤面を開きます。",
+        "マスを押し、十字形の範囲で変わった灯りをすべて確認します。",
+        "候補を見たいときはヒントを使い、別の手順を試すときは取り消しで盤面と手数を戻します。",
+        "すべての灯りを消して結果を確認し、同じ初期配置でより少ない手数に挑戦します。"
+      ],
+      "strategyTips": [
+        "角は3マス、辺は4マス、内側は5マスが変わります。押す前に十字形の範囲を見ましょう。",
+        "点灯しているマスの真下を押して、上から順に行を消してみましょう。最下段に灯りが残ったら、次は最上段の押し方を変えます。",
+        "同じマスを2回押すと配置は元に戻りますが、手数は2増えます。取り消しなら手数も戻ります。"
+      ],
+      "progression": [
+        "毎回同じ初期配置と5×5のルールで遊びます。ランダムな盤面や解放するステージはありません。",
+        "クリア時の手数を比べて手順を改善しましょう。時間制限、アカウント、購入はありません。"
+      ],
+      "designNote": "ライツアウトは共通のClassic Logic Lab画面構成、画面に合わせて変わる5×5盤面、固定で解ける初期配置、候補を示すヒント、手数も戻す取り消し、クリア結果、ブラウザ内に保存する設定とベスト手数を使用します。",
+      "parent": "ライツアウトは一般向けのブラウザパズルです。アカウントや購入は不要です。設定とベスト手数はこのブラウザに保存され、サイトデータを消すと失われる場合があります。",
+      "text140Tags": [
+        "スイッチパズル",
+        "5×5の論理",
+        "手数の計画"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "コマを落とすたびに盤面の脅威と、その列の次の着地点が変わります。自分のラインを作ると同時に、コンピューターに与える機会も読みましょう。",
+        "対局はそのまま結果画面へ進みます。「リプレイ」で盤を空にし、別の初手をすぐ試せます。"
+      ],
+      "systems": [
+        "盤は7列×6行です。コマは選んだ列の最も低い空きマスに落ち、満杯の列には置けません。",
+        "自分のコマを横・縦・斜めに4つ並べると勝ちです。どちらも4つ並べず盤が埋まった場合も対局が終わります。",
+        "簡単は空き列をランダムに選びます。普通は即勝ち、相手の即勝ちの防止、ランダムの順で選びます。難しいも勝ちと防御を確認し、それ以外は中央に近い列を優先します。難易度の変更は対局をリセットします。",
+        "ヒントは勝ち筋、防御、または中央の列を示すだけで、コマは置きません。取り消しは保留中のコンピューターの手を止め、自分の直前の手より前の盤面に戻します。"
+      ],
+      "how": [
+        "簡単・普通・難しいを選び、対局を始めます。",
+        "空きのある列を選んでコマを落とし、コンピューターの応手が終わるまで待ちます。",
+        "今すぐ置ける勝ちマスや相手の脅威を確認します。ヒントを参考にしたり、取り消して別の手を試したりできます。",
+        "勝敗または満盤による終了の後は、リプレイで新しい対局を始めるか、メインに戻ります。"
+      ],
+      "strategyTips": [
+        "中央付近の列は横や斜めのラインに参加しやすいため、序盤に検討しましょう。",
+        "コマが実際に落ちるマスを数えます。下に空きマスがある上段の隙間にはまだ置けません。",
+        "自分のコマが、すぐ上にある相手の勝ちマスを使えるようにしないか確認しましょう。",
+        "別々の列に今すぐ置ける勝ちマスを2つ作り、相手が即勝ちも一手で両方の防御もできなければ、強い脅威になります。"
+      ],
+      "progression": [
+        "3つの難易度で盤と勝利条件は同じです。変わるのはコンピューターの列選びだけで、難しいも全手順を探索する無敵の相手ではありません。",
+        "リプレイで初手や防御を比較できます。難易度を変えると新しい対局になり、アカウントのレベルはありません。"
+      ],
+      "designNote": "四目並べは共通のClassic Logic Lab画面、画面に合わせて変わる重力盤、コンピューターの手番中の操作制限、助言としてのヒント、1手番を戻す取り消し、結果画面、ブラウザ内の設定を使います。",
+      "parent": "四目並べは一般向けのブラウザ戦略ゲームです。アカウントや購入は不要です。設定と利用可能なベスト記録はこのブラウザ内に保存され、サイトデータを消すと失われる場合があります。",
+      "text140Tags": [
+        "重力盤",
+        "4つ並べる",
+        "コンピューター対戦"
+      ]
+    }
+  },
+  "ko": {
+    "lights-out": {
+      "story": [
+        "5×5 보드는 간결한 논리 퍼즐입니다. 한 칸을 누르면 십자 모양의 불빛이 바뀌므로 한 곳을 해결하다가 주변에 영향을 줄 수 있습니다.",
+        "매번 같은 고정된 불빛 배열에서 시작합니다. 모든 불을 끄고 이동 횟수를 확인한 뒤 다시 플레이하며 다른 경로를 시험해 보세요."
+      ],
+      "systems": [
+        "칸을 누르면 그 칸과 보드에 있는 상하좌우 이웃 칸의 상태가 바뀝니다. 모서리는 3칸, 가장자리는 4칸, 안쪽은 5칸에 영향을 줍니다.",
+        "25칸의 불을 모두 끄면 완료됩니다. 힌트는 누를 후보를 표시할 뿐 자동으로 누르지 않습니다. 실행 취소는 직전 보드와 이동 횟수를 되돌립니다.",
+        "게임 시작을 누르면 바로 보드가 열립니다. 새 퍼즐과 다시 플레이는 같은 시작 배열로 돌아갑니다. 결과 화면에는 다시 플레이, 메뉴, 닫기가 있습니다. 최고 이동 기록과 설정은 이 브라우저에 저장됩니다."
+      ],
+      "how": [
+        "게임 시작을 눌러 고정된 5×5 보드를 엽니다.",
+        "한 칸을 누르고 십자 모양 범위에서 바뀐 불을 모두 확인합니다.",
+        "다음 후보가 필요하면 힌트를 보고, 다른 방법을 시험하려면 실행 취소로 보드와 이동 횟수를 되돌립니다.",
+        "모든 불을 끄고 결과를 확인한 뒤 같은 시작 배열에서 더 적은 이동 횟수에 도전합니다."
+      ],
+      "strategyTips": [
+        "모서리는 3칸, 가장자리는 4칸, 안쪽은 5칸이 바뀝니다. 누르기 전에 십자 모양 범위를 확인하세요.",
+        "켜진 칸 바로 아래를 눌러 위쪽 행부터 차례로 지워 보세요. 마지막 행에 불이 남으면 다음 시도에서 첫 행의 선택을 바꿔 보세요.",
+        "같은 칸을 두 번 누르면 불빛 배열은 돌아오지만 이동 횟수가 2 늘어납니다. 실행 취소는 횟수도 되돌립니다."
+      ],
+      "progression": [
+        "모든 시도에서 같은 시작 배열과 5×5 규칙을 사용합니다. 무작위 보드나 잠금 해제할 단계는 없습니다.",
+        "완료한 이동 횟수를 비교하며 경로를 개선하세요. 시간 제한, 계정, 구매는 없습니다."
+      ],
+      "designNote": "라이트 아웃은 공통 Classic Logic Lab 화면 흐름, 반응형 5×5 보드, 풀 수 있는 고정 시작 배열, 후보를 표시하는 힌트, 이동 횟수까지 되돌리는 실행 취소, 완료 결과와 브라우저에 저장되는 설정 및 최고 기록을 사용합니다.",
+      "parent": "라이트 아웃은 일반 이용자를 위한 브라우저 퍼즐입니다. 계정이나 구매가 필요 없습니다. 설정과 최고 이동 기록은 이 브라우저에 저장되며 사이트 데이터를 지우면 사라질 수 있습니다.",
+      "text140Tags": [
+        "스위치 퍼즐",
+        "5×5 논리",
+        "이동 계획"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "말을 하나 놓을 때마다 눈앞의 위협과 그 열의 다음 착지 위치가 달라집니다. 줄을 만들면서 컴퓨터에 어떤 기회를 주는지도 살펴보세요.",
+        "대국은 바로 결과 화면으로 이어집니다. 다시 하기를 누르면 보드를 비우고 다른 첫 수를 곧바로 시험할 수 있습니다."
+      ],
+      "systems": [
+        "보드는 7열×6행입니다. 말은 선택한 열에서 가장 낮은 빈칸으로 떨어지며, 가득 찬 열에는 놓을 수 없습니다.",
+        "자신의 말 네 개를 가로, 세로 또는 대각선으로 이으면 승리합니다. 누구도 네 개를 잇지 못한 채 보드가 차도 대국이 끝납니다.",
+        "쉬움은 빈 열을 무작위로 고릅니다. 보통은 즉시 이기는 수를 먼저 찾고, 없으면 상대의 즉시 승리를 막고, 그 외에는 무작위로 둡니다. 어려움도 승리와 방어를 확인한 뒤 중앙에 가까운 열을 우선합니다. 난이도를 바꾸면 현재 대국이 초기화됩니다.",
+        "힌트는 승리, 방어 또는 중앙 열을 표시할 뿐 말을 놓지 않습니다. 되돌리기는 대기 중인 컴퓨터의 수를 취소하고 내 직전 수 이전의 보드로 복원합니다."
+      ],
+      "how": [
+        "쉬움, 보통 또는 어려움을 골라 대국을 시작하세요.",
+        "빈칸이 있는 열을 선택하고 컴퓨터가 응수할 때까지 기다리세요.",
+        "지금 놓을 수 있는 승리 칸과 상대의 즉각적인 위협을 확인하세요. 힌트를 참고하거나 되돌린 뒤 다른 수를 시험할 수 있습니다.",
+        "승패 또는 보드가 가득 찬 뒤 후 다시 하기로 새 대국을 시작하거나 메인으로 돌아가세요."
+      ],
+      "strategyTips": [
+        "중앙 열은 가능한 가로·대각선 줄에 더 많이 포함되므로 초반에 고려하세요.",
+        "말이 실제로 떨어질 칸을 보세요. 아래가 빈 높은 위치는 아직 사용할 수 없습니다.",
+        "내 말이 바로 위 상대의 승리 칸을 사용할 수 있게 만들지 확인하세요.",
+        "서로 다른, 지금 사용할 수 있는 승리 칸 두 곳을 만들고 상대가 즉시 이기거나 한 수로 둘 다 막을 수 없다면 강한 위협이 됩니다."
+      ],
+      "progression": [
+        "세 난이도의 보드와 승리 조건은 같습니다. 컴퓨터의 열 선택만 달라지며 어려움도 모든 후속 수를 탐색하거나 무적이 되지는 않습니다.",
+        "다시 하기로 첫 수, 방어, 위협을 비교할 수 있습니다. 난이도 변경은 새 대국을 시작하며 계정 레벨은 없습니다."
+      ],
+      "designNote": "사목은 공통 Classic Logic Lab 화면, 반응형 중력 보드, 컴퓨터 차례의 입력 잠금, 참고용 힌트, 한 차례를 복원하는 되돌리기, 결과 화면, 브라우저에 저장되는 설정을 사용합니다.",
+      "parent": "사목은 일반 이용자를 위한 브라우저 전략 게임입니다. 계정이나 구매가 필요 없습니다. 설정과 사용 가능한 최고 기록은 이 브라우저에만 남으며 사이트 데이터를 지우면 사라질 수 있습니다.",
+      "text140Tags": [
+        "중력 보드",
+        "네 개 잇기",
+        "컴퓨터 상대"
+      ]
+    }
+  },
+  "es": {
+    "lights-out": {
+      "story": [
+        "El tablero de 5×5 es un pequeño reto de lógica. Cada pulsación cambia un grupo en forma de cruz, así que resolver una zona puede alterar las casillas cercanas.",
+        "Cada intento empieza con el mismo patrón fijo. Apaga todas las luces, consulta tus movimientos y vuelve a jugar para probar otra ruta."
+      ],
+      "systems": [
+        "Al pulsar una casilla cambian esa casilla y sus vecinas existentes de arriba, abajo, izquierda y derecha. Una esquina afecta a tres casillas, un borde a cuatro y el interior a cinco.",
+        "La partida termina cuando las 25 luces están apagadas. Pista señala una pulsación sugerida sin hacerla; Deshacer restaura el tablero y los movimientos anteriores a la última pulsación.",
+        "Iniciar partida abre el tablero directamente. Nuevo puzle y Volver a jugar restauran el mismo inicio; el resultado ofrece Volver a jugar, Menú y Cerrar. La mejor marca y las preferencias se guardan en este navegador."
+      ],
+      "how": [
+        "Elige Iniciar partida para abrir el tablero fijo de 5×5.",
+        "Pulsa una casilla y comprueba todas las luces que cambiaron en la cruz.",
+        "Usa Pista para ver una sugerencia, o Deshacer para recuperar el tablero y el número de movimientos anterior.",
+        "Apaga todas las luces, mira el resultado y repite el mismo inicio para intentar usar menos movimientos."
+      ],
+      "strategyTips": [
+        "Una esquina cambia tres casillas, un borde cuatro y una casilla interior cinco. Mira toda la cruz antes de pulsar.",
+        "Prueba a limpiar filas de arriba abajo pulsando justo debajo de cada luz encendida. Si quedan luces en la última fila, cambia tus pulsaciones de la primera fila en el siguiente intento.",
+        "Pulsar dos veces la misma casilla recupera el patrón, pero suma dos movimientos; Deshacer también recupera el contador anterior."
+      ],
+      "progression": [
+        "El patrón inicial y las reglas de 5×5 son iguales en cada intento; no hay tableros aleatorios ni niveles por desbloquear.",
+        "Compara los movimientos de tus partidas resueltas para mejorar la ruta. No hay límite de tiempo, cuenta ni compras."
+      ],
+      "designNote": "Apaga las luces usa las pantallas compartidas de Classic Logic Lab, un tablero adaptable de 5×5, un inicio fijo con solución, Pista orientativa, Deshacer reversible, resultado de victoria y ajustes y mejor marca locales del navegador.",
+      "parent": "Apaga las luces es un puzle de navegador para todos los públicos. No requiere cuenta ni compras. Las preferencias y la mejor marca quedan en este navegador y pueden desaparecer al borrar los datos del sitio.",
+      "text140Tags": [
+        "Puzle de interruptores",
+        "Lógica 5×5",
+        "Planificación de movimientos"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "Cada ficha cambia las amenazas visibles y la altura a la que caerá la siguiente en esa columna. Forma una línea sin perder de vista las oportunidades que das al ordenador.",
+        "La partida pasa directamente del tablero al resultado. Repetir vacía el tablero para probar otra apertura."
+      ],
+      "systems": [
+        "El tablero tiene siete columnas y seis filas. La ficha cae en la casilla libre más baja de la columna elegida; una columna llena no admite jugadas.",
+        "Gana quien conecte cuatro fichas propias en horizontal, vertical o diagonal. Si el tablero se llena sin cuatro en línea, termina la ronda.",
+        "Fácil elige una columna libre al azar. Medio prioriza ganar de inmediato, después bloquear tu victoria inmediata y, si no hay ninguna, juega al azar. Difícil hace esas mismas comprobaciones y luego prefiere una columna cercana al centro. Cambiar la dificultad reinicia la ronda.",
+        "La pista señala una jugada ganadora, un bloqueo o una columna central sin colocar la ficha. Deshacer cancela un turno pendiente del ordenador y recupera el tablero anterior a tu último movimiento."
+      ],
+      "how": [
+        "Elige Fácil, Medio o Difícil y comienza la partida.",
+        "Selecciona una columna libre y espera a que el ordenador termine su respuesta.",
+        "Busca una casilla ganadora accesible y una amenaza inmediata del rival. Consulta la pista o deshaz la jugada para probar otra.",
+        "Tras ganar, perder o llenar el tablero sin ganador, elige Repetir para empezar de nuevo o Inicio para salir."
+      ],
+      "strategyTips": [
+        "Considera las columnas centrales al principio: intervienen en más líneas posibles.",
+        "Fíjate en dónde puede caer la ficha. Un hueco elevado sin apoyo debajo aún no es una amenaza jugable.",
+        "Antes de soltar una ficha, comprueba si facilitará una casilla ganadora del rival justo encima.",
+        "Dos casillas ganadoras distintas y accesibles pueden forzar una respuesta si el rival no puede ganar de inmediato ni bloquear ambas con una jugada."
+      ],
+      "progression": [
+        "Las tres dificultades comparten tablero y condición de victoria. Solo cambia cómo el ordenador elige columna; Difícil no analiza todo el árbol de juego ni es invencible.",
+        "Repite rondas para comparar aperturas, bloqueos y amenazas. Cambiar la dificultad inicia una ronda nueva; no hay niveles de cuenta."
+      ],
+      "designNote": "Cuatro en raya utiliza la interfaz compartida de Classic Logic Lab, un tablero adaptable con gravedad, bloqueo durante el turno del ordenador, pistas orientativas, Deshacer que recupera el turno, resultado y preferencias locales del navegador.",
+      "parent": "Cuatro en raya es un juego de estrategia de navegador para todos los públicos. No requiere cuenta ni compra; los ajustes y cualquier mejor resultado disponible se quedan en este navegador y pueden desaparecer al borrar los datos del sitio.",
+      "text140Tags": [
+        "Tablero con gravedad",
+        "Cuatro en línea",
+        "Rival de ordenador"
+      ]
+    }
+  },
+  "pt-BR": {
+    "lights-out": {
+      "story": [
+        "O tabuleiro 5×5 é um desafio compacto de lógica. Cada toque altera um grupo em forma de cruz, então resolver uma área pode mudar as casas vizinhas.",
+        "Toda tentativa começa com o mesmo padrão fixo. Apague todas as luzes, confira o número de movimentos e jogue outra vez para testar outro caminho."
+      ],
+      "systems": [
+        "Tocar em uma casa alterna essa casa e as vizinhas existentes acima, abaixo, à esquerda e à direita. Um canto afeta três casas, uma borda quatro e uma casa interna cinco.",
+        "A rodada termina quando as 25 luzes estão apagadas. Dica destaca um toque sugerido sem executá-lo; Desfazer restaura o tabuleiro e a contagem de movimentos anteriores ao último toque.",
+        "Começar abre o tabuleiro diretamente. Novo quebra-cabeça e Jogar de novo restauram o mesmo início; o resultado oferece Jogar de novo, Menu e Fechar. O melhor resultado e as preferências ficam neste navegador."
+      ],
+      "how": [
+        "Selecione Começar para abrir o tabuleiro fixo 5×5.",
+        "Toque em uma casa e confira todas as luzes alteradas na cruz.",
+        "Use Dica para ver uma sugestão ou Desfazer para recuperar o tabuleiro e a contagem de movimentos anteriores.",
+        "Apague todas as luzes, veja o resultado e repita o mesmo início para tentar usar menos movimentos."
+      ],
+      "strategyTips": [
+        "Um canto muda três casas, uma borda quatro e uma casa interna cinco. Observe a cruz inteira antes de tocar.",
+        "Experimente limpar as linhas de cima para baixo tocando logo abaixo de cada luz acesa. Se restarem luzes na última linha, mude os toques da primeira linha na próxima tentativa.",
+        "Tocar duas vezes na mesma casa recupera o padrão de luzes, mas soma dois movimentos; Desfazer também recupera a contagem anterior."
+      ],
+      "progression": [
+        "O padrão inicial e as regras 5×5 são iguais em todas as tentativas; não há tabuleiros aleatórios nem fases para desbloquear.",
+        "Compare os movimentos das rodadas resolvidas para melhorar seu caminho. Não há cronômetro, conta nem compra obrigatória."
+      ],
+      "designNote": "Apague as Luzes usa o fluxo de telas compartilhado do Classic Logic Lab, tabuleiro 5×5 responsivo, início fixo com solução, Dica consultiva, Desfazer reversível, resultado de vitória e preferências e melhor marca locais do navegador.",
+      "parent": "Apague as Luzes é um quebra-cabeça de navegador para o público geral. Não exige conta nem compra. As preferências e a melhor marca ficam neste navegador e podem desaparecer se os dados do site forem apagados.",
+      "text140Tags": [
+        "Puzzle de interruptores",
+        "Lógica 5×5",
+        "Planejamento de movimentos"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "Cada peça muda as ameaças visíveis e a altura onde a próxima cairá naquela coluna. Forme uma linha sem perder de vista as oportunidades que sua jogada dá ao computador.",
+        "A partida vai direto do tabuleiro para o Resultado. Jogar novamente limpa o tabuleiro para testar outra abertura."
+      ],
+      "systems": [
+        "O tabuleiro tem sete colunas e seis linhas. A peça cai na casa livre mais baixa da coluna escolhida; colunas cheias não aceitam jogadas.",
+        "Vence quem conectar quatro peças próprias na horizontal, vertical ou diagonal. Se o tabuleiro encher sem isso, a rodada termina.",
+        "Fácil escolhe uma coluna livre ao acaso. Médio prioriza vencer de imediato, depois bloquear sua vitória imediata e, sem essas opções, joga ao acaso. Difícil faz as mesmas verificações e então prefere uma coluna perto do centro. Mudar a dificuldade reinicia a rodada.",
+        "A Dica destaca uma jogada vencedora, um bloqueio ou uma coluna central sem colocar a peça. Desfazer cancela a jogada pendente do computador e restaura o tabuleiro anterior à sua última jogada."
+      ],
+      "how": [
+        "Escolha Fácil, Médio ou Difícil e comece a partida.",
+        "Selecione uma coluna livre e espere o computador concluir a resposta.",
+        "Procure uma casa vencedora acessível e uma ameaça imediata do adversário. Use a Dica ou desfaça a jogada para tentar outra.",
+        "Após vitória, derrota ou tabuleiro cheio sem vencedor, escolha Jogar novamente para recomeçar ou Início para sair."
+      ],
+      "strategyTips": [
+        "Considere as colunas centrais no início: elas participam de mais linhas possíveis.",
+        "Veja onde a peça realmente pode cair. Um espaço alto sem apoio embaixo ainda não é uma ameaça jogável.",
+        "Antes de soltar uma peça, confira se ela permitirá uma casa vencedora do adversário logo acima.",
+        "Duas casas vencedoras diferentes e acessíveis podem forçar uma resposta se o adversário não puder vencer de imediato nem bloquear as duas de uma vez."
+      ],
+      "progression": [
+        "As três dificuldades usam o mesmo tabuleiro e a mesma regra de vitória. Só muda como o computador escolhe a coluna; Difícil não analisa toda a árvore de jogadas e não é invencível.",
+        "Repita rodadas para comparar aberturas, bloqueios e ameaças. Mudar a dificuldade inicia uma nova rodada; não há níveis de conta."
+      ],
+      "designNote": "Quatro em Linha usa a interface compartilhada do Classic Logic Lab, um tabuleiro responsivo com gravidade, bloqueio durante o turno do computador, Dica orientativa, Desfazer que restaura o turno, Resultado e preferências locais do navegador.",
+      "parent": "Quatro em Linha é um jogo de estratégia de navegador para o público geral. Não exige conta nem compra; configurações e qualquer melhor resultado disponível ficam neste navegador e podem ser removidos ao limpar os dados do site.",
+      "text140Tags": [
+        "Tabuleiro com gravidade",
+        "Quatro em linha",
+        "Oponente computador"
+      ]
+    }
+  },
+  "fr": {
+    "lights-out": {
+      "story": [
+        "Le plateau de 5×5 est un petit défi logique. Chaque pression modifie un groupe en forme de croix : résoudre une zone peut donc changer les cases voisines.",
+        "Chaque essai commence avec la même disposition fixe. Éteignez toutes les lumières, consultez votre nombre de coups, puis rejouez pour essayer un autre parcours."
+      ],
+      "systems": [
+        "Appuyer sur une case inverse cette case et ses voisines présentes en haut, en bas, à gauche et à droite. Un coin affecte trois cases, un bord quatre et une case intérieure cinq.",
+        "La partie se termine lorsque les 25 lumières sont éteintes. Indice signale un coup suggéré sans le jouer ; Annuler restaure le plateau et le nombre de coups d'avant la dernière pression.",
+        "Commencer ouvre directement le plateau. Nouveau puzzle et Rejouer rétablissent la même disposition initiale ; le résultat propose Rejouer, Menu et Fermer. Le meilleur score et les préférences restent dans ce navigateur."
+      ],
+      "how": [
+        "Choisissez Commencer pour ouvrir le plateau fixe de 5×5.",
+        "Appuyez sur une case et observez toutes les lumières modifiées dans la croix.",
+        "Utilisez Indice pour voir une suggestion ou Annuler pour retrouver le plateau et le nombre de coups précédents.",
+        "Éteignez toutes les lumières, consultez le résultat et recommencez avec la même disposition pour tenter moins de coups."
+      ],
+      "strategyTips": [
+        "Un coin change trois cases, un bord quatre et une case intérieure cinq. Regardez toute la croix avant d'appuyer.",
+        "Essayez de vider les lignes du haut vers le bas en appuyant sous chaque case allumée. Si la dernière ligne reste allumée, changez vos choix de la première ligne au prochain essai.",
+        "Appuyer deux fois sur la même case rétablit les lumières, mais ajoute deux coups ; Annuler rétablit aussi le compteur précédent."
+      ],
+      "progression": [
+        "La disposition de départ et les règles du 5×5 restent identiques à chaque essai ; il n'y a ni plateau aléatoire ni niveau à débloquer.",
+        "Comparez les nombres de coups de vos réussites pour améliorer votre parcours. Il n'y a ni chronomètre, ni compte, ni achat requis."
+      ],
+      "designNote": "Extinction des lumières utilise le parcours d'écrans commun de Classic Logic Lab, un plateau 5×5 adaptatif, un départ fixe résoluble, un indice consultatif, une annulation réversible, un résultat de victoire et des préférences et un meilleur score locaux au navigateur.",
+      "parent": "Extinction des lumières est un puzzle de navigateur tout public. Aucun compte ni achat n'est nécessaire. Les préférences et le meilleur score restent dans ce navigateur et peuvent disparaître si les données du site sont effacées.",
+      "text140Tags": [
+        "Puzzle de boutons",
+        "Logique 5×5",
+        "Planification des coups"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "Chaque pion modifie les menaces visibles et la hauteur où tombera le prochain pion dans sa colonne. Construisez une ligne tout en surveillant les possibilités offertes à l’ordinateur.",
+        "La manche passe directement du plateau au résultat. Rejouer vide le plateau pour essayer une autre ouverture."
+      ],
+      "systems": [
+        "Le plateau compte sept colonnes et six lignes. Un pion tombe dans la case libre la plus basse de la colonne choisie ; une colonne pleine est injouable.",
+        "Alignez quatre de vos pions horizontalement, verticalement ou en diagonale pour gagner. Si le plateau est plein sans alignement, la manche se termine.",
+        "Facile choisit une colonne libre au hasard. Moyen cherche d’abord un gain immédiat, puis bloque le vôtre, sinon joue au hasard. Difficile fait ces mêmes vérifications puis privilégie une colonne proche du centre. Changer la difficulté réinitialise la manche.",
+        "L’indice indique un coup gagnant, un blocage ou une colonne centrale sans poser de pion. Annuler interrompt le tour en attente de l’ordinateur et rétablit le plateau avant votre dernier coup."
+      ],
+      "how": [
+        "Choisissez Facile, Moyen ou Difficile et lancez la partie.",
+        "Sélectionnez une colonne libre et attendez la réponse de l’ordinateur.",
+        "Repérez une case gagnante accessible ou une menace adverse immédiate. Consultez l’indice ou annulez pour essayer un autre coup.",
+        "Après une victoire, une défaite ou un plateau plein sans gagnant, choisissez Rejouer ou retournez à l’accueil."
+      ],
+      "strategyTips": [
+        "Au début, examinez les colonnes centrales : elles participent à davantage de lignes possibles.",
+        "Regardez où le pion peut réellement tomber. Un espace en hauteur sans appui dessous n’est pas encore une menace jouable.",
+        "Avant de poser un pion, vérifiez s’il rendra accessible une case gagnante adverse juste au-dessus.",
+        "Deux cases gagnantes distinctes et accessibles peuvent forcer une réponse si l’adversaire ne peut ni gagner immédiatement ni bloquer les deux en un coup."
+      ],
+      "progression": [
+        "Les trois difficultés conservent le même plateau et la même règle de victoire. Seul le choix de colonne de l’ordinateur change ; Difficile n’explore pas toutes les suites de coups et n’est pas invincible.",
+        "Rejouez pour comparer ouvertures, blocages et menaces. Changer la difficulté lance une nouvelle manche ; il n’y a pas de niveaux de compte."
+      ],
+      "designNote": "Puissance quatre utilise l’interface partagée de Classic Logic Lab, un plateau gravitaire adaptatif, un verrou pendant le tour de l’ordinateur, un indice indicatif, une annulation du tour, l’écran de résultat et des préférences locales.",
+      "parent": "Puissance quatre est un jeu de stratégie dans le navigateur pour tout public. Aucun compte ni achat n’est requis ; les réglages et tout meilleur résultat disponible restent dans ce navigateur et peuvent disparaître si ses données de site sont effacées.",
+      "text140Tags": [
+        "Plateau gravitaire",
+        "Quatre alignés",
+        "Adversaire ordinateur"
+      ]
+    }
+  },
+  "de": {
+    "lights-out": {
+      "story": [
+        "Das 5×5-Brett ist ein kompaktes Logikrätsel. Jeder Druck verändert eine kreuzförmige Gruppe von Lichtern. Eine gelöste Stelle kann daher benachbarte Felder beeinflussen.",
+        "Jeder Versuch beginnt mit demselben festen Muster. Lösche alle Lichter, prüfe deine Zugzahl und spiele erneut, um einen anderen Weg zu testen."
+      ],
+      "systems": [
+        "Ein Druck schaltet das gewählte Feld und seine vorhandenen Nachbarn oben, unten, links und rechts um. Eine Ecke beeinflusst drei, ein Randfeld vier und ein inneres Feld fünf Felder.",
+        "Das Rätsel endet, sobald alle 25 Lichter aus sind. Tipp markiert einen möglichen Zug, führt ihn aber nicht aus. Rückgängig stellt das Brett und die Zugzahl vor dem letzten Druck wieder her.",
+        "Spiel starten öffnet das Brett direkt. Neues Rätsel und Nochmal stellen denselben Anfangszustand wieder her. Im Ergebnis stehen Nochmal, Menü und Schließen bereit. Bestwert und Einstellungen bleiben in diesem Browser."
+      ],
+      "how": [
+        "Wähle Spiel starten, um das feste 5×5-Brett zu öffnen.",
+        "Drücke ein Feld und prüfe jedes Licht im veränderten Kreuz.",
+        "Nutze Tipp für einen Vorschlag oder Rückgängig, um Brett und Zugzahl von zuvor wiederherzustellen.",
+        "Schalte alle Lichter aus, prüfe das Ergebnis und versuche denselben Start mit weniger Zügen erneut."
+      ],
+      "strategyTips": [
+        "Eine Ecke verändert drei Felder, ein Randfeld vier und ein inneres Feld fünf. Prüfe vor dem Druck das ganze Kreuz.",
+        "Versuche, Reihen von oben nach unten zu löschen, indem du direkt unter einem leuchtenden Feld drückst. Bleiben unten Lichter an, ändere beim nächsten Versuch deine Züge in der ersten Reihe.",
+        "Zweimaliges Drücken desselben Felds stellt das Lichtmuster wieder her, zählt aber als zwei Züge. Rückgängig setzt auch die Zugzahl zurück."
+      ],
+      "progression": [
+        "Startmuster und 5×5-Regeln bleiben bei jedem Versuch gleich; es gibt weder zufällige Bretter noch freischaltbare Stufen.",
+        "Vergleiche deine Zugzahlen nach gelösten Runden und verbessere deinen Weg. Es gibt keinen Zeitdruck, kein Konto und keine Käufe."
+      ],
+      "designNote": "Licht aus nutzt den gemeinsamen Classic Logic Lab-Bildschirmablauf, ein responsives 5×5-Brett, einen festen lösbaren Start, einen beratenden Tipp, umkehrbares Rückgängig, ein Erfolgsergebnis sowie browserlokale Einstellungen und Bestzüge.",
+      "parent": "Licht aus ist ein Browserrätsel für ein allgemeines Publikum. Konto und Kauf sind nicht nötig. Einstellungen und Bestzüge bleiben in diesem Browser und können beim Löschen der Websitedaten verschwinden.",
+      "text140Tags": [
+        "Schalterrätsel",
+        "5×5-Logik",
+        "Zugplanung"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "Jeder Stein verändert sichtbare Drohungen und die Fallhöhe des nächsten Steins in seiner Spalte. Baue eine Linie und beachte zugleich, welche Chancen dein Zug dem Computer eröffnet.",
+        "Die Runde führt direkt vom Brett zum Ergebnis. Mit Erneut spielen leerst du das Brett und probierst eine andere Eröffnung."
+      ],
+      "systems": [
+        "Das Brett hat sieben Spalten und sechs Reihen. Ein Stein fällt auf das unterste freie Feld der gewählten Spalte; volle Spalten sind gesperrt.",
+        "Vier eigene Steine waagerecht, senkrecht oder diagonal ergeben einen Sieg. Ist das Brett voll, ohne dass jemand vier verbindet, endet die Runde.",
+        "Leicht wählt zufällig eine freie Spalte. Mittel nimmt zuerst einen sofortigen Sieg, blockiert sonst deinen sofortigen Sieg und wählt andernfalls zufällig. Schwer prüft Sieg und Block ebenso und bevorzugt danach eine Spalte nahe der Mitte. Ein Wechsel der Schwierigkeit setzt die Runde zurück.",
+        "Der Hinweis markiert einen Gewinnzug, einen Block oder eine mittlere Spalte, ohne einen Stein zu setzen. Rückgängig stoppt einen ausstehenden Computerzug und stellt das Brett vor deinem letzten Zug wieder her."
+      ],
+      "how": [
+        "Wähle Leicht, Mittel oder Schwer und starte die Partie.",
+        "Wähle eine freie Spalte und warte, bis der Computer seinen Zug beendet hat.",
+        "Suche ein spielbares Gewinnfeld und eine unmittelbare gegnerische Drohung. Nutze den Hinweis oder mache deinen Zug rückgängig, um einen anderen zu testen.",
+        "Nach Sieg, Niederlage oder einem vollen Brett ohne Sieger wählst du Erneut spielen für eine neue Runde oder Hauptmenü zum Verlassen."
+      ],
+      "strategyTips": [
+        "Prüfe zu Beginn die mittleren Spalten; sie gehören zu mehr möglichen Linien.",
+        "Achte darauf, wo ein Stein tatsächlich landet. Eine höher liegende Lücke ohne Unterbau ist noch keine spielbare Drohung.",
+        "Prüfe vor dem Zug, ob dein Stein ein gegnerisches Gewinnfeld direkt darüber zugänglich macht.",
+        "Zwei verschiedene spielbare Gewinnfelder können den Gegner unter Druck setzen, wenn er weder sofort gewinnt noch beide mit einem Zug blockieren kann."
+      ],
+      "progression": [
+        "Alle drei Schwierigkeitsgrade nutzen dasselbe Brett und dieselbe Siegbedingung. Nur die Spaltenwahl des Computers ändert sich; Schwer durchsucht nicht den gesamten Spielbaum und ist nicht unbesiegbar.",
+        "Wiederhole Runden, um Eröffnungen, Blocks und Drohungen zu vergleichen. Ein Schwierigkeitswechsel startet eine neue Runde; Kontolevel gibt es nicht."
+      ],
+      "designNote": "Vier gewinnt nutzt die gemeinsame Classic-Logic-Lab-Oberfläche, ein anpassbares Schwerkraftbrett, eine Sperre während des Computerzugs, beratende Hinweise, eine Zug-Wiederherstellung per Rückgängig, Ergebnisanzeige und lokale Browsereinstellungen.",
+      "parent": "Vier gewinnt ist ein Browser-Strategiespiel für alle. Konto und Kauf sind nicht nötig; Einstellungen und ein eventuell verfügbarer Bestwert bleiben in diesem Browser und können beim Löschen der Websitedaten verschwinden.",
+      "text140Tags": [
+        "Schwerkraftbrett",
+        "Vier in einer Reihe",
+        "Computergegner"
+      ]
+    }
+  },
+  "it": {
+    "lights-out": {
+      "story": [
+        "La griglia 5×5 è una piccola sfida di logica. Ogni pressione cambia un gruppo a croce, quindi sistemare una zona può modificare le caselle vicine.",
+        "Ogni tentativo parte dalla stessa disposizione fissa. Spegni tutte le luci, controlla le mosse e rigioca per provare un percorso diverso."
+      ],
+      "systems": [
+        "Premere una casella inverte quella casella e le vicine presenti sopra, sotto, a sinistra e a destra. Un angolo coinvolge tre caselle, un bordo quattro e una casella interna cinque.",
+        "La partita finisce quando tutte le 25 luci sono spente. Suggerimento indica una possibile pressione senza eseguirla; Annulla ripristina la griglia e il conteggio delle mosse precedenti all'ultima pressione.",
+        "Inizia apre direttamente la griglia. Nuovo puzzle e Rigioca ripristinano lo stesso inizio; il risultato offre Rigioca, Menu e Chiudi. Il record di mosse e le preferenze restano in questo browser."
+      ],
+      "how": [
+        "Seleziona Inizia per aprire la griglia fissa 5×5.",
+        "Premi una casella e osserva tutte le luci cambiate nella croce.",
+        "Usa Suggerimento per vedere una proposta o Annulla per ripristinare griglia e numero di mosse precedenti.",
+        "Spegni tutte le luci, leggi il risultato e riparti dallo stesso inizio per tentare meno mosse."
+      ],
+      "strategyTips": [
+        "Un angolo cambia tre caselle, un bordo quattro e una casella interna cinque. Guarda tutta la croce prima di premere.",
+        "Prova a liberare le righe dall'alto verso il basso premendo sotto ogni luce accesa. Se l'ultima riga resta illuminata, cambia le scelte nella prima riga al tentativo successivo.",
+        "Premere due volte la stessa casella ripristina le luci ma aggiunge due mosse; Annulla ripristina anche il conteggio precedente."
+      ],
+      "progression": [
+        "La disposizione iniziale e le regole 5×5 restano identiche in ogni tentativo; non ci sono griglie casuali o livelli da sbloccare.",
+        "Confronta le mosse delle partite risolte per migliorare il percorso. Non ci sono timer, account o acquisti richiesti."
+      ],
+      "designNote": "Spegni le luci usa il flusso condiviso di Classic Logic Lab, una griglia 5×5 adattabile, un inizio fisso risolvibile, un suggerimento non automatico, Annulla reversibile, il risultato di vittoria e impostazioni e record locali del browser.",
+      "parent": "Spegni le luci è un puzzle per browser adatto a tutti. Non servono account o acquisti. Preferenze e record di mosse restano in questo browser e possono sparire se i dati del sito vengono cancellati.",
+      "text140Tags": [
+        "Puzzle di interruttori",
+        "Logica 5×5",
+        "Pianificazione delle mosse"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "Ogni pedina cambia le minacce visibili e l’altezza a cui cadrà la prossima nella stessa colonna. Costruisci una linea tenendo d’occhio le occasioni che offri al computer.",
+        "La partita passa direttamente dal tabellone al risultato. Rigioca svuota la griglia per provare un’apertura diversa."
+      ],
+      "systems": [
+        "La griglia ha sette colonne e sei righe. Una pedina cade nella casella libera più bassa della colonna scelta; una colonna piena non può essere giocata.",
+        "Vince chi allinea quattro pedine proprie in orizzontale, verticale o diagonale. Se la griglia si riempie senza un quattro in linea, la partita termina.",
+        "Facile sceglie a caso una colonna libera. Medio cerca prima una vittoria immediata, poi blocca la tua vittoria immediata e altrimenti sceglie a caso. Difficile compie gli stessi controlli e poi preferisce una colonna vicina al centro. Cambiare difficoltà azzera la partita.",
+        "Il suggerimento evidenzia una mossa vincente, una difesa o una colonna centrale senza piazzare pedine. Annulla interrompe il turno in attesa del computer e ripristina la griglia prima della tua ultima mossa."
+      ],
+      "how": [
+        "Scegli Facile, Medio o Difficile e avvia la partita.",
+        "Seleziona una colonna libera e aspetta che il computer completi la risposta.",
+        "Cerca una casella vincente giocabile o una minaccia immediata avversaria. Consulta il suggerimento oppure annulla e prova una mossa diversa.",
+        "Dopo una vittoria, una sconfitta o una griglia piena senza vincitore, scegli Rigioca per ricominciare o Home per uscire."
+      ],
+      "strategyTips": [
+        "All’inizio considera le colonne centrali: fanno parte di più linee possibili.",
+        "Guarda dove può davvero cadere la pedina. Uno spazio alto senza sostegno sotto non è ancora una minaccia giocabile.",
+        "Prima di giocare controlla se la tua pedina renderà accessibile una casella vincente avversaria subito sopra.",
+        "Due caselle vincenti distinte e giocabili possono imporre una risposta se l’avversario non può vincere subito né bloccarle entrambe con una mossa."
+      ],
+      "progression": [
+        "Le tre difficoltà usano la stessa griglia e la stessa regola di vittoria. Cambia solo la scelta della colonna del computer; Difficile non esplora tutto l’albero di gioco e non è imbattibile.",
+        "Rigioca per confrontare aperture, difese e minacce. Cambiare difficoltà avvia una nuova partita; non ci sono livelli dell’account."
+      ],
+      "designNote": "Forza quattro usa l’interfaccia condivisa di Classic Logic Lab, una griglia gravitazionale adattiva, il blocco durante il turno del computer, suggerimenti indicativi, Annulla che ripristina il turno, il risultato e le preferenze locali del browser.",
+      "parent": "Forza quattro è un gioco di strategia nel browser per tutti. Non servono account o acquisti; le impostazioni e l’eventuale miglior risultato restano in questo browser e possono scomparire cancellando i dati del sito.",
+      "text140Tags": [
+        "Griglia a gravità",
+        "Quattro in linea",
+        "Avversario computer"
+      ]
+    }
+  },
+  "ru": {
+    "lights-out": {
+      "story": [
+        "Поле 5×5 — компактная логическая задача. Каждое нажатие меняет свет в клетках крестообразной области, поэтому решение в одной части поля может затронуть соседние клетки.",
+        "Каждая попытка начинается с одного и того же заданного узора. Погасите все огни, посмотрите число ходов и повторите попытку с другим порядком нажатий."
+      ],
+      "systems": [
+        "Нажатие переключает выбранную клетку и существующих соседей сверху, снизу, слева и справа. Угловая клетка меняет три клетки, краевая — четыре, внутренняя — пять.",
+        "Задача решена, когда все 25 огней погашены. Подсказка лишь отмечает предлагаемый ход и не делает его. Отмена возвращает поле и число ходов к состоянию до последнего нажатия.",
+        "Начать игру сразу открывает поле. Новая задача и Снова восстанавливают одно и то же начальное расположение. В окне результата доступны Снова, Меню и Закрыть. Лучший результат и настройки хранятся в этом браузере."
+      ],
+      "how": [
+        "Нажмите Начать игру, чтобы открыть поле 5×5 с заданным началом.",
+        "Нажмите клетку и проверьте все огни, изменившиеся в крестообразной области.",
+        "Используйте Подсказку для одного варианта или Отмену, чтобы вернуть прежнее поле и число ходов.",
+        "Погасите все огни, посмотрите результат и попробуйте решить то же расположение за меньшее число ходов."
+      ],
+      "strategyTips": [
+        "Угол меняет три клетки, край — четыре, внутренняя клетка — пять. Перед нажатием оцените всю область креста.",
+        "Попробуйте гасить ряды сверху вниз, нажимая прямо под горящей клеткой. Если нижний ряд не погас, в следующей попытке измените ходы в первом ряду.",
+        "Два нажатия одной клетки возвращают узор, но добавляют два хода. Отмена возвращает также прежнее число ходов."
+      ],
+      "progression": [
+        "Начальный узор и правила поля 5×5 одинаковы во всех попытках. Случайных полей и открываемых уровней нет.",
+        "Сравнивайте число ходов в решённых попытках и улучшайте порядок действий. Нет таймера, обязательной учётной записи или покупки."
+      ],
+      "designNote": "Погаси свет использует общую последовательность экранов Classic Logic Lab, адаптивное поле 5×5, заданное решаемое начало, рекомендательную подсказку, обратимую отмену, экран победы, а также локальное хранение настроек и лучшего числа ходов.",
+      "parent": "Погаси свет — браузерная головоломка для широкого круга игроков. Учётная запись и покупка не нужны. Настройки и лучшее число ходов хранятся в этом браузере и могут исчезнуть при очистке данных сайта.",
+      "text140Tags": [
+        "Головоломка с переключателями",
+        "Логика 5×5",
+        "Планирование ходов"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "Каждая фишка меняет видимые угрозы и высоту, на которую упадёт следующая фишка в этом столбце. Выстраивайте линию и следите, какие возможности ваш ход даёт компьютеру.",
+        "После партии сразу появляется экран результата. Повторная игра очищает поле, чтобы можно было проверить другое начало."
+      ],
+      "systems": [
+        "Поле состоит из семи столбцов и шести рядов. Фишка падает в самую нижнюю свободную клетку выбранного столбца; заполненный столбец недоступен.",
+        "Чтобы победить, соедините четыре свои фишки по горизонтали, вертикали или диагонали. Если поле заполнено, а линии нет ни у кого, раунд завершается.",
+        "Лёгкий уровень случайно выбирает свободный столбец. Средний сначала ищет немедленную победу, затем блокирует вашу немедленную победу, иначе выбирает случайно. Сложный тоже проверяет победу и блок, после чего предпочитает столбец ближе к центру. Смена сложности сбрасывает раунд.",
+        "Подсказка отмечает выигрышный ход, защиту или центральный столбец, но не ставит фишку. Отмена останавливает ожидающий ход компьютера и возвращает поле к состоянию перед вашим последним ходом."
+      ],
+      "how": [
+        "Выберите лёгкий, средний или сложный уровень и начните игру.",
+        "Выберите свободный столбец и дождитесь ответа компьютера.",
+        "Ищите доступную выигрышную клетку и немедленную угрозу соперника. Возьмите подсказку или отмените ход, чтобы попробовать другой.",
+        "После победы, поражения или заполнения поля без победителя выберите повторную игру либо вернитесь в меню."
+      ],
+      "strategyTips": [
+        "В начале обратите внимание на центральные столбцы: через них проходит больше возможных линий.",
+        "Смотрите, куда фишка действительно упадёт. Верхняя клетка без опоры снизу пока недоступна.",
+        "Перед ходом проверьте, не сделает ли ваша фишка доступной выигрышную клетку соперника прямо над ней.",
+        "Две разные доступные выигрышные клетки создают сильную угрозу, если соперник не может сразу победить или закрыть обе одним ходом."
+      ],
+      "progression": [
+        "На всех трёх уровнях поле и условие победы одинаковы. Меняется лишь выбор столбца компьютером; сложный уровень не перебирает всё дерево игры и не является непобедимым.",
+        "Повторяйте раунды, сравнивая первые ходы, блокировки и угрозы. Смена сложности начинает новый раунд; уровней аккаунта нет."
+      ],
+      "designNote": "«Четыре в ряд» использует общую оболочку Classic Logic Lab, адаптивное поле с падением фишек, блокировку во время хода компьютера, рекомендательную подсказку, отмену целого хода, экран результата и локальные настройки браузера.",
+      "parent": "«Четыре в ряд» — браузерная стратегическая игра для широкой аудитории. Аккаунт и покупки не нужны; настройки и доступный лучший результат остаются в этом браузере и могут исчезнуть при удалении данных сайта.",
+      "text140Tags": [
+        "Поле с падением фишек",
+        "Четыре в ряд",
+        "Компьютерный соперник"
+      ]
+    }
+  },
+  "hi": {
+    "lights-out": {
+      "story": [
+        "5×5 का बोर्ड एक छोटी तर्क पहेली है। हर बार दबाने पर क्रॉस के आकार में लाइट बदलती हैं, इसलिए एक जगह का हल आसपास के खाने बदल सकता है।",
+        "हर कोशिश में वही तय शुरुआती पैटर्न मिलता है। सभी लाइट बंद करें, चालों की संख्या देखें और दूसरा तरीका आज़माने के लिए फिर खेलें।"
+      ],
+      "systems": [
+        "किसी खाने को दबाने पर वह खाना और उसके मौजूद ऊपर, नीचे, बाएँ तथा दाएँ पड़ोसी खाने बदलते हैं। कोना तीन, किनारा चार और बीच का खाना पाँच खानों को प्रभावित करता है।",
+        "सभी 25 लाइट बंद होने पर पहेली पूरी होती है। संकेत केवल एक सुझाया गया खाना दिखाता है, उसे दबाता नहीं। चाल वापस लेने पर पिछला बोर्ड और चालों की संख्या लौट आती है।",
+        "गेम शुरू करें दबाते ही बोर्ड खुलता है। नई पहेली और फिर खेलें, दोनों वही शुरुआती पैटर्न लौटाते हैं। नतीजे में फिर खेलें, मेनू और बंद करें विकल्प हैं। सर्वोत्तम चाल संख्या और सेटिंग इस ब्राउज़र में रहती हैं।"
+      ],
+      "how": [
+        "तय 5×5 बोर्ड खोलने के लिए गेम शुरू करें चुनें।",
+        "कोई खाना दबाएँ और क्रॉस के आकार में बदली सभी लाइट जाँचें।",
+        "एक सुझाव के लिए संकेत देखें; दूसरा तरीका आज़माने के लिए चाल वापस लेकर बोर्ड और चालों की संख्या लौटाएँ।",
+        "सभी लाइट बंद करें, नतीजा देखें और उसी शुरुआत से कम चालों में हल करने की कोशिश करें।"
+      ],
+      "strategyTips": [
+        "कोना तीन, किनारा चार और बीच का खाना पाँच खाने बदलता है। दबाने से पहले पूरा क्रॉस देखें।",
+        "जली हुई लाइट के ठीक नीचे वाला खाना दबाकर ऊपर से नीचे की ओर पंक्तियाँ साफ़ करने की कोशिश करें। नीचे की पंक्ति में लाइट बचें तो अगली कोशिश में पहली पंक्ति की चालें बदलें।",
+        "एक ही खाना दो बार दबाने से लाइट का पैटर्न लौटता है, लेकिन दो चालें बढ़ती हैं। चाल वापस लेने से गिनती भी लौटती है।"
+      ],
+      "progression": [
+        "हर कोशिश में वही शुरुआती पैटर्न और 5×5 नियम रहते हैं। कोई बेतरतीब बोर्ड या खोलने वाला स्तर नहीं है।",
+        "हल की हुई पहेलियों की चालें तुलना करके तरीका सुधारें। समय सीमा, खाता या खरीद की ज़रूरत नहीं है।"
+      ],
+      "designNote": "लाइट्स आउट में साझा Classic Logic Lab स्क्रीन क्रम, स्क्रीन के अनुसार ढलने वाला 5×5 बोर्ड, तय और हल हो सकने वाला शुरुआती पैटर्न, केवल सुझाव देने वाला संकेत, चालों की गिनती सहित वापस लेने का विकल्प, हल का नतीजा तथा ब्राउज़र में रखी सेटिंग और सर्वोत्तम चाल संख्या हैं।",
+      "parent": "लाइट्स आउट आम खिलाड़ियों के लिए ब्राउज़र पहेली है। खाते या खरीद की ज़रूरत नहीं है। सेटिंग और सर्वोत्तम चाल संख्या इसी ब्राउज़र में रहती हैं और साइट का डेटा हटाने पर मिट सकती हैं।",
+      "text140Tags": [
+        "स्विच पहेली",
+        "5×5 तर्क",
+        "चालों की योजना"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "हर गोटी दिखने वाले खतरों और उस कॉलम में अगली गोटी के गिरने की ऊँचाई को बदलती है। अपनी पंक्ति बनाते समय देखें कि कंप्यूटर को कौन सा मौका मिल रहा है।",
+        "खेल सीधे परिणाम स्क्रीन पर पहुँचता है। फिर खेलें चुनने पर बोर्ड साफ हो जाता है, ताकि आप दूसरी शुरुआत आज़मा सकें।"
+      ],
+      "systems": [
+        "बोर्ड में सात कॉलम और छह पंक्तियाँ हैं। गोटी चुने गए कॉलम के सबसे नीचे खाली खाने में गिरती है; भरे हुए कॉलम में चाल नहीं चल सकते।",
+        "अपनी चार गोटियाँ क्षैतिज, ऊर्ध्वाधर या तिरछी पंक्ति में जोड़ने पर जीत होती है। बिना चार जुड़े पूरा बोर्ड भर जाए तो दौर समाप्त होता है।",
+        "आसान स्तर उपलब्ध कॉलम यादृच्छिक रूप से चुनता है। मध्यम पहले तुरंत जीत, फिर आपकी तुरंत जीत रोकने का मौका खोजता है, नहीं तो यादृच्छिक चाल चलता है। कठिन भी यही जाँच करता है और फिर केंद्र के पास वाला कॉलम चुनता है। कठिनाई बदलने से दौर रीसेट होता है।",
+        "संकेत जीतने वाली चाल, रोकने की चाल या बीच का कॉलम दिखाता है, पर गोटी नहीं रखता। पूर्ववत कंप्यूटर की लंबित चाल रोककर बोर्ड को आपकी पिछली चाल से पहले की स्थिति में लौटाता है।"
+      ],
+      "how": [
+        "आसान, मध्यम या कठिन चुनें और खेल शुरू करें।",
+        "खाली जगह वाला कॉलम चुनें और कंप्यूटर की चाल पूरी होने की प्रतीक्षा करें।",
+        "अभी उपलब्ध जीतने वाला खाना और विरोधी का तत्काल खतरा देखें। संकेत लें या चाल पूर्ववत करके दूसरा विकल्प आज़माएँ।",
+        "जीत, हार या बिना विजेता के पूरा बोर्ड भरने के बाद फिर खेलें से नया दौर शुरू करें या मुख्य पृष्ठ पर लौटें।"
+      ],
+      "strategyTips": [
+        "शुरुआत में बीच के कॉलम देखें; वे अधिक संभावित पंक्तियों का हिस्सा हैं।",
+        "ध्यान दें कि गोटी सचमुच कहाँ गिरेगी। नीचे सहारा न होने वाला ऊपरी खाली खाना अभी उपलब्ध नहीं है।",
+        "चाल से पहले जाँचें कि आपकी गोटी अपने ठीक ऊपर विरोधी का जीतने वाला खाना उपलब्ध तो नहीं कर रही।",
+        "दो अलग और अभी उपलब्ध जीतने वाले खाने विरोधी पर दबाव डालते हैं, यदि वह तुरंत जीत नहीं सकता और एक चाल में दोनों नहीं रोक सकता।"
+      ],
+      "progression": [
+        "तीनों कठिनाइयों में बोर्ड और जीत का नियम समान है। केवल कंप्यूटर का कॉलम चुनने का तरीका बदलता है; कठिन स्तर पूरी खेल-वृक्ष नहीं खोजता और अजेय नहीं है।",
+        "बार-बार खेलकर शुरुआती चालों, बचाव और खतरों की तुलना करें। कठिनाई बदलने पर नया दौर शुरू होता है; खाता स्तर नहीं हैं।"
+      ],
+      "designNote": "चार की पंक्ति साझा Classic Logic Lab इंटरफ़ेस, स्क्रीन के अनुसार ढलने वाला गुरुत्व बोर्ड, कंप्यूटर की बारी के दौरान चाल रोकने, सलाह देने वाला संकेत, बारी लौटाने वाला पूर्ववत, परिणाम और स्थानीय ब्राउज़र सेटिंग का उपयोग करती है।",
+      "parent": "चार की पंक्ति सभी के लिए ब्राउज़र रणनीति खेल है। खाते या खरीद की जरूरत नहीं; सेटिंग और उपलब्ध सर्वोत्तम परिणाम इसी ब्राउज़र में रहते हैं और साइट डेटा मिटाने पर हट सकते हैं।",
+      "text140Tags": [
+        "गुरुत्व बोर्ड",
+        "चार की पंक्ति",
+        "कंप्यूटर प्रतिद्वंद्वी"
+      ]
+    }
+  },
+  "ar": {
+    "lights-out": {
+      "story": [
+        "لوحة 5×5 لغز منطقي صغير. كل ضغطة تبدّل مجموعة على شكل صليب، لذا قد يؤثر حل منطقة في الخلايا المجاورة.",
+        "تبدأ كل محاولة بنمط الأضواء الثابت نفسه. أطفئ جميع الأنوار، وراجع عدد الحركات، ثم أعد اللعب لتجربة ترتيب مختلف."
+      ],
+      "systems": [
+        "الضغط على خلية يبدّلها ويبدّل جيرانها الموجودين فوقها وتحتها وعن يمينها ويسارها. تؤثر الزاوية في ثلاث خلايا، والحافة في أربع، والخلية الداخلية في خمس.",
+        "يُحل اللغز عند إطفاء الأنوار في الخلايا الخمس والعشرين كلها. يحدد التلميح ضغطة مقترحة من دون تنفيذها؛ ويعيد التراجع اللوحة وعدد الحركات إلى ما قبل الضغطة الأخيرة.",
+        "ينقلك «ابدأ اللعبة» مباشرة إلى اللوحة. يعيد كل من «لغز جديد» و«العب مجددًا» ترتيب البداية نفسه؛ وتتيح شاشة النتيجة إعادة اللعب والقائمة والإغلاق. يُحفظ أفضل عدد حركات والتفضيلات في هذا المتصفح."
+      ],
+      "how": [
+        "اختر «ابدأ اللعبة» لفتح لوحة 5×5 ذات البداية الثابتة.",
+        "اضغط خلية وتحقق من كل الأنوار التي تغيرت في شكل الصليب.",
+        "استخدم «تلميح» لرؤية اقتراح واحد، أو «تراجع» لاستعادة اللوحة وعدد الحركات السابقين.",
+        "أطفئ جميع الأنوار، وراجع النتيجة، ثم أعد المحاولة من البداية نفسها بحركات أقل."
+      ],
+      "strategyTips": [
+        "تبدّل الزاوية ثلاث خلايا، والحافة أربعًا، والخلية الداخلية خمسًا. افحص شكل الصليب كله قبل الضغط.",
+        "جرّب إطفاء الصفوف من الأعلى إلى الأسفل بالضغط تحت كل خلية مضاءة مباشرة. إذا بقي ضوء في الصف الأخير، فغيّر ضغطات الصف الأول في المحاولة التالية.",
+        "الضغط مرتين على الخلية نفسها يعيد نمط الأضواء، لكنه يضيف حركتين؛ أما التراجع فيعيد عدد الحركات أيضًا."
+      ],
+      "progression": [
+        "يبقى ترتيب البداية وقواعد لوحة 5×5 كما هما في كل محاولة؛ لا توجد لوحات عشوائية أو مراحل لفتحها.",
+        "قارن عدد الحركات في محاولاتك الناجحة لتحسين خطتك. لا يوجد مؤقت أو حساب أو شراء مطلوب."
+      ],
+      "designNote": "تستخدم إطفاء الأنوار تسلسل شاشات Classic Logic Lab المشترك، ولوحة 5×5 متجاوبة، وبداية ثابتة قابلة للحل، وتلميحًا إرشاديًا، وتراجعًا يعيد عدد الحركات، ونتيجة عند الحل، وإعدادات وأفضل عدد حركات محفوظين في المتصفح.",
+      "parent": "إطفاء الأنوار لغز متصفح مناسب للجمهور العام. لا يتطلب حسابًا أو شراءً. تبقى التفضيلات وأفضل نتيجة للحركات في هذا المتصفح، وقد تختفي عند مسح بيانات الموقع.",
+      "text140Tags": [
+        "لغز المفاتيح",
+        "منطق 5×5",
+        "تخطيط الحركات"
+      ]
+    },
+    "four-in-a-row": {
+      "story": [
+        "تغيّر كل قطعة التهديدات الظاهرة والارتفاع الذي ستهبط إليه القطعة التالية في العمود نفسه. كوّن صفًا وانتبه إلى الفرص التي تتيحها حركتك للحاسوب.",
+        "تنتقل الجولة مباشرة من اللوحة إلى شاشة النتيجة. يعيد خيار «العب مجددًا» إفراغ اللوحة لتجربة افتتاح مختلف."
+      ],
+      "systems": [
+        "تتكون اللوحة من سبعة أعمدة وستة صفوف. تهبط القطعة إلى أدنى خلية فارغة في العمود المختار، ولا يمكن اللعب في عمود ممتلئ.",
+        "تفوز بوصل أربع من قطعك أفقيًا أو رأسيًا أو قطريًا. إذا امتلأت اللوحة من دون أن يحقق أي طرف ذلك، تنتهي الجولة.",
+        "يختار المستوى السهل عمودًا متاحًا عشوائيًا. يبحث المتوسط أولًا عن فوز فوري، ثم يمنع فوزك الفوري، وإلا يختار عشوائيًا. يفعل الصعب الشيء نفسه، ثم يفضل عمودًا أقرب إلى الوسط. تغيير الصعوبة يعيد ضبط الجولة.",
+        "تشير التلميحة إلى حركة فوز أو دفاع أو عمود وسطي من دون وضع قطعة. يلغي التراجع دور الحاسوب المنتظر ويعيد اللوحة إلى ما قبل حركتك الأخيرة."
+      ],
+      "how": [
+        "اختر السهل أو المتوسط أو الصعب وابدأ اللعب.",
+        "اختر عمودًا غير ممتلئ وانتظر حتى يُكمل الحاسوب رده.",
+        "ابحث عن خلية فوز يمكن الوصول إليها وعن تهديد فوري من الخصم. استخدم التلميحة أو تراجع لتجربة حركة أخرى.",
+        "بعد فوز أو خسارة أو امتلاء اللوحة دون فائز، اختر «العب مجددًا» لبدء جولة جديدة أو «الرئيسية» للمغادرة."
+      ],
+      "strategyTips": [
+        "فكر في الأعمدة الوسطى مبكرًا، فهي تدخل في عدد أكبر من الخطوط الممكنة.",
+        "تحقق من موضع هبوط القطعة فعلًا. الفجوة المرتفعة التي تحتها خلايا فارغة ليست تهديدًا قابلًا للعب بعد.",
+        "قبل إسقاط قطعة، تأكد من أنها لا تجعل خلية فوز الخصم التي تعلوها مباشرة قابلة للاستخدام.",
+        "قد يفرض وجود خليتي فوز مختلفتين وقابلتين للعب ردًا على الخصم، إذا لم يستطع الفوز فورًا أو منع الفرصتين بحركة واحدة."
+      ],
+      "progression": [
+        "تستخدم مستويات الصعوبة الثلاثة اللوحة نفسها وقاعدة الفوز نفسها. يختلف فقط اختيار الحاسوب للعمود؛ المستوى الصعب لا يبحث كل مسارات اللعب وليس خصمًا لا يُهزم.",
+        "أعد الجولات لمقارنة الافتتاحات والدفاعات والتهديدات. تغيير الصعوبة يبدأ جولة جديدة، ولا توجد مستويات حساب."
+      ],
+      "designNote": "تستخدم «أربع في صف» واجهة Classic Logic Lab المشتركة ولوحة جاذبية متجاوبة وقفل الإدخال أثناء دور الحاسوب وتلميحة استشارية وتراجعًا يعيد الدور وشاشة نتيجة وتفضيلات محفوظة محليًا في المتصفح.",
+      "parent": "«أربع في صف» لعبة استراتيجية في المتصفح لعامة اللاعبين. لا يلزم حساب أو شراء؛ تبقى الإعدادات وأفضل نتيجة متاحة في هذا المتصفح، وقد تُحذف عند مسح بيانات الموقع.",
+      "text140Tags": [
+        "لوحة جاذبية",
+        "أربع قطع في صف",
+        "خصم حاسوبي"
+      ]
+    }
+  }
+};
+  for (const [localeKey, gamesCopy] of Object.entries(text140ClassicLogicGuides)) {
+    for (const [gameId, copy] of Object.entries(gamesCopy)) {
+      Object.assign(classicGeneralLocaleCopy[localeKey][gameId], copy);
+    }
+  }
+  // Keep the already indexed Arabic title and introduction while extending its Guide.
+  Object.assign(classicGeneralLocaleCopy.ar["four-in-a-row"], {
+    title: "أربع على التوالي",
+    intro: "أسقط أقراصك في لوحة من سبعة أعمدة وستة صفوف. اربط أربعة أقراص من لونك قبل الخصم، أفقيًا أو رأسيًا أو قطريًا.",
+  });
 
   for (const [localeKey, copies] of Object.entries(classicGeneralLocaleCopy)) {
     localizedGames[localeKey] ||= {};
@@ -10074,8 +11003,23 @@
       ["هل يُحفظ التقدم؟", "يُحفظ تقدم المراحل والمواهب في هذا المتصفح. يؤدي مسح بيانات المتصفح إلى حذف الحفظ."],
     ],
   };
+  const crystalTalentFaq = {
+    en: ["How do lasting talents work?", "Battle XP raises your adventure level and makes talent points available. Spend points after meeting branch prerequisites; Reset returns allocated points so you can choose again."],
+    "zh-Hant": ["持續生效的天賦怎麼運作？", "戰鬥經驗會提升冒險等級並提供天賦點。達成分支前置條件後可配點；重置會退回已分配點數，方便重新選擇。"],
+    "zh-Hans": ["持续生效的天赋怎么运作？", "战斗经验会提升冒险等级并提供天赋点。满足分支前置条件后可分配点数；重置会返还已分配点数，方便重新选择。"],
+    ja: ["継続する才能はどう使いますか？", "バトル経験値で冒険レベルが上がり、才能ポイントを使えるようになります。枝の前提条件を満たして振り分け、リセットすると割り振ったポイントが戻ります。"],
+    ko: ["지속 특성은 어떻게 사용하나요?", "전투 경험치로 모험 레벨이 올라 특성 포인트를 사용할 수 있습니다. 계열의 선행 조건을 채운 뒤 투자하고, 초기화하면 배분한 포인트를 돌려받습니다."],
+    es: ["¿Cómo funcionan los talentos permanentes?", "La XP de combate aumenta el nivel de aventura y habilita puntos de talento. Asigna puntos tras cumplir los requisitos de cada rama; Reiniciar devuelve los puntos asignados para elegir de nuevo."],
+    "pt-BR": ["Como funcionam os talentos duradouros?", "A XP das batalhas aumenta o nível de aventura e libera pontos de talento. Distribua pontos após cumprir os pré-requisitos do ramo; Reiniciar devolve os pontos alocados para uma nova escolha."],
+    fr: ["Comment fonctionnent les talents durables ?", "L’XP gagnée en combat augmente le niveau d’aventure et rend des points de talent disponibles. Remplissez les prérequis d’une branche avant de les dépenser ; Réinitialiser rend les points attribués."],
+    de: ["Wie funktionieren dauerhafte Talente?", "Kampf-EP erhöhen die Abenteuerstufe und machen Talentpunkte verfügbar. Investiere sie nach Erfüllung der Zweigvoraussetzungen; Zurücksetzen gibt verteilte Punkte zurück."],
+    it: ["Come funzionano i talenti permanenti?", "L'XP delle battaglie aumenta il livello avventura e rende disponibili punti talento. Assegnali dopo aver soddisfatto i prerequisiti del ramo; Ripristina restituisce i punti spesi."],
+    ru: ["Как работают постоянные таланты?", "Опыт за бои повышает уровень приключения и открывает очки талантов. Распределяйте их после выполнения условий ветки; сброс возвращает вложенные очки."],
+    hi: ["स्थायी प्रतिभाएँ कैसे काम करती हैं?", "युद्ध का XP साहसिक स्तर बढ़ाता है और प्रतिभा अंक उपलब्ध कराता है। शाखा की शर्तें पूरी करके अंक लगाएँ; रीसेट से लगाए गए अंक वापस मिलते हैं।"],
+    ar: ["كيف تعمل المواهب الدائمة؟", "ترفع خبرة القتال مستوى المغامرة وتتيح نقاط المواهب. وزّعها بعد استيفاء متطلبات الفرع؛ تعيد إعادة الضبط النقاط الموزعة لتختار من جديد."],
+  };
   for (const [code, faq] of Object.entries(crystalSeoFaqs)) {
-    crystalCombatGuides[code].faq = faq;
+    crystalCombatGuides[code].faq = [...faq, crystalTalentFaq[code]];
   }
 
   function localizedGame(id) {
@@ -10650,6 +11594,7 @@
           <h2>${escapeHtml(game.title)}</h2>
           <p>${escapeHtml(game.intro)}</p>
         </div>
+        ${Array.isArray(game.text140Tags) && game.text140Tags.length >= 2 ? `<div class="game-info-tags" data-wp-gameplay-tags="1.4.0">${game.text140Tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : ""}
         ${isClassicCardGame ? "" : `<div class="game-info-facts">
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("gameplay"))}</span><strong>${escapeHtml(game.gameplay || game.title)}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("genre"))}</span><div class="game-info-tags">${(game.genre || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>
@@ -20926,7 +21871,10 @@
   for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
     if (!localizedGames[code]) localizedGames[code] = {};
     for (const [id, copy] of Object.entries(localeData.games || {})) {
-      localizedGames[code][id] = { ...(localizedGames[code][id] || {}), ...copy };
+      const existing = localizedGames[code][id] || {};
+      localizedGames[code][id] = id === "four-in-a-row" && existing.text140Tags
+        ? { ...copy, ...existing }
+        : { ...existing, ...copy };
     }
   }
   const beastDeckArabicGuideCopy = {

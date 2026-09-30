@@ -338,6 +338,7 @@
     nextButton.onclick = () => startPath(state.path + 1, { campaign: state.campaignRun });
   };
   const guideCopy = window.ANIMAL_LANTERN_LATTICE_GUIDE_COPY || {};
+  const relatedCopy = window.ANIMAL_LANTERN_LATTICE_RELATED || {};
   const seoComparison = window.ANIMAL_LANTERN_LATTICE_SEO_COMPARISON || {};
   const buildGuide = () => {
     const guide = guideCopy[state.locale] || guideCopy.en;
@@ -374,6 +375,31 @@
       else article.append(Object.assign(document.createElement("p"),{textContent:bodies[index]}));
       return article;
     }));
+    const related = relatedCopy[state.locale] || relatedCopy.en;
+    if (related) {
+      const article = document.createElement("article");
+      article.className = "game-info-section game-info-related-section";
+      const heading = document.createElement("h3");
+      heading.textContent = related.heading;
+      const cards = document.createElement("div");
+      cards.className = "game-info-related";
+      for (const game of related.games) {
+        const card = document.createElement("a");
+        card.className = "game-info-related-card";
+        card.href = `/${related.segment}/games/${game.id}/`;
+        const copy = document.createElement("span");
+        copy.className = "game-info-related-copy";
+        const name = document.createElement("strong");
+        name.textContent = game.title;
+        const description = document.createElement("span");
+        description.textContent = game.description;
+        copy.append(name, description);
+        card.append(copy);
+        cards.append(card);
+      }
+      article.append(heading, cards);
+      sections.append(article);
+    }
   };
   const applyLocale = () => {
     document.documentElement.lang = state.locale;

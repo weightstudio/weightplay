@@ -63,22 +63,23 @@
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">熄燈遊戲</h1><div id="logicApp"></div><script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260907-lights-out-public-release-v12"></script><script src="game.js?v=20260907-lights-out-public-release-v12"></script><script src="analytics-ownership.js?v=20260815-lights-out-funnel-v4"></script><section class="game-page-info game-page-info-static" aria-label="熄燈遊戲 遊戲資訊" data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>熄燈遊戲</h2><p>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>開關益智</span><span>經典</span><span>益智</span><span>策略</span></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>熄燈遊戲</h2><p>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>開關益智</span><span>5×5 邏輯</span><span>步數規劃</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>開關益智</strong></div><div class="game-info-fact"><span>類型</span><strong>經典 · 益智 · 策略 · 家庭</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單至具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>3–8 分鐘</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>The board is a compact logic field: every press changes a cross-shaped group, so a move that helps one edge can create a new obligation nearby.</p>
-<p>A fixed puzzle loop keeps the goal readable. Solve the board, inspect the move count, then Replay or choose New Puzzle to practice a different route.</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>Lights Out uses a 5x5 board. A tile press toggles the selected tile plus its up, down, left, and right neighbors when those cells exist.</p>
-<p>The puzzle is solved when every light is off. Hint marks one legal candidate without playing it; Undo restores the prior board and move count.</p>
-<p>Start Game opens Battle directly. Result reports the solved board and offers Replay, Menu, and Close; progress and preferences remain local to this browser.</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>Choose Start Game to open the 5x5 board.</li><li>Press a tile and read the cross-shaped change to the selected cell and its orthogonal neighbors.</li><li>Use Hint when you want one candidate, then decide the move yourself; use Undo to compare a different route.</li><li>Turn every light off, review the Result move count, and choose Replay or New Puzzle for another attempt.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Work from the board edge inward; an edge press affects fewer cells than a center press.</li><li>After each press, reread the whole cross instead of assuming the last move only changed one tile.</li><li>Use Hint as a route suggestion and Undo as a comparison tool, not as an automatic solver.</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>Each round uses the same readable 5x5 rule set, while Replay and New Puzzle provide repeatable practice with a fresh board.</p>
-<p>Improvement is measured by solving cleanly and reducing moves; there is no timer, account level, or purchase gate.</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>Lights Out uses the shared Classic Logic Lab shell, a responsive 5x5 board, direct Main-to-Battle flow, advisory Hint, reversible Undo, solved Result feedback, and browser-local settings.</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>熄燈遊戲是一般玩家可遊玩的瀏覽器益智遊戲。不需要帳號或購買；設定與可用的最佳結果只保存在這個瀏覽器。</p></div>
+      <div class="game-info-section"><h3>世界與任務</h3><p>5×5 棋盤是一道精簡的邏輯題。每次按下都會改變十字範圍內的燈，因此處理一處也可能影響附近。</p>
+<p>每次挑戰都從同一個固定燈光排列開始。清空棋盤、查看步數，再重新遊玩，試試另一條解法。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>按下一格會切換該格及棋盤上存在的上下左右鄰格。角落影響三格，邊緣影響四格，內部影響五格。</p>
+<p>25 格燈全部熄滅即過關。提示只標記建議按下的位置，不會代你操作；復原會還原上一步之前的棋盤與步數。</p>
+<p>「開始遊戲」直接進入棋盤。「新謎題」與「重新遊玩」都會還原同一個開局；結果畫面提供重新遊玩、選單與關閉。最佳步數和偏好設定保存在本瀏覽器。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇「開始遊戲」，進入固定的 5×5 棋盤。</li><li>按下一格，檢查十字範圍內每盞燈的變化。</li><li>需要建議時使用「提示」；想比較另一種走法時，用「復原」還原棋盤與步數。</li><li>熄滅所有燈光，查看結果，再從相同開局挑戰更少步數。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>角落影響三格，邊緣四格，內部五格；下手前先看完整十字範圍。</li><li>可以由上往下，按下亮格正下方的格子，逐列清除。若最後一列仍亮，下次調整第一列的按法。</li><li>同一格按兩次會還原燈光排列，卻增加兩步；「復原」也會還原步數。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>每次挑戰都使用相同的開局與 5×5 規則，沒有隨機棋盤或待解鎖的關卡。</p>
+<p>比較過關步數，逐步改進解法；沒有計時、帳號或付費門檻。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>熄燈遊戲採用共用的 Classic Logic Lab 畫面流程、響應式 5×5 棋盤、固定且可解的開局、只提供建議的提示、可還原步數的復原功能，以及儲存在瀏覽器內的設定與最佳步數。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>熄燈遊戲是適合一般玩家的瀏覽器益智遊戲，不需要帳號或購買。偏好設定與最佳步數保存在本瀏覽器；清除網站資料後可能消失。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>按下一格會怎樣？</dt><dd>會切換該格，以及棋盤上存在的上下左右鄰格。</dd></div><div><dt>目標是什麼？</dt><dd>關掉所有燈光。</dd></div><div><dt>進度會保存嗎？</dt><dd>設定與可用的最佳結果只保存在這個瀏覽器。</dd></div><div><dt>提示會自動解題嗎？</dt><dd>不會。提示只標記一個合法候選位置，不會替你按下；是否按下仍由你決定。</dd></div><div><dt>這款線上開關益智遊戲要怎麼規劃解法？</dt><dd>按下前先看完整十字範圍：角落影響三格、邊緣四格、內部五格。可以從上往下，按在亮格正下方，逐列清掉上一列的燈。若最後一列仍亮，需重新考慮第一列的按法；不是任何起手都能直接解完。</dd></div><div><dt>同一格按兩次，等於復原嗎？</dt><dd>同一格按兩次會讓燈光回到原狀，但步數仍增加兩步。復原則同時還原上一個棋盤狀態與步數；想比較不同選擇時，用復原就不必多按一組互相抵銷的動作。</dd></div><div><dt>為什麼「新謎題」還是相同開局？</dt><dd>目前版本會重設同一個固定的 5×5 棋盤，不是隨機產生新題目，也不會解鎖下一關。可以重玩同一題，測試不同按法並比較步數。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑塊</strong><span>從 30 個已儲存關卡中選擇，挑戰經典、蛇形、直欄、錨點與繞行目標。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/sudoku/"><img src="/assets/interface7-redrawn/sudoku.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>數獨</strong><span>數獨是經典 9x9 推理謎題。</span></span></a></div></div>
     </div>

@@ -65,22 +65,24 @@
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">四目並べ</h1><div id="logicApp"></div><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260907-four-in-a-row-public-release-v8"></script><script src="game.js?v=20260909-four-interface-v9"></script><section class="game-page-info game-page-info-static" aria-label="四目並べ ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>四目並べ</h2><p>四目並べは、7×6の盤にコマを落として横・縦・斜めに4つそろえる定番ゲームです。</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>クラシック</span><span>パズル</span><span>戦略</span><span>ファミリー</span></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>四目並べ</h2><p>四目並べは、7×6の盤にコマを落として横・縦・斜めに4つそろえる定番ゲームです。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>重力盤</span><span>4つ並べる</span><span>コンピューター対戦</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>重力ストラテジー</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>クラシック · パズル · 戦略 · ファミリー</strong></div><div class="game-info-fact"><span>難易度</span><strong>簡単から難しい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>3～10分</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>Every disc changes both the visible threat and the future landing height of a column. A strong move creates a line while limiting the opponent&#39;s reply.</p>
-<p>The direct Battle loop keeps the board readable from the first drop to the Result. Replay resets the board so a different opening can be tested immediately.</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>The board has seven columns and six rows. A disc falls to the lowest open cell in its selected column; a full column cannot accept another disc.</p>
-<p>A round ends when a player connects four discs horizontally, vertically, or diagonally, or when the board fills. Difficulty changes the AI response, not the win rule.</p>
-<p>Hint highlights one tactical suggestion without auto-playing it; Undo restores the prior turn. Result offers Replay and Main, while local settings stay in this browser.</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>難易度を選び、列を選んで自分の石を落とします。</li><li>強調された合法手を読み、横・縦・斜めの4つ並びを計画します。</li><li>ヒントで戦術的な提案を1つ確認できますが、自動で置くことはありません。</li><li>AIより先に4つ並べたら、リプレイかメインに戻って続けます。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>Prefer the center columns early because they support more horizontal and diagonal lines.</li><li>Before making a drop, check the opponent&#39;s next winning column as well as your own immediate threat.</li><li>Avoid creating a winning-looking cell that gives the opponent a forced reply on the next turn.</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>Easy, Medium, and Hard change the opponent&#39;s decision pressure while keeping the same 7x6 board and four-line win condition.</p>
-<p>Replayable rounds make progress visible through better openings, safer blocks, and fewer forced replies rather than account levels.</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>Four in a Row uses the shared Classic Logic Lab shell, a responsive 7x6 gravity board, AI-turn lock, advisory Hint, reversible Undo, Result recovery, and browser-local preferences.</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>四目並べは一般向けのブラウザ戦略ゲームです。アカウントや購入は不要で、設定と利用可能なベスト結果はこのブラウザに保存されます。</p></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>コマを落とすたびに盤面の脅威と、その列の次の着地点が変わります。自分のラインを作ると同時に、コンピューターに与える機会も読みましょう。</p>
+<p>対局はそのまま結果画面へ進みます。「リプレイ」で盤を空にし、別の初手をすぐ試せます。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>盤は7列×6行です。コマは選んだ列の最も低い空きマスに落ち、満杯の列には置けません。</p>
+<p>自分のコマを横・縦・斜めに4つ並べると勝ちです。どちらも4つ並べず盤が埋まった場合も対局が終わります。</p>
+<p>簡単は空き列をランダムに選びます。普通は即勝ち、相手の即勝ちの防止、ランダムの順で選びます。難しいも勝ちと防御を確認し、それ以外は中央に近い列を優先します。難易度の変更は対局をリセットします。</p>
+<p>ヒントは勝ち筋、防御、または中央の列を示すだけで、コマは置きません。取り消しは保留中のコンピューターの手を止め、自分の直前の手より前の盤面に戻します。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>簡単・普通・難しいを選び、対局を始めます。</li><li>空きのある列を選んでコマを落とし、コンピューターの応手が終わるまで待ちます。</li><li>今すぐ置ける勝ちマスや相手の脅威を確認します。ヒントを参考にしたり、取り消して別の手を試したりできます。</li><li>勝敗または満盤による終了の後は、リプレイで新しい対局を始めるか、メインに戻ります。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>中央付近の列は横や斜めのラインに参加しやすいため、序盤に検討しましょう。</li><li>コマが実際に落ちるマスを数えます。下に空きマスがある上段の隙間にはまだ置けません。</li><li>自分のコマが、すぐ上にある相手の勝ちマスを使えるようにしないか確認しましょう。</li><li>別々の列に今すぐ置ける勝ちマスを2つ作り、相手が即勝ちも一手で両方の防御もできなければ、強い脅威になります。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>3つの難易度で盤と勝利条件は同じです。変わるのはコンピューターの列選びだけで、難しいも全手順を探索する無敵の相手ではありません。</p>
+<p>リプレイで初手や防御を比較できます。難易度を変えると新しい対局になり、アカウントのレベルはありません。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>四目並べは共通のClassic Logic Lab画面、画面に合わせて変わる重力盤、コンピューターの手番中の操作制限、助言としてのヒント、1手番を戻す取り消し、結果画面、ブラウザ内の設定を使います。</p></div>
+      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>四目並べは一般向けのブラウザ戦略ゲームです。アカウントや購入は不要です。設定と利用可能なベスト記録はこのブラウザ内に保存され、サイトデータを消すと失われる場合があります。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>コマはどう動きますか？</dt><dd>空いている列を選ぶと、コマは一番下の空きマスまで落ちます。</dd></div><div><dt>どうすれば勝てますか？</dt><dd>横・縦・斜めのいずれかに自分のコマを4つそろえます。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>設定と利用可能なベスト結果はこのブラウザだけに保存されます。</dd></div><div><dt>ヒントは何をしますか？</dt><dd>ヒントは戦術的な提案を1つ示しますが、代わりにコマを置くことはありません。</dd></div><div><dt>盤が埋まるとどうなりますか？</dt><dd>どちらも4つそろえられなければ満盤でラウンド終了です。結果画面からリプレイまたはメインへ進めます。</dd></div><div><dt>オンライン四目並べで、今すぐ使える脅威はどう見分けますか？</dt><dd>同じ色が3つあるかだけでなく、コマが落ちる高さを見ます。上の空きマスには、その下が埋まるまで置けません。自分の一手が、すぐ上にある相手の勝ちマスへの足場にならないかも確認しましょう。斜めの空きマスも、実際にそこへ落とせて初めて次の一手の脅威になります。</dd></div><div><dt>有効な二重の脅威とは何ですか？</dt><dd>できれば別々の列に、すぐ置けば勝てる異なるマスを2つ作ります。相手に即勝ちがなく、一手で両方を防げなければ、次の手にも勝ち筋が残ります。同じ空きマスを共有する2本の線は脅威1つです。下が空いていて置けないマスは、まだ直接の脅威ではありません。</dd></div><div><dt>この版の「簡単・普通・難しい」はどう違いますか？</dt><dd>簡単は空きのある列をランダムに選びます。普通は即勝ちを優先し、なければあなたの即勝ちを防ぎ、それもなければランダムに選びます。難しいも同じ勝ちと防御の確認を行い、それ以外では中央に近い空き列を優先します。全ての先の手を読むわけではなく、無敵ではありません。難易度を変えると現在の対局はリセットされます。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>マスと上下左右を切り替え、すべての灯りを消します。</span></span></a><a class="game-info-related-card" href="/ja/games/pyramid-solitaire/"><img src="/assets/interface7-redrawn/pyramid-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ピラミッドソリティア</strong><span>公開カードを合計13になるように組み合わせ、ピラミッドを消します。山札、ヒント、元に戻す、リスタートに対応。</span></span></a></div></div>
     </div>
