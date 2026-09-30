@@ -114,7 +114,7 @@ function claimNow(){const r=dailyRewardState();if(r.claimedToday)return{claimed:
 async function claimDailyReward(){try{return navigator.locks?.request?await navigator.locks.request("weightplay-daily-reward",claimNow):claimNow()}catch{return{claimed:false,reason:"storage-unavailable"}}}
 const api=Object.freeze({key:STORE,builderKey:BUILD,builderVersion:7,rewardPerClear:1,read,readBuilder:readBuild,creditFirstClear,build,upgradeWorld,worldLevel,ownedBlocks,landSize,placeBlock:place,removeBlock:remove,rotateBlock:turnBlock,dailyDiamondBonus,dailyDiamonds,dailyRewardState,claimDailyReward,refresh:()=>render()});window.WeightPlayCastle=api;
 
-const CUBE="/Assets/weightplay-block-world-cube-v1.svg?v=20260929-block-world-cube-v1";
+const CUBE="/assets/weightplay-block-world-cube-v1.svg?v=20260930-publish-path-v2";
 // The same small original pixel patterns power inventory icons and scene surfaces.
 function tint(hex,amount){const c=color(hex);return c.map(v=>Math.max(0,Math.min(255,Math.round(v*255*amount))))}
 function surfacePixels(m){const pixels=[];for(let y=0;y<8;y++)for(let x=0;x<8;x++){const hash=(x*17+y*31+x*y*7)%23;let hex=m.color,shade=.9+hash/115;switch(m.pattern){
