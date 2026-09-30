@@ -334,38 +334,38 @@ window.WeightPlayGameInfoLocales.es = {
         "Secuenciación",
         "Cuidado de animales"
       ],
-      "intro": "Animal Zoo Idle es un suave juego de gestión de parques construido en torno a 30 desafíos guardados. Los visitantes ingresan al prado, compran boletos y llenan una taquilla mientras el jugador cuida a los animales, mejora el puesto de refrigerios, la plataforma de visualización y el puesto de cuidador, expande la puerta y organiza los hábitats. Al final, doce animales podrán vivir en el parque. Cada quinto desafío es una revisión amistosa, que brinda a la economía continua un viaje claro de seis partes desde la primera recogida de entradas hasta el Gran Festival Safari.",
+      "intro": "Zoológico Idle es un juego de gestión de parques pausado, organizado en 30 desafíos guardados. Los visitantes ingresan al prado, compran boletos y llenan una taquilla mientras el jugador cuida a los animales, mejora el puesto de refrigerios, la plataforma de visualización y el puesto de cuidador, expande la puerta y organiza los hábitats. Al final, doce animales podrán vivir en el parque. Cada quinto desafío es una revisión amistosa, que brinda a la economía continua un viaje claro de seis partes desde la primera recogida de entradas hasta el Gran Festival Safari.",
       "story": [
         "La pradera comienza como un pequeño parque de animales con una puerta sencilla, unos pocos residentes y espacio para crecer. El jugador es su joven guardaparque. Un parque duradero necesita más que una entrada concurrida: los animales necesitan cuidados regulares, los espacios de hábitat deben estar cuidadosamente organizados y las instalaciones para los huéspedes deben seguir el ritmo de la creciente multitud.",
         "Mimi, Panko, un inspector de nutrias, un cuidador de rinocerontes y el equipo del desfile de pingüinos visitan los puntos de control de cinco etapas. Pasar una revisión significa que el parque ha demostrado cuidado básico, servicio de picnic, espacio de observación, apoyo de los cuidadores, capacidad para desfiles o la planificación equilibrada necesaria para el festival final."
       ],
       "how": [
-        "Elige un desafío desbloqueado del riel horizontal del escenario.",
-        "Lea cada gol antes de recolectar o gastar boletos.",
-        "Utilice Tidy Habitat para obtener felicidad o Enrichment Time para obtener ingresos por entradas.",
-        "Mejore la puerta, reclute animales, mejore las instalaciones o arrastre animales a nuevas posiciones de hábitat según lo solicitado.",
+        "Selecciona un desafío desbloqueado en la lista horizontal de desafíos.",
+        "Lee cada objetivo antes de recoger o gastar boletos.",
+        "Usa Tidy Habitat para mejorar el bienestar de los animales o Enrichment Time para obtener ingresos por boletos.",
+        "Mejora la puerta, recluta animales, mejora las instalaciones o arrastra animales a las nuevas posiciones de hábitat que pida el desafío.",
         "Reclama la recompensa después de completar cada objetivo y luego continúa con el siguiente desafío."
       ],
       "systems": [
-        "Los visitantes aportan continuamente billetes a la caja de recogida. Cada desafío superado de forma única también añade una pequeña bonificación de ingresos permanente.",
-        "Tidy Habitat genera felicidad, mientras que Enrichment Time otorga boletos. Ambos comparten un breve tiempo de reutilización de cuidados, por lo que el objetivo actual debería guiar la elección.",
+        "Los visitantes dejan continuamente monedas en la caja. Al completar cada desafío por primera vez, recibes una pequeña recompensa única en monedas.",
+        "Tidy Habitat aumenta el bienestar de los animales y Enrichment Time otorga boletos. Ambas acciones comparten el mismo tiempo breve de recarga; deja que el objetivo actual guíe tu elección.",
         "La puerta tiene ocho niveles. Los animales reclutados y las tres instalaciones de cuatro niveles permanecen guardados en este navegador.",
         "Los objetivos de disposición del hábitat cuentan el movimiento real de los animales en el prado en lugar de simplemente presionar un botón.",
-        "El Informe de crecimiento resume el parque, mientras que el Resultado del desafío desbloquea la siguiente etapa y ofrece el próximo desafío o desafíos."
+        "El Informe de crecimiento resume el parque. Al completar un desafío, el Resultado desbloquea el siguiente y permite continuar o repetir uno anterior."
       ],
       "progression": [
-        "Los desafíos 1 a 5 enseñan boletos, cuidados y movimiento del hábitat antes de la primera revisión de Mimi. Los desafíos 6 a 10 comparan opciones de cuidado, pide al jugador que sostenga una caja de boletos lista y presenta el puesto de refrigerios antes del picnic de Panko.",
-        "Los desafíos 11 a 15 presentan el View Deck, arreglos más amplios y objetivos de felicidad. Los desafíos 16 a 20 agregan el puesto de cuidador y combinan el cuidado, el recuento de animales y la planificación de instalaciones para la auditoría de cuidador de rinocerontes.",
+        "Los desafíos 1 a 5 enseñan boletos, cuidados y movimiento del hábitat antes de la primera revisión de Mimi. Los desafíos 6 a 10 comparan opciones de cuidado, piden mantener lista la caja de boletos e introducen el puesto de refrigerios antes del picnic de Panko.",
+        "Los desafíos 11 a 15 presentan el Mirador, una distribución más amplia y objetivos de felicidad. Los desafíos 16 a 20 incorporan el puesto del cuidador y combinan cuidados, recuento de animales y planificación de instalaciones para la revisión del cuidador de rinocerontes.",
         "Los desafíos 21 a 25 hacen crecer la puerta y la lista de animales para un desfile de pingüinos. Los desafíos 26 al 30 combinan gastos cuidadosos, las tres instalaciones, felicidad, arreglo e ingresos en el final del Gran Festival Safari."
       ],
       "strategyTips": [
-        "Lea todas las metas antes de gastar porque las metas de animales e instalaciones pueden competir por los mismos boletos.",
-        "Elija Tidy Habitat cuando se requiere felicidad, pero Enrichment Time cuando los ingresos son el cuello de botella.",
+        "Lee todos los objetivos antes de gastar, porque los de animales e instalaciones pueden competir por los mismos boletos.",
+        "Elige Tidy Habitat cuando necesites mejorar el bienestar; usa Enrichment Time cuando te falten boletos.",
         "No recojas una taquilla llena cuando el desafío actual te pida que la tengas lista.",
-        "Mueva un animal lo suficiente como para que cuente el reordenamiento.",
-        "Las actualizaciones permanentes se mantienen, mientras que el bono de ingresos único y claro se otorga solo una vez por desafío."
+        "Mueve al animal lo suficiente para que el cambio de posición cuente.",
+        "Las mejoras permanentes se conservan; cada desafío otorga su recompensa en monedas una sola vez, al completarlo por primera vez."
       ],
-      "designNote": "La economía continua permite a los niños observar la causa y el efecto sin cronómetro ni combate. Esperar por sí sola no es la actividad principal: cada desafío requiere una combinación objetiva de recolectar, elegir cuidados, organizar animales, reclutar y mejorar. El carril Stage convierte el parque en un recorrido visible de 30 pasos, y el ahorro local evita reconstruir el mismo recorrido en cada visita. Los botones grandes y el arrastre directo admiten el juego táctil y con el mouse. Las revisiones amistosas de los puntos de control reemplazan las peleas contra jefes porque la fantasía central es mejorar un espacio animal compartido.",
+      "designNote": "La economía continua permite a los niños observar la causa y el efecto sin cronómetro ni combate. Esperar por sí sola no es la actividad principal: cada desafío requiere una combinación de recoger, elegir cuidados, organizar animales, reclutar y mejorar. El selector horizontal de desafíos convierte el parque en un recorrido visible de 30 pasos, y el guardado local evita reconstruir el mismo recorrido en cada visita. Los botones grandes y el arrastre directo permiten jugar con la pantalla táctil o el ratón. Las revisiones amistosas de los puntos de control sustituyen a los jefes porque la fantasía central consiste en mejorar un espacio compartido para los animales.",
       "parent": "Este juego puede apoyar la planificación, la atención, la secuenciación y la discusión simples sobre el cuidado de los animales. Los adultos pueden preguntar por qué el jugador guardó boletos, seleccionó una actividad de cuidado o movió un animal. No hay combates, presión de clasificación, requisitos de cuenta ni solicitudes de publicidad en esta página para niños. El progreso, las actualizaciones y los informes del desafío son comentarios locales divertidos, no una evaluación escolar, de salud o de desarrollo.",
       "faq": [
         [

@@ -591,11 +591,11 @@
       ],
     },
     "star-memory": {
-      title: { en: "Find matching cards.", "zh-Hant": "\u627e\u51fa\u76f8\u540c\u5361\u7247\u3002" },
+      title: { en: "Find matching cards.", "zh-Hant": "\u627e\u51fa\u76f8\u540c\u5361\u7247\u3002", es: "Encuentra las parejas." },
       steps: [
-        { icon: "1", en: ["Flip", "Tap a card to reveal it."], "zh-Hant": ["\u7ffb\u724c", "\u9ede\u4e00\u5f35\u5361\u7247\u628a\u5716\u7247\u7ffb\u51fa\u4f86\u3002"] },
-        { icon: "2", en: ["Match", "Find two cards with the same picture."], "zh-Hant": ["\u914d\u5c0d", "\u627e\u5230\u5169\u5f35\u5716\u7247\u76f8\u540c\u7684\u5361\u7247\u3002"] },
-        { icon: "3", en: ["Clear", "Match all pairs with fewer moves for more stars."], "zh-Hant": ["\u5b8c\u6210", "\u7528\u66f4\u5c11\u6b65\u6578\u914d\u5c0d\u6240\u6709\u5361\u7247\uff0c\u53ef\u4ee5\u62ff\u5230\u66f4\u591a\u661f\u661f\u3002"] },
+        { icon: "1", en: ["Flip", "Tap a card to reveal it."], "zh-Hant": ["\u7ffb\u724c", "\u9ede\u4e00\u5f35\u5361\u7247\u628a\u5716\u7247\u7ffb\u51fa\u4f86\u3002"], es: ["Voltea", "Toca una carta para descubrirla."] },
+        { icon: "2", en: ["Match", "Find two cards with the same picture."], "zh-Hant": ["\u914d\u5c0d", "\u627e\u5230\u5169\u5f35\u5716\u7247\u76f8\u540c\u7684\u5361\u7247\u3002"], es: ["Forma parejas", "Busca dos cartas con la misma imagen."] },
+        { icon: "3", en: ["Clear", "Match all pairs with fewer moves for more stars."], "zh-Hant": ["\u5b8c\u6210", "\u7528\u66f4\u5c11\u6b65\u6578\u914d\u5c0d\u6240\u6709\u5361\u7247\uff0c\u53ef\u4ee5\u62ff\u5230\u66f4\u591a\u661f\u661f\u3002"], es: ["Completa", "Forma todas las parejas con menos movimientos para ganar más estrellas."] },
       ],
     },
     "shape-train": {
@@ -623,11 +623,11 @@
       ],
     },
     "animal-zoo-idle": {
-      title: { en: "Open your safari park.", "zh-Hant": "\u958b\u653e\u4f60\u7684\u8349\u539f\u6a02\u5712\u3002" },
+      title: { en: "Open your safari park.", "zh-Hant": "\u958b\u653e\u4f60\u7684\u8349\u539f\u6a02\u5712\u3002", es: "Abre tu parque zoológico." },
       steps: [
-        { icon: "1", en: ["Visitors", "Visitors walk in and leave ticket money in the box."], "zh-Hant": ["\u53c3\u89c0\u8005", "\u53c3\u89c0\u8005\u6703\u8d70\u9032\u4f86\uff0c\u628a\u9580\u7968\u9322\u7559\u5728\u7968\u7bb1\u3002"] },
-        { icon: "2", en: ["Care", "Care for animals to raise happiness and attract more visitors."], "zh-Hant": ["\u7167\u9867", "\u7167\u9867\u52d5\u7269\u63d0\u9ad8\u5feb\u6a02\u5ea6\uff0c\u5438\u5f15\u66f4\u591a\u53c3\u89c0\u8005\u3002"] },
-        { icon: "3", en: ["Upgrade", "Use coins to upgrade the gate and invite more animals."], "zh-Hant": ["\u5347\u7d1a", "\u7528\u91d1\u5e63\u5347\u7d1a\u5927\u9580\uff0c\u4e26\u9080\u8acb\u66f4\u591a\u52d5\u7269\u3002"] },
+        { icon: "1", en: ["Visitors", "Visitors walk in and leave ticket money in the box."], "zh-Hant": ["\u53c3\u89c0\u8005", "\u53c3\u89c0\u8005\u6703\u8d70\u9032\u4f86\uff0c\u628a\u9580\u7968\u9322\u7559\u5728\u7968\u7bb1\u3002"], es: ["Visitantes", "Los visitantes entran y dejan monedas en la caja."] },
+        { icon: "2", en: ["Care", "Care for animals to raise happiness and attract more visitors."], "zh-Hant": ["\u7167\u9867", "\u7167\u9867\u52d5\u7269\u63d0\u9ad8\u5feb\u6a02\u5ea6\uff0c\u5438\u5f15\u66f4\u591a\u53c3\u89c0\u8005\u3002"], es: ["Cuidados", "Cuida a los animales para aumentar su felicidad y atraer a más visitantes."] },
+        { icon: "3", en: ["Upgrade", "Use coins to upgrade the gate and invite more animals."], "zh-Hant": ["\u5347\u7d1a", "\u7528\u91d1\u5e63\u5347\u7d1a\u5927\u9580\uff0c\u4e26\u9080\u8acb\u66f4\u591a\u52d5\u7269\u3002"], es: ["Mejoras", "Usa monedas para mejorar la entrada y atraer a más animales."] },
       ],
     },
     "zoo-helper-day": {
