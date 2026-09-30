@@ -1483,6 +1483,7 @@ html[data-wp-shared-interface="7"] body img[data-wp-get-icon] {
   object-fit:contain!important;pointer-events:none!important;user-select:none!important;filter:none!important;opacity:1!important;transition:none!important;animation:none!important;
 }
 html[data-wp-shared-interface="7"] body img[data-wp-get-icon][data-wp-get-state="not-collected"] {filter:grayscale(1)!important;opacity:.72!important}
+html[data-wp-shared-interface="7"] body img[data-wp-get-icon][data-wp-get-state="unknown"] {filter:grayscale(.45)!important;opacity:.82!important}
 html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {
   position:absolute!important;z-index:4!important;inset-block-start:8px!important;inset-inline-end:8px!important;
   display:block!important;box-sizing:border-box!important;width:30px!important;height:34px!important;min-width:30px!important;min-height:34px!important;

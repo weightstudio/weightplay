@@ -26,7 +26,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v41";
+  const GAME_VERSION = "v42";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -1146,7 +1146,7 @@
 
   function track(eventName, details = {}) {
     try {
-      window.WonderAnalytics?.track?.(eventName, {
+      return window.WonderAnalytics?.track?.(eventName, {
         game_id: GAME_ID,
         game_version: GAME_VERSION,
         interface_version: INTERFACE_VERSION,
@@ -1158,7 +1158,38 @@
       });
     } catch {
       // Anonymous funnel measurement must never interrupt play.
+      return undefined;
     }
+  }
+
+  let stageBlockRewardStates = new Map();
+  function refreshStageBlockRewardStates() {
+    let completions = null;
+    let historyAvailable = false;
+    try {
+      const raw = localStorage.getItem("weightplayCastleV1");
+      if (raw === null) {
+        // No shared reward ledger means none of these tracked blocks was claimed.
+        completions = {};
+        historyAvailable = true;
+      } else {
+        const saved = JSON.parse(raw);
+        const savedCompletions = saved?.completions;
+        const hasCompletionHistory = savedCompletions && typeof savedCompletions === "object" && !Array.isArray(savedCompletions);
+        if ([1, 2, 3].includes(Number(saved?.version)) && hasCompletionHistory) {
+          completions = savedCompletions;
+          historyAvailable = true;
+        }
+      }
+    } catch {
+      // Invalid or unavailable legacy history must stay unknown.
+    }
+    stageBlockRewardStates = new Map();
+    for (let stageNumber = 1; stageNumber <= STAGE_COUNT; stageNumber += 1) {
+      const key = `${GAME_ID}:stage-${stageNumber}`;
+      stageBlockRewardStates.set(stageNumber, !historyAvailable ? "unknown" : completions[key] ? "collected" : "not-collected");
+    }
+    return stageBlockRewardStates;
   }
 
   function noteInput(event) {
@@ -1835,6 +1866,7 @@
     setUpgradeModalOpen(false, false);
     state.mode = "stage";
     show(nodes.stagePanel);
+    refreshStageBlockRewardStates();
     stageBrowseStage = Math.max(1, Math.min(STAGE_COUNT, save.unlockedStage));
     setStagePage("stages");
     renderStageSelector(shouldScroll);
@@ -1887,7 +1919,7 @@
     content.innerHTML = `<em>${modeLabels()[config.mode === "waves" ? 1 : config.mode === "boss" ? 2 : 0]} · ${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
     card.dataset.wpGetGameId = GAME_ID;
     card.dataset.wpGetIndex = String(index);
-    const getState = cleared ? "collected" : "not-collected";
+    const getState = stageBlockRewardStates.get(config.number) || "unknown";
     if (card.dataset.wpGetState !== getState) card.dataset.wpGetState = getState;
     card.setAttribute("aria-label", `${regionName}. ${stageName(config)}. ${stageRule(config)}. ${objective}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
     window.ShowGet?.(GAME_ID, index);
@@ -2992,7 +3024,6 @@
     resultReadyAt = performance.now() + 450;
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
-    window.ShowResultGet?.(GAME_ID, stageCleared);
     const primaryAction = stageCleared && state.stage < STAGE_COUNT
       ? nodes.nextStageBtn
       : stageCleared
@@ -3010,7 +3041,18 @@
       level: state.level,
       survived_seconds: Math.round(state.survived),
     });
-    track("game_complete", { reason, keys: state.keys, level: state.level, stage_cleared: stageCleared, prototype: true });
+    const blockReward = track("game_complete", {
+      reason,
+      keys: state.keys,
+      level: state.level,
+      stage_id: String(state.stage),
+      stage_cleared: stageCleared,
+      cleared: stageCleared,
+      outcome: stageCleared ? "complete" : "fail",
+      prototype: true,
+    });
+    if (blockReward?.credited === true) stageBlockRewardStates.set(state.stage, "collected");
+    window.ShowResultGet?.(GAME_ID, blockReward?.credited === true);
   }
 
   let resultReadyAt = 0;

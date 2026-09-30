@@ -39,7 +39,8 @@
     const itemRoot = Array.from(document.querySelectorAll('[data-wp-get-game-id][data-wp-get-index]'))
       .find((item) => item.dataset.wpGetGameId === normalizedGameId && Number(item.dataset.wpGetIndex) === itemIndex);
     if (!itemRoot) return null;
-    const state = itemRoot.dataset.wpGetState === 'collected' ? 'collected' : 'not-collected';
+    const allowedGetStates = ['collected', 'not-collected', 'unknown'];
+    const state = allowedGetStates.includes(itemRoot.dataset.wpGetState) ? itemRoot.dataset.wpGetState : 'unknown';
     if (itemRoot.dataset.wpGetState !== state) itemRoot.dataset.wpGetState = state;
 
     // Render the lobby cube as a real image child. Keep one node per recycled
