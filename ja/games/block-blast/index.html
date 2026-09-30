@@ -95,7 +95,7 @@
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
-      <div class="loading-card"><strong>ブロックブラスト</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+      <div class="loading-card"><strong>ブロックブラスト</strong><span>ゲームを準備中…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
@@ -105,7 +105,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="WeightPlayに戻る"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">ブロックブラスト</strong>
           <div class="main-controls">
@@ -114,12 +114,11 @@
               class="icon-control"
               type="button"
               aria-pressed="true"
-              data-sound-toggle
-            >
+              data-sound-toggle aria-label="サウンド" data-wp-text-aria="tgSound">
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">言語</span
+              ><select id="localeSelect" aria-label="言語" data-wp-text-aria="language"></select
             ></label>
           </div>
         </header>
@@ -127,7 +126,7 @@
           <img
             class="poster"
             src="../../assets/interface7-redrawn/block-blast.webp"
-            alt="ブロックブラストのゲーム画像"
+            alt="ブロックブラスト"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8 ブロックパズル</small>
@@ -140,22 +139,13 @@
                 class="primary"
                 type="button"
                 data-i18n="campaign"
-              >
-                Campaign</button
+              >キャンペーン</button
               ><button id="endlessBtn" type="button" data-i18n="endless">エンドレス</button>
             </div>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>パズル</span><span>戦略</span></div>
-        <h2 data-i18n="howTitle">遊び方</h2>
-        <div class="game-info-section"><ol>
-          <li data-i18n="how1">固定された3つの形から1つを8×8盤へドラッグします。</li>
-          <li data-i18n="how2">持ち上がった半透明プレビューが置ける場所を示します。</li>
-          <li data-i18n="how3">行か列が完成するとすぐ消えます。</li>
-        </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">配置後は移動も回転もできません。完成ラインは即座に消えます。</p><p data-i18n="gameOver">残りの形を置けません。</p></div>
-      </section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">ブロックブラスト</h2><p data-i18n="pitch">3つの形をすべて置き、行か列を完成させよう。</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">ブロックパズル</span><span data-i18n="tgTag2">行と列の消去</span><span data-i18n="tgTag3">3つの形を計画</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol><li data-i18n="how1">固定された3つの形をすべて確認してから、1つを8×8盤へ置きます。</li><li data-i18n="how2">持ち上がるプレビューで着地点を確認し、大きな形のために長い通路や広い空き場所を残します。</li><li data-i18n="how3">行か列を完成させると消去されます。3つをすべて使うと、続行できる場合は新しいセットが届きます。</li></ol><p data-i18n="helpText">最初の配置前に3つ全部の使い方を考えましょう。形は回転できず、未使用の形がどれも置けなくなるとその挑戦は終了します。</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">ステージと進行</h3><p data-i18n="tgProgress">30ミッションのキャンペーンか、スコアを伸ばすエンドレスを選べます。キャンペーンではライン、土、氷と石、指定色、宝石とロック、混合目標に挑みます。一部には3個セットの使用回数制限があります。宝石を覆うとロックが1つ開き、氷と土はラインと一緒に消えます。石の上には置けません。</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">次の一手を考える</h3><p data-i18n="tgTips">小さな形を置く前に、残りの大きな形がその空間を必要としないか確認しましょう。ラインを消せば場所が空きますが、孤立した穴は埋めにくくなります。エンドレスでは幅広の形や3×3の正方形も出るので、大きな空き場所を細かく分断しないようにしましょう。</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">パズルの仕組み</h3><p data-i18n="tgDesign">形の向きは固定で、自動では落下しません。行や列を消すと、トレーに残る形を置ける場所も変わります。置くだけでは得点にならず、ラインの完成で得点します。同時に複数のラインを消したり、続けてラインを消したりすると得点が増えます。</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">プレイヤーと保存情報</h3><p data-i18n="tgSave">形をドラッグするか、形を選んでから盤面のマスを選びます。アカウントは不要です。キャンペーンの解放状況、設定、エンドレスの最高得点はこのブラウザーに保存されます。やり直しは未完成の盤面の復元ではなく、新しい挑戦です。ブラウザーデータの削除で記録が失われることがあり、別端末の進行状況とは共有されません。</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">よくある質問</h3><dl><div><dt data-i18n="tgFaqQ1">形を回転できますか？</dt><dd data-i18n="tgFaqA1">できません。すべての形はトレーに表示された向きのまま使います。</dd></div><div><dt data-i18n="tgFaqQ2">いつ得点が増えますか？</dt><dd data-i18n="tgFaqA2">行や列を完成させて消すと得点します。ラインを消さずに形を置くだけでは増えません。</dd></div><div><dt data-i18n="tgFaqQ3">何ステージありますか？</dt><dd data-i18n="tgFaqA3">キャンペーンは30ミッションです。エンドレスは残りの形を置ける場所がなくなるまで続きます。</dd></div><div><dt data-i18n="tgFaqQ4">氷と石はどう違いますか？</dt><dd data-i18n="tgFaqA4">氷の上には置けますが、氷はその行や列が消えるまで残ります。石のマスには置けません。</dd></div><div><dt data-i18n="tgFaqQ5">なぜ挑戦が終わったのですか？</dt><dd data-i18n="tgFaqA5">未使用の形をどれも置けなくなると終了します。キャンペーンでは目標達成前にセット数の上限へ達した場合も終了します。</dd></div><div><dt data-i18n="tgFaqQ6">何が保存されますか？</dt><dd data-i18n="tgFaqA6">キャンペーンの解放状況、設定、エンドレスの最高得点がこのブラウザーに保存されます。ブラウザーデータの削除で失われることがあり、別端末には自動で引き継がれません。</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/ja/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">ヘキサソート</strong><span data-i18n="tgRelatedWhy1">色付きの六角形を整理し、同じ色の山にまとめます。</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/ja/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">アンブロック・トレイル</strong><span data-i18n="tgRelatedWhy2">ブロックをスライドさせて出口までの道を開きます。</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -171,22 +161,21 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Back"
-            >
+              aria-label="メインに戻る" data-wp-text-aria="tgBackMain">
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">ステージ選択</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
+            <button id="stageSound" class="icon-control" type="button" hidden aria-label="サウンド" data-wp-text-aria="tgSound">
               🔊
             </button>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="ステージ選択" data-wp-text-aria="chooseStage"></div>
           <footer class="stage-footer">
             <p class="stage-hint" data-i18n="stageHint">解放済みミッションを選びます。</p>
-            <nav class="stage-tabs" aria-label="Stage navigation">
+            <nav class="stage-tabs" aria-label="ステージマップ">
               <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">ステージマップ</button>
             </nav>
           </footer>
@@ -199,7 +188,7 @@
           >入る</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
-      </div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Can shapes rotate?</dt><dd>No. Each tray shape keeps its displayed orientation.</dd></div><div><dt>When do points increase?</dt><dd>Only completed rows or columns award points; simply placing a shape does not.</dd></div><div><dt>ステージはいくつありますか？</dt><dd>There are 30 authored Campaign missions plus an unlimited Endless run.</dd></div><div><dt>What do ice and stone do?</dt><dd>Ice remains visible beneath a placed block until its line clears; stone cannot be occupied.</dd></div><div><dt>Why did the run end?</dt><dd>The run ends when none of the unused shapes in the current tray has a legal placement.</dd></div><div><dt>進行状況は保存されますか？</dt><dd>Campaign unlocks and preferences are stored locally in this browser.</dd></div><div><dt>どの操作方法と画面サイズに対応していますか？</dt><dd>ゲームが対応している範囲で、タッチ、マウス、キーボードは同じルールで操作できます。インターフェースはスマートフォン、横画面、デスクトップの必要な画面サイズで、同じ論理レイアウトとして拡大縮小します。</dd></div><div><dt>進行状況は別の端末に自動で移行しますか？</dt><dd>いいえ。このゲームの進行状況は現在のところブラウザのローカルストレージにのみ保存されるため、別のブラウザプロファイルや端末では、それぞれ別の進行状況になります。将来アカウントシステムが追加されない限り、共有されません。</dd></div></dl></div>
+      </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
@@ -216,8 +205,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Back"
-              >
+                aria-label="ステージマップ" data-wp-text-aria="stageMap">
                 ←
               </button>
               <div class="battle-title">
@@ -226,10 +214,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="score">Score</b
+                  ><b data-i18n="score">スコア</b
                   ><strong id="scoreValue">0</strong></span
                 ><span
-                  ><b data-i18n="sets">Sets</b
+                  ><b data-i18n="sets">セット</b
                   ><strong id="setsValue">0</strong></span
                 >
               </div>
@@ -238,8 +226,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
-              >
+                aria-label="遊び方" data-wp-text-aria="howTitle">
                 ?
               </button>
             </header>
@@ -252,20 +239,18 @@
                 id="blockBoard"
                 class="block-board"
                 role="grid"
-                aria-label="8 by 8 block board"
-              ></div>
+                aria-label="ブロックブラスト" data-wp-text-aria="title"></div>
               <div
                 id="pieceTray"
                 class="piece-tray"
-                aria-label="Shape tray"
-              ></div>
+                aria-label="次の3つの形のために空間を残そう。" data-wp-text-aria="guideTitle"></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
               <h2 data-i18n="howTitle">遊び方</h2>
-              <p data-i18n="helpText">配置後は移動も回転もできません。完成ラインは即座に消えます。</p>
+              <p data-i18n="helpText">最初の配置前に3つ全部の使い方を考えましょう。形は回転できず、未使用の形がどれも置けなくなるとその挑戦は終了します。</p>
               <button
                 id="helpClose"
                 class="primary"
@@ -284,8 +269,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >続ける</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">ステージマップ</button>
               </div>
             </div>
@@ -294,23 +278,21 @@
             <div class="dialog result-layout">
               <img
                 src="../../assets/interface7-redrawn/block-blast.webp"
-                alt="Block Blast"
+                alt="ブロックブラスト"
               />
               <div>
-                <small id="resultStage">STAGE 1</small>
+                <small id="resultStage">ステージ 1</small>
                 <h2 id="resultTitle" data-i18n="clear">ミッション完了！</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">ステージマップ</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >次のステージ</button
                 ><button id="retryBtn" type="button" data-i18n="retry">もう一度</button>
               </div>
             </div>
@@ -333,7 +315,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio"></script>
+    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
@@ -347,7 +329,7 @@
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
-  
+
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ブロックブラスト";document.title="ブロックブラスト | WeightPlay";},{once:true});</script>
 </body>
 </html>

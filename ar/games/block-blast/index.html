@@ -95,7 +95,7 @@
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
-      <div class="loading-card"><strong>تفجير المكعبات</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+      <div class="loading-card"><strong>تفجير المكعبات</strong><span>جارٍ تجهيز اللعبة…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
@@ -105,7 +105,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="العودة إلى WeightPlay"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">تفجير المكعبات</strong>
           <div class="main-controls">
@@ -114,12 +114,11 @@
               class="icon-control"
               type="button"
               aria-pressed="true"
-              data-sound-toggle
-            >
+              data-sound-toggle aria-label="الصوت" data-wp-text-aria="tgSound">
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">اللغة</span
+              ><select id="localeSelect" aria-label="اللغة" data-wp-text-aria="language"></select
             ></label>
           </div>
         </header>
@@ -127,7 +126,7 @@
           <img
             class="poster"
             src="../../assets/interface7-redrawn/block-blast.webp"
-            alt="شعار WeightPlay"
+            alt="تفجير المكعبات"
           />
           <div class="hero-copy">
             <small data-i18n="genre">لغز كتل 8×8</small>
@@ -140,22 +139,13 @@
                 class="primary"
                 type="button"
                 data-i18n="campaign"
-              >
-                Campaign</button
+              >الحملة</button
               ><button id="endlessBtn" type="button" data-i18n="endless">بلا نهاية</button>
             </div>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>ألغاز</span><span>استراتيجية</span><span>عائلي</span><span>مكعبات</span></div>
-        <h2 data-i18n="howTitle">طريقة اللعب</h2>
-        <div class="game-info-section"><ol>
-          <li data-i18n="how1">اسحب واحداً من ثلاثة أشكال ثابتة إلى لوحة 8×8.</li>
-          <li data-i18n="how2">تظهر معاينة شفافة مرفوعة موضعاً صالحاً.</li>
-          <li data-i18n="how3">أكمل صفاً أو عموداً ليُحذف فوراً.</li>
-        </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">لا يمكن تحريك الشكل أو تدويره بعد وضعه. تُحذف الخطوط المكتملة فوراً.</p><p data-i18n="gameOver">لا يمكن وضع أي شكل متبقٍ.</p></div>
-      </section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">تفجير المكعبات</h2><p data-i18n="pitch">ضع الأشكال الثلاثة وأكمل صفوفاً أو أعمدة.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">لغز مكعبات</span><span data-i18n="tgTag2">مسح الصفوف والأعمدة</span><span data-i18n="tgTag3">تخطيط ثلاثة أشكال</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">طريقة اللعب</h3><ol><li data-i18n="how1">افحص الأشكال الثلاثة الثابتة قبل وضع أحدها على لوحة 8×8.</li><li data-i18n="how2">استخدم المعاينة المرفوعة لتأكيد موضع النزول، واترك مسارات طويلة أو مساحات واسعة للأشكال الأكبر.</li><li data-i18n="how3">أكمل صفوفاً أو أعمدة لمسحها. بعد استخدام الأشكال الثلاثة تصل مجموعة جديدة إذا كان يمكن متابعة الجولة.</li></ol><p data-i18n="helpText">خطط للمجموعة كاملة قبل أول وضع. الأشكال ثابتة ولا تدور؛ إذا لم يعد لأي شكل غير مستخدم موضع صالح تنتهي الجولة.</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">المراحل والتقدم</h3><p data-i18n="tgProgress">اختر الحملة ذات 30 مهمة أو جولة غير محدودة لتجميع النقاط. تتنوع الأهداف بين الخطوط والتراب والجليد والحجر والألوان والجواهر والأقفال والأهداف المختلطة. تحد بعض المهمات عدد مجموعات الأشكال الثلاثة. تغطية جوهرة تفتح قفلًا واحدًا؛ ويزول الجليد والتراب مع خط مكتمل، بينما لا يمكن وضع شكل فوق الحجر.</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">خطط للحركة التالية</h3><p data-i18n="tgTips">قبل وضع قطعة صغيرة، تأكد أن شكلًا كبيرًا غير مستخدم لا يحتاج تلك المساحة. الخطوط تختفي، لكن الفراغات المنعزلة يصعب ملؤها. قد تظهر في الوضع غير المحدود أشكال عريضة ومربع 3×3، لذا لا تقسّم كل مساحة واسعة إلى فجوات ضيقة.</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">كيف يعمل اللغز</h3><p data-i18n="tgDesign">تحافظ الأشكال على اتجاهها ولا تسقط تلقائيًا. مسح صف أو عمود يغيّر الأماكن المتاحة للأشكال الأخرى. مجرد وضع الشكل لا يمنح نقاطًا؛ إكمال الخطوط هو ما يمنحها. المسح المتزامن والحركات المتتالية التي تمسح خطوطًا يرفعان النتيجة.</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">معلومات اللاعب والحفظ</h3><p data-i18n="tgSave">اسحب شكلًا إلى مكانه أو حدده ثم اختر خانة في اللوحة. لا تحتاج إلى حساب. تُحفظ مراحل الحملة المفتوحة والتفضيلات وأفضل نتيجة للوضع غير المحدود في هذا المتصفح. إعادة البدء تبدأ محاولة جديدة ولا تستعيد اللوحة غير المكتملة. مسح بيانات المتصفح قد يحذف السجلات؛ ولكل جهاز آخر تقدمه المنفصل.</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">الأسئلة الشائعة</h3><dl><div><dt data-i18n="tgFaqQ1">هل يمكن تدوير الأشكال؟</dt><dd data-i18n="tgFaqA1">لا. يحتفظ كل شكل بالاتجاه المعروض في مجموعة القطع.</dd></div><div><dt data-i18n="tgFaqQ2">متى تزداد النقاط؟</dt><dd data-i18n="tgFaqA2">عند إكمال الصفوف أو الأعمدة ومسحها. وضع شكل دون مسح خط لا يمنح نقاطًا.</dd></div><div><dt data-i18n="tgFaqQ3">كم عدد المراحل؟</dt><dd data-i18n="tgFaqA3">تضم الحملة 30 مهمة. يستمر الوضع غير المحدود حتى لا يمكن وضع أي شكل متبقٍ في مكان صالح.</dd></div><div><dt data-i18n="tgFaqQ4">ماذا يفعل الجليد والحجر؟</dt><dd data-i18n="tgFaqA4">يمكن وضع كتلة فوق الجليد، لكنه يبقى حتى يُمسح صفه أو عموده. خانات الحجر لا يمكن إشغالها.</dd></div><div><dt data-i18n="tgFaqQ5">لماذا انتهت المحاولة؟</dt><dd data-i18n="tgFaqA5">تنتهي عندما لا يجد أي شكل غير مستخدم مكانًا صالحًا. وقد تنتهي المهمة أيضًا عند بلوغ حد المجموعات قبل إكمال الهدف.</dd></div><div><dt data-i18n="tgFaqQ6">ما الذي يُحفظ؟</dt><dd data-i18n="tgFaqA6">تُحفظ المراحل المفتوحة والتفضيلات وأفضل نتيجة للوضع غير المحدود في هذا المتصفح. مسح بياناته قد يحذفها؛ ولا تنتقل تلقائيًا إلى جهاز آخر.</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">ألعاب ذات صلة</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/ar/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">فرز السداسيات</strong><span data-i18n="tgRelatedWhy1">رتّب الأشكال السداسية الملوّنة في أكوام متطابقة اللون.</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/ar/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">مسار فك الحجب</strong><span data-i18n="tgRelatedWhy2">حرّك الكتل لفتح الطريق نحو المخرج.</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -171,22 +161,21 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Back"
-            >
+              aria-label="العودة إلى القائمة الرئيسية" data-wp-text-aria="tgBackMain">
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">اختر مرحلة</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
+            <button id="stageSound" class="icon-control" type="button" hidden aria-label="الصوت" data-wp-text-aria="tgSound">
               🔊
             </button>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="اختر مرحلة" data-wp-text-aria="chooseStage"></div>
           <footer class="stage-footer">
             <p class="stage-hint" data-i18n="stageHint">اختر مهمة مفتوحة.</p>
-            <nav class="stage-tabs" aria-label="Stage navigation">
+            <nav class="stage-tabs" aria-label="خريطة المراحل">
               <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">خريطة المراحل</button>
             </nav>
           </footer>
@@ -199,7 +188,7 @@
           >دخول</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
-      </div><div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يمكن تدوير الأشكال؟</dt><dd>لا. يحافظ كل شكل في الدرج على اتجاهه المعروض.</dd></div><div><dt>متى تزيد النقاط؟</dt><dd>تمنح الصفوف أو الأعمدة المكتملة فقط نقاطاً؛ أما وضع الشكل وحده فلا يفعل ذلك.</dd></div><div><dt>كم عدد المراحل؟</dt><dd>هناك 30 مهمة حملة مصممة بعناية، بالإضافة إلى جولة لا نهائية غير محدودة.</dd></div><div><dt>ماذا يفعل الجليد والحجر؟</dt><dd>يبقى الجليد ظاهراً تحت المكعب الموضوع حتى يُمسح خطه، ولا يمكن شغل الحجر.</dd></div><div><dt>لماذا انتهت الجولة؟</dt><dd>تنتهي الجولة عندما لا يملك أي شكل غير مستخدم في الدرج الحالي موضعاً قانونياً.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>تُخزن فتوح الحملة والتفضيلات محلياً في هذا المتصفح.</dd></div></dl></div>
+      </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
@@ -216,8 +205,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Back"
-              >
+                aria-label="خريطة المراحل" data-wp-text-aria="stageMap">
                 ←
               </button>
               <div class="battle-title">
@@ -226,10 +214,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="score">Score</b
+                  ><b data-i18n="score">النقاط</b
                   ><strong id="scoreValue">0</strong></span
                 ><span
-                  ><b data-i18n="sets">Sets</b
+                  ><b data-i18n="sets">المجموعات</b
                   ><strong id="setsValue">0</strong></span
                 >
               </div>
@@ -238,8 +226,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
-              >
+                aria-label="طريقة اللعب" data-wp-text-aria="howTitle">
                 ?
               </button>
             </header>
@@ -252,20 +239,18 @@
                 id="blockBoard"
                 class="block-board"
                 role="grid"
-                aria-label="8 by 8 block board"
-              ></div>
+                aria-label="تفجير المكعبات" data-wp-text-aria="title"></div>
               <div
                 id="pieceTray"
                 class="piece-tray"
-                aria-label="Shape tray"
-              ></div>
+                aria-label="اترك مساحة للأشكال الثلاثة التالية." data-wp-text-aria="guideTitle"></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
               <h2 data-i18n="howTitle">طريقة اللعب</h2>
-              <p data-i18n="helpText">لا يمكن تحريك الشكل أو تدويره بعد وضعه. تُحذف الخطوط المكتملة فوراً.</p>
+              <p data-i18n="helpText">خطط للمجموعة كاملة قبل أول وضع. الأشكال ثابتة ولا تدور؛ إذا لم يعد لأي شكل غير مستخدم موضع صالح تنتهي الجولة.</p>
               <button
                 id="helpClose"
                 class="primary"
@@ -284,8 +269,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >متابعة</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">خريطة المراحل</button>
               </div>
             </div>
@@ -294,23 +278,21 @@
             <div class="dialog result-layout">
               <img
                 src="../../assets/interface7-redrawn/block-blast.webp"
-                alt="صورة لعبة تفجير المكعبات"
+                alt="تفجير المكعبات"
               />
               <div>
-                <small id="resultStage">STAGE 1</small>
+                <small id="resultStage">المرحلة 1</small>
                 <h2 id="resultTitle" data-i18n="clear">اكتملت المهمة!</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">خريطة المراحل</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >المرحلة التالية</button
                 ><button id="retryBtn" type="button" data-i18n="retry">العب مجدداً</button>
               </div>
             </div>
@@ -332,7 +314,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio"></script>
+    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
@@ -346,6 +328,6 @@
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
-  
+
 </body>
 </html>

@@ -95,7 +95,7 @@
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
-      <div class="loading-card"><strong>ब्लॉक ब्लास्ट</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+      <div class="loading-card"><strong>ब्लॉक ब्लास्ट</strong><span>गेम तैयार हो रहा है…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
@@ -105,7 +105,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="WeightPlay पर लौटें"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">ब्लॉक ब्लास्ट</strong>
           <div class="main-controls">
@@ -114,12 +114,11 @@
               class="icon-control"
               type="button"
               aria-pressed="true"
-              data-sound-toggle
-            >
+              data-sound-toggle aria-label="ध्वनि" data-wp-text-aria="tgSound">
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">भाषा</span
+              ><select id="localeSelect" aria-label="भाषा" data-wp-text-aria="language"></select
             ></label>
           </div>
         </header>
@@ -127,7 +126,7 @@
           <img
             class="poster"
             src="../../assets/interface7-redrawn/block-blast.webp"
-            alt="ब्लॉक ब्लास्ट game artwork"
+            alt="ब्लॉक ब्लास्ट"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8 ब्लॉक पहेली</small>
@@ -140,22 +139,13 @@
                 class="primary"
                 type="button"
                 data-i18n="campaign"
-              >
-                Campaign</button
+              >अभियान</button
               ><button id="endlessBtn" type="button" data-i18n="endless">अनंत</button>
             </div>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>पहेली</span><span>रणनीति</span></div>
-        <h2 data-i18n="howTitle">कैसे खेलें</h2>
-        <div class="game-info-section"><ol>
-          <li data-i18n="how1">तीन स्थिर आकारों में से एक को 8×8 बोर्ड पर खींचें।</li>
-          <li data-i18n="how2">ऊपर उठा पारदर्शी पूर्वावलोकन सही स्थान दिखाता है।</li>
-          <li data-i18n="how3">पूरी पंक्ति या स्तंभ तुरंत मिटता है।</li>
-        </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">रखने के बाद आकार हिल या घूम नहीं सकता। पूरी लाइन तुरंत मिटती है।</p><p data-i18n="gameOver">कोई शेष आकार नहीं बैठता।</p></div>
-      </section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">ब्लॉक ब्लास्ट</h2><p data-i18n="pitch">तीनों आकार रखें और पूरी पंक्ति या स्तंभ मिटाएँ।</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">ब्लॉक पहेली</span><span data-i18n="tgTag2">पंक्ति और स्तंभ मिटाना</span><span data-i18n="tgTag3">तीन आकारों की योजना</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">कैसे खेलें</h3><ol><li data-i18n="how1">8×8 बोर्ड पर कोई आकार रखने से पहले तीनों स्थिर आकार देख लें।</li><li data-i18n="how2">ऊपर उठे पूर्वावलोकन से जगह पक्की करें और बड़े आकारों के लिए लंबी पंक्तियाँ या चौड़ी खाली जगह बचाएँ।</li><li data-i18n="how3">पूरी पंक्ति या स्तंभ बनाकर उसे मिटाएँ। तीनों आकार इस्तेमाल होने के बाद, खेल जारी रह सके तो नया समूह आता है।</li></ol><p data-i18n="helpText">पहला आकार रखने से पहले पूरे तीन-आकार समूह की योजना बनाएँ। स्थिर आकार घूम नहीं सकते; यदि कोई भी बचा हुआ आकार वैध जगह पर न बैठ सके तो खेल समाप्त हो जाता है।</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">चरण और प्रगति</h3><p data-i18n="tgProgress">30 मिशन वाली कैंपेन या स्कोर के लिए अनंत मोड चुनें। लक्ष्य बदलते हैं: लाइनें, मिट्टी, बर्फ और पत्थर, खास रंग, रत्न और ताले, फिर मिले-जुले लक्ष्य। कुछ मिशनों में तीन-आकार समूहों की सीमा होती है। रत्न ढकने से एक ताला खुलता है; बर्फ और मिट्टी पूरी लाइन के साथ मिटते हैं, लेकिन पत्थर पर आकार नहीं रखा जा सकता।</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">अगली चाल की योजना</h3><p data-i18n="tgTips">छोटा आकार रखने से पहले जाँचें कि बचे हुए बड़े आकार को उस जगह की ज़रूरत तो नहीं है। लाइन मिटने से जगह खुलती है, लेकिन अलग-अलग छोटे खाली खाने भरना कठिन होता है। अनंत मोड में चौड़े आकार और 3×3 वर्ग भी आ सकते हैं, इसलिए हर बड़े खाली हिस्से को सँकरी जगहों में न बाँटें।</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">पहेली कैसे काम करती है</h3><p data-i18n="tgDesign">आकार अपनी दिशा बनाए रखते हैं और अपने आप नीचे नहीं गिरते। पंक्ति या स्तंभ मिटने से ट्रे के अन्य आकारों के लिए जगह बदलती है। केवल आकार रखने से अंक नहीं मिलते; पूरी लाइन बनाने से मिलते हैं। एक साथ कई लाइनें मिटाने और लगातार चालों में लाइन मिटाने से स्कोर बढ़ता है।</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">खिलाड़ी और सेव की जानकारी</h3><p data-i18n="tgSave">आकार खींचकर रखें या पहले आकार चुनें और फिर बोर्ड का खाना। खाते की ज़रूरत नहीं है। कैंपेन की प्रगति, पसंद और अनंत मोड का सर्वोच्च स्कोर इसी ब्राउज़र में रहते हैं। फिर शुरू करने पर नया प्रयास होता है, अधूरा बोर्ड वापस नहीं आता। ब्राउज़र डेटा मिटाने पर रिकॉर्ड खो सकते हैं; दूसरे उपकरण की प्रगति अलग रहती है।</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt data-i18n="tgFaqQ1">क्या आकार घुमा सकते हैं?</dt><dd data-i18n="tgFaqA1">नहीं। हर आकार ट्रे में दिखाई गई दिशा में ही रहता है।</dd></div><div><dt data-i18n="tgFaqQ2">अंक कब बढ़ते हैं?</dt><dd data-i18n="tgFaqA2">पूरी पंक्ति या स्तंभ बनाकर मिटाने पर। लाइन मिटाए बिना केवल आकार रखने से अंक नहीं मिलते।</dd></div><div><dt data-i18n="tgFaqQ3">कितने चरण हैं?</dt><dd data-i18n="tgFaqA3">कैंपेन में 30 मिशन हैं। अनंत मोड तब तक चलता है जब तक बचे हुए किसी आकार को नियमों के अनुसार रखा जा सके।</dd></div><div><dt data-i18n="tgFaqQ4">बर्फ और पत्थर क्या करते हैं?</dt><dd data-i18n="tgFaqA4">बर्फ पर ब्लॉक रख सकते हैं, लेकिन वह अपनी पंक्ति या स्तंभ मिटने तक रहती है। पत्थर वाले खाने में आकार नहीं रख सकते।</dd></div><div><dt data-i18n="tgFaqQ5">प्रयास क्यों खत्म हुआ?</dt><dd data-i18n="tgFaqA5">जब बचा हुआ कोई आकार नहीं रखा जा सकता, प्रयास खत्म होता है। मिशन का लक्ष्य पूरा होने से पहले समूहों की सीमा खत्म होने पर भी वह समाप्त हो सकता है।</dd></div><div><dt data-i18n="tgFaqQ6">क्या सेव होता है?</dt><dd data-i18n="tgFaqA6">खुले मिशन, पसंद और अनंत मोड का सर्वोच्च स्कोर इसी ब्राउज़र में रहते हैं। उसका डेटा मिटाने पर रिकॉर्ड खो सकते हैं; वे दूसरे उपकरण पर अपने आप नहीं जाते।</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">संबंधित गेम</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/hi/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">हेक्सा सॉर्ट</strong><span data-i18n="tgRelatedWhy1">रंगीन षट्भुजों को समान रंग के ढेरों में सजाएँ।</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/hi/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">अनब्लॉक ट्रेल</strong><span data-i18n="tgRelatedWhy2">ब्लॉक खिसकाकर बाहर जाने का रास्ता खोलें।</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -171,22 +161,21 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Back"
-            >
+              aria-label="मुख्य स्क्रीन पर लौटें" data-wp-text-aria="tgBackMain">
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">चरण चुनें</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
+            <button id="stageSound" class="icon-control" type="button" hidden aria-label="ध्वनि" data-wp-text-aria="tgSound">
               🔊
             </button>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="चरण चुनें" data-wp-text-aria="chooseStage"></div>
           <footer class="stage-footer">
             <p class="stage-hint" data-i18n="stageHint">खुला मिशन चुनें।</p>
-            <nav class="stage-tabs" aria-label="Stage navigation">
+            <nav class="stage-tabs" aria-label="चरण नक्शा">
               <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">चरण नक्शा</button>
             </nav>
           </footer>
@@ -199,7 +188,7 @@
           >प्रवेश</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
-      </div><div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>Can shapes rotate?</dt><dd>No. Each tray shape keeps its displayed orientation.</dd></div><div><dt>When do points increase?</dt><dd>Only completed rows or columns award points; simply placing a shape does not.</dd></div><div><dt>कुल कितने चरण हैं?</dt><dd>There are 30 authored Campaign missions plus an unlimited Endless run.</dd></div><div><dt>What do ice and stone do?</dt><dd>Ice remains visible beneath a placed block until its line clears; stone cannot be occupied.</dd></div><div><dt>Why did the run end?</dt><dd>The run ends when none of the unused shapes in the current tray has a legal placement.</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>Campaign unlocks and preferences are stored locally in this browser.</dd></div><div><dt>कौन-से नियंत्रण और स्क्रीन आकार समर्थित हैं?</dt><dd>जहाँ गेम उन्हें समर्थित करता है, टच, माउस और कीबोर्ड एक ही नियमों का पालन करते हैं। इंटरफ़ेस फ़ोन, लैंडस्केप और डेस्कटॉप के आवश्यक स्क्रीन आकारों में एक ही तार्किक लेआउट के रूप में अनुकूलित होता है।</dd></div><div><dt>क्या प्रगति अपने-आप दूसरे डिवाइस पर चली जाती है?</dt><dd>नहीं। यह गेम अभी प्रगति को केवल ब्राउज़र के स्थानीय संग्रहण में सहेजता है, इसलिए किसी दूसरे ब्राउज़र प्रोफ़ाइल या डिवाइस पर अलग स्थानीय प्रगति होगी, जब तक भविष्य में खाता प्रणाली नहीं जोड़ी जाती।</dd></div></dl></div>
+      </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
@@ -216,8 +205,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Back"
-              >
+                aria-label="चरण नक्शा" data-wp-text-aria="stageMap">
                 ←
               </button>
               <div class="battle-title">
@@ -226,10 +214,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="score">Score</b
+                  ><b data-i18n="score">स्कोर</b
                   ><strong id="scoreValue">0</strong></span
                 ><span
-                  ><b data-i18n="sets">Sets</b
+                  ><b data-i18n="sets">समूह</b
                   ><strong id="setsValue">0</strong></span
                 >
               </div>
@@ -238,8 +226,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
-              >
+                aria-label="कैसे खेलें" data-wp-text-aria="howTitle">
                 ?
               </button>
             </header>
@@ -252,20 +239,18 @@
                 id="blockBoard"
                 class="block-board"
                 role="grid"
-                aria-label="8 by 8 block board"
-              ></div>
+                aria-label="ब्लॉक ब्लास्ट" data-wp-text-aria="title"></div>
               <div
                 id="pieceTray"
                 class="piece-tray"
-                aria-label="Shape tray"
-              ></div>
+                aria-label="अगले तीन आकारों के लिए जगह बनाए रखें।" data-wp-text-aria="guideTitle"></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
               <h2 data-i18n="howTitle">कैसे खेलें</h2>
-              <p data-i18n="helpText">रखने के बाद आकार हिल या घूम नहीं सकता। पूरी लाइन तुरंत मिटती है।</p>
+              <p data-i18n="helpText">पहला आकार रखने से पहले पूरे तीन-आकार समूह की योजना बनाएँ। स्थिर आकार घूम नहीं सकते; यदि कोई भी बचा हुआ आकार वैध जगह पर न बैठ सके तो खेल समाप्त हो जाता है।</p>
               <button
                 id="helpClose"
                 class="primary"
@@ -284,8 +269,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >जारी रखें</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">चरण नक्शा</button>
               </div>
             </div>
@@ -294,23 +278,21 @@
             <div class="dialog result-layout">
               <img
                 src="../../assets/interface7-redrawn/block-blast.webp"
-                alt="Block Blast"
+                alt="ब्लॉक ब्लास्ट"
               />
               <div>
-                <small id="resultStage">STAGE 1</small>
+                <small id="resultStage">चरण 1</small>
                 <h2 id="resultTitle" data-i18n="clear">मिशन पूरा!</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">चरण नक्शा</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >अगला चरण</button
                 ><button id="retryBtn" type="button" data-i18n="retry">फिर खेलें</button>
               </div>
             </div>
@@ -332,7 +314,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio"></script>
+    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
@@ -346,6 +328,6 @@
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
-  
+
 </body>
 </html>

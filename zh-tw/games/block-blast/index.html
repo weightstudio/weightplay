@@ -94,7 +94,7 @@
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
-      <div class="loading-card"><strong>方塊爆破</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+      <div class="loading-card"><strong>方塊爆破</strong><span>正在準備遊戲…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
@@ -104,7 +104,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="返回 WeightPlay"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">方塊爆破</strong>
           <div class="main-controls">
@@ -113,12 +113,11 @@
               class="icon-control"
               type="button"
               aria-pressed="true"
-              data-sound-toggle
-            >
+              data-sound-toggle aria-label="音效" data-wp-text-aria="tgSound">
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">語言</span
+              ><select id="localeSelect" aria-label="語言" data-wp-text-aria="language"></select
             ></label>
           </div>
         </header>
@@ -126,7 +125,7 @@
           <img
             class="poster"
             src="../../assets/interface7-redrawn/block-blast.webp"
-            alt="《方塊爆破》遊戲圖片"
+            alt="方塊爆破"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8 方塊益智</small>
@@ -139,22 +138,13 @@
                 class="primary"
                 type="button"
                 data-i18n="campaign"
-              >
-                Campaign</button
+              >關卡模式</button
               ><button id="endlessBtn" type="button" data-i18n="endless">無限模式</button>
             </div>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>益智</span><span>策略</span><span>空間推理</span></div>
-        <h2 data-i18n="howTitle">玩法說明</h2>
-        <div class="game-info-section"><ol>
-          <li data-i18n="how1">拖曳三個固定形狀之一到 8×8 棋盤。</li>
-          <li data-i18n="how2">上移的半透明預覽會顯示合法落點。</li>
-          <li data-i18n="how3">填滿橫排或直列後立即消除。</li>
-        </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">放置後不能移動或旋轉；完整行列會立即消除。</p><p data-i18n="gameOver">剩餘形狀都無法放置。</p></div>
-      </section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">方塊爆破</h2><p data-i18n="pitch">放完每組三個形狀，填滿橫排或直列立即消除。</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">方塊益智</span><span data-i18n="tgTag2">橫列直欄消除</span><span data-i18n="tgTag3">三形狀規劃</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">玩法說明</h3><ol><li data-i18n="how1">先看完三個固定形狀，再把其中一個放到 8×8 棋盤。</li><li data-i18n="how2">用上移預覽確認落點，並為較大的形狀保留長直空間或寬廣空區。</li><li data-i18n="how3">填滿橫排或直列就會消除；三個形狀都用完後，若還能繼續就會補上新的一組。</li></ol><p data-i18n="helpText">第一個形狀落下前先規劃整組三個形狀。固定形狀不能旋轉；只要剩餘未使用形狀都沒有合法位置，本局就會結束。</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">關卡與進度</h3><p data-i18n="tgProgress">可選擇 30 關戰役，或挑戰無盡模式分數。戰役目標依序變化，包含完成直線、泥土、冰與石頭、指定顏色、寶石與鎖，以及混合目標；部分關卡會限制三形狀組數。蓋住寶石能打開一個鎖，冰與泥土要隨完整直線消除，石頭所在格則不能放置。</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">下一步怎麼選</h3><p data-i18n="tgTips">小形狀落下前，先確認剩下的大形狀是否需要那塊空間。消掉整條直線可以騰出空間，但零散小洞仍難填。無盡模式可能出現較寬的形狀和 3×3 方塊，不要把每一塊大空區都切成狹窄缺口。</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">解謎方式</h3><p data-i18n="tgDesign">形狀維持原本方向，不會自動落下。消除橫列或直欄，會改變托盤中其他形狀可用的位置。單純放置不加分，完成直線才得分；同時消除多條直線，以及連續幾步都有消除，能提高分數。</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">玩家與存檔資訊</h3><p data-i18n="tgSave">可拖曳形狀到棋盤，也可先選形狀、再選放置格。不必登入帳號。戰役解鎖、偏好與無盡模式最高分保存在此瀏覽器。重新開始會重開本次挑戰，不會還原未完成盤面。清除瀏覽器資料可能刪除紀錄，其他裝置則有各自的進度。</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">常見問題</h3><dl><div><dt data-i18n="tgFaqQ1">形狀可以旋轉嗎？</dt><dd data-i18n="tgFaqA1">不可以，每個形狀都維持托盤中顯示的方向。</dd></div><div><dt data-i18n="tgFaqQ2">什麼時候會得分？</dt><dd data-i18n="tgFaqA2">完成橫列或直欄消除才會得分。只放置形狀、沒有消除直線，不會加分。</dd></div><div><dt data-i18n="tgFaqQ3">共有多少關？</dt><dd data-i18n="tgFaqA3">戰役共有 30 個任務。無盡模式會持續到剩餘形狀都沒有合法放置位置為止。</dd></div><div><dt data-i18n="tgFaqQ4">冰與石頭有什麼作用？</dt><dd data-i18n="tgFaqA4">可以把方塊放在冰上，但冰會保留到所在橫列或直欄消除。石頭所在格不能放置。</dd></div><div><dt data-i18n="tgFaqQ5">為什麼這次挑戰結束了？</dt><dd data-i18n="tgFaqA5">剩下未使用的形狀都放不下時就會結束。戰役也可能因為達到組數限制、卻還沒完成目標而結束。</dd></div><div><dt data-i18n="tgFaqQ6">哪些資料會保存？</dt><dd data-i18n="tgFaqA6">戰役解鎖、偏好與無盡模式最高分保存在此瀏覽器。清除瀏覽器資料可能刪除這些紀錄，也不會自動同步到其他裝置。</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/zh-tw/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">六角堆疊</strong><span data-i18n="tgRelatedWhy1">整理彩色六角形，疊成相同顏色的堆疊。</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/zh-tw/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">解鎖滑塊</strong><span data-i18n="tgRelatedWhy2">滑動方塊，清出通往出口的路線。</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -170,22 +160,21 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Back"
-            >
+              aria-label="返回主畫面" data-wp-text-aria="tgBackMain">
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">選擇關卡</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
+            <button id="stageSound" class="icon-control" type="button" hidden aria-label="音效" data-wp-text-aria="tgSound">
               🔊
             </button>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="選擇關卡" data-wp-text-aria="chooseStage"></div>
           <footer class="stage-footer">
             <p class="stage-hint" data-i18n="stageHint">選擇已解鎖任務。</p>
-            <nav class="stage-tabs" aria-label="Stage navigation">
+            <nav class="stage-tabs" aria-label="關卡地圖">
               <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">關卡地圖</button>
             </nav>
           </footer>
@@ -198,7 +187,7 @@
           >進入關卡</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
-      </div><div class="game-info-section"><h3>常見問題</h3><dl><div><dt>形狀可以旋轉嗎？</dt><dd>不可以。每個托盤形狀都維持顯示時的方向。</dd></div><div><dt>什麼時候會增加分數？</dt><dd>只有完成橫列或直行才會得分；單純放置形狀不會加分。</dd></div><div><dt>共有多少關？</dt><dd>包含 30 個精心設計的戰役任務，以及沒有固定終點的無限模式。</dd></div><div><dt>冰塊與石頭有什麼作用？</dt><dd>冰塊會留在方塊下方，直到該行列消除；石頭不能被占用。</dd></div><div><dt>為什麼本局結束？</dt><dd>當目前托盤中所有未使用形狀都沒有合法位置時，本局就會結束。</dd></div><div><dt>進度會儲存嗎？</dt><dd>戰役解鎖與偏好會儲存在這個瀏覽器。</dd></div></dl></div>
+      </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
@@ -215,8 +204,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Back"
-              >
+                aria-label="關卡地圖" data-wp-text-aria="stageMap">
                 ←
               </button>
               <div class="battle-title">
@@ -225,10 +213,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="score">Score</b
+                  ><b data-i18n="score">分數</b
                   ><strong id="scoreValue">0</strong></span
                 ><span
-                  ><b data-i18n="sets">Sets</b
+                  ><b data-i18n="sets">組數</b
                   ><strong id="setsValue">0</strong></span
                 >
               </div>
@@ -237,8 +225,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
-              >
+                aria-label="玩法說明" data-wp-text-aria="howTitle">
                 ?
               </button>
             </header>
@@ -251,20 +238,18 @@
                 id="blockBoard"
                 class="block-board"
                 role="grid"
-                aria-label="8 by 8 block board"
-              ></div>
+                aria-label="方塊爆破" data-wp-text-aria="title"></div>
               <div
                 id="pieceTray"
                 class="piece-tray"
-                aria-label="Shape tray"
-              ></div>
+                aria-label="為下一組三個形狀保留空間。" data-wp-text-aria="guideTitle"></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
               <h2 data-i18n="howTitle">玩法說明</h2>
-              <p data-i18n="helpText">放置後不能移動或旋轉；完整行列會立即消除。</p>
+              <p data-i18n="helpText">第一個形狀落下前先規劃整組三個形狀。固定形狀不能旋轉；只要剩餘未使用形狀都沒有合法位置，本局就會結束。</p>
               <button
                 id="helpClose"
                 class="primary"
@@ -283,8 +268,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >繼續</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">關卡地圖</button>
               </div>
             </div>
@@ -293,23 +277,21 @@
             <div class="dialog result-layout">
               <img
                 src="../../assets/interface7-redrawn/block-blast.webp"
-                alt="Block Blast"
+                alt="方塊爆破"
               />
               <div>
-                <small id="resultStage">STAGE 1</small>
+                <small id="resultStage">關卡 1</small>
                 <h2 id="resultTitle" data-i18n="clear">任務完成！</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">關卡地圖</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >下一關</button
                 ><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button>
               </div>
             </div>
@@ -331,7 +313,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio"></script>
+    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
@@ -345,6 +327,6 @@
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
-  
+
 </body>
 </html>

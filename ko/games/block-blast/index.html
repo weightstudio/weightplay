@@ -95,7 +95,7 @@
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
-      <div class="loading-card"><strong>블록 블라스트</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+      <div class="loading-card"><strong>블록 블라스트</strong><span>게임 준비 중…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
@@ -105,7 +105,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="WeightPlay로 돌아가기"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">블록 블라스트</strong>
           <div class="main-controls">
@@ -114,12 +114,11 @@
               class="icon-control"
               type="button"
               aria-pressed="true"
-              data-sound-toggle
-            >
+              data-sound-toggle aria-label="소리" data-wp-text-aria="tgSound">
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">언어</span
+              ><select id="localeSelect" aria-label="언어" data-wp-text-aria="language"></select
             ></label>
           </div>
         </header>
@@ -127,7 +126,7 @@
           <img
             class="poster"
             src="../../assets/interface7-redrawn/block-blast.webp"
-            alt="블록 블라스트 게임 이미지"
+            alt="블록 블라스트"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8 블록 퍼즐</small>
@@ -140,22 +139,13 @@
                 class="primary"
                 type="button"
                 data-i18n="campaign"
-              >
-                Campaign</button
+              >캠페인</button
               ><button id="endlessBtn" type="button" data-i18n="endless">무한 모드</button>
             </div>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>퍼즐</span><span>전략</span></div>
-        <h2 data-i18n="howTitle">플레이 방법</h2>
-        <div class="game-info-section"><ol>
-          <li data-i18n="how1">고정된 세 모양 중 하나를 8×8 보드로 드래그하세요.</li>
-          <li data-i18n="how2">위로 뜬 반투명 미리보기가 가능한 위치를 보여 줍니다.</li>
-          <li data-i18n="how3">행이나 열을 완성하면 즉시 사라집니다.</li>
-        </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">놓은 뒤에는 이동하거나 회전할 수 없습니다. 완성된 줄은 즉시 지워집니다.</p><p data-i18n="gameOver">남은 모양을 놓을 수 없습니다.</p></div>
-      </section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">블록 블라스트</h2><p data-i18n="pitch">세 모양을 모두 놓고 완성된 행이나 열을 지우세요.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">블록 퍼즐</span><span data-i18n="tgTag2">행과 열 지우기</span><span data-i18n="tgTag3">세 모양 배치 계획</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">플레이 방법</h3><ol><li data-i18n="how1">고정된 세 모양을 모두 확인한 뒤 하나를 8×8 보드에 놓으세요.</li><li data-i18n="how2">떠오르는 미리보기로 착지 위치를 확인하고 큰 모양을 위해 긴 길이나 넓은 빈 공간을 남기세요.</li><li data-i18n="how3">행이나 열을 완성하면 지워집니다. 세 모양을 모두 쓰면 계속할 수 있을 때 새 세트가 나옵니다.</li></ol><p data-i18n="helpText">첫 배치 전에 세 모양 전체의 자리를 계획하세요. 고정 모양은 회전할 수 없으며, 사용하지 않은 모양이 모두 놓일 곳이 없으면 그 판이 끝납니다.</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">스테이지와 진행</h3><p data-i18n="tgProgress">30개 미션의 캠페인이나 무한 점수 모드를 선택하세요. 캠페인 목표는 줄, 흙, 얼음과 돌, 지정 색, 보석과 잠금, 혼합 목표로 달라집니다. 일부 미션은 세 모양 세트의 사용 횟수를 제한합니다. 보석을 덮으면 잠금 하나가 열리고 얼음과 흙은 줄과 함께 지워지며 돌 위에는 놓을 수 없습니다.</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">다음 수 고르기</h3><p data-i18n="tgTips">작은 모양을 놓기 전에 남은 큰 모양이 그 공간을 필요로 하는지 확인하세요. 줄을 지우면 공간이 생기지만 고립된 틈은 채우기 어렵습니다. 무한 모드에는 넓은 모양과 3×3 정사각형도 나오므로 큰 빈 공간을 모두 좁게 나누지 마세요.</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">퍼즐의 원리</h3><p data-i18n="tgDesign">모양의 방향은 고정되어 있고 자동으로 떨어지지 않습니다. 행이나 열을 지우면 트레이의 다른 모양을 놓을 자리도 달라집니다. 배치만으로는 점수를 얻지 못하고 줄을 완성해야 합니다. 여러 줄을 동시에 지우거나 연속으로 줄을 지우면 점수가 높아집니다.</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">플레이어 및 저장 정보</h3><p data-i18n="tgSave">모양을 드래그하거나 먼저 모양을 선택한 뒤 보드 칸을 고르세요. 계정은 필요하지 않습니다. 캠페인 해금, 설정, 무한 모드 최고 점수는 이 브라우저에 저장됩니다. 다시 시작은 미완성 보드를 복원하지 않고 새 시도를 시작합니다. 브라우저 데이터를 지우면 기록이 없어질 수 있으며 다른 기기의 진행 상황과 자동으로 공유되지 않습니다.</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">자주 묻는 질문</h3><dl><div><dt data-i18n="tgFaqQ1">모양을 회전할 수 있나요?</dt><dd data-i18n="tgFaqA1">아니요. 모든 모양은 트레이에 표시된 방향 그대로 사용합니다.</dd></div><div><dt data-i18n="tgFaqQ2">언제 점수가 오르나요?</dt><dd data-i18n="tgFaqA2">행이나 열을 완성해 지울 때 점수를 얻습니다. 줄을 지우지 않고 모양만 놓으면 점수가 오르지 않습니다.</dd></div><div><dt data-i18n="tgFaqQ3">스테이지는 몇 개인가요?</dt><dd data-i18n="tgFaqA3">캠페인은 30개 미션입니다. 무한 모드는 남은 모양을 놓을 수 있는 자리가 없어질 때까지 계속됩니다.</dd></div><div><dt data-i18n="tgFaqQ4">얼음과 돌은 어떻게 다른가요?</dt><dd data-i18n="tgFaqA4">얼음 위에는 블록을 놓을 수 있지만 해당 행이나 열을 지울 때까지 얼음이 남습니다. 돌이 있는 칸에는 놓을 수 없습니다.</dd></div><div><dt data-i18n="tgFaqQ5">왜 이번 시도가 끝났나요?</dt><dd data-i18n="tgFaqA5">사용하지 않은 모양을 하나도 놓을 수 없으면 끝납니다. 캠페인에서는 목표를 이루기 전에 세트 한도에 도달해도 끝날 수 있습니다.</dd></div><div><dt data-i18n="tgFaqQ6">무엇이 저장되나요?</dt><dd data-i18n="tgFaqA6">캠페인 해금, 설정, 무한 모드 최고 점수가 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면 사라질 수 있으며 다른 기기로 자동 이전되지 않습니다.</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">관련 게임</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/ko/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">헥사 소트</strong><span data-i18n="tgRelatedWhy1">색깔 육각형을 정리해 같은 색끼리 쌓으세요.</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/ko/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">언블록 트레일</strong><span data-i18n="tgRelatedWhy2">블록을 밀어 출구로 가는 길을 여세요.</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -171,22 +161,21 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Back"
-            >
+              aria-label="메인으로 돌아가기" data-wp-text-aria="tgBackMain">
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">스테이지 선택</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
+            <button id="stageSound" class="icon-control" type="button" hidden aria-label="소리" data-wp-text-aria="tgSound">
               🔊
             </button>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="스테이지 선택" data-wp-text-aria="chooseStage"></div>
           <footer class="stage-footer">
             <p class="stage-hint" data-i18n="stageHint">열린 미션을 선택하세요.</p>
-            <nav class="stage-tabs" aria-label="Stage navigation">
+            <nav class="stage-tabs" aria-label="스테이지 맵">
               <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">스테이지 맵</button>
             </nav>
           </footer>
@@ -199,7 +188,7 @@
           >입장</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
-      </div><div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>Can shapes rotate?</dt><dd>No. Each tray shape keeps its displayed orientation.</dd></div><div><dt>When do points increase?</dt><dd>Only completed rows or columns award points; simply placing a shape does not.</dd></div><div><dt>스테이지는 몇 개 있나요?</dt><dd>There are 30 authored Campaign missions plus an unlimited Endless run.</dd></div><div><dt>What do ice and stone do?</dt><dd>Ice remains visible beneath a placed block until its line clears; stone cannot be occupied.</dd></div><div><dt>Why did the run end?</dt><dd>The run ends when none of the unused shapes in the current tray has a legal placement.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>Campaign unlocks and preferences are stored locally in this browser.</dd></div><div><dt>어떤 조작 방식과 화면 크기를 지원하나요?</dt><dd>게임이 지원하는 범위에서 터치, 마우스, 키보드는 같은 규칙으로 작동합니다. 인터페이스는 필요한 휴대폰, 가로 화면, 데스크톱 크기에서 하나의 논리 레이아웃으로 함께 조정됩니다.</dd></div><div><dt>진행 상황이 다른 기기로 자동 이동하나요?</dt><dd>아니요. 현재 이 게임의 진행 상황은 브라우저 로컬 저장소에만 저장되므로 다른 브라우저 프로필이나 기기에서는 각각 별도의 로컬 진행 상황을 사용합니다. 향후 계정 시스템이 추가되지 않는 한 공유되지 않습니다.</dd></div></dl></div>
+      </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
@@ -216,8 +205,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Back"
-              >
+                aria-label="스테이지 맵" data-wp-text-aria="stageMap">
                 ←
               </button>
               <div class="battle-title">
@@ -226,10 +214,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="score">Score</b
+                  ><b data-i18n="score">점수</b
                   ><strong id="scoreValue">0</strong></span
                 ><span
-                  ><b data-i18n="sets">Sets</b
+                  ><b data-i18n="sets">세트</b
                   ><strong id="setsValue">0</strong></span
                 >
               </div>
@@ -238,8 +226,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
-              >
+                aria-label="플레이 방법" data-wp-text-aria="howTitle">
                 ?
               </button>
             </header>
@@ -252,20 +239,18 @@
                 id="blockBoard"
                 class="block-board"
                 role="grid"
-                aria-label="8 by 8 block board"
-              ></div>
+                aria-label="블록 블라스트" data-wp-text-aria="title"></div>
               <div
                 id="pieceTray"
                 class="piece-tray"
-                aria-label="Shape tray"
-              ></div>
+                aria-label="다음 세 모양을 위한 공간을 남기세요." data-wp-text-aria="guideTitle"></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
               <h2 data-i18n="howTitle">플레이 방법</h2>
-              <p data-i18n="helpText">놓은 뒤에는 이동하거나 회전할 수 없습니다. 완성된 줄은 즉시 지워집니다.</p>
+              <p data-i18n="helpText">첫 배치 전에 세 모양 전체의 자리를 계획하세요. 고정 모양은 회전할 수 없으며, 사용하지 않은 모양이 모두 놓일 곳이 없으면 그 판이 끝납니다.</p>
               <button
                 id="helpClose"
                 class="primary"
@@ -284,8 +269,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >계속</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">스테이지 맵</button>
               </div>
             </div>
@@ -294,23 +278,21 @@
             <div class="dialog result-layout">
               <img
                 src="../../assets/interface7-redrawn/block-blast.webp"
-                alt="Block Blast"
+                alt="블록 블라스트"
               />
               <div>
-                <small id="resultStage">STAGE 1</small>
+                <small id="resultStage">스테이지 1</small>
                 <h2 id="resultTitle" data-i18n="clear">미션 완료!</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">스테이지 맵</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >다음 스테이지</button
                 ><button id="retryBtn" type="button" data-i18n="retry">다시 플레이</button>
               </div>
             </div>
@@ -332,7 +314,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio"></script>
+    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
@@ -346,6 +328,6 @@
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
-  
+
 </body>
 </html>

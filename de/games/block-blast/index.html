@@ -95,7 +95,7 @@
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
-      <div class="loading-card"><strong>Blockexplosion</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+      <div class="loading-card"><strong>Blockexplosion</strong><span>Spiel wird vorbereitet…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
@@ -105,7 +105,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="Zurück zu WeightPlay"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">Blockexplosion</strong>
           <div class="main-controls">
@@ -114,12 +114,11 @@
               class="icon-control"
               type="button"
               aria-pressed="true"
-              data-sound-toggle
-            >
+              data-sound-toggle aria-label="Ton" data-wp-text-aria="tgSound">
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">Sprache</span
+              ><select id="localeSelect" aria-label="Sprache" data-wp-text-aria="language"></select
             ></label>
           </div>
         </header>
@@ -127,7 +126,7 @@
           <img
             class="poster"
             src="../../assets/interface7-redrawn/block-blast.webp"
-            alt="Spielgrafik zu Blockexplosion"
+            alt="Blockexplosion"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8-BLOCKPUZZLE</small>
@@ -140,22 +139,13 @@
                 class="primary"
                 type="button"
                 data-i18n="campaign"
-              >
-                Campaign</button
+              >Kampagne</button
               ><button id="endlessBtn" type="button" data-i18n="endless">Endlos</button>
             </div>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Rätsel</span><span>Strategie</span></div>
-        <h2 data-i18n="howTitle">Spielanleitung</h2>
-        <div class="game-info-section"><ol>
-          <li data-i18n="how1">Ziehe eine von drei festen Formen auf das 8×8-Brett.</li>
-          <li data-i18n="how2">Eine angehobene durchscheinende Vorschau zeigt gültige Plätze.</li>
-          <li data-i18n="how3">Volle Reihen oder Spalten verschwinden sofort.</li>
-        </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">Formen können nach dem Legen weder bewegt noch gedreht werden. Volle Linien verschwinden sofort.</p><p data-i18n="gameOver">Keine übrige Form passt.</p></div>
-      </section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">Blockexplosion</h2><p data-i18n="pitch">Lege alle drei Formen und fülle Reihen oder Spalten.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">Blockrätsel</span><span data-i18n="tgTag2">Reihen und Spalten leeren</span><span data-i18n="tgTag3">Drei Formen planen</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">Spielanleitung</h3><ol><li data-i18n="how1">Prüfe alle drei festen Formen, bevor du eine auf das 8×8-Brett legst.</li><li data-i18n="how2">Nutze die angehobene Vorschau für den Zielplatz und halte lange Bahnen oder große Freiflächen für größere Formen offen.</li><li data-i18n="how3">Vervollständige Reihen oder Spalten, um sie zu löschen. Sind alle drei Formen benutzt, folgt ein neuer Satz, wenn die Runde weitergehen kann.</li></ol><p data-i18n="helpText">Plane den ganzen Dreiersatz vor der ersten Platzierung. Feste Formen lassen sich nicht drehen; wenn keine unbenutzte Form mehr einen gültigen Platz hat, endet die Runde.</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">Level und Fortschritt</h3><p data-i18n="tgProgress">Wähle die Kampagne mit 30 Missionen oder einen Endloslauf auf Punkte. Die Ziele wechseln zwischen Linien, Erde, Eis und Stein, Farben, Edelsteinen und Schlössern sowie gemischten Aufgaben. Manche Missionen begrenzen die Dreiersätze. Ein überdeckter Edelstein öffnet ein Schloss; Eis und Erde verschwinden mit einer vollständigen Linie. Stein lässt sich nicht belegen.</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">Den nächsten Zug planen</h3><p data-i18n="tgTips">Prüfe vor einer kleinen Platzierung, ob eine größere unbenutzte Form diesen Raum braucht. Linien verschwinden, vereinzelte Lücken bleiben aber schwer zu füllen. Im Endlosmodus können breite Formen und ein 3×3-Quadrat erscheinen. Zerteile deshalb nicht jede große Freifläche in schmale Nischen.</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">So funktioniert das Rätsel</h3><p data-i18n="tgDesign">Die Ausrichtung der Formen bleibt fest, und sie fallen nicht automatisch. Eine gelöschte Reihe oder Spalte verändert den Platz für die übrigen Formen. Das Ablegen allein gibt keine Punkte; vollständige Linien schon. Gleichzeitige Linien und aufeinanderfolgende Züge mit Linien erhöhen die Punktzahl.</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">Spieler- und Speicherhinweise</h3><p data-i18n="tgSave">Ziehe eine Form auf das Brett oder wähle erst die Form und dann ein Feld. Ein Konto ist nicht nötig. Kampagnenfreigaben, Einstellungen und der Endlosrekord bleiben in diesem Browser. Neustart beginnt einen neuen Versuch und stellt das unfertige Brett nicht wieder her. Gelöschte Browserdaten können diese Einträge entfernen; andere Geräte haben ihren eigenen Fortschritt.</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">Häufige Fragen</h3><dl><div><dt data-i18n="tgFaqQ1">Kann ich Formen drehen?</dt><dd data-i18n="tgFaqA1">Nein. Jede Form behält die Ausrichtung, die im Vorrat angezeigt wird.</dd></div><div><dt data-i18n="tgFaqQ2">Wann steigt die Punktzahl?</dt><dd data-i18n="tgFaqA2">Beim Vervollständigen und Leeren von Reihen oder Spalten. Das Ablegen ohne gelöschte Linie gibt keine Punkte.</dd></div><div><dt data-i18n="tgFaqQ3">Wie viele Level gibt es?</dt><dd data-i18n="tgFaqA3">Die Kampagne hat 30 Missionen. Der Endlosmodus läuft, bis keine übrige Form mehr legal platziert werden kann.</dd></div><div><dt data-i18n="tgFaqQ4">Was bewirken Eis und Stein?</dt><dd data-i18n="tgFaqA4">Auf Eis darfst du Blöcke setzen; es bleibt bis zum Leeren seiner Reihe oder Spalte. Steinfelder lassen sich nicht belegen.</dd></div><div><dt data-i18n="tgFaqQ5">Warum ist der Versuch beendet?</dt><dd data-i18n="tgFaqA5">Er endet, wenn keine unbenutzte Form mehr passt. Eine Mission kann auch enden, wenn ihr Satzlimit vor dem Erreichen des Ziels aufgebraucht ist.</dd></div><div><dt data-i18n="tgFaqQ6">Was wird gespeichert?</dt><dd data-i18n="tgFaqA6">Kampagnenfreigaben, Einstellungen und der Endlosrekord bleiben in diesem Browser. Das Löschen der Browserdaten kann sie entfernen; sie wechseln nicht automatisch auf andere Geräte.</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/de/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">Hexa-Sortierung</strong><span data-i18n="tgRelatedWhy1">Ordne farbige Sechsecke zu gleichfarbigen Stapeln.</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/de/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">Unblock-Pfad</strong><span data-i18n="tgRelatedWhy2">Verschiebe Blöcke, um den Ausgang freizumachen.</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -171,22 +161,21 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Back"
-            >
+              aria-label="Zurück zum Hauptmenü" data-wp-text-aria="tgBackMain">
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">Stufe wählen</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
+            <button id="stageSound" class="icon-control" type="button" hidden aria-label="Ton" data-wp-text-aria="tgSound">
               🔊
             </button>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="Stufe wählen" data-wp-text-aria="chooseStage"></div>
           <footer class="stage-footer">
             <p class="stage-hint" data-i18n="stageHint">Wähle eine offene Mission.</p>
-            <nav class="stage-tabs" aria-label="Stage navigation">
+            <nav class="stage-tabs" aria-label="Stufenkarte">
               <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">Stufenkarte</button>
             </nav>
           </footer>
@@ -199,7 +188,7 @@
           >Betreten</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
-      </div><div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Can shapes rotate?</dt><dd>No. Each tray shape keeps its displayed orientation.</dd></div><div><dt>When do points increase?</dt><dd>Only completed rows or columns award points; simply placing a shape does not.</dd></div><div><dt>Wie viele Stufen gibt es?</dt><dd>There are 30 authored Campaign missions plus an unlimited Endless run.</dd></div><div><dt>What do ice and stone do?</dt><dd>Ice remains visible beneath a placed block until its line clears; stone cannot be occupied.</dd></div><div><dt>Why did the run end?</dt><dd>The run ends when none of the unused shapes in the current tray has a legal placement.</dd></div><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Campaign unlocks and preferences are stored locally in this browser.</dd></div><div><dt>Welche Steuerungen und Bildschirmgrößen werden unterstützt?</dt><dd>Wenn das Spiel sie unterstützt, folgen Touch, Maus und Tastatur denselben Regeln. Die Oberfläche passt sich auf den erforderlichen Größen für Handy, Querformat und Desktop als einheitliches logisches Layout an.</dd></div><div><dt>Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?</dt><dd>Nein. Dieses Spiel speichert den Fortschritt derzeit nur im lokalen Browserspeicher. Ein anderes Browserprofil oder Gerät hat daher einen eigenen lokalen Fortschritt, solange kein Kontosystem hinzugefügt wird.</dd></div></dl></div>
+      </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
@@ -216,8 +205,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Back"
-              >
+                aria-label="Stufenkarte" data-wp-text-aria="stageMap">
                 ←
               </button>
               <div class="battle-title">
@@ -226,10 +214,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="score">Score</b
+                  ><b data-i18n="score">Punkte</b
                   ><strong id="scoreValue">0</strong></span
                 ><span
-                  ><b data-i18n="sets">Sets</b
+                  ><b data-i18n="sets">Sätze</b
                   ><strong id="setsValue">0</strong></span
                 >
               </div>
@@ -238,8 +226,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
-              >
+                aria-label="Spielanleitung" data-wp-text-aria="howTitle">
                 ?
               </button>
             </header>
@@ -252,20 +239,18 @@
                 id="blockBoard"
                 class="block-board"
                 role="grid"
-                aria-label="8 by 8 block board"
-              ></div>
+                aria-label="Blockexplosion" data-wp-text-aria="title"></div>
               <div
                 id="pieceTray"
                 class="piece-tray"
-                aria-label="Shape tray"
-              ></div>
+                aria-label="Halte Platz für die nächsten drei Formen frei." data-wp-text-aria="guideTitle"></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
               <h2 data-i18n="howTitle">Spielanleitung</h2>
-              <p data-i18n="helpText">Formen können nach dem Legen weder bewegt noch gedreht werden. Volle Linien verschwinden sofort.</p>
+              <p data-i18n="helpText">Plane den ganzen Dreiersatz vor der ersten Platzierung. Feste Formen lassen sich nicht drehen; wenn keine unbenutzte Form mehr einen gültigen Platz hat, endet die Runde.</p>
               <button
                 id="helpClose"
                 class="primary"
@@ -284,8 +269,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >Fortsetzen</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">Stufenkarte</button>
               </div>
             </div>
@@ -294,23 +278,21 @@
             <div class="dialog result-layout">
               <img
                 src="../../assets/interface7-redrawn/block-blast.webp"
-                alt="Block Blast"
+                alt="Blockexplosion"
               />
               <div>
-                <small id="resultStage">STAGE 1</small>
+                <small id="resultStage">Level 1</small>
                 <h2 id="resultTitle" data-i18n="clear">Mission erfüllt!</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">Stufenkarte</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >Nächste Stufe</button
                 ><button id="retryBtn" type="button" data-i18n="retry">Noch einmal</button>
               </div>
             </div>
@@ -332,7 +314,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio"></script>
+    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
@@ -346,6 +328,6 @@
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
-  
+
 </body>
 </html>

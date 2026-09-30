@@ -64,7 +64,7 @@
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
-      <div class="loading-card"><strong>Block Blast</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+      <div class="loading-card"><strong>Block Blast</strong><span>Preparing the game…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
@@ -83,12 +83,11 @@
               class="icon-control"
               type="button"
               aria-pressed="true"
-              data-sound-toggle
-            >
+              data-sound-toggle aria-label="Sound" data-wp-text-aria="tgSound">
               🔊</button
             ><label class="locale-control"
               ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><select id="localeSelect" aria-label="Language" data-wp-text-aria="language"></select
             ></label>
           </div>
         </header>
@@ -96,14 +95,12 @@
           <img
             class="poster"
             src="../../assets/interface7-redrawn/block-blast.webp"
-            alt="Colorful blocks clearing lines on a puzzle board"
+            alt="Block Blast"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
             <h1 data-i18n="title">Block Blast</h1>
-            <p data-i18n="pitch">
-              Place all three shapes and clear complete rows or columns.
-            </p>
+            <p data-i18n="pitch">Place all three shapes and clear complete rows or columns.</p>
             <strong id="mainProgress">1 / 30</strong>
             <div class="main-actions">
               <button
@@ -111,24 +108,13 @@
                 class="primary"
                 type="button"
                 data-i18n="campaign"
-              >
-                Campaign</button
-              ><button id="endlessBtn" type="button" data-i18n="endless">
-                Endless
-              </button>
+              >Campaign</button
+              ><button id="endlessBtn" type="button" data-i18n="endless">Endless</button>
             </div>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Puzzle</span><span>Strategy</span></div>
-        <h2 data-i18n="howTitle">How to play</h2>
-        <div class="game-info-section"><ol>
-          <li data-i18n="how1">Inspect all three fixed shapes before placing one on the 8×8 board.</li>
-          <li data-i18n="how2">Use the lifted preview to confirm the landing, and preserve long lanes or broad open pockets for larger shapes.</li>
-          <li data-i18n="how3">Complete rows or columns to clear them. When all three shapes are used, a new set arrives if the run can continue.</li>
-        </ol></div>
-        <div class="game-info-section"><p data-i18n="helpText">Plan the whole three-shape set before the first placement. Fixed shapes cannot rotate; if none of the unused shapes has a legal position, the run ends.</p><p data-i18n="gameOver">No remaining shape can fit.</p></div>
-      </section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">Block Blast</h2><p data-i18n="pitch">Place all three shapes and clear complete rows or columns.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">Block puzzle</span><span data-i18n="tgTag2">Row and column clearing</span><span data-i18n="tgTag3">Three-shape planning</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">How to play</h3><ol><li data-i18n="how1">Inspect all three fixed shapes before placing one on the 8×8 board.</li><li data-i18n="how2">Use the lifted preview to confirm the landing, and preserve long lanes or broad open pockets for larger shapes.</li><li data-i18n="how3">Complete rows or columns to clear them. When all three shapes are used, a new set arrives if the run can continue.</li></ol><p data-i18n="helpText">Plan the whole three-shape set before the first placement. Fixed shapes cannot rotate; if none of the unused shapes has a legal position, the run ends.</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">Stages and progression</h3><p data-i18n="tgProgress">Choose the 30-mission Campaign or an Endless score run. Campaign goals change between lines, dirt, ice and stone, colored blocks, gems and locks, and mixed objectives. Some missions limit the number of three-shape sets. Cover a gem to open a lock; ice and dirt clear with a completed line, while stone cannot be occupied.</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">Planning your next move</h3><p data-i18n="tgTips">Before dropping a small piece into an open area, check whether a larger unused shape needs that space. Lines disappear, but isolated gaps remain awkward to fill. In Endless, wider pieces and a 3×3 square can appear, so avoid dividing every large empty area into narrow pockets.</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">How the puzzle works</h3><p data-i18n="tgDesign">Shapes keep their displayed orientation and do not fall automatically. Clearing a row or column changes the spaces available to the other shapes in the tray. Points come from completed lines, not from placing a shape; simultaneous clears and consecutive clearing moves increase the score.</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">Player and save information</h3><p data-i18n="tgSave">Drag a shape into place, or select it and choose a board cell. No account is needed. Campaign unlocks, preferences and the Endless best score stay in this browser. Restart begins a new attempt rather than restoring the unfinished board. Clearing browser data can erase these records; another device has its own separate progress.</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">Frequently asked questions</h3><dl><div><dt data-i18n="tgFaqQ1">Can shapes rotate?</dt><dd data-i18n="tgFaqA1">No. Every shape keeps the orientation shown in the tray.</dd></div><div><dt data-i18n="tgFaqQ2">When do points increase?</dt><dd data-i18n="tgFaqA2">Completed rows and columns award points. Placing a shape without clearing a line does not.</dd></div><div><dt data-i18n="tgFaqQ3">How many stages are included?</dt><dd data-i18n="tgFaqA3">The Campaign has 30 missions. Endless continues until the remaining shapes have no legal placement.</dd></div><div><dt data-i18n="tgFaqQ4">What do ice and stone do?</dt><dd data-i18n="tgFaqA4">You can place a block over ice; the ice stays until its row or column clears. Stone cells cannot be occupied.</dd></div><div><dt data-i18n="tgFaqQ5">Why did the attempt end?</dt><dd data-i18n="tgFaqA5">It ends when no unused shape fits. A Campaign mission can also end if its set limit is reached before the objective is complete.</dd></div><div><dt data-i18n="tgFaqQ6">What is saved?</dt><dd data-i18n="tgFaqA6">Campaign unlocks, preferences and the Endless best score are stored in this browser. Clearing browser data may erase them; they do not automatically transfer to another device.</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">Related games</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/en/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">Hexa Sort</strong><span data-i18n="tgRelatedWhy1">Sort colored hexagons into matching stacks.</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/en/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">Unblock Trail</strong><span data-i18n="tgRelatedWhy2">Slide blocks to free a path to the exit.</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -144,27 +130,22 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Back"
-            >
+              aria-label="Back to Main" data-wp-text-aria="tgBackMain">
               ←
             </button>
             <div>
               <strong data-i18n="chooseStage">Choose a Stage</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
+            <button id="stageSound" class="icon-control" type="button" hidden aria-label="Sound" data-wp-text-aria="tgSound">
               🔊
             </button>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="Choose a Stage" data-wp-text-aria="chooseStage"></div>
           <footer class="stage-footer">
-            <p class="stage-hint" data-i18n="stageHint">
-              Select an unlocked mission.
-            </p>
-            <nav class="stage-tabs" aria-label="Stage navigation">
-              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
-                Stage Map
-              </button>
+            <p class="stage-hint" data-i18n="stageHint">Select an unlocked mission.</p>
+            <nav class="stage-tabs" aria-label="Stage Map">
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">Stage Map</button>
             </nav>
           </footer>
           <button
@@ -173,9 +154,7 @@
             type="button"
             data-wp-enter-battle
             data-i18n="enter"
-          >
-            Enter Stage
-          </button>
+          >Enter Stage</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
@@ -195,8 +174,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Back"
-              >
+                aria-label="Stage Map" data-wp-text-aria="stageMap">
                 ←
               </button>
               <div class="battle-title">
@@ -217,8 +195,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
-              >
+                aria-label="How to play" data-wp-text-aria="howTitle">
                 ?
               </button>
             </header>
@@ -231,13 +208,11 @@
                 id="blockBoard"
                 class="block-board"
                 role="grid"
-                aria-label="8 by 8 block board"
-              ></div>
+                aria-label="Block Blast" data-wp-text-aria="title"></div>
               <div
                 id="pieceTray"
                 class="piece-tray"
-                aria-label="Shape tray"
-              ></div>
+                aria-label="Make space for the next three shapes." data-wp-text-aria="guideTitle"></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </div>
@@ -250,9 +225,7 @@
                 class="primary"
                 type="button"
                 data-i18n="continue"
-              >
-                Continue
-              </button>
+              >Continue</button>
             </div>
           </section>
           <section id="leaveModal" class="modal" hidden>
@@ -265,11 +238,8 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
-                ><button id="leaveStage" type="button" data-i18n="stageMap">
-                  Stage Map
-                </button>
+                >Continue</button
+                ><button id="leaveStage" type="button" data-i18n="stageMap">Stage Map</button>
               </div>
             </div>
           </section>
@@ -280,23 +250,19 @@
                 alt="Block Blast"
               />
               <div>
-                <small id="resultStage">STAGE 1</small>
+                <small id="resultStage">Stage 1</small>
                 <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">Stage Map</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
-                ><button id="retryBtn" type="button" data-i18n="retry">
-                  Play Again
-                </button>
+                >Next Stage</button
+                ><button id="retryBtn" type="button" data-i18n="retry">Play Again</button>
               </div>
             </div>
           </section>
@@ -316,7 +282,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio"></script>
+    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
     <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
