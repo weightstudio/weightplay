@@ -79,6 +79,11 @@ body[data-screen="stage"] .wp-tutorial-button{display:none}
 #mainGuide .crown-related-card span{overflow-wrap:anywhere;line-height:1.5}
 #mainGuide .crown-related-card:focus-visible{outline:3px solid #edb74e;outline-offset:3px}
 @media(min-width:700px){#mainGuide{padding-inline:24px}}
+/* A click received before the game module is ready is queued and acknowledged in place. */
+#start[aria-busy="true"]{position:relative}
+#start[aria-busy="true"]::after{content:"";position:absolute;inset-inline-end:16px;top:50%;width:14px;height:14px;margin-top:-7px;border:2px solid currentColor;border-inline-end-color:transparent;border-radius:50%;animation:crownfall-start-pending .7s linear infinite}
+@keyframes crownfall-start-pending{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){#start[aria-busy="true"]::after{animation:none;border-inline-end-color:transparent}}
 /* Keep Crownfall's shared 52px Main action fully in the first fold on short landscape screens. */
 @media (min-width: 700px) and (max-height: 430px) and (orientation: landscape) {
   body[data-wp-game-id="animal-crownfall"] .wp-standard-main-composition {

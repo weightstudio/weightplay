@@ -1,8 +1,24 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-  <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-nest-weigh/"+location.search+location.hash)}catch{location.replace("/en/games/animal-nest-weigh/"+location.search+location.hash)}})();</script>
+    <link rel="canonical" href="https://weightplay.com/en/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-nest-weigh/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-nest-weigh/" />
+    <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <script src="../../src/weightplay-audio.js?v=1.0.0-nest-weigh-v6-i8"></script>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -14,18 +30,23 @@
   <title>Nest Weigh-In | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="/src/loading-screen.css?v=20260702-unified1" data-wp-loading-screen>
+  <link rel="stylesheet" href="/src/tutorial.css?v=20260701-style1">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
   <link rel="stylesheet" href="style.css?v=20260930-nest-weigh-v6-i8">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
 </head>
 <body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-nest-weigh" data-wp-game-version="v6" data-screen="main" data-wp-banner-ads="false">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite" aria-busy="true">
+    <div class="loading-card"><strong data-copy="title">Nest Weigh-In</strong><span data-copy="loading">Getting the nest table ready…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
   <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup">
       <main id="mainScreen" class="main-screen" data-wp-standard-main-screen data-wp-main-screen>
         <header id="mainHeader" class="main-header">
           <a id="mainReturn" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32"></a>
-          <strong data-wp-frame-title data-copy="title">Nest Weigh-In</strong>
+          <strong class="wp-shell-main-title wp-standard-main-title" data-wp-frame-title data-wp-game-title data-runtime-localize="off" data-copy="title">Nest Weigh-In</strong>
         </header>
         <section id="mainContent" class="main-hero">
           <picture class="cover-art-frame">
@@ -34,7 +55,7 @@
           </picture>
           <div class="hero-copy" data-wp-frame-copy>
             <p class="main-summary" data-wp-frame-summary data-copy="intro">Compare two nest materials, then choose the one the nest needs.</p>
-            <div id="mainProgress" class="main-progress progress-chip" data-wp-frame-progress role="status" aria-live="polite"></div>
+            <div id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-frame-progress role="status" aria-live="polite"></div>
             <button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start Game</button>
           </div>
         </section>
@@ -47,6 +68,7 @@
           <article class="game-info-section"><b data-copy="guideTwoTitle">2. Compare a pair</b><p data-copy="guideTwo">Choose two trays and watch the balance explain their order.</p></article>
           <article class="game-info-section"><b data-copy="guideThreeTitle">3. Check the nest</b><p data-copy="guideThree">Choose one answer. A wrong try stays visible so you can reason again.</p></article>
         </div>
+        <button id="tutorialOpenBtn" class="nest-tutorial-replay" type="button" data-copy="tutorialOpen">Replay how to play</button>
       </section>
       <div class="locale-source" hidden aria-hidden="true"><select id="localeSelect" aria-label="Choose a language">
         <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
@@ -54,7 +76,7 @@
     </div>
 
     <section id="stageScreen" class="stage-screen" hidden>
-      <section id="stageCanvas" class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-nest-weigh-cover.webp" style="--wp-stage-art:url('assets/animal-nest-weigh-cover.webp')">
+      <section id="stageCanvas" class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp" style="--wp-stage-art:url('/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp')">
         <header id="stageHeader" class="stage-header">
           <button id="stageBackBtn" type="button" data-wp-return="stage" data-copy-aria-label="back"><span aria-hidden="true">←</span></button>
           <strong data-wp-frame-title data-copy="title">Nest Weigh-In</strong>
@@ -67,7 +89,7 @@
           <div id="stageList" class="stage-rail" data-wp-stage-rail data-wp-stage-v6-pool-size="9" aria-label="Nest lessons"></div>
         </section>
         <nav class="stage-tabs" data-wp-frame-stage-nav aria-label="Nest lessons" role="tablist">
-          <button id="stagesTab" type="button" role="tab" aria-controls="stageWorkspace" aria-selected="true" data-wp-frame-stage-slot="stages" data-copy="stages">Nest lessons</button>
+          <button id="stagesTab" type="button" role="tab" aria-controls="stageWorkspace" aria-selected="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-copy="stages">Nest lessons</button>
         </nav>
       </section>
     </section>
@@ -78,7 +100,7 @@
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria-label="back"><span aria-hidden="true">←</span></button>
           <strong data-wp-frame-title data-copy="title">Nest Weigh-In</strong>
         </header>
-        <main id="battleContent" class="battle-content" data-wp-frame-logical-actions="battle">
+        <div id="battleContent" class="battle-content" data-wp-frame-logical-actions="battle">
           <div id="battlePanel" class="battle-panel">
             <div class="mission-row">
               <p id="roundHint" class="round-hint"></p>
@@ -102,7 +124,7 @@
               <div id="materialBoard" class="tray-grid" aria-label="Materials to compare"></div>
               <div class="weighing-actions">
                 <button id="phaseActionBtn" class="primary-btn" type="button" data-wp-primary-action data-wp-frame-action="primary"></button>
-                <button id="phaseToggleBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary" hidden></button>
+                <button id="phaseToggleBtn" class="secondary-btn" type="button" hidden></button>
                 <button id="clearSelectionBtn" class="text-btn" type="button" data-wp-frame-action="secondary" data-copy="clearPair">Clear selection</button>
               </div>
               <p id="comparisonText" class="comparison" role="status" aria-live="polite"></p>
@@ -125,7 +147,7 @@
               <button id="resultReplayBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary"></button>
             </div>
           </section>
-        </main>
+        </div>
         <section id="leaveDialog" class="leave-dialog" hidden role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy">
           <div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><div class="leave-actions" data-wp-frame-logical-actions="battle"><button id="leaveContinueBtn" class="primary-btn" data-wp-frame-action="primary" type="button"></button><button id="leaveStagesBtn" class="secondary-btn" data-wp-frame-action="secondary" type="button"></button></div></div>
         </section>
@@ -133,6 +155,20 @@
     </section>
   </div>
 
+  <div id="tutorialPanel" class="wp-tutorial-backdrop nest-tutorial-backdrop" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" aria-describedby="tutorialIntro" aria-hidden="true" hidden>
+    <section class="wp-tutorial-card nest-tutorial-card">
+      <div class="wp-tutorial-head"><strong id="tutorialTitle" data-copy="tutorialTitle">Read the balance; save the nest</strong><button id="tutorialCloseBtn" class="wp-tutorial-close" type="button" data-copy-aria-label="tutorialCloseLabel">×</button></div>
+      <p id="tutorialIntro" class="nest-tutorial-intro" data-copy="tutorialIntro">Compare materials one pair at a time. Every clue helps narrow the nest’s request.</p>
+      <div class="wp-tutorial-steps">
+        <div class="wp-tutorial-step"><div class="wp-tutorial-icon">1</div><div class="wp-tutorial-copy"><b data-copy="guideOneTitle">1. Read the request</b><span data-copy="guideOne"></span></div></div>
+        <div class="wp-tutorial-step"><div class="wp-tutorial-icon">2</div><div class="wp-tutorial-copy"><b data-copy="guideTwoTitle">2. Weigh a new pair</b><span data-copy="guideTwo"></span></div></div>
+        <div class="wp-tutorial-step"><div class="wp-tutorial-icon">3</div><div class="wp-tutorial-copy"><b data-copy="guideThreeTitle">3. Choose with evidence</b><span data-copy="guideThree"></span></div></div>
+      </div>
+      <button id="tutorialStartBtn" class="wp-tutorial-action" type="button" data-copy="tutorialStart">Start the first lesson</button>
+    </section>
+  </div>
+
+  <script src="/src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/stage-virtualization-standard.js"></script>
@@ -140,5 +176,6 @@
   <script src="locales.js?v=20260930-nest-weigh-v6-i8"></script>
   <script src="game-data.js?v=20260930-nest-weigh-v6-i8"></script>
   <script src="game.js?v=20260930-nest-weigh-v6-i8"></script>
+  <script src="tutorial.js?v=20260930-nest-weigh-v6-i8"></script>
 </body>
 </html>

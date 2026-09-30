@@ -215,13 +215,15 @@
     $("phaseLabel").textContent = copy(state.phase === "compare" ? "weighStep" : "chooseStep");
     $("phaseActionBtn").textContent = copy(state.phase === "compare" ? "compare" : "check");
     $("phaseActionBtn").disabled = state.phase === "compare" ? state.selectedPair.length !== 2 : state.selectedTarget === null;
-    $("phaseToggleBtn").hidden = state.phase === "compare" && state.comparisons < round.minimumComparisons;
-    $("phaseToggleBtn").textContent = copy(state.phase === "compare" ? "chooseAction" : "compareMore");
+    const phaseToggle = $("phaseToggleBtn");
+    const showPhaseToggle = state.phase !== "compare" || state.comparisons >= round.minimumComparisons;
+    phaseToggle.hidden = !showPhaseToggle;
+    if (showPhaseToggle) phaseToggle.setAttribute("data-wp-frame-action", "secondary");
+    else phaseToggle.removeAttribute("data-wp-frame-action");
+    phaseToggle.textContent = copy(state.phase === "compare" ? "chooseAction" : "compareMore");
     $("comparisonText").textContent = comparisonMessage();
     $("comparisonText").classList.toggle("has-comparison", state.clues.length > 0);
     $("comparisonText").classList.toggle("is-repeat", state.lastFeedback === "pairAlreadyKnown");
-    $("compareBtn").disabled = state.selectedPair.length !== 2;
-    $("checkBtn").disabled = state.selectedTarget === null;
     const status = state.wrong ? copy("wrong")
       : state.lastFeedback === "pairAlreadyKnown" ? copy("pairAlreadyKnown")
       : state.lastFeedback === "needPair" ? copy("needPair")
@@ -412,6 +414,7 @@
     if (screen === "main") renderMain();
     frame?.activate(screen, { covered: screen === "battle" && state.resultVisible });
     if (screen === "stage") {
+      renderStages();
       requestAnimationFrame(() => {
         stageController?.refresh();
         stageController?.center(highestUnlocked());
@@ -473,10 +476,11 @@
     state.lastFeedback = "";
     playSound("feedback.error");
     renderBattle();
-    $("materialBoard").classList.remove("is-rejected");
-    void $("materialBoard").offsetWidth;
-    $("materialBoard").classList.add("is-rejected");
-    $("materialBoard").addEventListener("animationend", () => $("materialBoard").classList.remove("is-rejected"), { once: true });
+    const weighingCard = $("materialBoard").closest(".weighing-card");
+    weighingCard.classList.remove("is-rejected");
+    void weighingCard.offsetWidth;
+    weighingCard.classList.add("is-rejected");
+    weighingCard.addEventListener("animationend", () => weighingCard.classList.remove("is-rejected"), { once: true });
   }
 
   function applyText() {
@@ -528,10 +532,6 @@
     $("phaseActionBtn").addEventListener("click", () => state.phase === "compare" ? compareSelected() : checkRound());
     $("phaseToggleBtn").addEventListener("click", togglePhase);
     $("clearSelectionBtn").addEventListener("click", clearPair);
-    $("resetBtn").addEventListener("click", () => {
-      resetRound({ replay: true });
-      playSound("game.start");
-    });
     $("materialBoard").addEventListener("click", (event) => {
       const card = event.target.closest("[data-material-tray]");
       if (!card) return;
@@ -616,6 +616,17 @@
     applyLocale(initialLocale());
     setScreen("main");
     renderMain();
+    const loadingPanel = $("loadingPanel");
+    if (loadingPanel) {
+      const hideLoading = () => {
+        loadingPanel.hidden = true;
+        loadingPanel.classList.add("hidden");
+        loadingPanel.setAttribute("aria-busy", "false");
+      };
+      if (document.readyState === "complete") hideLoading();
+      else window.addEventListener("load", hideLoading, { once: true });
+      window.setTimeout(hideLoading, 1600);
+    }
   }
 
   window.__ANIMAL_NEST_WEIGH_TEST__ = { state, rounds, targetIndex, startRound, applyLocale, compareSelected, checkRound };

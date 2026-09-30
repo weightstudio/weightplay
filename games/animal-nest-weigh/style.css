@@ -28,6 +28,7 @@ body[data-wp-game-id="animal-nest-weigh"] { min-height: 100svh; }
 .battle-canvas { background-color: #162a27; background-image: linear-gradient(180deg, rgb(16 35 30 / 70%), rgb(16 35 30 / 84%)), var(--wp-battle-art); background-position: center; background-size: cover; }
 .battle-content { position: relative; display: grid; min-width: 0; min-height: 0; overflow: hidden; }
 .battle-panel { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; gap: 7px; min-width: 0; min-height: 0; padding: 6px; overflow: auto; }
+#battlePanel[hidden], #battlePanel [hidden], #resultPanel[hidden], #leaveDialog[hidden] { display: none !important; }
 .mission-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
 .round-hint { min-width: 0; margin: 0; color: var(--wp-ui-text); font-size: .83rem; font-weight: 700; line-height: 1.3; }
 .progress-badge { flex: none; color: var(--wp-ui-muted); font-size: .78rem; font-weight: 800; }
@@ -58,6 +59,7 @@ body[data-wp-game-id="animal-nest-weigh"] { min-height: 100svh; }
 .tray-card { display: grid; place-items: center; align-content: center; gap: 2px; min-width: 0; min-height: 62px; padding: 4px 2px; border: 1px solid var(--wp-ui-line); border-radius: 12px; background: var(--wp-ui-control); color: var(--wp-ui-control-text); cursor: pointer; transition: border-color 150ms ease, background-color 150ms ease, box-shadow 180ms ease, transform 180ms cubic-bezier(.2,.85,.25,1.25); }
 .tray-card:active { transform: scale(.96); }
 .tray-card.is-selected { border-color: var(--wp-ui-gold); background: var(--wp-ui-primary); color: var(--wp-ui-primary-text); box-shadow: 0 0 0 3px rgb(245 200 76 / 28%); transform: translateY(-3px); }
+.tray-card:focus-visible { outline: 3px solid var(--wp-ui-gold); outline-offset: 2px; }
 .tray-card strong { max-width: 100%; font-size: clamp(.62rem, 1.5vw, .82rem); line-height: 1.1; text-align: center; overflow-wrap: anywhere; }
 .tray-icon { display: block; width: clamp(24px, 7vw, 58px); height: clamp(20px, 5vw, 46px); background-image: var(--wp-material-atlas); background-repeat: no-repeat; background-size: 500% 200%; background-position: 0% 0%; }
 .tray-icon.material-twig { background-position: 0% 0%; }
@@ -71,6 +73,7 @@ body[data-wp-game-id="animal-nest-weigh"] { min-height: 100svh; }
 .weighing-actions .primary-btn { grid-column: 1; }
 .weighing-actions .secondary-btn { grid-column: 2; }
 .weighing-actions .text-btn { grid-column: 1 / -1; justify-self: center; }
+.weighing-actions :disabled { opacity: .58; cursor: not-allowed; filter: saturate(.65); }
 .comparison { min-height: 20px; margin: 0; padding: 5px 8px; border-radius: 10px; background: rgb(99 230 190 / 12%); color: var(--wp-ui-text); font-size: .76rem; font-weight: 750; line-height: 1.3; }
 .comparison.has-comparison { animation: clue-arrive 360ms ease-out; }
 .comparison.is-repeat { background: rgb(245 200 76 / 14%); }
@@ -147,3 +150,20 @@ body[data-wp-game-id="animal-nest-weigh"] { min-height: 100svh; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+#tutorialPanel[hidden] { display: none !important; }
+#tutorialCloseBtn { width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex: 0 0 44px; }
+.nest-tutorial-intro { margin: 0; color: var(--wp-ui-text, #20332c); font-size: .94rem; line-height: 1.45; }
+.nest-tutorial-replay {
+  min-height: 44px;
+  margin: 14px 0 0;
+  border: 1px solid rgba(34, 69, 50, .22);
+  border-radius: 14px;
+  padding: 10px 16px;
+  background: #edf5e9;
+  color: #234630;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
+}
+.nest-tutorial-replay:hover, .nest-tutorial-replay:focus-visible { background: #dcefd2; outline: 3px solid rgba(86, 146, 90, .25); outline-offset: 2px; }
