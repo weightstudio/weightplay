@@ -143,3 +143,9 @@ body[data-game-id="animal-prism-battalion"] #labTab #labFeedback {
     gap: 5px;
   }
 }
+
+/* Keep the expanded gameplay lesson and its action within the Battle overlay. */
+#tutorial .dialog-card{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+#tutorial .dialog-card h2,#tutorialDone{flex:none}
+#tutorial .dialog-card ol{min-height:0;overflow:auto;flex:1 1 auto;margin-block:12px;padding-inline-start:26px;overscroll-behavior:contain}
+#tutorialDone{min-height:52px}

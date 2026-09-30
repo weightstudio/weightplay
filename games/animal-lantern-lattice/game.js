@@ -55,14 +55,82 @@
   const state = {
     locale: routeLocale || "en", path: 0, chain: [], motionSlot: null, sessionChecks: 0, checks: 0,
     screen: "main", campaignRun: false, lastResultCampaign: false,
+    focusedClue: null, errorSlot: -1, verifiedPrefix: 0,
   };
   const $ = (id) => document.getElementById(id);
   const setBattleStatus = (message, feedback = "neutral") => {
     const status = $("battleStatus");
     status.textContent = message;
     status.dataset.feedback = feedback;
+    animate(status, [{ opacity: .5 }, { opacity: 1 }], 160);
   };
   const app = $("app");
+  const GAME_AUDIO_CUES = ["board.move", "board.undo", "feedback.hint", "feedback.error", "puzzle.match", "puzzle.clear", "result.win"];
+  const audio = window.WeightPlayAudio?.createScope();
+  const effects = new Set();
+  const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const animate = (node, frames, duration = 240, delay = 0, cleanup = null) => {
+    if (!node?.animate) { cleanup?.(); return; }
+    const animation = node.animate(reduceMotion() ? [{ opacity: 0.65 }, { opacity: 1 }] : frames,
+      { duration: reduceMotion() ? 100 : duration, delay: reduceMotion() ? 0 : delay, easing: "cubic-bezier(.2,.8,.2,1)" });
+    effects.add(animation);
+    animation.finished.catch(() => {}).finally(() => { effects.delete(animation); cleanup?.(); });
+  };
+  const cancelEffects = () => {
+    effects.forEach((animation) => animation.cancel());
+    effects.clear();
+    document.querySelectorAll(".lantern-fx-layer").forEach((layer) => layer.replaceChildren());
+    audio?.stop();
+  };
+  const flash = (node, strong = false) => animate(node,
+    [{ filter: "brightness(1)" }, { filter: `brightness(${strong ? 1.9 : 1.45})` }, { filter: "brightness(1)" }], strong ? 420 : 220);
+  const flyLight = (id, source, destination, exiting = false) => {
+    const root = $("battleContent");
+    const origin = source?.getBoundingClientRect();
+    const arrival = destination?.getBoundingClientRect();
+    const bounds = root.getBoundingClientRect();
+    if (!origin || !arrival || !bounds.width || document.hidden) return;
+    let layer = root.querySelector(".lantern-fx-layer");
+    if (!layer) {
+      layer = document.createElement("div"); layer.className = "lantern-fx-layer";
+      layer.setAttribute("aria-hidden", "true"); root.append(layer);
+    }
+    // Use the owning content's logical coordinates, including uniform Canvas scale.
+    const scale = bounds.width / root.offsetWidth;
+    const center = (rect) => ({ x: (rect.left + rect.width / 2 - bounds.left) / scale + root.scrollLeft - 18,
+      y: (rect.top + rect.height / 2 - bounds.top) / scale + root.scrollTop - 18 });
+    const from = center(origin), to = center(arrival);
+    const mote = icon(lanterns.find((lantern) => lantern.id === id), "lantern-icon lantern-fx-mote");
+    mote.style.left = `${from.x}px`; mote.style.top = `${from.y}px`; layer.append(mote);
+    if (layer.childElementCount > 12) layer.firstElementChild.remove();
+    const frames = exiting
+      ? [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(.65) translateY(-12px)" }]
+      : [{ opacity: 1, transform: "translate(0,0) scale(1)" },
+        { opacity: 0, transform: `translate(${to.x - from.x}px,${to.y - from.y}px) scale(.8)` }];
+    animate(mote, frames, exiting ? 180 : 300, 0, () => mote.remove());
+  };
+  const linkedClues = () => {
+    const item = paths[state.path];
+    const available = new Map();
+    state.chain.slice(1).forEach((id, index) => {
+      const key = `${state.chain[index]}:${id}`;
+      available.set(key, (available.get(key) || 0) + 1);
+    });
+    return routeClues(item, state.path).map(({ previous, name }) => {
+      const key = item.reverse ? `${name}:${previous}` : `${previous}:${name}`;
+      const count = available.get(key) || 0;
+      if (count) available.set(key, count - 1);
+      return count > 0;
+    });
+  };
+  const focusClue = (index) => {
+    if (state.screen !== "battle") return;
+    state.focusedClue = state.focusedClue === index ? null : index;
+    renderBattle();
+    const clue = routeClues(paths[state.path], state.path)[index];
+    setBattleStatus(t("clueFollow", { previous: t(clue.previous), name: t(clue.name) }), "hint");
+    audio?.play("feedback.hint");
+  };
   let sharedFrame = null;
   let stageRailController = null;
   let stageBrowseIndex = 0;
@@ -172,6 +240,7 @@
     if (best) best.textContent = readBest() || t("noBest");
   };
   const show = (screen) => {
+    if (state.screen !== screen) cancelEffects();
     state.screen = screen;
     app.hidden = false;
     $("mainScreen").hidden = screen !== "main";
@@ -266,53 +335,95 @@
     const target = expectedTarget(item);
     $("roundLabel").textContent = t("stageRound", { n: state.path + 1, total: paths.length });
     $("battleRule").textContent = t(item.ruleKey, ruleVars(item));
-    $("battleHint").textContent = t("campaignBattleHint", { count: target.length });
+    $("battleHint").textContent = t("clueHint");
     $("sessionChecks").textContent = String(state.sessionChecks);
     const clueList = $("clueList");
     const clueDeckKey = `${state.path}:${state.locale}`;
     if (clueList.dataset.deck !== clueDeckKey) {
-      clueList.replaceChildren(...routeClues(item, state.path).map(({ previous, name }) => {
+      clueList.replaceChildren(...routeClues(item, state.path).map(({ previous, name }, index) => {
         const li = document.createElement("li");
-        li.textContent = t("clueFollow", {
-          name: t(lanterns.find((lantern) => lantern.id === name).key),
-          previous: t(lanterns.find((lantern) => lantern.id === previous).key),
-        });
+        const button = document.createElement("button");
+        button.type = "button"; button.className = "clue-link"; button.dataset.clueIndex = String(index);
+        const visual = document.createElement("span"); visual.className = "clue-pair"; visual.dir = "ltr";
+        const arrow = Object.assign(document.createElement("span"), { className: "clue-arrow", textContent: "→" });
+        arrow.setAttribute("aria-hidden", "true");
+        visual.append(icon(lanterns.find((entry) => entry.id === previous), "chain-icon"), arrow,
+          icon(lanterns.find((entry) => entry.id === name), "chain-icon"));
+        const label = Object.assign(document.createElement("span"), { className: "clue-text",
+          textContent: t("clueFollow", { name: t(name), previous: t(previous) }) });
+        button.append(visual, label);
+        button.addEventListener("click", () => focusClue(index)); li.append(button);
         return li;
       }));
       clueList.dataset.deck = clueDeckKey;
     }
+    const joined = linkedClues();
+    clueList.querySelectorAll(".clue-link").forEach((button, index) => {
+      const wasJoined = button.classList.contains("is-linked");
+      button.classList.toggle("is-linked", joined[index]);
+      button.classList.toggle("is-focused", state.focusedClue === index);
+      button.setAttribute("aria-pressed", String(state.focusedClue === index));
+      button.querySelector(".clue-arrow").textContent = joined[index] ? "✓" : "→";
+      if (joined[index] && !wasJoined) flash(button);
+    });
+    let meter = $("linkMeter");
+    if (!meter) {
+      meter = document.createElement("span"); meter.id = "linkMeter"; meter.className = "link-meter";
+      $("chainList").parentElement.querySelector("strong").append(meter);
+    }
+    const linked = joined.filter(Boolean).length;
+    meter.textContent = `${linked}/${joined.length}`;
+    meter.setAttribute("aria-label", t("linksProgress", { count: linked, total: joined.length }));
+    meter.classList.toggle("is-complete", linked === joined.length);
+    $("chainList").parentElement.classList.toggle("is-ready", state.chain.length === target.length);
     const chainList = $("chainList");
     chainList.setAttribute("aria-label", t("chainProgress", { count: state.chain.length, total: target.length }));
-    chainList.replaceChildren(...Array.from({ length: target.length }, (_, index) => {
-      const id = state.chain[index];
-      const lantern = id && lanterns.find((entry) => entry.id === id);
-      const slot = document.createElement(lantern ? "button" : "span");
-      slot.className = `chain-slot${lantern ? " has-light" : ""}${state.motionSlot === index ? " is-entering" : ""}`;
-      slot.dataset.chainSlot = String(index);
-      if (lantern) {
-        slot.type = "button";
-        slot.setAttribute("aria-label", t("undoLantern", { position: index + 1, name: t(lantern.key) }));
-        slot.append(icon(lantern, "chain-icon"), Object.assign(document.createElement("span"), { className: "chain-position", textContent: String(index + 1) }));
-        slot.addEventListener("click", () => rewindChain(index));
-      } else {
-        slot.setAttribute("aria-hidden", "true");
-        slot.append(Object.assign(document.createElement("span"), { className: "chain-position", textContent: String(index + 1) }));
-      }
+    if (chainList.children.length !== target.length) chainList.replaceChildren(...Array.from({ length: target.length }, (_, index) => {
+      const slot = document.createElement("button"); slot.type = "button";
+      slot.dataset.chainSlot = String(index); slot.addEventListener("click", () => rewindChain(index));
       return slot;
     }));
+    [...chainList.children].forEach((slot, index) => {
+      const id = state.chain[index];
+      const lantern = id && lanterns.find((entry) => entry.id === id);
+      const changed = slot.dataset.lantern !== (id || "");
+      slot.className = `chain-slot${lantern ? " has-light" : ""}${state.errorSlot === index ? " is-wrong" : ""}${index < state.verifiedPrefix ? " is-verified" : ""}`;
+      slot.dataset.lantern = id || "";
+      slot.disabled = !lantern;
+      slot.setAttribute("aria-hidden", String(!lantern));
+      if (lantern) {
+        slot.setAttribute("aria-label", t("undoLantern", { position: index + 1, name: t(lantern.key) }));
+      }
+      if (changed || !slot.children.length) slot.replaceChildren(...(lantern ? [icon(lantern, "chain-icon")] : []),
+        Object.assign(document.createElement("span"), { className: "chain-position", textContent: String(index + 1) }));
+      if (state.motionSlot === index) flash(slot);
+    });
     state.motionSlot = null;
-    $("lanternGrid").replaceChildren(...lanterns.map((lantern) => {
+    const grid = $("lanternGrid");
+    if (grid.dataset.deck !== clueDeckKey) {
+      grid.replaceChildren(...lanterns.map((lantern) => {
       const button = document.createElement("button");
-      const used = state.chain.filter((id) => id === lantern.id).length;
-      const canEcho = Boolean(item.echoId === lantern.id && used === 1);
       button.type = "button";
-      button.className = "lantern-choice";
-      button.disabled = used > 0 && !canEcho;
-      button.setAttribute("aria-label", t("lantern", { name: t(lantern.key) }));
-      button.append(icon(lantern, "lantern-icon"), Object.assign(document.createElement("b"), { textContent: t(lantern.key) }));
+      button.className = "lantern-choice"; button.dataset.lantern = lantern.id;
+      const count = document.createElement("span"); count.className = "lantern-used"; count.setAttribute("aria-hidden", "true");
+      button.append(icon(lantern, "lantern-icon"), Object.assign(document.createElement("b"), { textContent: t(lantern.key) }), count);
       button.addEventListener("click", () => chooseLantern(lantern.id));
       return button;
-    }));
+      }));
+      grid.dataset.deck = clueDeckKey;
+    }
+    const focused = state.focusedClue === null ? null : routeClues(item, state.path)[state.focusedClue];
+    grid.querySelectorAll(".lantern-choice").forEach((button) => {
+      const id = button.dataset.lantern;
+      const used = state.chain.filter((entry) => entry === id).length;
+      const canEcho = item.echoId === id && used === 1;
+      button.disabled = used > 0 && !canEcho;
+      button.classList.toggle("is-selected", used > 0);
+      button.classList.toggle("is-clue-focus", Boolean(focused && [focused.previous, focused.name].includes(id)));
+      button.querySelector(".lantern-used").textContent = used ? String(used) : "";
+      button.setAttribute("aria-label", `${t("lantern", { name: t(id) })}${used ? ` · ${used}` : ""}`);
+    });
+    $("checkBtn").classList.toggle("is-path-ready", state.chain.length === target.length);
   };
   const renderResult = () => {
     const finalStage = state.path >= paths.length - 1;
@@ -327,8 +438,24 @@
     $("skillReport").textContent = t("skillReportText");
     const stars = starCountForChecks(state.checks);
     const rating = $("resultRating");
-    rating.textContent = starMarks(stars);
+    rating.replaceChildren(...Array.from({ length: 3 }, (_, index) => {
+      const star = Object.assign(document.createElement("span"), { textContent: index < stars ? "★" : "☆" });
+      star.className = index < stars ? "earned-star" : "empty-star";
+      star.style.setProperty("--star-delay", `${index * 110}ms`); star.setAttribute("aria-hidden", "true");
+      return star;
+    }));
     rating.setAttribute("aria-label", t("starRating", { stars }));
+    let route = $("resultRoute");
+    if (!route) {
+      route = document.createElement("div"); route.id = "resultRoute"; route.className = "result-route";
+      rating.insertAdjacentElement("afterend", route);
+    }
+    route.setAttribute("aria-label", state.chain.map((id) => t(id)).join(" → "));
+    route.replaceChildren(...state.chain.map((id, index) => {
+      const light = icon(lanterns.find((lantern) => lantern.id === id), "chain-icon result-light");
+      light.style.setProperty("--light-delay", `${index * 65}ms`); return light;
+    }));
+    $("resultScreen").dataset.clearQuality = stars === 3 ? "perfect" : "clear";
     const nextButton = $("resultPrimaryBtn");
     nextButton.textContent = t("nextStage");
     nextButton.disabled = finalStage;
@@ -346,11 +473,11 @@
       ...guide,
       stepIntro: t("guideStepIntro"),
       steps: [
-        ...["guideStepRead", "guideStepBuild", "guideStepUndo", "guideStepClear"].map((key) => t(key)),
+        ...["guideStepRead", "guideStepBuild", "guideStepUndo", "guideStepClear"].map((key) => `${t(key)}${key === "guideStepRead" ? ` ${t("clueHint")}` : ""}`),
         guide.steps[4],
         guide.steps[5],
       ],
-      rules: t("guideRules"),
+      rules: `${t("guideRules")} ${t("clueHint")}`,
       tips: t("guideTips"),
     };
   };
@@ -402,6 +529,7 @@
     }
   };
   const applyLocale = () => {
+    cancelEffects();
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
@@ -417,6 +545,7 @@
     sharedFrame?.refresh();
   };
   const startSession = () => {
+    window.WeightPlayAudio?.preload(GAME_AUDIO_CUES);
     state.sessionChecks = 0;
     state.path = 0;
     state.chain = [];
@@ -428,49 +557,74 @@
   };
   const startPath = (index, { campaign = false, resetSession = false } = {}) => {
     if (index < 0 || index >= paths.length || index + 1 > readProgress().highestUnlocked) return;
+    cancelEffects();
     state.path = index;
     state.chain = [];
     state.motionSlot = null;
+    state.focusedClue = null;
+    state.errorSlot = -1;
+    state.verifiedPrefix = 0;
     state.checks = 0;
     state.campaignRun = campaign;
     state.lastResultCampaign = false;
     if (resetSession) state.sessionChecks = 0;
     show("battle");
     renderBattle();
+    setBattleStatus(t("chainProgress", { count: 0, total: expectedTarget(paths[state.path]).length }));
     track("path_start", { path: state.path + 1, arc: paths[state.path].arcKey });
   };
   const chooseLantern = (id) => {
+    if (state.screen !== "battle" || !lanterns.some((lantern) => lantern.id === id)) return;
     const item = paths[state.path];
     const used = state.chain.filter((entry) => entry === id).length;
     const canEcho = item.echoId === id && used === 1;
-    if (state.chain.length >= expectedTarget(item).length || (used > 0 && !canEcho)) return;
+    if (state.chain.length >= expectedTarget(item).length || (used > 0 && !canEcho)) {
+      setBattleStatus(t("chainReady"), "error"); audio?.play("feedback.error"); flash($("checkBtn")); return;
+    }
+    const source = $("lanternGrid").querySelector(`[data-lantern="${id}"] .lantern-icon`);
+    const before = linkedClues().filter(Boolean).length;
     state.chain.push(id);
     state.motionSlot = state.chain.length - 1;
-    setBattleStatus("", "neutral");
+    state.errorSlot = -1; state.verifiedPrefix = 0;
     renderBattle();
+    flyLight(id, source, $("chainList").children[state.chain.length - 1]);
+    setBattleStatus(t(state.chain.length === expectedTarget(item).length ? "chainReady" : "chainProgress",
+      { count: state.chain.length, total: expectedTarget(item).length }), "neutral");
+    audio?.play(linkedClues().filter(Boolean).length > before ? "puzzle.match" : "board.move");
     track("lantern_choose", { path: state.path + 1, position: state.chain.length, lantern: id });
   };
   const rewindChain = (index) => {
-    if (index < 0 || index >= state.chain.length) return;
+    if (state.screen !== "battle" || index < 0 || index >= state.chain.length) return;
+    state.chain.slice(index).forEach((id, offset) => flyLight(id, $("chainList").children[index + offset], $("chainList").children[index + offset], true));
     const removed = state.chain.length - index;
     state.chain = state.chain.slice(0, index);
     state.motionSlot = null;
-    setBattleStatus("", "neutral");
+    state.errorSlot = -1; state.verifiedPrefix = 0;
     renderBattle();
+    setBattleStatus(t("chainProgress", { count: state.chain.length, total: expectedTarget(paths[state.path]).length }));
+    audio?.play("board.undo");
     track("rewind", { path: state.path + 1, from: index + 1, removed });
   };
   const resetChain = () => {
+    if (state.screen !== "battle") return;
+    const hadLights = state.chain.length > 0;
+    state.chain.forEach((id, index) => flyLight(id, $("chainList").children[index], $("chainList").children[index], true));
     state.chain = [];
     state.motionSlot = null;
+    state.errorSlot = -1; state.verifiedPrefix = 0;
     renderBattle();
-    setBattleStatus(t("ready"));
+    setBattleStatus(t("chainProgress", { count: 0, total: expectedTarget(paths[state.path]).length }));
+    if (hadLights) audio?.play("board.undo");
+    else flash($("resetBtn"));
     track("reset", { path: state.path + 1 });
   };
   const checkPath = () => {
+    if (state.screen !== "battle") return;
     const item = paths[state.path];
     const target = expectedTarget(item);
     if (state.chain.length < target.length) {
       setBattleStatus(t("campaignNeedMore", { count: target.length - state.chain.length }), "neutral");
+      flash($("chainList").children[state.chain.length]); audio?.play("feedback.hint");
       track("check", { path: state.path + 1, checks: state.sessionChecks, correct: false, reason: "incomplete" });
       return;
     }
@@ -481,10 +635,14 @@
     const decoyChosen = item.decoy && state.chain.includes(item.decoy);
     track("check", { path: state.path + 1, checks: state.sessionChecks, correct: firstMismatch < 0 && !decoyChosen });
     if (decoyChosen) {
+      state.errorSlot = state.chain.indexOf(item.decoy); state.verifiedPrefix = Math.max(0, firstMismatch);
+      renderBattle(); flash($("chainList").children[state.errorSlot]); audio?.play("feedback.error");
       setBattleStatus(t("decoyWrong", { name: t(item.decoy) }), "error");
       return;
     }
     if (firstMismatch >= 0) {
+      state.errorSlot = firstMismatch; state.verifiedPrefix = firstMismatch;
+      renderBattle(); flash($("chainList").children[firstMismatch]); audio?.play("feedback.error");
       setBattleStatus(t("wrong", { n: firstMismatch + 1 }), "error");
       return;
     }
@@ -501,6 +659,7 @@
     }
     show("result");
     renderResult();
+    audio?.play(item.checkpoint ? "result.win" : "puzzle.clear");
   };
   $("startBtn").addEventListener("click", startSession);
   $("mapBtn").addEventListener("click", () => { state.campaignRun = false; show("stage"); renderStages({ entry: true }); track("path_map"); });
@@ -534,13 +693,23 @@
     },
   });
   window.addEventListener("resize", centerStageAfterViewportChange);
+  const effectPauseObserver = new MutationObserver(() => {
+    const covered = $("battleContent").inert;
+    effects.forEach((animation) => covered ? animation.pause() : animation.play());
+    if (covered) audio?.stop();
+  });
+  effectPauseObserver.observe($("battleContent"), { attributes: true, attributeFilter: ["inert"] });
   window.addEventListener("pagehide", (event) => {
+    cancelEffects();
     if (event.persisted) return;
+    effectPauseObserver.disconnect();
+    audio?.dispose();
     window.removeEventListener("resize", centerStageAfterViewportChange);
     stageRailResizeObserver?.disconnect();
     stageRailController?.destroy();
     stageRailController = null;
   });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) cancelEffects(); });
   window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready"); }, 260);
   window.__ANIMAL_LANTERN_LATTICE_TEST__ = {
     paths,

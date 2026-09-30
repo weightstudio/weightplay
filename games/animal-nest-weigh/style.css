@@ -170,6 +170,63 @@ body[data-wp-game-id="animal-nest-weigh"] { min-height: 100svh; }
 }
 .nest-tutorial-replay:hover, .nest-tutorial-replay:focus-visible { background: #dcefd2; outline: 3px solid rgba(86, 146, 90, .25); outline-offset: 2px; }
 
+/* Feedback layers share the logical Battle coordinate space and never own input. */
+.nest-effects { position: absolute; inset: 0; z-index: 50; overflow: hidden; pointer-events: none; }
+.nest-flight { position: absolute; width: 36px; height: 32px; filter: drop-shadow(0 0 8px #f9d672); }
+.nest-spark { position: absolute; width: 6px; height: 6px; background: #ffe8a0; box-shadow: 0 0 7px #f9d672; }
+.nest-spark:nth-child(even) { background: #8ce6be; width: 4px; height: 4px; }
+.request-card { position: relative; overflow: hidden; }
+.nest-companion { position: absolute; inset-inline-start: 4px; bottom: 0; width: 60px; height: 60px; object-fit: contain; opacity: .9; pointer-events: none; }
+.request-copy { position: relative; z-index: 1; padding-bottom: 42px; }
+.balance-visual { overflow: visible; }
+.balance-visual.is-loading .balance-beam { animation: nest-weigh-swing 620ms ease-in-out; }
+.balance-visual.is-loading .balance-icon { animation: nest-pan-load 280ms ease-out; }
+.balance-beam { transition: transform 460ms cubic-bezier(.18,.8,.25,1.3); }
+.deduction-meter { position: relative; isolation: isolate; overflow: hidden; height: 30px; min-height: 30px; display: grid; align-items: center; padding: 0 8px; border: 1px solid var(--wp-ui-line); border-radius: 8px; background: var(--wp-ui-control); font-size: .72rem; font-weight: 800; }
+.deduction-meter::before { content: ""; position: absolute; z-index: -1; inset: 0 auto 0 0; width: var(--proof-progress, 0%); background: rgb(99 230 190 / 22%); transition: width 420ms ease; }
+.deduction-meter.is-proven { border-color: var(--wp-ui-accent); }
+#deductionText { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tray-card { position: relative; min-height: 78px; transform: none; }
+.tray-card.is-selected { transform: none; }
+.tray-card .tray-icon { width: min(44px, 100%); height: 36px; transition: transform 180ms cubic-bezier(.2,.8,.2,1), filter 180ms; }
+.tray-card.is-selected .tray-icon { transform: translateY(-4px) rotate(-7deg); filter: drop-shadow(0 3px 6px #e5b75b); }
+.tray-rank { min-height: 14px; font-size: .64rem; font-weight: 900; color: inherit; }
+.tray-card.is-eliminated:not(.is-selected) { border-style: dashed; background: var(--wp-ui-control); }
+.tray-card.is-eliminated .tray-icon { filter: saturate(.3); opacity: .6; }
+.tray-card.is-proven { border-color: var(--wp-ui-accent); box-shadow: inset 0 0 0 2px rgb(99 230 190 / 32%); }
+.weighing-actions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 48px 48px; }
+.weighing-actions .text-btn { grid-column: 1 / -1; }
+.weighing-actions button { width: 100%; min-width: 0; }
+.comparison { height: 38px; overflow: auto; box-sizing: border-box; }
+.clue-log { height: 44px; min-height: 44px; }
+.battle-status { height: 36px; overflow: auto; }
+.small-stat { min-width: 64px; text-align: end; }
+.result-art img { filter: drop-shadow(0 8px 14px rgb(245 200 76 / 20%)); }
+.battle-panel { animation: nest-scene-enter 360ms ease-out; }
+.leave-card { animation: nest-scene-enter 220ms ease-out; }
+@keyframes nest-scene-enter { from { opacity: .2; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes nest-weigh-swing { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(7deg); } 55% { transform: rotate(-6deg); } 80% { transform: rotate(3deg); } }
+@keyframes nest-pan-load { from { opacity: .2; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+@media (orientation: landscape) and (max-height: 500px) {
+  .request-copy { padding-bottom: 0; }
+  .nest-companion { width: 56px; height: 56px; inset-inline-start: auto; inset-inline-end: 3px; opacity: .5; }
+  .tray-card { min-height: 56px; }
+  .tray-card .tray-icon { width: min(32px, 100%); height: 26px; }
+  .tray-rank { min-height: 10px; font-size: .59rem; }
+  .weighing-card { align-content: start; gap: 3px; padding: 5px; overflow: auto; }
+  #compareHeading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .weighing-actions { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,.8fr); grid-template-rows: 48px; }
+  .weighing-actions .text-btn { grid-column: auto; }
+  .deduction-meter { height: 20px; min-height: 20px; }
+  .comparison { height: 24px; }
+  .clue-log { height: 20px; min-height: 20px; }
+  .battle-status { height: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nest-flight, .nest-spark { display: none; }
+  .battle-panel, .leave-card, .balance-visual.is-loading .balance-beam, .balance-visual.is-loading .balance-icon { animation: none; }
+}
+
 @media (orientation: landscape) and (max-height: 560px) {
   .wp-tutorial-backdrop { padding: calc(8px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left)); }
   .wp-tutorial-card.nest-tutorial-card {

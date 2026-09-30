@@ -49,7 +49,11 @@
   const saveCompleted = () => safeSet(progressKey, JSON.stringify(uniqueSorted(state.completed)));
   const loadMastery = () => {
     try {
-      const value = JSON.parse(safeGet(masteryKey, "{}"));
+      const current = safeGet(masteryKey, "");
+      const value = JSON.parse(current || safeGet("weightplay-animal-nest-weigh-mastery-v6", "{}"));
+      if (!current && value && typeof value === "object" && !Array.isArray(value)) {
+        Object.values(value).forEach((record) => { if (record && typeof record === "object") record.legacy = true; });
+      }
       return value && typeof value === "object" && !Array.isArray(value) ? value : {};
     } catch { return {}; }
   };
@@ -216,6 +220,8 @@
 
   function comparisonMessage() {
     if (state.lastFeedback === "pairAlreadyKnown") return copy("pairAlreadyKnown");
+    if (state.lastFeedback === "inferredPair") return copy("inferredPair");
+    if (state.busy) return copy("weighing");
     const clue = state.clues.at(-1);
     if (!clue) return copy("comparisonEmpty");
     const round = rounds[state.round];
@@ -227,7 +233,7 @@
   function renderClues() {
     const list = $("clueLog");
     list.replaceChildren();
-    state.clues.slice(-6).forEach((clue) => {
+    state.clues.forEach((clue) => {
       const item = document.createElement("li");
       const round = rounds[state.round];
       const first = materialName(round.materials[clue.pair[0]]);
@@ -235,6 +241,7 @@
       item.textContent = copy("comparisonResult", { first, second, relation: relationFor(round, clue.pair[0], clue.pair[1]) });
       list.append(item);
     });
+    list.scrollTop = list.scrollHeight;
   }
 
   function updateBalance() {
@@ -438,7 +445,7 @@
     const index = state.round;
     const record = { feathers: chooseRank(), comparisons: state.comparisons, mistakes: state.mistakes };
     const previous = bestForStage(index);
-    const isNewBest = !previous || record.feathers > previous.feathers
+    const isNewBest = !previous || previous.legacy || record.feathers > previous.feathers
       || (record.feathers === previous.feathers && (record.comparisons < previous.comparisons
         || (record.comparisons === previous.comparisons && record.mistakes < previous.mistakes)));
     if (isNewBest) {
@@ -614,7 +621,7 @@
       state.lastFeedback = "";
       showResult();
       flyMaterial(state.selectedTarget, source, $("resultPanel").querySelector(".result-art"));
-      burst($("resultPanel").querySelector(".result-art"), true);
+      burst($("resultPanel").querySelector(".result-art"), Boolean(rounds[state.round].checkpoint));
       return;
     }
     state.wrong = true;
@@ -639,6 +646,8 @@
   }
 
   function applyLocale(locale, navigate = false) {
+    revealComparison();
+    cancelMotion();
     const selected = localeList.includes(locale) && localeMap[locale] ? locale : "en";
     const pathLocale = location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\//)?.[1] || "";
     const pathMap = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };

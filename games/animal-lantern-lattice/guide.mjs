@@ -29,14 +29,14 @@ export function renderLanternGuide(locale = "en") {
     ...baseGuide,
     stepIntro: runtimeCopy.guideStepIntro,
     steps: [
-      runtimeCopy.guideStepRead,
+      `${runtimeCopy.guideStepRead} ${runtimeCopy.clueHint}`,
       runtimeCopy.guideStepBuild,
       runtimeCopy.guideStepUndo,
       runtimeCopy.guideStepClear,
       baseGuide.steps[4],
       baseGuide.steps[5],
     ],
-    rules: runtimeCopy.guideRules,
+    rules: `${runtimeCopy.guideRules} ${runtimeCopy.clueHint}`,
     tips: runtimeCopy.guideTips,
   };
   const title = localeCopy[key].title;
