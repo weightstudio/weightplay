@@ -2252,6 +2252,2380 @@
     }),
   };
 
+  // Text Growth 1.4.0: source-checked Code Breaker and Reversi locale content.
+  const text140ClassicUpdates = {
+  "en": {
+    "code-breaker": {
+      "parent": "Play Code Breaker free in this browser with no account, purchase, cloud save, online match, or advertising flow. Cleared stages, the highest unlocked stage, and sound preference stay in this browser; clearing site data may remove them.",
+      "text140Tags": [
+        "Four-color code puzzle",
+        "Exact and misplaced clues",
+        "30-stage deduction campaign"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "A match begins with four discs in the center and opens into a contest for space. Every legal move must bracket one or more opponent discs between your new disc and an existing disc.",
+        "The board can change quickly: a move that flips many discs now may give away a corner or reduce your next options. The final count decides the winner."
+      ],
+      "systems": [
+        "Choose a legal empty square that brackets an opponent line in one of eight directions. Every bracketed disc flips to your color.",
+        "The AI replies at Easy, Medium, or Hard. Hint marks the first legal square in board order, not a tactical recommendation; live feedback describes corners, edges, or your legal-move count after the AI reply.",
+        "When one side cannot move, the turn passes automatically. When neither side has a legal move, Result compares disc counts. Replay starts a fresh four-disc opening at the selected difficulty."
+      ],
+      "how": [
+        "Choose Easy, Medium, or Hard and start the board.",
+        "Read the highlighted legal squares and choose one that flips a useful line.",
+        "Wait for the AI reply, then read the corner, edge, or mobility feedback.",
+        "Use Hint when you want one legal candidate without giving up the decision.",
+        "Keep playing through automatic passes. When neither side can move, compare the final disc counts and use Replay for a new plan."
+      ],
+      "strategyTips": [
+        "Corners cannot be flipped, so consider a corner before chasing a larger capture.",
+        "Watch the square next to an open corner; giving it away can hand the corner to the AI.",
+        "Compare your legal-move count before and after a move to keep mobility when possible.",
+        "A smaller early flip can be stronger if it protects an edge or preserves future choices."
+      ],
+      "progression": [
+        "Easy chooses the fewest immediate flips and Medium the most. Hard scores flips, strongly favors corners and edges, and penalizes squares beside an open corner. Replays challenge you to plan around the same rules."
+      ],
+      "designNote": "Reversi uses a readable eight-by-eight board, explicit legal-move targets, three transparent AI policies, advisory Hint, and localized payoff feedback so strategy stays visible rather than mysterious.",
+      "parent": "Language and sound preferences may remain in this browser. The current match is not saved across a reload. No account, purchase, cloud save, or online match is required; clearing site data may remove local preferences.",
+      "faq": [
+        [
+          "How is a move legal?",
+          "Place a disc on an empty square that brackets at least one opponent disc between the new disc and your existing disc."
+        ],
+        [
+          "What happens to bracketed discs?",
+          "They flip to your color in every bracketed direction."
+        ],
+        [
+          "What does Hint do?",
+          "Hint highlights the first legal square in board order. It does not choose the strongest move or place a disc."
+        ],
+        [
+          "What are the AI levels?",
+          "Easy flips the fewest discs immediately; Medium flips the most. Hard scores flips, corners, edges, and penalties for squares beside an open corner. Its choice is a heuristic, not a guaranteed best move."
+        ],
+        [
+          "How is the winner decided?",
+          "A side with no legal move passes automatically. When neither side can move, the game counts discs; the side with more wins."
+        ],
+        [
+          "Does Undo reverse a move?",
+          "No. The current Undo control announces Undo but does not restore the board or reverse a move. Use Replay to start again."
+        ],
+        [
+          "What if a player has no legal move?",
+          "The game passes that side automatically. Play continues if the other side has a legal move; Result appears when neither side can move."
+        ]
+      ],
+      "text140Tags": [
+        "8×8 Reversi board",
+        "Bracket and flip discs",
+        "Three AI policies"
+      ]
+    }
+  },
+  "zh-Hant": {
+    "code-breaker": {
+      "parent": "可在瀏覽器免費遊玩密碼推理，不需要帳號、購買、雲端存檔、線上對局或廣告流程。已通關關卡、最高解鎖關卡與音效偏好會保存在這個瀏覽器；清除網站資料可能會移除它們。",
+      "text140Tags": [
+        "四色密碼推理",
+        "位置與顏色線索",
+        "30 關推理戰役"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "棋局從中央四顆棋子開始，逐漸變成爭奪空間的對局。每個合法步都要在八個方向之一，用新棋子與己方棋子夾住至少一串對手棋子。",
+        "局面會快速改變：現在翻很多棋子的步法，可能送出角落或減少下一步選項。最後以棋子數決定勝負。"
+      ],
+      "systems": [
+        "選擇能在八方向夾住對手棋串的合法空格。所有被夾住的棋子都會翻成你的顏色。",
+        "電腦依簡單、中等或困難模式回應。提示只標出按棋盤順序找到的第一個合法格，並非戰術建議；即時回饋會在電腦回應後說明角落、邊線或你的合法走法數。",
+        "一方無合法走法時會自動跳過；雙方都不能走時，結果比較棋子數。再玩一次會按所選難度從四枚棋子的起始盤重新開始。"
+      ],
+      "how": [
+        "選擇簡單、中等或困難，開始棋盤。",
+        "閱讀標示的合法格，選擇能翻轉有利棋串的位置。",
+        "等待電腦回應，再閱讀角落、邊線或機動性回饋。",
+        "需要候選時使用提示，但決定仍由你保留。",
+        "遇到一方無棋可下時讓遊戲自動跳過；雙方都不能走後比較棋子數，再玩一次嘗試新計畫。"
+      ],
+      "strategyTips": [
+        "角落不能被翻轉，因此先考慮角落，不要只追求一次翻更多。",
+        "留意開放角落旁的格子；送出它可能讓電腦取得角落。",
+        "比較落子前後的合法步數，能保留機動性時就保留。",
+        "早期少翻一些棋子也可能更強，因為能保護邊線並留下後續選項。"
+      ],
+      "progression": [
+        "簡單選當下翻轉最少的棋步，中等選最多的。困難依翻轉數評分，偏重角落與邊線，並避開空角旁的格子。重玩時可用相同規則練習規劃。"
+      ],
+      "designNote": "黑白棋使用清楚的 8×8 棋盤、明確的合法落子目標、三種透明電腦策略、建議式提示與本地化局面回饋，讓策略保持可理解而不是神秘。",
+      "parent": "語言與音效偏好可能保留在這個瀏覽器；重新載入不會保留本局棋盤。不需要帳號、購買、雲端存檔或線上對局；清除網站資料可能移除本機偏好。",
+      "faq": [
+        [
+          "什麼是合法落子？",
+          "把棋子放在空格，讓至少一串對手棋子被新棋子與己方棋子夾住。"
+        ],
+        [
+          "被夾住的棋子會怎樣？",
+          "它們會在每個被夾住的方向翻成你的顏色。"
+        ],
+        [
+          "提示會做什麼？",
+          "提示只標示按棋盤順序找到的第一個合法空格，不會選出最佳走法，也不會替你落子。"
+        ],
+        [
+          "三種電腦難度有何不同？",
+          "簡單會選擇當下翻轉最少棋子的走法，中等選最多的。困難依翻轉數、角落與邊線加分，並對靠近空角的格子扣分；這是評分法，不保證每步最佳。"
+        ],
+        [
+          "如何決定勝負？",
+          "一方沒有合法走法時會自動跳過。雙方都不能走時，遊戲計算棋子；較多者獲勝。"
+        ],
+        [
+          "復原會撤回棋步嗎？",
+          "不會。目前的復原按鈕只播報復原，不會還原棋盤或撤回棋步。可使用再玩一次重新開始。"
+        ],
+        [
+          "一方無棋可下時會怎樣？",
+          "遊戲會自動跳過該方；若另一方仍有合法走法，對局繼續。雙方都不能走時才顯示結果。"
+        ]
+      ],
+      "text140Tags": [
+        "8×8 黑白棋盤",
+        "夾住並翻轉棋子",
+        "三種電腦走法"
+      ]
+    }
+  },
+  "zh-Hans": {
+    "code-breaker": {
+      "parent": "可在浏览器免费游玩密码推理，不需要账号、购买、云端存档、在线对局或广告流程。已通关关卡、最高解锁关卡和音效偏好会保存在此浏览器；清除网站数据可能会移除它们。",
+      "text140Tags": [
+        "四色密码推理",
+        "位置与颜色线索",
+        "30 关推理战役"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "棋局从中央四颗棋子开始，逐渐变成争夺空间的对局。每个合法步都要在八个方向之一，用新棋子与己方棋子夹住至少一串对手棋子。",
+        "局面会快速改变：现在翻很多棋子的走法，可能送出角落或减少下一步选项。最后以棋子数决定胜负。"
+      ],
+      "systems": [
+        "选择能在八方向夹住对手棋串的合法空格。所有被夹住的棋子都会翻成你的颜色。",
+        "电脑依简单、中等或困难模式回应。提示只标出按棋盘顺序找到的第一个合法格，并非战术建议；即时反馈会在电脑回应后说明角落、边线或你的合法走法数。",
+        "一方无合法走法时会自动跳过；双方都不能走时，结果比较棋子数。再玩一次会按所选难度从四枚棋子的起始盘重新开始。"
+      ],
+      "how": [
+        "选择简单、中等或困难，开始棋盘。",
+        "阅读标示的合法格，选择能翻转有利棋串的位置。",
+        "等待电脑回应，再阅读角落、边线或机动性反馈。",
+        "需要候选时使用提示，但决定仍由你保留。",
+        "遇到一方无棋可下时让游戏自动跳过；双方都不能走后比较棋子数，再玩一次尝试新计划。"
+      ],
+      "strategyTips": [
+        "角落不能被翻转，因此先考虑角落，不要只追求一次翻更多。",
+        "留意开放角落旁的格子；送出它可能让电脑取得角落。",
+        "比较落子前后的合法步数，能保留机动性时就保留。",
+        "早期少翻一些棋子也可能更强，因为能保护边线并留下后续选项。"
+      ],
+      "progression": [
+        "简单选当前翻转最少的棋步，中等选最多的。困难按翻转数评分，偏重角落和边线，并对空角旁的格子扣分。重玩可用相同规则练习规划。"
+      ],
+      "designNote": "黑白棋使用清楚的 8×8 棋盘、明确的合法落子目标、三种透明电脑策略、建议式提示与本地化局面反馈，让策略保持可理解而不是神秘。",
+      "parent": "语言和音效偏好可能保留在此浏览器；重新加载不会保留本局棋盘。无需账号、购买、云端存档或在线对局；清除网站数据可能移除本地偏好。",
+      "faq": [
+        [
+          "什么是合法落子？",
+          "把棋子放在空格，让至少一串对手棋子被新棋子与己方棋子夹住。"
+        ],
+        [
+          "被夹住的棋子会怎样？",
+          "它们会在每个被夹住的方向翻成你的颜色。"
+        ],
+        [
+          "提示会做什么？",
+          "提示只标记按棋盘顺序找到的第一个合法空格，不会选出最佳走法，也不会替你落子。"
+        ],
+        [
+          "三种电脑难度有什么不同？",
+          "简单选择当前翻转最少棋子的走法，中等选择最多的。困难按翻转数、角落和边线加分，并对空角旁的格子扣分；这是评分法，不保证每步最佳。"
+        ],
+        [
+          "如何决定胜负？",
+          "一方没有合法走法时会自动跳过。双方都不能走时，游戏计算棋子；较多者获胜。"
+        ],
+        [
+          "撤销会退回棋步吗？",
+          "不会。目前的撤销按钮只播报撤销，不会还原棋盘或退回棋步。可使用再玩一次重新开始。"
+        ],
+        [
+          "一方无棋可下时会怎样？",
+          "游戏会自动跳过该方；如果另一方仍有合法走法，对局继续。双方都不能走时才显示结果。"
+        ]
+      ],
+      "text140Tags": [
+        "8×8 黑白棋盘",
+        "夹住并翻转棋子",
+        "三种电脑走法"
+      ]
+    }
+  },
+  "ja": {
+    "code-breaker": {
+      "parent": "コードブレーカーはブラウザで無料で遊べます。アカウント、購入、クラウド保存、オンライン対戦、広告の流れはありません。クリアしたステージ、到達した最も先の解放ステージ、サウンド設定はこのブラウザに保存され、サイトデータを消すと失われる場合があります。",
+      "text140Tags": [
+        "4色コード推理",
+        "位置と色の手がかり",
+        "全30ステージ"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "中央の4個から始まり、盤面の空間を競う対局になります。合法手は8方向のどこかで、新しい石と自分の石の間に相手の石を挟みます。",
+        "一度に多く返せる手が必ず強いとは限りません。角を渡したり次の選択肢を減らしたりするため、最後の石数で勝負します。"
+      ],
+      "systems": [
+        "相手の石を1方向以上で挟める空きマスを選びます。挟まれた石はすべて自分の色に返ります。",
+        "AIは3つの難易度で応じます。ヒントは盤面順の最初の合法手を示すだけで、戦術的な推奨ではありません。AIの応手後、角・辺・自分の合法手数に関するフィードバックが出ます。",
+        "一方が打てなければ自動パスします。双方に合法手がなくなると結果で石の数を比べます。Replayは選んだ難易度で4石の初期配置から始めます。"
+      ],
+      "how": [
+        "難易度を選んで盤面を開始します。",
+        "表示された合法マスを読み、役立つ列を返せる場所を選びます。",
+        "AIの返答を待ち、角・辺・選択肢のフィードバックを読みます。",
+        "候補を見たいときはヒントを使いますが、選ぶのは自分です。",
+        "打てない側の手番は自動でパスされます。双方とも打てなくなったら石の数を比べ、Replayで新しい作戦を試します。"
+      ],
+      "strategyTips": [
+        "角は返されないため、大きく返すより角の機会を先に考えます。",
+        "空いている角の隣は注意します。渡すとAIが角を取ることがあります。",
+        "手の前後で合法手数を比べ、可能なら選択肢を残します。",
+        "序盤の小さな返しが、辺を守り次の選択肢を残す強い手になることがあります。"
+      ],
+      "progression": [
+        "かんたんは今返す石が最も少ない手、ふつうは最も多い手を選びます。むずかしいは返す数と角・辺を重視し、空いた角の隣を減点します。同じルールで何度でも計画を試せます。"
+      ],
+      "designNote": "リバーシは見やすい8×8盤、合法手の明示、方針が分かる3段階AI、助言型ヒント、局面フィードバックで、戦略を見える形にします。",
+      "parent": "言語と音の設定はこのブラウザに残る場合があります。現在の対局盤面は再読み込み後に保存されません。アカウント、購入、クラウド保存、オンライン対局は不要です。サイトデータの削除でローカル設定が消える場合があります。",
+      "faq": [
+        [
+          "合法手とは？",
+          "空きマスに置き、新しい石と自分の石の間に相手の石を1個以上挟む手です。"
+        ],
+        [
+          "挟んだ石は？",
+          "挟まれた方向の石が自分の色に返ります。"
+        ],
+        [
+          "ヒントは何をしますか？",
+          "ヒントは盤面の順番で最初に見つかった合法手を示すだけです。最善手を選んだり、代わりに石を置いたりはしません。"
+        ],
+        [
+          "AIの難易度は？",
+          "かんたんは今すぐ返す石が最も少ない手、ふつうは最も多い手を選びます。むずかしいは返す数、角、辺を評価し、空いた角の隣を減点します。必ず最善手になるわけではありません。"
+        ],
+        [
+          "勝敗はどう決まりますか？",
+          "一方に合法手がなければ自動的にパスします。双方とも打てなくなったら石を数え、多い方が勝ちます。"
+        ],
+        [
+          "Undoで手を戻せますか？",
+          "いいえ。現在のUndoは通知を出すだけで、盤面や手は戻しません。最初からやり直すにはReplayを使ってください。"
+        ],
+        [
+          "打てる場所がないときは？",
+          "その側は自動的にパスします。もう一方が打てるなら対局は続き、双方とも打てなくなると結果が表示されます。"
+        ]
+      ],
+      "text140Tags": [
+        "8×8のリバーシ盤",
+        "石を挟んで裏返す",
+        "3種類のAI方針"
+      ]
+    }
+  },
+  "ko": {
+    "code-breaker": {
+      "parent": "코드 브레이커는 브라우저에서 무료로 플레이할 수 있습니다. 계정, 구매, 클라우드 저장, 온라인 대전 또는 광고 흐름은 없습니다. 클리어한 단계, 가장 높은 잠금 해제 단계와 사운드 설정은 이 브라우저에 저장되며 사이트 데이터를 지우면 사라질 수 있습니다.",
+      "text140Tags": [
+        "네 색 코드 추리",
+        "위치와 색상 단서",
+        "30단계 추리 캠페인"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "중앙의 네 돌에서 시작해 보드의 공간을 다투는 경기로 이어집니다. 합법적인 수는 여덟 방향 중 하나에서 새 돌과 내 돌 사이에 상대 돌을 끼웁니다.",
+        "한 번에 많이 뒤집는 수가 항상 강한 것은 아닙니다. 모서리를 내주거나 다음 선택지를 줄일 수 있으므로 마지막 돌 수가 승패를 정합니다."
+      ],
+      "systems": [
+        "상대 돌을 한 방향 이상 끼울 수 있는 빈 칸을 선택하세요. 끼인 돌은 모두 내 색으로 뒤집힙니다.",
+        "AI는 세 난이도로 응수합니다. 힌트는 보드 순서의 첫 합법적인 칸만 표시하며 전술적 추천은 아닙니다. AI가 응수한 뒤 모서리, 가장자리 또는 내 합법적인 수의 개수를 알려 줍니다.",
+        "한쪽이 둘 수 없으면 자동으로 차례를 넘깁니다. 양쪽 모두 합법적인 수가 없으면 결과에서 돌 수를 비교합니다. 다시 하기는 선택한 난이도로 처음 네 돌 배치에서 시작합니다."
+      ],
+      "how": [
+        "난이도를 고르고 보드를 시작하세요.",
+        "표시된 합법 칸을 읽고 유리한 줄을 뒤집을 위치를 고르세요.",
+        "AI 응답을 기다린 뒤 모서리, 가장자리 또는 선택지 피드백을 읽으세요.",
+        "후보를 보고 싶을 때 힌트를 사용하되 선택은 직접 하세요.",
+        "둘 수 없는 쪽은 자동으로 차례를 넘깁니다. 양쪽 모두 둘 수 없으면 돌 수를 비교하고 다시 하기로 새 계획을 시험하세요."
+      ],
+      "strategyTips": [
+        "모서리는 뒤집히지 않으므로 많이 뒤집는 것보다 모서리 기회를 먼저 보세요.",
+        "열린 모서리 옆 칸을 조심하세요. 내주면 AI가 모서리를 얻을 수 있습니다.",
+        "수 전후의 합법적인 수를 비교해 가능하면 선택지를 남기세요.",
+        "초반에 적게 뒤집는 수가 가장자리와 다음 선택지를 지키는 강한 수일 수 있습니다."
+      ],
+      "progression": [
+        "쉬움은 바로 뒤집는 돌이 가장 적은 수, 보통은 가장 많은 수를 고릅니다. 어려움은 뒤집는 수와 모서리·가장자리에 점수를 주고 빈 모서리 옆 칸에는 감점합니다. 같은 규칙으로 계획을 다시 시험할 수 있습니다."
+      ],
+      "designNote": "리버시는 읽기 쉬운 8×8 보드, 분명한 합법 목표, 정책이 보이는 세 AI 레벨, 조언형 힌트와 국면 피드백으로 전략을 이해 가능하게 유지합니다.",
+      "parent": "언어와 소리 설정은 이 브라우저에 남을 수 있습니다. 현재 대국의 보드는 새로고침 후 저장되지 않습니다. 계정, 구매, 클라우드 저장, 온라인 대전은 필요하지 않습니다. 사이트 데이터를 지우면 로컬 설정이 사라질 수 있습니다.",
+      "faq": [
+        [
+          "합법적인 수란 무엇인가요?",
+          "빈 칸에 놓아 새 돌과 내 돌 사이에 상대 돌을 하나 이상 끼우는 수입니다."
+        ],
+        [
+          "끼인 돌은 어떻게 되나요?",
+          "끼인 방향의 돌이 내 색으로 뒤집힙니다."
+        ],
+        [
+          "힌트는 무엇을 하나요?",
+          "힌트는 보드 순서로 처음 찾은 합법적인 칸만 표시합니다. 최선의 수를 고르거나 대신 돌을 놓지 않습니다."
+        ],
+        [
+          "AI 레벨은 어떻게 다른가요?",
+          "쉬움은 바로 뒤집는 돌이 가장 적은 수를, 보통은 가장 많은 수를 고릅니다. 어려움은 뒤집는 수와 모서리·가장자리를 평가하고 빈 모서리 옆 칸에 감점을 줍니다. 항상 최선의 수라는 보장은 없습니다."
+        ],
+        [
+          "승자는 어떻게 정하나요?",
+          "한쪽에 합법적인 수가 없으면 자동으로 차례를 넘깁니다. 양쪽 모두 둘 수 없으면 돌 수를 세어 더 많은 쪽이 이깁니다."
+        ],
+        [
+          "실행 취소로 수를 되돌릴 수 있나요?",
+          "아니요. 현재 실행 취소는 안내만 하며 보드나 수를 되돌리지 않습니다. 다시 시작하려면 다시 하기를 사용하세요."
+        ],
+        [
+          "둘 수 있는 칸이 없으면 어떻게 되나요?",
+          "그쪽 차례가 자동으로 넘어갑니다. 상대가 둘 수 있으면 게임이 이어지고, 양쪽 모두 둘 수 없을 때 결과가 나타납니다."
+        ]
+      ],
+      "text140Tags": [
+        "8×8 리버시 보드",
+        "돌을 끼워 뒤집기",
+        "AI 전략 세 가지"
+      ]
+    }
+  },
+  "es": {
+    "code-breaker": {
+      "parent": "Juega gratis en el navegador sin cuenta, compra, guardado en la nube, partida online ni flujo publicitario. Las fases superadas, la fase más avanzada desbloqueada y la preferencia de sonido quedan en este navegador; borrar sus datos puede eliminarlas.",
+      "text140Tags": [
+        "Código de cuatro colores",
+        "Pistas de posición y color",
+        "Campaña de 30 fases"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "La partida empieza con cuatro fichas en el centro y se convierte en una lucha por el espacio. Cada jugada legal encierra una línea de fichas rivales entre tu ficha nueva y otra tuya.",
+        "Una jugada que voltea mucho ahora puede regalar una esquina o reducir tus opciones. El recuento final decide la partida."
+      ],
+      "systems": [
+        "Elige una casilla vacía que encierre fichas rivales en una de ocho direcciones. Todas las fichas encerradas cambian a tu color.",
+        "La IA responde en Fácil, Medio o Difícil. Pista marca la primera casilla legal en orden de tablero, no una recomendación táctica; tras la respuesta de la IA, el texto explica esquinas, bordes o el número de tus jugadas legales.",
+        "Si un lado no puede jugar, pasa automáticamente. Si ninguno tiene jugadas legales, Resultado compara las fichas. Repetir inicia una nueva partida con cuatro fichas y la dificultad elegida."
+      ],
+      "how": [
+        "Elige la dificultad e inicia el tablero.",
+        "Lee las casillas legales y elige una que voltee una línea útil.",
+        "Espera la respuesta de la IA y lee la información de esquina, borde o movilidad.",
+        "Usa Pista si quieres una candidata sin ceder la decisión.",
+        "Sigue jugando durante los pases automáticos. Cuando ninguno pueda mover, compara las fichas finales y usa Repetir para probar otro plan."
+      ],
+      "strategyTips": [
+        "Las esquinas no se pueden voltear: considéralas antes de buscar una captura mayor.",
+        "Vigila la casilla junto a una esquina abierta; entregarla puede dar la esquina a la IA.",
+        "Compara cuántas jugadas legales tienes antes y después para conservar movilidad.",
+        "Una captura pequeña puede ser mejor si protege un borde o mantiene opciones futuras."
+      ],
+      "progression": [
+        "Fácil elige menos capturas inmediatas y Medio elige más. Difícil puntúa las capturas, favorece esquinas y bordes, y penaliza las casillas junto a una esquina abierta. Repetir permite planear con las mismas reglas."
+      ],
+      "designNote": "Reversi usa un tablero 8×8 legible, objetivos legales explícitos, tres políticas de IA transparentes, Pista orientativa y comentarios de posición para hacer visible la estrategia.",
+      "parent": "Las preferencias de idioma y sonido pueden permanecer en este navegador. La partida actual no se guarda al recargar. No necesitas cuenta, compra, guardado en la nube ni partida en línea; borrar los datos del sitio puede eliminar las preferencias locales.",
+      "faq": [
+        [
+          "¿Qué es una jugada legal?",
+          "Coloca una ficha en una casilla vacía y encierra al menos una ficha rival entre la nueva y otra tuya."
+        ],
+        [
+          "¿Qué pasa con las fichas encerradas?",
+          "Se vuelven de tu color en cada dirección encerrada."
+        ],
+        [
+          "¿Qué hace Pista?",
+          "Pista marca la primera casilla legal según el orden del tablero. No busca la mejor jugada ni coloca una ficha por ti."
+        ],
+        [
+          "¿Cómo funcionan los niveles?",
+          "Fácil elige la jugada que voltea menos fichas de inmediato; Medio, la que voltea más. Difícil puntúa capturas, esquinas y bordes, y penaliza las casillas junto a una esquina vacía. Es una heurística, no una jugada óptima garantizada."
+        ],
+        [
+          "¿Cómo se decide el ganador?",
+          "Si un lado no tiene jugada legal, pasa automáticamente. Cuando ninguno puede jugar, se cuentan las fichas y gana quien tenga más."
+        ],
+        [
+          "¿Deshacer revierte una jugada?",
+          "No. El control Deshacer actual solo anuncia la acción; no restaura el tablero ni revierte jugadas. Usa Repetir para empezar de nuevo."
+        ],
+        [
+          "¿Qué pasa si no hay jugada legal?",
+          "Ese lado pasa automáticamente. Si el otro aún puede jugar, la partida continúa; Resultado aparece cuando ninguno puede hacerlo."
+        ]
+      ],
+      "text140Tags": [
+        "Tablero Reversi de 8×8",
+        "Encierra y voltea fichas",
+        "Tres políticas de IA"
+      ]
+    }
+  },
+  "pt-BR": {
+    "code-breaker": {
+      "parent": "Jogue grátis no navegador sem conta, compra, salvamento na nuvem, partida online ou fluxo de anúncios. As fases concluídas, a fase mais avançada desbloqueada e a preferência de som ficam neste navegador; limpar os dados pode removê-las.",
+      "text140Tags": [
+        "Código de quatro cores",
+        "Pistas de posição e cor",
+        "Campanha de 30 fases"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "A partida começa com quatro peças no centro e vira uma disputa por espaço. Cada jogada válida cerca uma linha de peças rivais entre sua peça nova e outra peça sua.",
+        "Uma jogada que vira muitas peças agora pode entregar um canto ou reduzir suas opções. A contagem final decide a partida."
+      ],
+      "systems": [
+        "Escolha uma casa vazia que cerque peças rivais em uma das oito direções. Todas as peças cercadas mudam para sua cor.",
+        "A IA responde no Fácil, Médio ou Difícil. Dica marca a primeira casa válida na ordem do tabuleiro, não uma recomendação tática; após a resposta da IA, o texto explica cantos, bordas ou o número de suas jogadas válidas.",
+        "Se um lado não puder jogar, passa automaticamente. Quando nenhum tiver jogadas válidas, o Resultado compara as peças. Jogar novamente começa com quatro peças e a dificuldade escolhida."
+      ],
+      "how": [
+        "Escolha a dificuldade e comece o tabuleiro.",
+        "Leia as casas válidas e escolha uma que vire uma linha útil.",
+        "Espere a resposta da IA e leia o retorno sobre canto, borda ou mobilidade.",
+        "Use Dica para ver uma candidata sem entregar a decisão.",
+        "Continue durante os passes automáticos. Quando nenhum lado puder jogar, compare as peças finais e jogue novamente com outro plano."
+      ],
+      "strategyTips": [
+        "Cantos não podem ser virados: considere um canto antes de buscar uma captura maior.",
+        "Observe a casa ao lado de um canto aberto; entregá-la pode dar o canto à IA.",
+        "Compare suas jogadas válidas antes e depois para manter mobilidade quando puder.",
+        "Uma captura pequena pode ser melhor se proteger a borda ou preservar escolhas futuras."
+      ],
+      "progression": [
+        "Fácil escolhe menos capturas imediatas e Médio escolhe mais. Difícil pontua capturas, favorece cantos e bordas e penaliza casas ao lado de um canto aberto. Rejogar permite planejar sob as mesmas regras."
+      ],
+      "designNote": "Reversi usa tabuleiro 8×8 claro, alvos legais explícitos, três políticas de IA transparentes, Dica orientativa e retorno de posição para tornar a estratégia visível.",
+      "parent": "As preferências de idioma e som podem permanecer neste navegador. A partida atual não é salva após recarregar. Não é preciso conta, compra, nuvem ou partida online; limpar os dados do site pode remover preferências locais.",
+      "faq": [
+        [
+          "O que é uma jogada válida?",
+          "Coloque uma peça numa casa vazia e cerque ao menos uma peça rival entre a nova e outra sua."
+        ],
+        [
+          "O que acontece com as peças cercadas?",
+          "Elas viram sua cor em cada direção cercada."
+        ],
+        [
+          "O que a Dica faz?",
+          "Dica marca a primeira casa válida na ordem do tabuleiro. Não procura a melhor jogada nem coloca uma peça por você."
+        ],
+        [
+          "Como funcionam os níveis?",
+          "Fácil escolhe a jogada que vira menos peças imediatamente; Médio, a que vira mais. Difícil pontua capturas, cantos e bordas e penaliza casas ao lado de um canto vazio. É uma heurística, não uma melhor jogada garantida."
+        ],
+        [
+          "Como o vencedor é decidido?",
+          "Se um lado não tiver jogada válida, passa automaticamente. Quando nenhum dos dois puder jogar, as peças são contadas e vence quem tiver mais."
+        ],
+        [
+          "Desfazer reverte uma jogada?",
+          "Não. O controle Desfazer atual apenas anuncia a ação; não restaura o tabuleiro nem reverte jogadas. Use Jogar novamente para recomeçar."
+        ],
+        [
+          "E se não houver jogada válida?",
+          "Esse lado passa automaticamente. Se o outro ainda puder jogar, a partida continua; o Resultado aparece quando nenhum dos dois puder."
+        ]
+      ],
+      "text140Tags": [
+        "Tabuleiro de Reversi 8×8",
+        "Cerque e vire peças",
+        "Três políticas de IA"
+      ]
+    }
+  },
+  "fr": {
+    "code-breaker": {
+      "parent": "Jouez gratuitement dans le navigateur sans compte, achat, sauvegarde cloud, partie en ligne ni flux publicitaire. Les étapes réussies, la dernière étape débloquée et le réglage du son restent dans ce navigateur ; effacer les données peut les supprimer.",
+      "text140Tags": [
+        "Code à quatre couleurs",
+        "Indices de place et de couleur",
+        "Campagne de 30 étapes"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "La partie commence avec quatre pions au centre et devient une lutte pour l’espace. Chaque coup légal encadre une ligne adverse entre votre nouveau pion et un pion à vous.",
+        "Un coup qui retourne beaucoup de pions peut offrir un coin ou réduire vos choix. Le compte final décide de la partie."
+      ],
+      "systems": [
+        "Choisissez une case vide qui encadre des pions adverses dans l’une des huit directions. Tous les pions encadrés changent de couleur.",
+        "L’IA répond en Facile, Moyen ou Difficile. Indice montre la première case légale dans l’ordre du plateau, et non une recommandation tactique ; après la réponse de l’IA, le texte explique les coins, les bords ou votre nombre de coups légaux.",
+        "Si un camp ne peut pas jouer, son tour passe automatiquement. Quand aucun n’a de coup légal, le Résultat compare les pions. Rejouer reprend à quatre pions avec la difficulté choisie."
+      ],
+      "how": [
+        "Choisissez la difficulté et commencez le plateau.",
+        "Lisez les cases légales et choisissez celle qui retourne une ligne utile.",
+        "Attendez la réponse de l’IA et lisez le retour sur le coin, le bord ou la mobilité.",
+        "Utilisez Indice pour voir un candidat sans abandonner la décision.",
+        "Jouez malgré les passes automatiques. Quand aucun camp ne peut jouer, comparez le compte final et rejouez avec un autre plan."
+      ],
+      "strategyTips": [
+        "Les coins ne peuvent pas être retournés : considérez-les avant une capture plus grande.",
+        "Surveillez la case voisine d’un coin ouvert ; la donner peut offrir le coin à l’IA.",
+        "Comparez le nombre de coups légaux avant et après pour conserver de la mobilité.",
+        "Une petite capture peut être meilleure si elle protège un bord ou garde des choix futurs."
+      ],
+      "progression": [
+        "Facile choisit le moins de prises immédiates et Moyen le plus. Difficile évalue les prises, favorise coins et bords, et pénalise les cases près d’un coin libre. Les replays permettent de planifier avec les mêmes règles."
+      ],
+      "designNote": "Reversi associe plateau 8×8 lisible, cibles légales explicites, trois politiques d’IA transparentes, Indice consultatif et retour de position pour rendre la stratégie visible.",
+      "parent": "Les préférences de langue et de son peuvent rester dans ce navigateur. La partie en cours n’est pas conservée après un rechargement. Aucun compte, achat, cloud ou match en ligne n’est nécessaire ; effacer les données du site peut supprimer les préférences locales.",
+      "faq": [
+        [
+          "Qu’est-ce qu’un coup légal ?",
+          "Placez un pion sur une case vide pour encadrer au moins un pion adverse entre le nouveau pion et un pion à vous."
+        ],
+        [
+          "Que deviennent les pions encadrés ?",
+          "Ils prennent votre couleur dans chaque direction encadrée."
+        ],
+        [
+          "Que fait Indice ?",
+          "Indice montre la première case légale dans l’ordre du plateau. Il ne cherche pas le meilleur coup et ne pose pas de pion à votre place."
+        ],
+        [
+          "Comment fonctionnent les niveaux ?",
+          "Facile choisit le coup qui retourne le moins de pions immédiatement ; Moyen, celui qui en retourne le plus. Difficile évalue les prises, les coins et les bords, et pénalise les cases près d’un coin vide. C’est une heuristique, pas un meilleur coup garanti."
+        ],
+        [
+          "Comment gagne-t-on ?",
+          "Si un camp n’a pas de coup légal, son tour passe automatiquement. Quand aucun camp ne peut jouer, les pions sont comptés ; le plus grand nombre gagne."
+        ],
+        [
+          "Annuler revient-il sur un coup ?",
+          "Non. Le bouton Annuler actuel ne fait qu’annoncer l’action ; il ne restaure pas le plateau et ne revient pas sur un coup. Utilisez Rejouer pour recommencer."
+        ],
+        [
+          "Que se passe-t-il sans coup légal ?",
+          "Le camp concerné passe automatiquement. Si l’autre peut encore jouer, la partie continue ; le Résultat s’affiche quand aucun des deux ne peut jouer."
+        ]
+      ],
+      "text140Tags": [
+        "Plateau de Reversi 8×8",
+        "Encadrer et retourner les pions",
+        "Trois politiques d’IA"
+      ]
+    }
+  },
+  "de": {
+    "code-breaker": {
+      "parent": "Spiele kostenlos im Browser ohne Konto, Kauf, Cloud-Speicher, Online-Partie oder Werbeablauf. Geschaffte Stufen, die höchste freigeschaltete Stufe und die Toneinstellung bleiben in diesem Browser; das Löschen der Websitedaten kann sie entfernen.",
+      "text140Tags": [
+        "Vierfarben-Code knacken",
+        "Positions- und Farbhinweise",
+        "Kampagne mit 30 Stufen"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "Die Partie beginnt mit vier Steinen in der Mitte und wird zu einem Kampf um Raum. Jeder gültige Zug schließt gegnerische Steine zwischen deinem neuen Stein und einem eigenen ein.",
+        "Ein Zug mit vielen Drehungen kann trotzdem eine Ecke verschenken oder Optionen verringern. Die Endzahl entscheidet."
+      ],
+      "systems": [
+        "Wähle ein leeres Feld, das in einer von acht Richtungen gegnerische Steine einschließt. Alle eingeschlossenen Steine wechseln deine Farbe.",
+        "Die KI antwortet auf Leicht, Mittel oder Schwer. Tipp markiert das erste gültige Feld in Brettreihenfolge, nicht unbedingt einen taktisch guten Zug. Nach der KI-Antwort erklärt der Text Ecken, Kanten oder die Zahl deiner gültigen Züge.",
+        "Kann eine Seite nicht ziehen, setzt sie automatisch aus. Wenn beide keine gültigen Züge haben, vergleicht das Ergebnis die Steine. Erneut spielen startet mit vier Steinen und der gewählten Schwierigkeit."
+      ],
+      "how": [
+        "Wähle die Stufe und starte das Brett.",
+        "Lies die gültigen Felder und wähle eines, das eine nützliche Reihe dreht.",
+        "Warte auf die KI und lies die Rückmeldung zu Ecke, Kante oder Optionen.",
+        "Nutze Tipp für einen Kandidaten, ohne die Entscheidung abzugeben.",
+        "Spiele über automatische Aussetzer hinweg. Wenn beide Seiten nicht ziehen können, vergleiche die Steine und versuche mit Erneut spielen einen neuen Plan."
+      ],
+      "strategyTips": [
+        "Ecken können nicht gedreht werden: Prüfe sie vor einer größeren Eroberung.",
+        "Behalte das Feld neben einer offenen Ecke im Blick; es kann der KI die Ecke geben.",
+        "Vergleiche deine gültigen Züge vor und nach dem Zug, um Optionen zu behalten.",
+        "Eine kleine frühe Drehung kann stärker sein, wenn sie eine Kante schützt oder spätere Wahlmöglichkeiten erhält."
+      ],
+      "progression": [
+        "Leicht wählt die wenigsten sofortigen Wendungen, Mittel die meisten. Schwer bewertet Wendungen, bevorzugt Ecken und Kanten und bestraft Felder neben einer freien Ecke. Wiederholungen fördern Planung nach denselben Regeln."
+      ],
+      "designNote": "Reversi verbindet ein übersichtliches 8×8-Brett, klare gültige Ziele, drei transparente KI-Strategien, beratenden Tipp und Positionsfeedback, damit Strategie sichtbar bleibt.",
+      "parent": "Sprach- und Toneinstellungen können in diesem Browser erhalten bleiben. Die laufende Partie wird nach dem Neuladen nicht gespeichert. Konto, Kauf, Cloud-Speicher und Online-Match sind nicht nötig; das Löschen der Websitedaten kann lokale Einstellungen entfernen.",
+      "faq": [
+        [
+          "Was ist ein gültiger Zug?",
+          "Setze einen Stein auf ein leeres Feld und schließe mindestens einen gegnerischen Stein zwischen dem neuen und einem eigenen ein."
+        ],
+        [
+          "Was passiert mit eingeschlossenen Steinen?",
+          "Sie wechseln in jeder eingeschlossenen Richtung deine Farbe."
+        ],
+        [
+          "Was macht Tipp?",
+          "Tipp markiert das erste gültige Feld in Brettreihenfolge. Er sucht nicht den besten Zug und setzt keinen Stein für dich."
+        ],
+        [
+          "Wie unterscheiden sich die Stufen?",
+          "Leicht wählt den Zug mit den wenigsten sofort gewendeten Steinen, Mittel den mit den meisten. Schwer bewertet Wendungen, Ecken und Kanten und bestraft Felder neben einer freien Ecke. Das ist eine Heuristik und garantiert keinen optimalen Zug."
+        ],
+        [
+          "Wie wird gewonnen?",
+          "Hat eine Seite keinen gültigen Zug, setzt sie automatisch aus. Wenn beide Seiten nicht ziehen können, werden die Steine gezählt; die höhere Zahl gewinnt."
+        ],
+        [
+          "Macht Rückgängig einen Zug rückgängig?",
+          "Nein. Die aktuelle Rückgängig-Schaltfläche meldet die Aktion nur an; sie stellt das Brett nicht wieder her und nimmt keinen Zug zurück. Mit Erneut spielen beginnst du neu."
+        ],
+        [
+          "Was geschieht ohne gültigen Zug?",
+          "Diese Seite setzt automatisch aus. Kann die andere Seite noch ziehen, geht die Partie weiter. Das Ergebnis erscheint, wenn beide nicht ziehen können."
+        ]
+      ],
+      "text140Tags": [
+        "8×8-Reversi-Brett",
+        "Steine einschließen und wenden",
+        "Drei KI-Strategien"
+      ]
+    }
+  },
+  "it": {
+    "code-breaker": {
+      "parent": "Gioca gratis nel browser senza account, acquisti, salvataggio cloud, partita online o flusso pubblicitario. Le fasi completate, la fase più avanzata sbloccata e la preferenza audio restano in questo browser; cancellare i dati può rimuoverle.",
+      "text140Tags": [
+        "Codice di quattro colori",
+        "Indizi di posizione e colore",
+        "Campagna di 30 livelli"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "La partita inizia con quattro pedine al centro e diventa una gara per lo spazio. Ogni mossa legale racchiude una fila rivale tra la nuova pedina e una tua.",
+        "Una mossa che rovescia molto può regalare un angolo o ridurre le opzioni successive. Decide il conteggio finale."
+      ],
+      "systems": [
+        "Scegli una casella vuota che racchiuda pedine rivali in una delle otto direzioni. Le pedine racchiuse cambiano tutte colore.",
+        "L’IA risponde a livello Facile, Medio o Difficile. Suggerimento indica la prima casella legale nell’ordine della tavola, non una raccomandazione tattica; dopo la risposta dell’IA il testo spiega angoli, bordi o il numero delle tue mosse legali.",
+        "Se un lato non può giocare, passa automaticamente. Quando nessuno ha mosse legali, il Risultato confronta le pedine. Rigioca riparte da quattro pedine con il livello scelto."
+      ],
+      "how": [
+        "Scegli il livello e avvia la tavola.",
+        "Leggi le caselle legali e scegli quella che rovescia una linea utile.",
+        "Attendi la risposta dell’IA e leggi il feedback su angolo, bordo o mobilità.",
+        "Usa Suggerimento per vedere una candidata senza cedere la decisione.",
+        "Continua durante i passaggi automatici. Quando nessuno può giocare, confronta le pedine finali e rigioca con un nuovo piano."
+      ],
+      "strategyTips": [
+        "Gli angoli non si possono rovesciare: considerali prima di una cattura più grande.",
+        "Controlla la casella vicino a un angolo aperto: offrirla può dare l’angolo all’IA.",
+        "Confronta le mosse legali prima e dopo per conservare mobilità quando puoi.",
+        "Una piccola cattura iniziale può essere forte se protegge un bordo o mantiene scelte future."
+      ],
+      "progression": [
+        "Facile sceglie la cattura immediata più piccola e Medio la più grande. Difficile valuta le catture, favorisce angoli e bordi e penalizza le caselle accanto a un angolo libero. Le ripetizioni allenano la pianificazione con le stesse regole."
+      ],
+      "designNote": "Reversi usa tavola 8×8 leggibile, obiettivi legali espliciti, tre politiche IA trasparenti, Suggerimento consultivo e feedback della posizione per rendere visibile la strategia.",
+      "parent": "Le preferenze di lingua e audio possono restare in questo browser. La partita in corso non viene salvata dopo un aggiornamento della pagina. Non servono account, acquisti, cloud o partite online; cancellare i dati del sito può rimuovere le preferenze locali.",
+      "faq": [
+        [
+          "Cos’è una mossa legale?",
+          "Metti una pedina in una casella vuota e racchiudi almeno una pedina rivale tra la nuova e una tua."
+        ],
+        [
+          "Cosa succede alle pedine racchiuse?",
+          "Cambiano nel tuo colore in ogni direzione racchiusa."
+        ],
+        [
+          "Cosa fa Suggerimento?",
+          "Suggerimento indica la prima casella legale nell’ordine della tavola. Non cerca la mossa migliore e non posa una pedina per te."
+        ],
+        [
+          "Come funzionano i livelli?",
+          "Facile sceglie la mossa che rovescia meno pedine subito, Medio quella che ne rovescia di più. Difficile valuta catture, angoli e bordi e penalizza le caselle accanto a un angolo vuoto. È un’euristica, non una mossa migliore garantita."
+        ],
+        [
+          "Come si decide il vincitore?",
+          "Se un lato non ha mosse legali, passa automaticamente. Quando nessuno può giocare, si contano le pedine e vince chi ne ha di più."
+        ],
+        [
+          "Annulla ritira una mossa?",
+          "No. Il comando Annulla attuale annuncia solo l’azione: non ripristina la tavola né ritira una mossa. Usa Rigioca per ricominciare."
+        ],
+        [
+          "Cosa succede senza mosse legali?",
+          "Quel lato passa automaticamente. Se l’altro può ancora giocare, la partita continua; il Risultato appare quando nessuno dei due può giocare."
+        ]
+      ],
+      "text140Tags": [
+        "Tavola Reversi 8×8",
+        "Racchiudi e rovescia pedine",
+        "Tre politiche IA"
+      ]
+    }
+  },
+  "ru": {
+    "code-breaker": {
+      "parent": "Играйте бесплатно в браузере без аккаунта, покупки, облачного сохранения, онлайн-партии и рекламного потока. Пройденные этапы, самый поздний открытый этап и настройка звука сохраняются в этом браузере; очистка данных может удалить их.",
+      "text140Tags": [
+        "Код из четырёх цветов",
+        "Подсказки позиции и цвета",
+        "Кампания из 30 этапов"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "Партия начинается с четырёх фишек в центре и превращается в борьбу за пространство. Каждый допустимый ход зажимает линию фишек соперника между новой и вашей фишкой.",
+        "Ход с большим захватом может отдать угол или уменьшить следующие варианты. Победителя определяет итоговое число фишек."
+      ],
+      "systems": [
+        "Выберите свободную клетку, которая зажимает фишки соперника в одном из восьми направлений. Все зажатые фишки меняют цвет.",
+        "ИИ отвечает на лёгком, среднем или сложном уровне. Подсказка отмечает первую допустимую клетку в порядке поля, а не рекомендует тактический ход. После ответа ИИ текст поясняет углы, края или число ваших допустимых ходов.",
+        "Если сторона не может ходить, очередь пропускается автоматически. Когда ни у кого нет допустимых ходов, результат сравнивает фишки. Повтор начинает партию с четырёх фишек на выбранной сложности."
+      ],
+      "how": [
+        "Выберите уровень и начните поле.",
+        "Прочитайте допустимые клетки и выберите ту, что перевернёт полезную линию.",
+        "Дождитесь ответа ИИ и прочитайте обратную связь об угле, крае или вариантах.",
+        "Используйте подсказку, чтобы увидеть кандидата, но решение оставьте за собой.",
+        "Продолжайте играть после автоматических пропусков. Когда обе стороны не могут ходить, сравните число фишек и повторите с новым планом."
+      ],
+      "strategyTips": [
+        "Углы нельзя перевернуть: рассмотрите угол до большого захвата.",
+        "Следите за клеткой рядом с открытым углом: её можно подарить ИИ вместе с углом.",
+        "Сравнивайте число допустимых ходов до и после, чтобы сохранять мобильность.",
+        "Небольшой ранний захват может быть сильнее, если он защищает край или оставляет варианты."
+      ],
+      "progression": [
+        "Лёгкий уровень выбирает минимум немедленных переворотов, средний — максимум. Сложный оценивает перевороты, предпочитает углы и края и штрафует клетки рядом со свободным углом. Повторы помогают планировать по тем же правилам."
+      ],
+      "designNote": "Реверси использует понятное поле 8×8, явные допустимые цели, три прозрачные политики ИИ, советующую подсказку и обратную связь позиции, чтобы стратегия оставалась видимой.",
+      "parent": "Настройки языка и звука могут сохраняться в этом браузере. Текущая партия не сохраняется после перезагрузки страницы. Аккаунт, покупка, облако и онлайн-партия не нужны; очистка данных сайта может удалить локальные настройки.",
+      "faq": [
+        [
+          "Что такое допустимый ход?",
+          "Поставьте фишку на свободную клетку и зажмите хотя бы одну фишку соперника между новой и своей фишкой."
+        ],
+        [
+          "Что происходит с зажатыми фишками?",
+          "Они меняют цвет в каждом зажатом направлении."
+        ],
+        [
+          "Что делает подсказка?",
+          "Подсказка отмечает первую допустимую клетку в порядке обхода поля. Она не ищет лучший ход и не ставит фишку за вас."
+        ],
+        [
+          "Чем отличаются уровни ИИ?",
+          "Лёгкий уровень выбирает ход с минимумом немедленных переворотов, средний — с максимумом. Сложный оценивает перевороты, углы и края и штрафует клетки рядом со свободным углом. Это эвристика, а не гарантия лучшего хода."
+        ],
+        [
+          "Как определяется победитель?",
+          "Если у стороны нет допустимого хода, её очередь пропускается автоматически. Когда ходов нет у обеих сторон, фишки подсчитываются; побеждает большинство."
+        ],
+        [
+          "Отмена возвращает ход?",
+          "Нет. Текущая кнопка отмены только объявляет действие: она не восстанавливает поле и не возвращает ход. Чтобы начать заново, используйте повтор."
+        ],
+        [
+          "Что происходит, если нет допустимого хода?",
+          "Очередь этой стороны автоматически пропускается. Если другая сторона ещё может ходить, партия продолжается; результат появляется, когда обе не могут ходить."
+        ]
+      ],
+      "text140Tags": [
+        "Поле реверси 8×8",
+        "Зажимайте и переворачивайте фишки",
+        "Три стратегии ИИ"
+      ]
+    }
+  },
+  "hi": {
+    "code-breaker": {
+      "parent": "कोड ब्रेकर ब्राउज़र में मुफ्त खेलें; खाते, खरीद, क्लाउड सेव, ऑनलाइन मैच या विज्ञापन प्रवाह की जरूरत नहीं। पूरे किए गए चरण, सबसे आगे खुला चरण और ध्वनि की पसंद इसी ब्राउज़र में रहती हैं; साइट डेटा मिटाने पर ये हट सकती हैं।",
+      "text140Tags": [
+        "चार रंगों का कोड",
+        "स्थान और रंग के संकेत",
+        "30 चरणों का अभियान"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "खेल बीच की चार गोटियों से शुरू होकर जगह के लिए मुकाबला बनता है। हर कानूनी चाल आठ दिशाओं में नई गोटी और अपनी गोटी के बीच प्रतिद्वंद्वी की पंक्ति को घेरती है।",
+        "अभी अधिक गोटियाँ पलटने वाली चाल कोना दे सकती है या अगले विकल्प घटा सकती है। अंतिम गोटी गिनती विजेता तय करती है।"
+      ],
+      "systems": [
+        "ऐसा खाली खाना चुनें जो आठ दिशाओं में प्रतिद्वंद्वी की गोटियों को घेरता हो। घिरी हुई सभी गोटियाँ आपके रंग में पलटती हैं।",
+        "AI आसान, मध्यम या कठिन स्तर पर जवाब देता है। संकेत बोर्ड क्रम का पहला वैध खाना दिखाता है, रणनीतिक सिफारिश नहीं। AI के जवाब के बाद प्रतिक्रिया कोनों, किनारों या आपकी वैध चालों की संख्या बताती है।",
+        "एक पक्ष न चल सके तो उसकी बारी अपने आप छूटती है। दोनों के पास वैध चाल न हो तो परिणाम गोटियाँ तुलना करता है। फिर खेलें चुने स्तर पर चार गोटियों की शुरुआत करता है।"
+      ],
+      "how": [
+        "कठिनाई चुनकर बोर्ड शुरू करें।",
+        "कानूनी खाने पढ़ें और उपयोगी पंक्ति पलटने वाला खाना चुनें।",
+        "AI का जवाब देखें और कोने, किनारे या विकल्प की प्रतिक्रिया पढ़ें।",
+        "उम्मीदवार देखने के लिए संकेत लें, पर निर्णय खुद रखें।",
+        "अपने आप छूटी बारियों के बाद खेल जारी रखें। दोनों पक्ष न चल सकें तो गोटियाँ तुलना करें और फिर खेलें से नई योजना आज़माएँ।"
+      ],
+      "strategyTips": [
+        "कोने पलटे नहीं जा सकते; बड़ी पकड़ से पहले कोने पर विचार करें।",
+        "खुले कोने के पास के खाने पर ध्यान दें; उसे देने से AI को कोना मिल सकता है।",
+        "चाल से पहले और बाद की कानूनी चालें तुलना कर विकल्प बचाएँ।",
+        "छोटी शुरुआती पकड़ मजबूत हो सकती है यदि वह किनारा बचाए या अगले विकल्प रखे।"
+      ],
+      "progression": [
+        "आसान तुरंत सबसे कम गोटियाँ पलटता है और मध्यम सबसे अधिक। कठिन पलटी गोटियों, कोनों और किनारों को अंक देता है तथा खाली कोने के पास के खानों पर कटौती करता है। फिर खेलें से इन्हीं नियमों पर नई योजना आज़माएँ।"
+      ],
+      "designNote": "रिवर्सी स्पष्ट 8×8 बोर्ड, दिखते कानूनी लक्ष्य, पारदर्शी AI नीतियाँ, सलाहकारी संकेत और स्थिति प्रतिक्रिया से रणनीति को समझने योग्य रखता है।",
+      "parent": "भाषा और ध्वनि की पसंद इस ब्राउज़र में रह सकती है। पेज दोबारा लोड करने पर वर्तमान मैच का बोर्ड नहीं बचता। खाते, खरीद, क्लाउड सेव या ऑनलाइन मैच की जरूरत नहीं; साइट डेटा मिटाने पर स्थानीय पसंद हट सकती है।",
+      "faq": [
+        [
+          "कानूनी चाल क्या है?",
+          "खाली खाने में रखकर नई और अपनी गोटी के बीच कम से कम एक प्रतिद्वंद्वी गोटी घेरें।"
+        ],
+        [
+          "घिरी गोटियों का क्या होता है?",
+          "हर घिरी दिशा में वे आपके रंग में पलटती हैं।"
+        ],
+        [
+          "संकेत क्या करता है?",
+          "संकेत बोर्ड के क्रम में पहला वैध खाना दिखाता है। यह सबसे अच्छी चाल नहीं चुनता और आपकी ओर से गोटी नहीं रखता।"
+        ],
+        [
+          "AI स्तरों में क्या फर्क है?",
+          "आसान तुरंत सबसे कम गोटियाँ पलटने वाली चाल चुनता है, मध्यम सबसे अधिक वाली। कठिन पलटी गोटियों, कोनों और किनारों को अंक देता है तथा खाली कोने के पास के खानों पर कटौती करता है। यह अनुमान आधारित नीति है, सर्वोत्तम चाल की गारंटी नहीं।"
+        ],
+        [
+          "विजेता कैसे तय होता है?",
+          "एक पक्ष के पास वैध चाल न हो तो उसकी बारी अपने आप छूट जाती है। दोनों पक्ष न चल सकें तो गोटियाँ गिनी जाती हैं; अधिक गोटियाँ वाला जीतता है।"
+        ],
+        [
+          "क्या वापस लें चाल पलटता है?",
+          "नहीं। मौजूदा वापस लें बटन केवल सूचना देता है; यह बोर्ड या चाल को वापस नहीं लाता। फिर खेलें से नई शुरुआत करें।"
+        ],
+        [
+          "वैध चाल न होने पर क्या होता है?",
+          "उस पक्ष की बारी अपने आप छूटती है। दूसरा पक्ष चल सकता हो तो खेल जारी रहता है; दोनों न चल सकें तो परिणाम दिखता है।"
+        ]
+      ],
+      "text140Tags": [
+        "8×8 रिवर्सी बोर्ड",
+        "घेरकर गोटियाँ पलटें",
+        "तीन AI नीतियाँ"
+      ]
+    }
+  },
+  "ar": {
+    "code-breaker": {
+      "parent": "العب كاسر الشفرة مجانًا في المتصفح من دون حساب أو شراء أو حفظ سحابي أو مباراة عبر الإنترنت أو تدفق إعلاني. تبقى المراحل المكتملة وأعلى مرحلة مفتوحة وتفضيل الصوت في هذا المتصفح؛ وقد يؤدي مسح بيانات الموقع إلى حذفها.",
+      "text140Tags": [
+        "رمز من أربعة ألوان",
+        "دلائل الموضع واللون",
+        "حملة من 30 مرحلة"
+      ]
+    },
+    "reversi": {
+      "story": [
+        "تبدأ المباراة بأربع قطع في الوسط ثم تتحول إلى صراع على المساحة. كل حركة قانونية تحاصر صفًا من قطع الخصم بين قطعتك الجديدة وقطعة لك.",
+        "قد تمنح الحركة التي تقلب قطعًا كثيرة زاوية أو تقلل خياراتك التالية. يحدد عدد القطع النهائي الفائز."
+      ],
+      "systems": [
+        "اختر خانة فارغة تحاصر قطع الخصم في أحد الاتجاهات الثمانية. تنقلب كل القطع المحاصرة إلى لونك.",
+        "يرد الذكاء الاصطناعي في السهل أو المتوسط أو الصعب. يحدد التلميح أول خانة قانونية بحسب ترتيب اللوحة، وليس توصية تكتيكية؛ وبعد رد الذكاء يشرح النص الزوايا أو الحواف أو عدد حركاتك القانونية.",
+        "إذا تعذر اللعب على طرف يُتجاوز دوره تلقائيًا. وعندما لا يملك الطرفان حركة قانونية تقارن النتيجة أعداد الأقراص. تبدأ الإعادة من أربع قطع وبالمستوى المختار."
+      ],
+      "how": [
+        "اختر المستوى وابدأ اللوحة.",
+        "اقرأ الخانات القانونية واختر خانة تقلب صفًا مفيدًا.",
+        "انتظر رد الذكاء الاصطناعي واقرأ ملاحظة الزاوية أو الحافة أو الخيارات.",
+        "استخدم التلميح لرؤية مرشح من دون التخلي عن القرار.",
+        "تابع اللعب بعد تجاوز الأدوار التلقائي. عندما يعجز الطرفان عن اللعب قارن عدد الأقراص وأعد اللعب بخطة جديدة."
+      ],
+      "strategyTips": [
+        "لا يمكن قلب الزوايا؛ فكّر في الزاوية قبل مطاردة قلب أكبر.",
+        "راقب الخانة بجانب زاوية مفتوحة؛ فقد تمنحها للذكاء الاصطناعي.",
+        "قارن عدد حركاتك القانونية قبل الحركة وبعدها وحافظ على الخيارات إن أمكن.",
+        "قد يكون القلب الصغير المبكر أقوى إذا حمى حافة أو أبقى خيارات لاحقة."
+      ],
+      "progression": [
+        "يختار السهل أقل قلب فوري والمتوسط أكبره. يقيّم الصعب عدد الأقراص المقلوبة ويفضل الزوايا والحواف ويخصم من الخانات المجاورة لزاوية مفتوحة. تتيح الإعادة التخطيط بالقواعد نفسها."
+      ],
+      "designNote": "يستخدم ريفيرسي لوحة 8×8 واضحة وأهدافًا قانونية ظاهرة وثلاث سياسات شفافة للذكاء الاصطناعي وتلميحًا استشاريًا وملاحظات للوضع حتى تبقى الاستراتيجية مفهومة.",
+      "parent": "قد تبقى تفضيلات اللغة والصوت في هذا المتصفح. لا تُحفظ لوحة المباراة الحالية بعد إعادة تحميل الصفحة. لا يلزم حساب أو شراء أو حفظ سحابي أو مباراة عبر الإنترنت؛ وقد يؤدي مسح بيانات الموقع إلى حذف التفضيلات المحلية.",
+      "faq": [
+        [
+          "ما الحركة القانونية؟",
+          "ضع قطعة في خانة فارغة وحاصر قطعة خصم واحدة على الأقل بين القطعة الجديدة وقطعتك."
+        ],
+        [
+          "ماذا يحدث للقطع المحاصرة؟",
+          "تنقلب إلى لونك في كل اتجاه محاصر."
+        ],
+        [
+          "ماذا يفعل التلميح؟",
+          "يحدد التلميح أول خانة قانونية بحسب ترتيب اللوحة. لا يختار أفضل حركة ولا يضع قرصًا بدلًا منك."
+        ],
+        [
+          "ما الفرق بين مستويات الذكاء؟",
+          "يختار السهل الحركة التي تقلب أقل عدد من الأقراص فورًا، والمتوسط التي تقلب أكبر عدد. يقيّم الصعب القلب والزوايا والحواف ويخصم من الخانات المجاورة لزاوية فارغة. هذه طريقة تقديرية وليست ضمانًا لأفضل حركة."
+        ],
+        [
+          "كيف يحدد الفائز؟",
+          "إذا لم يجد أحد الطرفين حركة قانونية يُتجاوز دوره تلقائيًا. وعندما يتعذر اللعب على الطرفين تُحسب الأقراص، ويفوز من يملك العدد الأكبر."
+        ],
+        [
+          "هل يعيد التراجع الحركة السابقة؟",
+          "لا. زر التراجع الحالي يعلن الأمر فقط؛ لا يستعيد اللوحة ولا يعكس الحركة. استخدم إعادة اللعب للبدء من جديد."
+        ],
+        [
+          "ماذا يحدث عند غياب حركة قانونية؟",
+          "يُتجاوز دور ذلك الطرف تلقائيًا. إذا استطاع الطرف الآخر اللعب تستمر المباراة، وتظهر النتيجة عندما لا يستطيع أي منهما اللعب."
+        ]
+      ],
+      "text140Tags": [
+        "لوحة ريفيرسي 8×8",
+        "حاصر الأقراص واقلبها",
+        "ثلاث سياسات للذكاء الاصطناعي"
+      ]
+    }
+  }
+};
+  for (const [locale, gamesCopy] of Object.entries(text140ClassicUpdates)) {
+    for (const [gameId, copy] of Object.entries(gamesCopy)) {
+      Object.assign(gameId === "code-breaker" ? codeBreaker[locale] : reversi[locale], copy);
+    }
+  }
+
+  // Text Growth 1.4.0: source-checked Wordle and Peg Solitaire locale content.
+  const text140BatchFiveUpdates = {
+  "en": {
+    "wordle": {
+      "text140Tags": [
+        "Five-letter English word puzzles",
+        "Clue lock deduction",
+        "36-star collection"
+      ],
+      "systems": [
+        "Correct place means the letter is at this position; Other place means a copy exists elsewhere. No extra copy means this guess has no remaining match for that letter after exact and misplaced copies are counted, so a repeated letter can receive a miss even when another copy is in the answer.",
+        "The six English puzzles can be played freely or with Clue lock. Choose before your first guess or hint; locked guesses must match every previous clue, including duplicate-letter counts and revealed positions.",
+        "Invalid or repeated guesses cost no attempt. Up to two hints each reveal one unresolved position without spending a guess.",
+        "Letter combinations are accepted without a full dictionary check."
+      ],
+      "how": [
+        "Start the round and inspect the five empty positions.",
+        "The six English puzzles can be played freely or with Clue lock.",
+        "Enter a five-letter word using the on-screen keys or your keyboard.",
+        "Correct place means the letter is at this position; Other place means a copy exists elsewhere. No extra copy means this guess has no remaining match for that letter after exact and misplaced copies are counted, so a repeated letter can receive a miss even when another copy is in the answer.",
+        "Up to two hints each reveal one unresolved position without spending a guess.",
+        "Solve within six guesses, review Result, then choose Play again for the next puzzle or return to Main."
+      ],
+      "progression": [
+        "Earn three stars by solving within three guesses without hints, two within four guesses using at most one hint, otherwise one for a solve. Each puzzle stores its best stars separately for both modes: 36 stars in total, not repeat-play farming.",
+        "A solve scores 500 plus 100 per unused guess, minus 50 per hint, plus 100 with Clue lock; an unsolved puzzle scores zero. Records stay in this browser; blocked storage keeps them only for this visit."
+      ],
+      "faq": [
+        [
+          "What do the feedback colors mean?",
+          "Correct place means the letter is at this position; Other place means a copy exists elsewhere. No extra copy means this guess has no remaining match for that letter after exact and misplaced copies are counted, so a repeated letter can receive a miss even when another copy is in the answer."
+        ],
+        [
+          "Does Hint solve the word?",
+          "Up to two hints each reveal one unresolved position without spending a guess."
+        ],
+        [
+          "How many guesses do I get?",
+          "You can make up to six guesses for each five-letter puzzle."
+        ],
+        [
+          "What happens after Result?",
+          "Play again advances through the six-puzzle deck; Main returns to the start without an online account."
+        ],
+        [
+          "Is progress saved online?",
+          "Each puzzle stores its best stars separately for both modes: 36 stars in total, not repeat-play farming. Records stay in this browser; blocked storage keeps them only for this visit."
+        ],
+        [
+          "How does Clue lock work?",
+          "The six English puzzles can be played freely or with Clue lock. Choose before your first guess or hint; locked guesses must match every previous clue, including duplicate-letter counts and revealed positions."
+        ],
+        [
+          "Are any five-letter combinations accepted?",
+          "Invalid or repeated guesses cost no attempt. Letter combinations are accepted without a full dictionary check."
+        ],
+        [
+          "How are stars awarded?",
+          "Earn three stars by solving within three guesses without hints, two within four guesses using at most one hint, otherwise one for a solve. Each puzzle stores its best stars separately for both modes: 36 stars in total, not repeat-play farming."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "Fixed cross-shaped board",
+        "Jump over one peg",
+        "One peg wins"
+      ],
+      "systems": [
+        "Select a peg, then choose an empty hole two spaces away over one adjacent peg. A legal jump removes the middle peg and leaves the source hole empty.",
+        "Hint highlights the first currently legal jump without making it or guaranteeing a solution. Undo restores the previous board and move count; New Puzzle restarts the same fixed setup.",
+        "Result appears when one peg remains or no legal jump remains. A win shows the move count; a blocked board shows how many pegs remain."
+      ],
+      "how": [
+        "Start the fixed board and inspect the empty holes around the pegs.",
+        "Select a peg that can jump over a neighboring peg.",
+        "Choose the empty landing hole two spaces away in a straight line.",
+        "Use Hint to inspect one legal jump, or Undo to test a different route.",
+        "Finish with one peg, read Result, and replay to search for a cleaner route."
+      ],
+      "parent": "The board, move history, and results are kept only during this play session; New Puzzle starts the same fixed board. Language and sound preferences may stay in this browser. No account, purchase, cloud save, or online match is required.",
+      "faq": [
+        [
+          "What is a legal jump?",
+          "Select a peg and jump it in a straight line over one adjacent peg into an empty hole two spaces away."
+        ],
+        [
+          "What happens to the middle peg?",
+          "It is removed, while the source hole becomes empty."
+        ],
+        [
+          "Does Hint solve the board?",
+          "No. Hint highlights the first currently legal jump, not a guaranteed route to one peg; you choose whether to play it."
+        ],
+        [
+          "Can I undo?",
+          "Yes. Undo restores the previous board and move count."
+        ],
+        [
+          "How do I win?",
+          "Reduce the board to exactly one remaining peg."
+        ]
+      ]
+    }
+  },
+  "zh-Hant": {
+    "wordle": {
+      "text140Tags": [
+        "五字母英文單字謎題",
+        "線索鎖定推理",
+        "36 星收集"
+      ],
+      "systems": [
+        "位置正確代表字母就在該格；位置不同代表答案的別處還有該字母。「無更多此字母」表示扣除已配對的同字母後沒有剩餘副本；即使答案含有一個該字母，猜測中多出的重複字母仍可能顯示未命中。",
+        "六題英文猜詞可自由推理，也可在首次猜測或提示前開啟線索鎖定。 鎖定後的猜測必須符合全部既有線索，包含重複字母的數量與已揭曉的位置。",
+        "格式錯誤或重複猜測不扣次數。 每題最多兩次提示，每次揭露一個尚未確定的位置，不消耗猜測次數。",
+        "遊戲接受五字母組合，並未套用完整英文字典驗證。"
+      ],
+      "how": [
+        "開始回合，查看五個空白位置。",
+        "六題英文猜詞可自由推理，也可在首次猜測或提示前開啟線索鎖定。",
+        "使用畫面按鍵或鍵盤輸入五字母單字。",
+        "位置正確代表字母就在該格；位置不同代表答案的別處還有該字母。「無更多此字母」表示扣除已配對的同字母後沒有剩餘副本；即使答案含有一個該字母，猜測中多出的重複字母仍可能顯示未命中。",
+        "每題最多兩次提示，每次揭露一個尚未確定的位置，不消耗猜測次數。",
+        "在六次猜測內解題，查看結果，再選擇再玩一次進入下一題或回到主頁。"
+      ],
+      "progression": [
+        "三次內猜中且未用提示可得三星；四次內猜中且最多用一次提示可得兩星；其他猜中情況得一星。 每題兩種模式分別保存最佳星數，總共 36 星，重玩不會重複灌分。",
+        "猜中得 500 分，每剩一次猜測加 100 分，每次提示扣 50 分，線索鎖定再加 100 分；未猜中為零分。 紀錄只存於此瀏覽器；儲存空間遭封鎖時僅在本次瀏覽保留。"
+      ],
+      "faq": [
+        [
+          "回饋顏色代表什麼？",
+          "位置正確代表字母就在該格；位置不同代表答案的別處還有該字母。「無更多此字母」表示扣除已配對的同字母後沒有剩餘副本；即使答案含有一個該字母，猜測中多出的重複字母仍可能顯示未命中。"
+        ],
+        [
+          "提示會自動解題嗎？",
+          "每題最多兩次提示，每次揭露一個尚未確定的位置，不消耗猜測次數。"
+        ],
+        [
+          "每題可以猜幾次？",
+          "每個五字母謎題最多可以猜六次。"
+        ],
+        [
+          "結果畫面之後會怎樣？",
+          "再玩一次會進入六題題庫的下一題，主頁則會返回開始位置。"
+        ],
+        [
+          "進度會保存到線上嗎？",
+          "每題兩種模式分別保存最佳星數，總共 36 星，重玩不會重複灌分。 紀錄只存於此瀏覽器；儲存空間遭封鎖時僅在本次瀏覽保留。"
+        ],
+        [
+          "線索鎖定如何運作？",
+          "六題英文猜詞可自由推理，也可在首次猜測或提示前開啟線索鎖定。 鎖定後的猜測必須符合全部既有線索，包含重複字母的數量與已揭曉的位置。"
+        ],
+        [
+          "任意五字母組合都能提交嗎？",
+          "格式錯誤或重複猜測不扣次數。 遊戲接受五字母組合，並未套用完整英文字典驗證。"
+        ],
+        [
+          "如何取得星星？",
+          "三次內猜中且未用提示可得三星；四次內猜中且最多用一次提示可得兩星；其他猜中情況得一星。 每題兩種模式分別保存最佳星數，總共 36 星，重玩不會重複灌分。"
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "固定十字形棋盤",
+        "跳過一顆棋子",
+        "留下 1 顆獲勝"
+      ],
+      "systems": [
+        "先選棋子，再選隔著一顆相鄰棋子的兩格外空洞。合法跳法會移除中間棋子，並讓來源位置變成空洞。",
+        "提示只標出目前找到的第一個合法跳法，不會代走，也不保證能解完。復原會還原上一個棋盤與步數；新謎題會從相同的固定初始局面重開。",
+        "剩下 1 顆棋子或已沒有合法跳法時會顯示結果。獲勝時顯示步數；無路可走時顯示剩餘棋子數。"
+      ],
+      "how": [
+        "開始固定棋盤，先觀察棋子周圍的空洞。",
+        "選擇可以跳過相鄰棋子的棋子。",
+        "選擇同一直線上兩格外的空洞作為落點。",
+        "用提示查看一個合法跳法，或用復原測試另一條路線。",
+        "留下 1 顆棋子後查看結果，再重玩尋找更乾淨的路線。"
+      ],
+      "parent": "棋盤、走法記錄與結果只保留在本次遊玩期間；新謎題會從同一固定棋盤重開。語言與音效偏好可能保留在此瀏覽器。不需要帳號、購買、雲端存檔或線上對局。",
+      "faq": [
+        [
+          "什麼是合法跳法？",
+          "選擇棋子，直線跳過一顆相鄰棋子，落到兩格外的空洞。"
+        ],
+        [
+          "中間棋子會怎樣？",
+          "它會被移除，來源位置則變成空洞。"
+        ],
+        [
+          "提示會解完棋盤嗎？",
+          "不會。提示只標出目前找到的第一個合法跳法，不保證能走到最後 1 顆；是否執行由你決定。"
+        ],
+        [
+          "可以復原嗎？",
+          "可以。復原會恢復上一個棋盤與步數。"
+        ],
+        [
+          "如何獲勝？",
+          "把棋盤縮減到剛好剩下 1 顆棋子。"
+        ]
+      ]
+    }
+  },
+  "zh-Hans": {
+    "wordle": {
+      "text140Tags": [
+        "五字母英文单词谜题",
+        "线索锁定推理",
+        "36 星收集"
+      ],
+      "systems": [
+        "位置正确代表字母就在该格；位置不同代表答案的别处还有该字母。“无更多此字母”表示扣除已匹配的同字母后没有剩余副本；即使答案含有一个该字母，猜测中多出的重复字母仍可能显示未命中。",
+        "六题英文猜词可自由推理，也可在首次猜测或提示前开启线索锁定。 锁定后的猜测必须符合全部已有线索，包括重复字母的数量和已揭晓的位置。",
+        "格式错误或重复猜测不扣次数。 每题最多两次提示，每次揭示一个尚未确定的位置，不消耗猜测次数。",
+        "游戏接受五字母组合，未使用完整英语词典验证。"
+      ],
+      "how": [
+        "开始回合，查看五个空白位置。",
+        "六题英文猜词可自由推理，也可在首次猜测或提示前开启线索锁定。",
+        "使用画面按键或键盘输入五字母单词。",
+        "位置正确代表字母就在该格；位置不同代表答案的别处还有该字母。“无更多此字母”表示扣除已匹配的同字母后没有剩余副本；即使答案含有一个该字母，猜测中多出的重复字母仍可能显示未命中。",
+        "每题最多两次提示，每次揭示一个尚未确定的位置，不消耗猜测次数。",
+        "在六次猜测内解题，查看结果，再选择再玩一次进入下一题或返回主页。"
+      ],
+      "progression": [
+        "三次内猜中且未用提示可得三星；四次内猜中且最多用一次提示可得两星；其他猜中情况得一星。 每题两种模式分别保存最佳星数，共 36 星，重玩不会重复加星。",
+        "猜中得 500 分，每剩一次猜测加 100 分，每次提示扣 50 分，线索锁定再加 100 分；未猜中为零分。 记录只存于此浏览器；存储被阻止时仅在本次访问保留。"
+      ],
+      "faq": [
+        [
+          "反馈颜色代表什么？",
+          "位置正确代表字母就在该格；位置不同代表答案的别处还有该字母。“无更多此字母”表示扣除已匹配的同字母后没有剩余副本；即使答案含有一个该字母，猜测中多出的重复字母仍可能显示未命中。"
+        ],
+        [
+          "提示会自动解题吗？",
+          "每题最多两次提示，每次揭示一个尚未确定的位置，不消耗猜测次数。"
+        ],
+        [
+          "每题可以猜几次？",
+          "每个五字母谜题最多可以猜六次。"
+        ],
+        [
+          "结果画面之后会怎样？",
+          "再玩一次会进入六题题库的下一题，主页则会返回开始位置。"
+        ],
+        [
+          "进度会保存到线上吗？",
+          "每题两种模式分别保存最佳星数，共 36 星，重玩不会重复加星。 记录只存于此浏览器；存储被阻止时仅在本次访问保留。"
+        ],
+        [
+          "线索锁定如何运作？",
+          "六题英文猜词可自由推理，也可在首次猜测或提示前开启线索锁定。 锁定后的猜测必须符合全部已有线索，包括重复字母的数量和已揭晓的位置。"
+        ],
+        [
+          "任意五字母组合都能提交吗？",
+          "格式错误或重复猜测不扣次数。 游戏接受五字母组合，未使用完整英语词典验证。"
+        ],
+        [
+          "如何获得星星？",
+          "三次内猜中且未用提示可得三星；四次内猜中且最多用一次提示可得两星；其他猜中情况得一星。 每题两种模式分别保存最佳星数，共 36 星，重玩不会重复加星。"
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "固定十字形棋盘",
+        "跳过一颗棋子",
+        "留下 1 颗获胜"
+      ],
+      "systems": [
+        "先选棋子，再选隔着一颗相邻棋子的两格外空洞。合法跳法会移除中间棋子，并让来源位置变成空洞。",
+        "提示只标出当前找到的第一个合法跳法，不会代走，也不保证能解完。撤销会恢复上一个棋盘和步数；新谜题会从相同的固定初始局面重开。",
+        "剩下 1 颗棋子或已没有合法跳法时会显示结果。获胜时显示步数；无路可走时显示剩余棋子数。"
+      ],
+      "how": [
+        "开始固定棋盘，先观察棋子周围的空洞。",
+        "选择可以跳过相邻棋子的棋子。",
+        "选择同一直线上两格外的空洞作为落点。",
+        "用提示查看一个合法跳法，或用撤销测试另一条路线。",
+        "留下 1 颗棋子后查看结果，再重玩寻找更干净的路线。"
+      ],
+      "parent": "棋盘、走法记录和结果只保留在本次游玩期间；新谜题会从同一固定棋盘重开。语言和音效偏好可能保留在此浏览器。不需要账号、购买、云端存档或在线对局。",
+      "faq": [
+        [
+          "什么是合法跳法？",
+          "选择棋子，直线跳过一颗相邻棋子，落到两格外的空洞。"
+        ],
+        [
+          "中间棋子会怎样？",
+          "它会被移除，来源位置则变成空洞。"
+        ],
+        [
+          "提示会解完棋盘吗？",
+          "不会。提示只标出当前找到的第一个合法跳法，不保证能走到最后 1 颗；是否执行由你决定。"
+        ],
+        [
+          "可以撤销吗？",
+          "可以。撤销会恢复上一个棋盘与步数。"
+        ],
+        [
+          "如何获胜？",
+          "把棋盘缩减到刚好剩下 1 颗棋子。"
+        ]
+      ]
+    }
+  },
+  "ja": {
+    "wordle": {
+      "text140Tags": [
+        "5文字の英単語パズル",
+        "ヒント固定の推理",
+        "全36個の星集め"
+      ],
+      "systems": [
+        "正しい位置は文字と場所が一致し、別の位置は答えのほかの場所にその文字が残っていることを示します。「残りなし」は一致した同じ文字を数えた後に余りがないという意味です。答えに同じ文字があっても、予想で余分に重ねた文字は不一致になる場合があります。",
+        "6問の英単語パズルを自由に解くか、最初の予想・ヒントの前にヒント固定を選べます。 固定中は、重複文字の数や判明した位置を含む全手がかりに合う予想が必要です。",
+        "不正な入力や同じ予想では回数を消費しません。 ヒントは各問2回までで、未確定の位置を1つ示し、予想回数は減りません。",
+        "5文字の組み合わせを受け付けますが、完全な英語辞書による検証は行いません。"
+      ],
+      "how": [
+        "ラウンドを始め、5つの空欄を確認します。",
+        "6問の英単語パズルを自由に解くか、最初の予想・ヒントの前にヒント固定を選べます。",
+        "画面のキーまたはキーボードで5文字を入力します。",
+        "正しい位置は文字と場所が一致し、別の位置は答えのほかの場所にその文字が残っていることを示します。「残りなし」は一致した同じ文字を数えた後に余りがないという意味です。答えに同じ文字があっても、予想で余分に重ねた文字は不一致になる場合があります。",
+        "ヒントは各問2回までで、未確定の位置を1つ示し、予想回数は減りません。",
+        "6回以内に解き、結果を確認し、もう一度遊ぶかメインへ戻ります。"
+      ],
+      "progression": [
+        "ヒントなしで3回以内に正解すると星3つ、ヒント1回以内で4回以内なら星2つ、それ以外の正解は星1つ。 各問題・各モードの最高記録を保存し、合計36個の星を集めます。 同じ問題の繰り返しでは星を水増しできません。",
+        "正解は500点、残りの予想1回につき100点加算、ヒント1回につき50点減点、固定モードは100点加算。 不正解は0点。 記録はこのブラウザーのみで、保存が禁止されている場合は今回の閲覧中のみ保持します。"
+      ],
+      "faq": [
+        [
+          "色の結果は何を意味しますか？",
+          "正しい位置は文字と場所が一致し、別の位置は答えのほかの場所にその文字が残っていることを示します。「残りなし」は一致した同じ文字を数えた後に余りがないという意味です。答えに同じ文字があっても、予想で余分に重ねた文字は不一致になる場合があります。"
+        ],
+        [
+          "ヒントは解答しますか？",
+          "ヒントは各問2回までで、未確定の位置を1つ示し、予想回数は減りません。"
+        ],
+        [
+          "何回推測できますか？",
+          "各5文字パズルで最大6回です。"
+        ],
+        [
+          "結果の後はどうなりますか？",
+          "もう一度遊ぶと6問デッキの次へ進み、メインは開始画面へ戻ります。"
+        ],
+        [
+          "進行はオンライン保存されますか？",
+          "各問題・各モードの最高記録を保存し、合計36個の星を集めます。 記録はこのブラウザーのみで、保存が禁止されている場合は今回の閲覧中のみ保持します。"
+        ],
+        [
+          "ヒント固定はどのように働きますか？",
+          "6問の英単語パズルを自由に解くか、最初の予想・ヒントの前にヒント固定を選べます。 固定中は、重複文字の数や判明した位置を含む全手がかりに合う予想が必要です。"
+        ],
+        [
+          "どんな5文字の組み合わせでも入力できますか？",
+          "不正な入力や同じ予想では回数を消費しません。 5文字の組み合わせを受け付けますが、完全な英語辞書による検証は行いません。"
+        ],
+        [
+          "星はどう獲得しますか？",
+          "ヒントなしで3回以内に正解すると星3つ、ヒント1回以内で4回以内なら星2つ、それ以外の正解は星1つ。 各問題・各モードの最高記録を保存し、合計36個の星を集めます。 同じ問題の繰り返しでは星を水増しできません。"
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "固定の十字形盤面",
+        "1個を飛び越す",
+        "1個残せば成功"
+      ],
+      "systems": [
+        "駒を選び、隣の駒を1個越えた2マス先の空き穴を選びます。合法ジャンプでは中央の駒が消え、出発点が空きます。",
+        "ヒントは現在の最初の合法ジャンプを示すだけで、自動で動かず、解ける保証もありません。元に戻すは直前の盤面と手数を復元し、新しいパズルは同じ固定初期盤面から再開します。",
+        "1個だけ残るか合法ジャンプがなくなると結果が表示されます。成功時は手数、行き詰まり時は残った駒の数が分かります。"
+      ],
+      "how": [
+        "固定盤面を始め、駒の周りの空き穴を確認します。",
+        "隣の駒を越えられる駒を選びます。",
+        "一直線で2マス先の空き穴を着地点にします。",
+        "ヒントで合法ジャンプを1つ確認し、別の道を試すなら元に戻すを使います。",
+        "1個を残して結果を確認し、よりきれいな道を探して再挑戦します。"
+      ],
+      "parent": "盤面、手の履歴、結果はこのプレイ中だけ保持され、新しいパズルは同じ固定盤面から始まります。言語とサウンドの設定はこのブラウザに残る場合があります。アカウント、購入、クラウド保存、オンライン対戦は不要です。",
+      "faq": [
+        [
+          "合法ジャンプとは？",
+          "駒を選び、隣の駒を一直線に越えて2マス先の空き穴へ移します。"
+        ],
+        [
+          "中央の駒はどうなりますか？",
+          "消え、出発点は空き穴になります。"
+        ],
+        [
+          "ヒントは解いてくれますか？",
+          "いいえ。現在の最初の合法ジャンプを示すだけで、最後の1個まで解ける保証はありません。実行するかは自分で決めます。"
+        ],
+        [
+          "元に戻せますか？",
+          "はい。盤面と手数を直前の状態に戻します。"
+        ],
+        [
+          "どうすれば勝ちですか？",
+          "盤面に残る駒をちょうど1個にします。"
+        ]
+      ]
+    }
+  },
+  "ko": {
+    "wordle": {
+      "text140Tags": [
+        "영어 다섯 글자 퍼즐",
+        "단서 고정 추리",
+        "별 36개 수집"
+      ],
+      "systems": [
+        "정확한 위치는 글자와 자리가 일치하고, 다른 위치는 답의 다른 자리에 해당 글자가 더 있음을 뜻합니다. 남은 글자 없음은 일치한 같은 글자를 센 뒤 추가로 맞출 글자가 없다는 뜻이므로, 답에 그 글자가 있어도 중복 입력한 글자는 빗나갈 수 있습니다.",
+        "6개의 영어 단어 문제를 자유롭게 풀거나 첫 추측·힌트 전에 단서 고정을 선택할 수 있습니다. 고정 모드에서는 중복 글자 수와 공개된 위치를 포함한 모든 단서를 따라야 합니다.",
+        "잘못된 형식이나 반복 추측은 횟수를 소모하지 않습니다. 문제마다 최대 두 번의 힌트로 미확정 위치 하나를 공개하며 추측 횟수는 줄지 않습니다.",
+        "5글자 조합을 허용하지만 완전한 영어 사전 검사는 하지 않습니다."
+      ],
+      "how": [
+        "라운드를 시작하고 다섯 칸을 확인하세요.",
+        "6개의 영어 단어 문제를 자유롭게 풀거나 첫 추측·힌트 전에 단서 고정을 선택할 수 있습니다.",
+        "화면 키나 키보드로 다섯 글자를 입력하세요.",
+        "정확한 위치는 글자와 자리가 일치하고, 다른 위치는 답의 다른 자리에 해당 글자가 더 있음을 뜻합니다. 남은 글자 없음은 일치한 같은 글자를 센 뒤 추가로 맞출 글자가 없다는 뜻이므로, 답에 그 글자가 있어도 중복 입력한 글자는 빗나갈 수 있습니다.",
+        "문제마다 최대 두 번의 힌트로 미확정 위치 하나를 공개하며 추측 횟수는 줄지 않습니다.",
+        "여섯 번 안에 풀고 결과를 확인한 뒤 다시 플레이하거나 메인으로 돌아가세요."
+      ],
+      "progression": [
+        "힌트 없이 3회 이내 정답이면 별 3개, 힌트 1회 이하로 4회 이내 정답이면 별 2개, 그 밖의 정답은 별 1개입니다. 각 문제와 모드의 최고 별 수를 저장하므로 총 36개이며 반복 플레이로 중복 획득할 수 없습니다.",
+        "정답은 500점에 남은 추측당 100점, 힌트당 −50점, 고정 모드 +100점입니다. 오답 종료는 0점입니다. 기록은 이 브라우저에만 저장하며 저장이 차단되면 이번 방문 동안만 유지됩니다."
+      ],
+      "faq": [
+        [
+          "색상 피드백은 무엇을 뜻하나요?",
+          "정확한 위치는 글자와 자리가 일치하고, 다른 위치는 답의 다른 자리에 해당 글자가 더 있음을 뜻합니다. 남은 글자 없음은 일치한 같은 글자를 센 뒤 추가로 맞출 글자가 없다는 뜻이므로, 답에 그 글자가 있어도 중복 입력한 글자는 빗나갈 수 있습니다."
+        ],
+        [
+          "힌트가 답을 자동으로 알려 주나요?",
+          "문제마다 최대 두 번의 힌트로 미확정 위치 하나를 공개하며 추측 횟수는 줄지 않습니다."
+        ],
+        [
+          "몇 번 추측할 수 있나요?",
+          "각 다섯 글자 퍼즐마다 최대 여섯 번입니다."
+        ],
+        [
+          "결과 다음에는 어떻게 되나요?",
+          "다시 플레이하면 여섯 퍼즐 덱의 다음 문제로 가고 메인은 시작 화면으로 돌아갑니다."
+        ],
+        [
+          "진행이 온라인에 저장되나요?",
+          "각 문제와 모드의 최고 별 수를 저장하므로 총 36개이며 반복 플레이로 중복 획득할 수 없습니다. 기록은 이 브라우저에만 저장하며 저장이 차단되면 이번 방문 동안만 유지됩니다."
+        ],
+        [
+          "단서 고정은 어떻게 작동하나요?",
+          "6개의 영어 단어 문제를 자유롭게 풀거나 첫 추측·힌트 전에 단서 고정을 선택할 수 있습니다. 고정 모드에서는 중복 글자 수와 공개된 위치를 포함한 모든 단서를 따라야 합니다."
+        ],
+        [
+          "영어 다섯 글자 조합은 모두 제출할 수 있나요?",
+          "잘못된 형식이나 반복 추측은 횟수를 소모하지 않습니다. 5글자 조합을 허용하지만 완전한 영어 사전 검사는 하지 않습니다."
+        ],
+        [
+          "별은 어떻게 받나요?",
+          "힌트 없이 3회 이내 정답이면 별 3개, 힌트 1회 이하로 4회 이내 정답이면 별 2개, 그 밖의 정답은 별 1개입니다. 각 문제와 모드의 최고 별 수를 저장하므로 총 36개이며 반복 플레이로 중복 획득할 수 없습니다."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "고정된 십자형 보드",
+        "말 하나를 뛰어넘기",
+        "말 하나면 승리"
+      ],
+      "systems": [
+        "말을 고른 뒤 이웃 말 하나를 넘는 두 칸 거리의 빈칸을 고르세요. 합법적인 점프는 가운데 말을 없애고 출발 칸을 비웁니다.",
+        "힌트는 현재 첫 번째 합법 점프를 표시할 뿐 대신 움직이지 않으며 해결을 보장하지 않습니다. 실행 취소는 이전 보드와 수를 복원하고 새 퍼즐은 같은 고정 시작 상태로 돌아갑니다.",
+        "말 하나가 남거나 합법 점프가 없어지면 결과가 표시됩니다. 승리하면 수를, 막히면 남은 말 수를 보여 줍니다."
+      ],
+      "how": [
+        "고정 보드를 시작하고 말 주변의 빈칸을 살펴보세요.",
+        "이웃 말을 넘을 수 있는 말을 선택하세요.",
+        "직선으로 두 칸 떨어진 빈칸을 착지 칸으로 선택하세요.",
+        "힌트로 합법 점프 하나를 확인하거나 실행 취소로 다른 경로를 시험하세요.",
+        "말 하나를 남긴 뒤 결과를 보고 더 깔끔한 경로를 찾아 다시 플레이하세요."
+      ],
+      "parent": "보드, 수 기록과 결과는 현재 플레이 중에만 유지됩니다. 새 퍼즐은 같은 고정 보드에서 다시 시작합니다. 언어와 사운드 설정은 이 브라우저에 남을 수 있습니다. 계정, 구매, 클라우드 저장, 온라인 대국은 필요하지 않습니다.",
+      "faq": [
+        [
+          "합법적인 점프란 무엇인가요?",
+          "말을 고르고 이웃 말을 직선으로 넘어 두 칸 떨어진 빈칸으로 옮깁니다."
+        ],
+        [
+          "가운데 말은 어떻게 되나요?",
+          "사라지고 출발 칸은 빈칸이 됩니다."
+        ],
+        [
+          "힌트가 풀어 주나요?",
+          "아니요. 현재 첫 번째 합법 점프를 보여 줄 뿐 말 하나로 끝나는 경로를 보장하지 않아요. 실행 여부는 직접 결정합니다."
+        ],
+        [
+          "되돌릴 수 있나요?",
+          "네. 직전 보드와 수로 복원합니다."
+        ],
+        [
+          "어떻게 이기나요?",
+          "보드에 남은 말을 정확히 하나로 줄이세요."
+        ]
+      ]
+    }
+  },
+  "es": {
+    "wordle": {
+      "text140Tags": [
+        "Puzles de palabras inglesas de cinco letras",
+        "Deducción con pistas fijas",
+        "Colección de 36 estrellas"
+      ],
+      "systems": [
+        "Lugar correcto indica letra y posición exactas; Otro lugar indica otra copia en la respuesta. Sin más copias significa que, tras contar las coincidencias, no queda otra copia: una letra repetida de más puede aparecer como ausente aunque la respuesta contenga esa letra.",
+        "Juega los seis acertijos ingleses libremente o activa Fijar pistas antes del primer intento o pista. Después debes respetar toda la información previa, incluidas las cantidades de letras repetidas y las posiciones reveladas.",
+        "Las entradas inválidas o repetidas no consumen intentos. Cada acertijo permite dos pistas que revelan una posición desconocida sin gastar un intento.",
+        "Se aceptan combinaciones de cinco letras sin comprobar un diccionario completo."
+      ],
+      "how": [
+        "Inicia la ronda y mira las cinco casillas.",
+        "Juega los seis acertijos ingleses libremente o activa Fijar pistas antes del primer intento o pista.",
+        "Escribe una palabra de cinco letras con el teclado o las teclas en pantalla.",
+        "Lugar correcto indica letra y posición exactas; Otro lugar indica otra copia en la respuesta. Sin más copias significa que, tras contar las coincidencias, no queda otra copia: una letra repetida de más puede aparecer como ausente aunque la respuesta contenga esa letra.",
+        "Cada acertijo permite dos pistas que revelan una posición desconocida sin gastar un intento.",
+        "Resuelve en seis intentos, revisa Resultado y juega otra vez o vuelve a Inicio."
+      ],
+      "progression": [
+        "Consigue tres estrellas al resolver en tres intentos sin pistas, dos en cuatro intentos con como máximo una pista, y una en los demás aciertos. Se guarda el mejor resultado por acertijo y modo: 36 estrellas en total, sin sumar repeticiones.",
+        "Resolver da 500 puntos, más 100 por intento restante, menos 50 por pista y 100 extra con pistas fijas; no resolver da cero. Los registros quedan en este navegador; si se bloquea el almacenamiento, solo duran esta visita."
+      ],
+      "faq": [
+        [
+          "¿Qué significan los colores?",
+          "Lugar correcto indica letra y posición exactas; Otro lugar indica otra copia en la respuesta. Sin más copias significa que, tras contar las coincidencias, no queda otra copia: una letra repetida de más puede aparecer como ausente aunque la respuesta contenga esa letra."
+        ],
+        [
+          "¿Pista resuelve la palabra?",
+          "Cada acertijo permite dos pistas que revelan una posición desconocida sin gastar un intento."
+        ],
+        [
+          "¿Cuántos intentos hay?",
+          "Hasta seis por puzle."
+        ],
+        [
+          "¿Qué ocurre después de Resultado?",
+          "Jugar otra vez avanza al siguiente puzle; Inicio vuelve al comienzo."
+        ],
+        [
+          "¿Se guarda online?",
+          "Se guarda el mejor resultado por acertijo y modo: 36 estrellas en total, sin sumar repeticiones. Los registros quedan en este navegador; si se bloquea el almacenamiento, solo duran esta visita."
+        ],
+        [
+          "¿Cómo funciona Fijar pistas?",
+          "Juega los seis acertijos ingleses libremente o activa Fijar pistas antes del primer intento o pista. Después debes respetar toda la información previa, incluidas las cantidades de letras repetidas y las posiciones reveladas."
+        ],
+        [
+          "¿Se acepta cualquier combinación de cinco letras?",
+          "Las entradas inválidas o repetidas no consumen intentos. Se aceptan combinaciones de cinco letras sin comprobar un diccionario completo."
+        ],
+        [
+          "¿Cómo se consiguen estrellas?",
+          "Consigue tres estrellas al resolver en tres intentos sin pistas, dos en cuatro intentos con como máximo una pista, y una en los demás aciertos. Se guarda el mejor resultado por acertijo y modo: 36 estrellas en total, sin sumar repeticiones."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "Tablero fijo en cruz",
+        "Salta sobre una ficha",
+        "Gana con una ficha"
+      ],
+      "systems": [
+        "Elige una ficha y después un hueco vacío a dos casillas sobre una ficha vecina. Un salto legal elimina la ficha central y vacía el origen.",
+        "Pista marca el primer salto legal disponible, sin ejecutarlo ni garantizar una solución. Deshacer restaura el tablero y el número de movimientos anteriores; Nuevo puzle reinicia la misma posición fija.",
+        "Resultado aparece al quedar una ficha o cuando no hay saltos legales. Una victoria muestra los movimientos; un bloqueo muestra cuántas fichas quedan."
+      ],
+      "how": [
+        "Inicia el tablero fijo y observa los huecos alrededor de las fichas.",
+        "Elige una ficha que pueda saltar sobre una vecina.",
+        "Elige el hueco vacío en línea recta dos casillas más allá.",
+        "Usa Pista para ver un salto legal o Deshacer para probar otra ruta.",
+        "Deja una ficha, revisa Resultado y repite para buscar una ruta más limpia."
+      ],
+      "parent": "El tablero, el historial de movimientos y los resultados solo duran esta sesión de juego; Nuevo puzle comienza en el mismo tablero fijo. Las preferencias de idioma y sonido pueden permanecer en este navegador. No necesitas cuenta, compra, guardado en la nube ni partida online.",
+      "faq": [
+        [
+          "¿Qué es un salto legal?",
+          "Elige una ficha y salta en línea recta sobre una vecina hasta un hueco vacío a dos casillas."
+        ],
+        [
+          "¿Qué ocurre con la ficha central?",
+          "Se elimina y el hueco de origen queda vacío."
+        ],
+        [
+          "¿Pista resuelve el tablero?",
+          "No. Marca el primer salto legal disponible, pero no garantiza una ruta hasta una sola ficha. Tú decides si jugarlo."
+        ],
+        [
+          "¿Puedo deshacer?",
+          "Sí. Deshacer recupera el tablero y los movimientos anteriores."
+        ],
+        [
+          "¿Cómo gano?",
+          "Reduce el tablero hasta dejar exactamente una ficha."
+        ]
+      ]
+    }
+  },
+  "pt-BR": {
+    "wordle": {
+      "text140Tags": [
+        "Desafios de palavras inglesas de cinco letras",
+        "Dedução com pistas fixas",
+        "Coleção de 36 estrelas"
+      ],
+      "systems": [
+        "Lugar certo indica letra e posição corretas; Outro lugar indica uma cópia em outra posição. Sem mais cópias significa que, após contar as correspondências, não resta outra cópia: uma letra repetida a mais pode aparecer como ausente mesmo que a resposta contenha essa letra.",
+        "Resolva os seis desafios em inglês livremente ou escolha Fixar pistas antes do primeiro palpite ou dica. Depois, cada palpite deve respeitar todas as pistas, inclusive quantidades de letras repetidas e posições reveladas.",
+        "Entradas inválidas ou repetidas não gastam tentativas. Cada desafio oferece até duas dicas, cada uma revelando uma posição desconhecida sem gastar palpite.",
+        "Combinações de cinco letras são aceitas sem validação por um dicionário completo."
+      ],
+      "how": [
+        "Comece a rodada e veja as cinco posições.",
+        "Resolva os seis desafios em inglês livremente ou escolha Fixar pistas antes do primeiro palpite ou dica.",
+        "Digite uma palavra de cinco letras pelo teclado ou pelas teclas na tela.",
+        "Lugar certo indica letra e posição corretas; Outro lugar indica uma cópia em outra posição. Sem mais cópias significa que, após contar as correspondências, não resta outra cópia: uma letra repetida a mais pode aparecer como ausente mesmo que a resposta contenha essa letra.",
+        "Cada desafio oferece até duas dicas, cada uma revelando uma posição desconhecida sem gastar palpite.",
+        "Resolva em seis tentativas, veja Resultado e jogue novamente ou volte ao Início."
+      ],
+      "progression": [
+        "Ganhe três estrelas ao resolver em três tentativas sem dicas, duas em quatro tentativas com no máximo uma dica, e uma nos demais acertos. O melhor resultado é salvo por desafio e modo: 36 estrelas no total, sem somar repetições.",
+        "Resolver vale 500 pontos, mais 100 por tentativa restante, menos 50 por dica e mais 100 com pistas fixas; falhar vale zero. Os registros ficam neste navegador; com armazenamento bloqueado, duram só esta visita."
+      ],
+      "faq": [
+        [
+          "O que significam as cores?",
+          "Lugar certo indica letra e posição corretas; Outro lugar indica uma cópia em outra posição. Sem mais cópias significa que, após contar as correspondências, não resta outra cópia: uma letra repetida a mais pode aparecer como ausente mesmo que a resposta contenha essa letra."
+        ],
+        [
+          "A Dica resolve a palavra?",
+          "Cada desafio oferece até duas dicas, cada uma revelando uma posição desconhecida sem gastar palpite."
+        ],
+        [
+          "Quantas tentativas existem?",
+          "Até seis por puzzle."
+        ],
+        [
+          "O que acontece depois de Resultado?",
+          "Jogar novamente avança ao próximo puzzle; Início volta ao começo."
+        ],
+        [
+          "O progresso fica online?",
+          "O melhor resultado é salvo por desafio e modo: 36 estrelas no total, sem somar repetições. Os registros ficam neste navegador; com armazenamento bloqueado, duram só esta visita."
+        ],
+        [
+          "Como funciona Fixar pistas?",
+          "Resolva os seis desafios em inglês livremente ou escolha Fixar pistas antes do primeiro palpite ou dica. Depois, cada palpite deve respeitar todas as pistas, inclusive quantidades de letras repetidas e posições reveladas."
+        ],
+        [
+          "Qualquer combinação de cinco letras é aceita?",
+          "Entradas inválidas ou repetidas não gastam tentativas. Combinações de cinco letras são aceitas sem validação por um dicionário completo."
+        ],
+        [
+          "Como ganhar estrelas?",
+          "Ganhe três estrelas ao resolver em três tentativas sem dicas, duas em quatro tentativas com no máximo uma dica, e uma nos demais acertos. O melhor resultado é salvo por desafio e modo: 36 estrelas no total, sem somar repetições."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "Tabuleiro fixo em cruz",
+        "Pule sobre um pino",
+        "Um pino vence"
+      ],
+      "systems": [
+        "Escolha um pino e depois uma casa vazia a duas posições sobre um pino vizinho. Um salto válido remove o pino central e esvazia a origem.",
+        "Dica marca o primeiro salto válido disponível, sem jogar por você nem garantir a solução. Desfazer restaura o tabuleiro e a contagem de movimentos anteriores; Novo quebra-cabeça reinicia a mesma posição fixa.",
+        "Resultado aparece quando resta um pino ou não há saltos válidos. A vitória mostra os movimentos; o bloqueio mostra quantos pinos restam."
+      ],
+      "how": [
+        "Comece o tabuleiro fixo e observe as casas vazias ao redor.",
+        "Escolha um pino que possa saltar sobre um vizinho.",
+        "Escolha a casa vazia em linha reta duas posições adiante.",
+        "Use Dica para ver um salto válido ou Desfazer para testar outra rota.",
+        "Deixe um pino, veja o Resultado e repita buscando uma rota mais limpa."
+      ],
+      "parent": "O tabuleiro, o histórico de movimentos e os resultados duram apenas esta sessão de jogo; Novo quebra-cabeça começa no mesmo tabuleiro fixo. Preferências de idioma e som podem permanecer neste navegador. Não é preciso conta, compra, salvamento na nuvem ou partida online.",
+      "faq": [
+        [
+          "O que é um salto válido?",
+          "Escolha um pino e pule em linha reta sobre um vizinho até uma casa vazia a duas posições."
+        ],
+        [
+          "O que acontece com o pino central?",
+          "Ele é removido e a casa de origem fica vazia."
+        ],
+        [
+          "A Dica resolve o tabuleiro?",
+          "Não. Ela marca o primeiro salto válido disponível, mas não garante um caminho até restar um pino. Você decide se vai jogar."
+        ],
+        [
+          "Posso desfazer?",
+          "Sim. Desfazer recupera o tabuleiro e os movimentos anteriores."
+        ],
+        [
+          "Como vencer?",
+          "Reduza o tabuleiro até restar exatamente um pino."
+        ]
+      ]
+    }
+  },
+  "fr": {
+    "wordle": {
+      "text140Tags": [
+        "Énigmes de mots anglais de cinq lettres",
+        "Déduction avec indices imposés",
+        "Collection de 36 étoiles"
+      ],
+      "systems": [
+        "Bonne place indique la bonne lettre au bon endroit ; Autre place indique un autre exemplaire dans la réponse. Aucun exemplaire restant signifie qu’après les correspondances, il n’en reste plus : une lettre répétée en trop peut être absente même si la réponse contient cette lettre.",
+        "Résolvez les six énigmes anglaises librement ou choisissez les indices imposés avant le premier essai ou indice. Chaque proposition doit alors respecter tous les indices précédents, y compris le nombre de lettres répétées et les positions révélées.",
+        "Les entrées invalides ou répétées ne coûtent aucun essai. Deux indices par énigme révèlent chacun une position inconnue sans dépenser d’essai.",
+        "Les combinaisons de cinq lettres sont acceptées sans vérification dans un dictionnaire complet."
+      ],
+      "how": [
+        "Commencez la manche et observez les cinq cases.",
+        "Résolvez les six énigmes anglaises librement ou choisissez les indices imposés avant le premier essai ou indice.",
+        "Saisissez un mot de cinq lettres avec le clavier ou les touches à l’écran.",
+        "Bonne place indique la bonne lettre au bon endroit ; Autre place indique un autre exemplaire dans la réponse. Aucun exemplaire restant signifie qu’après les correspondances, il n’en reste plus : une lettre répétée en trop peut être absente même si la réponse contient cette lettre.",
+        "Deux indices par énigme révèlent chacun une position inconnue sans dépenser d’essai.",
+        "Résolvez en six essais, consultez Résultat, puis rejouez ou revenez à l’accueil."
+      ],
+      "progression": [
+        "Gagnez trois étoiles en trois essais sans indice, deux en quatre essais avec au plus un indice, sinon une pour un mot trouvé. Le meilleur résultat est conservé par énigme et par mode : 36 étoiles au total, sans cumuler les répétitions.",
+        "Un succès rapporte 500 points, plus 100 par essai restant, moins 50 par indice et 100 de plus avec indices imposés ; un échec vaut zéro. Les données restent dans ce navigateur ; si le stockage est bloqué, elles ne durent que cette visite."
+      ],
+      "faq": [
+        [
+          "Que signifient les couleurs ?",
+          "Bonne place indique la bonne lettre au bon endroit ; Autre place indique un autre exemplaire dans la réponse. Aucun exemplaire restant signifie qu’après les correspondances, il n’en reste plus : une lettre répétée en trop peut être absente même si la réponse contient cette lettre."
+        ],
+        [
+          "Indice résout-il le mot ?",
+          "Deux indices par énigme révèlent chacun une position inconnue sans dépenser d’essai."
+        ],
+        [
+          "Combien d’essais ?",
+          "Jusqu’à six par énigme."
+        ],
+        [
+          "Que se passe-t-il après Résultat ?",
+          "Rejouer avance vers l’énigme suivante ; l’accueil revient au début."
+        ],
+        [
+          "La progression est-elle en ligne ?",
+          "Le meilleur résultat est conservé par énigme et par mode : 36 étoiles au total, sans cumuler les répétitions. Les données restent dans ce navigateur ; si le stockage est bloqué, elles ne durent que cette visite."
+        ],
+        [
+          "Comment fonctionnent les indices imposés ?",
+          "Résolvez les six énigmes anglaises librement ou choisissez les indices imposés avant le premier essai ou indice. Chaque proposition doit alors respecter tous les indices précédents, y compris le nombre de lettres répétées et les positions révélées."
+        ],
+        [
+          "Toutes les combinaisons de cinq lettres sont-elles acceptées ?",
+          "Les entrées invalides ou répétées ne coûtent aucun essai. Les combinaisons de cinq lettres sont acceptées sans vérification dans un dictionnaire complet."
+        ],
+        [
+          "Comment gagner des étoiles ?",
+          "Gagnez trois étoiles en trois essais sans indice, deux en quatre essais avec au plus un indice, sinon une pour un mot trouvé. Le meilleur résultat est conservé par énigme et par mode : 36 étoiles au total, sans cumuler les répétitions."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "Plateau fixe en croix",
+        "Sautez par-dessus un pion",
+        "Un pion pour gagner"
+      ],
+      "systems": [
+        "Choisissez un pion puis un trou vide à deux cases, par-dessus un pion voisin. Un saut légal retire le pion central et vide l’origine.",
+        "Indice marque le premier saut légal disponible sans le jouer ni garantir une solution. Annuler restaure le plateau et le nombre de coups précédents ; Nouveau puzzle reprend la même position fixe.",
+        "Le Résultat apparaît quand il reste un pion ou qu’aucun saut légal n’est possible. La victoire affiche les coups ; un blocage indique le nombre de pions restants."
+      ],
+      "how": [
+        "Commencez le plateau fixe et observez les trous autour des pions.",
+        "Choisissez un pion qui peut sauter par-dessus un voisin.",
+        "Choisissez le trou vide situé deux cases plus loin en ligne droite.",
+        "Utilisez Indice pour voir un saut légal ou Annuler pour essayer une autre route.",
+        "Gardez un pion, consultez Résultat et rejouez pour trouver une route plus propre."
+      ],
+      "parent": "Le plateau, l’historique des coups et les résultats ne durent que cette session de jeu ; Nouveau puzzle reprend le même plateau fixe. Les préférences de langue et de son peuvent rester dans ce navigateur. Aucun compte, achat, sauvegarde cloud ou match en ligne n’est nécessaire.",
+      "faq": [
+        [
+          "Qu’est-ce qu’un saut légal ?",
+          "Choisissez un pion et sautez en ligne droite par-dessus un voisin vers un trou vide à deux cases."
+        ],
+        [
+          "Que devient le pion central ?",
+          "Il est retiré et la case de départ devient vide."
+        ],
+        [
+          "Indice résout-il le plateau ?",
+          "Non. Il marque le premier saut légal disponible, sans garantir un parcours jusqu’au dernier pion. Vous choisissez de le jouer ou non."
+        ],
+        [
+          "Puis-je annuler ?",
+          "Oui. Annuler restaure le plateau et les coups précédents."
+        ],
+        [
+          "Comment gagner ?",
+          "Réduisez le plateau jusqu’à ne garder qu’un seul pion."
+        ]
+      ]
+    }
+  },
+  "de": {
+    "wordle": {
+      "text140Tags": [
+        "Englische Worträtsel mit fünf Buchstaben",
+        "Deduktion mit verbindlichen Hinweisen",
+        "Sammlung von 36 Sternen"
+      ],
+      "systems": [
+        "Richtiger Platz bedeutet richtiger Buchstabe an dieser Stelle; Anderer Platz bedeutet ein weiteres Vorkommen an anderer Stelle. Kein weiteres Exemplar bedeutet, dass nach den Treffern kein Vorkommen übrig ist: Ein überzähliger wiederholter Buchstabe kann fehlen, obwohl die Lösung diesen Buchstaben enthält.",
+        "Spiele die sechs englischen Worträtsel frei oder aktiviere vor dem ersten Versuch oder Tipp verbindliche Hinweise. Jeder weitere Versuch muss alle bekannten Hinweise erfüllen, auch die Anzahl wiederholter Buchstaben und aufgedeckte Positionen.",
+        "Ungültige oder wiederholte Eingaben kosten keinen Versuch. Bis zu zwei Tipps pro Rätsel zeigen je eine ungeklärte Position, ohne einen Versuch zu verbrauchen.",
+        "Fünf-Buchstaben-Kombinationen werden ohne vollständige Wörterbuchprüfung akzeptiert."
+      ],
+      "how": [
+        "Starte die Runde und prüfe die fünf Felder.",
+        "Spiele die sechs englischen Worträtsel frei oder aktiviere vor dem ersten Versuch oder Tipp verbindliche Hinweise.",
+        "Gib mit Tastatur oder Bildschirmtasten ein Wort mit fünf Buchstaben ein.",
+        "Richtiger Platz bedeutet richtiger Buchstabe an dieser Stelle; Anderer Platz bedeutet ein weiteres Vorkommen an anderer Stelle. Kein weiteres Exemplar bedeutet, dass nach den Treffern kein Vorkommen übrig ist: Ein überzähliger wiederholter Buchstabe kann fehlen, obwohl die Lösung diesen Buchstaben enthält.",
+        "Bis zu zwei Tipps pro Rätsel zeigen je eine ungeklärte Position, ohne einen Versuch zu verbrauchen.",
+        "Löse innerhalb von sechs Versuchen, prüfe Ergebnis und spiele weiter oder kehre zum Start zurück."
+      ],
+      "progression": [
+        "Drei Sterne gibt es für eine Lösung in drei Versuchen ohne Tipp, zwei für vier Versuche mit höchstens einem Tipp, sonst einen für eine Lösung. Pro Rätsel und Modus wird der beste Sternestand gespeichert: insgesamt 36, ohne Wiederholungen zu addieren.",
+        "Eine Lösung bringt 500 Punkte, plus 100 je verbleibendem Versuch, minus 50 je Tipp und 100 extra für verbindliche Hinweise; ein ungelöstes Rätsel bringt null. Daten bleiben in diesem Browser; bei blockiertem Speicher nur während dieses Besuchs."
+      ],
+      "faq": [
+        [
+          "Was bedeuten die Farben?",
+          "Richtiger Platz bedeutet richtiger Buchstabe an dieser Stelle; Anderer Platz bedeutet ein weiteres Vorkommen an anderer Stelle. Kein weiteres Exemplar bedeutet, dass nach den Treffern kein Vorkommen übrig ist: Ein überzähliger wiederholter Buchstabe kann fehlen, obwohl die Lösung diesen Buchstaben enthält."
+        ],
+        [
+          "Löst der Hinweis das Wort?",
+          "Bis zu zwei Tipps pro Rätsel zeigen je eine ungeklärte Position, ohne einen Versuch zu verbrauchen."
+        ],
+        [
+          "Wie viele Versuche gibt es?",
+          "Bis zu sechs pro Rätsel."
+        ],
+        [
+          "Was passiert nach dem Ergebnis?",
+          "Erneut spielen geht zum nächsten Rätsel; Start kehrt zum Anfang zurück."
+        ],
+        [
+          "Wird online gespeichert?",
+          "Pro Rätsel und Modus wird der beste Sternestand gespeichert: insgesamt 36, ohne Wiederholungen zu addieren. Daten bleiben in diesem Browser; bei blockiertem Speicher nur während dieses Besuchs."
+        ],
+        [
+          "Wie funktionieren verbindliche Hinweise?",
+          "Spiele die sechs englischen Worträtsel frei oder aktiviere vor dem ersten Versuch oder Tipp verbindliche Hinweise. Jeder weitere Versuch muss alle bekannten Hinweise erfüllen, auch die Anzahl wiederholter Buchstaben und aufgedeckte Positionen."
+        ],
+        [
+          "Sind alle Fünf-Buchstaben-Kombinationen erlaubt?",
+          "Ungültige oder wiederholte Eingaben kosten keinen Versuch. Fünf-Buchstaben-Kombinationen werden ohne vollständige Wörterbuchprüfung akzeptiert."
+        ],
+        [
+          "Wie bekomme ich Sterne?",
+          "Drei Sterne gibt es für eine Lösung in drei Versuchen ohne Tipp, zwei für vier Versuche mit höchstens einem Tipp, sonst einen für eine Lösung. Pro Rätsel und Modus wird der beste Sternestand gespeichert: insgesamt 36, ohne Wiederholungen zu addieren."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "Festes Kreuzbrett",
+        "Über einen Stein springen",
+        "Ein Stein gewinnt"
+      ],
+      "systems": [
+        "Wähle einen Stein und danach ein leeres Loch zwei Felder entfernt über einem Nachbarstein. Ein gültiger Sprung entfernt den mittleren Stein und leert den Startplatz.",
+        "Tipp markiert den ersten gerade gültigen Sprung, führt ihn aber nicht aus und garantiert keine Lösung. Rückgängig stellt Brett und Zugzahl vor dem letzten Zug wieder her; Neues Rätsel startet dieselbe feste Stellung.",
+        "Das Ergebnis erscheint, wenn ein Stein übrig bleibt oder kein gültiger Sprung mehr möglich ist. Bei Erfolg zeigt es die Zugzahl, beim Stillstand die übrigen Steine."
+      ],
+      "how": [
+        "Starte das feste Brett und prüfe die leeren Löcher neben den Steinen.",
+        "Wähle einen Stein, der über einen Nachbarn springen kann.",
+        "Wähle das leere Zielfeld zwei Felder weiter in gerader Linie.",
+        "Nutze Tipp für einen gültigen Sprung oder Rückgängig, um einen anderen Weg zu testen.",
+        "Lasse einen Stein übrig, prüfe Ergebnis und spiele für einen saubereren Weg erneut."
+      ],
+      "parent": "Brett, Zugverlauf und Ergebnisse bleiben nur während dieser Spielrunde erhalten; Neues Rätsel startet dasselbe feste Brett. Sprach- und Soundeinstellungen können in diesem Browser bleiben. Konto, Kauf, Cloud-Speicher oder Online-Match sind nicht nötig.",
+      "faq": [
+        [
+          "Was ist ein gültiger Sprung?",
+          "Wähle einen Stein und springe gerade über einen Nachbarn in ein leeres Loch zwei Felder entfernt."
+        ],
+        [
+          "Was passiert mit dem mittleren Stein?",
+          "Er wird entfernt und der Startplatz wird leer."
+        ],
+        [
+          "Löst Tipp das Brett?",
+          "Nein. Er markiert den ersten gerade gültigen Sprung, garantiert aber keinen Weg bis zu einem Stein. Du entscheidest, ob du ihn spielst."
+        ],
+        [
+          "Kann ich rückgängig machen?",
+          "Ja. Rückgängig stellt Brett und vorherige Züge wieder her."
+        ],
+        [
+          "Wie gewinne ich?",
+          "Reduziere das Brett auf genau einen verbleibenden Stein."
+        ]
+      ]
+    }
+  },
+  "it": {
+    "wordle": {
+      "text140Tags": [
+        "Enigmi con parole inglesi di cinque lettere",
+        "Deduzione con indizi vincolanti",
+        "Collezione di 36 stelle"
+      ],
+      "systems": [
+        "Posto giusto indica lettera e posizione corrette; Altro posto indica un’altra copia nella risposta. Nessun’altra copia significa che, dopo aver contato le corrispondenze, non ne resta una: una lettera ripetuta in eccesso può risultare assente anche se compare nella risposta.",
+        "Gioca liberamente ai sei enigmi inglesi oppure scegli gli indizi vincolanti prima del primo tentativo o indizio. Le proposte devono rispettare tutte le informazioni precedenti, incluse le quantità di lettere ripetute e le posizioni rivelate.",
+        "Input non validi o ripetuti non consumano tentativi. Ogni enigma permette due indizi, ciascuno dei quali rivela una posizione sconosciuta senza spendere un tentativo.",
+        "Le combinazioni di cinque lettere sono accettate senza verifica in un dizionario completo."
+      ],
+      "how": [
+        "Avvia il turno e osserva le cinque caselle.",
+        "Gioca liberamente ai sei enigmi inglesi oppure scegli gli indizi vincolanti prima del primo tentativo o indizio.",
+        "Inserisci una parola di cinque lettere con tastiera o tasti sullo schermo.",
+        "Posto giusto indica lettera e posizione corrette; Altro posto indica un’altra copia nella risposta. Nessun’altra copia significa che, dopo aver contato le corrispondenze, non ne resta una: una lettera ripetuta in eccesso può risultare assente anche se compare nella risposta.",
+        "Ogni enigma permette due indizi, ciascuno dei quali rivela una posizione sconosciuta senza spendere un tentativo.",
+        "Risolvi entro sei tentativi, controlla il Risultato e gioca ancora o torna alla Home."
+      ],
+      "progression": [
+        "Ottieni tre stelle risolvendo in tre tentativi senza indizi, due in quattro tentativi con al massimo un indizio, altrimenti una per una soluzione. Viene salvato il miglior risultato per enigma e modalità: 36 stelle totali, senza accumulare ripetizioni.",
+        "Una soluzione vale 500 punti, più 100 per tentativo rimasto, meno 50 per indizio e 100 extra con indizi vincolanti; un enigma non risolto vale zero. I dati restano in questo browser; con memoria bloccata durano solo questa visita."
+      ],
+      "faq": [
+        [
+          "Cosa significano i colori?",
+          "Posto giusto indica lettera e posizione corrette; Altro posto indica un’altra copia nella risposta. Nessun’altra copia significa che, dopo aver contato le corrispondenze, non ne resta una: una lettera ripetuta in eccesso può risultare assente anche se compare nella risposta."
+        ],
+        [
+          "Il Suggerimento risolve la parola?",
+          "Ogni enigma permette due indizi, ciascuno dei quali rivela una posizione sconosciuta senza spendere un tentativo."
+        ],
+        [
+          "Quanti tentativi ci sono?",
+          "Fino a sei per puzzle."
+        ],
+        [
+          "Cosa succede dopo il Risultato?",
+          "Gioca ancora passa al puzzle successivo; Home torna all’inizio."
+        ],
+        [
+          "Il progresso è online?",
+          "Viene salvato il miglior risultato per enigma e modalità: 36 stelle totali, senza accumulare ripetizioni. I dati restano in questo browser; con memoria bloccata durano solo questa visita."
+        ],
+        [
+          "Come funzionano gli indizi vincolanti?",
+          "Gioca liberamente ai sei enigmi inglesi oppure scegli gli indizi vincolanti prima del primo tentativo o indizio. Le proposte devono rispettare tutte le informazioni precedenti, incluse le quantità di lettere ripetute e le posizioni rivelate."
+        ],
+        [
+          "Si accetta qualsiasi combinazione di cinque lettere?",
+          "Input non validi o ripetuti non consumano tentativi. Le combinazioni di cinque lettere sono accettate senza verifica in un dizionario completo."
+        ],
+        [
+          "Come si ottengono le stelle?",
+          "Ottieni tre stelle risolvendo in tre tentativi senza indizi, due in quattro tentativi con al massimo un indizio, altrimenti una per una soluzione. Viene salvato il miglior risultato per enigma e modalità: 36 stelle totali, senza accumulare ripetizioni."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "Tavola fissa a croce",
+        "Salta sopra un piolo",
+        "Un piolo per vincere"
+      ],
+      "systems": [
+        "Scegli un piolo e poi un foro vuoto a due caselle oltre un piolo vicino. Un salto valido rimuove il piolo centrale e svuota la partenza.",
+        "Suggerimento indica il primo salto valido disponibile, senza eseguirlo né garantire la soluzione. Annulla ripristina tavola e numero di mosse precedenti; Nuovo puzzle riparte dalla stessa posizione fissa.",
+        "Il Risultato appare quando resta un piolo o non ci sono più salti validi. La vittoria mostra le mosse; un blocco mostra quanti pioli restano."
+      ],
+      "how": [
+        "Avvia la tavola fissa e osserva i fori vuoti attorno ai pioli.",
+        "Scegli un piolo che possa saltare un vicino.",
+        "Scegli il foro vuoto due caselle più avanti in linea retta.",
+        "Usa Suggerimento per vedere un salto valido o Annulla per provare un altro percorso.",
+        "Lascia un piolo, guarda il Risultato e rigioca cercando una via più pulita."
+      ],
+      "parent": "Tavola, cronologia delle mosse e risultati durano solo per questa sessione di gioco; Nuovo puzzle riparte dalla stessa tavola fissa. Le preferenze di lingua e audio possono restare in questo browser. Non servono account, acquisti, salvataggio cloud o partite online.",
+      "faq": [
+        [
+          "Cos’è un salto valido?",
+          "Scegli un piolo e saltalo in linea retta sopra un vicino fino a un foro vuoto a due caselle."
+        ],
+        [
+          "Cosa succede al piolo centrale?",
+          "Viene rimosso e la casella di partenza resta vuota."
+        ],
+        [
+          "Suggerimento risolve la tavola?",
+          "No. Indica il primo salto valido disponibile, ma non garantisce un percorso fino a un solo piolo. Decidi tu se giocarlo."
+        ],
+        [
+          "Posso annullare?",
+          "Sì. Annulla ripristina tavola e mosse precedenti."
+        ],
+        [
+          "Come si vince?",
+          "Riduci la tavola fino a lasciare esattamente un piolo."
+        ]
+      ]
+    }
+  },
+  "ru": {
+    "wordle": {
+      "text140Tags": [
+        "Английские слова из пяти букв",
+        "Строгий режим подсказок",
+        "Коллекция из 36 звёзд"
+      ],
+      "systems": [
+        "Верное место означает правильную букву на этой позиции; Другое место означает ещё одно вхождение в ответе. «Больше таких нет» значит, что после подсчёта совпадений не осталось дополнительных вхождений: лишняя повторная буква может не совпасть, хотя она есть в ответе.",
+        "Шесть английских загадок доступны в свободном режиме или со строгими подсказками, выбранными до первой попытки или подсказки. В строгом режиме нужно учитывать все прежние улики, включая число повторяющихся букв и открытые позиции.",
+        "Неверный формат и повторные варианты не тратят попытки. Две подсказки на загадку открывают по одной неизвестной позиции без расхода попытки.",
+        "Принимаются сочетания из пяти букв без проверки по полному словарю."
+      ],
+      "how": [
+        "Начните раунд и проверьте пять пустых позиций.",
+        "Шесть английских загадок доступны в свободном режиме или со строгими подсказками, выбранными до первой попытки или подсказки.",
+        "Введите слово из пяти букв клавиатурой или экранными клавишами.",
+        "Верное место означает правильную букву на этой позиции; Другое место означает ещё одно вхождение в ответе. «Больше таких нет» значит, что после подсчёта совпадений не осталось дополнительных вхождений: лишняя повторная буква может не совпасть, хотя она есть в ответе.",
+        "Две подсказки на загадку открывают по одной неизвестной позиции без расхода попытки.",
+        "Решите за шесть попыток, откройте результат и сыграйте снова или вернитесь в меню."
+      ],
+      "progression": [
+        "Три звезды даются за ответ за три попытки без подсказок, две — за четыре попытки с одной подсказкой или без неё, иначе одна за верный ответ. Сохраняется лучший результат каждой загадки в каждом режиме: всего 36 звёзд, без накопления за повторы.",
+        "Верный ответ даёт 500 очков, по 100 за оставшуюся попытку, минус 50 за подсказку и ещё 100 в строгом режиме; неудача даёт ноль. Данные остаются в этом браузере; при запрете хранения — только на время посещения."
+      ],
+      "faq": [
+        [
+          "Что означают цвета?",
+          "Верное место означает правильную букву на этой позиции; Другое место означает ещё одно вхождение в ответе. «Больше таких нет» значит, что после подсчёта совпадений не осталось дополнительных вхождений: лишняя повторная буква может не совпасть, хотя она есть в ответе."
+        ],
+        [
+          "Подсказка решает слово?",
+          "Две подсказки на загадку открывают по одной неизвестной позиции без расхода попытки."
+        ],
+        [
+          "Сколько попыток?",
+          "До шести на одну задачу."
+        ],
+        [
+          "Что после результата?",
+          "Играть снова открывает следующую задачу, меню возвращает в начало."
+        ],
+        [
+          "Прогресс онлайн?",
+          "Сохраняется лучший результат каждой загадки в каждом режиме: всего 36 звёзд, без накопления за повторы. Данные остаются в этом браузере; при запрете хранения — только на время посещения."
+        ],
+        [
+          "Как работает строгий режим подсказок?",
+          "Шесть английских загадок доступны в свободном режиме или со строгими подсказками, выбранными до первой попытки или подсказки. В строгом режиме нужно учитывать все прежние улики, включая число повторяющихся букв и открытые позиции."
+        ],
+        [
+          "Принимаются ли любые сочетания из пяти букв?",
+          "Неверный формат и повторные варианты не тратят попытки. Принимаются сочетания из пяти букв без проверки по полному словарю."
+        ],
+        [
+          "Как получить звёзды?",
+          "Три звезды даются за ответ за три попытки без подсказок, две — за четыре попытки с одной подсказкой или без неё, иначе одна за верный ответ. Сохраняется лучший результат каждой загадки в каждом режиме: всего 36 звёзд, без накопления за повторы."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "Фиксированное поле-крест",
+        "Прыжок через одну фишку",
+        "Победа с одной фишкой"
+      ],
+      "systems": [
+        "Выберите фишку, затем свободную лунку через две клетки за соседней фишкой. Правильный прыжок убирает среднюю фишку и освобождает начало.",
+        "Подсказка показывает первый доступный правильный прыжок, не делает ход за вас и не гарантирует решение. Отмена восстанавливает предыдущее поле и число ходов; Новая задача начинает ту же фиксированную позицию.",
+        "Результат появляется, когда остаётся одна фишка или больше нет допустимых прыжков. При победе показано число ходов, при тупике — число оставшихся фишек."
+      ],
+      "how": [
+        "Начните фиксированное поле и осмотрите свободные лунки рядом с фишками.",
+        "Выберите фишку, которая может перепрыгнуть соседа.",
+        "Выберите свободную лунку через две клетки по прямой.",
+        "Используйте подсказку для одного допустимого прыжка или отмену, чтобы проверить другой путь.",
+        "Оставьте одну фишку, откройте результат и повторите поиск более чистого маршрута."
+      ],
+      "parent": "Поле, история ходов и результаты хранятся только во время этой игровой сессии; Новая задача начинает то же фиксированное поле. Настройки языка и звука могут остаться в этом браузере. Аккаунт, покупка, облачное сохранение и онлайн-партия не нужны.",
+      "faq": [
+        [
+          "Что такое правильный прыжок?",
+          "Выберите фишку и перепрыгните через соседа по прямой в свободную лунку через две клетки."
+        ],
+        [
+          "Что происходит со средней фишкой?",
+          "Она убирается, а начальная клетка становится пустой."
+        ],
+        [
+          "Подсказка решает поле?",
+          "Нет. Она показывает первый доступный правильный прыжок, но не гарантирует путь до одной фишки. Делать этот ход или нет — ваш выбор."
+        ],
+        [
+          "Можно отменить ход?",
+          "Да. Отмена возвращает поле и предыдущий счёт ходов."
+        ],
+        [
+          "Как победить?",
+          "Сведите поле ровно к одной оставшейся фишке."
+        ]
+      ]
+    }
+  },
+  "hi": {
+    "wordle": {
+      "text140Tags": [
+        "पाँच अक्षरों की अंग्रेज़ी शब्द पहेलियाँ",
+        "संकेतों के पालन वाली पहेली",
+        "36 सितारों का संग्रह"
+      ],
+      "systems": [
+        "सही जगह का मतलब उसी स्थान पर सही अक्षर है; दूसरी जगह का मतलब उत्तर में उसकी एक प्रति कहीं और है। अतिरिक्त प्रति नहीं का अर्थ है कि मेल खाए अक्षर गिनने के बाद ऐसी और प्रति नहीं बची; इसलिए उत्तर में अक्षर होने पर भी अतिरिक्त दोहराया अक्षर चूक सकता है।",
+        "छह अंग्रेज़ी पहेलियाँ स्वतंत्र रूप से खेलें या पहली कोशिश अथवा संकेत से पहले संकेतों का पालन चुनें। इस तरीके में दोहराए अक्षरों की संख्या और खुली जगहों समेत सभी पुराने संकेतों का पालन ज़रूरी है।",
+        "गलत प्रारूप या दोहराए अनुमान से कोशिश नहीं घटती। हर पहेली में अधिकतम दो संकेत हैं; हर संकेत एक अनिश्चित स्थान खोलता है और कोशिश नहीं खर्च करता।",
+        "पाँच अक्षरों के संयोजन स्वीकार होते हैं, पर पूरे अंग्रेज़ी शब्दकोश से जाँच नहीं होती।"
+      ],
+      "how": [
+        "राउंड शुरू करके पाँच खाली स्थान देखें।",
+        "छह अंग्रेज़ी पहेलियाँ स्वतंत्र रूप से खेलें या पहली कोशिश अथवा संकेत से पहले संकेतों का पालन चुनें।",
+        "कीबोर्ड या स्क्रीन की कुंजियों से पाँच-अक्षर शब्द डालें।",
+        "सही जगह का मतलब उसी स्थान पर सही अक्षर है; दूसरी जगह का मतलब उत्तर में उसकी एक प्रति कहीं और है। अतिरिक्त प्रति नहीं का अर्थ है कि मेल खाए अक्षर गिनने के बाद ऐसी और प्रति नहीं बची; इसलिए उत्तर में अक्षर होने पर भी अतिरिक्त दोहराया अक्षर चूक सकता है।",
+        "हर पहेली में अधिकतम दो संकेत हैं; हर संकेत एक अनिश्चित स्थान खोलता है और कोशिश नहीं खर्च करता।",
+        "छह अनुमानों में हल करें, परिणाम देखें और फिर खेलें या मुख्य पृष्ठ पर लौटें।"
+      ],
+      "progression": [
+        "बिना संकेत तीन कोशिशों में हल करने पर तीन सितारे, अधिकतम एक संकेत के साथ चार कोशिशों में दो सितारे, अन्य सही उत्तर पर एक सितारा मिलता है। हर पहेली और तरीके का सर्वश्रेष्ठ संग्रहित होता है: कुल 36 सितारे, दोहराने से अतिरिक्त सितारे नहीं जुड़ते।",
+        "सही उत्तर पर 500 अंक, हर बची कोशिश पर 100 अतिरिक्त, हर संकेत पर 50 कम और संकेतों के पालन वाले तरीके में 100 अतिरिक्त मिलते हैं; असफलता पर शून्य। रिकॉर्ड इसी ब्राउज़र में रहते हैं; संग्रहण बंद हो तो केवल इस बार की यात्रा तक।"
+      ],
+      "faq": [
+        [
+          "रंगों का क्या अर्थ है?",
+          "सही जगह का मतलब उसी स्थान पर सही अक्षर है; दूसरी जगह का मतलब उत्तर में उसकी एक प्रति कहीं और है। अतिरिक्त प्रति नहीं का अर्थ है कि मेल खाए अक्षर गिनने के बाद ऐसी और प्रति नहीं बची; इसलिए उत्तर में अक्षर होने पर भी अतिरिक्त दोहराया अक्षर चूक सकता है।"
+        ],
+        [
+          "क्या Hint शब्द हल करता है?",
+          "हर पहेली में अधिकतम दो संकेत हैं; हर संकेत एक अनिश्चित स्थान खोलता है और कोशिश नहीं खर्च करता।"
+        ],
+        [
+          "कितने अनुमान हैं?",
+          "हर पहेली में अधिकतम छह।"
+        ],
+        [
+          "परिणाम के बाद क्या होता है?",
+          "फिर खेलें अगली पहेली खोलता है और मुख्य पृष्ठ शुरुआत पर लौटाता है।"
+        ],
+        [
+          "क्या प्रगति ऑनलाइन सहेजी जाती है?",
+          "हर पहेली और तरीके का सर्वश्रेष्ठ संग्रहित होता है: कुल 36 सितारे, दोहराने से अतिरिक्त सितारे नहीं जुड़ते। रिकॉर्ड इसी ब्राउज़र में रहते हैं; संग्रहण बंद हो तो केवल इस बार की यात्रा तक।"
+        ],
+        [
+          "संकेतों का पालन कैसे काम करता है?",
+          "छह अंग्रेज़ी पहेलियाँ स्वतंत्र रूप से खेलें या पहली कोशिश अथवा संकेत से पहले संकेतों का पालन चुनें। इस तरीके में दोहराए अक्षरों की संख्या और खुली जगहों समेत सभी पुराने संकेतों का पालन ज़रूरी है।"
+        ],
+        [
+          "क्या पाँच अक्षरों के सभी संयोजन स्वीकार होते हैं?",
+          "गलत प्रारूप या दोहराए अनुमान से कोशिश नहीं घटती। पाँच अक्षरों के संयोजन स्वीकार होते हैं, पर पूरे अंग्रेज़ी शब्दकोश से जाँच नहीं होती।"
+        ],
+        [
+          "सितारे कैसे मिलते हैं?",
+          "बिना संकेत तीन कोशिशों में हल करने पर तीन सितारे, अधिकतम एक संकेत के साथ चार कोशिशों में दो सितारे, अन्य सही उत्तर पर एक सितारा मिलता है। हर पहेली और तरीके का सर्वश्रेष्ठ संग्रहित होता है: कुल 36 सितारे, दोहराने से अतिरिक्त सितारे नहीं जुड़ते।"
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "तय क्रॉस आकार बोर्ड",
+        "एक गोटी के ऊपर कूदें",
+        "एक गोटी पर जीत"
+      ],
+      "systems": [
+        "गोटी चुनें, फिर पड़ोसी गोटी के ऊपर से दो खाने दूर खाली खाना चुनें। सही छलांग बीच की गोटी हटाती और शुरुआती खाना खाली करती है।",
+        "संकेत इस समय उपलब्ध पहली सही छलांग दिखाता है, लेकिन चाल नहीं चलता और समाधान की गारंटी नहीं देता। वापस लें पिछला बोर्ड और चालों की संख्या लौटाता है; नई पहेली उसी तय स्थिति से शुरू होती है।",
+        "एक गोटी बचने या कोई सही छलांग न रहने पर परिणाम दिखता है। जीत पर चालों की संख्या और अटकने पर बची गोटियों की संख्या दिखती है।"
+      ],
+      "how": [
+        "तय बोर्ड शुरू करें और गोटियों के आसपास खाली खाने देखें।",
+        "ऐसी गोटी चुनें जो पड़ोसी के ऊपर कूद सके।",
+        "सीधी रेखा में दो खाने आगे खाली खाने को लक्ष्य बनाएँ।",
+        "एक सही छलांग देखने के लिए संकेत या दूसरी राह जाँचने के लिए वापस लें इस्तेमाल करें।",
+        "एक गोटी बचाएँ, परिणाम देखें और साफ राह खोजने के लिए फिर खेलें।"
+      ],
+      "parent": "बोर्ड, चालों का इतिहास और परिणाम सिर्फ इस खेल सत्र में रहते हैं; नई पहेली उसी तय बोर्ड से शुरू होती है। भाषा और ध्वनि सेटिंग इस ब्राउज़र में रह सकती हैं। खाता, खरीद, क्लाउड सेव या ऑनलाइन मैच जरूरी नहीं हैं।",
+      "faq": [
+        [
+          "सही छलांग क्या है?",
+          "गोटी चुनकर पड़ोसी गोटी के ऊपर से सीधी रेखा में दो खाने दूर खाली खाने में जाएँ।"
+        ],
+        [
+          "बीच की गोटी का क्या होता है?",
+          "वह हटती है और शुरुआती खाना खाली हो जाता है।"
+        ],
+        [
+          "क्या संकेत बोर्ड हल करता है?",
+          "नहीं। यह अभी उपलब्ध पहली सही छलांग दिखाता है, लेकिन एक गोटी तक पहुँचने की गारंटी नहीं देता। उसे खेलना आपका फैसला है।"
+        ],
+        [
+          "क्या चाल वापस ले सकते हैं?",
+          "हाँ। पिछला बोर्ड और चालों की गिनती लौटती है।"
+        ],
+        [
+          "जीत कैसेें?",
+          "बोर्ड पर ठीक एक गोटी बचाएँ।"
+        ]
+      ]
+    }
+  },
+  "ar": {
+    "wordle": {
+      "text140Tags": [
+        "ألغاز كلمات إنجليزية من خمسة أحرف",
+        "استنتاج مع الالتزام بالأدلة",
+        "مجموعة من 36 نجمة"
+      ],
+      "systems": [
+        "المكان الصحيح يعني تطابق الحرف والموضع، والمكان الآخر يعني وجود نسخة أخرى من الحرف في الإجابة. «لا نسخة إضافية» تعني أنه بعد احتساب الأحرف المطابقة لم تبقَ نسخة أخرى؛ فقد يظهر حرف مكرر زائد كغير مطابق رغم وجود ذلك الحرف في الإجابة.",
+        "العب الألغاز الإنجليزية الستة بحرية أو اختر الالتزام بالأدلة قبل أول تخمين أو تلميح. عند تفعيله يجب أن يطابق كل تخمين الأدلة السابقة، بما فيها عدد الأحرف المكررة والمواضع المكشوفة.",
+        "الإدخال غير الصالح أو المكرر لا يستهلك محاولة. لكل لغز تلميحان يكشف كل منهما موضعًا غير مؤكد دون استهلاك تخمين.",
+        "تُقبل تركيبات من خمسة أحرف دون فحص بقاموس إنجليزي كامل."
+      ],
+      "how": [
+        "ابدأ الجولة وتفحص المواضع الخمسة الفارغة.",
+        "العب الألغاز الإنجليزية الستة بحرية أو اختر الالتزام بالأدلة قبل أول تخمين أو تلميح.",
+        "أدخل كلمة من خمسة حروف بلوحة المفاتيح أو المفاتيح الظاهرة.",
+        "المكان الصحيح يعني تطابق الحرف والموضع، والمكان الآخر يعني وجود نسخة أخرى من الحرف في الإجابة. «لا نسخة إضافية» تعني أنه بعد احتساب الأحرف المطابقة لم تبقَ نسخة أخرى؛ فقد يظهر حرف مكرر زائد كغير مطابق رغم وجود ذلك الحرف في الإجابة.",
+        "لكل لغز تلميحان يكشف كل منهما موضعًا غير مؤكد دون استهلاك تخمين.",
+        "حل خلال ست محاولات، راجع النتيجة، ثم العب مجددًا أو عد إلى الرئيسية."
+      ],
+      "progression": [
+        "تحصل على ثلاث نجوم عند الحل خلال ثلاث محاولات دون تلميحات، ونجمتين خلال أربع محاولات مع تلميح واحد كحد أقصى، وإلا نجمة واحدة للحل. يُحفظ أفضل عدد لكل لغز وطريقة: 36 نجمة إجمالًا دون جمع إضافي بتكرار اللعب.",
+        "الحل يمنح 500 نقطة، و100 لكل محاولة متبقية، ويخصم 50 لكل تلميح، ويضيف 100 عند الالتزام بالأدلة؛ عدم الحل يمنح صفرًا. تبقى السجلات في هذا المتصفح؛ إذا مُنع التخزين فتبقى لهذه الزيارة فقط."
+      ],
+      "faq": [
+        [
+          "ماذا تعني الألوان؟",
+          "المكان الصحيح يعني تطابق الحرف والموضع، والمكان الآخر يعني وجود نسخة أخرى من الحرف في الإجابة. «لا نسخة إضافية» تعني أنه بعد احتساب الأحرف المطابقة لم تبقَ نسخة أخرى؛ فقد يظهر حرف مكرر زائد كغير مطابق رغم وجود ذلك الحرف في الإجابة."
+        ],
+        [
+          "هل يحل التلميح الكلمة؟",
+          "لكل لغز تلميحان يكشف كل منهما موضعًا غير مؤكد دون استهلاك تخمين."
+        ],
+        [
+          "كم محاولة متاحة؟",
+          "حتى ست محاولات لكل لغز."
+        ],
+        [
+          "ماذا بعد النتيجة؟",
+          "ينقل اللعب مجددًا إلى اللغز التالي، وتعيد الرئيسية الجولة إلى البداية."
+        ],
+        [
+          "هل يُحفظ التقدم عبر الإنترنت؟",
+          "يُحفظ أفضل عدد لكل لغز وطريقة: 36 نجمة إجمالًا دون جمع إضافي بتكرار اللعب. تبقى السجلات في هذا المتصفح؛ إذا مُنع التخزين فتبقى لهذه الزيارة فقط."
+        ],
+        [
+          "كيف يعمل الالتزام بالأدلة؟",
+          "العب الألغاز الإنجليزية الستة بحرية أو اختر الالتزام بالأدلة قبل أول تخمين أو تلميح. عند تفعيله يجب أن يطابق كل تخمين الأدلة السابقة، بما فيها عدد الأحرف المكررة والمواضع المكشوفة."
+        ],
+        [
+          "هل تُقبل كل تركيبات الأحرف الخمسة؟",
+          "الإدخال غير الصالح أو المكرر لا يستهلك محاولة. تُقبل تركيبات من خمسة أحرف دون فحص بقاموس إنجليزي كامل."
+        ],
+        [
+          "كيف أحصل على النجوم؟",
+          "تحصل على ثلاث نجوم عند الحل خلال ثلاث محاولات دون تلميحات، ونجمتين خلال أربع محاولات مع تلميح واحد كحد أقصى، وإلا نجمة واحدة للحل. يُحفظ أفضل عدد لكل لغز وطريقة: 36 نجمة إجمالًا دون جمع إضافي بتكرار اللعب."
+        ]
+      ],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ]
+    },
+    "peg-solitaire": {
+      "text140Tags": [
+        "لوحة صليبية ثابتة",
+        "اقفز فوق حجر واحد",
+        "الفوز بحجر واحد"
+      ],
+      "systems": [
+        "اختر حجرًا ثم حفرة فارغة تبعد مربعين فوق حجر مجاور. تزيل القفزة القانونية الحجر الأوسط وتفرغ موضع البداية.",
+        "يُظهر التلميح أول قفزة قانونية متاحة الآن، من دون تنفيذها أو ضمان حل اللغز. يعيد التراجع اللوحة وعدد الحركات السابقين؛ ويبدأ اللغز الجديد من الوضع الثابت نفسه.",
+        "تظهر النتيجة عندما يبقى حجر واحد أو لا تعود هناك قفزات قانونية. عند الفوز يظهر عدد الحركات، وعند التعثر يظهر عدد الأحجار المتبقية."
+      ],
+      "how": [
+        "ابدأ اللوحة الثابتة وافحص الحفر الفارغة حول الأحجار.",
+        "اختر حجرًا يمكنه القفز فوق جار.",
+        "اختر الحفرة الفارغة على بعد مربعين في خط مستقيم.",
+        "استخدم التلميح لرؤية قفزة قانونية واحدة، أو التراجع لتجربة مسار آخر.",
+        "اترك حجرًا واحدًا وافتح النتيجة ثم أعد اللعب للبحث عن مسار أنظف."
+      ],
+      "parent": "تبقى اللوحة وسجل الحركات والنتائج خلال جلسة اللعب الحالية فقط؛ ويبدأ اللغز الجديد من اللوحة الثابتة نفسها. قد تبقى تفضيلات اللغة والصوت في هذا المتصفح. لا يلزم حساب أو شراء أو حفظ سحابي أو مباراة عبر الإنترنت.",
+      "faq": [
+        [
+          "ما القفزة القانونية؟",
+          "اختر حجرًا واقفز فوق حجر مجاور في خط مستقيم إلى حفرة فارغة تبعد مربعين."
+        ],
+        [
+          "ماذا يحدث للحجر الأوسط؟",
+          "يُزال وتصبح خانة البداية فارغة."
+        ],
+        [
+          "هل يحل التلميح اللوحة؟",
+          "لا. يعرض أول قفزة قانونية متاحة، لكنه لا يضمن الوصول إلى حجر واحد. القرار لك في تنفيذها."
+        ],
+        [
+          "هل يمكن التراجع؟",
+          "نعم. يعيد التراجع اللوحة وعدد الحركات السابق."
+        ],
+        [
+          "كيف أفوز؟",
+          "خفّض اللوحة حتى يبقى حجر واحد بالضبط."
+        ]
+      ]
+    }
+  }
+};
+  for (const [locale, gamesCopy] of Object.entries(text140BatchFiveUpdates)) {
+    for (const [gameId, copy] of Object.entries(gamesCopy)) {
+      // Both linked games have shipped artwork and playable locale routes.
+      Object.assign(gameId === "wordle" ? wordle[locale] : peg[locale], copy, {
+        relatedIds: ["lights-out", "four-in-a-row"],
+      });
+    }
+  }
+
   window.WEIGHTPLAY_PUBLIC_CLASSIC_GUIDES = {
     "code-breaker": codeBreaker,
     chess,

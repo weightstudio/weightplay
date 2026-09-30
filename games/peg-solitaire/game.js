@@ -19,19 +19,19 @@
     ar: "لوحة ثابتة جاهزة — ابدأ اللغز.",
   };
   const mainGuideCopy = {
-    en: "Play the one fixed board. Use Hint for one safe next idea, Undo to reverse a choice, or New Puzzle to reset the board.",
-    "zh-Hant": "遊玩這個固定棋盤。用提示取得一個安全的下一步，用復原撤回選擇，或用新謎題重設棋盤。",
-    "zh-Hans": "游玩这个固定棋盘。用提示获取一个安全的下一步，用撤销撤回选择，或用新谜题重置棋盘。",
-    ja: "固定盤面を遊びましょう。ヒントで安全な次の一手を確認し、元に戻すで選択を戻し、新しいパズルで盤面をリセットできます。",
-    ko: "고정된 보드를 플레이하세요. 힌트로 안전한 다음 수를 확인하고, 실행 취소로 선택을 되돌리거나 새 퍼즐로 보드를 초기화할 수 있어요.",
-    es: "Juega en el único tablero fijo. Usa Pista para ver una siguiente jugada segura, Deshacer para revertir una elección o Nuevo puzle para reiniciar el tablero.",
-    "pt-BR": "Jogue no único tabuleiro fixo. Use Dica para ver uma próxima jogada segura, Desfazer para reverter uma escolha ou Novo quebra-cabeça para reiniciar o tabuleiro.",
-    fr: "Jouez sur l’unique plateau fixe. Utilisez Indice pour voir une prochaine action sûre, Annuler pour revenir sur un choix ou Nouveau puzzle pour réinitialiser le plateau.",
-    de: "Spiele auf dem einzigen festen Brett. Nutze Tipp für eine sichere nächste Idee, Rückgängig zum Zurücknehmen einer Wahl oder Neues Rätsel zum Zurücksetzen des Bretts.",
-    it: "Gioca sull’unica tavola fissa. Usa Suggerimento per una prossima mossa sicura, Annulla per ripristinare una scelta o Nuovo puzzle per azzerare la tavola.",
-    ru: "Играйте на единственном фиксированном поле. Используйте подсказку для безопасного следующего хода, отмену для возврата выбора или новую головоломку для сброса поля.",
-    hi: "एकमात्र तय बोर्ड खेलें। सुरक्षित अगली चाल के लिए संकेत, चुनाव पलटने के लिए वापस लें, या बोर्ड रीसेट करने के लिए नई पहेली इस्तेमाल करें।",
-    ar: "العب على اللوحة الثابتة الوحيدة. استخدم التلميح لمعرفة فكرة آمنة تالية، أو التراجع لعكس اختيار، أو لغز جديد لإعادة ضبط اللوحة.",
+    en: "Play the one fixed board. Hint highlights the first legal jump, Undo reverses a move, and New Puzzle resets the board. A legal jump may still lead to a dead end.",
+    "zh-Hant": "遊玩這個固定棋盤。提示標出第一個合法跳法，復原可撤回一步，新謎題會重設棋盤；合法跳法仍可能走進死路。",
+    "zh-Hans": "游玩这个固定棋盘。提示标出第一个合法跳法，撤销可退回一步，新谜题会重置棋盘；合法跳法仍可能走进死路。",
+    ja: "固定盤面で遊びます。ヒントは最初に見つかった合法手を示し、元に戻すで一手戻り、新しいパズルで初期化できます。合法手でも行き止まりになることがあります。",
+    ko: "고정 보드에서 플레이하세요. 힌트는 첫 번째 합법적인 점프를 보여 주고, 실행 취소는 한 수를 되돌리며, 새 퍼즐은 보드를 초기화합니다. 합법적인 점프도 막다른 길로 이어질 수 있습니다.",
+    es: "Juega en el tablero fijo. Pista muestra el primer salto legal, Deshacer revierte un movimiento y Nuevo puzle reinicia el tablero. Un salto legal también puede acabar en un callejón sin salida.",
+    "pt-BR": "Jogue no tabuleiro fixo. Dica mostra o primeiro salto válido, Desfazer reverte uma jogada e Novo quebra-cabeça reinicia o tabuleiro. Um salto válido ainda pode levar a um beco sem saída.",
+    fr: "Jouez sur le plateau fixe. Indice montre le premier saut légal, Annuler revient d’un coup et Nouveau puzzle réinitialise le plateau. Un saut légal peut tout de même mener à une impasse.",
+    de: "Spiele auf dem festen Brett. Tipp zeigt den ersten erlaubten Sprung, Rückgängig nimmt einen Zug zurück und Neues Rätsel setzt das Brett zurück. Auch ein erlaubter Sprung kann in eine Sackgasse führen.",
+    it: "Gioca sulla tavola fissa. Suggerimento mostra il primo salto valido, Annulla ripristina una mossa e Nuovo puzzle reimposta la tavola. Anche un salto valido può portare a un vicolo cieco.",
+    ru: "Играйте на фиксированном поле. Подсказка показывает первый допустимый прыжок, отмена возвращает один ход, а новая головоломка сбрасывает поле. Допустимый прыжок всё же может привести в тупик.",
+    hi: "तय बोर्ड पर खेलें। संकेत पहली वैध छलाँग दिखाता है, वापस लें एक चाल पलटता है और नई पहेली बोर्ड रीसेट करती है। वैध छलाँग भी बंद रास्ते तक ले जा सकती है।",
+    ar: "العب على اللوحة الثابتة. يعرض التلميح أول قفزة قانونية، ويعيد التراجع نقلة واحدة، ويعيد لغز جديد اللوحة إلى بدايتها. قد تؤدي قفزة قانونية إلى طريق مسدود.",
   };
   if (app) {
     const locale = document.documentElement.lang || "en";

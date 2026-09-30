@@ -110,14 +110,11 @@
 }
     </script>
   </head><body>
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">ペグ・ソリティア</h1><div id="logicApp"></div><script src="/src/site-config.js?v=20260822-peg-candidate-target-v10"></script><script src="/src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260909-peg-v18&wp-audio=1.0.0"></script><script src="game.js?v=20260909-peg-v18"></script><script src="analytics-ownership.js?v=20260909-peg-v18"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="ペグ・ソリティア ゲーム情報">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">ペグ・ソリティア</h1><div id="logicApp"></div><section class="game-page-info game-page-info-static" aria-label="ペグ・ソリティア ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ペグ・ソリティア</h2><p>ペグ・ソリティアは固定盤面のジャンプ消去パズルです。駒を隣の駒越しに空き穴へ移し、飛び越えた駒を消して最後に1個を残します。</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>クラシック</span><span>パズル</span><span>ストラテジー</span></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ペグ・ソリティア</h2><p>ペグ・ソリティアは固定盤面のジャンプ消去パズルです。駒を隣の駒越しに空き穴へ移し、飛び越えた駒を消して最後に1個を残します。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>固定の十字形盤面</span><span>1個を飛び越す</span><span>1個残せば成功</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>固定ジャンプ消去ボード</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>クラシック · パズル · ストラテジー</strong></div><div class="game-info-fact"><span>難易度</span><strong>始めやすく、クリアは挑戦的</strong></div><div class="game-info-fact"><span>目安時間</span><strong>5〜8分</strong></div></div>
     </div>
 
@@ -125,16 +122,19 @@
       <div class="game-info-section"><h3>世界とミッション</h3><p>十字形の盤面は中央の空き穴と周囲の駒から始まります。1手ごとに駒を隣の駒越しに、一直線で2マス先の空き穴へ動かします。</p>
 <p>ただ飛び続けるのではなく、次の着地点を残しながら盤面を1個まで減らすことが目標です。</p></div>
       <div class="game-info-section"><h3>ゲームの仕組み</h3><p>駒を選び、隣の駒を1個越えた2マス先の空き穴を選びます。合法ジャンプでは中央の駒が消え、出発点が空きます。</p>
-<p>ヒントは安全な次の候補を示しますが、自動では動きません。元に戻すは盤面を戻し、新しいパズルは固定初期盤面に戻します。</p>
-<p>結果には残った駒と手数が出ます。1個なら成功、複数なら別の道を試します。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>固定盤面を始め、駒の周りの空き穴を確認します。</li><li>隣の駒を越えられる駒を選びます。</li><li>一直線で2マス先の空き穴を着地点にします。</li><li>候補を知りたいときはヒント、道を変えたいときは元に戻すを使います。</li><li>1個を残して結果を確認し、よりきれいな道を探して再挑戦します。</li></ol></div>
+<p>ヒントは現在の最初の合法ジャンプを示すだけで、自動で動かず、解ける保証もありません。元に戻すは直前の盤面と手数を復元し、新しいパズルは同じ固定初期盤面から再開します。</p>
+<p>1個だけ残るか合法ジャンプがなくなると結果が表示されます。成功時は手数、行き詰まり時は残った駒の数が分かります。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>固定盤面を始め、駒の周りの空き穴を確認します。</li><li>隣の駒を越えられる駒を選びます。</li><li>一直線で2マス先の空き穴を着地点にします。</li><li>ヒントで合法ジャンプを1つ確認し、別の道を試すなら元に戻すを使います。</li><li>1個を残して結果を確認し、よりきれいな道を探して再挑戦します。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>ジャンプ前に次の着地点も読み、今消す駒だけを見ないようにします。</li><li>端の近くの穴を守りましょう。後から届きにくくなることがあります。</li><li>ヒントを提案として使い、ジャンプ後の盤面は自分で比べます。</li><li>孤立した駒が残り始めたら早めに戻し、行き止まりで手数を使いません。</li></ul></div>
       <div class="game-info-section"><h3>進行と難易度</h3><p>最初の挑戦で出発点、中央の駒、着地点の関係を学びます。再挑戦では同じ盤面で出口を守り、最後を1個にする計画課題になります。</p></div>
       <div class="game-info-section"><h3>開発者メモ</h3><p>ペグ・ソリティアは見やすい固定盤面、合法着地点の表示、助言型ヒント、戻せる手順、1個という明確な結果で、タッチ・マウス・キーボードに向く古典パズルを作ります。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤー、端末、保存情報</h3><p>固定盤面、ベスト結果、サウンド設定はこのブラウザに保存されます。アカウント、購入、クラウド保存、オンライン対局は不要です。サイトデータを消すとローカル結果が失われることがあります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>合法ジャンプとは？</dt><dd>駒を選び、隣の駒を一直線に越えて2マス先の空き穴へ移します。</dd></div><div><dt>中央の駒はどうなりますか？</dt><dd>消え、出発点は空き穴になります。</dd></div><div><dt>ヒントは解いてくれますか？</dt><dd>いいえ。安全な候補を示すだけで、実行は自分で選びます。</dd></div><div><dt>元に戻せますか？</dt><dd>はい。盤面と手数を直前の状態に戻します。</dd></div><div><dt>どうすれば勝ちですか？</dt><dd>盤面に残る駒をちょうど1個にします。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スライディング15</strong><span>30の保存ステージから選び、クラシック・蛇行・列・アンカー・迂回の目標に挑戦します。</span></span></a></div></div>
+      <div class="game-info-section game-info-parent"><h3>プレイヤー、端末、保存情報</h3><p>盤面、手の履歴、結果はこのプレイ中だけ保持され、新しいパズルは同じ固定盤面から始まります。言語とサウンドの設定はこのブラウザに残る場合があります。アカウント、購入、クラウド保存、オンライン対戦は不要です。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>合法ジャンプとは？</dt><dd>駒を選び、隣の駒を一直線に越えて2マス先の空き穴へ移します。</dd></div><div><dt>中央の駒はどうなりますか？</dt><dd>消え、出発点は空き穴になります。</dd></div><div><dt>ヒントは解いてくれますか？</dt><dd>いいえ。現在の最初の合法ジャンプを示すだけで、最後の1個まで解ける保証はありません。実行するかは自分で決めます。</dd></div><div><dt>元に戻せますか？</dt><dd>はい。盤面と手数を直前の状態に戻します。</dd></div><div><dt>どうすれば勝ちですか？</dt><dd>盤面に残る駒をちょうど1個にします。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>四目並べ</strong><span>四目並べは、7×6の盤にコマを落として横・縦・斜めに4つそろえる定番ゲームです。</span></span></a></div></div>
     </div>
-  </section>
+  </section><script src="/src/site-config.js?v=20260822-peg-candidate-target-v10"></script><script src="/src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260909-peg-v18&wp-audio=1.0.0"></script><script src="game.js?v=20260909-peg-v18"></script><script src="analytics-ownership.js?v=20260909-peg-v18"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ペグ・ソリティア";document.title="ペグ・ソリティア | WeightPlay";},{once:true});</script>
 </body></html>

@@ -110,13 +110,11 @@
 }
     </script>
   </head><body>
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">孔明棋</h1><div id="logicApp"></div><script src="/src/site-config.js?v=20260822-peg-candidate-target-v10"></script><script src="/src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260909-peg-v18&wp-audio=1.0.0"></script><script src="game.js?v=20260909-peg-v18"></script><script src="analytics-ownership.js?v=20260909-peg-v18"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="孔明棋 遊戲資訊">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">孔明棋</h1><div id="logicApp"></div><section class="game-page-info game-page-info-static" aria-label="孔明棋 遊戲資訊">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>孔明棋</h2><p>孔明棋是一個固定的跳躍消除益智遊戲：讓一顆棋子跳過相鄰棋子落入空洞，移除被跳過的棋子，目標是最後留下 1 顆。</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>固定跳躍消除棋盤</span><span>經典</span><span>益智</span><span>策略</span></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>孔明棋</h2><p>孔明棋是一個固定的跳躍消除益智遊戲：讓一顆棋子跳過相鄰棋子落入空洞，移除被跳過的棋子，目標是最後留下 1 顆。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>固定十字形棋盤</span><span>跳過一顆棋子</span><span>留下 1 顆獲勝</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>固定跳躍消除棋盤</strong></div><div class="game-info-fact"><span>類型</span><strong>經典 · 益智 · 策略</strong></div><div class="game-info-fact"><span>難度</span><strong>容易上手，完成需要挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5–8 分鐘</strong></div></div>
     </div>
 
@@ -124,15 +122,17 @@
       <div class="game-info-section"><h3>世界與任務</h3><p>十字形棋盤從中央一個空洞與周圍棋子開始。每一步都是小型承諾：棋子跳過相鄰棋子，落到直線兩格外的空洞。</p>
 <p>目標不只是持續跳躍，而是保留之後的落點，直到棋盤能縮減為 1 顆棋子。</p></div>
       <div class="game-info-section"><h3>遊戲系統</h3><p>先選棋子，再選隔著一顆相鄰棋子的兩格外空洞。合法跳法會移除中間棋子，並讓來源位置變成空洞。</p>
-<p>提示會標出一個安全的下一步，但不會代玩。復原會恢復上一個棋盤，新謎題會重設固定初始局面。</p>
-<p>結果會顯示剩餘棋子與步數。留下 1 顆就是勝利；剩下更多棋子代表要再嘗試路線。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>開始固定棋盤，先觀察棋子周圍的空洞。</li><li>選擇可以跳過相鄰棋子的棋子。</li><li>選擇同一直線上兩格外的空洞作為落點。</li><li>需要候選步時使用提示，想換路線時使用復原。</li><li>留下 1 顆棋子後查看結果，再重玩尋找更乾淨的路線。</li></ol></div>
+<p>提示只標出目前找到的第一個合法跳法，不會代走，也不保證能解完。復原會還原上一個棋盤與步數；新謎題會從相同的固定初始局面重開。</p>
+<p>剩下 1 顆棋子或已沒有合法跳法時會顯示結果。獲勝時顯示步數；無路可走時顯示剩餘棋子數。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>開始固定棋盤，先觀察棋子周圍的空洞。</li><li>選擇可以跳過相鄰棋子的棋子。</li><li>選擇同一直線上兩格外的空洞作為落點。</li><li>用提示查看一個合法跳法，或用復原測試另一條路線。</li><li>留下 1 顆棋子後查看結果，再重玩尋找更乾淨的路線。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>跳之前先看下一步需要的落點，不要只看現在會移除哪顆棋子。</li><li>保護邊緣附近的空洞，因為它們之後可能很難到達。</li><li>把提示當成建議，再自己比較跳完後的棋盤。</li><li>路線開始留下孤立棋子時及早復原，不要在死路上繼續消耗步數。</li></ul></div>
       <div class="game-info-section"><h3>關卡與難度成長</h3><p>第一輪會教你理解來源棋子、中間棋子與落點幾何。重玩時，同一個固定棋盤會變成規劃挑戰：保留出口並把最後數量降到 1。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>孔明棋使用清楚的固定棋盤、合法落點回饋、建議式提示、可復原的復原功能與明確的單棋結果，讓經典益智遊戲適合觸控、滑鼠與鍵盤。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家、裝置與存檔資訊</h3><p>固定棋盤、最佳結果與音效偏好會留在這個瀏覽器。不需要帳號、購買、雲端存檔或線上對局；清除網站資料可能刪除本機結果。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>什麼是合法跳法？</dt><dd>選擇棋子，直線跳過一顆相鄰棋子，落到兩格外的空洞。</dd></div><div><dt>中間棋子會怎樣？</dt><dd>它會被移除，來源位置則變成空洞。</dd></div><div><dt>提示會解完棋盤嗎？</dt><dd>不會。提示只標出一個安全想法，是否執行仍由你決定。</dd></div><div><dt>可以復原嗎？</dt><dd>可以。復原會恢復上一個棋盤與步數。</dd></div><div><dt>如何獲勝？</dt><dd>把棋盤縮減到剛好剩下 1 顆棋子。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑塊</strong><span>從 30 個已儲存關卡中選擇，挑戰經典、蛇形、直欄、錨點與繞行目標。</span></span></a></div></div>
+      <div class="game-info-section game-info-parent"><h3>玩家、裝置與存檔資訊</h3><p>棋盤、走法記錄與結果只保留在本次遊玩期間；新謎題會從同一固定棋盤重開。語言與音效偏好可能保留在此瀏覽器。不需要帳號、購買、雲端存檔或線上對局。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>什麼是合法跳法？</dt><dd>選擇棋子，直線跳過一顆相鄰棋子，落到兩格外的空洞。</dd></div><div><dt>中間棋子會怎樣？</dt><dd>它會被移除，來源位置則變成空洞。</dd></div><div><dt>提示會解完棋盤嗎？</dt><dd>不會。提示只標出目前找到的第一個合法跳法，不保證能走到最後 1 顆；是否執行由你決定。</dd></div><div><dt>可以復原嗎？</dt><dd>可以。復原會恢復上一個棋盤與步數。</dd></div><div><dt>如何獲勝？</dt><dd>把棋盤縮減到剛好剩下 1 顆棋子。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>四子棋</strong><span>四子棋是經典 7×6 重力棋盤遊戲：把棋子落入欄位，橫向、直向或斜向連成四子。</span></span></a></div></div>
     </div>
-  </section>
+  </section><script src="/src/site-config.js?v=20260822-peg-candidate-target-v10"></script><script src="/src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260909-peg-v18&wp-audio=1.0.0"></script><script src="game.js?v=20260909-peg-v18"></script><script src="analytics-ownership.js?v=20260909-peg-v18"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>
