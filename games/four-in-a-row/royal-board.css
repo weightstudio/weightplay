@@ -1,32 +1,135 @@
-/* Native board/input geometry remains authoritative. Presentation only. */
-@media (min-width:700px) {
-  body[data-logic-game='four-in-a-row'] .logic-hero {
-    grid-template-columns:420px minmax(0,1fr);
-  }
-  body[data-logic-game='four-in-a-row'] .logic-poster,
-  body[data-logic-game='four-in-a-row'] .logic-poster img {
-    width:420px; height:420px; max-width:none;
-  }
-}
-/* Measure inside the fixed logical Canvas, not again against physical svh. */
-body[data-logic-game='four-in-a-row'] #logicBattle:not([hidden]) {
-  display:flex;
-  flex-direction:column;
-  min-height:0;
-}
-body[data-logic-game='four-in-a-row'] .logic-battle-header { flex-shrink:0; }
-body[data-logic-game='four-in-a-row'] .logic-battle-wrap {
-  flex:1;
-  min-height:0;
-  height:auto;
+/* The common frame owns headers, preferences, theme and outer Canvas. Only
+   game-owned board/feedback/action tracks are defined here, in logical units. */
+#logicMain .four-main-poster img {
+  display:block;
   width:100%;
+  height:auto;
+  aspect-ratio:1;
+  object-fit:contain;
 }
-body[data-logic-game='four-in-a-row'] .logic-connect-board {
+#logicMain .four-main-copy [data-wp-frame-summary] { margin:0; }
+#logicBattle .logic-battle-wrap {
+  width:100%;
+  height:100%;
+  min-height:0;
+  margin:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:44px minmax(0,1fr) auto 44px minmax(0,1fr) 44px;
+  gap:8px;
+  overflow:hidden;
+  container-type:size;
+}
+#logicBattle #logicStatus {
+  grid-row:1;
+  height:44px;
+  min-height:0;
+  padding:0 8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:auto;
+  font:600 14px/1.3 system-ui,sans-serif;
+  color:var(--wp-ui-text);
+}
+#logicBattle .logic-board-panel {
+  grid-row:3;
+  padding:0;
+  min-width:0;
+  min-height:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  background:none;
+  overflow:hidden;
+}
+#logicBattle #logicBoard {
+  width:100%;
+  height:auto;
+  min-height:0;
+  max-height:none;
+  display:grid;
+  place-items:center;
+  gap:0;
+}
+#logicBattle .four-board-layout {
+  width:min(100%,600px,calc((100cqh - 226px) * 7 / 6));
+  height:auto;
+  min-width:0;
+  min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:44px auto;
+  gap:8px;
+  align-items:center;
+  justify-items:center;
+  container-type:normal;
+}
+#logicBattle .four-column-actions {
+  grid-column:1;
+  grid-row:1;
+  width:100%;
+  height:44px;
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:6px;
+  direction:ltr;
+}
+#logicBattle .four-column-actions button {
+  min-width:0;
+  padding:0;
+}
+#logicBattle .four-difficulty {
+  grid-row:4;
+  min-width:0;
+  height:44px;
+  display:grid;
+  place-items:center;
+}
+#logicBattle .logic-board-toolbar { width:100%; height:44px; padding:0; margin:0; }
+#logicBattle .logic-select {
+  width:min(100%,240px);
+  height:44px;
+  min-height:44px;
+  padding:0 8px;
+  border:2px solid var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius);
+  color:var(--wp-ui-text);
+  background:var(--wp-ui-background);
+  font:600 14px/1.3 system-ui,sans-serif;
+}
+#logicBattle .logic-action-row {
+  grid-row:6;
+  width:100%;
+  height:44px;
+  min-height:0;
+  padding:0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+#logicBattle .logic-connect-board {
+  grid-column:1;
+  grid-row:2;
+  width:100%;
+  height:auto;
+  max-height:100%;
+  min-width:0;
+  min-height:0;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  grid-template-rows:repeat(6,minmax(0,1fr));
+  gap:6px;
+  padding:8px;
+  direction:ltr;
   background: linear-gradient(135deg,#173b60ef,#071a2ff2),url('/assets/card-table/emerald-table-v1.webp') center/cover;
   border: 2px solid #c5a46c;
   box-shadow: inset 0 0 0 2px #081525,inset 0 1px 15px #95bee533,0 7px 0 #55432b,0 15px 25px #0007;
 }
-body[data-logic-game='four-in-a-row'] .logic-connect-board .logic-cell {
+#logicBattle .logic-connect-board .logic-cell {
+  width:100%;
+  min-width:0;
+  min-height:0;
+  aspect-ratio:1;
   padding: 0;
   display: grid;
   place-items: center;
@@ -35,28 +138,66 @@ body[data-logic-game='four-in-a-row'] .logic-connect-board .logic-cell {
   box-shadow: inset 0 3px 6px #000c,0 1px 0 #abc2d449;
   overflow: visible;
 }
-body[data-logic-game='four-in-a-row'] .logic-battle-header h1 {
-  min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-@media (max-width: 480px) {
-  body[data-logic-game='four-in-a-row'] .logic-battle-header {
-    display: grid;
-    grid-template-columns: 48px minmax(0,1fr) auto;
-    gap: 8px;
-  }
-  body[data-logic-game='four-in-a-row'] .logic-battle-header h1 { font-size: 16px; }
-  body[data-logic-game='four-in-a-row'] .logic-status-chip { font-size: 11px; }
-}
-body[data-logic-game='four-in-a-row'] .logic-connect-board .disc {
+#logicBattle .logic-connect-board .disc {
   width: 83%; height: 83%; position: relative; pointer-events: none;
   box-shadow: inset 0 2px 2px #fff8,inset 0 -4px 4px #0005,0 3px 3px #0008;
 }
-body[data-logic-game='four-in-a-row'] .red .disc { background: radial-gradient(circle at 33% 25%,#ffd2bd,#ef7657 35%,#ad352f 85%); }
-body[data-logic-game='four-in-a-row'] .yellow .disc { background: radial-gradient(circle at 33% 25%,#fff7c3,#ebc25e 40%,#a46e1c 90%); }
-body[data-logic-game='four-in-a-row'] .disc::after { content:'';position:absolute;inset:20%;border-radius:50%;border:1px solid #fff6;box-shadow:0 1px 1px #0005,inset 0 1px 2px #0003; }
-body[data-logic-game='four-in-a-row'] .winning-disc { outline:2px solid #fff2b0;outline-offset:-2px;box-shadow:0 0 14px #ffe19f99; }
-body[data-logic-game='four-in-a-row'] .disc-arrived .disc { animation:four-disc-drop 220ms cubic-bezier(.2,.7,.3,1); }
+#logicBattle .red .disc { background: radial-gradient(circle at 33% 25%,#ffd2bd,#ef7657 35%,#ad352f 85%); }
+#logicBattle .yellow .disc { background: radial-gradient(circle at 33% 25%,#fff7c3,#ebc25e 40%,#a46e1c 90%); }
+#logicBattle .disc::after { content:'';position:absolute;inset:20%;border-radius:50%;border:1px solid #fff6;box-shadow:0 1px 1px #0005,inset 0 1px 2px #0003; }
+#logicBattle .winning-disc { outline:2px solid #fff2b0;outline-offset:-2px;box-shadow:0 0 14px #ffe19f99; }
+#logicBattle .disc-arrived .disc { animation:four-disc-drop 220ms cubic-bezier(.2,.7,.3,1); }
+#logicBattle[data-four-substate='leave'] .disc { animation-play-state:paused; }
+#logicBattle :is(.logic-result,.logic-leave) {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:120;
+  min-height:0;
+  display:grid;
+  place-items:center;
+  padding:16px;
+  overflow:auto;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  background:rgba(6,24,32,.92);
+}
+#logicBattle :is(.logic-result-card,.logic-leave-card) {
+  width:min(100%,460px);
+  max-height:100%;
+  min-height:0;
+  padding:16px;
+  overflow:auto;
+  color:var(--wp-ui-text);
+  background:var(--wp-ui-surface);
+  border:2px solid var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius);
+  box-shadow:0 5px 0 var(--wp-ui-shadow);
+  animation:none;
+}
+#logicBattle :is(.logic-result-card,.logic-leave-card) h2 { margin:0 0 12px; font:800 24px/1.25 system-ui,sans-serif; }
+#logicBattle :is(.logic-result-card,.logic-leave-card) p { margin:0 0 16px; color:var(--wp-ui-text); font:500 16px/1.5 system-ui,sans-serif; }
+#logicBattle .logic-result-actions { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+#logicBattle .logic-result-actions [data-wp-frame-action="secondary"] { height:46px!important; min-height:46px!important; }
+#logicBattle .logic-leave .logic-result-actions { grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (min-width:661px) and (max-height:760px) and (orientation:landscape) {
+  #logicBattle .logic-battle-wrap {
+    grid-template-columns:minmax(0,1fr) 220px;
+    grid-template-rows:72px 44px minmax(148px,1fr);
+    gap:8px;
+  }
+  #logicBattle .logic-board-panel { grid-column:1; grid-row:1 / 4; }
+  #logicBattle #logicStatus { grid-column:2; grid-row:1; height:72px; }
+  #logicBattle .four-difficulty { grid-column:2; grid-row:2; }
+  #logicBattle .logic-action-row { grid-column:2; grid-row:3; height:148px; grid-template-columns:minmax(0,1fr); grid-template-rows:repeat(3,44px); align-self:end; }
+  #logicBattle #logicBoard { height:100%; }
+  #logicBattle .four-board-layout { width:100%; height:100%; grid-template-columns:minmax(0,1fr); grid-template-rows:44px minmax(0,1fr); container-type:size; }
+  #logicBattle .logic-connect-board { grid-column:1; grid-row:2; width:min(100%,calc((100cqh - 52px) * 7 / 6)); height:auto; aspect-ratio:auto; }
+  #logicBattle :is(.logic-result,.logic-leave) { align-items:start; }
+}
 @keyframes four-disc-drop { from {transform:translateY(var(--drop-distance));opacity:.35;} 75% {transform:translateY(2px);} to {transform:translateY(0);opacity:1;} }
-@media (prefers-reduced-motion:reduce) { body[data-logic-game='four-in-a-row'] .disc-arrived .disc {animation:none;} }
+@media (prefers-reduced-motion:reduce) {
+  #logicBattle .disc-arrived .disc,
+  #logicBattle :is(.logic-result-card,.logic-leave-card) { animation:none; }
+}

@@ -878,21 +878,29 @@
     function updateSoundButton() { const soundButton = app.root.querySelector("#soundButton"); soundButton.textContent = `${t("sound")}: ${soundOn ? t("on") : t("off")}`; soundButton.setAttribute("aria-pressed", String(soundOn)); if (app.stageSound) { app.stageSound.textContent = soundOn ? "🔊" : "🔇"; app.stageSound.setAttribute("aria-pressed", String(soundOn)); } }
     updateSoundButton();
     if (id === "sliding-15") { const progress = readSlidingProgress(); app.root.querySelector("[data-wp-main-progress]").textContent = fillTemplate(text(slidingCampaignCopy.progress), { stage: Math.min(progress.highestUnlocked, SLIDING_TOTAL_STAGES), cleared: progress.cleared.length }); }
-    app.root.querySelector("#startButton").addEventListener("click", () => (id === "code-breaker" || id === "sliding-15") ? showStage() : startGame());
+    function runScreenAction(name, fallback) {
+      const action = app.screenFlow?.[name];
+      if (typeof action === "function") action();
+      else fallback();
+    }
+    app.root.querySelector("#startButton").addEventListener("click", () => runScreenAction("start", () => (id === "code-breaker" || id === "sliding-15") ? showStage() : startGame()));
     app.root.querySelector("#stageBack").addEventListener("click", showMain);
-    app.root.querySelector("#battleBack").addEventListener("click", () => (id === "code-breaker" || id === "sliding-15") ? openLeaveDialog() : showMain());
-    app.root.querySelector("#logicHint").addEventListener("click", () => activeGame?.hint?.());
-    app.root.querySelector("#logicUndo").addEventListener("click", () => activeGame?.undo?.());
-    app.root.querySelector("#logicReset").addEventListener("click", () => __wpReplayStart(() => activeGame?.reset?.()));
-    app.root.querySelector("#leaveContinue").addEventListener("click", () => { (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = true); });
-    app.root.querySelector("#leaveStages").addEventListener("click", () => { (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = true); showStage(); });
+    app.root.querySelector("#battleBack").addEventListener("click", () => runScreenAction("battleBack", () => (id === "code-breaker" || id === "sliding-15") ? openLeaveDialog() : showMain()));
+    app.root.querySelector("#logicHint").addEventListener("click", () => runScreenAction("hint", () => activeGame?.hint?.()));
+    app.root.querySelector("#logicUndo").addEventListener("click", () => runScreenAction("undo", () => activeGame?.undo?.()));
+    app.root.querySelector("#logicReset").addEventListener("click", () => runScreenAction("reset", () => __wpReplayStart(() => activeGame?.reset?.())));
+    app.root.querySelector("#leaveContinue").addEventListener("click", () => runScreenAction("leaveContinue", () => { (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = true); }));
+    app.root.querySelector("#leaveStages").addEventListener("click", () => runScreenAction("leaveStages", () => { (__wpNotifyMeasurement(), app.root.querySelector("#logicLeave").hidden = true); showStage(); }));
     app.root.querySelector("#resultStages").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); showStage(); });
     app.root.querySelector("#resultNext").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); const total = id === "sliding-15" ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; startGame(Math.min(total, (app.currentStage || 1) + 1)); });
-    app.root.querySelector("#resultReplay").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); __wpReplayStart(() => activeGame?.reset?.()); });
-    app.root.querySelector("#resultMenu").addEventListener("click", showMain);
-    app.root.querySelector("#resultClose").addEventListener("click", () => { (__wpNotifyMeasurement(), app.result.hidden = true); });
+    app.root.querySelector("#resultReplay").addEventListener("click", () => runScreenAction("resultReplay", () => { (__wpNotifyMeasurement(), app.result.hidden = true); __wpReplayStart(() => activeGame?.reset?.()); }));
+    app.root.querySelector("#resultMenu").addEventListener("click", () => runScreenAction("resultMenu", showMain));
+    app.root.querySelector("#resultClose").addEventListener("click", () => runScreenAction("resultClose", () => { (__wpNotifyMeasurement(), app.result.hidden = true); }));
     app.showMain = showMain;
     app.startGame = startGame;
+    app.getActiveGame = () => activeGame;
+    app.replay = () => __wpReplayStart(() => activeGame?.reset?.());
+    cfg.onMount?.(app, { showMain, startGame, getActiveGame: app.getActiveGame, replay: app.replay });
     return app;
 
     function resetScroll() { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; }
@@ -1019,6 +1027,7 @@
       app.resultTitle.textContent = won ? t("win") : t("lose"); app.resultText.textContent = detail || (won ? t("solved") : t("failed"));
     }
     (__wpNotifyMeasurement(), app.result.hidden = false); app.battleChip.textContent = won ? t("solved") : t("lose");
+    CONFIG[app.id].onResult?.(app, { won });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -1296,20 +1305,24 @@
   }
 
   function buildConnect() {
-    let grid = [], difficulty = "easy", locked = false, hintColumn = -1, playerMoves = 0, history = [], aiTimer = null; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); const board = document.createElement("div"); board.className = "logic-connect-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
+    let grid = [], difficulty = "easy", locked = false, hintColumn = -1, playerMoves = 0, history = [], aiTimer = null, paused = false, pendingAi = false; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); const board = document.createElement("div"); board.className = "logic-connect-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
     function render() { board.replaceChildren(); const hintRow = hintColumn >= 0 ? [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + hintColumn]) : -1; for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) { const value = grid[r * 7 + c]; const hintClass = hintRow === r && hintColumn === c && !value ? "is-hint" : ""; const label = fillTemplate(text(connectCellLabel), { column: c + 1, row: r + 1 }); const b = cell("", `${value === 1 ? "red" : value === 2 ? "yellow" : ""} ${hintClass}`, label, () => drop(c)); if (value) { const disc = document.createElement("span"); disc.className = "disc"; b.append(disc); } board.append(b); } setChip(`${t("player")}: ${grid.filter((v) => v === 1).length} · ${t("opponent")}: ${grid.filter((v) => v === 2).length}`); }
     function resultGoal(won) { const level = t(difficulty); const nextLevel = difficulty === "easy" ? t("medium") : t("hard"); const target = Math.max(1, playerMoves - 1); const copy = won ? (difficulty === "hard" ? connectResult.hard : connectResult.win) : connectResult.loss; return fillTemplate(text(copy), { level, moves: playerMoves, nextLevel, target }); }
     function clearAiTimer() { if (aiTimer !== null) { clearTimeout(aiTimer); aiTimer = null; } }
-    function drop(column) { if (locked) return; const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return; history.push({ grid: grid.slice(), playerMoves }); hintColumn = -1; grid[row * 7 + column] = 1; playerMoves += 1; render(); if (hasFour(1)) return finish(true, resultGoal(true)); if (grid.every(Boolean)) return finish(false, resultGoal(false)); locked = true; announce(text(connectOpponentThinking)); aiTimer = setTimeout(() => { aiTimer = null; ai(); }, 250); }
+    function scheduleAi() { clearAiTimer(); aiTimer = setTimeout(() => { aiTimer = null; if (paused || !pendingAi) return; pendingAi = false; ai(); }, 250); }
+    function pause() { paused = true; clearAiTimer(); }
+    function resume() { if (!paused) return; paused = false; if (pendingAi) scheduleAi(); }
+    function stop() { clearAiTimer(); paused = false; pendingAi = false; }
+    function drop(column) { if (locked || paused) return; const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return; history.push({ grid: grid.slice(), playerMoves }); hintColumn = -1; grid[row * 7 + column] = 1; playerMoves += 1; render(); if (hasFour(1)) return finish(true, resultGoal(true)); if (grid.every(Boolean)) return finish(false, resultGoal(false)); locked = true; pendingAi = true; announce(text(connectOpponentThinking)); scheduleAi(); }
     function hasFour(color) { for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) for (const [dr, dc] of [[0,1],[1,0],[1,1],[1,-1]]) { let n = 0; for (let k = 0; k < 4; k += 1) { const rr = r + dr * k, cc = c + dc * k; if (rr >= 0 && rr < 6 && cc >= 0 && cc < 7 && grid[rr * 7 + cc] === color) n += 1; } if (n === 4) return true; } return false; }
     function ai() { const available = [...new Set([...Array(7).keys()].filter((c) => grid[c] === 0))]; let column = available[Math.floor(Math.random() * available.length)]; const winning = available.find((c) => simulateWin(c, 2)); const block = available.find((c) => simulateWin(c, 1)); if (difficulty !== "easy") column = winning ?? block ?? (difficulty === "hard" ? available.sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b))[0] : column); const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); grid[row * 7 + column] = 2; locked = false; render(); if (hasFour(2) || grid.every(Boolean)) finish(false, resultGoal(false)); else announce(t("turn")); }
     function simulateWin(column, color) { const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return false; grid[row * 7 + column] = color; const result = hasFour(color); grid[row * 7 + column] = 0; return result; }
-    function reset() { clearAiTimer(); difficulty = select.value; grid = Array(42).fill(0); locked = false; hintColumn = -1; playerMoves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); render(); announce(t("turn"));
+    function reset() { stop(); difficulty = select.value; grid = Array(42).fill(0); locked = false; hintColumn = -1; playerMoves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); render(); announce(t("turn"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
     function hint() { if (locked) return announce(text(connectHint.wait)); const available = [...Array(7).keys()].filter((c) => grid[c] === 0); if (!available.length) return announce(t("failed")); const winning = available.find((c) => simulateWin(c, 1)); const block = winning === undefined ? available.find((c) => simulateWin(c, 2)) : undefined; const column = winning ?? block ?? available.slice().sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b) || a - b)[0]; const message = winning !== undefined ? connectHint.win : block !== undefined ? connectHint.block : connectHint.center; hintColumn = column; render(); announce(fillTemplate(text(message), { column: column + 1 })); }
-    function undo() { clearAiTimer(); const previous = history.pop(); hintColumn = -1; (__wpNotifyMeasurement(), app.result.hidden = true); locked = false; if (previous) { grid = previous.grid.slice(); playerMoves = previous.playerMoves; } render(); announce(previous ? `${t("undo")} · ${t("turn")}` : t("ready")); if (previous) __wpReopenMeasurement(); }
-    select.addEventListener("change", reset); return { reset, hint, undo, stop: clearAiTimer };
+    function undo() { stop(); const previous = history.pop(); hintColumn = -1; (__wpNotifyMeasurement(), app.result.hidden = true); locked = false; if (previous) { grid = previous.grid.slice(); playerMoves = previous.playerMoves; } render(); announce(previous ? `${t("undo")} · ${t("turn")}` : t("ready")); if (previous) __wpReopenMeasurement(); }
+    select.addEventListener("change", reset); return { reset, hint, undo, pause, resume, stop };
   }
 
   function buildNaval() {

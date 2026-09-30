@@ -1,46 +1,271 @@
-const lightsOutArtLink = document.createElement("link");
-lightsOutArtLink.rel = "stylesheet";
-lightsOutArtLink.href = "art.css?v=20260921-lights-out-block-scene-v1";
-document.head.appendChild(lightsOutArtLink);
-window.WPClassicLogic?.mount("lights-out");
-
 (() => {
-  const GUIDE_COPY = {
-    en: { guideLabel: "Lights Out game information", kicker: "WeightPlay Original Game Guide", title: "Lights Out", intro: "Switch a tile and its neighbors to turn every light off.", gameplayLabel: "Gameplay", gameplay: "Switch Puzzle", genreLabel: "Genre", genre: "Classic · Puzzle · Strategy · Family", faq: "FAQ", question: "What happens after a solve?", answer: "The result shows the move count and offers Replay, Menu, and Close." },
-    "zh-Hant": { guideLabel: "熄燈遊戲 遊戲資訊", kicker: "WeightPlay 原創遊戲指南", title: "熄燈遊戲", intro: "點擊一格與鄰近格，關掉全部燈並挑戰最少步數。", gameplayLabel: "玩法", gameplay: "開關益智", genreLabel: "類型", genre: "Classic · Puzzle · 策略 · 家庭", faq: "常見問題", question: "解開棋盤後會怎樣？", answer: "結果畫面會顯示步數，並提供重玩、主頁與關閉。" },
-    "zh-Hans": { guideLabel: "熄灯游戏 游戏资讯", kicker: "WeightPlay 原创游戏指南", title: "熄灯游戏", intro: "点击一格及相邻格，关掉所有灯并挑战最少步数。", gameplayLabel: "玩法", gameplay: "开关益智", genreLabel: "类型", genre: "Classic · Puzzle · 策略 · 家庭", faq: "常见问题", question: "解开棋盘后会怎样？", answer: "结果页面会显示步数，并提供重玩、菜单和关闭。" },
-    ja: { guideLabel: "ライツアウト のゲーム情報", kicker: "WeightPlay オリジナルゲームガイド", title: "ライツアウト", intro: "マスと上下左右を切り替え、すべての灯りを消します。", gameplayLabel: "ゲーム内容", gameplay: "スイッチパズル", genreLabel: "ジャンル", genre: "Classic · Puzzle · 戦略 · 家族", faq: "よくある質問", question: "解けた後はどうなりますか?", answer: "結果には手数が表示され、リプレイ、メニュー、閉じるを選べます。" },
-    ko: { guideLabel: "라이트 아웃 게임 정보", kicker: "WeightPlay 오리지널 게임 가이드", title: "라이트 아웃", intro: "칸과 상하좌우를 바꿔 모든 불을 끄세요.", gameplayLabel: "Gameplay", gameplay: "스위치 퍼즐", genreLabel: "Genre", genre: "Classic · Puzzle · 전략 · 가족", faq: "FAQ", question: "퍼즐을 풀면 어떻게 되나요?", answer: "결과에서 이동 횟수를 보여 주고 다시 하기, 메뉴, 닫기를 제공합니다." },
-    es: { guideLabel: "Guía de Apaga las luces", kicker: "Guía de juego original de WeightPlay", title: "Apaga las luces", intro: "Cambia una casilla y sus vecinas para apagar todas las luces.", gameplayLabel: "Cómo se juega", gameplay: "Puzzle de interruptores", genreLabel: "Género", genre: "Classic · Puzzle · Estrategia · familia", faq: "Preguntas frecuentes", question: "¿Qué ocurre al resolverlo?", answer: "El resultado muestra los movimientos y ofrece Repetir, Menú y Cerrar." },
-    "pt-BR": { guideLabel: "Apague as Luzes informações do jogo", kicker: "Guia de jogo original do WeightPlay", title: "Apague as Luzes", intro: "Alterne uma casa e suas vizinhas para apagar todas as luzes.", gameplayLabel: "Gameplay", gameplay: "Puzzle de interruptores", genreLabel: "Genre", genre: "Classic · Puzzle · Estratégia · Família", faq: "FAQ", question: "O que acontece ao resolver o tabuleiro?", answer: "O Resultado mostra o número de movimentos e oferece Rejogar, Menu e Fechar." },
-    fr: { guideLabel: "Informations sur le jeu Extinction des lumières", kicker: "Guide de jeu original WeightPlay", title: "Extinction des lumières", intro: "Basculez une case et ses voisines pour tout éteindre.", gameplayLabel: "Type de jeu", gameplay: "Puzzle de boutons", genreLabel: "Genre", genre: "Classic · Puzzle · Stratégie · Famille", faq: "Questions fréquentes", question: "Que se passe-t-il après la résolution ?", answer: "Le résultat affiche le nombre de coups et propose Rejouer, Menu et Fermer." },
-    de: { guideLabel: "Spielanleitung für Licht aus", kicker: "WeightPlay Original-Spielanleitung", title: "Licht aus", intro: "Schalte ein Feld samt Nachbarn und lösche alle Lichter.", gameplayLabel: "Spielweise", gameplay: "Schalterrätsel", genreLabel: "Genre", genre: "Classic · Puzzle · Strategie · Familie", faq: "Häufige Fragen", question: "Was passiert nach dem Lösen?", answer: "Das Ergebnis zeigt die Zugzahl und bietet Erneut spielen, Menü und Schließen." },
-    it: { guideLabel: "Spegni le luci informazioni sul gioco", kicker: "Guida al gioco originale WeightPlay", title: "Spegni le luci", intro: "Inverti una casella e le vicine per spegnerle tutte.", gameplayLabel: "Gameplay", gameplay: "Puzzle di interruttori", genreLabel: "Genre", genre: "Classic · Puzzle · Strategia · Famiglia", faq: "FAQ", question: "Cosa succede dopo la soluzione?", answer: "Il risultato mostra il numero di mosse e offre Rigioca, Menu e Chiudi." },
-    ru: { guideLabel: "Погаси свет информация об игре", kicker: "Руководство по оригинальной игре WeightPlay", title: "Погаси свет", intro: "Переключайте клетку и соседей, чтобы погасить все огни.", gameplayLabel: "Gameplay", gameplay: "Головоломка с переключателями", genreLabel: "Genre", genre: "Classic · Puzzle · Стратегия · Семья", faq: "FAQ", question: "Что происходит после решения?", answer: "Результат показывает число ходов и предлагает повторить игру, открыть меню или закрыть его." },
-    hi: { guideLabel: "लाइट्स आउट खेल की जानकारी", kicker: "WeightPlay मूल गेम गाइड", title: "लाइट्स आउट", intro: "खाने और उसके पड़ोसियों को बदलकर सभी लाइट बंद करें।", gameplayLabel: "Gameplay", gameplay: "स्विच पहेली", genreLabel: "Genre", genre: "Classic · Puzzle · रणनीति · परिवार", faq: "FAQ", question: "हल करने के बाद क्या होता है?", answer: "परिणाम में चालों की संख्या दिखती है और फिर से खेलें, मेन्यू या बंद करने के विकल्प मिलते हैं।" },
-    ar: { guideLabel: "دليل لعبة إطفاء الأنوار", kicker: "دليل ألعاب WeightPlay الأصلية", title: "إطفاء الأنوار", intro: "بدّل الخلية وجيرانها لإطفاء كل الأضواء.", gameplayLabel: "طريقة اللعب", gameplay: "لغز المفاتيح", genreLabel: "النوع", genre: "Classic · Puzzle · الإستراتيجية · العائلة", faq: "الأسئلة الشائعة", question: "ماذا يحدث بعد حل اللغز؟", answer: "تعرض النتيجة عدد النقلات وتوفر خيارات إعادة اللعب والقائمة والإغلاق." },
+  "use strict";
+
+  const art = document.createElement("link");
+  art.rel = "stylesheet";
+  art.href = new URL("art.css?v=20260930-lights-out-v13-i8", document.currentScript.src).href;
+  document.head.append(art);
+
+  const app = window.WPClassicLogic.mount("lights-out");
+  const root = app.root;
+  const query = (selector) => root.querySelector(selector);
+  const mainHeader = app.main.querySelector("header");
+  const battleHeader = app.battle.querySelector("header");
+  const content = query(".logic-battle-wrap");
+  const mainContent = query(".logic-hero");
+  const back = query("#battleBack");
+  const start = query("#startButton");
+  const leave = query("#logicLeave");
+  const continueButton = query("#leaveContinue");
+  const leaveButton = query("#leaveStages");
+  const replay = query("#resultReplay");
+  const menu = query("#resultMenu");
+  const close = query("#resultClose");
+  const picker = query("#localePicker");
+  const turnLabel = app.battleChip.textContent;
+  const abort = new AbortController();
+  const listen = (node, event, callback) => node.addEventListener(event, callback, { signal: abort.signal });
+  const seenRewards = new WeakSet();
+  let scene = "main";
+  let covered = null;
+  let motion = null;
+
+  const leaveCopy = {
+    en: ["Leave puzzle?", "Your current board and moves will be reset. Your saved best move count stays.", "Return to Main"],
+    "zh-Hant": ["離開棋盤？", "目前棋盤與步數將會重設，已儲存的最佳步數會保留。", "返回主頁"],
+    "zh-Hans": ["离开棋盘？", "当前棋盘和步数将会重置，已保存的最佳步数会保留。", "返回主页"],
+    ja: ["パズルを終了しますか？", "現在の盤面と手数はリセットされます。保存済みの最少手数は残ります。", "メインに戻る"],
+    ko: ["퍼즐을 나갈까요?", "현재 보드와 이동 횟수는 초기화됩니다. 저장된 최고 기록은 유지됩니다.", "메인으로 돌아가기"],
+    es: ["¿Salir del puzzle?", "El tablero y los movimientos actuales se reiniciarán. Tu mejor marca guardada se conserva.", "Volver al inicio"],
+    "pt-BR": ["Sair do puzzle?", "O tabuleiro e os movimentos atuais serão reiniciados. Sua melhor marca salva será mantida.", "Voltar ao início"],
+    fr: ["Quitter le puzzle ?", "Le plateau et les coups actuels seront réinitialisés. Votre meilleur score enregistré reste sauvegardé.", "Retour à l’accueil"],
+    de: ["Rätsel verlassen?", "Das aktuelle Brett und die Zugzahl werden zurückgesetzt. Dein gespeicherter Bestwert bleibt erhalten.", "Zurück zum Hauptmenü"],
+    it: ["Uscire dal puzzle?", "La griglia e le mosse attuali verranno azzerate. Il miglior risultato salvato resterà disponibile.", "Torna al menu"],
+    ru: ["Выйти из головоломки?", "Текущее поле и число ходов будут сброшены. Сохранённый лучший результат останется.", "Вернуться в меню"],
+    hi: ["पहेली छोड़ें?", "मौजूदा बोर्ड और चालों की संख्या रीसेट होगी। आपका सहेजा हुआ सर्वोत्तम रिकॉर्ड बना रहेगा।", "मुख्य स्क्रीन पर लौटें"],
+    ar: ["هل تريد مغادرة اللغز؟", "ستُعاد اللوحة الحالية وعدد النقلات إلى البداية. سيبقى أفضل عدد نقلات محفوظًا.", "العودة إلى الرئيسية"],
   };
-  const LOCALE_ALIASES = { "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", "pt-br": "pt-BR" };
-  const locale = () => {
-    const raw = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
-    return GUIDE_COPY[raw] ? raw : LOCALE_ALIASES[String(raw).toLowerCase()] || "en";
+  const copy = leaveCopy[document.documentElement.lang] || leaveCopy.en;
+  query("#logicLeaveTitle").textContent = copy[0];
+  leave.querySelector("p").textContent = copy[1];
+  leaveButton.textContent = copy[2];
+  back.setAttribute("aria-label", copy[2]);
+  leave.setAttribute("aria-describedby", "logicLeaveText");
+  leave.querySelector("p").id = "logicLeaveText";
+  app.result.setAttribute("aria-describedby", "logicResultText");
+  app.result.setAttribute("data-wp-result-screen", "");
+  app.result.querySelector(".logic-result-card").setAttribute("data-wp-result-card", "");
+
+  // Bind the existing content once. The shared frame is the only header,
+  // preferences, theme and active-scene presentation owner.
+  const retained = document.createElement("div");
+  retained.hidden = true;
+  retained.inert = true;
+  retained.append(picker);
+  root.append(retained);
+  mainHeader.querySelector(".logic-header-tools").remove();
+  root.querySelector(".logic-lab").classList.remove("logic-lab");
+  document.querySelector("body > h1")?.setAttribute("aria-hidden", "true");
+  app.stage.remove();
+  app.main.querySelector(".logic-guide").remove();
+  app.main.classList.remove("logic-main");
+  mainContent.className = "lights-main-content";
+  mainContent.querySelectorAll(".logic-kicker, .logic-facts, .logic-progress-slot, h2").forEach((node) => node.remove());
+  mainHeader.querySelector("h1").setAttribute("data-wp-frame-title", "");
+  battleHeader.querySelector("h1").setAttribute("data-wp-frame-title", "");
+  mainContent.querySelector(".logic-poster").setAttribute("data-wp-frame-poster", "");
+  mainContent.querySelector(".logic-poster img").src = window.WEIGHTPLAY_INTERFACE7_POSTERS?.["lights-out"] || "/assets/interface7-redrawn/lights-out.webp";
+  mainContent.querySelector(".logic-copy").setAttribute("data-wp-frame-copy", "");
+  mainContent.querySelector(".logic-copy > p").setAttribute("data-wp-frame-summary", "");
+  start.setAttribute("data-wp-frame-action", "primary");
+  content.querySelectorAll(".logic-action-row button").forEach((button) => button.setAttribute("data-wp-frame-action", "secondary"));
+  app.tutorial.tabIndex = 0;
+  app.tutorial.setAttribute("data-wp-scroll-owner", "");
+  for (const button of [replay, menu, close, continueButton, leaveButton]) button.setAttribute("data-wp-frame-action", "secondary");
+  // Equal-height persistent Result actions keep the established no-Stage
+  // Replay / Menu / Close recovery contract.
+  replay.setAttribute("data-wp-frame-action", "primary");
+  continueButton.setAttribute("data-wp-frame-action", "primary");
+  for (const button of [start, ...content.querySelectorAll(".logic-action-row button"), replay, menu, close, continueButton, leaveButton]) {
+    button.classList.remove("logic-primary", "logic-secondary");
+  }
+  const info = document.createElement("div");
+  info.setAttribute("data-wp-frame-info", "");
+  const stat = document.createElement("div");
+  stat.append(app.battleChip);
+  info.append(stat);
+  content.prepend(info);
+  app.battle.dataset.wpBattleMinWidth = "390";
+  app.battle.dataset.wpBattleMinHeight = "720";
+  app.battle.dataset.wpBattleLandscapeWidth = "760";
+  app.battle.dataset.wpBattleLandscapeHeight = "350";
+
+  const frame = window.WeightPlayScreenFrame.mount({
+    root,
+    localeSelect: picker,
+    scenes: {
+      main: { root: app.main, header: mainHeader, content: mainContent },
+      battle: { root: app.battle, header: battleHeader, content, headerInfo: info },
+    },
+  });
+
+  function enter(node) {
+    motion?.cancel();
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    motion = node.animate?.([{ opacity: 0.6 }, { opacity: 1 }], { duration: reduced ? 60 : 140, easing: "ease-out" }) || null;
+  }
+
+  function activate() {
+    const blocked = scene === "battle" && covered !== null;
+    app.main.hidden = scene !== "main";
+    app.battle.hidden = scene !== "battle";
+    app.result.hidden = covered !== "result";
+    leave.hidden = covered !== "leave";
+    content.inert = blocked;
+    content.setAttribute("aria-hidden", String(blocked));
+    document.body.classList.toggle("logic-playing", scene === "battle");
+    frame.activate(scene, { covered: blocked });
+    // The canonical scaler settles immediately at the same scene boundary.
+    window.WeightPlayBattleCanvas?.sync?.();
+  }
+
+  function refreshBoard(focusIndex = null) {
+    const cells = [...app.board.querySelectorAll(".logic-lights-board button")];
+    cells.forEach((cell, index) => {
+      cell.dataset.lightIndex = String(index);
+      cell.setAttribute("aria-pressed", String(cell.classList.contains("on")));
+    });
+    if (scene === "battle" && covered === null && focusIndex !== null) cells[focusIndex]?.focus({ preventScroll: true });
+  }
+
+  function startBattle(restarting = false) {
+    motion?.cancel();
+    window.ShowResultGet("lights-out", false);
+    covered = null;
+    scene = "battle";
+    if (restarting) app.replay();
+    else app.startGame();
+    activate();
+    refreshBoard(0);
+    enter(content);
+  }
+
+  function showMain() {
+    motion?.cancel();
+    window.ShowResultGet("lights-out", false);
+    covered = null;
+    scene = "main";
+    app.showMain();
+    activate();
+    start.focus({ preventScroll: true });
+    enter(mainContent);
+  }
+
+  function closeLeave() {
+    covered = null;
+    activate();
+    back.focus({ preventScroll: true });
+    enter(content);
+  }
+
+  function openLeave() {
+    // A never-mutated opening has no temporary progress to discard.
+    const moves = Number(app.board.querySelector(".logic-live")?.textContent.match(/\d+/)?.[0] || 0);
+    if (!moves) return showMain();
+    covered = "leave";
+    activate();
+    continueButton.focus({ preventScroll: true });
+    enter(leave.querySelector(".logic-leave-card"));
+  }
+
+  function closeResult() {
+    window.ShowResultGet("lights-out", false);
+    covered = null;
+    activate();
+    refreshBoard();
+    query("#logicUndo").focus({ preventScroll: true });
+    enter(content);
+  }
+
+  function gameAction(action) {
+    if (scene !== "battle" || covered !== null) return;
+    app.getActiveGame()?.[action]?.();
+    if (app.result.hidden) app.battleChip.textContent = app.board.querySelector(".logic-lights-board .on") ? turnLabel : app.battleChip.textContent;
+    refreshBoard();
+    enter(app.board.querySelector(".logic-lights-board"));
+  }
+
+  // Original Logic Lab listeners delegate here; there is no second action
+  // listener, DOM observer, navigation controller or copied gameplay engine.
+  app.screenFlow = {
+    start: () => startBattle(),
+    battleBack: openLeave,
+    hint: () => gameAction("hint"),
+    undo: () => gameAction("undo"),
+    reset: () => startBattle(true),
+    resultReplay: () => startBattle(true),
+    resultMenu: showMain,
+    resultClose: closeResult,
+    leaveContinue: closeLeave,
+    leaveStages: showMain,
   };
-  const syncGuide = () => {
-    const panel = document.querySelector(".game-page-info-static");
-    if (!panel) return;
-    const copy = GUIDE_COPY[locale()] || GUIDE_COPY.en;
-    panel.setAttribute("aria-label", copy.guideLabel);
-    panel.querySelector(".game-info-kicker")?.replaceChildren(document.createTextNode(copy.kicker));
-    panel.querySelector(".game-info-title h2")?.replaceChildren(document.createTextNode(copy.title));
-    panel.querySelector(".game-info-title p")?.replaceChildren(document.createTextNode(copy.intro));
-    const facts = panel.querySelectorAll(".game-info-fact");
-    if (facts[0]) { facts[0].querySelector("span")?.replaceChildren(document.createTextNode(copy.gameplayLabel)); facts[0].querySelector("strong")?.replaceChildren(document.createTextNode(copy.gameplay)); }
-    if (facts[1]) { facts[1].querySelector("span")?.replaceChildren(document.createTextNode(copy.genreLabel)); facts[1].querySelector("strong")?.replaceChildren(document.createTextNode(copy.genre)); }
-    panel.querySelector(".game-info-section h3")?.replaceChildren(document.createTextNode(copy.faq));
-    panel.querySelector(".game-info-section dt")?.replaceChildren(document.createTextNode(copy.question));
-    panel.querySelector(".game-info-section dd")?.replaceChildren(document.createTextNode(copy.answer));
-    panel.dataset.lightsOutLocale = locale();
+  app.cfg.onResult = () => {
+    covered = "result";
+    activate();
+    window.ShowResultGet("lights-out", false);
+    refreshBoard();
+    replay.focus({ preventScroll: true });
+    enter(app.result.querySelector(".logic-result-card"));
   };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", syncGuide, { once: true });
-  else syncGuide();
+
+  listen(app.board, "click", (event) => {
+    // The engine synchronously replaces every cell. The old event target
+    // retains its index but no longer has a board ancestor when this bubbles.
+    const button = event.target.closest("button[data-light-index]");
+    if (!button || scene !== "battle" || covered !== null) return;
+    const index = Number(button.dataset.lightIndex);
+    if (app.board.querySelector(".logic-lights-board .on")) app.battleChip.textContent = turnLabel;
+    refreshBoard(index);
+    enter(app.board.querySelector(".logic-lights-board"));
+  });
+  listen(window, "weightplay:castle-reward", (event) => {
+    const reward = event.detail;
+    if (!reward || reward.gameId !== "lights-out" || reward.completionId !== "first-completion"
+      || !(Number(reward.amount) > 0) || seenRewards.has(reward)) return;
+    seenRewards.add(reward);
+    // Shared analytics/castle publishes only after its reward store commits.
+    // A replay that does not grant another block keeps the marker cleared.
+    if (scene === "battle" && covered === "result") window.ShowResultGet("lights-out", true);
+  });
+  listen(root, "keydown", (event) => {
+    if (covered !== null) {
+      const dialog = covered === "leave" ? leave : app.result;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        covered === "leave" ? closeLeave() : closeResult();
+      } else if (event.key === "Tab") {
+        const controls = [...dialog.querySelectorAll("button")].filter((button) => !button.hidden && !button.disabled);
+        const index = controls.indexOf(document.activeElement);
+        event.preventDefault();
+        controls[(index + (event.shiftKey ? -1 : 1) + controls.length) % controls.length]?.focus({ preventScroll: true });
+      }
+      return;
+    }
+    const button = event.target.closest(".logic-lights-board button");
+    if (!button || scene !== "battle") return;
+    const index = Number(button.dataset.lightIndex);
+    const rtl = document.documentElement.dir === "rtl";
+    const step = { ArrowLeft: rtl ? 1 : -1, ArrowRight: rtl ? -1 : 1, ArrowUp: -5, ArrowDown: 5 }[event.key];
+    let target = event.key === "Home" ? Math.floor(index / 5) * 5 : event.key === "End" ? Math.floor(index / 5) * 5 + 4 : index + (step || 0);
+    if (step === undefined && !["Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    if (Math.abs(step) === 1 && Math.floor(target / 5) !== Math.floor(index / 5)) target = index;
+    refreshBoard(Math.max(0, Math.min(24, target)));
+  });
+  listen(window, "pageshow", () => activate());
+  listen(window, "pagehide", (event) => {
+    motion?.cancel();
+    if (!event.persisted) { abort.abort(); frame.destroy(); }
+  });
+  activate();
 })();

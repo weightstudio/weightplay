@@ -64,7 +64,6 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="style.css?v=20260819-chapter-mission-v14-141e1a2f03ac">
   <link rel="stylesheet" href="frame-content.css?v=20260913-prism-v15"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <script src="../../src/game-page-info.js?v=20260923-prism-garden-seo130" data-wp-comparison-only></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Prism Route Garden | WeightPlay" />
@@ -100,12 +99,14 @@
       </section>
     </main>
     <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="How to Play">
-      <div class="game-info-hero"><div class="game-info-title"><h2 data-t="guideTitle">How to Play</h2><p data-t="summary">Connect matching crystal flowers and fill every tile.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Puzzle</span><span>Strategy</span></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-t="guideTitle">How to Play</h2><p data-t="guideLead">Connect every matching prism without crossing paths. Prism gates accept only their own color, and every open tile must be filled.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tagPuzzle">Puzzle</span><span data-t="tagStrategy">Strategy</span><span data-t="tagRoutes">Route planning</span></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="guideRulesTitle">How to play</h3><ol><li data-t="guideRule1">Drag from a crystal flower to its matching color.</li><li data-t="guideRule2">Move up, down, left or right. Routes cannot cross or share tiles.</li><li data-t="guideRule3">A crystal gate accepts only the color shown by its border.</li><li data-t="guideRule4">Connect all pairs and fill every tile to unlock the next garden.</li></ol></div>
-        <div class="game-info-section"><h3 data-t="guideTipsTitle">Planning tips</h3><p data-t="guideRecovery">Reserve narrow passages first. Undo restores the previous board; Reset clears your routes. Hint completes one unfinished route. Progress is saved in this browser.</p></div>
-      </div>
-    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>There are 30 authored stages across six rule chapters. Stage 30 remains replayable after completion.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
+        <div class="game-info-section"><h3 data-t="guideTipsTitle">Planning tips</h3><ol><li data-t="guideTip1">Reserve narrow edges and gated corridors before filling the center.</li><li data-t="guideTip2">Trace longer pairs first when they divide the board.</li><li data-t="guideTip3">Use Undo or Hint without losing campaign progress.</li></ol><p data-t="guideRecovery">Reserve narrow passages first. Undo restores the previous board; Reset clears your routes. Hint completes one unfinished route. Progress is saved in this browser.</p></div>
+        <div class="game-info-section"><h3 data-t="guideCampaignTitle">Advanced campaign</h3><p data-t="guideCampaign">Thirty authored layouts expand from 7×7 to 10×10, introduce more color pairs and add prism gates in six chapters.</p></div>
+        <div class="game-info-section"><h3 data-t="faqTitle">Frequently Asked Questions</h3><dl><div><dt data-t="faq1q">What completes a garden?</dt><dd data-t="faq1a">Connect every matching pair and fill each open tile without crossing paths.</dd></div><div><dt data-t="faq2q">Can routes cross or share a tile?</dt><dd data-t="faq2a">No. Routes move orthogonally and each tile can belong to only one route.</dd></div><div><dt data-t="faq3q">How do prism gates work?</dt><dd data-t="faq3a">A gate can be crossed only by a route matching the color on its border.</dd></div><div><dt data-t="faq4q">What does Hint do?</dt><dd data-t="faq4a">Hint completes one available unfinished route; it does not choose every route for you.</dd></div><div><dt data-t="faq5q">Is my progress saved?</dt><dd data-t="faq5a">Unlocked gardens are saved in this browser when local storage is available; another browser or cleared site data may not keep them.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Related games</h3><p>Explore more compact puzzles about planning clear paths and finding a complete solution.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-one-line" href="/en/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the...</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-cratebound" href="/en/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cratebound</strong><span>Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.</span></span></a></div></div></div>
+    </section>
   </div>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-prism-garden.webp')" hidden>
@@ -152,7 +153,7 @@
   <script src="../../src/tutorial.js?v=20260729-prism-garden1"></script>
   <script src="levels.js?v=20260819-chapter-mission-v14-3f61780b8339"></script>
   <script src="locales.js?v=20260819-chapter-mission-v14-f72386435c43"></script>
-  <script src="guide-locales.js?v=20260913-prism-v15"></script>
+  <script src="guide-locales.js?v=20260930-text140-v1"></script>
   <script src="game.js?v=20260819-chapter-mission-v14-1e2228958a78&wp-audio=1.0.0"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>

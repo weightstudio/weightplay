@@ -1,8 +1,144 @@
-/* Game-owned voxel scenery; the light grid remains DOM-rendered for readability. */
-body[data-logic-game="lights-out"] .logic-battle-screen {
-  background: linear-gradient(180deg, rgba(5, 16, 33, .18), rgba(5, 16, 33, .48)), url("assets/lights-out-board-block-v1.png") center / cover no-repeat;
+/* Lights Out owns only the content of its permanent Main/Battle slots. */
+#logicMain .lights-main-content { margin: 0; }
+
+#logicBattle .logic-battle-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  display: grid;
+  grid-template-rows: 44px 60px minmax(0, 1fr) 52px;
+  gap: 8px;
+  overflow: hidden;
 }
 
-body[data-logic-game="lights-out"] .logic-board-panel {
+#logicBattle .logic-tutorial {
+  min-height: 0;
+  max-height: none;
+  padding: 0 8px;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: normal;
+  overflow: auto;
+}
+
+#logicBattle .logic-status-line {
+  height: 60px;
+  min-height: 60px;
+  padding: 2px 8px;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+#logicBattle .logic-board-panel {
+  min-width: 0;
+  min-height: 0;
+  padding: 2px;
+  overflow: hidden;
+  container-type: size;
   background: linear-gradient(160deg, rgba(17, 50, 92, .7), rgba(8, 23, 46, .82)), url("assets/lights-out-board-block-v1.png") center / cover no-repeat;
+}
+
+#logicBattle .logic-board-area {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+#logicBattle .logic-board-area > div {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 28px;
+  gap: 4px;
+  place-items: center;
+}
+
+#logicBattle .logic-lights-board {
+  width: min(100cqw, calc(100cqh - 32px));
+  height: auto;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+}
+
+#logicBattle .logic-lights-board .logic-cell {
+  min-width: 0;
+  min-height: 0;
+  border-radius: 4px;
+  touch-action: manipulation;
+}
+
+#logicBattle .logic-lights-board .logic-cell:hover { transform: none; }
+#logicBattle .logic-lights-board .logic-cell:active { filter: brightness(1.2); }
+#logicBattle .logic-live { margin: 0; line-height: 20px; font-size: 14px; }
+
+#logicBattle .logic-action-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 4px 0;
+}
+
+#logicBattle .logic-action-row button { min-width: 0; }
+
+#logicBattle :is(.logic-result, .logic-leave) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  z-index: 120;
+  display: grid;
+  align-items: start;
+  justify-items: center;
+  padding: 16px;
+  overflow: auto;
+  background: rgba(2, 10, 24, .88);
+}
+
+#logicBattle :is(.logic-result-card, .logic-leave-card) {
+  width: min(460px, 100%);
+  max-height: 100%;
+  min-height: 0;
+  margin: auto 0;
+  padding: 20px;
+  overflow: auto;
+  border: 2px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-surface);
+  color: var(--wp-ui-text);
+  text-align: center;
+  box-shadow: none;
+  animation: none;
+}
+
+#logicBattle :is(.logic-result-card, .logic-leave-card) h2 { margin: 0 0 12px; font-size: 24px; line-height: 1.2; }
+#logicBattle :is(.logic-result-card, .logic-leave-card) p { margin: 0 0 16px; color: var(--wp-ui-muted); font-size: 16px; line-height: 1.5; }
+#logicBattle .logic-result-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+#logicBattle .logic-leave-card .logic-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+@media (min-width: 700px) and (orientation: landscape) {
+  #logicBattle .logic-battle-wrap {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    grid-template-rows: 44px 52px minmax(0, 1fr);
+  }
+  #logicBattle .logic-board-panel { grid-column: 1; grid-row: 1 / -1; }
+  #logicBattle .logic-tutorial { grid-column: 2; grid-row: 1; }
+  #logicBattle .logic-status-line { grid-column: 2; grid-row: 2; height: 52px; min-height: 52px; }
+  #logicBattle .logic-action-row { grid-column: 2; grid-row: 3; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(3, 44px); align-content: end; padding: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #logicBattle .logic-cell { transition: none; }
+  #logicBattle .logic-cell.is-hint { animation: none; outline: 3px solid var(--logic-warn); outline-offset: -3px; }
 }

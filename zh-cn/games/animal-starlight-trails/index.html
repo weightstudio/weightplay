@@ -85,12 +85,12 @@
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
       <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-      <strong data-runtime-localize="off">Starlink 星链</strong>
+      <strong data-runtime-localize="off" data-wp-game-title>Starlink 星链</strong>
       <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
     </header>
     <section class="main-hero">
       <img class="main-poster" src="../../assets/animal-starlight-trails-cover.webp" alt="" />
-      <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's constellation workshop</small><h1 data-runtime-localize="off">Starlink 星链</h1><p data-i18n="pitch">Trace every trail exactly once and relight the Animal Star Map.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's constellation workshop</small><h1 data-runtime-localize="off" data-wp-game-title>Starlink 星链</h1><p data-i18n="pitch">Trace every trail exactly once and relight the Animal Star Map.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
     </section>
   </main>
 
@@ -109,13 +109,13 @@
 <p>第 6 至 10 关指定发光起点；第 11 至 15 关加入清楚可见的单向彗星箭；第 16 至 20 关要依序经过编号星星；第 21 至 25 关必须先拿钥匙再通过星门；最后五关会混合规则。</p>
 <p>复原会退回上一步，重新开始会清除本次路线，提示只会标出仍能完成全图的一个合法下一步，全部都不消耗货币。</p>
 <p>过关后会在此浏览器保存最佳星等与时间并解锁下一关，已解锁关卡都能重玩。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡轨道选择已解锁星座。</li><li>先阅读规则；若有发光起点星印，就必须从该处开始。</li><li>拖曳经过相邻星点，或逐一点击相邻星点，同一条路不可重复。</li><li>遵守箭头方向、编号顺序及先钥匙后星门的限制。</li><li>点亮全部星路即可过关并解锁下一关。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>未使用路线数量为奇数的星点，常能提示开放路线的起点或终点。</li><li>进入狭窄分支前，先确认还有路能回到星座主体。</li><li>箭头、数字、钥匙与星门都是路线限制，不是装饰。</li><li>短距离走错可用复原；若开局已困住多个分支，重新开始会更快。</li></ul></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡列选择已解锁的星座。</li><li>先阅读规则；若有发光起点星印，就必须从该处开始。</li><li>拖曳经过相邻星点，或逐一点击相邻星点，同一条路不可重复。</li><li>遵守箭头方向、编号顺序及先钥匙后星门的限制。</li><li>点亮全部星路即可过关并解锁下一关。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>未使用星路数为奇数的星点，常能提示开放路线的起点或终点。</li><li>进入狭窄分支前，先确认还有路能回到星座主体。</li><li>箭头、数字、钥匙与星门都是路线限制，不是装饰。</li><li>短距离走错可用复原；若开局已困住多个分支，重新开始会更快。</li></ul></div>
       <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1 至 5 关教基本一笔路线，第 6 至 10 关加入指定起点，第 11 至 15 关加入单向箭路。</p>
 <p>第 16 至 20 关加入顺序星点，第 21 至 25 关加入钥匙与星门，第 26 至 30 关综合全部规则。</p></div>
       <div class="game-info-section"><h3>开发设计理念</h3><p>Starlink 使用响应式逻辑 Canvas 填满 Stage 与 Battle 的安全区域，不会分别拉伸子元素。手机与宽萤幕会保留相同路线信息与操作，底部 56px 预留区也不会盖住游戏或结算按钮。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>Starlink 可免费在浏览器游玩，不需账号。解锁进度、最佳星等与时间只保存在目前浏览器；清除网站数据或更换浏览器可能建立另一份记录。技能反馈仅供游戏鼓励，不是正式能力评量。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>星点可以重复经过吗？</dt><dd>可以，但同一条连接星路只能使用一次。</dd></div><div><dt>为什么粉红色彗星路不能走？</dt><dd>路线上的箭头代表允许方向，从另一端进入不合法。</dd></div><div><dt>走到死路怎么办？</dt><dd>目前路线会保留，可免费复原或重新开始。</dd></div><div><dt>一定要使用提示吗？</dt><dd>不用，每一关都能不靠提示完成。</dd></div><div><dt>进度会保存吗？</dt><dd>会，解锁、最佳星等与时间会保存在此浏览器。</dd></div><div><dt>共有几关？</dt><dd>共有六个规则章节、30 个原创关卡。</dd></div><div><dt>哪些操作会降低星级？</dt><dd>错误操作、画出路线后重新开始各计一次，每次提示计两次。总数为零得三星，一至三得两星，更多得一星；撤销本身不扣分。</dd></div></dl></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>星点可以重复经过吗？</dt><dd>可以。星点可以再次经过，但每条连接星路只能走一次。</dd></div><div><dt>为什么粉色彗星星路不能通过？</dt><dd>箭头标明该星路允许的方向；从另一端进入不合法。</dd></div><div><dt>走到死路时会怎样？</dt><dd>当前路线会保留，你可以免费撤销一步或多步，也可以重新开始。</dd></div><div><dt>一定要使用提示吗？</dt><dd>不用。每一关都能不靠提示解开；提示只会标出一颗仍可完成路线的下一颗星。</dd></div><div><dt>进度会保存吗？</dt><dd>会。关卡解锁、最佳星级和最佳时间只存储在当前浏览器。</dd></div><div><dt>共有多少个关卡？</dt><dd>共有六个规则章节、30 个设计关卡。完成后仍可重玩第 30 关。</dd></div><div><dt>哪些操作会降低关卡星级？</dt><dd>错误操作各计一次；画出路线后重新开始也计一次；每次提示计两次。惩罚为零得三星，一至三得两星，更多得一星。单独撤销不扣分。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line 一笔到底</strong><span>One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>棱光破砖队</strong><span>在每颗回弹的光球下方移动球板，用接触位置控制反弹角度，并在三颗光球全部耗尽前击碎所有可破坏水晶。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬运队</strong><span>在 30 座手工设计的天空方舟仓库中行走、推动与拉回符文货箱。</span></span></a></div></div>
     </div>
   </section>
@@ -148,7 +148,8 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/tutorial.js"></script>
-  <script src="game.js?v=20260910-main-poster-v21"></script>
+  <script src="guide-locales.js?v=20260930-starlink-faq1"></script>
+  <script src="game.js?v=20260930-starlink-faq1"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260824-starlight-hindi-guide-ownership-v19"></script>
