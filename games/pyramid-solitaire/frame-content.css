@@ -2,15 +2,15 @@
 #gameFrame > [hidden], .pyramid-main-content [hidden], #gameGuide[hidden] {display:none!important}
 .battle-canvas[data-wp-frame-scene] {display:grid}
 .wp-premium-table .board-shell[data-wp-frame-content] {
-  background:#705139 url('../../assets/pyramid-solitaire-table-block-v27.webp') center/100% 100% no-repeat;
+  background:radial-gradient(ellipse at center,rgba(210,166,104,.28),transparent 70%),linear-gradient(135deg,#705139,#533a2a);
 }
 .wp-premium-table[data-card-deck='klondike'] .classic-card.front {
-  background:#fff5df url('../../assets/pyramid-solitaire-card-front-block-v27.webp') center/100% 100% no-repeat;
+  background:linear-gradient(145deg,#fffdf7,#f0dfbf);
   border-radius:3px;
 }
 .wp-premium-table .classic-card.covered {filter:brightness(.82)}
 .wp-premium-table .stock-pile {
-  background:#174b4d url('../../assets/pyramid-solitaire-card-back-block-v27.webp') center/100% 100% no-repeat;
+  background:repeating-linear-gradient(45deg,#174b4d 0 4px,#1d5d5f 4px 8px);
 }
 .result-card {max-height:100%;overflow:auto;box-sizing:border-box;background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
 .result-card .result-actions {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}

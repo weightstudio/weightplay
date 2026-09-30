@@ -68,7 +68,8 @@
     }});
     const abort = new AbortController();
     const syncSound = () => {
-      view.audio.setEnabled(!window.WeightPlayAudio.isMuted());
+      const enabled = !window.WeightPlayAudio.isMuted();
+      if (view.audio.enabled !== enabled) view.audio.setEnabled(enabled);
       view.refreshSound?.();
     };
     window.addEventListener('weightplay:audio-volume-change',syncSound,{signal:abort.signal});
