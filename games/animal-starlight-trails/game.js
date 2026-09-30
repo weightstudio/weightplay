@@ -293,6 +293,9 @@
   }
 
   let localizingGuide = false;
+  const setGuideText = (node, value) => {
+    if (node && node.textContent !== value) node.textContent = value;
+  };
   const spanishTutorial = {
     title: "Restaura todos los senderos estelares.",
     steps: [
@@ -347,8 +350,8 @@
       const rows = list ? [...list.children].filter(row => row.tagName === "DIV") : [];
       if (rows.length === faq.length && rows.every((row,index) => row.querySelector("dt") && row.querySelector("dd") && Array.isArray(faq[index]) && faq[index].length === 2)) {
         rows.forEach((row,index) => {
-          row.querySelector("dt").textContent = faq[index][0];
-          row.querySelector("dd").textContent = faq[index][1];
+          setGuideText(row.querySelector("dt"), faq[index][0]);
+          setGuideText(row.querySelector("dd"), faq[index][1]);
         });
       }
     }
@@ -356,12 +359,18 @@
     if (guideCopy?.firstStep && guideCopy?.firstTip) {
       const firstStep = dom.guide.querySelector(".game-info-section ol li");
       const firstTip = dom.guide.querySelector(".game-info-strategy li");
-      if (firstStep) firstStep.textContent = guideCopy.firstStep;
-      if (firstTip) firstTip.textContent = guideCopy.firstTip;
+      setGuideText(firstStep, guideCopy.firstStep);
+      setGuideText(firstTip, guideCopy.firstTip);
     }
     localizingGuide = false;
   }
-  new MutationObserver(localizeGuide).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(mutations => {
+    const guideChanged = mutations.some(({ target, addedNodes }) =>
+      target.closest?.(".game-page-info")
+      || [...addedNodes].some(node => node.nodeType === 1 && (node.matches?.(".game-page-info") || node.querySelector?.(".game-page-info")))
+    );
+    if (guideChanged) localizeGuide();
+  }).observe(document.body,{childList:true,subtree:true});
   new MutationObserver(localizeTutorial).observe(document.body,{childList:true,subtree:true});
 
   function updateMainProgress(){dom.mainProgress.innerHTML=`<strong>${t("progress",{cleared:clearedCount()})}</strong><span>${t("bestStars",{stars:totalStars()})}</span>`;}
