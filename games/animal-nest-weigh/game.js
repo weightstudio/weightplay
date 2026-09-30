@@ -6,12 +6,12 @@
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const progressKey = "weightplay-animal-nest-weigh-progress";
-  const masteryKey = "weightplay-animal-nest-weigh-mastery-v6";
+  const masteryKey = "weightplay-animal-nest-weigh-mastery-v7";
   const $ = (id) => document.getElementById(id);
   const state = {
     locale: "en", screen: "main", round: 0, selectedPair: [], selectedTarget: null,
     clues: [], knownPairs: new Set(), comparisons: 0, mistakes: 0, completed: [],
-    mastery: {}, phase: "compare", wrong: false, resultVisible: false, lastFeedback: "ready",
+    mastery: {}, phase: "compare", wrong: false, resultVisible: false, lastFeedback: "ready", busy: false,
   };
 
   const measurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -75,6 +75,77 @@
   let stageController = null;
   let renderedClueCount = -1;
   let returnFocus = null;
+  let revealTimer = null;
+  let pendingPair = null;
+  const effects = new Set();
+  const knowledge = () => window.NestWeighDeduction.analyze(rounds[state.round].materials.length, state.clues, rounds[state.round].targetType);
+  const reducedMotion = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  function cancelMotion() {
+    window.clearTimeout(revealTimer);
+    revealTimer = null;
+    pendingPair = null;
+    state.busy = false;
+    for (const animation of effects) animation.cancel();
+    effects.clear();
+    $("nestEffects")?.replaceChildren();
+    $("balanceVisual").classList.remove("is-loading");
+  }
+
+  function animate(node, frames, duration = 360) {
+    if (!node?.animate) return;
+    const animation = node.animate(reducedMotion() ? [{ opacity: .55 }, { opacity: 1 }] : frames,
+      { duration: reducedMotion() ? 100 : duration, easing: "cubic-bezier(.2,.8,.2,1)" });
+    effects.add(animation);
+    animation.finished.then(() => effects.delete(animation), () => effects.delete(animation));
+    return animation;
+  }
+
+  function flyMaterial(index, sourceRect, destination) {
+    const layer = $("nestEffects");
+    if (!layer || !sourceRect || !destination || reducedMotion()) return;
+    const root = layer.getBoundingClientRect();
+    const end = destination.getBoundingClientRect();
+    const scale = root.width / layer.clientWidth || 1;
+    const proxy = document.createElement("span");
+    proxy.className = "nest-flight tray-icon material-" + rounds[state.round].materials[index];
+    const x = (sourceRect.left + sourceRect.width / 2 - root.left) / scale - 18;
+    const y = (sourceRect.top + sourceRect.height / 2 - root.top) / scale - 16;
+    proxy.style.left = x + "px";
+    proxy.style.top = y + "px";
+    layer.append(proxy);
+    const dx = (end.left + end.width / 2 - root.left) / scale - 18 - x;
+    const dy = (end.top + end.height / 2 - root.top) / scale - 16 - y;
+    const motion = animate(proxy, [
+      { transform: "translate(0,0) scale(1)", opacity: 1 },
+      { transform: `translate(${dx * .5}px,${dy * .5 - 35}px) scale(1.2)`, opacity: 1, offset: .5 },
+      { transform: `translate(${dx}px,${dy}px) scale(.7)`, opacity: .2 },
+    ], 520);
+    if (motion) motion.finished.then(() => proxy.remove(), () => proxy.remove());
+    else proxy.remove();
+  }
+
+  function burst(destination, strong = false) {
+    animate(destination, [{ filter: "brightness(1)" }, { filter: "brightness(1.5)", offset: .35 }, { filter: "brightness(1)" }], 480);
+    if (reducedMotion()) return;
+    const layer = $("nestEffects");
+    const root = layer.getBoundingClientRect();
+    const rect = destination.getBoundingClientRect();
+    const scale = root.width / layer.clientWidth || 1;
+    for (let i = 0; i < (strong ? 16 : 8); i += 1) {
+      const spark = document.createElement("i");
+      spark.className = "nest-spark";
+      spark.style.left = (rect.left + rect.width / 2 - root.left) / scale + "px";
+      spark.style.top = (rect.top + rect.height / 2 - root.top) / scale + "px";
+      layer.append(spark);
+      const angle = i * Math.PI * 2 / (strong ? 16 : 8);
+      const distance = strong ? 72 : 38;
+      const motion = animate(spark, [{ transform: "translate(0,0)", opacity: 1 },
+        { transform: `translate(${Math.cos(angle) * distance}px,${Math.sin(angle) * distance}px) rotate(120deg)`, opacity: 0 }], strong ? 700 : 460);
+      if (motion) motion.finished.then(() => spark.remove(), () => spark.remove());
+      else spark.remove();
+    }
+  }
 
   function renderMain() {
     $("mainProgress").textContent = copy("progress", { count: state.completed.length });
@@ -167,7 +238,7 @@
   }
 
   function updateBalance() {
-    const clue = state.clues.at(-1);
+    const clue = pendingPair ? { pair: pendingPair } : state.clues.at(-1);
     const beam = $("balanceBeam");
     const left = $("balanceLeft");
     const right = $("balanceRight");
@@ -186,13 +257,13 @@
     const first = clue.pair[0];
     const second = clue.pair[1];
     const difference = round.weights[first] - round.weights[second];
-    const angle = Math.max(-7, Math.min(7, difference * -1.25));
+    const angle = pendingPair ? 0 : Math.sign(difference) * -9;
     beam.style.setProperty("--beam-tilt", angle + "deg");
     left.querySelector(".balance-icon").className = "balance-icon tray-icon material-" + round.materials[first];
     right.querySelector(".balance-icon").className = "balance-icon tray-icon material-" + round.materials[second];
     left.querySelector(".balance-label").textContent = materialName(round.materials[first]);
     right.querySelector(".balance-label").textContent = materialName(round.materials[second]);
-    const outcome = difference === 0 ? "equal" : difference > 0 ? "left" : "right";
+    const outcome = pendingPair ? "unknown" : difference === 0 ? "equal" : difference > 0 ? "left" : "right";
     $("balanceVisual").dataset.result = outcome;
     if (renderedClueCount !== state.clues.length) {
       renderedClueCount = state.clues.length;
@@ -205,31 +276,62 @@
 
   function renderBattle() {
     const round = rounds[state.round];
+    const info = knowledge();
     $("roundHint").textContent = copy(round.hint);
     $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length });
     $("requestText").textContent = copy(round.request);
-    $("comparisonCount").textContent = copy("evidenceCount", { count: state.comparisons, total: round.minimumComparisons });
+    $("comparisonCount").textContent = copy("weighCount", { count: state.comparisons });
     $("materialBoard").style.setProperty("--material-count", round.materials.length);
     $("materialBoard").setAttribute("aria-label", copy(state.phase === "compare" ? "compareTitle" : "answerTitle"));
-    $("materialBoard").innerHTML = round.materials.map((_material, index) => trayMarkup(round, index)).join("");
+    const board = $("materialBoard");
+    const boardKey = state.round + ":" + state.locale;
+    if (board.dataset.boardKey !== boardKey) {
+      board.innerHTML = round.materials.map((_material, index) => trayMarkup(round, index)).join("");
+      board.dataset.boardKey = boardKey;
+      board.querySelectorAll(".tray-card").forEach((card) => {
+        const badge = document.createElement("small");
+        badge.className = "tray-rank";
+        card.append(badge);
+      });
+    }
+    board.querySelectorAll(".tray-card").forEach((card, index) => {
+      const selected = state.phase === "compare" ? state.selectedPair.includes(index) : state.selectedTarget === index;
+      const possible = info.candidates.includes(index);
+      const { min, max } = info.bounds[index];
+      card.classList.toggle("is-selected", selected);
+      card.classList.toggle("is-eliminated", !possible);
+      card.classList.toggle("is-proven", info.proven === index);
+      card.setAttribute("aria-pressed", String(selected));
+      const rank = copy("rankRange", { min: min + 1, max: max + 1 });
+      card.querySelector(".tray-rank").textContent = info.proven === index ? "✓" : !possible ? "×" : `${min + 1}–${max + 1}`;
+      card.setAttribute("aria-label", copy(state.phase === "compare" ? "compareTray" : "answerTray", { name: materialName(round.materials[index]) }) + ". " + rank + ". " + copy(possible ? "candidate" : "ruledOut"));
+      card.disabled = state.busy;
+    });
+    $("deductionText").textContent = copy(info.proven !== null ? "proofReady" : "candidatesLeft", { count: info.candidates.length });
+    $("deductionMeter").style.setProperty("--proof-progress", ((round.materials.length - info.candidates.length) / (round.materials.length - 1) * 100) + "%");
+    $("deductionMeter").classList.toggle("is-proven", info.proven !== null);
     $("phaseLabel").textContent = copy(state.phase === "compare" ? "weighStep" : "chooseStep");
-    $("phaseActionBtn").textContent = copy(state.phase === "compare" ? "compare" : "check");
-    $("phaseActionBtn").disabled = state.phase === "compare" ? state.selectedPair.length !== 2 : state.selectedTarget === null;
+    $("phaseActionBtn").textContent = copy(state.busy ? "weighing" : state.phase === "compare" ? "compare" : "check");
+    $("phaseActionBtn").disabled = state.busy || (state.phase === "compare" ? state.selectedPair.length !== 2 : state.selectedTarget === null);
     const phaseToggle = $("phaseToggleBtn");
-    const showPhaseToggle = state.phase !== "compare" || state.comparisons >= round.minimumComparisons;
+    const showPhaseToggle = true;
     phaseToggle.hidden = !showPhaseToggle;
     if (showPhaseToggle) phaseToggle.setAttribute("data-wp-frame-action", "secondary");
     else phaseToggle.removeAttribute("data-wp-frame-action");
     phaseToggle.textContent = copy(state.phase === "compare" ? "chooseAction" : "compareMore");
+    phaseToggle.disabled = state.busy;
+    $("clearSelectionBtn").disabled = state.busy;
+    $("compareHeading").textContent = copy(state.phase === "compare" ? "compareTitle" : "answerTitle");
     $("comparisonText").textContent = comparisonMessage();
     $("comparisonText").classList.toggle("has-comparison", state.clues.length > 0);
     $("comparisonText").classList.toggle("is-repeat", state.lastFeedback === "pairAlreadyKnown");
-    const status = state.wrong ? copy("wrong")
+    const status = state.busy ? copy("weighing") : state.wrong ? copy("wrong")
       : state.lastFeedback === "pairAlreadyKnown" ? copy("pairAlreadyKnown")
       : state.lastFeedback === "needPair" ? copy("needPair")
       : state.lastFeedback === "needAnswer" ? copy("needAnswer")
-      : state.comparisons < round.minimumComparisons ? (state.comparisons ? copy("needMoreComparisons", { count: round.minimumComparisons }) : copy("ready"))
-      : state.phase === "answer" ? copy("chooseAfterCompare") : copy("ready");
+      : state.lastFeedback === "needProof" ? copy("needProof")
+      : state.lastFeedback === "inferredPair" ? copy("inferredPair")
+      : info.proven !== null ? copy("proofReady") : copy("strategyHelp");
     $("battleStatus").textContent = status;
     $("battleStatus").classList.toggle("is-wrong", state.wrong);
     $("mistakeCount").textContent = copy("mistakesCount", { count: state.mistakes });
@@ -241,6 +343,7 @@
   }
 
   function compareSelected() {
+    if (state.busy || state.resultVisible) return;
     if (state.selectedPair.length !== 2) {
       state.lastFeedback = "needPair";
       $("battleStatus").textContent = copy("needPair");
@@ -249,27 +352,60 @@
     }
     const pair = uniqueSorted(state.selectedPair);
     const key = pair.join(":");
-    state.selectedPair = [];
     if (state.knownPairs.has(key)) {
       state.lastFeedback = "pairAlreadyKnown";
       state.wrong = false;
       renderBattle();
+      animate($("comparisonText"), [{ opacity: .4 }, { opacity: 1 }]);
       return;
     }
+    const info = knowledge();
+    if (info.below[pair[0]][pair[1]] || info.below[pair[1]][pair[0]]) {
+      state.lastFeedback = "inferredPair";
+      renderBattle();
+      animate($("comparisonText"), [{ opacity: .4 }, { opacity: 1 }]);
+      return;
+    }
+    const sources = pair.map((index) => $("materialBoard").querySelector(`[data-material-tray="${index}"] .tray-icon`).getBoundingClientRect());
+    pendingPair = pair;
+    state.busy = true;
+    state.lastFeedback = "";
+    renderBattle();
+    $("balanceVisual").classList.add("is-loading");
+    pair.forEach((index, i) => flyMaterial(index, sources[i], $(i === 0 ? "balanceLeft" : "balanceRight")));
+    revealTimer = window.setTimeout(revealComparison, reducedMotion() ? 100 : 620);
+  }
+
+  function revealComparison() {
+    if (!pendingPair) return;
+    const pair = pendingPair;
+    const previous = knowledge().candidates.length;
+    window.clearTimeout(revealTimer);
+    revealTimer = null;
+    pendingPair = null;
+    state.busy = false;
+    $("balanceVisual").classList.remove("is-loading");
+    state.selectedPair = [];
+    const key = pair.join(":");
+    const round = rounds[state.round];
+    const [lighter, heavier] = round.weights[pair[0]] < round.weights[pair[1]] ? pair : [pair[1], pair[0]];
     state.knownPairs.add(key);
-    state.clues.push({ pair });
+    state.clues.push({ pair, lighter, heavier });
     state.comparisons = state.clues.length;
     state.selectedTarget = null;
-    if (state.comparisons >= rounds[state.round].minimumComparisons) state.phase = "answer";
+    if (knowledge().proven !== null) state.phase = "answer";
     state.lastFeedback = "";
     state.wrong = false;
     playSound("feedback.hint");
     renderBattle();
+    animate($("comparisonText"), [{ opacity: .2, transform: "translateY(5px)" }, { opacity: 1, transform: "translateY(0)" }]);
+    if (knowledge().candidates.length < previous) burst($("deductionMeter"));
+    if (knowledge().proven !== null) animate($("nestCompanion"), [{ transform: "translateY(0)" }, { transform: "translateY(-9px)", offset: .5 }, { transform: "translateY(0)" }], 420);
   }
 
   function togglePhase() {
+    if (state.busy || state.resultVisible) return;
     if (state.phase === "compare") {
-      if (state.comparisons < rounds[state.round].minimumComparisons) return;
       state.phase = "answer";
       state.selectedTarget = null;
     } else {
@@ -280,9 +416,11 @@
     state.wrong = false;
     state.lastFeedback = "";
     renderBattle();
+    animate($("materialBoard"), [{ opacity: .6 }, { opacity: 1 }]);
   }
 
   function clearPair() {
+    if (state.busy || state.resultVisible) return;
     state.selectedPair = [];
     state.selectedTarget = null;
     state.wrong = false;
@@ -291,9 +429,8 @@
   }
 
   function chooseRank() {
-    const extraComparisons = Math.max(0, state.comparisons - rounds[state.round].minimumComparisons);
-    if (state.mistakes === 0 && extraComparisons === 0) return 3;
-    if (state.mistakes <= 1 && extraComparisons <= 1) return 2;
+    if (state.mistakes === 0) return 3;
+    if (state.mistakes <= 1) return 2;
     return 1;
   }
 
@@ -358,6 +495,7 @@
   }
 
   function resetRound({ replay = false } = {}) {
+    cancelMotion();
     state.selectedPair = [];
     state.selectedTarget = null;
     state.clues = [];
@@ -392,6 +530,7 @@
   }
 
   function openLeaveDialog() {
+    revealComparison();
     returnFocus = document.activeElement;
     $("leaveTitle").textContent = copy("leaveTitle");
     $("leaveCopy").textContent = copy("leaveCopy");
@@ -404,6 +543,7 @@
   }
 
   function setScreen(screen) {
+    if (screen !== "battle") cancelMotion();
     state.screen = screen;
     document.body.dataset.screen = screen;
     $("mainGroup").hidden = screen !== "main";
@@ -453,22 +593,28 @@
   }
 
   function checkRound() {
-    if (state.comparisons < rounds[state.round].minimumComparisons) {
-      state.lastFeedback = "needMoreComparisons";
-      $("battleStatus").textContent = copy("needMoreComparisons", { count: rounds[state.round].minimumComparisons });
-      return;
-    }
+    if (state.busy || state.resultVisible) return;
     if (state.phase !== "answer" || state.selectedTarget === null) {
       state.lastFeedback = "needAnswer";
       $("battleStatus").textContent = copy("needAnswer");
       playSound("feedback.error");
       return;
     }
-    if (state.selectedTarget === targetIndex(rounds[state.round])) {
+    const info = knowledge();
+    if (info.candidates.includes(state.selectedTarget) && info.proven === null) {
+      state.lastFeedback = "needProof";
+      renderBattle();
+      animate($("deductionMeter"), [{ opacity: .4 }, { opacity: 1 }]);
+      return;
+    }
+    if (state.selectedTarget === info.proven) {
+      const source = $("materialBoard").querySelector(`[data-material-tray="${state.selectedTarget}"] .tray-icon`).getBoundingClientRect();
       state.wrong = false;
       state.lastRecordIsNewBest = false;
       state.lastFeedback = "";
       showResult();
+      flyMaterial(state.selectedTarget, source, $("resultPanel").querySelector(".result-art"));
+      burst($("resultPanel").querySelector(".result-art"), true);
       return;
     }
     state.wrong = true;
@@ -534,7 +680,7 @@
     $("clearSelectionBtn").addEventListener("click", clearPair);
     $("materialBoard").addEventListener("click", (event) => {
       const card = event.target.closest("[data-material-tray]");
-      if (!card) return;
+      if (!card || state.busy || state.resultVisible) return;
       const index = Number(card.dataset.materialTray);
       if (state.phase === "compare") {
         state.selectedPair = state.selectedPair.includes(index)
@@ -577,7 +723,10 @@
       }
     });
     $("localeSelect").addEventListener("change", (event) => applyLocale(event.target.value, true));
-    window.addEventListener("pagehide", () => stageController?.destroy(), { once: true });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) { revealComparison(); cancelMotion(); }
+    });
+    window.addEventListener("pagehide", () => { cancelMotion(); stageController?.destroy(); }, { once: true });
   }
 
   function mountFrame() {
@@ -629,6 +778,6 @@
     }
   }
 
-  window.__ANIMAL_NEST_WEIGH_TEST__ = { state, rounds, targetIndex, startRound, applyLocale, compareSelected, checkRound };
+  window.__ANIMAL_NEST_WEIGH_TEST__ = { state, rounds, targetIndex, startRound, applyLocale, compareSelected, checkRound, knowledge, revealComparison, cancelMotion };
   init();
 })();
