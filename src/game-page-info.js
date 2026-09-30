@@ -697,7 +697,7 @@
       parent:
         "This game may support simple planning, attention, sequencing, and discussion about animal care. Adults can ask why the player saved tickets, selected one care activity, or moved an animal. There is no combat, ranking pressure, account requirement, or advertising request on this Kids page. Challenge progress, upgrades, and reports are playful local feedback, not a school, health, or developmental assessment.",
       faq: [
-        ["How many challenges are there?", "There are 30 saved challenges in six arcs, with friendly reviews at Stages 5, 10, 15, 20, 25, and 30."],
+        ["How many challenges are there?", "There are 30 saved challenges in six groups of five. Challenges 5, 10, 15, 20, 25, and 30 are friendly park check-ins."],
         ["Why should I leave the ticket box full?", "Some challenges ask the park to prepare a ready box. Collect only after that goal is satisfied."],
         ["What is the difference between the care actions?", "Tidy Habitat raises happiness. Enrichment Time awards tickets. Both share a short cooldown."],
         ["How does habitat arranging count?", "Drag an animal to a noticeably different meadow position; tiny accidental movement does not count."],
@@ -10469,7 +10469,7 @@
     if (!segment) return Promise.resolve();
     const promise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL(`runtime-locales/${segment}.js?v=20260910-auto-squad-relic-free-v1`, sharedAssetBase).href;
+      script.src = new URL(`runtime-locales/${segment}.js?v=20260930-zoo-star-memory-runtime-guide-v1`, sharedAssetBase).href;
       script.dataset.wpGamePageInfoRuntimeLocale = activeLocale;
       script.onload = resolve;
       script.onerror = () => {
@@ -10545,7 +10545,7 @@
     if (japaneseResourcePromise) return japaneseResourcePromise;
     japaneseResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-ja.js?v=20260827-shadow-wolf-ja-guide-v1", sharedAssetBase).href;
+      script.src = new URL("game-page-info-ja.js?v=20260930-zoo-idle-ja-guide-v1", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "ja";
       script.onload = () => { installJapaneseResource(); resolve(); };
       script.onerror = () => { japaneseResourceFailed = true; resolve(); };
