@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260918-ui-fix1">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="frame-content.css?v=20261001-zhao-v39-battle-feel">
+  <link rel="stylesheet" href="frame-content.css?v=20261001-zhao-v40-strategy">
   <meta name="description" content="Tap a troop card to deploy. Soldiers advance and fight automatically." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -101,15 +101,15 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>World and Mission</h3><p>Protect A Dou and destroy the enemy fortress.</p></div>
       <div class="game-info-section"><h3>How the Systems Work</h3><p>Tap a troop card to deploy. Soldiers advance and fight automatically.</p>
-<p>Four free starters. Collect 10 shards to unlock each new character; take any four into battle.</p>
+<p>Train permanently with coins: +4% HP and +3% attack per level, up to Lv.20. Shards unlock characters and raise stars.</p>
 <p>Free: 3–6 shards + 10 diamonds. Coins: 2–5 shards. Diamonds: 12–20 shards.</p>
 <p>Supplies recover automatically. Cards show cost and cooldown. Zhao Yun damages and pushes back all enemies.</p></div>
       <div class="game-info-section"><h3>How to Play</h3><ol><li>Tap a troop card to deploy. Soldiers advance and fight automatically.</li><li>Protect archers with guards; save the charge for danger.</li><li>Supplies recover automatically. Cards show cost and cooldown. Zhao Yun damages and pushes back all enemies.</li><li>Protect A Dou and destroy the enemy fortress.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Protect archers with guards; save the charge for danger.</li><li>Bombers light a long fuse and hit a group. Interrupt with Zhao Yun’s charge.</li><li>Drummers speed nearby attacks. Archers prioritize support troops.</li><li>Heavy crossbows pierce two troops. Use cavalry to close the distance.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Four free starters. Collect 10 shards to unlock each new character; take any four into battle. Free: 3–6 shards + 10 diamonds. Coins: 2–5 shards. Diamonds: 12–20 shards. Unlock: 10 shards. Upgrade costs: 20/30/45/65/90/120/160/210/270, up to 10 stars. Each extra star adds 12% HP and 10% attack. Choose supply, guard or charge talents in Stages. Reset freely.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>Choose supply, guard or charge talents in Stages. Reset freely.</p></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Train permanently with coins: +4% HP and +3% attack per level, up to Lv.20. Shards unlock characters and raise stars. Free: 3–6 shards + 10 diamonds. Coins: 2–5 shards. Diamonds: 12–20 shards. Choose ONE doctrine. Switch freely before battle.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Choose ONE doctrine. Switch freely before battle.</p></div>
       <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Progress is stored locally in this browser.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Army</dt><dd>Base odds: common 72%, rare 24%, epic 4%; equal odds per character within each rarity. All packs share 10-draw rare+ and 30-draw epic guarantees. Unlock and upgrade with the card buttons. Extra shards at 10 stars become 5 coins each. Your four choices stay equipped.</dd></div><div><dt>Star up</dt><dd>Unlock: 10 shards. Upgrade costs: 20/30/45/65/90/120/160/210/270, up to 10 stars. Each extra star adds 12% HP and 10% attack.</dd></div><div><dt>Zhao Yun charge</dt><dd>Zhao Yun damages and pushes back all enemies.</dd></div><div><dt>Talents</dt><dd>Choose supply, guard or charge talents in Stages. Reset freely.</dd></div></dl></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Army</dt><dd>Base odds: common 72%, rare 24%, epic 4%; equal odds per character within each rarity. All packs share 10-draw rare+ and 30-draw epic guarantees. Unlock and upgrade with the card buttons. Extra shards at 10 stars become 5 coins each. Your four choices stay equipped.</dd></div><div><dt>Star up</dt><dd>Unlock: 10 shards. Upgrade costs: 20/30/45/65/90/120/160/210/270, up to 10 stars. Each extra star adds 12% HP and 10% attack.</dd></div><div><dt>Zhao Yun charge</dt><dd>Zhao Yun damages and pushes back all enemies.</dd></div><div><dt>Talents</dt><dd>Choose ONE doctrine. Switch freely before battle.</dd></div></dl></div>
 
     </div>
   </section>
@@ -131,12 +131,12 @@
     </div>
     <section id="armyPanel" class="stage-management" hidden aria-labelledby="armyTitle">
       <div class="army-summary"><strong id="armyTitle" data-t="army">Army</strong><span id="armyWallet"></span></div>
-      <div class="army-recruit"><button id="drawFree" data-t="freeDraw">Daily free</button><button id="drawOne" data-t="coinDraw">100 coins</button><button id="drawFive" data-t="diamondDraw">60 diamonds</button></div>
+      <details class="army-recruit-panel"><summary data-t="recruitPanel">Recruitment &amp; odds</summary><div class="army-recruit"><button id="drawFree" data-t="freeDraw">Daily free</button><button id="drawOne" data-t="coinDraw">100 coins</button><button id="drawFive" data-t="diamondDraw">60 diamonds</button></div>
       <p class="draw-help" data-t="drawHelp">Free: 3–6 shards + 10 diamonds. Coins: 2–5 shards. Diamonds: 12–20 shards.</p><p id="armyPity"></p>
-      <div id="drawResults" class="draw-results" role="status" aria-live="polite"></div>
+      <p><span data-t="common">Common</span> 72% · <span data-t="rare">Rare</span> 24% · <span data-t="epic">Epic</span> 4%</p><p data-t="armyOdds">Base odds: common 72%, rare 24%, epic 4%; equal odds per character within each rarity. All packs share 10-draw rare+ and 30-draw epic guarantees.</p><p data-t="armyStars">Unlock: 10 shards. Upgrade costs: 20/30/45/65/90/120/160/210/270, up to 10 stars. Each extra star adds 12% HP and 10% attack.</p><p data-t="armyAuto">Unlock and upgrade with the card buttons. Extra shards at 10 stars become 5 coins each. Your four choices stay equipped.</p><p data-t="freeReset">Free draw resets at 00:00 UTC. Progress is saved on this device; no purchases.</p></details><div id="drawResults" class="draw-results" role="status" aria-live="polite"></div>
       <div class="squad-heading"><strong id="collectionCount"></strong><span data-t="fourSlots">4 battle slots</span></div>
       <div id="armySquad" class="army-squad"></div><p id="squadHelp"></p>
-      <details><summary><span data-t="common">Common</span> 72% · <span data-t="rare">Rare</span> 24% · <span data-t="epic">Epic</span> 4%</summary><p data-t="armyOdds">Base odds: common 72%, rare 24%, epic 4%; equal odds per character within each rarity. All packs share 10-draw rare+ and 30-draw epic guarantees.</p><p data-t="armyStars">Unlock: 10 shards. Upgrade costs: 20/30/45/65/90/120/160/210/270, up to 10 stars. Each extra star adds 12% HP and 10% attack.</p><p data-t="armyAuto">Unlock and upgrade with the card buttons. Extra shards at 10 stars become 5 coins each. Your four choices stay equipped.</p><p data-t="freeReset">Free draw resets at 00:00 UTC. Progress is saved on this device; no purchases.</p></details>
+      <div class="army-roster-heading"><p data-t="trainingHelp">Train permanently with coins: +4% HP and +3% attack per level, up to Lv.20. Shards unlock characters and raise stars.</p><label><span data-t="rosterLabel">Roster</span><select id="armyFilter"><option value="owned" data-t="rosterOwned">Unlocked</option><option value="all" data-t="rosterAll">All characters</option></select></label></div>
       <div id="armyCards" class="army-cards"></div><p id="saveWarning" role="status" hidden></p>
     </section>
     <section id="talentPanel" class="stage-management" hidden></section>
@@ -229,14 +229,15 @@
   <script src="guide-copy.js?v=20260921-zhao-v38"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260927-zhao-v38-command-row"></script>
-  <script src="talents.js?v=20260921-zhao-v38"></script>
+  <script src="talents.js?v=20261001-zhao-v40-strategy"></script>
   <script src="talent-copy.js?v=20260921-zhao-v38"></script>
-  <script src="push-combat.js?v=20261001-zhao-v39-battle-feel"></script>
-  <script src="push-copy.js?v=20261001-zhao-v39-battle-feel"></script>
-  <script src="army.js?v=20260921-zhao-v38"></script>
+  <script src="push-combat.js?v=20261001-zhao-v40-strategy"></script>
+  <script src="push-copy.js?v=20261001-zhao-v40-strategy"></script>
+  <script src="army.js?v=20261001-zhao-v40-strategy"></script>
   <script src="army-copy.js?v=20260921-zhao-v38"></script>
-  <script src="game.js?v=20261001-zhao-v39-battle-feel&wp-audio=1.0.0"></script>
-  <script src="analytics-ownership.js?v=20261001-zhao-v39-battle-feel"></script>
+  <script src="strategy-copy.js?v=20261001-zhao-v40-strategy"></script>
+  <script src="game.js?v=20261001-zhao-v40-strategy&wp-audio=1.0.0"></script>
+  <script src="analytics-ownership.js?v=20261001-zhao-v40-strategy"></script>
 
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>

@@ -12,8 +12,8 @@ export class ZhaoBattle3D {
     catch(error){this.canvas.remove();this.geometry.dispose();throw error;}
     this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
     this.renderer.outputColorSpace=THREE.SRGBColorSpace;
-    this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.05;
-    this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0xa4c3bc);
+    this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.12;
+    this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0x193947);
     this.camera=new THREE.OrthographicCamera(-7,7,8,-8,.1,100);
     this.camera.position.set(0,9,19);
     this.camera.lookAt(0,.7,0);
@@ -48,10 +48,10 @@ export class ZhaoBattle3D {
       this.box(g,0,0,0,.25,.25,.25,0x433c37);this.glowBox(g,0,.18,0,.055,.12,.055,0xffbf66);
     }else if(f.kind==='deploy'){
       for(let i=0;i<4;i++){const a=i*Math.PI/2;this.glowBox(g,Math.cos(a)*.35,Math.sin(a)*.35,0,.22,.055,.04,0x83f7d4);}
-    }else if(f.kind==='supply'||f.kind==='combo'){
+    }else if(f.kind==='supply'||f.kind==='combo'||f.kind==='echo'){
       // These outcomes use readable DOM typography/transfer, no extra mesh.
-    }else if(f.kind==='blast'||f.kind==='rally'){
-      for(let i=0;i<8;i++){const a=i*Math.PI/4;const m=this.glowBox(g,Math.cos(a)*.55,Math.sin(a)*.55,0,.18,.07,.05,f.kind==='rally'?0xf0ce69:0xffa56d);m.rotation.z=a;}
+    }else if(['blast','rally','shieldBreak','fury'].includes(f.kind)){
+      for(let i=0;i<8;i++){const a=i*Math.PI/4;const m=this.glowBox(g,Math.cos(a)*.55,Math.sin(a)*.55,0,.18,.07,.05,f.kind==='shieldBreak'?0x82f1d5:f.kind==='fury'?0xff7355:f.kind==='rally'?0xf0ce69:0xffa56d);m.rotation.z=a;}
     }else if(f.kind==='arrow'){
       this.glowBox(g,0,0,0,.46,.035,.035,0xffedbe);this.glowBox(g,.24,0,0,.10,.10,.035,0xffffff);
     }else if(f.kind==='heal'){
@@ -76,38 +76,36 @@ export class ZhaoBattle3D {
   buildWorld(){
     const g=this.environment;
     // A single road, with paired fortresses. X is the combat axis; Y is up.
-    this.box(g,0,-.32,0,12,.6,3.8,0x596d5b);
-    this.box(g,0,-.035,0,11.6,.12,2.6,0xb6a783);
-    for(let x=-5;x<=5;x++)for(const z of [-.7,.7])this.box(g,x,.035,z,.94,.035,1.18,(x%2)?0xc6b894:0xafa585);
-    for(const z of [-1.65,1.65])for(let x=-5;x<=5;x+=.6)this.box(g,x,.05,z,.48,.17,.28,0x7f8870);
+    this.box(g,0,-.32,0,12,.6,3.8,0x38484b);
+    this.box(g,0,-.035,0,11.6,.12,2.6,0xa99a7a);
+    for(let x=-5;x<=5;x++)for(const z of [-.7,.7])this.box(g,x,.035,z,.94,.035,1.18,(x%2)?0xd2b994:0xbdab87);
+    for(const z of [-1.65,1.65])for(let x=-5;x<=5;x+=.6)this.box(g,x,.05,z,.48,.17,.28,0x586966);
     // Stone causeway above a river valley, with layered stepped silhouettes.
-    this.scene.fog=new THREE.Fog(0xa4c3bc,26,65);
-    this.box(g,0,-3.1,5,65,.12,55,0x568d8c);
+    this.scene.fog=new THREE.Fog(0x193947,25,62);
+    this.box(g,0,-3.1,5,65,.12,55,0x215362);
     for(const x of [-4.6,0,4.6]){
-      this.box(g,x,-1.45,0,.7,2.3,3.5,0x667970);
-      this.box(g,x,-2.65,0,1.1,.3,3.9,0x839086);
+      this.box(g,x,-1.45,0,.7,2.3,3.5,0x465456);
+      this.box(g,x,-2.65,0,1.1,.3,3.9,0x65706b);
     }
-    for(let i=0;i<11;i++){
-      const x=(i-5)*3.1,h=2.4+(i*7%5)*.65,z=-10-(i%3)*3;
-      const tint=i%2?0x66847b:0x748f81;
-      this.box(g,x,h/2-2,z,3.4,h,4,tint);
-      this.box(g,x+.2,h-2,z+.2,2.4,h*.55,2.7,tint);
-      this.box(g,x+.4,h*1.27-2,z+.3,1.25,.6,1.7,0x93aa91);
+    this.peakGeometry=new THREE.ConeGeometry(1,1,5);
+    for(let i=0;i<13;i++){
+      const x=(i-6)*2.7,h=4+(i*7%5)*.9,z=-17-(i%3)*5;
+      const peak=new THREE.Mesh(this.peakGeometry,this.mat(i%2?0x304e5d:0x496675));
+      peak.position.set(x,h/2-2,z);peak.scale.set(3.1,h,3.1);peak.rotation.y=i*.6;g.add(peak);
     }
     for(const side of [-1,1])for(let k=0;k<4;k++){
       const x=side*(5.3+k*.8),z=3.5+k*1.4;
-      this.box(g,x,-1.7,z,2.5,2,3,0x566f60);
-      this.box(g,x,-.6,z,2.4,.25,2.9,0x86916e);
+      this.box(g,x,-1.7,z,2.5,2,3,0x284e4b);
+      this.box(g,x,-.6,z,2.4,.25,2.9,0x4c7560);
       this.box(g,x+.1,.05,z,.25,1.2,.25,0x695742);
-      this.box(g,x,.8,z,1.4,.8,1.3,k%2?0x4f7962:0x64896a);
-      this.box(g,x,.8+.55,z,.9,.45,.8,0x7e9a73);
+      for(let tier=0;tier<2;tier++){const tree=new THREE.Mesh(this.peakGeometry,this.mat(k%2?0x2f685c:0x437963));tree.position.set(x,.65+tier*.65,z);tree.scale.set(1.05-tier*.25,1.7-tier*.3,1.05-tier*.25);g.add(tree);}
     }
     this.waterRipples=[];
-    for(let i=0;i<10;i++){const ripple=this.box(g,(i%5-2)*2.8,-3,5+Math.floor(i/5)*5,1.8,.025,.09,0x8db4a5);ripple.userData.restX=ripple.position.x;this.waterRipples.push(ripple);}
+    for(let i=0;i<24;i++){const ripple=this.box(g,(i%6-2.5)*2.4,-3,2+Math.floor(i/6)*3,1+(i%3)*.4,.025,.05,i%3?0x397282:0x75afa9);ripple.userData.restX=ripple.position.x;this.waterRipples.push(ripple);}
     this.flags=[];
     for(const side of [-1,1]){
       const base=new THREE.Group();base.position.x=side*5.1;g.add(base);
-      this.box(base,0,.7,0,1.3,1.4,1.8,side<0?0x6e8980:0x877c71);
+      this.box(base,0,.7,0,1.3,1.4,1.8,side<0?0x697f7e:0x877668);
       this.box(base,0,1.5,0,1.65,.25,2,side<0?0x327c75:0x794b40);
       this.box(base,0,1.73,0,1.35,.22,1.65,side<0?0x3e9b87:0x995e49);
       this.box(base,0,.65,1,.65,.9,.08,0x263d3b);
@@ -117,7 +115,21 @@ export class ZhaoBattle3D {
       this.box(flag,.32,0,0,.64,.55,.08,side<0?0x287d73:0xb45743);
       this.box(flag,.32,0,.055,.12,.24,.02,0xe2c878,true);
       if(side<0){this.camp=base;const baby=this.character('baby',false,false);baby.scale.setScalar(.6);baby.position.set(.2,1.85,.6);base.add(baby);}
-      else this.fortress=base;
+      else {this.fortress=base;this.fortShield=new THREE.Group();base.add(this.fortShield);for(const x of [-.88,.88])this.glowBox(this.fortShield,x,1.1,1.12,.07,2.2,.07,0xce9672);this.glowBox(this.fortShield,0,2.18,1.12,1.83,.07,.07,0xce9672);this.fortShield.visible=false;}
+    }
+    // Authored rail posts, suspended lanterns and stepped roof eaves.
+    for(const side of [-1,1]){
+      const x=side*5.4;
+      this.box(g,x,1.75,-1.3,.12,3.5,.12,0x514636);
+      this.box(g,x-side*.42,3.45,-1.3,.9,.13,.18,0x514636);
+      this.box(g,x-side*.72,3.12,-1.3,.035,.55,.035,0xae8b57);
+      this.glowBox(g,x-side*.72,2.85,-1.3,.3,.4,.3,0xffc66d);
+      this.box(g,x-side*.72,3.09,-1.3,.38,.07,.38,0x79634a);
+      for(const corner of [-1,1])this.box(g,x+corner*.7,1.7,0,.34,.14,2.1,side<0?0x3e9b87:0x995e49);
+      for(let i=0;i<4;i++){
+        const reed=this.box(g,side*(5.9+i*.23),-.6,2.7+i*.35,.07,.85,.07,0x8b9564);
+        reed.rotation.z=side*.18;
+      }
     }
     this.hero=this.character('horse',true,false);this.hero.scale.setScalar(1.05);this.hero.rotation.y=-Math.PI/2-.46;this.hero.position.set(-4.15,0,1);g.add(this.hero);
     this.chargeTrail=this.box(g,0,.09,0,8,.045,.7,0xe4bd62);this.chargeTrail.visible=false;
@@ -266,6 +278,9 @@ export class ZhaoBattle3D {
       this.flatBox(bar,0,0,0,.84,.105,.008,0x203b3d);
       obj.userData.health=this.flatBox(bar,0,0,.012,.78,.055,.008,enemy?0xef987a:0x6ae3be);
       obj.userData.healthBar=bar;
+      obj.userData.barrier=this.flatBox(bar,0,.14,.012,.78,.035,.008,0x91e7ff);
+      const aura=new THREE.Group();obj.add(aura);obj.userData.aura=aura;
+      for(let i=0;i<4;i++){const angle=i*Math.PI/2;const mesh=this.glowBox(aura,Math.cos(angle)*.44,.055,Math.sin(angle)*.44,.18,.055,.18,enemy?0xffad75:0xf7bc62);}
       this.actors.set(key,obj);this.scene.add(obj);}
     return obj;
   }
@@ -330,6 +345,8 @@ export class ZhaoBattle3D {
       const healthRatio=Math.max(0,Math.min(1,a.hp/a.maxHp));
       data.health.scale.x=.78*healthRatio;data.health.position.x=-.39*(1-healthRatio);
       data.healthBar.visible=a.hp>0;
+      data.barrier.visible=a.hp>0&&a.barrier>0;data.barrier.scale.x=.78*Math.max(0,(a.barrier||0)/(a.maxBarrier||1));
+      data.aura.visible=!a.enemy&&a.hp>0&&battle.furyTicks>0;data.aura.rotation.y=this.reduced?0:(this.ambientTime||0)*2;
       if(a.boss&&a.hp>0){const label='boss'+a.id;labelKeys.add(label);this.label(label,battle.bossLabel||'',worldX(x),2.5,0,'boss');}
     }
     for(const [key,obj] of this.actors)if(!active.has(key)){this.scene.remove(obj);this.actors.delete(key);}
@@ -351,7 +368,7 @@ export class ZhaoBattle3D {
       const power=f.strong?1.35:1;
       obj.scale.setScalar(projectile?1:power*(this.reduced?.65:Math.max(.05,1-progress*.8)));
       if(projectile){obj.visible=age>=(f.kind==='rocket'?3:duration-1)&&age<=duration;obj.rotation.z=f.enemy?Math.PI:0;if(f.kind==='bomb')obj.position.y+=Math.sin(flight*Math.PI)*.7;if(f.kind==='rocket')obj.position.y+=Math.sin(rocketFlight*Math.PI)*.8;}
-      if(f.kind==='blast'||f.kind==='rally')obj.scale.setScalar(this.reduced?.8:.5+progress*1.7);
+      if(['blast','rally','shieldBreak','fury'].includes(f.kind))obj.scale.setScalar(this.reduced?.8:.5+progress*1.7);
       if(f.kind==='attack'){obj.rotation.z=(f.enemy?Math.PI:0)+Math.max(0,age-2)*.55;obj.scale.setScalar(1.2);}
       if(f.kind==='deploy'){obj.position.y=.12;obj.scale.setScalar(this.reduced?.7:.5+progress);}
       for(const m of obj.children)if(m.userData.sparkAngle!=null){
@@ -372,6 +389,7 @@ export class ZhaoBattle3D {
     this.chargeTrail.scale.z=battle.chargeBoosted?1.45:1;
     this.canvas.style.transform=!this.reduced&&!paused&&now<this.joltUntil?'translate('+Math.sin(now*.11)*this.joltPower+'px,'+Math.cos(now*.13)*this.joltPower*.6+'px)':'';
     this.camp.rotation.z=!this.reduced&&battle.campFlash>0?Math.sin(time*50)*.025:0;
+    this.fortShield.visible=battle.enemies.some(enemy=>enemy.boss&&enemy.hp>0);
     if(battle.result)this.renderFinale(battle);
     this.renderer.render(this.scene,this.camera);const r=this.renderer.info;
     Object.assign(this.info,{frames:this.info.frames+1,drawCalls:r.render.calls,triangles:r.render.triangles,geometries:r.memory.geometries,textures:r.memory.textures,actors:this.actors.size,effects:this.fx.size});
@@ -389,7 +407,7 @@ export class ZhaoBattle3D {
     this.finalFragments.position.x=base.position.x;
     for(const m of this.finalFragments.children){const i=m.userData.seed,a=i*2.4;m.position.set(Math.cos(a)*p*1.7,.9+Math.sin(p*Math.PI)*1.1-p*.9,Math.sin(a)*p*1.3);m.rotation.set(p*4+i,p*3,0);m.scale.setScalar(.15*(1-p*.7));}
   }
-  dispose(){if(this.disposed)return;this.disposed=true;for(const bar of this.campBars)bar.hidden=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);this.geometry.dispose();for(const mat of this.materials.values())mat.dispose();this.materials.clear();this.actors.clear();this.fx.clear();for(const node of this.labels.values())node.remove();this.labels.clear();this.lastBattle=null;this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.canvas.remove();}
+  dispose(){if(this.disposed)return;this.disposed=true;for(const bar of this.campBars)bar.hidden=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);this.geometry.dispose();this.peakGeometry?.dispose();for(const mat of this.materials.values())mat.dispose();this.materials.clear();this.actors.clear();this.fx.clear();for(const node of this.labels.values())node.remove();this.labels.clear();this.lastBattle=null;this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.canvas.remove();}
 }
 
 // Production portraits are rendered from the exact authored combat rigs.

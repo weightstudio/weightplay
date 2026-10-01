@@ -22,7 +22,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v62";
+  const GAME_VERSION="v63";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -1411,7 +1411,10 @@
     // Aligned square facets replace the old staggered brick courses. Keep
     // their displayed proportions square even on the portrait battle canvas.
     const bounds=canvas.getBoundingClientRect(),tileW=36;
-    const tileH=tileW*(bounds.width/1000)/(Math.max(1,bounds.height)/620);
+    // Result/exit can hide the canvas between update and this RAF. A zero
+    // tile height would make the row loop advance by zero forever.
+    const tileH=bounds.width>0&&bounds.height>0
+      ?Math.max(1,tileW*(bounds.width/1000)/(bounds.height/620)):tileW;
     for(let row=0,ty=y+top;ty<y+h;row++,ty+=tileH){
       for(let col=0,tx=x;tx<x+w;col++,tx+=tileW){
         const shade=(col*7+row*11)%5;
@@ -1518,6 +1521,11 @@
     ctx.restore();
   }
   function draw(){
+    // finish() hides battleLive synchronously. Do not render its zero-sized
+    // canvas on the remainder of that frame or while Result/Stage is active.
+    if(screen!=="battle"||state.result||$("battleLive").hidden)return;
+    const bounds=canvas.getBoundingClientRect();
+    if(bounds.width<=0||bounds.height<=0)return;
     const spec=level(stageIndex);ctx.clearRect(0,0,1000,620);
     const sceneBackground=themeBackgrounds[spec.chapter];
     if(sceneBackground.complete&&sceneBackground.naturalWidth){

@@ -7,11 +7,12 @@ import {CATALOG, LOCALE_ORDER, LOCALE_NAMES, detectLocale, translate} from './lo
 import {renderGuide} from './guide.mjs';
 
 const $ = id => document.getElementById(id);
-const POSTER_URL = new URL('../../Assets/block-apex-poster.webp', import.meta.url).href;
+// Public sync merges both tracked asset trees into the lowercase /assets route.
+const POSTER_URL = new URL('../../assets/block-apex-poster.webp', import.meta.url).href;
 const UPGRADE_ICON_URLS = Object.freeze({
-  engine:new URL('../../Assets/block-apex-engine-upgrade.webp',import.meta.url).href,
-  tires:new URL('../../Assets/block-apex-tire-upgrade.webp',import.meta.url).href,
-  tank:new URL('../../Assets/block-apex-nitro-upgrade.webp',import.meta.url).href,
+  engine:new URL('../../assets/block-apex-engine-upgrade.webp',import.meta.url).href,
+  tires:new URL('../../assets/block-apex-tire-upgrade.webp',import.meta.url).href,
+  tank:new URL('../../assets/block-apex-nitro-upgrade.webp',import.meta.url).href,
 });
 const life = new AbortController();
 const listen = (node, type, fn, options={}) => node.addEventListener(type, fn, {...options, signal:life.signal});

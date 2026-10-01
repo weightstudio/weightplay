@@ -7120,7 +7120,7 @@ window.WONDER_LOBBY.games.push({
   relatedGameRules: { gameIds: ["snake", "space-rocks"], requirePlayable: true, basis: ["Reaction", "Focus"] },
   href: "games/block-apex/",
   meta: { en: ["30 Stages", "Drift & Boost"], "zh-Hant": ["30 場賽事", "甩尾加速"], "zh-Hans": ["30 场赛事", "甩尾加速"], ja: ["全30レース", "ドリフト＆ブースト"], ko: ["30개 레이스", "드리프트와 부스트"], es: ["30 carreras", "Derrape y nitro"], "pt-BR": ["30 corridas", "Derrapagem e nitro"], fr: ["30 courses", "Drift et turbo"], de: ["30 Rennen", "Drift und Turbo"], it: ["30 gare", "Derapata e turbo"], ru: ["30 гонок", "Дрифт и ускорение"], hi: ["30 रेस", "ड्रिफ्ट और नाइट्रो"], ar: ["30 سباقًا", "انجراف وتعزيز"] },
-  art: { kind: "image", background: "Assets/block-apex-poster.webp", hideHero: true },
+  art: { kind: "image", background: "assets/block-apex-poster.webp", hideHero: true },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("block-apex");
 

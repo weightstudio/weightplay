@@ -1,9 +1,14 @@
 /* Deterministic rules shared by runtime and focused tests. No storage/UI ownership. */
 (() => {
-  const branches=['supply','guard','charge'];
-  const nodes=branches.flatMap(branch=>[1,2,3].map(tier=>({id:branch+tier,branch,tier,parent:tier>1?branch+(tier-1):null,art:{supply:'spear',guard:'blade',charge:'horse'}[branch]})));
-  const points=stars=>Math.min(5,2+Math.floor((Array.isArray(stars)?stars:[]).filter(n=>n>0).length/3));
-  function normalize(value,stars){const picked=[];for(const node of nodes)if(Array.isArray(value)&&value.includes(node.id)&&(!node.parent||picked.includes(node.parent))&&picked.length<points(stars))picked.push(node.id);return picked;}
+  const branches=['fury','aegis','storm'];
+  const nodes=branches.map(id=>({id,branch:id,tier:1,parent:null,art:{fury:'blade',aegis:'spear',storm:'horse'}[id]}));
+  const points=()=>1;
+  function normalize(value){
+    const saved=Array.isArray(value)?value:[];
+    const current=saved.find(id=>branches.includes(id));if(current)return [current];
+    const old=[['fury','supply'],['aegis','guard'],['storm','charge']].map(([id,prefix])=>({id,count:saved.filter(key=>String(key).startsWith(prefix)).length}));
+    old.sort((a,b)=>b.count-a.count);return [old[0].id];
+  }
   function roll(random=Math.random,misses=0){
     const rarity=random(),unit=random();let level=rarity<.02?4:rarity<.18?2:1;
     if(misses>=7&&level===1)level=2;

@@ -27,8 +27,8 @@
   const card=id=>cards.find(c=>c.id===id);
   const utcDay=(now=Date.now())=>Math.floor(now/86400000);
   function normalize(saved) {
-    const current=saved?.schema===2,legacy=saved?.schema===1;
-    const army={schema:2,coins:current?integer(saved.coins):400+(legacy?integer(saved.seals)*100+integer(saved.dust)*5:0),
+    const current=[2,3].includes(saved?.schema),legacy=saved?.schema===1;
+    const army={schema:3,coins:current?integer(saved.coins):400+(legacy?integer(saved.seals)*100+integer(saved.dust)*5:0),
       diamonds:current?integer(saved.diamonds):120,draws:integer(saved?.draws),rarePity:integer(saved?.rarePity,9),epicPity:integer(saved?.epicPity,29),
       freeDay:current&&Number.isInteger(saved.freeDay)?Math.max(-1,saved.freeDay):-1,owned:{},equipped:[]};
     for(const c of cards){
@@ -36,17 +36,19 @@
       let stars=base,shards=0;
       if(current){stars=Math.max(base,integer(entry?.stars,10));shards=integer(entry?.shards);}
       else if(legacy){const copies=integer(entry,15),old=[1,3,6,10,15];stars=Math.max(base,old.filter(n=>copies>=n).length);if(stars&&stars<5)shards=Math.floor((copies-old[stars-1])/(old[stars]-old[stars-1])*upgradeCosts[stars-1]);}
-      army.owned[c.id]={stars,shards:stars===10?0:Math.max(0,shards)};
+      army.owned[c.id]={stars,shards:stars===10?0:Math.max(0,shards),training:stars?Math.max(1,integer(entry?.training,20)):0};
     }
     const selected=current?saved.equipped:legacy?roles.map(role=>saved.equipped?.[role]):starters;
     for(const id of [...(Array.isArray(selected)?selected:[]),...starters])if(card(id)&&army.owned[id].stars>0&&!army.equipped.includes(id)&&army.equipped.length<4)army.equipped.push(id);
     army.coins=integer(army.coins);return army;
   }
-  function stats(army,id){const c=card(id),entry=army.owned[id];return {...c,stars:entry.stars,hp:1+c.rarity*.15+Math.max(0,entry.stars-1)*.12,damage:1+c.rarity*.15+Math.max(0,entry.stars-1)*.10};}
+  function stats(army,id){const c=card(id),entry=army.owned[id],level=Math.max(1,entry.training||1);return {...c,stars:entry.stars,training:level,hp:(1+c.rarity*.15+Math.max(0,entry.stars-1)*.12)*(1+(level-1)*.04),damage:(1+c.rarity*.15+Math.max(0,entry.stars-1)*.10)*(1+(level-1)*.03)};}
+  function trainingCost(army,id){const entry=army.owned[id];return !entry?.stars||entry.training>=20?0:60+30*(Math.max(1,entry.training||1)-1);}
+  function train(army,id){const cost=trainingCost(army,id);if(!cost||army.coins<cost)return false;army.coins-=cost;army.owned[id].training=Math.max(1,army.owned[id].training||1)+1;return true;}
   function loadout(army){return Object.fromEntries(army.equipped.map(id=>[id,stats(army,id)]));}
   function equip(army,id,slot=0){if(!card(id)||!army.owned[id]?.stars||!Number.isInteger(slot)||slot<0||slot>3||army.equipped.includes(id))return false;army.equipped[slot]=id;return true;}
   function needed(army,id){const star=army.owned[id].stars;return star===0?10:star>=10?0:upgradeCosts[star-1];}
-  function upgrade(army,id){if(!card(id))return false;const entry=army.owned[id],cost=needed(army,id);if(!cost||entry.shards<cost)return false;entry.shards-=cost;entry.stars++;if(entry.stars===10){army.coins=integer(army.coins+entry.shards*5);entry.shards=0;}return true;}
+  function upgrade(army,id){if(!card(id))return false;const entry=army.owned[id],cost=needed(army,id);if(!cost||entry.shards<cost)return false;entry.shards-=cost;entry.stars++;entry.training=Math.max(1,entry.training||1);if(entry.stars===10){army.coins=integer(army.coins+entry.shards*5);entry.shards=0;}return true;}
   function grant(army,id,amount){const entry=army.owned[id];if(entry.stars===10){const coins=amount*5;army.coins=integer(army.coins+coins);return coins;}entry.shards=integer(entry.shards+amount);return 0;}
   function canDraw(army,kind,now=Date.now()){const pack=packs[kind];return Boolean(pack&&(kind==='free'?utcDay(now)>army.freeDay:army[pack.currency]>=pack.cost));}
   function draw(army,kind='coin',random=Math.random,now=Date.now()){
@@ -62,5 +64,5 @@
     return {id:c.id,rarity,amount,coins,ready:needed(army,c.id)>0&&army.owned[c.id].shards>=needed(army,c.id),unlocked:army.owned[c.id].stars>0,diamonds:kind==='free'?10:0};
   }
   function reward(army,level,first){const amount={coins:first?(level.bossKind?300:180):60,diamonds:first?(level.bossKind?40:15):0};army.coins=integer(army.coins+amount.coins);army.diamonds=integer(army.diamonds+amount.diamonds);return amount;}
-  window.ZhaoArmy={cards,roles,starters,upgradeCosts,packs,card,utcDay,normalize,stats,loadout,equip,needed,upgrade,grant,canDraw,draw,reward};
+  window.ZhaoArmy={cards,roles,starters,upgradeCosts,packs,card,utcDay,normalize,stats,loadout,equip,needed,upgrade,grant,canDraw,draw,reward,trainingCost,train};
 })();

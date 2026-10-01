@@ -193,3 +193,48 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 .battle-beat{position:absolute;inset:14% 8% auto;z-index:8;padding:8px 12px;text-align:center;color:#fff0b3;background:#173335d9;border:1px solid #dcb76888;border-radius:10px;font-weight:800;pointer-events:none}
 .world-label.combo{color:#ffe29a;font-size:clamp(20px,5vw,30px);font-weight:900;text-shadow:0 2px 2px #12302f}
 @media(prefers-reduced-motion:reduce){.skill-button::after{transition:none}}
+/* v40: troop capacity stays in the existing row; Army owns one scroll workspace. */
+#battle .battle-hud{grid-template-columns:68px 88px 44px minmax(0,1fr) 44px;gap:2px}
+#battle .battle-command{grid-column:2;grid-row:1;font:700 10px/1.2 system-ui;color:#b8e3d6;white-space:nowrap;text-align:center}
+#battle .battle-rule-hint{grid-column:3}
+#battle .skills{grid-column:4}
+#battle #battleUtilityBtn{grid-column:5}
+#battle .deploy-cost{font-size:10px}
+#battle .buns-hud{padding-inline:2px;gap:3px;white-space:nowrap}
+#battle .buns-hud>span{font-size:10px;white-space:nowrap}
+#battle .buns-hud>strong{font-size:12px}
+#armyPanel .army-squad .squad-slot{min-height:76px;height:76px;padding:4px}
+#armyPanel .army-squad .army-art{height:42px;width:42px}
+#armyPanel #squadHelp{font-size:11px;line-height:1.4;margin-block:6px}
+#armyPanel .draw-results{height:36px;min-height:36px;padding:4px}
+#armyPanel .army-roster-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+#armyPanel .army-roster-heading p{flex:1;min-width:190px;color:#aacac3;font-size:12px}
+#armyPanel .army-roster-heading label{display:flex;align-items:center;gap:8px}
+#armyPanel select{min-height:44px;background:#193b40;border:1px solid #6c978b;color:#e8efdd;padding:6px;border-radius:6px}
+#armyPanel .army-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#armyPanel .army-card{display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 10px;height:auto;min-height:220px;align-items:center;text-align:start;padding:12px}
+#armyPanel .army-card>.army-art{grid-column:1;grid-row:1/5;width:64px;height:80px;justify-self:center}
+#armyPanel .army-card>strong,#armyPanel .army-card>.army-stars,#armyPanel .army-card>p,#armyPanel .army-card>small{grid-column:2;margin:0}
+#armyPanel .army-card>.shard-count,#armyPanel .army-card>progress,#armyPanel .army-card>.army-card-actions{grid-column:1/-1;width:100%;margin:0}
+#armyPanel .army-card-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;position:static}
+#armyPanel .army-card button{min-width:0;height:52px;min-height:52px;margin:0;font-size:11px;overflow-wrap:anywhere}
+#armyPanel .army-card button .army-resource-art{width:18px;height:18px;margin-inline-end:3px}
+#armyPanel .army-recruit-panel{border:1px solid #547b70;background:linear-gradient(110deg,#254944,#19363d)}
+#armyPanel .draw-results{height:36px;font-size:11px}
+#talentPanel #talentTree{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#talentPanel .talent-branch h3{display:none}
+#talentPanel .talent-node{height:310px;margin:0;padding:16px;gap:12px;font-size:13px;line-height:1.5;background:linear-gradient(155deg,#2d504b,#122e39)}
+#talentPanel .talent-node::after{display:none}
+#talentPanel .talent-node>strong{font-size:20px;color:#ffe09a}
+#talentPanel .talent-art{width:86px;height:76px}
+#talentPanel .talent-node small{color:#ffdc85}
+#talentPanel .talent-footer{position:static}
+@media(max-width:600px){
+ #armyPanel .army-cards{grid-template-columns:minmax(0,1fr)}
+ #talentPanel #talentTree{grid-template-columns:minmax(0,1fr);gap:10px}
+ #talentPanel .talent-node{display:grid;grid-template-columns:64px minmax(0,1fr);height:auto;min-height:160px;text-align:start;padding:12px;gap:6px 12px}
+ #talentPanel .talent-art{grid-column:1;grid-row:1/4;width:64px;height:76px}
+ #talentPanel .talent-node>strong,#talentPanel .talent-node>span:not(.talent-art),#talentPanel .talent-node>small{grid-column:2}
+ #talentPanel .talent-node>strong{font-size:18px}
+ #talentPanel .talent-node small{margin:0}
+}

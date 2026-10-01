@@ -51,7 +51,7 @@
   const talents = window.ZhaoTalents;
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const push = window.ZhaoPush;
-  const worldModuleUrl = new URL("battle-3d.js?v=20261001-zhao-v39-battle-feel", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20261001-zhao-v40-strategy", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -421,7 +421,7 @@
       slot.append(cardArt(id),label);slot.addEventListener('click',()=>{selectedArmySlot=index;renderArmy();document.querySelector('[data-slot="'+index+'"]').focus();});squad.append(slot);
     });
     const results=document.getElementById('drawResults');results.replaceChildren();
-    if(!armyNotice&&!recentDraws.length){const hint=document.createElement('p');hint.textContent=t('armyHelp');results.append(hint);}
+    if(!armyNotice&&!recentDraws.length){const hint=document.createElement('p');hint.textContent=t('fourSlots');results.append(hint);}
     if(armyNotice){const message=document.createElement('p');message.textContent=armyNotice;results.append(message);}
     for(const result of recentDraws){
       const row=document.createElement('div');row.className='draw-result';row.dataset.rarity=result.rarity;
@@ -429,12 +429,12 @@
       row.append(cardArt(result.id),text);results.append(row);
     }
     const grid=document.getElementById('armyCards');grid.replaceChildren();
-    for(const card of army.cards){
+    for(const card of army.cards.filter(card=>document.getElementById('armyFilter').value==='all'||collection.owned[card.id].stars>0)){
       const entry=collection.owned[card.id],stat=army.stats(collection,card.id),slot=collection.equipped.indexOf(card.id),need=army.needed(collection,card.id);
       const item=document.createElement('article');item.className='army-card';item.dataset.rarity=card.rarity;item.dataset.card=card.id;item.tabIndex=-1;
       item.classList.toggle('is-equipped',slot>=0);item.classList.toggle('is-unowned',!entry.stars);
       const name=document.createElement('strong');name.textContent=cardLabel(card.id);
-      const star=document.createElement('span');star.className='army-stars';star.textContent=t(['common','rare','epic'][card.rarity])+' · '+(entry.stars?entry.stars+' / 10 ★':t('unowned'));
+      const star=document.createElement('span');star.className='army-stars';star.textContent=t(['common','rare','epic'][card.rarity])+' · '+(entry.stars?entry.stars+'★ · '+t('trainingLevel',{n:entry.training}):t('unowned'));
       const trait=document.createElement('p');trait.textContent=card.trait?t('trait_'+card.trait):t('role_'+card.role);
       const spec={...push.troops[card.role],...card.combat},bonus=document.createElement('small');bonus.textContent=t('statLine',{hp:Math.round(spec.hp*stat.hp),attack:Math.round(spec.damage*stat.damage),cost:spec.cost});
       const count=document.createElement('span');count.className='shard-count';count.textContent=need?entry.shards+' / '+need+' '+t('shards'):t('maxRank');
@@ -443,7 +443,10 @@
       upgrade.addEventListener('click',()=>{if(army.upgrade(collection,card.id)){armyNotice=t('upgradeDone',{name:cardLabel(card.id),n:collection.owned[card.id].stars});recentDraws=[];saveProgress();sound('merge');renderArmy();document.querySelector('[data-card="'+card.id+'"]').focus();}});
       const equip=document.createElement('button');equip.type='button';equip.className='equip-action';equip.dataset.equip=card.id;equip.textContent=slot>=0?t('equipped')+' '+(slot+1):t('replaceSlot',{n:selectedArmySlot+1});equip.disabled=!entry.stars||slot>=0;
       equip.addEventListener('click',()=>{if(army.equip(collection,card.id,selectedArmySlot)){saveProgress();renderArmy();document.querySelector('[data-card="'+card.id+'"]').focus();}});
-      const actions=document.createElement('div');actions.className='army-card-actions';actions.append(upgrade,equip);
+      const training=document.createElement('button'),trainingCost=army.trainingCost(collection,card.id);training.type='button';training.dataset.train=card.id;
+      training.append(resourceArt('coins'),document.createTextNode(trainingCost?t('trainingAction',{cost:trainingCost}):t(entry.stars?'trainingMax':'unowned')));training.disabled=!trainingCost||collection.coins<trainingCost;
+      training.addEventListener('click',()=>{if(army.train(collection,card.id)){armyNotice=cardLabel(card.id)+' · '+t('trainingLevel',{n:collection.owned[card.id].training});recentDraws=[];saveProgress();sound('morale');renderArmy();const target=document.querySelector('[data-train="'+card.id+'"]');target?.focus();if(target)animateFeedback(target,[{filter:'brightness(1.6)'},{filter:'brightness(1)'}],{duration:320});}});
+      const actions=document.createElement('div');actions.className='army-card-actions';actions.append(training,upgrade,equip);
       item.append(cardArt(card.id),name,star,trait,bonus,count,track,actions);grid.append(item);
     }
     const warning=document.getElementById('saveWarning');warning.hidden=!storageFailed;warning.textContent=t('armySavedError');
@@ -503,6 +506,8 @@
       if (event === 'wave') setStatus(t('waveReward'));
       else if (event === 'boss') {setStatus(t('boss_' + battle.level.bossKind));showBattleBeat(t('boss_' + battle.level.bossKind));sound(event);}
       else if (event === 'morale') {showBattleBeat(t('chargeEmpowered'));sound(event);}
+      else if (event === 'fury') {showBattleBeat(t('talent_fury'));sound('morale');}
+      else if (event === 'echo') {showBattleBeat(t('talent_storm'));sound('charge');}
       else sound(event);
     }
     collectFeedback();
@@ -527,6 +532,7 @@
       showBattleBeat(t(battle.chargeBoosted?'chargeEmpowered':'chargeAction'));
       emitMeasurementEvent('skill', {skill:'horse', stage:stageIndex + 1});
     } else if (!battle.enemies.some(e => e.hp > 0)) setStatus(t('noTarget'));
+    else if(battle.morale<50)setStatus(t('morale')+' '+battle.morale+'/50');
   }
 
   function ensureResultReplayGoal() {
@@ -608,6 +614,8 @@
     const battleHint=level.roster.includes('arbalest')?t('enemyBoltHelp'):level.roster.includes('drummer')?t('enemyDrumHelp'):level.roster.includes('bomber')?t('enemyBombHelp'):t('pushTip');
     document.querySelector('#tutorial [data-t="tutorialDefend"]').textContent=t('chargeAuto')+' '+battleHint;
     el.buns.textContent = battle.buns + ' / 30';
+    let command=document.getElementById('battleCommand');if(!command){command=document.createElement('span');command.id='battleCommand';command.className='battle-command';el.buns.closest('.buns-hud').after(command);}
+    const used=push.capacity(battle);command.textContent=t('capacityShort',{n:used.soldiers,c:used.command});command.title=t('capacityHelp');
     for (const [bar, hp, maximum, name] of [
       [el.adouHp, battle.adouHp, battle.maxAdouHp, 'allyCamp'],
       [el.enemyHp, battle.commandHp, battle.maxCommandHp, 'enemyCamp'],
@@ -620,12 +628,12 @@
       bar.classList.toggle('is-critical', ratio > 0 && ratio <= .25);
     }
     el.status.textContent = battle.status || t('pushGoal');
-    el.pressureCue.textContent = (battle.units.filter(u=>u.hp>0).length>=12 ? t('pushFull') : t('rule_' + level.rule))+' '+t('feelHelp');
+    el.pressureCue.textContent = t('rule_' + level.rule)+' '+t('capacityHelp')+' '+t('feelHelp');
     const dock = document.getElementById('deployDock');
     if(!dock.dataset.feedbackBound){dock.dataset.feedbackBound='1';dock.addEventListener('pointerdown',event=>{
       const button=event.target.closest('[data-deploy]');if(!button?.disabled||!battle||battle.result||paused())return;
       const type=button.dataset.deploy,cooldown=battle.deployCooldown[type]||0;
-      const reason=battle.units.filter(unit=>unit.hp>0).length>=12?t('pushFull'):cooldown?cardLabel(type)+' · '+Math.ceil(cooldown/10)+'s':cardLabel(type)+' · '+push.cost(battle,type)+' '+t('buns')+' · '+battle.buns+'/30';
+      const reason=push.deployReason(battle,type)==='capacity'?t('capacityHelp'):cooldown?cardLabel(type)+' · '+Math.ceil(cooldown/10)+'s':cardLabel(type)+' · '+push.cost(battle,type)+' '+t('buns')+' · '+battle.buns+'/30';
       setStatus(reason);showBattleBeat(reason);animateFeedback(button,[{filter:'brightness(.7)'},{filter:'brightness(1)'}],{duration:220});
     });}
     const dockKey=locale+JSON.stringify(battle.army);
@@ -645,8 +653,8 @@
     }
     for (const button of dock.children) {
       const type=button.dataset.deploy, cooldown=battle.deployCooldown[type]||0, cost=push.cost(battle,type);
-      button.disabled=Boolean(battle.result)||cooldown>0||battle.buns<cost||battle.units.filter(u=>u.hp>0).length>=12;
-      button.querySelector('.deploy-cost').textContent=cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns');
+      button.disabled=Boolean(push.deployReason(battle,type));
+      button.querySelector('.deploy-cost').textContent=(cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns'))+' · '+push.weight(battle,type)+t('commandUnit');
       button.style.setProperty('--ready', (100-cooldown/push.troop(battle,type).cooldown*100)+'%');
       button.setAttribute('aria-label',cardLabel(type)+' · '+t(battle.army[type].trait?'trait_'+battle.army[type].trait:'role_'+battle.army[type].role)+' · '+(cooldown?Math.ceil(cooldown/10)+'s':cost+' '+t('buns')));
     }
@@ -662,7 +670,7 @@
       button.addEventListener('click',()=>useSkill('horse'));el.skills.append(button);
     }
     const button=el.skills.firstElementChild,cooldown=battle.skillsUsed.horse||0;
-    button.disabled=cooldown>0||Boolean(battle.result);button.classList.toggle('ready',!cooldown);
+    button.disabled=cooldown>0||battle.morale<50||Boolean(battle.result);button.classList.toggle('ready',!cooldown&&battle.morale>=50);
     button.classList.toggle('empowered',battle.morale>=100);button.style.setProperty('--morale',battle.morale+'%');
     button.querySelector('strong').textContent=t(battle.morale>=100?'chargeEmpowered':'chargeAction');
     const effect=t('chargeAuto');
@@ -759,33 +767,35 @@
   function renderTalents() {
     const locked=document.body.dataset.screen==='battle';
     const total=talents.points(progress.stars),picked=progress.talents||[];
-    document.getElementById('talentSummary').textContent=locked?t('talentLocked'):t('talentPoints',{left:total-picked.length,total});
-    document.getElementById('recruitOdds').textContent=t('talentHelp');
+    document.getElementById('talentSummary').textContent=locked?t('talentLocked'):t('talentSingle');
+    document.getElementById('recruitOdds').textContent=t('capacityHelp');
     const tree=document.getElementById('talentTree');tree.replaceChildren();
     for(const branch of talents.branches){
       const column=document.createElement('section');column.className='talent-branch';
-      const heading=document.createElement('h3');heading.textContent=t('branch_'+branch);column.append(heading);
+      const heading=document.createElement('h3');heading.textContent=t('talent_'+branch);column.append(heading);
       for(const node of talents.nodes.filter(n=>n.branch===branch)){
         const button=document.createElement('button');button.type='button';button.dataset.talent=node.id;
         const selected=picked.includes(node.id);button.className='talent-node unit-type-'+node.art+(node.tier===3?' general-unit':'');
         button.setAttribute('aria-pressed',String(selected));
-        button.disabled=locked||selected||picked.length>=total||Boolean(node.parent&&!picked.includes(node.parent));
+        button.disabled=locked;
         const art=document.createElement('span');art.className='talent-art';art.setAttribute('aria-hidden','true');
-        const label=document.createElement('span');label.textContent=t('talent_'+node.id);
-        const badge=document.createElement('small');badge.textContent=(selected?'✓ ':'')+node.tier+'/3';
-        button.append(art,label,badge);button.addEventListener('click',()=>{
+        const label=document.createElement('strong');label.textContent=t('talent_'+node.id);
+        const description=document.createElement('span');description.textContent=t('talentBody_'+node.id);
+        const badge=document.createElement('small');badge.textContent=selected?'✓ '+t('equipped'):t('talentSelect');
+        button.append(art,label,description,badge);button.addEventListener('click',()=>{
           if(document.body.dataset.screen==='battle')return;
-          progress.talents=talents.normalize([...picked,node.id],progress.stars);saveProgress();renderTalents();
+          progress.talents=[node.id];saveProgress();sound('morale');renderTalents();
           document.querySelector('[data-talent="'+node.id+'"]').focus();
         });column.append(button);
       }tree.append(column);
     }
-    document.getElementById('talentReset').disabled=locked||!picked.length;
+    document.getElementById('talentReset').hidden=true;
   }
   function openTalents(){switchStagePanel('talents');}
   document.getElementById('talentsOpen').addEventListener('click',openTalents);
   document.getElementById('talentClose').addEventListener('click',()=>switchStagePanel('stages'));
   document.getElementById('armyOpen').addEventListener('click',()=>switchStagePanel('army'));
+  document.getElementById('armyFilter').addEventListener('change',renderArmy);
   document.getElementById('stagesOpen').addEventListener('click',()=>switchStagePanel('stages'));
   document.getElementById('drawFree').addEventListener('click',()=>drawCards('free'));
   document.getElementById('drawOne').addEventListener('click',()=>drawCards('coin'));
@@ -851,7 +861,7 @@
         unlocked: progress.unlocked,
         army: JSON.parse(JSON.stringify(progress.army)), stagePanel,
         result: battle && battle.result, finaleElapsed:battle?.finaleElapsed, resultOpen:el.result.open, loadout:battle?.loadout,
-        commandHp: battle && battle.commandHp, morale:battle?.morale, combo:battle?.combo,maxCombo:battle?.maxCombo,
+        commandHp: battle && battle.commandHp, morale:battle?.morale, combo:battle?.combo,maxCombo:battle?.maxCombo,capacity:battle&&push.capacity(battle),furyTicks:battle?.furyTicks,echoTicks:battle?.echoTicks,
         adouHp: battle && battle.adouHp,
         deployCooldown:battle?.deployCooldown, buns: battle && battle.buns, pity:battle?.pity, talents:battle?.talents, rescued:battle?.rescued, recruitIndex:battle?.recruitIndex,
         wave:battle?.wave, rule:battle?.level.rule, commandLane:battle?.commandLane, cooldown:battle?.skillsUsed.horse||0, ticks:battle?.ticks, bestTimes:progress.bestTimes,

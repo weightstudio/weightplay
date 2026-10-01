@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260918-ui-fix1">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="frame-content.css?v=20261001-zhao-v39-battle-feel">
+  <link rel="stylesheet" href="frame-content.css?v=20261001-zhao-v40-strategy">
   <meta name="description" content="Tocca una carta per schierare truppe. Avanzano e combattono da sole." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -102,15 +102,15 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>Mondo e missione</h3><p>Proteggi A Dou e distruggi la fortezza nemica.</p></div>
       <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Tocca una carta per schierare truppe. Avanzano e combattono da sole.</p>
-<p>Quattro truppe iniziali gratuite. Sblocca nuove truppe con 10 frammenti e portane quattro in battaglia.</p>
+<p>Allenamento permanente con monete: PV+4%, attacco+3% per livello, massimo20. Frammenti per sbloccare e aumentare stelle.</p>
 <p>Gratis: 3–6 frammenti + 10 diamanti. Monete: 2–5. Diamanti: 12–20.</p>
 <p>Le scorte si rigenerano. Le carte mostrano costo e attesa. Zhao Yun danneggia e respinge tutti i nemici.</p></div>
       <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Tocca una carta per schierare truppe. Avanzano e combattono da sole.</li><li>Proteggi gli arcieri con guardie e conserva la carica per il pericolo.</li><li>Le scorte si rigenerano. Le carte mostrano costo e attesa. Zhao Yun danneggia e respinge tutti i nemici.</li><li>Proteggi A Dou e distruggi la fortezza nemica.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Proteggi gli arcieri con guardie e conserva la carica per il pericolo.</li><li>I bombardieri accendono una miccia lunga. Interrompi con la carica.</li><li>I tamburi accelerano gli attacchi vicini. Gli arcieri mirano ai supporti.</li><li>Le balestre trapassano due soldati. Avvicinati con la cavalleria.</li></ul></div>
-      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>Quattro truppe iniziali gratuite. Sblocca nuove truppe con 10 frammenti e portane quattro in battaglia. Gratis: 3–6 frammenti + 10 diamanti. Monete: 2–5. Diamanti: 12–20. Sblocco: 10. Migliorie: 20/30/45/65/90/120/160/210/270 frammenti, fino a 10 stelle. Ogni stella extra: salute +12%, attacco +10%. Scegli talenti di scorte, difesa o carica nelle missioni. Ripristino gratuito.</p></div>
-      <div class="game-info-section"><h3>Nota di design</h3><p>Scegli talenti di scorte, difesa o carica nelle missioni. Ripristino gratuito.</p></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>Allenamento permanente con monete: PV+4%, attacco+3% per livello, massimo20. Frammenti per sbloccare e aumentare stelle. Gratis: 3–6 frammenti + 10 diamanti. Monete: 2–5. Diamanti: 12–20. Scegli UNA dottrina. Cambiala prima della battaglia.</p></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>Scegli UNA dottrina. Cambiala prima della battaglia.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>Non ci sono account, acquisti, chat, classifiche o pubblicità. I progressi restano solo in questo browser.</p></div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Caserma</dt><dd>Base: comune 72%, rara 24%, epica 4%; probabilità uguali per truppa dello stesso rango. Garanzia condivisa: rara+ entro 10, epica entro 30 estrazioni. Usa i pulsanti delle carte. A 10 stelle ogni frammento extra dà 5 monete. Scegli tu le quattro truppe.</dd></div><div><dt>Nuova stella</dt><dd>Sblocco: 10. Migliorie: 20/30/45/65/90/120/160/210/270 frammenti, fino a 10 stelle. Ogni stella extra: salute +12%, attacco +10%.</dd></div><div><dt>Carica di Zhao Yun</dt><dd>Zhao Yun danneggia e respinge tutti i nemici.</dd></div><div><dt>Talenti</dt><dd>Scegli talenti di scorte, difesa o carica nelle missioni. Ripristino gratuito.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Caserma</dt><dd>Base: comune 72%, rara 24%, epica 4%; probabilità uguali per truppa dello stesso rango. Garanzia condivisa: rara+ entro 10, epica entro 30 estrazioni. Usa i pulsanti delle carte. A 10 stelle ogni frammento extra dà 5 monete. Scegli tu le quattro truppe.</dd></div><div><dt>Nuova stella</dt><dd>Sblocco: 10. Migliorie: 20/30/45/65/90/120/160/210/270 frammenti, fino a 10 stelle. Ogni stella extra: salute +12%, attacco +10%.</dd></div><div><dt>Carica di Zhao Yun</dt><dd>Zhao Yun danneggia e respinge tutti i nemici.</dd></div><div><dt>Talenti</dt><dd>Scegli UNA dottrina. Cambiala prima della battaglia.</dd></div></dl></div>
 
     </div>
   </section>
@@ -132,12 +132,12 @@
     </div>
     <section id="armyPanel" class="stage-management" hidden aria-labelledby="armyTitle">
       <div class="army-summary"><strong id="armyTitle" data-t="army">Caserma</strong><span id="armyWallet"></span></div>
-      <div class="army-recruit"><button id="drawFree" data-t="freeDraw">Gratis ogni giorno</button><button id="drawOne" data-t="coinDraw">100 monete</button><button id="drawFive" data-t="diamondDraw">60 diamanti</button></div>
+      <details class="army-recruit-panel"><summary data-t="recruitPanel">Reclutamento e probabilità</summary><div class="army-recruit"><button id="drawFree" data-t="freeDraw">Gratis ogni giorno</button><button id="drawOne" data-t="coinDraw">100 monete</button><button id="drawFive" data-t="diamondDraw">60 diamanti</button></div>
       <p class="draw-help" data-t="drawHelp">Gratis: 3–6 frammenti + 10 diamanti. Monete: 2–5. Diamanti: 12–20.</p><p id="armyPity"></p>
-      <div id="drawResults" class="draw-results" role="status" aria-live="polite"></div>
+      <p><span data-t="common">Comune</span> 72% · <span data-t="rare">Rara</span> 24% · <span data-t="epic">Epica</span> 4%</p><p data-t="armyOdds">Base: comune 72%, rara 24%, epica 4%; probabilità uguali per truppa dello stesso rango. Garanzia condivisa: rara+ entro 10, epica entro 30 estrazioni.</p><p data-t="armyStars">Sblocco: 10. Migliorie: 20/30/45/65/90/120/160/210/270 frammenti, fino a 10 stelle. Ogni stella extra: salute +12%, attacco +10%.</p><p data-t="armyAuto">Usa i pulsanti delle carte. A 10 stelle ogni frammento extra dà 5 monete. Scegli tu le quattro truppe.</p><p data-t="freeReset">Estrazione gratis alle 00:00 UTC. Salvataggio locale, nessun acquisto.</p></details><div id="drawResults" class="draw-results" role="status" aria-live="polite"></div>
       <div class="squad-heading"><strong id="collectionCount"></strong><span data-t="fourSlots">4 posti</span></div>
       <div id="armySquad" class="army-squad"></div><p id="squadHelp"></p>
-      <details><summary><span data-t="common">Comune</span> 72% · <span data-t="rare">Rara</span> 24% · <span data-t="epic">Epica</span> 4%</summary><p data-t="armyOdds">Base: comune 72%, rara 24%, epica 4%; probabilità uguali per truppa dello stesso rango. Garanzia condivisa: rara+ entro 10, epica entro 30 estrazioni.</p><p data-t="armyStars">Sblocco: 10. Migliorie: 20/30/45/65/90/120/160/210/270 frammenti, fino a 10 stelle. Ogni stella extra: salute +12%, attacco +10%.</p><p data-t="armyAuto">Usa i pulsanti delle carte. A 10 stelle ogni frammento extra dà 5 monete. Scegli tu le quattro truppe.</p><p data-t="freeReset">Estrazione gratis alle 00:00 UTC. Salvataggio locale, nessun acquisto.</p></details>
+      <div class="army-roster-heading"><p data-t="trainingHelp">Allenamento permanente con monete: PV+4%, attacco+3% per livello, massimo20. Frammenti per sbloccare e aumentare stelle.</p><label><span data-t="rosterLabel">Truppe</span><select id="armyFilter"><option value="owned" data-t="rosterOwned">Sbloccate</option><option value="all" data-t="rosterAll">Tutte</option></select></label></div>
       <div id="armyCards" class="army-cards"></div><p id="saveWarning" role="status" hidden></p>
     </section>
     <section id="talentPanel" class="stage-management" hidden></section>
@@ -231,14 +231,15 @@
   <script src="guide-copy.js?v=20260921-zhao-v38"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260927-zhao-v38-command-row"></script>
-  <script src="talents.js?v=20260921-zhao-v38"></script>
+  <script src="talents.js?v=20261001-zhao-v40-strategy"></script>
   <script src="talent-copy.js?v=20260921-zhao-v38"></script>
-  <script src="push-combat.js?v=20261001-zhao-v39-battle-feel"></script>
-  <script src="push-copy.js?v=20261001-zhao-v39-battle-feel"></script>
-  <script src="army.js?v=20260921-zhao-v38"></script>
+  <script src="push-combat.js?v=20261001-zhao-v40-strategy"></script>
+  <script src="push-copy.js?v=20261001-zhao-v40-strategy"></script>
+  <script src="army.js?v=20261001-zhao-v40-strategy"></script>
   <script src="army-copy.js?v=20260921-zhao-v38"></script>
-  <script src="game.js?v=20261001-zhao-v39-battle-feel&wp-audio=1.0.0"></script>
-  <script src="analytics-ownership.js?v=20261001-zhao-v39-battle-feel"></script>
+  <script src="strategy-copy.js?v=20261001-zhao-v40-strategy"></script>
+  <script src="game.js?v=20261001-zhao-v40-strategy&wp-audio=1.0.0"></script>
+  <script src="analytics-ownership.js?v=20261001-zhao-v40-strategy"></script>
 
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>
