@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" fill="none">
+  <defs>
+    <pattern id="board" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M0 0h48v48H0zm48 48h48v48H48z" fill="#c79a55" opacity=".025"/><path d="M96 0H0v96" stroke="#bc995f" stroke-opacity=".035"/></pattern>
+    <radialGradient id="lamp"><stop stop-color="#f5be61" stop-opacity=".2"/><stop offset="1" stop-color="#e4ac52" stop-opacity="0"/></radialGradient>
+    <g id="spade"><path d="M0-28C-8-17-25-8-25 5c0 16 18 18 25 7 7 11 25 9 25-7C25-8 8-17 0-28Z"/><path d="M-7 27h14L0 9Z"/></g>
+    <g id="diamond"><path d="m0-26 17 26-17 26L-17 0Z"/></g>
+  </defs>
+  <path fill="url(#board)" d="M0 0h1440v960H0z"/>
+  <ellipse cx="160" cy="80" rx="300" ry="280" fill="url(#lamp)"/>
+  <ellipse cx="1320" cy="450" rx="240" ry="360" fill="url(#lamp)"/>
+  <g fill="#d9b477" opacity=".1"><use href="#spade" x="68" y="210"/><use href="#diamond" x="1360" y="110"/><use href="#diamond" x="105" y="720"/><use href="#spade" x="1325" y="815"/></g>
+  <path d="M24 0v960M1416 0v960" stroke="#c99950" stroke-opacity=".07"/>
+</svg>

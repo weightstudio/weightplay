@@ -394,6 +394,13 @@ function syncHallPresentation() {
   if (generalPlayTitle) {
     generalPlayTitle.textContent = i18n.t(activeHall === "tabletop" ? "hall.tabletop_title" : "general.play.title");
   }
+  const hallHeroTitle = document.querySelector('.lobby-hero-copy h2');
+  if (hallHeroTitle) {
+    hallHeroTitle.setAttribute('data-runtime-localize', 'off');
+    hallHeroTitle.textContent = i18n.t(activeHall === 'tabletop' ? 'hall.tabletop_title' : 'discovery.hero_title');
+  }
+  const hallEyebrow = document.querySelector('.hero-eyebrow');
+  if (hallEyebrow) hallEyebrow.textContent = activeHall === 'tabletop' ? 'WEIGHTPLAY CARDS & BOARD' : 'WEIGHTPLAY BLOCK WORLD';
 }
 
 function restoreDiscoveryFiltersFromUrl() {
@@ -1282,7 +1289,7 @@ function renderLobby({ historyMode = "replace" } = {}) {
   syncHallPresentation();
   renderCatalogDirectory();
   platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
-  platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : "general.site.subtitle");
+  platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : activeHall === 'tabletop' ? 'hall.tabletop_note' : "general.site.subtitle");
 
   const totalGameCount = gamesInHall().length;
   const lobbyVisitsTotal = Number(gameStats.totals?.lobbyVisitsTotal);

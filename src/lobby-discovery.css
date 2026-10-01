@@ -307,6 +307,9 @@ body.general-lobby-page {
   --lobby-arcade-active: #2c705d;
   --lobby-arcade-shadow: #061820;
   --lobby-arcade-background-image: url('../assets/lobby-block-atmosphere.svg');
+  --lobby-tabletop-background: #08121f;
+  --lobby-tabletop-background-image: url('../assets/lobby-tabletop-atmosphere.svg');
+  --lobby-tabletop-light: radial-gradient(ellipse at 72% 0, #3c3025 0, #102032 32%, #08121f 75%);
   color-scheme: dark;
   background-color: var(--lobby-arcade-background);
   background-image: var(--lobby-arcade-background-image), radial-gradient(ellipse at 50% 0, #204d4c 0, var(--lobby-arcade-background) 70%);
@@ -314,10 +317,8 @@ body.general-lobby-page {
   background-position: center top;
   background-repeat: repeat, no-repeat;
 }
-/* Hall-transition structure only: the tabletop art/palette is pending the
-   approved reference's pixel review. Both layers intentionally use today's
-   Block World scenery until that visual pass. An opaque destination over the
-   unchanged base supports interruption/reversal without timers or DOM churn. */
+/* An opaque tabletop destination crossfades over the unchanged Block World.
+   CSS reverses from the current opacity, including rapid history changes. */
 body.general-lobby-page {
   position: relative;
   isolation: isolate;
@@ -339,8 +340,38 @@ body.general-lobby-page::before {
   transition: opacity 1s cubic-bezier(.4, 0, .2, 1);
 }
 body.general-lobby-page[data-game-hall="tabletop"]::before { opacity: 1; }
+body.general-lobby-page .lobby-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #08121f url('../assets/lobby-tabletop-room.svg') 70% center / cover no-repeat;
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(.4, 0, .2, 1);
+}
+body.general-lobby-page[data-game-hall="tabletop"] .lobby-hero::before { opacity: 1; }
+body.general-lobby-page .lobby-hero::after { z-index: 0; }
+/* Shared controls keep their exact geometry while the room's light changes. */
+body.general-lobby-page :is(.lobby-topbar,.lobby-hero,.spotlight-game,.game-hall-switch button,.lobby-search input,.library-tabs button,.desktop-filter-rail,.topic-filter button,.game-card,.hero-game-card) {
+  transition: background-color 1s cubic-bezier(.4,0,.2,1), border-color 1s cubic-bezier(.4,0,.2,1), box-shadow 1s cubic-bezier(.4,0,.2,1), color 1s cubic-bezier(.4,0,.2,1);
+}
+body.general-lobby-page[data-game-hall="tabletop"] {
+  --lobby-ink: #f7edda;
+  --lobby-muted: #b5c0ce;
+  --lobby-line: #514a40;
+}
+body.general-lobby-page[data-game-hall="tabletop"] .lobby-topbar { border-color: #796344; }
+body.general-lobby-page[data-game-hall="tabletop"] .lobby-hero { border-color: #d0aa65; box-shadow: 0 6px 0 #584329, 0 9px 0 #050e18; }
+body.general-lobby-page[data-game-hall="tabletop"] :is(.spotlight-game,.desktop-filter-rail,.lobby-search input,.game-card,.hero-game-card) { background-color: #0d1c2b; border-color: #617081; }
+body.general-lobby-page[data-game-hall="tabletop"] :is(.library-tabs button,.topic-filter button,.game-hall-switch button) { background-color: #142635; border-color: #556777; color: #e9e4d7; }
+body.general-lobby-page[data-game-hall="tabletop"] .library-tabs button.active { background-color: #28545b; border-color: #89b5ad; color: #fff3d6; }
+body.general-lobby-page[data-game-hall="tabletop"] .game-hall-switch button.active { background: linear-gradient(180deg,#b88943,#765326); border-color: #f1d18a; box-shadow: inset 0 3px 0 #d9ae63, 0 5px 0 #493820, 0 7px 0 #07121d; }
+body.general-lobby-page[data-game-hall="tabletop"] :is(.lobby-subtitle,.spotlight-game span) { color: #dfd4bd; }
 @media (prefers-reduced-motion: reduce) {
-  body.general-lobby-page::before { transition: none; }
+  body.general-lobby-page::before,
+  body.general-lobby-page .lobby-hero::before,
+  body.general-lobby-page :is(.lobby-topbar,.lobby-hero,.spotlight-game,.game-hall-switch button,.lobby-search input,.library-tabs button,.desktop-filter-rail,.topic-filter button,.game-card,.hero-game-card) { transition: none; }
 }
 body.general-lobby-page .lobby-topbar { border-bottom: 2px solid #3c6368; margin-bottom: 18px; }
 body.general-lobby-page .lobby-topbar h1 { color: #fff4ce; text-shadow: 2px 3px 0 #07181e; letter-spacing: -.6px; }
@@ -361,7 +392,7 @@ body.general-lobby-page .lobby-hero .sound-toggle { border-radius: 3px; backgrou
 
 /* Hall entrances are chunky physical tiles, with a cube and a board mark. */
 body.general-lobby-page .game-hall-switch { gap: 14px; margin-bottom: 19px; }
-body.general-lobby-page .game-hall-switch button { border: 2px solid #486977; border-radius: 3px; background: #213e4a; color: #e1ede2; box-shadow: inset 0 3px 0 #41606b, 0 5px 0 #071923; transition: transform 120ms ease, box-shadow 120ms ease; }
+body.general-lobby-page .game-hall-switch button { border: 2px solid #486977; border-radius: 3px; background: #213e4a; color: #e1ede2; box-shadow: inset 0 3px 0 #41606b, 0 5px 0 #071923; }
 body.general-lobby-page .game-hall-switch button.active { border-color: #8ef0b7; background: var(--lobby-arcade-active); color: #f7ffe6; box-shadow: inset 0 3px 0 #61a783, 0 5px 0 #133e36, 0 7px 0 #061c22; }
 body.general-lobby-page[data-game-hall="tabletop"] .game-hall-switch button.active { border-color: #ffda83; background: #936132; color: #fff7d2; box-shadow: inset 0 3px 0 #ce9852, 0 5px 0 #513b28, 0 7px 0 #081c23; }
 body.general-lobby-page .game-hall-switch button:active { transform: translateY(3px); box-shadow: inset 0 2px 0 #698e81, 0 2px 0 #071923; }
@@ -539,4 +570,12 @@ html[dir="rtl"] body.general-lobby-page .lobby-hero > .weightplay-version-badge 
   html[dir="rtl"] body.general-lobby-page .lobby-hero > #spotlightGameSection {
     left: 10px !important;
   }
+}
+
+/* Keep press feedback quick while hall light/palette follows the room fade. */
+body.general-lobby-page .game-hall-switch button {
+  transition: transform 120ms ease, background-color 1s cubic-bezier(.4,0,.2,1), border-color 1s cubic-bezier(.4,0,.2,1), color 1s cubic-bezier(.4,0,.2,1), box-shadow 1s cubic-bezier(.4,0,.2,1);
+}
+@media (prefers-reduced-motion: reduce) {
+  body.general-lobby-page .game-hall-switch button { transition: none; }
 }
