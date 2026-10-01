@@ -1601,7 +1601,7 @@ window.WeightPlayGameInfoLocales.es = {
       ]
     },
     "tiny-weather-rescue": {
-      "title": "Búsqueda de ayudante de animales",
+      "title": "Misión de Ayuda",
       "age": "6+",
       "difficulty": "fácil",
       "time": "3-6 minutos por misión",
@@ -1610,79 +1610,78 @@ window.WeightPlayGameInfoLocales.es = {
         "Atención y bienestar animal",
         "Enfoque"
       ],
-      "intro": "Animal Helper Quest es un rompecabezas bilingüe gratuito con imágenes para niños con 30 misiones guardadas y seis controles de ayuda. Un conejo, un zorro, un panda, un pingüino, un león o un koala aparecen en uno de los seis barrios. Los jugadores conectan nueve situaciones meteorológicas o cotidianas con un paraguas, una toalla, un ventilador, una lámpara, un refugio, una manzana, unas botas o una manta. Las misiones posteriores eliminan palabras de herramientas visibles, combinan dos pistas, ocultan brevemente la necesidad o mueven la bandeja después de un error. Mission 30 combina todas las reglas avanzadas sin cuenta regresiva, compra, cuenta, límite de vida o solicitud de publicidad.",
+      "intro": "Misión de Ayuda es un rompecabezas infantil ilustrado con 30 misiones guardadas y seis pruebas de repaso. En seis entornos aparecen conejos, zorros, pandas, pingüinos, leones o koalas. Hay que relacionar nueve situaciones cotidianas o del tiempo con ocho objetos: paraguas, toalla, ventilador, lámpara, refugio, manzana, botas y manta. Las misiones avanzadas ocultan los nombres de los objetos, combinan dos pistas, esconden brevemente la necesidad o cambian el orden de la bandeja tras un error. La misión 30 reúne estas reglas. No hay cuenta atrás, compras, cuentas, límite de vidas ni solicitudes de publicidad.",
       "story": [
-        "Seis barrios de animales comparten un pequeño carrito de ayuda. Lluvias repentinas, charcos, calor, oscuridad, truenos, hambre, barro, frío y viento interrumpen su recorrido. El jugador lee la escena y envía el objeto útil para que el carro pueda continuar.",
-        "Estas son situaciones de juego simplificadas, no instrucciones profesionales para el cuidado de la vida silvestre. Las pistas emparejadas introducen una prioridad inmediata: la lluvia y el fuerte viento exigen refugio, mientras que un animal que ya está mojado después de la lluvia necesita la toalla. La misión 30 cierra el último cheque de ayuda mixto."
+        "Seis barrios de animales comparten un pequeño carrito de ayuda. La lluvia, los charcos, el calor, la oscuridad, los truenos, el hambre, el barro, el frío y el viento interrumpen el recorrido. El jugador observa la escena y elige el objeto útil para que el carrito pueda continuar.",
+        "Son situaciones simplificadas para jugar, no instrucciones profesionales de cuidado animal. Las pistas dobles piden atender primero la necesidad más urgente: con lluvia y viento fuerte se elige el refugio; si el animal ya está mojado, necesita la toalla. La misión 30 concluye la última prueba de repaso."
       ],
       "systems": [
-        "Cada misión contiene de cuatro a seis situaciones y un objetivo visible. Toque una herramienta o arrástrela hacia el animal; El tacto, el ratón y el teclado utilizan la misma decisión.",
-        "El cuidado correcto añade una ayuda. Una elección incorrecta implica un suave reintento; tres decisiones equivocadas continúan sin anotar esa situación, por lo que el juego no puede bloquearse suavemente.",
-        "Las herramientas de imagen ocultan palabras visibles pero conservan nombres accesibles. Las pistas emparejadas muestran dos íconos y una respuesta prioritaria. Recuerde que la Necesidad permite una revelación sin penalización. Cambiar la bandeja reordena las herramientas después de un error.",
-        "Una clara guarda estrellas, mejor puntuación, recuento de jugadas, errores y exactamente el próximo desbloqueo en el almacenamiento del navegador local. El Informe de habilidades utiliza los resultados reales de esta carrera.",
-        "No hay cuenta, compra, cronómetro, tabla de clasificación, solicitud de anuncio, reserva de anuncio ni evaluación formal."
+        "Cada misión presenta de cuatro a seis situaciones y un objetivo visible. Toca un objeto o arrástralo hasta el animal; los controles táctiles, el ratón y el teclado aplican la misma regla.",
+        "Cada respuesta correcta suma una ayuda. Si te equivocas, aparece una pista amable para que lo intentes de nuevo. Tras tres errores, esa situación termina sin puntos y la misión continúa.",
+        "En las misiones de objetos ilustrados se ocultan sus nombres visibles, pero se conservan las etiquetas accesibles. Las pistas dobles requieren elegir una sola respuesta prioritaria. Puedes tocar al animal para volver a mostrar una necesidad oculta sin penalización. En algunas misiones, la bandeja cambia de orden después de un error.",
+        "Al completar una misión, el navegador guarda las estrellas, la mejor puntuación, el número de partidas, los errores y el desbloqueo siguiente. El informe de habilidades resume los resultados de esa partida.",
+        "No necesitas una cuenta ni realizar compras. No hay temporizador, clasificación ni evaluación formal, y la versión Kids no envía solicitudes publicitarias."
       ],
       "how": [
-        "Presiona Iniciar juego y desliza el riel de misión horizontal hacia una tarjeta desbloqueada.",
-        "Estudie el animal, los íconos de situación grandes y la línea de necesidad corta.",
-        "Compara las imágenes, luego toca una herramienta o arrástrala hasta el animal.",
-        "Toca el animal para revisar un recuerdo oculto sin penalización.",
-        "Alcanza el objetivo de la misión para salvar estrellas y desbloquear exactamente la siguiente misión."
+        "Pulsa Iniciar y desliza la lista horizontal hasta una misión desbloqueada.",
+        "Observa al animal, los iconos de la situación y la breve indicación de lo que necesita.",
+        "Compara los dibujos y toca el objeto adecuado o arrástralo hasta el animal.",
+        "Si la necesidad se oculta, toca al animal para volver a verla sin penalización.",
+        "Alcanza el objetivo para guardar las estrellas y desbloquear solo la misión siguiente."
       ],
       "strategyTips": [
-        "Nombra la situación antes de revisar las herramientas.",
-        "Utilice la forma y el color del objeto cuando Herramientas de imagen elimine palabras visibles.",
-        "Con dos pistas, decida qué necesidad tiene prioridad inmediata.",
-        "Revise una necesidad oculta en lugar de adivinar.",
-        "Vuelve a escanear toda la bandeja después de una elección incorrecta en las misiones de cambio de bandeja.",
-        "Utilice comentarios amables para eliminar opciones improbables."
+        "Describe la situación antes de mirar los objetos.",
+        "Cuando no haya nombres visibles, fíjate en la forma y el color de cada dibujo.",
+        "Con dos pistas, decide qué necesidad debe atenderse primero.",
+        "Si olvidas la indicación, tócala de nuevo en el animal en lugar de adivinar.",
+        "Después de un error, revisa toda la bandeja: los objetos pueden haber cambiado de sitio."
       ],
       "progression": [
-        "Las misiones 1 a 5 enseñan una necesidad clara y terminan con el primer Chequeo de Ayuda.",
-        "Las misiones 6 a 10 eliminan palabras de herramientas visibles y al mismo tiempo conservan nombres accesibles.",
-        "Las misiones 11 a 15 combinan dos pistas de situación en una opción de prioridad.",
-        "Las misiones 16 a 20 ocultan brevemente la necesidad, que siempre se puede restaurar tocando al animal.",
-        "Las misiones 21 a 25 reordenan la bandeja de herramientas después de una elección incorrecta.",
-        "Las misiones 26 a 30 combinan imágenes, pistas emparejadas, memoria y reglas para cambiar la bandeja; La misión 30 contiene seis situaciones."
+        "Misiones 1–5: presentan una necesidad clara; la misión 5 es la primera prueba de repaso.",
+        "Misiones 6–10: ocultan los nombres visibles de los objetos, pero mantienen sus etiquetas accesibles.",
+        "Misiones 11–15: combinan dos pistas para elegir la prioridad; la misión 15 repasa esas situaciones.",
+        "Misiones 16–20: la necesidad se oculta brevemente y se puede volver a mostrar tocando al animal.",
+        "Misiones 21–25: la bandeja cambia de orden después de una respuesta incorrecta.",
+        "Misiones 26–30: combinan dibujos, pistas dobles, memoria y cambios de posición; la misión 30 presenta seis situaciones."
       ],
-      "designNote": "La dificultad aumenta al cambiar evidencia útil en lugar de reducir los objetivos o agregar un reloj. Las necesidades directas establecen significados; el reconocimiento de imágenes, la prioridad, la recuperación y el cambio de posiciones añaden una demanda comprensible. El lienzo lógico fijo se escala uniformemente en teléfonos, tabletas, computadoras de escritorio y paisajes cortos. Los efectos de la situación nunca muestran el elemento de respuesta y la retroalimentación en tiempo visible no puede finalizar mientras la página está en segundo plano. A diferencia de las categorías de cuidado y las rutinas ordenadas de Zoo Helper Day, este juego conecta situaciones ambientales con decisiones inmediatas sobre elementos. Kids play no tiene publicidad, cuenta, compra, ranking ni diagnóstico.",
-      "parent": "Animal Helper Quest puede apoyar el reconocimiento de imágenes, la discusión de causa y efecto, la priorización simple, el recuerdo breve, el enfoque y la coordinación ojo-mano. Los animales reales necesitan hábitats adecuados, dietas, cuidadores capacitados y apoyo veterinario más allá de estas escenas simplificadas. Las estrellas y el informe de habilidades son solo comentarios sobre el juego, no una calificación, puntaje de coeficiente intelectual, afirmación de salud o evaluación del desarrollo. El progreso permanece en este navegador. No se requiere perfil infantil y la ruta Kids no solicita publicidad.",
+      "designNote": "La dificultad crece al cambiar las pistas que hay que interpretar, no al reducir los objetivos ni añadir presión con un reloj. Las necesidades directas presentan los objetos; después se incorporan el reconocimiento visual, la prioridad, el recuerdo breve y el cambio de posiciones. El área de juego mantiene sus proporciones en teléfonos, tabletas y pantallas de escritorio o apaisadas. Los efectos de la escena no revelan la respuesta y las pausas de ayuda cuentan solo el tiempo visible con la página en primer plano.",
+      "parent": "Misión de Ayuda puede servir para conversar sobre reconocimiento visual, causa y efecto, prioridades sencillas, memoria breve y atención. Los animales reales requieren hábitats, alimentación y atención profesional que estas escenas simplificadas no representan. Las estrellas y el informe resumen la partida: no son una nota, una prueba de inteligencia, una afirmación de salud ni una evaluación del desarrollo. El progreso se guarda solo en este navegador y puede perderse al borrar los datos del sitio. No se necesita un perfil infantil y la versión Kids no envía solicitudes publicitarias.",
       "faq": [
         [
           "¿Cuántas misiones están incluidas?",
-          "Hay 30 misiones guardadas con Helper Checks en 5, 10, 15, 20, 25 y 30."
+          "Hay 30 misiones guardadas. Las pruebas de repaso aparecen en las misiones 5, 10, 15, 20, 25 y 30."
         ],
         [
           "¿Qué situaciones y herramientas aparecen?",
-          "Nueve situaciones utilizan ocho elementos de ayuda ilustrados."
+          "Hay nueve situaciones y ocho objetos de ayuda ilustrados."
         ],
         [
           "¿Por qué faltan palabras de herramientas?",
-          "Picture Tool y las misiones mixtas se basan en obras de arte mientras permanecen nombres accesibles."
+          "En estas misiones hay que reconocer los objetos por sus dibujos, pero sus etiquetas accesibles siguen disponibles."
         ],
         [
           "¿Qué significan dos iconos?",
-          "Elija el elemento que maneja la prioridad inmediata descrita por ambas pistas."
+          "Elige el objeto que resuelve la necesidad más urgente indicada por ambas pistas."
         ],
         [
           "¿Qué pasa si la necesidad desaparece?",
-          "Toca el animal para volver a mostrarlo sin penalización."
+          "Toca al animal para volver a mostrar la indicación sin perder estrellas."
         ],
         [
           "¿Por qué se movieron las herramientas?",
-          "Las misiones de cambio de bandeja las reordenan después de una elección incorrecta."
+          "En esas misiones, los objetos pueden cambiar de sitio después de una respuesta incorrecta."
         ],
         [
           "¿Puede una misión quedarse estancada?",
-          "No. Tres decisiones equivocadas pasan suavemente a la siguiente situación."
+          "No. Después de tres errores, esa situación termina sin puntos y el juego continúa."
         ],
         [
           "¿Se guarda el progreso?",
-          "Las estrellas, puntuaciones y desbloqueos permanecen solo en este navegador."
+          "Las estrellas, las mejores puntuaciones y los desbloqueos se guardan solo en este navegador."
         ],
         [
           "¿La página para niños muestra anuncios?",
-          "No. El juego no genera ninguna solicitud ni reserva de publicidad."
+          "No. La versión Kids no envía solicitudes publicitarias."
         ]
       ]
     },

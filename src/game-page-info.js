@@ -1439,6 +1439,8 @@
     },
     "tiny-weather-rescue": {
       title: "Animal Helper Quest",
+      relatedIds: ["zoo-helper-day", "animal-coloring-studio"],
+      showRelatedSkill: false,
       age: "6+",
       difficulty: "Easy",
       time: "3-6 minutes per mission",
@@ -27380,6 +27382,29 @@
       localizedGames[locale] ||= {};
       localizedGames[locale][id] = { ...(localizedGames[locale][id] || {}), text140Tags: tags };
     }
+  }
+  const helperQuestText140Tags = {
+    en: ["Picture clue matching", "Care item choice", "Priority decisions", "Short memory recall"],
+    "zh-Hant": ["看圖線索配對", "照顧道具選擇", "優先順序判斷", "短期記憶回想"],
+    "zh-Hans": ["看图线索配对", "照顾道具选择", "优先顺序判断", "短期记忆回想"],
+    ja: ["絵の手がかり合わせ", "ケア道具選び", "優先順位判断", "短期記憶"],
+    ko: ["그림 단서 맞추기", "돌봄 도구 선택", "우선순위 판단", "짧은 기억 회상"],
+    es: ["Unir pistas visuales", "Elegir objetos de ayuda", "Decidir prioridades", "Memoria breve"],
+    "pt-BR": ["Combinar pistas visuais", "Escolher itens de cuidado", "Decidir prioridades", "Memória breve"],
+    fr: ["Associer des indices visuels", "Choisir un objet d’aide", "Définir les priorités", "Mémoire à court terme"],
+    de: ["Bildhinweise zuordnen", "Hilfsgegenstände wählen", "Prioritäten erkennen", "Kurzzeitgedächtnis"],
+    it: ["Associare indizi visivi", "Scegliere oggetti di aiuto", "Stabilire le priorità", "Memoria a breve termine"],
+    ru: ["Сопоставление по картинкам", "Выбор предмета помощи", "Определение приоритета", "Кратковременная память"],
+    hi: ["चित्र संकेत मिलान", "देखभाल वस्तु चयन", "प्राथमिकता निर्णय", "अल्पकालिक स्मरण"],
+    ar: ["مطابقة الأدلة المصورة", "اختيار أداة العناية", "تحديد الأولوية", "تذكّر قصير المدى"],
+  };
+  games["tiny-weather-rescue"].text140Tags = helperQuestText140Tags.en;
+  for (const [locale, tags] of Object.entries(helperQuestText140Tags)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["tiny-weather-rescue"] = {
+      ...(localizedGames[locale]["tiny-weather-rescue"] || {}),
+      text140Tags: tags,
+    };
   }
   render();
 })();

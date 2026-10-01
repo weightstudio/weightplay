@@ -401,6 +401,29 @@
     },
   };
 
+  const text140SeoDescriptions = {
+    en: "Solve 30 animal-care missions by matching picture clues to eight tools, choosing priorities, recalling hidden needs, and adapting when the tool tray moves.",
+    "zh-Hant": "完成 30 個動物照護任務，從圖片線索選出八種道具、判斷優先需求、回想短暫隱藏的線索，並留意答錯後移動的道具列。",
+    "zh-Hans": "完成 30 个动物照护任务，从图片线索选出八种道具、判断优先需求、回想短暂隐藏的线索，并留意答错后移动的道具栏。",
+    ja: "絵の手がかりから8種類の道具を選び、動物の困りごとを解決する30ミッション。優先順位や一時的に隠れる合図を読み、道具の並び替えにも対応します。",
+    ko: "그림 단서로 여덟 가지 도구를 골라 동물을 돕는 30개 미션입니다. 우선순위와 잠시 숨겨진 필요를 살피고, 도구 위치가 바뀌면 다시 확인하세요.",
+    es: "Resuelve 30 misiones de cuidado animal: relaciona pistas visuales con ocho objetos, elige prioridades, recuerda necesidades ocultas y revisa la bandeja tras un error.",
+    "pt-BR": "Resolva 30 missões de cuidado animal: relacione pistas visuais a oito itens, escolha prioridades, lembre necessidades ocultas e confira a bandeja após um erro.",
+    fr: "Résolvez 30 missions de soin animal : associez les indices en images à huit objets, choisissez les priorités, rappelez-vous un besoin caché et vérifiez le plateau après une erreur.",
+    de: "Löse 30 Tierpflege-Missionen: Ordne Bildhinweise acht Hilfsmitteln zu, wähle die dringendste Hilfe, erinnere dich an verborgene Bedürfnisse und prüfe die Ablage nach einem Fehler.",
+    it: "Completa 30 missioni di cura: abbina gli indizi illustrati a otto oggetti, scegli la priorità, ricorda un bisogno nascosto e ricontrolla il vassoio dopo un errore.",
+    ru: "Пройдите 30 заданий по уходу за животными: сопоставляйте картинки с восемью предметами, выбирайте главное, вспоминайте скрытую потребность и проверяйте лоток после ошибки.",
+    hi: "जानवरों की देखभाल के 30 मिशन पूरे करें: चित्र-संकेतों से आठ वस्तुओं में सही विकल्प चुनें, प्राथमिकता तय करें और गलती के बाद बदली ट्रे फिर देखें।",
+    ar: "أكمل 30 مهمة لرعاية الحيوانات: طابق الأدلة المصورة مع ثماني أدوات، وحدد الحاجة الأهم، وتذكر الإشارة المخفية، ثم راجع ترتيب الأدوات بعد الخطأ.",
+  };
+  for (const [locale, description] of Object.entries(text140SeoDescriptions)) {
+    localeTextOverrides[locale] = {
+      ...(localeTextOverrides[locale] || {}),
+      seoDescription: description,
+      ogDescription: description,
+    };
+  }
+
   const $ = (id) => document.getElementById(id);
   const nodes = {
     localeSelect: $("localeSelect"),
