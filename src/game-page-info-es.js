@@ -3285,10 +3285,10 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   };
   resource.gameplayProfiles["animal-word-trails"] = { gameplay: "Puzle de rutas de palabras", genre: ["Palabras", "Puzle", "Animales"] };
   resource.games["animal-block-grove"] = {
-    title: "Bosque de Bloques Animales", difficulty: "Fácil a desafiante", time: "2-6 minutos por misión",
+    title: "Bosque de Bloques", difficulty: "Fácil a desafiante", time: "2-6 minutos por misión",
     gameplay: "Puzle de colocación en tablero 8×8", genre: ["Puzle", "Lógica", "Animales"],
     skills: ["Razonamiento espacial", "Planificación visual", "Resolución de problemas"],
-    intro: "Bosque de Bloques Animales es un puzle de treinta misiones protagonizado por Taro Caparazón de Musgo y Mimi Salto Arcoíris. Elige entre tres grupos, coloca todas sus casillas en el tablero 8×8 y completa filas o columnas para liberar espacio.",
+    intro: "Bosque de Bloques es un puzle de treinta misiones protagonizado por Taro Caparazón de Musgo y Mimi Salto Arcoíris. Elige entre tres grupos, coloca todas sus casillas en el tablero 8×8 y completa filas o columnas para liberar espacio.",
     story: ["Una tormenta cubrió los hábitats del bosque con ramas de distintas formas. Taro y Mimi restauran cada claro al completar líneas y abrir espacio para los animales."],
     systems: ["Elige uno de los tres grupos y colócalo completo en casillas libres. Una fila o columna llena se elimina. Cuando se usan los tres grupos aparece una nueva selección.", "La misión termina al alcanzar su objetivo. Deshacer restaura el último movimiento, Reiniciar reconstruye el mismo tablero y Pista señala una colocación válida sin jugarla."],
     how: ["Elige uno de los tres grupos.", "Colócalo completo sobre casillas libres.", "Completa filas o columnas para despejarlas.", "Cumple el objetivo antes de quedarte sin espacio."],
@@ -3297,7 +3297,7 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     designNote: "Las treinta misiones son deterministas y muestran toda la información necesaria. El mismo tablero y las mismas reglas funcionan con toque, ratón y teclado.",
     parent: "Este juego Kids no contiene anuncios ni requiere cuenta. El progreso se guarda únicamente en este navegador y no es una evaluación formal.",
     relatedIds: ["animal-parking-patrol", "animal-color-link"],
-    faq: [["¿Debe caber todo el grupo?", "Sí. Ninguna parte puede quedar fuera ni cubrir otra pieza."], ["¿Qué elimina bloques?", "Completar una fila o columna entera."], ["¿La pista juega por mí?", "No. Solo señala una colocación válida."], ["¿Se guarda el progreso?", "Sí, solo en este navegador."]]
+    faq: [["¿Debe caber todo el grupo?", "Sí. Ninguna parte puede quedar fuera ni cubrir otra pieza."], ["¿Qué elimina bloques?", "Completar una fila o columna entera."], ["¿La pista juega por mí?", "No. Solo señala una colocación válida."], ["¿Cuándo aparece otro grupo de tres piezas?", "Después de colocar las tres piezas disponibles aparece el siguiente grupo."], ["¿Se guarda el progreso?", "Sí, solo en este navegador."]]
   };
   resource.gameplayProfiles["animal-block-grove"] = { gameplay: "Puzle de colocación en tablero 8×8", genre: ["Puzle", "Lógica", "Animales"] };
   resource.games["animal-coloring-studio"] = {

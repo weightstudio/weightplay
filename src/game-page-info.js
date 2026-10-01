@@ -12195,16 +12195,16 @@
   }});
   gameplayProfiles["animal-sanctuary-loop"] = { gameplay: "Real-Time Territory Loop Arcade", genre: ["Arcade", "Strategy", "Animal"] };
   localizedGames["zh-Hant"]["animal-sanctuary-loop"] = {
-    ...games["animal-sanctuary-loop"], title: "動物聖域光環", difficulty: "中等至具挑戰性", time: "每個任務約 2 至 6 分鐘", gameplay: "即時領地光環遊戲", genre: ["動作", "策略", "動物"], skills: ["規劃", "反應", "風險管理"],
-    intro: "《動物聖域光環》是星爪菲亞主演的 30 關即時領地遊戲。離開已修復土地、在腐化區畫出脆弱光軌，並在獵影碰到開放路線前重新接回。"
+    ...games["animal-sanctuary-loop"], title: "聖域光環", difficulty: "中等至具挑戰性", time: "每個任務約 2 至 6 分鐘", gameplay: "即時領地光環遊戲", genre: ["動作", "策略", "動物"], skills: ["規劃", "反應", "風險管理"],
+    intro: "《聖域光環》是星爪菲亞主演的 30 關即時領地遊戲。離開已修復土地、在腐化區畫出脆弱光軌，並在獵影碰到開放路線前重新接回。"
   };
   localizedGameplayProfiles["zh-Hant"]["animal-sanctuary-loop"] = { gameplay: "即時領地光環遊戲", genre: ["動作", "策略", "動物"] };
-  localizedGames["zh-Hans"]["animal-sanctuary-loop"] = { ...localizedGames["zh-Hant"]["animal-sanctuary-loop"], title: "动物圣域光环", gameplay: "即时领地光环游戏", intro: "《动物圣域光环》是星爪菲亚主演的 30 关即时领地游戏。离开已修复土地、在腐化区画出脆弱光轨，并在猎影碰到开放路线前重新接回。" };
+  localizedGames["zh-Hans"]["animal-sanctuary-loop"] = { ...localizedGames["zh-Hant"]["animal-sanctuary-loop"], title: "圣域光环", gameplay: "即时领地光环游戏", intro: "《圣域光环》是星爪菲亚主演的 30 关即时领地游戏。离开已修复土地、在腐化区画出脆弱光轨，并在猎影碰到开放路线前重新接回。" };
   localizedGameplayProfiles["zh-Hans"]["animal-sanctuary-loop"] = { gameplay: "即时领地光环游戏", genre: ["动作", "策略", "动物"] };
   localizedGames.hi["animal-sanctuary-loop"] = {
-    ...games["animal-sanctuary-loop"], title: "पशु अभयारण्य चक्र", difficulty: "मध्यम से चुनौतीपूर्ण", time: "प्रति मिशन 2-6 मिनट", gameplay: "रियल-टाइम क्षेत्र आर्केड", genre: ["आर्केड", "रणनीति", "पशु"], skills: ["Planning", "Reaction", "Risk Management"],
+    ...games["animal-sanctuary-loop"], title: "अभयारण्य चक्र", difficulty: "मध्यम से चुनौतीपूर्ण", time: "प्रति मिशन 2-6 मिनट", gameplay: "रियल-टाइम क्षेत्र आर्केड", genre: ["आर्केड", "रणनीति", "पशु"], skills: ["Planning", "Reaction", "Risk Management"],
     guideKicker: "WeightPlay की मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड",
-    intro: "पशु अभयारण्य चक्र फिया के साथ 30 मिशनों वाला क्षेत्र आर्केड गेम है। पुनर्स्थापित भूमि छोड़ें, दूषित क्षेत्र में असुरक्षित बिजली का रास्ता बनाएँ और शिकारी के खुले रास्ते तक पहुँचने से पहले वापस जुड़ें।",
+    intro: "अभयारण्य चक्र फिया के साथ 30 मिशनों वाला क्षेत्र आर्केड गेम है। पुनर्स्थापित भूमि छोड़ें, दूषित क्षेत्र में असुरक्षित बिजली का रास्ता बनाएँ और शिकारी के खुले रास्ते तक पहुँचने से पहले वापस जुड़ें।",
     story: ["छह अभयारण्य क्षेत्र दूषित हो चुके हैं। फिया क्षेत्र घेरकर, बीकन बचाकर और तीस मिशनों के बदलते नियमों के बीच हर आवास को पुनर्स्थापित करती है।"],
     systems: ["पुनर्स्थापित भूमि पर फिया सुरक्षित रहती है। बाहर उसका खुला रास्ता शिकारी काट सकता है; वापस जुड़ने पर घिरा क्षेत्र आपका हो जाता है। Battle में दिल, लक्ष्य क्षेत्र, मिशन नियम और दुश्मन के रास्ते दिखाई देते हैं।", "बाद के अध्यायों में बचाव बीकन, तूफ़ानी गलियाँ, क्रमबद्ध मुहरें, सिकुड़ती सीमाएँ, प्रतिद्वंद्वी क्षेत्र और रक्षक शिकार जुड़ते हैं। अनलॉक, सितारे और चुनी हुई रास्ता शैलियाँ स्थानीय रूप से सहेजी जाती हैं।"],
     how: ["क्षैतिज Stage रेल से कोई अनलॉक मिशन चुनें।", "पुनर्स्थापित भूमि से दूषित क्षेत्र में जाएँ।", "शिकारी से बचते हुए उपयोगी चक्र बनाएँ।", "वापस जुड़कर क्षेत्र प्राप्त करें और मिशन का लक्ष्य पूरा करें।"],
@@ -12215,9 +12215,9 @@
     faq: [["कितने मिशन हैं?", "छह नियम अध्यायों में 30 authored मिशन हैं।"], ["फिया कब सुरक्षित रहती है?", "जब वह पुनर्स्थापित क्षेत्र को छूती है, तब वह सुरक्षित रहती है।"], ["नुकसान किससे होता है?", "शिकारी का फिया या उसके असुरक्षित खुले रास्ते को छूना एक दिल घटाता है।"], ["क्या प्रगति सहेजी जाती है?", "हाँ, इसी ब्राउज़र में स्थानीय रूप से।"]]
   };
   localizedGames.ar["animal-sanctuary-loop"] = {
-    ...games["animal-sanctuary-loop"], title: "حلقة محمية الحيوانات", difficulty: "متوسطة إلى صعبة", time: "2-6 دقائق لكل مهمة", gameplay: "أركيد السيطرة على الأراضي في الوقت الحقيقي", genre: ["أركيد", "استراتيجية", "حيوانات"], skills: ["Planning", "Reaction", "Risk Management"],
+    ...games["animal-sanctuary-loop"], title: "حلقة محمية", difficulty: "متوسطة إلى صعبة", time: "2-6 دقائق لكل مهمة", gameplay: "أركيد السيطرة على الأراضي في الوقت الحقيقي", genre: ["أركيد", "استراتيجية", "حيوانات"], skills: ["Planning", "Reaction", "Risk Management"],
     guideKicker: "دليل لعبة WeightPlay الأصلية", guideTitleSuffix: "دليل اللعبة",
-    intro: "حلقة محمية الحيوانات هي لعبة أركيد من 30 مهمة تقود فيها فيا. غادر الأرض المستعادة، وارسم مسارًا كهربائيًا مكشوفًا عبر المنطقة الفاسدة، ثم أعد الاتصال قبل أن يصل الصياد إلى الخط المفتوح.",
+    intro: "حلقة محمية هي لعبة أركيد من 30 مهمة تقود فيها فيا. غادر الأرض المستعادة، وارسم مسارًا كهربائيًا مكشوفًا عبر المنطقة الفاسدة، ثم أعد الاتصال قبل أن يصل الصياد إلى الخط المفتوح.",
     story: ["ابتلع الفساد ست مناطق من المحمية. تستعيد فيا كل موطن بإحاطة الأرض وإنقاذ المنارات ومواجهة القواعد المتغيرة خلال ثلاثين مهمة مصممة بعناية."],
     systems: ["تكون فيا آمنة على الأرض المستعادة. خارجها يستطيع الصياد قطع المسار المفتوح؛ وعند إعادة الاتصال تصبح المنطقة المحاطة ملكًا لك. تبقى القلوب ومنطقة الهدف وقواعد المهمة ومسارات الأعداء واضحة أثناء المعركة.", "تضيف الفصول اللاحقة منارات الإنقاذ وممرات العاصفة والأختام المرتبة والحدود المتقلصة والمناطق المتنافسة ومطاردات الحارس. تُحفظ عمليات الفتح والنجوم وأنماط المسار محليًا."],
     how: ["اختر مهمة مفتوحة من شريط Stage الأفقي.", "تحرك من الأرض المستعادة إلى المنطقة الفاسدة.", "ارسم حلقة مفيدة مع تجنب الصيادين.", "أعد الاتصال لضم المنطقة وإتمام هدف المهمة."],
@@ -14812,6 +14812,149 @@
     gameplayProfiles.war.marketComparison = window.WeightPlayWarText.reference;
   }
 
+  const animalText140RuntimeTags = {
+    "animal-block-grove": {
+      "en": [
+        "8×8 block placement puzzle",
+        "habitat line-clearing goals",
+        "30 missions + Infinite Grove"
+      ],
+      "zh-Hant": [
+        "8×8 方塊擺放益智",
+        "棲地消行列目標",
+        "30 個任務＋無限模式"
+      ],
+      "zh-Hans": [
+        "8×8 方块摆放益智",
+        "栖息地消行列目标",
+        "30 个任务＋无限模式"
+      ],
+      "ja": [
+        "8×8ブロック配置パズル",
+        "生息地の行列消去目標",
+        "30ミッション＋無限モード"
+      ],
+      "ko": [
+        "8×8 블록 배치 퍼즐",
+        "서식지 행·열 지우기 목표",
+        "30개 미션 + 무한 모드"
+      ],
+      "es": [
+        "Puzle de bloques 8×8",
+        "Objetivos de líneas del hábitat",
+        "30 misiones y modo infinito"
+      ],
+      "pt-BR": [
+        "Quebra-cabeça de blocos 8×8",
+        "Objetivos de linhas do habitat",
+        "30 missões e modo infinito"
+      ],
+      "fr": [
+        "Puzzle de blocs sur grille 8×8",
+        "Lignes à compléter pour restaurer l’habitat",
+        "30 missions et mode infini"
+      ],
+      "de": [
+        "8×8-Blocklegespiel",
+        "Lebensraumziele durch Reihen",
+        "30 Missionen und Endlosmodus"
+      ],
+      "it": [
+        "Puzzle di blocchi 8×8",
+        "Obiettivi habitat con righe",
+        "30 missioni e modalità infinita"
+      ],
+      "ru": [
+        "Головоломка с блоками 8×8",
+        "Цели по очистке рядов",
+        "30 заданий и бесконечный режим"
+      ],
+      "hi": [
+        "8×8 ब्लॉक रखने वाली पहेली",
+        "आवास के लिए पंक्ति लक्ष्य",
+        "30 मिशन और अनंत वन"
+      ],
+      "ar": [
+        "لغز وضع الكتل على شبكة 8×8",
+        "أهداف خطوط الموائل",
+        "30 مهمة وبستان لا نهائي"
+      ]
+    },
+    "animal-sanctuary-loop": {
+      "en": [
+        "territory-loop arcade",
+        "exposed trail risk",
+        "30 missions across six regions"
+      ],
+      "zh-Hant": [
+        "即時領地光環街機",
+        "開放光路風險",
+        "六個區域、30 個任務"
+      ],
+      "zh-Hans": [
+        "即时领地光环街机",
+        "开放光路风险",
+        "六个区域、30 个任务"
+      ],
+      "ja": [
+        "リアルタイム領地ループアーケード",
+        "むき出しの軌跡リスク",
+        "6地域・全30ミッション"
+      ],
+      "ko": [
+        "실시간 영토 루프 아케이드",
+        "노출된 경로의 위험",
+        "6개 지역·30개 미션"
+      ],
+      "es": [
+        "Arcade de bucles territoriales",
+        "Riesgo de dejar una estela expuesta",
+        "30 misiones en seis regiones"
+      ],
+      "pt-BR": [
+        "Arcade de ciclos territoriais",
+        "Risco da trilha exposta",
+        "30 missões em seis regiões"
+      ],
+      "fr": [
+        "Arcade de boucles territoriales",
+        "Risque d’une piste exposée",
+        "30 missions dans six régions"
+      ],
+      "de": [
+        "Echtzeit-Territoriumsschleifen",
+        "Risiko offener Spuren",
+        "30 Missionen in sechs Regionen"
+      ],
+      "it": [
+        "Arcade dei cicli territoriali",
+        "Rischio del percorso esposto",
+        "30 missioni in sei regioni"
+      ],
+      "ru": [
+        "Аркада с захватом территории",
+        "Риск открытого следа",
+        "30 заданий в шести регионах"
+      ],
+      "hi": [
+        "क्षेत्र घेरने वाला आर्केड खेल",
+        "खुली राह का जोखिम",
+        "छह क्षेत्रों में 30 मिशन"
+      ],
+      "ar": [
+        "أركيد حلقات السيطرة على الأرض",
+        "خطر المسار المكشوف",
+        "30 مهمة في ست مناطق"
+      ]
+    }
+  };
+  for (const [locale, gamesForLocale] of Object.entries(animalText140RuntimeTags)) {
+    localizedGames[locale] ||= {};
+    for (const [id, text140Tags] of Object.entries(gamesForLocale)) {
+      localizedGames[locale][id] = { ...(localizedGames[locale][id] || {}), text140Tags };
+    }
+  }
+
   window.WeightPlayGameInfo = {
     render,
     get(gameId) {
@@ -15658,7 +15801,7 @@
     ,"animal-color-springs": { gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"] }
     ,"animal-word-trails": { gameplay: "Reading Word-Path Puzzle", genre: ["Education", "Puzzle", "Animal"] }
   });
-  localizedGames["zh-Hant"]["animal-block-grove"] = { ...publicKidsBatch["animal-block-grove"], title: "動物方塊森林", gameplay: "8×8 方塊配置解謎", intro: "《動物方塊森林》是由苔殼太郎與彩躍咪咪帶領的三十關配置益智遊戲。從三組方塊中選擇，把每一格完整放進 8×8 森林棋盤，填滿橫列或直行即可消除並騰出棲地空間。" };
+  localizedGames["zh-Hant"]["animal-block-grove"] = { ...publicKidsBatch["animal-block-grove"], title: "方塊森林", gameplay: "8×8 方塊配置解謎", intro: "《方塊森林》是由苔殼太郎與彩躍咪咪帶領的三十關配置益智遊戲。從三組方塊中選擇，把每一格完整放進 8×8 森林棋盤，填滿橫列或直行即可消除並騰出棲地空間。", ...(localizedGames["zh-Hant"]["animal-block-grove"]?.text140Tags ? { text140Tags: localizedGames["zh-Hant"]["animal-block-grove"].text140Tags } : {}) };
   localizedGames["zh-Hant"]["animal-coloring-studio"] = { ...publicKidsBatch["animal-coloring-studio"], title: "動物塗色工作室", gameplay: "填色與畫筆創作", intro: "《動物塗色工作室》提供十二張原創動物圖畫。選擇喜歡的頁面與顏色，使用區域填色或自由畫筆慢慢完成作品，沒有倒數計時，也不需要追求分數。" };
   localizedGames["zh-Hant"]["animal-parking-patrol"] = {
     ...publicKidsBatch["animal-parking-patrol"],
@@ -16487,7 +16630,12 @@
   for (const [localeCode, copy] of Object.entries(blockGrove130Locales)) {
     localizedGames[localeCode] ||= {};
     localizedGameplayProfiles[localeCode] ||= {};
-    localizedGames[localeCode]["animal-block-grove"] = { ...publicKidsBatch["animal-block-grove"], ...copy };
+    const text140Tags = localizedGames[localeCode]["animal-block-grove"]?.text140Tags;
+    localizedGames[localeCode]["animal-block-grove"] = {
+      ...publicKidsBatch["animal-block-grove"],
+      ...copy,
+      ...(text140Tags ? { text140Tags } : {}),
+    };
     localizedGameplayProfiles[localeCode]["animal-block-grove"] = { gameplay: copy.gameplay, genre: copy.genre, skills: copy.skills };
   }
   // WP_BLOCK_GROVE_130_END
@@ -20276,7 +20424,7 @@
       "animal-crystal-survivor": { title: "الناجي من الكريستال الحيواني", intro: "حملة دورية في الوقت الفعلي متعددة المراحل، تعتمد على الحركة والهجمات التلقائية والترقيات المؤقتة والمخاطر الواضحة وستة زعماء حيوانات أصليين." },
       "animal-reef-fisher": { title: "صياد الشعاب الحيوانية", intro: "حملة صيد وجمع من 30 مهمة؛ اشحن الرمية، واضبط توتر الخيط، واكتشف المخلوقات البحرية، وأنفق ملاحظات الشعاب على تحسين العتاد." },
       "animal-bounce-brawl": { title: "شجار الارتداد", intro: "اضبط توقيت الارتداد، واختر أدوات الرغوة، وأخل بتوازن المنافس في ساحة فيزياء مرحة." },
-      "animal-block-grove": { title: "بستان الحيوانات المتراصة", intro: "ضع ثلاثين تشكيلًا من الكتل داخل لوحة غابة 8×8، وأكمل الصفوف والأعمدة لتفتح مساحة جديدة للتقدم." },
+      "animal-block-grove": { title: "Animal Block Grove", intro: "ضع ثلاثين تشكيلًا من الكتل داخل لوحة غابة 8×8، وأكمل الصفوف والأعمدة لتفتح مساحة جديدة للتقدم." },
       "animal-one-line": { title: "خط واحد", intro: "املأ كل الخانات المفتوحة في 30 مرحلة بمسار متصل، من دون زيارة أي خانة مرتين." },
       "animal-color-link": { title: "حديقة وصل الألوان", intro: "ارسم مسارات متصلة بين الألوان المتطابقة، واملأ اللوحة كاملة من دون تقاطع أو ترك خانة مفتوحة." },
       "spades": { title: "البستوني", intro: "راهن مع فريقك، واتبع النوع، واستخدم البستوني حكماً في لعبة الخدع." },
