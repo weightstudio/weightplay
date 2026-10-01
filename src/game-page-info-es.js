@@ -3429,6 +3429,44 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     return value;
   };
   resource.games["shadow-wolf"] = repairShadowWolfSpanish(resource.games["shadow-wolf"]);
+  const repairBubbleBakery140Spanish = (value) => {
+    if (typeof value === "string") return value
+      .replace(/Animal Bubble Bakery/g, "Panadería de Burbujas Animales")
+      .replace(/Panko the Bakery Coach/g, "Panko, el entrenador de la panadería")
+      .replace(/Panko's Master Bakery/g, "la Gran Pastelería de Panko")
+      .replace(/Panko Checks/g, "desafíos de Panko")
+      .replace(/Panko Check/g, "desafío de Panko")
+      .replace(/Panko's First Check/g, "primera prueba de Panko")
+      .replace(/Big-Batch Check/g, "prueba de lotes grandes")
+      .replace(/Panko's Queue Check/g, "prueba de cola de Panko")
+      .replace(/Panko's Festival Check/g, "prueba del festival de Panko")
+      .replace(/The Guardian/g, "el guardián")
+      .replace(/¿Cuántas niveles/g, "¿Cuántos niveles")
+      .replace(/\bLas niveles\b/g, "Los niveles")
+      .replace(/\blas niveles\b/g, "los niveles")
+      .replace(/\bLa nivel\b/g, "El nivel")
+      .replace(/\bla nivel\b/g, "el nivel")
+      .replace(/\bCada quinta nivel\b/g, "Cada quinto nivel")
+      .replace(/\bcada quinta nivel\b/g, "cada quinto nivel")
+      .replace(/\bun amigable Panko Check\b/g, "un desafío amistoso de Panko")
+      .replace(/\buna limpieza válida\b/g, "una eliminación válida")
+      .replace(/\bun grifo\b/g, "un grupo")
+      .replace(/\bla etapa mejor alcanzada\b/g, "el nivel más avanzado")
+      .replace(/\blos niveles desbloqueadas\b/g, "los niveles desbloqueados");
+    if (Array.isArray(value)) return value.map(repairBubbleBakery140Spanish);
+    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, repairBubbleBakery140Spanish(item)]));
+    return value;
+  };
+  window.WeightPlayGameInfoLocales.es.games["bubble-bakery"] = repairBubbleBakery140Spanish(window.WeightPlayGameInfoLocales.es.games["bubble-bakery"]);
+  const localizeColorLunchboxName = (value) => {
+    if (typeof value === "string") return value
+      .replace(/Animal Color Lunchbox/g, "Lonchera de Colores")
+      .replace(/The Guardian/g, "los guardianes");
+    if (Array.isArray(value)) return value.map(localizeColorLunchboxName);
+    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, localizeColorLunchboxName(item)]));
+    return value;
+  };
+  window.WeightPlayGameInfoLocales.es.games["color-lunchbox"] = localizeColorLunchboxName(window.WeightPlayGameInfoLocales.es.games["color-lunchbox"]);
 })(window.WeightPlayGameInfoLocales.es);
 
 window.WeightPlayGameInfoLocales.es.games["klondike-solitaire"] = {
