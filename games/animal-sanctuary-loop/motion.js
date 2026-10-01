@@ -34,12 +34,12 @@
       for (const animation of animations) paused ? animation.pause() : animation.play();
     }
     function field() { return { effects: [] }; }
-    function emit(state, kind, x, y, now, { cells = [], amount = "" } = {}) {
+    function emit(state, kind, x, y, now, { cells = [], amount = "", radius = 4 } = {}) {
       if (!state || reduced()) return;
       // One large capture cannot create a cell-sized particle storm or grow memory.
       const stride = Math.max(1, Math.ceil(cells.length / 256));
       const sampled = cells.filter((_, index) => index % stride === 0).slice(0, 256);
-      state.effects.push({ kind, x, y, born: now, life: kind === "hurt" ? 0.62 : 0.92, cells: sampled, amount });
+      state.effects.push({ kind, x, y, born: now, life: kind === "hurt" ? 0.62 : 0.92, cells: sampled, amount, radius });
       if (state.effects.length > 12) state.effects.splice(0, state.effects.length - 12);
     }
     function updateFacing(run, dt) {

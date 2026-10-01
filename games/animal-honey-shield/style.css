@@ -105,3 +105,20 @@ body[data-game-id="animal-honey-shield"] .wp-standard-main-progress{
   white-space:nowrap!important;
   text-overflow:ellipsis!important;
 }
+
+/* Finite, visual-only transitions retain the shared control geometry. */
+.battle-live:not([hidden]) .board-wrap{animation:honey-board-enter .28s ease-out both}
+.modal-layer:not([hidden])>.result-card{animation:honey-result-enter .3s ease-out both}
+#resultPanel[data-outcome="win"] .result-pup{animation:honey-pup-cheer .65s ease-out both}
+#resultPanel[data-outcome="fail"] .result-pup{animation:honey-pup-hurt .32s ease-out both}
+#resultPanel[data-outcome="fail"] .result-stars{color:#d9b0a3}
+.battle-stat strong{transition:color .15s ease}
+@keyframes honey-board-enter{from{opacity:0}to{opacity:1}}
+@keyframes honey-result-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes honey-pup-cheer{0%,100%{transform:translateY(0)}35%{transform:translateY(-12px) rotate(-4deg)}70%{transform:translateY(-5px) rotate(3deg)}}
+@keyframes honey-pup-hurt{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}65%{transform:translateX(5px)}}
+@media(prefers-reduced-motion:reduce){
+  .battle-live:not([hidden]) .board-wrap,.modal-layer:not([hidden])>.result-card{animation:honey-board-enter .12s linear both}
+  #resultPanel[data-outcome] .result-pup{animation:none}
+  .wave-meter i,.battle-stat strong{transition:none}
+}

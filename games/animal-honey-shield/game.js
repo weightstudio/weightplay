@@ -22,7 +22,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v61";
+  const GAME_VERSION="v62";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -44,6 +44,44 @@
   ];
   const state={mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:8,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:0,spawned:0,frame:0,last:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,repairCueKey:"",repairCueUntil:0,keyboard:{x:500,y:310},result:null};
   let raf=0;
+  const motionPreference=window.matchMedia("(prefers-reduced-motion: reduce)");
+  const feedback={clock:0,effects:[],blocks:0,recoveries:0,audioAt:-1,warning:false};
+  function resetFeedback(){Object.assign(feedback,{clock:0,effects:[],blocks:0,recoveries:0,audioAt:-1,warning:false})}
+  function effect(x,y,kind="block",strength=1){
+    // Visual proxies never own collision, nectar, rewards or delayed callbacks.
+    if(feedback.effects.length>=36)feedback.effects.shift();
+    feedback.effects.push({x,y,kind,strength,age:0,duration:kind==="lock"?.55:.34});
+  }
+  function strokeFeedback(stroke){
+    const contacts=strokeShapeLockContacts(stroke,level(stageIndex));
+    for(const contact of contacts)effect(contact.kind==="platform"?contact.x+contact.w/2:contact.x,contact.kind==="platform"?contact.y:contact.y,stroke.anchored?"lock":"draw");
+    const end=stroke.points.at(-1);effect(end.x,end.y,stroke.anchored?"lock":"draw");
+    window.WeightPlayAudio?.play(stroke.anchored?"magic.shield":"impact.soft");
+  }
+  function shieldImpact(bee,stroke,contact,nx,ny,held){
+    if((bee.nextFeedbackAt||0)>state.elapsed)return;
+    bee.nextFeedbackAt=state.elapsed+.28;
+    bee.impact=.18;
+    effect(contact.x,contact.y,held?"block":"push",held?1:1.2);
+    if(held){
+      feedback.blocks++;
+      // Stay outside the 27px contact band, then retreat before steering back.
+      // The old 22px correction left bees colliding again on every update.
+      bee.retreat=.24;bee.retreatX=nx;bee.retreatY=ny;
+      bee.vx=nx*155-ny*bee.route*70;bee.vy=ny*155+nx*bee.route*70;
+    }
+    if(feedback.audioAt<=state.elapsed){
+      window.WeightPlayAudio?.play(held?"combat.block":"impact.soft",{volume:.65});
+      feedback.audioAt=state.elapsed+.1;
+    }
+  }
+  function updateFeedback(dt){
+    if(screen!=="battle"||state.paused||state.modal||state.result)return;
+    feedback.clock+=dt;
+    for(const item of feedback.effects)item.age+=dt;
+    feedback.effects=feedback.effects.filter(item=>item.age<item.duration);
+    for(const bee of state.bees)bee.impact=Math.max(0,(bee.impact||0)-dt);
+  }
   const LINE_PIXELS_PER_NECTAR=14;
   function viewportBucket(){
     const width=window.innerWidth||0,height=window.innerHeight||0;
@@ -357,6 +395,7 @@
   }
   function resetStage(){
     const spec=level(stageIndex);
+    resetFeedback();
     Object.assign(state,{mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:spec.duration,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:spec.interval,spawned:0,frame:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,repairCueKey:"",repairCueUntil:0,result:null});
     (__wpNotifyMeasurement(), $("resultPanel").hidden=true);(__wpNotifyMeasurement(), $("leavePanel").hidden=true);(__wpNotifyMeasurement(), $("pausePanel").hidden=true);$("battleLive").inert=false;$("battleLive").hidden=false;
     frame?.activate('battle');
@@ -427,7 +466,7 @@
     // not replace paid points or release the wave before that pointer ends.
     if(!canDraw()||state.drawing||event.isPrimary===false||event.button!==0)return;canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);const point=pointerPoint(event);
     clearRepairCue();trackEvent("stroke_start",{input:"pointer",first_stroke:state.strokes.length===0});
-    state.drawing={pointerId:event.pointerId,points:[point],flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;$("anchorCoach").hidden=true;event.preventDefault();
+    state.drawing={pointerId:event.pointerId,points:[point],flash:0,blockedFlash:0,moves:0};effect(point.x,point.y,"draw");state.keyboard={...point};$("drawHint").hidden=true;$("anchorCoach").hidden=true;event.preventDefault();
   });
   canvas.addEventListener("pointermove",event=>{
     if(!state.drawing||event.pointerId!==state.drawing.pointerId||!canDraw())return;
@@ -462,7 +501,8 @@
       refreshStrokeMobility(state.drawing,level(stageIndex));
       recordStrokeCommit(state.drawing,"pointer");
       state.strokes.push(state.drawing);
-      state.wallNav=null;state.wallNavClock=0;
+      strokeFeedback(state.drawing);
+      state.nav=null;state.navClock=0;state.wallNav=null;state.wallNavClock=0;
     }
     state.drawing=null;
     if(!state.started&&state.strokes.length)beginWave();
@@ -482,7 +522,8 @@
       state.nectar=Math.max(0,state.nectar-length/LINE_PIXELS_PER_NECTAR);
       const stroke={points:[{x,y:y-length/2},{x,y:y+length/2}],flash:0,blockedFlash:0,moves:0};
       refreshStrokeMobility(stroke,level(stageIndex));recordStrokeCommit(stroke,"keyboard");state.strokes.push(stroke);
-      state.wallNav=null;state.wallNavClock=0;
+      strokeFeedback(stroke);
+      state.nav=null;state.navClock=0;state.wallNav=null;state.wallNavClock=0;
       if(!state.started)beginWave();
       updateHud();draw();event.preventDefault();
     }
@@ -950,6 +991,41 @@
     }
     return best;
   }
+  function clearBeeTravel(from,to,spec){
+    for(let step=1;step<=8;step++){
+      const t=step/8,point={x:from.x+(to.x-from.x)*t,y:from.y+(to.y-from.y)*t};
+      if(point.x<19||point.x>981||point.y<19||point.y>601||spec.solids.some(solid=>pointHitsSolid(point,solid,19)))return false;
+      if(state.strokes.some(stroke=>closestStrokePoint(stroke,point).d<27))return false;
+    }
+    return !state.strokes.some(stroke=>stroke.points.some((point,index)=>index>0&&segmentIntersection(from,to,stroke.points[index-1],point)));
+  }
+  function recoverBeeTravel(bee,spec,dt){
+    // Measure net displacement, so a fast two-position oscillation is also
+    // detected. Attached carriers are doing legitimate work, not stalled.
+    if(bee.attachedStroke){bee.travelSample=null;bee.escapeTarget=null;return}
+    if(!bee.travelSample)bee.travelSample={x:bee.x,y:bee.y,time:0};
+    const sample=bee.travelSample;sample.time+=dt;
+    if(bee.escapeTarget){
+      bee.escapeTarget.left-=dt;
+      if(bee.escapeTarget.left<=0||Math.hypot(bee.x-bee.escapeTarget.x,bee.y-bee.escapeTarget.y)<14)bee.escapeTarget=null;
+    }
+    if(sample.time<.65)return;
+    const moved=Math.hypot(bee.x-sample.x,bee.y-sample.y);
+    bee.travelSample={x:bee.x,y:bee.y,time:0};
+    if(moved>=18||bee.escapeTarget)return;
+    const base=Math.atan2(spec.dog.y-bee.y,spec.dog.x-bee.x),candidates=[];
+    for(let index=0;index<16;index++){
+      const angle=base+bee.route*index*Math.PI/8;
+      const point={x:bee.x+Math.cos(angle)*72,y:bee.y+Math.sin(angle)*72};
+      if(!clearBeeTravel(bee,point,spec))continue;
+      const cell=clamp(Math.floor(point.y/20),0,30)*50+clamp(Math.floor(point.x/20),0,49),distance=state.nav?.distance[cell]??-1;
+      candidates.push({...point,rank:distance>=0?distance:1000+index});
+    }
+    candidates.sort((a,b)=>a.rank-b.rank);
+    if(candidates.length){bee.escapeTarget={...candidates[0],left:.65};bee.retreat=0;feedback.recoveries++}
+    else bee.route*=-1;
+    // No position reset, wall crossing, invulnerability or false route opening.
+  }
   function closestStrokePoint(stroke,point){
     let best={x:stroke.points[0].x,y:stroke.points[0].y,d:Infinity};
     for(let index=1;index<stroke.points.length;index++){
@@ -1031,14 +1107,14 @@
         const nx=hit.nx*sign,ny=hit.ny*sign,dot=bee.vx*nx+bee.vy*ny;
         if(!canImpact){
           if(dot<0){bee.vx-=1.7*dot*nx;bee.vy-=1.7*dot*ny}
-          bee.x=contact.x+nx*22;bee.y=contact.y+ny*22;bee.bounced=true;return true;
+          bee.x=contact.x+nx*28;bee.y=contact.y+ny*28;bee.bounced=true;return true;
         }
         state.wallImpactContacts++;
         if(bee.routeOpen||stroke.anchored){
           if(state.mover?.stroke===stroke&&state.mover.bee===bee)state.mover=null;
           if(dot<0){bee.vx-=1.9*dot*nx;bee.vy-=1.9*dot*ny}
           bee.vx+=nx*42;bee.vy+=ny*42;bee.cooldown=.14;stroke.blockedFlash=.16;
-          bee.x=contact.x+nx*22;bee.y=contact.y+ny*22;bee.wallSlide=1.05;bee.bounced=true;stroke.flash=Math.max(stroke.flash,.12);return true;
+          bee.x=contact.x+nx*28;bee.y=contact.y+ny*28;shieldImpact(bee,stroke,contact,nx,ny,true);bee.wallSlide=1.05;bee.bounced=true;stroke.flash=Math.max(stroke.flash,.12);return true;
         }
         const moverValid=state.mover&&state.mover.stroke===stroke&&state.bees.includes(state.mover.bee)&&!state.mover.bee.routeOpen&&closestStrokePoint(stroke,state.mover.bee).d<=82;
         if(!moverValid){state.mover={stroke,bee,lastContactFrame:state.frame,movedFrame:-1};state.carrierChanges++}
@@ -1086,13 +1162,15 @@
           if(state.wallApproachStartedAt===null)state.wallApproachStartedAt=state.elapsed;
           state.maxGroupAttached=Math.max(state.maxGroupAttached,supporters.length||1);
           bee.cooldown=0;stroke.flash=.2;state.flash=.035;
+          shieldImpact(bee,stroke,contact,nx,ny,false);
           if(!stroke.repairCueShown){stroke.repairCueShown=true;announceRepair("repairLoose")}
         }else{
           if(dot<0){bee.vx-=1.9*dot*nx;bee.vy-=1.9*dot*ny}
           bee.vx+=nx*42;bee.vy+=ny*42;bee.cooldown=.14;stroke.blockedFlash=.16;
+          shieldImpact(bee,stroke,contact,nx,ny,true);
           if(!bee.routeOpen)announce("barrierHeld");
         }
-        if(!moved){bee.x=contact.x+nx*22;bee.y=contact.y+ny*22}
+        if(!moved){bee.x=contact.x+nx*28;bee.y=contact.y+ny*28}
         bee.wallSlide=moved?.5:1.05;bee.bounced=true;stroke.flash=Math.max(stroke.flash,.12);
         return true;
       }
@@ -1157,7 +1235,8 @@
           wallTarget=navigationDirection(state.wallNav,bee.x,bee.y);
         }
       }
-      const target=waypoint||wallTarget||solidDetourTarget(bee,spec),dx=target.x-bee.x,dy=target.y-bee.y,length=Math.hypot(dx,dy)||1;
+      bee.retreat=Math.max(0,(bee.retreat||0)-dt);
+      const target=bee.retreat>0?{x:bee.x+bee.retreatX*80-bee.retreatY*bee.route*32,y:bee.y+bee.retreatY*80+bee.retreatX*bee.route*32}:bee.escapeTarget||waypoint||wallTarget||solidDetourTarget(bee,spec),dx=target.x-bee.x,dy=target.y-bee.y,length=Math.hypot(dx,dy)||1;
       const sideX=-dy/length,sideY=dx/length;
       const navigating=bee.routeOpen||Boolean(wallTarget);
       const slide=navigating?0:bee.wallSlide>0?bee.route*spec.flank*.72:Math.sin(bee.life*1.8+bee.phase)*Math.min(9,spec.flank*.2);
@@ -1174,6 +1253,7 @@
       if(beeTouchesPip(bee,spec.dog)){finish(false,"pip_contact");return}
     }
     for(const bee of state.bees)separateBeeFromWalls(bee);
+    for(const bee of state.bees)recoverBeeTravel(bee,spec,dt);
     if(state.mover&&state.mover.bee.routeOpen)state.mover=null;
     state.bees=state.bees.filter(bee=>bee.life<18&&bee.x>-80&&bee.x<1080&&bee.y>-80&&bee.y<700);
     state.strokes.forEach(stroke=>{stroke.flash=Math.max(0,stroke.flash-dt);stroke.blockedFlash=Math.max(0,(stroke.blockedFlash||0)-dt)});
@@ -1210,6 +1290,8 @@
       if(state.result.stars>previous){save.stars[stageIndex]=state.result.stars;isBest=true}persist();updateMainProgress();
     }
     $("battleLive").inert=true;$("battleLive").hidden=true;(__wpNotifyMeasurement(), $("resultPanel").hidden=false);frame?.activate('battle',{covered:true});
+    $("resultPanel").dataset.outcome=won?"win":"fail";
+    window.WeightPlayAudio?.play(won?"result.win":"result.lose");
     $("resultTitle").textContent=fmt(won?"winTitle":"failTitle");
     $("resultStars").textContent=won?"★".repeat(state.result.stars)+"☆".repeat(3-state.result.stars):"☆☆☆";
     $("resultText").textContent=fmt(won?"winText":"failText",{stage:stageIndex+1,nectar:nectar.left});
@@ -1221,7 +1303,7 @@
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function loop(now){
-    const dt=Math.min(.034,Math.max(0,(now-state.last)/1000));state.last=now;update(dt);draw();raf=requestAnimationFrame(loop);
+    const dt=Math.min(.034,Math.max(0,(now-state.last)/1000));state.last=now;updateFeedback(dt);update(dt);draw();raf=requestAnimationFrame(loop);
   }
 
   function drawSprite(cell,x,y,w,h,flip=false){
@@ -1244,6 +1326,7 @@
     ctx.restore();
   }
   function wallRamVisual(bee){
+    if(motionPreference.matches)return{x:bee.x,y:bee.y,scaleX:1,scaleY:1,phase:"flight",offset:0};
     if(!bee.attachedStroke||(bee.intent!=="moveWall"&&bee.intent!=="supportWall"))return{x:bee.x,y:bee.y,scaleX:1,scaleY:1,phase:"flight",offset:0};
     const contact=closestStrokePoint(bee.attachedStroke,bee),distance=Math.max(.001,Math.hypot(bee.x-contact.x,bee.y-contact.y));
     const nx=(bee.x-contact.x)/distance,ny=(bee.y-contact.y)/distance,duration=.56,phase=((bee.life+(bee.id||0)*.031)%duration)/duration;
@@ -1260,11 +1343,47 @@
     const physicalWidth=80*uniform,physicalHeight=physicalWidth*crop.h/crop.w,dw=physicalWidth/physicalX,dh=physicalHeight/physicalY;
     const ram=wallRamVisual(bee),faceX=Number.isFinite(ram.faceX)?ram.faceX:bee.vx,faceY=Number.isFinite(ram.faceY)?ram.faceY:bee.vy;
     const facing=faceX<0?-1:1,tilt=Math.max(-.58,Math.min(.58,Math.atan2(faceY,Math.abs(faceX)||1))),cos=Math.cos(tilt),sin=Math.sin(tilt);
-    ctx.save();ctx.translate(ram.x,ram.y);
+    const reduced=motionPreference.matches,spawn=clamp(bee.life/.2,0,1),bob=reduced?0:Math.sin(bee.life*18+bee.phase)*2;
+    ctx.save();ctx.globalAlpha=.14;ctx.fillStyle="#082a27";ctx.beginPath();ctx.ellipse(bee.x,bee.y+19,19,7,0,0,Math.PI*2);ctx.fill();ctx.restore();
+    ctx.save();ctx.translate(ram.x,ram.y+bob);ctx.globalAlpha=spawn;
     ctx.transform(cos*facing,sin*facing*physicalX/physicalY,-sin*physicalY/physicalX,cos,0,0);
-    ctx.scale(ram.scaleX,ram.scaleY);
+    const impact=reduced?0:(bee.impact||0)/.18;
+    ctx.scale(ram.scaleX*(1+impact*.12),ram.scaleY*(1-impact*.1));
+    if(!reduced){
+      ctx.fillStyle=`rgba(224,255,255,${.16+Math.abs(Math.sin(bee.life*48))*.2})`;
+      ctx.fillRect(-dw*.15,-dh*.36,dw*.22,dh*.11);
+    }
     ctx.drawImage(beeArt,0,0,crop.w,crop.h,-centroid.x/crop.w*dw,-centroid.y/crop.h*dh,dw,dh);
     ctx.restore();
+  }
+  function drawFeedback(){
+    const reduced=motionPreference.matches;
+    ctx.save();
+    for(const item of feedback.effects){
+      const progress=item.age/item.duration,fade=1-progress;
+      ctx.globalAlpha=fade;
+      ctx.strokeStyle=item.kind==="block"||item.kind==="lock"?"#ffe688":item.kind==="push"?"#ffb776":"#a6fff0";
+      ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=item.kind==="lock"?4:3;
+      const radius=reduced?12:8+progress*(item.kind==="lock"?40:25);
+      ctx.beginPath();ctx.moveTo(item.x-radius,item.y-radius);ctx.lineTo(item.x+radius,item.y-radius);ctx.lineTo(item.x+radius,item.y+radius);ctx.lineTo(item.x-radius,item.y+radius);ctx.closePath();ctx.stroke();
+      if(!reduced)for(let index=0;index<6;index++){
+        const angle=index*Math.PI/3+Math.PI/6,distance=12+progress*46*item.strength,size=5*fade+1;
+        ctx.fillRect(item.x+Math.cos(angle)*distance-size/2,item.y+Math.sin(angle)*distance-size/2,size,size);
+      }
+    }
+    ctx.restore();
+  }
+  function drawPip(spec){
+    const dog=spec.dog,reduced=motionPreference.matches;
+    const nearest=state.bees.reduce((distance,bee)=>Math.min(distance,Math.hypot(bee.x-dog.x,bee.y-dog.y)),Infinity);
+    const threatened=state.started&&nearest<195&&state.bees.some(bee=>bee.routeOpen&&Math.hypot(bee.x-dog.x,bee.y-dog.y)<195);
+    ctx.save();ctx.fillStyle="rgba(7,35,25,.24)";ctx.beginPath();ctx.ellipse(dog.x,dog.y+42,57,13,0,0,Math.PI*2);ctx.fill();
+    if(threatened){
+      ctx.strokeStyle="#ffb16e";ctx.lineWidth=5;ctx.globalAlpha=.75;ctx.setLineDash([12,9]);
+      ctx.strokeRect(dog.x-83,dog.y-67,166,134);ctx.globalAlpha=1;
+    }
+    const breathe=reduced?0:Math.sin(feedback.clock*3)*1.8;
+    drawSprite(0,dog.x-82,dog.y-62+breathe,164,124);ctx.restore();
   }
   const platformMaterials={
     meadow:{face:"#788767",top:"#93bf43",edge:"#465d39",light:"#c8df83",mortar:"#617451"},
@@ -1332,7 +1451,8 @@
         // A short square glint and shaded lower edge make each water tile
         // read as a flat block facet instead of a painted wave or picture.
         ctx.fillStyle="rgba(194,237,215,.38)";
-        ctx.fillRect(tx+tileWidth*.16,ty+tileHeight*.16,tileWidth*.34,Math.max(2,tileHeight*.07));
+        const drift=motionPreference.matches?0:Math.sin(feedback.clock*1.8+col*.9+row*.7)*tileWidth*.1;
+        ctx.fillRect(tx+tileWidth*.16+drift,ty+tileHeight*.16,tileWidth*.34,Math.max(2,tileHeight*.07));
         ctx.fillStyle="rgba(7,74,101,.26)";
         ctx.fillRect(tx+tileWidth*.9,ty+tileHeight*.13,tileWidth*.1,tileHeight*.78);
       }
@@ -1371,7 +1491,7 @@
     const visible=screen==="battle"&&stageIndex===0&&!state.started&&!state.result&&!state.strokes.length;
     if(!visible||!spec.anchors.length)return;
     const contacts=state.drawing?strokeShapeLockContacts(state.drawing,spec):[];
-    const now=performance.now()/360;
+    const now=motionPreference.matches?0:feedback.clock*2.8;
     ctx.save();
     for(const [index,anchor] of spec.anchors.entries()){
       const contacted=contacts.some(solid=>solid.kind==="anchor"&&solid.x===anchor.x&&solid.y===anchor.y);
@@ -1404,8 +1524,15 @@
     for(const anchor of spec.anchors)drawSprite(3,anchor.x-48,anchor.y-48,96,96);
     drawAnchorTargetGuide(spec);
     for(const gate of spec.gates)drawSprite(4,gate.x-52,gate.y-58,104,116);
-    for(const hive of spec.hives)drawSprite(2,hive.x-75,hive.y-75,150,150);
-    drawSprite(0,spec.dog.x-82,spec.dog.y-62,164,124);
+    for(const [index,hive] of spec.hives.entries()){
+      const next=state.started&&state.spawned<spec.maxBees&&state.spawned%spec.hives.length===index;
+      const charge=next?clamp((state.spawnClock/spec.interval-.65)/.35,0,1):0;
+      ctx.save();
+      if(charge){ctx.strokeStyle="#ffd779";ctx.globalAlpha=.3+charge*.6;ctx.lineWidth=4;ctx.strokeRect(hive.x-28,hive.y+15,56,32);ctx.globalAlpha=1}
+      const shake=motionPreference.matches?0:Math.sin(feedback.clock*32)*charge*2;
+      drawSprite(2,hive.x-75+shake,hive.y-75,150,150);ctx.restore();
+    }
+    drawPip(spec);
     for(const bee of state.bees)drawBee(bee);
     const strokes=state.drawing?[...state.strokes,state.drawing]:state.strokes;
     ctx.lineCap="round";ctx.lineJoin="round";
@@ -1414,11 +1541,15 @@
       ctx.save();ctx.beginPath();stroke.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
       ctx.strokeStyle=blocked?"#ffe47a":moved?"#b8fff3":"#6effdf";ctx.lineWidth=16;ctx.shadowColor=blocked?"#ffc83b":"#36f5cf";ctx.shadowBlur=moved?24:18;ctx.globalAlpha=.94;ctx.stroke();
       ctx.strokeStyle="#ecfff8";ctx.lineWidth=4;ctx.globalAlpha=.85;ctx.stroke();ctx.restore();
+      if(stroke===state.drawing){
+        const tip=stroke.points.at(-1);ctx.save();ctx.fillStyle="#f0ffda";ctx.shadowColor="#76ffe1";ctx.shadowBlur=16;ctx.fillRect(tip.x-7,tip.y-7,14,14);ctx.restore();
+      }
     }
+    drawFeedback();
     if(document.activeElement===canvas){
       ctx.save();ctx.strokeStyle="#fff";ctx.lineWidth=3;ctx.setLineDash([8,6]);ctx.beginPath();ctx.arc(state.keyboard.x,state.keyboard.y,19,0,Math.PI*2);ctx.stroke();ctx.restore();
     }
-    if(state.flash>0){ctx.fillStyle=`rgba(91,255,226,${state.flash})`;ctx.fillRect(0,0,1000,620)}
+    if(state.flash>0&&!motionPreference.matches){ctx.fillStyle=`rgba(91,255,226,${state.flash})`;ctx.fillRect(0,0,1000,620)}
   }
 
   function openModal(panel,focusId){

@@ -88,16 +88,17 @@ function create(canvas){
   ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();const p=project(x-r,z-r,y,canvas.width);ctx.moveTo(p.x,p.y);
   let left=progress*4;for(let i=0;i<4&&left>0;i++,left--){const a=corners[i],b=corners[i+1],f=Math.min(1,left);const q=project(x+a[0]+(b[0]-a[0])*f,z+a[1]+(b[1]-a[1])*f,y,canvas.width);ctx.lineTo(q.x,q.y);}ctx.stroke();
  }
- function actor(image,x,z,scale,angle,color,now,reduced,isPlayer=false){
+ function actor(image,x,z,scale,angle,color,now,reduced,isPlayer=false,hitAt=-10,moving=false){
   const foot=project(x,z,.4,canvas.width),u=canvas.width/VIEW;
   // Explicit small footprint follows collision location; oversized art is decorative.
   floorQuad(x-.52,z-.52,1.04,.26,'#03191f',.75);ring(x,z,.73,.3,color);
   const a=angle-Math.PI/2,tip=project(x+Math.cos(a)*1.35,z+Math.sin(a)*1.35,.35,canvas.width);
   ctx.fillStyle=color;ctx.fillRect(tip.x-u*.16,tip.y-u*.16,u*.32,u*.32);
   if(!image?.complete||!image.naturalWidth)return;
-  const sw=scale*u,ratio=image.naturalWidth/image.naturalHeight,bob=reduced?0:Math.sin(now*7+x)*u*.1;
+  const hit=Math.max(0,1-(now-hitAt)/.32);
+  const sw=scale*u,ratio=image.naturalWidth/image.naturalHeight,bob=reduced?0:Math.sin(now*(moving?14:4)+x)*u*(moving?.22:.07);
   const iw=ratio>=1?sw:sw*ratio,ih=ratio>=1?sw/ratio:sw;
-  ctx.save();ctx.translate(foot.x,foot.y+bob);if(Math.cos(a)<-.1)ctx.scale(-1,1);
+  ctx.save();ctx.translate(foot.x+(reduced?0:Math.sin(hit*12)*hit*u*.65),foot.y+bob);if(!reduced&&hit)ctx.scale(1+hit*.16,1-hit*.12);if(Math.cos(a)<-.1)ctx.scale(-1,1);
   ctx.shadowColor='#001117';ctx.shadowBlur=3;ctx.drawImage(image,-iw/2,-ih*.88,iw,ih);ctx.restore();
   if(isPlayer){ctx.fillStyle='#fff6ac';ctx.fillRect(foot.x-u*.23,foot.y-ih*.92-u*.5,u*.46,u*.32);}
  }
@@ -110,6 +111,17 @@ function create(canvas){
   ctx.clearRect(0,0,w,w);
   if(driver){lastKind='HYBRID_3D';}else{ctx.drawImage(cache,0,0);lastKind='BLOCK_CANVAS';}
   canvas.dataset.renderer=lastKind==='HYBRID_3D'?'hybrid-3d':'block-canvas';
+  // Ground-level route cues communicate exposure and actual pursuit targets.
+  if(run.trail.size){
+   ring(run.anchor.x,run.anchor.y,1.7,.55,'#abffe1');
+   const p=project(run.player.x,run.player.y,.5,w),home=project(run.anchor.x,run.anchor.y,.5,w);
+   ctx.save();ctx.strokeStyle='#9cffe0';ctx.globalAlpha=.45;ctx.lineWidth=1.5;ctx.setLineDash([4,7]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(home.x,home.y);ctx.stroke();ctx.restore();
+   for(const h of run.hunters){if(!h.trailTarget||run.elapsed<(h.stunnedUntil||0))continue;
+    const distance=Math.hypot(h.x-h.trailTarget.x,h.y-h.trailTarget.y);if(distance>10)continue;
+    const a=project(h.x,h.y,.6,w),b=project(h.trailTarget.x,h.trailTarget.y,.6,w);
+    ctx.save();ctx.strokeStyle=distance<5?'#ff8799':'#ffc878';ctx.globalAlpha=.7;ctx.lineWidth=distance<5?2.5:1.5;ctx.setLineDash([u*.45,u*.35]);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore();ring(h.trailTarget.x+.5,h.trailTarget.y+.5,.6,.6,'#ff9b9b');
+   }
+  }
   // Exposed trail uses articulated luminous tiles; never a rounded neon tube.
   let j=0;for(const i of run.trail){const x=i%N,z=Math.floor(i/N);floorQuad(x+.10,z+.10,.80,.36,colors[0]);if(!reduced&&(j++ +Math.floor(run.elapsed*10))%4===0)floorQuad(x+.29,z+.29,.42,.4,'#fffbe0');}
   if(run.stage.storm){const p=run.stormClock/(run.stage.stormEvery||3.4);for(let k=0;k<16;k++){const x=(k*7+(reduced?0:run.elapsed*8))%N,z=(k*11)%N;floorQuad(x,z,.7,.5,p>.78?'#b4f1ff':'#66c9e1',p>.78?.38:.14);}ring(24,24,23.85,.5,p>.78?'#b4f1ff':'#497d9d');}
@@ -130,17 +142,21 @@ function create(canvas){
   // The shared motion emitter still owns lifetime/caps; render square sparks, not round rings.
   run.visual.effects=run.visual.effects.filter(e=>run.elapsed-e.born<e.life);
   if(reduced)run.visual.effects.length=0;
-  for(const e of run.visual.effects){const age=Math.max(0,(run.elapsed-e.born)/e.life),a=1-age,ease=1-a*a*a,col=e.kind==='hurt'?'#ff8799':e.kind==='marker'?'#ffe29a':'#9affda';
+  for(const e of run.visual.effects){const age=Math.max(0,(run.elapsed-e.born)/e.life),a=1-age,ease=1-a*a*a,col=e.kind==='hurt'||e.kind==='blocked'?'#ff8799':e.kind==='marker'?'#ffe29a':e.kind==='stun'||e.kind==='pulse'?'#c1c0ff':'#9affda';
    for(const i of e.cells)floorQuad(i%N,Math.floor(i/N),1,.5,col,a*.45);
-   ctx.globalAlpha=a;ring(e.x,e.y,.8+ease*4,.6,col);ctx.globalAlpha=1;
+   ctx.globalAlpha=a;ctx.lineWidth=e.kind==='pulse'?3:2;ring(e.x,e.y,.8+ease*(e.radius||4),.6,col);ctx.globalAlpha=1;
    for(let k=0;k<8;k++){const th=k*Math.PI/4,r=1+ease*(2+k%3);floorQuad(e.x+Math.cos(th)*r,e.y+Math.sin(th)*r,.22+a*.25,.8+Math.sin(age*Math.PI)*1.5,col,a);}
    if(e.amount){const p=project(e.x,e.y,3+ease*2,w);ctx.globalAlpha=a;ctx.fillStyle=col;ctx.strokeStyle='#09252e';ctx.lineWidth=3;ctx.font=`800 ${Math.max(18,u*1.7)}px system-ui`;ctx.textAlign='center';ctx.strokeText(e.amount,p.x,p.y);ctx.fillText(e.amount,p.x,p.y);ctx.globalAlpha=1;}
   }
   const cast=run.hunters.map(h=>({...h,player:false})).concat([{...run.player,imageKey:'player',size:4.4,player:true}]);cast.sort((a,b)=>a.y-b.y);
   for(const h of cast){const col=h.player?'#8fffd5':h.guardian?'#ff87a7':h.type==='runner'?'#7ce9ff':'#d6b2ff';
    if(!h.player&&h.type==='runner'&&run.trail.size){const phase=h.abilityClock%3.4;if(phase>=2.65)ring(h.x,h.y,h.size*.5,.7,'#ffe08b',(phase-2.65)/.75);if(h.burst)ring(h.x,h.y,h.size*.56,.7,'#85efff');}
-   actor(images[h.imageKey],h.x,h.y,h.player?6.6:h.guardian?8.5:h.size*1.43,h.visualAngle??h.angle+Math.PI/2,col,run.elapsed,reduced,h.player);
+   const stunned=run.elapsed<(h.stunnedUntil||0);
+   if(stunned){ring(h.x,h.y,h.size*.57,.5,'#d1c5ff');const p=project(h.x,h.y,4,w);ctx.fillStyle='#e1d7ff';for(let k=-1;k<=1;k++)ctx.fillRect(p.x+k*u*.65-u*.14,p.y+(reduced?0:Math.sin(run.elapsed*8+k)*u*.12),u*.28,u*.28);}
+   actor(images[h.imageKey],h.x,h.y,h.player?6.6:h.guardian?8.5:h.size*1.43,h.visualAngle??h.angle+Math.PI/2,col,run.elapsed,reduced,h.player,h.player?(h.hurtAt??-10):(h.hitAt??-10),h.player?!!(h.dx||h.dy):!stunned);
   }
+  // In-world combo countdown has fixed geometry and never intercepts controls.
+  if(run.chain){const p=project(run.player.x,run.player.y,7,w);ctx.save();ctx.font=`900 ${Math.max(15,u*1.4)}px system-ui`;ctx.textAlign='center';ctx.strokeStyle='#082332';ctx.lineWidth=4;ctx.fillStyle='#ffe49a';ctx.strokeText(`×${run.chain}`,p.x,p.y);ctx.fillText(`×${run.chain}`,p.x,p.y);ctx.globalAlpha=.8;ring(run.player.x,run.player.y,1.8,.4,'#ffe49a',Math.max(0,(run.chainUntil-run.elapsed)/12));ctx.restore();}
  }
  function point(event){const r=canvas.getBoundingClientRect();return unproject((event.clientX-r.left)/r.width*canvas.width,(event.clientY-r.top)/r.height*canvas.height,canvas.width);}
  function stats(){return {kind:lastKind,frames,builds,cuboids:terrain.length+boxes.length,driver:driver?.stats()||null,pending:!!pending,projectionError:driver?Math.max(...[[0,0],[24,24],[48,48],[0,48],[48,0]].map(([x,z])=>{const a=project(x,z,0,canvas.width),b=driver.project(x,z);return Math.hypot(a.x-b.x,a.y-b.y);})):0};}

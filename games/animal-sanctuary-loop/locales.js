@@ -348,5 +348,13 @@
   "relatedTwoTitle": "دبابيس روتفولت الحيوانية"
 });
   dictionaries.ar={...supplemental.ar};
+  const tempoRows = {
+    chainCapture: ["Loop ×{count} · +{seconds}s", "圈地 ×{count} · +{seconds}秒", "圈地 ×{count} · +{seconds}秒", "ループ ×{count} · +{seconds}秒", "고리 ×{count} · +{seconds}초", "Bucle ×{count} · +{seconds}s", "Laço ×{count} · +{seconds}s", "Boucle ×{count} · +{seconds}s", "Schleife ×{count} · +{seconds}s", "Anello ×{count} · +{seconds}s", "Петля ×{count} · +{seconds}с", "घेरा ×{count} · +{seconds}से", "حلقة ×{count} · +{seconds}ث"],
+    dangerTrail: ["Hunter closing in — reconnect!", "追獵者逼近光軌，快接回領地！", "追猎者逼近光轨，快接回领地！", "追跡者が接近！安全地帯へ！", "추적자 접근 중 — 다시 연결하세요!", "¡El cazador se acerca! ¡Reconecta!", "Caçador se aproximando — reconecte!", "Le chasseur approche — reconnectez !", "Jäger nähert sich — verbinde die Spur!", "Il cacciatore si avvicina — ricollega!", "Охотник близко — замкните след!", "शिकारी पास है — घेरा जोड़ें!", "الصياد يقترب — أعد وصل المسار!"],
+    returnSafe: ["Reconnect to safe land to capture", "接回安全領地，就能收復圈內區域", "接回安全领地，就能收复圈内区域", "安全地帯に戻って陣地を獲得", "안전지대로 연결해 영역을 확보하세요", "Vuelve a la zona segura para conquistar", "Reconecte à área segura para conquistar", "Rejoignez la zone sûre pour capturer", "Verbinde die Spur mit sicherem Land", "Ricollega alla zona sicura per conquistare", "Вернитесь на безопасную землю для захвата", "कब्ज़े के लिए सुरक्षित भूमि से जोड़ें", "عد إلى الأرض الآمنة للاستحواذ"],
+    chainReady: ["Chain ×{count} · {seconds}s to link again", "連鎖 ×{count} · {seconds}秒內再圈一塊", "连锁 ×{count} · {seconds}秒内再圈一块", "連鎖 ×{count} · あと{seconds}秒", "연속 ×{count} · 다음 고리까지 {seconds}초", "Racha ×{count} · {seconds}s para otra", "Sequência ×{count} · mais uma em {seconds}s", "Série ×{count} · encore {seconds}s", "Serie ×{count} · noch {seconds}s", "Serie ×{count} · ancora {seconds}s", "Серия ×{count} · ещё {seconds}с", "श्रृंखला ×{count} · अगला घेरा {seconds}से में", "سلسلة ×{count} · {seconds}ث للحلقة التالية"],
+    pulseHint: ["Large loops stun hunters; chain loops earn time", "大圈地震退追獵者，連續圈地補時間", "大圈地震退追猎者，连续圈地补时间", "大きな輪で敵を止め、連鎖で時間を獲得", "큰 고리는 적을 멈추고 연속 고리는 시간을 줍니다", "Los bucles grandes aturden; las rachas dan tiempo", "Laços grandes atordoam; sequências dão tempo", "Grandes boucles : étourdissement. Séries : temps bonus", "Große Schleifen betäuben; Serien geben Zeit", "Anelli grandi stordiscono; le serie danno tempo", "Большие петли оглушают; серии дают время", "बड़े घेरे शिकारियों को रोकते हैं; श्रृंखला समय देती है", "الحلقات الكبيرة تصعق الصيادين والسلاسل تمنح وقتًا"]
+  };
+  for (const [key, values] of Object.entries(tempoRows)) codes.forEach((code, index) => { dictionaries[code][key] = values[index]; });
   window.AnimalSanctuaryLoopLocales={codes,dictionaries};
 })();

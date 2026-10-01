@@ -21,7 +21,7 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
-  const GAME_VERSION = "v22";
+  const GAME_VERSION = "v23";
   const motion = window.SanctuaryLoopMotion.create();
   const screenFrame = window.WeightPlayScreenFrame.mount({
     root: $("frameRoot"),
@@ -252,6 +252,7 @@
     $("locale").value = locale;
     $("lobbyReturn").href = `/${routeSegments[locale]}/`;
     staticText.forEach((element) => { element.textContent = t(element.dataset.t); });
+    $("firstLoopCue").textContent = `${t("tutorialFirstLoop")} ${t("pulseHint")}`;
     assistiveText.forEach((element) => element.setAttribute(element.tagName === "IMG" ? "alt" : "aria-label", t(element.dataset.ta)));
     const resultActions = $("resultStage").parentElement;
     resultActions.append($("resultStage"), $("nextMission"), $("retry"));
@@ -885,6 +886,11 @@
       shrinkClock: 0,
       rivalMarks: [],
       rivalMarkedAt: -10,
+      chain: 0,
+      chainUntil: 0,
+      bonusTime: 0,
+      feedbackUntil: 0,
+      danger: false,
     };
     (__wpNotifyMeasurement(), $("leave").hidden = true);
     (__wpNotifyMeasurement(), $("tutorial").hidden = true);
@@ -895,6 +901,8 @@
     redrawLand();
     updateBattleHud(true);
     $("feedback").textContent = "";
+    $("feedback").dataset.kind = "safe";
+    $("arenaWrap").dataset.danger = "false";
     track("mission_start", { mission: stage.n, entry: "stage" });
     lastTime = performance.now();
     stopLoop();
@@ -995,6 +1003,8 @@
     lastHud = key;
     $("missionLabel").textContent = `${run.stage.n}/30`;
     $("progressValue").textContent = `${restored}%`;
+    $("progressValue").parentElement.classList.add("sanctuary-progress");
+    $("progressValue").parentElement.style.setProperty("--capture-progress", `${Math.min(100, restored / run.stage.target * 100)}%`);
     $("heartsValue").textContent = "♥".repeat(run.hearts);
     $("timeValue").textContent = Math.max(0, Math.ceil(run.time));
     $("objective").textContent = t("objectiveRestore", { percent: run.stage.target });
@@ -1007,6 +1017,13 @@
   }
 
   function redrawLand() { blockView.invalidate(); }
+
+  function battleFeedback(key, vars = {}, kind = "safe") {
+    $("feedback").textContent = t(key, vars);
+    $("feedback").dataset.kind = kind;
+    run.feedbackUntil = run.elapsed + 2.4;
+    motion.reveal($("feedback"));
+  }
 
   function checkMarkers() {
     const seals = run.markers.filter((marker) => marker.type === "seal");
@@ -1074,12 +1091,31 @@
     }
     run.trail.clear();
     run.anchor = { x: run.player.x, y: run.player.y };
+    // Only meaningful new territory earns tempo. Retracing or tiny excursions
+    // cannot farm time, and the complete mission has an eight-second budget.
+    if (filled >= 24) {
+      run.chain = run.elapsed <= run.chainUntil ? Math.min(3, run.chain + 1) : 1;
+      run.chainUntil = run.elapsed + 12;
+      const seconds = Math.max(0, Math.min(run.chain, 8 - run.bonusTime, run.stage.time - run.time));
+      run.time += seconds;
+      run.bonusTime += seconds;
+      battleFeedback("chainCapture", { count: run.chain, seconds: seconds.toLocaleString(locale, { maximumFractionDigits: 1 }) }, "capture");
+      if (filled >= 46) {
+        const radius = 9 + Math.min(7, filled / 24);
+        motion.emit(run.visual, "pulse", run.player.x, run.player.y, run.elapsed, { radius });
+        for (const hunter of run.hunters) {
+          if (Math.hypot(hunter.x - run.player.x, hunter.y - run.player.y) > radius) continue;
+          hunter.stunnedUntil = run.elapsed + (hunter.guardian ? 0.75 : 1.5);
+          hunter.hitAt = run.elapsed;
+          motion.emit(run.visual, "stun", hunter.x, hunter.y, run.elapsed);
+        }
+        window.WeightPlayAudio?.play?.("magic.cast");
+      }
+    } else battleFeedback("loopClosed", {}, "capture");
     checkMarkers();
     redrawLand();
     motion.emit(run.visual, "capture", run.player.x, run.player.y, run.elapsed, { cells: newlyOwned, amount: `+${(filled / TOTAL * 100).toLocaleString(locale, { maximumFractionDigits: 1 })}%` });
     motion.reveal($("progressValue"));
-    $("feedback").textContent = t("loopClosed");
-    motion.reveal($("feedback"));
     track("loop_close", { mission: run.stage.n, filled, restored: Math.round(territoryPercent()) });
     window.WeightPlayAudio?.play?.("feedback.success");
     return filled;
@@ -1088,7 +1124,10 @@
   function cutTrail() {
     if (!run || !run.trail.size || run.finished) return false;
     run.hearts -= 1;
-    motion.emit(run.visual, "hurt", run.player.x, run.player.y, run.elapsed);
+    motion.emit(run.visual, "hurt", run.player.x, run.player.y, run.elapsed, { cells: [...run.trail], amount: "−1 ♥" });
+    run.chain = 0;
+    run.chainUntil = 0;
+    run.player.hurtAt = run.elapsed;
     motion.emit(run.visual, "marker", run.anchor.x, run.anchor.y, run.elapsed);
     motion.reveal($("heartsValue"));
     run.trail.clear();
@@ -1096,10 +1135,10 @@
     run.player.y = run.anchor.y;
     run.player.dx = 0;
     run.player.dy = 0;
-    $("feedback").textContent = t("trailCut");
+    battleFeedback("trailCut", {}, "hurt");
     track("hunter_cut", { mission: run.stage.n, hearts: run.hearts });
     track("hearts_loss", { mission: run.stage.n, hearts: run.hearts });
-    window.WeightPlayAudio?.play?.("feedback.error");
+    window.WeightPlayAudio?.play?.("player.hurt");
     if (run.hearts <= 0) finish(false);
     return true;
   }
@@ -1165,7 +1204,8 @@
       if (run.blocked[indexFor(nextX, nextY)]) {
         player.dx = 0;
         player.dy = 0;
-        $("feedback").textContent = t("barrierHit");
+        battleFeedback("barrierHit", {}, "hurt");
+        motion.emit(run.visual, "blocked", player.x, player.y, run.elapsed);
       } else {
         player.x = nextX;
         player.y = nextY;
@@ -1176,7 +1216,7 @@
       if (!inside) {
         run.trail.add(index);
         if (!hadOpenTrail && run.trail.size === 1) {
-          $("feedback").textContent = t("trailStarted");
+          battleFeedback("trailStarted", {}, "trail");
           track("trail_start", { mission: run.stage.n });
         }
       }
@@ -1196,6 +1236,7 @@
 
     const patrolPoints = [{ x: 5, y: 5 }, { x: 43, y: 5 }, { x: 43, y: 43 }, { x: 5, y: 43 }];
     for (const hunter of run.hunters) {
+      if (run.elapsed < (hunter.stunnedUntil || 0)) continue;
       hunter.abilityClock += dt;
       hunter.burst = hunter.type === "runner" && run.trail.size && hunter.abilityClock % 3.4 < 0.78;
       let target = patrolPoints[hunter.patrolStep];
@@ -1229,6 +1270,7 @@
         target = patrolPoints[hunter.patrolStep];
       }
       const dx = target.x - hunter.x;
+      hunter.trailTarget = targetingTrail ? { ...target } : null;
       const dy = target.y - hunter.y;
       const length = Math.hypot(dx, dy) || 1;
       const moveSpeed = hunter.speed * (hunter.burst ? 1.85 : 1);
@@ -1255,6 +1297,16 @@
       && run.rescued >= run.stage.rescue
       && run.seals >= run.stage.seals
     ) finish(true);
+    if (run.chain && run.elapsed > run.chainUntil) run.chain = 0;
+    run.danger = run.trail.size > 0 && run.hunters.some((hunter) =>
+      run.elapsed >= (hunter.stunnedUntil || 0) && hunter.trailTarget
+      && Math.hypot(hunter.x - hunter.trailTarget.x, hunter.y - hunter.trailTarget.y) < 5);
+    $("arenaWrap").dataset.danger = String(run.danger);
+    if (run.danger || run.elapsed > run.feedbackUntil) {
+      const feedback = run.danger ? t("dangerTrail") : run.trail.size ? t("returnSafe") : run.chain ? t("chainReady", { count: run.chain, seconds: Math.ceil(run.chainUntil - run.elapsed) }) : t("pulseHint");
+      if ($("feedback").textContent !== feedback) $("feedback").textContent = feedback;
+      $("feedback").dataset.kind = run.danger ? "hurt" : run.trail.size ? "trail" : "safe";
+    }
     motion.updateFacing(run, dt);
     updateBattleHud();
   }
@@ -1537,6 +1589,9 @@
       Object.assign(run.hunters[0], target);
       return true;
     },
+    placeHunter(index, x, y) {
+      if (run?.hunters[index]) Object.assign(run.hunters[index], { x, y, speed: 0 });
+    },
     parkHunters() {
       if (!run) return;
       run.hunters.forEach((hunter, index) => {
@@ -1576,6 +1631,10 @@
           seals: run.seals,
           trail: [...run.trail],
           effectCount: run.visual.effects.length,
+          chain: run.chain,
+          chainUntil: run.chainUntil,
+          bonusTime: run.bonusTime,
+          danger: run.danger,
           restored: territoryCount(),
           blocked: Array.from(run.blocked).reduce((sum, value) => sum + value, 0),
           playerOwned: Boolean(run.owned[indexFor(run.player.x, run.player.y)]),

@@ -29,6 +29,11 @@ export class CastleCascade2D {
     this.onSwap = onSwap;
     this.pressedIndex = -1;
     this.dragOffset = { x: 0, y: 0 };
+    this.dragTarget = { x: 0, y: 0 };
+    this.dragVelocity = { x: 0, y: 0 };
+    this.keyboardFocus = false;
+    this.releasePose = null;
+    this.gesturePose = null;
     this.sprites = [];
     this.disposed = false;
     this.lost = false;
@@ -50,6 +55,7 @@ export class CastleCascade2D {
     this.handleMotionPreference = (event) => {
       this.reducedMotion = event.matches;
       if (event.matches) { this.cancelMotion(); this.highlightUntil = 0; }
+      if (event.matches) this.releasePose = null;
       this.invalidate();
     };
     this.motionPreference?.addEventListener?.("change", this.handleMotionPreference);
@@ -121,6 +127,9 @@ export class CastleCascade2D {
       if (index < 0) return;
       event.preventDefault();
       this.pointerDown = { id: event.pointerId, x: event.clientX, y: event.clientY, index };
+      this.keyboardFocus = false;
+      this.releasePose = null;
+      this.pressedAt = performance.now();
       this.pressedIndex = index;
       this.canvas.setPointerCapture?.(event.pointerId);
       this.invalidate();
@@ -131,15 +140,25 @@ export class CastleCascade2D {
       const cell = this.boardBounds.size / BOARD_WIDTH;
       const dx = (event.clientX - this.pointerDown.x) * this.width / rect.width;
       const dy = (event.clientY - this.pointerDown.y) * this.height / rect.height;
-      this.dragOffset = Math.abs(dx) > Math.abs(dy)
-        ? { x: clamp(dx, -cell * .24, cell * .24), y: 0 }
-        : { x: 0, y: clamp(dy, -cell * .24, cell * .24) };
+      this.dragTarget = Math.abs(dx) > Math.abs(dy)
+        ? { x: clamp(dx, -cell * .42, cell * .42), y: clamp(dy * .15, -cell * .06, cell * .06) }
+        : { x: clamp(dx * .15, -cell * .06, cell * .06), y: clamp(dy, -cell * .42, cell * .42) };
+      if (this.reducedMotion) this.dragOffset = { ...this.dragTarget };
       this.invalidate();
     };
     this.handlePointerUp = (event) => {
       const down = this.pointerDown;
+      const cell = this.boardBounds.size / BOARD_WIDTH;
+      const heldFor = performance.now() - this.pressedAt;
+      const lift = clamp(heldFor / 100, 0, 1);
+      const pose = down && !this.reducedMotion ? {
+        index: down.index, x: this.dragOffset.x, lift,
+        y: this.dragOffset.y - lift * cell * (.09 + Math.sin(heldFor / 180) * .018),
+        angle: this.dragOffset.x / cell * .18, started: performance.now(),
+      } : null;
       this.handlePointerCancel();
       if (!down || down.id !== event.pointerId || this.disposed || this.lost || this.failed) return;
+      this.releasePose = this.gesturePose = pose;
       const dx = event.clientX - down.x, dy = event.clientY - down.y;
       if (Math.hypot(dx, dy) > 14) {
         const col = down.index % BOARD_WIDTH, row = Math.floor(down.index / BOARD_WIDTH);
@@ -148,15 +167,19 @@ export class CastleCascade2D {
         const nextRow = row + (horizontal ? 0 : Math.sign(dy));
         if (nextCol >= 0 && nextCol < BOARD_WIDTH && nextRow >= 0 && nextRow < BOARD_HEIGHT)
           this.onSwap?.(down.index, nextRow * BOARD_WIDTH + nextCol);
+        this.gesturePose = null;
         return;
       }
       const index = this.indexAt(event.clientX, event.clientY);
       if (index === down.index) this.onCell?.(index);
+      this.gesturePose = null;
     };
     this.handlePointerCancel = () => {
       this.pointerDown = null;
       this.pressedIndex = -1;
       this.dragOffset = { x: 0, y: 0 };
+      this.dragTarget = { x: 0, y: 0 };
+      this.dragVelocity = { x: 0, y: 0 };
       this.invalidate();
     };
     this.handleContextLost = (event) => {
@@ -173,6 +196,23 @@ export class CastleCascade2D {
     this.canvas.addEventListener("pointercancel", this.handlePointerCancel);
     this.canvas.addEventListener("contextlost", this.handleContextLost);
     this.canvas.addEventListener("contextrestored", this.handleContextRestored);
+    this.handleKeyboardFocus = (event) => {
+      if (!event.target.closest?.("#board") || !["Tab", "Enter", " ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+      this.keyboardFocus = true;
+      this.invalidate();
+    };
+    document.addEventListener("keydown", this.handleKeyboardFocus);
+    this.handleGridFocus = (event) => {
+      if (!event.target.closest?.("#board") || !event.target.matches?.(":focus-visible")) return;
+      this.keyboardFocus = true;
+      this.invalidate();
+    };
+    this.handleInputBlur = () => {
+      this.handlePointerCancel();
+      this.releasePose = this.gesturePose = null;
+    };
+    document.addEventListener("focusin", this.handleGridFocus);
+    window.addEventListener("blur", this.handleInputBlur);
   }
 
   installResize() {
@@ -233,6 +273,15 @@ export class CastleCascade2D {
   frame(time) {
     this.raf = 0;
     if (this.disposed || this.lost || this.failed) return;
+    if (this.pressedIndex >= 0 && !this.reducedMotion) {
+      const step = clamp(this.lastFrame ? (time - this.lastFrame) / 16.667 : 1, .25, 2);
+      for (const axis of ["x", "y"]) {
+        this.dragVelocity[axis] += (this.dragTarget[axis] - this.dragOffset[axis]) * .25 * step;
+        this.dragVelocity[axis] *= .57 ** step;
+        this.dragOffset[axis] += this.dragVelocity[axis] * step;
+      }
+    }
+    if (this.releasePose && time - this.releasePose.started >= 300) this.releasePose = null;
     if (this.lastFrame && this.motion) {
       this.frameTimes.push(Math.min(250, time - this.lastFrame));
       if (this.frameTimes.length > 60) this.frameTimes.shift();
@@ -250,7 +299,7 @@ export class CastleCascade2D {
       finished.resolve?.(true);
       this.invalidate();
     }
-    if (this.motion) this.invalidate();
+    if (this.motion || !this.reducedMotion && (this.pressedIndex >= 0 || this.releasePose)) this.invalidate();
     else if (this.highlightCells.size && !this.reducedMotion && time < this.highlightUntil) this.invalidate();
     else if (this.highlightCells.size) {
       this.highlightCells.clear();
@@ -331,8 +380,19 @@ export class CastleCascade2D {
       const y = bounds.y + Math.floor(index / BOARD_WIDTH) * cell;
       const cx = x + cell / 2;
       const cy = y + cell / 2;
-      const pressed = index === this.pressedIndex;
-      this.drawTile(tile, index, cx + (pressed ? this.dragOffset.x : 0), cy + (pressed ? this.dragOffset.y : 0), cell, 1, pressed ? 1.06 : 1);
+      const movable = !tile.box && !tile.stone && !tile.gate && !tile.chain;
+      const pressed = index === this.pressedIndex && movable;
+      const released = movable && this.releasePose?.index === index ? this.releasePose : null;
+      const p = released ? clamp((time - released.started) / 300, 0, 1) : 0;
+      const settle = released ? (1 - p) ** 2 * Math.cos(p * Math.PI * 2.3) : 0;
+      const lift = pressed && !this.reducedMotion ? Math.min(1, (time - this.pressedAt) / 100) : 0;
+      const float = lift * (cell * .09 + Math.sin((time - this.pressedAt) / 180) * cell * .018);
+      const ox = pressed ? this.dragOffset.x : released ? released.x * settle : 0;
+      const oy = pressed ? this.dragOffset.y - float : released ? released.y * settle : 0;
+      const tilt = pressed && !this.reducedMotion ? this.dragOffset.x / cell * .18 : released ? released.angle * settle : 0;
+      this.context.save(); this.context.translate(cx + ox, cy + oy); this.context.rotate(tilt);
+      this.drawTile(tile, index, 0, 0, cell, 1, 1 + lift * .065 + (released ? .065 * released.lift * settle : 0));
+      this.context.restore();
       if (this.highlightCells.has(index)) this.drawImpact(x, y, cell, time);
     });
   }
@@ -437,6 +497,7 @@ export class CastleCascade2D {
 
   runMotion(motion) {
     this.cancelMotion();
+    this.releasePose = null;
     if (this.disposed || this.lost || this.failed) return Promise.resolve(false);
     if (this.reducedMotion) {
       this.board = motion.finalBoard || this.board;
@@ -467,7 +528,8 @@ export class CastleCascade2D {
       b,
       accepted,
       combo: Boolean(accepted && before[a]?.p && before[b]?.p),
-      duration: accepted ? 210 : 290,
+      gesture: this.gesturePose,
+      duration: accepted ? 300 : 350,
     });
   }
 
@@ -563,8 +625,10 @@ export class CastleCascade2D {
 
   drawSwapMotion(bounds, motion, time) {
     const elapsed = clamp((time - motion.started) / motion.duration, 0, 1);
-    const progress = motion.accepted ? 1 - (1 - elapsed) ** 3
-      : elapsed < 0.48 ? 1 - (1 - elapsed / 0.48) ** 3 : 1 - ((elapsed - 0.48) / 0.52) ** 3;
+    const glide = (value) => .5 - Math.cos(clamp(value, 0, 1) * Math.PI) * .5;
+    const progress = motion.accepted
+      ? elapsed < .78 ? glide(elapsed / .78) : 1 + Math.sin((elapsed - .78) / .22 * Math.PI) * .045
+      : elapsed < .42 ? glide(elapsed / .42) : 1 - glide((elapsed - .42) / .58);
     const cell = bounds.size / BOARD_WIDTH;
     const tiles = [motion.before[motion.a], motion.before[motion.b]];
     const from = [motion.a, motion.b];
@@ -574,10 +638,19 @@ export class CastleCascade2D {
       const fromCol = from[item] % BOARD_WIDTH;
       const toRow = Math.floor(to[item] / BOARD_WIDTH);
       const toCol = to[item] % BOARD_WIDTH;
-      const x = bounds.x + (fromCol + (toCol - fromCol) * progress + 0.5) * cell;
-      const y = bounds.y + (fromRow + (toRow - fromRow) * progress + 0.5) * cell;
-      const scale = 1 + Math.sin(progress * Math.PI) * 0.045;
-      this.drawTile(tiles[item], to[item], x, y, cell, 1, scale);
+      const gesture = motion.gesture?.index === from[item] ? motion.gesture : null;
+      const remaining = (1 - elapsed) ** 2;
+      const arc = Math.sin(Math.min(1, progress) * Math.PI);
+      const direction = item ? -1 : 1;
+      const x = bounds.x + (fromCol + (toCol - fromCol) * progress + .5) * cell
+        + (gesture?.x || 0) * remaining + (fromCol === toCol ? arc * cell * .10 * direction : 0);
+      const y = bounds.y + (fromRow + (toRow - fromRow) * progress + .5) * cell
+        + (gesture?.y || 0) * remaining - arc * cell * (item ? .07 : .14);
+      const scale = 1 + arc * .07 + (gesture ? .065 * gesture.lift * remaining : 0);
+      this.context.save(); this.context.translate(x, y);
+      this.context.rotate((gesture?.angle || 0) * remaining + arc * .10 * direction);
+      this.drawTile(tiles[item], to[item], 0, 0, cell, 1, scale);
+      this.context.restore();
     }
     if (motion.combo) this.drawComboLink(bounds, motion, progress, cell);
   }
@@ -751,13 +824,15 @@ export class CastleCascade2D {
       const fromRow = item.fromRow;
       const rowProgress = item.isDelivery ? -local * 0.42 : fromRow + (item.toRow - fromRow) * eased;
       const y = bounds.y + (rowProgress + 0.5) * cell;
-      const x = bounds.x + (item.col + 0.5) * cell;
+      const x = bounds.x + (item.col + .5) * cell + Math.sin(falling * Math.PI) * cell * .026 * (item.col % 2 ? -1 : 1);
       const rebound = local > .79 ? Math.sin((local - .79) / .21 * Math.PI * 2) * (1 - (local - .79) / .21) : 0;
       const landing = item.isDelivery ? 1 : 1 + rebound * .11;
       const delivering = motion.deliveredKeys.includes(item.toIndex) && item.payload.key;
       const fade = item.isDelivery ? 1 - local : delivering && local > 0.76 ? 1 - (local - 0.76) / 0.24 : 1;
       const ctx = this.context;
-      ctx.save(); ctx.translate(x, y); ctx.scale(landing, 1 / landing);
+      ctx.save(); ctx.translate(x, y - Math.max(0, rebound) * cell * .07);
+      ctx.rotate(Math.sin(falling * Math.PI) * .035 * (item.col % 2 ? -1 : 1));
+      ctx.scale(landing, 1 / landing);
       this.drawTile(item.payload, item.toIndex, 0, 0, cell, fade);
       ctx.restore();
       if (local > .79 && !item.isDelivery) this.drawRing(x, y + cell * .31, cell * (.16 + (local - .79) * .7), (1 - local) * 1.4, "#ffffff", cell * .025);
@@ -819,7 +894,7 @@ export class CastleCascade2D {
         }
       } else if (effect.type === "bird" || effect.type === "bird-carry") {
         const target = effect.target ?? effect.index;
-        this.drawBirdFlight(bounds, effect.index, target, progress, cell);
+        this.drawBirdFlight(bounds, effect.index, target, progress, cell, effect.type === "bird-carry" ? effect.power : null);
         const hitProgress = clamp((progress - 0.62) / 0.38, 0, 1);
         if (hitProgress > 0) {
           const tr = Math.floor(target / BOARD_WIDTH);
@@ -946,7 +1021,7 @@ export class CastleCascade2D {
     }
   }
 
-  drawBirdFlight(bounds, from, to, progress, cell) {
+  drawBirdFlight(bounds, from, to, progress, cell, carriedPower = null) {
     if (!Number.isInteger(from) || !Number.isInteger(to) || from < 0 || to < 0) return;
     const fromX = bounds.x + ((from % BOARD_WIDTH) + 0.5) * cell;
     const fromY = bounds.y + (Math.floor(from / BOARD_WIDTH) + 0.5) * cell;
@@ -962,6 +1037,7 @@ export class CastleCascade2D {
       this.drawSprite(SPRITE.spark,fromX+(toX-fromX)*p,fromY+(toY-fromY)*p-Math.sin(p*Math.PI)*cell*1.8,cell,.2, (1-trail/6)*.55);
     }
     const sprite = SPRITE.bird;
+    if (carriedPower) this.drawPower(carriedPower, x, y + cell * .28, cell * .50);
     this.drawSprite(sprite, x, y, cell, 0.82 + Math.sin(progress * Math.PI) * 0.08, 1 - progress * 0.15);
   }
 
@@ -1029,6 +1105,7 @@ export class CastleCascade2D {
     const ctx = this.context;
     const cell = bounds.size / BOARD_WIDTH;
     for (const [index, selected] of [[this.focusIndex, false], [this.selectedIndex, true]]) {
+      if (!selected && !this.keyboardFocus) continue;
       if (!Number.isInteger(index) || index < 0 || index >= BOARD_WIDTH * BOARD_HEIGHT || (index === this.selectedIndex && !selected)) continue;
       const row = Math.floor(index / BOARD_WIDTH);
       const col = index % BOARD_WIDTH;
@@ -1036,10 +1113,9 @@ export class CastleCascade2D {
       ctx.save();
       roundRect(ctx, bounds.x + col * cell + inset, bounds.y + row * cell + inset, cell - inset * 2, cell - inset * 2, cell * 0.17);
       ctx.lineWidth = Math.max(1.7, cell * (selected ? 0.07 : 0.045));
-      ctx.strokeStyle = selected ? "#fff0a3" : "#ffffffd9";
+      ctx.strokeStyle = selected ? "#fff0a3" : "#48d8ff";
       ctx.shadowColor = selected ? "#ffc94a" : "#7fe7ff";
       ctx.shadowBlur = cell * (selected ? 0.2 : 0.13);
-      if (!selected) ctx.setLineDash([cell * 0.1, cell * 0.06]);
       ctx.stroke();
       ctx.restore();
     }
@@ -1061,6 +1137,11 @@ export class CastleCascade2D {
     if (this.raf) cancelAnimationFrame(this.raf);
     this.resizeObserver?.disconnect();
     this.motionPreference?.removeEventListener?.("change", this.handleMotionPreference);
+    document.removeEventListener("keydown", this.handleKeyboardFocus);
+    document.removeEventListener("focusin", this.handleGridFocus);
+    window.removeEventListener("blur", this.handleInputBlur);
+    this.releasePose = this.gesturePose = null;
+    this.pointerDown = null;
     if (this.handleWindowResize) window.removeEventListener("resize", this.handleWindowResize);
     this.canvas?.removeEventListener("pointerdown", this.handlePointerDown);
     this.canvas?.removeEventListener("pointermove", this.handlePointerMove);
