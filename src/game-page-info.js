@@ -25802,37 +25802,17 @@
   "ar": "مرّ بكل خلية تحتوي على عنصر قابل للجمع في المتاهة الثابتة، بما فيها خلايا المنارات. يجب ألا تبقى أي عناصر لإنهاء المرحلة؛ أما مطاردة الأرواح للحصول على نقاط إضافية فهي اختيارية."
 };
     games["maze-chase"].faq[0][1] = clearAnswers.en;
-    games["maze-chase"].relatedIds = ["snake", "lights-out"];
+    games["maze-chase"].relatedIds = ["animal-word-trails", "lights-out"];
     for (const [key, answer] of Object.entries(clearAnswers)) {
       const guide = localizedGames[key]?.["maze-chase"];
       if (!guide) { if (key === "en") continue; throw new Error(`Missing Maze Chase Guide: ${key}`); }
       if (!Array.isArray(guide.faq) || guide.faq.length !== 6) throw new Error(`Unexpected Maze Chase FAQ: ${key}`);
       guide.faq = guide.faq.map(([question, value], index) => [question, index === 0 ? answer : value]);
-      guide.relatedIds = ["snake", "lights-out"];
+      guide.relatedIds = ["animal-word-trails", "lights-out"];
     }
   }
   applyMazeChaseGuideCorrections();
   window.WeightPlayGameInfo.applyMazeChaseGuideCorrections = applyMazeChaseGuideCorrections;
-  gameplayProfiles["maze-chase"] ||= {};
-  gameplayProfiles["maze-chase"].marketComparison = {
-    name: "PAC-MAN",
-    source: "https://pacman.com/en/character/",
-    locales: Object.fromEntries(Object.entries({
-  "en": "Looking for a browser maze-chase game with route choices and temporary chase reversals like PAC-MAN? Both ask you to collect items, avoid pursuers and choose when to take a power item. Here, guide Orla through three stages of one fixed maze, collect star motes and use Beacons against four Wisp pursuit styles. This independent game uses its own layout, movement and scoring rules, not the original arcade maze or its ghost routines. Best score and sound preferences stay in this browser; this is not an official PAC-MAN edition.",
-  "zh-Hant": "在找像 PAC-MAN 一樣，需要規劃路線、並把握短暫反擊時機的瀏覽器迷宮遊戲嗎？兩者都要收集物品、避開追兵，並選擇取得強化道具的時機。本站讓你引導 Orla 在同一座固定迷宮挑戰三個階段，收集星點，利用信標對抗四種不同追逐方式的光靈。這款獨立遊戲使用自己的地圖、移動與計分規則，不是原版街機的迷宮或鬼魂行動模式。最高分與音效偏好只保存在此瀏覽器；本站不是 PAC-MAN 官方版本。",
-  "zh-Hans": "在找像 PAC-MAN 一样，需要规划路线、并把握短暂反击时机的浏览器迷宫游戏吗？两者都要收集物品、避开追兵，并选择获得强化道具的时机。本站让你引导 Orla 在同一座固定迷宫挑战三个阶段，收集星点，利用信标对抗四种不同追逐方式的光灵。这款独立游戏使用自己的地图、移动与计分规则，不是原版街机的迷宫或幽灵行动模式。最高分与音效偏好只保存在此浏览器；本站不是 PAC-MAN 官方版本。",
-  "ja": "PAC-MAN のように進路を考え、一時的に追う側へ逆転できるブラウザーの迷路ゲームを探していますか。どちらもアイテムを集め、追手を避け、パワーアイテムを取るタイミングを選びます。本作では Orla を同じ固定迷路の3ステージへ導き、星の光を集め、ビーコンで4種類の追跡パターンを持つウィスプに対抗します。独立した本作の地形、移動、得点ルールは独自のもので、元のアーケード版の迷路やゴーストの行動を再現するものではありません。最高得点と音の設定はこのブラウザーに保存されます。PAC-MAN の公式版ではありません。",
-  "ko": "PAC-MAN처럼 경로를 선택하고 잠시 추격을 뒤집는 브라우저 미로 게임을 찾고 있나요? 두 게임 모두 아이템을 모으고 추격자를 피하며 강화 아이템을 얻을 때를 고릅니다. 여기서는 Orla를 같은 고정 미로의 세 단계로 이끌고 별빛을 모으며 봉화로 네 가지 추격 방식을 지닌 위스프에 맞섭니다. 이 독립 게임은 자체 지도, 이동 및 점수 규칙을 사용하며 원작 아케이드의 미로나 유령 행동을 재현하지 않습니다. 최고 점수와 소리 설정은 이 브라우저에만 저장되며 PAC-MAN 공식 버전이 아닙니다.",
-  "es": "¿Buscas un juego de laberintos para navegador con decisiones de ruta y cambios temporales de perseguidor a perseguido como en PAC-MAN? Ambos te piden recoger objetos, esquivar perseguidores y decidir cuándo tomar un potenciador. Aquí guías a Orla por tres etapas del mismo laberinto fijo, recoges motas estelares y usas balizas contra cuatro formas de persecución de los espectros. Este juego independiente tiene su propio mapa, movimiento y puntuación, no el laberinto ni las rutinas de fantasmas del arcade original. La mejor puntuación y el sonido se guardan en este navegador; no es una edición oficial de PAC-MAN.",
-  "pt-BR": "Procura um jogo de labirinto no navegador com escolhas de rota e momentos de virar a perseguição, como em PAC-MAN? Nos dois, você coleta itens, evita perseguidores e escolhe quando pegar um poder. Aqui você guia Orla por três etapas do mesmo labirinto fixo, coleta pontos de luz estelar e usa faróis contra quatro estilos de perseguição dos espíritos. Este jogo independente tem mapa, movimento e pontuação próprios, não o labirinto nem as rotinas dos fantasmas do arcade original. O recorde e a preferência de som ficam neste navegador; não é uma edição oficial de PAC-MAN.",
-  "fr": "Vous cherchez un jeu de labyrinthe sur navigateur où choisir son trajet et inverser temporairement la poursuite, comme dans PAC-MAN ? Les deux demandent de ramasser des objets, d'éviter des poursuivants et de choisir quand prendre un bonus de puissance. Ici, guidez Orla à travers trois étapes du même labyrinthe fixe, ramassez les lueurs d'étoiles et utilisez les balises contre quatre modes de poursuite des esprits. Ce jeu indépendant possède sa propre carte et ses propres règles de déplacement et de score, et non le labyrinthe ou les routines des fantômes de l'arcade original. Record et réglage sonore restent dans ce navigateur ; ce n'est pas une édition officielle de PAC-MAN.",
-  "de": "Suchst du ein Browser-Labyrinthspiel mit Routenplanung und kurzen Rollenwechseln bei der Verfolgung wie in PAC-MAN? In beiden sammelst du Gegenstände, weichst Verfolgern aus und entscheidest, wann du ein Kraftobjekt aufnimmst. Hier führst du Orla durch drei Stufen desselben festen Labyrinths, sammelst Sternenpunkte und setzt Leuchtfeuer gegen vier Wisp-Verfolgungsmuster ein. Dieses eigenständige Spiel hat eigene Karten-, Bewegungs- und Punkteregeln, nicht das Labyrinth oder die Geisterroutinen des ursprünglichen Arcade-Spiels. Bestwert und Toneinstellung bleiben in diesem Browser; es ist keine offizielle PAC-MAN-Ausgabe.",
-  "it": "Cerchi un gioco di labirinti per browser in cui scegliere il percorso e ribaltare brevemente l'inseguimento, come in PAC-MAN? Entrambi richiedono di raccogliere oggetti, evitare inseguitori e decidere quando prendere un potenziamento. Qui guidi Orla attraverso tre fasi dello stesso labirinto fisso, raccogli scintille stellari e usi i fari contro quattro modalità di inseguimento degli spiriti. Questo gioco indipendente usa una mappa e regole di movimento e punteggio proprie, non il labirinto o le routine dei fantasmi dell'arcade originale. Record e preferenze audio restano in questo browser; non è un'edizione ufficiale di PAC-MAN.",
-  "ru": "Ищете браузерную погоню в лабиринте с выбором маршрута и временной сменой ролей, как в PAC-MAN? В обеих играх нужно собирать предметы, избегать преследователей и выбирать момент для усиления. Здесь вы проводите Orla через три этапа одного фиксированного лабиринта, собираете звёздные искры и используете маяки против четырёх типов преследования духов. Эта самостоятельная игра использует собственную карту, движение и подсчёт очков, а не лабиринт и алгоритмы призраков оригинального аркадного автомата. Рекорд и настройка звука остаются в этом браузере; это не официальная версия PAC-MAN.",
-  "hi": "PAC-MAN जैसा ब्राउज़र भूलभुलैया खेल खोज रहे हैं, जिसमें रास्ता चुनना और कुछ समय के लिए पीछा करने वाले पर पलटवार करना अहम हो? दोनों में चीज़ें इकट्ठा करते हुए पीछा करने वालों से बचना और शक्ति देने वाली वस्तु लेने का समय चुनना होता है। यहाँ Orla को एक ही तय भूलभुलैया के तीन चरणों से ले जाएँ, तारों के कण जुटाएँ और चार तरह से पीछा करने वाली आत्माओं के विरुद्ध बीकन इस्तेमाल करें। इस स्वतंत्र खेल का नक्शा, चाल और स्कोर के नियम अपने हैं; यह मूल आर्केड की भूलभुलैया या भूतों की चाल का पुनरुत्पादन नहीं है। सर्वश्रेष्ठ स्कोर और ध्वनि की पसंद इसी ब्राउज़र में रहती है; यह PAC-MAN का आधिकारिक संस्करण नहीं है।",
-  "ar": "هل تبحث عن لعبة مطاردة في المتاهة عبر المتصفح تختار فيها مسارك وتقلب المطاردة مؤقتًا كما في PAC-MAN؟ تتطلب اللعبتان جمع العناصر وتجنب المطاردين واختيار وقت التقاط عنصر القوة. هنا تقود Orla خلال ثلاث مراحل في المتاهة الثابتة نفسها، وتجمع نقاط النجوم وتستخدم المنارات ضد أربعة أنماط لمطاردة الأرواح. لهذه اللعبة المستقلة خريطتها وقواعد حركتها وتسجيل نقاطها، وليست متاهة جهاز الأركيد الأصلي أو أنماط أشباحه. تُحفظ أفضل نتيجة وتفضيلات الصوت في هذا المتصفح؛ وليست هذه نسخة رسمية من PAC-MAN."
-}).map(([key, body]) => [key, { ...gameplayProfiles["four-in-a-row"].marketComparison.locales[key], body }]))
-  };
 
   // Hoop League: comparison only, separate from identity and publication approval.
   gameplayProfiles["animal-hoop-league"] ||= {};
@@ -27498,6 +27478,36 @@
     }
   }
   const textGrowth140GameplayTags = {
+    "maze-chase": {
+      en: ["Fixed-maze route planning", "Four Wisp patterns", "Beacon counterattack"],
+      "zh-Hant": ["固定迷宮路線規劃", "四種光靈追逐模式", "信標反擊"],
+      "zh-Hans": ["固定迷宫路线规划", "四种光灵追逐模式", "信标反击"],
+      ja: ["固定迷路のルート計画", "4種類のウィスプ追跡", "ビーコン反撃"],
+      ko: ["고정 미로 경로 계획", "네 가지 위습 추격", "비콘 반격"],
+      es: ["Planificación de rutas en laberinto", "Cuatro patrones de persecución", "Contraataque con balizas"],
+      "pt-BR": ["Planejamento de rotas no labirinto", "Quatro padrões de perseguição", "Contra-ataque com balizas"],
+      fr: ["Planification de parcours en labyrinthe", "Quatre profils de poursuite", "Contre-attaque par balise"],
+      de: ["Routenplanung im Labyrinth", "Vier Wisp-Jagdmuster", "Gegenangriff mit Leuchtfeuern"],
+      it: ["Pianificazione dei percorsi nel labirinto", "Quattro schemi di inseguimento", "Contrattacco con i Fari"],
+      ru: ["Планирование маршрута в лабиринте", "Четыре схемы преследования", "Контратака с помощью маяка"],
+      hi: ["भूलभुलैया मार्ग योजना", "विस्प के चार पीछा-पैटर्न", "बीकन से पलटवार"],
+      ar: ["تخطيط المسار في المتاهة", "أنماط مطاردة الومضات الأربعة", "هجوم مضاد بالمنارات"],
+    },
+    "animal-bounce-brawl": {
+      en: ["Bounce timing", "Foam tool choices", "Arena knockback"],
+      "zh-Hant": ["彈跳時機", "泡棉工具選擇", "鬥場擊退"],
+      "zh-Hans": ["弹跳时机", "泡棉工具选择", "竞技场击退"],
+      ja: ["バウンドのタイミング", "フォームツール選択", "アリーナでの吹き飛ばし"],
+      ko: ["바운스 타이밍", "폼 도구 선택", "아레나 넉백"],
+      es: ["Tiempo de rebote", "Elección de herramientas de espuma", "Empujones en la arena"],
+      "pt-BR": ["Tempo dos pulos", "Escolha de ferramentas de espuma", "Empurrões na arena"],
+      fr: ["Timing des rebonds", "Choix d’outils en mousse", "Repousses dans l’arène"],
+      de: ["Sprungtiming", "Schaumwerkzeug-Auswahl", "Rückstoß in der Arena"],
+      it: ["Tempismo dei rimbalzi", "Scelta degli strumenti in schiuma", "Spinte nell’arena"],
+      ru: ["Тайминг прыжков", "Выбор пенных инструментов", "Отбрасывание на арене"],
+      hi: ["उछाल का समय", "फोम उपकरण चयन", "एरीना में धक्का"],
+      ar: ["توقيت الارتداد", "اختيار أدوات الرغوة", "الارتداد في الساحة"],
+    },
     "animal-abyss-diver": {
       en: ["Underwater route strategy", "Oxygen management", "Sonar decisions", "Turn-based fish encounters"],
       "zh-Hant": ["深海路線策略", "氧氣管理", "聲納判斷", "回合制魚類遭遇"],
@@ -27532,6 +27542,7 @@
   for (const [id, locales] of Object.entries(textGrowth140GameplayTags)) {
     games[id].text140Tags = locales.en;
     for (const [locale, tags] of Object.entries(locales)) {
+      if (locale === "en") continue;
       localizedGames[locale] ||= {};
       localizedGames[locale][id] = { ...(localizedGames[locale][id] || {}), text140Tags: tags };
     }

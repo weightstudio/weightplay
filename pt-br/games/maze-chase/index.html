@@ -24,6 +24,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="description" content="Guie Orla por três fases de labirinto, reúna as partículas estelares, leia quatro padrões de perseguição e ative os Faróis para contra-atacar." />
   <title>Perseguição no Labirinto | WeightPlay</title>
   <link rel="stylesheet" href="../../src/classic-chase-rocks.css?v=20260923-maze-chase-v21-poster">
   <link rel="stylesheet" href="art.css?v=20260921-maze-chase-block-scene-v1">
@@ -53,8 +54,9 @@
       body.is-game-playing #battleScreen.has-result #resultScreen .result-copy {
         grid-area: copy;
         min-width: 0;
-        width: 100%;
+        width: min(100%, 300px);
         max-width: 100%;
+        box-sizing: border-box;
         overflow-wrap: anywhere;
         margin: 2px 0 0;
         font-size: 20px;
@@ -93,45 +95,17 @@
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <meta name="description" content="Perseguição no Labirinto é um jogo original de coleta em um labirinto fixo. Guie Orla por três fases cada vez mais rápidas, reúna cada partícula de..." />
+  <meta property="og:description" content="Guie Orla por três fases de labirinto, reúna as partículas estelares, leia quatro padrões de perseguição e ative os Faróis para contra-atacar." />
+    <meta name="twitter:description" content="Guie Orla por três fases de labirinto, reúna as partículas estelares, leia quatro padrões de perseguição e ative os Faróis para contra-atacar." />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Perseguição no Labirinto","url":"https://weightplay.com/pt-br/games/maze-chase/","image":"https://weightplay.com/assets/interface7-redrawn/maze-chase.webp","description":"Guie Orla por três fases de labirinto, reúna as partículas estelares, leia quatro padrões de perseguição e ative os Faróis para contra-atacar.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Planejamento de rotas no labirinto","Quatro padrões de perseguição","Contra-ataque com balizas"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Maze Chase"}</script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Perseguição no Labirinto | WeightPlay" />
-    <meta property="og:description" content="Perseguição no Labirinto é um jogo original de coleta em um labirinto fixo. Guie Orla por três fases cada vez mais rápidas, reúna cada partícula de..." />
     <meta property="og:url" content="https://weightplay.com/pt-br/games/maze-chase/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/maze-chase.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Perseguição no Labirinto | WeightPlay" />
-    <meta name="twitter:description" content="Perseguição no Labirinto é um jogo original de coleta em um labirinto fixo. Guie Orla por três fases cada vez mais rápidas, reúna cada partícula de..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/maze-chase.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "Perseguição no Labirinto",
-  "alternateName": "Maze Chase",
-  "url": "https://weightplay.com/pt-br/games/maze-chase/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/maze-chase.webp",
-  "description": "Perseguição no Labirinto é um jogo original de coleta em um labirinto fixo. Guie Orla por três fases cada vez mais rápidas, reúna cada partícula de...",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "pt-BR",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "Arcade",
-    "Labirinto",
-    "Estratégia"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players"
-  }
-}
-    </script>
   </head>
 <body data-game-id="maze-chase" data-wp-game-id="maze-chase" data-wp-audience="general" data-wp-interface-version="7" data-wp-game-owned-guide>
   <main id="classicArcade" class="classic-arcade" data-runtime-localize="off">
@@ -167,7 +141,8 @@
 <section class="game-page-info game-page-info-static" aria-label="Informações de Perseguição no Labirinto">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Perseguição no Labirinto</h2><p>Perseguição no Labirinto é um jogo original de coleta em um labirinto fixo. Guie Orla por três fases cada vez mais rápidas, reúna cada partícula de estrela, leia quatro padrões de perseguição dos Wisps e transforme um corredor perigoso em uma breve chance de contra-ataque com os Faróis.</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Arcade de perseguição</span><span>4 IAs</span><span>Contra-ataque</span></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Perseguição no Labirinto</h2><p>Perseguição no Labirinto é um jogo original de coleta em um labirinto fixo. Guie Orla por três fases cada vez mais rápidas, reúna cada partícula de estrela, leia quatro padrões de perseguição dos Wisps e transforme um corredor perigoso em uma breve chance de contra-ataque com os Faróis.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Planejamento de rotas no labirinto</span><span>Quatro padrões de perseguição</span><span>Contra-ataque com balizas</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Arcade de perseguição em labirinto</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Arcade · Labirinto · Estratégia</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil no início, cada vez mais desafiador</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>3–8 minutos por partida</strong></div></div>
     </div>
 
@@ -186,9 +161,9 @@
       <div class="game-info-section"><h3>Nota de design</h3><p>Perseguição no Labirinto usa um labirinto Canvas original, personagens e sons próprios, quatro lógicas de perseguição visualmente distintas, uma tela lógica responsiva, controles de teclado e toque, controles localizados e um fluxo completo Main-Battle-Result.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informações do jogador e do salvamento</h3><p>Este arcade de navegador para o público geral não exige conta nem compra; a melhor marca e a preferência de som ficam somente neste navegador.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Como termino uma fase?</dt><dd>Passe por todas as casas com itens no labirinto fixo, inclusive as dos faróis. A quantidade de itens restantes deve chegar a zero para concluir a etapa; perseguir espíritos por pontos extras é opcional.</dd></div><div><dt>Todos os Wisps usam a mesma perseguição?</dt><dd>Não. Wisps diretos, preditivos, de emboscada e errantes escolhem caminhos diferentes e exibem marcadores próprios.</dd></div><div><dt>O que um Farol faz?</dt><dd>Ele inicia uma breve janela de poder em que Wisps próximos podem ser perseguidos por pontos extras.</dd></div><div><dt>O que acontece após uma colisão?</dt><dd>Você perde uma vida e volta à rota atual com uma breve proteção. A fase continua até as vidas acabarem.</dd></div><div><dt>Posso jogar no celular?</dt><dd>Sim. Deslize pelo labirinto ou use o direcional; no computador também funcionam as setas e WASD.</dd></div><div><dt>O progresso é salvo?</dt><dd>Apenas a melhor marca e a preferência de som são salvas neste navegador; não é preciso conta.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><p>Como este jogo pratica Planejamento de rotas, experimente estes:</p><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/snake/"><img src="/assets/interface7-redrawn/snake.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Snake</strong><span>Snake é um arcade original de sobrevivência em grade do WeightPlay.</span></span></a><a class="game-info-related-card" href="/pt-br/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apague as Luzes</strong><span>Apague as Luzes é um puzzle clássico de interruptores em uma grade 5x5: alterne uma casa e suas vizinhas ortogonais para apagar todas as luzes.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><p>Como este jogo pratica Planejamento de rotas, experimente estes:</p><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-word-trails/"><img src="/assets/interface7-redrawn/animal-word-trails.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Trilhas de palavras</strong><span>Siga pistas de animais em dez trilhas e encontre quatro palavras-alvo em cada uma.</span></span></a><a class="game-info-related-card" href="/pt-br/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apague as Luzes</strong><span>Apague as Luzes é um puzzle clássico de interruptores em uma grade 5x5: alterne uma casa e suas vizinhas ortogonais para apagar todas as luzes.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-maze-chase-comparison-v1" data-wp-market-comparison-runtime></script>
+<script src="/src/game-page-info.js?v=20261002-maze-chase-text140-v1" data-wp-market-comparison-runtime></script>
 </body>
 </html>

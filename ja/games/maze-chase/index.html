@@ -24,6 +24,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="description" content="メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。" />
   <title>メイズチェイス | WeightPlay</title>
   <link rel="stylesheet" href="../../src/classic-chase-rocks.css?v=20260923-maze-chase-v21-poster">
   <link rel="stylesheet" href="art.css?v=20260921-maze-chase-block-scene-v1">
@@ -53,8 +54,9 @@
       body.is-game-playing #battleScreen.has-result #resultScreen .result-copy {
         grid-area: copy;
         min-width: 0;
-        width: 100%;
+        width: min(100%, 300px);
         max-width: 100%;
+        box-sizing: border-box;
         overflow-wrap: anywhere;
         margin: 2px 0 0;
         font-size: 20px;
@@ -94,45 +96,17 @@
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <meta name="description" content="メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。" />
+  <meta property="og:description" content="メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。" />
+    <meta name="twitter:description" content="メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。" />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"メイズチェイス","url":"https://weightplay.com/ja/games/maze-chase/","image":"https://weightplay.com/assets/interface7-redrawn/maze-chase.webp","description":"メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["固定迷路のルート計画","4種類のウィスプ追跡","ビーコン反撃"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Maze Chase"}</script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="メイズチェイス | WeightPlay" />
-    <meta property="og:description" content="メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/maze-chase/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/maze-chase.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="メイズチェイス | WeightPlay" />
-    <meta name="twitter:description" content="メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/maze-chase.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "メイズチェイス",
-  "alternateName": "Maze Chase",
-  "url": "https://weightplay.com/ja/games/maze-chase/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/maze-chase.webp",
-  "description": "メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "ja",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "アーケード",
-    "迷路",
-    "戦略"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players"
-  }
-}
-    </script>
   </head>
 <body data-game-id="maze-chase" data-wp-game-id="maze-chase" data-wp-audience="general" data-wp-interface-version="7" data-wp-game-owned-guide>
   <main id="classicArcade" class="classic-arcade" data-runtime-localize="off">
@@ -168,7 +142,8 @@
 <section class="game-page-info game-page-info-static" aria-label="メイズチェイス ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>メイズチェイス</h2><p>メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>迷路チェイスアーケード</span><span>4種のAI</span><span>ビーコン反撃</span></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>メイズチェイス</h2><p>メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。オルラを3つのステージへ導き、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>固定迷路のルート計画</span><span>4種類のウィスプ追跡</span><span>ビーコン反撃</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>迷路チェイス・アーケード</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アーケード · 迷路 · 戦略</strong></div><div class="game-info-fact"><span>難易度</span><strong>簡単から挑戦的</strong></div><div class="game-info-fact"><span>目安時間</span><strong>3～8分</strong></div></div>
     </div>
 
@@ -187,10 +162,10 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>メイズチェイスはオリジナルのCanvas迷路、キャラクター、効果音、4種類の見分けやすい追跡ロジック、レスポンシブな論理キャンバス、キーボードとタッチ操作、ローカライズされたコントロール、Main・Battle・Resultの一連の流れを備えています。</p></div>
       <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>メイズチェイスはブラウザーで無料で遊べます。アカウントや購入は不要で、ベストスコアとサウンド設定はこのブラウザーに保存されます。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ステージをクリアするには？</dt><dd>ビーコンのあるマスも含め、固定迷路の収集物がある全マスを通ります。残りの収集物がゼロになるとステージクリアです。追加得点のためにウィスプを追う必要はありません。</dd></div><div><dt>ウィスプは同じ追跡ロジックですか？</dt><dd>いいえ。直接型、予測型、待ち伏せ型、徘徊型は異なるルートを選び、別々の役割マーカーを表示します。</dd></div><div><dt>ビーコンは何をしますか？</dt><dd>近くのウィスプを追ってボーナスを得られる短いパワー時間を始めます。</dd></div><div><dt>衝突するとどうなりますか？</dt><dd>ライフを1つ失い、短い無敵時間付きで現在のルートへ戻ります。ライフが尽きるまでステージは続きます。</dd></div><div><dt>スマートフォンで遊べますか？</dt><dd>はい。迷路をスワイプするか画面の方向パッドを使えます。デスクトップでは矢印キーと WASD も使えます。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>ベストスコアとサウンド設定だけがこのブラウザーに保存され、アカウントは必要ありません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>このゲームではルート計画を練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/snake/"><img src="/assets/interface7-redrawn/snake.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スネーク</strong><span>スネークはWeightPlayオリジナルのグリッド生存アーケードです。</span></span></a><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>このゲームではルート計画を練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-word-trails/"><img src="/assets/interface7-redrawn/animal-word-trails.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>言葉の足跡</strong><span>動物の手掛かりから全10本のコースで言葉を探します。</span></span></a><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-maze-chase-comparison-v1" data-wp-market-comparison-runtime></script>
+<script src="/src/game-page-info.js?v=20261002-maze-chase-text140-v1" data-wp-market-comparison-runtime></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="メイズチェイス";document.title="メイズチェイス | WeightPlay";},{once:true});</script>
 </body>
 </html>
