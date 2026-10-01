@@ -7815,6 +7815,8 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Tap the passenger before choosing a car.": "在選擇汽車之前點擊乘客。",
   "Tap the passenger first to highlight its target, or drag toward the correct car. Mouse, touch, drag, and keyboard all use the same match result.": "首先點擊乘客以突出顯示其目標，或拖向正確的汽車。滑鼠、觸控、拖曳和鍵盤都使用相同的匹配結果。",
   "Tap the passenger, then choose the train car with the same symbol; drag, mouse and keyboard are also supported.": "點擊乘客，然後選擇具有相同符號的列車車廂；也支援拖曳、滑鼠和鍵盤。",
+  "Choose the car with the matching shape. On Boarding Pass routes only, tap the passenger first, then choose the car. Touch, drag, mouse and keyboard controls are supported.": "選擇形狀相同的車廂；只有驗票路線需要先點乘客，再選車廂。也可使用觸控、拖曳、滑鼠或鍵盤。",
+  "Animal Shape Train is a children's shape-matching game with 30 routes. Match each waiting passenger's shape to one of six train cars. Later routes add changing car positions, brief memory checks, and passenger-first ticket checks. Each route has four to eight passengers; a wrong choice lets you try the same passenger again.": "形狀小火車是一款有 30 條路線的兒童形狀配對遊戲。把每位候車乘客的形狀配對到六種車廂之一。後段路線會改變車廂位置、加入短暫記憶挑戰，以及先選乘客再選車廂的驗票關卡。每條路線有四到八名乘客；選錯後仍可繼續嘗試同一位乘客。",
   "Tap the passenger, then tap the train car with the same symbol. Dragging and keyboard controls are also supported.": "點擊乘客，然後點擊具有相同符號的火車車廂。還支援拖曳和鍵盤控制。",
   "Tap the piece until its angle matches.": "輕敲該部件直至其角度匹配。",
   "Tap to clear · Connected groups · Move-limited puzzle · Recipe goals": "點擊即可清除 · 連接的群組 · 移動受限的謎題 · 配方目標",

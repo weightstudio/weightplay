@@ -7815,6 +7815,8 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Tap the passenger before choosing a car.": "車を選択する前に乗客をタップします。",
   "Tap the passenger first to highlight its target, or drag toward the correct car. Mouse, touch, drag, and keyboard all use the same match result.": "まず乗客をタップしてターゲットを強調表示するか、正しい車に向かってドラッグします。マウス、タッチ、ドラッグ、キーボードはすべて同じ一致結果を使用します。",
   "Tap the passenger, then choose the train car with the same symbol; drag, mouse and keyboard are also supported.": "乗客をタップし、同じシンボルの車両を選択します。ドラッグ、マウス、キーボードもサポートされています。",
+  "Choose the car with the matching shape. On Boarding Pass routes only, tap the passenger first, then choose the car. Touch, drag, mouse and keyboard controls are supported.": "同じ形の車両を選びます。乗車券ルートだけは、先に乗客をタップしてから車両を選んでください。タップ、ドラッグ、マウス、キーボードでも操作できます。",
+  "Animal Shape Train is a children's shape-matching game with 30 routes. Match each waiting passenger's shape to one of six train cars. Later routes add changing car positions, brief memory checks, and passenger-first ticket checks. Each route has four to eight passengers; a wrong choice lets you try the same passenger again.": "かたちトレインは、全30ルートで形を合わせる子ども向けゲームです。待っている乗客の形を6種類の車両から選んで合わせます。後半では車両の位置が変わり、短い記憶課題や、乗客を先に選ぶ乗車券チェックも登場します。各ルートの乗客は4～8人で、間違えても同じ乗客からやり直せます。",
   "Tap the passenger, then tap the train car with the same symbol. Dragging and keyboard controls are also supported.": "乗客をタップしてから、同じシンボルの車両をタップします。ドラッグやキーボードによるコントロールもサポートされています。",
   "Tap the piece until its angle matches.": "角度が合うまでピースをタップします。",
   "Tap to clear · Connected groups · Move-limited puzzle · Recipe goals": "タップしてクリア・連結グループ・移動限定パズル・レシピ目標",

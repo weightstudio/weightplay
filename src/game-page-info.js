@@ -1416,14 +1416,14 @@
       age: "3+",
       difficulty: "Easy",
       time: "2-5 minutes per route",
-      skills: ["Color Recognition", "Logic", "Hand-Eye Coordination"],
-      intro: "Animal Shape Train is a free bilingual Kids matching game with 30 saved routes and six Conductor Checks. Shape friends wait at a cheerful station while the player finds the train car with the same circle, square, triangle, star, diamond, or heart symbol. The opening routes are direct picture matches. Later chapters reduce color, move the car order after each boarding, briefly hide the passenger, or require the passenger to be selected before a car can accept the ticket. Route 30 combines all of those rules with all six cars. There is no countdown, life limit, purchase, account, advertising request, or penalty that ends a route.",
+      skills: ["Shape Recognition", "Logic", "Hand-Eye Coordination"],
+      intro: "Animal Shape Train is a children's shape-matching game with 30 routes. Match each waiting passenger's shape to one of six train cars. Later routes add changing car positions, brief memory checks, and passenger-first ticket checks. Each route has four to eight passengers; a wrong choice lets you try the same passenger again.",
       story: ["The Shape Line links six small stations where animal friends deliver bright shape parcels. Every parcel carries one clear symbol, and every orange train car has a matching window. The player is the junior conductor responsible for checking the symbol and sending each passenger to the correct car. A completed route means every waiting friend is safely aboard and the train can leave the platform.", "The route rules represent busier parts of the railway. Outline Cars travel through fog that removes most color. Switching Cars arrive on moving platforms. Remember Passenger routes briefly lower the station card, while Boarding Pass routes require a passenger check before a car is chosen. Clearing Route 30 completes the final mixed Conductor Check."],
-      systems: ["Each route contains four to eight passengers selected from six real shapes. Only one visible car matches the current passenger.", "A correct choice shows a short visible-time celebration, advances progress and presents the next passenger. A wrong car gives gentle feedback and leaves the same passenger available.", "Outline Cars reduce color so geometry matters. Switching Cars reorder after every correct match. Remember Passenger hides the symbol but allows a no-penalty reveal. Boarding Pass requires the passenger to be selected first.", "Zero retries awards three stars, a small number awards two, and additional retries award one. The Result Skill Report uses actual matches, first tries, retries and boarded passengers.", "Stars and the highest unlock stay only in this browser. There is no account, leaderboard, purchase, advertising request, life meter or countdown.", "Every fifth route is a Conductor Check. Route 30 saves the final result and exposes no Route 31."],
-      how: ["Press Start Game and swipe the horizontal route rail to an unlocked card.", "Read the route rule and look at the passenger shape in the lower station card.", "Tap the passenger, then choose the train car with the same symbol; drag, mouse and keyboard are also supported.", "On memory routes, recall the hidden symbol or tap the passenger to reveal it again.", "Board every listed passenger to save stars and unlock exactly the next route."],
+      systems: ["Each route has four to eight passengers and two to six cars. Choose the visible car with the same shape as the current passenger.", "A correct choice boards the passenger and advances to the next one. A wrong car gives gentle feedback and leaves that passenger available to try again.", "Outline routes use less color, so compare curves, corners and points. Switching routes rearrange the cars after each correct boarding. On memory routes, tap the passenger to reveal the hidden shape without a penalty. Boarding Pass routes require you to select the passenger before choosing a car.", "Finish with no mistakes for three stars, one or two mistakes for two stars, and three or more for one star. The Result Skill Report summarizes actual matches, first tries, retries and boarded passengers.", "Stars and the highest unlocked route are stored in this browser. There is no account, leaderboard, purchase, advertising request, life meter or countdown.", "A Conductor Check appears every five routes. Route 30 saves the final result; there is no Route 31."],
+      how: ["Press Start Game and swipe the horizontal route rail to choose an unlocked route.", "Read that route's rule and compare the passenger's shape with the visible cars.", "Choose the car with the matching shape. On Boarding Pass routes only, tap the passenger first, then choose the car. Touch, drag, mouse and keyboard controls are supported.", "If a memory route hides the shape, tap the passenger to reveal it again without a penalty.", "Board every listed passenger to save your stars and unlock the next route."],
       strategyTips: ["Say the shape name before choosing a car.", "Compare points and curved edges when outline cars remove color.", "Scan the whole track again after every match on a moving route.", "For memory play, name the symbol aloud or trace its outline in the air.", "On Boarding Pass routes, select the passenger before touching a car.", "A wrong choice keeps the route open, so pause and compare instead of guessing quickly."],
-      progression: ["Routes 1–5 teach Direct Match with two to four bright cars and end at the first Conductor Check.", "Routes 6–10 use Outline Cars, making curves, corners and points more important than color.", "Routes 11–15 use Switching Cars that reorder after a successful boarding.", "Routes 16–20 briefly hide the passenger; tapping it restores the same shape without a penalty.", "Routes 21–25 add the ordered Boarding Pass action before the shape match.", "Routes 26–30 combine prior rules. Route 30 uses six cars and eight passengers with outline, movement, memory and Boarding Pass rules."],
-      designNote: "Difficulty grows by changing what the player observes instead of shrinking controls, adding a timer or hiding the correct hit area. Direct matching establishes the vocabulary; outline, movement, memory and ordered selection each add one understandable decision. The fixed logical layout scales uniformly on phone, tablet, desktop and short landscape. Image-backed cars and tokens keep play visual, while localized text explains only the current rule. Match and memory delays count visible play time, so an app switch cannot silently advance the route. Unlike Animal Quiz, no factual reading is required; unlike Zoo Helper Day, the decision is visual equivalence rather than care purpose. Kids play has no advertising, purchase, account, ranking or diagnostic claim.",
+      progression: ["Routes 1–5 introduce direct shape matching with two to four bright cars; Route 5 is the first Conductor Check.", "Routes 6–10 fade the colors so curves, corners and points matter more.", "Routes 11–15 rearrange the cars after each successful boarding.", "Routes 16–20 briefly hide the passenger's shape; tap the passenger to reveal it again without a penalty.", "Routes 21–25 require you to select the passenger before choosing a car.", "Routes 26–30 combine earlier rules. Route 30 uses all six shapes and eight passengers."],
+      designNote: "Challenge comes from noticing a different clue or following a new action order, not from smaller controls or a timer. The game stays visual: match the shapes, recheck the cars after they move, and reveal a hidden passenger when needed. Touch, drag, mouse and keyboard use the same matching rules; a wrong choice leaves the route open for another try. Kids play has no advertising, purchase, account, ranking or diagnostic claim.",
       parent: "Animal Shape Train may support conversations about circles, corners, points, visual matching, short recall, action order, focus and hand-eye coordination. An adult can name each shape aloud or ask how two outlines differ. Stars and the Skill Report describe only this play session; they are not a school grade, IQ score, developmental diagnosis or comparison with another child. Progress stays in the current browser and may disappear if local storage is cleared. No child profile is required, and the Kids route requests no advertising.",
       faq: [
         ["How many routes are included?", "There are 30 saved routes in six chapters, with Conductor Checks at 5, 10, 15, 20, 25 and 30."],
@@ -4157,13 +4157,13 @@
       },
       "shape-train": {
         title: "動物形狀小火車", age: "3+", difficulty: "簡單", time: "每條路線 2–5 分鐘", skills: ["形狀辨識", "邏輯", "手眼協調"],
-        intro: "《動物形狀小火車》是一款免費的雙語 Kids 配對遊戲，共有 30 條可保存路線與六次車長檢查。形狀朋友在明亮車站等候，玩家要從圓形、正方形、三角形、星形、菱形與愛心車廂中找出相同符號。前段是直接看圖配對；後續會淡化顏色、在每次上車後改變車廂順序、暫時藏起乘客，或要求先驗票再選車廂。第 30 路線會把所有規則與六種車廂合在一起。遊戲沒有倒數、生命限制、購買、帳號、廣告請求，也不會因一次選錯就結束路線。",
+        intro: "《動物形狀小火車》有 30 條路線。請把每位乘客送上圖案相同的車廂：圓形、正方形、三角形、星形、菱形或愛心。前段直接看圖配對；後段會淡化顏色、在成功上車後改變車廂順序、暫時藏起乘客圖案，或要求先選乘客再選車廂。每五條路線有一次車長檢查，第 30 路線會組合前面的規則。選錯不會結束路線，也沒有倒數或生命限制。",
         story: ["形狀線連接六座小車站，動物朋友會帶著有清楚符號的彩色包裹來搭車，每節橘色車廂的窗戶都有對應形狀。玩家扮演小車長，負責檢查符號並把乘客送到正確車廂。完成一條路線，代表所有等候朋友都安全上車，列車可以出發。", "不同規則代表鐵路較忙碌的區段。輪廓車廂行經薄霧，移動車廂停在會切換位置的月台；記憶乘客會暫時收起車站卡；驗票路線則要求先確認乘客。通過第 30 路線，代表完成最後一次混合車長檢查。"],
-        systems: ["每條路線有四到八名乘客，取自六種真實形狀；畫面上只會有一節車廂符合目前乘客。", "答對會顯示短暫的上車動畫、增加進度並換下一名乘客；選錯只會溫和提醒，同一名乘客仍可繼續嘗試。", "輪廓車廂降低顏色提示；移動車廂在答對後重新排序；記憶乘客會藏起符號但可免費再看；驗票規則要求先點乘客。", "零次重試可得三星，少量重試得二星，更多重試得一星。技能報告只使用本次真實配對、首次答對、重試與上車人數。", "星星與最高解鎖路線只保存在目前瀏覽器。沒有帳號、排行榜、購買、廣告、生命值或倒數。", "每五條路線是一個車長檢查；第 30 路線會保存最終結果，不會出現不存在的第 31 路線。"],
-        how: ["按下開始遊戲，在水平路線軌道上滑到已解鎖卡片。", "閱讀路線規則，觀察下方車站卡中的乘客形狀。", "先點乘客，再點相同符號的車廂；拖曳、滑鼠與鍵盤也能操作。", "記憶路線可回想藏起的符號，或再點乘客把它顯示出來。", "讓所有乘客上車即可保存星星，並只解鎖下一條路線。"],
+        systems: ["每條路線有四到八名乘客、兩到六節車廂；選擇與目前乘客形狀相同的車廂。", "選對會讓乘客上車並換下一位；選錯時會有提示，但同一位乘客仍可重試。", "輪廓路線會減少顏色提示，要比較曲線、角與尖端。移動路線會在成功上車後重新排列車廂。記憶路線可點乘客無懲罰重看圖案；驗票路線則要求先選乘客再選車廂。", "零次錯誤得三顆星，一到兩次得兩顆，三次以上得一顆。結果技能報告依本次配對、首次答對、重試與上車人數整理。", "星星與最高解鎖路線只存在目前瀏覽器。沒有帳號、排行榜、購買、廣告、生命值或倒數。", "每五條路線有一次車長檢查。第 30 路線會保存結果，沒有第 31 路線。"],
+        how: ["按下開始遊戲，在橫向路線列選擇已解鎖的路線。", "閱讀路線規則，觀察乘客圖案並和車廂比對。", "選擇圖案相同的車廂；只有驗票路線需要先點乘客，再選車廂。也可使用觸控、拖曳、滑鼠或鍵盤。", "記憶路線藏起圖案時，點乘客即可無懲罰重看。", "讓所有乘客上車即可保存星星並解鎖下一條路線。"],
         strategyTips: ["選車廂前先說出形狀名稱。", "輪廓車廂沒有明顯顏色時，比較尖角、邊與曲線。", "移動路線每次答對後都重新掃視整條軌道。", "記憶遊玩可把符號說出來，或用手在空中描出輪廓。", "驗票路線要先選乘客，再碰車廂。", "選錯不會關閉路線，停一下重新比較即可。"],
-        progression: ["第 1–5 路線是直接配對，以二到四節明亮車廂介紹六種形狀，第 5 路線是首次車長檢查。", "第 6–10 路線使用輪廓車廂，曲線、角與尖端會比顏色更重要。", "第 11–15 路線加入移動車廂，每次成功上車後都會重新排序。", "第 16–20 路線會暫時藏起乘客；再點乘客即可無懲罰顯示同一形狀。", "第 21–25 路線加入先驗票、再配對的動作順序。", "第 26–30 路線混合舊規則；第 30 路線有六節車廂、八名乘客，並結合輪廓、移動、記憶與驗票。"],
-        designNote: "難度成長來自改變玩家要觀察的線索，而不是縮小按鈕、增加壓力倒數或藏起正確點擊區。直接配對先建立形狀詞彙，輪廓、移動、記憶與順序再各加入一個能理解的判斷。固定邏輯畫面會在手機、平板、桌面與短橫向螢幕等比縮放；圖片車廂與形狀圖塊保留圖像為主的操作，文字只說明目前規則。配對與記憶等待只計算實際可見時間，切到其他 App 不會讓路線偷偷前進。它不像《動物知識小測》需要閱讀動物事實，也不像《動物園小幫手日》要依用途選照護工具；本作的核心始終是視覺等同。Kids 遊玩沒有廣告、購買、帳號、排名或診斷宣稱。",
+        progression: ["第 1–5 路線練習直接配對，使用兩到四節亮色車廂；第 5 路線是第一次車長檢查。", "第 6–10 路線淡化顏色，改用輪廓辨識。", "第 11–15 路線會在每次正確上車後重新排列車廂。", "第 16–20 路線暫時藏起乘客圖案，點乘客即可無懲罰重看。", "第 21–25 路線要求先選乘客再選車廂。", "第 26–30 路線組合先前規則；第 30 路線有六種形狀與八位乘客。"],
+        designNote: "難度來自要觀察的線索和操作順序逐步改變，不是縮小按鈕或加入倒數。玩家需要比對形狀、在車廂換位後重新尋找，並在記憶路線重看被藏起的圖案。觸控、拖曳、滑鼠和鍵盤使用相同規則；選錯後仍可繼續當前路線。Kids 遊玩沒有廣告、購買、帳號、排名或診斷宣稱。",
         parent: "《動物形狀小火車》可用來談圓形、角、尖端、視覺配對、短期記憶、動作順序、專注與手眼協調。大人可以一起說出形狀名稱，或問孩子兩個輪廓哪裡不同。星星與技能報告只描述這次遊玩，不是學校成績、智力分數、發展診斷，也不會與其他孩子比較。進度只留在目前瀏覽器，清除網站資料可能使它消失；不需要兒童帳號，Kids 路線也不會請求廣告。",
         faq: [["共有多少條路線？", "共有 30 條可保存路線與六個章節，車長檢查位於第 5、10、15、20、25、30 路線。"], ["有哪些形狀？", "遊戲實際使用圓形、正方形、三角形、星形、菱形與愛心。"], ["乘客為什麼消失？", "記憶乘客路線會暫時藏起它；再點乘客即可無懲罰顯示同一形狀。"], ["車廂為什麼移動？", "移動車廂會在答對後重新排序，讓玩家再次觀察。"], ["車廂為什麼不接受選擇？", "驗票路線要求先點乘客，再選車廂。"], ["選錯會怎樣？", "同一名乘客會留在畫面，玩家可在溫和提示後再試。"], ["進度會保存嗎？", "星星與最高解鎖路線只保存在目前瀏覽器，不需要登入。"], ["手機與鍵盤都能玩嗎？", "可以，觸控、拖曳、滑鼠與鍵盤使用相同配對規則。"], ["Kids 頁面有廣告嗎？", "沒有，《動物形狀小火車》不會建立廣告請求或廣告保留區。"]],
       },
@@ -8886,23 +8886,23 @@
       "逻辑",
       "手眼协调"
     ],
-    "intro": "《动物形状小火车》是一款免费的双语 Kids 配对游戏，共有 30 条可保存路线与六次车长检查。形状朋友在明亮车站等候，玩家要从圆形、正方形、三角形、星形、菱形与爱心车厢中找出相同符号。前段是直接看图配对；后续会淡化颜色、在每次上车后改变车厢顺序、暂时藏起乘客，或要求先验票再选车厢。第 30 路线会把所有规则与六种车厢合在一起。游戏没有倒数、生命限制、购买、帐号、广告请求，也不会因一次选错就结束路线。",
+    "intro": "《动物形状小火车》共有 30 条路线。请把每位乘客送上图案相同的车厢：圆形、正方形、三角形、星形、菱形或爱心。前段直接看图配对；后段会淡化颜色、在成功上车后改变车厢顺序、暂时藏起乘客图案，或要求先选乘客再选车厢。每五条路线有一次车长检查，第 30 路线会组合前面的规则。选错不会结束路线，也没有倒数或生命限制。",
     "story": [
       "形状线连接六座小车站，动物朋友会带着有清楚符号的彩色包裹来搭车，每节橘色车厢的窗户都有对应形状。玩家扮演小车长，负责检查符号并把乘客送到正确车厢。完成一条路线，代表所有等候朋友都安全上车，列车可以出发。",
       "不同规则代表铁路较忙碌的区段。轮廓车厢行经薄雾，移动车厢停在会切换位置的月台；记忆乘客会暂时收起车站卡；验票路线则要求先确认乘客。通过第 30 路线，代表完成最后一次混合车长检查。"
     ],
     "systems": [
-      "每条路线有四到八名乘客，取自六种真实形状；画面上只会有一节车厢符合目前乘客。",
-      "答对会显示短暂的上车动画、增加进度并换下一名乘客；选错只会温和提醒，同一名乘客仍可继续尝试。",
-      "轮廓车厢降低颜色提示；移动车厢在答对后重新排序；记忆乘客会藏起符号但可免费再看；验票规则要求先点乘客。",
-      "零次重试可得三星，少量重试得二星，更多重试得一星。技能报告只使用本次真实配对、首次答对、重试与上车人数。",
+      "每条路线有四到八名乘客、两到六节车厢；选择与目前乘客形状相同的车厢。",
+      "选对会让乘客上车并换下一位；选错时会有提示，但同一位乘客仍可重试。",
+      "轮廓路线会减少颜色提示，要比较曲线、角与尖端。移动车厢会在成功上车后重新排列。记忆路线可点乘客无惩罚重看图案；验票路线则要求先选乘客再选车厢。",
+      "零次错误得三星，一到两次得两星，三次以上得一星。技能报告依本次配对、首次答对、重试与上车人数整理。",
       "星星与最高解锁路线只保存在目前浏览器。没有帐号、排行榜、购买、广告、生命值或倒数。",
       "每五条路线是一个车长检查；第 30 路线会保存最终结果，不会出现不存在的第 31 路线。"
     ],
     "how": [
       "按下开始游戏，在水平路线轨道上滑到已解锁卡片。",
       "阅读路线规则，观察下方车站卡中的乘客形状。",
-      "先点乘客，再点相同符号的车厢；拖曳、滑鼠与键盘也能操作。",
+      "选择图案相同的车厢；只有验票路线需要先点乘客，再选车厢。也可使用触控、拖曳、滑鼠或键盘。",
       "记忆路线可回想藏起的符号，或再点乘客把它显示出来。",
       "让所有乘客上车即可保存星星，并只解锁下一条路线。"
     ],
@@ -8920,9 +8920,9 @@
       "第 11–15 路线加入移动车厢，每次成功上车后都会重新排序。",
       "第 16–20 路线会暂时藏起乘客；再点乘客即可无惩罚显示同一形状。",
       "第 21–25 路线加入先验票、再配对的动作顺序。",
-      "第 26–30 路线混合旧规则；第 30 路线有六节车厢、八名乘客，并结合轮廓、移动、记忆与验票。"
+      "第 26–30 路线组合先前规则；第 30 路线有六种形状与八位乘客。"
     ],
-    "designNote": "难度成长来自改变玩家要观察的线索，而不是缩小按钮、增加压力倒数或藏起正确点击区。直接配对先建立形状词汇，轮廓、移动、记忆与顺序再各加入一个能理解的判断。固定逻辑画面会在手机、平板、桌面与短横向萤幕等比缩放；图片车厢与形状图块保留图像为主的操作，文字只说明目前规则。配对与记忆等待只计算实际可见时间，切到其他 App 不会让路线偷偷前进。它不像《动物知识小测》需要阅读动物事实，也不像《动物园小帮手日》要依用途选照护工具；本作的核心始终是视觉等同。Kids 游玩没有广告、购买、帐号、排名或诊断宣称。",
+    "designNote": "难度来自要观察的线索和操作顺序逐步改变，不是缩小按钮或加入倒数。玩家需要比对形状、在车厢换位后重新寻找，并在记忆路线重看被藏起的图案。触控、拖曳、滑鼠和键盘使用相同规则；选错后仍可继续当前路线。Kids 游玩没有广告、购买、帐号、排名或诊断宣称。",
     "parent": "《动物形状小火车》可用来谈圆形、角、尖端、视觉配对、短期记忆、动作顺序、专注与手眼协调。大人可以一起说出形状名称，或问孩子两个轮廓哪里不同。星星与技能报告只描述这次游玩，不是学校成绩、智力分数、发展诊断，也不会与其他孩子比较。进度只留在目前浏览器，清除网站资料可能使它消失；不需要儿童帐号，Kids 路线也不会请求广告。",
     "faq": [
       [
