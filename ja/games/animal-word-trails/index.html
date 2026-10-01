@@ -28,26 +28,27 @@
   <meta name="weightplay-audience" content="kids">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index,follow" />
-  <meta id="pageDescription" name="description" content="Word Trails is a calm reading puzzle about following animal clues and connecting adjacent letters or characters into a complete word path.">
+  <meta id="pageDescription" name="description" content="全10本のコースで動物や生息地の語を探します。各4語で、斜め移動可、マスの再利用不可です。">
   <title>言葉の足跡 | WeightPlay</title>
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="言葉の足跡 | WeightPlay" />
-  <meta property="og:description" content="言葉の足跡 は、動物の手がかりをたどり、隣接する文字を接続して完全な単語パスを作る、穏やかな 30 段階のリーディング パズルです。" />
+  <meta property="og:description" content="全10本のコースで動物や生息地の語を探します。各4語で、斜め移動可、マスの再利用不可です。" />
   <meta property="og:url" content="https://weightplay.com/ja/games/animal-word-trails/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-word-trails.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="言葉の足跡 | WeightPlay" />
-  <meta name="twitter:description" content="言葉の足跡 は、動物の手がかりをたどり、隣接する文字を接続して完全な単語パスを作る、穏やかな 30 段階のリーディング パズルです。" />
+  <meta name="twitter:description" content="全10本のコースで動物や生息地の語を探します。各4語で、斜め移動可、マスの再利用不可です。" />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-word-trails.webp" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"言葉の足跡","description":"言葉の足跡 は、動物の手がかりをたどり、隣接する文字を接続して完全な単語パスを作る、穏やかな 30 段階のリーディング パズルです。","url":"https://weightplay.com/ja/games/animal-word-trails/","image":"https://weightplay.com/assets/animal-word-trails-cover.webp","genre":["言葉","Puzzle","Animal","Browser Game"],"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9},"alternateName":"Word Trails"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"言葉の足跡","description":"全10本のコースで動物や生息地の語を探します。各4語で、斜め移動可、マスの再利用不可です。","url":"https://weightplay.com/ja/games/animal-word-trails/","image":"https://weightplay.com/assets/animal-word-trails-cover.webp","genre":["ワードパスパズル","動物の手掛かり","読解練習"],"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9},"alternateName":"Word Trails"}</script>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20261001-animal-word-trails-runtime-v5">
   <script data-wp-stage-standard>/* Animal Word Trails owns its native Kids Stage rail. */</script>
   <script data-wp-battle-standard>/* Animal Word Trails owns its native Kids Battle Canvas. */</script>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="言葉の足跡 は、動物の手がかりをたどり、隣接する文字を接続して完全な単語パスを作る、穏やかな 30 段階のリーディング パズルです。" /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body>
@@ -71,7 +72,7 @@
         <span id="stageProgress"></span>
         <button id="album" class="mini" data-copy="album">Album</button>
       </header>
-      <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages"></div>
+      <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages" data-wp-stage-total="10"></div>
       <p id="stageFeedback" class="stage-feedback" aria-live="polite"></p>
       <button id="playStage" hidden type="button" tabindex="-1" aria-hidden="true"></button>
       <dialog id="albumDialog"><button id="closeAlbum" class="back" data-aria="closeAlbum" aria-label="Close">&larr;</button><h2 data-copy="albumTitle">Animal clues</h2><div id="albumList"></div></dialog>
@@ -105,32 +106,34 @@
     <div class="loading-card"><strong id="loadingTitle">Loading</strong><span id="loadingText">0%</span><div><i id="loadingFill"></i></div></div>
   </div>
   <script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="game.js?v=20260729-result-v4&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261001-animal-word-trails-runtime-v1&wp-audio=1.0.0"></script>
   <section class="game-page-info game-page-info-static" aria-label="言葉の足跡 ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">言葉の足跡</h2><p>Animal Word Trails は、動物の手がかりをたどり、隣接する文字を接続して完全な単語パスを作る、穏やかな 30 段階のリーディング パズルです。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>単語パスパズルを読む</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>言葉 · Puzzle · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>簡単から中程度まで</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1 つのトレイルあたり 2 ～ 5 分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>読書 · 集中 · 論理力</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">言葉の足跡</h2><p>動物の手掛かりから全10本のコースで言葉を探します。各盤面に目標語が4つ。斜めを含む隣接マスをつなげますが、同じ語でマスを再利用できません。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>ワードパスパズル</span><span>動物の手掛かり</span><span>読解練習</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>読み取りワードパスパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>ワードパズル · 読解 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>やさしい〜中級</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1コース約2〜5分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>読解 · 集中 · 論理</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>それぞれのトレイルから動物や生息地の手がかりが得られます。プレイヤーはライオン ガイドが失われた単語を再接続し、イラスト付きのフィールド アルバムを復元するのを手伝います。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>有効なタイルから開始し、ジャンプせずに隣接するタイルを通過します。ヒントは有用な次のステップを示し、「元に戻す」は最新のタイルを削除し、「クリア」は現在のパスをリセットします。</p>
-<p>完了したトレイル、スター、アルバムの発見は、このブラウザーにローカルに保存されます。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>ロックされていないトレイルを選択します。</li><li>動物や生息地の手がかりを読んでください。</li><li>隣接する文字または文字を順番に接続します。</li><li>完成したワードパスを送信して続行します。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>最初のタイルを選択する前に、レアな文字とボードの端を確認してください。</li><li>目に見えるすべてのシーケンスをテストするのではなく、手がかりの意味を念頭に置いてください。</li><li>ほぼ完全なパスをクリアするのではなく、1 つの間違った分岐に対して「元に戻す」を使用します。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>初期のトレイルでは、短い動物の名前と直接的なパスが使用されます。後の章では、生息地の用語、長い単語、分岐レイアウト、および 30 ステージすべてにわたる混合手がかりセットが追加されます。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>1 つの読み取り可能なタイル スケールと大きな隣接するターゲットにより、タッチ コントロールやデスクトップ コントロール上でロジックの読み取りとルーティングが快適に行えます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>アカウントは必要なく、進行状況はこのブラウザーに残ります。星や読書の概要は、学校、医療、能力の評価ではなく、遊び心のあるフィードバックです。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>トレイルはいくつ含まれていますか?</dt><dd>30 個の作成された単語トレイルがあります。</dd></div><div><dt>タイルはスキップできますか?</dt><dd>いいえ。すべてのステップで隣接するタイルを使用する必要があります。</dd></div><div><dt>Does progress save?</dt><dd>はい。クリア、スター、アルバムの発見はローカルに保存されます。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>ライオン案内役の野外図鑑には動物と生息地の項目が欠けています。語を見つけると手掛かりカードが戻り、4語すべてでコースをクリアして次が開きます。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>順にタップするか連続してドラッグし、「単語を確認」を選びます。ヒントは次に見つける単語の最初の文字を示します。戻す操作は最後のマスを外し、経路を消去する操作は現在の経路を消します。</p>
+<p>10個の元盤面はすべて4×4で、各盤面に目標語が4つあります。後半には通行不可マスや一方向の葉の入口が加わります。時間制限はなく、クリア、星、カードはこのブラウザーに保存されます。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>解放済みコースを選びます。</li><li>動物や生息地の手掛かりと目標語を読みます。</li><li>隣接マスをつなぎます。斜めは可能ですが同じマスは再利用できません。</li><li>各語を送信し、4語すべて見つけます。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>開始位置を決める前に目標語をすべて確認します。</li><li>次の文字が隣接するときに斜めを使います。</li><li>一方向の葉の入口には指定方向から入ります。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>全10コースに4語ずつあります。後半に通行不可マスや一方向の葉の入口が加わります。時間制限はなく、クリア、星、カードはこのブラウザーに保存されます。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>元の単語パックは英語と繁体字中国語です。対応するゲーム言語では英語パックから盤面を生成できます。これは自動生成のローカライズで、全公開ページに個別制作の単語パックがあるという意味ではありません。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>このKids向け読解パズルは広告もアカウント登録も不要です。進行と記録はこのブラウザーに保存され、サイトデータを消すと失われる場合があります。練習と娯楽のための内容で、正式な読解評価ではありません。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>コースはいくつありますか？</dt><dd>全10コースで、各コースに4語あります。</dd></div><div><dt>斜めに移動できますか？</dt><dd>できます。同じ語の中でマスを再利用することはできません。</dd></div><div><dt>ヒント・戻す・経路を消去する操作では何ができますか？</dt><dd>ヒントは次に見つける単語の最初の文字を示します。戻す操作は最後のマスを外し、経路を消去する操作は現在の経路を消します。</dd></div><div><dt>制限時間はありますか？</dt><dd>ありません。進行とカードはこのブラウザーに保存されます。</dd></div></dl></div>
 
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+<script type="application/json" data-wp-animal-word-trails-guide>{"locale":"ja","copy":{"intro":"動物の手掛かりから全10本のコースで言葉を探します。各盤面に目標語が4つ。斜めを含む隣接マスをつなげますが、同じ語でマスを再利用できません。","systems":["順にタップするか連続してドラッグし、「単語を確認」を選びます。ヒントは次に見つける単語の最初の文字を示します。戻す操作は最後のマスを外し、経路を消去する操作は現在の経路を消します。","10個の元盤面はすべて4×4で、各盤面に目標語が4つあります。後半には通行不可マスや一方向の葉の入口が加わります。時間制限はなく、クリア、星、カードはこのブラウザーに保存されます。"],"progression":["全10コースに4語ずつあります。後半に通行不可マスや一方向の葉の入口が加わります。時間制限はなく、クリア、星、カードはこのブラウザーに保存されます。"],"designNote":"元の単語パックは英語と繁体字中国語です。対応するゲーム言語では英語パックから盤面を生成できます。これは自動生成のローカライズで、全公開ページに個別制作の単語パックがあるという意味ではありません。","parent":"このKids向け読解パズルは広告もアカウント登録も不要です。進行と記録はこのブラウザーに保存され、サイトデータを消すと失われる場合があります。練習と娯楽のための内容で、正式な読解評価ではありません。","metaDescription":"全10本のコースで動物や生息地の語を探します。各4語で、斜め移動可、マスの再利用不可です。","text140Tags":["ワードパスパズル","動物の手掛かり","読解練習"],"gameplay":"読み取りワードパスパズル","genre":["ワードパズル","読解","動物"],"story":["ライオン案内役の野外図鑑には動物と生息地の項目が欠けています。語を見つけると手掛かりカードが戻り、4語すべてでコースをクリアして次が開きます。"],"how":["解放済みコースを選びます。","動物や生息地の手掛かりと目標語を読みます。","隣接マスをつなぎます。斜めは可能ですが同じマスは再利用できません。","各語を送信し、4語すべて見つけます。"],"strategyTips":["開始位置を決める前に目標語をすべて確認します。","次の文字が隣接するときに斜めを使います。","一方向の葉の入口には指定方向から入ります。"],"faq":[["コースはいくつありますか？","全10コースで、各コースに4語あります。"],["斜めに移動できますか？","できます。同じ語の中でマスを再利用することはできません。"],["ヒント・戻す・経路を消去する操作では何ができますか？","ヒントは次に見つける単語の最初の文字を示します。戻す操作は最後のマスを外し、経路を消去する操作は現在の経路を消します。"],["制限時間はありますか？","ありません。進行とカードはこのブラウザーに保存されます。"]],"difficulty":"やさしい〜中級","time":"1コース約2〜5分","skills":["読解","集中","論理"]}}</script>
+<script src="../../src/game-page-info.js?v=20261001-animal-word-trails-text140-v3"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="言葉の足跡";document.title="言葉の足跡 | WeightPlay";},{once:true});</script>
 </body>

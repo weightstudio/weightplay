@@ -53,7 +53,9 @@ function nextRandom(state) {
 }
 
 function isMatchable(tile) {
-  return tile.c !== null && !tile.box && !tile.stone && !tile.gate;
+  // A stored power awaits player activation or a hit from an active power.
+  // Its underlying color must not restart it when gravity makes a match.
+  return tile.c !== null && !tile.p && !tile.box && !tile.stone && !tile.gate;
 }
 
 export function matchGroups(board) {
@@ -713,11 +715,10 @@ function comboEffect(state, a, b) {
     }
     suppressed.add(a);
     suppressed.add(b);
-  } else {
-    addPowerEffect(board, a, powerA, direct, powerSet, new Set([a, b]), visualEffects);
-    addPowerEffect(board, b, powerB, direct, powerSet, new Set([a, b]), visualEffects);
   }
 
+  // Unpaired Arrow/Bomb sources are expanded here once, together with any
+  // powers hit by their footprint. Pair/carry sources are suppressed above.
   expandTriggeredPowers(board, direct, powerSet, suppressed, visualEffects);
   if (powerA && powerB) {
     visualEffects.push({

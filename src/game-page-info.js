@@ -11472,8 +11472,13 @@
     });
   }
 
+  let animalWordTrailsText140Ready = false;
   function render() {
     if (comparisonOnly) return;
+    // Word Trails owns its complete 1.4.0 Guide in a locale-keyed JSON file.
+    // Wait for that source before the shared renderer can paint its historical
+    // 30-level fallback over the generated route copy.
+    if (currentGameId() === "animal-word-trails" && !animalWordTrailsText140Ready) return;
     if (document.body?.hasAttribute("data-wp-game-owned-guide")) {
       // Retain Signal's existing Guide shell registration during native screen
       // changes without rehydrating obsolete text or rewriting its metadata.
@@ -27406,5 +27411,49 @@
       text140Tags: tags,
     };
   }
-  render();
+  if (currentGameId() === "animal-word-trails") {
+    document.querySelectorAll(".game-page-info, .public-guide, .game-guide").forEach((node) => node.remove());
+    let routeFallbackReady = false;
+    try {
+      const routeGuide = JSON.parse(document.querySelector("script[data-wp-animal-word-trails-guide]")?.textContent || "null");
+      if (routeGuide?.locale && routeGuide.copy) {
+        localizedGames[routeGuide.locale] ||= {};
+        localizedGames[routeGuide.locale]["animal-word-trails"] = {
+          ...(localizedGames[routeGuide.locale]["animal-word-trails"] || {}),
+          ...routeGuide.copy,
+        };
+        routeFallbackReady = true;
+      }
+    } catch {
+      // The fetched JSON remains the primary source; a missing inline fallback
+      // must not re-enable the obsolete shared Guide.
+    }
+    fetch("/games/animal-word-trails/text-growth-140.json")
+      .then((response) => {
+        if (!response.ok) throw new Error(`Word Trails Guide source returned ${response.status}`);
+        return response.json();
+      })
+      .then((source) => {
+        for (const [localeCode, copy] of Object.entries(source.locales || {})) {
+          localizedGames[localeCode] ||= {};
+          localizedGames[localeCode]["animal-word-trails"] = {
+            ...(localizedGames[localeCode]["animal-word-trails"] || {}),
+            ...copy,
+          };
+        }
+        animalWordTrailsText140Ready = true;
+        render();
+      })
+      .catch((error) => {
+        if (routeFallbackReady) {
+          animalWordTrailsText140Ready = true;
+          render();
+          return;
+        }
+        // Fail closed: never show the known obsolete 30-level Guide.
+        console.error("Unable to load the Word Trails 1.4.0 Guide source", error);
+      });
+  } else {
+    render();
+  }
 })();

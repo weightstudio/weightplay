@@ -24,40 +24,41 @@
   <meta name="weightplay-audience" content="kids">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index,follow">
-  <meta id="pageDescription" name="description" content="Word Trails is a calm reading puzzle about following animal clues and connecting adjacent letters or characters into a complete word path.">
+  <meta id="pageDescription" name="description" content="Find four animal or habitat words on each of ten trails. Diagonal moves are allowed; tiles cannot be reused.">
   <title>Word Trails | WeightPlay</title>
   <meta property="og:site_name" content="WeightPlay">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Word Trails | WeightPlay">
-  <meta property="og:description" content="Follow animal clues and connect adjacent letters or characters into complete word paths.">
+  <meta property="og:description" content="Find four animal or habitat words on each of ten trails. Diagonal moves are allowed; tiles cannot be reused." />
   <meta property="og:url" content="https://weightplay.com/en/games/animal-word-trails/">
   <meta property="og:image" content="https://weightplay.com/assets/animal-word-trails-cover.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Word Trails | WeightPlay">
-  <meta name="twitter:description" content="Follow animal clues and connect adjacent letters or characters into complete word paths.">
+  <meta name="twitter:description" content="Find four animal or habitat words on each of ten trails. Diagonal moves are allowed; tiles cannot be reused." />
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-word-trails-cover.webp">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Word Trails","description":"Follow animal clues and connect adjacent letters or characters into complete word paths.","url":"https://weightplay.com/en/games/animal-word-trails/","image":"https://weightplay.com/assets/animal-word-trails-cover.webp","genre":["Word","Puzzle","Animal"],"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Word Trails","description":"Find four animal or habitat words on each of ten trails. Diagonal moves are allowed; tiles cannot be reused.","url":"https://weightplay.com/en/games/animal-word-trails/","image":"https://weightplay.com/assets/animal-word-trails-cover.webp","genre":["Word-path puzzle","Animal clues","Reading practice"],"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9}}</script>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css">
-  <link rel="stylesheet" href="style.css?v=20260729-result-v4">
+  <link rel="stylesheet" href="style.css?v=20261001-animal-word-trails-runtime-v5">
   <script data-wp-stage-standard>/* Animal Word Trails owns its native Kids Stage rail. */</script>
   <script data-wp-battle-standard>/* Animal Word Trails owns its native Kids Battle Canvas. */</script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <link rel="stylesheet" href="interface-7-cleanup.css?v=20260923-interface7-cleanup1">
   <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-</head>
+
+  </head>
 <body>
   <main class="word-trails" id="app">
     <section class="screen main-screen" data-screen="main">
       <header class="main-header">
         <a class="lobby-return" data-wp-return="main" href="/kids/" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
         <h1 data-copy="title" data-wp-game-title data-runtime-localize="off">Word Trails</h1>
-        <div class="locale-row"><label for="locale" data-copy="language">Language</label><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option><option value="ja">&#26085;&#26412;&#35486;</option><option value="ko">&#54620;&#44397;&#50612;</option><option value="es">Espa&#241;ol</option><option value="pt-BR">Portugu&#234;s</option><option value="fr">Fran&#231;ais</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">&#1056;&#1091;&#1089;&#1082;&#1080;&#1081;</option></select></div>
+        <div class="locale-row"><label for="locale" data-copy="language">Language</label><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option><option value="ja">&#26085;&#26412;&#35486;</option><option value="ko">&#54620;&#44397;&#50612;</option><option value="es">Espa&#241;ol</option><option value="pt-BR">Portugu&#234;s</option><option value="fr">Fran&#231;ais</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option><option value="hi">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option></select></div>
       </header>
       <img class="cover" src="../../assets/animal-word-trails-cover.webp" alt="">
-      <p data-copy="intro">Follow animal clues and connect a word path.</p>
+      <p data-copy="intro">Follow animal clues and connect a word path.</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Word-path puzzle</span><span>Animal clues</span><span>Reading practice</span></div>
       <button class="primary" id="start" data-copy="start">Start Game</button>
       <section class="guide first-steps"><h2 data-copy="guideTitle">A calm reading puzzle</h2><p data-copy="guideBody">Find animal and habitat words. Your progress stays on this device.</p></section>
     </section>
@@ -69,7 +70,7 @@
         <span id="stageProgress"></span>
         <button id="album" class="mini" data-copy="album">Album</button>
       </header>
-      <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages"></div>
+      <div class="stage-rail" id="stageRail" data-wp-stage-total="10" data-aria="stages" aria-label="Stages"></div>
       <p id="stageFeedback" class="stage-feedback" aria-live="polite"></p>
       <button id="playStage" hidden type="button" tabindex="-1" aria-hidden="true"></button>
       <dialog id="albumDialog"><button id="closeAlbum" class="back" data-aria="closeAlbum" aria-label="Close">&larr;</button><h2 data-copy="albumTitle">Animal clues</h2><div id="albumList"></div></dialog>
@@ -105,9 +106,10 @@
   <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="game.js?v=20260729-result-v4&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261001-animal-word-trails-runtime-v1&wp-audio=1.0.0"></script>
   <script src="interface-7-compat.js?v=20260923-interface7-cleanup1"></script>
-  <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+  <script type="application/json" data-wp-animal-word-trails-guide>{"locale":"en","copy":{"intro":"Follow animal clues across ten trails. Find four target words on each board by connecting neighboring letters; diagonals are allowed, but a tile cannot be reused in one word.","systems":["Tap tiles in order or drag a continuous path, then choose Check Word. Hint reveals the first letter of the next unfound word; Undo removes the last tile, and Clear removes the current path.","The ten source boards are 4×4 and each contains four target words. Later trails add blocked tiles or a one-way leaf entry. There is no timer; clears, stars, and clue cards save in this browser."],"progression":["All ten source trails have four words. Later boards add blocked tiles or a one-way leaf entry. There is no timer; clears, stars, and clue cards save in this browser."],"designNote":"The original word packs are English and Traditional Chinese. The game can generate localized boards from the English pack for supported game languages; that is generated localization, not a separately authored pack for every public route.","parent":"This Kids reading puzzle is ad-free and needs no account. Progress and records stay in this browser and may be lost if site data is cleared. It is for practice and entertainment, not a formal reading assessment.","metaDescription":"Find four animal or habitat words on each of ten trails. Diagonal moves are allowed; tiles cannot be reused.","text140Tags":["Word-path puzzle","Animal clues","Reading practice"],"gameplay":"Reading word-path puzzle","genre":["Word puzzle","Reading","Animal"],"story":["Leo’s field album is missing animal and habitat entries. Find each word to return a clue card; finding all four completes the trail and opens the next available one."],"how":["Choose an unlocked trail.","Read its animal or habitat clue and target words.","Trace adjacent tiles; diagonals are allowed, but do not reuse a tile.","Submit each word and find all four to clear the trail."],"strategyTips":["Scan the full target list before choosing a start.","Use a diagonal only when the next target letter is adjacent.","Enter a one-way leaf tile from its marked direction."],"faq":[["How many trails are there?","Ten trails, with four target words on each."],["Can I move diagonally?","Yes. Diagonal neighbors count as adjacent; a tile cannot be reused in one word."],["What do Hint, Undo, and Clear do?","Hint reveals the first letter of the next unfound word; Undo removes the last tile, and Clear removes the current path."],["Does the game use a timer?","No. Progress and clue-card records stay in this browser."]],"difficulty":"Easy to Moderate","time":"2–5 minutes per trail","skills":["Reading","Focus","Logic"]}}</script>
+<script src="../../src/game-page-info.js?v=20261001-animal-word-trails-text140-v3"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js?v=20261001-castle-cascade-v13-i8";
+} from "./cascade-core.js?v=20261001-castle-cascade-v15-i8";
 import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261001-castle-cascade-v14-i8";
 
 const GAME_ID = "castle-cascade";

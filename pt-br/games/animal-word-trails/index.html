@@ -28,26 +28,27 @@
   <meta name="weightplay-audience" content="kids">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index,follow" />
-  <meta id="pageDescription" name="description" content="Word Trails is a calm reading puzzle about following animal clues and connecting adjacent letters or characters into a complete word path.">
+  <meta id="pageDescription" name="description" content="Encontre quatro palavras de animais ou habitats em cada uma das dez trilhas. A diagonal é permitida, sem repetir casas.">
   <title>Trilhas de palavras | WeightPlay</title>
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Trilhas de palavras | WeightPlay" />
-  <meta property="og:description" content="Trilhas de palavras é um quebra-cabeça de leitura calmo de 30 estágios sobre seguir pistas de animais e conectar letras ou caracteres adjacentes em um..." />
+  <meta property="og:description" content="Encontre quatro palavras de animais ou habitats em cada uma das dez trilhas. A diagonal é permitida, sem repetir casas." />
   <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-word-trails/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-word-trails.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Trilhas de palavras | WeightPlay" />
-  <meta name="twitter:description" content="Trilhas de palavras é um quebra-cabeça de leitura calmo de 30 estágios sobre seguir pistas de animais e conectar letras ou caracteres adjacentes em um..." />
+  <meta name="twitter:description" content="Encontre quatro palavras de animais ou habitats em cada uma das dez trilhas. A diagonal é permitida, sem repetir casas." />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-word-trails.webp" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Trilhas de palavras","description":"Trilhas de palavras é um quebra-cabeça de leitura calmo de 30 estágios sobre seguir pistas de animais e conectar letras ou caracteres adjacentes em um...","url":"https://weightplay.com/pt-br/games/animal-word-trails/","image":"https://weightplay.com/assets/animal-word-trails-cover.webp","genre":["Palavra","Puzzle","Animal","Browser Game"],"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9},"alternateName":"Word Trails"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Trilhas de palavras","description":"Encontre quatro palavras de animais ou habitats em cada uma das dez trilhas. A diagonal é permitida, sem repetir casas.","url":"https://weightplay.com/pt-br/games/animal-word-trails/","image":"https://weightplay.com/assets/animal-word-trails-cover.webp","genre":["Trilha de palavras","Pistas de animais","Prática de leitura"],"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9},"alternateName":"Word Trails"}</script>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20261001-animal-word-trails-runtime-v5">
   <script data-wp-stage-standard>/* Animal Word Trails owns its native Kids Stage rail. */</script>
   <script data-wp-battle-standard>/* Animal Word Trails owns its native Kids Battle Canvas. */</script>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="Trilhas de palavras é um quebra-cabeça de leitura calmo de 30 estágios sobre seguir pistas de animais e conectar letras ou caracteres adjacentes em um..." /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body>
@@ -71,7 +72,7 @@
         <span id="stageProgress"></span>
         <button id="album" class="mini" data-copy="album">Album</button>
       </header>
-      <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages"></div>
+      <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages" data-wp-stage-total="10"></div>
       <p id="stageFeedback" class="stage-feedback" aria-live="polite"></p>
       <button id="playStage" hidden type="button" tabindex="-1" aria-hidden="true"></button>
       <dialog id="albumDialog"><button id="closeAlbum" class="back" data-aria="closeAlbum" aria-label="Close">&larr;</button><h2 data-copy="albumTitle">Animal clues</h2><div id="albumList"></div></dialog>
@@ -104,32 +105,34 @@
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card"><strong id="loadingTitle">Loading</strong><span id="loadingText">0%</span><div><i id="loadingFill"></i></div></div>
   </div>
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="game.js?v=20260729-result-v4&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261001-animal-word-trails-runtime-v1&wp-audio=1.0.0"></script>
   <section class="game-page-info game-page-info-static" aria-label="Informações de Trilhas de palavras">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Trilhas de palavras</h2><p>Animal Word Trails é um quebra-cabeça de leitura calmo de 30 estágios sobre seguir pistas de animais e conectar letras ou caracteres adjacentes em um caminho completo de palavras.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Lendo o quebra-cabeça do caminho da palavra</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Palavra · Puzzle · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil de Moderar</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>2-5 minutos por trilha</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Lendo · Focus · Logic</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Trilhas de palavras</h2><p>Siga pistas de animais em dez trilhas e encontre quatro palavras-alvo em cada uma. Você pode conectar letras vizinhas na diagonal, mas não repetir uma casa na mesma palavra.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Trilha de palavras</span><span>Pistas de animais</span><span>Prática de leitura</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Quebra-cabeça de trilhas de palavras</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Palavras · Leitura · Animais</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil a moderado</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>2–5 minutos por trilha</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Leitura · Foco · Lógica</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo e missão</h3><p>Cada trilha revela uma pista de animal ou habitat. O jogador ajuda o guia do leão a reconectar as palavras que faltam e a restaurar o álbum de campo ilustrado.</p></div>
-      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Comece com uma peça válida e continue pelas peças vizinhas sem pular. A dica revela uma próxima etapa útil, Desfazer remove o bloco mais recente e Limpar redefine o caminho atual.</p>
-<p>Trilhas concluídas, estrelas e descobertas de álbuns são salvas localmente neste navegador.</p></div>
-      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha uma trilha desbloqueada.</li><li>Leia a pista do animal ou habitat.</li><li>Conecte letras ou caracteres adjacentes em ordem.</li><li>Envie o caminho da palavra preenchido e continue.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Verifique as letras raras e as bordas do tabuleiro antes de escolher a primeira peça.</li><li>Tenha em mente o significado da pista em vez de testar todas as sequências visíveis.</li><li>Use Desfazer para uma ramificação errada em vez de limpar um caminho quase completo.</li></ul></div>
-      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>As primeiras trilhas usam nomes curtos de animais e caminhos diretos. Os capítulos posteriores adicionam termos de habitat, palavras mais longas, layouts ramificados e conjuntos de pistas mistos em todos os 30 estágios.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>Uma escala de blocos legível e grandes alvos adjacentes mantêm a leitura e a lógica de rota confortáveis ​​em controles de toque e de desktop.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Nenhuma conta é necessária e o progresso permanece neste navegador. As estrelas e os resumos de leitura são um feedback lúdico, e não uma avaliação escolar, médica ou de habilidades.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas trilhas estão incluídas?</dt><dd>Existem 30 trilhas de palavras de autoria.</dd></div><div><dt>Os ladrilhos podem ser ignorados?</dt><dd>Não. Cada etapa deve usar uma peça adjacente.</dd></div><div><dt>Does progress save?</dt><dd>Sim. Clears, estrelas e descobertas de álbuns são armazenados localmente.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mundo e missão</h3><p>O álbum de campo do leão-guia está sem registros de animais e habitats. Cada palavra encontrada recupera um cartão; as quatro palavras concluem a trilha e liberam a próxima.</p></div>
+      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Toque nas casas em sequência ou arraste um caminho contínuo e escolha Conferir palavra. Dica revela a primeira letra da próxima palavra não encontrada; Desfazer remove a última casa e Limpar apaga o caminho atual.</p>
+<p>Os dez tabuleiros de origem são 4×4 e cada um tem quatro palavras-alvo. Os últimos acrescentam casas bloqueadas ou uma entrada de folha em sentido único. Não há cronômetro; progresso, estrelas e cartões ficam neste navegador.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha uma trilha desbloqueada.</li><li>Leia a pista e as palavras-alvo.</li><li>Conecte casas vizinhas; diagonais valem, sem repetir casas.</li><li>Envie as palavras e encontre as quatro.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Leia a lista inteira antes de escolher a casa inicial.</li><li>Use a diagonal quando a próxima letra estiver ao lado.</li><li>Entre na folha de sentido único pela direção indicada.</li></ul></div>
+      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>As dez trilhas de origem têm quatro palavras cada. As últimas acrescentam casas bloqueadas ou entrada de folha em sentido único. Não há cronômetro; progresso, estrelas e cartões ficam neste navegador.</p></div>
+      <div class="game-info-section"><h3>Nota de design</h3><p>Os pacotes originais foram escritos em inglês e chinês tradicional. O jogo pode gerar tabuleiros localizados do pacote em inglês para idiomas compatíveis; isso não significa que cada rota pública tenha um pacote escrito separadamente.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Este quebra-cabeça de leitura Kids não exibe anúncios nem exige conta. O progresso e os registros ficam neste navegador e podem ser apagados ao limpar os dados do site. É uma atividade de prática e diversão, não uma avaliação formal.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas trilhas existem?</dt><dd>São dez trilhas, cada uma com quatro palavras-alvo.</dd></div><div><dt>Posso seguir na diagonal?</dt><dd>Sim. Diagonais são vizinhas, mas a mesma casa não pode se repetir na palavra.</dd></div><div><dt>O que fazem Dica, Desfazer e Limpar?</dt><dd>Dica revela a primeira letra da próxima palavra não encontrada; Desfazer remove a última casa e Limpar apaga o caminho atual.</dd></div><div><dt>Há cronômetro?</dt><dd>Não. O progresso e os cartões ficam salvos neste navegador.</dd></div></dl></div>
 
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+<script type="application/json" data-wp-animal-word-trails-guide>{"locale":"pt-BR","copy":{"intro":"Siga pistas de animais em dez trilhas e encontre quatro palavras-alvo em cada uma. Você pode conectar letras vizinhas na diagonal, mas não repetir uma casa na mesma palavra.","systems":["Toque nas casas em sequência ou arraste um caminho contínuo e escolha Conferir palavra. Dica revela a primeira letra da próxima palavra não encontrada; Desfazer remove a última casa e Limpar apaga o caminho atual.","Os dez tabuleiros de origem são 4×4 e cada um tem quatro palavras-alvo. Os últimos acrescentam casas bloqueadas ou uma entrada de folha em sentido único. Não há cronômetro; progresso, estrelas e cartões ficam neste navegador."],"progression":["As dez trilhas de origem têm quatro palavras cada. As últimas acrescentam casas bloqueadas ou entrada de folha em sentido único. Não há cronômetro; progresso, estrelas e cartões ficam neste navegador."],"designNote":"Os pacotes originais foram escritos em inglês e chinês tradicional. O jogo pode gerar tabuleiros localizados do pacote em inglês para idiomas compatíveis; isso não significa que cada rota pública tenha um pacote escrito separadamente.","parent":"Este quebra-cabeça de leitura Kids não exibe anúncios nem exige conta. O progresso e os registros ficam neste navegador e podem ser apagados ao limpar os dados do site. É uma atividade de prática e diversão, não uma avaliação formal.","metaDescription":"Encontre quatro palavras de animais ou habitats em cada uma das dez trilhas. A diagonal é permitida, sem repetir casas.","text140Tags":["Trilha de palavras","Pistas de animais","Prática de leitura"],"gameplay":"Quebra-cabeça de trilhas de palavras","genre":["Palavras","Leitura","Animais"],"story":["O álbum de campo do leão-guia está sem registros de animais e habitats. Cada palavra encontrada recupera um cartão; as quatro palavras concluem a trilha e liberam a próxima."],"how":["Escolha uma trilha desbloqueada.","Leia a pista e as palavras-alvo.","Conecte casas vizinhas; diagonais valem, sem repetir casas.","Envie as palavras e encontre as quatro."],"strategyTips":["Leia a lista inteira antes de escolher a casa inicial.","Use a diagonal quando a próxima letra estiver ao lado.","Entre na folha de sentido único pela direção indicada."],"faq":[["Quantas trilhas existem?","São dez trilhas, cada uma com quatro palavras-alvo."],["Posso seguir na diagonal?","Sim. Diagonais são vizinhas, mas a mesma casa não pode se repetir na palavra."],["O que fazem Dica, Desfazer e Limpar?","Dica revela a primeira letra da próxima palavra não encontrada; Desfazer remove a última casa e Limpar apaga o caminho atual."],["Há cronômetro?","Não. O progresso e os cartões ficam salvos neste navegador."]],"difficulty":"Fácil a moderado","time":"2–5 minutos por trilha","skills":["Leitura","Foco","Lógica"]}}</script>
+<script src="../../src/game-page-info.js?v=20261001-animal-word-trails-text140-v3"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 </body>
 </html>
