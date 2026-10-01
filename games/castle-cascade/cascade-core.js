@@ -243,7 +243,12 @@ function squareCells(board, matchedCells) {
   return [];
 }
 
-function specialFromMatches(board, matched, movedIndex) {
+function specialFromGroup(board, matched, movedIndex) {
+  const longest = matched.groups.filter(group => group.axis !== "square")
+    .sort((a, b) => b.cells.length - a.cells.length)[0];
+  if (longest?.cells.length >= 5) {
+    return { at: longest.cells.includes(movedIndex) ? movedIndex : longest.cells[0], power: "prism" };
+  }
   const counts = new Map();
   for (const group of matched.groups) {
     if (group.axis === "square") continue;
@@ -252,10 +257,6 @@ function specialFromMatches(board, matched, movedIndex) {
   const cross = [...counts].find(([, count]) => count > 1);
   if (cross) return { at: cross[0], power: "bomb" };
 
-  const longest = [...matched.groups].sort((a, b) => b.cells.length - a.cells.length)[0];
-  if (longest?.cells.length >= 5) {
-    return { at: longest.cells.includes(movedIndex) ? movedIndex : longest.cells[0], power: "prism" };
-  }
   const square = squareCells(board, matched.cells);
   if (square.length) return { at: square.includes(movedIndex) ? movedIndex : square[0], power: "bird" };
   if (longest?.cells.length === 4) {
@@ -264,25 +265,68 @@ function specialFromMatches(board, matched, movedIndex) {
   return null;
 }
 
-function targetScore(tile, index) {
+// Each independent match earns its own power. Overlapping lines/squares are
+// one shape, so a T or L never pays out several powers for the same gems.
+export function specialsFromMatches(board, matched, movedIndex = -1) {
+  const pending = [...matched.groups];
+  const specials = [];
+  while (pending.length) {
+    const groups = [pending.shift()];
+    const cells = new Set(groups[0].cells);
+    for (let added = true; added;) {
+      added = false;
+      for (let index = pending.length - 1; index >= 0; index -= 1) {
+        if (!pending[index].cells.some(cell => cells.has(cell))) continue;
+        const [group] = pending.splice(index, 1);
+        groups.push(group);
+        group.cells.forEach(cell => cells.add(cell));
+        added = true;
+      }
+    }
+    const special = specialFromGroup(board, { groups, cells }, movedIndex);
+    if (special) specials.push({ ...special, cells: [...cells] });
+  }
+  return specials;
+}
+
+function targetScore(tile) {
   let score = 0;
-  if (tile.key) score += 100;
   if (tile.stone) score += 70;
   if (tile.gate) score += tile.c === tile.gateColor ? 68 : -30;
   if (tile.seal) score += 62;
   if (tile.box) score += 55;
   if (tile.chain) score += 48;
-  const row = Math.floor(index / BOARD_WIDTH);
-  const col = index % BOARD_WIDTH;
-  return score - Math.abs(row - 4) - Math.abs(col - 4) / 10;
+  return score;
 }
 
-function bestTarget(board, excluded = new Set()) {
+function bestTarget(board, excluded = new Set(), carriedPower = null) {
+  // A key is cargo, not a destructible target. Clear its route to the exit
+  // instead of repeatedly stripping the gem beneath the stationary key.
+  const keyRoute = new Set();
+  board.forEach((tile, index) => {
+    if (!tile.key) return;
+    const exit = board.findLastIndex((candidate, at) => candidate.exit && at % BOARD_WIDTH === index % BOARD_WIDTH);
+    for (let at = index + BOARD_WIDTH; at <= exit; at += BOARD_WIDTH) {
+      if (!board[at].key) keyRoute.add(at);
+    }
+  });
+  const value = index => excluded.has(index) ? 0 : targetScore(board[index]) + (keyRoute.has(index) ? 100 : 0);
   let choice = -1;
   let best = -Infinity;
   board.forEach((tile, index) => {
     if (excluded.has(index)) return;
-    const score = targetScore(tile, index);
+    let score = value(index);
+    if (carriedPower) {
+      const footprint = new Set([index]), powerHits = new Set();
+      if (carriedPower === "bomb") addArea(footprint, index, 2, powerHits);
+      else if (carriedPower === "arrowH") addRow(footprint, index, powerHits);
+      else if (carriedPower === "arrowV") addColumn(footprint, index, powerHits);
+      // Reward the whole delivered footprint, so a carried rocket/bomb aims
+      // at a useful line/cluster rather than one arbitrarily ranked blocker.
+      score = [...footprint].reduce((sum, hit) => sum + value(hit), 0) + value(index) / 100;
+    }
+    const row = Math.floor(index / BOARD_WIDTH), col = index % BOARD_WIDTH;
+    score -= (Math.abs(row - 4) + Math.abs(col - 4) / 10) / 1000;
     if (score > best) {
       best = score;
       choice = index;
@@ -419,13 +463,14 @@ function addStats(stats, values) {
   for (const key of Object.keys(values)) if (values[key]) stats[key] += 1;
 }
 
-function resolveOneBatch(state, direct, powerSet, special = null, forceGate = false, visualEffects = []) {
+function resolveOneBatch(state, direct, powerSet, specials = [], forceGate = false, visualEffects = []) {
+  const specialByCell = new Map(specials.map(special => [special.at, special]));
   const board = state.board;
   const before = cloneBoard(board);
   const directHits = [...direct].sort((a, b) => a - b);
   const adjacentHits = [...addAdjacentHitCells(direct)].sort((a, b) => a - b);
   const matchingColors = new Set(directHits.map((index) => board[index].c).filter((color) => color !== null));
-  const stats = { crate: 0, chain: 0, key: 0, gate: 0, stone: 0, seal: 0, special: special?.power || null };
+  const stats = { crate: 0, chain: 0, key: 0, gate: 0, stone: 0, seal: 0, special: specials[0]?.power || null, specials: specials.map(special => special.power) };
   const openedGates = new Set();
 
   directHits.forEach((index) => {
@@ -456,7 +501,8 @@ function resolveOneBatch(state, direct, powerSet, special = null, forceGate = fa
 
   for (const index of directHits) {
     const tile = board[index];
-    if (special?.at === index) {
+    const special = specialByCell.get(index);
+    if (special) {
       tile.p = special.power;
       tile.box = 0;
       tile.chain = 0;
@@ -483,7 +529,8 @@ function resolveOneBatch(state, direct, powerSet, special = null, forceGate = fa
     adjacentHits,
     powerHits: [...powerSet].sort((a, b) => a - b),
     visualEffects,
-    createdSpecial: special,
+    createdSpecial: specials[0] || null,
+    createdSpecials: specials,
     movements,
     deliveredKeys,
     stats,
@@ -655,7 +702,7 @@ function comboEffect(state, a, b) {
     const partnerIndex = bird === a ? b : a;
     const partnerPower = board[partnerIndex].p;
     if (partnerPower) {
-      const target = bestTarget(board, new Set([a, b]));
+      const target = bestTarget(board, new Set([a, b]), partnerPower);
       if (target >= 0) {
         visualEffects.push({ type: "bird-carry", index: bird, target, power: partnerPower });
         addPowerEffect(board, target, partnerPower, direct, powerSet, new Set([target]), visualEffects);
@@ -718,22 +765,22 @@ export function reshuffle(state) {
   return false;
 }
 
-function resolveCascade(state, initialDirect, initialPower, special = null, forceGate = false, initialVisualEffects = []) {
+function resolveCascade(state, initialDirect, initialPower, specials = [], forceGate = false, initialVisualEffects = []) {
   const batches = [];
   let direct = new Set(initialDirect);
   let powerSet = new Set(initialPower);
-  let specialToPlace = special;
+  let specialsToPlace = specials || [];
   let forceGateNow = forceGate;
   let visualEffects = initialVisualEffects;
   for (let batchIndex = 0; batchIndex < 40; batchIndex += 1) {
-    const batch = resolveOneBatch(state, direct, powerSet, specialToPlace, forceGateNow, visualEffects);
+    const batch = resolveOneBatch(state, direct, powerSet, specialsToPlace, forceGateNow, visualEffects);
     batches.push(batch);
     const match = matchGroups(state.board);
     if (!match.cells.size) break;
-    const nextSpecial = specialFromMatches(state.board, match, -1);
+    const nextSpecials = specialsFromMatches(state.board, match);
     direct = match.cells;
     powerSet = new Set();
-    specialToPlace = nextSpecial;
+    specialsToPlace = nextSpecials;
     forceGateNow = false;
     visualEffects = expandTriggeredPowers(state.board, direct, powerSet);
   }
@@ -785,13 +832,13 @@ export function playSwap(state, a, b) {
   }
 
   state.moves -= 1;
-  const special = specialFromMatches(state.board, match, b);
+  const specials = specialsFromMatches(state.board, match, b);
   const direct = new Set(match.cells);
   const powerSet = new Set();
-  if (special) direct.delete(special.at);
-  expandTriggeredPowers(state.board, direct, powerSet);
-  if (special) direct.add(special.at);
-  const batches = resolveCascade(state, direct, powerSet, special);
+  for (const special of specials) direct.delete(special.at);
+  const visualEffects = expandTriggeredPowers(state.board, direct, powerSet);
+  for (const special of specials) direct.add(special.at);
+  const batches = resolveCascade(state, direct, powerSet, specials, false, visualEffects);
   return actionResult(state, true, "match", batches, reshufflesBefore);
 }
 

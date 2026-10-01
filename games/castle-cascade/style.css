@@ -295,6 +295,11 @@ html body[data-wp-game-id="castle-cascade"] #stage {
 .battle-objective-indicators { width: 100%; min-height: 44px; }
 .battle-objective-indicators .objective-icons { display: flex; flex-wrap: nowrap; justify-content: center; height: 44px; align-items: center; gap: 4px; }
 .objective-icon { background: none; object-fit: contain; }
+/* This separate HUD export also includes the next atlas row's Prism tip. */
+.objective-chip[data-objective="stone"] .objective-icon {
+  clip-path: inset(0 0 18% 0);
+  transform: translateY(9%);
+}
 .battle-objective-indicators .objective-chip { position: relative; color: #243966; gap: 1px; min-width: 0; animation: none; }
 .battle-objective-indicators .objective-icon { width: 34px; height: 34px; }
 .battle-objective-indicators .objective-count { min-width: 16px; font-size: 19px; font-weight: 1000; font-variant-numeric: tabular-nums; text-shadow: 0 1px 0 #fff; }

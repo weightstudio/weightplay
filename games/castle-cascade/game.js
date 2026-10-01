@@ -6,8 +6,8 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js?v=20261001-castle-cascade-v10-i8";
-import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261001-castle-cascade-v10-i8";
+} from "./cascade-core.js?v=20261001-castle-cascade-v13-i8";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261001-castle-cascade-v13-i8";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
@@ -440,6 +440,11 @@ function objectivesCue(batches) {
   if (totals.gate) playSound("mechanism.unlock");
 }
 
+function objectiveCue(key) {
+  const sound = { crate: "impact.wood", stone: "impact.stone", gate: "mechanism.unlock" }[key];
+  if (sound) playSound(sound);
+}
+
 async function animateTurn(result, turnToken, visual = null) {
   const motionReduced = renderer?.reducedMotion;
   if (visual?.swap && renderer) {
@@ -453,13 +458,16 @@ async function animateTurn(result, turnToken, visual = null) {
     const contact = () => {
       if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
       playSound(batch.visualEffects?.length ? "puzzle.clear" : "puzzle.match");
-      objectivesCue([batch]);
     };
-    if (!motionReduced) await renderer.animateClear(batch, contact, chainDepth);
-    else contact();
+    const objectiveContact = (key) => {
+      if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
+      objectiveCue(key);
+    };
+    if (!motionReduced) await renderer.animateClear(batch, contact, chainDepth, objectiveContact);
+    else { contact(); objectivesCue([batch]); }
     if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
     renderBattleHud(batch.cleared);
-    if (!motionReduced) await renderer.animateGravity(batch.cleared, batch.after, batch.movements, batch.deliveredKeys);
+    if (!motionReduced) await renderer.animateGravity(batch.cleared, batch.after, batch.movements, batch.deliveredKeys, chainDepth);
     else renderer.setBoard(batch.after, -1, focusCell);
     renderBattleHud(batch.after);
   }

@@ -16,6 +16,36 @@ function roundRect(ctx, x, y, w, h, radius) {
   ctx.closePath();
 }
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const cascadeTempo = depth => Math.max(.70, 1 - Math.max(0, depth) * .075);
+
+// Generated atlas cells can contain a fragment of the next row. Locate the
+// stone's connected silhouette, not the union of every opaque pixel in its cell.
+export function dominantSpriteBounds(pixels, width, { left, top, right, bottom }) {
+  const w = right - left, h = bottom - top;
+  const visited = new Uint8Array(w * h), queue = new Int32Array(w * h);
+  let largest = null;
+  for (let start = 0; start < visited.length; start += 1) {
+    if (visited[start]) continue;
+    visited[start] = 1;
+    const opaque = at => pixels[((top + Math.floor(at / w)) * width + left + at % w) * 4 + 3] >= 128;
+    if (!opaque(start)) continue;
+    let head = 0, tail = 1, x0 = right, y0 = bottom, x1 = left, y1 = top;
+    queue[0] = start;
+    while (head < tail) {
+      const at = queue[head++], x = at % w, y = Math.floor(at / w);
+      x0 = Math.min(x0, left + x); x1 = Math.max(x1, left + x);
+      y0 = Math.min(y0, top + y); y1 = Math.max(y1, top + y);
+      const neighbors = [x > 0 ? at - 1 : -1, x + 1 < w ? at + 1 : -1, y > 0 ? at - w : -1, y + 1 < h ? at + w : -1];
+      for (const next of neighbors) {
+        if (next < 0 || visited[next]) continue;
+        visited[next] = 1;
+        if (opaque(next)) queue[tail++] = next;
+      }
+    }
+    if (!largest || tail > largest.area) largest = { x0, y0, x1, y1, area: tail };
+  }
+  return largest;
+}
 
 export class CastleCascade2D {
   constructor(canvas, onCell, onFailure, onSwap) {
@@ -107,6 +137,10 @@ export class CastleCascade2D {
       // Ignore isolated generation specks so they cannot change centering/scale.
       columns.forEach((count, x) => { if (count >= 7) { x0 = Math.min(x0, left+x); x1 = Math.max(x1, left+x); } });
       rows.forEach((count, y) => { if (count >= 7) { y0 = Math.min(y0, top+y); y1 = Math.max(y1, top+y); } });
+      if (index === SPRITE.stone) {
+        const silhouette = dominantSpriteBounds(pixels, source.width, { left, top, right, bottom });
+        if (silhouette) ({ x0, y0, x1, y1 } = silhouette);
+      }
       if (x1 < x0) continue;
       const sprite = document.createElement("canvas");
       sprite.width = sprite.height = 256;
@@ -278,9 +312,16 @@ export class CastleCascade2D {
       if (this.frameTimes.length > 60) this.frameTimes.shift();
     }
     this.lastFrame = time;
-    if (this.motion?.onImpact && !this.motion.impactPlayed && time >= this.motion.started + this.motion.duration * .22) {
+    const contactProgress = this.motion?.kind === "clear" ? this.clearProgress(this.motion, time) : 0;
+    if (this.motion?.onImpact && !this.motion.impactPlayed && contactProgress >= .22) {
       this.motion.impactPlayed = true;
       this.motion.onImpact();
+    }
+    for (const contact of this.motion?.objectiveContacts || []) {
+      if (!contact.played && contactProgress >= contact.at) {
+        contact.played = true;
+        this.motion.onObjectiveImpact?.(contact.key);
+      }
     }
     this.draw(time);
     if (this.motion && time >= this.motion.started + this.motion.duration) {
@@ -313,8 +354,9 @@ export class CastleCascade2D {
     // Impact impulse affects only artwork. HUD and input rectangles never move.
     const active = this.motion;
     if (active?.kind === "clear" && active.batch.visualEffects?.length) {
-      const p = clamp((time - active.started) / active.duration, 0, 1);
-      const impulse = p > .2 && p < .5 ? Math.sin((p - .2) / .3 * Math.PI) : 0;
+      const p = this.clearProgress(active, time);
+      const contact = active.impactAt ?? .22;
+      const impulse = p >= contact && p < contact + .20 ? Math.sin((p - contact) / .20 * Math.PI) : 0;
       const strength = active.batch.visualEffects.some(e => e.type === "combo-burst") ? 2.4 : 1.2;
       ctx.translate(Math.sin(p * 68) * impulse * strength, Math.cos(p * 79) * impulse * strength * .6);
     }
@@ -404,7 +446,24 @@ export class CastleCascade2D {
       this.drawGateColor(cx, cy, cell * scale, tile.gateColor);
     }
     if (tile.stone) this.drawSprite(SPRITE.stone, cx, cy, cell * scale, tile.stone > 1 ? 0.94 : 0.84);
-    if (tile.stone === 1) ctx.restore();
+    if (tile.stone === 1) {
+      ctx.restore();
+      // One hit remains: a real fracture survives small phone cells and does
+      // not depend on noticing a subtle opacity/size change in the sprite.
+      const size = cell * scale;
+      ctx.beginPath();
+      ctx.moveTo(cx + size * .05, cy - size * .31);
+      ctx.lineTo(cx - size * .09, cy - size * .08);
+      ctx.lineTo(cx + size * .08, cy + size * .04);
+      ctx.lineTo(cx - size * .06, cy + size * .30);
+      ctx.strokeStyle = "#433225";
+      ctx.lineWidth = Math.max(2, size * .075);
+      ctx.lineJoin = "round";
+      ctx.stroke();
+      ctx.strokeStyle = "#ffd589";
+      ctx.lineWidth = Math.max(1, size * .025);
+      ctx.stroke();
+    }
     if (tile.seal) this.drawSprite(SPRITE.seal, cx, cy, cell * scale, 0.82);
     if (tile.key) this.drawSprite(SPRITE.key, cx, cy, cell * scale, 0.70);
     if (tile.p) this.drawPower(tile.p, cx, cy, cell * scale);
@@ -493,6 +552,7 @@ export class CastleCascade2D {
     if (this.reducedMotion) {
       this.board = motion.finalBoard || this.board;
       motion.onImpact?.();
+      for (const contact of motion.objectiveContacts || []) motion.onObjectiveImpact?.(contact.key);
       this.invalidate();
       return Promise.resolve(false);
     }
@@ -560,17 +620,45 @@ export class CastleCascade2D {
     }
   }
 
-  animateClear(batch, onImpact, chainDepth = 0) {
+  clearProgress(motion, time) {
+    const elapsed = clamp((time - motion.started) / motion.duration, 0, 1);
+    if (!motion.batch.visualEffects?.some(effect => effect.type === "combo-burst")) return elapsed;
+    // Brief impact hold for combinations, paid for inside the existing wave
+    // duration. Cascades do not accumulate extra pauses or input latency.
+    const holdAt = (motion.impactAt ?? .22) + .018;
+    const hold = Math.min(.05, 34 / motion.duration);
+    if (elapsed <= holdAt) return elapsed;
+    if (elapsed <= holdAt + hold) return holdAt;
+    return holdAt + (elapsed - holdAt - hold) * (1 - holdAt) / (1 - holdAt - hold);
+  }
+
+  objectiveContacts(batch) {
+    const direct = new Set(batch.directHits), adjacent = new Set(batch.adjacentHits);
+    return [["crate", "box"], ["stone", "stone"], ["gate", "gate"]].flatMap(([key, field]) => {
+      const contacts = batch.before.flatMap((tile, index) => {
+        if (!(tile[field] > batch.cleared[index][field])) return [];
+        if (direct.has(index)) return [this.hitStart(batch, index)];
+        if (!adjacent.has(index)) return [1];
+        const neighbors = batch.directHits.filter(hit => Math.abs(Math.floor(hit / BOARD_WIDTH) - Math.floor(index / BOARD_WIDTH)) + Math.abs(hit % BOARD_WIDTH - index % BOARD_WIDTH) === 1);
+        return [neighbors.length ? Math.min(...neighbors.map(hit => this.hitStart(batch, hit))) : .22];
+      });
+      return contacts.length ? [{key, at:Math.min(...contacts)}] : [];
+    });
+  }
+
+  animateClear(batch, onImpact, chainDepth = 0, onObjectiveImpact = null) {
     this.board = batch.before;
     const effects = batch.visualEffects || [];
     const duration = effects.some(e => e.type === "bird-carry") ? 1100
       : effects.some(e => e.type === "combo-burst") ? 780
       : effects.some(e => ["bird", "flock", "bird-carry"].includes(e.type)) ? 700
         : effects.length ? 620 : 360;
-    return this.runMotion({ kind: "clear", batch, onImpact, chainDepth, finalBoard: batch.cleared, duration });
+    const impactAt = effects.some(e => e.type === "bird-carry") ? .68
+      : effects.length && effects.every(e => ["bird", "flock", "combo-burst"].includes(e.type)) ? .68 : .22;
+    return this.runMotion({ kind: "clear", batch, onImpact, onObjectiveImpact, objectiveContacts:this.objectiveContacts(batch), impactAt, chainDepth, finalBoard: batch.cleared, duration: duration * cascadeTempo(chainDepth) });
   }
 
-  animateGravity(cleared, after, movements = [], deliveredKeys = []) {
+  animateGravity(cleared, after, movements = [], deliveredKeys = [], chainDepth = 0) {
     this.board = cleared;
     const moving = movements.filter((item) => item.fromIndex !== item.toIndex || item.isNew || item.isDelivery);
     for (const index of deliveredKeys) {
@@ -597,8 +685,9 @@ export class CastleCascade2D {
       if (item.fromIndex !== null) hidden.add(item.fromIndex);
       hidden.add(item.toIndex);
     });
-    const stagger = (item) => Math.abs(item.col - 4) * 12 + (item.spawnOrder || 0) * 18;
-    const travel = (item) => 230 + Math.min(9, Math.abs(item.toRow - item.fromRow)) * 26;
+    const tempo = cascadeTempo(chainDepth);
+    const stagger = (item) => (Math.abs(item.col - 4) * 12 + (item.spawnOrder || 0) * 18) * tempo;
+    const travel = (item) => (230 + Math.min(9, Math.abs(item.toRow - item.fromRow)) * 26) * tempo;
     const duration = Math.max(...moving.map((item) => stagger(item) + travel(item)));
     return this.runMotion({
       kind: "gravity",
@@ -672,7 +761,7 @@ export class CastleCascade2D {
 
   drawClearMotion(bounds, motion, time) {
     const { batch } = motion;
-    const progress = clamp((time - motion.started) / motion.duration, 0, 1);
+    const progress = this.clearProgress(motion, time);
     const cell = bounds.size / BOARD_WIDTH;
     const center = index => ({ x: bounds.x + (index % BOARD_WIDTH + .5) * cell, y: bounds.y + (Math.floor(index / BOARD_WIDTH) + .5) * cell });
     for (const index of batch.directHits) {
@@ -723,12 +812,12 @@ export class CastleCascade2D {
       this.drawSprite(SPRITE.spark, cx, cy, cell, .7, Math.max(0, 1-hit*5));
     }
     this.drawSpecialEffects(bounds, batch.visualEffects || [], progress, cell);
-    if (batch.createdSpecial) {
-      const { at, power } = batch.createdSpecial;
+    for (const special of batch.createdSpecials || (batch.createdSpecial ? [batch.createdSpecial] : [])) {
+      const { at, power } = special;
       const { x: cx, y: cy } = center(at);
       const appear = clamp((progress - .54) / .40, 0, 1);
       if (appear > 0) {
-        for (const index of batch.directHits.slice(0, 8)) {
+        for (const index of (special.cells || batch.directHits).slice(0, 8)) {
           const from = center(index);
           const p = Math.min(1, appear * 1.7);
           const x = from.x + (cx-from.x) * p, y = from.y + (cy-from.y) * p;
