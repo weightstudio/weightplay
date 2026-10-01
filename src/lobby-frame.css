@@ -31,7 +31,7 @@ body.general-lobby-page .lobby-settings-button {
   padding: 0;
   border: 2px solid var(--lobby-frame-line);
   border-radius: 3px;
-  background: linear-gradient(#244a55, #163440);
+  background: var(--lobby-frame-header-shade,linear-gradient(#244a55, #163440));
   color: var(--lobby-frame-text);
   box-shadow: inset 0 2px 0 var(--lobby-frame-highlight), 0 3px 0 var(--lobby-frame-shadow);
   cursor: pointer;

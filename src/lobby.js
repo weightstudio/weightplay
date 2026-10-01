@@ -276,6 +276,7 @@ let activeSkill = "all";
 let activeLibrary = "all";
 let activeAvailability = "all";
 let activeSearch = "";
+let hallSearchDisplay;
 let toastTimer = null;
 let favoriteGameIds = readFavorites();
 let recentGameIds = readRecentGames();
@@ -403,7 +404,7 @@ function syncHallPresentation() {
   if (hallEyebrow) hallEyebrow.textContent = activeHall === 'tabletop' ? 'WEIGHTPLAY CARDS & BOARD' : 'WEIGHTPLAY BLOCK WORLD';
 }
 
-function restoreDiscoveryFiltersFromUrl() {
+function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
   const params = new URLSearchParams(window.location.search);
   activeHall = isKidsLobby ? "games" : selectedFilterValue(hallButtons, "hallTab", params.get("hall") || "games");
   activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
@@ -416,8 +417,8 @@ function restoreDiscoveryFiltersFromUrl() {
   activeAvailability = selectedFilterValue(availabilityButtons, "availabilityFilter", params.get("availability") || "all");
   const query = params.get("q") || "";
   activeSearch = normalizeSearch(query);
+  if (!present) { hallSearchDisplay = query; return; }
   if (gameSearch) gameSearch.value = query;
-
   setActiveButtons(hallButtons, "hallTab", activeHall);
   setActiveButtons(filterButtons, "ageFilter", activeFilter);
   setActiveButtons(topicButtons, "topicFilter", activeTopic);
@@ -1282,7 +1283,153 @@ function createGameCard(game) {
   return card;
 }
 
-function renderLobby({ historyMode = "replace" } = {}) {
+// Native snapshots contain pixels, never cloned interactive cards or IDs.
+// One owner also covers the non-View-Transition fallback; every interruption
+// commits the latest state once and releases its locks before another render.
+let hallMotion = null;
+let renderingHallMotion = false;
+const hallMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function settleHallMotion() {
+  const motion = hallMotion;
+  if (!motion) return;
+  hallMotion = null;
+  clearTimeout(motion.timer);
+  motion.transition?.skipTransition();
+  motion.animations.forEach(animation => animation.cancel());
+  if (!motion.committed) motion.commit();
+  motion.restore();
+}
+
+function renderLobby(options = {}) {
+  settleHallMotion();
+  const change = !isKidsLobby && document.body.dataset.gameHall
+    && document.body.dataset.gameHall !== activeHall;
+  if (!change || hallMotionQuery.matches) return renderLobbyContent(options);
+  const shell = document.querySelector('.lobby-shell');
+  const regions = [...shell.children].filter(node =>
+    !node.matches('.lobby-hero,.lobby-topbar,.game-hall-switch'));
+  regions.push(document.querySelector('.lobby-hero-copy'), spotlightSection, ...hallButtons);
+  const entries = regions.filter(Boolean).map((node, index) => ({
+    node, name: `wp-hall-region-${index}`, inert: node.inert,
+    previousName: node.style.viewTransitionName,
+    locked: !node.matches('.lobby-search-row,[data-hall-tab]'),
+  }));
+  const motion = { animations: [], transition: null, timer: null, committed: false };
+  const namedCards = [];
+  const clippedCards = new Map();
+  const cardStyle = document.createElement('style');
+  cardStyle.dataset.hallCardMotion = '';
+  const cardRules = [];
+  const visibleCards = () => [...document.querySelectorAll('.hero-game-card, #gameGrid > [data-game-id]')]
+    .filter(node => { const box = node.getBoundingClientRect(); return box.width > 0 && box.bottom > 0 && box.top < innerHeight + 100; });
+  const clipCards = cards => cards.forEach(card => {
+    const container = card.parentElement;
+    if (!clippedCards.has(container)) clippedCards.set(container, container.style.overflow);
+    container.style.overflow = 'hidden';
+  });
+  const nameRegions = () => entries.forEach(({node, name, previousName}) => {
+    const box = node.getBoundingClientRect();
+    node.style.viewTransitionName = box.width > 0 && box.bottom > 0 && box.top < innerHeight + 100 ? name : previousName;
+  });
+  const nameCards = phase => {
+    visibleCards().forEach((node, index) => {
+      namedCards.push({node, previousName:node.style.viewTransitionName});
+      // Each phase owns its viewport slots, including every visible lower row.
+      const name = `wp-hall-card-${phase}-${index}`;
+      node.style.viewTransitionName = name;
+      const exiting = phase === 'old';
+      cardRules.push(`::view-transition-group(${name}) {overflow:clip;animation-duration:900ms}`);
+      cardRules.push(`::view-transition-${phase}(${name}) {animation:var(--hall-card-${exiting ? 'exit' : 'enter'}) ${exiting ? 220 : 420}ms ${exiting ? 'cubic-bezier(.4,0,.8,.3)' : 'cubic-bezier(.16,.8,.2,1)'} ${exiting ? (index % 5) * 25 : 320 + (index % 5) * 35}ms both}`);
+    });
+    cardStyle.textContent = cardRules.join('\n');
+  };
+  motion.restore = () => {
+    entries.forEach(({node, inert, previousName, locked}) => {
+      node.style.viewTransitionName = previousName;
+      if (locked) node.inert = node.id === 'weightplayCastle' ? activeHall === 'tabletop' : inert;
+    });
+    namedCards.forEach(({node, previousName}) => { node.style.viewTransitionName = previousName; });
+    cardStyle.remove();
+    clippedCards.forEach((overflow, node) => { node.style.overflow = overflow; });
+    delete document.body.dataset.hallTransitionTarget;
+    shell.removeAttribute('aria-busy');
+    document.documentElement.classList.remove('hall-content-motion');
+    delete document.documentElement.dataset.hallMotionDirection;
+  };
+  motion.commit = () => {
+    if (motion.committed) return;
+    motion.committed = true;
+    renderingHallMotion = true;
+    try { renderLobbyContent(options); }
+    finally { renderingHallMotion = false; }
+    entries.forEach(({node, locked}) => { if (locked) node.inert = true; });
+    if (document.startViewTransition) { nameRegions(); nameCards('new'); }
+  };
+  const focused = document.activeElement;
+  if (entries.some(({node, locked}) => locked && node.contains(focused))) {
+    [...hallButtons].find(button => button.dataset.hallTab === activeHall)?.focus({preventScroll:true});
+  }
+  entries.forEach(({node, locked}) => {
+    if (locked) node.inert = true;
+  });
+  shell.setAttribute('aria-busy', 'true');
+  document.documentElement.classList.add('hall-content-motion');
+  const direction = activeHall === 'tabletop' ? 1 : -1;
+  document.documentElement.dataset.hallMotionDirection = direction === 1 ? 'forward' : 'back';
+  hallMotion = motion;
+  document.body.dataset.hallTransitionTarget = activeHall;
+  const finish = () => {
+    if (hallMotion !== motion) return;
+    hallMotion = null;
+    motion.animations.forEach(animation => animation.cancel());
+    motion.restore();
+  };
+  if (document.startViewTransition) {
+    nameRegions();
+    document.head.append(cardStyle);
+    nameCards('old');
+    motion.transition = document.startViewTransition(() => {
+      if (hallMotion === motion) motion.commit();
+    });
+    motion.transition.finished.then(finish, finish);
+  } else {
+    // Background starts immediately; only mutable content waits for its exit.
+    const outgoing = visibleCards();
+    clipCards(outgoing);
+    motion.animations = entries.map(({node}) => node.animate(
+      [{opacity:1}, {opacity:0}], {duration:320, easing:'ease-out', fill:'forwards'}));
+    motion.animations.push(...outgoing.map((node, index) => node.animate(
+      [{opacity:1, transform:'translateX(0) scale(1)', clipPath:'inset(0)'}, {opacity:0, transform:`translateX(${-direction * 110}%) scale(.88)`, clipPath:direction===1?'inset(0 0 0 110%)':'inset(0 110% 0 0)'}],
+      {duration:220, delay:(index % 5) * 25, easing:'cubic-bezier(.4,0,.8,.3)', fill:'both'})));
+    motion.timer = setTimeout(() => {
+      if (hallMotion !== motion) return;
+      motion.animations.forEach(animation => animation.cancel());
+      motion.commit();
+      delete document.body.dataset.hallTransitionTarget;
+      motion.animations = entries.map(({node}, index) => node.animate(
+        [{opacity:0, transform:'translateY(5px)'}, {opacity:1, transform:'translateY(0)'}],
+        {duration:420, easing:'cubic-bezier(.2,.7,.2,1)', fill:'both'}));
+      const incoming = visibleCards();
+      clipCards(incoming);
+      motion.animations.push(...incoming.map((node, index) => node.animate(
+        [{opacity:.35, transform:`translateX(${direction * 110}%) scale(.94)`, clipPath:direction===1?'inset(0 110% 0 0)':'inset(0 0 0 110%)'}, {opacity:1, transform:'translateX(0) scale(1)', clipPath:'inset(0)'}],
+        {duration:420, delay:(index % 5) * 35, easing:'cubic-bezier(.16,.8,.2,1)', fill:'both'})));
+      Promise.all(motion.animations.map(animation => animation.finished.catch(() => {}))).then(finish);
+    }, 320);
+  }
+}
+
+hallMotionQuery.addEventListener('change', () => { if (hallMotionQuery.matches) settleHallMotion(); });
+
+function renderLobbyContent({ historyMode = "replace" } = {}) {
+  if (gameSearch && hallSearchDisplay !== undefined) gameSearch.value = hallSearchDisplay;
+  hallSearchDisplay = undefined;
+  setActiveButtons(filterButtons, "ageFilter", activeFilter);
+  setActiveButtons(topicButtons, "topicFilter", activeTopic);
+  setActiveButtons(skillButtons, "skillFilter", activeSkill);
+  setActiveButtons(libraryButtons, "libraryTab", activeLibrary);
+  setActiveButtons(availabilityButtons, "availabilityFilter", activeAvailability);
   catalogSearchIndex.clear();
   catalogNeedsRebuild = true;
   applyStaticTranslations();
@@ -1761,13 +1908,14 @@ function selectCharacterPath(character) {
   showToast(i18n.t("character_showcase.toast", { name, skill }));
 }
 
-function clearDiscoverySelections() {
+function clearDiscoverySelections({ present = true } = {}) {
   activeFilter = "all";
   activeTopic = "all";
   activeSkill = "all";
   activeLibrary = "all";
   activeAvailability = "all";
   activeSearch = "";
+  if (!present) { hallSearchDisplay = ''; return; }
   if (gameSearch) gameSearch.value = "";
   setActiveButtons(filterButtons, "ageFilter", "all");
   setActiveButtons(topicButtons, "topicFilter", "all");
@@ -1865,6 +2013,7 @@ function renderCatalog(isFiltered) {
 }
 
 function applyFilter({ historyMode = "replace" } = {}) {
+  if (!renderingHallMotion) settleHallMotion();
   let upcomingVisibleCount = 0;
   const isFiltered =
     activeFilter !== "all" ||
@@ -2163,10 +2312,13 @@ hallButtons.forEach((button) => {
     const nextHall = button.dataset.hallTab;
     if (nextHall === activeHall) return;
     activeHall = nextHall;
-    clearDiscoverySelections();
+    clearDiscoverySelections({ present: false });
+    // Navigation records intent immediately, never from a delayed snapshot
+    // callback that could otherwise recreate a history entry after Back.
+    syncDiscoveryFiltersToUrl('push');
     window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("lobby_hall_switch", { lobby_hall: activeHall, locale: i18n.locale() });
-    renderLobby({ historyMode: "push" });
+    renderLobby();
   });
 });
 
@@ -2233,11 +2385,12 @@ availabilityButtons.forEach((button) => {
 });
 
 gameSearch?.addEventListener("input", () => {
+  hallSearchDisplay = undefined;
   activeSearch = normalizeSearch(gameSearch.value);
   applyFilter();
 });
 
-quickPickBtn?.addEventListener("click", openQuickPick);
+quickPickBtn?.addEventListener("click", () => { settleHallMotion(); openQuickPick(); });
 
 document.querySelectorAll("[data-reset-discovery]").forEach((button) => {
   button.addEventListener("click", resetDiscoveryFilters);
@@ -2249,13 +2402,13 @@ localeSelect.addEventListener("change", () => {
 });
 
 window.addEventListener("wonder:locale-change", renderLobby);
-window.addEventListener("pagehide", () => activeGamePreview?.releaseLobbyPreview());
+window.addEventListener("pagehide", () => { settleHallMotion(); activeGamePreview?.releaseLobbyPreview(); });
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) activeGamePreview?.releaseLobbyPreview();
+  if (document.hidden) { settleHallMotion(); activeGamePreview?.releaseLobbyPreview(); }
 });
 
 window.addEventListener("popstate", () => {
-  restoreDiscoveryFiltersFromUrl();
+  restoreDiscoveryFiltersFromUrl({ present: false });
   renderLobby();
 });
 
