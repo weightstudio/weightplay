@@ -59,8 +59,8 @@ body[data-screen="battle"] .wp-tutorial-button{top:70px}
 body[data-wp-game-id="animal-crownfall"]:has(.wp-shell-settings-popover:not([hidden])) .wp-tutorial-button{display:none}
 body[data-screen="stage"] .wp-tutorial-button{display:none}
 #stageContent{position:relative;display:block}
-#stageSummary{position:absolute;inset-inline:16px;bottom:0;height:44px;margin:0;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none}
-#stagePracticeToggle{min-height:44px;max-width:100%;padding:4px 16px;border:1px solid #edb74e;border-radius:999px;background:#173944;color:#f6f2dd;font-size:12px;font-weight:700;line-height:16px;text-align:center;pointer-events:auto}
+#stageSummary{position:absolute;inset-inline:16px;bottom:0;height:48px;margin:0;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none}
+#stagePracticeToggle{min-height:48px;max-width:100%;padding:4px 16px;border:1px solid #edb74e;border-radius:999px;background:#173944;color:#f6f2dd;font-size:12px;font-weight:700;line-height:16px;text-align:center;pointer-events:auto}
 #stagePracticeToggle[aria-pressed="true"]{background:#edb74e;color:#172934}
 #stagePracticeToggle:focus-visible{outline:3px solid #fff;outline-offset:2px}
 #stageRail{position:absolute;inset-inline:0;top:clamp(0px,calc(38% - 103px),calc(100% - 206px));height:206px;padding:8px max(16px,calc(50% - 132px));gap:12px;touch-action:none;scroll-snap-type:none;scrollbar-width:none;direction:ltr}
