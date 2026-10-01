@@ -6,6 +6,7 @@ import {NAMES} from './stage-copy.mjs';
 import {DETAILS} from './guide.mjs';
 import {upgradeText,stageLesson} from './upgrade-copy.mjs';
 import {normalize,award,SAVE_KEY} from './save.mjs';
+import {masteryFeedback} from './result-copy.mjs';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 const $=id=>document.getElementById(id);
 const GAME_ID='animal-crownfall',FIRST_CLEAR_BLOCK_KEY=`${GAME_ID}:first-completion`;
@@ -89,8 +90,11 @@ async function playMove(x,y){
  // Result owns the committed cube feedback; its actions must be usable immediately.
  if(blockGranted)window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID);
  if(state.status==='won'){
-  if(!practiceRun){const par=solve(newState(LEVELS[state.level-1])).moves.length;award(save,state.level,state.moves,usedHint,par);persist();}
-  const resultText=`${stageName(state.level)} · ${t('moves')}${practiceRun?` · ${t('practiceResult')}`:''}`;
+  const par=solve(newState(LEVELS[state.level-1])).moves.length,previousBest=save.best[state.level];
+  if(!practiceRun){award(save,state.level,state.moves,usedHint,par);persist();}
+  const performance=`${t('moves')}: ${state.moves}${practiceRun?'':` · ${t('best')}: ${save.best[state.level]}`}`;
+  const goal=masteryFeedback(locale,{moves:state.moves,previousBest,par,usedHint,practice:practiceRun});
+  const resultText=`${stageName(state.level)} · ${performance}. ${goal}${practiceRun?` · ${t('practiceResult')}`:''}`;
   showModal('result',t('won'),resultText,[[t('stages'),exitBattle],[t('next'),()=>startLevel(state.level+1,null,practiceRun),state.level>=30],[t('retry'),()=>startLevel(state.level,null,practiceRun)]],blockGranted);
   if(!practiceRun)$('badges').textContent=[t('clearBadge'),t('hintBadge'),t('parBadge')].map((name,i)=>`${save.badges[state.level][i]?'★':'☆'} ${name}`).join(' · ');
  }else if(state.status==='lost')showModal('result',t('lost'),`${reason(state)}${practiceRun?` · ${t('practiceResult')}`:''}`,[[t('stages'),exitBattle],[t('next'),()=>startLevel(state.level+1,null,practiceRun),true],[t('retry'),()=>startLevel(state.level,null,practiceRun)]],false);

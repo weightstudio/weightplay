@@ -48,6 +48,10 @@
 #arena[aria-busy="true"]::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:#edb74e;pointer-events:none;z-index:6}
 .cell-access:not(:focus){width:0;height:0;padding:0;border:0;min-width:0;min-height:0}
 #modal[data-kind="result"] #modalActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#modal[data-kind="result"] .modal-card{height:280px;display:grid;grid-template-rows:48px minmax(0,1fr) 32px 48px;gap:8px}
+#modal[data-kind="result"] h2{margin:0;align-self:center;font-size:24px}
+#modal[data-kind="result"] #modalText{margin:0;overflow:auto;font-size:14px;line-height:1.5}
+#modal[data-kind="result"] #badges{margin:0;align-self:center;font-size:12px}
 #modalActions button{min-width:0;min-height:48px}
 #stage{--wp-stage-scrim:linear-gradient(#102331a8,#102331ce);--wp-stage-art:url('../../assets/lobby-thumbs/w480/assets__animal-crownfall__cover.webp');background:linear-gradient(#102331db,#102331e8),var(--wp-stage-art) center/cover}
 #loadingPanel{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#102331f2;color:#ffdf89;font-size:20px}
