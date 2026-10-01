@@ -1,0 +1,15 @@
+export const GAMEPLAY_TAGS = Object.freeze({
+  en: ["two-row squad formation", "five-wave auto-battles", "30-stage animal campaign"],
+  "zh-Hant": ["雙排小隊編成", "五波自動戰鬥", "30 關動物戰役"],
+  "zh-Hans": ["双排小队编成", "五波自动战斗", "30 关动物战役"],
+  ja: ["2列の分隊編成", "5ウェーブの自動戦闘", "全30ステージの動物キャンペーン"],
+  ko: ["2열 분대 편성", "5웨이브 자동 전투", "30스테이지 동물 캠페인"],
+  es: ["Formación de escuadrón en dos filas", "Combates automáticos de cinco oleadas", "Campaña animal de 30 fases"],
+  "pt-BR": ["Formação de esquadrão em duas fileiras", "Batalhas automáticas de cinco ondas", "Campanha animal de 30 fases"],
+  fr: ["Formation d’escouade sur deux rangées", "Combats automatiques en cinq vagues", "Campagne animalière de 30 niveaux"],
+  de: ["Truppaufstellung in zwei Reihen", "Automatische Kämpfe mit fünf Wellen", "Tierkampagne mit 30 Stufen"],
+  it: ["Formazione della squadra su due file", "Battaglie automatiche in cinque ondate", "Campagna animale di 30 livelli"],
+  ru: ["Построение отряда в два ряда", "Автобои из пяти волн", "Кампания с животными на 30 этапов"],
+  hi: ["दो पंक्तियों में दल की तैनाती", "पाँच तरंगों वाली स्वचालित लड़ाइयाँ", "जानवरों का 30 चरणों वाला अभियान"],
+  ar: ["تشكيل فرقة في صفين", "معارك آلية من خمس موجات", "حملة حيوانات من 30 مرحلة"],
+});

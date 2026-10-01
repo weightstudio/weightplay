@@ -234,6 +234,9 @@ const css=`
 @media(max-width:760px){.wpb-editor .wpb-main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1.1fr) minmax(0,.9fr);gap:10px}.wpb-editor .wpb-scene canvas{height:100%;min-height:0}.wpb-editor .wpb-material{height:52px}.wpb-editor .wpb-note{max-width:calc(100% - 20px)}}
 @media(max-width:360px){.wpb-editor .wpb-mats{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .wpb-reset-entry{margin-inline-start:auto;border-color:#b18c79!important;color:#f5d4c6!important}.wpb-danger{border-color:#ffbc9e;background:linear-gradient(#e8a37f,#c67d60)}.wpb-reset-dialog p{line-height:1.6;overflow-wrap:anywhere}
+/* Preserve the overview's footprint; no invisible editor controls remain
+   interactive or in the accessibility tree (the section is also inert). */
+body.general-lobby-page[data-game-hall="tabletop"] #weightplayCastle :is([data-a],.wpb-note,.wpb-level-guide){visibility:hidden;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.wpb-scene.is-growing{animation:none}}
 `;const st=document.createElement("style");st.textContent=css;document.head.append(st);
 
@@ -321,6 +324,7 @@ dispose(){this.disposed=true;cancelAnimationFrame(this.raf);this.observer?.disco
 }
 
 let UI=null,scene=null,midnight,editorOverflow=null;
+function worldHallActive(){return !document.body.matches('.general-lobby-page[data-game-hall="tabletop"]')}
 function editorScroll(open){if(open&&editorOverflow===null){editorOverflow={overflow:document.documentElement.style.overflow,y:window.scrollY};document.documentElement.style.overflow="hidden"}else if(!open&&editorOverflow!==null){document.documentElement.style.overflow=editorOverflow.overflow;window.scrollTo({top:editorOverflow.y,behavior:"instant"});editorOverflow=null}}
 function closeEditor(){if(!UI)return;UI.edit=false;UI.reset=null;UI.mouseTap=null;UI.status="";render();document.querySelector('[data-a="edit"]')?.focus({preventScroll:true})}
 function icon(){return `<img src="${CUBE}" alt="">`}
@@ -335,7 +339,13 @@ function upgradeDialog(){const u=UI.upgrade;if(!u)return "";const unlocked=mater
 function resetDialog(){const pending=UI.reset;if(!pending)return"";return`<dialog class="wpb-upgrade-dialog wpb-reset-dialog" aria-labelledby="wpbResetTitle" aria-describedby="wpbResetDescription"><h2 id="wpbResetTitle">${t("resetTitle")}</h2><p id="wpbResetDescription">${t("resetBody",{n:pending.count})}</p><p class="wpb-status" role="status">${pending.error||""}</p><div class="wpb-dialog-actions"><button class="wpb-btn alt" data-a="cancel-reset" autofocus>${t("cancel")}</button><button class="wpb-btn wpb-danger" data-a="confirm-reset">${t("resetConfirm")}</button></div></dialog>`}
 function dismissReset(){UI.reset=null;render();document.querySelector('.wpb-editor [data-a="reset"]')?.focus({preventScroll:true})}
 function render(){
- const mode=UI?.edit?"editor":"overview",camera=scene?.mode===mode?{yaw:scene.yaw,pitch:scene.pitch,zoom:scene.zoom,target:[...scene.target],autoCamera:scene.autoCamera,needsFit:scene.needsFit}:null,active=document.activeElement?.dataset||{},scroll=document.querySelector(".wpb-editor .wpb-side")?.scrollTop||0,m=document.querySelector("#weightplayCastle");if(!m)return;
+ const m=document.querySelector("#weightplayCastle");if(!m)return;
+ const hallActive=worldHallActive(),returnHallFocus=!hallActive&&m.contains(document.activeElement);
+ // A hall switch cancels only transient dialogs, never construction or saves.
+ // Returning to Game World presents its overview; the editor opens explicitly.
+ if(!hallActive&&UI){UI.edit=false;UI.upgrade=null;UI.reset=null;UI.mouseTap=null}
+ m.inert=!hallActive;
+ const mode=UI?.edit?"editor":"overview",camera=scene?.mode===mode?{yaw:scene.yaw,pitch:scene.pitch,zoom:scene.zoom,target:[...scene.target],autoCamera:scene.autoCamera,needsFit:scene.needsFit}:null,active=document.activeElement?.dataset||{},scroll=document.querySelector(".wpb-editor .wpb-side")?.scrollTop||0;
  if(!UI){UI={type:"stone",selection:null,edit:false,status:"",upgrade:null,toolRotation:0,infoOpen:false};m.className="wpb"}
  const s=read(),r=dailyRewardState(),w=window.WeightPlayWallet?.read?.()||{diamonds:0},level=worldLevel(s);m.dir=loc()==="ar"?"rtl":"ltr";
  m.innerHTML=`<div class="wpb-head"><div class="wpb-title"><small>WEIGHTPLAY</small><h2 id="wpCastleTitle" data-runtime-localize="off">${t("title")}</h2><p>${t("intro")}</p></div></div>
@@ -349,7 +359,8 @@ function render(){
  const upgrade=m.querySelector(".wpb-upgrade-dialog:not(.wpb-reset-dialog)");if(upgrade){upgrade.showModal();upgrade.addEventListener("cancel",e=>{e.preventDefault();dismissUpgrade()});upgrade.querySelector(`[data-a="${UI.upgrade.completed?"dismiss-upgrade":"confirm-upgrade"}"]`)?.focus({preventScroll:true})}
  const reset=m.querySelector(".wpb-reset-dialog");if(reset){reset.showModal();reset.addEventListener("cancel",e=>{e.preventDefault();dismissReset()});reset.querySelector('[data-a="cancel-reset"]')?.focus({preventScroll:true})}
  scene?.dispose();try{scene=new Scene(m.querySelector("canvas"));if(camera){Object.assign(scene,camera);scene.draw()}}catch{scene=null}
- m.onclick=async e=>{const q=e.target.closest("[data-a]");if(!q||q.disabled)return;const a=q.dataset.a;UI.mouseTap=null;
+ if(returnHallFocus)document.querySelector('[data-hall-tab="tabletop"]')?.focus({preventScroll:true});
+ m.onclick=async e=>{if(!worldHallActive())return;const q=e.target.closest("[data-a]");if(!q||q.disabled)return;const a=q.dataset.a;UI.mouseTap=null;
  if(a==="reset"&&UI.edit){const b=readBuild();if(b.available===false){UI.status=t("save");render();return}UI.reset={signature:layoutSignature(b),count:b.blocks.length};render();return}
  if(a==="cancel-reset"){dismissReset();return}
  if(a==="confirm-reset"&&UI.reset){const z=resetWorld(UI.reset.signature);if(z.reset){UI.reset=null;UI.selection=null;UI.status=t("resetDone",{n:z.recovered});if(scene?.autoCamera)scene.needsFit=true}else UI.reset.error=t(z.reason==="stale"?"resetStale":"save");render();return}
@@ -373,6 +384,7 @@ function schedule(){clearTimeout(midnight);if(!document.querySelector("#weightpl
 function mount(){const old=document.querySelector("#weightplayCastle"),dailyNode=document.querySelector("#dailyReward");if(!old&&!dailyNode)return;const m=old||document.createElement("section");if(!old){m.id="weightplayCastle";dailyNode.after(m)}document.querySelector("#lobbyAccountStrip")?.remove();dailyNode?.remove();const ready=initializeWorld();if(!ready){UI=UI||{type:"stone",selection:null,edit:false,status:""};UI.status=t("save");m.className="wpb"}render();schedule();if(location.hash==="#castle")m.scrollIntoView({block:"start"})}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",mount,{once:true});else mount();
 window.addEventListener("weightplay:castle-updated",()=>{if(document.querySelector("#weightplayCastle"))render()});
+window.addEventListener("weightplay:hall-change",()=>render());
 window.addEventListener("weightplay:game-completed",e=>{const d=e.detail||{},o=String(d.outcome||"").toLowerCase();if(d.cleared===false||d.success===false||d.won===false||["fail","failed","loss","lose","defeat"].includes(o))return;const g=d.gameId||location.pathname.match(/\/games\/([^/]+)/)?.[1];if(!g)return;const raw=d.stageId??d.stage_id??d.levelId??d.level_id??d.stage??d.level,txt=(typeof raw==="string"||typeof raw==="number")?String(raw).trim():"",id=d.completionId??(txt?(txt.toLowerCase().startsWith("stage-")?txt:`stage-${txt.toLowerCase().replace(/[^a-z0-9._-]+/g,"-").slice(0,54)}`):"first-completion");creditFirstClear(g,id)});
 window.addEventListener("weightplay:castle-reward",e=>{if(document.querySelector("#weightplayCastle"))return;document.querySelectorAll(".wpb-toast").forEach(x=>x.remove());const n=document.createElement("div");n.className="wpb-toast";n.dataset.wpbRewardGame=String(e.detail?.gameId||"");n.setAttribute("role","status");n.innerHTML=`${icon()}<span>${t("clear",{n:e.detail?.amount||1})}</span><a href="/${seg[loc()]}/#castle">${t("visit")}</a>`;document.body.append(n);setTimeout(()=>n.remove(),6500)});
 window.addEventListener("wonder:locale-change",()=>render());window.addEventListener("storage",e=>{if([STORE,BUILD,PREVIOUSBUILD,OLDERBUILD,LEGACYBUILD,DAILY,"weightplayWallet"].includes(e.key)||e.key==null)render()});window.addEventListener("pagehide",()=>{scene?.dispose();scene=null;editorScroll(false);clearTimeout(midnight)});window.addEventListener("pageshow",()=>{render();schedule()});

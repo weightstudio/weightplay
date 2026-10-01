@@ -378,7 +378,12 @@ function selectedFilterValue(buttons, datasetKey, value) {
 
 function syncHallPresentation() {
   if (isKidsLobby) return;
-  document.body.dataset.gameHall = activeHall;
+  // One state owns the background and world controls, including URL restores.
+  // Notify only a real change; catalog/locale refreshes need no extra scene work.
+  if (document.body.dataset.gameHall !== activeHall) {
+    document.body.dataset.gameHall = activeHall;
+    window.dispatchEvent(new Event("weightplay:hall-change"));
+  }
   gameHallSwitch?.setAttribute("aria-label", i18n.t("hall.label"));
   setActiveButtons(hallButtons, "hallTab", activeHall);
   document.querySelectorAll("[data-hall-only]").forEach((element) => {

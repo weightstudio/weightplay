@@ -314,6 +314,34 @@ body.general-lobby-page {
   background-position: center top;
   background-repeat: repeat, no-repeat;
 }
+/* Hall-transition structure only: the tabletop art/palette is pending the
+   approved reference's pixel review. Both layers intentionally use today's
+   Block World scenery until that visual pass. An opaque destination over the
+   unchanged base supports interruption/reversal without timers or DOM churn. */
+body.general-lobby-page {
+  position: relative;
+  isolation: isolate;
+}
+body.general-lobby-page::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--lobby-tabletop-background, var(--lobby-arcade-background));
+  background-image: var(--lobby-tabletop-background-image, var(--lobby-arcade-background-image)),
+    var(--lobby-tabletop-light, radial-gradient(ellipse at 50% 0, #204d4c 0, var(--lobby-arcade-background) 70%));
+  background-size: 1440px 960px, 100% 1200px;
+  background-position: center top;
+  background-repeat: repeat, no-repeat;
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(.4, 0, .2, 1);
+}
+body.general-lobby-page[data-game-hall="tabletop"]::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  body.general-lobby-page::before { transition: none; }
+}
 body.general-lobby-page .lobby-topbar { border-bottom: 2px solid #3c6368; margin-bottom: 18px; }
 body.general-lobby-page .lobby-topbar h1 { color: #fff4ce; text-shadow: 2px 3px 0 #07181e; letter-spacing: -.6px; }
 body.general-lobby-page .lobby-topbar .brand-byline { color: #7ec4b5; }

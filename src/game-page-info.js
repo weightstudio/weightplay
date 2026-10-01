@@ -1760,7 +1760,8 @@
     },
 
     "animal-auto-squad": {
-      title: "Animal Auto Squad",
+      title: "Auto Squad",
+      text140Tags: ["two-row squad formation", "five-wave auto-battles", "30-stage animal campaign"],
       age: "13+",
       difficulty: "Medium",
       time: "5-10 minutes",
@@ -14926,7 +14927,8 @@
   localizedGameplayProfiles["zh-Hans"]["animal-2048"] = { gameplay: "全盘滑动合成策略", genre: ["益智", "策略", "逻辑", "动物"] };
 
   Object.assign(games, { "animal-abyss-diver": {
-    title: "Animal Abyss Diver",
+    title: "Abyss Diver",
+    text140Tags: ["underwater route strategy", "oxygen management", "sonar decisions", "turn-based fish encounters"],
     hideSkillsFact: true,
     showRelatedSkill: false,
     relatedIds: ["animal-bamboo-pipes", "animal-bus-jam", "animal-cratebound"],
@@ -14990,8 +14992,8 @@
   gameplayProfiles["animal-abyss-diver"] = { gameplay: "Deep-Sea Route Risk Adventure", genre: ["Strategy", "Adventure", "Risk Management", "Animal"] };
 
   localizedGames["zh-Hant"]["animal-abyss-diver"] = {
-    ...games["animal-abyss-diver"], title: "動物深淵潛航員", difficulty: "中等至具挑戰性", time: "每條路線約 5 至 12 分鐘", gameplay: "深海路線風險冒險", genre: ["策略", "冒險", "風險管理", "動物"], skills: ["邏輯", "專注", "問題解決"], guideTitleSuffix: "遊戲指南", noteTitle: "玩家與存檔說明",
-    intro: "《動物深淵潛航員》是一款由泡泡鰭諾里擔任主角的 30 路線深海策略冒險。每個海域各有左右目標，收益、危險與氧耗都不同。玩家要閱讀可見估計，判斷何時值得花共用電力取得精準聲納資訊，並在高收益潛航變成缺氧危機前安全上浮。",
+    ...games["animal-abyss-diver"], title: "深淵潛航員", difficulty: "中等至具挑戰性", time: "每條路線約 5 至 12 分鐘", gameplay: "深海路線風險冒險", genre: ["策略", "冒險", "風險管理", "動物"], skills: ["邏輯", "專注", "問題解決"], guideTitleSuffix: "遊戲指南", noteTitle: "玩家與存檔說明",
+    intro: "《深淵潛航員》是由泡泡鰭諾里擔任主角的 30 條深海策略路線。每個海域左右兩側都有不同目標，收益、危險與氧耗也各不相同。讀取可見估計後，再判斷何時值得花共用電力取得精準聲納資訊；若多拿寶藏會讓氧氣不夠，就該及時上浮。",
     story: ["諾里前往明亮的珊瑚深淵，尋找散落在亂流、氧氣泡、沉船與領域魚之間的古老導航遺物。六個章節依序穿越可判讀淺台、資源礁區、線索干擾遺跡、水壓海域、精通海溝與最終深淵；每條路線都有自己的名稱、遺物、遭遇順序、魚類位置、打撈目標與特殊規則。", "真正的目標不是不計代價一直下潛。成功的潛航員要知道何時多拿一個寶藏、何時保護易碎貨物、何時替魚戰保留電力，以及何時帶著部分成果上浮。完成第 30 路線代表諾里已掌握聲納干擾、易碎貨物、安全連線、水壓與鯊魚守衛，成功取回深淵心核。"],
     systems: ["每個海域會在左右各放一個目標。選擇前，卡片會顯示收益、危險、氧耗估計、回聲強度與環境線索；目標可能是遺物、大型寶藏、氧氣泡、強勁亂流或陷阱。諾里會留在中央等待玩家明確選擇。", "精準聲納會揭露左右兩側的實際結果，但聲納、一次性衝擊盾與魚戰工具共用四點電力。有些路線會改變工具成本、干擾指定海域，或讓氧氣泡、遺物、亂流和守衛戰回復電力，因此情報、防護與戰鬥準備會互相競爭。", "領域魚與深淵鯊魚會在指定海域阻擋路線。諾里和敵人各自只有一條清楚標示的生命條；攻擊使用已保存的攻擊能力，接著敵人會在可讀停頓後反擊。逃跑一定成功，但會消耗該路線標示的氧氣，也不會取得經驗或戰利品。", "升級會提供永久能力點，可分配到生命、攻擊或氧氣上限。每次選擇都會先顯示目前值與提升後數值，而且必須分配完本次取得的點數才能繼續。能力會支援不同玩法，但無法取代路線判讀。", "過關必須在五至八個海域中達成該路線指定的打撈目標。提早上浮可以安全保存部分成果，但不會解鎖下一條路線；未達目標或氧氣歸零時仍可重新規劃，缺氧或魚戰失敗只會保住部分攜帶品。", "緊急信標是可選的一次性三鑽石回復，只有氧氣低於有實際收益的 30% 門檻時才能確認，並不是通過戰役的必要條件。路線、等級、打撈幣、經驗、永久能力與教學狀態只保存在目前瀏覽器。"],
     how: ["按開始遊戲，在水平路線軌道拖曳到想玩的發光任務。", "進入戰鬥前閱讀規則、海域數、打撈目標、風險與獨特遺物。", "比較左右目標的估計與環境線索；只有在精準資訊值得消耗電力時使用聲納。", "選擇航線並結算氧氣與打撈，同時替護盾或後續魚戰保留電力。", "遭遇魚類時選擇攻擊取得經驗，或支付畫面標示的氧氣安全逃跑。", "達成打撈目標完成路線，或在合法檢查點上浮保存部分成果。", "升級時分配所有能力點，之後繼續潛航或從結算直接返回潛航路線。"],
@@ -15002,7 +15004,7 @@
     faq: [["共有多少條路線？", "共有六章 30 條具名路線，每條都有固定遭遇順序與任務規則。"], ["聲納會揭露什麼？", "它會顯示目前海域左右兩側的確切結果；未掃描時則顯示估計與環境線索。"], ["為什麼聲納、護盾與魚戰工具共用電力？", "共用四點電力讓情報、防護與戰鬥反制成為同一個路線規劃。"], ["隨時都能上浮嗎？", "大部分路線可以在遭遇之間上浮，但檢查點任務只能在規則指定的海域上浮。"], ["提早上浮會過關嗎？", "不會；它只會安全保存部分成果，必須達成打撈目標才會解鎖下一路線。"], ["緊急信標是必要的嗎？", "不是，它是可選的一次性鑽石回復，而且沒有氧氣收益時會停用。"], ["哪些內容會保存？", "路線、等級、打撈幣、經驗、永久能力與教學完成狀態會保存在目前瀏覽器。"], ["第 30 路線之後呢？", "第 30 路線仍可重玩，結算會返回潛航路線，不會出現不存在的第 31 路線。"]]
   };
   localizedGameplayProfiles["zh-Hant"]["animal-abyss-diver"] = { gameplay: "深海路線風險冒險", genre: ["策略", "冒險", "風險管理", "動物"] };
-  localizedGames["zh-Hans"]["animal-abyss-diver"] = { ...localizedGames["zh-Hant"]["animal-abyss-diver"], title: "动物深渊潜航员", gameplay: "深海路线风险冒险" };
+  localizedGames["zh-Hans"]["animal-abyss-diver"] = { ...localizedGames["zh-Hant"]["animal-abyss-diver"], title: "深渊潜航员", gameplay: "深海路线风险冒险", intro: "《深渊潜航员》由泡泡鳍诺里带领，包含 30 条深海策略路线。每个海域左右两侧都有不同目标，收益、危险和耗氧量也各不相同。先阅读可见估算，再判断何时值得花费共享电力获取精确声呐信息；如果继续捞取会让氧气不足，就应及时上浮。" };
   localizedGameplayProfiles["zh-Hans"]["animal-abyss-diver"] = { gameplay: "深海路线风险冒险", genre: ["策略", "冒险", "风险管理", "动物"] };
   localizedGames["ar"] ||= {};
   localizedGameplayProfiles["ar"] ||= {};
@@ -27338,6 +27340,45 @@
     for (const id of ["color-lunchbox", "bubble-bakery"]) {
       const copy = localizedGames[locale]?.[id];
       if (copy?.intro) copy.metaDescription = copy.intro;
+    }
+  }
+  const textGrowth140GameplayTags = {
+    "animal-abyss-diver": {
+      en: ["Underwater route strategy", "Oxygen management", "Sonar decisions", "Turn-based fish encounters"],
+      "zh-Hant": ["深海路線策略", "氧氣管理", "聲納判斷", "回合制魚類遭遇"],
+      "zh-Hans": ["深海路线策略", "氧气管理", "声呐判断", "回合制鱼类遭遇"],
+      ja: ["海中ルート戦略", "酸素管理", "ソナー判断", "ターン制の魚戦"],
+      ko: ["수중 경로 전략", "산소 관리", "소나 판단", "턴제 물고기 조우"],
+      es: ["Estrategia de rutas submarinas", "Gestión de oxígeno", "Decisiones de sonar", "Encuentros por turnos"],
+      "pt-BR": ["Estratégia de rotas submarinas", "Gestão de oxigênio", "Decisões de sonar", "Encontros por turnos"],
+      fr: ["Stratégie de routes sous-marines", "Gestion de l’oxygène", "Décisions au sonar", "Rencontres au tour par tour"],
+      de: ["Unterwasser-Routenstrategie", "Sauerstoffmanagement", "Sonar-Entscheidungen", "Rundenbasierte Fischbegegnungen"],
+      it: ["Strategia di rotte subacquee", "Gestione dell’ossigeno", "Decisioni sonar", "Incontri a turni"],
+      ru: ["Стратегия подводных маршрутов", "Управление кислородом", "Решения с сонаром", "Пошаговые встречи с рыбами"],
+      hi: ["पानी के भीतर मार्ग रणनीति", "ऑक्सीजन प्रबंधन", "सोनार निर्णय", "बारी-आधारित मछली मुकाबले"],
+      ar: ["استراتيجية المسارات تحت الماء", "إدارة الأكسجين", "قرارات السونار", "مواجهات أسماك قائمة على الأدوار"],
+    },
+    "animal-auto-squad": {
+      en: ["Two-row squad formation", "Five-wave auto-battles", "30-stage animal campaign"],
+      "zh-Hant": ["雙排小隊編成", "五波自動戰鬥", "30 關動物戰役"],
+      "zh-Hans": ["双排小队编成", "五波自动战斗", "30 关动物战役"],
+      ja: ["2列の分隊編成", "5ウェーブの自動戦闘", "全30ステージの動物キャンペーン"],
+      ko: ["2열 분대 편성", "5웨이브 자동 전투", "30스테이지 동물 캠페인"],
+      es: ["Formación de escuadrón en dos filas", "Combates automáticos de cinco oleadas", "Campaña animal de 30 fases"],
+      "pt-BR": ["Formação de esquadrão em duas fileiras", "Batalhas automáticas de cinco ondas", "Campanha animal de 30 fases"],
+      fr: ["Formation d’escouade sur deux rangées", "Combats automatiques en cinq vagues", "Campagne animalière de 30 niveaux"],
+      de: ["Truppaufstellung in zwei Reihen", "Automatische Kämpfe mit fünf Wellen", "Tierkampagne mit 30 Stufen"],
+      it: ["Formazione della squadra su due file", "Battaglie automatiche in cinque ondate", "Campagna animale di 30 livelli"],
+      ru: ["Построение отряда в два ряда", "Автобои из пяти волн", "Кампания с животными на 30 этапов"],
+      hi: ["दो पंक्तियों में दल की तैनाती", "पाँच तरंगों वाली स्वचालित लड़ाइयाँ", "जानवरों का 30 चरणों वाला अभियान"],
+      ar: ["تشكيل فرقة في صفين", "معارك آلية من خمس موجات", "حملة حيوانات من 30 مرحلة"],
+    },
+  };
+  for (const [id, locales] of Object.entries(textGrowth140GameplayTags)) {
+    games[id].text140Tags = locales.en;
+    for (const [locale, tags] of Object.entries(locales)) {
+      localizedGames[locale] ||= {};
+      localizedGames[locale][id] = { ...(localizedGames[locale][id] || {}), text140Tags: tags };
     }
   }
   render();
