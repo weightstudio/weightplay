@@ -184,3 +184,12 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 .battle-finale[data-outcome="loss"] {color:#ffd1b2;border-color:#c07e6a;}
 @keyframes finale-enter {from{opacity:0;transform:translateY(-12px) scale(.96)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce) {.battle-finale {animation:none;}}
+/* Battle feedback stays inside the field and existing command row. */
+.skill-button{position:relative;overflow:hidden;isolation:isolate}
+.skill-button::after{content:"";position:absolute;inset:auto auto 0 0;width:var(--morale,0%);height:4px;background:#79f5dc;pointer-events:none;transition:width .15s linear}
+.skill-button.empowered{border-color:#ffe29a;box-shadow:inset 0 0 18px #efc15b30,0 0 9px #efc15b35}
+.skill-button.empowered::after{background:#ffe29a}
+.battle-supply-fly{position:fixed;z-index:1000;color:#ffe29a;font-weight:900;font-size:20px;text-shadow:0 2px 3px #102c32;pointer-events:none}
+.battle-beat{position:absolute;inset:14% 8% auto;z-index:8;padding:8px 12px;text-align:center;color:#fff0b3;background:#173335d9;border:1px solid #dcb76888;border-radius:10px;font-weight:800;pointer-events:none}
+.world-label.combo{color:#ffe29a;font-size:clamp(20px,5vw,30px);font-weight:900;text-shadow:0 2px 2px #12302f}
+@media(prefers-reduced-motion:reduce){.skill-button::after{transition:none}}

@@ -382,6 +382,38 @@
     manageFromResult: false
   };
 
+  // Effects own presentation only. Cancellation never changes rewards or combat.
+  const combatEffects = new Set();
+  function clearCombatEffects() {
+    combatEffects.forEach(animation => animation.cancel());
+    combatEffects.clear();
+    $$('.combat-effect, .damage, .reward-flight').forEach(node => node.remove());
+  }
+  function motion(node, frames, duration = 240) {
+    if (!node?.animate) return;
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const animation = node.animate(reduced ? [{opacity:.6},{opacity:1}] : frames, {duration: reduced ? 100 : duration, easing:'ease-out'});
+    combatEffects.add(animation);
+    animation.finished.then(() => combatEffects.delete(animation), () => combatEffects.delete(animation));
+    return animation;
+  }
+  function effectAt(unit, text, kind = 'impact') {
+    const arena = $('#arena'), target = $(`[data-unit="${unit.key}"]`);
+    if (!target || !arena) return;
+    const a = arena.getBoundingClientRect(), r = target.getBoundingClientRect();
+    const node = document.createElement('span');
+    node.className = `combat-effect ${kind}`;
+    node.textContent = text;
+    node.style.left = `${r.left - a.left + r.width / 2}px`;
+    node.style.top = `${r.top - a.top + r.height * .45}px`;
+    arena.append(node);
+    // Bounded to the current volley even under repeated input.
+    while (arena.querySelectorAll('.combat-effect').length > 18) arena.querySelector('.combat-effect').remove();
+    const animation = motion(node, [{transform:'translate(-50%,-50%) scale(.45)',opacity:1},{transform:'translate(-50%,-65%) scale(1.3)',opacity:0}], 460);
+    if (animation) animation.finished.then(() => node.remove(), () => node.remove());
+    else node.remove();
+  }
+
   let resettingProgress = false;
   function save() {
     if (resettingProgress) return;
@@ -542,6 +574,8 @@
     battle.pendingWaveMs = battle.nextWaveHandle ? Math.max(0, battle.nextWaveDue - performance.now()) : null;
     clearInterval(battle.tickHandle); battle.tickHandle = 0;
     clearTimeout(battle.nextWaveHandle); battle.nextWaveHandle = 0;
+    clearCombatEffects();
+    window.WeightPlayAudio?.stopAll({combatOnly:true});
 
     __wpNotifyMeasurement();
 }
@@ -611,6 +645,10 @@
   }
 
   function startWave() {
+    const charge = new Map(battle.heroes.map(unit => [unit.id,unit.attacks]));
+    clearCombatEffects();
+    battle.pausedAt = 0;
+    battle.focusKey = null;
     clearTimeout(battle.nextWaveHandle);
     battle.nextWaveHandle = 0;
     battle.nextWaveDue = 0;
@@ -619,12 +657,16 @@
     battle.resultOpen = false;
     battle.running = true;
     battle.heroes = state.team.filter((id) => state.heroes[id]?.owned).map((id, i) => makeUnit(heroData(id), "hero", i));
+    if (state.wave > 1) battle.heroes.forEach(unit => { unit.attacks = charge.get(unit.id) || 0; });
     battle.enemies = enemyPack();
     (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden"));
     syncFrameCoverage();
     $("#battleStatus").textContent = state.wave === C.bossEvery ? copy("bossIncoming") : copy("enemyIncoming");
     renderCampaignMilestone();
     renderUnits();
+    renderCommands();
+    motion($('#enemyLane'), [{opacity:0,transform:'translateY(-18px)'},{opacity:1,transform:'translateY(0)'}], 320);
+    motion($('#heroLane'), [{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}], 320);
     updateHud();
     battle.tickHandle = window.setInterval(battleTick, 260);
 
@@ -645,10 +687,46 @@
 
   function unitMarkup(unit) {
     const hp = clamp(unit.hp / unit.maxHp * 100, 0, 100);
-    return `<div class="unit" data-unit="${unit.key}">
+    return `<div class="unit" data-unit="${unit.key}" ${unit.side === 'enemy' ? `data-focus="${unit.key}"` : ''}>
       <i class="hp"><b style="width:${hp}%"></b></i>${sprites.markup(unit.side, unit.data.id, `battle-${unit.key}`)}
-      <span class="unit-name">${localizedValue(unit.data.name)}</span><span class="status-badge is-hidden"></span>${unit.side === "hero" && unit.attacks >= 4 ? '<i class="skill-ready"></i>' : ''}
+      ${unit.side === 'enemy' ? `<button class="unit-name target-choice" data-focus="${unit.key}" aria-pressed="false" aria-label="${commandText(0)} · ${localizedValue(unit.data.name)}">${localizedValue(unit.data.name)}</button>` : `<span class="unit-name">${localizedValue(unit.data.name)}</span>`}<span class="status-badge is-hidden"></span>
     </div>`;
+  }
+
+  function renderCommands() {
+    let dock = $('#commandDock');
+    if (!dock) {
+      dock = document.createElement('div'); dock.id = 'commandDock'; dock.className = 'command-dock';
+      dock.setAttribute('data-runtime-localize', 'off');
+      dock.setAttribute('aria-label', commandText(1));
+      $('#arena').append(dock);
+      dock.addEventListener('click', event => {
+        const button = event.target.closest('[data-cast]');
+        const unit = button && battle.heroes.find(hero => hero.key === button.dataset.cast);
+        if (!unit || !battle.running || battle.pausedAt || battle.resultOpen || !$('#management').classList.contains('is-hidden') || !$('#modalLayer').classList.contains('is-hidden') || !$('#coach').classList.contains('is-hidden')) return;
+        if (unit.hp <= 0 || unit.attacks < 5) { motion(button,[{opacity:.4},{opacity:1}],140); return; }
+        runUnitAttack(unit, battle.enemies, 0, true);
+        settleCombat();
+      });
+    }
+    dock.innerHTML = battle.heroes.map(unit => `<button data-cast="${unit.key}" aria-label="${localizedValue(unit.data.skill)}" aria-disabled="${unit.attacks < 5 || unit.hp <= 0}"><strong>${localizedValue(unit.data.skill)}</strong><small></small><i><b></b></i></button>`).join('');
+    updateCommands();
+  }
+  function updateCommands() {
+    battle.heroes.forEach(unit => {
+      const button = $(`[data-cast="${unit.key}"]`);
+      if (!button) return;
+      const ready = unit.hp > 0 && unit.attacks >= 5;
+      button.classList.toggle('is-ready', ready);
+      button.setAttribute('aria-disabled', String(!ready));
+      $('small',button).textContent = unit.hp <= 0 ? '—' : ready ? `${commandText(2)} ◆` : `${commandText(3)} ${unit.attacks}/5`;
+      $('b',button).style.width = `${Math.min(100,unit.attacks / 5 * 100)}%`;
+    });
+  }
+  function settleCombat() {
+    renderUnitHealth(); updateCommands();
+    if (!battle.enemies.some(unit => unit.hp > 0)) waveVictory();
+    else if (!battle.heroes.some(unit => unit.hp > 0)) battleDefeat();
   }
 
   function battleTick() {
@@ -656,20 +734,23 @@
     const dt = .26 * battle.speed;
     battle.heroes.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.enemies, dt));
     battle.enemies.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.heroes, dt));
-    renderUnitHealth();
-    if (!battle.enemies.some((unit) => unit.hp > 0)) waveVictory();
-    else if (!battle.heroes.some((unit) => unit.hp > 0)) battleDefeat();
+    settleCombat();
   }
 
-  function runUnitAttack(unit, targets, dt) {
+  function runUnitAttack(unit, targets, dt, commanded = false) {
+    if (unit.hp <= 0 || (commanded && unit.attacks < 5)) return;
     unit.cooldown -= dt;
-    if (unit.cooldown > 0) return;
+    if (unit.cooldown > 0 && !commanded) {
+      if (unit.cooldown <= .3) $(`[data-unit="${unit.key}"]`)?.classList.add('is-winding');
+      return;
+    }
     const alive = targets.filter((target) => target.hp > 0);
     if (!alive.length) return;
     unit.cooldown = clamp(1.32 / unit.speed, .46, 1.65);
-    unit.attacks += 1;
-    const skill = (unit.side === "hero" && unit.attacks % 5 === 0) || (unit.id === "cobra" && unit.attacks % 4 === 0);
-    const target = alive[Math.floor(Math.random() * alive.length)];
+    if (!commanded) unit.attacks += 1;
+    const skill = commanded || (unit.side === 'hero' && unit.attacks >= 8) || (unit.id === 'cobra' && unit.attacks % 4 === 0);
+    if (skill && unit.side === 'hero') unit.attacks = 0;
+    const target = (unit.side === 'hero' && alive.find(enemy => enemy.key === battle.focusKey)) || alive[Math.floor(Math.random() * alive.length)];
     const crit = Math.random() < (unit.id === "tiger" ? .22 : .1);
     const counter = C.troopCounters[unit.data.troop] === target.data.troop ? 1.22 : 1;
     const variation = .86 + Math.random() * .28;
@@ -677,21 +758,23 @@
     if ((unit.status.weakenUntil || 0) > Date.now()) damage = Math.round(damage * .78);
     if ((target.status.shieldUntil || 0) > Date.now()) damage = Math.round(damage * .76);
     if (target.id === "bear" && target.side === "hero") damage = Math.round(damage * .92);
+    const applied = Math.min(target.hp, damage);
     target.hp = Math.max(0, target.hp - damage);
-    animateAttack(unit, target, damage, crit, skill);
+    animateAttack(unit, target, applied, crit, skill);
     if (skill) applySkill(unit, targets);
   }
 
   function applySkill(unit, targets) {
     if (unit.id === "crane") {
-      targets.filter((target) => target.hp > 0).forEach((target) => { target.hp = Math.max(0, target.hp - Math.round(unit.atk * .62)); });
+      targets.filter((target) => target.hp > 0).forEach((target) => { const amount = Math.min(target.hp, Math.round(unit.atk * .62)); target.hp -= amount; animateAttack(unit,target,amount,false,true); });
       $("#battleStatus").textContent = copy("skillCrane", { name: localizedValue(unit.data.name), skill: localizedValue(unit.data.skill) });
     } else if (unit.id === "leo") {
-      battle.heroes.filter((hero) => hero.hp > 0).forEach((hero) => { hero.hp = Math.min(hero.maxHp, hero.hp + Math.round(hero.maxHp * .08)); hero.status.buffUntil = Date.now() + 2800; });
+      battle.heroes.filter((hero) => hero.hp > 0).forEach((hero) => { const amount = Math.min(hero.maxHp - hero.hp, Math.round(hero.maxHp * .08)); hero.hp += amount; hero.status.buffUntil = Date.now() + 2800; effectAt(hero, amount ? `+${amount}` : copy('buff'), 'healing'); });
       $("#battleStatus").textContent = copy("skillLeo");
     } else if (unit.id === "bear") {
       unit.hp = Math.min(unit.maxHp, unit.hp + Math.round(unit.maxHp * .14));
       unit.status.shieldUntil = Date.now() + 3200;
+      effectAt(unit, copy('shield'), 'guard');
       $("#battleStatus").textContent = copy("skillBear");
     } else if (unit.id === "cobra") {
       const target = battle.heroes.filter((hero) => hero.hp > 0).sort((a, b) => b.atk - a.atk)[0];
@@ -706,18 +789,27 @@
   function animateAttack(unit, target, damage, crit, skill) {
     const attacker = $(`[data-unit="${unit.key}"]`);
     const victim = $(`[data-unit="${target.key}"]`);
-    attacker?.classList.add("is-attacking");
-    victim?.classList.add("is-hit");
-    setTimeout(() => attacker?.classList.remove("is-attacking"), 170);
-    setTimeout(() => victim?.classList.remove("is-hit"), 170);
+    attacker?.classList.remove('is-winding');
+    const direction = unit.side === 'hero' ? -1 : 1;
+    motion(attacker?.querySelector('.sprite'),[{translate:'0 0'},{translate:`0 ${direction * (skill ? 18 : 10)}px`,offset:.35},{translate:'0 0'}],skill ? 280 : 210);
+    motion(victim?.querySelector('.sprite'),[{filter:'brightness(1)'},{filter:'brightness(1.7)',translate:`${crit ? 8 : 4}px 0`,offset:.25},{filter:'brightness(1)',translate:'0 0'}],230);
+    const guarded = (target.status.shieldUntil || 0) > Date.now();
+    effectAt(target, guarded ? '⬡' : skill ? '✦' : '╱', guarded ? 'guard' : crit ? 'critical-impact' : 'impact');
+    if (skill) effectAt(unit, localizedValue(unit.data.skill || unit.data.name),'skill-title');
+    tone(guarded ? 'combat.block' : crit ? 'combat.critical' : target.side === 'hero' ? 'player.hurt' : unit.data.troop === '弓兵' ? 'weapon.arrow.hit' : unit.data.troop === '謀士' ? 'magic.hit' : 'weapon.sword.hit');
+    if (target.hp <= 0) { motion(victim,[{opacity:1,transform:'translateY(0)'},{opacity:.18,transform:'translateY(12px) rotate(6deg)'}],420); tone(target.side === 'enemy' ? 'enemy.defeat' : 'player.hurt'); }
     if (state.settings.damage) {
       const hit = document.createElement("span");
       hit.className = `damage${crit ? " crit" : ""}${skill ? " skill" : ""}`;
       hit.textContent = `${crit ? copy("critical") : ""}-${damage}`;
-      hit.style.setProperty("--x", `${22 + Math.random() * 56}%`);
-      hit.style.setProperty("--y", `${target.side === "enemy" ? 16 + Math.random() * 18 : 55 + Math.random() * 15}%`);
-      $("#combatFeed").append(hit);
-      setTimeout(() => hit.remove(), 900);
+      const a = $('#arena').getBoundingClientRect(), r = victim?.getBoundingClientRect();
+      if (!r) return;
+      hit.style.setProperty('--x', `${r.left - a.left + r.width / 2}px`);
+      hit.style.setProperty('--y', `${r.top - a.top + r.height * .35}px`);
+      $('#arena').append(hit);
+      const animation = motion(hit,[{transform:'translate(-50%,0) scale(.9)',opacity:1},{transform:'translate(-50%,-42px) scale(1.15)',opacity:0}],700);
+      if (animation) animation.finished.then(() => hit.remove(), () => hit.remove());
+      else hit.remove();
     }
   }
 
@@ -728,6 +820,9 @@
       const fill = $(".hp b", el);
       if (fill) fill.style.width = `${clamp(unit.hp / unit.maxHp * 100, 0, 100)}%`;
       el.style.opacity = unit.hp <= 0 ? ".18" : "1";
+      el.classList.toggle('is-focused', unit.hp > 0 && unit.key === battle.focusKey);
+      const focus = $('[data-focus]',el);
+      if (focus) { focus.disabled = unit.hp <= 0; focus.setAttribute('aria-pressed', String(unit.hp > 0 && unit.key === battle.focusKey)); }
       const badge = $(".status-badge", el);
       if (badge) {
         const weakened = (unit.status.weakenUntil || 0) > Date.now();
@@ -752,6 +847,8 @@
     battle.pendingLoot.materials += reward.materials;
     if (Math.random() < .18 || state.wave === C.bossEvery) battle.pendingLoot.gear.push(C.equipment[Math.floor(Math.random() * C.equipment.length)].id);
     $("#lootPile").classList.remove("is-hidden");
+    motion($('#lootPile'),[{filter:'brightness(1.8)',scale:'1.08'},{filter:'brightness(1)',scale:'1'}],300);
+    tone('game.checkpoint');
     $("#battleStatus").textContent = copy("waveVictory", { wave: state.wave });
     if (state.wave < C.bossEvery) {
       state.wave += 1;
@@ -796,6 +893,19 @@
     if (!loot.coins && !loot.materials && !loot.gear.length) return;
     state.resources.coins += loot.coins;
     state.resources.materials += loot.materials;
+    const root = $('#battleContent'), origin = $('#lootPile').getBoundingClientRect(), bounds = root.getBoundingClientRect();
+    ['coins','materials'].forEach(key => {
+      if (!loot[key]) return;
+      const target = $(key === 'coins' ? '#coinValue' : '#materialValue'), destination = target.getBoundingClientRect();
+      const node = document.createElement('span'); node.className = 'reward-flight'; node.innerHTML = itemArt(key);
+      node.style.left = `${origin.left - bounds.left + origin.width / 2}px`;
+      node.style.top = `${origin.top - bounds.top + origin.height / 2}px`;
+      root.append(node);
+      const animation = motion(node,[{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(${destination.left - origin.left}px,${destination.top - origin.top}px)`,opacity:0}],500);
+      if (animation) animation.finished.then(() => node.remove(), () => node.remove()); else node.remove();
+      motion(target,[{color:'#fff',filter:'brightness(1.8)'},{filter:'brightness(1)'}],550);
+    });
+    tone('reward.coin');
     loot.gear.forEach((itemId) => state.inventory.push({ uid: uid(), itemId, level: 1 }));
     if (!silent) toast(`${copy("resourceCoins")} ${loot.coins} · ${copy("resourceMaterials")} ${loot.materials}${loot.gear.length ? ` · ${copy("equipmentBag")} ${loot.gear.length}` : ""}`);
     battle.pendingLoot = { coins: 0, materials: 0, gear: [] };
@@ -810,8 +920,10 @@
   }
 
   function openManagement(tab) {
+    suspendCombat();
     closeModal();
     $("#management").classList.remove("is-hidden");
+    motion($('#management'),[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}],220);
     syncFrameCoverage();
     $$(".bottom-nav button").forEach((button) => button.classList.toggle("is-active", button.dataset.tab === tab));
     const titles = { heroes: copy("managementHeroes"), tavern: recruitText(2), law: copy("managementLaw"), campaign: copy("managementCampaign") };
@@ -834,6 +946,7 @@
       (__wpNotifyMeasurement(), $("#resultPanel").classList.remove("is-hidden"));
     }
     syncFrameCoverage();
+    if ($('#app').dataset.scene === 'battle' && !battle.resultOpen && $('#leaveConfirm').classList.contains('is-hidden')) resumeCombat();
 
     __wpNotifyMeasurement();
 }
@@ -855,7 +968,24 @@
   };
   const loadoutText = index => (loadoutCopy[activeLocale()] || loadoutCopy.en)[index];
   const gearArt = def => `<span class="equipment-art" data-equipment-art="${def.id}" aria-hidden="true"></span>`;
+  const commandCopy = {
+    'zh-Hant':['集火','點敵軍集火；技能蓄滿後點擊施放，未操作會自動施放。','施放','蓄力','目前穿戴','替換','最佳裝備','沒有更強的閒置裝備'],
+    'zh-Hans':['集火','点敌军集火；技能蓄满后点击施放，未操作会自动施放。','施放','蓄力','当前穿戴','替换','最佳装备','没有更强的闲置装备'],
+    en:['Focus','Tap an enemy to focus. Tap a charged skill to cast early; idle skills cast automatically.','Cast','Charging','Current loadout','Replace','Best gear','No stronger spare gear'],
+    ja:['集中攻撃','敵をタップして集中攻撃。充填したスキルをタップすると早く発動。放置時は自動発動。','発動','充填中','装備中','交換','最適装備','より強い予備装備がありません'],
+    ko:['집중 공격','적을 눌러 집중 공격. 충전된 기술을 누르면 일찍 발동하며 대기 시 자동 발동합니다.','발동','충전 중','현재 장비','교체','최적 장비','더 강한 여분 장비 없음'],
+    es:['Concentrar','Toca un enemigo para concentrar ataques. Lanza habilidades cargadas antes; también se lanzan automáticamente.','Lanzar','Cargando','Equipo actual','Reemplazar','Mejor equipo','No hay equipo libre mejor'],
+    'pt-BR':['Focar','Toque num inimigo para focar. Use habilidades carregadas antes; elas também são lançadas automaticamente.','Usar','Carregando','Equipado agora','Trocar','Melhor equipamento','Nenhum equipamento livre melhor'],
+    fr:['Cibler','Touchez un ennemi pour le cibler. Lancez une compétence chargée plus tôt ; sinon elle part automatiquement.','Lancer','Charge','Équipement actuel','Remplacer','Meilleur équipement','Aucun meilleur équipement libre'],
+    de:['Fokus','Tippe auf einen Gegner zum Fokussieren. Nutze geladene Fähigkeiten früher; sonst starten sie automatisch.','Wirken','Lädt','Aktuelle Ausrüstung','Ersetzen','Beste Ausrüstung','Keine bessere freie Ausrüstung'],
+    it:['Concentra','Tocca un nemico per concentrarti. Usa prima le abilità cariche; altrimenti si attivano automaticamente.','Usa','Carica','Equipaggiato','Sostituisci','Equipaggiamento migliore','Nessun equipaggiamento libero migliore'],
+    ru:['Фокус','Нажмите на врага для фокуса. Применяйте заряженные навыки раньше; без нажатия они сработают сами.','Применить','Заряд','Надето сейчас','Заменить','Лучшее снаряжение','Нет более сильного свободного снаряжения'],
+    hi:['लक्ष्य','हमले केंद्रित करने के लिए शत्रु दबाएँ। भरा कौशल जल्दी चलाएँ; अन्यथा वह अपने आप चलेगा।','चलाएँ','भर रहा है','पहने उपकरण','बदलें','बेहतर उपकरण','अधिक मजबूत खाली उपकरण नहीं'],
+    ar:['تركيز','اضغط عدواً لتركيز الهجمات. أطلق المهارة المشحونة مبكراً؛ وإلا تُطلق تلقائياً.','إطلاق','شحن','المعدات الحالية','استبدال','أفضل معدات','لا توجد معدات حرة أقوى']
+  };
+  const commandText = index => (commandCopy[activeLocale()] || commandCopy.en)[index];
   function renderHeroes() {
+    const scrollTop = $('#managementBody').scrollTop;
     const focused = document.activeElement?.closest('#managementBody button')?.dataset;
     const hero = heroData(selectedHero), p = state.heroes[selectedHero];
     const stats = heroStats(selectedHero), cost = heroUpgradeCost(selectedHero);
@@ -863,27 +993,43 @@
     const canBreak = p.level >= ((p.rank || 0) + 1) * 5 && state.resources.materials >= breakCost;
     const roster = C.heroes.map(h => {
       const progress = state.heroes[h.id];
-      return `<button class="roster-choice" data-action="select-hero" data-id="${h.id}" aria-pressed="${h.id === selectedHero}"><span class="roster-portrait">${sprites.markup('hero', h.id, `roster-${h.id}`)}</span><strong>${localizedValue(h.name)}</strong><small>${progress.owned ? `${copy('level')}${progress.level} · ${state.team.includes(h.id) ? `${copy('deploy')} · ${copy(state.team.indexOf(h.id) < 2 ? 'front' : 'back')}` : copy('remove')}` : loadoutText(7)}</small></button>`;
+      return `<button class="roster-choice" data-action="select-hero" data-id="${h.id}" aria-pressed="${h.id === selectedHero}"><span class="roster-portrait">${sprites.markup('hero', h.id, `roster-${h.id}`)}</span><strong>${localizedValue(h.name)}</strong><small>${progress.owned ? `${copy('level')}${progress.level} · ${state.team.includes(h.id) ? `${copy('deploy')} · ${copy(state.team.indexOf(h.id) < 2 ? 'front' : 'back')}` : copy('remove')}` : loadoutText(7)}</small><span class="roster-gear" aria-label="${commandText(4)}">${C.equipment.map(def => `<i class="${state.equipped[h.id]?.[def.id] ? 'filled' : ''}" title="${localizedValue(def.slot)}"></i>`).join('')}</span></button>`;
     }).join('');
     const slots = C.equipment.map(def => {
       const entry = state.inventory.find(item => item.uid === state.equipped[selectedHero]?.[def.id]);
-      return `<button class="loadout-slot" data-action="select-slot" data-id="${def.id}" aria-pressed="${selectedSlot === def.id}">${gearArt(def)}<strong>${localizedValue(def.slot)}</strong><small>${entry ? `${localizedValue(def.name)} +${entry.level}` : loadoutText(0)}</small></button>`;
+      return `<button class="loadout-slot ${entry ? 'is-equipped' : 'is-empty'}" data-action="select-slot" data-id="${def.id}" aria-pressed="${selectedSlot === def.id}"><span class="slot-top"><strong>${localizedValue(def.slot)}</strong><span>${entry ? `✓ ${loadoutText(1)}` : '—'}</span></span>${gearArt(def)}<b>${entry ? `${localizedValue(def.name)} +${entry.level}` : loadoutText(0)}</b><small>${entry ? equipmentStat(def,entry.level) : loadoutText(8)}</small></button>`;
     }).join('');
     const entries = state.inventory.filter(entry => entry.itemId === selectedSlot);
     const equipment = entries.map(entry => {
       const def = equipmentData(entry.itemId), holder = equipmentHolder(entry.uid);
       const enhanceCost = 3 + entry.level * 2;
-      return `<article class="equipment-row"><div class="equipment-description">${gearArt(def)}<div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.quality)} · ${equipmentStat(def, entry.level)}</small><span class="holder-label">${holder ? `${loadoutText(1)} · ${localizedValue(heroData(holder).name)}` : loadoutText(2)}</span></div></div><div class="card-actions"><button data-wp-frame-action="secondary" data-action="${holder === selectedHero ? 'unequip' : 'equip'}" data-id="${selectedHero}" data-uid="${entry.uid}" ${p.owned ? '' : 'disabled'}>${holder === selectedHero ? loadoutText(3) : `${holder ? loadoutText(4) : copy('equip')} → ${localizedValue(hero.name)}`}</button><button data-wp-frame-action="secondary" data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? 'disabled' : ''}>${copy('enhance')} ${resourceChip('materials', enhanceCost)}</button><button data-wp-frame-action="secondary" class="alt" data-action="salvage" data-uid="${entry.uid}" ${holder ? 'disabled' : ''}>${copy('salvage')} ${resourceChip('materials', '+5')}</button></div></article>`;
+      const current = state.inventory.find(item => item.uid === state.equipped[selectedHero]?.[def.id]);
+      const delta = Math.round(def.value * (entry.level - (current?.level || 0)) * 100) / 100;
+      const comparison = holder === selectedHero ? commandText(4) : `${delta > 0 ? '↑ +' : delta < 0 ? '↓ ' : '= '}${def.stat === 'speed' ? delta.toFixed(2) : delta} ${def.stat === 'speed' ? interactionText(4) : copy(def.stat === 'hp' ? 'health' : 'attack')}`;
+      return `<article class="equipment-row ${holder === selectedHero ? 'worn-item' : ''}" data-gear-uid="${entry.uid}"><div class="equipment-description">${gearArt(def)}<div><span class="quality">${localizedValue(def.quality)} · ${localizedValue(def.slot)}</span><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${equipmentStat(def, entry.level)}</small><span class="holder-label">${holder ? `${loadoutText(1)} · ${localizedValue(heroData(holder).name)}` : loadoutText(2)}</span><span class="gear-comparison ${delta > 0 ? 'better' : delta < 0 ? 'worse' : ''}">${comparison}</span></div></div><div class="card-actions"><button data-wp-frame-action="secondary" data-action="${holder === selectedHero ? 'unequip' : 'equip'}" data-id="${selectedHero}" data-uid="${entry.uid}" ${p.owned ? '' : 'disabled'}>${holder === selectedHero ? loadoutText(3) : `${holder ? loadoutText(4) : current ? commandText(5) : copy('equip')} → ${localizedValue(hero.name)}`}</button><button data-wp-frame-action="secondary" data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? 'disabled' : ''}>${copy('enhance')} ${resourceChip('materials', enhanceCost)}</button><button data-wp-frame-action="secondary" class="alt" data-action="salvage" data-uid="${entry.uid}" ${holder ? 'disabled' : ''}>${copy('salvage')} ${resourceChip('materials', '+5')}</button></div></article>`;
     }).join('');
     $('#managementBody').innerHTML = `<section class="hero-workspace"><div class="section-title"><h3>${loadoutText(6)}</h3><span>${state.team.length}/3 · ${copy('deploy')}</span></div><div class="hero-roster">${roster}</div><div class="hero-workspace-columns"><section><article class="hero-card hero-detail" data-hero="${hero.id}"><div class="hero-portrait">${sprites.markup('hero', hero.id, `detail-${hero.id}`)}</div><div class="hero-card-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.role)} · ${localizedValue(hero.skill)}</p><div class="mini-stats"><span>${copy('level')}${p.level}</span><span>${p.star} ${copy('stars')}</span><span>${copy('rank')} +${p.rank || 0}</span><span>${copy('attack')} ${stats.atk}</span><span>${copy('health')} ${stats.hp}</span><span>${interactionText(4)} ${stats.speed.toFixed(2)}</span></div></div></article>
     ${p.owned ? `<div class="hero-growth-actions card-actions"><button data-wp-frame-action="secondary" data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost || p.level >= C.heroLevelCap ? 'disabled' : ''}>${copy('upgrade')} ${resourceChip('coins', cost)}</button><button data-wp-frame-action="secondary" data-action="break-hero" data-id="${hero.id}" ${canBreak ? '' : 'disabled'}>${copy('break')} ${resourceChip('materials', breakCost)}</button><button data-wp-frame-action="secondary" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? copy('remove') : copy('deploy')}</button></div>` : `<p>${loadoutText(7)} · ${itemArt('fragments')}${copy('fragments')} ${p.fragments}/10</p>`}
-    <div class="section-title"><h3>${copy('equip')} · ${localizedValue(hero.name)}</h3></div><div class="loadout-slots">${slots}</div></section><section class="hero-backpack"><div class="section-title"><h3>${copy('equipmentBag')} · ${localizedValue(equipmentData(selectedSlot).slot)}</h3><span>${entries.length} ${copy('inventory')}</span></div><p class="loadout-help">${loadoutText(5)}</p><div class="wallet">${Object.entries(state.resources).map(([key, amount]) => resourceChip(key, fmt(amount))).join('')}</div>${equipment || `<div class="empty-equipment">${gearArt(equipmentData(selectedSlot))}<p>${loadoutText(0)}</p><p>${loadoutText(8)}</p></div>`}</section></div></section>`;
+    <div class="section-title"><h3>${commandText(4)} · ${localizedValue(hero.name)}</h3><button class="best-gear" data-action="best-gear" data-id="${hero.id}" ${p.owned ? '' : 'disabled'}>${commandText(6)}</button></div><div class="loadout-slots">${slots}</div></section><section class="hero-backpack"><div class="section-title"><h3>${copy('equipmentBag')} · ${localizedValue(equipmentData(selectedSlot).slot)}</h3><span>${entries.length} ${copy('inventory')}</span></div><p class="loadout-help">${loadoutText(5)}</p><div class="wallet">${Object.entries(state.resources).map(([key, amount]) => resourceChip(key, fmt(amount))).join('')}</div>${equipment || `<div class="empty-equipment">${gearArt(equipmentData(selectedSlot))}<p>${loadoutText(0)}</p><p>${loadoutText(8)}</p></div>`}</section></div></section>`;
+    $('#managementBody').scrollTop = scrollTop;
     if (focused) {
       const buttons = $$('#managementBody button[data-action]');
       const same = buttons.find(button => button.dataset.action === focused.action && button.dataset.id === focused.id && button.dataset.uid === focused.uid);
       const replacement = same || buttons.find(button => focused.uid && button.dataset.uid === focused.uid);
       replacement?.focus({preventScroll: true});
     }
+  }
+
+  function equipBest(id) {
+    if (!state.heroes[id]?.owned) return false;
+    let changed = false;
+    C.equipment.forEach(def => {
+      const current = state.inventory.find(item => item.uid === state.equipped[id]?.[def.id]);
+      const candidates = state.inventory.filter(item => item.itemId === def.id && !equipmentHolder(item.uid));
+      const best = candidates.reduce((winner,item) => !winner || item.level > winner.level ? item : winner, current);
+      if (best && best.uid !== current?.uid) { state.equipped[id][def.id] = best.uid; changed = true; }
+    });
+    return changed;
   }
 
   const recruitCopy = {
@@ -982,6 +1128,11 @@
       selectedSlot = id;
       renderHeroes();
       return;
+    }
+    if (action === 'best-gear') {
+      const changed = equipBest(id);
+      toast(changed ? `${commandText(6)} · ${localizedValue(heroData(id).name)}` : commandText(7));
+      renderHeroes();
     }
     if (action === 'unequip') {
       if (equipmentHolder(itemUid) !== id) return;
@@ -1342,7 +1493,7 @@
 
   function showCoach() {
     const steps = [
-      [copy("coachTitle1"), copy("coachCopy1")],
+      [copy("coachTitle1"), `${copy("coachCopy1")} ${commandText(1)}`],
       [copy("coachTitle2"), copy("coachCopy2")],
       [copy("coachTitle3"), copy("coachCopy3")]
     ];
@@ -1382,7 +1533,18 @@
   function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
   function bind() {
-    $("#startBtn").addEventListener("click", () => showScene("battle"));
+    $('#enemyLane').addEventListener('click', event => {
+      const button = event.target.closest('[data-focus]');
+      const target = button && battle.enemies.find(unit => unit.key === button.dataset.focus && unit.hp > 0);
+      if (!target || !battle.running || battle.pausedAt) return;
+      battle.focusKey = target.key;
+      $('#battleStatus').textContent = `${commandText(0)} · ${localizedValue(target.data.name)}`;
+      effectAt(target, '◎', 'guard'); renderUnitHealth();
+    });
+    $("#startBtn").addEventListener("click", () => {
+      window.WeightPlayAudio?.preload(['weapon.sword.hit','weapon.arrow.hit','magic.hit','magic.cast','combat.block','combat.critical','player.hurt','enemy.defeat','game.checkpoint','reward.coin']);
+      showScene("battle");
+    });
     $("#battleBack").addEventListener("click", requestBattleReturn);
     $('#leaveContinue').addEventListener('click', () => closeBattleReturn());
     $('#leaveMain').addEventListener('click', () => closeBattleReturn(true));

@@ -81,9 +81,11 @@
           <canvas id="arena" tabindex="0" data-i18n-aria="arena" aria-label="3D racing circuit" aria-keyshortcuts="ArrowLeft ArrowRight A D S Space Shift X R P Escape"></canvas>
           <p id="raceObjective" class="apex-objective"></p>
           <canvas id="minimap" width="160" height="120" aria-hidden="true"></canvas>
+          <div id="raceFx" class="apex-race-fx" aria-hidden="true"></div>
           <div class="apex-meter-panel" aria-live="off"><strong><span id="speedValue">0</span><small> km/h</small></strong><span><b data-i18n="nitro">Nitro</b><meter id="nitroMeter" aria-label="Nitro" data-i18n-aria="nitro" min="0" max="1" value="1"></meter></span><span><b data-i18n="drift">Drift</b><meter id="driftMeter" aria-label="Drift" data-i18n-aria="drift" min="0" max="2.4" value="0"></meter></span><span id="raceTargets"></span></div>
           <strong id="countdown" class="apex-countdown" aria-live="polite" hidden></strong>
           <p id="feedback" class="apex-feedback" role="status" aria-live="polite"></p>
+          <p id="driveState" class="apex-drive-state"></p>
         </div>
         <div id="driveControls" class="apex-drive-controls" data-wp-frame-logical-actions="battle" dir="ltr">
           <button type="button" data-drive="left" data-i18n-aria="left" aria-label="Left">←</button>

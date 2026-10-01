@@ -51,8 +51,7 @@
   const talents = window.ZhaoTalents;
   const hasTalent = id => (battle?.talents || progress.talents || []).includes(id);
   const push = window.ZhaoPush;
-  let audioContext = null, impactNoise = null, lastSound = 0;
-  const worldModuleUrl = new URL("battle-3d.js?v=20260921-zhao-v38", document.currentScript.src).href;
+  const worldModuleUrl = new URL("battle-3d.js?v=20261001-zhao-v39-battle-feel", document.currentScript.src).href;
   let worldModule = null, worldImportAttempts = 0;
   function loadWorldModule() {
     return worldModule ||= import(worldModuleUrl + (worldImportAttempts++ ? '&retry='+worldImportAttempts : '')).catch(() => {worldModule=null;return null;});
@@ -73,7 +72,33 @@
       catch (_) {fail();}
     });
   }
-  function sound(kind) { const cue = {"hit":"weapon.sword.hit","block":"combat.block","defeat":"enemy.defeat","charge":"movement.dash","merge":"puzzle.merge","hurt":"player.hurt","rocket":"explosion.small","victory":"result.win","loss":"result.lose"}[kind]; if (cue) return window.WeightPlayAudio?.play(cue); }
+  function sound(kind) { const cue = {hit:'weapon.sword.hit',swing:'weapon.sword.swing',release:'weapon.bow.release',arrowHit:'weapon.arrow.hit',critical:'combat.critical',deploy:'movement.land',morale:'feedback.success',combo:'reward.collect',block:'combat.block',defeat:'enemy.defeat',charge:'movement.dash',merge:'puzzle.merge',hurt:'player.hurt',rocket:'explosion.small',victory:'result.win',loss:'result.lose',boss:'alert.boss'}[kind]; if (cue) return window.WeightPlayAudio?.play(cue); }
+  const feedbackAnimations=new Set(), supplySeen=new Set();
+  function clearFeedback(){for(const animation of feedbackAnimations)animation.cancel();feedbackAnimations.clear();supplySeen.clear();document.querySelectorAll('.battle-supply-fly,.battle-beat').forEach(node=>node.remove());}
+  function animateFeedback(node,frames,options,remove=false){
+    const animation=node.animate(frames,options);feedbackAnimations.add(animation);
+    const done=()=>{feedbackAnimations.delete(animation);if(remove)node.remove();};animation.onfinish=done;animation.oncancel=done;
+    return animation;
+  }
+  function showBattleBeat(message){
+    const host=document.querySelector('.battle-field');host.querySelector('.battle-beat')?.remove();
+    const node=document.createElement('div');node.className='battle-beat';node.setAttribute('role','status');node.textContent=message;host.append(node);
+    animateFeedback(node,[{opacity:0},{opacity:1,offset:.15},{opacity:1,offset:.8},{opacity:0}],{duration:1600},true);
+  }
+  function collectFeedback(){
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    for(const effect of battle.effects){
+      if(effect.kind!=='supply'||supplySeen.has(effect.id))continue;
+      supplySeen.add(effect.id);
+      if(document.querySelectorAll('.battle-supply-fly').length>=5)continue;
+      const target=el.buns.getBoundingClientRect(),host=document.querySelector('.battle-field').getBoundingClientRect();
+      const origin=world?.projectSupply(effect.x)||{x:host.left+host.width/2,y:host.top+host.height/2};
+      const node=document.createElement('span');node.className='battle-supply-fly';node.setAttribute('aria-hidden','true');node.textContent='+'+effect.amount;
+      node.style.left=(reduced?target.left:origin.x)+'px';node.style.top=(reduced?target.top:origin.y)+'px';document.body.append(node);
+      animateFeedback(node,reduced?[{opacity:1},{opacity:0}]:[{transform:'translate(-50%,-50%) scale(1.2)',opacity:1},{transform:`translate(${target.left+target.width/2-origin.x}px,${target.top+target.height/2-origin.y}px) scale(.6)`,opacity:.3}],{duration:reduced?250:650,easing:'cubic-bezier(.2,.8,.4,1)'},true);
+    }
+    const live=new Set(battle.effects.map(effect=>effect.id));for(const id of supplySeen)if(!live.has(id))supplySeen.delete(id);
+  }
   document.addEventListener('pointerdown', () => window.WeightPlayAudio?.unlock(), { passive: true });
 
   const el = {
@@ -442,6 +467,7 @@
   }
 
   function stopLoop() {
+    clearFeedback();
     if (loopTimer) window.clearInterval(loopTimer);
     loopTimer = null;
     if (motionFrame !== null) window.cancelAnimationFrame(motionFrame);
@@ -453,6 +479,7 @@
   function renderEnemyMotion(timestamp) {
     motionFrame = null;
     if (!battle) return;
+    for(const animation of feedbackAnimations){if(paused()&&animation.playState==='running')animation.pause();else if(!paused()&&animation.playState==='paused')animation.play();}
     world?.render(battle, timestamp, paused() || Boolean(battle.result));
     if(battle.result&&!el.result.open){
       if(!paused()&&finaleLastTime!==null)battle.finaleElapsed+=Math.min(100,Math.max(0,timestamp-finaleLastTime));
@@ -474,16 +501,19 @@
     battle.motionTimestamp = performance.now();
     for (const event of new Set(battle.events)) {
       if (event === 'wave') setStatus(t('waveReward'));
-      else if (event === 'boss') setStatus(t('boss_' + battle.level.bossKind));
+      else if (event === 'boss') {setStatus(t('boss_' + battle.level.bossKind));showBattleBeat(t('boss_' + battle.level.bossKind));sound(event);}
+      else if (event === 'morale') {showBattleBeat(t('chargeEmpowered'));sound(event);}
       else sound(event);
     }
+    collectFeedback();
     if (outcome) finishBattle(outcome);
   }
 
   function recruit(type = battle?.loadout[0]) {
     if (!battle || battle.result || paused()) return;
     if (push.deploy(battle, type)) {
-      sound('merge');
+      sound('deploy');
+      const card=document.querySelector('[data-deploy="'+type+'"]');if(card)animateFeedback(card,[{filter:'brightness(1.6)'},{filter:'brightness(1)'}],{duration:240});
       setStatus(t('statusRecruit') + ' ' + (battle.army[type]?cardLabel(type):unitLabel({type, general:false})));
       renderBattle();
       emitMeasurementEvent('recruit', {stage:stageIndex + 1, troop:type});
@@ -493,7 +523,8 @@
   function useSkill() {
     if (!battle || battle.result || paused()) return;
     if (push.charge(battle)) {
-      sound('charge'); setStatus(t('chargeAuto')); renderBattle();
+      sound('charge'); setStatus(t('chargeAuto')); collectFeedback(); renderBattle();
+      showBattleBeat(t(battle.chargeBoosted?'chargeEmpowered':'chargeAction'));
       emitMeasurementEvent('skill', {skill:'horse', stage:stageIndex + 1});
     } else if (!battle.enemies.some(e => e.hp > 0)) setStatus(t('noTarget'));
   }
@@ -589,8 +620,14 @@
       bar.classList.toggle('is-critical', ratio > 0 && ratio <= .25);
     }
     el.status.textContent = battle.status || t('pushGoal');
-    el.pressureCue.textContent = battle.units.filter(u=>u.hp>0).length>=12 ? t('pushFull') : t('rule_' + level.rule);
+    el.pressureCue.textContent = (battle.units.filter(u=>u.hp>0).length>=12 ? t('pushFull') : t('rule_' + level.rule))+' '+t('feelHelp');
     const dock = document.getElementById('deployDock');
+    if(!dock.dataset.feedbackBound){dock.dataset.feedbackBound='1';dock.addEventListener('pointerdown',event=>{
+      const button=event.target.closest('[data-deploy]');if(!button?.disabled||!battle||battle.result||paused())return;
+      const type=button.dataset.deploy,cooldown=battle.deployCooldown[type]||0;
+      const reason=battle.units.filter(unit=>unit.hp>0).length>=12?t('pushFull'):cooldown?cardLabel(type)+' · '+Math.ceil(cooldown/10)+'s':cardLabel(type)+' · '+push.cost(battle,type)+' '+t('buns')+' · '+battle.buns+'/30';
+      setStatus(reason);showBattleBeat(reason);animateFeedback(button,[{filter:'brightness(.7)'},{filter:'brightness(1)'}],{duration:220});
+    });}
     const dockKey=locale+JSON.stringify(battle.army);
     if (dock.dataset.locale !== dockKey) {
       dock.dataset.locale=dockKey; dock.replaceChildren();
@@ -626,10 +663,11 @@
     }
     const button=el.skills.firstElementChild,cooldown=battle.skillsUsed.horse||0;
     button.disabled=cooldown>0||Boolean(battle.result);button.classList.toggle('ready',!cooldown);
-    button.querySelector('strong').textContent=t('chargeAction');
+    button.classList.toggle('empowered',battle.morale>=100);button.style.setProperty('--morale',battle.morale+'%');
+    button.querySelector('strong').textContent=t(battle.morale>=100?'chargeEmpowered':'chargeAction');
     const effect=t('chargeAuto');
-    button.querySelector('span').textContent=cooldown?Math.ceil(cooldown/10)+'s':effect;
-    button.setAttribute('aria-label',t('chargeAction')+': '+(cooldown?Math.ceil(cooldown/10)+'s':effect));
+    button.querySelector('span').textContent=(cooldown?Math.ceil(cooldown/10)+'s · ':'')+t('morale')+' '+battle.morale+'%';
+    button.setAttribute('aria-label',t(battle.morale>=100?'chargeEmpowered':'chargeAction')+': '+button.querySelector('span').textContent+' · '+effect);
   }
 
   function unitLabel(unit) {
@@ -802,7 +840,7 @@
   showScreen("main");
   window.setTimeout(updateStaticLocale, 900);
 
-  window.addEventListener("pagehide",()=>{stopLoop();stopWorld();audioContext?.close().catch(()=>{});audioContext=null;impactNoise=null;});
+  window.addEventListener("pagehide",()=>{stopLoop();stopWorld();});
   window.addEventListener('pageshow',event=>{if(event.persisted&&battle&&document.body.dataset.screen==='battle'){startWorld();if(!battle.result)startLoop();else if(!el.result.open){finaleLastTime=null;motionFrame=requestAnimationFrame(renderEnemyMotion);}}});
   window.__zhaoYunADouSmoke = {
     renderer:()=>world?{...world.info,pending:worldPending,failed:worldFailed}:null,
@@ -813,7 +851,7 @@
         unlocked: progress.unlocked,
         army: JSON.parse(JSON.stringify(progress.army)), stagePanel,
         result: battle && battle.result, finaleElapsed:battle?.finaleElapsed, resultOpen:el.result.open, loadout:battle?.loadout,
-        commandHp: battle && battle.commandHp,
+        commandHp: battle && battle.commandHp, morale:battle?.morale, combo:battle?.combo,maxCombo:battle?.maxCombo,
         adouHp: battle && battle.adouHp,
         deployCooldown:battle?.deployCooldown, buns: battle && battle.buns, pity:battle?.pity, talents:battle?.talents, rescued:battle?.rescued, recruitIndex:battle?.recruitIndex,
         wave:battle?.wave, rule:battle?.level.rule, commandLane:battle?.commandLane, cooldown:battle?.skillsUsed.horse||0, ticks:battle?.ticks, bestTimes:progress.bestTimes,

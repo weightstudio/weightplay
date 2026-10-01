@@ -28,8 +28,10 @@
   reviewedLocales.push(code);
  }
  const gateLocaleMap={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
+ const gameplayTags={en:["Mirror rotation","Light routing","Puzzle"],"zh-tw":["鏡面旋轉","光路規劃","益智"],"zh-cn":["镜面旋转","光路规划","益智"],ja:["鏡の回転","光路の設計","パズル"],ko:["거울 회전","빛 경로 설계","퍼즐"],es:["Giro de espejos","Rutas de luz","Rompecabezas"],"pt-br":["Rotação de espelhos","Rotas de luz","Quebra-cabeça"],fr:["Rotation de miroirs","Trajets lumineux","Réflexion"],de:["Spiegel drehen","Lichtwege planen","Rätsel"],it:["Rotazione degli specchi","Percorsi di luce","Rompicapo"],ru:["Поворот зеркал","Маршруты света","Головоломка"],hi:["दर्पण घुमाना","प्रकाश मार्ग","पहेली"],ar:["تدوير المرايا","مسارات الضوء","ألغاز"]};
  for(const [routeCode,localeCode] of Object.entries(gateLocaleMap)){
-  const gateRule=window.SUNBEAM_GATE_LOCALES?.[localeCode]?.guideBody;
+  window.SUNBEAM_GUIDE_LOCALES[routeCode].tags=gameplayTags[routeCode];
+  const gateRule=window.SUNBEAM_BLOOM_COPY?.[localeCode]?.guideBody||window.SUNBEAM_GATE_LOCALES?.[localeCode]?.guideBody;
   if(gateRule&&window.SUNBEAM_GUIDE_LOCALES[routeCode]){const guide=window.SUNBEAM_GUIDE_LOCALES[routeCode];guide.gateRule=gateRule;guide.rule3+=" "+gateRule;const names=window.SUNBEAM_CHAPTER_NAMES?.[localeCode];const heading=window.SUNBEAM_CHAPTER_HEADINGS?.[localeCode];if(names&&heading)guide.recovery+=" "+heading+" "+names.join(" · ")+"."}
  }
  window.SUNBEAM_GUIDE_OWNER=Object.freeze({reviewedSource:'WeightPlayGeneralReviewedGuides',hideRelatedGamesLocales:Object.freeze(reviewedLocales)});

@@ -3,7 +3,7 @@
 export const RACE_SOUNDS = Object.freeze({
   countdown:'ui.tick', go:'game.start', lap:'game.checkpoint',
   ring:'reward.collect', contact:'impact.soft', boost:'movement.dash',
-  pad:'movement.dash', driftBoost:'movement.dash',
+  pad:'movement.dash', driftBoost:'movement.dash', draftBoost:'movement.dash',
   win:'result.win', lose:'result.lose'
 });
 export class RaceAudio {

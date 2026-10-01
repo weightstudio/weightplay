@@ -136,7 +136,7 @@ function moveCar(race,car,input,dt) {
     car.driftLevel=tier;
     if(!stage.noRefill)car.nitro=Math.min(car.stats.tank,car.nitro+dt*.11*car.stats.drift);
   } else if(car.drifting) {
-    const tier=driftTier(car.driftBank);
+    const tier=onRoad&&car.contactCooldown<=0?driftTier(car.driftBank):0;
     if(tier) {
       car.miniBoost=[0,.65,1.05,1.5][tier];car.boostLevel=tier;
       car.speed=Math.min(car.stats.speed+7,car.speed+2+tier*1.5);
@@ -198,7 +198,8 @@ function moveCar(race,car,input,dt) {
   if(car.id===0)race.rings.forEach((ring,i)=>{
     const key=`${car.completedLaps}:${i}`;
     if(!car.collected.has(key)&&segmentDistance(car.prevX,car.prevZ,car.x,car.z,ring.x,ring.z)<2.2) {
-      car.collected.add(key);car.ringCount++;if(!stage.noRefill)car.nitro=Math.min(car.stats.tank,car.nitro+.08);event(race,'ring',car.ringCount);
+      car.collected.add(key);car.ringCount++;const before=car.nitro;if(!stage.noRefill)car.nitro=Math.min(car.stats.tank,car.nitro+.08);
+      if(race.events.length<48)race.events.push({type:'ring',value:car.ringCount,refilled:car.nitro>before,source:{x:ring.x,y:ring.y+1.7,z:ring.z}});
     }
   });
   checkpointCross(race,car,car.prevX,car.prevZ);

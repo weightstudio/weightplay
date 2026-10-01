@@ -305,3 +305,73 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 @media (min-width:700px) {
   .hero-workspace-columns { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
 }
+
+/* Commands and impacts share the arena coordinate space. */
+.unit-line { height: calc((100% - 190px) / 2); }
+.command-dock { position: absolute; z-index: 10; top: calc(50% - 15px); inset-inline: 5%; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; height: 44px; }
+.command-dock button { position: relative; min-width: 0; height: 44px; overflow: hidden; padding: 4px; border: 1px solid #5b7983; border-radius: 8px; color: #c9dae1; background: #102632ed; text-align: center; }
+.command-dock strong, .command-dock small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.command-dock small { color: #94bbb9; font-size: 9px; }
+.command-dock i { position: absolute; inset-inline: 0; bottom: 0; height: 3px; background: #0a141c; }
+.command-dock b { display: block; height: 100%; background: #55bfad; transition: width .22s; }
+.command-dock .is-ready { border-color: #ffe391; color: #ffe9a4; background: linear-gradient(145deg,#514428,#263f35); box-shadow: inset 0 0 12px #eac55e30,0 0 8px #eac55e35; }
+.command-dock .is-ready small { color: #fff0c0; }
+.target-choice { min-width: 44px; min-height: 44px; border: 1px solid #ffffff20; color: #fff; bottom: -16px; z-index: 6; }
+.unit.is-focused .hp { border-color: #ffe399; box-shadow: 0 0 7px #ffcf6c; }
+.unit.is-focused .target-choice { border-color: #f5c84c; color: #ffe599; }
+.unit.is-focused::after { content: '⌖'; position: absolute; z-index: 7; top: 8%; left: 50%; transform: translateX(-50%); color: #ffe599; font-size: 24px; pointer-events: none; }
+.unit.is-winding > .sprite { translate: 0 4px; filter: brightness(1.12); }
+.enemy-line .unit.is-winding > .sprite { translate: 0 -4px; }
+.combat-effect, .arena > .damage { position: absolute; z-index: 11; pointer-events: none; font-weight: 1000; text-shadow: 0 2px 4px #07151f; }
+.combat-effect { color: #ffdf86; font-size: 48px; }
+.combat-effect.critical-impact { color: #ffab77; font-size: 64px; }
+.combat-effect.guard { color: #8cfff1; font-size: 30px; }
+.combat-effect.healing { color: #91ffac; font-size: 17px; }
+.combat-effect.skill-title { padding: 5px 9px; max-width: 150px; border: 1px solid #92edf0; border-radius: 5px; color: #aaf7ff; background: #112c39e8; font-size: 12px; }
+.arena > .damage { animation: none; }
+.roster-gear { display: flex; gap: 4px; justify-content: center; }
+.roster-gear i { width: 8px; height: 8px; border: 1px solid #728d90; border-radius: 2px; }
+.roster-gear .filled { background: #82d6b4; border-color: #aef5cb; }
+.hero-workspace .section-title { flex-wrap: wrap; gap: 8px; }
+.best-gear { min-height: 44px; padding: 6px 12px; border: 1px solid #6ba992; border-radius: 8px; color: #b9f4dc; background: #203d36; font-size: 12px; font-weight: 800; }
+.best-gear:disabled { opacity: .4; }
+.loadout-slots { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.loadout-slot { position: relative; align-items: start; gap: 6px; min-height: 166px; padding: 10px; text-align: start; background: linear-gradient(140deg,#203845,#111f2d); border: 1px solid #49636a; border-radius: 12px; transition: border-color .18s,background-color .18s; }
+.loadout-slot .equipment-art { align-self: center; width: 64px; height: 64px; flex-basis: 64px; filter: drop-shadow(0 4px 4px #0008); }
+.loadout-slot b { font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
+.slot-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
+.slot-top > span { color: #9dedd0; font-size: 10px; }
+.loadout-slot.is-equipped { border-color: #63a68e; }
+.loadout-slot.is-empty .equipment-art { opacity: .25; filter: grayscale(1); }
+.loadout-slot.is-empty { border-style: dashed; }
+.loadout-slot[aria-pressed="true"] { border-color: #f5ce73; box-shadow: inset 0 0 0 1px #f5ce73,0 3px 12px #0004; }
+.hero-backpack { border-radius: 12px; background: linear-gradient(160deg,#182e3a,#101d2b); }
+.hero-backpack .equipment-row { padding: 12px; margin-block: 10px; border: 1px solid #405b65; border-radius: 10px; background: #213642; }
+.hero-backpack .equipment-row.worn-item { border-color: #75c3a2; background: #203c36; }
+.equipment-description strong { display: block; margin-block: 4px; font-size: 14px; }
+.holder-label { border-radius: 5px; color: #b6f2d1; background: #112c29; }
+.gear-comparison { display: block; margin-top: 6px; font-size: 12px; color: #c7d8e4; }
+.gear-comparison.better { color: #91efbe; }
+.gear-comparison.worse { color: #ffb29b; }
+.reward-flight { position: absolute; z-index: 30; pointer-events: none; }
+.hero-roster .roster-choice { flex-basis: 104px; }
+.hero-roster .roster-portrait { height: 52px; }
+.hero-detail, .hero-detail .hero-portrait { min-height: 110px; }
+.hero-detail .hero-portrait { height: 110px; }
+.hero-workspace-columns > section:first-child { display: flex; flex-direction: column; }
+.hero-detail { order: 0; }
+.hero-workspace-columns > section:first-child > .section-title { order: 1; }
+.loadout-slots { order: 2; }
+.hero-growth-actions { order: 3; margin-top: 12px; }
+@media (max-height:520px) and (orientation:landscape) {
+  .unit-line { height: auto; }
+  .command-dock { inset-inline: 35%; top: calc(50% - 18px); gap: 3px; }
+  .command-dock strong, .command-dock small { font-size: 8px; }
+}
+.hero-workspace button:active, .command-dock button:active, .target-choice:active { filter: brightness(1.3); }
+.hero-workspace-columns > section { animation: workspace-enter .2s ease-out; }
+@keyframes workspace-enter { from { opacity: .55; } to { opacity: 1; } }
+@media (prefers-reduced-motion:reduce) {
+  .unit > .sprite, .hp b, .command-dock b { transition: none; }
+  .unit.is-winding > .sprite { translate: none; }
+}

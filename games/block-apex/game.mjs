@@ -20,6 +20,7 @@ let locale = detectLocale(), screen = 'main', tab = 'stages', modalKind = null;
 let frame, rail, race = null, renderer = null, sound = null, input;
 let generation = 0, raf = 0, lastFrame = 0, accumulator = 0, disposed = false;
 let settingsPaused = false, feedbackUntil = 0, selectedStage = 1;
+const pickupFlights=new Set();
 let tutorialWaitTimer = 0, waitingForTutorial = false, tutorialWasOpened = false, tutorialPausedRace = false;
 let enginePromise = null, busy = false, hudClock = 0, lastCountdown = null;
 let analyticsRunStarted = false, analyticsRestartPending = false;
@@ -193,13 +194,18 @@ async function prepareArt() {
     $('artStatus').textContent=t('error');$('artStatus').hidden=false;document.body.dataset.apexArtError=error.name||'Error';
   }
 }
-function stopLoop() {cancelAnimationFrame(raf);raf=0;lastFrame=0;accumulator=0;}
+function stopLoop() {
+  cancelAnimationFrame(raf);raf=0;lastFrame=0;accumulator=0;clearFlights();
+  for(const id of ['feedback','countdown','nitroMeter','raceTargets'])for(const animation of $(id).getAnimations())animation.cancel();
+}
+function clearFlights(){for(const flight of pickupFlights){flight.animation.cancel();flight.dot.remove();}pickupFlights.clear();}
 function disposeView() {
   if(!renderer)return;
   renderer.scene?.traverse(node=>{if(node.isInstancedMesh)node.dispose();});
   renderer.dispose();renderer=null;
 }
 function endRace() {
+  clearFlights();$('arenaWrap').dataset.power='';$('arenaWrap').dataset.drift='0';$('arenaWrap').dataset.impact='false';
   generation++;busy=false;clearTutorialWait();endAnalytics('abandon');analyticsRestartPending=false;stopLoop();input.setEnabled(false);
   sound?.destroy();sound=null;disposeView();race=null;settingsPaused=false;
   hideModal();
@@ -210,6 +216,7 @@ function hideModal() {
   if(screen==='battle')frame.activate('battle');
 }
 function showModal(kind,title,description) {
+  clearFlights();
   modalKind=kind;input.setEnabled(false);stopLoop();sound?.silence();pauseRace(race);
   if(kind==='pause'||kind==='error')pauseAnalytics('game');
   $('modalTitle').textContent=title;$('modalText').textContent=description;$('modalDetails').replaceChildren();
@@ -314,22 +321,56 @@ function updateHud() {
   $('lapValue').textContent=`${Math.min(s.laps,p.completedLaps+1)} / ${s.laps}`;
   $('timeValue').textContent=(race.time+race.penalty).toFixed(1);
   $('speedValue').textContent=String(Math.round(p.speed*3.6));$('nitroMeter').max=p.stats.tank;$('nitroMeter').value=p.nitro;$('driftMeter').value=p.driftBank;
+  const power=p.boost?'nitro':p.miniBoost>0?'drift':p.draftBoost>0?'draft':'';
+  $('arenaWrap').dataset.power=power;$('arenaWrap').dataset.drift=String(p.driftLevel);$('arenaWrap').dataset.impact=String(p.impact>0);
+  const state=p.drifting?(p.driftLevel?t('releaseBoost',{n:p.driftLevel}):t('chargeDrift')):p.draftCharge>=1.4?t('draftReady'):p.drafting?t('drafting'):power?t('boosting'):'';
+  $('driveState').textContent=race.time<feedbackUntil&&state===$('feedback').textContent?'':state;
   $('raceObjective').textContent=stageTitle(s);
   $('raceTargets').textContent=[...(s.collect?[t('ringGoal',{n:`${p.ringCount}/${s.collect}`} )]:[]),...(s.drift?[t('driftGoal',{n:`${p.driftSeconds.toFixed(1)}/${s.drift}`} )]:[]),...(Number.isFinite(s.contactCap)?[t('cleanGoal',{n:`${p.contacts}/${s.contactCap}`} )]:[])].join(' · ');
   const count=race.status==='countdown'?Math.ceil(race.countdown):null;
-  if(count!==lastCountdown){lastCountdown=count;$('countdown').hidden=count===null;$('countdown').textContent=count===null?'':String(count);}
+  if(count!==lastCountdown){lastCountdown=count;$('countdown').hidden=count===null;$('countdown').textContent=count===null?'':String(count);if(count!==null)animateCue($('countdown'));}
   if(race.time>=feedbackUntil)$('feedback').textContent='';
   drawMap($('minimap'),race.track,race.cars);
+}
+function animateCue(node){
+  for(const animation of node.getAnimations())animation.cancel();
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  node.animate(reduced?[{opacity:.6},{opacity:1}]:[{opacity:.4,transform:'translateY(8px) scale(.9)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:180,easing:'cubic-bezier(.2,.8,.2,1)'});
+}
+function pickupFlight(event){
+  if(!event.source||!renderer||pickupFlights.size>=6)return;
+  const target=event.refilled?$('nitroMeter'):$('raceTargets');
+  const wrap=$('arenaWrap'),rect=wrap.getBoundingClientRect(),tank=target.getBoundingClientRect();
+  const start=renderer.projectWorld(event.source),scale=wrap.clientWidth/rect.width;
+  const x=start.visible?start.x*wrap.clientWidth:wrap.clientWidth*.5,y=start.visible?start.y*wrap.clientHeight:32;
+  const endX=(tank.x+tank.width/2-rect.x)*scale,endY=(tank.y+tank.height/2-rect.y)*scale;
+  const dot=document.createElement('span');dot.className='apex-pickup-flight';$('raceFx').append(dot);
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const animation=dot.animate(reduced?[{transform:`translate(${endX}px,${endY}px)`,opacity:1},{transform:`translate(${endX}px,${endY}px)`,opacity:0}]:[
+    {transform:`translate(${x}px,${y}px) scale(1.3)`,opacity:1},
+    {transform:`translate(${(x+endX)/2}px,${(y+endY)/2-30}px) scale(1)`,opacity:1,offset:.5},
+    {transform:`translate(${endX}px,${endY}px) scale(.4)`,opacity:0}],{duration:reduced?160:460,easing:'ease-in',fill:'forwards'});
+  const flight={dot,animation};pickupFlights.add(flight);
+  animation.onfinish=()=>{dot.remove();pickupFlights.delete(flight);animateCue(target);};
 }
 function processEvents() {
   for(const event of race.events.splice(0)) {
     if(event.type!=='win'&&event.type!=='lose')sound?.event(event);
+    renderer?.feedback(event);
     let message='';
     if(event.type==='go')message=t('go');
-    if(event.type==='driftBoost')message=t('drift')+' + '+t('nitro');
+    if(event.type==='driftBoost')message=t('driftRelease',{n:event.value});
+    if(event.type==='driftCharge')message=t('releaseBoost',{n:event.value});
+    if(event.type==='draftReady')message=t('draftReady');
+    if(event.type==='draftBoost')message=t('draftRelease');
+    if(event.type==='overtake')message=t('overtake',{n:event.value});
+    if(event.type==='ring'){message=t('ringGoal',{n:`${race.player.ringCount}/${race.stage.collect}`});pickupFlight(event);}
+    if(event.type==='boost')message=t('boosting');
+    if(event.type==='pad')message=t('boostPad');
+    if(event.type==='contact')message=t('contactFeedback');
     if(event.type==='recover')message=t('penalty')+' +3 s';
     if(event.type==='lap')message=t('lap')+' '+Math.min(race.stage.laps,event.value+1)+' / '+race.stage.laps;
-    if(message){$('feedback').textContent=message;feedbackUntil=race.time+1.5;}
+    if(message){$('feedback').textContent=message;$('feedback').dataset.kind=event.type;feedbackUntil=race.time+1.2;animateCue($('feedback'));}
   }
 }
 function scheduleLoop() {if(!raf&&!disposed&&race&&renderer&&!modalKind&&!settingsPaused&&!document.hidden)raf=requestAnimationFrame(tick);}
@@ -408,7 +449,8 @@ function boot() {
   listen(window,'pageshow',event=>{if(event.persisted&&!disposed)frame.activate(screen,{covered:!!modalKind});});
   activate('main');syncAnalytics();renderManagement();document.body.dataset.apexBooted='true';document.body.dataset.apexVersion=GAME_VERSION;
   window.BlockApex=Object.freeze({snapshot:()=>({version:GAME_VERSION,screen,modal:modalKind,stage:race?.stage.id,status:race?.status,time:race?.time,unlocked:store.data.unlocked,
-    player:race?{x:race.player.x,z:race.player.z,speed:race.player.speed,gates:race.player.gates,lap:race.player.completedLaps}:null,
+    player:race?{x:race.player.x,z:race.player.z,speed:race.player.speed,gates:race.player.gates,lap:race.player.completedLaps,
+      driftLevel:race.player.driftLevel,driftBank:race.player.driftBank,miniBoost:race.player.miniBoost,draftCharge:race.player.draftCharge,draftBoost:race.player.draftBoost,contacts:race.player.contacts}:null,
     resources:renderer?.metrics()||{renderer:false},raf:!!raf,pool:$('stageRail').children.length})});
   void prepareArt();
 }

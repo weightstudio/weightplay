@@ -37,4 +37,20 @@
  const genres={en:'Lane strategy', 'zh-Hant':'橫向推線','zh-Hans':'横向推线',ja:'横スクロール戦略',ko:'횡스크롤 전략',es:'Estrategia de avance','pt-BR':'Estratégia de avanço',fr:'Stratégie de progression',de:'Vormarschstrategie',it:'Strategia di avanzata',ru:'Стратегия наступления',hi:'आगे बढ़ने की रणनीति',ar:'استراتيجية التقدم'};
  const full={en:'Army limit: 12/12. Deploy again when a space opens.','zh-Hant':'部隊已滿 12/12，有空位即可再出兵。','zh-Hans':'部队已满 12/12，有空位即可再出兵。',ja:'部隊上限12/12。空きができると再出撃できます。',ko:'부대 한도 12/12. 자리가 나면 다시 출격하세요.',es:'Límite: 12/12. Despliega cuando haya espacio.','pt-BR':'Limite: 12/12. Envie mais quando houver espaço.',fr:'Limite : 12/12. Déployez dès qu’une place se libère.',de:'Truppenlimit: 12/12. Warte auf einen freien Platz.',it:'Limite: 12/12. Attendi un posto libero.',ru:'Лимит: 12/12. Дождитесь свободного места.',hi:'सेना सीमा: 12/12। जगह खाली होने पर भेजें।',ar:'حد الجيش: 12/12. أرسل قوات عند توفر مكان.'};
  for(const locale of Object.keys(genres)){const d=window.ZHAO_YUN_ADOU_LOCALES[locale];d.pushGenre=genres[locale];d.pushFull=full[locale];}
+ const feel={
+ en:['Morale','Empowered charge','Every 3 defeats within 6 seconds grants +2 supplies. Hits and defeats build morale; at 100%, the next charge deals 50% more damage and pushes farther.'],
+ 'zh-Hant':['戰意','趙雲・破陣','6 秒內連續擊破，每 3 隻額外補給 2 饅頭。命中與擊破累積戰意；滿 100% 時，下次突襲傷害提升 50%，擊退更遠。'],
+ 'zh-Hans':['战意','赵云・破阵','6 秒内连续击破，每 3 只额外补给 2 馒头。命中与击破积累战意；满 100% 时，下次突袭伤害提升 50%，击退更远。'],
+ ja:['戦意','趙雲・突破','6秒以内の連続撃破3体ごとに補給+2。命中と撃破で戦意が上がり、100%で次の突撃のダメージが50%増加し、より遠くへ押し戻します。'],
+ ko:['전의','조운・돌파','6초 이내 연속 처치 3회마다 보급 +2. 명중과 처치로 전의를 모으세요. 100%에서 다음 돌격 피해가 50% 증가하고 더 멀리 밀쳐냅니다.'],
+ es:['Moral','Carga potenciada','Cada 3 bajas encadenadas en 6 segundos dan +2 suministros. Golpear y derrotar aumenta la moral; al 100%, la próxima carga inflige un 50% más de daño y empuja más lejos.'],
+ 'pt-BR':['Moral','Investida reforçada','A cada 3 derrotas seguidas em 6 segundos, ganhe +2 suprimentos. Acertos e derrotas geram moral; a 100%, a próxima investida causa 50% mais dano e empurra mais longe.'],
+ fr:['Moral','Charge renforcée','Toutes les 3 éliminations enchaînées en 6 secondes donnent +2 provisions. Les coups et éliminations augmentent le moral ; à 100 %, la prochaine charge inflige 50 % de dégâts supplémentaires et repousse plus loin.'],
+ de:['Moral','Verstärkter Ansturm','Je 3 Abschüsse in Folge innerhalb von 6 Sekunden geben +2 Vorräte. Treffer und Abschüsse steigern die Moral; bei 100 % verursacht der nächste Ansturm 50 % mehr Schaden und stößt weiter zurück.'],
+ it:['Morale','Carica potenziata','Ogni 3 eliminazioni consecutive entro 6 secondi danno +2 scorte. Colpi ed eliminazioni aumentano il morale; al 100%, la prossima carica infligge il 50% di danni in più e respinge più lontano.'],
+ ru:['Боевой дух','Усиленный натиск','Каждые 3 последовательные победы над врагами за 6 секунд дают +2 припаса. Попадания и победы повышают боевой дух; при 100% следующий натиск наносит на 50% больше урона и отбрасывает дальше.'],
+ hi:['मनोबल','शक्तिशाली धावा','6 सेकंड के भीतर लगातार हर 3 दुश्मन हराने पर +2 रसद। वार और जीत से मनोबल बढ़ता है; 100% पर अगला धावा 50% अधिक क्षति करता है और दुश्मन को अधिक दूर धकेलता है।'],
+ ar:['المعنويات','اندفاع معزز','كل 3 هزائم متتابعة خلال 6 ثوان تمنح إمدادًا إضافيًا +2. الضربات والهزائم ترفع المعنويات؛ عند 100٪ يسبب الاندفاع التالي ضررًا إضافيًا بنسبة 50٪ ويدفع الأعداء أبعد.']
+ };
+ for(const [locale,row] of Object.entries(feel))Object.assign(window.ZHAO_YUN_ADOU_LOCALES[locale],{morale:row[0],chargeEmpowered:row[1],feelHelp:row[2]});
 })();

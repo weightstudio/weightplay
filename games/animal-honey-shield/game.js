@@ -222,7 +222,8 @@
     return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??`{${name}}`);
   }
   function announce(key,vars){
-    $("feedbackText").textContent=fmt(key,vars);
+    const message=fmt(key,vars);
+    if($("feedbackText").textContent!==message)$("feedbackText").textContent=message;
     if(key!=="repairLoose"){state.repairCueKey="";state.repairCueUntil=0}
   }
   function clearRepairCue(){
@@ -415,13 +416,15 @@
   function updateHud(){
     if(!$("timeValue"))return;
     const nectar=nectarSummary();
-    $("timeValue").textContent=Math.max(0,state.duration-state.elapsed).toFixed(1);
+    const remaining=Math.max(0,state.duration-state.elapsed).toFixed(1);
+    if($("timeValue").textContent!==remaining)$("timeValue").textContent=remaining;
     const finalSeconds=state.started&&!state.result&&state.duration-state.elapsed<=3;
     $("timeValue").style.color=finalSeconds?"#ffe27a":"";
     if(finalSeconds&&!feedback.warning){feedback.warning=true;window.WeightPlayAudio?.play("alert.warning")}
-    $("nectarValue").textContent=nectar.left;
+    if($("nectarValue").textContent!==String(nectar.left))$("nectarValue").textContent=nectar.left;
     $("waveFill").style.width=`${Math.min(100,state.elapsed/state.duration*100)}%`;
-    $("lineReadout").textContent=fmt("lineStatus",nectar);
+    const readout=fmt("lineStatus",nectar);
+    if($("lineReadout").textContent!==readout)$("lineReadout").textContent=readout;
   }
   function updateAnchorCoach(){
     const awaitingDraw=screen==="battle"&&!state.started&&!state.result&&!state.drawing&&state.strokes.length===0;
@@ -1297,7 +1300,9 @@
     window.WeightPlayAudio?.play(won?"result.win":"result.lose");
     $("resultTitle").textContent=fmt(won?"winTitle":"failTitle");
     $("resultStars").textContent=won?"★".repeat(state.result.stars)+"☆".repeat(3-state.result.stars):"☆☆☆";
-    $("resultText").textContent=fmt(won?"winText":"failText",{stage:stageIndex+1,nectar:nectar.left});
+    // The detailed rule below diagnoses the wall. Contact alone does not
+    // prove that it was loose, moved or lacked two anchors.
+    $("resultText").textContent=fmt(won?"winText":"touched",{stage:stageIndex+1,nectar:nectar.left});
     renderResultInsight();
     $("bestText").textContent=won?(isBest?fmt("newBest"):fmt("best",{stars:Math.max(previous,state.result.stars)})):"";
     $("nextBtn").disabled=!won||stageIndex>=29;$("nextBtn").setAttribute("aria-disabled",String($("nextBtn").disabled));
@@ -1784,21 +1789,21 @@
       }
       return{frames,minimumSpacing,wallMoves:state.wallMoves,maxAttached:state.maxGroupAttached,maxFrameWallMoveSolves:state.maxFrameWallMoveSolves,pushDirectionHistory:[...(stroke.pushDirectionHistory||[])],pushDirectionChanges:stroke.pushDirectionChanges||0,wallNavBuilds:state.wallNavBuilds,directWallTargets:state.directWallTargets,supporterCarryDistance:state.supporterCarryDistance,bees:state.bees.map(bee=>({x:bee.x,y:bee.y,intent:bee.intent}))};
     },
-    stage11ReportProbe(){
+    stage11ReportProbe(seconds=20){
       startStage(10);state.duration=20;
       const stroke={points:[{x:5,y:223},{x:160,y:223},{x:250,y:192},{x:360,y:130},{x:470,y:93},{x:580,y:87},{x:690,y:112},{x:730,y:167},{x:810,y:205},{x:940,y:223},{x:995,y:205}],flash:0,blockedFlash:0,moves:0,anchored:false};
       state.strokes=[stroke];refreshStrokeMobility(stroke,level(10));beginWave();
       for(let count=0;count<6;count++)spawnBee();
       const initialRoutes=state.bees.filter(bee=>navigationDirection(buildNavigationField(level(10)),bee.x,bee.y)).length;
-      for(let time=0;time<20&&!state.result;time+=.02)update(.02);
+      for(let time=0;time<seconds&&!state.result;time+=.02)update(.02);
       return{participants:6,initialRoutes,wallMoves:state.wallMoves,maxAttached:state.maxGroupAttached,pathOpenedAt:state.pathOpenedAt,moverStopped:state.mover===null,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};
     },
-    stage12ReportProbe(){
+    stage12ReportProbe(seconds=6){
       startStage(11);state.duration=12;
       const stroke={points:[{x:160,y:614},{x:170,y:521},{x:220,y:440},{x:290,y:397},{x:400,y:378},{x:550,y:378},{x:630,y:415},{x:670,y:484},{x:670,y:614}],flash:0,blockedFlash:0,moves:0,anchored:false};
       state.strokes=[stroke];refreshStrokeMobility(stroke,level(11));beginWave();for(let count=0;count<6;count++)spawnBee();
       const initialRoute=!!navigationDirection(buildNavigationField(level(11)),state.bees[0].x,state.bees[0].y);
-      for(let time=0;time<6&&!state.result;time+=.02)update(.02);
+      for(let time=0;time<seconds&&!state.result;time+=.02)update(.02);
       return{participants:6,initialRoute,approachStartedAt:state.wallApproachStartedAt,wallMoves:state.wallMoves,firstMoveAt:state.wallFirstMovedAt,maxAttached:state.maxGroupAttached,pathOpenedAt:state.pathOpenedAt,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};
     },
     stage16ScreenshotProbe(){

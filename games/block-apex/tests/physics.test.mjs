@@ -76,6 +76,37 @@ test('crossing the finish is insufficient when a required objective fails',()=>{
   const result=settle(race);assert.equal(result.success,false);assert.equal(result.goals.finish,true);assert.equal(result.goals.drift,false);
   assert.equal(settle(race),result);assert.equal(race.events.filter(e=>e.type==='lose').length,1);
 });
+test('three drift tiers give increasing immediate exit speed and duration',()=>{
+  let previousSpeed=0,previousDuration=0;
+  for(const bank of [.45,1.25,2.1]){
+    const race=running(1);at(race,30,0,20);race.player.drifting=true;race.player.driftBank=bank;
+    stepRace(race,{throttle:1});
+    assert.ok(race.player.speed>previousSpeed);assert.ok(race.player.miniBoost>previousDuration);
+    previousSpeed=race.player.speed;previousDuration=race.player.miniBoost;
+  }
+  const race=running(1);at(race,30,0,20);race.player.drifting=true;race.player.driftBank=.39;
+  stepRace(race,{throttle:1});assert.equal(race.player.miniBoost,0);
+});
+test('contact breaks drift and slipstream charge without granting an exit boost',()=>{
+  const race=running(1);at(race,30,race.track.width+1.4,20);
+  Object.assign(race.player,{drifting:true,driftBank:2.2,driftLevel:3,draftCharge:1.4,draftBoost:.8});
+  stepRace(race,{throttle:1});
+  assert.equal(race.player.driftBank,0);assert.equal(race.player.draftCharge,0);assert.equal(race.player.miniBoost,0);assert.equal(race.player.draftBoost,0);
+  assert.ok(race.player.impact>0);assert.ok(race.events.some(e=>e.type==='contact'));assert.ok(!race.events.some(e=>e.type==='driftBoost'));
+});
+test('a charged slipstream releases once, including fuel-conservation races',()=>{
+  for(const id of [1,22]){
+    const race=running(id);at(race,30,0,20);race.cars=[race.player];race.player.draftCharge=1.4;
+    const fuel=race.player.nitro;stepRace(race,{throttle:1});
+    assert.equal(race.player.draftBoost,.85);assert.equal(race.player.draftCharge,0);assert.ok(race.player.speed>22);
+    stepRace(race,{throttle:1});assert.equal(race.events.filter(e=>e.type==='draftBoost').length,1);
+    if(race.stage.noRefill)assert.equal(race.player.nitro,fuel);
+  }
+});
+test('recovery clears all transient driving benefits and impact state',()=>{
+  const race=running(1);Object.assign(race.player,{driftLevel:3,draftCharge:1.4,draftBoost:.8,impact:1,boostLevel:3});
+  recoverCar(race);for(const key of ['driftLevel','draftCharge','draftBoost','impact','boostLevel'])assert.equal(race.player[key],0);
+});
 test('timeout settles once and freezes further movement',()=>{
   const race=running(1);race.time=race.stage.limit-STEP/2;stepRace(race,{throttle:1});assert.equal(race.result.success,false);
   const x=race.player.x,time=race.time;stepRace(race,{throttle:1});assert.equal(race.player.x,x);assert.equal(race.time,time);

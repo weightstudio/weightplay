@@ -35,6 +35,31 @@
 .apex-meter-panel meter{width:120px;height:12px}
 .apex-countdown{position:absolute;inset:35% 0 auto;text-align:center;color:#fff;font-size:72px;text-shadow:0 3px 2px #17243a;pointer-events:none}
 .apex-feedback{position:absolute;inset-inline:8px;top:35%;margin:0;text-align:center;color:#fff;font-size:22px;font-weight:bold;text-shadow:0 2px 4px #13263a;pointer-events:none}
+.apex-race-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.apex-race-fx::before{content:'';position:absolute;inset:0;box-shadow:inset 0 0 40px rgba(52,207,246,.0);transition:box-shadow .15s}
+[data-power]:not([data-power=""])>.apex-race-fx::before{box-shadow:inset 0 0 40px rgba(52,207,246,.32)}
+[data-impact="true"]>.apex-race-fx::before{box-shadow:inset 0 0 28px rgba(255,143,85,.4)}
+.apex-pickup-flight{position:absolute;left:0;top:0;width:10px;height:10px;background:#ffd66b;box-shadow:0 0 10px #ffdc70;pointer-events:none}
+.apex-drive-state{position:absolute;top:calc(35% + 46px);inset-inline:12px;margin:0;min-height:36px;text-align:center;color:#b9f5ff;font-size:14px;font-weight:700;text-shadow:0 2px 4px #13263a;pointer-events:none}
+.apex-meter-panel{border-inline-start:3px solid #69d9ec;min-width:216px;transition:border-color .15s;background:linear-gradient(120deg,rgba(12,34,48,.94),rgba(10,23,34,.84))}
+.apex-meter-panel>strong{font-variant-numeric:tabular-nums;color:#b9f5ff}
+.apex-meter-panel meter{accent-color:#69e1ed}
+[data-drift="1"] .apex-meter-panel{border-color:#73e7ff}
+[data-drift="2"] .apex-meter-panel{border-color:#ffce57}
+[data-drift="3"] .apex-meter-panel{border-color:#f592ff}
+[data-drift="2"] #driftMeter{accent-color:#ffce57}
+[data-drift="3"] #driftMeter{accent-color:#f592ff}
+.apex-feedback[data-kind="contact"]{color:#ffc191}
+.apex-feedback[data-kind="driftBoost"],.apex-feedback[data-kind="overtake"]{color:#ffe29c}
+.apex-drive-controls button{transition:background-color .08s,border-color .08s,box-shadow .08s}
+.apex-drive-controls button.held{border-color:#65e5ed;box-shadow:inset 0 -4px rgba(23,142,160,.4)}
+.apex-overlay:not([hidden]) .apex-modal{animation:apex-panel-in .18s ease-out both}
+.apex-track-page:not([hidden]),.apex-management:not([hidden]){animation:apex-panel-in .18s ease-out both}
+@keyframes apex-panel-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){
+ .apex-overlay:not([hidden]) .apex-modal,.apex-track-page:not([hidden]),.apex-management:not([hidden]){animation-name:apex-panel-fade}
+ @keyframes apex-panel-fade{from{opacity:.5}to{opacity:1}}
+}
 .apex-drive-controls{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:8px;background:var(--wp-ui-background);touch-action:none}
 .apex-drive-controls button{min-width:0;min-height:52px;box-sizing:border-box;overflow-wrap:anywhere;touch-action:none;user-select:none;font-weight:bold;font-size:14px;background:var(--wp-ui-button-image);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line)}
 .apex-drive-controls button.held{background:var(--wp-ui-active);color:var(--wp-ui-text)}

@@ -25,7 +25,7 @@
       hp,maxHp:hp,damage:enemy?(boss?13:row[1])*(1+chapter*.04):Math.round(spec.damage*(card?.damage||1)),
       reach:enemy?(boss?10:row[2]):spec.reach,speed:enemy?(boss?.28:row[3]):spec.speed,
       period:enemy?(boss?24:row[4]):spec.period,attackCooldown:0,attackFlash:0,hitFlash:0,stun:0,
-      age:0,windup:null,defeatedTicks:0,moving:false,shield:type==='shield'||bossKind==='bulwark',charged:false,level:card?.stars||1,general:false,
+      age:0,windup:null,defeatedTicks:0,moving:false,lastHitStrong:false,shield:type==='shield'||bossKind==='bulwark',charged:false,level:card?.stars||1,general:false,
       trait:card?.trait||'',rarity:card?.rarity||0,cardId:card?.id||null,model:card?.model||type,slow:0,inspired:false};
   }
   function create(level,talents=[],army={}) {
@@ -33,7 +33,7 @@
     const b={level,talents:[...talents],army:JSON.parse(JSON.stringify(army)),units:[],enemies:[],ticks:0,buns:12+(talents.includes('supply1')?3:0),
       adouHp:base,maxAdouHp:base,commandHp:command,maxCommandHp:command,wave:1,spawned:0,
       nextSpawn:35,nextActorId:1,nextEffectId:1,recruitIndex:0,deployCooldown:{},skillsUsed:{horse:0},
-      chargeTicks:0,campFlash:0,effects:[],events:[],result:null,rescued:false,bossSpawned:false,status:''};
+      chargeTicks:0,chargeBoosted:false,campFlash:0,combo:0,comboTicks:0,maxCombo:0,morale:0,effects:[],events:[],result:null,rescued:false,bossSpawned:false,status:''};
     const selection=Object.keys(b.army);
     b.loadout=selection.length?selection:['blade','spear','horse','bow'];
     b.units.push(actor(b,b.loadout[0]));return b;
@@ -42,28 +42,41 @@
   function deploy(b,type) {
     if(!b.loadout.includes(type)||!troop(b,type).cost||b.result||b.deployCooldown[type]>0||b.buns<cost(b,type)||b.units.filter(u=>u.hp>0).length>=12)return false;
     b.buns-=cost(b,type);b.recruitIndex++;b.deployCooldown[type]=troop(b,type).cooldown;
-    b.units.push(actor(b,type));b.events.push('deploy');return true;
+    const unit=actor(b,type);b.units.push(unit);effect(b,'deploy',unit.x,'',unit.x,{sourceId:unit.id,ttl:8});b.events.push('deploy');return true;
   }
   function effect(b,kind,x,text='',fromX=x,visual={}) {
-    b.effects.push({id:b.nextEffectId++,kind,x,fromX,text,ttl:kind==='defeat'?8:6,...visual});
+    const f={id:b.nextEffectId++,kind,x,fromX,text,ttl:kind==='defeat'?10:6,...visual};f.duration=f.ttl;b.effects.push(f);
     if(b.effects.length>32)b.effects.shift();
   }
   function damage(b,target,amount,type) {
     if(!target||target.hp<=0)return;
     const blocked=(target.shield&&type!=='blade'&&type!=='charge')||(target.trait==='shield'&&['bow','flanker','arbalest','medic','bomber','cannon'].includes(type));
     const applied=Math.min(target.hp,Math.max(1,Math.round(amount*(blocked?.4:1))));
-    target.hp-=applied;target.hitFlash=3;
-    effect(b,blocked?'block':'hit',target.x,'−'+applied,target.x,{targetId:target.id,strong:applied>=18,enemy:target.enemy});b.events.push(blocked?'block':'hit');
-    if(target.hp<=0){target.defeatedTicks=5;target.windup=null;effect(b,'defeat',target.x,'',target.x,{targetId:target.id,enemy:target.enemy});b.events.push('defeat');if(target.enemy)b.buns=Math.min(30,b.buns+(target.boss?5:1));}
+    target.hp-=applied;target.hitFlash=4;target.lastHitStrong=!blocked&&applied>=18;
+    effect(b,blocked?'block':'hit',target.x,'−'+applied,target.x,{targetId:target.id,strong:target.lastHitStrong,enemy:target.enemy,weapon:type});
+    b.events.push(blocked?'block':target.lastHitStrong?'critical':['bow','flanker','arbalest','medic'].includes(type)?'arrowHit':'hit');
+    const previousMorale=b.morale;
+    if(target.enemy&&type!=='charge')b.morale=Math.min(100,b.morale+1);
+    if(target.hp<=0){
+      target.defeatedTicks=8;target.windup=null;effect(b,'defeat',target.x,'',target.x,{targetId:target.id,enemy:target.enemy});b.events.push('defeat');
+      if(target.enemy){
+        b.combo=b.comboTicks>0?b.combo+1:1;b.comboTicks=60;b.maxCombo=Math.max(b.maxCombo,b.combo);b.morale=Math.min(100,b.morale+18);
+        const bonus=b.combo%3===0?2:0,earned=Math.min(30-b.buns,(target.boss?5:1)+bonus);b.buns+=earned;
+        if(earned)effect(b,'supply',target.x,'+'+earned,target.x,{amount:earned,ttl:9,targetId:target.id});
+        if(b.combo>=2){effect(b,'combo',target.x,b.combo+'×',target.x,{ttl:10,strong:bonus>0});b.events.push('combo');}
+      }
+    }
+    if(previousMorale<100&&b.morale===100)b.events.push('morale');
     return applied;
   }
   function charge(b) {
     if(b.result||b.skillsUsed.horse>0||!b.enemies.some(e=>e.hp>0))return false;
+    b.chargeBoosted=b.morale>=100;if(b.chargeBoosted)b.morale=0;
     for(const enemy of b.enemies.filter(e=>e.hp>0)){
-      damage(b,enemy,has(b,'charge2')?36:24,'charge');enemy.x=Math.min(93,enemy.x+12);enemy.stun=10;
+      damage(b,enemy,(has(b,'charge2')?36:24)*(b.chargeBoosted?1.5:1),'charge');enemy.x=Math.min(93,enemy.x+(b.chargeBoosted?16:12));enemy.stun=b.chargeBoosted?14:10;
       enemy.windup=null;enemy.attackCooldown=Math.max(enemy.attackCooldown,10);
     }
-    b.skillsUsed.horse=has(b,'charge1')?70:100;b.chargeTicks=12;b.events.push('charge');effect(b,'charge',85,'',8);
+    b.skillsUsed.horse=has(b,'charge1')?70:100;b.chargeTicks=12;b.events.push('charge');effect(b,'charge',85,'',8,{strong:b.chargeBoosted,ttl:12});
     if(has(b,'charge3'))for(const u of b.units)u.attackCooldown=0;
     return true;
   }
@@ -71,6 +84,7 @@
   function step(b) {
     if(b.result)return b.result;
     b.ticks++;b.events=[];
+    b.comboTicks=Math.max(0,b.comboTicks-1);if(!b.comboTicks)b.combo=0;
     b.effects=b.effects.filter(f=>--f.ttl>0);
     for(const key of Object.keys(b.deployCooldown))b.deployCooldown[key]=Math.max(0,b.deployCooldown[key]-1);
     b.skillsUsed.horse=Math.max(0,b.skillsUsed.horse-1);b.chargeTicks=Math.max(0,b.chargeTicks-1);b.campFlash=Math.max(0,b.campFlash-1);
@@ -132,7 +146,7 @@
       reachable.sort((l,r)=>(!a.enemy&&a.type==='bow'?(Number(['medic','drummer','bomber'].includes(r.kind))-Number(['medic','drummer','bomber'].includes(l.kind))):0)||Math.abs(l.x-a.x)-Math.abs(r.x-a.x));
       const target=reachable[0],baseX=a.enemy?4:96,atBase=Math.abs(baseX-a.x)<=a.reach;
       if(target||atBase){
-        if(a.attackCooldown===0){const windup=a.type==='cannon'?12:a.kind==='bomber'?10:a.kind==='arbalest'?6:3;a.attackCooldown=a.period;a.attackFlash=windup+2;a.windup={target:target?target.id:'base',ticks:windup,total:windup};effect(b,a.type==='cannon'?'rocket':a.kind==='bomber'?'bomb':a.type==='bow'||['flanker','arbalest','medic'].includes(a.kind)?'arrow':'attack',target?target.x:baseX,'',a.x,{sourceId:a.id,targetId:target?.id,enemy:a.enemy,ttl:windup+3,flight:windup});}
+        if(a.attackCooldown===0){const windup=a.type==='cannon'?12:a.kind==='bomber'?10:a.kind==='arbalest'?6:4;a.attackCooldown=a.period;a.attackFlash=windup+3;a.windup={target:target?target.id:'base',ticks:windup,total:windup};effect(b,a.type==='cannon'?'rocket':a.kind==='bomber'?'bomb':a.type==='bow'||['flanker','arbalest','medic'].includes(a.kind)?'arrow':'attack',target?target.x:baseX,'',a.x,{sourceId:a.id,targetId:target?.id,enemy:a.enemy,ttl:windup+3,flight:windup});if(a.type!=='cannon'&&a.kind!=='bomber')b.events.push(a.type==='bow'||['flanker','arbalest','medic'].includes(a.kind)?'release':'swing');}
       }else{
         let speed=a.speed*(a.slow>0?.55:1);
         if(b.level.rule==='mud'&&a.x>35&&a.x<65)speed*=.6;

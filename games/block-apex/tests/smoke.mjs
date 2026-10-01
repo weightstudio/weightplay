@@ -2,18 +2,21 @@
 import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {localTestBrowserArgs,installLocalTestNetworkPolicy} from '../../../scripts/local-test-network-policy.mjs';
 if(!process.env.CODEX_THREAD_ID)throw new Error('Bind the real Codex thread/resource supervisor before running browser work.');
 const base=new URL(process.argv[2]||'http://127.0.0.1:8798');
 if(!['127.0.0.1','localhost','[::1]'].includes(base.hostname)||!['http:','https:'].includes(base.protocol))throw new Error('LOCAL_ORIGIN_ONLY');
 const output=resolve(process.env.APEX_EVIDENCE_DIR||`/tmp/block-apex-smoke-${Date.now()}`);
 if(!output.startsWith('/tmp/'))throw new Error('Evidence belongs under /tmp, not in the repository.');
 await mkdir(output,{recursive:true});
-const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
-const browser=await chromium.launch({headless:true});
-const runs=[],matrix=[['desktop','en',1280,900],['portrait','zh-Hant',390,844],['landscape','ja',844,390],['narrow-rtl','ar',360,740]];
+const playwright=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
+const {chromium}=playwright.default||playwright;
+const browser=await chromium.launch({headless:true,args:localTestBrowserArgs});
+const runs=[],matrix=[['desktop','en',1280,720],['portrait','zh-Hant',390,844],['tablet','de',612,876],['landscape','ja',844,390],['wide','en',1920,1080],['narrow-rtl','ar',360,740]];
 try{
   for(const [name,locale,width,height]of matrix){
-    const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,hasTouch:width<900});
+    const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,hasTouch:width<900,reducedMotion:name==='narrow-rtl'?'reduce':'no-preference'});
+    await installLocalTestNetworkPolicy(context);
     await context.route('**/*',route=>{
       const url=new URL(route.request().url());
       return url.origin===base.origin||['data:','blob:'].includes(url.protocol)?route.continue():route.abort();
@@ -39,9 +42,10 @@ try{
       await page.locator('#stagesTab').click();
       await page.screenshot({path:resolve(output,`${name}-stage.png`)});
       await page.locator('#stageRail [data-stage="1"]').click();
-      await page.waitForFunction(()=>window.BlockApex.snapshot().modal==='pause'||window.BlockApex.snapshot().modal==='error');
+      await page.waitForFunction(()=>document.querySelector('.wp-tutorial-action')||window.BlockApex.snapshot().modal==='pause'||window.BlockApex.snapshot().modal==='error');
       assert.notEqual(await page.evaluate(()=>window.BlockApex.snapshot().modal),'error');
-      await page.locator('#continue').click();
+      if(await page.locator('.wp-tutorial-action').isVisible())await page.locator('.wp-tutorial-action').click();
+      else await page.locator('#continue').click();
       await page.waitForFunction(()=>window.BlockApex.snapshot().status==='running');
       await page.waitForFunction(()=>window.BlockApex.snapshot().player.speed>1);
       assert.equal(await page.locator('#battleHeader #hudStats').count(),1);
@@ -49,7 +53,19 @@ try{
       assert.equal(await page.locator('#battleHeader [data-wp-frame-title]').isVisible(),false);
       const snapshot=await page.evaluate(()=>window.BlockApex.snapshot());
       assert.ok(snapshot.resources.drawCalls>0);assert.ok(snapshot.resources.triangles>0);
+      const controlsBefore=await page.locator('#driveControls').boundingBox();
+      await page.keyboard.down('Shift');
+      await page.waitForFunction(()=>document.querySelector('#arenaWrap').dataset.power==='nitro');
+      assert.ok((await page.locator('#driveState').innerText())||(await page.locator('#feedback').innerText()));
       await page.screenshot({path:resolve(output,`${name}-battle.png`)});
+      await page.keyboard.up('Shift');
+      assert.deepEqual(await page.locator('#driveControls').boundingBox(),controlsBefore);
+      await page.waitForFunction(()=>window.BlockApex.snapshot().player.speed>18);
+      await page.keyboard.down('Space');await page.keyboard.down('ArrowRight');
+      await page.waitForFunction(()=>window.BlockApex.snapshot().player.driftLevel>=1);
+      await page.keyboard.up('Space');await page.keyboard.up('ArrowRight');
+      await page.waitForFunction(()=>window.BlockApex.snapshot().player.miniBoost>0);
+      await page.screenshot({path:resolve(output,`${name}-drift.png`)});
       await page.keyboard.press('Escape');await page.waitForFunction(()=>window.BlockApex.snapshot().modal==='pause');
       const before=await page.evaluate(()=>window.BlockApex.snapshot().time);
       await page.waitForTimeout(120);assert.equal(await page.evaluate(()=>window.BlockApex.snapshot().time),before);

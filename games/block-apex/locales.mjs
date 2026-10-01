@@ -47,10 +47,27 @@ const names={
  hi:['बंदरगाह','पहाड़ियाँ','घाटी','घुमाव','तट','शिखर','नियॉन','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','उलटी दिशा'],
  ar:['الميناء','التلال','الوادي','المنعطفات','الساحل','القمة','النيون','Spark Paw Fia','Rainbow Hop Mimi','Drum Belly Panko','Bubble Fin Nori','الاتجاه العكسي'],
 };
+const feedbackKeys=['chargeDrift','releaseBoost','driftRelease','drafting','draftReady','draftRelease','overtake','boosting','boostPad','contactFeedback'];
+const feedbackRows={
+ en:['Charging drift','Release for boost · {n}/3','Drift boost · {n}/3','Slipstream charging','Slipstream ready — pull out to boost','Slingshot!','Overtake! · #{n}','Nitro boost','Boost pad!','Contact — charge lost'],
+ 'zh-Hant':['甩尾蓄力中','放開甩尾加速 · {n}/3 段','甩尾爆發 · {n}/3 段','尾流蓄力中','尾流就緒，切出加速！','尾流彈射！','超車！第 {n} 名','氮氣衝刺','加速板衝刺！','碰撞！蓄力中斷'],
+ 'zh-Hans':['漂移蓄力中','松开漂移加速 · {n}/3 段','漂移爆发 · {n}/3 段','尾流蓄力中','尾流就绪，切出加速！','尾流弹射！','超车！第 {n} 名','氮气冲刺','加速板冲刺！','碰撞！蓄力中断'],
+ ja:['ドリフト充電中','離して加速 · {n}/3','ドリフト加速 · {n}/3','スリップストリーム充電中','準備完了！横に出て加速','スリングショット！','追い越し！{n}位','ニトロ加速','加速パッド！','接触！充電中断'],
+ ko:['드리프트 충전 중','놓아서 가속 · {n}/3','드리프트 가속 · {n}/3','슬립스트림 충전 중','준비 완료! 옆으로 나가 가속','슬링샷!','추월! {n}위','니트로 가속','가속 패드!','충돌! 충전 중단'],
+ es:['Cargando derrape','Suelta para acelerar · {n}/3','Turbo de derrape · {n}/3','Cargando rebufo','¡Rebufo listo! Sal para acelerar','¡Impulso de rebufo!','¡Adelantamiento! · #{n}','Turbo nitro','¡Placa de turbo!','Contacto: carga perdida'],
+ 'pt-BR':['Carregando derrapagem','Solte para acelerar · {n}/3','Turbo de derrapagem · {n}/3','Carregando vácuo','Vácuo pronto! Saia para acelerar','Impulso de vácuo!','Ultrapassagem! · #{n}','Turbo nitro','Placa de turbo!','Contato: carga perdida'],
+ fr:['Dérapage en charge','Relâchez pour accélérer · {n}/3','Turbo de dérapage · {n}/3','Aspiration en charge','Aspiration prête ! Décalez-vous','Turbo d’aspiration !','Dépassement ! · #{n}','Turbo nitro','Plaque de turbo !','Contact : charge perdue'],
+ de:['Drift lädt','Loslassen zum Boosten · {n}/3','Drift-Boost · {n}/3','Windschatten lädt','Bereit! Zum Boosten ausscheren','Windschatten-Boost!','Überholt! · #{n}','Nitro-Boost','Boost-Feld!','Kontakt: Ladung verloren'],
+ it:['Derapata in carica','Rilascia per accelerare · {n}/3','Turbo derapata · {n}/3','Scia in carica','Scia pronta! Esci per accelerare','Turbo scia!','Sorpasso! · #{n}','Turbo nitro','Pedana turbo!','Contatto: carica persa'],
+ ru:['Заряд дрифта','Отпустите для ускорения · {n}/3','Ускорение дрифта · {n}/3','Заряд в воздушном следе','Готово! Выйдите из следа','Рывок из следа!','Обгон! · №{n}','Нитроускорение','Площадка ускорения!','Контакт: заряд потерян'],
+ hi:['ड्रिफ्ट चार्ज हो रहा है','बूस्ट के लिए छोड़ें · {n}/3','ड्रिफ्ट बूस्ट · {n}/3','स्लिपस्ट्रीम चार्ज हो रहा है','तैयार! बाहर निकलकर बूस्ट करें','स्लिपस्ट्रीम बूस्ट!','ओवरटेक! · #{n}','नाइट्रो बूस्ट','बूस्ट पैड!','टक्कर: चार्ज खत्म'],
+ ar:['شحن الانجراف','أفلت للتسارع · {n}/3','تسارع الانجراف · {n}/3','شحن السحب الهوائي','جاهز! اخرج جانباً للتسارع','اندفاع السحب الهوائي!','تجاوز! · #{n}','تسارع النيترو','لوحة التسارع!','اصطدام: فقدان الشحن'],
+};
 export const CATALOG=Object.fromEntries(LOCALE_ORDER.map(locale=>{
  const cells=rows[locale].split('|');if(cells.length!==KEYS.length)throw new Error(`LOCALE_ROW_LENGTH:${locale}:${cells.length}/${KEYS.length}`);
  if(Object.keys(details[locale]).sort().join('|')!==Object.keys(details.en).sort().join('|'))throw new Error(`LOCALE_KEYS:${locale}`);
- return [locale,Object.freeze({...Object.fromEntries(KEYS.map((key,index)=>[key,cells[index]])),...details[locale],names:names[locale]})];
+ if(feedbackRows[locale]?.length!==feedbackKeys.length)throw new Error(`FEEDBACK_LOCALE:${locale}`);
+ return [locale,Object.freeze({...Object.fromEntries(KEYS.map((key,index)=>[key,cells[index]])),...details[locale],...Object.fromEntries(feedbackKeys.map((key,index)=>[key,feedbackRows[locale][index]])),names:names[locale]})];
 }));
 export function translate(locale,key,values={}){
  const text=CATALOG[locale]?.[key];if(typeof text!=='string')throw new Error(`MISSING_TRANSLATION:${locale}:${key}`);
