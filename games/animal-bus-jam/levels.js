@@ -19,6 +19,15 @@
     71, 137, 24, 181, 192,
   ];
   const strategyLayouts = {
+    // Teach the holding decision from Stop 3, before the four-route arc.
+    2: { queues: [[2, 0], [0, 1, 2], [2, 1, 2]] },
+    3: { queues: [[1, 0], [2, 0, 2], [2, 1, 2]] },
+    4: { queues: [[2, 1, 0], [0, 1, 2], [2, 2]] },
+    5: { queues: [[0, 2], [1, 2], [0, 1], [0, 0]] },
+    6: { queues: [[1, 0], [2, 0], [1, 2], [1, 1]] },
+    7: { queues: [[0, 2, 1], [1, 2], [0], [0, 0]] },
+    8: { queues: [[2, 0], [2, 0], [1, 2], [1, 2]] },
+    9: { queues: [[2, 1], [2, 1], [0, 2], [0, 2]] },
     10: { queues: [[3, 0], [1, 0], [3, 2], [1, 2]], solution: [0, 0, 1, 1, 2, 3, 2, 3] },
     11: { queues: [[2, 0], [3, 1], [0, 3], [1, 2]], solution: [3, 1, 1, 0, 3, 2, 2, 0] },
     12: { queues: [[1, 0], [2, 3], [1, 3], [2, 0]], solution: [0, 0, 3, 3, 2, 2, 1, 1] },
@@ -107,35 +116,47 @@
     });
 
     const strategy = strategyLayouts[index];
-    return {
+    const level = {
       index,
       chapter,
       colors: config.colors,
       baySize: config.bay,
       buses,
       queues: strategy ? strategy.queues.map((queue) => queue.slice()) : queues,
-      solution: strategy ? strategy.solution.slice() : solution,
+      solution: strategy?.solution ? strategy.solution.slice() : strategy ? [] : solution,
       par: dispatchOrder.length,
     };
+    if (strategy && !strategy.solution) {
+      let state = { queues: level.queues.map((q) => q.slice()), waiting: [], busIndex: 0, busFilled: 0 };
+      while (!isComplete(level, state)) {
+        const { queue } = analyze(level, state);
+        if (queue < 0) throw new Error(`Unsolvable authored stop ${index + 1}`);
+        level.solution.push(queue);
+        state = step(level, state, queue);
+      }
+    }
+    return level;
   }
 
-  function settle(level, state) {
+  function settle(level, state, events) {
     while (state.busIndex < level.buses.length) {
       const bus = level.buses[state.busIndex];
       const waitingFrontMatches = state.waiting[0] === bus.color;
       if (waitingFrontMatches && state.busFilled < bus.seats) {
+        events?.push({ kind: "waiting-board", color: bus.color, busIndex: state.busIndex, seat: state.busFilled });
         state.waiting.shift();
         state.busFilled += 1;
         continue;
       }
       if (state.busFilled < bus.seats) break;
+      events?.push({ kind: "depart", busIndex: state.busIndex });
       state.busIndex += 1;
       state.busFilled = 0;
     }
     return state;
   }
 
-  function step(level, sourceState, queueIndex) {
+  function step(level, sourceState, queueIndex, events) {
     const state = {
       queues: sourceState.queues.map((queue) => queue.slice()),
       waiting: sourceState.waiting.slice(),
@@ -149,9 +170,14 @@
     const color = queue[0];
     if (color !== bus.color && state.waiting.length >= level.baySize) return null;
     queue.shift();
-    if (color === bus.color) state.busFilled += 1;
-    else state.waiting.push(color);
-    settle(level, state);
+    if (color === bus.color) {
+      events?.push({ kind: "board", color, busIndex: state.busIndex, seat: state.busFilled });
+      state.busFilled += 1;
+    } else {
+      events?.push({ kind: "hold", color, slot: state.waiting.length });
+      state.waiting.push(color);
+    }
+    settle(level, state, events);
     return state;
   }
 
@@ -172,6 +198,30 @@
       && (state.waiting.length >= level.baySize || noQueuedPassengersRemain);
   }
 
+  // Every step consumes a queued passenger, so this memoized search is acyclic.
+  // Optimize actual use of the holding lane, not the (always identical) move count.
+  const analyses = new WeakMap();
+  function analyze(level, sourceState) {
+    let cache = analyses.get(level);
+    if (!cache) { cache = new Map(); analyses.set(level, cache); }
+    const visit = (state) => {
+      const key = `${state.busIndex}:${state.busFilled}:${state.waiting.join("")}:${state.queues.map((q) => q.join("")).join("/")}`;
+      if (cache.has(key)) return cache.get(key);
+      if (isComplete(level, state)) return { holds: 0, queue: -1 };
+      let best = { holds: Infinity, queue: -1 };
+      state.queues.forEach((queue, index) => {
+        const next = step(level, state, index);
+        if (!next) return;
+        const cost = Number(queue[0] !== level.buses[state.busIndex]?.color);
+        const tail = visit(next);
+        if (cost + tail.holds < best.holds) best = { holds: cost + tail.holds, queue: index };
+      });
+      cache.set(key, best);
+      return best;
+    };
+    return visit({ ...sourceState, queues: sourceState.queues.map((q) => q.slice()), waiting: sourceState.waiting.slice() });
+  }
+
   const levels = Array.from({ length: 30 }, (_, index) => build(index));
   root.BUS_JAM_LEVELS = {
     colors: COLOR_COUNT,
@@ -181,6 +231,7 @@
     step,
     isComplete,
     isDeadlocked,
+    analyze,
   };
   if (typeof module !== "undefined") module.exports = root.BUS_JAM_LEVELS;
 })(typeof window !== "undefined" ? window : globalThis);

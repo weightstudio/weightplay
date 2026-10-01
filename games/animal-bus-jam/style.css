@@ -313,7 +313,7 @@ button { cursor: pointer; }
   transform: none;
   pointer-events: none;
   animation: busDepartLeft 560ms cubic-bezier(.3, .72, .18, 1) forwards;
-  animation-delay: calc(var(--departure-order, 0) * 90ms);
+  animation-delay: calc(340ms + var(--departure-order, 0) * 90ms);
 }
 .bus-head { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
 .bus strong { font-size: .76rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -654,3 +654,69 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .bus.departing { animation-duration: 80ms; animation-delay: 0ms; }
   .status.feedback-pop { animation: none; }
 }
+
+/* Transfers live in viewport coordinates; the logical canvas remains stable. */
+.transfer-passenger {
+  position: fixed;
+  z-index: 80;
+  pointer-events: none;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px var(--person));
+}
+.bus-suspended .bus.departing { animation-play-state: paused; }
+.dispatch-goal { color: #ffe1a2; letter-spacing: 0; white-space: nowrap; }
+.battle-content {
+  background: linear-gradient(#07142138, #07142182),
+    url("../../assets/animal-bus-jam-terminal-block-v16.webp") center / cover;
+}
+.convoy-panel { border-color: #81a7a4; background: #09202de0; }
+.bus { padding-block: 6px; }
+.bus-art { height: 60px; }
+.holding-panel[data-pressure="full"] { border-color: #ef9a62; box-shadow: inset 0 0 18px #ef9a6226; }
+.queue {
+  border-color: color-mix(in srgb, var(--lane) 50%, #536f83);
+  background: linear-gradient(180deg, #102534ed, #10253480);
+  box-shadow: inset 0 3px 0 color-mix(in srgb, var(--lane) 60%, transparent);
+}
+.passenger.front { transition: filter 140ms ease, background-color 140ms ease; }
+.passenger.front:hover { filter: brightness(1.22); }
+.passenger.front:active { filter: brightness(1.5); }
+.passenger.can-board { background: linear-gradient(110deg, color-mix(in srgb, var(--person) 55%, #12212d), #102b31); }
+.passenger.can-board .passenger-art-frame::after {
+  content: "↑";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  color: #fff;
+  font-size: 12px;
+  text-shadow: 0 1px 3px #000;
+}
+.queue-advance .passenger-art-frame { animation: queueAdvance 220ms ease-out; }
+.seat-arrived { animation: seatArrive 360ms ease-out; }
+.scene-enter { animation: sceneEnter 240ms ease-out; }
+dialog[open] { animation: sceneEnter 220ms ease-out; }
+.rating-stars { display: block; color: #ffcf65; font-size: 30px; letter-spacing: 6px; line-height: 1.2; }
+dialog > .result-rating { display: grid; gap: 5px; margin: 10px 0; font-size: .74rem; color: #f7e2b4; }
+.result-rating .rating-stars { animation: starsArrive 480ms ease-out; }
+.result-rating > span:last-child { line-height: 1.4; }
+@keyframes queueAdvance { from { opacity: .45; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes seatArrive { 40% { box-shadow: 0 0 15px 4px var(--bus); filter: brightness(1.8); } }
+@keyframes sceneEnter { from { opacity: .3; } to { opacity: 1; } }
+@keyframes starsArrive { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: none; } }
+@media (orientation: landscape) and (max-height: 500px) {
+  .bus { padding-block: 3px; }
+  .bus-art { height: 48px; }
+  .convoy-panel > .panel-label { flex-direction: column; gap: 2px; min-height: 26px; }
+  .convoy-panel > .buses { height: calc(100% - 26px); }
+  .dispatch-goal { font-size: .58rem; }
+  .rating-stars { font-size: 22px; }
+  dialog > .result-rating { margin: 5px 0; gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bus.departing { animation-name: busDepartFade; animation-duration: 100ms; }
+  .queue-advance .passenger-art-frame, .seat-arrived, .scene-enter,
+  dialog[open], .result-rating .rating-stars { animation: sceneEnter 100ms linear; }
+  .hint { animation: sceneEnter 100ms linear; outline-color: #fff; }
+  .jam { animation: sceneEnter 100ms linear; }
+}
+@keyframes busDepartFade { from { opacity: 1; } to { opacity: 0; } }

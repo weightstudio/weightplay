@@ -194,6 +194,7 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
 .world-label.combo{color:#ffe29a;font-size:clamp(20px,5vw,30px);font-weight:900;text-shadow:0 2px 2px #12302f}
 @media(prefers-reduced-motion:reduce){.skill-button::after{transition:none}}
 /* v40: troop capacity stays in the existing row; Army owns one scroll workspace. */
+#mainProgress{box-sizing:border-box;height:44px!important;min-height:44px!important;max-height:44px!important}
 #battle .battle-hud{grid-template-columns:68px 88px 44px minmax(0,1fr) 44px;gap:2px}
 #battle .battle-command{grid-column:2;grid-row:1;font:700 10px/1.2 system-ui;color:#b8e3d6;white-space:nowrap;text-align:center}
 #battle .battle-rule-hint{grid-column:3}

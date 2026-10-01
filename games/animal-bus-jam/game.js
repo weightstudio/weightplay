@@ -23,7 +23,7 @@
   const palette = ["#ef6b62", "#4da8e8", "#f0bb4d", "#9a7ae9"];
   const routeCodes = ["A", "B", "C", "D"];
   const GAME_ID = "animal-bus-jam";
-  const GAME_VERSION = 18;
+  const GAME_VERSION = 19;
   const INTERFACE_VERSION = 7;
   const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}-block-v16.webp`);
   const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}-block-v16.webp`);
@@ -64,6 +64,12 @@
   let state = null;
   let history = [];
   let moves = 0;
+  let holds = 0;
+  let assists = 0;
+  let holdingTarget = 0;
+  const bestKey = "animalBusJamMastery";
+  const best = window.BUS_JAM_MASTERY.readBest(read(bestKey));
+  const effects = new Set();
   let departingBusIndexes = [];
   let departureTimer = 0;
   let departureDeadline = 0;
@@ -140,7 +146,7 @@
 
   function t(key, vars = {}) {
     const active = dict[locale] || dict.en;
-    let value = active[key] ?? dict.en[key] ?? key;
+    let value = (key === "title" ? window.WEIGHTPLAY_GAME_TITLES?.[GAME_ID]?.[locale] : undefined) ?? active[key] ?? dict.en[key] ?? key;
     if (Array.isArray(value)) return value;
     return String(value).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? "");
   }
@@ -178,6 +184,7 @@
       busIndex: state.busIndex,
       busFilled: state.busFilled,
       moves,
+      holds,
     };
   }
 
@@ -189,6 +196,7 @@
       busFilled: saved.busFilled,
     };
     moves = saved.moves;
+    holds = saved.holds;
   }
 
   function applyLocale() {
@@ -203,16 +211,21 @@
     root.querySelectorAll("[data-t-alt]").forEach((element) => {
       element.alt = t(element.dataset.tAlt);
     });
+    const guide = root.querySelector('[data-t="guideBody"]');
+    if (guide) guide.textContent = `${t("guideBody")} ${t("masteryGuide")}`;
     $("locale").value = locale;
+    document.title = `${t("title")} | WeightPlay`;
     renderMainProgress();
     renderStage();
     if (screen === "battle" && state) render();
     renderFeedback();
     if ($("result").open) $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+    if ($("result").open) renderRating();
     if ($("leaveBattle").open) $("leaveBattleBody").textContent = t("leaveBody", { n: levelIndex + 1 });
   }
 
   function show(name) {
+    clearEffects();
     if (name !== "stage") cancelStageSettlement();
     if (name !== "battle") {
       window.clearTimeout(departureTimer);
@@ -233,6 +246,9 @@
     document.body.dataset.screen = name;
     document.body.dataset.gameView = name;
     screen = name;
+    const content = $(name).querySelector(name === "main" ? ".main-content" : name === "stage" ? ".stage-content" : ".battle-content");
+    content?.classList.remove("scene-enter");
+    if (content) { void content.offsetWidth; content.classList.add("scene-enter"); }
     if (name === "main") renderMainProgress();
     window.syncBusJamFrame?.();
     window.scrollTo(0, 0);
@@ -276,6 +292,8 @@
   }
 
   function suspendDeparture() {
+    clearEffects();
+    document.body.classList.add("bus-suspended");
     (__wpNotifyMeasurement(), lifecycleSuspended = true);
     if (!departureTimer) return;
     departureRemaining = Math.max(0, departureDeadline - performance.now());
@@ -287,6 +305,7 @@
   function resumeDeparture() {
     if (!lifecycleSuspended || !windowActive || !pageVisible || pageCached) return;
     (__wpNotifyMeasurement(), lifecycleSuspended = false);
+    document.body.classList.remove("bus-suspended");
     if (screen === "battle" && departingBusIndexes.length) scheduleDeparture(departureRemaining);
   }
 
@@ -342,7 +361,7 @@
     if (!level) return;
     const locked = index > 0 && !progress[index - 1];
     const active = index === selected;
-    const stateLabel = locked ? `🔒 ${t("locked")}` : progress[index] ? `✓ ${t("complete")}` : t("stageMeta", {
+    const stateLabel = locked ? `🔒 ${t("locked")}` : best[index] ? t("masteryBest", best[index]) : progress[index] ? `✓ ${t("complete")}` : t("stageMeta", {
       buses: level.buses.length,
       bay: level.baySize,
     });
@@ -576,10 +595,12 @@
     element.style.setProperty("--departure-order", departureOrder);
     if (departing) element.setAttribute("aria-hidden", "true");
     else element.removeAttribute("aria-hidden");
+    const previousFilled = Number(element.dataset.filled || 0);
+    element.dataset.filled = String(filled);
     element.innerHTML = `
       <div class="bus-head"><strong>${t("colors")[bus.color]}</strong><span class="bus-route">${active ? t("activeBus") : `R-${index + 1}`}</span></div>
       <img class="bus-art" src="${busArt[bus.color]}" alt="" aria-hidden="true">
-      <div class="seats" aria-label="${t("busLabel", { color: t("colors")[bus.color], filled, capacity: bus.seats })}">${Array.from({ length: bus.seats }, (_, seat) => `<i class="${seat < filled ? "filled" : ""}"></i>`).join("")}</div>
+      <div class="seats" aria-label="${t("busLabel", { color: t("colors")[bus.color], filled, capacity: bus.seats })}">${Array.from({ length: bus.seats }, (_, seat) => `<i class="${seat < filled ? "filled" : ""}${seat >= previousFilled && seat < filled ? " seat-arrived" : ""}"></i>`).join("")}</div>
     `;
   }
 
@@ -611,7 +632,8 @@
 
   function passenger(color, queueIndex, itemIndex) {
     const front = itemIndex === 0;
-    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" data-color="${color}" style="--person:${palette[color]}" aria-label="${t("personLabel", { color: t("colors")[color] })}" ${front ? "data-wp-primary-action=\"true\"" : "disabled tabindex=\"-1\" aria-hidden=\"true\" aria-disabled=\"true\""}>
+    const matches = front && color === levels[levelIndex].buses[state.busIndex]?.color;
+    return `<button class="passenger ${front ? "front" : ""}${matches ? " can-board" : ""}" data-queue="${queueIndex}" data-color="${color}" style="--person:${palette[color]}" aria-label="${t("personLabel", { color: t("colors")[color] })}" ${front ? "data-wp-primary-action=\"true\"" : "disabled tabindex=\"-1\" aria-hidden=\"true\" aria-disabled=\"true\""}>
       <span class="passenger-art-frame" aria-hidden="true"><img class="passenger-art" src="${passengerArt[color]}" alt=""><b>${routeCodes[color]}</b></span>
       <span>${t("colors")[color]}</span>
     </button>`;
@@ -624,6 +646,9 @@
     $("chapter").textContent = t("chapter", { n: level.chapter + 1 });
     $("stageName").textContent = t("stop", { n: levelIndex + 1 });
     $("remaining").textContent = t("remaining", { n: remaining });
+    $("dispatchGoal").textContent = t("dispatchGoal", { holds, target: holdingTarget });
+    $("dispatchGoal").title = t("masteryGuide");
+    root.querySelector(".holding-panel").dataset.pressure = state.waiting.length >= level.baySize ? "full" : "open";
     renderBuses(level);
     $("holdingCount").textContent = `${state.waiting.length}/${level.baySize}`;
     $("holding").innerHTML = Array.from({ length: level.baySize }, (_, index) => {
@@ -633,7 +658,7 @@
         : `<span class="holding-slot occupied" data-color="${color}" style="--person:${palette[color]}"><img class="holding-passenger-art" src="${passengerArt[color]}" alt="" aria-hidden="true"><b>${routeCodes[color]}</b></span>`;
     }).join("");
     $("queues").innerHTML = state.queues.map((queue, queueIndex) => `
-      <div class="queue" role="listitem">
+      <div class="queue" role="listitem" style="--lane:${palette[queue[0]] || "#45d7d0"}">
         <span class="queue-label">${t("queueNumber", { n: queueIndex + 1 })}</span>
         ${queue.length ? queue.map((color, itemIndex) => passenger(color, queueIndex, itemIndex)).join("") : `<span class="queue-empty">—</span>`}
       </div>
@@ -650,7 +675,50 @@
     nextPassenger?.focus({ preventScroll: true });
   }
 
+  function clearEffects() {
+    effects.forEach(({ animation, node }) => { animation.cancel(); node?.remove(); });
+    effects.clear();
+  }
+
+  function animateTransfer(color, from, target) {
+    if (!from || !target || lifecycleSuspended || !target.isConnected) return;
+    const to = target.getBoundingClientRect();
+    if (effects.size >= 12) {
+      const oldest = effects.values().next().value;
+      oldest.animation.cancel(); oldest.node?.remove(); effects.delete(oldest);
+    }
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const node = document.createElement("img");
+    node.src = passengerArt[color];
+    node.alt = "";
+    node.setAttribute("aria-hidden", "true");
+    node.className = "transfer-passenger";
+    const size = Math.max(20, Math.min(46, from.height));
+    const startX = from.left + from.width / 2 - size / 2;
+    const startY = from.top + from.height / 2 - size / 2;
+    node.style.cssText = `left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;--person:${palette[color]}`;
+    document.body.append(node);
+    const dx = to.left + to.width / 2 - size / 2 - startX;
+    const dy = to.top + to.height / 2 - size / 2 - startY;
+    const animation = node.animate(reduced ? [{ opacity: 1 }, { opacity: 0 }] : [
+      { transform: "translate(0,0) scale(1)", opacity: 1 },
+      { transform: `translate(${dx * .5}px,${dy * .5 - 16}px) scale(1.12)`, opacity: 1, offset: .5 },
+      { transform: `translate(${dx}px,${dy}px) scale(.55)`, opacity: 0 },
+    ], { duration: reduced ? 100 : 320, easing: "cubic-bezier(.2,.7,.25,1)" });
+    const effect = { animation, node };
+    effects.add(effect);
+    const cleanup = () => { node.remove(); effects.delete(effect); };
+    animation.onfinish = cleanup;
+    animation.oncancel = cleanup;
+  }
+
+  function renderRating() {
+    const stars = window.BUS_JAM_MASTERY.rating(holds, holdingTarget, assists);
+    $("resultRating").innerHTML = `<span class="rating-stars" aria-hidden="true">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</span><span>${t("masteryResult", { stars, holds, target: holdingTarget, assists })}</span>`;
+  }
+
   function startLevel(index) {
+    clearEffects();
     window.clearTimeout(departureTimer);
     departureTimer = 0;
     departureDeadline = 0;
@@ -667,6 +735,9 @@
     };
     history = [];
     moves = 0;
+    holds = 0;
+    assists = 0;
+    holdingTarget = engine.analyze(level, state).holds;
     (__wpNotifyMeasurement(), $("result").close());
     $("deadlock").close();
     (__wpNotifyMeasurement(), $("leaveBattle").close());
@@ -683,11 +754,14 @@
 }
 
   function dispatch(queueIndex, restoreKeyboardFocus = false) {
+    if (screen !== "battle" || lifecycleSuspended || $("result").open || $("deadlock").open || $("leaveBattle").open) return;
     const level = levels[levelIndex];
     const color = state.queues[queueIndex]?.[0];
     const activeColor = level.buses[state.busIndex]?.color;
     if (color === undefined || activeColor === undefined) return;
     const previousWaiting = state.waiting.length;
+    const sourceRect = root.querySelector(`.passenger.front[data-queue="${queueIndex}"] .passenger-art`)?.getBoundingClientRect();
+    const waitingRects = [...root.querySelectorAll(".holding-slot.occupied")].map((slot) => slot.getBoundingClientRect());
     if (color !== activeColor && state.waiting.length >= level.baySize) {
       announceFeedback("holdingFull", "blocked");
       root.querySelector(".holding-panel")?.classList.remove("jam");
@@ -696,10 +770,12 @@
     }
     history.push(snapshot());
     const previousBusIndex = state.busIndex;
-    const nextState = engine.step(level, state, queueIndex);
+    const events = [];
+    const nextState = engine.step(level, state, queueIndex, events);
     if (!nextState) return;
     state = nextState;
     moves += 1;
+    if (color !== activeColor) holds += 1;
     window.WeightPlayAudio?.play("board.move");
     trackFunnel("dispatch", {
       queue: queueIndex + 1,
@@ -709,16 +785,24 @@
       move_count: moves,
     });
     if (state.busIndex > previousBusIndex) {
-      departingBusIndexes = Array.from(
+      departingBusIndexes = [...new Set([...departingBusIndexes, ...Array.from(
         { length: state.busIndex - previousBusIndex },
         (_, offset) => previousBusIndex + offset,
-      );
+      )])];
       window.clearTimeout(departureTimer);
       const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-      const departureDuration = reducedMotion ? 80 : 560 + (departingBusIndexes.length - 1) * 90;
+      const departureDuration = reducedMotion ? 100 : 900 + (departingBusIndexes.length - 1) * 90;
       scheduleDeparture(departureDuration);
     }
     render();
+    root.querySelectorAll(".queue")[queueIndex]?.classList.add("queue-advance");
+    let waitingIndex = 0;
+    events.forEach((event) => {
+      if (event.kind === "depart") return;
+      const target = event.kind === "hold" ? $("holding").children[event.slot]
+        : root.querySelector(`.bus[data-bus-index="${event.busIndex}"] .seats`)?.children[event.seat];
+      animateTransfer(event.color, event.kind === "waiting-board" ? waitingRects[waitingIndex++] : sourceRect, target);
+    });
     if (restoreKeyboardFocus) focusNextPassenger(queueIndex);
     const clearedWaiting = previousWaiting > state.waiting.length;
     const departed = state.busIndex > previousBusIndex;
@@ -746,10 +830,14 @@
   function finishLevel() {
     if (!state || !engine.isComplete(levels[levelIndex], state) || $("result").open) return;
     progress[levelIndex] = true;
+    const result = { stars: window.BUS_JAM_MASTERY.rating(holds, holdingTarget, assists), holds };
+    best[levelIndex] = window.BUS_JAM_MASTERY.keepBest(best[levelIndex], result);
+    write(bestKey, JSON.stringify(best));
     save();
     renderMainProgress();
     window.WeightPlayAudio?.play("result.win");
     $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+    renderRating();
     resultActionClaimed = false;
     $("resultStages").disabled = false;
     $("retry").disabled = false;
@@ -770,6 +858,8 @@
   function undo() {
     const saved = history.pop();
     if (!saved) return;
+    clearEffects();
+    assists += 1;
     window.clearTimeout(departureTimer);
     departureTimer = 0;
     departureDeadline = 0;
@@ -784,13 +874,9 @@
 
   function hint() {
     const level = levels[levelIndex];
-    const activeColor = level.buses[state.busIndex]?.color;
-    let queueIndex = state.queues.findIndex((queue) => queue[0] === activeColor);
-    if (queueIndex < 0 && state.waiting.length < level.baySize) {
-      const nextColor = level.buses[state.busIndex + 1]?.color;
-      queueIndex = state.queues.findIndex((queue) => queue.length && queue[0] === nextColor);
-    }
-    if (queueIndex < 0) queueIndex = state.queues.findIndex((queue) => queue.length);
+    const queueIndex = engine.analyze(level, state).queue;
+    assists += 1;
+    if (queueIndex < 0) { announceFeedback("hintRecover", "blocked"); return; }
     const button = root.querySelector(`.passenger.front[data-queue="${queueIndex}"]`);
     if (button) {
       announceFeedback("hintMove", "hint", {

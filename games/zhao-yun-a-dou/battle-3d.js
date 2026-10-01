@@ -89,9 +89,9 @@ export class ZhaoBattle3D {
     }
     this.peakGeometry=new THREE.ConeGeometry(1,1,5);
     for(let i=0;i<13;i++){
-      const x=(i-6)*2.7,h=4+(i*7%5)*.9,z=-17-(i%3)*5;
+      const x=(i-6)*2.1,h=2.8+(i*7%5)*.45,z=-14-(i%3)*3;
       const peak=new THREE.Mesh(this.peakGeometry,this.mat(i%2?0x304e5d:0x496675));
-      peak.position.set(x,h/2-2,z);peak.scale.set(3.1,h,3.1);peak.rotation.y=i*.6;g.add(peak);
+      peak.position.set(x,h/2-2,z);peak.scale.set(1.9,h,1.9);peak.rotation.y=i*.6;g.add(peak);
     }
     for(const side of [-1,1])for(let k=0;k<4;k++){
       const x=side*(5.3+k*.8),z=3.5+k*1.4;

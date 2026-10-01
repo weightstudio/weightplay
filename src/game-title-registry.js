@@ -178,8 +178,8 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "animal-bus-jam": {
     "__localizedExact": true,
     "en": "Panko's Bus Jam",
-    "zh-Hant": "Panko 公車大塞車",
-    "zh-Hans": "Panko 公交大塞车",
+    "zh-Hant": "公車大塞車",
+    "zh-Hans": "公交大塞车",
     "ja": "Pankoのバスジャム",
     "ko": "판코의 버스 정리",
     "es": "Atasco de buses de Panko",

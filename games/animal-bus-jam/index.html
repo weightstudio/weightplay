@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-bus-jam/"+location.search+location.hash)}catch{location.replace("/en/games/animal-bus-jam/"+location.search+location.hash)}})();</script>
+  <script src="/src/game-title-registry.js?v=20261001-bus-jam-v19-mastery-motion" data-wp-game-title-registry></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-bus-jam/" />
@@ -27,8 +28,8 @@
   <meta name="theme-color" content="#081622">
   <title>Panko's Bus Jam | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260926-bus-jam-v18-main-progress-audio">
-  <link rel="stylesheet" href="style.css?v=20260926-bus-jam-v18-main-progress-audio">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261001-bus-jam-v19-mastery-motion">
+  <link rel="stylesheet" href="style.css?v=20261001-bus-jam-v19-mastery-motion">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
 </head>
@@ -85,7 +86,7 @@
     <section class="battle-content">
       <div id="battleInfo" data-wp-frame-info><div><small id="chapter"></small><strong id="stageName"></strong></div><span id="remaining"></span></div>
       <div class="convoy-panel">
-        <div class="panel-label" data-t="convoy">DEPARTURE ORDER</div>
+        <div class="panel-label"><span data-t="convoy">DEPARTURE ORDER</span><span id="dispatchGoal" class="dispatch-goal" aria-live="off"></span></div>
         <div id="buses" class="buses"></div>
       </div>
       <div class="dispatch-floor">
@@ -115,6 +116,7 @@
     <p class="eyebrow" data-t="complete">TERMINAL CLEARED</p>
     <h2 data-t="resultTitle">Every convoy departed!</h2>
     <p id="resultBody"></p>
+    <div id="resultRating" class="result-rating"></div>
     <div class="result-actions">
       <button id="resultStages" data-t="stages">Stages</button>
       <button id="next" class="primary" data-t="next">Next terminal</button>
@@ -144,13 +146,14 @@
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
   <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
-  <script src="levels.js"></script>
-  <script src="locales.js"></script>
-  <script src="strategy-locales.js?v=20260926-bus-jam-v18-main-progress-audio"></script>
+  <script src="levels.js?v=20261001-bus-jam-v19-mastery-motion"></script>
+  <script src="mastery.js?v=20261001-bus-jam-v19-mastery-motion"></script>
+  <script src="locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
+  <script src="strategy-locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
+  <script src="mastery-locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-bus-block-v16"></script>
-  <script src="game.js?v=20260926-bus-jam-v18-main-progress-audio"></script>
+  <script src="game.js?v=20261001-bus-jam-v19-mastery-motion"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>
 </html>

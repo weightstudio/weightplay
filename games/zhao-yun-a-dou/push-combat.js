@@ -123,7 +123,7 @@
       }
       if((a.bossKind==='summoner'||a.bossKind==='warlord')&&a.age%95===0)spawn(b,'soldier');
       if(a.windup){
-        a.windup.ticks-=!a.enemy&&b.furyTicks>0?2:1;
+        a.windup.ticks-=1;
         if(a.windup.ticks<=0){const hit=a.windup;a.windup=null;
           if(hit.target==='base'&&Math.abs((a.enemy?4:96)-a.x)<=a.reach+1){
             if(a.enemy){b.adouHp=Math.max(0,b.adouHp-a.damage);b.campFlash=5;b.events.push('hurt');effect(b,'hit',4,'−'+Math.round(a.damage));}
