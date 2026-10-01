@@ -86,6 +86,8 @@ async function playMove(x,y){
  const rewardWasClaimed=!practiceRun&&state.status==='won'&&hasFirstClearBlock();
  if(state.status!=='playing'&&!practiceRun)tracking()?.end(state.status==='won'?'win':'lose');
  const blockGranted=!practiceRun&&state.status==='won'&&!rewardWasClaimed&&hasFirstClearBlock();
+ // Result owns the committed cube feedback; its actions must be usable immediately.
+ if(blockGranted)window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID);
  if(state.status==='won'){
   if(!practiceRun){const par=solve(newState(LEVELS[state.level-1])).moves.length;award(save,state.level,state.moves,usedHint,par);persist();}
   const resultText=`${stageName(state.level)} · ${t('moves')}${practiceRun?` · ${t('practiceResult')}`:''}`;

@@ -30,7 +30,6 @@ export class CastleCascade2D {
     this.pressedIndex = -1;
     this.dragOffset = { x: 0, y: 0 };
     this.dragTarget = { x: 0, y: 0 };
-    this.dragVelocity = { x: 0, y: 0 };
     this.keyboardFocus = false;
     this.releasePose = null;
     this.gesturePose = null;
@@ -141,16 +140,17 @@ export class CastleCascade2D {
       const dx = (event.clientX - this.pointerDown.x) * this.width / rect.width;
       const dy = (event.clientY - this.pointerDown.y) * this.height / rect.height;
       this.dragTarget = Math.abs(dx) > Math.abs(dy)
-        ? { x: clamp(dx, -cell * .42, cell * .42), y: clamp(dy * .15, -cell * .06, cell * .06) }
-        : { x: clamp(dx * .15, -cell * .06, cell * .06), y: clamp(dy, -cell * .42, cell * .42) };
-      if (this.reducedMotion) this.dragOffset = { ...this.dragTarget };
+        ? { x: clamp(dx, -cell * .90, cell * .90), y: clamp(dy * .15, -cell * .06, cell * .06) }
+        : { x: clamp(dx * .15, -cell * .06, cell * .06), y: clamp(dy, -cell * .90, cell * .90) };
+      // Position follows this pointer event; only decoration/release is eased.
+      this.dragOffset = { ...this.dragTarget };
       this.invalidate();
     };
     this.handlePointerUp = (event) => {
       const down = this.pointerDown;
       const cell = this.boardBounds.size / BOARD_WIDTH;
       const heldFor = performance.now() - this.pressedAt;
-      const lift = clamp(heldFor / 100, 0, 1);
+      const lift = clamp(heldFor / 70, 0, 1);
       const pose = down && !this.reducedMotion ? {
         index: down.index, x: this.dragOffset.x, lift,
         y: this.dragOffset.y - lift * cell * (.09 + Math.sin(heldFor / 180) * .018),
@@ -179,7 +179,6 @@ export class CastleCascade2D {
       this.pressedIndex = -1;
       this.dragOffset = { x: 0, y: 0 };
       this.dragTarget = { x: 0, y: 0 };
-      this.dragVelocity = { x: 0, y: 0 };
       this.invalidate();
     };
     this.handleContextLost = (event) => {
@@ -273,14 +272,6 @@ export class CastleCascade2D {
   frame(time) {
     this.raf = 0;
     if (this.disposed || this.lost || this.failed) return;
-    if (this.pressedIndex >= 0 && !this.reducedMotion) {
-      const step = clamp(this.lastFrame ? (time - this.lastFrame) / 16.667 : 1, .25, 2);
-      for (const axis of ["x", "y"]) {
-        this.dragVelocity[axis] += (this.dragTarget[axis] - this.dragOffset[axis]) * .25 * step;
-        this.dragVelocity[axis] *= .57 ** step;
-        this.dragOffset[axis] += this.dragVelocity[axis] * step;
-      }
-    }
     if (this.releasePose && time - this.releasePose.started >= 300) this.releasePose = null;
     if (this.lastFrame && this.motion) {
       this.frameTimes.push(Math.min(250, time - this.lastFrame));
@@ -385,7 +376,7 @@ export class CastleCascade2D {
       const released = movable && this.releasePose?.index === index ? this.releasePose : null;
       const p = released ? clamp((time - released.started) / 300, 0, 1) : 0;
       const settle = released ? (1 - p) ** 2 * Math.cos(p * Math.PI * 2.3) : 0;
-      const lift = pressed && !this.reducedMotion ? Math.min(1, (time - this.pressedAt) / 100) : 0;
+      const lift = pressed && !this.reducedMotion ? Math.min(1, (time - this.pressedAt) / 70) : 0;
       const float = lift * (cell * .09 + Math.sin((time - this.pressedAt) / 180) * cell * .018);
       const ox = pressed ? this.dragOffset.x : released ? released.x * settle : 0;
       const oy = pressed ? this.dragOffset.y - float : released ? released.y * settle : 0;
@@ -529,7 +520,7 @@ export class CastleCascade2D {
       accepted,
       combo: Boolean(accepted && before[a]?.p && before[b]?.p),
       gesture: this.gesturePose,
-      duration: accepted ? 300 : 350,
+      duration: accepted ? 250 : 320,
     });
   }
 
@@ -606,8 +597,8 @@ export class CastleCascade2D {
       if (item.fromIndex !== null) hidden.add(item.fromIndex);
       hidden.add(item.toIndex);
     });
-    const stagger = (item) => (item.col % 3) * 9 + (item.spawnOrder || 0) * 22;
-    const travel = (item) => 180 + Math.min(9, Math.abs(item.toRow - item.fromRow)) * 23;
+    const stagger = (item) => Math.abs(item.col - 4) * 12 + (item.spawnOrder || 0) * 18;
+    const travel = (item) => 230 + Math.min(9, Math.abs(item.toRow - item.fromRow)) * 26;
     const duration = Math.max(...moving.map((item) => stagger(item) + travel(item)));
     return this.runMotion({
       kind: "gravity",
@@ -639,7 +630,7 @@ export class CastleCascade2D {
       const toRow = Math.floor(to[item] / BOARD_WIDTH);
       const toCol = to[item] % BOARD_WIDTH;
       const gesture = motion.gesture?.index === from[item] ? motion.gesture : null;
-      const remaining = (1 - elapsed) ** 2;
+      const remaining = motion.accepted ? Math.max(0, 1 - progress) : (1 - elapsed) ** 2;
       const arc = Math.sin(Math.min(1, progress) * Math.PI);
       const direction = item ? -1 : 1;
       const x = bounds.x + (fromCol + (toCol - fromCol) * progress + .5) * cell
@@ -819,23 +810,27 @@ export class CastleCascade2D {
     const cell = bounds.size / BOARD_WIDTH;
     for (const item of motion.movements) {
       const local = clamp((elapsed - motion.stagger(item)) / motion.travel(item), 0, 1);
-      const falling = clamp(local / .79, 0, 1);
-      const eased = falling * falling;
+      const falling = clamp(local / .66, 0, 1);
+      const eased = falling ** 1.65;
+      const landingTime = clamp((local - .66) / .34, 0, 1);
+      const direction = item.col % 2 ? -1 : 1;
+      const airWave = Math.sin(falling * Math.PI);
+      const sway = airWave * (.055 + .025 * Math.sin(falling * Math.PI * 2 + item.col * .6));
+      const rebound = Math.sin(landingTime * Math.PI * 2) * (1 - landingTime) ** 2;
       const fromRow = item.fromRow;
       const rowProgress = item.isDelivery ? -local * 0.42 : fromRow + (item.toRow - fromRow) * eased;
       const y = bounds.y + (rowProgress + 0.5) * cell;
-      const x = bounds.x + (item.col + .5) * cell + Math.sin(falling * Math.PI) * cell * .026 * (item.col % 2 ? -1 : 1);
-      const rebound = local > .79 ? Math.sin((local - .79) / .21 * Math.PI * 2) * (1 - (local - .79) / .21) : 0;
-      const landing = item.isDelivery ? 1 : 1 + rebound * .11;
+      const x = bounds.x + (item.col + .5) * cell + (item.isDelivery ? 0 : (sway + rebound * .035) * cell * direction);
+      const landing = item.isDelivery ? 1 : 1 + Math.sin(landingTime * Math.PI * 4) * .12 * (1 - landingTime) ** 2;
       const delivering = motion.deliveredKeys.includes(item.toIndex) && item.payload.key;
       const fade = item.isDelivery ? 1 - local : delivering && local > 0.76 ? 1 - (local - 0.76) / 0.24 : 1;
       const ctx = this.context;
-      ctx.save(); ctx.translate(x, y - Math.max(0, rebound) * cell * .07);
-      ctx.rotate(Math.sin(falling * Math.PI) * .035 * (item.col % 2 ? -1 : 1));
+      ctx.save(); ctx.translate(x, y - (item.isDelivery ? 0 : rebound * cell * .16));
+      ctx.rotate(item.isDelivery ? 0 : (airWave * .085 + rebound * .035) * direction);
       ctx.scale(landing, 1 / landing);
       this.drawTile(item.payload, item.toIndex, 0, 0, cell, fade);
       ctx.restore();
-      if (local > .79 && !item.isDelivery) this.drawRing(x, y + cell * .31, cell * (.16 + (local - .79) * .7), (1 - local) * 1.4, "#ffffff", cell * .025);
+      if (landingTime > 0 && !item.isDelivery) this.drawRing(x, y + cell * .31, cell * (.16 + landingTime * .20), (1 - landingTime) * .30, "#ffffff", cell * .025);
     }
     motion.cleared.forEach((tile, index) => {
       if (!tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.seal) return;
