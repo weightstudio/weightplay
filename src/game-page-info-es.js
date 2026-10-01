@@ -574,7 +574,7 @@ window.WeightPlayGameInfoLocales.es = {
       ]
     },
     "snack-blocks": {
-      "title": "Bloques de bocadillos",
+      "title": "Bloques de Aperitivos",
       "age": "9+",
       "difficulty": "Progresivo",
       "time": "3-8 minutos",
@@ -583,22 +583,22 @@ window.WeightPlayGameInfoLocales.es = {
         "Resolución de problemas",
         "Enfoque"
       ],
-      "intro": "Planifica cada intercambio en 30 etapas guardadas. Las piscinas de refrigerios rotativas y las seis familias de objetivos convierten el tablero de 7 por 10 en un rompecabezas diferente en cada capítulo.",
+      "intro": "Planifica cada intercambio en 30 etapas con progreso guardado. Los grupos rotativos de aperitivos y los seis tipos de objetivo convierten el tablero de 7 × 10 en un rompecabezas distinto en cada capítulo.",
       "story": [
-        "Los animales de Snack World llevan una mesa de picnic compartida desde los campos de bayas hasta el Crown Feast. Los partidos preparan tandas de comida mientras cada capítulo aporta una parte diferente de la comida final.",
-        "La campana de picnic, la puerta de la panadería, el tambor de jardín, el reloj del taller, el banquete del puente y la mesa de la corona son órdenes de control. Superar la etapa 30 significa que el festín completo ha llegado a la mesa de la corona."
+        "Los animales del mundo de los aperitivos llevan una mesa de picnic desde los campos de bayas hasta el banquete de la corona. Cada combinación reúne una parte de la comida final y cada capítulo añade una nueva parada al recorrido.",
+        "La campana del picnic, la puerta de la panadería, el tambor del jardín, el reloj del taller, el banquete del puente y la mesa de la corona marcan los seis puntos de control. Al superar la etapa 30, el festín está listo en la mesa de la corona."
       ],
       "how": [
-        "Elija una tarjeta desbloqueada en el riel horizontal del escenario.",
-        "Toque o arrastre un refrigerio hacia un refrigerio adyacente. Un intercambio legal debe crear una combinación de tres o más.",
-        "Observe cómo los bocadillos retirados desaparecen juntos y luego use la recarga que cae para preparar cascadas.",
-        "Utilice todo el presupuesto de movimiento y cumpla el objetivo del escenario para desbloquear la siguiente carta."
+        "Elija una tarjeta desbloqueada en la fila horizontal de etapas.",
+        "Toque o arrastre una ficha de aperitivo hacia una ficha adyacente. El intercambio solo es válido si forma una combinación de tres o más.",
+        "Observe cómo desaparecen las fichas combinadas y aproveche las que caen para preparar cascadas.",
+        "Cumpla el objetivo antes de agotar los movimientos para desbloquear la siguiente etapa."
       ],
       "systems": [
-        "Los borrados básicos obtienen 12 puntos por ficha, multiplicados por la profundidad de la cascada actual.",
-        "Los objetivos de puntuación, colección, pareja, cascada, partido importante y punto de control dual requieren planes diferentes.",
-        "Cada etapa declara su propio grupo de cuatro, cinco o seis refrigerios en lugar de usar siempre la misma combinación de tableros.",
-        "Los swaps no válidos se revierten y no gastan un movimiento. Los registros locales mantienen las etapas desbloqueadas y las mejores puntuaciones personales."
+        "Cada ficha eliminada suma 12 puntos, multiplicados por la profundidad de la cascada actual.",
+        "Hay seis tipos de objetivo: puntuación, recolección, parejas, cascadas, combinaciones grandes y puntos de control dobles.",
+        "Cada etapa indica un grupo de cuatro, cinco o seis aperitivos; la combinación disponible cambia entre tableros.",
+        "Los intercambios que no forman una combinación se deshacen sin gastar un movimiento. Las etapas desbloqueadas y las mejores puntuaciones se guardan en este navegador."
       ],
       "progression": [
         "Las etapas 1 a 5 enseñan puntuación, recolección y limpieza de cuatro fichas en Picnic Path.",
@@ -621,20 +621,20 @@ window.WeightPlayGameInfoLocales.es = {
           "Hay 30 etapas en seis capítulos, con puntos de control en 5, 10, 15, 20, 25 y 30."
         ],
         [
-          "¿Por qué un swap no válido retrocede?",
-          "Un intercambio legal debe hacer coincidir inmediatamente. Los swaps no válidos regresan sin gastar un movimiento."
+          "¿Por qué se deshace un intercambio no válido?",
+          "Cada intercambio debe formar inmediatamente una combinación de tres o más. Si no lo hace, las fichas vuelven a su sitio y no se gasta un movimiento."
         ],
         [
           "¿Qué es una cascada?",
-          "Es una combinación automática que se realiza después de que caen los bocadillos eliminados y el tablero se vuelve a llenar."
+          "Es una combinación automática que aparece después de que caen nuevas fichas para llenar los espacios vacíos."
         ],
         [
           "¿Cómo funcionan los objetivos de pareja?",
-          "Cualquier refrigerio con nombre cuenta para un objetivo combinado."
+          "Las fichas de cualquiera de los dos aperitivos indicados cuentan para el mismo objetivo."
         ],
         [
           "¿Qué es un puesto de control?",
-          "Requiere tanto una cantidad de refrigerio determinada como un objetivo de puntuación."
+          "Exige alcanzar una cantidad concreta de aperitivos y también la puntuación indicada."
         ],
         [
           "¿Se guarda el progreso?",
@@ -656,7 +656,7 @@ window.WeightPlayGameInfoLocales.es = {
       "strategyTips": [
         "Busca primero combinaciones en la parte inferior: cada caída puede crear una segunda coincidencia sin gastar otro movimiento.",
         "En los niveles con dos objetivos, no vacíes un color demasiado pronto si todavía lo necesitas para formar una pareja o una cascada.",
-        "Guarda los grupos grandes para los objetivos de explosión y usa coincidencias pequeñas para acercar las fichas necesarias.",
+        "Guarda los grupos grandes para los objetivos de combinación grande y usa coincidencias pequeñas para acercar las fichas necesarias.",
         "Antes de tocar, comprueba si la caída separará una pareja preparada en otra columna.",
         "En los controles de cada quinto nivel, cumple la regla especial antes de perseguir solo la puntuación."
       ]
@@ -3202,6 +3202,7 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   const repairStarMemorySpanish = (value) => {
     if (typeof value === "string") return value
       .replace(/¿Cuántas niveles/g, "¿Cuántos niveles")
+      .replace(/¿Cuántos niveles están incluidas/g, "¿Cuántos niveles están incluidos")
       .replace(/\bLas niveles\b/g, "Los niveles")
       .replace(/\blas niveles\b/g, "los niveles")
       .replace(/\bLos niveles ordenadas\b/g, "Los niveles ordenados")
@@ -3224,6 +3225,23 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     return value;
   };
   resource.games["star-memory"] = repairStarMemorySpanish(resource.games["star-memory"]);
+  const repairSnackBlocksSpanish = (value) => {
+    if (typeof value === "string") return value
+      .replace(/¿Cuántas niveles/g, "¿Cuántos niveles")
+      .replace(/\bLas niveles\b/g, "Los niveles")
+      .replace(/\blas niveles\b/g, "los niveles")
+      .replace(/\bla siguiente nivel\b/g, "el siguiente nivel")
+      .replace(/\bLa siguiente nivel\b/g, "El siguiente nivel")
+      .replace(/\bla nivel\b/g, "el nivel")
+      .replace(/\bLa nivel\b/g, "El nivel")
+      .replace(/\bnivel desbloqueada\b/g, "nivel desbloqueado")
+      .replace(/\bniveles desbloqueadas\b/g, "niveles desbloqueados")
+      .replace(/objetivos de explosión/g, "objetivos de combinación grande");
+    if (Array.isArray(value)) return value.map(repairSnackBlocksSpanish);
+    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, repairSnackBlocksSpanish(item)]));
+    return value;
+  };
+  resource.games["snack-blocks"] = repairSnackBlocksSpanish(resource.games["snack-blocks"]);
   const titles = {"wonder-crash":"Fantasía: Defensa del León","color-lunchbox":"Lonchera de Colores Animales","bubble-bakery":"Panadería de Burbujas Animales","animal-rope-rescue":"Rescate Animal con Lianas","animal-zoo-idle":"Zoológico Idle","star-memory":"Memoria Estelar","campus-dash":"Safari a Toda Velocidad","snack-blocks":"Bloques de Aperitivos","fruit-merge":"Torre de Fusión Animal","garden-tiles":"Fichas del Jardín Animal","animal-rescue":"Sendero de Rescate Animal","animal-bubble-safari":"Safari de Burbujas Animales","animal-habitat-mahjong":"Mahjong de Hábitats Animales","animal-hidden-safari":"Safari Oculto","animal-guard-yard":"Guardianes del Jardín Animal","animal-crystal-survivor":"Superviviente del Cristal Animal","animal-quiz":"Cuestionario","zoo-helper-day":"Día del Ayudante del Zoológico","shape-train":"Tren de Formas Animales","tiny-weather-rescue":"Misión de Ayuda Animal","beast-deck":"Mazo de Bestias: Bosque de Niebla","animal-relic-hunters":"Cazadores de Reliquias Animales","animal-rune-tactics":"Tácticas de Runas Animales","animal-orb-fortress":"Fortaleza del Orbe Animal","animal-auto-squad":"Escuadrón Animal Automático","beast-tactician":"Guardián de Bestias","animal-reef-fisher":"Pescador del Arrecife Animal","animal-cafe-rush":"Fiebre del Café Animal","animal-hero-trials":"Pruebas de Héroes Animales","animal-gearpack-expedition":"Expedición de la Mochila Animal","shadow-wolf":"Lobo Sombrío","animal-moonlight-heist":"Golpe Animal a la Luz de la Luna","animal-color-springs":"Resortes de Colores Animales","animal-coloring-studio":"Estudio para colorear animales","animal-word-trails":"Senderos de palabras de animales"};
   const difficulties = { "Medio": "Media", "fácil": "Fácil", "Fácil a medio": "Fácil a media", "Fácil de desafiar": "Fácil a desafiante", "De gentil a experto": "De suave a experta", "duro": "Difícil", "Medio a duro": "Media a difícil" };
   resource.games["animal-color-springs"] = {

@@ -961,6 +961,7 @@
       difficulty: "Progressive",
       time: "3-8 minutes",
       skills: ["Logic", "Problem Solving", "Focus"],
+      relatedIds: ["bubble-bakery", "animal-bubble-safari", "garden-tiles"],
       intro:
         "Plan every swap across 30 saved stages. Rotating snack pools and six goal families turn the 7-by-10 board into a different puzzle in each chapter.",
       story: [
@@ -10509,7 +10510,7 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-es.js?v=20260930-zoo-star-memory-es-guide-v18", sharedAssetBase).href;
+      script.src = new URL("game-page-info-es.js?v=20261001-campus-snack-text140-v1", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
         installSpanishResource();
@@ -10545,7 +10546,7 @@
     if (japaneseResourcePromise) return japaneseResourcePromise;
     japaneseResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-ja.js?v=20260930-zoo-star-memory-ja-guide-v2", sharedAssetBase).href;
+      script.src = new URL("game-page-info-ja.js?v=20261001-campus-snack-text140-v1", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "ja";
       script.onload = () => { installJapaneseResource(); resolve(); };
       script.onerror = () => { japaneseResourceFailed = true; resolve(); };
