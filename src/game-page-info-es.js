@@ -1435,45 +1435,45 @@ window.WeightPlayGameInfoLocales.es = {
         "Enfoque",
         "Coordinación ojo-mano"
       ],
-      "intro": "Zoo Helper Day es un juego bilingüe gratuito de cuidado de niños con 30 turnos guardados en seis zonas de animales. Los niños ayudan a un león, un panda, un elefante, un pingüino, una jirafa y un koala con frutas, hojas, peces, agua, cepillos, duchas, juguetes y pelotas. Los turnos tempranos nombran un elemento exacto. Los capítulos posteriores eliminan etiquetas visibles, aceptan una categoría de atención coincidente, ocultan brevemente una solicitud que se puede mostrar nuevamente o requieren dos pasos en orden. Cada quinto turno es un Keeper Check. No hay cuenta regresiva y un elemento incorrecto mantiene abierta la solicitud.",
+      "intro": "Zoo Helper Day es un juego infantil bilingüe y gratuito sobre el cuidado de animales, con 30 turnos en seis zonas. Los niños ayudan a un león, un panda, un elefante, un pingüino, una jirafa y un koala eligiendo entre frutas, hojas, peces, agua, cepillos, duchas, juguetes y pelotas. Al principio, cada petición nombra un objeto concreto. Más adelante, algunos turnos ocultan las etiquetas, piden clasificar el cuidado necesario, esconden brevemente una petición que se puede volver a consultar o requieren dos pasos en orden. Cada quinto turno incluye una revisión del cuidador. No hay cuenta atrás y elegir mal no cierra la petición: puedes intentarlo de nuevo.",
       "story": [
-        "La jornada laboral del pequeño zoológico se mueve entre Savanna Feeding, Bamboo Grove, Elephant Bath, Penguin Pool, Giraffe Lookout y Koala Nursery. El jugador es el ayudante que prepara el siguiente objeto de cuidado. Los boletos marcan un turno de estación completado, mientras que la felicidad refleja los reintentos. Una imagen equivocada nunca daña al animal ni pone fin al juego.",
-        "El conjunto de herramientas simplificado respalda las decisiones de juego en lugar de la instrucción de cuidado profesional. Completar el turno 30 significa que el ayudante ha practicado las seis familias de reglas y ha terminado Koala Nursery Keeper Mix."
+        "La jornada pasa por seis zonas: alimentación de la sabana, arboleda de bambú, baño de elefantes, estanque de pingüinos, mirador de jirafas y guardería de koalas. El jugador prepara el siguiente objeto de cuidado. Los boletos indican que se completó un turno; el medidor de bienestar refleja cuántos intentos necesitó el jugador. Una imagen equivocada no daña al animal ni termina la partida.",
+        "Los objetos y las reglas están simplificados para el juego; no sustituyen las indicaciones de un cuidador profesional. Completar el turno 30 significa que el jugador practicó las seis familias de reglas y terminó la revisión final en la guardería de koalas."
       ],
       "systems": [
         "Las solicitudes exactas aceptan un elemento con nombre entre cuatro opciones grandes.",
         "Las herramientas de imagen eliminan visualmente las palabras de los elementos, pero conservan el arte grande y los nombres accesibles.",
-        "Las categorías de atención solicitan comida, bebida, limpieza o juego; más de una herramienta listada puede ser válida.",
-        "Recordar y Ayuda muestra primero la solicitud y luego ofrece un mensaje de recuperación. Al tocar al animal se restablece la misma solicitud sin penalización.",
+        "Las categorías de cuidado pueden pedir comida, bebida, limpieza o juego; según la petición, puede haber más de una herramienta correcta.",
+        "En las peticiones de memoria, el juego muestra primero lo que necesita el animal y después oculta parte del texto. Toca al animal para volver a consultar la misma petición sin penalización.",
         "La rutina de dos pasos etiqueta los pasos 1/2 y 2/2; una herramienta posterior elegida antes cuenta como un reintento.",
-        "Los turnos de Keeper Mix combinan imágenes, categorías, recuerdos o reglas ordenadas ya enseñadas.",
-        "Un borrado guarda de una a tres estrellas y exactamente el siguiente desbloqueo en el almacenamiento del navegador local. No hay cuenta, compra, clasificación, solicitud de anuncios ni reserva de anuncios."
+        "Las revisiones finales combinan reglas de imágenes, categorías, memoria y orden que ya aparecieron en turnos anteriores.",
+        "Al completar un turno se guarda de una a tres estrellas y se desbloquea únicamente el siguiente. Las estrellas y el avance quedan en este navegador; no hacen falta cuenta ni compra y el juego Kids no solicita anuncios."
       ],
       "how": [
         "Desliza el riel horizontal del escenario hasta un turno desbloqueado.",
-        "Lea la regla de la estación y la solicitud de animales.",
-        "Toque la imagen de una herramienta o arrástrela a la tarjeta del animal; El teclado utiliza los mismos botones.",
-        "Utilice el animal para revelar una solicitud de memoria oculta cuando sea necesario.",
-        "Termina cada decisión para salvar estrellas y desbloquear el siguiente turno."
+        "Lee la regla de la zona y la petición del animal.",
+        "Toca la imagen de una herramienta o arrástrala hasta la tarjeta del animal; con el teclado puedes usar los mismos botones.",
+        "Si olvidas una petición, toca al animal para volver a verla.",
+        "Completa todas las decisiones para guardar estrellas y desbloquear el siguiente turno."
       ],
       "strategyTips": [
         "Diga en voz alta el artículo o la categoría de cuidado antes de elegir.",
-        "En desplazamientos de Herramientas de imagen, compare la forma y el color del objeto.",
+        "Cuando no aparecen los nombres, compara la forma y el color de los objetos.",
         "Toque el animal para revisar una solicitud recordada en lugar de adivinar.",
-        "Para el juego de categorías, decida si cada imagen significa comida, bebida, limpieza o juego.",
-        "Lee el marcador 1/2 y 2/2 antes de actuar en una rutina.",
-        "Considere un nuevo intento como una oportunidad tranquila para comparar las cuatro imágenes nuevamente."
+        "En una petición por categoría, decide si cada imagen representa comida, bebida, limpieza o juego.",
+        "En las rutinas de dos pasos, comprueba si estás en 1/2 o 2/2 antes de elegir.",
+        "Si te equivocas, compara de nuevo las cuatro imágenes: la petición seguirá abierta."
       ],
       "progression": [
-        "Los turnos 1 a 5 enseñan solicitudes exactas de Care Match y finalizan con el primer Keeper Check.",
-        "Los turnos 6 a 10 eliminan las etiquetas de elementos visibles en la reproducción de Herramientas de imagen.",
-        "Los turnos 11 a 15 introducen categorías de atención con una o más herramientas válidas.",
+        "Los turnos 1 a 5 enseñan a emparejar una petición con el objeto exacto; el turno 5 termina con la primera revisión del cuidador.",
+        "En los turnos 6 a 10 desaparecen los nombres de los objetos y hay que elegir por la imagen.",
+        "Los turnos 11 a 15 introducen categorías de cuidado con una o varias herramientas válidas.",
         "Los turnos 16 a 20 ocultan brevemente las solicitudes, que siempre se pueden restaurar tocando el animal.",
-        "Los turnos 21-25 requieren rutinas ordenadas de dos pasos; Shift 25 contiene tres pares completos.",
-        "Los turnos 26-30 recombinan reglas anteriores. Shift 30 utiliza opciones de categorías de solo imágenes, recuperación de recuerdos y seis decisiones. Los puntos de control son exactamente 5/10/15/20/25/30."
+        "Los turnos 21 a 25 requieren completar dos pasos en orden; el turno 25 incluye tres secuencias completas.",
+        "Los turnos 26 a 30 combinan reglas anteriores. El turno 30 presenta seis decisiones con categorías basadas solo en imágenes y peticiones para recordar. Las revisiones están en los turnos 5, 10, 15, 20, 25 y 30."
       ],
-      "designNote": "Los turnos cortos y las grandes imágenes de cuidado brindan a los jugadores de preescolar un final claro y sin cronómetro. La dificultad cambia el tipo de observación (reconocimiento, clasificación, memoria u orden) en lugar de reducir las áreas afectadas. Tocar, arrastrar, usar el mouse y el teclado comparten una transacción, y el diseño lógico se escala uniformemente en teléfonos, tabletas, computadoras de escritorio y paisajes breves. A diferencia de Animal Quiz, este juego pregunta qué herramienta de cuidado se adapta al momento en lugar de qué animal coincide con un hecho. El juego para niños no tiene publicidad, cuenta, compra, clasificación ni pantalla de fallo.",
-      "parent": "El Día del Ayudante del Zoológico puede apoyar el reconocimiento de imágenes, categorías amplias de atención, memoria de trabajo corta, secuenciación, concentración y coordinación ojo-mano. Los adultos pueden explicar que los animales reales necesitan cuidadores capacitados, dietas adecuadas, hábitats, enriquecimiento y apoyo veterinario más allá de este juego simplificado. Las estrellas y el informe de habilidades son comentarios sobre el juego, no una calificación, un diagnóstico o una comparación de niños. El progreso permanece en este navegador. No se requiere perfil infantil y la ruta Kids no solicita publicidad.",
+      "designNote": "Los turnos cortos y las imágenes grandes permiten completar cada actividad sin cuenta atrás. La dificultad cambia lo que hay que observar —reconocer una imagen, clasificar un objeto, recordar una petición o seguir un orden—, no el tamaño de los botones. Tocar, arrastrar, usar el ratón o el teclado aplica las mismas reglas; el tablero se adapta a móviles, tabletas y ordenadores. A diferencia de un cuestionario sobre animales, aquí hay que elegir qué objeto sirve para la petición de cuidado. La versión Kids no incluye anuncios ni requiere cuenta o compra.",
+      "parent": "El juego puede ayudar a practicar el reconocimiento visual, la clasificación sencilla, la memoria breve, el orden, la concentración y la coordinación entre manos y ojos. Los animales reales necesitan cuidadores capacitados, alimentación adecuada, hábitats, enriquecimiento y atención veterinaria; el juego no enseña cuidados profesionales. Las estrellas y el informe de habilidades describen esta partida, no califican ni diagnostican al niño. El progreso se guarda solo en este navegador. No se necesita perfil infantil y la versión Kids no solicita anuncios.",
       "faq": [
         [
           "¿Puede jugar un niño de 3 años?",
@@ -1481,11 +1481,11 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Cuántos turnos están incluidos?",
-          "Hay 30 turnos guardados y seis Keeper Checks."
+          "Hay 30 turnos; las revisiones del cuidador aparecen en los turnos 5, 10, 15, 20, 25 y 30."
         ],
         [
           "¿Por qué desaparecieron las palabras del elemento?",
-          "Los cambios de herramientas de imagen utilizan intencionalmente las ocho imágenes de herramientas; quedan nombres accesibles."
+          "En esos turnos se ocultan intencionalmente los nombres, pero las ocho imágenes y sus nombres accesibles siguen disponibles."
         ],
         [
           "¿Qué pasa si la solicitud desaparece?",
@@ -1493,7 +1493,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Pueden dos imágenes ser correctas?",
-          "Sí en turnos de Categoría de Atención cuando ambas pertenecen al tipo de atención solicitada."
+          "Sí. En los turnos de categoría de cuidado, varias herramientas pueden pertenecer al tipo solicitado."
         ],
         [
           "¿Cómo se otorgan las estrellas?",
@@ -1514,89 +1514,89 @@ window.WeightPlayGameInfoLocales.es = {
       ]
     },
     "shape-train": {
-      "title": "Tren con forma de animal",
+      "title": "Tren de Formas de Animales",
       "age": "3+",
       "difficulty": "fácil",
-      "time": "2-5 minutos por ruta",
+      "time": "2–5 minutos por ruta",
       "skills": [
-        "Reconocimiento de colores",
+        "Reconocimiento de formas",
         "Lógica",
         "Coordinación ojo-mano"
       ],
-      "intro": "Animal Shape Train es un juego de combinación bilingüe gratuito para niños con 30 rutas guardadas y seis controles de conductor. Los amigos de las formas esperan en una alegre estación mientras el jugador encuentra el vagón del tren con el mismo símbolo de círculo, cuadrado, triángulo, estrella, diamante o corazón. Las rutas de apertura son coincidencias de imágenes directas. Los capítulos posteriores reducen el color, cambian el orden de los automóviles después de cada embarque, ocultan brevemente al pasajero o requieren que se seleccione al pasajero antes de que un automóvil pueda aceptar el boleto. La Ruta 30 combina todas esas reglas con los seis autos. No existe cuenta atrás, límite de vida, compra, cuenta, solicitud de publicidad ni penalización que finalice una ruta.",
+      "intro": "Tren de Formas de Animales es un juego infantil de asociación visual con 30 rutas y seis pruebas del maquinista. En cada turno, ayuda a subir al vagón correcto al pasajero que lleva un círculo, cuadrado, triángulo, estrella, rombo o corazón. Las primeras rutas enseñan la asociación directa; después, el color pierde importancia, los vagones cambian de orden, la forma del pasajero se oculta por un momento o debes seleccionar al pasajero antes de elegir un vagón. La ruta 30 combina estas reglas. No hay cuenta atrás ni vidas que puedan terminar la partida.",
       "story": [
-        "Shape Line une seis pequeñas estaciones donde los amigos animales entregan paquetes de formas brillantes. Cada paquete lleva un símbolo claro y cada vagón de tren naranja tiene una ventana correspondiente. El jugador es el conductor junior responsable de comprobar el símbolo y enviar a cada pasajero al vagón correcto. Una ruta completa significa que todos los amigos que esperan están a salvo a bordo y el tren puede salir del andén.",
-        "Las reglas de ruta representan partes más transitadas del ferrocarril. Contorno Los autos viajan a través de una niebla que elimina la mayor parte del color. Los coches que cambian llegan en plataformas móviles. Recuerde Las rutas de pasajeros reducen brevemente la tarjeta de la estación, mientras que las rutas de tarjeta de embarque requieren una verificación de pasajero antes de elegir un automóvil. Al superar la Ruta 30 se completa la verificación final del conductor mixto."
+        "La línea recorre seis estaciones y lleva a bordo a animales con paquetes de distintas formas. Comprueba el símbolo del pasajero y elige el vagón que muestra la misma figura para que el tren pueda continuar.",
+        "Cada grupo de rutas añade una forma distinta de observar: primero la silueta, luego el nuevo orden de los vagones, la memoria de una forma oculta y, por último, el orden de selección. La ruta 30 reúne esas reglas en la última prueba del maquinista."
       ],
       "systems": [
-        "Cada ruta contiene de cuatro a ocho pasajeros seleccionados entre seis formas reales. Sólo un coche visible coincide con el pasajero actual.",
-        "Una elección correcta muestra una breve celebración en tiempo visible, avanza el progreso y presenta al siguiente pasajero. Un coche equivocado da una respuesta amable y deja al mismo pasajero disponible.",
-        "Los coches de contorno reducen el color para que la geometría importe. Cambiar de coche se reordena después de cada coincidencia correcta. Recuerde que Pasajero oculta el símbolo pero permite revelarlo sin penalización. La tarjeta de embarque requiere que el pasajero sea seleccionado primero.",
-        "Los intentos cero otorgan tres estrellas, un número pequeño otorga dos y los reintentos adicionales otorgan una. El Informe de habilidades de resultados utiliza coincidencias reales, primeros intentos, reintentos y pasajeros abordados.",
-        "Las estrellas y el desbloqueo más alto permanecen solo en este navegador. No hay cuenta, tabla de clasificación, compra, solicitud de publicidad, medidor de vida ni cuenta regresiva.",
-        "Cada quinta ruta es una verificación del conductor. La ruta 30 guarda el resultado final y no expone la ruta 31."
+        "Cada ruta presenta entre cuatro y ocho pasajeros y de dos a seis vagones. Busca el vagón cuya figura coincide con la del pasajero actual.",
+        "Una elección correcta suma una asociación, muestra brevemente que el pasajero subió y avanza al siguiente. Si eliges otro vagón, el mismo pasajero permanece disponible para que lo intentes de nuevo.",
+        "En las rutas de contornos, fíjate en la silueta porque hay menos color. En las rutas cambiantes, los vagones se reordenan tras cada acierto. En las rutas de memoria, toca al pasajero para volver a ver su figura sin penalización. En las rutas con billete, primero debes seleccionar al pasajero y después el vagón.",
+        "Terminar sin errores da tres estrellas; uno o dos errores dan dos; tres o más dan una. El informe de la partida resume las asociaciones correctas, los aciertos al primer intento, los reintentos y los pasajeros que subieron.",
+        "Las estrellas y la ruta más avanzada que hayas desbloqueado se guardan en este navegador. No hay cuenta, compras, clasificación, vidas ni temporizador.",
+        "Cada cinco rutas hay una prueba del maquinista. La última es la ruta 30; no existe una ruta 31."
       ],
       "how": [
-        "Presiona Iniciar juego y desliza el riel de ruta horizontal hacia una tarjeta desbloqueada.",
-        "Lea la regla de ruta y observe la forma del pasajero en la tarjeta de la estación inferior.",
-        "Toque al pasajero, luego elija el vagón de tren con el mismo símbolo; También se admiten arrastrar, mouse y teclado.",
-        "En rutas de memoria, recupera el símbolo oculto o toca al pasajero para revelarlo nuevamente.",
-        "Sube a bordo de todos los pasajeros de la lista para ahorrar estrellas y desbloquear exactamente la siguiente ruta."
+        "Pulsa Iniciar y desliza la fila horizontal para elegir una ruta desbloqueada.",
+        "Lee la regla de la ruta y fíjate en la forma del pasajero.",
+        "Elige el vagón que muestra la misma figura que el pasajero. En las rutas con billete, primero selecciona al pasajero y después el vagón. También puedes jugar con pantalla táctil, ratón o teclado.",
+        "Si la forma se oculta, toca al pasajero para verla de nuevo. Si los vagones cambian de sitio, vuelve a comparar sus figuras.",
+        "Ayuda a subir a todos los pasajeros para guardar las estrellas y desbloquear la ruta siguiente."
       ],
       "strategyTips": [
-        "Di el nombre de la forma antes de elegir un coche.",
-        "Compare puntos y bordes curvos cuando los contornos de los automóviles eliminen el color.",
-        "Escanea toda la pista nuevamente después de cada partido en una ruta en movimiento.",
-        "Para jugar a la memoria, nombra el símbolo en voz alta o traza su contorno en el aire.",
-        "En rutas con tarjeta de embarque, seleccione al pasajero antes de tocar un automóvil.",
-        "Una elección incorrecta mantiene la ruta abierta, así que haga una pausa y compare en lugar de adivinar rápidamente."
+        "Nombra la forma antes de elegir el vagón.",
+        "Cuando haya menos color, compara las curvas, las esquinas y las puntas.",
+        "Después de cada acierto en una ruta cambiante, revisa de nuevo la posición de los vagones.",
+        "Si olvidas la forma, toca al pasajero para verla otra vez en lugar de adivinar.",
+        "En las rutas con billete, selecciona primero al pasajero.",
+        "Un error no termina la ruta: detente un momento y compara las figuras antes del siguiente intento."
       ],
       "progression": [
-        "Las rutas 1 a 5 enseñan Direct Match con dos a cuatro autos brillantes y terminan en el primer Conductor Check.",
-        "Las rutas 6 a 10 utilizan Outline Cars, lo que hace que las curvas, esquinas y puntos sean más importantes que el color.",
-        "Las rutas 11 a 15 utilizan vagones de cambio que se reordenan después de un abordaje exitoso.",
-        "Las rutas 16 a 20 ocultan brevemente al pasajero; al tocarlo se restaura la misma forma sin penalización.",
-        "Las rutas 21 a 25 agregan la acción ordenada de la tarjeta de embarque antes de que coincida la forma.",
-        "Las rutas 26 a 30 combinan reglas anteriores. La Ruta 30 utiliza seis automóviles y ocho pasajeros con reglas de contorno, movimiento, memoria y tarjeta de embarque."
+        "Las rutas 1–5 enseñan la asociación directa y terminan con la primera prueba del maquinista.",
+        "Las rutas 6–10 reducen el color para que tengas que reconocer las formas por su contorno.",
+        "Las rutas 11–15 cambian el orden de los vagones después de cada acierto.",
+        "Las rutas 16–20 ocultan la forma por un momento; puedes tocar al pasajero para volver a verla sin penalización.",
+        "Las rutas 21–25 requieren seleccionar al pasajero antes de elegir su vagón.",
+        "Las rutas 26–30 combinan las reglas anteriores. La ruta 30 usa las seis formas, hasta seis vagones y ocho pasajeros."
       ],
-      "designNote": "La dificultad aumenta al cambiar lo que el jugador observa en lugar de reducir los controles, agregar un temporizador u ocultar el área de impacto correcta. La coincidencia directa establece el vocabulario; El contorno, el movimiento, la memoria y la selección ordenada añaden cada uno una decisión comprensible. El diseño lógico fijo se escala uniformemente en teléfonos, tabletas, computadoras de escritorio y paisajes cortos. Los autos y fichas respaldados por imágenes mantienen el juego visual, mientras que el texto localizado explica solo la regla actual. Los retrasos en los partidos y en la memoria cuentan el tiempo de juego visible, por lo que un cambio de aplicación no puede avanzar silenciosamente en la ruta. A diferencia de Animal Quiz, no se requiere lectura objetiva; a diferencia del Día del Ayudante del Zoológico, la decisión es una equivalencia visual más que un propósito de cuidado. Kids Play no tiene publicidad, compra, cuenta, clasificación o reclamo de diagnóstico.",
-      "parent": "Animal Shape Train puede respaldar conversaciones sobre círculos, esquinas, puntos, correspondencia visual, recuerdos breves, orden de acción, concentración y coordinación ojo-mano. Un adulto puede nombrar cada forma en voz alta o preguntar en qué se diferencian dos contornos. Las estrellas y el Informe de habilidades describen únicamente esta sesión de juego; no son una calificación escolar, un puntaje de coeficiente intelectual, un diagnóstico de desarrollo o una comparación con otro niño. El progreso permanece en el navegador actual y puede desaparecer si se borra el almacenamiento local. No se requiere perfil infantil y la ruta Kids no solicita publicidad.",
+      "designNote": "La dificultad cambia según la información que debes observar: primero emparejas figuras, luego comparas contornos, vuelves a buscar los vagones tras cada cambio, recuerdas una forma o sigues un orden de selección. No depende de un temporizador ni de controles cada vez más pequeños. El mismo criterio de asociación funciona con pantalla táctil, ratón y teclado, y un error deja disponible al pasajero para volver a intentarlo.",
+      "parent": "El juego invita a comparar círculos, esquinas, curvas y puntas, recordar una forma por un momento y seguir un orden sencillo. Un adulto puede nombrar las figuras o preguntar qué diferencia dos contornos. Las estrellas y el informe describen solo esta partida; no son una evaluación escolar, de inteligencia ni de desarrollo. El progreso se guarda en el navegador y puede borrarse al eliminar sus datos. No hace falta una cuenta o perfil infantil y esta versión no muestra anuncios.",
       "faq": [
         [
           "¿Cuántas rutas están incluidas?",
-          "Hay 30 rutas guardadas en seis capítulos, con controles del conductor en 5, 10, 15, 20, 25 y 30."
+          "Hay 30 rutas en seis capítulos. Las pruebas del maquinista aparecen en las rutas 5, 10, 15, 20, 25 y 30."
         ],
         [
           "¿Qué formas aparecen?",
-          "El juego utiliza círculos, cuadrados, triángulos, estrellas, diamantes y corazones."
+          "Aparecen círculos, cuadrados, triángulos, estrellas, rombos y corazones."
         ],
         [
           "¿Por qué desapareció el pasajero?",
-          "Recuerde que las rutas de pasajeros lo ocultan brevemente. Toca al pasajero para revelar la misma forma nuevamente sin penalización."
+          "En algunas rutas la forma se oculta por un momento. Toca al pasajero para volver a verla sin penalización."
         ],
         [
           "¿Por qué se movieron los vagones del tren?",
-          "Las rutas de Switching Cars se reordenan después de una coincidencia correcta para que el jugador escanee nuevamente."
+          "En las rutas cambiantes, los vagones se reordenan después de cada acierto. Vuelve a comparar sus formas antes de elegir."
         ],
         [
           "¿Por qué un coche no acepta mi elección?",
-          "Las rutas con tarjeta de embarque requieren que el pasajero sea seleccionado antes de elegir un automóvil."
+          "En las rutas con billete, primero debes seleccionar al pasajero y después elegir el vagón."
         ],
         [
-          "¿Qué pasa después de un partido equivocado?",
-          "El mismo pasajero permanece disponible con una suave respuesta."
+          "¿Qué ocurre si elijo el vagón equivocado?",
+          "El pasajero sigue esperando y puedes comparar las figuras para volver a intentarlo."
         ],
         [
           "¿Se guarda el progreso?",
-          "Las estrellas y la ruta más alta desbloqueada se almacenan únicamente en este navegador; no es necesario iniciar sesión."
+          "Las estrellas y la ruta más avanzada que hayas desbloqueado se guardan en este navegador. No necesitas iniciar sesión."
         ],
         [
           "¿Es compatible con teléfonos y teclados?",
-          "Sí. Tocar, arrastrar, usar el mouse y el teclado usan las mismas reglas de coincidencia."
+          "Sí. Puedes jugar con pantalla táctil, arrastrar, usar el ratón o el teclado; las reglas son las mismas."
         ],
         [
           "¿La página para niños contiene anuncios?",
-          "No. Animal Shape Train no crea ninguna solicitud de publicidad ni reserva de publicidad."
+          "No. Esta versión para niños no muestra anuncios."
         ]
       ]
     },
