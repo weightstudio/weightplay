@@ -10489,13 +10489,25 @@
     const resource = window.WeightPlayGameInfoLocales?.es;
     if (!resource) return false;
     const authoredRootvault = localizedGames.es?.["animal-rootvault-pins"];
+    const existingSpanishGames = localizedGames.es || {};
     labels.es = resource.labels || {};
     skillLabels.es = resource.skillLabels || {};
     localizedGameplayProfiles.es = resource.gameplayProfiles || {};
     // The authored Spanish resource is the source of truth for complete guide
     // records. Merge the runtime catalog first so its generic fragments cannot
     // overwrite a localized intro, story, or system field.
-    localizedGames.es = { ...(localizedGames.es || {}), ...(resource.games || {}) };
+    localizedGames.es = { ...existingSpanishGames, ...(resource.games || {}) };
+    for (const [id, source] of Object.entries(resource.games || {})) {
+      const current = existingSpanishGames[id];
+      if (!current?.text140Tags) continue;
+      localizedGames.es[id] = {
+        ...source,
+        text140Tags: current.text140Tags,
+        ...(current.gameplay ? { gameplay: current.gameplay } : {}),
+        ...(current.genre ? { genre: current.genre } : {}),
+        ...(current.difficulty ? { difficulty: current.difficulty } : {}),
+      };
+    }
     if (authoredRootvault && resource.games?.["animal-rootvault-pins"]) {
       localizedGames.es["animal-rootvault-pins"] = {
         ...authoredRootvault,
@@ -23609,7 +23621,7 @@
     },
     fr: {
       "garden-tiles": { title: "Tuiles de jardin pour animaux de compagnie", intro: "Associez des images d'animaux sur 30 plateaux de mémoire paisibles avec aperçu, règles du jardin et progression locale." },
-      "animal-hidden-safari": { title: "Safari caché avec des animaux", intro: "Cherchez les animaux cachés dans 30 habitats illustrés sans chronomètre, en vous appuyant sur l'observation plutôt que les cartes." },
+      "animal-hidden-safari": { title: "Safari des animaux cachés", intro: "Cherchez les animaux cachés dans 30 habitats illustrés sans chronomètre, en vous appuyant sur l'observation plutôt que les cartes." },
       "animal-quiz": { title: "Quiz sur les animaux", intro: "Identifiez les animaux grâce à des indices d'habitat, d'apparence et de comportement dans six chapitres." },
     },
     de: {
@@ -23619,7 +23631,7 @@
     },
     it: {
       "garden-tiles": { title: "Piastrelle da giardino per animali domestici", intro: "Abbina immagini di animali in 30 tabelloni di memoria tranquilli con anteprime, regole del giardino e progressi locali." },
-      "animal-hidden-safari": { title: "Safari nascosto con gli animali", intro: "Cerca animali nascosti in 30 habitat illustrati senza timer, usando l'osservazione invece della memoria delle carte." },
+      "animal-hidden-safari": { title: "Safari degli animali nascosti", intro: "Cerca animali nascosti in 30 habitat illustrati senza timer, usando l'osservazione invece della memoria delle carte." },
       "animal-quiz": { title: "Quiz sugli animali", intro: "Riconosci gli animali attraverso indizi su habitat, aspetto e comportamento in sei capitoli didattici." },
     },
     ru: {
@@ -27093,6 +27105,126 @@
     localizedGames[locale]["bubble-bakery"] = {
       ...(localizedGames[locale]["bubble-bakery"] || {}), text140Tags: tags,
     };
+  }
+  const rescueAndSafari140 = {
+    en: {
+      "animal-rescue": { tags: ["5x5 route-planning puzzle", "Weighted mud and one-use paths", "30 no-timer rescue trails"], gameplay: "Animal Route-Planning Puzzle", genre: ["Route puzzle"], difficulty: "Easy to Challenging" },
+      "animal-hidden-safari": { tags: ["Animal seek-and-find puzzle", "Six requested animals per habitat", "30 habitats without a fail timer"], gameplay: "Animal Seek-and-Find Puzzle", genre: ["Visual search"], difficulty: "Relaxed to Challenging" },
+    },
+    "zh-Hant": {
+      "animal-rescue": { tags: ["5×5 路線規劃益智", "泥地加權與單次通行格", "30 個無倒數救援路線"], gameplay: "動物回家路線規劃", genre: ["路線益智"], difficulty: "由簡單到具挑戰性" },
+      "animal-hidden-safari": { tags: ["動物找找看益智", "每個棲地尋找六個目標", "30 個沒有倒數失敗的棲地"], gameplay: "動物觀察找找看", genre: ["視覺搜尋"], difficulty: "輕鬆到具挑戰性" },
+    },
+    "zh-Hans": {
+      "animal-rescue": { tags: ["5×5 路线规划益智", "泥地加权与单次通行格", "30 个无倒计时救援路线"], gameplay: "动物回家路线规划", genre: ["路线益智"], difficulty: "由简单到有挑战性" },
+      "animal-hidden-safari": { tags: ["动物找找看益智", "每个栖地寻找六个目标", "30 个没有倒计时失败的栖地"], gameplay: "动物观察找找看", genre: ["视觉搜索"], difficulty: "轻松到有挑战性" },
+    },
+    ja: {
+      "animal-rescue": { tags: ["5×5のルート計画パズル", "ぬかるみの移動コストと一度だけ通れる道", "制限時間なしの救出ルート30本"], gameplay: "動物の帰り道を考えるパズル", genre: ["ルートパズル"], difficulty: "やさしい〜手ごたえあり" },
+      "animal-hidden-safari": { tags: ["動物を探す絵探しパズル", "各生息地で6匹を発見", "時間切れ失敗のない30の生息地"], gameplay: "動物を探す絵探しパズル", genre: ["絵探し"], difficulty: "のんびり〜手ごたえあり" },
+    },
+    ko: {
+      "animal-rescue": { tags: ["5×5 경로 계획 퍼즐", "진흙의 이동 비용과 한 번만 지나는 칸", "시간 제한 없는 구조 경로 30개"], gameplay: "동물 귀가 경로 계획 퍼즐", genre: ["경로 퍼즐"], difficulty: "쉬움부터 도전적까지" },
+      "animal-hidden-safari": { tags: ["동물 숨은그림찾기 퍼즐", "서식지마다 목표 동물 6마리", "시간 초과로 실패하지 않는 서식지 30곳"], gameplay: "동물 숨은그림찾기 퍼즐", genre: ["그림 찾기"], difficulty: "여유로움부터 도전적까지" },
+    },
+    es: {
+      "animal-rescue": { tags: ["Rompecabezas de rutas en cuadrícula 5×5", "Barro con coste y casillas de un solo uso", "30 rutas de rescate sin cuenta atrás"], gameplay: "Rompecabezas de rutas para animales", genre: ["Rompecabezas de rutas"], difficulty: "De fácil a desafiante" },
+      "animal-hidden-safari": { tags: ["Rompecabezas de busca y encuentra animales", "Seis objetivos por hábitat", "30 hábitats sin derrota por tiempo"], gameplay: "Búsqueda de animales en ilustraciones", genre: ["Búsqueda visual"], difficulty: "De relajado a desafiante" },
+    },
+    "pt-BR": {
+      "animal-rescue": { tags: ["Quebra-cabeça de rotas em grade 5×5", "Lama com custo e casas de uso único", "30 trilhas de resgate sem contagem regressiva"], gameplay: "Quebra-cabeça de rotas para animais", genre: ["Quebra-cabeça de rotas"], difficulty: "De fácil a desafiador" },
+      "animal-hidden-safari": { tags: ["Quebra-cabeça de busca e descoberta de animais", "Seis alvos por habitat", "30 habitats sem derrota por tempo"], gameplay: "Busca de animais em ilustrações", genre: ["Busca visual"], difficulty: "De tranquilo a desafiador" },
+    },
+    fr: {
+      "animal-rescue": { tags: ["Puzzle de parcours sur grille 5×5", "Boue à coût variable et cases à usage unique", "30 parcours de sauvetage sans compte à rebours"], gameplay: "Puzzle de parcours pour animaux", genre: ["Puzzle de parcours"], difficulty: "De facile à exigeant" },
+      "animal-hidden-safari": { tags: ["Jeu d’observation pour trouver des animaux", "Six cibles dans chaque habitat", "30 habitats sans échec au chronomètre"], gameplay: "Jeu d’observation et de recherche d’animaux", genre: ["Recherche visuelle"], difficulty: "De détendu à exigeant" },
+    },
+    de: {
+      "animal-rescue": { tags: ["Routenrätsel auf einem 5×5-Feld", "Matsch mit Zusatzkosten und Einwegfelder", "30 Rettungswege ohne Countdown"], gameplay: "Routenrätsel für Tiere", genre: ["Routenrätsel"], difficulty: "Leicht bis anspruchsvoll" },
+      "animal-hidden-safari": { tags: ["Suchbildrätsel mit Tieren", "Sechs gesuchte Tiere je Lebensraum", "30 Lebensräume ohne Zeitablauf-Niederlage"], gameplay: "Suchbildrätsel mit Tieren", genre: ["Bildersuche"], difficulty: "Entspannt bis anspruchsvoll" },
+    },
+    it: {
+      "animal-rescue": { tags: ["Puzzle di percorsi su griglia 5×5", "Fango con costo e caselle a uso singolo", "30 percorsi di salvataggio senza conto alla rovescia"], gameplay: "Puzzle di percorsi per animali", genre: ["Puzzle di percorsi"], difficulty: "Da facile a impegnativo" },
+      "animal-hidden-safari": { tags: ["Gioco di osservazione e ricerca di animali", "Sei obiettivi in ogni habitat", "30 habitat senza sconfitta a tempo"], gameplay: "Gioco di osservazione e ricerca di animali", genre: ["Ricerca visiva"], difficulty: "Rilassante fino a impegnativo" },
+    },
+    ru: {
+      "animal-rescue": { tags: ["Головоломка с маршрутом на поле 5×5", "Грязь с повышенной стоимостью и одноразовые клетки", "30 спасательных маршрутов без таймера"], gameplay: "Головоломка с маршрутами для животных", genre: ["Маршрутная головоломка"], difficulty: "От простого до сложного" },
+      "animal-hidden-safari": { tags: ["Головоломка «найди животных»", "Шесть целей в каждом месте обитания", "30 мест без поражения по таймеру"], gameplay: "Головоломка «найди животных»", genre: ["Визуальный поиск"], difficulty: "От спокойного до сложного" },
+    },
+    hi: {
+      "animal-rescue": { tags: ["5×5 रास्ता-योजना पहेली", "कीचड़ की चाल-लागत और एक बार चलने वाले खाने", "बिना उलटी गिनती के 30 बचाव रास्ते"], gameplay: "जानवरों के रास्ते की योजना वाली पहेली", genre: ["रास्ते की पहेली"], difficulty: "आसान से चुनौतीपूर्ण" },
+      "animal-hidden-safari": { tags: ["जानवर खोजने की चित्र-पहेली", "हर आवास में छह लक्ष्य", "समय खत्म होने से हार नहीं वाले 30 आवास"], gameplay: "जानवर खोजने की चित्र-पहेली", genre: ["दृश्य खोज"], difficulty: "आरामदायक से चुनौतीपूर्ण" },
+    },
+    ar: {
+      "animal-rescue": { tags: ["لغز تخطيط مسار على شبكة 5×5", "وحل بتكلفة حركة ومسارات تستخدم مرة واحدة", "30 مسار إنقاذ بلا عد تنازلي"], gameplay: "لغز تخطيط مسارات الحيوانات", genre: ["لغز مسارات"], difficulty: "من السهل إلى الصعب" },
+      "animal-hidden-safari": { tags: ["لغز البحث عن الحيوانات المخفية", "ستة أهداف في كل موطن", "30 موطنًا بلا خسارة بسبب الوقت"], gameplay: "لغز البحث عن الحيوانات المخفية", genre: ["بحث بصري"], difficulty: "من الهادئ إلى الصعب" },
+    },
+  };
+  for (const [locale, gamesForLocale] of Object.entries(rescueAndSafari140)) {
+    localizedGames[locale] ||= {};
+    for (const [id, copy] of Object.entries(gamesForLocale)) {
+      localizedGames[locale][id] = { ...(localizedGames[locale][id] || {}), text140Tags: copy.tags, gameplay: copy.gameplay, genre: copy.genre, difficulty: copy.difficulty };
+    }
+  }
+  const guardYardQuiz140 = {
+    en: {
+      "animal-guard-yard": { tags: ["Lane-defense strategy puzzle", "Five lanes and animal guards", "30 stages with six boss checks"], gameplay: "Five-Lane Animal Defense", genre: ["Lane-defense strategy"], difficulty: "Easy to Challenging" },
+      "animal-quiz": { tags: ["Animal knowledge quiz", "Ten animals in each stage", "Picture and fact clues"], gameplay: "Animal Knowledge Quiz", genre: ["Educational quiz"], difficulty: "Easy" },
+    },
+    "zh-Hant": {
+      "animal-guard-yard": { tags: ["五路線動物防守", "守衛配置與天賦培養", "30 關與六場首領戰"], gameplay: "五路線動物防守", genre: ["路線防守策略"], difficulty: "由易到具挑戰性" },
+      "animal-quiz": { tags: ["動物知識問答", "每關十種動物", "圖片與知識線索"], gameplay: "動物知識問答", genre: ["知識問答"], difficulty: "簡單" },
+    },
+    "zh-Hans": {
+      "animal-guard-yard": { tags: ["五路线动物防守", "守卫配置与天赋培养", "30 关与六场首领战"], gameplay: "五路线动物防守", genre: ["路线防守策略"], difficulty: "由易到有挑战性" },
+      "animal-quiz": { tags: ["动物知识问答", "每关十种动物", "图片与知识线索"], gameplay: "动物知识问答", genre: ["知识问答"], difficulty: "简单" },
+    },
+    ja: {
+      "animal-guard-yard": { tags: ["5レーンの動物防衛", "守衛の配置と才能の強化", "6体のボスが登場する全30ステージ"], gameplay: "5レーン動物防衛", genre: ["レーン防衛ストラテジー"], difficulty: "やさしい〜手ごたえあり" },
+      "animal-quiz": { tags: ["動物知識クイズ", "各ステージに動物10種", "写真と知識の手がかり"], gameplay: "動物知識クイズ", genre: ["学習クイズ"], difficulty: "かんたん" },
+    },
+    ko: {
+      "animal-guard-yard": { tags: ["다섯 경로 동물 방어", "수호자 배치와 특성 훈련", "보스전 여섯 번이 있는 30단계"], gameplay: "5경로 동물 방어", genre: ["경로 방어 전략"], difficulty: "쉬움부터 도전적까지" },
+      "animal-quiz": { tags: ["동물 지식 퀴즈", "단계마다 동물 열 종", "사진과 지식 단서"], gameplay: "동물 지식 퀴즈", genre: ["학습 퀴즈"], difficulty: "쉬움" },
+    },
+    es: {
+      "animal-guard-yard": { tags: ["Estrategia de defensa por carriles", "Cinco carriles y guardianes animales", "30 etapas con seis jefes"], gameplay: "Defensa animal en cinco carriles", genre: ["Estrategia de defensa por carriles"], difficulty: "De fácil a desafiante" },
+      "animal-quiz": { tags: ["Cuestionario de conocimientos animales", "Diez animales por etapa", "Pistas visuales y datos"], gameplay: "Cuestionario de conocimientos animales", genre: ["Cuestionario educativo"], difficulty: "Fácil" },
+    },
+    "pt-BR": {
+      "animal-guard-yard": { tags: ["Estratégia de defesa por rotas", "Cinco rotas e guardiões animais", "30 fases e seis chefes"], gameplay: "Defesa animal em cinco rotas", genre: ["Estratégia de defesa por rotas"], difficulty: "De fácil a desafiador" },
+      "animal-quiz": { tags: ["Quiz de conhecimentos sobre animais", "Dez animais por fase", "Pistas visuais e fatos"], gameplay: "Quiz de conhecimentos sobre animais", genre: ["Quiz educativo"], difficulty: "Fácil" },
+    },
+    fr: {
+      "animal-guard-yard": { tags: ["Stratégie de défense sur cinq voies", "Gardiens animaux à placer", "30 niveaux et six boss"], gameplay: "Défense animale sur cinq voies", genre: ["Stratégie de défense sur voies"], difficulty: "De facile à exigeant" },
+      "animal-quiz": { tags: ["Quiz de connaissances animales", "Dix animaux par niveau", "Images et indices factuels"], gameplay: "Quiz de connaissances animales", genre: ["Quiz éducatif"], difficulty: "Facile" },
+    },
+    de: {
+      "animal-guard-yard": { tags: ["Taktisches Spiel zur Wegverteidigung", "Fünf Wege mit Tierwächtern", "30 Stufen und sechs Bosskämpfe"], gameplay: "Tierverteidigung auf fünf Wegen", genre: ["Wegverteidigungsstrategie"], difficulty: "Leicht bis anspruchsvoll" },
+      "animal-quiz": { tags: ["Tierwissensquiz", "Zehn Tiere je Stufe", "Bild- und Sachhinweise"], gameplay: "Tierwissensquiz", genre: ["Lernquiz"], difficulty: "Leicht" },
+    },
+    it: {
+      "animal-guard-yard": { tags: ["Strategia di difesa su corsie", "Cinque corsie e guardiani animali", "30 livelli con sei boss"], gameplay: "Difesa animale su cinque corsie", genre: ["Strategia di difesa su corsie"], difficulty: "Da facile a impegnativo" },
+      "animal-quiz": { tags: ["Quiz di conoscenza degli animali", "Dieci animali per livello", "Immagini e indizi informativi"], gameplay: "Quiz di conoscenza degli animali", genre: ["Quiz educativo"], difficulty: "Facile" },
+    },
+    ru: {
+      "animal-guard-yard": { tags: ["Стратегия защиты пяти дорожек", "Расстановка животных-защитников", "30 этапов и шесть боссов"], gameplay: "Защита животных на пяти дорожках", genre: ["Стратегия защиты дорожек"], difficulty: "От простого до сложного" },
+      "animal-quiz": { tags: ["Викторина о животных", "Десять животных на этапе", "Изображения и факты-подсказки"], gameplay: "Викторина о животных", genre: ["Обучающая викторина"], difficulty: "Лёгкая" },
+    },
+    hi: {
+      "animal-guard-yard": { tags: ["लेन रक्षा रणनीति पहेली", "पाँच रास्तों पर पशु रक्षक", "छह बॉस वाले 30 चरण"], gameplay: "पाँच लेन में पशु रक्षा", genre: ["लेन रक्षा रणनीति"], difficulty: "आसान से चुनौतीपूर्ण" },
+      "animal-quiz": { tags: ["पशु ज्ञान प्रश्नोत्तरी", "हर चरण में दस पशु", "चित्र और तथ्य के संकेत"], gameplay: "पशु ज्ञान प्रश्नोत्तरी", genre: ["शैक्षिक प्रश्नोत्तरी"], difficulty: "आसान" },
+    },
+    ar: {
+      "animal-guard-yard": { tags: ["استراتيجية دفاع عبر خمسة مسارات", "حراس حيوانات وتوزيعهم", "30 مرحلة وستة زعماء"], gameplay: "دفاع الحيوانات عبر خمسة مسارات", genre: ["استراتيجية دفاع المسارات"], difficulty: "من السهل إلى الصعب" },
+      "animal-quiz": { tags: ["اختبار معرفة الحيوانات", "عشرة حيوانات في كل مرحلة", "صور وقرائن معرفية"], gameplay: "اختبار معرفة الحيوانات", genre: ["اختبار تعليمي"], difficulty: "سهل" },
+    },
+  };
+  for (const [locale, gamesForLocale] of Object.entries(guardYardQuiz140)) {
+    localizedGames[locale] ||= {};
+    for (const [id, copy] of Object.entries(gamesForLocale)) {
+      localizedGames[locale][id] = { ...(localizedGames[locale][id] || {}), text140Tags: copy.tags, gameplay: copy.gameplay, genre: copy.genre, difficulty: copy.difficulty };
+    }
   }
   // These locale-owned facts keep generated Guides out of the old generic
   // fallback. The game rules below were checked against each game's source.

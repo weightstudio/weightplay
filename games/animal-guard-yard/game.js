@@ -1911,9 +1911,13 @@ return __wpReturn;
         section.style.setProperty('border-radius', '18px', 'important');
       });
     };
-    import('/games/animal-guard-yard/guide.mjs?v=36').then(({guardYardGuide}) => {
+    import('/games/animal-guard-yard/guide.mjs?v=37-text140-preserve').then(({guardYardGuide}) => {
       const guide=document.querySelector('.game-page-info');
-      if (guide) guide.outerHTML=guardYardGuide(locale);
+      if (guide) {
+        const tags = guide.querySelector('.game-info-tags[data-wp-gameplay-tags="1.4.0"]')?.outerHTML || '';
+        const facts = guide.querySelector('.game-info-facts')?.outerHTML || '';
+        guide.outerHTML=guardYardGuide(locale, { tags, facts });
+      }
       applyGuideFrameRadius();
     }).catch(error => console.error('Guard Yard guide could not initialize',error));
     applyGuideFrameRadius();

@@ -664,9 +664,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "꼭꼭 숨은 동물 사파리",
     "es": "Safari Oculto",
     "pt-BR": "Safari Escondido",
-    "fr": "Safari caché avec",
+    "fr": "Safari des animaux cachés",
     "de": "Versteckte Tiersafari",
-    "it": "Safari nascosto con gli",
+    "it": "Safari degli animali nascosti",
     "ru": "Сафари со скрытыми животными",
     "hi": "हिडन सफ़ारी",
     "ar": "رحلات السفاري المخفية للحيوانات"
