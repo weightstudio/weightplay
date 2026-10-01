@@ -18,14 +18,18 @@ function roundRect(ctx, x, y, w, h, radius) {
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 export class CastleCascade2D {
-  constructor(canvas, onCell, onFailure) {
+  constructor(canvas, onCell, onFailure, onSwap) {
     if (!canvas) throw new Error("Castle Cascade board canvas is missing.");
-    const context = canvas.getContext("2d", { alpha: false });
+    const context = canvas.getContext("2d", { alpha: true });
     if (!context) throw new Error("Canvas 2D is not available in this browser.");
     this.canvas = canvas;
     this.context = context;
     this.onCell = onCell;
     this.onFailure = onFailure;
+    this.onSwap = onSwap;
+    this.pressedIndex = -1;
+    this.dragOffset = { x: 0, y: 0 };
+    this.sprites = [];
     this.disposed = false;
     this.lost = false;
     this.failed = false;
@@ -41,10 +45,16 @@ export class CastleCascade2D {
     this.motion = null;
     this.lastFrame = 0;
     this.frameTimes = [];
-    this.reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    this.motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    this.reducedMotion = this.motionPreference?.matches ?? false;
+    this.handleMotionPreference = (event) => {
+      this.reducedMotion = event.matches;
+      if (event.matches) { this.cancelMotion(); this.highlightUntil = 0; }
+      this.invalidate();
+    };
+    this.motionPreference?.addEventListener?.("change", this.handleMotionPreference);
     this.assets = {
-      atlas: this.loadImage(new URL("./assets/castle-cascade-board-sprites-v2.webp", import.meta.url).href),
-      background: this.loadImage(new URL("./assets/castle-cascade-courtyard-v1.webp", import.meta.url).href),
+      atlas: this.loadImage(new URL("./assets/castle-cascade-board-sprites-v3.webp", import.meta.url).href),
     };
     this.installInput();
     this.installResize();
@@ -56,7 +66,11 @@ export class CastleCascade2D {
   loadImage(source) {
     const image = new Image();
     image.decoding = "async";
-    image.onload = () => { if (!this.disposed) this.invalidate(); };
+    image.onload = () => {
+      if (this.disposed) return;
+      if (source.includes("board-sprites")) this.prepareAtlas(image);
+      this.invalidate();
+    };
     image.onerror = () => {
       if (this.disposed || this.failed) return;
       this.failed = true;
@@ -66,34 +80,95 @@ export class CastleCascade2D {
     return image;
   }
 
+  prepareAtlas(atlas) {
+    const source = document.createElement("canvas");
+    source.width = atlas.naturalWidth;
+    source.height = atlas.naturalHeight;
+    const context = source.getContext("2d", { willReadFrequently: true });
+    context.drawImage(atlas, 0, 0);
+    // Normalize each actual opaque silhouette, not the generated sheet's margins.
+    const pixels = context.getImageData(0, 0, source.width, source.height).data;
+    for (let index = 0; index < COLS * ROWS; index += 1) {
+      const left = Math.round((index % COLS) * source.width / COLS);
+      const top = Math.round(Math.floor(index / COLS) * source.height / ROWS);
+      const right = Math.round(((index % COLS) + 1) * source.width / COLS);
+      const bottom = Math.round((Math.floor(index / COLS) + 1) * source.height / ROWS);
+      let x0 = right, y0 = bottom, x1 = left, y1 = top;
+      const columns = new Uint16Array(right - left), rows = new Uint16Array(bottom - top);
+      for (let y = top; y < bottom; y += 1) for (let x = left; x < right; x += 1) {
+        if (pixels[(y * source.width + x) * 4 + 3] < 128) continue;
+        columns[x - left] += 1; rows[y - top] += 1;
+      }
+      // Ignore isolated generation specks so they cannot change centering/scale.
+      columns.forEach((count, x) => { if (count >= 7) { x0 = Math.min(x0, left+x); x1 = Math.max(x1, left+x); } });
+      rows.forEach((count, y) => { if (count >= 7) { y0 = Math.min(y0, top+y); y1 = Math.max(y1, top+y); } });
+      if (x1 < x0) continue;
+      const sprite = document.createElement("canvas");
+      sprite.width = sprite.height = 256;
+      const sw = x1 - x0 + 1, sh = y1 - y0 + 1;
+      const ratio = 236 / Math.max(sw, sh);
+      sprite.getContext("2d").drawImage(atlas, x0, y0, sw, sh,
+        (256 - sw * ratio) / 2, (256 - sh * ratio) / 2, sw * ratio, sh * ratio);
+      this.sprites[index] = sprite;
+    }
+  }
+
   installInput() {
     this.handlePointerDown = (event) => {
-      if (event.button !== undefined && event.button !== 0) return;
+      if (event.button !== undefined && event.button !== 0 || this.motion && this.motion.kind !== "entrance") return;
+      if (this.motion?.kind === "entrance") this.cancelMotion();
+      const index = this.indexAt(event.clientX, event.clientY);
+      if (index < 0) return;
       event.preventDefault();
-      this.pointerDown = { id: event.pointerId, x: event.clientX, y: event.clientY };
+      this.pointerDown = { id: event.pointerId, x: event.clientX, y: event.clientY, index };
+      this.pressedIndex = index;
       this.canvas.setPointerCapture?.(event.pointerId);
+      this.invalidate();
+    };
+    this.handlePointerMove = (event) => {
+      if (!this.pointerDown || event.pointerId !== this.pointerDown.id) return;
+      const rect = this.canvas.getBoundingClientRect();
+      const cell = this.boardBounds.size / BOARD_WIDTH;
+      const dx = (event.clientX - this.pointerDown.x) * this.width / rect.width;
+      const dy = (event.clientY - this.pointerDown.y) * this.height / rect.height;
+      this.dragOffset = Math.abs(dx) > Math.abs(dy)
+        ? { x: clamp(dx, -cell * .24, cell * .24), y: 0 }
+        : { x: 0, y: clamp(dy, -cell * .24, cell * .24) };
+      this.invalidate();
     };
     this.handlePointerUp = (event) => {
       const down = this.pointerDown;
-      this.pointerDown = null;
+      this.handlePointerCancel();
       if (!down || down.id !== event.pointerId || this.disposed || this.lost || this.failed) return;
-      if (Math.hypot(event.clientX - down.x, event.clientY - down.y) > 14) return;
+      const dx = event.clientX - down.x, dy = event.clientY - down.y;
+      if (Math.hypot(dx, dy) > 14) {
+        const col = down.index % BOARD_WIDTH, row = Math.floor(down.index / BOARD_WIDTH);
+        const horizontal = Math.abs(dx) > Math.abs(dy);
+        const nextCol = col + (horizontal ? Math.sign(dx) : 0);
+        const nextRow = row + (horizontal ? 0 : Math.sign(dy));
+        if (nextCol >= 0 && nextCol < BOARD_WIDTH && nextRow >= 0 && nextRow < BOARD_HEIGHT)
+          this.onSwap?.(down.index, nextRow * BOARD_WIDTH + nextCol);
+        return;
+      }
       const index = this.indexAt(event.clientX, event.clientY);
-      if (index >= 0) this.onCell?.(index);
+      if (index === down.index) this.onCell?.(index);
     };
-    this.handlePointerCancel = () => { this.pointerDown = null; };
+    this.handlePointerCancel = () => {
+      this.pointerDown = null;
+      this.pressedIndex = -1;
+      this.dragOffset = { x: 0, y: 0 };
+      this.invalidate();
+    };
     this.handleContextLost = (event) => {
-      event.preventDefault();
-      this.lost = true;
+      event.preventDefault(); this.lost = true; this.cancelMotion();
       this.onFailure?.("context-lost");
     };
     this.handleContextRestored = () => {
       if (this.disposed) return;
-      this.lost = false;
-      this.resize();
-      this.invalidate();
+      this.lost = false; this.resize(); this.invalidate();
     };
     this.canvas.addEventListener("pointerdown", this.handlePointerDown);
+    this.canvas.addEventListener("pointermove", this.handlePointerMove);
     this.canvas.addEventListener("pointerup", this.handlePointerUp);
     this.canvas.addEventListener("pointercancel", this.handlePointerCancel);
     this.canvas.addEventListener("contextlost", this.handleContextLost);
@@ -115,7 +190,7 @@ export class CastleCascade2D {
     const rect = this.canvas.getBoundingClientRect();
     const width = Math.max(1, Math.round(rect.width));
     const height = Math.max(1, Math.round(rect.height));
-    const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
     if (width === this.width && height === this.height && ratio === this.pixelRatio) return;
     this.width = width;
     this.height = height;
@@ -158,11 +233,15 @@ export class CastleCascade2D {
   frame(time) {
     this.raf = 0;
     if (this.disposed || this.lost || this.failed) return;
-    if (this.lastFrame) {
+    if (this.lastFrame && this.motion) {
       this.frameTimes.push(Math.min(250, time - this.lastFrame));
       if (this.frameTimes.length > 60) this.frameTimes.shift();
     }
     this.lastFrame = time;
+    if (this.motion?.onImpact && !this.motion.impactPlayed && time >= this.motion.started + this.motion.duration * .22) {
+      this.motion.impactPlayed = true;
+      this.motion.onImpact();
+    }
     this.draw(time);
     if (this.motion && time >= this.motion.started + this.motion.duration) {
       const finished = this.motion;
@@ -185,33 +264,36 @@ export class CastleCascade2D {
     const h = this.height;
     if (!w || !h) return;
     ctx.clearRect(0, 0, w, h);
-    const background = this.assets.background;
-    if (background?.complete && background.naturalWidth) ctx.drawImage(background, 0, 0, w, h);
-    else {
-      const fallback = ctx.createLinearGradient(0, 0, 0, h);
-      fallback.addColorStop(0, "#35235f");
-      fallback.addColorStop(1, "#21163f");
-      ctx.fillStyle = fallback;
-      ctx.fillRect(0, 0, w, h);
-    }
     const unit = Math.min(w, h);
-    const size = unit * 0.88;
+    const size = unit * 0.946;
     const bounds = { x: (w - size) / 2, y: (h - size) / 2, size };
     this.boardBounds = bounds;
     this.drawFrame(bounds);
+    ctx.save();
+    // Impact impulse affects only artwork. HUD and input rectangles never move.
+    const active = this.motion;
+    if (active?.kind === "clear" && active.batch.visualEffects?.length) {
+      const p = clamp((time - active.started) / active.duration, 0, 1);
+      const impulse = p > .2 && p < .5 ? Math.sin((p - .2) / .3 * Math.PI) : 0;
+      const strength = active.batch.visualEffects.some(e => e.type === "combo-burst") ? 2.4 : 1.2;
+      ctx.translate(Math.sin(p * 68) * impulse * strength, Math.cos(p * 79) * impulse * strength * .6);
+    }
     const motion = this.motion;
     const board = motion?.kind === "swap" ? motion.before
       : motion?.kind === "clear" ? motion.batch.before
         : motion?.kind === "gravity" ? motion.cleared : this.board;
     if (board) {
-      const hidden = motion?.kind === "swap" ? new Set(motion.indices)
+      const hidden = motion?.kind === "entrance" ? new Set(Array.from({ length: 81 }, (_, i) => i)) : motion?.kind === "swap" ? new Set(motion.indices)
         : motion?.kind === "clear" ? new Set([...motion.batch.directHits, ...motion.batch.adjacentHits])
           : motion?.kind === "gravity" ? motion.hidden : null;
       this.drawTiles(bounds, time, hidden);
       if (motion?.kind === "swap") this.drawSwapMotion(bounds, motion, time);
       else if (motion?.kind === "clear") this.drawClearMotion(bounds, motion, time);
       else if (motion?.kind === "gravity") this.drawGravityMotion(bounds, motion, time);
+      else if (motion?.kind === "entrance") this.drawEntrance(bounds, motion, time);
+      else if (motion?.kind === "victory") this.drawVictory(bounds, motion, time);
     }
+    ctx.restore();
     if (!motion) this.drawFocus(bounds);
     this.canvas.dataset.renderer = "canvas-2d";
     this.canvas.dataset.imageAssetCount = String(Object.values(this.assets).filter((img) => img?.complete && img.naturalWidth).length);
@@ -222,20 +304,23 @@ export class CastleCascade2D {
   drawFrame(bounds) {
     const ctx = this.context;
     const cell = bounds.size / BOARD_WIDTH;
-    const gap = Math.max(1.2, cell * 0.035);
+    const inset = cell * .12;
+    const gold = ctx.createLinearGradient(0, bounds.y, 0, bounds.y + bounds.size);
+    gold.addColorStop(0, "#fff1a5"); gold.addColorStop(.3, "#e6a821"); gold.addColorStop(1, "#ad681a");
+    ctx.save();
+    ctx.shadowColor = "#26355366"; ctx.shadowBlur = cell * .28; ctx.shadowOffsetY = cell * .12;
+    roundRect(ctx, bounds.x - inset, bounds.y - inset, bounds.size + inset * 2, bounds.size + inset * 2, cell * .18);
+    ctx.fillStyle = gold; ctx.fill();
+    ctx.shadowBlur = ctx.shadowOffsetY = 0;
+    ctx.strokeStyle = "#fff2b0"; ctx.lineWidth = Math.max(1.2, cell * .035); ctx.stroke();
     for (let i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i += 1) {
-      const row = Math.floor(i / BOARD_WIDTH);
-      const col = i % BOARD_WIDTH;
-      const x = bounds.x + col * cell + gap / 2;
-      const y = bounds.y + row * cell + gap / 2;
-      const inner = cell - gap;
-      roundRect(ctx, x, y, inner, inner, cell * 0.14);
-      ctx.fillStyle = (row + col) % 2 === 0 ? "#3022549c" : "#241942a8";
-      ctx.fill();
-      ctx.lineWidth = Math.max(0.55, cell * 0.012);
-      ctx.strokeStyle = "#dac9f02e";
-      ctx.stroke();
+      const row = Math.floor(i / BOARD_WIDTH), col = i % BOARD_WIDTH;
+      ctx.fillStyle = (row + col) % 2 ? "#bed6ee" : "#cbe0f4";
+      ctx.fillRect(bounds.x + col * cell, bounds.y + row * cell, cell + .25, cell + .25);
     }
+    ctx.strokeStyle = "#728dbb"; ctx.lineWidth = cell * .035;
+    ctx.strokeRect(bounds.x, bounds.y, bounds.size, bounds.size);
+    ctx.restore();
   }
 
   drawTiles(bounds, time, hidden = null) {
@@ -246,7 +331,8 @@ export class CastleCascade2D {
       const y = bounds.y + Math.floor(index / BOARD_WIDTH) * cell;
       const cx = x + cell / 2;
       const cy = y + cell / 2;
-      this.drawTile(tile, index, cx, cy, cell);
+      const pressed = index === this.pressedIndex;
+      this.drawTile(tile, index, cx + (pressed ? this.dragOffset.x : 0), cy + (pressed ? this.dragOffset.y : 0), cell, 1, pressed ? 1.06 : 1);
       if (this.highlightCells.has(index)) this.drawImpact(x, y, cell, time);
     });
   }
@@ -257,7 +343,9 @@ export class CastleCascade2D {
     ctx.save();
     ctx.globalAlpha *= alpha;
     if (tile.exit) this.drawSprite(SPRITE.exit, cx, cy, cell * scale, 0.78, 0.68);
-    if (tile.c !== null && tile.c >= 0 && tile.c < GEM_COLORS.length) this.drawGem(tile.c, cx, cy, cell * scale * 0.94);
+    if (!tile.box && !tile.stone && !tile.gate && !tile.p && tile.c !== null && tile.c >= 0 && tile.c < GEM_COLORS.length)
+      this.drawGem(tile.c, cx, cy, cell * scale);
+    if (tile.stone === 1) { ctx.save(); ctx.globalAlpha *= .78; }
     if (tile.box) this.drawSprite(SPRITE.crate, cx, cy, cell * scale, 0.96);
     if (tile.chain) this.drawSprite(SPRITE.chain, cx, cy, cell * scale, 0.96);
     if (tile.gate) {
@@ -265,6 +353,7 @@ export class CastleCascade2D {
       this.drawGateColor(cx, cy, cell * scale, tile.gateColor);
     }
     if (tile.stone) this.drawSprite(SPRITE.stone, cx, cy, cell * scale, tile.stone > 1 ? 0.94 : 0.84);
+    if (tile.stone === 1) ctx.restore();
     if (tile.seal) this.drawSprite(SPRITE.seal, cx, cy, cell * scale, 0.82);
     if (tile.key) this.drawSprite(SPRITE.key, cx, cy, cell * scale, 0.70);
     if (tile.p) this.drawPower(tile.p, cx, cy, cell * scale);
@@ -272,7 +361,12 @@ export class CastleCascade2D {
   }
 
   drawGem(color, cx, cy, size) {
-    this.drawSprite(color, cx, cy, size, 0.98);
+    const ctx = this.context;
+    ctx.save();
+    ctx.fillStyle = "#35547530";
+    ctx.beginPath(); ctx.ellipse(cx, cy + size * .32, size * .29, size * .095, 0, 0, Math.PI * 2); ctx.fill();
+    this.drawSprite(color, cx, cy, size, .96);
+    ctx.restore();
   }
 
   drawPower(power, cx, cy, cell) {
@@ -281,14 +375,12 @@ export class CastleCascade2D {
     if (sprite === undefined) return;
     ctx.save();
     const color = power.startsWith("arrow") ? "#ffe585" : power === "bomb" ? "#62caff" : power === "bird" ? "#73f1dc" : "#dc82ff";
-    ctx.beginPath();
-    ctx.arc(cx, cy, cell * 0.36, 0, Math.PI * 2);
-    ctx.lineWidth = Math.max(1.2, cell * 0.035);
-    ctx.strokeStyle = color + "a8";
-    ctx.stroke();
+    const glow = ctx.createRadialGradient(cx, cy, cell * .08, cx, cy, cell * .52);
+    glow.addColorStop(0, color + "88"); glow.addColorStop(1, color + "00");
+    ctx.fillStyle = glow; ctx.fillRect(cx - cell * .52, cy - cell * .52, cell * 1.04, cell * 1.04);
     ctx.translate(cx, cy);
     if (power === "arrowV") ctx.rotate(Math.PI / 2);
-    this.drawSprite(sprite, 0, 0, cell, 0.63);
+    this.drawSprite(sprite, 0, 0, cell, .94);
     ctx.restore();
   }
 
@@ -312,16 +404,13 @@ export class CastleCascade2D {
     ctx.restore();
   }
 
-  drawSprite(sprite, cx, cy, cell, scale = 0.9, alpha = 1) {
-    const atlas = this.assets.atlas;
-    if (!atlas?.complete || !atlas.naturalWidth) return;
-    const sourceWidth = atlas.naturalWidth / COLS;
-    const sourceHeight = atlas.naturalHeight / ROWS;
+  drawSprite(sprite, cx, cy, cell, scale = .9, alpha = 1) {
+    const image = this.sprites[sprite];
+    if (!image) return;
     const size = cell * scale;
     const ctx = this.context;
-    ctx.save();
-    ctx.globalAlpha *= alpha;
-    ctx.drawImage(atlas, (sprite % COLS) * sourceWidth, Math.floor(sprite / COLS) * sourceHeight, sourceWidth, sourceHeight, cx - size / 2, cy - size / 2, size, size);
+    ctx.save(); ctx.globalAlpha *= alpha;
+    ctx.drawImage(image, cx - size / 2, cy - size / 2, size, size);
     ctx.restore();
   }
 
@@ -351,11 +440,13 @@ export class CastleCascade2D {
     if (this.disposed || this.lost || this.failed) return Promise.resolve(false);
     if (this.reducedMotion) {
       this.board = motion.finalBoard || this.board;
+      motion.onImpact?.();
       this.invalidate();
       return Promise.resolve(false);
     }
     return new Promise((resolve) => {
       motion.started = performance.now();
+      this.lastFrame = 0;
       motion.resolve = resolve;
       this.motion = motion;
       this.highlightCells.clear();
@@ -376,13 +467,54 @@ export class CastleCascade2D {
       b,
       accepted,
       combo: Boolean(accepted && before[a]?.p && before[b]?.p),
-      duration: accepted ? 190 : 245,
+      duration: accepted ? 210 : 290,
     });
   }
 
-  animateClear(batch) {
+  animateEntrance() {
+    if (!this.board) return Promise.resolve(false);
+    return this.runMotion({ kind: "entrance", finalBoard: this.board, duration: 460 });
+  }
+
+  drawEntrance(bounds, motion, time) {
+    const cell = bounds.size / BOARD_WIDTH;
+    const elapsed = time - motion.started;
+    this.board.forEach((tile, index) => {
+      const row = Math.floor(index / BOARD_WIDTH), col = index % BOARD_WIDTH;
+      const p = clamp((elapsed - row * 15 - col * 8) / 260, 0, 1);
+      if (!p) return;
+      const scale = 1 + 2.7 * (p - 1) ** 3 + 1.7 * (p - 1) ** 2;
+      this.drawTile(tile, index, bounds.x + (col + .5) * cell, bounds.y + (row + .5) * cell, cell, Math.min(1, p * 3), Math.max(.01, scale));
+    });
+  }
+
+  animateVictory() {
+    return this.runMotion({ kind: "victory", finalBoard: this.board, duration: 620 });
+  }
+
+  drawVictory(bounds, motion, time) {
+    const p = clamp((time - motion.started) / motion.duration, 0, 1);
+    const cell = bounds.size / BOARD_WIDTH;
+    for (let i = 0; i < 42; i += 1) {
+      const startX = bounds.x + ((i * 17) % 43) / 43 * bounds.size;
+      const x = startX + Math.sin(i * 9 + p * 5) * cell * .7;
+      const y = bounds.y + bounds.size * .7 - Math.sin(p * Math.PI * .9) * bounds.size * (.6 + i % 3 * .1) + p * p * cell;
+      const ctx = this.context;
+      ctx.save(); ctx.globalAlpha *= Math.sin(p * Math.PI);
+      ctx.translate(x, y); ctx.rotate(i + p * 8);
+      ctx.fillStyle = ["#ffd15b", "#fff6cc", "#49c8ef", "#f078a0"][i % 4];
+      ctx.fillRect(-cell * .035, -cell * .07, cell * .07, cell * .14); ctx.restore();
+    }
+  }
+
+  animateClear(batch, onImpact, chainDepth = 0) {
     this.board = batch.before;
-    return this.runMotion({ kind: "clear", batch, finalBoard: batch.cleared, duration: batch.visualEffects?.length ? 335 : 255 });
+    const effects = batch.visualEffects || [];
+    const duration = effects.some(e => e.type === "bird-carry") ? 1100
+      : effects.some(e => e.type === "combo-burst") ? 780
+      : effects.some(e => ["bird", "flock", "bird-carry"].includes(e.type)) ? 700
+        : effects.length ? 620 : 360;
+    return this.runMotion({ kind: "clear", batch, onImpact, chainDepth, finalBoard: batch.cleared, duration });
   }
 
   animateGravity(cleared, after, movements = [], deliveredKeys = []) {
@@ -412,8 +544,8 @@ export class CastleCascade2D {
       if (item.fromIndex !== null) hidden.add(item.fromIndex);
       hidden.add(item.toIndex);
     });
-    const stagger = (item) => (item.col % 3) * 18 + (item.spawnOrder || 0) * 54;
-    const travel = (item) => 190 + Math.min(7, Math.abs(item.toRow - item.fromRow)) * 27;
+    const stagger = (item) => (item.col % 3) * 9 + (item.spawnOrder || 0) * 22;
+    const travel = (item) => 180 + Math.min(9, Math.abs(item.toRow - item.fromRow)) * 23;
     const duration = Math.max(...moving.map((item) => stagger(item) + travel(item)));
     return this.runMotion({
       kind: "gravity",
@@ -450,74 +582,134 @@ export class CastleCascade2D {
     if (motion.combo) this.drawComboLink(bounds, motion, progress, cell);
   }
 
+  hitStart(batch, index) {
+    const row = Math.floor(index / BOARD_WIDTH), col = index % BOARD_WIDTH;
+    const arrivals = [];
+    for (const effect of batch.visualEffects || []) {
+      const origin = effect.index ?? effect.origins?.[0];
+      if (!Number.isInteger(origin)) continue;
+      const r = Math.floor(origin / BOARD_WIDTH), c = origin % BOARD_WIDTH;
+      const distance = Math.hypot(row - r, col - c);
+      const carried = effects.some(e => e.type === "bird-carry" && e.target === origin)
+        && ["arrow", "bomb"].includes(effect.type);
+      const arrival = (local) => carried ? .60 + local * .40 : local;
+      if (effect.type === "arrow" && (effect.axis === "h" ? row === r : col === c))
+        arrivals.push(arrival(.22 + Math.abs(effect.axis === "h" ? col - c : row - r) / 8 * .42));
+      if (["bomb", "nova"].includes(effect.type) && Math.max(Math.abs(row-r), Math.abs(col-c)) <= effect.radius)
+        arrivals.push(arrival(.22 + distance / Math.max(1, effect.radius * 1.42) * .25));
+      if (["cross", "siege"].includes(effect.type)) arrivals.push(.22 + Math.min(Math.abs(row-r), Math.abs(col-c)) * .015 + Math.max(Math.abs(row-r), Math.abs(col-c)) / 8 * .38);
+      if (["bird", "bird-carry"].includes(effect.type) && index === effect.target) arrivals.push(.68);
+      if (effect.type === "flock" && effect.targets?.includes(index)) arrivals.push(.68);
+      if (["prism", "prism-combo", "spectrum"].includes(effect.type) && effect.targets?.includes(index)) arrivals.push(.28 + distance * .018);
+    }
+    return arrivals.length ? Math.min(...arrivals) : .22;
+  }
+
   drawClearMotion(bounds, motion, time) {
     const { batch } = motion;
     const progress = clamp((time - motion.started) / motion.duration, 0, 1);
     const cell = bounds.size / BOARD_WIDTH;
-    const powerOrigins = new Set((batch.visualEffects || []).flatMap((effect) => [
-      ...(Number.isInteger(effect.index) ? [effect.index] : []),
-      ...(effect.origins || []),
-    ]));
+    const center = index => ({ x: bounds.x + (index % BOARD_WIDTH + .5) * cell, y: bounds.y + (Math.floor(index / BOARD_WIDTH) + .5) * cell });
     for (const index of batch.directHits) {
       const tile = batch.before[index];
       if (!tile) continue;
-      const row = Math.floor(index / BOARD_WIDTH);
-      const col = index % BOARD_WIDTH;
-      const alpha = 1 - progress;
-      const scale = Math.max(0.25, 1 - progress * 0.72);
-      const cx = bounds.x + (col + 0.5) * cell;
-      const cy = bounds.y + (row + 0.5) * cell;
-      this.drawTile(tile, index, cx, cy, cell, alpha, scale);
-      const burst = Math.sin(progress * Math.PI);
-      this.context.save();
-      this.context.globalAlpha *= (1 - progress) * 0.7;
-      this.drawSprite(SPRITE.ripple, cx, cy, cell * (0.34 + progress * 1.06), 0.9);
-      this.drawSprite(SPRITE.spark, cx, cy, cell * (0.6 + burst * 0.38), 0.58 + burst * 0.2, 0.92);
-      this.context.restore();
-      const strong = powerOrigins.has(index);
-      const count = strong ? 8 : batch.directHits.length > 24 ? 1 : 3;
-      this.drawParticleBurst(cx, cy, cell, progress, count, strong ? 1.8 : 0.78, strong ? "#fff0a6" : "#c5f7ff", index);
+      const after = batch.cleared[index];
+      const { x: cx, y: cy } = center(index);
+      const start = this.hitStart(batch, index);
+      const hit = clamp((progress - start) / .28, 0, 1);
+      if (progress < start) {
+        const prepare = clamp(progress / start, 0, 1);
+        this.drawTile(tile, index, cx, cy, cell, 1, 1 + Math.sin(prepare * Math.PI) * .085);
+        if (tile.p) this.drawRing(cx, cy, cell * (.43 - prepare * .14), prepare * .6, "#fff3b7", cell * .04);
+        continue;
+      }
+      // Blocked/key pieces persist. Only actual removed layers or payload break.
+      const survives = after && (after.key || after.stone || after.gate);
+      if (survives) this.drawTile(after, index, cx + Math.sin(hit * 26) * (1-hit) * cell * .035, cy, cell);
+      else if (hit < .45) this.drawTile(tile, index, cx, cy, cell, 1 - hit / .45, 1.1 - hit * .88);
+      if (hit > 0 && hit < 1) {
+        const material = tile.box ? SPRITE.crate : tile.stone ? SPRITE.stone : tile.chain ? SPRITE.chain : tile.gate ? SPRITE.gate : tile.p ? (tile.p.startsWith("arrow") ? SPRITE.arrow : SPRITE[tile.p]) : tile.c;
+        // A remaining gate/stone gets recoil only, not a false destruction.
+        const removed = !survives || tile.stone > (after.stone || 0) || tile.chain && !after.chain;
+        if (removed && Number.isInteger(material)) this.drawFragments(material, cx, cy, cell, hit, batch.directHits.length > 30 ? 3 : tile.box ? 8 : 5, index);
+        const flash = Math.max(0, 1 - hit * 4);
+        this.drawSprite(SPRITE.spark, cx, cy, cell, .62 + hit * .7, flash);
+        this.drawRing(cx, cy, cell * (.16 + hit * .6), (1-hit) * .55, GEM_COLORS[tile.c] || "#ffd074", cell * .028);
+      }
     }
     for (const index of batch.adjacentHits) {
-      const tile = batch.before[index];
-      if (!tile) continue;
-      const row = Math.floor(index / BOARD_WIDTH);
-      const col = index % BOARD_WIDTH;
-      const cx = bounds.x + (col + 0.5) * cell;
-      const cy = bounds.y + (row + 0.5) * cell;
-      const after = batch.cleared[index] || tile;
-      const boxRemoved = Boolean(tile.box && !after.box);
-      const chainRemoved = Boolean(tile.chain && !after.chain);
-      const tileWithoutHitBlockers = {
-        ...tile,
-        box: boxRemoved ? 0 : tile.box,
-        chain: chainRemoved ? 0 : tile.chain,
-      };
-      this.drawTile(tileWithoutHitBlockers, index, cx, cy, cell);
-      if (!boxRemoved && !chainRemoved) continue;
-      const fade = 1 - progress;
-      const scale = 1 + Math.sin(progress * Math.PI) * 0.14 - progress * 0.12;
-      if (boxRemoved) this.drawSprite(SPRITE.crate, cx, cy, cell * scale, 0.96, fade);
-      if (chainRemoved) this.drawSprite(SPRITE.chain, cx, cy, cell * scale, 0.96, fade);
-      this.drawParticleBurst(cx, cy, cell, progress, 4, 0.72, "#ffe3a1", index + 9);
+      const tile = batch.before[index], after = batch.cleared[index];
+      if (!tile || !after) continue;
+      const { x: cx, y: cy } = center(index);
+      const boxRemoved = tile.box && !after.box, chainRemoved = tile.chain && !after.chain;
+      if (!boxRemoved && !chainRemoved) { this.drawTile(tile, index, cx, cy, cell); continue; }
+      const neighbors = batch.directHits.filter(hit => Math.abs(Math.floor(hit / BOARD_WIDTH) - Math.floor(index / BOARD_WIDTH)) + Math.abs(hit % BOARD_WIDTH - index % BOARD_WIDTH) === 1);
+      const start = neighbors.length ? Math.min(...neighbors.map(hit => this.hitStart(batch, hit))) : .22;
+      const hit = clamp((progress - start) / .30, 0, 1);
+      if (progress < start) { this.drawTile(tile, index, cx, cy, cell); continue; }
+      // Neighbor gem remains opaque throughout; only removed obstacle fragments fly.
+      this.drawTile(after, index, cx, cy, cell);
+      if (hit < .24) {
+        if (boxRemoved) this.drawSprite(SPRITE.crate, cx, cy, cell, .96 + hit * .3, 1-hit/.24);
+        if (chainRemoved) this.drawSprite(SPRITE.chain, cx, cy, cell, .96 + hit * .3, 1-hit/.24);
+      }
+      if (boxRemoved) this.drawFragments(SPRITE.crate, cx, cy, cell, hit, 8, index);
+      if (chainRemoved) this.drawFragments(SPRITE.chain, cx, cy, cell, hit, 6, index);
+      this.drawSprite(SPRITE.spark, cx, cy, cell, .7, Math.max(0, 1-hit*5));
     }
     this.drawSpecialEffects(bounds, batch.visualEffects || [], progress, cell);
     if (batch.createdSpecial) {
       const { at, power } = batch.createdSpecial;
-      const row = Math.floor(at / BOARD_WIDTH);
-      const col = at % BOARD_WIDTH;
-      const cx = bounds.x + (col + 0.5) * cell;
-      const cy = bounds.y + (row + 0.5) * cell;
-      const sprite = power.startsWith("arrow") ? SPRITE.arrow : SPRITE[power];
-      if (sprite !== undefined) {
-        const appear = clamp((progress - 0.4) / 0.6, 0, 1);
-        this.context.save();
-        this.context.globalAlpha *= appear;
-        this.drawSprite(sprite, cx, cy, cell, 0.48 + appear * 0.38);
-        this.context.restore();
-        this.drawRing(cx, cy, cell * (0.2 + appear * 0.28), 1 - appear * 0.5, "#ffe68a", cell * 0.035);
+      const { x: cx, y: cy } = center(at);
+      const appear = clamp((progress - .54) / .40, 0, 1);
+      if (appear > 0) {
+        for (const index of batch.directHits.slice(0, 8)) {
+          const from = center(index);
+          const p = Math.min(1, appear * 1.7);
+          const x = from.x + (cx-from.x) * p, y = from.y + (cy-from.y) * p;
+          this.drawSprite(SPRITE.spark, x, y, cell, .23, (1-p)*.8);
+        }
+        const ease = 1 + 2.7 * (appear-1) ** 3 + 1.7 * (appear-1) ** 2;
+        this.context.save(); this.context.globalAlpha *= Math.min(1, appear*3);
+        this.drawPower(power, cx, cy, cell * Math.max(.01, ease)); this.context.restore();
+        this.drawRing(cx, cy, cell * (.22 + appear * .56), 1-appear, "#fff7bf", cell * .05);
       }
     }
+    if (motion.chainDepth > 0) {
+      const p = clamp((progress - .15) / .62, 0, 1);
+      const alpha = Math.sin(p * Math.PI);
+      if (alpha > 0) {
+        const ctx = this.context;
+        ctx.save(); ctx.globalAlpha *= alpha;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.font = `900 ${cell * .62}px system-ui, sans-serif`;
+        ctx.strokeStyle = "#6d390f"; ctx.lineWidth = cell * .085;
+        const label = `×${motion.chainDepth + 1}`;
+        ctx.strokeText(label, bounds.x + bounds.size/2, bounds.y + bounds.size * .42 - p*cell*.7);
+        ctx.fillStyle = "#fff3b7"; ctx.fillText(label, bounds.x + bounds.size/2, bounds.y + bounds.size * .42 - p*cell*.7);
+        ctx.restore();
+      }
+    }
+  }
+
+  drawFragments(sprite, cx, cy, cell, progress, count, seed) {
+    if (progress <= 0 || progress >= 1 || !this.sprites[sprite]) return;
+    const ctx = this.context, image = this.sprites[sprite];
+    const alpha = Math.min(1, (1-progress) * 2.2);
+    ctx.save(); ctx.globalAlpha *= alpha;
+    for (let part=0; part<count; part+=1) {
+      const angle = (part/count) * Math.PI * 2 + seed * .71;
+      const speed = .55 + ((part*7+seed)%5)*.16;
+      const distance = progress * cell * speed;
+      const x = cx + Math.cos(angle) * distance;
+      const y = cy + Math.sin(angle) * distance - Math.sin(progress*Math.PI)*cell*.3 + progress*progress*cell*.64;
+      const sx = 24 + (part%3)*70, sy = 24 + (Math.floor(part/3)%3)*70;
+      const size = cell * (.16 + part%2*.035) * (1-progress*.45);
+      ctx.save(); ctx.translate(x,y); ctx.rotate(angle + progress*(part%2?4:-4));
+      ctx.drawImage(image, sx, sy, 68, 68, -size/2, -size/2, size, size);
+      ctx.restore();
+    }
+    ctx.restore();
   }
 
   drawComboLink(bounds, motion, progress, cell) {
@@ -545,19 +737,29 @@ export class CastleCascade2D {
   }
 
   drawGravityMotion(bounds, motion, time) {
+    this.context.save();
+    this.context.beginPath();
+    this.context.rect(bounds.x, bounds.y, bounds.size, bounds.size);
+    this.context.clip();
     const elapsed = time - motion.started;
     const cell = bounds.size / BOARD_WIDTH;
     for (const item of motion.movements) {
       const local = clamp((elapsed - motion.stagger(item)) / motion.travel(item), 0, 1);
-      const eased = 1 - (1 - local) ** 3;
+      const falling = clamp(local / .79, 0, 1);
+      const eased = falling * falling;
       const fromRow = item.fromRow;
       const rowProgress = item.isDelivery ? -local * 0.42 : fromRow + (item.toRow - fromRow) * eased;
       const y = bounds.y + (rowProgress + 0.5) * cell;
       const x = bounds.x + (item.col + 0.5) * cell;
-      const landing = item.isDelivery ? 1 : local > 0.82 ? 1 + Math.sin((local - 0.82) / 0.18 * Math.PI) * 0.055 : 1;
+      const rebound = local > .79 ? Math.sin((local - .79) / .21 * Math.PI * 2) * (1 - (local - .79) / .21) : 0;
+      const landing = item.isDelivery ? 1 : 1 + rebound * .11;
       const delivering = motion.deliveredKeys.includes(item.toIndex) && item.payload.key;
       const fade = item.isDelivery ? 1 - local : delivering && local > 0.76 ? 1 - (local - 0.76) / 0.24 : 1;
-      this.drawTile(item.payload, item.toIndex, x, y, cell, fade, landing);
+      const ctx = this.context;
+      ctx.save(); ctx.translate(x, y); ctx.scale(landing, 1 / landing);
+      this.drawTile(item.payload, item.toIndex, 0, 0, cell, fade);
+      ctx.restore();
+      if (local > .79 && !item.isDelivery) this.drawRing(x, y + cell * .31, cell * (.16 + (local - .79) * .7), (1 - local) * 1.4, "#ffffff", cell * .025);
     }
     motion.cleared.forEach((tile, index) => {
       if (!tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.seal) return;
@@ -580,29 +782,40 @@ export class CastleCascade2D {
         this.drawSprite(SPRITE.spark, cx, cy, cell, 0.42 + p * 0.23, 1 - p * 0.38);
       }
     }
+    this.context.restore();
   }
 
-  drawSpecialEffects(bounds, effects, progress, cell) {
+  drawSpecialEffects(bounds, effects, batchProgress, cell) {
     for (const effect of effects) {
+      const carried = effects.some(e => e.type === "bird-carry" && e.target === effect.index)
+        && ["arrow", "bomb"].includes(effect.type);
+      const progress = carried ? clamp((batchProgress - .60) / .40, 0, 1) : batchProgress;
+      if (carried && batchProgress <= .60) continue;
       const center = effect.index ?? effect.origins?.[0] ?? 40;
       const row = Math.floor(center / BOARD_WIDTH);
       const col = center % BOARD_WIDTH;
       const cx = bounds.x + (col + 0.5) * cell;
       const cy = bounds.y + (row + 0.5) * cell;
       if (effect.type === "arrow") {
-        const horizontal = effect.axis === "h";
-        const startX = horizontal ? bounds.x : cx;
-        const startY = horizontal ? cy : bounds.y;
-        const endX = horizontal ? bounds.x + bounds.size * progress : cx;
-        const endY = horizontal ? cy : bounds.y + bounds.size * progress;
-        this.drawBeam(startX, startY, endX, endY, "#fff0a0", cell * 0.12, cell * 0.28);
-        this.drawSprite(SPRITE.spark, endX, endY, cell * (0.42 + Math.sin(progress * Math.PI) * 0.22), 0.82, 1 - progress * 0.32);
-        this.drawParticleBurst(endX, endY, cell, progress, 5, 0.9, "#fff0a0", center);
+        this.drawRocketLine(bounds, cx, cy, effect.axis === "h", progress, cell);
       } else if (effect.type === "bomb" || effect.type === "nova") {
-        this.drawRing(cx, cy, cell * (0.35 + progress * (effect.radius + 0.45)), 1 - progress * 0.68, "#ffbf53", cell * 0.11);
-        this.drawRing(cx, cy, cell * (0.2 + progress * (effect.radius + 0.2)), 1 - progress * 0.8, "#fff4c8", cell * 0.035);
-        if (effect.type === "nova") this.drawRing(cx, cy, cell * (0.3 + progress * (effect.radius + 0.8)), 1 - progress * 0.82, "#9af2ff", cell * 0.045);
-        this.drawParticleBurst(cx, cy, cell, progress, effect.type === "nova" ? 14 : 8, effect.radius + 1.4, effect.type === "nova" ? "#fff0bd" : "#ffcb68", center);
+        const charge = clamp(progress/.22, 0, 1);
+        if (progress < .22) {
+          this.drawRing(cx, cy, cell * (.65-charge*.3), charge*.9, "#ffd279", cell*.075);
+          this.drawSprite(SPRITE.spark, cx, cy, cell, .32+charge*.2, charge);
+        }
+        const blast = clamp((progress-.22)/.52, 0, 1);
+        if (blast > 0 && blast < 1) {
+          const radius = cell * (.3+blast*(effect.radius+.7));
+          const ctx = this.context;
+          const glow = ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(1,radius));
+          glow.addColorStop(0, "#fff4c300"); glow.addColorStop(.72,"#ffcc6570"); glow.addColorStop(1,"#ffac3000");
+          ctx.save(); ctx.globalAlpha *= 1-blast; ctx.fillStyle=glow;
+          ctx.fillRect(cx-radius,cy-radius,radius*2,radius*2); ctx.restore();
+          this.drawRing(cx, cy, radius, 1-blast, "#ffc34f", cell * .14);
+          this.drawRing(cx, cy, radius*.91, 1-blast, "#fff9d5", cell * .046);
+          this.drawParticleBurst(cx,cy,cell,blast,effect.type==="nova"?16:10,effect.radius+1.2,"#ffd175",center);
+        }
       } else if (effect.type === "bird" || effect.type === "bird-carry") {
         const target = effect.target ?? effect.index;
         this.drawBirdFlight(bounds, effect.index, target, progress, cell);
@@ -615,31 +828,66 @@ export class CastleCascade2D {
       } else if (effect.type === "flock") {
         (effect.targets || []).forEach((target, targetIndex) => this.drawBirdFlight(bounds, effect.origins[targetIndex] ?? effect.origins[0], target, progress, cell));
       } else if (effect.type === "prism" || effect.type === "prism-combo" || effect.type === "spectrum") {
-        const hue = ((effect.color || 0) * 64 + progress * 110) % 360;
-        const color = `hsl(${hue} 100% 76%)`;
-        const span = effect.type === "spectrum" ? bounds.size * 0.78 : bounds.size * 0.5;
-        this.drawBeam(bounds.x + bounds.size * (1 - progress), cy, bounds.x + bounds.size * (1 - progress) + span, cy, color, cell * 0.08, cell * 0.28);
-        for (const target of effect.targets || []) {
-          const tr = Math.floor(target / BOARD_WIDTH);
-          const tc = target % BOARD_WIDTH;
-          const tx = bounds.x + (tc + 0.5) * cell;
-          const ty = bounds.y + (tr + 0.5) * cell;
-          this.drawRing(tx, ty, cell * (0.12 + progress * 0.38), 1 - progress * 0.72, color, cell * 0.035);
+        const local = clamp((progress-.22)/.56, 0, 1);
+        const targets = effect.targets || [];
+        // At most 24 rays per frame, evenly distributed across the actual targets.
+        const stride = Math.max(1, Math.ceil(targets.length/24));
+        for (let i=0; i<targets.length; i+=stride) {
+          const target = targets[i];
+          const tx = bounds.x + (target%BOARD_WIDTH+.5)*cell;
+          const ty = bounds.y + (Math.floor(target/BOARD_WIDTH)+.5)*cell;
+          const p = clamp((local-(i%4)*.035)/.82,0,1);
+          if (p<=0 || p>=1) continue;
+          const color = GEM_COLORS[(i+Math.floor(progress*12))%GEM_COLORS.length];
+          const envelope = Math.sin(p*Math.PI);
+          this.context.save(); this.context.globalAlpha *= envelope*.78;
+          this.drawLightning(cx,cy,tx,ty,color,cell, i);
+          this.context.restore();
+          this.drawSprite(SPRITE.spark,tx,ty,cell,.4,envelope);
         }
       } else if (effect.type === "cross") {
-        this.drawBeam(bounds.x, cy, bounds.x + bounds.size * progress, cy, "#fff0a0", cell * 0.12, cell * 0.3);
-        this.drawBeam(cx, bounds.y, cx, bounds.y + bounds.size * progress, "#a3f7ff", cell * 0.12, cell * 0.3);
+        this.drawRocketLine(bounds,cx,cy,true,progress,cell);
+        this.drawRocketLine(bounds,cx,cy,false,progress,cell);
       } else if (effect.type === "siege") {
-        for (const offset of [-1, 0, 1]) {
-          const lineRow = row + offset;
-          const lineCol = col + offset;
-          if (lineRow >= 0 && lineRow < BOARD_HEIGHT) this.drawBeam(bounds.x, bounds.y + (lineRow + 0.5) * cell, bounds.x + bounds.size * progress, bounds.y + (lineRow + 0.5) * cell, "#ffd980", cell * 0.075, cell * 0.23);
-          if (lineCol >= 0 && lineCol < BOARD_WIDTH) this.drawBeam(bounds.x + (lineCol + 0.5) * cell, bounds.y, bounds.x + (lineCol + 0.5) * cell, bounds.y + bounds.size * progress, "#b4f5ff", cell * 0.075, cell * 0.23);
+        for (const offset of [-1,0,1]) {
+          if (row+offset>=0 && row+offset<BOARD_HEIGHT) this.drawRocketLine(bounds,cx,cy+offset*cell,true,progress,cell);
+          if (col+offset>=0 && col+offset<BOARD_WIDTH) this.drawRocketLine(bounds,cx+offset*cell,cy,false,progress,cell);
         }
       } else if (effect.type === "combo-burst") {
         this.drawComboBurst(bounds, effect, progress, cell);
       }
     }
+  }
+
+  drawRocketLine(bounds,cx,cy,horizontal,progress,cell) {
+    const p=clamp((progress-.22)/.48,0,1);
+    if (p<=0 || p>=1) return;
+    const ctx=this.context;
+    for (const sign of [-1,1]) {
+      const end=horizontal ? (sign<0?bounds.x:bounds.x+bounds.size) : (sign<0?bounds.y:bounds.y+bounds.size);
+      const travel=(end-(horizontal?cx:cy))*p;
+      const x=cx+(horizontal?travel:0), y=cy+(horizontal?0:travel);
+      ctx.save(); ctx.globalAlpha*=Math.min(1,(1-p)*4);
+      this.drawBeam(cx,cy,x,y,"#ffb73e",cell*.18,cell*.20);
+      this.drawBeam(cx,cy,x,y,"#fff9dd",cell*.055,cell*.10);
+      ctx.translate(x,y); if (!horizontal) ctx.rotate(Math.PI/2);
+      this.drawSprite(SPRITE.arrow,0,0,cell,.63);
+      ctx.restore();
+    }
+  }
+
+  drawLightning(x1,y1,x2,y2,color,cell,seed) {
+    const ctx=this.context, dx=x2-x1, dy=y2-y1;
+    const length=Math.max(1,Math.hypot(dx,dy));
+    ctx.save(); ctx.lineCap="round"; ctx.strokeStyle=color;
+    ctx.lineWidth=cell*.065; ctx.shadowColor=color; ctx.shadowBlur=cell*.18;
+    ctx.beginPath(); ctx.moveTo(x1,y1);
+    for (let step=1;step<6;step+=1) {
+      const p=step/6, offset=Math.sin(step*17+seed)*cell*.2;
+      ctx.lineTo(x1+dx*p-dy/length*offset,y1+dy*p+dx/length*offset);
+    }
+    ctx.lineTo(x2,y2); ctx.stroke();
+    ctx.shadowBlur=0; ctx.strokeStyle="#fff9f1"; ctx.lineWidth=cell*.023; ctx.stroke(); ctx.restore();
   }
 
   drawComboBurst(bounds, effect, progress, cell) {
@@ -703,12 +951,17 @@ export class CastleCascade2D {
     const fromY = bounds.y + (Math.floor(from / BOARD_WIDTH) + 0.5) * cell;
     const toX = bounds.x + ((to % BOARD_WIDTH) + 0.5) * cell;
     const toY = bounds.y + (Math.floor(to / BOARD_WIDTH) + 0.5) * cell;
-    const arc = Math.sin(progress * Math.PI) * cell * 1.05;
+    progress = clamp((progress - .12) / .56, 0, 1);
+    if (progress >= 1) return;
+    const arc = Math.sin(progress * Math.PI) * cell * 1.8;
     const x = fromX + (toX - fromX) * progress;
     const y = fromY + (toY - fromY) * progress - arc;
-    this.drawBeam(fromX, fromY, x, y, "#8ff6e1", cell * 0.045, cell * 0.12);
+    for (let trail=1; trail<=5; trail+=1) {
+      const p = Math.max(0, progress-trail*.025);
+      this.drawSprite(SPRITE.spark,fromX+(toX-fromX)*p,fromY+(toY-fromY)*p-Math.sin(p*Math.PI)*cell*1.8,cell,.2, (1-trail/6)*.55);
+    }
     const sprite = SPRITE.bird;
-    this.drawSprite(sprite, x, y, cell, 0.52 + Math.sin(progress * Math.PI) * 0.1, 1 - progress * 0.15);
+    this.drawSprite(sprite, x, y, cell, 0.82 + Math.sin(progress * Math.PI) * 0.08, 1 - progress * 0.15);
   }
 
   drawBeam(x1, y1, x2, y2, color, width, glow) {
@@ -806,8 +1059,10 @@ export class CastleCascade2D {
     this.cancelMotion();
     if (this.raf) cancelAnimationFrame(this.raf);
     this.resizeObserver?.disconnect();
+    this.motionPreference?.removeEventListener?.("change", this.handleMotionPreference);
     if (this.handleWindowResize) window.removeEventListener("resize", this.handleWindowResize);
     this.canvas?.removeEventListener("pointerdown", this.handlePointerDown);
+    this.canvas?.removeEventListener("pointermove", this.handlePointerMove);
     this.canvas?.removeEventListener("pointerup", this.handlePointerUp);
     this.canvas?.removeEventListener("pointercancel", this.handlePointerCancel);
     this.canvas?.removeEventListener("contextlost", this.handleContextLost);
@@ -821,5 +1076,7 @@ export class CastleCascade2D {
     this.board = null;
     this.onCell = null;
     this.onFailure = null;
+    this.onSwap = null;
+    this.sprites.length = 0;
   }
 }

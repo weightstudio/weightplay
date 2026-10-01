@@ -252,3 +252,81 @@ body { background: #e6e5df; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* v8: original daylight royal art inside the canonical shared frame. */
+body[data-wp-game-id="castle-cascade"] {
+  --wp-ui-background-image: url("/games/castle-cascade/assets/castle-cascade-daylight-v2.webp");
+  background: #77b9d7 url("./assets/castle-cascade-daylight-v2.webp") center / cover fixed;
+}
+html body[data-wp-game-id="castle-cascade"] #battle {
+  background: #77b9d7 url("./assets/castle-cascade-daylight-v2.webp") center / cover !important;
+  container: castle-battle / size;
+}
+html body[data-wp-game-id="castle-cascade"] #stage {
+  background: linear-gradient(#10233880, #132944ad), url("./assets/castle-cascade-daylight-v2.webp") center / cover !important;
+}
+.battle-content {
+  width: 100%; height: 100%; min-height: 0;
+  grid-template-rows: 94px minmax(0, 1fr) 48px;
+  gap: 8px; padding: 4px 0 0; align-items: stretch; container-type: size;
+}
+.royal-scoreboard {
+  width: min(100%, 720px); justify-self: center;
+  display: grid; grid-template-columns: 66px minmax(0, 1fr) 76px;
+  align-items: center; gap: 7px; padding: 5px;
+  border: 2px solid #e9bd57; border-radius: 18px;
+  background: linear-gradient(#345990, #1d3563);
+  box-shadow: inset 0 2px 0 #7b9bc7, 0 4px 0 #142c51, 0 8px 15px #18385840;
+}
+.keeper-medallion {
+  width: 64px; height: 76px; border-radius: 12px;
+  border: 2px solid #ffd66f;
+  background: #edaf34 url("../../assets/castle-cascade-poster.webp") 50% 22% / 230% auto;
+  box-shadow: inset 0 0 0 2px #b97a25, 0 2px 0 #0c2449;
+}
+.royal-goals, .royal-moves {
+  height: 76px; min-width: 0;
+  display: grid; align-content: center; justify-items: center;
+  border: 2px solid #d7b57d; border-radius: 12px;
+  background: linear-gradient(#fffcf2, #f2e4c9);
+  color: #243966; box-shadow: inset 0 2px 3px #b4a08360;
+}
+.royal-stage { font-size: 12px; line-height: 16px; font-weight: 900; color: #4f6080; }
+.battle-objective-indicators { width: 100%; min-height: 44px; }
+.battle-objective-indicators .objective-icons { display: flex; flex-wrap: nowrap; justify-content: center; height: 44px; align-items: center; gap: 4px; }
+.objective-icon { background: none; object-fit: contain; }
+.battle-objective-indicators .objective-chip { position: relative; color: #243966; gap: 1px; min-width: 0; animation: none; }
+.battle-objective-indicators .objective-icon { width: 34px; height: 34px; }
+.battle-objective-indicators .objective-count { min-width: 16px; font-size: 19px; font-weight: 1000; font-variant-numeric: tabular-nums; text-shadow: 0 1px 0 #fff; }
+.objective-chip[data-complete="true"] .objective-count { color: #368754; }
+.objective-chip[data-complete="true"]::after { content: "✓"; position: absolute; bottom: -1px; left: 4px; font-size: 12px; color: #fff; background: #348c56; border-radius: 50%; width: 14px; height: 14px; display: grid; place-items: center; }
+.royal-goals:has(.objective-chip:nth-child(4)) .objective-icon { width: 25px; height: 25px; }
+.royal-goals:has(.objective-chip:nth-child(4)) .objective-count { font-size: 15px; min-width: 13px; }
+.royal-goals:has(.objective-chip:nth-child(5)) .objective-icons { flex-wrap: wrap; align-content: center; gap: 1px 3px; }
+.move-number { font-size: 33px; line-height: 36px; font-weight: 1000; font-variant-numeric: tabular-nums; color: #243966; text-shadow: 0 2px 0 #fff; }
+.move-caption { width: 100%; min-height: 24px; padding: 0 2px; font-size: 10px; line-height: 12px; font-weight: 800; text-align: center; overflow: hidden; }
+.royal-moves[data-low="true"] .move-number { color: #b83543; }
+.board-space { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; container-type: size; }
+.board-viewport { width: min(100cqw, 100cqh, 760px); aspect-ratio: 1; border-radius: 0; background: transparent; overflow: hidden; }
+#sceneCanvas { touch-action: none; }
+.battle-feedback { width: min(100%, 720px); height: 48px; display: grid; grid-template-rows: 24px 24px; align-items: center; padding-inline: 8px; border-radius: 10px; background: #162f5ce3; border: 1px solid #f3d79b66; box-shadow: inset 0 1px 0 #7da0c533; justify-self: center; }
+.battle-feedback .instructions, .battle-feedback #status { width: 100%; min-width: 0; margin: 0; font-size: 11px; line-height: 12px; color: #fff7df; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.battle-feedback #status { color: #ffe49c; font-weight: 900; }
+.stage-card .objective-icon { width: 31px; height: 31px; }
+html body[data-wp-game-id="castle-cascade"] #stage .stage-card img:not(.objective-icon) { object-fit: cover; object-position: center 32%; background: #b8e5f1; }
+.modal-card { border: 3px solid #ecc66a; background: linear-gradient(#fffdf3, #f7e8cc); box-shadow: 0 6px 0 #253a64, 0 18px 55px #12264480; }
+.result-keeper { display: block; width: 110px; height: 110px; object-fit: contain; margin: -10px auto 0; filter: drop-shadow(0 5px 4px #75431233); }
+.modal-layer:not([hidden]) .modal-card { animation: royal-panel-enter 260ms cubic-bezier(.2,.9,.3,1.12) both; }
+@keyframes royal-panel-enter { from { opacity: 0; transform: translateY(12px) scale(.94); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@supports not (width: 100cqh) { .board-viewport { width: min(100%, 760px); max-height: 100%; } }
+/* Flexible wide-envelope anchors; fixed logical font/control sizes are preserved. */
+@container castle-battle (min-aspect-ratio: 4/3) {
+  .battle-content { grid-template-columns: 190px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 48px; }
+  .royal-scoreboard { grid-column: 1; grid-row: 1; width: 190px; height: 174px; align-self: start; grid-template-columns: 66px minmax(0, 1fr); grid-template-rows: 76px 76px; }
+  .royal-scoreboard .keeper-medallion { grid-column: 1; grid-row: 1; }
+  .royal-scoreboard .royal-moves { grid-column: 2; grid-row: 1; width: 100%; }
+  .royal-scoreboard .royal-goals { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+  .board-space { grid-column: 2; grid-row: 1 / 3; }
+  .battle-feedback { grid-column: 1; grid-row: 2; width: 190px; }
+}
+@media (prefers-reduced-motion: reduce) { .modal-layer:not([hidden]) .modal-card { animation: none; } }
