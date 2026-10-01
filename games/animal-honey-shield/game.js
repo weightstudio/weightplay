@@ -416,6 +416,9 @@
     if(!$("timeValue"))return;
     const nectar=nectarSummary();
     $("timeValue").textContent=Math.max(0,state.duration-state.elapsed).toFixed(1);
+    const finalSeconds=state.started&&!state.result&&state.duration-state.elapsed<=3;
+    $("timeValue").style.color=finalSeconds?"#ffe27a":"";
+    if(finalSeconds&&!feedback.warning){feedback.warning=true;window.WeightPlayAudio?.play("alert.warning")}
     $("nectarValue").textContent=nectar.left;
     $("waveFill").style.width=`${Math.min(100,state.elapsed/state.duration*100)}%`;
     $("lineReadout").textContent=fmt("lineStatus",nectar);
@@ -1611,11 +1614,29 @@
       strokePushDirections:state.strokes.map(stroke=>[...(stroke.pushDirectionHistory||[])]),
       strokePushDirectionChanges:state.strokes.map(stroke=>stroke.pushDirectionChanges||0),
       bees:state.bees.length,beeIntents:state.bees.map(bee=>bee.intent),attachedBees:state.bees.filter(bee=>bee.attachedStroke).length,
+      feedback:{blocks:feedback.blocks,recoveries:feedback.recoveries,effects:feedback.effects.length,reducedMotion:motionPreference.matches},
       wallMoves:state.wallMoves,wallApproachStartedAt:state.wallApproachStartedAt,wallFirstMovedAt:state.wallFirstMovedAt,maxGroupAttached:state.maxGroupAttached,pathOpenedAt:state.pathOpenedAt,wallImpactContacts:state.wallImpactContacts,wallMoveSolves:state.wallMoveSolves,wallSupportContributions:state.wallSupportContributions,maxFrameWallMoveSolves:state.maxFrameWallMoveSolves,carrierChanges:state.carrierChanges,beeWallCorrections:state.beeWallCorrections,wallNavBuilds:state.wallNavBuilds,directWallTargets:state.directWallTargets,supporterCarryDistance:state.supporterCarryDistance,activeCarrier:state.mover?.bee?.id||null,result:state.result,save:structuredClone(save)
     }),
     drawBarrier(x=650){state.strokes.push({points:[{x,y:190},{x,y:560}],flash:0,blockedFlash:0,moves:0,anchored:false});state.nectar=Math.max(0,state.nectar-52);beginWave();updateHud();draw()},
     protect(){state.strokes=[{points:[{x:300,y:315},{x:360,y:210},{x:640,y:210},{x:700,y:315},{x:680,y:560},{x:320,y:560},{x:300,y:315}],flash:0,blockedFlash:0,moves:0,anchored:true}];beginWave();state.nectar=40},
     advance(seconds){for(let t=0;t<seconds&&!state.result;t+=.02)update(.02);draw();return this.snapshot?.()},
+    heldWallFlightProbe(dt=.02){
+      startStage(0);state.duration=10;beginWave();state.spawned=level(0).maxBees;
+      const stroke={points:[{x:700,y:0},{x:700,y:620}],flash:0,blockedFlash:0,moves:0,anchored:true};
+      state.strokes=[stroke];
+      const bee={id:1,x:729,y:240,prevX:729,prevY:240,vx:-210,vy:0,life:0,cooldown:0,wallSlide:0,bounced:false,phase:0,route:1,intent:"attack"};
+      state.bees=[bee];let minimumX=Infinity,maximumX=-Infinity,minimumY=Infinity,maximumY=-Infinity;
+      for(let time=0;time<3;time+=dt){updateFeedback(dt);update(dt);minimumX=Math.min(minimumX,bee.x);maximumX=Math.max(maximumX,bee.x);minimumY=Math.min(minimumY,bee.y);maximumY=Math.max(maximumY,bee.y)}
+      const result={minimumX,travel:Math.hypot(maximumX-minimumX,maximumY-minimumY),blocks:feedback.blocks,contacts:state.wallImpactContacts,wallMoves:state.wallMoves,result:state.result,effects:feedback.effects.length};
+      resetStage();return result;
+    },
+    travelRecoveryProbe(){
+      startStage(0);state.nav=buildNavigationField(level(0));
+      const bee={x:780,y:260,route:1,travelSample:{x:780,y:260,time:.64},attachedStroke:null};
+      recoverBeeTravel(bee,level(0),.02);
+      const result={target:bee.escapeTarget,clear:bee.escapeTarget?clearBeeTravel(bee,bee.escapeTarget,level(0)):false,recoveries:feedback.recoveries,position:[bee.x,bee.y]};
+      resetStage();return result;
+    },
     noDrawProbe(){startStage(0);this.advance(7);return this.snapshot()},
     wallProbe(){
       const free={points:[{x:790,y:210},{x:790,y:470}],flash:0,blockedFlash:0,moves:0,anchored:false};

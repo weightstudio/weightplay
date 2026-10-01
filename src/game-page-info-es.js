@@ -208,7 +208,7 @@ window.WeightPlayGameInfoLocales.es = {
       "faq": [
         [
           "¿Cuántas etapas hay en Animal Bubble Bakery?",
-          "Hay 30 etapas con nombre en seis lecciones de cinco etapas, con Panko Checks amistosos cada quinta etapa."
+          "Tiene 30 etapas con nombre, organizadas en seis lecciones de cinco; cada quinta etapa incluye un desafío amistoso de Panko."
         ],
         [
           "¿Qué burbujas forman un grupo conectado?",
@@ -250,7 +250,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Resolución de problemas",
         "Enfoque"
       ],
-      "intro": "Animal Vine Rescue es un rompecabezas de física animal de 30 etapas sobre cómo cortar una fruta colgante, conducir un trampolín de hojas y colocar la fruta en la canasta de un animal que espera. La campaña se divide en seis lecciones de rescate de cinco etapas. Las rutas posteriores añaden cestas móviles, capas de viento superior e inferior, viento que se invierte después de un rebote, entregas de dos rebotes, zonas de captura más estrechas y pedidos de picnic de dos o tres frutas. Cada quinta etapa es un Panko Check amistoso que combina la lección actual sin agregar combate ni presión de tiempo.",
+      "intro": "Rescate con Lianas es un rompecabezas de física de 30 etapas sobre cómo cortar una fruta colgante, conducir un trampolín de hojas y colocar la fruta en la canasta de un animal que espera. La campaña se divide en seis lecciones de rescate de cinco etapas. Las rutas posteriores añaden cestas móviles, capas de viento superior e inferior, viento que se invierte después de un rebote, entregas de dos rebotes, zonas de captura más estrechas y pedidos de picnic de dos o tres frutas. Cada quinta etapa es un Panko Check amistoso que combina la lección actual sin agregar combate ni presión de tiempo.",
       "story": [
         "Las enredaderas de entrega del huerto han crecido en un claro del bosque, dejando manzanas, plátanos y bayas colgando lejos de los animales que los solicitaron. Panko organiza el mapa de rescate mientras conejos, leones, pandas, zorros y koalas esperan junto a sus cestas. El jugador es el guía de las hojas: elige dónde espera el trampolín, decide cuándo cortar y sigue guiando mientras la fruta está en el aire.",
         "Limpiar las 30 rutas restablece seis rutas de entrega a través del huerto. El Panko Grand Rescue final sirve a tres animales en una batalla y combina viento en capas, una canasta en movimiento y una ruta de dos rebotes. La victoria representa una entrega de picnic completa en lugar de derrotar a un enemigo."
@@ -287,11 +287,11 @@ window.WeightPlayGameInfoLocales.es = {
         "Las etapas 26 a 30 combinan capturas estrechas, objetivos en movimiento, vientos en capas y en reversa, control de dos rebotes y servicio de dos o tres frutas. Panko's Grand Rescue utiliza tres entregas diferentes en lugar de un final únicamente numérico."
       ],
       "designNote": "El juego utiliza una acción de corte más una dirección continua de la hoja para que el jugador siga siendo responsable después de soltar la fruta. La estructura de 30 etapas cambia la información que un jugador debe leer (movimiento del objetivo, viento basado en la altitud, recuento de rebotes, potencia de la hoja, ancho de captura y secuencia de entrega) en lugar de depender únicamente de una gravedad más rápida. El campo de juego vertical le da a la fruta que cae suficiente tiempo de viaje para una corrección visible en los teléfonos, mientras que el mismo lienzo lógico se escala uniformemente en tabletas y pantallas horizontales. Los puntos de control de Panko crean hitos memorables para niños sin convertir un rompecabezas de entrega de frutas en combate.",
-      "parent": "Animal Vine Rescue puede favorecer la sincronización, la predicción visual, la coordinación ojo-mano, la concentración y la resolución de problemas simples. Los adultos pueden preguntar dónde se moverá la canasta o por qué el segundo rebote necesita una posición diferente de la hoja. No hay cronómetro, publicidad, requisitos de cuenta, presión de clasificación ni combate hostil. Las estrellas y el progreso guardado son comentarios locales divertidos, no una prueba de capacidad formal, un diagnóstico o una evaluación escolar.",
+      "parent": "Rescate con Lianas puede favorecer la sincronización, la predicción visual, la coordinación ojo-mano, la concentración y la resolución de problemas simples. Los adultos pueden preguntar dónde se moverá la canasta o por qué el segundo rebote necesita una posición diferente de la hoja. No hay cronómetro, publicidad, requisitos de cuenta, presión de clasificación ni combate hostil. Las estrellas y el progreso guardado son comentarios locales divertidos, no una prueba de capacidad formal, un diagnóstico o una evaluación escolar.",
       "faq": [
         [
-          "¿Cuántas etapas hay en Animal Vine Rescue?",
-          "Hay 30 etapas con nombre en seis lecciones de cinco etapas, con Panko Checks amistosos cada quinta etapa."
+          "¿Cuántas etapas tiene Rescate con Lianas?",
+          "Tiene 30 etapas con nombre, organizadas en seis lecciones de cinco; cada quinta etapa incluye un desafío amistoso de Panko."
         ],
         [
           "¿Puedo mover la hoja después de cortar la vid?",

@@ -52,11 +52,12 @@ export function segmentDistance(ax,az,bx,bz,x,z) {
   return hypot(ax+t*dx-x,az+t*dz-z);
 }
 function event(race,type,value=0) { if(race.events.length<48)race.events.push({type,value}); }
+export const driftTier = bank => bank>=2?3:bank>=1.2?2:bank>=.4?1:0;
 function carAt(track,id,stats,s,offset) {
   const p=sampleTrack(track,s,offset);
   return {id,stats,x:p.x,z:p.z,y:p.y,prevX:p.x,prevZ:p.z,prevY:p.y,yaw:p.heading,prevYaw:p.heading,motion:p.heading,
     slope:p.slope,speed:0,steer:0,nitro:stats.tank,boost:false,miniBoost:0,driftBank:0,drifting:false,driftSeconds:0,
-    contacts:0,contactCooldown:0,gates:-1,nextGate:0,completedLaps:0,progress:s,near:nearestTrack(track,p.x,p.z),
+    contacts:0,contactCooldown:0,impact:0,draftCharge:0,draftBoost:0,driftLevel:0,boostLevel:0,gates:-1,nextGate:0,completedLaps:0,progress:s,near:nearestTrack(track,p.x,p.z),
     collected:new Set(),ringCount:0,padCooldown:0,resetCount:0,lastReset:-10,finished:false,finishTime:Infinity};
 }
 export function createRace(stageId,save={},options={}) {
@@ -73,7 +74,7 @@ export function createRace(stageId,save={},options={}) {
     stage,track,cars,player,time:0,penalty:0,countdown:3,status:'countdown',result:null,events:[],lastCountdown:3,
     cones:stage.cones.map(([s,l])=>sampleTrack(track,s*track.length,l*track.width)),
     rings:stage.rings.map(([s,l])=>sampleTrack(track,s*track.length,l*track.width)),
-    pads:stage.pads.map(([s,l])=>sampleTrack(track,s*track.length,l*track.width)),rank:cars.length};
+    pads:stage.pads.map(([s,l])=>sampleTrack(track,s*track.length,l*track.width)),rank:cars.length,lastOvertake:-10};
   return race;
 }
 export function aiControl(race,car) {
@@ -89,7 +90,11 @@ export function aiControl(race,car) {
     drift:false,boost:Math.abs(error)<.085&&curvature<.14&&car.nitro>.42&&car.speed>18};
 }
 function countContact(race,car) {
-  if(car.contactCooldown<=0) {car.contacts++;car.contactCooldown=.55;if(car.id===0)event(race,'contact');}
+  if(car.contactCooldown<=0) {
+    car.contacts++;car.contactCooldown=.55;car.impact=1;
+    car.driftBank=0;car.driftLevel=0;car.draftCharge=0;car.draftBoost=0;car.miniBoost=0;
+    if(car.id===0)event(race,'contact');
+  }
 }
 function checkpointCross(race,car,ax,az) {
   const gate=race.track.gates[car.nextGate];
@@ -117,18 +122,27 @@ function moveCar(race,car,input,dt) {
   car.prevX=car.x;car.prevZ=car.z;car.prevY=car.y;car.prevYaw=car.yaw;
   car.contactCooldown=Math.max(0,car.contactCooldown-dt);car.padCooldown=Math.max(0,car.padCooldown-dt);
   car.miniBoost=Math.max(0,car.miniBoost-dt);
+  car.draftBoost=Math.max(0,car.draftBoost-dt);car.impact=Math.max(0,car.impact-dt*4);
   const steer=clamp(Number(input.steer)||0,-1,1),throttle=clamp(Number(input.throttle)||0,0,1),brake=clamp(Number(input.brake)||0,0,1);
   car.steer+=(steer-car.steer)*Math.min(1,dt*12);
   const onRoad=Math.abs(car.near.lateral)<track.width-.25;
   const position=car.near.s/track.length;
   const wet=stage.wet.some(([from,to])=>position>=from&&position<=to);
-  const drifting=Boolean(input.drift)&&Math.abs(steer)>.18&&car.speed>10&&onRoad;
+  const drifting=Boolean(input.drift)&&Math.abs(steer)>.18&&car.speed>10&&onRoad&&car.contactCooldown<=0;
   if(drifting) {
     car.driftBank=clamp(car.driftBank+dt*car.stats.drift,0,2.4);car.driftSeconds+=dt;
+    const tier=driftTier(car.driftBank);
+    if(tier>car.driftLevel&&car.id===0)event(race,'driftCharge',tier);
+    car.driftLevel=tier;
     if(!stage.noRefill)car.nitro=Math.min(car.stats.tank,car.nitro+dt*.11*car.stats.drift);
   } else if(car.drifting) {
-    if(car.driftBank>.4) {car.miniBoost=.35+car.driftBank*.45;if(car.id===0)event(race,'driftBoost',car.driftBank);}
-    car.driftBank=0;
+    const tier=driftTier(car.driftBank);
+    if(tier) {
+      car.miniBoost=[0,.65,1.05,1.5][tier];car.boostLevel=tier;
+      car.speed=Math.min(car.stats.speed+7,car.speed+2+tier*1.5);
+      if(car.id===0)event(race,'driftBoost',tier);
+    }
+    car.driftBank=0;car.driftLevel=0;
   }
   car.drifting=drifting;
   const oldBoost=car.boost;
@@ -137,15 +151,25 @@ function moveCar(race,car,input,dt) {
   else if(!stage.noRefill&&car.speed>5)car.nitro=Math.min(car.stats.tank,car.nitro+dt*.014);
   if(car.boost&&!oldBoost&&car.id===0)event(race,'boost');
   let drafting=false;
-  if(car.speed>13)for(const other of race.cars) {
+  if(car.speed>13&&onRoad&&car.contactCooldown<=0)for(const other of race.cars) {
     if(other===car||other.finished)continue;
     const dx=other.x-car.x,dz=other.z-car.z,forward=dx*Math.sin(car.yaw)+dz*Math.cos(car.yaw),side=dx*Math.cos(car.yaw)-dz*Math.sin(car.yaw);
     if(forward>4&&forward<22&&Math.abs(side)<2.3&&Math.abs(angle(other.yaw-car.yaw))<.28) {drafting=true;break;}
   }
   car.drafting=drafting;
+  if(drafting) {
+    const before=car.draftCharge;car.draftCharge=Math.min(1.4,before+dt);
+    if(before<1.4&&car.draftCharge>=1.4&&car.id===0)event(race,'draftReady');
+  }else if(car.draftCharge>=1.4) {
+    if(onRoad&&car.contactCooldown<=0) {
+      car.draftBoost=.85;car.speed=Math.min(car.stats.speed+5,car.speed+3);
+      if(car.id===0)event(race,'draftBoost');
+    }
+    car.draftCharge=0;
+  }else car.draftCharge=Math.max(0,car.draftCharge-dt*2);
   if(drafting&&!stage.noRefill)car.nitro=Math.min(car.stats.tank,car.nitro+dt*.035);
-  const maxSpeed=(onRoad?car.stats.speed:15)+(car.boost?11:0)+(car.miniBoost>0?7:0)+(drafting?2:0);
-  const acceleration=throttle*(car.stats.acceleration+(car.boost?8:0))-brake*34-(1.1+car.speed*car.speed*.0024)-(drifting?1.3:0);
+  const maxSpeed=(onRoad?car.stats.speed:15)+(car.boost?11:0)+(car.miniBoost>0?7:0)+(car.draftBoost>0?5:0)+(drafting?2:0);
+  const acceleration=throttle*(car.stats.acceleration+(car.boost?8:0)+(car.miniBoost>0?10:0)+(car.draftBoost>0?6:0))-brake*34-(1.1+car.speed*car.speed*.0024)-(drifting?1.3:0);
   car.speed=clamp(car.speed+acceleration*dt,0,maxSpeed);
   const yawRate=(.35+1.85*clamp(car.speed/car.stats.speed,0,1))*(drifting?1.18:1);
   car.yaw=angle(car.yaw+car.steer*yawRate*dt);
@@ -169,7 +193,7 @@ function moveCar(race,car,input,dt) {
     if(car.contactCooldown<=0)car.speed*=.60;countContact(race,car);
   }
   if(car.padCooldown<=0)for(const pad of race.pads)if(segmentDistance(car.prevX,car.prevZ,car.x,car.z,pad.x,pad.z)<2.7) {
-    car.miniBoost=1.25;car.padCooldown=1.5;if(car.id===0)event(race,'pad');break;
+    car.miniBoost=Math.max(car.miniBoost,1.25);car.boostLevel=2;car.speed=Math.min(car.stats.speed+7,car.speed+5);car.padCooldown=1.5;if(car.id===0)event(race,'pad');break;
   }
   if(car.id===0)race.rings.forEach((ring,i)=>{
     const key=`${car.completedLaps}:${i}`;
@@ -221,7 +245,11 @@ export function stepRace(race,input={},dt=STEP) {
       countContact(race,a);countContact(race,b);
     }
   }
+  const previousRank=race.rank;
   race.rank=positions(race).findIndex(c=>c.id===0)+1;
+  if(race.rank<previousRank&&race.time>3&&race.time-race.lastOvertake>1.2&&!race.player.finished) {
+    race.lastOvertake=race.time;event(race,'overtake',race.rank);
+  }
   if(race.player.finished)settle(race);
   else if(race.time+race.penalty>=race.stage.limit)settle(race,true);
 }
@@ -229,7 +257,7 @@ export function recoverCar(race) {
   if(race.status!=='running'||race.time-race.player.lastReset<2)return false;
   const car=race.player,s=car.gates<0?-4:(car.gates%GATE_COUNT)*race.track.interval+2.5,p=sampleTrack(race.track,s);
   Object.assign(car,{x:p.x,z:p.z,y:p.y,prevX:p.x,prevZ:p.z,prevY:p.y,yaw:p.heading,prevYaw:p.heading,motion:p.heading,speed:8,
-    miniBoost:0,nitro:0,driftBank:0,drifting:false,steer:0,lastReset:race.time});
+    miniBoost:0,nitro:0,driftBank:0,driftLevel:0,boostLevel:0,draftCharge:0,draftBoost:0,drafting:false,impact:0,drifting:false,steer:0,lastReset:race.time});
   car.near=nearestTrack(race.track,p.x,p.z);car.resetCount++;race.penalty+=3;event(race,'recover');return true;
 }
 export function pauseRace(race) {

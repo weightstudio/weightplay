@@ -465,7 +465,7 @@
       },
       showRelatedSkill: false,
       intro:
-        "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; three active abilities create clutch moments; after settlement, saved coins improve Leo, equipment, the shared Lionheart talent tree, or the wall. Players can retry without a timer, and the game remains permanently ad-free.",
+        "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; three automatic abilities respond to their own cooldown and battlefield conditions; after settlement, saved coins improve Leo, equipment, the shared Lionheart talent tree, or the wall. Players can retry without a timer, and the game remains permanently ad-free.",
       story: [
         "Boom Mane Leo guards the wall outside WeightPlay's enchanted school-supply vault. Wild boars, trickster hyenas, armored rhinos, charging buffalo, hawks, bears, tigers, and crocodiles are drawn toward the magic stored inside its pencils, rulers, and erasers. Leo cannot leave the wall unprotected, so the player patrols its width, keeps the automatic weapons aligned with incoming lanes, and repairs damage between expeditions.",
         "The campaign crosses six five-stage defense routes. Each route ends when a named beast commander is defeated at Stages 5, 10, 15, 20, 25, or 30. A first clear opens the next stage; a Boss first clear also grants the recorded diamond bonus. Clearing Bear Starfall at Stage 30 means the full beast roster has been driven away and the vault can reopen safely."
@@ -479,7 +479,7 @@
         "Bosses keep their beast identity and add a unique projectile rule. The Boar Captain fires quick pursuit shots; the Hyena creates paired crossfire; the Rhino begins behind six shield hits and throws a heavy orb; the Buffalo aims a large siege orb at wall center; the Hawk combines repeated dashes with twin fast shots; and the Bear casts three-orb starfall.",
         "Stage unlocks, permanent upgrades, equipped weapons, coins, and claimed Boss diamond bonuses are stored in this browser. Result shows remaining wall HP, defeated beasts, upgrade choices, rewards, and either the next stage or a replay/menu route."
       ],
-      how: ["Open Battle and swipe the horizontal rail to an unlocked stage.", "Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.", "Move Leo beneath the lane that most needs weapon coverage; firing is automatic.", "Use Roar, Pride Volley, and Wall Aegis when a lane or the wall is under pressure.", "Choose one Battle upgrade after each completed wave and adapt it to the next enemy mix.", "Spend settlement Talent Points in the shared tree, then continue, replay, or tune equipment."],
+      how: ["Open Battle and swipe the horizontal rail to an unlocked stage.", "Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.", "Move Leo beneath the lane that most needs weapon coverage; firing is automatic.", "Roar, Pride Volley, and Wall Aegis trigger automatically when their cooldown and battlefield conditions are met; improve their effects through the shared talent tree.", "Choose one Battle upgrade after each completed wave and adapt it to the next enemy mix.", "Spend settlement Talent Points in the shared tree, then continue, replay, or tune equipment."],
       strategyTips: [
         "Piercing and splash are strongest against fixed lanes or center-heavy formations; side shots cover alternating and edge attacks.",
         "Do not chase every fast beast. Hold a useful firing lane and move early when a hawk or tiger begins a dash.",
@@ -497,13 +497,13 @@
         "Stages 26-30 review all eight roles through lane, alternating, center, and edge formations. Bear Starfall finishes the campaign with the complete roster and a three-projectile casting pattern rather than another numeric copy of an earlier Boss."
       ],
       designNote:
-        "We use automatic weapon fire so the player's continuous decision is where Leo should stand, then make the high-stakes moments tactile: a visible ability rail, readable cooldowns, impact rings, chain lightning, shield flashes, wall thorns, and a shared talent tree. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices while keeping a player-friendly promise: no ads, no countdown pressure, supportive retry, and a factual Battle Performance summary rather than an ability assessment.",
+        "We use automatic weapon fire so the player's continuous decision is where Leo should stand, then make the high-stakes moments tactile: three condition-triggered automatic abilities, impact rings, chain lightning, shield flashes, wall thorns, and a shared talent tree. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices while keeping a player-friendly promise: no ads, no countdown pressure, supportive retry, and a factual Battle Performance summary rather than an ability assessment.",
       parent:
-        "Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, active abilities, wall HP, a shared talent tree, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.",
+        "Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, condition-triggered abilities, wall HP, a shared talent tree, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.",
       faq: [
         ["How many stages are in Fantasy Lion Defense?", "There are 30 authored stages in six five-stage routes, with Boss battles at Stages 5, 10, 15, 20, 25, and 30."],
         ["Do the weapons fire by themselves?", "Yes. Every equipped slot fires on its own cooldown while the player moves Leo and chooses between-wave upgrades."],
-        ["What are the active abilities?", "Roar controls nearby beasts, Pride Volley fires an empowered fan, and Wall Aegis blocks wall hits. The visible buttons show their cooldowns."],
+        ["How do the automatic abilities trigger?", "Pride Volley fires every 14 seconds while enemies remain. Roar triggers when a beast approaches the wall, with a cooldown of 12 seconds or 9 seconds at higher talent rank. Wall Aegis activates when the wall is damaged and an enemy is near; its cooldown is 22 seconds, reduced by Aegis talent ranks. There are no ability buttons."],
         ["How does the talent tree work?", "Victories award Talent Points. Lionheart, Battle Arts, and Rampart share one tree, and Rampart talents directly improve the wall inside the same build."],
         ["Why do later stages feel different?", "They use specified beast compositions and lane, alternating, edge, or center formations. Later Bosses also use different projectile patterns."],
         ["What happens if the wall reaches zero HP?", "The run ends with a retry and stage-select choice. Permanent progress already saved in the browser remains available."],
@@ -3841,7 +3841,7 @@
   };
 
   const gameplayProfiles = {
-    "wonder-crash": { gameplay: "Bullet Heaven Defense", genre: ["Action", "Defense", "Animal"] },
+    "wonder-crash": { gameplay: "Automatic Wave Defense", genre: ["Wave Defense", "Lane Positioning", "Automatic Abilities"] },
     "color-lunchbox": { gameplay: "Color Sorting", genre: ["Preschool", "Education", "Animal"] },
     "bubble-bakery": { gameplay: "Bubble Match Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
     "animal-zoo-idle": { gameplay: "Idle Zoo Care", genre: ["Idle", "Simulation", "Animal"] },
@@ -3850,7 +3850,7 @@
     "animal-nest-weigh": { gameplay: "Ranked Balance Comparison", genre: ["Puzzle", "Math", "Animal"] },
     "animal-gearpack-expedition": { gameplay: "Spatial Inventory Expedition", genre: ["Strategy", "Roguelite", "Animal"] },
     "animal-moonlight-heist": { gameplay: "Stealth Extraction Adventure", genre: ["Stealth", "Strategy", "Adventure", "Animal"] },
-    "animal-rope-rescue": { gameplay: "Vine Physics Puzzle", genre: ["Physics", "Puzzle", "Animal"] },
+    "animal-rope-rescue": { gameplay: "Vine-Cut Physics Puzzle", genre: ["Vine-Cut Physics", "Leaf Bounces", "Fruit Basket Rescue"] },
     "star-memory": { gameplay: "Memory Match", genre: ["Memory", "Puzzle", "Animal"] },
     "campus-dash": { gameplay: "Lane Runner", genre: ["Runner", "Reaction", "Animal"] },
     "snack-blocks": { gameplay: "Match 3 Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
