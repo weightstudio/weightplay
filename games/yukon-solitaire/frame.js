@@ -61,22 +61,8 @@
     });
     board.prepend(info);
     root.after(guide);
-    let comparison = guide.querySelector('[data-wp-market-comparison]');
-    if (!comparison) {
-      comparison = document.createElement('article');
-      comparison.className = 'game-info-section';
-      comparison.dataset.wpMarketComparison = '1.3.0';
-      comparison.dataset.runtimeLocalize = 'off';
-      comparison.innerHTML = '<h3 data-i18n="compareTitle"></h3>' +
-        '<div class="game-info-tags"><span><bdi>Yukon Russian Solitaire</bdi></span></div>' +
-        '<p data-i18n="compareBody"></p>' +
-        '<p data-i18n="compareDisclaimer"></p>' +
-        '<p><a data-wp-comparison-product href="https://apps.apple.com/us/app/yukon-russian-solitaire-game/id1459576037" rel="noopener noreferrer" data-i18n="compareProduct"></a> · ' +
-        '<a data-wp-comparison-rules href="https://www.mobilityware.com/how-to-play-yukon-solitaire-a-complete-guide/" rel="noopener noreferrer" data-i18n="compareRules"></a></p>';
-      guide.append(comparison);
-    }
     const faqSection = [...guide.querySelectorAll('.game-info-section')]
-      .find(section => !section.dataset.wpMarketComparison && section.querySelector('dl'));
+      .find(section => section.querySelector('dl'));
     if (faqSection) {
       const faqKeys = [
         'faqStockQuestion','faqStockAnswer',
@@ -107,7 +93,6 @@
     const sync = () => {
       const code = ({'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'}[view.locale] || view.locale || 'en');
       const strings = window.YUKON_GUIDE_LOCALES?.[code] || window.YUKON_GUIDE_LOCALES?.en || {};
-      comparison.dataset.comparisonLocale = code;
       for (const node of guide.querySelectorAll('[data-i18n]')) {
         if (strings[node.dataset.i18n]) node.textContent = strings[node.dataset.i18n];
       }

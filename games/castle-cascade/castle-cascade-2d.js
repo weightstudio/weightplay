@@ -585,7 +585,8 @@ export class CastleCascade2D {
   hitStart(batch, index) {
     const row = Math.floor(index / BOARD_WIDTH), col = index % BOARD_WIDTH;
     const arrivals = [];
-    for (const effect of batch.visualEffects || []) {
+    const effects = batch.visualEffects || [];
+    for (const effect of effects) {
       const origin = effect.index ?? effect.origins?.[0];
       if (!Number.isInteger(origin)) continue;
       const r = Math.floor(origin / BOARD_WIDTH), c = origin % BOARD_WIDTH;
