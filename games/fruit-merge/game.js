@@ -438,7 +438,7 @@
       fruit10: "獅王球",
     },
     es: {
-      title: "Torre de Fusión Animal", language: "Idioma", ariaLanguage: "Selector de idioma", ariaLobby: "Volver a la sala de WeightPlay", ariaBattle: "Pantalla de Torre de Fusión Animal", ariaBattleBack: "Volver a los desafíos",
+      title: "Torre de Fusión", language: "Idioma", ariaLanguage: "Selector de idioma", ariaLobby: "Volver a la sala de WeightPlay", ariaBattle: "Pantalla de Torre de Fusión", ariaBattleBack: "Volver a los desafíos",
       ariaScore: "Información de puntuación", ariaProgress: "Progreso de fusión", ariaBoard: "Tablero de fusión animal", ariaBoardControls: "Usa las flechas izquierda y derecha para apuntar y Espacio o Enter para soltar.", ariaAim: "Puntería {value}%",
       score: "Puntuación", best: "Mejor", next: "Siguiente", comboLabel: "Combo", comboReady: "Listo", comboStatus: "x{count}", largest: "Mayor", goal: "Objetivo: {name}", bestAnimal: "Mejor animal: {name}", combo: "¡Combo x{count}!", drop: "Soltar", restart: "Reiniciar",
       menuTitle: "Fusiona hasta llegar al Rey León", menuDesc: "Suelta las bolas con cuidado. Dos animales iguales se fusionan en uno mayor. Mantén la torre bajo la línea roja.", chainTitle: "Ruta de fusión", chainHint: "Une dos animales iguales para desbloquear el siguiente.",

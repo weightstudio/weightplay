@@ -205,8 +205,8 @@
       },
     },
     es: {
-      title: "Fichas del Jardín de Mascotas",
-      pageTitle: "Fichas del Jardín de Mascotas - WeightPlay",
+      title: "Fichas del Jardín Animal",
+      pageTitle: "Fichas del Jardín Animal - WeightPlay",
       pageDescription: "Encuentra parejas de animales y objetos del jardín en 30 retos tranquilos de memoria con vistas previas, niebla, ráfagas, desfiles y seis puntos de control guardados.",
       language: "Idioma",
       mainIntro: "Recuerda dónde están las imágenes del jardín y completa 30 retos tranquilos repartidos en seis capítulos.",

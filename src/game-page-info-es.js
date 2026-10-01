@@ -662,7 +662,8 @@ window.WeightPlayGameInfoLocales.es = {
       ]
     },
     "fruit-merge": {
-      "title": "Torre de fusión de animales",
+      "title": "Torre de Fusión",
+      "relatedIds": ["animal-skyspire-drop", "snack-blocks", "animal-bubble-safari"],
       "age": "6+",
       "difficulty": "Progresivo",
       "time": "3-8 minutos",
@@ -671,53 +672,53 @@ window.WeightPlayGameInfoLocales.es = {
         "Resolución de problemas",
         "Coordinación ojo-mano"
       ],
-      "intro": "Animal Merge Tower combina un modo de puntuación de juego libre original con 30 desafíos de física guardados. Seis capítulos cambian el espacio objetivo, el viento, la gravedad, el orden de generación y las condiciones de éxito, al tiempo que conservan la misma simulación de fusión de bola y animal.",
+      "intro": "Torre de Fusión Animal combina un modo libre de puntuación con 30 desafíos de física cuyo progreso se guarda. Seis capítulos cambian el espacio de apuntado, el viento, la gravedad, el orden de aparición y las condiciones de éxito, mientras mantienen la misma mecánica de fusionar bolas de animales.",
       "story": [
-        "El Festival de Animales está reconstruyendo su Crown Tower después de que el desfile esparciera linternas de animales en seis distritos. Las linternas a juego se reúnen en el siguiente nivel de animales, desde Mouse Ball hasta Lion King Ball.",
-        "Los pasos de la pradera, la ventana del bosque, la corriente del río, el peso de la montaña, el desfile de la luna y el festival de la corona enseñan cada uno una regla física diferente. Superar el Desafío 30 estabiliza la Mesa de la Corona del León para el desfile final."
+        "El Festival de Animales está reconstruyendo su torre de la corona después de que el desfile esparciera linternas de animales por seis distritos. Las bolas iguales se fusionan y pasan al siguiente nivel animal, desde la bola de ratón hasta la bola del rey león.",
+        "Los Pasos de la pradera, la Ventana del bosque, la Corriente del río, el Peso de la montaña, el Desfile lunar y el Festival de la corona enseñan reglas físicas distintas. Superar el Desafío 30 completa la Mesa de la corona del león para el desfile final."
       ],
       "how": [
-        "Elija Iniciar juego para el desafío o Juego libre para una carrera de puntuación ilimitada.",
-        "Apunte con el tacto, el movimiento del puntero o hacia la izquierda y la derecha, luego suelte con el tacto, la barra espaciadora o Intro.",
+        "Elige Empezar para afrontar los desafíos o Juego libre para una partida de puntuación sin límite de lanzamientos.",
+        "Apunta con la pantalla táctil, el puntero o las flechas izquierda y derecha; suelta la bola con un toque, la barra espaciadora o Intro.",
         "Junta dos bolas de animales iguales para crear el siguiente nivel y ganar puntos.",
-        "Mantenga la pila debajo de la línea roja y complete el objetivo actual antes de que finalice el presupuesto reducido."
+        "Mantén la pila debajo de la línea roja y completa el objetivo actual antes de agotar los lanzamientos disponibles."
       ],
       "systems": [
         "Once niveles de animales forman la cadena de fusión. Las fusiones rápidas y consecutivas aumentan un multiplicador hasta x5.",
         "Los objetivos utilizan puntuación, nivel de animal, recuento de fusiones, combo o un punto de control de doble nivel más puntuación.",
-        "Narrow Window reduce el espacio de puntería, River Wind aplica una fuerza lateral alterna, Heavy Gravity cambia la gravedad de Matter.js y Fix Queue utiliza un ritmo de generación creado por un autor.",
-        "El desbloqueo de desafíos, la finalización, la selección y las mejores puntuaciones permanecen en este navegador. Free Play mantiene su álbum local separado y su lista de mejores ejecuciones."
+        "Ventana estrecha reduce el espacio de puntería, Viento del río aplica una fuerza lateral alterna, Gravedad fuerte aumenta la gravedad de Matter.js y Cola fija sigue un orden de aparición predeterminado.",
+        "El desbloqueo de desafíos, la finalización, la selección y las mejores puntuaciones permanecen en este navegador. Juego libre conserva por separado su álbum local y la lista de mejores puntuaciones."
       ],
       "progression": [
-        "Los desafíos 1 a 5 enseñan la caja abierta y terminan en Meadow Drum.",
-        "Los desafíos 6 a 10 utilizan el rango de puntería reducido de la ventana del bosque.",
-        "Los desafíos 11 a 15 añaden la fuerza alterna de la corriente del río.",
-        "Los desafíos 16 a 20 utilizan una gravedad de peso de montaña más rápida.",
-        "Los desafíos 21 al 25 utilizan la cola predecible del Moon Parade.",
-        "Los desafíos 26 al 30 combinan reglas avanzadas, con los cuatro activos en la final de la Lion Crown Table."
+        "Los desafíos 1 a 5 enseñan la caja abierta y terminan en el Tambor de la pradera.",
+        "Los desafíos 6 a 10 reducen el espacio para apuntar en la Ventana del bosque.",
+        "Los desafíos 11 a 15 añaden la fuerza lateral alterna de la Corriente del río.",
+        "Los desafíos 16 a 20 aceleran la caída con el Peso de la montaña.",
+        "Los desafíos 21 a 25 utilizan la cola predecible del Desfile lunar.",
+        "Los desafíos 26 a 30 combinan reglas avanzadas; en el último están activas las cuatro y el objetivo es completar la Mesa de la corona del león."
       ],
       "tips": [
-        "Mantenga a los animales grandes bajos y cerca del centro mientras preserva un carril abierto para pelotas pequeñas inigualables.",
-        "Observe la dirección del viento antes de realizar un aterrizaje estrecho.",
-        "Utilice la conocida cola fija para preparar el espacio de aterrizaje varios descensos más adelante."
+        "Mantén las bolas grandes abajo y cerca del centro; deja un carril libre para las bolas pequeñas que aún no pueden fusionarse.",
+        "Observa la dirección del viento antes de hacer un lanzamiento en un espacio estrecho.",
+        "Aprovecha la cola fija conocida para preparar el lugar de caída con varios lanzamientos de antelación."
       ],
       "designNote": "Un tablero Matter.js de 720 por 1040 permanece dentro de un Kids Canvas de escala uniforme, por lo que el teléfono y el escritorio utilizan la misma física. La campaña agrega estructura sin eliminar el Juego Gratis. Su profundidad proviene de cambios ejecutables de puntería, fuerza, gravedad y cola, además de cinco familias de objetivos. La versión para niños no tiene publicidad y almacena el progreso solo en el navegador.",
-      "parent": "Animal Merge Tower está diseñado para mayores de 6 años y para juegos familiares. Los desafíos posteriores requieren predicción de movimiento, memoria de cola fija y ajuste a condiciones físicas cambiantes. Su Informe de habilidades es una retroalimentación de apoyo, no una prueba de inteligencia, un diagnóstico, una evaluación del desarrollo o una calificación escolar.",
+      "parent": "Torre de Fusión Animal está diseñada para mayores de 6 años y para jugar en familia. Los desafíos posteriores requieren predecir movimientos, recordar la cola fija y adaptarse a condiciones físicas cambiantes. El Informe de habilidades ofrece comentarios de apoyo; no es una prueba de inteligencia, un diagnóstico, una evaluación del desarrollo ni una calificación escolar.",
       "faq": [
         [
           "¿Cuántos desafíos hay?",
-          "Hay 30 en seis capítulos, con puntos de control del festival en 5, 10, 15, 20, 25 y 30."
+        "Hay 30 en seis capítulos, con puntos de control en los desafíos 5, 10, 15, 20, 25 y 30."
         ],
         [
           "¿En qué se diferencia del juego gratuito?",
-          "Los desafíos agregan objetivos, reducen presupuestos, desbloqueos guardados y reglas creadas; El juego gratuito sigue siendo ilimitado."
+          "Los desafíos añaden objetivos, un límite de lanzamientos, desbloqueos guardados y reglas diseñadas para cada nivel; el modo libre permite jugar sin límite de lanzamientos."
         ],
         [
-          "¿Cómo funciona Río Viento?",
+          "¿Cómo funciona Viento del río?",
           "Aplica fuerza lateral alterna a las bolas en movimiento dentro de la caja."
         ],
         [
-          "¿Qué cambia bajo Heavy Gravity?",
+          "¿Qué cambia con Gravedad fuerte?",
           "Las bolas aterrizan más rápido porque aumenta el valor de gravedad de Matter.js."
         ],
         [
@@ -742,15 +743,16 @@ window.WeightPlayGameInfoLocales.es = {
         ]
       ],
       "strategyTips": [
-        "Suelta frutas pequeñas cerca de otras iguales y deja espacio libre en el centro para las combinaciones grandes.",
-        "Evita apilar piezas distintas contra una pared: una fruta atrapada puede bloquear varias fusiones futuras.",
-        "Observa el rebote antes de soltar la siguiente fruta; el recipiente sigue moviéndose aunque la pieza ya haya tocado otra.",
-        "Usa los laterales para ordenar tamaños, pero conserva una ruta hacia el centro para que las frutas grandes puedan asentarse.",
-        "En los desafíos con objetivo concreto, prioriza la cadena necesaria en vez de producir muchas frutas de nivel bajo."
+        "Suelta bolas de animales pequeñas junto a otras del mismo tipo y deja espacio libre en el centro para las fusiones grandes.",
+        "Evita apilar bolas distintas contra una pared: una pieza atrapada puede bloquear varias fusiones futuras.",
+        "Observa el rebote antes de soltar la siguiente bola; el recipiente sigue moviéndose aunque la pieza ya haya tocado otra.",
+        "Usa los laterales para ordenar tamaños, pero conserva una ruta hacia el centro para que las bolas grandes puedan asentarse.",
+        "En los desafíos con objetivo concreto, prioriza la cadena necesaria en vez de producir muchas bolas de nivel bajo."
       ]
     },
     "garden-tiles": {
-      "title": "Azulejos de jardín para mascotas",
+      "title": "Fichas del Jardín Animal",
+      "relatedIds": ["star-memory", "animal-echo-orchard", "animal-quiz"],
       "age": "6+ / Familia",
       "difficulty": "Fácil de desafiar",
       "time": "3-8 minutos",
@@ -759,52 +761,52 @@ window.WeightPlayGameInfoLocales.es = {
         "Enfoque",
         "Resolución de problemas"
       ],
-      "intro": "Recupera el catálogo ilustrado de Fichas del Jardín Animal con 30 desafíos de memoria guardados y sin cronómetro. Seis capítulos presentan avances de apertura, primeras selecciones de corta duración, cartas en movimiento inigualables y puntos de control de jardín combinados.",
+      "intro": "Recupera el catálogo ilustrado de Fichas del Jardín Animal con 30 desafíos de memoria guardados y sin cronómetro por nivel. Seis capítulos presentan vistas previas iniciales, primeras cartas que se cierran al poco tiempo, cartas sin pareja que cambian de posición y puntos de control con varias reglas.",
       "story": [
         "El invernadero guarda tarjetas con imágenes de cada animal, cuidador, fruta y objeto del jardín que pasa por sus puertas. Una brisa nocturna esparció las cartas boca abajo justo antes del paseo de los faroles. Como guardián de cartas junior, reconstruirás el catálogo emparejado para que las seis salas del jardín puedan reabrirse y el desfile de animales pueda encontrar su ruta.",
-        "Cada par completado devuelve una imagen al registro. Superar cinco desafíos enciende una linterna de capítulo; Las etapas 5, 10, 15, 20, 25 y 30 son puntos de control que combinan los hábitos de memoria aprendidos en esa sala."
+        "Cada pareja completada devuelve una imagen al registro. Superar cinco desafíos enciende una linterna del capítulo; los desafíos 5, 10, 15, 20, 25 y 30 son puntos de control que combinan los hábitos de memoria aprendidos en esa sala."
       ],
       "how": [
-        "Elige un desafío desbloqueado en el riel horizontal.",
-        "Voltee dos tarjetas y haga coincidir imágenes de jardines idénticas.",
-        "Utilice la etiqueta de regla del capítulo para prepararse para avances, niebla, ráfagas o movimiento de desfile.",
+        "Elige un desafío desbloqueado en la lista horizontal.",
+        "Voltea dos cartas y encuentra imágenes de jardín idénticas.",
+        "Usa la regla del capítulo para prepararte para las vistas previas, la niebla, las ráfagas o el movimiento del desfile.",
         "Elimina cada par para ganar estrellas, guardar el progreso y desbloquear el siguiente desafío."
       ],
       "systems": [
-        "Movimientos y estrellas: los movimientos cuentan intentos completos de dos cartas. La retirada eficiente gana más estrellas, pero cualquier tablero superado progresa y nunca elimina un mejor anterior.",
+        "Movimientos y estrellas: cada intento de dos cartas cuenta como un movimiento. Resolver el tablero con menos movimientos puede dar más estrellas; cualquier tablero completado permite avanzar y no borra una marca anterior.",
         "Vista previa de la mañana: todas las imágenes aparecen brevemente antes de que se cierre el tablero, lo que recompensa un escaneo de apertura deliberado.",
-        "Garden Mist: una carta elegida en primer lugar se cierra después de una ventana suave si no se elige una segunda carta; el nivel en sí no tiene cuenta regresiva.",
-        "Ráfaga juguetona: una falta de coincidencia baraja solo las cartas restantes no coincidentes después de la pausa de retroalimentación visible.",
-        "Garden Parade: una partida exitosa rota las cartas restantes a través de sus espacios abiertos, por lo que el mapa mental debe seguir el movimiento."
+        "Niebla del jardín: la primera carta elegida se cierra tras un breve intervalo si no eliges una segunda; el nivel no tiene cuenta atrás.",
+        "Ráfaga juguetona: tras un intento fallido, solo cambian de sitio las cartas sin pareja que quedan, después de la pausa para observarlas.",
+        "Desfile del jardín cambia de sitio las cartas restantes después de acertar una pareja, así que tendrás que actualizar tu mapa mental."
       ],
       "progression": [
         "1-5 Paseo de plántulas: de cuatro a ocho parejas enseñan un verdadero emparejamiento boca abajo y terminan con un punto de control de vista previa.",
-        "6-10 Morning Greenhouse: Las vistas previas de apertura admiten tableros más grandes y escaneo fila por fila.",
-        "11-15 Misty Pond: Las primeras selecciones se cierran después de una breve ventana, entrenando un nuevo recuerdo visual sin un cronómetro de nivel.",
-        "16-20 Breezy Orchard: Las discordancias mueven cartas no coincidentes, por lo que las ubicaciones obsoletas deben descartarse.",
-        "21-25 Desfile de animales: las parejas exitosas rotan a los supervivientes y recompensan la atención al movimiento.",
-        "26-30 Conservatorio iluminado por la luna: las reglas se combinan y terminan con un Garden Checkpoint de 14 pares y cuatro reglas."
+        "6-10 Invernadero matinal: las vistas previas iniciales acompañan tableros más grandes y el repaso por filas.",
+        "11-15 Estanque con niebla: las primeras selecciones se cierran tras un breve intervalo, sin cronómetro para el nivel.",
+        "16-20 Huerto ventoso: los intentos fallidos desplazan las cartas sin pareja y obligan a actualizar sus posiciones.",
+        "21-25 Desfile de animales: las parejas acertadas mueven las cartas restantes y exigen seguir sus posiciones.",
+        "26-30 Invernadero a la luz de la luna: las reglas se combinan y terminan con un control de 14 parejas y cuatro reglas."
       ],
       "strategyTips": [
-        "Escanee vistas previas por esquinas o filas.",
-        "Trate una discrepancia como información de ubicación útil en tableros clásicos.",
-        "Después del movimiento Gust o Parade, reconstruya un pequeño mapa mental en lugar de confiar en todas las posiciones anteriores.",
+        "Repasa las vistas previas por esquinas o filas.",
+        "Usa cada intento fallido como una pista sobre la posición de las cartas en los tableros clásicos.",
+        "Después de la Ráfaga juguetona o el Desfile del jardín, reconstruye un pequeño mapa mental en lugar de confiar en las posiciones anteriores.",
         "Vuelve a jugar los desafíos terminados para las estrellas sin arriesgarte a que se desbloqueen los guardados."
       ],
-      "designNote": "El juego crece a través de demandas cambiantes de memoria en lugar de una cuenta regresiva estresante. Un lienzo fijo de 390 por 788 mantiene el tablero estable en todos los dispositivos, los botones nativos admiten la reproducción táctil y con el teclado, las discrepancias permanecen visibles el tiempo suficiente para aprender de ellas y el tiempo de página oculta detiene la retroalimentación. Preview, Mist, Gust y Parade solicitan cada uno un tipo diferente de recuperación al mismo tiempo que preservan la calma para que los niños jueguen.",
-      "parent": "Pet Garden Tiles está diseñado para mayores de 6 años y para juegos familiares. Las estrellas y el Informe de habilidades resumen solo la carrera local actual; no son una prueba de inteligencia, un diagnóstico, una evaluación del desarrollo ni una comparación con otros niños. La versión para niños no tiene anuncios, inicio de sesión, chat ni solicitud de compra.",
+      "designNote": "La dificultad cambia mediante distintas exigencias de memoria, no con una cuenta atrás para todo el nivel. Un lienzo fijo de 390 por 788 mantiene estable el tablero; los botones nativos admiten controles táctiles y de teclado, los fallos quedan visibles el tiempo suficiente para aprender y la pausa por pestaña oculta detiene la retroalimentación. La Vista previa matinal, la Niebla del jardín, la Ráfaga juguetona y el Desfile del jardín ejercitan formas distintas de recordar sin perder un ritmo tranquilo para jugar en familia.",
+      "parent": "Este juego está pensado para mayores de 6 años y para jugar en familia. Las estrellas y el Informe de habilidades resumen únicamente la partida local; no son una prueba de inteligencia, un diagnóstico, una evaluación del desarrollo ni una comparación con otros niños. La versión infantil no tiene anuncios, inicio de sesión, chat ni solicitudes de compra.",
       "faq": [
         [
           "¿Cuántos desafíos hay?",
           "Hay 30 en seis capítulos, con puntos de control en 5, 10, 15, 20, 25 y 30."
         ],
         [
-          "¿Las baldosas para jardín de mascotas están cronometradas?",
-          "No. Garden Mist cierra una carta elegida primero después de una breve ventana, pero ningún nivel tiene una cuenta regresiva."
+          "¿Los niveles de Fichas del Jardín Animal tienen cronómetro?",
+          "No. La Niebla del jardín cierra la primera carta elegida después de un breve intervalo, pero ningún nivel tiene cuenta atrás."
         ],
         [
           "¿Por qué se mueven las cartas?",
-          "Playful Gust mueve cartas inigualables después de fallar; Garden Parade los rota después de un partido."
+          "La Ráfaga juguetona cambia de sitio solo las cartas sin pareja después de un intento fallido; el Desfile del jardín mueve las restantes después de acertar una pareja."
         ],
         [
           "¿Cómo se calculan las estrellas?",
@@ -3242,7 +3244,7 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     return value;
   };
   resource.games["snack-blocks"] = repairSnackBlocksSpanish(resource.games["snack-blocks"]);
-  const titles = {"wonder-crash":"Fantasía: Defensa del León","color-lunchbox":"Lonchera de Colores Animales","bubble-bakery":"Panadería de Burbujas Animales","animal-rope-rescue":"Rescate Animal con Lianas","animal-zoo-idle":"Zoológico Idle","star-memory":"Memoria Estelar","campus-dash":"Safari a Toda Velocidad","snack-blocks":"Bloques de Aperitivos","fruit-merge":"Torre de Fusión Animal","garden-tiles":"Fichas del Jardín Animal","animal-rescue":"Sendero de Rescate Animal","animal-bubble-safari":"Safari de Burbujas Animales","animal-habitat-mahjong":"Mahjong de Hábitats Animales","animal-hidden-safari":"Safari Oculto","animal-guard-yard":"Guardianes del Jardín Animal","animal-crystal-survivor":"Superviviente del Cristal Animal","animal-quiz":"Cuestionario","zoo-helper-day":"Día del Ayudante del Zoológico","shape-train":"Tren de Formas Animales","tiny-weather-rescue":"Misión de Ayuda Animal","beast-deck":"Mazo de Bestias: Bosque de Niebla","animal-relic-hunters":"Cazadores de Reliquias Animales","animal-rune-tactics":"Tácticas de Runas Animales","animal-orb-fortress":"Fortaleza del Orbe Animal","animal-auto-squad":"Escuadrón Animal Automático","beast-tactician":"Guardián de Bestias","animal-reef-fisher":"Pescador del Arrecife Animal","animal-cafe-rush":"Fiebre del Café Animal","animal-hero-trials":"Pruebas de Héroes Animales","animal-gearpack-expedition":"Expedición de la Mochila Animal","shadow-wolf":"Lobo Sombrío","animal-moonlight-heist":"Golpe Animal a la Luz de la Luna","animal-color-springs":"Resortes de Colores Animales","animal-coloring-studio":"Estudio para colorear animales","animal-word-trails":"Senderos de palabras de animales"};
+  const titles = {"wonder-crash":"Fantasía: Defensa del León","color-lunchbox":"Lonchera de Colores Animales","bubble-bakery":"Panadería de Burbujas Animales","animal-rope-rescue":"Rescate Animal con Lianas","animal-zoo-idle":"Zoológico Idle","star-memory":"Memoria Estelar","campus-dash":"Safari a Toda Velocidad","snack-blocks":"Bloques de Aperitivos","fruit-merge":"Torre de Fusión","garden-tiles":"Fichas del Jardín Animal","animal-rescue":"Sendero de Rescate Animal","animal-bubble-safari":"Safari de Burbujas Animales","animal-habitat-mahjong":"Mahjong de Hábitats Animales","animal-hidden-safari":"Safari Oculto","animal-guard-yard":"Guardianes del Jardín Animal","animal-crystal-survivor":"Superviviente del Cristal Animal","animal-quiz":"Cuestionario","zoo-helper-day":"Día del Ayudante del Zoológico","shape-train":"Tren de Formas Animales","tiny-weather-rescue":"Misión de Ayuda Animal","beast-deck":"Mazo de Bestias: Bosque de Niebla","animal-relic-hunters":"Cazadores de Reliquias Animales","animal-rune-tactics":"Tácticas de Runas Animales","animal-orb-fortress":"Fortaleza del Orbe Animal","animal-auto-squad":"Escuadrón Animal Automático","beast-tactician":"Guardián de Bestias","animal-reef-fisher":"Pescador del Arrecife Animal","animal-cafe-rush":"Fiebre del Café Animal","animal-hero-trials":"Pruebas de Héroes Animales","animal-gearpack-expedition":"Expedición de la Mochila Animal","shadow-wolf":"Lobo Sombrío","animal-moonlight-heist":"Golpe Animal a la Luz de la Luna","animal-color-springs":"Resortes de Colores Animales","animal-coloring-studio":"Estudio para colorear animales","animal-word-trails":"Senderos de palabras de animales"};
   const difficulties = { "Medio": "Media", "fácil": "Fácil", "Fácil a medio": "Fácil a media", "Fácil de desafiar": "Fácil a desafiante", "De gentil a experto": "De suave a experta", "duro": "Difícil", "Medio a duro": "Media a difícil" };
   resource.games["animal-color-springs"] = {
     title: titles["animal-color-springs"], difficulty: "Fácil a desafiante", time: "2-6 minutos por nivel",

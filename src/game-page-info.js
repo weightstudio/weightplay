@@ -1010,13 +1010,14 @@
       ],
     },
     "fruit-merge": {
-      title: "Animal Merge Tower",
+      title: "Merge Tower",
+      relatedIds: ["animal-skyspire-drop", "snack-blocks", "animal-bubble-safari"],
       age: "6+",
       difficulty: "Progressive",
       time: "3-8 minutes",
       skills: ["Logic", "Problem Solving", "Hand-Eye Coordination"],
       intro:
-        "Animal Merge Tower combines an original Free Play score mode with 30 saved physics challenges. Six chapters change aim space, wind, gravity, generation order, and success conditions while preserving the same animal-ball merge simulation.",
+        "Merge Tower combines an original Free Play score mode with 30 saved physics challenges. Six chapters change aim space, wind, gravity, generation order, and success conditions while preserving the same animal-ball merge simulation.",
       story: [
         "The Animal Festival is rebuilding its Crown Tower after the parade scattered animal lanterns across six districts. Matching lanterns reunite into the next animal tier, from Mouse Ball to Lion King Ball.",
         "Meadow Steps, Forest Window, River Current, Mountain Weight, Moon Parade, and Crown Festival each teach a different physical rule. Clearing Challenge 30 stabilizes the Lion Crown Table for the final parade.",
@@ -1049,7 +1050,7 @@
       designNote:
         "One 720-by-1040 Matter.js board stays inside a uniformly scaled Kids Canvas, so phone and desktop use the same physics. The campaign adds structure without removing Free Play. Its depth comes from executable aim, force, gravity, and queue changes plus five goal families. The Kids build is ad-free and stores progress only in the browser.",
       parent:
-        "Animal Merge Tower is intended for ages 6+ and family play. Later challenges ask for motion prediction, fixed-queue memory, and adjustment to changing physical conditions. Its Skill Report is supportive run feedback, not an intelligence test, diagnosis, developmental assessment, or school grade.",
+        "Merge Tower is intended for ages 6+ and family play. Later challenges ask for motion prediction, fixed-queue memory, and adjustment to changing physical conditions. Its Skill Report is supportive run feedback, not an intelligence test, diagnosis, developmental assessment, or school grade.",
       faq: [
         ["How many challenges are there?", "There are 30 in six chapters, with Festival Checkpoints at 5, 10, 15, 20, 25, and 30."],
         ["What is different from Free Play?", "Challenges add goals, drop budgets, saved unlocks, and authored rules; Free Play remains unlimited."],
@@ -1064,6 +1065,7 @@
     },
     "garden-tiles": {
       title: "Pet Garden Tiles",
+      relatedIds: ["star-memory", "animal-echo-orchard", "animal-quiz"],
       age: "6+ / Family",
       difficulty: "Easy to Challenging",
       time: "3-8 minutes",
@@ -10510,7 +10512,7 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-es.js?v=20261001-campus-snack-text140-v1", sharedAssetBase).href;
+      script.src = new URL("game-page-info-es.js?v=20261001-fruit-garden-text140-v1", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
         installSpanishResource();
@@ -10546,7 +10548,7 @@
     if (japaneseResourcePromise) return japaneseResourcePromise;
     japaneseResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-ja.js?v=20261001-campus-snack-text140-v1", sharedAssetBase).href;
+      script.src = new URL("game-page-info-ja.js?v=20261001-fruit-garden-text140-v1", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "ja";
       script.onload = () => { installJapaneseResource(); resolve(); };
       script.onerror = () => { japaneseResourceFailed = true; resolve(); };

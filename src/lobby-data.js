@@ -5840,7 +5840,7 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "ko": "병합 타워",
     "es": "Torre de Fusión",
     "pt-BR": "Torre de fusão",
-    "fr": "Tour de fusion d'",
+    "fr": "Tour de fusion d'animaux",
     "de": "Tierverschmelzungsturm",
     "it": "Torre di fusione",
     "ru": "Башня слияния животных",
