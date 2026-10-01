@@ -18,6 +18,35 @@ function roundRect(ctx, x, y, w, h, radius) {
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const cascadeTempo = depth => Math.max(.70, 1 - Math.max(0, depth) * .075);
 
+// One contact/compression/rebound, contained in the existing travel budget.
+// Values are in cells so a phone and desktop communicate the same weight.
+export function landingPose(local, distance, travelMs) {
+  const landingShare = Math.min(.55, 160 / travelMs);
+  const falling = clamp(local / (1 - landingShare), 0, 1);
+  const landing = clamp((local - 1 + landingShare) / landingShare, 0, 1);
+  const weight = Math.min(8, Math.max(1, distance));
+  const compression = .18 + weight * .012;
+  const height = .10 + weight * .014;
+  const ease = t => t * t * (3 - 2 * t);
+  let scaleX = 1, scaleY = 1, lift = 0;
+  if (landing > 0 && landing < .22) {
+    const q = Math.sin(landing / .22 * Math.PI / 2);
+    scaleX += compression * .65 * q;
+    scaleY -= compression * q;
+  } else if (landing >= .22 && landing < .58) {
+    const q = ease((landing - .22) / .36);
+    scaleX = 1 + compression * .65 * (1 - q) - .06 * q;
+    scaleY = 1 - compression * (1 - q) + .10 * q;
+    lift = height * q;
+  } else if (landing >= .58) {
+    const q = clamp((landing - .58) / .42, 0, 1);
+    scaleX = .94 + .06 * q;
+    scaleY = 1.10 - .10 * q;
+    lift = height * (1 - q * q);
+  }
+  return { falling, landing, scaleX, scaleY, lift };
+}
+
 // Generated atlas cells can contain a fragment of the next row. Locate the
 // stone's connected silhouette, not the union of every opaque pixel in its cell.
 export function dominantSpriteBounds(pixels, width, { left, top, right, bottom }) {
@@ -770,7 +799,7 @@ export class CastleCascade2D {
       const after = batch.cleared[index];
       const { x: cx, y: cy } = center(index);
       const start = this.hitStart(batch, index);
-      const hit = clamp((progress - start) / .28, 0, 1);
+      const hit = clamp((progress - start) / (batch.visualEffects.length ? .34 : .50), 0, 1);
       if (progress < start) {
         const prepare = clamp(progress / start, 0, 1);
         this.drawTile(tile, index, cx, cy, cell, 1, 1 + Math.sin(prepare * Math.PI) * .085);
@@ -780,15 +809,13 @@ export class CastleCascade2D {
       // Blocked/key pieces persist. Only actual removed layers or payload break.
       const survives = after && (after.key || after.stone || after.gate);
       if (survives) this.drawTile(after, index, cx + Math.sin(hit * 26) * (1-hit) * cell * .035, cy, cell);
-      else if (hit < .45) this.drawTile(tile, index, cx, cy, cell, 1 - hit / .45, 1.1 - hit * .88);
+      else if (hit < .22) this.drawTile(tile, index, cx, cy, cell, 1 - hit / .22, 1.12 + hit * .6);
       if (hit > 0 && hit < 1) {
         const material = tile.box ? SPRITE.crate : tile.stone ? SPRITE.stone : tile.chain ? SPRITE.chain : tile.gate ? SPRITE.gate : tile.p ? (tile.p.startsWith("arrow") ? SPRITE.arrow : SPRITE[tile.p]) : tile.c;
         // A remaining gate/stone gets recoil only, not a false destruction.
         const removed = !survives || tile.stone > (after.stone || 0) || tile.chain && !after.chain;
-        if (removed && Number.isInteger(material)) this.drawFragments(material, cx, cy, cell, hit, batch.directHits.length > 30 ? 3 : tile.box ? 8 : 5, index);
-        const flash = Math.max(0, 1 - hit * 4);
-        this.drawSprite(SPRITE.spark, cx, cy, cell, .62 + hit * .7, flash);
-        this.drawRing(cx, cy, cell * (.16 + hit * .6), (1-hit) * .55, GEM_COLORS[tile.c] || "#ffd074", cell * .028);
+        if (removed && Number.isInteger(material)) this.drawFragments(material, cx, cy, cell, hit, batch.directHits.length > 24 ? 3 : tile.box ? 6 : 4, index);
+        this.drawBlockImpact(cx, cy, cell, hit, GEM_COLORS[tile.c] || "#ffd074", .62);
       }
     }
     for (const index of batch.adjacentHits) {
@@ -858,11 +885,28 @@ export class CastleCascade2D {
       const x = cx + Math.cos(angle) * distance;
       const y = cy + Math.sin(angle) * distance - Math.sin(progress*Math.PI)*cell*.3 + progress*progress*cell*.64;
       const sx = 24 + (part%3)*70, sy = 24 + (Math.floor(part/3)%3)*70;
-      const size = cell * (.16 + part%2*.035) * (1-progress*.45);
+      const size = cell * (.25 + part%2*.045) * (1-progress*.35);
       ctx.save(); ctx.translate(x,y); ctx.rotate(angle + progress*(part%2?4:-4));
       ctx.drawImage(image, sx, sy, 68, 68, -size/2, -size/2, size, size);
       ctx.restore();
     }
+    ctx.restore();
+  }
+
+  drawBlockImpact(cx, cy, cell, progress, color, strength = 1) {
+    if (progress <= 0 || progress >= .78) return;
+    const p = progress / .78, ctx = this.context;
+    const radius = cell * strength * (.22 + Math.sin(p * Math.PI / 2) * .65);
+    ctx.save(); ctx.globalAlpha *= (1-p) * .92;
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    for (let i=0;i<16;i++) {
+      const a=i*Math.PI/8, r=radius*(i%2 ? .37 : 1);
+      if (!i) ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r);
+      else ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);
+    }
+    ctx.closePath(); ctx.fillStyle = p < .30 ? "#fff6cf" : color;
+    ctx.fill(); ctx.strokeStyle=color; ctx.lineWidth=cell*.055; ctx.stroke();
     ctx.restore();
   }
 
@@ -899,27 +943,34 @@ export class CastleCascade2D {
     const cell = bounds.size / BOARD_WIDTH;
     for (const item of motion.movements) {
       const local = clamp((elapsed - motion.stagger(item)) / motion.travel(item), 0, 1);
-      const falling = clamp(local / .66, 0, 1);
+      const pose = landingPose(local, Math.abs(item.toRow-item.fromRow), motion.travel(item));
+      const { falling, landing:landingTime } = pose;
       const eased = falling ** 1.65;
-      const landingTime = clamp((local - .66) / .34, 0, 1);
       const direction = item.col % 2 ? -1 : 1;
       const airWave = Math.sin(falling * Math.PI);
-      const sway = airWave * (.055 + .025 * Math.sin(falling * Math.PI * 2 + item.col * .6));
-      const rebound = Math.sin(landingTime * Math.PI * 2) * (1 - landingTime) ** 2;
+      const sway = airWave * .035;
       const fromRow = item.fromRow;
       const rowProgress = item.isDelivery ? -local * 0.42 : fromRow + (item.toRow - fromRow) * eased;
       const y = bounds.y + (rowProgress + 0.5) * cell;
-      const x = bounds.x + (item.col + .5) * cell + (item.isDelivery ? 0 : (sway + rebound * .035) * cell * direction);
-      const landing = item.isDelivery ? 1 : 1 + Math.sin(landingTime * Math.PI * 4) * .12 * (1 - landingTime) ** 2;
+      const x = bounds.x + (item.col + .5) * cell + (item.isDelivery ? 0 : sway * cell * direction);
       const delivering = motion.deliveredKeys.includes(item.toIndex) && item.payload.key;
       const fade = item.isDelivery ? 1 - local : delivering && local > 0.76 ? 1 - (local - 0.76) / 0.24 : 1;
       const ctx = this.context;
-      ctx.save(); ctx.translate(x, y - (item.isDelivery ? 0 : rebound * cell * .16));
-      ctx.rotate(item.isDelivery ? 0 : (airWave * .085 + rebound * .035) * direction);
-      ctx.scale(landing, 1 / landing);
+      // Keep the bottom edge anchored during compression, then lift the whole
+      // piece once. No spring state survives the movement or affects the grid.
+      const lift = item.isDelivery ? 0 : (pose.lift - .43 * (1-pose.scaleY)) * cell;
+      ctx.save(); ctx.translate(x, y - lift);
+      ctx.rotate(item.isDelivery ? 0 : airWave * .045 * direction);
+      if (!item.isDelivery) ctx.scale(pose.scaleX, pose.scaleY);
       this.drawTile(item.payload, item.toIndex, 0, 0, cell, fade);
       ctx.restore();
-      if (landingTime > 0 && !item.isDelivery) this.drawRing(x, y + cell * .31, cell * (.16 + landingTime * .20), (1 - landingTime) * .30, "#ffffff", cell * .025);
+      if (landingTime > 0 && landingTime < .65 && !item.isDelivery) {
+        const ground = bounds.y + (item.toRow + .93) * cell;
+        ctx.save(); ctx.globalAlpha *= (1-landingTime/.65)*.32;
+        ctx.fillStyle="#587293"; ctx.beginPath();
+        ctx.ellipse(x,ground,cell*(.28+landingTime*.24),cell*.036,0,0,Math.PI*2);ctx.fill();
+        ctx.restore();
+      }
     }
     motion.cleared.forEach((tile, index) => {
       if (!tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.seal) return;
@@ -946,6 +997,7 @@ export class CastleCascade2D {
   }
 
   drawSpecialEffects(bounds, effects, batchProgress, cell) {
+    const combined = effects.some(effect => effect.type === "combo-burst");
     for (const effect of effects) {
       const carried = effects.some(e => e.type === "bird-carry" && e.target === effect.index)
         && ["arrow", "bomb"].includes(effect.type);
@@ -957,7 +1009,7 @@ export class CastleCascade2D {
       const cx = bounds.x + (col + 0.5) * cell;
       const cy = bounds.y + (row + 0.5) * cell;
       if (effect.type === "arrow") {
-        this.drawRocketLine(bounds, cx, cy, effect.axis === "h", progress, cell);
+        this.drawRocketLine(bounds, cx, cy, effect.axis === "h", progress, cell, combined ? 1.4 : 1);
       } else if (effect.type === "bomb" || effect.type === "nova") {
         const charge = clamp(progress/.22, 0, 1);
         if (progress < .22) {
@@ -979,11 +1031,27 @@ export class CastleCascade2D {
       } else if (effect.type === "bird" || effect.type === "bird-carry") {
         const target = effect.target ?? effect.index;
         this.drawBirdFlight(bounds, effect.index, target, progress, cell, effect.type === "bird-carry" ? effect.power : null);
-        const hitProgress = clamp((progress - 0.62) / 0.38, 0, 1);
+        const hitProgress = clamp((progress - 0.68) / 0.32, 0, 1);
+        const tx = bounds.x + (target % BOARD_WIDTH + .5) * cell;
+        const ty = bounds.y + (Math.floor(target / BOARD_WIDTH) + .5) * cell;
+        if (effect.type === "bird" && progress > .48 && progress < .98) {
+          // A single Bird has its own readable target/impact silhouette, not
+          // just the same small star as an ordinary match. Cargo combinations
+          // retain their separate, larger destination blast.
+          const aiming = progress < .68;
+          const q = aiming ? (progress-.48)/.20 : hitProgress;
+          const radius = cell * (aiming ? .76-q*.34 : .42+q*.63);
+          const ctx=this.context;
+          ctx.save();ctx.translate(tx,ty);ctx.rotate(Math.PI/4);
+          ctx.globalAlpha *= aiming ? .35+q*.45 : (1-q)*.95;
+          ctx.strokeStyle="#138b96";ctx.lineWidth=cell*.10;
+          ctx.strokeRect(-radius/2,-radius/2,radius,radius);
+          ctx.strokeStyle="#c8fff2";ctx.lineWidth=cell*.042;
+          ctx.strokeRect(-radius/2,-radius/2,radius,radius);
+          ctx.restore();
+        }
         if (hitProgress > 0) {
-          const tr = Math.floor(target / BOARD_WIDTH);
-          const tc = target % BOARD_WIDTH;
-          this.drawParticleBurst(bounds.x + (tc + 0.5) * cell, bounds.y + (tr + 0.5) * cell, cell, hitProgress, 7, 1.05, "#95f4df", target);
+          this.drawBlockImpact(tx, ty, cell, hitProgress, "#37cbb8", 1.45);
         }
       } else if (effect.type === "flock") {
         (effect.targets || []).forEach((target, targetIndex) => this.drawBirdFlight(bounds, effect.origins[targetIndex] ?? effect.origins[0], target, progress, cell));
@@ -991,14 +1059,14 @@ export class CastleCascade2D {
         const local = clamp((progress-.22)/.56, 0, 1);
         const targets = effect.targets || [];
         // At most 24 rays per frame, evenly distributed across the actual targets.
-        const stride = Math.max(1, Math.ceil(targets.length/24));
+        const stride = Math.max(1, Math.ceil(targets.length/(combined ? 16 : 24)));
         for (let i=0; i<targets.length; i+=stride) {
           const target = targets[i];
           const tx = bounds.x + (target%BOARD_WIDTH+.5)*cell;
           const ty = bounds.y + (Math.floor(target/BOARD_WIDTH)+.5)*cell;
           const p = clamp((local-(i%4)*.035)/.82,0,1);
           if (p<=0 || p>=1) continue;
-          const color = GEM_COLORS[(i+Math.floor(progress*12))%GEM_COLORS.length];
+          const color = GEM_COLORS[i%GEM_COLORS.length];
           const envelope = Math.sin(p*Math.PI);
           this.context.save(); this.context.globalAlpha *= envelope*.78;
           this.drawLightning(cx,cy,tx,ty,color,cell, i);
@@ -1006,20 +1074,27 @@ export class CastleCascade2D {
           this.drawSprite(SPRITE.spark,tx,ty,cell,.4,envelope);
         }
       } else if (effect.type === "cross") {
-        this.drawRocketLine(bounds,cx,cy,true,progress,cell);
-        this.drawRocketLine(bounds,cx,cy,false,progress,cell);
+        this.drawRocketLine(bounds,cx,cy,true,progress,cell,1.55);
+        this.drawRocketLine(bounds,cx,cy,false,progress,cell,1.55);
       } else if (effect.type === "siege") {
         for (const offset of [-1,0,1]) {
-          if (row+offset>=0 && row+offset<BOARD_HEIGHT) this.drawRocketLine(bounds,cx,cy+offset*cell,true,progress,cell);
-          if (col+offset>=0 && col+offset<BOARD_WIDTH) this.drawRocketLine(bounds,cx+offset*cell,cy,false,progress,cell);
+          if (row+offset>=0 && row+offset<BOARD_HEIGHT) this.drawRocketLine(bounds,cx,cy+offset*cell,true,progress,cell,1.35);
+          if (col+offset>=0 && col+offset<BOARD_WIDTH) this.drawRocketLine(bounds,cx+offset*cell,cy,false,progress,cell,1.35);
         }
       } else if (effect.type === "combo-burst") {
-        this.drawComboBurst(bounds, effect, progress, cell);
+        this.drawComboBurst(bounds, effect, progress, cell, effects);
       }
     }
   }
 
-  drawRocketLine(bounds,cx,cy,horizontal,progress,cell) {
+  drawRocketLine(bounds,cx,cy,horizontal,progress,cell,strength=1) {
+    if (progress < .22) {
+      const ctx=this.context;
+      ctx.save(); ctx.globalAlpha*=progress/.22*.2;ctx.fillStyle="#ffc24c";
+      if(horizontal)ctx.fillRect(bounds.x,cy-cell*.11*strength,bounds.size,cell*.22*strength);
+      else ctx.fillRect(cx-cell*.11*strength,bounds.y,cell*.22*strength,bounds.size);
+      ctx.restore();
+    }
     const p=clamp((progress-.22)/.48,0,1);
     if (p<=0 || p>=1) return;
     const ctx=this.context;
@@ -1028,10 +1103,11 @@ export class CastleCascade2D {
       const travel=(end-(horizontal?cx:cy))*p;
       const x=cx+(horizontal?travel:0), y=cy+(horizontal?0:travel);
       ctx.save(); ctx.globalAlpha*=Math.min(1,(1-p)*4);
-      this.drawBeam(cx,cy,x,y,"#ffb73e",cell*.18,cell*.20);
-      this.drawBeam(cx,cy,x,y,"#fff9dd",cell*.055,cell*.10);
+      this.drawBeam(cx,cy,x,y,"#d47812",cell*.34*strength,0);
+      this.drawBeam(cx,cy,x,y,"#ffc950",cell*.24*strength,cell*.12);
+      this.drawBeam(cx,cy,x,y,"#fff9dd",cell*.075*strength,0);
       ctx.translate(x,y); if (!horizontal) ctx.rotate(Math.PI/2);
-      this.drawSprite(SPRITE.arrow,0,0,cell,.63);
+      this.drawSprite(SPRITE.arrow,0,0,cell,.82*strength);
       ctx.restore();
     }
   }
@@ -1050,59 +1126,62 @@ export class CastleCascade2D {
     ctx.shadowBlur=0; ctx.strokeStyle="#fff9f1"; ctx.lineWidth=cell*.023; ctx.stroke(); ctx.restore();
   }
 
-  drawComboBurst(bounds, effect, progress, cell) {
-    const origins = (effect.origins || []).filter((index) => Number.isInteger(index) && index >= 0 && index < BOARD_WIDTH * BOARD_HEIGHT);
-    const points = origins.length ? origins : [effect.index];
-    const centers = points.map((index) => ({
-      x: bounds.x + ((index % BOARD_WIDTH) + 0.5) * cell,
-      y: bounds.y + (Math.floor(index / BOARD_WIDTH) + 0.5) * cell,
-    }));
-    const cx = centers.reduce((sum, point) => sum + point.x, 0) / centers.length;
-    const cy = centers.reduce((sum, point) => sum + point.y, 0) / centers.length;
-    const phase = clamp(progress, 0, 1);
-    const envelope = Math.sin(Math.PI * phase);
-    if (envelope <= 0) return;
-    const isSpectrum = effect.powers?.includes("prism");
-    const firstColor = isSpectrum ? "#f0a9ff" : "#ffe28a";
-    const secondColor = isSpectrum ? "#9cf4ff" : "#9ceeff";
-    const radius = cell * (0.35 + phase * 3.9);
+  drawComboBurst(bounds, effect, progress, cell, effects = []) {
+    const carry = effects.find(item => item.type === "bird-carry");
+    const index = carry?.target ?? effect.index;
+    const cx = bounds.x + (index % BOARD_WIDTH + .5) * cell;
+    const cy = bounds.y + (Math.floor(index / BOARD_WIDTH) + .5) * cell;
+    const spectrum = effect.powers?.includes("prism");
+    const arrows = effect.powers?.every(power => power.startsWith("arrow"));
+    const impactAt = carry ? .68 : .22;
     const ctx = this.context;
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-    ctx.globalAlpha *= envelope * 0.72;
-    this.drawRing(cx, cy, radius, 0.9, firstColor, cell * (0.11 - phase * 0.045));
-    this.drawRing(cx, cy, radius * 0.68, 0.66, secondColor, cell * 0.045);
-    ctx.lineCap = "round";
-    for (let ray = 0; ray < 12; ray += 1) {
-      const angle = ray * Math.PI / 6 + phase * 0.34;
-      const inner = radius * (0.18 + (ray % 3) * 0.035);
-      const outer = radius * (0.83 + (ray % 2) * 0.13);
-      const color = ray % 2 ? firstColor : secondColor;
-      this.drawBeam(
-        cx + Math.cos(angle) * inner,
-        cy + Math.sin(angle) * inner,
-        cx + Math.cos(angle) * outer,
-        cy + Math.sin(angle) * outer,
-        color,
-        cell * 0.055,
-        Math.min(cell * 0.24, 11),
-      );
+    const color = spectrum ? "#df83ff" : carry ? "#42d8c1" : "#ffb735";
+    // A single, local charge silhouette identifies the combination. No white
+    // board overlay and no rapidly changing rainbow colors.
+    if (progress < impactAt) {
+      const q=clamp((progress-impactAt+.22)/.22,0,1);
+      if (!q) return;
+      ctx.save(); ctx.translate(cx,cy);ctx.globalAlpha*=q*.9;
+      ctx.strokeStyle=color;ctx.lineWidth=cell*.075;
+      const r=cell*(1.02-q*.32);
+      if (carry) {
+        for(const sx of [-1,1])for(const sy of [-1,1]){
+          ctx.beginPath();ctx.moveTo(sx*r,sy*r*.55);ctx.lineTo(sx*r,sy*r);ctx.lineTo(sx*r*.55,sy*r);ctx.stroke();
+        }
+      } else {
+        ctx.rotate(Math.PI/4);ctx.strokeRect(-r/2,-r/2,r,r);
+        ctx.fillStyle="#fff4c9";ctx.fillRect(-cell*.13,-cell*.13,cell*.26,cell*.26);
+      }
+      ctx.restore();return;
+    }
+    const p=clamp((progress-impactAt)/(1-impactAt),0,1);
+    this.drawBlockImpact(cx,cy,cell,p,color,arrows?1.9:spectrum?2.15:1.7);
+    const radius=cell*(.42+Math.sin(p*Math.PI/2)*(spectrum?3.8:carry?2.15:2.9));
+    ctx.save();ctx.translate(cx,cy);ctx.globalAlpha*=(1-p)*.85;
+    ctx.lineJoin="miter";ctx.lineWidth=cell*(.13-p*.07);ctx.strokeStyle=color;
+    if (arrows) {
+      // Four solid chevrons follow the actual cross, instead of the same
+      // circular burst used by every pair in the previous presentation.
+      for(let arm=0;arm<4;arm++){
+        ctx.save();ctx.rotate(arm*Math.PI/2);
+        ctx.beginPath();ctx.moveTo(radius-cell*.28,-cell*.24);ctx.lineTo(radius,0);ctx.lineTo(radius-cell*.28,cell*.24);ctx.stroke();
+        ctx.restore();
+      }
+    } else if (spectrum) {
+      // A faceted chromatic crown; fixed hue per edge avoids color flicker.
+      for(let edge=0;edge<8;edge++){
+        const a=edge*Math.PI/4, b=(edge+1)*Math.PI/4;
+        ctx.strokeStyle=GEM_COLORS[edge%GEM_COLORS.length];
+        ctx.beginPath();ctx.moveTo(Math.cos(a)*radius,Math.sin(a)*radius);
+        ctx.lineTo(Math.cos(b)*radius,Math.sin(b)*radius);ctx.stroke();
+      }
+    } else {
+      // Bird cargo/Bomb combinations detonate at the cargo destination.
+      ctx.rotate(Math.PI/4);ctx.strokeRect(-radius*.65,-radius*.65,radius*1.3,radius*1.3);
+      ctx.strokeStyle="#fff1b4";ctx.lineWidth=cell*.055;
+      ctx.strokeRect(-radius*.52,-radius*.52,radius*1.04,radius*1.04);
     }
     ctx.restore();
-    this.drawParticleBurst(cx, cy, cell, phase, 14, 4.2, firstColor, effect.index || 0);
-    const targets = effect.targets || [];
-    const targetStride = Math.max(1, Math.ceil(targets.length / 18));
-    let shownTargets = 0;
-    for (let targetIndex = 0; targetIndex < targets.length && shownTargets < 18; targetIndex += targetStride) {
-      const target = targets[targetIndex];
-      const local = clamp((phase - 0.12 - (targetIndex % 6) * 0.035) / 0.54, 0, 1);
-      const hit = Math.sin(local * Math.PI);
-      if (!hit) continue;
-      const tr = Math.floor(target / BOARD_WIDTH);
-      const tc = target % BOARD_WIDTH;
-      this.drawRing(bounds.x + (tc + 0.5) * cell, bounds.y + (tr + 0.5) * cell, cell * (0.12 + local * 0.25), hit * 0.82, targetIndex % 2 ? firstColor : secondColor, cell * 0.032);
-      shownTargets += 1;
-    }
   }
 
   drawBirdFlight(bounds, from, to, progress, cell, carriedPower = null) {
