@@ -1,6 +1,9 @@
 // BEGIN generated from src/lobby-data.js audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs
 if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire"]);
 // END generated tabletop classification
+// BEGIN generated from src/lobby-data.js audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs
+if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
+// END generated Castle Block reward exclusions
 (function () {
   if (window.WonderAnalytics) return;
   const config = window.WONDER_SITE?.analytics || {};
@@ -84,6 +87,7 @@ if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = ne
     const gameId = String(params.game_id || params.gameId || window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "").trim();
     if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(gameId)) return { credited: false, reason: "invalid-game" };
     if (window.__weightPlayTabletopGameIds.has(gameId.toLowerCase())) return { credited: false, reason: "tabletop-excluded" };
+    if (window.__weightPlayCastleBlockRewardExcludedGameIds.has(gameId.toLowerCase())) return { credited: false, reason: "game-reward-excluded" };
     const rawStage = reportedStageId(params);
     const stageText = typeof rawStage === "string" || typeof rawStage === "number" ? String(rawStage).trim() : "";
     const normalizedStage = stageText.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54);
