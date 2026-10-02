@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" role="img" aria-labelledby="title desc">
+  <title id="title">Hot Topics Play Yard</title>
+  <desc id="desc">A playful tabletop parade and an original block-shaped robot dog under a spotlight.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#98e1da"/><stop offset="1" stop-color="#e8f5d7"/></linearGradient>
+    <linearGradient id="road" x2="0" y2="1"><stop stop-color="#496f77"/><stop offset="1" stop-color="#284d5b"/></linearGradient>
+    <linearGradient id="beam" x2="0" y2="1"><stop stop-color="#fff2a7" stop-opacity=".86"/><stop offset="1" stop-color="#fff2a7" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="1200" height="400" fill="url(#sky)"/>
+  <circle cx="175" cy="74" r="42" fill="#ffe28a"/><path d="M0 246 Q240 196 420 238T830 226T1200 213V400H0Z" fill="#cce7a8"/>
+  <path d="M-50 331 Q320 245 590 311T1250 275" fill="none" stroke="#f8e6b7" stroke-width="94" stroke-linecap="round"/><path d="M-50 331 Q320 245 590 311T1250 275" fill="none" stroke="url(#road)" stroke-width="76" stroke-linecap="round"/><path d="M0 321 Q340 262 600 309T1190 280" fill="none" stroke="#fff0bf" stroke-width="5" stroke-dasharray="34 28"/>
+  <g transform="translate(112 210)"><rect y="35" width="165" height="73" rx="23" fill="#f18b70" stroke="#fff8e2" stroke-width="9"/><path d="M30 35 53 4h61l25 31" fill="#ffd36d" stroke="#fff8e2" stroke-width="9"/><circle cx="43" cy="109" r="17" fill="#254c59" stroke="#fff" stroke-width="6"/><circle cx="127" cy="109" r="17" fill="#254c59" stroke="#fff" stroke-width="6"/><text x="81" y="77" text-anchor="middle" font-family="system-ui,sans-serif" font-size="25" font-weight="900" fill="#fffdf1">GO!</text></g>
+  <g transform="translate(355 250) scale(.73)"><rect y="35" width="165" height="73" rx="23" fill="#82c7bc" stroke="#fff8e2" stroke-width="9"/><path d="M30 35 53 4h61l25 31" fill="#ffcf6c" stroke="#fff8e2" stroke-width="9"/><circle cx="43" cy="109" r="17" fill="#254c59" stroke="#fff" stroke-width="6"/><circle cx="127" cy="109" r="17" fill="#254c59" stroke="#fff" stroke-width="6"/><text x="82" y="78" text-anchor="middle" font-family="system-ui,sans-serif" font-size="29" font-weight="900" fill="#fffdf1">SNACK</text></g>
+  <path d="M751 0H1017L1116 277H653Z" fill="url(#beam)"/><path d="M742 25h268" stroke="#fff5be" stroke-width="9" stroke-linecap="round"/>
+  <g transform="translate(823 115)"><path d="M13 40 31 7h24v43M102 50V7h24l19 33" fill="#f0846f" stroke="#244653" stroke-width="10" stroke-linejoin="round"/><rect x="29" y="34" width="102" height="77" rx="20" fill="#70cbd0" stroke="#244653" stroke-width="10"/><circle cx="58" cy="67" r="6" fill="#173c4b"/><circle cx="103" cy="67" r="6" fill="#173c4b"/><path d="M72 89q9 10 18 0" fill="none" stroke="#173c4b" stroke-width="6" stroke-linecap="round"/><rect x="15" y="114" width="126" height="67" rx="21" fill="#70cbd0" stroke="#244653" stroke-width="10"/><path d="M39 166v39m79-39v39" stroke="#244653" stroke-width="13" stroke-linecap="round"/><path d="m141 129 30-17" stroke="#f0846f" stroke-width="11" stroke-linecap="round"/><path d="M172 7v41m-21-20h42" stroke="#fff6c9" stroke-width="8" stroke-linecap="round"/></g>
+  <g fill="#fff8da"><path d="m610 75 8 22 23 1-18 14 6 22-19-13-19 13 7-22-18-14 23-1z"/><path d="m1087 116 6 15 16 1-13 10 5 16-14-9-14 9 5-16-13-10 16-1z"/></g>
+</svg>

@@ -12,6 +12,7 @@ const ownerPreviewMode = new URLSearchParams(window.location.search).get("previe
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const tabletopGameIds = new Set(lobby.audiences?.tabletopGameIds || []);
+const topicGameIds = new Set(lobby.audiences?.topicGameIds || []);
 const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
 // GENERATED GAMEPLAY REVIEW PASSES START
@@ -20,8 +21,11 @@ const verifiedGameplayReviewPasses = Object.freeze({});
 // GENERATED GAMEPLAY REVIEW PASSES END
 const catalogGames = allLobbyGames.filter((game) =>
   (game.status === "playable"
+    || (!isKidsLobby && topicGameIds.has(game.id))
     || (!ownerPreviewMode && !isKidsLobby && game.id === "animal-dice-bastion"))
-  && (isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id)));
+  && (isKidsLobby
+    ? !generalGameIds.has(game.id) && !topicGameIds.has(game.id)
+    : generalGameIds.has(game.id)));
 const showAgeLabels = isKidsLobby;
 const modeHeroGameIds = isKidsLobby
   ? ["color-lunchbox", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
@@ -29,6 +33,7 @@ const modeHeroGameIds = isKidsLobby
 // Owner-locked General spotlight. See docs/lobby-featured-game-lock.md.
 const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-crystal-survivor";
 const tabletopHeroGameIds = ["mahjong-solitaire", "chess", "hearts", "klondike-solitaire", "spades"];
+const topicHeroGameIds = [...topicGameIds];
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;
 lobby.featuredGameId = modeFeaturedGameId;
@@ -38,6 +43,14 @@ if (ownerPreviewMode) {
 }
 const filterButtons = document.querySelectorAll("[data-age-filter]");
 const gameHallSwitch = document.querySelector(".game-hall-switch");
+if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.querySelector('[data-hall-tab="topics"]')) {
+  const topicsButton = document.createElement("button");
+  topicsButton.type = "button";
+  topicsButton.dataset.hallTab = "topics";
+  topicsButton.setAttribute("aria-pressed", "false");
+  topicsButton.innerHTML = '<span class="hall-tab-long" data-i18n="hall.topics"></span><span class="hall-tab-short" data-i18n="hall.topics_short" aria-hidden="true"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
+  gameHallSwitch.append(topicsButton);
+}
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
 const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
@@ -296,6 +309,7 @@ let gameStats = {
 };
 
 function gameHall(game) {
+  if (topicGameIds.has(game?.id)) return "topics";
   return tabletopGameIds.has(game?.id) ? "tabletop" : "games";
 }
 
@@ -391,17 +405,24 @@ function syncHallPresentation() {
     element.hidden = element.dataset.hallOnly !== activeHall;
   });
   const catalogHallLabel = document.querySelector("#catalogHallLabel");
-  if (catalogHallLabel) catalogHallLabel.textContent = i18n.t(activeHall === "tabletop" ? "hall.tabletop" : "hall.games");
+  const hallNameKey = `hall.${activeHall}`;
+  const hallTitleKey = `hall.${activeHall}_title`;
+  const hallNoteKey = `hall.${activeHall}_note`;
+  if (catalogHallLabel) catalogHallLabel.textContent = i18n.t(activeHall === "games" ? "hall.games" : hallNameKey);
   if (generalPlayTitle) {
-    generalPlayTitle.textContent = i18n.t(activeHall === "tabletop" ? "hall.tabletop_title" : "general.play.title");
+    generalPlayTitle.textContent = i18n.t(activeHall === "games" ? "general.play.title" : hallTitleKey);
   }
   const hallHeroTitle = document.querySelector('.lobby-hero-copy h2');
   if (hallHeroTitle) {
     hallHeroTitle.setAttribute('data-runtime-localize', 'off');
-    hallHeroTitle.textContent = i18n.t(activeHall === 'tabletop' ? 'hall.tabletop_title' : 'discovery.hero_title');
+    hallHeroTitle.textContent = i18n.t(activeHall === 'games' ? 'discovery.hero_title' : hallTitleKey);
   }
   const hallEyebrow = document.querySelector('.hero-eyebrow');
-  if (hallEyebrow) hallEyebrow.textContent = activeHall === 'tabletop' ? 'WEIGHTPLAY CARDS & BOARD' : 'WEIGHTPLAY BLOCK WORLD';
+  if (hallEyebrow) hallEyebrow.textContent = i18n.t(activeHall === 'games' ? 'hall.games' : hallNameKey);
+  const hallScene = document.querySelector('.general-hero-scene');
+  if (hallScene) hallScene.src = activeHall === 'topics'
+    ? '/assets/topic-hall-hero.svg'
+    : '/assets/animal-zoo-idle-cover.webp';
 }
 
 function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
@@ -790,9 +811,14 @@ function rankLabel(game, fallbackRank) {
 }
 
 function popularGames(limit = 3) {
+  if (!isKidsLobby && activeHall === "topics") {
+    const topicGames = gamesInHall().filter((game) => topicHeroGameIds.includes(game.id));
+    return topicGames.slice(0, limit);
+  }
   const playableGames = gamesInHall().filter((game) => game.status === "playable");
   if (!hasRealStats()) {
-    const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds : lobby.heroGameIds;
+    const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds
+      : !isKidsLobby && activeHall === "topics" ? topicHeroGameIds : lobby.heroGameIds;
     return heroIds.map((id) => playableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
   }
   return [...playableGames]
@@ -829,7 +855,9 @@ function upcomingPreviewGames(limit = Number.POSITIVE_INFINITY) {
   return allLobbyGames
     .filter((game) =>
       game.status === "planned"
-      && (isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id))
+      && (isKidsLobby
+        ? !generalGameIds.has(game.id) && !topicGameIds.has(game.id)
+        : generalGameIds.has(game.id))
       && gameMatchesHall(game)
       && (game.art?.background || game.art?.hero))
     .slice(0, limit);
@@ -1377,7 +1405,9 @@ function renderLobby(options = {}) {
   });
   shell.setAttribute('aria-busy', 'true');
   document.documentElement.classList.add('hall-content-motion');
-  const direction = activeHall === 'tabletop' ? 1 : -1;
+  const hallOrder = ["games", "tabletop", "topics"];
+  const previousHall = document.body.dataset.gameHall || "games";
+  const direction = hallOrder.indexOf(activeHall) >= hallOrder.indexOf(previousHall) ? 1 : -1;
   document.documentElement.dataset.hallMotionDirection = direction === 1 ? 'forward' : 'back';
   hallMotion = motion;
   document.body.dataset.hallTransitionTarget = activeHall;
@@ -1394,6 +1424,9 @@ function renderLobby(options = {}) {
     motion.transition = document.startViewTransition(() => {
       if (hallMotion === motion) motion.commit();
     });
+    // Rapid hall changes can skip snapshot preparation before `ready` settles.
+    // The transition is intentionally cancelled; consume that native rejection.
+    motion.transition.ready.catch(() => {});
     motion.transition.finished.then(finish, finish);
   } else {
     // Background starts immediately; only mutable content waits for its exit.
@@ -1438,7 +1471,7 @@ function renderLobbyContent({ historyMode = "replace" } = {}) {
   syncHallPresentation();
   renderCatalogDirectory();
   platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
-  platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : activeHall === 'tabletop' ? 'hall.tabletop_note' : "general.site.subtitle");
+  platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : activeHall === 'games' ? "general.site.subtitle" : `hall.${activeHall}_note`);
 
   const totalGameCount = gamesInHall().length;
   const lobbyVisitsTotal = Number(gameStats.totals?.lobbyVisitsTotal);
@@ -1521,12 +1554,15 @@ function discoveryCards(games, { popular = false } = {}) {
   return games
     .map((game, index) => {
       const isPlayable = game.status === "playable";
+      const isTopicPreview = !isKidsLobby && activeHall === "topics" && topicGameIds.has(game.id);
       const title = text(game.title);
       const type = text(game.type);
       const ageLabel = text(game.ageLabel);
       // Popular cards are ranked after unavailable games are filtered out, so
       // their visible Top 5 positions must stay consecutive.
       const rankText = popular ? i18n.t("stats.rank_label", { rank: index + 1 }) : "";
+      // Topic hall teasers are always buttons; planned topic games never become
+      // public anchors to their internal trial paths.
       const card = document.createElement(isPlayable ? "a" : "button");
       card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;
       card.dataset.discoveryGameId = game.id;
@@ -1542,7 +1578,7 @@ function discoveryCards(games, { popular = false } = {}) {
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
         </div>
         <div class="hero-game-copy">
-          ${popular && !isKidsLobby ? `<span class="hero-game-rank">${rankText}</span>` : ""}
+          ${isTopicPreview ? `<span class="topic-preview-label">${i18n.t("hall.topics_preview")}</span>` : popular && !isKidsLobby ? `<span class="hero-game-rank">${rankText}</span>` : ""}
           <strong data-runtime-localize="off">${title}</strong>
           <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
           ${popular ? `<em>${playCountText(game)}</em>` : ""}
@@ -2084,7 +2120,9 @@ function applyFilter({ historyMode = "replace" } = {}) {
 
   if (visibleCount === 0) {
     const emptyText =
-      activeLibrary === "favorites" ? i18n.t("status.no_favorites") : activeLibrary === "recent" ? i18n.t("status.no_recent") : i18n.t("status.no_games");
+      activeLibrary === "favorites" ? i18n.t("status.no_favorites")
+        : activeLibrary === "recent" ? i18n.t("status.no_recent")
+          : activeHall === "topics" && !isFiltered ? i18n.t("hall.topics_empty") : i18n.t("status.no_games");
     filterStatus.innerHTML = `
       <span>${emptyText}</span>
       ${isFiltered ? `<button type="button" data-clear-filters>${i18n.t("status.clear_filters")}</button>` : ""}
@@ -2125,7 +2163,8 @@ function applyStaticTranslations() {
   featuredLabel.textContent = i18n.t("site.featured");
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
-  heroGamesTitle.textContent = i18n.t("section.hero_games");
+  heroGamesTitle.textContent = i18n.t(activeHall === "topics" ? "hall.topics_games_title" : "section.hero_games");
+  heroRankLabel.hidden = activeHall === "topics";
   if (mobilePicksTitle) mobilePicksTitle.textContent = i18n.t("mobile_picks.title");
   if (mobilePicksReason) mobilePicksReason.textContent = i18n.t("mobile_picks.reason");
   if (upcomingGamesTitle) upcomingGamesTitle.textContent = i18n.t("upcoming.title");
@@ -2230,6 +2269,7 @@ function showPlannedGame(game) {
 }
 
 function internalTrialPath(game) {
+  if (topicGameIds.has(game?.id)) return "";
   if (!game.internalTrial) return "";
   if (typeof game.internalTrial === "string") return game.internalTrial;
   return "internal-test.html?trial=1";
@@ -2321,6 +2361,12 @@ hallButtons.forEach((button) => {
     window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("lobby_hall_switch", { lobby_hall: activeHall, locale: i18n.locale() });
     renderLobby();
+    // A compact destination hall can be much shorter than the previous one.
+    // Return its three-way switch and first cards to view after the layout settles.
+    window.requestAnimationFrame(() => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
   });
 });
 

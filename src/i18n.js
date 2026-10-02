@@ -1903,21 +1903,21 @@ const essentialLobbyCopy = {
   });
 
   const gameHallCopy = {
-    en: ["Game sections", "Game World", "Adventures, puzzles and action", "Cards & Board", "Solitaire, card and board games", "Choose a card or board game"],
-    "zh-Hant": ["遊戲館別", "遊戲世界", "冒險、益智與動作", "棋牌館", "接龍、紙牌與棋盤遊戲", "挑選一款棋牌遊戲"],
-    "zh-Hans": ["游戏馆别", "游戏世界", "冒险、益智与动作", "棋牌馆", "接龙、纸牌与棋盘游戏", "挑选一款棋牌游戏"],
-    ja: ["ゲームセクション", "ゲームワールド", "冒険・パズル・アクション", "カード＆ボード", "ソリティア・カード・ボードゲーム", "カードやボードゲームを選ぼう"],
-    ko: ["게임 구역", "게임 월드", "모험, 퍼즐, 액션", "카드 & 보드", "솔리테어, 카드, 보드게임", "카드나 보드게임을 골라 보세요"],
-    es: ["Secciones de juegos", "Mundo de juegos", "Aventuras, puzles y acción", "Cartas y mesa", "Solitarios, cartas y juegos de mesa", "Elige un juego de cartas o de mesa"],
-    "pt-BR": ["Seções de jogos", "Mundo dos jogos", "Aventuras, quebra-cabeças e ação", "Cartas e tabuleiro", "Paciência, cartas e jogos de tabuleiro", "Escolha um jogo de cartas ou tabuleiro"],
-    fr: ["Espaces de jeux", "Monde des jeux", "Aventures, puzzles et action", "Cartes et plateau", "Patiences, cartes et jeux de plateau", "Choisissez un jeu de cartes ou de plateau"],
-    de: ["Spielbereiche", "Spielewelt", "Abenteuer, Rätsel und Action", "Karten & Brett", "Solitär-, Karten- und Brettspiele", "Wähle ein Karten- oder Brettspiel"],
-    it: ["Sezioni di gioco", "Mondo dei giochi", "Avventure, puzzle e azione", "Carte e tavolo", "Solitari, carte e giochi da tavolo", "Scegli un gioco di carte o da tavolo"],
-    ru: ["Разделы игр", "Мир игр", "Приключения, головоломки и экшен", "Карты и доска", "Пасьянсы, карточные и настольные игры", "Выберите карточную или настольную игру"],
-    hi: ["गेम अनुभाग", "गेम वर्ल्ड", "रोमांच, पहेलियाँ और एक्शन", "कार्ड और बोर्ड", "सॉलिटेयर, कार्ड और बोर्ड गेम", "कार्ड या बोर्ड गेम चुनें"],
-    ar: ["أقسام الألعاب", "عالم الألعاب", "مغامرات وألغاز وأكشن", "البطاقات والطاولة", "سوليتير وبطاقات وألعاب طاولة", "اختر لعبة بطاقات أو لعبة طاولة"],
+    en: ["Game sections", "Game World", "Adventures, puzzles and action", "Cards & Board", "Solitaire, card and board games", "Choose a card or board game", "Hot Topics Playground", "Fresh ideas, playful twists", "Jump into a playful new idea", "No Hot Topics games are playable right now."],
+    "zh-Hant": ["遊戲館別", "遊戲世界", "冒險、益智與動作", "棋牌館", "接龍、紙牌與棋盤遊戲", "挑選一款棋牌遊戲", "熱梗遊樂場", "熱門靈感，趣味新玩法", "走進熱門靈感，玩點新花樣", "目前沒有可遊玩的熱梗遊戲。"],
+    "zh-Hans": ["游戏馆别", "游戏世界", "冒险、益智与动作", "棋牌馆", "接龙、纸牌与棋盘游戏", "挑选一款棋牌游戏", "热梗游乐场", "热门灵感，趣味新玩法", "走进热门灵感，玩点新花样", "目前没有可游玩的热梗游戏。"],
+    ja: ["ゲームセクション", "ゲームワールド", "冒険・パズル・アクション", "カード＆ボード", "ソリティア・カード・ボードゲーム", "カードやボードゲームを選ぼう", "話題のあそび場", "話題のアイデアを楽しくアレンジ", "話題のアイデアから新しい遊びを見つけよう", "現在プレイできる話題のゲームはありません。"],
+    ko: ["게임 구역", "게임 월드", "모험, 퍼즐, 액션", "카드 & 보드", "솔리테어, 카드, 보드게임", "카드나 보드게임을 골라 보세요", "핫토픽 놀이터", "요즘 아이디어로 즐기는 색다른 게임", "새로운 발상으로 즐겁게 시작해 보세요", "지금은 플레이할 수 있는 핫토픽 게임이 없어요."],
+    es: ["Secciones de juegos", "Mundo de juegos", "Aventuras, puzles y acción", "Cartas y mesa", "Solitarios, cartas y juegos de mesa", "Elige un juego de cartas o de mesa", "Patio de ideas populares", "Ideas actuales con un giro divertido", "Entra y prueba una idea diferente", "Ahora mismo no hay juegos de tendencias disponibles."],
+    "pt-BR": ["Seções de jogos", "Mundo dos jogos", "Aventuras, quebra-cabeças e ação", "Cartas e tabuleiro", "Paciência, cartas e jogos de tabuleiro", "Escolha um jogo de cartas ou tabuleiro", "Playground de tendências", "Ideias atuais com um toque divertido", "Entre e experimente uma nova ideia", "No momento, não há jogos de tendências disponíveis."],
+    fr: ["Espaces de jeux", "Monde des jeux", "Aventures, puzzles et action", "Cartes et plateau", "Patiences, cartes et jeux de plateau", "Choisissez un jeu de cartes ou de plateau", "Terrain de jeu des tendances", "Des idées du moment revisitées avec humour", "Entrez et découvrez une idée originale", "Aucun jeu tendance n’est jouable pour le moment."],
+    de: ["Spielbereiche", "Spielewelt", "Abenteuer, Rätsel und Action", "Karten & Brett", "Solitär-, Karten- und Brettspiele", "Wähle ein Karten- oder Brettspiel", "Trendthemen-Spielplatz", "Aktuelle Ideen mit verspieltem Dreh", "Entdecke eine neue spielerische Idee", "Im Moment sind keine Trendthemen-Spiele spielbar."],
+    it: ["Sezioni di gioco", "Mondo dei giochi", "Avventure, puzzle e azione", "Carte e tavolo", "Solitari, carte e giochi da tavolo", "Scegli un gioco di carte o da tavolo", "Parco delle idee del momento", "Spunti attuali con un tocco giocoso", "Entra e prova una nuova idea", "Al momento non ci sono giochi di tendenza disponibili."],
+    ru: ["Разделы игр", "Мир игр", "Приключения, головоломки и экшен", "Карты и доска", "Пасьянсы, карточные и настольные игры", "Выберите карточную или настольную игру", "Игровая площадка трендов", "Свежие идеи с игривым поворотом", "Попробуйте новую игровую идею", "Сейчас нет доступных игр на актуальные темы."],
+    hi: ["गेम अनुभाग", "गेम वर्ल्ड", "रोमांच, पहेलियाँ और एक्शन", "कार्ड और बोर्ड", "सॉलिटेयर, कार्ड और बोर्ड गेम", "कार्ड या बोर्ड गेम चुनें", "ट्रेंड्स का खेल का मैदान", "आज के विचारों में मज़ेदार नया मोड़", "एक नया मज़ेदार विचार आज़माएँ", "अभी खेलने के लिए कोई ट्रेंडिंग गेम उपलब्ध नहीं है।"],
+    ar: ["أقسام الألعاب", "عالم الألعاب", "مغامرات وألغاز وأكشن", "البطاقات والطاولة", "سوليتير وبطاقات وألعاب طاولة", "اختر لعبة بطاقات أو لعبة طاولة", "ساحة الأفكار الرائجة", "أفكار جديدة بلمسة مرحة", "اكتشف فكرة لعب جديدة", "لا توجد ألعاب رائجة قابلة للعب حاليًا."],
   };
-  Object.entries(gameHallCopy).forEach(([locale, [label, games, gamesNote, tabletop, tabletopNote, tabletopTitle]]) => {
+  Object.entries(gameHallCopy).forEach(([locale, [label, games, gamesNote, tabletop, tabletopNote, tabletopTitle, topics, topicsNote, topicsTitle, topicsEmpty]]) => {
     dictionaries[locale] = {
       ...(dictionaries[locale] || {}),
       "hall.label": label,
@@ -1926,7 +1926,34 @@ const essentialLobbyCopy = {
       "hall.tabletop": tabletop,
       "hall.tabletop_note": tabletopNote,
       "hall.tabletop_title": tabletopTitle,
+      "hall.topics": topics,
+      "hall.topics_note": topicsNote,
+      "hall.topics_title": topicsTitle,
+      "hall.topics_empty": topicsEmpty,
     };
+  });
+
+  const topicShortLabels = {
+    en: "Topics", "zh-Hant": "熱梗", "zh-Hans": "热梗", ja: "話題", ko: "화제",
+    es: "Temas", "pt-BR": "Temas", fr: "Tendances", de: "Themen", it: "Temi",
+    ru: "Темы", hi: "विषय", ar: "موضوعات",
+  };
+  Object.entries(topicShortLabels).forEach(([locale, label]) => {
+    dictionaries[locale]["hall.topics_short"] = label;
+  });
+
+  const topicPreviewCopy = {
+    en: ["Two Original Games", "Coming Soon"], "zh-Hant": ["兩款原創遊戲", "敬請期待"],
+    "zh-Hans": ["两款原创游戏", "敬请期待"], ja: ["オリジナルゲーム2本", "近日公開"],
+    ko: ["오리지널 게임 2종", "출시 예정"], es: ["Dos juegos originales", "Próximamente"],
+    "pt-BR": ["Dois jogos originais", "Em breve"], fr: ["Deux jeux originaux", "Bientôt"],
+    de: ["Zwei originelle Spiele", "Demnächst"], it: ["Due giochi originali", "Prossimamente"],
+    ru: ["Две оригинальные игры", "Скоро"], hi: ["दो मौलिक गेम", "जल्द"],
+    ar: ["لعبتان أصليتان", "قريبًا"],
+  };
+  Object.entries(topicPreviewCopy).forEach(([locale, [title, preview]]) => {
+    dictionaries[locale]["hall.topics_games_title"] = title;
+    dictionaries[locale]["hall.topics_preview"] = preview;
   });
 
   const extendedCategoryCopy = {

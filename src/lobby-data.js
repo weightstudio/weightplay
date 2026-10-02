@@ -69,6 +69,9 @@ window.WONDER_LOBBY = {
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
       "checkers", "tic-tac-toe", "peg-solitaire", "reversi", "four-in-a-row", "chess", "mahjong-solitaire",
     ],
+    // Third General hall: short, timely, original games. These IDs also stay in
+    // generalGameIds so the Kids catalog's non-General rule excludes them.
+    topicGameIds: ["traffic-jam-diner", "robot-dog-showtime"],
     // General games here do not award unrelated Block World materials.
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
@@ -7233,3 +7236,101 @@ window.WONDER_LOBBY.games.push({
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes("castle-cascade")) {
   window.WONDER_LOBBY.audiences.generalGameIds.push("castle-cascade");
 }
+
+// Owner-requested General production opening. Keep planned concepts internal
+// until their implementation and release gates are complete.
+const trafficJamDinerStatusText = {
+  __localizedExact: true,
+  en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
+  ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
+  de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+};
+const trafficJamDinerTitle = {
+  __localizedExact: true,
+  en: "Traffic Jam Diner", "zh-Hant": "交通塞車餐館", "zh-Hans": "交通堵塞餐馆",
+  ja: "渋滞ダイナー", ko: "교통 체증 다이너", es: "Comedor del atasco",
+  "pt-BR": "Lanchonete do Engarrafamento", fr: "Le Diner des Embouteillages",
+  de: "Stau-Diner", it: "La Tavola del Traffico", ru: "Закусочная в пробке",
+  hi: "ट्रैफिक डाइनर", ar: "مطعم الازدحام",
+};
+const trafficJamDinerType = {
+  __localizedExact: true,
+  en: "Animal Matching Puzzle", "zh-Hant": "動物配對益智", "zh-Hans": "动物配对益智",
+  ja: "動物マッチングパズル", ko: "동물 매칭 퍼즐", es: "Rompecabezas de parejas animales",
+  "pt-BR": "Quebra-cabeça de combinação animal", fr: "Puzzle d’association animale",
+  de: "Tierisches Zuordnungsspiel", it: "Puzzle di abbinamento animale",
+  ru: "Игра на подбор для зверят", hi: "पशु मिलान पहेली", ar: "لغز مطابقة الحيوانات",
+};
+const trafficJamDinerDescription = {
+  __localizedExact: true,
+  en: "Help friendly animal neighbors reach a tiny diner counter and match each guest to a favorite snack in a cozy, make-believe lane.",
+  "zh-Hant": "幫友善的動物鄰居排到小餐館櫃檯前，為每位客人配對最愛點心，在安全的想像車道裡享受溫馨時光。",
+  "zh-Hans": "帮助友善的动物邻居排到小餐馆柜台前，为每位客人配对最爱点心，在安全的想象车道里享受温馨时光。",
+  ja: "動物のお客さんを小さなダイナーのカウンターへ案内し、それぞれの大好きなおやつを選ぶ、やさしい想像のレーンゲームです。",
+  ko: "친근한 동물 이웃을 작은 식당 카운터로 안내하고 각 손님이 좋아하는 간식을 맞추는 포근한 상상 속 레인 게임이에요.",
+  es: "Guía a vecinos animales hasta el mostrador de un pequeño comedor y combina a cada cliente con su tentempié favorito en una tranquila calle imaginaria.",
+  "pt-BR": "Ajude os vizinhos animais a chegar ao balcão de uma lanchonete e combine cada cliente com seu lanche favorito em uma ruazinha de faz de conta.",
+  fr: "Guide les voisins animaux jusqu’au comptoir d’un petit diner et associe chaque visiteur à son goûter préféré dans une ruelle imaginaire et paisible.",
+  de: "Begleite tierische Nachbarn zum Tresen eines kleinen Diners und finde für jeden Gast den Lieblingssnack in einer gemütlichen Fantasiegasse.",
+  it: "Accompagna i vicini animali al bancone di una piccola tavola e abbina a ogni ospite il suo snack preferito in una tranquilla strada immaginaria.",
+  ru: "Помоги дружелюбным зверятам добраться до стойки маленького кафе и подбери каждому любимое угощение на уютной сказочной улочке.",
+  hi: "प्यारे पशु पड़ोसियों को छोटे डाइनर के काउंटर तक पहुँचाएँ और शांत काल्पनिक गली में हर मेहमान का पसंदीदा नाश्ता मिलाएँ।",
+  ar: "ساعد جيرانك من الحيوانات الودودة على الوصول إلى طاولة المطعم الصغير، وطابق كل ضيف مع وجبته الخفيفة المفضلة في ممر خيالي هادئ.",
+};
+window.WONDER_LOBBY.games.push({
+  id: "traffic-jam-diner", audience: "general", status: "planned", internalOnly: true,
+  title: trafficJamDinerTitle, statusText: trafficJamDinerStatusText, type: trafficJamDinerType,
+  categories: ["Puzzle", "Casual", "Animal Games"],
+  skills: ["Attention", "Pattern Recognition", "Planning"],
+  ages: ["8", "family"], ageTags: ["8", "family"], ageLabel: "8+",
+  recommendedAge: "8+", difficulty: "Easy", estimatedPlayTime: "1-2 minutes",
+  description: trafficJamDinerDescription, href: "games/traffic-jam-diner/",
+  art: { kind: "image", background: "/games/traffic-jam-diner/poster.svg", hideHero: true },
+  meta: { en: ["Animal Neighbors", "Snack Matching"], "zh-Hant": ["動物鄰居", "點心配對"] },
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("traffic-jam-diner");
+
+const robotDogShowtimeTitle = {
+  __localizedExact: true,
+  en: "Robot Dog Showtime", "zh-Hant": "機器狗才藝秀", "zh-Hans": "机器狗才艺秀",
+  ja: "ロボット犬のショータイム", ko: "로봇 강아지 쇼타임", es: "El espectáculo del perro robot",
+  "pt-BR": "Show do Cão Robô", fr: "Le Spectacle du Chien Robot",
+  de: "Die Robot-Hundeshow", it: "Lo Show del Cane Robot", ru: "Шоу робопса",
+  hi: "रोबोट कुत्ते का शो", ar: "عرض الكلب الآلي",
+};
+const robotDogShowtimeType = {
+  __localizedExact: true,
+  en: "Rhythm & Memory Show", "zh-Hant": "節奏記憶表演", "zh-Hans": "节奏记忆表演",
+  ja: "リズムと記憶のショー", ko: "리듬·기억 쇼", es: "Espectáculo de ritmo y memoria",
+  "pt-BR": "Show de ritmo e memória", fr: "Spectacle de rythme et mémoire",
+  de: "Rhythmus- und Gedächtnisshow", it: "Show di ritmo e memoria",
+  ru: "Шоу ритма и памяти", hi: "लय और स्मृति शो", ar: "عرض الإيقاع والذاكرة",
+};
+const robotDogShowtimeDescription = {
+  __localizedExact: true,
+  en: "Help a friendly robot pup learn short light, sound, and movement patterns, then cheer for its playful animal-friends show.",
+  "zh-Hant": "陪伴友善的機器狗記住簡短的燈光、聲音與動作節奏，再為牠和動物朋友們的趣味演出喝采。",
+  "zh-Hans": "陪伴友善的机器狗记住简短的灯光、声音与动作节奏，再为它和动物朋友们的趣味演出喝彩。",
+  ja: "やさしいロボット犬と一緒に、光や音、動きの短いパターンを覚えて、動物の仲間たちとの楽しいショーを応援しましょう。",
+  ko: "친근한 로봇 강아지와 함께 짧은 빛·소리·동작 패턴을 기억하고 동물 친구들과 펼치는 즐거운 공연을 응원해요.",
+  es: "Ayuda a un simpático cachorro robot a recordar breves secuencias de luces, sonidos y movimientos, y disfruta su divertido show con amigos animales.",
+  "pt-BR": "Ajude um simpático cão robô a memorizar sequências curtas de luzes, sons e movimentos e curta seu show divertido com amigos animais.",
+  fr: "Aide un gentil chiot robot à retenir de courtes séquences de lumières, de sons et de mouvements, puis encourage son spectacle avec ses amis animaux.",
+  de: "Hilf einem freundlichen Roboterwelpen, kurze Licht-, Klang- und Bewegungsmuster zu merken, und jubelt gemeinsam bei seiner Tiershow.",
+  it: "Aiuta un tenero cucciolo robot a ricordare brevi sequenze di luci, suoni e movimenti, poi fai il tifo per il suo spettacolo con gli amici animali.",
+  ru: "Помоги дружелюбному робопсу запомнить короткие последовательности света, звуков и движений и поддержи его весёлое шоу с друзьями-зверятами.",
+  hi: "प्यारे रोबोट पपी को रोशनी, ध्वनि और गतिविधि के छोटे क्रम याद करने में मदद करें, फिर उसके पशु-मित्रों वाले मज़ेदार शो का आनंद लें।",
+  ar: "ساعد جروًا آليًا ودودًا على تذكّر أنماط قصيرة من الأضواء والأصوات والحركات، ثم شجّع عرضه المرح مع أصدقائه من الحيوانات.",
+};
+window.WONDER_LOBBY.games.push({
+  id: "robot-dog-showtime", audience: "general", status: "planned", internalOnly: true,
+  title: robotDogShowtimeTitle, statusText: trafficJamDinerStatusText, type: robotDogShowtimeType,
+  categories: ["Puzzle", "Music", "Animal Games"],
+  skills: ["Working Memory", "Pattern Recognition", "Timing"],
+  ages: ["8", "family"], ageTags: ["8", "family"], ageLabel: "8+",
+  recommendedAge: "8+", difficulty: "Easy", estimatedPlayTime: "1-3 minutes",
+  description: robotDogShowtimeDescription, href: "games/robot-dog-showtime/",
+  art: { kind: "image", background: "/games/robot-dog-showtime/poster.svg", hideHero: true },
+  meta: { en: ["Robot Pup", "Rhythm & Memory"], "zh-Hant": ["機器狗", "節奏與記憶"] },
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("robot-dog-showtime");
