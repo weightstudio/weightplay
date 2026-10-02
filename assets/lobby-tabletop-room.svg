@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="480" viewBox="0 0 1440 480">
   <defs>
-    <linearGradient id="room" x2="0" y2="1"><stop stop-color="#08111d"/><stop offset="1" stop-color="#142433"/></linearGradient>
+    <linearGradient id="room" x2="0" y2="1"><stop stop-color="#0b1640"/><stop offset="1" stop-color="#243769"/></linearGradient>
     <radialGradient id="light"><stop stop-color="#ffcc78" stop-opacity=".45"/><stop offset="1" stop-color="#c88030" stop-opacity="0"/></radialGradient>
     <linearGradient id="gold"><stop stop-color="#fae2aa"/><stop offset=".25" stop-color="#ad722e"/><stop offset=".5" stop-color="#ffe7a3"/><stop offset=".75" stop-color="#815023"/><stop offset="1" stop-color="#efc573"/></linearGradient>
     <linearGradient id="paper" x2="0" y2="1"><stop stop-color="#fff0cc"/><stop offset="1" stop-color="#bca47e"/></linearGradient>
     <pattern id="shelf" width="210" height="230" patternUnits="userSpaceOnUse"><path d="M10 0v220h190V0M10 170h190" fill="none" stroke="#c99852" stroke-opacity=".18" stroke-width="7"/><path d="M30 65h14v100H30zm25-15h12v115H55zm23 25h20v90H78zm30-35h14v125h-14z" fill="#93734d" opacity=".13"/></pattern>
-    <pattern id="board" width="160" height="160" patternUnits="userSpaceOnUse"><path d="M0 0h80v80H0zm80 80h80v80H80z" fill="#b49a6c"/><path d="M80 0h80v80H80zM0 80h80v80H0z" fill="#122130"/></pattern>
+    <pattern id="board" width="160" height="160" patternUnits="userSpaceOnUse"><path d="M0 0h80v80H0zm80 80h80v80H80z" fill="#b49a6c"/><path d="M80 0h80v80H80zM0 80h80v80H0z" fill="#16294e"/></pattern>
     <g id="lamp"><path d="M0 0v82" stroke="#b59057" stroke-width="4"/><path d="m-32 128 14-47h36l14 47Z" fill="url(#gold)"/><path d="m-23 122 10-34h26l10 34Z" fill="#ffdc8c"/><ellipse cy="135" rx="39" ry="7" fill="#9a6a37"/></g>
     <g id="spade"><path d="M0-30C-9-18-27-8-27 7c0 16 18 20 27 7 9 13 27 9 27-7C27-8 9-18 0-30Z"/><path d="M-8 32h16L0 10Z"/></g>
   </defs>

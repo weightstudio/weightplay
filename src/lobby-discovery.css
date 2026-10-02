@@ -306,9 +306,9 @@ body.general-lobby-page {
   --lobby-arcade-active: #2c705d;
   --lobby-arcade-shadow: #061820;
   --lobby-arcade-background-image: url('../assets/lobby-block-atmosphere.svg');
-  --lobby-tabletop-background: #14181b;
-  --lobby-tabletop-background-image: url('../assets/lobby-tabletop-atmosphere.svg');
-  --lobby-tabletop-light: radial-gradient(ellipse at 72% 0, #36342f 0, #202529 32%, #14181b 75%);
+  --lobby-tabletop-background: #0b1230;
+  --lobby-tabletop-background-image: url('../assets/lobby-tabletop-atmosphere.svg?v=20261002-blue-indigo');
+  --lobby-tabletop-light: radial-gradient(ellipse at 72% 0, #332963 0, #172e5a 32%, #0b1230 75%);
   color-scheme: dark;
   background-color: var(--lobby-arcade-background);
   background-image: var(--lobby-arcade-background-image), radial-gradient(ellipse at 50% 0, #204d4c 0, var(--lobby-arcade-background) 70%);
@@ -345,8 +345,8 @@ body.general-lobby-page .lobby-hero::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:linear-gradient(90deg,#171b1ef2,#202529cc 24%,#171b1e22 69%),#171b1e url('../assets/lobby-tabletop-room.svg') 70% center / cover no-repeat;
-  filter: saturate(.35) brightness(.78);
+  background:linear-gradient(90deg,#0b1439f2,#19295db8 24%,#1726510d 69%),#101c42 url('../assets/lobby-tabletop-room.svg?v=20261002-blue-indigo') 70% center / cover no-repeat;
+  filter: saturate(1.08) brightness(1.03);
   opacity: 0;
   transition: opacity 1s cubic-bezier(.4, 0, .2, 1);
 }
@@ -386,7 +386,7 @@ body.general-lobby-page .game-hall-switch button:active { transform: translateY(
 body.general-lobby-page .game-hall-switch small { color: var(--hall-muted, #aec9c6); }
 body.general-lobby-page .game-hall-switch button.active small { color: var(--hall-text, #d6f0d3); }
 body.general-lobby-page .game-hall-switch button::before { content: ""; width: 26px; height: 30px; top: 19px; background: url('../Assets/weightplay-block-cube-v1.svg?v=20260929-shared-cube-cache-v2') center / contain no-repeat; }
-body.general-lobby-page .game-hall-switch button[data-hall-tab="tabletop"]::before { content: ""; height: 26px; top: 21px; background: conic-gradient(var(--hall-action, #f7d69c) 25%,var(--hall-selected, #846044) 0 50%,var(--hall-action, #f7d69c) 0 75%,var(--hall-selected, #846044) 0) 0 0 / 13px 13px; clip-path: none; border: 2px solid var(--hall-selected-edge, #f1be68); box-shadow: 2px 3px 0 var(--hall-shadow, #0b202a); }
+body.general-lobby-page .game-hall-switch button[data-hall-tab="tabletop"]::before { content: ""; height: 26px; top: 21px; background: conic-gradient(var(--hall-action, #f7d69c) 25%,var(--hall-icon-contrast, var(--hall-selected, #846044)) 0 50%,var(--hall-action, #f7d69c) 0 75%,var(--hall-icon-contrast, var(--hall-selected, #846044)) 0) 0 0 / 13px 13px; clip-path: none; border: 2px solid var(--hall-selected-edge, #f1be68); box-shadow: 2px 3px 0 var(--hall-shadow, #0b202a); }
 
 body.general-lobby-page .lobby-search-row { margin-bottom: 17px; }
 body.general-lobby-page .lobby-search input { border: 2px solid var(--hall-border, #4c747a); border-radius: 2px; background: var(--hall-surface, #0d2935); color: var(--hall-text, #eef4df); box-shadow: inset 0 3px 0 var(--hall-shadow, #061b25); }
@@ -400,8 +400,8 @@ body.general-lobby-page .vibe-options { padding-bottom: 8px; scrollbar-color: va
 body.general-lobby-page .vibe-options button { border: 2px solid var(--hall-border, #45646b); border-radius: 2px; background: var(--hall-surface, #1b3b46); color: var(--hall-text, #c9ded2); box-shadow: 0 3px 0 var(--hall-shadow, #061923); }
 body.general-lobby-page .vibe-options button.active { border-color: var(--hall-selected-edge, #f0ca76); background: var(--hall-selected, #655638); color: var(--hall-text, #fff0ba); box-shadow: inset 0 2px 0 var(--hall-edge, #9c824a), 0 3px 0 var(--hall-shadow, #09202a); }
 body.general-lobby-page #filterStatus.results-active { border: 2px solid var(--hall-border, #47777b); border-radius: 2px; background: var(--hall-surface, #14333e); box-shadow: 0 4px 0 var(--hall-shadow, #061d27); color: var(--hall-text, #f3f3d9); }
-body.general-lobby-page .filter-status-chips span { border: 1px solid var(--hall-border, #6aa68e); border-radius: 2px; background: var(--hall-selected, #244d48); color: var(--hall-text, #d7f1d4); }
-body.general-lobby-page #filterStatus button { border: 2px solid var(--hall-border, #9bb994); border-radius: 2px; background: var(--hall-selected, #3c735c); color: var(--hall-text, #fff1cc); }
+body.general-lobby-page .filter-status-chips span { border: 1px solid var(--hall-border, #6aa68e); border-radius: 2px; background: var(--hall-selected, #244d48); color: var(--hall-selected-ink, var(--hall-text, #d7f1d4)); }
+body.general-lobby-page #filterStatus button { border: 2px solid var(--hall-border, #9bb994); border-radius: 2px; background: var(--hall-selected, #3c735c); color: var(--hall-selected-ink, var(--hall-text, #fff1cc)); }
 
 /* Framed game shelves: the artwork stays complete, with readable title plates. */
 body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading { min-height: 40px; border-bottom: 2px solid var(--hall-border, #375d62); padding-bottom: 8px; }
@@ -592,13 +592,14 @@ body.general-lobby-page[data-hall-transition-target="games"] .lobby-hero::before
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
 }
 
-/* Matte graphite/champagne semantics. Unset in Block World so its existing
+/* Blue/indigo with warm-gold selection semantics. Unset in Block World so its existing
    authored colors remain exact; destination intent starts the shared fade. */
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) {
-  --hall-text:#ebe8df; --hall-muted:#b6b8b5; --hall-accent:#d1bd97;
-  --hall-border:#51565a; --hall-surface:#24282c; --hall-surface-deep:#171b1e;
-  --hall-selected:#4b4841; --hall-selected-edge:#b7a786;
-  --hall-shadow:#0b0e10; --hall-edge:#60615e; --hall-action:#b7a684;
+  --hall-text:#edf3ff; --hall-muted:#bbc9ed; --hall-accent:#ffda8f;
+  --hall-border:#6d85d7; --hall-surface:#203a72; --hall-surface-deep:#101b3b;
+  --hall-selected:#deb564; --hall-selected-edge:#ffdc92; --hall-selected-ink:#182342;
+  --hall-shadow:#070d25; --hall-edge:#637dde; --hall-action:#f5c76d;
+  --hall-hover:#304d8e; --hall-icon-contrast:#223668;
   --lobby-ink:var(--hall-text); --lobby-muted:var(--hall-muted);
   --lobby-line:var(--hall-border); --lobby-paper:var(--hall-surface);
   --lobby-accent:var(--hall-accent); --lobby-arcade-surface:var(--hall-surface);
@@ -609,7 +610,7 @@ body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition
   --lobby-frame-text:var(--hall-text); --lobby-frame-muted:var(--hall-muted);
   --lobby-frame-gold:var(--hall-accent); --lobby-frame-active:var(--hall-selected);
   --lobby-frame-highlight:var(--hall-edge); --lobby-frame-shadow:var(--hall-shadow);
-  --lobby-frame-header-shade:linear-gradient(#34383a,#24282c);
+  --lobby-frame-header-shade:linear-gradient(#344f91,#203a72);
 }
 body.general-lobby-page :is(button,input,select,.library-tabs,.hero-game-copy,.game-card-body,.section-heading,.catalog-heading,.catalog-jump,.brand-byline,.filter-count,.lobby-kids-gateway,.daily-day,.continue-playing-card,.general-trust-strip,.publisher-story,.site-footer,.site-footer a) {
   transition-property:background-color,border-color,color,box-shadow,outline-color;
@@ -619,7 +620,7 @@ body.general-lobby-page :is(button,input,select,.library-tabs,.hero-game-copy,.g
 body.general-lobby-page :is(button,input,select,summary,a):focus-visible { outline-color:var(--hall-selected-edge,#bd721b); }
 body.general-lobby-page .quick-pick-btn { color:var(--hall-action-ink,#322a17); }
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) {
-  --hall-action-ink:#1d2022;
+  --hall-action-ink:#142344;
 }
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .game-card-body { background:var(--hall-surface); border-color:var(--hall-border); }
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .game-card :is(h2,.game-description) { color:var(--hall-text); }
@@ -655,3 +656,28 @@ body.general-lobby-page :is(.lobby-topbar h1,.hero-eyebrow,.lobby-hero-copy h2,.
   body.general-lobby-page .lobby-hero::after,
   body.general-lobby-page :is(.lobby-topbar h1,.hero-eyebrow,.lobby-hero-copy h2,.lobby-subtitle,.section-heading h2,.section-heading span,.catalog-heading h2,.hero-game-copy strong,.hero-game-copy small,.game-hall-switch small) { transition:none; }
 }
+
+/* Color signals availability; muted disabled controls are deliberately separate.
+   Properties use the shared one-second fade, including interrupted reversals. */
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) :is(.game-hall-switch,.library-tabs,.vibe-options,.desktop-filter-rail) button.active {
+  color:var(--hall-selected-ink);
+}
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .game-hall-switch button.active small { color:var(--hall-selected-ink); }
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .desktop-filter-rail :is(.library-tabs,.topic-filter,.skill-filter,.availability-filter) button.active { color:var(--hall-selected-ink); }
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) :is(.game-hall-switch,.library-tabs,.vibe-options,.desktop-filter-rail) button:not(.active):not(:disabled):not([aria-disabled="true"]):is(:hover,:focus-visible) {
+  background-color:var(--hall-hover); border-color:#b3b2ff; color:var(--hall-text);
+}
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) :is(button,a,input,select):focus-visible { outline-color:var(--hall-selected-edge); }
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) :is(.game-hall-switch,.library-tabs,.vibe-options,.desktop-filter-rail,.lobby-settings-popover) button:is(:disabled,[aria-disabled="true"]),
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .quick-pick-btn:is(:disabled,[aria-disabled="true"]) {
+  background-color:#252c42; border-color:#566078; color:#aab2c6;
+  box-shadow:none; cursor:not-allowed; filter:none;
+}
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .quick-pick-btn:not(:disabled):hover { background-color:#ffdb91; }
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-settings-button:not(:disabled):is(:hover,:focus-visible) { background-color:var(--hall-hover); }
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) :is(.lobby-kids-gateway,.daily-day.claimable),
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-kids-gateway :is(span,strong),
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .continue-playing-card:is(:hover,:focus,:active),
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .continue-playing-card:is(:hover,:focus,:active) :is(strong,small),
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-sound-toggle[aria-checked="true"],
+body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-sound-toggle[aria-checked="true"] .lobby-sound-state { color:var(--hall-selected-ink); }

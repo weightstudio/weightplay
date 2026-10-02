@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" fill="none">
   <defs>
-    <pattern id="metal" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 1h4" stroke="#e0dfd8" stroke-opacity=".015"/><path d="M0 3h4" stroke="#000" stroke-opacity=".09"/></pattern>
-    <pattern id="board" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M0 0h48v48H0zm48 48h48v48H48z" fill="#c79a55" opacity=".025"/><path d="M96 0H0v96" stroke="#bc995f" stroke-opacity=".035"/></pattern>
-    <radialGradient id="lamp"><stop stop-color="#f5be61" stop-opacity=".1"/><stop offset="1" stop-color="#e4ac52" stop-opacity="0"/></radialGradient>
+    <pattern id="metal" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 1h4" stroke="#b8c4ff" stroke-opacity=".015"/><path d="M0 3h4" stroke="#000" stroke-opacity=".09"/></pattern>
+    <pattern id="board" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M0 0h48v48H0zm48 48h48v48H48z" fill="#748bff" opacity=".025"/><path d="M96 0H0v96" stroke="#93a4ff" stroke-opacity=".035"/></pattern>
+    <radialGradient id="lamp"><stop stop-color="#ad96ff" stop-opacity=".18"/><stop offset="1" stop-color="#7761c7" stop-opacity="0"/></radialGradient>
     <g id="spade"><path d="M0-28C-8-17-25-8-25 5c0 16 18 18 25 7 7 11 25 9 25-7C25-8 8-17 0-28Z"/><path d="M-7 27h14L0 9Z"/></g>
     <g id="diamond"><path d="m0-26 17 26-17 26L-17 0Z"/></g>
   </defs>
