@@ -1,5 +1,9 @@
+// BEGIN generated from src/lobby-data.js audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs
+if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire"]);
+// END generated tabletop classification
+
 window.WONDER_SITE = {
-  version: "v0.36.91",
+  version: "v0.36.92",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
@@ -7,6 +11,7 @@ window.WONDER_SITE = {
     plannedLocales: [],
     useLocaleRoutes: true,
   },
+  isTabletopGameId(gameId) { return window.__weightPlayTabletopGameIds?.has(String(gameId || "").trim()) === true; },
   gameIdFromPath(pathname = location.pathname) {
     const match = String(pathname).match(/(?:^|\/)games\/([^/]+)/i);
     return match?.[1] || "";
