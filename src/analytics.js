@@ -72,20 +72,371 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     if ((typeof stageId === "string" || typeof stageId === "number") && String(stageId).trim()) rememberStageId(params);
     else if (name === "game_start" && !params.tracking_version) { activeStageId = null; pendingStageId = null; }
   }
+  // Domain-separated, local-only collections. A completion reaches exactly
+  // one domain through a canonical lobby launch marker; no collection balance
+  // can be exchanged with the Block World store or the global wallet.
+  const collectionDomainConfig = {
+    tabletop: { key: "weightplayTabletopCollectionV1", version: 1, fresh: () => ({ version: 1, eventIds: [], eventGames: [], equipped: {} }) },
+    kids: { key: "weightplayKidsStickerAlbumV1", version: 1, fresh: () => ({ version: 1, eventIds: [], eventGames: [], layout: { pages: [{ pageId: "meadow", stickers: [], decorationId: null }, { pageId: "stars", stickers: [], decorationId: null }] } }) },
+  };
+  const collectionModules = new Map();
+  const collectionStrings = {
+    en: { tabletop: "Open tabletop collection", kids: "Open animal sticker album", notice: "Collection progress saved. Open your collection to see what is new." },
+    "zh-Hant": { tabletop: "打開棋室收藏櫃", kids: "打開動物貼紙冊", notice: "收藏進度已儲存，打開收藏查看新內容。" },
+    "zh-Hans": { tabletop: "打开棋室收藏柜", kids: "打开动物贴纸册", notice: "收藏进度已保存，打开收藏查看新内容。" },
+    ja: { tabletop: "テーブルゲームのコレクション", kids: "どうぶつシールアルバムを開く", notice: "コレクションの進行状況を保存しました。新しい内容を確認しましょう。" },
+    ko: { tabletop: "테이블 게임 컬렉션 열기", kids: "동물 스티커 앨범 열기", notice: "수집 진행 상황을 저장했어요. 새 항목을 확인해 보세요." },
+    es: { tabletop: "Abrir colección de mesa", kids: "Abrir álbum de pegatinas", notice: "Progreso guardado. Abre tu colección para ver las novedades." },
+    "pt-BR": { tabletop: "Abrir coleção de mesa", kids: "Abrir álbum de adesivos", notice: "Progresso salvo. Abra a coleção para ver as novidades." },
+    fr: { tabletop: "Ouvrir la collection de table", kids: "Ouvrir l’album d’autocollants", notice: "Progression enregistrée. Ouvrez votre collection pour voir les nouveautés." },
+    de: { tabletop: "Tischspiel-Sammlung öffnen", kids: "Tierstickeralbum öffnen", notice: "Fortschritt gespeichert. Öffne deine Sammlung für Neuigkeiten." },
+    it: { tabletop: "Apri la collezione da tavolo", kids: "Apri l’album di adesivi", notice: "Progressi salvati. Apri la collezione per vedere le novità." },
+    ru: { tabletop: "Открыть коллекцию настольных игр", kids: "Открыть альбом с наклейками", notice: "Прогресс сохранён. Откройте коллекцию, чтобы увидеть новое." },
+    hi: { tabletop: "टेबलटॉप संग्रह खोलें", kids: "जानवरों का स्टिकर एल्बम खोलें", notice: "प्रगति सहेजी गई। नया देखने के लिए संग्रह खोलें।" },
+    ar: { tabletop: "افتح مجموعة ألعاب الطاولة", kids: "افتح ألبوم ملصقات الحيوانات", notice: "حُفظ التقدم. افتح المجموعة لرؤية الجديد." },
+  };
+  const collectionLocale = () => {
+    const value = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || document.documentElement.lang || "en";
+    if (collectionStrings[value]) return value;
+    const lower = String(value).toLowerCase();
+    return lower.startsWith("zh") ? (lower.includes("hans") || lower.includes("cn") ? "zh-Hans" : "zh-Hant") : lower.startsWith("pt") ? "pt-BR" : collectionStrings[lower] ? lower : "en";
+  };
+  function emptyCollection(domain) { return collectionDomainConfig[domain].fresh(); }
+  function readCollection(domain) {
+    const spec = collectionDomainConfig[domain];
+    try {
+      const value = JSON.parse(localStorage.getItem(spec.key) || "null");
+      if (!value || value.version !== spec.version || !Array.isArray(value.eventIds) || !Array.isArray(value.eventGames)) return emptyCollection(domain);
+      const state = { ...emptyCollection(domain), ...value, version: spec.version };
+      state.eventIds = [...new Set(value.eventIds.filter(x => typeof x === "string" && x.length <= 192))].slice(-256);
+      state.eventGames = [...new Set(value.eventGames.filter(x => typeof x === "string" && /^[a-z0-9][a-z0-9-]{0,63}$/i.test(x)))].slice(0, 256);
+      if (domain === "tabletop") state.equipped = value.equipped && typeof value.equipped === "object" ? value.equipped : {};
+      if (domain === "kids") state.layout = normalizeAlbumLayout(value.layout);
+      return state;
+    } catch { return emptyCollection(domain); }
+  }
+  function normalizeAlbumLayout(value) {
+    const source = value && Array.isArray(value.pages) ? value.pages : [];
+    const defaults = collectionDomainConfig.kids.fresh().layout.pages;
+    const pages = defaults.map((fallback, index) => {
+      const page = source.find(item => item?.pageId === fallback.pageId) || source[index] || fallback;
+      const stickers = Array.isArray(page?.stickers) ? page.stickers.slice(0, 5).filter(sticker =>
+        typeof sticker?.itemId === "string" && /^kids:sticker:[a-z0-9-]{1,48}$/.test(sticker.itemId))
+        .map(sticker => ({ itemId: sticker.itemId, x: Math.max(5, Math.min(95, Number(sticker.x) || 50)), y: Math.max(10, Math.min(88, Number(sticker.y) || 50)), rotation: Math.max(-20, Math.min(20, Number(sticker.rotation) || 0)) })) : [];
+      return { pageId: fallback.pageId, stickers, decorationId: ["kids:decor:stars", "kids:decor:meadow"].includes(page?.decorationId) ? page.decorationId : null };
+    });
+    return { pages };
+  }
+  async function withCollectionLock(domain, action) {
+    const lockName = `weightplay-collection-${domain}-v1`;
+    if (navigator.locks?.request) return navigator.locks.request(lockName, action);
+    const lockKey = "weightplayCollectionTxnLockV1", token = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    let acquired = false;
+    for (let attempt = 0; attempt < 90; attempt += 1) {
+      try {
+        const current = JSON.parse(localStorage.getItem(lockKey) || "null");
+        if (!current || Number(current.expires) < Date.now()) {
+          localStorage.setItem(lockKey, JSON.stringify({ token, domain, expires: Date.now() + 4000 }));
+          acquired = JSON.parse(localStorage.getItem(lockKey) || "null")?.token === token;
+          if (acquired) break;
+        }
+      } catch { throw new Error("collection-storage-unavailable"); }
+      await new Promise(resolve => setTimeout(resolve, 18 + Math.floor(Math.random() * 24)));
+    }
+    if (!acquired) throw new Error("collection-lock-timeout");
+    try { return await action(); }
+    finally { try { if (JSON.parse(localStorage.getItem(lockKey) || "null")?.token === token) localStorage.removeItem(lockKey); } catch { /* Keep saved collection state; stale lease expires. */ } }
+  }
+  function unlockedCollectionIds(domain, state = readCollection(domain)) {
+    const module = collectionModules.get(domain), count = state.eventGames.length;
+    return module ? module.items.filter(item => item.unlock?.kind === "uniqueGames" && count >= Number(item.unlock.count)).map(item => item.id) : [];
+  }
+  async function writeCollection(domain, mutate) {
+    return withCollectionLock(domain, async () => {
+      const spec = collectionDomainConfig[domain];
+      const state = readCollection(domain);
+      const outcome = mutate(state);
+      if (outcome === false) return false;
+      try { localStorage.setItem(spec.key, JSON.stringify(state)); }
+      catch { return false; }
+      window.dispatchEvent(new CustomEvent("WeightPlayCollectionsUpdated", { detail: { domain } }));
+      return state;
+    });
+  }
+  function registerCollectionModule(module) {
+    if (!module || !collectionDomainConfig[module.id] || !Array.isArray(module.items) || typeof module.render !== "function") return false;
+    if (module.items.some(item => !item.id?.startsWith(`${module.id}:`) || item.unlock?.kind !== "uniqueGames" || !Number.isInteger(Number(item.unlock.count)))) return false;
+    collectionModules.set(module.id, module);
+    ensureCollectionLauncher();
+    window.dispatchEvent(new Event("WeightPlayCollectionsReady"));
+    return true;
+  }
+  const collectionScriptPromises = new Map();
+  function ensureCollectionModule(domain) {
+    if (collectionModules.has(domain)) return Promise.resolve(collectionModules.get(domain));
+    if (!collectionDomainConfig[domain]) return Promise.resolve(null);
+    if (collectionScriptPromises.has(domain)) return collectionScriptPromises.get(domain);
+    const promise = new Promise(resolve => {
+      const script = document.createElement("script");
+      script.src = `/src/${domain === "kids" ? "kids-collection" : "tabletop-collection"}.js?v=20261002-collections-v2`;
+      script.async = true; script.dataset.weightplayCollectionModule = domain;
+      script.onload = () => resolve(collectionModules.get(domain) || null);
+      script.onerror = () => resolve(null);
+      document.head.append(script);
+    });
+    collectionScriptPromises.set(domain, promise);
+    return promise;
+  }
+  function currentLobbyDomain() {
+    if (!document.body?.classList.contains("lobby-page")) return null;
+    // The topic discovery hall is deliberately outside both collection domains.
+    if (document.body.dataset.gameHall === "topics") return null;
+    return document.body.dataset.audience === "kids" ? "kids" : document.body.dataset.audience === "general" ? "tabletop" : null;
+  }
+  function publicLobbyGame(id) {
+    const lobby = window.WONDER_LOBBY, game = lobby?.games?.find(value => value?.id === id);
+    return Boolean(game && game.status === "playable" && !game.internalOnly);
+  }
+  function topicGameIds() {
+    const lobby = window.WONDER_LOBBY;
+    return new Set(lobby?.audiences?.topicGameIds || lobby?.topicGameIds || []);
+  }
+  function hallAtLaunch(surface, gameId) {
+    if (topicGameIds().has(gameId)) return "topic";
+    const topicSurface = surface?.closest?.('[data-topic-hall], [data-hall="topic"], [data-hall-tab="topic"], [data-hall-tab="topics"], [data-hall="topics"], [data-topic-game], .topic-hall, .hot-meme-hall');
+    if (topicSurface) return "topic";
+    const lobby = window.WONDER_LOBBY;
+    const general = new Set(lobby?.audiences?.generalGameIds || []);
+    const tabletop = new Set(lobby?.audiences?.tabletopGameIds || []);
+    if (document.body.dataset.audience === "kids") return publicLobbyGame(gameId) && !general.has(gameId) && !tabletop.has(gameId) ? "kids" : "ineligible";
+    if (!publicLobbyGame(gameId) || !general.has(gameId)) return "ineligible";
+    return tabletop.has(gameId) ? "tabletop" : "general";
+  }
+  function recordLobbyLaunch(event) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const anchor = event.target.closest?.('a[href*="/games/"]');
+    const card = event.target.closest?.('#gameGrid > [data-game-id]');
+    const grid = document.querySelector("#gameGrid");
+    const surface = card || anchor?.closest?.('#gameGrid > [data-game-id]');
+    if (!grid || !(surface ? grid.contains(surface) : anchor && grid.contains(anchor))) return;
+    const gameId = surface?.dataset.gameId || anchor?.closest?.('[data-game-id]')?.dataset.gameId || new URL(anchor.href, location.href).pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1];
+    if (!gameId) return;
+    const lobbyGame = window.WONDER_LOBBY?.games?.find(value => value?.id === gameId);
+    const rawPath = anchor?.href || lobbyGame?.href;
+    if (!rawPath) return;
+    let path;
+    try {
+      const target = new URL(rawPath, document.baseURI);
+      const localized = window.WonderI18n?.localizedPath?.(window.WonderI18n.actualLocale(), `${target.pathname}${target.search}${target.hash}`) || `${target.pathname}${target.search}${target.hash}`;
+      path = new URL(localized, target.origin).pathname.replace(/\/+$/, "") + "/";
+    } catch { return; }
+    if (path.match(/(?:^|\/)games\/([^/]+)\/$/i)?.[1] !== gameId) return;
+    const domain = hallAtLaunch(surface || anchor, gameId);
+    try {
+      if (domain === "ineligible") { sessionStorage.removeItem("weightplayCollectionLaunchV1"); return; }
+      sessionStorage.setItem("weightplayCollectionLaunchV1", JSON.stringify({ version: 1, domain, gameId, path, launchedAt: Date.now() }));
+    } catch { /* An unavailable launch marker means this completion earns no collection progress. */ }
+  }
+  function currentLaunchDomain(gameId) {
+    try {
+      const marker = JSON.parse(sessionStorage.getItem("weightplayCollectionLaunchV1") || "null");
+      const currentPath = location.pathname.replace(/\/+$/, "") + "/";
+      const routeId = window.WONDER_SITE?.gameIdFromPath?.(location.pathname) || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";
+      const query = new URLSearchParams(location.search || "");
+      if (["preview", "trial", "qa", "test"].some(key => query.has(key)) || marker?.version !== 1 || marker.gameId !== gameId || marker.gameId !== routeId || marker.path !== currentPath || Date.now() - Number(marker.launchedAt) > 8 * 60 * 60 * 1000) return null;
+      return ["tabletop", "kids", "general", "topic"].includes(marker.domain) ? marker.domain : null;
+    } catch { return null; }
+  }
+  async function recordCollectionCompletion(domain, gameId, completionId) {
+    const config = collectionDomainConfig[domain];
+    if (!config || !/^[a-z0-9][a-z0-9-]{0,63}$/i.test(gameId) || !completionId) return { credited: false, reason: "invalid" };
+    await ensureCollectionModule(domain);
+    const eventId = `collection-v1:${domain}:${gameId}:first-clear`;
+    const priorState = readCollection(domain), previous = priorState.eventGames.length;
+    const saved = await writeCollection(domain, state => {
+      if (state.eventIds.includes(eventId) || state.eventGames.includes(gameId)) return false;
+      state.eventIds.push(eventId); state.eventGames.push(gameId);
+      if (domain === "kids") state.layout = normalizeAlbumLayout(state.layout);
+      return true;
+    });
+    if (!saved) return { credited: false, reason: "duplicate-or-storage-unavailable" };
+    const previousState = { ...saved, eventGames: saved.eventGames.slice(0, previous) };
+    const thresholdReached = unlockedCollectionIds(domain, saved).length > unlockedCollectionIds(domain, previousState).length;
+    const detail = { domain, gameId, completionId, eventId, progress: saved.eventGames.length, newItem: thresholdReached };
+    window.dispatchEvent(new CustomEvent("weightplay:collection-earned", { detail }));
+    return { credited: true, eventId, progress: saved.eventGames.length, newItem: thresholdReached };
+  }
+  async function saveCollectionEquipment(domain, patch) {
+    if (domain !== "tabletop" || !patch || typeof patch !== "object") return false;
+    const module = collectionModules.get(domain), ids = new Set(unlockedCollectionIds(domain));
+    const allowed = new Map((module?.items || []).map(item => [item.id, item.type]));
+    const entries = Object.entries(patch);
+    if (entries.length !== 1 || !entries.every(([slot, id]) => ["cardBack", "table"].includes(slot) && typeof id === "string" && ids.has(id) && allowed.get(id) === slot)) return false;
+    const saved = await writeCollection(domain, state => { state.equipped = { ...state.equipped, ...patch }; });
+    if (saved) window.dispatchEvent(new CustomEvent("WeightPlayTabletopThemeChanged", { detail: saved.equipped }));
+    return Boolean(saved);
+  }
+  async function saveKidsAlbumLayout(layout) {
+    const allowed = new Set(unlockedCollectionIds("kids"));
+    const next = normalizeAlbumLayout(layout);
+    for (const page of next.pages) {
+      const unique = new Set();
+      for (const sticker of page.stickers) {
+        if (!allowed.has(sticker.itemId) || unique.has(sticker.itemId)) return false;
+        unique.add(sticker.itemId);
+      }
+      if (page.decorationId && !allowed.has(page.decorationId)) return false;
+    }
+    return Boolean(await writeCollection("kids", state => { state.layout = next; }));
+  }
+  function showCollectionNotice(domain, text) {
+    const old = document.querySelector("[data-wp-collection-notice]"); old?.remove();
+    const node = document.createElement("div");
+    node.dataset.wpCollectionNotice = domain; node.setAttribute("role", "status"); node.setAttribute("aria-live", "polite");
+    node.textContent = text; Object.assign(node.style, { position: "fixed", zIndex: "1200", insetInline: "max(12px,env(safe-area-inset-left))", bottom: "max(12px,env(safe-area-inset-bottom))", maxWidth: "min(520px,calc(100vw - 24px))", marginInline: "auto", padding: "14px 18px", borderRadius: "14px", background: domain === "kids" ? "#fff0a9" : "#302216", color: domain === "kids" ? "#263b28" : "#fff0dc", boxShadow: "0 8px 30px #0005", font: "600 16px/1.4 system-ui,sans-serif" });
+    document.body.append(node); setTimeout(() => node.remove(), 6500);
+  }
+  function refreshTabletopTheme() {
+    if (!document.body || !/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname)) return;
+    const gameId = window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";
+    if (currentLaunchDomain(gameId) !== "tabletop") return;
+    const state = readCollection("tabletop"), equipped = state.equipped || {};
+    document.body.dataset.wpCollectionTable = equipped.table || "";
+    document.body.dataset.wpCollectionCardBack = equipped.cardBack || "";
+    document.body.classList.add("wp-collection-active");
+    if (!document.querySelector("[data-weightplay-tabletop-bridge]")) {
+      const script = document.createElement("script"); script.src = "/src/tabletop-collection-bridge.js?v=20261002-collections-v2"; script.dataset.weightplayTabletopBridge = "true"; script.async = true; document.head.append(script);
+    } else window.WeightPlayTabletopThemeBridge?.refresh?.();
+  }
+  let collectionDialog, collectionDialogContent, collectionOpener, collectionDomain, collectionHistoryState = false;
+  function ensureCollectionLauncher() {
+    const domain = currentLobbyDomain(), module = domain && collectionModules.get(domain);
+    const grid = document.querySelector("#gameGrid");
+    const existing = document.querySelector("[data-weightplay-collection-entry]");
+    if (!domain || !module || !grid) { existing?.remove(); return; }
+    if (existing?.dataset.weightplayCollectionEntry === domain) return;
+    existing?.remove();
+    const locale = collectionLocale(), copy = collectionStrings[locale], entry = document.createElement("section");
+    entry.dataset.weightplayCollectionEntry = domain; entry.setAttribute("aria-label", copy[domain]);
+    Object.assign(entry.style, { margin: "22px auto", maxWidth: "1100px", padding: "clamp(16px,3vw,24px)", borderRadius: "18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "14px", flexWrap: "wrap", background: domain === "kids" ? "linear-gradient(135deg,#d8f2bb,#fff0a8 55%,#f7c4a1)" : "linear-gradient(135deg,#271c14,#4a3221)", border: domain === "kids" ? "2px solid #7cae70" : "1px solid #846542", color: domain === "kids" ? "#23432d" : "#fff1d8" });
+    const label = document.createElement("strong"); label.textContent = copy[domain]; label.style.font = "700 clamp(1.05rem,3vw,1.35rem)/1.25 system-ui,sans-serif";
+    const button = document.createElement("button"); button.type = "button"; button.textContent = copy[domain]; button.setAttribute("aria-haspopup", "dialog"); button.setAttribute("aria-label", copy[domain]);
+    Object.assign(button.style, { minHeight: "48px", minWidth: "180px", padding: "10px 18px", border: "0", borderRadius: "12px", background: domain === "kids" ? "#277a54" : "#c69b58", color: domain === "kids" ? "white" : "#21170d", font: "700 16px/1.2 system-ui,sans-serif", cursor: "pointer" });
+    button.addEventListener("click", () => openCollection(domain, button));
+    entry.append(label, button);
+    const toast = document.querySelector("#lobbyToast");
+    if (toast?.parentNode) toast.parentNode.insertBefore(entry, toast); else grid.after(entry);
+  }
+  if (document.body && typeof MutationObserver !== "undefined") {
+    new MutationObserver(ensureCollectionLauncher).observe(document.body, { attributes: true, attributeFilter: ["data-game-hall", "data-audience"] });
+  }
+  function trapCollectionFocus(event) {
+    if (event.key === "Escape") { event.preventDefault(); closeCollection(true); return; }
+    if (event.key !== "Tab" || !collectionDialog) return;
+    const focusable = [...collectionDialog.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(node => node.offsetParent !== null);
+    if (!focusable.length) { event.preventDefault(); collectionDialog.focus(); return; }
+    const first = focusable[0], last = focusable.at(-1);
+    if (event.shiftKey && (document.activeElement === first || document.activeElement === collectionDialog)) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+  function openCollection(domain, opener) {
+    if (!collectionModules.has(domain)) return;
+    if (!collectionDialog) {
+      collectionDialog = document.createElement("div"); collectionDialog.className = "wpc-overlay"; collectionDialog.tabIndex = -1; collectionDialog.setAttribute("role", "dialog"); collectionDialog.setAttribute("aria-modal", "true");
+      Object.assign(collectionDialog.style, { position: "fixed", inset: "0", zIndex: "1190", display: "grid", placeItems: "center", padding: "max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom))", background: "#090908d9", backdropFilter: "blur(5px)" });
+      const panel = document.createElement("div"); panel.className = "wpc-panel"; Object.assign(panel.style, { width: "min(920px,100%)", maxHeight: "min(94dvh,900px)", overflow: "auto", borderRadius: "20px", outline: "none" });
+      collectionDialogContent = document.createElement("div"); collectionDialogContent.className = "wpc-content"; panel.append(collectionDialogContent); collectionDialog.append(panel); document.body.append(collectionDialog);
+      collectionDialog.addEventListener("keydown", trapCollectionFocus);
+      collectionDialog.addEventListener("click", event => { if (event.target === collectionDialog) closeCollection(true); });
+    }
+    collectionDomain = domain; collectionOpener = opener || document.activeElement;
+    collectionHistoryState = true;
+    try { history.pushState({ ...(history.state || {}), weightplayCollection: domain }, "", `${location.pathname}${location.search}#collection`); } catch { collectionHistoryState = false; }
+    renderCollection(); collectionDialog.hidden = false; collectionDialog.style.display = "grid";
+    document.documentElement.style.overflow = "hidden";
+    requestAnimationFrame(() => collectionDialog?.querySelector("button:not([disabled])")?.focus({ preventScroll: true }) || collectionDialog?.focus({ preventScroll: true }));
+  }
+  function renderCollection() {
+    if (!collectionDomain || !collectionDialogContent) return;
+    const module = collectionModules.get(collectionDomain); if (!module) return;
+    const state = readCollection(collectionDomain), locale = collectionLocale(), rtl = locale === "ar";
+    collectionDialogContent.replaceChildren();
+    module.render(collectionDialogContent, {
+      locale, rtl, state, progress: state.eventGames.length, unlockedIds: unlockedCollectionIds(collectionDomain, state),
+      onEquip: patch => saveCollectionEquipment(collectionDomain, patch).then(ok => { if (ok) renderCollection(); return ok; }),
+      onLayout: layout => saveKidsAlbumLayout(layout),
+      onClose: () => closeCollection(true),
+      announce: message => { const live = collectionDialogContent.querySelector("[data-wpc-live]"); if (live) live.textContent = String(message || ""); },
+    });
+    collectionDialog.setAttribute("aria-label", collectionModules.get(collectionDomain)?.items?.[0]?.name?.[locale] || "Collection");
+  }
+  function closeCollection(useHistory) {
+    if (!collectionDialog || collectionDialog.hidden) return;
+    if (useHistory && collectionHistoryState && history.state?.weightplayCollection) {
+      collectionHistoryState = false; history.back(); return;
+    }
+    collectionDialog.hidden = true; collectionDialog.style.display = "none"; document.documentElement.style.overflow = "";
+    collectionDomain = null; collectionHistoryState = false;
+    collectionOpener?.focus?.({ preventScroll: true }); collectionOpener = null;
+  }
+  window.addEventListener("popstate", () => { if (collectionDialog && !collectionDialog.hidden) closeCollection(false); });
+  window.addEventListener("storage", event => {
+    const domains = Object.entries(collectionDomainConfig).filter(([, value]) => event.key === value.key).map(([domain]) => domain);
+    domains.forEach(domain => { if (domain === collectionDomain) renderCollection(); });
+    if (event.key === "weightplayCollectionLaunchV1") refreshTabletopTheme();
+  });
+  window.addEventListener("WeightPlayTabletopThemeChanged", refreshTabletopTheme);
+  function loadCollectionModules() {
+    if (document.body?.classList.contains("lobby-page")) {
+      ensureCollectionModule(document.body.dataset.audience === "kids" ? "kids" : "tabletop").then(ensureCollectionLauncher);
+      return;
+    }
+    const gameId = window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";
+    const domain = currentLaunchDomain(gameId);
+    if (domain === "tabletop" || domain === "kids") ensureCollectionModule(domain).then(() => { if (domain === "tabletop") refreshTabletopTheme(); });
+  }
+  window.WeightPlayCollections = Object.freeze({
+    register: registerCollectionModule,
+    read: readCollection,
+    unlockedIds: unlockedCollectionIds,
+    saveEquipment: saveCollectionEquipment,
+    saveAlbumLayout: saveKidsAlbumLayout,
+  });
+  window.addEventListener("click", recordLobbyLaunch, { capture: true });
+  loadCollectionModules();
   function isSuccessfulOutcome(outcome) {
     return ["complete", "win", "won", "success", "victory", "clear"].includes(String(outcome || "").toLowerCase());
   }
   function awardCompletedRound(params = {}) {
     if (roundClearReported) return { credited: false, reason: "already-reported-this-round" };
     roundClearReported = true;
+    const gameId = String(params.game_id || params.gameId || window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "").trim();
+    const routeGameId = window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";
+    if (!routeGameId || gameId.toLowerCase() !== routeGameId.toLowerCase()) return { credited: false, reason: "route-game-mismatch" };
     const stageId = reportedStageId(params);
-    return creditCastleFirstClear(stageId == null && activeStageId != null ? { ...params, stage_id: activeStageId } : params);
+    const normalized = stageId == null && activeStageId != null ? { ...params, stage_id: activeStageId } : params;
+    const completionId = stageId == null ? "first-completion" : `stage-${String(stageId).toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 54).replace(/^stage-/, "")}`;
+    if (["stage-endless", "stage-infinite", "stage-survival"].includes(completionId)) return { credited: false, reason: "non-stage-clear" };
+    const domain = currentLaunchDomain(gameId);
+    if (domain === "tabletop" || domain === "kids") {
+      recordCollectionCompletion(domain, gameId, completionId).then(result => {
+        if (result.credited && result.newItem) showCollectionNotice(domain, collectionStrings[collectionLocale()].notice);
+      }).catch(() => {});
+      return { credited: true, domain, completionId };
+    }
+    if (domain === "topic") return { credited: false, reason: "topic-hall-excluded" };
+    if (!domain && document.body?.dataset.audience === "kids") return { credited: false, reason: "kids-launch-context-required" };
+    if (domain === "general" && topicGameIds().has(gameId)) return { credited: false, reason: "topic-hall-excluded" };
+    return creditCastleFirstClear(normalized);
   }
   function creditCastleFirstClear(params = {}) {
     const outcome = String(params.outcome || "").toLowerCase();
     if (params.cleared === false || params.success === false || params.won === false || ["fail", "failed", "loss", "lose", "defeat"].includes(outcome)) return { credited: false, reason: "not-cleared" };
     const gameId = String(params.game_id || params.gameId || window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "").trim();
     if (!/^[a-z0-9][a-z0-9-]{0,63}$/i.test(gameId)) return { credited: false, reason: "invalid-game" };
+    const domain = currentLaunchDomain(gameId);
+    if (domain === "tabletop" || domain === "kids" || domain === "topic" || (!domain && document.body?.dataset.audience === "kids")) return { credited: false, reason: `${domain || "kids"}-collection-owned` };
+    if (domain === "general" && topicGameIds().has(gameId)) return { credited: false, reason: "topic-hall-excluded" };
     if (window.__weightPlayTabletopGameIds.has(gameId.toLowerCase())) return { credited: false, reason: "tabletop-excluded" };
     if (window.__weightPlayCastleBlockRewardExcludedGameIds.has(gameId.toLowerCase())) return { credited: false, reason: "game-reward-excluded" };
     const rawStage = reportedStageId(params);

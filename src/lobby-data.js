@@ -7285,7 +7285,7 @@ window.WONDER_LOBBY.games.push({
   ages: ["8", "family"], ageTags: ["8", "family"], ageLabel: "8+",
   recommendedAge: "8+", difficulty: "Easy", estimatedPlayTime: "1-2 minutes",
   description: trafficJamDinerDescription, href: "games/traffic-jam-diner/",
-  art: { kind: "image", background: "/games/traffic-jam-diner/poster.svg", hideHero: true },
+  art: { kind: "image", background: "/assets/traffic-jam-diner-cover-v2.webp", hideHero: true },
   meta: { en: ["Animal Neighbors", "Snack Matching"], "zh-Hant": ["動物鄰居", "點心配對"] },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("traffic-jam-diner");
@@ -7330,7 +7330,7 @@ window.WONDER_LOBBY.games.push({
   ages: ["8", "family"], ageTags: ["8", "family"], ageLabel: "8+",
   recommendedAge: "8+", difficulty: "Easy", estimatedPlayTime: "1-3 minutes",
   description: robotDogShowtimeDescription, href: "games/robot-dog-showtime/",
-  art: { kind: "image", background: "/games/robot-dog-showtime/poster.svg", hideHero: true },
+  art: { kind: "image", background: "/assets/robot-dog-showtime-cover-v2.webp", hideHero: true },
   meta: { en: ["Robot Pup", "Rhythm & Memory"], "zh-Hant": ["機器狗", "節奏與記憶"] },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("robot-dog-showtime");

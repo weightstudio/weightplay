@@ -48,7 +48,7 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   topicsButton.type = "button";
   topicsButton.dataset.hallTab = "topics";
   topicsButton.setAttribute("aria-pressed", "false");
-  topicsButton.innerHTML = '<span class="hall-tab-long" data-i18n="hall.topics"></span><span class="hall-tab-short" data-i18n="hall.topics_short" aria-hidden="true"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
+  topicsButton.innerHTML = '<span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true">✦</span><span class="hall-tab-label" data-i18n="hall.topics_short"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
   gameHallSwitch.append(topicsButton);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
@@ -421,8 +421,8 @@ function syncHallPresentation() {
   if (hallEyebrow) hallEyebrow.textContent = i18n.t(activeHall === 'games' ? 'hall.games' : hallNameKey);
   const hallScene = document.querySelector('.general-hero-scene');
   if (hallScene) hallScene.src = activeHall === 'topics'
-    ? '/assets/topic-hall-hero.svg'
-    : '/Assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-general-hero-restore-v1';
+    ? '/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2'
+    : '/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2';
 }
 
 function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
@@ -1341,7 +1341,7 @@ function renderLobby(options = {}) {
     !node.matches('.lobby-hero,.lobby-topbar,.game-hall-switch'));
   regions.push(document.querySelector('.lobby-hero-copy'), spotlightSection, ...hallButtons);
   const entries = regions.filter(Boolean).map((node, index) => ({
-    node, name: `wp-hall-region-${index}`, inert: node.inert,
+    node, name: node === spotlightSection ? 'wp-hall-spotlight' : `wp-hall-region-${index}`, inert: node.inert,
     previousName: node.style.viewTransitionName,
     locked: !node.matches('.lobby-search-row,[data-hall-tab]'),
   }));
