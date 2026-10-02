@@ -36,10 +36,49 @@ body.old-maid-royal-table #cardGameCenter .playing-card.is-face-down {
 }
 body.old-maid-royal-table #cardGameCenter .playing-card.is-face-down::after {content:none;}
 body.old-maid-royal-table #cardGameCenter .playing-card:focus-visible,
-body.old-maid-royal-table #cardGameCenter .playing-card:hover {outline:2px solid #ffe9ae;outline-offset:-3px;box-shadow:0 0 13px #e6c78388;}
-body.old-maid-royal-table #cardGameCenter button.playing-card {cursor:pointer;transition:transform 150ms cubic-bezier(.2,.8,.2,1),box-shadow 150ms ease,filter 150ms ease;}
-body.old-maid-royal-table #cardGameCenter button.playing-card:hover {transform:translateY(-7px) rotate(-2deg);filter:brightness(1.12);}
-body.old-maid-royal-table #cardGameCenter button.playing-card:active {transform:translateY(-1px) scale(.96);}
+body.old-maid-royal-table #cardGameCenter .playing-card:hover {
+  outline: 2px solid #ffe9ae;
+  outline-offset: -3px;
+  box-shadow: 0 0 13px #e6c78388;
+}
+/* Draw choices keep one stable hit box while hover and press acknowledge the
+   input. Moving or shrinking the button made a pointer parked near its lower
+   edge leave/re-enter the target and could cancel a press before click. */
+body.old-maid-royal-table #cardGameCenter button.playing-card {
+  cursor: pointer;
+  transform: none;
+  transition: box-shadow 150ms ease, filter 150ms ease;
+}
+body.old-maid-royal-table #cardGameCenter button.playing-card:hover,
+body.old-maid-royal-table #cardGameCenter button.playing-card:focus-visible {
+  transform: none;
+  filter: brightness(1.12);
+}
+body.old-maid-royal-table #cardGameCenter button.playing-card:active {
+  transform: none;
+  filter: brightness(1.2) saturate(1.12);
+  box-shadow: 0 0 0 3px #ffe9ae88, 0 4px 9px #00160faa;
+}
+/* Arabic shell sync adds a translated back label beside the shell arrow.
+   The narrow battle button wraps both glyphs into two rows; keep its visual
+   affordance compact while the button's localized aria-label remains intact. */
+html[lang="ar"] body.old-maid-royal-table #battleBackBtn {
+  position: relative;
+  font-size: 0 !important;
+}
+html[lang="ar"] body.old-maid-royal-table #battleBackBtn .wp-shell-return-arrow {
+  display: none;
+}
+html[lang="ar"] body.old-maid-royal-table #battleBackBtn::after {
+  content: "←";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 24px !important;
+  line-height: 1;
+  pointer-events: none;
+}
 body.old-maid-royal-table #cardGameCenter .table-row {gap:7px;}
 body.old-maid-royal-table #cardGameHand .playing-card {width:48px;height:68px;flex:0 0 48px;min-width:0;font-family:Georgia,serif;}
 body.old-maid-royal-table #cardGameHand .rank {font-size:10px;line-height:1;}
@@ -57,9 +96,17 @@ body.old-maid-royal-table #resultOverlay .result-card {background:radial-gradien
 @keyframes old-maid-opponent-turn {from{transform:translateY(0);}to{transform:translateY(-2px);}}
 @keyframes old-maid-turn-glow {from{box-shadow:0 0 0 #51d9a400;}to{box-shadow:0 0 20px #51d9a455;}}
 @keyframes old-maid-score-pop {0%{transform:scale(.8);color:#b8ffd7;}42%{transform:scale(1.38);color:#fff0a3;text-shadow:0 0 18px #ffe07a;}100%{transform:scale(1);}}
+@keyframes old-maid-reduced-feedback {from{opacity:.72;}to{opacity:1;}}
 @media(orientation:landscape) and (max-height:560px){
  body.old-maid-royal-table #cardGameCenter .playing-card.is-face-down {width:44px;min-width:44px;height:62px;min-height:62px;flex-basis:44px;}
  body.old-maid-royal-table #cardGameHand .playing-card {width:43px;height:61px;flex-basis:43px;}
  body.old-maid-royal-table #cardGameCenter .table-row {gap:4px;}
 }
-@media(prefers-reduced-motion:reduce){body.old-maid-royal-table :is(.playing-card,.card-old-maid-draw-cue,.card-old-maid-risk,.opponent-card){animation:none!important;transition:none!important;}}
+@media(prefers-reduced-motion:reduce){
+ body.old-maid-royal-table :is(.playing-card,.card-old-maid-draw-cue,.card-old-maid-risk,.opponent-card){animation:none!important;transition:none!important;}
+ body.old-maid-royal-table :is(.card-old-maid-draw-cue,.card-old-maid-risk,.opponent-card.is-old-maid-turn,#cardGameScore.old-maid-score-pop,#cardGameHand .playing-card.old-maid-arrival){animation:old-maid-reduced-feedback 80ms ease-out both!important;}
+ body.old-maid-royal-table #cardGameCenter button.playing-card{transition:opacity 80ms ease!important;}
+ body.old-maid-royal-table #cardGameCenter button.playing-card:hover,
+ body.old-maid-royal-table #cardGameCenter button.playing-card:focus-visible{opacity:.86;filter:none;}
+ body.old-maid-royal-table #cardGameCenter button.playing-card:active{opacity:.76;filter:none;}
+}
