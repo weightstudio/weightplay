@@ -3,7 +3,7 @@ if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = ne
 // END generated tabletop classification
 
 window.WONDER_SITE = {
-  version: "v0.36.93",
+  version: "v0.36.94",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
