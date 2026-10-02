@@ -3267,20 +3267,25 @@
   }
 
   function makeOldMaidFixed(controller) {
-    const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "" };
+    const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "", drawOutcome: "" };
     let timer = null;
     let paused = false;
     const cancelTurn = () => { clearTimeout(timer); timer = null; };
     const scheduleTurn = () => {
       cancelTurn();
-      if (!paused && !s.over && s.turn !== 0) timer = setTimeout(() => { timer = null; aiTurn(); }, 320);
+      if (!paused && !s.over && s.turn !== 0) {
+        const target = targetFor(s.turn);
+        const lastCard = target >= 0 && s.players[target].length === 1;
+        const turnDelay = lastCard ? 920 : 560 + Math.floor(Math.random() * 180);
+        timer = setTimeout(() => { timer = null; aiTurn(); }, turnDelay);
+      }
     };
     window.addEventListener("pagehide", cancelTurn);
     window.addEventListener("pageshow", (event) => {
       if (event.persisted && controller.isBattleActive()) scheduleTurn();
     });
     const names = OLD_MAID_NAMES[currentLocale()] || OLD_MAID_NAMES.en;
-    const oldMaidOpponentMarkup = (name, count, extra = "") => `<div class="opponent-card"><strong data-runtime-localize="off">${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`;
+    const oldMaidOpponentMarkup = (name, count, extra = "", player = 0) => `<div class="opponent-card${s.turn === player ? " is-old-maid-turn" : ""}${count === 1 ? " is-old-maid-last-card" : ""}${count === 0 ? " is-old-maid-out" : ""}" data-old-maid-player="${player}"><strong data-runtime-localize="off">${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`;
     const pair = (player) => { const byRank = new Map(); s.players[player].forEach((item) => { const list = byRank.get(item.rank) || []; list.push(item); byRank.set(item.rank, list); }); byRank.forEach((items) => { const normal = items.filter((item) => !item.oldMaid); for (let pairIndex = 0; pairIndex + 1 < normal.length; pairIndex += 2) { [normal[pairIndex], normal[pairIndex + 1]].forEach((item) => { const index = s.players[player].indexOf(item); if (index >= 0) s.players[player].splice(index, 1); }); s.books[player] += 1; } }); };
     const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); const copy = OLD_MAID_RESULT[currentLocale()] || OLD_MAID_RESULT.en; const lesson = (copy[loser === 0 ? "lost" : "cleared"] || copy.cleared).replace("{holder}", names[loser]); const holderLine = loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`; s.over = true; controller.result(loser !== 0, `${holderLine} · ${lesson}`); } };
     const targetFor = (player) => { for (let offset = 1; offset < s.players.length; offset += 1) { const target = (player + offset) % s.players.length; if (s.players[target].length) return target; } return -1; };
@@ -3298,6 +3303,7 @@
       const cueKey = s.books[player] > pairsBefore ? "pair" : s.players[player].some((card) => card.oldMaid) ? "risk" : "none";
       if (player === 0) {
         s.drawCue = oldMaidText(cueKey);
+        s.drawOutcome = cueKey;
         oldMaidTrack("blind_draw", { source: "opponent_hand", position, remaining_count: source.length, input_type: "card_control" });
         oldMaidTrack("pair_outcome", { outcome: cueKey, pairs_delta: s.books[player] - pairsBefore });
       }
@@ -3309,10 +3315,10 @@
       pause() { paused = true; cancelTurn(); },
       resume() { if (!paused) return; paused = false; scheduleTurn(); },
       stop() { paused = true; cancelTurn(); },
-      reset() { cancelTurn(); paused = false; const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "" }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
+      reset() { cancelTurn(); paused = false; const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "", drawOutcome: "" }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
       card(index) { if (!paused && s.turn === 0 && !s.over) drawFrom(0, index); },
       action() {},
-      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; const choices = target.map((_, index) => cardMarkup({ faceDown: true }, index, { ariaLabel: oldMaidText("hiddenCard", { position: index + 1, total: target.length }), runtimeLocalizeOff: true })).join(""); return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => oldMaidOpponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${choices}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
+      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-outcome="${s.drawOutcome}" data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; const choices = target.map((_, index) => cardMarkup({ faceDown: true }, index, { ariaLabel: oldMaidText("hiddenCard", { position: index + 1, total: target.length }), runtimeLocalizeOff: true })).join(""); return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => oldMaidOpponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`, index + 1)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}${s.turn === 0 ? " is-old-maid-player-turn" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${choices}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
     };
   }
 
