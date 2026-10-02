@@ -422,7 +422,7 @@ function syncHallPresentation() {
   const hallScene = document.querySelector('.general-hero-scene');
   if (hallScene) hallScene.src = activeHall === 'topics'
     ? '/assets/topic-hall-hero.svg'
-    : '/assets/animal-zoo-idle-cover.webp';
+    : '/Assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-general-hero-restore-v1';
 }
 
 function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
