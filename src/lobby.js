@@ -695,13 +695,14 @@ function setFilterCount(button, type, value) {
   const label = filterButtonLabel(button, type, value);
   const count = countGamesBy(type, value);
   const hint = filterButtonHint(type, value);
-  button.innerHTML = `
+  const icon = button.querySelector(".kids-topic-icon")?.outerHTML || button.dataset.kidsTopicIcon || "";
+  if (icon) button.dataset.kidsTopicIcon = icon;
+  button.innerHTML = `${icon}
     <span class="filter-copy">
       <span class="filter-label">${label}</span>
       ${hint ? `<span class="filter-hint">${hint}</span>` : ""}
     </span>
-    <b class="filter-count">${count}</b>
-  `;
+    <b class="filter-count">${count}</b>`;
   button.setAttribute("aria-label", hint ? `${label}, ${hint}, ${count}` : `${label}, ${count}`);
 }
 
@@ -1191,6 +1192,7 @@ function createGameCard(game) {
         </span>
       </div>
       <h2 data-runtime-localize="off">${title}</h2>
+      ${isKidsLobby && isPlayable ? `<span class="game-card-play-tag">${type}</span>` : ""}
       <p>${text(game.description)}</p>
       ${gameStateCard(game, isPlayable)}
       <div class="game-card-categories">${categoryBadges}</div>
@@ -2392,6 +2394,99 @@ gameSearch?.addEventListener("input", () => {
 
 quickPickBtn?.addEventListener("click", () => { settleHallMotion(); openQuickPick(); });
 
+function setupKidsLobbyPresentation() {
+  if (!isKidsLobby) return;
+  const shell = document.querySelector(".lobby-shell");
+  const gameGrid = document.querySelector("#gameGrid");
+  if (!shell || !gameGrid) return;
+
+  const promise = document.querySelector(".kids-promise");
+  const parentTrust = document.querySelector(".parent-trust-strip");
+  const parentDetails = document.createElement("details");
+  parentDetails.className = "kids-parent-details";
+  const parentSummary = document.createElement("summary");
+  parentSummary.dataset.i18n = "kids.promise.kicker";
+  parentSummary.textContent = i18n.t("kids.promise.kicker");
+  const parentContent = document.createElement("div");
+  parentContent.className = "kids-parent-details-content";
+  parentDetails.append(parentSummary, parentContent);
+  [promise, parentTrust].filter(Boolean).forEach((section) => parentContent.append(section));
+  if (parentContent.childElementCount) gameGrid.after(parentDetails);
+
+  const featured = document.querySelector("#featuredGame");
+  if (featured) {
+    const featureStrip = document.createElement("section");
+    featureStrip.className = "kids-featured-strip";
+    featureStrip.setAttribute("aria-label", i18n.t("kids.portal.title"));
+    featureStrip.append(featured);
+    gameGrid.after(featureStrip);
+  }
+
+  const railToggle = document.createElement("button");
+  railToggle.className = "kids-rail-toggle";
+  railToggle.type = "button";
+  railToggle.setAttribute("aria-controls", "kidsFilterRail");
+  const railToggleIcon = document.createElement("span");
+  railToggleIcon.setAttribute("aria-hidden", "true");
+  railToggleIcon.textContent = "☰";
+  const railToggleLabel = document.createElement("span");
+  railToggleLabel.dataset.railToggleLabel = "true";
+  railToggle.append(railToggleIcon, railToggleLabel);
+  const updateRailToggleLabel = () => {
+    const collapsed = document.body.classList.contains("kids-rail-collapsed");
+    const key = collapsed ? "filter.show_sidebar" : "filter.hide_sidebar";
+    railToggle.setAttribute("aria-expanded", String(!collapsed));
+    railToggle.setAttribute("aria-label", i18n.t(key));
+    railToggleLabel.dataset.i18n = key;
+    railToggleLabel.textContent = i18n.t(key);
+  };
+  updateRailToggleLabel();
+  shell.append(railToggle);
+  railToggle.addEventListener("click", () => {
+    document.body.classList.toggle("kids-rail-collapsed");
+    updateRailToggleLabel();
+    window.WeightPlayAudio?.play("ui.click");
+  });
+
+  const filterRail = document.querySelector("#kidsFilterRail");
+  if (filterRail) {
+    const railLibrary = filterRail.querySelector(".rail-library");
+    const filterGroups = [...filterRail.querySelectorAll(":scope > .desktop-filter-group")];
+    const filterPanel = document.createElement("div");
+    filterPanel.className = "kids-advanced-filter-panel";
+    filterPanel.id = "kidsAdvancedFilterPanel";
+    filterPanel.hidden = true;
+    filterGroups.forEach((group) => filterPanel.append(group));
+
+    const advancedToggle = document.createElement("button");
+    advancedToggle.className = "kids-advanced-filter-toggle";
+    advancedToggle.type = "button";
+    advancedToggle.setAttribute("aria-controls", filterPanel.id);
+    const advancedToggleLabel = document.createElement("span");
+    const updateAdvancedToggleLabel = (expanded = !filterPanel.hidden) => {
+      const key = expanded ? "filter.fewer_filters" : "filter.more_filters";
+      advancedToggle.setAttribute("aria-expanded", String(expanded));
+      advancedToggle.setAttribute("aria-label", i18n.t(key));
+      advancedToggleLabel.dataset.i18n = key;
+      advancedToggleLabel.textContent = i18n.t(key);
+    };
+    advancedToggle.append(advancedToggleLabel);
+    updateAdvancedToggleLabel(false);
+    if (railLibrary) railLibrary.after(advancedToggle, filterPanel);
+    else filterRail.prepend(advancedToggle, filterPanel);
+
+    advancedToggle.addEventListener("click", () => {
+      filterPanel.hidden = !filterPanel.hidden;
+      updateAdvancedToggleLabel();
+      window.WeightPlayAudio?.play("ui.click");
+    });
+    window.addEventListener("wonder:locale-change", () => {
+      updateAdvancedToggleLabel();
+      updateRailToggleLabel();
+    });
+  }
+}
+
 document.querySelectorAll("[data-reset-discovery]").forEach((button) => {
   button.addEventListener("click", resetDiscoveryFilters);
 });
@@ -2413,6 +2508,7 @@ window.addEventListener("popstate", () => {
 });
 
 restoreDiscoveryFiltersFromUrl();
+setupKidsLobbyPresentation();
 renderLobby();
 loadGameStats();
 if (!isKidsLobby) {

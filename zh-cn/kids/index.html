@@ -30,7 +30,7 @@
     <meta property="og:image" content="https://weightplay.com/assets/animal-bubble-safari-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
-    <link rel="stylesheet" href="src/styles.css?v=20260920-kids-art-entry1" />
+    <link rel="stylesheet" href="src/styles.css?v=20261002-kids-playground4" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -46,7 +46,7 @@
   </head>
   <body class="lobby-page kids-lobby-page" data-audience="kids">
     <main class="lobby-shell">
-      <aside class="desktop-filter-rail kids-desktop-filter-rail" aria-label="Game filters">
+      <aside id="kidsFilterRail" class="desktop-filter-rail kids-desktop-filter-rail" aria-label="Game filters">
         <div class="desktop-filter-rail-heading">
           <span data-i18n="kids.play.kicker">Choose your age</span>
           <h2 data-i18n="kids.play.title">Pick a game and play!</h2>
@@ -83,7 +83,7 @@
       </aside>
 
       <header class="lobby-hero kids-lobby-hero">
-        <img class="kids-hero-scene" src="assets/lobby-thumbs/w960/assets__animal-zoo-idle-cover.webp" alt="" decoding="async" fetchpriority="high" width="960" height="960" />
+        <img class="kids-hero-scene" src="assets/lobby-thumbs/w960/assets__weightplay-general-lobby-block-animals-hero-v1.webp" alt="" decoding="async" fetchpriority="high" width="960" height="960" />
         <a class="kids-back-link" href="./" data-i18n="kids.back_general">Back to game lobby</a>
         <div class="lobby-hero-copy">
           <p id="lobbyKicker" class="lobby-kicker">Pick a game and play!</p>
@@ -177,6 +177,13 @@
         <button type="button" data-age-filter="6" data-i18n="filter.age_6">6+</button>
         <button type="button" data-age-filter="9" data-i18n="filter.age_9">9+</button>
       </section>
+      <nav class="kids-topic-shortcuts topic-filter" aria-label="Game topics" data-runtime-localize="off">
+        <button type="button" data-topic-filter="all" aria-pressed="true"><span class="kids-topic-icon" aria-hidden="true">✦</span><span data-i18n="filter.all_topics">All Topics</span></button>
+        <button type="button" data-topic-filter="Featured"><span class="kids-topic-icon" aria-hidden="true">🌟</span><span data-i18n="topic.featured">Featured</span></button>
+        <button type="button" data-topic-filter="Puzzle"><span class="kids-topic-icon" aria-hidden="true">🧩</span><span data-i18n="topic.puzzle">Puzzle</span></button>
+        <button type="button" data-topic-filter="Arcade"><span class="kids-topic-icon" aria-hidden="true">🕹️</span><span data-i18n="topic.arcade">Arcade</span></button>
+        <button type="button" data-topic-filter="Education"><span class="kids-topic-icon" aria-hidden="true">📚</span><span data-i18n="topic.education">Education</span></button>
+      </nav>
 
       <section class="library-tabs" aria-label="Game library tabs">
         <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
@@ -525,14 +532,14 @@
     <script src="src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="src/i18n-es.js?v=20260718-es1"></script>
     <script src="src/i18n-ja.js?v=20260719-ja1"></script>
-    <script src="src/i18n.js?v=20260906-lobby-pagination1"></script><script src="src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+    <script src="src/i18n.js?v=20261002-kids-filterfix2"></script><script src="src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="src/wallet.js"></script>
     <script src="src/game-title-registry.js?v=20260908-approved-game-names1"></script>
     <script src="src/lobby-data.js?v=20260911-beast-tactician-cover-v1"></script>
     <script src="src/lobby-data-es.js?v=20260718-es1"></script>
     <script src="src/lobby-data-ja.js?v=20260719-ja1"></script>
     <script src="src/interface7-poster-registry.js?v=20260911-authored-posters-complete"></script>
-    <script src="src/lobby.js?v=20260928-castle-economy-v2"></script>
+    <script src="src/lobby.js?v=20261002-kids-filterfix2"></script>
       <script src="/src/weightplay-castle.js?v=20261002-block-world-button-states-v7"></script>
   </body>
 </html>

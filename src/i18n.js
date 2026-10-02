@@ -1111,6 +1111,23 @@
     "kids.back_general": "返回游戏大厅",
   };
 
+  const kidsFilterControlCopy = {
+    en: { "filter.more_filters": "More filters", "filter.fewer_filters": "Collapse filters", "filter.hide_sidebar": "Hide sidebar", "filter.show_sidebar": "Show sidebar" },
+    "zh-Hant": { "filter.more_filters": "更多篩選", "filter.fewer_filters": "收起篩選", "filter.hide_sidebar": "收起側欄", "filter.show_sidebar": "展開側欄" },
+    "zh-Hans": { "filter.more_filters": "更多筛选", "filter.fewer_filters": "收起筛选", "filter.hide_sidebar": "收起侧栏", "filter.show_sidebar": "展开侧栏" },
+    ja: { "filter.more_filters": "さらに絞り込む", "filter.fewer_filters": "絞り込みを閉じる", "filter.hide_sidebar": "サイドバーを閉じる", "filter.show_sidebar": "サイドバーを開く" },
+    ko: { "filter.more_filters": "더 많은 필터", "filter.fewer_filters": "필터 접기", "filter.hide_sidebar": "사이드바 숨기기", "filter.show_sidebar": "사이드바 열기" },
+    es: { "filter.more_filters": "Más filtros", "filter.fewer_filters": "Ocultar filtros", "filter.hide_sidebar": "Ocultar barra lateral", "filter.show_sidebar": "Mostrar barra lateral" },
+    "pt-BR": { "filter.more_filters": "Mais filtros", "filter.fewer_filters": "Recolher filtros", "filter.hide_sidebar": "Ocultar painel lateral", "filter.show_sidebar": "Mostrar painel lateral" },
+    fr: { "filter.more_filters": "Plus de filtres", "filter.fewer_filters": "Masquer les filtres", "filter.hide_sidebar": "Masquer le panneau", "filter.show_sidebar": "Afficher le panneau" },
+    de: { "filter.more_filters": "Mehr Filter", "filter.fewer_filters": "Filter einklappen", "filter.hide_sidebar": "Seitenleiste ausblenden", "filter.show_sidebar": "Seitenleiste anzeigen" },
+    it: { "filter.more_filters": "Altri filtri", "filter.fewer_filters": "Riduci filtri", "filter.hide_sidebar": "Nascondi barra laterale", "filter.show_sidebar": "Mostra barra laterale" },
+    ru: { "filter.more_filters": "Другие фильтры", "filter.fewer_filters": "Свернуть фильтры", "filter.hide_sidebar": "Скрыть боковую панель", "filter.show_sidebar": "Показать боковую панель" },
+    hi: { "filter.more_filters": "और फ़िल्टर", "filter.fewer_filters": "फ़िल्टर समेटें", "filter.hide_sidebar": "साइडबार छिपाएँ", "filter.show_sidebar": "साइडबार दिखाएँ" },
+    ar: { "filter.more_filters": "مزيد من عوامل التصفية", "filter.fewer_filters": "طيّ عوامل التصفية", "filter.hide_sidebar": "إخفاء الشريط الجانبي", "filter.show_sidebar": "إظهار الشريط الجانبي" },
+  };
+  Object.entries(kidsFilterControlCopy).forEach(([locale, copy]) => Object.assign(dictionaries[locale], copy));
+
   const zhHansPhraseMap = Object.freeze([
     ["點選", "点击"],
     ["點擊", "点击"],
