@@ -25,7 +25,9 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="description" content="العب مباراة داما كاملة على لوحة 8×8 متجاوبة مع الأخذ الإجباري والقفزات المتعددة والترقية إلى ملك وخصم حقيقي يرد على حركاتك." />
+<meta name="weightplay-game-version" content="v21">
+<meta name="weightplay-interface-version" content="7">
+<meta name="description" content="العب الداما على لوحة 8×8: خطط للتحركات القطرية، نفّذ الأخذ الإجباري، تابع القفزات ورقِّ القطع إلى ملك." />
 <title>الداما | WeightPlay</title>
 <style>
   .preview-art { overflow: hidden; }
@@ -37,22 +39,21 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="الداما | WeightPlay" />
-    <meta property="og:description" content="العب مباراة داما كاملة على لوحة 8×8 متجاوبة مع الأخذ الإجباري والقفزات المتعددة والترقية إلى ملك وخصم حقيقي يرد على حركاتك." />
+    <meta property="og:description" content="العب الداما على لوحة 8×8: خطط للتحركات القطرية، نفّذ الأخذ الإجباري، تابع القفزات ورقِّ القطع إلى ملك." />
     <meta property="og:url" content="https://weightplay.com/ar/games/checkers/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="الداما | WeightPlay" />
-    <meta name="twitter:description" content="العب مباراة داما كاملة على لوحة 8×8 متجاوبة مع الأخذ الإجباري والقفزات المتعددة والترقية إلى ملك وخصم حقيقي يرد على حركاتك." />
+    <meta name="twitter:description" content="العب الداما على لوحة 8×8: خطط للتحركات القطرية، نفّذ الأخذ الإجباري، تابع القفزات ورقِّ القطع إلى ملك." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "الداما",
-  "alternateName": "Checkers",
   "url": "https://weightplay.com/ar/games/checkers/",
   "image": "https://weightplay.com/assets/interface7-redrawn/checkers.webp",
-  "description": "العب مباراة داما كاملة على لوحة 8×8 متجاوبة مع الأخذ الإجباري والقفزات المتعددة والترقية إلى ملك وخصم حقيقي يرد على حركاتك.",
+  "description": "العب الداما على لوحة 8×8: خطط للتحركات القطرية، نفّذ الأخذ الإجباري، تابع القفزات ورقِّ القطع إلى ملك.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,10 +63,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "كلاسيكية",
-    "ألغاز",
-    "استراتيجية",
-    "عائلية"
+    "الأخذ الإجباري",
+    "القفزات المتعددة",
+    "استراتيجية تبادلية"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -91,16 +91,17 @@
   <section id="battleScreen" class="screen battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
+      <div class="control-row checkers-battle-actions"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div>
     </div>
+    <section id="resultScreen" class="screen result-panel" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="homeBtn" class="secondary"></button><button id="retryBtn" class="primary"></button></div></div>
+    </section>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-  </section>
-  <section id="resultScreen" class="screen" hidden>
-    <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div>
   </section>
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
@@ -113,22 +114,23 @@
 <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة الداما">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>الداما</h2><p>العب مباراة داما كاملة على لوحة 8×8 متجاوبة مع الأخذ الإجباري والقفزات المتعددة والترقية إلى ملك وخصم حقيقي يرد على حركاتك.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>مباراة داما كاملة</strong></div><div class="game-info-fact"><span>النوع</span><strong>كلاسيكية · ألغاز · استراتيجية · عائلية</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>5–15 دقيقة للمباراة</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>التخطيط · تمييز الأنماط · التركيز</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>الداما</h2><p>العب مباراة داما كاملة على لوحة 8×8. كل أخذ متاح إجباري؛ تابع القفزات المتعددة ورقِّ القطع إلى ملك لفتح مسارات آمنة.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>الأخذ الإجباري</span><span>القفزات المتعددة</span><span>استراتيجية تبادلية</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>مباراة داما كاملة</strong></div><div class="game-info-fact"><span>النوع</span><strong>كلاسيكية · ألغاز · استراتيجية</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>5–15 دقيقة للمباراة</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>اللوحة ساحة صغيرة 8×8 لا تُلعب فيها إلا المربعات الداكنة. تبدأ باثنتي عشرة قطعة ويبدأ الخصم باثنتي عشرة قطعة، لذلك يمكن لكل قطر مفتوح أن يصبح طريق هروب أو فخاً أو أول حلقة في سلسلة أخذ.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>تتحرك القطع العادية خطوة واحدة قطرياً إلى الأمام. يقفز الأخذ فوق قطعة خصم مجاورة إلى مربع فارغ ويزيل تلك القطعة. إذا وُجد أي أخذ على اللوحة، فلا تكون الحركات غير الآخذة قانونية.</p>
-<p>بعد الأخذ، افحص القطعة نفسها مرة أخرى: إذا كان أخذ آخر متاحاً، يجب أن تتابع القفزات المتعددة من مربعها الجديد. وعند بلوغ الصف البعيد، تترقى القطعة إلى ملك يستطيع التحرك والأخذ قطرياً في الاتجاهين.</p>
-<p>يرد الخصم بعد دورك ويمكنه تنفيذ سلسلة أخذ خاصة به. تنتهي المباراة عندما لا يملك أحد الطرفين قطعاً أو حركة قانونية؛ وقد تُحسم كسحب بعد سلسلة طويلة بلا تقدّم. يحدد التلميح قطعة قانونية لكنه لا يختار الوجهة نيابةً عنك.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>ابدأ من الشاشة الرئيسية وراقب القطع الذهبية المميزة ورسالة الدور الحالية.</li><li>اختر قطعة ذهبية لها وجهة قطرية قانونية، ثم اختر مربع الهبوط المميز.</li><li>إذا كان الأخذ متاحاً، نفّذه حتى لو بدت الحركة الهادئة أكثر أماناً؛ وبعد الهبوط واصل بالقطعة نفسها كلما ظهر أخذ آخر.</li><li>احمِ طريقاً إلى الصف البعيد، رقِّ القطعة إلى ملك، واستعمل حركته في الاتجاهين لتغيير شكل الوضع.</li><li>استعمل التلميح عندما تحتاج إلى قطعة بداية قانونية، أو أعد البدء لإعادة المباراة نفسها من وضعها الافتتاحي.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>قبل التحرك، افحص كل قطعة للخصم بحثاً عن أخذ إجباري واحسب مربع الهبوط، لا القطعة المقفوز فوقها فقط.</li><li>تجنب دفع قطعة واحدة بمفردها؛ حافظ على دعم قطري حتى لا يرد الخصم بأخذ مجاني.</li><li>أثناء القفزات المتعددة، أعد تقييم مربع الهبوط التالي بعد كل قفزة بدلاً من افتراض أن الأخذ الأول ينهي الدور.</li><li>عند الترقية، ضع في بالك مربع هروب واضحاً. الملك مرن، لكنه قد يُحاصر أيضاً بأخذ إجباري أو قطر مسدود.</li><li>عندما تتقدم في عدد القطع، بدّل بأمان وقلل حركات الخصم القانونية؛ وعندما تتأخر، حافظ على الحركة وابحث عن سباق الترقية.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعلّم البداية الحركة القطرية وقاعدة الأخذ العامة. تضيف أوضاع منتصف المباراة خيارات أخذ متنافسة وقرارات القفز المتعدد، بينما تكافئ النهاية استعمال الملوك والطرق المسدودة والانتباه إلى عدد الحركات.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تستخدم معاينة الداما محرك الحركات القانونية نفسه للمس والماوس وتركيز لوحة المفاتيح والتلميح وردّ الخصم وتسميات اللوحة الميسّرة. تبقى القطعة المحددة والأهداف القانونية متميزتين بصرياً، كي تفهم سبب منع الحركة الهادئة من دون الاعتماد على قواعد مخفية.</p></div>
-      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>الداما لعبة استراتيجية للمتصفح موجهة للجمهور العام، موصى بها للأعمار 9 سنوات فأكثر وللعب العائلي. لا يلزم حساب أو شراء؛ تبقى المباراة الحالية وأفضل نتيجة في هذا المتصفح فقط.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يُحفظ التقدم؟</dt><dd>نعم، في هذا المتصفح فقط.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>لا تُستخدم إلا المربعات الداكنة على لوحة 8×8. يبدأ كل طرف باثنتي عشرة قطعة؛ وقد يصبح القطر المفتوح طريق هروب أو فخاً أو بداية سلسلة من عمليات الأخذ.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>تتحرك القطعة العادية خطوة واحدة قطرياً إلى الأمام. وللأخذ تقفز فوق قطعة خصم مجاورة إلى مربع فارغ فتُزال القطعة المقفوز فوقها. إذا توفر أخذ في أي موضع على اللوحة، فلا يجوز اختيار حركة بلا أخذ.</p>
+<p>بعد الأخذ، افحص موضع القطعة نفسها. إذا أمكنها الأخذ مجدداً، فعليها متابعة القفزات المتعددة. وعند بلوغ الصف الأخير للخصم تصبح ملكاً وتتحرك وتأخذ قطرياً في الاتجاهين. إذا أدى الأخذ إلى ترقية القطعة، ينتهي الدور فوراً.</p>
+<p>يرد الخصم بحركة قانونية وقد يفضّل الأخذ أو الترقية. تنتهي المباراة عندما لا يملك أحد الطرفين قطعاً أو حركات قانونية؛ وقد تنتهي بالتعادل بعد مدة طويلة بلا أخذ أو ترقية. تبرز التلميحة قطعة بداية قانونية لكنها لا تختار مربع الوصول.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اضغط على «ابدأ اللعب» في الشاشة الرئيسية ولاحظ الدور الحالي والقطع المميزة باللون الذهبي.</li><li>اختر قطعة ذهبية لها وجهة قطرية قانونية، ثم اختر مربع الوصول المميز.</li><li>إذا توفر أخذ، فيجب تنفيذه. بعد الهبوط تابع بالقطعة نفسها إذا أمكنها الأخذ مرة أخرى. إذا أدى الأخذ إلى ترقية القطعة، ينتهي الدور فوراً.</li><li>حافظ على طريق إلى الصف الأخير للخصم واستفد من الحركة في الاتجاهين بعد الترقية إلى ملك.</li><li>استخدم التلميحة لرؤية قطعة بداية قانونية. تعيد إعادة البدء المباراة إلى وضعها الافتتاحي.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>قبل التحرك، افحص إمكانات الأخذ لدى كل قطع الخصم واحسب مربع الوصول، لا القطعة التي ستقفز فوقها فقط.</li><li>لا تدفع قطعة واحدة بعيداً وحدها؛ احتفظ بدعم قطري كي لا يرد الخصم بأخذ سهل.</li><li>أثناء القفزات المتعددة، أعد تقييم المربع التالي بعد كل هبوط؛ فالأخذ الأول لا ينهي الدور دائماً.</li><li>عند السعي إلى الترقية، اترك طريقاً للعودة. الملك أكثر مرونة لكنه قد يُحاصر بأخذ إجباري أو قطر مغلق.</li><li>عندما تتقدم في عدد القطع، بدّل بأمان وقلل الحركات القانونية للخصم؛ وعندما تتأخر، حافظ على الحركة وابحث عن طريق للترقية.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعلّم البداية الحركة القطرية وقاعدة الأخذ العامة. تظهر في منتصف المباراة خيارات أخذ متنافسة وقرارات القفز المتعدد؛ وفي النهاية تزداد أهمية الملوك والطرق المسدودة وحساب كل حركة. كل جلسة مباراة كاملة وليست مراحل تُفتح بالتتابع.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تستخدم اللمسات والماوس وتركيز لوحة المفاتيح والتلميحات وردود الخصم محرك الحركات القانونية نفسه. تظهر القطعة المحددة ومربعات الوصول القانونية بعلامتين مختلفتين، كي توضح اللوحة سبب منع الحركة الهادئة عند توفر أخذ.</p></div>
+      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>لا يلزم تسجيل الدخول أو الشراء للعب. لا تُحفظ المباراة الجارية؛ تبقى أفضل نتيجة فقط في هذا المتصفح. قد يؤدي مسح بيانات الموقع إلى حذفها.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل الأخذ إجباري؟</dt><dd>نعم. إذا توفر أخذ في أي موضع على اللوحة، فعليك اختيار حركة تتضمن الأخذ.</dd></div><div><dt>متى تنتهي القفزات المتعددة؟</dt><dd>تتابع القطعة نفسها القفز ما دامت تستطيع الأخذ من مربعها الجديد. وينتهي الدور عندما لا يتوفر أخذ آخر. إذا أدى الأخذ إلى ترقية القطعة، ينتهي الدور فوراً.</dd></div><div><dt>كيف تصبح القطعة ملكاً؟</dt><dd>عندما تصل إلى الصف الأخير للخصم، تترقى وتستطيع التحرك والأخذ قطرياً في الاتجاهين.</dd></div><div><dt>كيف أفوز بالمباراة؟</dt><dd>تفوز عندما لا يبقى للخصم قطع أو حركات قانونية. وقد تنتهي المباراة بالتعادل بعد مدة طويلة بلا أخذ أو ترقية.</dd></div><div><dt>هل تتحرك التلميحة بدلاً مني؟</dt><dd>لا. تبرز قطعة بداية قانونية فقط؛ أما مربع الوصول والحركة فتختارهما بنفسك.</dd></div><div><dt>هل تُحفظ المباراة أو أفضل نتيجة؟</dt><dd>لا تُحفظ المباراة الجارية. تبقى أفضل نتيجة في هذا المتصفح فقط؛ ولا يلزم تسجيل الدخول أو الشراء.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>إطفاء الأنوار</strong><span>إطفاء الأنوار لغز مفاتيح كلاسيكي على لوحة 5×5: بدّل الخلية وجيرانها الجانبيين حتى تطفئ كل الأضواء.</span></span></a><a class="game-info-related-card" href="/ar/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>أربع على التوالي</strong><span>أسقط أقراصك في لوحة من سبعة أعمدة وستة صفوف.</span></span></a></div></div>
     </div>
   </section>
 </body>

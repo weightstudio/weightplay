@@ -720,6 +720,9 @@
   }
 
   function localizeGuide() {
+    // The route's locale-owned Text Growth 1.4.0 Guide and FAQ are complete;
+    // preserve that rendered copy instead of applying the legacy partial override.
+    if (document.querySelector('.game-page-info-static[data-wp-text-growth-version="1.4.0"]')) return;
     const guide = document.querySelector(".game-page-info");
     if (!guide) return;
     const setText = (selector, key) => {

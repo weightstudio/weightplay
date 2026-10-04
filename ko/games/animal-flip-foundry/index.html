@@ -23,59 +23,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="크리스털 통을 스와이프해 공중에서 회전시키고 다음 작업장 표면에 똑바로 착지시키세요." />
+    <meta name="description" content="한 번의 스와이프로 수정 용기를 발사하고 힘을 조절해 여섯 챕터의 공방 플랫폼 24곳에 착지하세요." />
     <title>플립 공방 | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
     <script defer src="game.js?v=20260903-animal-flip-foundry-stage-hit-target-v14"></script>
+    <meta property="og:description" content="한 번의 스와이프로 수정 용기를 발사하고 힘을 조절해 여섯 챕터의 공방 플랫폼 24곳에 착지하세요." />
+    <meta name="twitter:description" content="한 번의 스와이프로 수정 용기를 발사하고 힘을 조절해 여섯 챕터의 공방 플랫폼 24곳에 착지하세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="플립 공방 | WeightPlay" />
-    <meta property="og:description" content="크리스털 통을 스와이프해 공중에서 회전시키고 다음 작업장 표면에 똑바로 착지시키세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/animal-flip-foundry/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="플립 공방 | WeightPlay" />
-    <meta name="twitter:description" content="크리스털 통을 스와이프해 공중에서 회전시키고 다음 작업장 표면에 똑바로 착지시키세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "플립 공방",
-  "alternateName": "Flip Foundry",
-  "url": "https://weightplay.com/ko/games/animal-flip-foundry/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "크리스털 통을 스와이프해 공중에서 회전시키고 다음 작업장 표면에 똑바로 착지시키세요.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "ko",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "아케이드",
-    "물리",
-    "동물"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 9
-  }
-}
-    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"플립 공방","alternateName":"Flip Foundry","url":"https://weightplay.com/ko/games/animal-flip-foundry/","image":"https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp","description":"한 번의 스와이프로 수정 용기를 발사하고 힘을 조절해 여섯 챕터의 공방 플랫폼 24곳에 착지하세요.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ko","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["스와이프 발사","힘 조절","물리 아케이드","정밀 착지"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   </head>
   <body data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>플립 공방</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
         <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">플립 공방</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><img class="five-game-cover main-cover" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary" data-five-copy="lede">Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.</p>
+        <p class="lede main-summary" data-five-copy="lede">한 번의 스와이프로 수정 용기를 발사하고 힘을 조절해 여섯 챕터의 공방 플랫폼 24곳에 착지하세요.</p>
         <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best streak: 0</p><button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png')" hidden><header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Foundry Chapters</h2></header><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav></section>
@@ -83,7 +55,7 @@
     </main>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-    <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
+    <script src="../../src/five-new-games-locale.js?v=20261003-flip-foundry-text140-v1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
@@ -91,23 +63,25 @@
   <section class="game-page-info game-page-info-static" aria-label="플립 공방 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>플립 공방</h2><p>크리스털 통을 스와이프해 공중에서 회전시키고 다음 작업장 표면에 똑바로 착지시키세요.</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>정밀 플립 챌린지</span><span>아케이드</span><span>물리</span><span>동물</span></div></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>정밀 플립 챌린지</strong></div><div class="game-info-fact"><span>장르</span><strong>아케이드 · 물리 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉬움부터 도전까지</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>챕터당 1~3분</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>플립 공방</h2><p>한 번의 스와이프로 수정 용기를 발사하고 힘을 조절해 여섯 챕터의 공방 플랫폼 24곳에 착지하세요.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>스와이프 발사</span><span>힘 조절</span><span>물리 아케이드</span><span>정밀 착지</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>스와이프 착지 아케이드</strong></div><div class="game-info-fact"><span>장르</span><strong>스와이프 발사 · 힘 조절 · 물리 아케이드 · 정밀 착지</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉬움부터 도전까지</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>챕터당 1~3분</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>공방에서는 신중한 한 번의 발사가 네 표면을 잇는 경로가 됩니다. 짧은 스와이프는 낮게, 긴 스와이프는 멀리 이동하며, 똑바로 착지할 때마다 다음 판단이 생깁니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>실시간 경기장에서 통을 위로 드래그하세요. 스와이프 힘이 발사 거리를 정하고 통은 비행 중 회전합니다.</p>
-<p>성공하면 연승을 이어 다음 표면으로 가고, 실패하면 같은 플랫폼을 즉시 다시 시도할 수 있는 결과 화면이 열립니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>챕터를 선택하고 준비 신호를 기다리세요.</li><li>통을 누른 뒤 한 번의 깨끗한 위쪽 제스처로 드래그하세요.</li><li>다음 표면까지의 거리에 맞춰 길이를 조절하고 회전을 관찰하세요.</li><li>네 표면에 똑바로 착지해 챕터를 클리어한 뒤 다시 플레이하거나 계속하세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>가까운 플랫폼에는 짧게 스와이프하고 먼 플랫폼일 때만 길이를 늘리세요.</li><li>동작은 대부분 수직으로 유지하세요. 큰 옆방향 드래그는 정밀 착지를 어렵게 합니다.</li><li>실패 후 결과 안내를 읽고 한 번에 한 요소만 바꾸세요.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>여섯 챕터는 넓은 시작점에서 시작해 새로운 간격을 더하고 정밀한 경로로 끝납니다. 각 챕터는 네 표면을 유지하며 거리와 타이밍으로 어려워집니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>정밀 플립 챌린지는 오리지널 통 아트, 제작 물리, 제스처 입력과 즉시 착지 피드백으로 모바일과 데스크톱에서 힘과 정확도를 보여 줍니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>이 일반 브라우저 게임에는 계정, 구매, 채팅, 순위표 또는 광고 흐름이 없습니다. 착지 연승과 최고 기록은 이 브라우저에 저장됩니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>통을 어떻게 발사하나요?</dt><dd>경기장에서 통을 위로 드래그하세요. 발사하려면 충분히 긴 제스처가 필요합니다.</dd></div><div><dt>성공적인 착지는 무엇인가요?</dt><dd>스와이프를 놓는 순간 발사 힘이 현재 발판의 허용 범위에 드는지로 성공이 결정됩니다. 실패하면 스와이프 길이를 조정하세요. 화면의 회전과 별개로 똑바로 선 각도를 검사하지는 않습니다.</dd></div><div><dt>마우스를 사용할 수 있나요?</dt><dd>네. 마우스 드래그와 터치 스와이프는 같은 발사 동작을 사용합니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>이 브라우저에 로컬 최고 연승만 저장됩니다.</dd></div><div><dt>한 챕터에는 몇 개의 표면이 있나요?</dt><dd>여섯 챕터마다 작업장 표면 네 개가 있으며, 거리와 타이밍으로 도전이 커집니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-sketchwheel-rally/"><img src="/assets/interface7-redrawn/animal-sketchwheel-rally.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>스케치휠 랠리</strong><span>지형마다 바퀴 윤곽을 그리고 실제 형태의 성능을 확인한 뒤 다음 바퀴를 조절해 동물 레이서가 라이벌보다 먼저 결승에 도착하게 하세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>바운스 난투</strong><span>재미있는 물리 경기장에서 바운스 시간을 맞추고, 폼 도구를 선택하고, 라이벌의 균형을 무너뜨리세요.</span></span></a></div></div>
+      <div class="game-info-section"><h3>세계와 목표</h3><p>각 챕터에는 공방 플랫폼 네 개가 있습니다. 착지에 성공하면 캐니스터가 다음 플랫폼으로 이동하고 연속 기록이 이어집니다.</p>
+<p>놓을 때의 스와이프 힘을 플랫폼의 허용 범위에 맞추는 것이 핵심입니다. 실패한 플랫폼은 조정해 다시 시도할 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>용기를 누른 채 끊김 없이 위로 드래그하세요. 스와이프 길이에 따라 발사 힘과 비행이 달라지며, 놓을 때 현재 플랫폼의 허용 힘 범위에 맞는지 판정합니다.</p>
+<p>착지에 성공하면 다음 플랫폼으로 이동하고 연속 기록이 이어집니다. 실패하면 다시 시도로 같은 플랫폼을 반복하거나 챕터를 눌러 지도로 돌아가세요.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>공방 지도에서 챕터를 고르고 준비 표시를 기다리세요.</li><li>용기를 누른 채 한 번의 부드러운 위쪽 동작으로 드래그하세요. 스와이프 길이가 발사 힘을 바꿉니다.</li><li>놓아 발사하세요. 성공 여부는 놓을 때 힘이 현재 플랫폼의 허용 범위에 들어가는지로 결정됩니다.</li><li>실패하면 다시 시도를 선택하고 힘을 조절하세요. 플랫폼 네 곳에 성공적으로 착지하면 챕터를 완료합니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>먼저 안정적으로 위로 스와이프하고 착지 결과를 보며 현재 플랫폼의 힘 범위를 파악하세요.</li><li>실패하면 스와이프 길이를 조금 바꿔 결과를 비교하세요. 플랫폼까지의 거리는 성공 판정 기준이 아닙니다.</li><li>동작을 되도록 수직으로 유지하고 플랫폼의 결과를 보며 힘을 조절하세요.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>공방은 6개 챕터로 구성되며 각 챕터에는 플랫폼 4개가 있습니다. 착지에 성공하면 다음 플랫폼으로 이동하며 연속 기록이 이어집니다. 실패하면 같은 플랫폼을 다시 시도하거나 챕터 지도로 돌아갈 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>스케치휠 랠리에서는 직접 그린 바퀴가 지형에서의 주행에 영향을 줍니다. 플립 공방은 위쪽 스와이프를 조절해 놓을 때의 힘을 현재 플랫폼의 허용 범위에 맞추는 데 집중합니다. 터치와 마우스는 같은 동작을 사용하며, 착지 결과를 보고 같은 플랫폼에서 다음 시도를 조정할 수 있습니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>플립 공방은 짧게 즐기는 일반 이용자용 브라우저 게임이며 계정이나 구매가 필요하지 않습니다. 최고 착지 기록만 이 브라우저에 저장됩니다. 현재 기록은 진행 중인 플레이에만 유지되며, 사이트 데이터를 지우면 저장된 최고 기록이 사라질 수 있습니다. WeightPlay는 개인정보 처리방침에 설명된 대로 페이지와 게임 이용 분석을 사용할 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>용기를 어떻게 발사하나요?</dt><dd>용기를 누른 채 위로 드래그하세요. 스와이프 길이가 발사 힘을 바꿉니다.</dd></div><div><dt>착지 성공은 어떻게 판정하나요?</dt><dd>놓을 때의 힘이 현재 플랫폼의 허용 범위에 들어가야 합니다. 회전은 시각적 피드백이며 각도를 별도로 검사하지 않습니다.</dd></div><div><dt>마우스로도 플레이할 수 있나요?</dt><dd>네. 마우스 드래그와 터치 스와이프는 같은 동작을 사용합니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>최고 연속 기록만 이 브라우저에 저장됩니다. 현재 기록은 진행 중인 플레이에만 유지됩니다.</dd></div><div><dt>한 챕터에는 플랫폼이 몇 개 있나요?</dt><dd>여섯 챕터마다 공방 플랫폼이 네 개 있습니다. 착지에 성공하면 다음으로 이동하고 실패하면 다시 시도할 수 있습니다.</dd></div><div><dt>실패한 뒤에는 무엇을 조절하나요?</dt><dd>스와이프 길이를 조금 바꿔 놓을 때의 힘을 조절하고 같은 플랫폼에서 결과를 비교하세요.</dd></div><div><dt>같은 플랫폼을 다시 시도할 수 있나요?</dt><dd>네. 실패 후 재시도를 누르면 같은 플랫폼에서 다시 시작하고, 챕터를 누르면 지도 화면으로 돌아갑니다.</dd></div><div><dt>연속 기록은 무엇을 세나요?</dt><dd>현재 플레이에서 성공한 직립 착지의 연속 횟수입니다. 최고 기록은 이 브라우저에 저장됩니다.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-sketchwheel-rally/"><img src="/assets/interface7-redrawn/animal-sketchwheel-rally.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>스케치휠 랠리</strong><span>다음 지형에 맞춰 바퀴를 그리고, 측정된 모양이 경주에 주는 영향을 살핀 뒤 코스가 바뀌면 다시 그려 보세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>바운스 난투</strong><span>재미있는 물리 경기장에서 바운스 시간을 맞추고, 폼 도구를 선택하고, 라이벌의 균형을 무너뜨리세요.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-flip-seo130"></script>
+<script src="/src/game-page-info.js?v=20261003-flip-foundry-text140-v1"></script>
 </body>
 </html>

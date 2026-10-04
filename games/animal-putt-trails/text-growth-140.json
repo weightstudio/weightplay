@@ -1,0 +1,798 @@
+{
+  "version": "1.4.0",
+  "locales": {
+    "en": {
+      "description": "Plan putts across 30 holes: pull back to set direction and power, bank around walls, avoid water, and save each hole’s best strokes in this browser.",
+      "tags": [
+        "One-Thumb Putting Strategy",
+        "Bank-Shot Planning",
+        "Par-Based Sports Puzzle"
+      ],
+      "intro": "Choose a line and pull strength for each of 30 holes. Use the banks to bend a shot around a wall, or take a shorter route that leaves room to recover.",
+      "story": [
+        "Orla’s moonlit course has 30 holes. The routes use meadow greens, low banks and water hazards; later holes shift the start, cup and obstacles to ask for a new line.",
+        "Clear a hole to open the next one. Every fifth hole is a checkpoint, and earlier holes stay on the map so you can return to improve a best score."
+      ],
+      "systems": [
+        "Pull back from the ball, away from the direction you want it to travel. The pull sets both aim and power; release to putt. A short pull is easier to control, while a long pull sends the ball farther and can make a miss harder to recover.",
+        "Walls and banks redirect the rolling ball. Water ends the current attempt, but Retry lets you play that hole again without removing cleared holes or unlocked progress. You earn 1 acorn at par and 1 more for each stroke under par; over par earns none.",
+        "The result screen offers Retry, Next hole or Trail map. Best strokes for each hole and the next unlocked hole are stored in this browser, not an online account."
+      ],
+      "how": [
+        "Choose an unlocked hole and check its par and visible hazards.",
+        "Place the pointer or finger at the ball, then pull back in the direction opposite your intended shot.",
+        "Release to putt. Watch where the ball stops; if a long pull reaches water, retry with less power or use a bank to approach from the safe side.",
+        "Clear the hole to continue, retry it, or return to the map. Replay an earlier hole whenever you want to improve its best score."
+      ],
+      "strategyTips": [
+        "A common mistake is pulling too far when the cup is beyond a wall. The extra power can carry the ball into water; try a shorter bank shot and leave a manageable second putt.",
+        "Aim for the open side of a bank before trying a direct line. A safe first stroke can set up a clearer approach to the cup.",
+        "Use par as a target, not a timer. If a hole takes extra strokes, it remains replayable and does not erase later unlocks."
+      ],
+      "progression": [
+        "The first five holes introduce aim, power and bank rebounds. Checkpoints follow holes 5, 10, 15, 20, 25 and 30.",
+        "Later holes combine shifted obstacles, longer routes and higher par targets. The same pull-and-release controls remain in use, and the course can be replayed after hole 30."
+      ],
+      "designNote": "Touch and mouse use drag-and-release; keyboard aiming uses the arrow keys and Enter. The 30 holes save best scores and unlocks in this browser, with no account or online ranking.",
+      "parent": "Animal Putt Trails is a calm, general-audience putting puzzle. There is no account, purchase or public ranking. Hole unlocks and best strokes stay in this browser and may be removed if its site data is cleared.",
+      "faq": [
+        [
+          "How do I aim and putt?",
+          "Pull back from the ball in the opposite direction to set aim and power, then release. A shorter pull gives you finer control."
+        ],
+        [
+          "What happens if the ball reaches water?",
+          "The attempt on that hole ends. Retry the hole; cleared holes and unlocks remain."
+        ],
+        [
+          "How many holes are there?",
+          "There are 30 holes, with a checkpoint every five holes."
+        ],
+        [
+          "What do par and acorns mean?",
+          "You earn 1 acorn at par and 1 more for each stroke under par; over par earns none."
+        ],
+        [
+          "Can I replay a hole?",
+          "Yes. Cleared holes remain available on the map, so you can try to improve a best score."
+        ],
+        [
+          "Is progress saved online?",
+          "No. Best strokes and the next unlocked hole are saved only in this browser."
+        ]
+      ]
+    },
+    "zh-Hant": {
+      "description": "規劃 30 洞推桿：向後拖曳設定方向與力道，利用邊界反彈、避開水域，並在此瀏覽器保存各洞最佳桿數。",
+      "tags": [
+        "單手推桿策略",
+        "反彈路線規劃",
+        "標準桿運動益智"
+      ],
+      "intro": "每一洞都要選好路線與拖曳力道。球可借邊界繞過牆面；若走較短的安全路線，也能為下一桿留下補救空間。",
+      "story": [
+        "Orla 的月光球場共有 30 洞。路線包含草地、低矮邊界與水域；後段會移動起點、球洞和障礙物，讓你重新判斷球路。",
+        "完成一洞就會開放下一洞；第 5、10、15、20、25、30 洞是檢查點。已完成的洞會留在地圖上，可再挑戰並刷新最佳桿數。"
+      ],
+      "systems": [
+        "從球的位置向後拖曳，也就是朝預計球路的反方向拖動。拖曳距離同時設定瞄準與力道，放開後球就會滾出。短拉比較好控制；長拉能推得更遠，但失手時也較難補救。",
+        "牆面與場地邊界會改變球的反彈方向。球碰到水面時，本次嘗試會結束；重試只重開該洞，不會取消已完成的洞或解鎖進度。以標準桿完成可得 1 顆橡果；每少一桿再多得 1 顆，高於標準桿則沒有橡果。",
+        "結果畫面可選重試、下一洞或小徑地圖。各洞最佳桿數與下一個解鎖洞只保存在這個瀏覽器，不會同步到線上帳號。"
+      ],
+      "how": [
+        "從地圖選一個已解鎖的洞，先看標準桿與障礙位置。",
+        "在球的位置按住或放下手指，再朝預計球路的反方向拖曳。",
+        "放開推桿並觀察球停在哪裡。若長拉讓球碰水，重試時減少力道，或借邊界從安全側接近。",
+        "完成後可前往下一洞、重試，或回到地圖。想刷新紀錄時，也能重玩先前完成的洞。"
+      ],
+      "strategyTips": [
+        "常見失誤是洞口在牆後時仍拉得太長；球可能越過安全落點而掉進水裡。改用較短的反彈球路，讓下一桿仍好控制。",
+        "先瞄準邊界較寬的一側，再考慮直線路徑。安全的第一桿能讓球停在更容易接近洞口的位置。",
+        "把標準桿當目標，不是倒數計時。多用幾桿完成也不會鎖回後續洞，舊洞仍可重玩。"
+      ],
+      "progression": [
+        "前五洞帶你熟悉瞄準、力道與邊界反彈；之後每五洞遇到一個檢查點，直到第 30 洞。",
+        "後段會組合位移後的障礙、較長路線與更高的標準桿；操作仍是向後拖曳再放開。完成第 30 洞後，球場仍可重玩。"
+      ],
+      "designNote": "觸控與滑鼠使用拖曳後放開；鍵盤則以方向鍵瞄準並按 Enter 推桿。30 洞的最佳桿數與解鎖狀態保存在本機，不需帳號或線上排名。",
+      "parent": "《動物推桿小徑》是節奏平和、適合一般玩家的推桿益智遊戲。不需帳號、購買或公開排名；解鎖與最佳桿數只保存在此瀏覽器，清除網站資料可能會一併刪除。",
+      "faq": [
+        [
+          "怎樣瞄準與推桿？",
+          "從球的位置朝預計球路的反方向拖曳來設定瞄準與力道，再放開。短拉比較容易微調。"
+        ],
+        [
+          "球碰到水會怎樣？",
+          "該洞這次嘗試會結束。重試該洞即可，已完成的洞與解鎖會保留。"
+        ],
+        [
+          "共有幾個洞？",
+          "共有 30 洞，每五洞設有檢查點。"
+        ],
+        [
+          "標準桿與橡果代表什麼？",
+          "以標準桿完成可得 1 顆橡果；每少一桿再多得 1 顆，高於標準桿則沒有橡果。"
+        ],
+        [
+          "可以重玩已完成的洞嗎？",
+          "可以。完成的洞會留在地圖上，你可以再挑戰並改善最佳桿數。"
+        ],
+        [
+          "進度會存到線上嗎？",
+          "不會。最佳桿數與下一個解鎖洞只存在這個瀏覽器。"
+        ]
+      ]
+    },
+    "zh-Hans": {
+      "description": "规划 30 洞推杆：向后拖动设置方向和力度，利用边界反弹、避开水域，并在此浏览器保存各洞最佳杆数。",
+      "tags": [
+        "单手推杆策略",
+        "反弹路线规划",
+        "标准杆运动益智"
+      ],
+      "intro": "每一洞都要选好路线和拖动距离。球可以借边界绕过墙面；选择较短的安全路线，也能为下一杆留下调整空间。",
+      "story": [
+        "Orla 的月光球场共有 30 洞。路线包含草地、低矮边界和水域；后段会移动起点、球洞和障碍物，让你重新判断球路。",
+        "完成一洞就会开放下一洞；第 5、10、15、20、25、30 洞是检查点。已完成的洞会留在地图上，可以再次挑战并刷新最佳杆数。"
+      ],
+      "systems": [
+        "从球的位置向后拖动，也就是朝预期球路的反方向拖。拖动距离同时设置瞄准和力度，松开后球就会滚出。短拉更容易控制；长拉能推得更远，但失手时也更难补救。",
+        "墙面和场地边界会改变球的反弹方向。球碰到水面时，本次尝试会结束；重试只重新开始该洞，不会取消已完成的洞或解锁进度。以标准杆完成可得 1 颗橡果；每少一杆再多得 1 颗，高于标准杆则没有橡果。",
+        "结果画面可选重试、下一洞或小径地图。各洞最佳杆数与下一个解锁洞只保存在此浏览器，不会同步到线上账号。"
+      ],
+      "how": [
+        "从地图选择一个已解锁的洞，先查看标准杆和障碍位置。",
+        "在球的位置按下鼠标或放下手指，再朝预期球路的反方向拖动。",
+        "松开推杆并观察球停在哪里。如果长拉让球碰水，重试时减小力度，或借边界从安全侧接近。",
+        "完成后可前往下一洞、重试或回到地图。想刷新纪录时，也能重玩之前完成的洞。"
+      ],
+      "strategyTips": [
+        "常见失误是洞口在墙后时仍拉得太长；球可能越过安全落点而掉进水里。改用较短的反弹路线，让下一杆仍容易控制。",
+        "先瞄准边界较宽的一侧，再考虑直线路径。安全的第一杆能让球停在更容易靠近洞口的位置。",
+        "把标准杆当作目标，不是倒计时。多用几杆完成也不会锁回后续洞，旧洞仍可重玩。"
+      ],
+      "progression": [
+        "前五洞带你熟悉瞄准、力度与边界反弹；之后每五洞遇到一个检查点，直到第 30 洞。",
+        "后段会组合移位后的障碍、更长的路线和更高的标准杆；操作仍是向后拖动再松开。完成第 30 洞后，球场仍可重玩。"
+      ],
+      "designNote": "触控与鼠标使用拖动后松开；键盘则用方向键瞄准并按 Enter 推杆。30 洞的最佳杆数与解锁状态保存在本地，无需账号或在线排名。",
+      "parent": "《动物推杆小径》是一款节奏平和、适合一般玩家的推杆益智游戏。无需账号、购买或公开排名；解锁和最佳杆数只保存在此浏览器，清除网站数据可能会一并删除。",
+      "faq": [
+        [
+          "怎样瞄准和推杆？",
+          "从球的位置朝预期球路的反方向拖动来设置瞄准和力度，再松开。短拉更容易微调。"
+        ],
+        [
+          "球碰到水会怎样？",
+          "该洞本次尝试会结束。重试该洞即可，已完成的洞与解锁会保留。"
+        ],
+        [
+          "共有多少个洞？",
+          "共有 30 洞，每五洞设有检查点。"
+        ],
+        [
+          "标准杆和橡果是什么意思？",
+          "以标准杆完成可得 1 颗橡果；每少一杆再多得 1 颗，高于标准杆则没有橡果。"
+        ],
+        [
+          "可以重玩已完成的洞吗？",
+          "可以。完成的洞会留在地图上，你可以再次挑战并改善最佳杆数。"
+        ],
+        [
+          "进度会保存到线上吗？",
+          "不会。最佳杆数与下一个解锁洞只保存在此浏览器。"
+        ]
+      ]
+    },
+    "ja": {
+      "description": "全30ホールのパットを計画。後ろへ引いて方向と強さを決め、壁際のバンクを使い、水を避けます。各ホールのベスト打数はこのブラウザーに保存されます。",
+      "tags": [
+        "片手パット戦略",
+        "バンクショット計画",
+        "パー目標スポーツパズル"
+      ],
+      "intro": "全30ホールでラインと引く強さを選びます。バンクを使って壁を回り込むか、次の一打を調整しやすい安全な短いルートを選びましょう。",
+      "story": [
+        "オルラの月明かりのコースには全30ホールがあります。芝、低い壁、水場があり、後半はスタート位置やカップ、障害物が移動してラインの読み直しが必要になります。",
+        "ホールをクリアすると次が解放され、5・10・15・20・25・30ホール目がチェックポイントです。クリア済みのホールはマップに残るので、ベスト打数を目指して再挑戦できます。"
+      ],
+      "systems": [
+        "ボールの位置から後ろへ引き、進ませたい向きとは反対方向にドラッグします。引く距離で狙いと強さが決まり、離すとパットします。短く引くと調整しやすく、長く引くと遠くまで届く一方、外したときの立て直しが難しくなります。",
+        "壁やコースの縁に当たるとボールの向きが変わります。水に入るとそのホールの試行は終了しますが、リトライしてもクリア済みホールや解放状況は失われません。パーちょうどならドングリ1個、パーより1打少ないごとに1個追加され、パーを超える打数では獲得できません。",
+        "結果画面からリトライ、次のホール、コースマップを選べます。各ホールのベスト打数と次の解放ホールはこのブラウザー内に保存され、オンラインアカウントには同期されません。"
+      ],
+      "how": [
+        "マップで解放済みのホールを選び、パーと障害物を確認します。",
+        "ボールから、狙いたい向きとは反対へドラッグして引きます。",
+        "離してパットし、ボールが止まった位置を見ます。強く引いて水に入ったら、リトライでは力を弱めるか、安全な側へ回り込むバンクを使います。",
+        "クリア後は次へ進む、やり直す、マップへ戻る操作を選べます。ベスト打数を更新したいときは以前のホールも再挑戦できます。"
+      ],
+      "strategyTips": [
+        "カップが壁の向こうにあるとき、強く引きすぎるのはよくある失敗です。安全な停止位置を越えて水に入ることがあります。短いバンクショットで、次の一打を打ちやすくしましょう。",
+        "まっすぐ狙う前に、広い側のバンクを狙ってみましょう。安全な一打でカップに近づけると、次のラインが読みやすくなります。",
+        "パーは目標打数で、制限時間ではありません。打数が増えても後のホールがロックされることはなく、前のホールも再挑戦できます。"
+      ],
+      "progression": [
+        "最初の5ホールで狙い、強さ、バンクの跳ね返りを覚えます。その後は5ホールごとにチェックポイントがあり、30ホール目まで続きます。",
+        "後半は位置の変わった障害物、長いルート、高めのパーが組み合わさります。操作は後ろへ引いて離す方式のままです。30ホールをクリアした後も再挑戦できます。"
+      ],
+      "designNote": "タッチとマウスはドラッグして離して打ちます。キーボードでは矢印キーで狙い、Enterで打ちます。全30ホールのベスト打数と解放状況はこのブラウザーに保存され、アカウントやオンラインランキングは不要です。",
+      "parent": "Animal Putt Trailsは、落ち着いて遊べる一般向けのパットパズルです。アカウント、購入、公開ランキングはありません。解放状況とベスト打数はこのブラウザーに保存され、サイトデータを消すと削除されることがあります。",
+      "faq": [
+        [
+          "狙って打つには？",
+          "ボールから狙いたい向きと反対へドラッグして、向きと強さを決めてから離します。短く引くと微調整しやすくなります。"
+        ],
+        [
+          "ボールが水に入ると？",
+          "そのホールの試行が終了します。ホールをリトライすれば、クリア済みのホールや解放状況は残ります。"
+        ],
+        [
+          "ホールはいくつありますか？",
+          "全30ホールで、5ホールごとにチェックポイントがあります。"
+        ],
+        [
+          "パーとドングリは何を表しますか？",
+          "パーちょうどならドングリ1個、パーより1打少ないごとに1個追加され、パーを超える打数では獲得できません。"
+        ],
+        [
+          "クリアしたホールを再挑戦できますか？",
+          "はい。クリア済みホールはマップに残るので、ベスト打数の更新を目指せます。"
+        ],
+        [
+          "進行状況はオンライン保存されますか？",
+          "いいえ。ベスト打数と次の解放ホールはこのブラウザーにのみ保存されます。"
+        ]
+      ]
+    },
+    "ko": {
+      "description": "30개 홀의 퍼팅을 계획하세요. 뒤로 당겨 방향과 힘을 정하고, 벽의 반사면을 이용해 물을 피하세요. 홀별 최고 타수는 이 브라우저에 저장됩니다.",
+      "tags": [
+        "한 손 퍼팅 전략",
+        "벽 반사 경로 계획",
+        "파 목표 스포츠 퍼즐"
+      ],
+      "intro": "30개 홀마다 공이 갈 길과 당기는 힘을 정하세요. 둑에 공을 튕겨 벽을 돌아가거나, 다음 샷을 조절하기 쉬운 짧고 안전한 길을 고를 수 있습니다.",
+      "story": [
+        "오를라의 달빛 코스는 30개 홀로 이루어져 있습니다. 잔디 코스와 낮은 둑, 물 장애물이 나오며 뒤쪽 홀은 출발점, 컵, 장애물 위치가 달라져 경로를 다시 읽어야 합니다.",
+        "홀을 클리어하면 다음 홀이 열립니다. 5, 10, 15, 20, 25, 30번 홀이 체크포인트이며, 완료한 홀은 지도에 남아 최고 타수를 다시 노릴 수 있습니다."
+      ],
+      "systems": [
+        "공에서 원하는 진행 방향의 반대로 뒤로 당기세요. 당기는 거리로 조준과 힘을 함께 정하고 손을 놓으면 퍼팅합니다. 짧게 당기면 조절하기 쉽고, 길게 당기면 멀리 가지만 빗나간 뒤 만회하기 어렵습니다.",
+        "벽이나 코스 가장자리에 맞으면 공의 방향이 바뀝니다. 물에 빠지면 해당 홀의 시도가 끝나지만, 다시 해도 완료한 홀과 해금 상태는 유지됩니다. 파로 마치면 도토리 1개를 받고, 파보다 한 타 적을 때마다 1개를 더 받습니다. 파보다 많이 치면 도토리를 받지 않습니다.",
+        "결과 화면에서 재시도, 다음 홀, 트레일 지도를 선택하세요. 홀별 최고 타수와 다음 해금 홀은 이 브라우저에만 저장되며 온라인 계정과 동기화되지 않습니다."
+      ],
+      "how": [
+        "지도에서 열린 홀을 고르고 파와 장애물 위치를 확인하세요.",
+        "공에서 원하는 방향의 반대로 손가락이나 마우스를 움직여 당기세요.",
+        "놓아서 퍼팅하고 공이 멈춘 곳을 살펴보세요. 세게 당겨 물에 빠졌다면 다시 할 때 힘을 줄이거나 안전한 쪽의 둑을 이용하세요.",
+        "홀을 마치면 다음으로 가거나, 다시 하거나, 지도로 돌아갈 수 있습니다. 최고 타수를 노리고 이전 홀을 다시 플레이해도 됩니다."
+      ],
+      "strategyTips": [
+        "컵이 벽 뒤에 있을 때 너무 세게 당기는 실수가 흔합니다. 안전한 지점을 지나 물에 빠질 수 있으니 짧게 튕기는 샷으로 다음 퍼팅을 쉽게 만드세요.",
+        "직선으로 노리기 전에 넓은 쪽 둑을 이용해 보세요. 안전한 첫 샷은 컵을 향한 다음 경로를 더 읽기 쉽게 합니다.",
+        "파는 목표 타수이지 제한 시간이 아닙니다. 더 많은 타수가 들어도 다음 홀이 다시 잠기지 않으며 지난 홀도 재도전할 수 있습니다."
+      ],
+      "progression": [
+        "처음 다섯 홀에서 조준, 힘 조절, 둑 반사를 익힙니다. 이후 다섯 홀마다 체크포인트가 있으며 30번 홀까지 이어집니다.",
+        "뒤쪽 홀에는 위치가 바뀐 장애물, 더 긴 경로, 더 높은 파가 조합됩니다. 조작은 계속 뒤로 당겼다가 놓는 방식이며 30번 홀을 마친 뒤에도 코스를 다시 할 수 있습니다."
+      ],
+      "designNote": "터치와 마우스는 드래그한 뒤 놓아 퍼팅합니다. 키보드로는 화살표 키로 조준하고 Enter를 눌러 퍼팅합니다. 30개 홀의 최고 타수와 해금은 이 브라우저에 저장되며 계정이나 온라인 순위는 필요하지 않습니다.",
+      "parent": "Animal Putt Trails는 차분하게 즐길 수 있는 일반 대상 퍼팅 퍼즐입니다. 계정, 구매, 공개 순위가 없습니다. 해금과 최고 타수는 이 브라우저에 저장되며 사이트 데이터를 지우면 삭제될 수 있습니다.",
+      "faq": [
+        [
+          "어떻게 조준하고 퍼팅하나요?",
+          "공에서 원하는 방향의 반대로 뒤로 당겨 방향과 힘을 정한 뒤 놓으세요. 짧게 당길수록 세밀하게 조절하기 쉽습니다."
+        ],
+        [
+          "공이 물에 빠지면 어떻게 되나요?",
+          "해당 홀의 시도가 끝납니다. 홀을 다시 해도 완료한 홀과 해금 상태는 유지됩니다."
+        ],
+        [
+          "홀은 몇 개 있나요?",
+          "총 30개 홀이 있으며 다섯 홀마다 체크포인트가 있습니다."
+        ],
+        [
+          "파와 도토리는 무엇인가요?",
+          "파로 마치면 도토리 1개를 받고, 파보다 한 타 적을 때마다 1개를 더 받습니다. 파보다 많이 치면 도토리를 받지 않습니다."
+        ],
+        [
+          "완료한 홀을 다시 할 수 있나요?",
+          "네. 완료한 홀은 지도에 남아 있으므로 최고 타수를 다시 노릴 수 있습니다."
+        ],
+        [
+          "진행 상황이 온라인에 저장되나요?",
+          "아니요. 최고 타수와 다음으로 열리는 홀은 이 브라우저에만 저장됩니다."
+        ]
+      ]
+    },
+    "es": {
+      "description": "Planifica golpes en 30 hoyos: arrastra hacia atrás para elegir dirección y fuerza, rebota en los bordes, evita el agua y guarda aquí tus mejores golpes.",
+      "tags": [
+        "Estrategia de putt a un dedo",
+        "Planificación de rebotes",
+        "Puzle deportivo por par"
+      ],
+      "intro": "En cada uno de los 30 hoyos eliges la línea y cuánto arrastrar. Puedes usar un reborde para rodear un muro o tomar una ruta corta y segura que facilite el siguiente golpe.",
+      "story": [
+        "El recorrido iluminado por la luna de Orla tiene 30 hoyos. Hay césped, bordes bajos y agua; en los hoyos posteriores cambian la salida, el hoyo y los obstáculos, así que toca volver a leer la línea.",
+        "Al completar un hoyo se abre el siguiente. Los hoyos 5, 10, 15, 20, 25 y 30 son puntos de control. Los hoyos superados permanecen en el mapa para intentar mejorar tu mejor resultado."
+      ],
+      "systems": [
+        "Arrastra hacia atrás desde la bola, en sentido contrario al que quieres que avance. La distancia del arrastre ajusta la dirección y la fuerza; al soltar, golpeas. Un arrastre corto se controla mejor. Uno largo llega más lejos, pero cuesta más recuperarse si fallas.",
+        "Los muros y bordes cambian la trayectoria de la bola. Si cae al agua, termina el intento de ese hoyo; puedes repetirlo sin perder hoyos superados ni desbloqueos. Ganas 1 bellota al hacer el par y una más por cada golpe bajo par; por encima del par no recibes ninguna.",
+        "Al terminar, elige Reintentar, Siguiente hoyo o Mapa de senderos. Los mejores golpes de cada hoyo y el próximo hoyo desbloqueado se guardan en este navegador, no en una cuenta en línea."
+      ],
+      "how": [
+        "Elige en el mapa un hoyo desbloqueado y mira el par y los obstáculos.",
+        "Desde la bola, arrastra en dirección opuesta a la trayectoria que quieres darle.",
+        "Suelta para golpear y observa dónde se detiene. Si un arrastre largo acaba en el agua, prueba con menos fuerza o rebota por el lado seguro.",
+        "Completa el hoyo para avanzar, repetirlo o volver al mapa. También puedes regresar a un hoyo superado para mejorar tu marca."
+      ],
+      "strategyTips": [
+        "Un error habitual es arrastrar demasiado cuando el hoyo está detrás de un muro. La bola puede pasar la zona segura y caer al agua. Prueba un rebote más corto para dejar un segundo golpe controlable.",
+        "Antes de buscar una línea recta, apunta al lado más abierto del borde. Un primer golpe seguro puede dejarte una aproximación más clara.",
+        "El par es una meta de golpes, no un temporizador. Necesitar más golpes no bloquea los hoyos posteriores y puedes repetir los anteriores."
+      ],
+      "progression": [
+        "Los cinco primeros hoyos enseñan dirección, fuerza y rebotes en los bordes. Después hay un punto de control cada cinco hoyos hasta el 30.",
+        "Los hoyos posteriores combinan obstáculos desplazados, rutas más largas y pares más altos. El control sigue siendo arrastrar hacia atrás y soltar; el recorrido se puede repetir después del hoyo 30."
+      ],
+      "designNote": "En pantalla táctil y con ratón, arrastra y suelta; con el teclado, apunta con las flechas y pulsa Enter. Los mejores golpes y desbloqueos de los 30 hoyos se guardan en este navegador, sin cuenta ni clasificación en línea.",
+      "parent": "Animal Putt Trails es un puzle de putt tranquilo para público general. No requiere cuenta, compra ni clasificación pública. Los desbloqueos y mejores golpes se quedan en este navegador y pueden borrarse al eliminar los datos del sitio.",
+      "faq": [
+        [
+          "¿Cómo apunto y golpeo?",
+          "Arrastra desde la bola en dirección opuesta a la trayectoria deseada para fijar dirección y fuerza; luego suelta. Un arrastre corto permite ajustar mejor."
+        ],
+        [
+          "¿Qué ocurre si la bola cae al agua?",
+          "Termina el intento de ese hoyo. Puedes repetirlo; los hoyos superados y desbloqueos se conservan."
+        ],
+        [
+          "¿Cuántos hoyos hay?",
+          "Hay 30 hoyos y un punto de control cada cinco."
+        ],
+        [
+          "¿Qué significan el par y las bellotas?",
+          "Ganas 1 bellota al hacer el par y una más por cada golpe bajo par; por encima del par no recibes ninguna."
+        ],
+        [
+          "¿Puedo repetir un hoyo superado?",
+          "Sí. Los hoyos superados siguen en el mapa para que intentes mejorar tu mejor marca."
+        ],
+        [
+          "¿El progreso se guarda en línea?",
+          "No. Los mejores golpes y el siguiente hoyo desbloqueado se guardan solo en este navegador."
+        ]
+      ]
+    },
+    "pt-BR": {
+      "description": "Planeje tacadas em 30 buracos: arraste para trás para definir direção e força, use as bordas para rebater, evite a água e salve aqui suas melhores tacadas.",
+      "tags": [
+        "Estratégia de putt com um dedo",
+        "Planejamento de rebatidas",
+        "Quebra-cabeça esportivo por par"
+      ],
+      "intro": "Em cada um dos 30 buracos, escolha a linha e a força do arrasto. Use uma borda para contornar um muro ou siga por um caminho curto e seguro que facilite a próxima tacada.",
+      "story": [
+        "O campo ao luar de Orla tem 30 buracos. Há gramados, bordas baixas e água; nos buracos seguintes, a saída, o alvo e os obstáculos mudam de posição e pedem uma nova leitura da linha.",
+        "Concluir um buraco libera o próximo. Os buracos 5, 10, 15, 20, 25 e 30 são pontos de controle. Os anteriores continuam no mapa para você tentar melhorar seu melhor resultado."
+      ],
+      "systems": [
+        "Arraste para trás a partir da bola, na direção oposta à que deseja seguir. A distância define mira e força; solte para bater. Um arrasto curto é mais fácil de controlar. Um longo alcança mais longe, mas dificulta a recuperação quando erra.",
+        "Muros e bordas mudam a trajetória da bola. Se ela cair na água, a tentativa daquele buraco termina; é possível tentar de novo sem perder buracos concluídos ou desbloqueios. Você ganha 1 bolota ao fazer o par e mais uma por tacada abaixo do par; acima do par, não ganha bolotas.",
+        "Na tela de resultado, escolha Tentar de novo, Próximo buraco ou Mapa de trilhas. As melhores tacadas por buraco e o próximo buraco liberado ficam salvos neste navegador, não em uma conta on-line."
+      ],
+      "how": [
+        "Escolha no mapa um buraco liberado e confira o par e os obstáculos.",
+        "A partir da bola, arraste no sentido oposto à trajetória que deseja fazer.",
+        "Solte para bater e veja onde a bola para. Se um arrasto longo levar à água, tente com menos força ou rebata pelo lado seguro.",
+        "Conclua o buraco para avançar, tentar novamente ou voltar ao mapa. Você também pode jogar um buraco concluído outra vez para melhorar a marca."
+      ],
+      "strategyTips": [
+        "Um erro comum é arrastar com força demais quando o buraco fica atrás de um muro. A bola pode passar do ponto seguro e cair na água. Tente uma rebatida curta para deixar a próxima tacada mais simples.",
+        "Antes de buscar uma linha reta, mire no lado mais aberto da borda. Uma primeira tacada segura pode deixar uma aproximação mais clara.",
+        "Par é uma meta de tacadas, não um cronômetro. Usar mais tacadas não bloqueia os próximos buracos, e os anteriores podem ser repetidos."
+      ],
+      "progression": [
+        "Os cinco primeiros buracos ensinam mira, força e rebatidas nas bordas. Depois há um ponto de controle a cada cinco buracos até o 30.",
+        "Os buracos finais combinam obstáculos deslocados, trajetos mais longos e pares maiores. O controle continua sendo arrastar para trás e soltar; dá para repetir o campo após o buraco 30."
+      ],
+      "designNote": "No toque e no mouse, arraste e solte; no teclado, mire com as setas e pressione Enter para bater. Os melhores resultados e desbloqueios dos 30 buracos ficam neste navegador, sem conta nem ranking on-line.",
+      "parent": "Animal Putt Trails é um quebra-cabeça de putt tranquilo para o público geral. Não exige conta, compra ou ranking público. Desbloqueios e melhores tacadas ficam neste navegador e podem ser apagados quando os dados do site são limpos.",
+      "faq": [
+        [
+          "Como mirar e bater?",
+          "Arraste a partir da bola na direção oposta à trajetória desejada para definir mira e força; depois solte. Um arrasto curto é mais fácil de ajustar."
+        ],
+        [
+          "O que acontece se a bola cair na água?",
+          "A tentativa daquele buraco termina. Você pode tentar de novo sem perder os buracos concluídos ou desbloqueios."
+        ],
+        [
+          "Quantos buracos existem?",
+          "São 30 buracos, com ponto de controle a cada cinco."
+        ],
+        [
+          "O que significam par e bolotas?",
+          "Você ganha 1 bolota ao fazer o par e mais uma por tacada abaixo do par; acima do par, não ganha bolotas."
+        ],
+        [
+          "Posso repetir um buraco concluído?",
+          "Sim. Os buracos concluídos continuam no mapa para você tentar melhorar sua melhor marca."
+        ],
+        [
+          "O progresso fica salvo on-line?",
+          "Não. As melhores tacadas e o próximo buraco liberado ficam salvos apenas neste navegador."
+        ]
+      ]
+    },
+    "fr": {
+      "description": "Prépare tes putts sur 30 trous : tire vers l’arrière pour régler direction et puissance, utilise les rebords, évite l’eau et garde ici tes meilleurs scores.",
+      "tags": [
+        "Stratégie de putt à un doigt",
+        "Planification des rebonds",
+        "Puzzle sportif avec par"
+      ],
+      "intro": "Pour chacun des 30 trous, choisissez une trajectoire et une force. Un rebord peut contourner un mur ; une route plus courte et sûre peut aussi faciliter le coup suivant.",
+      "story": [
+        "Le parcours d’Orla au clair de lune compte 30 trous. Vous y trouverez du gazon, des rebords bas et de l’eau. Plus loin, les départs, les trous et les obstacles changent de place : il faut relire la trajectoire.",
+        "Réussir un trou débloque le suivant. Les trous 5, 10, 15, 20, 25 et 30 sont des points de contrôle. Les trous réussis restent sur la carte pour tenter d’améliorer votre meilleur score."
+      ],
+      "systems": [
+        "Tirez depuis la balle vers l’arrière, dans la direction opposée à celle visée. La longueur règle à la fois la visée et la puissance ; relâchez pour putter. Un petit geste se contrôle plus facilement. Un grand envoie la balle plus loin, mais rend les erreurs plus difficiles à rattraper.",
+        "Les murs et les rebords dévient la balle. Si elle tombe dans l’eau, l’essai de ce trou s’arrête ; recommencer ne supprime ni les trous réussis ni les déblocages. Vous gagnez 1 gland au par, puis 1 de plus par coup sous le par ; au-dessus du par, vous n’en gagnez pas.",
+        "À l’écran de résultat, choisissez Recommencer, Trou suivant ou Carte des sentiers. Les meilleurs coups de chaque trou et le prochain trou débloqué sont enregistrés dans ce navigateur, sans compte en ligne."
+      ],
+      "how": [
+        "Choisissez sur la carte un trou débloqué et repérez son par et ses obstacles.",
+        "Depuis la balle, tirez dans le sens opposé à la trajectoire souhaitée.",
+        "Relâchez pour putter et observez où la balle s’arrête. Si un grand geste l’envoie dans l’eau, réduisez la puissance ou passez par le côté sûr du rebord.",
+        "Terminez le trou pour avancer, recommencer ou revenir à la carte. Vous pouvez rejouer un ancien trou pour améliorer votre marque."
+      ],
+      "strategyTips": [
+        "Une erreur fréquente consiste à tirer trop fort lorsque le trou est derrière un mur. La balle peut dépasser la zone sûre et tomber dans l’eau. Essayez un rebond plus court pour garder un deuxième coup facile à contrôler.",
+        "Avant de viser en ligne droite, choisissez le côté le plus ouvert du rebord. Un premier coup sûr peut préparer une approche plus simple.",
+        "Le par est un objectif de coups, pas un compte à rebours. Jouer quelques coups de plus ne verrouille pas la suite et les anciens trous restent rejouables."
+      ],
+      "progression": [
+        "Les cinq premiers trous présentent la visée, la puissance et les rebonds. Un point de contrôle revient ensuite tous les cinq trous jusqu’au 30e.",
+        "Les derniers trous associent obstacles déplacés, trajets plus longs et par plus élevés. Les commandes restent les mêmes : tirer vers l’arrière puis relâcher. Le parcours reste rejouable après le 30e trou."
+      ],
+      "designNote": "Sur écran tactile et à la souris, fais glisser puis relâche ; au clavier, vise avec les flèches et appuie sur Entrée. Les meilleurs scores et déblocages des 30 trous restent dans ce navigateur, sans compte ni classement en ligne.",
+      "parent": "Animal Putt Trails est un puzzle de putt calme pour le grand public. Aucun compte, achat ni classement public n’est nécessaire. Les déblocages et meilleurs coups restent dans ce navigateur et peuvent disparaître si les données du site sont effacées.",
+      "faq": [
+        [
+          "Comment viser et putter ?",
+          "Tirez depuis la balle dans la direction opposée à la trajectoire voulue pour régler direction et puissance, puis relâchez. Un geste court se règle plus facilement."
+        ],
+        [
+          "Que se passe-t-il si la balle tombe dans l’eau ?",
+          "L’essai de ce trou s’arrête. Vous pouvez le recommencer sans perdre les trous réussis ni les déblocages."
+        ],
+        [
+          "Combien y a-t-il de trous ?",
+          "Il y a 30 trous et un point de contrôle tous les cinq trous."
+        ],
+        [
+          "Que signifient le par et les glands ?",
+          "Vous gagnez 1 gland au par, puis 1 de plus par coup sous le par ; au-dessus du par, vous n’en gagnez pas."
+        ],
+        [
+          "Peut-on rejouer un trou réussi ?",
+          "Oui. Les trous réussis restent sur la carte pour tenter d’améliorer votre meilleur score."
+        ],
+        [
+          "La progression est-elle enregistrée en ligne ?",
+          "Non. Les meilleurs coups et le prochain trou débloqué sont enregistrés uniquement dans ce navigateur."
+        ]
+      ]
+    },
+    "de": {
+      "description": "Plane Putts auf 30 Löchern: Ziehe zurück, um Richtung und Kraft festzulegen, nutze Banden für Abpraller, meide Wasser und speichere Bestschläge im Browser.",
+      "tags": [
+        "Einhand-Puttstrategie",
+        "Bandenstoß-Planung",
+        "Sport-Rätsel mit Par-Ziel"
+      ],
+      "intro": "Wähle für jedes der 30 Löcher die Linie und Zugkraft. Über eine Bande kannst du um eine Wand spielen; ein kürzerer, sicherer Weg kann den nächsten Schlag erleichtern.",
+      "story": [
+        "Orlas mondhelliger Platz umfasst 30 Löcher. Dich erwarten Gras, niedrige Banden und Wasser. Spätere Löcher verschieben Abschlag, Ziel und Hindernisse, sodass du die Linie neu lesen musst.",
+        "Ein abgeschlossenes Loch schaltet das nächste frei. Die Löcher 5, 10, 15, 20, 25 und 30 sind Kontrollpunkte. Geschaffte Löcher bleiben auf der Karte und können für einen besseren Bestwert wiederholt werden."
+      ],
+      "systems": [
+        "Ziehe vom Ball aus nach hinten, also entgegen der gewünschten Flugrichtung. Die Zuglänge bestimmt Zielrichtung und Kraft; beim Loslassen rollt der Ball. Ein kurzer Zug ist leichter zu steuern. Ein langer reicht weiter, lässt sich nach einem Fehlschlag aber schwerer ausgleichen.",
+        "Wände und Banden lenken den Ball um. Fällt er ins Wasser, endet der Versuch für dieses Loch. Beim erneuten Spielen bleiben geschaffte Löcher und Freischaltungen erhalten. Bei Par gibt es 1 Eichel und für jeden Schlag unter Par eine weitere; über Par gibt es keine Eicheln.",
+        "Im Ergebnis wählst du Wiederholen, Nächstes Loch oder Pfadkarte. Bestschläge je Loch und das nächste freigeschaltete Loch bleiben in diesem Browser gespeichert, nicht in einem Onlinekonto."
+      ],
+      "how": [
+        "Wähle auf der Karte ein freigeschaltetes Loch und prüfe Par und Hindernisse.",
+        "Ziehe vom Ball aus entgegen der Richtung, in die er rollen soll.",
+        "Lass los und beobachte, wo der Ball liegen bleibt. Führt ein langer Zug ins Wasser, nimm beim Neustart weniger Kraft oder spiele über die sichere Bandenseite.",
+        "Schließe das Loch ab, spiele es erneut oder kehre zur Karte zurück. Frühere Löcher kannst du jederzeit für einen besseren Bestwert wiederholen."
+      ],
+      "strategyTips": [
+        "Ein häufiger Fehler ist ein zu langer Zug, wenn das Loch hinter einer Wand liegt. Der Ball kann über den sicheren Bereich hinaus ins Wasser rollen. Ein kurzer Bandenschlag lässt einen besser kontrollierbaren zweiten Putt.",
+        "Ziele erst auf die offenere Seite der Bande, bevor du es direkt versuchst. Ein sicherer erster Schlag schafft oft eine klarere Annäherung.",
+        "Par ist ein Schlagziel, kein Timer. Mehr Schläge sperren spätere Löcher nicht; frühere bleiben wiederholbar."
+      ],
+      "progression": [
+        "Die ersten fünf Löcher führen Zielen, Kraft und Bandenabpraller ein. Danach folgt alle fünf Löcher ein Kontrollpunkt bis zum 30. Loch.",
+        "Spätere Löcher kombinieren versetzte Hindernisse, längere Wege und höhere Par-Ziele. Die Steuerung bleibt gleich: zurückziehen und loslassen. Nach Loch 30 kannst du den Platz weiter wiederholen."
+      ],
+      "designNote": "Bei Touch und Maus ziehst du und lässt los; mit der Tastatur zielst du per Pfeiltasten und puttest mit der Eingabetaste. Bestschläge und Freischaltungen der 30 Löcher bleiben in diesem Browser; Konto und Online-Rangliste sind nicht nötig.",
+      "parent": "Animal Putt Trails ist ein ruhiges Putt-Rätsel für ein allgemeines Publikum. Konto, Kauf und öffentliche Rangliste sind nicht erforderlich. Freischaltungen und Bestschläge bleiben in diesem Browser und können beim Löschen der Websitedaten verloren gehen.",
+      "faq": [
+        [
+          "Wie ziele und putte ich?",
+          "Ziehe vom Ball aus entgegen der gewünschten Richtung, um Ziel und Kraft festzulegen, und lasse los. Ein kurzer Zug lässt sich leichter dosieren."
+        ],
+        [
+          "Was passiert, wenn der Ball ins Wasser fällt?",
+          "Der Versuch für dieses Loch endet. Beim Wiederholen bleiben geschaffte Löcher und Freischaltungen erhalten."
+        ],
+        [
+          "Wie viele Löcher gibt es?",
+          "Es gibt 30 Löcher mit einem Kontrollpunkt alle fünf Löcher."
+        ],
+        [
+          "Was bedeuten Par und Eicheln?",
+          "Bei Par gibt es 1 Eichel und für jeden Schlag unter Par eine weitere; über Par gibt es keine Eicheln."
+        ],
+        [
+          "Kann ich ein geschafftes Loch wiederholen?",
+          "Ja. Geschaffte Löcher bleiben auf der Karte, damit du deinen Bestwert verbessern kannst."
+        ],
+        [
+          "Wird der Fortschritt online gespeichert?",
+          "Nein. Bestschläge und das nächste freigeschaltete Loch werden nur in diesem Browser gespeichert."
+        ]
+      ]
+    },
+    "it": {
+      "description": "Pianifica i putt in 30 buche: tira indietro per regolare direzione e forza, usa le sponde per rimbalzare, evita l’acqua e salva qui i colpi migliori.",
+      "tags": [
+        "Strategia di putt a un dito",
+        "Pianificazione dei rimbalzi",
+        "Puzzle sportivo con obiettivo par"
+      ],
+      "intro": "Per ognuna delle 30 buche scegli traiettoria e forza del trascinamento. Puoi usare una sponda per aggirare un muro oppure una via breve e sicura che semplifichi il colpo successivo.",
+      "story": [
+        "Il campo di Orla al chiaro di luna ha 30 buche. Ci sono prati, sponde basse e acqua; nelle buche successive cambiano partenza, coppa e ostacoli, quindi occorre rileggere la traiettoria.",
+        "Completare una buca sblocca la successiva. Le buche 5, 10, 15, 20, 25 e 30 sono checkpoint. Quelle completate restano sulla mappa e si possono ripetere per migliorare il proprio record."
+      ],
+      "systems": [
+        "Trascina indietro dalla palla, nella direzione opposta a quella in cui vuoi mandarla. La distanza imposta mira e forza; rilascia per tirare. Un trascinamento breve è più facile da controllare. Uno lungo copre più distanza, ma rende più difficile recuperare un errore.",
+        "Muri e sponde deviano la palla. Se entra in acqua, il tentativo di quella buca termina; riprovare non cancella buche completate o sblocchi. Al par ottieni 1 ghianda e un’altra per ogni colpo sotto il par; sopra il par non ne ottieni.",
+        "Nella schermata Risultato puoi scegliere Riprova, Buca successiva o Mappa percorsi. I migliori colpi di ogni buca e la prossima buca sbloccata restano salvati in questo browser, non in un account online."
+      ],
+      "how": [
+        "Scegli sulla mappa una buca sbloccata e controlla par e ostacoli.",
+        "Dalla palla trascina nella direzione opposta alla traiettoria desiderata.",
+        "Rilascia per tirare e guarda dove si ferma la palla. Se un tiro troppo forte finisce in acqua, riprova con meno forza oppure usa la sponda dal lato sicuro.",
+        "Completa la buca per avanzare, riprovarla o tornare alla mappa. Puoi rigiocare una buca già completata per migliorare il record."
+      ],
+      "strategyTips": [
+        "Un errore comune è trascinare troppo quando la buca è dietro un muro. La palla può superare il punto sicuro e cadere in acqua. Prova un rimbalzo più corto per rendere gestibile il colpo successivo.",
+        "Prima di cercare la linea diretta, mira al lato più aperto della sponda. Un primo colpo sicuro può preparare un approccio più semplice.",
+        "Il par è un obiettivo di colpi, non un conto alla rovescia. Fare più colpi non blocca le buche successive e quelle precedenti restano rigiocabili."
+      ],
+      "progression": [
+        "Le prime cinque buche insegnano mira, forza e rimbalzi sulle sponde. Poi c’è un checkpoint ogni cinque buche, fino alla 30.",
+        "Le buche successive combinano ostacoli spostati, percorsi più lunghi e par più alti. I comandi restano gli stessi: trascina indietro e rilascia. Il campo si può rigiocare anche dopo la buca 30."
+      ],
+      "designNote": "Con touch e mouse, trascina e rilascia; con la tastiera, mira con le frecce e premi Invio per tirare. I record e gli sblocchi delle 30 buche restano in questo browser, senza account né classifica online.",
+      "parent": "Animal Putt Trails è un puzzle di putt tranquillo per un pubblico generale. Non richiede account, acquisti o classifiche pubbliche. Sblocchi e migliori colpi restano in questo browser e possono sparire cancellando i dati del sito.",
+      "faq": [
+        [
+          "Come miro e tiro?",
+          "Trascina indietro dalla palla, nella direzione opposta alla traiettoria desiderata, per regolare mira e forza; poi rilascia. Un tiro breve è più facile da dosare."
+        ],
+        [
+          "Cosa succede se la palla entra in acqua?",
+          "Il tentativo in quella buca termina. Puoi riprovare senza perdere le buche completate o gli sblocchi."
+        ],
+        [
+          "Quante buche ci sono?",
+          "Ci sono 30 buche e un punto di controllo ogni cinque."
+        ],
+        [
+          "Cosa indicano par e ghiande?",
+          "Al par ottieni 1 ghianda e un’altra per ogni colpo sotto il par; sopra il par non ne ottieni."
+        ],
+        [
+          "Posso ripetere una buca completata?",
+          "Sì. Le buche completate restano sulla mappa e puoi tentare di migliorare il tuo record."
+        ],
+        [
+          "I progressi sono salvati online?",
+          "No. I migliori colpi e la prossima buca sbloccata sono salvati solo in questo browser."
+        ]
+      ]
+    },
+    "ru": {
+      "description": "Планируйте удары на 30 лунках: тяните назад, выбирая направление и силу, используйте борта для отскока, обходите воду и сохраняйте лучшие результаты в браузере.",
+      "tags": [
+        "Стратегия паттинга одним пальцем",
+        "Планирование отскоков от борта",
+        "Спортивная головоломка с паром"
+      ],
+      "intro": "На каждой из 30 лунок выберите направление и силу удара. Можно оттолкнуть мяч от борта, чтобы обойти стену, или выбрать короткий безопасный путь для удобного следующего удара.",
+      "story": [
+        "На освещённом луной поле Орлы 30 лунок. На них есть газон, низкие борта и вода. На поздних лунках смещаются старт, лунка и препятствия, поэтому траекторию нужно оценить заново.",
+        "После прохождения лунки открывается следующая. Контрольные точки находятся на лунках 5, 10, 15, 20, 25 и 30. Пройденные лунки остаются на карте, и их можно повторить ради лучшего результата."
+      ],
+      "systems": [
+        "Потяните от мяча назад, в сторону, противоположную желаемому движению. Длина жеста задаёт направление и силу; отпустите, чтобы ударить. Короткий жест легче контролировать. Длинный отправит мяч дальше, но усложнит исправление ошибки.",
+        "Стены и борта меняют направление катящегося мяча. Попадание в воду завершает попытку на этой лунке; повтор не удаляет пройденные лунки и открытия. За результат в пар вы получаете 1 желудь и ещё по одному за каждый удар ниже пара; выше пара жёлуди не начисляются.",
+        "На экране результата можно выбрать повтор, следующую лунку или карту маршрутов. Лучший результат каждой лунки и следующая открытая лунка хранятся только в этом браузере, без онлайн-аккаунта."
+      ],
+      "how": [
+        "Выберите на карте открытую лунку и проверьте пар и препятствия.",
+        "От мяча потяните в сторону, противоположную желаемой траектории.",
+        "Отпустите и посмотрите, где остановился мяч. Если сильный удар привёл в воду, повторите с меньшей силой или обойдите препятствие по безопасному борту.",
+        "Пройдите лунку, повторите её или вернитесь к карте. Ранее пройденные лунки можно снова сыграть ради рекорда."
+      ],
+      "strategyTips": [
+        "Частая ошибка — слишком сильно тянуть, когда лунка находится за стеной. Мяч может пролететь безопасную зону и попасть в воду. Попробуйте короткий отскок, чтобы следующий удар было проще контролировать.",
+        "Прежде чем бить прямо, выберите более открытый край борта. Безопасный первый удар может оставить понятный подход к лунке.",
+        "Пар — цель по числу ударов, а не таймер. Лишние удары не закрывают следующие лунки, а предыдущие можно переиграть."
+      ],
+      "progression": [
+        "Первые пять лунок знакомят с прицеливанием, силой и отскоком от борта. Затем контрольная точка встречается каждые пять лунок до 30-й.",
+        "На поздних лунках сочетаются смещённые препятствия, более длинные маршруты и высокий пар. Управление остаётся прежним: потянуть назад и отпустить. После 30-й лунки поле можно проходить снова."
+      ],
+      "designNote": "На сенсорном экране и мышью тяните и отпускайте; на клавиатуре целитесь стрелками и нажимайте Enter. Лучшие результаты и открытия на 30 лунках хранятся в этом браузере; аккаунт и онлайн-рейтинг не нужны.",
+      "parent": "Animal Putt Trails — спокойная спортивная головоломка для широкой аудитории. Аккаунт, покупки и публичный рейтинг не нужны. Открытия и лучшие результаты хранятся в этом браузере и могут удалиться при очистке данных сайта.",
+      "faq": [
+        [
+          "Как прицелиться и ударить?",
+          "Потяните от мяча в сторону, противоположную желаемому движению, чтобы задать направление и силу, затем отпустите. Короткий жест проще дозировать."
+        ],
+        [
+          "Что будет, если мяч попадёт в воду?",
+          "Попытка на этой лунке завершится. Её можно повторить; пройденные лунки и открытия сохранятся."
+        ],
+        [
+          "Сколько здесь лунок?",
+          "Всего 30 лунок; контрольная точка появляется каждые пять."
+        ],
+        [
+          "Что означают пар и жёлуди?",
+          "За результат в пар вы получаете 1 желудь и ещё по одному за каждый удар ниже пара; выше пара жёлуди не начисляются."
+        ],
+        [
+          "Можно ли повторить пройденную лунку?",
+          "Да. Пройденные лунки остаются на карте — можно постараться улучшить лучший результат."
+        ],
+        [
+          "Прогресс хранится онлайн?",
+          "Нет. Лучшие удары и следующая открытая лунка сохраняются только в этом браузере."
+        ]
+      ]
+    },
+    "hi": {
+      "description": "30 होल में पुट की योजना बनाएँ: दिशा और ताकत तय करने के लिए पीछे खींचें, किनारों से गेंद मोड़ें, पानी से बचें और सर्वश्रेष्ठ स्ट्रोक इसी ब्राउज़र में रखें।",
+      "tags": [
+        "एक-अंगूठे की पुट रणनीति",
+        "किनारे से गेंद मोड़ने की योजना",
+        "पार-लक्ष्य खेल-पहेली"
+      ],
+      "intro": "30 में से हर होल के लिए रास्ता और खींचने की ताकत चुनें। दीवार के पार जाने के लिए किनारे से गेंद मोड़ें, या अगला पुट आसान रखने वाला छोटा सुरक्षित रास्ता लें।",
+      "story": [
+        "ओरला के चाँदनी वाले मैदान में 30 होल हैं। घास, नीची सीमाएँ और पानी की बाधाएँ मिलती हैं; आगे के होल में शुरुआती जगह, कप और बाधाएँ खिसकती हैं, इसलिए रास्ता फिर से पढ़ना पड़ता है।",
+        "होल पूरा करने पर अगला खुलता है। 5, 10, 15, 20, 25 और 30वें होल पर चेकपॉइंट है। पूरे किए होल नक्शे पर बने रहते हैं, ताकि आप अपना सर्वश्रेष्ठ स्कोर सुधारने के लिए फिर खेल सकें।"
+      ],
+      "systems": [
+        "गेंद से पीछे की ओर खींचें—उस दिशा के उलट जिसमें आप उसे भेजना चाहते हैं। खींचने की दूरी से निशाना और ताकत दोनों तय होते हैं; छोड़ने पर पुट लगता है। छोटी खींच को नियंत्रित करना आसान है। लंबी खींच गेंद को दूर भेजती है, पर चूक सुधारना कठिन हो सकता है।",
+        "दीवार और किनारे लुढ़कती गेंद की दिशा बदलते हैं। पानी में जाने पर उस होल का प्रयास समाप्त होता है; फिर खेलने से पूरे किए होल या अनलॉक नहीं मिटते। पार पर 1 बलूत मिलता है और पार से हर कम स्ट्रोक पर 1 और; पार से अधिक स्ट्रोक पर बलूत नहीं मिलते।",
+        "नतीजे की स्क्रीन पर फिर कोशिश, अगला होल या ट्रेल नक्शा चुनें। हर होल का सर्वश्रेष्ठ स्ट्रोक और अगला खुला होल इसी ब्राउज़र में सहेजा जाता है, किसी ऑनलाइन खाते में नहीं।"
+      ],
+      "how": [
+        "नक्शे से खुला होल चुनें और उसका पार व बाधाएँ देखें।",
+        "गेंद से उस दिशा के उलट खींचें जिसमें आप उसे भेजना चाहते हैं।",
+        "छोड़कर पुट करें और देखें गेंद कहाँ रुकती है। लंबी खींच से पानी में गई हो तो कम ताकत आज़माएँ या सुरक्षित किनारे से घुमाएँ।",
+        "होल पूरा करके आगे जाएँ, फिर कोशिश करें या नक्शे पर लौटें। सर्वश्रेष्ठ स्कोर सुधारने के लिए पुराने होल भी दोबारा खेल सकते हैं।"
+      ],
+      "strategyTips": [
+        "कप दीवार के पीछे हो तो बहुत जोर से खींचना आम चूक है। गेंद सुरक्षित जगह पार करके पानी में जा सकती है। छोटा बैंक शॉट आज़माएँ, ताकि अगला पुट नियंत्रित रहे।",
+        "सीधी लाइन लेने से पहले किनारे की खुली तरफ निशाना लगाएँ। सुरक्षित पहला स्ट्रोक कप की ओर आसान अगला रास्ता बना सकता है।",
+        "पार स्ट्रोक का लक्ष्य है, टाइमर नहीं। अधिक स्ट्रोक लगने से आगे के होल बंद नहीं होते और पुराने होल फिर खेले जा सकते हैं।"
+      ],
+      "progression": [
+        "पहले पाँच होल में निशाना, ताकत और किनारे से उछालना सीखें। फिर हर पाँच होल पर चेकपॉइंट आता है, 30वें होल तक।",
+        "बाद के होल में बदली हुई बाधाएँ, लंबे रास्ते और ऊँचे पार मिलते हैं। नियंत्रण वही रहता है: पीछे खींचें और छोड़ें। 30वें होल के बाद भी मैदान दोबारा खेला जा सकता है।"
+      ],
+      "designNote": "टच और माउस पर खींचकर छोड़ें; कीबोर्ड पर तीर कुंजियों से निशाना लगाएँ और पुट के लिए Enter दबाएँ। 30 होल के सर्वश्रेष्ठ स्ट्रोक और अनलॉक इसी ब्राउज़र में रहते हैं; खाते या ऑनलाइन रैंकिंग की जरूरत नहीं है।",
+      "parent": "Animal Putt Trails सामान्य दर्शकों के लिए शांत पुट-पहेली है। खाते, खरीद या सार्वजनिक रैंकिंग की जरूरत नहीं है। अनलॉक और सर्वश्रेष्ठ स्ट्रोक इसी ब्राउज़र में रहते हैं और साइट डेटा मिटाने पर हट सकते हैं।",
+      "faq": [
+        [
+          "निशाना और पुट कैसे करें?",
+          "गेंद से इच्छित दिशा के उलट पीछे खींचकर निशाना और ताकत तय करें, फिर छोड़ें। छोटी खींच को ठीक से नियंत्रित करना आसान है।"
+        ],
+        [
+          "गेंद पानी में जाए तो क्या होगा?",
+          "उस होल का प्रयास खत्म हो जाता है। होल फिर खेलें; पूरे किए होल और अनलॉक बने रहते हैं।"
+        ],
+        [
+          "कुल कितने होल हैं?",
+          "कुल 30 होल हैं और हर पाँच होल पर चेकपॉइंट है।"
+        ],
+        [
+          "पार और बलूत का क्या मतलब है?",
+          "पार पर 1 बलूत मिलता है और पार से हर कम स्ट्रोक पर 1 और; पार से अधिक स्ट्रोक पर बलूत नहीं मिलते।"
+        ],
+        [
+          "क्या पूरा किया होल फिर खेल सकते हैं?",
+          "हाँ। पूरे किए होल नक्शे पर बने रहते हैं, ताकि आप अपना सर्वश्रेष्ठ स्कोर सुधार सकें।"
+        ],
+        [
+          "क्या प्रगति ऑनलाइन सहेजी जाती है?",
+          "नहीं। सर्वश्रेष्ठ स्ट्रोक और अगला खुला होल केवल इसी ब्राउज़र में सहेजे जाते हैं।"
+        ]
+      ]
+    },
+    "ar": {
+      "description": "خطط ضرباتك في 30 حفرة: اسحب للخلف لتحديد الاتجاه والقوة، واستفد من الحواف للارتداد، وتجنب الماء، واحفظ أفضل الضربات في هذا المتصفح.",
+      "tags": [
+        "استراتيجية الضربة بإبهام واحد",
+        "تخطيط الارتداد عن الحواف",
+        "لغز رياضي بهدف المعدل"
+      ],
+      "intro": "اختر خط الضربة وقوة السحب لكل حفرة من الحفر الثلاثين. يمكنك جعل الكرة ترتد عن الحافة لتجاوز جدار، أو اختيار مسار أقصر وأكثر أماناً لتسهيل الضربة التالية.",
+      "story": [
+        "يضم ملعب أورلا تحت ضوء القمر 30 حفرة. ستجد العشب والحواف المنخفضة ومناطق الماء؛ وفي الحفر اللاحقة تتغير أماكن البداية والكأس والعوائق، فتحتاج إلى قراءة الخط من جديد.",
+        "يؤدي إكمال الحفرة إلى فتح الحفرة التالية. الحفر 5 و10 و15 و20 و25 و30 نقاط تفتيش. تبقى الحفر المكتملة على الخريطة لتعيدها وتحسن أفضل نتيجة."
+      ],
+      "systems": [
+        "اسحب من موضع الكرة إلى الخلف، عكس الاتجاه الذي تريد أن تسلكه. تحدد مسافة السحب الاتجاه والقوة معاً؛ ارفع إصبعك لتضرب. السحبة القصيرة أسهل في التحكم، أما الطويلة فترسل الكرة أبعد لكنها تجعل تصحيح الخطأ أصعب.",
+        "تغير الجدران والحواف اتجاه الكرة المتدحرجة. إذا دخلت الماء تنتهي محاولة تلك الحفرة، لكن الإعادة لا تمحو الحفر المكتملة أو ما فُتح منها. تحصل على بلوطة واحدة عند المعدل، وبلوطة إضافية عن كل ضربة أقل من المعدل؛ ولا تحصل على بلوطات إذا تجاوزت المعدل.",
+        "تتيح شاشة النتيجة إعادة المحاولة أو الانتقال إلى الحفرة التالية أو العودة إلى الخريطة. تُحفظ أفضل الضربات لكل حفرة والحفرة المفتوحة التالية في هذا المتصفح فقط، ولا تُزامن مع حساب عبر الإنترنت."
+      ],
+      "how": [
+        "اختر حفرة مفتوحة من الخريطة، ثم راجع المعدل والعوائق الظاهرة.",
+        "اسحب من الكرة عكس المسار الذي تريد أن تسلكه.",
+        "ارفع إصبعك لتضرب ولاحظ موضع توقف الكرة. إذا أرسلتها السحبة القوية إلى الماء، فخفف القوة أو استخدم الحافة من الجانب الآمن.",
+        "أكمل الحفرة للمتابعة أو أعدها أو ارجع إلى الخريطة. يمكنك إعادة حفرة مكتملة لتحسين أفضل نتيجة."
+      ],
+      "strategyTips": [
+        "من الأخطاء الشائعة السحب بقوة مفرطة عندما يكون الكأس خلف جدار؛ فقد تتجاوز الكرة موضع التوقف الآمن وتسقط في الماء. جرّب ارتداداً أقصر لتبقى الضربة التالية سهلة التحكم.",
+        "قبل تجربة خط مستقيم، صوب نحو الجانب الأوسع من الحافة. قد تترك الضربة الأولى الآمنة مساراً أوضح نحو الكأس.",
+        "المعدل هدف لعدد الضربات وليس مؤقتاً. لا تمنعك الضربات الإضافية من فتح الحفر التالية، ويمكنك إعادة الحفر السابقة."
+      ],
+      "progression": [
+        "تعلمك الحفر الخمس الأولى التصويب والقوة والارتداد عن الحواف. وبعدها تأتي نقطة تفتيش كل خمس حفر حتى الحفرة 30.",
+        "تجمع الحفر اللاحقة بين العوائق المتحركة والمسارات الأطول ومعدلات أعلى. تبقى طريقة التحكم نفسها: اسحب للخلف ثم ارفع إصبعك. ويمكن إعادة الملعب بعد الحفرة 30."
+      ],
+      "designNote": "على اللمس والماوس اسحب ثم اترك؛ وباستخدام لوحة المفاتيح صوب بمفاتيح الأسهم واضغط Enter للضرب. تُحفظ أفضل النتائج والفتحات للحفر الثلاثين في هذا المتصفح، من دون حساب أو ترتيب عبر الإنترنت.",
+      "parent": "Animal Putt Trails لغز ضربات هادئ للجمهور العام. لا يحتاج إلى حساب أو شراء أو ترتيب عام. تبقى الحفر المفتوحة وأفضل الضربات في هذا المتصفح، وقد تُحذف عند مسح بيانات الموقع.",
+      "faq": [
+        [
+          "كيف أصوب وأضرب؟",
+          "اسحب من الكرة إلى الخلف، عكس المسار الذي تريده، لتحديد الاتجاه والقوة ثم ارفع إصبعك. السحبة القصيرة أسهل في الضبط."
+        ],
+        [
+          "ماذا يحدث إذا دخلت الكرة الماء؟",
+          "تنتهي محاولة تلك الحفرة. يمكنك إعادتها من دون فقد الحفر المكتملة أو ما فُتح منها."
+        ],
+        [
+          "كم عدد الحفر؟",
+          "هناك 30 حفرة ونقطة تفتيش كل خمس حفر."
+        ],
+        [
+          "ماذا يعني المعدل والبلوط؟",
+          "تحصل على بلوطة واحدة عند المعدل، وبلوطة إضافية عن كل ضربة أقل من المعدل؛ ولا تحصل على بلوطات إذا تجاوزت المعدل."
+        ],
+        [
+          "هل يمكن إعادة حفرة مكتملة؟",
+          "نعم. تبقى الحفر المكتملة على الخريطة لتتمكن من تحسين أفضل نتيجة."
+        ],
+        [
+          "هل يُحفظ التقدم عبر الإنترنت؟",
+          "لا. تُحفظ أفضل الضربات والحفرة المفتوحة التالية في هذا المتصفح فقط."
+        ]
+      ]
+    }
+  }
+}

@@ -13,6 +13,7 @@
     settings: "الإعدادات",
     sound: "الصوت",
     language: "اللغة",
+    summary: "طابق النوع أو الرتبة، ثم العب ثمانية لاختيار النوع التالي.",
     start: "بدء اللعبة",
     restart: "إعادة البدء",
     newGame: "لعبة جديدة",
@@ -39,7 +40,7 @@
     faqQuestion: "هل يُحفظ التقدم؟",
     faqAnswer: "نعم، في هذا المتصفح فقط.",
     quickGuide: "طريقة اللعب",
-    quickGuideCopy: "عندما لا تكون هناك بطاقة قانونية، اسحب بطاقة. أول لاعب يفرغ يده يفوز.",
+    quickGuideCopy: "طابق النوع أو الرتبة النشطة. تتيح لك كل بطاقة 8 اختيار النوع التالي. إذا لم تستطع اللعب، اسحب بطاقة واحدة. يفوز أول لاعب يفرغ يده.",
     opponents: ["أنت", "الذكاء الاصطناعي شمالاً", "الذكاء الاصطناعي شرقاً", "الذكاء الاصطناعي غرباً"],
   };
 
@@ -86,6 +87,7 @@
       setText(document.querySelector("#startBtn"), ARABIC_SHELL.start);
       setText(document.querySelector("#restartBtn"), ARABIC_SHELL.restart);
       setText(document.querySelector("#newGameBtn"), ARABIC_SHELL.newGame);
+      setText(document.querySelector("[data-card-summary]"), ARABIC_SHELL.summary);
       setText(document.querySelector("[data-wp-main-progress] strong"), ARABIC_SHELL.progressLabel);
       setText(document.querySelector("[data-wp-main-progress] span"), ARABIC_SHELL.progressCopy);
       const battleUtility = document.querySelector("[data-wp-battle-utility]");

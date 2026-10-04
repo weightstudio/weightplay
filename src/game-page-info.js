@@ -359,55 +359,53 @@
     },
     "sudoku": {
       title: "Sudoku",
-      age: "9+",
       difficulty: "Easy to Hard",
-      time: "3-15 minutes",
+      time: "3–15 minutes",
       skills: ["Deduction", "Pattern Recognition", "Focus"],
       gameplay: "Number Logic",
-      genre: ["Classic", "Puzzle", "Strategy", "Family"],
+      genre: ["Sudoku", "Logic puzzle", "Number placement"],
       showSkills: false,
       showRelatedSkill: false,
       hideScoreBands: true,
       noteTitle: "Player and Save Information",
-      intro: "Sudoku is a classic 9x9 deduction puzzle. Fill every row, column, and 3x3 box with numbers 1–9 while using the difficulty selector, Hint, Undo, and a fresh puzzle to control the pace.",
+      intro: "Fill a 9×9 grid so every row, column, and 3×3 box contains the digits 1–9 without repeats. Choose Easy, Medium, or Hard; each level starts with its own fixed set of clues.",
       story: [
-        "The board starts with a fixed solution and a readable set of given numbers. Every empty cell narrows the next choice through the three overlapping rules: its row, its column, and its 3x3 box.",
-        "Easy, Medium, and Hard change how many cells are given at the start. The same board language remains visible at every level, so progress comes from making safer deductions rather than guessing faster.",
+        "The board is a self-contained number puzzle: fixed clues narrow the choices in each row, column, and 3×3 box. The same rule applies everywhere, so one placement can help resolve more than one part of the grid.",
+        "Easy, Medium, and Hard use the same solved grid with different clue patterns. Hard begins with fewer numbers visible, so you must carry more deductions forward before a cell is settled.",
       ],
       systems: [
-        "Select an empty cell, then choose a number from 1 to 9. Given cells are locked; editable cells can be filled or cleared without changing the puzzle solution.",
-        "A number is accepted only when it does not already appear in the selected cell's row, column, or 3x3 box. The game immediately explains a conflict instead of silently accepting an illegal move.",
-        "Hint marks one safe next cell but leaves the number choice to you. Undo restores the previous entry, while Restart repeats the current difficulty and New Game creates a fresh puzzle.",
-        "The board is playable with touch, mouse, or keyboard-friendly controls. There is no timer, account, purchase, or required network service.",
+        "Select an editable cell and enter a digit from 1 to 9. The given cells are locked; Clear removes an entry you made.",
+        "A repeated digit in the selected cell's row, column, or 3×3 box is rejected with feedback. A completed board must contain all 81 digits with no duplicates in any of those groups.",
+        "Hint highlights one editable cell that still needs attention, but does not enter a digit. Undo restores your previous entry; New Puzzle resets the current difficulty's starting board.",
+        "There is no countdown. Your current entries and undo history are temporary and are discarded when you leave. Locale and sound preferences are stored in this browser; no account or purchase is required.",
       ],
       how: [
-        "Choose Easy, Medium, or Hard from the difficulty selector.",
-        "Select an empty cell and inspect the numbers already present in its row, column, and 3x3 box.",
-        "Enter a legal number with the keypad, then use Undo or Clear when you want to compare another route.",
-        "Use Hint for one safe next cell, but make the deduction yourself.",
-        "Fill all 81 cells correctly to complete the puzzle, or choose New Game to begin a fresh board.",
+        "Choose Easy, Medium, or Hard, then start the puzzle.",
+        "Pick an empty cell and scan its row, column, and 3×3 box for digits that are already used.",
+        "Enter a possible digit with the keypad. Use Clear or Undo to revise an entry; use Hint to mark one cell to review.",
+        "Fill all 81 cells without repeating a digit in any row, column, or box to reach the solved Result.",
       ],
       strategyTips: [
-        "Start with a row, column, or box that has the most given numbers; it usually offers the narrowest candidate set.",
-        "When a number can appear in only one empty cell of a 3x3 box, place it before scanning wider patterns.",
-        "Use Clear and Undo to test a deduction without turning one uncertain guess into a long chain of errors.",
-        "Treat Hint as a next-step marker, not an automatic solution; reading why that cell is safe builds the useful skill.",
+        "Start with a row, column, or box that already contains many clues; it leaves fewer candidates to compare.",
+        "If one digit has only one possible cell in a 3×3 box, place it before checking wider patterns.",
+        "After a placement, rescan the crossing row, column, and box. One digit can narrow all three at once.",
+        "Use Hint to locate a cell that needs attention, then do the deduction yourself; it does not fill the answer.",
       ],
       progression: [
-        "Easy leaves more given cells visible, Medium removes more of the starting information, and Hard asks for the longest chain of deductions.",
-        "Each difficulty can be replayed at your own pace. A completed board is the goal; speed is not required for a successful solve.",
+        "This is one 9×9 puzzle with three clue densities, not a stage campaign. Easy shows the most starting digits, Medium fewer, and Hard the fewest.",
+        "The board rules stay fixed across difficulties. The added challenge comes from having to compare more candidates before finding a legal placement; there is no timer or unlock track.",
       ],
-      designNote: "Sudoku uses the shared Classic Logic Lab shell, a responsive 9x9 board, direct legality checks, localized feedback, Hint, Clear, Undo, Restart, New Game, and a complete Main-Battle-Result recovery path.",
-      parent: "Sudoku is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required; the current board and preferences remain in this browser.",
+      designNote: "Sudoku keeps one familiar 9×9 board across its difficulty choices. Row, column, and box checks give immediate feedback, while Hint points to a cell to review without completing the deduction for you.",
+      parent: "Sudoku is a number puzzle for a general audience. No sign-in or purchase is required. Current board entries and Undo history are not saved and are discarded when you leave; locale and sound preferences stay in this browser and may be removed with its site data.",
       related: ["lights-out", "sliding-15"],
       relatedIds: ["lights-out", "sliding-15"],
       faq: [
-        ["What is the goal?", "Fill every row, column, and 3x3 box with the numbers 1 through 9 exactly once."],
-        ["What happens when a number conflicts?", "The game rejects it and explains that the row, column, or 3x3 box already contains that number."],
-        ["What does Hint do?", "Hint marks one safe empty cell. You still choose and enter the number yourself."],
-        ["What changes between Easy, Medium, and Hard?", "The difficulty changes how many cells are given at the start; the 9x9 rules stay the same."],
-        ["Can I undo or restart?", "Yes. Undo removes the previous entry, Restart repeats the current board, and New Game creates a fresh puzzle."],
-        ["Is progress saved?", "The current board and preferences stay only in this browser. No account or cloud save is required."],
+        ["What makes a number legal?", "It must not already appear in that cell's row, column, or 3×3 box."],
+        ["What changes between Easy, Medium, and Hard?", "Each difficulty uses a different set of starting clues on the same 9×9 solved grid. Hard begins with fewer clues."],
+        ["What does Hint do?", "It highlights an editable cell that needs attention. It does not enter a digit for you."],
+        ["Does New Puzzle create a different board?", "No. It resets the selected difficulty's starting board; this version uses a fixed solved grid rather than generating a new one."],
+        ["How do I complete the puzzle?", "Fill all 81 cells so each row, column, and 3×3 box contains 1–9 without repeats."],
+        ["Is my current board saved?", "No. Board entries and Undo history are discarded when you leave. Only locale and sound preferences are stored in this browser."],
       ],
     },
     "golf-solitaire": {
@@ -1965,19 +1963,25 @@
       gameplay: "Complete Checkers Match",
       genre: ["Classic", "Puzzle", "Strategy", "Family"],
       skills: ["Planning", "Pattern Recognition", "Focus"],
+      hideSkillsFact: true,
+      noteTitle: "Player and Save Information",
+      metaDescription: "Play a full 8×8 Checkers match: plan legal diagonals, make every available capture, continue multi-jumps, and promote pieces to kings.",
+      text140Tags: ["Mandatory Captures", "Multi-Jump Checkers", "Turn-Based Strategy"],
+      relatedIds: ["lights-out", "four-in-a-row"],
+      showRelatedSkill: false,
       intro: "Checkers is a complete 8×8 match against a responsive rival. Read the dark squares, choose a legal diagonal move, and turn a forced capture into a safe route toward promotion.",
       story: [
         "The board is a compact 8×8 arena where only the dark squares are playable. You begin with twelve pieces and the rival begins with twelve pieces, so every open diagonal can become an escape route, a trap, or the first link in a capture sequence.",
       ],
       systems: [
         "Ordinary pieces move one step diagonally forward. A capture jumps over an adjacent rival piece into an empty square and removes that piece. If any capture exists anywhere on the board, non-capturing moves are not legal.",
-        "After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.",
+        "After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. If that jump promotes the piece, the turn ends immediately. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.",
         "The rival answers after your turn and can make its own capture sequence. The match ends when one side has no pieces or no legal move; a long no-progress sequence can also settle as a draw. Hint marks a legal piece but never chooses the destination for you.",
       ],
       how: [
         "Start from Main and study the highlighted gold pieces and the current turn message.",
         "Select a gold piece with a legal diagonal destination, then select the highlighted landing square.",
-        "If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown.",
+        "If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown, unless that capture promotes it to a king. Promotion ends the turn.",
         "Protect a path to the far row, promote to a king, and use the king's two-way movement to change the shape of the position.",
         "Use Hint when you need one legal starting piece, or Restart to replay the same match from its opening position.",
       ],
@@ -1992,10 +1996,10 @@
         "The opening teaches diagonal movement and the global capture rule. Midgame positions add competing capture choices and multi-jump decisions, while the endgame rewards kings, blocked routes, and move-count awareness.",
       ],
       designNote: "The Checkers preview uses the same legal-move engine for touch, mouse, keyboard focus, Hint, the rival response, and accessible board labels. A selected piece and legal targets remain visually distinct, so the player can understand why a quiet move is unavailable without relying on hidden rules.",
-      parent: "Checkers is a general-audience browser strategy game recommended for ages 9+ and family play. No account or purchase is required; the current match and Best record stay in this browser only.",
+      parent: "No sign-in or purchase is required to play. The current match is temporary; only the Best record is kept in this browser. Clearing this browser's site data can remove that record.",
       faq: [
         ["Are captures mandatory?", "Yes. If any capture is available, you must choose a capturing move."],
-        ["How do multi-jumps work?", "After a capture, the same piece must continue if it has another capture from its new square."],
+        ["How do multi-jumps work?", "After a capture, the same piece must continue if it has another capture from its new square. If the capture promotes it to a king, the turn ends immediately."],
         ["What does promotion do?", "A piece that reaches the far row becomes a king and can move or capture diagonally in both directions."],
         ["How is the winner decided?", "You win when the rival has no pieces or no legal moves. A long no-progress sequence can settle as a draw."],
         ["Does Hint play for me?", "No. Hint marks one legal starting piece; you still choose the destination and complete the move."],
@@ -2112,7 +2116,7 @@
       ],
       systems: [
         "A card is legal when its rank or suit matches the top discard. Any Eight is wild; after playing it, choose the suit that becomes active for the next turn. The active suit can therefore differ from the Eight's printed suit.",
-        "The turn moves around the table after a legal play. When you have no legal card, Draw takes one card from the stock; a drawn legal card can be played immediately, while an unusable draw leaves the turn to the next player. If the stock is empty, the round continues with the available discard state.",
+        "The turn moves around the table after a legal play. When you have no legal card, Draw takes one card from the stock; a drawn legal card can be played immediately, while an unusable draw leaves the turn to the next player. ",
         "The round ends when a player empties their hand. The Result surface identifies the winner and reports the round outcome, while New Game deals a fresh hand without changing the rules. Illegal taps stay inert and show a localized cue, so a mistaken card does not consume a turn."
       ],
       how: [
@@ -2314,19 +2318,19 @@
     },
     "animal-flip-foundry": {
       title: "Flip Foundry", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per chapter",
-      gameplay: "Precision Flip Challenge", genre: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision", "Hand-Eye Coordination"],
+      gameplay: "Swipe-and-Land Arcade", genre: ["Swipe Launch", "Force Calibration", "Physics Arcade", "Precision Landing"], skills: ["Force Calibration", "Precision", "Hand-Eye Coordination"],
       showSkills: false, showRelatedSkill: false, hideSkillsFact: true, hideRecommendedAge: true, hideScoreBands: true,
       noteTitle: "Player and Save Information",
       relatedIds: ["animal-sketchwheel-rally", "animal-bounce-brawl"],
-      intro: "Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.",
-      story: ["The foundry turns one careful launch into a route of four surfaces. Shorter swipes stay low, longer swipes travel farther, and every upright landing earns the next decision."],
-      systems: ["Drag upward from the canister on the live arena. Swipe force controls the launch distance while the canister rotates during flight.", "A good landing continues the streak and advances the surface. A miss opens a focused result with Retry so the same platform can be learned immediately."],
-      how: ["Choose a chapter and wait for the ready cue.", "Press on the canister and drag upward in one clean gesture.", "Adjust the swipe length to the distance of the next surface and watch the rotation.", "Land upright across four surfaces to clear the chapter, then replay or continue."],
-      strategyTips: ["Use a short swipe for a nearby platform and add length only when the next surface is farther away.", "Keep the gesture mostly vertical; a large sideways pull makes a precise landing harder.", "Read the result feedback after a miss and change one variable at a time."],
-      progression: ["Six chapters begin with wide starts, add new spacing, and finish with a precision route. Each chapter keeps four surfaces so the challenge grows through distance and timing, not repetition alone."],
-      designNote: "Flip Foundry uses original crystal-canister art, production physics, gesture input, and immediate landing feedback to make force and precision visible on mobile and desktop.",
-      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Landing streaks and best progress stay in this browser.",
-      faq: [["How do I launch the canister?", "Drag upward from the canister on the arena; the gesture must be long enough to launch."], ["What makes a landing good?", "Success is decided when you release the swipe: its launch strength must fall within the current surface's allowed range. Adjust the swipe length after a miss; the visible rotation is not a separate upright-angle test."], ["Can I use a mouse?", "Yes. Mouse dragging and touch swiping use the same launch gesture."], ["Is progress saved?", "Only the local best streak is saved in this browser."]],
+      intro: "Flip Foundry is a swipe-and-land arcade game: launch a crystal canister, read its flight, and tune your next swipe to land upright across a six-chapter workshop route.",
+      story: ["Inside the foundry, each chapter is a short route of four workshop platforms. One clean launch carries the crystal canister to the next surface; a successful upright landing keeps the run moving and adds to your streak.", "The challenge is to tune each swipe to the platform's allowed launch-force range. The six chapters offer a sequence of 24 platforms; a miss returns you to the same platform so you can adjust and try again."],
+      systems: ["Press the canister and drag upward in one continuous gesture. Swipe length changes launch force and flight; the canister's visible rotation makes the flight readable, but landing success is checked against the current platform's allowed force range when you release.", "A successful landing advances to the next platform and extends the current streak. A miss opens Retry for the same platform or Stages to choose a chapter. Each chapter has four platforms, and the six-chapter route contains 24 platforms when cleared without a miss."],
+      how: ["Choose any chapter from the foundry map and wait for the ready cue.", "Press on the canister and drag upward in one smooth gesture; swipe length changes the launch force and flight.", "Release to launch. Watch the rotation for feedback; success depends on whether the released swipe's force fits the current platform's allowed range.", "On a miss, use Retry to repeat that platform and adjust your swipe force. Clear all four platforms to finish the chapter; choose the next chapter or replay from the result."],
+      strategyTips: ["Start with a controlled upward swipe and use the landing result to learn the current platform's force range.", "After a miss, change the swipe length a little and compare the next result; the target's distance does not set the success rule.", "Keep the gesture mostly vertical so the canister travels along the intended path, then tune force from the platform's feedback."],
+      progression: ["The foundry has six chapters with four platforms each. Every successful landing advances to the next platform and extends the streak; a miss offers a retry on the same platform or a return to the chapter map."],
+      designNote: "Where Sketchwheel Rally asks players to draw a wheel that changes how a race handles terrain, Flip Foundry centers on calibrating one upward swipe to the current platform’s launch-force range. Touch and mouse use the same gesture, and the immediate landing result lets players adjust the next attempt on that platform.",
+      parent: "Flip Foundry is a short general-audience browser game with no account or purchase required. Only your best landing streak is saved in this browser; your current streak ends with the active run, and clearing site data may erase the saved best. WeightPlay may use page and gameplay analytics as described in its Privacy Policy.",
+      faq: [["How do I launch the canister?", "Press the canister and drag upward in one continuous gesture; swipe length changes launch force."], ["What determines a successful landing?", "When you release, the swipe's force must fall within the current platform's allowed range. Rotation is visual feedback, not a separate angle check."], ["Can I use a mouse?", "Yes. Mouse dragging and touch swiping use the same launch gesture."], ["Is progress saved?", "Only your best landing streak is saved in this browser. The current streak lasts only for the active run."]],
     },
     "animal-deep-sea-salvage": {
       title: "Deep Sea Salvage Company", age: "13+", difficulty: "Easy to Strategic", time: "5-15 minutes per session",
@@ -4760,6 +4764,152 @@
     localizedGames[localeKey]["animal-nest-weigh"] = { ...games["animal-nest-weigh"], ...copy };
   }
 
+  const animalNestWeighText140 = {
+    en: {
+      description: "Compare nest materials two at a time, keep each heavier-or-lighter clue, and infer a requested rank across 30 untimed lessons.",
+      difficulty: "Easy to challenging",
+      time: "2–6 minutes per lesson",
+      tags: ["Pairwise weight comparison", "Rank-order deduction", "Logic puzzle"],
+      faq: [
+        ["Do I see exact weights?", "No. Each weighing only shows which of the two trays is heavier. Combine those visible comparisons to prove the requested rank."],
+        ["Why can't I weigh a pair again?", "The result of a known pair stays visible. Another weighing would add no clue, so choose a different pair that can narrow the requested rank."],
+      ],
+    },
+    "zh-Hant": {
+      description: "每次比較兩種巢材並保留較重或較輕的線索，在 30 堂無計時課程中推理指定名次。",
+      difficulty: "由簡單到有挑戰性",
+      time: "每堂 2–6 分鐘",
+      tags: ["巢材重量比較", "排序推理", "邏輯益智"],
+      faq: [
+        ["會顯示確切重量數字嗎？", "不會。每次秤量只會顯示兩個托盤中哪一個較重。整理畫面上保留的比較結果，就能推理出指定名次。"],
+        ["為什麼不能重複秤同一對？", "已比較過的結果會留在畫面上，重秤不會增加新線索。請改選能縮小目標名次範圍的另一對巢材。"],
+      ],
+    },
+    "zh-Hans": {
+      description: "每次比较两种巢材并保留轻重线索，在 30 节不限时课程中推理指定名次。",
+      difficulty: "从简单到有挑战性",
+      time: "每课 2–6 分钟",
+      tags: ["巢材重量比较", "排序推理", "逻辑益智"],
+      faq: [
+        ["会显示准确的重量数字吗？", "不会。每次称量只显示两个托盘中哪一个更重。整理屏幕上保留的比较结果，就能推理出指定名次。"],
+        ["为什么不能重复称量同一对？", "已比较的结果会留在屏幕上，重复称量不会增加新线索。请改选能缩小目标名次范围的另一对巢材。"],
+      ],
+    },
+    ja: {
+      description: "巣材を二つずつ比べて重さの手がかりを集め、30の時間制限なしのレッスンで指定順位を推理します。",
+      difficulty: "やさしい内容から難しい内容へ",
+      time: "1レッスン 2～6分",
+      tags: ["巣材の重さ比べ", "順位を推理するパズル", "論理パズル"],
+      faq: [
+        ["正確な重さの数字は表示されますか？", "いいえ。量ると二つのトレイのどちらが重いかだけが分かります。画面に残る比較結果を組み合わせて、指定順位を推理します。"],
+        ["同じ組をもう一度量れないのはなぜですか？", "比べた結果は画面に残るため、同じ組から新しい手がかりは得られません。求める順位を絞れる別の組を選びましょう。"],
+      ],
+    },
+    ko: {
+      description: "둥지 재료를 두 개씩 비교하고 무게 단서를 모아, 시간 제한 없는 30개 레슨에서 요청된 순위를 추론해요.",
+      difficulty: "쉬운 단계부터 도전적인 단계까지",
+      time: "레슨당 2~6분",
+      tags: ["둥지 재료 무게 비교", "순위 추론", "논리 퍼즐"],
+      faq: [
+        ["정확한 무게 숫자가 표시되나요?", "아니요. 비교하면 두 쟁반 중 어느 쪽이 더 무거운지만 보여요. 화면에 남은 비교 결과를 모아 요청된 순위를 추론하세요."],
+        ["같은 쌍을 다시 비교할 수 없는 이유는 무엇인가요?", "이미 비교한 결과가 화면에 남아 있어 다시 해도 새 단서는 생기지 않아요. 목표 순위를 좁힐 수 있는 다른 쌍을 고르세요."],
+      ],
+    },
+    es: {
+      description: "Compara materiales del nido de dos en dos y deduce el puesto pedido a partir de las pistas en 30 lecciones sin cronómetro.",
+      difficulty: "De fácil a desafiante",
+      time: "2–6 minutos por lección",
+      tags: ["Comparación de pesos", "Deducción de posiciones", "Rompecabezas lógico"],
+      faq: [
+        ["¿Veo el peso exacto de cada material?", "No. Cada pesada solo indica cuál de las dos bandejas pesa más. Combina esas comparaciones visibles para demostrar el puesto solicitado."],
+        ["¿Por qué no puedo pesar otra vez la misma pareja?", "El resultado de una pareja ya pesada permanece en pantalla. Repetirla no aporta otra pista; elige una pareja distinta que ayude a acotar el puesto."],
+      ],
+    },
+    "pt-BR": {
+      description: "Compare os materiais do ninho dois a dois e deduza a posição pedida com as pistas de 30 lições sem cronômetro.",
+      difficulty: "De fácil a desafiador",
+      time: "2–6 minutos por lição",
+      tags: ["Comparação de pesos", "Dedução de posições", "Quebra-cabeça lógico"],
+      faq: [
+        ["O peso exato de cada material aparece?", "Não. Cada pesagem mostra apenas qual das duas bandejas é mais pesada. Combine as comparações visíveis para provar a posição pedida."],
+        ["Por que não posso pesar o mesmo par de novo?", "O resultado de um par já comparado continua visível. Repetir a pesagem não traz uma pista nova; escolha outro par que ajude a limitar a posição."],
+      ],
+    },
+    fr: {
+      description: "Comparez les matériaux du nid deux par deux et déduisez le rang demandé grâce aux indices de 30 leçons sans chronomètre.",
+      difficulty: "De facile à exigeant",
+      time: "2 à 6 minutes par leçon",
+      tags: ["Comparaison de poids", "Déduction du classement", "Casse-tête logique"],
+      faq: [
+        ["Le poids exact de chaque matériau est-il affiché ?", "Non. Chaque pesée indique seulement lequel des deux plateaux est le plus lourd. Combinez les comparaisons visibles pour établir le rang demandé."],
+        ["Pourquoi ne puis-je pas peser deux fois la même paire ?", "Le résultat d'une paire déjà comparée reste visible. La répéter n'apporte aucun indice ; choisissez une autre paire pour mieux cerner le rang."],
+      ],
+    },
+    de: {
+      description: "Vergleiche Nestmaterial paarweise und leite den gesuchten Rang aus den Hinweisen in 30 zeitlosen Lektionen ab.",
+      difficulty: "Von leicht bis anspruchsvoll",
+      time: "2–6 Minuten pro Lektion",
+      tags: ["Gewichtsvergleich", "Rangfolge ableiten", "Logikrätsel"],
+      faq: [
+        ["Sehe ich das genaue Gewicht der Materialien?", "Nein. Beim Wiegen erfährst du nur, welche der beiden Schalen schwerer ist. Aus den sichtbaren Vergleichen leitest du den gesuchten Rang ab."],
+        ["Warum kann ich dasselbe Paar nicht erneut wiegen?", "Das Ergebnis eines bereits verglichenen Paars bleibt sichtbar. Eine Wiederholung liefert keinen neuen Hinweis; wähle ein anderes Paar, das den gesuchten Rang eingrenzt."],
+      ],
+    },
+    it: {
+      description: "Confronta a coppie i materiali del nido e deduci la posizione richiesta dagli indizi in 30 lezioni senza timer.",
+      difficulty: "Da facile a impegnativo",
+      time: "2–6 minuti per lezione",
+      tags: ["Confronto dei pesi", "Deduzione dell'ordine", "Enigma logico"],
+      faq: [
+        ["Vedo il peso esatto dei materiali?", "No. Ogni pesata indica solo quale dei due vassoi è più pesante. Combina i confronti visibili per dimostrare la posizione richiesta."],
+        ["Perché non posso pesare di nuovo la stessa coppia?", "Il risultato di una coppia già confrontata resta visibile. Ripeterla non aggiunge indizi: scegli un'altra coppia che aiuti a restringere la posizione."],
+      ],
+    },
+    ru: {
+      description: "Сравнивайте материалы гнезда попарно и выводите нужное место по подсказкам в 30 уроках без таймера.",
+      difficulty: "От простого к сложному",
+      time: "2–6 минут на урок",
+      tags: ["Сравнение веса", "Определение порядка", "Логическая головоломка"],
+      faq: [
+        ["Показывается ли точный вес материалов?", "Нет. При каждом взвешивании видно только, какой из двух лотков тяжелее. Сопоставляйте результаты, чтобы определить нужное место."],
+        ["Почему нельзя снова взвесить ту же пару?", "Результат сравнения уже остаётся на экране. Повтор не даст новой подсказки — выберите другую пару, которая поможет сузить варианты."],
+      ],
+    },
+    hi: {
+      description: "घोंसले की सामग्रियों को जोड़ों में तौलकर, बिना टाइमर वाले 30 पाठों में मिले संकेतों से माँगी गई क्रम-स्थिति जानें।",
+      difficulty: "सरल से चुनौतीपूर्ण तक",
+      time: "हर पाठ में 2–6 मिनट",
+      tags: ["वज़न की तुलना", "क्रम का अनुमान", "तर्क पहेली"],
+      faq: [
+        ["क्या सामग्री का सटीक वज़न दिखता है?", "नहीं। हर बार केवल यह पता चलता है कि दो ट्रे में कौन-सी भारी है। दिखती तुलना को जोड़कर माँगी गई क्रम-स्थिति निकालें।"],
+        ["एक ही जोड़ी को फिर से क्यों नहीं तौल सकते?", "पहले से तौली गई जोड़ी का परिणाम स्क्रीन पर रहता है। दोहराने से नया संकेत नहीं मिलेगा; ऐसी दूसरी जोड़ी चुनें जो क्रम-स्थिति के विकल्प घटाए।"],
+      ],
+    },
+    ar: {
+      description: "قارن مواد العش في أزواج واستنتج الترتيب المطلوب من الأدلة في 30 درسًا بلا مؤقت.",
+      difficulty: "من السهل إلى الصعب",
+      time: "2–6 دقائق لكل درس",
+      tags: ["مقارنة الأوزان", "استنتاج الترتيب", "أحجية منطقية"],
+      faq: [
+        ["هل يظهر الوزن الدقيق لكل مادة؟", "لا. تكشف كل عملية وزن أيّ المادتين أثقل فقط. اجمع المقارنات الظاهرة لتستنتج الترتيب المطلوب."],
+        ["لماذا لا يمكن وزن الزوج نفسه مرة أخرى؟", "تبقى نتيجة الزوج الذي قورن ظاهرة على الشاشة. لن تضيف الإعادة دليلًا جديدًا؛ اختر زوجًا آخر يساعد على تضييق احتمالات الترتيب."],
+      ],
+    },
+  };
+  for (const [localeKey, copy] of Object.entries(animalNestWeighText140)) {
+    const current = localizedGames[localeKey]["animal-nest-weigh"];
+    localizedGames[localeKey]["animal-nest-weigh"] = {
+      ...current,
+      metaDescription: copy.description,
+      gameplay: copy.tags[0],
+      difficulty: copy.difficulty,
+      time: copy.time,
+      genre: copy.tags,
+      text140Tags: copy.tags,
+      faq: [...current.faq, ...copy.faq],
+    };
+  }
+
   const balanceGroveLocaleGuideCopy = {
     en: { title: "Balance Grove", intro: "Balance Grove is a calm three-grove puzzle about choosing named stones to steady forest bridges. Read the target, compare the visible weights, and make a careful subset before Taro checks the scale.", gameplay: "Balance Subset Puzzle", genre: ["Puzzle", "Balance", "Logic", "Family", "Animal"], skills: ["Math", "Planning", "Focus"] },
     "zh-Hant": { title: "平衡林地", intro: "《平衡林地》是一款平靜的三座森林小橋益智遊戲，透過選擇有名字的石頭讓橋保持穩定。讀取目標、比較可見重量，先規劃組合再檢查磅秤。", gameplay: "平衡子集合益智", genre: ["益智", "平衡", "邏輯", "家庭", "動物"], skills: ["數學", "規劃", "專注"] },
@@ -6968,6 +7118,29 @@
   };
   gameplayProfiles["animal-reef-fisher"] = { gameplay:"Fishing Tension Campaign", genre:["Fishing", "Collection", "Timing", "Animal"], skills:["Focus", "Reaction", "Problem Solving"] };
   localizedGameplayProfiles["zh-Hant"]["animal-reef-fisher"] = { gameplay:"釣魚張力任務", genre:["釣魚", "收集", "時機", "動物"], skills:["專注", "反應", "解決問題"] };
+  const reefFisherLocalizedTags = {
+    en: { gameplay: "Fishing Line Tension Campaign", genre: ["Fishing", "Collection", "Timing", "Animal"] },
+    "zh-Hant": { gameplay: "釣魚線張力控制任務", genre: ["釣魚", "收集", "時機", "動物"] },
+    "zh-Hans": { gameplay: "钓鱼线张力控制任务", genre: ["钓鱼", "收集", "时机", "动物"] },
+    ja: { gameplay: "釣り糸の張力管理キャンペーン", genre: ["釣り", "コレクション", "タイミング", "動物"] },
+    ko: { gameplay: "낚싯줄 장력 조절 캠페인", genre: ["낚시", "수집", "타이밍", "동물"] },
+    es: { gameplay: "Campaña de control de la tensión de la línea", genre: ["Pesca", "Colección", "Precisión temporal", "Animales"] },
+    "pt-BR": { gameplay: "Campanha de controle da tensão da linha", genre: ["Pesca", "Coleção", "Controle do tempo", "Animais"] },
+    fr: { gameplay: "Campagne de gestion de la tension de la ligne", genre: ["Pêche", "Collection", "Précision temporelle", "Animaux"] },
+    de: { gameplay: "Angelkampagne mit Schnurspannungssteuerung", genre: ["Angeln", "Sammeln", "Timing", "Tiere"] },
+    it: { gameplay: "Campagna di pesca con controllo della tensione del filo", genre: ["Pesca", "Collezione", "Tempismo", "Animali"] },
+    ru: { gameplay: "Кампания по управлению натяжением лески", genre: ["Рыбалка", "Коллекция", "Точность выбора момента", "Животные"] },
+    hi: { gameplay: "मछली पकड़ने की डोरी का तनाव संभालने वाला अभियान", genre: ["मछली पकड़ना", "संग्रह", "सही समय चुनना", "समुद्री जीव"] },
+    ar: { gameplay: "حملة التحكم في شدّ خيط الصيد", genre: ["الصيد", "جمع الكائنات البحرية", "التوقيت", "الحيوانات"] },
+  };
+  Object.entries(reefFisherLocalizedTags).forEach(([locale, profile]) => {
+    localizedGameplayProfiles[locale] ||= {};
+    localizedGameplayProfiles[locale]["animal-reef-fisher"] = {
+      ...localizedGameplayProfiles[locale]["animal-reef-fisher"],
+      ...profile,
+      skills: localizedGameplayProfiles[locale]["animal-reef-fisher"]?.skills || ["Focus", "Reaction", "Problem Solving"],
+    };
+  });
   localizedGames["zh-Hant"]["animal-reef-fisher"] = {
     title:"動物珊瑚釣手",
     difficulty:"漸進挑戰",
@@ -8398,7 +8571,7 @@
     ],
     "systems": [
       "目前与下一颗泡泡可用来提前规划。拖曳瞄准；方向键调整同一逻辑瞄准点，Enter 或空白键发射。",
-      "泡泡以连续飞行的小步骤检查可见碰撞，并附著在实际碰到泡泡附近的空位，不会瞬移到远方隐藏格。",
+      "泡泡以连续飞行的小步骤检查可见碰撞，并附着在实际碰到泡泡附近的空位，不会瞬移到远方隐藏格。",
       "三颗以上同色相连会消除；反弹目标要求先碰墙；救援目标要清除一到三颗标记动物泡泡。",
       "叶球由相邻配对带走，蜂蜜需两次直击，云被碰会清除整排；风会改变飞行，移动关会在发射后平移交错列。",
       "彩虹变成碰到的颜色，横扫清一排，爆破清附近区域与障碍，交换则互换颜色。",
@@ -8408,7 +8581,7 @@
       "在水平关卡轨道滑到已解锁关卡，阅读目标与提示。",
       "瞄准前先看目前与下一颗泡泡。",
       "拖向同色泡泡；直线被挡时利用墙面。",
-      "放开发射，观察精确碰撞与附著后再规划。",
+      "放开发射，观察精确碰撞与附着后再规划。",
       "在泡泡用完前完成指定配对或救援。"
     ],
     "strategyTips": [
@@ -8427,7 +8600,7 @@
       "第 21–25 关把四种力量分别搭配适合障碍，最后同时救三只动物。",
       "第 26–30 关混合叶石通道、蜂蜜逆风、移动云列与三兽救援；第 30 关使用所有主要规则。"
     ],
-    "designNote": "本作的核心承诺是可见碰撞要产生可信附著。连续移动与局部空位选择维持瞄准公平；难度来自角度、障碍反应、救援位置、风、列移动、下一颗规划与力量时机，而不是加速或缩小目标。单一逻辑 Canvas 会在手机、平板、桌面与短横向萤幕等比缩放；触控、滑鼠与键盘共享瞄准状态，切换 App 也不会让旧放手事件偷偷发射。它不同于《动物泡泡烘焙坊》的点击群组，本作核心是轨迹与反弹。Kids 游玩没有广告、帐号、购买、排名或诊断。",
+    "designNote": "本作的核心承诺是可见碰撞要产生可信附着。连续移动与局部空位选择维持瞄准公平；难度来自角度、障碍反应、救援位置、风、列移动、下一颗规划与力量时机，而不是加速或缩小目标。单一逻辑 Canvas 会在手机、平板、桌面与短横向萤幕等比缩放；触控、滑鼠与键盘共享瞄准状态，切换 App 也不会让旧放手事件偷偷发射。它不同于《动物泡泡烘焙坊》的点击群组，本作核心是轨迹与反弹。Kids 游玩没有广告、帐号、购买、排名或诊断。",
     "parent": "《动物泡泡探险》可用来谈视觉预测、规划、颜色分类、专注与手眼协调。大人可以一起讨论反射路线、风向偏移，或目前泡泡是否应替下一颗开路。星星与技能报告只是本机游玩回馈，不是成绩、智力分数、诊断或儿童比较。进度只留在目前浏览器；不需要儿童帐号，Kids 路线也不会请求广告。",
     "faq": [
       [
@@ -8435,7 +8608,7 @@
         "共有 30 个可保存关卡，草原检查位于第 5、10、15、20、25、30 关。"
       ],
       [
-        "泡泡为什么附著在目标旁边？",
+        "泡泡为什么附着在目标旁边？",
         "它会使用实际碰到泡泡附近最近的空位。"
       ],
       [
@@ -9859,6 +10032,70 @@
       ]
     ]
   };
+  localizedGames["fr"] ||= {};
+  localizedGames["fr"]["animal-reef-fisher"] = {
+    story: [
+      "Les archives du récif tiennent à jour les cartes de six zones : la Côte ensoleillée, le Jardin d’algues, la Porte de corail, la Marée lunaire, le Plateau des tempêtes et le Bleu abyssal. Des marées inhabituelles ont déplacé les poissons de leurs couloirs habituels. Bubble Fin parcourt ces eaux en bateau pour repérer les espèces présentes et observer la traction exercée par chaque courant sur la ligne.",
+      "Les Notes du récif sont des crédits d’enquête qui servent à améliorer le matériel. Toutes les cinq missions, un Gardien protège le repère de son habitat : Sun Crown Guardian, Kelp Leviathan, Coral Ram Ray, Eclipse Manta, Storm Lantern Warden ou Crystal Crown Sovereign. Capturer le Gardien valide la carte de la région. La mission 30 termine la campagne après le classement de la sixième carte, sans créer de mission 31."
+    ],
+    systems: [
+      "Déroulement : choisissez une mission débloquée dans la liste horizontale. La plupart des objectifs demandent deux ou trois prises. Une victoire sauvegarde la progression et débloque uniquement la mission suivante ; les anciennes restent rejouables.",
+      "Lancer et chronomètre : une expédition commence avec 90 secondes, auxquelles s’ajoutent cinq secondes par niveau de Portée du bateau au-delà du niveau 1. Maintenez la surface de l’eau ou la barre d’espace pour charger, puis relâchez pour lancer. Une charge plus forte réduit l’attente avant la touche, mais ne sélectionne pas un poisson plus rare.",
+      "Contrôle de la ligne : après la touche, déplacez le marqueur rouge avec sa commande, en glissant sur l’eau ou avec les flèches gauche et droite. Rester dans la bande SAFE réduit la force du poisson. Une sortie prolongée casse la ligne et relance le lancer sans arrêter le chronomètre.",
+      "Comportement des poissons : les espèces ordinaires tirent de façon régulière, brusque ou puissante. L’indice de touche et le Sonar indiquent le type rencontré. Une nouvelle espèce ajoute une entrée à l’album et rapporte un bonus, en plus des points et des Notes du récif.",
+      "Conditions marines : en eau calme, la bande reste stable ; les courants dans les algues la déplacent ; les récifs coralliens la resserrent par moments ; la marée la fait passer d’un côté à l’autre ; les rafales poussent la ligne à intervalles réguliers. Dans les profondeurs, plusieurs effets se combinent.",
+      "Équipement et outils facultatifs : la canne, le moulinet, la ligne, l’appât, le bateau et le scanner ont chacun cinq niveaux sauvegardés localement. Le scanner élargit la liste des espèces dans les premières zones. Un leurre rare à trois diamants garantit une prise rare admissible ; un sonar à deux diamants révèle et verrouille le prochain poisson. Chaque achat demande confirmation, et aucun n’est requis pour progresser."
+    ],
+    strategyTips: [
+      "Si vous restez dans la bande SAFE mais que la prise prend trop de temps, améliorez la puissance de la canne ou la qualité de l’appât. Si le marqueur en sort souvent, privilégiez le contrôle du moulinet ou la résistance de la ligne.",
+      "Les courants d’algues, les marées et les missions des profondeurs déplacent le centre de la bande. Suivez la zone verte plutôt que de viser toujours le milieu de l’écran.",
+      "Le Coral Ram Ray et le Crystal Crown Sovereign ne perdent de puissance que lorsque leur armure est ouverte. Stabilisez la ligne pendant sa fermeture afin d’aborder la prochaine ouverture dans la zone SAFE.",
+      "Les rafales arrivent toutes les trois secondes dans les missions concernées. Rapprochez-vous du centre de la bande avant leur signal, puis corrigez après la poussée.",
+      "Une charge maximale n’augmente pas les chances d’obtenir un poisson rare ; elle réduit seulement l’attente. Si l’album manque d’espèces rares, le leurre rare ne peut servir qu’à une prise admissible.",
+      "Utilisez le sonar lorsque vous voulez connaître le profil de traction du prochain poisson. Choisissez le leurre si votre objectif est de compléter une entrée rare de l’album."
+    ],
+    progression: [
+      "Missions 1 à 5 : la bande SAFE reste stable pendant que les quatre premières missions enseignent le lancer, la reprise après une ligne cassée et les tractions ordinaires. Sun Crown Guardian conclut le chapitre par trois impulsions régulières.",
+      "Missions 6 à 10 : les courants d’algues déplacent toute la bande. Kelp Leviathan ajoute une traction puissante et prolongée, qu’il faut suivre pendant que la zone bouge.",
+      "Missions 11 à 15 : la bande des récifs se resserre par phases. Coral Ram Ray alterne armure fermée et ouverture toutes les deux secondes.",
+      "Missions 16 à 20 : la marée déplace la bande d’un côté à l’autre toutes les quatre secondes. Eclipse Manta feinte avant d’inverser sa traction.",
+      "Missions 21 à 25 : la bande est plus étroite et la ligne subit une poussée toutes les trois secondes. Storm Lantern Warden maintient une forte traction entre les rafales.",
+      "Missions 26 à 30 : les profondeurs combinent déplacement de la bande et rafales temporisées. Crystal Crown Sovereign ajoute des phases d’armure pour l’épreuve finale."
+    ],
+    parent: "Aucun compte n’est nécessaire. Les missions débloquées, la sélection en cours, les Notes du récif, les meilleures prises, les 12 entrées de l’album, les six niveaux d’équipement et les outils préparés sont conservés dans ce navigateur. Effacer les données du site ou changer de navigateur peut créer une autre sauvegarde. Le solde commun de diamants ne sert qu’aux achats de leurre et de sonar confirmés. Les 30 missions, les six Gardiens, l’équipement et la progression ordinaire de l’album sont accessibles sans ces outils. Les rapports de compétences résument la partie à titre ludique ; ils ne constituent ni un diagnostic, ni un classement, ni une évaluation officielle."
+  };
+  localizedGames["de"] ||= {};
+  localizedGames["de"]["animal-reef-fisher"] = {
+    story: [
+      "Das Riffarchiv aktualisiert die Karten von sechs Gebieten: Sonnige Küste, Tang-Garten, Korallentor, Mondgezeiten, Sturmablage und Tiefsee-Blau. Ungewöhnliche Gezeiten haben Fische aus ihren bekannten Bahnen verdrängt. Bubble Fin fährt mit dem Forschungskutter jede Route ab, um die dortigen Arten zu erfassen und zu beobachten, wie die Strömung an der Angelschnur zieht.",
+      "Riffnotizen sind Forschungspunkte, mit denen die Ausrüstung verbessert wird. Alle fünf Missionen bewacht ein Wächter den Markierungspunkt seines Lebensraums: Sun Crown Guardian, Kelp Leviathan, Coral Ram Ray, Eclipse Manta, Storm Lantern Warden oder Crystal Crown Sovereign. Mit seinem Fang wird die Karte des Gebiets bestätigt. Mission 30 schließt die Kampagne nach der sechsten Karte ab; eine Mission 31 gibt es nicht."
+    ],
+    systems: [
+      "Missionsablauf: Wähle eine freigeschaltete Mission aus der horizontalen Leiste. Die meisten Ziele verlangen zwei oder drei Fänge. Ein Sieg speichert den Fortschritt und schaltet genau die nächste Mission frei; frühere Missionen bleiben wiederholbar.",
+      "Wurf und Zeit: Eine Expedition beginnt mit 90 Sekunden. Für jede Bootsreichweiten-Stufe über Stufe 1 kommen fünf Sekunden hinzu. Halte die Wasseroberfläche oder die Leertaste zum Aufladen gedrückt und lass zum Werfen los. Mehr Kraft verkürzt die Wartezeit bis zum Biss, wählt aber keinen selteneren Fisch.",
+      "Schnurkontrolle: Nach einem Biss bewegst du den roten Marker mit dem Drehknopf, durch Wischen über die Wasseroberfläche oder mit den Pfeiltasten. Im SAFE-Bereich wird der Fisch schwächer. Bleibst du zu lange außerhalb, reißt die Schnur und der Wurf beginnt erneut; die Missionszeit läuft weiter.",
+      "Zugmuster der Fische: Gewöhnliche Arten ziehen gleichmäßig, ruckartig oder kräftig. Der Hinweis beim Anbeißen und das Sonar zeigen das jeweilige Muster. Ein neuer Fund füllt einen Albumeintrag und bringt zusätzlich zu Punkten und Riffnotizen einen Entdeckungsbonus.",
+      "Meeresbedingungen: In ruhigem Wasser bleibt der Bereich stabil; Strömungen im Tang bewegen ihn; an Korallen verengt er sich in wechselnden Phasen; die Gezeiten wechseln die Seite; Böen drücken die Schnur in festen Abständen. In der Tiefsee treffen mehrere Bedingungen zusammen.",
+      "Ausrüstung und optionale Werkzeuge: Rute, Rolle, Schnur, Köder, Boot und Scanner haben jeweils fünf lokal gespeicherte Stufen. Der Scanner erweitert den Artenpool früher Gebiete. Ein seltener Köder für drei Diamanten garantiert einen geeigneten seltenen Fang; ein Sonar-Ping für zwei Diamanten zeigt den nächsten Fisch und sperrt ihn fest. Beide Käufe müssen bestätigt werden und sind für den Fortschritt nicht nötig."
+    ],
+    strategyTips: [
+      "Bleibst du sicher im SAFE-Bereich, aber der Fang dauert zu lange, verbessere Rutenstärke oder Köderqualität. Entkommt der Marker häufig aus dem Bereich, helfen eher Rollenkontrolle oder Schnurhaltbarkeit.",
+      "Tang-, Gezeiten- und Tiefseemissionen verschieben die Mitte des sicheren Bereichs. Folge der grünen Fläche, statt immer die Bildschirmmitte anzuvisieren.",
+      "Coral Ram Ray und Crystal Crown Sovereign verlieren nur bei offener Panzerung an Kraft. Halte die Schnur während der geschlossenen Phase stabil, damit du die nächste Öffnung aus dem SAFE-Bereich erreichst.",
+      "In den betreffenden Missionen kommt alle drei Sekunden eine Böe. Richte den Marker vor dem Signal nahe der Mitte des SAFE-Bereichs aus und korrigiere nach dem Stoß.",
+      "Ein voll aufgeladener Wurf erhöht nicht die Seltenheit, sondern verkürzt nur die Wartezeit. Für einen fehlenden seltenen Albumeintrag kann der seltene Köder einmalig einen geeigneten Fang absichern.",
+      "Nutze Sonar, wenn du das Zugmuster des nächsten Fisches vorher kennen möchtest. Wähle den Köder, wenn du gezielt einen seltenen Albumeintrag ergänzen willst."
+    ],
+    progression: [
+      "Missionen 1–5: Der SAFE-Bereich bleibt stabil. Die ersten vier Missionen führen Werfen, Erholung nach Schnurbruch und die normalen Zugmuster ein. Sun Crown Guardian beendet das Kapitel mit drei gleichmäßigen Impulsen.",
+      "Missionen 6–10: Strömungen im Tang bewegen den gesamten SAFE-Bereich. Kelp Leviathan zieht lange und kräftig, während du der wandernden Zone folgst.",
+      "Missionen 11–15: Der Bereich an den Korallen verengt sich in Phasen. Coral Ram Ray wechselt alle zwei Sekunden zwischen geschlossener Panzerung und offener Schwachstelle.",
+      "Missionen 16–20: Die Gezeiten versetzen den SAFE-Bereich alle vier Sekunden auf die andere Seite. Eclipse Manta täuscht einen Zugwechsel an, bevor die Richtung tatsächlich kippt.",
+      "Missionen 21–25: Der SAFE-Bereich ist schmaler und die Schnur wird alle drei Sekunden von einer Böe getroffen. Storm Lantern Warden hält auch zwischen den Böen stark dagegen.",
+      "Missionen 26–30: In der Tiefsee verbinden sich ein wandernder Bereich und zeitgesteuerte Böen. Crystal Crown Sovereign ergänzt wechselnde Panzerphasen als letzte Regelkombination."
+    ],
+    parent: "Du brauchst kein Konto. Freigeschaltete und ausgewählte Missionen, Riffnotizen, beste Fänge, zwölf Albumeinträge, sechs Ausrüstungsstufen und vorbereitete Werkzeuge bleiben in diesem Browser gespeichert. Beim Löschen der Websitedaten oder mit einem anderen Browser kann ein neuer Spielstand entstehen. Das gemeinsame Diamantguthaben wird nur für bestätigte Köder- und Sonarvorbereitungen verwendet. Alle 30 Missionen, sechs Wächter, Ausrüstungsstufen und normale Albumfortschritte sind auch ohne diese Werkzeuge erreichbar. Skill-Berichte fassen einen Lauf zur Unterhaltung zusammen; sie sind keine Diagnose, Rangliste oder formelle Leistungsbewertung."
+  };
   localizedGames["zh-Hans"]["animal-crystal-survivor"] = {
     "title": "动物水晶生存战",
     "difficulty": "中等",
@@ -9977,7 +10214,7 @@
     "intro": "《动物装备行囊远征》是由齿轮角鲁克斯主演的 30 关空间行囊策略游戏。玩家要把装备排入 11 栏、7 排的旅行行囊，连结锻造、自然、水晶与月光材质，并在每关通过五场固定遭遇。六个区域各自加入不同的配装压力，每五关则由一位会真正改变安全排法的守关首领收尾。",
     "story": [
       "齿轮森林的商队道路原本连接六座工坊。储藏库开始对货物产生异常反应后，树根封住森林、水晶裂开矿场、发条空谷重新启动、熔炉外泄高热、风暴线圈充满观测站，日蚀宝库则把回收货物与最后一批机械军一同封锁。",
-      "齿轮角鲁克斯负责整理行囊，月帽欧拉则带著商店跟随路线。通过一关代表重新打开一段道路；击败树根守卫、水晶守卫、发条巨像、熔炉巨兽、风暴统领与日蚀藏主，才算恢复六区运输并取回全部货物。"
+      "齿轮角鲁克斯负责整理行囊，月帽欧拉则带着商店跟随路线。通过一关代表重新打开一段道路；击败树根守卫、水晶守卫、发条巨像、熔炉巨兽、风暴统领与日蚀藏主，才算恢复六区运输并取回全部货物。"
     ],
     "systems": [
       "行囊共有 11 栏、7 排。装备形状各不相同，可在放置前旋转。攻击决定鲁克斯造成的伤害，防御会降低反击，治疗则在承受伤害前恢复生命。两件不同装备只要同材质格子上下或左右相邻，就会形成连结；每个有效连结增加 2 攻击与 1 防御。",
@@ -10476,7 +10713,10 @@
     if (!segment) return Promise.resolve();
     const promise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL(`runtime-locales/${segment}.js?v=20260930-zoo-star-memory-runtime-guide-v4`, sharedAssetBase).href;
+      const runtimeLocaleVersion = currentGameId() === "animal-gearpack-expedition"
+        ? "20261003-gearpack-text140-v5"
+        : "20260930-zoo-star-memory-runtime-guide-v4";
+      script.src = new URL(`runtime-locales/${segment}.js?v=${runtimeLocaleVersion}`, sharedAssetBase).href;
       script.dataset.wpGamePageInfoRuntimeLocale = activeLocale;
       script.onload = resolve;
       script.onerror = () => {
@@ -10528,7 +10768,10 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-es.js?v=20261001-fruit-garden-text140-v1", sharedAssetBase).href;
+      const spanishResourceVersion = currentGameId() === "animal-gearpack-expedition"
+        ? "20261003-gearpack-text140-v5"
+        : "20261001-fruit-garden-text140-v1";
+      script.src = new URL(`game-page-info-es.js?v=${spanishResourceVersion}`, sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
         installSpanishResource();
@@ -10573,6 +10816,9 @@
     return japaneseResourcePromise;
   }
 
+  // WP_ANIMAL_HERO_TRIALS_TEXT140_START
+  const animalHeroTrialsTextGrowth140 = {"en":{"title":"Hero Trials","intro":"Hero Trials is a 30-trial action campaign with four heroes who differ in health, speed, attack range, and active skills. Tap or drag to move while each hero attacks the nearest enemy in range. Every trial has three rooms: clear the first two to choose a free Power, Cooldown, or Recovery blessing, then face an elite captain or a checkpoint Boss. Victories award Trial Marks, unlock the next trial, and build permanent Heart Mastery.","controls":"Tap an arena point or hold and drag to steer. Arrow keys or WASD move on a keyboard; attacks happen automatically when an enemy is in range. Use the skill button or Space when the skill is ready.","description":"Choose one of four heroes and move by touch or keys through 30 three-room trials. Pick free blessings, counter six checkpoint Bosses, and earn Trial Marks for permanent Heart Mastery.","tags":["Tap-and-drag action combat","Three-room roguelite trials","Timed hero skills"],"faqs":[["How many trials and Bosses are there?","There are 30 three-room trials. Trials 5, 10, 15, 20, 25, and 30 each end with a different checkpoint Boss."],["What happens after the first two rooms?","After Rooms 1 and 2, choose one free Power, Cooldown, or Recovery blessing. These choices last for that trial; Room 3 ends the run."],["How do the four heroes differ?","Leo stuns nearby enemies with a roar, Fia dashes through danger, Orla marks targets for stronger follow-up shots, and Taro reduces incoming damage with a timed guard."],["Why does an enemy take so little damage?","Abyss Guards, Prism Basilisk, and the Void Crown Emperor can use guard phases. Hero skills break guard faster than automatic attacks."],["How do I move and attack?","Tap an arena point or hold and drag to steer. Arrow keys or WASD move on a keyboard; attacks happen automatically when an enemy is in range. Use the skill button or Space when the skill is ready."],["What is saved between trials?","Unlocked trials, Trial Marks, Heart Mastery, and the selected hero are saved in this browser. Temporary blessings reset. Diamonds are optional for one confirmed blessing reroll per trial."],["What happens after defeat?","Retry starts the same trial again. Permanent unlocks, Marks, and Heart Mastery remain."],["Can I replay an earlier trial?","Yes. Every unlocked trial stays available on the Stage rail."]]},"zh-Hant":{"title":"英雄試煉","intro":"《英雄試煉》是一款包含 30 個試煉的動作遊戲，四位英雄各有不同生命、速度、攻擊射程與主動技能。點按或拖曳來移動，英雄會自動攻擊射程內最近的敵人。每關有三個房間：清除前兩房後，從攻擊、冷卻或恢復中免費選一項祝福，接著挑戰菁英隊長或檢查點 Boss。勝利可取得試煉印記、解鎖下一關，並累積永久生命精通。","controls":"點按戰場位置，或按住拖曳來操控移動。鍵盤可用方向鍵或 WASD；敵人進入射程後會自動攻擊。技能就緒時按技能鈕或空白鍵。","description":"選擇四位英雄之一，以點按、拖曳或鍵盤走位，挑戰 30 個三房間試煉。選擇免費祝福、破解六個檢查點 Boss，並用試煉印記提升永久生命精通。","tags":["點按與拖曳走位","三房間動作闖關","英雄技能時機"],"faqs":[["共有幾關與幾個 Boss？","共有 30 個三房間試煉；第 5、10、15、20、25、30 關各有不同的檢查點 Boss。"],["前兩個房間結束後會怎樣？","第 1、2 房清除後，可免費選擇攻擊、冷卻或恢復祝福。祝福只在該次試煉生效；第 3 房會結束挑戰。"],["四位英雄有什麼差異？","Leo 的怒吼可暈眩附近敵人，Fia 能衝刺穿越危險，Orla 會標記敵人以強化後續攻擊，Taro 則用限時守護降低所受傷害。"],["為什麼敵人只受到少量傷害？","深淵護衛、稜晶蛇王與虛空王冠帝會進入守護階段。英雄技能破除守護的速度比自動攻擊快。"],["如何移動與攻擊？","點按戰場位置，或按住拖曳來操控移動。鍵盤可用方向鍵或 WASD；敵人進入射程後會自動攻擊。技能就緒時按技能鈕或空白鍵。"],["哪些進度會保留？","已解鎖試煉、試煉印記、生命精通與選定英雄會存在目前瀏覽器；臨時祝福每次重置。鑽石只用於每次試煉一次、需確認的選擇性祝福重抽。"],["失敗後會怎樣？","重試會重新開始同一關；永久解鎖、印記與生命精通都會保留。"],["可以重玩較早的試煉嗎？","可以。所有已解鎖試煉都會留在關卡列。"]]},"zh-Hans":{"title":"英雄试炼","intro":"《英雄试炼》是一款包含 30 个试炼的动作游戏，四位英雄各有不同生命、速度、攻击射程和主动技能。点按或拖动来移动，英雄会自动攻击射程内最近的敌人。每关有三个房间：清除前两间后，从攻击、冷却或恢复中免费选择一项祝福，然后挑战精英队长或检查点 Boss。胜利可获得试炼印记、解锁下一关，并累积永久生命精通。","controls":"点按战场位置，或按住并拖动来操控移动。键盘可用方向键或 WASD；敌人进入射程后会自动攻击。技能就绪时按技能按钮或空格键。","description":"选择四位英雄之一，通过点按、拖动或键盘移动，挑战 30 个三房间试炼。选择免费祝福、应对六个检查点 Boss，并用试炼印记提升永久生命精通。","tags":["点按与拖动走位","三房间动作闯关","英雄技能时机"],"faqs":[["共有多少试炼和 Boss？","共有 30 个三房间试炼；第 5、10、15、20、25、30 关各有不同的检查点 Boss。"],["前两个房间结束后会怎样？","第 1、2 房清除后，可免费选择攻击、冷却或恢复祝福。祝福只在本次试炼生效；第 3 房结束挑战。"],["四位英雄有何不同？","Leo 的怒吼可眩晕附近敌人，Fia 能冲刺穿越危险，Orla 会标记敌人以强化后续攻击，Taro 则用限时守护降低受到的伤害。"],["为什么敌人只受到少量伤害？","深渊护卫、棱晶蛇王与虚空王冠帝会进入守护阶段。英雄技能破除守护的速度比自动攻击快。"],["如何移动和攻击？","点按战场位置，或按住并拖动来操控移动。键盘可用方向键或 WASD；敌人进入射程后会自动攻击。技能就绪时按技能按钮或空格键。"],["哪些进度会保留？","已解锁试炼、试炼印记、生命精通和选定英雄保存在当前浏览器；临时祝福每次重置。钻石只用于每次试炼一次、需确认的可选祝福重抽。"],["失败后会怎样？","重试会重新开始同一关；永久解锁、印记和生命精通都会保留。"],["可以重玩之前的试炼吗？","可以。所有已解锁试炼都会保留在关卡列。"]]},"ja":{"title":"英雄試練","intro":"『英雄試練』は30の試練に挑むアクションゲームです。4人の英雄は体力、速さ、攻撃範囲、アクティブスキルが異なります。タップまたはドラッグで移動し、射程内で最も近い敵には自動で攻撃します。各試練は3部屋構成で、最初の2部屋をクリアすると攻撃・クールダウン・回復の祝福を無料で1つ選び、最後にエリート隊長か節目のボスと戦います。勝利で試練マークを獲得し、次の試練と恒久的なハートマスタリーが進みます。","controls":"戦場をタップするか、押したままドラッグして移動します。キーボードでは矢印キーまたはWASDを使用できます。敵が射程に入ると自動で攻撃し、スキルが使えるときはボタンかSpaceキーを押します。","description":"4人の英雄から選び、タップやドラッグ、キーボードで30の3部屋試練に挑戦。無料の祝福を選び、6体の節目ボスに対策して、試練マークで恒久強化を進めましょう。","tags":["タップ・ドラッグ移動","3部屋アクション試練","英雄スキルの発動判断"],"faqs":[["試練とボスはいくつありますか？","3部屋構成の試練が30個あります。第5、10、15、20、25、30試練にはそれぞれ異なる節目ボスが登場します。"],["最初の2部屋の後はどうなりますか？","部屋1と2をクリアするたびに、攻撃・クールダウン・回復から祝福を無料で1つ選べます。祝福はその試練中に有効で、部屋3が試練の最後です。"],["4人の英雄はどう違いますか？","Leoの咆哮は近くの敵をひるませ、Fiaは危険を抜けるダッシュ、Orlaは敵をマークして後続攻撃を強化し、Taroは時間制のガードで受けるダメージを減らします。"],["敵にほとんどダメージが入らないのはなぜ？","深淵の守衛、プリズムバジリスク、虚空の王冠皇帝はガード状態になることがあります。英雄スキルは通常攻撃より速くガードを崩します。"],["移動と攻撃の操作方法は？","戦場をタップするか、押したままドラッグして移動します。キーボードでは矢印キーまたはWASDを使用できます。敵が射程に入ると自動で攻撃し、スキルが使えるときはボタンかSpaceキーを押します。"],["試練の間に何が保存されますか？","解放した試練、試練マーク、ハートマスタリー、選択した英雄はこのブラウザーに保存されます。一時的な祝福は毎回リセットされます。ダイヤは各試練で一度だけ確認して行う任意の祝福引き直しに使います。"],["敗北すると何が起きますか？","再挑戦すると同じ試練を最初から始めます。恒久的な解放、マーク、マスタリーは失われません。"],["前の試練をもう一度遊べますか？","はい。解放済みの試練はすべてステージレールに残ります。"]]},"ko":{"title":"Animal Hero Trials","intro":"Animal Hero Trials는 30개 시험에 도전하는 액션 게임입니다. 네 영웅은 체력, 속도, 공격 거리와 액티브 스킬이 서로 다릅니다. 탭하거나 드래그해 이동하면 사거리 안에서 가장 가까운 적을 자동으로 공격합니다. 각 시험은 세 방으로 구성됩니다. 앞의 두 방을 클리어할 때마다 공격, 재사용 대기시간, 회복 중 하나를 무료로 고르고, 마지막 방에서 정예 대장이나 체크포인트 보스와 맞서세요. 승리하면 시험 표식을 받아 다음 시험을 열고 영구 생명 숙련도를 올릴 수 있습니다.","controls":"전장을 탭하거나 누른 채 드래그해 이동하세요. 키보드에서는 방향키나 WASD를 사용합니다. 적이 사거리 안에 들어오면 자동 공격하며, 스킬이 준비되면 버튼이나 Space를 누릅니다.","description":"네 영웅 중 하나를 골라 터치, 드래그 또는 키보드로 30개의 3개 방 시험에 도전하세요. 무료 축복을 선택하고 여섯 체크포인트 보스에 대응해 영구 숙련도를 키우세요.","tags":["터치·드래그 이동 액션","세 방 로그라이트 시험","영웅 스킬 타이밍"],"faqs":[["시험과 보스는 몇 개 있나요?","세 방으로 이루어진 시험이 30개 있습니다. 5, 10, 15, 20, 25, 30번째 시험에는 각각 다른 체크포인트 보스가 나옵니다."],["첫 두 방을 마치면 어떻게 되나요?","1번과 2번 방을 클리어할 때마다 공격, 재사용 대기시간, 회복 중 하나의 축복을 무료로 고릅니다. 축복은 해당 시험 동안 유지되고 3번 방에서 시험이 끝납니다."],["네 영웅은 어떻게 다른가요?","Leo의 포효는 주변 적을 기절시키고, Fia는 위험을 통과하는 돌진을 하며, Orla는 적을 표식해 후속 공격을 강화하고, Taro는 시간제 방어로 받는 피해를 줄입니다."],["적에게 피해가 거의 들어가지 않는 이유는 무엇인가요?","심연 경비병, 프리즘 바실리스크, 공허 왕관 황제는 방어 상태에 들어갈 수 있습니다. 영웅 스킬은 자동 공격보다 방어를 더 빨리 무너뜨립니다."],["이동하고 공격하려면 어떻게 하나요?","전장을 탭하거나 누른 채 드래그해 이동하세요. 키보드에서는 방향키나 WASD를 사용합니다. 적이 사거리 안에 들어오면 자동 공격하며, 스킬이 준비되면 버튼이나 Space를 누릅니다."],["시험 사이에 무엇이 저장되나요?","해금한 시험, 시험 표식, 하트 숙련도, 선택한 영웅은 이 브라우저에 저장됩니다. 임시 축복은 매번 초기화됩니다. 다이아는 시험마다 한 번, 확인을 거치는 선택적 축복 다시 뽑기에만 사용됩니다."],["패배하면 어떻게 되나요?","다시 시도하면 같은 시험을 처음부터 시작합니다. 영구 해금, 표식, 숙련도는 유지됩니다."],["이전 시험을 다시 할 수 있나요?","네. 해금한 시험은 모두 스테이지 레일에 남습니다."]]},"es":{"title":"Pruebas de Héroes","intro":"Pruebas de Héroes es una campaña de acción con 30 pruebas y cuatro héroes distintos en salud, velocidad, alcance y habilidades activas. Toca o arrastra para moverte; cada héroe ataca automáticamente al enemigo más cercano dentro de su alcance. Cada prueba tiene tres salas: supera las dos primeras para elegir gratis una bendición de Potencia, Enfriamiento o Recuperación y luego enfréntate a un capitán de élite o a un jefe de punto de control. Las victorias otorgan Marcas de Prueba, desbloquean la siguiente prueba y mejoran la Maestría del Corazón permanente.","controls":"Toca un punto de la arena o mantén y arrastra para dirigir el movimiento. Usa flechas o WASD en teclado. El héroe ataca automáticamente cuando un enemigo está a su alcance; pulsa el botón de habilidad o Espacio cuando esté lista.","description":"Elige uno de cuatro héroes y muévete con toques, arrastres o teclado en 30 pruebas de tres salas. Escoge bendiciones gratis, supera seis jefes de control y mejora tu maestría permanente.","tags":["Combate con toque y arrastre","Pruebas de acción de tres salas","Habilidades de héroe con tiempo"],"faqs":[["¿Cuántas pruebas y jefes hay?","Hay 30 pruebas de tres salas. Las pruebas 5, 10, 15, 20, 25 y 30 terminan con un jefe de control diferente."],["¿Qué ocurre tras las dos primeras salas?","Al superar las salas 1 y 2, elige gratis una bendición de Potencia, Enfriamiento o Recuperación. Dura durante esa prueba; la sala 3 la termina."],["¿En qué se diferencian los cuatro héroes?","El rugido de Leo aturde a los enemigos cercanos; Fia atraviesa el peligro con una embestida; Orla marca objetivos para potenciar ataques posteriores; y Taro reduce el daño con una guardia temporal."],["¿Por qué un enemigo recibe tan poco daño?","Los Guardias del Abismo, el Basilisco Prisma y el Emperador de la Corona Vacía pueden activar su guardia. Las habilidades de héroe la rompen más rápido que los ataques automáticos."],["¿Cómo me muevo y ataco?","Toca un punto de la arena o mantén y arrastra para dirigir el movimiento. Usa flechas o WASD en teclado. El héroe ataca automáticamente cuando un enemigo está a su alcance; pulsa el botón de habilidad o Espacio cuando esté lista."],["¿Qué se guarda entre pruebas?","Las pruebas desbloqueadas, las Marcas de Prueba, la Maestría del Corazón y el héroe elegido se guardan en este navegador. Las bendiciones temporales se reinician. Los diamantes son opcionales y permiten una repetición confirmada de bendiciones por prueba."],["¿Qué pasa al perder?","Reintentar empieza de nuevo la misma prueba. Los desbloqueos, las marcas y la maestría permanentes se conservan."],["¿Puedo repetir una prueba anterior?","Sí. Todas las pruebas desbloqueadas siguen disponibles en la selección de etapas."]]},"pt-BR":{"title":"Hero Trials","intro":"Hero Trials é uma campanha de ação com 30 desafios e quatro heróis diferentes em vida, velocidade, alcance e habilidades ativas. Toque ou arraste para se mover; cada herói ataca automaticamente o inimigo mais próximo dentro do alcance. Cada desafio tem três salas: vença as duas primeiras para escolher de graça uma bênção de Poder, Recarga ou Recuperação e depois enfrente um capitão de elite ou um chefe de marco. As vitórias concedem Marcas de Prova, liberam o próximo desafio e aumentam a Maestria do Coração permanente.","controls":"Toque em um ponto da arena ou mantenha e arraste para direcionar o movimento. No teclado, use as setas ou WASD. O herói ataca sozinho quando um inimigo entra no alcance; use o botão de habilidade ou Espaço quando ela estiver pronta.","description":"Escolha um dos quatro heróis e mova-se por toque, arraste ou teclado em 30 desafios de três salas. Escolha bênçãos grátis, enfrente seis chefes de marco e evolua a maestria permanente.","tags":["Combate com toque e arraste","Desafios de ação em três salas","Habilidades de herói no tempo certo"],"faqs":[["Quantos desafios e chefes existem?","São 30 desafios com três salas. Os desafios 5, 10, 15, 20, 25 e 30 terminam com chefes de marco diferentes."],["O que acontece depois das duas primeiras salas?","Ao vencer as salas 1 e 2, escolha grátis uma bênção de Poder, Recarga ou Recuperação. Ela vale durante o desafio; a sala 3 encerra a partida."],["Como os quatro heróis são diferentes?","O rugido de Leo atordoa inimigos próximos; Fia atravessa o perigo com uma arrancada; Orla marca alvos para fortalecer ataques seguintes; e Taro reduz o dano com uma guarda temporária."],["Por que um inimigo sofre tão pouco dano?","Guardas do Abismo, Basilisco Prisma e Imperador da Coroa Vazia podem ativar uma guarda. Habilidades dos heróis quebram essa defesa mais rápido que ataques automáticos."],["Como me movimento e ataco?","Toque em um ponto da arena ou mantenha e arraste para direcionar o movimento. No teclado, use as setas ou WASD. O herói ataca sozinho quando um inimigo entra no alcance; use o botão de habilidade ou Espaço quando ela estiver pronta."],["O que fica salvo entre os desafios?","Desafios liberados, Marcas de Prova, Maestria do Coração e o herói escolhido ficam salvos neste navegador. Bênçãos temporárias reiniciam. Diamantes são opcionais e permitem uma troca confirmada de bênçãos por desafio."],["O que acontece quando perco?","Tentar de novo reinicia o mesmo desafio. Desbloqueios, marcas e maestria permanentes são mantidos."],["Posso jogar um desafio anterior novamente?","Sim. Todos os desafios liberados continuam disponíveis na seleção de fases."]]},"fr":{"title":"Hero Trials","intro":"Hero Trials est une campagne d’action de 30 épreuves mettant en scène quatre héros aux points de vie, à la vitesse, à la portée et aux compétences actives différents. Touchez ou faites glisser pour vous déplacer ; chaque héros attaque automatiquement l’ennemi le plus proche à portée. Chaque épreuve comprend trois salles : terminez les deux premières pour choisir gratuitement un bonus de Puissance, de Recharge ou de Récupération, puis affrontez un capitaine d’élite ou un boss de checkpoint. Les victoires donnent des Marques d’épreuve, débloquent l’épreuve suivante et font progresser la Maîtrise du cœur permanente.","controls":"Touchez un point de l’arène ou maintenez et faites glisser pour diriger le déplacement. Au clavier, utilisez les flèches ou WASD. Le héros attaque automatiquement lorsqu’un ennemi est à portée ; utilisez le bouton de compétence ou Espace quand elle est prête.","description":"Choisissez un héros et déplacez-vous par toucher, glisser ou clavier dans 30 épreuves de trois salles. Prenez des bonus gratuits, affrontez six boss de checkpoint et améliorez votre maîtrise permanente.","tags":["Combat par toucher et glisser","Épreuves d’action en trois salles","Compétences héroïques au bon moment"],"faqs":[["Combien y a-t-il d’épreuves et de boss ?","Il y a 30 épreuves de trois salles. Les épreuves 5, 10, 15, 20, 25 et 30 se terminent chacune par un boss de checkpoint différent."],["Que se passe-t-il après les deux premières salles ?","Après les salles 1 et 2, choisissez gratuitement un bonus de Puissance, Recharge ou Récupération. Il dure pendant cette épreuve ; la salle 3 la termine."],["En quoi les quatre héros sont-ils différents ?","Le rugissement de Leo étourdit les ennemis proches ; Fia traverse le danger avec une ruée ; Orla marque une cible pour renforcer ses attaques suivantes ; Taro réduit les dégâts avec une garde temporaire."],["Pourquoi un ennemi subit-il si peu de dégâts ?","Les Gardiens des abysses, le Basilic prismatique et l’Empereur de la Couronne vide peuvent activer une garde. Les compétences héroïques la brisent plus vite que les attaques automatiques."],["Comment se déplacer et attaquer ?","Touchez un point de l’arène ou maintenez et faites glisser pour diriger le déplacement. Au clavier, utilisez les flèches ou WASD. Le héros attaque automatiquement lorsqu’un ennemi est à portée ; utilisez le bouton de compétence ou Espace quand elle est prête."],["Qu’est-ce qui est sauvegardé entre les épreuves ?","Les épreuves débloquées, les Marques d’épreuve, la Maîtrise du cœur et le héros choisi sont enregistrés dans ce navigateur. Les bonus temporaires sont réinitialisés. Les diamants sont facultatifs et permettent un changement de bonus confirmé par épreuve."],["Que se passe-t-il en cas de défaite ?","Réessayer relance la même épreuve. Les déblocages, marques et maîtrises permanents sont conservés."],["Peut-on rejouer une ancienne épreuve ?","Oui. Toutes les épreuves débloquées restent accessibles dans la sélection des niveaux."]]},"de":{"title":"Animal Hero Trials","intro":"Animal Hero Trials ist eine Action-Kampagne mit 30 Prüfungen und vier Helden, die sich bei Gesundheit, Tempo, Reichweite und aktiven Fähigkeiten unterscheiden. Tippe oder ziehe zum Bewegen; jeder Held greift automatisch den nächsten Gegner in Reichweite an. Jede Prüfung hat drei Räume: Räume 1 und 2 liefern je eine kostenlose Segnung für Kraft, Abklingzeit oder Erholung. Danach kämpfst du gegen einen Elitehauptmann oder einen Checkpoint-Boss. Siege bringen Prüfungsmarken, schalten die nächste Prüfung frei und steigern die permanente Herzmeisterschaft.","controls":"Tippe auf einen Punkt in der Arena oder halte und ziehe zum Lenken. Mit Tastatur nutzt du Pfeiltasten oder WASD. Angriffe erfolgen automatisch, sobald ein Gegner in Reichweite ist; die Fähigkeit löst du mit der Taste oder Leertaste aus.","description":"Wähle einen von vier Helden und bewege dich per Tippen, Ziehen oder Tastatur durch 30 Prüfungen mit je drei Räumen. Wähle kostenlose Segnungen, meistere sechs Checkpoint-Bosse und verbessere deine dauerhafte Meisterschaft.","tags":["Kampf mit Tippen und Ziehen","Drei-Raum-Action-Prüfungen","Zeitpunkt für Heldenfähigkeiten"],"faqs":[["Wie viele Prüfungen und Bosse gibt es?","Es gibt 30 Prüfungen mit je drei Räumen. In Prüfung 5, 10, 15, 20, 25 und 30 wartet jeweils ein anderer Checkpoint-Boss."],["Was passiert nach den ersten zwei Räumen?","Nach Raum 1 und 2 wählst du kostenlos eine Segnung für Kraft, Abklingzeit oder Erholung. Sie gilt für diese Prüfung; Raum 3 beendet den Lauf."],["Worin unterscheiden sich die vier Helden?","Leos Brüllen betäubt Gegner in der Nähe, Fia stürmt durch Gefahr, Orla markiert Ziele für stärkere Folgeangriffe, und Taro verringert Schaden mit einer zeitlich begrenzten Abwehr."],["Warum nimmt ein Gegner kaum Schaden?","Abyss-Wachen, der Prism-Basilisk und der Void Crown Emperor können eine Schutzphase aktivieren. Heldenfähigkeiten brechen sie schneller als automatische Angriffe."],["Wie bewege und kämpfe ich?","Tippe auf einen Punkt in der Arena oder halte und ziehe zum Lenken. Mit Tastatur nutzt du Pfeiltasten oder WASD. Angriffe erfolgen automatisch, sobald ein Gegner in Reichweite ist; die Fähigkeit löst du mit der Taste oder Leertaste aus."],["Was wird zwischen Prüfungen gespeichert?","Freigeschaltete Prüfungen, Prüfungsmarken, Herzmeisterschaft und der gewählte Held werden in diesem Browser gespeichert. Vorübergehende Segnungen werden zurückgesetzt. Diamanten sind optional und erlauben einen bestätigten Segnungswechsel pro Prüfung."],["Was passiert bei einer Niederlage?","Wiederholen startet dieselbe Prüfung neu. Dauerhafte Freischaltungen, Marken und Meisterschaft bleiben erhalten."],["Kann ich eine frühere Prüfung erneut spielen?","Ja. Alle freigeschalteten Prüfungen bleiben auf der Stufenleiste verfügbar."]]},"it":{"title":"Animal Hero Trials","intro":"Animal Hero Trials è una campagna d’azione con 30 prove e quattro eroi diversi per salute, velocità, gittata e abilità attive. Tocca o trascina per muoverti; ogni eroe attacca automaticamente il nemico più vicino entro gittata. Ogni prova ha tre stanze: completa le prime due per scegliere gratis una benedizione Potenza, Ricarica o Recupero, poi affronta un capitano élite o un boss di checkpoint. Le vittorie assegnano Marchi della Prova, sbloccano la prova successiva e fanno crescere la Maestria del Cuore permanente.","controls":"Tocca un punto dell'arena oppure tieni premuto e trascina per guidare il movimento. Con la tastiera usa frecce o WASD. Gli attacchi partono da soli quando un nemico è a portata; usa il pulsante abilità o Spazio quando è pronta.","description":"Scegli uno dei quattro eroi e muoviti con tocco, trascinamento o tastiera in 30 prove di tre stanze. Scegli benedizioni gratuite, affronta sei boss di checkpoint e migliora la maestria permanente.","tags":["Combattimento con tocco e trascinamento","Prove d'azione in tre stanze","Tempismo delle abilità degli eroi"],"faqs":[["Quante prove e boss ci sono?","Ci sono 30 prove di tre stanze. Le prove 5, 10, 15, 20, 25 e 30 terminano con un diverso boss di checkpoint."],["Cosa succede dopo le prime due stanze?","Dopo le stanze 1 e 2 scegli gratis una benedizione Potenza, Ricarica o Recupero. Vale per quella prova; la stanza 3 la conclude."],["In cosa si distinguono i quattro eroi?","Il ruggito di Leo stordisce i nemici vicini; Fia scatta attraverso il pericolo; Orla marca i bersagli per potenziare gli attacchi successivi; Taro riduce i danni con una guardia temporanea."],["Perché un nemico subisce pochi danni?","Guardie dell'Abisso, Basilisco Prisma e Imperatore della Corona Vuota possono attivare una guardia. Le abilità degli eroi la abbattono più velocemente degli attacchi automatici."],["Come mi muovo e attacco?","Tocca un punto dell'arena oppure tieni premuto e trascina per guidare il movimento. Con la tastiera usa frecce o WASD. Gli attacchi partono da soli quando un nemico è a portata; usa il pulsante abilità o Spazio quando è pronta."],["Cosa viene salvato tra le prove?","Prove sbloccate, Marchi della Prova, Maestria del Cuore ed eroe scelto restano salvati in questo browser. Le benedizioni temporanee si azzerano. I diamanti sono facoltativi e consentono un cambio confermato di benedizioni per prova."],["Cosa succede se perdo?","Riprova riavvia la stessa prova. Sblocchi, marchi e maestria permanenti restano."],["Posso rigiocare una prova precedente?","Sì. Tutte le prove sbloccate restano disponibili nella selezione dei livelli."]]},"ru":{"title":"Animal Hero Trials","intro":"Animal Hero Trials — это экшен-кампания из 30 испытаний с четырьмя героями, у которых различаются здоровье, скорость, дальность атаки и активные навыки. Перемещайтесь касанием или перетаскиванием; герой автоматически атакует ближайшего врага в радиусе. В каждом испытании три комнаты: после первых двух бесплатно выберите усиление Силы, Перезарядки или Восстановления, а затем сразитесь с элитным капитаном или боссом контрольного рубежа. Победы дают знаки испытаний, открывают следующий этап и развивают постоянное Мастерство сердца.","controls":"Коснитесь точки на арене или удерживайте и перетаскивайте, чтобы управлять движением. На клавиатуре используйте стрелки или WASD. Герой атакует автоматически, когда враг входит в радиус; для навыка нажмите кнопку или пробел, когда он готов.","description":"Выберите одного из четырёх героев и пройдите 30 трёхкомнатных испытаний с сенсорным управлением или клавиатурой. Берите бесплатные усиления, одолейте шесть боссов рубежей и развивайте постоянное мастерство.","tags":["Бой с перемещением касанием и перетаскиванием","Экшен-испытания из трёх комнат","Выбор момента для навыка героя"],"faqs":[["Сколько испытаний и боссов в игре?","В игре 30 испытаний по три комнаты. На этапах 5, 10, 15, 20, 25 и 30 вас ждёт отдельный босс контрольного рубежа."],["Что происходит после первых двух комнат?","После комнат 1 и 2 бесплатно выберите усиление Силы, Перезарядки или Восстановления. Оно действует до конца испытания; комната 3 завершает забег."],["Чем отличаются четыре героя?","Рёв Leo оглушает врагов поблизости, Fia прорывается рывком через опасность, Orla помечает цель для усиленных последующих атак, а Taro временно снижает получаемый урон защитой."],["Почему враг получает так мало урона?","Стражи Бездны, Призматический василиск и Император Пустой Короны могут включать защиту. Навыки героев снимают её быстрее автоматических атак."],["Как двигаться и атаковать?","Коснитесь точки на арене или удерживайте и перетаскивайте, чтобы управлять движением. На клавиатуре используйте стрелки или WASD. Герой атакует автоматически, когда враг входит в радиус; для навыка нажмите кнопку или пробел, когда он готов."],["Что сохраняется между испытаниями?","Открытые испытания, знаки испытаний, Мастерство сердца и выбранный герой сохраняются в этом браузере. Временные усиления сбрасываются. Алмазы необязательны и позволяют один раз за испытание подтвердить смену усилений."],["Что будет после поражения?","Повторный запуск начинает то же испытание заново. Постоянные открытия, знаки и мастерство сохраняются."],["Можно ли переиграть пройденное испытание?","Да. Все открытые испытания остаются на ленте этапов."]]},"hi":{"title":"Animal Hero Trials","intro":"Animal Hero Trials एक 30-ट्रायल एक्शन अभियान है, जिसमें चार नायकों की सेहत, गति, हमले की दूरी और सक्रिय कौशल अलग-अलग हैं। चलने के लिए स्क्रीन पर टैप या ड्रैग करें; दूरी में मौजूद सबसे नज़दीकी दुश्मन पर नायक अपने-आप हमला करता है। हर ट्रायल में तीन कमरे हैं: पहले दो कमरे साफ़ करने पर पावर, कूलडाउन या रिकवरी का एक आशीर्वाद मुफ़्त चुनें, फिर किसी एलीट कप्तान या चेकपॉइंट बॉस से लड़ें। जीत से ट्रायल मार्क मिलते हैं, अगला ट्रायल खुलता है और स्थायी हार्ट मास्टरी बढ़ती है।","controls":"मैदान की जगह पर टैप करें या दबाकर ड्रैग करें। कीबोर्ड पर ऐरो कुंजियाँ या WASD चलाएँ। दुश्मन दूरी में आते ही हमला अपने-आप होता है; कौशल तैयार होने पर उसका बटन या Space दबाएँ।","description":"चार नायकों में से चुनें और स्पर्श, ड्रैग या कीबोर्ड से 30 तीन-कमरे वाले ट्रायल खेलें। मुफ़्त आशीर्वाद चुनें, छह चेकपॉइंट बॉस को हराएँ और स्थायी मास्टरी बढ़ाएँ।","tags":["टैप-ड्रैग एक्शन मुकाबला","तीन-कमरे वाले एक्शन ट्रायल","हीरो कौशल का सही समय"],"faqs":[["कितने ट्रायल और बॉस हैं?","30 ट्रायल हैं और हर ट्रायल में तीन कमरे हैं। 5वें, 10वें, 15वें, 20वें, 25वें और 30वें ट्रायल में अलग चेकपॉइंट बॉस आता है।"],["पहले दो कमरों के बाद क्या होता है?","कमरा 1 और 2 साफ़ करने के बाद पावर, कूलडाउन या रिकवरी का एक मुफ़्त आशीर्वाद चुनें। यह उसी ट्रायल तक रहता है; कमरा 3 ट्रायल पूरा करता है।"],["चारों नायक कैसे अलग हैं?","Leo की दहाड़ पास के दुश्मनों को रोकती है, Fia डैश से खतरे के पार जाती है, Orla लक्ष्य पर निशान लगाकर आगे के हमले मज़बूत करती है, और Taro का सीमित समय वाला गार्ड नुकसान घटाता है।"],["दुश्मन को इतना कम नुकसान क्यों हो रहा है?","एबिस गार्ड, प्रिज़्म बेसिलिस्क और वॉइड क्राउन एम्परर गार्ड चालू कर सकते हैं। हीरो कौशल ऑटो हमलों से तेज़ी से गार्ड हटाते हैं।"],["चलना और हमला करना कैसे है?","मैदान की जगह पर टैप करें या दबाकर ड्रैग करें। कीबोर्ड पर ऐरो कुंजियाँ या WASD चलाएँ। दुश्मन दूरी में आते ही हमला अपने-आप होता है; कौशल तैयार होने पर उसका बटन या Space दबाएँ।"],["ट्रायल के बीच क्या सेव रहता है?","खुले ट्रायल, ट्रायल मार्क, हार्ट मास्टरी और चुना नायक इस ब्राउज़र में सेव रहते हैं। अस्थायी आशीर्वाद हर बार रीसेट होते हैं। डायमंड वैकल्पिक हैं और हर ट्रायल में एक बार पुष्टि करके आशीर्वाद बदलने के लिए इस्तेमाल होते हैं।"],["हारने पर क्या होता है?","फिर से प्रयास करने पर वही ट्रायल दोबारा शुरू होता है। स्थायी अनलॉक, मार्क और मास्टरी बने रहते हैं।"],["क्या पुराना ट्रायल फिर खेल सकते हैं?","हाँ। हर खुला ट्रायल स्टेज सूची में उपलब्ध रहता है।"]]},"ar":{"title":"محاكمات بطل الحيوان","intro":"محاكمات بطل الحيوان حملة حركة تضم 30 تجربة وأربعة أبطال تختلف صحتهم وسرعتهم ومدى هجومهم ومهاراتهم النشطة. المس أو اسحب للتحرك، ويهاجم كل بطل تلقائيًا أقرب عدو ضمن مداه. تتكون كل تجربة من ثلاث غرف: بعد اجتياز الأولى والثانية اختر نعمة مجانية للقوة أو التبريد أو التعافي، ثم واجه قائدًا نخبة أو زعيم نقطة تحقق. تمنح الانتصارات علامات التجربة، وتفتح التجربة التالية، وتزيد إتقان القلب الدائم.","controls":"المس نقطة في الساحة أو اضغط واسحب لتوجيه الحركة. استخدم مفاتيح الأسهم أو WASD على لوحة المفاتيح. يهاجم البطل تلقائيًا عندما يدخل العدو مداه؛ استخدم زر المهارة أو المسافة عندما تصبح جاهزة.","description":"اختر أحد أربعة أبطال وتحرك باللمس أو السحب أو لوحة المفاتيح خلال 30 تجربة من ثلاث غرف. اختر تعزيزات مجانية، وواجه ستة زعماء نقاط التحقق، وطوّر الإتقان الدائم.","tags":["قتال بالحركة باللمس والسحب","تجارب حركة من ثلاث غرف","توقيت مهارات الأبطال"],"faqs":[["كم تجربة وزعيمًا في اللعبة؟","هناك 30 تجربة، في كل منها ثلاث غرف. تنتهي التجارب 5 و10 و15 و20 و25 و30 بزعيم مختلف لنقطة تحقق."],["ماذا يحدث بعد أول غرفتين؟","بعد اجتياز الغرفتين 1 و2 اختر نعمة مجانية للقوة أو التبريد أو التعافي. تستمر في تلك التجربة، وتنهي الغرفة 3 الجولة."],["كيف يختلف الأبطال الأربعة؟","زئير Leo يذهل الأعداء القريبين، ويندفع Fia عبر الخطر، ويضع Orla علامة على الهدف لتقوية الهجمات التالية، ويخفف Taro الضرر بحراسة مؤقتة."],["لماذا يتلقى العدو ضررًا قليلًا؟","قد يفعّل حراس الهاوية أو البازيليسق المنشوري أو إمبراطور تاج الفراغ حالة الحراسة. تكسر مهارات الأبطال الحراسة أسرع من الهجمات التلقائية."],["كيف أتحرك وأهاجم؟","المس نقطة في الساحة أو اضغط واسحب لتوجيه الحركة. استخدم مفاتيح الأسهم أو WASD على لوحة المفاتيح. يهاجم البطل تلقائيًا عندما يدخل العدو مداه؛ استخدم زر المهارة أو المسافة عندما تصبح جاهزة."],["ما الذي يُحفظ بين التجارب؟","تُحفظ التجارب المفتوحة وعلامات التجربة وإتقان القلب والبطل المختار في هذا المتصفح. تُعاد النعم المؤقتة إلى البداية. الماسات اختيارية؛ ثلاثة منها تغيّر خيارات النعم الثلاثة مرة واحدة في التجربة بعد التأكيد."],["ماذا يحدث عند الهزيمة؟","تعيد المحاولة التجربة نفسها من بدايتها. تبقى عمليات الفتح والعلامات والإتقان الدائم محفوظة."],["هل يمكن إعادة تجربة سابقة؟","نعم. تبقى كل تجربة مفتوحة متاحة في شريط المراحل."]]}};
+  // WP_ANIMAL_HERO_TRIALS_TEXT140_END
   const animalHeroTrialsLocaleGuideOverrides = {
     de: {
       noteTitle: "Spieler- und Speicherhinweise",
@@ -11043,6 +11289,33 @@
 
   function localizedGame(id) {
     let game = localizedGameContent(id);
+    if (id === "animal-bubble-safari" && game) {
+      try {
+        const routeCopy = JSON.parse(document.querySelector("script[data-wp-bubble-safari-text-growth]")?.textContent || "null");
+        const activeLocale = locale();
+        const intro = routeCopy?.guideIntros?.[activeLocale];
+        const text140Tags = routeCopy?.tags?.[activeLocale];
+        const missionCopy = routeCopy?.missionCopy?.[activeLocale];
+        const faq = routeCopy?.faqs?.[activeLocale];
+        const progression = routeCopy?.progressionCopy?.[activeLocale];
+        if (intro && Array.isArray(text140Tags) && text140Tags.length === 4
+            && typeof missionCopy === "string" && Array.isArray(faq)
+            && faq.length >= 6 && faq.every(pair => Array.isArray(pair) && pair.length === 2 && pair.every(value => typeof value === "string"))
+            && Array.isArray(progression) && progression.length === 6 && progression.every(value => typeof value === "string")) {
+          const story = Array.isArray(game.story) ? [...game.story] : [];
+          if (story.length >= 2) story[story.length - 1] = missionCopy;
+          game = { ...game, intro, text140Tags, story, faq, progression };
+        }
+      } catch {
+        // Keep the current Guide copy intact if an older route has no 1.4.0 payload.
+      }
+    }
+    if (id === "animal-cratebound" && game) {
+      const text140 = window.WEIGHTPLAY_CRATEBOUND_TEXT_140?.[locale()];
+      if (text140?.description && Array.isArray(text140.tags)) {
+        game = { ...game, intro: text140.description, genre: text140.tags, text140Tags: text140.tags };
+      }
+    }
     if(id==="animal-abyss-diver"&&game&&window.AbyssDiverTactics)game=window.AbyssDiverTactics.applyGuide(game,locale());
     if (id === "animal-2048" && game) game = { ...game, systems: [...(game.systems || []), forestCheckpointGuide[locale()] || forestCheckpointGuide.en] };
     if (id === "wonder-crash" && game && window.LionTalents) game = { ...game, ...window.LionTalents.guide(locale()) };
@@ -11057,6 +11330,13 @@
         parent: guide.note || "",
       };
     }
+    // WP_ANIMAL_HERO_TRIALS_TEXT140_RENDER_START
+    if (id === "animal-hero-trials" && game) {
+      const copy = animalHeroTrialsTextGrowth140[locale()] || animalHeroTrialsTextGrowth140.en;
+      game = { ...game, intro: copy.intro, text140Tags: copy.tags, faq: copy.faqs.slice(0, 7), systems: [...(game.systems || [])] };
+      game.systems[1] = copy.controls;
+    }
+    // WP_ANIMAL_HERO_TRIALS_TEXT140_RENDER_END
     const official = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale()];
     return game && official && document.documentElement.hasAttribute?.('data-wp-official-name') ? { ...game, title: official } : game;
   }
@@ -11489,6 +11769,14 @@
       }
       return;
     }
+    // Sudoku 1.4.0 ships a complete locale-owned static Guide on each public
+    // route. Keep the shared legacy renderer from replacing that authored copy
+    // during its asynchronous locale initialization.
+    if (currentGameId() === "sudoku" && document.querySelector('[data-wp-sudoku-text-growth="1.4.0"]')) {
+      document.documentElement.classList.add("has-game-page-info");
+      document.body?.classList.add("has-game-page-info");
+      return;
+    }
     const activeLocale = locale();
     if (currentGameId() !== "animal-rune-tactics" && activeLocale !== "en" && !window.WeightPlayGameRuntimeLocales?.[activeLocale] && !runtimeGuideResourceFailures.has(activeLocale)) {
       ensureRuntimeGuideResource(activeLocale).then(render);
@@ -11725,7 +12013,7 @@
         </div>
         ${related.length ? `<div class="game-info-section game-info-related-section">
           <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
-          ${game.showRelatedSkill === false ? "" : `<p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>`}
+          ${game.showRelatedSkill === false ? "" : `<p>${escapeHtml(game.relatedIntro || uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>`}
           <div class="game-info-related">${related.map(relatedCard).join("")}</div>
         </div>` : ""}
       </div>
@@ -11774,7 +12062,7 @@
     difficulty: "Easy to Challenging",
     time: "2-6 minutes per stage",
     gameplay: "Single-Stroke Logic Puzzle",
-    genre: ["Puzzle", "Strategy", "Logic", "Animal"],
+    genre: ["Sliding block puzzle", "Axis-locked moves", "6×6 board"],
     skills: ["Logic", "Focus", "Problem Solving"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
@@ -12099,6 +12387,11 @@
     ...games["animal-rootvault-pins"],
     title: "دبابيس روتفولت الحيوانية", difficulty: "من السهل إلى التحدي", time: "من دقيقتين إلى 6 دقائق لكل غرفة", gameplay: "لغز دبابيس بتفاعلات المواد", genre: ["ألغاز", "استراتيجية", "حيوانات"], skills: ["المنطق", "التخطيط", "حل المشكلات"],
     guideKicker: "دليل لعبة WeightPlay الأصلية", guideTitleSuffix: "دليل اللعبة",
+    guideTitle: "كل دبوس يغيّر الخزانة", guideWorldTitle: "خزانة تارو الحية",
+    guideWorld: "تشابكت قنوات ماء القمر تحت قوقعة حصن تارو مع الجمر والظلال والأقفال الرونية القديمة.",
+    guideRulesTitle: "المواد تتفاعل", guideRules: "يبرّد ماء القمر الجمر ليصبح بخارًا غير ضار. تحمي درع القوقعة تارو من ظل واحد ثم تُستهلك. تفتح المفاتيح الدبابيس ذات الرون المطابق.",
+    guideStrategyTitle: "راقب قبل السحب", guideStrategy: "قد يحبس المسار الخاطئ النواة النجمية أو يعرّض تارو للخطر. تعيد إعادة البدء الغرفة كما كانت.",
+    guideAccessTitle: "حركة واحدة في كل مرة", guideAccess: "اختر دبوسًا واسحبه، أو حدده ثم اضغط Enter أو المسافة. لا يتكرر الإدخال عند الضغط المطوّل.",
     intro: "دبابيس روتفولت الحيوانية لغز دبابيس من 30 غرفة من بطولة موس شل تارو. اسحب الدبابيس الذهبية الكاملة بالترتيب الآمن، وحل تفاعلات المواد المرئية، واجمع تارو ونواة النجم في الملجأ.",
     story: ["تشابكت قنوات مياه القمر تحت قوقعة قلعة تارو الحية مع Emberlight وShadow Wisps والدروع والأقفال الرونية القديمة. تؤدي استعادة الفصول الستة إلى إعادة فتح روتفولت."],
     systems: ["تنقل كل عملية سحب العناصر من غرفة المصدر إلى غرفة الوجهة. يبرّد ماء القمر Emberlight ليحوله إلى بخار، ويحمي درع القوقعة تارو مرة واحدة، وتفتح مفاتيح الرون الدبابيس التي تحمل العلامة المطابقة.", "تعيد إعادة التشغيل الغرفة المؤلفة نفسها تمامًا. تُحفظ عمليات الإكمال وأفضل عدد من السحبات وعلامات البذور وترقيات الورشة محليًا في هذا المتصفح."],
@@ -12179,6 +12472,35 @@
       ...current,
       designNote: additions.designNote || current.designNote,
       faq,
+    };
+  }
+
+  const rootvaultTextGrowth140 = {
+    en: { tags: ["Pin-Pull Puzzle", "Material Reactions", "Route Planning"], metaDescription: "Plan complete pin pulls and material reactions as Taro and the Star Core cross 30 authored Rootvault chambers. Use Moonwater, wards, rune keys, and the optional Preview Thread." },
+    "zh-Hant": { tags: ["拉針益智", "材質反應", "路線規劃"], metaDescription: "規劃完整拉針與材質反應，陪太郎和星核通過 30 間原創根脈機關室。運用月水、護盾、符文鑰匙，以及可選的預覽根線。" },
+    "zh-Hans": { tags: ["拉针解谜", "材质反应", "路线规划"], metaDescription: "规划完整拉针与材质反应，陪 Taro 和星核通过 30 间原创根脉机关室。运用月水、护盾、符文钥匙，以及可选的预览根线。" },
+    ja: { tags: ["ピン抜きパズル", "素材の反応", "ルート計画"], metaDescription: "ピンを抜く順番と素材の反応を計画し、タロとスターコアを全30室のルートヴォルトへ導きます。ムーンウォーター、守り、ルーンキー、任意の予見の根糸を活用しましょう。" },
+    ko: { tags: ["핀 당기기 퍼즐", "재료 반응", "경로 계획"], metaDescription: "핀을 당기는 순서와 재료 반응을 계획해 타로와 스타 코어를 30개의 루트볼트 방으로 안내하세요. 달물, 보호막, 룬 열쇠와 선택형 예견의 뿌리실을 활용할 수 있습니다." },
+    es: { tags: ["Rompecabezas de clavijas", "Reacciones de materiales", "Planificación de rutas"], metaDescription: "Planifica cada extracción y las reacciones de materiales para guiar a Taro y al Núcleo Estelar por 30 cámaras de Rootvault. Usa Agua Lunar, escudos, llaves rúnicas y el Hilo de previsión opcional." },
+    "pt-BR": { tags: ["Quebra-cabeça de pinos", "Reações entre materiais", "Planejamento de rotas"], metaDescription: "Planeje cada puxada e reação entre materiais para guiar Taro e o Núcleo Estelar por 30 câmaras de Rootvault. Use Água Lunar, escudos, chaves rúnicas e o Fio de previsão opcional." },
+    fr: { tags: ["Puzzle à broches à tirer", "Réactions des matériaux", "Planification des parcours"], metaDescription: "Planifiez chaque tirage et réaction des matériaux pour guider Taro et le Cœur stellaire à travers 30 chambres de Rootvault. Utilisez l’Eau lunaire, les boucliers, les clés runiques et le Fil de prévision facultatif." },
+    de: { tags: ["Stiftzieh-Rätsel", "Materialreaktionen", "Routenplanung"], metaDescription: "Plane jeden Stiftzug und jede Materialreaktion, um Taro und den Sternenkern durch 30 Rootvault-Kammern zu führen. Nutze Mondwasser, Schutzschilde, Runenschlüssel und den optionalen Vorschaufaden." },
+    it: { tags: ["Rompicapo con perni da estrarre", "Reazioni dei materiali", "Pianificazione dei percorsi"], metaDescription: "Pianifica ogni estrazione e reazione dei materiali per guidare Taro e il Nucleo Stellare attraverso 30 camere di Rootvault. Usa Acqua lunare, scudi, chiavi runiche e il Filo di previsione facoltativo." },
+    ru: { tags: ["Головоломка со штифтами", "Реакции материалов", "Планирование маршрута"], metaDescription: "Планируйте вытягивание штифтов и реакции материалов, чтобы провести Таро и Звёздное ядро через 30 комнат Рутвольта. Используйте Лунную воду, защиту, рунные ключи и необязательную Нить предвидения." },
+    hi: { tags: ["पिन खींचने वाली पहेली", "सामग्री की प्रतिक्रियाएँ", "रास्ते की योजना"], metaDescription: "पिन खींचने का क्रम और सामग्री की प्रतिक्रियाएँ तय करके टैरो और स्टार कोर को रूटवॉल्ट के 30 कक्षों से पार ले जाएँ। मूनवॉटर, कवच, रूण चाबियाँ और वैकल्पिक पूर्वावलोकन धागे का उपयोग करें।" },
+    ar: { tags: ["لغز سحب الدبابيس", "تفاعلات المواد", "تخطيط المسارات"], metaDescription: "خطط لسحب الدبابيس وتفاعلات المواد لتوجيه تارو ونواة النجم عبر 30 غرفة مؤلفة في روتفولت. استخدم مياه القمر والدروع ومفاتيح الرون وخيط المعاينة الاختياري." },
+  };
+  for (const [code, copy] of Object.entries(rootvaultTextGrowth140)) {
+    const target = code === "en" ? games["animal-rootvault-pins"] : localizedGames[code]["animal-rootvault-pins"];
+    target.genre = copy.tags;
+    target.metaDescription = copy.metaDescription;
+    target.tags = copy.tags;
+    target.textGrowth140 = true;
+    target.text140Tags = copy.tags;
+    if (code === "en") gameplayProfiles["animal-rootvault-pins"] = { gameplay: "Material-Reaction Pin Puzzle", genre: copy.tags };
+    localizedGameplayProfiles[code]["animal-rootvault-pins"] = {
+      ...(localizedGameplayProfiles[code]["animal-rootvault-pins"] || {}),
+      genre: copy.tags,
     };
   }
 
@@ -12413,7 +12735,7 @@
       title: "瘋狂八人組", difficulty: "簡單到具挑戰性", time: "3–10 分鐘", gameplay: "經典出牌型卡牌遊戲", genre: ["卡牌", "家庭", "策略"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "玩家與儲存資訊",
       intro: "《瘋狂八人組》是四人出牌型卡牌對戰。打出符合目前花色或牌面點數的牌，用 8 轉換下一個花色，並在三位 AI 對手之前出完手牌。",
       story: ["牌局由你與三位 AI 對手開始，每人持有一小手牌，牌庫與棄牌堆決定下一個選擇。每一回合都會改變桌面上的花色與對手剩餘牌數。", "這裡沒有永久收藏或戰役階梯；每局都是一次短小的閱讀練習：找出合法出口、保留靈活的 8，並在另一手牌歸零前完成自己的手牌。"],
-      systems: ["只要符合棄牌頂牌的點數或目前花色即可出牌。任何 8 都是萬用牌；打出後選擇下一個花色，所選花色可能與這張 8 的原始花色不同。", "合法出牌後輪到下一位。若手上沒有合法牌，使用抽牌從牌庫抽一張；抽到可出的牌會立即進入出牌流程，不能出的牌則把回合交給下一位。牌庫耗盡時，牌局仍會依現有棄牌狀態繼續。", "任何玩家出完手牌時牌局結束。Result 會顯示勝者與本局結果，New Game 會重新發牌；非法點擊不會消耗回合，並顯示在地化提示。"],
+      systems: ["只要符合棄牌頂牌的點數或目前花色即可出牌。任何 8 都是萬用牌；打出後選擇下一個花色，所選花色可能與這張 8 的原始花色不同。", "合法出牌後輪到下一位。若手上沒有合法牌，使用抽牌從牌庫抽一張；抽到可出的牌會立即進入出牌流程，不能出的牌則把回合交給下一位。", "任何玩家出完手牌時牌局結束。Result 會顯示勝者與本局結果，New Game 會重新發牌；非法點擊不會消耗回合，並顯示在地化提示。"],
       how: ["先讀取棄牌頂牌的點數，以及桌面上顯示的目前花色，再選擇符合其一的牌或任意一張 8。", "沒有合法牌時使用一次抽牌；抽到可出的牌會立即打出，否則等待下一回合。", "打出 8 後選擇花色，讓自己下一回合更容易接牌，或讓 AI 較難找到匹配。", "持續查看每位對手的剩餘牌數。先出完手牌即可獲勝，Result 後可用 New Game 開始下一局。"],
       strategyTips: ["不要只因為 8 可以出就立刻用掉；把它留給被卡住的花色、控制下一個花色或收尾。", "有多張牌能出時，優先保留能連到第二個花色或點數的手牌，避免留下孤立牌。", "先注意手牌最少的對手；如果一張好牌讓對手更容易收尾，就未必值得現在打出。", "選擇 8 的花色前，先數自己的匹配牌，也觀察 AI 最近避開的花色，保留清楚的後續路線。"],
       progression: ["遊戲沒有戰役階梯或人工難度門檻；重玩價值來自新的發牌、不同的棄牌順序、萬用 8 的時機，以及三位 AI 手牌造成的壓力。", "牌局直接從 Main 進入 Battle，再到 Result。New Game 只重置牌局，不建立不存在的關卡進度。"],
@@ -12425,7 +12747,7 @@
       title: "疯狂八人组", difficulty: "简单到具挑战性", time: "3–10 分钟", gameplay: "经典出牌型卡牌游戏", genre: ["卡牌", "家庭", "策略"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "玩家与保存信息",
       intro: "《疯狂八人组》是四人出牌型卡牌对战。打出符合当前花色或牌面点数的牌，用 8 转换下一个花色，并在三位 AI 对手之前出完手牌。",
       story: ["牌局由你和三位 AI 对手开始，每人持有一小手牌，牌库与弃牌堆决定下一个选择。每一回合都会改变桌面花色与对手剩余牌数。", "这里没有永久收藏或战役阶梯；每局都是一次短小的阅读练习：找出合法出口、保留灵活的 8，并在另一手牌归零前完成自己的手牌。"],
-      systems: ["只要符合弃牌顶牌的点数或当前花色即可出牌。任何 8 都是万能牌；打出后选择下一个花色，所选花色可能与这张 8 的原始花色不同。", "合法出牌后轮到下一位。若手上没有合法牌，使用抽牌从牌库抽一张；抽到可出的牌会立即进入出牌流程，不能出的牌则把回合交给下一位。牌库耗尽时，牌局仍会根据现有弃牌状态继续。", "任何玩家出完手牌时牌局结束。Result 会显示胜者与本局结果，New Game 会重新发牌；非法点击不会消耗回合，并显示本地化提示。"],
+      systems: ["只要符合弃牌顶牌的点数或当前花色即可出牌。任何 8 都是万能牌；打出后选择下一个花色，所选花色可能与这张 8 的原始花色不同。", "合法出牌后轮到下一位。若手上没有合法牌，使用抽牌从牌库抽一张；抽到可出的牌会立即进入出牌流程，不能出的牌则把回合交给下一位。", "任何玩家出完手牌时牌局结束。Result 会显示胜者与本局结果，New Game 会重新发牌；非法点击不会消耗回合，并显示本地化提示。"],
       how: ["先读取弃牌顶牌的点数，以及桌面显示的当前花色，再选择符合其一的牌或任意一张 8。", "没有合法牌时使用一次抽牌；抽到可出的牌会立即打出，否则等待下一回合。", "打出 8 后选择花色，让自己下一回合更容易接牌，或让 AI 更难找到匹配。", "持续查看每位对手的剩余牌数。先出完手牌即可获胜，Result 后可用 New Game 开始下一局。"],
       strategyTips: ["不要只因为 8 可以出就立刻用掉；把它留给被卡住的花色、控制下一个花色或收尾。", "有多张牌能出时，优先保留能连到第二个花色或点数的手牌，避免留下孤立牌。", "先注意手牌最少的对手；如果一张好牌让对手更容易收尾，就未必值得现在打出。", "选择 8 的花色前，先数自己的匹配牌，也观察 AI 最近避开的花色，保留清楚的后续路线。"],
       progression: ["游戏没有战役阶梯或人工难度门槛；重玩价值来自新的发牌、不同的弃牌顺序、万能 8 的时机，以及三位 AI 手牌造成的压力。", "牌局直接从 Main 进入 Battle，再到 Result。New Game 只重置牌局，不建立不存在的关卡进度。"],
@@ -12461,7 +12783,7 @@
       title: "Ochos locos", difficulty: "De fácil a desafiante", time: "3–10 minutos", gameplay: "Juego clásico de descartes", genre: ["Cartas", "Familia", "Estrategia"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "Información del jugador y guardado",
       intro: "Ochos locos es una partida de cuatro jugadores para quedarse sin cartas. Juega una carta que coincida con el palo o el valor activo, usa un ocho para elegir el siguiente palo y vacía tu mano antes que tres rivales de IA.",
       story: ["Tú y tres rivales de IA empezáis con una mano pequeña; el mazo y el descarte crean la siguiente decisión. Cada turno cambia el palo activo y el número de cartas de cada rival.", "No hay campaña ni colección permanente. Cada ronda es una lectura breve: encuentra una salida legal, guarda un ocho flexible y termina antes de que otra mano llegue a cero."],
-      systems: ["Puedes jugar una carta cuyo valor o palo coincida con la carta superior del descarte. Cualquier ocho es comodín; al jugarlo eliges el palo activo siguiente.", "Después de una jugada legal pasa el turno. Si no tienes carta legal, roba una; si es jugable entra inmediatamente en la partida, y si no lo es el turno pasa al siguiente jugador. Si se agota el mazo, la ronda continúa con el descarte disponible.", "La ronda termina cuando alguien se queda sin cartas. Resultado muestra el ganador y Nueva partida reparte otra mano; un toque ilegal no cambia la mano ni consume el turno y muestra una indicación localizada."],
+      systems: ["Puedes jugar una carta cuyo valor o palo coincida con la carta superior del descarte. Cualquier ocho es comodín; al jugarlo eliges el palo activo siguiente.", "Después de una jugada legal pasa el turno. Si no tienes carta legal, roba una; si es jugable entra inmediatamente en la partida, y si no lo es el turno pasa al siguiente jugador. ", "La ronda termina cuando alguien se queda sin cartas. Resultado muestra el ganador y Nueva partida reparte otra mano; un toque ilegal no cambia la mano ni consume el turno y muestra una indicación localizada."],
       how: ["Lee el valor del descarte y el palo activo, y selecciona una carta que coincida o cualquier ocho.", "Si no tienes una jugada legal, roba una carta. Si se puede jugar, se juega de inmediato; si no, espera tu siguiente turno.", "Después de jugar un ocho, elige el palo que te deje más opciones o que dificulte las coincidencias de la IA.", "Observa las cartas restantes de cada rival. Vacía tu mano para ganar y usa Nueva partida después del Resultado para repartir otra vez."],
       strategyTips: ["No gastes un ocho solo porque sea legal; guárdalo para escapar de un palo bloqueado, controlar el siguiente palo o cerrar la mano.", "Si puedes jugar varias cartas, conserva una conexión con otro palo o valor para tu siguiente turno.", "Vigila primero al rival con menos cartas. Una buena coincidencia no vale tanto si le das una salida fácil.", "Antes de elegir el palo del ocho, cuenta tus propias coincidencias y observa los palos que la IA ha evitado."],
       progression: ["No hay campaña ni niveles artificiales. Las nuevas manos, el orden del descarte, el momento de los ochos y las tres manos de IA cambian cada reto.", "La ronda va directamente de Main a Battle y Resultado. Nueva partida reinicia el reparto, no crea una progresión de niveles inexistente."],
@@ -12473,7 +12795,7 @@
       title: "Oitos loucos", difficulty: "Fácil a desafiador", time: "3–10 minutos", gameplay: "Jogo clássico de descartar cartas", genre: ["Cartas", "Família", "Estratégia"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "Informações do jogador e do salvamento",
       intro: "Oitos loucos é uma partida para quatro jogadores que tentam ficar sem cartas. Jogue uma carta que combine com o naipe ou valor ativo, use um oito para escolher o próximo naipe e esvazie sua mão antes de três rivais de IA.",
       story: ["Você e três rivais de IA começam com uma mão pequena; o monte e o descarte criam a próxima decisão. Cada turno muda o naipe ativo e a quantidade de cartas de cada rival.", "Não há campanha nem coleção permanente. Cada rodada é uma leitura curta: encontre uma saída legal, guarde um oito flexível e termine antes que outra mão chegue a zero."],
-      systems: ["Você pode jogar uma carta que combine com o valor ou o naipe da carta no topo do descarte. Qualquer oito é coringa; ao jogá-lo, escolha o próximo naipe ativo.", "Depois de uma jogada legal, a vez passa. Se você não tiver uma carta legal, compre uma; se ela puder ser jogada, entra imediatamente na partida, e se não puder a vez passa ao próximo jogador. Se o monte acabar, a rodada continua com o descarte disponível.", "A rodada termina quando alguém fica sem cartas. Resultado mostra o vencedor e Novo jogo distribui outra mão; um toque ilegal não muda a mão nem consome a vez e mostra uma mensagem localizada."],
+      systems: ["Você pode jogar uma carta que combine com o valor ou o naipe da carta no topo do descarte. Qualquer oito é coringa; ao jogá-lo, escolha o próximo naipe ativo.", "Depois de uma jogada legal, a vez passa. Se você não tiver uma carta legal, compre uma; se ela puder ser jogada, entra imediatamente na partida, e se não puder a vez passa ao próximo jogador. ", "A rodada termina quando alguém fica sem cartas. Resultado mostra o vencedor e Novo jogo distribui outra mão; um toque ilegal não muda a mão nem consome a vez e mostra uma mensagem localizada."],
       how: ["Leia o valor do descarte e o naipe ativo, depois selecione uma carta compatível ou qualquer oito.", "Se não houver jogada legal, compre uma carta. Se puder jogar, ela é jogada imediatamente; caso contrário, espere a próxima vez.", "Depois de jogar um oito, escolha o naipe que mantenha mais opções para você ou dificulte as combinações da IA.", "Observe quantas cartas cada rival ainda tem. Esvazie sua mão para vencer e use Novo jogo após o Resultado para começar outra distribuição."],
       strategyTips: ["Não gaste um oito apenas porque pode; guarde-o para escapar de um naipe bloqueado, controlar o próximo naipe ou finalizar.", "Se várias cartas servirem, preserve uma conexão com outro naipe ou valor para a próxima vez.", "Observe primeiro o rival com menos cartas. Uma boa combinação vale menos se der a ele uma saída fácil.", "Antes de escolher o naipe do oito, conte suas combinações e observe os naipes que a IA evitou recentemente."],
       progression: ["Não há campanha nem níveis artificiais. Novas mãos, a ordem do descarte, o momento dos oitos e as três mãos da IA mudam cada desafio.", "A rodada segue diretamente de Main para Battle e Resultado. Novo jogo reinicia a distribuição, sem criar uma progressão de fases inexistente."],
@@ -12485,7 +12807,7 @@
       title: "Huit fous", difficulty: "Facile à stimulant", time: "3 à 10 minutes", gameplay: "Jeu classique de défausse", genre: ["Cartes", "Famille", "Stratégie"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "Informations du joueur et sauvegarde",
       intro: "Huit fous est une partie à quatre joueurs où chacun cherche à vider sa main. Jouez une carte du même symbole ou de la même valeur que la carte active, utilisez un huit pour choisir le prochain symbole et finissez avant trois adversaires IA.",
       story: ["Vous et trois adversaires IA commencez avec une petite main ; la pioche et la défausse créent la décision suivante. Chaque tour modifie le symbole actif et le nombre de cartes de chaque adversaire.", "Il n’y a ni campagne ni collection permanente. Chaque manche est une courte lecture : trouvez une sortie légale, gardez un huit flexible et terminez avant qu’une autre main n’atteigne zéro."],
-      systems: ["Une carte est jouable si sa valeur ou son symbole correspond à la carte au sommet de la défausse. Tout huit est un joker ; après l’avoir joué, choisissez le symbole actif suivant.", "Après un coup légal, le tour avance. Si aucune carte n’est jouable, piochez-en une ; si elle est légale, elle peut être jouée immédiatement, sinon le tour passe. Si la pioche est vide, la manche continue avec la défausse disponible.", "La manche se termine quand un joueur n’a plus de cartes. Résultat indique le vainqueur et Nouvelle partie distribue une nouvelle main ; un appui illégal ne consomme ni carte ni tour et affiche un message localisé."],
+      systems: ["Une carte est jouable si sa valeur ou son symbole correspond à la carte au sommet de la défausse. Tout huit est un joker ; après l’avoir joué, choisissez le symbole actif suivant.", "Après un coup légal, le tour avance. Si aucune carte n’est jouable, piochez-en une ; si elle est légale, elle peut être jouée immédiatement, sinon le tour passe. ", "La manche se termine quand un joueur n’a plus de cartes. Résultat indique le vainqueur et Nouvelle partie distribue une nouvelle main ; un appui illégal ne consomme ni carte ni tour et affiche un message localisé."],
       how: ["Lisez la valeur de la défausse et le symbole actif, puis choisissez une carte correspondante ou un huit.", "S’il n’y a aucun coup légal, piochez une carte. Si elle est jouable, elle est posée immédiatement ; sinon, attendez le prochain tour.", "Après un huit, choisissez le symbole qui vous laisse le plus de possibilités ou qui gêne les correspondances de l’IA.", "Surveillez le nombre de cartes de chaque adversaire. Videz votre main pour gagner, puis utilisez Nouvelle partie après le Résultat."],
       strategyTips: ["Ne dépensez pas un huit uniquement parce qu’il est légal ; gardez-le pour sortir d’un symbole bloqué, contrôler le suivant ou finir.", "Quand plusieurs cartes conviennent, gardez une carte qui ouvre encore un autre symbole ou une autre valeur.", "Surveillez d’abord l’adversaire qui a le moins de cartes. Une bonne correspondance ne vaut pas une victoire offerte.", "Avant de choisir le symbole du huit, comptez vos propres correspondances et observez ceux que l’IA a évités."],
       progression: ["Il n’y a pas de campagne ni de niveaux artificiels. Les nouvelles mains, l’ordre de la défausse, le moment des huit et les trois mains IA changent chaque défi.", "La manche passe directement de Main à Battle puis Résultat. Nouvelle partie recommence la distribution sans inventer une progression de niveaux."],
@@ -12497,7 +12819,7 @@
       title: "Verrückte Achter", difficulty: "Leicht bis anspruchsvoll", time: "3–10 Minuten", gameplay: "Klassisches Ablegespiel", genre: ["Karten", "Familie", "Strategie"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "Spieler- und Speicherhinweise",
       intro: "Verrückte Achter ist ein Ablegespiel für vier Personen. Lege eine Karte mit passender Farbe oder Zahl, nutze eine Acht für die nächste Farbe und leere deine Hand vor drei KI-Gegnern.",
       story: ["Du und drei KI-Gegner beginnt mit einer kleinen Hand; Stapel und Ablage bestimmen die nächste Entscheidung. In jeder Runde ändern sich aktive Farbe und die Kartenzahl der Gegner.", "Es gibt keine Kampagne und keine dauerhafte Sammlung. Jede Runde ist eine kurze Leseaufgabe: einen legalen Ausweg finden, eine flexible Acht bewahren und vor einer anderen leeren Hand fertig werden."],
-      systems: ["Eine Karte ist spielbar, wenn Zahl oder Farbe zur obersten Ablagekarte passt. Jede Acht ist wild; nach dem Ausspielen wählst du die nächste aktive Farbe.", "Nach einem legalen Zug ist der nächste Spieler dran. Wenn keine Karte passt, ziehst du eine Karte; ist sie spielbar, darf sie sofort gespielt werden, sonst geht der Zug weiter. Wenn der Stapel leer ist, läuft die Runde mit der verfügbaren Ablage weiter.", "Die Runde endet, sobald ein Spieler keine Karten mehr hat. Ergebnis zeigt den Sieger und Neues Spiel gibt neu aus; ein ungültiger Klick verändert weder Hand noch Zug und zeigt einen lokalisierten Hinweis."],
+      systems: ["Eine Karte ist spielbar, wenn Zahl oder Farbe zur obersten Ablagekarte passt. Jede Acht ist wild; nach dem Ausspielen wählst du die nächste aktive Farbe.", "Nach einem legalen Zug ist der nächste Spieler dran. Wenn keine Karte passt, ziehst du eine Karte; ist sie spielbar, darf sie sofort gespielt werden, sonst geht der Zug weiter. ", "Die Runde endet, sobald ein Spieler keine Karten mehr hat. Ergebnis zeigt den Sieger und Neues Spiel gibt neu aus; ein ungültiger Klick verändert weder Hand noch Zug und zeigt einen lokalisierten Hinweis."],
       how: ["Prüfe Zahl der Ablage und aktive Farbe, dann wähle eine passende Karte oder eine Acht.", "Wenn keine Karte passt, ziehe einmal. Eine spielbare gezogene Karte wird sofort gespielt; sonst wartest du auf den nächsten Zug.", "Wähle nach einer Acht die Farbe, die dir die meisten Anschlüsse lässt oder der KI wenige Möglichkeiten gibt.", "Beobachte die Kartenanzahl aller Gegner. Leere deine Hand und starte nach dem Ergebnis mit Neues Spiel eine weitere Runde."],
       strategyTips: ["Spiele eine Acht nicht nur, weil sie passt. Bewahre sie für eine blockierte Farbe, die Kontrolle des nächsten Zugs oder den Abschluss.", "Wenn mehrere Karten passen, behalte eine Verbindung zu einer zweiten Farbe oder Zahl.", "Beobachte zuerst den Gegner mit der kleinsten Hand. Ein guter Zug ist wenig wert, wenn er ihm den Abschluss schenkt.", "Zähle vor der Farbwahl deiner Acht deine Anschlüsse und achte darauf, welche Farben die KI zuletzt gemieden hat."],
       progression: ["Es gibt keine Kampagne und keine künstlichen Stufen. Neue Ausgaben, die Ablagereihenfolge, der Zeitpunkt der Achten und drei KI-Hände verändern jede Herausforderung.", "Die Runde führt direkt von Main über Battle zu Ergebnis. Neues Spiel startet nur eine neue Ausgabe und keine erfundene Level-Fortschrittsleiste."],
@@ -12509,7 +12831,7 @@
       title: "Otto pazzi", difficulty: "Da facile a impegnativo", time: "3–10 minuti", gameplay: "Classico gioco di scarto", genre: ["Carte", "Famiglia", "Strategia"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "Informazioni sul giocatore e salvataggio",
       intro: "Otto pazzi è una partita a quattro giocatori per restare senza carte. Gioca una carta dello stesso seme o valore, usa un otto per scegliere il seme successivo e svuota la tua mano prima di tre avversari IA.",
       story: ["Tu e tre avversari IA iniziate con una mano piccola; mazzo e scarti creano la decisione successiva. Ogni turno cambia il seme attivo e il numero di carte degli avversari.", "Non ci sono campagna o collezione permanente. Ogni mano è una breve lettura: trova un’uscita legale, conserva un otto flessibile e termina prima che un’altra mano arrivi a zero."],
-      systems: ["Puoi giocare una carta che corrisponde al valore o al seme della carta in cima agli scarti. Ogni otto è jolly; dopo averlo giocato scegli il seme attivo successivo.", "Dopo una giocata legale il turno passa. Se non hai carte legali, pescane una; se è giocabile entra subito nella mano, altrimenti il turno passa. Se il mazzo finisce, la partita continua con gli scarti disponibili.", "La mano termina quando qualcuno resta senza carte. Risultato mostra il vincitore e Nuova partita distribuisce una nuova mano; un tocco illegale non cambia mano o turno e mostra un avviso localizzato."],
+      systems: ["Puoi giocare una carta che corrisponde al valore o al seme della carta in cima agli scarti. Ogni otto è jolly; dopo averlo giocato scegli il seme attivo successivo.", "Dopo una giocata legale il turno passa. Se non hai carte legali, pescane una; se è giocabile entra subito nella mano, altrimenti il turno passa. ", "La mano termina quando qualcuno resta senza carte. Risultato mostra il vincitore e Nuova partita distribuisce una nuova mano; un tocco illegale non cambia mano o turno e mostra un avviso localizzato."],
       how: ["Leggi il valore degli scarti e il seme attivo, poi scegli una carta compatibile o un otto.", "Se non hai una giocata legale, pesca una carta. Se è giocabile viene giocata subito; altrimenti aspetta il turno successivo.", "Dopo un otto scegli il seme che ti lascia più possibilità o rende difficili le corrispondenze dell’IA.", "Controlla quante carte restano a ogni avversario. Svuota la tua mano e usa Nuova partita dopo il Risultato per ricominciare."],
       strategyTips: ["Non usare un otto solo perché è legale; conservalo per uscire da un seme bloccato, controllare il successivo o chiudere.", "Se puoi giocare più carte, conserva un collegamento con un secondo seme o valore.", "Osserva prima l’avversario con meno carte. Una buona corrispondenza vale poco se gli offre una chiusura facile.", "Prima di scegliere il seme dell’otto, conta le tue corrispondenze e osserva i semi evitati di recente dall’IA."],
       progression: ["Non ci sono campagna o livelli artificiali. Nuove mani, ordine degli scarti, momento degli otto e tre mani IA cambiano ogni sfida.", "La mano passa direttamente da Main a Battle e Risultato. Nuova partita ricomincia la distribuzione senza creare livelli inesistenti."],
@@ -12521,7 +12843,7 @@
       title: "Сумасшедшие восьмёрки", difficulty: "От простой до сложной", time: "3–10 минут", gameplay: "Классическая карточная игра на сброс", genre: ["Карты", "Семейная", "Стратегия"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "Сведения об игроке и сохранении",
       intro: "Сумасшедшие восьмёрки — игра на четверых, где нужно первым избавиться от карт. Кладите карту подходящей масти или значения, используйте восьмёрку, чтобы выбрать следующую масть, и опередите трёх соперников-ИИ.",
       story: ["Вы и три соперника-ИИ начинаете с небольшой рукой; колода и сброс задают следующий выбор. Каждый ход меняет активную масть и число карт у соперников.", "Кампании и постоянной коллекции нет. Каждый раунд — короткая задача на чтение: найдите допустимый ход, сохраните гибкую восьмёрку и закончите раньше другой руки."],
-      systems: ["Можно положить карту того же значения или активной масти, что и верхняя карта сброса. Любая восьмёрка — джокер; после неё выберите следующую активную масть.", "После допустимого хода очередь переходит дальше. Если подходящей карты нет, возьмите одну; если она подходит, её можно сразу сыграть, иначе ход переходит следующему игроку. При пустой колоде раунд продолжается с доступным сбросом.", "Раунд заканчивается, когда у игрока не осталось карт. Результат показывает победителя, а Новая игра раздаёт новую руку; недопустимое нажатие не меняет руку и ход, а показывает локализованную подсказку."],
+      systems: ["Можно положить карту того же значения или активной масти, что и верхняя карта сброса. Любая восьмёрка — джокер; после неё выберите следующую активную масть.", "После допустимого хода очередь переходит дальше. Если подходящей карты нет, возьмите одну; если она подходит, её можно сразу сыграть, иначе ход переходит следующему игроку. ", "Раунд заканчивается, когда у игрока не осталось карт. Результат показывает победителя, а Новая игра раздаёт новую руку; недопустимое нажатие не меняет руку и ход, а показывает локализованную подсказку."],
       how: ["Проверьте значение верхней карты сброса и активную масть, затем выберите подходящую карту или восьмёрку.", "Если допустимой карты нет, возьмите одну. Подходящая карта сыграется сразу, иначе ход перейдёт дальше.", "После восьмёрки выберите масть, которая оставит вам больше вариантов или затруднит совпадение для ИИ.", "Следите за числом карт у каждого соперника. Опустошите руку, а после Результата начните новую раздачу через Новую игру."],
       strategyTips: ["Не тратьте восьмёрку только потому, что её можно положить; сохраните её для выхода из заблокированной масти, контроля следующей масти или финиша.", "Если подходят несколько карт, оставьте связь с другой мастью или значением на следующий ход.", "Сначала следите за соперником с наименьшей рукой. Хороший ход не стоит лёгкой победы для него.", "Перед выбором масти восьмёрки посчитайте свои совпадения и заметьте масти, которых ИИ недавно избегал."],
       progression: ["Кампании и искусственных уровней сложности нет. Новые раздачи, порядок сброса, момент восьмёрок и три руки ИИ меняют каждое испытание.", "Раунд напрямую проходит от Main к Battle и Результату. Новая игра начинает новую раздачу, не создавая несуществующих уровней."],
@@ -12533,7 +12855,7 @@
       title: "पागल आठ", difficulty: "आसान से चुनौतीपूर्ण", time: "3–10 मिनट", gameplay: "क्लासिक कार्ड छोड़ने का खेल", genre: ["कार्ड", "परिवार", "रणनीति"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "खिलाड़ी और सेव जानकारी",
       intro: "पागल आठ चार खिलाड़ियों का कार्ड गेम है जिसमें हाथ खाली करना लक्ष्य है। सक्रिय सूट या रैंक से मेल खाता कार्ड खेलें, 8 से अगला सूट चुनें और तीन AI प्रतिद्वंद्वियों से पहले हाथ खत्म करें।",
       story: ["आप और तीन AI प्रतिद्वंद्वी छोटे हाथ से शुरू करते हैं; स्टॉक और डिस्कार्ड अगला निर्णय बनाते हैं। हर चाल सक्रिय सूट और प्रतिद्वंद्वियों के बचे कार्ड बदलती है।", "कोई अभियान या स्थायी संग्रह नहीं है। हर राउंड एक छोटी पढ़ने की चुनौती है: वैध रास्ता खोजें, लचीला 8 बचाएँ और किसी दूसरे हाथ के शून्य होने से पहले समाप्त करें।"],
-      systems: ["डिस्कार्ड के ऊपर वाले कार्ड की रैंक या सक्रिय सूट से मेल खाने वाला कार्ड खेल सकते हैं। कोई भी 8 वाइल्ड है; उसे खेलने के बाद अगला सक्रिय सूट चुनें।", "वैध चाल के बाद अगली बारी आती है। कोई वैध कार्ड न हो तो स्टॉक से एक कार्ड लें; खेलने योग्य हो तो तुरंत खेलें, वरना बारी अगले खिलाड़ी को जाती है। स्टॉक खत्म होने पर उपलब्ध डिस्कार्ड के साथ राउंड चलता रहता है।", "किसी खिलाड़ी का हाथ खाली होते ही राउंड खत्म होता है। Result विजेता दिखाता है और New Game नया हाथ बाँटता है; गलत टैप हाथ या बारी नहीं बदलता और स्थानीय संदेश दिखाता है।"],
+      systems: ["डिस्कार्ड के ऊपर वाले कार्ड की रैंक या सक्रिय सूट से मेल खाने वाला कार्ड खेल सकते हैं। कोई भी 8 वाइल्ड है; उसे खेलने के बाद अगला सक्रिय सूट चुनें।", "वैध चाल के बाद अगली बारी आती है। कोई वैध कार्ड न हो तो स्टॉक से एक कार्ड लें; खेलने योग्य हो तो तुरंत खेलें, वरना बारी अगले खिलाड़ी को जाती है। ", "किसी खिलाड़ी का हाथ खाली होते ही राउंड खत्म होता है। Result विजेता दिखाता है और New Game नया हाथ बाँटता है; गलत टैप हाथ या बारी नहीं बदलता और स्थानीय संदेश दिखाता है।"],
       how: ["डिस्कार्ड की रैंक और सक्रिय सूट पढ़ें, फिर मेल खाता कार्ड या कोई 8 चुनें।", "वैध कार्ड न हो तो एक कार्ड लें। खेलने योग्य हो तो तुरंत खेलें, नहीं तो अगली बारी की प्रतीक्षा करें।", "8 खेलने के बाद वह सूट चुनें जो आपके विकल्प बढ़ाए या AI के लिए मिलान कठिन करे।", "हर प्रतिद्वंद्वी के बचे कार्ड देखें। अपना हाथ खाली करें और Result के बाद New Game से फिर शुरू करें।"],
       strategyTips: ["8 केवल इसलिए न खर्च करें कि वह चल सकता है; उसे बंद सूट से निकलने, अगला सूट नियंत्रित करने या अंत के लिए बचाएँ।", "कई कार्ड चलें तो दूसरे सूट या रैंक से जुड़ने वाला कार्ड बचाएँ।", "सबसे कम कार्ड वाले प्रतिद्वंद्वी पर पहले ध्यान दें। उसे आसान अंत देने वाली चाल से सावधान रहें।", "8 का सूट चुनने से पहले अपने मिलान गिनें और देखें कि AI ने हाल में किन सूटों से परहेज किया है।"],
       progression: ["कोई अभियान या कृत्रिम कठिनाई स्तर नहीं है। नई डील, डिस्कार्ड क्रम, 8 का समय और तीन AI हाथ हर चुनौती बदलते हैं।", "राउंड सीधे Main से Battle और Result में जाता है। New Game केवल नई डील शुरू करता है, कोई काल्पनिक स्तर प्रगति नहीं।"],
@@ -12545,7 +12867,7 @@
       title: "الثمانيات المجنونة", difficulty: "من السهل إلى التحدي", time: "3–10 دقائق", gameplay: "لعبة البطاقات الكلاسيكية للتخلص", genre: ["بطاقات", "عائلية", "استراتيجية"], hideSkillsFact: true, relatedIds: ["gin-rummy", "spades", "go-fish"], noteTitle: "معلومات اللاعب والحفظ",
       intro: "الثمانيات المجنونة لعبة لأربعة لاعبين هدفها التخلص من البطاقات. العب بطاقة تطابق النوع أو الرتبة النشطة، واستخدم الثمانية لاختيار النوع التالي، وأنهِ يدك قبل ثلاثة منافسين من الذكاء الاصطناعي.",
       story: ["تبدأ أنت وثلاثة منافسين من الذكاء الاصطناعي بيد صغيرة، وتحدد الرزمة والرمي القرار التالي. يغيّر كل دور النوع النشط وعدد البطاقات المتبقية لدى المنافسين.", "لا توجد حملة أو مجموعة دائمة. كل جولة قراءة قصيرة: اعثر على مخرج قانوني، واحتفظ بثمانية مرنة، وأنهِ يدك قبل أن تصل يد أخرى إلى الصفر."],
-      systems: ["يمكنك لعب بطاقة تطابق رتبة أو نوع البطاقة العليا في الرمي. كل ثمانية بطاقة جامحة؛ وبعد لعبها تختار النوع النشط التالي.", "بعد اللعب القانوني ينتقل الدور. إذا لم تملك بطاقة قانونية فاسحب بطاقة؛ إن كانت قابلة للعب تُلعب فوراً، وإلا ينتقل الدور. إذا نفدت الرزمة تستمر الجولة مع الرمي المتاح.", "تنتهي الجولة عندما يفرغ لاعب يده. تعرض النتيجة الفائز وتوزع لعبة جديدة يداً جديدة؛ ولا يغيّر النقر غير القانوني اليد أو الدور بل يعرض إرشاداً مترجماً."],
+      systems: ["يمكنك لعب بطاقة تطابق رتبة أو نوع البطاقة العليا في الرمي. كل ثمانية بطاقة جامحة؛ وبعد لعبها تختار النوع النشط التالي.", "بعد اللعب القانوني ينتقل الدور. إذا لم تملك بطاقة قانونية فاسحب بطاقة؛ إن كانت قابلة للعب تُلعب فوراً، وإلا ينتقل الدور. ", "تنتهي الجولة عندما يفرغ لاعب يده. تعرض النتيجة الفائز وتوزع لعبة جديدة يداً جديدة؛ ولا يغيّر النقر غير القانوني اليد أو الدور بل يعرض إرشاداً مترجماً."],
       how: ["اقرأ رتبة أعلى بطاقة في الرمي والنوع النشط، ثم اختر بطاقة مطابقة أو أي ثمانية.", "إذا لم توجد بطاقة قانونية فاسحب واحدة. تُلعب فوراً إن كانت صالحة، وإلا انتظر الدور التالي.", "بعد لعب الثمانية اختر النوع الذي يترك لك خيارات أكثر أو يصعّب المطابقة على الذكاء الاصطناعي.", "راقب عدد بطاقات كل منافس. أفرغ يدك للفوز، ثم استخدم لعبة جديدة بعد النتيجة لبدء توزيع آخر."],
       strategyTips: ["لا تنفق الثمانية لمجرد أنها قانونية؛ احتفظ بها للخروج من نوع مغلق أو التحكم في النوع التالي أو إنهاء اليد.", "إذا كانت عدة بطاقات صالحة فاحتفظ ببطاقة تصل إلى نوع أو رتبة ثانية في دورك التالي.", "راقب أولاً المنافس صاحب اليد الأصغر. لا تمنحه طريقاً سهلاً إلى النهاية.", "قبل اختيار نوع الثمانية، احسب بطاقاتك المطابقة ولاحظ الأنواع التي تجنبها الذكاء الاصطناعي مؤخراً."],
       progression: ["لا توجد حملة أو مستويات صعوبة مصطنعة. تغيّر التوزيعات الجديدة وترتيب الرمي وتوقيت الثمانيات وأيدي الذكاء الاصطناعي الثلاثة كل تحدٍّ.", "تنتقل الجولة مباشرة من Main إلى Battle ثم النتيجة. تبدأ لعبة جديدة توزيعاً جديداً ولا تنشئ مراحل غير موجودة."],
@@ -12558,6 +12880,30 @@
     localizedGames[locale] ||= {};
     localizedGames[locale]["crazy-eights"] = { ...games["crazy-eights"], ...copy };
   });
+  // Align the draw guidance with the shipped card engine: an unplayable draw
+  // leaves the human turn active, so players may draw again while stock remains.
+  const crazyEightsDrawGuidance = {
+    en: ["When you have no legal card, Draw takes one card from the stock. If it is playable, you may play it; otherwise your turn remains active and you can draw again while stock remains.", "If no card is legal, draw from the stock. Play the drawn card if it is legal; otherwise your turn remains active while stock remains.", "Draw from the stock when you have no legal card. Play the card if it is legal; otherwise your turn remains active while stock remains."],
+    "zh-Hant": ["沒有合法牌時，使用抽牌從牌庫抽一張；若可出就打出，否則你的回合仍會繼續，只要牌庫還有牌就能再抽。", "沒有合法牌時從牌庫抽牌。若抽到的牌可出就打出；否則只要牌庫還有牌，你仍可繼續抽牌。", "沒有合法牌時，從牌庫抽牌。若抽到的牌可出就打出；否則只要牌庫還有牌，你的回合仍會繼續。"],
+    "zh-Hans": ["没有合法牌时，使用抽牌从牌库抽一张；若可出就打出，否则你的回合仍会继续，只要牌库还有牌就能再抽。", "没有合法牌时从牌库抽牌。若抽到的牌可出就打出；否则只要牌库还有牌，你仍可继续抽牌。", "没有合法牌时，从牌库抽牌。若抽到的牌可出就打出；否则只要牌库还有牌，你的回合仍会继续。"],
+    ja: ["出せるカードがない時は山札から1枚引きます。引いたカードが出せればプレイでき、出せなくても手番は続き、山札が残っていれば再び引けます。", "出せるカードがなければ山札から引きます。引いたカードが出せるならプレイし、そうでなければ山札がある間は手番が続き、再び引けます。", "出せるカードがない時は山札から引きます。カードが出せればプレイし、そうでなければ山札がある間は手番が続きます。"],
+    ko: ["낼 카드가 없으면 덱에서 한 장을 뽑습니다. 낼 수 있는 카드면 내고, 아니면 내 차례가 유지되므로 덱에 카드가 남아 있는 동안 다시 뽑을 수 있습니다.", "낼 카드가 없으면 덱에서 뽑으세요. 낼 수 있으면 내고, 아니면 덱이 남아 있는 동안 차례가 계속되어 다시 뽑을 수 있습니다.", "낼 카드가 없으면 덱에서 뽑으세요. 낼 수 있는 카드면 내고, 아니면 덱이 남아 있는 동안 차례가 계속됩니다."],
+    es: ["Si no tienes una carta legal, roba del mazo. Si puedes jugarla, hazlo; si no, tu turno sigue activo y puedes robar otra mientras queden cartas.", "Si no hay una carta legal, roba del mazo. Juega la carta si es válida; de lo contrario, tu turno sigue activo mientras queden cartas.", "Roba del mazo cuando no tengas una carta legal. Juega la carta si es válida; de lo contrario, tu turno sigue activo mientras queden cartas."],
+    "pt-BR": ["Se não tiver uma jogada válida, compre do monte. Jogue a carta se puder; caso contrário, sua vez continua e você pode comprar outra enquanto houver cartas.", "Se não houver jogada válida, compre do monte. Jogue a carta se ela for válida; caso contrário, sua vez continua enquanto houver cartas.", "Compre do monte quando não tiver uma jogada válida. Jogue a carta se ela for válida; caso contrário, sua vez continua enquanto houver cartas."],
+    fr: ["Sans carte jouable, piochez dans la pioche. Jouez-la si elle est valide ; sinon, votre tour reste actif et vous pouvez repiocher tant qu'il reste des cartes.", "Sans carte jouable, piochez. Jouez la carte si elle est valide ; sinon, votre tour reste actif tant qu'il reste des cartes.", "Piochez lorsque vous n'avez aucune carte jouable. Jouez la carte si elle est valide ; sinon, votre tour reste actif tant qu'il reste des cartes."],
+    de: ["Wenn du keine passende Karte hast, ziehe vom Nachziehstapel. Ist sie spielbar, kannst du sie legen; andernfalls bleibt dein Zug aktiv und du kannst weiterziehen, solange Karten da sind.", "Ziehe vom Nachziehstapel, wenn keine Karte passt. Lege die Karte, falls sie spielbar ist; andernfalls bleibt dein Zug aktiv, solange Karten im Stapel sind.", "Ziehe, wenn du keine passende Karte hast. Lege sie, falls sie spielbar ist; andernfalls bleibt dein Zug aktiv, solange Karten im Stapel sind."],
+    it: ["Se non hai carte valide, pesca dal mazzo. Gioca la carta se è valida; altrimenti il tuo turno resta attivo e puoi pescare ancora finché ci sono carte.", "Se non hai carte valide, pesca. Gioca la carta se è valida; altrimenti il tuo turno resta attivo finché ci sono carte.", "Pesca quando non hai carte valide. Gioca la carta se è valida; altrimenti il tuo turno resta attivo finché ci sono carte."],
+    ru: ["Если нет подходящей карты, возьмите карту из колоды. Если её можно сыграть, сыграйте; иначе ваш ход продолжается, и можно тянуть дальше, пока в колоде есть карты.", "Если подходящей карты нет, возьмите карту из колоды. Сыграйте её, если она подходит; иначе ваш ход продолжается, пока в колоде есть карты.", "Берите карту из колоды, если ходить нечем. Сыграйте её, если она подходит; иначе ваш ход продолжается, пока в колоде есть карты."],
+    hi: ["वैध कार्ड न हो तो स्टॉक से कार्ड लें। खेलने योग्य हो तो खेलें; नहीं तो आपकी बारी जारी रहती है और स्टॉक में कार्ड रहने तक आप फिर ले सकते हैं।", "वैध कार्ड न हो तो स्टॉक से कार्ड लें। खेलने योग्य हो तो खेलें; नहीं तो स्टॉक में कार्ड रहने तक आपकी बारी जारी रहती है।", "जब कोई वैध कार्ड न हो तो स्टॉक से कार्ड लें। खेलने योग्य हो तो खेलें; नहीं तो स्टॉक में कार्ड रहने तक आपकी बारी जारी रहती है।"],
+    ar: ["إذا لم تملك بطاقة قانونية فاسحب من الرزمة. إن كانت قابلة للعب فالعبها؛ وإلا يبقى دورك ويمكنك السحب مجدداً ما دامت هناك بطاقات.", "إذا لم توجد بطاقة قانونية فاسحب من الرزمة. العب البطاقة إن كانت صالحة؛ وإلا يبقى دورك ما دامت الرزمة تحتوي بطاقات.", "اسحب من الرزمة عندما لا تملك بطاقة قانونية. العبها إن كانت صالحة؛ وإلا يبقى دورك ما دامت هناك بطاقات في الرزمة."]
+  };
+  for (const [locale, guidance] of Object.entries(crazyEightsDrawGuidance)) {
+    const guide = localizedGames[locale]?.["crazy-eights"] || (locale === "en" ? games["crazy-eights"] : undefined);
+    if (!guide) throw new Error(`Missing Crazy Eights guide for ${locale}`);
+    guide.systems[1] = guidance[0];
+    guide.how[1] = guidance[1];
+    guide.faq[2][1] = guidance[2];
+  }
   const crazyEightsRelatedByLocale = {
     "zh-Hant": [["gin-rummy", "金拉米", "組成同點數套牌與同花色順子，並降低未組牌的死牌分數。"], ["go-fish", "去釣魚", "詢問牌面、收集四張同點數牌組，並觀察桌上的線索。"]],
     "zh-Hans": [["gin-rummy", "金拉米", "组成同点数组合和同花色顺子，并降低未组合牌的死牌分数。"], ["go-fish", "去钓鱼", "询问牌面、收集四张同点数牌组，并观察桌面线索。"]],
@@ -13005,63 +13351,205 @@
     localizedGames[locale]["shadow-wolf"] = { ...games["shadow-wolf"], ...copy };
   }
 
-  // Checkers owns its complete interactive shell in popular-games-batch.js,
-  // while this shared data owns the static SEO Guide. Keep the route identity
-  // and the high-signal facts localized even when a locale does not yet have
-  // a separately reviewed long-form translation; the remaining authored
-  // mechanics stay truthful and are covered by the English source guide.
+  // Checkers owns its interactive shell in popular-games-batch.js and its
+  // static, locale-owned SEO Guide here. Each published route must carry the
+  // same verified rules without falling back to English paragraphs.
   const checkersLocaleFacts = {
-    "zh-Hant": { title: "西洋跳棋", difficulty: "漸進挑戰", time: "5～15 分鐘／局", gameplay: "完整西洋跳棋對局", genre: ["經典", "益智", "策略", "家庭"], skills: ["規劃", "模式辨識", "專注"], intro: "在響應式 8×8 棋盤上進行完整西洋跳棋對局，包含強制吃子、連跳、升王與會回應的真正對手。" },
-    "zh-Hans": { title: "西洋跳棋", difficulty: "渐进挑战", time: "5～15 分钟／局", gameplay: "完整西洋跳棋对局", genre: ["经典", "益智", "策略", "家庭"], skills: ["规划", "模式识别", "专注"], intro: "在响应式 8×8 棋盘上进行完整西洋跳棋对局，包含强制吃子、连跳、升王与会回应的真实对手。" },
-    ja: { title: "チェッカー", difficulty: "初級から挑戦的", time: "1局 5〜15分", gameplay: "完全なチェッカー対局", genre: ["クラシック", "パズル", "戦略", "ファミリー"], skills: ["計画", "パターン認識", "集中"], intro: "レスポンシブな8×8盤で、強制取り、連続ジャンプ、キング昇格、応手する対戦相手を含むチェッカーを最後まで遊びます。" },
-    ko: { title: "체커", difficulty: "쉬움부터 도전적", time: "한 판 5~15분", gameplay: "완전한 체커 대국", genre: ["클래식", "퍼즐", "전략", "가족"], skills: ["계획", "패턴 인식", "집중"], intro: "반응형 8×8 보드에서 강제 잡기, 연속 점프, 킹 승격과 실제로 응수하는 상대가 있는 체커 한 판을 끝까지 플레이하세요." },
-    es: { title: "Damas", difficulty: "De fácil a desafiante", time: "5-15 minutos por partida", gameplay: "Partida completa de damas", genre: ["Clásico", "Puzzle", "Estrategia", "Familia"], skills: ["Planificación", "Reconocimiento de patrones", "Concentración"], intro: "Juega una partida completa de damas en un tablero adaptable de 8×8, con capturas obligatorias, saltos múltiples, coronación y un rival que responde de verdad." },
-    "pt-BR": { title: "Damas", difficulty: "De fácil a desafiador", time: "5–15 minutos por partida", gameplay: "Partida completa de damas", genre: ["Clássico", "Quebra-cabeça", "Estratégia", "Família"], skills: ["Planejamento", "Reconhecimento de padrões", "Concentração"], intro: "Jogue uma partida completa de damas em um tabuleiro responsivo 8×8, com capturas obrigatórias, saltos múltiplos, promoção e um rival que reage de verdade." },
-    fr: { title: "Dames", difficulty: "De facile à exigeant", time: "5 à 15 minutes par partie", gameplay: "Partie complète de dames", genre: ["Classique", "Puzzle", "Stratégie", "Famille"], skills: ["Planification", "Reconnaissance des motifs", "Concentration"], intro: "Jouez une partie complète de dames sur un plateau 8×8 adaptatif, avec prises obligatoires, rafles, promotion et un véritable adversaire." },
-    de: { title: "Dame", difficulty: "Einfach bis anspruchsvoll", time: "5–15 Minuten pro Partie", gameplay: "Vollständige Damepartie", genre: ["Klassisch", "Puzzle", "Strategie", "Familie"], skills: ["Planung", "Mustererkennung", "Konzentration"], intro: "Spiele eine vollständige Damepartie auf einem responsiven 8×8-Brett mit Schlagzwang, Mehrfachsprüngen, Damen und einem echten Gegenspieler." },
-    it: { title: "Dama", difficulty: "Da facile a impegnativo", time: "5–15 minuti a partita", gameplay: "Partita completa a dama", genre: ["Classico", "Puzzle", "Strategia", "Famiglia"], skills: ["Pianificazione", "Riconoscimento degli schemi", "Concentrazione"], intro: "Gioca una partita completa a dama su una tavola 8×8 adattiva, con prese obbligatorie, salti multipli, promozione e un vero avversario." },
-    ru: { title: "Шашки", difficulty: "От простого к сложному", time: "5–15 минут за партию", gameplay: "Полная партия в шашки", genre: ["Классика", "Головоломка", "Стратегия", "Семейная"], skills: ["Планирование", "Распознавание схем", "Концентрация"], intro: "Сыграйте полную партию в шашки на адаптивной доске 8×8 с обязательным взятием, сериями прыжков, дамками и настоящим соперником." },
-    hi: { title: "चेकर्स", difficulty: "आसान से चुनौतीपूर्ण", time: "हर मैच 5–15 मिनट", gameplay: "पूरा चेकर्स मैच", genre: ["क्लासिक", "पहेली", "रणनीति", "परिवार"], skills: ["योजना", "पैटर्न पहचान", "एकाग्रता"], intro: "8×8 अनुकूल बोर्ड पर अनिवार्य कैप्चर, लगातार छलाँग, किंग पदोन्नति और जवाब देने वाले असली प्रतिद्वंद्वी के साथ पूरा चेकर्स मैच खेलें।" },
+    "zh-Hant": {
+      title: "西洋跳棋", difficulty: "由簡單到具挑戰性", time: "5～15 分鐘／局", gameplay: "完整西洋跳棋對局", genre: ["經典", "益智", "策略"], hideSkillsFact: true,
+      intro: "在 8×8 西洋跳棋對局中閱讀斜線：有任何吃子就必須吃，並用連跳與升王為棋子打開安全路線。",
+      metaDescription: "玩一場完整的 8×8 西洋跳棋：規劃斜向移動、吃掉可吃的棋子，連續跳吃並升王。",
+      text140Tags: ["強制吃子", "連跳棋局", "回合制策略"], noteTitle: "玩家與存檔說明",
+      story: ["暗格上共有 24 枚棋子：你與對手各 12 枚。每條開放的斜線都可能成為逃路、陷阱，或一串吃子的起點。"],
+      systems: ["普通棋子沿斜線向前移一格；吃子時，棋子跳過相鄰敵棋並落在空格，同時移除被跳過的棋子。只要盤上任一棋子可以吃子，就必須選擇吃子的走法。", "吃子後要檢查同一枚棋子的新位置；若還能再吃，就必須繼續連跳。棋子抵達對面底列後升為王，可以沿斜線前後移動與吃子。", "對手會在你的回合後依合法走法回應，並會優先選擇吃子或升王。任一方沒有棋子或沒有合法走法時，對局結束；長時間沒有吃子或升王也可能以和局收尾。提示會標出一枚合法棋子，但不替你選目的格。"],
+      how: ["在主畫面按下「開始遊戲」，先看目前回合訊息與金色標記。", "選一枚有合法斜向目的格的金色棋子，再選擇標出的落點。", "若有吃子走法，就必須吃；落地後若同一枚棋子仍可吃，繼續完成連跳。", "保留通往對面底列的路線，升王後善用前後移動改變盤面。", "需要提示時先看一枚合法起始棋子；若要重來，按重新開始恢復開局。"],
+      strategyTips: ["出手前掃描所有敵棋的吃子機會，並評估落點，而不只看被跳過的棋子。", "別讓單枚棋子孤軍深入；維持斜線支援，降低對手免費吃子的機會。", "連跳時每次落地都重新檢查下一個落點，不要假設第一吃就是整回合。", "推進升王前先留意退路；王的移動更自由，仍可能被強制吃子或封住斜線。", "領先時安全交換並限制對手走法；落後時保留機動性，尋找升王的路線。"],
+      progression: ["開局先熟悉斜向移動與全盤強制吃子。中盤會出現互相競爭的吃子選擇與連跳判斷；殘局則更看重王棋、封路和每一步的計算。這是一場完整對局，沒有另行解鎖的關卡。"],
+      designNote: "西洋跳棋使用同一套合法走法引擎處理觸控、滑鼠、鍵盤焦點、提示與對手回合。選中的棋子和合法落點以不同標記呈現，讓你能直接看出哪些斜向選擇可走，以及為什麼有吃子時不能走安靜步。",
+      parent: "不需登入或購買即可遊玩。未完成的對局不會保存；只有最佳紀錄會留在這個瀏覽器。清除網站資料可能會刪除該紀錄。",
+      faq: [["有吃子時可以不吃嗎？", "不可以。只要盤上任何一枚棋子能吃子，你就必須選擇其中一種吃子走法。"], ["連跳何時結束？", "同一枚棋子落地後若仍能吃子，就必須繼續；沒有可接續的吃子時，回合才結束。"], ["棋子怎麼升王？", "普通棋子走到對面底列就會升為王，之後能沿斜線前後移動與吃子。"], ["怎樣贏得對局？", "讓對手沒有棋子或沒有合法走法即可獲勝；長時間沒有吃子或升王時可能和局。"], ["提示會替我走棋嗎？", "不會。提示只標出一枚合法起始棋子，目的格和完整走法仍由你決定。"], ["對局或最佳紀錄會保存嗎？", "未完成對局不會保存；最佳紀錄只留在目前瀏覽器。遊玩不需登入或購買。"]],
+    },
+    "zh-Hans": {
+      title: "西洋跳棋", difficulty: "由简单到有挑战性", time: "5～15 分钟／局", gameplay: "完整西洋跳棋对局", genre: ["经典", "益智", "策略"], hideSkillsFact: true,
+      intro: "在 8×8 西洋跳棋对局中观察斜线：只要有棋子可吃就必须吃，并用连续跳吃与升王开辟安全路线。",
+      metaDescription: "玩一场完整的 8×8 西洋跳棋：规划斜向移动、吃掉可吃的棋子，连续跳吃并升王。",
+      text140Tags: ["强制吃子", "连续跳吃", "回合制策略"], noteTitle: "玩家与存档说明",
+      story: ["暗格上共有 24 枚棋子：你和对手各 12 枚。每条开放的斜线都可能成为退路、陷阱，或一串吃子的起点。"],
+      systems: ["普通棋子沿斜线向前移动一格；吃子时，棋子跳过相邻敌棋并落在空格，同时移除被跳过的棋子。只要盘上任一棋子可以吃子，就必须选择吃子的走法。", "吃子后要检查同一枚棋子的新位置；如果还能再吃，就必须继续连续跳吃。棋子到达对面底行后升为王，可以沿斜线前后移动和吃子。", "对手会在你的回合后按合法走法应对，并优先选择吃子或升王。任一方没有棋子或没有合法走法时，对局结束；长时间没有吃子或升王也可能以和局结束。提示会标出一枚合法棋子，但不会替你选择落点。"],
+      how: ["在主画面按“开始游戏”，先看当前回合提示和金色标记。", "选择一枚有合法斜向落点的金色棋子，再选择标出的落点。", "如果有吃子走法，就必须吃；落地后若同一枚棋子还能吃，就继续完成连续跳吃。", "保留通往对面底行的路线，升王后善用前后移动改变局面。", "需要提示时先看一枚合法起始棋子；要重来则按重新开始，恢复开局。"],
+      strategyTips: ["出手前检查所有敌棋的吃子机会，并评估落点，而不只看被跳过的棋子。", "别让单枚棋子孤军深入；保持斜线支援，减少对手免费吃子的机会。", "连续跳吃时每次落地都重新检查下一处，不要假定第一次吃子就结束回合。", "推进升王前先留意退路；王棋移动更自由，仍可能被强制吃子或封住斜线。", "领先时安全交换并限制对手走法；落后时保留机动性，寻找升王路线。"],
+      progression: ["开局先熟悉斜向移动和全盘强制吃子。中盘会出现互相竞争的吃子选择与连续跳吃判断；残局则更看重王棋、封路和每一步的计算。这是一场完整对局，没有另外解锁的关卡。"],
+      designNote: "国际跳棋使用同一套合法走法引擎处理触控、鼠标、键盘焦点、提示和对手回合。选中的棋子和合法落点使用不同标记，让你能直接看出哪些斜向选择有效，以及为什么出现吃子时不能走安静步。",
+      parent: "无需登录或购买即可游玩。未完成的对局不会保存；只有最佳纪录会保留在此浏览器中。清除网站数据可能会删除该纪录。",
+      faq: [["有吃子时可以不吃吗？", "不可以。只要盘上任何一枚棋子能吃子，你就必须选择一种吃子走法。"], ["连续跳吃何时结束？", "同一枚棋子落地后如果还能吃，就必须继续；没有可接续的吃子时，回合才结束。"], ["棋子怎样升王？", "普通棋子走到对面底行就会升为王，之后可沿斜线前后移动和吃子。"], ["怎样赢得对局？", "让对手没有棋子或没有合法走法即可获胜；长时间没有吃子或升王时可能和局。"], ["提示会替我走棋吗？", "不会。提示只标出一枚合法起始棋子，落点和完整走法仍由你决定。"], ["对局或最佳纪录会保存吗？", "未完成对局不会保存；最佳纪录只保留在当前浏览器。无需登录或购买。"]],
+    },
+    ja: {
+      title: "チェッカー", difficulty: "初級から手ごたえのある難度まで", time: "1局 5〜15分", gameplay: "チェッカーの完全対局", genre: ["クラシック", "パズル", "戦略"], hideSkillsFact: true,
+      intro: "8×8のチェッカーを最後まで対局します。取れる駒があれば必ず取り、連続ジャンプとキング昇格で安全な道を作りましょう。",
+      metaDescription: "8×8のチェッカーを対局。斜めの移動を読み、強制取りと連続ジャンプをこなして駒をキングに昇格させます。",
+      text140Tags: ["強制取り", "連続ジャンプ", "ターン制ボード戦略"], noteTitle: "プレイヤーと保存について",
+      story: ["使えるのは8×8盤の暗いマスです。あなたと相手は12枚ずつの駒で始まり、空いた斜線は逃げ道にも罠にも、連続取りの始点にもなります。"],
+      systems: ["通常の駒は斜め前に1マス進みます。取りでは隣の相手の駒を飛び越えて空きマスに着地し、その駒を盤から取り除きます。盤上のどこかで取れる駒があれば、取らない手は選べません。", "取った後は同じ駒の着地点を確認します。さらに取れるなら、その駒で連続ジャンプを続けます。相手側の端まで進むとキングになり、斜め前後に移動・取ることができます。", "相手は合法手で応じ、取れる手や昇格を優先することがあります。どちらかが駒を失い尽くすか合法手がなくなると対局終了です。長く取りや昇格がない場合は引き分けになります。ヒントは動かせる駒を1枚示しますが、行き先は選びません。"],
+      how: ["メインで「ゲーム開始」を押し、現在の手番と金色に示された駒を確認します。", "斜めの合法な行き先がある金色の駒を選び、示された着地点を選びます。", "取れる手があれば必ず取り、着地後も同じ駒が取れるなら連続ジャンプします。", "相手側の端まで進む道を残し、キングになったら前後移動を使って盤面を変えます。", "迷ったらヒントで合法な駒を確認します。最初からやり直すにはリスタートを使います。"],
+      strategyTips: ["手を選ぶ前に相手全員の取れる手を見て、取られる駒だけでなく着地点も数えます。", "1枚だけ前に進めず、斜めの支えを残してただ取りを防ぎます。", "連続ジャンプ中は着地するたびに次の升を確認します。最初の取りで手番が終わるとは限りません。", "キング昇格を狙う時は逃げ道も確保します。動きやすいキングも、強制取りや塞がれた斜線には弱くなります。", "駒数で勝っている時は安全に交換し、負けている時は動ける駒と昇格の機会を残します。"],
+      progression: ["序盤は斜め移動と全盤の強制取りに慣れます。中盤は複数の取り方と連続ジャンプの判断が増え、終盤はキング、通路の封鎖、手数の見通しが重要になります。段階を解放する形式ではなく、毎回1局を最後まで遊びます。"],
+      designNote: "タッチ、マウス、キーボードのフォーカス、ヒント、相手の応手は同じ合法手エンジンを使います。選択中の駒と合法な着地点を別の表示にすることで、取れる手がある時に通常移動が選べない理由を盤面で確認できます。",
+      parent: "ログインや購入は不要です。進行中の対局は保存されず、ベスト記録だけがこのブラウザーに残ります。サイトデータを消すと記録が失われることがあります。",
+      faq: [["取れる時は必ず取りますか？", "はい。盤上のどこかで取れる手があれば、取る手を選ぶ必要があります。"], ["連続ジャンプはいつ終わりますか？", "同じ駒が着地後にさらに取れる間は続きます。次の取りがなくなると手番が終わります。"], ["キングにはどうやってなりますか？", "相手側の端まで進むとキングになります。以降は斜め前後に移動して取れます。"], ["どうすれば勝ちですか？", "相手の駒をすべて取るか、相手に合法手がなくなると勝ちです。取りや昇格が長くない場合は引き分けになります。"], ["ヒントが代わりに動かしますか？", "いいえ。ヒントは動かせる駒を1枚示すだけなので、行き先は自分で選びます。"], ["対局やベスト記録は保存されますか？", "対局の途中経過は保存されません。ベスト記録のみこのブラウザーに保存され、ログインや購入は不要です。"]],
+    },
+    ko: {
+      title: "체커", difficulty: "쉬움부터 도전적인 수준까지", time: "한 판 5~15분", gameplay: "체커 한 판 완주", genre: ["클래식", "퍼즐", "전략"], hideSkillsFact: true,
+      intro: "8×8 체커 한 판을 끝까지 플레이하세요. 잡을 수 있는 말은 반드시 잡고, 연속 점프와 킹 승격으로 안전한 길을 만드세요.",
+      metaDescription: "8×8 체커 한 판을 플레이하세요. 대각선 수를 읽고 강제 잡기와 연속 점프를 이어 말들을 킹으로 승격하세요.",
+      text140Tags: ["강제 잡기", "연속 점프", "턴제 보드 전략"], noteTitle: "플레이어 및 저장 정보",
+      story: ["8×8 보드에서는 어두운 칸만 사용할 수 있습니다. 양쪽은 각각 말 12개로 시작하며, 열린 대각선은 탈출로이자 함정 또는 연속 잡기의 시작이 될 수 있습니다."],
+      systems: ["일반 말은 대각선 앞으로 한 칸 이동합니다. 잡을 때는 인접한 상대 말을 뛰어넘어 빈칸에 착지하고 그 말을 제거합니다. 보드 어디서든 잡을 수 있는 말이 있으면 잡지 않는 수는 선택할 수 없습니다.", "잡은 뒤에는 같은 말의 새 위치를 확인하세요. 다시 잡을 수 있으면 그 말로 연속 점프를 이어 가야 합니다. 상대편 끝줄에 도달하면 킹으로 승격되어 앞뒤 대각선으로 이동하고 잡을 수 있습니다.", "상대는 합법적인 수로 응수하며 잡기나 승격을 우선할 수 있습니다. 한쪽 말이 모두 없어지거나 둘 수 있는 합법적인 수가 없으면 대국이 끝납니다. 잡기나 승격이 오랫동안 없으면 무승부가 될 수 있습니다. 힌트는 합법적인 시작 말을 표시하지만 목적지를 대신 선택하지는 않습니다."],
+      how: ["메인에서 게임 시작을 누르고 현재 차례와 금색으로 표시된 말을 확인하세요.", "대각선으로 합법적인 목적지가 있는 금색 말을 선택한 다음 강조된 도착 칸을 누르세요.", "잡을 수 있으면 반드시 잡아야 합니다. 착지 후 같은 말이 또 잡을 수 있으면 연속 점프를 계속하세요.", "상대편 끝줄까지 가는 길을 지키고 킹이 되면 앞뒤 이동으로 보드의 모양을 바꿔 보세요.", "막히면 힌트로 합법적인 말 하나를 확인하세요. 다시 시작하면 같은 초기 배치에서 새로 시작합니다."],
+      strategyTips: ["두기 전에 상대 말 전체의 강제 잡기 가능성을 살피고, 뛰어넘을 말뿐 아니라 착지 칸도 계산하세요.", "한 말을 혼자 전진시키지 말고 대각선 지원을 남겨 공짜로 잡히지 않도록 하세요.", "연속 점프 중에는 착지할 때마다 다음 칸을 다시 확인하세요. 첫 잡기가 차례의 끝은 아닙니다.", "킹 승격을 노릴 때 탈출 칸도 남겨 두세요. 킹은 움직임이 넓지만 강제 잡기나 막힌 대각선에 갇힐 수 있습니다.", "말이 앞설 때는 안전하게 교환하고 상대의 합법 수를 줄이세요. 뒤처졌다면 기동성과 승격 기회를 지키세요."],
+      progression: ["초반에는 대각선 이동과 보드 전체의 강제 잡기 규칙을 익힙니다. 중반에는 경쟁하는 잡기 선택과 연속 점프 판단이 늘고, 후반에는 킹과 길막기, 수읽기가 중요해집니다. 별도의 스테이지가 아니라 매번 한 판을 끝까지 플레이합니다."],
+      designNote: "터치, 마우스, 키보드 포커스, 힌트, 상대의 응수는 모두 같은 합법 수 엔진을 사용합니다. 선택한 말과 가능한 도착 칸을 다르게 표시해 잡을 수 있을 때 일반 이동을 할 수 없는 이유를 보드에서 확인할 수 있습니다.",
+      parent: "로그인이나 구매 없이 플레이할 수 있습니다. 진행 중인 대국은 저장되지 않으며 최고 기록만 이 브라우저에 남습니다. 사이트 데이터를 지우면 기록이 사라질 수 있습니다.",
+      faq: [["잡을 수 있으면 반드시 잡아야 하나요?", "네. 보드 어디서든 잡을 수 있는 수가 있으면 잡는 수를 선택해야 합니다."], ["연속 점프는 언제 끝나나요?", "같은 말이 착지한 뒤 다시 잡을 수 있는 동안 계속합니다. 이어서 잡을 수 없으면 차례가 끝납니다."], ["킹은 어떻게 되나요?", "상대편 끝줄에 도달하면 킹으로 승격됩니다. 이후 앞뒤 대각선으로 이동하고 잡을 수 있습니다."], ["어떻게 이기나요?", "상대의 말을 모두 잡거나 상대에게 합법적인 수가 남지 않으면 이깁니다. 잡기나 승격이 오랫동안 없으면 무승부가 될 수 있습니다."], ["힌트가 대신 움직이나요?", "아니요. 힌트는 합법적인 시작 말 하나를 표시하며 도착 칸은 직접 선택해야 합니다."], ["대국이나 최고 기록이 저장되나요?", "진행 중인 대국은 저장되지 않고 최고 기록만 현재 브라우저에 저장됩니다. 로그인이나 구매는 필요하지 않습니다."]],
+    },
+    es: {
+      title: "Damas", difficulty: "De fácil a desafiante", time: "5-15 minutos por partida", gameplay: "Partida completa de damas", genre: ["Clásico", "Puzzle", "Estrategia"], hideSkillsFact: true,
+      intro: "Juega una partida completa de damas en un tablero 8×8. Si puedes capturar, debes hacerlo; encadena saltos y corona tus fichas para abrir rutas seguras.",
+      metaDescription: "Juega damas en un tablero 8×8: planifica diagonales, realiza las capturas obligatorias, encadena saltos y corona fichas.",
+      text140Tags: ["Capturas obligatorias", "Saltos múltiples", "Estrategia por turnos"], noteTitle: "Información del jugador y guardado",
+      story: ["Solo se usan las casillas oscuras del tablero 8×8. Cada lado empieza con doce fichas, así que una diagonal abierta puede servir de escape, convertirse en una trampa o iniciar una cadena de capturas."],
+      systems: ["Las fichas normales avanzan una casilla en diagonal. Para capturar, saltan por encima de una ficha rival adyacente y aterrizan en una casilla vacía; la ficha saltada desaparece. Si hay alguna captura disponible en el tablero, no puedes hacer un movimiento sin capturar.", "Después de capturar, revisa la nueva posición de la misma ficha. Si puede capturar otra vez, debe continuar con saltos múltiples. Al llegar a la última fila del rival, se convierte en dama y puede moverse y capturar en ambas direcciones diagonales.", "El rival responde con una jugada legal y puede priorizar capturas o coronaciones. La partida termina si un lado se queda sin fichas o sin movimientos legales; una larga secuencia sin capturas ni coronaciones también puede acabar en empate. La pista señala una ficha legal, pero no elige el destino."],
+      how: ["Pulsa «Empezar» en la pantalla principal y mira el turno actual y las fichas marcadas en dorado.", "Elige una ficha dorada con un destino diagonal legal y después toca la casilla de llegada resaltada.", "Si hay una captura disponible, debes hacerla. Tras aterrizar, continúa con la misma ficha si puede volver a capturar.", "Mantén una ruta hacia la última fila rival y aprovecha el movimiento en ambas direcciones cuando corones una dama.", "Usa Pista para ver una ficha legal de inicio. Reiniciar devuelve la partida a su posición inicial."],
+      strategyTips: ["Antes de mover, busca capturas forzadas en todas las fichas rivales y cuenta la casilla de llegada, no solo la ficha saltada.", "Evita avanzar una ficha aislada; conserva apoyo diagonal para que el rival no consiga una captura gratis.", "Durante una cadena, vuelve a evaluar la siguiente casilla después de cada salto: la primera captura no siempre termina el turno.", "Al buscar la coronación, deja una salida. Una dama se mueve con más libertad, pero aún puede quedar atrapada por una captura forzada o una diagonal bloqueada.", "Si tienes más fichas, intercambia con cuidado y limita las jugadas rivales; si vas por detrás, conserva movilidad y busca coronar."],
+      progression: ["La apertura enseña el movimiento diagonal y la regla global de captura. En el medio de la partida aparecen decisiones entre distintas capturas y cadenas; el final depende más de las damas, los bloqueos y el cálculo de cada movimiento. Cada sesión es una partida completa, no una serie de niveles desbloqueables."],
+      designNote: "La partida usa el mismo motor de jugadas legales para los controles táctiles, el ratón, el foco del teclado, las pistas y la respuesta del rival. La ficha seleccionada y los destinos legales tienen marcas distintas, de modo que el tablero explica por qué un movimiento tranquilo no está permitido cuando hay una captura.",
+      parent: "No hace falta iniciar sesión ni comprar nada para jugar. La partida en curso no se guarda; solo se conserva el mejor resultado en este navegador. Al borrar los datos del sitio, ese registro podría eliminarse.",
+      faq: [["¿Las capturas son obligatorias?", "Sí. Si hay una captura disponible en cualquier parte del tablero, debes elegir un movimiento de captura."], ["¿Cuándo termina una cadena de saltos?", "La misma ficha debe continuar mientras pueda capturar desde su nueva casilla. El turno termina cuando ya no puede seguir capturando."], ["¿Cómo se corona una ficha?", "Al llegar a la última fila del rival, una ficha se convierte en dama y puede moverse o capturar en ambas direcciones diagonales."], ["¿Cómo se gana la partida?", "Ganas si el rival se queda sin fichas o sin movimientos legales. Una larga racha sin capturas ni coronaciones puede terminar en empate."], ["¿La pista mueve la ficha por mí?", "No. La pista señala una ficha inicial legal; tú eliges el destino y completas el movimiento."], ["¿Se guarda la partida o el mejor resultado?", "La partida en curso no se guarda. El mejor resultado queda solo en este navegador; no necesitas iniciar sesión ni comprar nada."]],
+    },
+    "pt-BR": {
+      title: "Damas", difficulty: "Do fácil ao desafiador", time: "5–15 minutos por partida", gameplay: "Partida completa de damas", genre: ["Clássico", "Quebra-cabeça", "Estratégia"], hideSkillsFact: true,
+      intro: "Jogue uma partida completa de damas em um tabuleiro 8×8. Se houver captura, você precisa capturar; encadeie saltos e coroe peças para abrir caminhos seguros.",
+      metaDescription: "Jogue damas em um tabuleiro 8×8: planeje diagonais, faça as capturas obrigatórias, encadeie saltos e coroe peças.",
+      text140Tags: ["Capturas obrigatórias", "Saltos múltiplos", "Estratégia por turnos"], noteTitle: "Informações do jogador e do salvamento",
+      story: ["Só as casas escuras do tabuleiro 8×8 podem ser usadas. Cada lado começa com doze peças; uma diagonal livre pode virar rota de fuga, armadilha ou início de uma sequência de capturas."],
+      systems: ["Peças comuns avançam uma casa na diagonal. Para capturar, pulam uma peça adversária vizinha e aterrissam em uma casa vazia; a peça pulada é removida. Se houver qualquer captura disponível no tabuleiro, você não pode fazer uma jogada sem capturar.", "Depois de capturar, confira a nova posição da mesma peça. Se ela puder capturar de novo, deve continuar com saltos múltiplos. Ao chegar à última fileira do adversário, ela vira dama e pode mover e capturar nas duas direções diagonais.", "O adversário responde com uma jogada legal e pode priorizar capturas ou coroações. A partida termina se um lado ficar sem peças ou sem jogadas legais; uma longa sequência sem capturas ou coroações também pode terminar empatada. A dica aponta uma peça legal, mas não escolhe o destino."],
+      how: ["Toque em Começar na tela principal e confira o turno e as peças destacadas em dourado.", "Escolha uma peça dourada com um destino diagonal legal e depois toque na casa de chegada marcada.", "Se houver captura, você precisa fazê-la. Depois de aterrissar, continue com a mesma peça se ela puder capturar novamente.", "Mantenha uma rota até a última fileira do adversário e use o movimento nos dois sentidos quando virar dama.", "Use Dica para ver uma peça inicial legal. Reiniciar devolve a partida à posição de abertura."],
+      strategyTips: ["Antes de mover, procure capturas forçadas em todas as peças adversárias e conte a casa de chegada, não só a peça pulada.", "Evite avançar uma peça isolada; mantenha apoio diagonal para não oferecer uma captura fácil.", "Durante uma sequência, reavalie a próxima casa após cada salto: a primeira captura nem sempre encerra o turno.", "Ao buscar a coroação, deixe uma saída. A dama tem mais mobilidade, mas ainda pode ficar presa por uma captura forçada ou diagonal bloqueada.", "Se estiver à frente em peças, troque com segurança e reduza as jogadas do rival; se estiver atrás, preserve mobilidade e procure coroar."],
+      progression: ["A abertura ensina o movimento diagonal e a regra geral de captura. No meio da partida surgem escolhas entre capturas e decisões de saltos múltiplos; no final, damas, bloqueios e cálculo de jogadas ganham peso. Cada sessão é uma partida completa, sem fases desbloqueáveis."],
+      designNote: "A partida usa o mesmo mecanismo de jogadas legais para toque, mouse, foco do teclado, dicas e resposta do adversário. A peça selecionada e os destinos legais têm marcações diferentes, para que o próprio tabuleiro mostre por que uma jogada sem captura não é permitida quando há uma captura disponível.",
+      parent: "Não é preciso entrar em uma conta nem fazer compras para jogar. A partida em andamento não é salva; apenas o melhor resultado fica neste navegador. Limpar os dados do site pode apagar esse registro.",
+      faq: [["As capturas são obrigatórias?", "Sim. Se houver uma captura disponível em qualquer ponto do tabuleiro, você precisa escolher uma jogada de captura."], ["Quando termina uma sequência de saltos?", "A mesma peça deve continuar enquanto ainda puder capturar da nova casa. O turno acaba quando não há outra captura para ela."], ["Como uma peça vira dama?", "Ao chegar à última fileira adversária, a peça é promovida e pode mover e capturar nas duas direções diagonais."], ["Como vencer a partida?", "Você vence quando o adversário fica sem peças ou sem jogadas legais. Uma longa sequência sem capturas ou coroações pode terminar empatada."], ["A dica joga por mim?", "Não. Ela destaca uma peça inicial legal; você escolhe o destino e conclui a jogada."], ["A partida ou o melhor resultado ficam salvos?", "A partida em andamento não é salva. O melhor resultado fica apenas neste navegador; não é preciso entrar em uma conta nem comprar algo."]],
+    },
+    fr: {
+      title: "Dames", difficulty: "De facile à exigeant", time: "5 à 15 minutes par partie", gameplay: "Partie complète de dames", genre: ["Classique", "Puzzle", "Stratégie"], hideSkillsFact: true,
+      intro: "Jouez une partie complète de dames sur un plateau 8×8. Toute prise disponible est obligatoire ; enchaînez les sauts et faites une dame pour ouvrir des voies sûres.",
+      metaDescription: "Jouez aux dames sur un plateau 8×8 : préparez vos diagonales, prenez obligatoirement, enchaînez les sauts et faites une dame.",
+      text140Tags: ["Prises obligatoires", "Rafles", "Stratégie au tour par tour"], noteTitle: "Informations du joueur et sauvegarde",
+      story: ["Seules les cases sombres du plateau 8×8 sont jouables. Chaque camp commence avec douze pions ; une diagonale libre peut devenir une sortie, un piège ou le début d'une série de prises."],
+      systems: ["Un pion ordinaire avance d'une case en diagonale. Pour prendre, il saute par-dessus un pion adverse voisin et atterrit sur une case vide ; le pion sauté est retiré. Dès qu'une prise est possible quelque part sur le plateau, un déplacement sans prise est interdit.", "Après une prise, vérifiez la nouvelle position du même pion. S'il peut reprendre, il doit continuer la rafle. En atteignant la rangée opposée, il devient une dame et peut se déplacer et prendre dans les deux sens diagonaux.", "L'adversaire répond par un coup légal et peut privilégier une prise ou une promotion. La partie s'arrête lorsqu'un camp n'a plus de pions ou de coup légal ; une longue période sans prise ni promotion peut aussi aboutir à un nul. L'indice désigne un pion jouable sans choisir sa destination."],
+      how: ["Appuyez sur « Commencer » depuis l'écran principal et observez le tour ainsi que les pions dorés.", "Choisissez un pion doré qui a une destination diagonale légale, puis la case d'arrivée indiquée.", "Si une prise est possible, vous devez la jouer. Après l'atterrissage, continuez avec le même pion s'il peut reprendre.", "Gardez un chemin vers la dernière rangée adverse et utilisez le déplacement dans les deux sens après la promotion.", "L'indice montre un pion de départ légal. Redémarrer remet la partie dans sa position initiale."],
+      strategyTips: ["Avant de jouer, repérez les prises possibles de tous les pions adverses et comptez la case d'arrivée, pas seulement le pion sauté.", "Évitez d'avancer un pion isolé ; gardez un appui diagonal pour ne pas offrir une prise facile.", "Pendant une rafle, réévaluez la prochaine case après chaque saut : la première prise ne termine pas toujours le tour.", "En visant la promotion, gardez une case de sortie. Une dame bouge plus librement, mais une prise forcée ou une diagonale bloquée peut encore la piéger.", "Si vous avez plus de pions, échangez prudemment et réduisez les coups adverses ; si vous êtes en retard, gardez de la mobilité et cherchez la promotion."],
+      progression: ["L'ouverture apprend les déplacements diagonaux et la règle générale de prise. Le milieu de partie ajoute des choix entre plusieurs prises et des décisions de rafle ; la fin dépend davantage des dames, des blocages et du calcul des coups. Chaque session est une partie complète, sans niveaux à débloquer."],
+      designNote: "La partie utilise le même moteur de coups légaux pour le toucher, la souris, le focus clavier, les indices et la réponse adverse. Le pion sélectionné et les destinations possibles ont des repères distincts ; le plateau montre ainsi pourquoi un déplacement calme est interdit lorsqu'une prise existe.",
+      parent: "Aucun compte ni achat n'est nécessaire pour jouer. La partie en cours n'est pas enregistrée ; seul le meilleur résultat reste dans ce navigateur. Effacer les données du site peut supprimer ce record.",
+      faq: [["Les prises sont-elles obligatoires ?", "Oui. Si une prise est possible quelque part sur le plateau, vous devez choisir un coup de prise."], ["Quand une rafle se termine-t-elle ?", "Le même pion continue tant qu'il peut reprendre depuis sa nouvelle case. Le tour s'arrête lorsqu'aucune autre prise n'est possible pour lui."], ["Comment un pion devient-il une dame ?", "En atteignant la dernière rangée adverse, il est promu et peut se déplacer ou prendre dans les deux sens diagonaux."], ["Comment gagner la partie ?", "Vous gagnez si l'adversaire n'a plus de pions ou de coups légaux. Une longue période sans prise ni promotion peut se terminer par un nul."], ["L'indice joue-t-il à ma place ?", "Non. Il indique un pion de départ légal ; vous choisissez la destination et terminez le coup."], ["La partie ou le meilleur résultat sont-ils sauvegardés ?", "La partie en cours n'est pas enregistrée. Seul le meilleur résultat est conservé dans ce navigateur ; aucun compte ni achat n'est requis."]],
+    },
+    de: {
+      title: "Dame", difficulty: "Leicht bis anspruchsvoll", time: "5–15 Minuten pro Partie", gameplay: "Vollständige Damepartie", genre: ["Klassisch", "Rätsel", "Strategie"], hideSkillsFact: true,
+      intro: "Spiele eine vollständige Damepartie auf dem 8×8-Brett. Jeder mögliche Schlag ist Pflicht; setze Sprungfolgen fort und kröne Steine, um sichere Wege zu öffnen.",
+      metaDescription: "Spiele Dame auf einem 8×8-Brett: plane Diagonalen, führe Pflichtschläge aus, setze Sprungfolgen fort und kröne Steine.",
+      text140Tags: ["Schlagzwang", "Mehrfachsprünge", "Rundenbasierte Brettstrategie"], noteTitle: "Spieler- und Speicherinformationen",
+      story: ["Gespielt wird auf den dunklen Feldern des 8×8-Bretts. Beide Seiten beginnen mit zwölf Steinen. Eine offene Diagonale kann Fluchtweg, Falle oder der erste Schritt einer Schlagfolge sein."],
+      systems: ["Normale Steine ziehen ein Feld diagonal vorwärts. Beim Schlag überspringen sie einen benachbarten gegnerischen Stein und landen auf einem freien Feld; der übersprungene Stein wird entfernt. Gibt es irgendwo auf dem Brett einen möglichen Schlag, ist ein Zug ohne Schlag nicht erlaubt.", "Prüfe nach einem Schlag die neue Position desselben Steins. Kann er erneut schlagen, muss die Sprungfolge weitergehen. Erreicht ein Stein die gegnerische Grundreihe, wird er zur Dame und kann diagonal vorwärts und rückwärts ziehen und schlagen.", "Der Gegner antwortet mit einem legalen Zug und bevorzugt dabei mögliche Schläge oder eine Beförderung. Die Partie endet, wenn eine Seite keine Steine oder keinen legalen Zug mehr hat; lange Folgen ohne Schlag oder Beförderung können auch unentschieden enden. Der Hinweis markiert einen legalen Stein, wählt aber kein Zielfeld."],
+      how: ["Tippe auf dem Hauptbildschirm auf „Spiel starten“ und beachte den Zughinweis sowie die goldenen Steine.", "Wähle einen goldenen Stein mit einem legalen diagonalen Ziel und danach das markierte Landefeld.", "Wenn ein Schlag möglich ist, musst du schlagen. Kann derselbe Stein danach erneut schlagen, setze die Folge fort.", "Halte einen Weg zur gegnerischen Grundreihe offen und nutze nach der Beförderung die Bewegung in beide Richtungen.", "Der Hinweis zeigt einen legalen Startstein. Mit Neustart setzt du die Partie auf ihre Anfangsstellung zurück."],
+      strategyTips: ["Prüfe vor jedem Zug alle gegnerischen Schlagmöglichkeiten und zähle das Zielfeld mit, nicht nur den übersprungenen Stein.", "Schicke keinen Stein allein nach vorn; diagonale Unterstützung verhindert einfache Gegenschläge.", "Bewerte während einer Sprungfolge nach jeder Landung das nächste Feld neu. Der erste Schlag beendet den Zug nicht immer.", "Plane bei einer Beförderung auch einen Rückweg ein. Eine Dame ist beweglicher, kann aber durch Schlagzwang oder blockierte Diagonalen festgesetzt werden.", "Wenn du mehr Steine hast, tausche sicher und begrenze gegnerische Züge. Liegt der Gegner vorn, bewahre Beweglichkeit und suche einen Weg zur Beförderung."],
+      progression: ["Die Eröffnung vermittelt diagonale Züge und den allgemeinen Schlagzwang. Im Mittelspiel entstehen konkurrierende Schlagoptionen und Sprungfolgen; im Endspiel zählen Damen, blockierte Wege und das Vorausplanen einzelner Züge. Jede Sitzung ist eine vollständige Partie ohne freischaltbare Level."],
+      designNote: "Touch, Maus, Tastaturfokus, Hinweis und gegnerische Antwort verwenden dieselbe Engine für legale Züge. Ausgewählter Stein und erlaubte Zielfelder sind unterschiedlich markiert, damit das Brett zeigt, warum ein ruhiger Zug bei möglichem Schlag nicht erlaubt ist.",
+      parent: "Zum Spielen sind weder Anmeldung noch Kauf nötig. Die laufende Partie wird nicht gespeichert; nur der Bestwert bleibt in diesem Browser. Beim Löschen der Websitedaten kann dieser Rekord verloren gehen.",
+      faq: [["Sind Schläge Pflicht?", "Ja. Sobald irgendwo auf dem Brett ein Schlag möglich ist, musst du einen Schlagzug wählen."], ["Wann endet eine Sprungfolge?", "Derselbe Stein muss weiterspringen, solange er von seiner neuen Position erneut schlagen kann. Danach endet der Zug."], ["Wie wird ein Stein zur Dame?", "Erreicht er die gegnerische Grundreihe, wird er befördert und kann diagonal vorwärts und rückwärts ziehen und schlagen."], ["Wie gewinnt man die Partie?", "Du gewinnst, wenn der Gegner keine Steine oder keine legalen Züge mehr hat. Lange Phasen ohne Schlag oder Beförderung können unentschieden enden."], ["Zieht der Hinweis für mich?", "Nein. Er markiert einen legalen Startstein; Zielfeld und Zug wählst du selbst."], ["Werden Partie oder Bestwert gespeichert?", "Die laufende Partie wird nicht gespeichert. Nur der Bestwert bleibt in diesem Browser; Anmeldung oder Kauf sind nicht erforderlich."]],
+    },
+    it: {
+      title: "Dama", difficulty: "Da facile a impegnativo", time: "5–15 minuti a partita", gameplay: "Partita completa a dama", genre: ["Classico", "Puzzle", "Strategia"], hideSkillsFact: true,
+      intro: "Gioca una partita completa a dama su una scacchiera 8×8. Ogni presa disponibile è obbligatoria: concatena i salti e promuovi le pedine per aprire percorsi sicuri.",
+      metaDescription: "Gioca a dama su una scacchiera 8×8: pianifica le diagonali, fai le prese obbligatorie, concatena i salti e promuovi le pedine.",
+      text140Tags: ["Prese obbligatorie", "Salti multipli", "Strategia a turni"], noteTitle: "Informazioni sul giocatore e sui salvataggi",
+      story: ["Si gioca solo sulle caselle scure della scacchiera 8×8. Entrambi i lati iniziano con dodici pedine; una diagonale aperta può diventare una via di fuga, una trappola o l'inizio di una serie di prese."],
+      systems: ["Le pedine normali avanzano di una casella in diagonale. Per catturare, saltano una pedina avversaria adiacente e atterrano su una casella vuota; la pedina saltata viene rimossa. Se è disponibile una presa in qualsiasi punto della scacchiera, non puoi fare una mossa senza catturare.", "Dopo una presa, controlla la nuova posizione della stessa pedina. Se può catturare ancora, deve continuare con salti multipli. Raggiunta la fila opposta, diventa dama e può muoversi e catturare in entrambe le direzioni diagonali.", "L'avversario risponde con una mossa legale e può dare priorità a prese o promozioni. La partita termina quando un lato non ha più pedine o mosse legali; una lunga sequenza senza prese o promozioni può finire in parità. Il suggerimento indica una pedina legale, ma non sceglie la destinazione."],
+      how: ["Premi Inizia nella schermata principale e osserva il turno e le pedine evidenziate in oro.", "Scegli una pedina dorata con una destinazione diagonale legale, poi seleziona la casella di arrivo evidenziata.", "Se è disponibile una presa, devi effettuarla. Dopo l'atterraggio continua con la stessa pedina se può catturare ancora.", "Mantieni un percorso verso la fila opposta e usa il movimento in entrambe le direzioni dopo la promozione.", "Usa Suggerimento per vedere una pedina iniziale legale. Riavvia ripristina la posizione iniziale della partita."],
+      strategyTips: ["Prima di muovere, cerca le prese forzate di tutte le pedine avversarie e considera la casella di atterraggio, non solo la pedina saltata.", "Non far avanzare una pedina da sola; mantieni il supporto diagonale per evitare una presa facile.", "Durante i salti multipli, rivaluta la casella successiva dopo ogni atterraggio: la prima presa non sempre conclude il turno.", "Quando cerchi la promozione, lascia una via d'uscita. La dama è più flessibile, ma può restare intrappolata da una presa obbligatoria o da una diagonale bloccata.", "Se hai più pedine, scambiale con prudenza e limita le mosse avversarie; se sei in svantaggio, conserva mobilità e cerca una promozione."],
+      progression: ["L'apertura insegna il movimento diagonale e la regola generale delle prese. A metà partita si presentano scelte tra diverse catture e salti multipli; nel finale contano dame, passaggi bloccati e calcolo delle mosse. Ogni sessione è una partita completa, non una serie di livelli da sbloccare."],
+      designNote: "La partita usa lo stesso motore delle mosse legali per tocco, mouse, focus della tastiera, suggerimenti e risposte dell'avversario. La pedina selezionata e le destinazioni consentite hanno indicatori diversi, così la scacchiera mostra perché una mossa tranquilla è vietata quando c'è una presa.",
+      parent: "Per giocare non servono accesso a un account né acquisti. La partita in corso non viene salvata; solo il record migliore resta in questo browser. Cancellando i dati del sito, il record potrebbe andare perso.",
+      faq: [["Le prese sono obbligatorie?", "Sì. Se è disponibile una presa in qualsiasi punto della scacchiera, devi scegliere una mossa di cattura."], ["Quando termina una serie di salti?", "La stessa pedina deve continuare finché può catturare dalla nuova casella. Il turno finisce quando non può più farlo."], ["Come si promuove una pedina?", "Raggiungendo la fila opposta, la pedina diventa dama e può muoversi o catturare in entrambe le direzioni diagonali."], ["Come si vince la partita?", "Vinci quando l'avversario non ha pedine o mosse legali. Una lunga sequenza senza prese o promozioni può terminare in parità."], ["Il suggerimento muove al posto mio?", "No. Indica una pedina iniziale legale; la destinazione e la mossa le scegli tu."], ["La partita o il record migliore vengono salvati?", "La partita in corso non viene salvata. Solo il record migliore resta in questo browser; non servono accesso o acquisti."]],
+    },
+    ru: {
+      title: "Шашки", difficulty: "От простого к сложному", time: "5–15 минут за партию", gameplay: "Полная партия в шашки", genre: ["Классика", "Головоломка", "Стратегия"], hideSkillsFact: true,
+      intro: "Сыграйте полную партию в шашки на доске 8×8. Если можно взять шашку, взятие обязательно; продолжайте серии прыжков и проводите шашки в дамки.",
+      metaDescription: "Играйте в шашки на доске 8×8: планируйте диагонали, выполняйте обязательные взятия, продолжайте прыжки и делайте дамок.",
+      text140Tags: ["Обязательное взятие", "Серии прыжков", "Пошаговая стратегия"], noteTitle: "Информация об игроке и сохранении",
+      story: ["Играть можно только на тёмных клетках доски 8×8. У каждой стороны по двенадцать шашек; свободная диагональ может стать путём отхода, ловушкой или началом серии взятий."],
+      systems: ["Обычная шашка ходит на одну клетку по диагонали вперёд. При взятии она перепрыгивает соседнюю шашку соперника на пустую клетку, а перепрыгнутая шашка снимается с доски. Если взятие доступно где-либо на доске, ход без взятия запрещён.", "После взятия проверьте новое положение той же шашки. Если она может взять ещё, серия прыжков должна продолжиться. Дойдя до дальней линии, шашка становится дамкой и может ходить и брать по диагонали в обе стороны.", "Соперник отвечает допустимым ходом и может предпочесть взятие или превращение. Партия заканчивается, когда у одной стороны не остаётся шашек или допустимых ходов; долгая серия без взятий и превращений также может завершиться ничьей. Подсказка отмечает допустимую шашку, но не выбирает клетку назначения."],
+      how: ["Нажмите «Начать игру» на главном экране и посмотрите, чей ход и какие шашки отмечены золотым.", "Выберите золотую шашку с допустимым диагональным ходом, затем нажмите отмеченную клетку приземления.", "Если доступно взятие, его нужно выполнить. После приземления продолжайте той же шашкой, если она может взять снова.", "Сохраняйте путь к дальней линии и используйте движение в обе стороны после превращения в дамку.", "Подсказка покажет допустимую шашку для начала. Кнопка перезапуска возвращает начальную расстановку."],
+      strategyTips: ["Перед ходом проверьте возможные взятия всех шашек соперника и оцените клетку приземления, а не только перепрыгиваемую шашку.", "Не продвигайте шашку в одиночку; оставляйте диагональную поддержку, чтобы не подставить её под лёгкое взятие.", "Во время серии после каждого прыжка заново оценивайте следующую клетку: первое взятие не всегда завершает ход.", "Планируя превращение, оставьте путь отхода. Дамка подвижнее, но её тоже можно поймать обязательным взятием или перекрытой диагональю.", "При преимуществе безопасно разменивайтесь и сокращайте ходы соперника; если отстаёте, сохраняйте подвижность и ищите путь к превращению."],
+      progression: ["В начале осваиваются диагональные ходы и общее правило обязательного взятия. В середине партии появляются конкурирующие варианты взятия и серии прыжков; в эндшпиле важны дамки, перекрытые пути и расчёт ходов. Каждая сессия — полная партия, а не набор открываемых уровней."],
+      designNote: "Одна и та же система допустимых ходов работает для касаний, мыши, клавиатурного фокуса, подсказок и ответов соперника. Выбранная шашка и клетки назначения отмечаются по-разному, поэтому доска показывает, почему нельзя сделать тихий ход, когда доступно взятие.",
+      parent: "Для игры не нужны вход в аккаунт или покупка. Текущая партия не сохраняется; в этом браузере остаётся только лучший результат. Очистка данных сайта может удалить эту запись.",
+      faq: [["Взятие обязательно?", "Да. Если взятие доступно где-либо на доске, нужно выбрать ход со взятием."], ["Когда заканчивается серия прыжков?", "Та же шашка продолжает, пока может взять с новой клетки. Когда продолжать нечем, ход заканчивается."], ["Как шашка становится дамкой?", "Дойдя до дальней линии, она превращается в дамку и может ходить и брать по диагонали в обе стороны."], ["Как выиграть партию?", "Вы побеждаете, если у соперника не остаётся шашек или допустимых ходов. Долгая серия без взятий и превращений может завершиться ничьей."], ["Подсказка ходит за меня?", "Нет. Она отмечает допустимую шашку для начала; клетку назначения и сам ход выбираете вы."], ["Сохраняются ли партия или лучший результат?", "Текущая партия не сохраняется. Лучший результат остаётся только в этом браузере; аккаунт и покупка не нужны."]],
+    },
+    hi: {
+      title: "चेकर्स", difficulty: "आसान से चुनौतीपूर्ण", time: "हर मैच 5–15 मिनट", gameplay: "पूरा चेकर्स मैच", genre: ["क्लासिक", "पहेली", "रणनीति"], hideSkillsFact: true,
+      intro: "8×8 बोर्ड पर चेकर्स का पूरा मैच खेलें। जहाँ कैप्चर संभव हो, उसे करना अनिवार्य है; लगातार छलाँग लगाएँ और गोटियों को किंग बनाएँ।",
+      metaDescription: "8×8 बोर्ड पर चेकर्स खेलें: तिरछी चालें सोचें, अनिवार्य कैप्चर करें, लगातार छलाँग लगाएँ और गोटियों को किंग बनाएँ।",
+      text140Tags: ["अनिवार्य कैप्चर", "लगातार छलाँग", "बारी-आधारित रणनीति"], noteTitle: "खिलाड़ी और सेव की जानकारी",
+      story: ["8×8 बोर्ड पर केवल गहरे खाने इस्तेमाल होते हैं। दोनों पक्ष बारह-बारह गोटियों से शुरू करते हैं; खुला तिरछा रास्ता बच निकलने का मार्ग, जाल या कैप्चर-श्रृंखला की शुरुआत बन सकता है।"],
+      systems: ["साधारण गोटी तिरछे आगे एक खाना चलती है। कैप्चर में वह पास की प्रतिद्वंद्वी गोटी के ऊपर से खाली खाने पर छलाँग लगाती है और उस गोटी को हटा देती है। बोर्ड पर कहीं भी कैप्चर संभव हो, तो बिना कैप्चर वाली चाल नहीं चल सकते।", "कैप्चर के बाद उसी गोटी की नई जगह देखें। यदि वह फिर कैप्चर कर सकती है, तो लगातार छलाँग जारी रखनी होगी। प्रतिद्वंद्वी की आखिरी पंक्ति पर पहुँचने से गोटी किंग बनती है और दोनों तिरछी दिशाओं में चल व कैप्चर कर सकती है।", "प्रतिद्वंद्वी वैध चाल से जवाब देता है और कैप्चर या किंग बनने को प्राथमिकता दे सकता है। किसी पक्ष की गोटियाँ या वैध चालें समाप्त हों तो मैच खत्म होता है; लंबे समय तक कैप्चर या किंग न बनने पर ड्रॉ भी हो सकता है। हिंट वैध शुरुआती गोटी दिखाता है, गंतव्य नहीं चुनता।"],
+      how: ["मुख्य स्क्रीन पर शुरू करें दबाएँ और चाल का संकेत तथा सुनहरे रंग से दिखाई गई गोटियाँ देखें।", "ऐसी सुनहरी गोटी चुनें जिसकी तिरछी वैध जगह हो, फिर दिखाई गई उतरने की जगह चुनें।", "कैप्चर उपलब्ध हो तो उसे करना होगा। उतरने के बाद उसी गोटी से फिर कैप्चर संभव हो तो छलाँग जारी रखें।", "प्रतिद्वंद्वी की आखिरी पंक्ति तक रास्ता बचाएँ और किंग बनने पर दोनों दिशाओं में चलने का लाभ लें।", "हिंट से वैध शुरुआती गोटी देखें। रीस्टार्ट दबाने पर मैच शुरुआती स्थिति में लौटता है।"],
+      strategyTips: ["चाल से पहले सभी प्रतिद्वंद्वी गोटियों के कैप्चर देखें और उतरने का खाना भी गिनें, केवल छलाँग के ऊपर की गोटी नहीं।", "किसी एक गोटी को अकेले आगे न बढ़ाएँ; तिरछा सहारा रखें ताकि प्रतिद्वंद्वी आसानी से कैप्चर न कर सके।", "लगातार छलाँग के दौरान हर बार उतरने के बाद अगली जगह फिर देखें; पहला कैप्चर हमेशा चाल का अंत नहीं होता।", "किंग बनने की राह में वापसी का खाना रखें। किंग अधिक स्वतंत्र है, फिर भी अनिवार्य कैप्चर या बंद तिरछे रास्ते में फँस सकता है।", "गोटियाँ अधिक हों तो सुरक्षित अदला-बदली करें और प्रतिद्वंद्वी की वैध चालें घटाएँ; पीछे हों तो गतिशीलता और किंग बनने का रास्ता बचाएँ।"],
+      progression: ["शुरुआत में तिरछी चाल और पूरे बोर्ड पर अनिवार्य कैप्चर का नियम आता है। बीच के खेल में कई कैप्चर विकल्प और लगातार छलाँग के फैसले आते हैं; अंत में किंग, बंद रास्ते और चालों की गणना अहम होती है। हर सत्र एक पूरा मैच है, अलग से खुलने वाले स्तर नहीं।"],
+      designNote: "टच, माउस, कीबोर्ड फोकस, हिंट और प्रतिद्वंद्वी की प्रतिक्रिया सभी एक ही वैध-चाल इंजन का उपयोग करते हैं। चुनी हुई गोटी और वैध उतरने की जगह अलग-अलग दिखती हैं, ताकि कैप्चर उपलब्ध होने पर साधारण चाल क्यों मना है यह बोर्ड पर स्पष्ट रहे।",
+      parent: "खेलने के लिए लॉगिन या खरीदारी की ज़रूरत नहीं है। चल रहा मैच सेव नहीं होता; केवल सर्वोत्तम रिकॉर्ड इस ब्राउज़र में रहता है। साइट डेटा मिटाने पर यह रिकॉर्ड हट सकता है।",
+      faq: [["क्या कैप्चर करना अनिवार्य है?", "हाँ। बोर्ड पर कहीं भी कैप्चर संभव हो, तो कैप्चर वाली चाल चुननी होगी।"], ["लगातार छलाँग कब रुकती है?", "नई जगह से उसी गोटी का अगला कैप्चर संभव रहने तक छलाँग जारी रहती है। अगला कैप्चर न हो तो चाल खत्म होती है।"], ["गोटी किंग कैसे बनती है?", "प्रतिद्वंद्वी की आखिरी पंक्ति तक पहुँचने पर वह किंग बनती है और दोनों तिरछी दिशाओं में चल व कैप्चर कर सकती है।"], ["मैच कैसे जीतें?", "जब प्रतिद्वंद्वी की गोटियाँ या वैध चालें खत्म हों, आप जीतते हैं। लंबे समय तक कैप्चर या किंग न बनने पर ड्रॉ हो सकता है।"], ["क्या हिंट मेरी चाल चल देता है?", "नहीं। हिंट केवल वैध शुरुआती गोटी दिखाता है; उतरने की जगह आपको चुननी होती है।"], ["क्या मैच या सर्वोत्तम रिकॉर्ड सेव होता है?", "चल रहा मैच सेव नहीं होता। सर्वोत्तम रिकॉर्ड केवल इस ब्राउज़र में रहता है; लॉगिन या खरीदारी आवश्यक नहीं है।"]],
+    },
     ar: {
-      title: "الداما",
-      difficulty: "من السهل إلى التحدي",
-      time: "5–15 دقيقة للمباراة",
-      gameplay: "مباراة داما كاملة",
-      genre: ["كلاسيكية", "ألغاز", "استراتيجية", "عائلية"],
-      skills: ["التخطيط", "تمييز الأنماط", "التركيز"],
-      intro: "العب مباراة داما كاملة على لوحة 8×8 متجاوبة مع الأخذ الإجباري والقفزات المتعددة والترقية إلى ملك وخصم حقيقي يرد على حركاتك.",
-      story: [
-        "اللوحة ساحة صغيرة 8×8 لا تُلعب فيها إلا المربعات الداكنة. تبدأ باثنتي عشرة قطعة ويبدأ الخصم باثنتي عشرة قطعة، لذلك يمكن لكل قطر مفتوح أن يصبح طريق هروب أو فخاً أو أول حلقة في سلسلة أخذ.",
-      ],
-      systems: [
-        "تتحرك القطع العادية خطوة واحدة قطرياً إلى الأمام. يقفز الأخذ فوق قطعة خصم مجاورة إلى مربع فارغ ويزيل تلك القطعة. إذا وُجد أي أخذ على اللوحة، فلا تكون الحركات غير الآخذة قانونية.",
-        "بعد الأخذ، افحص القطعة نفسها مرة أخرى: إذا كان أخذ آخر متاحاً، يجب أن تتابع القفزات المتعددة من مربعها الجديد. وعند بلوغ الصف البعيد، تترقى القطعة إلى ملك يستطيع التحرك والأخذ قطرياً في الاتجاهين.",
-        "يرد الخصم بعد دورك ويمكنه تنفيذ سلسلة أخذ خاصة به. تنتهي المباراة عندما لا يملك أحد الطرفين قطعاً أو حركة قانونية؛ وقد تُحسم كسحب بعد سلسلة طويلة بلا تقدّم. يحدد التلميح قطعة قانونية لكنه لا يختار الوجهة نيابةً عنك.",
-      ],
-      how: [
-        "ابدأ من الشاشة الرئيسية وراقب القطع الذهبية المميزة ورسالة الدور الحالية.",
-        "اختر قطعة ذهبية لها وجهة قطرية قانونية، ثم اختر مربع الهبوط المميز.",
-        "إذا كان الأخذ متاحاً، نفّذه حتى لو بدت الحركة الهادئة أكثر أماناً؛ وبعد الهبوط واصل بالقطعة نفسها كلما ظهر أخذ آخر.",
-        "احمِ طريقاً إلى الصف البعيد، رقِّ القطعة إلى ملك، واستعمل حركته في الاتجاهين لتغيير شكل الوضع.",
-        "استعمل التلميح عندما تحتاج إلى قطعة بداية قانونية، أو أعد البدء لإعادة المباراة نفسها من وضعها الافتتاحي.",
-      ],
-      strategyTips: [
-        "قبل التحرك، افحص كل قطعة للخصم بحثاً عن أخذ إجباري واحسب مربع الهبوط، لا القطعة المقفوز فوقها فقط.",
-        "تجنب دفع قطعة واحدة بمفردها؛ حافظ على دعم قطري حتى لا يرد الخصم بأخذ مجاني.",
-        "أثناء القفزات المتعددة، أعد تقييم مربع الهبوط التالي بعد كل قفزة بدلاً من افتراض أن الأخذ الأول ينهي الدور.",
-        "عند الترقية، ضع في بالك مربع هروب واضحاً. الملك مرن، لكنه قد يُحاصر أيضاً بأخذ إجباري أو قطر مسدود.",
-        "عندما تتقدم في عدد القطع، بدّل بأمان وقلل حركات الخصم القانونية؛ وعندما تتأخر، حافظ على الحركة وابحث عن سباق الترقية.",
-      ],
-      progression: [
-        "تعلّم البداية الحركة القطرية وقاعدة الأخذ العامة. تضيف أوضاع منتصف المباراة خيارات أخذ متنافسة وقرارات القفز المتعدد، بينما تكافئ النهاية استعمال الملوك والطرق المسدودة والانتباه إلى عدد الحركات.",
-      ],
-      designNote: "تستخدم معاينة الداما محرك الحركات القانونية نفسه للمس والماوس وتركيز لوحة المفاتيح والتلميح وردّ الخصم وتسميات اللوحة الميسّرة. تبقى القطعة المحددة والأهداف القانونية متميزتين بصرياً، كي تفهم سبب منع الحركة الهادئة من دون الاعتماد على قواعد مخفية.",
-      parent: "الداما لعبة استراتيجية للمتصفح موجهة للجمهور العام، موصى بها للأعمار 9 سنوات فأكثر وللعب العائلي. لا يلزم حساب أو شراء؛ تبقى المباراة الحالية وأفضل نتيجة في هذا المتصفح فقط.",
+      title: "الداما", difficulty: "من السهل إلى التحدي", time: "5–15 دقيقة للمباراة", gameplay: "مباراة داما كاملة", genre: ["كلاسيكية", "ألغاز", "استراتيجية"], hideSkillsFact: true,
+      intro: "العب مباراة داما كاملة على لوحة 8×8. كل أخذ متاح إجباري؛ تابع القفزات المتعددة ورقِّ القطع إلى ملك لفتح مسارات آمنة.",
+      metaDescription: "العب الداما على لوحة 8×8: خطط للتحركات القطرية، نفّذ الأخذ الإجباري، تابع القفزات ورقِّ القطع إلى ملك.",
+      text140Tags: ["الأخذ الإجباري", "القفزات المتعددة", "استراتيجية تبادلية"], noteTitle: "معلومات اللاعب والحفظ",
+      story: ["لا تُستخدم إلا المربعات الداكنة على لوحة 8×8. يبدأ كل طرف باثنتي عشرة قطعة؛ وقد يصبح القطر المفتوح طريق هروب أو فخاً أو بداية سلسلة من عمليات الأخذ."],
+      systems: ["تتحرك القطعة العادية خطوة واحدة قطرياً إلى الأمام. وللأخذ تقفز فوق قطعة خصم مجاورة إلى مربع فارغ فتُزال القطعة المقفوز فوقها. إذا توفر أخذ في أي موضع على اللوحة، فلا يجوز اختيار حركة بلا أخذ.", "بعد الأخذ، افحص موضع القطعة نفسها. إذا أمكنها الأخذ مجدداً، فعليها متابعة القفزات المتعددة. وعند بلوغ الصف الأخير للخصم تصبح ملكاً وتتحرك وتأخذ قطرياً في الاتجاهين.", "يرد الخصم بحركة قانونية وقد يفضّل الأخذ أو الترقية. تنتهي المباراة عندما لا يملك أحد الطرفين قطعاً أو حركات قانونية؛ وقد تنتهي بالتعادل بعد مدة طويلة بلا أخذ أو ترقية. تبرز التلميحة قطعة بداية قانونية لكنها لا تختار مربع الوصول."],
+      how: ["اضغط على «ابدأ اللعب» في الشاشة الرئيسية ولاحظ الدور الحالي والقطع المميزة باللون الذهبي.", "اختر قطعة ذهبية لها وجهة قطرية قانونية، ثم اختر مربع الوصول المميز.", "إذا توفر أخذ، فيجب تنفيذه. بعد الهبوط تابع بالقطعة نفسها إذا أمكنها الأخذ مرة أخرى.", "حافظ على طريق إلى الصف الأخير للخصم واستفد من الحركة في الاتجاهين بعد الترقية إلى ملك.", "استخدم التلميحة لرؤية قطعة بداية قانونية. تعيد إعادة البدء المباراة إلى وضعها الافتتاحي."],
+      strategyTips: ["قبل التحرك، افحص إمكانات الأخذ لدى كل قطع الخصم واحسب مربع الوصول، لا القطعة التي ستقفز فوقها فقط.", "لا تدفع قطعة واحدة بعيداً وحدها؛ احتفظ بدعم قطري كي لا يرد الخصم بأخذ سهل.", "أثناء القفزات المتعددة، أعد تقييم المربع التالي بعد كل هبوط؛ فالأخذ الأول لا ينهي الدور دائماً.", "عند السعي إلى الترقية، اترك طريقاً للعودة. الملك أكثر مرونة لكنه قد يُحاصر بأخذ إجباري أو قطر مغلق.", "عندما تتقدم في عدد القطع، بدّل بأمان وقلل الحركات القانونية للخصم؛ وعندما تتأخر، حافظ على الحركة وابحث عن طريق للترقية."],
+      progression: ["تعلّم البداية الحركة القطرية وقاعدة الأخذ العامة. تظهر في منتصف المباراة خيارات أخذ متنافسة وقرارات القفز المتعدد؛ وفي النهاية تزداد أهمية الملوك والطرق المسدودة وحساب كل حركة. كل جلسة مباراة كاملة وليست مراحل تُفتح بالتتابع."],
+      designNote: "تستخدم اللمسات والماوس وتركيز لوحة المفاتيح والتلميحات وردود الخصم محرك الحركات القانونية نفسه. تظهر القطعة المحددة ومربعات الوصول القانونية بعلامتين مختلفتين، كي توضح اللوحة سبب منع الحركة الهادئة عند توفر أخذ.",
+      parent: "لا يلزم تسجيل الدخول أو الشراء للعب. لا تُحفظ المباراة الجارية؛ تبقى أفضل نتيجة فقط في هذا المتصفح. قد يؤدي مسح بيانات الموقع إلى حذفها.",
+      faq: [["هل الأخذ إجباري؟", "نعم. إذا توفر أخذ في أي موضع على اللوحة، فعليك اختيار حركة تتضمن الأخذ."], ["متى تنتهي القفزات المتعددة؟", "تتابع القطعة نفسها القفز ما دامت تستطيع الأخذ من مربعها الجديد. وينتهي الدور عندما لا يتوفر أخذ آخر."], ["كيف تصبح القطعة ملكاً؟", "عندما تصل إلى الصف الأخير للخصم، تترقى وتستطيع التحرك والأخذ قطرياً في الاتجاهين."], ["كيف أفوز بالمباراة؟", "تفوز عندما لا يبقى للخصم قطع أو حركات قانونية. وقد تنتهي المباراة بالتعادل بعد مدة طويلة بلا أخذ أو ترقية."], ["هل تتحرك التلميحة بدلاً مني؟", "لا. تبرز قطعة بداية قانونية فقط؛ أما مربع الوصول والحركة فتختارهما بنفسك."], ["هل تُحفظ المباراة أو أفضل نتيجة؟", "لا تُحفظ المباراة الجارية. تبقى أفضل نتيجة في هذا المتصفح فقط؛ ولا يلزم تسجيل الدخول أو الشراء."]],
     },
   };
   for (const [locale, facts] of Object.entries(checkersLocaleFacts)) {
     localizedGames[locale] ||= {};
     localizedGames[locale].checkers = { ...localizedGames[locale].checkers, ...facts };
+  }
+  // A capture that promotes ends the turn in this implementation, even if the
+  // newly crowned king could otherwise capture again. Keep that exception
+  // explicit in each locale's systems, how-to, and FAQ copy.
+  const checkersPromotionException = {
+    "zh-Hant": "若這次吃子升王，回合會立即結束。",
+    "zh-Hans": "如果这次吃子升王，回合会立即结束。",
+    ja: "その取りでキングになった場合は、そこで手番が終わります。",
+    ko: "그 잡기로 킹이 되면 그 즉시 차례가 끝납니다.",
+    "pt-BR": "Se essa captura coroar a peça, o turno termina imediatamente.",
+    fr: "Si cette prise la promeut, le tour s'arrête immédiatement.",
+    de: "Wird der Stein durch diesen Schlag gekrönt, endet der Zug sofort.",
+    es: "Si esa captura la corona, el turno termina de inmediato.",
+    it: "Se questa presa la promuove, il turno termina subito.",
+    ru: "Если взятие превращает шашку в дамку, ход сразу заканчивается.",
+    hi: "यदि कैप्चर से गोटी किंग बनती है, तो चाल तुरंत समाप्त हो जाती है।",
+    ar: "إذا أدى الأخذ إلى ترقية القطعة، ينتهي الدور فوراً.",
+  };
+  for (const [locale, exception] of Object.entries(checkersPromotionException)) {
+    const guide = localizedGames[locale].checkers;
+    guide.systems[1] = `${guide.systems[1]} ${exception}`;
+    guide.how[2] = `${guide.how[2]} ${exception}`;
+    guide.faq[1][1] = `${guide.faq[1][1]} ${exception}`;
   }
 
   const spaceRocksLocaleGuides = {
@@ -14246,181 +14734,7 @@
   gameplayProfiles["campus-dash"] ||= {};
   gameplayProfiles["campus-dash"].marketComparison = { name: "Subway Surfers", source: "https://sybogames.com/", locales: campusDashMarketComparisonCopy };
 
-  // Text Growth 1.3.0: Habitat Builder market comparison start
-  const habitatBuilderMarketComparisonCopy = {
-  "en": {
-    "heading": "Similar tile-placement landscape puzzle reference",
-    "tagsLabel": "Gameplay tags:",
-    "tags": [
-      "Strategic tile placement",
-      "Grid planning",
-      "Adjacency rules",
-      "Landscape puzzle"
-    ],
-    "body": "Both games center on placing landscape tiles thoughtfully. Toukana describes Dorfromantik as a peaceful building strategy and puzzle game where hexagonal tiles form an ever-growing village landscape, with varied biomes, unlockable tiles, and quests. Habitat Builder instead uses fixed 4×5 reserves with four tile types—water, meadow, forest, and shelter—and asks you to satisfy exact tile counts plus visible connectivity, edge, or adjacency rules. Blocked cells and a placement budget add constraints across 30 authored stages. It is a stage-based rule puzzle rather than an ever-expanding hex landscape with Dorfromantik's quests and high-score loop.",
-    "disclaimer": "Habitat Builder is an independent WeightPlay game. WeightPlay is not affiliated with, endorsed by, licensed by, or co-developing this game with Toukana Interactive or Dorfromantik.",
-    "sourceLabel": "Official Dorfromantik page by Toukana Interactive"
-  },
-  "zh-Hant": {
-    "heading": "相似地景鋪磚益智玩法參考",
-    "tagsLabel": "玩法標籤：",
-    "tags": [
-      "策略鋪磚",
-      "網格規劃",
-      "相鄰規則",
-      "地景益智"
-    ],
-    "body": "兩款遊戲都以有計畫地放置地景板塊為核心。Toukana 官方頁面將 Dorfromantik 描述為寧靜的建造策略與益智遊戲，用六角板塊逐步組成不斷延伸的村落地景，並包含多種生態區、可解鎖板塊與任務。本作則使用固定 4×5 保護區，只有水域、草地、森林、庇護所四種板塊；每關要同時符合精確數量與畫面明示的連通、邊緣或相鄰規則，後期還加入封鎖格與放置步數預算，共 30 個固定設計關卡。它是逐關驗證小型保護區的規則益智，不是持續擴張的六角地景，也沒有 Dorfromantik 的任務與高分循環。",
-    "disclaimer": "棲地建造師 是 WeightPlay 的獨立遊戲。WeightPlay 與 Toukana Interactive 或 Dorfromantik 沒有隸屬、背書、授權或共同開發關係。",
-    "sourceLabel": "Toukana Interactive 官方 Dorfromantik 頁面"
-  },
-  "zh-Hans": {
-    "heading": "相似景观铺砖益智玩法参考",
-    "tagsLabel": "玩法标签：",
-    "tags": [
-      "策略铺砖",
-      "网格规划",
-      "相邻规则",
-      "景观益智"
-    ],
-    "body": "两款游戏都以有计划地放置景观板块为核心。Toukana 官方页面将 Dorfromantik 描述为宁静的建造策略与益智游戏，用六角板块逐步组成不断延伸的村落景观，并包含多种生态区、可解锁板块和任务。本作则使用固定 4×5 保护区，只有水域、草地、森林和庇护所四种板块；每关要同时满足精确数量以及画面明确显示的连通、边缘或相邻规则，后期还会加入封锁格和放置步数预算，共 30 个固定设计关卡。它是逐关验证小型保护区的规则益智，并非持续扩张的六角景观，也没有 Dorfromantik 的任务与高分循环。",
-    "disclaimer": "栖地建造师 是 WeightPlay 的独立游戏。WeightPlay 与 Toukana Interactive 或 Dorfromantik 不存在隶属、背书、授权或共同开发关系。",
-    "sourceLabel": "Toukana Interactive 官方 Dorfromantik 页面"
-  },
-  "ja": {
-    "heading": "似た地形タイル配置パズルの参考",
-    "tagsLabel": "ゲームプレイタグ：",
-    "tags": [
-      "戦略的タイル配置",
-      "グリッド計画",
-      "隣接ルール",
-      "景観パズル"
-    ],
-    "body": "どちらも地形タイルを考えて配置することが中心です。Toukana の公式ページでは Dorfromantik を、六角形タイルで成長し続ける村の景観を作り、多様なバイオーム、アンロックできるタイル、クエストを楽しむ穏やかな建築ストラテジー／パズルと説明しています。本作は固定の4×5保護区を使い、水・草地・森・シェルターの4種類を配置して、正確な枚数と画面に示された連結・端・隣接条件を同時に満たします。後半では配置不可マスと手数上限も加わり、全30ステージです。広がり続ける六角形の景観やクエスト／ハイスコアを追う形式ではなく、小さな保護区をステージごとの規則で完成させるゲームです。",
-    "disclaimer": "ハビタット・ビルダー は WeightPlay の独立作品です。WeightPlay は Toukana Interactive または Dorfromantik と提携、推薦、許諾、共同開発の関係にありません。",
-    "sourceLabel": "Toukana Interactive 公式 Dorfromantik ページ"
-  },
-  "ko": {
-    "heading": "비슷한 지형 타일 배치 퍼즐 참고",
-    "tagsLabel": "게임플레이 태그:",
-    "tags": [
-      "전략적 타일 배치",
-      "격자 계획",
-      "인접 규칙",
-      "풍경 퍼즐"
-    ],
-    "body": "두 게임 모두 지형 타일을 계획해서 배치하는 것이 핵심입니다. Toukana 공식 페이지는 Dorfromantik를 육각형 타일로 계속 확장되는 마을 풍경을 만들고, 다양한 생물군계와 해금 타일, 퀘스트를 즐기는 평화로운 건설 전략·퍼즐 게임으로 설명합니다. 이 게임은 고정된 4×5 보호구역에서 물, 초원, 숲, 쉼터 네 종류의 타일을 사용하며 정확한 수량과 화면에 표시된 연결·가장자리·인접 조건을 함께 충족해야 합니다. 후반에는 막힌 칸과 배치 횟수 제한도 더해지며 총 30개의 고정 스테이지로 구성됩니다. 끝없이 확장되는 육각형 풍경이나 퀘스트·고득점 순환이 아니라, 작은 보호구역을 스테이지 규칙에 맞춰 완성하는 퍼즐입니다.",
-    "disclaimer": "서식지 빌더는 WeightPlay의 독립 게임입니다. WeightPlay는 Toukana Interactive 또는 Dorfromantik와 제휴, 보증, 라이선스 또는 공동 개발 관계가 없습니다.",
-    "sourceLabel": "Toukana Interactive 공식 Dorfromantik 페이지"
-  },
-  "es": {
-    "heading": "Referencia de un puzle similar de colocación de losetas de paisaje",
-    "tagsLabel": "Etiquetas de juego:",
-    "tags": [
-      "Colocación estratégica",
-      "Planificación en cuadrícula",
-      "Reglas de adyacencia",
-      "Puzle de paisaje"
-    ],
-    "body": "Ambos juegos giran en torno a colocar piezas de paisaje con planificación. La página oficial de Toukana describe Dorfromantik como un juego tranquilo de estrategia de construcción y puzles en el que losetas hexagonales forman un paisaje de aldea que crece sin parar, con biomas variados, nuevas losetas desbloqueables y misiones. Constructor de Hábitats usa en cambio reservas fijas de 4×5 con cuatro tipos de loseta —agua, pradera, bosque y refugio— y exige cumplir cantidades exactas junto con reglas visibles de conexión, borde o adyacencia. Las casillas bloqueadas y un presupuesto de colocaciones añaden restricciones a lo largo de 30 niveles diseñados. Es un puzle por niveles con reglas concretas, no un paisaje hexagonal en expansión con las misiones y la búsqueda de puntuación de Dorfromantik.",
-    "disclaimer": "Constructor de Hábitats es un juego independiente de WeightPlay. WeightPlay no está afiliado, respaldado, autorizado ni desarrollado conjuntamente con Toukana Interactive o Dorfromantik.",
-    "sourceLabel": "Página oficial de Dorfromantik de Toukana Interactive"
-  },
-  "pt-BR": {
-    "heading": "Referência de quebra-cabeça semelhante de colocação de peças de paisagem",
-    "tagsLabel": "Tags de jogabilidade:",
-    "tags": [
-      "Colocação estratégica",
-      "Planejamento em grade",
-      "Regras de adjacência",
-      "Quebra-cabeça de paisagem"
-    ],
-    "body": "Os dois jogos giram em torno de colocar peças de paisagem com planejamento. A página oficial da Toukana descreve Dorfromantik como um jogo tranquilo de estratégia de construção e quebra-cabeça em que peças hexagonais formam uma paisagem de vila que cresce continuamente, com biomas variados, novas peças desbloqueáveis e missões. Construtor de Habitats usa reservas fixas de 4×5 com quatro tipos de peça —água, campo, floresta e abrigo— e exige quantidades exatas junto de regras visíveis de conexão, borda ou adjacência. Casas bloqueadas e um limite de colocações acrescentam restrições ao longo de 30 fases projetadas. É um quebra-cabeça por fases com regras específicas, e não uma paisagem hexagonal em expansão com as missões e a busca por pontuação de Dorfromantik.",
-    "disclaimer": "Construtor de Habitats é um jogo independente da WeightPlay. A WeightPlay não é afiliada, endossada, licenciada nem co-desenvolvedora com a Toukana Interactive ou Dorfromantik.",
-    "sourceLabel": "Página oficial de Dorfromantik da Toukana Interactive"
-  },
-  "fr": {
-    "heading": "Référence d’un puzzle proche de placement de tuiles paysagères",
-    "tagsLabel": "Tags de gameplay :",
-    "tags": [
-      "Placement stratégique",
-      "Planification sur grille",
-      "Règles d’adjacence",
-      "Puzzle paysager"
-    ],
-    "body": "Les deux jeux reposent sur le placement réfléchi de tuiles de paysage. La page officielle de Toukana décrit Dorfromantik comme un jeu paisible de stratégie de construction et de puzzle où des tuiles hexagonales composent un paysage de village qui s’étend continuellement, avec plusieurs biomes, des tuiles à débloquer et des quêtes. Bâtisseur d’Habitats utilise plutôt des réserves fixes de 4×5 avec quatre types de tuiles —eau, prairie, forêt et abri— et demande de respecter des quantités précises ainsi que des règles visibles de connexion, de bord ou d’adjacence. Des cases bloquées et un budget de placements ajoutent des contraintes sur 30 niveaux conçus. Il s’agit d’un puzzle à règles par niveau, et non d’un paysage hexagonal en expansion avec les quêtes et la recherche de score de Dorfromantik.",
-    "disclaimer": "Bâtisseur d’Habitats est un jeu indépendant de WeightPlay. WeightPlay n’est ni affilié à Toukana Interactive ou Dorfromantik, ni approuvé ou licencié par eux, et il n’existe aucun développement conjoint.",
-    "sourceLabel": "Page officielle de Dorfromantik par Toukana Interactive"
-  },
-  "de": {
-    "heading": "Referenz für ein ähnliches Landschafts-Plättchenpuzzle",
-    "tagsLabel": "Gameplay-Tags:",
-    "tags": [
-      "Strategisches Plättchenlegen",
-      "Rasterplanung",
-      "Nachbarschaftsregeln",
-      "Landschaftspuzzle"
-    ],
-    "body": "In beiden Spielen steht das planvolle Platzieren von Landschaftsplättchen im Mittelpunkt. Toukana beschreibt Dorfromantik auf der offiziellen Seite als friedliches Aufbau- und Puzzlespiel, in dem sechseckige Plättchen eine ständig wachsende Dorflandschaft bilden; dazu kommen unterschiedliche Biome, freischaltbare Plättchen und Aufgaben. Lebensraum-Baumeister nutzt dagegen feste 4×5-Reservate mit vier Plättchentypen —Wasser, Wiese, Wald und Unterschlupf— und verlangt exakte Mengen sowie sichtbare Regeln zu Verbindung, Randlage oder Nachbarschaft. Gesperrte Felder und ein Platzierungsbudget erhöhen die Einschränkungen in 30 gestalteten Stufen. Es ist ein stufenbasiertes Regelpuzzle statt einer fortlaufend wachsenden Hex-Landschaft mit Dorfromantiks Aufgaben- und Highscore-Schleife.",
-    "disclaimer": "Lebensraum-Baumeister ist ein unabhängiges WeightPlay-Spiel. WeightPlay ist weder mit Toukana Interactive oder Dorfromantik verbunden noch von ihnen unterstützt, lizenziert oder gemeinsam entwickelt.",
-    "sourceLabel": "Offizielle Dorfromantik-Seite von Toukana Interactive"
-  },
-  "it": {
-    "heading": "Riferimento a un puzzle simile di tessere paesaggistiche",
-    "tagsLabel": "Tag di gioco:",
-    "tags": [
-      "Posizionamento strategico",
-      "Pianificazione su griglia",
-      "Regole di adiacenza",
-      "Puzzle paesaggistico"
-    ],
-    "body": "Entrambi i giochi ruotano attorno al posizionamento ragionato di tessere paesaggistiche. La pagina ufficiale di Toukana descrive Dorfromantik come un tranquillo gioco di strategia costruttiva e puzzle in cui tessere esagonali formano un paesaggio di villaggio in continua crescita, con biomi diversi, nuove tessere sbloccabili e missioni. Costruttore di Habitat usa invece riserve fisse 4×5 con quattro tipi di tessera —acqua, prato, foresta e rifugio— e richiede quantità esatte insieme a regole visibili di connessione, bordo o adiacenza. Celle bloccate e un limite di posizionamenti aggiungono vincoli in 30 livelli progettati. È un puzzle a regole per livelli, non un paesaggio esagonale in espansione con le missioni e la ricerca del punteggio di Dorfromantik.",
-    "disclaimer": "Costruttore di Habitat è un gioco indipendente di WeightPlay. WeightPlay non è affiliata, approvata, autorizzata o coinvolta in uno sviluppo congiunto con Toukana Interactive o Dorfromantik.",
-    "sourceLabel": "Pagina ufficiale di Dorfromantik di Toukana Interactive"
-  },
-  "ru": {
-    "heading": "Сравнение с похожей головоломкой про размещение ландшафтных плиток",
-    "tagsLabel": "Теги игрового процесса:",
-    "tags": [
-      "Стратегическое размещение",
-      "Планирование сетки",
-      "Правила соседства",
-      "Ландшафтная головоломка"
-    ],
-    "body": "Обе игры строятся вокруг продуманного размещения элементов ландшафта. На официальной странице Toukana Dorfromantik описывается как спокойная строительная стратегия и головоломка, где шестиугольные плитки образуют постоянно растущий деревенский пейзаж, а игрок открывает новые плитки, биомы и выполняет задания. Строитель среды вместо этого использует фиксированные заповедники 4×5 с четырьмя типами плиток —вода, луг, лес и укрытие— и требует одновременно выполнить точные количества и видимые правила связности, края или соседства. Заблокированные клетки и лимит размещений добавляют ограничения на протяжении 30 созданных уровней. Это поуровневая головоломка с явными правилами, а не бесконечно расширяющийся шестиугольный пейзаж с заданиями и погоней за очками Dorfromantik.",
-    "disclaimer": "Строитель среды — независимая игра WeightPlay. WeightPlay не связана с Toukana Interactive или Dorfromantik отношениями аффилированности, одобрения, лицензирования или совместной разработки.",
-    "sourceLabel": "Официальная страница Dorfromantik от Toukana Interactive"
-  },
-  "hi": {
-    "heading": "मिलते-जुलते लैंडस्केप टाइल-प्लेसमेंट पज़ल का संदर्भ",
-    "tagsLabel": "गेमप्ले टैग:",
-    "tags": [
-      "रणनीतिक टाइल प्लेसमेंट",
-      "ग्रिड योजना",
-      "सन्निकटता नियम",
-      "लैंडस्केप पज़ल"
-    ],
-    "body": "दोनों खेल सोच-समझकर लैंडस्केप टाइल रखने पर केंद्रित हैं। Toukana की आधिकारिक साइट Dorfromantik को एक शांत निर्माण-रणनीति और पज़ल खेल बताती है, जिसमें षट्कोणीय टाइलों से लगातार बढ़ता गाँव का दृश्य बनता है और अलग-अलग बायोम, अनलॉक होने वाली टाइलें तथा क्वेस्ट मिलते हैं। हैबिटैट बिल्डर इसके बजाय तय 4×5 रिज़र्व में पानी, घास का मैदान, जंगल और आश्रय—इन चार टाइल प्रकारों का उपयोग करता है और सटीक संख्या के साथ दिखाए गए कनेक्टिविटी, किनारे या सन्निकटता नियम पूरे करने होते हैं। बंद खाने और प्लेसमेंट सीमा 30 बनाए गए स्तरों में अतिरिक्त बाधाएँ जोड़ते हैं। यह स्तर-आधारित नियम पज़ल है, Dorfromantik जैसा लगातार फैलता षट्कोणीय लैंडस्केप, क्वेस्ट और हाई-स्कोर चक्र नहीं।",
-    "disclaimer": "हैबिटैट बिल्डर, WeightPlay का स्वतंत्र खेल है। WeightPlay का Toukana Interactive या Dorfromantik के साथ कोई संबद्धता, समर्थन, लाइसेंस या सह-विकास संबंध नहीं है।",
-    "sourceLabel": "Toukana Interactive का आधिकारिक Dorfromantik पृष्ठ"
-  },
-  "ar": {
-    "heading": "مرجع للعبة ألغاز مشابهة تعتمد على وضع بلاطات المناظر",
-    "tagsLabel": "وسوم أسلوب اللعب:",
-    "tags": [
-      "وضع البلاطات استراتيجياً",
-      "تخطيط الشبكة",
-      "قواعد التجاور",
-      "ألغاز المناظر"
-    ],
-    "body": "تتمحور اللعبتان حول وضع بلاطات المناظر بتخطيط مسبق. تصف صفحة Toukana الرسمية لعبة Dorfromantik بأنها لعبة هادئة تجمع بين البناء والاستراتيجية والألغاز، حيث تكوّن البلاطات السداسية منظراً قروياً يتوسع باستمرار، مع مناطق حيوية متنوعة وبلاطات قابلة للفتح ومهام. أما باني المواطن فيستخدم محميات ثابتة بحجم 4×5 وأربعة أنواع من البلاطات: الماء والمرج والغابة والمأوى، ويطلب تحقيق أعداد دقيقة إلى جانب قواعد ظاهرة للاتصال أو الحواف أو التجاور. تضيف الخانات المحجوبة وحدّ مرات الوضع قيوداً عبر 30 مرحلة مصممة. إنها أحجية مراحل بقواعد محددة، وليست منظراً سداسياً متوسعاً مع مهام Dorfromantik ودورة السعي إلى النقاط العالية.",
-    "disclaimer": "باني المواطن لعبة مستقلة من WeightPlay. لا توجد علاقة انتساب أو تأييد أو ترخيص أو تطوير مشترك بين WeightPlay وToukana Interactive أو Dorfromantik.",
-    "sourceLabel": "صفحة Dorfromantik الرسمية من Toukana Interactive"
-  }
-};
-  gameplayProfiles["animal-habitat-builder"] ||= {};
-  gameplayProfiles["animal-habitat-builder"].marketComparison = { name: "Dorfromantik", source: "https://www.toukana.com/dorfromantik", locales: habitatBuilderMarketComparisonCopy };
-  // Text Growth 1.3.0: Habitat Builder market comparison end
+
 
 
   // Text Growth 1.3.0: Animal Parking Patrol market comparison begin
@@ -14955,6 +15269,15 @@
       localizedGames[locale][id] = { ...(localizedGames[locale][id] || {}), text140Tags };
     }
   }
+
+  Object.entries(reefFisherLocalizedTags).forEach(([locale, profile]) => {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["animal-reef-fisher"] = {
+      ...(localizedGames[locale]["animal-reef-fisher"] || {}),
+      gameplay: profile.gameplay,
+      genre: profile.genre,
+    };
+  });
 
   window.WeightPlayGameInfo = {
     render,
@@ -17495,6 +17818,148 @@
     localizedGames[localeCode]["animal-bus-jam"] = { ...guide, showSkills: false, showRelatedSkill: false };
   });
 
+  // Text Growth 1.4.0 delta: update only the newly shipped v19 mastery facts,
+  // preserving the already-reviewed localized Guide and its existing FAQs.
+  const busJamTextGrowth140 = {
+    en: {
+      gameplay: "Passenger-Queue Strategy Puzzle", genre: ["Passenger queues", "Limited holding lane", "Strategy puzzle"],
+      systems: ["Each stop also shows a solver-checked minimum holding-trip target. Clear the stop, meet that target, and use neither Hint nor Undo to earn all three stars; clearing alone unlocks the next stop."],
+      how: ["After a clear, compare your holding trips and assistance with the three-star conditions; replay any cleared stop to improve its saved best."],
+      progression: ["The 30 stops form six chapters of five. Stops 3–10 sharpen the holding-lane choice; later chapters add the fourth color, more queues, longer convoys, and changing lane capacity."],
+      strategyTips: ["The Hint follows a checked route and counts as assistance. Use it to learn a safe next dispatch, or avoid it when you are aiming for the no-assistance star."],
+      parent: "No account or in-game purchase is required. Cleared stops and each stop’s best star rating and holding count are stored in this browser, not synced across devices. Clearing browser or site data may remove local progress.",
+      faq: [["How do I earn all three stars?", "Clear the stop, use no more holding trips than its displayed target, and finish without Hint or Undo. Each condition contributes one star."], ["Does using Hint or Undo block the next stop?", "No. A clear unlocks the next stop. Hint and Undo count as assistance only for the no-assistance star on that attempt."], ["What mastery record is saved?", "The browser keeps each stop’s best star rating and holding count. A weaker replay does not replace a better record; progress does not sync to another device."]]
+    },
+    "zh-Hant": {
+      gameplay: "乘客排隊策略益智", genre: ["乘客排隊", "有限候車通道", "策略益智"],
+      systems: ["每站也會顯示經解法檢查的最少候車次數目標。通關、達到目標，且不使用提示或復原即可取得三星；只要通關就會解鎖下一站。"],
+      how: ["通關後查看候車次數與輔助紀錄，對照三星條件；已完成的站點可以重玩，刷新最佳紀錄。"],
+      progression: ["30 個站點分成六章，每章五站。第 3 至 10 站加強候車通道的調度抉擇；後續章節加入第四種顏色、更多隊列、更長車隊與不同容量的候車通道。"],
+      strategyTips: ["提示會依據已檢查的路線指出下一步，也會算作輔助。想熟悉安全派法時可以使用；若要取得無輔助星星，就自行規劃。"],
+      parent: "遊玩不需要帳號，也沒有遊戲內購買。已完成站點、每站最佳星等與候車次數會保存在此瀏覽器，不會跨裝置同步。清除瀏覽器或網站資料可能會移除本機進度。",
+      faq: [["如何取得三星？", "通關、候車次數不超過畫面顯示的目標，並且整次不使用提示或復原。三項條件各得一星。"], ["使用提示或復原會鎖住下一站嗎？", "不會。通關即可解鎖下一站；提示與復原只會影響該次挑戰的無輔助星星。"], ["會保存哪些精通紀錄？", "瀏覽器會保存每站最佳星等與候車次數。較差的重玩結果不會取代較好的紀錄；進度不會同步到其他裝置。"]]
+    },
+    "zh-Hans": {
+      gameplay: "乘客排队策略益智", genre: ["乘客排队", "有限候车通道", "策略益智"],
+      systems: ["每站也会显示经过解法检查的最少候车次数目标。通关、达到目标，且不使用提示或撤销即可获得三星；只要通关就会解锁下一站。"],
+      how: ["通关后查看候车次数与辅助记录，对照三星条件；已完成的站点可以重玩，刷新最佳记录。"],
+      progression: ["30 个站点分成六章，每章五站。第 3 至 10 站加强候车通道的调度抉择；后续章节加入第四种颜色、更多队列、更长车队与不同容量的候车通道。"],
+      strategyTips: ["提示会依据已检查的路线指出下一步，也会算作辅助。想熟悉安全派法时可以使用；若要获得无辅助星星，就自行规划。"],
+      parent: "游玩不需要账号，也没有游戏内购买。已完成站点、每站最佳星级与候车次数保存在此浏览器，不会跨设备同步。清除浏览器或网站数据可能会移除本地进度。",
+      faq: [["如何获得三星？", "通关、候车次数不超过画面显示的目标，并且整次不使用提示或撤销。三项条件各得一星。"], ["使用提示或撤销会锁住下一站吗？", "不会。通关即可解锁下一站；提示与撤销只影响该次挑战的无辅助星星。"], ["会保存哪些精通记录？", "浏览器会保存每站最佳星级与候车次数。较差的重玩结果不会取代较好的记录；进度不会同步到其他设备。"]]
+    },
+    ja: {
+      gameplay: "乗客の列をさばく戦略パズル", genre: ["乗客の列", "待機レーン", "戦略パズル"],
+      systems: ["各停留所には、解法チェックで確かめた待機回数の最少目標も表示されます。クリアし、目標を達成し、ヒントも取り消しも使わなければ三つ星です。クリアすれば星の数に関係なく次が解放されます。"],
+      how: ["クリア後に待機回数と補助の使用状況を三つ星条件と比べましょう。クリア済みの停留所は再挑戦でき、自己ベストを更新できます。"],
+      progression: ["全30か所は5か所ずつの6章構成です。停留所3〜10では待機レーンの判断が深まり、後半は4色目、列の増加、長い車列、異なるレーン容量が加わります。"],
+      strategyTips: ["ヒントは検証済みルートに沿って次の一手を示し、補助として記録されます。安全な手を学ぶときに使い、補助なしの星を狙うときは自分で順序を組み立てましょう。"],
+      parent: "アカウントもゲーム内購入も必要ありません。クリア状況と各停留所の最高星数・待機回数はこのブラウザーに保存され、端末間では同期されません。ブラウザーやサイトのデータを消すと、ローカルの進行状況が失われる場合があります。",
+      faq: [["三つ星を取るには？", "停留所をクリアし、表示された待機目標以内に収め、ヒントも取り消しも使わずに終えます。各条件で一つ星です。"], ["ヒントや取り消しを使うと次の停留所が解放されませんか？", "いいえ。クリアすれば次が解放されます。ヒントと取り消しが影響するのは、その挑戦の補助なし星だけです。"], ["どの記録が保存されますか？", "各停留所の最高星数と待機回数がブラウザーに保存されます。低い記録で自己ベストが上書きされることはなく、別端末とは同期されません。"]]
+    },
+    ko: {
+      gameplay: "승객 대기열 전략 퍼즐", genre: ["승객 대기열", "제한된 대기 통로", "전략 퍼즐"],
+      systems: ["각 정류장에는 해법 검증으로 확인한 최소 대기 횟수 목표도 표시됩니다. 정류장을 완료하고 목표를 달성하며 힌트와 되돌리기를 모두 쓰지 않으면 별 세 개를 받습니다. 완료만 해도 다음 정류장이 열립니다."],
+      how: ["완료 후 대기 횟수와 도움 사용 기록을 별 세 개 조건과 비교하세요. 완료한 정류장은 다시 플레이해 최고 기록을 갱신할 수 있습니다."],
+      progression: ["30개 정류장은 다섯 개씩 여섯 챕터로 나뉩니다. 3~10번 정류장은 대기 통로 선택을 더 깊게 다루고, 이후에는 네 번째 색, 더 많은 대기열, 긴 버스 행렬과 달라지는 통로 용량이 추가됩니다."],
+      strategyTips: ["힌트는 검증된 경로에 따라 안전한 다음 수를 보여 주며 도움으로 기록됩니다. 안전한 배차를 배우는 데 활용하고, 무도움 별을 노릴 때는 직접 순서를 계획하세요."],
+      parent: "계정이나 게임 내 구매 없이 플레이할 수 있습니다. 완료한 정류장과 각 정류장의 최고 별점·대기 횟수는 이 브라우저에 저장되며 기기 간 동기화되지 않습니다. 브라우저나 사이트 데이터를 지우면 로컬 진행 상황이 사라질 수 있습니다.",
+      faq: [["별 세 개를 받으려면 어떻게 하나요?", "정류장을 완료하고 표시된 대기 목표 이내로 움직이며 힌트와 되돌리기를 사용하지 마세요. 조건마다 별 하나를 받습니다."], ["힌트나 되돌리기를 쓰면 다음 정류장이 잠기나요?", "아니요. 완료하면 다음 정류장이 열립니다. 힌트와 되돌리기는 해당 시도의 무도움 별에만 영향을 줍니다."], ["어떤 기록이 저장되나요?", "각 정류장의 최고 별점과 대기 횟수가 브라우저에 저장됩니다. 낮은 기록이 더 좋은 기록을 덮어쓰지 않으며 다른 기기와 동기화되지 않습니다."]]
+    },
+    es: {
+      gameplay: "Puzzle estratégico de colas de pasajeros", genre: ["Colas de pasajeros", "Zona de espera limitada", "Puzzle estratégico"],
+      systems: ["Cada parada muestra también el mínimo de esperas comprobado por el solucionador. Completa la parada, alcanza ese objetivo y no uses Pista ni Deshacer para obtener tres estrellas; completar la parada basta para desbloquear la siguiente."],
+      how: ["Tras completar una parada, compara las esperas y la asistencia usada con las condiciones de tres estrellas. Puedes repetir cualquier parada superada para mejorar tu mejor resultado."],
+      progression: ["Las 30 paradas forman seis capítulos de cinco. Las paradas 3–10 profundizan la decisión de la zona de espera; los capítulos posteriores añaden un cuarto color, más colas, convoyes largos y distintas capacidades de espera."],
+      strategyTips: ["Pista sigue una ruta comprobada y cuenta como ayuda. Úsala para aprender un envío seguro; si buscas la estrella sin ayuda, decide el orden por tu cuenta."],
+      parent: "No hace falta una cuenta ni hay compras dentro del juego. Las paradas superadas y la mejor puntuación de estrellas y esperas se guardan en este navegador, sin sincronización entre dispositivos. Borrar los datos del navegador o del sitio puede eliminar el progreso local.",
+      faq: [["¿Cómo consigo las tres estrellas?", "Completa la parada, no superes el objetivo de esperas que aparece y termina sin usar Pista ni Deshacer. Cada condición aporta una estrella."], ["¿Pista o Deshacer impiden desbloquear la siguiente parada?", "No. Completarla desbloquea la siguiente. Pista y Deshacer solo afectan a la estrella por jugar sin ayuda en ese intento."], ["¿Qué récords se guardan?", "El navegador guarda la mejor puntuación de estrellas y el menor número de esperas de cada parada. Un intento peor no sustituye un récord mejor y no hay sincronización entre dispositivos."]]
+    },
+    "pt-BR": {
+      gameplay: "Quebra-cabeça estratégico de filas", genre: ["Filas de passageiros", "Área de espera limitada", "Quebra-cabeça estratégico"],
+      systems: ["Cada parada também mostra o mínimo de esperas verificado pelo solucionador. Conclua a parada, alcance essa meta e não use Dica nem Desfazer para ganhar três estrelas; concluir a parada já libera a próxima."],
+      how: ["Depois de concluir uma parada, compare as esperas e a ajuda usada com as condições das três estrelas. Você pode repetir qualquer parada concluída para melhorar seu melhor resultado."],
+      progression: ["As 30 paradas formam seis capítulos de cinco. As paradas 3–10 aprofundam a decisão sobre a área de espera; os capítulos seguintes acrescentam uma quarta cor, mais filas, comboios longos e capacidades diferentes."],
+      strategyTips: ["Dica segue uma rota verificada e conta como ajuda. Use para aprender um envio seguro; se quiser a estrela sem ajuda, planeje a ordem por conta própria."],
+      parent: "Não é preciso ter conta e não há compras dentro do jogo. Paradas concluídas e o melhor resultado de estrelas e esperas ficam salvos neste navegador, sem sincronização entre dispositivos. Apagar os dados do navegador ou do site pode remover o progresso local.",
+      faq: [["Como ganho três estrelas?", "Conclua a parada, não ultrapasse a meta de esperas exibida e termine sem usar Dica nem Desfazer. Cada condição vale uma estrela."], ["Usar Dica ou Desfazer bloqueia a próxima parada?", "Não. Concluir libera a próxima. Dica e Desfazer afetam apenas a estrela por jogar sem ajuda naquela tentativa."], ["Quais recordes são salvos?", "O navegador guarda o melhor total de estrelas e o menor número de esperas de cada parada. Um resultado pior não substitui um recorde melhor, e não há sincronização entre dispositivos."]]
+    },
+    fr: {
+      gameplay: "Puzzle stratégique de files de passagers", genre: ["Files de passagers", "Zone d’attente limitée", "Puzzle stratégique"],
+      systems: ["Chaque arrêt affiche aussi le nombre minimal d’attentes vérifié par le solveur. Terminez l’arrêt, atteignez cet objectif et n’utilisez ni Indice ni Annuler pour gagner trois étoiles ; terminer suffit à débloquer le suivant."],
+      how: ["Après un arrêt, comparez vos attentes et l’aide utilisée aux conditions des trois étoiles. Vous pouvez rejouer tout arrêt terminé pour améliorer votre meilleur résultat."],
+      progression: ["Les 30 arrêts forment six chapitres de cinq. Les arrêts 3 à 10 approfondissent le choix de la zone d’attente ; les chapitres suivants ajoutent une quatrième couleur, plus de files, des convois plus longs et des capacités variables."],
+      strategyTips: ["Indice suit une route vérifiée et compte comme une aide. Utilisez-le pour apprendre un envoi sûr ; pour obtenir l’étoile sans aide, choisissez vous-même l’ordre."],
+      parent: "Aucun compte ni achat dans le jeu n’est nécessaire. Les arrêts terminés et le meilleur score d’étoiles et d’attentes sont enregistrés dans ce navigateur, sans synchronisation entre appareils. Effacer les données du navigateur ou du site peut supprimer la progression locale.",
+      faq: [["Comment obtenir les trois étoiles ?", "Terminez l’arrêt, ne dépassez pas l’objectif d’attentes affiché et n’utilisez ni Indice ni Annuler. Chaque condition rapporte une étoile."], ["Indice ou Annuler empêchent-ils de débloquer l’arrêt suivant ?", "Non. Terminer débloque la suite. Indice et Annuler influencent seulement l’étoile sans aide de cette tentative."], ["Quels records sont conservés ?", "Le navigateur garde le meilleur nombre d’étoiles et d’attentes pour chaque arrêt. Un résultat plus faible ne remplace pas un meilleur record, et les appareils ne sont pas synchronisés."]]
+    },
+    de: {
+      gameplay: "Strategierätsel mit Fahrgastschlangen", genre: ["Fahrgastschlangen", "Begrenzte Wartezone", "Strategierätsel"],
+      systems: ["Für jede Haltestelle wird auch die vom Solver geprüfte Mindestzahl an Wartegängen angezeigt. Schließe sie ab, erreiche das Ziel und verwende weder Tipp noch Rückgängig für drei Sterne. Der Abschluss allein schaltet die nächste Haltestelle frei."],
+      how: ["Vergleiche nach dem Abschluss deine Wartegänge und Hilfen mit den Drei-Sterne-Bedingungen. Erledigte Haltestellen kannst du wiederholen und deinen Bestwert verbessern."],
+      progression: ["Die 30 Haltestellen bilden sechs Kapitel mit je fünf Stationen. Haltestellen 3–10 vertiefen die Entscheidung in der Wartezone; später kommen eine vierte Farbe, mehr Schlangen, längere Konvois und wechselnde Wartekapazitäten hinzu."],
+      strategyTips: ["Der Tipp folgt einer geprüften Route und zählt als Hilfe. Nutze ihn, um einen sicheren Zug zu lernen; für den Stern ohne Hilfe planst du die Reihenfolge selbst."],
+      parent: "Ein Konto und Käufe im Spiel sind nicht erforderlich. Erledigte Haltestellen und die beste Sternwertung samt Wartegängen werden in diesem Browser gespeichert, aber nicht zwischen Geräten synchronisiert. Das Löschen von Browser- oder Websitedaten kann den lokalen Fortschritt entfernen.",
+      faq: [["Wie erhalte ich drei Sterne?", "Schließe die Haltestelle ab, überschreite die angezeigte Zielzahl der Wartegänge nicht und verwende weder Tipp noch Rückgängig. Jede Bedingung bringt einen Stern."], ["Verhindern Tipp oder Rückgängig die nächste Haltestelle?", "Nein. Der Abschluss schaltet sie frei. Tipp und Rückgängig beeinflussen nur den Stern für einen Versuch ohne Hilfe."], ["Welche Bestwerte werden gespeichert?", "Der Browser speichert pro Haltestelle die beste Sternwertung und Wartezahl. Ein schwächerer Versuch überschreibt keinen besseren Bestwert; Geräte werden nicht synchronisiert."]]
+    },
+    it: {
+      gameplay: "Puzzle strategico sulle code dei passeggeri", genre: ["Code di passeggeri", "Corsia d’attesa limitata", "Puzzle strategico"],
+      systems: ["Ogni fermata mostra anche il numero minimo di attese verificato dal risolutore. Completa la fermata, raggiungi l’obiettivo e non usare Suggerimento né Annulla per ottenere tre stelle; completarla basta per sbloccare la successiva."],
+      how: ["Dopo aver completato una fermata, confronta attese e aiuti usati con i requisiti delle tre stelle. Puoi ripetere una fermata completata per migliorare il tuo record."],
+      progression: ["Le 30 fermate sono divise in sei capitoli da cinque. Le fermate 3–10 approfondiscono la scelta della corsia d’attesa; i capitoli successivi aggiungono un quarto colore, più code, convogli più lunghi e capacità variabili."],
+      strategyTips: ["Suggerimento segue un percorso verificato e conta come aiuto. Usalo per imparare una mossa sicura; per la stella senza aiuti, pianifica da te l’ordine."],
+      parent: "Non servono un account né acquisti nel gioco. Le fermate completate e il miglior risultato di stelle e attese sono salvati in questo browser, senza sincronizzazione tra dispositivi. Cancellare i dati del browser o del sito può eliminare i progressi locali.",
+      faq: [["Come ottengo tre stelle?", "Completa la fermata, non superare l’obiettivo di attese mostrato e termina senza Suggerimento né Annulla. Ogni condizione vale una stella."], ["Suggerimento o Annulla impediscono di sbloccare la fermata successiva?", "No. Basta completare la fermata. Suggerimento e Annulla influiscono solo sulla stella senza aiuti di quel tentativo."], ["Quali record vengono salvati?", "Il browser conserva il miglior risultato di stelle e attese per ogni fermata. Un risultato peggiore non sostituisce quello migliore e i dispositivi non si sincronizzano."]]
+    },
+    ru: {
+      gameplay: "Стратегическая головоломка с очередями пассажиров", genre: ["Очереди пассажиров", "Ограниченная зона ожидания", "Стратегическая головоломка"],
+      systems: ["Для каждой остановки также показана проверенная решателем цель — минимальное число ожиданий. Пройдите остановку, достигните цели и не используйте подсказку или отмену, чтобы получить три звезды. Для открытия следующей достаточно пройти остановку."],
+      how: ["После прохождения сравните число ожиданий и использованную помощь с условиями трёх звёзд. Пройденную остановку можно переиграть и улучшить лучший результат."],
+      progression: ["30 остановок разделены на шесть глав по пять. На остановках 3–10 важнее становится выбор для зоны ожидания; дальше появляются четвёртый цвет, больше очередей, длинные колонны и разная вместимость зоны."],
+      strategyTips: ["Подсказка следует проверенному маршруту и считается помощью. Используйте её, чтобы понять безопасный ход; для звезды без помощи выберите порядок сами."],
+      parent: "Для игры не нужны аккаунт или внутриигровые покупки. Пройденные остановки и лучший результат по звёздам и ожиданиям хранятся в этом браузере и не синхронизируются между устройствами. Очистка данных браузера или сайта может удалить локальный прогресс.",
+      faq: [["Как получить три звезды?", "Пройдите остановку, уложитесь в показанную цель по ожиданиям и не используйте подсказку или отмену. Каждое условие даёт одну звезду."], ["Подсказка или отмена закроют следующую остановку?", "Нет. Следующая открывается после прохождения. Подсказка и отмена влияют только на звезду за прохождение без помощи в этой попытке."], ["Какие рекорды сохраняются?", "Браузер хранит лучший результат по звёздам и ожиданиям для каждой остановки. Худшая попытка не заменит лучший результат; синхронизации между устройствами нет."]]
+    },
+    hi: {
+      gameplay: "यात्री कतार रणनीति पहेली", genre: ["यात्री कतारें", "सीमित प्रतीक्षा लेन", "रणनीति पहेली"],
+      systems: ["हर पड़ाव पर समाधान-जाँच से तय न्यूनतम प्रतीक्षा का लक्ष्य भी दिखता है। पड़ाव पूरा करें, लक्ष्य हासिल करें और तीन सितारों के लिए संकेत तथा पूर्ववत—दोनों से बचें। अगला पड़ाव खोलने के लिए केवल पूरा करना ज़रूरी है।"],
+      how: ["पड़ाव पूरा करने के बाद अपनी प्रतीक्षा और सहायता को तीन-सितारा शर्तों से मिलाएँ। पूरे किए पड़ाव को दोबारा खेलकर अपना सर्वश्रेष्ठ सुधार सकते हैं।"],
+      progression: ["30 पड़ाव पाँच-पाँच के छह अध्यायों में हैं। पड़ाव 3–10 प्रतीक्षा लेन के फैसले को गहराते हैं; आगे चौथा रंग, अधिक कतारें, लंबे बस-समूह और बदलती लेन क्षमता जुड़ती है।"],
+      strategyTips: ["संकेत जाँचे गए मार्ग से अगला सुरक्षित कदम दिखाता है और सहायता गिना जाता है। सुरक्षित चाल सीखने के लिए इसका उपयोग करें; बिना सहायता वाला सितारा पाने के लिए क्रम स्वयं तय करें।"],
+      parent: "खेलने के लिए खाते या गेम के भीतर खरीदारी की आवश्यकता नहीं है। पूरे पड़ाव और हर पड़ाव का सर्वश्रेष्ठ सितारा तथा प्रतीक्षा रिकॉर्ड इसी ब्राउज़र में सहेजा जाता है; दूसरे उपकरण से समन्वय नहीं होता। ब्राउज़र या साइट का डेटा मिटाने पर स्थानीय प्रगति हट सकती है।",
+      faq: [["तीन सितारे कैसे मिलते हैं?", "पड़ाव पूरा करें, दिखाई गई प्रतीक्षा सीमा में रहें और संकेत या पूर्ववत का उपयोग न करें। हर शर्त पर एक सितारा मिलता है।"], ["संकेत या पूर्ववत से अगला पड़ाव बंद हो जाता है?", "नहीं। पड़ाव पूरा करने पर अगला खुलता है। संकेत और पूर्ववत केवल उस प्रयास के बिना-सहायता वाले सितारे को प्रभावित करते हैं।"], ["कौन-से रिकॉर्ड सहेजे जाते हैं?", "ब्राउज़र हर पड़ाव के सर्वश्रेष्ठ सितारे और प्रतीक्षा संख्या को सहेजता है। कमजोर दोबारा प्रयास बेहतर रिकॉर्ड को नहीं बदलता; उपकरणों के बीच समन्वय नहीं होता।"]]
+    },
+    ar: {
+      gameplay: "لغز استراتيجي لطوابير الركاب", genre: ["طوابير الركاب", "مسار انتظار محدود", "لغز استراتيجي"],
+      systems: ["تعرض كل محطة أيضًا هدفًا لأقل عدد من مرات الانتظار، وقد جرى التحقق منه بالحل. أكمل المحطة وحقق الهدف ولا تستخدم التلميح أو التراجع لتحصل على ثلاث نجوم؛ إكمالها وحده يفتح المحطة التالية."],
+      how: ["بعد إكمال المحطة، قارن مرات الانتظار والمساعدة المستخدمة بشروط النجوم الثلاث. يمكنك إعادة أي محطة مكتملة لتحسين أفضل نتيجة."],
+      progression: ["تضم المحطات الثلاثون ستة فصول، خمسة في كل فصل. تعمّق المحطات 3–10 قرار مسار الانتظار؛ ثم تظهر أربعة ألوان وطوابير أكثر وقوافل أطول وسعات انتظار متغيرة."],
+      strategyTips: ["يتبع التلميح مسارًا جرى التحقق منه ويُسجل كمساعدة. استخدمه لتتعلم إرسالًا آمنًا، أو خطط الترتيب بنفسك إذا كنت تريد نجمة اللعب دون مساعدة."],
+      parent: "لا تحتاج إلى حساب ولا توجد مشتريات داخل اللعبة. تُحفظ المحطات المكتملة وأفضل عدد من النجوم ومرات الانتظار لكل محطة في هذا المتصفح، من دون مزامنة بين الأجهزة. قد يؤدي مسح بيانات المتصفح أو الموقع إلى حذف التقدم المحلي.",
+      faq: [["كيف أحصل على النجوم الثلاث؟", "أكمل المحطة، ولا تتجاوز هدف الانتظار الظاهر، وأنهِ المحاولة من دون تلميح أو تراجع. يمنح كل شرط نجمة واحدة."], ["هل يمنع التلميح أو التراجع فتح المحطة التالية؟", "لا. يفتح الإكمال المحطة التالية. يؤثر التلميح والتراجع فقط في نجمة اللعب دون مساعدة في تلك المحاولة."], ["ما السجلات التي تُحفظ؟", "يحفظ المتصفح أفضل عدد من النجوم ومرات الانتظار لكل محطة. لا تستبدل المحاولة الأضعف سجلًا أفضل، ولا توجد مزامنة بين الأجهزة."]]
+    }
+  };
+  Object.entries(busJamTextGrowth140).forEach(([localeCode, delta]) => {
+    if (localeCode === "en") return;
+    const guide = localizedGames[localeCode]["animal-bus-jam"];
+    localizedGames[localeCode]["animal-bus-jam"] = {
+      ...guide, ...delta,
+      systems: [...guide.systems, ...delta.systems],
+      how: [...guide.how, ...delta.how],
+      strategyTips: [...guide.strategyTips, ...delta.strategyTips],
+      faq: [...guide.faq.slice(0, -2), ...delta.faq],
+      showSkills: false, showRelatedSkill: false,
+    };
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode]["animal-bus-jam"] = { gameplay: delta.gameplay, genre: delta.genre };
+  });
+  Object.assign(games["animal-bus-jam"], busJamTextGrowth140.en, {
+    systems: [...games["animal-bus-jam"].systems, ...busJamTextGrowth140.en.systems],
+    how: [...games["animal-bus-jam"].how, ...busJamTextGrowth140.en.how],
+    strategyTips: [...games["animal-bus-jam"].strategyTips, ...busJamTextGrowth140.en.strategyTips],
+    faq: [...games["animal-bus-jam"].faq.slice(0, -2), ...busJamTextGrowth140.en.faq],
+  });
+
   registerExpandedGuide("animal-number-match", {
     title: "Panko's Number Grove", gameplay: "Visible-Line Number Pair Puzzle",
     relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"], showSkills: false, showRelatedSkill: false,
@@ -18345,15 +18810,15 @@
     hideSkillsFact: true,
     showRelatedSkill: false,
     relatedIds: ["animal-rootvault-pins", "animal-one-line", "animal-2048"],
-    intro: "Slide horizontal and vertical blocks along their own axes until the red explorer gains a clear route through the exit.",
-    story: ["Panko maps thirty crowded forest gates. Every block begins on a fixed grid and every puzzle has a verified sequence that releases the marked explorer.", "Blocks never rotate, jump, or leave the board. The challenge is deciding which temporary moves create room for the decisive final slide."],
-    systems: ["Horizontal blocks move only left and right; vertical blocks move only up and down.", "A move stops before the board edge or another block. Occupied cells cannot overlap.", "The red explorer clears the stage when its path reaches the marked exit lane.", "Undo restores one slide, Hint identifies a useful block, and Restart restores the exact opening layout."],
-    how: ["Choose an unlocked trail.", "Identify every block crossing the explorer's exit row.", "Move those blockers only after creating space along their legal axis.", "Slide the explorer through the exit and continue to the next trail."],
+    intro: "Slide horizontal and vertical blocks along their own axes to clear the exit for the green bamboo block marked with a gold arrow.",
+    story: ["Panko maps thirty fixed forest-gate puzzles arranged in three chapters of ten. Each block starts on a set grid, and every authored layout has a solution.", "Blocks never rotate, jump, or leave the board. The challenge is deciding which temporary moves create room for the decisive final slide."],
+    systems: ["Horizontal blocks move only left and right; vertical blocks move only up and down.", "A move stops before the board edge or another block. Occupied cells cannot overlap.", "Clear the marked exit lane for the green bamboo block with the gold arrow to finish the stage.", "Undo restores one slide, Hint identifies a useful block, and Restart restores the exact opening layout."],
+    how: ["Choose an unlocked trail.", "Identify every block crossing the green bamboo block's exit row.", "Move those blockers only after creating space along their legal axis.", "Slide the green bamboo block through the exit and continue to the next trail."],
     strategyTips: ["Work backward from the exit lane.", "Move a blocker farther than seems necessary when it must make room for another block.", "Avoid filling the only open column with a block needed later.", "Use Undo for a recent positioning error and Restart when the whole order is wrong."],
     progression: ["Early trails teach axis limits and single blockers. Later chapters use longer pieces, narrow buffers, nested dependencies, multiple crossings, and dense finale boards.", "Every stage changes the spatial sequence without adding arbitrary movement rules."],
     designNote: "The drag direction, grid snapping, collision test, and block artwork use the same cell geometry on touch, mouse, and keyboard input.",
     parent: "There is no timer, account, purchase, or public score. Unlocks and local best move counts stay in this browser.",
-    faq: [["Can blocks rotate?", "No, each block keeps its original orientation."], ["Why did a drag stop?", "The next cell was occupied or outside the board."], ["Which block must exit?", "The clearly marked red explorer."], ["Are all thirty trails solvable?", "Yes, each authored layout has a verified solution."]]
+    faq: [["Can blocks rotate?", "No, each block keeps its original orientation."], ["Why did a drag stop?", "The next cell was occupied or outside the board."], ["Which block must exit?", "The green bamboo block marked with a gold arrow."], ["Are all thirty trails solvable?", "Yes, each authored layout has a verified solution."]]
   }, "解鎖滑塊", "解锁滑块");
   localizedGames["ar"] ||= {};
   localizedGames["ar"]["animal-unblock"] = {
@@ -18412,33 +18877,33 @@
   };
   localizedGameplayProfiles["zh-Hant"]["animal-unblock"] = {
     gameplay: "滑塊出口益智",
-    genre: ["益智", "策略", "邏輯", "動物"],
+    genre: ["滑塊解謎", "沿軸移動", "6×6 棋盤"],
   };
   Object.assign(localizedGames["zh-Hant"]["animal-unblock"], {
     title: "解鎖滑塊",
     difficulty: "簡單到具挑戰性",
     time: "每關約 2–8 分鐘",
     gameplay: "滑塊出口益智",
-    genre: ["益智", "策略", "邏輯", "動物"],
+    genre: ["滑塊解謎", "沿軸移動", "6×6 棋盤"],
     guideKicker: "WeightPlay 原創遊戲指南",
     guideTitleSuffix: "遊戲指南",
     noteTitle: "玩家與存檔資訊",
-    intro: "沿著每塊木塊自己的方向滑動，逐步清出出口通道，讓紅色探險家離開擁擠的森林關卡。",
+    intro: "沿著木塊各自的軸向滑動，清出出口通道，讓帶金色箭頭的綠色竹塊離開森林關卡。",
     story: [
-      "Panko 記錄了三十座被木塊堵住的森林關卡。每塊木塊都從固定格位開始，每個盤面都有一條經過驗證、能讓紅色探險家抵達出口的移動順序。",
+      "Panko 探索三個章節共三十個固定的森林滑塊謎題。每塊木塊都從固定格位開始，每個盤面都有可行解法，目標是讓帶金色箭頭的綠色竹塊抵達出口。",
       "木塊不會旋轉、跳躍或離開棋盤。真正的挑戰是判斷哪些暫時移動能騰出空間，最後完成關鍵的出口滑動。",
     ],
     systems: [
       "橫向木塊只能左右移動；直向木塊只能上下移動。",
       "木塊碰到棋盤邊界或其他木塊前就會停止，任何兩塊木塊都不能占用同一格。",
-      "當紅色探險家的路徑接上標示的出口通道時，本關即告完成。",
+      "帶金色箭頭的綠色竹塊滑到標示的出口通道即可完成本關。",
       "復原會撤銷最近一次滑動；提示只指出值得移動的木塊與方向，不會代替玩家移動；重新開始則恢復原始盤面。",
     ],
     how: [
       "從橫向關卡列選擇一條已解鎖的小徑。",
-      "找出所有擋在紅色探險家出口路線上的木塊。",
+      "找出擋住綠色竹塊出口路線的木塊。",
       "先沿著合法方向騰出空間，再移開真正阻擋出口的木塊。",
-      "把紅色探險家滑出出口，查看結果並繼續下一條小徑。",
+      "把帶金色箭頭的綠色竹塊滑出出口，查看結果並繼續下一條小徑。",
     ],
     strategyTips: [
       "從出口位置反推，先確認最後一格必須由哪塊木塊讓開。",
@@ -18455,7 +18920,7 @@
     faq: [
       ["木塊可以旋轉嗎？", "不行，每塊木塊都會保持原本的橫向或直向方向。"],
       ["為什麼拖曳到一半就停下來？", "下一格已被其他木塊占用，或木塊已經碰到棋盤邊界。"],
-      ["哪一塊需要離開棋盤？", "只有清楚標示的紅色探險家需要從出口滑出去。"],
+      ["哪一塊需要離開棋盤？", "帶金色箭頭的綠色竹塊要從出口滑出去。"],
       ["提示會自動替我移動嗎？", "不會。提示只標出一塊有用的木塊與建議方向，盤面與步數仍保持不變。"],
       ["三十條小徑都能解開嗎？", "可以，每個手工盤面都有經過驗證的解法。"],
       ["進度會保存嗎？", "已解鎖小徑與最佳步數會保存在目前瀏覽器的本機儲存空間。"],
@@ -18476,7 +18941,7 @@
   };
   localizedGameplayProfiles["zh-Hans"]["animal-unblock"] = {
     gameplay: "滑块出口益智",
-    genre: ["益智", "策略", "逻辑", "动物"],
+    genre: ["滑块解谜", "沿轴移动", "6×6 棋盘"],
   };
 
   registerExpandedGuide("animal-spectrum-pulse", {
@@ -19057,6 +19522,32 @@
     localizedGames[locale]["animal-prism-breakers"] = { ...games["animal-prism-breakers"], ...copy };
   }
 
+  // Text Growth 1.4.0 corrects a source-level claim: the 30 stage layouts are
+  // reproducibly generated from stage data, not individually hand-built.
+  // Keep the same verified explanation in the initial Guide and runtime copy.
+  const prismBreakersText140 = {
+    en: ["A fox keeper restores 30 numbered crystal layouts across six five-stage chapters. The layouts are generated deterministically from the stage number rather than drawn as 30 unique hand-built boards.", "Each chapter groups five stages and adds its own crystal patterns and rules. The paddle controls stay the same while the stage layout and hazards change." , ["Are all 30 crystal layouts hand-built?", "No. The stage number selects a repeatable layout and its chapter rules; the game does not choose a random board each time."]],
+    "zh-Hant": ["狐狸守衛要在六個、每章五關的章節中修復 30 個編號水晶陣形。陣形會依關卡編號穩定生成，並非 30 個逐一手工繪製的盤面。", "每章包含五關，並加入各自的水晶排列與規則。球板操作保持不變，關卡陣形與危險則會改變。", ["30 個水晶陣形都是手工繪製的嗎？", "不是。關卡編號會決定可重現的陣形與章節規則；每次進入時不會隨機抽取盤面。"]],
+    "zh-Hans": ["狐狸守卫要在六个、每章五关的章节中修复 30 个编号水晶阵形。阵形会根据关卡编号稳定生成，并非 30 个逐一手工绘制的盘面。", "每章包含五关，并加入各自的水晶排列与规则。球板操作保持不变，关卡阵形与危险则会改变。", ["30 个水晶阵形都是手工绘制的吗？", "不是。关卡编号会决定可重复生成的阵形与章节规则；每次进入时不会随机抽取盘面。"]],
+    ja: ["キツネの守り手は、各5ステージの6章にある30個の番号付きクリスタル配置を修復します。配置はステージ番号から再現可能な形で生成され、30個すべてを個別に手作業で描いた盤面ではありません。", "各章は5ステージで構成され、章ごとのクリスタル配置とルールが加わります。パドル操作は同じまま、配置と危険が変化します。", ["30個の配置はすべて手作りですか？", "いいえ。ステージ番号で再現可能な配置と章のルールが決まり、毎回ランダムな盤面を選ぶ仕組みではありません。"]],
+    ko: ["여우 수호자는 각 5개 스테이지로 이루어진 여섯 챕터에서 번호가 붙은 크리스털 배치 30개를 복구합니다. 배치는 스테이지 번호에 따라 동일하게 생성되며, 30개를 하나씩 손으로 그린 보드는 아닙니다.", "각 챕터는 5개 스테이지로 구성되며 고유한 크리스털 패턴과 규칙을 더합니다. 패들 조작은 같고 배치와 위험 요소가 달라집니다.", ["크리스털 배치 30개를 모두 손으로 만들었나요?", "아니요. 스테이지 번호가 재현 가능한 배치와 챕터 규칙을 정하며, 매번 무작위 보드를 고르지 않습니다."]],
+    es: ["Una guardiana zorro restaura 30 diseños de cristales numerados en seis capítulos de cinco fases. Los diseños se generan de forma determinista a partir del número de fase; no son 30 tableros dibujados a mano uno por uno.", "Cada capítulo reúne cinco fases y añade sus propios patrones y reglas. El control de la pala se mantiene, mientras cambian el diseño y los peligros.", ["¿Los 30 diseños de cristales están hechos a mano?", "No. El número de fase determina un diseño reproducible y las reglas del capítulo; el juego no elige un tablero al azar cada vez."]],
+    "pt-BR": ["Uma guardiã raposa restaura 30 formações numeradas de cristais em seis capítulos de cinco fases. As formações são geradas de modo determinístico pelo número da fase; não são 30 tabuleiros desenhados à mão individualmente.", "Cada capítulo reúne cinco fases e acrescenta padrões e regras próprios. O controle da raquete continua igual, enquanto a formação e os perigos mudam.", ["As 30 formações de cristais foram feitas à mão?", "Não. O número da fase determina uma formação reproduzível e as regras do capítulo; o jogo não escolhe um tabuleiro aleatório a cada tentativa."]],
+    fr: ["Une gardienne renarde restaure 30 dispositions de cristaux numérotées dans six chapitres de cinq niveaux. Les dispositions sont générées de façon déterministe à partir du numéro du niveau ; elles ne sont pas 30 plateaux dessinés un par un à la main.", "Chaque chapitre regroupe cinq niveaux et ajoute ses propres motifs et règles. Le contrôle de la raquette reste le même, tandis que la disposition et les dangers évoluent.", ["Les 30 dispositions de cristaux sont-elles faites à la main ?", "Non. Le numéro du niveau détermine une disposition reproductible et les règles du chapitre ; le jeu ne choisit pas un plateau au hasard à chaque fois."]],
+    de: ["Eine Fuchs-Wächterin stellt 30 nummerierte Kristallformationen in sechs Kapiteln mit je fünf Stufen wieder her. Die Formationen werden anhand der Stufennummer deterministisch erzeugt; es sind keine 30 einzeln von Hand gezeichneten Spielfelder.", "Jedes Kapitel umfasst fünf Stufen und ergänzt eigene Kristallmuster und Regeln. Die Paddelsteuerung bleibt gleich, während sich Formation und Gefahren ändern.", ["Sind alle 30 Kristallformationen von Hand erstellt?", "Nein. Die Stufennummer bestimmt eine reproduzierbare Formation und die Kapitelregeln; das Spiel wählt nicht bei jedem Start ein zufälliges Feld."]],
+    it: ["Una guardiana volpe ripristina 30 disposizioni numerate di cristalli in sei capitoli da cinque livelli. Le disposizioni vengono generate in modo deterministico in base al numero del livello; non sono 30 schemi disegnati a mano uno per uno.", "Ogni capitolo raccoglie cinque livelli e aggiunge schemi e regole specifici. I comandi della racchetta restano gli stessi, mentre cambiano la disposizione e i pericoli.", ["Le 30 disposizioni di cristalli sono tutte disegnate a mano?", "No. Il numero del livello determina una disposizione riproducibile e le regole del capitolo; il gioco non sceglie ogni volta uno schema casuale."]],
+    ru: ["Хранительница-лисица восстанавливает 30 пронумерованных схем кристаллов в шести главах по пять этапов. Схемы детерминированно генерируются по номеру этапа; это не 30 отдельных полей, нарисованных вручную.", "В каждой главе по пять этапов со своими узорами кристаллов и правилами. Управление платформой не меняется, но схемы и опасности становятся другими.", ["Все 30 схем кристаллов созданы вручную?", "Нет. Номер этапа задаёт воспроизводимую схему и правила главы; игра не выбирает случайное поле при каждом запуске."]],
+    hi: ["लोमड़ी रक्षक छह अध्यायों में 30 क्रमांकित क्रिस्टल विन्यास बहाल करती है; हर अध्याय में पाँच चरण हैं। विन्यास चरण संख्या से नियत रूप से बनते हैं, 30 अलग-अलग हाथ से बनाए बोर्ड नहीं हैं।", "हर अध्याय में पाँच चरण हैं और अपने क्रिस्टल पैटर्न व नियम हैं। पैडल नियंत्रण वही रहता है, जबकि विन्यास और खतरे बदलते हैं।", ["क्या सभी 30 क्रिस्टल विन्यास हाथ से बनाए गए हैं?", "नहीं। चरण संख्या से दोहराया जा सकने वाला विन्यास और अध्याय के नियम तय होते हैं; हर बार कोई यादृच्छिक बोर्ड नहीं चुना जाता।"]],
+    ar: ["تعيد حارسة الثعالب بناء 30 ترتيبًا مرقّمًا للبلورات ضمن ستة فصول، في كل فصل خمسة مراحل. تُولّد الترتيبات بطريقة حتمية اعتمادًا على رقم المرحلة، وليست 30 لوحة مرسومة يدويًا كلٌّ على حدة.", "يجمع كل فصل خمس مراحل ويضيف أنماط بلورات وقواعد خاصة به. تظل طريقة تحريك المضرب كما هي، بينما تتغير الترتيبات والمخاطر.", ["هل صُممت ترتيبات البلورات الثلاثون يدويًا؟", "لا. يحدد رقم المرحلة ترتيبًا قابلًا للتكرار وقواعد الفصل؛ ولا تختار اللعبة لوحة عشوائية عند كل محاولة."]],
+  };
+  for (const [locale, [story, progression, faq]] of Object.entries(prismBreakersText140)) {
+    const entry = locale === "en" ? games["animal-prism-breakers"] : localizedGames[locale]?.["animal-prism-breakers"];
+    if (!entry) throw new Error(`Missing Prism Breakers Text Growth locale: ${locale}`);
+    entry.story = [story, ...entry.story.slice(1)];
+    entry.progression = [progression, ...entry.progression.slice(1)];
+    entry.faq = [...entry.faq, faq];
+  }
+
   for (const [locale, noteTitle] of Object.entries(generalSaveNoteTitles)) {
     for (const id of generalSaveNoteTitleGameIds) {
       if (localizedGames[locale]?.[id]) localizedGames[locale][id].noteTitle = noteTitle;
@@ -19249,7 +19740,7 @@
     progression: ["The six five-stage campaign chapters increase wave length and guardian combinations. Daily missions emphasize coins or materials, while events rotate on their shown schedule.", "Roster and rune growth expand strategic options without changing the readable three-reel resolution order."],
     designNote: "Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals.",
     parent: "No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser.",
-    faq: [["What does a matching line do?", "It doubles that rune ability after all three reels stop."], ["Do heroes share one attack?", "No. Heroes attack separately; team defense and healing are combined for the summoner."], ["What happens if I leave Battle?", "Permanent inventory remains, but the current battle attempt is lost."], ["Are event rewards always available?", "No. Event missions follow the schedule displayed in Stage."], ["What happens after a spin?", "Choose one reel, then once per turn use Reroll, Hold, or Leader before Resolve. AUTO unlocks after the Rift is cleared."]]
+    faq: [["What does a matching line do?", "It doubles that rune ability after all three reels stop."], ["Do heroes share one attack?", "No. Heroes attack separately; team defense and healing are combined for the summoner."], ["What happens if I leave Battle?", "Permanent inventory remains, but the current battle attempt is lost."], ["Are event rewards always available?", "No. Event missions follow the schedule displayed in Stage."], ["What happens after a spin?", "Choose one reel, then once per turn use Reroll, Hold, or Leader before Resolve. AUTO unlocks after the Rift is cleared."], ["How long does the Summoner’s Shield last?", "It blocks incoming enemy damage for that turn only. Its cap is 35% of the Summoner’s maximum HP; any Shield left expires when the turn ends."]]
   }, "動物符文轉輪", "动物符文转轮");
 
   localizedGames["zh-Hant"]["animal-rune-reels"] = {
@@ -19264,7 +19755,7 @@
     progression: ["六個五關戰役章節會增加波次長度與守護者組合。每日任務偏重金幣或材料，活動則依畫面顯示的排程輪換。", "英雄名冊與符文成長會擴大策略選擇，但不會改變清楚可讀的三轉輪結算順序。"],
     designNote: "轉輪固定依可見順序停止，完整符文列會在結算前發光，英雄行動也會與召喚師合併的防禦和治療總量分開呈現。完整介面使用最大寬度 920 像素的置中單一邏輯版面；手機、橫向與桌面會一起縮放相同的控制項、點擊區、美術與遊戲座標。",
     parent: "不需要帳號。英雄名冊、戰役進度、貨幣、材料、符文等級與獎勵領取紀錄都儲存在此瀏覽器。清除網站資料或更換瀏覽器可能會建立獨立存檔。",
-    faq: [["相同符文列會做什麼？", "三列轉輪全部停止後，相同列會讓該符文能力加倍。"], ["所有英雄共用一次攻擊嗎？", "不會。英雄會分別攻擊；隊伍防禦與治療則會合併給召喚師。"], ["離開戰鬥會怎樣？", "永久背包內容會保留，但目前的戰鬥嘗試會失去。"], ["活動獎勵總是可以取得嗎？", "不一定。活動任務依關卡頁顯示的排程開放。"], ["支援哪些控制方式與螢幕尺寸？", "遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以單一邏輯版面縮放。"], ["進度會自動移到其他裝置嗎？", "不會。進度目前只儲存在本機瀏覽器，其他設定檔或裝置會有獨立進度。"]]
+    faq: [["相同符文列會做什麼？", "三列轉輪全部停止後，相同列會讓該符文能力加倍。"], ["所有英雄共用一次攻擊嗎？", "不會。英雄會分別攻擊；隊伍防禦與治療則會合併給召喚師。"], ["離開戰鬥會怎樣？", "永久背包內容會保留，但目前的戰鬥嘗試會失去。"], ["活動獎勵總是可以取得嗎？", "不一定。活動任務依關卡頁顯示的排程開放。"], ["支援哪些控制方式與螢幕尺寸？", "遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以單一邏輯版面縮放。"], ["進度會自動移到其他裝置嗎？", "不會。進度目前只儲存在本機瀏覽器，其他設定檔或裝置會有獨立進度。"], ["召喚師的護盾會持續多久？", "護盾只在目前回合抵擋敵人傷害，上限為召喚師最大生命值的 35%；回合結束時，未消耗的護盾會消失。"]]
   };
   localizedGames["zh-Hans"] ||= {};
   localizedGames["zh-Hans"]["animal-rune-reels"] = {
@@ -19279,7 +19770,7 @@
     progression: ["六个五关战役章节会增加波次长度与守护者组合。每日任务偏重金币或材料，活动则依画面显示的排程轮换。", "英雄名册与符文成长会扩大策略选择，但不会改变清楚可读的三转轮结算顺序。"],
     designNote: "转轮固定依可见顺序停止，完整符文列会在结算前发光，英雄行动也会与召唤师合并的防御和治疗总量分开呈现。完整界面使用最大宽度 920 像素的居中单一逻辑版面；手机、横向与桌面会一起缩放相同的控制项、点击区、美术与游戏坐标。",
     parent: "不需要账号。英雄名册、战役进度、货币、材料、符文等级与奖励领取记录都保存在此浏览器。清除网站数据或更换浏览器可能会建立独立存档。",
-    faq: [["相同符文列会做什么？", "三列转轮全部停止后，相同列会让该符文能力加倍。"], ["所有英雄共用一次攻击吗？", "不会。英雄会分别攻击；队伍防御与治疗则会合并给召唤师。"], ["离开战斗会怎样？", "永久背包内容会保留，但当前的战斗尝试会丢失。"], ["活动奖励总是可以取得吗？", "不一定。活动任务依关卡页显示的排程开放。"], ["支持哪些控制方式与屏幕尺寸？", "游戏支持触控、鼠标与键盘；界面会在手机、横向与桌面窗口中以单一逻辑版面缩放。"], ["进度会自动移到其他设备吗？", "不会。进度目前只保存在本地浏览器，其他配置文件或设备会有独立进度。"]]
+    faq: [["相同符文列会做什么？", "三列转轮全部停止后，相同列会让该符文能力加倍。"], ["所有英雄共用一次攻击吗？", "不会。英雄会分别攻击；队伍防御与治疗则会合并给召唤师。"], ["离开战斗会怎样？", "永久背包内容会保留，但当前的战斗尝试会丢失。"], ["活动奖励总是可以取得吗？", "不一定。活动任务依关卡页显示的排程开放。"], ["支持哪些控制方式与屏幕尺寸？", "游戏支持触控、鼠标与键盘；界面会在手机、横向与桌面窗口中以单一逻辑版面缩放。"], ["进度会自动移到其他设备吗？", "不会。进度目前只保存在本地浏览器，其他配置文件或设备会有独立进度。"], ["召唤师的护盾会持续多久？", "护盾只在当前回合抵挡敌人伤害，上限为召唤师最大生命值的 35%；回合结束时，未消耗的护盾会消失。"]]
   };
   localizedGames["ja"] ||= {};
   localizedGames["ja"]["animal-rune-reels"] = {
@@ -19294,7 +19785,7 @@
     progression: ["5ステージずつの6章でウェーブの長さと守護者の組み合わせが増えます。デイリーはコインや素材を重視し、イベントは表示された予定で入れ替わります。", "ヒーローとルーンの成長は戦略の選択肢を広げますが、3列リールの分かりやすい解決順は変わりません。"],
     designNote: "リールは固定された見た目の順で止まり、完成した列は解決前に光ります。ヒーローの行動は、召喚士に合算される防御と回復の合計とは分けて表示されます。インターフェースは最大幅920ピクセルの中央揃え論理レイアウトで、スマートフォン、横画面、デスクトップの操作部と座標を一緒に拡大縮小します。",
     parent: "アカウントは必要ありません。ヒーロー、キャンペーン進行、通貨、素材、ルーンレベル、報酬の受け取りはこのブラウザに保存されます。サイトデータを消去したりブラウザを変えたりすると別のセーブになる場合があります。",
-    faq: [["同じルーンの列は何をしますか？", "3列のリールがすべて止まると、そのルーンの能力が2倍になります。"], ["ヒーローは1回だけ攻撃しますか？", "いいえ。ヒーローは個別に攻撃し、防御と回復は召喚士用に合算されます。"], ["バトルを離れるとどうなりますか？", "恒久的な所持品は残りますが、現在のバトル挑戦は失われます。"], ["イベント報酬はいつでも受け取れますか？", "いいえ。イベントミッションはStageに表示された予定に従います。"], ["対応する操作と画面サイズは？", "タッチ、マウス、キーボードに対応し、スマートフォン、横画面、デスクトップで同じ論理レイアウトを使います。"], ["進行状況は別の端末へ移りますか？", "いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。"]]
+    faq: [["同じルーンの列は何をしますか？", "3列のリールがすべて止まると、そのルーンの能力が2倍になります。"], ["ヒーローは1回だけ攻撃しますか？", "いいえ。ヒーローは個別に攻撃し、防御と回復は召喚士用に合算されます。"], ["バトルを離れるとどうなりますか？", "恒久的な所持品は残りますが、現在のバトル挑戦は失われます。"], ["イベント報酬はいつでも受け取れますか？", "いいえ。イベントミッションはStageに表示された予定に従います。"], ["対応する操作と画面サイズは？", "タッチ、マウス、キーボードに対応し、スマートフォン、横画面、デスクトップで同じ論理レイアウトを使います。"], ["進行状況は別の端末へ移りますか？", "いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。"], ["召喚士のシールドはいつまで続きますか？", "敵から受けるダメージをそのターン中だけ防ぎます。上限は召喚士の最大HPの35%で、ターン終了時に残ったシールドは消えます。"]]
   };
 
   registerExpandedGuide("animal-sketchwheel-rally", {
@@ -19473,6 +19964,88 @@
     parent: "لا يلزم حساب أو شراء أو قائمة متصدرين عامة. تبقى الانتصارات والمسامير والتحسينات والعدسة وأفضل الأوقات المحلية في هذا المتصفح.",
     faq: [["هل يجب أن تكون كل عجلة دائرية؟", "لا. كل تضاريس تكافئ شكلًا مقاسًا مختلفًا."], ["هل يمكنني إعادة الرسم أثناء السباق؟", "نعم، التكيف قبل أجزاء التضاريس اللاحقة هو طريقة اللعب المقصودة."], ["لماذا تباطأت العربة على الدرج؟", "ربما لم تحتوِ العجلة الحالية على ارتفاع أو قبضة كافيين."], ["هل تستخدم المنافسة عجلتي؟", "لا. توفر المنافسة ضغط السباق، بينما يأتي أداؤك من الشكل الذي رسمته."]]
   };
+
+  // Text Growth 1.4.0: keep the hydrated Guide, first-response HTML, metadata,
+  // and VideoGame genre aligned with the same measured wheel rules.
+  const sketchwheelText140RuntimeCopy = {
+    en: { tags: ["Drawn-Wheel Racing", "Wheel Physics", "Terrain Strategy"], metaDescription: "Draw and test wheels in 30 races. Match roundness to flat roads, height to stairs, grip to mud and ice, and width to tunnels and gaps. Speed affects performance during gap crossings; a strong pass in later chapters can grant a brief boost.", terrain: "A round wheel clears flat road; stairs need height; mud and ice need grip; tunnels and gaps check width. Gap clearance requires width; wheel speed affects performance during the crossing, and a strong pass in later chapters can grant a brief boost. Wind checks for a narrow wheel.", faq: [["How many races are in Sketchwheel Rally?", "There are 30 authored races across six chapters, with five races in each chapter."], ["What wheel works on ice?", "Use a grippy profile: the game checks grip for ice. A smooth round wheel is not automatically the best match."], ["Where is my progress saved?", "Race clears, bolts, upgrades, lens state, and best times are saved in this browser. They do not sync to another browser or device."]] },
+    "zh-Hant": { tags: ["繪輪競速", "車輪物理", "地形策略"], metaDescription: "畫出車輪並挑戰三十場競速：平路看圓度、階梯看高度、泥地與冰面看抓地力，隧道與缺口看寬度。速度會影響跨越表現，後續章節的高表現通過可能帶來短暫加速。", terrain: "平路檢查圓度；階梯需要高度；泥地與冰面需要抓地力；隧道與缺口會檢查寬度。缺口通過由寬度判定；速度會影響跨越表現，後續章節的高表現通過可能帶來短暫加速。側風則檢查車輪是否夠窄。", faq: [["繪輪競速共有幾場？", "共有六章、每章五場，合計三十場預先設計的競速。"], ["冰面適合什麼車輪？", "選擇抓地力較高的輪型；遊戲會檢查冰面所需的抓地力，平滑圓輪不一定適合。"], ["進度存在哪裡？", "過關紀錄、螺栓、升級、鏡片狀態與最佳時間保存在目前瀏覽器，不會同步到其他瀏覽器或裝置。"]] },
+    "zh-Hans": { tags: ["绘轮竞速", "车轮物理", "地形策略"], metaDescription: "画出车轮并挑战三十场竞速：平路看圆度、阶梯看高度、泥地和冰面看抓地力，隧道和缺口看宽度。速度会影响跨越表现，后续章节的高表现通过可能带来短暂加速。", terrain: "平路检查圆度；阶梯需要高度；泥地和冰面需要抓地力；隧道和缺口会检查宽度。缺口通行由宽度判定；速度会影响跨越表现，后续章节的高表现通过可能带来短暂加速。侧风则检查车轮是否够窄。", faq: [["绘轮竞速共有几场？", "共有六章、每章五场，合计三十场预先设计的竞速。"], ["冰面适合什么车轮？", "选择抓地力较高的轮型；游戏会检查冰面所需的抓地力，平滑圆轮不一定适合。"], ["进度保存在哪里？", "通关记录、螺栓、升级、镜片状态与最佳时间保存在当前浏览器，不会同步到其他浏览器或设备。"]] },
+    ja: { tags: ["描画ホイールレース", "車輪の物理", "地形戦略"], metaDescription: "車輪を描いて30レースに挑戦。平地では丸さ、階段では高さ、泥と氷ではグリップ、トンネルや隙間では幅を調整。速度は渡る間の評価に反映され、後半の章では高い評価で短いブーストが発生することがあります。", terrain: "平地では丸さ、階段では高さ、泥と氷ではグリップを確認します。トンネルと隙間では幅が条件です。隙間の通過は幅で判定され、走行速度は渡る間の評価に反映されます。後半の章では高い評価で短いブーストが発生することがあります。横風には細い車輪が向いています。", faq: [["レースはいくつありますか？", "全6章、各章5レースの合計30コースです。"], ["氷ではどんな車輪が向いていますか？", "グリップを重視した形です。氷ではグリップが判定されるため、滑らかな円形が常に最適とは限りません。"], ["進行状況はどこに保存されますか？", "クリア、ボルト、アップグレード、レンズ状態、ベストタイムはこのブラウザーに保存され、別の端末とは同期しません。"]] },
+    ko: { tags: ["그린 바퀴 레이싱", "바퀴 물리", "지형 전략"], metaDescription: "바퀴를 그려 30개 경주에 도전하세요. 평지는 둥근 정도, 계단은 높이, 진흙과 얼음은 접지력, 터널과 틈은 폭을 확인합니다. 속도는 틈을 건너는 동안 성능에 반영되며, 후반 챕터의 좋은 통과는 짧은 부스트를 줄 수 있습니다.", terrain: "평지는 둥근 정도를, 계단은 높이를, 진흙과 얼음은 접지력을 확인합니다. 터널과 틈에서는 폭이 조건입니다. 틈 통과 여부는 폭으로 결정되고, 바퀴 속도는 건너는 동안 성능에 반영됩니다. 후반 챕터에서 높은 성능으로 통과하면 짧은 부스트가 주어질 수 있습니다. 측풍에서는 폭이 좁은 바퀴가 유리합니다.", faq: [["경주는 몇 개 있나요?", "6개 챕터에 각 5개씩, 총 30개의 직접 구성된 경주가 있습니다."], ["얼음 지형에는 어떤 바퀴가 맞나요?", "접지력을 높인 형태를 사용하세요. 얼음은 접지력을 검사하므로 매끈한 원형이 항상 최선은 아닙니다."], ["진행 상황은 어디에 저장되나요?", "클리어, 볼트, 업그레이드, 렌즈 상태와 최고 기록은 현재 브라우저에 저장되며 다른 기기와 동기화되지 않습니다."]] },
+    es: { tags: ["Carreras con ruedas dibujadas", "Física de ruedas", "Estrategia de terreno"], metaDescription: "Dibuja ruedas y pruébalas en 30 carreras. Ajusta redondez para el llano, altura para escaleras, agarre para barro y hielo, y anchura para túneles y huecos. La velocidad influye durante el cruce; una buena pasada posterior puede dar un impulso breve.", terrain: "La carretera plana comprueba la redondez; las escaleras requieren altura; el barro y el hielo, agarre; los túneles y huecos, anchura. El ancho determina si superas el hueco; la velocidad influye en el rendimiento durante el cruce y una buena pasada en capítulos posteriores puede dar un impulso breve. El viento favorece una rueda estrecha.", faq: [["¿Cuántas carreras hay?", "Hay 30 carreras diseñadas, repartidas en seis capítulos de cinco carreras."], ["¿Qué rueda conviene para el hielo?", "Elige un perfil con agarre: el juego comprueba el agarre en el hielo. Una rueda lisa y redonda no siempre es la mejor opción."], ["¿Dónde se guarda mi progreso?", "Las victorias, los pernos, las mejoras, el estado de la lente y los mejores tiempos se guardan en este navegador; no se sincronizan con otros dispositivos."]] },
+    "pt-BR": { tags: ["Corrida com rodas desenhadas", "Física das rodas", "Estratégia de terreno"], metaDescription: "Desenhe rodas e teste-as em 30 corridas. Ajuste a circularidade para pistas planas, altura para escadas, aderência para lama e gelo e largura para túneis e vãos. A velocidade afeta a travessia; uma boa passagem nos capítulos posteriores pode dar um impulso breve.", terrain: "A estrada plana verifica a circularidade; escadas exigem altura; lama e gelo, aderência; túneis e vãos, largura. A largura determina se você atravessa o vão; a velocidade afeta o desempenho durante a travessia, e uma boa passagem nos capítulos posteriores pode dar um impulso breve. No vento, uma roda estreita ajuda.", faq: [["Quantas corridas existem?", "São 30 corridas criadas para o jogo, em seis capítulos com cinco corridas cada."], ["Que roda funciona no gelo?", "Use um perfil com boa aderência: o jogo verifica a aderência no gelo. Uma roda lisa e redonda não é sempre a melhor escolha."], ["Onde meu progresso fica salvo?", "Vitórias, parafusos, melhorias, estado da lente e melhores tempos ficam salvos neste navegador e não são sincronizados com outros dispositivos."]] },
+    fr: { tags: ["Course de roues dessinées", "Physique des roues", "Stratégie de terrain"], metaDescription: "Dessinez des roues et testez-les sur 30 courses. Ajustez la rondeur sur le plat, la hauteur dans les escaliers, l’adhérence dans la boue et la glace, et la largeur dans les tunnels et les brèches. La vitesse agit pendant le passage ; une bonne traversée peut donner une brève accélération.", terrain: "La route plate vérifie la rondeur ; les escaliers demandent de la hauteur ; la boue et la glace, de l’adhérence ; les tunnels et les brèches, de la largeur. La largeur détermine le passage d’une brèche ; la vitesse influence la performance pendant la traversée, et un bon passage dans les chapitres suivants peut donner une brève accélération. Le vent favorise une roue étroite.", faq: [["Combien de courses sont proposées ?", "Il y a 30 courses conçues pour le jeu, réparties en six chapitres de cinq courses."], ["Quelle roue choisir sur la glace ?", "Privilégiez l’adhérence : le jeu la vérifie sur la glace. Une roue lisse et ronde n’est pas toujours le bon choix."], ["Où ma progression est-elle enregistrée ?", "Les victoires, boulons, améliorations, état de la lentille et meilleurs temps sont enregistrés dans ce navigateur, sans synchronisation entre appareils."]] },
+    de: { tags: ["Rennen mit gezeichneten Rädern", "Radphysik", "Geländestrategie"], metaDescription: "Zeichne Räder und teste sie in 30 Rennen. Runde Räder helfen auf ebener Straße, Höhe auf Treppen, Grip in Matsch und Eis sowie Breite in Tunneln und Lücken. Tempo wirkt während der Überquerung; eine starke Passage kann später einen kurzen Schub geben.", terrain: "Auf ebener Straße zählt Rundheit; Treppen brauchen Höhe; Matsch und Eis Grip; Tunnel und Lücken prüfen die Breite. Die Breite entscheidet, ob du eine Lücke passierst; Tempo beeinflusst die Leistung während der Überquerung. Eine starke Passage kann in späteren Kapiteln einen kurzen Schub geben. Bei Seitenwind hilft ein schmales Rad.", faq: [["Wie viele Rennen gibt es?", "Es gibt 30 gestaltete Rennen in sechs Kapiteln mit je fünf Rennen."], ["Welches Rad eignet sich für Eis?", "Wähle ein Profil mit viel Grip: Auf Eis prüft das Spiel die Haftung. Ein glattes rundes Rad passt nicht automatisch am besten."], ["Wo wird mein Fortschritt gespeichert?", "Siege, Bolzen, Verbesserungen, Linsenstatus und Bestzeiten werden in diesem Browser gespeichert und nicht mit anderen Geräten synchronisiert."]] },
+    it: { tags: ["Gare con ruote disegnate", "Fisica delle ruote", "Strategia del terreno"], metaDescription: "Disegna ruote e provale in 30 gare. Regola rotondità sul piano, altezza sulle scale, aderenza su fango e ghiaccio e larghezza in tunnel e vuoti. La velocità influisce durante l’attraversamento; una buona prova successiva può dare una breve spinta.", terrain: "La strada piana controlla la rotondità; le scale richiedono altezza; fango e ghiaccio aderenza; tunnel e vuoti larghezza. La larghezza determina il superamento del vuoto; la velocità influisce sulla prestazione durante l’attraversamento, e una buona prova nei capitoli successivi può dare una breve spinta. Con il vento aiuta una ruota stretta.", faq: [["Quante gare ci sono?", "Ci sono 30 gare progettate, divise in sei capitoli da cinque gare ciascuno."], ["Quale ruota usare sul ghiaccio?", "Scegli un profilo con buona aderenza: sul ghiaccio il gioco controlla la presa. Una ruota liscia e rotonda non è sempre la scelta migliore."], ["Dove viene salvato il mio progresso?", "Vittorie, bulloni, potenziamenti, stato della lente e tempi migliori restano in questo browser e non si sincronizzano con altri dispositivi."]] },
+    ru: { tags: ["Гонки на рисованных колёсах", "Физика колёс", "Тактика рельефа"], metaDescription: "Рисуйте колёса и проверяйте их в 30 гонках. Учитывайте округлость на ровной дороге, высоту на лестницах, сцепление в грязи и на льду, ширину в туннелях и разрывах. Скорость влияет во время пересечения; успешный проход позже может дать краткое ускорение.", terrain: "На ровной дороге важна округлость; лестницам нужна высота; грязи и льду — сцепление; туннелям и разрывам — ширина. Ширина определяет, получится ли преодолеть разрыв; скорость влияет на результат во время пересечения. В поздних главах успешный проход может дать краткое ускорение. При боковом ветре помогает узкое колесо.", faq: [["Сколько гонок доступно?", "В игре 30 созданных трасс: шесть глав по пять гонок."], ["Какое колесо подходит для льда?", "Выберите профиль с хорошим сцеплением: на льду игра проверяет именно его. Гладкое круглое колесо подходит не всегда."], ["Где сохраняется прогресс?", "Победы, болты, улучшения, состояние линзы и лучшие времена сохраняются в этом браузере и не синхронизируются с другими устройствами."]] },
+    hi: { tags: ["बनाए पहियों की रेस", "पहिया भौतिकी", "भूभाग रणनीति"], metaDescription: "पहिए बनाकर 30 रेस में परखें। खुली सड़क पर गोलाई, सीढ़ियों पर ऊंचाई, कीचड़ और बर्फ पर पकड़, तथा सुरंग और दरार में चौड़ाई मिलाएँ। पार करते समय गति प्रदर्शन में योगदान देती है; बाद के अध्यायों में अच्छा पार करना थोड़ी देर का बूस्ट दे सकता है।", terrain: "खुली सड़क पर गोलाई, सीढ़ियों पर ऊंचाई, कीचड़ और बर्फ पर पकड़, तथा सुरंग और दरार में चौड़ाई जाँची जाती है। दरार पार करने की जाँच चौड़ाई से होती है; पार करते समय गति प्रदर्शन में योगदान देती है। बाद के अध्यायों में अच्छा पार करना थोड़ी देर का बूस्ट दे सकता है। हवा में पतला पहिया मदद करता है।", faq: [["कितनी रेस हैं?", "छह अध्यायों में पाँच-पाँच, कुल 30 बनाई गई रेस हैं।"], ["बर्फ पर कौन-सा पहिया सही है?", "अच्छी पकड़ वाला आकार चुनें: बर्फ पर खेल पकड़ की जाँच करता है। चिकना गोल पहिया हमेशा सही नहीं होता।"], ["मेरी प्रगति कहाँ सहेजी जाती है?", "जीत, बोल्ट, अपग्रेड, लेंस स्थिति और सर्वश्रेष्ठ समय इसी ब्राउज़र में रहते हैं; दूसरे उपकरणों से सिंक नहीं होते।"]] },
+    ar: { tags: ["سباق العجلات المرسومة", "فيزياء العجلات", "استراتيجية التضاريس"], metaDescription: "ارسم العجلات واختبرها في 30 سباقًا. اضبط الاستدارة للطريق المستوي، والارتفاع للسلالم، والتماسك للطين والجليد، والعرض للأنفاق والفجوات. تؤثر السرعة أثناء العبور، وقد يمنح الاجتياز القوي لاحقًا دفعة قصيرة.", terrain: "يفحص الطريق المستوي استدارة العجلة، وتحتاج السلالم إلى الارتفاع، والطين والجليد إلى التماسك، والأنفاق والفجوات إلى العرض. يحدد العرض إمكانية اجتياز الفجوة؛ وتؤثر السرعة في الأداء أثناء العبور، وقد يمنح الاجتياز القوي في الفصول اللاحقة دفعة قصيرة. وتناسب الرياح عجلة ضيقة.", faq: [["كم عدد السباقات؟", "هناك 30 سباقًا مصممًا ضمن ستة فصول، خمسة سباقات في كل فصل."], ["ما العجلة المناسبة للجليد؟", "اختر شكلًا ذا تماسك جيد؛ فاللعبة تفحص التماسك على الجليد. العجلة الدائرية الملساء ليست الخيار الأفضل دائمًا."], ["أين يُحفظ تقدمي؟", "تُحفظ مرات الفوز والبراغي والترقيات وحالة العدسة وأفضل الأوقات في هذا المتصفح، ولا تتم مزامنتها مع أجهزة أخرى."]] },
+  };
+  const sketchwheelText140ShortMeta = {
+    en: "Draw wheels for 30 races. Match roundness, height, grip, and width to each terrain. Speed affects gap crossings, and strong later passes can grant a brief boost.",
+    "zh-Hant": "畫出車輪挑戰三十場競速：平路看圓度、階梯看高度、泥冰看抓地力，隧道與缺口看寬度；速度影響跨越表現，後續強勢通過可帶來短暫加速。",
+    "zh-Hans": "画出车轮挑战三十场竞速：平路看圆度、阶梯看高度、泥冰看抓地力，隧道和缺口看宽度；速度影响跨越表现，后续强势通过可带来短暂加速。",
+    ja: "車輪を描いて30レースに挑戦。平地は丸さ、階段は高さ、泥や氷はグリップ、トンネルや隙間は幅が重要です。速度は渡る間の評価に影響し、後半は好成績で短いブーストも。",
+    ko: "바퀴를 그려 30개 경주에 도전하세요. 평지는 둥근 정도, 계단은 높이, 진흙과 얼음은 접지력, 터널과 틈은 폭이 중요합니다. 속도는 틈을 건너는 성능에 반영됩니다.",
+    es: "Dibuja ruedas para 30 carreras. Ajusta redondez, altura, agarre y anchura al terreno; la velocidad influye al cruzar huecos y las buenas pasadas posteriores pueden dar un impulso breve.",
+    "pt-BR": "Desenhe rodas para 30 corridas. Ajuste circularidade, altura, aderência e largura ao terreno; a velocidade afeta a travessia, e boas passagens posteriores podem dar um impulso breve.",
+    fr: "Dessinez des roues pour 30 courses. Ajustez rondeur, hauteur, adhérence et largeur au terrain ; la vitesse agit pendant les brèches et une bonne traversée peut donner une brève accélération.",
+    de: "Zeichne Räder für 30 Rennen. Passe Rundheit, Höhe, Grip und Breite ans Gelände an; Tempo wirkt bei Lücken, und starke spätere Passagen können einen kurzen Schub geben.",
+    it: "Disegna ruote per 30 gare. Adatta rotondità, altezza, aderenza e larghezza al terreno; la velocità influisce sui vuoti e le buone prove successive possono dare una breve spinta.",
+    ru: "Рисуйте колёса для 30 гонок. Подбирайте округлость, высоту, сцепление и ширину под трассу; скорость влияет при пересечении разрывов, а сильный проход позже может дать ускорение.",
+    hi: "30 रेस के लिए पहिए बनाएं। भूभाग के अनुसार गोलाई, ऊंचाई, पकड़ और चौड़ाई चुनें; दरार पार करते समय गति प्रदर्शन में योगदान देती है, और बाद में अच्छा पार करना छोटा बूस्ट दे सकता है।",
+    ar: "ارسم عجلات لـ30 سباقًا. اضبط الاستدارة والارتفاع والتماسك والعرض حسب التضاريس؛ تؤثر السرعة أثناء عبور الفجوات، وقد يمنح الاجتياز القوي لاحقًا دفعة قصيرة."
+  };
+  const sketchwheelText140IntroCopy = {
+    en: "Draw a wheel for the next terrain, read how its measured shape changes the race, and redraw when the route changes. Sketchwheel Rally turns wheel geometry into a choice between momentum and control.",
+    "zh-Hant": "為前方地形畫出車輪，觀察形狀測量值如何影響競速，並在路線改變時重新繪製。繪輪競速把輪型幾何變成速度與操控的取捨。",
+    "zh-Hans": "为前方地形画出车轮，观察形状测量值如何影响竞速，并在路线改变时重新绘制。绘轮竞速把轮型几何变成速度与操控的取舍。",
+    ja: "次の地形に合わせて車輪を描き、測定された形がレースに与える影響を見て、コースが変わったら描き直します。車輪の形を速度と安定性の選択につなげるラリーです。",
+    ko: "다음 지형에 맞춰 바퀴를 그리고, 측정된 모양이 경주에 주는 영향을 살핀 뒤 코스가 바뀌면 다시 그려 보세요. 바퀴 형태를 속도와 안정성의 선택으로 연결하는 랠리입니다.",
+    es: "Dibuja una rueda para el siguiente terreno, observa cómo sus medidas cambian la carrera y vuelve a dibujar cuando cambie la ruta. Aquí la geometría de la rueda decide entre impulso y control.",
+    "pt-BR": "Desenhe uma roda para o próximo terreno, observe como as medidas mudam a corrida e redesenhe quando a rota mudar. Aqui, o formato da roda cria escolhas entre impulso e controle.",
+    fr: "Dessinez une roue pour le prochain terrain, observez l’effet de ses mesures sur la course, puis recommencez lorsque le parcours change. La forme de la roue impose un choix entre élan et contrôle.",
+    de: "Zeichne ein Rad für den nächsten Untergrund, beobachte, wie seine Messwerte das Rennen verändern, und zeichne bei einem Streckenwechsel neu. Die Radform entscheidet zwischen Schwung und Kontrolle.",
+    it: "Disegna una ruota per il terreno successivo, osserva come le sue misure cambiano la gara e ridisegnala quando cambia il percorso. La forma della ruota crea un equilibrio tra slancio e controllo.",
+    ru: "Нарисуйте колесо для следующего участка, посмотрите, как его параметры меняют гонку, и перерисуйте его при смене трассы. Форма колеса помогает выбрать между скоростью и контролем.",
+    hi: "अगले भूभाग के लिए पहिया बनाएं, देखें कि उसके माप रेस को कैसे बदलते हैं, और रास्ता बदलने पर फिर बनाएं। पहिए का आकार गति और नियंत्रण के बीच चुनाव बनाता है।",
+    ar: "ارسم عجلة للتضاريس التالية، وراقب كيف تغيّر قياساتها السباق، ثم أعد رسمها عند تغيّر المسار. يضع شكل العجلة السرعة والتحكم في ميزان الاختيار."
+  };
+  const sketchwheelText140SaveHeading = {
+    en: "Player and Save Information", "zh-Hant": "玩家與儲存資訊", "zh-Hans": "玩家与保存信息",
+    ja: "プレイヤーとセーブデータ", ko: "플레이어와 저장 정보", es: "Información del jugador y guardado",
+    "pt-BR": "Informações do jogador e salvamento", fr: "Informations sur le joueur et la sauvegarde",
+    de: "Spielerinformationen und Speicherstand", it: "Informazioni sul giocatore e sui salvataggi",
+    ru: "Данные игрока и сохранение", hi: "खिलाड़ी और सेव जानकारी", ar: "معلومات اللاعب والحفظ"
+  };
+  const sketchwheelText140FaqExtra = {
+    en: [["Can I redraw during a rally?", "Yes. Redraw before the next terrain section when its needs change."], ["Does the rival use my wheel?", "No. The rival sets race pressure; your result depends on the shape you draw."]],
+    "zh-Hant": [["競速中可以重新繪製車輪嗎？", "可以。前方地形需求改變時，重新繪製下一個車輪是主要玩法。"], ["對手會使用我畫的車輪嗎？", "不會。對手帶來競速壓力，你的表現取決於自己畫出的輪型。"]],
+    "zh-Hans": [["竞速中可以重新绘制车轮吗？", "可以。前方地形需求改变时，重新绘制下一个车轮是主要玩法。"], ["对手会使用我画的车轮吗？", "不会。对手带来竞速压力，你的表现取决于自己画出的轮型。"]],
+    ja: [["ラリー中に車輪を描き直せますか？", "できます。次の地形に合わせて描き直すのが基本の遊び方です。"], ["ライバルは自分の車輪を使いますか？", "いいえ。ライバルは競争相手で、結果は自分で描いた形によって変わります。"]],
+    ko: [["경주 중에 바퀴를 다시 그릴 수 있나요?", "네. 다음 지형의 조건이 바뀌기 전에 다시 그리는 것이 기본 진행 방식입니다."], ["상대도 내가 그린 바퀴를 사용하나요?", "아니요. 상대는 경쟁 압박을 제공하며 결과는 내가 그린 모양에 따라 달라집니다."]],
+    es: [["¿Puedo volver a dibujar durante una carrera?", "Sí. Redibuja antes del siguiente tramo cuando cambien las necesidades del terreno."], ["¿El rival usa mi rueda?", "No. El rival marca el ritmo de la competición; tu resultado depende de la forma que dibujes."]],
+    "pt-BR": [["Posso redesenhar a roda durante a corrida?", "Sim. Redesenhe antes do próximo trecho quando as exigências do terreno mudarem."], ["O rival usa a roda que eu desenhei?", "Não. O rival cria a disputa; seu resultado depende do formato que você desenhar."]],
+    fr: [["Puis-je redessiner la roue pendant une course ?", "Oui. Redessinez-la avant le prochain terrain lorsque ses exigences changent."], ["Le rival utilise-t-il ma roue ?", "Non. Le rival met la course sous pression ; votre résultat dépend de la forme que vous dessinez."]],
+    de: [["Kann ich während eines Rennens neu zeichnen?", "Ja. Zeichne vor dem nächsten Abschnitt neu, wenn sich die Anforderungen des Geländes ändern."], ["Benutzt der Rivale mein Rad?", "Nein. Der Rivale sorgt für den Wettbewerb; dein Ergebnis hängt von deiner gezeichneten Form ab."]],
+    it: [["Posso ridisegnare la ruota durante una gara?", "Sì. Ridisegnala prima del tratto successivo quando cambiano le esigenze del terreno."], ["Il rivale usa la ruota che ho disegnato?", "No. Il rivale crea la sfida; il risultato dipende dalla forma che disegni."]],
+    ru: [["Можно ли перерисовать колесо во время гонки?", "Да. Меняйте форму перед следующим участком, когда требования трассы меняются."], ["Соперник использует моё колесо?", "Нет. Соперник создаёт соревновательное давление, а результат зависит от нарисованной вами формы."]],
+    hi: [["क्या रेस के दौरान पहिया फिर से बना सकते हैं?", "हाँ। अगले हिस्से की ज़रूरत बदलने पर वहाँ पहुँचने से पहले पहिया फिर से बनाएं।"], ["क्या प्रतिद्वंद्वी मेरा बनाया पहिया इस्तेमाल करता है?", "नहीं। प्रतिद्वंद्वी रेस की चुनौती देता है; आपका परिणाम आपके बनाए आकार पर निर्भर करता है।"]],
+    ar: [["هل يمكنني إعادة رسم العجلة أثناء السباق؟", "نعم. أعد رسمها قبل المقطع التالي عندما تتغير متطلبات التضاريس."], ["هل يستخدم المنافس عجلتي؟", "لا. يضيف المنافس ضغط السباق، وتعتمد نتيجتك على الشكل الذي ترسمه."]]
+  };
+  for (const [localeCode, copy] of Object.entries(sketchwheelText140RuntimeCopy)) {
+    const profile = localeCode === "en" ? games["animal-sketchwheel-rally"] : localizedGames[localeCode]?.["animal-sketchwheel-rally"];
+    if (!profile) continue;
+    profile.text140Tags = copy.tags;
+    profile.genre = copy.tags;
+    profile.metaDescription = sketchwheelText140ShortMeta[localeCode];
+    profile.intro = sketchwheelText140IntroCopy[localeCode];
+    profile.systems = [...(profile.systems || [])];
+    if (profile.systems.length > 1) profile.systems[1] = copy.terrain;
+    profile.faq = [...copy.faq, ...sketchwheelText140FaqExtra[localeCode]];
+    profile.noteTitle = sketchwheelText140SaveHeading[localeCode];
+  }
 
   registerExpandedGuide("animal-skybridge-rivals", {
     title: "Animal Skybridge Rivals", gameplay: "Collect-and-Build Bridge Race",
@@ -19670,7 +20243,7 @@
     progression: ["5스테이지씩 구성된 6개 챕터에서 웨이브 길이와 수호자 조합이 늘어납니다. 일일 임무는 코인이나 재료를 강조하고 이벤트는 표시된 일정에 따라 바뀝니다.", "영웅과 룬의 성장은 전략 선택을 넓히지만 읽기 쉬운 세 릴 처리 순서는 바꾸지 않습니다."],
     designNote: "릴은 고정된 시각 순서로 멈추고, 완성된 줄은 처리 전에 빛납니다. 영웅 행동은 소환사에게 합산되는 방어 및 회복 총량과 분리되어 표시됩니다. 인터페이스는 최대 920픽셀의 중앙 정렬 논리 레이아웃을 사용하며 휴대폰, 가로 화면, 데스크톱에서 컨트롤과 게임 좌표를 함께 확대합니다.",
     parent: "계정은 필요하지 않습니다. 영웅, 캠페인 진행, 재화, 재료, 룬 레벨과 보상 기록은 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 별도 저장이 생길 수 있습니다.",
-    faq: [["같은 룬 줄은 무엇을 하나요?", "세 릴이 모두 멈춘 뒤 해당 룬 능력을 두 배로 만듭니다."], ["영웅이 한 번에 함께 공격하나요?", "아니요. 영웅은 각각 공격하고 방어와 회복은 소환사에게 합산됩니다."], ["전투를 나가면 어떻게 되나요?", "영구 보관물은 남지만 현재 전투 시도는 사라집니다."], ["이벤트 보상은 언제나 받을 수 있나요?", "아니요. 이벤트 임무는 Stage에 표시된 일정에 따릅니다."], ["어떤 조작과 화면 크기를 지원하나요?", "터치·마우스·키보드를 지원하며 휴대폰, 가로 화면과 데스크톱에서 같은 논리 레이아웃을 사용합니다."], ["진행도가 다른 기기로 자동 이동하나요?", "아니요. 현재는 브라우저에만 저장되므로 다른 프로필이나 기기에는 별도 진행도가 생깁니다."]]
+    faq: [["같은 룬 줄은 무엇을 하나요?", "세 릴이 모두 멈춘 뒤 해당 룬 능력을 두 배로 만듭니다."], ["영웅이 한 번에 함께 공격하나요?", "아니요. 영웅은 각각 공격하고 방어와 회복은 소환사에게 합산됩니다."], ["전투를 나가면 어떻게 되나요?", "영구 보관물은 남지만 현재 전투 시도는 사라집니다."], ["이벤트 보상은 언제나 받을 수 있나요?", "아니요. 이벤트 임무는 Stage에 표시된 일정에 따릅니다."], ["어떤 조작과 화면 크기를 지원하나요?", "터치·마우스·키보드를 지원하며 휴대폰, 가로 화면과 데스크톱에서 같은 논리 레이아웃을 사용합니다."], ["진행도가 다른 기기로 자동 이동하나요?", "아니요. 현재는 브라우저에만 저장되므로 다른 프로필이나 기기에는 별도 진행도가 생깁니다."], ["소환사의 보호막은 얼마나 지속되나요?", "그 턴에 받는 적의 피해만 막습니다. 최대치는 소환사의 최대 HP의 35%이며, 턴이 끝날 때 남은 보호막은 사라집니다."]]
   };
   localizedGames["es"] ||= {};
   localizedGames["es"]["animal-rune-reels"] = {
@@ -19685,7 +20258,7 @@
     progression: ["Los seis capítulos de cinco etapas aumentan la longitud de las oleadas y las combinaciones de guardianes. Las misiones diarias destacan monedas o materiales y los eventos rotan según el horario mostrado.", "El crecimiento del elenco y las runas amplía las opciones estratégicas sin cambiar el orden legible de las tres ruletas."],
     designNote: "Las ruletas se detienen en un orden visual fijo, las líneas completas brillan antes de resolverse y las acciones de los héroes se mantienen separadas de los totales combinados de defensa y curación del invocador. La interfaz usa un diseño lógico centrado de 920 píxeles como máximo y escala juntos controles y coordenadas en móvil, horizontal y escritorio.",
     parent: "No se necesita cuenta. El elenco, la campaña, las monedas, los materiales, los niveles de runa y las recompensas se guardan localmente en este navegador. Borrar los datos del sitio o cambiar de navegador puede crear otro guardado.",
-    faq: [["¿Qué hace una línea de runas iguales?", "Duplica esa habilidad cuando se detienen las tres ruletas."], ["¿Los héroes comparten un ataque?", "No. Atacan por separado; la defensa y curación del equipo se combinan para el invocador."], ["¿Qué pasa si salgo de Battle?", "El inventario permanente permanece, pero se pierde el intento de batalla actual."], ["¿Las recompensas de evento están siempre disponibles?", "No. Las misiones de evento siguen el horario mostrado en Stage."], ["¿Qué controles y tamaños de pantalla se admiten?", "Toque, ratón y teclado usan las mismas reglas y el diseño lógico se adapta a móvil, horizontal y escritorio."], ["¿El progreso pasa automáticamente a otro dispositivo?", "No. Solo se guarda en el navegador; otro perfil o dispositivo tiene progreso independiente."]]
+    faq: [["¿Qué hace una línea de runas iguales?", "Duplica esa habilidad cuando se detienen las tres ruletas."], ["¿Los héroes comparten un ataque?", "No. Atacan por separado; la defensa y curación del equipo se combinan para el invocador."], ["¿Qué pasa si salgo de Battle?", "El inventario permanente permanece, pero se pierde el intento de batalla actual."], ["¿Las recompensas de evento están siempre disponibles?", "No. Las misiones de evento siguen el horario mostrado en Stage."], ["¿Qué controles y tamaños de pantalla se admiten?", "Toque, ratón y teclado usan las mismas reglas y el diseño lógico se adapta a móvil, horizontal y escritorio."], ["¿El progreso pasa automáticamente a otro dispositivo?", "No. Solo se guarda en el navegador; otro perfil o dispositivo tiene progreso independiente."], ["¿Cuánto dura el escudo del invocador?", "Bloquea el daño enemigo solo durante ese turno. Su límite es el 35 % de la vida máxima del invocador; el escudo restante desaparece al terminar el turno."]]
   };
   localizedGames["pt-BR"] ||= {};
   localizedGames["pt-BR"]["animal-rune-reels"] = {
@@ -19700,7 +20273,7 @@
     progression: ["Os seis capítulos de cinco fases aumentam o tamanho das ondas e as combinações de guardiões. Missões diárias destacam moedas ou materiais e eventos alternam conforme o horário exibido.", "O crescimento do elenco e das runas amplia as opções estratégicas sem mudar a ordem clara das três roletas."],
     designNote: "As roletas param em uma ordem visual fixa, linhas completas brilham antes de resolver e as ações dos heróis ficam separadas dos totais combinados de defesa e cura do invocador. A interface usa um layout lógico centralizado de no máximo 920 pixels e escala controles e coordenadas juntos no celular, na horizontal e no desktop.",
     parent: "Não é preciso criar conta. Elenco, campanha, moedas, materiais, níveis de runa e recompensas ficam salvos localmente neste navegador. Limpar os dados do site ou trocar de navegador pode criar outro salvamento.",
-    faq: [["O que uma linha de runas iguais faz?", "Ela dobra a habilidade quando as três roletas param."], ["Os heróis compartilham um ataque?", "Não. Eles atacam separadamente; defesa e cura da equipe são combinadas para o invocador."], ["O que acontece se eu sair da Battle?", "O inventário permanente fica, mas a tentativa de batalha atual é perdida."], ["As recompensas de evento estão sempre disponíveis?", "Não. As missões de evento seguem o horário exibido em Stage."], ["Quais controles e tamanhos de tela são aceitos?", "Toque, mouse e teclado usam as mesmas regras e o layout lógico se adapta ao celular, horizontal e desktop."], ["O progresso vai automaticamente para outro dispositivo?", "Não. Ele fica apenas no navegador; outro perfil ou dispositivo terá progresso separado."]]
+    faq: [["O que uma linha de runas iguais faz?", "Ela dobra a habilidade quando as três roletas param."], ["Os heróis compartilham um ataque?", "Não. Eles atacam separadamente; defesa e cura da equipe são combinadas para o invocador."], ["O que acontece se eu sair da Battle?", "O inventário permanente fica, mas a tentativa de batalha atual é perdida."], ["As recompensas de evento estão sempre disponíveis?", "Não. As missões de evento seguem o horário exibido em Stage."], ["Quais controles e tamanhos de tela são aceitos?", "Toque, mouse e teclado usam as mesmas regras e o layout lógico se adapta ao celular, horizontal e desktop."], ["O progresso vai automaticamente para outro dispositivo?", "Não. Ele fica apenas no navegador; outro perfil ou dispositivo terá progresso separado."], ["Por quanto tempo dura o escudo do invocador?", "Ele bloqueia o dano inimigo apenas naquele turno. O limite é 35% da vida máxima do invocador; qualquer escudo restante desaparece no fim do turno."]]
   };
   localizedGames["fr"] ||= {};
   localizedGames["fr"]["animal-rune-reels"] = {
@@ -19715,7 +20288,7 @@
     progression: ["Les six chapitres de cinq étapes augmentent la longueur des vagues et les combinaisons de gardiens. Les missions quotidiennes privilégient pièces ou matériaux et les événements suivent le calendrier affiché.", "La progression des héros et des runes élargit les choix sans changer l’ordre lisible de résolution des trois roues."],
     designNote: "Les roues s’arrêtent dans un ordre visuel fixe, les lignes complètes brillent avant leur résolution et les actions des héros restent distinctes des totaux combinés de défense et de soins de l’invocateur. L’interface utilise une mise en page logique centrée de 920 pixels maximum et agrandit ensemble contrôles et coordonnées sur mobile, en paysage et sur ordinateur.",
     parent: "Aucun compte n’est nécessaire. Héros, campagne, monnaies, matériaux, niveaux de runes et récompenses restent enregistrés dans ce navigateur. Effacer les données du site ou changer de navigateur peut créer une sauvegarde distincte.",
-    faq: [["Que fait une ligne de runes identiques ?", "Elle double cette capacité quand les trois roues sont arrêtées."], ["Les héros partagent-ils une attaque ?", "Non. Ils attaquent séparément ; défense et soins de l’équipe sont additionnés pour l’invocateur."], ["Que se passe-t-il si je quitte Battle ?", "L’inventaire permanent reste, mais la tentative actuelle est perdue."], ["Les récompenses d’événement sont-elles toujours disponibles ?", "Non. Les missions d’événement suivent le calendrier affiché dans Stage."], ["Quels contrôles et écrans sont pris en charge ?", "Tactile, souris et clavier suivent les mêmes règles ; la mise en page logique s’adapte au mobile, au paysage et à l’ordinateur."], ["La progression passe-t-elle automatiquement sur un autre appareil ?", "Non. Elle reste dans le navigateur ; un autre profil ou appareil aura sa propre progression."]]
+    faq: [["Que fait une ligne de runes identiques ?", "Elle double cette capacité quand les trois roues sont arrêtées."], ["Les héros partagent-ils une attaque ?", "Non. Ils attaquent séparément ; défense et soins de l’équipe sont additionnés pour l’invocateur."], ["Que se passe-t-il si je quitte Battle ?", "L’inventaire permanent reste, mais la tentative actuelle est perdue."], ["Les récompenses d’événement sont-elles toujours disponibles ?", "Non. Les missions d’événement suivent le calendrier affiché dans Stage."], ["Quels contrôles et écrans sont pris en charge ?", "Tactile, souris et clavier suivent les mêmes règles ; la mise en page logique s’adapte au mobile, au paysage et à l’ordinateur."], ["La progression passe-t-elle automatiquement sur un autre appareil ?", "Non. Elle reste dans le navigateur ; un autre profil ou appareil aura sa propre progression."], ["Combien de temps dure le bouclier de l’invocateur ?", "Il bloque les dégâts ennemis pendant ce tour uniquement. Son plafond est de 35 % des PV max. de l’invocateur ; tout bouclier restant disparaît à la fin du tour."]]
   };
   localizedGames["de"] ||= {};
   localizedGames["de"]["animal-rune-reels"] = {
@@ -19730,7 +20303,7 @@
     progression: ["Sechs Kapitel mit je fünf Abschnitten erhöhen Wellenlänge und Wächterkombinationen. Tagesmissionen betonen Münzen oder Materialien, Events wechseln nach dem angezeigten Zeitplan.", "Helden- und Runenwachstum erweitert die Strategie, ohne die gut lesbare Auflösungsreihenfolge der drei Räder zu ändern."],
     designNote: "Die Räder halten in einer festen visuellen Reihenfolge an, vollständige Reihen leuchten vor der Auflösung und Heldenaktionen bleiben von den addierten Verteidigungs- und Heilwerten des Beschwörers getrennt. Die Oberfläche nutzt ein zentriertes logisches Layout mit höchstens 920 Pixeln und skaliert Steuerung und Koordinaten auf Handy, Querformat und Desktop gemeinsam.",
     parent: "Ein Konto ist nicht erforderlich. Helden, Kampagne, Währungen, Materialien, Runenstufen und Belohnungen werden in diesem Browser gespeichert. Das Löschen von Websitedaten oder ein Browserwechsel kann einen separaten Spielstand erzeugen.",
-    faq: [["Was bewirkt eine gleiche Runenreihe?", "Sie verdoppelt diese Fähigkeit, sobald alle drei Räder angehalten sind."], ["Teilen sich die Helden einen Angriff?", "Nein. Helden greifen einzeln an; Teamverteidigung und Heilung werden für den Beschwörer addiert."], ["Was passiert beim Verlassen von Battle?", "Das permanente Inventar bleibt, aber der aktuelle Kampfversuch geht verloren."], ["Sind Eventbelohnungen immer verfügbar?", "Nein. Eventmissionen folgen dem in Stage angezeigten Zeitplan."], ["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Touch, Maus und Tastatur folgen denselben Regeln; das logische Layout passt sich Handy, Querformat und Desktop an."], ["Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?", "Nein. Er bleibt im Browser; ein anderes Profil oder Gerät erhält eigenen Fortschritt."]]
+    faq: [["Was bewirkt eine gleiche Runenreihe?", "Sie verdoppelt diese Fähigkeit, sobald alle drei Räder angehalten sind."], ["Teilen sich die Helden einen Angriff?", "Nein. Helden greifen einzeln an; Teamverteidigung und Heilung werden für den Beschwörer addiert."], ["Was passiert beim Verlassen von Battle?", "Das permanente Inventar bleibt, aber der aktuelle Kampfversuch geht verloren."], ["Sind Eventbelohnungen immer verfügbar?", "Nein. Eventmissionen folgen dem in Stage angezeigten Zeitplan."], ["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Touch, Maus und Tastatur folgen denselben Regeln; das logische Layout passt sich Handy, Querformat und Desktop an."], ["Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?", "Nein. Er bleibt im Browser; ein anderes Profil oder Gerät erhält eigenen Fortschritt."], ["Wie lange hält der Schild des Beschwörers?", "Er blockt gegnerischen Schaden nur in diesem Zug. Die Obergrenze beträgt 35 % der maximalen LP des Beschwörers; übriger Schild verfällt am Zugende."]]
   };
   localizedGames["it"] ||= {};
   localizedGames["it"]["animal-rune-reels"] = {
@@ -19745,7 +20318,7 @@
     progression: ["Sei capitoli da cinque fasi aumentano la durata delle ondate e le combinazioni di guardiani. Le missioni giornaliere privilegiano monete o materiali, gli eventi seguono il calendario mostrato.", "La crescita di eroi e rune amplia le scelte senza cambiare l’ordine leggibile di risoluzione dei tre rulli."],
     designNote: "I rulli si fermano in un ordine visivo fisso, le linee complete brillano prima della risoluzione e le azioni degli eroi restano separate dai totali combinati di difesa e cura dell’evocatore. L’interfaccia usa un layout logico centrato di massimo 920 pixel e scala insieme controlli e coordinate su telefono, orizzontale e desktop.",
     parent: "Non serve un account. Eroi, campagna, valute, materiali, livelli delle rune e ricompense restano salvati in questo browser. Cancellare i dati del sito o cambiare browser può creare un salvataggio separato.",
-    faq: [["Cosa fa una linea di rune uguali?", "Raddoppia quella capacità quando tutti e tre i rulli si fermano."], ["Gli eroi condividono un attacco?", "No. Attaccano separatamente; difesa e cura della squadra vengono sommate per l’evocatore."], ["Cosa succede se esco da Battle?", "L’inventario permanente resta, ma il tentativo di battaglia corrente viene perso."], ["Le ricompense degli eventi sono sempre disponibili?", "No. Le missioni evento seguono il calendario mostrato in Stage."], ["Quali controlli e dimensioni sono supportati?", "Touch, mouse e tastiera usano le stesse regole; il layout logico si adatta a telefono, orizzontale e desktop."], ["I progressi passano automaticamente a un altro dispositivo?", "No. Ora vengono salvati solo nel browser; un altro profilo o dispositivo avrà progressi separati."]]
+    faq: [["Cosa fa una linea di rune uguali?", "Raddoppia quella capacità quando tutti e tre i rulli si fermano."], ["Gli eroi condividono un attacco?", "No. Attaccano separatamente; difesa e cura della squadra vengono sommate per l’evocatore."], ["Cosa succede se esco da Battle?", "L’inventario permanente resta, ma il tentativo di battaglia corrente viene perso."], ["Le ricompense degli eventi sono sempre disponibili?", "No. Le missioni evento seguono il calendario mostrato in Stage."], ["Quali controlli e dimensioni sono supportati?", "Touch, mouse e tastiera usano le stesse regole; il layout logico si adatta a telefono, orizzontale e desktop."], ["I progressi passano automaticamente a un altro dispositivo?", "No. Ora vengono salvati solo nel browser; un altro profilo o dispositivo avrà progressi separati."], ["Quanto dura lo scudo dell’evocatore?", "Blocca i danni nemici solo per quel turno. Il limite è il 35% dei PS massimi dell’evocatore; lo scudo residuo scompare alla fine del turno."]]
   };
   localizedGames["ru"] ||= {};
   localizedGames["ru"]["animal-rune-reels"] = {
@@ -19760,7 +20333,7 @@
     progression: ["Шесть глав по пять этапов увеличивают длину волн и сочетания хранителей. Ежедневные миссии выделяют монеты или материалы, а события меняются по показанному расписанию.", "Рост героев и рун расширяет стратегию, не меняя понятный порядок разрешения трёх барабанов."],
     designNote: "Барабаны останавливаются в фиксированном визуальном порядке, полные линии светятся до разрешения, а действия героев отделены от объединённых показателей защиты и лечения призывателя. Интерфейс использует единую центрированную логическую раскладку шириной до 920 пикселей и вместе масштабирует управление и координаты на телефоне, в альбомном режиме и на компьютере.",
     parent: "Аккаунт не нужен. Герои, кампания, валюты, материалы, уровни рун и награды хранятся в этом браузере. Очистка данных сайта или смена браузера может создать отдельное сохранение.",
-    faq: [["Что делает линия одинаковых рун?", "После остановки всех трёх барабанов она удваивает способность этой руны."], ["Герои делят одну атаку?", "Нет. Герои атакуют отдельно, а защита и лечение команды суммируются для призывателя."], ["Что произойдёт, если выйти из Battle?", "Постоянный инвентарь сохранится, но текущая попытка боя будет потеряна."], ["Событийные награды доступны всегда?", "Нет. Событийные миссии следуют расписанию, показанному на Stage."], ["Какие способы управления и размеры экрана поддерживаются?", "Сенсорное управление, мышь и клавиатура используют одни правила; раскладка масштабируется на телефоне, в альбомном режиме и на компьютере."], ["Переносится ли прогресс на другое устройство автоматически?", "Нет. Сейчас он хранится только в браузере, поэтому другой профиль или устройство получит отдельный прогресс."]]
+    faq: [["Что делает линия одинаковых рун?", "После остановки всех трёх барабанов она удваивает способность этой руны."], ["Герои делят одну атаку?", "Нет. Герои атакуют отдельно, а защита и лечение команды суммируются для призывателя."], ["Что произойдёт, если выйти из Battle?", "Постоянный инвентарь сохранится, но текущая попытка боя будет потеряна."], ["Событийные награды доступны всегда?", "Нет. Событийные миссии следуют расписанию, показанному на Stage."], ["Какие способы управления и размеры экрана поддерживаются?", "Сенсорное управление, мышь и клавиатура используют одни правила; раскладка масштабируется на телефоне, в альбомном режиме и на компьютере."], ["Переносится ли прогресс на другое устройство автоматически?", "Нет. Сейчас он хранится только в браузере, поэтому другой профиль или устройство получит отдельный прогресс."], ["Как долго действует щит призывателя?", "Он блокирует урон врагов только в этом ходу. Предел — 35% от максимума здоровья призывателя; остаток щита исчезает в конце хода."]]
   };
   localizedGames["hi"] ||= {};
   localizedGames["hi"]["animal-rune-reels"] = {
@@ -19775,7 +20348,7 @@
     progression: ["पाँच-पाँच चरण वाले छह अध्याय लहर की लंबाई और संरक्षक संयोजन बढ़ाते हैं। दैनिक मिशन सिक्कों या सामग्री पर जोर देते हैं और कार्यक्रम दिखाए गए समय पर बदलते हैं।", "नायक और रूण की वृद्धि रणनीतिक विकल्प बढ़ाती है, लेकिन तीन रील के स्पष्ट समाधान क्रम को नहीं बदलती।"],
     designNote: "रील एक निश्चित दृश्य क्रम में रुकती हैं, पूरी हुई पंक्तियाँ हल होने से पहले चमकती हैं और नायक की क्रियाएँ बुलाने वाले की संयुक्त रक्षा व उपचार से अलग रहती हैं। इंटरफ़ेस अधिकतम 920 पिक्सेल वाले केंद्रित तार्किक लेआउट में फ़ोन, लैंडस्केप और डेस्कटॉप पर नियंत्रण व निर्देशांक साथ स्केल करता है।",
     parent: "खाते की आवश्यकता नहीं है। नायक, अभियान, मुद्रा, सामग्री, रूण स्तर और इनाम इसी ब्राउज़र में सहेजे जाते हैं। साइट डेटा मिटाने या ब्राउज़र बदलने पर अलग सेव बन सकती है।",
-    faq: [["समान रूण पंक्ति क्या करती है?", "तीनों रील रुकने के बाद वह उस रूण की क्षमता दोगुनी करती है।"], ["क्या नायक एक ही हमला साझा करते हैं?", "नहीं। नायक अलग-अलग हमला करते हैं; टीम रक्षा और उपचार बुलाने वाले के लिए जुड़ते हैं।"], ["Battle से निकलने पर क्या होगा?", "स्थायी सामान बचा रहता है, लेकिन वर्तमान युद्ध प्रयास खो जाता है।"], ["क्या कार्यक्रम इनाम हमेशा उपलब्ध हैं?", "नहीं। कार्यक्रम मिशन Stage में दिखाए समय का पालन करते हैं।"], ["कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "टच, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फ़ोन, लैंडस्केप और डेस्कटॉप पर स्केल होता है।"], ["क्या प्रगति दूसरे उपकरण पर अपने आप जाती है?", "नहीं। यह केवल ब्राउज़र में रहती है; दूसरे प्रोफ़ाइल या उपकरण की प्रगति अलग होगी।"]]
+    faq: [["समान रूण पंक्ति क्या करती है?", "तीनों रील रुकने के बाद वह उस रूण की क्षमता दोगुनी करती है।"], ["क्या नायक एक ही हमला साझा करते हैं?", "नहीं। नायक अलग-अलग हमला करते हैं; टीम रक्षा और उपचार बुलाने वाले के लिए जुड़ते हैं।"], ["Battle से निकलने पर क्या होगा?", "स्थायी सामान बचा रहता है, लेकिन वर्तमान युद्ध प्रयास खो जाता है।"], ["क्या कार्यक्रम इनाम हमेशा उपलब्ध हैं?", "नहीं। कार्यक्रम मिशन Stage में दिखाए समय का पालन करते हैं।"], ["कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "टच, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फ़ोन, लैंडस्केप और डेस्कटॉप पर स्केल होता है।"], ["क्या प्रगति दूसरे उपकरण पर अपने आप जाती है?", "नहीं। यह केवल ब्राउज़र में रहती है; दूसरे प्रोफ़ाइल या उपकरण की प्रगति अलग होगी।"], ["समनर की शील्ड कितनी देर रहती है?", "यह केवल उसी टर्न में दुश्मनों का नुकसान रोकती है। इसकी सीमा समनर के अधिकतम HP का 35% है; टर्न खत्म होने पर बची शील्ड हट जाती है।"]]
   };
   localizedGames["ar"] ||= {};
   localizedGames["ar"]["animal-rune-reels"] = {
@@ -19790,7 +20363,7 @@
     progression: ["تزيد ستة فصول من خمس مراحل طول الموجات وتركيبات الحراس. تركز المهام اليومية على العملات أو المواد، وتتبدل الفعاليات حسب الجدول الظاهر.", "يوسع نمو الأبطال والرونات الخيارات الاستراتيجية من دون تغيير ترتيب حل البكرات الثلاث الواضح."],
     designNote: "تتوقف البكرات بترتيب بصري ثابت، وتضيء الصفوف المكتملة قبل حلها، وتبقى أفعال الأبطال منفصلة عن إجمالي دفاع المستدعي وعلاجه. تستخدم الواجهة تخطيطًا منطقيًا واحدًا في المنتصف بعرض أقصى 920 بكسل، وتكبر عناصر التحكم والإحداثيات معًا على الهاتف والوضع الأفقي وسطح المكتب.",
     parent: "لا يلزم حساب. تُحفظ الأبطال والحملة والعملات والمواد ومستويات الرون والمكافآت في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى إنشاء حفظ منفصل.",
-    faq: [["ماذا يفعل صف الرونات المتطابقة؟", "يضاعف قدرة الرون بعد توقف البكرات الثلاث."], ["هل يشترك الأبطال في هجوم واحد؟", "لا. يهاجم كل بطل منفردًا، ويُجمع دفاع الفريق وعلاجه للمستدعي."], ["ماذا يحدث إذا غادرت المعركة؟", "تبقى محتويات الحقيبة الدائمة، لكن محاولة المعركة الحالية تضيع."], ["هل مكافآت الفعاليات متاحة دائمًا؟", "لا. تتبع مهام الفعاليات الجدول المعروض في المراحل."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط المنطقي مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ حاليًا في المتصفح فقط، لذلك يملك الملف أو الجهاز الآخر تقدمًا منفصلًا."]]
+    faq: [["ماذا يفعل صف الرونات المتطابقة؟", "يضاعف قدرة الرون بعد توقف البكرات الثلاث."], ["هل يشترك الأبطال في هجوم واحد؟", "لا. يهاجم كل بطل منفردًا، ويُجمع دفاع الفريق وعلاجه للمستدعي."], ["ماذا يحدث إذا غادرت المعركة؟", "تبقى محتويات الحقيبة الدائمة، لكن محاولة المعركة الحالية تضيع."], ["هل مكافآت الفعاليات متاحة دائمًا؟", "لا. تتبع مهام الفعاليات الجدول المعروض في المراحل."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط المنطقي مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ حاليًا في المتصفح فقط، لذلك يملك الملف أو الجهاز الآخر تقدمًا منفصلًا."], ["إلى متى يستمر درع المستدعي؟", "يصد ضرر الأعداء خلال هذا الدور فقط. حده 35٪ من أقصى صحة للمستدعي، ويختفي أي درع متبقٍ عند نهاية الدور."]]
   };
   const runeReelsTacticalAdditions = {
     en: {
@@ -25547,91 +26120,6 @@
     }
   }
 };
-  gameplayProfiles["tetris"] ||= {};
-  gameplayProfiles["tetris"].marketComparison = {
-  "name": "Tetris Effect: Connected",
-  "source": "https://tetriseffect.game/",
-  "locales": {
-    "en": {
-      "heading": "Similar gameplay references",
-      "sourceLabel": "Official reference",
-      "disclaimer": "These are separate works. This comparison does not indicate an official edition, endorsement or partnership.",
-      "body": "Looking for the falling-block decisions found in Tetris Effect: Connected? Both involve fitting falling pieces, keeping space open and completing horizontal lines. That title also offers an audiovisual Journey, the time-stopping Zone mechanic and multiplayer modes. This WeightPlay game is instead a continuous solo browser run, with a level increase every ten cleared lines and a locally saved best score; it has no Zone, Journey campaign or multiplayer."
-    },
-    "zh-Hant": {
-      "heading": "相似玩法參考",
-      "sourceLabel": "參考作品官方說明",
-      "disclaimer": "這是不同作品之間的玩法比較，不表示本站提供該作品的官方版本、獲得其背書或與其合作。",
-      "body": "在找像 Tetris Effect: Connected 的落下方塊玩法嗎？兩者都要安排方塊落點、保留空間並填滿橫列。參考作品另有影音旅程、暫停時間的 Zone 機制及多人模式；本站則是持續進行的單人瀏覽器挑戰，每消除十行升級，最高分保存在本機，沒有 Zone、旅程戰役或多人對戰。"
-    },
-    "zh-Hans": {
-      "heading": "相似玩法参考",
-      "sourceLabel": "参考作品官方说明",
-      "disclaimer": "这是不同作品之间的玩法比较，不表示本站提供该作品的官方版本、获得其背书或与其合作。",
-      "body": "在找像 Tetris Effect: Connected 的下落方块玩法吗？两者都要安排方块落点、保留空间并填满横行。参考作品另有影音旅程、暂停时间的 Zone 机制及多人模式；本站则是持续进行的单人浏览器挑战，每消除十行升级，最高分保存在本设备，没有 Zone、旅程战役或多人对战。"
-    },
-    "ja": {
-      "heading": "似た遊び方の作品",
-      "sourceLabel": "参照作品の公式情報",
-      "disclaimer": "別の作品同士の遊び方を比較しています。公式版、推薦、提携を示すものではありません。",
-      "body": "Tetris Effect: Connected のような落ちものパズルを探していますか。どちらも落ちるピースを組み合わせ、空間を残し、横一列を埋めます。参照作品には映像と音楽の Journey、時間を止める Zone、マルチプレイもあります。本作は一人用の連続したブラウザー挑戦で、十ラインごとにレベルが上がり、最高点を端末に保存します。Zone、Journey、対人戦はありません。"
-    },
-    "ko": {
-      "heading": "비슷한 플레이 방식의 게임",
-      "sourceLabel": "참고 게임의 공식 정보",
-      "disclaimer": "서로 다른 작품의 플레이 방식을 비교한 내용이며, 공식 버전이나 추천 또는 제휴 관계를 뜻하지 않습니다.",
-      "body": "Tetris Effect: Connected와 같은 낙하 블록의 배치 결정을 찾고 있나요? 두 게임 모두 떨어지는 조각을 맞추고 공간을 남기며 가로줄을 완성합니다. 참고 작품에는 시청각 Journey, 시간을 멈추는 Zone, 다인용 모드도 있습니다. 이 게임은 혼자 이어 가는 브라우저 도전으로 열 줄마다 레벨이 오르고 최고 점수를 기기에 저장합니다. Zone, Journey 캠페인, 다인용 대전은 없습니다."
-    },
-    "es": {
-      "heading": "Juegos con mecánicas similares",
-      "sourceLabel": "Información oficial del juego citado",
-      "disclaimer": "Son obras distintas. Esta comparación no indica una versión oficial, un respaldo ni una colaboración.",
-      "body": "¿Buscas decisiones de bloques en caída como las de Tetris Effect: Connected? Ambos consisten en encajar piezas, dejar espacio y completar líneas horizontales. Ese título también ofrece un viaje audiovisual Journey, la mecánica Zone que detiene el tiempo y modos multijugador. Aquí hay una partida individual continua en el navegador, con un nivel nuevo cada diez líneas y récord local, sin Zone, campaña Journey ni multijugador."
-    },
-    "pt-BR": {
-      "heading": "Jogos com mecânicas semelhantes",
-      "sourceLabel": "Informações oficiais do jogo citado",
-      "disclaimer": "São obras diferentes. Esta comparação não indica uma versão oficial, endosso ou parceria.",
-      "body": "Procura decisões de blocos em queda como em Tetris Effect: Connected? Os dois envolvem encaixar peças, manter espaço e completar linhas horizontais. O título citado também oferece a jornada audiovisual Journey, a mecânica Zone que para o tempo e modos multijogador. Aqui há uma partida solo contínua no navegador, com avanço de nível a cada dez linhas e recorde local, sem Zone, campanha Journey ou multijogador."
-    },
-    "fr": {
-      "heading": "Jeux aux mécaniques proches",
-      "sourceLabel": "Informations officielles du jeu cité",
-      "disclaimer": "Il s’agit d’œuvres distinctes. Cette comparaison ne signifie ni version officielle, ni recommandation, ni partenariat.",
-      "body": "Vous cherchez les décisions de blocs en chute de Tetris Effect: Connected ? Les deux jeux demandent d’emboîter les pièces, de garder de l’espace et de compléter des lignes horizontales. Le titre cité propose aussi le parcours audiovisuel Journey, la mécanique Zone qui arrête le temps et des modes multijoueurs. Ici, la partie solo dans le navigateur continue avec un niveau toutes les dix lignes et un record local, sans Zone, campagne Journey ni multijoueur."
-    },
-    "de": {
-      "heading": "Spiele mit ähnlicher Spielweise",
-      "sourceLabel": "Offizielle Informationen zum Vergleichsspiel",
-      "disclaimer": "Es handelt sich um eigenständige Werke. Der Vergleich bedeutet weder eine offizielle Ausgabe noch eine Empfehlung oder Partnerschaft.",
-      "body": "Du suchst Fallblock-Entscheidungen wie in Tetris Effect: Connected? Beide Spiele verlangen passende Platzierungen, freien Raum und vollständige waagerechte Reihen. Der genannte Titel bietet zusätzlich die audiovisuelle Journey, die zeitstoppende Zone-Mechanik und Mehrspielermodi. Hier spielst du allein und fortlaufend im Browser, steigst alle zehn Reihen eine Stufe auf und speicherst den Bestwert lokal; Zone, Journey-Kampagne und Mehrspieler fehlen."
-    },
-    "it": {
-      "heading": "Giochi con meccaniche simili",
-      "sourceLabel": "Informazioni ufficiali sul gioco citato",
-      "disclaimer": "Si tratta di opere distinte. Il confronto non indica una versione ufficiale, un’approvazione o una collaborazione.",
-      "body": "Cerchi le decisioni sui blocchi in caduta di Tetris Effect: Connected? Entrambi richiedono di incastrare i pezzi, lasciare spazio e completare righe orizzontali. Il titolo citato offre anche il percorso audiovisivo Journey, la meccanica Zone che ferma il tempo e modalità multigiocatore. Qui la partita in solitaria nel browser è continua, con un livello ogni dieci righe e record locale, senza Zone, campagna Journey o multigiocatore."
-    },
-    "ru": {
-      "heading": "Игры с похожей механикой",
-      "sourceLabel": "Официальная информация об упомянутой игре",
-      "disclaimer": "Это разные произведения. Сравнение не означает официальную версию, одобрение или партнёрство.",
-      "body": "Ищете решения о размещении падающих блоков, как в Tetris Effect: Connected? В обеих играх нужно укладывать фигуры, сохранять свободное место и заполнять горизонтальные ряды. Упомянутая игра также предлагает аудиовизуальную Journey, останавливающую время механику Zone и многопользовательские режимы. Здесь непрерывная одиночная партия в браузере с повышением уровня каждые десять линий и локальным рекордом, без Zone, кампании Journey и сетевой игры."
-    },
-    "hi": {
-      "heading": "मिलते-जुलते खेलों की तुलना",
-      "sourceLabel": "संदर्भित खेल की आधिकारिक जानकारी",
-      "disclaimer": "ये अलग-अलग खेल हैं। इस तुलना का अर्थ आधिकारिक संस्करण, समर्थन या साझेदारी नहीं है।",
-      "body": "Tetris Effect: Connected जैसे गिरते ब्लॉकों के फैसले खोज रहे हैं? दोनों में टुकड़े फिट करना, जगह खुली रखना और क्षैतिज पंक्तियाँ भरना होता है। संदर्भित खेल में दृश्य-संगीत वाली Journey, समय रोकने वाली Zone और बहुखिलाड़ी मोड भी हैं। यहाँ ब्राउज़र में लगातार अकेले खेलते हैं, हर दस साफ पंक्तियों पर स्तर बढ़ता है और सर्वश्रेष्ठ स्कोर स्थानीय रूप से सहेजता है। Zone, Journey मुहिम और बहुखिलाड़ी मोड नहीं हैं।"
-    },
-    "ar": {
-      "heading": "ألعاب ذات أسلوب لعب مشابه",
-      "sourceLabel": "المعلومات الرسمية للعبة المرجعية",
-      "disclaimer": "هذه أعمال مختلفة. لا تعني المقارنة أن هذه نسخة رسمية أو أنها تحظى بتأييد أو شراكة.",
-      "body": "هل تبحث عن قرارات ترتيب الكتل المتساقطة الموجودة في Tetris Effect: Connected؟ تتطلب اللعبتان ملاءمة القطع وترك مساحة وإكمال الصفوف الأفقية. يقدم العنوان المرجعي أيضًا رحلة Journey السمعية البصرية وآلية Zone التي توقف الزمن وأوضاعًا جماعية. هنا جولة فردية مستمرة في المتصفح مع ارتفاع المستوى كل عشرة صفوف وحفظ أفضل نتيجة محليًا، دون Zone أو حملة Journey أو لعب جماعي."
-    }
-  }
-};
   // SEO 1.3.0: comparison-layer branch draft, not a third-party game identity.
   gameplayProfiles["peg-solitaire"] ||= {};
   gameplayProfiles["peg-solitaire"].marketComparison = {
@@ -27521,6 +28009,592 @@
       text140Tags: coloringStudioTextTags140[locale]
     };
   }
+  const gearpackText140Guide = {
+    en: ["Gearpack Expedition", "Pack shaped gear into an 11-column by 7-row grid, rotating pieces to fit. Link matching material cells from different items to raise Attack and Defense, then watch Rux fight automatically through five encounters. After each win, choose loot and repack before the next enemy; clear 30 stages across six regions, with a Guardian every fifth stage."],
+    "zh-Hant": ["動物裝備行囊遠征", "把不同形狀的裝備放進 11 欄、7 列的行囊，必要時先旋轉再放置。讓不同裝備的相同材質格上下或左右相鄰，可提高攻擊與防禦；接著由魯克斯自動迎戰五場遭遇。每次獲勝後選擇戰利品並重新整理行囊，再迎戰下一名敵人。完成六區共 30 關，每五關會遇到一位守關首領。"],
+    "zh-Hans": ["动物装备行囊远征", "把不同形状的装备放入 11 列、7 行的行囊，必要时先旋转再放置。让不同装备的相同材质格上下或左右相邻，可提高攻击与防御；随后由鲁克斯自动迎战五场遭遇。每次获胜后选择战利品并重新整理行囊，再迎战下一名敌人。完成六个区域共 30 关，每五关会遇到一位守关首领。"],
+    ja: ["ギアパック遠征", "形の異なる装備を11列×7行のバッグに配置し、必要なら回転させて隙間に合わせます。別々の装備で同じ素材のマスを上下左右につなぐと、攻撃力と防御力が上がります。戦闘は自動で進み、1ステージにつき5戦。勝利後は戦利品を選び、次の敵の前にバッグを組み直します。6地域の全30ステージを進み、5ステージごとにガーディアンへ挑みます。"],
+    ko: ["기어팩 원정대", "모양이 다른 장비를 11열×7행 가방에 배치하고, 필요하면 회전해 빈칸에 맞추세요. 서로 다른 장비의 같은 재료 칸을 상하좌우로 맞닿게 연결하면 공격력과 방어력이 올라갑니다. 전투는 자동으로 진행되며 한 스테이지에서 다섯 번 싸웁니다. 승리 후 전리품을 고르고 다음 적 전에 가방을 다시 꾸리세요. 여섯 지역의 30개 스테이지를 진행하며 다섯 스테이지마다 수호자와 맞섭니다."],
+    es: ["Expedición Gearpack", "Coloca piezas de equipo con distintas formas en una mochila de 11 columnas por 7 filas y gíralas para encajarlas. Al unir en vertical u horizontal las casillas del mismo material de dos objetos distintos, aumentan el Ataque y la Defensa. Rux combate automáticamente en cinco encuentros por etapa. Tras cada victoria, elige botín y vuelve a organizar la mochila antes del siguiente enemigo. Supera 30 etapas en seis regiones. Al final de cada quinta etapa te espera un Guardián."],
+    "pt-BR": ["Expedição Gearpack", "Organize equipamentos de formatos diferentes em uma mochila de 11 colunas por 7 linhas e gire as peças para encaixá-las. Ao unir, na vertical ou na horizontal, casas do mesmo material em itens diferentes, você aumenta Ataque e Defesa. Rux luta automaticamente em cinco encontros por etapa. Após cada vitória, escolha um saque e reorganize a mochila antes do próximo inimigo. Conclua 30 etapas em seis regiões; a cada quinta etapa há um Guardião."],
+    fr: ["Expédition Gearpack", "Placez des équipements de formes variées dans un sac de 11 colonnes sur 7 lignes et faites-les pivoter pour les ajuster. En reliant à la verticale ou à l’horizontale les cases d’un même matériau sur deux objets distincts, vous augmentez l’Attaque et la Défense. Rux combat automatiquement lors de cinq affrontements par étape. Après chaque victoire, choisissez un butin puis réorganisez le sac avant l’ennemi suivant. Parcourez 30 étapes dans six régions. Un Gardien vous attend à la fin de chaque cinquième étape."],
+    de: ["Gearpack-Expedition", "Ordne Ausrüstung mit unterschiedlichen Formen in einem Raster aus 11 Spalten und 7 Reihen an und drehe Teile, damit sie passen. Berühren sich gleiche Materialfelder verschiedener Gegenstände waagerecht oder senkrecht, steigen Angriff und Verteidigung. Rux kämpft fünf Begegnungen pro Abschnitt automatisch. Wähle nach jedem Sieg Beute und packe den Rucksack vor dem nächsten Gegner neu. Schließe 30 Abschnitte in sechs Regionen ab; nach je fünf Abschnitten wartet ein Wächter."],
+    it: ["Spedizione Gearpack", "Disponi equipaggiamenti di forme diverse in uno zaino da 11 colonne per 7 righe e ruotali per farli entrare. Quando le caselle dello stesso materiale di oggetti diversi si toccano in orizzontale o in verticale, aumentano Attacco e Difesa. Rux affronta automaticamente cinque scontri per livello. Dopo ogni vittoria scegli il bottino e riorganizza lo zaino prima del nemico successivo. Completa 30 livelli in sei regioni. Ogni cinque livelli ti aspetta un Guardiano."],
+    ru: ["Экспедиция Gearpack", "Размещайте предметы разной формы в рюкзаке размером 11 на 7 клеток и поворачивайте их, чтобы они поместились. Если клетки одного материала у разных предметов соприкасаются по горизонтали или вертикали, растут атака и защита. Рукс автоматически проходит пять боёв на каждом этапе. После победы выберите добычу и перестройте рюкзак перед следующим противником. Пройдите 30 этапов в шести регионах. После каждых пяти этапов предстоит бой со Стражем."],
+    hi: ["गियरपैक अभियान", "अलग-अलग आकार के उपकरणों को 11 स्तंभ × 7 पंक्तियों वाले बैग में रखें और जगह के अनुसार घुमाएँ। अलग वस्तुओं की एक ही सामग्री वाली कोशिकाएँ ऊपर-नीचे या दाएँ-बाएँ जुड़ें तो आक्रमण और रक्षा बढ़ती है। रक्स हर चरण में पाँच लड़ाइयाँ अपने-आप लड़ता है। हर जीत के बाद लूट चुनें और अगले शत्रु से पहले बैग फिर से सजाएँ। छह क्षेत्रों के 30 चरण पूरे करें; हर पाँचवें चरण के अंत में एक संरक्षक है।"],
+    ar: ["رحلة Gearpack", "رتّب معدات مختلفة الأشكال في حقيبة من 11 عمودًا و7 صفوف، ودوّر القطع لتناسب المساحة. عندما تتلامس خلايا المادة نفسها في قطعتين مختلفتين أفقيًا أو رأسيًا، تزداد قوة الهجوم والدفاع. يخوض روكس خمس مواجهات تلقائيًا في كل مرحلة. بعد كل فوز اختر غنيمة وأعد ترتيب الحقيبة قبل العدو التالي. أكمل 30 مرحلة في ست مناطق، واستعد لمواجهة حارس بعد كل خمس مراحل."]
+  };
+  const gearpackText140LocalizedDetails = {
+    ko: {
+      title: "기어팩 원정", gameplay: "장비 배치형 로그라이트 전략", genre: ["전략", "공간 배치", "로그라이트"], difficulty: "보통에서 어려움", time: "원정당 5~12분", noteTitle: "플레이어 및 저장 정보",
+      story: ["기어우드의 대상로는 여섯 작업장을 이었습니다. 보관고가 화물에 반응해 봉쇄되자 숲은 뿌리에 막히고, 수정 채석장은 갈라졌으며, 시계장치와 용광로, 폭풍 관측소가 차례로 폭주했습니다. 마지막에는 자동 병력이 이클립스 금고의 화물을 지키고 있습니다.", "짐꾸리기 전문가 기어 혼 룩스는 이동 상점을 운영하는 문 캡 올라와 함께 길을 복구합니다. 지역 수호자를 물리칠 때마다 화물 운송로가 다시 열립니다."],
+      systems: ["장비는 11열×7행 가방에 놓으며, 모양에 맞게 회전할 수 있습니다. 공격은 피해를 주고, 방어구는 반격 피해를 줄이며, 회복 장비는 다음 공격 전에 체력을 회복합니다. 서로 다른 두 장비의 같은 재료 칸이 가로나 세로로 맞닿으면 연결이 생겨 공격력 2와 방어력 1을 얻습니다.", "체력은 원정의 다섯 전투 동안 이어집니다. 승리할 때마다 장비를 꺼내 다시 배치하고, 세 가지 전리품 중 하나를 고르거나 공간을 남길 수 있습니다. 대기 칸과 가방을 합쳐 장비는 최대 12개까지 둘 수 있습니다.", "적의 규칙은 배치 전략을 바꿉니다. 방패는 첫 공격을 막고, 매복자는 먼저 공격하며, 연결되지 않은 장비는 추가 피해를 부릅니다. 부식은 방어력을 낮추고, 윗줄의 열기는 공간을 제한하며, 과부하와 봉인은 사용할 수 있는 재료를 바꿉니다.", "작업장 경험치, 발견 기록, 완료한 스테이지와 다음 해금 스테이지는 이 브라우저에 저장됩니다. 다이아몬드는 선택 재화이며, 확인 후 올라의 상점 상품 세 개를 새로 고를 때만 사용합니다."],
+      how: ["가로로 움직이는 30개 스테이지 원정 목록에서 열린 스테이지를 골라 규칙을 읽습니다.", "대기 칸에서 장비를 고르고 필요하면 회전한 뒤 11열×7행 가방의 빈칸에 놓습니다.", "서로 다른 장비의 같은 재료 칸을 맞닿게 연결해 공격력과 방어력을 높입니다.", "가방을 준비하고 전투를 시작합니다. 승리하면 전리품을 고른 뒤 다음 적에 맞춰 다시 배치합니다.", "다섯 번째 전투에서 이기면 스테이지가 완료됩니다. 5, 10, 15, 20, 25, 30스테이지에는 수호자가 등장합니다."],
+      strategyTips: ["배치 전에 스테이지 규칙을 읽고 재료 봉인이나 과부하에 대비해 여러 종류를 연결하세요.", "고립 규칙에서는 중요한 장비를 서로 연결하고, 윗줄 열기 규칙에서는 첫 줄을 비워 두세요.", "부식 전투는 길어질수록 불리합니다. 방패 적에게는 방패를 깬 뒤 큰 공격을 준비하세요.", "전리품을 모두 받을 필요는 없습니다. 상점이나 수호자를 앞두고는 빈칸이 더 유용할 수 있습니다."],
+      progression: ["1~5스테이지는 연결, 회전, 방패, 선제 공격과 고립 규칙을 소개합니다. 자연 재료 연결이 있으면 뿌리 수호자의 회복을 막을 수 있습니다.", "6~10스테이지는 달 재료 봉인과 더 큰 수정 방벽을 더합니다. 수정 수호자는 18의 방패를 두르고 시작합니다.", "11~15스테이지는 분노, 고립, 부식을 조합합니다. 시계 거상은 방어 단계와 강한 반격 단계가 번갈아 나타납니다.", "16~20스테이지에는 윗줄 열기와 강한 부식이 추가됩니다. 용광로 거수전에서는 통풍 공간과 빠른 공격이 중요합니다.", "21~25스테이지는 선제 공격과 최다 재료 과부하를 결합합니다. 폭풍 대공은 연결되지 않은 장비에 연쇄 번개를 내립니다.", "26~30스테이지에서는 네 재료의 봉인이 바뀌며 이전 규칙이 함께 등장합니다. 마지막 수호자전에는 여러 연결과 고립 장비를 줄이는 배치가 필요합니다."],
+      designNote: "스테이지마다 다섯 전투를 배치해 가방 구성을 발전시킬 시간을 주면서도 원정이 지나치게 길어지지 않게 했습니다. 자동 전투 동안에는 장비 모양과 연결, 빈칸, 다음 적의 규칙을 계획할 수 있습니다. 여섯 지역은 수치만 높이는 대신 서로 다른 배치 과제를 냅니다.",
+      parent: "계정 없이 플레이할 수 있습니다. 해금·완료 스테이지, 작업장 경험치, 발견 기록과 최고 진행도는 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 기기를 바꾸면 기록이 사라질 수 있습니다. 다이아몬드는 선택 사항입니다."
+    },
+    ru: {
+      title: "Экспедиция Gearpack", gameplay: "Стратегия с размещением снаряжения и элементами roguelite", genre: ["Стратегия", "Инвентарь", "Roguelite"], difficulty: "От средней до высокой", time: "5–12 минут на экспедицию", noteTitle: "Игрок и сохранение",
+      story: ["Караванная дорога Гирвуда соединяла шесть мастерских. Склады отреагировали на груз и закрыли путь: корни перекрыли лес, кристаллы раскололи карьер, часовые механизмы вышли из-под контроля, кузница перегрелась, а штормовые катушки захватили обсерваторию. В Хранилище затмения механическая армия охраняет последние запасы.", "Гир Хорн Рукс, мастер укладки снаряжения, отправляется в путь вместе с Мун Кэп Орлой и её передвижной лавкой. Победа над хранителем региона открывает дорогу для каравана и возвращает груз."],
+      systems: ["Укладывайте снаряжение в рюкзак из 11 столбцов и 7 рядов; предметы можно поворачивать, чтобы подобрать форму. Атака наносит урон, броня уменьшает ответный удар, а лечение восстанавливает здоровье до следующего попадания. Если клетки одного материала у двух разных предметов соприкасаются по горизонтали или вертикали, возникает связь: +2 к атаке и +1 к защите.", "Здоровье сохраняется на протяжении пяти боёв экспедиции. После победы предметы можно вынуть и разместить заново, а из трёх вариантов добычи взять один или оставить место свободным. В рюкзаке и лотке вместе помещается не более 12 предметов.", "Правила противников меняют расстановку. Щиты поглощают первый удар, засада атакует первой, а изолированные предметы увеличивают получаемый урон. Коррозия снижает защиту; жара верхнего ряда ограничивает свободные клетки, а перегрузка и печати блокируют отдельные материалы.", "Опыт мастерской, открытия, пройденные этапы и следующий открытый этап сохраняются в этом браузере. Алмазы необязательны: после отдельного подтверждения ими можно один раз обновить три товара Орлы."],
+      how: ["Выберите открытый этап на горизонтальной ленте из 30 этапов и прочитайте его правило.", "Возьмите предмет из лотка, при необходимости поверните его и разместите в рюкзаке 11×7.", "Соединяйте одинаковые материалы на разных предметах, чтобы повысить атаку и защиту.", "Подготовьте рюкзак и начните бой. После победы выберите добычу и перестройте рюкзак перед следующим противником.", "Победа в пятом бою завершает этап. На этапах 5, 10, 15, 20, 25 и 30 ждёт хранитель."],
+      strategyTips: ["Прочитайте правило этапа до расстановки и создайте связи из нескольких материалов на случай блокировки одного из них.", "Против изоляции соединяйте важные предметы; при жаре верхнего ряда оставляйте его свободным.", "Коррозия усиливает опасность затяжного боя. Против щита подготовьте мощный удар после его разрушения.", "Не обязательно брать каждый трофей. Перед лавкой или хранителем свободное место может оказаться ценнее слабого предмета."],
+      progression: ["Этапы 1–5 знакомят со связями, поворотом предметов, щитами, первым ударом и изоляцией. Связь с природным материалом останавливает восстановление здоровья Хранителя корней.", "Этапы 6–10 добавляют блокировку лунного материала и более прочные призматические барьеры. Хранитель кристаллов начинает бой с щитом на 18 единиц.", "Этапы 11–15 сочетают ярость, изоляцию и коррозию. Механический колосс чередует защиту и усиленную контратаку.", "Этапы 16–20 добавляют жар верхнего ряда и сильную коррозию. Против Левиафана кузницы нужны вентиляция и быстрый урон.", "Этапы 21–25 соединяют внезапные атаки с блокировкой самого частого материала. Грозовой архонт бьёт цепной молнией по изолированным предметам.", "Этапы 26–30 чередуют печати четырёх материалов и объединяют прежние правила. В финале пригодятся несколько разных связей и отсутствие изолированных предметов."],
+      designNote: "Пять боёв на этап дают рюкзаку время измениться, но не затягивают экспедицию. Автоматический бой оставляет игроку главную задачу: подбирать форму предметов, связи и свободные клетки с учётом следующего противника. Шесть регионов добавляют разные правила расстановки, а не только повышают числа.",
+      parent: "Играть можно без аккаунта. Открытые и пройденные этапы, опыт мастерской, открытия и лучший результат сохраняются в этом браузере. Очистка данных сайта или смена устройства может удалить сохранение. Алмазы необязательны."
+    },
+    ja: {
+      title: "ギアパック遠征", gameplay: "装備配置型ローグライト戦略", genre: ["戦略", "持ち物整理", "ローグライト"], difficulty: "中級から上級", time: "1回の遠征につき約5～12分", noteTitle: "プレイヤーとセーブ情報",
+      story: ["ギアウッドの街道は、六つの工房と倉庫をつないでいました。貨物に反応した倉庫が暴走し、森の根、水晶の裂け目、再起動した時計仕掛け、熱を帯びた炉、嵐の観測所、そして機械軍が守る日蝕の宝庫が道をふさぎます。", "荷造り役のギアホーン・ルクスは、旅商人ムーンキャップ・オーラと一緒に道を切り開きます。各地域の守護者を倒すと、閉ざされた倉庫から荷物を取り戻せます。"],
+      systems: ["装備は11列×7行のバッグに置き、形に合わせて回転できます。攻撃は敵に与えるダメージ、装甲は反撃の軽減、回復は被弾前の体力回復に使います。別々の装備の同じ素材マスが上下左右で接するとリンクになり、攻撃+2、防御+1を得ます。", "体力は1ステージの5戦を通して引き継がれます。勝利後は装備を取り出して並べ直し、候補3つから戦利品を選ぶか、空きを保つために見送れます。バッグと待機トレイを合わせた装備上限は12個です。", "敵の規則は配置を変えます。盾は初撃を吸収し、伏兵は先制し、孤立した装備は追加ダメージを招きます。腐食は防御を削り、最上段の熱は場所を奪い、過負荷と封印は使える素材を変えます。", "経験値、発見記録、クリア済みステージ、次の解放ステージはこのブラウザーに保存されます。ダイヤは任意で、確認後にオーラの店の商品を一度だけ更新する用途です。"],
+      how: ["遠征レールで解放済みステージを選び、ルールを確認します。", "トレイから装備を選び、必要なら回転して11×7のバッグに置きます。", "別々の装備の同じ素材を隣り合わせ、リンクで攻撃と防御を伸ばします。", "準備ができたら遭遇を開始し、勝利後に戦利品を選んで再配置します。", "5戦目を勝ち抜くとステージをクリア。5、10、15、20、25、30面は守護者戦です。"],
+      strategyTips: ["出発前に地域ルールを読み、素材封印や過負荷に備えて複数のリンクを作ります。", "孤立の規則では重要な装備をつなぎ、最上段の熱がある時は上段を空けます。", "腐食戦では長期戦を避け、盾の相手には破壊後の大きな一撃を準備します。", "戦利品をすべて取る必要はありません。店や守護者の前では空きマスが役立ちます。"],
+      progression: ["1～5面はリンク、回転、盾、先制、孤立を学びます。根の守護者は自然素材リンクで再生を止められます。", "6～10面は月素材の封印と大きな水晶障壁が登場します。水晶の守護者は18点の盾を持ちます。", "11～15面は怒り、孤立、腐食を組み合わせます。時計仕掛けの巨像は防御と怒りの段階を切り替えます。", "16～20面は最上段の熱と強い腐食が加わり、炉の巨獣には通気と回復が必要です。", "21～25面は先制攻撃と最多素材の過負荷が重なり、嵐の守護者は孤立装備を雷で狙います。", "26～30面は四素材の封印が巡り、最後の守護者は孤立も利用します。複数素材をつなぎ、未接続の装備を残さないことが鍵です。"],
+      designNote: "1ステージを5戦にすることで、同じバッグを育てる余地を残しながら遠征を短く保ちます。自動戦闘により、プレイヤーは形・素材リンク・空きマスと敵ルールの組み合わせに集中できます。6地域は数値だけでなく、異なる配置判断を求めます。",
+      parent: "アカウントなしで遊べます。解放・クリア状況、経験値、発見記録、ベスト進行はこのブラウザーに保存されます。サイトデータを消去したり端末を変えたりすると、記録が失われる場合があります。ダイヤは任意です。",
+      faq: [["ステージはいくつありますか？", "六つの地域に全30ステージがあり、5、10、15、20、25、30面で守護者に挑みます。"], ["素材リンクはどう作りますか？", "異なる2つの装備の同じ素材マスを上下左右で隣り合わせます。有効なリンクは攻撃+2、防御+1です。"], ["リンクが無効になるのはなぜですか？", "月素材の封印、過負荷、巡回する封印は特定の素材を止めます。現在の規則は戦闘画面上部に表示されます。"], ["敵ごとに装備を並べ直せますか？", "はい。勝利後に戦利品を選ぶと、次の戦闘まで自由にバッグを組み直せます。"], ["バッグがいっぱいならどうしますか？", "戦利品を見送るか、トレイの装備を売れます。満杯でも進行は止まりません。"], ["ダイヤは必要ですか？", "いいえ。確認した場合に限り、オーラの店の3品を一度更新できます。"], ["何が保存されますか？", "解放・クリア済みステージ、経験値、発見記録、ベスト進行がこのブラウザーに保存されます。"], ["キーボードで遊べますか？", "はい。7行×11列のバッグはラベル付きで、矢印キーで移動できます。"]]
+    },
+    fr: {
+      title: "Expédition Gearpack", gameplay: "Stratégie roguelite de rangement", genre: ["Stratégie", "Inventaire spatial", "Roguelite"], difficulty: "Modérée à difficile", time: "5 à 12 minutes par expédition", noteTitle: "Joueur et sauvegarde",
+      story: ["La route de Gearwood reliait six ateliers. Les réserves ont réagi au chargement : des racines ont fermé la forêt, les cristaux ont fendu la carrière, les automates se sont réveillés, la forge a surchauffé et les tempêtes ont envahi l’observatoire. Au bout du chemin, une armée garde le Coffre de l’Éclipse.", "Rux, maître de bagages, part avec Orla et sa boutique ambulante. Chaque victoire rouvre une portion de route ; vaincre les six Gardiens permet de récupérer les cargaisons des régions."],
+      systems: ["Rangez l’équipement dans une grille de 11 colonnes sur 7 rangées et faites pivoter les pièces pour les ajuster. L’Attaque inflige des dégâts, l’Armure réduit une riposte et les soins rendent des points de vie avant le coup suivant. Deux pièces différentes créent un lien si leurs cases de même matériau se touchent horizontalement ou verticalement : chaque lien actif ajoute 2 d’Attaque et 1 de Défense.", "Les points de vie persistent pendant les cinq affrontements d’une étape. Après une victoire, vous pouvez reprendre et réorganiser les pièces, puis choisir un butin parmi trois ou garder de la place. Le sac et le plateau d’attente partagent une limite de douze objets.", "Les règles ennemies changent la disposition : les boucliers absorbent le premier choc, les embusqués frappent d’abord et les objets isolés attirent des dégâts supplémentaires. La corrosion réduit la Défense ; la chaleur du premier rang, la surcharge et les sceaux limitent les placements ou matériaux disponibles.", "L’expérience d’atelier, les découvertes, les étapes terminées et la prochaine étape débloquée sont enregistrées dans ce navigateur. Les diamants sont facultatifs et ne servent qu’à renouveler, après confirmation, les trois articles d’Orla."],
+      how: ["Choisissez une étape débloquée sur le rail et lisez sa règle.", "Sélectionnez une pièce, faites-la pivoter si nécessaire et placez-la dans la grille 11 × 7.", "Reliez des cases de même matériau appartenant à des pièces différentes pour augmenter Attaque et Défense.", "Lancez l’affrontement une fois le sac prêt ; après chaque victoire, choisissez un butin puis réorganisez-le.", "La cinquième victoire valide l’étape. Les étapes 5, 10, 15, 20, 25 et 30 se terminent par un Gardien."],
+      strategyTips: ["Lisez la règle avant de construire et évitez de dépendre d’un seul matériau, qui peut être neutralisé.", "Contre l’isolement, reliez chaque pièce importante ; contre la chaleur, gardez la première rangée libre.", "La corrosion pénalise les combats longs. Face à un bouclier, préparez une forte attaque après l’avoir brisé.", "Ne prenez pas chaque butin : une case vide peut être plus utile avant la boutique ou un Gardien."],
+      progression: ["Étapes 1–5 : liens, rotation, boucliers, attaque initiale et isolement. Le Gardien des Racines régénère sa vie sans lien de Nature.", "Étapes 6–10 : sceaux de Lune et barrières prismatiques ; le Gardien de Cristal commence avec un bouclier de 18 points.", "Étapes 11–15 : rage, isolement et corrosion. Le Colosse mécanique alterne défense renforcée et riposte furieuse.", "Étapes 16–20 : chaleur du premier rang et corrosion accrue ; le Léviathan de la Forge exige de l’espace d’aération.", "Étapes 21–25 : attaques surprises et surcharge du matériau dominant ; l’Archonte de la Tempête frappe les pièces isolées.", "Étapes 26–30 : les sceaux tournent entre les matériaux et combinent les règles précédentes. Le Maître du Coffre de l’Éclipse récompense plusieurs liens et un sac sans pièce isolée."],
+      designNote: "Cinq combats par étape laissent le temps de faire évoluer le sac sans allonger chaque tentative. Les combats automatiques mettent l’accent sur le placement des formes, les liens et la règle du prochain adversaire. Les six régions ajoutent des familles de contraintes distinctes plutôt qu’une simple hausse des statistiques.",
+      parent: "Aucun compte n’est nécessaire. Les étapes débloquées ou terminées, l’expérience, les découvertes et la meilleure progression restent dans ce navigateur ; effacer ses données ou changer d’appareil peut les supprimer. Les diamants sont facultatifs.",
+      faq: [["Combien d’étapes sont proposées ?", "Les six régions comptent 30 étapes. Un Gardien attend aux étapes 5, 10, 15, 20, 25 et 30."], ["Comment créer un lien de matériau ?", "Deux pièces différentes doivent se toucher par des cases du même matériau, horizontalement ou verticalement. Chaque lien actif ajoute 2 d’Attaque et 1 de Défense."], ["Pourquoi un lien devient-il inactif ?", "Les sceaux de Lune, la surcharge et les sceaux tournants peuvent bloquer un matériau. La règle active apparaît en haut du combat."], ["Peut-on réorganiser le sac entre deux ennemis ?", "Oui. Après le butin, une phase de préparation permet de reprendre, tourner et replacer les objets."], ["Que faire quand le sac est plein ?", "Ignorez le butin ou vendez une pièce du plateau. Un sac plein ne bloque pas la progression."], ["Les diamants sont-ils nécessaires ?", "Non. Ils peuvent renouveler les trois articles de la boutique d’Orla, après confirmation."], ["Quelles données sont sauvegardées ?", "Les étapes, l’expérience d’atelier, les découvertes et la meilleure progression sont enregistrées localement."], ["Le jeu fonctionne-t-il au clavier ?", "Oui. La grille de 7 rangées sur 11 colonnes est étiquetée et se parcourt avec les flèches."]]
+    },
+    de: {
+      title: "Gearpack-Expedition", gameplay: "Roguelite-Strategie mit Packraster", genre: ["Strategie", "Inventar-Puzzle", "Roguelite"], difficulty: "Mittel bis anspruchsvoll", time: "5–12 Minuten pro Expedition", noteTitle: "Spieler- und Speicherhinweise",
+      story: ["Die Karawanenstraße von Gearwood verband sechs Werkstätten. Als die Lager auf die Fracht reagierten, versperrten Wurzeln den Wald, Kristalle spalteten den Steinbruch, Uhrwerke erwachten und der Schmelzofen überhitzte. Sturmspulen legten das Observatorium lahm; im Eclipse-Tresor wartet eine mechanische Armee.", "Packmeister Rux zieht mit Händlerin Orla los. Jeder Sieg öffnet einen Abschnitt der Straße. Erst wenn alle sechs regionalen Wächter besiegt sind, werden die Lager und ihre Fracht wieder zugänglich."],
+      systems: ["Ordne Ausrüstung in einem Raster mit 11 Spalten und 7 Reihen an; Teile lassen sich drehen. Angriff verursacht Schaden, Rüstung schwächt Gegenangriffe und Heilung stellt vor dem nächsten Treffer Gesundheit wieder her. Berühren sich gleiche Materialfelder zweier verschiedener Teile waagerecht oder senkrecht, entsteht ein Link mit +2 Angriff und +1 Verteidigung.", "Gesundheit bleibt in den fünf Kämpfen einer Stufe erhalten. Nach einem Sieg kannst du Teile herausnehmen und neu anordnen, eines von drei Beutestücken wählen oder Platz freihalten. Raster und Ablage teilen sich eine Grenze von zwölf Gegenständen.", "Gegnerregeln verändern den Bauplan: Schilde fangen Eröffnungsschaden ab, Hinterhalte greifen zuerst an und isolierte Teile ziehen Zusatzschaden an. Korrosion senkt die Verteidigung; Hitze in der obersten Reihe, Überlastung und rotierende Siegel schränken Platz oder Materialien ein.", "Werkstatt-EP, Entdeckungen, abgeschlossene Stufen und die nächste Freischaltung werden lokal in diesem Browser gespeichert. Diamanten sind optional und erneuern nach separater Bestätigung Orlas drei Angebote."],
+      how: ["Wähle eine freigeschaltete Stufe auf der Leiste und lies ihre Routenregel.", "Wähle ein Teil aus der Ablage, drehe es bei Bedarf und setze es in das 11×7-Raster.", "Verbinde gleiche Materialien auf unterschiedlichen Teilen, um Angriff und Verteidigung zu erhöhen.", "Starte den Kampf, wenn der Rucksack bereit ist. Nach jedem Sieg wählst du Beute und ordnest neu.", "Der fünfte Sieg schließt eine Stufe ab. Auf Stufe 5, 10, 15, 20, 25 und 30 wartet ein Wächter."],
+      strategyTips: ["Prüfe zuerst die Routenregel und verlasse dich nicht auf ein Material, das gesperrt werden kann.", "Bei Isolation sollte jedes wichtige Teil verbunden sein; bei Oberhitze bleibt die erste Reihe frei.", "Korrosion macht lange Kämpfe riskant. Gegen Schilde lohnt sich ein kräftiger Treffer nach dem Bruch.", "Nimm nicht jede Beute mit: Vor einem Laden oder Wächter kann freier Platz wertvoller sein."],
+      progression: ["Stufen 1–5 vermitteln Links, Drehen, Schilde, Eröffnungsschläge und Isolation. Der Wurzelwächter regeneriert sich ohne Natur-Link.", "Stufen 6–10 führen Mond-Siegel und größere Prismenbarrieren ein. Der Kristallwächter startet mit 18 Schildpunkten.", "Stufen 11–15 kombinieren Wut, Isolation und Korrosion. Der Uhrwerk-Koloss wechselt zwischen Abwehr und verstärktem Gegenschlag.", "Stufen 16–20 ergänzen Oberhitze und stärkere Korrosion; der Ofen-Leviathan braucht Lüftungsraum.", "Stufen 21–25 verbinden Eröffnungsangriffe mit Überlastung des häufigsten Materials. Der Sturm-Archon trifft isolierte Teile mit Kettenblitzen.", "Stufen 26–30 drehen Material-Siegel und kombinieren frühere Regeln. Gegen den Eclipse-Schatzmeister helfen mehrere Link-Arten und keine losen Teile."],
+      designNote: "Fünf Kämpfe pro Stufe geben dem Pack Zeit, sich zu entwickeln, ohne einen Durchlauf unnötig zu verlängern. Automatische Kämpfe lassen die Entscheidungen beim Formenlegen, Verknüpfen und Lesen der nächsten Gegnerregel. Sechs Regionen verlangen unterschiedliche Pläne statt nur höhere Werte.",
+      parent: "Ein Konto ist nicht nötig. Freigeschaltete und abgeschlossene Stufen, Werkstatt-EP, Entdeckungen und Bestwerte werden in diesem Browser gespeichert. Browserdaten löschen oder ein Gerätewechsel kann den Spielstand entfernen. Diamanten sind optional.",
+      faq: [["Wie viele Stufen gibt es?", "Sechs Regionen enthalten 30 Stufen. Wächter warten auf Stufe 5, 10, 15, 20, 25 und 30."], ["Wie entstehen Material-Links?", "Gleiche Materialfelder auf zwei verschiedenen Teilen müssen waagerecht oder senkrecht aneinandergrenzen. Ein aktiver Link gibt +2 Angriff und +1 Verteidigung."], ["Warum ist ein Link nicht mehr aktiv?", "Mond-Siegel, Überlastung und rotierende Siegel können ein Material sperren. Die aktive Regel steht über dem Kampf."], ["Kann ich zwischen Gegnern umpacken?", "Ja. Nach der Beute kannst du alle Teile herausnehmen, drehen und vor dem nächsten Kampf neu setzen."], ["Was passiert bei einem vollen Pack?", "Lass Beute liegen oder verkaufe ein Teil aus der Ablage. Ein volles Pack blockiert den Fortschritt nicht."], ["Brauche ich Diamanten?", "Nein. Sie erneuern nur nach Bestätigung Orlas aktuelles Dreier-Angebot."], ["Was wird gespeichert?", "Freigeschaltete und abgeschlossene Stufen, Werkstatt-EP, Entdeckungen und Bestfortschritt werden lokal gespeichert."], ["Kann ich mit der Tastatur spielen?", "Ja. Das beschriftete Raster hat 7 Reihen und 11 Spalten; die Pfeiltasten bewegen die Auswahl."]]
+    },
+    ar: {
+      title: "رحلة حقيبة العتاد", gameplay: "استراتيجية ترتيب المعدات", genre: ["استراتيجية", "تنظيم الحقيبة", "مغامرة قتالية"], difficulty: "متوسطة إلى صعبة", time: "من 5 إلى 12 دقيقة لكل رحلة", noteTitle: "معلومات اللاعب والحفظ",
+      story: ["كان طريق قوافل غابة التروس يصل بين ست ورش. ثم تفاعلت المخازن مع الحمولة: أغلقت الجذور طريق الغابة، وشقّت البلورات المحجر، وعادت آلات الساعة إلى العمل، وارتفعت حرارة المسبك، واجتاحت العواصف المرصد. وفي خزانة الكسوف جيش آلي يحرس الشحنات.", "ينطلق روكس، مسؤول تجهيز القافلة، مع أورلا ومتجرها المتنقل لفتح الطريق من جديد. يعيد كل انتصار فتح جزء من المسار، ولا تعود البضائع إلى أصحابها حتى هزيمة حرّاس المناطق الست."],
+      systems: ["رتّب المعدات في حقيبة من 11 عمودًا و7 صفوف، ودوّر القطع لتناسب الفراغات. يسبب الهجوم الضرر، ويخفف الدرع قوة الهجوم المضاد، ويستعيد العلاج الصحة قبل الضربة التالية. إذا تلامست خلايا المادة نفسها في قطعتين مختلفتين أفقيًا أو رأسيًا، تتكون رابطة تضيف نقطتين للهجوم ونقطة للدفاع.", "تستمر الصحة طوال المواجهات الخمس في المرحلة. بعد كل فوز يمكنك إخراج القطع وإعادة ترتيبها، ثم اختيار غنيمة من ثلاث أو الاحتفاظ بالمساحة. لا يتجاوز مجموع المعدات الموضوعة وفي الدرج 12 قطعة.", "تغيّر قواعد الأعداء طريقة الترتيب: تمتص الدروع ضرر الضربة الأولى، ويهاجم المتربص أولًا، وتزيد القطع غير المرتبطة الضرر. يقلل التآكل الدفاع، وتعاقب حرارة الصف الأعلى الخلايا المشغولة، بينما تمنع زيادة الحمل والأختام استخدام بعض المواد.", "تُحفظ خبرة الورشة والاكتشافات والمراحل المكتملة والمرحلة التالية المفتوحة في هذا المتصفح. الماسات اختيارية، وتُستخدم فقط بعد تأكيد منفصل لتبديل عروض أورلا الثلاثة."],
+      how: ["اختر مرحلة مفتوحة من شريط الرحلة واقرأ قاعدة الطريق.", "اختر قطعة من الدرج، ودوّرها عند الحاجة، ثم ضعها في حقيبة 11×7.", "صِل خلايا المادة نفسها في قطعتين مختلفتين لرفع الهجوم والدفاع.", "ابدأ المواجهة بعد تجهيز الحقيبة. وبعد الفوز اختر غنيمة ثم أعد ترتيب المعدات.", "يُكمل الفوز الخامس المرحلة. المراحل 5 و10 و15 و20 و25 و30 تنتهي بمواجهة حارس."],
+      strategyTips: ["اقرأ قاعدة المرحلة قبل الترتيب، ولا تعتمد على مادة واحدة قد تُمنع.", "أمام قاعدة العزل، اربط كل قطعة مهمة. وأمام حرارة الصف الأعلى، اترك الصف الأول فارغًا.", "يجعل التآكل القتال الطويل أصعب؛ جهّز ضربة قوية بعد كسر الدرع.", "لا تأخذ كل غنيمة. قد تكون المساحة الفارغة أنفع قبل المتجر أو مواجهة الحارس."],
+      progression: ["المراحل 1–5 تعلّم الروابط والتدوير والدروع والضربات الافتتاحية والعزل. يتجدد حارس الجذور ما لم توجد رابطة طبيعة.", "المراحل 6–10 تضيف أختام القمر وحواجز بلورية أكبر. يبدأ حارس البلور بدرع من 18 نقطة.", "المراحل 11–15 تجمع الغضب والعزل والتآكل. يتناوب عملاق الساعة بين الدفاع والرد الأقوى.", "المراحل 16–20 تضيف حرارة الصف الأعلى وتآكلًا أشد؛ يحتاج وحش المسبك إلى مساحة تهوية.", "المراحل 21–25 تجمع الهجوم المبكر وزيادة الحمل على المادة الأكثر شيوعًا. يضرب حارس العاصفة القطع المعزولة ببرق متسلسل.", "المراحل 26–30 تدوّر أختام المواد وتجمع القواعد السابقة. تتطلب مواجهة سيد خزانة الكسوف روابط متنوعة وقطعًا قليلة العزلة."],
+      designNote: "تمنح خمس مواجهات في المرحلة الحقيبة وقتًا للتطور من دون إطالة الرحلة. يحل القتال تلقائيًا، فيبقى التركيز على أشكال المعدات والروابط والمساحة الفارغة وقاعدة العدو التالي. تضيف المناطق الست تحديات ترتيب مختلفة بدل الاكتفاء برفع الأرقام.",
+      parent: "لا يلزم إنشاء حساب. تُحفظ المراحل المفتوحة والمكتملة وخبرة الورشة والاكتشافات وأفضل تقدم في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تغيير الجهاز إلى حذف الحفظ. الماسات اختيارية.",
+      faq: [["كم مرحلة تتضمن اللعبة؟", "تضم ست مناطق و30 مرحلة. تظهر مواجهة الحارس في المراحل 5 و10 و15 و20 و25 و30."], ["كيف تتكون روابط المواد؟", "يجب أن تتلامس خلايا المادة نفسها في قطعتين مختلفتين أفقيًا أو رأسيًا. تضيف كل رابطة نشطة نقطتين للهجوم ونقطة للدفاع."], ["لماذا توقفت رابطة عن العمل؟", "قد تمنع أختام القمر أو زيادة الحمل أو الأختام الدوارة مادةً معينة. تظهر القاعدة الحالية أعلى ساحة القتال."], ["هل يمكن إعادة ترتيب الحقيبة بين الأعداء؟", "نعم. بعد اختيار الغنيمة أو تجاوزها، يمكنك إخراج المعدات وتدويرها وإعادة وضعها قبل المواجهة التالية."], ["ماذا أفعل إذا امتلأت الحقيبة؟", "تجاوز الغنيمة أو بِع قطعة من الدرج. لا تمنع الحقيبة الممتلئة استمرار الرحلة."], ["هل أحتاج إلى الماسات؟", "لا. تُستخدم فقط لتبديل عروض متجر أورلا الثلاثة بعد تأكيد العملية."], ["ما التقدم الذي يُحفظ؟", "تُحفظ المراحل المفتوحة والمكتملة وخبرة الورشة والاكتشافات وأفضل تقدم محليًا في هذا المتصفح."], ["هل تدعم اللعبة لوحة المفاتيح؟", "نعم. للشبكة المعلّمة 7 صفوف و11 عمودًا، ويمكن التحرك فيها بمفاتيح الأسهم."]]
+    },
+    es: { faq: [["¿Cuántas etapas tiene?", "Hay 30 etapas en seis regiones. Los Guardianes aparecen en las etapas 5, 10, 15, 20, 25 y 30."], ["¿Cómo se crean los enlaces de materiales?", "Las casillas del mismo material de dos piezas distintas deben tocarse en horizontal o vertical. Cada enlace activo suma 2 de Ataque y 1 de Defensa."], ["¿Por qué dejó de funcionar un enlace?", "Los sellos lunares, la sobrecarga y los sellos rotatorios pueden bloquear un material. La regla activa aparece sobre el combate."], ["¿Puedo reorganizar la mochila entre enemigos?", "Sí. Tras elegir o saltar el botín, puedes sacar, girar y recolocar las piezas antes del próximo combate."], ["¿Qué hago si la mochila está llena?", "Omite el botín o vende una pieza de la bandeja. La mochila llena no bloquea la partida."], ["¿Necesito diamantes?", "No. Solo sirven para renovar, tras confirmarlo, las tres ofertas de Orla."], ["¿Qué progreso se guarda?", "Las etapas desbloqueadas y completadas, la experiencia, los descubrimientos y el mejor progreso se guardan en este navegador."], ["¿Se puede jugar con teclado?", "Sí. La cuadrícula etiquetada de 7 filas por 11 columnas se recorre con las flechas."]] },
+    ko: { faq: [["스테이지는 몇 개 있나요?", "여섯 지역에 총 30개 스테이지가 있으며 5, 10, 15, 20, 25, 30스테이지에서 수호자와 맞섭니다."], ["재료 연결은 어떻게 하나요?", "서로 다른 장비의 같은 재료 칸을 가로나 세로로 맞닿게 배치하세요. 연결 하나마다 공격력 2와 방어력 1이 추가됩니다."], ["연결이 왜 비활성화되나요?", "달 재료 봉인, 과부하, 순환 봉인이 재료를 막을 수 있습니다. 현재 규칙은 전투 위쪽에 표시됩니다."], ["적 사이에 가방을 다시 꾸밀 수 있나요?", "네. 전리품을 선택하거나 건너뛴 뒤 다음 전투 전에 장비를 꺼내고 회전해 다시 배치할 수 있습니다."], ["가방이 가득 차면 어떻게 하나요?", "전리품을 건너뛰거나 대기 장비를 판매하세요. 가방이 가득 차도 진행은 막히지 않습니다."], ["다이아몬드가 꼭 필요한가요?", "아니요. 확인 후 오를라의 세 가지 상품을 새로 고를 때만 쓰는 선택 재화입니다."], ["어떤 진행이 저장되나요?", "해금·완료 스테이지, 공방 경험치, 발견 기록과 최고 진행도가 이 브라우저에 저장됩니다."], ["키보드로 플레이할 수 있나요?", "네. 라벨이 있는 7행×11열 가방은 방향키로 이동할 수 있습니다."]] },
+    "pt-BR": { faq: [["Quantas etapas existem?", "São 30 etapas em seis regiões. Há Guardiões nas etapas 5, 10, 15, 20, 25 e 30."], ["Como criar vínculos de materiais?", "Casas do mesmo material em duas peças diferentes precisam se tocar na horizontal ou na vertical. Cada vínculo ativo acrescenta 2 de Ataque e 1 de Defesa."], ["Por que um vínculo foi desativado?", "Selos da Lua, sobrecarga e selos rotativos podem bloquear um material. A regra atual aparece acima da batalha."], ["Posso reorganizar a mochila entre inimigos?", "Sim. Depois de escolher ou dispensar o saque, retire, gire e reposicione as peças antes da próxima luta."], ["O que fazer quando a mochila enche?", "Dispense o saque ou venda um item da bandeja. A mochila cheia não impede o progresso."], ["Diamantes são necessários?", "Não. Eles só renovam as três ofertas da loja da Orla após uma confirmação."], ["Que progresso fica salvo?", "Etapas liberadas e concluídas, XP da oficina, descobertas e melhor progresso ficam salvos neste navegador."], ["Dá para jogar com teclado?", "Sim. A grade identificada de 7 linhas por 11 colunas aceita navegação pelas setas."]] },
+    it: { faq: [["Quanti livelli ci sono?", "Ci sono 30 livelli in sei regioni. I Guardiani si affrontano ai livelli 5, 10, 15, 20, 25 e 30."], ["Come si crea un legame tra materiali?", "Le caselle dello stesso materiale su due oggetti diversi devono toccarsi in orizzontale o in verticale. Ogni legame attivo aggiunge 2 Attacco e 1 Difesa."], ["Perché un legame non è più attivo?", "Sigilli lunari, sovraccarico e sigilli rotanti possono bloccare un materiale. La regola attiva compare sopra la battaglia."], ["Posso riordinare lo zaino tra i nemici?", "Sì. Dopo aver scelto o saltato il bottino, puoi spostare, ruotare e riposizionare gli oggetti prima dello scontro successivo."], ["Cosa faccio se lo zaino è pieno?", "Salta il bottino o vendi un oggetto dal vassoio. Uno zaino pieno non blocca la progressione."], ["I diamanti sono necessari?", "No. Servono solo a rinnovare, dopo conferma, le tre offerte del negozio di Orla."], ["Quali progressi vengono salvati?", "Livelli sbloccati e completati, esperienza, scoperte e miglior avanzamento restano salvati in questo browser."], ["Si può giocare con la tastiera?", "Sì. La griglia etichettata di 7 righe per 11 colonne si naviga con i tasti freccia."]] },
+    ru: { faq: [["Сколько всего этапов?", "В шести регионах 30 этапов. Хранители ждут на этапах 5, 10, 15, 20, 25 и 30."], ["Как соединять материалы?", "Одинаковые клетки на двух разных предметах должны соприкасаться по горизонтали или вертикали. Каждая активная связь даёт +2 к атаке и +1 к защите."], ["Почему связь перестала работать?", "Лунные печати, перегрузка и сменяющиеся печати могут блокировать материал. Текущее правило показано над боем."], ["Можно перестроить рюкзак между врагами?", "Да. После выбора или пропуска добычи можно вынуть, повернуть и переставить предметы перед следующим боем."], ["Что делать, если рюкзак заполнен?", "Пропустите добычу или продайте предмет из лотка. Полный рюкзак не останавливает прохождение."], ["Нужны ли алмазы?", "Нет. После подтверждения ими можно обновить три предложения Орлы в магазине."], ["Что сохраняется?", "Открытые и пройденные этапы, опыт мастерской, открытия и лучший прогресс сохраняются в этом браузере."], ["Можно играть с клавиатуры?", "Да. В размеченной сетке 7×11 можно перемещаться клавишами со стрелками."]] },
+    hi: { faq: [["कुल कितने चरण हैं?", "छह क्षेत्रों में 30 चरण हैं। संरक्षक चरण 5, 10, 15, 20, 25 और 30 पर मिलते हैं।"], ["सामग्री का लिंक कैसे बनता है?", "दो अलग वस्तुओं की समान सामग्री वाली कोशिकाएँ ऊपर-नीचे या दाएँ-बाएँ छूनी चाहिए। हर सक्रिय लिंक से आक्रमण 2 और रक्षा 1 बढ़ती है।"], ["लिंक काम करना क्यों बंद हुआ?", "चंद्र मुहर, अधिकभार और घूमती मुहरें किसी सामग्री को रोक सकती हैं। मौजूदा नियम युद्ध के ऊपर दिखता है।"], ["क्या दुश्मनों के बीच बैग फिर से सजा सकते हैं?", "हाँ। लूट चुनने या छोड़ने के बाद अगली लड़ाई से पहले उपकरण निकालें, घुमाएँ और फिर रखें।"], ["बैग भर जाए तो क्या करें?", "लूट छोड़ दें या ट्रे की कोई वस्तु बेचें। भरा बैग आगे बढ़ने से नहीं रोकता।"], ["क्या हीरे ज़रूरी हैं?", "नहीं। पुष्टि के बाद वे केवल ओरला की दुकान के तीन प्रस्ताव बदलते हैं।"], ["कौन-सी प्रगति सहेजी जाती है?", "खुले और पूरे चरण, कार्यशाला XP, खोजें और सर्वश्रेष्ठ प्रगति इसी ब्राउज़र में सहेजी जाती हैं।"], ["क्या कीबोर्ड से खेल सकते हैं?", "हाँ। 7 पंक्ति × 11 स्तंभ वाले नामांकित ग्रिड में तीर कुंजियों से जाएँ।"]] }
+  };
+  gearpackText140LocalizedDetails.es = {
+    ...(gearpackText140LocalizedDetails.es || {}),
+    gameplay: "Estrategia de gestión de mochila",
+    genre: ["Estrategia", "Gestión de inventario", "Roguelite"],
+    difficulty: "De media a alta",
+    time: "5–12 minutos por expedición",
+  };
+  for (const [locale, [title, intro]] of Object.entries(gearpackText140Guide)) {
+    const profile = locale === "en" ? games["animal-gearpack-expedition"] : (localizedGames[locale] ||= {})["animal-gearpack-expedition"] ||= { ...games["animal-gearpack-expedition"] };
+    if (locale === "fr") profile.title = title;
+    profile.intro = intro;
+  }
+  for (const [locale, details] of Object.entries(gearpackText140LocalizedDetails)) {
+    const profile = (localizedGames[locale] ||= {})["animal-gearpack-expedition"] ||= { ...games["animal-gearpack-expedition"] };
+    Object.assign(profile, details);
+    if (details.gameplay || details.genre) {
+      const gameplayProfile = (localizedGameplayProfiles[locale] ||= {})["animal-gearpack-expedition"] ||= {};
+      if (details.gameplay) gameplayProfile.gameplay = details.gameplay;
+      if (details.genre) gameplayProfile.genre = details.genre;
+    }
+  }
+  // WP_ANIMAL_PARKING_PATROL_TEXT140_START
+  const animalParkingPatrolText140 = {
+  "en": {
+    "intro": "For each route, read a wooden cart’s arrow and trace its straight path to the edge it faces. Move it only when every cell ahead is clear; the ✦ signal cart opens red signals, and linked carts wait for their lead.",
+    "tags": [
+      "Traffic-order puzzle",
+      "Directional cart exits",
+      "Signal and convoy rules",
+      "Four-way path planning"
+    ],
+    "relatedIntro": "For another logic puzzle, try these next:",
+    "faq": [
+      [
+        "Why can’t a cart leave?",
+        "Another cart may block the straight path to the edge it faces. A closed red signal or an earlier convoy cart can also hold it."
+      ],
+      [
+        "What does the ✦ signal cart do?",
+        "When it leaves, it opens the red signals in that route."
+      ],
+      [
+        "When can a linked cart leave?",
+        "It waits until its lead cart has left."
+      ],
+      [
+        "How many blocked taps are allowed?",
+        "Three per attempt. The third blocked tap ends that route attempt."
+      ],
+      [
+        "Does Hint move a cart for me?",
+        "No. It highlights one cart that can leave safely."
+      ],
+      [
+        "What progress is saved?",
+        "Route completions, stars, and your best blocked-tap count stay in this browser."
+      ]
+    ]
+  },
+  "zh-Hant": {
+    "intro": "每條路線開始前，先看清木車箭頭，再沿著車頭方向檢查到棋盤邊緣的直線道路。前方每一格都暢通才能放行；✦ 號誌車會開啟紅燈，連鎖車隊則要等領隊先離場。",
+    "tags": [
+      "交通順序解謎",
+      "木車方向離場",
+      "號誌與車隊規則",
+      "四向路徑規劃"
+    ],
+    "relatedIntro": "想再挑戰不同玩法的邏輯解謎，可以試試：",
+    "faq": [
+      [
+        "為什麼木車不能離場？",
+        "車頭方向通往邊緣的直線上可能有其他木車；紅燈未開或車隊尚未輪到，也會暫時擋住去路。"
+      ],
+      [
+        "✦ 號誌車有什麼作用？",
+        "✦ 號誌車離場後，會開啟該路線中的紅燈。"
+      ],
+      [
+        "連鎖車隊什麼時候能前進？",
+        "後車要等領隊木車先離場，才能依序離開。"
+      ],
+      [
+        "可以點錯幾次？",
+        "每次挑戰最多受阻三次；第三次受阻點擊會結束這條路線的挑戰。"
+      ],
+      [
+        "提示會替我移動木車嗎？",
+        "不會。提示只會標出一台目前可以安全離場的木車。"
+      ],
+      [
+        "哪些進度會保存？",
+        "路線完成狀態、星星與受阻點擊最佳紀錄只保存在目前的瀏覽器。"
+      ]
+    ]
+  },
+  "zh-Hans": {
+    "intro": "开始每条路线前，先看清木车箭头，再沿车头方向检查通往棋盘边缘的直线路径。前方每一格都畅通才能放行；✦ 信号车会开启红灯，连锁车队则要等领队先离场。",
+    "tags": [
+      "交通顺序解谜",
+      "木车方向离场",
+      "信号与车队规则",
+      "四向路径规划"
+    ],
+    "relatedIntro": "想试试另一种逻辑谜题？可以接着玩：",
+    "faq": [
+      [
+        "为什么木车不能离场？",
+        "车头方向通往边缘的直线上可能有其他木车；红灯未开启或车队还没轮到，也会暂时挡住去路。"
+      ],
+      [
+        "✦ 信号车有什么作用？",
+        "✦ 信号车离场后，会开启该路线中的红灯。"
+      ],
+      [
+        "连锁车队什么时候能前进？",
+        "后车要等领队木车先离场，才能按顺序离开。"
+      ],
+      [
+        "可以点错几次？",
+        "每次挑战最多受阻三次；第三次受阻点击会结束这条路线的挑战。"
+      ],
+      [
+        "提示会替我移动车吗？",
+        "不会。提示只会标出一辆目前可以安全离场的木车。"
+      ],
+      [
+        "哪些进度会保存？",
+        "路线完成状态、星星和受阻点击最佳记录只保存在当前浏览器。"
+      ]
+    ]
+  },
+  "ja": {
+    "intro": "各ルートでは、木のカートの矢印を確認し、向いている方向の出口まで一直線に見ます。進路のすべてのマスが空いているときだけ進めます。✦の信号カートは赤信号を開き、連結カートは先頭車の退出を待ちます。",
+    "tags": [
+      "交通順序パズル",
+      "方向どおりの退出",
+      "信号と車列のルール",
+      "四方向の経路計画"
+    ],
+    "relatedIntro": "別のロジックパズルにも挑戦したいなら、こちらもどうぞ。",
+    "faq": [
+      [
+        "カートが出られないのはなぜ？",
+        "向いている方向の出口までの直線に別のカートがあるか、赤信号が閉じている、または車列の順番待ちかもしれません。"
+      ],
+      [
+        "✦の信号カートは何をするの？",
+        "✦の信号カートが出ると、そのルートの赤信号が開きます。"
+      ],
+      [
+        "連結カートはいつ出られる？",
+        "先頭のカートが出たあと、後続が順番に進めます。"
+      ],
+      [
+        "通れない場所を何回タップできる？",
+        "1回の挑戦で3回までです。3回目のブロックでそのルートの挑戦が終わります。"
+      ],
+      [
+        "ヒントがカートを動かすの？",
+        "いいえ。安全に出られるカートを1台光らせるだけです。"
+      ],
+      [
+        "どの進行状況が保存される？",
+        "クリアしたルート、星、ブロックされたタップのベスト記録がこのブラウザーに保存されます。"
+      ]
+    ]
+  },
+  "ko": {
+    "intro": "각 경로에서는 나무 카트의 화살표를 읽고, 앞을 향한 출구까지 일직선으로 확인하세요. 지나갈 칸이 모두 비어 있을 때만 카트를 보낼 수 있습니다. ✦ 신호 카트는 빨간 신호를 열고, 연결 카트는 선두 카트가 나갈 때까지 기다립니다.",
+    "tags": [
+      "교통 순서 퍼즐",
+      "방향에 따른 카트 출구",
+      "신호와 대열 규칙",
+      "사방 경로 계획"
+    ],
+    "relatedIntro": "다른 방식의 논리 퍼즐도 즐기고 싶다면 다음 게임을 확인해 보세요.",
+    "faq": [
+      [
+        "카트가 왜 나가지 않나요?",
+        "카트가 향한 출구까지의 직선에 다른 카트가 있거나, 빨간 신호가 닫혀 있거나, 대열 순서를 기다리는 중일 수 있습니다."
+      ],
+      [
+        "✦ 신호 카트는 무슨 일을 하나요?",
+        "✦ 신호 카트가 나가면 해당 경로의 빨간 신호가 열립니다."
+      ],
+      [
+        "연결 카트는 언제 나갈 수 있나요?",
+        "선두 카트가 먼저 나간 뒤에 후속 카트가 순서대로 나갑니다."
+      ],
+      [
+        "막힌 카트를 몇 번 누를 수 있나요?",
+        "한 번의 도전에서 세 번까지입니다. 세 번째 막힌 탭에서 해당 경로 도전이 끝납니다."
+      ],
+      [
+        "힌트가 카트를 대신 움직이나요?",
+        "아니요. 안전하게 나갈 수 있는 카트 한 대를 밝혀 줍니다."
+      ],
+      [
+        "어떤 진행 상황이 저장되나요?",
+        "완료한 경로, 별, 막힌 탭 최고 기록이 현재 브라우저에 저장됩니다."
+      ]
+    ]
+  },
+  "es": {
+    "intro": "En cada ruta, lee la flecha de un carro de madera y sigue en línea recta hasta el borde hacia el que apunta. Solo puede salir si todas las casillas del camino están libres; el carro ✦ abre los semáforos rojos y los carros enlazados esperan a su líder.",
+    "tags": [
+      "Lógica de orden del tráfico",
+      "Salidas según la dirección",
+      "Reglas de señales y convoyes",
+      "Planificación de cuatro salidas"
+    ],
+    "relatedIntro": "Si quieres otro reto de lógica, prueba estos juegos:",
+    "faq": [
+      [
+        "¿Por qué no puede salir un carro?",
+        "Puede haber otro carro en la línea hasta el borde, un semáforo rojo cerrado o un convoy que aún espera su turno."
+      ],
+      [
+        "¿Qué hace el carro ✦?",
+        "Al salir, abre los semáforos rojos de esa ruta."
+      ],
+      [
+        "¿Cuándo puede salir un carro enlazado?",
+        "Espera a que salga primero el carro que lo guía."
+      ],
+      [
+        "¿Cuántos toques bloqueados se permiten?",
+        "Tres por intento. El tercer toque bloqueado termina el intento de esa ruta."
+      ],
+      [
+        "¿La pista mueve un carro por mí?",
+        "No. Solo ilumina un carro que puede salir sin peligro."
+      ],
+      [
+        "¿Qué progreso se guarda?",
+        "Las rutas completadas, las estrellas y tu mejor marca de toques bloqueados se guardan en este navegador."
+      ]
+    ]
+  },
+  "pt-BR": {
+    "intro": "Em cada rota, leia a seta do carrinho de madeira e siga em linha reta até a borda para a qual ele aponta. Ele só pode sair quando todas as casas do caminho estiverem livres; o carrinho ✦ abre os sinais vermelhos, e os carrinhos ligados esperam pelo líder.",
+    "tags": [
+      "Lógica de ordem no trânsito",
+      "Saídas na direção do carrinho",
+      "Regras de sinal e comboio",
+      "Planejamento de quatro saídas"
+    ],
+    "relatedIntro": "Para encarar outro desafio de lógica, experimente estes jogos:",
+    "faq": [
+      [
+        "Por que o carrinho não sai?",
+        "Outro carrinho pode estar na linha até a borda, o sinal vermelho pode estar fechado ou um comboio pode estar aguardando a vez."
+      ],
+      [
+        "O que o carrinho ✦ faz?",
+        "Quando ele sai, abre os sinais vermelhos daquela rota."
+      ],
+      [
+        "Quando um carrinho ligado pode sair?",
+        "Ele espera o carrinho líder sair primeiro."
+      ],
+      [
+        "Quantos toques bloqueados são permitidos?",
+        "Três por tentativa. O terceiro toque bloqueado encerra a tentativa daquela rota."
+      ],
+      [
+        "A dica move um carrinho por mim?",
+        "Não. Ela só ilumina um carrinho que pode sair com segurança."
+      ],
+      [
+        "Que progresso fica salvo?",
+        "Rotas concluídas, estrelas e seu melhor número de toques bloqueados ficam salvos neste navegador."
+      ]
+    ]
+  },
+  "fr": {
+    "intro": "Sur chaque parcours, lis la flèche d’un chariot en bois et vérifie en ligne droite jusqu’au bord qu’il indique. Il ne peut sortir que si toutes les cases devant lui sont libres ; le chariot ✦ ouvre les feux rouges et les chariots liés attendent leur meneur.",
+    "tags": [
+      "Logique d’ordre de circulation",
+      "Sorties selon la direction",
+      "Règles des feux et convois",
+      "Planification sur quatre côtés"
+    ],
+    "relatedIntro": "Pour un autre défi de logique, essayez ces jeux :",
+    "faq": [
+      [
+        "Pourquoi un chariot ne sort-il pas ?",
+        "Un autre chariot peut bloquer la ligne jusqu’au bord, un feu rouge peut être fermé ou un convoi peut attendre son tour."
+      ],
+      [
+        "À quoi sert le chariot ✦ ?",
+        "Lorsqu’il sort, il ouvre les feux rouges du parcours."
+      ],
+      [
+        "Quand un chariot lié peut-il sortir ?",
+        "Il attend que le chariot meneur soit sorti."
+      ],
+      [
+        "Combien de touches bloquées sont autorisées ?",
+        "Trois par tentative. La troisième touche bloquée termine l’essai sur ce parcours."
+      ],
+      [
+        "L’indice déplace-t-il un chariot à ma place ?",
+        "Non. Il met seulement en évidence un chariot qui peut sortir sans danger."
+      ],
+      [
+        "Quelle progression est enregistrée ?",
+        "Les parcours terminés, les étoiles et votre meilleur nombre de touches bloquées restent dans ce navigateur."
+      ]
+    ]
+  },
+  "de": {
+    "intro": "Lies auf jeder Route den Pfeil eines Holzwagens und prüfe die gerade Strecke bis zum Rand, auf den er zeigt. Er darf nur fahren, wenn jedes Feld davor frei ist; der ✦-Signalwagen öffnet rote Signale und verbundene Wagen warten auf ihren Leitwagen.",
+    "tags": [
+      "Verkehrsreihenfolge-Logik",
+      "Ausfahrt in Pfeilrichtung",
+      "Signal- und Konvoi-Regeln",
+      "Planung in vier Richtungen"
+    ],
+    "relatedIntro": "Für ein weiteres Logikrätsel probiere diese Spiele aus:",
+    "faq": [
+      [
+        "Warum fährt ein Wagen nicht aus?",
+        "Ein anderer Wagen kann die gerade Strecke zum Rand blockieren, ein rotes Signal ist noch geschlossen oder ein Konvoi wartet auf seine Reihenfolge."
+      ],
+      [
+        "Was bewirkt der ✦-Signalwagen?",
+        "Wenn er ausfährt, öffnet er die roten Signale dieser Route."
+      ],
+      [
+        "Wann darf ein verbundener Wagen fahren?",
+        "Er wartet, bis sein Leitwagen ausgefahren ist."
+      ],
+      [
+        "Wie viele blockierte Klicks sind erlaubt?",
+        "Drei pro Versuch. Der dritte blockierte Klick beendet den Versuch auf dieser Route."
+      ],
+      [
+        "Bewegt der Hinweis einen Wagen für mich?",
+        "Nein. Er hebt nur einen Wagen hervor, der sicher ausfahren kann."
+      ],
+      [
+        "Welcher Fortschritt wird gespeichert?",
+        "Abgeschlossene Routen, Sterne und dein bester Wert bei blockierten Klicks bleiben in diesem Browser gespeichert."
+      ]
+    ]
+  },
+  "it": {
+    "intro": "In ogni percorso, leggi la freccia del carrello di legno e controlla in linea retta fino al bordo verso cui punta. Può uscire solo se tutte le caselle davanti sono libere; il carrello ✦ apre i segnali rossi e quelli collegati aspettano il capofila.",
+    "tags": [
+      "Logica dell’ordine del traffico",
+      "Uscite nella direzione indicata",
+      "Regole di segnali e convogli",
+      "Pianificazione sui quattro lati"
+    ],
+    "relatedIntro": "Per un altro rompicapo logico, prova questi giochi:",
+    "faq": [
+      [
+        "Perché un carrello non esce?",
+        "Un altro carrello può bloccare la linea fino al bordo, il segnale rosso può essere chiuso oppure un convoglio può aspettare il proprio turno."
+      ],
+      [
+        "A cosa serve il carrello ✦?",
+        "Quando esce, apre i segnali rossi di quel percorso."
+      ],
+      [
+        "Quando può uscire un carrello collegato?",
+        "Aspetta che sia uscito il carrello capofila."
+      ],
+      [
+        "Quanti tocchi bloccati sono consentiti?",
+        "Tre per tentativo. Il terzo tocco bloccato termina il tentativo del percorso."
+      ],
+      [
+        "Il suggerimento muove un carrello al posto mio?",
+        "No. Illumina soltanto un carrello che può uscire in sicurezza."
+      ],
+      [
+        "Quali progressi vengono salvati?",
+        "Percorsi completati, stelle e miglior numero di tocchi bloccati restano salvati in questo browser."
+      ]
+    ]
+  },
+  "ru": {
+    "intro": "На каждом маршруте прочитайте стрелку деревянной тележки и проверьте прямой путь до края, куда она направлена. Выезжать можно, только если все клетки впереди свободны; тележка ✦ открывает красные сигналы, а связанные тележки ждут ведущую.",
+    "tags": [
+      "Логика очередности движения",
+      "Выезд по направлению стрелки",
+      "Правила сигналов и колонны",
+      "Планирование четырёх выездов"
+    ],
+    "relatedIntro": "Для другой логической головоломки попробуйте эти игры:",
+    "faq": [
+      [
+        "Почему тележка не выезжает?",
+        "На прямом пути к краю может стоять другая тележка, красный сигнал может быть закрыт или колонна ещё ждёт очереди."
+      ],
+      [
+        "Что делает тележка ✦?",
+        "Когда она выезжает, красные сигналы на этом маршруте открываются."
+      ],
+      [
+        "Когда может выехать связанная тележка?",
+        "После того как выедет ведущая тележка."
+      ],
+      [
+        "Сколько раз можно нажать на заблокированную тележку?",
+        "Три раза за попытку. Третье заблокированное нажатие завершает попытку на маршруте."
+      ],
+      [
+        "Подсказка двигает тележку за меня?",
+        "Нет. Она только подсвечивает тележку, которая может безопасно выехать."
+      ],
+      [
+        "Какой прогресс сохраняется?",
+        "Пройденные маршруты, звёзды и лучший результат по заблокированным нажатиям сохраняются в этом браузере."
+      ]
+    ]
+  },
+  "hi": {
+    "intro": "हर रास्ते पर लकड़ी की गाड़ी का तीर पढ़ें और उसी दिशा में किनारे तक सीधा रास्ता देखें। आगे का हर खाना खाली हो तभी गाड़ी बाहर जा सकती है; ✦ संकेत-गाड़ी लाल बत्तियाँ खोलती है और जुड़ी गाड़ियाँ अगुआ के निकलने की प्रतीक्षा करती हैं।",
+    "tags": [
+      "यातायात क्रम की पहेली",
+      "तीर की दिशा में निकास",
+      "संकेत और काफ़िले के नियम",
+      "चारों ओर के रास्तों की योजना"
+    ],
+    "relatedIntro": "एक और तर्क पहेली आज़माने के लिए ये खेल देखें:",
+    "faq": [
+      [
+        "गाड़ी बाहर क्यों नहीं जा रही?",
+        "किनारे तक सीधे रास्ते में दूसरी गाड़ी हो सकती है, लाल संकेत बंद हो सकता है या काफ़िला अपनी बारी की प्रतीक्षा कर रहा हो सकता है।"
+      ],
+      [
+        "✦ संकेत-गाड़ी क्या करती है?",
+        "उसके बाहर निकलने पर उस रास्ते की लाल बत्तियाँ खुल जाती हैं।"
+      ],
+      [
+        "जुड़ी गाड़ी कब निकल सकती है?",
+        "अगुआ गाड़ी के निकलने के बाद ही वह आगे बढ़ती है।"
+      ],
+      [
+        "रुके हुए रास्ते पर कितनी बार टैप कर सकते हैं?",
+        "हर कोशिश में तीन बार। तीसरा रुका हुआ टैप उस रास्ते की कोशिश समाप्त कर देता है।"
+      ],
+      [
+        "क्या संकेत मेरे लिए गाड़ी चलाता है?",
+        "नहीं। यह केवल सुरक्षित रूप से निकल सकने वाली एक गाड़ी को चमकाता है।"
+      ],
+      [
+        "कौन-सी प्रगति सहेजी जाती है?",
+        "पूरे हुए रास्ते, सितारे और रुके हुए टैप का आपका सर्वश्रेष्ठ रिकॉर्ड इसी ब्राउज़र में सहेजा जाता है।"
+      ]
+    ]
+  },
+  "ar": {
+    "intro": "في كل مسار، اقرأ سهم العربة الخشبية وافحص الطريق المستقيم حتى الحافة التي تشير إليها. لا تتحرك إلا إذا كانت كل الخانات أمامها خالية؛ عربة الإشارة ✦ تفتح الأضواء الحمراء، والعربات المرتبطة تنتظر خروج العربة القائدة.",
+    "tags": [
+      "أحجية ترتيب حركة المرور",
+      "خروج في اتجاه السهم",
+      "قواعد الإشارة والقافلة",
+      "تخطيط المسارات من الجهات الأربع"
+    ],
+    "relatedIntro": "لتجربة لغز منطقي آخر، جرّب هذه الألعاب:",
+    "faq": [
+      [
+        "لماذا لا تخرج العربة؟",
+        "قد تعترض عربة أخرى الطريق المستقيم إلى الحافة، أو تبقى الإشارة الحمراء مغلقة، أو تنتظر القافلة دورها."
+      ],
+      [
+        "ما وظيفة عربة الإشارة ✦؟",
+        "عند خروجها، تفتح الأضواء الحمراء في ذلك المسار."
+      ],
+      [
+        "متى تتحرك العربة المرتبطة؟",
+        "تنتظر حتى تخرج العربة القائدة أولاً."
+      ],
+      [
+        "كم نقرة محجوبة يُسمح بها؟",
+        "ثلاث نقرات في كل محاولة. النقرة المحجوبة الثالثة تنهي محاولة ذلك المسار."
+      ],
+      [
+        "هل تحرك التلميحات عربة بدلاً مني؟",
+        "لا. إنها تضيء عربة واحدة يمكنها الخروج بأمان."
+      ],
+      [
+        "ما التقدم الذي يُحفظ؟",
+        "تبقى المسارات المكتملة والنجوم وأفضل عدد للنقرات المحجوبة محفوظة في هذا المتصفح."
+      ]
+    ]
+  }
+};
+  Object.assign(games["animal-parking-patrol"], animalParkingPatrolText140.en, { text140Tags: animalParkingPatrolText140.en.tags });
+  for (const [localeCode, copy] of Object.entries(animalParkingPatrolText140)) {
+    if (localeCode === "en") continue;
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-parking-patrol"] = { ...games["animal-parking-patrol"], ...(localizedGames[localeCode]["animal-parking-patrol"] || {}), ...copy, text140Tags: copy.tags };
+  }
+    // WP_ANIMAL_PARKING_PATROL_TEXT140_END
   if (currentGameId() === "animal-coloring-studio") render();
 
   if (currentGameId() === "animal-word-trails") {
@@ -27567,6 +28641,35 @@
       });
   } else if (currentGameId() !== "animal-coloring-studio") {
     render();
+  }
+
+  if (currentGameId() === "animal-gearpack-expedition") {
+    const gearpackVisibleMetadata = {
+      en: ["Gameplay", "Genre", "Difficulty", "Estimated Play Time", "Spatial-inventory strategy", ["Strategy", "Spatial inventory", "Roguelite"], "Medium to hard", "5–12 minutes per expedition", ["Backpack packing", "Spatial inventory", "Gear placement", "Auto-battle preparation"]],
+      "zh-Hant": ["玩法", "類型", "難度", "預估時間", "空間行囊策略遠征", ["策略", "空間行囊", "裝備配置"], "中等至困難", "每次遠征約 5–12 分鐘", ["策略", "空間行囊", "裝備配置", "自動戰鬥"]],
+      "zh-Hans": ["玩法", "类型", "难度", "预计时间", "空间行囊策略远征", ["策略", "空间行囊", "装备配置"], "中等至困难", "每次远征约 5–12 分钟", ["策略", "空间行囊", "装备配置", "自动战斗"]],
+      ja: ["ゲーム内容", "ジャンル", "難易度", "推定プレイ時間", "装備配置型ローグライト戦略", ["戦略", "持ち物整理", "ローグライト"], "中級から上級", "1回の遠征につき約5～12分", ["戦略", "持ち物整理", "装備配置", "自動戦闘"]],
+      ko: ["게임플레이", "장르", "난이도", "예상 시간", "장비 배치 전략", ["전략", "공간 배치", "로그라이트"], "보통에서 어려움", "원정당 5~12분", ["전략", "장비 배치", "공간 관리", "자동 전투"]],
+      es: ["Jugabilidad", "Género", "Dificultad", "Tiempo estimado", "Estrategia de gestión de mochila", ["Estrategia", "Gestión de inventario", "Roguelite"], "De media a alta", "5–12 minutos por expedición", ["Estrategia", "Gestión de mochila", "Roguelite", "Combate automático"]],
+      "pt-BR": ["Jogabilidade", "Gênero", "Dificuldade", "Tempo estimado", "Estratégia de organização de mochila", ["Estratégia", "Gestão de inventário", "Roguelite"], "De média a alta", "5–12 minutos por expedição", ["Estratégia", "Organização de mochila", "Roguelite", "Combate automático"]],
+      fr: ["Jeu", "Genre", "Difficulté", "Durée estimée", "Stratégie roguelite de rangement", ["Stratégie", "Inventaire spatial", "Roguelite"], "Modérée à difficile", "5 à 12 minutes par expédition", ["Stratégie", "Gestion du sac", "Roguelite", "Combat automatique"]],
+      de: ["Spielweise", "Genre", "Schwierigkeit", "Geschätzte Spielzeit", "Roguelite-Strategie mit Packraster", ["Strategie", "Rucksackplanung", "Roguelite"], "Mittel bis anspruchsvoll", "5–12 Minuten je Expedition", ["Strategie", "Rucksackplanung", "Roguelite", "Automatische Kämpfe"]],
+      it: ["Gioco", "Genere", "Difficoltà", "Tempo di gioco stimato", "Strategia di gestione dello zaino", ["Strategia", "Gestione inventario", "Roguelite"], "Da media a difficile", "5–12 minuti per spedizione", ["Strategia", "Gestione dello zaino", "Roguelite", "Combattimento automatico"]],
+      ru: ["Геймплей", "Жанр", "Сложность", "Расчётное время", "Стратегия размещения снаряжения", ["Стратегия", "Планирование рюкзака", "Roguelite"], "От средней до высокой", "5–12 минут на экспедицию", ["Стратегия", "Планирование рюкзака", "Roguelite", "Автобой"]],
+      hi: ["गेमप्ले", "शैली", "कठिनाई", "अनुमानित समय", "बैग सजाने की रणनीति", ["रणनीति", "स्थानिक व्यवस्था", "Roguelite"], "मध्यम से कठिन", "प्रति अभियान 5–12 मिनट", ["रणनीति", "बैग व्यवस्था", "Roguelite", "स्वचालित युद्ध"]],
+      ar: ["طريقة اللعب", "النوع", "الصعوبة", "وقت اللعب المقدر", "استراتيجية ترتيب المعدات", ["استراتيجية", "تنظيم الحقيبة", "Roguelite"], "متوسطة إلى صعبة", "من 5 إلى 12 دقيقة لكل رحلة", ["استراتيجية", "تنظيم الحقيبة", "Roguelite", "قتال تلقائي"]],
+    };
+    const applyGearpackMetadata = () => {
+      const activeLocale = locale();
+      const [gameplayLabel, genreLabel, difficultyLabel, timeLabel, gameplay, genre, difficulty, time, tags] = gearpackVisibleMetadata[activeLocale] || gearpackVisibleMetadata.en;
+      const tagNode = document.querySelector(".game-info-tags[data-wp-gameplay-tags]");
+      if (tagNode) tagNode.innerHTML = tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
+      const factsNode = document.querySelector(".game-info-facts");
+      if (factsNode) factsNode.innerHTML = [[gameplayLabel, gameplay], [genreLabel, genre.join(" · ")], [difficultyLabel, difficulty], [timeLabel, time]]
+        .map(([label, value]) => `<div class="game-info-fact"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
+    };
+    applyGearpackMetadata();
+    document.querySelector("#localeSelect")?.addEventListener("change", () => window.setTimeout(applyGearpackMetadata, 0));
   }
 
 

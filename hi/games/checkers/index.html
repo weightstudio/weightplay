@@ -25,7 +25,9 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="description" content="8×8 अनुकूल बोर्ड पर अनिवार्य कैप्चर, लगातार छलाँग, किंग पदोन्नति और जवाब देने वाले असली प्रतिद्वंद्वी के साथ पूरा चेकर्स मैच खेलें।" />
+<meta name="weightplay-game-version" content="v21">
+<meta name="weightplay-interface-version" content="7">
+<meta name="description" content="8×8 बोर्ड पर चेकर्स खेलें: तिरछी चालें सोचें, अनिवार्य कैप्चर करें, लगातार छलाँग लगाएँ और गोटियों को किंग बनाएँ।" />
 <title>चेकर्स | WeightPlay</title>
 <style>
   .preview-art { overflow: hidden; }
@@ -37,22 +39,21 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="चेकर्स | WeightPlay" />
-    <meta property="og:description" content="8×8 अनुकूल बोर्ड पर अनिवार्य कैप्चर, लगातार छलाँग, किंग पदोन्नति और जवाब देने वाले असली प्रतिद्वंद्वी के साथ पूरा चेकर्स मैच खेलें।" />
+    <meta property="og:description" content="8×8 बोर्ड पर चेकर्स खेलें: तिरछी चालें सोचें, अनिवार्य कैप्चर करें, लगातार छलाँग लगाएँ और गोटियों को किंग बनाएँ।" />
     <meta property="og:url" content="https://weightplay.com/hi/games/checkers/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="चेकर्स | WeightPlay" />
-    <meta name="twitter:description" content="8×8 अनुकूल बोर्ड पर अनिवार्य कैप्चर, लगातार छलाँग, किंग पदोन्नति और जवाब देने वाले असली प्रतिद्वंद्वी के साथ पूरा चेकर्स मैच खेलें।" />
+    <meta name="twitter:description" content="8×8 बोर्ड पर चेकर्स खेलें: तिरछी चालें सोचें, अनिवार्य कैप्चर करें, लगातार छलाँग लगाएँ और गोटियों को किंग बनाएँ।" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "चेकर्स",
-  "alternateName": "Checkers",
   "url": "https://weightplay.com/hi/games/checkers/",
   "image": "https://weightplay.com/assets/interface7-redrawn/checkers.webp",
-  "description": "8×8 अनुकूल बोर्ड पर अनिवार्य कैप्चर, लगातार छलाँग, किंग पदोन्नति और जवाब देने वाले असली प्रतिद्वंद्वी के साथ पूरा चेकर्स मैच खेलें।",
+  "description": "8×8 बोर्ड पर चेकर्स खेलें: तिरछी चालें सोचें, अनिवार्य कैप्चर करें, लगातार छलाँग लगाएँ और गोटियों को किंग बनाएँ।",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,10 +63,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "क्लासिक",
-    "पहेली",
-    "रणनीति",
-    "परिवार"
+    "अनिवार्य कैप्चर",
+    "लगातार छलाँग",
+    "बारी-आधारित रणनीति"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -91,16 +91,17 @@
   <section id="battleScreen" class="screen battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
+      <div class="control-row checkers-battle-actions"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div>
     </div>
+    <section id="resultScreen" class="screen result-panel" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="homeBtn" class="secondary"></button><button id="retryBtn" class="primary"></button></div></div>
+    </section>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-  </section>
-  <section id="resultScreen" class="screen" hidden>
-    <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div>
   </section>
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
@@ -113,22 +114,23 @@
 <section class="game-page-info game-page-info-static" aria-label="चेकर्स गेम की जानकारी">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>चेकर्स</h2><p>8×8 अनुकूल बोर्ड पर अनिवार्य कैप्चर, लगातार छलाँग, किंग पदोन्नति और जवाब देने वाले असली प्रतिद्वंद्वी के साथ पूरा चेकर्स मैच खेलें।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>पूरा चेकर्स मैच</strong></div><div class="game-info-fact"><span>शैली</span><strong>क्लासिक · पहेली · रणनीति · परिवार</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>आसान से चुनौतीपूर्ण</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>हर मैच 5–15 मिनट</strong></div><div class="game-info-fact"><span>अभ्यास कौशल</span><strong>योजना · पैटर्न पहचान · एकाग्रता</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>चेकर्स</h2><p>8×8 बोर्ड पर चेकर्स का पूरा मैच खेलें। जहाँ कैप्चर संभव हो, उसे करना अनिवार्य है; लगातार छलाँग लगाएँ और गोटियों को किंग बनाएँ।</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>अनिवार्य कैप्चर</span><span>लगातार छलाँग</span><span>बारी-आधारित रणनीति</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>पूरा चेकर्स मैच</strong></div><div class="game-info-fact"><span>शैली</span><strong>क्लासिक · पहेली · रणनीति</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>आसान से चुनौतीपूर्ण</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>हर मैच 5–15 मिनट</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>The board is a compact 8×8 arena where only the dark squares are playable. You begin with twelve pieces and the rival begins with twelve pieces, so every open diagonal can become an escape route, a trap, or the first link in a capture sequence.</p></div>
-      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>Ordinary pieces move one step diagonally forward. A capture jumps over an adjacent rival piece into an empty square and removes that piece. If any capture exists anywhere on the board, non-capturing moves are not legal.</p>
-<p>After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.</p>
-<p>The rival answers after your turn and can make its own capture sequence. The match ends when one side has no pieces or no legal move; a long no-progress sequence can also settle as a draw. Hint marks a legal piece but never chooses the destination for you.</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>Start from Main and study the highlighted gold pieces and the current turn message.</li><li>Select a gold piece with a legal diagonal destination, then select the highlighted landing square.</li><li>If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown.</li><li>Protect a path to the far row, promote to a king, and use the king&#39;s two-way movement to change the shape of the position.</li><li>Use Hint when you need one legal starting piece, or Restart to replay the same match from its opening position.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>Before moving, scan every rival piece for a forced capture and count the landing square, not just the jumped piece.</li><li>Avoid advancing one piece alone; keep diagonal support so the rival cannot answer with a free capture.</li><li>During a multi-jump, reassess the next landing square after every jump instead of assuming the first capture is the whole turn.</li><li>Reach promotion with a clear escape square in mind. A king is flexible, but it can still be trapped by a forced capture or blocked diagonal.</li><li>When ahead in pieces, trade safely and reduce the rival&#39;s legal moves; when behind, preserve mobility and search for a promotion race.</li></ul></div>
-      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>The opening teaches diagonal movement and the global capture rule. Midgame positions add competing capture choices and multi-jump decisions, while the endgame rewards kings, blocked routes, and move-count awareness.</p></div>
-      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>The Checkers preview uses the same legal-move engine for touch, mouse, keyboard focus, Hint, the rival response, and accessible board labels. A selected piece and legal targets remain visually distinct, so the player can understand why a quiet move is unavailable without relying on hidden rules.</p></div>
-      <div class="game-info-section game-info-parent"><h3>अभिभावक सूचना</h3><p>Checkers is a general-audience browser strategy game recommended for ages 9+ and family play. No account or purchase is required; the current match and Best record stay in this browser only.</p></div>
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>8×8 बोर्ड पर केवल गहरे खाने इस्तेमाल होते हैं। दोनों पक्ष बारह-बारह गोटियों से शुरू करते हैं; खुला तिरछा रास्ता बच निकलने का मार्ग, जाल या कैप्चर-श्रृंखला की शुरुआत बन सकता है।</p></div>
+      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>साधारण गोटी तिरछे आगे एक खाना चलती है। कैप्चर में वह पास की प्रतिद्वंद्वी गोटी के ऊपर से खाली खाने पर छलाँग लगाती है और उस गोटी को हटा देती है। बोर्ड पर कहीं भी कैप्चर संभव हो, तो बिना कैप्चर वाली चाल नहीं चल सकते।</p>
+<p>कैप्चर के बाद उसी गोटी की नई जगह देखें। यदि वह फिर कैप्चर कर सकती है, तो लगातार छलाँग जारी रखनी होगी। प्रतिद्वंद्वी की आखिरी पंक्ति पर पहुँचने से गोटी किंग बनती है और दोनों तिरछी दिशाओं में चल व कैप्चर कर सकती है। यदि कैप्चर से गोटी किंग बनती है, तो चाल तुरंत समाप्त हो जाती है।</p>
+<p>प्रतिद्वंद्वी वैध चाल से जवाब देता है और कैप्चर या किंग बनने को प्राथमिकता दे सकता है। किसी पक्ष की गोटियाँ या वैध चालें समाप्त हों तो मैच खत्म होता है; लंबे समय तक कैप्चर या किंग न बनने पर ड्रॉ भी हो सकता है। हिंट वैध शुरुआती गोटी दिखाता है, गंतव्य नहीं चुनता।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>मुख्य स्क्रीन पर शुरू करें दबाएँ और चाल का संकेत तथा सुनहरे रंग से दिखाई गई गोटियाँ देखें।</li><li>ऐसी सुनहरी गोटी चुनें जिसकी तिरछी वैध जगह हो, फिर दिखाई गई उतरने की जगह चुनें।</li><li>कैप्चर उपलब्ध हो तो उसे करना होगा। उतरने के बाद उसी गोटी से फिर कैप्चर संभव हो तो छलाँग जारी रखें। यदि कैप्चर से गोटी किंग बनती है, तो चाल तुरंत समाप्त हो जाती है।</li><li>प्रतिद्वंद्वी की आखिरी पंक्ति तक रास्ता बचाएँ और किंग बनने पर दोनों दिशाओं में चलने का लाभ लें।</li><li>हिंट से वैध शुरुआती गोटी देखें। रीस्टार्ट दबाने पर मैच शुरुआती स्थिति में लौटता है।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>चाल से पहले सभी प्रतिद्वंद्वी गोटियों के कैप्चर देखें और उतरने का खाना भी गिनें, केवल छलाँग के ऊपर की गोटी नहीं।</li><li>किसी एक गोटी को अकेले आगे न बढ़ाएँ; तिरछा सहारा रखें ताकि प्रतिद्वंद्वी आसानी से कैप्चर न कर सके।</li><li>लगातार छलाँग के दौरान हर बार उतरने के बाद अगली जगह फिर देखें; पहला कैप्चर हमेशा चाल का अंत नहीं होता।</li><li>किंग बनने की राह में वापसी का खाना रखें। किंग अधिक स्वतंत्र है, फिर भी अनिवार्य कैप्चर या बंद तिरछे रास्ते में फँस सकता है।</li><li>गोटियाँ अधिक हों तो सुरक्षित अदला-बदली करें और प्रतिद्वंद्वी की वैध चालें घटाएँ; पीछे हों तो गतिशीलता और किंग बनने का रास्ता बचाएँ।</li></ul></div>
+      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>शुरुआत में तिरछी चाल और पूरे बोर्ड पर अनिवार्य कैप्चर का नियम आता है। बीच के खेल में कई कैप्चर विकल्प और लगातार छलाँग के फैसले आते हैं; अंत में किंग, बंद रास्ते और चालों की गणना अहम होती है। हर सत्र एक पूरा मैच है, अलग से खुलने वाले स्तर नहीं।</p></div>
+      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>टच, माउस, कीबोर्ड फोकस, हिंट और प्रतिद्वंद्वी की प्रतिक्रिया सभी एक ही वैध-चाल इंजन का उपयोग करते हैं। चुनी हुई गोटी और वैध उतरने की जगह अलग-अलग दिखती हैं, ताकि कैप्चर उपलब्ध होने पर साधारण चाल क्यों मना है यह बोर्ड पर स्पष्ट रहे।</p></div>
+      <div class="game-info-section game-info-parent"><h3>खिलाड़ी और सेव की जानकारी</h3><p>खेलने के लिए लॉगिन या खरीदारी की ज़रूरत नहीं है। चल रहा मैच सेव नहीं होता; केवल सर्वोत्तम रिकॉर्ड इस ब्राउज़र में रहता है। साइट डेटा मिटाने पर यह रिकॉर्ड हट सकता है।</p></div>
+      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या कैप्चर करना अनिवार्य है?</dt><dd>हाँ। बोर्ड पर कहीं भी कैप्चर संभव हो, तो कैप्चर वाली चाल चुननी होगी।</dd></div><div><dt>लगातार छलाँग कब रुकती है?</dt><dd>नई जगह से उसी गोटी का अगला कैप्चर संभव रहने तक छलाँग जारी रहती है। अगला कैप्चर न हो तो चाल खत्म होती है। यदि कैप्चर से गोटी किंग बनती है, तो चाल तुरंत समाप्त हो जाती है।</dd></div><div><dt>गोटी किंग कैसे बनती है?</dt><dd>प्रतिद्वंद्वी की आखिरी पंक्ति तक पहुँचने पर वह किंग बनती है और दोनों तिरछी दिशाओं में चल व कैप्चर कर सकती है।</dd></div><div><dt>मैच कैसे जीतें?</dt><dd>जब प्रतिद्वंद्वी की गोटियाँ या वैध चालें खत्म हों, आप जीतते हैं। लंबे समय तक कैप्चर या किंग न बनने पर ड्रॉ हो सकता है।</dd></div><div><dt>क्या हिंट मेरी चाल चल देता है?</dt><dd>नहीं। हिंट केवल वैध शुरुआती गोटी दिखाता है; उतरने की जगह आपको चुननी होती है।</dd></div><div><dt>क्या मैच या सर्वोत्तम रिकॉर्ड सेव होता है?</dt><dd>चल रहा मैच सेव नहीं होता। सर्वोत्तम रिकॉर्ड केवल इस ब्राउज़र में रहता है; लॉगिन या खरीदारी आवश्यक नहीं है।</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>लाइट्स आउट</strong><span>लाइट्स आउट एक क्लासिक 5×5 स्विच पहेली है: खाने और उसके मौजूद ऊपर, नीचे, बाएँ और दाएँ पड़ोसियों को बदलकर सभी लाइट बंद करें।</span></span></a><a class="game-info-related-card" href="/hi/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>चार की पंक्ति</strong><span>चार की पंक्ति 7×6 गुरुत्व बोर्ड का क्लासिक खेल है: गोटियाँ गिराएँ और क्षैतिज, ऊर्ध्वाधर या तिरछी चार गोटियाँ जोड़ें।</span></span></a></div></div>
     </div>
   </section>
 </body>

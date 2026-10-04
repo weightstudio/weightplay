@@ -100,7 +100,7 @@
       // here when Settings changes locale in the same session.
       const faq = [...guide.querySelectorAll('.game-info-section')].find(section => section.querySelector('dl'));
       if (faq) {
-        const faqKeys = ['faqTitle','faqQ1','faqA1','faqQ2','faqA2','faqQ3','faqA3','faqQ4','faqA4'];
+        const faqKeys = ['faqTitle', ...Array.from({length: 8}, (_, i) => [`faqQ${i + 1}`, `faqA${i + 1}`]).flat()];
         const faqNodes = [faq.querySelector('h3'), ...faq.querySelectorAll('dt,dd')];
         faqNodes.forEach((node, index) => {
           const value = strings[faqKeys[index]];

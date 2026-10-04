@@ -868,7 +868,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Animal Rootvault Pins is a 30-chamber pin puzzle starring Moss Shell Taro. Pull complete golden pins in a safe order, resolve visible material reactions, and bring Taro and the Star Core together at the sanctuary.": "Animal Rootvault Pins ist ein 30-Kammer-Pin-Puzzle mit Moss Shell Taro in der Hauptrolle. Ziehen Sie in sicherer Reihenfolge komplette Goldnadeln heraus, lösen Sie sichtbare materielle Reaktionen und bringen Sie Taro und den Sternenkern im Heiligtum zusammen.",
   "Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.": "Animal Rune Tactics ist eine rundenbasierte Kampagne mit 30 Missionen, die auf variablen 4×5 bis 6×6 Runenbrettern gespielt wird. Der Löwenwächter, der Eulenmagier und der Schildkrötenschild führen jeweils eine Aktion aus, bevor der Feind an der Reihe ist: sich bewegen, angreifen, bewachen oder Energie für eine bestimmte Fähigkeit ausgeben. Sechs Kapitel mit fünf Missionen stellen blockierte Routen, Fallen, Strömungen, Feuer, rotierende Runen und Siegel sowie Feinde vor, die kontern, drängen, zum Schweigen bringen, markieren, Energie verbrauchen oder Klone erstellen. Die Missionen 5, 10, 15, 20, 25 und 30 enden mit sechs unterschiedlichen Stufenbossen. Missionsfreischaltungen, Heldentraining und Runenbelohnungen werden in diesem Browser gespeichert.",
   "Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through corruption, and reconnect it before a hunter reaches the open line.": "Animal Sanctuary Loop ist ein 30-Missionen umfassendes Arcade-Spiel mit Spark Paw Fia in der Hauptrolle. Verlassen Sie wiederhergestelltes Land, ziehen Sie eine verletzliche Blitzspur durch die Korruption und verbinden Sie sie wieder, bevor ein Jäger die offene Linie erreicht.",
-  "Animal Screw Workshop": "Werkstatt für Tierschrauben",
+  "Animal Screw Workshop": "Schrauben-Werkstatt",
   "Animal Shape Train": "Zug in Tierform",
   "Animal Shape Train - How to Play": "Tierform-Zug – Spielanleitung",
   "Animal Shape Train - Preschool Shape Matching Game": "Tierformzug - Formanpassungsspiel für Vorschulkinder",
@@ -992,7 +992,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Asegurar 5": "Sicherung 5",
   "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.": "Fragen Sie einen anderen Spieler nach Ihrem Rang. Wenn sie es haben, müssen sie dir jede Karte dieses Wertes geben; andernfalls Go Fish.",
   "Ask for a rank that is already close to a book when the table evidence supports it.": "Frage nach einem Rang, der bereits fast ein Buch bildet, wenn die Hinweise auf dem Tisch das nahelegen.",
-  "Ask for ranks, collect four-of-a-kind books, and read the table.": "Fragen Sie nach Rängen, sammeln Sie vier gleiche Bücher und lesen Sie die Tabelle.",
+  "Ask for ranks, collect four-of-a-kind books, and read the table.": "Frage nach einem Kartenwert, den du auf der Hand hast, sammle vier Karten desselben Werts und achte auf die Hinweise auf dem Tisch.",
   "Asociar formas": "Asociar formas",
   "Astral Crown": "Astralkrone",
   "At every fifth stage, defeat the named Boss as well as completing the key target.": "Besiege in jeder fünften Phase den genannten Boss und erfülle das Hauptziel.",
@@ -9447,9 +9447,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Can progress move automatically to another device?": "Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "Nein. Dieses Spiel speichert den Fortschritt derzeit nur im lokalen Browserspeicher. Ein anderes Browserprofil oder Gerät hat daher einen eigenen lokalen Fortschritt, solange kein Kontosystem hinzugefügt wird.",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Ein Impuls gelingt nur, wenn Farbe und Emblem innerhalb des sichtbaren Zeitfensters ausgerichtet sind.",
-  "The nearest marker did not match both required properties inside the window.": "Die nächste Markierung stimmte innerhalb des Fensters nicht mit beiden erforderlichen Eigenschaften überein."
-};
-Object.assign(window.WeightPlayGameRuntimeLocales["de"], {
+  "The nearest marker did not match both required properties inside the window.": "Die nächste Markierung stimmte innerhalb des Fensters nicht mit beiden erforderlichen Eigenschaften überein.",
   "Numbered-Node Route Puzzle": "Routenrätsel mit nummerierten Knoten",
   "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Verbinde alle nummerierten Knoten der Reihe nach, meide rot markierte gesperrte Luftwege und erreiche das hervorgehobene Dock.",
   "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "Am Cloudline Skyport ist jede Schicht ein Routenrätsel: Führe ein Tierluftschiff zum hervorgehobenen Dock.",
@@ -9469,5 +9467,8 @@ Object.assign(window.WeightPlayGameRuntimeLocales["de"], {
   "What makes a route valid?": "Wann ist eine Route gültig?",
   "What causes an Error?": "Was zählt als Fehler?",
   "What happens after three Errors?": "Was passiert nach drei Fehlern?",
-  "How many shifts are there?": "Wie viele Schichten gibt es?"
-});
+  "How many shifts are there?": "Wie viele Schichten gibt es?",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw once. Empty your hand first to win.": "Lege eine Karte mit passender Farbe oder Zahl; mit jeder Acht wählst du die nächste Farbe. Wenn du nicht legen kannst, ziehe eine Karte. Wer zuerst die Hand leert, gewinnt.",
+  "Match suit or rank, then use an Eight to change the active suit.": "Passe nach Farbe oder Wert und wähle mit einer Acht die nächste Farbe.",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.": "Lege eine Karte mit passender Farbe oder Zahl; mit jeder Acht wählst du die nächste Farbe. Wenn du nicht legen kannst, ziehe vom Nachziehstapel. Wer zuerst die Hand leert, gewinnt."
+};

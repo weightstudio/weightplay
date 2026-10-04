@@ -25,7 +25,9 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="description" content="Gioca una partita completa a dama su una tavola 8×8 adattiva, con prese obbligatorie, salti multipli, promozione e un vero avversario." />
+<meta name="weightplay-game-version" content="v21">
+<meta name="weightplay-interface-version" content="7">
+<meta name="description" content="Gioca a dama su una scacchiera 8×8: pianifica le diagonali, fai le prese obbligatorie, concatena i salti e promuovi le pedine." />
 <title>Dama | WeightPlay</title>
 <style>
   .preview-art { overflow: hidden; }
@@ -37,22 +39,21 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Dama | WeightPlay" />
-    <meta property="og:description" content="Gioca una partita completa a dama su una tavola 8×8 adattiva, con prese obbligatorie, salti multipli, promozione e un vero avversario." />
+    <meta property="og:description" content="Gioca a dama su una scacchiera 8×8: pianifica le diagonali, fai le prese obbligatorie, concatena i salti e promuovi le pedine." />
     <meta property="og:url" content="https://weightplay.com/it/games/checkers/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Dama | WeightPlay" />
-    <meta name="twitter:description" content="Gioca una partita completa a dama su una tavola 8×8 adattiva, con prese obbligatorie, salti multipli, promozione e un vero avversario." />
+    <meta name="twitter:description" content="Gioca a dama su una scacchiera 8×8: pianifica le diagonali, fai le prese obbligatorie, concatena i salti e promuovi le pedine." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Dama",
-  "alternateName": "Checkers",
   "url": "https://weightplay.com/it/games/checkers/",
   "image": "https://weightplay.com/assets/interface7-redrawn/checkers.webp",
-  "description": "Gioca una partita completa a dama su una tavola 8×8 adattiva, con prese obbligatorie, salti multipli, promozione e un vero avversario.",
+  "description": "Gioca a dama su una scacchiera 8×8: pianifica le diagonali, fai le prese obbligatorie, concatena i salti e promuovi le pedine.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,10 +63,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Classico",
-    "Puzzle",
-    "Strategia",
-    "Famiglia"
+    "Prese obbligatorie",
+    "Salti multipli",
+    "Strategia a turni"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -91,16 +91,17 @@
   <section id="battleScreen" class="screen battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
+      <div class="control-row checkers-battle-actions"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div>
     </div>
+    <section id="resultScreen" class="screen result-panel" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="homeBtn" class="secondary"></button><button id="retryBtn" class="primary"></button></div></div>
+    </section>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-  </section>
-  <section id="resultScreen" class="screen" hidden>
-    <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div>
   </section>
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
@@ -113,22 +114,23 @@
 <section class="game-page-info game-page-info-static" aria-label="Informazioni su Dama">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Dama</h2><p>Gioca una partita completa a dama su una tavola 8×8 adattiva, con prese obbligatorie, salti multipli, promozione e un vero avversario.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Partita completa a dama</strong></div><div class="game-info-fact"><span>Genere</span><strong>Classico · Puzzle · Strategia · Famiglia</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Da facile a impegnativo</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>5–15 minuti a partita</strong></div><div class="game-info-fact"><span>Abilità</span><strong>Pianificazione · Riconoscimento degli schemi · Concentrazione</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Dama</h2><p>Gioca una partita completa a dama su una scacchiera 8×8. Ogni presa disponibile è obbligatoria: concatena i salti e promuovi le pedine per aprire percorsi sicuri.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Prese obbligatorie</span><span>Salti multipli</span><span>Strategia a turni</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Partita completa a dama</strong></div><div class="game-info-fact"><span>Genere</span><strong>Classico · Puzzle · Strategia</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Da facile a impegnativo</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>5–15 minuti a partita</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mondo e missione</h3><p>The board is a compact 8×8 arena where only the dark squares are playable. You begin with twelve pieces and the rival begins with twelve pieces, so every open diagonal can become an escape route, a trap, or the first link in a capture sequence.</p></div>
-      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Ordinary pieces move one step diagonally forward. A capture jumps over an adjacent rival piece into an empty square and removes that piece. If any capture exists anywhere on the board, non-capturing moves are not legal.</p>
-<p>After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.</p>
-<p>The rival answers after your turn and can make its own capture sequence. The match ends when one side has no pieces or no legal move; a long no-progress sequence can also settle as a draw. Hint marks a legal piece but never chooses the destination for you.</p></div>
-      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Start from Main and study the highlighted gold pieces and the current turn message.</li><li>Select a gold piece with a legal diagonal destination, then select the highlighted landing square.</li><li>If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown.</li><li>Protect a path to the far row, promote to a king, and use the king&#39;s two-way movement to change the shape of the position.</li><li>Use Hint when you need one legal starting piece, or Restart to replay the same match from its opening position.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Before moving, scan every rival piece for a forced capture and count the landing square, not just the jumped piece.</li><li>Avoid advancing one piece alone; keep diagonal support so the rival cannot answer with a free capture.</li><li>During a multi-jump, reassess the next landing square after every jump instead of assuming the first capture is the whole turn.</li><li>Reach promotion with a clear escape square in mind. A king is flexible, but it can still be trapped by a forced capture or blocked diagonal.</li><li>When ahead in pieces, trade safely and reduce the rival&#39;s legal moves; when behind, preserve mobility and search for a promotion race.</li></ul></div>
-      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>The opening teaches diagonal movement and the global capture rule. Midgame positions add competing capture choices and multi-jump decisions, while the endgame rewards kings, blocked routes, and move-count awareness.</p></div>
-      <div class="game-info-section"><h3>Nota di design</h3><p>The Checkers preview uses the same legal-move engine for touch, mouse, keyboard focus, Hint, the rival response, and accessible board labels. A selected piece and legal targets remain visually distinct, so the player can understand why a quiet move is unavailable without relying on hidden rules.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>Checkers is a general-audience browser strategy game recommended for ages 9+ and family play. No account or purchase is required; the current match and Best record stay in this browser only.</p></div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>I progressi vengono salvati?</dt><dd>Sì, solo in questo browser.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Si gioca solo sulle caselle scure della scacchiera 8×8. Entrambi i lati iniziano con dodici pedine; una diagonale aperta può diventare una via di fuga, una trappola o l&#39;inizio di una serie di prese.</p></div>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Le pedine normali avanzano di una casella in diagonale. Per catturare, saltano una pedina avversaria adiacente e atterrano su una casella vuota; la pedina saltata viene rimossa. Se è disponibile una presa in qualsiasi punto della scacchiera, non puoi fare una mossa senza catturare.</p>
+<p>Dopo una presa, controlla la nuova posizione della stessa pedina. Se può catturare ancora, deve continuare con salti multipli. Raggiunta la fila opposta, diventa dama e può muoversi e catturare in entrambe le direzioni diagonali. Se questa presa la promuove, il turno termina subito.</p>
+<p>L&#39;avversario risponde con una mossa legale e può dare priorità a prese o promozioni. La partita termina quando un lato non ha più pedine o mosse legali; una lunga sequenza senza prese o promozioni può finire in parità. Il suggerimento indica una pedina legale, ma non sceglie la destinazione.</p></div>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Premi Inizia nella schermata principale e osserva il turno e le pedine evidenziate in oro.</li><li>Scegli una pedina dorata con una destinazione diagonale legale, poi seleziona la casella di arrivo evidenziata.</li><li>Se è disponibile una presa, devi effettuarla. Dopo l&#39;atterraggio continua con la stessa pedina se può catturare ancora. Se questa presa la promuove, il turno termina subito.</li><li>Mantieni un percorso verso la fila opposta e usa il movimento in entrambe le direzioni dopo la promozione.</li><li>Usa Suggerimento per vedere una pedina iniziale legale. Riavvia ripristina la posizione iniziale della partita.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Prima di muovere, cerca le prese forzate di tutte le pedine avversarie e considera la casella di atterraggio, non solo la pedina saltata.</li><li>Non far avanzare una pedina da sola; mantieni il supporto diagonale per evitare una presa facile.</li><li>Durante i salti multipli, rivaluta la casella successiva dopo ogni atterraggio: la prima presa non sempre conclude il turno.</li><li>Quando cerchi la promozione, lascia una via d&#39;uscita. La dama è più flessibile, ma può restare intrappolata da una presa obbligatoria o da una diagonale bloccata.</li><li>Se hai più pedine, scambiale con prudenza e limita le mosse avversarie; se sei in svantaggio, conserva mobilità e cerca una promozione.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>L&#39;apertura insegna il movimento diagonale e la regola generale delle prese. A metà partita si presentano scelte tra diverse catture e salti multipli; nel finale contano dame, passaggi bloccati e calcolo delle mosse. Ogni sessione è una partita completa, non una serie di livelli da sbloccare.</p></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>La partita usa lo stesso motore delle mosse legali per tocco, mouse, focus della tastiera, suggerimenti e risposte dell&#39;avversario. La pedina selezionata e le destinazioni consentite hanno indicatori diversi, così la scacchiera mostra perché una mossa tranquilla è vietata quando c&#39;è una presa.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Informazioni sul giocatore e sui salvataggi</h3><p>Per giocare non servono accesso a un account né acquisti. La partita in corso non viene salvata; solo il record migliore resta in questo browser. Cancellando i dati del sito, il record potrebbe andare perso.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Le prese sono obbligatorie?</dt><dd>Sì. Se è disponibile una presa in qualsiasi punto della scacchiera, devi scegliere una mossa di cattura.</dd></div><div><dt>Quando termina una serie di salti?</dt><dd>La stessa pedina deve continuare finché può catturare dalla nuova casella. Il turno finisce quando non può più farlo. Se questa presa la promuove, il turno termina subito.</dd></div><div><dt>Come si promuove una pedina?</dt><dd>Raggiungendo la fila opposta, la pedina diventa dama e può muoversi o catturare in entrambe le direzioni diagonali.</dd></div><div><dt>Come si vince la partita?</dt><dd>Vinci quando l&#39;avversario non ha pedine o mosse legali. Una lunga sequenza senza prese o promozioni può terminare in parità.</dd></div><div><dt>Il suggerimento muove al posto mio?</dt><dd>No. Indica una pedina iniziale legale; la destinazione e la mossa le scegli tu.</dd></div><div><dt>La partita o il record migliore vengono salvati?</dt><dd>La partita in corso non viene salvata. Solo il record migliore resta in questo browser; non servono accesso o acquisti.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Spegni le luci</strong><span>Spegni le luci è un classico puzzle 5x5: inverti una casella e le vicine ortogonali per spegnere tutte le luci.</span></span></a><a class="game-info-related-card" href="/it/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Forza quattro</strong><span>Forza quattro è un classico gioco a gravità su una griglia 7x6: lascia cadere le pedine e collegane quattro in orizzontale, verticale o diagonale.</span></span></a></div></div>
     </div>
   </section>
 </body>

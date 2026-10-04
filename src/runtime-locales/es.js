@@ -992,7 +992,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Asegurar 5": "Asegurar 5",
   "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.": "Pregúntale a otro jugador cuál es tu rango. Si lo tienen, deberán entregarte todas las cartas de ese rango; de lo contrario, ve a pescar.",
   "Ask for a rank that is already close to a book when the table evidence supports it.": "Pide un valor que ya esté cerca de formar un libro cuando las pistas de la mesa lo respalden.",
-  "Ask for ranks, collect four-of-a-kind books, and read the table.": "Pida rangos, recopile libros de cuatro iguales y lea la tabla.",
+  "Ask for ranks, collect four-of-a-kind books, and read the table.": "Pide un rango que tengas en la mano, reúne cuatro cartas iguales y fíjate en las pistas de la mesa.",
   "Asociar formas": "Asociar formas",
   "Astral Crown": "Corona Astral",
   "At every fifth stage, defeat the named Boss as well as completing the key target.": "En cada quinta etapa, derrota al jefe nombrado y completa el objetivo clave.",
@@ -9446,9 +9446,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Can progress move automatically to another device?": "¿El progreso se transfiere automáticamente a otro dispositivo?",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "No. Actualmente este juego guarda el progreso solo en el almacenamiento local del navegador, por lo que otro perfil de navegador u otro dispositivo tendrá un progreso local independiente, salvo que en el futuro se añada un sistema de cuentas.",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Un pulso tiene éxito solo cuando el color y el emblema se alinean dentro de la ventana de sincronización visible.",
-  "The nearest marker did not match both required properties inside the window.": "El marcador más cercano no coincidió con las dos propiedades requeridas dentro de la ventana."
-};
-Object.assign(window.WeightPlayGameRuntimeLocales["es"], {
+  "The nearest marker did not match both required properties inside the window.": "El marcador más cercano no coincidió con las dos propiedades requeridas dentro de la ventana.",
   "Numbered-Node Route Puzzle": "Rompecabezas de rutas con nodos numerados",
   "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Conecta todos los nodos numerados en orden, evita las rutas aéreas bloqueadas en rojo y llega al muelle resaltado.",
   "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "En Cloudline Skyport, cada turno es un rompecabezas de rutas: guía una aeronave animal hasta el muelle resaltado.",
@@ -9468,5 +9466,8 @@ Object.assign(window.WeightPlayGameRuntimeLocales["es"], {
   "What makes a route valid?": "¿Qué hace que una ruta sea válida?",
   "What causes an Error?": "¿Qué provoca un Error?",
   "What happens after three Errors?": "¿Qué ocurre después de tres errores?",
-  "How many shifts are there?": "¿Cuántos turnos hay?"
-});
+  "How many shifts are there?": "¿Cuántos turnos hay?",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw once. Empty your hand first to win.": "Juega una carta del palo o valor activo; cualquier ocho te permite elegir el siguiente palo. Si no puedes jugar, roba una carta. Gana quien vacíe su mano primero.",
+  "Match suit or rank, then use an Eight to change the active suit.": "Iguala el palo o el valor y juega un ocho para elegir el siguiente palo.",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.": "Juega una carta del palo o valor activo; cualquier ocho te permite elegir el siguiente palo. Si no puedes jugar, roba del mazo. Gana quien vacíe su mano primero."
+};

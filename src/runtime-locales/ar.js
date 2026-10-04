@@ -868,7 +868,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Animal Rootvault Pins is a 30-chamber pin puzzle starring Moss Shell Taro. Pull complete golden pins in a safe order, resolve visible material reactions, and bring Taro and the Star Core together at the sanctuary.": "Animal Rootvault Pins عبارة عن لغز دبوس مكون من 30 غرفة من بطولة Moss Shell Taro. اسحب الدبابيس الذهبية الكاملة بترتيب آمن، وحل التفاعلات المادية المرئية، واجمع القلقاس ونواة النجم معًا في الحرم.",
   "Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.": "Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.",
   "Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through corruption, and reconnect it before a hunter reaches the open line.": "Animal Sanctuary Loop هي لعبة أركيد مكونة من 30 مهمة من بطولة Spark Paw Fia. اترك الأرض المستعادة، وارسم مسارًا صاعدًا ضعيفًا عبر الفساد، وأعد توصيله قبل أن يصل الصياد إلى الخط المفتوح.",
-  "Animal Screw Workshop": "ورشة المسمار الحيواني",
+  "Animal Screw Workshop": "ورشة البراغي",
   "Animal Shape Train": "قطار على شكل حيوان",
   "Animal Shape Train - How to Play": "قطار على شكل حيوان - كيفية اللعب",
   "Animal Shape Train - Preschool Shape Matching Game": "قطار على شكل حيوان - لعبة مطابقة أشكال ما قبل المدرسة",
@@ -992,7 +992,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Asegurar 5": "الأمان 5",
   "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.": "اطلب من لاعب آخر الحصول على رتبة تحملها. إذا كانت بحوزتهم، فيجب عليهم إعطاؤك كل بطاقة من تلك الرتبة؛ خلاف ذلك، اذهب السمك.",
   "Ask for a rank that is already close to a book when the table evidence supports it.": "اطلب رتبة اقتربت بالفعل من تكوين مجموعة عندما تدعم قرائن الطاولة ذلك.",
-  "Ask for ranks, collect four-of-a-kind books, and read the table.": "اطلب الرتب، واجمع الكتب الأربعة من نفس النوع، واقرأ الجدول.",
+  "Ask for ranks, collect four-of-a-kind books, and read the table.": "اطلب قيمة تملكها، واجمع أربع بطاقات من القيمة نفسها، وانتبه إلى دلائل الطاولة.",
   "Asociar formas": "الصيغ الاجتماعية",
   "Astral Crown": "التاج النجمي",
   "At every fifth stage, defeat the named Boss as well as completing the key target.": "في كل مرحلة خامسة، اهزم الزعيم المسمى بالإضافة إلى إكمال الهدف الرئيسي.",
@@ -9447,9 +9447,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Can progress move automatically to another device?": "هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "لا. تحفظ اللعبة التقدم حاليًا في التخزين المحلي للمتصفح فقط، لذلك سيكون لملف متصفح أو جهاز آخر تقدم محلي منفصل، ما لم تتم إضافة نظام حسابات مستقبلًا.",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "ينجح النبض فقط عندما يتطابق اللون والشعار داخل نافذة التوقيت المرئية.",
-  "The nearest marker did not match both required properties inside the window.": "لم يتطابق المؤشر الأقرب مع الخاصيتين المطلوبتين داخل النافذة."
-};
-Object.assign(window.WeightPlayGameRuntimeLocales["ar"], {
+  "The nearest marker did not match both required properties inside the window.": "لم يتطابق المؤشر الأقرب مع الخاصيتين المطلوبتين داخل النافذة.",
   "Numbered-Node Route Puzzle": "لغز مسارات بعقد مرقمة",
   "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "صِل كل العقد المرقمة بالترتيب، وتجنب الممرات الجوية المحظورة باللون الأحمر، ثم أصل إلى الرصيف المميز.",
   "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "في Cloudline Skyport، كل مناوبة لغز مسارات: وجّه منطادًا حيوانيًا إلى الرصيف المميز له.",
@@ -9469,5 +9467,8 @@ Object.assign(window.WeightPlayGameRuntimeLocales["ar"], {
   "What makes a route valid?": "ما شروط المسار الصحيح؟",
   "What causes an Error?": "ما الذي يضيف خطأً؟",
   "What happens after three Errors?": "ماذا يحدث عند ثلاثة أخطاء؟",
-  "How many shifts are there?": "كم عدد المناوبات؟"
-});
+  "How many shifts are there?": "كم عدد المناوبات؟",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw once. Empty your hand first to win.": "العب بطاقة تطابق النوع أو الرتبة النشطة؛ تتيح لك كل بطاقة 8 اختيار النوع التالي. إذا لم تستطع اللعب، اسحب بطاقة واحدة. يفوز أول من يفرغ يده.",
+  "Match suit or rank, then use an Eight to change the active suit.": "طابق النوع أو الرتبة، ثم العب ثمانية لاختيار النوع التالي.",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.": "العب بطاقة تطابق النوع أو الرتبة النشطة؛ تتيح لك كل بطاقة 8 اختيار النوع التالي. إذا لم تستطع اللعب، اسحب من الرزمة. يفوز أول من يفرغ يده."
+};

@@ -25,7 +25,9 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="description" content="Jogue uma partida completa de damas em um tabuleiro responsivo 8×8, com capturas obrigatórias, saltos múltiplos, promoção e um rival que reage de verdade." />
+<meta name="weightplay-game-version" content="v21">
+<meta name="weightplay-interface-version" content="7">
+<meta name="description" content="Jogue damas em um tabuleiro 8×8: planeje diagonais, faça as capturas obrigatórias, encadeie saltos e coroe peças." />
 <title>Damas | WeightPlay</title>
 <style>
   .preview-art { overflow: hidden; }
@@ -37,22 +39,21 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Damas | WeightPlay" />
-    <meta property="og:description" content="Jogue uma partida completa de damas em um tabuleiro responsivo 8×8, com capturas obrigatórias, saltos múltiplos, promoção e um rival que reage de verdade." />
+    <meta property="og:description" content="Jogue damas em um tabuleiro 8×8: planeje diagonais, faça as capturas obrigatórias, encadeie saltos e coroe peças." />
     <meta property="og:url" content="https://weightplay.com/pt-br/games/checkers/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Damas | WeightPlay" />
-    <meta name="twitter:description" content="Jogue uma partida completa de damas em um tabuleiro responsivo 8×8, com capturas obrigatórias, saltos múltiplos, promoção e um rival que reage de verdade." />
+    <meta name="twitter:description" content="Jogue damas em um tabuleiro 8×8: planeje diagonais, faça as capturas obrigatórias, encadeie saltos e coroe peças." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Damas",
-  "alternateName": "Checkers",
   "url": "https://weightplay.com/pt-br/games/checkers/",
   "image": "https://weightplay.com/assets/interface7-redrawn/checkers.webp",
-  "description": "Jogue uma partida completa de damas em um tabuleiro responsivo 8×8, com capturas obrigatórias, saltos múltiplos, promoção e um rival que reage de verdade.",
+  "description": "Jogue damas em um tabuleiro 8×8: planeje diagonais, faça as capturas obrigatórias, encadeie saltos e coroe peças.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,10 +63,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Clássico",
-    "Quebra-cabeça",
-    "Estratégia",
-    "Família"
+    "Capturas obrigatórias",
+    "Saltos múltiplos",
+    "Estratégia por turnos"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -91,16 +91,17 @@
   <section id="battleScreen" class="screen battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
+      <div class="control-row checkers-battle-actions"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div>
     </div>
+    <section id="resultScreen" class="screen result-panel" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="homeBtn" class="secondary"></button><button id="retryBtn" class="primary"></button></div></div>
+    </section>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-  </section>
-  <section id="resultScreen" class="screen" hidden>
-    <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div>
   </section>
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
@@ -113,22 +114,23 @@
 <section class="game-page-info game-page-info-static" aria-label="Informações de Damas">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Damas</h2><p>Jogue uma partida completa de damas em um tabuleiro responsivo 8×8, com capturas obrigatórias, saltos múltiplos, promoção e um rival que reage de verdade.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Partida completa de damas</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Clássico · Quebra-cabeça · Estratégia · Família</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>De fácil a desafiador</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>5–15 minutos por partida</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Planejamento · Reconhecimento de padrões · Concentração</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Damas</h2><p>Jogue uma partida completa de damas em um tabuleiro 8×8. Se houver captura, você precisa capturar; encadeie saltos e coroe peças para abrir caminhos seguros.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Capturas obrigatórias</span><span>Saltos múltiplos</span><span>Estratégia por turnos</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Partida completa de damas</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Clássico · Quebra-cabeça · Estratégia</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Do fácil ao desafiador</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>5–15 minutos por partida</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo e missão</h3><p>The board is a compact 8×8 arena where only the dark squares are playable. You begin with twelve pieces and the rival begins with twelve pieces, so every open diagonal can become an escape route, a trap, or the first link in a capture sequence.</p></div>
-      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Ordinary pieces move one step diagonally forward. A capture jumps over an adjacent rival piece into an empty square and removes that piece. If any capture exists anywhere on the board, non-capturing moves are not legal.</p>
-<p>After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.</p>
-<p>The rival answers after your turn and can make its own capture sequence. The match ends when one side has no pieces or no legal move; a long no-progress sequence can also settle as a draw. Hint marks a legal piece but never chooses the destination for you.</p></div>
-      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Start from Main and study the highlighted gold pieces and the current turn message.</li><li>Select a gold piece with a legal diagonal destination, then select the highlighted landing square.</li><li>If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown.</li><li>Protect a path to the far row, promote to a king, and use the king&#39;s two-way movement to change the shape of the position.</li><li>Use Hint when you need one legal starting piece, or Restart to replay the same match from its opening position.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Before moving, scan every rival piece for a forced capture and count the landing square, not just the jumped piece.</li><li>Avoid advancing one piece alone; keep diagonal support so the rival cannot answer with a free capture.</li><li>During a multi-jump, reassess the next landing square after every jump instead of assuming the first capture is the whole turn.</li><li>Reach promotion with a clear escape square in mind. A king is flexible, but it can still be trapped by a forced capture or blocked diagonal.</li><li>When ahead in pieces, trade safely and reduce the rival&#39;s legal moves; when behind, preserve mobility and search for a promotion race.</li></ul></div>
-      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>The opening teaches diagonal movement and the global capture rule. Midgame positions add competing capture choices and multi-jump decisions, while the endgame rewards kings, blocked routes, and move-count awareness.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>The Checkers preview uses the same legal-move engine for touch, mouse, keyboard focus, Hint, the rival response, and accessible board labels. A selected piece and legal targets remain visually distinct, so the player can understand why a quiet move is unavailable without relying on hidden rules.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Checkers is a general-audience browser strategy game recommended for ages 9+ and family play. No account or purchase is required; the current match and Best record stay in this browser only.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>O progresso é salvo?</dt><dd>Sim, somente neste navegador.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>Mundo e missão</h3><p>Só as casas escuras do tabuleiro 8×8 podem ser usadas. Cada lado começa com doze peças; uma diagonal livre pode virar rota de fuga, armadilha ou início de uma sequência de capturas.</p></div>
+      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Peças comuns avançam uma casa na diagonal. Para capturar, pulam uma peça adversária vizinha e aterrissam em uma casa vazia; a peça pulada é removida. Se houver qualquer captura disponível no tabuleiro, você não pode fazer uma jogada sem capturar.</p>
+<p>Depois de capturar, confira a nova posição da mesma peça. Se ela puder capturar de novo, deve continuar com saltos múltiplos. Ao chegar à última fileira do adversário, ela vira dama e pode mover e capturar nas duas direções diagonais. Se essa captura coroar a peça, o turno termina imediatamente.</p>
+<p>O adversário responde com uma jogada legal e pode priorizar capturas ou coroações. A partida termina se um lado ficar sem peças ou sem jogadas legais; uma longa sequência sem capturas ou coroações também pode terminar empatada. A dica aponta uma peça legal, mas não escolhe o destino.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Toque em Começar na tela principal e confira o turno e as peças destacadas em dourado.</li><li>Escolha uma peça dourada com um destino diagonal legal e depois toque na casa de chegada marcada.</li><li>Se houver captura, você precisa fazê-la. Depois de aterrissar, continue com a mesma peça se ela puder capturar novamente. Se essa captura coroar a peça, o turno termina imediatamente.</li><li>Mantenha uma rota até a última fileira do adversário e use o movimento nos dois sentidos quando virar dama.</li><li>Use Dica para ver uma peça inicial legal. Reiniciar devolve a partida à posição de abertura.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Antes de mover, procure capturas forçadas em todas as peças adversárias e conte a casa de chegada, não só a peça pulada.</li><li>Evite avançar uma peça isolada; mantenha apoio diagonal para não oferecer uma captura fácil.</li><li>Durante uma sequência, reavalie a próxima casa após cada salto: a primeira captura nem sempre encerra o turno.</li><li>Ao buscar a coroação, deixe uma saída. A dama tem mais mobilidade, mas ainda pode ficar presa por uma captura forçada ou diagonal bloqueada.</li><li>Se estiver à frente em peças, troque com segurança e reduza as jogadas do rival; se estiver atrás, preserve mobilidade e procure coroar.</li></ul></div>
+      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>A abertura ensina o movimento diagonal e a regra geral de captura. No meio da partida surgem escolhas entre capturas e decisões de saltos múltiplos; no final, damas, bloqueios e cálculo de jogadas ganham peso. Cada sessão é uma partida completa, sem fases desbloqueáveis.</p></div>
+      <div class="game-info-section"><h3>Nota de design</h3><p>A partida usa o mesmo mecanismo de jogadas legais para toque, mouse, foco do teclado, dicas e resposta do adversário. A peça selecionada e os destinos legais têm marcações diferentes, para que o próprio tabuleiro mostre por que uma jogada sem captura não é permitida quando há uma captura disponível.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Informações do jogador e do salvamento</h3><p>Não é preciso entrar em uma conta nem fazer compras para jogar. A partida em andamento não é salva; apenas o melhor resultado fica neste navegador. Limpar os dados do site pode apagar esse registro.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>As capturas são obrigatórias?</dt><dd>Sim. Se houver uma captura disponível em qualquer ponto do tabuleiro, você precisa escolher uma jogada de captura.</dd></div><div><dt>Quando termina uma sequência de saltos?</dt><dd>A mesma peça deve continuar enquanto ainda puder capturar da nova casa. O turno acaba quando não há outra captura para ela. Se essa captura coroar a peça, o turno termina imediatamente.</dd></div><div><dt>Como uma peça vira dama?</dt><dd>Ao chegar à última fileira adversária, a peça é promovida e pode mover e capturar nas duas direções diagonais.</dd></div><div><dt>Como vencer a partida?</dt><dd>Você vence quando o adversário fica sem peças ou sem jogadas legais. Uma longa sequência sem capturas ou coroações pode terminar empatada.</dd></div><div><dt>A dica joga por mim?</dt><dd>Não. Ela destaca uma peça inicial legal; você escolhe o destino e conclui a jogada.</dd></div><div><dt>A partida ou o melhor resultado ficam salvos?</dt><dd>A partida em andamento não é salva. O melhor resultado fica apenas neste navegador; não é preciso entrar em uma conta nem comprar algo.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apague as Luzes</strong><span>Apague as Luzes é um puzzle clássico de interruptores em uma grade 5x5: alterne uma casa e suas vizinhas ortogonais para apagar todas as luzes.</span></span></a><a class="game-info-related-card" href="/pt-br/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quatro em Linha</strong><span>Quatro em Linha é um jogo clássico de gravidade em um tabuleiro 7x6: solte peças e conecte quatro na horizontal, vertical ou diagonal.</span></span></a></div></div>
     </div>
   </section>
 </body>

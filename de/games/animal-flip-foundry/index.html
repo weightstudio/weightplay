@@ -23,59 +23,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Wische einen Kristallbehälter, drehe ihn in der Luft und lande aufrecht auf der nächsten Werkstattfläche." />
+    <meta name="description" content="Starte einen Kristallbehälter mit einer Wischbewegung und lande mit passender Kraft auf 24 Plattformen in sechs Kapiteln." />
     <title>Flip-Werkstatt | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
     <script defer src="game.js?v=20260903-animal-flip-foundry-stage-hit-target-v14"></script>
+    <meta property="og:description" content="Starte einen Kristallbehälter mit einer Wischbewegung und lande mit passender Kraft auf 24 Plattformen in sechs Kapiteln." />
+    <meta name="twitter:description" content="Starte einen Kristallbehälter mit einer Wischbewegung und lande mit passender Kraft auf 24 Plattformen in sechs Kapiteln." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Flip-Werkstatt | WeightPlay" />
-    <meta property="og:description" content="Wische einen Kristallbehälter, drehe ihn in der Luft und lande aufrecht auf der nächsten Werkstattfläche." />
     <meta property="og:url" content="https://weightplay.com/de/games/animal-flip-foundry/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Flip-Werkstatt | WeightPlay" />
-    <meta name="twitter:description" content="Wische einen Kristallbehälter, drehe ihn in der Luft und lande aufrecht auf der nächsten Werkstattfläche." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "Flip-Werkstatt",
-  "alternateName": "Flip Foundry",
-  "url": "https://weightplay.com/de/games/animal-flip-foundry/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "Wische einen Kristallbehälter, drehe ihn in der Luft und lande aufrecht auf der nächsten Werkstattfläche.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "de",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "Arcade",
-    "Physik",
-    "Tiere"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 9
-  }
-}
-    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Flip-Werkstatt","alternateName":"Flip Foundry","url":"https://weightplay.com/de/games/animal-flip-foundry/","image":"https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp","description":"Starte einen Kristallbehälter mit einer Wischbewegung und lande mit passender Kraft auf 24 Plattformen in sechs Kapiteln.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"de","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Wischstart","Kraftabstimmung","Physik-Arcade","Präzisionslandung"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   </head>
   <body data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Flip-Werkstatt</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
         <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Flip-Werkstatt</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><img class="five-game-cover main-cover" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary" data-five-copy="lede">Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.</p>
+        <p class="lede main-summary" data-five-copy="lede">Starte einen Kristallbehälter mit einer Wischbewegung und lande mit passender Kraft auf 24 Plattformen in sechs Kapiteln.</p>
         <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best streak: 0</p><button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png')" hidden><header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Foundry Chapters</h2></header><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav></section>
@@ -83,7 +55,7 @@
     </main>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-    <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
+    <script src="../../src/five-new-games-locale.js?v=20261003-flip-foundry-text140-v1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
@@ -91,23 +63,25 @@
   <section class="game-page-info game-page-info-static" aria-label="Informationen zu Flip-Werkstatt">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Flip-Werkstatt</h2><p>Wische einen Kristallbehälter, drehe ihn in der Luft und lande aufrecht auf der nächsten Werkstattfläche.</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Präzisions-Flip-Herausforderung</span><span>Arcade</span><span>Physik</span><span>Tiere</span></div></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Präzisions-Flip-Herausforderung</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcade · Physik · Tiere</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Leicht bis anspruchsvoll</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>1–3 Minuten pro Kapitel</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Flip-Werkstatt</h2><p>Starte einen Kristallbehälter mit einer Wischbewegung und lande mit passender Kraft auf 24 Plattformen in sechs Kapiteln.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Wischstart</span><span>Kraftabstimmung</span><span>Physik-Arcade</span><span>Präzisionslandung</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Wisch- und Lande-Arcade</strong></div><div class="game-info-fact"><span>Genre</span><strong>Wischstart · Kraftabstimmung · Physik-Arcade · Präzisionslandung</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Leicht bis anspruchsvoll</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>1–3 Minuten pro Kapitel</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Welt und Mission</h3><p>Die Gießerei macht aus einem sorgfältigen Start eine Route über vier Flächen. Kurze Wischer bleiben niedrig, lange reichen weiter, und jede aufrechte Landung bringt die nächste Entscheidung.</p></div>
-      <div class="game-info-section"><h3>Spielsysteme</h3><p>Ziehe in der Arena vom Behälter nach oben. Die Wischkraft bestimmt die Entfernung, während sich der Behälter im Flug dreht.</p>
-<p>Eine gute Landung setzt die Serie fort und führt weiter; ein Fehlschlag öffnet ein fokussiertes Ergebnis mit Wiederholen.</p></div>
-      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Wähle ein Kapitel und warte auf das Bereitschaftssignal.</li><li>Drücke den Behälter und ziehe ihn mit einer klaren Bewegung nach oben.</li><li>Passe die Länge an die Entfernung der Fläche an und beobachte die Drehung.</li><li>Lande auf vier Flächen aufrecht, um das Kapitel zu schaffen, und spiele weiter oder erneut.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Nutze für eine nahe Plattform einen kurzen Wischer und verlängere ihn erst bei größerer Entfernung.</li><li>Halte die Bewegung weitgehend senkrecht; starkes seitliches Ziehen erschwert die Landung.</li><li>Lies nach einem Fehler die Rückmeldung und ändere jeweils nur eine Variable.</li></ul></div>
-      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Die sechs Kapitel starten mit breiten Abständen, ergänzen neue Distanzen und enden mit einer Präzisionsroute. Die Schwierigkeit wächst durch Entfernung und Timing, nicht nur durch Wiederholung.</p></div>
-      <div class="game-info-section"><h3>Designnotiz</h3><p>Die Präzisions-Flip-Herausforderung nutzt originale Behälterkunst, Produktionsphysik, Gesten und sofortiges Landungsfeedback, damit Kraft und Genauigkeit auf Mobilgerät und Desktop sichtbar werden.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Dieses allgemeine Browserspiel hat kein Konto, keine Käufe, keinen Chat, keine öffentliche Rangliste und keinen Werbeablauf. Serien und Bestwerte bleiben in diesem Browser.</p></div>
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie starte ich den Behälter?</dt><dd>Ziehe in der Arena vom Behälter nach oben; die Bewegung muss lang genug für den Start sein.</dd></div><div><dt>Was ist eine gute Landung?</dt><dd>Beim Loslassen wird entschieden: Die Wurfkraft muss im erlaubten Bereich der aktuellen Fläche liegen. Passe nach einem Fehlschlag die Wischlänge an; die sichtbare Drehung ist keine zusätzliche Prüfung eines aufrechten Landewinkels.</dd></div><div><dt>Kann ich eine Maus verwenden?</dt><dd>Ja. Mausziehen und Wischen per Touch nutzen dieselbe Startbewegung.</dd></div><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Nur die lokale Bestserie wird in diesem Browser gespeichert.</dd></div><div><dt>Wie viele Flächen hat ein Kapitel?</dt><dd>Jedes der sechs Kapitel hat vier Werkstattflächen; die Herausforderung wächst durch Abstand und Timing.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-sketchwheel-rally/"><img src="/assets/interface7-redrawn/animal-sketchwheel-rally.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Skizzenrad-Rennen</strong><span>Zeichne vor jedem Geländeabschnitt ein Radprofil, beobachte die Wirkung seiner gemessenen Form und passe das nächste Rad an, damit der Tier-Racer vor dem Rivalen ins Ziel kommt.</span></span></a><a class="game-info-related-card" href="/de/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Hüpfduell</strong><span>Planen Sie Ihre Sprünge, wählen Sie Schaumstoff-Werkzeuge und bringen Sie den Rivalen in einer spielerischen Physik-Arena aus dem Gleichgewicht.</span></span></a></div></div>
+      <div class="game-info-section"><h3>Welt und Mission</h3><p>Jedes Kapitel hat vier Werkstattplattformen. Bei einer erfolgreichen Landung gelangt der Behälter zur nächsten Plattform und die Serie geht weiter.</p>
+<p>Die Herausforderung besteht darin, die Kraft des Wischs auf den erlaubten Bereich der Plattform abzustimmen. Nach einem Fehlversuch kannst du diese Plattform anpassen und erneut versuchen.</p></div>
+      <div class="game-info-section"><h3>Spielsysteme</h3><p>Drücke auf den Behälter und ziehe ihn in einer durchgehenden Bewegung nach oben. Die Wischlänge verändert Kraft und Flug; beim Loslassen wird geprüft, ob die Kraft im erlaubten Bereich der aktuellen Plattform liegt.</p>
+<p>Bei einer erfolgreichen Landung geht es zur nächsten Plattform und die Serie verlängert sich. Nach einem Fehlversuch kannst du „Erneut versuchen“ wählen, um dieselbe Plattform zu wiederholen, oder zur Kapitelauswahl zurückkehren.</p></div>
+      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Wähle ein Kapitel auf der Werkstattkarte und warte auf das Startsignal.</li><li>Drücke auf den Behälter und ziehe ihn in einer flüssigen Bewegung nach oben. Die Länge bestimmt die Startkraft.</li><li>Lass los, um zu starten. Der Erfolg hängt davon ab, ob die Kraft beim Loslassen im erlaubten Bereich der Plattform liegt.</li><li>Wähle nach einem Fehlversuch „Erneut versuchen“ und passe die Kraft an. Mit erfolgreichen Landungen auf vier Plattformen ist das Kapitel geschafft.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Beginne mit einer kontrollierten Aufwärtsbewegung und nutze das Ergebnis, um den Kraftbereich der Plattform zu erkennen.</li><li>Ändere nach einem Fehlversuch die Wischlänge leicht und vergleiche das Ergebnis; die Entfernung bestimmt den Erfolg nicht.</li><li>Halte die Bewegung möglichst senkrecht und stimme die Kraft anhand der Rückmeldung ab.</li></ul></div>
+      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Die Werkstatt umfasst sechs Kapitel mit je vier Plattformen. Jede erfolgreiche Landung führt zur nächsten Plattform und verlängert die Serie. Nach einem Fehlversuch kannst du „Erneut versuchen“ wählen, um dieselbe Plattform zu wiederholen, oder zur Kapitelauswahl zurückkehren.</p></div>
+      <div class="game-info-section"><h3>Designnotiz</h3><p>Bei Skizzenrad-Rennen verändert das gezeichnete Rad, wie das Fahrzeug über den Untergrund fährt. Flip-Werkstatt konzentriert sich darauf, einen Aufwärtswisch so abzustimmen, dass die Kraft beim Loslassen im Bereich der aktuellen Plattform liegt. Touch und Maus verwenden dieselbe Geste; das Landergebnis hilft beim nächsten Versuch auf derselben Plattform.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Flip-Werkstatt ist ein kurzes Browserspiel für ein allgemeines Publikum; ein Konto oder Kauf ist nicht nötig. Nur die beste Landeserie wird in diesem Browser gespeichert. Die aktuelle Serie endet mit dem laufenden Spiel; beim Löschen der Websitedaten kann der Bestwert verloren gehen. WeightPlay kann Seiten- und Spielnutzungsdaten wie in der Datenschutzerklärung beschrieben analysieren.</p></div>
+      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie starte ich den Behälter?</dt><dd>Drücke auf den Behälter und ziehe nach oben; die Länge verändert die Startkraft.</dd></div><div><dt>Wodurch wird eine erfolgreiche Landung bestimmt?</dt><dd>Beim Loslassen muss die Kraft im erlaubten Bereich der aktuellen Plattform liegen. Die Drehung ist visuelle Rückmeldung und keine separate Winkelprüfung.</dd></div><div><dt>Kann ich mit der Maus spielen?</dt><dd>Ja. Ziehen mit der Maus und Wischen auf dem Touchscreen verwenden dieselbe Bewegung.</dd></div><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Nur die beste Serie wird in diesem Browser gespeichert. Die aktuelle Serie gilt nur für den laufenden Durchgang.</dd></div><div><dt>Wie viele Plattformen hat ein Kapitel?</dt><dd>Jedes der sechs Kapitel hat vier Werkstattplattformen. Bei einer erfolgreichen Landung geht es weiter; nach einem Fehlversuch kannst du es erneut versuchen.</dd></div><div><dt>Was sollte ich nach einem Fehlversuch anpassen?</dt><dd>Ändere die Wischlänge leicht, um die Kraft beim Loslassen abzustimmen, und vergleiche das Ergebnis auf derselben Plattform.</dd></div><div><dt>Kann ich dieselbe Plattform erneut versuchen?</dt><dd>Ja. Wähle nach einem Fehlversuch Erneut versuchen, um dieselbe Plattform zu spielen, oder Stufen, um zur Kapitelkarte zurückzukehren.</dd></div><div><dt>Was zählt die Serie?</dt><dd>Sie zählt aufeinanderfolgende erfolgreiche Landungen im aktuellen Lauf. Deine Bestserie bleibt in diesem Browser gespeichert.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-sketchwheel-rally/"><img src="/assets/interface7-redrawn/animal-sketchwheel-rally.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Skizzenrad-Rennen</strong><span>Zeichne ein Rad für den nächsten Untergrund, beobachte, wie seine Messwerte das Rennen verändern, und zeichne bei einem Streckenwechsel neu.</span></span></a><a class="game-info-related-card" href="/de/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Hüpfduell</strong><span>Planen Sie Ihre Sprünge, wählen Sie Schaumstoff-Werkzeuge und bringen Sie den Rivalen in einer spielerischen Physik-Arena aus dem Gleichgewicht.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-flip-seo130"></script>
+<script src="/src/game-page-info.js?v=20261003-flip-foundry-text140-v1"></script>
 </body>
 </html>

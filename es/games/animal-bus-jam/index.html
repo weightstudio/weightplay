@@ -3,7 +3,8 @@
 <head>
 
     <base href="/games/animal-bus-jam/" />
-  <script src="/src/game-title-registry.js?v=20261001-bus-jam-v19-mastery-motion" data-wp-game-title-registry></script>
+
+    <script src="/src/game-title-registry.js?v=20261001-bus-jam-v19-mastery-motion" data-wp-game-title-registry></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/es/games/animal-bus-jam/" />
@@ -33,26 +34,25 @@
   <link rel="stylesheet" href="style.css?v=20261001-bus-jam-v19-mastery-motion">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <meta name="description" content="Lee el orden del convoy y evita bloquear la zona de espera en 30 terminales." />
+  <meta name="description" content="Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Atasco de buses de Panko | WeightPlay" />
-    <meta property="og:description" content="Lee el orden del convoy y evita bloquear la zona de espera en 30 terminales." />
+    <meta property="og:description" content="Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-bus-jam/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-bus-jam.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Atasco de buses de Panko | WeightPlay" />
-    <meta name="twitter:description" content="Lee el orden del convoy y evita bloquear la zona de espera en 30 terminales." />
+    <meta name="twitter:description" content="Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-bus-jam.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Atasco de buses de Panko",
-  "alternateName": "Panko's Bus Jam",
   "url": "https://weightplay.com/es/games/animal-bus-jam/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-bus-jam.webp",
-  "description": "Lee el orden del convoy y evita bloquear la zona de espera en 30 terminales.",
+  "description": "Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,17 +62,18 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzle",
-    "Estrategia",
-    "Animales"
+    "Colas de pasajeros",
+    "Zona de espera limitada",
+    "Puzzle de estrategia"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  }
+  },
+  "alternateName": "Panko's Bus Jam"
 }
-    </script>
+</script>
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
   <div id="gameFrame" data-wp-frame-root>
@@ -83,14 +84,14 @@
       <label class="locale"><span data-t="language">Idioma</span><select id="locale"></select></label>
     </header>
     <section class="main-content" data-wp-frame-content="main">
-      <img class="main-poster" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-bus-jam.webp" data-t-alt="Un panda de estilo cúbico junto a autobuses de colores en una terminal de bambú" alt="Imagen del juego Atasco de buses de Panko">
+      <img class="main-poster" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-bus-jam.webp" data-t-alt="A block-style panda conductor beside colorful buses at a bamboo terminal" alt="Imagen del juego Atasco de buses de Panko">
       <div class="main-copy" data-wp-frame-copy>
-        <p class="main-summary" data-wp-frame-summary data-t="summary">Lee el orden del convoy y evita bloquear la zona de espera en 30 terminales.</p>
+        <p class="main-summary" data-wp-frame-summary data-t="summary">Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda.</p>
         <p id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-main-progress role="status" aria-live="polite">0/30 cleared</p>
         <button id="start" class="primary" data-wp-frame-action="primary" data-t="start">Empezar</button>
       </div>
     </section>
-    <section class="public-guide game-page-info" data-wp-game-guide aria-labelledby="busGuideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Puzzle</span><span>Strategy</span><span>Animal</span></div>
+    <section class="public-guide game-page-info" data-wp-game-guide aria-labelledby="busGuideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Colas de pasajeros</span><span>Zona de espera limitada</span><span>Puzzle de estrategia</span></div>
       <div class="game-info-section">
       <h2 id="busGuideTitle" data-t="guideTitle">Cómo jugar</h2>
       <p data-t="guideBody">Solo acepta pasajeros el primer autobús. Los colores incorrectos esperan en orden; si el carril se bloquea, pierdes.</p>
@@ -99,8 +100,8 @@
         <li data-t="guideRule2">Envía solo al primero de cada fila.</li>
         <li data-t="guideRule3">Deshaz antes de bloquear el carril.</li>
       </ol>
-      </div><div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Puedo enviar desde el centro de una fila?</dt><dd>No. Solo puede moverse el primer pasajero visible de cada fila.</dd></div><div><dt>¿Por qué entró un pasajero en el carril de espera?</dt><dd>Solo el autobús activo recoge pasajeros; las rutas futuras esperan en orden.</dd></div><div><dt>¿Por qué se bloqueó la terminal?</dt><dd>El orden de espera bloqueó la ruta activa y ningún pasajero visible podía despejarla.</dd></div><div><dt>¿Se pueden resolver todas las terminales?</dt><dd>Sí. Las treinta rutas de solución registradas se comprueban automáticamente.</dd></div><div><dt>¿Qué controles y tamaños de pantalla se admiten?</dt><dd>Las mismas reglas funcionan con tacto, ratón y teclado donde estén disponibles. La interfaz escala como un único diseño lógico en móvil, paisaje y escritorio.</dd></div><div><dt>¿El progreso pasa automáticamente a otro dispositivo?</dt><dd>No. Actualmente se guarda solo en el navegador; otro perfil o dispositivo tiene su propio progreso.</dd></div></dl></div>
-    </section>
+      </div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>¿Puedo enviar desde el centro de una fila?</dt><dd>No. Solo puede moverse el primer pasajero visible de cada fila.</dd></div><div><dt>¿Por qué entró un pasajero en el carril de espera?</dt><dd>Solo el autobús activo recoge pasajeros; las rutas futuras esperan en orden.</dd></div><div><dt>¿Por qué se bloqueó la terminal?</dt><dd>El orden de espera bloqueó la ruta activa y ningún pasajero visible podía despejarla.</dd></div><div><dt>¿Se pueden resolver todas las terminales?</dt><dd>Sí. Las treinta rutas de solución registradas se comprueban automáticamente.</dd></div><div><dt>¿Cómo consigo las tres estrellas?</dt><dd>Completa la parada, no superes el objetivo de esperas que aparece y termina sin usar Pista ni Deshacer. Cada condición aporta una estrella.</dd></div><div><dt>¿Pista o Deshacer impiden desbloquear la siguiente parada?</dt><dd>No. Completarla desbloquea la siguiente. Pista y Deshacer solo afectan a la estrella por jugar sin ayuda en ese intento.</dd></div><div><dt>¿Qué récords se guardan?</dt><dd>El navegador guarda la mejor puntuación de estrellas y el menor número de esperas de cada parada. Un intento peor no sustituye un récord mejor y no hay sincronización entre dispositivos.</dd></div></dl></div>
+    <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><p>Prueba otros dos puzles públicos de WeightPlay con reglas claras y decisiones de planificación.</p><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de bambú de Panko</strong><span>Gira los tubos de bambú de Panko, lleva agua por cada tramo y revive la arboleda.</span></span></a><a class="game-info-related-card" href="/es/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cajas Enlazadas</strong><span>Empuja, atrae y guía cargamentos rúnicos por 30 almacenes celestes con hielo, señales, imanes y cajas enlazadas.</span></span></a></div></div></section>
   </main>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-terminal-block-v16.webp')" hidden>
@@ -191,11 +192,11 @@
   <script src="levels.js?v=20261001-bus-jam-v19-mastery-motion"></script>
   <script src="mastery.js?v=20261001-bus-jam-v19-mastery-motion"></script>
   <script src="locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
-  <script src="strategy-locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
+  <script src="strategy-locales.js?v=20261004-bus-jam-text-growth-140-v1"></script>
   <script src="mastery-locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="frame.js?v=20260912-bus-block-v16"></script>
-  <script src="game.js?v=20261001-bus-jam-v19-mastery-motion"></script>
+  <script src="game.js?v=20261004-bus-jam-text-growth-140-v1"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
 </body>
 </html>

@@ -28,7 +28,7 @@
   <meta name="weightplay-game-version" content="v21">
   <meta name="weightplay-interface-version" content="7">
   <title>Tierische Putt-Pfade | WeightPlay</title>
-  <meta name="description" content="Lies jeden Pfad, wähle Linie und Kraft und umspiele Banden und ruhiges Wasser bis zur Fahne." />
+  <meta name="description" content="Plane Putts auf 30 Löchern: Ziehe zurück, um Richtung und Kraft festzulegen, nutze Banden für Abpraller, meide Wasser und speichere Bestschläge im Browser." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260921-interface7">
@@ -41,6 +41,7 @@
     button { border:0; cursor:pointer; }
     .shell { width:min(100%, 1120px); margin:0 auto; padding:clamp(12px,3vw,28px); }
     .wp-main-shell-header { position:relative; }
+    @media (max-width:480px) { html[lang="ar"] .wp-main-shell-header > .wp-shell-main-title { font-size:15px !important; } }
     .brand { color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.02em; }
     .locale { min-height:44px; border:2px solid rgba(47,125,98,.25); border-radius:14px; background:#fff; color:var(--ink); padding:8px 10px; }
     .settings-popover { position:absolute; z-index:10; top:56px; right:0; display:grid; gap:10px; min-width:220px; padding:14px; border:1px solid rgba(35,55,68,.15); border-radius:16px; background:#fff; box-shadow:0 14px 30px rgba(35,55,68,.2); }
@@ -141,47 +142,17 @@
     @media (max-height:500px) and (orientation:landscape) { #stageScreen .putt-stage-guide-art { display:none; } }
 </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
-  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:description" content="Plane Putts auf 30 Löchern: Ziehe zurück, um Richtung und Kraft festzulegen, nutze Banden für Abpraller, meide Wasser und speichere Bestschläge im Browser." />
+    <meta name="twitter:description" content="Plane Putts auf 30 Löchern: Ziehe zurück, um Richtung und Kraft festzulegen, nutze Banden für Abpraller, meide Wasser und speichere Bestschläge im Browser." />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Tierische Putt-Pfade","url":"https://weightplay.com/de/games/animal-putt-trails/","image":"https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp","description":"Plane Putts auf 30 Löchern: Ziehe zurück, um Richtung und Kraft festzulegen, nutze Banden für Abpraller, meide Wasser und speichere Bestschläge im Browser.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"de","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Einhand-Puttstrategie","Bandenstoß-Planung","Sport-Rätsel mit Par-Ziel"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6},"alternateName":"Animal Putt Trails"}</script>
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Tierische Putt-Pfade | WeightPlay" />
-    <meta property="og:description" content="Lies jeden Pfad, wähle Linie und Kraft und umspiele Banden und ruhiges Wasser bis zur Fahne." />
     <meta property="og:url" content="https://weightplay.com/de/games/animal-putt-trails/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Tierische Putt-Pfade | WeightPlay" />
-    <meta name="twitter:description" content="Lies jeden Pfad, wähle Linie und Kraft und umspiele Banden und ruhiges Wasser bis zur Fahne." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "Tierische Putt-Pfade",
-  "alternateName": "Animal Putt Trails",
-  "url": "https://weightplay.com/de/games/animal-putt-trails/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp",
-  "description": "Lies jeden Pfad, wähle Linie und Kraft und umspiele Banden und ruhiges Wasser bis zur Fahne.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "de",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "Sport",
-    "Timing",
-    "Raumplanung",
-    "Familie",
-    "Tiere"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 6
-  }
-}
-    </script>
   </head>
 <body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-audience="general" data-wp-interface-version="7" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
@@ -229,34 +200,35 @@
     </main>
   </div>
   <script src="../../src/stage-virtualization-standard.js?v=20260921-interface7" data-wp-stage-standard></script>
-  <script src="game.js?v=20260926-interface7-source"></script>
+  <script src="game.js?v=20261003-animal-putt-trails-text140-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <section class="game-page-info game-page-info-static" aria-label="Informationen zu Tierische Putt-Pfade">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Tierische Putt-Pfade</h2><p>Lies jeden Pfad, wähle Linie und Kraft und umspiele Banden und ruhiges Wasser bis zur Fahne.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Tierische Putt-Pfade</h2><p>Wähle für jedes der 30 Löcher die Linie und Zugkraft. Über eine Bande kannst du um eine Wand spielen; ein kürzerer, sicherer Weg kann den nächsten Schlag erleichtern.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Einhand-Puttstrategie</span><span>Bandenstoß-Planung</span><span>Sport-Rätsel mit Par-Ziel</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Ein-Finger-Puttstrategie</strong></div><div class="game-info-fact"><span>Genre</span><strong>Sport · Timing · Raumplanung · Familie · Tiere</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Leicht bis anspruchsvoll</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>3–8 Minuten pro Pfad</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Welt und Mission</h3><p>Orla&#39;s moonlit course links 30 putting trails through meadow gates, quiet banks, and small water hazards. Each trail is a short read-and-try challenge rather than a speed test.</p>
-<p>Every fifth trail is a checkpoint. Clearing the full route restores the moonlit map while keeping earlier trails available for replay and better strokes.</p></div>
-      <div class="game-info-section"><h3>Spielsysteme</h3><p>Drag back from the ball to set direction and power, then release to putt. Short pulls give finer control; longer pulls cover more distance but make a miss more costly.</p>
-<p>Par is the trail&#39;s target stroke count. Banks can redirect the ball, water ends the attempt, and acorns reward finishing near or below par.</p>
-<p>Cleared trails unlock the next trail, while best strokes and the next unlocked trail are saved only in this browser. Result offers Retry, Next hole, or Trail map.</p></div>
-      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Choose an unlocked trail from the map and read its par and hazards.</li><li>Drag back from the ball to aim away from the direction you want it to travel.</li><li>Release to putt, then read the roll and use the banks or a safer short stroke on the next attempt.</li><li>Clear every hole in the trail, then choose the next hole, retry, or return to the map.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Start with a short stroke when learning a bank or water edge; distance is easier to add than to recover.</li><li>Aim for the safe side of a bank and leave a simple second shot instead of chasing a direct line through a hazard.</li><li>Use the trail map and checkpoints as a pacing tool: replay cleared trails to improve strokes without risking unlocks.</li></ul></div>
-      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Trails 1–5 teach aim, power, banks, and the first checkpoint. Trails 6–10 add longer reads and tighter landing zones, with checkpoints continuing at 10, 15, 20, 25, and 30.</p>
-<p>Later trails combine bank angles, gentle water, and par pressure without adding a countdown. The campaign stays replayable after Trail 30.</p></div>
-      <div class="game-info-section"><h3>Designnotiz</h3><p>The same ball, course, collision, stroke, and result rules drive touch, mouse, and keyboard-friendly aiming. This guide describes the playable route without promising online accounts, purchases, or cross-device sync.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Hinweis für Eltern</h3><p>Animal-Puttpfade ist ein allgemeines Sportpuzzle für ruhiges Familienspiel. Konto, Kauf, öffentliche Rangliste und persönliche Daten sind nicht erforderlich.</p></div>
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Bestwerte und der nächste freigeschaltete Pfad werden nur in diesem Browser gespeichert.</dd></div><div><dt>Wie viele Pfade gibt es?</dt><dd>Es gibt dreißig auswählbare Pfade mit Kontrollpunkten bei 5, 10, 15, 20, 25 und 30.</dd></div><div><dt>Kann ich einen Pfad wiederholen?</dt><dd>Ja. Geschaffte Pfade bleiben auf der Karte, und der nächste wird nach einem Erfolg freigeschaltet.</dd></div><div><dt>Wie ziele und putte ich?</dt><dd>Ziehe vom Ball nach hinten, um Gegenrichtung und Kraft festzulegen, und lasse los. Ein kurzer Zug ist leichter zu kontrollieren.</dd></div><div><dt>Was passiert bei Wasser?</dt><dd>Der Versuch endet und du kannst das Loch wiederholen, ohne geschaffte Pfade oder Freischaltungen zu verlieren.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Welt und Mission</h3><p>Orlas mondhelliger Platz umfasst 30 Löcher. Dich erwarten Gras, niedrige Banden und Wasser. Spätere Löcher verschieben Abschlag, Ziel und Hindernisse, sodass du die Linie neu lesen musst.</p>
+<p>Ein abgeschlossenes Loch schaltet das nächste frei. Die Löcher 5, 10, 15, 20, 25 und 30 sind Kontrollpunkte. Geschaffte Löcher bleiben auf der Karte und können für einen besseren Bestwert wiederholt werden.</p></div>
+      <div class="game-info-section"><h3>Spielsysteme</h3><p>Ziehe vom Ball aus nach hinten, also entgegen der gewünschten Flugrichtung. Die Zuglänge bestimmt Zielrichtung und Kraft; beim Loslassen rollt der Ball. Ein kurzer Zug ist leichter zu steuern. Ein langer reicht weiter, lässt sich nach einem Fehlschlag aber schwerer ausgleichen.</p>
+<p>Wände und Banden lenken den Ball um. Fällt er ins Wasser, endet der Versuch für dieses Loch. Beim erneuten Spielen bleiben geschaffte Löcher und Freischaltungen erhalten. Bei Par gibt es 1 Eichel und für jeden Schlag unter Par eine weitere; über Par gibt es keine Eicheln.</p>
+<p>Im Ergebnis wählst du Wiederholen, Nächstes Loch oder Pfadkarte. Bestschläge je Loch und das nächste freigeschaltete Loch bleiben in diesem Browser gespeichert, nicht in einem Onlinekonto.</p></div>
+      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Wähle auf der Karte ein freigeschaltetes Loch und prüfe Par und Hindernisse.</li><li>Ziehe vom Ball aus entgegen der Richtung, in die er rollen soll.</li><li>Lass los und beobachte, wo der Ball liegen bleibt. Führt ein langer Zug ins Wasser, nimm beim Neustart weniger Kraft oder spiele über die sichere Bandenseite.</li><li>Schließe das Loch ab, spiele es erneut oder kehre zur Karte zurück. Frühere Löcher kannst du jederzeit für einen besseren Bestwert wiederholen.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Ein häufiger Fehler ist ein zu langer Zug, wenn das Loch hinter einer Wand liegt. Der Ball kann über den sicheren Bereich hinaus ins Wasser rollen. Ein kurzer Bandenschlag lässt einen besser kontrollierbaren zweiten Putt.</li><li>Ziele erst auf die offenere Seite der Bande, bevor du es direkt versuchst. Ein sicherer erster Schlag schafft oft eine klarere Annäherung.</li><li>Par ist ein Schlagziel, kein Timer. Mehr Schläge sperren spätere Löcher nicht; frühere bleiben wiederholbar.</li></ul></div>
+      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Die ersten fünf Löcher führen Zielen, Kraft und Bandenabpraller ein. Danach folgt alle fünf Löcher ein Kontrollpunkt bis zum 30. Loch.</p>
+<p>Spätere Löcher kombinieren versetzte Hindernisse, längere Wege und höhere Par-Ziele. Die Steuerung bleibt gleich: zurückziehen und loslassen. Nach Loch 30 kannst du den Platz weiter wiederholen.</p></div>
+      <div class="game-info-section"><h3>Designnotiz</h3><p>Bei Touch und Maus ziehst du und lässt los; mit der Tastatur zielst du per Pfeiltasten und puttest mit der Eingabetaste. Bestschläge und Freischaltungen der 30 Löcher bleiben in diesem Browser; Konto und Online-Rangliste sind nicht nötig.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Hinweis für Eltern</h3><p>Animal Putt Trails ist ein ruhiges Putt-Rätsel für ein allgemeines Publikum. Konto, Kauf und öffentliche Rangliste sind nicht erforderlich. Freischaltungen und Bestschläge bleiben in diesem Browser und können beim Löschen der Websitedaten verloren gehen.</p></div>
+      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie ziele und putte ich?</dt><dd>Ziehe vom Ball aus entgegen der gewünschten Richtung, um Ziel und Kraft festzulegen, und lasse los. Ein kurzer Zug lässt sich leichter dosieren.</dd></div><div><dt>Was passiert, wenn der Ball ins Wasser fällt?</dt><dd>Der Versuch für dieses Loch endet. Beim Wiederholen bleiben geschaffte Löcher und Freischaltungen erhalten.</dd></div><div><dt>Wie viele Löcher gibt es?</dt><dd>Es gibt 30 Löcher mit einem Kontrollpunkt alle fünf Löcher.</dd></div><div><dt>Was bedeuten Par und Eicheln?</dt><dd>Bei Par gibt es 1 Eichel und für jeden Schlag unter Par eine weitere; über Par gibt es keine Eicheln.</dd></div><div><dt>Kann ich ein geschafftes Loch wiederholen?</dt><dd>Ja. Geschaffte Löcher bleiben auf der Karte, damit du deinen Bestwert verbessern kannst.</dd></div><div><dt>Wird der Fortschritt online gespeichert?</dt><dd>Nein. Bestschläge und das nächste freigeschaltete Loch werden nur in diesem Browser gespeichert.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line ist ein originelles 30-Stufen-Rasterrätsel mit Rainbow Hop Mimi in der Hauptrolle.</span></span></a><a class="game-info-related-card" href="/de/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Pankos Bambus-Wasserweg</strong><span>Drehe Pankos Bambusrohre, leite Wasser durch jedes Segment und belebe den Hain.</span></span></a><a class="game-info-related-card" href="/de/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Fracht</strong><span>Laufe, schiebe und ziehe Runenfracht durch 30 handgebaute Himmelslager.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-putt-seo130"></script>
-<script src="/src/site-config.js?v=20260721-locale13-1"></script>
+<script src="/src/game-page-info.js?v=20261003-animal-putt-trails-text140-v1"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 </body>
 </html>

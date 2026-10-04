@@ -28,7 +28,7 @@
   <meta name="weightplay-game-version" content="v21">
   <meta name="weightplay-interface-version" content="7">
   <title>Trilhas de Putt Animal | WeightPlay</title>
-  <meta name="description" content="Leia cada trilha, escolha linha e força e contorne bordas e água calma até a bandeira." />
+  <meta name="description" content="Planeje tacadas em 30 buracos: arraste para trás para definir direção e força, use as bordas para rebater, evite a água e salve aqui suas melhores tacadas." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260921-interface7">
@@ -41,6 +41,7 @@
     button { border:0; cursor:pointer; }
     .shell { width:min(100%, 1120px); margin:0 auto; padding:clamp(12px,3vw,28px); }
     .wp-main-shell-header { position:relative; }
+    @media (max-width:480px) { html[lang="ar"] .wp-main-shell-header > .wp-shell-main-title { font-size:15px !important; } }
     .brand { color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.02em; }
     .locale { min-height:44px; border:2px solid rgba(47,125,98,.25); border-radius:14px; background:#fff; color:var(--ink); padding:8px 10px; }
     .settings-popover { position:absolute; z-index:10; top:56px; right:0; display:grid; gap:10px; min-width:220px; padding:14px; border:1px solid rgba(35,55,68,.15); border-radius:16px; background:#fff; box-shadow:0 14px 30px rgba(35,55,68,.2); }
@@ -141,47 +142,17 @@
     @media (max-height:500px) and (orientation:landscape) { #stageScreen .putt-stage-guide-art { display:none; } }
 </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
-  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:description" content="Planeje tacadas em 30 buracos: arraste para trás para definir direção e força, use as bordas para rebater, evite a água e salve aqui suas melhores tacadas." />
+    <meta name="twitter:description" content="Planeje tacadas em 30 buracos: arraste para trás para definir direção e força, use as bordas para rebater, evite a água e salve aqui suas melhores tacadas." />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Trilhas de Putt Animal","url":"https://weightplay.com/pt-br/games/animal-putt-trails/","image":"https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp","description":"Planeje tacadas em 30 buracos: arraste para trás para definir direção e força, use as bordas para rebater, evite a água e salve aqui suas melhores tacadas.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Estratégia de putt com um dedo","Planejamento de rebatidas","Quebra-cabeça esportivo por par"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6},"alternateName":"Animal Putt Trails"}</script>
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Trilhas de Putt Animal | WeightPlay" />
-    <meta property="og:description" content="Leia cada trilha, escolha linha e força e contorne bordas e água calma até a bandeira." />
     <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-putt-trails/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Trilhas de Putt Animal | WeightPlay" />
-    <meta name="twitter:description" content="Leia cada trilha, escolha linha e força e contorne bordas e água calma até a bandeira." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "Trilhas de Putt Animal",
-  "alternateName": "Animal Putt Trails",
-  "url": "https://weightplay.com/pt-br/games/animal-putt-trails/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp",
-  "description": "Leia cada trilha, escolha linha e força e contorne bordas e água calma até a bandeira.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "pt-BR",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "Esportes",
-    "Tempo",
-    "Planejamento espacial",
-    "Família",
-    "Animais"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 6
-  }
-}
-    </script>
   </head>
 <body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-audience="general" data-wp-interface-version="7" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
@@ -229,34 +200,35 @@
     </main>
   </div>
   <script src="../../src/stage-virtualization-standard.js?v=20260921-interface7" data-wp-stage-standard></script>
-  <script src="game.js?v=20260926-interface7-source"></script>
+  <script src="game.js?v=20261003-animal-putt-trails-text140-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <section class="game-page-info game-page-info-static" aria-label="Informações de Trilhas de Putt Animal">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Trilhas de Putt Animal</h2><p>Leia cada trilha, escolha linha e força e contorne bordas e água calma até a bandeira.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Trilhas de Putt Animal</h2><p>Em cada um dos 30 buracos, escolha a linha e a força do arrasto. Use uma borda para contornar um muro ou siga por um caminho curto e seguro que facilite a próxima tacada.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Estratégia de putt com um dedo</span><span>Planejamento de rebatidas</span><span>Quebra-cabeça esportivo por par</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Estratégia de putt com um dedo</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Esportes · Tempo · Planejamento espacial · Família · Animais</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Do fácil ao desafiador</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>3–8 minutos por trilha</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo e missão</h3><p>Orla&#39;s moonlit course links 30 putting trails through meadow gates, quiet banks, and small water hazards. Each trail is a short read-and-try challenge rather than a speed test.</p>
-<p>Every fifth trail is a checkpoint. Clearing the full route restores the moonlit map while keeping earlier trails available for replay and better strokes.</p></div>
-      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Drag back from the ball to set direction and power, then release to putt. Short pulls give finer control; longer pulls cover more distance but make a miss more costly.</p>
-<p>Par is the trail&#39;s target stroke count. Banks can redirect the ball, water ends the attempt, and acorns reward finishing near or below par.</p>
-<p>Cleared trails unlock the next trail, while best strokes and the next unlocked trail are saved only in this browser. Result offers Retry, Next hole, or Trail map.</p></div>
-      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Choose an unlocked trail from the map and read its par and hazards.</li><li>Drag back from the ball to aim away from the direction you want it to travel.</li><li>Release to putt, then read the roll and use the banks or a safer short stroke on the next attempt.</li><li>Clear every hole in the trail, then choose the next hole, retry, or return to the map.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Start with a short stroke when learning a bank or water edge; distance is easier to add than to recover.</li><li>Aim for the safe side of a bank and leave a simple second shot instead of chasing a direct line through a hazard.</li><li>Use the trail map and checkpoints as a pacing tool: replay cleared trails to improve strokes without risking unlocks.</li></ul></div>
-      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>Trails 1–5 teach aim, power, banks, and the first checkpoint. Trails 6–10 add longer reads and tighter landing zones, with checkpoints continuing at 10, 15, 20, 25, and 30.</p>
-<p>Later trails combine bank angles, gentle water, and par pressure without adding a countdown. The campaign stays replayable after Trail 30.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>The same ball, course, collision, stroke, and result rules drive touch, mouse, and keyboard-friendly aiming. This guide describes the playable route without promising online accounts, purchases, or cross-device sync.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Trilhas de Putt Animal é um quebra-cabeça esportivo geral para uma brincadeira familiar e tranquila. Não exige conta, compra, ranking público ou dados pessoais.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>O progresso é salvo?</dt><dd>As melhores tacadas e a próxima trilha desbloqueada ficam apenas neste navegador.</dd></div><div><dt>Quantas trilhas existem?</dt><dd>Há trinta trilhas selecionáveis, com pontos de controle nas trilhas 5, 10, 15, 20, 25 e 30.</dd></div><div><dt>Posso repetir uma trilha?</dt><dd>Sim. As trilhas concluídas continuam no mapa e a próxima é desbloqueada após uma conclusão.</dd></div><div><dt>Como mirar e bater?</dt><dd>Arraste para trás a partir da bola para definir direção e força e solte. Um arrasto curto é mais fácil de controlar.</dd></div><div><dt>O que acontece se a bola cair na água?</dt><dd>A tentativa termina e você pode repetir o buraco sem perder trilhas concluídas ou desbloqueios.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mundo e missão</h3><p>O campo ao luar de Orla tem 30 buracos. Há gramados, bordas baixas e água; nos buracos seguintes, a saída, o alvo e os obstáculos mudam de posição e pedem uma nova leitura da linha.</p>
+<p>Concluir um buraco libera o próximo. Os buracos 5, 10, 15, 20, 25 e 30 são pontos de controle. Os anteriores continuam no mapa para você tentar melhorar seu melhor resultado.</p></div>
+      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Arraste para trás a partir da bola, na direção oposta à que deseja seguir. A distância define mira e força; solte para bater. Um arrasto curto é mais fácil de controlar. Um longo alcança mais longe, mas dificulta a recuperação quando erra.</p>
+<p>Muros e bordas mudam a trajetória da bola. Se ela cair na água, a tentativa daquele buraco termina; é possível tentar de novo sem perder buracos concluídos ou desbloqueios. Você ganha 1 bolota ao fazer o par e mais uma por tacada abaixo do par; acima do par, não ganha bolotas.</p>
+<p>Na tela de resultado, escolha Tentar de novo, Próximo buraco ou Mapa de trilhas. As melhores tacadas por buraco e o próximo buraco liberado ficam salvos neste navegador, não em uma conta on-line.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha no mapa um buraco liberado e confira o par e os obstáculos.</li><li>A partir da bola, arraste no sentido oposto à trajetória que deseja fazer.</li><li>Solte para bater e veja onde a bola para. Se um arrasto longo levar à água, tente com menos força ou rebata pelo lado seguro.</li><li>Conclua o buraco para avançar, tentar novamente ou voltar ao mapa. Você também pode jogar um buraco concluído outra vez para melhorar a marca.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Um erro comum é arrastar com força demais quando o buraco fica atrás de um muro. A bola pode passar do ponto seguro e cair na água. Tente uma rebatida curta para deixar a próxima tacada mais simples.</li><li>Antes de buscar uma linha reta, mire no lado mais aberto da borda. Uma primeira tacada segura pode deixar uma aproximação mais clara.</li><li>Par é uma meta de tacadas, não um cronômetro. Usar mais tacadas não bloqueia os próximos buracos, e os anteriores podem ser repetidos.</li></ul></div>
+      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>Os cinco primeiros buracos ensinam mira, força e rebatidas nas bordas. Depois há um ponto de controle a cada cinco buracos até o 30.</p>
+<p>Os buracos finais combinam obstáculos deslocados, trajetos mais longos e pares maiores. O controle continua sendo arrastar para trás e soltar; dá para repetir o campo após o buraco 30.</p></div>
+      <div class="game-info-section"><h3>Nota de design</h3><p>No toque e no mouse, arraste e solte; no teclado, mire com as setas e pressione Enter para bater. Os melhores resultados e desbloqueios dos 30 buracos ficam neste navegador, sem conta nem ranking on-line.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Animal Putt Trails é um quebra-cabeça de putt tranquilo para o público geral. Não exige conta, compra ou ranking público. Desbloqueios e melhores tacadas ficam neste navegador e podem ser apagados quando os dados do site são limpos.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Como mirar e bater?</dt><dd>Arraste a partir da bola na direção oposta à trajetória desejada para definir mira e força; depois solte. Um arrasto curto é mais fácil de ajustar.</dd></div><div><dt>O que acontece se a bola cair na água?</dt><dd>A tentativa daquele buraco termina. Você pode tentar de novo sem perder os buracos concluídos ou desbloqueios.</dd></div><div><dt>Quantos buracos existem?</dt><dd>São 30 buracos, com ponto de controle a cada cinco.</dd></div><div><dt>O que significam par e bolotas?</dt><dd>Você ganha 1 bolota ao fazer o par e mais uma por tacada abaixo do par; acima do par, não ganha bolotas.</dd></div><div><dt>Posso repetir um buraco concluído?</dt><dd>Sim. Os buracos concluídos continuam no mapa para você tentar melhorar sua melhor marca.</dd></div><div><dt>O progresso fica salvo on-line?</dt><dd>Não. As melhores tacadas e o próximo buraco liberado ficam salvos apenas neste navegador.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de Bambu do Panko</strong><span>Gire os tubos de bambu do Panko, leve água por cada trecho e reviva o bosque.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Arca de Carga</strong><span>Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-putt-seo130"></script>
-<script src="/src/site-config.js?v=20260721-locale13-1"></script>
+<script src="/src/game-page-info.js?v=20261003-animal-putt-trails-text140-v1"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 </body>
 </html>

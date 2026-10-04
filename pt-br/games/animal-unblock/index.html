@@ -41,16 +41,16 @@
     <link rel="stylesheet" href="../../src/game-ui-theme.css">
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
     <link rel="stylesheet" href="frame-content.css?v=20260912-unblock-validator-contract-v24">
-  <meta name="description" content="Mova os blocos e leve Panko à saída em 30 trilhas." />
+  <meta name="description" content="Resolva 30 quebra-cabeças fixos em três capítulos e abra a saída para o bloco de bambu verde com seta dourada." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Trilha Desbloqueio | WeightPlay" />
-    <meta property="og:description" content="Mova os blocos e leve Panko à saída em 30 trilhas." />
+    <meta property="og:description" content="Resolva 30 quebra-cabeças fixos em três capítulos e abra a saída para o bloco de bambu verde com seta dourada." />
     <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-unblock/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Trilha Desbloqueio | WeightPlay" />
-    <meta name="twitter:description" content="Mova os blocos e leve Panko à saída em 30 trilhas." />
+    <meta name="twitter:description" content="Resolva 30 quebra-cabeças fixos em três capítulos e abra a saída para o bloco de bambu verde com seta dourada." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <script type="application/ld+json">
 {
@@ -60,7 +60,7 @@
   "alternateName": "Unblock Trail",
   "url": "https://weightplay.com/pt-br/games/animal-unblock/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp",
-  "description": "Mova os blocos e leve Panko à saída em 30 trilhas.",
+  "description": "Resolva 30 quebra-cabeças fixos em três capítulos e abra a saída para o bloco de bambu verde com seta dourada.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,10 +70,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Quebra-cabeça",
-    "Estratégia",
-    "Lógica",
-    "Animais"
+    "Puzzle de blocos deslizantes",
+    "Movimentos por eixo",
+    "Tabuleiro 6×6"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -88,7 +87,7 @@
     <main id="main" class="screen main main-screen" data-screen="main">
       <header>
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <h1 data-t="title" data-wp-frame-title>Unblock Trail</h1>
+        <h1 data-t="title" data-wp-frame-title>Trilha Desbloqueio</h1>
         <select id="locale"></select>
       </header>
       <section class="hero">
@@ -96,13 +95,15 @@
           src="../../assets/interface7-redrawn/animal-unblock.webp"
           class="cover main-cover"
           data-wp-frame-poster
-          data-t-alt="Panko moving trail blocks through a bamboo grove"
+          data-t-alt="coverAlt"
           alt="Imagem do jogo Trilha Desbloqueio"
         />
         <div data-wp-frame-copy>
-          <p class="main-summary" data-t="summary" data-wp-frame-summary>Deslize a madeira para levar o bambu verde com seta dourada até a saída à direita.</p>
+          <p class="main-summary" data-t="summary" data-wp-frame-summary></p>
           <p id="mainProgress" data-wp-main-progress data-wp-frame-progress></p>
-          <button id="start" data-wp-main-start data-t="start">Start game</button></div>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button></div>
       </section>
     </main>
     <main
@@ -118,7 +119,7 @@
     >
       <header>
         <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-        <h2 data-t="choose" data-wp-frame-title hidden>CHOOSE A TRAIL</h2>
+        <h2 data-t="choose" data-wp-frame-title hidden></h2>
       </header>
       <section
         id="stageGrid"
@@ -146,9 +147,9 @@
           aria-label="Unblock Trail game board"
         ></div>
         <div class="tools">
-          <button id="undo" data-t="undo">Undo</button>
-          <button id="hint" data-t="hint" data-wp-battle-utility>Hint</button>
-          <button id="restart" data-t="restart" data-wp-primary-action>Restart</button>
+          <button id="undo" data-t="undo"></button>
+          <button id="hint" data-t="hint" data-wp-battle-utility></button>
+          <button id="restart" data-t="restart" data-wp-primary-action></button>
         </div>
         <p id="status"></p>
       </section>
@@ -158,39 +159,53 @@
         src="../../assets/animal-unblock-panda-block-v22.webp"
         alt=""
       />
-      <h2 data-t="resultTitle">Trilha concluída!</h2>
+      <h2 data-t="resultTitle"></h2>
       <p id="resultBody"></p>
       <p id="resultMastery" data-result-mastery></p>
       <p id="resultTarget" class="result-target" data-runtime-localize="off"></p>
       <p id="resultNextPreview" class="result-next-preview" data-runtime-localize="off" hidden></p>
       <div class="result-actions">
-        <button id="resultStages" data-t="stageList">Trail list</button>
-        <button id="next" data-t="next">Next trail</button>
-        <button id="retry" data-t="retry">Play again</button>
+        <button id="resultStages" data-t="stageList"></button>
+        <button id="next" data-t="next"></button>
+        <button id="retry" data-t="retry"></button>
       </div>
     </dialog>
     <dialog id="leaveDialog" aria-labelledby="leaveTitle">
-      <h2 id="leaveTitle" data-t="leaveTitle">Sair da trilha?</h2>
-      <p data-t="leaveText">A posição e as jogadas atuais serão reiniciadas. Trilhas concluídas e recordes serão mantidos.</p>
-      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay">Continuar</button><button id="confirmLeave" data-t="stageList">Trail list</button></div>
+      <h2 id="leaveTitle" data-t="leaveTitle"></h2>
+      <p data-t="leaveText"></p>
+      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay"></button><button id="confirmLeave" data-t="stageList"></button></div>
     </dialog>
     </main>
     </div>
     <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
-    <section id="mainGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-game-owned-guide="true" data-runtime-localize="off">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideTitle">Como jogar</span><h2 data-t="title">Unblock Trail</h2><p data-t="summary">Deslize a madeira para levar o bambu verde com seta dourada até a saída à direita.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Puzzle de blocos</span><span>Tabuleiro 6×6</span><span>Milhares de layouts</span></div></div>
-      <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-t="howTitle">Como jogar</h3><p data-t="guideBody">Escolha uma trilha liberada. Arraste peças horizontais para os lados e verticais para cima ou para baixo. No teclado, selecione a peça e use as setas. Leve o bambu ao portão direito.</p></article>
-        <article class="game-info-section"><h3 data-t="rulesTitle">Regras</h3><p data-t="rulesText">Não é possível girar, sobrepor, saltar peças ou sair do tabuleiro. Cada deslize válido conta uma jogada. Não há derrota por tempo ou limite de jogadas. Desfazer volta uma jogada; Reiniciar restaura o início.</p></article>
-        <article class="game-info-section"><h3 data-t="progressTitle">Progressão</h3><p data-t="progressText">Concluir uma trilha libera a próxima. Mais adiante surgem peças longas, espaços estreitos e movimentos encadeados. Jogue novamente para atingir a meta ou melhorar seu recorde local.</p></article>
-        <article class="game-info-section"><h3 data-t="tipsTitle">Dicas</h3><p data-t="tipsText">Planeje a partir da saída. Às vezes é preciso afastar uma peça para abrir espaço. A dica destaca uma peça e a direção, mas não joga por você.</p></article>
-        <article class="game-info-section"><h3 data-t="saveTitle">Salvar e voltar</h3><p data-t="saveText">Trilhas e melhores resultados ficam neste navegador, sem conta. Sair descarta a posição atual, não as trilhas concluídas. Limpar os dados do navegador apaga o progresso.</p></article>
-        <article class="game-info-section"><h3 data-t="faqTitle">Perguntas</h3><dl><dt data-t="faqQuestion">Por que a peça não se move?</dt><dd data-t="faqAnswer">A próxima casa está ocupada ou fora do tabuleiro. Afaste o obstáculo primeiro. O bambu verde com seta dourada é a peça que deve sair.</dd></dl></article>
-      </div>
-    </section>
+    <section id="mainGuide" data-wp-game-owned-guide="true" data-wp-text-growth-version="1.4.0" data-wp-text-growth-locale="pt-BR" class="game-page-info game-page-info-static" aria-label="Informações de Trilha Desbloqueio">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Trilha Desbloqueio</h2><p>Resolva 30 quebra-cabeças fixos em três capítulos e abra a saída para o bloco de bambu verde com seta dourada.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Puzzle de blocos deslizantes</span><span>Movimentos por eixo</span><span>Tabuleiro 6×6</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Puzzle de blocos</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Puzzle de blocos deslizantes · Movimentos por eixo · Tabuleiro 6×6</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Do fácil ao desafiador</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>2-8 minutos por fase</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e missão</h3><p>Panko mapeia trinta portões da floresta cheios de blocos. Cada bloco começa em uma grade fixa e cada quebra-cabeça tem uma sequência verificada que liberta o bloco de bambu verde marcado com uma seta dourada.</p>
+<p>Os blocos não giram, saltam nem saem do tabuleiro. O desafio é decidir quais movimentos temporários criam espaço para o deslizamento final.</p></div>
+      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Blocos horizontais só se movem para a esquerda e a direita; blocos verticais só sobem e descem.</p>
+<p>Um movimento para antes da borda ou de outro bloco; casas ocupadas não podem se sobrepor.</p>
+<p>A fase termina quando o bloco de bambu verde com seta dourada alcança a faixa de saída marcada.</p>
+<p>Desfazer reverte um deslizamento, Dica indica um bloco útil e Reiniciar restaura exatamente a disposição inicial.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha uma trilha desbloqueada.</li><li>Identifique todos os blocos que cruzam a linha de saída do bloco de bambu verde com seta dourada.</li><li>Crie espaço no eixo permitido de cada obstáculo antes de movê-lo.</li><li>Deslize o bloco de bambu verde com seta dourada pela saída e avance para a próxima trilha.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Planeje o caminho de trás para frente a partir da saída.</li><li>Mova um obstáculo além do que parece necessário quando ele precisa abrir espaço para outro bloco.</li><li>Não ocupe a única coluna livre com um bloco que será necessário depois.</li><li>Use Desfazer para um erro recente e Reiniciar quando toda a ordem estiver errada.</li></ul></div>
+      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>As primeiras trilhas ensinam os limites dos eixos e obstáculos simples. Os capítulos seguintes trazem peças longas, espaços estreitos, dependências encadeadas, vários cruzamentos e tabuleiros finais densos.</p>
+<p>Cada fase muda a sequência espacial sem acrescentar regras arbitrárias de movimento.</p></div>
+      <div class="game-info-section"><h3>Nota de design</h3><p>A direção do arrasto, o encaixe na grade, a colisão e a arte dos blocos usam a mesma geometria de casas no toque, mouse e teclado.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Não há cronômetro, conta, compras nem pontuação pública. Desbloqueios e melhores números de movimentos ficam somente neste navegador.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Os blocos podem girar?</dt><dd>Não. Cada bloco mantém a orientação inicial.</dd></div><div><dt>Por que o arrasto parou?</dt><dd>A próxima casa estava ocupada ou fora do tabuleiro.</dd></div><div><dt>Qual bloco deve sair?</dt><dd>O bloco de bambu verde com seta dourada.</dd></div><div><dt>Todas as trinta trilhas têm solução?</dt><dd>Sim. Cada disposição criada tem uma solução verificada.</dd></div></dl></div>
+
+    </div>
+  </section>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-    <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="levels.js"></script>

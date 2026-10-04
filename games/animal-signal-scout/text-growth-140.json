@@ -1,0 +1,96 @@
+{
+  "version": "1.4.0",
+  "locales": {
+    "en": {
+      "description": "Decode 30 patrols in six chapters. Match fox, owl and rabbit signals by applying visible clues for order, reversal, rotation, skipped posts and memory. Every fifth patrol is a checkpoint; progress stays in this browser.",
+      "tags": ["Sequence-Decoding Puzzle", "Animal Signal Matching", "30-Patrol Logic Campaign"],
+      "intro": "Read each scout note, match fox, owl and rabbit signals to their colours, then enter the patrol order shown by its clue.",
+      "guide": "Work through 30 fixed patrols in six chapters. Each note shows the animal order and a rule: read forward or backward, move the first post to the end, skip crossed-out posts, or combine rules. Every fifth patrol is a checkpoint; later chapters add memory and mixed-rule routes. Check marks the first wrong position without erasing your entries. Clear a patrol to save its best star rating and open the next one; cleared patrols remain replayable.",
+      "starFaq": ["How are patrol stars earned?", "A first-check clear with no clue review earns three stars. A clear within three checks earns two; later clears earn one. Reviewing a memory clue counts as a hint, so it rules out a three-star clear for that patrol."]
+    },
+    "zh-Hant": {
+      "description": "解讀六章共 30 趟巡邏。依照可見線索中的順序、倒序、輪轉、略過哨點與記憶規則，配對狐狸、貓頭鷹和兔子的訊號。每五關設有檢查點；進度保存在此瀏覽器。",
+      "tags": ["序列解碼益智", "動物訊號配對", "30 趟巡邏邏輯任務"],
+      "intro": "讀取每趟偵察筆記，配對狐狸、貓頭鷹和兔子的訊號顏色，再依線索輸入巡邏順序。",
+      "guide": "六章共有 30 趟固定巡邏。每張筆記都會顯示動物順序和一條規則：正向或倒序讀取、把第一站移到最後、略過打叉的哨點，或組合多條規則。每五關設有檢查點；後續章節加入記憶與混合規則。按下檢查後，遊戲會標出第一個錯誤位置，但保留已輸入的內容。完成巡邏會保存該關最佳星等並開啟下一關；已完成的巡邏仍可重玩。",
+      "starFaq": ["巡邏星星如何取得？", "不查看線索並在第一次檢查就答對，可得三顆星。三次檢查內完成可得兩顆；再多則得一顆。在記憶關重新查看線索會算提示，因此該關無法取得三顆星。"]
+    },
+    "zh-Hans": {
+      "description": "解读六章共 30 趟巡逻。根据可见线索中的顺序、倒序、轮转、跳过哨点和记忆规则，配对狐狸、猫头鹰与兔子的信号。每五关设有检查点；进度保存在此浏览器。",
+      "tags": ["序列解码益智", "动物信号配对", "30 趟巡逻逻辑任务"],
+      "intro": "阅读每趟侦察笔记，配对狐狸、猫头鹰和兔子的信号颜色，再按线索输入巡逻顺序。",
+      "guide": "六章共有 30 趟固定巡逻。每张笔记都会显示动物顺序和一条规则：正向或倒序读取、把第一站移到最后、跳过打叉的哨点，或组合多条规则。每五关设有检查点；后续章节加入记忆和混合规则。按下检查后，游戏会标出第一个错误位置，但保留已输入的内容。完成巡逻会保存该关最佳星级并解锁下一关；已完成的巡逻仍可重玩。",
+      "starFaq": ["巡逻星星怎样获得？", "不查看线索并在第一次检查时答对，可得三颗星。三次检查内完成可得两颗；更多次数则得一颗。在记忆关重新查看线索会算作提示，因此该关无法获得三颗星。"]
+    },
+    "ja": {
+      "description": "全6章・30の固定パトロールを解読。表示された手がかりに従い、キツネ・フクロウ・ウサギの信号を順番、逆順、回転、地点のスキップ、記憶のルールで入力します。5回ごとにチェックポイントがあり、進行状況はこのブラウザーに保存されます。",
+      "tags": ["順序解読パズル", "動物信号合わせ", "全30回の論理パトロール"],
+      "intro": "偵察メモでキツネ、フクロウ、ウサギの信号色を確認し、手がかりに示された順に入力しましょう。",
+      "guide": "6章に全30回の固定パトロールがあります。各メモには動物の順番とルールが表示されます。順読み・逆読み、最初の地点を最後へ移す操作、×印の地点を飛ばす操作、または複数ルールの組み合わせです。5回ごとにチェックポイントがあり、後半では記憶と複合ルールが加わります。「確認」を押すと最初の誤りが示されますが、入力済みの内容は残ります。クリアするとその回の最高スター数が保存され、次の回が開きます。クリア済みの回も再挑戦できます。",
+      "starFaq": ["パトロールの星はどう獲得しますか？", "手がかりを見直さず、最初の確認で正解すると星3つです。3回以内の確認でクリアすると星2つ、それ以上では星1つです。記憶ステージで手がかりを再表示するとヒント扱いになり、その回は星3つを獲得できません。"]
+    },
+    "ko": {
+      "description": "6개 장에 걸친 고정 순찰 30개를 해독하세요. 보이는 단서의 순서, 역순, 회전, 초소 건너뛰기, 기억 규칙을 적용해 여우·부엉이·토끼 신호를 입력합니다. 다섯 번째 순찰마다 체크포인트가 있으며 진행도는 이 브라우저에 저장됩니다.",
+      "tags": ["순서 해독 퍼즐", "동물 신호 맞추기", "30개 순찰 논리 캠페인"],
+      "intro": "정찰 기록에서 여우·부엉이·토끼의 신호 색을 확인하고, 단서에 나온 순서대로 입력하세요.",
+      "guide": "6개 장에 고정 순찰 30개가 있습니다. 각 기록에는 동물 순서와 규칙이 나옵니다. 정순이나 역순으로 읽고, 첫 초소를 맨 뒤로 옮기거나, X 표시 초소를 건너뛰거나, 여러 규칙을 함께 적용하세요. 다섯 번째 순찰마다 체크포인트가 있고 후반에는 기억과 복합 규칙이 추가됩니다. 확인을 누르면 첫 오답 위치를 알려 주지만 입력한 내용은 지우지 않습니다. 순찰을 완료하면 최고 별점이 저장되고 다음 순찰이 열립니다. 완료한 순찰은 다시 플레이할 수 있습니다.",
+      "starFaq": ["순찰 별은 어떻게 얻나요?", "단서를 다시 보지 않고 첫 확인에서 맞히면 별 3개입니다. 확인 3회 이내에 완료하면 별 2개, 그보다 많으면 별 1개입니다. 기억 순찰에서 단서를 다시 열면 힌트로 처리되어 해당 순찰에서 별 3개를 받을 수 없습니다."]
+    },
+    "es": {
+      "description": "Descifra 30 patrullas fijas en seis capítulos. Sigue las pistas de orden, inversión, rotación, puestos omitidos y memoria para introducir las señales del zorro, el búho y el conejo. Hay un punto de control cada cinco patrullas; el progreso queda en este navegador.",
+      "tags": ["Puzle de secuencias", "Señales de animales", "Campaña lógica de 30 patrullas"],
+      "intro": "Lee cada nota, relaciona los colores de las señales del zorro, el búho y el conejo, y escribe el orden que indica la pista.",
+      "guide": "Hay 30 patrullas fijas repartidas en seis capítulos. Cada nota muestra el orden de los animales y una regla: leer hacia delante o al revés, mover el primer puesto al final, omitir los puestos tachados o combinar reglas. Cada quinta patrulla es un punto de control; los capítulos posteriores añaden memoria y rutas con varias reglas. Al comprobar el código, se marca el primer error sin borrar lo que ya escribiste. Completar una patrulla guarda tu mejor número de estrellas y abre la siguiente; puedes volver a jugar las ya superadas.",
+      "starFaq": ["¿Cómo se consiguen estrellas?", "Si aciertas al primer intento sin volver a mostrar la pista, obtienes tres estrellas. Completar en tres comprobaciones o menos da dos; después, una. En las patrullas de memoria, volver a consultar la pista cuenta como ayuda y descarta las tres estrellas en esa patrulla."]
+    },
+    "pt-BR": {
+      "description": "Decifre 30 patrulhas fixas em seis capítulos. Siga as pistas de ordem, inversão, rotação, postos ignorados e memória para inserir os sinais da raposa, da coruja e do coelho. Há um ponto de controle a cada cinco patrulhas; o progresso fica neste navegador.",
+      "tags": ["Quebra-cabeça de sequências", "Sinais de animais", "Campanha lógica de 30 patrulhas"],
+      "intro": "Leia cada anotação, associe as cores dos sinais da raposa, da coruja e do coelho e digite a ordem indicada pela pista.",
+      "guide": "São 30 patrulhas fixas em seis capítulos. Cada anotação mostra a ordem dos animais e uma regra: ler para a frente ou de trás para a frente, mover o primeiro posto para o fim, pular postos riscados ou combinar regras. A cada quinta patrulha há um ponto de controle; os capítulos finais acrescentam memória e rotas com várias regras. Ao conferir o código, o primeiro erro é indicado sem apagar o que você digitou. Concluir uma patrulha salva sua melhor quantidade de estrelas e libera a próxima; patrulhas concluídas podem ser refeitas.",
+      "starFaq": ["Como ganho estrelas nas patrulhas?", "Acertar na primeira conferência sem rever a pista rende três estrelas. Concluir em até três conferências rende duas; depois disso, uma. Nas patrulhas de memória, rever a pista conta como dica e impede as três estrelas naquela patrulha."]
+    },
+    "fr": {
+      "description": "Décodez 30 patrouilles fixes en six chapitres. Suivez les indices d’ordre, d’inversion, de rotation, de postes à ignorer et de mémoire pour saisir les signaux du renard, de la chouette et du lapin. Un point de contrôle revient toutes les cinq patrouilles ; la progression reste dans ce navigateur.",
+      "tags": ["Puzzle de séquences", "Signaux d’animaux", "Campagne logique de 30 patrouilles"],
+      "intro": "Lisez chaque note, associez les couleurs du renard, de la chouette et du lapin, puis saisissez l’ordre indiqué par l’indice.",
+      "guide": "Les six chapitres comprennent 30 patrouilles fixes. Chaque note indique l’ordre des animaux et une règle : lire dans l’ordre ou à rebours, déplacer le premier poste à la fin, ignorer les postes barrés ou combiner plusieurs règles. Chaque cinquième patrouille sert de point de contrôle ; les derniers chapitres ajoutent la mémoire et des parcours à règles combinées. La vérification signale la première erreur sans effacer vos réponses. Réussir une patrouille enregistre votre meilleur nombre d’étoiles et ouvre la suivante ; les patrouilles terminées restent rejouables.",
+      "starFaq": ["Comment gagner les étoiles ?", "Une réussite dès la première vérification, sans revoir l’indice, rapporte trois étoiles. Une réussite en trois vérifications maximum en rapporte deux ; au-delà, une seule. Dans les patrouilles de mémoire, revoir l’indice compte comme une aide et empêche d’obtenir trois étoiles pour cette patrouille."]
+    },
+    "de": {
+      "description": "Entschlüssle 30 feste Patrouillen in sechs Kapiteln. Wende die sichtbaren Hinweise zu Reihenfolge, Umkehr, Rotation, übersprungenen Posten und Gedächtnis an, um die Signale von Fuchs, Eule und Hase einzugeben. Jede fünfte Patrouille ist ein Kontrollpunkt; dein Fortschritt bleibt in diesem Browser.",
+      "tags": ["Sequenzrätsel", "Tiersignale zuordnen", "Logikkampagne mit 30 Patrouillen"],
+      "intro": "Lies jeden Spähbericht, ordne Fuchs, Eule und Hase ihre Signalfarben zu und gib die Reihenfolge aus dem Hinweis ein.",
+      "guide": "Die sechs Kapitel enthalten 30 feste Patrouillen. Jeder Bericht zeigt die Tierfolge und eine Regel: vorwärts oder rückwärts lesen, den ersten Posten ans Ende verschieben, durchgestrichene Posten auslassen oder Regeln kombinieren. Jede fünfte Patrouille ist ein Kontrollpunkt; in späteren Kapiteln kommen Gedächtnis- und Mischregeln hinzu. Beim Prüfen wird die erste falsche Stelle markiert, ohne deine Eingabe zu löschen. Nach einem Erfolg werden deine beste Sternwertung gespeichert und die nächste Patrouille freigeschaltet. Abgeschlossene Patrouillen kannst du erneut spielen.",
+      "starFaq": ["Wie verdiene ich Sterne?", "Wer den ersten Prüfversuch ohne erneutes Anzeigen des Hinweises besteht, erhält drei Sterne. Ein Abschluss in höchstens drei Prüfungen bringt zwei Sterne, danach gibt es einen. In Gedächtnis-Patrouillen zählt das erneute Anzeigen des Hinweises als Hilfe und schließt drei Sterne für diese Patrouille aus."]
+    },
+    "it": {
+      "description": "Decifra 30 pattuglie fisse in sei capitoli. Segui gli indizi su ordine, inversione, rotazione, posti da saltare e memoria per inserire i segnali di volpe, gufo e coniglio. Ogni quinta pattuglia è un checkpoint; i progressi restano in questo browser.",
+      "tags": ["Puzzle di sequenze", "Abbinamento di segnali animali", "Campagna logica di 30 pattuglie"],
+      "intro": "Leggi ogni nota, abbina i colori dei segnali di volpe, gufo e coniglio e inserisci l’ordine indicato dall’indizio.",
+      "guide": "I sei capitoli contengono 30 pattuglie fisse. Ogni nota mostra l’ordine degli animali e una regola: leggere in avanti o all’indietro, spostare il primo posto alla fine, saltare i posti barrati oppure combinare più regole. Ogni quinta pattuglia è un checkpoint; nei capitoli successivi arrivano memoria e regole combinate. Quando controlli il codice, viene indicato il primo errore senza cancellare le tue scelte. Completare una pattuglia salva il tuo miglior numero di stelle e sblocca la successiva; puoi rigiocare quelle già completate.",
+      "starFaq": ["Come si ottengono le stelle?", "Rispondendo correttamente al primo controllo senza rivedere l’indizio ottieni tre stelle. Completando entro tre controlli ne ottieni due; dopo, una. Nelle pattuglie di memoria, rivedere l’indizio conta come aiuto e impedisce di ottenere tre stelle in quella pattuglia."]
+    },
+    "ru": {
+      "description": "Расшифруйте 30 фиксированных патрулей в шести главах. Применяйте подсказки о порядке, обратном ходе, сдвиге, пропуске постов и памяти, чтобы ввести сигналы лисы, совы и кролика. Каждая пятая миссия — контрольная точка; прогресс хранится в этом браузере.",
+      "tags": ["Пазл на последовательности", "Сигналы животных", "Логическая кампания из 30 патрулей"],
+      "intro": "Прочитайте заметку разведчика, сопоставьте цвета сигналов лисы, совы и кролика и введите порядок из подсказки.",
+      "guide": "В шести главах — 30 фиксированных патрулей. В каждой заметке показан порядок животных и правило: читать вперёд или назад, перенести первый пост в конец, пропустить зачёркнутые посты или сочетать правила. Каждый пятый патруль — контрольная точка; в следующих главах появляются задания на память и комбинации правил. Проверка отмечает первую ошибку, не удаляя введённые ответы. За пройденный патруль сохраняется лучший результат в звёздах и открывается следующий; пройденные патрули можно повторить.",
+      "starFaq": ["Как получить звёзды за патруль?", "Три звезды даются за верный код с первой проверки без повторного просмотра подсказки. Завершение не более чем за три проверки приносит две звезды; позднее — одну. В патрулях на память повторный просмотр подсказки считается помощью и исключает три звезды за этот патруль."]
+    },
+    "hi": {
+      "description": "छह अध्यायों में 30 तय गश्तों के संकेत सुलझाएँ। क्रम, उलटे क्रम, घुमाव, चौकियाँ छोड़ने और याददाश्त के नियमों से लोमड़ी, उल्लू और खरगोश के संकेत भरें। हर पाँचवीं गश्त पर जाँच-बिंदु है; प्रगति इसी ब्राउज़र में रहती है।",
+      "tags": ["क्रम-पहेली", "पशु संकेत मिलान", "30 गश्तों का तर्क अभियान"],
+      "intro": "हर खोज-नोट पढ़ें, लोमड़ी, उल्लू और खरगोश के संकेत-रंग मिलाएँ, फिर सुराग में दिया गश्त क्रम भरें।",
+      "guide": "छह अध्यायों में 30 तय गश्तें हैं। हर नोट में पशुओं का क्रम और एक नियम मिलता है: आगे या पीछे से पढ़ना, पहली चौकी को अंत में रखना, काटी गई चौकियाँ छोड़ना, या नियमों को मिलाना। हर पाँचवीं गश्त जाँच-बिंदु है; बाद के अध्यायों में याददाश्त और मिले-जुले नियम आते हैं। जाँच करने पर पहली गलत जगह दिखती है, लेकिन आपकी भरी हुई प्रविष्टियाँ नहीं मिटतीं। गश्त पूरी करने पर आपका सर्वोत्तम सितारा स्कोर सहेजा जाता है और अगली गश्त खुलती है; पूरी की हुई गश्त फिर खेल सकते हैं।",
+      "starFaq": ["गश्त के सितारे कैसे मिलते हैं?", "सुराग दोबारा देखे बिना पहली जाँच में सही उत्तर देने पर तीन सितारे मिलते हैं। तीन जाँचों के भीतर पूरा करने पर दो, और उसके बाद एक सितारा मिलता है। याददाश्त वाली गश्त में सुराग फिर देखना मदद माना जाता है, इसलिए उस गश्त में तीन सितारे नहीं मिलते।"]
+    },
+    "ar": {
+      "description": "حلّوا 30 دورية ثابتة ضمن ستة فصول. طبّقوا أدلة الترتيب والعكس والتدوير وتجاوز المحطات والذاكرة لإدخال إشارات الثعلب والبومة والأرنب. كل دورية خامسة نقطة تحقق؛ ويبقى التقدم في هذا المتصفح.",
+      "tags": ["لغز تسلسل الإشارات", "مطابقة إشارات الحيوانات", "حملة منطقية من 30 دورية"],
+      "intro": "اقرؤوا ملاحظة الكشّاف، وطابقوا ألوان إشارات الثعلب والبومة والأرنب، ثم أدخلوا ترتيب الدورية الذي يوضحه الدليل.",
+      "guide": "تضم الفصول الستة 30 دورية ثابتة. تعرض كل ملاحظة ترتيب الحيوانات وقاعدةً واحدة: القراءة إلى الأمام أو بالعكس، نقل المحطة الأولى إلى النهاية، تجاوز المحطات المشطوبة، أو جمع القواعد. كل دورية خامسة نقطة تحقق؛ وتضيف الفصول اللاحقة قواعد الذاكرة والتركيبات. يحدد الفحص أول موضع خاطئ من دون مسح ما أدخلتموه. عند إنهاء الدورية يُحفظ أفضل عدد من النجوم وتُفتح التالية؛ ويمكن إعادة الدوريات المكتملة.",
+      "starFaq": ["كيف أحصل على نجوم الدورية؟", "تحصلون على ثلاث نجوم عند الحل من أول فحص من دون مراجعة الدليل. الإكمال خلال ثلاثة فحوص يمنح نجمتين، وما بعد ذلك يمنح نجمة واحدة. في دوريات الذاكرة تُعد مراجعة الدليل مساعدةً، لذا تمنع النجوم الثلاث في تلك الدورية."]
+    }
+  }
+}

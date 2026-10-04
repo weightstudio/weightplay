@@ -94,9 +94,24 @@
     hi: ["{count} बार तौला", "तौल रहे हैं…", "संभव स्थान: {min}–{max} (1 = सबसे हल्का)", "अभी संभव", "सुरागों से बाहर", "{count} संभव सामग्री", "प्रमाण पूरा! सही सामग्री चुनें।", "कई सामग्री अभी संभव हैं। अपने चयन को साबित करने के लिए फिर तुलना करें।", "पहले के सुराग इस क्रम को साबित करते हैं। दूसरी जोड़ी चुनें।", "अनिश्चित जोड़ियों की तुलना करें। स्थान 1 सबसे हल्का है; बड़ा अंक अधिक भारी है।"],
     ar: ["{count} مرات وزن", "جارٍ الوزن…", "الترتيب المحتمل: {min}–{max} (١ = الأخف)", "ما زال محتملًا", "استُبعد بالأدلة", "{count} مواد محتملة", "اكتمل الدليل! اختر المادة المناسبة.", "ما زالت عدة مواد مناسبة. قارن مجددًا لإثبات اختيارك.", "الأدلة السابقة تثبت هذا الترتيب. جرّب زوجًا آخر.", "قارن الأزواج غير المحسومة. الترتيب ١ هو الأخف والرقم الأكبر أثقل."],
   };
+  const textGrowthTagCopy = {
+    en: { guideTagComparison: "Pairwise weight comparison", guideTagRank: "Rank-order deduction", guideTagLogic: "Logic puzzle" },
+    "zh-Hant": { guideTagComparison: "巢材重量比較", guideTagRank: "排序推理", guideTagLogic: "邏輯益智" },
+    "zh-Hans": { guideTagComparison: "巢材重量比较", guideTagRank: "排序推理", guideTagLogic: "逻辑益智" },
+    ja: { guideTagComparison: "巣材の重さ比べ", guideTagRank: "順位の推理", guideTagLogic: "論理パズル" },
+    ko: { guideTagComparison: "둥지 재료 무게 비교", guideTagRank: "순위 추론", guideTagLogic: "논리 퍼즐" },
+    es: { guideTagComparison: "Comparación de pesos", guideTagRank: "Deducción de posiciones", guideTagLogic: "Rompecabezas lógico" },
+    "pt-BR": { guideTagComparison: "Comparação de pesos", guideTagRank: "Dedução de posições", guideTagLogic: "Quebra-cabeça lógico" },
+    fr: { guideTagComparison: "Comparaison de poids", guideTagRank: "Déduction du classement", guideTagLogic: "Casse-tête logique" },
+    de: { guideTagComparison: "Gewichtsvergleich", guideTagRank: "Rangfolge ableiten", guideTagLogic: "Logikrätsel" },
+    it: { guideTagComparison: "Confronto dei pesi", guideTagRank: "Deduzione dell'ordine", guideTagLogic: "Enigma logico" },
+    ru: { guideTagComparison: "Сравнение веса", guideTagRank: "Определение порядка", guideTagLogic: "Логическая головоломка" },
+    hi: { guideTagComparison: "वज़न की तुलना", guideTagRank: "क्रम का अनुमान", guideTagLogic: "तर्क पहेली" },
+    ar: { guideTagComparison: "مقارنة الأوزان", guideTagRank: "استنتاج الترتيب", guideTagLogic: "أحجية منطقية" },
+  };
   const planningLabels = ["Comparison planning", "比較策略", "比较策略", "比較戦略", "비교 전략", "Estrategia de comparación", "Estratégia de comparação", "Stratégie de comparaison", "Vergleichsstrategie", "Strategia di confronto", "Стратегия сравнения", "तुलना की रणनीति", "استراتيجية المقارنة"];
   window.ANIMAL_NEST_WEIGH_LOCALES = Object.fromEntries(keys.map((locale, localeIndex) => {
     const evidence = Object.fromEntries(deductionKeys.map((key, i) => [key, deductionCopy[locale][i]]));
-    return [locale, Object.assign({}, base, locales[locale] || {}, depthLocales[locale] || {}, upgradeCopy[locale] || {}, { finishText: finishCopy[locale] }, currentFlowCopy[locale] || currentFlowCopy.en, evidence, { guideThree: evidence.needProof, mapIntro: evidence.strategyHelp, mechanicPressure: planningLabels[localeIndex] })];
+    return [locale, Object.assign({}, base, locales[locale] || {}, depthLocales[locale] || {}, upgradeCopy[locale] || {}, { finishText: finishCopy[locale] }, currentFlowCopy[locale] || currentFlowCopy.en, evidence, textGrowthTagCopy[locale], { guideThree: evidence.needProof, mapIntro: evidence.strategyHelp, mechanicPressure: planningLabels[localeIndex] })];
   }));
 }());

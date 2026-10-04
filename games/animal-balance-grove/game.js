@@ -18,27 +18,58 @@
     en: { kicker: "WeightPlay Original Game Guide", gameplay: "Gameplay", gameplayValue: "Balance Subset Puzzle", genre: "Genre", genreValue: "Puzzle · Balance · Logic · Family · Animal", faq: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser.", stageHelp: "Grove help", stageSections: "Grove sections", guideAria: "Balance Grove game information" },
     "zh-Hant": { kicker: "WeightPlay 原創遊戲指南", gameplay: "玩法", gameplayValue: "平衡子集合益智", genre: "類型", genreValue: "益智 · 平衡 · 邏輯 · 家庭 · 動物", faq: "常見問題", faqQuestion: "進度會保存嗎？", faqAnswer: "會，只保存在這個瀏覽器中。", stageHelp: "林地說明", stageSections: "林地區段", guideAria: "平衡林地遊戲資訊" },
     "zh-Hans": { kicker: "WeightPlay 原创游戏指南", gameplay: "玩法", gameplayValue: "平衡子集益智", genre: "类型", genreValue: "益智 · 平衡 · 逻辑 · 家庭 · 动物", faq: "常见问题", faqQuestion: "进度会保存吗？", faqAnswer: "是，仅保存在此浏览器中。", stageHelp: "林地说明", stageSections: "林地区段", guideAria: "平衡林地游戏信息" },
-    ja: { kicker: "WeightPlay オリジナルゲームガイド", gameplay: "ゲーム内容", gameplayValue: "バランス部分集合パズル", genre: "ジャンル", genreValue: "パズル · バランス · ロジック · ファミリー · 動物", faq: "よくある質問", faqQuestion: "進行状況は保存されますか？", faqAnswer: "はい、このブラウザにのみ保存されます。", stageHelp: "森のヘルプ", stageSections: "森のセクション", guideAria: "バランスの森 ゲーム情報" },
-    ko: { kicker: "WeightPlay 오리지널 게임 가이드", gameplay: "게임플레이", gameplayValue: "균형 부분집합 퍼즐", genre: "장르", genreValue: "퍼즐 · 균형 · 논리 · 가족 · 동물", faq: "자주 묻는 질문", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "예, 이 브라우저에만 저장됩니다.", stageHelp: "숲 도움말", stageSections: "숲 섹션", guideAria: "밸런스 숲 게임 정보" },
-    es: { kicker: "Guía de juegos originales de WeightPlay", gameplay: "Jugabilidad", gameplayValue: "Puzle de equilibrio por subconjuntos", genre: "Género", genreValue: "Puzle · Equilibrio · Lógica · Familiar · Animales", faq: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, solo en este navegador.", stageHelp: "Ayuda del bosque", stageSections: "Secciones del bosque", guideAria: "Información del juego Bosque Equilibrio" },
-    "pt-BR": { kicker: "Guia de jogos originais WeightPlay", gameplay: "Jogabilidade", gameplayValue: "Quebra-cabeça de equilíbrio por subconjuntos", genre: "Gênero", genreValue: "Quebra-cabeça · Equilíbrio · Lógica · Família · Animais", faq: "Perguntas frequentes", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, somente neste navegador.", stageHelp: "Ajuda do bosque", stageSections: "Seções do bosque", guideAria: "Informações do jogo Bosque Equilíbrio" },
-    fr: { kicker: "Guide des jeux originaux WeightPlay", gameplay: "Jeu", gameplayValue: "Puzzle d’équilibre par sous-ensembles", genre: "Genre", genreValue: "Puzzle · Équilibre · Logique · Famille · Animaux", faq: "Questions fréquentes", faqQuestion: "La progression est-elle sauvegardée ?", faqAnswer: "Oui, uniquement dans ce navigateur.", stageHelp: "Aide du bosquet", stageSections: "Sections du bosquet", guideAria: "Informations sur le jeu Bosquet Équilibre" },
+    ja: { kicker: "WeightPlay オリジナルゲームガイド", gameplay: "ゲーム内容", gameplayValue: "バランス部分集合パズル", genre: "ジャンル", genreValue: "パズル · バランス · ロジック · ファミリー · 動物", faq: "よくある質問", faqQuestion: "進行状況は保存されますか？", faqAnswer: "はい、このブラウザにのみ保存されます。", stageHelp: "森のヘルプ", stageSections: "森のセクション", guideAria: "バランス・グローブのゲーム情報" },
+    ko: { kicker: "WeightPlay 오리지널 게임 가이드", gameplay: "게임플레이", gameplayValue: "균형 부분집합 퍼즐", genre: "장르", genreValue: "퍼즐 · 균형 · 논리 · 가족 · 동물", faq: "자주 묻는 질문", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "예, 이 브라우저에만 저장됩니다.", stageHelp: "숲 도움말", stageSections: "숲 섹션", guideAria: "밸런스 그로브 게임 정보" },
+    es: { kicker: "Guía de juegos originales de WeightPlay", gameplay: "Jugabilidad", gameplayValue: "Puzle de equilibrio por subconjuntos", genre: "Género", genreValue: "Puzle · Equilibrio · Lógica · Familiar · Animales", faq: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, solo en este navegador.", stageHelp: "Ayuda del bosque", stageSections: "Secciones del bosque", guideAria: "Información del juego Arboleda del Equilibrio" },
+    "pt-BR": { kicker: "Guia de jogos originais WeightPlay", gameplay: "Jogabilidade", gameplayValue: "Quebra-cabeça de equilíbrio por subconjuntos", genre: "Gênero", genreValue: "Quebra-cabeça · Equilíbrio · Lógica · Família · Animais", faq: "Perguntas frequentes", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, somente neste navegador.", stageHelp: "Ajuda do bosque", stageSections: "Seções do bosque", guideAria: "Informações do jogo Bosque do Equilíbrio" },
+    fr: { kicker: "Guide des jeux originaux WeightPlay", gameplay: "Jeu", gameplayValue: "Puzzle d’équilibre par sous-ensembles", genre: "Genre", genreValue: "Puzzle · Équilibre · Logique · Famille · Animaux", faq: "Questions fréquentes", faqQuestion: "La progression est-elle sauvegardée ?", faqAnswer: "Oui, uniquement dans ce navigateur.", stageHelp: "Aide du bosquet", stageSections: "Sections du bosquet", guideAria: "Informations sur le jeu Bosquet d’Équilibre" },
     de: { kicker: "WeightPlay-Leitfaden für Originalspiele", gameplay: "Spielweise", gameplayValue: "Teilmenge-Balance-Rätsel", genre: "Genre", genreValue: "Rätsel · Balance · Logik · Familie · Tiere", faq: "Häufige Fragen", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser.", stageHelp: "Hilfe zum Hain", stageSections: "Hainbereiche", guideAria: "Informationen zum Spiel Balance-Hain" },
-    it: { kicker: "Guida ai giochi originali WeightPlay", gameplay: "Gioco", gameplayValue: "Puzzle di equilibrio per sottoinsiemi", genre: "Genere", genreValue: "Puzzle · Equilibrio · Logica · Famiglia · Animali", faq: "Domande frequenti", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser.", stageHelp: "Aiuto del bosco", stageSections: "Sezioni del bosco", guideAria: "Informazioni sul gioco Bosco Equilibrio" },
-    ru: { kicker: "Руководство по оригинальным играм WeightPlay", gameplay: "Геймплей", gameplayValue: "Головоломка на баланс подмножеств", genre: "Жанр", genreValue: "Головоломка · Баланс · Логика · Семейная · Животные", faq: "Частые вопросы", faqQuestion: "Сохраняется ли прогресс?", faqAnswer: "Да, только в этом браузере.", stageHelp: "Справка о лесе", stageSections: "Разделы леса", guideAria: "Информация об игре «Равновесный лес»" },
-    hi: { kicker: "WeightPlay मौलिक गेम गाइड", gameplay: "गेमप्ले", gameplayValue: "उपसमुच्चय संतुलन पहेली", genre: "शैली", genreValue: "पहेली · संतुलन · तर्क · परिवार · जानवर", faq: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।", stageHelp: "वन सहायता", stageSections: "वन अनुभाग", guideAria: "संतुलन वन गेम की जानकारी" },
+    it: { kicker: "Guida ai giochi originali WeightPlay", gameplay: "Gioco", gameplayValue: "Puzzle di equilibrio per sottoinsiemi", genre: "Genere", genreValue: "Puzzle · Equilibrio · Logica · Famiglia · Animali", faq: "Domande frequenti", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser.", stageHelp: "Aiuto del bosco", stageSections: "Sezioni del bosco", guideAria: "Informazioni sul gioco Bosco dell’Equilibrio" },
+    ru: { kicker: "Руководство по оригинальным играм WeightPlay", gameplay: "Геймплей", gameplayValue: "Головоломка на баланс подмножеств", genre: "Жанр", genreValue: "Головоломка · Баланс · Логика · Семейная · Животные", faq: "Частые вопросы", faqQuestion: "Сохраняется ли прогресс?", faqAnswer: "Да, только в этом браузере.", stageHelp: "Справка о лесе", stageSections: "Разделы леса", guideAria: "Информация об игре «Роща равновесия»" },
+    hi: { kicker: "WeightPlay मौलिक गेम गाइड", gameplay: "गेमप्ले", gameplayValue: "उपसमुच्चय संतुलन पहेली", genre: "शैली", genreValue: "पहेली · संतुलन · तर्क · परिवार · जानवर", faq: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।", stageHelp: "वन सहायता", stageSections: "वन अनुभाग", guideAria: "संतुलन उपवन गेम की जानकारी" },
     ar: {
-      kicker: "دليل ألعاب WeightPlay الأصلية", gameplay: "طريقة اللعب", gameplayValue: "لغز توازن المجموعات الجزئية", genre: "النوع", genreValue: "لغز · توازن · منطق · عائلية · حيوانات", difficulty: "من السهل إلى التحدي", time: "2–6 دقائق لكل غابة", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", stageHelp: "مساعدة الغابة", stageSections: "أقسام الغابة", guideAria: "معلومات لعبة غابة التوازن",
+      kicker: "دليل ألعاب WeightPlay الأصلية", gameplay: "طريقة اللعب", gameplayValue: "لغز توازن المجموعات الجزئية", genre: "النوع", genreValue: "لغز · توازن · منطق · عائلية · حيوانات", difficulty: "من السهل إلى التحدي", time: "2–6 دقائق لكل غابة", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", stageHelp: "مساعدة الغابة", stageSections: "أقسام الغابة", guideAria: "معلومات لعبة بستان التوازن",
       storyTitle: "العالم والرسالة", systemsTitle: "كيف تعمل الأنظمة", howTitle: "طريقة اللعب", strategyTitle: "نصائح استراتيجية", progressionTitle: "تطور المراحل والصعوبة", designTitle: "ملاحظة تصميم المطوّر", parentTitle: "معلومات اللاعب والحفظ",
       story: ["يُصلح تارو ذو الدرع الطحلبي ثلاثة جسور هادئة في بستان الغابة. تعرض كل غابة مجموعة أحجار مصممة بعناية، بأسماء واضحة وهدف محدد. ليست السرعة هي الهدف؛ بل ملاحظة العلاقات ووضع خطة واختيار مجموعة مستقرة تُبقي الجسر متوازنًا.", "تحافظ الحملة القصيرة على القواعد الودودة نفسها مع تغيير الهدف ومجموعة الأحجار والتركيبات المفيدة. تطلب الغابات اللاحقة مقارنة أكثر تعمدًا وتجعل الأحجار الخادعة أكثر إغراءً، ليتعلم اللاعب فحص الصينية كاملة بدل اختيار أول إجابة تبدو مناسبة."],
       systems: ["اختر الأحجار من الصينية لوضعها على الكفة اليمنى، ثم اختر فحص التوازن. تعرض الكفة اليسرى وزن الجسر الثابت، بينما تعرض الكفة اليمنى المجموعة المختارة. يمكن مسح التركيبة الخاطئة بأمان والمحاولة من جديد.", "لا يوجد مؤقت أو حساب أو شراء أو طلب إعلانات. يبقى التقدم وأفضل عدد من الفحوص في هذا المتصفح. يعمل مسار الشاشة الرئيسي والمرحلة والمعركة والنتيجة باللمس والماوس ولوحة المفاتيح."],
       how: ["ابدأ جولة واقرأ الهدف المعروض للغابة الحالية.", "افحص أسماء كل حجر وأوزانه قبل اختيار أي حجر.", "اختر مجموعة يساوي مجموعها هدف الجسر، ثم افحص التوازن.", "امسح الكفة وحاول تركيبة أخرى عندما لا تكون النتيجة مستقرة."],
       strategyTips: ["ابحث عن أزواج يساوي مجموعها الهدف قبل تجربة تركيبات أكبر.", "استخدم الأوزان الظاهرة لاستبعاد الأحجار الأثقل أو الأخف من اللازم.", "أبقِ الصينية المتبقية أمامك؛ فقد يساعد حجر خادع في مجموع جزئي لكنه يمنع المجموعة النهائية.", "اعتبر كل غابة درسًا قصيرًا في تخطيط المجموعات، لا سباقًا مع الساعة."],
       progression: ["تعرّف الغابة الأولى بالميزان والأحجار المسماة ومطابقة الهدف المباشرة. تضيف الغابة الثانية بدائل أكثر إغراءً وتطلب خطة مقارنة أوضح.", "تجمع الغابة الثالثة الاختيارات السابقة في فحص إتقان موجز. كل غابة قابلة لإعادة اللعب، وتساعد المحاولة الهادئة على فهم سبب نجاح المجموعة أو فشلها."],
-      designNote: "تستخدم غابة التوازن أهدافًا مصممة وحسابًا ظاهرًا وشاشات رئيسية ومرحلة ومعركة ونتيجة متجاوبة، مع عناصر تحكم مترجمة وتعليقات إعادة محاولة لطيفة. ملاحظات اللغز للعب والتقدم المحلي وليست تقييمًا رسميًا للقدرة.",
+      designNote: "تستخدم بستان التوازن أهدافًا مصممة وحسابًا ظاهرًا وشاشات رئيسية ومرحلة ومعركة ونتيجة متجاوبة، مع عناصر تحكم مترجمة وتعليقات إعادة محاولة لطيفة. ملاحظات اللغز للعب والتقدم المحلي وليست تقييمًا رسميًا للقدرة.",
       parent: "قد تساعد هذه اللعبة العائلية العامة على ممارسة العد والمقارنة والتخطيط وشرح الاختيار. إنها ملاحظات لعب وليست تقييمًا مدرسيًا أو طبيًا أو للذكاء. يُخزّن التقدم وأفضل الفحوص في هذا المتصفح فقط، ولا يلزم حساب أو شراء.",
       faqItems: [["كيف أثبّت الجسر؟", "اختر أحجارًا يساوي مجموع أوزانها الهدف المعروض، ثم اختر فحص التوازن."], ["هل يمكنني إعادة محاولة إجابة خاطئة؟", "نعم. يمكن مسح التركيبة الخاطئة بأمان، وإعادة تجربة الغابة الحالية دون فقدان التقدم."], ["هل يوجد مؤقت؟", "لا. صُممت الغابات الثلاث للمقارنة الهادئة وتخطيط المجموعات."], ["هل يُحفظ التقدم؟", "يُحفظ التقدم المفتوح وأفضل عدد من الفحوص في هذا المتصفح فقط."]]
     },
+  };
+  let textGrowthGuide = null;
+  let routeTextGrowthCopy = null;
+  const applyTextGrowthGuide = async () => {
+    const guide = document.querySelector(".game-page-info[data-wp-balance-grove-guide]");
+    if (!guide) return;
+    try {
+      const routeLocale = guide.getAttribute("data-wp-balance-grove-locale");
+      if (!routeTextGrowthCopy) {
+        const source = guide.querySelector("script[data-wp-balance-grove-copy]")?.textContent;
+        if (source) routeTextGrowthCopy = JSON.parse(source);
+      }
+      if (state.locale !== routeLocale) {
+        textGrowthGuide ||= await fetch("/games/animal-balance-grove/text-growth-140.json?v=20261003-balance-grove-text140-v7").then((response) => response.ok ? response.json() : null);
+      }
+      const sourceCopy = state.locale === routeLocale ? routeTextGrowthCopy?.locale : textGrowthGuide?.locales?.[state.locale];
+      if (!sourceCopy) return;
+      const copy = { ...sourceCopy, runtimeLabels: routeTextGrowthCopy?.runtimeLabels?.[state.locale] };
+      const set = (node, value) => { if (node && typeof value === "string" && node.textContent !== value) node.textContent = value; };
+      if (guideInfoCopy[state.locale]?.guideAria) guide.setAttribute("aria-label", guideInfoCopy[state.locale].guideAria);
+      set(guide.querySelector(".game-info-kicker"), guideInfoCopy[state.locale]?.kicker || guideInfoCopy.en.kicker);
+      set(guide.querySelector(".game-info-title h2"), copy.title);
+      set(guide.querySelector(".game-info-title p"), copy.intro);
+      const sections = [...guide.querySelectorAll(":scope .game-info-sections > .game-info-section")];
+      copy.guide.forEach((item, index) => { set(sections[index]?.querySelector("h3"), item.heading); set(sections[index]?.querySelector("p"), item.body); });
+      const faq = sections[copy.guide.length];
+      set(faq?.querySelector("h3"), guideInfoCopy[state.locale]?.faq || copy.runtimeLabels?.faq || "FAQ");
+      faq?.querySelectorAll("dl > div").forEach((item, index) => { set(item.querySelector("dt"), copy.faq[index]?.[0]); set(item.querySelector("dd"), copy.faq[index]?.[1]); });
+      guide.querySelectorAll(".game-info-tags span").forEach((node, index) => set(node, copy.tags[index] || ""));
+      set(sections[copy.guide.length + 1]?.querySelector("h3"), copy.runtimeLabels?.related || "Related Games");
+    } catch { /* Static localized HTML remains available when the optional runtime copy fetch fails. */ }
   };
   const marketComparisonCopy = {
     "en": {
@@ -280,7 +311,8 @@
     $("tokenTray").setAttribute("aria-label", t("chooseStone"));
     document.querySelector(".scale").setAttribute("aria-label", t("scaleLabel"));
     $("bestValue").textContent = readBest() || t("noBest");
-    applyGuideLocale(guideCopy);
+    if (document.querySelector(".game-page-info[data-wp-balance-grove-guide]")) applyTextGrowthGuide();
+    else applyGuideLocale(guideCopy);
     if (!screens.stages.hidden) renderStages();
     if (!screens.battle.hidden) renderBattle();
     if (!screens.result.hidden) renderResult();
@@ -369,7 +401,15 @@
   $("startBtn").addEventListener("click", startSession); $("mapBtn").addEventListener("click", () => { show("stages"); renderStages(); track("stage_map"); }); $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("battleBackBtn").addEventListener("click", () => { show("stages"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stages"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("checkBtn").addEventListener("click", checkBalance); $("clearBtn").addEventListener("click", clearTokens); $("settingsBtn").addEventListener("click", () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden)); }); $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); }); $("localeSelect").addEventListener("change", (event) => { const next = normalizeLocale(event.target.value); if (window.WonderI18n?.setLocale) { window.WonderI18n.setLocale(next); return; } setLocale(next); });
   window.addEventListener?.("wonder:locale-change", (event) => setLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
   window.addEventListener?.("weightplay:audio-volume-change", () => { syncSoundState(); applyLocale(); });
-  new MutationObserver(() => applyGuideLocale(guideInfoCopy[state.locale] || guideInfoCopy.en)).observe(document.body, { childList: true, subtree: true });
+  let guideRefreshPending = false;
+  new MutationObserver((records) => {
+    const guide = document.querySelector(".game-page-info[data-wp-balance-grove-guide]");
+    if (!guide) { applyGuideLocale(guideInfoCopy[state.locale] || guideInfoCopy.en); return; }
+    const guideChanged = records.some((record) => guide.contains(record.target) || [...record.addedNodes].some((node) => node === guide || node.contains?.(guide)));
+    if (!guideChanged || guideRefreshPending) return;
+    guideRefreshPending = true;
+    window.requestAnimationFrame(() => { guideRefreshPending = false; applyTextGrowthGuide(); });
+  }).observe(document.body, { childList: true, characterData: true, subtree: true });
   try { const saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale"); if (!routedLocale && saved) state.locale = normalizeLocale(saved); } catch (error) { state.storage = false; }
   window.setTimeout(() => { $("loadingPanel").hidden = true; screens.main.hidden = false; applyLocale(); track("main_ready"); }, 420);
 }());

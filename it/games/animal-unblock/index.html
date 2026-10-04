@@ -41,16 +41,16 @@
     <link rel="stylesheet" href="../../src/game-ui-theme.css">
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
     <link rel="stylesheet" href="frame-content.css?v=20260912-unblock-validator-contract-v24">
-  <meta name="description" content="Sposta i blocchi e guida Panko all&#39;uscita." />
+  <meta name="description" content="Risolvi 30 rompicapi fissi in tre capitoli e libera l’uscita per il blocco di bambù verde con la freccia dorata." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Sentiero Unblock | WeightPlay" />
-    <meta property="og:description" content="Sposta i blocchi e guida Panko all&#39;uscita." />
+    <meta property="og:description" content="Risolvi 30 rompicapi fissi in tre capitoli e libera l’uscita per il blocco di bambù verde con la freccia dorata." />
     <meta property="og:url" content="https://weightplay.com/it/games/animal-unblock/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Sentiero Unblock | WeightPlay" />
-    <meta name="twitter:description" content="Sposta i blocchi e guida Panko all&#39;uscita." />
+    <meta name="twitter:description" content="Risolvi 30 rompicapi fissi in tre capitoli e libera l’uscita per il blocco di bambù verde con la freccia dorata." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <script type="application/ld+json">
 {
@@ -60,7 +60,7 @@
   "alternateName": "Unblock Trail",
   "url": "https://weightplay.com/it/games/animal-unblock/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp",
-  "description": "Sposta i blocchi e guida Panko all'uscita.",
+  "description": "Risolvi 30 rompicapi fissi in tre capitoli e libera l’uscita per il blocco di bambù verde con la freccia dorata.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,10 +70,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Strategia",
-    "Logica",
-    "Animali"
+    "Puzzle con blocchi scorrevoli",
+    "Movimenti lungo un asse",
+    "Griglia 6×6"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -88,7 +87,7 @@
     <main id="main" class="screen main main-screen" data-screen="main">
       <header>
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <h1 data-t="title" data-wp-frame-title>Unblock Trail</h1>
+        <h1 data-t="title" data-wp-frame-title>Sentiero Unblock</h1>
         <select id="locale"></select>
       </header>
       <section class="hero">
@@ -96,13 +95,15 @@
           src="../../assets/interface7-redrawn/animal-unblock.webp"
           class="cover main-cover"
           data-wp-frame-poster
-          data-t-alt="Panko moving trail blocks through a bamboo grove"
+          data-t-alt="coverAlt"
           alt="Immagine del gioco Sentiero Unblock"
         />
         <div data-wp-frame-copy>
-          <p class="main-summary" data-t="summary" data-wp-frame-summary>Sposta i blocchi di legno e porta il bambù verde con freccia dorata all’uscita di destra.</p>
+          <p class="main-summary" data-t="summary" data-wp-frame-summary></p>
           <p id="mainProgress" data-wp-main-progress data-wp-frame-progress></p>
-          <button id="start" data-wp-main-start data-t="start">Start game</button></div>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button></div>
       </section>
     </main>
     <main
@@ -118,7 +119,7 @@
     >
       <header>
         <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-        <h2 data-t="choose" data-wp-frame-title hidden>CHOOSE A TRAIL</h2>
+        <h2 data-t="choose" data-wp-frame-title hidden></h2>
       </header>
       <section
         id="stageGrid"
@@ -146,9 +147,9 @@
           aria-label="Unblock Trail game board"
         ></div>
         <div class="tools">
-          <button id="undo" data-t="undo">Undo</button>
-          <button id="hint" data-t="hint" data-wp-battle-utility>Hint</button>
-          <button id="restart" data-t="restart" data-wp-primary-action>Restart</button>
+          <button id="undo" data-t="undo"></button>
+          <button id="hint" data-t="hint" data-wp-battle-utility></button>
+          <button id="restart" data-t="restart" data-wp-primary-action></button>
         </div>
         <p id="status"></p>
       </section>
@@ -158,39 +159,53 @@
         src="../../assets/animal-unblock-panda-block-v22.webp"
         alt=""
       />
-      <h2 data-t="resultTitle">Sentiero completato!</h2>
+      <h2 data-t="resultTitle"></h2>
       <p id="resultBody"></p>
       <p id="resultMastery" data-result-mastery></p>
       <p id="resultTarget" class="result-target" data-runtime-localize="off"></p>
       <p id="resultNextPreview" class="result-next-preview" data-runtime-localize="off" hidden></p>
       <div class="result-actions">
-        <button id="resultStages" data-t="stageList">Trail list</button>
-        <button id="next" data-t="next">Next trail</button>
-        <button id="retry" data-t="retry">Play again</button>
+        <button id="resultStages" data-t="stageList"></button>
+        <button id="next" data-t="next"></button>
+        <button id="retry" data-t="retry"></button>
       </div>
     </dialog>
     <dialog id="leaveDialog" aria-labelledby="leaveTitle">
-      <h2 id="leaveTitle" data-t="leaveTitle">Uscire dal sentiero?</h2>
-      <p data-t="leaveText">La disposizione e le mosse attuali saranno azzerate. Sentieri completati e record resteranno salvati.</p>
-      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay">Continua</button><button id="confirmLeave" data-t="stageList">Trail list</button></div>
+      <h2 id="leaveTitle" data-t="leaveTitle"></h2>
+      <p data-t="leaveText"></p>
+      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay"></button><button id="confirmLeave" data-t="stageList"></button></div>
     </dialog>
     </main>
     </div>
     <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
-    <section id="mainGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-game-owned-guide="true" data-runtime-localize="off">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideTitle">Come giocare</span><h2 data-t="title">Unblock Trail</h2><p data-t="summary">Sposta i blocchi di legno e porta il bambù verde con freccia dorata all’uscita di destra.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Puzzle</span><span>Logica</span><span>Tema animale</span></div></div>
-      <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-t="howTitle">Come giocare</h3><p data-t="guideBody">Scegli un sentiero sbloccato. Trascina i blocchi lungo il loro asse orizzontale o verticale. Con la tastiera, seleziona un blocco e usa le frecce. Porta il bambù al cancello destro.</p></article>
-        <article class="game-info-section"><h3 data-t="rulesTitle">Regole</h3><p data-t="rulesText">Non puoi ruotare, sovrapporre, saltare blocchi o uscire dal tabellone. Ogni scorrimento valido conta una mossa. Non perdi per tempo o mosse esaurite. Annulla torna indietro di una mossa; Ricomincia ripristina l’inizio.</p></article>
-        <article class="game-info-section"><h3 data-t="progressTitle">Progressione</h3><p data-t="progressText">Completare un sentiero sblocca il successivo. Poi arrivano blocchi lunghi, spazi stretti e mosse collegate. Rigioca per raggiungere l’obiettivo o migliorare il record locale.</p></article>
-        <article class="game-info-section"><h3 data-t="tipsTitle">Consigli</h3><p data-t="tipsText">Pianifica partendo dall’uscita. A volte devi allontanare un blocco per fare spazio. Il suggerimento indica blocco e direzione, ma non lo sposta.</p></article>
-        <article class="game-info-section"><h3 data-t="saveTitle">Salvataggio e ritorno</h3><p data-t="saveText">Progressi e record restano in questo browser, senza account. Uscire annulla la disposizione attuale, non i sentieri completati. Cancellare i dati del browser elimina i progressi.</p></article>
-        <article class="game-info-section"><h3 data-t="faqTitle">Domande</h3><dl><dt data-t="faqQuestion">Perché un blocco non si muove?</dt><dd data-t="faqAnswer">La casella seguente è occupata o fuori dal tabellone. Sposta prima l’ostacolo. Il bambù verde con freccia dorata deve raggiungere l’uscita.</dd></dl></article>
-      </div>
-    </section>
+    <section id="mainGuide" data-wp-game-owned-guide="true" data-wp-text-growth-version="1.4.0" data-wp-text-growth-locale="it" class="game-page-info game-page-info-static" aria-label="Informazioni su Sentiero Unblock">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Sentiero Unblock</h2><p>Risolvi 30 rompicapi fissi in tre capitoli e libera l’uscita per il blocco di bambù verde con la freccia dorata.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Puzzle con blocchi scorrevoli</span><span>Movimenti lungo un asse</span><span>Griglia 6×6</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Puzzle a scorrimento</strong></div><div class="game-info-fact"><span>Genere</span><strong>Puzzle con blocchi scorrevoli · Movimenti lungo un asse · Griglia 6×6</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Da facile a impegnativo</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>2-8 minuti per livello</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Panko esplora trenta cancelli della foresta pieni di blocchi. Ogni blocco parte su una griglia fissa e ogni puzzle ha una sequenza verificata che libera il blocco di bambù verde contrassegnato da una freccia dorata.</p>
+<p>I blocchi non ruotano, non saltano e non escono dal tabellone. La sfida è capire quali mosse temporanee creano lo spazio per lo scorrimento finale.</p></div>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>I blocchi orizzontali si muovono solo a sinistra e a destra; quelli verticali solo in alto e in basso.</p>
+<p>Una mossa si ferma prima del bordo o di un altro blocco; le caselle occupate non possono sovrapporsi.</p>
+<p>Il livello termina quando il blocco di bambù verde con freccia dorata raggiunge la corsia di uscita indicata.</p>
+<p>Annulla ripristina uno scorrimento, Suggerimento indica un blocco utile e Ricomincia riporta all’esatta disposizione iniziale.</p></div>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Scegli un sentiero sbloccato.</li><li>Individua tutti i blocchi che attraversano la riga di uscita del blocco di bambù verde con freccia dorata.</li><li>Crea spazio lungo l’asse consentito di ogni ostacolo prima di spostarlo.</li><li>Fai scorrere il blocco di bambù verde con freccia dorata attraverso l’uscita e continua con il sentiero successivo.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Ragiona a ritroso partendo dall’uscita.</li><li>Sposta un ostacolo più lontano del necessario quando deve lasciare spazio a un altro blocco.</li><li>Non riempire l’unica colonna libera con un blocco che servirà più avanti.</li><li>Usa Annulla per un errore recente e Ricomincia quando l’intera sequenza è sbagliata.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>I primi sentieri insegnano i limiti degli assi e gli ostacoli singoli. I capitoli successivi aggiungono pezzi lunghi, spazi stretti, dipendenze annidate, più incroci e tabelloni finali densi.</p>
+<p>Ogni livello cambia la sequenza spaziale senza introdurre regole di movimento arbitrarie.</p></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>Direzione del trascinamento, aggancio alla griglia, collisioni e grafica dei blocchi usano la stessa geometria delle caselle con tocco, mouse e tastiera.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>Non ci sono timer, account, acquisti o punteggi pubblici. Gli sblocchi e i migliori numeri di mosse restano soltanto in questo browser.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>I blocchi possono ruotare?</dt><dd>No. Ogni blocco mantiene l’orientamento iniziale.</dd></div><div><dt>Perché il trascinamento si è fermato?</dt><dd>La casella successiva era occupata o fuori dal tabellone.</dd></div><div><dt>Quale blocco deve uscire?</dt><dd>Il blocco di bambù verde con freccia dorata.</dd></div><div><dt>Tutti e trenta i sentieri sono risolvibili?</dt><dd>Sì. Ogni disposizione creata ha una soluzione verificata.</dd></div></dl></div>
+
+    </div>
+  </section>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-    <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/it.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="levels.js"></script>

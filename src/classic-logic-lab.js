@@ -253,19 +253,19 @@
   };
   const sudokuFeedback = {
     ready: L(
-      "Choose a cell, then enter a number. Hint marks one safe next step.",
-      "選擇格子後輸入數字。提示會標出一個安全的下一步。",
-      "选择格子后输入数字。提示会标出一个安全的下一步。",
-      "マスを選び、数字を入力します。ヒントは安全な次の一手を示します。",
-      "칸을 고른 뒤 숫자를 입력하세요. 힌트는 안전한 다음 수를 표시합니다.",
-      "Elige una casilla e introduce un número. La pista marca un siguiente paso seguro.",
-      "Escolha uma casa e insira um número. A dica marca um próximo passo seguro.",
-      "Choisissez une case et saisissez un chiffre. L’indice marque une prochaine étape sûre.",
-      "Wähle ein Feld und gib eine Zahl ein. Der Tipp markiert einen sicheren nächsten Schritt.",
-      "Scegli una casella e inserisci un numero. Il suggerimento indica un prossimo passo sicuro.",
-      "Выберите клетку и введите число. Подсказка отметит безопасный следующий шаг.",
-      "खाना चुनकर संख्या भरें। संकेत अगला सुरक्षित कदम दिखाता है।",
-      "اختر خانة ثم أدخل رقمًا. يحدد التلميح خطوة آمنة تالية."
+      "Choose a cell, then enter a number. Hint marks a cell to review.",
+      "選擇格子後輸入數字。提示會標出需要檢查的格子。",
+      "选择格子后输入数字。提示会标出需要检查的格子。",
+      "マスを選び、数字を入力します。ヒントは確認するマスを示します。",
+      "칸을 고른 뒤 숫자를 입력하세요. 힌트는 확인할 칸을 표시합니다.",
+      "Elige una casilla e introduce un número. La pista señala una casilla para revisar.",
+      "Escolha uma casa e insira um número. A dica indica uma casa para revisar.",
+      "Choisissez une case et saisissez un chiffre. L’indice signale une case à vérifier.",
+      "Wähle ein Feld und gib eine Zahl ein. Der Tipp markiert ein Feld zum Überprüfen.",
+      "Scegli una casella e inserisci un numero. Il suggerimento indica una casella da controllare.",
+      "Выберите клетку и введите число. Подсказка отметит клетку для проверки.",
+      "खाना चुनकर संख्या भरें। संकेत जाँचने के लिए एक खाना दिखाता है।",
+      "اختر خانة ثم أدخل رقمًا. يحدد التلميح خانة لمراجعتها."
     ),
     correct: L(
       "Correct placement. {remaining} cells remain.",
@@ -313,19 +313,19 @@
       "هذا الرقم يتعارض مع الصف أو العمود أو المربع. جرّب رقمًا آخر."
     ),
     hint: L(
-      "Hint marks a safe next cell. You still choose the number.",
-      "提示會標出安全的下一格，數字仍由你選擇。",
-      "提示会标出安全的下一格，数字仍由你选择。",
-      "ヒントは安全な次のマスを示します。数字は自分で選びます。",
-      "힌트는 안전한 다음 칸을 표시합니다. 숫자는 직접 고르세요.",
-      "La pista marca una casilla segura. Tú eliges el número.",
-      "A dica marca uma próxima casa segura. Você escolhe o número.",
-      "L’indice marque une prochaine case sûre. Vous choisissez le chiffre.",
-      "Der Tipp markiert ein sicheres nächstes Feld. Die Zahl wählst du selbst.",
-      "Il suggerimento indica una prossima casella sicura. Scegli tu il numero.",
-      "Подсказка отмечает безопасную следующую клетку. Число выбираете вы.",
-      "संकेत अगला सुरक्षित खाना दिखाता है। संख्या आप चुनें।",
-      "يحدد التلميح خانة آمنة تالية. أنت تختار الرقم."
+      "Hint marks a cell to review. You still choose the number.",
+      "提示會標出需要檢查的格子，數字仍由你選擇。",
+      "提示会标出需要检查的格子，数字仍由你选择。",
+      "ヒントは確認するマスを示します。数字は自分で選びます。",
+      "힌트는 확인할 칸을 표시합니다. 숫자는 직접 고르세요.",
+      "La pista señala una casilla para revisar. Tú eliges el número.",
+      "A dica indica uma casa para revisar. Você escolhe o número.",
+      "L’indice signale une case à vérifier. Vous choisissez le chiffre.",
+      "Der Tipp markiert ein Feld zum Überprüfen. Die Zahl wählst du selbst.",
+      "Il suggerimento indica una casella da controllare. Scegli tu il numero.",
+      "Подсказка отметит клетку для проверки. Число выбираете вы.",
+      "संकेत जाँचने के लिए एक खाना दिखाता है। संख्या आप चुनें।",
+      "يحدد التلميح خانة لمراجعتها، وتختار أنت الرقم."
     ),
     undo: L(
       "Undo restored the previous cell. {remaining} cells remain.",

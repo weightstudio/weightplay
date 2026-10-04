@@ -28,7 +28,7 @@
   <meta name="weightplay-game-version" content="v21">
   <meta name="weightplay-interface-version" content="7">
   <title>애니멀 퍼트 트레일 | WeightPlay</title>
-  <meta name="description" content="코스를 읽고 라인과 힘을 정해 둑과 잔잔한 물을 피해 공을 깃발까지 보내세요." />
+  <meta name="description" content="30개 홀의 퍼팅을 계획하세요. 뒤로 당겨 방향과 힘을 정하고, 벽의 반사면을 이용해 물을 피하세요. 홀별 최고 타수는 이 브라우저에 저장됩니다." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260921-interface7">
@@ -41,6 +41,7 @@
     button { border:0; cursor:pointer; }
     .shell { width:min(100%, 1120px); margin:0 auto; padding:clamp(12px,3vw,28px); }
     .wp-main-shell-header { position:relative; }
+    @media (max-width:480px) { html[lang="ar"] .wp-main-shell-header > .wp-shell-main-title { font-size:15px !important; } }
     .brand { color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.02em; }
     .locale { min-height:44px; border:2px solid rgba(47,125,98,.25); border-radius:14px; background:#fff; color:var(--ink); padding:8px 10px; }
     .settings-popover { position:absolute; z-index:10; top:56px; right:0; display:grid; gap:10px; min-width:220px; padding:14px; border:1px solid rgba(35,55,68,.15); border-radius:16px; background:#fff; box-shadow:0 14px 30px rgba(35,55,68,.2); }
@@ -141,47 +142,17 @@
     @media (max-height:500px) and (orientation:landscape) { #stageScreen .putt-stage-guide-art { display:none; } }
 </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
-  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:description" content="30개 홀의 퍼팅을 계획하세요. 뒤로 당겨 방향과 힘을 정하고, 벽의 반사면을 이용해 물을 피하세요. 홀별 최고 타수는 이 브라우저에 저장됩니다." />
+    <meta name="twitter:description" content="30개 홀의 퍼팅을 계획하세요. 뒤로 당겨 방향과 힘을 정하고, 벽의 반사면을 이용해 물을 피하세요. 홀별 최고 타수는 이 브라우저에 저장됩니다." />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"애니멀 퍼트 트레일","url":"https://weightplay.com/ko/games/animal-putt-trails/","image":"https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp","description":"30개 홀의 퍼팅을 계획하세요. 뒤로 당겨 방향과 힘을 정하고, 벽의 반사면을 이용해 물을 피하세요. 홀별 최고 타수는 이 브라우저에 저장됩니다.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ko","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["한 손 퍼팅 전략","벽 반사 경로 계획","파 목표 스포츠 퍼즐"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6},"alternateName":"Animal Putt Trails"}</script>
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="애니멀 퍼트 트레일 | WeightPlay" />
-    <meta property="og:description" content="코스를 읽고 라인과 힘을 정해 둑과 잔잔한 물을 피해 공을 깃발까지 보내세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/animal-putt-trails/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="애니멀 퍼트 트레일 | WeightPlay" />
-    <meta name="twitter:description" content="코스를 읽고 라인과 힘을 정해 둑과 잔잔한 물을 피해 공을 깃발까지 보내세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "애니멀 퍼트 트레일",
-  "alternateName": "Animal Putt Trails",
-  "url": "https://weightplay.com/ko/games/animal-putt-trails/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp",
-  "description": "코스를 읽고 라인과 힘을 정해 둑과 잔잔한 물을 피해 공을 깃발까지 보내세요.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "ko",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "스포츠",
-    "타이밍",
-    "공간 계획",
-    "가족",
-    "동물"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 6
-  }
-}
-    </script>
   </head>
 <body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-audience="general" data-wp-interface-version="7" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
@@ -229,34 +200,35 @@
     </main>
   </div>
   <script src="../../src/stage-virtualization-standard.js?v=20260921-interface7" data-wp-stage-standard></script>
-  <script src="game.js?v=20260926-interface7-source"></script>
+  <script src="game.js?v=20261003-animal-putt-trails-text140-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <section class="game-page-info game-page-info-static" aria-label="애니멀 퍼트 트레일 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>애니멀 퍼트 트레일</h2><p>코스를 읽고 라인과 힘을 정해 둑과 잔잔한 물을 피해 공을 깃발까지 보내세요.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>애니멀 퍼트 트레일</h2><p>30개 홀마다 공이 갈 길과 당기는 힘을 정하세요. 둑에 공을 튕겨 벽을 돌아가거나, 다음 샷을 조절하기 쉬운 짧고 안전한 길을 고를 수 있습니다.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>한 손 퍼팅 전략</span><span>벽 반사 경로 계획</span><span>파 목표 스포츠 퍼즐</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>한 손 퍼팅 전략</strong></div><div class="game-info-fact"><span>장르</span><strong>스포츠 · 타이밍 · 공간 계획 · 가족 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉬움부터 도전까지</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>트레일당 약 3~8분</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>Orla&#39;s moonlit course links 30 putting trails through meadow gates, quiet banks, and small water hazards. Each trail is a short read-and-try challenge rather than a speed test.</p>
-<p>Every fifth trail is a checkpoint. Clearing the full route restores the moonlit map while keeping earlier trails available for replay and better strokes.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>Drag back from the ball to set direction and power, then release to putt. Short pulls give finer control; longer pulls cover more distance but make a miss more costly.</p>
-<p>Par is the trail&#39;s target stroke count. Banks can redirect the ball, water ends the attempt, and acorns reward finishing near or below par.</p>
-<p>Cleared trails unlock the next trail, while best strokes and the next unlocked trail are saved only in this browser. Result offers Retry, Next hole, or Trail map.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>Choose an unlocked trail from the map and read its par and hazards.</li><li>Drag back from the ball to aim away from the direction you want it to travel.</li><li>Release to putt, then read the roll and use the banks or a safer short stroke on the next attempt.</li><li>Clear every hole in the trail, then choose the next hole, retry, or return to the map.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>Start with a short stroke when learning a bank or water edge; distance is easier to add than to recover.</li><li>Aim for the safe side of a bank and leave a simple second shot instead of chasing a direct line through a hazard.</li><li>Use the trail map and checkpoints as a pacing tool: replay cleared trails to improve strokes without risking unlocks.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>Trails 1–5 teach aim, power, banks, and the first checkpoint. Trails 6–10 add longer reads and tighter landing zones, with checkpoints continuing at 10, 15, 20, 25, and 30.</p>
-<p>Later trails combine bank angles, gentle water, and par pressure without adding a countdown. The campaign stays replayable after Trail 30.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>The same ball, course, collision, stroke, and result rules drive touch, mouse, and keyboard-friendly aiming. This guide describes the playable route without promising online accounts, purchases, or cross-device sync.</p></div>
-      <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>애니멀 퍼트 트레일은 가족이 차분하게 즐길 수 있는 일반 대상 스포츠 퍼즐입니다. 계정, 구매, 공개 순위, 개인 정보가 필요하지 않습니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>최고 타수와 다음으로 잠금 해제되는 트레일은 이 브라우저에만 저장됩니다.</dd></div><div><dt>트레일은 몇 개 있나요?</dt><dd>선택 가능한 트레일은 30개이며 5, 10, 15, 20, 25, 30에 체크포인트가 있습니다.</dd></div><div><dt>트레일을 다시 할 수 있나요?</dt><dd>네. 클리어한 트레일은 지도에 남고 다음 트레일은 클리어 후 잠금 해제됩니다.</dd></div><div><dt>어떻게 조준하고 퍼팅하나요?</dt><dd>공에서 뒤로 드래그해 반대 방향과 힘을 정한 뒤 놓으세요. 짧게 당길수록 조절하기 쉽습니다.</dd></div><div><dt>공이 물에 들어가면 어떻게 되나요?</dt><dd>시도가 끝나며 완료한 트레일과 해금 상태를 잃지 않고 홀을 다시 시도할 수 있습니다.</dd></div></dl></div>
+      <div class="game-info-section"><h3>세계와 목표</h3><p>오를라의 달빛 코스는 30개 홀로 이루어져 있습니다. 잔디 코스와 낮은 둑, 물 장애물이 나오며 뒤쪽 홀은 출발점, 컵, 장애물 위치가 달라져 경로를 다시 읽어야 합니다.</p>
+<p>홀을 클리어하면 다음 홀이 열립니다. 5, 10, 15, 20, 25, 30번 홀이 체크포인트이며, 완료한 홀은 지도에 남아 최고 타수를 다시 노릴 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>공에서 원하는 진행 방향의 반대로 뒤로 당기세요. 당기는 거리로 조준과 힘을 함께 정하고 손을 놓으면 퍼팅합니다. 짧게 당기면 조절하기 쉽고, 길게 당기면 멀리 가지만 빗나간 뒤 만회하기 어렵습니다.</p>
+<p>벽이나 코스 가장자리에 맞으면 공의 방향이 바뀝니다. 물에 빠지면 해당 홀의 시도가 끝나지만, 다시 해도 완료한 홀과 해금 상태는 유지됩니다. 파로 마치면 도토리 1개를 받고, 파보다 한 타 적을 때마다 1개를 더 받습니다. 파보다 많이 치면 도토리를 받지 않습니다.</p>
+<p>결과 화면에서 재시도, 다음 홀, 트레일 지도를 선택하세요. 홀별 최고 타수와 다음 해금 홀은 이 브라우저에만 저장되며 온라인 계정과 동기화되지 않습니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>지도에서 열린 홀을 고르고 파와 장애물 위치를 확인하세요.</li><li>공에서 원하는 방향의 반대로 손가락이나 마우스를 움직여 당기세요.</li><li>놓아서 퍼팅하고 공이 멈춘 곳을 살펴보세요. 세게 당겨 물에 빠졌다면 다시 할 때 힘을 줄이거나 안전한 쪽의 둑을 이용하세요.</li><li>홀을 마치면 다음으로 가거나, 다시 하거나, 지도로 돌아갈 수 있습니다. 최고 타수를 노리고 이전 홀을 다시 플레이해도 됩니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>컵이 벽 뒤에 있을 때 너무 세게 당기는 실수가 흔합니다. 안전한 지점을 지나 물에 빠질 수 있으니 짧게 튕기는 샷으로 다음 퍼팅을 쉽게 만드세요.</li><li>직선으로 노리기 전에 넓은 쪽 둑을 이용해 보세요. 안전한 첫 샷은 컵을 향한 다음 경로를 더 읽기 쉽게 합니다.</li><li>파는 목표 타수이지 제한 시간이 아닙니다. 더 많은 타수가 들어도 다음 홀이 다시 잠기지 않으며 지난 홀도 재도전할 수 있습니다.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>처음 다섯 홀에서 조준, 힘 조절, 둑 반사를 익힙니다. 이후 다섯 홀마다 체크포인트가 있으며 30번 홀까지 이어집니다.</p>
+<p>뒤쪽 홀에는 위치가 바뀐 장애물, 더 긴 경로, 더 높은 파가 조합됩니다. 조작은 계속 뒤로 당겼다가 놓는 방식이며 30번 홀을 마친 뒤에도 코스를 다시 할 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>터치와 마우스는 드래그한 뒤 놓아 퍼팅합니다. 키보드로는 화살표 키로 조준하고 Enter를 눌러 퍼팅합니다. 30개 홀의 최고 타수와 해금은 이 브라우저에 저장되며 계정이나 온라인 순위는 필요하지 않습니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>Animal Putt Trails는 차분하게 즐길 수 있는 일반 대상 퍼팅 퍼즐입니다. 계정, 구매, 공개 순위가 없습니다. 해금과 최고 타수는 이 브라우저에 저장되며 사이트 데이터를 지우면 삭제될 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>어떻게 조준하고 퍼팅하나요?</dt><dd>공에서 원하는 방향의 반대로 뒤로 당겨 방향과 힘을 정한 뒤 놓으세요. 짧게 당길수록 세밀하게 조절하기 쉽습니다.</dd></div><div><dt>공이 물에 빠지면 어떻게 되나요?</dt><dd>해당 홀의 시도가 끝납니다. 홀을 다시 해도 완료한 홀과 해금 상태는 유지됩니다.</dd></div><div><dt>홀은 몇 개 있나요?</dt><dd>총 30개 홀이 있으며 다섯 홀마다 체크포인트가 있습니다.</dd></div><div><dt>파와 도토리는 무엇인가요?</dt><dd>파로 마치면 도토리 1개를 받고, 파보다 한 타 적을 때마다 1개를 더 받습니다. 파보다 많이 치면 도토리를 받지 않습니다.</dd></div><div><dt>완료한 홀을 다시 할 수 있나요?</dt><dd>네. 완료한 홀은 지도에 남아 있으므로 최고 타수를 다시 노릴 수 있습니다.</dd></div><div><dt>진행 상황이 온라인에 저장되나요?</dt><dd>아니요. 최고 타수와 다음으로 열리는 홀은 이 브라우저에만 저장됩니다.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>원라인(One Line)은 레인보우 홉 미미가 주연을 맡은 오리지널 30단계 그리드 퍼즐입니다.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>판코의 대나무 수로</strong><span>판코의 대나무 관을 돌려 모든 수로에 물을 보내고 숲을 피우세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>크레이트바운드</strong><span>30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-putt-seo130"></script>
-<script src="/src/site-config.js?v=20260721-locale13-1"></script>
+<script src="/src/game-page-info.js?v=20261003-animal-putt-trails-text140-v1"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 </body>
 </html>

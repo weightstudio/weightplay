@@ -1,10 +1,11 @@
 (function () {
   "use strict";
 
+  const gameScriptUrl = document.currentScript?.src || document.baseURI;
   const appendStyle = (href) => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = href;
+    link.href = new URL(href, gameScriptUrl).href;
     document.head.appendChild(link);
   };
 
@@ -75,7 +76,7 @@
 
   const poster = main?.querySelector(".logic-poster img");
   if (poster) {
-    poster.src = "../../assets/sudoku-cover-v1.webp";
+    poster.src = new URL("../../assets/sudoku-cover-v1.webp", gameScriptUrl).href;
     poster.dataset.wpMainPoster = "";
   }
 

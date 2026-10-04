@@ -28,7 +28,7 @@
   <meta name="weightplay-game-version" content="v21">
   <meta name="weightplay-interface-version" content="7">
   <title>مسارات ضربات الحيوانات | WeightPlay</title>
-  <meta name="description" content="اقرأ كل مسار واختر الخط والقوة وتجاوز الحواف والماء الهادئ حتى الراية." />
+  <meta name="description" content="خطط ضرباتك في 30 حفرة: اسحب للخلف لتحديد الاتجاه والقوة، واستفد من الحواف للارتداد، وتجنب الماء، واحفظ أفضل الضربات في هذا المتصفح." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260921-interface7">
@@ -41,6 +41,7 @@
     button { border:0; cursor:pointer; }
     .shell { width:min(100%, 1120px); margin:0 auto; padding:clamp(12px,3vw,28px); }
     .wp-main-shell-header { position:relative; }
+    @media (max-width:480px) { html[lang="ar"] .wp-main-shell-header > .wp-shell-main-title { font-size:15px !important; } }
     .brand { color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.02em; }
     .locale { min-height:44px; border:2px solid rgba(47,125,98,.25); border-radius:14px; background:#fff; color:var(--ink); padding:8px 10px; }
     .settings-popover { position:absolute; z-index:10; top:56px; right:0; display:grid; gap:10px; min-width:220px; padding:14px; border:1px solid rgba(35,55,68,.15); border-radius:16px; background:#fff; box-shadow:0 14px 30px rgba(35,55,68,.2); }
@@ -141,47 +142,17 @@
     @media (max-height:500px) and (orientation:landscape) { #stageScreen .putt-stage-guide-art { display:none; } }
 </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
-  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:description" content="خطط ضرباتك في 30 حفرة: اسحب للخلف لتحديد الاتجاه والقوة، واستفد من الحواف للارتداد، وتجنب الماء، واحفظ أفضل الضربات في هذا المتصفح." />
+    <meta name="twitter:description" content="خطط ضرباتك في 30 حفرة: اسحب للخلف لتحديد الاتجاه والقوة، واستفد من الحواف للارتداد، وتجنب الماء، واحفظ أفضل الضربات في هذا المتصفح." />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"مسارات ضربات الحيوانات","url":"https://weightplay.com/ar/games/animal-putt-trails/","image":"https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp","description":"خطط ضرباتك في 30 حفرة: اسحب للخلف لتحديد الاتجاه والقوة، واستفد من الحواف للارتداد، وتجنب الماء، واحفظ أفضل الضربات في هذا المتصفح.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ar","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["استراتيجية الضربة بإبهام واحد","تخطيط الارتداد عن الحواف","لغز رياضي بهدف المعدل"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6},"alternateName":"Animal Putt Trails"}</script>
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مسارات ضربات الحيوانات | WeightPlay" />
-    <meta property="og:description" content="اقرأ كل مسار واختر الخط والقوة وتجاوز الحواف والماء الهادئ حتى الراية." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-putt-trails/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="مسارات ضربات الحيوانات | WeightPlay" />
-    <meta name="twitter:description" content="اقرأ كل مسار واختر الخط والقوة وتجاوز الحواف والماء الهادئ حتى الراية." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "مسارات ضربات الحيوانات",
-  "alternateName": "Animal Putt Trails",
-  "url": "https://weightplay.com/ar/games/animal-putt-trails/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp",
-  "description": "اقرأ كل مسار واختر الخط والقوة وتجاوز الحواف والماء الهادئ حتى الراية.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "ar",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "رياضة",
-    "توقيت",
-    "تخطيط مكاني",
-    "عائلية",
-    "حيوانات"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 6
-  }
-}
-    </script>
   </head>
 <body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-audience="general" data-wp-interface-version="7" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
@@ -229,34 +200,35 @@
     </main>
   </div>
   <script src="../../src/stage-virtualization-standard.js?v=20260921-interface7" data-wp-stage-standard></script>
-  <script src="game.js?v=20260926-interface7-source"></script>
+  <script src="game.js?v=20261003-animal-putt-trails-text140-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة مسارات ضربات الحيوانات">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>مسارات ضربات الحيوانات</h2><p>اقرأ كل مسار واختر الخط والقوة وتجاوز الحواف والماء الهادئ حتى الراية.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>مسارات ضربات الحيوانات</h2><p>اختر خط الضربة وقوة السحب لكل حفرة من الحفر الثلاثين. يمكنك جعل الكرة ترتد عن الحافة لتجاوز جدار، أو اختيار مسار أقصر وأكثر أماناً لتسهيل الضربة التالية.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>استراتيجية الضربة بإبهام واحد</span><span>تخطيط الارتداد عن الحواف</span><span>لغز رياضي بهدف المعدل</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>استراتيجية الضربة بإصبع واحد</strong></div><div class="game-info-fact"><span>النوع</span><strong>رياضة · توقيت · تخطيط مكاني · عائلية · حيوانات</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>3–8 دقائق لكل مسار</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>Orla&#39;s moonlit course links 30 putting trails through meadow gates, quiet banks, and small water hazards. Each trail is a short read-and-try challenge rather than a speed test.</p>
-<p>Every fifth trail is a checkpoint. Clearing the full route restores the moonlit map while keeping earlier trails available for replay and better strokes.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>Drag back from the ball to set direction and power, then release to putt. Short pulls give finer control; longer pulls cover more distance but make a miss more costly.</p>
-<p>Par is the trail&#39;s target stroke count. Banks can redirect the ball, water ends the attempt, and acorns reward finishing near or below par.</p>
-<p>Cleared trails unlock the next trail, while best strokes and the next unlocked trail are saved only in this browser. Result offers Retry, Next hole, or Trail map.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>Choose an unlocked trail from the map and read its par and hazards.</li><li>Drag back from the ball to aim away from the direction you want it to travel.</li><li>Release to putt, then read the roll and use the banks or a safer short stroke on the next attempt.</li><li>Clear every hole in the trail, then choose the next hole, retry, or return to the map.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>Start with a short stroke when learning a bank or water edge; distance is easier to add than to recover.</li><li>Aim for the safe side of a bank and leave a simple second shot instead of chasing a direct line through a hazard.</li><li>Use the trail map and checkpoints as a pacing tool: replay cleared trails to improve strokes without risking unlocks.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>Trails 1–5 teach aim, power, banks, and the first checkpoint. Trails 6–10 add longer reads and tighter landing zones, with checkpoints continuing at 10, 15, 20, 25, and 30.</p>
-<p>Later trails combine bank angles, gentle water, and par pressure without adding a countdown. The campaign stays replayable after Trail 30.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>The same ball, course, collision, stroke, and result rules drive touch, mouse, and keyboard-friendly aiming. This guide describes the playable route without promising online accounts, purchases, or cross-device sync.</p></div>
-      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>مسارات الضرب للحيوانات لغز رياضي عام مناسب للعب العائلي الهادئ. لا يحتاج إلى حساب أو شراء أو ترتيب عام أو معلومات شخصية.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يُحفظ التقدم؟</dt><dd>تُحفظ أفضل الضربات والمسار التالي الذي تم فتحه في هذا المتصفح فقط.</dd></div><div><dt>كم عدد المسارات؟</dt><dd>هناك ثلاثون مساراً قابلاً للاختيار، مع نقاط تفتيش عند 5 و10 و15 و20 و25 و30.</dd></div><div><dt>هل يمكنني إعادة المسار؟</dt><dd>نعم. تبقى المسارات المكتملة متاحة على الخريطة، ويُفتح المسار التالي بعد إكمال المسار الحالي.</dd></div><div><dt>كيف أصوب وأضرب؟</dt><dd>اسحب للخلف من الكرة لضبط الاتجاه المعاكس والقوة، ثم ارفع إصبعك. السحبة القصيرة أسهل في التحكم.</dd></div><div><dt>ماذا يحدث إذا دخلت الكرة الماء؟</dt><dd>تنتهي المحاولة ويمكنك إعادة الحفرة من دون فقدان المسارات المكتملة أو الفتحات.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يضم ملعب أورلا تحت ضوء القمر 30 حفرة. ستجد العشب والحواف المنخفضة ومناطق الماء؛ وفي الحفر اللاحقة تتغير أماكن البداية والكأس والعوائق، فتحتاج إلى قراءة الخط من جديد.</p>
+<p>يؤدي إكمال الحفرة إلى فتح الحفرة التالية. الحفر 5 و10 و15 و20 و25 و30 نقاط تفتيش. تبقى الحفر المكتملة على الخريطة لتعيدها وتحسن أفضل نتيجة.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>اسحب من موضع الكرة إلى الخلف، عكس الاتجاه الذي تريد أن تسلكه. تحدد مسافة السحب الاتجاه والقوة معاً؛ ارفع إصبعك لتضرب. السحبة القصيرة أسهل في التحكم، أما الطويلة فترسل الكرة أبعد لكنها تجعل تصحيح الخطأ أصعب.</p>
+<p>تغير الجدران والحواف اتجاه الكرة المتدحرجة. إذا دخلت الماء تنتهي محاولة تلك الحفرة، لكن الإعادة لا تمحو الحفر المكتملة أو ما فُتح منها. تحصل على بلوطة واحدة عند المعدل، وبلوطة إضافية عن كل ضربة أقل من المعدل؛ ولا تحصل على بلوطات إذا تجاوزت المعدل.</p>
+<p>تتيح شاشة النتيجة إعادة المحاولة أو الانتقال إلى الحفرة التالية أو العودة إلى الخريطة. تُحفظ أفضل الضربات لكل حفرة والحفرة المفتوحة التالية في هذا المتصفح فقط، ولا تُزامن مع حساب عبر الإنترنت.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اختر حفرة مفتوحة من الخريطة، ثم راجع المعدل والعوائق الظاهرة.</li><li>اسحب من الكرة عكس المسار الذي تريد أن تسلكه.</li><li>ارفع إصبعك لتضرب ولاحظ موضع توقف الكرة. إذا أرسلتها السحبة القوية إلى الماء، فخفف القوة أو استخدم الحافة من الجانب الآمن.</li><li>أكمل الحفرة للمتابعة أو أعدها أو ارجع إلى الخريطة. يمكنك إعادة حفرة مكتملة لتحسين أفضل نتيجة.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>من الأخطاء الشائعة السحب بقوة مفرطة عندما يكون الكأس خلف جدار؛ فقد تتجاوز الكرة موضع التوقف الآمن وتسقط في الماء. جرّب ارتداداً أقصر لتبقى الضربة التالية سهلة التحكم.</li><li>قبل تجربة خط مستقيم، صوب نحو الجانب الأوسع من الحافة. قد تترك الضربة الأولى الآمنة مساراً أوضح نحو الكأس.</li><li>المعدل هدف لعدد الضربات وليس مؤقتاً. لا تمنعك الضربات الإضافية من فتح الحفر التالية، ويمكنك إعادة الحفر السابقة.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعلمك الحفر الخمس الأولى التصويب والقوة والارتداد عن الحواف. وبعدها تأتي نقطة تفتيش كل خمس حفر حتى الحفرة 30.</p>
+<p>تجمع الحفر اللاحقة بين العوائق المتحركة والمسارات الأطول ومعدلات أعلى. تبقى طريقة التحكم نفسها: اسحب للخلف ثم ارفع إصبعك. ويمكن إعادة الملعب بعد الحفرة 30.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>على اللمس والماوس اسحب ثم اترك؛ وباستخدام لوحة المفاتيح صوب بمفاتيح الأسهم واضغط Enter للضرب. تُحفظ أفضل النتائج والفتحات للحفر الثلاثين في هذا المتصفح، من دون حساب أو ترتيب عبر الإنترنت.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>Animal Putt Trails لغز ضربات هادئ للجمهور العام. لا يحتاج إلى حساب أو شراء أو ترتيب عام. تبقى الحفر المفتوحة وأفضل الضربات في هذا المتصفح، وقد تُحذف عند مسح بيانات الموقع.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كيف أصوب وأضرب؟</dt><dd>اسحب من الكرة إلى الخلف، عكس المسار الذي تريده، لتحديد الاتجاه والقوة ثم ارفع إصبعك. السحبة القصيرة أسهل في الضبط.</dd></div><div><dt>ماذا يحدث إذا دخلت الكرة الماء؟</dt><dd>تنتهي محاولة تلك الحفرة. يمكنك إعادتها من دون فقد الحفر المكتملة أو ما فُتح منها.</dd></div><div><dt>كم عدد الحفر؟</dt><dd>هناك 30 حفرة ونقطة تفتيش كل خمس حفر.</dd></div><div><dt>ماذا يعني المعدل والبلوط؟</dt><dd>تحصل على بلوطة واحدة عند المعدل، وبلوطة إضافية عن كل ضربة أقل من المعدل؛ ولا تحصل على بلوطات إذا تجاوزت المعدل.</dd></div><div><dt>هل يمكن إعادة حفرة مكتملة؟</dt><dd>نعم. تبقى الحفر المكتملة على الخريطة لتتمكن من تحسين أفضل نتيجة.</dd></div><div><dt>هل يُحفظ التقدم عبر الإنترنت؟</dt><dd>لا. تُحفظ أفضل الضربات والحفرة المفتوحة التالية في هذا المتصفح فقط.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>خط واحد</strong><span>خط واحد لعبة ألغاز شبكية أصلية من 30 مرحلة، بطولة رينبو هوب ميمي.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مجرى بانكو الخيزراني</strong><span>أدر أنابيب بانكو الخيزرانية وأوصل الماء إلى كل جزء ليزهر البستان.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مستودع</strong><span>تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-putt-seo130"></script>
-<script src="/src/site-config.js?v=20260721-locale13-1"></script>
+<script src="/src/game-page-info.js?v=20261003-animal-putt-trails-text140-v1"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 </body>
 </html>

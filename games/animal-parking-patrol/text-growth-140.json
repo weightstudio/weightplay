@@ -1,0 +1,1068 @@
+{
+  "version": "1.4.0",
+  "locales": {
+    "en": {
+      "intro": "For each route, read a wooden cart’s arrow and trace its straight path to the edge it faces. Move it only when every cell ahead is clear; the ✦ signal cart opens red signals, and linked carts wait for their lead.",
+      "tags": [
+        "Traffic-order puzzle",
+        "Directional cart exits",
+        "Signal and convoy rules",
+        "Four-way path planning"
+      ],
+      "relatedIntro": "For another logic puzzle, try these next:",
+      "faqs": [
+        [
+          "Why can’t a cart leave?",
+          "Another cart may block the straight path to the edge it faces. A closed red signal or an earlier convoy cart can also hold it."
+        ],
+        [
+          "What does the ✦ signal cart do?",
+          "When it leaves, it opens the red signals in that route."
+        ],
+        [
+          "When can a linked cart leave?",
+          "It waits until its lead cart has left."
+        ],
+        [
+          "How many blocked taps are allowed?",
+          "Three per attempt. The third blocked tap ends that route attempt."
+        ],
+        [
+          "Does Hint move a cart for me?",
+          "No. It highlights one cart that can leave safely."
+        ],
+        [
+          "What progress is saved?",
+          "Route completions, stars, and your best blocked-tap count stay in this browser."
+        ]
+      ],
+      "description": "Clear 30 Animal Parking Patrol routes by reading each cart’s arrow, opening blocked lanes, and releasing signals and linked convoys in order."
+    },
+    "zh-Hant": {
+      "intro": "每條路線開始前，先看清木車箭頭，再沿著車頭方向檢查到棋盤邊緣的直線道路。前方每一格都暢通才能放行；✦ 號誌車會開啟紅燈，連鎖車隊則要等領隊先離場。",
+      "tags": [
+        "交通順序解謎",
+        "木車方向離場",
+        "號誌與車隊規則",
+        "四向路徑規劃"
+      ],
+      "relatedIntro": "想再挑戰不同玩法的邏輯解謎，可以試試：",
+      "faqs": [
+        [
+          "為什麼木車不能離場？",
+          "車頭方向通往邊緣的直線上可能有其他木車；紅燈未開或車隊尚未輪到，也會暫時擋住去路。"
+        ],
+        [
+          "✦ 號誌車有什麼作用？",
+          "✦ 號誌車離場後，會開啟該路線中的紅燈。"
+        ],
+        [
+          "連鎖車隊什麼時候能前進？",
+          "後車要等領隊木車先離場，才能依序離開。"
+        ],
+        [
+          "可以點錯幾次？",
+          "每次挑戰最多受阻三次；第三次受阻點擊會結束這條路線的挑戰。"
+        ],
+        [
+          "提示會替我移動木車嗎？",
+          "不會。提示只會標出一台目前可以安全離場的木車。"
+        ],
+        [
+          "哪些進度會保存？",
+          "路線完成狀態、星星與受阻點擊最佳紀錄只保存在目前的瀏覽器。"
+        ]
+      ],
+      "description": "閱讀木車箭頭、清出直線車道，依序解除號誌與車隊，完成《森林停車疏導隊》的 30 條路線。"
+    },
+    "zh-Hans": {
+      "intro": "开始每条路线前，先看清木车箭头，再沿车头方向检查通往棋盘边缘的直线路径。前方每一格都畅通才能放行；✦ 信号车会开启红灯，连锁车队则要等领队先离场。",
+      "tags": [
+        "交通顺序解谜",
+        "木车方向离场",
+        "信号与车队规则",
+        "四向路径规划"
+      ],
+      "relatedIntro": "想试试另一种逻辑谜题？可以接着玩：",
+      "faqs": [
+        [
+          "为什么木车不能离场？",
+          "车头方向通往边缘的直线上可能有其他木车；红灯未开启或车队还没轮到，也会暂时挡住去路。"
+        ],
+        [
+          "✦ 信号车有什么作用？",
+          "✦ 信号车离场后，会开启该路线中的红灯。"
+        ],
+        [
+          "连锁车队什么时候能前进？",
+          "后车要等领队木车先离场，才能按顺序离开。"
+        ],
+        [
+          "可以点错几次？",
+          "每次挑战最多受阻三次；第三次受阻点击会结束这条路线的挑战。"
+        ],
+        [
+          "提示会替我移动车吗？",
+          "不会。提示只会标出一辆目前可以安全离场的木车。"
+        ],
+        [
+          "哪些进度会保存？",
+          "路线完成状态、星星和受阻点击最佳记录只保存在当前浏览器。"
+        ]
+      ],
+      "description": "阅读木车箭头、清出直线路道，依序解除信号与车队，完成《森林停车疏导队》的 30 条路线。"
+    },
+    "ja": {
+      "intro": "各ルートでは、木のカートの矢印を確認し、向いている方向の出口まで一直線に見ます。進路のすべてのマスが空いているときだけ進めます。✦の信号カートは赤信号を開き、連結カートは先頭車の退出を待ちます。",
+      "tags": [
+        "交通順序パズル",
+        "方向どおりの退出",
+        "信号と車列のルール",
+        "四方向の経路計画"
+      ],
+      "relatedIntro": "別のロジックパズルにも挑戦したいなら、こちらもどうぞ。",
+      "faqs": [
+        [
+          "カートが出られないのはなぜ？",
+          "向いている方向の出口までの直線に別のカートがあるか、赤信号が閉じている、または車列の順番待ちかもしれません。"
+        ],
+        [
+          "✦の信号カートは何をするの？",
+          "✦の信号カートが出ると、そのルートの赤信号が開きます。"
+        ],
+        [
+          "連結カートはいつ出られる？",
+          "先頭のカートが出たあと、後続が順番に進めます。"
+        ],
+        [
+          "通れない場所を何回タップできる？",
+          "1回の挑戦で3回までです。3回目のブロックでそのルートの挑戦が終わります。"
+        ],
+        [
+          "ヒントがカートを動かすの？",
+          "いいえ。安全に出られるカートを1台光らせるだけです。"
+        ],
+        [
+          "どの進行状況が保存される？",
+          "クリアしたルート、星、ブロックされたタップのベスト記録がこのブラウザーに保存されます。"
+        ]
+      ],
+      "description": "矢印の向き、出口までの道、信号車と連結車の順番を見極めて、Animal Parking Patrol の全30ルートをクリアしよう。"
+    },
+    "ko": {
+      "intro": "각 경로에서는 나무 카트의 화살표를 읽고, 앞을 향한 출구까지 일직선으로 확인하세요. 지나갈 칸이 모두 비어 있을 때만 카트를 보낼 수 있습니다. ✦ 신호 카트는 빨간 신호를 열고, 연결 카트는 선두 카트가 나갈 때까지 기다립니다.",
+      "tags": [
+        "교통 순서 퍼즐",
+        "방향에 따른 카트 출구",
+        "신호와 대열 규칙",
+        "사방 경로 계획"
+      ],
+      "relatedIntro": "다른 방식의 논리 퍼즐도 즐기고 싶다면 다음 게임을 확인해 보세요.",
+      "faqs": [
+        [
+          "카트가 왜 나가지 않나요?",
+          "카트가 향한 출구까지의 직선에 다른 카트가 있거나, 빨간 신호가 닫혀 있거나, 대열 순서를 기다리는 중일 수 있습니다."
+        ],
+        [
+          "✦ 신호 카트는 무슨 일을 하나요?",
+          "✦ 신호 카트가 나가면 해당 경로의 빨간 신호가 열립니다."
+        ],
+        [
+          "연결 카트는 언제 나갈 수 있나요?",
+          "선두 카트가 먼저 나간 뒤에 후속 카트가 순서대로 나갑니다."
+        ],
+        [
+          "막힌 카트를 몇 번 누를 수 있나요?",
+          "한 번의 도전에서 세 번까지입니다. 세 번째 막힌 탭에서 해당 경로 도전이 끝납니다."
+        ],
+        [
+          "힌트가 카트를 대신 움직이나요?",
+          "아니요. 안전하게 나갈 수 있는 카트 한 대를 밝혀 줍니다."
+        ],
+        [
+          "어떤 진행 상황이 저장되나요?",
+          "완료한 경로, 별, 막힌 탭 최고 기록이 현재 브라우저에 저장됩니다."
+        ]
+      ],
+      "description": "수레의 화살표와 출구까지의 길을 살피고 신호 수레와 연결 수레를 순서대로 움직여 Animal Parking Patrol 30개 경로를 완료하세요."
+    },
+    "es": {
+      "intro": "En cada ruta, lee la flecha de un carro de madera y sigue en línea recta hasta el borde hacia el que apunta. Solo puede salir si todas las casillas del camino están libres; el carro ✦ abre los semáforos rojos y los carros enlazados esperan a su líder.",
+      "tags": [
+        "Lógica de orden del tráfico",
+        "Salidas según la dirección",
+        "Reglas de señales y convoyes",
+        "Planificación de cuatro salidas"
+      ],
+      "relatedIntro": "Si quieres otro reto de lógica, prueba estos juegos:",
+      "faqs": [
+        [
+          "¿Por qué no puede salir un carro?",
+          "Puede haber otro carro en la línea hasta el borde, un semáforo rojo cerrado o un convoy que aún espera su turno."
+        ],
+        [
+          "¿Qué hace el carro ✦?",
+          "Al salir, abre los semáforos rojos de esa ruta."
+        ],
+        [
+          "¿Cuándo puede salir un carro enlazado?",
+          "Espera a que salga primero el carro que lo guía."
+        ],
+        [
+          "¿Cuántos toques bloqueados se permiten?",
+          "Tres por intento. El tercer toque bloqueado termina el intento de esa ruta."
+        ],
+        [
+          "¿La pista mueve un carro por mí?",
+          "No. Solo ilumina un carro que puede salir sin peligro."
+        ],
+        [
+          "¿Qué progreso se guarda?",
+          "Las rutas completadas, las estrellas y tu mejor marca de toques bloqueados se guardan en este navegador."
+        ]
+      ],
+      "description": "Completa 30 rutas: sigue las flechas de los carros, despeja sus caminos y respeta el orden de las señales y los convoyes."
+    },
+    "pt-BR": {
+      "intro": "Em cada rota, leia a seta do carrinho de madeira e siga em linha reta até a borda para a qual ele aponta. Ele só pode sair quando todas as casas do caminho estiverem livres; o carrinho ✦ abre os sinais vermelhos, e os carrinhos ligados esperam pelo líder.",
+      "tags": [
+        "Lógica de ordem no trânsito",
+        "Saídas na direção do carrinho",
+        "Regras de sinal e comboio",
+        "Planejamento de quatro saídas"
+      ],
+      "relatedIntro": "Para encarar outro desafio de lógica, experimente estes jogos:",
+      "faqs": [
+        [
+          "Por que o carrinho não sai?",
+          "Outro carrinho pode estar na linha até a borda, o sinal vermelho pode estar fechado ou um comboio pode estar aguardando a vez."
+        ],
+        [
+          "O que o carrinho ✦ faz?",
+          "Quando ele sai, abre os sinais vermelhos daquela rota."
+        ],
+        [
+          "Quando um carrinho ligado pode sair?",
+          "Ele espera o carrinho líder sair primeiro."
+        ],
+        [
+          "Quantos toques bloqueados são permitidos?",
+          "Três por tentativa. O terceiro toque bloqueado encerra a tentativa daquela rota."
+        ],
+        [
+          "A dica move um carrinho por mim?",
+          "Não. Ela só ilumina um carrinho que pode sair com segurança."
+        ],
+        [
+          "Que progresso fica salvo?",
+          "Rotas concluídas, estrelas e seu melhor número de toques bloqueados ficam salvos neste navegador."
+        ]
+      ],
+      "description": "Conclua 30 rotas: siga as setas dos carrinhos, libere os caminhos e respeite a ordem dos sinais e comboios."
+    },
+    "fr": {
+      "intro": "Sur chaque parcours, lis la flèche d’un chariot en bois et vérifie en ligne droite jusqu’au bord qu’il indique. Il ne peut sortir que si toutes les cases devant lui sont libres ; le chariot ✦ ouvre les feux rouges et les chariots liés attendent leur meneur.",
+      "tags": [
+        "Logique d’ordre de circulation",
+        "Sorties selon la direction",
+        "Règles des feux et convois",
+        "Planification sur quatre côtés"
+      ],
+      "relatedIntro": "Pour un autre défi de logique, essayez ces jeux :",
+      "faqs": [
+        [
+          "Pourquoi un chariot ne sort-il pas ?",
+          "Un autre chariot peut bloquer la ligne jusqu’au bord, un feu rouge peut être fermé ou un convoi peut attendre son tour."
+        ],
+        [
+          "À quoi sert le chariot ✦ ?",
+          "Lorsqu’il sort, il ouvre les feux rouges du parcours."
+        ],
+        [
+          "Quand un chariot lié peut-il sortir ?",
+          "Il attend que le chariot meneur soit sorti."
+        ],
+        [
+          "Combien de touches bloquées sont autorisées ?",
+          "Trois par tentative. La troisième touche bloquée termine l’essai sur ce parcours."
+        ],
+        [
+          "L’indice déplace-t-il un chariot à ma place ?",
+          "Non. Il met seulement en évidence un chariot qui peut sortir sans danger."
+        ],
+        [
+          "Quelle progression est enregistrée ?",
+          "Les parcours terminés, les étoiles et votre meilleur nombre de touches bloquées restent dans ce navigateur."
+        ]
+      ],
+      "description": "Terminez 30 parcours : suivez les flèches des chariots, libérez leur voie et respectez l’ordre des signaux et des convois."
+    },
+    "de": {
+      "intro": "Lies auf jeder Route den Pfeil eines Holzwagens und prüfe die gerade Strecke bis zum Rand, auf den er zeigt. Er darf nur fahren, wenn jedes Feld davor frei ist; der ✦-Signalwagen öffnet rote Signale und verbundene Wagen warten auf ihren Leitwagen.",
+      "tags": [
+        "Verkehrsreihenfolge-Logik",
+        "Ausfahrt in Pfeilrichtung",
+        "Signal- und Konvoi-Regeln",
+        "Planung in vier Richtungen"
+      ],
+      "relatedIntro": "Für ein weiteres Logikrätsel probiere diese Spiele aus:",
+      "faqs": [
+        [
+          "Warum fährt ein Wagen nicht aus?",
+          "Ein anderer Wagen kann die gerade Strecke zum Rand blockieren, ein rotes Signal ist noch geschlossen oder ein Konvoi wartet auf seine Reihenfolge."
+        ],
+        [
+          "Was bewirkt der ✦-Signalwagen?",
+          "Wenn er ausfährt, öffnet er die roten Signale dieser Route."
+        ],
+        [
+          "Wann darf ein verbundener Wagen fahren?",
+          "Er wartet, bis sein Leitwagen ausgefahren ist."
+        ],
+        [
+          "Wie viele blockierte Klicks sind erlaubt?",
+          "Drei pro Versuch. Der dritte blockierte Klick beendet den Versuch auf dieser Route."
+        ],
+        [
+          "Bewegt der Hinweis einen Wagen für mich?",
+          "Nein. Er hebt nur einen Wagen hervor, der sicher ausfahren kann."
+        ],
+        [
+          "Welcher Fortschritt wird gespeichert?",
+          "Abgeschlossene Routen, Sterne und dein bester Wert bei blockierten Klicks bleiben in diesem Browser gespeichert."
+        ]
+      ],
+      "description": "Schließe 30 Routen ab: Folge den Pfeilen der Wagen, mach ihre Wege frei und beachte die Reihenfolge von Signalen und Konvois."
+    },
+    "it": {
+      "intro": "In ogni percorso, leggi la freccia del carrello di legno e controlla in linea retta fino al bordo verso cui punta. Può uscire solo se tutte le caselle davanti sono libere; il carrello ✦ apre i segnali rossi e quelli collegati aspettano il capofila.",
+      "tags": [
+        "Logica dell’ordine del traffico",
+        "Uscite nella direzione indicata",
+        "Regole di segnali e convogli",
+        "Pianificazione sui quattro lati"
+      ],
+      "relatedIntro": "Per un altro rompicapo logico, prova questi giochi:",
+      "faqs": [
+        [
+          "Perché un carrello non esce?",
+          "Un altro carrello può bloccare la linea fino al bordo, il segnale rosso può essere chiuso oppure un convoglio può aspettare il proprio turno."
+        ],
+        [
+          "A cosa serve il carrello ✦?",
+          "Quando esce, apre i segnali rossi di quel percorso."
+        ],
+        [
+          "Quando può uscire un carrello collegato?",
+          "Aspetta che sia uscito il carrello capofila."
+        ],
+        [
+          "Quanti tocchi bloccati sono consentiti?",
+          "Tre per tentativo. Il terzo tocco bloccato termina il tentativo del percorso."
+        ],
+        [
+          "Il suggerimento muove un carrello al posto mio?",
+          "No. Illumina soltanto un carrello che può uscire in sicurezza."
+        ],
+        [
+          "Quali progressi vengono salvati?",
+          "Percorsi completati, stelle e miglior numero di tocchi bloccati restano salvati in questo browser."
+        ]
+      ],
+      "description": "Completa 30 percorsi: segui le frecce dei carretti, libera le corsie e rispetta l’ordine di segnali e convogli."
+    },
+    "ru": {
+      "intro": "На каждом маршруте прочитайте стрелку деревянной тележки и проверьте прямой путь до края, куда она направлена. Выезжать можно, только если все клетки впереди свободны; тележка ✦ открывает красные сигналы, а связанные тележки ждут ведущую.",
+      "tags": [
+        "Логика очередности движения",
+        "Выезд по направлению стрелки",
+        "Правила сигналов и колонны",
+        "Планирование четырёх выездов"
+      ],
+      "relatedIntro": "Для другой логической головоломки попробуйте эти игры:",
+      "faqs": [
+        [
+          "Почему тележка не выезжает?",
+          "На прямом пути к краю может стоять другая тележка, красный сигнал может быть закрыт или колонна ещё ждёт очереди."
+        ],
+        [
+          "Что делает тележка ✦?",
+          "Когда она выезжает, красные сигналы на этом маршруте открываются."
+        ],
+        [
+          "Когда может выехать связанная тележка?",
+          "После того как выедет ведущая тележка."
+        ],
+        [
+          "Сколько раз можно нажать на заблокированную тележку?",
+          "Три раза за попытку. Третье заблокированное нажатие завершает попытку на маршруте."
+        ],
+        [
+          "Подсказка двигает тележку за меня?",
+          "Нет. Она только подсвечивает тележку, которая может безопасно выехать."
+        ],
+        [
+          "Какой прогресс сохраняется?",
+          "Пройденные маршруты, звёзды и лучший результат по заблокированным нажатиям сохраняются в этом браузере."
+        ]
+      ],
+      "description": "Пройдите 30 маршрутов: следуйте стрелкам повозок, освобождайте путь и соблюдайте порядок сигналов и колонн."
+    },
+    "hi": {
+      "intro": "हर रास्ते पर लकड़ी की गाड़ी का तीर पढ़ें और उसी दिशा में किनारे तक सीधा रास्ता देखें। आगे का हर खाना खाली हो तभी गाड़ी बाहर जा सकती है; ✦ संकेत-गाड़ी लाल बत्तियाँ खोलती है और जुड़ी गाड़ियाँ अगुआ के निकलने की प्रतीक्षा करती हैं।",
+      "tags": [
+        "यातायात क्रम की पहेली",
+        "तीर की दिशा में निकास",
+        "संकेत और काफ़िले के नियम",
+        "चारों ओर के रास्तों की योजना"
+      ],
+      "relatedIntro": "एक और तर्क पहेली आज़माने के लिए ये खेल देखें:",
+      "faqs": [
+        [
+          "गाड़ी बाहर क्यों नहीं जा रही?",
+          "किनारे तक सीधे रास्ते में दूसरी गाड़ी हो सकती है, लाल संकेत बंद हो सकता है या काफ़िला अपनी बारी की प्रतीक्षा कर रहा हो सकता है।"
+        ],
+        [
+          "✦ संकेत-गाड़ी क्या करती है?",
+          "उसके बाहर निकलने पर उस रास्ते की लाल बत्तियाँ खुल जाती हैं।"
+        ],
+        [
+          "जुड़ी गाड़ी कब निकल सकती है?",
+          "अगुआ गाड़ी के निकलने के बाद ही वह आगे बढ़ती है।"
+        ],
+        [
+          "रुके हुए रास्ते पर कितनी बार टैप कर सकते हैं?",
+          "हर कोशिश में तीन बार। तीसरा रुका हुआ टैप उस रास्ते की कोशिश समाप्त कर देता है।"
+        ],
+        [
+          "क्या संकेत मेरे लिए गाड़ी चलाता है?",
+          "नहीं। यह केवल सुरक्षित रूप से निकल सकने वाली एक गाड़ी को चमकाता है।"
+        ],
+        [
+          "कौन-सी प्रगति सहेजी जाती है?",
+          "पूरे हुए रास्ते, सितारे और रुके हुए टैप का आपका सर्वश्रेष्ठ रिकॉर्ड इसी ब्राउज़र में सहेजा जाता है।"
+        ]
+      ],
+      "description": "तीर देखकर 30 रास्ते पूरे करें: हर गाड़ी का मार्ग साफ़ करें और सिग्नल व जुड़ी गाड़ियों का क्रम समझें।"
+    },
+    "ar": {
+      "intro": "في كل مسار، اقرأ سهم العربة الخشبية وافحص الطريق المستقيم حتى الحافة التي تشير إليها. لا تتحرك إلا إذا كانت كل الخانات أمامها خالية؛ عربة الإشارة ✦ تفتح الأضواء الحمراء، والعربات المرتبطة تنتظر خروج العربة القائدة.",
+      "tags": [
+        "أحجية ترتيب حركة المرور",
+        "خروج في اتجاه السهم",
+        "قواعد الإشارة والقافلة",
+        "تخطيط المسارات من الجهات الأربع"
+      ],
+      "relatedIntro": "لتجربة لغز منطقي آخر، جرّب هذه الألعاب:",
+      "faqs": [
+        [
+          "لماذا لا تخرج العربة؟",
+          "قد تعترض عربة أخرى الطريق المستقيم إلى الحافة، أو تبقى الإشارة الحمراء مغلقة، أو تنتظر القافلة دورها."
+        ],
+        [
+          "ما وظيفة عربة الإشارة ✦؟",
+          "عند خروجها، تفتح الأضواء الحمراء في ذلك المسار."
+        ],
+        [
+          "متى تتحرك العربة المرتبطة؟",
+          "تنتظر حتى تخرج العربة القائدة أولاً."
+        ],
+        [
+          "كم نقرة محجوبة يُسمح بها؟",
+          "ثلاث نقرات في كل محاولة. النقرة المحجوبة الثالثة تنهي محاولة ذلك المسار."
+        ],
+        [
+          "هل تحرك التلميحات عربة بدلاً مني؟",
+          "لا. إنها تضيء عربة واحدة يمكنها الخروج بأمان."
+        ],
+        [
+          "ما التقدم الذي يُحفظ؟",
+          "تبقى المسارات المكتملة والنجوم وأفضل عدد للنقرات المحجوبة محفوظة في هذا المتصفح."
+        ]
+      ],
+      "description": "أكمل 30 مسارًا: اتبع أسهم العربات، وافتح الطريق، وراعِ ترتيب الإشارات والعربات المرتبطة."
+    }
+  },
+  "runtimeLocales": {
+    "fr": {
+      "loading": "Ouverture de la place de la forêt…",
+      "title": "Patrouille de stationnement des animaux",
+      "language": "Langue",
+      "backWeightPlay": "Retour à WeightPlay",
+      "posterAlt": "Orla guide les chariots d’animaux sur une place forestière",
+      "eyebrow": "Le poste de circulation d’Orla",
+      "pitch": "Lis la direction des chariots, libère le passage et guide tous les animaux hors de la place.",
+      "start": "Commencer",
+      "guideLabel": "Guide du jeu",
+      "guideKicker": "Puzzle de circulation WeightPlay",
+      "guideTitle": "Dégage la place forestière",
+      "howTitle": "Comment jouer",
+      "how1": "Lis la flèche de chaque chariot.",
+      "how2": "Choisis un chariot dont le chemin jusqu’au bord est libre.",
+      "how3": "Respecte les signaux et l’ordre du convoi avant de déplacer les chariots marqués.",
+      "parentTitle": "Pour les familles",
+      "parentText": "Conseillé à partir de 9 ans. Les puzzles font travailler l’observation et l’organisation ; ce n’est pas un test d’aptitude.",
+      "growthTitle": "30 parcours de patrouille",
+      "growthText": "Les derniers chapitres ajoutent des croisements denses, des signaux, des convois et quatre directions de sortie.",
+      "saveTitle": "Progression locale",
+      "saveText": "Les étoiles et records restent dans ce navigateur. Aucun compte ni envoi n’est nécessaire.",
+      "backMain": "Retour à l’accueil",
+      "chooseStage": "Choisir un parcours",
+      "stageRailLabel": "Sélection du parcours",
+      "summary": "{done}/30 parcours · {stars} étoiles",
+      "chapter": "Chapitre {n}",
+      "stage": "Parcours {n}",
+      "ready": "Disponible",
+      "locked": "Verrouillé",
+      "cleared": "Terminé",
+      "goal": "Fais sortir {n} chariots",
+      "mistakeGoal": "3 touches bloquées autorisées",
+      "chapters": [
+        "Premières sorties",
+        "Carrefour animé",
+        "Signaux lumineux",
+        "Ordre du convoi",
+        "Circulation à quatre côtés",
+        "Grande patrouille"
+      ],
+      "rules": [
+        "Lis les flèches et fais sortir les chariots dont la voie est libre.",
+        "Les croisements plus denses demandent un ordre plus long.",
+        "Le chariot ✦ ouvre tous les feux rouges.",
+        "Les chariots liés attendent leur meneur.",
+        "La circulation sort par les quatre bords.",
+        "Combine signaux, convois et parcours denses."
+      ],
+      "backStage": "Retour aux parcours",
+      "left": "Restants",
+      "safety": "Sécurité",
+      "boardLabel": "Puzzle de circulation en forêt",
+      "undo": "Annuler",
+      "restart": "Recommencer",
+      "hint": "Indice",
+      "resultKicker": "Rapport de patrouille",
+      "retry": "Réessayer",
+      "stages": "Parcours",
+      "next": "Suivant",
+      "leaveTitle": "Quitter la patrouille ?",
+      "leaveText": "Continuer garde l’état du trafic. Revenir aux parcours termine cet essai.",
+      "continue": "Continuer",
+      "returnStages": "Revenir aux parcours",
+      "close": "Fermer",
+      "tutorialTitle": "Observe la route avant de toucher",
+      "tutorial1": "Chaque chariot sort dans la direction de sa flèche.",
+      "tutorial2": "Un autre chariot devant lui bloque la voie.",
+      "tutorial3": "Trois touches bloquées terminent la patrouille. Observe avant d’agir.",
+      "tutorialStart": "Commencer le parcours 1",
+      "progress": "{done}/30 parcours · {stars} étoiles",
+      "objective": "Fais sortir tous les chariots · sécurité {safety}/3",
+      "signalPending": "Le feu rouge est fermé. Fais sortir d’abord le chariot ✦.",
+      "convoyPending": "Ce chariot lié attend le meneur.",
+      "pathBlocked": "Un autre chariot occupe encore cette voie.",
+      "safeExit": "Voie libre !",
+      "signalCleared": "Tous les feux de la place sont verts !",
+      "winTitle": "Place dégagée !",
+      "winText": "Parcours {stage} terminé avec {mistakes} touches bloquées.",
+      "failTitle": "Arrête-toi et observe à nouveau",
+      "failText": "Les trois vérifications de sécurité sont utilisées. Réessayer est gratuit.",
+      "newBest": "Nouveau record de patrouille !",
+      "best": "Record : {n} blocages",
+      "hintReady": "Un chariot peut sortir sans danger.",
+      "noHint": "Aucun chariot ne peut encore sortir.",
+      "restored": "La sortie précédente a été restaurée.",
+      "nothingUndo": "Déplace un chariot avant d’annuler.",
+      "restarted": "Le parcours est prêt à nouveau.",
+      "cartLabel": "Chariot {animal}, direction {direction}{rule}",
+      "signalRule": ", chariot signal",
+      "gatedRule": ", en attente du signal",
+      "convoyRule": ", convoi lié",
+      "directions": {
+        "up": "haut",
+        "right": "droite",
+        "down": "bas",
+        "left": "gauche"
+      },
+      "animals": [
+        "renard",
+        "loutre",
+        "panda",
+        "lion",
+        "hibou",
+        "tortue",
+        "lapin",
+        "rhinocéros"
+      ],
+      "settings": "Pause et réglages",
+      "pauseTitle": "Patrouille en pause",
+      "pauseText": "Le trafic reste en l’état pendant ta pause.",
+      "resume": "Reprendre",
+      "soundOn": "Activer le son",
+      "soundOff": "Désactiver le son",
+      "tutorialHelp": "Comment jouer"
+    },
+    "it": {
+      "loading": "Apertura della piazza nel bosco…",
+      "title": "Pattuglia parcheggio animali",
+      "language": "Lingua",
+      "backWeightPlay": "Torna a WeightPlay",
+      "posterAlt": "Orla guida i carrelli degli animali in una piazza nel bosco",
+      "eyebrow": "La centrale del traffico di Orla",
+      "pitch": "Leggi la direzione dei carrelli, libera il passaggio e guida tutti gli animali fuori dalla piazza.",
+      "start": "Inizia",
+      "guideLabel": "Guida del gioco",
+      "guideKicker": "Puzzle del traffico originale WeightPlay",
+      "guideTitle": "Libera la piazza nel bosco",
+      "howTitle": "Come si gioca",
+      "how1": "Leggi la freccia di ogni carrello.",
+      "how2": "Scegli un carrello con il percorso libero fino al bordo.",
+      "how3": "Risolvi prima segnali e ordine del convoglio per i carrelli contrassegnati.",
+      "parentTitle": "Per le famiglie",
+      "parentText": "Consigliato dai 9 anni. I puzzle allenano osservazione e pianificazione; non sono una valutazione delle capacità.",
+      "growthTitle": "30 percorsi di pattuglia",
+      "growthText": "Gli ultimi capitoli aggiungono incroci affollati, segnali, convogli e quattro direzioni di uscita.",
+      "saveTitle": "Progressi locali",
+      "saveText": "Stelle e record restano in questo browser. Non servono account né invii.",
+      "backMain": "Torna alla schermata iniziale",
+      "chooseStage": "Scegli un percorso",
+      "stageRailLabel": "Selezione del percorso",
+      "summary": "{done}/30 percorsi · {stars} stelle",
+      "chapter": "Capitolo {n}",
+      "stage": "Percorso {n}",
+      "ready": "Disponibile",
+      "locked": "Bloccato",
+      "cleared": "Completato",
+      "goal": "Fai uscire {n} carrelli",
+      "mistakeGoal": "Sono consentiti 3 tocchi bloccati",
+      "chapters": [
+        "Prime uscite",
+        "Incrocio affollato",
+        "Segnali luminosi",
+        "Ordine del convoglio",
+        "Traffico a quattro vie",
+        "Grande pattuglia"
+      ],
+      "rules": [
+        "Leggi le frecce e libera le corsie aperte.",
+        "Gli incroci più fitti richiedono un ordine più lungo.",
+        "Il carrello ✦ apre tutti i segnali rossi.",
+        "I carrelli collegati aspettano il capofila.",
+        "Il traffico esce dai quattro lati della piazza.",
+        "Combina segnali, convogli e percorsi fitti."
+      ],
+      "backStage": "Torna ai percorsi",
+      "left": "Restano",
+      "safety": "Sicurezza",
+      "boardLabel": "Puzzle del traffico nel bosco",
+      "undo": "Annulla",
+      "restart": "Ricomincia",
+      "hint": "Suggerimento",
+      "resultKicker": "Rapporto di pattuglia",
+      "retry": "Riprova",
+      "stages": "Percorsi",
+      "next": "Avanti",
+      "leaveTitle": "Vuoi lasciare la pattuglia?",
+      "leaveText": "Continua mantiene il traffico invariato. Tornare ai percorsi termina il tentativo.",
+      "continue": "Continua",
+      "returnStages": "Torna ai percorsi",
+      "close": "Chiudi",
+      "tutorialTitle": "Osserva la strada prima di toccare",
+      "tutorial1": "Ogni carrello esce nella direzione della sua freccia.",
+      "tutorial2": "Un altro carrello davanti blocca la corsia.",
+      "tutorial3": "Tre tocchi bloccati terminano la pattuglia: osserva prima.",
+      "tutorialStart": "Inizia il percorso 1",
+      "progress": "{done}/30 percorsi · {stars} stelle",
+      "objective": "Fai uscire tutti i carrelli · sicurezza {safety}/3",
+      "signalPending": "Il segnale rosso è chiuso. Fai uscire prima il carrello ✦.",
+      "convoyPending": "Questo carrello collegato aspetta il capofila.",
+      "pathBlocked": "C’è ancora un altro carrello in questa corsia.",
+      "safeExit": "Percorso libero!",
+      "signalCleared": "Tutti i segnali della piazza sono verdi!",
+      "winTitle": "Piazza liberata!",
+      "winText": "Percorso {stage} completato con {mistakes} tocchi bloccati.",
+      "failTitle": "Fermati e osserva di nuovo",
+      "failText": "Hai usato tutte e tre le verifiche di sicurezza. Riprova gratis.",
+      "newBest": "Nuovo record di pattuglia!",
+      "best": "Record: {n} blocchi",
+      "hintReady": "Un carrello può uscire in sicurezza.",
+      "noHint": "Nessun carrello può ancora uscire.",
+      "restored": "È stata ripristinata l’uscita precedente.",
+      "nothingUndo": "Sposta un carrello prima di annullare.",
+      "restarted": "Il percorso è di nuovo pronto.",
+      "cartLabel": "Carrello {animal}, verso {direction}{rule}",
+      "signalRule": ", carrello segnale",
+      "gatedRule": ", in attesa del segnale",
+      "convoyRule": ", convoglio collegato",
+      "directions": {
+        "up": "su",
+        "right": "destra",
+        "down": "giù",
+        "left": "sinistra"
+      },
+      "animals": [
+        "volpe",
+        "lontra",
+        "panda",
+        "leone",
+        "gufo",
+        "tartaruga",
+        "coniglio",
+        "rinoceronte"
+      ],
+      "settings": "Pausa e impostazioni",
+      "pauseTitle": "Pattuglia in pausa",
+      "pauseText": "Durante la pausa il traffico resta invariato.",
+      "resume": "Riprendi",
+      "soundOn": "Attiva audio",
+      "soundOff": "Disattiva audio",
+      "tutorialHelp": "Come si gioca"
+    },
+    "ru": {
+      "loading": "Открываем лесную площадь…",
+      "title": "Патруль звериных парковок",
+      "language": "Язык",
+      "backWeightPlay": "Вернуться в WeightPlay",
+      "posterAlt": "Орла направляет тележки-зверей на лесной площади",
+      "eyebrow": "Пост регулировки движения Орлы",
+      "pitch": "Читайте направление тележек, освобождайте путь и помогите всем зверям покинуть площадь.",
+      "start": "Начать",
+      "guideLabel": "Правила игры",
+      "guideKicker": "Авторская головоломка WeightPlay о движении",
+      "guideTitle": "Освободите лесную площадь",
+      "howTitle": "Как играть",
+      "how1": "Смотрите на стрелку каждой тележки.",
+      "how2": "Выберите тележку с открытым путём до края.",
+      "how3": "Сначала выполните условия сигналов и колонны для отмеченных тележек.",
+      "parentTitle": "Для всей семьи",
+      "parentText": "Рекомендуется с 9 лет. Головоломки развивают наблюдательность и планирование; это не тест способностей.",
+      "growthTitle": "30 патрульных маршрутов",
+      "growthText": "В поздних главах появляются тесные перекрёстки, сигналы, колонны и четыре направления выезда.",
+      "saveTitle": "Локальный прогресс",
+      "saveText": "Звёзды и рекорды хранятся в этом браузере. Аккаунт и отправка данных не нужны.",
+      "backMain": "На главный экран",
+      "chooseStage": "Выберите маршрут",
+      "stageRailLabel": "Выбор маршрута",
+      "summary": "Маршруты: {done}/30 · звёзды: {stars}",
+      "chapter": "Глава {n}",
+      "stage": "Маршрут {n}",
+      "ready": "Доступен",
+      "locked": "Закрыт",
+      "cleared": "Пройден",
+      "goal": "Выведите {n} тележек",
+      "mistakeGoal": "Допускается 3 заблокированных нажатия",
+      "chapters": [
+        "Первые выезды",
+        "Оживлённый перекрёсток",
+        "Сигнальные фонари",
+        "Порядок колонны",
+        "Движение с четырёх сторон",
+        "Большой патруль"
+      ],
+      "rules": [
+        "Читайте стрелки и выпускайте тележки с открытой полосой.",
+        "На тесных перекрёстках нужно планировать более длинную очередь.",
+        "Тележка ✦ открывает все красные сигналы.",
+        "Связанные тележки ждут ведущую.",
+        "Тележки выезжают со всех четырёх краёв площади.",
+        "Сочетайте сигналы, колонны и тесные маршруты."
+      ],
+      "backStage": "К маршрутам",
+      "left": "Осталось",
+      "safety": "Ошибки",
+      "boardLabel": "Головоломка о движении в лесу",
+      "undo": "Отменить",
+      "restart": "Начать заново",
+      "hint": "Подсказка",
+      "resultKicker": "Отчёт патруля",
+      "retry": "Повторить",
+      "stages": "Маршруты",
+      "next": "Далее",
+      "leaveTitle": "Покинуть патруль?",
+      "leaveText": "Продолжение сохранит текущее положение тележек. Возврат к маршрутам завершит попытку.",
+      "continue": "Продолжить",
+      "returnStages": "К маршрутам",
+      "close": "Закрыть",
+      "tutorialTitle": "Сначала осмотрите дорогу",
+      "tutorial1": "Каждая тележка выезжает по направлению стрелки.",
+      "tutorial2": "Другая тележка впереди перекрывает путь.",
+      "tutorial3": "Три заблокированных нажатия завершают патруль. Сначала осмотритесь.",
+      "tutorialStart": "Начать маршрут 1",
+      "progress": "Пройдено {done}/30 · звёзды: {stars}",
+      "objective": "Выведите все тележки · ошибки {safety}/3",
+      "signalPending": "Красный сигнал закрыт. Сначала выведите тележку ✦.",
+      "convoyPending": "Эта тележка ждёт ведущую.",
+      "pathBlocked": "На этой полосе ещё стоит тележка.",
+      "safeExit": "Путь свободен!",
+      "signalCleared": "Все сигналы площади зелёные!",
+      "winTitle": "Площадь свободна!",
+      "winText": "Маршрут {stage} пройден с заблокированными нажатиями: {mistakes}.",
+      "failTitle": "Остановитесь и осмотрите путь ещё раз",
+      "failText": "Все три проверки безопасности использованы. Повторная попытка бесплатна.",
+      "newBest": "Новый рекорд патруля!",
+      "best": "Рекорд: блокировок {n}",
+      "hintReady": "Одна тележка может безопасно выехать.",
+      "noHint": "Пока нет тележки для безопасного выезда.",
+      "restored": "Предыдущий выезд восстановлен.",
+      "nothingUndo": "Сначала передвиньте тележку.",
+      "restarted": "Маршрут подготовлен заново.",
+      "cartLabel": "Тележка {animal}, направление {direction}{rule}",
+      "signalRule": ", сигнальная тележка",
+      "gatedRule": ", ждёт сигнала",
+      "convoyRule": ", связанная колонна",
+      "directions": {
+        "up": "вверх",
+        "right": "вправо",
+        "down": "вниз",
+        "left": "влево"
+      },
+      "animals": [
+        "лиса",
+        "выдра",
+        "панда",
+        "лев",
+        "сова",
+        "черепаха",
+        "кролик",
+        "носорог"
+      ],
+      "settings": "Пауза и настройки",
+      "pauseTitle": "Патруль приостановлен",
+      "pauseText": "Во время перерыва положение тележек не меняется.",
+      "resume": "Продолжить",
+      "soundOn": "Включить звук",
+      "soundOff": "Выключить звук",
+      "tutorialHelp": "Как играть"
+    },
+    "hi": {
+      "loading": "वन चौक खुल रहा है…",
+      "title": "पशु पार्किंग गश्ती",
+      "language": "भाषा",
+      "backWeightPlay": "WeightPlay पर लौटें",
+      "posterAlt": "ओरला वन चौक में पशु-गाड़ियों को दिशा देती हुई",
+      "eyebrow": "ओरला का यातायात कक्ष",
+      "pitch": "गाड़ियों की दिशा पढ़ें, रास्ता साफ़ करें और सभी जानवरों को सुरक्षित चौक से बाहर निकालें।",
+      "start": "शुरू करें",
+      "guideLabel": "खेल की मार्गदर्शिका",
+      "guideKicker": "WeightPlay की मूल यातायात पहेली",
+      "guideTitle": "वन चौक का रास्ता खोलें",
+      "howTitle": "कैसे खेलें",
+      "how1": "हर गाड़ी का तीर देखें।",
+      "how2": "ऐसी गाड़ी चुनें जिसके सामने किनारे तक रास्ता खाली हो।",
+      "how3": "चिह्नित गाड़ियों से पहले संकेत और काफ़िले की शर्तें पूरी करें।",
+      "parentTitle": "परिवारों के लिए",
+      "parentText": "9 वर्ष और उससे अधिक के लिए सुझाया गया। पहेलियाँ दृश्य निरीक्षण और योजना का अभ्यास कराती हैं; यह क्षमता-परीक्षण नहीं है।",
+      "growthTitle": "गश्ती के 30 रास्ते",
+      "growthText": "बाद के अध्यायों में भीड़भरे चौक, संकेत, काफ़िले और चार दिशाओं से निकास आते हैं।",
+      "saveTitle": "स्थानीय प्रगति",
+      "saveText": "सितारे और रिकॉर्ड इसी ब्राउज़र में रहते हैं। खाता या अपलोड ज़रूरी नहीं।",
+      "backMain": "मुख्य स्क्रीन पर लौटें",
+      "chooseStage": "गश्ती का रास्ता चुनें",
+      "stageRailLabel": "रास्ता चयन",
+      "summary": "पूरे {done}/30 रास्ते · {stars} सितारे",
+      "chapter": "अध्याय {n}",
+      "stage": "रास्ता {n}",
+      "ready": "उपलब्ध",
+      "locked": "बंद",
+      "cleared": "पूरा",
+      "goal": "{n} गाड़ियों को बाहर निकालें",
+      "mistakeGoal": "3 रुके हुए टैप की अनुमति",
+      "chapters": [
+        "पहली निकासी",
+        "व्यस्त चौक",
+        "संकेत लालटेन",
+        "काफ़िले का क्रम",
+        "चार ओर का यातायात",
+        "बड़ी गश्ती"
+      ],
+      "rules": [
+        "तीर पढ़ें और खाली रास्ते वाली गाड़ियाँ पहले निकालें।",
+        "घने चौक में लंबा क्रम बनाना पड़ता है।",
+        "✦ संकेत-गाड़ी सभी लाल बत्तियाँ खोलती है।",
+        "जुड़ी गाड़ियाँ अगुआ के निकलने की प्रतीक्षा करती हैं।",
+        "गाड़ियाँ चौक की चारों दिशाओं से निकलती हैं।",
+        "संकेत, काफ़िले और घने रास्तों के नियम साथ लागू करें।"
+      ],
+      "backStage": "रास्तों पर लौटें",
+      "left": "बाकी",
+      "safety": "सुरक्षा",
+      "boardLabel": "वन यातायात पहेली बोर्ड",
+      "undo": "वापस लें",
+      "restart": "फिर शुरू करें",
+      "hint": "संकेत",
+      "resultKicker": "गश्ती रिपोर्ट",
+      "retry": "फिर कोशिश करें",
+      "stages": "रास्ते",
+      "next": "अगला",
+      "leaveTitle": "गश्ती छोड़ें?",
+      "leaveText": "जारी रखने पर गाड़ियों की यही स्थिति रहेगी। रास्तों पर लौटने से यह कोशिश समाप्त होगी।",
+      "continue": "जारी रखें",
+      "returnStages": "रास्तों पर लौटें",
+      "close": "बंद करें",
+      "tutorialTitle": "टैप करने से पहले रास्ता देखें",
+      "tutorial1": "हर गाड़ी तीर की दिशा में ही निकलती है।",
+      "tutorial2": "आगे दूसरी गाड़ी हो तो रास्ता रुका है।",
+      "tutorial3": "तीन रुके हुए टैप से गश्ती समाप्त होती है, इसलिए पहले देखें।",
+      "tutorialStart": "रास्ता 1 शुरू करें",
+      "progress": "पूरे {done}/30 रास्ते · {stars} सितारे",
+      "objective": "सभी गाड़ियाँ निकालें · सुरक्षा {safety}/3",
+      "signalPending": "लाल संकेत बंद है। पहले ✦ संकेत-गाड़ी निकालें।",
+      "convoyPending": "यह जुड़ी गाड़ी अगुआ की प्रतीक्षा कर रही है।",
+      "pathBlocked": "इस रास्ते में अभी दूसरी गाड़ी है।",
+      "safeExit": "रास्ता खुला!",
+      "signalCleared": "चौक के सभी संकेत हरे हैं!",
+      "winTitle": "चौक साफ़!",
+      "winText": "रास्ता {stage} पूरा, रुके हुए टैप {mistakes}।",
+      "failTitle": "रुकें और फिर से देखें",
+      "failText": "तीनों सुरक्षा जाँचें इस्तेमाल हो गईं। फिर कोशिश करना मुफ़्त है।",
+      "newBest": "नई सुरक्षित गश्ती का रिकॉर्ड!",
+      "best": "सर्वश्रेष्ठ: {n} रुकावटें",
+      "hintReady": "एक गाड़ी सुरक्षित निकल सकती है।",
+      "noHint": "अभी कोई गाड़ी सुरक्षित नहीं निकल सकती।",
+      "restored": "पिछली निकासी वापस लाई गई।",
+      "nothingUndo": "वापस लेने से पहले एक गाड़ी चलाएँ।",
+      "restarted": "रास्ता फिर तैयार है।",
+      "cartLabel": "{animal} गाड़ी, दिशा {direction}{rule}",
+      "signalRule": ", संकेत-गाड़ी",
+      "gatedRule": ", संकेत की प्रतीक्षा",
+      "convoyRule": ", जुड़ा काफ़िला",
+      "directions": {
+        "up": "ऊपर",
+        "right": "दाएँ",
+        "down": "नीचे",
+        "left": "बाएँ"
+      },
+      "animals": [
+        "लोमड़ी",
+        "ऊदबिलाव",
+        "पांडा",
+        "शेर",
+        "उल्लू",
+        "कछुआ",
+        "खरगोश",
+        "गैंडा"
+      ],
+      "settings": "रोकें और सेटिंग",
+      "pauseTitle": "गश्ती रुकी है",
+      "pauseText": "विराम के दौरान यातायात की स्थिति वैसी ही रहेगी।",
+      "resume": "जारी रखें",
+      "soundOn": "ध्वनि चालू",
+      "soundOff": "ध्वनि बंद",
+      "tutorialHelp": "कैसे खेलें"
+    },
+    "ar": {
+      "loading": "جارٍ فتح ساحة الغابة…",
+      "title": "دورية مواقف الحيوانات",
+      "language": "اللغة",
+      "backWeightPlay": "العودة إلى WeightPlay",
+      "posterAlt": "أورلا ترشد عربات الحيوانات في ساحة الغابة",
+      "eyebrow": "مركز أورلا لتنظيم المرور",
+      "pitch": "اقرأ اتجاه العربات، وافتح الطريق، وساعد الحيوانات على الخروج بأمان من الساحة.",
+      "start": "ابدأ اللعبة",
+      "guideLabel": "دليل اللعبة",
+      "guideKicker": "أحجية مرور أصلية من WeightPlay",
+      "guideTitle": "افتح الطريق في ساحة الغابة",
+      "howTitle": "طريقة اللعب",
+      "how1": "اقرأ السهم على كل عربة.",
+      "how2": "اختر عربة طريقها إلى الحافة خالٍ.",
+      "how3": "نفّذ شروط الإشارات والقافلة قبل تحريك العربات المحددة.",
+      "parentTitle": "إرشادات للعائلة",
+      "parentText": "موصى بها من عمر 9 سنوات. تساعد الأحجية على التدريب على الملاحظة البصرية والتخطيط، وليست اختبارًا للقدرات.",
+      "growthTitle": "30 مسار دورية",
+      "growthText": "تضيف الفصول المتقدمة تقاطعات مزدحمة وإشارات وقوافل ومخارج من الجهات الأربع.",
+      "saveTitle": "تقدم محلي",
+      "saveText": "تُحفظ النجوم والأرقام القياسية في هذا المتصفح فقط. لا حاجة إلى حساب أو رفع بيانات.",
+      "backMain": "العودة إلى الشاشة الرئيسية",
+      "chooseStage": "اختر مسار الدورية",
+      "stageRailLabel": "اختيار المسار",
+      "summary": "المكتمل {done}/30 · النجوم {stars}",
+      "chapter": "الفصل {n}",
+      "stage": "المسار {n}",
+      "ready": "متاح",
+      "locked": "مغلق",
+      "cleared": "مكتمل",
+      "goal": "أخرج {n} عربات",
+      "mistakeGoal": "يُسمح بثلاث نقرات محجوبة",
+      "chapters": [
+        "المخارج الأولى",
+        "تقاطع مزدحم",
+        "فوانيس الإشارة",
+        "ترتيب القافلة",
+        "حركة من أربع جهات",
+        "الدورية الكبرى"
+      ],
+      "rules": [
+        "اقرأ الأسهم وأخرج العربات ذات الطريق المفتوح أولاً.",
+        "تحتاج الساحات المزدحمة إلى ترتيب أطول للخروج.",
+        "عربة الإشارة ✦ تفتح كل الأضواء الحمراء.",
+        "تنتظر العربات المرتبطة خروج العربة القائدة.",
+        "تخرج العربات من الجهات الأربع للساحة.",
+        "اجمع بين الإشارات والقوافل والمسارات المزدحمة."
+      ],
+      "backStage": "العودة إلى المسارات",
+      "left": "المتبقي",
+      "safety": "المحاولات",
+      "boardLabel": "لوحة أحجية مرور الغابة",
+      "undo": "تراجع",
+      "restart": "إعادة البدء",
+      "hint": "تلميح",
+      "resultKicker": "تقرير الدورية",
+      "retry": "حاول مجددًا",
+      "stages": "المسارات",
+      "next": "التالي",
+      "leaveTitle": "هل تريد مغادرة الدورية؟",
+      "leaveText": "المتابعة تحفظ حالة المرور الحالية. العودة إلى المسارات تنهي هذه المحاولة.",
+      "continue": "متابعة",
+      "returnStages": "العودة إلى المسارات",
+      "close": "إغلاق",
+      "tutorialTitle": "افحص الطريق قبل النقر",
+      "tutorial1": "تخرج كل عربة في اتجاه سهمها فقط.",
+      "tutorial2": "وجود عربة أخرى أمامها يعني أن الطريق محجوب.",
+      "tutorial3": "تنهي ثلاث نقرات محجوبة الدورية، لذا افحص الطريق أولاً.",
+      "tutorialStart": "ابدأ المسار 1",
+      "progress": "المكتمل {done}/30 · النجوم {stars}",
+      "objective": "أخرج كل العربات · المحاولات {safety}/3",
+      "signalPending": "الإشارة الحمراء مغلقة. أخرج عربة ✦ أولاً.",
+      "convoyPending": "تنتظر هذه العربة المرتبطة العربة القائدة.",
+      "pathBlocked": "ما زالت عربة أخرى في هذا الممر.",
+      "safeExit": "الطريق مفتوح!",
+      "signalCleared": "أصبحت كل إشارات الساحة خضراء!",
+      "winTitle": "أُخليت الساحة!",
+      "winText": "اكتمل المسار {stage} مع {mistakes} نقرات محجوبة.",
+      "failTitle": "توقف وافحص الطريق مجددًا",
+      "failText": "استهلكت محاولات الأمان الثلاث. إعادة المحاولة مجانية.",
+      "newBest": "رقم قياسي جديد للدورية!",
+      "best": "الأفضل: {n} مرات حجب",
+      "hintReady": "يمكن لعربة أن تخرج بأمان.",
+      "noHint": "لا توجد عربة جاهزة للخروج بعد.",
+      "restored": "تمت استعادة الخروج السابق.",
+      "nothingUndo": "حرّك عربة قبل التراجع.",
+      "restarted": "أُعيد تجهيز المسار.",
+      "cartLabel": "عربة {animal} باتجاه {direction}{rule}",
+      "signalRule": "، عربة إشارة",
+      "gatedRule": "، تنتظر الإشارة",
+      "convoyRule": "، قافلة مرتبطة",
+      "directions": {
+        "up": "أعلى",
+        "right": "يمين",
+        "down": "أسفل",
+        "left": "يسار"
+      },
+      "animals": [
+        "ثعلب",
+        "قضاعة",
+        "باندا",
+        "أسد",
+        "بومة",
+        "سلحفاة",
+        "أرنب",
+        "وحيد القرن"
+      ],
+      "settings": "إيقاف والإعدادات",
+      "pauseTitle": "الدورية متوقفة مؤقتًا",
+      "pauseText": "تبقى حالة المرور كما هي أثناء الاستراحة.",
+      "resume": "متابعة الدورية",
+      "soundOn": "تشغيل الصوت",
+      "soundOff": "إيقاف الصوت",
+      "tutorialHelp": "طريقة اللعب"
+    }
+  }
+}

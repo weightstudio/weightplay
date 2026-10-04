@@ -41,16 +41,16 @@
     <link rel="stylesheet" href="../../src/game-ui-theme.css">
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
     <link rel="stylesheet" href="frame-content.css?v=20260912-unblock-validator-contract-v24">
-  <meta name="description" content="Двигай блоки и выведи Панко к выходу." />
+  <meta name="description" content="Решите 30 заданных головоломок в трёх главах и откройте выход зелёному бамбуковому блоку с золотой стрелкой." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Тропа Unblock | WeightPlay" />
-    <meta property="og:description" content="Двигай блоки и выведи Панко к выходу." />
+    <meta property="og:description" content="Решите 30 заданных головоломок в трёх главах и откройте выход зелёному бамбуковому блоку с золотой стрелкой." />
     <meta property="og:url" content="https://weightplay.com/ru/games/animal-unblock/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Тропа Unblock | WeightPlay" />
-    <meta name="twitter:description" content="Двигай блоки и выведи Панко к выходу." />
+    <meta name="twitter:description" content="Решите 30 заданных головоломок в трёх главах и откройте выход зелёному бамбуковому блоку с золотой стрелкой." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <script type="application/ld+json">
 {
@@ -60,7 +60,7 @@
   "alternateName": "Unblock Trail",
   "url": "https://weightplay.com/ru/games/animal-unblock/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp",
-  "description": "Двигай блоки и выведи Панко к выходу.",
+  "description": "Решите 30 заданных головоломок в трёх главах и откройте выход зелёному бамбуковому блоку с золотой стрелкой.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,10 +70,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Головоломка",
-    "Стратегия",
-    "Логика",
-    "Животные"
+    "Головоломка с блоками",
+    "Движение вдоль оси",
+    "Поле 6×6"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -88,7 +87,7 @@
     <main id="main" class="screen main main-screen" data-screen="main">
       <header>
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <h1 data-t="title" data-wp-frame-title>Unblock Trail</h1>
+        <h1 data-t="title" data-wp-frame-title>Тропа Unblock</h1>
         <select id="locale"></select>
       </header>
       <section class="hero">
@@ -96,13 +95,15 @@
           src="../../assets/interface7-redrawn/animal-unblock.webp"
           class="cover main-cover"
           data-wp-frame-poster
-          data-t-alt="Panko moving trail blocks through a bamboo grove"
+          data-t-alt="coverAlt"
           alt="Изображение игры «Тропа Unblock»"
         />
         <div data-wp-frame-copy>
-          <p class="main-summary" data-t="summary" data-wp-frame-summary>Сдвигайте деревянные блоки, чтобы зелёный бамбук с золотой стрелкой достиг правого выхода.</p>
+          <p class="main-summary" data-t="summary" data-wp-frame-summary></p>
           <p id="mainProgress" data-wp-main-progress data-wp-frame-progress></p>
-          <button id="start" data-wp-main-start data-t="start">Start game</button></div>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button></div>
       </section>
     </main>
     <main
@@ -118,7 +119,7 @@
     >
       <header>
         <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-        <h2 data-t="choose" data-wp-frame-title hidden>CHOOSE A TRAIL</h2>
+        <h2 data-t="choose" data-wp-frame-title hidden></h2>
       </header>
       <section
         id="stageGrid"
@@ -146,9 +147,9 @@
           aria-label="Unblock Trail game board"
         ></div>
         <div class="tools">
-          <button id="undo" data-t="undo">Undo</button>
-          <button id="hint" data-t="hint" data-wp-battle-utility>Hint</button>
-          <button id="restart" data-t="restart" data-wp-primary-action>Restart</button>
+          <button id="undo" data-t="undo"></button>
+          <button id="hint" data-t="hint" data-wp-battle-utility></button>
+          <button id="restart" data-t="restart" data-wp-primary-action></button>
         </div>
         <p id="status"></p>
       </section>
@@ -158,39 +159,53 @@
         src="../../assets/animal-unblock-panda-block-v22.webp"
         alt=""
       />
-      <h2 data-t="resultTitle">Путь пройден!</h2>
+      <h2 data-t="resultTitle"></h2>
       <p id="resultBody"></p>
       <p id="resultMastery" data-result-mastery></p>
       <p id="resultTarget" class="result-target" data-runtime-localize="off"></p>
       <p id="resultNextPreview" class="result-next-preview" data-runtime-localize="off" hidden></p>
       <div class="result-actions">
-        <button id="resultStages" data-t="stageList">Trail list</button>
-        <button id="next" data-t="next">Next trail</button>
-        <button id="retry" data-t="retry">Play again</button>
+        <button id="resultStages" data-t="stageList"></button>
+        <button id="next" data-t="next"></button>
+        <button id="retry" data-t="retry"></button>
       </div>
     </dialog>
     <dialog id="leaveDialog" aria-labelledby="leaveTitle">
-      <h2 id="leaveTitle" data-t="leaveTitle">Покинуть путь?</h2>
-      <p data-t="leaveText">Текущая расстановка и ходы сбросятся. Пройденные пути и рекорды сохранятся.</p>
-      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay">Продолжить</button><button id="confirmLeave" data-t="stageList">Trail list</button></div>
+      <h2 id="leaveTitle" data-t="leaveTitle"></h2>
+      <p data-t="leaveText"></p>
+      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay"></button><button id="confirmLeave" data-t="stageList"></button></div>
     </dialog>
     </main>
     </div>
     <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
-    <section id="mainGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-game-owned-guide="true" data-runtime-localize="off">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideTitle">Как играть</span><h2 data-t="title">Unblock Trail</h2><p data-t="summary">Сдвигайте деревянные блоки, чтобы зелёный бамбук с золотой стрелкой достиг правого выхода.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Головоломка</span><span>Стратегия</span><span>Логика</span><span>Животные</span></div></div>
-      <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-t="howTitle">Как играть</h3><p data-t="guideBody">Выберите открытый путь. Горизонтальные блоки тяните влево или вправо, вертикальные — вверх или вниз. С клавиатуры выберите блок и нажимайте стрелки. Доставьте бамбук к правым воротам.</p></article>
-        <article class="game-info-section"><h3 data-t="rulesTitle">Правила</h3><p data-t="rulesText">Нельзя поворачивать блоки, накладывать их, перепрыгивать или выходить за поле. Каждый допустимый сдвиг считается ходом. Ограничения времени и ходов нет. Отмена возвращает один ход; Перезапуск восстанавливает начало.</p></article>
-        <article class="game-info-section"><h3 data-t="progressTitle">Продвижение</h3><p data-t="progressText">Решение открывает следующий путь. Позже появляются длинные блоки, узкие зазоры и связанные ходы. Повторяйте путь ради целевого числа ходов или личного рекорда.</p></article>
-        <article class="game-info-section"><h3 data-t="tipsTitle">Советы</h3><p data-t="tipsText">Планируйте от выхода назад. Иногда блок надо отодвинуть от цели, чтобы освободить место. Подсказка отмечает блок и направление, но не двигает его.</p></article>
-        <article class="game-info-section"><h3 data-t="saveTitle">Сохранение и выход</h3><p data-t="saveText">Открытые пути и рекорды сохраняются в этом браузере без аккаунта. Выход сбрасывает текущую расстановку, но не завершённые пути. Очистка данных браузера удаляет прогресс.</p></article>
-        <article class="game-info-section"><h3 data-t="faqTitle">Вопросы</h3><dl><dt data-t="faqQuestion">Почему блок не движется?</dt><dd data-t="faqAnswer">Следующая клетка занята или находится за краем поля. Сначала уберите препятствие. Зелёный бамбук с золотой стрелкой должен попасть к выходу.</dd></dl></article>
-      </div>
-    </section>
+    <section id="mainGuide" data-wp-game-owned-guide="true" data-wp-text-growth-version="1.4.0" data-wp-text-growth-locale="ru" class="game-page-info game-page-info-static" aria-label="Информация об игре Тропа Unblock">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Тропа Unblock</h2><p>Решите 30 заданных головоломок в трёх главах и откройте выход зелёному бамбуковому блоку с золотой стрелкой.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Головоломка с блоками</span><span>Движение вдоль оси</span><span>Поле 6×6</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Головоломка с выходом и скользящими блоками</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Головоломка с блоками · Движение вдоль оси · Поле 6×6</strong></div><div class="game-info-fact"><span>Сложность</span><strong>От простого к сложному</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>2–8 минут на этап</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Мир и цель</h3><p>Панко исследует тридцать загромождённых лесных ворот. Каждый блок стоит на заданной сетке, а у каждой головоломки есть проверенная последовательность, освобождающая отмеченный зелёный бамбуковый блок с золотой стрелкой.</p>
+<p>Блоки не поворачиваются, не перепрыгивают друг друга и не покидают поле. Нужно понять, какие временные ходы освободят место для решающего последнего сдвига.</p></div>
+      <div class="game-info-section"><h3>Игровые системы</h3><p>Горизонтальные блоки движутся только влево и вправо, вертикальные — только вверх и вниз.</p>
+<p>Ход останавливается перед краем поля или другим блоком; занятые клетки не могут пересекаться.</p>
+<p>Этап завершён, когда зелёный бамбуковый блок с золотой стрелкой достигает отмеченной линии выхода.</p>
+<p>Отмена возвращает один сдвиг, Подсказка указывает полезный блок, а Перезапуск восстанавливает точную начальную расстановку.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите открытую тропу.</li><li>Найдите все блоки, пересекающие линию выхода бамбукового блока с золотой стрелкой.</li><li>Освободите место вдоль разрешённой оси препятствия, прежде чем двигать его.</li><li>Проведите зелёный бамбуковый блок с золотой стрелкой через выход и переходите к следующей тропе.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Планируйте путь в обратном направлении от выхода.</li><li>Отодвигайте препятствие дальше, чем кажется нужным, если оно должно освободить место другому блоку.</li><li>Не занимайте единственный свободный столбец блоком, который понадобится позже.</li><li>Используйте Отмену для недавней ошибки и Перезапуск, если неверен весь порядок.</li></ul></div>
+      <div class="game-info-section"><h3>Прогресс и сложность</h3><p>Первые тропы знакомят с ограничениями осей и одиночными препятствиями. Позже появляются длинные блоки, узкие промежутки, вложенные зависимости, несколько пересечений и плотные финальные поля.</p>
+<p>Каждый этап меняет пространственную последовательность, не добавляя произвольных правил движения.</p></div>
+      <div class="game-info-section"><h3>Заметка разработчика</h3><p>Направление перетаскивания, привязка к сетке, проверка столкновений и графика блоков используют одну геометрию клеток для сенсорного экрана, мыши и клавиатуры.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Для родителей</h3><p>Здесь нет таймера, учётной записи, покупок или общедоступного счёта. Открытые этапы и местные рекорды ходов хранятся только в этом браузере.</p></div>
+      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Можно ли поворачивать блоки?</dt><dd>Нет. Каждый блок сохраняет исходную ориентацию.</dd></div><div><dt>Почему перетаскивание остановилось?</dt><dd>Следующая клетка занята или находится за пределами поля.</dd></div><div><dt>Какой блок нужно вывести?</dt><dd>Зелёный бамбуковый блок с золотой стрелкой.</dd></div><div><dt>Можно ли решить все тридцать троп?</dt><dd>Да. Для каждой созданной расстановки есть проверенное решение.</dd></div></dl></div>
+
+    </div>
+  </section>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-    <script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="levels.js"></script>

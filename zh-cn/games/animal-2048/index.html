@@ -12,16 +12,16 @@
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#062e2d" />
   <title>2048：森林进化 | WeightPlay</title>
-  <meta name="description" content="《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。" />
+  <meta name="description" content="滑动 4×4 棋盘合并相同动物，在 30 个森林任务中管理步数；无尽森林没有步数上限。" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="2048：森林进化 | WeightPlay" />
-  <meta property="og:description" content="《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。" />
+  <meta property="og:description" content="滑动 4×4 棋盘合并相同动物，在 30 个森林任务中管理步数；无尽森林没有步数上限。" />
   <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-2048/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-2048.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="2048：森林进化 | WeightPlay" />
-  <meta name="twitter:description" content="《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。" />
+  <meta name="twitter:description" content="滑动 4×4 棋盘合并相同动物，在 30 个森林任务中管理步数；无尽森林没有步数上限。" />
   <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-2048/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-2048/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-2048/" />
@@ -37,7 +37,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-2048/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-2048/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-2048/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"2048：森林进化","url":"https://weightplay.com/zh-cn/games/animal-2048/","image":"https://weightplay.com/assets/animal-2048/cover-block-v1.png","description":"《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"genre":["益智","策略","逻辑","动物","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"},"alternateName":"2048: Forest Evolution"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"2048：森林进化","url":"https://weightplay.com/zh-cn/games/animal-2048/","image":"https://weightplay.com/assets/animal-2048/cover-block-v1.png","description":"滑动 4×4 棋盘合并相同动物，在 30 个森林任务中管理步数；无尽森林没有步数上限。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"genre":["方格合并益智","棋盘策略","动物进化"],"audience":{"@type":"Audience","audienceType":"General players"},"alternateName":"2048: Forest Evolution"}</script>
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
@@ -100,18 +100,21 @@
 
   </main>
     <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off" aria-label="动物 2048 游戏指南" data-i18n-aria="guideLabel">
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="fullTitle">动物 2048：森林进化</h2><p data-i18n="guideIntro">滑动、合并，让方块动物进化。保留空格，逐步掌握森林中的策略挑战。</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>益智</span><span>策略</span><span>逻辑</span><span>动物</span></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="fullTitle">动物 2048：森林进化</h2><p data-i18n="guideIntro">每次滑动都会推动整座 4×4 棋盘：合并相同动物、保留移动路线，并在步数用完前完成任务目标。</p></div></div>
+    <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>方格合并益智</span><span>棋盘策略</span><span>动物进化</span></div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3 data-i18n="guideHowTitle">游玩方式</h3><ol><li data-i18n="tutorial1">向上、下、左或右滑动。</li><li data-i18n="tutorial2">相同动物相遇后，每回合只会合并一次。</li><li data-i18n="guideHow5">在步数用完前完成指定动物、合并次数或分数目标。</li></ol><p data-i18n="tutorial3">固定一个角落并保留空格，才能持续进化。</p></div>
-      <div class="game-info-section"><h3 data-i18n="guideMissionsTitle">森林任务</h3><p data-i18n="rule3">石块会把直线分成不同移动区段。</p><p data-i18n="guideCheckpoint">部分任务还需要保留空格，或在同一步合并多组。最后一步前，确认画面上的每个目标。</p></div>
-      <div class="game-info-section"><h3 data-i18n="infiniteMode">无限森林</h3><p data-i18n="faq5a">没有步数上限；只有棋盘完全没有合法移动时才结算，并保存最高分与最高阶动物。</p></div>
-      <div class="game-info-section"><h3 data-i18n="guideFaqTitle">常见问题</h3><dl><div><dt data-i18n="faq1q">每次滑动都会增加动物吗？</dt><dd data-i18n="faq1a">只有真正改变棋盘的滑动才会消耗一步，并新增一只低阶动物。</dd></div><div><dt data-i18n="faq3q">撤销会恢复哪些内容？</dt><dd data-i18n="faq3a">完整棋盘、分数、步数、目标状态与生成状态都会恢复。</dd></div></dl></div>
+      <div class="game-info-section"><h3>任务流程</h3><p>选择 30 个森林任务之一，达成指定动物、分数或合并次数；部分任务还要求保留空格，或在单一步骤中合并多组动物。有效移动会新增一只低阶动物，因此每个空格都很重要。</p></div>
+      <div class="game-info-section"><h3>先看完整棋盘</h3><p>选择方向后，所有未被阻挡的行列都会一起移动；相同动物每回合最多合并一次。苔石会把直线分成不同路径。滑动前先想好目标动物会停在哪里，以及移动后是否还有空间容纳新动物。眼前的合并可能封住路线，或在达成目标前塞满棋盘。</p></div>
+      <div class="game-info-section"><h3>六章逐步增加不同条件</h3><p>30 个任务分成六章，每章五关。后续章节加入连锁合并、苔石分隔、分数目标、稀有动物巢穴与高阶进化。核心操作仍是方向滑动，但每章要求你处理不同限制。</p></div>
+      <div class="game-info-section"><h3>森林任务与无尽森林</h3><p>每个任务都从固定棋盘与生成种子开始，因此重试会重现相同起始条件。无尽森林是独立模式：每次从新棋盘开始，没有步数上限，直到四个方向都无法改变棋盘才结束。最佳分数与最高动物只保存在当前浏览器。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>怎样才算一步？</dt><dd>方向必须让棋盘产生变化才算有效。有效移动消耗一步、每对相同动物最多合并一次，并新增一只低阶动物。</dd></div><div><dt>为什么滑动后棋盘没动？</dt><dd>如果该方向没有方块可移动或合并，移动就不会成立，也不会消耗步数或新增动物。</dd></div><div><dt>任务会要求哪些目标？</dt><dd>目标可能是合成指定动物、达到分数或完成合并次数；检查条件也可能要求留下空格或单步合并多组动物。</dd></div><div><dt>任务失败后可以重试吗？</dt><dd>可以，重试免费，并会从该任务固定的棋盘与生成顺序重新开始。</dd></div><div><dt>哪些进度会保存？</dt><dd>通关、星星、最佳分数、解锁任务与无尽森林记录只保存在当前浏览器，不需要账号。</dd></div><div><dt>无尽森林何时结束？</dt><dd>没有步数上限；当四个方向都无法改变棋盘时，这一局才会结束。</dd></div></dl></div>
       <div class="game-info-section"><h3 data-i18n="guideSaveTitle">玩家与存档信息</h3><p data-i18n="guideSave">关卡进度、星星、最佳分数与解锁任务只存储在当前浏览器，不需要登录账号；规划报告也不是正式能力测验。</p></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><p>再试试另一款方块益智，或用不同方式推理格子。</p><div class="game-info-related-cards"><a class="game-info-related-card" href="/zh-cn/games/fruit-merge/" data-related-game="fruit-merge"><strong>合成塔</strong><span>合并相同水果方块，并在变化的棋盘上安排空间。</span></a><a class="game-info-related-card" href="/zh-cn/games/animal-mosaic-clues/" data-related-game="animal-mosaic-clues"><strong>马赛克线索</strong><span>依据行列线索填出图案格子。</span></a></div></div>
     </div>
   </section>
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260913-forest-guide-v26"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="campaign.js?v=20260925-issue-1157-v28"></script><script src="game.js?v=20260925-issue-1157-v28&wp-audio=1.0.0"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260913-forest-guide-v26"></script>
+  <script src="locales.js?v=20260913-forest-guide-v26"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="campaign.js?v=20260925-issue-1157-v28"></script><script src="game.js?v=20260925-issue-1157-v28&wp-audio=1.0.0"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20261002-coloring-studio-text140-v1"></script>
 
 </body>
 </html>

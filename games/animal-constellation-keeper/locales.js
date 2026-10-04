@@ -36,6 +36,237 @@
   window.ANIMAL_CONSTELLATION_KEEPER_LOCALES = Object.fromEntries(keys.map((key) => [key, { ...english, ...(variants[key] || {}), ...(map4Translations[key] || {}) }]));
 })();
 
+// Text Growth 1.4.0: keep the Guide complete and locale-owned in both the
+// initial route HTML and the runtime dictionary used after language changes.
+(() => {
+  const copy = {
+    en: {
+      guideSummary: "Match two position clues to one of three 3×3 animal boards and find the arrangement that fits both.",
+      resultGuide: "The 30 maps run in six arcs of five. Solving a map unlocks the next; maps 5, 10, 15, 20, 25, and 30 close each arc. The Result screen shows maps restored and checks used, and Replay lets you revisit an unlocked map.",
+      readingText: "Each map shows three animals on a 3×3 board, three candidate arrangements, and two visible position clues. Compare both clues with the same board; diagonal positions count too.",
+      tips: "Read each clue as a position between two named animals, then test both clues on the same board. A wrong check counts toward your total, but the boards stay visible while you compare and try another.",
+      playerInfoTitle: "Player and save information",
+      playerInfo: "This family logic puzzle has no timer or lives, and no account is needed. Progress and best total checks use this browser’s local storage when available; they do not sync to another device and may be erased if browser or site data is cleared.",
+      faqAnswer: "Yes. Solved maps unlock the next map, and every unlocked map can be replayed in this browser.",
+      faqSaveQuestion: "Does progress sync across devices?",
+      faqSaveAnswer: "No. Progress and best checks stay in this browser’s local storage when available. They do not sync, and clearing browser or site data can erase them.",
+      faqRuleQuestion: "How do I use both clues?",
+      faqRuleAnswer: "Compare both named-animal positions against the same 3×3 board; diagonal positions count too.",
+      guideTitle: "How to play", gameplayFact: "Gameplay", gameplayValue: "Spatial relationship deduction", genreFact: "Game type", genreValue: "Logic puzzle · Family · Animal",
+      campaignTitle: "Maps and checkpoints", readingTitle: "Reading a star map", resultGuideTitle: "Results and replay", tipsTitle: "Strategy", faqTitle: "Frequently asked questions",
+      faqQuestion: "Is progress saved?", faqCampaignQuestion: "How many maps are there?", faqChoiceQuestion: "What happens after a wrong choice?",
+      relatedTitle: "Related games", relatedIntro: "If you like checking spatial clues before choosing, try these other WeightPlay puzzles."
+    },
+    "zh-Hant": {
+      guideSummary: "比對兩條位置線索與三個 3×3 動物星盤，找出同時符合兩條規則的排列。",
+      resultGuide: "30 幅地圖分成六個篇章，每篇五幅。解開一幅就會開放下一幅；第 5、10、15、20、25、30 幅是各篇章的終點。結果畫面會顯示已修復地圖數與檢查次數，也可重玩已開放的地圖。",
+      readingText: "每幅地圖有三隻動物、三個 3×3 星盤排列，以及兩條可見的位置線索。請用同一個星盤比對兩條線索，斜向位置也要計入。",
+      tips: "先讀清楚兩隻指定動物的位置關係，再用同一個星盤核對兩條線索。選錯仍會計入檢查次數，但星盤會留在畫面上，方便比對後再試。",
+      playerInfoTitle: "玩家與存檔資訊",
+      playerInfo: "這款家庭益智遊戲沒有倒數計時或生命限制，也不需要帳號。進度與最佳總檢查次數會在可用時存於此瀏覽器；不會同步到其他裝置，清除瀏覽器或網站資料可能會將它們一併刪除。",
+      faqAnswer: "會。解開地圖會開放下一幅，已開放的地圖都能在此瀏覽器重玩。",
+      faqSaveQuestion: "進度會同步到其他裝置嗎？",
+      faqSaveAnswer: "不會。進度與最佳檢查次數在可用時存於此瀏覽器，不會跨裝置同步；清除瀏覽器或網站資料可能會將它們刪除。",
+      faqRuleQuestion: "兩條線索要怎麼一起判斷？",
+      faqRuleAnswer: "用同一個 3×3 星盤比對兩條動物位置關係，斜向位置也算。",
+      gameInfoKicker: "WeightPlay 原創遊戲指南", guideTitle: "玩法", gameplayFact: "玩法", gameplayValue: "空間關係推理", genreFact: "遊戲類型", genreValue: "邏輯益智・家庭・動物",
+      campaignTitle: "地圖與檢查點", readingTitle: "讀懂星圖", resultGuideTitle: "結果與重玩", tipsTitle: "推理技巧", faqTitle: "常見問題",
+      faqQuestion: "進度會保存嗎？", faqCampaignQuestion: "共有多少幅地圖？", faqChoiceQuestion: "選錯後會怎樣？",
+      relatedTitle: "相關遊戲", relatedIntro: "如果你喜歡先核對空間線索再選擇，也可以試試這些 WeightPlay 益智遊戲。"
+    },
+    "zh-Hans": {
+      guideSummary: "对照两条位置线索与三个 3×3 动物星盘，找出同时符合两条规则的排列。",
+      resultGuide: "30 幅地图分成六个篇章，每篇五幅。解开一幅就会开放下一幅；第 5、10、15、20、25、30 幅是各篇章的终点。结果画面会显示已修复地图数与检查次数，也可重玩已开放的地图。",
+      readingText: "每幅地图有三只动物、三个 3×3 星盘排列，以及两条可见的位置线索。请用同一个星盘对照两条线索，斜向位置也要计入。",
+      tips: "先读清两只指定动物的位置关系，再用同一个星盘核对两条线索。选错仍会计入检查次数，但星盘会留在画面上，方便对照后再试。",
+      playerInfoTitle: "玩家与存档信息",
+      playerInfo: "这款家庭益智游戏没有倒计时或生命限制，也不需要账号。进度与最佳总检查次数会在可用时保存在此浏览器；不会同步到其他设备，清除浏览器或网站数据可能会将它们一并删除。",
+      faqAnswer: "会。解开地图会开放下一幅，已开放的地图都能在此浏览器重玩。",
+      faqSaveQuestion: "进度会同步到其他设备吗？",
+      faqSaveAnswer: "不会。进度与最佳检查次数在可用时保存在此浏览器，不会跨设备同步；清除浏览器或网站数据可能会将它们删除。",
+      faqRuleQuestion: "两条线索要怎样一起判断？",
+      faqRuleAnswer: "用同一个 3×3 星盘对照两条动物位置关系，斜向位置也算。",
+      gameInfoKicker: "WeightPlay 原创游戏指南", guideTitle: "玩法", gameplayFact: "玩法", gameplayValue: "空间关系推理", genreFact: "游戏类型", genreValue: "逻辑益智・家庭・动物",
+      campaignTitle: "地图与检查点", readingTitle: "读懂星图", resultGuideTitle: "结果与重玩", tipsTitle: "推理技巧", faqTitle: "常见问题",
+      faqQuestion: "进度会保存吗？", faqCampaignQuestion: "一共有多少幅地图？", faqChoiceQuestion: "选错后会怎样？",
+      relatedTitle: "相关游戏", relatedIntro: "如果你喜欢先核对空间线索再选择，也可以试试这些 WeightPlay 益智游戏。"
+    },
+    ja: {
+      guideSummary: "2つの位置ヒントを3枚の3×3動物ボードと照らし、両方に合う並びを選びましょう。",
+      resultGuide: "全30マップは5枚ずつの6アークで構成されています。クリアすると次のマップが開き、5・10・15・20・25・30枚目が各アークの区切りです。結果画面では修復したマップ数とチェック回数を確認でき、開放済みのマップは再プレイできます。",
+      readingText: "各マップには3匹の動物、3枚の3×3配置候補、2つの位置ヒントがあります。同じ盤面で両方のヒントを確かめ、斜めの位置も見落とさないようにしましょう。",
+      tips: "2匹の動物の位置関係を読み、同じ盤面で2つのヒントを確かめてからチェックしましょう。誤答もチェック回数に含まれますが、盤面は残るので見比べて再挑戦できます。",
+      playerInfoTitle: "プレイヤーとセーブについて",
+      playerInfo: "このファミリー向け論理パズルに制限時間やライフはなく、アカウントも不要です。進行状況と最少チェック記録は、利用可能な場合このブラウザーのローカルストレージに保存されます。別の端末とは同期されず、ブラウザーやサイトのデータを消すと失われることがあります。",
+      faqAnswer: "はい。マップをクリアすると次が開き、開放済みのマップはこのブラウザーで再プレイできます。",
+      faqSaveQuestion: "進行状況は別の端末と同期されますか？",
+      faqSaveAnswer: "いいえ。進行状況と最少チェック記録は、利用可能な場合このブラウザーに保存されます。同期はされず、ブラウザーやサイトのデータを消すと失われることがあります。",
+      faqRuleQuestion: "2つのヒントはどう使いますか？",
+      faqRuleAnswer: "同じ3×3盤面で2匹の位置関係をどちらも確かめます。斜めの位置もヒントに含まれます。",
+      gameInfoKicker: "WeightPlayオリジナルゲームガイド", guideTitle: "遊び方", gameplayFact: "ゲーム内容", gameplayValue: "位置関係の推理", genreFact: "ゲームの種類", genreValue: "論理パズル・ファミリー・動物",
+      campaignTitle: "マップとチェックポイント", readingTitle: "星図の読み方", resultGuideTitle: "結果と再プレイ", tipsTitle: "考え方のヒント", faqTitle: "よくある質問",
+      faqQuestion: "進行状況は保存されますか？", faqCampaignQuestion: "マップはいくつありますか？", faqChoiceQuestion: "間違えて選ぶとどうなりますか？",
+      relatedTitle: "関連ゲーム", relatedIntro: "空間のヒントを確かめてから選ぶのが好きなら、WeightPlayのほかのパズルも試してみましょう。"
+    },
+    ko: {
+      guideSummary: "두 위치 단서를 세 개의 3×3 동물 보드와 비교해 두 규칙을 모두 만족하는 배치를 찾으세요.",
+      resultGuide: "30개 지도는 다섯 개씩 여섯 아크로 구성됩니다. 지도를 해결하면 다음 지도가 열리고, 5·10·15·20·25·30번 지도가 각 아크의 끝입니다. 결과 화면에서 복원한 지도 수와 확인 횟수를 볼 수 있으며, 열린 지도는 다시 플레이할 수 있습니다.",
+      readingText: "각 지도에는 동물 세 마리, 3×3 배치 후보 세 개, 위치 단서 두 개가 보입니다. 같은 보드에서 두 단서를 모두 비교하고 대각선 위치도 확인하세요.",
+      tips: "이름이 나온 두 동물의 위치 관계를 읽고, 같은 보드에서 두 단서를 모두 확인한 뒤 체크하세요. 오답도 확인 횟수에 포함되지만 보드가 그대로 남아 비교하며 다시 시도할 수 있습니다.",
+      playerInfoTitle: "플레이어 및 저장 정보",
+      playerInfo: "이 가족용 논리 퍼즐에는 제한 시간이나 목숨이 없고 계정도 필요하지 않습니다. 진행 상황과 최저 확인 횟수는 가능한 경우 이 브라우저의 로컬 저장소에 저장됩니다. 다른 기기와 동기화되지 않으며 브라우저나 사이트 데이터를 지우면 사라질 수 있습니다.",
+      faqAnswer: "네. 지도를 해결하면 다음 지도가 열리고, 열린 지도는 이 브라우저에서 다시 플레이할 수 있습니다.",
+      faqSaveQuestion: "진행 상황이 기기 간 동기화되나요?",
+      faqSaveAnswer: "아니요. 진행 상황과 최저 확인 횟수는 가능한 경우 이 브라우저에 저장됩니다. 동기화되지 않으며 브라우저나 사이트 데이터를 지우면 사라질 수 있습니다.",
+      faqRuleQuestion: "두 단서를 어떻게 함께 사용하나요?",
+      faqRuleAnswer: "같은 3×3 보드에서 두 동물의 위치 관계를 모두 비교하세요. 대각선 위치도 단서에 포함됩니다.",
+      gameInfoKicker: "WeightPlay 오리지널 게임 가이드", guideTitle: "게임 방법", gameplayFact: "게임 방식", gameplayValue: "공간 관계 추리", genreFact: "게임 유형", genreValue: "논리 퍼즐 · 가족 · 동물",
+      campaignTitle: "지도와 체크포인트", readingTitle: "별 지도 읽기", resultGuideTitle: "결과와 다시 하기", tipsTitle: "풀이 요령", faqTitle: "자주 묻는 질문",
+      faqQuestion: "진행 상황이 저장되나요?", faqCampaignQuestion: "지도는 몇 개인가요?", faqChoiceQuestion: "틀리게 고르면 어떻게 되나요?",
+      relatedTitle: "관련 게임", relatedIntro: "공간 단서를 확인한 뒤 선택하는 퍼즐이 좋다면 WeightPlay의 다른 퍼즐도 해 보세요."
+    },
+    es: {
+      guideSummary: "Compara dos pistas de posición con tres tableros de animales de 3×3 y elige la disposición que cumple ambas.",
+      resultGuide: "Los 30 mapas se reparten en seis arcos de cinco. Resolver uno desbloquea el siguiente; los mapas 5, 10, 15, 20, 25 y 30 cierran cada arco. El resultado muestra cuántos mapas has restaurado y cuántas comprobaciones usaste; puedes repetir cualquier mapa desbloqueado.",
+      readingText: "Cada mapa muestra tres animales, tres disposiciones candidatas en una cuadrícula 3×3 y dos pistas de posición. Comprueba ambas pistas en el mismo tablero; también cuentan las posiciones diagonales.",
+      tips: "Lee la posición entre los dos animales nombrados y comprueba ambas pistas en el mismo tablero antes de confirmar. Una respuesta incorrecta cuenta como comprobación, pero los tableros siguen visibles para comparar y probar otra.",
+      playerInfoTitle: "Información para jugadores y partidas guardadas",
+      playerInfo: "Este puzle lógico familiar no tiene temporizador ni vidas y no requiere cuenta. El progreso y el mejor total de comprobaciones se guardan en el almacenamiento local de este navegador cuando está disponible; no se sincronizan con otros dispositivos y pueden borrarse al eliminar los datos del navegador o del sitio.",
+      faqAnswer: "Sí. Resolver un mapa desbloquea el siguiente y puedes repetir aquí cualquier mapa desbloqueado.",
+      faqSaveQuestion: "¿Se sincroniza el progreso entre dispositivos?",
+      faqSaveAnswer: "No. El progreso y el mejor total de comprobaciones se guardan en este navegador cuando está disponible. No se sincronizan y pueden borrarse al eliminar los datos del navegador o del sitio.",
+      faqRuleQuestion: "¿Cómo uso las dos pistas?",
+      faqRuleAnswer: "Compara las posiciones de los animales indicados en el mismo tablero de 3×3; también cuentan las diagonales.",
+      gameInfoKicker: "Guía del juego original de WeightPlay", guideTitle: "Cómo jugar", gameplayFact: "Jugabilidad", gameplayValue: "Deducción de relaciones espaciales", genreFact: "Tipo de juego", genreValue: "Puzle lógico · Familiar · Animales",
+      campaignTitle: "Mapas y puntos de control", readingTitle: "Cómo leer un mapa estelar", resultGuideTitle: "Resultados y repetición", tipsTitle: "Consejos de estrategia", faqTitle: "Preguntas frecuentes",
+      faqQuestion: "¿Se guarda el progreso?", faqCampaignQuestion: "¿Cuántos mapas hay?", faqChoiceQuestion: "¿Qué ocurre tras una elección incorrecta?",
+      relatedTitle: "Juegos relacionados", relatedIntro: "Si te gusta comprobar pistas espaciales antes de elegir, prueba estos otros puzles de WeightPlay."
+    },
+    "pt-BR": {
+      guideSummary: "Compare duas pistas de posição com três tabuleiros 3×3 de animais e escolha a disposição que atende às duas.",
+      resultGuide: "Os 30 mapas estão divididos em seis arcos de cinco. Resolver um mapa libera o próximo; os mapas 5, 10, 15, 20, 25 e 30 encerram cada arco. O resultado mostra quantos mapas foram restaurados e quantas conferências você fez; dá para repetir qualquer mapa liberado.",
+      readingText: "Cada mapa mostra três animais, três disposições candidatas em um tabuleiro 3×3 e duas pistas de posição. Confira as duas pistas no mesmo tabuleiro; posições diagonais também valem.",
+      tips: "Leia a posição entre os dois animais indicados e confira as duas pistas no mesmo tabuleiro antes de verificar. Uma resposta errada conta como conferência, mas os tabuleiros continuam visíveis para comparar e tentar outra.",
+      playerInfoTitle: "Informações para jogadores e salvamento",
+      playerInfo: "Este quebra-cabeça lógico para a família não tem cronômetro nem vidas e não exige conta. O progresso e o menor total de conferências ficam no armazenamento local deste navegador, quando disponível; não sincronizam com outros dispositivos e podem ser apagados ao limpar os dados do navegador ou do site.",
+      faqAnswer: "Sim. Resolver um mapa libera o próximo, e você pode repetir neste navegador qualquer mapa já liberado.",
+      faqSaveQuestion: "O progresso sincroniza entre dispositivos?",
+      faqSaveAnswer: "Não. O progresso e o menor total de conferências ficam neste navegador, quando o armazenamento está disponível. Não sincronizam e podem ser apagados ao limpar os dados do navegador ou do site.",
+      faqRuleQuestion: "Como uso as duas pistas?",
+      faqRuleAnswer: "Compare as posições dos animais indicados no mesmo tabuleiro 3×3; as diagonais também contam.",
+      gameInfoKicker: "Guia de jogo original WeightPlay", guideTitle: "Como jogar", gameplayFact: "Jogabilidade", gameplayValue: "Dedução de relações espaciais", genreFact: "Tipo de jogo", genreValue: "Quebra-cabeça lógico · Família · Animais",
+      campaignTitle: "Mapas e checkpoints", readingTitle: "Como ler um mapa estelar", resultGuideTitle: "Resultado e replay", tipsTitle: "Dicas de estratégia", faqTitle: "Perguntas frequentes",
+      faqQuestion: "O progresso fica salvo?", faqCampaignQuestion: "Quantos mapas existem?", faqChoiceQuestion: "O que acontece depois de uma escolha errada?",
+      relatedTitle: "Jogos relacionados", relatedIntro: "Se você gosta de conferir pistas espaciais antes de escolher, experimente estes outros quebra-cabeças do WeightPlay."
+    },
+    fr: {
+      guideSummary: "Comparez deux indices de position aux trois grilles animales en 3×3 et choisissez l’agencement qui respecte les deux règles.",
+      resultGuide: "Les 30 cartes forment six arcs de cinq. Résoudre une carte débloque la suivante ; les cartes 5, 10, 15, 20, 25 et 30 terminent chaque arc. Le résultat indique le nombre de cartes restaurées et de vérifications utilisées ; toute carte débloquée peut être rejouée.",
+      readingText: "Chaque carte montre trois animaux, trois agencements possibles sur une grille 3×3 et deux indices de position. Vérifiez les deux indices sur la même grille ; les diagonales comptent aussi.",
+      tips: "Lisez la position entre les deux animaux nommés, puis vérifiez les deux indices sur la même grille avant de valider. Une mauvaise réponse compte comme une vérification, mais les grilles restent visibles pour comparer et réessayer.",
+      playerInfoTitle: "Informations de jeu et de sauvegarde",
+      playerInfo: "Ce jeu de logique familial n’a ni chronomètre ni vies et ne demande aucun compte. La progression et le meilleur total de vérifications sont enregistrés dans le stockage local de ce navigateur, s’il est disponible ; ils ne sont pas synchronisés entre appareils et peuvent être effacés avec les données du navigateur ou du site.",
+      faqAnswer: "Oui. Résoudre une carte débloque la suivante ; toutes les cartes débloquées peuvent être rejouées dans ce navigateur.",
+      faqSaveQuestion: "La progression se synchronise-t-elle entre appareils ?",
+      faqSaveAnswer: "Non. La progression et le meilleur total de vérifications restent dans ce navigateur si le stockage est disponible. Ils ne sont pas synchronisés et peuvent être effacés en supprimant les données du navigateur ou du site.",
+      faqRuleQuestion: "Comment utiliser les deux indices ?",
+      faqRuleAnswer: "Comparez les positions des animaux nommés sur la même grille 3×3 ; les diagonales comptent aussi.",
+      gameInfoKicker: "Guide du jeu original WeightPlay", guideTitle: "Comment jouer", gameplayFact: "Jeu", gameplayValue: "Déduction des relations spatiales", genreFact: "Type de jeu", genreValue: "Casse-tête logique · Famille · Animaux",
+      campaignTitle: "Cartes et points de contrôle", readingTitle: "Lire une carte céleste", resultGuideTitle: "Résultats et rejouer", tipsTitle: "Conseils de stratégie", faqTitle: "Questions fréquentes",
+      faqQuestion: "La progression est-elle sauvegardée ?", faqCampaignQuestion: "Combien y a-t-il de cartes ?", faqChoiceQuestion: "Que se passe-t-il après un mauvais choix ?",
+      relatedTitle: "Jeux associés", relatedIntro: "Si vous aimez vérifier des indices spatiaux avant de choisir, essayez aussi ces puzzles WeightPlay."
+    },
+    de: {
+      guideSummary: "Vergleiche zwei Positionshinweise mit drei 3×3-Tier-Sternkarten und wähle die Anordnung, die beide Regeln erfüllt.",
+      resultGuide: "Die 30 Karten sind in sechs Bögen mit je fünf Karten aufgeteilt. Eine gelöste Karte schaltet die nächste frei; die Karten 5, 10, 15, 20, 25 und 30 schließen jeweils einen Bogen ab. Das Ergebnis zeigt gelöste Karten und benötigte Prüfungen; freigeschaltete Karten lassen sich erneut spielen.",
+      readingText: "Jede Karte zeigt drei Tiere, drei mögliche Anordnungen auf einem 3×3-Brett und zwei sichtbare Positionshinweise. Prüfe beide Hinweise am selben Brett; diagonale Positionen zählen ebenfalls.",
+      tips: "Lies die Position zwischen den beiden genannten Tieren und prüfe beide Hinweise am selben Brett, bevor du bestätigst. Ein falscher Versuch zählt als Prüfung, doch die Bretter bleiben zum Vergleichen und erneuten Probieren sichtbar.",
+      playerInfoTitle: "Spiel- und Speicherinformationen",
+      playerInfo: "Dieses Familiendenkspiel hat weder Zeitlimit noch Leben und benötigt kein Konto. Fortschritt und Bestwert für die Gesamtzahl der Prüfungen werden, wenn verfügbar, im lokalen Speicher dieses Browsers abgelegt. Sie werden nicht zwischen Geräten synchronisiert und können beim Löschen der Browser- oder Websitedaten verloren gehen.",
+      faqAnswer: "Ja. Eine gelöste Karte schaltet die nächste frei; alle freigeschalteten Karten kannst du in diesem Browser erneut spielen.",
+      faqSaveQuestion: "Wird der Fortschritt zwischen Geräten synchronisiert?",
+      faqSaveAnswer: "Nein. Fortschritt und Bestwert bleiben, sofern verfügbar, im lokalen Speicher dieses Browsers. Es gibt keine Synchronisierung; beim Löschen der Browser- oder Websitedaten können sie verloren gehen.",
+      faqRuleQuestion: "Wie nutze ich beide Hinweise?",
+      faqRuleAnswer: "Vergleiche die Positionen der genannten Tiere auf demselben 3×3-Brett; diagonale Positionen zählen ebenfalls.",
+      gameInfoKicker: "Original-Spielguide von WeightPlay", guideTitle: "So wird gespielt", gameplayFact: "Spielprinzip", gameplayValue: "Räumliche Beziehungen erschließen", genreFact: "Spieltyp", genreValue: "Logikrätsel · Familie · Tiere",
+      campaignTitle: "Karten und Kontrollpunkte", readingTitle: "Eine Sternkarte lesen", resultGuideTitle: "Ergebnis und erneutes Spielen", tipsTitle: "Strategietipps", faqTitle: "Häufige Fragen",
+      faqQuestion: "Wird der Fortschritt gespeichert?", faqCampaignQuestion: "Wie viele Karten gibt es?", faqChoiceQuestion: "Was passiert bei einer falschen Wahl?",
+      relatedTitle: "Ähnliche Spiele", relatedIntro: "Wenn du räumliche Hinweise gern vor der Wahl prüfst, probiere auch diese Rätsel von WeightPlay."
+    },
+    it: {
+      guideSummary: "Confronta due indizi di posizione con tre griglie 3×3 di animali e scegli la disposizione che rispetta entrambe le regole.",
+      resultGuide: "Le 30 mappe sono divise in sei archi da cinque. Risolvere una mappa sblocca la successiva; le mappe 5, 10, 15, 20, 25 e 30 chiudono ogni arco. Il risultato mostra quante mappe hai ripristinato e quanti controlli hai usato; puoi rigiocare ogni mappa sbloccata.",
+      readingText: "Ogni mappa mostra tre animali, tre disposizioni candidate su una griglia 3×3 e due indizi di posizione. Verifica entrambi gli indizi sulla stessa griglia; contano anche le posizioni diagonali.",
+      tips: "Leggi la posizione tra i due animali indicati e verifica entrambi gli indizi sulla stessa griglia prima di confermare. Una risposta errata conta come controllo, ma le griglie restano visibili per confrontare e riprovare.",
+      playerInfoTitle: "Informazioni per giocare e salvare",
+      playerInfo: "Questo rompicapo logico per famiglie non ha timer né vite e non richiede un account. Progressi e miglior totale di controlli vengono salvati nella memoria locale di questo browser, quando disponibile; non si sincronizzano tra dispositivi e possono andare persi cancellando i dati del browser o del sito.",
+      faqAnswer: "Sì. Risolvere una mappa sblocca la successiva e puoi rigiocare qui tutte quelle già sbloccate.",
+      faqSaveQuestion: "I progressi si sincronizzano tra dispositivi?",
+      faqSaveAnswer: "No. Progressi e miglior totale di controlli restano in questo browser quando la memoria è disponibile. Non si sincronizzano e possono andare persi cancellando i dati del browser o del sito.",
+      faqRuleQuestion: "Come uso entrambi gli indizi?",
+      faqRuleAnswer: "Confronta le posizioni dei due animali indicati sulla stessa griglia 3×3; valgono anche le diagonali.",
+      gameInfoKicker: "Guida al gioco originale WeightPlay", guideTitle: "Come si gioca", gameplayFact: "Gameplay", gameplayValue: "Deduzione delle relazioni spaziali", genreFact: "Tipo di gioco", genreValue: "Enigma logico · Famiglia · Animali",
+      campaignTitle: "Mappe e checkpoint", readingTitle: "Come leggere una mappa stellare", resultGuideTitle: "Risultati e replay", tipsTitle: "Consigli di strategia", faqTitle: "Domande frequenti",
+      faqQuestion: "I progressi vengono salvati?", faqCampaignQuestion: "Quante mappe ci sono?", faqChoiceQuestion: "Cosa succede dopo una scelta errata?",
+      relatedTitle: "Giochi correlati", relatedIntro: "Se ti piace verificare indizi spaziali prima di scegliere, prova anche questi rompicapi WeightPlay."
+    },
+    ru: {
+      guideSummary: "Сравни две подсказки о расположении с тремя сетками 3×3 с животными и выбери расстановку, которая подходит обеим.",
+      resultGuide: "30 карт разделены на шесть арок по пять. Решение карты открывает следующую; карты 5, 10, 15, 20, 25 и 30 завершают арки. На экране результата показаны восстановленные карты и число проверок; открытую карту можно пройти снова.",
+      readingText: "На каждой карте показаны три животных, три варианта расстановки на поле 3×3 и две подсказки о позициях. Сверяй обе подсказки с одним полем; диагональные позиции тоже учитываются.",
+      tips: "Прочитай, где находятся два названных животных, и проверь обе подсказки на одном поле. Ошибочная попытка засчитывается как проверка, но поле остаётся на экране — сравни варианты и попробуй снова.",
+      playerInfoTitle: "Информация об игре и сохранениях",
+      playerInfo: "В этой семейной логической головоломке нет таймера и жизней, аккаунт не нужен. Прогресс и лучший общий результат по числу проверок хранятся локально в этом браузере, если хранилище доступно; они не синхронизируются между устройствами и могут удалиться при очистке данных браузера или сайта.",
+      faqAnswer: "Да. Решение карты открывает следующую, а любую открытую карту можно пройти снова в этом браузере.",
+      faqSaveQuestion: "Синхронизируется ли прогресс между устройствами?",
+      faqSaveAnswer: "Нет. Прогресс и лучший результат хранятся в этом браузере, если доступно локальное хранилище. Синхронизации нет; очистка данных браузера или сайта может удалить сохранение.",
+      faqRuleQuestion: "Как применять обе подсказки?",
+      faqRuleAnswer: "Сравни позиции названных животных на одном поле 3×3; диагональные позиции тоже учитываются.",
+      gameInfoKicker: "Руководство по оригинальной игре WeightPlay", guideTitle: "Как играть", gameplayFact: "Игровой процесс", gameplayValue: "Пространственная логика", genreFact: "Жанр", genreValue: "Логическая головоломка · Семейная игра · Животные",
+      campaignTitle: "Карты и контрольные точки", readingTitle: "Как читать карту звёзд", resultGuideTitle: "Результат и повторная игра", tipsTitle: "Советы по решению", faqTitle: "Частые вопросы",
+      faqQuestion: "Сохраняется ли прогресс?", faqCampaignQuestion: "Сколько всего карт?", faqChoiceQuestion: "Что произойдёт после неверного выбора?",
+      relatedTitle: "Похожие игры", relatedIntro: "Если тебе нравится проверять пространственные подсказки перед выбором, попробуй и другие головоломки WeightPlay."
+    },
+    hi: {
+      guideSummary: "दोनों स्थान-संकेतों की तुलना तीन 3×3 पशु-बोर्ड से करें और वही विन्यास चुनें जो दोनों नियमों पर खरा उतरे।",
+      resultGuide: "30 मानचित्र पाँच-पाँच के छह आर्क में हैं। मानचित्र हल करने पर अगला खुलता है; 5, 10, 15, 20, 25 और 30वें मानचित्र हर आर्क का अंत हैं। परिणाम स्क्रीन पर बहाल मानचित्र और जाँचों की संख्या दिखती है; खुले मानचित्र फिर खेले जा सकते हैं।",
+      readingText: "हर मानचित्र में तीन जानवर, 3×3 बोर्ड पर तीन संभावित विन्यास और स्थान के दो संकेत होते हैं। दोनों संकेतों को एक ही बोर्ड पर मिलाएँ; तिरछी स्थिति भी मान्य है।",
+      tips: "बताए गए दोनों जानवरों की स्थिति पढ़ें और जाँचने से पहले एक ही बोर्ड पर दोनों संकेत मिलाएँ। गलत कोशिश भी जाँच में गिनी जाती है, पर बोर्ड दिखता रहता है ताकि तुलना करके फिर प्रयास कर सकें।",
+      playerInfoTitle: "खेल और सेव की जानकारी",
+      playerInfo: "इस पारिवारिक तर्क-पहेली में समय-सीमा या जानें नहीं हैं और खाता भी नहीं चाहिए। प्रगति और सबसे कम कुल जाँचें उपलब्ध होने पर इसी ब्राउज़र के स्थानीय स्टोरेज में रहती हैं; वे दूसरे डिवाइस पर सिंक नहीं होतीं और ब्राउज़र या साइट का डेटा मिटाने पर खो सकती हैं।",
+      faqAnswer: "हाँ। मानचित्र हल करने पर अगला खुलता है, और खुला हुआ कोई भी मानचित्र इसी ब्राउज़र में फिर खेल सकते हैं।",
+      faqSaveQuestion: "क्या प्रगति दूसरे डिवाइस से सिंक होती है?",
+      faqSaveAnswer: "नहीं। प्रगति और सबसे कम कुल जाँचें उपलब्ध होने पर इसी ब्राउज़र में रहती हैं। वे सिंक नहीं होतीं और ब्राउज़र या साइट का डेटा मिटाने पर खो सकती हैं।",
+      faqRuleQuestion: "दोनों संकेतों का साथ में उपयोग कैसे करें?",
+      faqRuleAnswer: "एक ही 3×3 बोर्ड पर बताए गए जानवरों की दोनों स्थितियाँ मिलाएँ; तिरछी स्थिति भी गिनी जाती है।",
+      gameInfoKicker: "WeightPlay मूल गेम गाइड", guideTitle: "कैसे खेलें", gameplayFact: "गेमप्ले", gameplayValue: "स्थानिक संबंधों पर तर्क", genreFact: "गेम का प्रकार", genreValue: "तर्क पहेली · परिवार · पशु",
+      campaignTitle: "मानचित्र और चेकपॉइंट", readingTitle: "तारों का मानचित्र पढ़ना", resultGuideTitle: "नतीजे और फिर से खेलना", tipsTitle: "रणनीति के सुझाव", faqTitle: "अक्सर पूछे जाने वाले प्रश्न",
+      faqQuestion: "क्या प्रगति सेव होती है?", faqCampaignQuestion: "कुल कितने मानचित्र हैं?", faqChoiceQuestion: "गलत चुनाव के बाद क्या होता है?",
+      relatedTitle: "संबंधित गेम", relatedIntro: "अगर चुनने से पहले स्थानिक संकेत जाँचना पसंद है, तो WeightPlay की ये पहेलियाँ भी आज़माएँ।"
+    },
+    ar: {
+      guideSummary: "قارن إشارتَي الموقع بثلاث لوحات حيوانات 3×3، واختر الترتيب الذي يطابق القاعدتين معًا.",
+      resultGuide: "تتوزع الخرائط الثلاثون على ستة أقواس، في كل قوس خمس خرائط. يفتح حل الخريطة التالية؛ وتُنهي الخرائط 5 و10 و15 و20 و25 و30 كل قوس. تعرض شاشة النتيجة الخرائط التي أُصلحت وعدد الفحوصات، ويمكن إعادة أي خريطة مفتوحة.",
+      readingText: "تعرض كل خريطة ثلاثة حيوانات وثلاثة ترتيبات مرشحة على لوحة 3×3 وإشارتين واضحتين للموقع. قارن الإشارتين على اللوحة نفسها؛ وتُحتسب المواقع القطرية أيضًا.",
+      tips: "اقرأ موضعي الحيوانين المذكورين، ثم طابق الإشارتين على اللوحة نفسها قبل الفحص. يُحتسب الاختيار الخاطئ ضمن عدد الفحوصات، لكن اللوحات تبقى ظاهرة لتقارن وتحاول مجددًا.",
+      playerInfoTitle: "معلومات اللعب والحفظ",
+      playerInfo: "لا يوجد في هذه الأحجية العائلية مؤقت أو محاولات محدودة، ولا تحتاج إلى حساب. يُحفظ التقدم وأفضل مجموع للفحوصات محليًا في هذا المتصفح عند توفر التخزين؛ ولا تتم مزامنتهما مع جهاز آخر، وقد يضيعان عند مسح بيانات المتصفح أو الموقع.",
+      faqAnswer: "نعم. يفتح حل الخريطة الخريطة التالية، ويمكن إعادة أي خريطة مفتوحة في هذا المتصفح.",
+      faqSaveQuestion: "هل يتزامن التقدم بين الأجهزة؟",
+      faqSaveAnswer: "لا. يُحفظ التقدم وأفضل مجموع للفحوصات في هذا المتصفح فقط عند توفر التخزين المحلي. لا تتم المزامنة، وقد تضيع البيانات عند مسح بيانات المتصفح أو الموقع.",
+      faqRuleQuestion: "كيف أستخدم الإشارتين معًا؟",
+      faqRuleAnswer: "قارن موقعي الحيوانين المذكورين على لوحة 3×3 نفسها؛ وتُحتسب المواقع القطرية أيضًا.",
+      gameInfoKicker: "دليل لعبة WeightPlay الأصلية", guideTitle: "طريقة اللعب", gameplayFact: "أسلوب اللعب", gameplayValue: "استنتاج العلاقات المكانية", genreFact: "نوع اللعبة", genreValue: "أحجية منطقية · عائلية · حيوانات",
+      campaignTitle: "الخرائط ونقاط التحقق", readingTitle: "قراءة خريطة النجوم", resultGuideTitle: "النتيجة وإعادة اللعب", tipsTitle: "نصائح للحل", faqTitle: "الأسئلة الشائعة",
+      faqQuestion: "هل يُحفظ التقدم؟", faqCampaignQuestion: "كم خريطة في اللعبة؟", faqChoiceQuestion: "ماذا يحدث بعد اختيار خاطئ؟",
+      relatedTitle: "ألعاب ذات صلة", relatedIntro: "إذا كنت تحب فحص الإشارات المكانية قبل الاختيار، فجرب أحجيات WeightPlay الأخرى هذه."
+    }
+  };
+  for (const [locale, values] of Object.entries(copy)) {
+    Object.assign(window.ANIMAL_CONSTELLATION_KEEPER_LOCALES[locale], values);
+  }
+})();
+
 (() => {
   const tables = window.ANIMAL_CONSTELLATION_KEEPER_LOCALES || {};
   const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -250,4 +481,85 @@
     ar: { campaignTitle: "الحملة ونقاط التحقق", campaignText: "تتكون الحملة من ستة أقواس، في كل منها خمس خرائط، بإجمالي 30 خريطة مصممة بعناية. يفتح إكمال الخريطة التالية؛ وتمثل الخرائط 5 و10 و15 و20 و25 و30 نهاية كل قوس.", readingTitle: "قراءة خريطة النجوم", readingText: "تعرض كل خريطة لوحة 3×3 وثلاثة خيارات وإشارتين واضحتين للعلاقة. اقرأ مواضع فوق وتحت ويسار ويمين وقطريًا حرفيًا قبل الاختيار.", faqCampaignQuestion: "كم خريطة تتضمن اللعبة؟", faqCampaignAnswer: "تتضمن 30 خريطة مصممة بعناية، موزعة على ستة أقواس من خمس خرائط.", faqChoiceQuestion: "ماذا يحدث بعد اختيار خاطئ؟", faqChoiceAnswer: "تبقى اللوحة الخاطئة ظاهرة، ويمكن التحقق منها مجددًا دون فقدان التقدم.", faqSaveQuestion: "هل أحتاج إلى حساب؟", faqSaveAnswer: "لا. يُستخدم التخزين المحلي لهذا المتصفح فقط للتقدم وأفضل عدد فحوصات عند توفره.", faqRuleQuestion: "ما الإشارات التي أقرأها؟", faqRuleAnswer: "قارن العلاقتين الظاهرتين، بما فيهما المواضع القطرية، مع كل لوحة مرشحة.", relatedTitle: "ألعاب ذات صلة", relatedIntro: "إذا كنت تستمتع بفحص القواعد المكانية قبل الحركة، فجرب ألغاز WeightPlay الأخرى هذه.", relatedOneTitle: "One Line", relatedOneDescription: "ارسم مسارًا متصلًا عبر طرق مصممة بعناية مع تجنب الجدران والظلال المتحركة.", relatedTwoTitle: "Panko's Bamboo Waterway", relatedTwoDescription: "أدر أنابيب الخيزران المترابطة لتوصل الماء من نبع منحوت إلى حوض مزهر دون فجوات." }
   };
   Object.entries(guideEnhancements).forEach(([locale, copy]) => Object.assign(tables[locale] || {}, copy));
+})();
+
+
+// WeightPlay 1.4.0 wording corrections: make the unlock FAQ answer its question,
+// and keep the short instructions and campaign facts localized at runtime.
+(function () {
+  const tables = window.ANIMAL_CONSTELLATION_KEEPER_LOCALES || {};
+  const corrections = {
+    en: { faqQuestion: "What happens when I solve a map?", guideOne: "Read the two relationship rules.", guideTwo: "Choose the one constellation that follows both.", guideThree: "If a choice is wrong, it stays visible so you can try again.", campaignText: "Six arcs contain five maps each. Solving a map unlocks the next; maps 5, 10, 15, 20, 25, and 30 end an arc." },
+    "zh-Hant": { faqQuestion: "解開地圖後會怎樣？", guideOne: "閱讀兩條關係規則。", guideTwo: "選出同時符合兩條規則的唯一星圖。", guideThree: "選錯的星圖會保留在畫面上，方便再試一次。", campaignText: "共有六個篇章，每章五幅地圖。解開一幅地圖會開放下一幅；第 5、10、15、20、25、30 幅地圖是各篇章的終點。" },
+    "zh-Hans": { faqQuestion: "解开地图后会怎样？", guideOne: "阅读两条关系规则。", guideTwo: "选出同时符合两条规则的唯一星图。", guideThree: "选错的星图会留在画面上，方便再试一次。", campaignText: "共有六个篇章，每章五幅地图。解开一幅地图会开放下一幅；第 5、10、15、20、25、30 幅地图是各篇章的终点。" },
+    ja: { faqQuestion: "マップを解くとどうなりますか？", guideOne: "2つの位置関係のルールを読みます。", guideTwo: "両方のルールに合う星座を1つ選びます。", guideThree: "間違えた選択肢は表示されたままなので、もう一度挑戦できます。", campaignText: "全6章に各5マップがあります。マップを解くと次が解放され、5・10・15・20・25・30面目が各章の区切りです。" },
+    ko: { faqQuestion: "맵을 풀면 어떻게 되나요?", guideOne: "두 가지 관계 규칙을 읽으세요.", guideTwo: "두 규칙을 모두 따르는 별자리를 하나 고르세요.", guideThree: "틀린 선택도 화면에 남아 다시 시도할 수 있습니다.", campaignText: "각 5개 맵으로 이루어진 6개 아크가 있습니다. 맵을 풀면 다음 맵이 열리고, 5·10·15·20·25·30번 맵이 각 아크의 끝입니다." },
+    es: { faqQuestion: "¿Qué pasa al resolver un mapa?", guideOne: "Lee las dos reglas de relación.", guideTwo: "Elige el único mapa estelar que cumple ambas.", guideThree: "La opción incorrecta permanece visible para que puedas intentarlo de nuevo.", campaignText: "Hay seis arcos de cinco mapas. Resolver un mapa desbloquea el siguiente; los mapas 5, 10, 15, 20, 25 y 30 cierran cada arco." },
+    "pt-BR": { faqQuestion: "O que acontece ao resolver um mapa?", guideOne: "Leia as duas regras de relação.", guideTwo: "Escolha o único mapa estelar que segue ambas.", guideThree: "A opção errada continua visível para você tentar de novo.", campaignText: "São seis arcos com cinco mapas cada. Resolver um mapa libera o próximo; os mapas 5, 10, 15, 20, 25 e 30 encerram cada arco." },
+    fr: { faqQuestion: "Que se passe-t-il quand je résous une carte ?", guideOne: "Lisez les deux règles de relation.", guideTwo: "Choisissez la seule carte céleste qui respecte les deux.", guideThree: "Un mauvais choix reste visible pour vous permettre de réessayer.", campaignText: "Six arcs comptent cinq cartes chacun. Résoudre une carte déverrouille la suivante ; les cartes 5, 10, 15, 20, 25 et 30 terminent chaque arc." },
+    de: { faqQuestion: "Was passiert, wenn ich eine Karte löse?", guideOne: "Lies die beiden Beziehungsregeln.", guideTwo: "Wähle die einzige Sternkarte, die beide erfüllt.", guideThree: "Eine falsche Wahl bleibt sichtbar, damit du es erneut versuchen kannst.", campaignText: "Sechs Arcs enthalten jeweils fünf Karten. Eine gelöste Karte schaltet die nächste frei; die Karten 5, 10, 15, 20, 25 und 30 beenden jeweils einen Arc." },
+    it: { faqQuestion: "Cosa succede quando risolvo una mappa?", guideOne: "Leggi le due regole sulle relazioni.", guideTwo: "Scegli l'unica mappa stellare che le rispetta entrambe.", guideThree: "La scelta errata resta visibile, così puoi riprovare.", campaignText: "Ci sono sei archi di cinque mappe ciascuno. Risolvere una mappa sblocca la successiva; le mappe 5, 10, 15, 20, 25 e 30 concludono ogni arco." },
+    ru: { faqQuestion: "Что произойдёт, если решить карту?", guideOne: "Прочитай два правила о взаимном расположении.", guideTwo: "Выбери единственную карту, которая соблюдает оба правила.", guideThree: "Неверный вариант останется видимым, и можно попробовать ещё раз.", campaignText: "В шести арках по пять карт. Решение карты открывает следующую; карты 5, 10, 15, 20, 25 и 30 завершают арки." },
+    hi: { faqQuestion: "मानचित्र हल करने पर क्या होता है?", guideOne: "संबंध के दोनों नियम पढ़ें।", guideTwo: "वह एकमात्र तारामंडल चुनें जो दोनों नियमों का पालन करता है।", guideThree: "गलत चुनाव दिखता रहता है, इसलिए आप फिर से कोशिश कर सकते हैं।", campaignText: "छह आर्क में प्रत्येक में पाँच मानचित्र हैं। मानचित्र हल करने पर अगला खुलता है; 5, 10, 15, 20, 25 और 30वें मानचित्र हर आर्क का अंत हैं।" },
+    ar: { faqQuestion: "ماذا يحدث عند حل خريطة؟", guideOne: "اقرأ قاعدتي العلاقة.", guideTwo: "اختر خريطة النجوم الوحيدة التي تطابق القاعدتين.", guideThree: "يبقى الاختيار الخاطئ ظاهرًا لتتمكن من المحاولة مجددًا.", campaignText: "تضم الحملة ستة أقواس، في كل قوس خمس خرائط. يؤدي حل الخريطة إلى فتح الخريطة التالية؛ وتنهي الخرائط 5 و10 و15 و20 و25 و30 كل قوس." }
+  };
+  Object.entries(corrections).forEach(([locale, copy]) => Object.assign(tables[locale] || {}, copy));
+})();
+
+(function () {
+  const t = window.ANIMAL_CONSTELLATION_KEEPER_LOCALES || {};
+  const copy = {
+    en: ["Compare two position clues with three 3×3 animal boards and choose the arrangement that satisfies both.", "Each map shows a 3×3 board with three animal arrangements and two position clues. Read above, below, left, right, and diagonal literally.", "The six five-map arcs contain 30 maps. Solving a map unlocks the next; unlocked maps remain replayable. Progress and best total checks stay in this browser when storage is available.", "Read each relation literally. Keep both clues in view and compare each of the three arrangements."],
+    "zh-Hant": ["比對兩條位置線索與三個 3×3 動物星盤，找出同時符合兩條規則的排列。", "每幅地圖都有 3×3 星盤、三種動物排列與兩條位置線索。請按字面理解上、下、左、右與斜向位置。", "六個篇章各有五幅地圖，共 30 幅。解開一幅地圖會開放下一幅，已開放的地圖可重玩。進度與最佳總檢查次數在儲存功能可用時只保存在此瀏覽器。", "按字面理解每條關係線索。保留兩條線索並比較三種排列。"],
+    "zh-Hans": ["对照两条位置线索与三个 3×3 动物星盘，找出同时符合两条规则的排列。", "每幅地图都有 3×3 星盘、三种动物排列和两条位置线索。请按字面理解上、下、左、右和斜向位置。", "六个篇章各有五幅地图，共 30 幅。解开一幅地图会开放下一幅，已开放的地图可以重玩。存储可用时，进度和最佳总检查次数只保存在此浏览器。", "按字面理解每条关系线索。保留两条线索，并比较三种排列。"],
+    ja: ["2つの位置ヒントを3枚の3×3動物ボードと比べ、両方を満たす配置を選びます。", "各マップには3×3の盤面、3つの動物配置、2つの位置ヒントがあります。上下左右と斜めの位置を文字どおりに読みましょう。", "全6章に各5マップ、合計30マップがあります。解くと次が解放され、解放済みのマップは再プレイできます。保存可能な場合、進行状況と最少チェック数はこのブラウザー内だけに保存されます。", "位置関係を文字どおりに読みましょう。2つのヒントを見比べ、3つの配置を確認します。"],
+    ko: ["두 위치 단서를 세 개의 3×3 동물 보드와 비교해 두 규칙을 모두 만족하는 배치를 고르세요.", "각 맵에는 3×3 보드, 세 가지 동물 배치, 두 가지 위치 단서가 있습니다. 위·아래·왼쪽·오른쪽·대각선 위치를 그대로 읽으세요.", "각 5개 맵으로 된 6개 아크, 총 30개 맵이 있습니다. 맵을 풀면 다음이 열리고 열린 맵은 다시 할 수 있습니다. 저장이 가능하면 진행과 최고 총 확인 횟수는 이 브라우저에만 저장됩니다.", "각 관계를 있는 그대로 읽으세요. 두 단서를 함께 보며 세 배치를 비교하세요."],
+    es: ["Compara dos pistas de posición con tres tableros de animales de 3×3 y elige la disposición que cumple ambas.", "Cada mapa muestra un tablero 3×3, tres disposiciones de animales y dos pistas de posición. Interpreta literalmente arriba, abajo, izquierda, derecha y diagonal.", "Hay seis arcos de cinco mapas, 30 en total. Resolver uno desbloquea el siguiente y los mapas abiertos se pueden repetir. Si el almacenamiento está disponible, el progreso y el mejor total de comprobaciones solo se guardan en este navegador.", "Interpreta literalmente cada relación. Mantén visibles las dos pistas y compara las tres disposiciones."],
+    "pt-BR": ["Compare duas pistas de posição com três tabuleiros 3×3 de animais e escolha a disposição que atende às duas.", "Cada mapa mostra um tabuleiro 3×3, três disposições de animais e duas pistas de posição. Interprete literalmente acima, abaixo, à esquerda, à direita e na diagonal.", "São seis arcos de cinco mapas, 30 no total. Resolver um mapa libera o próximo, e os mapas liberados podem ser jogados novamente. Se disponível, o progresso e o melhor total de verificações ficam salvos apenas neste navegador.", "Interprete cada relação literalmente. Mantenha as duas pistas à vista e compare as três disposições."],
+    fr: ["Comparez deux indices de position aux trois plateaux animaliers en 3×3 et choisissez la disposition qui respecte les deux règles.", "Chaque carte présente un plateau 3×3, trois dispositions d’animaux et deux indices de position. Interprétez littéralement haut, bas, gauche, droite et diagonale.", "Six arcs de cinq cartes comptent 30 cartes. Résoudre une carte déverrouille la suivante ; les cartes ouvertes restent rejouables. Si le stockage est disponible, la progression et le meilleur total de vérifications restent dans ce navigateur.", "Lisez chaque relation au sens littéral. Gardez les deux indices visibles et comparez les trois dispositions."],
+    de: ["Vergleiche zwei Positionshinweise mit drei 3×3-Tierbrettern und wähle die Anordnung, die beide Regeln erfüllt.", "Jede Karte zeigt ein 3×3-Brett, drei Tieranordnungen und zwei Positionshinweise. Lies oben, unten, links, rechts und diagonal wörtlich.", "Sechs Arcs mit je fünf Karten ergeben 30 Karten. Eine gelöste Karte schaltet die nächste frei; offene Karten lassen sich erneut spielen. Wenn Speicherung möglich ist, bleiben Fortschritt und niedrigste Gesamtzahl der Prüfungen nur in diesem Browser.", "Lies jede Beziehung wörtlich. Behalte beide Hinweise im Blick und vergleiche die drei Anordnungen."],
+    it: ["Confronta due indizi di posizione con tre griglie 3×3 di animali e scegli la disposizione che rispetta entrambe le regole.", "Ogni mappa mostra una griglia 3×3, tre disposizioni di animali e due indizi di posizione. Interpreta alla lettera sopra, sotto, sinistra, destra e diagonale.", "Sei archi di cinque mappe contengono 30 mappe. Risolverne una sblocca la successiva; quelle sbloccate si possono rigiocare. Se disponibile, progressi e miglior totale di controlli restano solo in questo browser.", "Interpreta ogni relazione alla lettera. Tieni visibili i due indizi e confronta le tre disposizioni."],
+    ru: ["Сравни две подсказки о расположении с тремя сетками 3×3 с животными и выбери расстановку, подходящую обеим.", "На каждой карте есть поле 3×3, три расстановки животных и две подсказки о расположении. Буквально учитывай верх, низ, лево, право и диагональ.", "В шести арках по пять карт, всего 30. Решение карты открывает следующую; открытые карты можно проходить повторно. Если хранилище доступно, прогресс и лучший общий результат проверок сохраняются только в этом браузере.", "Точно читай каждую связь. Держи обе подсказки перед глазами и сравни три расстановки."],
+    hi: ["दो स्थान-संकेतों की तुलना तीन 3×3 पशु-बोर्ड से करें और वह विन्यास चुनें जो दोनों नियमों पर खरा उतरे।", "हर मानचित्र में 3×3 बोर्ड, पशुओं के तीन विन्यास और दो स्थान-संकेत होते हैं। ऊपर, नीचे, बाएँ, दाएँ और तिरछी स्थिति को ठीक उसी अर्थ में पढ़ें।", "छह आर्क में पाँच-पाँच मानचित्र, कुल 30 हैं। मानचित्र हल करने पर अगला खुलता है और खुले मानचित्र फिर खेले जा सकते हैं। उपलब्ध होने पर प्रगति और कुल जाँचों का सर्वोत्तम परिणाम केवल इसी ब्राउज़र में रहता है।", "हर संबंध को ठीक उसी अर्थ में पढ़ें। दोनों संकेत देखते हुए तीनों विन्यासों की तुलना करें।"],
+    ar: ["قارن إشارتي موقع بثلاث لوحات حيوانات 3×3، واختر الترتيب الذي يطابق القاعدتين معًا.", "تعرض كل خريطة لوحة 3×3 وثلاثة ترتيبات للحيوانات وإشارتي موقع. اقرأ مواضع فوق وتحت ويسار ويمين وقطريًا حرفيًا.", "تضم الأقواس الستة خمس خرائط لكل منها، بإجمالي 30. يؤدي حل الخريطة إلى فتح الخريطة التالية، ويمكن إعادة لعب الخرائط المفتوحة. عند توفر التخزين، يبقى التقدم وأفضل مجموع للفحوصات في هذا المتصفح فقط.", "اقرأ كل علاقة حرفيًا. أبقِ الإشارتين أمامك وقارن الترتيبات الثلاثة."]
+  };
+  for (const [locale, [summary, reading, result, tips]] of Object.entries(copy)) {
+    Object.assign(t[locale] || {}, { guideSummary: summary, readingText: reading, resultGuide: result, tips, faqAnswer: ({
+      en: "Solving a map unlocks the next one, and unlocked maps can be replayed.",
+      "zh-Hant": "解開地圖會開放下一幅，已開放的地圖也可以重玩。",
+      "zh-Hans": "解开地图会开放下一幅，已开放的地图也可以重玩。",
+      ja: "マップを解くと次が解放され、解放済みのマップは再プレイできます。",
+      ko: "맵을 풀면 다음 맵이 열리고, 열린 맵은 다시 할 수 있습니다.",
+      es: "Resolver un mapa desbloquea el siguiente y permite repetir los mapas ya abiertos.",
+      "pt-BR": "Resolver um mapa libera o próximo, e os mapas liberados podem ser jogados novamente.",
+      fr: "Résoudre une carte déverrouille la suivante ; les cartes déjà ouvertes restent rejouables.",
+      de: "Eine gelöste Karte schaltet die nächste frei; offene Karten lassen sich erneut spielen.",
+      it: "Risolvere una mappa sblocca la successiva; quelle già sbloccate si possono rigiocare.",
+      ru: "Решение карты открывает следующую; открытые карты можно проходить повторно.",
+      hi: "मानचित्र हल करने पर अगला खुलता है और खुले मानचित्र फिर खेले जा सकते हैं।",
+      ar: "يؤدي حل الخريطة إلى فتح الخريطة التالية، ويمكن إعادة لعب الخرائط المفتوحة."
+    })[locale] });
+  }
+})();
+
+(function () {
+  const t = window.ANIMAL_CONSTELLATION_KEEPER_LOCALES || {};
+  const labels = {
+    en: ["Results and saves", "Practical tips", "Spatial deduction", "Logic puzzle", "Animal theme"],
+    "zh-Hant": ["結果與保存", "實用提示", "空間關係推理", "邏輯益智", "動物主題"],
+    "zh-Hans": ["结果与保存", "实用提示", "空间关系推理", "逻辑益智", "动物主题"],
+    ja: ["結果と保存", "プレイのヒント", "位置関係の推理", "論理パズル", "動物テーマ"],
+    ko: ["결과와 저장", "플레이 팁", "공간 관계 추리", "논리 퍼즐", "동물 테마"],
+    es: ["Resultados y guardado", "Consejos prácticos", "Deducción espacial", "Rompecabezas lógico", "Tema animal"],
+    "pt-BR": ["Resultados e salvamento", "Dicas práticas", "Dedução espacial", "Quebra-cabeça lógico", "Tema animal"],
+    fr: ["Résultats et sauvegarde", "Conseils pratiques", "Déduction spatiale", "Casse-tête logique", "Thème animal"],
+    de: ["Ergebnisse und Speicherung", "Praktische Tipps", "Räumliches Schlussfolgern", "Logikrätsel", "Tiermotive"],
+    it: ["Risultati e salvataggi", "Consigli pratici", "Deduzione spaziale", "Enigma logico", "Tema animale"],
+    ru: ["Результаты и сохранение", "Полезные советы", "Пространственная дедукция", "Логическая головоломка", "Тема животных"],
+    hi: ["परिणाम और सेव", "काम के सुझाव", "स्थानिक तर्क", "तर्क पहेली", "पशु थीम"],
+    ar: ["النتائج والحفظ", "نصائح عملية", "الاستنتاج المكاني", "لغز منطقي", "موضوع الحيوانات"]
+  };
+  for (const [locale, [resultGuideTitle, tipsTitle, tagSpatial, tagLogic, tagAnimal]] of Object.entries(labels)) {
+    Object.assign(t[locale] || {}, { resultGuideTitle, tipsTitle, tagSpatial, tagLogic, tagAnimal });
+  }
 })();

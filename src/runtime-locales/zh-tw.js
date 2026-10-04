@@ -992,7 +992,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Asegurar 5": "阿塞古拉爾 5",
   "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.": "向其他玩家詢問您所擁有的排名。如果他們有，他們必須給你該等級的每張牌；否則，去釣魚。",
   "Ask for a rank that is already close to a book when the table evidence supports it.": "當桌面線索支持時，詢問已接近完成牌組的點數。",
-  "Ask for ranks, collect four-of-a-kind books, and read the table.": "求名列，集四書，讀錶。",
+  "Ask for ranks, collect four-of-a-kind books, and read the table.": "詢問手上已有的點數，收集四張同點數的牌組，留意桌面線索。",
   "Asociar formas": "甲魚形式",
   "Astral Crown": "星界王冠",
   "At every fifth stage, defeat the named Boss as well as completing the key target.": "每第五階段，擊敗指定的 Boss 並完成關鍵目標。",
@@ -9447,9 +9447,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Can progress move automatically to another device?": "進度會自動轉移到其他裝置嗎？",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "不會。本遊戲目前只將進度儲存在瀏覽器本機，因此其他瀏覽器設定檔或裝置會有各自獨立的本機進度，除非未來加入帳號系統。",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只要顏色與徽章在可見的時機窗口內對齊，脈衝就會成功。",
-  "The nearest marker did not match both required properties inside the window.": "最近的標記在窗口內沒有同時符合兩項必要屬性。"
-};
-Object.assign(window.WeightPlayGameRuntimeLocales["zh-Hant"], {
+  "The nearest marker did not match both required properties inside the window.": "最近的標記在窗口內沒有同時符合兩項必要屬性。",
   "Numbered-Node Route Puzzle": "編號節點航線謎題",
   "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "依序連接所有編號節點、避開紅色封鎖航線，抵達醒目的目標碼頭。",
   "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "在雲際天空港，每個班次都是一道航線謎題：引導動物飛船抵達標示的碼頭。",
@@ -9469,5 +9467,8 @@ Object.assign(window.WeightPlayGameRuntimeLocales["zh-Hant"], {
   "What makes a route valid?": "怎樣才算有效航線？",
   "What causes an Error?": "什麼情況會增加錯誤？",
   "What happens after three Errors?": "累積三個錯誤後會怎樣？",
-  "How many shifts are there?": "共有幾個班次？"
-});
+  "How many shifts are there?": "共有幾個班次？",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw once. Empty your hand first to win.": "打出符合目前花色或點數的牌；任何 8 都可讓你選擇下一個花色。沒有合法牌時抽一張。先出完手牌即可獲勝。",
+  "Match suit or rank, then use an Eight to change the active suit.": "配對目前花色或點數，打出 8 來改變接下來的花色。",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.": "打出符合目前花色或點數的牌；任何 8 都可讓你選擇下一個花色。沒有合法牌時從牌庫抽牌。先出完手牌即可獲勝。"
+};

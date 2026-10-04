@@ -36,9 +36,42 @@
   ];
   const blendArcNamesEn = ["First Light", "Windy Boughs", "Twilight Garden", "Moving Canopy", "Signal Orchard", "Mastery Grove"];
   const blendArcNamesAr = ["الضوء الأول", "أغصان عاصفة", "حديقة الشفق", "مظلة متحركة", "بستان الإشارة", "بستان الإتقان"];
-  const blendLocalizedSeries = (english, arabic) => english.map((name, index) => localeOrder.map((locale) => locale === "ar" ? arabic[index] : name));
-  const blendStageNames = blendLocalizedSeries(blendStageNamesEn, blendStageNamesAr);
-  const blendArcNames = blendLocalizedSeries(blendArcNamesEn, blendArcNamesAr);
+  const blendArcNamesByLocale = {
+    en: blendArcNamesEn,
+    "zh-Hant": ["初光花園", "風中枝椏", "暮色花園", "流動樹冠", "訊號果園", "精通林地"],
+    "zh-Hans": ["初光花园", "风中枝桠", "暮色花园", "流动树冠", "信号果园", "精通林地"],
+    ja: ["最初の光", "風渡る枝", "黄昏の庭", "揺れる樹冠", "合図の果樹園", "熟達の林"],
+    ko: ["첫 빛 정원", "바람 부는 가지", "황혼 정원", "움직이는 나무 덮개", "신호 과수원", "숙련의 숲"],
+    es: ["Jardín de la primera luz", "Ramas al viento", "Jardín del crepúsculo", "Dosel cambiante", "Huerto de señales", "Bosque de dominio"],
+    "pt-BR": ["Jardim da primeira luz", "Ramos ao vento", "Jardim do crepúsculo", "Copa em movimento", "Pomar de sinais", "Bosque de domínio"],
+    fr: ["Jardin de la première lumière", "Branches au vent", "Jardin du crépuscule", "Canopée mouvante", "Verger des signaux", "Bosquet de maîtrise"],
+    de: ["Garten des ersten Lichts", "Windige Zweige", "Dämmerungsgarten", "Wanderndes Blätterdach", "Signal-Obstgarten", "Meisterhain"],
+    it: ["Giardino della prima luce", "Rami al vento", "Giardino del crepuscolo", "Chioma mobile", "Frutteto dei segnali", "Bosco della maestria"],
+    ru: ["Сад первого света", "Ветви на ветру", "Сад сумерек", "Подвижный полог", "Сад сигналов", "Роща мастерства"],
+    hi: ["पहली रोशनी का बगीचा", "हवा में झूमती डालियाँ", "सांझ का बगीचा", "हिलती हुई छतरी", "संकेतों का बगीचा", "कौशल का उपवन"],
+    ar: blendArcNamesAr,
+  };
+  const blendPhaseNamesByLocale = {
+    "zh-Hant": ["配對練習", "位置洗牌", "逆序回想", "三組序列", "限時掃描", "規則組合"],
+    "zh-Hans": ["配对练习", "位置洗牌", "逆序回想", "三组序列", "限时扫描", "规则组合"],
+    ja: ["ペア練習", "位置の入れ替え", "逆順の記憶", "3組の連続入力", "短いスキャン時間", "ルールの組み合わせ"],
+    ko: ["짝 맞추기 연습", "위치 섞기", "역순 기억", "세 쌍 연속 입력", "짧아진 스캔 시간", "규칙 결합"],
+    es: ["Práctica de parejas", "Posiciones mezcladas", "Recuerdo inverso", "Secuencia de tres parejas", "Escaneo más rápido", "Reglas combinadas"],
+    "pt-BR": ["Prática de pares", "Posições embaralhadas", "Ordem inversa", "Sequência de três pares", "Varredura mais rápida", "Regras combinadas"],
+    fr: ["Exercice des paires", "Positions mélangées", "Rappel inversé", "Séquence de trois paires", "Scan accéléré", "Règles combinées"],
+    de: ["Paare üben", "Positionen wechseln", "Rückwärts erinnern", "Folge aus drei Paaren", "Kürzeres Scanfenster", "Kombinierte Regeln"],
+    it: ["Allenamento con le coppie", "Posizioni mescolate", "Ordine inverso", "Sequenza di tre coppie", "Scansione più rapida", "Regole combinate"],
+    ru: ["Тренировка пар", "Перемешанные позиции", "Обратный порядок", "Последовательность из трёх пар", "Быстрое сканирование", "Сочетание правил"],
+    hi: ["जोड़ी बनाने का अभ्यास", "बदली हुई जगहें", "उल्टा क्रम याद करें", "तीन जोड़ियों का क्रम", "तेज़ स्कैन", "मिले-जुले नियम"],
+    ar: ["تدريب المطابقة", "مواقع متبدلة", "تذكّر عكسي", "تسلسل من ثلاثة أزواج", "مسح أسرع", "قواعد مجتمعة"],
+  };
+  const blendStageNames = blendStageNamesEn.map((name, index) => localeOrder.map((locale) => {
+    if (locale === "en") return name;
+    if (locale === "ar") return blendStageNamesAr[index];
+    const phase = blendPhaseNamesByLocale[locale][Math.floor(index / 5)];
+    return `${phase} · ${index + 1}`;
+  }));
+  const blendArcNames = blendArcNamesEn.map((_name, index) => localeOrder.map((locale) => blendArcNamesByLocale[locale][index]));
   const gameText = {
     "animal-hoop-league": {
       title: ["Animal Hoop League", "動物灌籃聯盟", "动物灌篮联盟", "アニマル・フープリーグ", "애니멀 후프 리그", "Liga Animal de Aros", "Liga Animal de Cestas", "Ligue Animale du Panier", "Tierische Korbliga", "Lega Animale del Canestro", "Звериная лига колец", "एनिमल हूप लीग", "دوري سلال الحيوانات"],
@@ -84,7 +117,7 @@
     },
     "animal-moonlight-workshop": {
       title: ["Moonlight Workshop Escape", "月光工坊逃脫", "月光工坊逃脱", "月明かり工房の脱出", "달빛 공방 탈출", "Escape del Taller Lunar", "Fuga da Oficina Lunar", "Évasion de l’Atelier Lunaire", "Flucht aus der Mondwerkstatt", "Fuga dall’Officina Lunare", "Побег из лунной мастерской", "मूनलाइट वर्कशॉप एस्केप", "الهروب من ورشة ضوء القمر"],
-      lede: ["Route Rux across switches, collect the key, and open the workshop door.", "規劃 Rux 的路線，踩亮開關、取得鑰匙並開啟工坊大門。", "规划 Rux 的路线，踩亮开关、取得钥匙并开启工坊大门。", "ルクスを導き、スイッチを踏み、鍵を取って工房の扉を開けよう。", "룩스의 길을 계획해 스위치를 켜고 열쇠를 얻어 공방 문을 여세요.", "Guía a Rux por los interruptores, recoge la llave y abre la puerta.", "Guie Rux pelos interruptores, pegue a chave e abra a porta.", "Guide Rux sur les interrupteurs, prends la clé et ouvre la porte.", "Führe Rux über Schalter, hole den Schlüssel und öffne das Tor.", "Guida Rux sugli interruttori, prendi la chiave e apri la porta.", "Проведите Рукса по переключателям, возьмите ключ и откройте дверь.", "रक्स को स्विचों तक ले जाएँ, चाबी लें और कार्यशाला का दरवाज़ा खोलें।", "وجّه روكس عبر المفاتيح واجمع المفتاح وافتح باب الورشة."],
+      lede: ["Route Rux through six fixed rooms: light every switch, take the key, then reach the exit within the move limit.", "帶領 Rux 依序闖過六個固定房間：點亮所有開關、取得鑰匙，再於步數用盡前抵達出口。", "带领 Rux 依序闯过六个固定房间：点亮所有开关、取得钥匙，再在步数用尽前抵达出口。", "Ruxを6つの固定された部屋へ導き、すべてのスイッチを点灯し、鍵を取って手数が尽きる前に出口へ。", "Rux를 여섯 개의 고정 방으로 이끄세요. 모든 스위치를 켜고 열쇠를 얻은 뒤 이동 제한 안에 출구에 도착하세요.", "Guía a Rux por seis salas fijas: activa todos los interruptores, toma la llave y llega a la salida dentro del límite de movimientos.", "Guie Rux por seis salas fixas: acenda todos os interruptores, pegue a chave e chegue à saída dentro do limite de movimentos.", "Guide Rux dans six salles fixes : active tous les interrupteurs, prends la clé et atteins la sortie dans la limite de déplacements.", "Führe Rux durch sechs feste Räume: Aktiviere alle Schalter, hole den Schlüssel und erreiche den Ausgang innerhalb des Zuglimits.", "Guida Rux in sei stanze fisse: attiva tutti gli interruttori, prendi la chiave e raggiungi l’uscita entro il limite di mosse.", "Проведите Рукса через шесть комнат: включите все переключатели, возьмите ключ и доберитесь до выхода в пределах лимита ходов.", "Rux को छह तय कमरों से ले जाएँ: सभी स्विच जलाएँ, चाबी लें और चाल सीमा के भीतर निकास तक पहुँचें।", "وجّه روكس عبر ست غرف ثابتة: أضئ كل المفاتيح وخذ المفتاح وبلغ المخرج ضمن حدّ الحركات."],
       guide: ["Use arrows, WASD, or the pad. Read walls, numbered gates, ice, portals, and switch order; light every switch, take the key, then exit within the move budget.", "使用方向鍵、WASD 或畫面方向盤；看懂牆、數字門、冰軌、傳送門與開關順序，在步數內點亮全部開關、拿鑰匙並離開。", "使用方向键、WASD 或画面方向盘；看懂墙、数字门、冰轨、传送门与开关顺序，在步数内点亮全部开关、拿钥匙并离开。", "矢印、WASD、画面パッドで移動。壁、数字ゲート、氷、ポータル、スイッチ順を読み、手数内に全点灯・鍵・出口を達成します。", "화살표, WASD 또는 패드로 이동하세요. 벽, 숫자 문, 얼음, 포털, 스위치 순서를 읽고 제한 안에 모두 켜서 열쇠를 얻고 탈출하세요.", "Usa flechas, WASD o el control. Lee muros, puertas numeradas, hielo, portales y orden; enciende todo, toma la llave y sal dentro del límite.", "Use setas, WASD ou o controle. Leia paredes, portões numerados, gelo, portais e ordem; acenda tudo, pegue a chave e saia no limite.", "Utilise flèches, WASD ou le pavé. Lis murs, portes numérotées, glace, portails et ordre ; allume tout, prends la clé et sors à temps.", "Nutze Pfeile, WASD oder das Steuerkreuz. Beachte Wände, Zahlentore, Eis, Portale und Reihenfolge; aktiviere alles, hole den Schlüssel und entkomme im Limit.", "Usa frecce, WASD o il comando. Leggi muri, cancelli numerati, ghiaccio, portali e ordine; accendi tutto, prendi la chiave ed esci nel limite.", "Используйте стрелки, WASD или панель. Учитывайте стены, ворота, лёд, порталы и порядок; зажгите всё, возьмите ключ и выйдите за лимит.", "तीर, WASD या पैड से चलें। दीवार, अंकित द्वार, बर्फ, पोर्टल और क्रम समझें; सीमा में सभी स्विच जलाकर चाबी लें और निकलें।", "استخدم الأسهم أو WASD أو اللوحة. راقب الجدران والبوابات المرقمة والجليد والبوابات وترتيب المفاتيح؛ أضئها وخذ المفتاح واخرج ضمن الحد."],
     },
     "animal-chameleon-blend": {
@@ -147,7 +180,7 @@
     },
     "animal-habitat-builder": {
       title: ["Habitat Builder", "棲地建造師", "栖地建造师", "ハビタット・ビルダー", "서식지 빌더", "Constructor de Hábitats", "Construtor de Habitats", "Bâtisseur d’Habitats", "Lebensraum-Baumeister", "Costruttore di Habitat", "Строитель среды", "हैबिटैट बिल्डर", "باني المواطن"],
-      lede: ["Place water, shelter, meadow, and forest tiles so every visiting animal has what it needs.", "配置水源、庇護所、草地與森林，讓每隻造訪的動物都獲得所需環境。", "配置水源、庇护所、草地与森林，让每只造访的动物都获得所需环境。", "水・隠れ家・草地・森を配置し、訪れる動物の必要条件を満たそう。", "물, 쉼터, 초원, 숲 타일을 놓아 모든 동물의 필요를 채우세요.", "Coloca agua, refugio, pradera y bosque para cubrir las necesidades de cada animal.", "Coloque água, abrigo, campo e floresta para atender cada animal.", "Place eau, abri, prairie et forêt pour répondre aux besoins de chaque animal.", "Platziere Wasser, Schutz, Wiese und Wald für alle Tiere.", "Posiziona acqua, rifugio, prato e foresta per soddisfare ogni animale.", "Размещайте воду, укрытия, луга и лес, чтобы помочь всем животным.", "पानी, आश्रय, घास और जंगल टाइलें लगाएँ ताकि हर जानवर की जरूरत पूरी हो।", "ضع الماء والمأوى والمرج والغابة لتلبية احتياجات كل حيوان."],
+      lede: ["Place water, meadow, forest, and shelter tiles to meet each reserve's target counts and visible ecology checks within its move limit.", "配置水域、草地、森林與庇護所板塊，滿足各保護區的目標數量與生態檢查，並留在步數上限內。", "配置水域、草地、森林和庇护所板块，满足各保护区的目标数量与生态检查，并控制在步数上限内。", "水・草地・森・隠れ家のタイルを置き、保護区ごとの必要数と生態チェックを手数内に満たします。", "물, 초원, 숲, 쉼터 타일을 놓아 보호구역별 수량과 생태 검사를 제한된 이동 안에 완료하세요.", "Coloca agua, pradera, bosque y refugio para cumplir las cantidades y reglas ecológicas de cada reserva dentro del límite de movimientos.", "Posicione água, campo, floresta e abrigo para cumprir as quantidades e regras ecológicas de cada reserva dentro do limite de jogadas.", "Place l’eau, la prairie, la forêt et les abris pour respecter les quantités et règles écologiques de chaque réserve avant la limite de coups.", "Platziere Wasser, Wiese, Wald und Schutz, um die Mengen und Ökologie-Regeln jedes Reservats im Zuglimit zu erfüllen.", "Posiziona acqua, prato, foresta e rifugio per soddisfare quantità e regole ecologiche di ogni riserva entro il limite di mosse.", "Размещайте воду, луг, лес и укрытия, чтобы выполнить нормы и экологические правила каждого заповедника за отведённое число ходов.", "पानी, घास, जंगल और आश्रय की टाइलें रखकर हर अभयारण्य की मात्रा और पारिस्थितिकी जाँचें चाल-सीमा के भीतर पूरी करें।", "ضع بلاطات الماء والمرج والغابة والمأوى لتلبية الكميات والقواعد البيئية في كل محمية ضمن حد الحركات."],
       guide: ["Meet the quantities and visible ecology rules: connect water or forest chains, span water between edges, place edge forest, shelter beside forest, and meadow beside water. Crossed cells cannot be built on.", "滿足數量與可見生態規則：連接水域或森林、讓水域跨越兩側、在邊緣種森林、庇護所鄰接森林、草地鄰接水域；叉號格不可建造。", "满足数量与可见生态规则：连接水域或森林、让水域跨越两侧、在边缘种森林、庇护所邻接森林、草地邻接水域；叉号格不可建造。", "数量と生態ルールを満たします。水／森を連結、水を左右へ接続、端に森、森の隣に隠れ家、水の隣に草地。×マスは建設不可です。", "수량과 생태 규칙을 채우세요. 물/숲 연결, 양쪽 물길, 가장자리 숲, 숲 옆 쉼터, 물 옆 초원이 필요하며 X 칸에는 지을 수 없습니다.", "Cumple cantidades y reglas: conecta agua o bosque, lleva agua entre bordes, pon bosque en el borde, refugio junto al bosque y pradera junto al agua. No construyas en X.", "Cumpra quantidades e regras: conecte água ou floresta, atravesse água entre bordas, ponha floresta na borda, abrigo junto à floresta e campo junto à água. Não construa no X.", "Respecte quantités et règles : relie eau ou forêt, traverse d’un bord à l’autre, mets la forêt en bordure, l’abri près de la forêt et la prairie près de l’eau. Les cases X sont bloquées.", "Erfülle Mengen und Regeln: Wasser/Wald verbinden, Wasser zwischen Rändern spannen, Wald am Rand, Schutz neben Wald und Wiese neben Wasser. X-Felder sind gesperrt.", "Rispetta quantità e regole: collega acqua o foresta, unisci i bordi con l’acqua, metti foresta sul bordo, rifugio vicino alla foresta e prato vicino all’acqua. Le caselle X sono bloccate.", "Выполните нормы и правила: соединяйте воду/лес, ведите воду между краями, лес ставьте у края, укрытие — у леса, луг — у воды. Клетки X закрыты.", "मात्रा और नियम पूरे करें: पानी/जंगल जोड़ें, पानी से दोनों किनारे मिलाएँ, किनारे पर जंगल, जंगल के पास आश्रय और पानी के पास घास रखें। X खानों पर निर्माण नहीं होता।", "حقق الكميات والقواعد: صِل الماء أو الغابة، ومد الماء بين الحافتين، وضع الغابة عند الحافة والمأوى قرب الغابة والمرج قرب الماء. خانات X محظورة."],
       tiles: [
         ["Water", "水域", "水域", "水", "물", "Agua", "Água", "Eau", "Wasser", "Acqua", "Вода", "पानी", "ماء"],
@@ -167,6 +200,7 @@
   function apply() {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    document.querySelectorAll(".locale-picker > span").forEach((node) => { node.textContent = c()[0]; });
     const title = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale] || at(game.title);
     document.title = `${title} | WeightPlay`;
     document.querySelectorAll("[data-m5-title]").forEach((node) => { node.textContent = title; node.setAttribute("data-runtime-localize", "off"); });
@@ -177,7 +211,7 @@
     document.querySelectorAll("[data-m5-aria='backMain']").forEach((node) => node.setAttribute("aria-label", c()[3]));
     document.querySelectorAll("[data-m5-aria='backStages']").forEach((node) => node.setAttribute("aria-label", c()[4]));
     document.querySelectorAll("[data-m5-aria='battleUtility']").forEach((node) => node.setAttribute("aria-label", c()[22]));
-    const select = document.getElementById("localeSelect"); if (select) select.value = locale;
+    const select = document.getElementById("localeSelect"); if (select) { select.value = locale; select.setAttribute("aria-label", c()[0]); }
     if (game.comparisonSummary) {
       const own = (value) => String(value || "").replaceAll("{title}", title);
       document.querySelectorAll("[data-wp-comparison-heading]").forEach((node) => { node.textContent = at(game.comparisonHeading); });

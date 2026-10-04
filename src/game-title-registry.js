@@ -1144,7 +1144,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "색칠 공부 스튜디오",
     "es": "Estudio para colorear",
     "pt-BR": "Estúdio de coloração",
-    "fr": "Atelier de coloriage animalier",
+    "fr": "Studio de coloriage d'",
     "de": "Tierfärbestudio",
     "it": "Studio di colorazione",
     "ru": "Студия раскраски животных",
@@ -1160,12 +1160,12 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "나사 워크숍",
     "es": "Taller de Tornillos",
     "pt-BR": "Oficina de Parafusos",
-    "fr": "Atelier de vis pour",
-    "de": "Werkstatt für Tierschrauben",
-    "it": "Laboratorio di viti per",
-    "ru": "Мастерская винтов для животных",
+    "fr": "Atelier des vis",
+    "de": "Schrauben-Werkstatt",
+    "it": "Officina delle viti",
+    "ru": "Мастерская винтов",
     "hi": "पेंच कार्यशाला",
-    "ar": "ورشة المسمار الحيواني"
+    "ar": "ورشة البراغي"
   },
   "animal-parking-patrol": {
     "__localizedExact": true,
@@ -1386,8 +1386,8 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "pt-BR": "Cafe Rush",
     "fr": "Ruée vers le café",
     "de": "Animal Cafe Rush",
-    "it": "Corsa al caffè",
-    "ru": "Кафе Раш",
+    "it": "Corsa agli al caffè",
+    "ru": "Животное Кафе Раш",
     "hi": "कैफे रश",
     "ar": "مقهى الحيوان راش"
   },
@@ -2846,5 +2846,37 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Castle Cascade",
     "hi": "Castle Cascade",
     "ar": "Castle Cascade"
+  },
+  "traffic-jam-diner": {
+    "__localizedExact": true,
+    "en": "Traffic Jam Diner",
+    "zh-Hant": "交通塞車餐館",
+    "zh-Hans": "交通堵塞餐馆",
+    "ja": "渋滞ダイナー",
+    "ko": "교통 체증 다이너",
+    "es": "Comedor del atasco",
+    "pt-BR": "Lanchonete do Engarrafamento",
+    "fr": "Le Diner des Embouteillages",
+    "de": "Stau-Diner",
+    "it": "La Tavola del Traffico",
+    "ru": "Закусочная в пробке",
+    "hi": "ट्रैफिक डाइनर",
+    "ar": "مطعم الازدحام"
+  },
+  "robot-dog-showtime": {
+    "__localizedExact": true,
+    "en": "Robot Dog Showtime",
+    "zh-Hant": "機器狗才藝秀",
+    "zh-Hans": "机器狗才艺秀",
+    "ja": "ロボット犬のショータイム",
+    "ko": "로봇 강아지 쇼타임",
+    "es": "El espectáculo del perro robot",
+    "pt-BR": "Show do Cão Robô",
+    "fr": "Le Spectacle du Chien Robot",
+    "de": "Die Robot-Hundeshow",
+    "it": "Lo Show del Cane Robot",
+    "ru": "Шоу робопса",
+    "hi": "रोबोट कुत्ते का शो",
+    "ar": "عرض الكلب الآلي"
   }
 };

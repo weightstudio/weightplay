@@ -25,7 +25,9 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="description" content="在响应式 8×8 棋盘上进行完整西洋跳棋对局，包含强制吃子、连跳、升王与会回应的真实对手。" />
+<meta name="weightplay-game-version" content="v21">
+<meta name="weightplay-interface-version" content="7">
+<meta name="description" content="玩一场完整的 8×8 西洋跳棋：规划斜向移动、吃掉可吃的棋子，连续跳吃并升王。" />
 <title>西洋跳棋 | WeightPlay</title>
 <style>
   .preview-art { overflow: hidden; }
@@ -37,22 +39,21 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="西洋跳棋 | WeightPlay" />
-    <meta property="og:description" content="在响应式 8×8 棋盘上进行完整西洋跳棋对局，包含强制吃子、连跳、升王与会回应的真实对手。" />
+    <meta property="og:description" content="玩一场完整的 8×8 西洋跳棋：规划斜向移动、吃掉可吃的棋子，连续跳吃并升王。" />
     <meta property="og:url" content="https://weightplay.com/zh-cn/games/checkers/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="西洋跳棋 | WeightPlay" />
-    <meta name="twitter:description" content="在响应式 8×8 棋盘上进行完整西洋跳棋对局，包含强制吃子、连跳、升王与会回应的真实对手。" />
+    <meta name="twitter:description" content="玩一场完整的 8×8 西洋跳棋：规划斜向移动、吃掉可吃的棋子，连续跳吃并升王。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "西洋跳棋",
-  "alternateName": "Checkers",
   "url": "https://weightplay.com/zh-cn/games/checkers/",
   "image": "https://weightplay.com/assets/interface7-redrawn/checkers.webp",
-  "description": "在响应式 8×8 棋盘上进行完整西洋跳棋对局，包含强制吃子、连跳、升王与会回应的真实对手。",
+  "description": "玩一场完整的 8×8 西洋跳棋：规划斜向移动、吃掉可吃的棋子，连续跳吃并升王。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,10 +63,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "经典",
-    "益智",
-    "策略",
-    "家庭"
+    "强制吃子",
+    "连续跳吃",
+    "回合制策略"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -91,16 +91,17 @@
   <section id="battleScreen" class="screen battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
+      <div class="control-row checkers-battle-actions"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div>
     </div>
+    <section id="resultScreen" class="screen result-panel" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="homeBtn" class="secondary"></button><button id="retryBtn" class="primary"></button></div></div>
+    </section>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-  </section>
-  <section id="resultScreen" class="screen" hidden>
-    <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div>
   </section>
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
@@ -113,22 +114,23 @@
 <section class="game-page-info game-page-info-static" aria-label="西洋跳棋 游戏信息">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>西洋跳棋</h2><p>在响应式 8×8 棋盘上进行完整西洋跳棋对局，包含强制吃子、连跳、升王与会回应的真实对手。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>完整西洋跳棋对局</strong></div><div class="game-info-fact"><span>类型</span><strong>经典 · 益智 · 策略 · 家庭</strong></div><div class="game-info-fact"><span>难度</span><strong>渐进挑战</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>5～15 分钟／局</strong></div><div class="game-info-fact"><span>练习能力</span><strong>规划 · 模式识别 · 专注</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>西洋跳棋</h2><p>在 8×8 西洋跳棋对局中观察斜线：只要有棋子可吃就必须吃，并用连续跳吃与升王开辟安全路线。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>强制吃子</span><span>连续跳吃</span><span>回合制策略</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>完整西洋跳棋对局</strong></div><div class="game-info-fact"><span>类型</span><strong>经典 · 益智 · 策略</strong></div><div class="game-info-fact"><span>难度</span><strong>由简单到有挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>5～15 分钟／局</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>The board is a compact 8×8 arena where only the dark squares are playable. You begin with twelve pieces and the rival begins with twelve pieces, so every open diagonal can become an escape route, a trap, or the first link in a capture sequence.</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>Ordinary pieces move one step diagonally forward. A capture jumps over an adjacent rival piece into an empty square and removes that piece. If any capture exists anywhere on the board, non-capturing moves are not legal.</p>
-<p>After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.</p>
-<p>The rival answers after your turn and can make its own capture sequence. The match ends when one side has no pieces or no legal move; a long no-progress sequence can also settle as a draw. Hint marks a legal piece but never chooses the destination for you.</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>Start from Main and study the highlighted gold pieces and the current turn message.</li><li>Select a gold piece with a legal diagonal destination, then select the highlighted landing square.</li><li>If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown.</li><li>Protect a path to the far row, promote to a king, and use the king&#39;s two-way movement to change the shape of the position.</li><li>Use Hint when you need one legal starting piece, or Restart to replay the same match from its opening position.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Before moving, scan every rival piece for a forced capture and count the landing square, not just the jumped piece.</li><li>Avoid advancing one piece alone; keep diagonal support so the rival cannot answer with a free capture.</li><li>During a multi-jump, reassess the next landing square after every jump instead of assuming the first capture is the whole turn.</li><li>Reach promotion with a clear escape square in mind. A king is flexible, but it can still be trapped by a forced capture or blocked diagonal.</li><li>When ahead in pieces, trade safely and reduce the rival&#39;s legal moves; when behind, preserve mobility and search for a promotion race.</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>The opening teaches diagonal movement and the global capture rule. Midgame positions add competing capture choices and multi-jump decisions, while the endgame rewards kings, blocked routes, and move-count awareness.</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>The Checkers preview uses the same legal-move engine for touch, mouse, keyboard focus, Hint, the rival response, and accessible board labels. A selected piece and legal targets remain visually distinct, so the player can understand why a quiet move is unavailable without relying on hidden rules.</p></div>
-      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>Checkers is a general-audience browser strategy game recommended for ages 9+ and family play. No account or purchase is required; the current match and Best record stay in this browser only.</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>进度会保存吗？</dt><dd>是，仅保存在此浏览器中。</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>世界与任务</h3><p>暗格上共有 24 枚棋子：你和对手各 12 枚。每条开放的斜线都可能成为退路、陷阱，或一串吃子的起点。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>普通棋子沿斜线向前移动一格；吃子时，棋子跳过相邻敌棋并落在空格，同时移除被跳过的棋子。只要盘上任一棋子可以吃子，就必须选择吃子的走法。</p>
+<p>吃子后要检查同一枚棋子的新位置；如果还能再吃，就必须继续连续跳吃。棋子到达对面底行后升为王，可以沿斜线前后移动和吃子。 如果这次吃子升王，回合会立即结束。</p>
+<p>对手会在你的回合后按合法走法应对，并优先选择吃子或升王。任一方没有棋子或没有合法走法时，对局结束；长时间没有吃子或升王也可能以和局结束。提示会标出一枚合法棋子，但不会替你选择落点。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>在主画面按“开始游戏”，先看当前回合提示和金色标记。</li><li>选择一枚有合法斜向落点的金色棋子，再选择标出的落点。</li><li>如果有吃子走法，就必须吃；落地后若同一枚棋子还能吃，就继续完成连续跳吃。 如果这次吃子升王，回合会立即结束。</li><li>保留通往对面底行的路线，升王后善用前后移动改变局面。</li><li>需要提示时先看一枚合法起始棋子；要重来则按重新开始，恢复开局。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>出手前检查所有敌棋的吃子机会，并评估落点，而不只看被跳过的棋子。</li><li>别让单枚棋子孤军深入；保持斜线支持，减少对手免费吃子的机会。</li><li>连续跳吃时每次落地都重新检查下一处，不要假定第一次吃子就结束回合。</li><li>推进升王前先留意退路；王棋移动更自由，仍可能被强制吃子或封住斜线。</li><li>领先时安全交换并限制对手走法；落后时保留机动性，寻找升王路线。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>开局先熟悉斜向移动和全盘强制吃子。中盘会出现互相竞争的吃子选择与连续跳吃判断；残局则更看重王棋、封路和每一步的计算。这是一场完整对局，没有另外解锁的关卡。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>国际跳棋使用同一套合法走法引擎处理触控、鼠标、键盘焦点、提示和对手回合。选中的棋子和合法落点使用不同标记，让你能直接看出哪些斜向选择有效，以及为什么出现吃子时不能走安静步。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>无需登录或购买即可游玩。未完成的对局不会保存；只有最佳记录会保留在此浏览器中。清除网站数据可能会删除该记录。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>有吃子时可以不吃吗？</dt><dd>不可以。只要盘上任何一枚棋子能吃子，你就必须选择一种吃子走法。</dd></div><div><dt>连续跳吃何时结束？</dt><dd>同一枚棋子落地后如果还能吃，就必须继续；没有可接续的吃子时，回合才结束。 如果这次吃子升王，回合会立即结束。</dd></div><div><dt>棋子怎样升王？</dt><dd>普通棋子走到对面底行就会升为王，之后可沿斜线前后移动和吃子。</dd></div><div><dt>怎样赢得对局？</dt><dd>让对手没有棋子或没有合法走法即可获胜；长时间没有吃子或升王时可能和局。</dd></div><div><dt>提示会替我走棋吗？</dt><dd>不会。提示只标出一枚合法起始棋子，落点和完整走法仍由你决定。</dd></div><div><dt>对局或最佳记录会保存吗？</dt><dd>未完成对局不会保存；最佳记录只保留在当前浏览器。无需登录或购买。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄灯游戏</strong><span>熄灯游戏是经典 5×5 开关益智游戏：点击一格及其上下左右相邻格，关掉所有灯光。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>四子棋</strong><span>四子棋是经典 7×6 重力棋盘游戏：把棋子落入列中，横向、纵向或斜向连成四子。</span></span></a></div></div>
     </div>
   </section>
 </body>

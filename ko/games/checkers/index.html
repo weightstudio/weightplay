@@ -25,7 +25,9 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="description" content="반응형 8×8 보드에서 강제 잡기, 연속 점프, 킹 승격과 실제로 응수하는 상대가 있는 체커 한 판을 끝까지 플레이하세요." />
+<meta name="weightplay-game-version" content="v21">
+<meta name="weightplay-interface-version" content="7">
+<meta name="description" content="8×8 체커 한 판을 플레이하세요. 대각선 수를 읽고 강제 잡기와 연속 점프를 이어 말들을 킹으로 승격하세요." />
 <title>체커 | WeightPlay</title>
 <style>
   .preview-art { overflow: hidden; }
@@ -37,22 +39,21 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="체커 | WeightPlay" />
-    <meta property="og:description" content="반응형 8×8 보드에서 강제 잡기, 연속 점프, 킹 승격과 실제로 응수하는 상대가 있는 체커 한 판을 끝까지 플레이하세요." />
+    <meta property="og:description" content="8×8 체커 한 판을 플레이하세요. 대각선 수를 읽고 강제 잡기와 연속 점프를 이어 말들을 킹으로 승격하세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/checkers/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="체커 | WeightPlay" />
-    <meta name="twitter:description" content="반응형 8×8 보드에서 강제 잡기, 연속 점프, 킹 승격과 실제로 응수하는 상대가 있는 체커 한 판을 끝까지 플레이하세요." />
+    <meta name="twitter:description" content="8×8 체커 한 판을 플레이하세요. 대각선 수를 읽고 강제 잡기와 연속 점프를 이어 말들을 킹으로 승격하세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/checkers.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "체커",
-  "alternateName": "Checkers",
   "url": "https://weightplay.com/ko/games/checkers/",
   "image": "https://weightplay.com/assets/interface7-redrawn/checkers.webp",
-  "description": "반응형 8×8 보드에서 강제 잡기, 연속 점프, 킹 승격과 실제로 응수하는 상대가 있는 체커 한 판을 끝까지 플레이하세요.",
+  "description": "8×8 체커 한 판을 플레이하세요. 대각선 수를 읽고 강제 잡기와 연속 점프를 이어 말들을 킹으로 승격하세요.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,10 +63,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "클래식",
-    "퍼즐",
-    "전략",
-    "가족"
+    "강제 잡기",
+    "연속 점프",
+    "턴제 보드 전략"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -91,16 +91,17 @@
   <section id="battleScreen" class="screen battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
+      <div class="control-row checkers-battle-actions"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary" data-wp-primary-action></button></div>
     </div>
+    <section id="resultScreen" class="screen result-panel" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="homeBtn" class="secondary"></button><button id="retryBtn" class="primary"></button></div></div>
+    </section>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-  </section>
-  <section id="resultScreen" class="screen" hidden>
-    <div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div>
   </section>
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
@@ -113,22 +114,23 @@
 <section class="game-page-info game-page-info-static" aria-label="체커 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>체커</h2><p>반응형 8×8 보드에서 강제 잡기, 연속 점프, 킹 승격과 실제로 응수하는 상대가 있는 체커 한 판을 끝까지 플레이하세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>완전한 체커 대국</strong></div><div class="game-info-fact"><span>장르</span><strong>클래식 · 퍼즐 · 전략 · 가족</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉬움부터 도전적</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>한 판 5~15분</strong></div><div class="game-info-fact"><span>연습 능력</span><strong>계획 · 패턴 인식 · 집중</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>체커</h2><p>8×8 체커 한 판을 끝까지 플레이하세요. 잡을 수 있는 말은 반드시 잡고, 연속 점프와 킹 승격으로 안전한 길을 만드세요.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>강제 잡기</span><span>연속 점프</span><span>턴제 보드 전략</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>체커 한 판 완주</strong></div><div class="game-info-fact"><span>장르</span><strong>클래식 · 퍼즐 · 전략</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉬움부터 도전적인 수준까지</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>한 판 5~15분</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>The board is a compact 8×8 arena where only the dark squares are playable. You begin with twelve pieces and the rival begins with twelve pieces, so every open diagonal can become an escape route, a trap, or the first link in a capture sequence.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>Ordinary pieces move one step diagonally forward. A capture jumps over an adjacent rival piece into an empty square and removes that piece. If any capture exists anywhere on the board, non-capturing moves are not legal.</p>
-<p>After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.</p>
-<p>The rival answers after your turn and can make its own capture sequence. The match ends when one side has no pieces or no legal move; a long no-progress sequence can also settle as a draw. Hint marks a legal piece but never chooses the destination for you.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>Start from Main and study the highlighted gold pieces and the current turn message.</li><li>Select a gold piece with a legal diagonal destination, then select the highlighted landing square.</li><li>If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown.</li><li>Protect a path to the far row, promote to a king, and use the king&#39;s two-way movement to change the shape of the position.</li><li>Use Hint when you need one legal starting piece, or Restart to replay the same match from its opening position.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>Before moving, scan every rival piece for a forced capture and count the landing square, not just the jumped piece.</li><li>Avoid advancing one piece alone; keep diagonal support so the rival cannot answer with a free capture.</li><li>During a multi-jump, reassess the next landing square after every jump instead of assuming the first capture is the whole turn.</li><li>Reach promotion with a clear escape square in mind. A king is flexible, but it can still be trapped by a forced capture or blocked diagonal.</li><li>When ahead in pieces, trade safely and reduce the rival&#39;s legal moves; when behind, preserve mobility and search for a promotion race.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>The opening teaches diagonal movement and the global capture rule. Midgame positions add competing capture choices and multi-jump decisions, while the endgame rewards kings, blocked routes, and move-count awareness.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>The Checkers preview uses the same legal-move engine for touch, mouse, keyboard focus, Hint, the rival response, and accessible board labels. A selected piece and legal targets remain visually distinct, so the player can understand why a quiet move is unavailable without relying on hidden rules.</p></div>
-      <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>Checkers is a general-audience browser strategy game recommended for ages 9+ and family play. No account or purchase is required; the current match and Best record stay in this browser only.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예. 이 브라우저에만 저장됩니다.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>세계와 목표</h3><p>8×8 보드에서는 어두운 칸만 사용할 수 있습니다. 양쪽은 각각 말 12개로 시작하며, 열린 대각선은 탈출로이자 함정 또는 연속 잡기의 시작이 될 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>일반 말은 대각선 앞으로 한 칸 이동합니다. 잡을 때는 인접한 상대 말을 뛰어넘어 빈칸에 착지하고 그 말을 제거합니다. 보드 어디서든 잡을 수 있는 말이 있으면 잡지 않는 수는 선택할 수 없습니다.</p>
+<p>잡은 뒤에는 같은 말의 새 위치를 확인하세요. 다시 잡을 수 있으면 그 말로 연속 점프를 이어 가야 합니다. 상대편 끝줄에 도달하면 킹으로 승격되어 앞뒤 대각선으로 이동하고 잡을 수 있습니다. 그 잡기로 킹이 되면 그 즉시 차례가 끝납니다.</p>
+<p>상대는 합법적인 수로 응수하며 잡기나 승격을 우선할 수 있습니다. 한쪽 말이 모두 없어지거나 둘 수 있는 합법적인 수가 없으면 대국이 끝납니다. 잡기나 승격이 오랫동안 없으면 무승부가 될 수 있습니다. 힌트는 합법적인 시작 말을 표시하지만 목적지를 대신 선택하지는 않습니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>메인에서 게임 시작을 누르고 현재 차례와 금색으로 표시된 말을 확인하세요.</li><li>대각선으로 합법적인 목적지가 있는 금색 말을 선택한 다음 강조된 도착 칸을 누르세요.</li><li>잡을 수 있으면 반드시 잡아야 합니다. 착지 후 같은 말이 또 잡을 수 있으면 연속 점프를 계속하세요. 그 잡기로 킹이 되면 그 즉시 차례가 끝납니다.</li><li>상대편 끝줄까지 가는 길을 지키고 킹이 되면 앞뒤 이동으로 보드의 모양을 바꿔 보세요.</li><li>막히면 힌트로 합법적인 말 하나를 확인하세요. 다시 시작하면 같은 초기 배치에서 새로 시작합니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>두기 전에 상대 말 전체의 강제 잡기 가능성을 살피고, 뛰어넘을 말뿐 아니라 착지 칸도 계산하세요.</li><li>한 말을 혼자 전진시키지 말고 대각선 지원을 남겨 공짜로 잡히지 않도록 하세요.</li><li>연속 점프 중에는 착지할 때마다 다음 칸을 다시 확인하세요. 첫 잡기가 차례의 끝은 아닙니다.</li><li>킹 승격을 노릴 때 탈출 칸도 남겨 두세요. 킹은 움직임이 넓지만 강제 잡기나 막힌 대각선에 갇힐 수 있습니다.</li><li>말이 앞설 때는 안전하게 교환하고 상대의 합법 수를 줄이세요. 뒤처졌다면 기동성과 승격 기회를 지키세요.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>초반에는 대각선 이동과 보드 전체의 강제 잡기 규칙을 익힙니다. 중반에는 경쟁하는 잡기 선택과 연속 점프 판단이 늘고, 후반에는 킹과 길막기, 수읽기가 중요해집니다. 별도의 스테이지가 아니라 매번 한 판을 끝까지 플레이합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>터치, 마우스, 키보드 포커스, 힌트, 상대의 응수는 모두 같은 합법 수 엔진을 사용합니다. 선택한 말과 가능한 도착 칸을 다르게 표시해 잡을 수 있을 때 일반 이동을 할 수 없는 이유를 보드에서 확인할 수 있습니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>로그인이나 구매 없이 플레이할 수 있습니다. 진행 중인 대국은 저장되지 않으며 최고 기록만 이 브라우저에 남습니다. 사이트 데이터를 지우면 기록이 사라질 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>잡을 수 있으면 반드시 잡아야 하나요?</dt><dd>네. 보드 어디서든 잡을 수 있는 수가 있으면 잡는 수를 선택해야 합니다.</dd></div><div><dt>연속 점프는 언제 끝나나요?</dt><dd>같은 말이 착지한 뒤 다시 잡을 수 있는 동안 계속합니다. 이어서 잡을 수 없으면 차례가 끝납니다. 그 잡기로 킹이 되면 그 즉시 차례가 끝납니다.</dd></div><div><dt>킹은 어떻게 되나요?</dt><dd>상대편 끝줄에 도달하면 킹으로 승격됩니다. 이후 앞뒤 대각선으로 이동하고 잡을 수 있습니다.</dd></div><div><dt>어떻게 이기나요?</dt><dd>상대의 말을 모두 잡거나 상대에게 합법적인 수가 남지 않으면 이깁니다. 잡기나 승격이 오랫동안 없으면 무승부가 될 수 있습니다.</dd></div><div><dt>힌트가 대신 움직이나요?</dt><dd>아니요. 힌트는 합법적인 시작 말 하나를 표시하며 도착 칸은 직접 선택해야 합니다.</dd></div><div><dt>대국이나 최고 기록이 저장되나요?</dt><dd>진행 중인 대국은 저장되지 않고 최고 기록만 현재 브라우저에 저장됩니다. 로그인이나 구매는 필요하지 않습니다.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>라이트 아웃</strong><span>라이트 아웃은 칸과 상하좌우 이웃을 바꿔 모든 불을 끄는 5×5 클래식 스위치 퍼즐입니다.</span></span></a><a class="game-info-related-card" href="/ko/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>사목</strong><span>사목은 7×6 중력 보드에 말을 떨어뜨려 가로, 세로 또는 대각선으로 네 개를 잇는 클래식 게임입니다.</span></span></a></div></div>
     </div>
   </section>
 </body>

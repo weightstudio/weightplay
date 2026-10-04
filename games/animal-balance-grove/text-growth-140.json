@@ -1,0 +1,785 @@
+{
+  "version": "1.4.0",
+  "locales": {
+    "en": {
+      "title": "Balance Grove",
+      "description": "Choose stones whose values total 5, 7, or 9 to balance three forest bridges. No timer; best checks save in this browser.",
+      "tags": [
+        "Subset-sum puzzle",
+        "Weight-balance puzzle",
+        "Stone-selection puzzle",
+        "Casual logic game"
+      ],
+      "geoSummary": "Balance Grove is a stone-selection puzzle with three bridges targeted at 5, 7, and 9. Select stones whose values add to the displayed total and check the set.",
+      "intro": "Help Taro steady three forest bridges. Read each target, choose a set of named stones that adds to it, and check your balance.",
+      "guide": [
+        {
+          "heading": "Mission",
+          "body": "Balance the stones on each grove's scale to steady its bridge. The visible targets are 5, 7, and 9."
+        },
+        {
+          "heading": "Play loop",
+          "body": "Tap or click stones to select a non-empty set, then choose Check. A wrong total clears the set safely so you can try another combination."
+        },
+        {
+          "heading": "Three groves",
+          "body": "The first grove uses stone values 1–4 and targets 5. The second uses 1–5 and targets 7. The third uses 1–6 and targets 9. A correct check advances and unlocks the next grove."
+        },
+        {
+          "heading": "A quick example",
+          "body": "For target 5, an acorn worth 1 and a shell tile worth 5 would total 6, so that set is too heavy. Try one shell tile by itself, or another set totaling exactly 5."
+        },
+        {
+          "heading": "A quiet design",
+          "body": "There is no timer or lives system. Each check shows whether the selected values match the target; an incorrect selection clears for a fresh attempt."
+        },
+        {
+          "heading": "Player and Save Information",
+          "body": "Play with taps or a mouse; no account is needed. Only your best check counts are saved in localStorage in this browser, and your audio preference is saved locally. Clearing site data or switching browsers may remove these settings and records."
+        }
+      ],
+      "faq": [
+        [
+          "What totals do the bridges need?",
+          "The three visible targets are 5, 7, and 9."
+        ],
+        [
+          "What are the stone values?",
+          "Acorn is 1, pebble 2, twig bundle 3, berry basket 4, shell tile 5, and firefly jar 6."
+        ],
+        [
+          "What happens after a wrong check?",
+          "The selected set clears safely, so you can choose a different non-empty set and check again."
+        ],
+        [
+          "Is there a timer or lives limit?",
+          "No. The game has no timer or lives system."
+        ],
+        [
+          "What is saved?",
+          "Only best check counts and the audio preference are saved locally in this browser. Site-data clearing or a browser switch may remove them."
+        ]
+      ]
+    },
+    "zh-Hant": {
+      "title": "平衡林地",
+      "description": "選出總值為 5、7 或 9 的石頭，平衡三座森林小橋。沒有計時；最佳檢查次數保存在此瀏覽器。",
+      "tags": [
+        "子集合總和謎題",
+        "重量平衡謎題",
+        "選石謎題",
+        "休閒邏輯遊戲"
+      ],
+      "geoSummary": "《平衡林地》是選石謎題，三座小橋的目標總值為 5、7、9。選取數值總和符合目標的石頭，再進行檢查。",
+      "intro": "幫塔羅穩住三座森林小橋。讀取每個目標，選出總值相符的一組石頭，再檢查平衡。",
+      "guide": [
+        {
+          "heading": "任務",
+          "body": "平衡每座林地秤上的石頭，穩住小橋。畫面上的目標依序是 5、7、9。"
+        },
+        {
+          "heading": "遊玩流程",
+          "body": "點選石頭，選出至少一顆，再按下「檢查平衡」。總值不符時，選取會安全清空，讓你換一組再試。"
+        },
+        {
+          "heading": "三座林地",
+          "body": "第一座使用 1–4 的石頭值，目標是 5；第二座使用 1–5，目標是 7；第三座使用 1–6，目標是 9。檢查正確後會前進並解鎖下一座。"
+        },
+        {
+          "heading": "快速示例",
+          "body": "目標為 5 時，價值 1 的橡果加上價值 5 的苔殼磚，總值是 6，太重了。可以只選一塊苔殼磚，或改選總值剛好為 5 的組合。"
+        },
+        {
+          "heading": "平靜的設計",
+          "body": "遊戲沒有計時器或生命次數。每次檢查都會告訴你所選石頭是否符合目標；選錯時清空後即可重新嘗試。"
+        },
+        {
+          "heading": "玩家與儲存資訊",
+          "body": "可用觸控或滑鼠遊玩，不需要帳號。只有最佳檢查次數會透過 localStorage 保存在此瀏覽器，音效偏好也會在本機保存。清除網站資料或更換瀏覽器可能會移除這些紀錄與設定。"
+        }
+      ],
+      "faq": [
+        [
+          "小橋的目標總值是多少？",
+          "三個畫面目標依序是 5、7、9。"
+        ],
+        [
+          "各種石頭的數值是多少？",
+          "橡果為 1、圓石為 2、樹枝束為 3、莓果籃為 4、苔殼磚為 5、螢火罐為 6。"
+        ],
+        [
+          "檢查錯誤後會怎樣？",
+          "所選組合會安全清空，你可以重新選一組非空組合再檢查。"
+        ],
+        [
+          "有計時或生命次數限制嗎？",
+          "沒有計時器，也沒有生命次數系統。"
+        ],
+        [
+          "遊戲會儲存哪些資料？",
+          "只有最佳檢查次數和音效偏好會在此瀏覽器本機保存。清除網站資料或更換瀏覽器可能會使其消失。"
+        ]
+      ]
+    },
+    "zh-Hans": {
+      "title": "平衡林地",
+      "description": "选出总值为 5、7 或 9 的石头，平衡三座森林小桥。没有计时；最佳检查次数保存在此浏览器。",
+      "tags": [
+        "子集和谜题",
+        "重量平衡谜题",
+        "选石谜题",
+        "休闲逻辑游戏"
+      ],
+      "geoSummary": "《平衡林地》是选石谜题，三座小桥的目标总值为 5、7、9。选取数值总和符合目标的石头，再进行检查。",
+      "intro": "帮塔罗稳住三座森林小桥。读取每个目标，选出总值相符的一组石头，再检查平衡。",
+      "guide": [
+        {
+          "heading": "任务",
+          "body": "平衡每座林地秤上的石头，稳住小桥。画面上的目标依次是 5、7、9。"
+        },
+        {
+          "heading": "游玩流程",
+          "body": "点击石头，选出至少一颗，再点击“检查平衡”。总值不符时，选择会安全清空，让你换一组再试。"
+        },
+        {
+          "heading": "三座林地",
+          "body": "第一座使用 1–4 的石头值，目标是 5；第二座使用 1–5，目标是 7；第三座使用 1–6，目标是 9。检查正确后会前进并解锁下一座。"
+        },
+        {
+          "heading": "快速示例",
+          "body": "目标为 5 时，价值 1 的橡果加上价值 5 的苔壳砖，总值是 6，太重了。可以只选一块苔壳砖，或改选总值刚好为 5 的组合。"
+        },
+        {
+          "heading": "平静的设计",
+          "body": "游戏没有计时器或生命次数。每次检查都会告诉你所选石头是否符合目标；选错时清空后即可重新尝试。"
+        },
+        {
+          "heading": "玩家与保存信息",
+          "body": "可用触控或鼠标游玩，不需要账号。只有最佳检查次数会通过 localStorage 保存在此浏览器，音效偏好也会在本机保存。清除网站数据或更换浏览器可能会移除这些记录和设置。"
+        }
+      ],
+      "faq": [
+        [
+          "小桥的目标总值是多少？",
+          "三个画面目标依次是 5、7、9。"
+        ],
+        [
+          "各种石头的数值是多少？",
+          "橡果为 1、圆石为 2、树枝束为 3、浆果篮为 4、苔壳砖为 5、萤火罐为 6。"
+        ],
+        [
+          "检查错误后会怎样？",
+          "所选组合会安全清空，你可以重新选择一组非空组合再检查。"
+        ],
+        [
+          "有计时或生命次数限制吗？",
+          "没有计时器，也没有生命次数系统。"
+        ],
+        [
+          "游戏会保存哪些数据？",
+          "只有最佳检查次数和音效偏好会在此浏览器本地保存。清除网站数据或更换浏览器可能会使其消失。"
+        ]
+      ]
+    },
+    "ja": {
+      "title": "バランス・グローブ",
+      "description": "石の値を合計して5・7・9の橋を整えます。タイマーはありません。最少チェック数はこのブラウザーに保存されます。",
+      "tags": [
+        "部分和パズル",
+        "重さ合わせパズル",
+        "石選びパズル",
+        "カジュアルなロジックゲーム"
+      ],
+      "geoSummary": "バランス・グローブは石を選ぶパズルです。3つの橋の目標は5、7、9。表示された合計と同じ値になる石を選び、確認します。",
+      "intro": "タロと一緒に、森の3つの橋を安定させましょう。目標を読み、合計が合う石を選んで確認します。",
+      "guide": [
+        {
+          "heading": "ミッション",
+          "body": "森ごとのはかりで石の合計を合わせ、橋を安定させます。表示される目標は5、7、9です。"
+        },
+        {
+          "heading": "遊び方",
+          "body": "石をタップまたはクリックして、1個以上選びます。「バランスを確認」を押してください。合計が違うと選択は安全にクリアされ、別の組み合わせを試せます。"
+        },
+        {
+          "heading": "3つの森",
+          "body": "1つ目は値1〜4の石で目標5、2つ目は値1〜5で目標7、3つ目は値1〜6で目標9です。正解すると次の森へ進み、次の森が開きます。"
+        },
+        {
+          "heading": "例",
+          "body": "目標5で、値1のどんぐりと値5の苔殻タイルを選ぶと合計6で重すぎます。苔殻タイルだけを選ぶか、合計がちょうど5になる別の組み合わせを選びましょう。"
+        },
+        {
+          "heading": "落ち着いた設計",
+          "body": "タイマーもライフ制もありません。選んだ値が目標に合うかを確認し、間違っていたら選択がクリアされて再挑戦できます。"
+        },
+        {
+          "heading": "プレイヤーと保存について",
+          "body": "タップまたはマウスで遊べ、アカウントは不要です。ベストのチェック回数だけがこのブラウザーのlocalStorageに保存され、サウンド設定も端末内に保存されます。サイトデータの削除やブラウザーの変更で記録や設定が消える場合があります。"
+        }
+      ],
+      "faq": [
+        [
+          "橋の目標はいくつですか？",
+          "3つの目標は5、7、9です。"
+        ],
+        [
+          "石の値を教えてください。",
+          "どんぐり1、小石2、枝の束3、ベリーかご4、苔殻タイル5、ホタルの瓶6です。"
+        ],
+        [
+          "確認して間違っていたらどうなりますか？",
+          "選んだ組み合わせがクリアされます。1個以上の石を選び直して再確認できます。"
+        ],
+        [
+          "タイマーやライフ制はありますか？",
+          "いいえ。タイマーもライフ制もありません。"
+        ],
+        [
+          "何が保存されますか？",
+          "ベストのチェック回数とサウンド設定だけがこのブラウザーに保存されます。サイトデータの削除やブラウザーの変更で消える場合があります。"
+        ]
+      ]
+    },
+    "ko": {
+      "title": "밸런스 그로브",
+      "description": "돌의 값을 더해 5, 7, 9인 다리의 균형을 맞추세요. 시간 제한은 없고 최고 확인 횟수는 이 브라우저에 저장됩니다.",
+      "tags": [
+        "부분합 퍼즐",
+        "무게 균형 퍼즐",
+        "돌 선택 퍼즐",
+        "캐주얼 논리 게임"
+      ],
+      "geoSummary": "밸런스 그로브는 돌을 골라 합을 맞추는 퍼즐입니다. 세 다리의 목표는 5, 7, 9이며, 목표와 합이 같은 돌을 골라 확인합니다.",
+      "intro": "타로와 함께 숲의 다리 세 곳을 안정시키세요. 목표를 읽고 합이 맞는 돌을 골라 확인하면 됩니다.",
+      "guide": [
+        {
+          "heading": "임무",
+          "body": "각 숲 저울의 돌 무게를 맞춰 다리를 안정시키세요. 표시된 목표는 5, 7, 9입니다."
+        },
+        {
+          "heading": "진행 방법",
+          "body": "돌을 탭하거나 클릭해 하나 이상 고른 뒤 균형 확인을 누르세요. 합이 틀리면 선택이 안전하게 초기화되어 다른 조합을 시도할 수 있습니다."
+        },
+        {
+          "heading": "세 숲",
+          "body": "첫 숲은 값 1~4의 돌로 목표 5, 둘째는 1~5로 목표 7, 셋째는 1~6으로 목표 9를 맞춥니다. 정답을 확인하면 다음 숲으로 진행하고 잠금이 해제됩니다."
+        },
+        {
+          "heading": "간단한 예",
+          "body": "목표가 5일 때 값 1인 도토리와 값 5인 껍질 타일을 고르면 합이 6이라 너무 무겁습니다. 껍질 타일 하나만 고르거나 합이 정확히 5가 되는 다른 조합을 찾아보세요."
+        },
+        {
+          "heading": "차분한 설계",
+          "body": "시간 제한이나 목숨 시스템은 없습니다. 확인할 때마다 선택한 값이 목표와 맞는지 알 수 있고, 틀린 선택은 초기화되어 다시 시도할 수 있습니다."
+        },
+        {
+          "heading": "플레이어 및 저장 정보",
+          "body": "터치나 마우스로 플레이하며 계정은 필요하지 않습니다. 최고 확인 횟수만 이 브라우저의 localStorage에 저장되고, 사운드 설정도 기기에 저장됩니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 기록과 설정이 사라질 수 있습니다."
+        }
+      ],
+      "faq": [
+        [
+          "다리의 목표 합은 얼마인가요?",
+          "세 목표는 5, 7, 9입니다."
+        ],
+        [
+          "돌마다 값이 어떻게 되나요?",
+          "도토리 1, 조약돌 2, 나뭇가지 묶음 3, 베리 바구니 4, 껍질 타일 5, 반딧불이 병 6입니다."
+        ],
+        [
+          "잘못 확인하면 어떻게 되나요?",
+          "선택한 조합이 안전하게 초기화됩니다. 하나 이상의 돌을 다시 골라 확인할 수 있습니다."
+        ],
+        [
+          "시간 제한이나 목숨이 있나요?",
+          "없습니다. 시간 제한과 목숨 시스템 모두 없습니다."
+        ],
+        [
+          "무엇이 저장되나요?",
+          "최고 확인 횟수와 사운드 설정만 이 브라우저에 저장됩니다. 사이트 데이터 삭제나 브라우저 변경 시 사라질 수 있습니다."
+        ]
+      ]
+    },
+    "es": {
+      "title": "Arboleda del Equilibrio",
+      "description": "Suma piedras hasta 5, 7 o 9 para equilibrar tres puentes. Sin cronómetro; las mejores comprobaciones se guardan en este navegador.",
+      "tags": [
+        "Rompecabezas de suma de subconjuntos",
+        "Puzzle de equilibrio de peso",
+        "Puzzle de selección de piedras",
+        "Juego casual de lógica"
+      ],
+      "geoSummary": "Arboleda del Equilibrio es un puzle de selección de piedras con tres puentes cuyos objetivos son 5, 7 y 9. Elige piedras que sumen el total indicado y comprueba.",
+      "intro": "Ayuda a Taro a estabilizar tres puentes del bosque. Lee cada objetivo, elige piedras cuyos valores sumen esa cantidad y comprueba el equilibrio.",
+      "guide": [
+        {
+          "heading": "Misión",
+          "body": "Equilibra las piedras de cada claro para estabilizar su puente. Los objetivos visibles son 5, 7 y 9."
+        },
+        {
+          "heading": "Cómo se juega",
+          "body": "Toca o haz clic en piedras para elegir un conjunto no vacío y pulsa Comprobar equilibrio. Si la suma no coincide, la selección se borra de forma segura para que pruebes otra combinación."
+        },
+        {
+          "heading": "Tres claros",
+          "body": "El primero usa piedras con valores del 1 al 4 y tiene objetivo 5; el segundo usa del 1 al 5 y pide 7; el tercero usa del 1 al 6 y pide 9. Una comprobación correcta te hace avanzar y desbloquea el siguiente claro."
+        },
+        {
+          "heading": "Un ejemplo",
+          "body": "Para el objetivo 5, una bellota de valor 1 y una loseta de concha de valor 5 suman 6: pesan demasiado. Prueba solo la loseta o elige otra combinación que sume exactamente 5."
+        },
+        {
+          "heading": "Diseño tranquilo",
+          "body": "No hay cronómetro ni sistema de vidas. Cada comprobación indica si los valores elegidos coinciden con el objetivo; una selección incorrecta se borra para volver a intentarlo."
+        },
+        {
+          "heading": "Información del jugador y guardado",
+          "body": "Puedes jugar con toques o ratón; no hace falta una cuenta. Solo se guardan las mejores cantidades de comprobaciones en localStorage de este navegador, y la preferencia de audio se guarda localmente. Borrar los datos del sitio o cambiar de navegador puede eliminar estos datos."
+        }
+      ],
+      "faq": [
+        [
+          "¿Qué totales necesitan los puentes?",
+          "Los tres objetivos visibles son 5, 7 y 9."
+        ],
+        [
+          "¿Cuánto vale cada piedra?",
+          "Bellota 1, guijarro 2, manojo de ramitas 3, cesta de bayas 4, loseta de concha 5 y frasco de luciérnagas 6."
+        ],
+        [
+          "¿Qué ocurre si me equivoco al comprobar?",
+          "La selección se borra de forma segura y puedes elegir otro conjunto no vacío para volver a comprobarlo."
+        ],
+        [
+          "¿Hay cronómetro o límite de vidas?",
+          "No. El juego no tiene cronómetro ni sistema de vidas."
+        ],
+        [
+          "¿Qué se guarda?",
+          "Solo las mejores cantidades de comprobaciones y la preferencia de audio se guardan localmente en este navegador. Borrar los datos del sitio o cambiar de navegador puede eliminarlos."
+        ]
+      ]
+    },
+    "pt-BR": {
+      "title": "Bosque do Equilíbrio",
+      "description": "Some pedras até 5, 7 ou 9 para equilibrar três pontes. Sem cronômetro; as melhores tentativas ficam salvas neste navegador.",
+      "tags": [
+        "Quebra-cabeça de soma de subconjuntos",
+        "Puzzle de equilíbrio de peso",
+        "Puzzle de escolha de pedras",
+        "Jogo casual de lógica"
+      ],
+      "geoSummary": "Bosque do Equilíbrio é um quebra-cabeça de escolha de pedras com três pontes cujas metas são 5, 7 e 9. Selecione pedras cuja soma corresponda à meta e confira.",
+      "intro": "Ajude Taro a firmar três pontes da floresta. Leia a meta, escolha pedras cujos valores somem esse total e confira o equilíbrio.",
+      "guide": [
+        {
+          "heading": "Missão",
+          "body": "Equilibre as pedras em cada clareira para firmar a ponte. As metas visíveis são 5, 7 e 9."
+        },
+        {
+          "heading": "Como jogar",
+          "body": "Toque ou clique nas pedras para selecionar um conjunto com pelo menos uma peça e toque em Conferir equilíbrio. Se a soma estiver errada, a seleção é limpa com segurança para você tentar outra combinação."
+        },
+        {
+          "heading": "Três clareiras",
+          "body": "A primeira usa pedras de valores 1–4 e tem meta 5; a segunda usa 1–5 e pede 7; a terceira usa 1–6 e pede 9. Ao conferir corretamente, você avança e desbloqueia a próxima clareira."
+        },
+        {
+          "heading": "Exemplo rápido",
+          "body": "Para a meta 5, uma bolota de valor 1 e uma Peça de casca de valor 5 somam 6, então ficam pesadas demais. Tente só a Peça de casca ou outra combinação que some exatamente 5."
+        },
+        {
+          "heading": "Design tranquilo",
+          "body": "Não há cronômetro nem sistema de vidas. Cada conferência mostra se os valores selecionados correspondem à meta; uma escolha incorreta é limpa para uma nova tentativa."
+        },
+        {
+          "heading": "Informações do jogador e salvamento",
+          "body": "Jogue por toque ou mouse; não precisa de conta. Somente as melhores quantidades de conferências ficam no localStorage deste navegador, e a preferência de áudio é salva localmente. Apagar os dados do site ou trocar de navegador pode remover esses registros e configurações."
+        }
+      ],
+      "faq": [
+        [
+          "Quais são os totais das pontes?",
+          "As três metas visíveis são 5, 7 e 9."
+        ],
+        [
+          "Qual é o valor de cada pedra?",
+          "Bolota 1, pedrinha 2, feixe de gravetos 3, cesta de frutas 4, Peça de casca 5 e pote de vaga-lumes 6."
+        ],
+        [
+          "O que acontece se eu errar a conferência?",
+          "A seleção é limpa com segurança. Escolha outro conjunto com pelo menos uma pedra e confira de novo."
+        ],
+        [
+          "Há cronômetro ou limite de vidas?",
+          "Não. O jogo não tem cronômetro nem sistema de vidas."
+        ],
+        [
+          "O que fica salvo?",
+          "Somente as melhores quantidades de conferências e a preferência de áudio ficam salvas localmente neste navegador. Apagar os dados do site ou trocar de navegador pode removê-las."
+        ]
+      ]
+    },
+    "fr": {
+      "title": "Bosquet d’Équilibre",
+      "description": "Additionnez des pierres jusqu’à 5, 7 ou 9 pour équilibrer trois ponts. Sans chrono ; les meilleurs nombres d’essais restent dans ce navigateur.",
+      "tags": [
+        "Puzzle de somme de sous-ensemble",
+        "Puzzle d’équilibre des poids",
+        "Puzzle de sélection de pierres",
+        "Jeu de logique décontracté"
+      ],
+      "geoSummary": "Bosquet d’Équilibre est un casse-tête de choix de pierres. Les trois ponts visent 5, 7 et 9 ; choisissez des pierres dont la somme atteint l’objectif affiché, puis vérifiez.",
+      "intro": "Aidez Taro à stabiliser trois ponts de la forêt. Lisez chaque objectif, choisissez des pierres dont les valeurs correspondent, puis vérifiez l’équilibre.",
+      "guide": [
+        {
+          "heading": "Mission",
+          "body": "Équilibrez les pierres de chaque bosquet pour stabiliser son pont. Les objectifs affichés sont 5, 7 et 9."
+        },
+        {
+          "heading": "Déroulement",
+          "body": "Touchez ou cliquez sur des pierres pour choisir un ensemble non vide, puis lancez la vérification. Si le total est incorrect, la sélection est effacée sans risque et vous pouvez essayer une autre combinaison."
+        },
+        {
+          "heading": "Trois bosquets",
+          "body": "Le premier propose des pierres de valeur 1 à 4 et vise 5 ; le deuxième va de 1 à 5 et vise 7 ; le troisième va de 1 à 6 et vise 9. Une vérification correcte fait avancer et débloque le bosquet suivant."
+        },
+        {
+          "heading": "Exemple",
+          "body": "Pour l’objectif 5, un gland de valeur 1 et une tuile-coquille de valeur 5 totalisent 6 : c’est trop lourd. Essayez la tuile seule ou une autre combinaison qui totalise exactement 5."
+        },
+        {
+          "heading": "Un rythme tranquille",
+          "body": "Il n’y a ni chronomètre ni système de vies. Chaque vérification indique si les valeurs choisies correspondent à l’objectif ; une sélection incorrecte est effacée pour recommencer."
+        },
+        {
+          "heading": "Informations sur le joueur et les sauvegardes",
+          "body": "Jouez au toucher ou à la souris, sans compte. Seuls les meilleurs nombres de vérifications sont enregistrés dans le localStorage de ce navigateur ; la préférence audio est aussi stockée localement. Effacer les données du site ou changer de navigateur peut supprimer ces données."
+        }
+      ],
+      "faq": [
+        [
+          "Quels totaux faut-il atteindre ?",
+          "Les trois objectifs affichés sont 5, 7 et 9."
+        ],
+        [
+          "Quelle est la valeur de chaque pierre ?",
+          "Gland 1, galet 2, fagot de brindilles 3, panier de baies 4, tuile-coquille 5 et bocal à lucioles 6."
+        ],
+        [
+          "Que se passe-t-il après une mauvaise vérification ?",
+          "La sélection est effacée sans risque ; vous pouvez choisir un autre ensemble non vide et réessayer."
+        ],
+        [
+          "Y a-t-il un chrono ou des vies ?",
+          "Non. Le jeu n’a ni chronomètre ni système de vies."
+        ],
+        [
+          "Quelles données sont enregistrées ?",
+          "Seuls les meilleurs nombres de vérifications et la préférence audio sont enregistrés localement dans ce navigateur. Effacer les données du site ou changer de navigateur peut les supprimer."
+        ]
+      ]
+    },
+    "de": {
+      "title": "Balance-Hain",
+      "description": "Wähle Steine mit Summe 5, 7 oder 9 für drei Brücken. Ohne Zeitlimit; die beste Zahl an Prüfungen wird in diesem Browser gespeichert.",
+      "tags": [
+        "Teilmengensummen-Rätsel",
+        "Gewichtsbalance-Rätsel",
+        "Steine-Auswahlrätsel",
+        "Entspanntes Logikspiel"
+      ],
+      "geoSummary": "Balance-Hain ist ein Steine-Auswahlrätsel mit drei Brücken und den Zielwerten 5, 7 und 9. Wähle Steine, deren Summe dem angezeigten Ziel entspricht, und prüfe.",
+      "intro": "Hilf Taro, drei Waldbrücken zu stabilisieren. Lies das Ziel, wähle Steine mit passender Summe und prüfe die Waage.",
+      "guide": [
+        {
+          "heading": "Aufgabe",
+          "body": "Bringe die Steine auf jeder Lichtungswaage ins Gleichgewicht, damit die Brücke stabil steht. Die sichtbaren Ziele sind 5, 7 und 9."
+        },
+        {
+          "heading": "Spielablauf",
+          "body": "Tippe oder klicke Steine an, wähle mindestens einen und drücke „Balance prüfen“. Stimmt die Summe nicht, wird die Auswahl sicher geleert und du kannst eine andere Kombination versuchen."
+        },
+        {
+          "heading": "Drei Haine",
+          "body": "Im ersten Hain haben die Steine Werte von 1–4 und das Ziel ist 5. Im zweiten reichen die Werte von 1–5, Ziel 7. Im dritten von 1–6, Ziel 9. Eine richtige Prüfung führt weiter und schaltet den nächsten Hain frei."
+        },
+        {
+          "heading": "Kurzes Beispiel",
+          "body": "Beim Ziel 5 ergeben eine Eichel mit Wert 1 und eine Schalenfliese mit Wert 5 zusammen 6 – zu schwer. Wähle nur die Schalenfliese oder eine andere Kombination mit genau 5."
+        },
+        {
+          "heading": "Ruhiges Spieldesign",
+          "body": "Es gibt weder Zeitlimit noch Leben. Jede Prüfung zeigt, ob die gewählten Werte zum Ziel passen; eine falsche Auswahl wird für einen neuen Versuch geleert."
+        },
+        {
+          "heading": "Spieler- und Speicherinformationen",
+          "body": "Du kannst per Touch oder Maus spielen; ein Konto ist nicht nötig. Nur die beste Zahl an Prüfungen wird im localStorage dieses Browsers gespeichert, die Audioeinstellung ebenfalls lokal. Beim Löschen der Websitedaten oder einem Browserwechsel können diese Daten verloren gehen."
+        }
+      ],
+      "faq": [
+        [
+          "Welche Summen brauchen die Brücken?",
+          "Die drei angezeigten Ziele sind 5, 7 und 9."
+        ],
+        [
+          "Welche Werte haben die Steine?",
+          "Eichel 1, Kiesel 2, Zweigbündel 3, Beerenkorb 4, Schalenfliese 5 und Glühwürmchenglas 6."
+        ],
+        [
+          "Was passiert bei einer falschen Prüfung?",
+          "Die Auswahl wird sicher geleert. Wähle mindestens einen anderen Stein oder eine andere Kombination und prüfe erneut."
+        ],
+        [
+          "Gibt es Zeitlimit oder Leben?",
+          "Nein. Das Spiel hat weder Zeitlimit noch Lebenssystem."
+        ],
+        [
+          "Was wird gespeichert?",
+          "Nur die beste Zahl an Prüfungen und die Audioeinstellung werden lokal in diesem Browser gespeichert. Beim Löschen der Websitedaten oder Browserwechsel können sie verschwinden."
+        ]
+      ]
+    },
+    "it": {
+      "title": "Bosco dell’Equilibrio",
+      "description": "Somma pietre fino a 5, 7 o 9 per equilibrare tre ponti. Senza timer; i migliori tentativi restano salvati in questo browser.",
+      "tags": [
+        "Puzzle della somma di sottoinsiemi",
+        "Puzzle di equilibrio dei pesi",
+        "Puzzle di scelta delle pietre",
+        "Gioco di logica rilassante"
+      ],
+      "geoSummary": "Bosco dell’Equilibrio è un rompicapo di scelta delle pietre. I tre ponti hanno obiettivi 5, 7 e 9: seleziona pietre che raggiungano la somma indicata e controlla.",
+      "intro": "Aiuta Taro a rendere stabili tre ponti nel bosco. Leggi l’obiettivo, scegli pietre con la somma giusta e controlla l’equilibrio.",
+      "guide": [
+        {
+          "heading": "Missione",
+          "body": "Equilibra le pietre sulla bilancia di ogni radura per stabilizzare il ponte. Gli obiettivi visibili sono 5, 7 e 9."
+        },
+        {
+          "heading": "Come si gioca",
+          "body": "Tocca o fai clic sulle pietre per selezionare un insieme non vuoto, poi scegli Controlla equilibrio. Se il totale è errato, la selezione viene azzerata in sicurezza e puoi provare un’altra combinazione."
+        },
+        {
+          "heading": "Tre radure",
+          "body": "La prima usa pietre con valori 1–4 e ha obiettivo 5; la seconda usa 1–5 e punta a 7; la terza usa 1–6 e punta a 9. Un controllo corretto ti fa avanzare e sblocca la radura successiva."
+        },
+        {
+          "heading": "Un esempio",
+          "body": "Con obiettivo 5, una ghianda da 1 e una tessera-conchiglia da 5 fanno 6: troppo pesante. Prova la sola tessera oppure un’altra combinazione che dia esattamente 5."
+        },
+        {
+          "heading": "Un ritmo tranquillo",
+          "body": "Non ci sono timer né vite. Ogni controllo indica se i valori scelti corrispondono all’obiettivo; una selezione errata viene azzerata per riprovare."
+        },
+        {
+          "heading": "Informazioni sul giocatore e salvataggi",
+          "body": "Puoi giocare con tocchi o mouse; non serve un account. Solo il miglior numero di controlli viene salvato nel localStorage di questo browser; anche la preferenza audio è salvata localmente. Cancellare i dati del sito o cambiare browser può rimuovere questi dati."
+        }
+      ],
+      "faq": [
+        [
+          "Quali totali richiedono i ponti?",
+          "I tre obiettivi visibili sono 5, 7 e 9."
+        ],
+        [
+          "Qual è il valore di ciascuna pietra?",
+          "Ghianda 1, ciottolo 2, fascio di rametti 3, cestino di bacche 4, tessera-conchiglia 5 e barattolo di lucciole 6."
+        ],
+        [
+          "Cosa succede se il controllo è sbagliato?",
+          "La selezione viene azzerata in sicurezza. Puoi scegliere un altro insieme non vuoto e controllare di nuovo."
+        ],
+        [
+          "Ci sono timer o vite?",
+          "No. Il gioco non ha né timer né sistema di vite."
+        ],
+        [
+          "Che cosa viene salvato?",
+          "Solo il miglior numero di controlli e la preferenza audio vengono salvati localmente in questo browser. Cancellare i dati del sito o cambiare browser può rimuoverli."
+        ]
+      ]
+    },
+    "ru": {
+      "title": "Роща равновесия",
+      "description": "Подберите камни на сумму 5, 7 или 9, чтобы уравновесить три моста. Без таймера; лучший результат проверок хранится в этом браузере.",
+      "tags": [
+        "Задача на сумму подмножеств",
+        "Головоломка на равновесие веса",
+        "Головоломка с выбором камней",
+        "Спокойная логическая игра"
+      ],
+      "geoSummary": "Роща равновесия — головоломка с выбором камней. Цели трёх мостов — 5, 7 и 9. Выберите камни с нужной суммой и проверьте набор.",
+      "intro": "Помогите Таро укрепить три лесных моста. Прочитайте цель, выберите камни с нужной суммой и проверьте равновесие.",
+      "guide": [
+        {
+          "heading": "Задача",
+          "body": "Уравновесьте камни на весах каждой поляны, чтобы укрепить мост. Видимые цели — 5, 7 и 9."
+        },
+        {
+          "heading": "Как играть",
+          "body": "Нажмите или коснитесь камней, чтобы выбрать непустой набор, затем нажмите «Проверить равновесие». Если сумма неверна, выбор безопасно сбросится, и можно попробовать другое сочетание."
+        },
+        {
+          "heading": "Три поляны",
+          "body": "На первой поляне значения камней — 1–4, цель — 5; на второй значения 1–5, цель — 7; на третьей 1–6, цель — 9. Верная проверка открывает переход к следующей поляне."
+        },
+        {
+          "heading": "Пример",
+          "body": "Для цели 5 желудь со значением 1 и плитка-ракушка со значением 5 дают 6 — слишком много. Выберите одну плитку или другое сочетание с точной суммой 5."
+        },
+        {
+          "heading": "Спокойный темп",
+          "body": "Здесь нет таймера и системы жизней. Проверка показывает, совпадает ли сумма выбранных камней с целью; неверный выбор сбрасывается для новой попытки."
+        },
+        {
+          "heading": "Информация об игре и сохранении",
+          "body": "Играйте касаниями или мышью; аккаунт не нужен. В localStorage этого браузера сохраняется только лучшее число проверок, а настройка звука хранится локально. Очистка данных сайта или смена браузера может удалить эти записи и настройки."
+        }
+      ],
+      "faq": [
+        [
+          "Какие суммы нужны мостам?",
+          "Три видимые цели — 5, 7 и 9."
+        ],
+        [
+          "Сколько стоит каждый камень?",
+          "Жёлудь — 1, галька — 2, связка веток — 3, корзина ягод — 4, плитка-ракушка — 5, банка со светлячками — 6."
+        ],
+        [
+          "Что будет после неверной проверки?",
+          "Выбранный набор безопасно сбросится. Выберите другой непустой набор и проверьте снова."
+        ],
+        [
+          "Есть ли таймер или ограничение жизней?",
+          "Нет. В игре нет ни таймера, ни системы жизней."
+        ],
+        [
+          "Что сохраняется?",
+          "Локально в этом браузере сохраняются только лучшее число проверок и настройка звука. Очистка данных сайта или смена браузера может их удалить."
+        ]
+      ]
+    },
+    "hi": {
+      "title": "संतुलन उपवन",
+      "description": "तीन पुलों को संतुलित करने के लिए 5, 7 या 9 के कुल मान वाले पत्थर चुनें। समय सीमा नहीं; सर्वश्रेष्ठ जाँच इसी ब्राउज़र में सहेजी जाती हैं।",
+      "tags": [
+        "उपसमुच्चय-योग पहेली",
+        "वज़न-संतुलन पहेली",
+        "पत्थर-चयन पहेली",
+        "आरामदेह तर्क खेल"
+      ],
+      "geoSummary": "संतुलन उपवन पत्थर चुनने वाली पहेली है। तीन पुलों के लक्ष्य 5, 7 और 9 हैं। दिखाए गए लक्ष्य के बराबर कुल मान वाले पत्थर चुनकर जाँचें।",
+      "intro": "टारो की मदद से जंगल के तीन पुल स्थिर करें। हर लक्ष्य पढ़ें, सही कुल मान वाले पत्थर चुनें और संतुलन जाँचें।",
+      "guide": [
+        {
+          "heading": "मिशन",
+          "body": "हर वन-तराजू पर पत्थरों का कुल मान मिलाकर पुल को स्थिर करें। दिखने वाले लक्ष्य 5, 7 और 9 हैं।"
+        },
+        {
+          "heading": "खेलने का तरीका",
+          "body": "पत्थरों को टैप या क्लिक करके कम से कम एक चुनें, फिर संतुलन जाँचें। कुल गलत होने पर चयन सुरक्षित रूप से साफ़ हो जाता है और आप दूसरा मेल आज़मा सकते हैं।"
+        },
+        {
+          "heading": "तीन वन",
+          "body": "पहले वन में पत्थरों के मान 1–4 हैं और लक्ष्य 5 है; दूसरे में मान 1–5 और लक्ष्य 7; तीसरे में मान 1–6 और लक्ष्य 9 है। सही जाँच से आप आगे बढ़ते हैं और अगला वन खुलता है।"
+        },
+        {
+          "heading": "एक उदाहरण",
+          "body": "लक्ष्य 5 के लिए मान 1 वाला बलूत और मान 5 वाली खोल-टाइल मिलकर 6 होते हैं, यानी ज़्यादा। केवल खोल-टाइल चुनें या ऐसा दूसरा मेल चुनें जिसका कुल मान ठीक 5 हो।"
+        },
+        {
+          "heading": "शांत डिज़ाइन",
+          "body": "कोई टाइमर या जीवन-सीमा नहीं है। हर जाँच बताती है कि चुने गए मान लक्ष्य से मेल खाते हैं या नहीं; गलत चयन साफ़ हो जाता है ताकि आप फिर कोशिश कर सकें।"
+        },
+        {
+          "heading": "खिलाड़ी और सेव जानकारी",
+          "body": "टच या माउस से खेलें; खाते की ज़रूरत नहीं। केवल सबसे कम जाँच संख्या इस ब्राउज़र के localStorage में सहेजी जाती है और ध्वनि पसंद भी इसी डिवाइस पर सहेजी जाती है। साइट डेटा मिटाने या ब्राउज़र बदलने से ये रिकॉर्ड और सेटिंग हट सकती हैं।"
+        }
+      ],
+      "faq": [
+        [
+          "पुलों के लक्ष्य कुल मान क्या हैं?",
+          "तीन दिखने वाले लक्ष्य 5, 7 और 9 हैं।"
+        ],
+        [
+          "हर पत्थर का मान क्या है?",
+          "बलूत 1, कंकड़ 2, टहनियों का बंडल 3, बेरी की टोकरी 4, खोल-टाइल 5 और जुगनू का जार 6।"
+        ],
+        [
+          "गलत जाँच के बाद क्या होता है?",
+          "चयन सुरक्षित रूप से साफ़ हो जाता है। दूसरा खाली न होने वाला समूह चुनकर फिर जाँचें।"
+        ],
+        [
+          "क्या टाइमर या जीवन-सीमा है?",
+          "नहीं। खेल में टाइमर और जीवन प्रणाली नहीं है।"
+        ],
+        [
+          "क्या सहेजा जाता है?",
+          "केवल सबसे कम जाँच संख्या और ध्वनि पसंद इसी ब्राउज़र में स्थानीय रूप से सहेजे जाते हैं। साइट डेटा मिटाने या ब्राउज़र बदलने पर वे हट सकते हैं।"
+        ]
+      ]
+    },
+    "ar": {
+      "title": "بستان التوازن",
+      "description": "اختر أحجارًا مجموعها 5 أو 7 أو 9 لموازنة ثلاثة جسور. بلا مؤقّت؛ يُحفظ أفضل عدد من المحاولات في هذا المتصفح.",
+      "tags": [
+        "لغز مجموع مجموعة فرعية",
+        "لغز توازن الأوزان",
+        "لغز اختيار الأحجار",
+        "لعبة منطق هادئة"
+      ],
+      "geoSummary": "بستان التوازن لغز لاختيار الأحجار. أهداف الجسور الثلاثة هي 5 و7 و9؛ اختر أحجارًا يساوي مجموع قيمها الهدف الظاهر ثم تحقّق.",
+      "intro": "ساعد تارو على تثبيت ثلاثة جسور في الغابة. اقرأ الهدف، واختر أحجارًا يساوي مجموع قيمها ذلك الهدف، ثم تحقّق من التوازن.",
+      "guide": [
+        {
+          "heading": "المهمة",
+          "body": "وازن الأحجار على ميزان كل فسحة لتثبيت جسرها. الأهداف الظاهرة هي 5 و7 و9."
+        },
+        {
+          "heading": "طريقة اللعب",
+          "body": "المس الأحجار أو انقر عليها لاختيار مجموعة غير فارغة، ثم اختر التحقّق من التوازن. إذا لم يطابق المجموع الهدف، يُمسح الاختيار بأمان لتجربة مجموعة أخرى."
+        },
+        {
+          "heading": "ثلاث فسحات",
+          "body": "تستخدم الفسحة الأولى أحجارًا قيمها من 1 إلى 4 وهدفها 5؛ والثانية قيمها من 1 إلى 5 وهدفها 7؛ والثالثة قيمها من 1 إلى 6 وهدفها 9. عند التحقّق من الإجابة الصحيحة تتقدّم وتُفتح الفسحة التالية."
+        },
+        {
+          "heading": "مثال سريع",
+          "body": "للهدف 5، تجمع حبّة بلوط قيمتها 1 مع بلاطة صدفة قيمتها 5 إلى 6، وهذا أثقل من المطلوب. جرّب بلاطة الصدفة وحدها أو مجموعة أخرى مجموعها 5 تمامًا."
+        },
+        {
+          "heading": "تصميم هادئ",
+          "body": "لا يوجد مؤقّت أو نظام أرواح. يبيّن كل تحقّق ما إذا كانت قيم الأحجار المختارة تطابق الهدف؛ ويُمسح الاختيار الخاطئ لإتاحة المحاولة مجددًا."
+        },
+        {
+          "heading": "معلومات اللاعب والحفظ",
+          "body": "العب باللمس أو بالفأرة؛ لا حاجة إلى حساب. يُحفظ أفضل عدد من مرات التحقّق فقط في localStorage بهذا المتصفح، كما يُحفظ تفضيل الصوت محليًا. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى حذف هذه السجلات والإعدادات."
+        }
+      ],
+      "faq": [
+        [
+          "ما مجموع الأهداف المطلوبة للجسور؟",
+          "الأهداف الظاهرة الثلاثة هي 5 و7 و9."
+        ],
+        [
+          "ما قيمة كل حجر؟",
+          "حبّة البلوط 1، والحصاة 2، وحزمة الأغصان 3، وسلّة التوت 4، وبلاطة الصدفة 5، ومرطبان اليراعات 6."
+        ],
+        [
+          "ماذا يحدث إذا كان التحقّق خاطئًا؟",
+          "تُمسح المجموعة المختارة بأمان، ويمكنك اختيار مجموعة أخرى غير فارغة والتحقّق مجددًا."
+        ],
+        [
+          "هل يوجد مؤقّت أو حد للأرواح؟",
+          "لا. لا تحتوي اللعبة على مؤقّت أو نظام أرواح."
+        ],
+        [
+          "ما الذي يُحفظ؟",
+          "يُحفظ محليًا في هذا المتصفح أفضل عدد من مرات التحقّق وتفضيل الصوت فقط. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى حذفها."
+        ]
+      ]
+    }
+  }
+}

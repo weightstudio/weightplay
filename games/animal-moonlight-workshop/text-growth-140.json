@@ -1,0 +1,70 @@
+{
+  "metaDescriptions": {
+    "en": "Guide Rux through six switch, ice, and portal rooms; collect the key and reach each exit within its 15–24 move limit.",
+    "zh-Hant": "帶領 Rux 挑戰六個含開關、冰面與傳送門的房間，收集鑰匙並在各房 15 至 24 步的上限內抵達出口。",
+    "zh-Hans": "带领 Rux 挑战六个含开关、冰面和传送门的房间，收集钥匙并在每间 15 至 24 步的上限内抵达出口。",
+    "ja": "スイッチ、氷、ポータルが登場する6部屋でRuxを導き、各部屋15～24手の制限内に鍵を集めて出口へ進みましょう。",
+    "ko": "스위치, 얼음, 포털이 등장하는 여섯 방에서 Rux를 안내하고, 방마다 15~24회인 이동 제한 안에 열쇠를 얻어 출구에 도착하세요.",
+    "es": "Guía a Rux por seis salas con interruptores, hielo y portales; recoge la llave y llega a cada salida dentro del límite de 15 a 24 movimientos.",
+    "pt-BR": "Guie Rux por seis salas com interruptores, gelo e portais; pegue a chave e alcance cada saída no limite de 15 a 24 movimentos.",
+    "fr": "Guidez Rux dans six salles avec interrupteurs, glace et portails ; prenez la clé et atteignez chaque sortie en 15 à 24 déplacements.",
+    "de": "Führe Rux durch sechs Räume mit Schaltern, Eis und Portalen; hole den Schlüssel und erreiche jeden Ausgang in 15 bis 24 Zügen.",
+    "it": "Guida Rux in sei stanze con interruttori, ghiaccio e portali; prendi la chiave e raggiungi ogni uscita entro 15–24 mosse.",
+    "ru": "Проведите Рукса через шесть комнат с переключателями, льдом и порталами; возьмите ключ и доберитесь до выхода за 15–24 хода.",
+    "hi": "स्विच, बर्फ़ और पोर्टल वाले छह कमरों में Rux को ले जाएँ; चाबी लेकर हर कमरे की 15–24 चालों की सीमा में निकास तक पहुँचें।",
+    "ar": "قد روكس عبر ست غرف تضم مفاتيح تبديل وجليداً وبوابات؛ خذ المفتاح وبلغ المخرج ضمن حدّ 15 إلى 24 حركة لكل غرفة."
+  },
+  "workId": "wp140-20261003-moonlight-workshop-cloud-01a0ff10",
+  "tags": {
+    "en": ["Switch-and-key puzzle", "Ice-slide route planning", "Move-limit escape"],
+    "zh-Hant": ["開關鑰匙解謎", "冰軌路線規劃", "步數限制逃脫"],
+    "zh-Hans": ["开关钥匙解谜", "冰轨路线规划", "步数限制逃脱"],
+    "ja": ["スイッチと鍵の脱出", "氷上ルートの計画", "手数制限パズル"],
+    "ko": ["스위치·열쇠 탈출", "얼음길 경로 계획", "이동 횟수 제한 퍼즐"],
+    "es": ["Puzle de interruptores y llave", "Rutas con deslizamiento sobre hielo", "Escape con límite de movimientos"],
+    "pt-BR": ["Quebra-cabeça de interruptores e chave", "Rotas com deslizamento no gelo", "Fuga com limite de movimentos"],
+    "fr": ["Énigme des interrupteurs et de la clé", "Parcours sur glace", "Évasion à déplacements limités"],
+    "de": ["Schalter-und-Schlüsselrätsel", "Routenplanung auf Eis", "Flucht mit Zuglimit"],
+    "it": ["Enigma di interruttori e chiave", "Percorsi sul ghiaccio", "Fuga con limite di mosse"],
+    "ru": ["Побег с переключателями и ключом", "Маршрут по льду", "Побег с лимитом ходов"],
+    "hi": ["स्विच और चाबी की पहेली", "बर्फ़ीले रास्ते की योजना", "चाल सीमा वाला एस्केप"],
+    "ar": ["لغز الهروب بالمفاتيح والبوابات", "تخطيط المسار فوق الجليد", "هروب بحدّ للحركات"]
+  },
+  "designNoteTitle": {
+    "en": "Developer Design Note", "zh-Hant": "設計筆記", "zh-Hans": "设计笔记",
+    "ja": "デザインノート", "ko": "디자인 노트", "es": "Nota de diseño",
+    "pt-BR": "Nota de design", "fr": "Note de conception", "de": "Designnotiz",
+    "it": "Nota di progettazione", "ru": "Заметка о дизайне", "hi": "डिज़ाइन नोट",
+    "ar": "ملاحظة التصميم"
+  },
+  "designNote": {
+    "en": "Six authored rooms share one 5×8 grid, so the challenge comes from reading each route rather than learning a new board shape. The early rooms establish switch counts and numbered gates; later rooms add ice slides, a paired portal, and ordered switches before combining them. Each room’s move budget makes every detour a route decision. A successful room needs every switch lit, the key collected, and Rux at the exit, so a short path still has to respect the objective order. The same directional rules work with touch, pointer, or keyboard. Because the layouts are authored rather than randomized, a replay lets players test a more efficient route through the same constraints.",
+    "zh-Hant": "六個設計好的房間共用 5×8 格盤面，挑戰在於讀懂路線，而不是重新學習另一種棋盤。前段房間建立開關數量與數字門的概念；後段再加入冰面滑行、成對傳送門與依序啟動的開關，最後組合這些規則。每房都有步數上限，因此繞路也是路線選擇。完成房間仍須點亮所有開關、取得鑰匙並讓 Rux 抵達出口；路線再短也要遵守目標順序。觸控、指標與鍵盤採用相同的方向移動規則。關卡是預先設計的固定布局，重玩時可以在相同條件下嘗試更有效率的路線。",
+    "zh-Hans": "六个设计好的房间共用 5×8 格盘面，挑战在于读懂路线，而不是重新学习另一种棋盘。前段房间建立开关数量与数字门的概念；后段再加入冰面滑行、成对传送门和按顺序启动的开关，最后组合这些规则。每个房间都有步数上限，因此绕路也是路线选择。完成房间仍须点亮所有开关、取得钥匙并让 Rux 抵达出口；路线再短也要遵守目标顺序。触控、指针和键盘采用相同的方向移动规则。关卡是预先设计的固定布局，重玩时可以在相同条件下尝试更高效的路线。",
+    "ja": "6つの作り込まれた部屋は共通の5×8グリッドを使うため、新しい盤面を覚えるより各ルートを読むことが課題です。序盤でスイッチ数と番号付きゲートを学び、後半では氷の滑走、対になったポータル、順番どおりに押すスイッチが加わり、最後に組み合わさります。各部屋の手数上限により、寄り道もルート選択の一部です。クリアには全スイッチを点灯し、鍵を取り、Ruxを出口へ導く必要があり、近道でも目標の順番を守らなければなりません。タッチ、ポインター、キーボードは同じ方向移動ルールを使います。盤面は固定の作り込み式なので、再挑戦では同じ条件でより効率のよい道を試せます。",
+    "ko": "직접 구성한 여섯 방은 같은 5×8 격자를 사용하므로 새로운 판 모양을 익히기보다 각 경로를 읽는 것이 과제입니다. 초반 방에서 스위치 수와 번호 문을 배우고, 후반에는 얼음 미끄럼, 짝을 이루는 포털, 순서가 있는 스위치가 추가된 뒤 서로 조합됩니다. 방마다 이동 횟수 제한이 있어 우회도 경로 선택의 일부입니다. 방을 완료하려면 모든 스위치를 켜고 열쇠를 얻은 뒤 Rux를 출구로 보내야 하므로, 짧은 길도 목표 순서를 따라야 합니다. 터치, 포인터, 키보드는 같은 방향 이동 규칙을 사용합니다. 무작위가 아닌 고정 구성이라 다시 도전할 때 같은 조건에서 더 효율적인 경로를 시험할 수 있습니다.",
+    "es": "Las seis salas diseñadas comparten una cuadrícula de 5×8, así que el reto consiste en leer cada ruta, no en aprender otro tablero. Las primeras salas presentan el conteo de interruptores y las puertas numeradas; después aparecen los deslizamientos sobre hielo, un portal emparejado y los interruptores en orden, que finalmente se combinan. Cada sala tiene un límite de movimientos, por lo que cualquier desvío es una decisión de ruta. Para completar una sala hay que activar todos los interruptores, recoger la llave y llevar a Rux hasta la salida, respetando ese orden aunque exista un camino corto. Los controles direccionales funcionan igual con pantalla táctil, puntero o teclado. Como los diseños son fijos y no aleatorios, repetir permite probar una ruta más eficiente con las mismas reglas.",
+    "pt-BR": "As seis salas criadas para o jogo usam a mesma grade 5×8; o desafio está em ler cada rota, não em aprender outro formato de tabuleiro. As primeiras salas apresentam a contagem de interruptores e os portões numerados; depois entram os deslizes no gelo, um portal em par e interruptores que precisam ser ativados em ordem, até essas regras se combinarem. Cada sala tem limite de movimentos, então qualquer desvio é uma decisão de rota. Para concluir, é preciso acender todos os interruptores, pegar a chave e levar Rux à saída, respeitando a ordem dos objetivos mesmo quando há um caminho curto. Toque, ponteiro e teclado usam as mesmas regras direcionais. Como os layouts são fixos, repetir permite testar uma rota mais eficiente sob as mesmas condições.",
+    "fr": "Les six salles conçues pour le jeu partagent une grille de 5×8 : le défi consiste à lire chaque parcours, pas à découvrir un nouveau plateau. Les premières salles introduisent le compte des interrupteurs et les portes numérotées ; les suivantes ajoutent les glissades sur la glace, un portail par paire et des interrupteurs à activer dans l’ordre, avant de combiner ces règles. Chaque salle impose un nombre de déplacements, donc tout détour devient un choix de parcours. Pour réussir, il faut allumer tous les interrupteurs, prendre la clé et conduire Rux jusqu’à la sortie en respectant l’ordre des objectifs, même si un chemin semble plus court. Le tactile, le pointeur et le clavier appliquent les mêmes déplacements. Les plans étant fixes, rejouer permet d’essayer un trajet plus efficace dans les mêmes conditions.",
+    "de": "Die sechs gestalteten Räume verwenden dasselbe 5×8-Raster. Die Herausforderung besteht darin, jede Route zu lesen, statt ein neues Spielfeld zu lernen. In den ersten Räumen geht es um Schalterzahlen und nummerierte Tore; später kommen Rutschflächen aus Eis, ein Portalpaar und Schalter in fester Reihenfolge hinzu, bevor die Regeln kombiniert werden. Jeder Raum hat ein Zuglimit, deshalb ist jeder Umweg eine Routenentscheidung. Zum Abschluss müssen alle Schalter aktiviert, der Schlüssel geholt und Rux zum Ausgang geführt werden; auch ein kurzer Weg muss die Zielreihenfolge beachten. Touch, Mauszeiger und Tastatur verwenden dieselben Richtungsregeln. Da die Räume fest gestaltet und nicht zufällig sind, lässt sich beim erneuten Spielen unter denselben Bedingungen eine effizientere Route ausprobieren.",
+    "it": "Le sei stanze progettate a mano condividono una griglia 5×8: la sfida è leggere ogni percorso, non imparare una nuova forma di tabellone. Le prime stanze introducono il conteggio degli interruttori e le porte numerate; poi arrivano scivolate sul ghiaccio, un portale a coppia e interruttori da attivare in ordine, prima di combinare queste regole. Ogni stanza ha un limite di mosse, quindi una deviazione è una scelta di percorso. Per completarla bisogna accendere tutti gli interruttori, prendere la chiave e portare Rux all’uscita rispettando l’ordine degli obiettivi, anche se esiste una via più breve. Touch, puntatore e tastiera usano le stesse regole direzionali. I livelli sono fissi, non casuali: rigiocare permette di provare una strada più efficiente nelle stesse condizioni.",
+    "ru": "Все шесть созданных вручную комнат используют одну сетку 5×8, поэтому задача состоит в чтении маршрута, а не в освоении новой формы поля. В первых комнатах изучаются число переключателей и пронумерованные ворота; позже появляются скольжение по льду, парный портал и переключатели, которые нужно включать по порядку, а затем эти правила сочетаются. В каждой комнате ограничено число ходов, поэтому обходной путь становится тактическим выбором. Для победы нужно включить все переключатели, взять ключ и довести Рукса до выхода, соблюдая порядок целей даже при коротком пути. Сенсорное управление, указатель и клавиатура используют одинаковые правила движения. Фиксированные, неслучайные комнаты позволяют при повторной попытке искать более эффективный маршрут в тех же условиях.",
+    "hi": "खुद बनाए गए छह कमरे एक ही 5×8 ग्रिड साझा करते हैं, इसलिए चुनौती नए बोर्ड को सीखने की नहीं, हर रास्ते को समझने की है। शुरुआती कमरे स्विचों की गिनती और नंबर वाले द्वार सिखाते हैं; आगे बर्फ पर फिसलना, जोड़ा पोर्टल और क्रम में चालू होने वाले स्विच जुड़ते हैं, फिर ये नियम साथ आते हैं। हर कमरे में चालों की सीमा है, इसलिए चक्कर लगाना भी रास्ते का चुनाव है। जीतने के लिए सभी स्विच जलाएँ, चाबी लें और Rux को निकास तक पहुँचाएँ; छोटा रास्ता भी लक्ष्य क्रम का पालन करे। टच, पॉइंटर और कीबोर्ड पर दिशात्मक नियम समान हैं। स्थिर, पहले से बनाए गए कमरे दोबारा खेलते समय उन्हीं शर्तों में अधिक कुशल रास्ता आज़माने देते हैं।",
+    "ar": "تستخدم الغرف الست المصممة يدوياً شبكة واحدة 5×8، لذا يكمن التحدي في قراءة كل مسار لا في تعلّم شكل لوحة جديد. تعلّم الغرف الأولى عدّ المفاتيح والبوابات المرقمة؛ ثم تضيف الغرف اللاحقة الانزلاق على الجليد وبوابة انتقال مزدوجة ومفاتيح تُفعّل بالترتيب قبل جمع هذه القواعد. لكل غرفة حدّ للحركات، لذلك يصبح الالتفاف قراراً في المسار. للنجاح أضئ كل المفاتيح وخذ المفتاح وقد روكس إلى المخرج مع احترام ترتيب الأهداف، حتى عند وجود طريق أقصر. تعمل قواعد الاتجاه نفسها باللمس والمؤشر ولوحة المفاتيح. وبما أن التخطيطات ثابتة وليست عشوائية، تتيح الإعادة تجربة مسار أكفأ في الظروف نفسها."
+  },
+  "moveBudgetFaq": {
+    "en": ["How many moves does each room allow?", "Each room has its own limit; the six room limits range from 15 to 24 moves."],
+    "zh-Hant": ["每個房間有多少步數？", "每個房間都有自己的步數上限；六個房間的上限介於 15 至 24 步。"],
+    "zh-Hans": ["每个房间有多少步数？", "每个房间都有自己的步数上限；六个房间的上限介于 15 至 24 步。"],
+    "ja": ["各部屋の手数はいくつですか？", "部屋ごとに上限が異なり、6部屋の上限は15～24手です。"],
+    "ko": ["방마다 이동 횟수 제한이 다른가요?", "방마다 제한이 다르며 여섯 방의 제한은 15~24회입니다."],
+    "es": ["¿Cuántos movimientos permite cada sala?", "Cada sala tiene su propio límite; en las seis, va de 15 a 24 movimientos."],
+    "pt-BR": ["Quantos movimentos cada sala permite?", "Cada sala tem seu próprio limite; nas seis, ele varia de 15 a 24 movimentos."],
+    "fr": ["Combien de déplacements chaque salle autorise-t-elle ?", "Chaque salle a sa limite ; sur les six, elle va de 15 à 24 déplacements."],
+    "de": ["Wie viele Züge sind je Raum erlaubt?", "Jeder Raum hat sein eigenes Limit; über die sechs Räume reicht es von 15 bis 24 Zügen."],
+    "it": ["Quante mosse consente ogni stanza?", "Ogni stanza ha il proprio limite; nelle sei stanze varia da 15 a 24 mosse."],
+    "ru": ["Сколько ходов отведено на комнату?", "У каждой комнаты свой лимит; для шести комнат он составляет от 15 до 24 ходов."],
+    "hi": ["हर कमरे में कितनी चालों की सीमा है?", "हर कमरे की सीमा अलग है; छह कमरों में यह 15 से 24 चालों तक है."],
+    "ar": ["كم حركة يسمح بها كل غرفة؟", "لكل غرفة حدّها الخاص؛ وتتراوح حدود الغرف الست بين 15 و24 حركة."]
+  }
+}

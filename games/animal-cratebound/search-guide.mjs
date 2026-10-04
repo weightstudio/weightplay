@@ -2,7 +2,7 @@
 export const searchCopy = {
   "en": {
     "heading": "Online box-pushing puzzle: plan a route that stays open",
-    "intro": "This free browser puzzle is about moving crates onto docks one square at a time, not matching or merging tiles. Plan both the cargo route and the space Rux needs to stand in. Clearing a dock too early can leave no way to reach the next crate.",
+    "intro": "Move one square at a time, push each rune crate onto its dock, and keep a route open for Rux. Thirty warehouses across six chapters add ice rails, signal gates, linked crates, and one-way storm belts. Undo or restart a plan; progress stays in this browser.",
     "tipsTitle": "Three checks before your next move",
     "tips": [
       "First warehouse: move down once, then right three times. The first step gets Rux behind the crate; the next three push it onto the dock. Use this small example to separate walking from pushing.",
@@ -14,7 +14,7 @@ export const searchCopy = {
   },
   "zh-Hant": {
     "heading": "線上推箱益智：先留退路，再把貨箱送進碼頭",
-    "intro": "這款免費瀏覽器推箱遊戲，是逐格搬運貨箱的邏輯解謎，不是配對消除或方塊合成。除了貨箱的路線，也要替魯克斯保留站位；太早把箱子送到碼頭，反而可能堵住通往下一個貨箱的路。",
+    "intro": "每次移動一格，把符文貨箱推到碼頭，同時替魯克斯保留可通行的路。30 座倉庫分布在六章，逐步加入冰軌、訊號門、連動貨箱與單向風暴輸送帶。可以復原或重來；進度只存在此瀏覽器。",
     "tipsTitle": "下一步之前，先檢查這三件事",
     "tips": [
       "第一座倉庫：先向下走一次，再向右三次。第一步讓魯克斯繞到箱子後方，後三步才把箱子推進碼頭。用這個小例子分清楚「走到位置」與「推動貨箱」。",
@@ -26,7 +26,7 @@ export const searchCopy = {
   },
   "zh-Hans": {
     "heading": "在线推箱子解谜：先留退路，再把货箱送进码头",
-    "intro": "这款免费浏览器推箱子游戏，是逐格搬运货箱的逻辑解谜，不是配对消除或方块合成。除了货箱的路线，也要给鲁克斯保留站位；过早把箱子送到码头，反而可能堵住通往下一个货箱的路。",
+    "intro": "每次移动一格，把符文货箱推到码头，同时为鲁克斯保留可通行的路。30 座仓库分布在六章，逐步加入冰轨、信号门、联动货箱与单向风暴传送带。可以撤销或重来；进度只保存在此浏览器。",
     "tipsTitle": "下一步之前，先检查这三件事",
     "tips": [
       "第一座仓库：先向下走一次，再向右三次。第一步让鲁克斯绕到箱子后方，后三步才把箱子推进码头。用这个小例子分清楚「走到位置」与「推动货箱」。",
@@ -38,7 +38,7 @@ export const searchCopy = {
   },
   "ja": {
     "heading": "ブラウザで遊ぶ箱押しパズル：運ぶ前に通り道を確保",
-    "intro": "箱を1マスずつ動かしてドックへ運ぶ、無料のブラウザパズルです。同じ絵柄を消したり、ブロックを合体させたりするゲームではありません。荷物の道だけでなく、Ruxが立つ場所も考えましょう。先に箱を置いたドックが、次の箱への道を塞ぐこともあります。",
+    "intro": "一度に1マス進み、ルーン箱をドックへ押しながら、Ruxが通れる道も残しましょう。全30倉庫・6章を通じて、氷のレール、信号ゲート、連結箱、一方向のストームベルトが登場します。操作は元に戻したり倉庫をやり直したりでき、進行状況はこのブラウザー内に保存されます。",
     "tipsTitle": "次の一手の前に確認する3つのこと",
     "tips": [
       "最初の倉庫は、下に1回、右に3回。最初の一歩でRuxが箱の後ろへ回り、続く3手でドックまで押します。「立ち位置を変える」と「箱を押す」の違いを確かめましょう。",
@@ -50,7 +50,7 @@ export const searchCopy = {
   },
   "ko": {
     "heading": "온라인 상자 밀기 퍼즐: 운반하기 전에 길부터 확보하세요",
-    "intro": "상자를 한 칸씩 움직여 도착 지점에 놓는 무료 브라우저 논리 퍼즐입니다. 같은 그림을 지우거나 블록을 합치는 게임이 아닙니다. 상자의 이동 경로와 Rux가 서야 할 자리를 함께 생각하세요. 상자 하나를 너무 일찍 도착시키면 다음 상자로 가는 길이 막힐 수 있습니다.",
+    "intro": "한 번에 한 칸씩 이동해 룬 상자를 도크로 밀고, Rux가 지날 길도 남겨 두세요. 6개 챕터의 창고 30곳에서 얼음 레일, 신호 게이트, 연결 상자, 단방향 폭풍 컨베이어가 등장합니다. 이동은 실행 취소하거나 창고를 다시 시작할 수 있고, 진행 상황은 이 브라우저에 저장됩니다.",
     "tipsTitle": "다음 행동 전에 확인할 세 가지",
     "tips": [
       "첫 창고에서는 아래로 한 번, 오른쪽으로 세 번 움직이세요. 첫걸음으로 상자 뒤에 서고, 이어지는 세 번의 밀기로 도착 지점에 놓습니다. 걷기와 상자 밀기가 어떻게 다른지 확인할 수 있습니다.",
@@ -62,7 +62,7 @@ export const searchCopy = {
   },
   "es": {
     "heading": "Puzle de empujar cajas online: deja una ruta de salida",
-    "intro": "Este juego de lógica gratuito para navegador consiste en llevar cajas a los muelles, casilla a casilla; no en combinar ni fusionar fichas. Planifica tanto la ruta de la carga como el lugar donde debe colocarse Rux. Completar un muelle demasiado pronto puede bloquear el acceso a otra caja.",
+    "intro": "Avanza una casilla, empuja cada caja rúnica hasta su muelle y deja un camino para que Rux pueda pasar. Los 30 almacenes de seis capítulos incorporan raíles de hielo, puertas de señal, cajas enlazadas y cintas de tormenta de un solo sentido. Puedes deshacer o reiniciar; el progreso se guarda en este navegador.",
     "tipsTitle": "Tres comprobaciones antes de mover",
     "tips": [
       "Primer almacén: baja una vez y ve tres veces a la derecha. El primer paso coloca a Rux detrás de la caja; los tres siguientes la empujan al muelle. Así puedes distinguir entre caminar y empujar.",
@@ -74,7 +74,7 @@ export const searchCopy = {
   },
   "pt-BR": {
     "heading": "Quebra-cabeça de empurrar caixas online: mantenha uma saída livre",
-    "intro": "Neste jogo de lógica gratuito para navegador, você leva caixas até as docas, uma casa por vez; não combina nem funde peças. Planeje tanto o caminho da carga quanto o lugar onde Rux precisa ficar. Concluir uma doca cedo demais pode bloquear o acesso à próxima caixa.",
+    "intro": "Mova uma casa por vez, empurre cada caixa rúnica até a doca e deixe um caminho livre para Rux. Os 30 armazéns de seis capítulos trazem trilhos de gelo, portões de sinal, caixas conectadas e esteiras de tempestade de mão única. Você pode desfazer ou reiniciar; o progresso fica salvo neste navegador.",
     "tipsTitle": "Três verificações antes de mover",
     "tips": [
       "No primeiro armazém, vá uma vez para baixo e três para a direita. O primeiro passo posiciona Rux atrás da caixa; os três seguintes a empurram até a doca. Esse exemplo mostra a diferença entre andar e empurrar.",
@@ -86,7 +86,7 @@ export const searchCopy = {
   },
   "fr": {
     "heading": "Puzzle de caisses en ligne : gardez un passage libre",
-    "intro": "Ce jeu de logique gratuit sur navigateur consiste à pousser des caisses jusqu’aux quais, case par case, et non à associer ou fusionner des tuiles. Prévoyez le trajet de la cargaison et la place où Rux doit se tenir. Remplir un quai trop tôt peut bloquer l’accès à la caisse suivante.",
+    "intro": "Avancez d’une case, poussez chaque caisse runique jusqu’à son quai et gardez un passage pour Rux. Les 30 entrepôts des six chapitres ajoutent rails de glace, portes à signaux, caisses liées et tapis de tempête à sens unique. Vous pouvez annuler ou recommencer ; la progression reste dans ce navigateur.",
     "tipsTitle": "Trois vérifications avant de jouer",
     "tips": [
       "Premier entrepôt : descendez une fois, puis allez trois fois à droite. Le premier pas place Rux derrière la caisse ; les trois suivants la poussent sur le quai. Cet exemple distingue le déplacement du personnage de celui de la caisse.",
@@ -98,7 +98,7 @@ export const searchCopy = {
   },
   "de": {
     "heading": "Kisten-Schiebepuzzle im Browser: Halte den Rückweg frei",
-    "intro": "In diesem kostenlosen Logikspiel im Browser bewegst du Kisten Feld für Feld zu den Docks. Es geht nicht darum, gleiche Steine zu kombinieren oder zu verschmelzen. Plane sowohl den Transportweg als auch Rux’ Standposition. Eine zu früh abgestellte Kiste kann den Zugang zur nächsten versperren.",
+    "intro": "Gehe jeweils ein Feld, schiebe jede Runenkiste zum Dock und halte einen Weg für Rux frei. In 30 Lagern aus sechs Kapiteln kommen Eisbahnen, Signalschranken, gekoppelte Kisten und Sturmförderbänder mit Einbahnrichtung hinzu. Züge lassen sich rückgängig machen oder das Lager neu starten; der Fortschritt bleibt in diesem Browser.",
     "tipsTitle": "Drei Prüfungen vor dem nächsten Zug",
     "tips": [
       "Erstes Lager: einmal nach unten, dann dreimal nach rechts. Der erste Schritt bringt Rux hinter die Kiste; die nächsten drei schieben sie aufs Dock. So erkennst du den Unterschied zwischen Gehen und Schieben.",
@@ -110,7 +110,7 @@ export const searchCopy = {
   },
   "it": {
     "heading": "Puzzle di casse online: lascia libera una via di passaggio",
-    "intro": "In questo rompicapo logico gratuito per browser porti le casse ai moli, una casella alla volta: non devi abbinare né fondere tessere. Pianifica sia il percorso del carico sia il punto in cui deve stare Rux. Occupare un molo troppo presto può bloccare l’accesso alla cassa successiva.",
+    "intro": "Avanza di una casella, spingi ogni cassa runica fino al suo molo e lascia un passaggio per Rux. I 30 magazzini dei sei capitoli introducono binari di ghiaccio, cancelli di segnale, casse collegate e nastri della tempesta a senso unico. Puoi annullare una mossa o ricominciare il magazzino; i progressi restano in questo browser.",
     "tipsTitle": "Tre controlli prima della prossima mossa",
     "tips": [
       "Primo magazzino: una mossa in basso, poi tre a destra. La prima porta Rux dietro la cassa; le tre successive la spingono sul molo. Questo esempio distingue il camminare dallo spingere.",
@@ -122,7 +122,7 @@ export const searchCopy = {
   },
   "ru": {
     "heading": "Головоломка с ящиками онлайн: оставьте путь свободным",
-    "intro": "В этой бесплатной браузерной логической игре нужно передвигать ящики по клеткам к причалам, а не собирать одинаковые плитки или объединять блоки. Продумывайте и путь груза, и место, с которого Рукс сможет его толкнуть. Слишком рано поставленный на причал ящик может перекрыть доступ к следующему.",
+    "intro": "Двигайтесь по одной клетке, толкайте рунические ящики к причалам и оставляйте проход для Rux. В 30 складах шести глав появляются ледяные рельсы, сигнальные ворота, связанные ящики и односторонние штормовые ленты. Ход можно отменить, а склад — начать заново; прогресс хранится в этом браузере.",
     "tipsTitle": "Три проверки перед следующим ходом",
     "tips": [
       "Первый склад: один шаг вниз, затем три вправо. Первый шаг ставит Рукса за ящиком, а следующие три толчка доставляют груз на причал. Так проще увидеть разницу между ходьбой и толканием.",
@@ -134,7 +134,7 @@ export const searchCopy = {
   },
   "hi": {
     "heading": "ऑनलाइन बॉक्स-पुशिंग पहेली: सामान पहुँचाने से पहले रास्ता बचाएँ",
-    "intro": "इस मुफ़्त ब्राउज़र लॉजिक गेम में बक्सों को एक-एक खाने से डॉक तक पहुँचाना है, एक जैसी टाइलें मिलाना या ब्लॉक जोड़ना नहीं। सामान के रास्ते के साथ यह भी सोचें कि रक्स कहाँ खड़ा होगा। किसी डॉक पर बहुत जल्दी बक्सा रख देने से अगले बक्से तक पहुँचने का रास्ता बंद हो सकता है।",
+    "intro": "एक बार में एक खाने चलें, हर रूनी संदूक को उसके डॉक तक धकेलें और Rux के लिए रास्ता खुला रखें। छह अध्यायों के 30 गोदामों में बर्फीली पटरियाँ, संकेत-द्वार, जुड़े संदूक और एक-दिशा वाले तूफ़ानी कन्वेयर आते हैं। चाल वापस लें या गोदाम फिर से शुरू करें; प्रगति इसी ब्राउज़र में सहेजी जाती है।",
     "tipsTitle": "अगली चाल से पहले तीन जाँच",
     "tips": [
       "पहले गोदाम में एक बार नीचे, फिर तीन बार दाईं ओर जाएँ। पहले कदम से रक्स बक्से के पीछे पहुँचता है और अगले तीन धक्के उसे डॉक तक ले जाते हैं। इस उदाहरण से चलने और बक्सा धकेलने का अंतर समझें।",
@@ -146,7 +146,7 @@ export const searchCopy = {
   },
   "ar": {
     "heading": "لعبة دفع الصناديق عبر المتصفح: اترك طريقاً مفتوحاً",
-    "intro": "في لعبة الألغاز المنطقية المجانية هذه، تنقل الصناديق إلى الأرصفة خانةً بخانة، بدلاً من مطابقة القطع أو دمجها. خطط لمسار الحمولة ولمكان وقوف روكس معاً. فقد يسد صندوق تضعه على الرصيف مبكراً طريق الوصول إلى الصندوق التالي.",
+    "intro": "تحرّك خانة واحدة في كل مرة، وادفع كل صندوق روني إلى رصيفه، واترك طريقًا مفتوحًا لـRux. تضيف المستودعات الثلاثون في الفصول الستة سككًا جليدية وبوابات إشارات وصناديق مترابطة وأحزمة عاصفة أحادية الاتجاه. يمكنك التراجع أو إعادة المستودع؛ ويُحفظ التقدم في هذا المتصفح.",
     "tipsTitle": "ثلاثة أمور تتحقق منها قبل الحركة التالية",
     "tips": [
       "في المستودع الأول، تحرك مرة إلى الأسفل ثم ثلاث مرات إلى اليمين. تضع الخطوة الأولى روكس خلف الصندوق، وتدفعه الحركات الثلاث التالية إلى الرصيف. يوضح هذا المثال الفرق بين المشي ودفع الحمولة.",

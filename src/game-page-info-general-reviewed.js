@@ -380,6 +380,263 @@
     reviewed.games[reefFisherId] = copy;
   }
 
+  // Text Growth 1.4.0: give every public locale the same precise first-run,
+  // recovery, save, and return guidance in both the rendered Guide and runtime.
+  const reefFisherTextGrowth140 = {
+    en: {
+      intro: "Across 30 reef missions, charge a cast and keep the marker inside the green SAFE band while reeling. A broken line costs mission time; catches fill a 12-creature album, and Reef Notes buy six gear upgrades.",
+      metaDescription: "Cast through 30 reef missions, hold the marker in each green SAFE band, and face six Guardians. Record 12 creatures and spend Reef Notes on gear upgrades.",
+      text140Tags: ["reef fishing missions", "line-tension control", "catch collection"],
+      how: [
+        "Choose an unlocked mission after checking its sea condition and catch goal.",
+        "Hold the water or Space to charge a cast, then release. More power shortens the wait for a bite; it does not choose a rarer fish.",
+        "After a bite, move the red marker with the knob, a sea-surface slide, or the arrow keys. Keep it in the green SAFE band to wear the fish down.",
+        "If the line breaks, the fish escapes and casting resumes while the mission clock keeps running.",
+        "At Result, check catches, Reef Notes, and new album entries. Return to the Reef Map to replay or choose the next unlocked mission."
+      ],
+      designNote: "Six regions introduce six sea conditions over five missions each. The green SAFE band shows where control reduces fish power; moving or narrowing bands change where to correct, and a broken line spends the same mission clock.",
+      faq: [
+        ["What happens if I leave before Result?", "The current expedition, its catches, and any prepared Rare Lure or Sonar are lost. Album entries, Reef Notes, and gear already saved remain in this browser."],
+        ["Why does the green SAFE band move or narrow?", "It is the mission's sea condition: Kelp Drift moves it, Coral Snags changes its width, Moon Tide switches sides, Storm Gust pushes the line, and Abyss combines conditions."],
+        ["Are Diamonds needed to finish the campaign?", "No. A confirmed Rare Lure or Sonar is optional. Missions, Guardian fish, ordinary catches, and gear upgrades do not require Diamonds."],
+        ["Where is my progress saved?", "Mission unlocks, Reef Notes, album entries, gear, and best catches are stored in this browser. They do not sync across browsers; clearing site data may remove them."]
+      ]
+    },
+    "zh-Hant": {
+      intro: "30 個礁區任務都要先蓄力拋竿，再把標記留在綠色 SAFE 張力區內收線。魚線斷掉會消耗本關時間；漁獲會填入 12 格圖鑑，礁石筆記可用來升級六種裝備。",
+      metaDescription: "在 30 個礁區任務中拋竿並守住綠色 SAFE 張力區，挑戰六隻守護魚。收集 12 種海洋生物，再用礁石筆記升級裝備。",
+      text140Tags: ["珊瑚礁釣魚任務", "魚線張力控制", "漁獲圖鑑收集"],
+      how: [
+        "先查看海況與漁獲目標，再選擇已解鎖的任務。",
+        "按住海面或空白鍵蓄力，放開拋竿。蓄力較高只會縮短等魚咬餌的時間，不會挑到更稀有的魚。",
+        "魚上鉤後，用紅色旋鈕、在海面左右滑動或按方向鍵移動標記，留在綠色 SAFE 區內削弱魚的拉力。",
+        "魚線斷掉時，魚會逃走，接著你可以重新拋竿，但本關計時會繼續。",
+        "在結算畫面查看漁獲、礁石筆記與新圖鑑項目，再返回礁區地圖重玩或選擇下一個已解鎖任務。"
+      ],
+      designNote: "六個區域各用五個任務介紹一種海況。綠色 SAFE 區表示張力操作能削弱魚的拉力；安全區移動或變窄時要跟著調整，斷線則會繼續消耗本關時間。",
+      faq: [
+        ["結算前離開任務會失去什麼？", "本次遠征、已釣漁獲及已準備的稀有魚餌或聲納會消失；已儲存的圖鑑、礁石筆記與裝備仍保留在這個瀏覽器。"],
+        ["為什麼綠色 SAFE 區會移動或變窄？", "這是任務海況：海藻會帶動安全區漂移，珊瑚會讓安全區變窄，潮汐會使它左右換邊，陣風會推動魚線，深海任務則會組合多種狀況。"],
+        ["完成戰役一定要用鑽石嗎？", "不用。確認使用的稀有魚餌或聲納都是選用工具；任務、守護魚、一般漁獲與裝備升級都不需要鑽石。"],
+        ["遊戲進度存在哪裡？", "任務解鎖、礁石筆記、圖鑑、裝備與最佳漁獲存在目前瀏覽器，不會跨瀏覽器同步；清除網站資料可能會刪除它們。"]
+      ]
+    },
+    "zh-Hans": {
+      intro: "30 个礁区任务都要先蓄力抛竿，再把标记留在绿色 SAFE 张力区内收线。鱼线断掉会消耗本关时间；渔获会填入 12 格图鉴，礁石笔记可用来升级六种装备。",
+      metaDescription: "在 30 个礁区任务中抛竿并守住绿色 SAFE 张力区，挑战六条守护鱼。收集 12 种海洋生物，再用礁石笔记升级装备。",
+      text140Tags: ["珊瑚礁钓鱼任务", "鱼线张力控制", "渔获图鉴收集"],
+      how: [
+        "先查看海况和渔获目标，再选择已解锁的任务。",
+        "按住海面或空格蓄力，松开抛竿。蓄力更高只会缩短等鱼咬钩的时间，不会选到更稀有的鱼。",
+        "鱼上钩后，用红色旋钮、在海面左右滑动或按方向键移动标记，留在绿色 SAFE 区内削弱鱼的拉力。",
+        "鱼线断掉时，鱼会逃走，随后你可以重新抛竿，但本关计时会继续。",
+        "在结算画面查看渔获、礁石笔记和新图鉴项目，再返回礁区地图重玩或选择下一个已解锁任务。"
+      ],
+      designNote: "六个区域各用五个任务介绍一种海况。绿色 SAFE 区表示张力操作能削弱鱼的拉力；安全区移动或变窄时要跟着调整，断线则会继续消耗本关时间。",
+      faq: [
+        ["结算前离开任务会失去什么？", "本次远征、已钓渔获及已准备的稀有鱼饵或声呐会消失；已保存的图鉴、礁石笔记和装备仍保留在这个浏览器。"],
+        ["为什么绿色 SAFE 区会移动或变窄？", "这是任务海况：海藻会带动安全区漂移，珊瑚会让安全区变窄，潮汐会使它左右换边，阵风会推动鱼线，深海任务则会组合多种情况。"],
+        ["完成战役一定要用钻石吗？", "不用。确认使用的稀有鱼饵或声呐都是可选工具；任务、守护鱼、普通渔获和装备升级都不需要钻石。"],
+        ["游戏进度存在哪里？", "任务解锁、礁石笔记、图鉴、装备和最佳渔获存在当前浏览器，不会跨浏览器同步；清除网站数据可能会删除它们。"]
+      ]
+    },
+    ja: {
+      intro: "全30ミッションでキャストをチャージし、リール操作中は赤いマーカーを緑のSAFE帯に保ちます。ラインが切れると制限時間を失います。釣果は12枠のアルバムに記録され、リーフノートで6種類の装備を強化できます。",
+      metaDescription: "全30のリーフミッションでキャストと張力を操作し、6体のガーディアンに挑戦。12種の生き物を記録し、リーフノートで装備を強化します。",
+      text140Tags: ["リーフ釣りミッション", "ライン張力操作", "釣果コレクション"],
+      how: [
+        "海況と釣果目標を確認し、解放済みのミッションを選びます。",
+        "海面またはSpaceキーを長押ししてチャージし、離してキャストします。強く投げるとアタリまでの待ち時間が短くなりますが、魚の希少度は変わりません。",
+        "アタリが来たら、赤いノブ、海面のスワイプ、または矢印キーでマーカーを動かし、緑のSAFE帯に保って魚の力を弱めます。",
+        "ラインが切れると魚は逃げ、キャストに戻ります。ミッションの残り時間はリセットされません。",
+        "結果画面で釣果、リーフノート、新しいアルバム記録を確認し、リーフマップに戻って再挑戦するか次の解放済みミッションを選びます。"
+      ],
+      designNote: "6つの地域では、それぞれ5ミッションを通して海況のルールを紹介します。SAFE帯にいると魚の力が弱まります。帯が動いたり狭まったりしたら位置を合わせ、ライン切れ後も残り時間が進む点に注意してください。",
+      faq: [
+        ["結果を見る前に離れると何が失われますか？", "進行中の遠征、その遠征の釣果、準備したレアベイトやソナーは失われます。保存済みのアルバム記録、リーフノート、装備はこのブラウザーに残ります。"],
+        ["緑のSAFE帯が動いたり狭くなったりするのはなぜですか？", "ミッションの海況によるものです。海藻の流れで帯が動き、サンゴ礁で幅が変わり、潮の変化で左右が入れ替わり、突風でラインが押されます。深海では複数の条件が重なります。"],
+        ["キャンペーンのクリアにダイヤは必要ですか？", "いいえ。確認して使うレアベイトやソナーは任意です。ミッション、ガーディアン、通常の釣果、装備強化にダイヤは必要ありません。"],
+        ["進行状況はどこに保存されますか？", "ミッション解放、リーフノート、アルバム、装備、ベスト釣果はこのブラウザーに保存されます。別のブラウザーとは同期せず、サイトデータを消すと失われることがあります。"]
+      ]
+    },
+    ko: {
+      intro: "30개 산호초 미션마다 캐스팅을 충전한 뒤 릴을 감는 동안 빨간 마커를 초록색 SAFE 구간에 두세요. 줄이 끊기면 미션 시간이 줄어듭니다. 어획은 12칸 앨범에 기록되고 Reef Notes로 여섯 장비를 업그레이드할 수 있습니다.",
+      metaDescription: "30개 산호초 미션에서 캐스팅과 장력을 조절하고 여섯 Guardian 물고기를 만나세요. 12종을 기록하고 Reef Notes로 장비를 업그레이드하세요.",
+      text140Tags: ["산호초 낚시 미션", "줄 장력 조절", "어획 앨범 수집"],
+      how: [
+        "해역 조건과 어획 목표를 확인한 뒤 잠금 해제된 미션을 고르세요.",
+        "바다나 Space를 눌러 캐스팅을 충전하고 놓으세요. 더 강한 캐스팅은 입질 대기 시간을 줄일 뿐, 더 희귀한 물고기를 고르지는 않습니다.",
+        "입질이 오면 빨간 손잡이, 바다 위 스와이프, 방향키로 마커를 움직여 초록색 SAFE 구간 안에서 물고기의 힘을 줄이세요.",
+        "줄이 끊기면 물고기가 달아나고 캐스팅 단계로 돌아갑니다. 미션 시간은 초기화되지 않습니다.",
+        "결과 화면에서 어획, Reef Notes, 새 앨범 기록을 확인한 뒤 산호초 지도로 돌아가 다시 하거나 다음 잠금 해제 미션을 선택하세요."
+      ],
+      designNote: "여섯 지역은 각각 다섯 미션에 걸쳐 해역 규칙을 소개합니다. SAFE 구간 안에 있으면 물고기의 힘이 줄어듭니다. 구간이 움직이거나 좁아질 때 위치를 조정하고, 줄이 끊겨도 미션 시간이 계속 흐르는 점을 기억하세요.",
+      faq: [
+        ["결과 화면 전에 나가면 무엇을 잃나요?", "진행 중인 원정, 그 원정에서 잡은 물고기, 준비한 희귀 미끼나 소나는 사라집니다. 저장된 앨범 기록, Reef Notes, 장비는 이 브라우저에 남습니다."],
+        ["초록 SAFE 구간은 왜 움직이거나 좁아지나요?", "미션의 바다 상태 때문입니다. 해초가 흐르며 구간을 움직이고 산호초가 폭을 바꾸며, 조수가 방향을 바꾸고 돌풍이 낚싯줄을 밀어요. 깊은 바다 미션에서는 여러 조건이 함께 나타납니다."],
+        ["캠페인 완료에 다이아몬드가 필요한가요?", "아니요. 확인 후 사용하는 희귀 미끼와 소나는 선택 사항입니다. 미션, Guardian, 일반 어획, 장비 업그레이드에는 다이아몬드가 필요하지 않습니다."],
+        ["진행 상황은 어디에 저장되나요?", "미션 잠금 해제, Reef Notes, 앨범, 장비, 최고 어획은 이 브라우저에 저장됩니다. 브라우저 간 동기화는 없으며 사이트 데이터를 지우면 사라질 수 있습니다."]
+      ]
+    },
+    es: {
+      intro: "En 30 misiones de arrecife, carga el lanzamiento y mantén el marcador en la banda verde SEGURA al recoger la línea. Si se rompe, pierdes tiempo de misión; las capturas llenan un álbum de 12 criaturas y las Notas del Arrecife mejoran seis equipos.",
+      metaDescription: "Pesca en 30 misiones de arrecife, mantén el indicador en la zona verde SEGURA y enfrenta a seis Guardianes. Registra 12 criaturas y mejora tu equipo.",
+      text140Tags: ["misiones de pesca en arrecifes", "control de tensión de línea", "colección de capturas"],
+      how: [
+        "Lee la condición del mar y el objetivo de capturas; luego elige una misión desbloqueada.",
+        "Mantén pulsada la superficie del agua o la barra espaciadora para cargar y suelta para lanzar. Más potencia reduce la espera hasta la picada, pero no elige un pez más raro.",
+        "Cuando pique, mueve el indicador rojo con el mando rojo, deslizando por la superficie del agua o con las flechas. Déjalo en la zona verde SEGURA para reducir la fuerza del pez.",
+        "Si se rompe la línea, el pez escapa y vuelves a lanzar; el reloj de la misión no se reinicia.",
+        "En Resultados, revisa las capturas, las Notas y las novedades del álbum. Vuelve al Mapa del arrecife para repetir o elegir la siguiente misión desbloqueada."
+      ],
+      designNote: "Seis regiones presentan seis condiciones marinas en bloques de cinco misiones. La zona SEGURA verde indica dónde el control reduce la fuerza del pez. Si se mueve o estrecha, ajusta el indicador; una línea rota consume el mismo reloj de misión.",
+      faq: [
+        ["¿Qué pierdo si salgo antes de Resultados?", "Se pierden la expedición actual, sus capturas y cualquier Cebo raro o Sonar preparado. El álbum, las Notas del Arrecife y el equipo guardados permanecen en este navegador."],
+        ["¿Por qué se mueve o estrecha la zona SEGURA verde?", "Depende de la condición del mar: las corrientes entre algas mueven la zona, el coral cambia su anchura, la marea alterna el lado, las ráfagas empujan la línea y las profundidades combinan varias condiciones."],
+        ["¿Necesito Diamantes para completar la campaña?", "No. El Cebo raro o el Sonar requieren confirmación y son opcionales. Las misiones, los Guardianes, las capturas normales y las mejoras no necesitan Diamantes."],
+        ["¿Dónde se guarda mi progreso?", "Las misiones desbloqueadas, las Notas, el álbum, el equipo y las mejores capturas se guardan en este navegador. No se sincronizan y pueden borrarse al eliminar los datos del sitio."]
+      ]
+    },
+    "pt-BR": {
+      intro: "Nas 30 missões do recife, carregue o arremesso e mantenha o marcador na faixa verde SEGURA durante o recolhimento da linha. Se ela arrebentar, você perde tempo da missão; as capturas preenchem um álbum de 12 criaturas, e as Notas do Recife melhoram seis equipamentos.",
+      metaDescription: "Pesque em 30 missões do recife, mantenha o marcador na faixa SEGURA e enfrente seis Guardiões. Registre 12 criaturas e melhore seus equipamentos.",
+      text140Tags: ["missões de pesca no recife", "controle da tensão da linha", "coleção de capturas"],
+      how: [
+        "Leia a condição do mar e a meta de capturas; depois escolha uma missão desbloqueada.",
+        "Mantenha pressionada a superfície da água ou a barra de espaço para carregar o arremesso e solte para lançar. Mais força reduz o tempo até a fisgada, mas não escolhe um peixe mais raro.",
+        "Quando o peixe morder, mova o marcador vermelho pelo controle, deslizando no mar ou usando as setas. Mantenha-o na faixa verde SEGURA para reduzir a força do peixe.",
+        "Se a linha arrebentar, o peixe escapa e o arremesso recomeça; o relógio da missão não zera.",
+        "Na tela de resultado, confira as capturas, as Notas e as novas entradas do álbum. Volte ao Mapa do Recife para repetir ou escolher a próxima missão liberada."
+      ],
+      designNote: "Seis regiões apresentam seis condições do mar em blocos de cinco missões. A faixa SEGURA mostra onde o controle reduz a força do peixe. Se ela se mover ou estreitar, ajuste o marcador; uma linha arrebentada consome o mesmo tempo da missão.",
+      faq: [
+        ["O que perco se sair antes do resultado?", "A expedição atual, suas capturas e qualquer Isca Rara ou Sonar preparado são perdidos. O álbum, as Notas do Recife e os equipamentos salvos continuam neste navegador."],
+        ["Por que a faixa verde SEGURA se move ou estreita?", "É a condição do mar da missão: o movimento das algas desloca a faixa, os corais alteram sua largura, a maré muda o lado, as rajadas empurram a linha e as águas profundas combinam condições."],
+        ["Preciso de Diamantes para concluir a campanha?", "Não. A Isca Rara e o Sonar são opcionais e exigem confirmação. Missões, Guardiões, capturas normais e melhorias de equipamento não precisam de Diamantes."],
+        ["Onde meu progresso fica salvo?", "Missões liberadas, Notas, álbum, equipamentos e melhores capturas ficam salvos neste navegador. Não há sincronização entre navegadores; limpar os dados do site pode apagá-los."]
+      ]
+    },
+    fr: {
+      intro: "Dans les 30 missions du récif, chargez le lancer puis gardez le marqueur dans la bande verte SAFE pendant la récupération. Une ligne rompue coûte du temps de mission ; les prises remplissent un album de 12 créatures et les Notes du récif servent à améliorer six équipements.",
+      metaDescription: "Pêchez au fil de 30 missions, gardez le marqueur dans la bande SAFE et affrontez six Gardiens. Consignez 12 créatures et améliorez votre équipement.",
+      text140Tags: ["missions de pêche sur récif", "contrôle de la tension", "collection de prises"],
+      how: [
+        "Lisez la condition de mer et l’objectif de prises, puis choisissez une mission débloquée.",
+        "Maintenez le doigt sur la surface de l’eau ou appuyez sur la barre d’espace pour charger le lancer, puis relâchez. Plus de puissance réduit l’attente de la touche, mais ne choisit pas un poisson plus rare.",
+        "À la touche, déplacez le marqueur rouge avec la commande rouge, en glissant sur la surface de l’eau ou avec les flèches. Gardez-le dans la bande verte SAFE pour réduire la force du poisson.",
+        "Si la ligne casse, le poisson s’échappe et le lancer reprend ; le chronomètre de la mission ne repart pas à zéro.",
+        "À l’écran de résultat, vérifiez les prises, les Notes et les nouvelles entrées de l’album. Revenez à la carte du récif pour rejouer ou choisir la prochaine mission débloquée."
+      ],
+      designNote: "Les six régions présentent six conditions marines sur cinq missions chacune. La bande SAFE indique où le contrôle réduit la force du poisson. Si elle dérive ou rétrécit, ajustez le marqueur ; une ligne cassée consomme le même temps de mission.",
+      faq: [
+        ["Que perd-on en quittant avant le résultat ?", "L’expédition en cours, ses prises et tout leurre rare ou sonar préparé sont perdus. L’album, les Notes du récif et l’équipement déjà sauvegardés restent dans ce navigateur."],
+        ["Pourquoi la bande verte SAFE bouge-t-elle ou rétrécit-elle ?", "Cela dépend de l’état de la mer : les courants dans les algues déplacent la bande, le corail en change la largeur, la marée alterne le côté, les rafales poussent la ligne et les grandes profondeurs combinent plusieurs conditions."],
+        ["Faut-il des diamants pour finir la campagne ?", "Non. Le leurre rare et le sonar sont facultatifs et nécessitent une confirmation. Les missions, Gardiens, prises ordinaires et améliorations ne demandent pas de diamants."],
+        ["Où ma progression est-elle sauvegardée ?", "Les missions débloquées, les Notes, l’album, l’équipement et les meilleures prises sont sauvegardés dans ce navigateur. Ils ne se synchronisent pas entre navigateurs et peuvent être effacés avec les données du site."]
+      ]
+    },
+    de: {
+      intro: "In 30 Riffmissionen lädst du den Wurf auf und hältst den Marker beim Einholen im grünen SAFE-Bereich. Ein Riss kostet Missionszeit. Fänge füllen ein Album mit 12 Meereslebewesen; mit Riffnotizen verbesserst du sechs Ausrüstungsteile.",
+      metaDescription: "Angle in 30 Riffmissionen, halte den Marker im SAFE-Bereich und stelle dich sechs Wächtern. Sammle 12 Lebewesen und verbessere deine Ausrüstung.",
+      text140Tags: ["Riffangel-Missionen", "Schnurspannung steuern", "Fangsammlung"],
+      how: [
+        "Lies die Meeresbedingung und das Fangziel, dann wähle eine freigeschaltete Mission.",
+        "Halte die Wasseroberfläche oder die Leertaste zum Aufladen gedrückt und lass zum Werfen los. Mehr Kraft verkürzt die Wartezeit bis zum Biss, wählt aber keinen selteneren Fisch.",
+        "Nach einem Biss bewegst du den Marker mit dem roten Drehknopf, einem Wischer über die Wasseroberfläche oder den Pfeiltasten. Bleib im grünen SAFE-Bereich, um den Fisch zu ermüden.",
+        "Reißt die Schnur, entkommt der Fisch und der Wurf beginnt erneut. Die Missionszeit wird nicht zurückgesetzt.",
+        "Prüfe im Ergebnis Fänge, Riffnotizen und neue Albumeinträge. Kehre zur Riffkarte zurück, um die Mission zu wiederholen oder die nächste freigeschaltete zu wählen."
+      ],
+      designNote: "Sechs Regionen führen über je fünf Missionen unterschiedliche Meeresbedingungen ein. Im SAFE-Bereich verringert deine Steuerung die Kraft des Fisches. Wandert oder verengt sich der Bereich, musst du den Marker anpassen; ein Schnurriss verbraucht weiter Missionszeit.",
+      faq: [
+        ["Was verliere ich, wenn ich vor dem Ergebnis gehe?", "Der laufende Ausflug, seine Fänge und vorbereitete seltene Köder oder Sonare gehen verloren. Gespeicherte Albumeinträge, Riffnotizen und Ausrüstung bleiben in diesem Browser."],
+        ["Warum bewegt sich der grüne SAFE-Bereich oder wird schmaler?", "Das hängt vom Seegang ab: Strömungen im Tang bewegen den Bereich, Korallen verändern seine Breite, die Gezeiten wechseln die Seite, Böen drücken die Schnur und in der Tiefsee treffen mehrere Bedingungen zusammen."],
+        ["Brauche ich Diamanten für die Kampagne?", "Nein. Seltene Köder und Sonar sind optional und müssen bestätigt werden. Missionen, Wächter, normale Fänge und Ausrüstungsverbesserungen benötigen keine Diamanten."],
+        ["Wo wird mein Fortschritt gespeichert?", "Freigeschaltete Missionen, Riffnotizen, Album, Ausrüstung und beste Fänge werden in diesem Browser gespeichert. Sie synchronisieren nicht zwischen Browsern und können beim Löschen der Websitedaten verloren gehen."]
+      ]
+    },
+    it: {
+      intro: "Nelle 30 missioni della barriera, carica il lancio e tieni il marcatore nella fascia verde SICURA mentre recuperi la lenza. Se si rompe, perdi tempo della missione; le catture riempiono un album di 12 creature e le Note della barriera migliorano sei equipaggiamenti.",
+      metaDescription: "Pesca in 30 missioni della barriera, resta nella fascia SICURA e affronta sei Guardiani. Registra 12 creature e migliora l’attrezzatura.",
+      text140Tags: ["missioni di pesca sulla barriera", "controllo della tensione", "raccolta delle catture"],
+      how: [
+        "Leggi la condizione del mare e l’obiettivo di catture, poi scegli una missione sbloccata.",
+        "Tieni premuto sulla superficie dell’acqua o sulla barra spaziatrice per caricare il lancio, poi rilascia. Più potenza riduce l’attesa dell’abboccata, ma non sceglie un pesce più raro.",
+        "Quando abbocca, sposta il marcatore rosso con la manopola rossa, scorrendo sulla superficie dell’acqua o con le frecce. Tienilo nella fascia verde SICURA per ridurre la forza del pesce.",
+        "Se la lenza si rompe, il pesce scappa e il lancio ricomincia; il timer della missione non si azzera.",
+        "Nel risultato controlla catture, Note e nuove voci dell’album. Torna alla mappa della barriera per ripetere o scegliere la prossima missione sbloccata."
+      ],
+      designNote: "Sei regioni presentano sei condizioni marine in gruppi di cinque missioni. La fascia SICURA indica dove il controllo riduce la forza del pesce. Se si sposta o si restringe, regola il marcatore; una lenza rotta consuma comunque il tempo della missione.",
+      faq: [
+        ["Cosa perdo se esco prima del risultato?", "Perdi la spedizione in corso, le sue catture e ogni esca rara o sonar preparati. Album, Note della barriera ed equipaggiamento già salvati restano in questo browser."],
+        ["Perché la fascia verde SICURA si sposta o si restringe?", "Dipende dalle condizioni del mare: le correnti tra le alghe spostano la fascia, i coralli ne cambiano la larghezza, la marea alterna il lato, le raffiche spingono la lenza e le acque profonde combinano più condizioni."],
+        ["Servono diamanti per completare la campagna?", "No. Esca rara e sonar sono facoltativi e richiedono conferma. Missioni, Guardiani, catture normali e miglioramenti dell’equipaggiamento non richiedono diamanti."],
+        ["Dove viene salvato il mio progresso?", "Missioni sbloccate, Note, album, equipaggiamento e migliori catture sono salvati in questo browser. Non si sincronizzano tra browser e possono sparire eliminando i dati del sito."]
+      ]
+    },
+    ru: {
+      intro: "В 30 миссиях на рифе зарядите заброс и при вываживании удерживайте маркер в зелёной безопасной зоне. Обрыв лески отнимает время миссии; улов пополняет альбом из 12 морских обитателей, а рифовые заметки позволяют улучшить шесть видов снаряжения.",
+      metaDescription: "Пройдите 30 рыболовных миссий, удерживайте маркер в безопасной зоне и встретьте шесть Стражей. Запишите 12 видов и улучшайте снасти.",
+      text140Tags: ["миссии на коралловом рифе", "контроль натяжения лески", "коллекция улова"],
+      how: [
+        "Прочитайте условие моря и цель по улову, затем выберите открытую миссию.",
+        "Удерживайте палец на поверхности воды или клавишу пробела, чтобы зарядить заброс, затем отпустите. Более сильный заброс сокращает ожидание поклёвки, но не выбирает редкую рыбу.",
+        "После поклёвки двигайте маркер красным регулятором, проводя по поверхности воды или нажимая стрелки. Оставайтесь в зелёной безопасной зоне, чтобы ослаблять рыбу.",
+        "При обрыве рыба уходит, и заброс начинается снова; время миссии не сбрасывается.",
+        "В результате проверьте улов, заметки и новые записи альбома. Вернитесь на карту рифа, чтобы повторить миссию или выбрать следующую открытую."
+      ],
+      designNote: "Шесть регионов знакомят с морскими условиями по пять миссий каждый. В безопасной зоне управление ослабляет рыбу. Если зона смещается или сужается, двигайте маркер; после обрыва лески время миссии продолжает идти.",
+      faq: [
+        ["Что пропадёт, если выйти до результата?", "Текущая экспедиция, её улов и подготовленные редкая приманка или сонар будут потеряны. Сохранённые записи альбома, рифовые заметки и снасти останутся в этом браузере."],
+        ["Почему зелёная безопасная зона движется или сужается?", "Так меняются условия моря: течение среди водорослей сдвигает зону, кораллы меняют её ширину, прилив чередует стороны, порывы ветра толкают леску, а на глубине сочетаются несколько условий."],
+        ["Нужны ли алмазы для прохождения кампании?", "Нет. Редкая приманка и сонар необязательны и требуют подтверждения. Для миссий, Стражей, обычного улова и улучшений снастей алмазы не нужны."],
+        ["Где сохраняется прогресс?", "Открытые миссии, заметки, альбом, снасти и лучшие уловы хранятся в этом браузере. Синхронизации между браузерами нет; очистка данных сайта может удалить сохранение."]
+      ]
+    },
+    hi: {
+      intro: "30 रीफ़ मिशनों में कास्ट चार्ज करें और रील करते समय मार्कर को हरे SAFE बैंड में रखें। लाइन टूटने पर मिशन का समय चलता रहता है। पकड़ी गई मछलियाँ 12 जीवों वाले एल्बम में जुड़ती हैं, और रीफ़ नोट्स से छह तरह के उपकरण अपग्रेड होते हैं।",
+      metaDescription: "30 रीफ़ मिशनों में कास्ट और लाइन का तनाव संभालें, छह रक्षक मछलियों का सामना करें। 12 जीव दर्ज करें और रीफ़ नोट्स से उपकरण अपग्रेड करें।",
+      text140Tags: ["रीफ़ मछली पकड़ने के मिशन", "लाइन तनाव नियंत्रण", "कैच संग्रह"],
+      how: [
+        "समुद्री स्थिति और कैच लक्ष्य पढ़ें, फिर खुला मिशन चुनें।",
+        "कास्ट चार्ज करने के लिए पानी की सतह पर उंगली या Space दबाकर रखें, फिर छोड़ें। अधिक ताकत से मछली के काटने का इंतज़ार घटता है, पर दुर्लभ मछली नहीं चुनी जाती।",
+        "मछली के चारा लेने पर लाल नियामक, पानी की सतह पर स्वाइप या ऐरो कुंजियों से मार्कर चलाएँ। मछली का ज़ोर घटाने के लिए इसे हरे SAFE बैंड में रखें।",
+        "लाइन टूटने पर मछली बच निकलती है और कास्ट फिर शुरू होता है; मिशन की घड़ी रीसेट नहीं होती।",
+        "नतीजे में कैच, Reef Notes और एल्बम की नई प्रविष्टियाँ देखें। रीफ़ मैप पर लौटकर मिशन दोहराएँ या अगला खुला मिशन चुनें।"
+      ],
+      designNote: "छह क्षेत्र पाँच-पाँच मिशनों में समुद्र की छह स्थितियाँ सिखाते हैं। SAFE बैंड में रहने से नियंत्रण मछली की ताकत घटाता है। बैंड खिसके या संकरा हो तो मार्कर मिलाएँ; लाइन टूटने के बाद भी मिशन का समय चलता है।",
+      faq: [
+        ["नतीजे से पहले बाहर निकलने पर क्या खोता है?", "मौजूदा अभियान, उसमें पकड़ी मछलियाँ और पहले से तैयार दुर्लभ चारा या मछली खोजने वाला सोनार खो जाता है। एल्बम की सहेजी प्रविष्टियाँ, रीफ़ नोट्स और उपकरण इस ब्राउज़र में सुरक्षित रहते हैं।"],
+        ["हरा SAFE बैंड क्यों खिसकता या संकरा होता है?", "यह मिशन की समुद्री स्थिति है: समुद्री घास के बीच की धारा बैंड खिसकाती है, मूँगे उसकी चौड़ाई बदलते हैं, ज्वार दिशा बदलता है, तेज़ हवा लाइन को धकेलती है और गहरे पानी में कई स्थितियाँ एक साथ आती हैं।"],
+        ["क्या अभियान पूरा करने के लिए हीरे चाहिए?", "नहीं। दुर्लभ चारा और मछली खोजने वाला सोनार वैकल्पिक हैं और पुष्टि माँगते हैं। मिशन, रक्षक मछलियों, सामान्य पकड़ और उपकरणों के उन्नयन के लिए हीरे आवश्यक नहीं हैं।"],
+        ["मेरी प्रगति कहाँ सहेजी जाती है?", "खुले मिशन, रीफ़ नोट्स, एल्बम, उपकरण और सबसे अच्छी पकड़ इसी ब्राउज़र में सहेजे जाते हैं। ब्राउज़र के बीच सिंक नहीं होता; साइट डेटा मिटाने से सेव हट सकता है।"]
+      ]
+    },
+    ar: {
+      intro: "في 30 مهمة على الشعاب، اشحن الرمية وأبقِ المؤشر داخل نطاق SAFE الأخضر أثناء سحب الخيط. انقطاعه يستهلك وقت المهمة؛ وتملأ المصيدات ألبومًا من 12 مخلوقًا، فيما تتيح ملاحظات الشعاب ترقية ست معدات.",
+      metaDescription: "أكمل 30 مهمة صيد، وأبقِ المؤشر في نطاق SAFE، وواجه ستة من أسماك الحراسة. سجّل 12 مخلوقًا وطوّر معداتك بملاحظات الشعاب.",
+      text140Tags: ["مهام صيد الشعاب", "التحكم في شد الخيط", "جمع المصيدات"],
+      how: [
+        "اقرأ حالة البحر وهدف الصيد، ثم اختر مهمة مفتوحة.",
+        "اضغط مطولًا على الماء أو مفتاح المسافة لشحن الرمية، ثم ارفع إصبعك. تزيد القوة سرعة وصول العضة ولا تختار سمكة أندر.",
+        "بعد العضة، حرّك المؤشر الأحمر بالمقبض أو بالسحب على البحر أو بمفاتيح الأسهم. أبقه داخل نطاق SAFE الأخضر لإضعاف السمكة.",
+        "إذا انقطع الخيط، تهرب السمكة وتعود إلى الرمي؛ ولا يعود مؤقت المهمة إلى البداية.",
+        "راجع المصيدات والملاحظات ومدخلات الألبوم الجديدة في النتيجة. عد إلى خريطة الشعاب لإعادة المهمة أو اختيار المهمة المفتوحة التالية."
+      ],
+      designNote: "تقدم ست مناطق قواعد بحرية مختلفة عبر خمس مهام لكل منها. يوضح نطاق SAFE أين يضعف التحكم قوة السمكة. إذا تحرك النطاق أو ضاق فعدّل المؤشر؛ ويستمر وقت المهمة بعد انقطاع الخيط.",
+      faq: [
+        ["ما الذي أفقده إذا غادرت قبل النتيجة؟", "تُفقد الرحلة الحالية ومصيدها وأي طُعم نادر أو سونار مجهز. وتبقى مدخلات الألبوم وملاحظات الشعاب والمعدات المحفوظة في هذا المتصفح."],
+        ["لماذا يتحرك نطاق SAFE الأخضر أو يضيق؟", "تعتمد الإجابة على حالة البحر: تحرك التيارات بين الأعشاب النطاق، وتغير الشعاب عرضه، ويبدل المد الجهة، وتدفع هبات الرياح الخيط، وتجتمع عدة حالات في المياه العميقة."],
+        ["هل أحتاج إلى الماسات لإكمال الحملة؟", "لا. الطُعم النادر والسونار اختياريان ويتطلبان تأكيدًا. لا تحتاج المهام وأسماك الحراسة والمصيد العادي وترقيات المعدات إلى الماسات."],
+        ["أين يُحفظ تقدمي؟", "تُحفظ المهام المفتوحة والملاحظات والألبوم والمعدات وأفضل المصيدات في هذا المتصفح. لا تتم المزامنة بين المتصفحات، وقد يؤدي مسح بيانات الموقع إلى حذف الحفظ."]
+      ]
+    }
+  };
+  for (const [locale, copy] of Object.entries(reefFisherTextGrowth140)) {
+    const reviewed = window.WeightPlayGeneralReviewedGuides[locale] ||= { games: {} };
+    reviewed.games ||= {};
+    reviewed.games[reefFisherId] = { ...(reviewed.games[reefFisherId] || {}), ...copy };
+  }
+
   const unblockId = "animal-unblock";
   const unblockGuide = (copy) => ({
     related: [],
@@ -391,123 +648,123 @@
   const unblockGuides = {
     ja: unblockGuide({
       title: "トレイルを開けよう", difficulty: "やさしいものから難しいものまで", time: "1ステージ約2～8分", gameplay: "スライドブロック脱出パズル", genre: ["パズル", "戦略", "論理", "動物"],
-      intro: "横向きと縦向きのブロックをそれぞれの向きに沿って動かし、赤い探検家が出口まで進める道を作りましょう。",
-      story: ["Pankoは、ブロックで混み合った森の30の門を調べます。すべてのブロックは決められたマスから始まり、各パズルには印の付いた探検家を脱出させる確認済みの手順があります。", "ブロックは回転したり、飛び越えたり、盤面の外へ出たりしません。一時的にどのブロックを動かせば最後の道が開くかを考えることが挑戦です。"],
-      systems: ["横向きのブロックは左右だけ、縦向きのブロックは上下だけに動きます。", "ブロックは盤面の端または別のブロックの手前で止まり、同じマスに重なることはできません。", "赤い探検家が印の付いた出口の列まで進むとステージクリアです。", "「元に戻す」は直前のスライドを戻し、「ヒント」は役立つブロックを示し、「やり直す」は最初の配置に戻します。"],
-      how: ["開放済みのトレイルを選びます。", "探検家の出口の列をふさいでいるブロックを確認します。", "それぞれの合法な向きに動かせる空間を作ってから、障害物を移動します。", "探検家を出口まで滑らせ、次のトレイルへ進みます。"],
+      intro: "横向きと縦向きのブロックをそれぞれの向きに沿って動かし、金色の矢印が付いた緑の竹ブロックが出口まで進める道を作りましょう。",
+      story: ["Pankoは、ブロックで混み合った森の30の門を調べます。すべてのブロックは決められたマスから始まり、各パズルには印の付いた緑の竹ブロックを脱出させる確認済みの手順があります。", "ブロックは回転したり、飛び越えたり、盤面の外へ出たりしません。一時的にどのブロックを動かせば最後の道が開くかを考えることが挑戦です。"],
+      systems: ["横向きのブロックは左右だけ、縦向きのブロックは上下だけに動きます。", "ブロックは盤面の端または別のブロックの手前で止まり、同じマスに重なることはできません。", "金色の矢印が付いた緑の竹ブロックが印の付いた出口の列まで進むとステージクリアです。", "「元に戻す」は直前のスライドを戻し、「ヒント」は役立つブロックを示し、「やり直す」は最初の配置に戻します。"],
+      how: ["開放済みのトレイルを選びます。", "緑の竹ブロックの出口の列をふさいでいるブロックを確認します。", "それぞれの合法な向きに動かせる空間を作ってから、障害物を移動します。", "緑の竹ブロックを出口まで滑らせ、次のトレイルへ進みます。"],
       strategyTips: ["出口から逆向きに道筋を考えましょう。", "別のブロックのために場所を空ける必要があるときは、障害物を思ったより遠くまで動かします。", "後で必要になるブロックで、唯一空いている列をふさがないようにします。", "直前の配置ミスには「元に戻す」、手順全体を変えたいときには「やり直す」を使います。"],
       progression: ["序盤では移動方向の制限と単純な障害物を学びます。後半では長いブロック、狭い空間、入れ子状の手順、複数の交差、密集した最終盤面が登場します。", "各ステージでは、勝手な新ルールを加えずに空間的な手順だけが変化します。"],
       designNote: "ドラッグ方向、マスへの吸着、衝突判定、ブロックの絵は、タッチ・マウス・キーボードのどの操作でも同じマス座標を使います。",
       parent: "制限時間、アカウント、購入、公開スコアはありません。開放状況とローカルの最少手数はこのブラウザー内だけに保存されます。",
-      faq: [["ブロックは回転できますか？", "いいえ。各ブロックは最初の向きを保ちます。"], ["ドラッグが途中で止まるのはなぜですか？", "次のマスが埋まっているか、盤面の外だからです。"], ["どのブロックを出口へ出しますか？", "赤くはっきり印の付いた探検家です。"], ["30のトレイルはすべて解けますか？", "はい。各配置には確認済みの解法があります。"]],
+      faq: [["ブロックは回転できますか？", "いいえ。各ブロックは最初の向きを保ちます。"], ["ドラッグが途中で止まるのはなぜですか？", "次のマスが埋まっているか、盤面の外だからです。"], ["どのブロックを出口へ出しますか？", "金色の矢印が付いた緑の竹ブロックです。"], ["30のトレイルはすべて解けますか？", "はい。各配置には確認済みの解法があります。"]],
     }),
     ko: unblockGuide({
       title: "길 열기", difficulty: "쉬움부터 어려움까지", time: "스테이지당 약 2~8분", gameplay: "슬라이딩 블록 탈출 퍼즐", genre: ["퍼즐", "전략", "논리", "동물"],
-      intro: "가로 블록과 세로 블록을 각자의 축을 따라 밀어 빨간 탐험가가 출구까지 갈 수 있는 길을 만드세요.",
-      story: ["Panko는 블록으로 붐비는 숲의 관문 30곳을 조사합니다. 모든 블록은 정해진 격자에서 시작하며, 각 퍼즐에는 표시된 탐험가를 탈출시키는 검증된 순서가 있습니다.", "블록은 회전하거나 뛰어넘거나 보드 밖으로 나갈 수 없습니다. 마지막 길을 열기 위해 어떤 임시 이동이 공간을 만드는지 판단하는 것이 핵심입니다."],
-      systems: ["가로 블록은 좌우로만, 세로 블록은 위아래로만 움직입니다.", "블록은 보드 가장자리나 다른 블록 앞에서 멈추며, 차지한 칸은 겹칠 수 없습니다.", "빨간 탐험가가 표시된 출구 줄에 닿으면 스테이지를 완료합니다.", "되돌리기는 직전 이동을 복구하고, 힌트는 유용한 블록을 알려 주며, 다시 시작은 처음 배치를 복원합니다."],
-      how: ["잠금 해제된 길을 선택하세요.", "탐험가의 출구 줄을 가로막는 블록을 모두 찾으세요.", "허용된 축을 따라 움직일 공간을 만든 뒤 방해 블록을 옮기세요.", "탐험가를 출구로 밀고 다음 길로 진행하세요."],
+      intro: "가로 블록과 세로 블록을 각자의 축을 따라 밀어 금색 화살표가 있는 초록 대나무 블록이 출구까지 갈 수 있는 길을 만드세요.",
+      story: ["Panko는 블록으로 붐비는 숲의 관문 30곳을 조사합니다. 모든 블록은 정해진 격자에서 시작하며, 각 퍼즐에는 표시된 초록 대나무 블록을 탈출시키는 검증된 순서가 있습니다.", "블록은 회전하거나 뛰어넘거나 보드 밖으로 나갈 수 없습니다. 마지막 길을 열기 위해 어떤 임시 이동이 공간을 만드는지 판단하는 것이 핵심입니다."],
+      systems: ["가로 블록은 좌우로만, 세로 블록은 위아래로만 움직입니다.", "블록은 보드 가장자리나 다른 블록 앞에서 멈추며, 차지한 칸은 겹칠 수 없습니다.", "금색 화살표가 있는 초록 대나무 블록이 표시된 출구 줄에 닿으면 스테이지를 완료합니다.", "되돌리기는 직전 이동을 복구하고, 힌트는 유용한 블록을 알려 주며, 다시 시작은 처음 배치를 복원합니다."],
+      how: ["잠금 해제된 길을 선택하세요.", "초록 대나무 블록의 출구 줄을 가로막는 블록을 모두 찾으세요.", "허용된 축을 따라 움직일 공간을 만든 뒤 방해 블록을 옮기세요.", "초록 대나무 블록을 출구로 밀고 다음 길로 진행하세요."],
       strategyTips: ["출구에서 거꾸로 경로를 생각하세요.", "다른 블록이 지나갈 공간이 필요하면 방해 블록을 예상보다 더 멀리 옮기세요.", "나중에 필요한 블록으로 유일하게 열린 열을 막지 마세요.", "최근 배치 실수에는 되돌리기를, 전체 순서가 틀렸다면 다시 시작을 사용하세요."],
       progression: ["초반 길에서는 축 제한과 한 개의 방해물을 익힙니다. 후반에는 더 긴 블록, 좁은 여유 공간, 겹친 의존 관계, 여러 교차로와 빽빽한 최종 보드가 등장합니다.", "각 스테이지는 임의의 새 이동 규칙 없이 공간 순서만 바꿉니다."],
       designNote: "드래그 방향, 격자 맞춤, 충돌 판정과 블록 그림은 터치, 마우스, 키보드에서 같은 셀 좌표를 사용합니다.",
       parent: "타이머, 계정, 구매 또는 공개 점수가 없습니다. 잠금 해제 상태와 로컬 최소 이동 기록은 이 브라우저에만 저장됩니다.",
-      faq: [["블록을 회전할 수 있나요?", "아니요. 각 블록은 처음 방향을 유지합니다."], ["드래그가 왜 중간에 멈추나요?", "다음 칸이 차 있거나 보드 밖이기 때문입니다."], ["어떤 블록을 출구로 보내야 하나요?", "빨간색으로 뚜렷하게 표시된 탐험가입니다."], ["30개 길을 모두 풀 수 있나요?", "네. 모든 배치에는 검증된 해법이 있습니다."]],
+      faq: [["블록을 회전할 수 있나요?", "아니요. 각 블록은 처음 방향을 유지합니다."], ["드래그가 왜 중간에 멈추나요?", "다음 칸이 차 있거나 보드 밖이기 때문입니다."], ["어떤 블록을 출구로 보내야 하나요?", "금색 화살표가 있는 초록 대나무 블록입니다."], ["30개 길을 모두 풀 수 있나요?", "네. 모든 배치에는 검증된 해법이 있습니다."]],
     }),
     es: unblockGuide({
       title: "Desbloquear el sendero", difficulty: "De fácil a desafiante", time: "2-8 minutos por etapa", gameplay: "Puzle de salida con bloques deslizantes", genre: ["Puzle", "Estrategia", "Lógica", "Animales"],
-      intro: "Desliza los bloques horizontales y verticales por sus propios ejes hasta abrir una ruta para que el explorador rojo llegue a la salida.",
-      story: ["Panko recorre treinta puertas del bosque repletas de bloques. Cada bloque empieza en una cuadrícula fija y cada puzle tiene una secuencia verificada que libera al explorador marcado.", "Los bloques no giran, saltan ni salen del tablero. El reto consiste en decidir qué movimientos temporales crean espacio para el deslizamiento final."],
-      systems: ["Los bloques horizontales solo se mueven a izquierda y derecha; los verticales solo suben y bajan.", "Un movimiento se detiene antes del borde o de otro bloque; las casillas ocupadas no pueden solaparse.", "La etapa termina cuando el explorador rojo alcanza el carril de salida marcado.", "Deshacer revierte un deslizamiento, Pista señala un bloque útil y Reiniciar restaura la distribución inicial exacta."],
-      how: ["Elige un sendero desbloqueado.", "Identifica todos los bloques que cruzan la fila de salida del explorador.", "Crea espacio en el eje permitido de cada obstáculo antes de moverlo.", "Desliza al explorador por la salida y continúa al siguiente sendero."],
+      intro: "Desliza los bloques horizontales y verticales por sus propios ejes hasta abrir una ruta para que el bloque de bambú verde con flecha dorada llegue a la salida.",
+      story: ["Panko recorre treinta puertas del bosque repletas de bloques. Cada bloque empieza en una cuadrícula fija y cada puzle tiene una secuencia verificada para liberar el bloque de bambú verde marcado con una flecha dorada.", "Los bloques no giran, saltan ni salen del tablero. El reto consiste en decidir qué movimientos temporales crean espacio para el deslizamiento final."],
+      systems: ["Los bloques horizontales solo se mueven a izquierda y derecha; los verticales solo suben y bajan.", "Un movimiento se detiene antes del borde o de otro bloque; las casillas ocupadas no pueden solaparse.", "La etapa termina cuando el bloque de bambú verde con flecha dorada alcanza el carril de salida marcado.", "Deshacer revierte un deslizamiento, Pista señala un bloque útil y Reiniciar restaura la distribución inicial exacta."],
+      how: ["Elige un sendero desbloqueado.", "Identifica todos los bloques que cruzan la fila de salida del bloque de bambú verde con flecha dorada.", "Crea espacio en el eje permitido de cada obstáculo antes de moverlo.", "Desliza al bloque de bambú verde con flecha dorada por la salida y continúa al siguiente sendero."],
       strategyTips: ["Piensa la ruta hacia atrás desde la salida.", "Mueve un obstáculo más lejos de lo que parece necesario si debe dejar sitio a otro bloque.", "No llenes la única columna libre con un bloque que necesitarás después.", "Usa Deshacer para un error reciente y Reiniciar cuando el orden completo sea incorrecto."],
       progression: ["Los primeros senderos enseñan los límites de cada eje y los obstáculos simples. Los capítulos posteriores añaden piezas largas, espacios estrechos, dependencias anidadas, cruces múltiples y tableros finales densos.", "Cada etapa cambia la secuencia espacial sin introducir reglas de movimiento arbitrarias."],
       designNote: "La dirección de arrastre, el ajuste a la cuadrícula, las colisiones y el arte de los bloques usan la misma geometría de casillas con toque, ratón y teclado.",
       parent: "No hay temporizador, cuenta, compras ni puntuación pública. Los desbloqueos y los mejores números de movimientos se guardan solo en este navegador.",
-      faq: [["¿Pueden girar los bloques?", "No. Cada bloque conserva su orientación inicial."], ["¿Por qué se detuvo el arrastre?", "La casilla siguiente estaba ocupada o fuera del tablero."], ["¿Qué bloque debe salir?", "El explorador rojo claramente marcado."], ["¿Se pueden resolver los treinta senderos?", "Sí. Cada distribución tiene una solución verificada."]],
+      faq: [["¿Pueden girar los bloques?", "No. Cada bloque conserva su orientación inicial."], ["¿Por qué se detuvo el arrastre?", "La casilla siguiente estaba ocupada o fuera del tablero."], ["¿Qué bloque debe salir?", "El bloque de bambú verde con flecha dorada claramente marcado."], ["¿Se pueden resolver los treinta senderos?", "Sí. Cada distribución tiene una solución verificada."]],
     }),
     "pt-BR": unblockGuide({
       title: "Desbloquear a trilha", difficulty: "Do fácil ao desafiador", time: "2-8 minutos por fase", gameplay: "Quebra-cabeça de saída com blocos deslizantes", genre: ["Quebra-cabeça", "Estratégia", "Lógica", "Animais"],
-      intro: "Deslize os blocos horizontais e verticais ao longo dos próprios eixos até abrir um caminho para o explorador vermelho chegar à saída.",
-      story: ["Panko mapeia trinta portões da floresta cheios de blocos. Cada bloco começa em uma grade fixa e cada quebra-cabeça tem uma sequência verificada que liberta o explorador marcado.", "Os blocos não giram, saltam nem saem do tabuleiro. O desafio é decidir quais movimentos temporários criam espaço para o deslizamento final."],
-      systems: ["Blocos horizontais só se movem para a esquerda e a direita; blocos verticais só sobem e descem.", "Um movimento para antes da borda ou de outro bloco; casas ocupadas não podem se sobrepor.", "A fase termina quando o explorador vermelho alcança a faixa de saída marcada.", "Desfazer reverte um deslizamento, Dica indica um bloco útil e Reiniciar restaura exatamente a disposição inicial."],
-      how: ["Escolha uma trilha desbloqueada.", "Identifique todos os blocos que cruzam a linha de saída do explorador.", "Crie espaço no eixo permitido de cada obstáculo antes de movê-lo.", "Deslize o explorador pela saída e avance para a próxima trilha."],
+      intro: "Deslize os blocos horizontais e verticais ao longo dos próprios eixos até abrir um caminho para o bloco de bambu verde com seta dourada chegar à saída.",
+      story: ["Panko mapeia trinta portões da floresta cheios de blocos. Cada bloco começa em uma grade fixa e cada quebra-cabeça tem uma sequência verificada que liberta o bloco de bambu verde marcado com uma seta dourada.", "Os blocos não giram, saltam nem saem do tabuleiro. O desafio é decidir quais movimentos temporários criam espaço para o deslizamento final."],
+      systems: ["Blocos horizontais só se movem para a esquerda e a direita; blocos verticais só sobem e descem.", "Um movimento para antes da borda ou de outro bloco; casas ocupadas não podem se sobrepor.", "A fase termina quando o bloco de bambu verde com seta dourada alcança a faixa de saída marcada.", "Desfazer reverte um deslizamento, Dica indica um bloco útil e Reiniciar restaura exatamente a disposição inicial."],
+      how: ["Escolha uma trilha desbloqueada.", "Identifique todos os blocos que cruzam a linha de saída do bloco de bambu verde com seta dourada.", "Crie espaço no eixo permitido de cada obstáculo antes de movê-lo.", "Deslize o bloco de bambu verde com seta dourada pela saída e avance para a próxima trilha."],
       strategyTips: ["Planeje o caminho de trás para frente a partir da saída.", "Mova um obstáculo além do que parece necessário quando ele precisa abrir espaço para outro bloco.", "Não ocupe a única coluna livre com um bloco que será necessário depois.", "Use Desfazer para um erro recente e Reiniciar quando toda a ordem estiver errada."],
       progression: ["As primeiras trilhas ensinam os limites dos eixos e obstáculos simples. Os capítulos seguintes trazem peças longas, espaços estreitos, dependências encadeadas, vários cruzamentos e tabuleiros finais densos.", "Cada fase muda a sequência espacial sem acrescentar regras arbitrárias de movimento."],
       designNote: "A direção do arrasto, o encaixe na grade, a colisão e a arte dos blocos usam a mesma geometria de casas no toque, mouse e teclado.",
       parent: "Não há cronômetro, conta, compras nem pontuação pública. Desbloqueios e melhores números de movimentos ficam somente neste navegador.",
-      faq: [["Os blocos podem girar?", "Não. Cada bloco mantém a orientação inicial."], ["Por que o arrasto parou?", "A próxima casa estava ocupada ou fora do tabuleiro."], ["Qual bloco deve sair?", "O explorador vermelho claramente marcado."], ["Todas as trinta trilhas têm solução?", "Sim. Cada disposição criada tem uma solução verificada."]],
+      faq: [["Os blocos podem girar?", "Não. Cada bloco mantém a orientação inicial."], ["Por que o arrasto parou?", "A próxima casa estava ocupada ou fora do tabuleiro."], ["Qual bloco deve sair?", "O bloco de bambu verde com seta dourada."], ["Todas as trinta trilhas têm solução?", "Sim. Cada disposição criada tem uma solução verificada."]],
     }),
     fr: unblockGuide({
       title: "Libérer le sentier", difficulty: "Facile à difficile", time: "2 à 8 minutes par niveau", gameplay: "Puzzle de sortie à blocs coulissants", genre: ["Puzzle", "Stratégie", "Logique", "Animaux"],
-      intro: "Faites glisser les blocs horizontaux et verticaux selon leur propre axe jusqu’à dégager un passage permettant à l’explorateur rouge d’atteindre la sortie.",
-      story: ["Panko cartographie trente portes forestières encombrées. Chaque bloc commence sur une grille fixe et chaque puzzle possède une séquence vérifiée qui libère l’explorateur marqué.", "Les blocs ne tournent pas, ne sautent pas et ne quittent pas le plateau. Il faut déterminer quels déplacements temporaires créent l’espace nécessaire au glissement final."],
-      systems: ["Les blocs horizontaux se déplacent uniquement à gauche et à droite ; les blocs verticaux uniquement vers le haut et le bas.", "Un déplacement s’arrête avant le bord ou un autre bloc ; deux blocs ne peuvent pas occuper les mêmes cases.", "Le niveau est réussi lorsque l’explorateur rouge atteint la voie de sortie indiquée.", "Annuler revient sur un glissement, Indice désigne un bloc utile et Recommencer restaure exactement la disposition initiale."],
-      how: ["Choisissez un sentier déverrouillé.", "Repérez tous les blocs qui traversent la ligne de sortie de l’explorateur.", "Créez de l’espace sur l’axe autorisé de chaque obstacle avant de le déplacer.", "Faites glisser l’explorateur vers la sortie puis poursuivez au sentier suivant."],
+      intro: "Faites glisser les blocs horizontaux et verticaux selon leur axe pour dégager un passage vers la sortie au bloc de bambou vert marqué d’une flèche dorée.",
+      story: ["Panko cartographie trente portes forestières encombrées. Chaque bloc commence sur une grille fixe et chaque puzzle possède une séquence vérifiée qui libère le bloc de bambou vert marqué d’une flèche dorée.", "Les blocs ne tournent pas, ne sautent pas et ne quittent pas le plateau. Il faut déterminer quels déplacements temporaires créent l’espace nécessaire au glissement final."],
+      systems: ["Les blocs horizontaux se déplacent uniquement à gauche et à droite ; les blocs verticaux uniquement vers le haut et le bas.", "Un déplacement s’arrête avant le bord ou un autre bloc ; deux blocs ne peuvent pas occuper les mêmes cases.", "Le niveau est réussi lorsque le bloc de bambou vert marqué d’une flèche dorée atteint la voie de sortie indiquée.", "Annuler revient sur un glissement, Indice désigne un bloc utile et Recommencer restaure exactement la disposition initiale."],
+      how: ["Choisissez un sentier déverrouillé.", "Repérez tous les blocs qui traversent la ligne de sortie du bloc de bambou vert.", "Créez de l’espace sur l’axe autorisé de chaque obstacle avant de le déplacer.", "Faites glisser le bloc de bambou vert vers la sortie puis poursuivez au sentier suivant."],
       strategyTips: ["Raisonnez à rebours depuis la sortie.", "Éloignez davantage un obstacle s’il doit laisser de la place à un autre bloc.", "N’occupez pas l’unique colonne libre avec un bloc dont vous aurez besoin plus tard.", "Utilisez Annuler pour une erreur récente et Recommencer lorsque tout l’ordre est incorrect."],
       progression: ["Les premiers sentiers enseignent les limites des axes et les obstacles simples. Les chapitres suivants ajoutent des pièces longues, des espaces étroits, des dépendances imbriquées, plusieurs croisements et des plateaux finaux denses.", "Chaque niveau modifie la séquence spatiale sans ajouter de règle de déplacement arbitraire."],
       designNote: "La direction du glissement, l’alignement sur la grille, les collisions et l’illustration des blocs utilisent la même géométrie de cases au toucher, à la souris et au clavier.",
       parent: "Il n’y a ni chronomètre, ni compte, ni achat, ni score public. Les déverrouillages et les meilleurs nombres de déplacements restent dans ce navigateur.",
-      faq: [["Les blocs peuvent-ils tourner ?", "Non. Chaque bloc conserve son orientation initiale."], ["Pourquoi le glissement s’est-il arrêté ?", "La case suivante était occupée ou hors du plateau."], ["Quel bloc doit sortir ?", "L’explorateur rouge clairement indiqué."], ["Les trente sentiers sont-ils tous réalisables ?", "Oui. Chaque disposition possède une solution vérifiée."]],
+      faq: [["Les blocs peuvent-ils tourner ?", "Non. Chaque bloc conserve son orientation initiale."], ["Pourquoi le glissement s’est-il arrêté ?", "La case suivante était occupée ou hors du plateau."], ["Quel bloc doit sortir ?", "Le bloc de bambou vert marqué d’une flèche dorée."], ["Les trente sentiers sont-ils tous réalisables ?", "Oui. Chaque disposition possède une solution vérifiée."]],
     }),
     de: unblockGuide({
       title: "Pfad freimachen", difficulty: "Leicht bis anspruchsvoll", time: "2–8 Minuten pro Stufe", gameplay: "Schiebeblock-Ausgangsrätsel", genre: ["Rätsel", "Strategie", "Logik", "Tiere"],
-      intro: "Schiebe waagerechte und senkrechte Blöcke entlang ihrer eigenen Achse, bis der rote Entdecker einen freien Weg zum Ausgang hat.",
-      story: ["Panko kartiert dreißig dicht versperrte Waldtore. Jeder Block beginnt auf einem festen Raster und jedes Rätsel besitzt eine geprüfte Zugfolge, die den markierten Entdecker befreit.", "Blöcke können sich nicht drehen, springen oder das Spielfeld verlassen. Die Aufgabe besteht darin, mit vorübergehenden Zügen Platz für den entscheidenden letzten Schub zu schaffen."],
-      systems: ["Waagerechte Blöcke bewegen sich nur nach links und rechts, senkrechte nur nach oben und unten.", "Ein Zug endet vor dem Spielfeldrand oder einem anderen Block; belegte Felder dürfen sich nicht überschneiden.", "Die Stufe ist geschafft, sobald der rote Entdecker die markierte Ausgangsspur erreicht.", "Rückgängig nimmt einen Schub zurück, Hinweis zeigt einen nützlichen Block und Neustart stellt die genaue Anfangsanordnung wieder her."],
-      how: ["Wähle einen freigeschalteten Pfad.", "Finde alle Blöcke, die die Ausgangsreihe des Entdeckers kreuzen.", "Schaffe entlang der erlaubten Achse Platz, bevor du ein Hindernis verschiebst.", "Schiebe den Entdecker durch den Ausgang und gehe zum nächsten Pfad weiter."],
+      intro: "Schiebe waagerechte und senkrechte Blöcke entlang ihrer Achse, bis der grüne Bambusblock mit goldenem Pfeil den Ausgang erreichen kann.",
+      story: ["Panko kartiert dreißig dicht versperrte Waldtore. Jeder Block beginnt auf einem festen Raster und jedes Rätsel besitzt eine geprüfte Zugfolge, die den markierten grünen Bambusblock mit goldenem Pfeil befreit.", "Blöcke können sich nicht drehen, springen oder das Spielfeld verlassen. Die Aufgabe besteht darin, mit vorübergehenden Zügen Platz für den entscheidenden letzten Schub zu schaffen."],
+      systems: ["Waagerechte Blöcke bewegen sich nur nach links und rechts, senkrechte nur nach oben und unten.", "Ein Zug endet vor dem Spielfeldrand oder einem anderen Block; belegte Felder dürfen sich nicht überschneiden.", "Die Stufe ist geschafft, sobald der grüne Bambusblock mit goldenem Pfeil die markierte Ausgangsspur erreicht.", "Rückgängig nimmt einen Schub zurück, Hinweis zeigt einen nützlichen Block und Neustart stellt die genaue Anfangsanordnung wieder her."],
+      how: ["Wähle einen freigeschalteten Pfad.", "Finde alle Blöcke, die die Ausgangsreihe des grünen Bambusblocks mit goldenem Pfeil kreuzen.", "Schaffe entlang der erlaubten Achse Platz, bevor du ein Hindernis verschiebst.", "Schiebe den grünen Bambusblock mit goldenem Pfeil durch den Ausgang und gehe zum nächsten Pfad weiter."],
       strategyTips: ["Plane vom Ausgang aus rückwärts.", "Verschiebe ein Hindernis weiter als zunächst nötig, wenn ein anderer Block Platz braucht.", "Fülle nicht die einzige freie Spalte mit einem Block, den du später noch benötigst.", "Nutze Rückgängig bei einem jüngsten Stellungsfehler und Neustart, wenn die gesamte Reihenfolge falsch ist."],
       progression: ["Die ersten Pfade erklären Achsengrenzen und einzelne Hindernisse. Spätere Kapitel bieten längere Teile, knappe Freiräume, verschachtelte Abhängigkeiten, mehrere Kreuzungen und dichte Finalfelder.", "Jede Stufe verändert die räumliche Reihenfolge, ohne willkürliche Bewegungsregeln hinzuzufügen."],
       designNote: "Zugrichtung, Rastereinrastung, Kollisionsprüfung und Blockgrafik verwenden bei Touch, Maus und Tastatur dieselbe Feldgeometrie.",
       parent: "Es gibt keinen Timer, kein Konto, keine Käufe und keine öffentliche Punktzahl. Freischaltungen und lokale Bestwerte bleiben nur in diesem Browser.",
-      faq: [["Können sich Blöcke drehen?", "Nein. Jeder Block behält seine ursprüngliche Ausrichtung."], ["Warum wurde der Zug gestoppt?", "Das nächste Feld war belegt oder lag außerhalb des Spielfelds."], ["Welcher Block muss hinaus?", "Der deutlich markierte rote Entdecker."], ["Sind alle dreißig Pfade lösbar?", "Ja. Jede erstellte Anordnung hat eine geprüfte Lösung."]],
+      faq: [["Können sich Blöcke drehen?", "Nein. Jeder Block behält seine ursprüngliche Ausrichtung."], ["Warum wurde der Zug gestoppt?", "Das nächste Feld war belegt oder lag außerhalb des Spielfelds."], ["Welcher Block muss hinaus?", "Der grüne Bambusblock mit goldenem Pfeil."], ["Sind alle dreißig Pfade lösbar?", "Ja. Jede erstellte Anordnung hat eine geprüfte Lösung."]],
     }),
     it: unblockGuide({
       title: "Libera il sentiero", difficulty: "Da facile a impegnativo", time: "2-8 minuti per livello", gameplay: "Puzzle di uscita con blocchi scorrevoli", genre: ["Puzzle", "Strategia", "Logica", "Animali"],
-      intro: "Fai scorrere i blocchi orizzontali e verticali lungo il proprio asse finché l’esploratore rosso non ha un percorso libero verso l’uscita.",
-      story: ["Panko esplora trenta cancelli della foresta pieni di blocchi. Ogni blocco parte su una griglia fissa e ogni puzzle ha una sequenza verificata che libera l’esploratore contrassegnato.", "I blocchi non ruotano, non saltano e non escono dal tabellone. La sfida è capire quali mosse temporanee creano lo spazio per lo scorrimento finale."],
-      systems: ["I blocchi orizzontali si muovono solo a sinistra e a destra; quelli verticali solo in alto e in basso.", "Una mossa si ferma prima del bordo o di un altro blocco; le caselle occupate non possono sovrapporsi.", "Il livello termina quando l’esploratore rosso raggiunge la corsia di uscita indicata.", "Annulla ripristina uno scorrimento, Suggerimento indica un blocco utile e Ricomincia riporta all’esatta disposizione iniziale."],
-      how: ["Scegli un sentiero sbloccato.", "Individua tutti i blocchi che attraversano la riga di uscita dell’esploratore.", "Crea spazio lungo l’asse consentito di ogni ostacolo prima di spostarlo.", "Fai scorrere l’esploratore attraverso l’uscita e continua con il sentiero successivo."],
+      intro: "Fai scorrere i blocchi orizzontali e verticali lungo il proprio asse finché il blocco di bambù verde con freccia dorata non ha un percorso libero verso l’uscita.",
+      story: ["Panko esplora trenta cancelli della foresta pieni di blocchi. Ogni blocco parte su una griglia fissa e ogni puzzle ha una sequenza verificata che libera il blocco di bambù verde contrassegnato da una freccia dorata.", "I blocchi non ruotano, non saltano e non escono dal tabellone. La sfida è capire quali mosse temporanee creano lo spazio per lo scorrimento finale."],
+      systems: ["I blocchi orizzontali si muovono solo a sinistra e a destra; quelli verticali solo in alto e in basso.", "Una mossa si ferma prima del bordo o di un altro blocco; le caselle occupate non possono sovrapporsi.", "Il livello termina quando il blocco di bambù verde con freccia dorata raggiunge la corsia di uscita indicata.", "Annulla ripristina uno scorrimento, Suggerimento indica un blocco utile e Ricomincia riporta all’esatta disposizione iniziale."],
+      how: ["Scegli un sentiero sbloccato.", "Individua tutti i blocchi che attraversano la riga di uscita del blocco di bambù verde con freccia dorata.", "Crea spazio lungo l’asse consentito di ogni ostacolo prima di spostarlo.", "Fai scorrere il blocco di bambù verde con freccia dorata attraverso l’uscita e continua con il sentiero successivo."],
       strategyTips: ["Ragiona a ritroso partendo dall’uscita.", "Sposta un ostacolo più lontano del necessario quando deve lasciare spazio a un altro blocco.", "Non riempire l’unica colonna libera con un blocco che servirà più avanti.", "Usa Annulla per un errore recente e Ricomincia quando l’intera sequenza è sbagliata."],
       progression: ["I primi sentieri insegnano i limiti degli assi e gli ostacoli singoli. I capitoli successivi aggiungono pezzi lunghi, spazi stretti, dipendenze annidate, più incroci e tabelloni finali densi.", "Ogni livello cambia la sequenza spaziale senza introdurre regole di movimento arbitrarie."],
       designNote: "Direzione del trascinamento, aggancio alla griglia, collisioni e grafica dei blocchi usano la stessa geometria delle caselle con tocco, mouse e tastiera.",
       parent: "Non ci sono timer, account, acquisti o punteggi pubblici. Gli sblocchi e i migliori numeri di mosse restano soltanto in questo browser.",
-      faq: [["I blocchi possono ruotare?", "No. Ogni blocco mantiene l’orientamento iniziale."], ["Perché il trascinamento si è fermato?", "La casella successiva era occupata o fuori dal tabellone."], ["Quale blocco deve uscire?", "L’esploratore rosso chiaramente contrassegnato."], ["Tutti e trenta i sentieri sono risolvibili?", "Sì. Ogni disposizione creata ha una soluzione verificata."]],
+      faq: [["I blocchi possono ruotare?", "No. Ogni blocco mantiene l’orientamento iniziale."], ["Perché il trascinamento si è fermato?", "La casella successiva era occupata o fuori dal tabellone."], ["Quale blocco deve uscire?", "Il blocco di bambù verde con freccia dorata."], ["Tutti e trenta i sentieri sono risolvibili?", "Sì. Ogni disposizione creata ha una soluzione verificata."]],
     }),
     ru: unblockGuide({
       title: "Освободить тропу", difficulty: "От простого к сложному", time: "2–8 минут на этап", gameplay: "Головоломка с выходом и скользящими блоками", genre: ["Головоломка", "Стратегия", "Логика", "Животные"],
-      intro: "Передвигайте горизонтальные и вертикальные блоки только вдоль их осей, пока у красного исследователя не появится свободный путь к выходу.",
-      story: ["Панко исследует тридцать загромождённых лесных ворот. Каждый блок стоит на заданной сетке, а у каждой головоломки есть проверенная последовательность, освобождающая отмеченного исследователя.", "Блоки не поворачиваются, не перепрыгивают друг друга и не покидают поле. Нужно понять, какие временные ходы освободят место для решающего последнего сдвига."],
-      systems: ["Горизонтальные блоки движутся только влево и вправо, вертикальные — только вверх и вниз.", "Ход останавливается перед краем поля или другим блоком; занятые клетки не могут пересекаться.", "Этап завершён, когда красный исследователь достигает отмеченной линии выхода.", "Отмена возвращает один сдвиг, Подсказка указывает полезный блок, а Перезапуск восстанавливает точную начальную расстановку."],
-      how: ["Выберите открытую тропу.", "Найдите все блоки, пересекающие линию выхода исследователя.", "Освободите место вдоль разрешённой оси препятствия, прежде чем двигать его.", "Проведите исследователя через выход и переходите к следующей тропе."],
+      intro: "Передвигайте горизонтальные и вертикальные блоки только вдоль их осей, пока у зелёного бамбукового блока с золотой стрелкой не появится свободный путь к выходу.",
+      story: ["Панко исследует тридцать загромождённых лесных ворот. Каждый блок стоит на заданной сетке, а у каждой головоломки есть проверенная последовательность, освобождающая отмеченный зелёный бамбуковый блок с золотой стрелкой.", "Блоки не поворачиваются, не перепрыгивают друг друга и не покидают поле. Нужно понять, какие временные ходы освободят место для решающего последнего сдвига."],
+      systems: ["Горизонтальные блоки движутся только влево и вправо, вертикальные — только вверх и вниз.", "Ход останавливается перед краем поля или другим блоком; занятые клетки не могут пересекаться.", "Этап завершён, когда зелёный бамбуковый блок с золотой стрелкой достигает отмеченной линии выхода.", "Отмена возвращает один сдвиг, Подсказка указывает полезный блок, а Перезапуск восстанавливает точную начальную расстановку."],
+      how: ["Выберите открытую тропу.", "Найдите все блоки, пересекающие линию выхода бамбукового блока с золотой стрелкой.", "Освободите место вдоль разрешённой оси препятствия, прежде чем двигать его.", "Проведите зелёный бамбуковый блок с золотой стрелкой через выход и переходите к следующей тропе."],
       strategyTips: ["Планируйте путь в обратном направлении от выхода.", "Отодвигайте препятствие дальше, чем кажется нужным, если оно должно освободить место другому блоку.", "Не занимайте единственный свободный столбец блоком, который понадобится позже.", "Используйте Отмену для недавней ошибки и Перезапуск, если неверен весь порядок."],
       progression: ["Первые тропы знакомят с ограничениями осей и одиночными препятствиями. Позже появляются длинные блоки, узкие промежутки, вложенные зависимости, несколько пересечений и плотные финальные поля.", "Каждый этап меняет пространственную последовательность, не добавляя произвольных правил движения."],
       designNote: "Направление перетаскивания, привязка к сетке, проверка столкновений и графика блоков используют одну геометрию клеток для сенсорного экрана, мыши и клавиатуры.",
       parent: "Здесь нет таймера, учётной записи, покупок или общедоступного счёта. Открытые этапы и местные рекорды ходов хранятся только в этом браузере.",
-      faq: [["Можно ли поворачивать блоки?", "Нет. Каждый блок сохраняет исходную ориентацию."], ["Почему перетаскивание остановилось?", "Следующая клетка занята или находится за пределами поля."], ["Какой блок нужно вывести?", "Красного исследователя с отчётливой отметкой."], ["Можно ли решить все тридцать троп?", "Да. Для каждой созданной расстановки есть проверенное решение."]],
+      faq: [["Можно ли поворачивать блоки?", "Нет. Каждый блок сохраняет исходную ориентацию."], ["Почему перетаскивание остановилось?", "Следующая клетка занята или находится за пределами поля."], ["Какой блок нужно вывести?", "Зелёный бамбуковый блок с золотой стрелкой."], ["Можно ли решить все тридцать троп?", "Да. Для каждой созданной расстановки есть проверенное решение."]],
     }),
     hi: unblockGuide({
       title: "रास्ता खोलें", difficulty: "आसान से चुनौतीपूर्ण", time: "हर चरण में लगभग 2–8 मिनट", gameplay: "खिसकने वाले ब्लॉक की निकास पहेली", genre: ["पहेली", "रणनीति", "तर्क", "जानवर"],
-      intro: "क्षैतिज और ऊर्ध्वाधर ब्लॉक को उनकी अपनी दिशा में खिसकाएँ, ताकि लाल खोजी के लिए निकास तक साफ रास्ता बन सके।",
-      story: ["Panko ब्लॉक से भरे जंगल के तीस द्वारों का नक्शा बनाता है। हर ब्लॉक तय ग्रिड पर शुरू होता है और हर पहेली में चिह्नित खोजी को बाहर निकालने का जाँचा हुआ क्रम है।", "ब्लॉक न घूमते हैं, न छलाँग लगाते हैं और न बोर्ड से बाहर जाते हैं। चुनौती यह तय करना है कि कौन-सी अस्थायी चालें अंतिम खिसकाव के लिए जगह बनाएँगी।"],
-      systems: ["क्षैतिज ब्लॉक केवल बाएँ और दाएँ चलते हैं; ऊर्ध्वाधर ब्लॉक केवल ऊपर और नीचे चलते हैं।", "चाल बोर्ड के किनारे या दूसरे ब्लॉक से पहले रुकती है; भरी हुई खाने एक-दूसरे पर नहीं आ सकतीं।", "लाल खोजी के चिह्नित निकास पंक्ति तक पहुँचते ही चरण पूरा होता है।", "वापस करें पिछली एक चाल लौटाता है, संकेत उपयोगी ब्लॉक बताता है और फिर शुरू करें शुरुआती व्यवस्था बहाल करता है।"],
-      how: ["खुला हुआ रास्ता चुनें।", "खोजी की निकास पंक्ति को काटने वाले सभी ब्लॉक पहचानें।", "हर रुकावट को खिसकाने से पहले उसकी मान्य दिशा में जगह बनाएँ।", "खोजी को निकास से बाहर खिसकाएँ और अगले रास्ते पर जाएँ।"],
+      intro: "क्षैतिज और ऊर्ध्वाधर ब्लॉकों को उनकी धुरी पर खिसकाएँ और सुनहरे तीर वाले हरे बाँस के ब्लॉक के लिए निकास तक रास्ता खोलें।",
+      story: ["Panko ब्लॉक से भरे जंगल के तीस द्वारों का नक्शा बनाता है। हर ब्लॉक तय ग्रिड पर शुरू होता है और हर पहेली में सुनहरे तीर वाले हरे बाँस के ब्लॉक को बाहर निकालने का जाँचा हुआ क्रम है।", "ब्लॉक न घूमते हैं, न छलाँग लगाते हैं और न बोर्ड से बाहर जाते हैं। चुनौती यह तय करना है कि कौन-सी अस्थायी चालें अंतिम खिसकाव के लिए जगह बनाएँगी।"],
+      systems: ["क्षैतिज ब्लॉक केवल बाएँ और दाएँ चलते हैं; ऊर्ध्वाधर ब्लॉक केवल ऊपर और नीचे चलते हैं।", "चाल बोर्ड के किनारे या दूसरे ब्लॉक से पहले रुकती है; भरी हुई खाने एक-दूसरे पर नहीं आ सकतीं।", "चरण तब पूरा होता है जब सुनहरे तीर वाला हरा बाँस का ब्लॉक चिह्नित निकास पंक्ति तक पहुँचता है।", "वापस करें पिछली एक चाल लौटाता है, संकेत उपयोगी ब्लॉक बताता है और फिर शुरू करें शुरुआती व्यवस्था बहाल करता है।"],
+      how: ["खुला हुआ रास्ता चुनें।", "सुनहरे तीर वाले हरे बाँस के ब्लॉक की निकास पंक्ति को काटने वाले सभी ब्लॉक पहचानें।", "हर रुकावट को खिसकाने से पहले उसकी मान्य दिशा में जगह बनाएँ।", "सुनहरे तीर वाले हरे बाँस के ब्लॉक को निकास से बाहर खिसकाएँ और अगले रास्ते पर जाएँ।"],
       strategyTips: ["निकास से उलटी दिशा में रास्ता सोचें।", "अगर दूसरे ब्लॉक के लिए जगह चाहिए तो रुकावट को अनुमान से अधिक दूर खिसकाएँ।", "उस ब्लॉक से एकमात्र खाली स्तंभ न भरें जिसकी बाद में जरूरत होगी।", "हाल की गलती के लिए वापस करें और पूरा क्रम गलत होने पर फिर शुरू करें चुनें।"],
       progression: ["शुरुआती रास्ते दिशा की सीमाएँ और एकल रुकावटें सिखाते हैं। आगे लंबे टुकड़े, तंग जगह, एक-दूसरे पर निर्भर चालें, कई क्रॉसिंग और घने अंतिम बोर्ड आते हैं।", "हर चरण मनमाने नए नियम जोड़े बिना स्थानिक क्रम बदलता है।"],
       designNote: "खींचने की दिशा, ग्रिड पर टिकना, टक्कर जाँच और ब्लॉक की कला स्पर्श, माउस और कीबोर्ड पर एक ही खाने की ज्यामिति इस्तेमाल करते हैं।",
       parent: "कोई टाइमर, खाता, खरीद या सार्वजनिक स्कोर नहीं है। खुले चरण और स्थानीय सर्वश्रेष्ठ चालें केवल इसी ब्राउज़र में रहती हैं।",
-      faq: [["क्या ब्लॉक घूम सकते हैं?", "नहीं। हर ब्लॉक अपनी शुरुआती दिशा बनाए रखता है।"], ["खींचना बीच में क्यों रुक गया?", "अगला खाना भरा था या बोर्ड से बाहर था।"], ["कौन-सा ब्लॉक बाहर निकालना है?", "साफ तौर पर चिह्नित लाल खोजी।"], ["क्या सभी तीस रास्ते हल हो सकते हैं?", "हाँ। हर बनाई गई व्यवस्था का जाँचा हुआ समाधान है।"]],
+      faq: [["क्या ब्लॉक घूम सकते हैं?", "नहीं। हर ब्लॉक अपनी शुरुआती दिशा बनाए रखता है।"], ["खींचना बीच में क्यों रुक गया?", "अगला खाना भरा था या बोर्ड से बाहर था।"], ["कौन-सा ब्लॉक बाहर निकालना है?", "सुनहरे तीर से चिह्नित हरे बाँस का ब्लॉक।"], ["क्या सभी तीस रास्ते हल हो सकते हैं?", "हाँ। हर बनाई गई व्यवस्था का जाँचा हुआ समाधान है।"]],
     }),
     ar: unblockGuide({
       title: "افتح المسار", difficulty: "من السهل إلى الصعب", time: "نحو 2–8 دقائق لكل مرحلة", gameplay: "لغز مخرج بالكتل المنزلقة", genre: ["ألغاز", "استراتيجية", "منطق", "حيوانات"],
-      intro: "حرّك الكتل الأفقية والعمودية على محاورها الخاصة حتى تفتح للمستكشف الأحمر طريقًا واضحًا إلى المخرج.",
-      story: ["يرسم Panko خريطة ثلاثين بوابة غابة مزدحمة بالكتل. تبدأ كل كتلة على شبكة ثابتة، ولكل لغز تسلسل مجرّب يحرر المستكشف المميز.", "لا تدور الكتل ولا تقفز ولا تغادر اللوحة. يكمن التحدي في تحديد الحركات المؤقتة التي تصنع مساحة للانزلاق الأخير الحاسم."],
-      systems: ["تتحرك الكتل الأفقية يمينًا ويسارًا فقط، وتتحرك الكتل العمودية إلى أعلى وأسفل فقط.", "تتوقف الحركة قبل حافة اللوحة أو كتلة أخرى، ولا يمكن أن تتداخل الخانات المشغولة.", "تكتمل المرحلة عندما يصل المستكشف الأحمر إلى مسار الخروج المحدد.", "يعيد التراجع حركة واحدة، ويحدد التلميح كتلة مفيدة، وتعيد إعادة البدء ترتيب الافتتاح نفسه."],
-      how: ["اختر مسارًا مفتوحًا.", "حدد كل الكتل التي تقطع صف خروج المستكشف.", "اصنع مساحة على المحور المسموح لكل عائق قبل تحريكه.", "حرّك المستكشف عبر المخرج ثم تابع إلى المسار التالي."],
+      intro: "حرّك الكتل الأفقية والعمودية على محاورها لفتح الطريق أمام كتلة الخيزران الخضراء ذات السهم الذهبي إلى المخرج.",
+      story: ["يرسم Panko خريطة ثلاثين بوابة غابة مزدحمة بالكتل. تبدأ كل كتلة على شبكة ثابتة، ولكل لغز تسلسل مجرّب يحرر كتلة الخيزران الخضراء المميزة بسهم ذهبي.", "لا تدور الكتل ولا تقفز ولا تغادر اللوحة. يكمن التحدي في تحديد الحركات المؤقتة التي تصنع مساحة للانزلاق الأخير الحاسم."],
+      systems: ["تتحرك الكتل الأفقية يمينًا ويسارًا فقط، وتتحرك الكتل العمودية إلى أعلى وأسفل فقط.", "تتوقف الحركة قبل حافة اللوحة أو كتلة أخرى، ولا يمكن أن تتداخل الخانات المشغولة.", "تكتمل المرحلة عندما تصل كتلة الخيزران الخضراء ذات السهم الذهبي إلى مسار الخروج المحدد.", "يعيد التراجع حركة واحدة، ويحدد التلميح كتلة مفيدة، وتعيد إعادة البدء ترتيب الافتتاح نفسه."],
+      how: ["اختر مسارًا مفتوحًا.", "حدد كل الكتل التي تقطع صف خروج كتلة الخيزران الخضراء ذات السهم الذهبي.", "اصنع مساحة على المحور المسموح لكل عائق قبل تحريكه.", "حرّك كتلة الخيزران الخضراء ذات السهم الذهبي عبر المخرج ثم تابع إلى المسار التالي."],
       strategyTips: ["خطط بالعكس بدءًا من المخرج.", "أبعد العائق أكثر مما يبدو ضروريًا عندما يحتاج إلى إفساح مكان لكتلة أخرى.", "لا تملأ العمود الحر الوحيد بكتلة ستحتاج إليها لاحقًا.", "استخدم التراجع لخطأ حديث، وإعادة البدء عندما يكون ترتيب الحل كله خاطئًا."],
       progression: ["تعلّم المسارات الأولى حدود المحاور والعوائق البسيطة. وتضيف الفصول اللاحقة قطعًا أطول ومساحات ضيقة واعتمادًا متداخلًا وتقاطعًا متعددًا ولوحات نهائية كثيفة.", "تغيّر كل مرحلة التسلسل المكاني من دون إضافة قواعد حركة عشوائية."],
       designNote: "يستخدم اتجاه السحب والمحاذاة مع الشبكة وفحص التصادم ورسوم الكتل هندسة الخانات نفسها مع اللمس والفأرة ولوحة المفاتيح.",
       parent: "لا يوجد مؤقت أو حساب أو شراء أو نتيجة عامة. تبقى المراحل المفتوحة وأفضل أعداد الحركات المحلية في هذا المتصفح فقط.",
-      faq: [["هل يمكن تدوير الكتل؟", "لا. تحتفظ كل كتلة باتجاهها الأصلي."], ["لماذا توقف السحب؟", "كانت الخانة التالية مشغولة أو خارج اللوحة."], ["أي كتلة يجب أن تخرج؟", "المستكشف الأحمر المميز بوضوح."], ["هل يمكن حل المسارات الثلاثين كلها؟", "نعم. لكل ترتيب مصمم حل مجرّب."]],
+      faq: [["هل يمكن تدوير الكتل؟", "لا. تحتفظ كل كتلة باتجاهها الأصلي."], ["لماذا توقف السحب؟", "كانت الخانة التالية مشغولة أو خارج اللوحة."], ["أي كتلة يجب أن تخرج؟", "كتلة الخيزران الخضراء ذات السهم الذهبي المميز بوضوح."], ["هل يمكن حل المسارات الثلاثين كلها؟", "نعم. لكل ترتيب مصمم حل مجرّب."]],
     }),
   };
   // Authored Arabic guide: card-pile names are gameplay terms, not English
@@ -579,7 +836,15 @@
     "يختار السهل عمودًا متاحًا عشوائيًا. يبحث المتوسط أولًا عن فوز فوري، ثم يمنع فوزك الفوري، وإلا يختار عشوائيًا. يجري الصعب الفحوص نفسها ثم يفضل عمودًا متاحًا قريبًا من الوسط. لا يبحث في شجرة اللعبة كاملة وليس خصمًا لا يُهزم. تغيير الصعوبة يعيد ضبط الجولة الحالية."
   ]
 ]);
+  const unblockTags = {
+    en: ["Sliding block puzzle", "Axis-locked moves", "6×6 board"], "zh-Hant": ["滑塊解謎", "沿軸移動", "6×6 棋盤"], "zh-Hans": ["滑块解谜", "沿轴移动", "6×6 棋盘"],
+    ja: ["スライドブロックパズル", "軸に沿った移動", "6×6盤面"], ko: ["슬라이딩 블록 퍼즐", "축 방향 이동", "6×6 보드"], es: ["Puzle de bloques deslizantes", "Movimientos por eje", "Tablero 6×6"],
+    "pt-BR": ["Puzzle de blocos deslizantes", "Movimentos por eixo", "Tabuleiro 6×6"], fr: ["Puzzle de blocs coulissants", "Déplacements par axe", "Plateau 6×6"], de: ["Schiebeblockrätsel", "Zug entlang der Achse", "6×6-Brett"],
+    it: ["Puzzle con blocchi scorrevoli", "Movimenti lungo un asse", "Griglia 6×6"], ru: ["Головоломка с блоками", "Движение вдоль оси", "Поле 6×6"], hi: ["स्लाइडिंग ब्लॉक पहेली", "अक्ष के साथ चाल", "6×6 बोर्ड"], ar: ["لغز الكتل المنزلقة", "حركة على المحور", "لوحة 6×6"],
+  };
   for (const [locale, copy] of Object.entries(unblockGuides)) {
+    copy.genre = unblockTags[locale];
+    copy.text140Tags = unblockTags[locale];
     const reviewed = window.WeightPlayGeneralReviewedGuides[locale] ||= { games: {} };
     reviewed.games ||= {};
     reviewed.games[unblockId] = copy;

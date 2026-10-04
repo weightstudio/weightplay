@@ -35,49 +35,19 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
-  <meta name="description" content="3つの天気サインを読み、次を予測して動物を穏やかな避難時間へ導こう。" />
-    <meta property="og:site_name" content="WeightPlay" />
-    <meta property="og:type" content="website" />
+  <meta name="description" content="交互・2つ後に戻る・3つの循環。3種類の予報ルールを読み、次の天気サインを予測。時間制限はなく、間違えても再挑戦できます。" />
     <meta property="og:title" content="ウェザー・ウォッチ | WeightPlay" />
-    <meta property="og:description" content="3つの天気サインを読み、次を予測して動物を穏やかな避難時間へ導こう。" />
+    <meta property="og:description" content="交互・2つ後に戻る・3つの循環。3種類の予報ルールを読み、次の天気サインを予測。時間制限はなく、間違えても再挑戦できます。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-weather-watch/" />
-    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-weather-watch.webp" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-weather-watch/assets/animal-weather-watch-cover-art.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ウェザー・ウォッチ | WeightPlay" />
-    <meta name="twitter:description" content="3つの天気サインを読み、次を予測して動物を穏やかな避難時間へ導こう。" />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-weather-watch.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "ウェザー・ウォッチ",
-  "alternateName": "Weather Watch",
-  "url": "https://weightplay.com/ja/games/animal-weather-watch/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-weather-watch.webp",
-  "description": "3つの天気サインを読み、次を予測して動物を穏やかな避難時間へ導こう。",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "ja",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "パズル",
-    "ロジック",
-    "パターン認識",
-    "ファミリー",
-    "動物"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 6
-  }
-}
-    </script>
-  </head>
+    <meta name="twitter:description" content="交互・2つ後に戻る・3つの循環。3種類の予報ルールを読み、次の天気サインを予測。時間制限はなく、間違えても再挑戦できます。" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-weather-watch/assets/animal-weather-watch-cover-art.webp" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"ウェザー・ウォッチ","url":"https://weightplay.com/ja/games/animal-weather-watch/","image":"https://weightplay.com/games/animal-weather-watch/assets/animal-weather-watch-cover-art.webp","description":"交互・2つ後に戻る・3つの循環。3種類の予報ルールを読み、次の天気サインを予測。時間制限はなく、間違えても再挑戦できます。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["天気パターンパズル","並びの予測","規則を読む"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6},"alternateName":"Weather Watch"}</script>
+</head>
 <body data-wp-game-id="animal-weather-watch" data-wp-interface-version="7" data-runtime-localize="off">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">☁</div><p data-i18n="loading">Reading the sky log…</p></div>
   <main id="app" hidden data-wp-frame-root>
@@ -95,7 +65,7 @@
       </header>
       <div class="main-copy">
         <div class="cover-wrap"><picture><source srcset="assets/animal-weather-watch-cover-art.webp" type="image/webp" /><img class="main-cover" data-wp-frame-poster src="assets/animal-weather-watch-cover-art.png" alt="" width="1254" height="1254" /></picture></div>
-        <p class="main-summary intro" data-i18n="intro" data-wp-frame-summary>Read three sky signs, predict the next one, and open a safe shelter window for each animal.</p>
+        <p class="main-summary intro" data-i18n="intro" data-wp-frame-summary>画面に示された天気の規則を読み、抜けた空のサインを予測して、3つの短い予報で動物に穏やかな避難時間を用意します。</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-i18n="progress">Three forecasts · three shelter windows</p>
         <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary">Start Game</button></div>
       </div>
@@ -132,10 +102,10 @@
         <div class="main-actions"><button id="resultMapBtn" class="secondary" type="button">Stages</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="replayBtn" class="secondary" type="button">Replay</button></div></section>
   </main>
 
-  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="天気観測所 game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>天気観測所</h2><p>『天気観測所』は、3つの予報を読む穏やかなパターンパズルです。空のサインを読み、次の変化を予測して、動物たちの安全な避難場所を開きます。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>遊び方</span><strong>予報パターンパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル・ロジック・パターン認識・ファミリー・動物</strong></div><div class="game-info-fact"><span>予報</span><strong>作者制作の3予報</strong></div><div class="game-info-fact"><span>1回の時間</span><strong>約2〜5分</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>柳かげ気象台</h3><p>柳かげ気象台の予報ノートには、夜明けの草原、雨のくぼ地、夕暮れの林という3つの名前付き予報があります。各予報では3つの空のサインと短い避難場所の物語を読み、次のサインを選びます。</p><p>目的はリアルタイムの天気に追いつくことではありません。決められた公平な並びを読み、動物ごとの穏やかな避難場所を開くことです。正解すると次のResultへ進み、3つすべて確定すると今回の訪問が終わります。</p></div><div class="game-info-section"><h3>予報の仕組み</h3><p>夜明けの草原は晴れと雲が交互に出るため、晴れ・雲・晴れの次は雲です。雨のくぼ地は最初のサインが2つ後に戻り、雨・雲・雲の次は雨です。夕暮れの林は晴れ・雨・雲の順に巡るため、晴れ・雨・雲の次は晴れです。</p><p>予報画面には3つのルールが表示されます。サインを選ぶだけでは記録されず、予報を確認したときに1回の試行になり、正解または安全な再挑戦が表示されます。</p></div><div class="game-info-section"><h3>遊び方</h3><p>メインで最初の予報を読むか、予報ノートから予報を選びます。</p><p>3つのサイン、ルール文、次のサインを問う文章を読みます。</p><p>晴れ・雲・雨から選び、予報を確認します。タッチとマウスは同じボタン操作です。</p><p>間違えたらリズムを読み直して別のサインを選びます。リセットは現在の選択だけを消します。</p><p>正解したら次の予報へ進み、3つ完了後は予報を選んでノートから再挑戦できます。</p></div><div class="game-info-section"><h3>攻略のヒント</h3><p>選ぶ前に、交互・2つ後に戻る・3つの循環のどれかを言葉にしましょう。</p><p>最後の2つだけでなく位置全体を見ます。2つ目の予報では最初のサインが2つ後に戻ります。</p><p>表示されたルールとヒントを一緒に使います。間違えても予報は閉じず、ローカル進行も消えません。</p><p>再挑戦では3つの答えは変わらないので、訪問全体の試行回数を減らしてみましょう。</p></div><div class="game-info-section"><h3>進行とリプレイ</h3><p>夜明けの草原、雨のくぼ地、夕暮れの林の順に進み、交互から遅れて戻る規則、3サイン循環へと読み方が広がります。4つ目の予報は生成されず、作者制作の章は3つで完結します。</p><p>確定した予報はノートからいつでも再挑戦できます。Resultには完了数、今回の試行数、ブラウザに保存されたベスト試行数が表示されます。</p></div><div class="game-info-section"><h3>開発とデザイン</h3><p>小さく固定されたルールにより、速度や運ではなくパターンを読むことを中心にしました。メイン、予報ノート、Battle、Resultで必要な手掛かりを保ち、同じレスポンシブ操作をスマートフォン、タブレット、デスクトップで使えます。穏やかなフィードバックは間違いを次の理解できる試行に変えます。</p></div><div class="game-info-section"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、チャット、ランキング、オンラインプロフィールは不要です。ベスト試行数とサウンド設定はこのブラウザだけに保存されます。サイトデータの削除、プライベート閲覧、ブラウザや端末の変更で別の結果になったり保存が消えたりする場合があります。試行数は遊びのフィードバックで、正式な能力評価ではありません。</p></div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>3つの予報はどんなルールですか？</dt><dd>夜明けの草原は晴れと雲の交互、雨のくぼ地は最初のサインが2つ後に戻る規則、夕暮れの林は晴れ・雨・雲の循環です。</dd></div><div><dt>予測を間違えるとどうなりますか？</dt><dd>予報は開いたままです。並びを読み直して別のサインを選び、もう一度確認します。リセットは現在の選択だけを消します。</dd></div><div><dt>予報はいくつありますか？</dt><dd>作者制作の予報は3つで、確定した予報はノートから再挑戦できます。</dd></div><div><dt>Bestは何を表しますか？</dt><dd>3つの予報を完了した訪問で使った最少の確認回数です。ローカルな遊びの記録で、評価ではありません。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>ベスト試行数とサウンド設定だけがこのブラウザに保存されます。アカウントは不要です。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>見えるルールを読み、次の手を考えるパズルが好きなら、公開中のWeightPlay作品も試してみてください。</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>パンコの竹管を回し、すべての水路に水を通して森に花を咲かせよう。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div></div></section>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="ウェザー・ウォッチのゲームガイド"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ウェザー・ウォッチ</h2><p>画面に示された天気の規則を読み、抜けた空のサインを予測して、3つの短い予報で動物に穏やかな避難時間を用意します。</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>天気パターンパズル</span><span>並びの予測</span><span>規則を読む</span></div></div><div class="game-info-facts"><div class="game-info-fact"><span>遊び方</span><strong>予報パターンパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル・ロジック・パターン認識</strong></div><div class="game-info-fact"><span>予報</span><strong>作者制作の3予報</strong></div><div class="game-info-fact"><span>1回の時間</span><strong>約2〜5分</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>柳かげ気象台</h3><p>柳かげ気象台の予報ノートには、夜明けの草原、雨のくぼ地、夕暮れの林という3つの名前付き予報があります。各予報では3つの空のサインと短い避難場所の物語を読み、次のサインを選びます。</p><p>目的はリアルタイムの天気に追いつくことではありません。決められた公平な並びを読み、動物ごとの穏やかな避難場所を開くことです。正解すると次のResultへ進み、3つすべて確定すると今回の訪問が終わります。</p></div><div class="game-info-section"><h3>予報の仕組み</h3><p>夜明けの草原は晴れと雲が交互に出るため、晴れ・雲・晴れの次は雲です。雨のくぼ地は最初のサインが2つ後に戻り、雨・雲・雲の次は雨です。夕暮れの林は晴れ・雨・雲の順に巡るため、晴れ・雨・雲の次は晴れです。</p><p>予報画面には3つのルールが表示されます。サインを選ぶだけでは記録されず、予報を確認したときに1回の試行になり、正解または安全な再挑戦が表示されます。</p></div><div class="game-info-section"><h3>遊び方</h3><p>メイン画面で「ゲーム開始」を押し、予報ボードから予報を1つ開きます。</p><p>3つのサイン、ルール文、次のサインを問う文章を読みます。</p><p>晴れ・雲・雨から選び、予報を確認します。タッチとマウスは同じボタン操作です。</p><p>間違えたらリズムを読み直して別のサインを選びます。リセットは現在の選択だけを消します。</p><p>正解したら次の予報へ進み、3つ完了後は予報を選んでノートから再挑戦できます。</p></div><div class="game-info-section"><h3>攻略のヒント</h3><p>選ぶ前に、交互・2つ後に戻る・3つの循環のどれかを言葉にしましょう。</p><p>最後の2つだけでなく位置全体を見ます。2つ目の予報では最初のサインが2つ後に戻ります。</p><p>表示されたルールとヒントを一緒に使います。間違えても予報は閉じず、ローカル進行も消えません。</p><p>再挑戦では3つの答えは変わらないので、訪問全体の試行回数を減らしてみましょう。</p></div><div class="game-info-section"><h3>進行とリプレイ</h3><p>夜明けの草原、雨のくぼ地、夕暮れの林の順に進み、交互から遅れて戻る規則、3サイン循環へと読み方が広がります。4つ目の予報は生成されず、作者制作の章は3つで完結します。</p><p>確定した予報はノートからいつでも再挑戦できます。Resultには完了数、今回の試行数、ブラウザに保存されたベスト試行数が表示されます。</p></div><div class="game-info-section"><h3>開発とデザイン</h3><p>小さく固定されたルールにより、速度や運ではなくパターンを読むことを中心にしました。メイン、予報ノート、Battle、Resultで必要な手掛かりを保ち、同じレスポンシブ操作をスマートフォン、タブレット、デスクトップで使えます。穏やかなフィードバックは間違いを次の理解できる試行に変えます。</p></div><div class="game-info-section"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、チャット、ランキング、オンラインプロフィールは不要です。ベスト試行数とサウンド設定はこのブラウザだけに保存されます。サイトデータの削除、プライベート閲覧、ブラウザや端末の変更で別の結果になったり保存が消えたりする場合があります。試行数は遊びのフィードバックで、正式な能力評価ではありません。</p></div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>3つの予報はどんなルールですか？</dt><dd>夜明けの草原は晴れと雲の交互、雨のくぼ地は最初のサインが2つ後に戻る規則、夕暮れの林は晴れ・雨・雲の循環です。</dd></div><div><dt>予測を間違えるとどうなりますか？</dt><dd>予報は開いたままです。並びを読み直して別のサインを選び、もう一度確認します。リセットは現在の選択だけを消します。</dd></div><div><dt>予報はいくつありますか？</dt><dd>作者制作の予報は3つで、確定した予報はノートから再挑戦できます。</dd></div><div><dt>Bestは何を表しますか？</dt><dd>3つの予報を完了した訪問で使った最少の確認回数です。ローカルな遊びの記録で、評価ではありません。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>ベスト試行数とサウンド設定だけがこのブラウザに保存されます。アカウントは不要です。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>見えるルールを読み、次の手を考えるパズルが好きなら、公開中のWeightPlay作品も試してみてください。</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>パンコの竹管を回し、すべての水路に水を通して森に花を咲かせよう。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div></div></section>
 
   <script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="locales.js?v=20260904-weather-watch-v4-route-locale-overflow-v1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="locales.js?v=20261004-weather-watch-textgrowth140-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <script src="game.js?v=20260926-weather-watch-interface7"></script>

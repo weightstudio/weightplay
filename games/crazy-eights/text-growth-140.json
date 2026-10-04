@@ -1,0 +1,152 @@
+{
+  "version": "1.4.0",
+  "gameId": "crazy-eights",
+  "faqCount": 7,
+  "locales": {
+    "en": {
+      "description": "Play Crazy Eights against three AI rivals. Match the active suit or rank, choose the next suit with any Eight, and empty your hand first to win.",
+      "tags": [
+        "Classic Shedding Card Game",
+        "Card Matching",
+        "Family Card Game",
+        "Strategy"
+      ],
+      "summary": "Match suit or rank, then use an Eight to change the active suit."
+    },
+    "zh-Hant": {
+      "description": "和三位 AI 對手來場瘋狂八紙牌對戰。出牌需符合目前花色或點數；打出 8 後可指定下一個花色，先出完手牌即獲勝。",
+      "tags": [
+        "經典出牌型卡牌遊戲",
+        "卡牌",
+        "家庭",
+        "策略"
+      ],
+      "summary": "配對目前花色或點數，打出 8 來改變接下來的花色。"
+    },
+    "zh-Hans": {
+      "description": "和三位 AI 对手来场疯狂八纸牌对战。出牌需符合当前花色或点数；打出 8 后可指定下一个花色，先出完手牌即获胜。",
+      "tags": [
+        "经典出牌型卡牌游戏",
+        "卡牌",
+        "家庭",
+        "策略"
+      ],
+      "summary": "匹配当前花色或点数，打出 8 来改变接下来的花色。"
+    },
+    "ja": {
+      "description": "3人のAIとクレイジーエイトで対戦。場のスートかランクに合うカードを出し、8で次のスートを選択。手札を先になくした人が勝ちです。",
+      "tags": [
+        "手札を出すカードゲーム",
+        "カード",
+        "ファミリー",
+        "戦略"
+      ],
+      "summary": "現在のスートかランクを合わせ、8を出して次のスートを選びます。"
+    },
+    "ko": {
+      "description": "세 명의 AI와 크레이지 에이트를 즐기세요. 현재 무늬나 숫자에 맞춰 내고, 8로 다음 무늬를 고른 뒤 먼저 손을 비우면 승리합니다.",
+      "tags": [
+        "클래식 카드 털기 게임",
+        "카드",
+        "가족",
+        "전략"
+      ],
+      "summary": "현재 무늬나 숫자를 맞추고, 8을 내서 다음 무늬를 고르세요."
+    },
+    "es": {
+      "description": "Juega a Ochos locos contra tres rivales de IA. Combina el palo o valor activo, elige el siguiente palo con un ocho y vacía tu mano primero para ganar.",
+      "tags": [
+        "Juego clásico de descartes",
+        "Cartas",
+        "Familia",
+        "Estrategia"
+      ],
+      "summary": "Iguala el palo o el valor y juega un ocho para elegir el siguiente palo."
+    },
+    "pt-BR": {
+      "description": "Jogue Oitos loucos contra três rivais de IA. Combine o naipe ou valor ativo, escolha o próximo naipe com um oito e esvazie a mão primeiro para vencer.",
+      "tags": [
+        "Jogo clássico de descartar cartas",
+        "Cartas",
+        "Família",
+        "Estratégia"
+      ],
+      "summary": "Combine o naipe ou o valor e use um oito para escolher o próximo naipe."
+    },
+    "fr": {
+      "description": "Jouez à Huit fous contre trois adversaires IA. Associez la couleur ou la valeur active, choisissez la suivante avec un huit et videz votre main pour gagner.",
+      "tags": [
+        "Jeu classique de défausse",
+        "Cartes",
+        "Famille",
+        "Stratégie"
+      ],
+      "summary": "Associez la couleur ou la valeur, puis jouez un huit pour choisir la prochaine couleur."
+    },
+    "de": {
+      "description": "Spiele Verrückte Achter gegen drei KI-Gegner. Lege eine Karte mit passender Farbe oder Zahl, bestimme mit einer Acht die nächste Farbe und leere deine Hand zuerst.",
+      "tags": [
+        "Klassisches Ablegespiel",
+        "Karten",
+        "Familie",
+        "Strategie"
+      ],
+      "summary": "Passe nach Farbe oder Wert und wähle mit einer Acht die nächste Farbe."
+    },
+    "it": {
+      "description": "Gioca a Otto pazzi contro tre avversari IA. Abbina il seme o il valore attivo, scegli il seme successivo con un otto e svuota la mano per primo.",
+      "tags": [
+        "Classico gioco di scarto",
+        "Carte",
+        "Famiglia",
+        "Strategia"
+      ],
+      "summary": "Abbina il seme o il valore e usa un Otto per scegliere il seme successivo."
+    },
+    "ru": {
+      "description": "Сыграйте в «Сумасшедшие восьмёрки» против трёх соперников с ИИ. Подбирайте масть или достоинство, выбирайте масть восьмёркой и первым избавьтесь от карт.",
+      "tags": [
+        "Классическая игра на сброс карт",
+        "Карты",
+        "Семейная",
+        "Стратегия"
+      ],
+      "summary": "Совпадайте по масти или рангу, а восьмёркой выберите следующую масть."
+    },
+    "hi": {
+      "description": "तीन AI प्रतिद्वंद्वियों के साथ पागल आठ खेलें। सक्रिय सूट या रैंक से मेल खाता पत्ता डालें, 8 से अगला सूट चुनें और सबसे पहले हाथ खाली करके जीतें।",
+      "tags": [
+        "क्लासिक कार्ड छोड़ने का खेल",
+        "कार्ड",
+        "परिवार",
+        "रणनीति"
+      ],
+      "summary": "सूट या रैंक मिलाएँ और अगला सूट चुनने के लिए आठ खेलें।"
+    },
+    "ar": {
+      "description": "العب الثمانيات المجنونة ضد ثلاثة منافسين من الذكاء الاصطناعي. طابق النوع أو الرتبة النشطة، واختر النوع التالي ببطاقة 8، ثم أفرغ يدك أولاً لتفوز.",
+      "tags": [
+        "لعبة البطاقات الكلاسيكية للتخلص",
+        "بطاقات",
+        "عائلية",
+        "استراتيجية"
+      ],
+      "summary": "طابق النوع أو الرتبة، ثم العب ثمانية لاختيار النوع التالي."
+    }
+  },
+  "runtimeCoach": {
+    "en": "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.",
+    "zh-Hant": "打出符合目前花色或點數的牌；任何 8 都可讓你選擇下一個花色。沒有合法牌時從牌庫抽牌。先出完手牌即可獲勝。",
+    "zh-Hans": "打出符合当前花色或点数的牌；任何 8 都可让你选择下一个花色。没有合法牌时从牌库抽牌。先出完手牌即可获胜。",
+    "ja": "場のスートかランクに合うカードを出します。8を出すと次のスートを選べます。出せるカードがないときは山札から引き、先に手札をなくすと勝ちです。",
+    "ko": "현재 무늬나 숫자에 맞는 카드를 내세요. 8을 내면 다음 무늬를 고를 수 있습니다. 낼 카드가 없으면 덱에서 뽑고, 먼저 손을 비우면 승리합니다.",
+    "es": "Juega una carta del palo o valor activo; cualquier ocho te permite elegir el siguiente palo. Si no puedes jugar, roba del mazo. Gana quien vacíe su mano primero.",
+    "pt-BR": "Jogue uma carta do naipe ou valor ativo; qualquer Oito permite escolher o próximo naipe. Se não puder jogar, compre do monte. Vence quem esvaziar a mão primeiro.",
+    "fr": "Jouez une carte de la couleur ou valeur active ; chaque huit permet de choisir la suivante. Sans carte jouable, piochez dans la pioche. Le premier à vider sa main gagne.",
+    "de": "Lege eine Karte mit passender Farbe oder Zahl; mit jeder Acht wählst du die nächste Farbe. Wenn du nicht legen kannst, ziehe vom Nachziehstapel. Wer zuerst die Hand leert, gewinnt.",
+    "it": "Gioca una carta del seme o valore attivo; ogni Otto ti permette di scegliere il seme successivo. Se non puoi giocare, pesca dal mazzo. Vince chi svuota la mano per primo.",
+    "ru": "Сыграйте карту подходящей масти или достоинства; каждой восьмёркой можно выбрать следующую масть. Если ходить нечем, возьмите карту из колоды. Побеждает тот, кто первым избавится от карт.",
+    "hi": "सक्रिय सूट या रैंक से मेल खाता पत्ता खेलें; हर 8 से अगला सूट चुन सकते हैं। चाल न हो तो स्टॉक से कार्ड लें। सबसे पहले हाथ खाली करने वाला जीतता है।",
+    "ar": "العب بطاقة تطابق النوع أو الرتبة النشطة؛ تتيح لك كل بطاقة 8 اختيار النوع التالي. إذا لم تستطع اللعب، اسحب من الرزمة. يفوز أول من يفرغ يده."
+  }
+}

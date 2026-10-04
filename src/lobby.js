@@ -48,7 +48,7 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   topicsButton.type = "button";
   topicsButton.dataset.hallTab = "topics";
   topicsButton.setAttribute("aria-pressed", "false");
-  topicsButton.innerHTML = '<span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true">✦</span><span class="hall-tab-label" data-i18n="hall.topics_short"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
+  topicsButton.innerHTML = '<span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true"><img src="/assets/topics-hall-tab-v2.webp?v=20261002-topics-icon-v2" alt="" width="30" height="30" decoding="async"></span><span class="hall-tab-label" data-i18n="hall.topics_short"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
   gameHallSwitch.append(topicsButton);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
@@ -64,6 +64,7 @@ const continuePlaying = document.querySelector("#continuePlaying");
 const continuePlayingSection = document.querySelector("#continuePlayingSection");
 const continuePlayingTitle = document.querySelector("#continuePlayingTitle");
 const continuePlayingReason = document.querySelector("#continuePlayingReason");
+const publisherStory = document.querySelector(".publisher-story");
 const gameGrid = document.querySelector("#gameGrid");
 // Limit rendered cards, never the searchable catalog. See the lobby runbook.
 let catalogRevealedBatches = 1;
@@ -130,11 +131,16 @@ if (!isKidsLobby) document.querySelector(".lobby-hero").append(spotlightSection)
 function renderSpotlight() {
   if (isKidsLobby) return;
   const game = lobby.games.find(item => item.id === lobby.featuredGameId);
-  if (!game || !gameMatchesHall(game)) { spotlightSection.hidden = true; return; }
+  if (!game || !gameMatchesHall(game)) {
+    spotlightSection.hidden = true;
+    spotlightSection.replaceChildren();
+    return;
+  }
   spotlightSection.hidden = false;
   spotlightSection.innerHTML = `<h2>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</h2><a class="spotlight-game" href="${game.href}">
     <img ${lobbyImageAttributes(primaryArt(game), {priority:true})} alt="" width="480" height="480"/>
     <div><small>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</small><h3>${text(game.title)}</h3><p>${text(game.type)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
+  revealDecodedImage(spotlightSection.querySelector(".spotlight-game > img"));
 }
 
 let firstPublicDates = {};
@@ -291,6 +297,10 @@ let activeAvailability = "all";
 let activeSearch = "";
 let hallSearchDisplay;
 let toastTimer = null;
+let toastDeadline = 0;
+let toastRevision = 0;
+let toastMotionClassTimer = null;
+let toastMotionGeneration = 0;
 let favoriteGameIds = readFavorites();
 let recentGameIds = readRecentGames();
 let gameStats = {
@@ -339,6 +349,12 @@ function primaryArt(game) {
   return game.art?.background || "assets/hero.png";
 }
 
+function hallHeroImageSource(hall) {
+  return hall === "topics"
+    ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2"
+    : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2";
+}
+
 function lobbyThumbnail(source, width = 480) {
   const clean = String(source || "").split(/[?#]/, 1)[0].replace(/^\/+/, "");
   // The poster registry resolves existing derivatives, or the intact source
@@ -362,6 +378,42 @@ function setLobbyImage(image, source, { priority = false, width = 480 } = {}) {
   image.loading = priority ? "eager" : "lazy";
   image.decoding = "async";
   image.fetchPriority = priority ? "high" : "auto";
+}
+
+function revealDecodedImage(image) {
+  if (!image) return;
+  const reveal = () => {
+    if (image.naturalWidth > 0) image.classList.add("is-decoded");
+  };
+  if (image.complete) reveal();
+  else image.addEventListener("load", reveal, { once: true });
+}
+
+function decodeLobbyImage(source) {
+  if (!source) return Promise.resolve(true);
+  const image = new Image();
+  image.decoding = "async";
+  image.loading = "eager";
+  return new Promise(resolve => {
+    let settled = false;
+    const finish = ready => {
+      if (settled) return;
+      settled = true;
+      resolve(Boolean(ready && image.naturalWidth > 0));
+    };
+    const decode = () => {
+      if (!image.naturalWidth) { finish(false); return; }
+      if (typeof image.decode === "function") image.decode().then(() => finish(true), () => finish(image.naturalWidth > 0));
+      else finish(true);
+    };
+    image.addEventListener("load", decode, { once: true });
+    image.addEventListener("error", () => finish(false), { once: true });
+    image.src = source;
+    // A newly assigned image can report `complete === true` before its first
+    // request starts, with naturalWidth still zero. Treat only a decoded cache
+    // hit as complete; the load/error listeners own every in-flight request.
+    if (image.complete && image.naturalWidth > 0) decode();
+  });
 }
 
 function categoryText(category) {
@@ -420,9 +472,14 @@ function syncHallPresentation() {
   const hallEyebrow = document.querySelector('.hero-eyebrow');
   if (hallEyebrow) hallEyebrow.textContent = i18n.t(activeHall === 'games' ? 'hall.games' : hallNameKey);
   const hallScene = document.querySelector('.general-hero-scene');
-  if (hallScene) hallScene.src = activeHall === 'topics'
-    ? '/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2'
-    : '/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2';
+  if (hallScene) {
+    const source = hallHeroImageSource(activeHall);
+    if (hallScene.getAttribute('src') !== source) {
+      hallScene.classList.remove('is-decoded');
+      hallScene.src = source;
+    }
+    revealDecodedImage(hallScene);
+  }
 }
 
 function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
@@ -449,6 +506,7 @@ function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
 }
 
 function syncDiscoveryFiltersToUrl(historyMode = "replace") {
+  if (historyMode === "none") return;
   const url = new URL(window.location.href);
   const values = {
     hall: isKidsLobby || activeHall === "games" ? "all" : activeHall,
@@ -1313,146 +1371,154 @@ function createGameCard(game) {
   return card;
 }
 
-// Native snapshots contain pixels, never cloned interactive cards or IDs.
-// One owner also covers the non-View-Transition fallback; every interruption
-// commits the latest state once and releases its locks before another render.
+// One transition owner commits each decoded hall change once and releases its
+// live DOM locks before another render can start.
 let hallMotion = null;
 let renderingHallMotion = false;
 const hallMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function hallMotionImageSources(targetHall) {
+  const sources = new Set([hallHeroImageSource(targetHall)].filter(Boolean));
+  const featured = lobby.games.find(game => game.id === lobby.featuredGameId);
+  if (featured && gameMatchesHall(featured, targetHall)) sources.add(lobbyThumbnail(primaryArt(featured), 480));
+  return [...sources];
+}
+
+const hallImageWaitLimit = 700;
+const nextLobbyFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
+
+async function waitForShellOpacity(shell, expected) {
+  const started = performance.now();
+  let settledFrames = 0;
+  while (performance.now() - started < 1200) {
+    await nextLobbyFrame();
+    const opacity = Number(getComputedStyle(shell).opacity);
+    const transitioning = shell.getAnimations().some(animation => animation.transitionProperty === 'opacity');
+    if (Math.abs(opacity - expected) < 0.01 && !transitioning) {
+      if (++settledFrames >= 2) return;
+    } else settledFrames = 0;
+  }
+}
+
+function waitForHallImages(motion, targetHall) {
+  let timer;
+  let wake;
+  const changed = new Promise(resolve => {
+    wake = () => resolve('changed');
+    motion.wakeImageWait = wake;
+  });
+  const loaded = Promise.all(hallMotionImageSources(targetHall).map(source => decodeLobbyImage(source).catch(() => false)))
+    .then(() => 'loaded');
+  const deadline = new Promise(resolve => { timer = setTimeout(() => resolve('timeout'), hallImageWaitLimit); });
+  return Promise.race([loaded, deadline, changed]).finally(() => {
+    clearTimeout(timer);
+    if (motion.wakeImageWait === wake) motion.wakeImageWait = null;
+  });
+}
 
 function settleHallMotion() {
   const motion = hallMotion;
   if (!motion) return;
   hallMotion = null;
-  clearTimeout(motion.timer);
-  motion.transition?.skipTransition();
-  motion.animations.forEach(animation => animation.cancel());
-  if (!motion.committed) motion.commit();
+  motion.wakeImageWait?.();
+  document.body.dataset.hallMotionPhase = 'commit';
+  motion.commit(motion.targetHall);
   motion.restore();
+  if (motion.deferredRender) queueMicrotask(() => renderLobby(motion.options));
 }
 
 function renderLobby(options = {}) {
-  settleHallMotion();
+  if (hallMotion) {
+    hallMotion.options = { ...hallMotion.options, ...options };
+    hallMotion.resetScroll ||= Boolean(options.resetScroll);
+    if (activeHall !== hallMotion.targetHall) {
+      hallMotion.targetHall = activeHall;
+      hallMotion.generation += 1;
+      hallMotion.wakeImageWait?.();
+    } else {
+      hallMotion.deferredRender = true;
+    }
+    return;
+  }
   const change = !isKidsLobby && document.body.dataset.gameHall
     && document.body.dataset.gameHall !== activeHall;
-  if (!change || hallMotionQuery.matches) return renderLobbyContent(options);
+  if (!change) return renderLobbyContent(options);
   const shell = document.querySelector('.lobby-shell');
   const regions = [...shell.children].filter(node =>
-    !node.matches('.lobby-hero,.lobby-topbar,.game-hall-switch'));
-  regions.push(document.querySelector('.lobby-hero-copy'), spotlightSection, ...hallButtons);
-  const entries = regions.filter(Boolean).map((node, index) => ({
-    node, name: node === spotlightSection ? 'wp-hall-spotlight' : `wp-hall-region-${index}`, inert: node.inert,
-    previousName: node.style.viewTransitionName,
-    locked: !node.matches('.lobby-search-row,[data-hall-tab]'),
-  }));
-  const motion = { animations: [], transition: null, timer: null, committed: false };
-  const namedCards = [];
-  const clippedCards = new Map();
-  const cardStyle = document.createElement('style');
-  cardStyle.dataset.hallCardMotion = '';
-  const cardRules = [];
-  const visibleCards = () => [...document.querySelectorAll('.hero-game-card, #gameGrid > [data-game-id]')]
-    .filter(node => { const box = node.getBoundingClientRect(); return box.width > 0 && box.bottom > 0 && box.top < innerHeight + 100; });
-  const clipCards = cards => cards.forEach(card => {
-    const container = card.parentElement;
-    if (!clippedCards.has(container)) clippedCards.set(container, container.style.overflow);
-    container.style.overflow = 'hidden';
-  });
-  const nameRegions = () => entries.forEach(({node, name, previousName}) => {
-    const box = node.getBoundingClientRect();
-    node.style.viewTransitionName = box.width > 0 && box.bottom > 0 && box.top < innerHeight + 100 ? name : previousName;
-  });
-  const nameCards = phase => {
-    visibleCards().forEach((node, index) => {
-      namedCards.push({node, previousName:node.style.viewTransitionName});
-      // Each phase owns its viewport slots, including every visible lower row.
-      const name = `wp-hall-card-${phase}-${index}`;
-      node.style.viewTransitionName = name;
-      const exiting = phase === 'old';
-      cardRules.push(`::view-transition-group(${name}) {overflow:clip;animation-duration:900ms}`);
-      cardRules.push(`::view-transition-${phase}(${name}) {animation:var(--hall-card-${exiting ? 'exit' : 'enter'}) ${exiting ? 220 : 420}ms ${exiting ? 'cubic-bezier(.4,0,.8,.3)' : 'cubic-bezier(.16,.8,.2,1)'} ${exiting ? (index % 5) * 25 : 320 + (index % 5) * 35}ms both}`);
-    });
-    cardStyle.textContent = cardRules.join('\n');
-  };
+    !node.matches('.lobby-topbar,.game-hall-switch,.lobby-search-row'));
+  const entries = regions.filter(Boolean).map(node => ({ node, inert: node.inert }));
+  const motion = { targetHall: activeHall, options: { ...options }, deferredRender: false, resetScroll: Boolean(options.resetScroll), generation: 0, wakeImageWait: null, quickPickWasDisabled: Boolean(quickPickBtn?.disabled) };
   motion.restore = () => {
-    entries.forEach(({node, inert, previousName, locked}) => {
-      node.style.viewTransitionName = previousName;
-      if (locked) node.inert = node.id === 'weightplayCastle' ? activeHall === 'tabletop' : inert;
-    });
-    namedCards.forEach(({node, previousName}) => { node.style.viewTransitionName = previousName; });
-    cardStyle.remove();
-    clippedCards.forEach((overflow, node) => { node.style.overflow = overflow; });
+    entries.forEach(({node, inert}) => { node.inert = inert; });
+    if (quickPickBtn) quickPickBtn.disabled = motion.quickPickWasDisabled;
+    delete document.body.dataset.hallMotionPhase;
     delete document.body.dataset.hallTransitionTarget;
     shell.removeAttribute('aria-busy');
     document.documentElement.classList.remove('hall-content-motion');
-    delete document.documentElement.dataset.hallMotionDirection;
+    resumeToastAfterHallMotion(motion.toastState);
   };
-  motion.commit = () => {
-    if (motion.committed) return;
-    motion.committed = true;
+  motion.commit = (targetHall) => {
+    activeHall = targetHall;
+    document.body.dataset.hallTransitionTarget = targetHall;
     renderingHallMotion = true;
-    try { renderLobbyContent(options); }
+    try { renderLobbyContent(motion.options); }
     finally { renderingHallMotion = false; }
-    entries.forEach(({node, locked}) => { if (locked) node.inert = true; });
-    if (document.startViewTransition) { nameRegions(); nameCards('new'); }
+    if (motion.resetScroll) {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      motion.resetScroll = false;
+    }
   };
   const focused = document.activeElement;
-  if (entries.some(({node, locked}) => locked && node.contains(focused))) {
+  if (entries.some(({node}) => node.contains(focused))) {
     [...hallButtons].find(button => button.dataset.hallTab === activeHall)?.focus({preventScroll:true});
   }
-  entries.forEach(({node, locked}) => {
-    if (locked) node.inert = true;
-  });
+  entries.forEach(({node}) => { node.inert = true; });
   shell.setAttribute('aria-busy', 'true');
   document.documentElement.classList.add('hall-content-motion');
-  const hallOrder = ["games", "tabletop", "topics"];
-  const previousHall = document.body.dataset.gameHall || "games";
-  const direction = hallOrder.indexOf(activeHall) >= hallOrder.indexOf(previousHall) ? 1 : -1;
-  document.documentElement.dataset.hallMotionDirection = direction === 1 ? 'forward' : 'back';
+  if (quickPickBtn) quickPickBtn.disabled = true;
+  motion.toastState = pauseToastForHallMotion();
   hallMotion = motion;
-  document.body.dataset.hallTransitionTarget = activeHall;
-  const finish = () => {
+  void (async () => {
+    await nextLobbyFrame();
     if (hallMotion !== motion) return;
-    hallMotion = null;
-    motion.animations.forEach(animation => animation.cancel());
-    motion.restore();
-  };
-  if (document.startViewTransition) {
-    nameRegions();
-    document.head.append(cardStyle);
-    nameCards('old');
-    motion.transition = document.startViewTransition(() => {
-      if (hallMotion === motion) motion.commit();
-    });
-    // Rapid hall changes can skip snapshot preparation before `ready` settles.
-    // The transition is intentionally cancelled; consume that native rejection.
-    motion.transition.ready.catch(() => {});
-    motion.transition.finished.then(finish, finish);
-  } else {
-    // Background starts immediately; only mutable content waits for its exit.
-    const outgoing = visibleCards();
-    clipCards(outgoing);
-    motion.animations = entries.map(({node}) => node.animate(
-      [{opacity:1}, {opacity:0}], {duration:320, easing:'ease-out', fill:'forwards'}));
-    motion.animations.push(...outgoing.map((node, index) => node.animate(
-      [{opacity:1, transform:'translateX(0) scale(1)', clipPath:'inset(0)'}, {opacity:0, transform:`translateX(${-direction * 110}%) scale(.88)`, clipPath:direction===1?'inset(0 0 0 110%)':'inset(0 110% 0 0)'}],
-      {duration:220, delay:(index % 5) * 25, easing:'cubic-bezier(.4,0,.8,.3)', fill:'both'})));
-    motion.timer = setTimeout(() => {
+    document.body.dataset.hallMotionPhase = 'exit';
+    if (hallMotionQuery.matches || document.hidden) {
+      motion.commit(motion.targetHall);
+      hallMotion = null;
+      motion.restore();
+      return;
+    }
+    await waitForShellOpacity(shell, 0);
+    while (hallMotion === motion) {
+      const targetHall = motion.targetHall;
+      const generation = motion.generation;
+      const imageState = await waitForHallImages(motion, targetHall);
       if (hallMotion !== motion) return;
-      motion.animations.forEach(animation => animation.cancel());
-      motion.commit();
+      if (imageState === 'changed' || generation !== motion.generation) continue;
+      document.body.dataset.hallMotionPhase = 'commit';
+      motion.commit(targetHall);
       delete document.body.dataset.hallTransitionTarget;
-      motion.animations = entries.map(({node}, index) => node.animate(
-        [{opacity:0, transform:'translateY(5px)'}, {opacity:1, transform:'translateY(0)'}],
-        {duration:420, easing:'cubic-bezier(.2,.7,.2,1)', fill:'both'}));
-      const incoming = visibleCards();
-      clipCards(incoming);
-      motion.animations.push(...incoming.map((node, index) => node.animate(
-        [{opacity:.35, transform:`translateX(${direction * 110}%) scale(.94)`, clipPath:direction===1?'inset(0 110% 0 0)':'inset(0 0 0 110%)'}, {opacity:1, transform:'translateX(0) scale(1)', clipPath:'inset(0)'}],
-        {duration:420, delay:(index % 5) * 35, easing:'cubic-bezier(.16,.8,.2,1)', fill:'both'})));
-      Promise.all(motion.animations.map(animation => animation.finished.catch(() => {}))).then(finish);
-    }, 320);
-  }
+      document.body.dataset.hallMotionPhase = 'enter';
+      await nextLobbyFrame();
+      await nextLobbyFrame();
+      if (hallMotion !== motion) return;
+      delete document.body.dataset.hallMotionPhase;
+      await waitForShellOpacity(shell, 1);
+      if (hallMotion !== motion) return;
+      if (motion.targetHall !== document.body.dataset.gameHall) {
+        document.body.dataset.hallMotionPhase = 'exit';
+        await waitForShellOpacity(shell, 0);
+        continue;
+      }
+      const deferredRender = motion.deferredRender;
+      const deferredOptions = motion.options;
+      hallMotion = null;
+      motion.restore();
+      if (deferredRender) queueMicrotask(() => renderLobby(deferredOptions));
+      return;
+    }
+  })();
 }
 
 hallMotionQuery.addEventListener('change', () => { if (hallMotionQuery.matches) settleHallMotion(); });
@@ -1469,6 +1535,7 @@ function renderLobbyContent({ historyMode = "replace" } = {}) {
   catalogNeedsRebuild = true;
   applyStaticTranslations();
   syncHallPresentation();
+  if (publisherStory) publisherStory.hidden = !isKidsLobby && activeHall !== "games";
   renderCatalogDirectory();
   platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
   platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : activeHall === 'games' ? "general.site.subtitle" : `hall.${activeHall}_note`);
@@ -1574,7 +1641,7 @@ function discoveryCards(games, { popular = false } = {}) {
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png")} alt="" />
+          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png", { priority: popular })} alt="" />
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
         </div>
         <div class="hero-game-copy">
@@ -1584,6 +1651,7 @@ function discoveryCards(games, { popular = false } = {}) {
           ${popular ? `<em>${playCountText(game)}</em>` : ""}
         </div>
       `;
+      revealDecodedImage(card.querySelector(".hero-game-image"));
       return card;
     });
 }
@@ -2051,6 +2119,10 @@ function renderCatalog(isFiltered) {
 }
 
 function applyFilter({ historyMode = "replace" } = {}) {
+  if (!renderingHallMotion && hallMotion) {
+    hallMotion.deferredRender = true;
+    return;
+  }
   if (!renderingHallMotion) settleHallMotion();
   let upcomingVisibleCount = 0;
   const isFiltered =
@@ -2238,11 +2310,60 @@ function applyStaticTranslations() {
   localeSelect.value = i18n.locale();
 }
 
+function scheduleToastDismiss(delay, revision) {
+  toastDeadline = Date.now() + delay;
+  toastTimer = setTimeout(() => {
+    if (revision !== toastRevision) return;
+    lobbyToast.classList.add("hidden");
+    toastTimer = null;
+    toastDeadline = 0;
+  }, delay);
+}
+
+function pauseToastForHallMotion() {
+  if (!lobbyToast || lobbyToast.classList.contains("hidden")) return null;
+  clearTimeout(toastMotionClassTimer);
+  toastMotionGeneration += 1;
+  lobbyToast.classList.add("hall-motion-toast");
+  clearTimeout(toastTimer);
+  const remaining = Math.max(0, toastDeadline - Date.now());
+  const animation = lobbyToast.getAnimations().find(value => value.animationName === "lobby-toast-up");
+  animation?.pause();
+  toastTimer = null;
+  toastDeadline = 0;
+  return { revision: toastRevision, remaining, animation };
+}
+
+function resumeToastAfterHallMotion(state) {
+  if (!state || state.revision !== toastRevision || lobbyToast.classList.contains("hidden")) return;
+  const generation = toastMotionGeneration;
+  clearTimeout(toastMotionClassTimer);
+  toastMotionClassTimer = setTimeout(() => {
+    if (generation === toastMotionGeneration && !hallMotion) lobbyToast.classList.remove("hall-motion-toast");
+    toastMotionClassTimer = null;
+  }, 260);
+  if (state.remaining <= 0) {
+    lobbyToast.classList.add("hidden");
+    toastTimer = null;
+    toastDeadline = 0;
+    return;
+  }
+  state.animation?.play();
+  scheduleToastDismiss(state.remaining, state.revision);
+}
+
 function showToast(message) {
   clearTimeout(toastTimer);
+  toastTimer = null;
+  toastDeadline = 0;
+  toastRevision += 1;
+  lobbyToast.getAnimations().filter(value => value.animationName === "lobby-toast-up").forEach(value => value.cancel());
+  lobbyToast.classList.add("hidden");
+  void lobbyToast.offsetWidth;
   lobbyToast.textContent = message;
   lobbyToast.classList.remove("hidden");
-  toastTimer = setTimeout(() => lobbyToast.classList.add("hidden"), 1500);
+  scheduleToastDismiss(1500, toastRevision);
+  if (hallMotion) hallMotion.toastState = pauseToastForHallMotion();
 }
 
 function showPlannedGame(game) {
@@ -2360,13 +2481,7 @@ hallButtons.forEach((button) => {
     syncDiscoveryFiltersToUrl('push');
     window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("lobby_hall_switch", { lobby_hall: activeHall, locale: i18n.locale() });
-    renderLobby();
-    // A compact destination hall can be much shorter than the previous one.
-    // Return its three-way switch and first cards to view after the layout settles.
-    window.requestAnimationFrame(() => {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    });
+    renderLobby({ resetScroll: true });
   });
 });
 
@@ -2545,7 +2660,10 @@ localeSelect.addEventListener("change", () => {
 window.addEventListener("wonder:locale-change", renderLobby);
 window.addEventListener("pagehide", () => { settleHallMotion(); activeGamePreview?.releaseLobbyPreview(); });
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) { settleHallMotion(); activeGamePreview?.releaseLobbyPreview(); }
+  if (document.hidden) {
+    settleHallMotion();
+    activeGamePreview?.releaseLobbyPreview();
+  }
 });
 
 window.addEventListener("popstate", () => {

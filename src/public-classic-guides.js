@@ -1757,7 +1757,7 @@
 
   const hoopBase = {
     title: "Animal Hoop League",
-    intro: "Read the target arc, tune aim and power, then hold and release Shoot to outscore the rival across six authored animal courts.",
+    intro: "Aim along the target arc, charge Shoot, and release inside the power window. Use shot feedback to beat the rival across six courts.",
     gameplay: "Arc-and-power basketball challenge",
     genre: ["Sports", "Arcade", "Animal"],
     difficulty: "Easy to learn, tighter by court",
@@ -1803,7 +1803,7 @@
   const hoop = localizedClassic(["lights-out", "sliding-15"], hoopBase, {
     en: {},
     "zh-Hant": {
-      title: "動物灌籃聯盟", intro: "讀取目標弧線，調整瞄準與力度，按住再放開 Shoot，在六個設計好的動物球場中超過對手。", gameplay: "弧線與力度籃球挑戰", genre: ["運動", "街機", "動物"], difficulty: "容易上手，球場逐步收緊", time: "3–8 分鐘",
+      title: "動物灌籃聯盟", intro: "沿著目標弧線瞄準，按住 Shoot 蓄力並在力度範圍內放開。讀取每球回饋，在六座球場挑戰對手。", gameplay: "弧線與力度籃球挑戰", genre: ["運動", "街機", "動物"], difficulty: "容易上手，球場逐步收緊", time: "3–8 分鐘",
       story: ["每個球場都把一次投籃變成容易理解的決策。目標弧線與力度範圍會逐場改變，而對手分數讓每次出手都有明確目的。", "六個 Stage 組成短小聯盟：先熟悉友善目標，再學會交替控制瞄準與力度，最後處理更窄的範圍與預設投籃模式。"],
       systems: ["左右移動瞄準標記，按住 Shoot 充入力度條，看到弧線與力度對準目前目標時放開。", "每個球場都有固定投籃組合與自己的容錯。每次放開後，命中、完美命中、你的分數與對手分數都會即時更新。", "通過目前球場就會解鎖下一個。結果畫面顯示球場摘要，並提供下一球場或重試；最佳 Stage 只保存在這個瀏覽器。"],
       how: ["選擇已解鎖球場，閱讀瞄準、力度與投籃提示。", "用左右控制把瞄準標記放到目標弧線。", "按住 Shoot 充入力度，然後在目標範圍內放開。", "每球後閱讀命中、完美、分數與對手回饋。", "完成球場後查看結果，選擇下一球場或重試來改善聯盟成績。"],
@@ -1813,7 +1813,7 @@
       faq: [["怎麼投籃？", "設定瞄準標記，按住 Shoot 充入力度，兩者都在目前目標範圍內時放開。"], ["什麼是完美投籃？", "在該次預設投籃的更窄完美範圍內命中。"], ["如何解鎖球場？", "通過一個 Stage 就能解鎖下一個，最佳通過 Stage 會保留在此瀏覽器。"], ["完成球場後會怎樣？", "結果顯示摘要，並提供下一球場或重試。"], ["進度會保存嗎？", "最佳 Stage 只保存在這個瀏覽器。"],],
     },
     "zh-Hans": {
-      title: "动物灌篮联盟", intro: "读取目标弧线，调整瞄准和力度，按住再松开 Shoot，在六个设计好的动物球场中超过对手。", gameplay: "弧线与力度篮球挑战", genre: ["运动", "街机", "动物"], difficulty: "容易上手，球场逐步收紧", time: "3–8 分钟",
+      title: "动物灌篮联盟", intro: "沿着目标弧线瞄准，按住 Shoot 蓄力并在力度范围内松开。读取每球反馈，在六座球场挑战对手。", gameplay: "弧线与力度篮球挑战", genre: ["运动", "街机", "动物"], difficulty: "容易上手，球场逐步收紧", time: "3–8 分钟",
       story: ["每个球场都把一次投篮变成容易理解的决策。目标弧线和力度范围会逐场改变，而对手分数让每次出手都有明确目的。", "六个 Stage 组成短小联赛：先熟悉友善目标，再学会交替控制瞄准和力度，最后处理更窄范围与预设投篮模式。"],
       systems: ["左右移动瞄准标记，按住 Shoot 充入力度条，看到弧线和力度对准当前目标时松开。", "每个球场都有固定投篮组合和自己的容错。每次松开后，命中、完美命中、你的分数和对手分数都会即时更新。", "通过当前球场会解锁下一个。结果画面显示球场摘要，并提供下一球场或重试；最佳 Stage 只保存在此浏览器。"],
       how: ["选择已解锁球场，阅读瞄准、力度和投篮提示。", "用左右控制把瞄准标记放到目标弧线。", "按住 Shoot 充入力度，然后在目标范围内松开。", "每球后阅读命中、完美、分数和对手反馈。", "完成球场后查看结果，选择下一球场或重试来改善联赛成绩。"],
@@ -1823,7 +1823,7 @@
       faq: [["怎么投篮？", "设置瞄准标记，按住 Shoot 充入力度，两者都在当前目标范围内时松开。"], ["什么是完美投篮？", "在该次预设投篮的更窄完美范围内命中。"], ["如何解锁球场？", "通过一个 Stage 就能解锁下一个，最佳通过 Stage 会保留在此浏览器。"], ["完成球场后会怎样？", "结果显示摘要，并提供下一球场或重试。"], ["进度会保存吗？", "最佳 Stage 只保存在此浏览器。"],],
     },
     ja: {
-      title: "アニマル・フープ・リーグ", intro: "目標の弧を読み、狙いとパワーを整え、Shootを押して離し、6つの動物コートでライバルを上回ります。", gameplay: "弧とパワーのバスケット挑戦", genre: ["スポーツ", "アーケード", "アニマル"], difficulty: "始めやすくコートごとに厳しくなる", time: "3〜8分",
+      title: "アニマル・フープ・リーグ", intro: "目標の弧に照準を合わせ、Shootを長押ししてパワー範囲で離します。各ショットの結果を読み、6コートでライバルに挑戦。", gameplay: "弧とパワーのバスケット挑戦", genre: ["スポーツ", "アーケード", "アニマル"], difficulty: "始めやすくコートごとに厳しくなる", time: "3〜8分",
       story: ["各コートは1本のシュートを読みやすい判断に変えます。目標の弧とパワー幅が変わり、ライバルの得点が毎回の理由を示します。", "6ステージの短いリーグで、最初は親切な目標、次に狙いとパワーの交互調整、最後に狭い幅と決められたパターンへ進みます。"],
       systems: ["左右で狙いマーカーを動かし、Shootを長押ししてパワーをため、弧とパワーが目標に合ったら離します。", "各コートには固有の許容幅と固定されたショット列があります。成功、パーフェクト、自分とライバルの得点が離すたびに更新されます。", "コートをクリアすると次が開きます。結果には概要が出て、次のステージかリトライを選べます。最高ステージはブラウザに保存されます。"],
       how: ["解放済みのコートを選び、狙い・パワー・ショット説明を読みます。", "左右操作で狙いマーカーを目標の弧へ置きます。", "Shootを長押ししてパワーをため、目標幅で離します。", "各ショット後に成功、パーフェクト、得点、ライバルの反応を読みます。", "コートを終え、結果から次のステージかリトライを選びます。"],
@@ -1833,7 +1833,7 @@
       faq: [["どうシュートしますか？", "狙いマーカーを置き、Shootを長押ししてパワーをため、両方が目標幅に入ったら離します。"], ["パーフェクトとは？", "そのショットの狭いパーフェクト幅に入った成功です。"], ["コートはどう開きますか？", "ステージをクリアすると次が開き、最高ステージがブラウザに残ります。"], ["コート後は？", "結果に概要が出て、次のステージかリトライを選べます。"], ["進行は保存されますか？", "最高ステージはこのブラウザだけに保存されます。"],],
     },
     ko: {
-      title: "애니멀 후프 리그", intro: "목표 아크를 읽고 조준과 파워를 맞춘 뒤 Shoot을 길게 눌렀다 놓아 여섯 동물 코트에서 라이벌을 앞서세요.", gameplay: "아크와 파워 농구 도전", genre: ["스포츠", "아케이드", "동물"], difficulty: "쉽게 시작하고 코트마다 좁아짐", time: "3–8분",
+      title: "애니멀 후프 리그", intro: "목표 궤적에 조준하고 Shoot를 눌러 힘을 모은 뒤 파워 범위에서 놓으세요. 슛 결과를 읽으며 6개 코트에서 라이벌과 겨루세요.", gameplay: "아크와 파워 농구 도전", genre: ["스포츠", "아케이드", "동물"], difficulty: "쉽게 시작하고 코트마다 좁아짐", time: "3–8분",
       story: ["각 코트는 한 번의 슛을 읽기 쉬운 결정으로 바꿉니다. 목표 아크와 파워 범위가 코트마다 달라지고 라이벌 점수가 슛의 이유를 만듭니다.", "여섯 스테이지의 짧은 리그에서 친절한 목표로 시작해 조준과 파워를 번갈아 조절하고, 마지막에는 좁은 범위와 고정 패턴을 다룹니다."],
       systems: ["좌우로 조준 마커를 옮기고 Shoot을 길게 눌러 파워를 채운 뒤 아크와 파워가 목표에 맞을 때 놓으세요.", "각 코트에는 고유 허용 범위와 고정 슛 구성이 있습니다. 성공, 퍼펙트, 내 점수, 라이벌 점수가 놓을 때마다 즉시 갱신됩니다.", "코트를 통과하면 다음 코트가 열립니다. 결과에서 요약을 보고 다음 스테이지나 재시도를 선택할 수 있으며 최고 스테이지는 브라우저에 저장됩니다."],
       how: ["잠금 해제된 코트를 선택하고 조준·파워·슛 안내를 읽으세요.", "좌우 조작으로 조준 마커를 목표 아크에 놓으세요.", "Shoot을 길게 눌러 파워를 채우고 목표 범위에서 놓으세요.", "매 슛 뒤 성공, 퍼펙트, 점수, 라이벌 피드백을 읽으세요.", "코트를 끝내고 결과에서 다음 스테이지나 재시도를 고르세요."],
@@ -1843,7 +1843,7 @@
       faq: [["어떻게 슛하나요?", "조준 마커를 놓고 Shoot을 길게 눌러 파워를 채운 뒤 두 값이 목표 범위 안에 있을 때 놓으세요."], ["퍼펙트 슛이 무엇인가요?", "해당 시도의 더 좁은 퍼펙트 범위 안에 들어간 성공입니다."], ["코트는 어떻게 열리나요?", "스테이지를 통과하면 다음 코트가 열리고 최고 스테이지가 브라우저에 남습니다."], ["코트 후에는 무엇을 하나요?", "결과에서 요약을 보고 다음 스테이지나 재시도를 선택합니다."], ["진행이 저장되나요?", "최고 스테이지는 이 브라우저에만 저장됩니다."],],
     },
     es: {
-      title: "Liga de Aros Animal", intro: "Lee el arco objetivo, ajusta dirección y potencia, mantén y suelta Shoot para superar al rival en seis pistas animales.", gameplay: "Desafío de baloncesto con arco y potencia", genre: ["Deportes", "Arcade", "Animales"], difficulty: "Fácil de empezar, más estrecho por pista", time: "3–8 minutos",
+      title: "Liga de Aros Animal", intro: "Apunta al arco objetivo, carga Shoot y suéltalo en la zona de potencia. Lee cada tiro para superar al rival en seis canchas.", gameplay: "Desafío de baloncesto con arco y potencia", genre: ["Deportes", "Arcade", "Animales"], difficulty: "Fácil de empezar, más estrecho por pista", time: "3–8 minutos",
       story: ["Cada pista convierte un tiro en una decisión clara: cambian el arco y la ventana de potencia, mientras la puntuación rival explica por qué importa cada lanzamiento.", "Las seis pistas forman una liga breve, desde un objetivo amable hasta patrones fijos y ventanas más estrechas."],
       systems: ["Mueve el marcador con izquierda y derecha, mantén Shoot para cargar potencia y suéltalo cuando arco y potencia coincidan.", "Cada pista tiene tiros fijos y tolerancia propia. Aciertos, perfectos, tu puntuación y la rival se actualizan tras cada tiro.", "Superar una pista desbloquea la siguiente. Resultado ofrece Siguiente pista o Reintentar y guarda la mejor pista en este navegador."],
       how: ["Elige una pista desbloqueada y lee el objetivo de dirección, potencia y tiro.", "Coloca el marcador sobre el arco con los controles laterales.", "Mantén Shoot para cargar y suéltalo dentro de la ventana objetivo.", "Lee el acierto, perfecto, puntuación y rival antes del siguiente tiro.", "Revisa Resultado y elige Siguiente pista o Reintentar."],
@@ -1853,7 +1853,7 @@
       faq: [["¿Cómo tiro?", "Coloca el marcador, mantén Shoot para cargar y suelta cuando dirección y potencia estén en la ventana."], ["¿Qué es un tiro perfecto?", "Un acierto dentro de la ventana perfecta más estrecha de ese intento."], ["¿Cómo se desbloquean pistas?", "Supera una pista para abrir la siguiente; la mejor queda en el navegador."], ["¿Qué ocurre al terminar?", "Resultado muestra el resumen y permite avanzar o reintentar."], ["¿Se guarda el progreso?", "Solo se guarda localmente en este navegador."],],
     },
     "pt-BR": {
-      title: "Liga Animal de Arremessos", intro: "Leia o arco-alvo, ajuste direção e força, segure e solte Shoot para superar o rival em seis quadras animais.", gameplay: "Desafio de basquete com arco e força", genre: ["Esportes", "Arcade", "Animais"], difficulty: "Fácil de começar, mais apertado por quadra", time: "3–8 minutos",
+      title: "Liga Animal de Arremessos", intro: "Mire o arco-alvo, carregue Shoot e solte na faixa de força. Leia cada arremesso para superar o rival em seis quadras.", gameplay: "Desafio de basquete com arco e força", genre: ["Esportes", "Arcade", "Animais"], difficulty: "Fácil de começar, mais apertado por quadra", time: "3–8 minutos",
       story: ["Cada quadra transforma um arremesso em uma decisão clara: o arco e a janela de força mudam, enquanto a pontuação rival dá motivo a cada tentativa.", "As seis quadras formam uma liga curta, começando com um alvo amigável e terminando com padrões fixos e janelas menores."],
       systems: ["Mova o marcador com esquerda e direita, segure Shoot para carregar força e solte quando arco e força coincidirem.", "Cada quadra tem arremessos fixos e tolerância própria. Acertos, perfeitos, sua pontuação e a do rival mudam após cada soltura.", "Vencer uma quadra libera a próxima. Resultado oferece Próxima quadra ou Tentar novamente e guarda a melhor quadra neste navegador."],
       how: ["Escolha uma quadra liberada e leia o resumo de direção, força e arremesso.", "Coloque o marcador no arco-alvo usando os controles laterais.", "Segure Shoot para carregar e solte dentro da janela-alvo.", "Leia acerto, perfeito, pontuação e rival antes do próximo arremesso.", "Veja Resultado e escolha Próxima quadra ou Tentar novamente."],
@@ -1863,7 +1863,7 @@
       faq: [["Como arremesso?", "Posicione o marcador, segure Shoot para carregar e solte quando direção e força estiverem na janela."], ["O que é um arremesso perfeito?", "Um acerto dentro da janela perfeita mais estreita daquela tentativa."], ["Como liberar quadras?", "Vença uma quadra para abrir a próxima; a melhor fica no navegador."], ["O que acontece ao terminar?", "Resultado mostra o resumo e permite avançar ou tentar novamente."], ["O progresso é salvo?", "Somente localmente neste navegador."],],
     },
     fr: {
-      title: "Ligue des Arceaux Animaux", intro: "Lisez l’arc cible, réglez la visée et la puissance, maintenez puis relâchez Shoot pour dépasser l’adversaire sur six terrains animaliers.", gameplay: "Défi de basket d’arc et de puissance", genre: ["Sports", "Arcade", "Animaux"], difficulty: "Facile à commencer, plus serré à chaque terrain", time: "3–8 minutes",
+      title: "Ligue des Arceaux Animaux", intro: "Visez l’arc cible, chargez Shoot et relâchez dans la zone de puissance. Lisez chaque retour de tir pour devancer le rival sur six terrains.", gameplay: "Défi de basket d’arc et de puissance", genre: ["Sports", "Arcade", "Animaux"], difficulty: "Facile à commencer, plus serré à chaque terrain", time: "3–8 minutes",
       story: ["Chaque terrain transforme un tir en décision lisible : l’arc et la fenêtre de puissance changent, tandis que le score adverse donne un enjeu à chaque tir.", "Les six terrains forment une ligue courte, d’une cible accueillante aux motifs fixes et fenêtres plus étroites."],
       systems: ["Déplacez le marqueur avec gauche et droite, maintenez Shoot pour charger et relâchez quand l’arc et la puissance correspondent.", "Chaque terrain possède une série de tirs fixe et une tolérance propre. Réussites, parfaits, votre score et celui de l’adversaire se mettent à jour à chaque tir.", "Réussir un terrain débloque le suivant. Résultat propose Terrain suivant ou Réessayer et conserve le meilleur terrain dans ce navigateur."],
       how: ["Choisissez un terrain débloqué et lisez l’objectif de visée, puissance et tir.", "Placez le marqueur sur l’arc avec les commandes latérales.", "Maintenez Shoot pour charger, puis relâchez dans la fenêtre cible.", "Lisez réussite, parfait, score et adversaire avant le tir suivant.", "Consultez Résultat et choisissez Terrain suivant ou Réessayer."],
@@ -1873,7 +1873,7 @@
       faq: [["Comment tirer ?", "Placez le marqueur, maintenez Shoot pour charger, puis relâchez quand visée et puissance sont dans la fenêtre."], ["Qu’est-ce qu’un tir parfait ?", "Une réussite dans la fenêtre parfaite, plus étroite, de cet essai."], ["Comment débloquer les terrains ?", "Réussissez un terrain pour ouvrir le suivant ; le meilleur reste dans le navigateur."], ["Que se passe-t-il après ?", "Résultat affiche le bilan et permet d’avancer ou de réessayer."], ["La progression est-elle sauvegardée ?", "Elle est sauvegardée localement dans ce navigateur uniquement."],],
     },
     de: {
-      title: "Animal Hoop League", intro: "Lies den Zielbogen, stelle Richtung und Kraft ein, halte Shoot und lasse los, um den Rivalen auf sechs Tierplätzen zu übertreffen.", gameplay: "Basketball-Herausforderung mit Bogen und Kraft", genre: ["Sport", "Arcade", "Tiere"], difficulty: "Leicht zu beginnen, je Platz enger", time: "3–8 Minuten",
+      title: "Animal Hoop League", intro: "Richte dich am Zielbogen aus, lade Shoot auf und lasse im Kraftfenster los. Nutze das Wurf-Feedback, um den Rivalen auf sechs Courts zu schlagen.", gameplay: "Basketball-Herausforderung mit Bogen und Kraft", genre: ["Sport", "Arcade", "Tiere"], difficulty: "Leicht zu beginnen, je Platz enger", time: "3–8 Minuten",
       story: ["Jeder Platz macht aus einem Wurf eine lesbare Entscheidung: Zielbogen und Kraftfenster wechseln, während der Rivalenstand jeden Wurf sinnvoll macht.", "Sechs Plätze bilden eine kurze Liga – vom freundlichen Ziel bis zu festen Mustern und engeren Fenstern."],
       systems: ["Bewege die Markierung links und rechts, halte Shoot zum Laden und lasse los, wenn Bogen und Kraft passen.", "Jeder Platz hat feste Würfe und eigene Toleranzen. Treffer, perfekte Treffer, dein Stand und der Rivalenstand werden nach jedem Wurf aktualisiert.", "Ein geschaffter Platz schaltet den nächsten frei. Ergebnis bietet Nächster Platz oder Wiederholen und speichert den besten Platz im Browser."],
       how: ["Wähle einen freigeschalteten Platz und lies Richtung, Kraft und Wurfhinweis.", "Setze die Markierung mit den Seitensteuerungen auf den Zielbogen.", "Halte Shoot zum Laden und lasse innerhalb des Zielfensters los.", "Lies Treffer, Perfekt, Punktestand und Rivalenfeedback.", "Prüfe Ergebnis und wähle Nächster Platz oder Wiederholen."],
@@ -1883,7 +1883,7 @@
       faq: [["Wie werfe ich?", "Setze die Markierung, halte Shoot zum Laden und lasse los, wenn Richtung und Kraft im Fenster liegen."], ["Was ist ein perfekter Wurf?", "Ein Treffer im engeren perfekten Fenster dieses Versuchs."], ["Wie werden Plätze frei?", "Schaffe einen Platz, um den nächsten zu öffnen; der beste bleibt im Browser."], ["Was kommt danach?", "Ergebnis zeigt die Zusammenfassung und erlaubt Weiter oder Wiederholen."], ["Wird der Fortschritt gespeichert?", "Nur lokal in diesem Browser."],],
     },
     it: {
-      title: "Animal Hoop League", intro: "Leggi l’arco bersaglio, regola mira e potenza, tieni premuto e rilascia Shoot per superare il rivale in sei campi animali.", gameplay: "Sfida di basket con arco e potenza", genre: ["Sport", "Arcade", "Animali"], difficulty: "Facile da iniziare, più stretto a ogni campo", time: "3–8 minuti",
+      title: "Animal Hoop League", intro: "Mira l’arco bersaglio, carica Shoot e rilascia nella zona di potenza. Usa il feedback di ogni tiro per battere il rivale in sei campi.", gameplay: "Sfida di basket con arco e potenza", genre: ["Sport", "Arcade", "Animali"], difficulty: "Facile da iniziare, più stretto a ogni campo", time: "3–8 minuti",
       story: ["Ogni campo trasforma un tiro in una decisione chiara: arco e finestra di potenza cambiano, mentre il punteggio rivale dà un motivo a ogni tentativo.", "I sei campi formano una lega breve, da un bersaglio amichevole a schemi fissi e finestre più strette."],
       systems: ["Sposta il marcatore a destra o sinistra, tieni Shoot per caricare e rilascia quando arco e potenza coincidono.", "Ogni campo ha tiri fissi e tolleranza propria. Canestri, perfetti, il tuo punteggio e quello rivale si aggiornano a ogni rilascio.", "Superare un campo sblocca il successivo. Risultato offre Campo successivo o Riprova e salva il miglior campo nel browser."],
       how: ["Scegli un campo sbloccato e leggi mira, potenza e indicazione del tiro.", "Posiziona il marcatore sull’arco con i comandi laterali.", "Tieni Shoot per caricare e rilascia nella finestra bersaglio.", "Leggi canestro, perfetto, punteggio e rivale prima del tiro seguente.", "Apri Risultato e scegli Campo successivo o Riprova."],
@@ -1893,7 +1893,7 @@
       faq: [["Come tiro?", "Posiziona il marcatore, tieni Shoot per caricare e rilascia quando mira e potenza sono nella finestra."], ["Cos’è un tiro perfetto?", "Un canestro dentro la finestra perfetta più stretta di quel tentativo."], ["Come sblocco i campi?", "Supera un campo per aprire il successivo; il migliore resta nel browser."], ["Cosa succede dopo?", "Risultato mostra il riepilogo e permette di continuare o riprovare."], ["Il progresso viene salvato?", "Solo localmente in questo browser."],],
     },
     ru: {
-      title: "Звериная лига колец", intro: "Читайте целевую дугу, настраивайте направление и силу, удерживайте и отпускайте Shoot, чтобы обойти соперника на шести площадках.", gameplay: "Баскетбольная задача на дугу и силу", genre: ["Спорт", "Аркада", "Животные"], difficulty: "Легко начать, допуск сужается", time: "3–8 минут",
+      title: "Звериная лига колец", intro: "Цельтесь по дуге, удерживайте Shoot и отпустите в нужном окне силы. Используйте подсказки бросков, чтобы обойти соперника на шести площадках.", gameplay: "Баскетбольная задача на дугу и силу", genre: ["Спорт", "Аркада", "Животные"], difficulty: "Легко начать, допуск сужается", time: "3–8 минут",
       story: ["Каждая площадка превращает бросок в понятное решение: дуга и окно силы меняются, а счёт соперника объясняет важность попытки.", "Шесть площадок образуют короткую лигу — от дружелюбной цели до фиксированных схем и узких окон."],
       systems: ["Двигайте маркер влево и вправо, удерживайте Shoot для набора силы и отпускайте при совпадении дуги и силы.", "На каждой площадке есть фиксированные броски и собственный допуск. Попадания, идеальные броски и оба счёта обновляются после отпускания.", "Пройденная площадка открывает следующую. Результат предлагает Следующую или Повтор, а лучший этап хранится в браузере."],
       how: ["Выберите открытую площадку и прочитайте цель направления, силы и броска.", "Поставьте маркер на целевую дугу боковыми кнопками.", "Удерживайте Shoot и отпустите внутри окна цели.", "Читайте попадание, идеальный бросок, свой счёт и счёт соперника.", "Откройте результат и выберите Следующую площадку или Повтор."],
@@ -1903,7 +1903,7 @@
       faq: [["Как бросать?", "Поставьте маркер, удерживайте Shoot для силы и отпустите, когда направление и сила попадут в окно."], ["Что такое идеальный бросок?", "Попадание в более узкое идеальное окно этой попытки."], ["Как открыть площадки?", "Пройдите площадку, чтобы открыть следующую; лучший этап остаётся в браузере."], ["Что после площадки?", "Результат показывает итог и позволяет продолжить или повторить."], ["Прогресс сохраняется?", "Только локально в этом браузере."],],
     },
     hi: {
-      title: "एनिमल हूप लीग", intro: "लक्ष्य आर्क पढ़ें, निशाना और पावर मिलाएँ, Shoot को दबाकर छोड़ें और छह पशु कोर्ट में प्रतिद्वंद्वी से आगे निकलें।", gameplay: "आर्क और पावर बास्केटबॉल चुनौती", genre: ["खेल", "आर्केड", "पशु"], difficulty: "शुरू करना आसान, हर कोर्ट में कड़ा", time: "3–8 मिनट",
+      title: "एनिमल हूप लीग", intro: "लक्ष्य चाप पर निशाना लगाएँ, Shoot दबाकर ताकत भरें और सही शक्ति-क्षेत्र में छोड़ें। हर शॉट की प्रतिक्रिया से छह कोर्ट में प्रतिद्वंद्वी को चुनौती दें।", gameplay: "आर्क और पावर बास्केटबॉल चुनौती", genre: ["खेल", "आर्केड", "पशु"], difficulty: "शुरू करना आसान, हर कोर्ट में कड़ा", time: "3–8 मिनट",
       story: ["हर कोर्ट एक शॉट को साफ निर्णय में बदलता है। लक्ष्य आर्क और पावर विंडो बदलती है, जबकि प्रतिद्वंद्वी का स्कोर हर शॉट को उद्देश्य देता है।", "छह कोर्ट की छोटी लीग दोस्ताना लक्ष्य से शुरू होकर स्थिर पैटर्न और संकरी विंडो तक जाती है।"],
       systems: ["बाएँ-दाएँ से निशाना मार्कर चलाएँ, Shoot दबाकर पावर भरें और आर्क व पावर मिलने पर छोड़ें।", "हर कोर्ट में तय शॉट और अलग सहनशीलता है। हिट, परफेक्ट, अपना स्कोर और प्रतिद्वंद्वी स्कोर हर रिलीज़ के बाद बदलते हैं।", "कोर्ट पूरा करने पर अगला खुलता है। Result सारांश और Next या Retry देता है; सर्वोत्तम कोर्ट इसी ब्राउज़र में रहता है।"],
       how: ["खुले कोर्ट को चुनकर निशाना, पावर और शॉट संकेत पढ़ें।", "साइड कंट्रोल से मार्कर को लक्ष्य आर्क पर रखें।", "Shoot दबाकर पावर भरें और लक्ष्य विंडो में छोड़ें।", "हर शॉट के बाद हिट, परफेक्ट और दोनों स्कोर पढ़ें।", "Result देखें और Next Court या Retry चुनें।"],
@@ -1913,7 +1913,7 @@
       faq: [["शॉट कैसे लें?", "मार्कर रखें, Shoot दबाकर पावर भरें और निशाना व पावर विंडो में होने पर छोड़ें।"], ["परफेक्ट शॉट क्या है?", "उस प्रयास की संकरी परफेक्ट विंडो में लगा हुआ शॉट।"], ["कोर्ट कैसे खुलते हैं?", "एक कोर्ट पूरा करने पर अगला खुलता है और सर्वोत्तम कोर्ट ब्राउज़र में रहता है।"], ["कोर्ट के बाद क्या होता है?", "Result सारांश दिखाकर आगे बढ़ने या फिर कोशिश का विकल्प देता है।"], ["क्या प्रगति सेव होती है?", "केवल इसी ब्राउज़र में स्थानीय रूप से।"],],
     },
     ar: {
-      title: "دوري الحلقات الحيواني", intro: "اقرأ القوس المستهدف، واضبط الاتجاه والقوة، واضغط Shoot ثم اتركه لتتجاوز المنافس في ست ساحات حيوانية.", gameplay: "تحدي كرة سلة بالقوس والقوة", genre: ["رياضة", "أركيد", "حيوانات"], difficulty: "سهلة البدء وتضيق في كل ساحة", time: "3–8 دقائق",
+      title: "دوري الحلقات الحيواني", intro: "صوّب نحو القوس المستهدف، واشحن Shoot ثم أفلت داخل نطاق القوة. استفد من نتيجة كل تسديدة لمنافسة الخصم في ستة ملاعب.", gameplay: "تحدي كرة سلة بالقوس والقوة", genre: ["رياضة", "أركيد", "حيوانات"], difficulty: "سهلة البدء وتضيق في كل ساحة", time: "3–8 دقائق",
       story: ["تحول كل ساحة الرمية إلى قرار واضح: يتغير القوس ونافذة القوة، بينما يمنحك رصيد المنافس سببًا لكل محاولة.", "تشكل الساحات الست دوريًا قصيرًا يبدأ بهدف مريح وينتهي بأنماط ثابتة ونوافذ أضيق."],
       systems: ["حرّك مؤشر التصويب يمينًا ويسارًا، واضغط Shoot لشحن القوة، ثم اتركه عندما يتطابق القوس والقوة مع الهدف.", "لكل ساحة رميات ثابتة وتسامح خاص. تتحدث الإصابات والرميات المثالية ونتيجتاك ونتيجة المنافس بعد كل ترك.", "يفتح اجتياز الساحة التالية. تعرض النتيجة الملخص وتقدم التالية أو إعادة المحاولة، وتحفظ أفضل ساحة في المتصفح."],
       how: ["اختر ساحة مفتوحة واقرأ هدف الاتجاه والقوة والرمية.", "ضع المؤشر على القوس باستخدام التحكم الجانبي.", "اضغط Shoot لشحن القوة واتركه داخل نافذة الهدف.", "اقرأ الإصابة والمثالية والنتيجتين قبل الرمية التالية.", "راجع النتيجة واختر الساحة التالية أو إعادة المحاولة."],

@@ -78,7 +78,8 @@ body.general-lobby-page #spotlightGameSection { position: absolute; inset: auto 
 body.general-lobby-page #spotlightGameSection[hidden] { display: none; }
 body.general-lobby-page #spotlightGameSection > h2 { display: none; }
 body.general-lobby-page .spotlight-game { grid-template-columns: 72px minmax(0,1fr); gap: 12px; padding: 10px; border: 1px solid #a8c4ae; border-radius: 12px; background: rgba(15,44,36,.94); box-shadow: 0 8px 24px #08241b33; }
-body.general-lobby-page .spotlight-game > img { width: 72px; height: 72px; border-radius: 7px; }
+body.general-lobby-page .spotlight-game > img { width: 72px; height: 72px; border-radius: 7px; opacity:0; transition:opacity 360ms cubic-bezier(.2,.7,.2,1); }
+body.general-lobby-page .spotlight-game > img.is-decoded { opacity:1; }
 body.general-lobby-page .spotlight-game > div { padding: 0; }
 body.general-lobby-page .spotlight-game small { font-size: 9px; color: #ebc980; letter-spacing: 1px; }
 body.general-lobby-page .spotlight-game h3 { margin: 5px 0; font-size: 16px; line-height: 1.25; color: #fffef4; }
@@ -95,7 +96,8 @@ body.general-lobby-page .game-hall-switch button { position: relative; min-heigh
 body.general-lobby-page .game-hall-switch button::before { content: none !important; }
 body.general-lobby-page .game-hall-switch .hall-tab-icon { position: absolute; inset-inline-start: 16px; top: 50%; display: grid; width: 30px; height: 30px; place-items: center; transform: translateY(-50%); line-height: 1; }
 body.general-lobby-page .game-hall-switch .hall-tab-icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
-body.general-lobby-page .game-hall-switch .hall-tab-icon--topics { color: #ffca91; font-size: 28px; font-weight: 800; }
+body.general-lobby-page .game-hall-switch .hall-tab-icon--topics img { display:block; width:100%; height:100%; object-fit:contain; image-rendering:auto; }
+body.general-lobby-page .game-hall-switch button.active .hall-tab-icon--topics img { filter:brightness(1.12) saturate(1.12); }
 body.general-lobby-page .game-hall-switch button.active { background: #1b513f; border-color: #1b513f; color: #fffef4; box-shadow: 0 3px 0 #123b2f; }
 body.general-lobby-page .game-hall-switch button:hover { border-color: #718f78; }
 body.general-lobby-page .game-hall-switch span { font-size: 17px; font-weight: 750; }
@@ -190,18 +192,6 @@ body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition
   box-shadow:inset 0 2px 0 #ffffff36,0 3px 0 #16192e,0 0 0 1px #c6a7ff40;
 }
 
-/* Keep the featured-game handoff visible in both native and fallback motion. */
-::view-transition-old(wp-hall-spotlight) {
-  animation:hall-spotlight-exit 180ms ease-out both;
-}
-::view-transition-new(wp-hall-spotlight) {
-  animation:hall-spotlight-enter 280ms cubic-bezier(.2,.7,.2,1) 90ms both;
-}
-@keyframes hall-spotlight-exit { to { opacity:0; transform:translateY(-5px) scale(.985); } }
-@keyframes hall-spotlight-enter { from { opacity:0; transform:translateY(7px) scale(.99); } to { opacity:1; transform:translateY(0) scale(1); } }
-@media (prefers-reduced-motion:reduce) {
-  ::view-transition-old(wp-hall-spotlight),::view-transition-new(wp-hall-spotlight) { animation:none; }
-}
 body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
 body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading h2 { display: block; order: -1; color: var(--lobby-ink); font-size: 20px; font-weight: 750; line-height: 1.25; }
 body.general-lobby-page .section-heading span { color: #718272; font-size: 11px; font-weight: 500; }
@@ -214,6 +204,8 @@ body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-copy { width: 10
 body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-card { height: auto; min-height: 0; max-height: none; aspect-ratio: auto; }
 body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-art { width: 100%; height: auto; min-height: 0; aspect-ratio: 1; }
 body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-art > img { position: absolute; inset: 0; width: 100%; height: 100%; min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; object-fit: contain; transform: none; }
+body.general-lobby-page .hero-game-image { opacity:0; transition:opacity 360ms cubic-bezier(.2,.7,.2,1); }
+body.general-lobby-page .hero-game-image.is-decoded { opacity:1; }
 body.general-lobby-page .hero-game-art { background: #e4e9df; border-radius: 0; }
 body.general-lobby-page .hero-game-copy { position: relative; display: grid; grid-template-columns: minmax(0,1fr); align-content: center; min-height: 47px; padding: 9px 10px; gap: 0; background: var(--lobby-paper); color: var(--lobby-ink); }
 body.general-lobby-page .hero-game-copy strong { font-size: 13px; line-height: 1.3; font-weight: 700; color: var(--lobby-ink); text-align: start; }
@@ -253,6 +245,7 @@ body.general-lobby-page .upcoming-game-copy :is(h3,p) { color: var(--lobby-ink);
 body.general-lobby-page .general-trust-strip { order: 16; background: #eaf0e5; border-color: var(--lobby-line); color: var(--lobby-ink); box-shadow: none; }
 body.general-lobby-page .general-trust-strip :is(h2,p,strong,small,a,span) { color: var(--lobby-ink); }
 body.general-lobby-page .publisher-story { order: 17; margin: 20px 0; padding: 24px 0; border: 0; border-top: 1px solid var(--lobby-line); background: transparent; box-shadow: none; color: var(--lobby-muted); }
+body.general-lobby-page .publisher-story[hidden] { display: none !important; }
 body.general-lobby-page .publisher-story :is(h2,h3) { color: var(--lobby-ink); }
 body.general-lobby-page .publisher-story :is(p,span) { color: var(--lobby-muted); }
 body.general-lobby-page .publisher-story article { background: transparent; border: 0; box-shadow: none; }
@@ -389,8 +382,8 @@ body.general-lobby-page {
   background-position: center top;
   background-repeat: repeat, no-repeat;
 }
-/* An opaque tabletop destination crossfades over the unchanged Block World.
-   CSS reverses from the current opacity, including rapid history changes. */
+/* Hall-specific page backdrops layer over the stable World background. The
+   shared motion phase fades these live pseudo layers with the lobby shell. */
 body.general-lobby-page {
   position: relative;
   isolation: isolate;
@@ -439,7 +432,8 @@ body.general-lobby-page .lobby-topbar h1 { color: var(--hall-text, #fff4ce); tex
 body.general-lobby-page .lobby-topbar .brand-byline { color: var(--hall-muted, #7ec4b5); }
 body.general-lobby-page .lobby-topbar select { border: 2px solid var(--hall-border, #5d8688); border-radius: 2px; background: var(--hall-surface, #163440); color: var(--hall-text, #f5e9c4); box-shadow: 0 4px 0 var(--lobby-arcade-shadow), inset 0 2px 0 var(--hall-edge, #30535d); }
 body.general-lobby-page .lobby-hero { border: 3px solid var(--hall-selected-edge, #d8ad59); border-radius: 3px; box-shadow: 0 6px 0 var(--hall-edge, #77562c), 0 9px 0 var(--hall-shadow, #06151d); margin-bottom: 24px; }
-body.general-lobby-page .general-hero-scene { opacity: 1; }
+body.general-lobby-page .general-hero-scene { opacity: 0; transition: opacity 180ms ease-out; }
+body.general-lobby-page .general-hero-scene.is-decoded { opacity: 1; }
 body.general-lobby-page .lobby-hero::after { background:linear-gradient(90deg,#112f3bec,#153f46cc 24%,#10324322 69%); opacity:1; transition:opacity 1s cubic-bezier(.4,0,.2,1); }
 body.general-lobby-page .hero-eyebrow { color: var(--hall-accent, #ffe18c); text-shadow: 1px 2px var(--hall-shadow, #09242f); }
 body.general-lobby-page .lobby-hero-copy h2 { color: var(--hall-text, #fff8dd); text-shadow: 3px 3px 0 var(--lobby-arcade-background); }
@@ -636,31 +630,53 @@ body.general-lobby-page .game-hall-switch button {
   body.general-lobby-page .game-hall-switch button { transition: none; }
 }
 
-/* Only named content is captured. The accepted room/background keeps its own
-   uninterrupted one-second fade behind this short interface handoff. */
-html.hall-content-motion { view-transition-name: none; }
-::view-transition { pointer-events: none; }
-::view-transition-group(*) { animation-duration: 460ms; animation-timing-function: cubic-bezier(.2,.7,.2,1); }
-::view-transition-old(*) { animation: hall-content-exit 120ms ease-out both; }
-::view-transition-new(*) { animation: hall-content-enter 300ms cubic-bezier(.2,.7,.2,1) 120ms both; }
-@keyframes hall-content-exit { to { opacity: 0; filter: brightness(.92); } }
-@keyframes hall-content-enter { from { opacity: 0; transform: translateY(5px); filter: brightness(1.08); } to { opacity: 1; transform: translateY(0); filter: brightness(1); } }
-/* Card windows clear in sequence, then receive the next hall from the side.
-   Snapshot clipping preserves the actual layout and document scroll width. */
-html.hall-content-motion { --hall-card-exit: hall-card-exit-left; --hall-card-enter: hall-card-enter-right; }
-html.hall-content-motion[data-hall-motion-direction="back"] { --hall-card-exit: hall-card-exit-right; --hall-card-enter: hall-card-enter-left; }
-@keyframes hall-card-exit-left { to { opacity:0; transform:translateX(-110%) scale(.88); } }
-@keyframes hall-card-exit-right { to { opacity:0; transform:translateX(110%) scale(.88); } }
-@keyframes hall-card-enter-right { from { opacity:.35; transform:translateX(110%) scale(.94); } to { opacity:1; transform:translateX(0) scale(1); } }
-@keyframes hall-card-enter-left { from { opacity:.35; transform:translateX(-110%) scale(.94); } to { opacity:1; transform:translateX(0) scale(1); } }
+/* Fade the full live lobby together so no hall-specific section or control
+   appears before its destination. The existing DOM remains interactive-safe
+   while content is swapped at the shell's fully transparent midpoint. */
 body.general-lobby-page[data-hall-transition-target="tabletop"]::before,
 body.general-lobby-page[data-hall-transition-target="tabletop"] .lobby-hero::before { opacity: 1; }
 body.general-lobby-page[data-hall-transition-target="games"]::before,
 body.general-lobby-page[data-hall-transition-target="games"] .lobby-hero::before { opacity: 0; }
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
+html.hall-content-motion body.general-lobby-page::before,
+html.hall-content-motion body.general-lobby-page::after,
+html.hall-content-motion body.general-lobby-page .lobby-hero::before,
+html.hall-content-motion body.general-lobby-page .lobby-hero::after {
+  transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
 }
-
+html.hall-content-motion body.general-lobby-page::before,
+html.hall-content-motion body.general-lobby-page::after,
+html.hall-content-motion body.general-lobby-page .lobby-hero::before,
+html.hall-content-motion body.general-lobby-page .lobby-hero::after,
+html.hall-content-motion body.general-lobby-page .lobby-shell {
+  transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
+}
+body.general-lobby-page #lobbyToast.hall-motion-toast:not(.hidden) {
+  transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
+}
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"]::before,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"]::after,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"] .lobby-hero::before,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"] .lobby-hero::after,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"] .lobby-shell,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"]::before,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"]::after,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"] .lobby-hero::before,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"] .lobby-hero::after,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"] .lobby-shell,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"]::before,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"]::after,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"] .lobby-hero::before,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"] .lobby-hero::after,
+html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"] .lobby-shell { opacity: 0 !important; }
+body.general-lobby-page[data-hall-motion-phase] #lobbyToast.hall-motion-toast:not(.hidden) { opacity: 0 !important; }
+@media (prefers-reduced-motion: reduce) {
+  html.hall-content-motion body.general-lobby-page::before,
+  html.hall-content-motion body.general-lobby-page::after,
+  html.hall-content-motion body.general-lobby-page .lobby-hero::before,
+  html.hall-content-motion body.general-lobby-page .lobby-hero::after,
+  html.hall-content-motion body.general-lobby-page .lobby-shell { transition: none !important; }
+  body.general-lobby-page #lobbyToast.hall-motion-toast:not(.hidden) { transition: none !important; }
+}
 /* Blue/indigo with warm-gold selection semantics. Unset in Block World so its existing
    authored colors remain exact; destination intent starts the shared fade. */
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) {

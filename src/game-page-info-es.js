@@ -2536,20 +2536,20 @@ window.WeightPlayGameInfoLocales.es = {
       "guideTitleSuffix": "Guía del juego",
       "noteTitle": "Información del jugador y guardado",
       "hideScoreBands": true,
-      "intro": "Animal Gearpack Expedition es una aventura de estrategia de inventario espacial de 30 etapas protagonizada por Gear Horn Rux. Coloca el equipo en un paquete de once columnas y siete filas, conecta materiales de Forja, Naturaleza, Cristal y Luna y sobrevive a cinco encuentros por etapa. Seis regiones introducen diferentes presiones de empaque, y cada quinta etapa termina con un Guardián cuya mecánica cambia la apariencia de una construcción segura.",
+      "intro": "Expedición de la Mochila es una aventura de estrategia de inventario espacial de 30 niveles protagonizada por Gear Horn Rux. Coloca el equipo en una mochila de once columnas y siete filas, conecta materiales de Forja, Naturaleza, Cristal y Luna y supera cinco combates por nivel. Seis regiones plantean distintas reglas de organización, y cada quinto nivel termina con un Guardián que pone a prueba una estrategia nueva.",
       "story": [
         "La carretera de caravanas de Gearwood alguna vez unía seis talleres. La ruta falló cuando sus bóvedas reaccionaron a la carga: las raíces bloquearon el bosque, los cristales dividieron la cantera, las máquinas se reiniciaron en Clockwork Hollow, la fundición se sobrecalentó, las bobinas de tormenta cargaron el observatorio y la Bóveda Eclipse selló cada envío recuperado detrás de un ejército mecánico final.",
         "Gear Horn Rux es el jefe de carga de la caravana, mientras que Moon Cap Orla le sigue con una tienda ambulante. Pasar un tramo vuelve a abrir un tramo de la carretera. Derrotar a Root Guardian, Crystal Warden, Hollow Colossus, Furnace Leviathan, Tempest Archon y Eclipse Hoardmaster restaura las seis regiones y libera la carga almacenada."
       ],
       "systems": [
-        "El paquete de equipo tiene once columnas y siete filas. Los elementos utilizan diferentes formas de celda y se pueden rotar antes de colocarlos. El ataque inflige daño, la armadura reduce el contraataque y la curación restaura la salud antes del daño recibido. Dos piezas diferentes crean un vínculo material cuando las celdas de etiquetas coincidentes se tocan horizontal o verticalmente; cada enlace activo agrega dos Ataques y una Defensa.",
+        "La mochila tiene once columnas y siete filas. Las piezas ocupan formas distintas y se pueden girar antes de colocarlas. El ataque inflige daño, la armadura reduce el contraataque y la curación restaura salud antes del siguiente golpe. Dos piezas distintas crean un vínculo cuando sus casillas del mismo material se tocan en horizontal o vertical; cada vínculo activo suma 2 puntos de ataque y 1 de defensa.",
         "La salud persiste durante los cinco encuentros en una expedición, pero cada elemento se puede recoger y reorganizar entre peleas. La bandeja y el equipo colocado comparten un límite de doce elementos. Después de una victoria, toma uno de los tres objetos de botín o continúa sin botín. El oro ganado en esa expedición compra las acciones de Orla o proviene de la venta de equipo no deseado.",
-        "Los enemigos especiales cambian el problema del diseño. Los escudos absorben el daño de apertura, los emboscadores atacan antes del intercambio normal, el aislamiento agrega daño a los elementos no vinculados, la corrosión elimina la defensa con el tiempo, el calor de la fila superior castiga las celdas de ventilación ocupadas, la sobrecarga suprime la etiqueta más común del paquete y los sellos giratorios circulan entre los cuatro materiales.",
+        "Los enemigos especiales cambian cómo conviene organizar la mochila. Los escudos absorben el primer golpe, los emboscadores atacan antes, el aislamiento aumenta el daño de las piezas sin vínculo y la corrosión reduce la defensa con el tiempo. El calor de la fila superior castiga sus casillas ocupadas; la sobrecarga suprime el material más frecuente y los sellos giratorios alternan entre los cuatro materiales.",
         "Los XP del taller, los descubrimientos, las etapas completadas y la siguiente etapa desbloqueada se almacenan localmente. Los niveles del taller proporcionan un modesto beneficio para la salud. Los diamantes son moneda compartida opcional que se utiliza únicamente para un reemplazo confirmado por separado de las tres ofertas de la tienda de Orla; la libre progresión no los requiere."
       ],
       "how": [
         "Elija una tarjeta desbloqueada del carril de expedición horizontal de 30 etapas y lea su regla de ruta.",
-        "Seleccione el equipo de la bandeja, gírelo cuando sea útil y colóquelo en una celda verde válida en el paquete de 11 x 7.",
+        "Elige equipo de la bandeja, gíralo si hace falta y colócalo en una casilla verde válida de la mochila de 11 × 7.",
         "Conecta piezas de Forja, Naturaleza, Cristal o Luna que coincidan y luego comienza el encuentro cuando la construcción actual esté lista.",
         "Después de cada victoria, elige u omite el botín y reconstruye la manada antes que el próximo enemigo. Visita Orla cuando la ruta llegue a su parada comercial.",
         "Derrota el quinto encuentro para salvar el escenario. Las etapas 5, 10, 15, 20, 25 y 30 son puntos de control de Guardian."
@@ -2568,12 +2568,12 @@ window.WeightPlayGameInfoLocales.es = {
         "Las etapas 21-25 combinan golpes iniciales con sobrecarga del material más común. Tempest Archon agrega daño de relámpago en cadena por cada elemento aislado.",
         "Las etapas 26-30 rotan los sellos de material y mezclan todas las presiones anteriores. Eclipse Hoardmaster combina la rotación del sello con el aislamiento, por lo que el paquete final necesita varias familias de enlaces útiles y ningún equipo suelto."
       ],
-      "designNote": "Cinco encuentros le dan a un paquete tiempo suficiente para evolucionar sin que cada intento sea demasiado largo. El combate se resuelve automáticamente para que los jugadores táctiles, de puntero y de teclado puedan concentrarse en la decisión distintiva: encajar formas y vínculos alrededor del siguiente dominio enemigo. La dificultad crece a través de seis familias mecánicas en lugar de una curva numérica. Cada Guardián pone a prueba un hábito espacial aprendido (vínculos con la naturaleza, ruptura de escudos, sincronización de fases, ventilación, vínculos compactos o adaptación de sellos), por lo que las etapas posteriores solicitan nuevos planes en lugar de solo estadísticas más amplias.",
+      "designNote": "Cinco encuentros le dan a un paquete tiempo suficiente para evolucionar sin que cada intento sea demasiado largo. El combate se resuelve automáticamente para que los jugadores táctiles, de puntero y de teclado puedan concentrarse en la decisión distintiva: encajar formas y crear vínculos para responder a la siguiente regla enemiga. La dificultad crece a través de seis familias mecánicas en lugar de una curva numérica. Cada Guardián pone a prueba un hábito espacial aprendido (vínculos con la naturaleza, ruptura de escudos, sincronización de fases, ventilación, vínculos compactos o adaptación de sellos), por lo que las etapas posteriores solicitan nuevos planes en lugar de solo estadísticas más amplias.",
       "parent": "El juego básico no requiere una cuenta. Las etapas desbloqueadas y completadas, Workshop XP, descubrimientos y el mejor progreso de encuentro se almacenan en este navegador; borrar el almacenamiento del sitio o cambiar de dispositivo puede eliminar ese perfil. El oro y el equipamiento actual son temporales. Los diamantes son opcionales y requieren confirmación en la actualización de Orla.",
       "faq": [
         [
-          "¿Cuántas etapas están incluidas?",
-          "Hay 30 etapas creadas en seis regiones, con puntos de control de Guardianes en las etapas 5, 10, 15, 20, 25 y 30."
+          "¿Cuántas etapas tiene la expedición?",
+          "La expedición incluye 30 etapas en seis regiones. Las etapas 5, 10, 15, 20, 25 y 30 son puntos de control con Guardianes."
         ],
         [
           "¿Cómo funcionan los enlaces de materiales?",
@@ -2589,7 +2589,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Qué pasa cuando el paquete está lleno?",
-          "Continuar sin botín ni vender un artículo de bandeja. Un paquete completo nunca bloquea el progreso."
+          "Puedes dejar pasar el botín o vender una pieza de la bandeja. Una mochila llena no bloquea el avance."
         ],
         [
           "¿Se requieren diamantes?",
@@ -3179,6 +3179,27 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   };
   resource.games = normalize(resource.games);
   resource.gameplayProfiles = normalize(resource.gameplayProfiles);
+  const repairGearpackSpanish = (value) => {
+    if (typeof value === "string") return value
+      .replace(/Animal Gearpack Expedition/g, "Expedición de la Mochila")
+      .replace(/\bLas niveles\b/g, "Los niveles")
+      .replace(/\blas niveles\b/g, "los niveles")
+      .replace(/¿Cuántas niveles/g, "¿Cuántos niveles")
+      .replace(/\bcada quinta nivel\b/g, "cada quinto nivel")
+      .replace(/\bCada quinta nivel\b/g, "Cada quinto nivel")
+      .replace(/\bla siguiente nivel\b/g, "el siguiente nivel")
+      .replace(/\bLa siguiente nivel\b/g, "El siguiente nivel")
+      .replace(/\bniveles completadas\b/g, "niveles completados")
+      .replace(/\bdesbloqueados y completadas\b/g, "desbloqueados y completados")
+      .replace(/\bniveles desbloqueadas\b/g, "niveles desbloqueados")
+      .replace(/\bnivel desbloqueada\b/g, "nivel desbloqueado")
+      .replace(/\bWorkshop XP\b/g, "XP del taller");
+    if (Array.isArray(value)) return value.map(repairGearpackSpanish);
+    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, repairGearpackSpanish(item)]));
+    return value;
+  };
+  resource.games["animal-gearpack-expedition"] = repairGearpackSpanish(resource.games["animal-gearpack-expedition"]);
+  resource.gameplayProfiles["animal-gearpack-expedition"] = repairGearpackSpanish(resource.gameplayProfiles["animal-gearpack-expedition"]);
   const repairCrystalSpanish = (value) => {
     if (typeof value === "string") {
       return value
@@ -3374,7 +3395,9 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     difficulty: "Fácil a desafiante",
     time: "2-6 minutos por cámara",
     gameplay: "Rompecabezas de clavijas con reacciones materiales",
-    genre: ["Puzle", "Estrategia", "Animales"],
+    genre: ["Rompecabezas de clavijas", "Reacciones de materiales", "Planificación de rutas"],
+    tags: ["Rompecabezas de clavijas", "Reacciones de materiales", "Planificación de rutas"],
+    metaDescription: "Planifica cada extracción y las reacciones de materiales para guiar a Taro y al Núcleo Estelar por 30 cámaras de Rootvault. Usa Agua Lunar, escudos, llaves rúnicas y el Hilo de previsión opcional.",
     skills: ["Lógica", "Planificación", "Resolución de problemas"],
     intro: "Clavijas de la Cámara Animal es un rompecabezas de 30 cámaras protagonizado por Taro. Saca clavijas doradas completas en un orden seguro, resuelve las reacciones visibles y reúne a Taro con el Núcleo Estelar en el santuario.",
     story: ["Los canales de Agua Lunar bajo el caparazón de fortaleza viviente de Taro se han enredado con Emberlight, las Sombras, los escudos y los antiguos cierres rúnicos. Restaurar los seis capítulos vuelve a abrir la Cámara Raíz."],
@@ -3681,10 +3704,13 @@ window.WeightPlayGameInfoLocales.es.games["animal-rune-reels"] = {
   designNote: "El resultado aleatorio crea la situación, pero el jugador decide cómo corregirla. Los controles tácticos permanecen dentro del mismo lienzo adaptable en móvil y escritorio.",
   parent: "No se requiere cuenta. Héroes, equipo, progreso, monedas, materiales y niveles de runa se guardan solo en este navegador.",
   faq: [
-    ["¿Qué hace una línea de runas iguales?", "Potencia el efecto de esa runa después de que se detienen los tres carretes."],
-    ["¿Puedo corregir todos los carretes?", "No. Cada turno permite una sola corrección antes de resolver."],
-    ["¿Cuándo está disponible AUTO?", "Después de completar esa misión principal, o en modos de repetición de recursos."],
-    ["¿Qué ocurre al salir de la batalla?", "El inventario permanente se conserva, pero el intento actual termina."]
+    ["¿Qué hace una línea de runas iguales?", "Duplica esa habilidad cuando se detienen las tres ruletas."],
+    ["¿Los héroes comparten un ataque?", "No. Atacan por separado; la defensa y curación del equipo se combinan para el invocador."],
+    ["¿Qué pasa si salgo de Battle?", "El inventario permanente permanece, pero se pierde el intento de batalla actual."],
+    ["¿Las recompensas de evento están siempre disponibles?", "No. Las misiones de evento siguen el horario mostrado en Stage."],
+    ["¿Qué controles y tamaños de pantalla se admiten?", "Toque, ratón y teclado usan las mismas reglas y el diseño lógico se adapta a móvil, horizontal y escritorio."],
+    ["¿El progreso pasa automáticamente a otro dispositivo?", "No. Solo se guarda en el navegador; otro perfil o dispositivo tiene progreso independiente."],
+    ["¿Cuánto dura el escudo del invocador?", "Bloquea el daño enemigo solo durante ese turno. Su límite es el 35 % de la vida máxima del invocador; el escudo restante desaparece al terminar el turno."]
   ]
 };
 window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-rune-reels"] = {

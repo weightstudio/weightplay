@@ -4,7 +4,7 @@
     en: {
       coverAlt: "A block-style panda conductor beside colorful buses at a bamboo terminal",
       kicker: "NIGHT TERMINAL CONTROL",
-      summary: "Read the convoy order, route each queue, and keep the holding lane from locking up.",
+      summary: "Route passengers to matching buses, manage the FIFO holding lane, and clear 30 stops. Earn three stars by minimizing holds without assistance.",
       guideBody: "Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.",
       guideRule1: "Check the active bus and its remaining seats.",
       guideRule2: "Dispatch only the front passenger of a queue.",
@@ -21,7 +21,7 @@
     },
     "zh-Hant": {
       coverAlt: "方塊熊貓站長與竹林車站的彩色巴士", kicker: "夜間轉運調度",
-      summary: "判讀車隊順序、安排各排隊伍，別讓候車通道堵死。",
+      summary: "依序派出隊列前方的乘客，送上同色巴士並管理先進先出的候車通道，完成 30 個站點。三星挑戰獎勵最少候車且不使用輔助的通關。",
       guideBody: "只有第一台公車能上客。顏色不符的乘客會依序進入候車通道；若通道塞住、當前公車又無法補滿，就會調度失敗。",
       guideRule1: "先確認當前公車及剩餘座位。", guideRule2: "每次只能派出各隊最前方的乘客。", guideRule3: "候車通道堵住前可使用復原。",
       choose: "選擇轉運站", convoy: "發車順序", holding: "候車通道", stageMeta: "{buses} 台車 · {bay} 格候車位",
@@ -33,7 +33,7 @@
     },
     "zh-Hans": {
       coverAlt: "方块熊猫站长与竹林车站的彩色巴士", kicker: "夜间换乘调度",
-      summary: "判断车队顺序、安排各排队伍，别让候车通道堵死。",
+      summary: "依次派出队列前方的乘客，送上同色公交车并管理先进先出的候车通道，完成 30 个站点。三星挑战奖励最少候车且不使用辅助的通关。",
       guideBody: "只有第一辆公交车能上客。颜色不符的乘客会依次进入候车通道；若通道堵住、当前公交车又无法坐满，就会调度失败。",
       guideRule1: "先确认当前公交车及剩余座位。", guideRule2: "每次只能派出各队最前方的乘客。", guideRule3: "候车通道堵住前可使用撤销。",
       choose: "选择换乘站", convoy: "发车顺序", holding: "候车通道", stageMeta: "{buses} 辆车 · {bay} 个候车位",
@@ -45,7 +45,7 @@
     },
     ja: {
       coverAlt: "竹林のターミナルに並ぶカラフルなバスとブロック風のパンダ車掌", kicker: "夜間ターミナル管制",
-      summary: "車列の順番を読み、待機レーンを詰まらせずに各列をさばこう。",
+      summary: "列の先頭から同じ色のバスへ乗客を送り、先入れ先出しの待機レーンを管理して30か所をクリア。待機を最小限にし、補助なしで三つ星を目指します。",
       guideBody: "乗車できるのは先頭のバスだけです。色が違う乗客は待機レーンへ順番に入り、レーンが詰まると失敗します。",
       guideRule1: "現在のバスと空席を確認する。", guideRule2: "各列の先頭だけを送り出す。", guideRule3: "詰まる前に「戻す」を使う。",
       choose: "ターミナルを選択", convoy: "出発順", holding: "待機レーン", stageMeta: "バス{buses}台・待機{bay}枠",
@@ -57,7 +57,7 @@
     },
     ko: {
       coverAlt: "대나무 터미널의 알록달록한 버스와 블록 스타일 판다 차장", kicker: "야간 터미널 관제",
-      summary: "차량 순서를 읽고 대기 통로가 막히지 않게 각 줄을 배차하세요.",
+      summary: "대기열 맨 앞 승객을 같은 색 버스로 보내고 선입선출 대기 통로를 관리해 30개 정류장을 완료하세요. 대기를 줄이고 도움 없이 세 별을 노릴 수 있습니다.",
       guideBody: "맨 앞 버스만 승객을 받습니다. 색이 다른 승객은 순서대로 대기 통로에 들어가며 통로가 막히면 실패합니다.",
       guideRule1: "현재 버스와 남은 좌석을 확인하세요.", guideRule2: "각 줄의 맨 앞 승객만 보낼 수 있습니다.", guideRule3: "막히기 전에 실행 취소를 사용하세요.",
       choose: "터미널 선택", convoy: "출발 순서", holding: "대기 통로", stageMeta: "버스 {buses}대 · 대기 {bay}칸",
@@ -69,7 +69,7 @@
     },
     es: {
       coverAlt: "Un panda de estilo cúbico junto a autobuses de colores en una terminal de bambú", kicker: "CONTROL DE TERMINAL NOCTURNA",
-      summary: "Lee el orden del convoy y evita bloquear el carril de espera.",
+      summary: "Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda.",
       guideBody: "Solo acepta pasajeros el primer autobús. Los colores incorrectos esperan en orden; si el carril se bloquea, pierdes.",
       guideRule1: "Comprueba el autobús activo y sus plazas.", guideRule2: "Envía solo al primero de cada fila.", guideRule3: "Deshaz antes de bloquear el carril.",
       choose: "ELIGE TERMINAL", convoy: "ORDEN DE SALIDA", holding: "CARRIL DE ESPERA", stageMeta: "{buses} buses · {bay} espacios",
@@ -81,7 +81,7 @@
     },
     "pt-BR": {
       coverAlt: "Um panda em estilo de blocos ao lado de ônibus coloridos em um terminal de bambu", kicker: "CONTROLE DO TERMINAL NOTURNO",
-      summary: "Leia a ordem do comboio e não deixe a faixa de espera travar.",
+      summary: "Envie cada passageiro ao ônibus da mesma cor e gerencie a espera FIFO em 30 paradas. Busque três estrelas com poucas esperas e sem ajuda.",
       guideBody: "Só o primeiro ônibus recebe passageiros. Cores erradas aguardam em ordem; se a faixa travar, você perde.",
       guideRule1: "Confira o ônibus ativo e os assentos.", guideRule2: "Envie apenas o primeiro de cada fila.", guideRule3: "Desfaça antes de bloquear a faixa.",
       choose: "ESCOLHA O TERMINAL", convoy: "ORDEM DE SAÍDA", holding: "FAIXA DE ESPERA", stageMeta: "{buses} ônibus · {bay} vagas",
@@ -93,7 +93,7 @@
     },
     fr: {
       coverAlt: "Un panda de style cubique près de bus colorés dans une gare de bambou", kicker: "CONTRÔLE DU TERMINAL DE NUIT",
-      summary: "Lisez l’ordre du convoi sans bloquer la voie d’attente.",
+      summary: "Envoyez chaque passager vers le bus de sa couleur et gérez la file FIFO sur 30 arrêts. Trois étoiles : peu d’attentes, sans aide.",
       guideBody: "Seul le premier bus accepte des passagers. Les mauvaises couleurs attendent dans l’ordre ; si la voie se bloque, vous perdez.",
       guideRule1: "Vérifiez le bus actif et ses places.", guideRule2: "Envoyez seulement le premier de chaque file.", guideRule3: "Annulez avant de bloquer la voie.",
       choose: "CHOISISSEZ LE TERMINAL", convoy: "ORDRE DE DÉPART", holding: "VOIE D’ATTENTE", stageMeta: "{buses} bus · {bay} places",
@@ -105,7 +105,7 @@
     },
     de: {
       coverAlt: "Ein Panda-Schaffner im Blockstil neben bunten Bussen an einem Bambusterminal", kicker: "NACHTTERMINAL-LEITUNG",
-      summary: "Lies die Abfahrtsfolge und halte die Wartezone frei.",
+      summary: "Schicke Fahrgäste in den passenden Bus und verwalte die FIFO-Wartezone an 30 Haltestellen. Drei Sterne gibt es für wenige Wartegänge ohne Hilfe.",
       guideBody: "Nur der erste Bus nimmt Fahrgäste auf. Falsche Farben warten der Reihe nach; blockiert die Zone, ist die Runde verloren.",
       guideRule1: "Prüfe den aktiven Bus und seine Plätze.", guideRule2: "Schicke nur den Ersten jeder Reihe.", guideRule3: "Nutze Rückgängig vor der Blockade.",
       choose: "TERMINAL WÄHLEN", convoy: "ABFAHRTSFOLGE", holding: "WARTEZONE", stageMeta: "{buses} Busse · {bay} Plätze",
@@ -117,7 +117,7 @@
     },
     it: {
       coverAlt: "Un panda in stile a blocchi accanto ad autobus colorati in un terminal di bambù", kicker: "CONTROLLO TERMINAL NOTTURNO",
-      summary: "Leggi l’ordine del convoglio e non bloccare la corsia d’attesa.",
+      summary: "Invia i passeggeri in testa al bus del loro colore, gestisci la corsia FIFO e completa 30 fermate. Le tre stelle premiano poche attese senza aiuti.",
       guideBody: "Solo il primo autobus accetta passeggeri. I colori errati attendono in ordine; se la corsia si blocca, perdi.",
       guideRule1: "Controlla l’autobus attivo e i posti.", guideRule2: "Invia solo il primo di ogni fila.", guideRule3: "Annulla prima di bloccare la corsia.",
       choose: "SCEGLI IL TERMINAL", convoy: "ORDINE DI PARTENZA", holding: "CORSIA D’ATTESA", stageMeta: "{buses} autobus · {bay} posti",
@@ -129,7 +129,7 @@
     },
     ru: {
       coverAlt: "Панда-кондуктор в кубическом стиле рядом с разноцветными автобусами на бамбуковом вокзале", kicker: "НОЧНОЙ ТЕРМИНАЛ",
-      summary: "Следите за очередью автобусов и не блокируйте зону ожидания.",
+      summary: "Отправляйте пассажиров в автобусы нужного цвета, управляйте очередью FIFO и пройдите 30 остановок. Три звезды — за минимум ожиданий без подсказок.",
       guideBody: "Пассажиров принимает только первый автобус. Другие цвета ждут по порядку; блокировка зоны означает поражение.",
       guideRule1: "Проверьте активный автобус и места.", guideRule2: "Отправляйте только первого в очереди.", guideRule3: "Отмените ход до блокировки.",
       choose: "ВЫБЕРИТЕ ТЕРМИНАЛ", convoy: "ПОРЯДОК ОТПРАВЛЕНИЯ", holding: "ЗОНА ОЖИДАНИЯ", stageMeta: "{buses} автобусов · {bay} места",
@@ -141,7 +141,7 @@
     },
     hi: {
       coverAlt: "बाँस के बस अड्डे पर रंगीन बसों के पास ब्लॉक शैली का पांडा कंडक्टर", kicker: "रात्रि टर्मिनल नियंत्रण",
-      summary: "बस क्रम पढ़ें और प्रतीक्षा लेन को जाम होने से बचाएँ।",
+      summary: "कतार के आगे के यात्री को उसी रंग की बस में भेजें, सीमित प्रतीक्षा लेन सँभालें और 30 पड़ाव पूरे करें। तीन सितारे कम प्रतीक्षा और बिना सहायता के लिए हैं।",
       guideBody: "केवल पहली बस यात्री लेती है। गलत रंग के यात्री क्रम से प्रतीक्षा लेन में जाते हैं; लेन जाम हुई तो हार होगी।",
       guideRule1: "सक्रिय बस और खाली सीटें देखें।", guideRule2: "हर कतार के पहले यात्री को ही भेजें।", guideRule3: "जाम से पहले पूर्ववत करें।",
       choose: "टर्मिनल चुनें", convoy: "प्रस्थान क्रम", holding: "प्रतीक्षा लेन", stageMeta: "{buses} बस · {bay} स्थान",
@@ -153,7 +153,7 @@
     },
     ar: {
       coverAlt: "باندا بأسلوب المكعبات بجوار حافلات ملونة في محطة من الخيزران", kicker: "إدارة المحطة الليلية",
-      summary: "اقرأ ترتيب الحافلات ولا تدع مسار الانتظار ينسد.",
+      summary: "أرسل أول راكب ظاهر إلى الحافلة المطابقة للونه، وأدر مسار الانتظار بترتيب الوصول لإكمال 30 محطة. تمنحك النجوم الثلاث تقديرًا للانتظار الأقل دون مساعدة.",
       guideBody: "الحافلة الأولى وحدها تستقبل الركاب. الألوان غير المطابقة تنتظر بالترتيب، وانسداد المسار يعني الخسارة.",
       guideRule1: "تحقق من الحافلة النشطة والمقاعد.", guideRule2: "أرسل أول راكب في كل صف فقط.", guideRule3: "استخدم التراجع قبل الانسداد.",
       choose: "اختر المحطة", convoy: "ترتيب المغادرة", holding: "مسار الانتظار", stageMeta: "{buses} حافلات · {bay} أماكن",

@@ -1,0 +1,226 @@
+{
+  "version": "1.4.0",
+  "locales": {
+    "en": {
+      "title": "Hero Trials",
+      "intro": "Hero Trials is a 30-trial action campaign with four heroes who differ in health, speed, attack range, and active skills. Tap or drag to move while each hero attacks the nearest enemy in range. Every trial has three rooms: clear the first two to choose a free Power, Cooldown, or Recovery blessing, then face an elite captain or a checkpoint Boss. Victories award Trial Marks, unlock the next trial, and build permanent Heart Mastery.",
+      "controls": "Tap an arena point or hold and drag to steer. Arrow keys or WASD move on a keyboard; attacks happen automatically when an enemy is in range. Use the skill button or Space when the skill is ready.",
+      "description": "Choose one of four heroes and move by touch or keys through 30 three-room trials. Pick free blessings, counter six checkpoint Bosses, and earn Trial Marks for permanent Heart Mastery.",
+      "tags": ["Tap-and-drag action combat", "Three-room roguelite trials", "Timed hero skills"],
+      "faqs": [
+        ["How many trials and Bosses are there?", "There are 30 three-room trials. Trials 5, 10, 15, 20, 25, and 30 each end with a different checkpoint Boss."],
+        ["What happens after the first two rooms?", "After Rooms 1 and 2, choose one free Power, Cooldown, or Recovery blessing. These choices last for that trial; Room 3 ends the run."],
+        ["How do the four heroes differ?", "Leo stuns nearby enemies with a roar, Fia dashes through danger, Orla marks targets for stronger follow-up shots, and Taro reduces incoming damage with a timed guard."],
+        ["Why does an enemy take so little damage?", "Abyss Guards, Prism Basilisk, and the Void Crown Emperor can use guard phases. Hero skills break guard faster than automatic attacks."],
+        ["How do I move and attack?", "Tap an arena point or hold and drag to steer. Arrow keys or WASD move on a keyboard; attacks happen automatically when an enemy is in range. Use the skill button or Space when the skill is ready."],
+        ["What is saved between trials?", "Unlocked trials, Trial Marks, Heart Mastery, and the selected hero are saved in this browser. Temporary blessings reset. Diamonds are optional for one confirmed blessing reroll per trial."],
+        ["What happens after defeat?", "Retry starts the same trial again. Permanent unlocks, Marks, and Heart Mastery remain."],
+        ["Can I replay an earlier trial?", "Yes. Every unlocked trial stays available on the Stage rail." ]
+      ]
+    },
+    "zh-Hant": {
+      "title": "英雄試煉",
+      "intro": "《英雄試煉》是一款包含 30 個試煉的動作遊戲，四位英雄各有不同生命、速度、攻擊射程與主動技能。點按或拖曳來移動，英雄會自動攻擊射程內最近的敵人。每關有三個房間：清除前兩房後，從攻擊、冷卻或恢復中免費選一項祝福，接著挑戰菁英隊長或檢查點 Boss。勝利可取得試煉印記、解鎖下一關，並累積永久生命精通。",
+      "controls": "點按戰場位置，或按住拖曳來操控移動。鍵盤可用方向鍵或 WASD；敵人進入射程後會自動攻擊。技能就緒時按技能鈕或空白鍵。",
+      "description": "選擇四位英雄之一，以點按、拖曳或鍵盤走位，挑戰 30 個三房間試煉。選擇免費祝福、破解六個檢查點 Boss，並用試煉印記提升永久生命精通。",
+      "tags": ["點按與拖曳走位", "三房間動作闖關", "英雄技能時機"],
+      "faqs": [
+        ["共有幾關與幾個 Boss？", "共有 30 個三房間試煉；第 5、10、15、20、25、30 關各有不同的檢查點 Boss。"],
+        ["前兩個房間結束後會怎樣？", "第 1、2 房清除後，可免費選擇攻擊、冷卻或恢復祝福。祝福只在該次試煉生效；第 3 房會結束挑戰。"],
+        ["四位英雄有什麼差異？", "Leo 的怒吼可暈眩附近敵人，Fia 能衝刺穿越危險，Orla 會標記敵人以強化後續攻擊，Taro 則用限時守護降低所受傷害。"],
+        ["為什麼敵人只受到少量傷害？", "深淵護衛、稜晶蛇王與虛空王冠帝會進入守護階段。英雄技能破除守護的速度比自動攻擊快。"],
+        ["如何移動與攻擊？", "點按戰場位置，或按住拖曳來操控移動。鍵盤可用方向鍵或 WASD；敵人進入射程後會自動攻擊。技能就緒時按技能鈕或空白鍵。"],
+        ["哪些進度會保留？", "已解鎖試煉、試煉印記、生命精通與選定英雄會存在目前瀏覽器；臨時祝福每次重置。鑽石只用於每次試煉一次、需確認的選擇性祝福重抽。"],
+        ["失敗後會怎樣？", "重試會重新開始同一關；永久解鎖、印記與生命精通都會保留。"],
+        ["可以重玩較早的試煉嗎？", "可以。所有已解鎖試煉都會留在關卡列。"]
+      ]
+    },
+    "zh-Hans": {
+      "title": "英雄试炼",
+      "intro": "《英雄试炼》是一款包含 30 个试炼的动作游戏，四位英雄各有不同生命、速度、攻击射程和主动技能。点按或拖动来移动，英雄会自动攻击射程内最近的敌人。每关有三个房间：清除前两间后，从攻击、冷却或恢复中免费选择一项祝福，然后挑战精英队长或检查点 Boss。胜利可获得试炼印记、解锁下一关，并累积永久生命精通。",
+      "controls": "点按战场位置，或按住并拖动来操控移动。键盘可用方向键或 WASD；敌人进入射程后会自动攻击。技能就绪时按技能按钮或空格键。",
+      "description": "选择四位英雄之一，通过点按、拖动或键盘移动，挑战 30 个三房间试炼。选择免费祝福、应对六个检查点 Boss，并用试炼印记提升永久生命精通。",
+      "tags": ["点按与拖动走位", "三房间动作闯关", "英雄技能时机"],
+      "faqs": [
+        ["共有多少试炼和 Boss？", "共有 30 个三房间试炼；第 5、10、15、20、25、30 关各有不同的检查点 Boss。"],
+        ["前两个房间结束后会怎样？", "第 1、2 房清除后，可免费选择攻击、冷却或恢复祝福。祝福只在本次试炼生效；第 3 房结束挑战。"],
+        ["四位英雄有何不同？", "Leo 的怒吼可眩晕附近敌人，Fia 能冲刺穿越危险，Orla 会标记敌人以强化后续攻击，Taro 则用限时守护降低受到的伤害。"],
+        ["为什么敌人只受到少量伤害？", "深渊护卫、棱晶蛇王与虚空王冠帝会进入守护阶段。英雄技能破除守护的速度比自动攻击快。"],
+        ["如何移动和攻击？", "点按战场位置，或按住并拖动来操控移动。键盘可用方向键或 WASD；敌人进入射程后会自动攻击。技能就绪时按技能按钮或空格键。"],
+        ["哪些进度会保留？", "已解锁试炼、试炼印记、生命精通和选定英雄保存在当前浏览器；临时祝福每次重置。钻石只用于每次试炼一次、需确认的可选祝福重抽。"],
+        ["失败后会怎样？", "重试会重新开始同一关；永久解锁、印记和生命精通都会保留。"],
+        ["可以重玩之前的试炼吗？", "可以。所有已解锁试炼都会保留在关卡列。"]
+      ]
+    },
+    "ja": {
+      "title": "英雄試練",
+      "intro": "『英雄試練』は30の試練に挑むアクションゲームです。4人の英雄は体力、速さ、攻撃範囲、アクティブスキルが異なります。タップまたはドラッグで移動し、射程内で最も近い敵には自動で攻撃します。各試練は3部屋構成で、最初の2部屋をクリアすると攻撃・クールダウン・回復の祝福を無料で1つ選び、最後にエリート隊長か節目のボスと戦います。勝利で試練マークを獲得し、次の試練と恒久的なハートマスタリーが進みます。",
+      "controls": "戦場をタップするか、押したままドラッグして移動します。キーボードでは矢印キーまたはWASDを使用できます。敵が射程に入ると自動で攻撃し、スキルが使えるときはボタンかSpaceキーを押します。",
+      "description": "4人の英雄から選び、タップやドラッグ、キーボードで30の3部屋試練に挑戦。無料の祝福を選び、6体の節目ボスに対策して、試練マークで恒久強化を進めましょう。",
+      "tags": ["タップ・ドラッグ移動", "3部屋アクション試練", "英雄スキルの発動判断"],
+      "faqs": [
+        ["試練とボスはいくつありますか？", "3部屋構成の試練が30個あります。第5、10、15、20、25、30試練にはそれぞれ異なる節目ボスが登場します。"],
+        ["最初の2部屋の後はどうなりますか？", "部屋1と2をクリアするたびに、攻撃・クールダウン・回復から祝福を無料で1つ選べます。祝福はその試練中に有効で、部屋3が試練の最後です。"],
+        ["4人の英雄はどう違いますか？", "Leoの咆哮は近くの敵をひるませ、Fiaは危険を抜けるダッシュ、Orlaは敵をマークして後続攻撃を強化し、Taroは時間制のガードで受けるダメージを減らします。"],
+        ["敵にほとんどダメージが入らないのはなぜ？", "深淵の守衛、プリズムバジリスク、虚空の王冠皇帝はガード状態になることがあります。英雄スキルは通常攻撃より速くガードを崩します。"],
+        ["移動と攻撃の操作方法は？", "戦場をタップするか、押したままドラッグして移動します。キーボードでは矢印キーまたはWASDを使用できます。敵が射程に入ると自動で攻撃し、スキルが使えるときはボタンかSpaceキーを押します。"],
+        ["試練の間に何が保存されますか？", "解放した試練、試練マーク、ハートマスタリー、選択した英雄はこのブラウザーに保存されます。一時的な祝福は毎回リセットされます。ダイヤは各試練で一度だけ確認して行う任意の祝福引き直しに使います。"],
+        ["敗北すると何が起きますか？", "再挑戦すると同じ試練を最初から始めます。恒久的な解放、マーク、マスタリーは失われません。"],
+        ["前の試練をもう一度遊べますか？", "はい。解放済みの試練はすべてステージレールに残ります。"]
+      ]
+    },
+    "ko": {
+      "title": "Animal Hero Trials",
+      "intro": "Animal Hero Trials는 30개 시험에 도전하는 액션 게임입니다. 네 영웅은 체력, 속도, 공격 거리와 액티브 스킬이 서로 다릅니다. 탭하거나 드래그해 이동하면 사거리 안에서 가장 가까운 적을 자동으로 공격합니다. 각 시험은 세 방으로 구성됩니다. 앞의 두 방을 클리어할 때마다 공격, 재사용 대기시간, 회복 중 하나를 무료로 고르고, 마지막 방에서 정예 대장이나 체크포인트 보스와 맞서세요. 승리하면 시험 표식을 받아 다음 시험을 열고 영구 생명 숙련도를 올릴 수 있습니다.",
+      "controls": "전장을 탭하거나 누른 채 드래그해 이동하세요. 키보드에서는 방향키나 WASD를 사용합니다. 적이 사거리 안에 들어오면 자동 공격하며, 스킬이 준비되면 버튼이나 Space를 누릅니다.",
+      "description": "네 영웅 중 하나를 골라 터치, 드래그 또는 키보드로 30개의 3개 방 시험에 도전하세요. 무료 축복을 선택하고 여섯 체크포인트 보스에 대응해 영구 숙련도를 키우세요.",
+      "tags": ["터치·드래그 이동 액션", "세 방 로그라이트 시험", "영웅 스킬 타이밍"],
+      "faqs": [
+        ["시험과 보스는 몇 개 있나요?", "세 방으로 이루어진 시험이 30개 있습니다. 5, 10, 15, 20, 25, 30번째 시험에는 각각 다른 체크포인트 보스가 나옵니다."],
+        ["첫 두 방을 마치면 어떻게 되나요?", "1번과 2번 방을 클리어할 때마다 공격, 재사용 대기시간, 회복 중 하나의 축복을 무료로 고릅니다. 축복은 해당 시험 동안 유지되고 3번 방에서 시험이 끝납니다."],
+        ["네 영웅은 어떻게 다른가요?", "Leo의 포효는 주변 적을 기절시키고, Fia는 위험을 통과하는 돌진을 하며, Orla는 적을 표식해 후속 공격을 강화하고, Taro는 시간제 방어로 받는 피해를 줄입니다."],
+        ["적에게 피해가 거의 들어가지 않는 이유는 무엇인가요?", "심연 경비병, 프리즘 바실리스크, 공허 왕관 황제는 방어 상태에 들어갈 수 있습니다. 영웅 스킬은 자동 공격보다 방어를 더 빨리 무너뜨립니다."],
+        ["이동하고 공격하려면 어떻게 하나요?", "전장을 탭하거나 누른 채 드래그해 이동하세요. 키보드에서는 방향키나 WASD를 사용합니다. 적이 사거리 안에 들어오면 자동 공격하며, 스킬이 준비되면 버튼이나 Space를 누릅니다."],
+        ["시험 사이에 무엇이 저장되나요?", "해금한 시험, 시험 표식, 하트 숙련도, 선택한 영웅은 이 브라우저에 저장됩니다. 임시 축복은 매번 초기화됩니다. 다이아는 시험마다 한 번, 확인을 거치는 선택적 축복 다시 뽑기에만 사용됩니다."],
+        ["패배하면 어떻게 되나요?", "다시 시도하면 같은 시험을 처음부터 시작합니다. 영구 해금, 표식, 숙련도는 유지됩니다."],
+        ["이전 시험을 다시 할 수 있나요?", "네. 해금한 시험은 모두 스테이지 레일에 남습니다."]
+      ]
+    },
+    "es": {
+      "title": "Pruebas de Héroes",
+      "intro": "Pruebas de Héroes es una campaña de acción con 30 pruebas y cuatro héroes distintos en salud, velocidad, alcance y habilidades activas. Toca o arrastra para moverte; cada héroe ataca automáticamente al enemigo más cercano dentro de su alcance. Cada prueba tiene tres salas: supera las dos primeras para elegir gratis una bendición de Potencia, Enfriamiento o Recuperación y luego enfréntate a un capitán de élite o a un jefe de punto de control. Las victorias otorgan Marcas de Prueba, desbloquean la siguiente prueba y mejoran la Maestría del Corazón permanente.",
+      "controls": "Toca un punto de la arena o mantén y arrastra para dirigir el movimiento. Usa flechas o WASD en teclado. El héroe ataca automáticamente cuando un enemigo está a su alcance; pulsa el botón de habilidad o Espacio cuando esté lista.",
+      "description": "Elige uno de cuatro héroes y muévete con toques, arrastres o teclado en 30 pruebas de tres salas. Escoge bendiciones gratis, supera seis jefes de control y mejora tu maestría permanente.",
+      "tags": ["Combate con toque y arrastre", "Pruebas de acción de tres salas", "Habilidades de héroe con tiempo"],
+      "faqs": [
+        ["¿Cuántas pruebas y jefes hay?", "Hay 30 pruebas de tres salas. Las pruebas 5, 10, 15, 20, 25 y 30 terminan con un jefe de control diferente."],
+        ["¿Qué ocurre tras las dos primeras salas?", "Al superar las salas 1 y 2, elige gratis una bendición de Potencia, Enfriamiento o Recuperación. Dura durante esa prueba; la sala 3 la termina."],
+        ["¿En qué se diferencian los cuatro héroes?", "El rugido de Leo aturde a los enemigos cercanos; Fia atraviesa el peligro con una embestida; Orla marca objetivos para potenciar ataques posteriores; y Taro reduce el daño con una guardia temporal."],
+        ["¿Por qué un enemigo recibe tan poco daño?", "Los Guardias del Abismo, el Basilisco Prisma y el Emperador de la Corona Vacía pueden activar su guardia. Las habilidades de héroe la rompen más rápido que los ataques automáticos."],
+        ["¿Cómo me muevo y ataco?", "Toca un punto de la arena o mantén y arrastra para dirigir el movimiento. Usa flechas o WASD en teclado. El héroe ataca automáticamente cuando un enemigo está a su alcance; pulsa el botón de habilidad o Espacio cuando esté lista."],
+        ["¿Qué se guarda entre pruebas?", "Las pruebas desbloqueadas, las Marcas de Prueba, la Maestría del Corazón y el héroe elegido se guardan en este navegador. Las bendiciones temporales se reinician. Los diamantes son opcionales y permiten una repetición confirmada de bendiciones por prueba."],
+        ["¿Qué pasa al perder?", "Reintentar empieza de nuevo la misma prueba. Los desbloqueos, las marcas y la maestría permanentes se conservan."],
+        ["¿Puedo repetir una prueba anterior?", "Sí. Todas las pruebas desbloqueadas siguen disponibles en la selección de etapas."]
+      ]
+    },
+    "pt-BR": {
+      "title": "Hero Trials",
+      "intro": "Hero Trials é uma campanha de ação com 30 desafios e quatro heróis diferentes em vida, velocidade, alcance e habilidades ativas. Toque ou arraste para se mover; cada herói ataca automaticamente o inimigo mais próximo dentro do alcance. Cada desafio tem três salas: vença as duas primeiras para escolher de graça uma bênção de Poder, Recarga ou Recuperação e depois enfrente um capitão de elite ou um chefe de marco. As vitórias concedem Marcas de Prova, liberam o próximo desafio e aumentam a Maestria do Coração permanente.",
+      "controls": "Toque em um ponto da arena ou mantenha e arraste para direcionar o movimento. No teclado, use as setas ou WASD. O herói ataca sozinho quando um inimigo entra no alcance; use o botão de habilidade ou Espaço quando ela estiver pronta.",
+      "description": "Escolha um dos quatro heróis e mova-se por toque, arraste ou teclado em 30 desafios de três salas. Escolha bênçãos grátis, enfrente seis chefes de marco e evolua a maestria permanente.",
+      "tags": ["Combate com toque e arraste", "Desafios de ação em três salas", "Habilidades de herói no tempo certo"],
+      "faqs": [
+        ["Quantos desafios e chefes existem?", "São 30 desafios com três salas. Os desafios 5, 10, 15, 20, 25 e 30 terminam com chefes de marco diferentes."],
+        ["O que acontece depois das duas primeiras salas?", "Ao vencer as salas 1 e 2, escolha grátis uma bênção de Poder, Recarga ou Recuperação. Ela vale durante o desafio; a sala 3 encerra a partida."],
+        ["Como os quatro heróis são diferentes?", "O rugido de Leo atordoa inimigos próximos; Fia atravessa o perigo com uma arrancada; Orla marca alvos para fortalecer ataques seguintes; e Taro reduz o dano com uma guarda temporária."],
+        ["Por que um inimigo sofre tão pouco dano?", "Guardas do Abismo, Basilisco Prisma e Imperador da Coroa Vazia podem ativar uma guarda. Habilidades dos heróis quebram essa defesa mais rápido que ataques automáticos."],
+        ["Como me movimento e ataco?", "Toque em um ponto da arena ou mantenha e arraste para direcionar o movimento. No teclado, use as setas ou WASD. O herói ataca sozinho quando um inimigo entra no alcance; use o botão de habilidade ou Espaço quando ela estiver pronta."],
+        ["O que fica salvo entre os desafios?", "Desafios liberados, Marcas de Prova, Maestria do Coração e o herói escolhido ficam salvos neste navegador. Bênçãos temporárias reiniciam. Diamantes são opcionais e permitem uma troca confirmada de bênçãos por desafio."],
+        ["O que acontece quando perco?", "Tentar de novo reinicia o mesmo desafio. Desbloqueios, marcas e maestria permanentes são mantidos."],
+        ["Posso jogar um desafio anterior novamente?", "Sim. Todos os desafios liberados continuam disponíveis na seleção de fases."]
+      ]
+    },
+    "fr": {
+      "title": "Hero Trials",
+      "intro": "Hero Trials est une campagne d’action de 30 épreuves mettant en scène quatre héros aux points de vie, à la vitesse, à la portée et aux compétences actives différents. Touchez ou faites glisser pour vous déplacer ; chaque héros attaque automatiquement l’ennemi le plus proche à portée. Chaque épreuve comprend trois salles : terminez les deux premières pour choisir gratuitement un bonus de Puissance, de Recharge ou de Récupération, puis affrontez un capitaine d’élite ou un boss de checkpoint. Les victoires donnent des Marques d’épreuve, débloquent l’épreuve suivante et font progresser la Maîtrise du cœur permanente.",
+      "controls": "Touchez un point de l’arène ou maintenez et faites glisser pour diriger le déplacement. Au clavier, utilisez les flèches ou WASD. Le héros attaque automatiquement lorsqu’un ennemi est à portée ; utilisez le bouton de compétence ou Espace quand elle est prête.",
+      "description": "Choisissez un héros et déplacez-vous par toucher, glisser ou clavier dans 30 épreuves de trois salles. Prenez des bonus gratuits, affrontez six boss de checkpoint et améliorez votre maîtrise permanente.",
+      "tags": ["Combat par toucher et glisser", "Épreuves d’action en trois salles", "Compétences héroïques au bon moment"],
+      "faqs": [
+        ["Combien y a-t-il d’épreuves et de boss ?", "Il y a 30 épreuves de trois salles. Les épreuves 5, 10, 15, 20, 25 et 30 se terminent chacune par un boss de checkpoint différent."],
+        ["Que se passe-t-il après les deux premières salles ?", "Après les salles 1 et 2, choisissez gratuitement un bonus de Puissance, Recharge ou Récupération. Il dure pendant cette épreuve ; la salle 3 la termine."],
+        ["En quoi les quatre héros sont-ils différents ?", "Le rugissement de Leo étourdit les ennemis proches ; Fia traverse le danger avec une ruée ; Orla marque une cible pour renforcer ses attaques suivantes ; Taro réduit les dégâts avec une garde temporaire."],
+        ["Pourquoi un ennemi subit-il si peu de dégâts ?", "Les Gardiens des abysses, le Basilic prismatique et l’Empereur de la Couronne vide peuvent activer une garde. Les compétences héroïques la brisent plus vite que les attaques automatiques."],
+        ["Comment se déplacer et attaquer ?", "Touchez un point de l’arène ou maintenez et faites glisser pour diriger le déplacement. Au clavier, utilisez les flèches ou WASD. Le héros attaque automatiquement lorsqu’un ennemi est à portée ; utilisez le bouton de compétence ou Espace quand elle est prête."],
+        ["Qu’est-ce qui est sauvegardé entre les épreuves ?", "Les épreuves débloquées, les Marques d’épreuve, la Maîtrise du cœur et le héros choisi sont enregistrés dans ce navigateur. Les bonus temporaires sont réinitialisés. Les diamants sont facultatifs et permettent un changement de bonus confirmé par épreuve."],
+        ["Que se passe-t-il en cas de défaite ?", "Réessayer relance la même épreuve. Les déblocages, marques et maîtrises permanents sont conservés."],
+        ["Peut-on rejouer une ancienne épreuve ?", "Oui. Toutes les épreuves débloquées restent accessibles dans la sélection des niveaux."]
+      ]
+    },
+    "de": {
+      "title": "Animal Hero Trials",
+      "intro": "Animal Hero Trials ist eine Action-Kampagne mit 30 Prüfungen und vier Helden, die sich bei Gesundheit, Tempo, Reichweite und aktiven Fähigkeiten unterscheiden. Tippe oder ziehe zum Bewegen; jeder Held greift automatisch den nächsten Gegner in Reichweite an. Jede Prüfung hat drei Räume: Räume 1 und 2 liefern je eine kostenlose Segnung für Kraft, Abklingzeit oder Erholung. Danach kämpfst du gegen einen Elitehauptmann oder einen Checkpoint-Boss. Siege bringen Prüfungsmarken, schalten die nächste Prüfung frei und steigern die permanente Herzmeisterschaft.",
+      "controls": "Tippe auf einen Punkt in der Arena oder halte und ziehe zum Lenken. Mit Tastatur nutzt du Pfeiltasten oder WASD. Angriffe erfolgen automatisch, sobald ein Gegner in Reichweite ist; die Fähigkeit löst du mit der Taste oder Leertaste aus.",
+      "description": "Wähle einen von vier Helden und bewege dich per Tippen, Ziehen oder Tastatur durch 30 Prüfungen mit je drei Räumen. Wähle kostenlose Segnungen, meistere sechs Checkpoint-Bosse und verbessere deine dauerhafte Meisterschaft.",
+      "tags": ["Kampf mit Tippen und Ziehen", "Drei-Raum-Action-Prüfungen", "Zeitpunkt für Heldenfähigkeiten"],
+      "faqs": [
+        ["Wie viele Prüfungen und Bosse gibt es?", "Es gibt 30 Prüfungen mit je drei Räumen. In Prüfung 5, 10, 15, 20, 25 und 30 wartet jeweils ein anderer Checkpoint-Boss."],
+        ["Was passiert nach den ersten zwei Räumen?", "Nach Raum 1 und 2 wählst du kostenlos eine Segnung für Kraft, Abklingzeit oder Erholung. Sie gilt für diese Prüfung; Raum 3 beendet den Lauf."],
+        ["Worin unterscheiden sich die vier Helden?", "Leos Brüllen betäubt Gegner in der Nähe, Fia stürmt durch Gefahr, Orla markiert Ziele für stärkere Folgeangriffe, und Taro verringert Schaden mit einer zeitlich begrenzten Abwehr."],
+        ["Warum nimmt ein Gegner kaum Schaden?", "Abyss-Wachen, der Prism-Basilisk und der Void Crown Emperor können eine Schutzphase aktivieren. Heldenfähigkeiten brechen sie schneller als automatische Angriffe."],
+        ["Wie bewege und kämpfe ich?", "Tippe auf einen Punkt in der Arena oder halte und ziehe zum Lenken. Mit Tastatur nutzt du Pfeiltasten oder WASD. Angriffe erfolgen automatisch, sobald ein Gegner in Reichweite ist; die Fähigkeit löst du mit der Taste oder Leertaste aus."],
+        ["Was wird zwischen Prüfungen gespeichert?", "Freigeschaltete Prüfungen, Prüfungsmarken, Herzmeisterschaft und der gewählte Held werden in diesem Browser gespeichert. Vorübergehende Segnungen werden zurückgesetzt. Diamanten sind optional und erlauben einen bestätigten Segnungswechsel pro Prüfung."],
+        ["Was passiert bei einer Niederlage?", "Wiederholen startet dieselbe Prüfung neu. Dauerhafte Freischaltungen, Marken und Meisterschaft bleiben erhalten."],
+        ["Kann ich eine frühere Prüfung erneut spielen?", "Ja. Alle freigeschalteten Prüfungen bleiben auf der Stufenleiste verfügbar."]
+      ]
+    },
+    "it": {
+      "title": "Animal Hero Trials",
+      "intro": "Animal Hero Trials è una campagna d’azione con 30 prove e quattro eroi diversi per salute, velocità, gittata e abilità attive. Tocca o trascina per muoverti; ogni eroe attacca automaticamente il nemico più vicino entro gittata. Ogni prova ha tre stanze: completa le prime due per scegliere gratis una benedizione Potenza, Ricarica o Recupero, poi affronta un capitano élite o un boss di checkpoint. Le vittorie assegnano Marchi della Prova, sbloccano la prova successiva e fanno crescere la Maestria del Cuore permanente.",
+      "controls": "Tocca un punto dell'arena oppure tieni premuto e trascina per guidare il movimento. Con la tastiera usa frecce o WASD. Gli attacchi partono da soli quando un nemico è a portata; usa il pulsante abilità o Spazio quando è pronta.",
+      "description": "Scegli uno dei quattro eroi e muoviti con tocco, trascinamento o tastiera in 30 prove di tre stanze. Scegli benedizioni gratuite, affronta sei boss di checkpoint e migliora la maestria permanente.",
+      "tags": ["Combattimento con tocco e trascinamento", "Prove d'azione in tre stanze", "Tempismo delle abilità degli eroi"],
+      "faqs": [
+        ["Quante prove e boss ci sono?", "Ci sono 30 prove di tre stanze. Le prove 5, 10, 15, 20, 25 e 30 terminano con un diverso boss di checkpoint."],
+        ["Cosa succede dopo le prime due stanze?", "Dopo le stanze 1 e 2 scegli gratis una benedizione Potenza, Ricarica o Recupero. Vale per quella prova; la stanza 3 la conclude."],
+        ["In cosa si distinguono i quattro eroi?", "Il ruggito di Leo stordisce i nemici vicini; Fia scatta attraverso il pericolo; Orla marca i bersagli per potenziare gli attacchi successivi; Taro riduce i danni con una guardia temporanea."],
+        ["Perché un nemico subisce pochi danni?", "Guardie dell'Abisso, Basilisco Prisma e Imperatore della Corona Vuota possono attivare una guardia. Le abilità degli eroi la abbattono più velocemente degli attacchi automatici."],
+        ["Come mi muovo e attacco?", "Tocca un punto dell'arena oppure tieni premuto e trascina per guidare il movimento. Con la tastiera usa frecce o WASD. Gli attacchi partono da soli quando un nemico è a portata; usa il pulsante abilità o Spazio quando è pronta."],
+        ["Cosa viene salvato tra le prove?", "Prove sbloccate, Marchi della Prova, Maestria del Cuore ed eroe scelto restano salvati in questo browser. Le benedizioni temporanee si azzerano. I diamanti sono facoltativi e consentono un cambio confermato di benedizioni per prova."],
+        ["Cosa succede se perdo?", "Riprova riavvia la stessa prova. Sblocchi, marchi e maestria permanenti restano."],
+        ["Posso rigiocare una prova precedente?", "Sì. Tutte le prove sbloccate restano disponibili nella selezione dei livelli."]
+      ]
+    },
+    "ru": {
+      "title": "Animal Hero Trials",
+      "intro": "Animal Hero Trials — это экшен-кампания из 30 испытаний с четырьмя героями, у которых различаются здоровье, скорость, дальность атаки и активные навыки. Перемещайтесь касанием или перетаскиванием; герой автоматически атакует ближайшего врага в радиусе. В каждом испытании три комнаты: после первых двух бесплатно выберите усиление Силы, Перезарядки или Восстановления, а затем сразитесь с элитным капитаном или боссом контрольного рубежа. Победы дают знаки испытаний, открывают следующий этап и развивают постоянное Мастерство сердца.",
+      "controls": "Коснитесь точки на арене или удерживайте и перетаскивайте, чтобы управлять движением. На клавиатуре используйте стрелки или WASD. Герой атакует автоматически, когда враг входит в радиус; для навыка нажмите кнопку или пробел, когда он готов.",
+      "description": "Выберите одного из четырёх героев и пройдите 30 трёхкомнатных испытаний с сенсорным управлением или клавиатурой. Берите бесплатные усиления, одолейте шесть боссов рубежей и развивайте постоянное мастерство.",
+      "tags": ["Бой с перемещением касанием и перетаскиванием", "Экшен-испытания из трёх комнат", "Выбор момента для навыка героя"],
+      "faqs": [
+        ["Сколько испытаний и боссов в игре?", "В игре 30 испытаний по три комнаты. На этапах 5, 10, 15, 20, 25 и 30 вас ждёт отдельный босс контрольного рубежа."],
+        ["Что происходит после первых двух комнат?", "После комнат 1 и 2 бесплатно выберите усиление Силы, Перезарядки или Восстановления. Оно действует до конца испытания; комната 3 завершает забег."],
+        ["Чем отличаются четыре героя?", "Рёв Leo оглушает врагов поблизости, Fia прорывается рывком через опасность, Orla помечает цель для усиленных последующих атак, а Taro временно снижает получаемый урон защитой."],
+        ["Почему враг получает так мало урона?", "Стражи Бездны, Призматический василиск и Император Пустой Короны могут включать защиту. Навыки героев снимают её быстрее автоматических атак."],
+        ["Как двигаться и атаковать?", "Коснитесь точки на арене или удерживайте и перетаскивайте, чтобы управлять движением. На клавиатуре используйте стрелки или WASD. Герой атакует автоматически, когда враг входит в радиус; для навыка нажмите кнопку или пробел, когда он готов."],
+        ["Что сохраняется между испытаниями?", "Открытые испытания, знаки испытаний, Мастерство сердца и выбранный герой сохраняются в этом браузере. Временные усиления сбрасываются. Алмазы необязательны и позволяют один раз за испытание подтвердить смену усилений."],
+        ["Что будет после поражения?", "Повторный запуск начинает то же испытание заново. Постоянные открытия, знаки и мастерство сохраняются."],
+        ["Можно ли переиграть пройденное испытание?", "Да. Все открытые испытания остаются на ленте этапов."]
+      ]
+    },
+    "hi": {
+      "title": "Animal Hero Trials",
+      "intro": "Animal Hero Trials एक 30-ट्रायल एक्शन अभियान है, जिसमें चार नायकों की सेहत, गति, हमले की दूरी और सक्रिय कौशल अलग-अलग हैं। चलने के लिए स्क्रीन पर टैप या ड्रैग करें; दूरी में मौजूद सबसे नज़दीकी दुश्मन पर नायक अपने-आप हमला करता है। हर ट्रायल में तीन कमरे हैं: पहले दो कमरे साफ़ करने पर पावर, कूलडाउन या रिकवरी का एक आशीर्वाद मुफ़्त चुनें, फिर किसी एलीट कप्तान या चेकपॉइंट बॉस से लड़ें। जीत से ट्रायल मार्क मिलते हैं, अगला ट्रायल खुलता है और स्थायी हार्ट मास्टरी बढ़ती है।",
+      "controls": "मैदान की जगह पर टैप करें या दबाकर ड्रैग करें। कीबोर्ड पर ऐरो कुंजियाँ या WASD चलाएँ। दुश्मन दूरी में आते ही हमला अपने-आप होता है; कौशल तैयार होने पर उसका बटन या Space दबाएँ।",
+      "description": "चार नायकों में से चुनें और स्पर्श, ड्रैग या कीबोर्ड से 30 तीन-कमरे वाले ट्रायल खेलें। मुफ़्त आशीर्वाद चुनें, छह चेकपॉइंट बॉस को हराएँ और स्थायी मास्टरी बढ़ाएँ।",
+      "tags": ["टैप-ड्रैग एक्शन मुकाबला", "तीन-कमरे वाले एक्शन ट्रायल", "हीरो कौशल का सही समय"],
+      "faqs": [
+        ["कितने ट्रायल और बॉस हैं?", "30 ट्रायल हैं और हर ट्रायल में तीन कमरे हैं। 5वें, 10वें, 15वें, 20वें, 25वें और 30वें ट्रायल में अलग चेकपॉइंट बॉस आता है।"],
+        ["पहले दो कमरों के बाद क्या होता है?", "कमरा 1 और 2 साफ़ करने के बाद पावर, कूलडाउन या रिकवरी का एक मुफ़्त आशीर्वाद चुनें। यह उसी ट्रायल तक रहता है; कमरा 3 ट्रायल पूरा करता है।"],
+        ["चारों नायक कैसे अलग हैं?", "Leo की दहाड़ पास के दुश्मनों को रोकती है, Fia डैश से खतरे के पार जाती है, Orla लक्ष्य पर निशान लगाकर आगे के हमले मज़बूत करती है, और Taro का सीमित समय वाला गार्ड नुकसान घटाता है।"],
+        ["दुश्मन को इतना कम नुकसान क्यों हो रहा है?", "एबिस गार्ड, प्रिज़्म बेसिलिस्क और वॉइड क्राउन एम्परर गार्ड चालू कर सकते हैं। हीरो कौशल ऑटो हमलों से तेज़ी से गार्ड हटाते हैं।"],
+        ["चलना और हमला करना कैसे है?", "मैदान की जगह पर टैप करें या दबाकर ड्रैग करें। कीबोर्ड पर ऐरो कुंजियाँ या WASD चलाएँ। दुश्मन दूरी में आते ही हमला अपने-आप होता है; कौशल तैयार होने पर उसका बटन या Space दबाएँ।"],
+        ["ट्रायल के बीच क्या सेव रहता है?", "खुले ट्रायल, ट्रायल मार्क, हार्ट मास्टरी और चुना नायक इस ब्राउज़र में सेव रहते हैं। अस्थायी आशीर्वाद हर बार रीसेट होते हैं। डायमंड वैकल्पिक हैं और हर ट्रायल में एक बार पुष्टि करके आशीर्वाद बदलने के लिए इस्तेमाल होते हैं।"],
+        ["हारने पर क्या होता है?", "फिर से प्रयास करने पर वही ट्रायल दोबारा शुरू होता है। स्थायी अनलॉक, मार्क और मास्टरी बने रहते हैं।"],
+        ["क्या पुराना ट्रायल फिर खेल सकते हैं?", "हाँ। हर खुला ट्रायल स्टेज सूची में उपलब्ध रहता है।"]
+      ]
+    },
+    "ar": {
+      "title": "محاكمات بطل الحيوان",
+      "intro": "محاكمات بطل الحيوان حملة حركة تضم 30 تجربة وأربعة أبطال تختلف صحتهم وسرعتهم ومدى هجومهم ومهاراتهم النشطة. المس أو اسحب للتحرك، ويهاجم كل بطل تلقائيًا أقرب عدو ضمن مداه. تتكون كل تجربة من ثلاث غرف: بعد اجتياز الأولى والثانية اختر نعمة مجانية للقوة أو التبريد أو التعافي، ثم واجه قائدًا نخبة أو زعيم نقطة تحقق. تمنح الانتصارات علامات التجربة، وتفتح التجربة التالية، وتزيد إتقان القلب الدائم.",
+      "controls": "المس نقطة في الساحة أو اضغط واسحب لتوجيه الحركة. استخدم مفاتيح الأسهم أو WASD على لوحة المفاتيح. يهاجم البطل تلقائيًا عندما يدخل العدو مداه؛ استخدم زر المهارة أو المسافة عندما تصبح جاهزة.",
+      "description": "اختر أحد أربعة أبطال وتحرك باللمس أو السحب أو لوحة المفاتيح خلال 30 تجربة من ثلاث غرف. اختر تعزيزات مجانية، وواجه ستة زعماء نقاط التحقق، وطوّر الإتقان الدائم.",
+      "tags": ["قتال بالحركة باللمس والسحب", "تجارب حركة من ثلاث غرف", "توقيت مهارات الأبطال"],
+      "faqs": [
+        ["كم تجربة وزعيمًا في اللعبة؟", "هناك 30 تجربة، في كل منها ثلاث غرف. تنتهي التجارب 5 و10 و15 و20 و25 و30 بزعيم مختلف لنقطة تحقق."],
+        ["ماذا يحدث بعد أول غرفتين؟", "بعد اجتياز الغرفتين 1 و2 اختر نعمة مجانية للقوة أو التبريد أو التعافي. تستمر في تلك التجربة، وتنهي الغرفة 3 الجولة."],
+        ["كيف يختلف الأبطال الأربعة؟", "زئير Leo يذهل الأعداء القريبين، ويندفع Fia عبر الخطر، ويضع Orla علامة على الهدف لتقوية الهجمات التالية، ويخفف Taro الضرر بحراسة مؤقتة."],
+        ["لماذا يتلقى العدو ضررًا قليلًا؟", "قد يفعّل حراس الهاوية أو البازيليسق المنشوري أو إمبراطور تاج الفراغ حالة الحراسة. تكسر مهارات الأبطال الحراسة أسرع من الهجمات التلقائية."],
+        ["كيف أتحرك وأهاجم؟", "المس نقطة في الساحة أو اضغط واسحب لتوجيه الحركة. استخدم مفاتيح الأسهم أو WASD على لوحة المفاتيح. يهاجم البطل تلقائيًا عندما يدخل العدو مداه؛ استخدم زر المهارة أو المسافة عندما تصبح جاهزة."],
+        ["ما الذي يُحفظ بين التجارب؟", "تُحفظ التجارب المفتوحة وعلامات التجربة وإتقان القلب والبطل المختار في هذا المتصفح. تُعاد النعم المؤقتة إلى البداية. الماسات اختيارية؛ ثلاثة منها تغيّر خيارات النعم الثلاثة مرة واحدة في التجربة بعد التأكيد."],
+        ["ماذا يحدث عند الهزيمة؟", "تعيد المحاولة التجربة نفسها من بدايتها. تبقى عمليات الفتح والعلامات والإتقان الدائم محفوظة."],
+        ["هل يمكن إعادة تجربة سابقة؟", "نعم. تبقى كل تجربة مفتوحة متاحة في شريط المراحل."]
+      ]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "version": "1.4.0",
+  "locales": {
+    "en": { "description": "Fold Moss Shell Taro’s three field puzzles by flipping linked panels. Read each target pattern, plan a route, and play without a timer.", "tags": ["Linked-Flap Puzzle", "Pattern Planning", "Spatial Logic", "Animal Puzzle"] },
+    "zh-Hant": { "description": "幫苔殼太郎解開三道田野謎題：翻動連動葉片、讀懂目標圖樣並規劃步驟，全程沒有計時。", "tags": ["連動摺葉益智", "圖樣規劃", "空間邏輯", "動物益智"] },
+    "zh-Hans": { "description": "帮苔壳太郎解开三道田野谜题：翻动联动叶片、读懂目标图样并规划步骤，全程没有计时。", "tags": ["联动折叶益智", "图样规划", "空间逻辑", "动物益智"] },
+    "ja": { "description": "コケガメのタロウと3つの野原パズルに挑戦。連動するフラップを動かして目標の模様を作ります。制限時間はありません。", "tags": ["連動フラップパズル", "模様の計画", "空間ロジック", "動物パズル"] },
+    "ko": { "description": "이끼등딱지 타로와 세 가지 들판 퍼즐을 풀어 보세요. 연결된 플랩을 바꿔 목표 패턴을 맞추며, 시간제한은 없습니다.", "tags": ["연결 플랩 퍼즐", "패턴 계획", "공간 논리", "동물 퍼즐"] },
+    "es": { "description": "Resuelve tres puzles de campo con Taro Caparazón Musgoso: gira solapas enlazadas, lee el patrón objetivo y juega sin cronómetro.", "tags": ["Puzle de solapas enlazadas", "Planificación de patrones", "Lógica espacial", "Puzle de animales"] },
+    "pt-BR": { "description": "Resolva três desafios do campo com Taro Casco de Musgo: vire abas conectadas, leia o padrão-alvo e jogue sem cronômetro.", "tags": ["Quebra-cabeça de abas conectadas", "Planejamento de padrões", "Lógica espacial", "Quebra-cabeça de animais"] },
+    "fr": { "description": "Résolvez trois puzzles du champ avec Taro Carapace Mousseuse : retournez des volets liés, lisez le motif cible et jouez sans minuteur.", "tags": ["Puzzle de volets liés", "Planification de motifs", "Logique spatiale", "Puzzle animalier"] },
+    "de": { "description": "Löse mit Moospanzer Taro drei Feldrätsel: Klappe verbundene Felder um, lies das Zielmuster und spiele ohne Zeitlimit.", "tags": ["Verbundene Klappenrätsel", "Musterplanung", "Räumliches Denken", "Tierspiel"] },
+    "it": { "description": "Risolvi tre enigmi del campo con Taro Guscio di Muschio: gira le alette collegate, leggi lo schema obiettivo e gioca senza timer.", "tags": ["Puzzle con alette collegate", "Pianificazione degli schemi", "Logica spaziale", "Puzzle con animali"] },
+    "ru": { "description": "Решите три полевых головоломки вместе с Таро Мшистый Панцирь: поворачивайте связанные створки и собирайте узор без таймера.", "tags": ["Головоломка со створками", "Планирование узора", "Пространственная логика", "Головоломка о животных"] },
+    "hi": { "description": "मॉस शेल तारो के साथ खेत की तीन पहेलियाँ सुलझाएँ: जुड़ी पट्टियाँ पलटें, लक्ष्य पैटर्न देखें और बिना टाइमर खेलें।", "tags": ["जुड़ी पट्टियों की पहेली", "पैटर्न योजना", "स्थानिक तर्क", "पशु पहेली"] },
+    "ar": { "description": "حلّ ثلاثة ألغاز حقل مع تارو ذي الدرع الطحلبي: اقلب اللوحات المترابطة، واقرأ النمط الهدف، والعب بلا مؤقت.", "tags": ["لغز الألواح المترابطة", "تخطيط الأنماط", "منطق مكاني", "لغز الحيوانات"] }
+  }
+}

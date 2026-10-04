@@ -868,7 +868,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Animal Rootvault Pins is a 30-chamber pin puzzle starring Moss Shell Taro. Pull complete golden pins in a safe order, resolve visible material reactions, and bring Taro and the Star Core together at the sanctuary.": "Animal Rootvault Pins est un puzzle d'épingles à 30 chambres mettant en vedette Moss Shell Taro. Tirez des épingles dorées complètes dans un ordre sûr, résolvez les réactions matérielles visibles et rassemblez Taro et le Star Core au sanctuaire.",
   "Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.": "Animal Rune Tactics est une campagne au tour par tour de 30 missions jouée sur des tableaux de runes variables de 4 × 5 à 6 × 6. Le Lion Gardien, le Mage Hibou et le Bouclier Tortue effectuent chacun une action avant le tour ennemi : se déplacer, attaquer, garder ou dépenser de l'Énergie sur une Compétence distincte. Six chapitres de cinq missions présentent les routes bloquées, les pièges, les courants, le feu, les runes et les sceaux rotatifs, ainsi que les ennemis qui contrent, poussent, réduisent au silence, marquent, drainent de l'énergie ou créent des clones. Les missions 5, 10, 15, 20, 25 et 30 se terminent avec six boss à phases différentes. Les déverrouillages de mission, l'entraînement des héros et les récompenses runiques sont enregistrés dans ce navigateur.",
   "Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through corruption, and reconnect it before a hunter reaches the open line.": "Animal Sanctuary Loop est un jeu d'arcade de territoire de 30 missions mettant en vedette Spark Paw Fia. Quittez les terres restaurées, tracez une traînée de foudre vulnérable grâce à la corruption et reconnectez-la avant qu'un chasseur n'atteigne la ligne ouverte.",
-  "Animal Screw Workshop": "Atelier de vis pour animaux",
+  "Animal Screw Workshop": "Atelier des vis",
   "Animal Shape Train": "Train en forme d'animal",
   "Animal Shape Train - How to Play": "Train en forme d'animal - Comment jouer",
   "Animal Shape Train - Preschool Shape Matching Game": "Train de formes animales - Jeu d'association de formes préscolaires",
@@ -992,7 +992,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Asegurar 5": "Assurer 5",
   "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.": "Demandez à un autre joueur le rang que vous occupez. S'ils l'ont, ils doivent vous donner toutes les cartes de ce rang ; sinon, allez pêcher.",
   "Ask for a rank that is already close to a book when the table evidence supports it.": "Demandez une valeur déjà proche du carré lorsque les indices de la table le justifient.",
-  "Ask for ranks, collect four-of-a-kind books, and read the table.": "Demandez des classements, récupérez des livres en carré et lisez le tableau.",
+  "Ask for ranks, collect four-of-a-kind books, and read the table.": "Demandez une valeur que vous avez en main, réunissez quatre cartes de même rang et observez les indices sur la table.",
   "Asociar formas": "Formes sociales",
   "Astral Crown": "Couronne astrale",
   "At every fifth stage, defeat the named Boss as well as completing the key target.": "À chaque cinquième étape, battez le boss nommé et complétez l'objectif clé.",
@@ -9450,9 +9450,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "Non. Pour le moment, ce jeu enregistre la progression uniquement dans le stockage local du navigateur ; un autre profil de navigateur ou un autre appareil aura donc une progression locale distincte, sauf si un système de comptes est ajouté plus tard.",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Une impulsion réussit uniquement lorsque la couleur et l'emblème s'alignent dans la fenêtre de synchronisation visible.",
   "The nearest marker did not match both required properties inside the window.": "Le marqueur le plus proche ne correspondait pas aux deux propriétés requises dans la fenêtre.",
-  "Nouvelle partie": "Nouvelle partie"
-};
-Object.assign(window.WeightPlayGameRuntimeLocales["fr"], {
+  "Nouvelle partie": "Nouvelle partie",
   "Numbered-Node Route Puzzle": "Puzzle de parcours à nœuds numérotés",
   "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "Reliez tous les nœuds numérotés dans l’ordre, évitez les couloirs aériens bloqués en rouge et atteignez le quai indiqué.",
   "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "À Cloudline Skyport, chaque service est un puzzle de parcours : guidez un dirigeable animalier jusqu’au quai indiqué.",
@@ -9472,5 +9470,8 @@ Object.assign(window.WeightPlayGameRuntimeLocales["fr"], {
   "What makes a route valid?": "Qu’est-ce qui rend un parcours valide ?",
   "What causes an Error?": "Qu’est-ce qui ajoute une erreur ?",
   "What happens after three Errors?": "Que se passe-t-il après trois erreurs ?",
-  "How many shifts are there?": "Combien y a-t-il de services ?"
-});
+  "How many shifts are there?": "Combien y a-t-il de services ?",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw once. Empty your hand first to win.": "Jouez une carte de la couleur ou valeur active ; chaque huit permet de choisir la suivante. Sans carte jouable, piochez-en une. Le premier à vider sa main gagne.",
+  "Match suit or rank, then use an Eight to change the active suit.": "Associez la couleur ou la valeur, puis jouez un huit pour choisir la prochaine couleur.",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.": "Jouez une carte de la couleur ou valeur active ; chaque huit permet de choisir la suivante. Sans carte jouable, piochez dans la pioche. Le premier à vider sa main gagne."
+};

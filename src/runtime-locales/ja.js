@@ -992,7 +992,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Asegurar 5": "アセグラ 5",
   "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.": "他のプレイヤーに自分のランクを尋ねます。彼らがそれを持っている場合、彼らはあなたにそのランクのすべてのカードを与えなければなりません。それ以外の場合は、魚を食べに行きましょう。",
   "Ask for a rank that is already close to a book when the table evidence supports it.": "場の情報が示しているなら、ブック完成に近いランクを尋ねましょう。",
-  "Ask for ranks, collect four-of-a-kind books, and read the table.": "順位を尋ね、フォー・オブ・ア・カインドの本を集め、表を読んでください。",
+  "Ask for ranks, collect four-of-a-kind books, and read the table.": "手札にあるランクを尋ね、同じランクを4枚集め、場の手がかりを読みます。",
   "Asociar formas": "関連形式",
   "Astral Crown": "アストラルクラウン",
   "At every fifth stage, defeat the named Boss as well as completing the key target.": "5 ステージごとに、指定されたボスを倒し、主要なターゲットを完了します。",
@@ -9447,9 +9447,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Can progress move automatically to another device?": "進行状況は別の端末に自動で移行しますか？",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "いいえ。このゲームの進行状況は現在のところブラウザのローカルストレージにのみ保存されるため、別のブラウザプロファイルや端末では、それぞれ別の進行状況になります。将来アカウントシステムが追加されない限り、共有されません。",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "見えるタイミングウィンドウ内で色とエンブレムが揃うと、パルスが成功します。",
-  "The nearest marker did not match both required properties inside the window.": "最も近いマーカーはウィンドウ内で必要な2つの属性に一致しませんでした。"
-};
-Object.assign(window.WeightPlayGameRuntimeLocales["ja"], {
+  "The nearest marker did not match both required properties inside the window.": "最も近いマーカーはウィンドウ内で必要な2つの属性に一致しませんでした。",
   "Numbered-Node Route Puzzle": "番号ノードのルートパズル",
   "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "すべての番号付きノードを順番に通り、赤い通行禁止空域を避け、ハイライトされたドックに到達します。",
   "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "Cloudline Skyportでは、各シフトが航路パズルです。動物飛行船をハイライトされたドックまで導きます。",
@@ -9469,5 +9467,8 @@ Object.assign(window.WeightPlayGameRuntimeLocales["ja"], {
   "What makes a route valid?": "有効な航路の条件は？",
   "What causes an Error?": "何がErrorになりますか？",
   "What happens after three Errors?": "Errorが3つになるとどうなりますか？",
-  "How many shifts are there?": "シフトはいくつありますか？"
-});
+  "How many shifts are there?": "シフトはいくつありますか？",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw once. Empty your hand first to win.": "場のスートかランクに合うカードを出します。8を出すと次のスートを選べます。出せるカードがないときは1枚引き、先に手札をなくすと勝ちです。",
+  "Match suit or rank, then use an Eight to change the active suit.": "現在のスートかランクを合わせ、8を出して次のスートを選びます。",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.": "場のスートかランクに合うカードを出します。8を出すと次のスートを選べます。出せるカードがないときは山札から引き、先に手札をなくすと勝ちです。"
+};

@@ -277,7 +277,21 @@
   const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); state.values = [0, 0, 0]; state.moves = 0; setScreen("battle"); $("battleStatus").textContent = copy("ready");
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
-  const applyLocale = (locale) => { state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en"; safeSet("weightplay-locale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
+  const localeRoute = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const applyLocale = (locale) => {
+    state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en";
+    safeSet("weightplay-locale", state.locale);
+    safeSet("weightPlayLocale", state.locale);
+    const route = location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/animal-dawn-shutters\/?$/);
+    if (route && route[1] !== localeRoute[state.locale]) {
+      location.assign(`/${localeRoute[state.locale]}/games/animal-dawn-shutters/${location.search}${location.hash}`);
+      return;
+    }
+    document.documentElement.lang = state.locale;
+    document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+    $("languageSelect").value = state.locale;
+    applyText();
+  };
   const bind = () => { $("startBtn").addEventListener("click", () => setScreen("stage")); $("mapBtn").addEventListener("click", () => setScreen("stage")); $("mainSettingsBtn")?.addEventListener("click", () => { const open = $("settingsPanel").hidden; $("settingsPanel").hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }); $("closeSettingsBtn")?.addEventListener("click", () => { $("settingsPanel").hidden = true; $("mainSettingsBtn")?.setAttribute("aria-expanded", "false"); }); $("stageBackBtn").addEventListener("click", () => setScreen("main")); $("stageInfoBtn").addEventListener("click", () => showToast(copy("mapIntro"))); $("battleBackBtn").addEventListener("click", () => setScreen("stage")); $("checkBtn").addEventListener("click", checkRound); $("resetBtn").addEventListener("click", function (...args) { return __wpReplayStart(() => resetRound.apply(this, args)); }); $("resultMapBtn").addEventListener("click", () => setScreen("stage")); $("resultHomeBtn").addEventListener("click", () => setScreen("main")); [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-dawn-shutters-sound", state.sound ? "on" : "off"); applyText(); })); $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value)); };
   const init = () => { installInterfaceCompatibility(); state.sound = safeGet("weightplay-animal-dawn-shutters-sound", "on") !== "off"; state.completed = loadCompleted(); bind(); const routeLocale = document.documentElement.lang; const initialLocale = localeList.includes(routeLocale) && localeMap[routeLocale] ? routeLocale : safeGet("weightplay-locale", "en"); applyLocale(initialLocale); resetRound(); setScreen("main"); };
   init();

@@ -838,6 +838,25 @@
     ],
   };
 
+  const reefFisherLeaveLabels = {
+    en: ["Keep Fishing", "Leave Expedition"],
+    "zh-Hant": ["繼續釣魚", "離開遠征"],
+    "zh-Hans": ["继续钓鱼", "离开远征"],
+    ja: ["釣りを続ける", "遠征を終了"],
+    ko: ["계속 낚시하기", "원정 나가기"],
+    es: ["Seguir pescando", "Salir de la expedición"],
+    "pt-BR": ["Continuar pescando", "Sair da expedição"],
+    fr: ["Continuer à pêcher", "Quitter l’expédition"],
+    de: ["Weiterangeln", "Expedition verlassen"],
+    it: ["Continua a pescare", "Lascia la spedizione"],
+    ru: ["Продолжить рыбалку", "Покинуть экспедицию"],
+    hi: ["मछली पकड़ना जारी रखें", "अभियान छोड़ें"],
+    ar: ["تابع الصيد", "الخروج من الرحلة"],
+  };
+  Object.entries(reefFisherLeaveLabels).forEach(([language, [keepFishing, leaveExpedition]]) => {
+    if (text[language]) Object.assign(text[language], { keepFishing, leaveExpedition });
+  });
+
   let locale = activeI18nLocale() || readStorage(localeKey) || "en";
   if (!text[locale]) locale = "en";
   const initialShellCopy = {};

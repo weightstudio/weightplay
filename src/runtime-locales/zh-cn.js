@@ -992,7 +992,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Asegurar 5": "阿塞古拉尔 5",
   "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.": "向其他玩家询问您所拥有的排名。如果他们有，他们必须给你该等级的每张牌；否则，去钓鱼。",
   "Ask for a rank that is already close to a book when the table evidence supports it.": "当桌面线索支持时，询问已经接近完成牌组的点数。",
-  "Ask for ranks, collect four-of-a-kind books, and read the table.": "求名列，集四书，读表。",
+  "Ask for ranks, collect four-of-a-kind books, and read the table.": "询问手上已有的点数，收集四张同点数的牌组，留意桌面线索。",
   "Asociar formas": "甲鱼形式",
   "Astral Crown": "星界王冠",
   "At every fifth stage, defeat the named Boss as well as completing the key target.": "每第五阶段，击败指定的 Boss 并完成关键目标。",
@@ -3465,7 +3465,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Gear and upgrades": "装备和升级",
   "Gear Boots": "齿轮靴",
   "Gear Horn Rux draws rune wheels for a forest rally cart": "Gear Horn Rux 为森林拉力车绘制符文轮",
-  "Gear Horn Rux is the caravan packmaster, while Moon Cap Orla follows with a travelling shop. Clearing a stage reopens one section of road. Defeating the Root Guardian, Crystal Warden, Hollow Colossus, Furnace Leviathan, Tempest Archon, and Eclipse Hoardmaster restores all six regions and releases the stored cargo.": "Gear Horn Rux 是商队包装管理员，而 Moon Cap Orla 则拥有一家旅行商店。清理一个舞台会重新开放一段道路。击败根之守护者、水晶守望者、空心巨像、熔炉利维坦、暴风雨执政官和日蚀囤积大师可恢复所有六个区域并释放储存的货物。",
+  "Gear Horn Rux is the caravan packmaster, while Moon Cap Orla follows with a travelling shop. Clearing a stage reopens one section of road. Defeating the Root Guardian, Crystal Warden, Hollow Colossus, Furnace Leviathan, Tempest Archon, and Eclipse Hoardmaster restores all six regions and releases the stored cargo.": "齿轮角鲁克斯负责整理行囊，月帽欧拉经营着随队商店，并一路陪伴商队前行。完成一关会重新打通一段道路。击败根之守护者、水晶守望者、空心巨像、熔炉利维坦、暴风雨执政官和日蚀囤积大师后，六个地区才会全部恢复，货物也能取回。",
   "Gear Horn Rux is the caravan&#39;s packmaster. He cannot carry every useful object in a loose pile, so his task is to make a working build from the space available. Forge tools, Nature supplies, Crystal devices, and Moon charms become stronger when matching tags touch. Moon Cap Orla follows the route with a travelling shop, offering new gear when Rux reaches a safe stop. Clearing a stage means reopening one short section of road; defeating the Guardian at Stages 5, 10, 15, 20, 25, and 30 restores an entire region. The final victory over the Eclipse Hoardmaster releases the stored cargo and reconnects all six workshops.": "齿轮·霍恩·鲁克斯是商队的背包管理员。他无法将所有有用的物品都松散地堆放在一起，因此他的任务是利用可用空间进行工作构建。当匹配标签接触时，锻造工具、自然用品、水晶装置和月亮护身符会变得更强。 Moon Cap Orla 沿着路线设有一家旅行商店，当 Rux 到达安全站时提供新装备。清理一个阶段意味着重新开放一小段道路；在第 5、10、15、20、25 和 30 阶段击败守护者可以恢复整个区域。最终战胜日食储藏大师释放了储存的货物并重新连接了所有六个车间。",
   "Gear Horn Rux presenting an animal screw puzzle in his forest workshop": "Gear Horn Rux 在他的森林工作室中展示动物螺丝拼图",
   "Gear Horn Rux restores wooden animal signs inside the forest workshop. Select a screw, choose an empty hole, and watch unsupported plates drop away.": "Gear Horn Rux 在森林作坊内修复木制动物标志。选择一个螺钉，选择一个空孔，然后观察不受支撑的板掉落。",
@@ -9447,9 +9447,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Can progress move automatically to another device?": "进度会自动转移到其他设备吗？",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "不会。本游戏目前只将进度保存在浏览器本地，因此其他浏览器配置文件或设备会拥有各自独立的本地进度，除非未来加入账号系统。",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只有颜色和徽章在可见时机窗口内对齐，脉冲才会成功。",
-  "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。"
-};
-Object.assign(window.WeightPlayGameRuntimeLocales["zh-Hans"], {
+  "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。",
   "Numbered-Node Route Puzzle": "编号节点航线谜题",
   "Connect every numbered node in order, avoid red blocked airways, and reach the highlighted dock.": "依序连接所有编号节点、避开红色封锁航线，抵达醒目的目标码头。",
   "At Cloudline Skyport, every shift is a route puzzle: guide an animal airship to its highlighted dock.": "在云际天空港，每个班次都是一道航线谜题：引导动物飞船抵达标示的码头。",
@@ -9469,5 +9467,8 @@ Object.assign(window.WeightPlayGameRuntimeLocales["zh-Hans"], {
   "What makes a route valid?": "怎样才算有效航线？",
   "What causes an Error?": "什么情况会增加错误？",
   "What happens after three Errors?": "累计三个错误后会怎样？",
-  "How many shifts are there?": "共有多少个班次？"
-});
+  "How many shifts are there?": "共有多少个班次？",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw once. Empty your hand first to win.": "打出符合当前花色或点数的牌；任何 8 都可让你选择下一个花色。没有合法牌时抽一张。先出完手牌即可获胜。",
+  "Match suit or rank, then use an Eight to change the active suit.": "匹配当前花色或点数，打出 8 来改变接下来的花色。",
+  "Match the active suit or rank; any Eight lets you choose the next suit. If no card is legal, draw from the stock. Empty your hand first to win.": "打出符合当前花色或点数的牌；任何 8 都可让你选择下一个花色。没有合法牌时从牌库抽牌。先出完手牌即可获胜。"
+};

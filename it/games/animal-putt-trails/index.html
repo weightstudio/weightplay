@@ -28,7 +28,7 @@
   <meta name="weightplay-game-version" content="v21">
   <meta name="weightplay-interface-version" content="7">
   <title>Sentieri di Putt Animali | WeightPlay</title>
-  <meta name="description" content="Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina." />
+  <meta name="description" content="Pianifica i putt in 30 buche: tira indietro per regolare direzione e forza, usa le sponde per rimbalzare, evita l’acqua e salva qui i colpi migliori." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260921-interface7">
@@ -41,6 +41,7 @@
     button { border:0; cursor:pointer; }
     .shell { width:min(100%, 1120px); margin:0 auto; padding:clamp(12px,3vw,28px); }
     .wp-main-shell-header { position:relative; }
+    @media (max-width:480px) { html[lang="ar"] .wp-main-shell-header > .wp-shell-main-title { font-size:15px !important; } }
     .brand { color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.02em; }
     .locale { min-height:44px; border:2px solid rgba(47,125,98,.25); border-radius:14px; background:#fff; color:var(--ink); padding:8px 10px; }
     .settings-popover { position:absolute; z-index:10; top:56px; right:0; display:grid; gap:10px; min-width:220px; padding:14px; border:1px solid rgba(35,55,68,.15); border-radius:16px; background:#fff; box-shadow:0 14px 30px rgba(35,55,68,.2); }
@@ -141,47 +142,17 @@
     @media (max-height:500px) and (orientation:landscape) { #stageScreen .putt-stage-guide-art { display:none; } }
 </style>
   <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
-  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:description" content="Pianifica i putt in 30 buche: tira indietro per regolare direzione e forza, usa le sponde per rimbalzare, evita l’acqua e salva qui i colpi migliori." />
+    <meta name="twitter:description" content="Pianifica i putt in 30 buche: tira indietro per regolare direzione e forza, usa le sponde per rimbalzare, evita l’acqua e salva qui i colpi migliori." />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Sentieri di Putt Animali","url":"https://weightplay.com/it/games/animal-putt-trails/","image":"https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp","description":"Pianifica i putt in 30 buche: tira indietro per regolare direzione e forza, usa le sponde per rimbalzare, evita l’acqua e salva qui i colpi migliori.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"it","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Strategia di putt a un dito","Pianificazione dei rimbalzi","Puzzle sportivo con obiettivo par"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6},"alternateName":"Animal Putt Trails"}</script>
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Sentieri di Putt Animali | WeightPlay" />
-    <meta property="og:description" content="Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina." />
     <meta property="og:url" content="https://weightplay.com/it/games/animal-putt-trails/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Sentieri di Putt Animali | WeightPlay" />
-    <meta name="twitter:description" content="Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "Sentieri di Putt Animali",
-  "alternateName": "Animal Putt Trails",
-  "url": "https://weightplay.com/it/games/animal-putt-trails/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp",
-  "description": "Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "it",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "Sport",
-    "Tempismo",
-    "Pianificazione spaziale",
-    "Famiglia",
-    "Animali"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 6
-  }
-}
-    </script>
   </head>
 <body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-audience="general" data-wp-interface-version="7" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
@@ -229,34 +200,35 @@
     </main>
   </div>
   <script src="../../src/stage-virtualization-standard.js?v=20260921-interface7" data-wp-stage-standard></script>
-  <script src="game.js?v=20260926-interface7-source"></script>
+  <script src="game.js?v=20261003-animal-putt-trails-text140-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/it.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <section class="game-page-info game-page-info-static" aria-label="Informazioni su Sentieri di Putt Animali">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Sentieri di Putt Animali</h2><p>Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Sentieri di Putt Animali</h2><p>Per ognuna delle 30 buche scegli traiettoria e forza del trascinamento. Puoi usare una sponda per aggirare un muro oppure una via breve e sicura che semplifichi il colpo successivo.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Strategia di putt a un dito</span><span>Pianificazione dei rimbalzi</span><span>Puzzle sportivo con obiettivo par</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Strategia di putt a un dito</strong></div><div class="game-info-fact"><span>Genere</span><strong>Sport · Tempismo · Pianificazione spaziale · Famiglia · Animali</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Da facile a impegnativo</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>3–8 minuti per sentiero</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mondo e missione</h3><p>Orla&#39;s moonlit course links 30 putting trails through meadow gates, quiet banks, and small water hazards. Each trail is a short read-and-try challenge rather than a speed test.</p>
-<p>Every fifth trail is a checkpoint. Clearing the full route restores the moonlit map while keeping earlier trails available for replay and better strokes.</p></div>
-      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Drag back from the ball to set direction and power, then release to putt. Short pulls give finer control; longer pulls cover more distance but make a miss more costly.</p>
-<p>Par is the trail&#39;s target stroke count. Banks can redirect the ball, water ends the attempt, and acorns reward finishing near or below par.</p>
-<p>Cleared trails unlock the next trail, while best strokes and the next unlocked trail are saved only in this browser. Result offers Retry, Next hole, or Trail map.</p></div>
-      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Choose an unlocked trail from the map and read its par and hazards.</li><li>Drag back from the ball to aim away from the direction you want it to travel.</li><li>Release to putt, then read the roll and use the banks or a safer short stroke on the next attempt.</li><li>Clear every hole in the trail, then choose the next hole, retry, or return to the map.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Start with a short stroke when learning a bank or water edge; distance is easier to add than to recover.</li><li>Aim for the safe side of a bank and leave a simple second shot instead of chasing a direct line through a hazard.</li><li>Use the trail map and checkpoints as a pacing tool: replay cleared trails to improve strokes without risking unlocks.</li></ul></div>
-      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>Trails 1–5 teach aim, power, banks, and the first checkpoint. Trails 6–10 add longer reads and tighter landing zones, with checkpoints continuing at 10, 15, 20, 25, and 30.</p>
-<p>Later trails combine bank angles, gentle water, and par pressure without adding a countdown. The campaign stays replayable after Trail 30.</p></div>
-      <div class="game-info-section"><h3>Nota di design</h3><p>The same ball, course, collision, stroke, and result rules drive touch, mouse, and keyboard-friendly aiming. This guide describes the playable route without promising online accounts, purchases, or cross-device sync.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>Sentieri di Putt Animal è un puzzle sportivo generale per giocare con calma in famiglia. Non servono account, acquisti, classifiche pubbliche o dati personali.</p></div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>I progressi vengono salvati?</dt><dd>I migliori colpi e il sentiero sbloccato successivo vengono salvati solo in questo browser.</dd></div><div><dt>Quanti sentieri ci sono?</dt><dd>Ci sono trenta sentieri selezionabili, con checkpoint ai numeri 5, 10, 15, 20, 25 e 30.</dd></div><div><dt>Posso ripetere un sentiero?</dt><dd>Sì. I sentieri completati restano sulla mappa e il successivo si sblocca dopo un completamento.</dd></div><div><dt>Come miro e tiro?</dt><dd>Trascina indietro dalla palla per impostare direzione opposta e potenza, poi rilascia. Un trascinamento breve è più facile da controllare.</dd></div><div><dt>Cosa succede se la palla entra nell’acqua?</dt><dd>Il tentativo termina e puoi ripetere la buca senza perdere sentieri completati o sblocchi.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Il campo di Orla al chiaro di luna ha 30 buche. Ci sono prati, sponde basse e acqua; nelle buche successive cambiano partenza, coppa e ostacoli, quindi occorre rileggere la traiettoria.</p>
+<p>Completare una buca sblocca la successiva. Le buche 5, 10, 15, 20, 25 e 30 sono checkpoint. Quelle completate restano sulla mappa e si possono ripetere per migliorare il proprio record.</p></div>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Trascina indietro dalla palla, nella direzione opposta a quella in cui vuoi mandarla. La distanza imposta mira e forza; rilascia per tirare. Un trascinamento breve è più facile da controllare. Uno lungo copre più distanza, ma rende più difficile recuperare un errore.</p>
+<p>Muri e sponde deviano la palla. Se entra in acqua, il tentativo di quella buca termina; riprovare non cancella buche completate o sblocchi. Al par ottieni 1 ghianda e un’altra per ogni colpo sotto il par; sopra il par non ne ottieni.</p>
+<p>Nella schermata Risultato puoi scegliere Riprova, Buca successiva o Mappa percorsi. I migliori colpi di ogni buca e la prossima buca sbloccata restano salvati in questo browser, non in un account online.</p></div>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Scegli sulla mappa una buca sbloccata e controlla par e ostacoli.</li><li>Dalla palla trascina nella direzione opposta alla traiettoria desiderata.</li><li>Rilascia per tirare e guarda dove si ferma la palla. Se un tiro troppo forte finisce in acqua, riprova con meno forza oppure usa la sponda dal lato sicuro.</li><li>Completa la buca per avanzare, riprovarla o tornare alla mappa. Puoi rigiocare una buca già completata per migliorare il record.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Un errore comune è trascinare troppo quando la buca è dietro un muro. La palla può superare il punto sicuro e cadere in acqua. Prova un rimbalzo più corto per rendere gestibile il colpo successivo.</li><li>Prima di cercare la linea diretta, mira al lato più aperto della sponda. Un primo colpo sicuro può preparare un approccio più semplice.</li><li>Il par è un obiettivo di colpi, non un conto alla rovescia. Fare più colpi non blocca le buche successive e quelle precedenti restano rigiocabili.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>Le prime cinque buche insegnano mira, forza e rimbalzi sulle sponde. Poi c’è un checkpoint ogni cinque buche, fino alla 30.</p>
+<p>Le buche successive combinano ostacoli spostati, percorsi più lunghi e par più alti. I comandi restano gli stessi: trascina indietro e rilascia. Il campo si può rigiocare anche dopo la buca 30.</p></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>Con touch e mouse, trascina e rilascia; con la tastiera, mira con le frecce e premi Invio per tirare. I record e gli sblocchi delle 30 buche restano in questo browser, senza account né classifica online.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>Animal Putt Trails è un puzzle di putt tranquillo per un pubblico generale. Non richiede account, acquisti o classifiche pubbliche. Sblocchi e migliori colpi restano in questo browser e possono sparire cancellando i dati del sito.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Come miro e tiro?</dt><dd>Trascina indietro dalla palla, nella direzione opposta alla traiettoria desiderata, per regolare mira e forza; poi rilascia. Un tiro breve è più facile da dosare.</dd></div><div><dt>Cosa succede se la palla entra in acqua?</dt><dd>Il tentativo in quella buca termina. Puoi riprovare senza perdere le buche completate o gli sblocchi.</dd></div><div><dt>Quante buche ci sono?</dt><dd>Ci sono 30 buche e un punto di controllo ogni cinque.</dd></div><div><dt>Cosa indicano par e ghiande?</dt><dd>Al par ottieni 1 ghianda e un’altra per ogni colpo sotto il par; sopra il par non ne ottieni.</dd></div><div><dt>Posso ripetere una buca completata?</dt><dd>Sì. Le buche completate restano sulla mappa e puoi tentare di migliorare il tuo record.</dd></div><div><dt>I progressi sono salvati online?</dt><dd>No. I migliori colpi e la prossima buca sbloccata sono salvati solo in questo browser.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line è un originale puzzle a griglia in 30 livelli con protagonista Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" href="/it/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canale di bambù di Panko</strong><span>Ruota i tubi di Panko, porta acqua in ogni tratto e fai rifiorire il boschetto.</span></span></a><a class="game-info-related-card" href="/it/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Carico</strong><span>Spingi, attira e instrada carichi runici in 30 magazzini celesti con ghiaccio, segnali, magneti e casse collegate.</span></span></a></div></div>
     </div>
   </section>
-<script src="/src/game-page-info.js?v=20260919-putt-seo130"></script>
-<script src="/src/site-config.js?v=20260721-locale13-1"></script>
+<script src="/src/game-page-info.js?v=20261003-animal-putt-trails-text140-v1"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 </body>
 </html>

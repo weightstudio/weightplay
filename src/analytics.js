@@ -189,9 +189,13 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
   }
   function currentLobbyDomain() {
     if (!document.body?.classList.contains("lobby-page")) return null;
-    // The topic discovery hall is deliberately outside both collection domains.
-    if (document.body.dataset.gameHall === "topics") return null;
-    return document.body.dataset.audience === "kids" ? "kids" : document.body.dataset.audience === "general" ? "tabletop" : null;
+    const audience = document.body.dataset.audience;
+    if (audience === "kids") return "kids";
+    // The tabletop module may be loaded for the whole General lobby, but its
+    // launcher and modal belong only to the Cards & Board hall.
+    const requestedHall = new URLSearchParams(location.search).get("hall");
+    const hall = document.body.dataset.gameHall || (requestedHall === "tabletop" || requestedHall === "topics" ? requestedHall : "games");
+    return audience === "general" && hall === "tabletop" ? "tabletop" : null;
   }
   function publicLobbyGame(id) {
     const lobby = window.WONDER_LOBBY, game = lobby?.games?.find(value => value?.id === id);
@@ -313,7 +317,14 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     const domain = currentLobbyDomain(), module = domain && collectionModules.get(domain);
     const grid = document.querySelector("#gameGrid");
     const existing = document.querySelector("[data-weightplay-collection-entry]");
-    if (!domain || !module || !grid) { existing?.remove(); return; }
+    if (!domain || !module || !grid) {
+      if (collectionDomain && collectionDomain !== domain) {
+        closeCollection(false);
+        discardInvalidCollectionHistory();
+      }
+      existing?.remove();
+      return;
+    }
     if (existing?.dataset.weightplayCollectionEntry === domain) return;
     existing?.remove();
     const locale = collectionLocale(), copy = collectionStrings[locale], entry = document.createElement("section");
@@ -339,8 +350,8 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     if (event.shiftKey && (document.activeElement === first || document.activeElement === collectionDialog)) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
-  function openCollection(domain, opener) {
-    if (!collectionModules.has(domain)) return;
+  function openCollection(domain, opener, { historyMode = "push" } = {}) {
+    if (!collectionModules.has(domain) || currentLobbyDomain() !== domain) return;
     if (!collectionDialog) {
       collectionDialog = document.createElement("div"); collectionDialog.className = "wpc-overlay"; collectionDialog.tabIndex = -1; collectionDialog.setAttribute("role", "dialog"); collectionDialog.setAttribute("aria-modal", "true");
       Object.assign(collectionDialog.style, { position: "fixed", inset: "0", zIndex: "1190", display: "grid", placeItems: "center", padding: "max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom))", background: "#090908d9", backdropFilter: "blur(5px)" });
@@ -350,8 +361,11 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
       collectionDialog.addEventListener("click", event => { if (event.target === collectionDialog) closeCollection(true); });
     }
     collectionDomain = domain; collectionOpener = opener || document.activeElement;
-    collectionHistoryState = true;
-    try { history.pushState({ ...(history.state || {}), weightplayCollection: domain }, "", `${location.pathname}${location.search}#collection`); } catch { collectionHistoryState = false; }
+    collectionHistoryState = historyMode === "push" || historyMode === "restore";
+    try {
+      if (historyMode === "push") history.pushState({ ...(history.state || {}), weightplayCollection: domain }, "", `${location.pathname}${location.search}#collection`);
+      else if (historyMode === "direct") history.replaceState({ ...(history.state || {}), weightplayCollection: domain }, "", `${location.pathname}${location.search}#collection`);
+    } catch { collectionHistoryState = false; }
     renderCollection(); collectionDialog.hidden = false; collectionDialog.style.display = "grid";
     document.documentElement.style.overflow = "hidden";
     requestAnimationFrame(() => collectionDialog?.querySelector("button:not([disabled])")?.focus({ preventScroll: true }) || collectionDialog?.focus({ preventScroll: true }));
@@ -375,11 +389,38 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     if (useHistory && collectionHistoryState && history.state?.weightplayCollection) {
       collectionHistoryState = false; history.back(); return;
     }
+    if (useHistory && location.hash === "#collection") discardInvalidCollectionHistory();
     collectionDialog.hidden = true; collectionDialog.style.display = "none"; document.documentElement.style.overflow = "";
     collectionDomain = null; collectionHistoryState = false;
     collectionOpener?.focus?.({ preventScroll: true }); collectionOpener = null;
   }
-  window.addEventListener("popstate", () => { if (collectionDialog && !collectionDialog.hidden) closeCollection(false); });
+  function discardInvalidCollectionHistory() {
+    if (location.hash !== "#collection") return;
+    try {
+      const state = { ...(history.state || {}) };
+      delete state.weightplayCollection;
+      history.replaceState(state, "", `${location.pathname}${location.search}`);
+    } catch { /* The collection remains closed even if history is unavailable. */ }
+    collectionHistoryState = false;
+  }
+  function syncCollectionHistory() {
+    const domain = currentLobbyDomain();
+    const requested = history.state?.weightplayCollection;
+    if (requested && requested === domain && collectionModules.has(domain)) {
+      if (!collectionDialog || collectionDialog.hidden || collectionDomain !== domain) openCollection(domain, document.querySelector(`[data-weightplay-collection-entry="${domain}"] button`), { historyMode: "restore" });
+      return;
+    }
+    if (collectionDialog && !collectionDialog.hidden) closeCollection(false);
+    // Direct #collection navigation is meaningful only in the tabletop hall;
+    // history entries created by a collection button also carry the domain.
+    if (location.hash === "#collection" && domain === "tabletop" && collectionModules.has(domain)) {
+      openCollection(domain, document.querySelector(`[data-weightplay-collection-entry="${domain}"] button`), { historyMode: "direct" });
+      return;
+    }
+    if (location.hash === "#collection" && domain !== "tabletop") discardInvalidCollectionHistory();
+  }
+  window.addEventListener("popstate", () => queueMicrotask(() => syncCollectionHistory()));
+  window.addEventListener("hashchange", () => queueMicrotask(() => syncCollectionHistory()));
   window.addEventListener("storage", event => {
     const domains = Object.entries(collectionDomainConfig).filter(([, value]) => event.key === value.key).map(([domain]) => domain);
     domains.forEach(domain => { if (domain === collectionDomain) renderCollection(); });
@@ -388,7 +429,8 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
   window.addEventListener("WeightPlayTabletopThemeChanged", refreshTabletopTheme);
   function loadCollectionModules() {
     if (document.body?.classList.contains("lobby-page")) {
-      ensureCollectionModule(document.body.dataset.audience === "kids" ? "kids" : "tabletop").then(ensureCollectionLauncher);
+      const domain = document.body.dataset.audience === "kids" ? "kids" : "tabletop";
+      ensureCollectionModule(domain).then(() => { ensureCollectionLauncher(); syncCollectionHistory(); });
       return;
     }
     const gameId = window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";

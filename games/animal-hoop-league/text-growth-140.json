@@ -1,0 +1,57 @@
+{
+  "version": "1.4.0",
+  "locales": {
+    "en": {
+      "description": "Aim along the target arc, charge Shoot, and release inside the power window. Use shot feedback to beat the rival across six courts.",
+      "tags": ["Aim-and-release basketball", "Arc and power targeting", "Six-court score challenge"]
+    },
+    "zh-Hant": {
+      "description": "沿著目標弧線瞄準，按住 Shoot 蓄力並在力度範圍內放開。讀取每球回饋，在六座球場挑戰對手。",
+      "tags": ["瞄準與蓄力籃球", "弧線與力道控制", "六座球場得分挑戰"]
+    },
+    "zh-Hans": {
+      "description": "沿着目标弧线瞄准，按住 Shoot 蓄力并在力度范围内松开。读取每球反馈，在六座球场挑战对手。",
+      "tags": ["瞄准与蓄力篮球", "弧线与力度控制", "六座球场得分挑战"]
+    },
+    "ja": {
+      "description": "目標の弧に照準を合わせ、Shootを長押ししてパワー範囲で離します。各ショットの結果を読み、6コートでライバルに挑戦。",
+      "tags": ["照準とパワーのバスケ", "弧とリリースの調整", "6コートの得点対決"]
+    },
+    "ko": {
+      "description": "목표 궤적에 조준하고 Shoot를 눌러 힘을 모은 뒤 파워 범위에서 놓으세요. 슛 결과를 읽으며 6개 코트에서 라이벌과 겨루세요.",
+      "tags": ["조준·파워 농구", "슛 타이밍 조절", "6개 코트 점수 대결"]
+    },
+    "es": {
+      "description": "Apunta al arco objetivo, carga Shoot y suéltalo en la zona de potencia. Lee cada tiro para superar al rival en seis canchas.",
+      "tags": ["Baloncesto de puntería y potencia", "Control de arco y lanzamiento", "Desafío en seis canchas"]
+    },
+    "pt-BR": {
+      "description": "Mire o arco-alvo, carregue Shoot e solte na faixa de força. Leia cada arremesso para superar o rival em seis quadras.",
+      "tags": ["Basquete de mira e força", "Controle de arco e arremesso", "Desafio em seis quadras"]
+    },
+    "fr": {
+      "description": "Visez l’arc cible, chargez Shoot et relâchez dans la zone de puissance. Lisez chaque retour de tir pour devancer le rival sur six terrains.",
+      "tags": ["Basket avec visée et puissance", "Réglage de l’arc et du tir", "Défi sur six terrains"]
+    },
+    "de": {
+      "description": "Richte dich am Zielbogen aus, lade Shoot auf und lasse im Kraftfenster los. Nutze das Wurf-Feedback, um den Rivalen auf sechs Courts zu schlagen.",
+      "tags": ["Basketball mit Ziel und Kraft", "Bogen und Wurfkraft abstimmen", "Sechs Courts im Punkteduell"]
+    },
+    "it": {
+      "description": "Mira l’arco bersaglio, carica Shoot e rilascia nella zona di potenza. Usa il feedback di ogni tiro per battere il rivale in sei campi.",
+      "tags": ["Basket con mira e potenza", "Controllo di arco e rilascio", "Sfida su sei campi"]
+    },
+    "ru": {
+      "description": "Цельтесь по дуге, удерживайте Shoot и отпустите в нужном окне силы. Используйте подсказки бросков, чтобы обойти соперника на шести площадках.",
+      "tags": ["Баскетбол: прицел и сила", "Настройка дуги и броска", "Счёт на шести площадках"]
+    },
+    "hi": {
+      "description": "लक्ष्य चाप पर निशाना लगाएँ, Shoot दबाकर ताकत भरें और सही शक्ति-क्षेत्र में छोड़ें। हर शॉट की प्रतिक्रिया से छह कोर्ट में प्रतिद्वंद्वी को चुनौती दें।",
+      "tags": ["निशाना और ताकत वाला बास्केटबॉल", "छह कोर्ट के तय शॉट", "प्रतिद्वंद्वी के स्कोर को चुनौती"]
+    },
+    "ar": {
+      "description": "صوّب نحو القوس المستهدف، واشحن Shoot ثم أفلت داخل نطاق القوة. استفد من نتيجة كل تسديدة لمنافسة الخصم في ستة ملاعب.",
+      "tags": ["كرة سلة بالتصويب والقوة", "ضبط القوس وقوة التسديد", "تحدي النتيجة في ستة ملاعب"]
+    }
+  }
+}
