@@ -63,6 +63,10 @@
   .contract-choice{padding:5px 9px;font-size:.7rem}
   .insurance-btn{font-size:.7rem}
   .stage-rail>.stage-card{height:122px!important;min-height:122px!important;max-height:122px!important;padding:10px;font-size:.78rem}
+  /* The shared selector imposes a 198px rail and 190px cards. In the
+     334px landscape canvas those defaults spill into the bottom tab row. */
+  #stageScreen #stageRail{min-height:0!important}
+  #stageScreen #stageRail>.stage-card{height:122px!important;min-height:122px!important;max-height:122px!important}
 }
 
 /* Keep localized Battle actions readable inside the fixed logical footer. */
@@ -129,3 +133,22 @@
     max-height:52px!important;
   }
 }
+.stage-card{grid-template-rows:minmax(0,1fr);align-content:stretch}
+.stage-card>[data-wp-item-content]{width:100%;height:100%;display:grid;align-content:space-between;justify-items:center}
+.battle-hud-info{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-width:0;font-size:clamp(.64rem,2.8vw,.85rem);line-height:1.1}
+.battle-hud-info strong{flex:0 1 auto!important;min-width:0;text-align:start!important;white-space:nowrap}
+.battle-hud-info #scoreText{min-width:0;flex:0 1 auto;white-space:nowrap;text-align:end}
+[dir="rtl"] .battle-hud-info{flex-direction:column;justify-content:center;gap:0;font-size:clamp(.58rem,2.4vw,.7rem);line-height:1}
+[dir="rtl"] .battle-hud-info>*{width:100%;text-align:center!important}
+.result-next-preview:empty{display:none}
+.tutorial-overlay{position:absolute;inset:0;z-index:9;display:grid;place-items:center;overflow:auto;padding:clamp(14px,4vw,28px);background:#061521ed;animation:skyport-tutorial-enter .18s ease-out both}
+.tutorial-overlay.is-closing{animation-direction:reverse}
+.tutorial-card{width:min(100%,520px);display:grid;gap:12px;padding:clamp(18px,4vw,28px);border:1px solid #6ca8b6;border-radius:18px;background:linear-gradient(145deg,#193e5c,#0b263d);box-shadow:0 16px 42px #0008;color:#f6fbff}
+.tutorial-card h2,.tutorial-card p{margin:0}
+.tutorial-card h2{color:#fff3ad;font-size:clamp(1.15rem,4vw,1.55rem);line-height:1.2}
+.tutorial-card p{font-size:clamp(.9rem,2.8vw,1rem);line-height:1.45}
+.tutorial-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:4px}
+.tutorial-actions button{min-width:0;min-height:48px;white-space:normal}
+.tutorial-actions button:focus-visible{outline:3px solid #fff4b7;outline-offset:3px}
+@keyframes skyport-tutorial-enter{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.tutorial-overlay{animation:none}}

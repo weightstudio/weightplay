@@ -32,21 +32,21 @@
     <link rel="stylesheet" href="../../src/loading-screen.css">
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260928-snake-tutorial1">
   </head>
-<body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle"></h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction" class="tagline">Use the direction controls to guide the snake to every food cell.</p><div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Objective</strong><span>Guide the snake to food and keep moving.</span></div><button id="startBtn" class="primary">Start Game</button></div><div class="preview-art" aria-hidden="true">◉</div></div></section><section id="battleScreen" class="screen" data-wp-logical-battle-canvas hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main>
+<body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle"></h1><p id="gameTagline" class="tagline">Collect food, leave room to turn, and route around visible obstacles.</p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction" class="tagline">Use the direction controls to guide the snake to every food cell.</p><div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Objective</strong><span>Guide the snake to food and keep moving.</span></div><button id="startBtn" class="primary">Start Game</button></div><div class="preview-art" aria-hidden="true">◉</div></div></section><section id="battleScreen" class="screen" data-wp-logical-battle-canvas hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main>
     <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
       <div class="loading-card"><strong>Snake</strong><span>Preparing your game…</span><div class="loading-track"><i></i></div></div>
     </section>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Snake game guide">
+    <section class="game-page-info game-page-info-static" aria-label="Snake game guide" data-wp-text-growth-version="1.4.0">
       <div class="game-info-hero">
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Snake - Game Guide</h2>
-          <p>Snake is an original WeightPlay grid survival arcade game. Guide a growing star-serpent through a bounded board, collect food sparks, and keep a clean route open.</p>
+          <p>Steer a growing snake across a grid, collect food, and plan around your trail and the Gate or Orbit obstacles. The edges wrap, and each run keeps going until a collision.</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Grid Snake Arcade</span><span>Continuous Survival</span><span>Route Planning</span></div>
         </div>
         <div class="game-info-facts">
           <div class="game-info-fact"><span>Gameplay</span><strong>Grid Survival Arcade</strong></div>
-          <div class="game-info-fact"><span>Genre</span><div class="game-info-tags"><span>Classic</span><span>Arcade</span><span>Action</span></div></div>
+          <div class="game-info-fact"><span>Genre</span><div class="game-info-tags"><span>Arcade</span></div></div>
 
           <div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div>
           <div class="game-info-fact"><span>Estimated Play Time</span><strong>1-4 minutes per run</strong></div>
@@ -59,32 +59,22 @@
           <p>A small star-serpent wakes inside a night grid. Each food spark adds another segment, turning every safe turn into the next spatial decision.</p><p>Each run rotates through Open, Gate, and Orbit board patterns. The visible route changes without hiding the rules, so a replay asks you to read the space again rather than repeat one memorized path.</p>
         </div>
         <div class="game-info-section game-info-systems">
-          <h3>How the Systems Work</h3>
-          <ul><li>The serpent moves continuously on a grid. Food increases its length and score, while walls or the serpent&#39;s own body end the round.</li><li>Gate and Orbit patterns add visible obstacle cells that cannot be entered or used for food. Reaching the current food milestone settles the bonus immediately, then the run continues toward a higher target.</li></ul>
-        </div>
+          <h3>How the Systems Work</h3><ul><li>The snake moves forward on a timed grid. Food adds a segment and points; movement speeds up as the run advances. The left, right, top, and bottom edges wrap to the opposite side.</li><li>Open runs have no obstacle cells. Gate and Orbit runs add visible blocked cells; hitting one or the snake&#39;s own trail ends the run. Food milestones settle a bonus immediately, then the endless run continues.</li></ul></div>
         <div class="game-info-section">
-          <h3>How to Play</h3>
-          <ol><li>Use Arrow keys or WASD on desktop, visible direction controls on touch screens, or swipe across the board on mobile.</li><li>Turn before the next grid cell closes; opposite-direction turns are ignored to protect the current route.</li><li>Keep moving and collect food sparks while the serpent grows; there is no fixed food-count finish.</li><li>Hitting a wall or your own trail ends the run; Retry starts a fresh board while Best stays in local storage.</li></ol>
-        </div>
+          <h3>How to Play</h3><ol><li>Use Arrow keys or WASD on desktop, the visible direction buttons on touch screens, or swipe across the board.</li><li>Turn before the next cell arrives. A direct reverse turn is ignored, so plan a legal corner instead.</li><li>Collect food to grow the snake and raise the score. There is no fixed food-count finish; milestone targets rise across runs.</li><li>Use Retry for a fresh run. The local Best score remains in this browser.</li></ol></div>
         <div class="game-info-section game-info-strategy">
-          <h3>Strategy Tips</h3>
-          <ul><li>Plan two turns ahead instead of chasing the nearest spark.</li><li>Use the outer edge early, then leave a turning lane before the serpent grows.</li><li>Choose a longer route when it keeps the next corner open.</li><li>Short, deliberate direction changes keep the route readable as the trail grows.</li><li>Treat a visible obstacle as a route boundary, not a target. Check the next two open cells before committing to a turn.</li><li>After a milestone, use the bonus feedback as a pause to reassess the new target and the space left by the longer trail.</li></ul>
-        </div>
+          <h3>Strategy Tips</h3><ul><li>Look beyond the current food and keep the next corner open.</li><li>A longer route can be safer when a direct turn would close your lane.</li><li>Treat Gate and Orbit obstacle cells as walls, and check the two cells beyond a turn before committing.</li><li>As the snake grows and movement speeds up, leave a wider turning lane.</li></ul></div>
         <div class="game-info-section game-info-campaign">
-          <h3>Campaign and Difficulty Growth</h3>
-          <p>The first spark teaches grid steering. Later sparks lengthen the trail and increase the spatial risk, making each safe turn matter more.</p><p>The opening pace leaves room to learn. Food thresholds tighten the timer, run numbers raise the milestone, and the rotating board patterns create a fresh route decision on replay.</p>
-        </div>
+          <h3>Campaign and Difficulty Growth</h3><p>Open, Gate, and Orbit patterns rotate between runs. Open has no blocked cells; Gate and Orbit place visible obstacles that change which turns remain available.</p><p>The snake grows with each food pickup, the pace rises as a run advances, and milestone targets increase on later runs. Each bonus is added when its target food is collected; play then continues.</p></div>
         <div class="game-info-section game-info-design">
           <h3>Developer Design Note</h3>
           <p>Snake uses WeightPlay&#39;s own star-serpent, night-grid palette, food sparks, visible obstacle language, responsive shell, localized controls, immediate milestone feedback, and continuous survival loop.</p>
         </div>
         <div class="game-info-section game-info-parent">
-          <h3>Player and Save Information</h3>
-          <p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Score, Best, and the current short-run record stay in this browser; no account is required.</p>
-        </div>
+          <h3>Player and Save Information</h3><p>Best score and run count are stored locally in this browser; the active run is not saved. No account is required.</p></div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>What ends a run?</dt><dd>A wall, an obstacle, or the serpent&#39;s own trail ends the run.</dd></div><div><dt>Does the serpent move continuously?</dt><dd>Yes. It advances on a timed grid until the player collides or chooses to return.</dd></div><div><dt>Which controls work?</dt><dd>Arrow keys, WASD, visible direction controls, and horizontal or vertical swipe.</dd></div><div><dt>Is progress saved?</dt><dd>Only the local Best score is saved in this browser.</dd></div><div><dt>What changes between runs?</dt><dd>The run number, milestone target, and board pattern rotate so the route must be read again.</dd></div><div><dt>What happens at a milestone?</dt><dd>The current food pickup immediately adds the bonus, shows localized feedback, and keeps the endless run active.</dd></div></dl>
+          <dl><div><dt>Do the edges stop the snake?</dt><dd>No. The snake wraps from one edge of the grid to the opposite edge.</dd></div><div><dt>What ends a run?</dt><dd>Hitting a blocked obstacle cell or the snake&#39;s own trail ends the run.</dd></div><div><dt>How does the snake grow?</dt><dd>Each food pickup adds a segment and points, leaving less open space for later turns.</dd></div><div><dt>Are the boards different?</dt><dd>Runs rotate among Open, Gate, and Orbit patterns; Gate and Orbit include visible obstacle cells.</dd></div><div><dt>What happens at a milestone?</dt><dd>The target food pickup immediately adds the bonus. The run continues toward its next target.</dd></div><div><dt>What is saved?</dt><dd>Best score and run count are stored locally in this browser; the active run is not saved.</dd></div></dl>
         </div>
       </div>
     </section>
@@ -136,8 +126,8 @@
       }
     </script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/tutorial.js?v=20260928-snake-tutorial1"></script>
+    <script src="../../src/tutorial.js?v=20261004-snake-text-growth-140-tutorial-v1"></script>
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
     <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-    <script src="../../src/popular-games-batch.js?v=20260926-snake-v32-battle-recovery"></script><script src="game.js"></script></body>
+    <script src="../../src/popular-games-batch.js?v=20261004-snake-text-growth-140-v1"></script><script src="game.js"></script></body>
 </html>

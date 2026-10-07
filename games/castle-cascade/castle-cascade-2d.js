@@ -106,11 +106,13 @@ export class CastleCascade2D {
     this.pixelRatio = 1;
     this.raf = 0;
     this.motion = null;
+    this.pausedAt = null;
     this.lastFrame = 0;
     this.frameTimes = [];
     this.motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     this.reducedMotion = this.motionPreference?.matches ?? false;
     this.handleMotionPreference = (event) => {
+      if (this.pausedAt !== null) return;
       this.reducedMotion = event.matches;
       if (event.matches) { this.cancelMotion(); this.highlightUntil = 0; }
       if (event.matches) this.releasePose = null;
@@ -335,6 +337,10 @@ export class CastleCascade2D {
   frame(time) {
     this.raf = 0;
     if (this.disposed || this.lost || this.failed) return;
+    if (this.pausedAt !== null) {
+      this.draw(this.pausedAt);
+      return;
+    }
     if (this.releasePose && time - this.releasePose.started >= 300) this.releasePose = null;
     if (this.lastFrame && this.motion) {
       this.frameTimes.push(Math.min(250, time - this.lastFrame));
@@ -369,6 +375,7 @@ export class CastleCascade2D {
   }
 
   draw(time = performance.now()) {
+    if (this.pausedAt !== null) time = this.pausedAt;
     const ctx = this.context;
     const w = this.width;
     const h = this.height;
@@ -593,6 +600,28 @@ export class CastleCascade2D {
       this.highlightCells.clear();
       this.invalidate();
     });
+  }
+
+  setPaused(paused) {
+    if (this.disposed || paused === (this.pausedAt !== null)) return;
+    if (paused) {
+      this.pausedAt = performance.now();
+      if (this.raf) cancelAnimationFrame(this.raf);
+      this.raf = 0;
+      this.draw(this.pausedAt);
+      return;
+    }
+    const elapsed = performance.now() - this.pausedAt;
+    this.pausedAt = null;
+    if (this.motion) this.motion.started += elapsed;
+    if (this.releasePose) this.releasePose.started += elapsed;
+    this.highlightStarted += elapsed;
+    this.highlightUntil += elapsed;
+    this.lastFrame = 0;
+    if (this.reducedMotion !== (this.motionPreference?.matches ?? false)) {
+      this.handleMotionPreference({ matches: this.motionPreference?.matches ?? false });
+    }
+    this.invalidate();
   }
 
   animateSwap(before, after, a, b, accepted) {

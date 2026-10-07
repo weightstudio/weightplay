@@ -28,18 +28,18 @@
   <title>Custode degli Aquiloni | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260929-kite-keeper-v16-motion-feedback">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260911-kite-keeper-v6-interface-repair">
-  <script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
+  <script src="/src/shared-interface-bootstrap.js?v=20261007-kite-keeper-poster-path-fix" data-wp-shared-interface="7"></script>
   <meta name="description" content="Scegli ogni raffica per guidare l&#39;aquilone di Taro attraverso tre finestre del cielo fino al molo-lanterna." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Custode degli Aquiloni | WeightPlay" />
     <meta property="og:description" content="Scegli ogni raffica per guidare l&#39;aquilone di Taro attraverso tre finestre del cielo fino al molo-lanterna." />
     <meta property="og:url" content="https://weightplay.com/it/games/animal-kite-keeper/" />
-    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-kite-keeper.webp" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Custode degli Aquiloni | WeightPlay" />
     <meta name="twitter:description" content="Scegli ogni raffica per guidare l&#39;aquilone di Taro attraverso tre finestre del cielo fino al molo-lanterna." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-kite-keeper.webp" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover-block-v1.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,7 +47,7 @@
   "name": "Custode degli Aquiloni",
   "alternateName": "Kite Keeper",
   "url": "https://weightplay.com/it/games/animal-kite-keeper/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-kite-keeper.webp",
+  "image": "https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover-block-v1.webp",
   "description": "Scegli ogni raffica per guidare l'aquilone di Taro attraverso tre finestre del cielo fino al molo-lanterna.",
   "publisher": {
     "@type": "Organization",
@@ -89,15 +89,16 @@
       <p id="best" class="best" data-i18n="best" data-i18n-vars="count">Best checks: —</p>
     </section>
 
-    <section id="gameGuide" class="guide-card game-page-info game-page-info-static" data-wp-game-guide aria-label="Kite Keeper game guide">
-      <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="Moss Shell Taro holding a kite spool" width="1024" height="1536"><div><h2 data-i18n="guideTitle">How to play</h2><p data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p></div></div>
+    <section id="gameGuide" class="guide-card game-page-info game-page-info-static" data-wp-game-guide aria-label="Guida di gioco di Kite Keeper">
+      <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="Moss Shell Taro con una bobina per aquilone" width="1024" height="1536"><div><h2 data-i18n="guideTitle" data-runtime-localize="off">Come si gioca</h2><p data-i18n="guide" data-runtime-localize="off">Scegli una carta Vento alla volta e raggiungi il molo del faro esattamente con tre raffiche.</p></div></div>
       <div id="guideSections" class="game-info-sections">
-        <div class="game-info-section"><h3>Read the flight plan</h3><p>Each of the thirty routes begins with the kite on a marked grid square and a lantern dock on another square. The route card names three wind directions that form the safe flight plan. Read the start, dock, and direction sequence before choosing a card. A direction moves the kite by one square: north moves up, east moves right, south moves down, and west moves left. The goal is not speed. The goal is to understand how every gust changes the two coordinates and to arrive exactly on the dock after the third choice.</p></div>
-        <div class="game-info-section"><h3>Choose one gust at a time</h3><p>Open Sky routes, choose any numbered route, and use the four large Wind cards in Battle. After every choice, the kite marker moves immediately and the position line reports the new coordinates. Compare that position with the lantern dock before continuing. The progress pill shows the current route and the gust counter shows how many of the three moves have been used. You remain in control of every move; the game never chooses or corrects a direction automatically. If the route still matches the plan, select the next named gust and watch the board respond.</p></div>
-        <div class="game-info-section"><h3>Recover from a drift</h3><p>A wind that leaves the board, or a three-gust sequence that misses the dock, produces a clear drift message and locks the current attempt. Use Reset route to return the kite to that route's starting square with an empty gust history. Nothing is lost, there is no timer, and there are no lives. Treat a drift as information: compare the last position with the target, identify which coordinate changed in the wrong direction, and try the authored sequence again. This calm reset loop is the main way the campaign teaches vector reading without punishing experimentation.</p></div>
-        <div class="game-info-section"><h3>Progress through thirty routes</h3><p>The campaign contains thirty selectable stages arranged as ten flights in each of three visual route families. Early routes use familiar turns near the centre of the board. Middle routes mix horizontal and vertical corrections, while later routes ask you to read less obvious starts and targets before committing. Every route has its own start, lantern dock, and three-gust plan; completed-route checks are saved on this browser across visits. Result offers Next route for continuous play, Sky routes for a different stage, and Back to General lobby when you are finished. Completing all thirty changes the Result heading to confirm that every sky route is complete.</p></div>
-        <div class="game-info-section"><h3>Use the board and controls</h3><p>The kite and lantern are the two important markers. The compass, wind lines, background art, and route title support orientation but never hide the coordinates or determine the answer. Wind cards are buttons and can be reached by keyboard navigation as well as pointer or touch. The Stage list uses tab semantics with arrow-key movement, Home, and End. Settings provides all thirteen supported languages and the shared sound preference. Sound is feedback only: the board position, selected direction, status text, and Result always communicate the same state when audio is muted.</p></div>
-        <div class="game-info-section"><h3>Strategy, saves, and design note</h3><p>For a reliable flight, say the coordinate change aloud before pressing a Wind card, then verify the marker after it moves. When the target is to the right, east increases the first coordinate; when it is above, north decreases the second. The best-check total is stored only in this browser after the full campaign is completed, so clearing storage removes it and private browsing may keep it only for the visit. Kite Keeper is an original WeightPlay spatial-planning puzzle designed for short, calm sessions. Its fixed three-gust routes make mistakes explainable while the thirty-stage catalog supplies enough varied practice for repeat play.</p></div>
+        <div class="game-info-section"><h3>Leggi il piano di volo</h3><p>Tutti i trenta percorsi mostrano la casella iniziale dell’aquilone e il molo del faro su un’altra casella. La carta del percorso indica i tre venti necessari per arrivare al molo. Prima di scegliere, controlla partenza, obiettivo e direzioni. Ogni raffica sposta l’aquilone di una casella: nord in alto, est a destra, sud in basso e ovest a sinistra. Segui entrambe le coordinate e raggiungi il molo al terzo movimento.</p></div>
+        <div class="game-info-section"><h3>Scegli una raffica alla volta</h3><p>Apri Percorsi del cielo, scegli un percorso numerato e seleziona una delle quattro carte Vento nella battaglia. Dopo ogni scelta l’aquilone si sposta e la riga della posizione mostra le nuove coordinate. Confrontale con il molo prima di continuare. L’indicatore di avanzamento mostra il percorso; il contatore delle raffiche indica quanti dei tre movimenti hai usato. Ogni direzione la scegli tu: il gioco non la corregge automaticamente.</p></div>
+        <div class="game-info-section"><h3>Riparti dopo una deviazione</h3><p>Se l’aquilone esce dalla griglia o la terza raffica non raggiunge il molo, il tentativo in corso si blocca. Seleziona Reimposta percorso per riportare l’aquilone alla partenza di quel percorso e cancellare la sequenza di raffiche del tentativo. I percorsi completati restano segnati quando il browser può salvarli. Non ci sono timer né vite. Guarda l’ultima posizione, individua la coordinata cambiata nel verso sbagliato e riprova.</p></div>
+        <div class="game-info-section"><h3>Avanza nei trenta percorsi</h3><p>La campagna ha trenta livelli selezionabili, divisi in tre famiglie visive da dieci voli ciascuna. Ogni percorso ha una partenza, un molo e una sequenza di tre venti propria; leggi le coordinate prima di scegliere. Al termine, Risultato offre Percorso successivo, Percorsi del cielo e Torna alla lobby generale. Dopo tutti e trenta cambia il titolo del risultato.</p></div>
+        <div class="game-info-section"><h3>Usa griglia e comandi</h3><p>L’aquilone e il faro sono i riferimenti principali; le coordinate restano visibili durante gli spostamenti. Le carte Vento funzionano con mouse, tocco e tastiera. L’elenco dei livelli usa schede e supporta le frecce, Home e End. Impostazioni offre tredici lingue e una preferenza audio. L’audio è solo un feedback aggiuntivo: griglia, stato e Risultato comunicano ciò che è successo anche senza suono.</p></div>
+        <div class="game-info-section"><h3>Strategia e progressi salvati</h3><p>Prima di muoverti, pensa a come cambieranno le coordinate e poi controlla il segnalino. Andando a est aumenta la prima coordinata; andando a nord diminuisce la seconda. I percorsi completati vengono salvati in questo browser se la memoria è disponibile. Quando completi tutti e trenta i percorsi, il gioco salva quante carte Vento hai scelto da quando hai aperto questa pagina, comprese quelle dei tentativi reimpostati. Le scelte delle visite precedenti non vengono conteggiate. Cancellare i dati del browser può eliminare i progressi; in navigazione privata potrebbero restare solo durante la visita. Kite Keeper è un rompicapo tranquillo di pianificazione spaziale con trenta percorsi fissi di tre raffiche.</p></div>
+        <div class="game-info-section"><h3>Domande frequenti</h3><dl><dt>Quanti percorsi ci sono?</dt><dd>Ci sono trenta percorsi selezionabili, divisi in tre famiglie visive da dieci.</dd><dt>Cosa succede se scelgo una direzione sbagliata?</dt><dd>Se l’aquilone esce dalla griglia o la terza raffica non raggiunge il molo, il tentativo si blocca. Reimposta percorso riporta l’aquilone alla partenza attuale senza cancellare i percorsi completati.</dd><dt>I progressi vengono salvati?</dt><dd>I percorsi completati si salvano in questo browser se la memoria è disponibile. Quando completi tutti e trenta i percorsi, il gioco salva quante carte Vento hai scelto da quando hai aperto questa pagina, comprese quelle dei tentativi reimpostati. Le scelte delle visite precedenti non vengono conteggiate. Cancellare i dati può eliminare i progressi; in navigazione privata potrebbero restare solo durante la visita.</dd><dt>Ci sono limiti di tempo o vite?</dt><dd>No. Puoi reimpostare un percorso sbagliato e riprovare senza timer né contatore di vite.</dd></dl></div>
       </div>
     </section>
 
@@ -137,7 +138,7 @@
     <div id="battleAdReserve" class="battle-ad-reserve" data-wp-ad-reserve hidden aria-hidden="true"></div>
   </main>
   <script src="/src/stage-virtualization-standard.js?v=20260929-kite-keeper-v16-motion-feedback"></script>
-  <script src="locales.js?v=20260929-kite-keeper-v16-motion-feedback"></script><script src="game.js?v=20260929-kite-keeper-v16-motion-feedback"></script>
+  <script src="locales.js?v=20261007-kite-keeper-v16-layout-error-copy-r2"></script><script src="game.js?v=20261007-kite-keeper-v16-layout-error-copy-r2"></script>
   <script id="kite-keeper-block-asset-upgrade-v1">
     (() => {
       const poster = document.querySelector('.main-poster');

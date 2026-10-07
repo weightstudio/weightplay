@@ -7,13 +7,14 @@
 
 .scene-canvas{transform-origin:top left;margin-left:0;margin-right:auto}
 /* A stable compact status row gives the released space to the board. */
-#battleContent{position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 48px 32px 48px 48px}
+#battleContent{position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 48px 56px 48px 48px}
 #arena{grid-column:1;grid-row:1}
 #mapControls{grid-column:1;grid-row:2;min-width:0;min-height:0}
-#side{grid-column:1;grid-row:3;display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden}
-#objective,#calculation{display:none}
-#feedback{direction:ltr;unicode-bidi:plaintext;flex:1;min-width:0;max-height:32px;font-size:12px;line-height:16px;padding:0 4px}
-#legend{flex:none;font-size:11px}
+#side{grid-column:1;grid-row:3;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:26px 14px 14px;align-content:center;gap:1px 0;min-width:0;overflow:hidden}
+#objective{display:block;min-width:0;max-height:26px;text-align:center;font-size:11px;line-height:12px;white-space:normal;overflow:auto;color:#ffdf89}
+#calculation{display:none}
+#feedback{direction:ltr;unicode-bidi:plaintext;min-width:0;max-height:14px;font-size:11px;line-height:14px;padding:0 4px;text-align:center;white-space:nowrap;overflow:auto}
+#legend{min-width:0;font-size:10px;line-height:12px;white-space:nowrap;overflow:auto;text-align:center}
 #legend:empty{display:none}
 .tools{grid-column:1;grid-row:5}
 #choice{grid-column:1/-1;grid-row:4;justify-self:end;display:grid;grid-template-columns:1fr 1fr;gap:6px;width:min(420px,100%);height:48px;background:transparent;z-index:2}
@@ -24,14 +25,17 @@
 .impact-cue[data-kind="fail"]{color:#ff9cb4;border-color:#ff9cb4}
 
 @media(min-aspect-ratio:1.45){
- #battleContent{grid-template-columns:minmax(0,1fr) 180px;grid-template-rows:minmax(0,1fr) 94px 24px 48px 48px;gap:5px}
+  #battleContent{grid-template-columns:minmax(0,1fr) 180px;grid-template-rows:minmax(0,1fr) 94px 56px 48px 48px;gap:5px}
  #arena{grid-column:1;grid-row:1/5}
  #mapControls{grid-column:2;grid-row:2}
- #side{grid-column:2;grid-row:3;height:24px;align-self:end}
+  #side{grid-column:2;grid-row:3;height:56px;align-self:end;grid-template-rows:26px 14px 14px}
  .tools{grid-column:1/3;grid-row:5}
  .tools button{white-space:nowrap}
  #choice{grid-column:2;grid-row:4;justify-self:stretch;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
- #choice button{font-size:10px;padding:4px 6px}
+  #choice button{font-size:10px;padding:4px 6px}
+  #objective{font-size:10px;line-height:12px}
+  #legend{font-size:9px}
+  #feedback{font-size:10px}
 }
 
 /* The camera toolbar owns space outside the rendered board. */

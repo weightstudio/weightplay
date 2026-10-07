@@ -58,7 +58,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "animal-hollow-fit": "/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp",
   "animal-honey-shield": "/assets/interface7-redrawn/animal-honey-shield.webp",
   "animal-hoop-league": "/assets/interface7-redrawn/animal-hoop-league.webp",
-  "animal-kite-keeper": "/assets/interface7-redrawn/animal-kite-keeper.webp",
+  "animal-kite-keeper": "/games/animal-kite-keeper/assets/animal-kite-keeper-cover-block-v1.webp",
   "animal-lantern-guides": "/assets/interface7-redrawn/animal-lantern-guides.webp",
   "animal-lantern-lattice": "/assets/interface7-redrawn/animal-lantern-lattice.webp",
   "animal-layer-grove": "/assets/interface7-redrawn/animal-layer-grove.webp",

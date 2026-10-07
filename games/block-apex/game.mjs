@@ -1,10 +1,10 @@
 import {STAGES, VEHICLES, UPGRADE_KEYS, UPGRADE_COSTS, GAME_VERSION, campaignStars} from './data.mjs';
 import {createRace, buildTrack, stepRace, pauseRace, resumeRace, recoverCar, STEP} from './physics.mjs';
 import {SaveStore} from './store.mjs';
-import {RaceInput} from './input.mjs';
+import {RaceInput} from './input.mjs?v=20261003-v15-guide-hant-copy1';
 import {RaceAudio} from './audio.mjs';
 import {CATALOG, LOCALE_ORDER, LOCALE_NAMES, detectLocale, translate} from './locales.mjs';
-import {renderGuide} from './guide.mjs';
+import {renderGuide} from './guide.mjs?v=20261003-v15-guide-hant-copy1';
 
 const $ = id => document.getElementById(id);
 // Public sync merges both tracked asset trees into the lowercase /assets route.
@@ -62,7 +62,7 @@ function finishAnalytics(result) {
   if(!analyticsRunStarted)return;
   if(result.success&&race?.stage.id===STAGES.length) {
     analyticsCall('complete');
-    try{window.WonderAnalytics?.trackPrivacySafe?.('game_complete',{game_id:'block-apex',game_version:'v5',interface_version:'7',locale});}catch{/* Analytics is optional and must not affect play. */}
+    try{window.WonderAnalytics?.trackPrivacySafe?.('game_complete',{game_id:'block-apex',game_version:'v15',interface_version:'7',locale});}catch{/* Analytics is optional and must not affect play. */}
   } else analyticsCall('end',result.success?'success':'fail');
   analyticsRunStarted=false;
 }
@@ -219,6 +219,7 @@ function hideModal() {
 function showModal(kind,title,description) {
   clearFlights();
   modalKind=kind;input.setEnabled(false);stopLoop();sound?.silence();pauseRace(race);
+  $('countdown').hidden=true;$('countdown').textContent='';lastCountdown=null;
   if(kind==='pause'||kind==='error')pauseAnalytics('game');
   $('modalTitle').textContent=title;$('modalText').textContent=description;$('modalDetails').replaceChildren();
   for(const group of ['pause','result','error'])$(group+'Actions').hidden=group!==kind;
@@ -278,7 +279,8 @@ function failed(error,token) {
 }
 async function startRace(id,{restart=false}={}) {
   if(busy||!Number.isInteger(id)||id<1||id>store.data.unlocked||!STAGES[id-1])return;
-  endRace();analyticsRestartPending=restart;const token=generation;selectedStage=id;busy=true;
+  endRace();feedbackUntil=0;lastCountdown=null;$('feedback').textContent='';$('feedback').removeAttribute('data-kind');$('driveState').textContent='';
+  analyticsRestartPending=restart;const token=generation;selectedStage=id;busy=true;
   race=createRace(id,store.data);sound=new RaceAudio();sound.unlock();
   activate('battle');showModal('loading',t('loading'),stageTitle(race.stage));
   $('errorActions').hidden=false;$('errorRetry').disabled=true;

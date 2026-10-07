@@ -653,22 +653,9 @@ html.hall-content-motion body.general-lobby-page .lobby-shell {
 body.general-lobby-page #lobbyToast.hall-motion-toast:not(.hidden) {
   transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
 }
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"]::before,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"]::after,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"] .lobby-hero::before,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"] .lobby-hero::after,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="exit"] .lobby-shell,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"]::before,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"]::after,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"] .lobby-hero::before,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"] .lobby-hero::after,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="commit"] .lobby-shell,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"]::before,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"]::after,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"] .lobby-hero::before,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"] .lobby-hero::after,
-html.hall-content-motion body.general-lobby-page[data-hall-motion-phase="enter"] .lobby-shell { opacity: 0 !important; }
-body.general-lobby-page[data-hall-motion-phase] #lobbyToast.hall-motion-toast:not(.hidden) { opacity: 0 !important; }
+/* The outgoing shell remains visible until its decoded replacement is ready.
+   A visual copy fades over the live incoming shell; never hide the live shell. */
+.hall-crossfade-snapshot { user-select: none; }
 @media (prefers-reduced-motion: reduce) {
   html.hall-content-motion body.general-lobby-page::before,
   html.hall-content-motion body.general-lobby-page::after,

@@ -852,6 +852,7 @@
     app.main = app.root.querySelector("#logicMain"); app.stage = app.root.querySelector("#logicStage"); app.stageSound = app.root.querySelector("#stageSound"); app.stageRail = app.root.querySelector("#stageRail"); app.stageProgress = app.root.querySelector("#stageProgress"); app.stageStatus = app.root.querySelector("#stageStatus"); app.battle = app.root.querySelector("#logicBattle"); app.board = app.root.querySelector("#logicBoard"); app.tutorial = app.root.querySelector("#logicTutorial"); app.status = app.root.querySelector("#logicStatus"); app.result = app.root.querySelector("#logicResult"); app.resultTitle = app.root.querySelector("#logicResultTitle"); app.resultText = app.root.querySelector("#logicResultText"); app.battleChip = app.root.querySelector("#battleChip"); app.currentStage = null;
     const battleBackButton = app.root.querySelector("#battleBack");
     battleBackButton?.removeAttribute("data-wp-battle-utility");
+    if (id === "sudoku") app.battle?.setAttribute("data-wp-battle-return-only", "");
     if (battleBackButton) battleBackButton.setAttribute("aria-label", text(battleReturnCopy));
     if (!(id === "code-breaker" || id === "sliding-15")) {
       app.stage?.removeAttribute("data-screen");

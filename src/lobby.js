@@ -1387,17 +1387,32 @@ function hallMotionImageSources(targetHall) {
 const hallImageWaitLimit = 700;
 const nextLobbyFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 
-async function waitForShellOpacity(shell, expected) {
-  const started = performance.now();
-  let settledFrames = 0;
-  while (performance.now() - started < 1200) {
-    await nextLobbyFrame();
-    const opacity = Number(getComputedStyle(shell).opacity);
-    const transitioning = shell.getAnimations().some(animation => animation.transitionProperty === 'opacity');
-    if (Math.abs(opacity - expected) < 0.01 && !transitioning) {
-      if (++settledFrames >= 2) return;
-    } else settledFrames = 0;
-  }
+function crossfadeHallShell(shell, motion) {
+  const rect = shell.getBoundingClientRect();
+  const snapshot = shell.cloneNode(true);
+  snapshot.classList.add('hall-crossfade-snapshot');
+  snapshot.setAttribute('aria-hidden', 'true');
+  snapshot.removeAttribute('aria-busy');
+  snapshot.inert = true;
+  // The copy is visual only: no duplicated media playback or live controls.
+  snapshot.querySelectorAll('video').forEach(video => video.remove());
+  snapshot.querySelectorAll('[id]').forEach(node => {
+    const original = document.getElementById(node.id);
+    if (original) {
+      const style = getComputedStyle(original);
+      for (const property of style) node.style.setProperty(property, style.getPropertyValue(property));
+    }
+    node.removeAttribute('id');
+  });
+  snapshot.querySelectorAll('[data-hall-tab]').forEach(node => node.removeAttribute('data-hall-tab'));
+  Object.assign(snapshot.style, {
+    position: 'fixed', top: `${rect.top}px`, left: `${rect.left}px`,
+    width: `${rect.width}px`, height: `${rect.height}px`, margin: '0',
+    pointerEvents: 'none', zIndex: '100', overflow: 'hidden'
+  });
+  document.body.append(snapshot);
+  motion.snapshot = snapshot;
+  return snapshot;
 }
 
 function waitForHallImages(motion, targetHall) {
@@ -1449,6 +1464,8 @@ function renderLobby(options = {}) {
   const entries = regions.filter(Boolean).map(node => ({ node, inert: node.inert }));
   const motion = { targetHall: activeHall, options: { ...options }, deferredRender: false, resetScroll: Boolean(options.resetScroll), generation: 0, wakeImageWait: null, quickPickWasDisabled: Boolean(quickPickBtn?.disabled) };
   motion.restore = () => {
+    motion.fade?.cancel();
+    motion.snapshot?.remove();
     entries.forEach(({node, inert}) => { node.inert = inert; });
     if (quickPickBtn) quickPickBtn.disabled = motion.quickPickWasDisabled;
     delete document.body.dataset.hallMotionPhase;
@@ -1489,28 +1506,29 @@ function renderLobby(options = {}) {
       motion.restore();
       return;
     }
-    await waitForShellOpacity(shell, 0);
+    // Keep the entire outgoing lobby visible while the destination images load.
     while (hallMotion === motion) {
       const targetHall = motion.targetHall;
       const generation = motion.generation;
       const imageState = await waitForHallImages(motion, targetHall);
       if (hallMotion !== motion) return;
       if (imageState === 'changed' || generation !== motion.generation) continue;
+      const snapshot = crossfadeHallShell(shell, motion);
       document.body.dataset.hallMotionPhase = 'commit';
       motion.commit(targetHall);
       delete document.body.dataset.hallTransitionTarget;
       document.body.dataset.hallMotionPhase = 'enter';
-      await nextLobbyFrame();
-      await nextLobbyFrame();
+      // Incoming content is fully visible underneath the fading outgoing copy.
+      // There is never an intermediate frame containing only the page background.
+      motion.fade = snapshot.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 240, easing: 'cubic-bezier(.2,.65,.3,1)', fill: 'forwards'
+      });
+      await motion.fade.finished.catch(() => {});
+      snapshot.remove();
+      motion.snapshot = null;
       if (hallMotion !== motion) return;
       delete document.body.dataset.hallMotionPhase;
-      await waitForShellOpacity(shell, 1);
-      if (hallMotion !== motion) return;
-      if (motion.targetHall !== document.body.dataset.gameHall) {
-        document.body.dataset.hallMotionPhase = 'exit';
-        await waitForShellOpacity(shell, 0);
-        continue;
-      }
+      if (motion.targetHall !== document.body.dataset.gameHall) continue;
       const deferredRender = motion.deferredRender;
       const deferredOptions = motion.options;
       hallMotion = null;

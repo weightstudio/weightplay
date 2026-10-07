@@ -70,7 +70,7 @@
     });
   }
   const locales = window.KITE_KEEPER_LOCALES || { en: {
-    title: "Kite Keeper", subtitle: "Choose the wind. Find the lantern dock.", guideTitle: "How to play", guide: "Choose one wind card at a time. Reach the lantern dock in exactly three gusts.", start: "Start a sky route", map: "Sky routes", settings: "Settings", close: "Close settings", language: "Language", sound: "Sound", on: "On", off: "Off", best: "Best checks: {count}", route1: "Meadow Lift", route2: "Reef Breeze", route3: "Snow Lantern", hint1: "East, north, east", hint2: "North, west, north", hint3: "East, south, east", routePrompt: "Read the dock marker, then choose the next wind.", dock: "Lantern dock", wind: "Wind cards", north: "North", east: "East", south: "South", west: "West", position: "Kite position: {x}, {y}", gusts: "Gusts: {count} / 3", choose: "Choose a wind card", selected: "Wind chosen: {name}", wrong: "That gust drifts away from the dock. Try the route again.", correct: "Perfect flight! The kite reached the lantern dock.", reset: "Reset route", resultTitle: "Route complete", resultText: "You guided the kite with {checks} checks.", next: "Next route", finished: "All sky routes complete", back: "Back to General lobby", ariaKite: "Kite flight board"
+    title: "Kite Keeper", subtitle: "Choose the wind. Find the lantern dock.", guideTitle: "How to play", guide: "Choose one wind card at a time. Reach the lantern dock in exactly three gusts.", start: "Start a sky route", map: "Sky routes", settings: "Settings", close: "Close settings", language: "Language", sound: "Sound", on: "On", off: "Off", best: "Best checks: {count}", route1: "Meadow Lift", route2: "Reef Breeze", route3: "Snow Lantern", hint1: "East, north, east", hint2: "North, west, north", hint3: "East, south, east", routePrompt: "Read the dock marker, then choose the next wind.", dock: "Lantern dock", wind: "Wind cards", north: "North", east: "East", south: "South", west: "West", position: "Kite position: {x}, {y}", gusts: "Gusts: {count} / 3", choose: "Choose a wind card", selected: "Wind chosen: {name}", wrong: "That gust drifts away from the dock. Try the route again.", correct: "Perfect flight! The kite reached the lantern dock.", reset: "Reset route", resultTitle: "Route complete", resultText: "You guided the kite with {checks} checks.", next: "Next route", finished: "All sky routes complete", back: "Back to General lobby", ariaKite: "Kite flight board", layoutLoadError: "Game screen failed to load. Reload to retry."
   } };
   const vectors = { north: [0, -1], east: [1, 0], south: [0, 1], west: [-1, 0] };
   const routeFixtures = [
@@ -554,7 +554,7 @@
   async function boot() {
     await waitForInterface7Assets();
     if (!await waitForBattleCanvasRuntime()) {
-      $("loading").textContent = "Kite Keeper could not load its game layout. Please reload to try again.";
+      $("loading").textContent = copy("layoutLoadError");
       $("loading").setAttribute("role", "alert");
       return;
     }

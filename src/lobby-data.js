@@ -4043,7 +4043,7 @@ const nextFiveGeneralCandidates = [
     id: "animal-trap-trail",
     title: { en: "Moonlit Trap Trail", "zh-Hant": "月光陷阱小徑", "zh-Hans": "月光陷阱小径", ja: "月明かりのトラップ道", ko: "달빛 함정 길", es: "Sendero de trampas lunar", "pt-BR": "Trilha das Armadilhas Lunares", fr: "Sentier des pièges lunaires", de: "Mondlicht-Fallenpfad", it: "Sentiero delle trappole lunari", ru: "Лунная тропа ловушек", hi: "चाँदनी जाल पथ", ar: "درب فخاخ ضوء القمر" },
     type: { en: "Trap-Learning Platform Trail", "zh-Hant": "陷阱學習平台闖關", "zh-Hans": "陷阱学习平台闯关", ja: "罠を学ぶ platform アクション", ko: "함정 학습 플랫폼 액션", es: "Plataformas y trampas", "pt-BR": "Plataformas e armadilhas", fr: "Plateformes et pièges", de: "Plattformen und Fallen", it: "Piattaforme e trappole", ru: "Платформы и ловушки", hi: "प्लेटफ़ॉर्म और जाल", ar: "منصات وفخاخ" },
-    description: { en: "Read the quiet path, test the next step, and reach the lantern without trusting every floor tile.", "zh-Hant": "讀懂安靜小徑，試探下一步，在不盲信每塊地板的情況下抵達提燈。", "zh-Hans": "读懂安静小径，试探下一步，在不盲信每块地板的情况下抵达提灯。", ja: "静かな道を読み、次の一歩を試し、すべての床を信じずランタンへたどり着こう。", ko: "조용한 길을 읽고 다음 발판을 시험하며 모든 바닥을 믿지 않고 랜턴에 도달하세요.", es: "Lee el camino, prueba el siguiente paso y llega al farol sin confiar en cada baldosa.", "pt-BR": "Leia o caminho, teste o próximo passo e chegue à lanterna sem confiar em todo piso.", fr: "Lis le chemin, teste le prochain pas et atteins la lanterne sans croire chaque dalle.", de: "Lies den stillen Weg, teste den nächsten Schritt und erreiche die Laterne ohne jedem Feld zu trauen.", it: "Leggi il sentiero, prova il passo successivo e raggiungi la lanterna senza fidarti di ogni piastrella.", ru: "Читайте тихую тропу, проверяйте следующий шаг и доберитесь до фонаря, не доверяя каждой плите.", hi: "रास्ता पढ़ें, अगला कदम जाँचें और हर फर्श पर भरोसा किए बिना लालटेन तक पहुँचें।", ar: "اقرأ الطريق الهادئ واختبر الخطوة التالية وبلغ الفانوس دون الثقة بكل بلاطة." },
+    description: {"en": "Read trap cues, use the optional Pulse to reveal the next hint, and reach the lantern across 30 authored stages. A mistake resets only the current room.", "zh-Hant": "讀取陷阱線索，選用脈衝短暫顯示下一個提示，在 30 個設計關卡中抵達燈籠。失誤只會重置目前房間。", "zh-Hans": "读懂陷阱线索，选用脉冲短暂显示下一个提示，在 30 个设计关卡中抵达灯笼。失误只会重置当前房间。", "ja": "罠の合図を読み、任意のパルスで次のヒントを短く示して、全30ステージを進みランタンへ。失敗しても現在の部屋だけがリセットされます。", "ko": "함정 신호를 읽고 선택 기능인 펄스로 다음 단서를 잠깐 확인하며 30개 스테이지를 지나 등불에 도달하세요. 실패해도 현재 방만 초기화됩니다.", "es": "Lee las señales de las trampas, usa Pulso como pista opcional y alcanza el farol en 30 fases diseñadas. Un error reinicia solo la sala actual.", "pt-BR": "Leia os sinais das armadilhas, use o Pulso como pista opcional e alcance a lanterna em 30 fases criadas à mão. Um erro reinicia apenas a sala atual.", "fr": "Lis les signaux des pièges, utilise l’Impulsion comme indice facultatif et rejoins la lanterne en 30 niveaux conçus à la main. Une erreur réinitialise seulement la salle actuelle.", "de": "Lies die Fallenhinweise, nutze den optionalen Puls als kurzen Tipp und erreiche die Laterne in 30 gestalteten Stufen. Ein Fehler setzt nur den aktuellen Raum zurück.", "it": "Leggi gli indizi delle trappole, usa l’Impulso come suggerimento facoltativo e raggiungi la lanterna in 30 livelli creati a mano. Un errore azzera solo la stanza attuale.", "ru": "Читайте сигналы ловушек, используйте необязательный Импульс как подсказку и доберитесь до фонаря на 30 продуманных этапах. Ошибка сбрасывает только текущую комнату.", "hi": "जाल के संकेत पढ़ें, वैकल्पिक पल्स से अगली झलक पाएँ और हाथ से बनाए 30 चरणों में लालटेन तक पहुँचें। गलती से केवल मौजूदा कमरा रीसेट होता है।", "ar": "اقرأ إشارات الفخاخ، واستخدم النبضة الاختيارية كتلميح، واصل إلى الفانوس عبر 30 مرحلة مصممة. الخطأ يعيد الغرفة الحالية فقط."},
     meta: { en: ["Trap Tells", "4 Chapters", "Retry Learning"], "zh-Hant": ["陷阱提示", "4 個章節", "死亡學習"], "zh-Hans": ["陷阱提示", "4 个章节", "死亡学习"] },
     art: { kind: "image", background: "assets/animal-trap-trail-cover.webp", hideHero: true },
     previewVideo: "assets/previews/animal-trap-trail-battle.webm",
@@ -4569,7 +4569,21 @@ const animalEchoOrchardPlanned = {
   status: "planned",
   statusText: { ...ownerPreviewStatusText },
   type: marketFiveLocalized(["Sequence Memory Puzzle", "序列記憶益智", "序列记忆益智", "順番記憶パズル", "순서 기억 퍼즐", "Puzle de memoria secuencial", "Puzzle de memória sequencial", "Puzzle de mémoire séquentielle", "Sequenz-Merkpuzzle", "Puzzle di memoria sequenziale", "Пазл на запоминание последовательности", "पहचान क्रम पहेली", "لغز ذاكرة التسلسل"]),
-  description: marketFiveLocalized(["Listen to a chime-fruit sequence, replay it with four orchard buttons, and help the keeper tune each moonlit grove.", "聽見鐘果序列，用四個果實按鈕重現它，幫果園守護者調好每座月光果園。", "听见钟果序列，用四个果实按钮重现它，帮果园守护者调好每座月光果园。", "鐘の実の順番を聞き、4つの果実ボタンで再現して月明かりの果樹園を整えよう。", "차임 열매 순서를 듣고 네 과일 버튼으로 재현해 달빛 과수원을 가꿔 보세요.", "Escucha una secuencia de frutos sonoros, repítela con cuatro botones y afina cada huerto bajo la luna.", "Ouça uma sequência de frutos sonoros, repita-a com quatro botões e afine cada pomar ao luar.", "Écoute une séquence de fruits carillonnants, répète-la avec quatre boutons et accorde chaque verger au clair de lune.", "Hör dir eine Klangfruchtfolge an, wiederhole sie mit vier Knöpfen und stimme jeden Mondgarten.", "Ascolta una sequenza di frutti sonori, ripetila con quattro pulsanti e accorda ogni frutteto al chiaro di luna.", "Слушайте последовательность звенящих плодов, повторяйте её четырьмя кнопками и настраивайте лунные сады.", "ध्वनि-फलों का क्रम सुनें, चार बटनों से दोहराएँ और हर चाँदनी बाग़ को सँवारें।", "استمع إلى تسلسل ثمار رنانة، وكرره بأربعة أزرار واضبط كل بستان مضاء بالقمر."]),
+  description: marketFiveLocalized([
+    "Watch four colored chime-fruits light up, then tap them in the same order. Complete each sequence to open the next of 30 stages.",
+    "看著四種彩色鐘果依序發光，再按相同順序點擊。完成序列即可解鎖下一關，共 30 關。",
+    "看着四种彩色鸣果依次发光，再按相同顺序点击。完成序列即可解锁下一关，共 30 关。",
+    "4色のチャイムフルーツが光る順番を見て、同じ順でタップ。各パターンをクリアすると次のステージが開き、全30ステージに挑戦できます。",
+    "네 가지 색의 차임 열매가 빛나는 순서를 보고 같은 순서로 탭하세요. 패턴을 맞히면 다음 스테이지가 열리며 총 30개를 진행합니다.",
+    "Mira cómo se iluminan cuatro frutas sonoras y tócalas en el mismo orden. Cada secuencia completada abre la siguiente de 30 etapas.",
+    "Veja quatro frutas sonoras se acenderem e toque-as na mesma ordem. Cada sequência concluída abre a próxima das 30 fases.",
+    "Regarde quatre fruits-carillons s’allumer et touche-les dans le même ordre. Chaque séquence réussie ouvre l’étape suivante parmi les 30.",
+    "Sieh vier Klangfrüchte aufleuchten und tippe sie in derselben Reihenfolge an. Jede gelöste Folge öffnet die nächste der 30 Stufen.",
+    "Guarda quattro frutti sonori accendersi e toccali nello stesso ordine. Ogni sequenza completata apre il livello successivo, fino a 30 livelli.",
+    "Смотрите, как загораются четыре звенящих плода, и нажимайте на них в том же порядке. Каждая разгаданная последовательность открывает следующий этап из 30.",
+    "चार झंकार वाले फलों के जलने का क्रम देखें और उन्हें उसी क्रम में टैप करें। हर सही क्रम अगले चरण को खोलता है; कुल 30 चरण हैं।",
+    "راقب أربع ثمار رنانة وهي تضيء، ثم انقر عليها بالترتيب نفسه. كل تسلسل صحيح يفتح المرحلة التالية من أصل 30 مرحلة."
+  ]),
   meta: marketFiveLocalized([["3 Groves", "Listen + Replay", "Calm Retry"], ["3 座果園", "聆聽＋重現", "平靜重試"], ["3 座果园", "聆听＋重现", "平静重试"], ["3つの果樹園", "聞いて再現", "穏やかな再挑戦"], ["3 과수원", "듣고 재현", "차분한 재시도"], ["3 huertos", "Escuchar y repetir", "Reintento amable"], ["3 pomares", "Ouvir e repetir", "Nova tentativa calma"], ["3 vergers", "Écouter et répéter", "Reprise douce"], ["3 Gärten", "Hören + Wiederholen", "Ruhiger Neustart"], ["3 frutteti", "Ascolta e ripeti", "Riprova calma"], ["3 сада", "Слушать и повторять", "Спокойный повтор"], ["3 बाग़", "सुनें और दोहराएँ", "शांत पुनःप्रयास"], ["3 بساتين", "استمع وكرر", "إعادة هادئة"]]),
   categories: ["Puzzle", "Memory", "Pattern Recognition", "Family", "Animal"],
   skills: ["Working Memory", "Sequencing", "Focus"],
@@ -7129,14 +7143,7 @@ window.WONDER_LOBBY.games.push({
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("block-apex");
 
-// Owner-requested Castle Cascade publication opening identity. Keep the exact
-// game internal and planned until its versioned acceptance and release gates pass.
-const castleCascadeStatusText = {
-  __localizedExact: true,
-  en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
-  ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
-  de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
-};
+// Owner-authorized Castle Cascade public-release candidate.
 const castleCascadeTitle = {
   __localizedExact: true,
   en: "Castle Cascade", "zh-Hant": "王城連鎖", "zh-Hans": "王城连锁",
@@ -7216,10 +7223,8 @@ const castleCascadeMeta = {
   ar: ["30 مرحلة", "6 فصول", "تركيبات قطع القوة"],
 };
 window.WONDER_LOBBY.games.push({
-  id: "castle-cascade", audience: "general", status: "planned", internalOnly: true,
-  internalTrial: "/games/castle-cascade/index.html?trial=1",
+  id: "castle-cascade", audience: "general", status: "playable",
   title: castleCascadeTitle,
-  statusText: castleCascadeStatusText,
   type: castleCascadeType,
   categories: ["Puzzle", "Strategy", "Family"],
   skills: ["Pattern Recognition", "Planning", "Focus"],
@@ -7230,6 +7235,7 @@ window.WONDER_LOBBY.games.push({
   scoreBandsByAge: {},
   relatedGameRules: { gameIds: ["animal-color-link", "block-blast"], requirePlayable: true, basis: ["Pattern Recognition", "Planning"] },
   href: "games/castle-cascade/",
+  previewVideo: "assets/previews/castle-cascade-battle.webm",
   meta: castleCascadeMeta,
   art: { kind: "image", background: "assets/castle-cascade-poster.webp", hideHero: true },
 });

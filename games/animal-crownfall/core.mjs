@@ -131,3 +131,11 @@ export function solve(start,{limit=60000}={}) {
   }
   return {status:'dead',moves:[],visited:queue.length};
 }
+export function recoveryUndoCount(history,{maxDepth=12,limit=6000}={}) {
+  const depth=Math.min(history.length,maxDepth);
+  for(let offset=0;offset<depth;offset++) {
+    const candidate=history[history.length-1-offset];
+    if(solve(candidate,{limit}).status==='solved')return offset+1;
+  }
+  return null;
+}

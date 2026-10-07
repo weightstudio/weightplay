@@ -12,3 +12,6 @@ body:not([data-screen="main"]) [data-wp-game-guide]{display:none!important}
 .clock-icon{display:inline-block;flex:none;width:16px;height:16px;border:2px solid currentColor;border-radius:50%;position:relative;margin:3px}
 .clock-icon::after{content:"";position:absolute;left:5px;top:2px;width:5px;height:5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor}
 .regen-icon{position:relative}.regen-icon::after{content:"+";position:absolute;right:-2px;bottom:-2px;display:grid;place-items:center;width:11px;height:11px;border-radius:3px;background:#c9ffd8;color:#124d35;font:bold 12px/1 system-ui;text-shadow:none}
+/* Keep the Stage carousel and Battle actions compact within the shared frame. */
+.rail{padding:0 calc(50% - 108px)}.rail>button{top:calc(38% - 78px)}.stage-card{flex-basis:216px;width:216px;height:156px;padding:12px}.stage-card h3{font-size:19px;margin:8px 0}
+.battle-area{grid-template-rows:40px minmax(0,1fr) 32px 72px}.actions{grid-template-columns:repeat(4,72px);height:72px}.actions button{height:56px}

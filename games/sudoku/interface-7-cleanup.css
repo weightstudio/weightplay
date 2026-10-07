@@ -10,6 +10,15 @@ body[data-logic-game="sudoku"] #logicMain .logic-hero {
   align-items: center;
 }
 
+/* The shared frame gives Main copy a fixed-height column and centers its
+   contents. In short wide viewports, top-align Sudoku's copy so Start is
+   reachable while the poster and document flow keep their shared geometry. */
+@media (min-width: 700px) and (max-height: 520px) {
+  body[data-logic-game="sudoku"] .wp-standard-main-copy {
+    align-content: start;
+  }
+}
+
 body[data-logic-game="sudoku"] #logicBattle #battleChip {
   min-width: 0;
   max-width: 100%;

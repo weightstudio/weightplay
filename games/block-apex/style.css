@@ -77,6 +77,28 @@
 .apex-stage-storage-warning{position:absolute;bottom:0;inset-inline:8px;margin:0;padding:4px 8px;background:var(--wp-ui-surface);color:var(--wp-ui-text);font-size:12px;z-index:2;pointer-events:none}
 .apex-boot-error{position:fixed;bottom:12px;inset-inline:12px;z-index:100;background:#17243a;color:#fff;padding:16px;border:2px solid #f5c84c}
 .apex-boot-error a{color:#f5c84c}
+@media(max-width:480px){
+ body[data-wp-game-id="block-apex"] .wp-tutorial-card{box-sizing:border-box;width:min(100%,430px)}
+}
+@media(orientation:landscape) and (max-height:420px){
+ .apex-management{min-height:0;padding:8px}
+ .apex-resource-summary,.apex-tuning-help{margin-bottom:8px}
+ .apex-collection{gap:8px}
+ .apex-item{min-height:0;padding:8px}
+ .apex-item [data-wp-item-content]{gap:4px}
+ .apex-item [data-wp-item-content] img{width:84px;height:84px}
+ .apex-item [data-wp-item-content] .apex-upgrade-icon{width:52px;height:52px}
+ .apex-item meter{height:12px}
+}
+@media(orientation:landscape) and (max-height:540px){
+ body[data-wp-game-id="block-apex"] .wp-tutorial-backdrop{padding:8px}
+ body[data-wp-game-id="block-apex"][data-wp-frame-tutorial="true"] .wp-tutorial-card{box-sizing:border-box;width:min(96vw,760px);max-width:100%;max-height:calc(100svh - 16px);padding:10px;gap:8px;border-radius:16px}
+ body[data-wp-game-id="block-apex"] .wp-tutorial-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ body[data-wp-game-id="block-apex"] .wp-tutorial-step{min-height:0;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:8px}
+ body[data-wp-game-id="block-apex"] .wp-tutorial-icon{width:40px;height:40px;border-radius:12px}
+ body[data-wp-game-id="block-apex"] .wp-tutorial-copy b{font-size:.9rem}
+ body[data-wp-game-id="block-apex"] .wp-tutorial-copy span{font-size:.78rem;line-height:1.2}
+}
 @media(orientation:landscape) and (max-height:540px){
  .apex-meter-panel{grid-template-columns:repeat(3,auto);align-items:center;gap:8px;padding:4px 8px}
  .apex-meter-panel>span:not(:last-child){grid-template-columns:auto 70px;gap:4px}
@@ -89,3 +111,15 @@
  .apex-modal p,.apex-goal-results{font-size:13px;margin-bottom:8px}
 }
 @media(prefers-reduced-motion:reduce){.apex-drive-controls button{transition:none}}
+/* At the governed 844px landscape width, scale the registered poster and fit
+   its adjacent copy block so the primary action stays inside the frame. */
+@media(min-width:700px) and (max-width:900px){
+ html body [data-wp-frame="2"] [data-wp-frame-content="main"],
+ html body #mainContent{--wp-main-poster-size:260px!important;grid-template-columns:260px minmax(0,1fr)!important;height:auto!important;min-height:0!important}
+ html body [data-wp-frame="2"] [data-wp-frame-poster],
+ html body #mainContent [data-wp-frame-poster]{width:260px!important;height:260px!important;min-width:260px!important;max-width:260px!important;min-height:260px!important;max-height:260px!important}
+ html body [data-wp-frame="2"] [data-wp-frame-poster]>img,
+ html body #mainContent [data-wp-frame-poster]>img{width:260px!important;height:260px!important;min-width:260px!important;max-width:260px!important;min-height:260px!important;max-height:260px!important}
+ html body [data-wp-frame="2"] [data-wp-frame-copy],
+ html body #mainContent [data-wp-frame-copy]{height:auto!important;min-height:0!important;gap:8px!important}
+}

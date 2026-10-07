@@ -1423,6 +1423,144 @@ html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generate
   grid-column:2!important;grid-row:1!important;min-width:0!important;width:100%!important;margin:0!important;text-align:center!important;
 }
 
+/* Logical Stage/Battle Canvases scale their complete owning scene. Keep the
+   shared 48px physical control track by expressing its header and controls in
+   inverse-scaled logical units; the following play content then begins below
+   the same physical track without moving or replacing the game's Back node. */
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header {
+  --wp-frame-physical-control-size:calc(48px / var(--wp-stage-canvas-scale,1));
+  --wp-frame-play-header-height:var(--wp-frame-physical-control-size);
+  grid-template-columns:var(--wp-frame-physical-control-size) minmax(0,1fr) var(--wp-frame-physical-control-size)!important;
+}
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header:has(> .wp-stage-header-action) {
+  grid-template-columns:var(--wp-frame-physical-control-size) minmax(0,1fr) minmax(96px,auto) var(--wp-frame-physical-control-size)!important;
+}
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > [data-wp-return="stage"],
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > .wp-shell-settings,
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > button:not(.wp-stage-header-action),
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > [data-wp-shell-info] {
+  box-sizing:border-box!important;
+  width:var(--wp-frame-physical-control-size)!important;
+  min-width:var(--wp-frame-physical-control-size)!important;
+  max-width:var(--wp-frame-physical-control-size)!important;
+  height:var(--wp-frame-physical-control-size)!important;
+  min-height:var(--wp-frame-physical-control-size)!important;
+  max-height:var(--wp-frame-physical-control-size)!important;
+}
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > .wp-shell-settings-button {
+  width:var(--wp-frame-physical-control-size)!important;
+  min-width:var(--wp-frame-physical-control-size)!important;
+  height:var(--wp-frame-physical-control-size)!important;
+  min-height:var(--wp-frame-physical-control-size)!important;
+}
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > .wp-shell-settings > .wp-shell-settings-button {
+  width:var(--wp-frame-physical-control-size)!important;
+  min-width:var(--wp-frame-physical-control-size)!important;
+  height:var(--wp-frame-physical-control-size)!important;
+  min-height:var(--wp-frame-physical-control-size)!important;
+}
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > [data-wp-return="stage"]:hover,
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > button[data-wp-return="stage"]:hover {
+  transform:none!important;
+}
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] :is(button,a)[data-wp-return="stage"] {
+  box-sizing:border-box!important;
+  width:calc(48px / var(--wp-stage-canvas-scale,1))!important;
+  min-width:calc(48px / var(--wp-stage-canvas-scale,1))!important;
+  max-width:calc(48px / var(--wp-stage-canvas-scale,1))!important;
+  height:calc(48px / var(--wp-stage-canvas-scale,1))!important;
+  min-height:calc(48px / var(--wp-stage-canvas-scale,1))!important;
+  max-height:calc(48px / var(--wp-stage-canvas-scale,1))!important;
+}
+html[data-wp-shared-interface="7"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] :is(button,a)[data-wp-return="stage"]:hover {
+  transform:none!important;
+}
+
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] {
+  --wp-frame-physical-control-size:calc(48px / var(--wp-battle-canvas-scale,1));
+  --wp-frame-play-header-height:var(--wp-frame-physical-control-size);
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] .wp-battle-shell-header {
+  height:var(--wp-frame-physical-control-size)!important;
+  min-height:var(--wp-frame-physical-control-size)!important;
+}
+/* Battle play tracks must subtract the physical header's logical size from
+   their fixed logical Canvas. A viewport-height row here remeasures the
+   physical screen after the parent has already been scaled, pushing actions
+   below the owning Canvas at compact landscape and tall desktop sizes. */
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas].logic-battle-screen > .logic-battle-wrap {
+  height:calc(100% - var(--wp-frame-play-header-height,48px))!important;
+  min-height:0!important;
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] .wp-battle-shell-header:has(> [data-wp-battle-utility]) {
+  grid-template-columns:var(--wp-frame-physical-control-size) minmax(0,1fr) var(--wp-frame-physical-control-size)!important;
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] .wp-battle-shell-header > [data-wp-return="battle"],
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] .wp-battle-shell-header > [data-wp-battle-utility] {
+  box-sizing:border-box!important;
+  flex-basis:var(--wp-frame-physical-control-size)!important;
+  width:var(--wp-frame-physical-control-size)!important;
+  min-width:var(--wp-frame-physical-control-size)!important;
+  max-width:var(--wp-frame-physical-control-size)!important;
+  height:var(--wp-frame-physical-control-size)!important;
+  min-height:var(--wp-frame-physical-control-size)!important;
+  max-height:var(--wp-frame-physical-control-size)!important;
+  font-size:calc(20px / var(--wp-battle-canvas-scale,1))!important;
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] .wp-battle-shell-header > [data-wp-return="battle"]:hover {
+  transform:none!important;
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] :is(button,a)[data-wp-return="battle"] {
+  box-sizing:border-box!important;
+  width:calc(48px / var(--wp-battle-canvas-scale,1))!important;
+  min-width:calc(48px / var(--wp-battle-canvas-scale,1))!important;
+  max-width:calc(48px / var(--wp-battle-canvas-scale,1))!important;
+  height:calc(48px / var(--wp-battle-canvas-scale,1))!important;
+  min-height:calc(48px / var(--wp-battle-canvas-scale,1))!important;
+  max-height:calc(48px / var(--wp-battle-canvas-scale,1))!important;
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] :is(button,a)[data-wp-return="battle"]:hover {
+  transform:none!important;
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] .wp-generated-battle-header {
+  inset:calc(8px / var(--wp-battle-canvas-scale,1)) auto auto calc(8px / var(--wp-battle-canvas-scale,1))!important;
+  width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  min-width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  max-width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  min-height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  max-height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+}
+html[data-wp-shared-interface="7"] body.wp-logical-battle-active
+  [data-wp-logical-battle-canvas] .wp-generated-battle-header > [data-wp-return="battle"] {
+  width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  min-width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  min-height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+}
+
 .wp-stage-shell-header > [data-wp-shell-info] {
   grid-column:2!important;grid-row:1!important;
   box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:none!important;

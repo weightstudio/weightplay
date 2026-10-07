@@ -33,7 +33,7 @@
   }
 
 
-  const version = "20260921-interface7-single-frame-v2";
+  const version = "20261006-interface7-physical-header-targets-v3";
   const assetUrl = (name) => new URL(name, `${location.origin}/src/`).href;
 
   const addStylesheet = (name) => {
@@ -116,7 +116,7 @@
     }
     window.__weightPlayInterface7PosterRegistryRequested = true;
     const script = document.createElement("script");
-    script.src = assetUrl("interface7-poster-registry.js?v=20260911-authored-posters-complete");
+    script.src = assetUrl("interface7-poster-registry.js?v=20261007-kite-keeper-poster-path-fix");
     script.dataset.wpSharedInterface = "7";
     script.addEventListener("load", () => {
       window.dispatchEvent(new Event("weightplay-interface7-poster-registry-ready"));

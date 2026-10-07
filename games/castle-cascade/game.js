@@ -7,7 +7,7 @@ import {
   objectiveCounts,
   playSwap,
 } from "./cascade-core.js?v=20261001-castle-cascade-v15-i8";
-import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261001-castle-cascade-v14-i8";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261003-castle-cascade-v16-i8";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
@@ -23,7 +23,7 @@ const number = (value) => Number(value).toLocaleString(locale);
 let locale = readLocale();
 let copy = window.CC_I18N?.[locale] || window.CC_I18N?.en;
 let unlocked = readUnlocked();
-let selectedStage = 0;
+let selectedStage = unlocked - 1;
 let gameState = null;
 let selectedCell = -1;
 let focusCell = 40;
@@ -36,6 +36,44 @@ let boardAvailable = false;
 let pendingResultStatus = null;
 let leaveReturnFocus = null;
 let initialObjectiveKeys = [];
+let tutorialSurface = null;
+let tutorialExit = null;
+
+function cancelTutorialExit() {
+  if (!tutorialExit) return;
+  tutorialExit.animation.cancel();
+  tutorialExit.node.remove();
+  tutorialExit = null;
+}
+
+// The shared tutorial owns controls and close/start semantics. Retain only an
+// inert visual exit after it removes the original surface; never clone IDs or
+// replay its handlers. Scene exit/new tutorial cancels this finite effect.
+window.addEventListener("weightplay:tutorial-open", (event) => {
+  if (event.detail?.gameId !== GAME_ID) return;
+  cancelTutorialExit();
+  tutorialSurface = document.querySelector(".wp-tutorial-backdrop");
+});
+window.addEventListener("weightplay:tutorial-close", (event) => {
+  if (event.detail?.gameId !== GAME_ID) return;
+  const node = tutorialSurface;
+  tutorialSurface = null;
+  if (!node || node.isConnected || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  cancelTutorialExit();
+  node.inert = true;
+  node.setAttribute("aria-hidden", "true");
+  node.removeAttribute("role");
+  node.removeAttribute("aria-modal");
+  node.style.pointerEvents = "none";
+  node.classList.replace("wp-tutorial-backdrop", "castle-tutorial-exit");
+  document.body.append(node);
+  const animation = node.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: "ease-out", fill: "forwards" });
+  const exit = tutorialExit = { node, animation };
+  animation.finished.then(() => {
+    node.remove();
+    if (tutorialExit === exit) tutorialExit = null;
+  }, () => {});
+});
 
 function readStorage(key) {
   try { return localStorage.getItem(key); } catch { return null; }
@@ -122,6 +160,7 @@ function playSound(id) {
 }
 
 function screen(id) {
+  cancelTutorialExit();
   screenEpoch += 1;
   busy = false;
   for (const selector of SELECTORS) {
@@ -131,11 +170,20 @@ function screen(id) {
   document.body.dataset.screen = id;
   document.querySelector("#result").hidden = true;
   document.querySelector("#leaveConfirm").hidden = true;
+  document.querySelector("#battle .battle-content").inert = false;
+  document.querySelector("#battle .battle-header").inert = false;
   pendingResultStatus = null;
   leaveReturnFocus = null;
-  document.dispatchEvent(new Event("weightplay:shell-sync"));
-  document.dispatchEvent(new Event("weightplay:stage-sync"));
-  document.dispatchEvent(new Event("weightplay:battle-sync"));
+  // Shared scene controllers subscribe on window. A non-bubbling document
+  // event left their previous scene ownership in place until an observer ran.
+  window.dispatchEvent(new Event("weightplay:shell-sync"));
+  window.dispatchEvent(new Event("weightplay:stage-sync"));
+  window.dispatchEvent(new Event("weightplay:battle-sync"));
+  window.WeightPlayBattleCanvas?.sync?.();
+  window.WeightPlayScreenFrame?.sync?.();
+  // Complete the shared artwork writer in this scene transition, rather than
+  // exposing its previous hidden-scene state until its observer's next frame.
+  window.WeightPlayStageArtwork?.sync?.();
 
   if (id !== "battle") {
     disposeRenderer();
@@ -146,10 +194,6 @@ function screen(id) {
     renderAccessibleBoard();
     renderBattleHud();
   }
-  requestAnimationFrame(() => {
-    window.WeightPlayBattleCanvas?.sync?.();
-    window.WeightPlayScreenFrame?.sync?.();
-  });
   if (id === "battle") {
     window.dispatchEvent(new CustomEvent("weightplay:battle-open", { detail: { screen: id, gameId: GAME_ID } }));
   }
@@ -235,6 +279,7 @@ function renderStageList() {
   const activeCardHadFocus = rail.contains(document.activeElement);
   rail.replaceChildren();
   document.querySelector("#progress").textContent = text("progress", { count: number(unlocked) });
+  document.querySelector("#mainProgress").textContent = text("progress", { count: number(unlocked) });
   for (let index = 0; index < LEVELS.length; index += 1) {
     const level = LEVELS[index];
     const arcIndex = Math.floor(index / 5);
@@ -246,6 +291,7 @@ function renderStageList() {
     card.className = `stage-card${index === selectedStage ? " selected" : ""}`;
     card.dataset.stageIndex = String(index);
     card.disabled = index >= unlocked;
+    if (index === selectedStage && !card.disabled) card.dataset.wpStageRecommended = "true";
     card.setAttribute("aria-label", text("stageAria", { stage: stageText, objective, moves: moveText }));
     card.setAttribute("aria-current", index === selectedStage ? "step" : "false");
 
@@ -302,7 +348,14 @@ function renderBattleHud(board = gameState?.board) {
     value.className = "move-number"; caption.className = "move-caption";
     moves.append(value, caption);
   }
-  moves.querySelector("b").textContent = number(gameState.moves);
+  const moveNumber = moves.querySelector("b");
+  const nextMoves = number(gameState.moves);
+  if (moveNumber.textContent !== nextMoves) {
+    moveNumber.textContent = nextMoves;
+    for (const animation of moveNumber.getAnimations()) animation.cancel();
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      moveNumber.animate([{ opacity: .55 }, { opacity: 1 }], { duration: 150, easing: "ease-out" });
+  }
   moves.querySelector("span").textContent = text("movesLeft", { count: "" }).trim();
   moves.setAttribute("aria-label", text("movesLeft", { count: number(gameState.moves) }));
   moves.dataset.low = String(gameState.moves <= 5);
@@ -621,15 +674,17 @@ function handleKeydown(event) {
 }
 
 function requestLeaveBattle() {
-  if (busy) return;
-  if (!gameState || gameState.status !== "playing" || !document.querySelector("#result").hidden) {
+  if (!gameState || (!busy && gameState.status !== "playing") || !document.querySelector("#result").hidden) {
     screen("stage");
     renderStageList();
     return;
   }
   const dialog = document.querySelector("#leaveConfirm");
   if (!dialog.hidden) return;
-  leaveReturnFocus = document.activeElement;
+  leaveReturnFocus = document.querySelector('#battle [data-back]');
+  renderer?.setPaused(true);
+  document.querySelector("#battle .battle-content").inert = true;
+  document.querySelector("#battle .battle-header").inert = true;
   dialog.hidden = false;
   document.querySelector("#continueBattle").focus({ preventScroll: true });
 }
@@ -638,6 +693,9 @@ function closeLeaveConfirmation() {
   const dialog = document.querySelector("#leaveConfirm");
   if (dialog.hidden) return;
   dialog.hidden = true;
+  document.querySelector("#battle .battle-content").inert = false;
+  document.querySelector("#battle .battle-header").inert = false;
+  renderer?.setPaused(false);
   const pending = pendingResultStatus;
   pendingResultStatus = null;
   const returnFocus = leaveReturnFocus;

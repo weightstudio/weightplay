@@ -1,8 +1,8 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {GroundCues} from './ground-cues.js';
-import {axePose,chopBody,ease,enemyWind,enemyStroke} from './combat-pose.js';
+import {axePose,chopBody,ease,enemyWind,enemyStroke} from './combat-pose.js?v=20261003-wildwood-axe-v12a';
 const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555};
-const materialCells={orange:[0,0],cream:[1,0],leaf:[2,0],moss:[3,0],wood:[0,1],teal:[2,1],dark:[3,3],gold:[0,2],stone:[3,2],white:[2,2],cyan:[0,3],purple:[1,3],red:[2,3]};
+const materialCells={orange:[0,0],cream:[1,0],leaf:[2,0],moss:[3,0],wood:[0,1],teal:[2,1],dark:[3,3],gold:[0,2],steel:[1,2],edge:[2,2],stone:[3,2],white:[2,2],cyan:[0,3],purple:[1,3],red:[2,3]};
 export class WildwoodWorld {
  constructor(canvas,sim){
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -50,19 +50,27 @@ export class WildwoodWorld {
   if(hero){
    this.box(g,'teal',[0,1,.03],[.73,.16,.64]);this.box(g,'teal',[-.2,.75,.3],[.22,.4,.12]);this.box(g,'gold',[0,.49,.27],[.13,.12,.06]);
    const tail=new THREE.Group();tail.position.set(0,.6,-.25);tail.rotation.x=-.65;g.add(tail);for(let i=0;i<5;i++)this.box(tail,i%2?'dark':'orange',[0,0,-i*.28],[.36,.36,.35]);
-   elbow=new THREE.Group();elbow.position.y=-.28;arm.add(elbow);
+   elbow=new THREE.Group();elbow.position.set(0,-.20,0);arm.add(elbow);
    this.box(elbow,'orange',[0,-.11,0],[.23,.25,.25]);this.box(elbow,'dark',[0,-.24,.02],[.25,.16,.27]);
-   // Original compact splitting axe: dark eye/poll, stepped forged cheek,
-   // broad pale cutting edge, wooden haft and three teal grip wraps.
-   this.box(elbow,'wood',[0,-.34,.10],[.12,.67,.13]);
-   for(let i=0;i<3;i++)this.box(elbow,'teal',[0,-.19-i*.075,.10],[.145,.045,.15]);
-   this.box(elbow,'gold',[0,-.45,.10],[.15,.07,.16]);
-   this.box(elbow,'dark',[0,-.53,.08],[.22,.25,.28]);
-   this.box(elbow,'stone',[0,-.52,.24],[.20,.34,.26]);
-   this.box(elbow,'stone',[0,-.56,.36],[.16,.43,.17]);
-   this.box(elbow,'white',[0,-.56,.465],[.09,.49,.075]);
-   this.box(elbow,'gold',[.115,-.51,.10],[.025,.075,.075]);
-   bladeTip=new THREE.Object3D();bladeTip.position.set(0,-.56,.50);elbow.add(bladeTip);
+   // Keep the wood shaft, metal socket and flared cutting head in one angled
+   // assembly. Its forward rake exposes the blade to the high-angle camera
+   // while the lower haft remains visibly in Brindle's weapon hand.
+   const axe=new THREE.Group();axe.position.set(0,.08,.45);axe.rotation.x=.82;elbow.add(axe);
+   this.box(axe,'wood',[0,0,0],[.13,.92,.16]);
+   for(let i=0;i<3;i++)this.box(axe,'teal',[0,-.28+i*.08,0],[.17,.045,.19]);
+   this.box(axe,'gold',[0,-.38,.015],[.19,.10,.20]);
+   // A compact poll and socket overlap the haft; stepped steel cheeks widen
+   // into a bright, single-bit edge with readable bevel and fitted hardware.
+   this.box(axe,'dark',[-.12,.39,.13],[.29,.24,.29]);
+   this.box(axe,'steel',[.03,.39,.13],[.38,.36,.32]);
+   this.box(axe,'steel',[.40,.39,.14],[.54,.43,.32]);
+   this.box(axe,'steel',[.88,.39,.14],[.52,.54,.30]);
+   const blade=this.box(axe,'steel',[1.36,.39,.14],[.64,.64,.28]);blade.rotation.z=-.10;
+   const edge=this.box(axe,'edge',[1.70,.39,.25],[.24,.58,.27]);edge.rotation.z=-.10;
+   const edgeFace=this.box(axe,'edge',[1.71,.39,.37],[.08,.50,.045]);edgeFace.rotation.z=-.10;
+   this.box(axe,'gold',[.06,.40,.31],[.085,.085,.06]);
+   this.box(axe,'cyan',[.68,.40,.315],[.16,.12,.055]);
+   bladeTip=new THREE.Object3D();bladeTip.position.set(1.82,.15,.384);axe.add(bladeTip);
    this.box(g,'gold',[-.43,.4,.2],[.18,.23,.18]);
   }else if(['shield','ironbark','stumpback'].includes(type)){
    this.box(arm,'wood',[0,-.1,.35],[.7,.95,.18]);this.box(arm,'gold',[0,-.1,.46],[.55,.14,.04]);this.box(arm,'cyan',[0,-.1,.49],[.17,.3,.04]);
@@ -84,7 +92,7 @@ export class WildwoodWorld {
   }
   this.root.add(g);return g;
  }
- batch(color){if(this.batches.has(color))return this.batches.get(color);const atlas=color!=='ground'?this.materialAtlas:null;const material=new THREE.MeshStandardMaterial({color:0xffffff,map:color==='ground'?this.ground:atlas,roughness:.72,metalness:['gold','white'].includes(color)?.28:.03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24});if(atlas){const [column,row]=materialCells[color]||[3,3],inset=.0035,scale=.243,u=column*.25+inset,v=(3-row)*.25+inset;material.onBeforeCompile=shader=>{shader.vertexShader=shader.vertexShader.replace('#include <uv_vertex>',`#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = vMapUv * vec2(${scale}, ${scale}) + vec2(${u}, ${v});\n#endif`);};material.customProgramCacheKey=()=>`wildwood-material-atlas-${color}`;}const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;}
+ batch(color){if(this.batches.has(color))return this.batches.get(color);const steel=color==='steel',edge=color==='edge',atlas=color!=='ground'&&!edge?this.materialAtlas:null;const material=new THREE.MeshStandardMaterial({color:edge?0xe6edf2:0xffffff,map:color==='ground'?this.ground:atlas,roughness:steel?.38:edge?.24:.72,metalness:steel?.58:edge?.68:['gold','white'].includes(color)?.28:.03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24});if(atlas){const [column,row]=materialCells[color]||[3,3],inset=.0035,scale=.243,u=column*.25+inset,v=(3-row)*.25+inset;material.onBeforeCompile=shader=>{shader.vertexShader=shader.vertexShader.replace('#include <uv_vertex>',`#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = vMapUv * vec2(${scale}, ${scale}) + vec2(${u}, ${v});\n#endif`);};material.customProgramCacheKey=()=>`wildwood-material-atlas-${color}`;}const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;}
  resize(){const r=this.canvas.getBoundingClientRect();this.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);const aspect=r.width/Math.max(1,r.height);const halfH=Math.max(4.8,4.8/aspect),halfW=halfH*aspect;Object.assign(this.camera,{left:-halfW,right:halfW,top:halfH,bottom:-halfH});this.camera.updateProjectionMatrix();}
  consume(events){for(const e of events)if(['hit','hurt','defeat','wardBlock','pulse','mastery','pickup'].includes(e.type)){
    if(e.type==='defeat'&&['enemy','boss'].includes(e.kind)){
@@ -108,8 +116,8 @@ export class WildwoodWorld {
   this.walkBlend=(this.walkBlend||0)+((walking?1:0)-(this.walkBlend||0))*(1-Math.exp(-dt*14));
   const stride=Math.sin(sim.time*12)*this.walkBlend,rig=this.heroModel.userData;
   if(h.attack&&h.attack!==this.lastAttack){this.attackBegan=sim.time-(h.attack.total-h.attack.left);this.attackStart=rig.arm.rotation.x;this.lastAttack=h.attack;}
-  if(h.moving&&sim.time-(this.attackBegan??-10)<.62){this.attackBegan=-10;this.recovery={at:sim.time,x:rig.arm.rotation.x,y:rig.arm.rotation.y,z:rig.arm.rotation.z,elbow:rig.elbow.rotation.x,lean:this.heroModel.rotation.x,brace:rig.offarm.rotation.x,drop:this.heroModel.position.y};}
-  const elapsed=sim.time-(this.attackBegan??-10),attacking=elapsed<.62;
+  if(h.moving&&sim.time-(this.attackBegan??-10)<.66){this.attackBegan=-10;this.recovery={at:sim.time,x:rig.arm.rotation.x,y:rig.arm.rotation.y,z:rig.arm.rotation.z,elbow:rig.elbow.rotation.x,lean:this.heroModel.rotation.x,brace:rig.offarm.rotation.x,drop:this.heroModel.position.y};}
+  const elapsed=sim.time-(this.attackBegan??-10),attacking=elapsed<.66;
   const body=attacking?chopBody(elapsed):{elbow:0,lean:0,brace:0,drop:0};
   rig.arm.rotation.set(attacking?axePose(elapsed,this.attackStart,stride*.4):stride*.4,0,0);
   rig.elbow.rotation.x=body.elbow;rig.offarm.rotation.x=-stride*.65-body.brace;this.heroModel.rotation.z=stride*.085;

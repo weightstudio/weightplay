@@ -18,6 +18,18 @@
   __wpNotifyMeasurement();
 
   const $ = (id) => document.getElementById(id);
+  const GAME_ID = 'animal-skyport-dispatch';
+  window.addEventListener('weightplay:castle-reward', (event) => {
+    const detail = event.detail || {};
+    if (detail.gameId !== GAME_ID || detail.completionId !== 'first-completion' || $('result').classList.contains('hidden')) return;
+    window.ShowResultGet?.(GAME_ID, true);
+    queueMicrotask(() => window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID));
+  });
+  const refreshVisibleStageRewards = () => {
+    if (!$('stageScreen').classList.contains('hidden')) renderStages();
+  };
+  window.addEventListener('weightplay:castle-ready', refreshVisibleStageRewards);
+  window.addEventListener('weightplay:castle-updated', refreshVisibleStageRewards);
   document.body.dataset.wpCombinedSound = 'true';
   // General Stage and Battle own the complete safe physical width. These
   // declarations run before the shared controllers load, so their responsive
@@ -230,6 +242,7 @@
       coins: boundedInteger(source.coins, 0, 0),
       stamps: boundedInteger(source.stamps, 0, 0),
       medals,
+      tutorialComplete: source.tutorialComplete === true || (source.tutorialComplete !== false && (unlocked > 1 || medals[1] > 0)),
       ...(source.insuranceReady === true ? {insuranceReady:true} : {})
     };
   };
@@ -261,6 +274,8 @@
   let stageBrowseLogical = Math.max(0, centeredShift - 1);
   let stageSettleFrame = 0;
   let cancelStagePointer = () => {};
+  let tutorialOpen = false;
+  let tutorialClosing = false;
   const skyportDynamicText = {
     en: {
       shift:'Shift {n}/30', objective:'Serve {done}/{goal} flights', errors:'Errors {done}/3', nodeProgress:'Nodes {done}/{goal}',
@@ -355,6 +370,21 @@
     },
   };
   Object.entries({
+    en: {tutorialTitle:'Your first dispatch',tutorialRoute:'Drag the airship through every numbered node in order, then release it on the matching dock.',tutorialRisk:'Avoid red blocked airways. A wrong route can be retried without losing the shift.',tutorialStart:'Start Shift',tutorialSkip:'Skip Lesson'},
+    'zh-Hant': {tutorialTitle:'第一次調度',tutorialRoute:'拖曳飛船依序通過所有編號節點，再放到配對的碼頭。',tutorialRisk:'避開紅色封鎖航線。路線錯誤可以重試，不會失去班次。',tutorialStart:'開始班次',tutorialSkip:'略過教學'},
+    'zh-Hans': {tutorialTitle:'首次调度',tutorialRoute:'拖动飞艇依次经过所有编号节点，再放到匹配的码头。',tutorialRisk:'避开红色封锁航线。路线错误可以重试，不会失去班次。',tutorialStart:'开始班次',tutorialSkip:'跳过教程'},
+    ja: {tutorialTitle:'はじめての運航',tutorialRoute:'飛行船をドラッグして番号付きノードを順番に通り、対応するドックで離します。',tutorialRisk:'赤い閉鎖空路を避けてください。ルートを間違えてもシフトを失わずにやり直せます。',tutorialStart:'シフト開始',tutorialSkip:'説明をスキップ'},
+    ko: {tutorialTitle:'첫 운항 안내',tutorialRoute:'비행선을 끌어 번호가 있는 노드를 순서대로 지나 알맞은 도크에 놓으세요.',tutorialRisk:'빨간색 폐쇄 항로를 피하세요. 경로가 틀려도 교대를 잃지 않고 다시 시도할 수 있어요.',tutorialStart:'교대 시작',tutorialSkip:'설명 건너뛰기'},
+    es: {tutorialTitle:'Tu primer vuelo',tutorialRoute:'Arrastra la aeronave por todos los nodos numerados en orden y suéltala en el muelle correspondiente.',tutorialRisk:'Evita las vías aéreas rojas. Puedes volver a intentar una ruta incorrecta sin perder el turno.',tutorialStart:'Iniciar turno',tutorialSkip:'Omitir lección'},
+    'pt-BR': {tutorialTitle:'Seu primeiro voo',tutorialRoute:'Arraste a aeronave por todos os nós numerados em ordem e solte-a na doca correspondente.',tutorialRisk:'Evite as vias aéreas vermelhas. Você pode tentar uma rota errada novamente sem perder o turno.',tutorialStart:'Iniciar turno',tutorialSkip:'Pular lição'},
+    fr: {tutorialTitle:'Votre premier vol',tutorialRoute:'Faites glisser le dirigeable sur chaque nœud numéroté dans l’ordre, puis relâchez-le sur le quai correspondant.',tutorialRisk:'Évitez les voies aériennes rouges. Vous pouvez réessayer une mauvaise route sans perdre le tour.',tutorialStart:'Commencer le tour',tutorialSkip:'Passer le tutoriel'},
+    de: {tutorialTitle:'Dein erster Flug',tutorialRoute:'Ziehe das Luftschiff der Reihe nach über alle nummerierten Knoten und lasse es am passenden Dock los.',tutorialRisk:'Meide rote gesperrte Luftwege. Eine falsche Route kannst du erneut versuchen, ohne die Schicht zu verlieren.',tutorialStart:'Schicht starten',tutorialSkip:'Anleitung überspringen'},
+    it: {tutorialTitle:'Il tuo primo volo',tutorialRoute:'Trascina il dirigibile attraverso tutti i nodi numerati in ordine, poi rilascialo sul molo corrispondente.',tutorialRisk:'Evita le rotte aeree rosse. Puoi riprovare una rotta errata senza perdere il turno.',tutorialStart:'Inizia il turno',tutorialSkip:'Salta la guida'},
+    ru: {tutorialTitle:'Первый рейс',tutorialRoute:'Проведите дирижабль по всем пронумерованным узлам по порядку и отпустите на нужном доке.',tutorialRisk:'Избегайте красных закрытых воздушных путей. Ошибочный маршрут можно повторить без потери смены.',tutorialStart:'Начать смену',tutorialSkip:'Пропустить урок'},
+    hi: {tutorialTitle:'पहली उड़ान',tutorialRoute:'एयरशिप को सभी क्रमांकित नोड से क्रम में खींचें और सही डॉक पर छोड़ें।',tutorialRisk:'लाल बंद वायुमार्ग से बचें। गलत मार्ग को शिफ्ट खोए बिना फिर से आज़मा सकते हैं।',tutorialStart:'शिफ्ट शुरू करें',tutorialSkip:'पाठ छोड़ें'},
+    ar: {tutorialTitle:'رحلتك الأولى',tutorialRoute:'اسحب المنطاد عبر كل العقد المرقمة بالترتيب، ثم أفلته عند الرصيف المطابق.',tutorialRisk:'تجنب الممرات الجوية الحمراء المغلقة. يمكنك إعادة المحاولة بعد اختيار مسار خاطئ دون خسارة المناوبة.',tutorialStart:'ابدأ المناوبة',tutorialSkip:'تخطَّ الدرس'},
+  }).forEach(([localeKey, copy]) => Object.assign(skyportDynamicText[localeKey] || (skyportDynamicText[localeKey] = {}), copy));
+  Object.entries({
     en: {keyboardChooseDock:'Airship selected. Use arrow keys to choose a dock, then press Enter to dispatch. Escape cancels.'},
     'zh-Hant': {keyboardChooseDock:'已選擇飛船。用方向鍵選碼頭，按 Enter 調度；Escape 取消。'},
     'zh-Hans': {keyboardChooseDock:'已选择飞艇。使用方向键选择码头，然后按 Enter 调度。Escape 取消。'},
@@ -426,6 +456,47 @@
     const template = skyportDynamicText[activeLocale()]?.[key] ?? skyportUiText[activeLocale()]?.[key] ?? skyportStageText[activeLocale()]?.[key] ?? strings[locale]?.[key] ?? strings.en?.[key] ?? key;
     return Object.entries(values).reduce((value, [name, replacement]) => String(value).replace(`{${name}}`, replacement), template);
   };
+  function ensureTutorialPanel() {
+    if ($('tutorialPanel')) return;
+    const canvas = $('battleHelpPopover')?.parentElement;
+    if (!canvas) return;
+    const panel = document.createElement('section');
+    panel.id = 'tutorialPanel';
+    panel.className = 'tutorial-overlay hidden';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-labelledby', 'tutorialTitle');
+    panel.setAttribute('aria-describedby', 'tutorialRoute tutorialRisk');
+    const card = document.createElement('div');
+    card.className = 'tutorial-card';
+    const title = document.createElement('h2');
+    title.id = 'tutorialTitle';
+    title.dataset.i18n = 'tutorialTitle';
+    title.textContent = t('tutorialTitle');
+    const route = document.createElement('p');
+    route.id = 'tutorialRoute';
+    route.dataset.i18n = 'tutorialRoute';
+    route.textContent = t('tutorialRoute');
+    const risk = document.createElement('p');
+    risk.id = 'tutorialRisk';
+    risk.dataset.i18n = 'tutorialRisk';
+    risk.textContent = t('tutorialRisk');
+    const actions = document.createElement('div');
+    actions.className = 'tutorial-actions';
+    for (const [id, key, className] of [['tutorialStartBtn','tutorialStart','primary'],['tutorialSkipBtn','tutorialSkip','secondary']]) {
+      const button = document.createElement('button');
+      button.id = id;
+      button.type = 'button';
+      button.className = className;
+      button.dataset.i18n = key;
+      button.textContent = t(key);
+      actions.append(button);
+    }
+    card.append(title, route, risk, actions);
+    panel.append(card);
+    canvas.insertBefore(panel, $('battleHelpPopover'));
+  }
+  ensureTutorialPanel();
   function normalizeResultActions() {
     const panel = $('result');
     if (!panel) return;
@@ -455,8 +526,8 @@
     if (id !== 'stageScreen') cancelStageMotion();
     ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id && !(id === 'result' && screen === 'battleShell')));
     const resultOpen = id === 'result';
-    $('battleLive').inert = resultOpen;
-    $('battleLive').setAttribute('aria-hidden', resultOpen ? 'true' : 'false');
+    $('battleLive').inert = resultOpen || tutorialOpen;
+    $('battleLive').setAttribute('aria-hidden', resultOpen || tutorialOpen ? 'true' : 'false');
     $('mainHeader').classList.toggle('hidden', id !== 'mainScreen');
     document.body.classList.toggle('skyport-protected-screen', id !== 'mainScreen');
     document.body.classList.toggle('skyport-playing', id === 'battleShell' || id === 'result');
@@ -469,7 +540,7 @@
             ? document.querySelector(`.stage-card[data-shift="${state.shift}"]`) || document.querySelector('.stage-card[aria-disabled="false"]')
             : id === 'result'
               ? $('nextBtn')
-              : $('flight');
+              : tutorialOpen ? $('tutorialStartBtn') : $('flight');
         const active = document.activeElement;
         if (active && $(id)?.contains(active) && active !== target) return;
         target?.focus({preventScroll:true});
@@ -509,8 +580,34 @@
     const button = $('battleHelp');
     const popover = $('battleHelpPopover');
     if (!button || !popover) return;
-    popover.classList.toggle('hidden', !open);
+    popover.classList.toggle('hidden', !open || tutorialOpen);
     button.setAttribute('aria-expanded', String(open));
+  }
+  function openFirstPlayTutorial() {
+    if (state.shift !== 1 || save.tutorialComplete) return;
+    tutorialOpen = true;
+    setBattleHelp(false);
+    $('tutorialPanel').classList.remove('hidden');
+    $('battleLive').inert = true;
+    $('battleLive').setAttribute('aria-hidden', 'true');
+    $('tutorialStartBtn').focus({preventScroll:true});
+  }
+  function closeFirstPlayTutorial() {
+    if (!tutorialOpen || tutorialClosing) return;
+    tutorialClosing = true;
+    const panel = $('tutorialPanel');
+    panel.classList.add('is-closing');
+    window.setTimeout(() => {
+      tutorialOpen = false;
+      tutorialClosing = false;
+      panel.classList.remove('is-closing');
+      panel.classList.add('hidden');
+      $('battleLive').inert = false;
+      $('battleLive').setAttribute('aria-hidden', 'false');
+      save.tutorialComplete = true;
+      persist();
+      $('flight').focus({preventScroll:true});
+    }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180);
   }
   function clearInsuranceConfirmation() {
     clearTimeout(insuranceConfirmTimer);
@@ -611,7 +708,30 @@
     const card = document.createElement('button');
     card.type = 'button';
     card.dataset.wpStagePoolNode = String(poolIndex + 1);
+    card.dataset.wpGetGameId = GAME_ID;
+    const content = document.createElement('div');
+    content.dataset.wpItemContent = '';
+    card.append(content);
     return card;
+  }
+  function stageRewardState(shift) {
+    const castle = window.WeightPlayCastle;
+    if (!castle?.read || !castle.key) return 'unknown';
+    try {
+      const raw = readStorage(castle.key);
+      if (!raw) return 'unknown';
+      const saved = JSON.parse(raw);
+      if (!saved || ![1, 2, 3].includes(saved.version)
+        || !saved.completions || typeof saved.completions !== 'object' || Array.isArray(saved.completions)) return 'unknown';
+      const completions = castle.read()?.completions;
+      if (completions && Object.prototype.hasOwnProperty.call(completions, `${GAME_ID}:first-completion`)) return 'collected';
+      // Shift medals can prove historical play without proving the shared
+      // game-wide first-clear reward's state in an older Castle save.
+      if (Number(save.medals?.[shift]) > 0) return 'unknown';
+      return 'not-collected';
+    } catch {
+      return 'unknown';
+    }
   }
   function bindStageCard(card, index) {
     const shift = index + 1;
@@ -629,7 +749,16 @@
     card.setAttribute('aria-posinset', String(shift));
     card.setAttribute('aria-setsize', String(TOTAL_SHIFTS));
     card.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight Home End');
-    card.innerHTML = `<strong>${t('shift', {n:shift})}</strong><span>${t('objective', {done:0, goal:config.goal})}</span><small><span>${t(availability)}</span><span class="stage-medals">${t('medals', {n:save.medals?.[shift] || 0})}</span></small>`;
+    card.dataset.wpGetIndex = String(index);
+    card.dataset.wpGetState = stageRewardState(shift);
+    let content = card.querySelector(':scope > [data-wp-item-content]');
+    if (!content) {
+      content = document.createElement('div');
+      content.dataset.wpItemContent = '';
+      card.append(content);
+    }
+    content.innerHTML = `<strong>${t('shift', {n:shift})}</strong><span>${t('objective', {done:0, goal:config.goal})}</span><small><span>${t(availability)}</span><span class="stage-medals">${t('medals', {n:save.medals?.[shift] || 0})}</span></small>`;
+    window.ShowGet?.(GAME_ID, index);
   }
   function buildStagePool() {
     stageWindowStart = desiredStageWindow(stageBrowseLogical);
@@ -844,6 +973,7 @@
     nextFlight();
     renderHud();
     focusCurrentBattleAction();
+    openFirstPlayTutorial();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -876,6 +1006,7 @@
     const insuredRun = insuranceActive;
     setBattleHelp(false);
     show('result');
+    window.ShowResultGet?.(GAME_ID, false);
     if (win) playSound("result.win");
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
@@ -980,7 +1111,7 @@
     }
   }
   function battleDecisionOpen() {
-    return !$('leaveConfirm').classList.contains('hidden') || !$('result').classList.contains('hidden');
+    return tutorialOpen || !$('leaveConfirm').classList.contains('hidden') || !$('result').classList.contains('hidden');
   }
   function finish(ok, chosenDock = ok ? state.dock : '') {
     if (battleDecisionOpen()) return;
@@ -1134,6 +1265,17 @@
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; centeredShift = state.shift; show('stageScreen'); renderStages(); };
   $('battleHelp').onclick = () => setBattleHelp($('battleHelpPopover').classList.contains('hidden'));
+  $('tutorialStartBtn').onclick = closeFirstPlayTutorial;
+  $('tutorialSkipBtn').onclick = closeFirstPlayTutorial;
+  $('tutorialPanel').addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { event.preventDefault(); closeFirstPlayTutorial(); return; }
+    if (event.key !== 'Tab') return;
+    const controls = [$('tutorialStartBtn'), $('tutorialSkipBtn')];
+    const index = controls.indexOf(document.activeElement);
+    const next = event.shiftKey ? (index <= 0 ? controls.length - 1 : index - 1) : (index === controls.length - 1 ? 0 : index + 1);
+    event.preventDefault();
+    controls[next].focus({preventScroll:true});
+  });
   $('battleHelp').addEventListener('keydown', (event) => {
     if (event.key === 'Escape') { event.preventDefault(); setBattleHelp(false); }
   });

@@ -24,7 +24,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-trap-trail" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Lies den täuschenden Pfad im Mondlicht, lerne die Fallensignale und erreiche die Laterne, ohne jedem Bodenfeld zu vertrauen." />
+    <meta name="description" content="Lies die Fallenhinweise, nutze den optionalen Puls als kurzen Tipp und erreiche die Laterne in 30 gestalteten Stufen. Ein Fehler setzt nur den aktuellen Raum zurück." />
     <title>Mondlicht-Fallenpfad | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260907-animal-trap-trail-v15-landscape-poster" />
     <link rel="stylesheet" href="/games/animal-trap-trail/result-repair.css?v=20260927-trap-result-actions-wip1" />
@@ -32,17 +32,17 @@
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-    <script defer src="game.js?v=20260927-trap-suggestion-repair-wip1"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="game.js?v=20260927-trap-suggestion-repair-wip1"></script><meta property="og:description" content="Lies die Fallenhinweise, nutze den optionalen Puls als kurzen Tipp und erreiche die Laterne in 30 gestalteten Stufen. Ein Fehler setzt nur den aktuellen Raum zurück." />
+    <meta name="twitter:description" content="Lies die Fallenhinweise, nutze den optionalen Puls als kurzen Tipp und erreiche die Laterne in 30 gestalteten Stufen. Ein Fehler setzt nur den aktuellen Raum zurück." />
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Mondlicht-Fallenpfad | WeightPlay" />
-    <meta property="og:description" content="Lies den täuschenden Pfad im Mondlicht, lerne die Fallensignale und erreiche die Laterne, ohne jedem Bodenfeld zu vertrauen." />
     <meta property="og:url" content="https://weightplay.com/de/games/animal-trap-trail/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-trap-trail.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mondlicht-Fallenpfad | WeightPlay" />
-    <meta name="twitter:description" content="Lies den täuschenden Pfad im Mondlicht, lerne die Fallensignale und erreiche die Laterne, ohne jedem Bodenfeld zu vertrauen." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-trap-trail.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Mondlicht-Fallenpfad","alternateName":"Moonlit Trap Trail","url":"https://weightplay.com/de/games/animal-trap-trail/","image":"https://weightplay.com/assets/interface7-redrawn/animal-trap-trail.webp","description":"Lies den täuschenden Pfad im Mondlicht, lerne die Fallensignale und erreiche die Laterne, ohne jedem Bodenfeld zu vertrauen.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"de","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Action","Plattform","Tiere"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Mondlicht-Fallenpfad","alternateName":"Moonlit Trap Trail","url":"https://weightplay.com/de/games/animal-trap-trail/","image":"https://weightplay.com/assets/interface7-redrawn/animal-trap-trail.webp","description":"Lies die Fallenhinweise, nutze den optionalen Puls als kurzen Tipp und erreiche die Laterne in 30 gestalteten Stufen. Ein Fehler setzt nur den aktuellen Raum zurück.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"de","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Plattformspiel mit Fallenhinweisen","Optionaler Hinweis-Puls","Neustart im aktuellen Raum"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -76,7 +76,7 @@
     </main>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-    <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
@@ -85,8 +85,9 @@
   <section class="game-page-info game-page-info-static" aria-label="Informationen zu Mondlicht-Fallenpfad">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2 data-wp-game-title data-runtime-localize="off">Mondlicht-Fallenpfad</h2><p>Lies den täuschenden Pfad im Mondlicht, lerne die Fallensignale und erreiche die Laterne, ohne jedem Bodenfeld zu vertrauen.</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Plattformabenteuer mit Fallenlesen</span><span>Action</span><span>Plattform</span><span>Tiere</span></div></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Plattformabenteuer mit Fallenlesen</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Plattform · Tiere</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Leicht bis anspruchsvoll</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>8–20 Minuten für den ganzen Pfad</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2 data-wp-game-title data-runtime-localize="off">Mondlicht-Fallenpfad</h2><p>Lies die Fallenhinweise, nutze den optionalen Puls als kurzen Tipp und erreiche die Laterne in 30 gestalteten Stufen. Ein Fehler setzt nur den aktuellen Raum zurück.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Plattformspiel mit Fallenhinweisen</span><span>Optionaler Hinweis-Puls</span><span>Neustart im aktuellen Raum</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Plattformabenteuer mit Fallenlesen</strong></div><div class="game-info-fact"><span>Genre</span><strong>Plattformspiel mit Fallenhinweisen · Optionaler Hinweis-Puls · Neustart im aktuellen Raum</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Leicht bis anspruchsvoll</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>8–20 Minuten für den ganzen Pfad</strong></div></div>
     </div>
 
     <div class="game-info-sections">
@@ -101,7 +102,7 @@
       <div class="game-info-section"><h3>Designnotiz</h3><p>Der Mondlicht-Fallenpfad nutzt originale WeightPlay-Pfadgetaltung, bewusst gesetztes Fallentiming, Touch-Steuerung und stufenweise Wiederholungen, damit ein Fehler sofort zur nächsten lernbaren Handlung führt. Jede der 30 Stufen hat ein benanntes Ziel und eine absichtliche Mechanikkombination.</p></div>
       <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Dieses allgemeine Browserspiel hat keinen Account-, Kauf-, Chat-, Ranglisten- oder Werbeablauf. Der höchste geschaffte Abschnitt und die Freischaltungen bleiben in diesem Browser gespeichert.</p></div>
       <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Was passiert, wenn ich eine Falle treffe?</dt><dd>Nur die aktuelle Stufe wird zurückgesetzt, und das Ergebnis nennt die Art des Routenfehlers.</dd></div><div><dt>Kann ich ohne Tastatur spielen?</dt><dd>Ja. Auf Touchscreens gibt es sichtbare Steuerungen für links, rechts, Sprung und Pulse.</dd></div><div><dt>Ist Pulse nötig?</dt><dd>Nein. Es ist ein kurzer optionaler Hinweis, der die nächste Falle erklärt.</dd></div><div><dt>Wie viele Stufen gibt es?</dt><dd>Es gibt 30 Stufen in sechs Fünferabschnitten, mit Kontrollpunkten auf 5, 10, 15, 20, 25 und 30; geschaffte Stufen bleiben wiederholbar.</dd></div><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Die höchste geschaffte Stufe und Freischaltungen bleiben nur in diesem Browser.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-canopy-cut/"><img src="/assets/interface7-redrawn/animal-canopy-cut.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canopy Cut</strong><span>Wische über sichere Früchte, bilde eine Kette und meide dunkle Samenkapseln in einer Kampagne mit 30 Baumkronen-Stufen.</span></span></a><a class="game-info-related-card" href="/de/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Fracht</strong><span>Laufe, schiebe und ziehe Runenfracht durch 30 handgebaute Himmelslager.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-canopy-cut/"><img src="/assets/interface7-redrawn/animal-canopy-cut.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canopy Cut</strong><span>Spiele sechs Abschnitte mit je fünf Stufen, wische über sichere Früchte und baue eine Punkteserie auf.</span></span></a><a class="game-info-related-card" href="/de/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Fracht</strong><span>Laufe, schiebe und ziehe Runenfracht durch 30 handgebaute Himmelslager.</span></span></a></div></div>
     </div>
   </section>
 <script src="/src/game-page-info.js?v=20260919-trap-seo130"></script>

@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {STAGES,TRACKS,GATE_COUNT} from '../data.mjs';
-import {STEP,buildTrack,sampleTrack,nearestTrack,createRace,stepRace,aiControl,pauseRace,resumeRace,recoverCar,settle,segmentDistance} from '../physics.mjs';
+import {STEP,angle,buildTrack,sampleTrack,nearestTrack,createRace,stepRace,aiControl,pauseRace,resumeRace,recoverCar,settle,segmentDistance} from '../physics.mjs';
+import {actionsFromKeys,steerFromActions} from '../input.mjs';
 const running=id=>{const race=createRace(id,{}, {id:`test-${id}`});race.status='running';return race;};
 const at=(race,s,offset=0,speed=20)=>{
   const p=sampleTrack(race.track,s,offset),car=race.player;
@@ -34,6 +35,13 @@ test('countdown freezes position and racing time; pause has no catch-up',()=>{
 });
 test('fixed-step contract rejects invalid and oversized time increments',()=>{
   const race=createRace(1);for(const dt of [0,-1,NaN,Infinity,1/30])assert.throws(()=>stepRace(race,{},dt),/FIXED_STEP_REQUIRED/);
+});
+test('left-labelled input turns the kart left and right-labelled input turns it right',()=>{
+  const left=running(1),right=running(1);left.cars=[left.player];right.cars=[right.player];
+  const leftCar=at(left,.01,0,18),rightCar=at(right,.01,0,18),startYaw=leftCar.yaw;
+  const leftSteer=steerFromActions(actionsFromKeys(['ArrowLeft'])),rightSteer=steerFromActions(actionsFromKeys(['ArrowRight']));
+  for(let i=0;i<30;i++){stepRace(left,{throttle:1,steer:leftSteer},STEP);stepRace(right,{throttle:1,steer:rightSteer},STEP);}
+  assert.ok(angle(leftCar.yaw-startYaw)<0);assert.ok(angle(rightCar.yaw-startYaw)>0);
 });
 test('a real steering controller can drive the entire introductory circuit',()=>{
   const race=createRace(1);for(let n=0;n<11000&&race.status!=='result';n++)stepRace(race,aiControl(race,race.player));

@@ -819,6 +819,20 @@
   Object.assign(dictionaries.hi, { "game.start": "\u0916\u0947\u0932 \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902" });
   Object.assign(dictionaries.ar, { "game.start": "\u0627\u0628\u062f\u0623 \u0627\u0644\u0644\u0639\u0628\u0629" });
 
+  const languageLabelCopy = {
+    ko: "언어",
+    "pt-BR": "Idioma",
+    fr: "Langue",
+    de: "Sprache",
+    it: "Lingua",
+    ru: "Язык",
+    hi: "भाषा",
+    ar: "اللغة",
+  };
+  Object.entries(languageLabelCopy).forEach(([locale, label]) => {
+    dictionaries[locale] = { ...(dictionaries[locale] || {}), "language.label": label };
+  });
+
   Object.assign(dictionaries.en, { "topic.strategy": "Strategy", "category.Strategy": "Strategy" });
   Object.assign(dictionaries["zh-Hant"], { "topic.strategy": "\u7b56\u7565", "category.Strategy": "\u7b56\u7565" });
 

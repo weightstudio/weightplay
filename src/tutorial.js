@@ -960,6 +960,14 @@
     "yukon-solitaire",
   ]);
 
+  // WP_SNAKE_TEXT_GROWTH_140_START
+  const snakeTextGrowth140Tutorial = {"en":"A blocked obstacle cell or your own trail ends the run; the grid edges wrap. Retry starts a new board.","zh-Hant":"撞上障礙格或自己的蛇身會結束本局；棋盤邊緣會接到對側。重試會開啟新棋盤。","zh-Hans":"撞上障碍格或自己的蛇身会结束本局；棋盘边缘会接到对侧。重试会开启新棋盘。","ja":"障害マスか自分の体に当たると終了します。盤面の端は反対側につながり、再挑戦で新しい盤面になります。","ko":"장애물 칸이나 자신의 몸에 닿으면 런이 끝나요. 보드 가장자리는 반대편으로 이어지며, 다시 하기를 누르면 새 보드가 시작돼요.","es":"Chocar con una casilla bloqueada o con tu rastro termina la partida; los bordes conectan con el lado opuesto. Reintentar crea otro tablero.","pt-BR":"Bater em uma casa bloqueada ou no próprio rastro encerra a partida; as bordas levam ao lado oposto. Tentar novamente cria outro tabuleiro.","fr":"Toucher une case bloquée ou sa propre trace termine la partie ; les bords rejoignent le côté opposé. Réessayer crée un autre plateau.","de":"Ein gesperrtes Feld oder die eigene Spur beendet den Lauf; die Ränder führen zur Gegenseite. Erneut spielen startet ein neues Feld.","it":"Una cella bloccata o la propria scia termina la partita; i bordi portano al lato opposto. Riprova crea una nuova griglia.","ru":"Столкновение с закрытой клеткой или собственным следом завершает забег; края поля ведут на противоположную сторону. Повторный старт создаёт новое поле.","hi":"बंद बाधा वाले खाने या अपनी पूँछ से टकराने पर रन समाप्त होता है; किनारे दूसरी ओर जुड़ते हैं। फिर से खेलने पर नया बोर्ड मिलता है।","ar":"ينتهي اللعب عند الاصطدام بخانة محظورة أو بمسار الثعبان نفسه؛ تصل الحواف بالجهة المقابلة. وتبدأ إعادة المحاولة لوحة جديدة."};
+  for (const [localeKey, copy] of Object.entries(snakeTextGrowth140Tutorial)) {
+    const step = tutorials.snake?.steps?.[2]?.[localeKey];
+    if (!step) throw new Error(`Snake tutorial is missing locale: ${localeKey}`);
+    tutorials.snake.steps[2][localeKey] = [step[0], copy];
+  }
+  // WP_SNAKE_TEXT_GROWTH_140_END
   function gameIdFromPath() {
     const parts = window.location.pathname.split("/").filter(Boolean);
     const index = parts.indexOf("games");

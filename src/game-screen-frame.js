@@ -612,7 +612,7 @@
     if (!document.querySelector('script[src*="game-page-info.js"]')) {
       const script = document.createElement("script");
       const gameId = document.body?.dataset.wpGameId || location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
-      const gameInfoCacheTag = gameId === "maze-chase"
+      const gameInfoCacheTag = gameId === "snake" ? "20261004-snake-text-growth-140-v1" : gameId === "maze-chase"
         ? "20260826-maze-guide-v15"
         : gameId === "cribbage" ? "20260827-cribbage-arabic-opening-v1"
         : gameId === "old-maid" ? "20260829-old-maid-arabic-guide-v17"

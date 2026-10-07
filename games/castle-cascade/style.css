@@ -223,10 +223,12 @@ body { background: #e6e5df; }
 .modal-card { border: 2px solid #5b4c67; border-radius: 18px; background: #fff8e9; box-shadow: 0 8px 0 #171326; }
 .result-actions button, .leave-actions button { border-radius: 10px; background: #e5ddef; box-shadow: 0 2px 0 #b6a9c4; }
 .result-actions .primary, .leave-actions .primary { background: #f5c447; box-shadow: 0 3px 0 #b3862d; }
-.stage:not([hidden]), .battle:not([hidden]) { animation: scene-arrive 170ms ease-out both; }
+#main:not([hidden]), .stage:not([hidden]), .battle:not([hidden]) { animation: scene-arrive 170ms ease-out both; }
 .stage-card.selected { animation: card-select 220ms ease-out both; }
 .objective-chip { animation: objective-pop 200ms ease-out both; }
-@keyframes scene-arrive { from { opacity: .65; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+/* The shared Canvas owner controls the scene root's transform. Entry feedback
+   fades the artwork without translating that root or its input rectangles. */
+@keyframes scene-arrive { from { opacity: .65; } to { opacity: 1; } }
 @keyframes card-select { from { transform: scale(.985); } to { transform: scale(1); } }
 @keyframes objective-pop { from { opacity: .55; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -334,4 +336,37 @@ html body[data-wp-game-id="castle-cascade"] #stage .stage-card img:not(.objectiv
   .board-space { grid-column: 2; grid-row: 1 / 3; }
   .battle-feedback { grid-column: 1; grid-row: 2; width: 190px; }
 }
+/* Bound dialogs to the same logical Battle envelope as their controls. */
+@container castle-battle (max-height: 500px) {
+  .modal-layer { padding: 12px; }
+  .modal-card { padding: 16px; max-height: 100%; overflow-y: auto; }
+  .result-keeper { width: 64px; height: 64px; margin: 0 auto; }
+  .modal-card p { margin-block: 8px; }
+  .modal-card h2 { margin-block: 6px; }
+  .result-actions, .leave-actions { margin-block-start: 12px; }
+}
 @media (prefers-reduced-motion: reduce) { .modal-layer:not([hidden]) .modal-card { animation: none; } }
+
+/* Fade visual panels without adding a second shared control/geometry owner.
+   Discrete display transitions keep closing panels noninteractive. */
+body[data-wp-game-id="castle-cascade"] :is(.wp-frame-popover, .wp-shell-settings-popover, .modal-layer) {
+  opacity: 1;
+  transition: opacity 120ms ease-out, display 120ms allow-discrete;
+}
+body[data-wp-game-id="castle-cascade"] :is(.wp-frame-popover, .wp-shell-settings-popover, .modal-layer)[hidden] {
+  opacity: 0; pointer-events: none;
+}
+@starting-style {
+  body[data-wp-game-id="castle-cascade"] :is(.wp-frame-popover, .wp-shell-settings-popover, .modal-layer):not([hidden]) { opacity: .65; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-wp-game-id="castle-cascade"] :is(.wp-frame-popover, .wp-shell-settings-popover, .modal-layer) { transition: none; }
+}
+
+.castle-tutorial-exit { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: calc(18px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left)); background: rgba(10,16,28,.62); backdrop-filter: blur(8px); pointer-events: none; }
+.castle-tutorial-exit .wp-tutorial-card { animation: none; }
+
+/* The fixed help button yields while the header-owned Settings is open. */
+body[data-wp-game-id="castle-cascade"] .wp-tutorial-button { transition: opacity 120ms ease-out, display 120ms allow-discrete; }
+body[data-wp-game-id="castle-cascade"]:has(.wp-shell-settings-button[aria-expanded="true"]) .wp-tutorial-button { display: none; opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { body[data-wp-game-id="castle-cascade"] .wp-tutorial-button { transition: none; } }

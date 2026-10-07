@@ -78,11 +78,12 @@
     const refresh = () => {
       const locale = currentLocale();
       const labels = copy[locale] || copy.en;
+      const languageLabel = window.WonderI18n?.t?.('language.label') || labels[1];
       const selectedLocale = localeSelect?.value || locale;
       button.setAttribute('aria-label', labels[0]);
       panel.setAttribute('aria-label', labels[0]);
-      languageText.textContent = labels[1];
-      select.setAttribute('aria-label', labels[1]);
+      languageText.textContent = languageLabel;
+      select.setAttribute('aria-label', languageLabel);
       if (Array.from(select.options).some((option) => option.value === selectedLocale)) select.value = selectedLocale;
       const muted = Boolean(window.WeightPlayAudio?.isMuted?.());
       soundText.textContent = labels[2];
