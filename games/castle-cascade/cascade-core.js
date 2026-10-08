@@ -766,7 +766,18 @@ export function reshuffle(state) {
   return false;
 }
 
-function resolveCascade(state, initialDirect, initialPower, specials = [], forceGate = false, initialVisualEffects = []) {
+function updateDeferredPowerPosition(deferredPower, batch) {
+  if (!deferredPower || deferredPower.consumed) return;
+  if (batch.directHits.includes(deferredPower.index)) {
+    deferredPower.consumed = true;
+    return;
+  }
+  const movement = batch.movements.find((entry) => entry.fromIndex === deferredPower.index
+    && entry.payload?.p === deferredPower.power);
+  if (movement) deferredPower.index = movement.toIndex;
+}
+
+function resolveCascade(state, initialDirect, initialPower, specials = [], forceGate = false, initialVisualEffects = [], deferredPower = null) {
   const batches = [];
   let direct = new Set(initialDirect);
   let powerSet = new Set(initialPower);
@@ -776,6 +787,7 @@ function resolveCascade(state, initialDirect, initialPower, specials = [], force
   for (let batchIndex = 0; batchIndex < 40; batchIndex += 1) {
     const batch = resolveOneBatch(state, direct, powerSet, specialsToPlace, forceGateNow, visualEffects);
     batches.push(batch);
+    updateDeferredPowerPosition(deferredPower, batch);
     const match = matchGroups(state.board);
     if (!match.cells.size) break;
     const nextSpecials = specialsFromMatches(state.board, match);
@@ -783,9 +795,52 @@ function resolveCascade(state, initialDirect, initialPower, specials = [], force
     powerSet = new Set();
     specialsToPlace = nextSpecials;
     forceGateNow = false;
-    visualEffects = expandTriggeredPowers(state.board, direct, powerSet);
+    const suppressed = deferredPower && !deferredPower.consumed ? new Set([deferredPower.index]) : new Set();
+    visualEffects = expandTriggeredPowers(state.board, direct, powerSet, suppressed);
   }
   return batches;
+}
+
+function resolveDeferredPower(state, deferredPower) {
+  const { index, power, partnerColor, partnerIndex } = deferredPower;
+  const live = !deferredPower.consumed && state.board[index]?.p === power;
+  const direct = new Set();
+  const powerSet = new Set();
+  const visualEffects = [];
+  const suppressed = new Set([index]);
+
+  if (power === "prism") {
+    const targets = [];
+    state.board.forEach((tile, target) => {
+      if (tile.c !== partnerColor) return;
+      direct.add(target);
+      powerSet.add(target);
+      targets.push(target);
+    });
+    if (live) {
+      direct.add(index);
+      powerSet.add(index);
+    } else {
+      direct.delete(index);
+      powerSet.delete(index);
+    }
+    visualEffects.push({ type: "prism-combo", index, target: partnerIndex, color: partnerColor, power: null, targets });
+  } else if (live) {
+    direct.add(index);
+    powerSet.add(index);
+  } else {
+    addPowerEffect(state.board, index, power, direct, powerSet, new Set([index]), visualEffects);
+    direct.delete(index);
+    powerSet.delete(index);
+  }
+
+  if (!direct.size) return [];
+  const effects = power === "prism"
+    ? expandTriggeredPowers(state.board, direct, powerSet, suppressed, visualEffects)
+    : live
+      ? expandTriggeredPowers(state.board, direct, powerSet, new Set(), visualEffects)
+      : expandTriggeredPowers(state.board, direct, powerSet, suppressed, visualEffects);
+  return resolveCascade(state, direct, powerSet, null, false, effects);
 }
 
 function actionResult(state, accepted, reason, batches = [], reshufflesBefore = state.reshuffles) {
@@ -819,6 +874,31 @@ export function playSwap(state, a, b) {
   const powerB = state.board[b].p;
   if (powerA || powerB) {
     swapPieces(state.board, a, b);
+    if (Boolean(powerA) !== Boolean(powerB)) {
+      const power = powerA || powerB;
+      const powerIndex = powerA ? b : a;
+      const partnerIndex = powerA ? a : b;
+      const match = matchGroups(state.board);
+      if (match.cells.size) {
+        const deferredPower = {
+          index: powerIndex,
+          power,
+          partnerIndex,
+          partnerColor: state.board[partnerIndex].c,
+          consumed: false,
+        };
+        state.moves -= 1;
+        const specials = specialsFromMatches(state.board, match, partnerIndex);
+        const direct = new Set(match.cells);
+        const powerSet = new Set();
+        for (const special of specials) direct.delete(special.at);
+        const visualEffects = expandTriggeredPowers(state.board, direct, powerSet, new Set([powerIndex]));
+        for (const special of specials) direct.add(special.at);
+        const matchBatches = resolveCascade(state, direct, powerSet, specials, false, visualEffects, deferredPower);
+        const powerBatches = resolveDeferredPower(state, deferredPower);
+        return actionResult(state, true, "match", [...matchBatches, ...powerBatches], reshufflesBefore);
+      }
+    }
     state.moves -= 1;
     const effect = comboEffect(state, a, b);
     const batches = resolveCascade(state, effect.direct, effect.powerSet, null, effect.forceGate, effect.visualEffects);

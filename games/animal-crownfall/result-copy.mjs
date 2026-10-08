@@ -1,23 +1,23 @@
-// Completion feedback uses the same effective-move and no-hint rules as badges.
+// Crown collection clears the stage; move count and Hint use are optional mastery only.
 const rows={
- en:['New best: {delta} fewer moves.','Next goal: {par} moves or fewer, without hints.','Next goal: finish without hints.','No hints and move target achieved!'],
- 'zh-Hant':['新最佳：減少 {delta} 步。','下次目標：不用提示，{par} 步內通關。','下次目標：不用提示通關。','未用提示，目標步數也達成！'],
- 'zh-Hans':['新最佳：减少 {delta} 步。','下次目标：不用提示，{par} 步内通关。','下次目标：不用提示通关。','未用提示，目标步数也达成！'],
- ja:['新記録：{delta} 手短縮。','次の目標：ヒントなしで {par} 手以内。','次の目標：ヒントなしでクリア。','ヒントなし・目標手数を達成！'],
- ko:['새 최고 기록: {delta}회 줄였어요.','다음 목표: 힌트 없이 {par}회 이내에 완료.','다음 목표: 힌트 없이 완료.','힌트 없이 목표 이동 수를 달성했어요!'],
- es:['Nuevo récord: {delta} movimientos menos.','Próxima meta: {par} movimientos o menos, sin pistas.','Próxima meta: terminar sin pistas.','¡Sin pistas y dentro de la meta!'],
- 'pt-BR':['Novo recorde: {delta} jogadas a menos.','Próxima meta: até {par} jogadas, sem dicas.','Próxima meta: concluir sem dicas.','Sem dicas e dentro da meta!'],
- fr:['Nouveau record : {delta} coups de moins.','Prochain objectif : {par} coups maximum, sans indice.','Prochain objectif : terminer sans indice.','Sans indice et objectif de coups atteint !'],
- de:['Neuer Bestwert: {delta} Züge weniger.','Nächstes Ziel: höchstens {par} Züge, ohne Tipps.','Nächstes Ziel: ohne Tipps abschließen.','Ohne Tipps und Zugziel erreicht!'],
- it:['Nuovo record: {delta} mosse in meno.','Prossimo obiettivo: massimo {par} mosse, senza indizi.','Prossimo obiettivo: finire senza indizi.','Senza indizi e obiettivo mosse raggiunto!'],
- ru:['Новый рекорд: на {delta} ходов меньше.','Следующая цель: не более {par} ходов без подсказок.','Следующая цель: пройти без подсказок.','Без подсказок и цель по ходам достигнута!'],
- hi:['नया सर्वश्रेष्ठ: {delta} चालें कम।','अगला लक्ष्य: बिना संकेत, {par} चालों या कम में पूरा करें।','अगला लक्ष्य: बिना संकेत पूरा करें।','बिना संकेत और चालों का लक्ष्य पूरा!'],
- ar:['أفضل نتيجة جديدة: أقل بـ {delta} حركة.','الهدف التالي: {par} حركات أو أقل دون تلميحات.','الهدف التالي: الإكمال دون تلميحات.','دون تلميحات وتم بلوغ هدف الحركات!']
+ en:['New best: {delta} fewer moves.','Collecting the crown clears the stage. Optional challenge met: no Hints, within the {par}-move limit.','Collecting the crown clears the stage. Optional challenge missed: over the {par}-move limit.','Collecting the crown clears the stage. Optional challenge missed: a Hint was used (the {par}-move limit was met).','Collecting the crown clears the stage. Optional challenge missed: over the {par}-move limit and a Hint was used.'],
+ 'zh-Hant':['新最佳：少 {delta} 步。','取得皇冠即通關；選擇挑戰達成：{par} 步內且未用提示。','取得皇冠即通關；選擇挑戰未達成：超過 {par} 步。','取得皇冠即通關；選擇挑戰未達成：用了提示（步數上限 {par} 步）。','取得皇冠即通關；選擇挑戰未達成：超過 {par} 步且用了提示。'],
+ 'zh-Hans':['新最佳：少 {delta} 步。','取得皇冠即可通关；可选挑战达成：{par} 步内且未用提示。','取得皇冠即可通关；可选挑战未达成：超过 {par} 步。','取得皇冠即可通关；可选挑战未达成：用了提示（步数上限 {par} 步）。','取得皇冠即可通关；可选挑战未达成：超过 {par} 步且用了提示。'],
+ ja:['新記録：{delta} 手短縮。','王冠クリア達成。任意目標も達成：ヒントなしで {par} 手以内。','王冠クリア達成。任意目標は未達成：{par} 手を超えました。','王冠クリア達成。任意目標は未達成：ヒントを使用しました（上限 {par} 手）。','王冠クリア達成。任意目標は未達成：{par} 手を超え、ヒントも使用しました。'],
+ ko:['새 최고 기록: {delta}회 줄였어요.','왕관 클리어 성공. 선택 도전도 달성: 힌트 없이 {par}회 이내.','왕관 클리어 성공. 선택 도전 미달성: {par}회를 초과했어요.','왕관 클리어 성공. 선택 도전 미달성: 힌트를 사용했어요 ({par}회 이내 목표).','왕관 클리어 성공. 선택 도전 미달성: {par}회를 초과하고 힌트도 사용했어요.'],
+ es:['Nuevo récord: {delta} movimientos menos.','La corona cuenta como victoria. Reto opcional cumplido: {par} movimientos o menos, sin pistas.','La corona cuenta como victoria. Reto opcional no cumplido: más de {par} movimientos.','La corona cuenta como victoria. Reto opcional no cumplido: usaste una pista (límite: {par} movimientos).','La corona cuenta como victoria. Reto opcional no cumplido: más de {par} movimientos y usaste una pista.'],
+ 'pt-BR':['Novo recorde: {delta} jogadas a menos.','A coroa conta como vitória. Desafio opcional concluído: até {par} jogadas, sem dicas.','A coroa conta como vitória. Desafio opcional não concluído: mais de {par} jogadas.','A coroa conta como vitória. Desafio opcional não concluído: você usou uma dica (limite: {par} jogadas).','A coroa conta como vitória. Desafio opcional não concluído: mais de {par} jogadas e você usou uma dica.'],
+ fr:['Nouveau record : {delta} coups de moins.','La couronne valide le niveau. Défi facultatif réussi : {par} coups maximum, sans indice.','La couronne valide le niveau. Défi facultatif manqué : plus de {par} coups.','La couronne valide le niveau. Défi facultatif manqué : un indice a été utilisé (limite : {par} coups).','La couronne valide le niveau. Défi facultatif manqué : plus de {par} coups et un indice utilisé.'],
+ de:['Neuer Bestwert: {delta} Züge weniger.','Der Kronensieg zählt. Freiwillige Zusatzaufgabe geschafft: höchstens {par} Züge, ohne Tipps.','Der Kronensieg zählt. Zusatzaufgabe verfehlt: mehr als {par} Züge.','Der Kronensieg zählt. Zusatzaufgabe verfehlt: Ein Tipp wurde benutzt (höchstens {par} Züge).','Der Kronensieg zählt. Zusatzaufgabe verfehlt: mehr als {par} Züge und ein Tipp wurde benutzt.'],
+ it:['Nuovo record: {delta} mosse in meno.','La corona vale come vittoria. Sfida facoltativa completata: massimo {par} mosse, senza indizi.','La corona vale come vittoria. Sfida facoltativa non completata: oltre {par} mosse.','La corona vale come vittoria. Sfida facoltativa non completata: è stato usato un indizio (limite: {par} mosse).','La corona vale come vittoria. Sfida facoltativa non completata: oltre {par} mosse e con un indizio usato.'],
+ ru:['Новый рекорд: на {delta} ходов меньше.','Корона означает победу. Дополнительное задание выполнено: не более {par} ходов без подсказок.','Корона означает победу. Дополнительное задание не выполнено: больше {par} ходов.','Корона означает победу. Дополнительное задание не выполнено: использована подсказка (лимит — {par} ходов).','Корона означает победу. Дополнительное задание не выполнено: больше {par} ходов и использована подсказка.'],
+ hi:['नया सर्वश्रेष्ठ: {delta} चालें कम।','ताज जीतना सफलता है। वैकल्पिक चुनौती पूरी: बिना संकेत {par} या कम चालें।','ताज जीतना सफलता है। वैकल्पिक चुनौती अधूरी: {par} से अधिक चालें।','ताज जीतना सफलता है। वैकल्पिक चुनौती अधूरी: संकेत इस्तेमाल किया ({par} चालों की सीमा)।','ताज जीतना सफलता है। वैकल्पिक चुनौती अधूरी: {par} से अधिक चालें और संकेत इस्तेमाल किया।'],
+ ar:['أفضل نتيجة جديدة: أقل بـ {delta} حركة.','استعادة التاج تعني الفوز. اكتمل التحدي الاختياري: {par} حركة أو أقل دون تلميحات.','استعادة التاج تعني الفوز. لم يكتمل التحدي الاختياري: أكثر من {par} حركة.','استعادة التاج تعني الفوز. لم يكتمل التحدي الاختياري: استُخدم تلميح (الحد {par} حركة).','استعادة التاج تعني الفوز. لم يكتمل التحدي الاختياري: أكثر من {par} حركة مع استخدام تلميح.']
 };
 export function masteryFeedback(locale,{moves,previousBest,par,usedHint,practice=false}){
  const copy=rows[locale]||rows.en;
  const fill=(index,args={})=>copy[index].replace(/\{(\w+)\}/g,(_,key)=>String(args[key]));
  const improved=!practice&&Number.isInteger(previousBest)&&moves<previousBest;
- const goal=moves>par?fill(1,{par}):usedHint?fill(2):fill(3);
+ const goal=moves<=par&&!usedHint?fill(1,{par}):moves>par&&usedHint?fill(4,{par}):moves>par?fill(2,{par}):fill(3,{par});
  return improved?`${fill(0,{delta:previousBest-moves})} ${goal}`:goal;
 }

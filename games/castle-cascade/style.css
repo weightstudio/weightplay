@@ -370,3 +370,15 @@ body[data-wp-game-id="castle-cascade"] :is(.wp-frame-popover, .wp-shell-settings
 body[data-wp-game-id="castle-cascade"] .wp-tutorial-button { transition: opacity 120ms ease-out, display 120ms allow-discrete; }
 body[data-wp-game-id="castle-cascade"]:has(.wp-shell-settings-button[aria-expanded="true"]) .wp-tutorial-button { display: none; opacity: 0; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { body[data-wp-game-id="castle-cascade"] .wp-tutorial-button { transition: none; } }
+
+body[data-wp-game-id="castle-cascade"] .castle-loading-fill {
+  width: 34%;
+  animation: castle-loading-sweep 900ms ease-in-out infinite alternate;
+}
+@keyframes castle-loading-sweep {
+  from { transform: translateX(-75%); }
+  to { transform: translateX(285%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-wp-game-id="castle-cascade"] .castle-loading-fill { animation: none; }
+}

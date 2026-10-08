@@ -6,7 +6,7 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js?v=20261001-castle-cascade-v15-i8";
+} from "./cascade-core.js?v=20261007-castle-cascade-v17-i8";
 import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261003-castle-cascade-v16-i8";
 
 const GAME_ID = "castle-cascade";
@@ -765,3 +765,5 @@ installLocaleSelect();
 bindControls();
 translatePage();
 screen("main");
+document.body.setAttribute("aria-busy", "false");
+document.querySelector("#loadingPanel")?.classList.add("hidden");

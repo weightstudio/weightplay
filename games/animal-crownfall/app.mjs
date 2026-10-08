@@ -9,6 +9,16 @@ import {normalize,award,SAVE_KEY} from './save.mjs';
 import {masteryFeedback} from './result-copy.mjs';
 import {battleObjective} from './objective-copy.mjs';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
+const GAME_INTERFACE_VERSION='8';
+function assertGameInterfaceIdentity(){
+ const meta=document.querySelector('meta[name="weightplay-interface-version"]');
+ if(meta&&meta.content!==GAME_INTERFACE_VERSION)meta.content=GAME_INTERFACE_VERSION;
+ if(document.body?.dataset.wpInterfaceVersion!==GAME_INTERFACE_VERSION)document.body?.setAttribute('data-wp-interface-version',GAME_INTERFACE_VERSION);
+}
+assertGameInterfaceIdentity();
+const gameInterfaceIdentityObserver=new MutationObserver(assertGameInterfaceIdentity);
+gameInterfaceIdentityObserver.observe(document.head,{subtree:true,childList:true,attributes:true,attributeFilter:['content']});
+gameInterfaceIdentityObserver.observe(document.body,{attributes:true,attributeFilter:['data-wp-interface-version']});
 const $=id=>document.getElementById(id);
 const GAME_ID='animal-crownfall',FIRST_CLEAR_BLOCK_KEY=`${GAME_ID}:first-completion`;
 const tracking=()=>practiceMode||practiceRun?null:window.WonderAnalytics?.game;

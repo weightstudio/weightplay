@@ -69,13 +69,21 @@
 }
     </script>
   <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="style.css?v=20261003-castle-cascade-v16-i8">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
   <meta name="twitter:image" content="https://weightplay.com/assets/castle-cascade-poster.webp" />
   </head>
-<body class="has-game-page-info" data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-game-version="v16" data-wp-interface-version="8" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true">
+<body class="has-game-page-info" data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-game-version="v16" data-wp-interface-version="8" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true" aria-busy="true">
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite" aria-atomic="true">
+    <div class="loading-card">
+      <strong data-t="title">Castle Cascade</strong>
+      <span class="sr-only" data-t="kicker">शाही मैच-3 पहेली</span>
+      <div aria-hidden="true"><i class="castle-loading-fill"></i></div>
+    </div>
+  </div>
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" data-t-aria="backToMain" aria-label="मुख्य मेनू पर लौटें">←</a>
@@ -162,12 +170,13 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="locales.js?v=20261001-castle-cascade-v10-i8"></script>
   <script src="../../src/tutorial.js?v=20260928-castle-cascade-tutorial1"></script>
+  <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script type="module" src="game.js?v=20261003-castle-cascade-v16-i8"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 <script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

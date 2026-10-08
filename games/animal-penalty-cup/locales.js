@@ -64,6 +64,25 @@
     ar:"انتهت مهلة إشارة التصدي الحقيقية. عند الإعادة، انتظر الإشارة الساطعة واختر منطقتها قبل انتهاء الوقت."
   };
   const all={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
+  all["zh-Hans"].guideKicker="比赛指南";
+  const guideTags={
+    en:["Penalty shootout","Attack and defend","Fair cues"],
+    "zh-Hant":["十二碼射門","射門與守門","公平提示"],
+    "zh-Hans":["点球大战","射门与守门","公平提示"],
+    ja:["ペナルティ戦","攻撃と守備","公平な合図"],
+    ko:["승부차기","공격과 수비","공정한 신호"],
+    es:["Tanda de penaltis","Ataca y defiende","Señales claras"],
+    "pt-BR":["Disputa de pênaltis","Ataque e defesa","Sinais justos"],
+    fr:["Tirs au but","Attaque et défense","Signaux équitables"],
+    de:["Elfmeterschießen","Angriff und Abwehr","Faire Signale"],
+    it:["Calci di rigore","Attacco e difesa","Segnali chiari"],
+    ru:["Серия пенальти","Атака и защита","Честные сигналы"],
+    hi:["पेनल्टी शूटआउट","आक्रमण और बचाव","निष्पक्ष संकेत"],
+    ar:["ركلات الترجيح","هجوم ودفاع","إشارات عادلة"]
+  };
+  for(const [code,tags] of Object.entries(guideTags)){
+    ["tagPenalty","tagRoles","tagCues"].forEach((key,index)=>all[code][key]=tags[index]);
+  }
   for(const [code,copy] of Object.entries(campaign)){all[code].chapterNames=copy[0];all[code].chapterRules=copy[1]}
   for(const [code,name] of Object.entries(teamNames))all[code].teamName=name;
   for(const [code,copy] of Object.entries(defendTarget))all[code].defendTarget=copy;

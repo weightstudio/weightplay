@@ -3,7 +3,7 @@
   "use strict";
   const copies = {
   "en": {
-    "summary": "Play a solo card War round against the computer: compare revealed ranks, collect each winning pile, and resolve ties with three face-down cards per side.",
+    "summary": "Play solo War: each side reveals one card; the higher rank takes the pile. Ties add three face-down cards per side.",
     "headings": [
       "How a round works",
       "Ties and short decks",
@@ -80,11 +80,11 @@
       "eyebrow": "Classic card game",
       "guideLabel": "Game guide",
       "posterAlt": "Game artwork: {title}",
-      "summary": "Play a solo card War round against the computer: compare revealed ranks, collect each winning pile, and resolve ties with three face-down cards per side.",
+      "summary": "Play solo War: each side reveals one card; the higher rank takes the pile. Ties add three face-down cards per side.",
       "loser": "Computer wins",
       "resultStats": "WAR {wars} · Biggest pot {largest} cards"
     },
-    "description": "Play a solo card War round against the computer: compare revealed ranks, collect each winning pile, and resolve ties with three face-down cards per side."
+    "description": "Play solo War: each side reveals one card; the higher rank takes the pile. Ties add three face-down cards per side."
   },
   "zh-Hant": {
     "summary": "和電腦玩單人比牌：雙方翻開牌堆頂牌比較點數，勝者收下中央牌堆；平手時各放三張蓋牌再翻一張。",
