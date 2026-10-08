@@ -1,6 +1,6 @@
 const pawaxeLobbyReleaseStatus = "playable";
 const wildwoodLobbyReleaseStatus = "planned";
-const crownfallLobbyReleaseStatus = "planned";
+const crownfallLobbyReleaseStatus = "playable";
 
 window.WONDER_LOBBY = {
   platform: {
