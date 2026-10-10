@@ -175,6 +175,7 @@ function initBreaker(stage){
   const balls=[{x:.5,y:.78,vx:.42,vy:-.86,r:.012,trail:[]}];if(rules.twinStart)balls.push({x:.5,y:.78,vx:-.42,vy:-.86,r:.012,trail:[]});
   engine={kind:"breaker",paddle:{x:.5,w:stage<6?.25:.19},balls,blocks:breakerLayout(stage),lives:3,score:0,combo:0,bestCombo:0,time:0,accum:0,stage,chapter:rules.chapter,rules,launched:false,splitAwarded:0,particles:[],impactFlash:0};
   text(E.objective,rules.objective);
+  if(stage===1&&C.id==="animal-prism-breakers")announce(C.firstServeHint||"");
   E.controls.innerHTML=`<button id="launchBall" class="primary">Launch</button><button id="moveLeft">← Move</button><button id="moveRight">Move →</button><button id="breakerRestart">Restart</button>`;
   E.controls.querySelector("#launchBall").onclick=()=>{engine.launched=true};E.controls.querySelector("#moveLeft").onpointerdown=()=>engine.keyLeft=true;E.controls.querySelector("#moveLeft").onpointerup=()=>engine.keyLeft=false;E.controls.querySelector("#moveRight").onpointerdown=()=>engine.keyRight=true;E.controls.querySelector("#moveRight").onpointerup=()=>engine.keyRight=false;E.controls.querySelector("#breakerRestart").onclick=()=>initEngine(selected);updateBreakerStats()
 }

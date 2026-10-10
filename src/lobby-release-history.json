@@ -81,6 +81,10 @@
       "date": "2026-07-26T14:39:48+08:00",
       "evidence": "git:0af3b8a45edfd8e11ede0ead0032a44f3ffbf0a3"
     },
+    "animal-crownfall": {
+      "date": "2026-10-10T05:42:22.201Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-crystal-survivor": {
       "date": "2026-07-06T08:33:55+08:00",
       "evidence": "git:52046a360aaa1726c6e54bf488c2ac4f6e488bab"

@@ -71,7 +71,7 @@
     if (!document.querySelector('link[data-dewline-interface7]')) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = '/games/animal-dewline/interface-7-cleanup.css';
+      link.href = '/games/animal-dewline/interface-7-cleanup.css?v=20261010-dewline-stage-hidden-v1';
       link.dataset.dewlineInterface7 = '';
       document.head.append(link);
     }

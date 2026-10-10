@@ -1870,6 +1870,30 @@ const essentialLobbyCopy = {
     };
   });
 
+  const recentPlayCopy = {
+    en: ["Recently played", "Games you opened recently", "Play again"],
+    "zh-Hant": ["最近玩過", "最近開啟的遊戲", "再玩一次"],
+    "zh-Hans": ["最近玩过", "最近打开的游戏", "再玩一次"],
+    ja: ["最近遊んだゲーム", "最近開いたゲーム", "もう一度遊ぶ"],
+    ko: ["최근 플레이", "최근 연 게임", "다시 플레이"],
+    es: ["Jugados recientemente", "Juegos que abriste hace poco", "Jugar otra vez"],
+    "pt-BR": ["Jogos recentes", "Jogos que você abriu recentemente", "Jogar novamente"],
+    fr: ["Joués récemment", "Jeux ouverts récemment", "Rejouer"],
+    de: ["Kürzlich gespielt", "Zuletzt geöffnete Spiele", "Erneut spielen"],
+    it: ["Giocati di recente", "Giochi aperti di recente", "Gioca di nuovo"],
+    ru: ["Недавно играли", "Недавно открытые игры", "Играть снова"],
+    hi: ["हाल ही में खेले गए", "हाल ही में खोले गए गेम", "फिर से खेलें"],
+    ar: ["لُعبت مؤخرًا", "ألعاب فتحتها مؤخرًا", "العب مجددًا"],
+  };
+  Object.entries(recentPlayCopy).forEach(([locale, [title, reason, action]]) => {
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "recent_play.title": title,
+      "recent_play.reason": reason,
+      "recent_play.action": action,
+    };
+  });
+
   const extendedTopicCopy = {
     en: ["Card Games", "Block Puzzles", "Board Games"],
     "zh-Hant": ["紙牌遊戲", "方塊", "棋盤遊戲"],

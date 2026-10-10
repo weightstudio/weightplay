@@ -870,9 +870,9 @@ function rankLabel(game, fallbackRank) {
 
 function popularGames(limit = 3) {
   if (!isKidsLobby && activeHall === "topics") {
-    // Topics may contain planned/internal teasers. Only public playable games
-    // belong in a shelf labeled Popular or in play-count/rank presentation.
-    const topicGames = gamesInHall().filter((game) => game.status === "playable" && topicHeroGameIds.includes(game.id));
+    // The Topics shelf is a preview, not a popularity ranking. Its planned
+    // cards are rendered as Coming Soon buttons without rank or play counts.
+    const topicGames = gamesInHall().filter((game) => topicHeroGameIds.includes(game.id));
     return topicGames.slice(0, limit);
   }
   const playableGames = gamesInHall().filter((game) => game.status === "playable");
@@ -1251,13 +1251,15 @@ function createGameCard(game) {
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable
-    ? i18n.t(recent ? "action.continue" : "action.play")
+    ? i18n.t(recent ? "recent_play.action" : "action.play")
     : ownerPreviewMode && internalTrialPath(game)
       ? `${stateCopy("previewLabel")} · ${i18n.t("action.play")}`
       : i18n.t("action.coming_soon");
   const ageOverlay = isKidsLobby && showAgeLabels ? `<span class="game-card-age-overlay">${ageLabel}</span>` : "";
-  const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
-  const lifetimeRank = hasRealStats() ? popularGames(5).findIndex((popularGame) => popularGame.id === game.id) + 1 : 0;
+  const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("recent_play.action")}</span>` : "";
+  const lifetimeRank = isPlayable && hasRealStats()
+    ? popularGames(5).findIndex((popularGame) => popularGame.id === game.id) + 1
+    : 0;
   const popularBadge = lifetimeRank > 0 ? `<span class="popular-card-badge">${rankLabel(game, lifetimeRank)}</span>` : "";
   const updatedBadge = recentlyUpdatedGameIds.has(game.id) ? `<span class="updated-card-badge">${i18n.t("badge.updated")}</span>` : "";
 
@@ -1624,35 +1626,37 @@ function renderContinuePlaying() {
         ${showAgeLabels ? `<span>${ageLabel}</span>` : ""}
         <strong data-runtime-localize="off">${title}</strong>
         <small>${type}</small>
-        <b>${i18n.t("action.continue")}</b>
+        <b>${i18n.t("recent_play.action")}</b>
       </div>
     `;
     return card;
   });
-  continuePlayingTitle.textContent = i18n.t("continue_playing.title");
-  continuePlayingReason.textContent = i18n.t("continue_playing.reason");
-  continuePlayingSection.setAttribute("aria-label", i18n.t("continue_playing.title"));
+  continuePlayingTitle.textContent = i18n.t("recent_play.title");
+  continuePlayingReason.textContent = i18n.t("recent_play.reason");
+  continuePlayingSection.setAttribute("aria-label", i18n.t("recent_play.title"));
   continuePlayingSection.classList.toggle("hidden", cards.length === 0);
   document.body.classList.toggle("has-recent-games", cards.length > 0);
   continuePlaying.replaceChildren(...cards);
 }
 
-function discoveryCards(games, { popular = false } = {}) {
+function discoveryCards(games, { popular = false, visualIdentity = false } = {}) {
   return games
     .map((game, index) => {
       const isPlayable = game.status === "playable";
-      const isTopicPreview = !isKidsLobby && activeHall === "topics" && topicGameIds.has(game.id);
+      const isTopicPreview = !isKidsLobby && activeHall === "topics" && topicGameIds.has(game.id) && game.status === "planned";
       const title = text(game.title);
       const type = text(game.type);
       const ageLabel = text(game.ageLabel);
+      const hasVisualIdentity = visualIdentity && isPlayable && !isKidsLobby;
       // Popular cards are ranked after unavailable games are filtered out, so
       // their visible Top 5 positions must stay consecutive.
       const rankText = popular ? i18n.t("stats.rank_label", { rank: index + 1 }) : "";
       // Topic hall teasers are always buttons; planned topic games never become
       // public anchors to their internal trial paths.
       const card = document.createElement(isPlayable ? "a" : "button");
-      card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;
+      card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}${hasVisualIdentity ? " has-visual-identity" : ""}`;
       card.dataset.discoveryGameId = game.id;
+      if (hasVisualIdentity) card.setAttribute("aria-label", `${title}. ${type}. ${stateCopy("playableLabel")}`);
       card.type = isPlayable ? undefined : "button";
       if (isPlayable) {
         card.href = game.href;
@@ -1662,14 +1666,15 @@ function discoveryCards(games, { popular = false } = {}) {
       card.innerHTML = `
         <div class="hero-game-art">
           <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png", { priority: popular })} alt="" />
+          ${hasVisualIdentity ? `<span class="hero-game-art-identity" aria-hidden="true"><strong>${title}</strong><small>${type}</small></span>` : ""}
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
         </div>
-        <div class="hero-game-copy">
+        ${hasVisualIdentity ? "" : `<div class="hero-game-copy">
           ${isTopicPreview ? `<span class="topic-preview-label">${i18n.t("hall.topics_preview")}</span>` : popular && !isKidsLobby ? `<span class="hero-game-rank">${rankText}</span>` : ""}
           <strong data-runtime-localize="off">${title}</strong>
           <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
           ${popular ? `<em>${playCountText(game)}</em>` : ""}
-        </div>
+        </div>`}
       `;
       revealDecodedImage(card.querySelector(".hero-game-image"));
       return card;
@@ -1677,7 +1682,7 @@ function discoveryCards(games, { popular = false } = {}) {
 }
 
 function renderHeroGames() {
-  heroGames.replaceChildren(...discoveryCards(popularGames(5), { popular: true }));
+  heroGames.replaceChildren(...discoveryCards(popularGames(5), { popular: activeHall !== "topics" }));
 }
 
 function latestPublicGames() {
@@ -1695,7 +1700,7 @@ function renderLatestGames() {
   latestGamesSection.querySelector("h2").textContent = title;
   latestGamesSection.querySelector(".catalog-jump").textContent = `${i18n.t("library.all_games")} →`;
   latestGamesSection.setAttribute("aria-label", title);
-  latestGames.replaceChildren(...discoveryCards(latestPublicGames()));
+  latestGames.replaceChildren(...discoveryCards(latestPublicGames(), { visualIdentity: true }));
 }
 
 function renderMobilePicks() {
@@ -2314,7 +2319,7 @@ function applyStaticTranslations() {
   });
   gameGrid?.setAttribute("aria-label", i18n.t("aria.game_list"));
   const regionLabels = [
-    [heroGamesSection, "section.hero_games"],
+    [heroGamesSection, activeHall === "topics" ? "hall.topics_games_title" : "section.hero_games"],
     [mobilePicksSection, "mobile_picks.title"],
     [upcomingGamesSection, "availability_hint.preview"],
     [characterShowcaseSection, "character_showcase.title"],
