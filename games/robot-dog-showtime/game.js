@@ -24,10 +24,11 @@ function saveDraft(){save.drafts[String(stageIndex+1)]=plan.map(pair=>[...pair])
 function currentStage(){return stages[stageIndex]}
 function showBattleScene(epoch){try{if(epoch!==renderEpoch||screen!=='battle')return;scene=new ShowtimeScene(els.canvas);scene.setState({positions:currentStage().starts,goals:currentStage().goals,walls:currentStage().walls});els.fallback.hidden=true}catch(error){console.error('Robot Dog Showtime 3D initialization failed',error);els.fallback.hidden=false}}
 function destroyScene(){renderEpoch++;scene?.dispose();scene=null}
-function startBattle(index){if(index<0||index>=stages.length||index>=save.unlocked)return;destroyScene();stageIndex=index;selectedActor=0;selectedBeat=0;plan=draftFor(currentStage());syncScreen('battle');
+function startBattle(index){if(index<0||index>=stages.length||index>=save.unlocked)return;stageIndex=index;selectedActor=0;selectedBeat=0;plan=draftFor(currentStage());syncScreen('battle');
   const s=currentStage();els.label.textContent=stageName(s);els.dogGoal.textContent=`Mark ${s.goals[0]+1}`;els.foxGoal.textContent=`Mark ${s.goals[1]+1}`;
   $('selectDog').setAttribute('aria-pressed','true');$('selectFox').setAttribute('aria-pressed','false');renderPlan();setStatus(`Plan ${s.beats} beats. Choose a performer, beat, and cue.`);renderMain();
-  try{window.WeightPlayAudio?.play('game.start')}catch{};showBattleScene(renderEpoch)
+  try{window.WeightPlayAudio?.play('game.start')}catch{};
+  if(scene){scene.activate();scene.setState({positions:s.starts,goals:s.goals,walls:s.walls});els.fallback.hidden=true}else showBattleScene(renderEpoch)
 }
 function cueName(cue){return cue?byCue[cue]:'—'}
 function renderPlan(){const s=currentStage();els.beatRail.replaceChildren();
@@ -60,8 +61,8 @@ function clearStage(stage){if(!save.cleared.includes(stage.id))save.cleared.push
 function openResult(stage){$('resultKicker').textContent=stage.id%5===0?'CHECKPOINT CLEARED':'SHOW COMPLETE';$('resultTitle').textContent=stage.id===30?'Opening Night!':'Great formation!';$('resultText').textContent=`The pup and fox reached their marks on Stage ${stage.id}. Progress is saved.`;$('nextStage').disabled=stage.id===30;els.result.hidden=false;focusBeforeDialog=document.activeElement;$('nextStage').focus()}
 function closeDialog(dialog,focus){dialog.hidden=true;if(focus?.isConnected)focus.focus()}
 function openHelp(){if(rehearsing)return;focusBeforeDialog=document.activeElement;els.help.hidden=false;$('closeHelp').focus()}
-function goMap(){if(rehearsing)return;closeDialog(els.leave);closeDialog(els.result);destroyScene();syncScreen('stage');renderMap();$('stageBack').focus()}
-function closeToMap(){if(rehearsing)return;destroyScene();closeDialog(els.leave);closeDialog(els.help);syncScreen('stage');renderMap();$('stageBack').focus()}
+function goMap(){if(rehearsing)return;closeDialog(els.leave);closeDialog(els.result);scene?.suspend();syncScreen('stage');renderMap();$('stageBack').focus()}
+function closeToMap(){if(rehearsing)return;scene?.suspend();closeDialog(els.leave);closeDialog(els.help);syncScreen('stage');renderMap();$('stageBack').focus()}
 
 $('startButton').addEventListener('click',()=>{syncScreen('stage');renderMap();$('stageBack').focus()});
 $('stageBack').addEventListener('click',()=>{syncScreen('main');renderMain();$('startButton').focus()});

@@ -31,11 +31,14 @@ export class ShowtimeScene {
     this.dog=this.buildDog(); this.fox=this.buildFox(); this.sceneObjects.add(this.dog,this.fox);
     this.targets=[this.makeTarget(0),this.makeTarget(1)]; this.sceneObjects.add(...this.targets);
     this.positions=[0,11]; this.goals=[0,11]; this.activeActor=0; this.tick=0; this.frame=0;
-    this.onResize=()=>this.resize(); window.addEventListener('resize',this.onResize,{passive:true});
-    this.resizeObserver='ResizeObserver'in window?new ResizeObserver(()=>this.resize()):null;
-    this.resizeObserver?.observe(canvas.parentElement); this.resize(); this.drawLoop();
+    this.onResize=()=>this.resize(); this.resizeObserver=null; this.active=false;
+    this.activate();
     canvas.dataset.renderer='three-webgl';
   }
+  activate(){if(this.disposed||this.active)return;this.active=true;window.addEventListener('resize',this.onResize,{passive:true});
+    this.resizeObserver='ResizeObserver'in window?new ResizeObserver(()=>this.resize()):null;
+    this.resizeObserver?.observe(this.canvas.parentElement);this.resize();this.drawLoop();}
+  suspend(){if(!this.active)return;this.active=false;cancelAnimationFrame(this.frame);window.removeEventListener('resize',this.onResize);this.resizeObserver?.disconnect();this.resizeObserver=null;}
   own(x){this.owned.add(x);return x}
   mat(color,metalness=0,roughness=.55){return this.own(new THREE.MeshStandardMaterial({color,metalness,roughness}))}
   basic(color){return this.own(new THREE.MeshBasicMaterial({color}))}
@@ -106,13 +109,13 @@ export class ShowtimeScene {
     const h=Math.max(worldH,worldW/aspect)*pad;this.camera.top=h/2;this.camera.bottom=-h/2;this.camera.left=-h*aspect/2;this.camera.right=h*aspect/2;this.camera.updateProjectionMatrix();
     this.renderer.setSize(rect.width,rect.height,false);
   }
-  drawLoop(){if(this.disposed)return;this.frame=requestAnimationFrame(()=>this.drawLoop());
+  drawLoop(){if(this.disposed||!this.active)return;this.frame=requestAnimationFrame(()=>this.drawLoop());
     if(document.hidden)return;this.tick+=.016;
     if(!this.reduced){this.dog.position.y=.025+Math.sin(this.tick*1.55)*.025;this.fox.position.y=.02+Math.sin(this.tick*1.55+1)*.022;}
     this.renderer.render(this.scene,this.camera);
   }
   stats(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures}}
-  dispose(){if(this.disposed)return;this.disposed=true;cancelAnimationFrame(this.frame);window.removeEventListener('resize',this.onResize);this.resizeObserver?.disconnect();
+  dispose(){if(this.disposed)return;this.suspend();this.disposed=true;
     this.scene?.traverse(o=>{if(o.geometry)this.owned.add(o.geometry);if(Array.isArray(o.material))o.material.forEach(m=>this.owned.add(m));else if(o.material)this.owned.add(o.material)});
     for(const item of this.owned)item.dispose?.();this.renderer?.dispose();this.renderer?.forceContextLoss();this.owned.clear();
   }

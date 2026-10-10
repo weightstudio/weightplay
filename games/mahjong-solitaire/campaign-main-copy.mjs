@@ -14,6 +14,36 @@ const labels={
  hi:'खेल शुरू करें|खेल की गाइड|सेटिंग|भाषा|ध्वनि',
  ar:'ابدأ اللعبة|دليل اللعبة|الإعدادات|اللغة|الصوت',
 };
+const gameplayTags={
+ en:['Tile matching','Pair matching','Board-clearing puzzle'],
+ 'zh-Hant':['麻將牌配對','相同牌消除','牌面清空解謎'],
+ 'zh-Hans':['麻将牌配对','相同牌消除','牌面清空解谜'],
+ ja:['麻雀牌のペア合わせ','牌の取り除き','盤面クリアパズル'],
+ ko:['마작 타일 짝 맞추기','같은 타일 제거','보드 클리어 퍼즐'],
+ es:['Emparejar fichas','Combinar parejas','Puzle de tablero'],
+ 'pt-BR':['Combinação de peças','Formar pares iguais','Quebra-cabeça de tabuleiro'],
+ fr:['Association de tuiles','Paires identiques','Casse-tête de plateau'],
+ de:['Steinpaare zuordnen','Gleiche Paare entfernen','Brett-Rätsel'],
+ it:['Abbinare tessere','Coppie identiche','Puzzle da tavolo'],
+ ru:['Сопоставление плиток','Поиск одинаковых пар','Головоломка с очисткой поля'],
+ hi:['टाइल का मिलान','एक जैसे जोड़े हटाना','बोर्ड साफ़ करने की पहेली'],
+ ar:['مطابقة البلاطات','إزالة الأزواج المتطابقة','أحجية لإخلاء اللوحة'],
+};
+const hintRule={
+ en:'Hint searches for a clearing path within a fixed search budget. If it reaches that limit, the board has not been proven impossible.',
+ 'zh-Hant':'提示會在固定搜尋上限內尋找可清盤的步驟。若達到上限，並不代表已證明牌局無解。',
+ 'zh-Hans':'提示会在固定搜索上限内寻找清空牌盘的步骤。若达到上限，并不代表已经证明牌局无解。',
+ ja:'ヒントは決められた探索数の範囲で盤面をクリアする手順を探します。上限に達しても、クリア不可能と証明されたわけではありません。',
+ ko:'힌트는 정해진 탐색 한도 안에서 보드를 비울 수순을 찾습니다. 한도에 도달해도 해결 불가가 증명된 것은 아닙니다.',
+ es:'La pista busca una secuencia para vaciar el tablero dentro de un límite de búsqueda. Si alcanza ese límite, no significa que se haya demostrado que el tablero es imposible.',
+ 'pt-BR':'A dica procura uma sequência para limpar o tabuleiro dentro de um limite de busca. Se atingir esse limite, isso não prova que o tabuleiro seja impossível.',
+ fr:'L’indice cherche une suite de coups pour vider le plateau dans une limite de recherche définie. Atteindre cette limite ne prouve pas que la partie est impossible.',
+ de:'Der Tipp sucht innerhalb eines festgelegten Suchlimits nach einem Lösungsweg. Wird das Limit erreicht, ist damit nicht bewiesen, dass das Brett unlösbar ist.',
+ it:'Il suggerimento cerca una sequenza per liberare il tabellone entro un limite di ricerca. Se raggiunge il limite, non significa che il tabellone sia irrisolvibile.',
+ ru:'Подсказка ищет последовательность ходов для очистки поля в пределах заданного лимита поиска. Если лимит достигнут, это не доказывает, что поле невозможно пройти.',
+ hi:'संकेत तय खोज-सीमा के भीतर बोर्ड साफ़ करने के लिए चालों का क्रम खोजता है। सीमा पूरी होने पर यह सिद्ध नहीं होता कि बोर्ड हल नहीं हो सकता।',
+ ar:'يبحث التلميح عن تسلسل لحل اللوح ضمن حد محدد للبحث. إذا بلغ هذا الحد، فهذا لا يثبت أن حل اللوح مستحيل.',
+};
 const stars={
  en:'Earn three stars by clearing without hints or undo. Using either costs one star; using both earns one star. Replay to improve your best.',
  'zh-Hant':'不使用提示與撤銷完成清盤可得三星。使用其中一種扣一星，兩種都用則得一星；重玩可刷新最佳紀錄。',
@@ -45,5 +75,6 @@ const progression={
  ar:'أخلِ اللوح لفتح المرحلة التالية من أصل 30 مرحلة. يمكنك إعادة المراحل المكتملة. يُحفظ التقدم في هذا المتصفح عند توفر التخزين.',
 };
 const keys=['startGame','guide','settings','language','sound'];
-export const MAHJONG_MAIN_COPY=Object.freeze(Object.fromEntries(CAMPAIGN_LOCALES.map(l=>[l,Object.freeze({...Object.fromEntries(labels[l].split('|').map((v,i)=>[keys[i],v])),starsRule:stars[l],progression:progression[l]})])));
+export const MAHJONG_MAIN_COPY=Object.freeze(Object.fromEntries(CAMPAIGN_LOCALES.map(l=>[l,Object.freeze({...Object.fromEntries(labels[l].split('|').map((v,i)=>[keys[i],v])),starsRule:stars[l],hintRule:hintRule[l],progression:progression[l]})])));
 export function mahjongMainCopy(locale){const row=MAHJONG_MAIN_COPY[locale];if(!row)throw new Error('Unsupported Main locale');return row;}
+export function mahjongMainTags(locale){const row=gameplayTags[locale];if(!row)throw new Error('Unsupported Main locale');return row;}
