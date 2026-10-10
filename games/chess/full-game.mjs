@@ -73,7 +73,7 @@ function showScene(name){
 }
 const sound=name=>{if(!document.hidden)window.WeightPlayAudio?.play(name);};
 function saved(){try{const data=localStorage.getItem(saveKey);return data?ChessSession.restore(JSON.parse(data)):null;}catch{return null;}}
-function updateMain(){const copy=mainLocales[locale];challengeButton.textContent=copy.start;$('intro').textContent=copy.intro;$('exit').setAttribute('aria-label',copy.back);const count=document.createElement('bdi');count.dir='ltr';count.textContent=`${progress.cleared.length} / ${challenges.length}`;$('campaignProgress').replaceChildren(document.createTextNode(copy.progress+' · '),count);}
+function updateMain(){const copy=mainLocales[locale];challengeButton.textContent=copy.start;$('intro').textContent=copy.intro;$('exit').setAttribute('aria-label',copy.back);const tags=$('rulesReference').querySelector('.game-info-tags');if(tags)tags.replaceChildren(...copy.tags.map(value=>{const span=document.createElement('span');span.textContent=value;return span;}));const count=document.createElement('bdi');count.dir='ltr';count.textContent=`${progress.cleared.length} / ${challenges.length}`;$('campaignProgress').replaceChildren(document.createTextNode(copy.progress+' · '),count);}
 function persist(){if(currentChallenge){$('saved').textContent='';return;}try{localStorage.setItem(saveKey,JSON.stringify(session.serialize()));$('saved').textContent=text('saved');}catch{$('saved').textContent='';}}
 function localize(){
  for(const button of $('promoteChoices').children)button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[button.dataset.piece]);

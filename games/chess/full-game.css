@@ -42,6 +42,9 @@ header{max-width:920px}
 .piece-reference>div{padding:16px;border:1px solid #ffffff29;border-inline-start:3px solid #bfa36a;border-radius:14px;background:#17243a;min-width:0}
 .piece-reference dt{font-weight:750;font-size:18px;color:#f5d895;margin-bottom:8px}
 .piece-reference dd{margin:0;overflow-wrap:anywhere}
+/* The shared Guide defaults are tuned for light cards; keep Chess text bright on its dark panels. */
+#rulesReference .piece-reference dt{color:#f5d895}
+#rulesReference .game-info-section p,#rulesReference .piece-reference dd{color:#dbe6f2}
 #main #challenges{height:52px;min-height:52px;margin:12px 0 0;background:#f5c84c;color:#1f2937;font-size:16px;font-weight:800;line-height:1.2;border-radius:14px;display:grid;place-items:center}
 #main #campaignProgress{margin:8px 0 0;height:40px;min-height:40px;max-height:40px;display:flex;align-items:center;gap:4px;font-size:14px;color:#cbd5e1}
 #exit{width:58px;height:48px;flex:0 0 58px;display:grid;grid-template-columns:16px 28px;gap:4px;align-items:center;justify-content:center;padding:4px;background:#f8fafc;color:#176a9d;border-radius:14px;text-decoration:none;font-size:22px;line-height:1;overflow:hidden}

@@ -36,6 +36,7 @@
   };
   const stageLandscapeRatioThresholdByGame = {
     "animal-postcard-crop": 1.25, // Keep shared 44px Stage controls usable at 1280x720.
+    pawflow: 1.25, // Use the authored wide Stage envelope at 1280x720 so scaled controls stay above the 44px physical minimum.
     "animal-rune-tactics": 1.25,
     "animal-habitat-builder": 1.25,
     "animal-gust-garden": 1.25,
