@@ -6,9 +6,9 @@
     data[code] = {title, metaDescription, gameplay, genre, difficulty, time, intro, story, systems, how, strategyTips, progression, designNote, parent, faq, comparison: Object.fromEntries(['heading','body','disclaimer','sourceLabel'].map((key,i)=>[key,comparison[i]])), hideScoreBands:true, showSkills:false, skills:[], relatedIds:['animal-auto-squad','animal-relic-hunters','animal-dice-bastion']};
   }
   add('en','Rune Tactics',
-    'Lead a lion, owl and turtle through 30 turn-based missions on 4×5 to 6×6 boards. Master terrain, six bosses and permanent upgrades.',
+    'Lead a lion, owl and turtle through 30 turn-based missions on 6×6 boards. Master terrain, six bosses and permanent upgrades.',
     'Turn-based squad positioning',['Turn-based tactics','Squad strategy','Campaign'],'Progressive challenge','Play at your own pace',
-    'Rune Tactics is an original single-player campaign with 30 authored missions, three animal heroes and six bosses. Read the terrain, move into position and coordinate attacks on rune boards ranging from 4×5 to 6×6 cells.',
+    'Rune Tactics is an original single-player campaign with 30 authored missions, three animal heroes and six bosses. Read the terrain, move into position and coordinate attacks on rune boards ranging from 6×6 cells.',
     ['A lion, an owl and a turtle cross six five-mission chapters. Each chapter introduces hazards and enemy traits before a different boss combines those rules.','The campaign is authored rather than an endless random map. Earlier unlocked missions remain available for practicing formations and improving your saved star record.'],
     ['Each hero can move once and then perform one combat action during a player turn. The lion moves up to three cells; the owl and turtle move up to two. Highlighted destinations follow legal paths around rubble and occupied cells. Moving does not spend the attack, but a completed combat action ends that hero’s turn.','The lion’s skill damages a group, the owl’s skill chains between nearby enemies, and the turtle’s skill protects the squad and restores health. Skills require Energy; silence can prevent a skill without disabling normal attacks or Guard.','Position matters as well as attack strength. Opposite-side allies enable flanking; armor, shields, seals and flying immunity affect the damage preview. Tide, fire and rotating outer cells can change a safe formation after the turn ends.','Each mission has three persistent stars: victory, all three heroes surviving, and the displayed turn target. Every newly earned star grants four Runes once. Missing a star does not invalidate a victory, and replaying an already earned star does not pay it again.'],
     ['Start the game, browse the mission cards and activate an unlocked card to enter Battle. Read its terrain and enemy information first.','Select a hero with touch or mouse, then choose a highlighted destination before attacking, guarding or using a skill. Keyboard arrows move grid focus; Enter or Space activates a cell.','Compare the preview with your remaining Energy and the other heroes’ positions. End the turn when your planned actions are complete.','After victory, choose a Rune Reward and continue, replay or return to Missions. Hero upgrades and the optional training slot are available before battle.'],
@@ -19,9 +19,9 @@
     [['Can I move and attack in the same turn?','Yes. Move the selected hero first, then use one attack, Guard or skill. Once the combat action is complete, that hero is done for the turn.'],['Why is a skill unavailable?','Check the hero’s Energy, whether its combat action is already used, and whether it is silenced. A normal attack or Guard may still be available.'],['Does zero preview damage mean the attack is broken?','Not necessarily. Flying immunity, shields or armor can reduce or prevent damage. Reposition or use another hero and check the preview.'],['Must I earn all three stars to proceed?','No. Victory can unlock progress without the survival or turn-target star. Replay later to earn only the still-missing rewards.'],['Does restarting delete my upgrades?','Restarting resets that battle, not your saved campaign upgrades. Clearing browser storage can remove the local save.'],['What happens after mission 30?','The campaign ends at mission 30. Revisit unlocked missions to improve stars; the game does not invent a mission 31.']],
     ['A comparison for turn-based tactics players','Into the Breach and Rune Tactics both ask you to coordinate a squad through turn-based grid positioning. Into the Breach uses mechs and telegraphed enemy attacks. This WeightPlay game instead offers 30 authored missions, three animal heroes, six bosses and permanent browser-local progression. Its damage preview is not a complete forecast of every enemy’s next action.','Rune Tactics is an independent WeightPlay game, not an official version of Into the Breach. WeightPlay is not affiliated with, endorsed by or partnered with Subset Games.','Subset Games: official Into the Breach overview']);
   add('zh-Hant','符文戰棋',
-    '帶領獅子、貓頭鷹與烏龜挑戰 30 關回合制任務，在 4×5 至 6×6 棋盤運用地形、夾擊與技能，擊敗六位首領並累積永久成長。',
+    '帶領獅子、貓頭鷹與烏龜挑戰 30 關回合制任務，在 6×6 棋盤運用地形、夾擊與技能，擊敗六位首領並累積永久成長。',
     '回合制小隊走位',['回合戰術','小隊策略','章節戰役'],'逐步進階','依自己的步調遊玩',
-    '《符文戰棋》是包含 30 個設計關卡、三位動物英雄與六位首領的原創單人戰役。在 4×5 至 6×6 格的符文棋盤上，觀察地形、安排走位，再協調隊員出招。',
+    '《符文戰棋》是包含 30 個設計關卡、三位動物英雄與六位首領的原創單人戰役。在 6×6 格的符文棋盤上，觀察地形、安排走位，再協調隊員出招。',
     ['獅子、貓頭鷹與烏龜一起穿越六個章節，每章五關。先認識新的地形與敵人特性，再迎戰結合章節規則的首領。','這是固定設計的戰役，不是無限隨機地圖。已解鎖關卡會保留，方便練習不同陣形並改善儲存的星星紀錄。'],
     ['每位英雄在玩家回合可以先移動一次，再進行一次戰鬥行動。獅子最多移動三格，貓頭鷹與烏龜最多兩格。亮起的目的地會依合法路徑繞過碎石與被占用格；移動不會用掉攻擊，但完成攻擊、防守或技能後，該英雄本回合便結束。','獅子技能可波及敵群，貓頭鷹技能可連鎖鄰近敵人，烏龜技能則保護小隊並回復生命。技能需要能量；沉默會限制技能，但不會直接封鎖普通攻擊與防守。','走位和攻擊力同樣重要。敵人兩側的隊友可形成夾擊；護甲、護盾、封印與飛行免疫會影響傷害預覽。潮汐、火焰和外圈旋轉也可能在回合結束後改變安全位置。','每關保留三項星星紀錄：獲勝、三位英雄全員存活，以及達成畫面顯示的回合目標。每顆新獲得的星星只會發放一次四枚符文；少拿星星不會取消勝利，重複拿同一顆也不會再次領獎。'],
     ['開始遊戲後瀏覽任務卡，點選已解鎖卡片即可進入戰鬥。先看清該關地形與敵人資訊。','使用觸控或滑鼠選擇英雄，先點亮起的格子移動，再攻擊、防守或使用技能。鍵盤方向鍵移動棋盤焦點，Enter 或空白鍵啟動格子。','比較傷害預覽、剩餘能量與其他隊員位置，完成預定行動後再結束回合。','獲勝後選擇符文獎勵，再繼續、重玩或返回任務。英雄升級與選用的訓練欄位位於戰前介面。'],
@@ -32,9 +32,9 @@
     [['同一回合可以移動再攻擊嗎？','可以。先移動選中的英雄，再使用一次攻擊、防守或技能；戰鬥行動完成後，該英雄本回合便結束。'],['為什麼不能用技能？','請檢查剩餘能量、是否已用完戰鬥行動，以及是否處於沉默狀態；普通攻擊或防守可能仍可使用。'],['傷害預覽是零，代表攻擊壞掉了嗎？','不一定。飛行免疫、護盾或護甲可能減少或阻擋傷害；換位置或換英雄後再看一次預覽。'],['必須拿滿三顆星才能繼續嗎？','不用。沒有全員存活或回合目標星星，獲勝仍可推進戰役；之後重玩只會補發尚未取得的星星獎勵。'],['重試會刪掉升級嗎？','重試只重置該場戰鬥，不會刪除已保存的戰役升級；清除瀏覽器儲存資料則可能移除存檔。'],['第 30 關之後還有什麼？','戰役在第 30 關結束，可重玩已解鎖任務並改善星星紀錄，不會出現不存在的第 31 關。']],
     ['給回合戰術玩家的玩法比較','Into the Breach 與《符文戰棋》都需要在回合制格子戰場安排小隊走位。Into the Breach 使用機甲，並預告敵方攻擊；這款 WeightPlay 遊戲則提供 30 個設計任務、三位動物英雄、六位首領與瀏覽器本機永久成長。本作的傷害預覽不等於完整預告每位敵人的下一步。','《符文戰棋》是 WeightPlay 獨立作品，不是 Into the Breach 的官方版本。WeightPlay 與 Subset Games 沒有隸屬、背書或合作關係。','Subset Games：Into the Breach 官方介紹']);
   add('zh-Hans','符文战棋',
-    '带领狮子、猫头鹰与乌龟挑战 30 关回合制任务，在 4×5 至 6×6 棋盘运用地形、夹击与技能，击败六位首领并积累永久成长。',
+    '带领狮子、猫头鹰与乌龟挑战 30 关回合制任务，在 6×6 棋盘运用地形、夹击与技能，击败六位首领并积累永久成长。',
     '回合制小队走位',['回合战术','小队策略','章节战役'],'逐步进阶','按自己的节奏游玩',
-    '《符文战棋》是包含 30 个设计关卡、三位动物英雄与六位首领的原创单人战役。在 4×5 至 6×6 格的符文棋盘上，观察地形、安排走位，再协调队员出招。',
+    '《符文战棋》是包含 30 个设计关卡、三位动物英雄与六位首领的原创单人战役。在 6×6 格的符文棋盘上，观察地形、安排走位，再协调队员出招。',
     ['狮子、猫头鹰与乌龟一起穿越六个章节，每章五关。先认识新的地形与敌人特性，再迎战结合章节规则的首领。','这是固定设计的战役，不是无限随机地图。已解锁关卡会保留，方便练习不同阵形并改善保存的星星记录。'],
     ['每位英雄在玩家回合可以先移动一次，再进行一次战斗行动。狮子最多移动三格，猫头鹰与乌龟最多两格。亮起的目的地会依合法路径绕过碎石与被占用格；移动不会用掉攻击，但完成攻击、防守或技能后，该英雄本回合便结束。','狮子技能可波及敌群，猫头鹰技能可连锁邻近敌人，乌龟技能则保护小队并恢复生命。技能需要能量；沉默会限制技能，但不会直接封锁普通攻击与防守。','走位和攻击力同样重要。敌人两侧的队友可形成夹击；护甲、护盾、封印与飞行免疫会影响伤害预览。潮汐、火焰和外圈旋转也可能在回合结束后改变安全位置。','每关保留三项星星记录：获胜、三位英雄全员存活，以及达到画面显示的回合目标。每颗新获得的星星只会发放一次四枚符文；少拿星星不会取消胜利，重复拿同一颗也不会再次领奖。'],
     ['开始游戏后浏览任务卡，点击已解锁卡片即可进入战斗。先看清该关地形与敌人信息。','使用触控或鼠标选择英雄，先点击亮起的格子移动，再攻击、防守或使用技能。键盘方向键移动棋盘焦点，Enter 或空格键激活格子。','比较伤害预览、剩余能量与其他队员位置，完成预定行动后再结束回合。','获胜后选择符文奖励，再继续、重玩或返回任务。英雄升级与可选训练栏位于战前界面。'],
@@ -45,9 +45,9 @@
     [['同一回合可以移动再攻击吗？','可以。先移动选中的英雄，再使用一次攻击、防守或技能；战斗行动完成后，该英雄本回合便结束。'],['为什么不能用技能？','请检查剩余能量、是否已用完战斗行动，以及是否处于沉默状态；普通攻击或防守可能仍可使用。'],['伤害预览是零，代表攻击坏掉了吗？','不一定。飞行免疫、护盾或护甲可能减少或阻挡伤害；换位置或换英雄后再看一次预览。'],['必须拿满三颗星才能继续吗？','不用。没有全员存活或回合目标星星，获胜仍可推进战役；之后重玩只会补发尚未获得的星星奖励。'],['重试会删掉升级吗？','重试只重置该场战斗，不会删除已保存的战役升级；清除浏览器存储数据则可能移除存档。'],['第 30 关之后还有什么？','战役在第 30 关结束，可重玩已解锁任务并改善星星记录，不会出现不存在的第 31 关。']],
     ['给回合战术玩家的玩法比较','Into the Breach 与《符文战棋》都需要在回合制格子战场安排小队走位。Into the Breach 使用机甲，并预告敌方攻击；这款 WeightPlay 游戏则提供 30 个设计任务、三位动物英雄、六位首领与浏览器本地永久成长。本作的伤害预览不等于完整预告每位敌人的下一步。','《符文战棋》是 WeightPlay 独立作品，不是 Into the Breach 的官方版本。WeightPlay 与 Subset Games 没有隶属、背书或合作关系。','Subset Games：Into the Breach 官方介绍']);
   add('ja','ルーン戦術',
-    'ライオン、フクロウ、カメを指揮して全30ミッションへ。4×5〜6×6の盤面で地形とスキルを使い、6体のボスに挑んで仲間を育てよう。',
+    'ライオン、フクロウ、カメを指揮して全30ミッションへ。6×6の盤面で地形とスキルを使い、6体のボスに挑んで仲間を育てよう。',
     'ターン制の部隊配置',['ターン制戦術','部隊戦略','キャンペーン'],'段階的に難しくなる','自分のペースでプレイ',
-    '「ルーン戦術」は、30の設計済みミッション、3体の動物ヒーロー、6体のボスが登場するオリジナルの1人用キャンペーンです。4×5〜6×6マスの盤面で地形を読み、移動と攻撃の順序を組み立てます。',
+    '「ルーン戦術」は、30の設計済みミッション、3体の動物ヒーロー、6体のボスが登場するオリジナルの1人用キャンペーンです。6×6マスの盤面で地形を読み、移動と攻撃の順序を組み立てます。',
     ['ライオン、フクロウ、カメが、各5ミッションの全6章を進みます。新しい地形や敵の特性を覚えた後、その章の仕組みを組み合わせたボスに挑みます。','無限のランダムマップではなく、設計されたキャンペーンです。解放済みのミッションには戻れるので、配置を練習して星の記録を更新できます。'],
     ['各ヒーローはプレイヤーのターンに1回移動し、その後に1回の戦闘行動ができます。移動範囲はライオンが最大3マス、フクロウとカメが最大2マスです。光る移動先は瓦礫や他の駒を避けた経路に従います。移動しても攻撃は残りますが、攻撃・ガード・スキルを使うとそのヒーローの行動は終了します。','ライオンのスキルは複数の敵にダメージを与え、フクロウは近くの敵へ連鎖し、カメは部隊を守って体力を回復します。スキルにはエネルギーが必要です。沈黙中でも通常攻撃やガードは使えます。','敵を反対側から挟む配置で挟撃が成立します。装甲、盾、封印、飛行中の無効化はダメージ予測に反映されます。潮流、炎、外周の回転で、ターン終了後に安全な場所が変わることもあります。','各ミッションの星は、勝利、3体全員の生存、表示された目標ターン数の達成です。新しい星1個につきルーン4個を一度だけ獲得します。星を逃しても勝利は有効で、取得済みの星の報酬は繰り返し受け取れません。'],
     ['ゲームを開始し、ミッションカードを選びます。解放済みのカードを押すと戦闘に入るので、先に地形と敵の情報を確認しましょう。','タッチかマウスでヒーローを選び、光るマスへ移動してから攻撃・ガード・スキルを選びます。矢印キーで盤面のフォーカスを動かし、Enterまたはスペースでマスを選択できます。','ダメージ予測、残りエネルギー、仲間の位置を比較し、予定した行動を終えてからターンを終了します。','勝利後にルーン報酬を選び、次へ進むか再挑戦するか、ミッションへ戻ります。仲間の強化と任意の訓練枠は戦闘前に利用できます。'],
@@ -58,9 +58,9 @@
     [['移動したターンに攻撃できますか？','はい。先に移動し、その後に攻撃・ガード・スキルを1回使えます。戦闘行動を終えたヒーローは行動終了です。'],['スキルが使えないのはなぜですか？','エネルギー不足、戦闘行動の使用済み、沈黙を確認してください。通常攻撃やガードは使える場合があります。'],['予測ダメージが0なら不具合ですか？','必ずしもそうではありません。飛行中の無効化、盾、装甲の影響があります。位置やヒーローを変えて予測を確認してください。'],['先へ進むには星3個が必要ですか？','いいえ。生存や目標ターン数の星を逃しても勝利すれば進めます。再挑戦で未取得の報酬だけを獲得できます。'],['再挑戦すると強化も消えますか？','その戦闘だけがリセットされ、保存済みの強化は残ります。ブラウザーの保存データを消すと記録を失う場合があります。'],['ミッション30の後は？','キャンペーンは30で終了します。解放済みミッションの星を改善できますが、存在しないミッション31は作られません。']],
     ['ターン制戦術ゲームとの比較','Into the Breachと「ルーン戦術」は、どちらもターン制の格子盤面で部隊の位置を考えるゲームです。Into the Breachではメカを操作し、敵の攻撃が予告されます。一方、このWeightPlay作品は30の設計済みミッション、3体の動物ヒーロー、6体のボス、ブラウザー内に残る成長を用意しています。本作のダメージ予測は、すべての敵の次の行動を予告する機能ではありません。','「ルーン戦術」は独立したWeightPlay作品で、Into the Breachの公式版ではありません。WeightPlayとSubset Gamesに提携、推薦、所属関係はありません。','Subset Games：Into the Breach公式紹介']);
   add('ko','룬 전술',
-    '사자, 부엉이, 거북이와 턴제 임무 30개에 도전하세요. 4×5~6×6 보드에서 지형과 스킬을 활용하고 보스 6명과 싸우며 영웅을 성장시키세요.',
+    '사자, 부엉이, 거북이와 턴제 임무 30개에 도전하세요. 6×6 보드에서 지형과 스킬을 활용하고 보스 6명과 싸우며 영웅을 성장시키세요.',
     '턴제 분대 위치 전략',['턴제 전술','분대 전략','캠페인'],'단계별 도전','자신의 속도로 플레이',
-    '룬 전술은 직접 설계한 임무 30개, 동물 영웅 3명, 보스 6명이 등장하는 독창적인 싱글 플레이 캠페인입니다. 4×5~6×6칸 보드에서 지형을 읽고 이동과 공격 순서를 계획하세요.',
+    '룬 전술은 직접 설계한 임무 30개, 동물 영웅 3명, 보스 6명이 등장하는 독창적인 싱글 플레이 캠페인입니다. 6×6칸 보드에서 지형을 읽고 이동과 공격 순서를 계획하세요.',
     ['사자, 부엉이, 거북이가 임무 다섯 개씩 묶인 여섯 장을 진행합니다. 새로운 지형과 적 특성을 익힌 뒤, 해당 규칙을 조합하는 보스와 싸웁니다.','무한 무작위 지도가 아닌 설계된 캠페인입니다. 해금한 임무를 다시 선택해 진형을 연습하고 저장된 별 기록을 개선할 수 있습니다.'],
     ['영웅마다 플레이어 턴에 한 번 이동한 뒤 전투 행동을 한 번 할 수 있습니다. 사자는 최대 세 칸, 부엉이와 거북이는 최대 두 칸 이동합니다. 표시된 목적지는 잔해와 다른 유닛을 피해 갈 수 있는 경로를 따릅니다. 이동해도 공격은 남지만 공격, 방어 또는 스킬을 쓰면 해당 영웅의 턴이 끝납니다.','사자 스킬은 여러 적에게 피해를 주고, 부엉이 스킬은 가까운 적에게 연쇄되며, 거북이 스킬은 분대를 보호하고 체력을 회복합니다. 스킬에는 에너지가 필요합니다. 침묵은 스킬을 막지만 일반 공격과 방어까지 막지는 않습니다.','적의 양쪽에 아군을 배치하면 협공이 가능합니다. 장갑, 보호막, 봉인, 비행 면역은 피해 미리보기에 반영됩니다. 밀물, 불, 바깥 고리 회전은 턴이 끝난 뒤 안전한 위치를 바꿀 수 있습니다.','별 조건은 승리, 영웅 세 명 모두 생존, 표시된 목표 턴 수 달성입니다. 새로 얻은 별마다 룬 네 개를 한 번만 받습니다. 별을 놓쳐도 승리는 유효하며 이미 받은 별 보상은 반복 지급되지 않습니다.'],
     ['게임을 시작하고 임무 카드를 살펴보세요. 해금한 카드를 누르면 전투에 들어가므로 지형과 적 정보를 먼저 확인하세요.','터치나 마우스로 영웅을 선택하고 표시된 칸으로 이동한 뒤 공격, 방어 또는 스킬을 고르세요. 방향키로 보드 초점을 옮기고 Enter나 스페이스로 칸을 선택할 수도 있습니다.','예상 피해, 남은 에너지, 다른 영웅의 위치를 비교한 뒤 계획한 행동이 끝나면 턴을 종료하세요.','승리 후 룬 보상을 고르고 계속하기, 다시 하기 또는 임무로 돌아가기를 선택하세요. 영웅 강화와 선택형 훈련 슬롯은 전투 전에 이용할 수 있습니다.'],
@@ -71,9 +71,9 @@
     [['한 턴에 이동하고 공격할 수 있나요?','네. 먼저 이동한 뒤 공격, 방어 또는 스킬을 한 번 사용하세요. 전투 행동을 마치면 해당 영웅의 턴이 끝납니다.'],['스킬을 쓸 수 없는 이유는 무엇인가요?','남은 에너지, 전투 행동 사용 여부, 침묵 상태를 확인하세요. 일반 공격이나 방어는 가능할 수 있습니다.'],['예상 피해가 0이면 오류인가요?','반드시 그렇지는 않습니다. 비행 면역, 보호막, 장갑이 피해를 줄이거나 막습니다. 위치나 영웅을 바꿔 미리보기를 확인하세요.'],['별 세 개가 있어야 진행할 수 있나요?','아니요. 생존이나 목표 턴 별이 없어도 승리로 진행할 수 있습니다. 다시 도전하면 아직 얻지 못한 별 보상만 받습니다.'],['다시 시작하면 강화가 사라지나요?','그 전투만 초기화되고 저장된 강화는 남습니다. 브라우저 저장소를 지우면 진행을 잃을 수 있습니다.'],['임무 30 다음에는 무엇이 있나요?','캠페인은 임무 30에서 끝납니다. 해금한 임무를 다시 해 별을 개선할 수 있으며 존재하지 않는 임무 31은 생성되지 않습니다.']],
     ['턴제 전술 플레이어를 위한 비교','Into the Breach와 룬 전술은 모두 턴제 격자 전장에서 분대의 위치를 조율합니다. Into the Breach는 메카를 사용하며 적의 공격을 미리 알립니다. 반면 이 WeightPlay 게임은 설계된 임무 30개, 동물 영웅 3명, 보스 6명과 브라우저에 저장되는 영구 성장을 제공합니다. 이 게임의 피해 미리보기는 모든 적의 다음 행동을 완전히 예고하는 기능이 아닙니다.','룬 전술은 독립적인 WeightPlay 작품이며 Into the Breach의 공식 버전이 아닙니다. WeightPlay는 Subset Games와 제휴, 추천 또는 소속 관계가 없습니다.','Subset Games: Into the Breach 공식 소개']);
   add('es','Tácticas de Runas',
-    'Dirige un león, un búho y una tortuga en 30 misiones por turnos. Tableros de 4×5 a 6×6, terreno, seis jefes y mejoras permanentes.',
+    'Dirige un león, un búho y una tortuga en 30 misiones por turnos. Tableros de 6×6, terreno, seis jefes y mejoras permanentes.',
     'Táctica de equipo por turnos',['Táctica por turnos','estrategia de escuadra','Campaña'],'Desafío progresivo','Juega a tu ritmo',
-    'Tácticas de Runas es una campaña original para una persona con 30 misiones diseñadas, tres héroes animales y seis jefes. Lee el terreno, coloca a tus aliados y coordina ataques en tableros de 4×5 a 6×6 casillas.',
+    'Tácticas de Runas es una campaña original para una persona con 30 misiones diseñadas, tres héroes animales y seis jefes. Lee el terreno, coloca a tus aliados y coordina ataques en tableros de 6×6 casillas.',
     ['El león, el búho y la tortuga atraviesan seis capítulos de cinco misiones. Cada capítulo presenta peligros y rasgos enemigos antes de un jefe que combina esas reglas.','No es un mapa aleatorio infinito. Las misiones desbloqueadas siguen disponibles para practicar formaciones y mejorar el registro de estrellas.'],
     ['Cada héroe puede moverse una vez y después realizar una acción de combate por turno. El león avanza hasta tres casillas; el búho y la tortuga, hasta dos. Los destinos resaltados siguen rutas legales entre escombros y unidades. Moverse no consume el ataque, pero atacar, defender o usar una habilidad termina el turno de ese héroe.','La habilidad del león afecta a un grupo, la del búho encadena enemigos cercanos y la de la tortuga protege y cura a la escuadra. Las habilidades necesitan energía; el silencio puede impedirlas sin bloquear el ataque normal ni la defensa.','Aliados en lados opuestos permiten flanquear. La armadura, los escudos, los sellos y la inmunidad de vuelo modifican la previsión de daño. La marea, el fuego y la rotación del borde pueden cambiar las posiciones seguras al acabar el turno.','Cada misión guarda tres estrellas: victoria, supervivencia de los tres héroes y objetivo de turnos indicado. Cada estrella nueva entrega cuatro Runas una sola vez. Perder una estrella no anula una victoria; repetir una ya conseguida no vuelve a pagarla.'],
     ['Empieza, recorre las tarjetas y activa una misión desbloqueada. Lee antes su terreno y enemigos.','Selecciona un héroe con el ratón o el tacto, muévelo a un destino resaltado y elige ataque, defensa o habilidad. Las flechas desplazan el foco; Intro o Espacio activa una casilla.','Compara el daño previsto, la energía y las posiciones de tus aliados. Termina el turno cuando completes tu plan.','Tras ganar, elige una recompensa de Runas y continúa, repite o vuelve a Misiones. Las mejoras y el entrenamiento opcional están disponibles antes del combate.'],
@@ -84,9 +84,9 @@
     [['¿Puedo moverme y atacar en el mismo turno?','Sí. Mueve primero al héroe y después usa un ataque, defensa o habilidad. Al terminar la acción de combate, su turno acaba.'],['¿Por qué no puedo usar una habilidad?','Revisa la energía, si ya gastaste la acción de combate y si hay silencio. El ataque normal o la defensa podrían seguir disponibles.'],['¿El daño previsto de cero es un fallo?','No necesariamente. La inmunidad de vuelo, los escudos o la armadura pueden evitar daño. Cambia de posición o héroe y consulta la previsión.'],['¿Necesito tres estrellas para avanzar?','No. Ganar permite avanzar aunque falte la estrella de supervivencia o de turnos. Repite para conseguir las recompensas pendientes.'],['¿Reintentar borra mis mejoras?','Reinicia ese combate, no las mejoras guardadas. Borrar el almacenamiento del navegador sí puede eliminar la partida.'],['¿Qué ocurre después de la misión 30?','La campaña termina ahí. Puedes repetir misiones y mejorar estrellas; no aparece una misión 31 inexistente.']],
     ['Comparación para aficionados a la táctica por turnos','Into the Breach y Tácticas de Runas comparten la coordinación de una escuadra por turnos sobre una cuadrícula. Into the Breach utiliza mecas y anuncia los ataques enemigos. Este juego de WeightPlay ofrece, en cambio, 30 misiones diseñadas, tres héroes animales, seis jefes y progreso permanente local en el navegador. Su previsión de daño no anuncia por completo la siguiente acción de cada enemigo.','Tácticas de Runas es una obra independiente de WeightPlay, no una versión oficial de Into the Breach. WeightPlay no está afiliado, respaldado ni asociado con Subset Games.','Subset Games: presentación oficial de Into the Breach']);
   add('pt-BR','Táticas de Runas',
-    'Comande leão, coruja e tartaruga em 30 missões por turnos. Tabuleiros de 4×5 a 6×6, terrenos, seis chefes e melhorias permanentes.',
+    'Comande leão, coruja e tartaruga em 30 missões por turnos. Tabuleiros de 6×6, terrenos, seis chefes e melhorias permanentes.',
     'Táticas de equipe por turnos',['Tática por turnos','Estratégia de equipe','Campanha'],'Desafio progressivo','Jogue no seu ritmo',
-    'Táticas de Runas é uma campanha original individual com 30 missões planejadas, três heróis animais e seis chefes. Observe o terreno, posicione os aliados e combine ataques em tabuleiros de 4×5 a 6×6 casas.',
+    'Táticas de Runas é uma campanha original individual com 30 missões planejadas, três heróis animais e seis chefes. Observe o terreno, posicione os aliados e combine ataques em tabuleiros de 6×6 casas.',
     ['Leão, coruja e tartaruga percorrem seis capítulos de cinco missões. Cada capítulo apresenta perigos e características inimigas antes de um chefe que combina essas regras.','Não se trata de um mapa aleatório infinito. Missões desbloqueadas continuam disponíveis para praticar formações e melhorar o registro de estrelas.'],
     ['Cada herói pode se mover uma vez e depois realizar uma ação de combate no turno. O leão anda até três casas; a coruja e a tartaruga, até duas. Os destinos destacados seguem caminhos válidos entre escombros e unidades. Mover-se não gasta o ataque, mas atacar, defender ou usar uma habilidade encerra o turno daquele herói.','A habilidade do leão atinge um grupo, a da coruja salta entre inimigos próximos e a da tartaruga protege e cura a equipe. Habilidades exigem energia; o silêncio pode bloqueá-las sem impedir ataques normais ou defesa.','Aliados em lados opostos permitem flanquear. Armadura, escudos, selos e imunidade durante o voo afetam a previsão de dano. Marés, fogo e rotação da borda podem mudar as posições seguras ao fim do turno.','Cada missão registra três estrelas: vitória, sobrevivência dos três heróis e meta de turnos indicada. Cada estrela nova concede quatro Runas uma única vez. Perder uma estrela não anula a vitória, e repetir uma já obtida não paga novamente.'],
     ['Comece, percorra as cartas e ative uma missão desbloqueada. Leia primeiro o terreno e os inimigos.','Selecione um herói pelo toque ou mouse, mova-o até uma casa destacada e escolha ataque, defesa ou habilidade. As setas movem o foco; Enter ou Espaço ativa a casa.','Compare o dano previsto, a energia e a posição dos aliados. Encerre o turno quando terminar seu plano.','Após vencer, escolha uma recompensa de Runas e continue, repita ou volte às Missões. Melhorias e treinamento opcional ficam disponíveis antes do combate.'],
@@ -97,9 +97,9 @@
     [['Posso me mover e atacar no mesmo turno?','Sim. Mova o herói primeiro e depois use um ataque, defesa ou habilidade. A ação de combate encerra o turno dele.'],['Por que a habilidade não está disponível?','Confira energia, ação de combate já usada e silêncio. Ataque normal ou defesa podem continuar disponíveis.'],['Dano previsto igual a zero significa um erro?','Não necessariamente. Imunidade de voo, escudos ou armadura podem impedir dano. Mude de posição ou herói e confira a previsão.'],['Preciso de três estrelas para avançar?','Não. A vitória permite avançar mesmo sem as estrelas de sobrevivência ou turnos. Rejogue para receber apenas as recompensas que faltam.'],['Ao repetir, perco as melhorias?','Reinicia somente o combate, não as melhorias salvas. Apagar o armazenamento do navegador pode excluir o progresso.'],['O que vem depois da missão 30?','A campanha termina ali. Você pode repetir missões e melhorar estrelas; não surge uma missão 31 inexistente.']],
     ['Comparação para quem gosta de tática por turnos','Into the Breach e Táticas de Runas envolvem coordenar uma equipe por turnos em um tabuleiro quadriculado. Into the Breach usa mecas e anuncia os ataques inimigos. Este jogo da WeightPlay oferece 30 missões planejadas, três heróis animais, seis chefes e crescimento permanente salvo no navegador. Sua previsão de dano não revela integralmente a próxima ação de cada inimigo.','Táticas de Runas é uma obra independente da WeightPlay, não uma versão oficial de Into the Breach. A WeightPlay não tem afiliação, endosso ou parceria com a Subset Games.','Subset Games: apresentação oficial de Into the Breach']);
   add('fr','Tactiques runiques',
-    'Dirigez un lion, une chouette et une tortue dans 30 missions au tour par tour : plateaux de 4×5 à 6×6, six boss et améliorations durables.',
+    'Dirigez un lion, une chouette et une tortue dans 30 missions au tour par tour : plateaux de 6×6, six boss et améliorations durables.',
     'Placement tactique au tour par tour',['Tactique au tour par tour','Stratégie d’escouade','Campagne'],'Défi progressif','Jouez à votre rythme',
-    'Tactiques runiques est une campagne originale en solo avec 30 missions conçues, trois héros animaux et six boss. Lisez le terrain, placez vos alliés et coordonnez leurs attaques sur des plateaux de 4×5 à 6×6 cases.',
+    'Tactiques runiques est une campagne originale en solo avec 30 missions conçues, trois héros animaux et six boss. Lisez le terrain, placez vos alliés et coordonnez leurs attaques sur des plateaux de 6×6 cases.',
     ['Le lion, la chouette et la tortue traversent six chapitres de cinq missions. Chaque chapitre présente des dangers et des traits ennemis avant un boss qui combine ces règles.','Il ne s’agit pas d’une carte aléatoire infinie. Les missions débloquées restent accessibles pour essayer des formations et améliorer les étoiles enregistrées.'],
     ['Chaque héros peut se déplacer une fois puis effectuer une action de combat par tour. Le lion avance jusqu’à trois cases, la chouette et la tortue jusqu’à deux. Les destinations éclairées suivent des chemins valides entre débris et unités. Se déplacer ne consomme pas l’attaque ; attaquer, garder ou utiliser une compétence termine le tour du héros.','La compétence du lion touche un groupe, celle de la chouette rebondit entre ennemis proches et celle de la tortue protège et soigne l’escouade. Elles demandent de l’énergie. Le silence peut empêcher une compétence sans bloquer l’attaque normale ni la garde.','Des alliés de part et d’autre d’un ennemi permettent une attaque en tenaille. Armure, boucliers, sceaux et immunité en vol modifient les dégâts prévus. Marée, feu et rotation du bord peuvent déplacer les positions sûres en fin de tour.','Chaque mission conserve trois étoiles : victoire, survie des trois héros et objectif de tours affiché. Chaque nouvelle étoile rapporte quatre Runes une seule fois. Manquer une étoile n’annule pas la victoire ; une étoile déjà obtenue ne rapporte plus sa récompense.'],
     ['Commencez, parcourez les cartes et activez une mission débloquée. Lisez d’abord le terrain et les ennemis.','Sélectionnez un héros au toucher ou à la souris, déplacez-le sur une case éclairée, puis choisissez attaque, garde ou compétence. Les flèches déplacent le focus ; Entrée ou Espace active une case.','Comparez les dégâts prévus, l’énergie et la position des alliés. Terminez le tour après les actions prévues.','Après la victoire, choisissez une récompense runique puis continuez, rejouez ou revenez aux missions. Améliorations et entraînement facultatif sont accessibles avant le combat.'],
@@ -110,9 +110,9 @@
     [['Peut-on se déplacer puis attaquer dans le même tour ?','Oui. Déplacez d’abord le héros, puis utilisez une attaque, une garde ou une compétence. Cette action de combat termine son tour.'],['Pourquoi une compétence est-elle indisponible ?','Vérifiez l’énergie, l’action de combat déjà utilisée et le silence. Une attaque normale ou la garde peut rester possible.'],['Des dégâts prévus de zéro indiquent-ils un problème ?','Pas forcément. Immunité en vol, boucliers ou armure peuvent empêcher les dégâts. Changez de position ou de héros et consultez la prévision.'],['Faut-il trois étoiles pour avancer ?','Non. La victoire permet d’avancer sans les étoiles de survie ou de tours. Rejouez ensuite pour les récompenses manquantes.'],['Réessayer efface-t-il les améliorations ?','Cela réinitialise le combat, pas les améliorations enregistrées. Effacer les données du navigateur peut supprimer la sauvegarde.'],['Que se passe-t-il après la mission 30 ?','La campagne s’y termine. Vous pouvez rejouer et améliorer les étoiles ; aucune mission 31 inexistante n’est créée.']],
     ['Comparaison pour les amateurs de tactique au tour par tour','Into the Breach et Tactiques runiques demandent tous deux de coordonner une escouade sur une grille au tour par tour. Into the Breach utilise des méchas et annonce les attaques ennemies. Ce jeu WeightPlay propose plutôt 30 missions conçues, trois héros animaux, six boss et une progression permanente enregistrée dans le navigateur. Sa prévision de dégâts n’annonce pas intégralement la prochaine action de chaque ennemi.','Tactiques runiques est une création indépendante de WeightPlay, pas une version officielle d’Into the Breach. WeightPlay n’est ni affilié à Subset Games, ni approuvé par ce studio, ni son partenaire.','Subset Games : présentation officielle d’Into the Breach']);
   add('de','Runentaktik',
-    'Führe Löwe, Eule und Schildkröte durch 30 Rundenmissionen: Bretter von 4×5 bis 6×6 Feldern, Gelände, sechs Bosse und dauerhafte Verbesserungen.',
+    'Führe Löwe, Eule und Schildkröte durch 30 Rundenmissionen: Bretter von 6×6 Feldern, Gelände, sechs Bosse und dauerhafte Verbesserungen.',
     'Rundenbasierte Trupppositionierung',['Rundentaktik','Truppstrategie','Kampagne'],'Steigende Herausforderung','Spiele in deinem Tempo',
-    'Runentaktik ist eine eigenständige Einzelspielerkampagne mit 30 gestalteten Missionen, drei Tierhelden und sechs Bossen. Lies das Gelände, positioniere deine Gruppe und kombiniere Angriffe auf Brettern mit 4×5 bis 6×6 Feldern.',
+    'Runentaktik ist eine eigenständige Einzelspielerkampagne mit 30 gestalteten Missionen, drei Tierhelden und sechs Bossen. Lies das Gelände, positioniere deine Gruppe und kombiniere Angriffe auf Brettern mit 6×6 Feldern.',
     ['Löwe, Eule und Schildkröte durchqueren sechs Kapitel mit jeweils fünf Missionen. Jedes Kapitel führt Gefahren und Gegnereigenschaften ein, bevor ein Boss diese Regeln verbindet.','Dies ist keine endlose Zufallskarte. Freigeschaltete Missionen bleiben verfügbar, um Aufstellungen auszuprobieren und gespeicherte Sterne zu verbessern.'],
     ['Jeder Held kann sich pro Spielerzug einmal bewegen und anschließend eine Kampfaktion ausführen. Der Löwe bewegt sich bis zu drei Felder, Eule und Schildkröte bis zu zwei. Markierte Ziele berücksichtigen Wege zwischen Trümmern und Figuren. Bewegung verbraucht den Angriff nicht; Angriff, Schutz oder Fähigkeit beenden den Zug dieses Helden.','Die Löwenfähigkeit trifft eine Gruppe, die Eulenfähigkeit springt auf nahe Gegner über und die Schildkrötenfähigkeit schützt und heilt den Trupp. Fähigkeiten benötigen Energie. Schweigen verhindert Fähigkeiten, aber nicht grundsätzlich normale Angriffe oder Schutz.','Verbündete auf gegenüberliegenden Seiten ermöglichen einen Zangenangriff. Rüstung, Schilde, Siegel und Flugimmunität beeinflussen die Schadensvorschau. Gezeiten, Feuer und Außenringdrehung können sichere Positionen nach Zugende verändern.','Jede Mission speichert drei Sterne: Sieg, Überleben aller drei Helden und das angezeigte Zugziel. Jeder neue Stern gewährt einmalig vier Runen. Ein fehlender Stern hebt den Sieg nicht auf; bereits verdiente Sterne werden nicht erneut ausgezahlt.'],
     ['Starte das Spiel, durchsuche die Missionskarten und aktiviere eine freigeschaltete Karte. Prüfe vorher Gelände und Gegner.','Wähle einen Helden per Touch oder Maus und bewege ihn auf ein markiertes Feld, bevor du angreifst, schützt oder eine Fähigkeit nutzt. Pfeiltasten bewegen den Brettfokus; Eingabe oder Leertaste aktiviert ein Feld.','Vergleiche Schadensvorschau, Energie und Positionen der anderen Helden. Beende den Zug nach deinen geplanten Aktionen.','Wähle nach dem Sieg eine Runenbelohnung und fahre fort, wiederhole oder kehre zu den Missionen zurück. Verbesserungen und optionaler Trainingsplatz stehen vor dem Kampf bereit.'],
@@ -123,9 +123,9 @@
     [['Kann ich mich bewegen und im selben Zug angreifen?','Ja. Bewege den Helden zuerst und nutze danach einen Angriff, Schutz oder eine Fähigkeit. Diese Kampfaktion beendet seinen Zug.'],['Warum ist eine Fähigkeit nicht verfügbar?','Prüfe Energie, bereits verbrauchte Kampfaktion und Schweigen. Ein normaler Angriff oder Schutz kann weiterhin möglich sein.'],['Bedeutet eine Schadensvorschau von null einen Fehler?','Nicht unbedingt. Flugimmunität, Schilde oder Rüstung können Schaden verhindern. Ändere Position oder Held und prüfe die Vorschau.'],['Brauche ich drei Sterne zum Weiterkommen?','Nein. Ein Sieg ermöglicht Fortschritt auch ohne Überlebens- oder Zugstern. Wiederhole später für fehlende Belohnungen.'],['Löscht ein Neustart meine Verbesserungen?','Er setzt diesen Kampf zurück, nicht die gespeicherten Verbesserungen. Gelöschte Browserdaten können den Spielstand entfernen.'],['Was folgt nach Mission 30?','Dort endet die Kampagne. Du kannst Missionen wiederholen und Sterne verbessern; eine nicht vorhandene Mission 31 wird nicht erzeugt.']],
     ['Ein Vergleich für Fans von Rundentaktik','Into the Breach und Runentaktik verlangen beide die Koordination eines Trupps auf einem rundenbasierten Raster. Into the Breach setzt auf Mechs und angekündigte Gegnerangriffe. Dieses WeightPlay-Spiel bietet dagegen 30 gestaltete Missionen, drei Tierhelden, sechs Bosse und dauerhaften, lokal im Browser gespeicherten Fortschritt. Seine Schadensvorschau sagt nicht jede nächste Gegneraktion vollständig voraus.','Runentaktik ist ein eigenständiges WeightPlay-Spiel, keine offizielle Version von Into the Breach. WeightPlay ist nicht mit Subset Games verbunden, wird nicht von ihnen empfohlen und unterhält keine Partnerschaft mit ihnen.','Subset Games: offizielle Vorstellung von Into the Breach']);
   add('it','Tattiche delle rune',
-    'Guida leone, gufo e tartaruga in 30 missioni a turni: tabelloni da 4×5 a 6×6, terreni, sei boss e potenziamenti permanenti.',
+    'Guida leone, gufo e tartaruga in 30 missioni a turni: tabelloni da 6×6, terreni, sei boss e potenziamenti permanenti.',
     'Posizionamento della squadra a turni',['Tattica a turni','Strategia di squadra','Campagna'],'Sfida progressiva','Gioca al tuo ritmo',
-    'Tattiche delle rune è una campagna originale per un giocatore con 30 missioni progettate, tre eroi animali e sei boss. Leggi il terreno, posiziona gli alleati e coordina gli attacchi su tabelloni da 4×5 a 6×6 caselle.',
+    'Tattiche delle rune è una campagna originale per un giocatore con 30 missioni progettate, tre eroi animali e sei boss. Leggi il terreno, posiziona gli alleati e coordina gli attacchi su tabelloni da 6×6 caselle.',
     ['Leone, gufo e tartaruga attraversano sei capitoli da cinque missioni. Ogni capitolo presenta pericoli e caratteristiche nemiche prima di un boss che ne combina le regole.','Non è una mappa casuale infinita. Le missioni sbloccate restano disponibili per provare formazioni e migliorare le stelle salvate.'],
     ['Ogni eroe può muoversi una volta e poi compiere un’azione di combattimento nel turno. Il leone percorre fino a tre caselle, gufo e tartaruga fino a due. Le destinazioni evidenziate seguono percorsi validi tra macerie e unità. Muoversi non consuma l’attacco; attaccare, difendere o usare un’abilità conclude però il turno dell’eroe.','L’abilità del leone colpisce un gruppo, quella del gufo si propaga tra nemici vicini e quella della tartaruga protegge e cura la squadra. Le abilità richiedono energia. Il silenzio può impedirle senza bloccare attacchi normali o difesa.','Alleati sui lati opposti di un nemico permettono l’accerchiamento. Armatura, scudi, sigilli e immunità in volo modificano l’anteprima dei danni. Marea, fuoco e rotazione del bordo possono cambiare le posizioni sicure alla fine del turno.','Ogni missione conserva tre stelle: vittoria, sopravvivenza di tutti e tre gli eroi e obiettivo di turni indicato. Ogni nuova stella assegna quattro Rune una sola volta. Una stella mancata non annulla la vittoria e quelle già ottenute non pagano di nuovo.'],
     ['Avvia il gioco, scorri le carte e attiva una missione sbloccata. Leggi prima terreno e nemici.','Seleziona un eroe con il tocco o il mouse, muovilo su una casella evidenziata e scegli attacco, difesa o abilità. Le frecce spostano il focus; Invio o Spazio attiva una casella.','Confronta danno previsto, energia e posizione degli altri eroi. Termina il turno dopo le azioni pianificate.','Dopo la vittoria, scegli una ricompensa runica e continua, ripeti o torna alle missioni. Potenziamenti e allenamento facoltativo sono disponibili prima del combattimento.'],
@@ -136,9 +136,9 @@
     [['Posso muovermi e attaccare nello stesso turno?','Sì. Muovi prima l’eroe, poi usa un attacco, una difesa o un’abilità. L’azione di combattimento conclude il suo turno.'],['Perché un’abilità non è disponibile?','Controlla energia, azione di combattimento già usata e silenzio. Attacco normale o difesa potrebbero essere ancora disponibili.'],['Un’anteprima di zero danni indica un errore?','Non necessariamente. Immunità in volo, scudi o armatura possono impedire i danni. Cambia posizione o eroe e ricontrolla.'],['Servono tre stelle per avanzare?','No. La vittoria permette di procedere senza le stelle di sopravvivenza o turni. Rigioca per le ricompense mancanti.'],['Riprovare cancella i potenziamenti?','Azzera quel combattimento, non i potenziamenti salvati. Cancellare la memoria del browser può eliminare i progressi.'],['Cosa accade dopo la missione 30?','La campagna termina lì. Puoi ripetere missioni e migliorare le stelle; non viene creata una missione 31 inesistente.']],
     ['Confronto per gli appassionati di tattica a turni','Into the Breach e Tattiche delle rune richiedono entrambi di coordinare una squadra a turni su una griglia. Into the Breach usa mech e anticipa gli attacchi nemici. Questo gioco WeightPlay offre invece 30 missioni progettate, tre eroi animali, sei boss e progressi permanenti salvati nel browser. La sua anteprima dei danni non prevede integralmente l’azione successiva di ogni nemico.','Tattiche delle rune è un’opera indipendente di WeightPlay, non una versione ufficiale di Into the Breach. WeightPlay non ha affiliazioni, approvazioni o collaborazioni con Subset Games.','Subset Games: presentazione ufficiale di Into the Breach']);
   add('ru','Тактика животных с рунами',
-    'Ведите льва, сову и черепаху через 30 пошаговых заданий: поля от 4×5 до 6×6, особенности местности, шесть боссов и постоянные улучшения.',
+    'Ведите льва, сову и черепаху через 30 пошаговых заданий: поля от 6×6, особенности местности, шесть боссов и постоянные улучшения.',
     'Пошаговая расстановка отряда',['Пошаговая тактика','Стратегия отряда','Кампания'],'Постепенное усложнение','Играйте в своём темпе',
-    '«Тактика животных с рунами» — оригинальная одиночная кампания: 30 созданных вручную заданий, три героя-животных и шесть боссов. Изучайте местность, расставляйте союзников и согласовывайте атаки на полях от 4×5 до 6×6 клеток.',
+    '«Тактика животных с рунами» — оригинальная одиночная кампания: 30 созданных вручную заданий, три героя-животных и шесть боссов. Изучайте местность, расставляйте союзников и согласовывайте атаки на полях от 6×6 клеток.',
     ['Лев, сова и черепаха проходят шесть глав по пять заданий. Каждая знакомит с опасностями и свойствами врагов, затем объединяет правила в бою с боссом.','Это спроектированная кампания, а не бесконечная случайная карта. Открытые задания можно повторять, чтобы проверять построения и улучшать сохранённые звёзды.'],
     ['За ход игрока каждый герой может один раз переместиться, а затем выполнить одно боевое действие. Лев проходит до трёх клеток, сова и черепаха — до двух. Подсвеченные цели учитывают допустимые пути в обход обломков и занятых клеток. Перемещение не расходует атаку, но атака, защита или умение завершают ход героя.','Умение льва поражает группу, умение совы переходит между близкими врагами, а умение черепахи защищает отряд и восстанавливает здоровье. Для умений нужна энергия. Безмолвие может запрещать умения, не блокируя обычную атаку или защиту.','Союзники по противоположным сторонам врага позволяют атаковать с флангов. Броня, щиты, печати и невосприимчивость в полёте влияют на прогноз урона. Прилив, огонь и вращение внешнего кольца могут изменить безопасные позиции после окончания хода.','Каждое задание хранит три звезды: победа, выживание всех трёх героев и показанный предел ходов. Каждая новая звезда один раз даёт четыре руны. Пропущенная звезда не отменяет победу; уже открытая звезда не приносит ту же награду снова.'],
     ['Начните игру, просмотрите карточки и выберите открытое задание. Сначала прочитайте сведения о местности и врагах.','Выберите героя касанием или мышью, переместите его на подсвеченную клетку, затем атакуйте, защищайтесь или примените умение. Стрелки перемещают фокус; Enter или пробел активируют клетку.','Сравните прогноз урона, энергию и позиции союзников. Завершите ход после запланированных действий.','После победы выберите руническую награду и продолжите, повторите бой или вернитесь к заданиям. Улучшения и необязательное место тренировки доступны до боя.'],
@@ -149,9 +149,9 @@
     [['Можно переместиться и атаковать за один ход?','Да. Сначала переместите героя, затем выполните одну атаку, защиту или умение. Боевое действие завершает его ход.'],['Почему умение недоступно?','Проверьте энергию, расход боевого действия и безмолвие. Обычная атака или защита ещё могут быть доступны.'],['Нулевой прогноз урона означает ошибку?','Не обязательно. Невосприимчивость в полёте, щиты и броня могут предотвращать урон. Смените позицию или героя и проверьте прогноз.'],['Для продвижения нужны три звезды?','Нет. Победа позволяет идти дальше без звезды за выживание или число ходов. Повторите задание ради ещё не полученных наград.'],['Повтор боя удалит улучшения?','Повтор сбрасывает этот бой, а не сохранённые улучшения. Очистка хранилища браузера может удалить прогресс.'],['Что происходит после задания 30?','На нём кампания заканчивается. Можно повторять задания и улучшать звёзды; несуществующее задание 31 не создаётся.']],
     ['Сравнение для любителей пошаговой тактики','Into the Breach и «Тактика животных с рунами» требуют согласовывать позиции отряда на пошаговом клеточном поле. Into the Breach использует мехов и заранее показывает атаки врагов. Эта игра WeightPlay предлагает 30 спроектированных заданий, трёх героев-животных, шесть боссов и постоянный прогресс в браузере. Её прогноз урона не раскрывает полностью следующее действие каждого врага.','«Тактика животных с рунами» — самостоятельная игра WeightPlay, а не официальная версия Into the Breach. WeightPlay не связан с Subset Games, не является его партнёром и не имеет его одобрения.','Subset Games: официальное описание Into the Breach']);
   add('hi','रूण रणनीति',
-    'शेर, उल्लू और कछुए के साथ 30 बारी-आधारित मिशन खेलें। 4×5 से 6×6 के बोर्ड, भूभाग, छह बॉस और स्थायी सुधारों की रणनीति बनाएँ।',
+    'शेर, उल्लू और कछुए के साथ 30 बारी-आधारित मिशन खेलें। 6×6 के बोर्ड, भूभाग, छह बॉस और स्थायी सुधारों की रणनीति बनाएँ।',
     'बारी-आधारित दस्ते की स्थिति',['बारी-आधारित रणनीति','दस्ते की योजना','अभियान'],'धीरे-धीरे बढ़ती चुनौती','अपनी गति से खेलें',
-    'रूण रणनीति एक मौलिक एकल-खिलाड़ी अभियान है, जिसमें 30 बनाए गए मिशन, तीन पशु नायक और छह बॉस हैं। 4×5 से 6×6 खानों के बोर्ड पर भूभाग समझें, नायकों को सही जगह ले जाएँ और उनके हमलों का क्रम तय करें।',
+    'रूण रणनीति एक मौलिक एकल-खिलाड़ी अभियान है, जिसमें 30 बनाए गए मिशन, तीन पशु नायक और छह बॉस हैं। 6×6 खानों के बोर्ड पर भूभाग समझें, नायकों को सही जगह ले जाएँ और उनके हमलों का क्रम तय करें।',
     ['शेर, उल्लू और कछुआ पाँच-पाँच मिशन वाले छह अध्यायों से गुजरते हैं। हर अध्याय नए खतरे और दुश्मनों की विशेषताएँ सिखाता है, फिर बॉस उन्हीं नियमों को मिलाता है।','यह अंतहीन यादृच्छिक नक्शा नहीं है। खुले मिशन दोबारा खेलकर नई संरचनाएँ आजमा सकते हैं और सहेजे सितारों का रिकॉर्ड सुधार सकते हैं।'],
     ['खिलाड़ी की बारी में हर नायक एक बार चल सकता है और उसके बाद एक युद्ध कार्रवाई कर सकता है। शेर अधिकतम तीन खाने, उल्लू और कछुआ अधिकतम दो खाने चलते हैं। चमकते गंतव्य मलबे और दूसरे पात्रों से बचकर जाने वाले वैध रास्ते दिखाते हैं। चलने से हमला खर्च नहीं होता, लेकिन हमला, रक्षा या कौशल करने पर उस नायक की बारी खत्म होती है।','शेर का कौशल समूह को नुकसान पहुँचाता है, उल्लू का कौशल पास के दुश्मनों में आगे बढ़ता है और कछुए का कौशल दस्ते की रक्षा करके स्वास्थ्य लौटाता है। कौशल के लिए ऊर्जा चाहिए। मौन कौशल रोक सकता है, पर सामान्य हमला या रक्षा अपने-आप बंद नहीं होते।','दुश्मन के विपरीत किनारों पर साथी रखकर घेराव किया जा सकता है। कवच, ढाल, मुहर और उड़ान की प्रतिरक्षा नुकसान का पूर्वानुमान बदलते हैं। ज्वार, आग और बाहरी घेरे का घूमना बारी समाप्त होने पर सुरक्षित स्थान बदल सकते हैं।','हर मिशन के तीन सितारे हैं: जीत, तीनों नायकों का जीवित रहना और दिखाया गया बारी का लक्ष्य। हर नया सितारा केवल एक बार चार रूण देता है। सितारा छूटने से जीत रद्द नहीं होती और पहले मिले सितारे का पुरस्कार दोबारा नहीं मिलता।'],
     ['खेल शुरू करें, मिशन कार्ड देखें और खुले कार्ड को चुनकर युद्ध में जाएँ। पहले भूभाग और दुश्मनों की जानकारी पढ़ें।','टच या माउस से नायक चुनें, उसे चमकते खाने तक चलाएँ और फिर हमला, रक्षा या कौशल चुनें। तीर कुंजियाँ बोर्ड का फ़ोकस बदलती हैं; Enter या स्पेस से खाना चुना जाता है।','नुकसान का पूर्वानुमान, बची ऊर्जा और साथियों की स्थिति की तुलना करें। योजना पूरी होने पर बारी समाप्त करें।','जीत के बाद रूण पुरस्कार चुनकर आगे बढ़ें, दोबारा खेलें या मिशन पर लौटें। सुधार और वैकल्पिक प्रशिक्षण युद्ध से पहले उपलब्ध हैं।'],
@@ -162,9 +162,9 @@
     [['क्या एक बारी में चलकर हमला कर सकते हैं?','हाँ। पहले नायक को चलाएँ और उसके बाद एक हमला, रक्षा या कौशल करें। युद्ध कार्रवाई से उसकी बारी खत्म हो जाती है।'],['कौशल क्यों उपलब्ध नहीं है?','बची ऊर्जा, युद्ध कार्रवाई पहले उपयोग हुई या नहीं, और मौन जाँचें। सामान्य हमला या रक्षा संभव हो सकते हैं।'],['नुकसान का पूर्वानुमान शून्य हो तो क्या त्रुटि है?','जरूरी नहीं। उड़ान की प्रतिरक्षा, ढाल या कवच नुकसान रोक सकते हैं। स्थान या नायक बदलकर पूर्वानुमान देखें।'],['आगे बढ़ने के लिए तीनों सितारे चाहिए?','नहीं। जीवित रहने या बारी वाले सितारे के बिना भी जीत से आगे बढ़ सकते हैं। केवल छूटे पुरस्कारों के लिए दोबारा खेलें।'],['दोबारा शुरू करने पर सुधार मिटेंगे?','केवल वही लड़ाई रीसेट होती है, सहेजे सुधार नहीं। ब्राउज़र का भंडारण मिटाने से प्रगति हट सकती है।'],['मिशन 30 के बाद क्या होता है?','अभियान वहीं समाप्त होता है। खुले मिशन फिर खेलकर सितारे सुधार सकते हैं; कोई काल्पनिक मिशन 31 नहीं बनता।']],
     ['बारी-आधारित रणनीति पसंद करने वालों के लिए तुलना','Into the Breach और रूण रणनीति दोनों में खानों वाले युद्धक्षेत्र पर बारी-बारी से दस्ते की स्थिति तय करनी होती है। Into the Breach में युद्ध-मशीनें हैं और दुश्मनों के हमले पहले दिखाए जाते हैं। यह WeightPlay खेल 30 बनाए गए मिशन, तीन पशु नायक, छह बॉस और ब्राउज़र में सहेजी जाने वाली स्थायी प्रगति देता है। इसका नुकसान पूर्वानुमान हर दुश्मन की अगली कार्रवाई का पूरा खुलासा नहीं करता।','रूण रणनीति WeightPlay का स्वतंत्र खेल है, Into the Breach का आधिकारिक संस्करण नहीं। WeightPlay का Subset Games से संबद्धता, समर्थन या साझेदारी का संबंध नहीं है।','Subset Games: Into the Breach का आधिकारिक परिचय']);
   add('ar','تكتيكات الرون الحيواني',
-    'قد الأسد والبومة والسلحفاة في 30 مهمة بالأدوار، على لوحات من 4×5 إلى 6×6. استخدم التضاريس وواجه ستة زعماء وطوّر أبطالك.',
+    'قد الأسد والبومة والسلحفاة في 30 مهمة بالأدوار، على لوحات من 6×6. استخدم التضاريس وواجه ستة زعماء وطوّر أبطالك.',
     'تمركز فرقة بنظام الأدوار',['تكتيك بالأدوار','استراتيجية فرقة','حملة'],'تحدٍّ متدرج','العب بوتيرتك',
-    'تكتيكات الرون الحيواني حملة أصلية للاعب واحد تضم 30 مهمة مصممة وثلاثة أبطال حيوانات وستة زعماء. اقرأ التضاريس، وضع حلفاءك في مواقع مناسبة، ونسّق الهجمات على لوحات تتراوح من 4×5 إلى 6×6 خانات.',
+    'تكتيكات الرون الحيواني حملة أصلية للاعب واحد تضم 30 مهمة مصممة وثلاثة أبطال حيوانات وستة زعماء. اقرأ التضاريس، وضع حلفاءك في مواقع مناسبة، ونسّق الهجمات على لوحات تتراوح من 6×6 خانات.',
     ['يعبر الأسد والبومة والسلحفاة ستة فصول، في كل منها خمس مهام. يقدم كل فصل مخاطر وسمات أعداء جديدة قبل زعيم يجمع تلك القواعد.','ليست خريطة عشوائية لا نهائية. تبقى المهام المفتوحة متاحة لتجربة التشكيلات وتحسين سجل النجوم المحفوظ.'],
     ['يستطيع كل بطل التحرك مرة واحدة ثم تنفيذ إجراء قتالي واحد في دور اللاعب. يتحرك الأسد حتى ثلاث خانات، والبومة والسلحفاة حتى خانتين. تتبع الوجهات المضيئة مسارات مسموحة حول الأنقاض والخانات المشغولة. لا تستهلك الحركة الهجوم، لكن الهجوم أو الحراسة أو المهارة ينهي دور ذلك البطل.','تصيب مهارة الأسد مجموعة، وتنتقل مهارة البومة بين أعداء قريبين، وتحمي مهارة السلحفاة الفرقة وتستعيد الصحة. تحتاج المهارات إلى طاقة؛ قد يمنع الصمت المهارة دون منع الهجوم العادي أو الحراسة.','يسمح وجود حليفين على جانبين متقابلين من العدو بالكماشة. تؤثر الدروع والحواجز والأختام وحصانة الطيران في معاينة الضرر. وقد يغير المد والنار ودوران الحلقة الخارجية المواقع الآمنة بعد نهاية الدور.','تسجل كل مهمة ثلاث نجوم: الفوز، وبقاء الأبطال الثلاثة أحياء، وتحقيق عدد الأدوار المستهدف الظاهر. تمنح كل نجمة جديدة أربع رونات مرة واحدة فقط. لا يلغي فقدان نجمة الفوز، ولا تُدفع مكافأة النجمة المكتسبة سابقًا مرة أخرى.'],
     ['ابدأ اللعبة وتصفح البطاقات، ثم فعّل بطاقة مهمة مفتوحة. اقرأ أولًا معلومات التضاريس والأعداء.','اختر بطلًا باللمس أو الفأرة، وانقله إلى خانة مضيئة، ثم اختر الهجوم أو الحراسة أو المهارة. تنقل الأسهم التركيز، ويُفعّل Enter أو مفتاح المسافة الخانة.','قارن الضرر المتوقع والطاقة المتبقية ومواقع الحلفاء. أنهِ الدور بعد إتمام خطتك.','بعد الفوز اختر مكافأة رونية ثم تابع أو أعد اللعب أو ارجع إلى المهام. تتاح الترقيات وخانة التدريب الاختيارية قبل المعركة.'],
@@ -177,7 +177,161 @@
   const comparisonGameplayTags = {"en":["Gameplay tags:",["Turn-based tactics","Squad positioning","Grid strategy","Enemy telegraphs"]],"zh-Hant":["玩法標籤：",["回合制戰術","小隊走位","格子策略","敵方預告"]],"zh-Hans":["玩法标签：",["回合制战术","小队走位","网格策略","敌方预告"]],"ja":["ゲームプレイタグ：",["ターン制戦術","部隊配置","グリッド戦略","敵行動予告"]],"ko":["게임플레이 태그:",["턴제 전술","분대 배치","격자 전략","적 행동 예고"]],"es":["Etiquetas de jugabilidad:",["Táctica por turnos","Posicionamiento de escuadra","Estrategia en cuadrícula","Ataques anunciados"]],"pt-BR":["Tags de jogabilidade:",["Tática por turnos","Posicionamento de equipe","Estratégia em grade","Ataques anunciados"]],"fr":["Tags de gameplay :",["Tactique au tour par tour","Placement d’escouade","Stratégie sur grille","Attaques annoncées"]],"de":["Gameplay-Tags:",["Rundentaktik","Trupppositionierung","Rasterstrategie","Angriffsankündigungen"]],"it":["Tag di gioco:",["Tattica a turni","Posizionamento squadra","Strategia su griglia","Attacchi annunciati"]],"ru":["Теги игрового процесса:",["Пошаговая тактика","Расстановка отряда","Стратегия на сетке","Предупреждения об атаках"]],"hi":["गेमप्ले टैग:",["बारी-आधारित रणनीति","दस्ते की तैनाती","ग्रिड रणनीति","दुश्मन हमले की पूर्वसूचना"]],"ar":["وسوم أسلوب اللعب:",["تكتيك بنظام الأدوار","تمركز الفرقة","استراتيجية الشبكة","إنذارات هجمات الأعداء"]]};
   const noteTitles = {'en':'Player and Save Information','zh-Hant':'玩家與存檔資訊','zh-Hans':'玩家与存档信息','ja':'プレイヤーと保存情報','ko':'플레이어 및 저장 정보','es':'Información del jugador y guardado','pt-BR':'Informações do jogador e salvamento','fr':'Informations du joueur et sauvegarde','de':'Spieler- und Speicherhinweise','it':'Informazioni del giocatore e salvataggio','ru':'Информация об игроке и сохранении','hi':'खिलाड़ी और सेव जानकारी','ar':'معلومات اللاعب والحفظ'};
   const relatedCopy = {"en": ["Game guide", "Plan an animal formation before automatic squad battles.", "Explore rooms and collect relics through 30 expeditions."], "zh-Hant": ["遊戲攻略", "先安排動物陣形，再觀看小隊自動戰鬥。", "探索房間、蒐集遺物，挑戰 30 次遠征。"], "zh-Hans": ["游戏攻略", "先安排动物阵形，再观看小队自动战斗。", "探索房间、收集遗物，挑战 30 次远征。"], "ja": ["ゲームガイド", "動物の陣形を決めてから、部隊の自動戦闘を見守ります。", "部屋を探索し、遺物を集めながら30の遠征に挑みます。"], "ko": ["게임 안내", "동물 진형을 계획한 뒤 분대의 자동 전투를 지켜보세요.", "방을 탐험하고 유물을 모으며 원정 30개에 도전하세요."], "es": ["Guía del juego", "Prepara una formación animal antes de las batallas automáticas.", "Explora salas y reúne reliquias en 30 expediciones."], "pt-BR": ["Guia do jogo", "Planeje a formação dos animais antes das batalhas automáticas.", "Explore salas e reúna relíquias em 30 expedições."], "fr": ["Guide du jeu", "Préparez une formation animale avant les combats automatiques.", "Explorez des salles et récoltez des reliques dans 30 expéditions."], "de": ["Spielanleitung", "Plane die Tierformation vor den automatischen Truppkämpfen.", "Erkunde Räume und sammle Relikte auf 30 Expeditionen."], "it": ["Guida del gioco", "Prepara la formazione degli animali prima dei combattimenti automatici.", "Esplora stanze e raccogli reliquie in 30 spedizioni."], "ru": ["Руководство по игре", "Расставляйте животных перед автоматическими боями отряда.", "Исследуйте комнаты и собирайте реликвии в 30 экспедициях."], "hi": ["खेल मार्गदर्शिका", "दस्ते की स्वचालित लड़ाइयों से पहले पशुओं की संरचना तय करें।", "30 अभियानों में कमरे खोजें और अवशेष इकट्ठा करें।"], "ar": ["دليل اللعبة", "خطط لتشكيل الحيوانات قبل معارك الفرقة التلقائية.", "استكشف الغرف واجمع الآثار عبر 30 بعثة."]};
+  const campaignNotes = {
+  "en": [
+    "A surviving foe counters once per round within its range. Lion interrupts; shields absorb counters.",
+    "◎ Ranged aim tracks the hero. Leave the shooter’s range, interrupt it, or absorb the hit with a shield.",
+    "Permanent rune choices are awarded only on the first victory in each mission."
+  ],
+  "zh-Hant": [
+    "存活敵人在射程內每回合反擊一次；獅子打斷、護盾可擋反擊。",
+    "◎ 遠程瞄準會追蹤英雄；必須離開射程、打斷射手，或用護盾承受。",
+    "每關首次勝利才能選擇永久符文；重玩不會重複疊加。"
+  ],
+  "zh-Hans": [
+    "存活敌人在射程内每回合反击一次；狮子打断、护盾可挡反击。",
+    "◎ 远程瞄准会追踪英雄；必须离开射程、打断射手，或用护盾承受。",
+    "每关首次胜利才能选择永久符文；重玩不会重复叠加。"
+  ],
+  "ja": [
+    "生き残った敵は射程内で毎ターン1回反撃。ライオンの中断や盾で防ごう。",
+    "◎ 遠距離照準は英雄を追跡。射程外へ逃げるか、敵を中断するか、盾で受けよう。",
+    "永久ルーンを選べるのは各任務の初勝利時だけです。"
+  ],
+  "ko": [
+    "생존한 적은 사거리 안에서 턴당 한 번 반격합니다. 사자의 방해나 방패로 막으세요.",
+    "◎ 원거리 조준은 영웅을 추적합니다. 사거리 밖으로 이동하거나 적을 방해하거나 방패로 막으세요.",
+    "영구 룬 선택은 각 임무의 첫 승리에서만 받습니다."
+  ],
+  "es": [
+    "Un enemigo superviviente contraataca una vez por ronda dentro de su alcance. Interrúmpelo con León o usa escudos.",
+    "◎ La mira sigue al héroe. Sal del alcance, interrumpe al tirador o absorbe el impacto con un escudo.",
+    "Las runas permanentes se eligen solo en la primera victoria de cada misión."
+  ],
+  "pt-BR": [
+    "O inimigo sobrevivente contra-ataca uma vez por rodada dentro do alcance. Interrompa com Leão ou use escudos.",
+    "◎ A mira acompanha o herói. Saia do alcance, interrompa o atirador ou absorva o golpe com um escudo.",
+    "Runas permanentes são escolhidas apenas na primeira vitória de cada missão."
+  ],
+  "fr": [
+    "Un ennemi survivant riposte une fois par tour à portée. Le Lion interrompt et les boucliers absorbent la riposte.",
+    "◎ La visée suit le héros. Sortez de portée, interrompez le tireur ou absorbez le tir avec un bouclier.",
+    "Les runes permanentes ne sont proposées que lors de la première victoire de chaque mission."
+  ],
+  "de": [
+    "Überlebende Gegner kontern einmal pro Runde in Reichweite. Löwe unterbricht; Schilde fangen Konter ab.",
+    "◎ Fernkampfvisiere verfolgen den Helden. Verlasse die Reichweite, unterbrich den Schützen oder nutze einen Schild.",
+    "Dauerhafte Runen gibt es nur beim ersten Sieg jeder Mission."
+  ],
+  "it": [
+    "Un nemico superstite contrattacca una volta per turno entro gittata. Il Leone interrompe; gli scudi assorbono il colpo.",
+    "◎ La mira segue l’eroe. Esci dalla gittata, interrompi il tiratore o assorbi il colpo con uno scudo.",
+    "Le rune permanenti si scelgono solo alla prima vittoria di ogni missione."
+  ],
+  "ru": [
+    "Выживший враг контратакует раз за раунд в пределах дальности. Лев прерывает, щиты поглощают ответ.",
+    "◎ Дальний прицел следует за героем. Выйдите из радиуса, прервите стрелка или примите удар щитом.",
+    "Постоянные руны выдаются только за первую победу в каждой миссии."
+  ],
+  "hi": [
+    "बचा हुआ शत्रु अपनी सीमा में हर दौर एक पलटवार करता है। सिंह रोकता है और ढाल नुकसान सोखती है।",
+    "◎ दूर का निशाना नायक का पीछा करता है। सीमा से बाहर जाएँ, शत्रु को रोकें या ढाल से वार सहें।",
+    "स्थायी रून हर मिशन की पहली जीत पर ही चुने जाते हैं।"
+  ],
+  "ar": [
+    "يرد العدو الناجي مرة في الجولة ضمن مداه. يوقفه الأسد وتمتص الدروع الرد.",
+    "◎ يتتبع التصويب البطل. اخرج من المدى أو أوقف الرامي أو امتص الإصابة بدرع.",
+    "تُختار الرون الدائمة عند أول انتصار فقط في كل مهمة."
+  ]
+};
+  const mapGuide = {
+  "en": [
+    "Move, preview a MAP attack, aim and fire. Sweep whole groups!",
+    "MAP costs 3 Energy. Each kill refunds 1 (max 1 per action); attack, Guard and each round restore 1.",
+    "Fire a three-cell-wide corridor in the chosen direction. Interrupt survivors; no friendly fire. Bombard a 3×3 area around any cell. Mark survivors; no friendly fire. Hit every foe within 2 cells of Turtle. Heal all allies by 2 and shield their next hit for 2.",
+    "Every mission has 6 opening enemies and 2–4 waves of 6. Reinforcements arrive every two rounds, or immediately after a clear field. Defeat every wave to win."
+  ],
+  "zh-Hant": [
+    "移動 → 地圖炮預覽 → 調整範圍 → 發射，一次掃蕩整群敵人！",
+    "地圖炮耗 3 能量；擊殺回充 1（每次最多 1），普攻／防守／每回合各回充 1。",
+    "朝指定方向轟出 3 格寬的貫穿炮，打斷存活敵人；不傷隊友。 指定任意格，轟炸周圍 3×3 區域；為存活敵人刻印，不傷隊友。 震擊自身 2 格內所有敵人；全隊恢復 2 生命並獲得減傷 2 護盾。",
+    "每關先有 6 名敵人，再增援 2–4 波、每波 6 名；每兩回合抵達，清空戰場會提前出現。消滅所有波次才算獲勝。"
+  ],
+  "zh-Hans": [
+    "移动 → 地图炮预览 → 调整范围 → 发射，一次扫荡整群敌人！",
+    "地图炮耗 3 能量；击杀回充 1（每次最多 1），普攻／防守／每回合各回充 1。",
+    "朝指定方向轰出 3 格宽的贯穿炮，打断存活敌人；不伤队友。 指定任意格，轰炸周围 3×3 区域；为存活敌人刻印，不伤队友。 震击自身 2 格内所有敌人；全队恢复 2 生命并获得减伤 2 护盾。",
+    "每关先有 6 名敌人，再增援 2–4 波、每波 6 名；每两回合抵达，清空战场会提前出现。消灭所有波次才算获胜。"
+  ],
+  "ja": [
+    "移動→MAP攻撃の範囲確認→照準→発射。敵の群れを一掃！",
+    "MAPはエネルギー3。撃破で1回復（1行動で最大1）、通常攻撃・防御・各ターンで1回復。",
+    "指定方向に幅3マスの砲撃。生存した敵の行動を中断。味方には無効。 任意のマスの周囲3×3を爆撃。生存した敵に刻印。味方には無効。 亀から2マス以内の敵を攻撃。味方全員を2回復し、次の被弾を2軽減。",
+    "各任務は敵6体と、各6体の増援2〜4波。2ターンごと、または敵全滅直後に到着。全波撃破で勝利。"
+  ],
+  "ko": [
+    "이동→MAP 범위 확인→조준→발사! 적 무리를 쓸어버리세요.",
+    "MAP은 에너지 3 소모. 처치당 1 회복(행동당 최대 1), 일반 공격·방어·매 턴 1 회복.",
+    "선택 방향으로 폭 3칸 포격. 생존한 적의 행동을 방해하며 아군은 안전합니다. 아무 칸을 골라 주변 3×3을 폭격. 생존 적에게 표식을 남기며 아군은 안전합니다. 거북이의 2칸 내 모든 적 공격. 아군 전원 체력 2 회복, 다음 피해 2 감소.",
+    "각 임무는 적 6명과 6명씩 2~4차 증원으로 구성됩니다. 2턴마다 또는 적 전멸 직후 도착하며 모든 증원을 격파하면 승리합니다."
+  ],
+  "es": [
+    "Muévete, apunta el ataque MAP y dispara. ¡Barre grupos enteros!",
+    "MAP cuesta 3 de Energía. Cada baja devuelve 1 (máx. 1 por acción); atacar, defender y cada ronda dan 1.",
+    "Dispara una franja de 3 casillas de ancho en la dirección elegida. Interrumpe a los supervivientes; no daña aliados. Bombardea un área de 3×3 alrededor de cualquier casilla. Marca supervivientes; no daña aliados. Golpea a todos los enemigos a 2 casillas de Tortuga. Cura 2 a cada aliado y bloquea 2 del siguiente golpe.",
+    "Cada misión empieza con 6 enemigos y añade 2–4 oleadas de 6. Llegan cada dos rondas o al despejar el campo. Vence a todas para ganar."
+  ],
+  "pt-BR": [
+    "Mova, mire o ataque MAP e dispare. Varra grupos inteiros!",
+    "MAP custa 3 de Energia. Cada baixa devolve 1 (máx. 1 por ação); atacar, defender e cada rodada dão 1.",
+    "Dispara uma faixa de 3 casas na direção escolhida. Interrompe sobreviventes; não atinge aliados. Bombardeia 3×3 casas ao redor de qualquer casa. Marca sobreviventes; não atinge aliados. Atinge todo inimigo a 2 casas da Tartaruga. Cura 2 de cada aliado e bloqueia 2 do próximo golpe.",
+    "Cada missão começa com 6 inimigos e recebe 2–4 ondas de 6. Chegam a cada duas rodadas ou ao limpar o campo. Derrote todas para vencer."
+  ],
+  "fr": [
+    "Déplacez-vous, visez avec MAP et tirez. Balayez des groupes entiers !",
+    "MAP coûte 3 Énergie. Chaque élimination rend 1 (max. 1 par action) ; attaque, garde et chaque tour rendent 1.",
+    "Tire un couloir large de 3 cases dans la direction choisie. Interrompt les survivants ; alliés épargnés. Bombarde une zone de 3×3 autour de toute case. Marque les survivants ; alliés épargnés. Frappe tous les ennemis à 2 cases de Tortue. Soigne chaque allié de 2 et bloque 2 du prochain coup.",
+    "Chaque mission débute avec 6 ennemis et ajoute 2 à 4 vagues de 6. Elles arrivent tous les deux tours ou dès que le terrain est vide. Éliminez toutes les vagues."
+  ],
+  "de": [
+    "Bewegen, MAP-Zielbereich prüfen und feuern. Ganze Gruppen besiegen!",
+    "MAP kostet 3 Energie. Pro Abschuss +1 (max. 1 je Aktion); Angriff, Abwehr und jede Runde geben +1.",
+    "Feuert einen 3 Felder breiten Streifen in die gewählte Richtung. Unterbricht Überlebende; keine Verbündetentreffer. Bombardiert 3×3 Felder um ein beliebiges Feld. Markiert Überlebende; keine Verbündetentreffer. Trifft alle Gegner im Abstand 2 von Schildkröte. Heilt alle Verbündeten um 2 und blockt 2 des nächsten Treffers.",
+    "Jede Mission beginnt mit 6 Gegnern und 2–4 Verstärkungswellen mit je 6. Sie kommen alle zwei Runden oder sofort nach Räumung des Feldes. Besiege alle Wellen."
+  ],
+  "it": [
+    "Muovi, mira con MAP e spara. Spazza via interi gruppi!",
+    "MAP costa 3 Energia. Ogni sconfitta restituisce 1 (max 1 per azione); attacco, guardia e ogni turno danno 1.",
+    "Spara una fascia larga 3 caselle nella direzione scelta. Interrompe i superstiti; nessun danno agli alleati. Bombarda 3×3 caselle attorno a qualsiasi casella. Marca i superstiti; nessun danno agli alleati. Colpisce tutti i nemici entro 2 caselle da Tartaruga. Cura 2 a ogni alleato e blocca 2 del prossimo colpo.",
+    "Ogni missione inizia con 6 nemici e aggiunge 2–4 ondate da 6. Arrivano ogni due turni o appena il campo è libero. Sconfiggi tutte le ondate."
+  ],
+  "ru": [
+    "Переместитесь, наведите MAP-атаку и стреляйте. Сметайте целые группы!",
+    "MAP стоит 3 энергии. За убийство +1 (макс. 1 за действие); атака, защита и каждый раунд дают 1.",
+    "Залп полосой шириной 3 клетки в выбранную сторону. Прерывает выживших; союзники не страдают. Обстрел области 3×3 вокруг любой клетки. Помечает выживших; союзники не страдают. Бьёт всех врагов в 2 клетках от Черепахи. Лечит союзников на 2 и снижает следующий урон на 2.",
+    "В миссии 6 первых врагов и 2–4 волны по 6. Подкрепления приходят каждые два раунда или сразу после зачистки. Для победы уничтожьте все волны."
+  ],
+  "hi": [
+    "चलें, MAP का क्षेत्र देखें, निशाना लगाएँ और चलाएँ। पूरे झुंड हराएँ!",
+    "MAP में 3 ऊर्जा लगती है। हर हार पर 1 वापस (प्रति चाल अधिकतम 1); हमला, बचाव और हर दौर पर 1 वापस।",
+    "चुनी दिशा में 3 खाने चौड़ी पट्टी पर वार। बचे शत्रुओं को रोकता है; साथियों को चोट नहीं। किसी भी खाने के आसपास 3×3 क्षेत्र पर वार। बचे शत्रुओं पर निशान; साथी सुरक्षित। कछुए से 2 खाने तक के सभी शत्रुओं पर वार। हर साथी को 2 स्वास्थ्य और अगले वार में 2 की सुरक्षा।",
+    "हर मिशन में पहले 6 दुश्मन, फिर 6 की 2–4 लहरें आती हैं। वे हर दो दौर या मैदान खाली होते ही आती हैं। सभी लहरों को हराकर जीतें।"
+  ],
+  "ar": [
+    "تحرك وحدد نطاق MAP ثم أطلق. اقضِ على مجموعات كاملة!",
+    "يكلف MAP ثلاث طاقات. كل هزيمة تعيد 1 (بحد أقصى 1 للفعل)، والهجوم والحراسة وكل جولة تعيد 1.",
+    "يقصف ممراً بعرض 3 خانات في الاتجاه المختار. يوقف الناجين ولا يصيب الحلفاء. يقصف مساحة 3×3 حول أي خانة. يضع علامة على الناجين ولا يصيب الحلفاء. يضرب كل عدو ضمن خانتين من السلحفاة. يشفي الحلفاء بمقدار 2 ويحجب 2 من الضربة التالية.",
+    "تبدأ كل مهمة بستة أعداء ثم 2–4 موجات من ستة. تصل كل جولتين أو فور إخلاء الساحة. اهزم جميع الموجات للفوز."
+  ]
+};
   for (const [code, copy] of Object.entries(data)) {
+    copy.systems[1] = mapGuide[code][2];
+    copy.systems.push(mapGuide[code][1],mapGuide[code][3]);
+    copy.how[2] = mapGuide[code][0]+" "+mapGuide[code][1];
+    copy.strategyTips[0] = mapGuide[code][0];
+    copy.designNote = mapGuide[code][3];
+    copy.systems.push(...campaignNotes[code]);
+    copy.how[3] = campaignNotes[code][2];
     const tagCopy = comparisonGameplayTags[code];
     if (!tagCopy || tagCopy[1].length !== 4) throw new Error(`Incomplete Rune comparison tags ${code}`);
     copy.comparison.tagsLabel = tagCopy[0];

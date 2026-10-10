@@ -2697,13 +2697,12 @@ html body.wp-logical-battle-active.is-rune-playing .selected-card .skill-help i 
 }
 
 html body.wp-logical-battle-active.is-rune-playing .selected-card .skill-help {
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr) !important;
-  grid-auto-rows: auto !important;
-  align-items: start !important;
+  display: block !important;
 }
 
-html body.wp-logical-battle-active.is-rune-playing .selected-card .skill-help i {
-  grid-column: 1 / -1 !important;
+html body.wp-logical-battle-active.is-rune-playing .selected-card .skill-help > * {
+  display: block;
+  margin-top: 4px;
 }
 
 /* The shared Canvas keeps this game on its portrait logical envelope in
@@ -2873,6 +2872,12 @@ html body[data-screen="main"] [data-wp-frame-scene="main"] [data-wp-frame-progre
 }
 /* Battle v27: intent and rune feedback stay within existing tile bounds. */
 .campaign-help { margin:4px 0 0; color:#ffd980; font-size:12px; line-height:1.4; }
+.tile.is-map-area { box-shadow:inset 0 0 0 3px #6cf6ef!important; background:#277e85!important; }
+.tile.is-map-center { outline:3px solid #fff2a0; outline-offset:-6px; }
+.map-pulse { position:absolute; pointer-events:none; border:2px solid #ffffd0; border-radius:5px; background:#ffc44699; box-shadow:inset 0 0 18px #fff4a9; }
+.map-pulse-owl { background:#7bd8ff99; box-shadow:inset 0 0 18px #bceeff; }
+.map-pulse-turtle { background:#69efb199; box-shadow:inset 0 0 18px #bfffda; }
+html body .rune-app #runeBattleScene .actions .map-ready { color:#fff3ad; border-color:#eec867; background:linear-gradient(130deg,#69542b,#264f4b); }
 #gamePanel .reinforcement-entry { background:#654c14; color:#fff2ba; top:auto; bottom:3px; }
 #gamePanel .tile.is-threatened { box-shadow: inset 0 0 0 3px #ff786c; background-color: #542e40; }
 #gamePanel .tile.is-tracked { box-shadow: inset 0 0 0 3px #ffc95e; background-color:#594423; }
@@ -2921,3 +2926,5 @@ html body .rune-app #runeBattleScene #resultPanel .result-actions button {
   html body .rune-app #runeBattleScene #resultPanel .result-actions button { line-height:18px; }
   html body .rune-app #runeBattleScene .battle-log { font-size:14px !important; line-height:18px !important; }
 }
+
+#battleLog.is-sweep { color: #fff0a0; text-shadow: 0 1px 6px #945c13; }

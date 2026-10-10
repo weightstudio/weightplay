@@ -53,7 +53,8 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 31;
+  const GAME_VERSION = 32;
+  let combatRules;
   const INTERFACE_VERSION = 7;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -1495,9 +1496,9 @@
         magnet: 0,
       },
       gearLevels: {},
-      inventory: [],
+      inventory: ['sword-rare', 'dagger-epic'],
       equipped: {
-        weapon: null,
+        weapon: 'sword-rare',
         armor: null,
         boots: null,
       },
@@ -1530,7 +1531,7 @@
     }
 
     if (Array.isArray(data.inventory)) {
-      next.inventory = [...new Set(data.inventory.filter((key) => typeof key === "string" && gearDb[key]))];
+      next.inventory = [...new Set([...next.inventory, ...data.inventory.filter((key) => typeof key === "string" && gearDb[key])])];
     }
 
     const gearLevels = data.gearLevels && typeof data.gearLevels === "object" && !Array.isArray(data.gearLevels) ? data.gearLevels : {};
@@ -1541,7 +1542,8 @@
     const equipped = data.equipped && typeof data.equipped === "object" && !Array.isArray(data.equipped) ? data.equipped : {};
     for (const slot of ["weapon", "armor", "boots"]) {
       const key = equipped[slot];
-      next.equipped[slot] = gearDb[key]?.slot === slot ? key : null;
+      next.equipped[slot] = gearDb[key]?.slot === slot ? key
+        : slot === 'weapon' && !Object.hasOwn(equipped, slot) ? 'sword-rare' : null;
       if (next.equipped[slot] && !next.inventory.includes(next.equipped[slot])) {
         next.inventory.push(next.equipped[slot]);
       }
@@ -1681,10 +1683,10 @@
     enemy.hitVisualKey = visualKey;
     if (!blocked) {
       const angle = Math.atan2(enemy.y - state.playerY, enemy.x - state.playerX);
-      const recoil = enemy.isBoss ? 3 : 13;
+      const recoil = enemy.isBoss ? 2 : visualKey === 'sword-rare' ? 12 : 3;
       enemy.x += Math.cos(angle) * recoil;
       enemy.y += Math.sin(angle) * recoil;
-      enemy.pulseStaggerUntil = Math.max(enemy.pulseStaggerUntil || 0, performance.now() + 90);
+      enemy.pulseStaggerUntil = Math.max(enemy.pulseStaggerUntil || 0, performance.now() + (visualKey === 'sword-rare' ? 70 : 20));
     }
     if (showFeedback) showCombatFeedback(blocked ? "combatWard" : "combatHit", blocked ? {} : { damage: Math.max(1, Math.round(Number(damage) || 0)) });
   }
@@ -1866,6 +1868,8 @@
     const g = gearDb[key];
     if (!g) return "";
     const scale = gearScaleAtLevel(level);
+    if (key === 'sword-rare') return `${t('swordAbility')} · +${(g.bonusDmg * scale * combatRules.WEAPONS[key].damage).toFixed(1)} ${t('statDamage').replace(/[:：]\s*$/, '')}`;
+    if (key === 'dagger-epic') return `${t('daggerAbility')} · -${Math.round(Math.min(.65, g.bonusRate * scale) * 100)}% ${t('statAttackRate').replace(/[:：]\s*$/, '')}`;
     if (g.bonusDmg) return `+${(g.bonusDmg * scale).toFixed(1)} ${t("statDamage").replace(/[:：]\s*$/, "")}`;
     if (g.bonusRate) return `-${Math.round(g.bonusRate * scale * 100)}% ${t("statAttackRate").replace(/[:：]\s*$/, "")}`;
     if (g.bonusHp) return `+${Math.round(g.bonusHp * scale)} ${t("statMaxHp") || "Max HP"}`;
@@ -2607,13 +2611,14 @@
       magnet += state.relicMagnetCount * 40;
     }
 
-    return { dmg, rate, speed, magnet, maxHp };
+    return { dmg, rate: Math.max(.18, rate), speed, magnet, maxHp };
   }
 
   function renderStatsPanel() {
     const stats = getStats();
-    nodes.statDmg.textContent = stats.dmg.toFixed(0);
-    nodes.statRate.textContent = `${stats.rate.toFixed(2)}s`;
+    const weapon = combatRules.WEAPONS[state.eqWeapon] || combatRules.WEAPONS.default;
+    nodes.statDmg.textContent = (stats.dmg * weapon.damage).toFixed(0);
+    nodes.statRate.textContent = `${(stats.rate * weapon.interval).toFixed(2)}s`;
     nodes.statSpeed.textContent = stats.speed.toFixed(1);
     nodes.statMagnet.textContent = `${stats.magnet}px`;
 
@@ -2832,9 +2837,6 @@
     combatFeedbackUntil = 0;
     lastCombatFeedbackAt = 0;
 
-    // Wave spawning trigger
-    spawnRoomEntities();
-
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
@@ -2851,6 +2853,12 @@
 
     renderStatsPanel();
     renderEquippedGear();
+
+    // Measure the visible scene before placing its opening ring. A hidden
+    // Stage-to-Battle canvas still has the previous screen's aspect ratio.
+    drawCanvasFrame();
+    resetBattleCamera();
+    spawnRoomEntities();
 
     state.gameActive = true;
     lastTrackedObjectiveKey = "";
@@ -3005,11 +3013,12 @@
   function createThreat(behavior, x, y, options = {}) {
     const mission = missionDefinition();
     const room = state.room || 1;
-    const difficulty = 1 + ((mission.id - 1) * 0.035) + ((room - 1) * 0.08);
     const tankLike = ["tank", "ward", "regenerator", "slower"].includes(behavior);
-    const baseHp = tankLike ? 38 : 22;
-    const baseSpeed = behavior === "rusher" ? 2.35 : behavior === "orbiter" ? 1.75 : tankLike ? 1.05 : 1.65;
-    const maxHp = Math.round((baseHp + mission.region * 4) * difficulty * (options.hpMultiplier || 1));
+    const vitals = combatRules.threatVitals({ behavior, mission: mission.id, region: mission.region, room,
+      hpMultiplier: options.hpMultiplier || 1, speedMultiplier: options.speedMultiplier || 1,
+      pursuitSpeed: state.roomPursuitSpeed || 3.5, veteranPower: state.roomVeteranPower || 1 });
+    const maxHp = vitals.hp;
+    const baseSpeed = vitals.speed;
     return {
       x,
       y,
@@ -3017,7 +3026,9 @@
       behavior,
       hp: maxHp,
       maxHp,
-      speed: baseSpeed * (options.speedMultiplier || 1),
+      speed: baseSpeed,
+      spawnTicks: options.immediate ? 0 : 36,
+      bleedTicks: 0, bleedStacks: 0, bleedDamage: 0,
       baseSpeed,
       isElite: Boolean(options.isElite),
       isBoss: Boolean(options.isBoss),
@@ -3036,7 +3047,8 @@
   function createGuardian(region, checkpoint, options = {}) {
     const behavior = checkpoint ? guardianBehaviors[region - 1] : guardianBehaviors[Math.max(0, region - 1)];
     const hpMultiplier = checkpoint ? 8.6 : (options.hpMultiplier || 4.2);
-    const guardian = createThreat(behavior, ARENA_WIDTH / 2, -70, {
+    const point = pursuitSpawnPoint(0, 1);
+    const guardian = createThreat(behavior, point.x, point.y, {
       isElite: true,
       isBoss: checkpoint,
       hpMultiplier,
@@ -3059,6 +3071,14 @@
     state.orbs = [];
     state.pickups = [];
     state.roomGraceUntil = performance.now() + ROOM_ENTRY_GRACE_MS;
+    state.roomTicks = 0;
+    state.waveNumber = 0;
+    state.nextWaveTicks = 360;
+    state.roomSecured = false;
+    state.roomPursuitSpeed = getStats().speed;
+    state.roomVeteranPower = 1 + profile.training.damage * .045
+      + Math.max(0, gearLevel(state.eqWeapon) - 1) * .025;
+
     state.playerHitUntil = 0;
     combatFeedbackText = "";
     combatFeedbackUntil = 0;
@@ -3071,9 +3091,10 @@
     const roomThreats = encounterProfile?.rooms[roomIndex] || regionThreatPools[mission.region];
     const formation = encounterProfile?.formations[roomIndex] || "surround";
     state.roomGraceUntil = performance.now() + Math.min(1800, encounterProfile?.grace[roomIndex] || ROOM_ENTRY_GRACE_MS);
-    for (let i = 0; i < roomThreats.length; i += 1) {
-      const point = formationSpawnPoint(formation, i, roomThreats.length);
-      state.enemies.push(createThreat(roomThreats[i], point.x, point.y, {
+    const opening = [...roomThreats, 'rusher', 'shooter', 'tank', 'rusher', 'chaser'];
+    for (let i = 0; i < opening.length; i += 1) {
+      const point = pursuitSpawnPoint(i, opening.length);
+      state.enemies.push(createThreat(opening[i], point.x, point.y, {
         hpMultiplier: encounterProfile?.hpMultiplier || 1,
         speedMultiplier: encounterProfile?.speedMultiplier || 1,
       }));
@@ -3092,7 +3113,7 @@
         hpMultiplier: encounterProfile?.eliteHp[roomIndex],
         speedMultiplier: encounterProfile?.eliteSpeed,
       }));
-    }, Math.min(5200, encounterProfile?.eliteDelay[roomIndex] || 5200));
+    }, 16000 + roomIndex * 1000);
   }
 
   function updateHUDText() {
@@ -3134,39 +3155,55 @@
     }
   }
 
-  // Firing function
+  function pursuitSpawnPoint(index, count) {
+    const camera = getBattleCameraTarget();
+    const halfW = ARENA_WIDTH / battleZoom / 2 - 36;
+    const halfH = battleViewHeight / battleZoom / 2 - 36;
+    const base = Math.PI * 2 * index / Math.max(1, count) + state.room * .7;
+    let point = { x: 400, y: 500 };
+    // Spawn on a visible edge, never directly on a cornered player.
+    for (let attempt = 0; attempt < 12; attempt++) {
+      const angle = base + attempt * .52;
+      point = { x: Math.max(36, Math.min(764, camera.x + Math.cos(angle) * halfW)),
+        y: Math.max(36, Math.min(964, camera.y + Math.sin(angle) * halfH)) };
+      if (Math.hypot(point.x - state.playerX, point.y - state.playerY) > 180) break;
+    }
+    return point;
+  }
+
+  function reinforceRoom() {
+    state.waveNumber += 1;
+    const roster = combatRules.reinforcementRoster(missionDefinition().region, state.waveNumber);
+    for (let i = 0; i < roster.length && state.enemies.length < combatRules.MAX_THREATS; i++) {
+      const point = pursuitSpawnPoint(i, roster.length);
+      state.enemies.push(createThreat(roster[i], point.x, point.y, { hpMultiplier: .72 }));
+    }
+    showCombatFeedback('waveWarning', {}, 1300);
+    window.WeightPlayAudio?.play('alert.boss');
+  }
+
+  function enemyInView(enemy) {
+    return combatRules.insideView(enemy, battleCameraInitialized ? battleCamera : getBattleCameraTarget(), ARENA_WIDTH, battleViewHeight, battleZoom);
+  }
+
   function fireBullet() {
-    if (state.enemies.length === 0) return;
-
-    // Find nearest enemy
-    let nearest = null;
-    let minDist = Infinity;
-    state.enemies.forEach((enemy) => {
-      const dx = enemy.x - state.playerX;
-      const dy = enemy.y - state.playerY;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      if (d < minDist) {
-        minDist = d;
-        nearest = enemy;
-      }
-    });
-
-    if (!nearest) return;
-
-    const angle = Math.atan2(nearest.y - state.playerY, nearest.x - state.playerX);
-
+    const weapon = combatRules.WEAPONS[state.eqWeapon] || combatRules.WEAPONS.default;
+    const targets = state.enemies.filter(enemy => !(enemy.spawnTicks > 0) && enemyInView(enemy)
+      && Math.hypot(enemy.x - state.playerX, enemy.y - state.playerY) <= weapon.range)
+      .sort((a,b) => Math.hypot(a.x-state.playerX,a.y-state.playerY)-Math.hypot(b.x-state.playerX,b.y-state.playerY));
+    if (!targets.length) return;
     const stats = getStats();
-    state.bullets.push({
-      x: state.playerX,
-      y: state.playerY,
-      vx: Math.cos(angle) * 7.5,
-      vy: Math.sin(angle) * 7.5,
-      dmg: stats.dmg,
-      size: 6,
-      trail: [],
-      visualKey: state.eqWeapon || "default",
-    });
-    window.WeightPlayAudio?.play("magic.cast");
+    for (let i = 0; i < weapon.count; i++) {
+      const target = targets[i % targets.length];
+      const angle = Math.atan2(target.y-state.playerY,target.x-state.playerX) + (i-(weapon.count-1)/2)*.13;
+      state.bullets.push({ x:state.playerX, y:state.playerY,
+        vx:Math.cos(angle)*weapon.speed, vy:Math.sin(angle)*weapon.speed,
+        dmg:stats.dmg*weapon.damage, size:weapon.size, trail:[], visualKey:state.eqWeapon || 'default',
+        life:Math.ceil(weapon.range/weapon.speed), hitTargets:new Set(), pierce:weapon.pierce,
+        target:state.eqWeapon === 'dagger-epic' ? target : null,
+        bleedDamage:state.eqWeapon === 'dagger-epic' ? stats.dmg*1.2 : 0 });
+    }
+    window.WeightPlayAudio?.play('magic.cast');
   }
 
   // Exp/Level up draft Relic selection
@@ -3610,7 +3647,7 @@
   }
 
   function summonThreats(enemy, behavior, count = 2) {
-    for (let index = 0; index < count; index += 1) {
+    for (let index = 0; index < count && state.enemies.length < combatRules.MAX_THREATS; index += 1) {
       const angle = (Math.PI * 2 * index) / count;
       state.enemies.push(createThreat(
         behavior,
@@ -3682,7 +3719,7 @@
       else if (cycle >= 145 && cycle < 180) {
         moveAngle = enemy.chargeAngle ?? moveAngle;
         speed *= 2.8;
-      } else speed *= 0.9;
+      } else speed *= cycle >= 180 ? .35 : .96;
     }
     if (enemy.behavior === "orbiter" || enemy.behavior === "moon") {
       moveAngle += dist > 210 ? 0.45 : Math.PI / 2;
@@ -3692,6 +3729,14 @@
       speed *= 0.8;
     } else if (ranged && dist < 310) {
       speed = 0;
+    }
+    // Nearby bodies separate so hordes surround instead of hiding in one stack.
+    for (const other of state.enemies) {
+      if (other === enemy || other.spawnTicks > 0) continue;
+      const sx = enemy.x-other.x, sy = enemy.y-other.y, separation = Math.hypot(sx,sy);
+      if (separation > .1 && separation < enemy.size + other.size) {
+        enemy.x += sx / separation * .35; enemy.y += sy / separation * .35;
+      }
     }
     enemy.x += Math.cos(moveAngle) * speed;
     enemy.y += Math.sin(moveAngle) * speed;
@@ -3756,6 +3801,7 @@
     }
 
     if (enemy.isElite) {
+      state.roomSecured = true;
       if (state.room === ROOMS_PER_EXPEDITION) {
         endGame(true);
       } else {
@@ -3785,7 +3831,7 @@
       }
     }
 
-    const pulseDamage = Math.max(1, Math.round(stats.dmg * (1.4 + state.relicDamageCount * 0.15)));
+    const pulseDamage = Math.max(1, Math.round(stats.dmg * (15 + state.relicDamageCount * 0.8)));
     let damagedEnemy = false;
     let blockedByWard = false;
     let brokeWard = false;
@@ -3794,13 +3840,13 @@
       const dx = enemy.x - state.playerX;
       const dy = enemy.y - state.playerY;
       const distance = Math.hypot(dx, dy);
-      if (distance > PULSE_RADIUS + enemy.size * 0.25) continue;
+      if (enemy.spawnTicks > 0 || !enemyInView(enemy) || distance > PULSE_RADIUS + enemy.size * 0.25) continue;
 
       enemy.pulseStaggerUntil = now + PULSE_EFFECT_MS;
       const directionX = distance > 0 ? dx / distance : 1;
       const directionY = distance > 0 ? dy / distance : 0;
-      enemy.x = Math.max(20, Math.min(ARENA_WIDTH - 20, enemy.x + directionX * 62));
-      enemy.y = Math.max(20, Math.min(ARENA_HEIGHT - 20, enemy.y + directionY * 62));
+      enemy.x = Math.max(20, Math.min(ARENA_WIDTH - 20, enemy.x + directionX * 100));
+      enemy.y = Math.max(20, Math.min(ARENA_HEIGHT - 20, enemy.y + directionY * 100));
       if (enemy.shieldHits > 0) {
         enemy.shieldHits -= 1;
         blockedByWard = true;
@@ -3896,8 +3942,12 @@
     }
 
     // 2. Automated Weapon Firing Timer
+    state.roomTicks = (state.roomTicks || 0) + 1;
+    if (!state.roomSecured && state.roomTicks >= state.nextWaveTicks) {
+      reinforceRoom(); state.nextWaveTicks = state.roomTicks + 360;
+    }
     shootTimer += 1 / 60;
-    if (shootTimer >= stats.rate * (state.surgeTicks > 0 ? 0.5 : 1) && performance.now() >= state.silencedUntil) {
+    if (shootTimer >= stats.rate * (combatRules.WEAPONS[state.eqWeapon]?.interval || 1) * (state.surgeTicks > 0 ? 0.5 : 1) && performance.now() >= state.silencedUntil) {
       shootTimer = 0;
       fireBullet();
     }
@@ -3905,13 +3955,19 @@
     // 3. Move & Check Bullets
     for (let index = state.bullets.length - 1; index >= 0; index -= 1) {
       const bullet = state.bullets[index];
+      if (bullet.target && state.enemies.includes(bullet.target)) {
+        const angle = Math.atan2(bullet.target.y-bullet.y,bullet.target.x-bullet.x);
+        const speed = Math.hypot(bullet.vx,bullet.vy);
+        bullet.vx = Math.cos(angle)*speed; bullet.vy = Math.sin(angle)*speed;
+      }
+      bullet.life = (bullet.life ?? 60) - 1;
       bullet.trail.push({ x: bullet.x, y: bullet.y });
       if (bullet.trail.length > 10) bullet.trail.shift();
       bullet.x += bullet.vx;
       bullet.y += bullet.vy;
 
       // Out of bounds remove
-      if (bullet.x < -10 || bullet.x > ARENA_WIDTH + 10 || bullet.y < -10 || bullet.y > ARENA_HEIGHT + 10) {
+      if (bullet.life <= 0 || bullet.x < -10 || bullet.x > ARENA_WIDTH + 10 || bullet.y < -10 || bullet.y > ARENA_HEIGHT + 10) {
         state.bullets.splice(index, 1);
       }
     }
@@ -3919,6 +3975,16 @@
     // 4. Move & Check Enemies
     for (let eIndex = state.enemies.length - 1; eIndex >= 0; eIndex -= 1) {
       const enemy = state.enemies[eIndex];
+      if (enemy.spawnTicks > 0) { enemy.spawnTicks--; continue; }
+      if (enemy.bleedTicks > 0) {
+        enemy.bleedTicks--;
+        if (enemy.bleedTicks % 30 === 0) {
+          const damage = enemy.bleedDamage * enemy.bleedStacks * .5;
+          enemy.hp -= damage; enemy.lastHitAt = performance.now();
+          createDamageSparks(enemy.x,enemy.y,Math.round(damage));
+          if (enemy.hp <= 0) { defeatThreat(enemy); continue; }
+        }
+      } else enemy.bleedStacks = 0;
       // Every threat family owns a real movement or attack rule rather than
       // sharing one chase loop with larger numbers.
       const dx = state.playerX - enemy.x;
@@ -3943,7 +4009,8 @@
         const bdy = bullet.y - enemy.y;
         const bdist = Math.sqrt(bdx * bdx + bdy * bdy);
 
-        if (bdist < enemy.size + bullet.size) {
+        if (bdist < enemy.size + bullet.size && enemyInView(enemy) && !bullet.hitTargets?.has(enemy)) {
+          bullet.hitTargets?.add(enemy);
           if (enemy.shieldHits > 0) {
             enemy.shieldHits -= 1;
             state.bullets.splice(bIndex, 1);
@@ -3953,7 +4020,12 @@
           }
           enemy.hp -= bullet.dmg;
           enemy.lastHitAt = performance.now();
-          state.bullets.splice(bIndex, 1);
+          bullet.pierce = (bullet.pierce || 1) - 1;
+          if (bullet.pierce <= 0) state.bullets.splice(bIndex, 1);
+          if (bullet.bleedDamage) {
+            enemy.bleedTicks = 180; enemy.bleedStacks = Math.min(3, (enemy.bleedStacks || 0) + 1);
+            enemy.bleedDamage = bullet.bleedDamage;
+          }
           markEnemyImpact(enemy, { damage: bullet.dmg, visualKey: bullet.visualKey });
 
           // Spark particle system
@@ -4248,6 +4320,17 @@
       ctx.shadowColor = visual.shadow;
       ctx.shadowBlur = 14;
       ctx.beginPath();
+      if (bullet.visualKey === 'sword-rare') {
+        ctx.translate(bullet.x,bullet.y); ctx.rotate(Math.atan2(bullet.vy,bullet.vx));
+        ctx.moveTo(-8,-23); ctx.quadraticCurveTo(22,0,-8,23);
+        ctx.lineTo(0,0); ctx.closePath();
+        ctx.fill(); ctx.restore(); return;
+      }
+      if (bullet.visualKey === 'dagger-epic') {
+        ctx.translate(bullet.x,bullet.y); ctx.rotate(Math.atan2(bullet.vy,bullet.vx));
+        ctx.moveTo(13,0); ctx.lineTo(-7,-5); ctx.lineTo(-3,0); ctx.lineTo(-7,5); ctx.closePath();
+        ctx.fill(); ctx.restore(); return;
+      }
       ctx.arc(bullet.x, bullet.y, bullet.size, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = visual.core;
@@ -4264,6 +4347,12 @@
     state.enemies.forEach((enemy) => {
       ctx.save();
       ctx.translate(enemy.x, enemy.y);
+      if (enemy.spawnTicks > 0) {
+        ctx.strokeStyle = '#ffbb72'; ctx.lineWidth = 3;
+        ctx.setLineDash([7,5]); ctx.beginPath();
+        ctx.arc(0,0,enemy.size+14,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+        ctx.globalAlpha = .25 + .65*(1-enemy.spawnTicks/36);
+      }
       const chargeCycle = enemy.abilityTimer % 210;
       if (['rusher', 'moss', 'crown'].includes(enemy.behavior) && chargeCycle >= 115 && chargeCycle < 145) {
         ctx.save();
@@ -4353,6 +4442,10 @@
         ctx.globalAlpha = 1;
       }
 
+      if (enemy.bleedTicks > 0) {
+        ctx.fillStyle = '#e879f9';
+        for (let i=0;i<enemy.bleedStacks;i++) ctx.fillRect(-8+i*7,enemy.size+8,4,7);
+      }
       if (enemy.shieldHits > 0) {
         ctx.strokeStyle = "#7dd3fc";
         ctx.lineWidth = 4;
@@ -4365,7 +4458,7 @@
       ctx.restore();
 
       // Enemy HP Bar
-      if (enemy.hp < enemy.maxHp) {
+      if (enemy.spawnTicks <= 0) {
         ctx.fillStyle = "rgba(0,0,0,0.5)";
         ctx.fillRect(enemy.x - enemy.size, enemy.y - enemy.size - 12, enemy.size * 2, 4);
         ctx.fillStyle = "#ef4444";
@@ -4466,7 +4559,7 @@
   // Particle Effects system
   let particleSparksList = [];
   function createDamageSparks(x, y, damage = 0) {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 4 && particleSparksList.length < 160; i++) {
       particleSparksList.push({
         x: x,
         y: y,
@@ -4476,7 +4569,7 @@
         color: `hsl(${180 + Math.random() * 40}, 100%, 75%)`,
       });
     }
-    if (damage > 0) {
+    if (damage > 0 && particleSparksList.length < 180) {
       particleSparksList.push({
         x,
         y: y - 5,
@@ -4540,7 +4633,11 @@
 
   function activateDodge() {
     if (!battleInputReady() || state.dodgeCooldownTicks > 0) return false;
-    state.dodgeDirection = { ...state.facing };
+    const x = Number(Boolean(keysPressed.d || keysPressed.ArrowRight)) - Number(Boolean(keysPressed.a || keysPressed.ArrowLeft));
+    const y = Number(Boolean(keysPressed.s || keysPressed.ArrowDown)) - Number(Boolean(keysPressed.w || keysPressed.ArrowUp));
+    const input = x || y ? {x,y} : moveVector;
+    const magnitude = Math.hypot(input.x,input.y);
+    state.dodgeDirection = magnitude > .01 ? {x:input.x/magnitude,y:input.y/magnitude} : {...state.facing};
     state.dodgeTicks = 14;
     state.dodgeCooldownTicks = 180;
     updateBattleControls();
@@ -4742,10 +4839,12 @@
 
   // Init handler
   async function init() {
-    const { battleCopy } = await import('./battle-copy.mjs?v=31');
+    combatRules = await import('./combat-rules.mjs?v=32');
+    const { combatCopy } = await import('./combat-copy.mjs?v=32');
+    const { battleCopy } = await import('./battle-copy.mjs?v=32');
     for (const [locale, copy] of Object.entries(battleCopy)) {
-      Object.assign(text[locale], copy);
-      ariaText[locale].arena = copy.controlsGuide;
+      Object.assign(text[locale], copy, combatCopy[locale]);
+      ariaText[locale].arena = `${copy.controlsGuide} ${combatCopy[locale].combatGuide}`;
     }
     mountBattleControls();
     loadLocalState();
@@ -5016,6 +5115,33 @@
 
     if (new URLSearchParams(location.search).has("smoke")) {
       window.__animalRelicHuntersSmoke = {
+        weaponTrial(weapon = 'sword-rare') {
+          startRun();
+          clearEliteSpawnTimer();
+          cancelAnimationFrame(state.gameLoopId);
+          state.eqWeapon = weapon;
+          state.roomSecured = true;
+          state.playerX = 400; state.playerY = 500;
+          resetBattleCamera();
+          shootTimer = -100;
+          state.enemies = [0,1,2].map(i => {
+            const enemy = createThreat('chaser', 450 + i*45, weapon === 'dagger-epic' ? 450+i*50 : 500, { immediate:true });
+            enemy.hp = enemy.maxHp = 5000; enemy.speed = 0;
+            return enemy;
+          });
+          state.bullets = []; fireBullet();
+          const projectileCount = state.bullets.length;
+          for (let i=0;i<24;i++) simulateGameTick();
+          const targets = state.enemies.map(enemy => ({ damage:5000-enemy.hp, bleedStacks:enemy.bleedStacks }));
+          state.enemies = [createThreat('chaser', -1000, -1000, { immediate:true })];
+          state.bullets = []; fireBullet();
+          const offscreenShots = state.bullets.length;
+          state.enemies = Array.from({length:combatRules.MAX_THREATS},()=>createThreat('chaser',40,40));
+          reinforceRoom();
+          const cappedCount = state.enemies.length;
+          startRun();
+          return { projectileCount, targets, offscreenShots, cappedCount };
+        },
         verifyCombatRules() {
           const saved = { ...state };
           const sparks = particleSparksList;
@@ -5362,7 +5488,9 @@
             surgeTicks: state.surgeTicks,
             equipmentOpen,
             settingsOpen,
-            enemies: state.enemies.map(({x,y,hp,behavior,isElite}) => ({x,y,hp,behavior,isElite})),
+            enemies: state.enemies.map(({x,y,hp,maxHp,speed,behavior,isElite,spawnTicks,bleedStacks}) => ({x,y,hp,maxHp,speed,behavior,isElite,spawnTicks,bleedStacks})),
+            waveNumber: state.waveNumber, roomSecured: state.roomSecured, roomTicks: state.roomTicks,
+            stats: getStats(), weapon: state.eqWeapon,
             pickups: state.pickups.map(({x,y,type}) => ({x,y,type})),
             roomGraceRemaining: Math.max(0, state.roomGraceUntil - (backgroundSuspendedAt || performance.now())),
             combatFeedback: {

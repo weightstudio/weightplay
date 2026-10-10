@@ -58,7 +58,7 @@
     it: {
       tag1: "Logica dei territori colorati", tag2: "Puzzle di posizionamento felino", tag3: "Deduzione senza contatto",
       faq3Q: "Cosa mostra il Suggerimento?", faq3A: "Evidenzia una casella che può ospitare il prossimo gatto corretto; non completa la griglia.",
-      faq4Q: "Cosa succede se una mossa viola una regola?", faq4A: "Il gioco rifiuta una posizione in conflitto con riga, colonna, territorio a motivo o regola di non contatto. Annulla ripristina la mossa precedente.",
+      faq4Q: "Cosa succede se una mossa viola una regola?", faq4A: "Il gioco rifiuta una posizione in conflitto con una riga, una colonna, un territorio a motivo o la regola di non contatto. Usa Annulla per ripristinare la mossa precedente.",
       faq5Q: "Come si completa una mappa?", faq5A: "Posiziona tutti i gatti in modo che ogni riga, colonna e territorio a motivo ne contenga uno e che non si tocchino, nemmeno in diagonale. Poi si sblocca la mappa successiva."
     },
     ru: {
