@@ -1,5 +1,5 @@
 import {mountMahjongCampaign} from './campaign-app.mjs';
-import {createCampaignMainView} from './campaign-main-view.mjs';
+import {createCampaignMainView} from './campaign-main-view.mjs?v=20261010-mahjong-order-availability-v1';
 import {createCampaignSettings} from './campaign-settings.mjs';
 import {createCampaignAudio} from './campaign-audio.mjs';
 import {CAMPAIGN_LOCALES} from './campaign-copy.mjs';

@@ -1,4 +1,4 @@
-import {campaignCopy} from './campaign-copy.mjs';
+import {campaignCopy} from './campaign-copy.mjs?v=20261010-mahjong-order-availability-v1';
 import {mahjongMainCopy} from './campaign-main-copy.mjs';
 import {createFaceElement} from './campaign-faces.mjs';
 
