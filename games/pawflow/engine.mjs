@@ -89,7 +89,7 @@ export function tick(s,{detectDeadlock=true}={}) {
       if(!unit.hits) s.emptyLaps++;
       const slot=s.reserve.indexOf(null);
       if(slot<0) {s.active.push(unit);s.status='lost';s.reason='overflow';emit(s,{type:'lose',reason:s.reason});break;}
-      s.reserve[slot]={id:unit.id,color:unit.color,ammo:unit.ammo};emit(s,{type:'park',id:unit.id,index:slot});
+      s.reserve[slot]={id:unit.id,color:unit.color,ammo:unit.ammo};emit(s,{type:'park',id:unit.id,index:slot,hits:unit.hits});
     }
   }
   if(detectDeadlock && s.status==='running' && !s.active.length && !canProgress(s)) {

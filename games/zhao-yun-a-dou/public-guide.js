@@ -16,6 +16,21 @@
     hi: ['सैनिक भर्ती करके तीन रास्तों पर रक्षा संतुलित करें और आ दोउ को बचाएँ। मिलाते समय कोई रास्ता असुरक्षित न छोड़ें।', 'आगे के मिशनों में दुश्मनों की सहनशक्ति, गति और दबाव बढ़ता है तथा प्रमुख दुश्मन अधिक बार आते हैं।', 'ब्लॉक शैली के सैनिक अलग प्रकार पहचानने में मदद करते हैं। गठन और क्षमताओं का समय खिलाड़ी तय करता है।'],
     ar: ['احمِ آ دو بتجنيد الجنود وتوزيعهم على ثلاثة مسارات. لا تترك مسارًا بلا دفاع عند الدمج.', 'تزيد المهمات اللاحقة متانة الأعداء وسرعتهم والضغط عبر المسارات، وتظهر الزعماء بوتيرة أكبر.', 'تساعد الشخصيات المكعبة على تمييز أنواع الجنود. يختار اللاعب التشكيل وتوقيت استخدام المهارات.'],
   };
+  const gameplayTags = {
+    en: ['Single-route defense', 'Troop deployment', 'Defense strategy'],
+    'zh-Hant': ['單路防守', '點擊部署', '塔防策略'],
+    'zh-Hans': ['单路防守', '点击部署', '塔防策略'],
+    ja: ['一本道の防衛', '部隊の配置', '防衛戦略'],
+    ko: ['단일 경로 방어', '부대 배치', '방어 전략'],
+    es: ['Defensa de una ruta', 'Despliegue de tropas', 'Estrategia defensiva'],
+    'pt-BR': ['Defesa de uma rota', 'Envio de tropas', 'Estratégia de defesa'],
+    fr: ['Défense sur une voie', 'Déploiement des troupes', 'Stratégie défensive'],
+    de: ['Verteidigung eines Weges', 'Truppen einsetzen', 'Verteidigungsstrategie'],
+    it: ['Difesa su un percorso', 'Schieramento delle truppe', 'Strategia difensiva'],
+    ru: ['Защита одного пути', 'Размещение войск', 'Стратегия обороны'],
+    hi: ['एक रास्ते की रक्षा', 'सैनिक तैनाती', 'रक्षा रणनीति'],
+    ar: ['دفاع بمسار واحد', 'نشر القوات', 'استراتيجية دفاعية'],
+  };
   const registry = window.WeightPlayGeneralReviewedGuides;
   registry.en ||= {games: {}};
   registry.en.games ||= {};
@@ -45,6 +60,11 @@
     guide.strategyTips = [runtime.pushTip, runtime.enemyBombHelp, runtime.enemyDrumHelp, runtime.enemyBoltHelp];
     guide.how = [runtime.commandHelp,runtime.mergeHint,runtime.guideBody,runtime.rule_coverage];
     guide.designNote = runtime.talentHelp || designNote;
+    if (!Array.isArray(gameplayTags[locale]) || gameplayTags[locale].length < 2) throw new Error('ZHAO_PUBLIC_GUIDE_TAGS_MISSING:' + locale);
+    guide.tags = gameplayTags[locale];
+    // The static route renderer consumes the same game-owned list for its
+    // current-version gameplay-tag contract.
+    guide.text140Tags = gameplayTags[locale];
     // The obsolete character-symbol quiz is not part of the illustrated game.
     guide.faq = [[runtime.army, runtime.armyOdds+' '+runtime.armyAuto], [runtime.promotion, runtime.armyStars], [runtime.chargeAction, runtime.chargeAuto], [runtime.talents, runtime.talentHelp]];
 
@@ -89,6 +109,10 @@
     if (!guide || !labels[locale]) throw new Error('ZHAO_GUIDE_RENDER_LOCALE:' + locale);
     root.replaceChildren();
     root.lang = locale; root.dir = locale === 'ar' ? 'rtl' : 'ltr';
+    const tags = node('div', '', 'game-info-tags');
+    tags.dataset.wpGameplayTags = '1.4.0';
+    guide.tags.forEach(tag => tags.append(node('span', tag)));
+    root.append(tags);
     root.append(node('h2', window.ZHAO_YUN_ADOU_LOCALES[locale].guideTitle));
     const sections = [guide.story, guide.systems, guide.progression, guide.strategyTips, [guide.designNote], [guide.parent]];
     const grid = node('div', '', 'game-info-sections');

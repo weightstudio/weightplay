@@ -16,12 +16,14 @@
  ar:['اضغط بطاقة جندي لإرساله. تتقدم القوات وتقاتل تلقائيًا.','احمِ آ دو ودمّر قلعة العدو.','حارس أمامي','ضد الفرسان','مدى بعيد','هجوم سريع','تتعافى المؤن تلقائيًا. تعرض البطاقة التكلفة ووقت الانتظار.','يؤذي تشاو يون جميع الأعداء ويدفعهم للخلف.','اختر مواهب الإمداد أو الحراسة أو الاندفاع في المهمات. إعادة الضبط مجانية.','تعافي المؤن +27%','صحة المعسكر +40','صحة القوات +25%','النجاة مرة بصحة 30','ضرر الاندفاع +50%','يبطئ الوحل في الوسط كلا الجانبين.','احمِ الرماة بالحراس واحتفظ بالاندفاع للخطر.']
  };
  const keys=['pushIntro','pushGoal','role_blade','role_spear','role_bow','role_horse','pushSupply','chargeAuto','talentHelp','talent_supply2','talent_guard1','talent_guard2','talent_guard3','talent_charge2','pushMud','pushTip'];
+ const battlefieldLabels={en:'Single-route battlefield','zh-Hant':'單一路線戰場','zh-Hans':'单一路线战场',ja:'一本道の戦場',ko:'단일 경로 전장',es:'Campo de una sola ruta','pt-BR':'Campo de uma rota',fr:'Champ de bataille à voie unique',de:'Schlachtfeld mit einem Weg',it:'Campo di battaglia a percorso singolo',ru:'Поле боя с одним путём',hi:'एक रास्ते वाला युद्धक्षेत्र',ar:'ساحة معركة بمسار واحد'};
  for(const [locale,row] of Object.entries(rows)){
   const d=window.ZHAO_YUN_ADOU_LOCALES[locale];keys.forEach((key,i)=>d[key]=row[i]);
   d.summary=d.pushIntro;d.commandHelp=d.pushIntro;d.guideBody=d.pushSupply+' '+d.chargeAuto;
   d.tutorialRecruit=d.pushIntro;d.tutorialMerge=d.pushSupply;d.tutorialDefend=d.chargeAuto;
   d.mergeHint=d.pushTip;d.battleGuideBody=d.pushIntro;d.battleField=d.pushGoal;
   d.recruitOdds=d.pushSupply;d.typeOdds='';d.resultReplayGoalLoss=d.pushTip;
+  d.battleField=battlefieldLabels[locale];
   d.rule_coverage=d.pushGoal;d.rule_merge=d.pushTip;d.rule_shield=d.role_blade+' · '+d.pushTip;
   d.rule_reach=d.role_bow;d.rule_charge=d.role_spear;d.rule_flank=d.role_spear;
   d.rule_medic=d.role_bow;d.rule_mud=d.pushMud;d.rule_reserve=d.pushSupply;

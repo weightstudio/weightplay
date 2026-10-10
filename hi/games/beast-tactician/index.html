@@ -11,7 +11,7 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-version" content="v19" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="बीस्ट गार्जियन एक हीरो टावर-रक्षा अभियान है जो निश्चित टावर पैड के बजाय मार्ग निर्माण के आसपास बनाया गया है। चार सामान्य पशु सैनिक भूमिकाएँ और सात..." />
+    <meta name="description" content="Beast Guardian रास्ते बनाने वाला टावर-डिफेंस अभियान है। Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw..." />
     <link rel="canonical" href="https://weightplay.com/hi/games/beast-tactician/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/beast-tactician/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/beast-tactician/" />
@@ -30,7 +30,7 @@
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Beast Guardian | WeightPlay" />
-    <meta property="og:description" content="बीस्ट गार्जियन एक हीरो टावर-रक्षा अभियान है जो निश्चित टावर पैड के बजाय मार्ग निर्माण के आसपास बनाया गया है। चार सामान्य पशु सैनिक भूमिकाएँ और सात..." />
+    <meta property="og:description" content="Beast Guardian रास्ते बनाने वाला टावर-डिफेंस अभियान है। Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw..." />
     <meta property="og:url" content="https://weightplay.com/hi/games/beast-tactician/" />
     <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
     <link rel="stylesheet" href="defense.css?v=20260926-beast-tactician-v19-interface7" />
     <script type="application/ld+json">
 {
@@ -50,7 +50,7 @@
   "name": "Beast Guardian",
   "url": "https://weightplay.com/hi/games/beast-tactician/",
   "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
-  "description": "बीस्ट गार्जियन एक हीरो टावर-रक्षा अभियान है जो निश्चित टावर पैड के बजाय मार्ग निर्माण के आसपास बनाया गया है। चार सामान्य पशु सैनिक भूमिकाएँ और सात...",
+  "description": "Beast Guardian रास्ते बनाने वाला टावर-डिफेंस अभियान है। Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw...",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -59,8 +59,8 @@
   "applicationCategory": "Game",
   "genre": [
     "टावर रक्षा",
-    "Strategy",
-    "Animal",
+    "रणनीति",
+    "पशु",
     "Browser Game"
   ],
   "audience": {
@@ -80,7 +80,7 @@
       @media (orientation:landscape) and (max-width:900px) { body:not(.guardian-playing):not(.guardian-stage) .poster-frame { width:420px!important; max-width:calc(100vw - 24px); } }
     </style>
   <meta name="twitter:title" content="Beast Guardian | WeightPlay" />
-    <meta name="twitter:description" content="बीस्ट गार्जियन एक हीरो टावर-रक्षा अभियान है जो निश्चित टावर पैड के बजाय मार्ग निर्माण के आसपास बनाया गया है। चार सामान्य पशु सैनिक भूमिकाएँ और सात..." />
+    <meta name="twitter:description" content="Beast Guardian रास्ते बनाने वाला टावर-डिफेंस अभियान है। Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
   </head>
   <body data-game-id="beast-tactician" data-wp-game-id="beast-tactician" data-wp-game-version="v19" data-screen="main" data-wp-combined-sound="true">
@@ -246,34 +246,34 @@
     <script src="/src/site-config.js?v=20260918-ui-fix1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+    <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
     <script src="../../src/stage-selector-standard.js?v=20260910-beast-rally-block-v14" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
     <script src="game.js?v=20260926-beast-tactician-v19-interface7&wp-audio=1.0.0"></script>
     <section class="game-page-info game-page-info-static" aria-label="Beast Guardian गेम की जानकारी">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>Beast Guardian</h2><p>बीस्ट गार्जियन एक हीरो टावर-रक्षा अभियान है जो निश्चित टावर पैड के बजाय मार्ग निर्माण के आसपास बनाया गया है। चार सामान्य पशु सैनिक भूमिकाएँ और सात WeightPlay नायकों को वन ग्रिड पर रखें, कम से कम एक मार्ग खुला रखें, और छह पाँच-चरण क्षेत्रों के माध्यम से क्रिस्टल कोर की रक्षा करें। भेड़िये, बख्तरबंद सूअर, उड़ने वाले चमगादड़, पुनर्जीवित झुंड, घायल धावक और ग्रहण संरचनाएं अलग-अलग सुरक्षा की मांग करती हैं। चरण 5, 10, 15, 20, 25, और 30 बड़े स्वास्थ्य सलाखों वाले सामान्य दुश्मनों के बजाय नियम बदलने वाले मालिकों के साथ समाप्त होते हैं।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>Hero Tower Defense</strong></div><div class="game-info-fact"><span>शैली</span><strong>टावर रक्षा · Strategy · Animal</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>Hard</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>प्रति चरण 8-15 मिनट</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>Beast Guardian</h2><p>Beast Guardian रास्ते बनाने वाला टावर-डिफेंस अभियान है। Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux समेत आठ रक्षक तैनात किए जा सकते हैं। छह क्षेत्रों के पाँच-पाँच चरणों में क्रिस्टल की रक्षा करें।</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>मार्ग निर्माण टावर रक्षा</span><span>ग्रिड रक्षा रणनीति</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>रास्ता-निर्माण टावर रक्षा</strong></div><div class="game-info-fact"><span>शैली</span><strong>टावर रक्षा · रणनीति · पशु</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>Hard</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>प्रति चरण 8-15 मिनट</strong></div></div>
     </div>
 
     <div class="game-info-sections">
       <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>क्रिस्टल मार्ग गार्जियन फ़ॉरेस्ट के छह हिस्सों को जोड़ते हैं: पहला मूल पथ, क्रिस्टल एयर लेन, आयरनबार्क कार्य, पुनः उगने वाली धुंध की लकड़ी, तूफान की प्राचीर, और वॉयडरूट सिंहासन के लिए ग्रहण सड़क। शत्रु समूह प्रत्येक युद्धक्षेत्र के सुदूरवर्ती भाग तक पहुँचने का प्रयास कर रहे हैं। एक साफ़ चरण का मतलब है कि मार्ग अभिभावकों के लिए अगले क्षेत्र में आगे बढ़ने के लिए पर्याप्त रूप से सुरक्षित है।</p>
-<p>आप प्रत्येक लहर से पहले और उसके दौरान रक्षा की कमान संभालते हैं। एकोर्न गार्ड्स और मॉस शैल टैरो मोड़ पकड़ते हैं, स्काउट आर्चर और मून कैप ओर्ला लंबे कोणों को कवर करते हैं, रूण सैपर्स धीमी गति से क्लस्टर किए गए हमलावरों को कवर करते हैं, मेडिक शावक घायल अवरोधकों की मरम्मत करते हैं, और स्पार्क पा फिया जैसे नायक केंद्रित क्षति प्रदान करते हैं। बोर्ड एक सजावट नहीं है: प्रत्येक तैनात रक्षक मार्ग बदलता है जब तक कि इकाई पथ से दूर रेंज समर्थन के रूप में कार्य नहीं कर रही हो।</p></div>
-      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>एकत्र करें: हर वेव में एक Rally चार्ज मिलता है। सक्रिय वेव में किसी जीवित रक्षक को चुनकर Rally या R दबाएँ; छह सेकंड तक डैमेज 32% बढ़ता है, हमले तेज होते हैं और उपचार मजबूत होता है। चार्ज उपयोग तक बचा रहता है, इसलिए इसे मोड़ या बॉस के लिए रखें।</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>सक्रिय वेव में जीवित रक्षक चुनें और सुनहरा Rally बटन तैयार होने पर दबाएँ; R भी काम करता है। छह सेकंड का बूस्ट किसी अहम मोड़ या बॉस पर लगाएँ।</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>Rally को हर वेव की शुरुआत में खर्च करने के बजाय समय साधने का साधन मानें: बॉस, भीड़भरे मोड़ या घायल एंकर का इंतज़ार करें और छह सेकंड का दबाव सुरक्षित संभलने में बदलें।</li></ul></div>
-      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>चरण 1-5 मार्ग के मोड़, विभाजित गलियाँ, प्रारंभिक दूरी की कवरेज, सूअर का दबाव और पथ को सील करने के परिणाम सिखाते हैं। शैडो ब्रूट सामान्य बॉसों की तुलना में अवरोधकों पर तेजी से हमला करता है, इसलिए पहले समापन में परीक्षण किया जाता है कि क्या मार्ग में केवल क्षति इकाइयों के बजाय एक टिकाऊ एंकर है।</p>
-<p>चरण 6-10 में चमगादड़ों का परिचय दिया जाता है जो ग्रिड और मिश्रित वायु-जमीन तरंगों के पार उड़ते हैं। फ़ॉरेस्ट बेहेमोथ अपने स्वास्थ्य का कुछ हिस्सा खोने के बाद भेड़िये और चमगादड़ की सहायता मांगता है। चरण 11-15 में टूटने योग्य आयरनबार्क कवच जोड़ा जाता है और आयरनबार्क कोलोसस के साथ समाप्त किया जाता है, जो लड़ाई के बीच में एक बड़ी गार्ड परत का पुनर्निर्माण करता है।</p>
-<p>चरण 16-20 चलते समय अधूरे शत्रुओं को पुनर्जीवित करते हैं; वर्डेंट एंशिएंट अपने स्वयं के स्वास्थ्य के एक हिस्से को पुनर्स्थापित करता है और समर्थन को बुलाता है। चरण 21-25 में घायल गति में वृद्धि होती है, जो टेम्पेस्ट रैगर द्वारा अपने एस्कॉर्ट्स को तेज करने के साथ समाप्त होती है। चरण 26-30 हर पिछले नियम को कम धीमी प्रभावशीलता के साथ जोड़ते हैं। वॉयडरूट एम्परर में दो चरण परिवर्तन होते हैं, इसलिए चरण 30 में ग्राउंड रूटिंग, एयर कवरेज, कवच तोड़ना, क्षति को खत्म करना, उपचार करना और एक बचाव में बॉस फोकस को सहेजना आवश्यक है।</p></div>
+<p>तीन उपलब्ध सैनिक Acorn Guard, Scout Archer और Rune Sapper हैं; पाँच हीरो Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux हैं।</p></div>
+      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>मार्ग निर्माण: रक्षक सामान्य जमीनी कोशिकाओं पर कब्जा कर लेते हैं। दुश्मन अपने चारों ओर एक मार्ग की पुनर्गणना करते हैं, लेकिन एक पूरी तरह से सील किया गया मार्ग जमीनी दुश्मनों को निकटतम अवरोधक पर तब तक हमला करने के लिए मजबूर करता है जब तक कि मार्ग दोबारा नहीं खुल जाता। उड़ने वाले चमगादड़ ज़मीनी भूलभुलैया को नज़रअंदाज कर देते हैं, इसलिए एक लंबा रास्ता अकेले हर लहर को हल नहीं कर सकता।</p>
+<p>Rally: हर वेव में एक बार चुने हुए जीवित रक्षक को छह सेकंड तक मजबूत करें। उसका नुकसान 32% बढ़ता है और हमलों के बीच का समय घटता है।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>स्वाइप स्टेज रेल से एक स्टेज चुनें और धमकी, योजना और इनाम नोट्स पढ़ें।</li><li>सैनिकों या WeightPlay नायकों को सामान्य ग्राउंड टाइल्स पर रखने के लिए स्टेज सिक्के खर्च करें। किसी स्थिति की पुष्टि करने से पहले दृश्यमान श्रेणी पूर्वावलोकन का उपयोग करें।</li><li>कम से कम एक रास्ता खुला रखें, अन्यथा मार्ग दोबारा खुलने तक अवरुद्ध दुश्मन निकटतम रक्षक पर हमला करेंगे।</li><li>वेव इंटेल पढ़ें, वेव शुरू करें, फिर दुश्मन मिश्रण में बदलाव होने पर रखी गई इकाइयों को अपग्रेड करें या बेचें। गैर-अंतिम साफ़ तरंगें पांच सेकंड के बाद स्वचालित रूप से फिर से शुरू हो जाती हैं।</li><li>प्रत्येक तरंग के माध्यम से क्रिस्टल की रक्षा करें। परिणाम शेष मुख्य स्वास्थ्य के अनुसार एक से तीन स्टार प्रदान करता है और अगले चरण, पुनः प्रयास, या चरणों पर वापस जाने की पेशकश करता है।</li><li>जब स्थायी बिजली, तटबंध स्वास्थ्य, या शुरुआती अर्थव्यवस्था में सुधार की आवश्यकता हो तो स्टेज से सहेजे गए अपग्रेड पॉइंट खर्च करें। वैकल्पिक डायमंड क्रियाएं हमेशा अपनी लागत दिखाती हैं और पुष्टि की आवश्यकता होती है।</li><li>सक्रिय वेव में जीवित रक्षक चुनें और सुनहरा Rally बटन तैयार होने पर दबाएँ; R भी काम करता है। छह सेकंड का बूस्ट किसी अहम मोड़ या बॉस पर लगाएँ।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>महंगे नायकों में निवेश करने से पहले दो या तीन फायरिंग मोड़ बनाने के लिए एकोर्न गार्ड का उपयोग करें। एक लंबा मार्ग प्रत्येक रेंज वाली इकाई के उपयोगी हमले के समय को बढ़ाता है।</li><li>प्रत्येक कोशिका को बंद न करें. एक सीलबंद मार्ग भूलभुलैया को निकटतम अवरोधक के खिलाफ सीधी लड़ाई में बदल देता है और उस समय के लाभ को हटा सकता है जिसे आप बनाने की कोशिश कर रहे थे।</li><li>बैट क्रॉसिंग और बाद में उड़ान चरणों के दौरान क्रिस्टल के पास रेंज कवरेज रखें क्योंकि चमगादड़ जमीन अवरोधकों को बायपास करते हैं। तूफान के चरणों में कवच टूटने से पहले सूअरों की गति धीमी हो जाती है, इसलिए उनकी घायल गति कम खतरनाक होती है।</li><li>पुनर्जीवित दुश्मनों के खिलाफ, क्षति फैलाने के बजाय एक मार क्षेत्र के अंदर आग को केंद्रित करें। कवच के विरुद्ध, निरंतर या छींटे क्षति से हीरो बर्स्ट होने से पहले गार्ड को हटा देना चाहिए।</li><li>बॉस चरणों के लिए भूमिका कवरेज सहेजें। अंतिम वॉयडरूट सम्राट दो स्वास्थ्य सीमाओं पर चरण बदलता है, पहले चमगादड़ों को बुलाता है और फिर गार्ड का पुनर्निर्माण करते समय बख्तरबंद जमीनी समर्थन करता है।</li><li>Rally को हर वेव की शुरुआत में खर्च करने के बजाय समय साधने का साधन मानें: बॉस, भीड़भरे मोड़ या घायल एंकर का इंतज़ार करें और छह सेकंड का दबाव सुरक्षित संभलने में बदलें।</li></ul></div>
+      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>चरण 1–5 में मुड़े हुए रास्ते, अलग लेन, दूर से सुरक्षा, जंगली सूअरों का दबाव और खुला मार्ग रखने का महत्व सिखाया जाता है। चरण 6–10 में उड़ने वाले चमगादड़ और मिली-जुली लहरें आती हैं; 11–15 में टूटने योग्य कवच जुड़ता है। चरण 16–20 में चलते समय पुनर्जीवित होने वाले शत्रु, 21–25 में घायल होने पर तेज़ होने वाले शत्रु और 26–30 में इन नियमों के साथ कमज़ोर धीमापन शामिल है। छह बॉस चरणों की अपनी युक्तियाँ हैं; Voidroot Emperor दो बार चरण बदलता है।</p></div>
       <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>खेल में इकाइयों को स्वतंत्र रूप से रखने दिया जाता है, क्योंकि मुख्य निर्णय केवल यह नहीं है कि कौन-सा टावर खरीदा जाए; यह भी है कि हर इकाई की जगह बदलने से यात्रा समय, हमले के कोण और रास्ता रुकने का जोखिम कैसे बदलता है। लहरों के बीच पाँच सेकंड का बदलाव लगातार चल रही रक्षा का एहसास बनाए रखता है और थोड़ी योजना का समय देता है। विभिन्न स्टेज छह यांत्रिक चरणों में बाँटे गए हैं, इसलिए कठिनाई केवल आँकड़े बढ़ाने के बजाय नए जवाबों और संयोजनों से बढ़ती है। टच खिलाड़ी माउस खिलाड़ियों जैसे ही बड़े निर्माण कार्ड और ग्रिड खाने इस्तेमाल करते हैं; कीबोर्ड से टाइल कर्सर चलाना, बनाना, चुनना, अपग्रेड करना, बेचना, यूनिट बदलना और लहर शुरू करना भी संभव है। यह खेल Animal Auto Squad से अलग है: दोनों तैयारी को महत्व देते हैं, लेकिन यहाँ सक्रिय लहरों के दौरान मैदान को फिर से बनाने और प्रतिक्रिया देने की सुविधा है।</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>ब्राउज़र इस डिवाइस पर उच्चतम अनलॉक स्टेज, स्टेज क्लियर, सर्वश्रेष्ठ स्टार रेटिंग, स्थायी प्रौद्योगिकी स्तर, अपग्रेड पॉइंट, डायमंड बैलेंस और कॉस्मेटिक स्वामित्व संग्रहीत करता है। बुनियादी खेल के लिए किसी लॉगिन की आवश्यकता नहीं है, और इस साइट के ब्राउज़र संग्रहण को साफ़ करने से वह प्रगति समाप्त हो सकती है। डायमंड कार्रवाइयां वैकल्पिक हैं और अभियान चरणों को अनलॉक करने के लिए इनकी आवश्यकता नहीं है।</p></div>
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>Rally क्या करता है?</dt><dd>Rally एक चार्ज खर्च करके चुने हुए जीवित रक्षक को छह सेकंड तक मजबूत करता है: डैमेज, हमले की गति और मिलने वाला उपचार बढ़ता है। हर वेव की शुरुआत में एक चार्ज लौटता है।</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>रूण रणनीति</strong><span>रूण रणनीति एक मौलिक एकल-खिलाड़ी अभियान है, जिसमें 30 बनाए गए मिशन, तीन पशु नायक और छह बॉस हैं। 4×5 से 6×6 खानों के बोर्ड पर भूभाग समझें, नायकों को सही जगह ले जाएँ और उनके हमलों का क्रम तय करें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>प्रिज़्म बटालियन</strong><span>तीन गलियों के बीच एक स्वचालित प्रिज़्म बैटरी बदलें, आती हुई संरचनाएँ नष्ट करें, दुर्लभ आक्रमण कोर इकट्ठा करें और बचे हुए राक्षसों को क्रिस्टल कोर से दूर रखें।</span></span></a></div></div>
+      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या बीस्ट गार्जियन खेलने के लिए स्वतंत्र है?</dt><dd>हाँ। पूरा अभियान बिना किसी आवश्यक खरीदारी या लॉगिन के ब्राउज़र में चलता है।</dd></div><div><dt>मैं एक मंच कैसे शुरू करूं?</dt><dd>स्वाइप रेल से एक अनलॉक चरण चुनें, फिर बचाव शुरू करें। साफ़ की गई गैर-अंतिम तरंगें पांच सेकंड की उलटी गिनती के बाद स्वचालित रूप से शुरू हो जाती हैं।</dd></div><div><dt>दुश्मन कभी-कभी रक्षक पर हमला क्यों करते हैं?</dt><dd>जब कोर तक जाने वाले हर कानूनी रास्ते को सील कर दिया जाता है तो जमीनी दुश्मन पास के अवरोधक पर हमला करते हैं। अगले प्रयास में किसी इकाई को बेचें या उसका स्थान बदलें, या एक खुली लेन वाला मार्ग डिज़ाइन करें।</dd></div><div><dt>छह बॉस किस प्रकार भिन्न हैं?</dt><dd>शैडो ब्रूट तेजी से अवरोधकों पर हमला करता है, फॉरेस्ट बेहेमोथ एस्कॉर्ट्स को बुलाता है, आयरनबार्क कोलोसस कवच का पुनर्निर्माण करता है, वर्डेंट एंशिएंट हील्स, टेम्पेस्ट रैगर सहयोगियों को तेज करता है, और वॉयडरूट सम्राट दो बार चरण बदलता है।</dd></div><div><dt>सितारे क्या मापते हैं?</dt><dd>सितारे जीत के बाद बचे क्रिस्टल कोर स्वास्थ्य को दर्शाते हैं। एक क्लोज़ क्लियर अभी भी अगले चरण को अनलॉक करता है, जबकि एक मजबूत मार्ग के साथ दोबारा खेलने से सहेजी गई रेटिंग में सुधार हो सकता है।</dd></div><div><dt>क्या बीस्ट गार्जियन प्रगति बचाता है?</dt><dd>हाँ. इस ब्राउज़र में अनलॉक, क्लियर, स्टार, अपग्रेड पॉइंट, स्थायी तकनीक, डायमंड और कॉस्मेटिक स्वामित्व स्थानीय रूप से सहेजे जाते हैं।</dd></div><div><dt>हीरे क्या कर सकते हैं?</dt><dd>हीरे वैकल्पिक रूप से एक कोर रिवाइव की पुष्टि करते हैं, एक परिणाम इनाम को फिर से रोल करते हैं, या सुनहरे फ्रेम को अनलॉक करते हैं। सामान्य अभियान प्रगति के लिए उनकी आवश्यकता नहीं है।</dd></div><div><dt>मैं किन रक्षकों को तैनात कर सकता हूँ?</dt><dd>कुल आठ: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux।</dd></div><div><dt>मैं किन रक्षकों को तैनात कर सकता हूँ?</dt><dd>कुल आठ: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux।</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>रूण रणनीति</strong><span>रूण रणनीति एक मौलिक एकल-खिलाड़ी अभियान है, जिसमें 30 बनाए गए मिशन, तीन पशु नायक और छह बॉस हैं। 6×6 खानों के बोर्ड पर भूभाग समझें, नायकों को सही जगह ले जाएँ और उनके हमलों का क्रम तय करें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>प्रिज़्म बटालियन</strong><span>बैटरी अपने आप गोली चलाती है। आपको चुनना है कि तीन लेन में अभी किस पर ध्यान दें: पास आता दुश्मन, बम या अगली गोलियों को मजबूत करने वाला पावर कोर।</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260918-ui-fix1"></script>

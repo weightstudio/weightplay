@@ -551,7 +551,7 @@ body[data-logic-game="sliding-15"] .logic-status-line {
   body[data-logic-game="sliding-15"] .logic-sliding-board {
     width: min(100%, 220px);
     grid-template-columns: repeat(4, minmax(50px, 1fr));
-    transform: translateY(24px);
+    transform: translateY(28px);
   }
   body[data-logic-game="sliding-15"] .logic-sliding-board .logic-cell {
     min-width: 50px;

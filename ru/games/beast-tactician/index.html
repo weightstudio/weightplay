@@ -11,7 +11,7 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-version" content="v19" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Beast Guardian — это героическая кампания по защите башен, построенная вокруг построения маршрутов, а не фиксированных площадок для башен. Разместите..." />
+    <meta name="description" content="Beast Guardian — кампания по защите башнями с прокладкой маршрутов. Можно выставить восемь защитников: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane..." />
     <link rel="canonical" href="https://weightplay.com/ru/games/beast-tactician/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/beast-tactician/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/beast-tactician/" />
@@ -30,7 +30,7 @@
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Beast Guardian | WeightPlay" />
-    <meta property="og:description" content="Beast Guardian — это героическая кампания по защите башен, построенная вокруг построения маршрутов, а не фиксированных площадок для башен. Разместите..." />
+    <meta property="og:description" content="Beast Guardian — кампания по защите башнями с прокладкой маршрутов. Можно выставить восемь защитников: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane..." />
     <meta property="og:url" content="https://weightplay.com/ru/games/beast-tactician/" />
     <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
     <link rel="stylesheet" href="defense.css?v=20260926-beast-tactician-v19-interface7" />
     <script type="application/ld+json">
 {
@@ -50,7 +50,7 @@
   "name": "Beast Guardian",
   "url": "https://weightplay.com/ru/games/beast-tactician/",
   "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
-  "description": "Beast Guardian — это героическая кампания по защите башен, построенная вокруг построения маршрутов, а не фиксированных площадок для башен. Разместите...",
+  "description": "Beast Guardian — кампания по защите башнями с прокладкой маршрутов. Можно выставить восемь защитников: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane...",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -58,9 +58,9 @@
   },
   "applicationCategory": "Game",
   "genre": [
-    "Башня обороны",
-    "Strategy",
-    "Animal",
+    "Защита башнями",
+    "Стратегия",
+    "Животные",
     "Browser Game"
   ],
   "audience": {
@@ -80,7 +80,7 @@
       @media (orientation:landscape) and (max-width:900px) { body:not(.guardian-playing):not(.guardian-stage) .poster-frame { width:420px!important; max-width:calc(100vw - 24px); } }
     </style>
   <meta name="twitter:title" content="Beast Guardian | WeightPlay" />
-    <meta name="twitter:description" content="Beast Guardian — это героическая кампания по защите башен, построенная вокруг построения маршрутов, а не фиксированных площадок для башен. Разместите..." />
+    <meta name="twitter:description" content="Beast Guardian — кампания по защите башнями с прокладкой маршрутов. Можно выставить восемь защитников: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
   </head>
   <body data-game-id="beast-tactician" data-wp-game-id="beast-tactician" data-wp-game-version="v19" data-screen="main" data-wp-combined-sound="true">
@@ -246,34 +246,34 @@
     <script src="/src/site-config.js?v=20260918-ui-fix1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+    <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
     <script src="../../src/stage-selector-standard.js?v=20260910-beast-rally-block-v14" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
     <script src="game.js?v=20260926-beast-tactician-v19-interface7&wp-audio=1.0.0"></script>
     <section class="game-page-info game-page-info-static" aria-label="Информация об игре Beast Guardian">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Beast Guardian</h2><p>Beast Guardian — это героическая кампания по защите башен, построенная вокруг построения маршрутов, а не фиксированных площадок для башен. Разместите четыре роли обычных животных-солдат и семь героев WeightPlay на лесной сетке, оставьте открытым хотя бы один маршрут и защитите кристаллическое ядро ​​в шести пятиэтапных регионах. Волки, бронированные кабаны, летучие мыши, регенерирующие стаи, раненые спринтеры и формирования затмений требуют разной защиты. Этапы 5, 10, 15, 20, 25 и 30 заканчиваются боссами, меняющими правила, вместо обычных врагов с большими полосками здоровья.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Hero Tower Defense</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Башня обороны · Strategy · Animal</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Hard</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>8-15 минут на этап</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Beast Guardian</h2><p>Beast Guardian — кампания по защите башнями с прокладкой маршрутов. Можно выставить восемь защитников: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia и Gear Horn Rux. Защищайте кристалл в шести регионах по пять этапов.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Башенная защита с маршрутами</span><span>Тактика защиты на сетке</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Башенная защита с прокладкой маршрутов</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Защита башнями · Стратегия · Животные</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Hard</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>8-15 минут на этап</strong></div></div>
     </div>
 
     <div class="game-info-sections">
       <div class="game-info-section"><h3>Мир и цель</h3><p>Кристальные маршруты соединяют шесть частей Леса Хранителей: первые корневые тропы, кристальные воздушные коридоры, работы Железной коры, вновь растущий туманный лес, штормовые валы и дорога затмения к трону Корня Бездны. Вражеские стаи пытаются достичь ядра на дальней стороне каждого поля боя. Очищенный этап означает, что маршрут безопасен достаточно долго, чтобы стражи могли перейти к следующему сектору.</p>
-<p>Вы командуете обороной до и во время каждой волны. Желудевые Стражи и Таро из Моховой Панциря удерживают повороты, Лучники-разведчики и Лунная Шапка Орла прикрывают длинные углы, Рунные Саперы замедляют сгруппированных атакующих, Медики восстанавливают раненых блокирующих, а такие герои, как Искра Лапа Фиа, наносят сосредоточенный урон. Доска не является украшением: каждый размещенный защитник меняет маршрут, если только отряд не служит дальней поддержкой вдали от пути.</p></div>
-      <div class="game-info-section"><h3>Игровые системы</h3><p>Сбор: каждая волна даёт один заряд Сбора. Во время активной волны выберите живого защитника и нажмите «Сбор» или R, чтобы на шесть секунд получить на 32% больше урона, более быстрые атаки и усиленное лечение. Заряд сохраняется до применения — берегите его для узкого места или Босса.</p></div>
-      <div class="game-info-section"><h3>Как играть</h3><ol><li>Во время активной волны выберите живого защитника и нажмите «Сбор», когда золотая кнопка готова; также можно нажать R. Направьте шестисекундное усиление на важный поворот или Босса.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Считайте «Сбор» инструментом тайминга, а не обязательной тратой в начале волны: дождитесь Босса, переполненного поворота или раненого якоря и превратите шесть секунд давления в безопасное восстановление.</li></ul></div>
-      <div class="game-info-section"><h3>Прогресс и сложность</h3><p>На этапах 1–5 обучают изгибам маршрута, разделению полос, раннему охвату дальности, давлению кабанов и последствиям перекрытия пути. Shadow Brute атакует блокирующих быстрее, чем обычные боссы, поэтому в первом финале проверяется, есть ли на маршруте прочный якорь, а не только единицы урона.</p>
-<p>На этапах 6–10 представлены летучие мыши, которые летают по сетке и смешивают воздушно-земные волны. Лесной Бегемот вызывает поддержку волков и летучих мышей после потери части своего здоровья. На этапах 11–15 добавляются разрушаемые доспехи из железной коры и завершаются колосом из железной коры, который восстанавливает большой защитный слой в середине боя.</p>
-<p>На этапах 16–20 незавершенные враги регенерируют во время движения; Verdant Ancient восстанавливает часть собственного здоровья и вызывает поддержку. На этапах 21–25 добавляются скачки скорости раненых, заканчивающиеся тем, что Tempest Ravager ускоряет свой сопровождающий. Этапы 26–30 объединяют все предыдущие правила с пониженной эффективностью замедления. Император Корней Бездны имеет две смены фаз, поэтому для этапа 30 требуется маршрутизация земли, прикрытие с воздуха, пробитие брони, добивание урона, исцеление и сохранение фокуса Босса в одной защите.</p></div>
+<p>Доступны три солдата: Acorn Guard, Scout Archer и Rune Sapper; и пять героев: Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia и Gear Horn Rux.</p></div>
+      <div class="game-info-section"><h3>Игровые системы</h3><p>Построение маршрута: защитники занимают обычные наземные ячейки. Враги пересчитывают путь вокруг себя, но полностью закрытый маршрут заставляет наземных врагов атаковать ближайшего блокирующего, пока маршрут снова не откроется. Летучие мыши игнорируют наземный лабиринт, поэтому длинный маршрут сам по себе не может решить каждую волну.</p>
+<p>Сбор: один раз за волну выберите живого защитника и усильте его на шесть секунд. Урон возрастает на 32%, а перерыв между атаками сокращается.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите этап на панели этапов и прочтите заметки об угрозах, планах и наградах.</li><li>Тратьте монеты этапов, чтобы разместить солдат или героев WeightPlay на обычных плитках земли. Используйте предварительный просмотр видимого диапазона перед подтверждением позиции.</li><li>Держите хотя бы один путь открытым, иначе заблокированные враги будут атаковать ближайшего защитника, пока путь не откроется снова.</li><li>Прочтите информацию о волне, начните волну, а затем улучшайте или продавайте размещенные юниты по мере изменения состава врагов. Неокончательно очищенные волны возобновляются автоматически через пять секунд.</li><li>Защитите кристалл сквозь каждую волну. Результат дает от одной до трех звезд в зависимости от оставшегося основного здоровья и предлагает следующий этап, повторную попытку или возврат к этапам.</li><li>Потратьте сохраненные очки улучшения на этапе, когда постоянная мощность, здоровье оплота или стартовая экономика нуждаются в улучшении. Дополнительные действия Diamond всегда показывают их стоимость и требуют подтверждения.</li><li>Во время активной волны выберите живого защитника и нажмите «Сбор», когда золотая кнопка готова; также можно нажать R. Направьте шестисекундное усиление на важный поворот или Босса.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Используйте Acorn Guards, чтобы сделать два или три поворота для стрельбы, прежде чем инвестировать в дорогих героев. Более длинный маршрут увеличивает полезное время атаки каждого отряда дальнего боя.</li><li>Не закрывайте каждую ячейку. Закрытый маршрут превращает лабиринт в прямую битву с ближайшим блокирующим и может лишить вас временного преимущества, которое вы пытались создать.</li><li>Держите дальнее прикрытие рядом с кристаллом во время полета летучих мышей и на более поздних этапах полета, потому что летучие мыши обходят наземных блокировщиков. Медленно замедляйте кабанов до того, как их броня сломается на стадиях шторма, чтобы их раненый всплеск скорости был менее опасен.</li><li>Против регенерирующих врагов концентрируйте огонь внутри одной зоны поражения, а не распространяйте урон. Против брони, продолжительный урон или урон по области должны снять защиту до того, как будет совершен взрыв героя.</li><li>Сохраните описание ролей для этапов Босса. Последний Император Корней Бездны меняет фазу при достижении двух порогов здоровья, сначала вызывая летучих мышей, а затем наземную поддержку бронетехники и восстанавливая защиту.</li><li>Считайте «Сбор» инструментом тайминга, а не обязательной тратой в начале волны: дождитесь Босса, переполненного поворота или раненого якоря и превратите шесть секунд давления в безопасное восстановление.</li></ul></div>
+      <div class="game-info-section"><h3>Прогресс и сложность</h3><p>Этапы 1–5 знакомят с поворотами маршрута, разделением путей, дальним прикрытием, натиском кабанов и важностью открытого прохода. На этапах 6–10 появляются летучие мыши и смешанные волны, на 11–15 — разрушаемая броня. На этапах 16–20 враги восстанавливаются на ходу, на 21–25 ускоряются при ранении, а 26–30 объединяют эти правила с ослаблением замедления. У шести боссов свои механики; Voidroot Emperor дважды меняет фазу.</p></div>
       <div class="game-info-section"><h3>Заметка разработчика</h3><p>В игре используется свободная расстановка, потому что главный выбор — не только то, какую башню купить, но и то, как положение каждого отряда меняет время пути, углы обстрела и риск блокировки. Переход в пять секунд между волнами сохраняет ощущение единой обороны и оставляет короткое окно для планирования. Тридцать этапов разделены на шесть механических арок: сложность растёт благодаря новым контрмерам и сочетаниям, а не только числовым параметрам. Игроки с сенсорным управлением используют те же большие карточки строительства и клетки поля, что и игроки с мышью; клавиатура также позволяет перемещать курсор по клеткам, строить, выбирать, улучшать, продавать, переключать отряды и запускать волны. Это отличает игру от Animal Auto Squad: обе игры поощряют подготовку, но здесь можно менять поле и реагировать во время активных волн.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Браузер сохраняет на этом устройстве информацию о самом высоком разблокированном этапе, прохождениях этапов, лучших звездных рейтингах, постоянных уровнях технологий, точках улучшения, балансе алмазов и косметических принадлежностях. Для базовой игры вход в систему не требуется, и очистка памяти браузера этого сайта может привести к удалению этого прогресса. Алмазные действия не являются обязательными и не требуются для разблокировки этапов кампании.</p></div>
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Что делает «Сбор»?</dt><dd>«Сбор» тратит один заряд и на шесть секунд усиливает выбранного живого защитника: повышает урон, скорость атак и получаемое лечение. В начале каждой волны возвращается один заряд.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Тактика животных с рунами</strong><span>«Тактика животных с рунами» — оригинальная одиночная кампания: 30 созданных вручную заданий, три героя-животных и шесть боссов.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Батальон Животных Призм</strong><span>Переключайте автоматическую призматическую батарею между тремя линиями, уничтожайте формации, собирайте редкие ядра и защищайте кристальное ядро.</span></span></a></div></div>
+      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Игра Beast Guardian бесплатна?</dt><dd>Да. Полная кампания запускается в браузере без обязательной покупки или входа в систему.</dd></div><div><dt>Как начать этап?</dt><dd>Выберите разблокированную сцену на панели управления и начните защиту. Очищенные нефинальные волны начинаются автоматически после пятисекундного обратного отсчета.</dd></div><div><dt>Почему враги иногда нападают на защитника?</dt><dd>Наземные враги атакуют ближайшего блокирующего, когда все законные пути к ядру перекрыты. Продайте или переместите отряд при следующей попытке или спроектируйте маршрут с одной открытой полосой движения.</dd></div><div><dt>Чем отличаются шесть боссов?</dt><dd>Shadow Brute быстро атакует блокирующих, Forest Behemoth вызывает эскорт, Ironbark Colossus восстанавливает броню, Verdant Ancient лечит, Tempest Ravager ускоряет союзников, а Voidroot Emperor дважды меняет фазу.</dd></div><div><dt>Что измеряют звезды?</dt><dd>Звезды отражают здоровье кристаллического ядра, оставшееся после победы. Зачистка по-прежнему открывает следующий этап, а переигрывание с более сильным маршрутом может улучшить сохраненный рейтинг.</dd></div><div><dt>Сохраняет ли Beast Guardian прогресс?</dt><dd>Да. Разблокировки, очистка, звезды, очки улучшения, постоянные технологии, бриллианты и владение косметическими предметами сохраняются локально в этом браузере.</dd></div><div><dt>Что могут бриллианты?</dt><dd>Бриллианты по желанию подтверждают основное возрождение, изменяют награду за результат или открывают золотую рамку. Они не требуются для нормального хода кампании.</dd></div><div><dt>Каких защитников можно выставить?</dt><dd>Всего восемь: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia и Gear Horn Rux.</dd></div><div><dt>Каких защитников можно выставить?</dt><dd>Всего восемь: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia и Gear Horn Rux.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Тактика животных с рунами</strong><span>«Тактика животных с рунами» — оригинальная одиночная кампания: 30 созданных вручную заданий, три героя-животных и шесть боссов.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Батальон Животных Призм</strong><span>Батарея стреляет сама.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260918-ui-fix1"></script>

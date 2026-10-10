@@ -12,6 +12,13 @@ function solve(level,checkRestore=false){let s=createState(level);assertState(s)
  finishLap(s);assertState(s);
  }assert.equal(s.status,'won');assert.equal(s.leftHP,0);assert.equal(stars(s,level.par),3);return s;
 }
+test('a no-hit hidden-layer return exposes a localized foreground hint',()=>{
+ const s=createState(getLevel(6)),unit=actions(s).find(a=>a.source==='queue'&&a.index===2).unit;
+ assert.equal(dispatch(s,'queue',2).ok,true);finishLap(s);
+ const parked=s.events.find(event=>event.type==='park'&&event.id===unit.id);
+ assert.equal(parked.hits,0);assert.equal(s.emptyLaps,1);
+ for(const locale of LOCALES)assert.ok(translator(locale)('noHit').trim());
+});
 for(let id=1;id<=30;id++)test(`campaign ${id}: native simulation witness, conservation and checkpoint recovery`,()=>solve(getLevel(id),true));
 for(let n=0;n<90;n++)test(`daily ${n}: deterministic solvable variant`,()=>{const date=new Date(Date.UTC(2026,8,1+n)),key=dailyKey(date),a=dailyLevel(key),b=dailyLevel(key);assert.deepEqual(a,b);solve(a);});
 const fixture=(cells,units)=>({id:6,signature:'fixture-v1',board:Array.from({length:100},(_,i)=>clone(cells[i]||[])),supply:units,requiredKeys:0,shutters:false,gateTicks:150,phaseOffset:0,reverse:false,par:99});

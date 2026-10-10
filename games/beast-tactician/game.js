@@ -673,8 +673,8 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
         "zh-Hant": ["基礎狼群測試第一個轉角。", "兩條樹根路線分散狼群。", "快速斥候懲罰太晚建置。", "野豬會壓垮單一阻擋者。", "暗影巨漢會突破薄弱前線。"],
       },
       plans: {
-        en: ["Bend the route with Guards.", "Join both lanes before adding range.", "Open with Archer coverage.", "Upgrade one anchor and add healing.", "Use Taro to hold while Fia burns the Boss."],
-        "zh-Hant": ["用守衛拉出轉彎路線。", "先讓雙線匯流，再補遠程。", "先用弓手覆蓋快速敵人。", "升級一名主坦並加入治療。", "太郎定線，菲亞集中攻擊 Boss。"],
+        en: ["Bend the route with Guards.", "Join both lanes before adding range.", "Open with Archer coverage.", "Upgrade one anchor and add ranged cover.", "Use Taro to hold while Fia burns the Boss."],
+        "zh-Hant": ["用守衛拉出轉彎路線。", "先讓雙線匯流，再補遠程。", "先用弓手覆蓋快速敵人。", "升級一名主坦並補上遠程火力。", "太郎定線，菲亞集中攻擊 Boss。"],
       },
       boss: { en: "Shadow Brute", ja: "シャドウブルート", "zh-Hant": "暗影巨漢", ability: "siege" },
     },

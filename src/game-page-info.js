@@ -1838,14 +1838,14 @@
       hideScoreBands: true,
       relatedIds: ["animal-rune-tactics", "animal-prism-battalion"],
       intro:
-        "Beast Guardian is a hero tower-defense campaign built around route construction rather than fixed tower pads. Place four ordinary animal soldier roles and seven WeightPlay heroes on a forest grid, keep at least one route open, and protect the crystal core through six five-stage regions. Wolves, armored boars, flying bats, regenerating packs, wounded sprinters, and eclipse formations ask for different defenses. Stages 5, 10, 15, 20, 25, and 30 end with rule-changing Bosses instead of ordinary enemies with larger health bars.",
+        "Beast Guardian is a route-building tower-defense campaign with eight selectable defenders: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, and Gear Horn Rux. Protect the crystal through six regions of five stages.",
       story: [
         "The crystal routes connect six parts of the Guardian Forest: the first root paths, crystal air lanes, Ironbark works, the regrowing mistwood, storm ramparts, and the eclipse road to the Voidroot throne. Enemy packs are trying to reach the core at the far side of each battlefield. A cleared stage means the route is secure long enough for the guardians to advance to the next sector.",
-        "You command the defense before and during every wave. Acorn Guards and Moss Shell Taro hold bends, Scout Archers and Moon Cap Orla cover long angles, Rune Sappers slow clustered attackers, Medic Cubs repair injured blockers, and heroes such as Spark Paw Fia provide focused damage. The board is not a decoration: every placed defender changes the route unless the unit is serving as ranged support away from the path."
+        "The selectable roster has three soldiers—Acorn Guard, Scout Archer, and Rune Sapper—and five heroes: Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, and Gear Horn Rux."
       ],
       systems: [
         "Route building: defenders occupy normal ground cells. Enemies recalculate a path around them, but a completely sealed route makes ground enemies attack the nearest blocker until a route opens again. Flying bats ignore the ground maze, so a long route alone cannot solve every wave.",
-        "Combat roles: blockers buy time, Archers and Orla cover distance, Sappers apply splash damage and slowing, Medics heal damaged defenders, Fia focuses Boss pressure, and Gear Horn Rux strengthens nearby allies. Selecting a placed unit shows its upgrade cost and sell refund.",
+        "Rally: once each wave, select a living defender to boost for six seconds. Rally increases damage by 32% and shortens that defender’s attack cooldown.",
         "Wave information: before each wave, the HUD names the incoming wolves, boars, bats, escorts, or Boss. Non-final waves continue after a five-second countdown, so the player can read the next composition and use earned coins before pressure resumes.",
         "Special enemies: Ironbark stages give enemies breakable guard armor; mistwood enemies recover health while moving; storm enemies accelerate after falling below half health; eclipse stages combine armor, recovery, surge behavior, flying routes, and reduced slow effectiveness.",
         "Permanent progress: victories award stars, upgrade points, and Diamonds. Upgrade points improve hero power, defender health, or starting economy. Diamonds are optional and can confirm a core revive, reroll a result reward, or unlock a cosmetic golden defender frame; normal stage unlocks do not require them."
@@ -6470,14 +6470,14 @@
     noteTitle: "玩家與存檔說明",
     hideScoreBands: true,
     intro:
-      "《獸王守衛》是一套以自由改造路線為核心的英雄塔防戰役。玩家在森林格子上配置四種動物士兵與七名 WeightPlay 英雄，保留至少一條可通行路線，穿越六個五關區域並守住水晶核心。暗狼、重甲野豬、飛行影蝠、再生敵群、受傷加速者與月蝕混合編隊，都需要不同的防線。第 5、10、15、20、25、30 關各有改變規則的 Boss，不是只把普通敵人的生命放大。",
+      "《獸王守衛》是路線建構塔防戰役，可部署八名防禦者：橡果守衛、斥候弓手、符文工兵、爆鬃雷歐、苔殼太郎、月帽歐拉、電爪菲亞與齒角魯克斯。守護水晶，通過六個各有五關的區域。",
     story: [
       "水晶路線連接守護森林的六個區域：最初的樹根小徑、水晶空中通道、鐵皮木工坊、會再生的霧林、暴風壁壘，以及通往虛根王座的月蝕道路。敵群會從入口穿越玩家安排的防線前往另一端核心；通關代表該段路線已安全到足以讓守衛隊前進。",
-      "玩家是整條防線的指揮者。栗果守衛與苔甲太郎負責撐住轉角，偵查弓手與月帽歐菈覆蓋長距離，符文工兵緩速群體，醫護幼獸修復受傷阻擋者，火花菲雅則負責集中攻擊 Boss。每個角色站的位置都會改變敵人行走距離、射擊角度或阻擋風險。"
+      "可部署的三名士兵是橡果守衛、斥候弓手與符文工兵；五名英雄是爆鬃雷歐、苔殼太郎、月帽歐拉、電爪菲亞與齒角魯克斯。"
     ],
     systems: [
       "路線建置：守衛可以放在一般地格，地面敵人會重新尋找路徑。若完全封死所有道路，敵人不會消失，而是攻擊最近的阻擋者直到路線恢復。飛行影蝠不受地面迷宮影響。",
-      "角色定位：阻擋者爭取時間，弓手與歐菈負責遠程，工兵提供濺射與緩速，醫護修復前線，菲雅專門處理 Boss 壓力，齒角魯克斯則強化附近隊友。點選已部署角色可查看升級費用與出售返還。",
+      "集結：每波可使用一次，選取一名存活的防禦者強化 6 秒。期間傷害提高 32%，攻擊冷卻時間縮短。",
       "波次情報：每波開始前會列出暗狼、野豬、影蝠、護衛與 Boss 組成。非最終波通過後有五秒倒數，玩家可以讀取下一波、花費剛取得的金幣並調整升級。",
       "特殊敵人：鐵皮木區的敵人有可擊破護甲；霧林敵人移動時恢復生命；暴風敵人在生命低於一半後加速；月蝕區會同時混合護甲、再生、加速、飛行與較高緩速抗性。",
       "永久進度：勝利會取得星等、升級點與鑽石。升級點可提高英雄力量、守衛生命或開場經濟；鑽石只用於可選的核心復活、結果獎勵重抽與黃金守衛框，正常解鎖關卡不需要鑽石。"
@@ -9613,14 +9613,14 @@
     "guideTitleSuffix": "游戏指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《兽王守卫》是一套以自由改造路线为核心的英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30 关各有改变规则的 Boss，不是只把普通敌人的生命放大。",
+    "intro": "《兽王守卫》是路线建构塔防战役，可部署八名防御者：橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯。守护水晶，通关六个各有五关的区域。",
     "story": [
       "水晶路线连接守护森林的六个区域：最初的树根小径、水晶空中通道、铁皮木工坊、会再生的雾林、暴风壁垒，以及通往虚根王座的月蚀道路。敌群会从入口穿越玩家安排的防线前往另一端核心；通关代表该段路线已安全到足以让守卫队前进。",
-      "玩家是整条防线的指挥者。栗果守卫与苔甲太郎负责撑住转角，侦查弓手与月帽欧菈覆盖长距离，符文工兵缓速群体，医护幼兽修复受伤阻挡者，火花菲雅则负责集中攻击 Boss。每个角色站的位置都会改变敌人行走距离、射击角度或阻挡风险。"
+      "可部署的三名士兵是橡果守卫、斥候弓手与符文工兵；五名英雄是爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯。"
     ],
     "systems": [
       "路线建置：守卫可以放在一般地格，地面敌人会重新寻找路径。若完全封死所有道路，敌人不会消失，而是攻击最近的阻挡者直到路线恢复。飞行影蝠不受地面迷宫影响。",
-      "角色定位：阻挡者争取时间，弓手与欧菈负责远程，工兵提供溅射与缓速，医护修复前线，菲雅专门处理 Boss 压力，齿角鲁克斯则强化附近队友。点选已部署角色可查看升级费用与出售返还。",
+      "集结：每波可使用一次，选取一名存活的防御者强化 6 秒。期间伤害提高 32%，攻击冷却时间缩短。",
       "波次情报：每波开始前会列出暗狼、野猪、影蝠、护卫与 Boss 组成。非最终波通过后有五秒倒数，玩家可以读取下一波、花费刚取得的金币并调整升级。",
       "特殊敌人：铁皮木区的敌人有可击破护甲；雾林敌人移动时恢复生命；暴风敌人在生命低于一半后加速；月蚀区会同时混合护甲、再生、加速、飞行与较高缓速抗性。",
       "永久进度：胜利会取得星等、升级点与钻石。升级点可提高英雄力量、守卫生命或开场经济；钻石只用于可选的核心复活、结果奖励重抽与黄金守卫框，正常解锁关卡不需要钻石。"
@@ -15482,6 +15482,30 @@
     };
   }
 
+  // Text Growth 1.4 tags are source-owned for every public locale.
+  const localizedText140Tags = {
+    en: { skyport: ["Numbered-Node Route Puzzle", "Airship Dispatch"], beast: ["Route-Building Tower Defense", "Grid Defense Tactics"] },
+    "zh-Hant": { skyport: ["編號節點航線謎題", "飛船調度"], beast: ["路線建構塔防", "格線防衛策略"] },
+    "zh-Hans": { skyport: ["编号节点航线谜题", "飞艇调度"], beast: ["路线建构塔防", "网格防卫策略"] },
+    ja: { skyport: ["番号ノード航路パズル", "飛行船ディスパッチ"], beast: ["ルート構築タワーディフェンス", "グリッド防衛戦略"] },
+    ko: { skyport: ["번호 노드 경로 퍼즐", "비행선 배차"], beast: ["경로 건설 타워 디펜스", "격자 방어 전략"] },
+    es: { skyport: ["Rompecabezas de rutas con nodos numerados", "Despacho de aeronaves"], beast: ["Defensa de torres con rutas", "Estrategia de defensa en cuadrícula"] },
+    "pt-BR": { skyport: ["Quebra-cabeça de rotas com nós numerados", "Despacho de dirigíveis"], beast: ["Defesa de torre com rotas", "Estratégia de defesa em grade"] },
+    fr: { skyport: ["Puzzle de routes à nœuds numérotés", "Dispatch de dirigeables"], beast: ["Tower defense à routes", "Stratégie de défense sur grille"] },
+    de: { skyport: ["Routenrätsel mit nummerierten Knoten", "Luftschiff-Disposition"], beast: ["Tower-Defense mit Routenbau", "Raster-Verteidigungsstrategie"] },
+    it: { skyport: ["Puzzle di percorsi con nodi numerati", "Dispatch di dirigibili"], beast: ["Tower defense con percorsi", "Strategia di difesa a griglia"] },
+    ru: { skyport: ["Головоломка с нумерованными узлами", "Диспетчеризация дирижаблей"], beast: ["Башенная защита с маршрутами", "Тактика защиты на сетке"] },
+    hi: { skyport: ["क्रमांकित नोड मार्ग पहेली", "एयरशिप डिस्पैच"], beast: ["मार्ग निर्माण टावर रक्षा", "ग्रिड रक्षा रणनीति"] },
+    ar: { skyport: ["لغز مسار بعُقد مرقمة", "توجيه المناطيد"], beast: ["دفاع أبراج ببناء المسارات", "تكتيك دفاع الشبكة"] },
+  };
+  for (const [localeKey, tags] of Object.entries(localizedText140Tags)) {
+    localizedGames[localeKey] ||= {};
+    localizedGames[localeKey]["animal-skyport-dispatch"] ||= { ...games["animal-skyport-dispatch"] };
+    localizedGames[localeKey]["animal-skyport-dispatch"].text140Tags = tags.skyport;
+    localizedGames[localeKey]["beast-tactician"] ||= { ...games["beast-tactician"] };
+    localizedGames[localeKey]["beast-tactician"].text140Tags = tags.beast;
+  }
+
   window.WeightPlayGameInfo = {
     render,
     get(gameId) {
@@ -20786,6 +20810,52 @@
     }
   }
   Object.assign(localizedGames["ar"]["animal-skyport-dispatch"], skyportDispatchArabicGuideOverride);
+  const skyportRoutePuzzleTruth = {
+    en: ["Solve 30 route-puzzle shifts at Cloudline Skyport: draw from the airship through every numbered node in order and end at the highlighted dock.", "A route is valid only if it visits all numbered nodes in order, reaches the highlighted dock, avoids red blocked airways, and does not cross itself. Each invalid submission adds an Error; three Errors end the shift and offer a free Retry.", "Choose an unlocked shift, read its goal, then draw one continuous route through the numbered nodes to the highlighted dock and release. Complete the flight goal; after three invalid routes, use the offered free Retry.", ["How many shifts are there?", "The campaign has 30 designed shifts across six chapters."], ["What happens after three invalid routes?", "Three Errors end the current shift and offer a free Retry."]],
+    "zh-Hant": ["在 Cloudline Skyport 挑戰 30 個航線謎題班次：從飛船出發，依序通過所有編號節點，最後抵達指定碼頭。", "有效路線必須依序經過全部編號節點、抵達指定碼頭、不穿越紅色封鎖航線，也不能自我交叉。每次提交無效路線都會增加一次錯誤；累積三次就結束班次並提供免費重試。", "選擇已解鎖班次並閱讀目標，再畫出一條連續路線，依序通過編號節點並在指定碼頭放開。完成飛行目標；若累積三次無效路線，可使用提供的免費重試。", ["共有幾個班次？", "六個章節共有 30 個設計班次。"], ["三次無效路線後會怎樣？", "累積三次錯誤會結束目前班次並提供免費重試。"]],
+    "zh-Hans": ["在 Cloudline Skyport 挑战 30 个航线谜题班次：从飞艇出发，依次经过所有编号节点，最后抵达指定码头。", "有效路线必须依次经过全部编号节点、抵达指定码头、不穿越红色封锁航线，也不能自我交叉。每次提交无效路线都会增加一次错误；累计三次就结束班次并提供免费重试。", "选择已解锁班次并阅读目标，再画出一条连续路线，依次经过编号节点并在指定码头放开。完成飞行目标；若累计三次无效路线，可使用提供的免费重试。", ["共有多少个班次？", "六个章节共有 30 个设计班次。"], ["三次无效路线后会怎样？", "累计三次错误会结束当前班次并提供免费重试。"]],
+    ja: ["Cloudline Skyportで30のルートパズルに挑戦します。飛行船から番号付きノードを順番に通り、指定ドックで終わるルートを描きます。", "有効なルートは、番号付きノードを順番にすべて通り、指定ドックに到着し、赤い閉鎖空路を避け、自分の線と交差しない必要があります。無効な提出ごとにエラーが1回増え、3回でシフトが終了して無料リトライが提示されます。", "解放済みシフトを選び目標を確認し、番号付きノードを順番に通って指定ドックへ至る連続ルートを描いて離します。飛行目標を達成しましょう。無効ルートが3回になると無料リトライが提示されます。", ["シフトはいくつありますか？", "6章に全30シフトがあります。"], ["無効なルートが3回になると？", "現在のシフトが終了し、無料リトライが提示されます。"]],
+    ko: ["Cloudline Skyport에서 30개의 경로 퍼즐 교대를 진행하세요. 비행선에서 출발해 번호가 붙은 노드를 순서대로 지나 지정된 도크에 도착하는 경로를 그립니다.", "유효한 경로는 번호 노드를 모두 순서대로 방문하고 지정 도크에 도착하며, 빨간 폐쇄 항로와 자기 경로 교차를 피해야 합니다. 유효하지 않은 제출마다 오류가 추가되고 3회면 교대가 끝나며 무료 재시작이 제공됩니다.", "잠금 해제된 교대를 골라 목표를 읽고, 번호 노드를 순서대로 지나 지정 도크에 닿는 하나의 연속 경로를 그린 뒤 놓으세요. 비행 목표를 완료하고, 잘못된 경로가 3회면 제공되는 무료 재시작을 이용하세요.", ["교대는 몇 개 있나요?", "6개 챕터에 총 30개의 설계된 교대가 있습니다."], ["유효하지 않은 경로가 3회면 어떻게 되나요?", "현재 교대가 끝나고 무료 재시작이 제공됩니다."]],
+    es: ["Resuelve 30 turnos de rutas en Cloudline Skyport: dibuja desde la aeronave por todos los nodos numerados en orden hasta el muelle indicado.", "Una ruta válida visita todos los nodos numerados en orden, llega al muelle indicado, evita las vías rojas bloqueadas y no se cruza consigo misma. Cada envío no válido suma un error; tres errores terminan el turno y ofrecen un reintento gratis.", "Elige un turno desbloqueado y lee el objetivo. Traza una ruta continua por los nodos en orden hasta el muelle indicado y suelta. Completa el objetivo; tras tres rutas no válidas, puedes usar el reintento gratuito.", ["¿Cuántos turnos hay?", "La campaña tiene 30 turnos diseñados en seis capítulos."], ["¿Qué pasa tras tres rutas no válidas?", "El turno actual termina y se ofrece un reintento gratis."]],
+    "pt-BR": ["Resolva 30 turnos de rotas em Cloudline Skyport: trace da aeronave por todos os nós numerados em ordem até a doca indicada.", "Uma rota válida passa por todos os nós numerados em ordem, chega à doca indicada, evita as vias vermelhas bloqueadas e não cruza a si mesma. Cada envio inválido adiciona um erro; três erros encerram o turno e oferecem uma nova tentativa grátis.", "Escolha um turno desbloqueado e leia a meta. Trace uma rota contínua pelos nós em ordem até a doca indicada e solte. Conclua a meta; após três rotas inválidas, use a nova tentativa grátis oferecida.", ["Quantos turnos existem?", "A campanha tem 30 turnos planejados em seis capítulos."], ["O que acontece após três rotas inválidas?", "O turno atual termina e uma nova tentativa grátis é oferecida."]],
+    fr: ["Résolvez 30 shifts de parcours à Cloudline Skyport : tracez depuis le dirigeable en passant par chaque nœud numéroté dans l’ordre jusqu’au quai indiqué.", "Un parcours valide visite tous les nœuds numérotés dans l’ordre, atteint le quai indiqué, évite les voies rouges fermées et ne croise pas sa propre ligne. Chaque envoi invalide ajoute une erreur ; trois erreurs terminent le shift et proposent une nouvelle tentative gratuite.", "Choisissez un shift débloqué et lisez son objectif. Tracez un parcours continu par les nœuds dans l’ordre jusqu’au quai indiqué, puis relâchez. Après trois parcours invalides, la nouvelle tentative gratuite est proposée.", ["Combien y a-t-il de shifts ?", "La campagne comprend 30 shifts conçus en six chapitres."], ["Que se passe-t-il après trois parcours invalides ?", "Le shift actuel se termine et une nouvelle tentative gratuite est proposée."]],
+    de: ["Löse 30 Routenrätsel-Schichten am Cloudline Skyport: Zeichne vom Luftschiff durch alle nummerierten Knoten in Reihenfolge bis zum markierten Dock.", "Eine gültige Route besucht alle nummerierten Knoten der Reihe nach, erreicht das markierte Dock, meidet rote gesperrte Luftwege und kreuzt sich nicht selbst. Jede ungültige Abgabe zählt als Fehler; drei Fehler beenden die Schicht und bieten einen kostenlosen Neustart an.", "Wähle eine freigeschaltete Schicht und lies das Ziel. Zeichne eine durchgehende Route durch die Knoten in Reihenfolge bis zum markierten Dock und lasse los. Nach drei ungültigen Routen wird ein kostenloser Neustart angeboten.", ["Wie viele Schichten gibt es?", "Die Kampagne umfasst 30 entworfene Schichten in sechs Kapiteln."], ["Was passiert nach drei ungültigen Routen?", "Die aktuelle Schicht endet und ein kostenloser Neustart wird angeboten."]],
+    it: ["Risolvi 30 turni di percorsi a Cloudline Skyport: traccia dall’aeronave passando in ordine per tutti i nodi numerati fino al molo indicato.", "Un percorso valido visita tutti i nodi numerati in ordine, raggiunge il molo indicato, evita le rotte rosse bloccate e non incrocia la propria linea. Ogni invio non valido aggiunge un errore; tre errori terminano il turno e offrono un nuovo tentativo gratuito.", "Scegli un turno sbloccato e leggi l’obiettivo. Traccia un percorso continuo attraverso i nodi in ordine fino al molo indicato e rilascia. Dopo tre percorsi non validi viene offerto un nuovo tentativo gratuito.", ["Quanti turni ci sono?", "La campagna comprende 30 turni progettati in sei capitoli."], ["Cosa succede dopo tre percorsi non validi?", "Il turno attuale termina e viene offerto un nuovo tentativo gratuito."]],
+    ru: ["Решите 30 маршрутных задач Cloudline Skyport: проведите дирижабль через все пронумерованные узлы по порядку к указанному доку.", "Верный маршрут проходит все пронумерованные узлы по порядку, достигает указанного дока, обходит красные закрытые пути и не пересекает сам себя. Каждая неверная отправка добавляет ошибку; три ошибки завершают смену и предлагают бесплатный повтор.", "Выберите открытую смену и прочитайте цель. Нарисуйте непрерывный маршрут через узлы по порядку к указанному доку и отпустите. После трёх неверных маршрутов предлагается бесплатный повтор.", ["Сколько всего смен?", "Кампания включает 30 созданных вручную смен в шести главах."], ["Что происходит после трёх неверных маршрутов?", "Текущая смена завершается и предлагается бесплатный повтор."]],
+    hi: ["Cloudline Skyport में 30 रूट-पहेली शिफ्ट हल करें: एयरशिप से शुरू करके सभी क्रमांकित नोड क्रम में पार करें और बताए गए डॉक तक पहुँचें।", "सही मार्ग सभी क्रमांकित नोड क्रम से पार करता है, बताए गए डॉक तक पहुँचता है, लाल बंद हवाई मार्गों से बचता है और अपनी ही रेखा को नहीं काटता। हर अमान्य सबमिशन से एक त्रुटि जुड़ती है; तीन त्रुटियों पर शिफ्ट समाप्त होती है और मुफ्त पुनः प्रयास मिलता है।", "अनलॉक शिफ्ट चुनें और लक्ष्य पढ़ें। क्रमांकित नोड से होकर बताए गए डॉक तक एक लगातार मार्ग बनाएँ और छोड़ें। तीन अमान्य मार्गों के बाद मुफ्त पुनः प्रयास दिया जाता है।", ["कितनी शिफ्ट हैं?", "छह अध्यायों में कुल 30 डिज़ाइन की गई शिफ्ट हैं।"], ["तीन अमान्य मार्गों के बाद क्या होता है?", "मौजूदा शिफ्ट समाप्त होती है और मुफ्त पुनः प्रयास दिया जाता है।"]],
+    ar: ["حلّ 30 مناوبة من ألغاز المسارات في Cloudline Skyport: ارسم من المنطاد عبر كل العقد المرقمة بالترتيب حتى الرصيف المحدد.", "يزور المسار الصحيح كل العقد المرقمة بالترتيب، ويصل إلى الرصيف المحدد، ويتجنب الممرات الحمراء المغلقة ولا يتقاطع مع نفسه. تضيف كل محاولة غير صالحة خطأً؛ وتنهي ثلاثة أخطاء المناوبة مع إتاحة إعادة مجانية.", "اختر مناوبة مفتوحة واقرأ هدفها. ارسم مساراً متصلاً عبر العقد بالترتيب إلى الرصيف المحدد ثم أفلت. بعد ثلاثة مسارات غير صالحة تُتاح إعادة مجانية.", ["كم عدد المناوبات؟", "تضم الحملة 30 مناوبة مصممة ضمن ستة فصول."], ["ماذا يحدث بعد ثلاثة مسارات غير صالحة؟", "تنتهي المناوبة الحالية وتُتاح إعادة مجانية."]]
+  };
+  const skyportGuideLocaleSupplement140 = {
+    en: { gameplay: "Numbered-Node Route Puzzle", genre: ["Puzzle", "Strategy", "Animal"], time: "4-7 minutes per shift", strategyTips: ["Trace the whole path first; the visible line is the route the game checks.", "Visit nodes in order and keep clear of blocked lines and your own route."], progression: ["Across 30 shifts, challenges add up to four ordered nodes, up to three blocked airways, five layouts, changing dock targets, and rising flight goals."], designNote: "The route checker follows the visible sampled path; it never substitutes a hidden straight line for what you drew.", parent: "This is a route puzzle: there are no crew, fuel, repair parts, congestion, storms, or post-docking service steps." },
+    "zh-Hant": { gameplay: "編號節點航線謎題", genre: ["益智", "策略", "動物"], time: "每班約 4 至 7 分鐘", strategyTips: ["先看完整條路線；畫面上看見的線就是遊戲實際檢查的路徑。", "依序通過節點，避開封鎖線，也不要讓路線交叉。"], progression: ["30 個班次會逐步加入最多四個依序節點、最多三條封鎖航線、五種版面、不同指定碼頭與逐漸提高的飛行目標。"], designNote: "路線判定依照畫面顯示的取樣路徑，不會把玩家畫出的路線替換成隱藏直線。", parent: "這是航線謎題，沒有組員、燃料、維修零件、壅塞、暴風或靠港後服務流程。" },
+    "zh-Hans": { gameplay: "编号节点航线谜题", genre: ["益智", "策略", "动物"], time: "每班约 4 至 7 分钟", strategyTips: ["先看完整条路线；画面上看到的线就是游戏实际检查的路径。", "依序经过节点，避开封锁线，也不要让路线交叉。"], progression: ["30 个班次会逐步加入最多四个依序节点、最多三条封锁航线、五种版面、不同指定码头与逐渐提高的飞行目标。"], designNote: "路线判定依照画面显示的采样路径，不会把玩家画出的路线替换成隐藏直线。", parent: "这是航线谜题，没有组员、燃料、维修零件、拥堵、暴风或靠港后服务流程。" },
+    ja: { gameplay: "番号ノード航路パズル", genre: ["パズル", "戦略", "動物"], time: "1シフト約4～7分", strategyTips: ["まず全体の経路を確認しましょう。画面に見える線が判定対象のルートです。", "ノードを順番に通り、閉鎖線と自分のルートとの交差を避けます。"], progression: ["全30シフトで、順番に通るノードは最大4つ、閉鎖空路は最大3つまで増え、5種類の配置、異なる目的ドック、上昇する飛行目標が登場します。"], designNote: "ルート判定は画面上に描かれたサンプル経路を使い、見えない直線に置き換えません。", parent: "本作はルートパズルです。乗員、燃料、修理部品、混雑、嵐、ドック後の整備はありません。" },
+    ko: { gameplay: "번호 노드 경로 퍼즐", genre: ["퍼즐", "전략", "동물"], time: "교대당 4~7분", strategyTips: ["먼저 전체 경로를 살펴보세요. 화면에 보이는 선이 게임이 검사하는 실제 경로입니다.", "노드를 순서대로 지나고 폐쇄 항로와 자기 경로 교차를 피하세요."], progression: ["총 30개 교대에서 순서 노드는 최대 4개, 폐쇄 항로는 최대 3개까지 늘고, 5개 배치와 바뀌는 목표 도크 및 높아지는 비행 목표가 등장합니다."], designNote: "경로 판정은 화면에 표시된 샘플 경로를 따르며 보이지 않는 직선으로 대체하지 않습니다.", parent: "이 게임은 경로 퍼즐입니다. 승무원, 연료, 수리 부품, 혼잡, 폭풍, 도킹 후 서비스는 없습니다." },
+    es: { gameplay: "Rompecabezas de rutas con nodos numerados", genre: ["Puzle", "Estrategia", "Animales"], time: "4-7 minutos por turno", strategyTips: ["Traza mentalmente la ruta completa: la línea visible es la que comprueba el juego.", "Visita los nodos en orden y evita las vías bloqueadas y cruzar tu propia ruta."], progression: ["En 30 turnos aparecen hasta cuatro nodos ordenados, tres vías bloqueadas, cinco diseños, distintos muelles objetivo y metas de vuelo cada vez mayores."], designNote: "La comprobación sigue los puntos muestreados de la ruta visible; nunca la sustituye por una línea recta oculta.", parent: "Es un rompecabezas de rutas: no hay tripulación, combustible, piezas de reparación, congestión, tormentas ni tareas de servicio tras atracar." },
+    "pt-BR": { gameplay: "Quebra-cabeça de rotas com nós numerados", genre: ["Quebra-cabeça", "Estratégia", "Animais"], time: "4 a 7 minutos por turno", strategyTips: ["Planeje o trajeto inteiro primeiro: a linha visível é a rota que o jogo verifica.", "Passe pelos nós em ordem e evite vias bloqueadas e cruzar sua própria rota."], progression: ["Nos 30 turnos, surgem até quatro nós ordenados, três vias bloqueadas, cinco layouts, docas-alvo diferentes e metas de voo crescentes."], designNote: "A validação segue os pontos amostrados da rota visível e nunca a substitui por uma linha reta oculta.", parent: "Este é um quebra-cabeça de rotas: não há tripulação, combustível, peças de reparo, congestionamento, tempestades nem serviço após a docagem." },
+    fr: { gameplay: "Puzzle de routes à nœuds numérotés", genre: ["Puzzle", "Stratégie", "Animaux"], time: "4 à 7 minutes par shift", strategyTips: ["Repérez d’abord tout le trajet : la ligne visible est celle que le jeu vérifie.", "Passez par les nœuds dans l’ordre et évitez les voies fermées ainsi que votre propre tracé."], progression: ["Sur 30 shifts, les défis ajoutent jusqu’à quatre nœuds ordonnés, trois voies fermées, cinq configurations, des quais cibles variables et des objectifs de vol croissants."], designNote: "La validation suit les points échantillonnés du tracé visible et ne le remplace jamais par une ligne droite cachée.", parent: "C’est un puzzle de parcours : pas d’équipage, de carburant, de pièces de réparation, de congestion, de tempête ni de service après l’amarrage." },
+    de: { gameplay: "Routenrätsel mit nummerierten Knoten", genre: ["Rätsel", "Strategie", "Tiere"], time: "4–7 Minuten pro Schicht", strategyTips: ["Prüfe zuerst den gesamten Weg: Die sichtbare Linie ist die Route, die das Spiel bewertet.", "Besuche die Knoten der Reihe nach und vermeide Sperrlinien sowie Kreuzungen mit deiner Route."], progression: ["In 30 Schichten kommen bis zu vier Knoten in Reihenfolge, drei gesperrte Luftwege, fünf Layouts, wechselnde Zieldocks und steigende Flugziele hinzu."], designNote: "Die Routenprüfung folgt den sichtbaren Abtastpunkten und ersetzt die gezeichnete Route nie durch eine unsichtbare Gerade.", parent: "Dies ist ein Routenrätsel: Es gibt keine Crew, keinen Treibstoff, keine Reparaturteile, keinen Stau, keine Stürme und keine Versorgung nach dem Andocken." },
+    it: { gameplay: "Puzzle di percorsi con nodi numerati", genre: ["Puzzle", "Strategia", "Animali"], time: "4-7 minuti per turno", strategyTips: ["Esamina prima tutto il percorso: la linea visibile è quella che il gioco controlla.", "Visita i nodi in ordine ed evita le rotte bloccate e gli incroci con il tuo percorso."], progression: ["Nei 30 turni compaiono fino a quattro nodi in ordine, tre rotte bloccate, cinque layout, moli obiettivo variabili e traguardi di volo crescenti."], designNote: "Il controllo segue i punti campionati del percorso visibile e non lo sostituisce mai con una linea retta nascosta.", parent: "È un puzzle di percorsi: non ci sono equipaggio, carburante, ricambi, congestione, tempeste o servizi dopo l’attracco." },
+    ru: { gameplay: "Головоломка с нумерованными узлами", genre: ["Головоломка", "Стратегия", "Животные"], time: "4–7 минут на смену", strategyTips: ["Сначала проследите весь путь: игра проверяет именно видимую линию.", "Проходите узлы по порядку, обходите закрытые пути и не пересекайте собственный маршрут."], progression: ["За 30 смен добавляются до четырёх узлов по порядку, три закрытых воздушных пути, пять схем, разные целевые доки и растущие цели полёта."], designNote: "Проверка следует видимым точкам маршрута и не подменяет нарисованный путь скрытой прямой линией.", parent: "Это маршрутная головоломка: здесь нет экипажа, топлива, запчастей, пробок, штормов и обслуживания после стыковки." },
+    hi: { gameplay: "क्रमांकित नोड मार्ग पहेली", genre: ["पहेली", "रणनीति", "पशु"], time: "प्रति शिफ्ट 4–7 मिनट", strategyTips: ["पहले पूरा रास्ता देखें: दिखाई देने वाली रेखा ही वह मार्ग है जिसे गेम जाँचता है।", "नोड क्रम से पार करें और बंद हवाई मार्गों तथा अपनी रेखा से टकराने से बचें।"], progression: ["30 शिफ्ट में क्रम वाले अधिकतम चार नोड, तीन बंद हवाई मार्ग, पाँच लेआउट, बदलते लक्ष्य डॉक और बढ़ते उड़ान लक्ष्य जुड़ते हैं।"], designNote: "रूट जाँच दिखाई देने वाले नमूना-पथ का अनुसरण करती है; यह बनाए गए रास्ते को किसी छिपी सीधी रेखा से नहीं बदलती।", parent: "यह मार्ग-पहेली है: इसमें चालक दल, ईंधन, मरम्मत पुर्ज़े, भीड़, तूफ़ान या डॉक के बाद सेवा नहीं है।" },
+    ar: { gameplay: "لغز مسار بعُقد مرقمة", genre: ["ألغاز", "استراتيجية", "حيوانات"], time: "4-7 دقائق لكل مناوبة", strategyTips: ["تتبّع المسار كاملاً أولاً؛ فالخط الظاهر هو المسار الذي تفحصه اللعبة.", "اعبر العقد بالترتيب وتجنب الممرات المغلقة وتقاطع مسارك مع نفسه."], progression: ["تضيف المناوبات الثلاثون ما يصل إلى أربع عقد مرتبة وثلاثة ممرات مغلقة وخمسة تخطيطات وأرصفة هدف متغيرة وأهداف طيران متصاعدة."], designNote: "يتبع فحص المسار نقاط المسار الظاهر ولا يستبدله بخط مستقيم مخفي.", parent: "هذه لعبة ألغاز مسارات: لا يوجد طاقم أو وقود أو قطع إصلاح أو ازدحام أو عواصف أو خدمة بعد الرسو." }
+  };
+  for (const [localeCode, [intro, systems, how, faqA, faqB]] of Object.entries(skyportRoutePuzzleTruth)) {
+    const guide = localeCode === "en" ? games["animal-skyport-dispatch"] : localizedGames[localeCode]?.["animal-skyport-dispatch"];
+    if (!guide) continue;
+    guide.intro = intro;
+    guide.story = [faqA[1]];
+    guide.systems = [systems];
+    guide.how = [how];
+    guide.faq = [faqA, faqB];
+    Object.assign(guide, skyportGuideLocaleSupplement140[localeCode]);
+    const tags = localizedText140Tags[localeCode]?.skyport;
+    if (tags) guide.text140Tags = tags;
+  }
+  if (window.__routeExport) {
+    window.__routeExport.skyportRoutePuzzleTruth = skyportRoutePuzzleTruth;
+    window.__routeExport.skyportGuideLocaleSupplement140 = skyportGuideLocaleSupplement140;
+  }
   const spiderRelatedCardLocaleCopy = {
     "zh-Hant": {
       "klondike-solitaire": { title: "克朗代克接龍", intro: "經典 52 張牌玩法：把四個花色從 A 排到 K，同時管理牌桌、牌庫與棄牌堆。" },
@@ -21114,6 +21184,127 @@
     guide.strategyTips = [...(guide.strategyTips || []), copy.strategyTips];
     guide.faq = [...(guide.faq || []), copy.faq];
   }
+  const beastSelectableRosterTruth = {
+    en: {
+      gameplay: "Route-Building Tower Defense", genre: ["Tower Defense", "Strategy", "Animal"],
+      intro: "Beast Guardian is a route-building tower-defense campaign with eight selectable defenders: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, and Gear Horn Rux. Protect the crystal through six regions of five stages.",
+      story: "Choose from three soldiers—Acorn Guard, Scout Archer, and Rune Sapper—and five heroes: Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, and Gear Horn Rux.",
+      systems: "Rally: once each wave, select a living defender to boost for six seconds. Rally increases damage by 32% and shortens that defender’s attack cooldown.",
+      faq: ["Which defenders can I place?", "Eight: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, and Gear Horn Rux."]
+    },
+    "zh-Hant": {
+      gameplay: "路線建構塔防", genre: ["塔防", "策略", "動物"],
+      intro: "《獸王守衛》是路線建構塔防戰役，可部署橡果守衛、斥候弓手、符文工兵、爆鬃雷歐、苔殼太郎、月帽歐拉、電爪菲亞與齒角魯克斯共 8 名防禦者。守護水晶，通過六個各有五關的區域。",
+      story: "可部署的三名士兵是橡果守衛、斥候弓手與符文工兵；五名英雄是爆鬃雷歐、苔殼太郎、月帽歐拉、電爪菲亞與齒角魯克斯。",
+      systems: "集結：每波可使用一次，選取一名存活的防禦者強化 6 秒。期間傷害提高 32%，攻擊冷卻時間縮短。",
+      faq: ["可以部署哪些防禦者？", "共有八名：橡果守衛、斥候弓手、符文工兵、爆鬃雷歐、苔殼太郎、月帽歐拉、電爪菲亞與齒角魯克斯。"]
+    },
+    "zh-Hans": {
+      gameplay: "路线建构塔防", genre: ["塔防", "策略", "动物"],
+      intro: "《兽王守卫》是路线建构塔防战役，可部署橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯共 8 名防御者。守护水晶，通关六个各有五关的区域。",
+      story: "可部署的三名士兵是橡果守卫、斥候弓手与符文工兵；五名英雄是爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯。",
+      systems: "集结：每波可使用一次，选取一名存活的防御者强化 6 秒。期间伤害提高 32%，攻击冷却时间缩短。",
+      faq: ["可以部署哪些防御者？", "共有八名：橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯。"]
+    },
+    ja: {
+      gameplay: "ルート構築型タワーディフェンス", genre: ["タワーディフェンス", "戦略", "動物"],
+      intro: "ビースト・ガーディアンはルート構築型タワーディフェンスです。Acorn Guard、Scout Archer、Rune Sapper、Boom Mane Leo、Moss Shell Taro、Moon Cap Orla、Spark Paw Fia、Gear Horn Ruxの8体を配置し、全6地域・各5ステージでクリスタルを守ります。",
+      story: "配置できる兵士はAcorn Guard、Scout Archer、Rune Sapperの3体、英雄はBoom Mane Leo、Moss Shell Taro、Moon Cap Orla、Spark Paw Fia、Gear Horn Ruxの5体です。",
+      systems: "Rally：各ウェーブで1回、HPのある防衛者を選んで6秒間強化できます。ダメージが32%増加し、攻撃間隔が短くなります。",
+      faq: ["配置できる防衛者は？", "Acorn Guard、Scout Archer、Rune Sapper、Boom Mane Leo、Moss Shell Taro、Moon Cap Orla、Spark Paw Fia、Gear Horn Ruxの8体です。"]
+    },
+    ko: {
+      gameplay: "경로 건설형 타워 디펜스", genre: ["타워 디펜스", "전략", "동물"],
+      intro: "비스트 가디언은 경로를 설계하는 타워 디펜스 캠페인입니다. Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, Gear Horn Rux 총 8명의 방어자를 배치해 6개 지역의 각 5개 스테이지에서 수정 핵을 지키세요.",
+      story: "배치 가능한 병사는 Acorn Guard, Scout Archer, Rune Sapper 3명이며, 영웅은 Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, Gear Horn Rux 5명입니다.",
+      systems: "Rally: 웨이브마다 한 번, 살아 있는 방어자를 선택해 6초간 강화합니다. 피해량이 32% 증가하고 공격 재사용 대기시간이 짧아집니다.",
+      faq: ["어떤 방어자를 배치할 수 있나요?", "Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia, Gear Horn Rux 총 8명입니다."]
+    },
+    es: {
+      gameplay: "Defensa de torres con rutas", genre: ["Defensa de torres", "Estrategia", "Animales"],
+      intro: "Beast Guardian es una campaña de defensa de torres con rutas. Puedes desplegar ocho defensores: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux. Protege el cristal en seis regiones de cinco fases.",
+      story: "Los tres soldados disponibles son Acorn Guard, Scout Archer y Rune Sapper; los cinco héroes son Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux.",
+      systems: "Rally: puedes usarlo una vez por oleada para potenciar durante seis segundos a un defensor vivo seleccionado. Aumenta su daño un 32% y reduce su tiempo entre ataques.",
+      faq: ["¿Qué defensores puedo colocar?", "Hay ocho: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux."]
+    },
+    "pt-BR": {
+      gameplay: "Defesa de torres com rotas", genre: ["Defesa de torres", "Estratégia", "Animais"],
+      intro: "Beast Guardian é uma campanha de defesa de torres com rotas. Você pode posicionar oito defensores: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia e Gear Horn Rux. Proteja o cristal em seis regiões com cinco fases cada.",
+      story: "Os três soldados disponíveis são Acorn Guard, Scout Archer e Rune Sapper; os cinco heróis são Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia e Gear Horn Rux.",
+      systems: "Rally: uma vez por onda, escolha um defensor vivo para receber um impulso de seis segundos. O dano aumenta 32% e o intervalo entre ataques diminui.",
+      faq: ["Quais defensores posso posicionar?", "São oito: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia e Gear Horn Rux."]
+    },
+    fr: {
+      gameplay: "Défense de tours avec construction de routes", genre: ["Défense de tours", "Stratégie", "Animaux"],
+      intro: "Beast Guardian est une campagne de défense de tours avec construction de routes. Huit défenseurs sont disponibles : Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia et Gear Horn Rux. Protégez le cristal dans six régions de cinq niveaux.",
+      story: "Les trois soldats disponibles sont Acorn Guard, Scout Archer et Rune Sapper ; les cinq héros sont Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia et Gear Horn Rux.",
+      systems: "Ralliement : une fois par vague, choisissez un défenseur vivant pour le renforcer pendant six secondes. Ses dégâts augmentent de 32 % et son délai entre les attaques diminue.",
+      faq: ["Quels défenseurs puis-je placer ?", "Il y en a huit : Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia et Gear Horn Rux."]
+    },
+    de: {
+      gameplay: "Tower-Defense mit Routenbau", genre: ["Tower-Defense", "Strategie", "Tiere"],
+      intro: "Beast Guardian ist eine Tower-Defense-Kampagne mit Routenbau. Acht Verteidiger sind verfügbar: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia und Gear Horn Rux. Schütze den Kristall in sechs Regionen mit je fünf Stufen.",
+      story: "Die drei verfügbaren Soldaten sind Acorn Guard, Scout Archer und Rune Sapper; die fünf Helden sind Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia und Gear Horn Rux.",
+      systems: "Rally: Einmal pro Welle kannst du einen lebenden Verteidiger sechs Sekunden lang stärken. Sein Schaden steigt um 32 %, und die Angriffspause wird kürzer.",
+      faq: ["Welche Verteidiger kann ich platzieren?", "Es gibt acht: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia und Gear Horn Rux."]
+    },
+    it: {
+      gameplay: "Difesa di torri con percorsi", genre: ["Difesa di torri", "Strategia", "Animali"],
+      intro: "Beast Guardian è una campagna di difesa di torri con percorsi. Puoi schierare otto difensori: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia e Gear Horn Rux. Proteggi il cristallo in sei regioni da cinque livelli.",
+      story: "I tre soldati disponibili sono Acorn Guard, Scout Archer e Rune Sapper; i cinque eroi sono Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia e Gear Horn Rux.",
+      systems: "Raduno: una volta per ondata, scegli un difensore vivo da potenziare per sei secondi. I danni aumentano del 32% e l'intervallo tra gli attacchi si riduce.",
+      faq: ["Quali difensori posso schierare?", "Sono otto: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia e Gear Horn Rux."]
+    },
+    ru: {
+      gameplay: "Башенная защита с прокладкой маршрутов", genre: ["Защита башнями", "Стратегия", "Животные"],
+      intro: "Beast Guardian — кампания по защите башнями с прокладкой маршрутов. Можно выставить восемь защитников: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia и Gear Horn Rux. Защищайте кристалл в шести регионах по пять этапов.",
+      story: "Доступны три солдата: Acorn Guard, Scout Archer и Rune Sapper; и пять героев: Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia и Gear Horn Rux.",
+      systems: "Сбор: один раз за волну выберите живого защитника и усильте его на шесть секунд. Урон возрастает на 32%, а перерыв между атаками сокращается.",
+      faq: ["Каких защитников можно выставить?", "Всего восемь: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia и Gear Horn Rux."]
+    },
+    hi: {
+      gameplay: "रास्ता-निर्माण टावर रक्षा", genre: ["टावर रक्षा", "रणनीति", "पशु"],
+      intro: "Beast Guardian रास्ते बनाने वाला टावर-डिफेंस अभियान है। Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux समेत आठ रक्षक तैनात किए जा सकते हैं। छह क्षेत्रों के पाँच-पाँच चरणों में क्रिस्टल की रक्षा करें।",
+      story: "तीन उपलब्ध सैनिक Acorn Guard, Scout Archer और Rune Sapper हैं; पाँच हीरो Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux हैं।",
+      systems: "Rally: हर वेव में एक बार चुने हुए जीवित रक्षक को छह सेकंड तक मजबूत करें। उसका नुकसान 32% बढ़ता है और हमलों के बीच का समय घटता है।",
+      faq: ["मैं किन रक्षकों को तैनात कर सकता हूँ?", "कुल आठ: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux।"]
+    },
+    ar: {
+      gameplay: "دفاع أبراج ببناء المسارات", genre: ["دفاع الأبراج", "استراتيجية", "حيوانات"],
+      intro: "Beast Guardian حملة دفاع أبراج ببناء المسارات. يمكنك نشر ثمانية مدافعين: Acorn Guard وScout Archer وRune Sapper وBoom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux. احمِ البلورة في ست مناطق من خمس مراحل لكل منها.",
+      story: "الجنود الثلاثة المتاحون هم Acorn Guard وScout Archer وRune Sapper؛ والأبطال الخمسة هم Boom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux.",
+      systems: "التجمّع: مرة واحدة في كل موجة، اختر مدافعاً حياً لتعزيزه لمدة ست ثوانٍ. يزداد ضرره بنسبة 32% ويقصر الفاصل بين هجماته.",
+      faq: ["ما المدافعون الذين يمكنني نشرهم؟", "هناك ثمانية: Acorn Guard وScout Archer وRune Sapper وBoom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux."]
+    }
+  };
+  const beastProgressionTruth140 = {
+    en: "Stages 1–5 teach route bends, split lanes, ranged cover, boar pressure, and open paths. Stages 6–10 add flying bats and mixed waves; stages 11–15 introduce breakable armor. Stages 16–20 add moving enemies that regenerate, stages 21–25 add wounded speed surges, and stages 26–30 combine these rules with reduced slowing. Six Boss stages add distinct mechanics, culminating in Voidroot Emperor’s two phase changes.",
+    "zh-Hant": "第 1–5 關練習轉彎路線、分流、遠程火力、野豬壓力與保持通路；第 6–10 關加入飛行蝠與空地混合波次，第 11–15 關加入可破壞護甲。第 16–20 關出現移動中再生的敵人，第 21–25 關加入受傷加速，第 26–30 關則組合這些規則並降低緩速效果。六個 Boss 關各有不同機制，最後由虛根皇帝進行兩次階段轉換。",
+    "zh-Hans": "第 1–5 关练习转弯路线、分流、远程火力、野猪压力与保持通路；第 6–10 关加入飞行蝠与空地混合波次，第 11–15 关加入可破坏护甲。第 16–20 关出现移动中再生的敌人，第 21–25 关加入受伤加速，第 26–30 关则组合这些规则并降低减速效果。六个 Boss 关各有不同机制，最后由虚根皇帝进行两次阶段转换。",
+    ja: "ステージ1～5ではルートの曲がり、分岐、遠距離攻撃、イノシシへの対応、通路を開けておく重要性を学びます。6～10では飛行するコウモリと地上・空中の混成ウェーブ、11～15では破壊可能な装甲が登場します。16～20では移動中に再生する敵、21～25では負傷時の加速、26～30ではこれらのルールとスロー耐性が組み合わさります。6つのボス戦には固有の仕組みがあり、最後のVoidroot Emperorは2回フェーズを変えます。",
+    ko: "1~5스테이지에서는 경로 굽이, 분리된 차선, 원거리 지원, 멧돼지 압박, 열린 길의 중요성을 익힙니다. 6~10스테이지는 비행 박쥐와 지상·공중 혼합 웨이브를 추가하고, 11~15스테이지는 파괴 가능한 방어구를 도입합니다. 16~20스테이지에는 이동 중 재생하는 적, 21~25스테이지에는 부상 시 가속하는 적이 등장하며, 26~30스테이지는 기존 규칙과 감속 효과 감소를 결합합니다. 여섯 보스 스테이지에는 각기 다른 기믹이 있으며 마지막 Voidroot Emperor는 두 번 페이즈를 전환합니다.",
+    es: "Las fases 1–5 enseñan curvas, carriles separados, cobertura a distancia, presión de los jabalíes y la importancia de dejar una ruta abierta. Las fases 6–10 añaden murciélagos voladores y oleadas mixtas; las 11–15 introducen armadura rompible. En las 16–20 aparecen enemigos que se regeneran al moverse; en las 21–25, acelerones al resultar heridos; y las 26–30 combinan esas reglas con menos eficacia de ralentización. Las seis fases de jefe tienen mecánicas propias; Voidroot Emperor cambia de fase dos veces.",
+    "pt-BR": "As fases 1–5 ensinam curvas, rotas divididas, cobertura à distância, pressão dos javalis e a importância de manter um caminho aberto. As fases 6–10 adicionam morcegos voadores e ondas mistas; as 11–15 introduzem armadura destrutível. Nas fases 16–20, inimigos se regeneram enquanto avançam; nas 21–25, aceleram quando feridos; e as 26–30 combinam essas regras com menor eficácia de lentidão. As seis fases de chefe têm mecânicas próprias; Voidroot Emperor muda de fase duas vezes.",
+    fr: "Les étapes 1 à 5 enseignent les virages, les voies séparées, la couverture à distance, la pression des sangliers et l’importance de laisser un passage ouvert. Les étapes 6 à 10 ajoutent des chauves-souris volantes et des vagues mixtes ; les étapes 11 à 15 introduisent une armure destructible. Les ennemis des étapes 16 à 20 se régénèrent en avançant, ceux des étapes 21 à 25 accélèrent lorsqu’ils sont blessés, et les étapes 26 à 30 combinent ces règles avec des ralentissements moins efficaces. Les six Boss ont chacun leur mécanique ; Voidroot Emperor change deux fois de phase.",
+    de: "Die Stufen 1–5 vermitteln Kurven, getrennte Wege, Fernkampfdeckung, Wildschweindruck und offene Routen. Stufen 6–10 ergänzen fliegende Fledermäuse und gemischte Wellen; Stufen 11–15 führen zerstörbare Rüstung ein. Auf Stufen 16–20 regenerieren sich Gegner während der Bewegung, auf 21–25 beschleunigen sie bei Verletzungen, und 26–30 verbinden diese Regeln mit schwächerer Verlangsamung. Die sechs Bossstufen haben eigene Mechaniken; Voidroot Emperor wechselt zweimal die Phase.",
+    it: "Le fasi 1–5 insegnano curve, corsie separate, copertura a distanza, pressione dei cinghiali e l’importanza di lasciare un percorso aperto. Le fasi 6–10 aggiungono pipistrelli volanti e ondate miste; le 11–15 introducono armature distruttibili. Nelle fasi 16–20 i nemici si rigenerano mentre avanzano, nelle 21–25 accelerano quando sono feriti e le 26–30 combinano queste regole con rallentamenti meno efficaci. Le sei fasi Boss hanno meccaniche specifiche; Voidroot Emperor cambia fase due volte.",
+    ru: "Этапы 1–5 знакомят с поворотами маршрута, разделением путей, дальним прикрытием, натиском кабанов и важностью открытого прохода. На этапах 6–10 появляются летучие мыши и смешанные волны, на 11–15 — разрушаемая броня. На этапах 16–20 враги восстанавливаются на ходу, на 21–25 ускоряются при ранении, а 26–30 объединяют эти правила с ослаблением замедления. У шести боссов свои механики; Voidroot Emperor дважды меняет фазу.",
+    hi: "चरण 1–5 में मुड़े हुए रास्ते, अलग लेन, दूर से सुरक्षा, जंगली सूअरों का दबाव और खुला मार्ग रखने का महत्व सिखाया जाता है। चरण 6–10 में उड़ने वाले चमगादड़ और मिली-जुली लहरें आती हैं; 11–15 में टूटने योग्य कवच जुड़ता है। चरण 16–20 में चलते समय पुनर्जीवित होने वाले शत्रु, 21–25 में घायल होने पर तेज़ होने वाले शत्रु और 26–30 में इन नियमों के साथ कमज़ोर धीमापन शामिल है। छह बॉस चरणों की अपनी युक्तियाँ हैं; Voidroot Emperor दो बार चरण बदलता है।",
+    ar: "تعلّم المراحل 1–5 المنعطفات والمسارات المنفصلة والتغطية بعيدة المدى وضغط الخنازير وأهمية إبقاء طريق مفتوح. تضيف المراحل 6–10 خفافيش طائرة وموجات مختلطة، وتضيف 11–15 دروعاً قابلة للكسر. يتجدد الأعداء أثناء الحركة في 16–20، ويتسارعون عند الإصابة في 21–25، ثم تجمع 26–30 هذه القواعد مع ضعف الإبطاء. لكل مرحلة من مراحل الزعماء الست آلية خاصة؛ ويغيّر Voidroot Emperor طوره مرتين."
+  };
+  for (const [localeCode, copy] of Object.entries(beastSelectableRosterTruth)) {
+    const guide = localeCode === "en" ? games["beast-tactician"] : localizedGames[localeCode]?.["beast-tactician"];
+    if (!guide) continue;
+    guide.intro = copy.intro;
+    guide.gameplay = copy.gameplay;
+    guide.genre = copy.genre;
+    guide.progression = [beastProgressionTruth140[localeCode]];
+    guide.story = [...(guide.story || []).slice(0, 1), copy.story];
+    guide.systems = [...(guide.systems || []).slice(0, 1), copy.systems];
+    guide.faq = [...(guide.faq || []).filter(([question]) => !/rally|集結|集结|ralliement|raduno|сбор|रैली|تجمّع|랠리|ラリー|which defenders|defenders can i|qué defensores|quais defensores|quels défenseurs|welche verteidiger|quali difensori|каких защитников|कौन से रक्षक|ما المدافعون|어떤 방어자|配置できる防衛者|可以部署哪些防御者|可以部署哪些角色|目前可以部署哪些角色/i.test(question)), copy.faq];
+    guide.text140Tags = localizedText140Tags[localeCode]?.beast || guide.text140Tags;
+  }
+  if (window.__routeExport) window.__routeExport.beastSelectableRosterTruth = beastSelectableRosterTruth;
   localizedRelatedCardCopy = {
     "zh-Hant": {
       "maze-chase": { title: "星徑迷宮", intro: "在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。" },

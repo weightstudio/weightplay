@@ -34,3 +34,4 @@
 #commands #feedback{color:#e6d498;padding-inline:4px}
 @keyframes pawflow-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 @media(prefers-reduced-motion:reduce){#commands .courier-top img{animation:none}#battleContent #boardProgress::-webkit-progress-value{transition:none}}
+@media (orientation:landscape) and (max-height:480px){#battleContent[data-wide=true]{grid-template-columns:minmax(0,1fr) 300px}}
