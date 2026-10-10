@@ -518,6 +518,12 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
 /* Sliding 15 owns the target-floor repair; preserve other Logic Lab games. */
 body[data-logic-game="sliding-15"] .logic-action-row button { min-width: 44px; min-height: 44px; }
 body[data-logic-game="sliding-15"] .logic-battle-back { min-width: 48px; min-height: 44px; }
+/* The shared desktop Battle fit scales this short-height viewport slightly;
+   reserve enough CSS size so the rendered controls stay at the 44px floor. */
+@media (min-width: 700px) and (min-height: 561px) and (max-height: 760px) {
+  body[data-logic-game="sliding-15"] .logic-battle-wrap:has(.logic-sliding-board) > .logic-action-row button { min-height: 50px; }
+  body[data-logic-game="sliding-15"] .logic-battle-header .logic-battle-back { min-width: 50px; min-height: 50px; }
+}
 /* Keep Sliding 15's primary board anchored while Hint replaces the short
    ready message with a localized explanation that may wrap to extra lines. */
 body[data-logic-game="sliding-15"] .logic-status-line {
@@ -543,8 +549,9 @@ body[data-logic-game="sliding-15"] .logic-status-line {
      Keep every Sliding 15 tile and direct Battle control above 44 physical
      pixels after that transform, without changing other Logic Lab games. */
   body[data-logic-game="sliding-15"] .logic-sliding-board {
-    width: min(100%, 244px);
+    width: min(100%, 220px);
     grid-template-columns: repeat(4, minmax(50px, 1fr));
+    transform: translateY(24px);
   }
   body[data-logic-game="sliding-15"] .logic-sliding-board .logic-cell {
     min-width: 50px;

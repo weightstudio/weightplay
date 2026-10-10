@@ -73,3 +73,49 @@ body[data-wp-game-id="animal-canopy-cut"] .stage-tabs>button{grid-column:2!impor
    shared frame. The Battle artwork itself remains untouched. */
 body[data-wp-game-id="animal-canopy-cut"] .stage-screen,
 body[data-wp-game-id="animal-canopy-cut"] .battle-screen{border:0!important;border-radius:0!important;box-shadow:none!important}
+
+/* Game-owned content slots. Shared frame owns all top controls and tracks. */
+#app [hidden]{display:none!important}
+#app #main-screen{min-height:0!important;justify-content:initial;align-items:stretch}
+#app .locale-picker[hidden]{display:none!important}
+#stage-content{display:grid;grid-template-rows:auto minmax(0,1fr);gap:8px;overflow:hidden}
+#stage-content .stage-progress{margin:0;padding:4px}
+#stage-list [data-wp-item-content]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:100%;text-align:center}
+#stage-list .stage-number{font-size:1.5rem;font-weight:900;color:var(--gold)}
+#app #battle-content{display:grid;grid-template-rows:auto 4px minmax(0,1fr) 24px auto;gap:6px;overflow:hidden}
+.canopy-objective{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:24px;color:#f9eec4;font-size:14px}
+#app #stage-objective{margin:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start;font-size:14px}
+#miss-label{white-space:nowrap;font-variant-numeric:tabular-nums}
+#miss-label[data-danger="true"],#battle-status[data-tone="danger"]{color:#ff9aad}
+#round-meter{display:block;appearance:none;width:100%;height:4px;border:0;border-radius:2px;background:#173d42;color:#92dbb7}
+#round-meter::-webkit-progress-bar{background:#173d42}
+#round-meter::-webkit-progress-value{background:#92dbb7}
+#round-meter::-moz-progress-bar{background:#92dbb7}
+.canopy-arena{position:relative;min-height:0;overflow:hidden;border:1px solid #4e8d80;border-radius:12px;background:url('assets/animal-canopy-cut-background.png') center/cover}
+#app #arena{position:absolute;inset:0;width:100%!important;height:100%!important;max-height:none!important;min-height:0!important;border:0;border-radius:0;display:block;background:transparent;touch-action:none;user-select:none}
+#app .battle-status{margin:0;font-size:13px;line-height:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#app .battle-key{justify-content:center;gap:4px 14px;flex-wrap:nowrap;margin:0;padding:0;border:0;background:none;font-size:12px}
+#app .battle-key-item{gap:5px;min-width:0}
+.key-art{width:30px!important;height:30px!important;flex:none;border:0!important;background:transparent!important}
+#pause-panel{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#08252ed9}
+#pause-panel[hidden]{display:none}
+#pause-title{font-size:24px}
+#resume{min-width:160px}
+#app #result-screen{position:absolute!important;inset:0!important;z-index:120;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;width:100%!important;height:100%!important;min-height:0!important;max-height:100%!important;overflow:auto;padding:24px!important;background:#0b2735f5!important;text-align:center}
+#result-screen p,#result-screen h2{margin:0;max-width:90%;line-height:1.45}
+#result-score{font-size:clamp(40px,10vw,68px);line-height:1;color:#ffe2a2;font-variant-numeric:tabular-nums}
+#result-stats{font-size:14px;color:#d1ece2}
+#result-record{color:#ffe2a2}
+#result-checkpoint{font-size:13px;color:#a9e3cb}
+#app .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:min(600px,100%)}
+#app .result-actions button{min-height:48px}
+#app .result-actions button:disabled{opacity:.4;cursor:default}
+@media(orientation:landscape) and (max-height:460px){
+ #app #battle-content{grid-template-rows:22px 3px minmax(0,1fr) 20px;gap:3px}
+ #app .battle-key{display:none}
+ #app .battle-status{line-height:20px;font-size:12px}
+ #app #result-screen{gap:6px;padding:12px!important}
+ #result-score{font-size:36px}
+ #app .result-actions{grid-template-columns:repeat(3,1fr);width:min(600px,100%)}
+}
+@media(prefers-reduced-motion:reduce){#app *{scroll-behavior:auto!important}}

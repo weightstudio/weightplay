@@ -1,15 +1,17 @@
 export const CANOPY_CUT_TEXT_140 = {
   en: {
     description: "Swipe safe fruit across 30 canopy stages, avoid dark seed pods, and adapt to crosswinds, weaving branches, light cues, and pulse timing.",
+    time: "15–25 seconds per stage",
     tags: ["Swipe Arcade", "Fruit-Chain Game", "Reflex Challenge"],
     intro: "Swipe through safe fruit in six five-stage arcs, build a score chain, and read each new cue before a dark seed pod or shifting pattern closes the route.",
     story: "Fruit crosses a bright treetop arena in 30 short stages. The opening levels teach readable arcs; crosswind arrives at stage 4, before the Lantern Checkpoint at stage 5. Stages 6–10 continue with shifting wind, 11–15 add twilight shadows, 16–20 weave in moving branches, and 21–25 combine active light signals with pulse timing. Stages 26–30 bring those cues together. A dark seed pod ends the run; clearing a stage requires at least one safe harvest and fewer than three misses. Checkpoint fruit appears at stages 5, 10, 15, 20, 25 and 30.",
     progression: "Stages 1–3 teach readable fruit arcs; sidewind arrives at stage 4, before the Lantern Checkpoint at stage 5. Stages 6–10 continue with changing wind. Stages 11–15 introduce twilight shadows, 16–20 add weaving branches, and 21–25 pair active light signals with pulse timing. Stages 26–30 combine the cues for the Grand Canopy Finale.",
-    strategy: "A common risky swipe is to keep extending a stroke toward fruit that has already left the arena. Take the safe fruit whose path is clear, then reset your read for the next arc; one clean harvest can clear a stage even when you leave the checkpoint fruit for a replay.",
+    strategy: "A common risky swipe is to keep extending a stroke toward fruit that has already left the arena. Take the safe fruit whose path is clear, then reset your read for the next arc; keep harvesting until the timer ends. Three missed fruit end the run, while checkpoint fruit is an optional replay challenge.",
     faq: ["Do I have to collect the checkpoint fruit to unlock the next stage?", "No. A checkpoint fruit appears in stages 5, 10, 15, 20, 25 and 30, and the Result tells you whether you collected it. A successful stage clear unlocks the next stage without it; replay the stage if you want another try at the checkpoint."],
   },
   "zh-Hant": {
     description: "在 30 個樹冠關卡中滑過安全果實、避開深色種莢，並因應交叉風、穿梭枝葉、光訊號與節奏脈衝。",
+    time: "每關約 15–25 秒",
     tags: ["滑動街機", "果實連擊", "反應挑戰"],
     intro: "在六段、每段五關的樹冠旅程中滑過安全果實、累積分數連擊；每次出手前先讀懂新提示，避開深色種莢與變化中的路線。",
     story: "果實在明亮的樹冠場地中飛行，全程共有 30 個短關卡。第 1–3 關先練習判讀清楚的果實弧線；第 4 關就加入側風，第 5 關抵達燈籠檢查點。第 6–10 關延續變向風，第 11–15 關加入暮色陰影，第 16–20 關加入穿梭枝葉，第 21–25 關結合啟動中的光訊號與節奏脈衝；第 26–30 關則綜合這些提示。碰到深色種莢會立刻結束該局；要過關，至少要採到一顆安全果實，且失誤少於三次。第 5、10、15、20、25、30 關會出現檢查點果實。",
@@ -19,6 +21,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   "zh-Hans": {
     description: "在 30 个树冠关卡中划过安全水果、避开深色种荚，并应对横风、穿梭枝叶、光信号和节奏脉冲。",
+    time: "每关约 15–25 秒",
     tags: ["滑动街机", "水果连击", "反应挑战"],
     intro: "在六段、每段五关的树冠旅程中划过安全水果、累积得分连击；每次出手前先读懂新提示，避开深色种荚和变化中的路线。",
     story: "水果飞过明亮的树冠场地，共有 30 个短关卡。第 1–3 关练习判断清晰的水果弧线；第 4 关就加入侧风，第 5 关到达灯笼检查点。第 6–10 关继续应对变向风；第 11–15 关加入暮色阴影，第 16–20 关加入穿梭枝叶，第 21–25 关结合启动中的光信号与节奏脉冲；第 26–30 关则综合这些提示。碰到深色种荚会立刻结束本局；要过关，至少要采到一颗安全水果，且失误少于三次。第 5、10、15、20、25、30 关会出现检查点水果。",
@@ -28,6 +31,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   ja: {
     description: "30 の樹冠ステージで安全なフルーツをスワイプし、暗い種のさやを避けながら、横風・枝の動き・光の合図・リズムに対応します。",
+    time: "1ステージ約15〜25秒",
     tags: ["スワイプアーケード", "フルーツ連鎖", "反応チャレンジ"],
     intro: "5 ステージずつの 6 つの弧を進み、安全なフルーツをスワイプしてスコアのチェーンを伸ばしましょう。暗い種のさやや変化する軌道に備え、次の合図を読んでから動くのがコツです。",
     story: "明るい樹冠のアリーナを、全 30 ステージの短い課題で進みます。ステージ 1～3 では果物の弧を読む練習をし、ステージ 4 で横風、ステージ 5 でランタンのチェックポイントが登場します。ステージ 6～10 では風向きが変わり、11～15 では夕暮れの影、16～20 では揺れる枝、21～25 では点灯する合図とパルスのタイミングが加わります。26～30 ではこれらの合図が組み合わさります。暗い種のさやに触れるとその挑戦は終了します。クリアには安全なフルーツを 1 個以上収穫し、ミスを 3 回未満に抑える必要があります。5、10、15、20、25、30 ステージにはチェックポイントのフルーツが出ます。",
@@ -37,6 +41,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   ko: {
     description: "30개 캐노피 스테이지에서 안전한 과일을 쓸어 담고 어두운 씨앗 꼬투리를 피하며, 맞바람·흔들리는 가지·빛 신호·박자에 대응하세요.",
+    time: "스테이지당 약 15–25초",
     tags: ["스와이프 아케이드", "과일 연속 수확", "반응 도전"],
     intro: "5개씩 여섯 구간으로 이어지는 캐노피 여정에서 안전한 과일을 쓸어 담아 점수 연속 기록을 만드세요. 어두운 씨앗 꼬투리와 달라지는 경로를 살피고 다음 신호를 읽은 뒤 움직이세요.",
     story: "밝은 나무 꼭대기 경기장에서 총 30개의 짧은 스테이지를 진행합니다. 1~3스테이지에서는 과일의 뚜렷한 곡선을 읽고, 4스테이지에서 맞바람이 시작되며 5스테이지에 랜턴 체크포인트가 나옵니다. 6~10스테이지는 바뀌는 바람을 이어서 다루고, 11~15스테이지는 황혼의 그림자, 16~20스테이지는 흔들리는 가지를 더합니다. 21~25스테이지에는 켜지는 빛 신호와 박자 타이밍이 함께 나오고, 26~30스테이지는 여러 신호를 종합합니다. 어두운 씨앗 꼬투리에 닿으면 그 도전은 끝납니다. 스테이지를 깨려면 안전한 과일을 하나 이상 수확하고 실수는 세 번 미만이어야 합니다. 5·10·15·20·25·30 스테이지에는 체크포인트 과일이 나타납니다.",
@@ -46,6 +51,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   es: {
     description: "Desliza sobre fruta segura en 30 fases de copa, evita las vainas oscuras y adáptate al viento, las ramas móviles, las señales de luz y el ritmo.",
+    time: "15–25 segundos por fase",
     tags: ["Arcade de deslizamiento", "Cadenas de fruta", "Desafío de reflejos"],
     intro: "Recorre seis arcos de cinco fases, desliza sobre fruta segura y alarga tu cadena de puntos. Lee cada nueva señal antes de moverte para evitar las vainas oscuras y las trayectorias cambiantes.",
     story: "La fruta cruza una arena luminosa entre las copas en 30 fases breves. Las fases 1–3 enseñan a leer trayectorias claras; el viento cruzado aparece en la fase 4, antes del punto de control Linterna en la 5. Las fases 6–10 continúan con cambios de viento; las 11–15 añaden sombras del atardecer y las 16–20, ramas móviles. En las fases 21–25 se combinan señales de luz activas y pulsos de ritmo; las 26–30 reúnen todas esas señales. Tocar una vaina oscura termina la ronda. Para superar una fase, debes recoger al menos una fruta segura y cometer menos de tres fallos. Hay fruta del punto de control en las fases 5, 10, 15, 20, 25 y 30.",
@@ -55,6 +61,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   "pt-BR": {
     description: "Deslize sobre frutas seguras em 30 fases na copa, evite vagens escuras e reaja ao vento, aos galhos móveis, aos sinais de luz e ao ritmo.",
+    time: "15–25 segundos por fase",
     tags: ["Arcade de deslize", "Sequências de frutas", "Desafio de reflexo"],
     intro: "Atravesse seis arcos de cinco fases, deslize sobre frutas seguras e aumente sua sequência de pontos. Leia cada novo sinal antes de agir para evitar as vagens escuras e os caminhos que mudam.",
     story: "As frutas cruzam uma arena iluminada entre as copas em 30 fases curtas. As fases 1–3 ensinam a ler trajetórias claras; o vento lateral começa na fase 4, antes do checkpoint Lanterna na fase 5. As fases 6–10 continuam com mudanças de vento; as 11–15 trazem sombras do entardecer e as 16–20, galhos em movimento. Nas fases 21–25, sinais de luz ativos se combinam com pulsos de ritmo; as 26–30 reúnem essas pistas. Tocar numa vagem escura encerra a rodada. Para vencer uma fase, colha pelo menos uma fruta segura e cometa menos de três erros. Há frutas de checkpoint nas fases 5, 10, 15, 20, 25 e 30.",
@@ -64,6 +71,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   fr: {
     description: "Faites glisser les fruits sûrs dans 30 étapes sous la canopée, évitez les gousses sombres et suivez le vent, les branches, les signaux lumineux et le rythme.",
+    time: "15–25 secondes par niveau",
     tags: ["Arcade par glissement", "Enchaînements de fruits", "Défi de réflexes"],
     intro: "Parcourez six arcs de cinq étapes, glissez sur les fruits sûrs et prolongez votre série de points. Lisez chaque nouveau signal avant d’agir pour éviter les gousses sombres et les trajectoires changeantes.",
     story: "Les fruits traversent une arène lumineuse dans les arbres au fil de 30 courtes étapes. Les étapes 1 à 3 apprennent à lire des trajectoires nettes ; le vent latéral arrive dès l’étape 4, avant le point de contrôle Lanterne à l’étape 5. Les étapes 6 à 10 poursuivent avec des changements de vent ; les ombres du crépuscule arrivent aux étapes 11 à 15, puis les branches mobiles aux étapes 16 à 20. Les étapes 21 à 25 associent signaux lumineux et pulsations rythmiques ; les étapes 26 à 30 réunissent ces repères. Toucher une gousse sombre met fin à la manche. Pour réussir une étape, récoltez au moins un fruit sûr et faites moins de trois erreurs. Des fruits de point de contrôle apparaissent aux étapes 5, 10, 15, 20, 25 et 30.",
@@ -73,6 +81,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   de: {
     description: "Wische in 30 Baumkronen-Stufen über sichere Früchte, meide dunkle Samenkapseln und lies Seitenwind, bewegte Äste, Lichtsignale und den Puls.",
+    time: "15–25 Sekunden pro Stufe",
     tags: ["Swipe-Arcade", "Fruchtketten", "Reaktionsspiel"],
     intro: "Spiele sechs Abschnitte mit je fünf Stufen, wische über sichere Früchte und baue eine Punkteserie auf. Lies jedes neue Signal, bevor du handelst, damit dunkle Samenkapseln und wechselnde Flugbahnen dich nicht überraschen.",
     story: "Früchte fliegen durch eine helle Arena in den Baumkronen: insgesamt 30 kurze Stufen. Stufe 1–3 üben klare Flugbahnen; Seitenwind beginnt schon in Stufe 4, vor dem Laternen-Checkpoint in Stufe 5. Stufe 6–10 führen wechselnden Wind fort, Stufe 11–15 bringen Dämmerungsschatten und Stufe 16–20 bewegte Äste. Stufe 21–25 verbinden aktive Lichtsignale mit Pulstiming; Stufe 26–30 führen diese Hinweise zusammen. Eine dunkle Samenkapsel beendet den Durchgang. Für einen Stufensieg musst du mindestens eine sichere Frucht ernten und weniger als drei Fehler machen. Checkpoint-Früchte erscheinen in Stufe 5, 10, 15, 20, 25 und 30.",
@@ -82,6 +91,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   it: {
     description: "Scorri sulla frutta sicura in 30 fasi tra le chiome, evita i baccelli scuri e segui vento, rami mobili, segnali luminosi e ritmo.",
+    time: "15–25 secondi per livello",
     tags: ["Arcade a scorrimento", "Catene di frutta", "Sfida di riflessi"],
     intro: "Attraversa sei archi di cinque fasi, scorri sulla frutta sicura e allunga la serie di punti. Leggi ogni nuovo segnale prima di muoverti per evitare i baccelli scuri e le traiettorie che cambiano.",
     story: "La frutta attraversa una luminosa arena tra le chiome in 30 brevi fasi. Le fasi 1–3 insegnano a leggere traiettorie chiare; il vento laterale arriva già alla fase 4, prima del checkpoint Lanterna alla 5. Le fasi 6–10 continuano con il vento variabile; le 11–15 aggiungono le ombre del crepuscolo e le 16–20 i rami mobili. Nelle fasi 21–25 si combinano segnali luminosi attivi e ritmo a impulsi; le 26–30 riuniscono questi indizi. Toccare un baccello scuro conclude il tentativo. Per superare una fase devi raccogliere almeno un frutto sicuro e fare meno di tre errori. I frutti checkpoint compaiono nelle fasi 5, 10, 15, 20, 25 e 30.",
@@ -91,6 +101,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   ru: {
     description: "Проведите по безопасным фруктам в 30 этапах под кронами, избегайте тёмных стручков и следите за ветром, ветвями, световыми сигналами и ритмом.",
+    time: "15–25 секунд на этап",
     tags: ["Аркада со свайпами", "Цепочки фруктов", "Игра на реакцию"],
     intro: "Пройдите шесть дуг по пять этапов, проводите по безопасным фруктам и наращивайте серию очков. Перед каждым движением читайте новый сигнал, чтобы обойти тёмные стручки и меняющиеся траектории.",
     story: "Фрукты летят через яркую арену среди крон в 30 коротких этапах. Этапы 1–3 учат читать понятные траектории; боковой ветер появляется уже на этапе 4, перед контрольной точкой «Фонарь» на этапе 5. На этапах 6–10 ветер меняет направление; на 11–15 появляются сумеречные тени, на 16–20 — движущиеся ветви. Этапы 21–25 соединяют световые сигналы с ритмом пульса, а 26–30 объединяют эти подсказки. Касание тёмного стручка завершает попытку. Для победы нужно собрать хотя бы один безопасный фрукт и допустить меньше трёх ошибок. Фрукты контрольной точки появляются на этапах 5, 10, 15, 20, 25 и 30.",
@@ -100,6 +111,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   hi: {
     description: "पेड़ों की छतरी के 30 चरणों में सुरक्षित फलों पर स्वाइप करें, गहरी बीज फलियों से बचें और हवा, हिलती शाखाओं, रोशनी के संकेतों व ताल पर ध्यान दें।",
+    time: "हर चरण में 15–25 सेकंड",
     tags: ["स्वाइप आर्केड", "फल श्रृंखला", "प्रतिक्रिया चुनौती"],
     intro: "पाँच-पाँच चरणों के छह खंडों में आगे बढ़ें, सुरक्षित फलों पर स्वाइप करें और स्कोर श्रृंखला बनाएँ। गहरी बीज फलियों और बदलते रास्तों से बचने के लिए हर नए संकेत को पढ़कर कदम उठाएँ।",
     story: "पेड़ों की चमकदार छतरी वाले मैदान में कुल 30 छोटे चरण हैं। चरण 1–3 में साफ़ फल-चाप पढ़ना सीखें; चरण 4 में तिरछी हवा आती है और चरण 5 में लालटेन चेकपॉइंट है। चरण 6–10 में बदलती हवा जारी रहती है; 11–15 में साँझ की परछाइयाँ, 16–20 में हिलती शाखाएँ और 21–25 में सक्रिय रोशनी के संकेत व ताल की धड़कन जुड़ते हैं। चरण 26–30 इन संकेतों को मिलाते हैं। गहरी बीज फली छूने पर वह कोशिश समाप्त हो जाती है। चरण जीतने के लिए कम-से-कम एक सुरक्षित फल लेना और तीन से कम चूक करना ज़रूरी है। चरण 5, 10, 15, 20, 25 और 30 में चेकपॉइंट फल आता है।",
@@ -109,6 +121,7 @@ export const CANOPY_CUT_TEXT_140 = {
   },
   ar: {
     description: "مرّر على الثمار الآمنة في 30 مرحلة بين تيجان الأشجار، وتجنب قرون البذور الداكنة وراقب الرياح والأغصان المتحركة وإشارات الضوء والإيقاع.",
+    time: "15–25 ثانية لكل مرحلة",
     tags: ["أركيد بالسحب", "سلاسل الفاكهة", "تحدي سرعة الاستجابة"],
     intro: "اعبر ستة أقواس، في كل منها خمس مراحل، ومرّر على الثمار الآمنة لبناء سلسلة نقاط. اقرأ كل إشارة جديدة قبل الحركة كي تتجنب قرون البذور الداكنة والمسارات المتغيرة.",
     story: "تعبر الثمار ساحة مضيئة بين تيجان الأشجار في 30 مرحلة قصيرة. تعلّم في المراحل 1–3 قراءة المسارات الواضحة؛ وتظهر الرياح الجانبية في المرحلة 4 قبل نقطة فانوس التفتيش في المرحلة 5. تواصل المراحل 6–10 مع تغيّر اتجاه الرياح، وتضيف المراحل 11–15 ظلال الغسق، و16–20 الأغصان المتمايلة. تجمع المراحل 21–25 إشارات الضوء النشطة وتوقيت النبض، ثم توحّد المراحل 26–30 هذه الإشارات. لمس قرن بذور داكن ينهي المحاولة. للفوز بالمرحلة، احصد ثمرة آمنة واحدة على الأقل وارتكب أقل من ثلاثة إخفاقات. تظهر ثمرة نقطة التفتيش في المراحل 5 و10 و15 و20 و25 و30.",

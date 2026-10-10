@@ -15,6 +15,9 @@
     const copy = locales[activeLocale] || locales.en;
     if (!copy) return;
 
+    const duration = guide.querySelector('.game-info-facts .game-info-fact:last-child strong');
+    if (duration && copy.time && duration.textContent !== copy.time) duration.textContent = copy.time;
+
     const intro = guide.querySelector(".game-info-title > p");
     if (intro && intro.textContent !== copy.intro) intro.textContent = copy.intro;
 

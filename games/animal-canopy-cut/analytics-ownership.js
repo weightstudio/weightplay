@@ -1,7 +1,7 @@
 (() => {
   const GAME_ID = "animal-canopy-cut";
-  const GAME_VERSION = "v15";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = "v17";
+  const INTERFACE_VERSION = "8";
   const EVENT_NAME = "wp-canopy-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);
   const EVENTS = new Set(["chapter_open", "wave_start", "pointer_stroke", "safe_hit", "hazard_hit", "wave_result", "chapter_final_wave", "retry", "next_wave", "stage_return"]);

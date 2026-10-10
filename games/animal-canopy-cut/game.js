@@ -1,11 +1,11 @@
-/* Internal prototype only. Target art is temporary until the art gate. */
+/* Canopy Cut v17: game-owned simulation and declared shared scene slots. */
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
-    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    paused: Boolean(state?.paused || state?.suspended), stageId: state.stage, node: document.body,
     activityMode: "input", idleSeconds: 300
   });
   function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
@@ -29,12 +29,7 @@
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
-  const CANVAS_WIDTH = 960;
-  const DEFAULT_ARENA_HEIGHT = 560;
-  const COMPACT_ARENA_HEIGHT = 320;
   const ctx = canvas.getContext("2d");
-  const canopyArt = new Image();
-  canopyArt.src = "assets/animal-canopy-cut-original-assets-v1.png";
   const propArt = new Image();
   propArt.src = "assets/animal-canopy-cut-props.png";
   const localeCopy = {
@@ -66,41 +61,6 @@
     ru: { label: "Обозначения целей", safe: "Безопасный фрукт", hazard: "Тёмный стручок" },
     hi: { label: "लक्ष्य कुंजी", safe: "सुरक्षित फल", hazard: "गहरी बीज की फली" },
     ar: { label: "مفتاح الأهداف", safe: "ثمرة آمنة", hazard: "قرن بذور داكن" },
-  };
-  const targetPreviewCopy = {
-    en: { message: "First look: safe fruit briefly glows as it enters. Dark seed pods stay unlit—swipe only when the path is clear." },
-    "zh-Hant": { message: "先看清楚：安全果實進場時會短暫發光。深色種莢不會發光——看清路線再滑動。" },
-    "zh-Hans": { message: "先看清：安全果实入场时会短暂发光。深色种荚不会发光——看清路线再滑动。" },
-    ja: { message: "まず見分けましょう。安全な果実は登場時に短く光ります。暗い種のさやは光りません。道筋を見てからなぞってください。" },
-    ko: { message: "먼저 구분해 보세요. 안전한 과일은 들어올 때 잠깐 빛납니다. 어두운 씨앗 꼬투리는 빛나지 않으니 경로를 본 뒤 스와이프하세요." },
-    es: { message: "Primero distingue: la fruta segura brilla un instante al entrar. Las vainas oscuras no brillan; desliza cuando veas la ruta." },
-    "pt-BR": { message: "Primeiro, observe: a fruta segura brilha por um instante ao entrar. As vagens escuras não brilham; deslize quando enxergar o caminho." },
-    fr: { message: "Observez d’abord : le fruit sûr brille brièvement à son arrivée. Les gousses sombres restent éteintes ; glissez quand la trajectoire est claire." },
-    de: { message: "Erst unterscheiden: Sichere Früchte leuchten kurz beim Eintritt. Dunkle Samenschoten leuchten nicht – wische erst, wenn der Weg klar ist." },
-    it: { message: "Prima distingui: la frutta sicura brilla per un attimo quando entra. I baccelli scuri non brillano; scorri quando il percorso è chiaro." },
-    ru: { message: "Сначала различите цели: безопасный фрукт ненадолго светится при появлении. Тёмные стручки не светятся — проводите, когда путь понятен." },
-    hi: { message: "पहले पहचानें: सुरक्षित फल आते समय थोड़ी देर चमकता है। गहरी बीज की फलियाँ नहीं चमकतीं—रास्ता साफ़ दिखे तभी स्वाइप करें।" },
-    ar: { message: "ميّز الهدف أولًا: تضيء الثمرة الآمنة للحظة عند ظهورها. لا تضيء قرون البذور الداكنة؛ مرّر عندما يتضح المسار." },
-  };
-  const chainPayoffCopy = {
-    en: { best: "Chain x{chain} adds +{bonus} to the best-score total. New best: {best}. Keep the clean path into the next wave.", chain: "Chain x{chain} adds +{bonus} to the best-score total. Best remains {best}; carry a clean path into the next wave.", none: "No chain bonus this wave. Best: {best}; try a clean path in the next wave." },
-    "zh-Hant": { best: "連擊 x{chain} 為最佳成績加上 +{bonus}。新最佳：{best}。把乾淨路線延續到下一波。", chain: "連擊 x{chain} 為最佳成績加上 +{bonus}。最佳仍是 {best}；下一波再維持乾淨路線。", none: "這一波沒有連擊加成。最佳：{best}；下一波試著保持乾淨路線。" },
-    "zh-Hans": { best: "连击 x{chain} 为最佳成绩加上 +{bonus}。新最佳：{best}。把干净路线延续到下一波。", chain: "连击 x{chain} 为最佳成绩加上 +{bonus}。最佳仍是 {best}；下一波再保持干净路线。", none: "这一波没有连击加成。最佳：{best}；下一波试着保持干净路线。" },
-    ja: { best: "チェーン x{chain} がベストスコアに +{bonus}。新ベスト: {best}。次のウェーブもきれいな軌道を続けましょう。", chain: "チェーン x{chain} がベストスコアに +{bonus}。ベストは {best} のままです。次のウェーブもきれいな軌道を。", none: "このウェーブはチェーンボーナスなし。ベスト: {best}。次はきれいな軌道を目指しましょう。" },
-    ko: { best: "연속 x{chain}이(가) 최고 점수에 +{bonus}를 더했습니다. 새 최고: {best}. 다음 웨이브에도 깔끔한 경로를 이어 보세요.", chain: "연속 x{chain}이(가) 최고 점수에 +{bonus}를 더했습니다. 최고 점수는 {best}로 유지됩니다. 다음 웨이브에도 깔끔한 경로를 이어 보세요.", none: "이번 웨이브에는 연속 보너스가 없습니다. 최고 점수: {best}. 다음 웨이브에서 깔끔한 경로를 시도하세요." },
-    es: { best: "¡La cadena x{chain} añade +{bonus} al mejor resultado! Nuevo mejor: {best}. Mantén la ruta limpia en la siguiente oleada.", chain: "Cadena x{chain}: +{bonus} al mejor resultado. El mejor sigue en {best}; mantén una ruta limpia en la siguiente oleada.", none: "Esta oleada no da bonificación de cadena. Mejor: {best}; intenta una ruta limpia en la siguiente oleada." },
-    "pt-BR": { best: "A sequência x{chain} adicionou +{bonus} ao melhor resultado. Novo melhor: {best}. Mantenha o caminho limpo na próxima onda.", chain: "A sequência x{chain} adicionou +{bonus} ao melhor resultado. O melhor continua em {best}; mantenha o caminho limpo na próxima onda.", none: "Esta onda não deu bônus de sequência. Melhor: {best}; tente um caminho limpo na próxima onda." },
-    fr: { best: "La série x{chain} ajoute +{bonus} au meilleur score. Nouveau record : {best}. Gardez une trajectoire propre à la prochaine vague.", chain: "La série x{chain} ajoute +{bonus} au meilleur score. Le meilleur reste à {best} ; gardez une trajectoire propre à la prochaine vague.", none: "Pas de bonus de série cette vague. Meilleur score : {best} ; essayez une trajectoire propre à la prochaine." },
-    de: { best: "Serie x{chain} gibt +{bonus} auf den Bestwert. Neuer Bestwert: {best}. Halte den sauberen Weg in der nächsten Welle.", chain: "Serie x{chain} gibt +{bonus} auf den Bestwert. Der Bestwert bleibt {best}; halte den sauberen Weg in der nächsten Welle.", none: "Diese Welle gab keinen Serienbonus. Bestwert: {best}; versuche in der nächsten Welle einen sauberen Weg." },
-    it: { best: "La serie x{chain} aggiunge +{bonus} al miglior punteggio. Nuovo record: {best}. Mantieni il percorso pulito nella prossima ondata.", chain: "La serie x{chain} aggiunge +{bonus} al miglior punteggio. Il record resta {best}; mantieni il percorso pulito nella prossima ondata.", none: "Nessun bonus di serie in questa ondata. Record: {best}; prova un percorso pulito nella prossima." },
-    ru: { best: "Серия x{chain} добавила +{bonus} к лучшему результату. Новый рекорд: {best}. Сохраните чистый путь в следующей волне.", chain: "Серия x{chain} добавила +{bonus} к лучшему результату. Лучший результат остаётся {best}; сохраните чистый путь в следующей волне.", none: "В этой волне бонуса за серию нет. Лучший результат: {best}; попробуйте чистый путь в следующей." },
-    hi: { best: "सिलसिला x{chain} ने सर्वश्रेष्ठ स्कोर में +{bonus} जोड़ा। नया सर्वश्रेष्ठ: {best}। अगली लहर में साफ़ रास्ता बनाए रखें।", chain: "सिलसिला x{chain} ने सर्वश्रेष्ठ स्कोर में +{bonus} जोड़ा। सर्वश्रेष्ठ {best} पर है; अगली लहर में साफ़ रास्ता बनाए रखें।", none: "इस लहर में सिलसिला बोनस नहीं मिला। सर्वश्रेष्ठ: {best}; अगली लहर में साफ़ रास्ता आज़माएँ।" },
-    ar: { best: "أضاف التتابع x{chain} قيمة +{bonus} إلى أفضل نتيجة. أفضل نتيجة جديدة: {best}. حافظ على المسار النظيف في الموجة التالية.", chain: "أضاف التتابع x{chain} قيمة +{bonus} إلى أفضل نتيجة. تبقى أفضل نتيجة {best}؛ حافظ على المسار النظيف في الموجة التالية.", none: "لا توجد مكافأة تتابع في هذه الموجة. الأفضل: {best}؛ حاول اتباع مسار نظيف في الموجة التالية." },
-  };
-  const settingsCopy = {
-    en: "Settings", "zh-Hant": "設定", "zh-Hans": "设置", ja: "設定", ko: "설정",
-    es: "Configuración", "pt-BR": "Configurações", fr: "Paramètres", de: "Einstellungen",
-    it: "Impostazioni", ru: "Настройки", hi: "सेटिंग्स", ar: "الإعدادات",
   };
   const TOTAL_STAGES = 30;
   const stageDefs = [
@@ -148,7 +108,6 @@
   const stageLabel = () => stageCopy[currentLocale()] || stageCopy.en;
   const arcLabel = (arc) => (stageArcs[currentLocale()] || stageArcs.en)[arc - 1] || stageArcs.en[arc - 1];
   const stageName = (definition) => currentLocale() === "zh-Hant" ? definition.nameZh : currentLocale() === "ar" ? definition.nameAr : definition.name;
-  const stageNumber = (chapter, wave) => Math.max(1, Math.min(TOTAL_STAGES, (chapter - 1) * 5 + wave));
   const stageFor = (number) => stageDefs[Math.max(0, Math.min(TOTAL_STAGES - 1, number - 1))];
   const normalizeProgress = (value) => {
     const source = value && typeof value === "object" ? value : {};
@@ -160,42 +119,38 @@
     let frontier = 1;
     while (cleared[frontier] && frontier < TOTAL_STAGES) frontier += 1;
     const requested = Number(source.unlocked);
-    const unlocked = Math.min(TOTAL_STAGES, Math.max(1, Number.isFinite(requested) ? requested : 1));
-    return { unlocked: Math.max(unlocked, frontier), cleared, best: source.best && typeof source.best === "object" ? source.best : {} };
+    const unlocked = Math.min(TOTAL_STAGES, Math.max(1, Number.isFinite(requested) ? Math.floor(requested) : 1));
+    return { unlocked: Math.max(unlocked, frontier), cleared, best: source.best && typeof source.best === "object" ? source.best : {}, checkpoints: source.checkpoints && typeof source.checkpoints === "object" ? source.checkpoints : {} };
   };
   const loadProgress = () => {
     try { return normalizeProgress(JSON.parse(localStorage.getItem("wp-canopy-progress-v15") || localStorage.getItem("wp-canopy-progress-v14") || localStorage.getItem("wp-canopy-progress-v13") || "{}")); } catch { return normalizeProgress({}); }
   };
   const saveProgress = () => { try { localStorage.setItem("wp-canopy-progress-v15", JSON.stringify(progress)); } catch {} };
   const progress = loadProgress();
-  const state = { screen: "main", stage: Math.min(progress.unlocked, TOTAL_STAGES), chapter: 1, wave: 1, score: 0, best: Number(localStorage.getItem("wp-canopy-best") || 0), chain: 0, misses: 0, targets: [], stroke: [], active: false, strokeInputType: "unknown", elapsed: 0, last: 0, spawn: 0, ready: 0, previewUntil: 0, previewSafeShown: false, checkpointSpawned: false, checkpointHit: false, seed: 1, raf: 0, status: "ready", resultWin: null, bestImproved: false, cardsLocale: "" };
-  const colors = { safe: ["#ffcf64", "#f8896c", "#96e6c1", "#b99cff"], hazard: "#25283b" };
+  const state = { screen: "main", stage: Math.min(progress.unlocked, TOTAL_STAGES), chapter: 1, wave: 1, score: 0, best: (() => { try { return Math.max(0, Number.isFinite(Number(localStorage.getItem("wp-canopy-best"))) ? Number(localStorage.getItem("wp-canopy-best")) : 0); } catch { return 0; } })(), chain: 0, misses: 0, targets: [], stroke: [], active: false, strokeInputType: "unknown", elapsed: 0, last: 0, spawn: 0, ready: 0, previewUntil: 0, previewSafeShown: false, checkpointSpawned: false, checkpointHit: false, seed: 1, raf: 0, status: "ready", resultWin: null, bestImproved: false, cardsLocale: "" };
   const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
-  const compactLandscape = () => window.matchMedia?.("(orientation: landscape) and (max-height: 460px)")?.matches ?? false;
-  const arenaHeight = () => compactLandscape() ? COMPACT_ARENA_HEIGHT : DEFAULT_ARENA_HEIGHT;
   const syncArenaSize = () => {
-    const nextHeight = arenaHeight();
-    if (canvas.width !== CANVAS_WIDTH) canvas.width = CANVAS_WIDTH;
-    if (canvas.height !== nextHeight) canvas.height = nextHeight;
-    return nextHeight;
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const width = rect.width, height = rect.height;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const nextWidth = Math.round(width * dpr), nextHeight = Math.round(height * dpr);
+    if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
+      canvas.width = nextWidth; canvas.height = nextHeight;
+      state.round?.resize(width, height);
+      state.stroke = []; state.previousPoint = null; state.active = false;
+    }
+    state.arenaWidth = width; state.arenaHeight = height;
   };
   const currentLocale = () => localeCopy[window.WeightPlayFiveGameLocale?.locale] ? window.WeightPlayFiveGameLocale.locale : (localeCopy[document.documentElement.lang] ? document.documentElement.lang : "en");
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
   const fill = (value, values) => value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
   const label = (key, values = {}) => fill(copy()[key] || localeCopy.en[key] || key, values);
-  const targetPreviewLabel = () => (targetPreviewCopy[currentLocale()] || targetPreviewCopy.en).message;
   const key = () => keyCopy[currentLocale()] || keyCopy.en;
-  const chainLesson = (key, values = {}) => fill((chainPayoffCopy[currentLocale()] || chainPayoffCopy.en)[key], values);
-  const config = () => {
-    const definition = stageFor(state.stage);
-    return {
-      ...definition,
-      spawnGap: definition.rhythm ? 24 + Math.sin(state.elapsed * 3.2) * 5 : Math.max(22, 38 - definition.count * 2),
-    };
-  };
-  function show(name) { state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
+  const config = () => stageFor(state.stage);
+  function show(name) { audioScope?.stop(); state.screen = name; state.active = false; state.pointerId = null; state.stroke = []; effects.length = 0; state.paused = false; $("pause-panel").hidden = true; frameController.activate(name === "result" ? "battle" : name, {covered:name === "result"}); document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (!reducedMotion) $(name === "result" ? "result-screen" : `${name}-content`)?.animate([{opacity:.4},{opacity:1}],{duration:180}); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
-      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
+      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = state.resultWin ? "win" : "loss"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
@@ -212,131 +167,272 @@
       const checkpoint = definition.checkpoint ? ` · ${copy.checkpoint}` : "";
       const objective = copy.objective[definition.mechanic] || stageCopy.en.objective[definition.mechanic];
       const aria = `${copy.stage} ${definition.id} · ${stageName(definition)} · ${objective}${checkpoint} · ${status}`;
-      return `<button class="stage-card${available ? " unlocked" : " locked"}${cleared ? " cleared" : ""}${selected ? " selected" : ""}" type="button" data-wp-enter-battle data-stage="${definition.id}" data-chapter="${Math.ceil(definition.id / 5)}" data-wave="${((definition.id - 1) % 5) + 1}" aria-label="${aria}" aria-disabled="${available ? "false" : "true"}" aria-posinset="${definition.id}" aria-setsize="${TOTAL_STAGES}"${available ? "" : " disabled"}><span class="stage-number">${String(definition.id).padStart(2, "0")}</span><strong>${stageName(definition)}</strong><small>${arcLabel(definition.arc)}${checkpoint}</small><span>${objective}</span><b>${status}</b></button>`;
+      return `<button class="stage-card${available ? " unlocked" : " locked"}${cleared ? " cleared" : ""}${selected ? " selected" : ""}" type="button" data-wp-enter-battle data-stage="${definition.id}" data-chapter="${Math.ceil(definition.id / 5)}" data-wave="${((definition.id - 1) % 5) + 1}" aria-label="${aria}" aria-disabled="${available ? "false" : "true"}" aria-posinset="${definition.id}" aria-setsize="${TOTAL_STAGES}"${available ? "" : " disabled"}><span data-wp-item-content><span class="stage-number">${String(definition.id).padStart(2, "0")}</span><strong>${stageName(definition)}</strong><small>${arcLabel(definition.arc)}${checkpoint}</small><span>${objective}</span><b>${status}${progress.checkpoints?.[definition.id] ? " · ◆" : ""}</b></span></button>`;
     }).join("");
     $("stage-list").querySelectorAll("button.unlocked").forEach((button) => button.addEventListener("click", () => {
       emitAnalytics("chapter_open", { from: "stage", outcome: "opened", stage: Number(button.dataset.stage) });
       startStage(Number(button.dataset.stage));
     }));
     state.cardsLocale = currentLocale();
+    renderCollectionBadges();
     if (state.screen === "stage") requestAnimationFrame(centerStageCard);
   }
   function centerStageCard() {
     const anchor = Math.max(1, Math.min(TOTAL_STAGES, progress.unlocked));
-    $("stage-list")?.querySelector(`[data-stage="${anchor}"]`)?.scrollIntoView({ block: "center", inline: "center" });
+    const card = $("stage-list")?.querySelector(`[data-stage="${anchor}"]`);
+    card?.scrollIntoView({ block: "center", inline: "center" });
+    markStageCard(card);
   }
-  function random() { state.seed = (state.seed * 1664525 + 1013904223) >>> 0; return state.seed / 4294967296; }
+  function markStageCard(selected) {
+    $("stage-list").querySelectorAll('[data-stage]').forEach(card => {
+      card.classList.toggle('selected', card === selected);
+      if (card === selected) card.setAttribute('aria-current','true');
+      else card.removeAttribute('aria-current');
+    });
+  }
+  $("stage-list").addEventListener('wonder:stage-snap', () => {
+    const rail = $("stage-list").getBoundingClientRect(), center = rail.x + rail.width / 2;
+    const cards = [...$("stage-list").querySelectorAll('[data-stage]')];
+    const nearest = cards.reduce((a,b) => { const distance = c => {const r=c.getBoundingClientRect();return Math.abs(r.x+r.width/2-center);}; return !a || distance(b)<distance(a) ? b : a; },null);
+    markStageCard(nearest);
+  });
+
   function startStage(stage = 1, from = "stage") {
     const nextStage = Math.max(1, Math.min(TOTAL_STAGES, Number(stage) || 1));
     if (nextStage > progress.unlocked) return;
     state.stage = nextStage;
+    state.roundStartedAt = Date.now();
     state.chapter = Math.ceil(nextStage / 5);
     state.wave = ((nextStage - 1) % 5) + 1;
     state.score = 0; state.chain = 0; state.misses = 0; state.targets = []; state.stroke = []; state.strokeInputType = "unknown";
-    state.elapsed = 0; state.spawn = 0; state.ready = 54; state.previewUntil = 0; state.previewSafeShown = false; state.checkpointSpawned = false; state.checkpointHit = false; state.status = "ready"; state.resultWin = null;
+    state.elapsed = 0; state.spawn = 0; state.ready = .8; state.settle = 0; state.statusUntil = 0; state.paused = false; state.active = false; state.pointerId = null; state.previewUntil = 0; state.previewSafeShown = false; state.checkpointSpawned = false; state.checkpointHit = false; state.status = "ready"; state.resultWin = null;
     state.seed = nextStage * 100 + 1;
     emitAnalytics("wave_start", { from, outcome: "started", stage: nextStage });
     $("score-label").textContent = "0";
     $("next").hidden = false;
     $("next").disabled = false;
-    show("battle"); renderLocalized();
+    show("battle"); syncArenaSize(); state.round = new CanopyEngine.Round(stageFor(nextStage), state.arenaWidth, state.arenaHeight); renderLocalized(); sound("game.start", .26);
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-  function startWave(chapter = 1, wave = 1, from = "stage") { startStage(stageNumber(chapter, wave), from); }
-  function addTarget() {
-    const c = config();
-    const height = syncArenaSize();
-    const compact = height === COMPACT_ARENA_HEIGHT;
-    const hazard = random() < c.hazard;
-    const lane = Math.floor(random() * c.count);
-    const kind = hazard ? 3 : Math.floor(random() * 3);
-    const cue = !hazard && !state.previewSafeShown;
-    const checkpoint = Boolean(c.checkpoint && !hazard && !state.checkpointSpawned && state.elapsed > 1.5);
-    if (cue) state.previewSafeShown = true;
-    if (checkpoint) state.checkpointSpawned = true;
-    state.targets.push({
-      x: 110 + (lane + random() * .55) * (740 / c.count),
-      y: height - 40,
-      vx: (random() - .5) * 1.8 + (c.wind || 0),
-      vy: -(c.speed * (compact ? .62 : 1)) - random() * (compact ? 1.2 : 3),
-      phase: random() * Math.PI * 2,
-      r: hazard ? 24 : checkpoint ? 25 : 22,
-      hazard, kind, cue, checkpoint, hit: false, asset: propArt,
-      color: hazard ? colors.hazard : checkpoint ? "#ffd36b" : colors.safe[Math.floor(random() * colors.safe.length)],
-    });
+  const playCopy = {
+    en: ["Harvest", "Misses", "Time", "Continue", "Paused", "Three fruit missed", "Avoid the dark pods", "Keep harvesting until the timer ends", "Best chain", "Clean harvest", "New best!"],
+    "zh-Hant": ["採收", "漏接", "時間", "繼續", "已暫停", "漏接三顆果實", "小心深色種莢", "持續採收，撐到時間結束", "最高連擊", "完美採收", "新紀錄！"],
+    "zh-Hans": ["采收", "漏接", "时间", "继续", "已暂停", "漏接三颗果实", "小心深色种荚", "持续采收，撑到时间结束", "最高连击", "完美采收", "新纪录！"],
+    ja: ["収穫", "ミス", "時間", "続ける", "一時停止", "果実を3個逃しました", "暗いさやを避けよう", "時間切れまで収穫しよう", "最高チェーン", "完璧な収穫", "新記録！"],
+    ko: ["수확", "놓침", "시간", "계속", "일시 정지", "과일 3개를 놓쳤어요", "어두운 꼬투리를 피하세요", "시간이 끝날 때까지 수확하세요", "최고 연속", "완벽한 수확", "새 기록!"],
+    es: ["Cosecha", "Fallos", "Tiempo", "Continuar", "En pausa", "Tres frutas perdidas", "Evita las vainas oscuras", "Cosecha hasta que termine el tiempo", "Mejor cadena", "Cosecha perfecta", "¡Nuevo récord!"],
+    "pt-BR": ["Colheita", "Erros", "Tempo", "Continuar", "Pausado", "Três frutas perdidas", "Evite as vagens escuras", "Colha até o tempo acabar", "Melhor sequência", "Colheita perfeita", "Novo recorde!"],
+    fr: ["Récolte", "Ratés", "Temps", "Continuer", "En pause", "Trois fruits manqués", "Évite les gousses sombres", "Récolte jusqu’à la fin du temps", "Meilleure série", "Récolte parfaite", "Nouveau record !"],
+    de: ["Ernte", "Fehler", "Zeit", "Weiter", "Pause", "Drei Früchte verpasst", "Meide dunkle Schoten", "Ernte bis zum Ablauf der Zeit", "Beste Serie", "Perfekte Ernte", "Neuer Rekord!"],
+    it: ["Raccolto", "Errori", "Tempo", "Continua", "In pausa", "Tre frutti persi", "Evita i baccelli scuri", "Raccogli fino allo scadere del tempo", "Migliore serie", "Raccolto perfetto", "Nuovo record!"],
+    ru: ["Урожай", "Промахи", "Время", "Продолжить", "Пауза", "Пропущено три фрукта", "Избегайте тёмных стручков", "Собирайте до конца времени", "Лучшая серия", "Идеальный урожай", "Новый рекорд!"],
+    hi: ["फसल", "चूक", "समय", "जारी रखें", "रुका हुआ", "तीन फल छूट गए", "गहरी फलियों से बचें", "समय खत्म होने तक फल लें", "सर्वश्रेष्ठ सिलसिला", "बढ़िया फसल", "नया रिकॉर्ड!"],
+    ar: ["الحصاد", "الإخفاقات", "الوقت", "متابعة", "متوقف", "فاتتك ثلاث ثمار", "تجنب القرون الداكنة", "احصد حتى ينتهي الوقت", "أفضل تتابع", "حصاد مثالي", "رقم قياسي جديد!"],
+  };
+  const ui = i => (playCopy[currentLocale()] || playCopy.en)[i];
+  const scoreCaption = () => ({en:"Score","zh-Hant":"分數","zh-Hans":"分数",ja:"スコア",ko:"점수",es:"Puntos","pt-BR":"Pontos",fr:"Score",de:"Punkte",it:"Punti",ru:"Счёт",hi:"स्कोर",ar:"النقاط"}[currentLocale()] || "Score");
+  const audioScope = window.WeightPlayAudio?.createScope();
+  const sound = (id, volume) => audioScope?.play(id, { volume });
+  window.WeightPlayAudio?.preload(["game.start","game.checkpoint","reward.collect","alert.warning","feedback.error","result.win","result.lose"]);
+  window.addEventListener("pagehide",()=>audioScope?.stop());
+  const effects = [];
+  const frameController = window.WeightPlayScreenFrame.mount({root: $("app"), localeSelect: $("localeSelect"), scenes: {
+    main: {root: $("main-screen"), header: $("main-header"), content: $("main-content")},
+    stage: {root: $("stage-screen"), header: $("stage-header"), content: $("stage-content")},
+    battle: {root: $("battle-screen"), header: $("battle-header"), content: $("battle-content"), headerInfo: $("battle-info")},
+  }});
+  frameController.activate("main");
+  function point(e) { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, life: .2 }; }
+  function syncRound() {
+    if (!state.round) return;
+    for (const name of ["score", "chain", "misses", "targets", "checkpointHit"]) state[name] = state.round[name];
+    state.elapsed = state.round.time;
   }
-  function point(e) { const r = canvas.getBoundingClientRect(); return { x: (e.clientX - r.left) * canvas.width / r.width, y: (e.clientY - r.top) * canvas.height / r.height }; }
-  function distance(a,b) { return Math.hypot(a.x-b.x,a.y-b.y); }
-  function renderStatus() { const preview = state.status === "targetPreview"; const message = preview ? targetPreviewLabel() : label(state.status, state.status === "chain" ? { chain: state.chain } : {}); $("battle-status").textContent = message; $("battle-status").dataset.targetPreview = preview ? "active" : "inactive"; canvas.setAttribute("aria-label", preview ? `${label("canvas")}. ${message}` : label("canvas")); }
-  function hitAt(p) { state.targets.forEach((t) => { if (!t.hit && distance(p, t) < t.r + 24) { t.hit = true; if (t.hazard) { emitAnalytics("hazard_hit", { inputType: state.strokeInputType, from: "battle", outcome: "hazard", stage: state.stage }); state.chain = 0; state.misses = 3; state.status = "seedPod"; } else { emitAnalytics("safe_hit", { inputType: state.strokeInputType, from: "battle", outcome: "safe", stage: state.stage }); state.score += 10 + state.chain * 2; state.chain += 1; state.checkpointHit ||= Boolean(t.checkpoint); state.status = state.chain > 1 ? "chain" : "clean"; } renderStatus(); draw(); } }); }
+  function writeText(id, value) { const node = $(id), text = String(value); if (node.textContent !== text) node.textContent = text; }
+  function renderStatus() {
+    let message = state.paused ? ui(4) : state.status === "miss" ? `${ui(1)} ${state.misses}/3` : state.status === "targetPreview" ? ui(7) : label(state.status, {chain: state.chain});
+    writeText("battle-status", message);
+    $("battle-status").dataset.targetPreview = state.status === "targetPreview" ? "active" : "inactive";
+    $("battle-status").dataset.tone = ["miss", "seedPod"].includes(state.status) ? "danger" : "normal";
+  }
+  function renderHud() {
+    writeText("score-label", state.score);
+    writeText("time-label", `${Math.max(0, Math.ceil(config().duration - state.elapsed))}s`);
+    writeText("harvest-label", `${ui(0)} ${state.round?.harvested || 0}`);
+    writeText("miss-label", `${ui(1)} ${state.misses}/3`);
+    $("miss-label").dataset.danger = String(state.misses > 0);
+    $("round-meter").value = Math.min(config().duration, state.elapsed);
+    $("round-meter").max = config().duration;
+  }
+  function consumeEvents() {
+    syncRound();
+    for (const e of state.round.drain()) {
+      if (e.type === "harvest" || e.type === "hazard") {
+        const t = e.target;
+        effects.push({ ...t, type: e.type, life: .6, duration: .6, points: e.points });
+        emitAnalytics(e.type === "harvest" ? "safe_hit" : "hazard_hit", {inputType: state.strokeInputType, from: "battle", outcome: e.type === "harvest" ? "safe" : "hazard", stage: state.stage});
+        if (e.type === "harvest") {
+          state.status = state.chain > 1 ? "chain" : "clean";
+          sound(t.checkpoint ? "game.checkpoint" : "reward.collect", t.checkpoint ? .5 : .24);
+          $("score-label").animate([{opacity:.55},{opacity:1}], {duration:180});
+        } else { state.status = "seedPod"; sound("feedback.error", .34); }
+        state.statusUntil = state.round.time + .85;
+      } else if (e.type === "miss") {
+        state.status = "miss"; state.statusUntil = state.round.time + 1;
+        sound("alert.warning", .25);
+        effects.push({...e.target, y: state.arenaHeight - 28, type:"miss", life:.65, duration:.65});
+      } else if (e.type === "finish") state.settle = .65;
+    }
+    renderStatus(); renderHud();
+  }
+  function hitAt(p, previous = p) {
+    if (!state.round || state.round.finished || state.paused || state.ready > 0) return;
+    state.round.swipe(previous, p); consumeEvents(); draw();
+  }
   function finish() {
-    const waveScore = state.score + state.chain * 5;
-    const previousBest = state.best;
-    state.best = Math.max(state.best, waveScore);
+    state.active = false; state.stroke = []; state.pointerId = null;
+    const round = state.round, previousBest = state.best;
+    state.best = Math.max(state.best, state.score);
     state.bestImproved = state.best > previousBest;
     try { localStorage.setItem("wp-canopy-best", String(state.best)); } catch {}
-    // A wave clear must be earned with at least one safe-fruit harvest; idle
-    // zero-input checks are failures and must not unlock the next stage.
-    state.resultWin = state.misses < 3 && state.score > 0;
+    state.resultWin = round.won;
     if (state.resultWin) {
       progress.cleared[state.stage] = true;
       progress.unlocked = Math.max(progress.unlocked, Math.min(TOTAL_STAGES, state.stage + 1));
-      progress.best[state.stage] = Math.max(Number(progress.best[state.stage] || 0), waveScore);
+      progress.best[state.stage] = Math.max(Number(progress.best[state.stage] || 0), state.score);
+      progress.checkpoints ||= {};
+      progress.checkpoints[state.stage] ||= round.checkpointHit;
       saveProgress();
     }
-    const outcome = state.resultWin ? "success" : "hazard";
-    emitAnalytics("wave_result", { from: "battle", outcome, stage: state.stage });
-    if (state.wave === 5) emitAnalytics("chapter_final_wave", { chapter: state.chapter, from: "battle", outcome, stage: state.stage });
+    const outcome = state.resultWin ? "success" : round.reason === "hazard" ? "hazard" : "no_moves";
+    emitAnalytics("wave_result", {from:"battle", outcome, stage:state.stage});
+    if (state.wave === 5) emitAnalytics("chapter_final_wave", {chapter:state.chapter, from:"battle", outcome, stage:state.stage});
     show("result"); renderLocalized();
-
-    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
-}
+    sound(state.resultWin ? "result.win" : "result.lose", state.resultWin ? .5 : .35);
+    $("retry").focus({preventScroll:true});
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = state.resultWin ? "win" : "loss"; __wpMeasurement.screen = null; __wpNotifyMeasurement();
+  }
   function renderResult() {
     if (state.resultWin === null) return;
-    const stageUi = stageLabel();
-    const lessonKey = state.chain > 0 ? (state.bestImproved ? "best" : "chain") : "none";
-    const lesson = chainLesson(lessonKey, { chain: state.chain, bonus: state.chain * 5, best: state.best });
-    const checkpointNote = stageFor(state.stage).checkpoint ? ` · ${state.checkpointHit ? stageUi.checkpointHit : stageUi.checkpointMiss}` : "";
+    const round = state.round;
     $("result-title").textContent = state.resultWin ? label("waveClear") : label("waveEnded");
-    $("result-copy").textContent = `${stageUi.stage} ${state.stage} · ${label("resultCopy", { chapter: state.chapter, wave: state.wave, score: state.score, chain: state.chain, best: state.best })} · ${lesson}${checkpointNote}`;
+    $("result-copy").textContent = state.resultWin ? (round.misses === 0 ? ui(9) : ui(7)) : round.reason === "hazard" ? ui(6) : ui(5);
+    $("result-score").textContent = String(state.score);
+    $("result-stats").textContent = `${ui(0)} ${round.harvested} · ${ui(8)} ${round.peakChain} · ${ui(1)} ${round.misses}/3`;
+    $("result-record").textContent = state.bestImproved ? ui(10) : `${label("bestScore")}: ${state.best}`;
+    $("result-checkpoint").textContent = config().checkpoint ? (round.checkpointHit ? stageLabel().checkpointHit : stageLabel().checkpointMiss) : "";
+    $("result-checkpoint").hidden = !config().checkpoint;
     $("to-stages").textContent = label("stages");
     const hasNext = state.resultWin && state.stage < TOTAL_STAGES;
-    $("next").hidden = !hasNext;
-    $("next").disabled = !hasNext;
+    $("next").hidden = false; $("next").disabled = !hasNext;
     $("next").setAttribute("aria-disabled", String(!hasNext));
-    $("next").textContent = hasNext ? `${stageUi.stage} ${state.stage + 1}` : label("replay");
+    $("next").textContent = hasNext ? `${stageLabel().stage} ${state.stage + 1}` : label("nextWave");
     $("retry").textContent = label("retry");
+    const awarded = collectionHistory()[`animal-canopy-cut:stage-${state.stage}`];
+    window.ShowResultGet?.("animal-canopy-cut", Boolean(state.resultWin && awarded && awarded >= state.roundStartedAt));
   }
+  function collectionHistory() {
+    try { return (window.WeightPlayCastle?.read() || JSON.parse(localStorage.getItem('weightplayCastleV1') || '{}')).completions || {}; }
+    catch { return {}; }
+  }
+  function renderCollectionBadges() {
+    const history = collectionHistory();
+    $("stage-list").querySelectorAll('[data-stage]').forEach(card => {
+      const id = Number(card.dataset.stage), saved = history[`animal-canopy-cut:stage-${id}`];
+      const value = saved ? 'collected' : progress.cleared[id] ? 'unknown' : 'not-collected';
+      card.dataset.wpGetGameId = 'animal-canopy-cut'; card.dataset.wpGetIndex = String(id - 1);
+      if (card.dataset.wpGetState !== value) card.dataset.wpGetState = value;
+      window.ShowGet?.('animal-canopy-cut', id - 1);
+    });
+  }
+  for(const event of ['weightplay:castle-ready','weightplay:castle-updated','weightplay:castle-reward'])window.addEventListener(event,()=>{renderCollectionBadges();if(state.screen==='result')renderResult();});
   function renderLocalized() {
-    const targetKey = key();
-    const settingsLabel = settingsCopy[currentLocale()] || settingsCopy.en;
-    const currentStage = stageFor(state.stage);
-    const stageUi = stageLabel();
-    document.querySelector("#stage-screen h2").textContent = label("stageTitle");
-    document.querySelector("#stage-screen .back").setAttribute("aria-label", label("backMain"));
-    document.querySelector("#stage-screen nav").setAttribute("aria-label", label("stageSections"));
-    document.querySelector("#stage-screen nav button").textContent = label("stages");
-    document.querySelector("#battle-screen .back").setAttribute("aria-label", label("backStages"));
-    $("battle-utility")?.setAttribute("aria-label", settingsLabel);
-    $("battle-utility")?.setAttribute("title", settingsLabel);
-    canvas.setAttribute("aria-label", label("canvas"));
-    document.querySelector(".touch-hint").textContent = label("hint");
-    $("battle-key")?.setAttribute("aria-label", targetKey.label);
-    $("safe-key").textContent = targetKey.safe;
-    $("hazard-key").textContent = targetKey.hazard;
-    $("main-progress").textContent = `${label("bestScore")}: ${state.best}`;
-    $("wave-label").textContent = `${stageUi.stage} ${state.stage} · ${label("waveLabel", { chapter: state.chapter, wave: state.wave })}`;
-    $("stage-objective").textContent = `${arcLabel(currentStage.arc)} · ${stageUi.objective[currentStage.mechanic] || stageCopy.en.objective[currentStage.mechanic]}${currentStage.checkpoint ? ` · ${stageUi.checkpoint}` : ""}`;
-    renderStatus();
+    const targetKey = key(), currentStage = stageFor(state.stage);
+    $("stage-header").querySelector("h2").textContent = label("stageTitle");
+    document.querySelector('[data-wp-return="stage"]').setAttribute("aria-label", label("backMain"));
+    document.querySelector('#stage-screen nav').setAttribute("aria-label", label("stageSections"));
+    document.querySelector('#stage-screen nav button').textContent = label("stages");
+    document.querySelector('[data-wp-return="battle"]').setAttribute("aria-label", label("backStages"));
+    canvas.setAttribute("aria-label", `${label("canvas")}. ${ui(7)}. ${ui(6)}.`);
+    $("battle-key").setAttribute("aria-label", targetKey.label);
+    $("safe-key").textContent = targetKey.safe; $("hazard-key").textContent = targetKey.hazard;
+    $("main-progress").textContent = `${stageLabel().total.replace("{unlocked}",progress.unlocked).replace("{total}",TOTAL_STAGES)} · ${label("bestScore")}: ${state.best}`;
+    $("wave-label").textContent = `${stageLabel().stage} ${state.stage}`;
+    $("score-caption").textContent = scoreCaption(); $("time-caption").textContent = ui(2);
+    $("stage-objective").textContent = stageName(currentStage);
+    $("stage-objective").title = stageLabel().objective[currentStage.mechanic];
+    $("resume").textContent = ui(3); $("pause-title").textContent = ui(4);
+    $("round-meter").setAttribute("aria-label", ui(2));
+    renderStatus(); renderHud();
     if (state.cardsLocale !== currentLocale() || state.screen === "stage") stageCards();
-    renderResult(); draw();
+    renderResult(); draw(); frameController.refresh();
   }
-  function drawHudText(text, color, y) { ctx.save(); ctx.fillStyle = color; ctx.font = "bold 20px system-ui"; const rtl = currentLocale() === "ar"; ctx.direction = rtl ? "rtl" : "ltr"; ctx.textAlign = rtl ? "right" : "left"; ctx.fillText(text, rtl ? CANVAS_WIDTH - 24 : 24, y); ctx.restore(); }
-  function draw() { const height = syncArenaSize(); const groundTop = height - 60; const c = config(); ctx.clearRect(0,0,canvas.width,canvas.height); const g=ctx.createLinearGradient(0,0,0,height);g.addColorStop(0,"#123c4b");g.addColorStop(1,"#071923");ctx.fillStyle=g;ctx.fillRect(0,0,CANVAS_WIDTH,height);ctx.fillStyle="#1d5d55";ctx.fillRect(0,groundTop,CANVAS_WIDTH,60); if (c.wind) { ctx.save(); ctx.strokeStyle="rgba(141,240,207,.16)"; ctx.lineWidth=3; for (let i = 0; i < 5; i += 1) { const y = 88 + i * Math.min(62, height / 7); const bend = Math.sin(state.elapsed * 2 + i) * 16; ctx.beginPath(); ctx.moveTo(54 + i * 150, y); ctx.quadraticCurveTo(180 + i * 110, y - bend, 300 + i * 130, y); ctx.stroke(); } ctx.restore(); } drawHudText(label("chain", { chain: state.chain }), "#8df0cf", 38); drawHudText(`${label("bestScore")} ${state.score}`, "#ffd36b", 68);state.stroke.forEach((p,i)=>{ctx.fillStyle=`rgba(255,240,170,${(i+1)/Math.max(1,state.stroke.length)*.55})`;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill()});state.targets.forEach(t=>{if(t.hit)return;ctx.save();ctx.translate(t.x,t.y);if(t.cue&&state.status==="targetPreview"){const alpha=reducedMotion ? .46 : .24+.2*(Math.sin(performance.now()/180)+1);ctx.beginPath();ctx.arc(0,0,t.r+15,0,Math.PI*2);ctx.strokeStyle=`rgba(141,240,207,${alpha})`;ctx.lineWidth=6;ctx.stroke()}if(t.checkpoint){ctx.beginPath();ctx.arc(0,0,t.r+12,0,Math.PI*2);ctx.strokeStyle="#ffd36b";ctx.lineWidth=4;ctx.stroke()}if(t.hazard&&c.shadow){ctx.beginPath();ctx.arc(0,0,t.r+8,0,Math.PI*2);ctx.strokeStyle="rgba(255,111,129,.75)";ctx.lineWidth=3;ctx.stroke()}if(t.asset?.complete&&t.asset.naturalWidth){const crop=t.hazard?[0,360,620,364]:[[0,0,560,420],[630,0,660,420],[1450,0,700,430]][t.kind];ctx.drawImage(t.asset,crop[0],crop[1],crop[2],crop[3],-t.r-10,-t.r-10,(t.r+10)*2,(t.r+10)*2);}else{ctx.fillStyle=t.color;ctx.beginPath();ctx.arc(0,0,t.r,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#fff8";ctx.lineWidth=4;ctx.stroke();ctx.fillStyle="#173042";ctx.font="bold 24px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(t.hazard?"!":"✦",0,0);}ctx.restore()}); }
-  function frame(now) { if (state.screen !== "battle") return; const height = syncArenaSize(); const compact = height === COMPACT_ARENA_HEIGHT; const dt=Math.min((now-state.last)/16.67,2); state.last=now; if (state.ready > 0) { state.ready -= dt; if (state.ready <= 0) { state.status = "targetPreview"; state.previewUntil = now + (reducedMotion ? 1050 : 1650); renderStatus(); } draw(); state.raf=requestAnimationFrame(frame); return; } if (state.status === "targetPreview" && now >= state.previewUntil) { state.status = "swipe"; renderStatus(); } const c=config(); state.elapsed += dt/60; state.spawn += dt; if(state.spawn > c.spawnGap){state.spawn=0;addTarget();if(random()<.28)addTarget()} state.targets.forEach(t=>{const wind = c.mechanic === "windSwitch" && Math.floor(state.elapsed) % 4 >= 2 ? -(c.wind || 0) : (c.wind || 0); t.x+=t.vx*dt + Math.sin(state.elapsed*3.4+t.phase)*(c.weave||0)*dt; t.vx += wind * .012 * dt; t.y+=t.vy*dt;t.vy+=(compact ? .12 : .24)*dt;t.x=Math.max(t.r,Math.min(CANVAS_WIDTH-t.r,t.x))}); state.targets=state.targets.filter(t=>t.y<height+60 && !t.hit); if(state.elapsed>c.duration || state.misses>=3){finish();return} $("score-label").textContent=`${state.score} · ${Math.ceil(c.duration-state.elapsed)}s`;draw();state.raf=requestAnimationFrame(frame); }
-  canvas.addEventListener("pointerdown",(e)=>{if(state.screen!=="battle"||state.ready>0)return;canvas.setPointerCapture(e.pointerId);state.active=true;state.strokeInputType=e.pointerType||"unknown";state.stroke=[point(e)];hitAt(state.stroke[0])});
-  canvas.addEventListener("pointermove",(e)=>{if(!state.active)return;const p=point(e);state.stroke.push(p);hitAt(p);if(state.stroke.length>24)state.stroke.shift()});
-  ["pointerup","pointercancel","lostpointercapture"].forEach((event)=>canvas.addEventListener(event,()=>{if(state.active&&state.stroke.length)emitAnalytics("pointer_stroke",{inputType:state.strokeInputType,from:"battle",outcome:event==="pointerup"?"completed":"cancelled"});state.active=false;state.stroke=[];state.strokeInputType="unknown"}));
-  $("start-game").addEventListener("click",()=>{show("stage");renderLocalized()}); document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(b.dataset.back==="stage")emitAnalytics("stage_return",{from:state.screen==="result"?"result":"battle",outcome:"returned"});show(b.dataset.back);renderLocalized()})); $("retry").addEventListener("click",()=>{emitAnalytics("retry",{from:"result",outcome:"retry",stage:state.stage});__wpReplayStart(() => startStage(state.stage,"result"))}); $("next").addEventListener("click",()=>{if(!state.resultWin||state.stage>=TOTAL_STAGES)return;emitAnalytics("next_wave",{from:"result",outcome:"next_stage",stage:state.stage+1});startStage(state.stage+1,"result")}); $("to-stages").addEventListener("click",()=>{emitAnalytics("stage_return",{from:"result",outcome:"returned",stage:state.stage});show("stage");renderLocalized()}); $("localeSelect")?.addEventListener("change",()=>setTimeout(renderLocalized,0)); stageCards(); renderLocalized();
+  const crops = [[140,0,430,355],[715,0,610,350],[1380,0,565,354],[130,352,480,330]];
+  function renderKeys() { document.querySelectorAll('.key-art').forEach(node => { const c=crops[Number(node.dataset.kind)], scale=60/Math.max(c[2],c[3]), g=node.getContext('2d');g.clearRect(0,0,64,64);g.drawImage(propArt,...c,(64-c[2]*scale)/2,(64-c[3]*scale)/2,c[2]*scale,c[3]*scale); }); }
+  propArt.addEventListener('load',renderKeys);
+  if(propArt.complete && propArt.naturalWidth)renderKeys();
+  function sprite(t, x, y, size, alpha = 1) {
+    if (!propArt.complete || !propArt.naturalWidth) return;
+    const crop = crops[t.hazard ? 3 : t.kind];
+    const scale = size / Math.max(crop[2], crop[3]);
+    ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x,y); ctx.rotate(t.rotation || 0);
+    ctx.drawImage(propArt,...crop,-crop[2]*scale/2,-crop[3]*scale/2,crop[2]*scale,crop[3]*scale); ctx.restore();
+  }
+  function draw() {
+    syncArenaSize();
+    const w = state.arenaWidth, h = state.arenaHeight;
+    if (!w || !h) return;
+    const scale = canvas.width / w; ctx.setTransform(scale,0,0,scale,0,0); ctx.clearRect(0,0,w,h);
+    const c = config(), tint = ctx.createLinearGradient(0,0,0,h);
+    tint.addColorStop(0,c.shadow ? "rgba(16,22,51,.85)" : "rgba(9,37,46,.58)"); tint.addColorStop(1,"rgba(5,26,31,.92)");
+    ctx.fillStyle=tint;ctx.fillRect(0,0,w,h);
+    if(c.wind) {ctx.strokeStyle="#a5ecd74d";ctx.lineWidth=2;for(let i=0;i<4;i++){const y=h*(.2+i*.17),x=((state.elapsed*(c.wind>0?35:-35)+i*w*.3)%w+w)%w;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+25,y-3);ctx.stroke();}}
+    if(c.rhythm||c.mechanic==="signal"||c.mechanic==="focus") {const pulse=Math.max(0,1-Math.abs((state.round?.nextSpawn||0)-state.elapsed)*2);ctx.fillStyle=`rgba(141,240,207,${.08+pulse*.14})`;ctx.fillRect(0,h-8,w,8);}
+    for (const t of state.targets) {
+      ctx.save();ctx.translate(t.x,t.y);
+      ctx.beginPath();ctx.arc(0,0,t.r+4,0,Math.PI*2);
+      ctx.fillStyle=t.hazard?"#2a152bcc":t.checkpoint?"#f2ce6244":"#8df0cf22";ctx.fill();
+      ctx.lineWidth=t.checkpoint?3:1.5;ctx.strokeStyle=t.hazard?"#ff869c":t.checkpoint?"#ffe38a":"#b3f0cb99";ctx.stroke();
+      if(t.hazard){ctx.strokeStyle="#ffabc0";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-t.r*.55,-t.r*.55);ctx.lineTo(t.r*.55,t.r*.55);ctx.moveTo(t.r*.55,-t.r*.55);ctx.lineTo(-t.r*.55,t.r*.55);ctx.stroke();}
+      ctx.restore();sprite(t,t.x,t.y,t.r*2.4);
+    }
+    for (const e of effects) {
+      const k=1-e.life/e.duration, travel=reducedMotion?0:k;
+      if(e.type==="harvest") {
+        for(const side of [-1,1]){ctx.save();ctx.beginPath();ctx.rect(e.x+(side<0?-e.r*2:0)+side*travel*20,e.y-e.r*2, e.r*2,e.r*4);ctx.clip();sprite(e,e.x+side*travel*20,e.y+travel*travel*35,e.r*2.4,1-k);ctx.restore();}
+        if(!reducedMotion)for(let i=0;i<6;i++){const a=i*Math.PI/3;ctx.fillStyle=e.checkpoint?"#ffe38a":"#abefd0";ctx.globalAlpha=1-k;ctx.fillRect(e.x+Math.cos(a)*k*48,e.y+Math.sin(a)*k*35,3,3);}
+        ctx.globalAlpha=1-k;ctx.fillStyle="#fff2b9";ctx.textAlign="center";ctx.font="800 18px system-ui";ctx.fillText(`+${e.points}`,e.x,Math.max(22,e.y-e.r-travel*28));ctx.globalAlpha=1;
+      } else {ctx.globalAlpha=(1-k)*.7;ctx.strokeStyle="#ff8798";ctx.lineWidth=3;ctx.beginPath();ctx.arc(e.x,e.y, e.r+(reducedMotion?0:k*20),0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;}
+    }
+    for(let i=1;i<state.stroke.length;i++){const a=state.stroke[i-1],b=state.stroke[i];ctx.strokeStyle=`rgba(255,241,179,${Math.min(1,b.life/.2)})`;ctx.lineWidth=3;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+    if(state.ready>0){ctx.fillStyle="#f8edc6";ctx.textAlign="center";ctx.font="800 28px system-ui";ctx.fillText(label("ready"),w/2,h*.45);}
+  }
+  function frame(now) {
+    if(state.screen!=="battle")return;
+    const dt=Math.min(.05, Math.max(0,(now-state.last)/1000));state.last=now;
+    if(!state.paused){
+      if(state.ready>0){state.ready-=dt;if(state.ready<=0){state.status="targetPreview";renderStatus();}}
+      else if(state.settle>0){state.settle-=dt;if(state.settle<=0){finish();return;}}
+      else {state.round.step(dt);consumeEvents();if(state.statusUntil && state.round.time>state.statusUntil){state.status="swipe";state.statusUntil=0;renderStatus();}}
+      for(const e of effects)e.life-=dt;
+      for(let i=effects.length-1;i>=0;i--)if(effects[i].life<=0)effects.splice(i,1);
+      for(const p of state.stroke)p.life-=dt;
+      state.stroke=state.stroke.filter(p=>p.life>0);
+    }
+    draw();state.raf=requestAnimationFrame(frame);
+  }
+  function stopStroke() {state.active=false;state.pointerId=null;state.previousPoint=null;}
+  function pause() {
+    if(state.screen!=="battle" || state.paused)return;
+    state.paused=true;stopStroke();state.stroke=[];$("pause-panel").hidden=false;renderStatus();__wpNotifyMeasurement();
+  }
+  $("resume").addEventListener("click",()=>{state.paused=false;$("pause-panel").hidden=true;state.last=performance.now();renderStatus();__wpNotifyMeasurement();});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)pause();});
+  window.addEventListener("blur",pause);
+  window.addEventListener("weightplay:interaction-state",()=>{if(document.querySelector('#battle-screen [data-wp-settings][aria-expanded="true"]'))pause();});
+  canvas.addEventListener("pointerdown",e=>{if(state.screen!=="battle"||state.ready>0||state.paused||state.active||state.round?.finished)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);state.pointerId=e.pointerId;state.active=true;state.strokeInputType=e.pointerType||"unknown";const p=point(e);state.stroke=[p];state.previousPoint=p;hitAt(p);});
+  canvas.addEventListener("pointermove",e=>{if(!state.active||e.pointerId!==state.pointerId)return;const p=point(e);hitAt(p,state.previousPoint);state.stroke.push(p);state.previousPoint=p;if(state.stroke.length>32)state.stroke.shift();});
+  ["pointerup","pointercancel","lostpointercapture"].forEach(event=>canvas.addEventListener(event,e=>{if(e.pointerId!==state.pointerId)return;if(state.active)emitAnalytics("pointer_stroke",{inputType:state.strokeInputType,from:"battle",outcome:event==="pointerup"?"completed":"cancelled"});stopStroke();}));
+  $("start-game").addEventListener("click",()=>{show("stage");renderLocalized()}); document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(b.dataset.back==="stage")emitAnalytics("stage_return",{from:state.screen==="result"?"result":"battle",outcome:"returned"});show(b.dataset.back);renderLocalized()})); $("retry").addEventListener("click",()=>{emitAnalytics("retry",{from:"result",outcome:"retry",stage:state.stage});__wpReplayStart(() => startStage(state.stage,"result"))}); $("next").addEventListener("click",()=>{if(!state.resultWin||state.stage>=TOTAL_STAGES)return;emitAnalytics("next_wave",{from:"result",outcome:"next_stage",stage:state.stage+1});startStage(state.stage+1,"result")}); $("to-stages").addEventListener("click",()=>{emitAnalytics("stage_return",{from:"result",outcome:"returned",stage:state.stage});show("stage");renderLocalized()}); $("localeSelect")?.addEventListener("change",()=>setTimeout(renderLocalized,0)); window.addEventListener("wonder:locale-change", renderLocalized); stageCards(); renderLocalized();
 })();
