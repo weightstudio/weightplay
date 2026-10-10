@@ -145,11 +145,28 @@
   };
 
   const applyLocale = () => {
+    const hasSharedLocaleOwner = typeof window.WonderI18n?.setLocale === "function";
     window.WonderI18n?.setLocale?.(state.locale, { navigate: false });
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+    if (!hasSharedLocaleOwner) {
+      const legacyLocale = state.locale === "zh-Hans" ? "zh-Hant" : state.locale;
+      window.dispatchEvent(new CustomEvent("wonder:locale-change", {
+        detail: { locale: state.locale, legacyLocale },
+      }));
+    }
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.copyAria)); });
+    const gameplayTags = copy[state.locale]?.gameplayTags;
+    if (Array.isArray(gameplayTags)) {
+      document.querySelectorAll("[data-wp-gameplay-tags]").forEach((list) => {
+        list.replaceChildren(...gameplayTags.map((tag) => {
+          const node = document.createElement("span");
+          node.textContent = tag;
+          return node;
+        }));
+      });
+    }
     $("localeSelect").value = state.locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
     $("settingsBtn").setAttribute("aria-label", t("settings"));

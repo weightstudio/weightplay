@@ -30,7 +30,7 @@ body[data-wp-game-id="animal-dewline"] #startBtn {
   text-overflow: clip !important;
 }
 
-body[data-wp-game-id="animal-dewline"] #stageScreen[data-wp-standard-stage-screen] {
+body[data-wp-game-id="animal-dewline"] #stageScreen[data-wp-standard-stage-screen]:not([hidden]) {
   box-sizing: border-box !important;
   display: grid !important;
   grid-template-rows: 48px minmax(0, 1fr) 56px !important;

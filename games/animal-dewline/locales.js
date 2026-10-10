@@ -1,6 +1,6 @@
 window.ANIMAL_DEWLINE_LOCALES = {
   en: {
-    loading: "Waking the meadow…", back: "Return to WeightPlay", settings: "Settings", soundOn: "Sound: On", soundOff: "Sound: Off", language: "Language", kicker: "A calm linked-flow puzzle", title: "Meadow Dewline", intro: "Tune three linked dew valves to match the meadow note and wake the dawn flowers.", progress: "3 meadows · 9 valves · no timer", start: "Start a meadow", plots: "Choose a meadow", best: "Best tries", noBest: "Not yet", guideKicker: "WeightPlay Original Game Guide", guideTitle: "How to play", guideIntro: "Tune three linked dew valves to match the meadow note and wake the dawn flowers.", guideGameplay: "Gameplay", guideGameplayValue: "Linked flow puzzle", guideGenre: "Genre", guideGenreValue: "Puzzle · Logic · Planning · Family · Animal", guideOneTitle: "1. Read the note", guideOne: "Each meadow shows the three flow levels the flowers need.", guideTwoTitle: "2. Tune the valves", guideTwo: "Use − and + to set every linked valve; the live total stays visible.", guideThreeTitle: "3. Check gently", guideThree: "A mismatch names the first valve to revisit. There is no timer or lives.", faqTitle: "FAQ", faqProgressQuestion: "Where is progress saved?", faqProgressAnswer: "Only the best check count recorded when you finish the third meadow is saved in this browser. Valve settings, completed-meadow flags and the current session are not saved. The record can include a direct third-meadow attempt, not necessarily a full three-meadow run.", guidePlanTitle: "Plan a calm sequence", guidePlan: "Begin by reading all three values before touching a control. The meadow note is a small plan, not a timed test. Compare the targets, notice which valve is furthest away, and decide on a gentle order. A valve can move up or down one step at a time, so you can watch how each change affects the total. Keeping the whole note in view makes the linked system easier to understand.", guideTotalTitle: "Read the live total", guideTotal: "The current total is a helpful checkpoint, but it is not the only answer. Two settings can share a total while still missing different targets. Look at each valve card, then use the total to confirm the direction of your adjustment. If the total rises too far, step back with the same small controls. This rhythm keeps the puzzle readable and gives every choice a clear cause and effect.", guideFeedbackTitle: "Use feedback as a clue", guideFeedback: "When a check does not match, Dewline names the first valve to revisit. Treat that message as a clue rather than a penalty. Return to the named card, make one considered change, and check again. There are no lives to lose, no countdown, and no hidden score multiplier. The calm feedback loop is designed for learning the relationship between the three linked flows.", guideFinishTitle: "Finish each meadow", guideFinish: "A matching answer opens Result. The first two meadows offer the next meadow; the third offers the map. All three cards are already selectable, so choose a sequence for practice rather than treating the map as locked progress. Each selected meadow starts with three zero values. Checks accumulate within the current session, while changing values is free.", guidePrivacyTitle: "Progress and privacy", guidePrivacy: "This game stores the best check count when the third meadow is completed, plus your chosen language. It does not save valve positions, completed-meadow markers or a paused session. Reloading starts from Main; the saved best can remain when browser storage is available. Clearing site data or changing browser profiles can remove that record. It is not a cloud save or a verified full-campaign score.", guideReplayTitle: "Replay thoughtfully", guideReplay: "Replay the same visible target to compare a new adjustment order. All three meadows are available, and selecting one resets its valves. To compare full runs fairly, start from Main and visit the three meadows in the same order: jumping straight to the third can also produce a best-check record. A lower number from a different route is not evidence of a better full run.", round: "Meadow {n} of {total}", tries: "Tries", noteLabel: "Meadow note", target: "Target", current: "Current", valve: "Valve {n}", decrease: "Decrease valve {n}", increase: "Increase valve {n}", battleHint: "Match each valve to the note, then check the flow.", total: "Current total", check: "Check flow", reset: "Reset valves", ready: "Flow is ready to check.", wrong: "Valve {n} is off target. Adjust it and try again.", correct: "The flowers are drinking happily.", finishTitle: "Dewline complete!", finishText: "Three meadows opened in {n} tries. Your best is {best}.", next: "Next meadow", map: "Meadow map", home: "Back to menu", allDone: "All three dawn meadows are awake.", meadow1: "Dawn Basin", meadow2: "Fern Channel", meadow3: "Pollen Brook",
+    loading: "Waking the meadow…", back: "Return to WeightPlay", settings: "Settings", soundOn: "Sound: On", soundOff: "Sound: Off", language: "Language", kicker: "A calm linked-flow puzzle", title: "Meadow Dewline", intro: "Tune three linked dew valves to match the meadow note and wake the dawn flowers.", progress: "3 meadows · 9 valves · no timer", start: "Start a meadow", plots: "Choose a meadow", best: "Best tries", noBest: "Not yet", guideKicker: "WeightPlay Original Game Guide", guideTitle: "How to play", guideIntro: "Tune three linked dew valves to match the meadow note and wake the dawn flowers.", guideGameplay: "Gameplay", guideGameplayValue: "Linked flow puzzle", guideGenre: "Genre", guideGenreValue: "Puzzle · Logic · Planning", guideOneTitle: "1. Read the note", guideOne: "Each meadow shows the three flow levels the flowers need.", guideTwoTitle: "2. Tune the valves", guideTwo: "Use − and + to set every linked valve; the live total stays visible.", guideThreeTitle: "3. Check gently", guideThree: "A mismatch names the first valve to revisit. There is no timer or lives.", faqTitle: "FAQ", faqProgressQuestion: "Where is progress saved?", faqProgressAnswer: "Only the best check count recorded when you finish the third meadow is saved in this browser. Valve settings, completed-meadow flags and the current session are not saved. The record can include a direct third-meadow attempt, not necessarily a full three-meadow run.", guidePlanTitle: "Plan a calm sequence", guidePlan: "Begin by reading all three values before touching a control. The meadow note is a small plan, not a timed test. Compare the targets, notice which valve is furthest away, and decide on a gentle order. A valve can move up or down one step at a time, so you can watch how each change affects the total. Keeping the whole note in view makes the linked system easier to understand.", guideTotalTitle: "Read the live total", guideTotal: "The current total is a helpful checkpoint, but it is not the only answer. Two settings can share a total while still missing different targets. Look at each valve card, then use the total to confirm the direction of your adjustment. If the total rises too far, step back with the same small controls. This rhythm keeps the puzzle readable and gives every choice a clear cause and effect.", guideFeedbackTitle: "Use feedback as a clue", guideFeedback: "When a check does not match, Dewline names the first valve to revisit. Treat that message as a clue rather than a penalty. Return to the named card, make one considered change, and check again. There are no lives to lose, no countdown, and no hidden score multiplier. The calm feedback loop is designed for learning the relationship between the three linked flows.", guideFinishTitle: "Finish each meadow", guideFinish: "A matching answer opens Result. The first two meadows offer the next meadow; the third offers the map. All three cards are already selectable, so choose a sequence for practice rather than treating the map as locked progress. Each selected meadow starts with three zero values. Checks accumulate within the current session, while changing values is free.", guidePrivacyTitle: "Progress and privacy", guidePrivacy: "This game stores the best check count when the third meadow is completed, plus your chosen language. It does not save valve positions, completed-meadow markers or a paused session. Reloading starts from Main; the saved best can remain when browser storage is available. Clearing site data or changing browser profiles can remove that record. It is not a cloud save or a verified full-campaign score.", guideReplayTitle: "Replay thoughtfully", guideReplay: "Replay the same visible target to compare a new adjustment order. All three meadows are available, and selecting one resets its valves. To compare full runs fairly, start from Main and visit the three meadows in the same order: jumping straight to the third can also produce a best-check record. A lower number from a different route is not evidence of a better full run.", round: "Meadow {n} of {total}", tries: "Tries", noteLabel: "Meadow note", target: "Target", current: "Current", valve: "Valve {n}", decrease: "Decrease valve {n}", increase: "Increase valve {n}", battleHint: "Match each valve to the note, then check the flow.", total: "Current total", check: "Check flow", reset: "Reset valves", ready: "Flow is ready to check.", wrong: "Valve {n} is off target. Adjust it and try again.", correct: "The flowers are drinking happily.", finishTitle: "Dewline complete!", finishText: "Three meadows opened in {n} tries. Your best is {best}.", next: "Next meadow", map: "Meadow map", home: "Back to menu", allDone: "All three dawn meadows are awake.", meadow1: "Dawn Basin", meadow2: "Fern Channel", meadow3: "Pollen Brook",
     faqCountQuestion: "How many meadows are included?",
     faqCountAnswer: "There are 3 authored meadows with 9 linked valves in total.",
     faqValvesQuestion: "How do the linked valves work?",
@@ -38,7 +38,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "玩法",
     guideGameplayValue: "數值配對益智",
     guideGenre: "類型",
-    guideGenreValue: "益智 · 邏輯 · 規劃 · 家庭 · 動物",
+    guideGenreValue: "益智 · 邏輯 · 規劃",
     guideIntro: "調整三個連動的晨露閥門，依照草地筆記喚醒晨光花朵。",
     faqCountQuestion: "共有幾片草地？",
     faqCountAnswer: "共有 3 片原創草地，總共 9 個相互連動的閥門。",
@@ -77,7 +77,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "玩法",
     guideGameplayValue: "数值配对益智",
     guideGenre: "类型",
-    guideGenreValue: "益智 · 逻辑 · 规划 · 家庭 · 动物",
+    guideGenreValue: "益智 · 逻辑 · 规划",
     guideIntro: "调整三个连动的晨露阀门，对准草地笔记，唤醒晨光花朵。",
     faqTitle: "常见问题",
     faqCountQuestion: "共有多少片草地？",
@@ -119,7 +119,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "遊び方",
     guideGameplayValue: "数合わせパズル",
     guideGenre: "ジャンル",
-    guideGenreValue: "パズル · 論理 · 計画 · ファミリー · 動物",
+    guideGenreValue: "パズル · 論理 · 計画",
     guideIntro: "3つの連動する露のバルブを草原のメモに合わせ、朝の花を目覚めさせましょう。",
     faqTitle: "よくある質問",
     faqCountQuestion: "草原はいくつありますか？",
@@ -161,7 +161,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "게임 방식",
     guideGameplayValue: "숫자 맞추기 퍼즐",
     guideGenre: "장르",
-    guideGenreValue: "퍼즐 · 논리 · 계획 · 가족 · 동물",
+    guideGenreValue: "퍼즐 · 논리 · 계획",
     progress: "초원 3개 · 밸브 9개 · 시간 제한 없음",
     guideIntro: "연결된 이슬 밸브 세 개를 초원 쪽지에 맞춰 아침 꽃을 깨워 보세요.",
     faqTitle: "자주 묻는 질문",
@@ -187,7 +187,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     publicRelated2Intro: "칸과 상하좌우를 바꿔 모든 불을 끄세요.",
   },
   es: {
-    loading: "Despertando la pradera…", back: "Volver a WeightPlay", settings: "Ajustes", soundOn: "Sonido: activado", soundOff: "Sonido: desactivado", language: "Idioma", kicker: "Un rompecabezas sereno de flujos conectados", title: "Línea de Rocío", intro: "Ajusta tres válvulas de rocío conectadas según la nota de la pradera y despierta las flores del amanecer.", start: "Comenzar pradera", plots: "Elegir pradera", best: "Mejor marca", noBest: "Aún no hay marca", guideTitle: "Cómo jugar", guideOneTitle: "1. Lee la nota", guideOne: "Cada pradera muestra los tres niveles de flujo que necesitan las flores.", guideTwoTitle: "2. Ajusta las válvulas", guideTwo: "Usa − y + para fijar cada válvula conectada y ver el total en directo.", guideThreeTitle: "3. Comprueba con calma", guideThree: "Si no coincide, nombra la primera válvula que debes revisar. No hay tiempo ni vidas.", round: "Pradera {n} de {total}", tries: "Intentos", noteLabel: "Nota de la pradera", target: "Objetivo", current: "Actual", valve: "Válvula {n}", decrease: "Bajar válvula {n}", increase: "Subir válvula {n}", battleHint: "Ajusta cada válvula a la nota y comprueba el flujo.", total: "Total actual", check: "Comprobar flujo", reset: "Reiniciar válvulas", ready: "El flujo está listo para comprobarse.", wrong: "La válvula {n} no coincide con el objetivo. Ajústala y vuelve a intentarlo.", correct: "Las flores beben felices.", finishTitle: "¡Línea de Rocío completada!", finishText: "Abriste tres praderas en {n} intentos. Tu mejor marca es {best}.", next: "Siguiente pradera", map: "Mapa de praderas", home: "Volver al menú", allDone: "Las tres praderas del amanecer están despiertas.", meadow1: "Cuenca del Alba", meadow2: "Canal de Helechos", meadow3: "Arroyo del Polen",
+    loading: "Despertando la pradera…", back: "Volver a WeightPlay", settings: "Ajustes", soundOn: "Sonido: activado", soundOff: "Sonido: desactivado", language: "Idioma", kicker: "Un rompecabezas sereno de flujos conectados", title: "Línea de Rocío", intro: "Ajusta tres válvulas de rocío conectadas según la nota de la pradera y despierta las flores del amanecer.", start: "Comenzar pradera", plots: "Elegir pradera", best: "Mejor marca", noBest: "Aún no hay marca", guideTitle: "Cómo jugar", guideOneTitle: "1. Lee la nota", guideOne: "Cada pradera muestra los tres niveles de flujo que necesitan las flores.", guideTwoTitle: "2. Ajusta las válvulas", guideTwo: "Usa − y + para fijar cada válvula conectada y ver el total en directo.", guideThreeTitle: "3. Comprueba con calma", guideThree: "Si hay un desajuste, el juego señala la primera válvula que debes revisar. No hay temporizador ni vidas.", round: "Pradera {n} de {total}", tries: "Intentos", noteLabel: "Nota de la pradera", target: "Objetivo", current: "Actual", valve: "Válvula {n}", decrease: "Bajar válvula {n}", increase: "Subir válvula {n}", battleHint: "Ajusta cada válvula a la nota y comprueba el flujo.", total: "Total actual", check: "Comprobar flujo", reset: "Reiniciar válvulas", ready: "El flujo está listo para comprobarse.", wrong: "La válvula {n} no coincide con el objetivo. Ajústala y vuelve a intentarlo.", correct: "Las flores beben felices.", finishTitle: "¡Línea de Rocío completada!", finishText: "Abriste tres praderas en {n} intentos. Tu mejor marca es {best}.", next: "Siguiente pradera", map: "Mapa de praderas", home: "Volver al menú", allDone: "Las tres praderas del amanecer están despiertas.", meadow1: "Cuenca del Alba", meadow2: "Canal de Helechos", meadow3: "Arroyo del Polen",
     guideFinish: "Al acertar los tres valores aparece el resultado. Las dos primeras praderas ofrecen pasar a la siguiente y la tercera permite volver al mapa. Las tres tarjetas están disponibles desde el inicio: elige un orden para practicar, no para desbloquearlas. Cada selección pone las válvulas a cero, pero conserva las comprobaciones de la sesión. Cambiar valores no cuenta.",
     guidePrivacy: "El juego guarda el mejor número de comprobaciones al completar la tercera pradera y el idioma elegido. No guarda posiciones, marcas de praderas terminadas ni partidas interrumpidas. Recargar vuelve al menú; el récord puede permanecer si el navegador permite guardar datos. Borrar los datos del sitio o cambiar de perfil puede eliminarlo. No es una partida en la nube ni un récord verificado de las tres praderas.",
     guideReplay: "Repite el objetivo visible con otro orden de ajustes. Todas las praderas están disponibles y elegir una reinicia sus válvulas. Para comparar recorridos completos, empieza desde el menú y visita las tres en el mismo orden. Saltar directamente a la tercera también puede actualizar el récord; una cifra menor por otra ruta no demuestra una mejor vuelta completa.",
@@ -204,7 +204,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "Mecánica",
     guideGameplayValue: "Puzle de igualar números",
     guideGenre: "Género",
-    guideGenreValue: "Puzle · Lógica · Planificación · Familia · Animales",
+    guideGenreValue: "Puzle · Lógica · Planificación",
     progress: "3 praderas · 9 válvulas · Sin cronómetro",
     guideIntro: "Ajusta tres válvulas de rocío conectadas según la nota de la pradera y despierta las flores del amanecer.",
     faqTitle: "Preguntas frecuentes",
@@ -247,7 +247,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "Jogabilidade",
     guideGameplayValue: "Quebra-cabeça de números",
     guideGenre: "Gênero",
-    guideGenreValue: "Quebra-cabeça · Lógica · Planejamento · Família · Animais",
+    guideGenreValue: "Quebra-cabeça · Lógica · Planejamento",
     progress: "3 prados · 9 válvulas · Sem cronômetro",
     guideIntro: "Ajuste três válvulas de orvalho conectadas à nota do prado e desperte as flores da manhã.",
     faqTitle: "Perguntas frequentes",
@@ -290,7 +290,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "Mécanique",
     guideGameplayValue: "Correspondance de nombres",
     guideGenre: "Genre",
-    guideGenreValue: "Puzzle · Logique · Planification · Famille · Animaux",
+    guideGenreValue: "Casse-tête · Logique · Planification",
     progress: "3 prairies · 9 vannes · Sans chronomètre",
     guideIntro: "Règle trois vannes de rosée liées selon la note de la prairie et réveille les fleurs de l’aube.",
     faqTitle: "Questions fréquentes",
@@ -333,9 +333,9 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "Spielweise",
     guideGameplayValue: "Zahlen-Zuordnungspuzzle",
     guideGenre: "Genre",
-    guideGenreValue: "Puzzle · Logik · Planung · Familie · Tiere",
+    guideGenreValue: "Rätsel · Logik · Planung",
     progress: "3 Wiesen · 9 Ventile · Ohne Zeitlimit",
-    guideIntro: "Stelle drei verbundene Tauschleusen nach der Wiesennotiz ein und wecke die Blumen der Morgendämmerung.",
+    guideIntro: "Stelle drei verbundene Tauventile nach der Wiesennotiz ein und wecke die Blumen der Morgendämmerung.",
     faqTitle: "Häufige Fragen",
     faqCountQuestion: "Wie viele Wiesen gibt es?",
     faqCountAnswer: "Es gibt 3 entworfene Wiesen mit insgesamt 9 verbundenen Ventilen.",
@@ -376,7 +376,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "Meccanica",
     guideGameplayValue: "Rompicapo di numeri",
     guideGenre: "Genere",
-    guideGenreValue: "Rompicapo · Logica · Pianificazione · Famiglia · Animali",
+    guideGenreValue: "Rompicapo · Logica · Pianificazione",
     progress: "3 prati · 9 valvole · Senza timer",
     guideIntro: "Regola tre valvole di rugiada collegate seguendo la nota del prato e risveglia i fiori dell’alba.",
     faqTitle: "Domande frequenti",
@@ -419,7 +419,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "Механика",
     guideGameplayValue: "Сопоставление чисел",
     guideGenre: "Жанр",
-    guideGenreValue: "Головоломка · Логика · Планирование · Семья · Животные",
+    guideGenreValue: "Головоломка · Логика · Планирование",
     progress: "3 луга · 9 клапанов · Без таймера",
     guideIntro: "Настройте три связанные росовые заслонки по заметке луга и разбудите цветы рассвета.",
     faqTitle: "Частые вопросы",
@@ -462,7 +462,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     guideGameplay: "खेल का तरीका",
     guideGameplayValue: "संख्या मिलान पहेली",
     guideGenre: "श्रेणी",
-    guideGenreValue: "पहेली · तर्क · योजना · परिवार · जानवर",
+    guideGenreValue: "पहेली · तर्क · योजना",
     progress: "3 मैदान · 9 वाल्व · कोई टाइमर नहीं",
     guideIntro: "तीन जुड़े ओस वाल्व को मैदान की पर्ची से मिलाकर सुबह के फूल जगाएँ।",
     faqTitle: "अक्सर पूछे गए प्रश्न",
@@ -488,7 +488,7 @@ window.ANIMAL_DEWLINE_LOCALES = {
     publicRelated2Intro: "खाने और उसके पड़ोसियों को बदलकर सभी लाइट बंद करें।",
   },
   ar: {
-    loading: "نوقظ المرج…", back: "العودة إلى WeightPlay", settings: "الإعدادات", soundOn: "الصوت: مفعّل", soundOff: "الصوت: متوقف", language: "اللغة", kicker: "لغز هادئ بتدفقات مترابطة", title: "خط الندى", intro: "اضبط صمامات الندى الثلاثة المترابطة وفق ملاحظة المرج وأيقظ زهور الفجر.", progress: "3 مروج · 9 صمامات · بلا مؤقت", start: "ابدأ المرج", plots: "اختر مرجاً", best: "أفضل المحاولات", noBest: "لا يوجد سجل بعد", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideTitle: "طريقة اللعب", guideIntro: "اضبط صمامات الندى الثلاثة المترابطة وفق ملاحظة المرج وأيقظ زهور الفجر.", guideGameplay: "طريقة اللعب", guideGameplayValue: "لغز تدفق مترابط", guideGenre: "النوع", guideGenreValue: "ألغاز · منطق · تخطيط · عائلية · حيوانات", guideOneTitle: "1. اقرأ الملاحظة", guideOne: "يعرض كل مرج مستويات التدفق الثلاثة التي تحتاجها الزهور.", guideTwoTitle: "2. اضبط الصمامات", guideTwo: "استخدم − و + لضبط كل صمام مترابط، وسيبقى المجموع الحالي ظاهراً.", guideThreeTitle: "3. افحص بهدوء", guideThree: "عند عدم التطابق سيُذكر أول صمام تحتاج إلى مراجعته. لا يوجد مؤقت أو أرواح.", faqTitle: "الأسئلة الشائعة", faqProgressQuestion: "أين يُحفظ التقدم؟", faqProgressAnswer: "يحفظ هذا المتصفح أقل عدد من الفحوص المسجل عند إنهاء المرج الثالث فقط. لا يحفظ قيم الصمامات أو علامات إكمال المروج أو الجلسة الحالية. بدء المرج الثالث مباشرة قد يسجل رقمًا قياسيًا أيضًا، دون إنهاء المروج الثلاثة.", guidePlanTitle: "خطط لتسلسل هادئ", guidePlan: "ابدأ بقراءة القيم الثلاث كلها قبل لمس أي عنصر تحكم. ملاحظة المرج خطة صغيرة وليست اختباراً موقّتاً. قارن الأهداف ولاحظ الصمام الأبعد ثم اختر ترتيباً هادئاً. حرّك الصمام خطوة واحدة صعوداً أو هبوطاً لترى أثر كل تغيير في المجموع. إبقاء الملاحظة كاملة أمامك يجعل النظام المترابط أسهل فهماً.", guideTotalTitle: "اقرأ المجموع الحي", guideTotal: "المجموع الحالي نقطة تحقق مفيدة لكنه ليس الإجابة الوحيدة. قد تتشارك إعداداتان المجموع نفسه مع اختلاف الأهداف غير المطابقة. انظر إلى بطاقة كل صمام ثم استخدم المجموع لتأكيد اتجاه تعديلك. إذا ارتفع المجموع أكثر من اللازم فتراجع بالضوابط الصغيرة نفسها. يحافظ هذا الإيقاع على وضوح اللغز ويجعل سبب كل اختيار ونتيجته واضحين.", guideFeedbackTitle: "استخدم الملاحظات كدليل", guideFeedback: "عندما لا يطابق الفحص الهدف يذكر خط الندى أول صمام يجب مراجعته. تعامل مع الرسالة كدليل لا كعقوبة. عد إلى البطاقة المذكورة وأجرِ تغييراً مدروساً ثم افحص مجدداً. لا توجد أرواح تخسرها ولا عدّ تنازلي ولا مضاعف نقاط خفي. صُممت حلقة الملاحظات الهادئة لتعلّم العلاقة بين التدفقات الثلاثة المترابطة.", guideFinishTitle: "أكمل كل مرج", guideFinish: "تظهر النتيجة عند مطابقة القيم الثلاث. يتيح المرجان الأولان الانتقال إلى التالي، ويتيح الثالث العودة إلى الخريطة. البطاقات الثلاث متاحة أصلًا، فاختر ترتيب التدريب دون انتظار فتحها. يبدأ كل مرج تختاره بصمامات صفرية، مع استمرار مجموع فحوص الجلسة. تعديل القيم وحده لا يُحسب محاولة.", guidePrivacyTitle: "التقدم والخصوصية", guidePrivacy: "يحفظ اللعب أقل عدد من الفحوص عند إنهاء المرج الثالث، وكذلك اللغة المختارة. لا يحفظ مواضع الصمامات أو المروج المكتملة أو جلسة متوقفة. إعادة تحميل الصفحة تعيدك إلى الرئيسية؛ قد يبقى أفضل رقم إذا كان تخزين المتصفح متاحًا. حذف بيانات الموقع أو تغيير ملف المتصفح قد يزيله. ليس حفظًا سحابيًا ولا نتيجة موثقة لإكمال المروج الثلاثة.", guideReplayTitle: "أعد اللعب بتأنٍ", guideReplay: "أعد الهدف نفسه بترتيب مختلف للتعديلات. جميع المروج متاحة، واختيار أحدها يصفر صماماته. لمقارنة جولات كاملة، ابدأ من الرئيسية وزر المروج الثلاثة بالترتيب نفسه. إنهاء الثالث مباشرة قد يغير أفضل رقم أيضًا؛ العدد الأصغر في مسار مختلف لا يعني أداءً أفضل في جولة كاملة.", round: "المرج {n} من {total}", tries: "المحاولات", noteLabel: "ملاحظة المرج", target: "الهدف", current: "الحالي", valve: "الصمام {n}", decrease: "خفض الصمام {n}", increase: "رفع الصمام {n}", battleHint: "طابق كل صمام مع الملاحظة ثم افحص التدفق.", total: "المجموع الحالي", check: "افحص التدفق", reset: "إعادة ضبط الصمامات", ready: "التدفق جاهز للفحص.", wrong: "الصمام {n} لا يطابق الهدف. اضبطه وحاول مرة أخرى.", correct: "الزهور تشرب بسعادة.", finishTitle: "اكتمل خط الندى!", finishText: "فتحت ثلاثة مروج خلال {n} محاولات. أفضل نتيجة لك هي {best}.", next: "المرج التالي", map: "خريطة المروج", home: "العودة إلى القائمة", allDone: "استيقظت مروج الفجر الثلاثة كلها.", meadow1: "حوض الفجر", meadow2: "قناة السرخس", meadow3: "جدول اللقاح",
+    loading: "نوقظ المرج…", back: "العودة إلى WeightPlay", settings: "الإعدادات", soundOn: "الصوت: مفعّل", soundOff: "الصوت: متوقف", language: "اللغة", kicker: "لغز هادئ بتدفقات مترابطة", title: "خط الندى", intro: "اضبط صمامات الندى الثلاثة المترابطة وفق ملاحظة المرج وأيقظ زهور الفجر.", progress: "3 مروج · 9 صمامات · بلا مؤقت", start: "ابدأ المرج", plots: "اختر مرجاً", best: "أفضل المحاولات", noBest: "لا يوجد سجل بعد", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideTitle: "طريقة اللعب", guideIntro: "اضبط صمامات الندى الثلاثة المترابطة وفق ملاحظة المرج وأيقظ زهور الفجر.", guideGameplay: "طريقة اللعب", guideGameplayValue: "لغز تدفق مترابط", guideGenre: "النوع", guideGenreValue: "لغز · منطق · تخطيط", guideOneTitle: "1. اقرأ الملاحظة", guideOne: "يعرض كل مرج مستويات التدفق الثلاثة التي تحتاجها الزهور.", guideTwoTitle: "2. اضبط الصمامات", guideTwo: "استخدم − و + لضبط كل صمام مترابط، وسيبقى المجموع الحالي ظاهراً.", guideThreeTitle: "3. افحص بهدوء", guideThree: "عند عدم التطابق سيُذكر أول صمام تحتاج إلى مراجعته. لا يوجد مؤقت أو أرواح.", faqTitle: "الأسئلة الشائعة", faqProgressQuestion: "أين يُحفظ التقدم؟", faqProgressAnswer: "يحفظ هذا المتصفح أقل عدد من الفحوص المسجل عند إنهاء المرج الثالث فقط. لا يحفظ قيم الصمامات أو علامات إكمال المروج أو الجلسة الحالية. بدء المرج الثالث مباشرة قد يسجل رقمًا قياسيًا أيضًا، دون إنهاء المروج الثلاثة.", guidePlanTitle: "خطط لتسلسل هادئ", guidePlan: "ابدأ بقراءة القيم الثلاث كلها قبل لمس أي عنصر تحكم. ملاحظة المرج خطة صغيرة وليست اختباراً موقّتاً. قارن الأهداف ولاحظ الصمام الأبعد ثم اختر ترتيباً هادئاً. حرّك الصمام خطوة واحدة صعوداً أو هبوطاً لترى أثر كل تغيير في المجموع. إبقاء الملاحظة كاملة أمامك يجعل النظام المترابط أسهل فهماً.", guideTotalTitle: "اقرأ المجموع الحي", guideTotal: "المجموع الحالي نقطة تحقق مفيدة لكنه ليس الإجابة الوحيدة. قد تتشارك إعداداتان المجموع نفسه مع اختلاف الأهداف غير المطابقة. انظر إلى بطاقة كل صمام ثم استخدم المجموع لتأكيد اتجاه تعديلك. إذا ارتفع المجموع أكثر من اللازم فتراجع بالضوابط الصغيرة نفسها. يحافظ هذا الإيقاع على وضوح اللغز ويجعل سبب كل اختيار ونتيجته واضحين.", guideFeedbackTitle: "استخدم الملاحظات كدليل", guideFeedback: "عند عدم التطابق، تشير اللعبة إلى أول صمام يحتاج إلى مراجعة. تعامل مع الرسالة كدليل لا كعقوبة. عد إلى البطاقة المذكورة وأجرِ تغييراً مدروساً ثم افحص مجدداً. لا توجد أرواح تخسرها ولا عدّ تنازلي ولا مضاعف نقاط خفي. صُممت حلقة الملاحظات الهادئة لتعلّم العلاقة بين التدفقات الثلاثة المترابطة.", guideFinishTitle: "أكمل كل مرج", guideFinish: "تظهر النتيجة عند مطابقة القيم الثلاث. يتيح المرجان الأولان الانتقال إلى التالي، ويتيح الثالث العودة إلى الخريطة. البطاقات الثلاث متاحة أصلًا، فاختر ترتيب التدريب دون انتظار فتحها. يبدأ كل مرج تختاره بصمامات صفرية، مع استمرار مجموع فحوص الجلسة. تعديل القيم وحده لا يُحسب محاولة.", guidePrivacyTitle: "التقدم والخصوصية", guidePrivacy: "يحفظ اللعب أقل عدد من الفحوص عند إنهاء المرج الثالث، وكذلك اللغة المختارة. لا يحفظ مواضع الصمامات أو المروج المكتملة أو جلسة متوقفة. إعادة تحميل الصفحة تعيدك إلى الرئيسية؛ قد يبقى أفضل رقم إذا كان تخزين المتصفح متاحًا. حذف بيانات الموقع أو تغيير ملف المتصفح قد يزيله. ليس حفظًا سحابيًا ولا نتيجة موثقة لإكمال المروج الثلاثة.", guideReplayTitle: "أعد اللعب بتأنٍ", guideReplay: "أعد الهدف نفسه بترتيب مختلف للتعديلات. جميع المروج متاحة، واختيار أحدها يصفر صماماته. لمقارنة جولات كاملة، ابدأ من الرئيسية وزر المروج الثلاثة بالترتيب نفسه. إنهاء الثالث مباشرة قد يغير أفضل رقم أيضًا؛ العدد الأصغر في مسار مختلف لا يعني أداءً أفضل في جولة كاملة.", round: "المرج {n} من {total}", tries: "المحاولات", noteLabel: "ملاحظة المرج", target: "الهدف", current: "الحالي", valve: "الصمام {n}", decrease: "خفض الصمام {n}", increase: "رفع الصمام {n}", battleHint: "طابق كل صمام مع الملاحظة ثم افحص التدفق.", total: "المجموع الحالي", check: "افحص التدفق", reset: "إعادة ضبط الصمامات", ready: "التدفق جاهز للفحص.", wrong: "الصمام {n} لا يطابق الهدف. اضبطه وحاول مرة أخرى.", correct: "الزهور تشرب بسعادة.", finishTitle: "اكتمل خط الندى!", finishText: "فتحت ثلاثة مروج خلال {n} محاولات. أفضل نتيجة لك هي {best}.", next: "المرج التالي", map: "خريطة المروج", home: "العودة إلى القائمة", allDone: "استيقظت مروج الفجر الثلاثة كلها.", meadow1: "حوض الفجر", meadow2: "قناة السرخس", meadow3: "جدول اللقاح",
     faqCountQuestion: "كم مرجاً تتضمن اللعبة؟",
     faqCountAnswer: "تتضمن اللعبة 3 مروج مصممة و9 صمامات مترابطة إجمالاً.",
     faqValvesQuestion: "كيف تعمل الصمامات المترابطة؟",
@@ -509,3 +509,46 @@ window.ANIMAL_DEWLINE_LOCALES = {
     publicRelated2Intro: "بدّل الخلية وجيرانها لإطفاء كل الأضواء.",
   }
 };
+
+// Keep the visible 1.4.0 gameplay tags available to both the route generator
+// and the in-page locale switcher. The generated Guide can then stay in sync
+// when players change language without navigating away.
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.en, {
+  gameplayTags: ["Target Matching", "Logic Puzzle", "Planning"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES["zh-Hant"], {
+  gameplayTags: ["目標配對", "邏輯益智", "規劃"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES["zh-Hans"], {
+  gameplayTags: ["目标匹配", "逻辑益智", "规划"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.ja, {
+  gameplayTags: ["目標値合わせ", "論理パズル", "計画"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.ko, {
+  gameplayTags: ["목표 맞추기", "논리 퍼즐", "계획"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.es, {
+  gameplayTags: ["Ajuste de válvulas", "Puzle lógico", "Planificación"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES["pt-BR"], {
+  gameplayTags: ["Correspondência de valores-alvo", "Quebra-cabeça de lógica", "Planejamento"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.fr, {
+  gameplayTags: ["Correspondance des valeurs cibles", "Casse-tête logique", "Planification"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.de, {
+  gameplayTags: ["Ventile einstellen", "Logikrätsel", "Planung"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.it, {
+  gameplayTags: ["Abbinamento ai valori obiettivo", "Rompicapo logico", "Pianificazione"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.ru, {
+  gameplayTags: ["Сверка с целевыми значениями", "Логическая головоломка", "Планирование"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.hi, {
+  gameplayTags: ["लक्ष्यों से मिलान", "तर्क पहेली", "योजना"],
+});
+Object.assign(window.ANIMAL_DEWLINE_LOCALES.ar, {
+  gameplayTags: ["مطابقة القيم المستهدفة", "لغز منطقي", "تخطيط"],
+});

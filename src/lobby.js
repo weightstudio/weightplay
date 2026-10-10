@@ -870,7 +870,9 @@ function rankLabel(game, fallbackRank) {
 
 function popularGames(limit = 3) {
   if (!isKidsLobby && activeHall === "topics") {
-    const topicGames = gamesInHall().filter((game) => topicHeroGameIds.includes(game.id));
+    // Topics may contain planned/internal teasers. Only public playable games
+    // belong in a shelf labeled Popular or in play-count/rank presentation.
+    const topicGames = gamesInHall().filter((game) => game.status === "playable" && topicHeroGameIds.includes(game.id));
     return topicGames.slice(0, limit);
   }
   const playableGames = gamesInHall().filter((game) => game.status === "playable");
@@ -2213,9 +2215,12 @@ function applyFilter({ historyMode = "replace" } = {}) {
       activeLibrary === "favorites" ? i18n.t("status.no_favorites")
         : activeLibrary === "recent" ? i18n.t("status.no_recent")
           : activeHall === "topics" && !isFiltered ? i18n.t("hall.topics_empty") : i18n.t("status.no_games");
+    const recoveryLabel = activeLibrary === "recent"
+      ? i18n.t("library.all_games")
+      : i18n.t("status.clear_filters");
     filterStatus.innerHTML = `
       <span>${emptyText}</span>
-      ${isFiltered ? `<button type="button" data-clear-filters>${i18n.t("status.clear_filters")}</button>` : ""}
+      ${isFiltered ? `<button type="button" data-clear-filters>${recoveryLabel}</button>` : ""}
     `;
     filterStatus.querySelector("[data-clear-filters]")?.addEventListener("click", resetDiscoveryFilters);
   } else if (activeLibrary === "favorites" && activeFilter === "all" && activeTopic === "all" && activeSkill === "all" && activeAvailability === "all") {
