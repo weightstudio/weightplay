@@ -1188,14 +1188,14 @@
     html=html.replace(/<div\b[^>]*id=["']resultOverlay["'][^>]*>/i,tag=>attr(tag,'aria-labelledby','resultTitle'));
     html=html.replace(/<body\b[^>]*>/i,tag=>attr(tag,'data-runtime-localize','off'));
     html=html.replace(/<html\b[^>]*>/i,tag=>attr(tag,'dir',code==='ar'?'rtl':'ltr'));
-    html=html.replace(/card-games-next\.js\?v=[^"']+/gi,'card-games-next.js?v=20261007-war-text-growth-140-v1');
+    html=html.replace(/card-games-next\.js\?v=[^"']+/gi,'card-games-next.js?v=20261009-war-cache-normalization-v2');
     if(!/src=["']\/games\/war\/text-content\.js/.test(html)) {
-      const tag='<script src="/games/war/text-content.js?v=20261007-war-text-growth-140-v1"></script>';
+      const tag='<script src="/games/war/text-content.js?v=20261009-war-cache-normalization-v2"></script>';
       const anchor=/<script\b[^>]*src=["'][^"']*card-games-next\.js[^"']*["'][^>]*>/i;
       if(!anchor.test(html)) throw new Error('War engine script is missing');
       html=html.replace(anchor,tag+'$&');
     }
-    html=html.replace(/text-content\.js\?v=[^"']+/gi,'text-content.js?v=20261007-war-text-growth-140-v1');
+    html=html.replace(/text-content\.js\?v=[^"']+/gi,'text-content.js?v=20261009-war-cache-normalization-v2');
     html=html.replace(/<[a-z][^>]*>/gi,tag=>{
       const count=(tag.match(/\sdata-runtime-localize=["']off["']/gi)||[]).length;
       return count>1?tag.replace(/\sdata-runtime-localize=["']off["']/gi,'').replace(/>$/,' data-runtime-localize="off">'):tag;
