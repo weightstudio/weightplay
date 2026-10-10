@@ -72,7 +72,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "블록 왕관 모험",
     "es": "La corona caída",
     "pt-BR": "A coroa perdida",
-    "fr": "La couronne perdue",
+    "fr": "Couronne perdue",
     "de": "Kronensturz",
     "it": "La corona perduta",
     "ru": "Путь к короне",
