@@ -7,11 +7,21 @@ export function routeLocale(pathname){return LOCALE_ROUTES[/^\/([^/]+)\/games\/p
 export function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 export function decodeHtml(value){return String(value).replace(/&(#x[\da-f]+|#\d+|amp|lt|gt|quot|apos);/gi,(all,entity)=>entity[0]==='#'?String.fromCodePoint(entity[1].toLowerCase()==='x'?parseInt(entity.slice(2),16):parseInt(entity.slice(1),10)):({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[entity.toLowerCase()]||all));}
 export function faqPairs(locale){const c=GUIDE_COPY[locale];if(!c)throw new Error(`Unsupported pawaxe locale: ${locale}`);return c.questions.map((q,i)=>[q,[c.finish,c.gear,c.companion,c.save][i]]);}
+export const GAMEPLAY_TAGS=Object.freeze({
+  en:['Click or Auto Battle','Loot Adventure','Companion RPG'],
+  'zh-Hant':['點擊或自動戰鬥','戰利品冒險','夥伴角色扮演'], 'zh-Hans':['点击或自动战斗','战利品冒险','伙伴角色扮演'],
+  ja:['タップ／自動バトル','戦利品アドベンチャー','仲間と進むRPG'], ko:['클릭·자동 전투','전리품 모험','동료 RPG'],
+  es:['Combate manual o automático','Aventura de botín','RPG con compañeros'], 'pt-BR':['Combate por toque ou automático','Aventura de saque','RPG com companheiros'],
+  fr:['Combat au toucher ou automatique','Aventure de butin','RPG avec compagnons'], de:['Tippen oder Auto-Kampf','Beuteabenteuer','Begleiter-RPG'],
+  it:['Combattimento manuale o automatico','Avventura con bottino','RPG con compagni'], ru:['Ручной или автоматический бой','Приключение за добычей','RPG с напарниками'],
+  hi:['टैप या स्वचालित लड़ाई','लूट का रोमांच','साथियों वाला RPG'], ar:['قتال بالنقر أو تلقائي','مغامرة الغنائم','لعبة تقمص أدوار مع رفاق']
+});
 export function faqSchema(locale){return {'@context':'https://schema.org','@type':'FAQPage',inLanguage:locale,mainEntity:faqPairs(locale).map(([name,text])=>({'@type':'Question',name,acceptedAnswer:{'@type':'Answer',text}}))};}
 export function guideInner(locale,title){
   const c=GUIDE_COPY[locale];if(!c)throw new Error(`Unsupported pawaxe locale: ${locale}`);
   const blocks=[[c.controls,c.companion],[c.progress,c.finish],[c.gear],[c.save]];
-  return `<h2 id="pawaxe-guide-title">${escapeHtml(title)}</h2><p>${escapeHtml(c.summary)}</p><div class="game-info-sections">${blocks.map((paragraphs,i)=>`<div class="game-info-section"><h3>${escapeHtml(c.headings[i])}</h3>${paragraphs.map(p=>`<p>${escapeHtml(p)}</p>`).join('')}</div>`).join('')}<div class="game-info-section"><h3>${escapeHtml(c.headings[4])}</h3><dl>${faqPairs(locale).map(([q,a])=>`<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join('')}</dl></div></div>`;
+  const tags=GAMEPLAY_TAGS[locale];
+  return `<h2 id="pawaxe-guide-title">${escapeHtml(title)}</h2><p>${escapeHtml(c.summary)}</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0">${tags.map(tag=>`<span>${escapeHtml(tag)}</span>`).join('')}</div><div class="game-info-sections">${blocks.map((paragraphs,i)=>`<div class="game-info-section"><h3>${escapeHtml(c.headings[i])}</h3>${paragraphs.map(p=>`<p>${escapeHtml(p)}</p>`).join('')}</div>`).join('')}<div class="game-info-section"><h3>${escapeHtml(c.headings[4])}</h3><dl>${faqPairs(locale).map(([q,a])=>`<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join('')}</dl></div></div>`;
 }
 export function replaceGuide(html,locale,title){
   const start=/<section\b[^>]*class=["'][^"']*\bgame-page-info\b[^"']*["'][^>]*>/i.exec(html);

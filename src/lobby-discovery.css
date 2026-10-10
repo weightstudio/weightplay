@@ -862,3 +862,32 @@ body.general-lobby-page .lobby-hero { height:276px !important; min-height:276px 
 @media (max-width:900px) and (max-height:500px) and (orientation:landscape) {
   body.general-lobby-page .lobby-hero { height:160px !important; min-height:160px !important; }
 }
+
+body.general-lobby-page .explore-type-filters {
+  display: flex;
+  order: 9;
+  flex-wrap: wrap;
+  gap: 8px;
+  overflow: visible;
+  margin: 14px 0 4px;
+  padding: 4px 2px 8px;
+  scrollbar-width: thin;
+}
+body.general-lobby-page .explore-type-filters button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 2px solid var(--lobby-line);
+  border-radius: 999px;
+  background: var(--lobby-panel);
+  color: var(--lobby-ink);
+  font: inherit;
+  font-weight: 700;
+}
+body.general-lobby-page .explore-type-filters button[aria-pressed="true"] {
+  background: var(--lobby-gold, #edc164);
+  color: #17373c;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.general-lobby-page .explore-type-filters button { transition: none; }
+}

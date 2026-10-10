@@ -1,6 +1,6 @@
 export const GUIDE_COPY = {
   "en": {
-    "summary": "Tap to fight through 30 forest routes, collect four companions and 15 equipment pieces, and turn duplicate drops into upgrades.",
+    "summary": "Tap through 30 forest routes, collect four companions and 15 equipment pieces, and use shards from duplicate equipment drops to upgrade your gear.",
     "maxRank": "Maximum rank",
     "headings": [
       "Controls and combat",
@@ -9,12 +9,12 @@ export const GUIDE_COPY = {
       "Player and Save Information",
       "Frequently asked questions"
     ],
-    "controls": "Tap the battlefield or Slash to attack. On a keyboard, Space attacks, F toggles Auto, J calls your companion, A/D or the left/right arrows select a target, and Esc pauses. Every eighth slash sweeps the enemies.",
+    "controls": "Tap the battlefield or press Space to slash. F toggles optional Auto, which is off by default. Choose one companion in Stage; press J to activate its skill when ready. Every eighth slash sweeps the enemies.",
     "companion": "Choose one of your collected companions before entering a route. Activate its skill when the energy meter is full; collecting all four does not put four companions into the same battle.",
-    "progress": "There are 30 routes: routes 1–10 have 24 waves, 11–20 have 32, and 21–30 have 40. Every fifth route is a boss checkpoint. Later routes bring longer encounters and denser enemy groups.",
-    "finish": "At 100%, the route is recorded as cleared and the next route unlocks, except after route 30. Tap the completion control to open the result, or keep fighting for more drops. Defeat or leaving does not erase a route already cleared.",
+    "progress": "There are 30 routes: routes 1–10 have 24 waves, 11–20 have 32, and 21–30 have 40. Every fifth route features a boss battle. Later routes bring longer encounters and denser enemy groups.",
+    "finish": "At 100%, the route is recorded as cleared and the next route unlocks, except after route 30. Tap the ✓ checkmark to open the result, or keep fighting for more drops. Defeat or leaving does not erase a route already cleared.",
     "gear": "There are 15 equipment pieces. Drops depend on the current route and chance; reaching an unlock route does not guarantee an item. Duplicate equipment becomes shards. The first upgrade costs 10 shards, and later upgrades cost more. Equip or upgrade in Stage before starting another run.",
-    "save": "When browser storage is available, completed routes, collected equipment and companions, upgrades and preferences are stored in this browser. An unfinished encounter does not resume after a reload. Clearing site data, changing browsers or using storage that is blocked or temporary can lose progress; there is no cloud-save transfer.",
+    "save": "When browser storage is available, completed routes, collected equipment and companions, upgrades, and preferences are stored in this browser. Reloading does not resume an unfinished encounter. Clearing site data, changing browsers, or using blocked or temporary storage can lose progress; there is no cloud-save transfer.",
     "questions": [
       "What happens at 100%?",
       "Why did a duplicate not add another item?",
@@ -32,10 +32,10 @@ export const GUIDE_COPY = {
       "玩家與儲存資訊",
       "常見問題"
     ],
-    "controls": "點擊戰場或「揮斧」即可攻擊。鍵盤空白鍵攻擊，F 切換自動戰鬥，J 發動夥伴技能，A／D 或左右方向鍵選擇目標，Esc 暫停。每第八次揮斧會掃擊敵人。",
+    "controls": "點擊戰場或按空白鍵揮斧。F 可切換自動戰鬥（預設關閉）。在關卡畫面選一位夥伴；技能就緒時按 J 發動。每第八次揮斧會掃擊敵人。",
     "companion": "進入路線前，從已收集的夥伴中選擇一位出戰；能量全滿時可發動其技能。收齊四位夥伴並不代表四位能同時上場。",
-    "progress": "共有 30 條路線：第 1–10 條各有 24 波，第 11–20 條各有 32 波，第 21–30 條各有 40 波；每五條有一個首領關卡。後段路線戰鬥更長，敵人組合也更密集。",
-    "finish": "進度達到 100% 時，該路線即記錄為通關並解鎖下一條；第 30 條之後沒有下一關。點完成按鈕可開啟結算，也可繼續戰鬥刷掉落。之後落敗或離開，不會抹除已通關的路線。",
+    "progress": "共有 30 條路線：第 1–10 條各有 24 波，第 11–20 條各有 32 波，第 21–30 條各有 40 波。每五條路線會有一場首領戰。後段路線的戰鬥更長，敵人組合也更密集。",
+    "finish": "進度達到 100% 時，該路線會記錄為通關並解鎖下一條；第 30 條之後沒有下一條。點擊 ✓ 勾號開啟結算，或繼續戰鬥收集掉落。之後落敗或離開，不會抹除已通關的路線。",
     "gear": "共有 15 件裝備，依目前路線與機率掉落；達到解鎖路線不代表必定取得。重複裝備會轉為碎片，第一次升階需要 10 片，後續需求會增加。請在關卡畫面更換或升階，再開始下一次探險。",
     "save": "瀏覽器允許儲存時，已通關路線、收集的裝備與夥伴、升階和偏好會保存在目前瀏覽器。重新整理不會接續未完成的戰鬥。清除網站資料、換瀏覽器，或使用封鎖／暫時性儲存，都可能使進度遺失；沒有雲端存檔轉移。",
     "questions": [
@@ -55,10 +55,10 @@ export const GUIDE_COPY = {
       "玩家与保存信息",
       "常见问题"
     ],
-    "controls": "点击战场或“挥斧”即可攻击。键盘空格键攻击，F 切换自动战斗，J 发动伙伴技能，A／D 或左右方向键选择目标，Esc 暂停。每第八次挥斧会扫击敌人。",
+    "controls": "点击战场或按空格键挥斧。F 可切换自动战斗（默认关闭）。在关卡界面选择一位伙伴；技能就绪时按 J 发动。每第八次挥斧会扫击敌人。",
     "companion": "进入路线前，从已收集的伙伴中选择一位出战；能量全满时可发动其技能。集齐四位伙伴并不代表四位能同时上场。",
-    "progress": "共有 30 条路线：第 1–10 条各有 24 波，第 11–20 条各有 32 波，第 21–30 条各有 40 波；每五条有一个首领关卡。后期路线战斗更长，敌人组合也更密集。",
-    "finish": "进度达到 100% 时，该路线即记录为通关并解锁下一条；第 30 条之后没有下一关。点击完成按钮可打开结算，也可继续战斗刷掉落。之后落败或离开，不会抹除已通关的路线。",
+    "progress": "共有 30 条路线：第 1–10 条各有 24 波，第 11–20 条各有 32 波，第 21–30 条各有 40 波。每五条路线会有一场首领战。后期路线的战斗更长，敌人组合也更密集。",
+    "finish": "进度达到 100% 时，该路线会记录为通关并解锁下一条；第 30 条之后没有下一条。点击 ✓ 勾号打开结算，或继续战斗收集掉落。之后落败或离开，不会抹除已通关的路线。",
     "gear": "共有 15 件装备，依当前路线与概率掉落；达到解锁路线不代表必定获得。重复装备会转为碎片，第一次升阶需要 10 片，后续需求会增加。请在关卡界面更换或升阶，再开始下一次探险。",
     "save": "浏览器允许保存时，已通关路线、收集的装备与伙伴、升阶和偏好会保存在当前浏览器。刷新不会接续未完成的战斗。清除网站数据、更换浏览器，或使用被禁用／临时的存储，都可能使进度丢失；没有云存档转移。",
     "questions": [
@@ -78,10 +78,10 @@ export const GUIDE_COPY = {
       "プレイヤーと保存について",
       "よくある質問"
     ],
-    "controls": "戦場か攻撃ボタンをタップして攻撃します。キーボードではスペースで攻撃、Fで自動戦闘の切り替え、Jで仲間のスキル、A／Dまたは左右キーで対象選択、Escで一時停止。8回目の斧攻撃は敵をまとめてなぎ払います。",
+    "controls": "戦場をタップするかスペースキーで斬撃します。Fで任意の自動戦闘を切り替えます（初期設定はオフ）。ステージで仲間を1人選び、スキルが使えるときにJで発動します。斧攻撃8回ごとに敵をなぎ払います。",
     "companion": "ルートに入る前に、獲得した仲間から1人を選びます。エネルギーが満タンになるとスキルを使えます。4人集めても、同じ戦闘に全員を連れて行くことはできません。",
-    "progress": "全30ルートです。1〜10は各24ウェーブ、11〜20は32ウェーブ、21〜30は40ウェーブ。5ルートごとにボスの関門があり、後半ほど戦闘が長く、敵の集団も密になります。",
-    "finish": "進行度が100%になるとクリアが記録され、次のルートが開きます。30の次はありません。完了ボタンで結果を開くか、戦闘を続けてドロップを狙えます。その後に敗北したり退出したりしても、記録済みのクリアは消えません。",
+    "progress": "全30ルートです。1〜10は各24ウェーブ、11〜20は各32、21〜30は各40です。5ルートごとにボス戦があります。後半ほど戦闘が長く、敵の集団も密になります。",
+    "finish": "進行度が100%になるとクリアが記録され、次のルートが開きます。30の次はありません。✓マークをタップして結果を開くか、戦闘を続けてドロップを狙えます。その後に敗北したり退出したりしても、記録済みのクリアは消えません。",
     "gear": "装備は15種類。現在のルートと確率に応じてドロップし、解放ルートに到達しても入手は確約されません。重複装備はかけらになり、最初の強化には10個、以降はより多く必要です。次の探索を始める前にステージ画面で装備変更や強化を行いましょう。",
     "save": "ブラウザーで保存が許可されている場合、クリア済みルート、獲得装備と仲間、強化、設定がこのブラウザーに保存されます。再読み込みで未完了の戦闘は再開できません。サイトデータの削除、別のブラウザーの使用、保存の禁止や一時保存では進行状況を失うことがあります。クラウド保存の引き継ぎはありません。",
     "questions": [
@@ -101,10 +101,10 @@ export const GUIDE_COPY = {
       "플레이어 및 저장 안내",
       "자주 묻는 질문"
     ],
-    "controls": "전장이나 공격 버튼을 누르면 공격합니다. 키보드는 스페이스로 공격, F로 자동 전투 전환, J로 동료 기술 사용, A/D 또는 좌우 화살표로 대상 선택, Esc로 일시 정지합니다. 여덟 번째 도끼 공격마다 적들을 휩씁니다.",
+    "controls": "전장을 누르거나 스페이스 키를 눌러 공격하세요. F로 선택형 자동 전투를 전환합니다(기본 꺼짐). 스테이지에서 동료 한 명을 고르고 기술이 준비되면 J를 눌러 사용하세요. 도끼 공격 8회마다 적을 휩씁니다.",
     "companion": "경로에 들어가기 전에 수집한 동료 중 한 명을 선택하세요. 에너지가 가득 차면 기술을 사용할 수 있습니다. 네 명을 모두 모아도 한 전투에 모두 데려갈 수는 없습니다.",
-    "progress": "경로는 30개입니다. 1~10은 각각 24웨이브, 11~20은 32웨이브, 21~30은 40웨이브입니다. 다섯 경로마다 보스 관문이 있으며 후반에는 전투가 길어지고 적 무리가 더 빽빽해집니다.",
-    "finish": "진행률 100%에서 완료가 기록되고 다음 경로가 열립니다. 30번 뒤에는 다음 경로가 없습니다. 완료 버튼으로 결과를 열거나 계속 싸우며 전리품을 모을 수 있습니다. 이후 패배하거나 나가도 이미 완료한 기록은 지워지지 않습니다.",
+    "progress": "경로는 30개입니다. 1~10은 각각 24웨이브, 11~20은 32, 21~30은 40웨이브입니다. 다섯 경로마다 보스 전투가 있습니다. 후반에는 전투가 길어지고 적 무리가 더 빽빽해집니다.",
+    "finish": "진행률이 100%가 되면 완료가 기록되고 다음 경로가 열립니다. 30번 뒤에는 다음 경로가 없습니다. ✓ 표시를 눌러 결과를 열거나 계속 싸우며 전리품을 모을 수 있습니다. 이후 패배하거나 나가도 이미 완료한 기록은 지워지지 않습니다.",
     "gear": "장비는 15종이며 현재 경로와 확률에 따라 나옵니다. 해금 경로에 도달해도 획득이 보장되지는 않습니다. 중복 장비는 조각으로 바뀌며 첫 강화에는 10개, 이후에는 더 많이 필요합니다. 다음 탐험 전에 스테이지 화면에서 장비를 교체하거나 강화하세요.",
     "save": "브라우저 저장이 허용되면 완료 경로, 수집한 장비와 동료, 강화 및 설정이 현재 브라우저에 저장됩니다. 새로고침하면 미완료 전투는 이어지지 않습니다. 사이트 데이터 삭제, 브라우저 변경, 저장 차단 또는 임시 저장으로 진행 상황을 잃을 수 있습니다. 클라우드 저장 이전은 지원하지 않습니다.",
     "questions": [
@@ -124,10 +124,10 @@ export const GUIDE_COPY = {
       "Información del jugador y guardado",
       "Preguntas frecuentes"
     ],
-    "controls": "Toca el campo de batalla o el botón de ataque. En teclado, Espacio ataca, F alterna el combate automático, J activa al compañero, A/D o las flechas izquierda y derecha seleccionan objetivo y Esc pausa. Cada octavo hachazo barre a los enemigos.",
+    "controls": "Toca el campo de batalla o pulsa Espacio para atacar. F activa o desactiva el combate automático opcional (empieza desactivado). Elige un compañero en Fases y pulsa J para activar su habilidad cuando esté lista. Cada octavo hachazo barre a los enemigos.",
     "companion": "Antes de entrar en una ruta, elige un compañero de tu colección. Su habilidad se activa con la energía llena. Reunir los cuatro no permite llevarlos juntos a una misma batalla.",
-    "progress": "Hay 30 rutas: las 1–10 tienen 24 oleadas, las 11–20 tienen 32 y las 21–30 tienen 40. Cada quinta ruta es un puesto de jefe. Más adelante, las batallas son más largas y los grupos enemigos más densos.",
-    "finish": "Al llegar al 100%, la ruta queda completada y se desbloquea la siguiente, salvo después de la 30. Pulsa el control de finalización para ver el resultado o sigue luchando por más botín. Perder o salir después no borra una ruta ya completada.",
+    "progress": "Hay 30 rutas: las 1–10 tienen 24 oleadas, las 11–20 tienen 32 y las 21–30 tienen 40. Cada quinta ruta incluye una batalla contra un jefe. Más adelante, las batallas son más largas y los grupos enemigos más densos.",
+    "finish": "Al llegar al 100%, la ruta queda completada y se desbloquea la siguiente, salvo después de la 30. Pulsa la marca ✓ para ver el resultado o sigue luchando por más botín. Perder o salir después no borra una ruta ya completada.",
     "gear": "Existen 15 piezas de equipo. Los objetos caen según la ruta y el azar: alcanzar su ruta de desbloqueo no garantiza obtenerlos. Los duplicados se convierten en fragmentos; la primera mejora cuesta 10 y las siguientes cuestan más. Equipa o mejora desde la pantalla de etapas antes de otra expedición.",
     "save": "Si el navegador permite guardar, las rutas completadas, el equipo y los compañeros obtenidos, las mejoras y las preferencias se guardan en este navegador. Recargar no reanuda un combate sin terminar. Borrar los datos del sitio, cambiar de navegador o usar almacenamiento bloqueado o temporal puede hacer que pierdas el progreso. No hay transferencia de partidas en la nube.",
     "questions": [
@@ -147,10 +147,10 @@ export const GUIDE_COPY = {
       "Informações do jogador e salvamento",
       "Perguntas frequentes"
     ],
-    "controls": "Toque no campo de batalha ou no botão de ataque. No teclado, Espaço ataca, F alterna o combate automático, J ativa o companheiro, A/D ou as setas esquerda e direita escolhem o alvo e Esc pausa. Cada oitavo golpe de machado varre os inimigos.",
+    "controls": "Toque no campo de batalha ou pressione Espaço para atacar. F alterna o combate automático opcional (começa desligado). Escolha um companheiro em Fases e pressione J para ativar a habilidade quando estiver pronta. A cada oitavo golpe de machado, os inimigos são atingidos em área.",
     "companion": "Antes de entrar em uma rota, escolha um companheiro da sua coleção. Use a habilidade quando a energia estiver cheia. Reunir os quatro não permite levar todos à mesma batalha.",
-    "progress": "São 30 rotas: as rotas 1–10 têm 24 ondas, as 11–20 têm 32 e as 21–30 têm 40. A cada cinco rotas há um ponto de chefe. Mais adiante, as batalhas ficam mais longas e os grupos inimigos mais densos.",
-    "finish": "Ao chegar a 100%, a rota fica registrada como concluída e a próxima é liberada, exceto depois da rota 30. Toque no controle de conclusão para abrir o resultado ou continue lutando por itens. Perder ou sair depois não apaga uma rota já concluída.",
+    "progress": "São 30 rotas: as rotas 1–10 têm 24 ondas, 11–20 têm 32 e 21–30 têm 40. A cada cinco rotas há uma batalha contra um chefe. Mais adiante, as batalhas ficam mais longas e os grupos inimigos mais densos.",
+    "finish": "Ao chegar a 100%, a rota fica registrada como concluída e a próxima é liberada, exceto depois da rota 30. Toque na marca ✓ para abrir o resultado ou continue lutando por itens. Perder ou sair depois não apaga uma rota já concluída.",
     "gear": "Há 15 equipamentos. Os itens dependem da rota atual e da sorte: chegar à rota de desbloqueio não garante recebê-los. Duplicatas viram fragmentos; a primeira melhoria custa 10, e as seguintes custam mais. Equipe ou melhore na tela de fases antes da próxima expedição.",
     "save": "Quando o navegador permite salvar, rotas concluídas, equipamentos e companheiros coletados, melhorias e preferências ficam neste navegador. Recarregar não retoma um combate inacabado. Apagar os dados do site, trocar de navegador ou usar armazenamento bloqueado ou temporário pode causar perda do progresso. Não há transferência de partidas pela nuvem.",
     "questions": [
@@ -170,10 +170,10 @@ export const GUIDE_COPY = {
       "Informations de jeu et sauvegarde",
       "Questions fréquentes"
     ],
-    "controls": "Touchez le champ de bataille ou le bouton d’attaque. Au clavier, Espace attaque, F active ou désactive le combat automatique, J appelle le compagnon, A/D ou les flèches gauche et droite choisissent la cible, et Échap met en pause. Chaque huitième coup de hache balaie les ennemis.",
+    "controls": "Touchez le champ de bataille ou appuyez sur Espace pour attaquer. F active ou désactive le combat automatique facultatif (désactivé au départ). Choisissez un compagnon dans les niveaux et appuyez sur J pour activer son pouvoir lorsqu’il est prêt. Chaque huitième coup de hache balaie les ennemis.",
     "companion": "Avant de commencer un parcours, choisissez un compagnon de votre collection. Son pouvoir s’active lorsque l’énergie est pleine. Posséder les quatre ne permet pas de les emmener ensemble au combat.",
-    "progress": "Il y a 30 parcours : les 1–10 comptent 24 vagues, les 11–20 en comptent 32 et les 21–30 en comptent 40. Un boss vous attend tous les cinq parcours. Plus loin, les combats s’allongent et les groupes ennemis se densifient.",
-    "finish": "À 100 %, le parcours est enregistré comme réussi et le suivant se débloque, sauf après le 30. Utilisez le bouton de fin pour ouvrir le résultat ou continuez à combattre pour obtenir du butin. Perdre ou quitter ensuite n’efface pas un parcours déjà réussi.",
+    "progress": "Il y a 30 parcours : les 1–10 comptent 24 vagues, les 11–20 en comptent 32 et les 21–30 en comptent 40. Un combat de boss a lieu tous les cinq parcours. Plus loin, les combats s’allongent et les groupes ennemis se densifient.",
+    "finish": "À 100 %, le parcours est enregistré comme réussi et le suivant se débloque, sauf après le 30. Touchez la coche ✓ pour ouvrir le résultat ou continuez à combattre pour obtenir du butin. Perdre ou quitter ensuite n’efface pas un parcours déjà réussi.",
     "gear": "Il existe 15 équipements. Les objets dépendent du parcours et du hasard : atteindre leur parcours de déblocage ne garantit pas leur obtention. Les doublons deviennent des fragments. La première amélioration en coûte 10, les suivantes davantage. Équipez-vous ou améliorez votre matériel depuis la sélection des étapes avant de repartir.",
     "save": "Si le navigateur autorise le stockage, les parcours réussis, équipements et compagnons obtenus, améliorations et préférences sont conservés dans ce navigateur. Recharger ne reprend pas un combat inachevé. Effacer les données du site, changer de navigateur ou utiliser un stockage bloqué ou temporaire peut faire perdre la progression. Aucun transfert de sauvegarde dans le cloud n’est proposé.",
     "questions": [
@@ -193,12 +193,12 @@ export const GUIDE_COPY = {
       "Spieler- und Speicherinformationen",
       "Häufige Fragen"
     ],
-    "controls": "Tippe auf das Schlachtfeld oder die Angriffstaste. Auf der Tastatur greift die Leertaste an, F schaltet den automatischen Kampf um, J aktiviert den Begleiter, A/D oder die Pfeiltasten links und rechts wählen ein Ziel und Esc pausiert. Jeder achte Axthieb trifft die Gegner mit einem Rundumschlag.",
+    "controls": "Tippe auf das Schlachtfeld oder drücke die Leertaste zum Angriff. Mit F schaltest du den optionalen automatischen Kampf um (anfangs aus). Wähle in der Stufenauswahl einen Gefährten und drücke J, um seine bereite Fähigkeit einzusetzen. Jeder achte Axthieb trifft die Gegner mit einem Rundumschlag.",
     "companion": "Wähle vor einem Pfad einen gesammelten Begleiter. Seine Fähigkeit ist bei voller Energie verfügbar. Auch mit allen vier Begleitern in deiner Sammlung kämpft nur einer an deiner Seite.",
-    "progress": "Es gibt 30 Pfade: 1–10 haben je 24 Wellen, 11–20 je 32 und 21–30 je 40. Jeder fünfte Pfad ist ein Boss-Kontrollpunkt. Später werden die Kämpfe länger und die Gegnergruppen dichter.",
-    "finish": "Bei 100 % wird der Pfad als abgeschlossen gespeichert und der nächste freigeschaltet; nach Pfad 30 gibt es keinen weiteren. Öffne mit der Abschlusstaste das Ergebnis oder kämpfe für weitere Beute weiter. Eine spätere Niederlage oder das Verlassen löscht keinen bereits abgeschlossenen Pfad.",
+    "progress": "Es gibt 30 Pfade: 1–10 haben je 24 Wellen, 11–20 je 32 und 21–30 je 40. Auf jedem fünften Pfad wartet ein Bosskampf. Später werden die Kämpfe länger und die Gegnergruppen dichter.",
+    "finish": "Bei 100 % wird der Pfad als abgeschlossen gespeichert und der nächste freigeschaltet; nach Pfad 30 gibt es keinen weiteren. Tippe auf das Häkchen ✓, um das Ergebnis zu öffnen, oder kämpfe für weitere Beute weiter. Eine spätere Niederlage oder das Verlassen löscht keinen bereits abgeschlossenen Pfad.",
     "gear": "Es gibt 15 Ausrüstungsteile. Beute hängt vom Pfad und vom Zufall ab; der Freischaltpfad garantiert keinen Fund. Duplikate werden zu Fragmenten. Die erste Aufwertung kostet 10, spätere kosten mehr. Rüste dich vor dem nächsten Lauf in der Stufenauswahl aus oder werte dort auf.",
-    "save": "Wenn der Browser das Speichern erlaubt, bleiben abgeschlossene Pfade, gesammelte Ausrüstung und Begleiter, Aufwertungen und Einstellungen in diesem Browser. Ein Neuladen setzt einen unfertigen Kampf nicht fort. Gelöschte Websitedaten, ein anderer Browser oder blockierter beziehungsweise vorübergehender Speicher können Fortschritt verlieren lassen. Es gibt keine Übertragung per Cloud-Speicherstand.",
+    "save": "Wenn der Browser die Speicherung zulässt, bleiben abgeschlossene Pfade, gesammelte Ausrüstung und Gefährten, Aufwertungen und Einstellungen in diesem Browser gespeichert. Ein Neuladen setzt einen noch laufenden Kampf nicht fort. Gelöschte Websitedaten, ein anderer Browser oder gesperrter beziehungsweise nur vorübergehender Speicher können zum Verlust des Fortschritts führen. Cloud-Speicherstände lassen sich nicht übertragen.",
     "questions": [
       "Was passiert bei 100 %?",
       "Warum ergibt ein Duplikat kein weiteres Teil?",
@@ -216,10 +216,10 @@ export const GUIDE_COPY = {
       "Informazioni sul giocatore e salvataggio",
       "Domande frequenti"
     ],
-    "controls": "Tocca il campo di battaglia o il pulsante di attacco. Sulla tastiera, Spazio attacca, F attiva o disattiva il combattimento automatico, J chiama il compagno, A/D o le frecce sinistra e destra scelgono il bersaglio ed Esc mette in pausa. Ogni ottavo colpo d’ascia spazza i nemici.",
+    "controls": "Tocca il campo di battaglia o premi Spazio per attaccare. F attiva o disattiva il combattimento automatico facoltativo (inizialmente spento). Scegli un compagno nei livelli e premi J per attivare la sua abilità quando è pronta. Ogni ottavo colpo d’ascia colpisce i nemici con un fendente ad area.",
     "companion": "Prima di entrare in un percorso, scegli un compagno dalla tua collezione. Usa la sua abilità quando l’energia è piena. Possederli tutti e quattro non permette di portarli insieme nella stessa battaglia.",
-    "progress": "Ci sono 30 percorsi: quelli 1–10 hanno 24 ondate, 11–20 ne hanno 32 e 21–30 ne hanno 40. Ogni quinto percorso è un punto di controllo con boss. Più avanti, le battaglie si allungano e i gruppi nemici diventano più fitti.",
-    "finish": "Al 100%, il percorso viene registrato come completato e si sblocca il successivo, tranne dopo il 30. Premi il comando di completamento per aprire il risultato oppure continua a combattere per ottenere bottino. Perdere o uscire in seguito non cancella un percorso già completato.",
+    "progress": "Ci sono 30 percorsi: 1–10 hanno 24 ondate ciascuno, 11–20 ne hanno 32 e 21–30 ne hanno 40. Ogni quinto percorso prevede una battaglia con un boss. Più avanti, i combattimenti si allungano e i gruppi nemici diventano più fitti.",
+    "finish": "Al 100%, il percorso viene registrato come completato e si sblocca il successivo, tranne dopo il 30. Premi il segno di spunta ✓ per aprire il risultato oppure continua a combattere per ottenere bottino. Perdere o uscire in seguito non cancella un percorso già completato.",
     "gear": "Esistono 15 equipaggiamenti. I ritrovamenti dipendono dal percorso e dal caso: raggiungere il percorso di sblocco non garantisce l’oggetto. I duplicati diventano frammenti. Il primo potenziamento ne costa 10, i successivi di più. Equipaggia o potenzia dalla schermata delle tappe prima di un’altra spedizione.",
     "save": "Se il browser consente il salvataggio, percorsi completati, equipaggiamenti e compagni raccolti, potenziamenti e preferenze rimangono in questo browser. Ricaricare non riprende uno scontro incompleto. Cancellare i dati del sito, cambiare browser o usare memoria bloccata o temporanea può far perdere i progressi. Non è disponibile il trasferimento dei salvataggi tramite cloud.",
     "questions": [
@@ -230,7 +230,7 @@ export const GUIDE_COPY = {
     ]
   },
   "ru": {
-    "summary": "Сражайтесь на 30 лесных маршрутах, соберите четырёх спутников и 15 предметов снаряжения, а повторы превращайте в осколки для улучшений.",
+    "summary": "Сражайтесь на 30 лесных маршрутах, соберите четырёх спутников и 15 предметов снаряжения; дубликаты снаряжения превращаются в осколки для улучшений.",
     "maxRank": "Максимальный ранг",
     "headings": [
       "Управление и бой",
@@ -239,11 +239,11 @@ export const GUIDE_COPY = {
       "Информация об игре и сохранении",
       "Частые вопросы"
     ],
-    "controls": "Нажмите на поле боя или кнопку атаки. На клавиатуре пробел атакует, F переключает автоматический бой, J активирует спутника, A/D или стрелки влево и вправо выбирают цель, Esc ставит игру на паузу. Каждый восьмой взмах топора наносит размашистый удар по врагам.",
+    "controls": "Нажмите на поле боя или пробел, чтобы атаковать. F включает и выключает необязательный автоматический бой (изначально выключен). Выберите спутника на экране этапов и нажмите J, чтобы применить его готовое умение. Каждый восьмой удар топором задевает всех врагов вокруг.",
     "companion": "Перед выходом выберите одного собранного спутника. Его умение доступно при полной энергии. Даже собрав всех четырёх, нельзя взять их всех в один бой.",
-    "progress": "Всего 30 маршрутов: на 1–10 по 24 волны, на 11–20 по 32, на 21–30 по 40. Каждый пятый маршрут — рубеж с боссом. На поздних маршрутах бои длиннее, а группы врагов плотнее.",
-    "finish": "При 100% маршрут отмечается пройденным и открывается следующий; после маршрута 30 следующего нет. Нажмите кнопку завершения, чтобы открыть результат, или продолжайте бой ради добычи. Последующее поражение или выход не отменяет уже записанное прохождение.",
-    "gear": "В игре 15 предметов снаряжения. Добыча зависит от маршрута и случая: доступ к маршруту не гарантирует предмет. Повторы превращаются в осколки. Первое улучшение стоит 10 осколков, дальнейшие — больше. Меняйте и улучшайте снаряжение на экране этапов до следующего похода.",
+    "progress": "Всего 30 маршрутов: на 1–10 по 24 волны, на 11–20 по 32, на 21–30 по 40. На каждом пятом маршруте проходит битва с боссом. На поздних маршрутах бои длиннее, а группы врагов плотнее.",
+    "finish": "При 100% маршрут отмечается пройденным и открывается следующий; после маршрута 30 следующего нет. Нажмите на отметку ✓, чтобы открыть результат, или продолжайте бой ради добычи. Последующее поражение или выход не отменяет уже записанное прохождение.",
+    "gear": "В игре 15 предметов снаряжения. Добыча зависит от маршрута и случая: достижение маршрута, на котором предмет открывается, не гарантирует его выпадение. Дубликаты снаряжения превращаются в осколки. Первое улучшение стоит 10 осколков, дальнейшие — больше. Меняйте и улучшайте снаряжение на экране этапов до следующего похода.",
     "save": "Если браузер разрешает хранение, пройденные маршруты, собранные предметы и спутники, улучшения и настройки сохраняются в этом браузере. Перезагрузка не возобновляет незавершённый бой. Очистка данных сайта, смена браузера, заблокированное или временное хранилище могут привести к потере прогресса. Переноса облачных сохранений нет.",
     "questions": [
       "Что происходит при 100%?",
@@ -262,12 +262,12 @@ export const GUIDE_COPY = {
       "खिलाड़ी और सेव की जानकारी",
       "अक्सर पूछे जाने वाले सवाल"
     ],
-    "controls": "हमला करने के लिए युद्धक्षेत्र या हमला बटन पर टैप करें। कीबोर्ड पर स्पेस हमला करता है, F अपने-आप लड़ने का विकल्प बदलता है, J साथी की क्षमता चलाता है, A/D या बाएँ-दाएँ तीर लक्ष्य चुनते हैं और Esc खेल रोकता है। कुल्हाड़ी का हर आठवाँ वार दुश्मनों पर व्यापक प्रहार करता है।",
+    "controls": "हमला करने के लिए युद्धक्षेत्र पर टैप करें या स्पेस दबाएँ। F वैकल्पिक अपने-आप लड़ने की सुविधा चालू या बंद करता है (शुरू में बंद)। चरण स्क्रीन पर एक साथी चुनें और उसकी क्षमता तैयार होने पर उसे चलाने के लिए J दबाएँ। कुल्हाड़ी का हर आठवाँ वार दुश्मनों पर व्यापक प्रहार करता है।",
     "companion": "रास्ते पर जाने से पहले अपने जुटाए हुए साथियों में से एक को चुनें। ऊर्जा पूरी होने पर उसकी क्षमता चलाएँ। चारों साथी मिल जाने पर भी उन्हें एक ही लड़ाई में साथ नहीं उतारा जा सकता।",
-    "progress": "कुल 30 रास्ते हैं: 1–10 में 24 लहरें, 11–20 में 32 और 21–30 में 40 लहरें हैं। हर पाँचवाँ रास्ता बॉस का पड़ाव है। आगे की लड़ाइयाँ लंबी होती हैं और दुश्मनों के समूह अधिक घने होते हैं।",
-    "finish": "100% पर रास्ता पूरा दर्ज होता है और अगला खुलता है; रास्ते 30 के बाद अगला नहीं है। नतीजा खोलने के लिए पूरा करने वाला बटन दबाएँ या और सामान पाने के लिए लड़ते रहें। बाद में हारने या बाहर निकलने से पहले से पूरा रास्ता नहीं मिटता।",
-    "gear": "कुल 15 उपकरण हैं। सामान वर्तमान रास्ते और संयोग पर निर्भर करता है; किसी उपकरण का रास्ता खुलने से वह मिलना तय नहीं होता। दोबारा मिले उपकरण टुकड़े बनते हैं। पहले उन्नयन में 10 टुकड़े लगते हैं, बाद के उन्नयन में अधिक। अगली यात्रा से पहले चरण स्क्रीन पर उपकरण पहनें या उन्नत करें।",
-    "save": "ब्राउज़र में संग्रहण की अनुमति होने पर पूरे रास्ते, जुटाए उपकरण और साथी, उन्नयन तथा पसंद इसी ब्राउज़र में सेव होते हैं। पेज फिर लोड करने पर अधूरी लड़ाई आगे नहीं चलती। साइट का डेटा मिटाने, ब्राउज़र बदलने या बंद अथवा अस्थायी संग्रहण से प्रगति खो सकती है। क्लाउड सेव को दूसरे ब्राउज़र में ले जाने की सुविधा नहीं है।",
+    "progress": "कुल 30 रास्ते हैं: 1–10 में 24 लहरें, 11–20 में 32 और 21–30 में 40 लहरें हैं। हर पाँचवें रास्ते पर बॉस से लड़ाई होती है। आगे की लड़ाइयाँ लंबी होती हैं और दुश्मनों के समूह अधिक घने होते हैं।",
+    "finish": "100% पर रास्ता पूरा दर्ज होता है और अगला खुलता है; 30वें रास्ते के बाद अगला रास्ता नहीं है। नतीजा खोलने के लिए ✓ चेकमार्क दबाएँ या और सामान पाने के लिए लड़ते रहें। बाद में हारने या बाहर निकलने से पहले से पूरा रास्ता नहीं मिटता.",
+    "gear": "कुल 15 उपकरण हैं। सामान वर्तमान रास्ते और संयोग पर निर्भर करता है; किसी उपकरण के खुलने वाले रास्ते तक पहुँचने से उसका मिलना तय नहीं होता। दोबारा मिले उपकरण टुकड़ों में बदलते हैं। पहले उन्नयन में 10 टुकड़े लगते हैं और बाद के उन्नयन में अधिक। अगली यात्रा से पहले चरण स्क्रीन पर उपकरण पहनें या उन्नत करें.",
+    "save": "ब्राउज़र में संग्रहण की अनुमति होने पर पूरे किए गए रास्ते, जुटाए उपकरण और साथी, उन्नयन तथा पसंद इसी ब्राउज़र में सेव होते हैं। पेज फिर लोड करने पर अधूरी लड़ाई आगे नहीं चलती। साइट का डेटा मिटाने, ब्राउज़र बदलने या बंद अथवा अस्थायी संग्रहण से प्रगति खो सकती है। क्लाउड सेव को दूसरे ब्राउज़र में ले जाने की सुविधा नहीं है।",
     "questions": [
       "100% पर क्या होता है?",
       "दोबारा मिलने पर एक और उपकरण क्यों नहीं जुड़ता?",
@@ -285,12 +285,12 @@ export const GUIDE_COPY = {
       "معلومات اللاعب والحفظ",
       "الأسئلة الشائعة"
     ],
-    "controls": "انقر ساحة المعركة أو زر الهجوم. على لوحة المفاتيح، يهاجم مفتاح المسافة، ويبدّل F القتال التلقائي، ويفعّل J مهارة الرفيق، وتختار A/D أو سهما اليمين واليسار الهدف، ويوقف Esc اللعب مؤقتًا. كل ضربة فأس ثامنة تجتاح الأعداء.",
+    "controls": "انقر ساحة المعركة أو اضغط مفتاح المسافة للهجوم. يبدّل F القتال التلقائي الاختياري (وهو متوقف افتراضيًا). اختر رفيقًا واحدًا في شاشة المراحل واضغط J لتفعيل مهارته عندما تصبح جاهزة. كل ضربة فأس ثامنة تجتاح الأعداء.",
     "companion": "اختر رفيقًا واحدًا من مجموعتك قبل دخول المسار. فعّل مهارته عندما تمتلئ الطاقة. جمع الرفاق الأربعة لا يتيح إشراكهم جميعًا في المعركة نفسها.",
-    "progress": "هناك 30 مسارًا: تضم المسارات 1–10 عدد 24 موجة، و11–20 عدد 32 موجة، و21–30 عدد 40 موجة. كل مسار خامس هو نقطة مواجهة زعيم. تصبح المعارك لاحقًا أطول ومجموعات الأعداء أكثر كثافة.",
-    "finish": "عند 100% يُسجّل المسار مكتملًا ويُفتح التالي، ولا يوجد مسار بعد 30. اضغط زر الإكمال لفتح النتيجة أو واصل القتال لجمع المزيد من الغنائم. الخسارة أو المغادرة لاحقًا لا تمحو مسارًا سُجّل مكتملًا.",
+    "progress": "هناك 30 مسارًا: تضم المسارات 1–10 عدد 24 موجة، و11–20 عدد 32 موجة، و21–30 عدد 40 موجة. في كل مسار خامس تجري معركة زعيم. تصبح المعارك لاحقًا أطول ومجموعات الأعداء أكثر كثافة.",
+    "finish": "عند 100% يُسجّل المسار مكتملًا ويُفتح التالي، ولا يوجد مسار بعد 30. اضغط علامة الصح ✓ لفتح النتيجة أو واصل القتال لجمع المزيد من الغنائم. الخسارة أو المغادرة لاحقًا لا تمحو مسارًا سُجّل مكتملًا.",
     "gear": "توجد 15 قطعة تجهيز. يعتمد سقوطها على المسار الحالي والصدفة؛ الوصول إلى مسار فتح القطعة لا يضمن الحصول عليها. تتحول القطع المكررة إلى شظايا. تكلف الترقية الأولى 10 شظايا، وتزداد تكلفة الترقيات اللاحقة. جهّز القطع أو رقّها من شاشة المراحل قبل الرحلة التالية.",
-    "save": "عندما يسمح المتصفح بالتخزين، تُحفظ المسارات المكتملة والتجهيزات والرفاق الذين جمعتهم والترقيات والتفضيلات في هذا المتصفح. لا تستأنف إعادة تحميل الصفحة معركة غير مكتملة. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح أو استخدام تخزين محظور أو مؤقت إلى فقدان التقدم. لا تتوفر إمكانية نقل حفظ سحابي.",
+    "save": "عندما يسمح المتصفح بالتخزين، يحفظ هذا المتصفح المسارات المكتملة والتجهيزات والرفاق الذين جمعتهم والترقيات والتفضيلات. لا تُستأنف المعركة غير المكتملة بعد إعادة تحميل الصفحة. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح أو حظر التخزين أو كونه مؤقتًا إلى فقدان التقدم. لا يتوفر نقل الحفظ عبر السحابة.",
     "questions": [
       "ماذا يحدث عند 100%؟",
       "لماذا لا تضيف القطعة المكررة قطعة أخرى؟",

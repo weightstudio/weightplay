@@ -51,6 +51,17 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
       if (debug) console.info("[WonderAnalytics]", name, payload);
     } catch { /* Analytics must never interrupt a game. */ }
   }
+  function rememberActualGameStart(name, params = {}) {
+    if (name !== "game_start" || testContext) return;
+    const routeId = location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1];
+    const gameId = String(params.game_id || routeId || "");
+    if (!/^[a-z0-9][a-z0-9-]{1,63}$/i.test(gameId)) return;
+    try {
+      const saved = JSON.parse(localStorage.getItem("weightplayRecentGames") || "[]");
+      const recent = Array.isArray(saved) ? saved.filter((id) => typeof id === "string" && id !== gameId) : [];
+      localStorage.setItem("weightplayRecentGames", JSON.stringify([gameId, ...recent].slice(0, 8)));
+    } catch { /* Recent history is optional and local only. */ }
+  }
   function announceCastleReward(detail) {
     const notify = () => window.dispatchEvent(new CustomEvent("weightplay:castle-reward", { detail }));
     notify();
@@ -542,6 +553,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     } catch { /* The optional castle feature must not interrupt game startup. */ }
   }
   function track(name, params = {}) {
+    rememberActualGameStart(name, params);
     if (lifecycleOwner && ["game_start", "game_restart", "game_end"].includes(name) && !params.tracking_version) return;
     if (["game_start", "game_restart", "stage_start", "level_start", "mission_start"].includes(name)) beginReportedRound(name, params);
     let rewardResult;
@@ -552,6 +564,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     return rewardResult;
   }
   function trackPrivacySafe(name, params = {}) {
+    rememberActualGameStart(name, params);
     if (lifecycleOwner && ["game_start", "game_restart", "game_end"].includes(name) && !params.tracking_version) return;
     if (!/^[a-z][a-z0-9_]{0,63}$/.test(name)) return;
     if (["game_start", "game_restart", "stage_start", "level_start", "mission_start"].includes(name)) beginReportedRound(name, params);
