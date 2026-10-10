@@ -635,9 +635,9 @@ html[dir="rtl"] body.general-lobby-page .lobby-hero > .weightplay-version-badge 
   }
 }
 
-/* Keep press feedback quick while hall light/palette follows the room fade. */
+/* Keep press feedback quick while hall light/palette follows the room change. */
 body.general-lobby-page .game-hall-switch button {
-  transition: transform 120ms ease, background-color 1s cubic-bezier(.4,0,.2,1), border-color 1s cubic-bezier(.4,0,.2,1), color 1s cubic-bezier(.4,0,.2,1), box-shadow 1s cubic-bezier(.4,0,.2,1);
+  transition: transform 120ms ease, background-color 780ms cubic-bezier(.22,.61,.36,1), border-color 780ms cubic-bezier(.22,.61,.36,1), color 780ms cubic-bezier(.22,.61,.36,1), box-shadow 780ms cubic-bezier(.22,.61,.36,1);
 }
 @media (prefers-reduced-motion: reduce) {
   body.general-lobby-page .game-hall-switch button { transition: none; }
@@ -654,21 +654,25 @@ html.hall-content-motion body.general-lobby-page::before,
 html.hall-content-motion body.general-lobby-page::after,
 html.hall-content-motion body.general-lobby-page .lobby-hero::before,
 html.hall-content-motion body.general-lobby-page .lobby-hero::after {
-  transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
+  transition: opacity 780ms cubic-bezier(.22,.61,.36,1) !important;
 }
 html.hall-content-motion body.general-lobby-page::before,
 html.hall-content-motion body.general-lobby-page::after,
 html.hall-content-motion body.general-lobby-page .lobby-hero::before,
 html.hall-content-motion body.general-lobby-page .lobby-hero::after,
-html.hall-content-motion body.general-lobby-page .lobby-shell {
-  transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
+html.hall-content-motion body.general-lobby-page .lobby-shell,
+html.hall-content-motion body.general-lobby-page :is(.lobby-topbar,.lobby-hero,.spotlight-game,.game-hall-switch button,.lobby-search input,.library-tabs button,.desktop-filter-rail,.topic-filter button,.game-card,.hero-game-card,.hero-game-copy,.game-card-body,.section-heading,.catalog-heading,.brand-byline,.filter-count,.section-heading h2,.section-heading span,.catalog-heading h2,.hero-game-copy strong,.hero-game-copy small,.game-hall-switch small) {
+  transition-duration: 780ms !important;
+  transition-timing-function: cubic-bezier(.22,.61,.36,1) !important;
+}
+html.hall-content-motion body.general-lobby-page .game-hall-switch button {
+  transition-duration: 120ms,780ms,780ms,780ms,780ms !important;
 }
 body.general-lobby-page #lobbyToast.hall-motion-toast:not(.hidden) {
-  transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
+  transition: opacity 780ms cubic-bezier(.22,.61,.36,1) !important;
 }
-/* The outgoing shell remains visible until its decoded replacement is ready.
-   A visual copy fades over the live incoming shell; never hide the live shell. */
-.hall-crossfade-snapshot { user-select: none; }
+/* The outgoing room clears while its decoded destination rises into view. */
+.hall-crossfade-snapshot { user-select: none; transform-origin: center center; }
 @media (prefers-reduced-motion: reduce) {
   html.hall-content-motion body.general-lobby-page::before,
   html.hall-content-motion body.general-lobby-page::after,

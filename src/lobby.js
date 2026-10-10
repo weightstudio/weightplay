@@ -1390,7 +1390,10 @@ function hallMotionImageSources(targetHall) {
 
 const hallImageWaitLimit = 700;
 const nextLobbyFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
-
+const lobbyScrollOffset = () => ({
+  left: Math.max(window.scrollX, document.documentElement.scrollLeft, document.body.scrollLeft),
+  top: Math.max(window.scrollY, document.documentElement.scrollTop, document.body.scrollTop)
+});
 function crossfadeHallShell(shell, motion) {
   const rect = shell.getBoundingClientRect();
   const snapshot = shell.cloneNode(true);
@@ -1410,13 +1413,63 @@ function crossfadeHallShell(shell, motion) {
   });
   snapshot.querySelectorAll('[data-hall-tab]').forEach(node => node.removeAttribute('data-hall-tab'));
   Object.assign(snapshot.style, {
-    position: 'fixed', top: `${rect.top}px`, left: `${rect.left}px`,
+    position: 'absolute', top: `${rect.top + lobbyScrollOffset().top}px`, left: `${rect.left + lobbyScrollOffset().left}px`,
     width: `${rect.width}px`, height: `${rect.height}px`, margin: '0',
     pointerEvents: 'none', zIndex: '100', overflow: 'hidden'
   });
   document.body.append(snapshot);
   motion.snapshot = snapshot;
+  if (!motion.syncSnapshotPosition) {
+    motion.syncSnapshotPosition = () => {
+      const current = motion.snapshot;
+      if (!current) return;
+      const liveRect = shell.getBoundingClientRect();
+      const scroll = lobbyScrollOffset();
+      current.style.left = `${liveRect.left + scroll.left}px`;
+      current.style.top = `${liveRect.top + scroll.top}px`;
+      if (!motion.snapshotFrame) {
+        motion.snapshotFrame = requestAnimationFrame(() => {
+          motion.snapshotFrame = null;
+          motion.syncSnapshotPosition?.();
+        });
+      }
+    };
+  }
+  motion.syncSnapshotPosition();
   return snapshot;
+}
+
+function clearHallEntryAnimations(motion) {
+  motion.entryAnimations?.forEach(animation => animation.cancel());
+  motion.entryAnimations = [];
+}
+
+function animateHallArrival(shell, motion) {
+  clearHallEntryAnimations(motion);
+  const inView = node => {
+    const rect = node.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0 && rect.bottom > -24 && rect.top < innerHeight + 24;
+  };
+  const blocks = [
+    shell.querySelector('.lobby-hero'),
+    shell.querySelector('.game-hall-switch'),
+    shell.querySelector('.lobby-search-row'),
+    shell.querySelector('.library-tabs'),
+    shell.querySelector('.desktop-filter-rail'),
+    ...[...shell.querySelectorAll('#latestGamesSection .section-heading, #heroGamesSection .section-heading, #catalogHeading')]
+  ].filter(node => node && !node.classList.contains('hidden') && inView(node)).slice(0, 4);
+  const cards = [...shell.querySelectorAll('#latestGames > :is(.game-card, .hero-game-card), #heroGames > :is(.game-card, .hero-game-card), #gameGrid > .game-card:not(.hidden)')]
+    .filter(inView).slice(0, 4);
+  const targets = [...new Set([...blocks, ...cards])];
+  motion.entryAnimations = targets.map((node, index) => node.animate([
+    { opacity: 0, transform: 'translate3d(0, 12px, 0) scale(.992)' },
+    { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }
+  ], {
+    duration: 580,
+    delay: index * 30,
+    easing: 'cubic-bezier(.2,.72,.25,1)',
+    fill: 'both'
+  }));
 }
 
 function waitForHallImages(motion, targetHall) {
@@ -1440,6 +1493,7 @@ function settleHallMotion() {
   if (!motion) return;
   hallMotion = null;
   motion.wakeImageWait?.();
+  clearHallEntryAnimations(motion);
   document.body.dataset.hallMotionPhase = 'commit';
   motion.commit(motion.targetHall);
   motion.restore();
@@ -1469,7 +1523,11 @@ function renderLobby(options = {}) {
   const motion = { targetHall: activeHall, options: { ...options }, deferredRender: false, resetScroll: Boolean(options.resetScroll), generation: 0, wakeImageWait: null, quickPickWasDisabled: Boolean(quickPickBtn?.disabled) };
   motion.restore = () => {
     motion.fade?.cancel();
+    clearHallEntryAnimations(motion);
     motion.snapshot?.remove();
+    cancelAnimationFrame(motion.snapshotFrame);
+    motion.snapshotFrame = null;
+    motion.syncSnapshotPosition = null;
     entries.forEach(({node, inert}) => { node.inert = inert; });
     if (quickPickBtn) quickPickBtn.disabled = motion.quickPickWasDisabled;
     delete document.body.dataset.hallMotionPhase;
@@ -1512,27 +1570,42 @@ function renderLobby(options = {}) {
     }
     // Keep the entire outgoing lobby visible while the destination images load.
     while (hallMotion === motion) {
+      clearHallEntryAnimations(motion);
       const targetHall = motion.targetHall;
       const generation = motion.generation;
       const imageState = await waitForHallImages(motion, targetHall);
       if (hallMotion !== motion) return;
       if (imageState === 'changed' || generation !== motion.generation) continue;
-      const snapshot = crossfadeHallShell(shell, motion);
+      const snapshot = motion.snapshot || crossfadeHallShell(shell, motion);
       document.body.dataset.hallMotionPhase = 'commit';
       motion.commit(targetHall);
       delete document.body.dataset.hallTransitionTarget;
       document.body.dataset.hallMotionPhase = 'enter';
-      // Incoming content is fully visible underneath the fading outgoing copy.
-      // There is never an intermediate frame containing only the page background.
-      motion.fade = snapshot.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: 240, easing: 'cubic-bezier(.2,.65,.3,1)', fill: 'forwards'
+      // Rise visible controls and artwork into the destination while the old room
+      // clears quickly to prevent overlapping hall labels and shelf content.
+      animateHallArrival(shell, motion);
+      motion.fade = snapshot.animate([
+        { offset: 0, opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' },
+        { offset: .14, opacity: .58, transform: 'translate3d(0, -3px, 0) scale(.998)' },
+        { offset: .3, opacity: 0, transform: 'translate3d(0, -6px, 0) scale(.996)' },
+        { offset: 1, opacity: 0, transform: 'translate3d(0, -9px, 0) scale(.995)' }
+      ], {
+        duration: 820, easing: 'cubic-bezier(.3,.1,.2,1)', fill: 'forwards'
       });
       await motion.fade.finished.catch(() => {});
-      snapshot.remove();
-      motion.snapshot = null;
       if (hallMotion !== motion) return;
       delete document.body.dataset.hallMotionPhase;
-      if (motion.targetHall !== document.body.dataset.gameHall) continue;
+      if (motion.targetHall !== document.body.dataset.gameHall) {
+        // Keep the settled destination visible while the next selection's images
+        // are prepared, rather than exposing an intermediate hall.
+        snapshot.remove();
+        motion.snapshot = crossfadeHallShell(shell, motion);
+        motion.snapshot.style.opacity = '1';
+        motion.snapshot.style.transform = 'none';
+        continue;
+      }
+      snapshot.remove();
+      motion.snapshot = null;
       const deferredRender = motion.deferredRender;
       const deferredOptions = motion.options;
       hallMotion = null;
