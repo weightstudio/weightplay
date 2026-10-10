@@ -31,7 +31,7 @@
   <meta name="description" content="Leggi le pile di tesori, crea coppie sicure e completa ogni trio prima di riempire i sette spazi di Mimi in 30 livelli." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260919-triple-match-v24-landscape-reachability">
+  <link rel="stylesheet" href="style.css?v=20261010-triple-text-growth-140-v5">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Abbinamento triplo | WeightPlay" />
@@ -62,7 +62,7 @@
         <div class="main-copy">
           <small data-t="eyebrow">Puzzle di tesori</small>
           <h1 data-t="title" data-wp-game-title data-runtime-localize="off">Abbinamento triplo</h1>
-          <p data-t="pitch">Tocca i tesori liberi e raccogline tre uguali prima di riempire i sette spazi.</p>
+          <p data-t="pitch">Forma trii con i tesori accessibili. Il vassoio ha sette spazi nei livelli 1–23 e sei nei livelli 24–30.</p>
           <span id="mainProgress">0 / 30</span>
           <button id="startBtn" class="primary" type="button" data-t="start" data-wp-main-start data-runtime-localize="off">Inizia</button>
           <a class="guide-jump" href="#publicGuide" data-t="guideLabel">Guida di gioco</a>
@@ -73,10 +73,10 @@
       <div class="game-info-hero"><div class="game-info-title">
       <small class="game-info-kicker" data-t="guideLabel">Guida di gioco</small>
       <h2 data-wp-game-title data-runtime-localize="off">Abbinamento triplo</h2>
-      <p data-t="guideIntro">La serra di Mimi trabocca di ricordi incantati. Solo gli oggetti scoperti possono muoversi. Tre uguali spariscono; sette oggetti spaiati chiudono il tentativo.</p>
+      <p data-t="guideIntro">La serra di Mimi custodisce tesori incantati. Solo i tesori accessibili e scoperti entrano nel vassoio. Tre tesori uguali scompaiono automaticamente. Il tentativo termina se tutti gli spazi sono occupati senza formare un trio. I livelli 1–23 hanno sette spazi, i livelli 24–30 ne hanno sei.</p>
       </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Rompicapo</span><span>Strategia</span><span>Animali</span></div></div>
       <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-t="howTitle">Come giocare</h3><ol><li data-t="how1">Tocca un oggetto libero per spostarlo.</li><li data-t="how2">Tre oggetti uguali scompaiono.</li><li data-t="how3">Svuota la pila prima di occupare sette spazi.</li></ol></article>
+        <article class="game-info-section"><h3 data-t="howTitle">Come giocare</h3><ol><li data-t="how1">Tocca un oggetto libero per spostarlo.</li><li data-t="how2">Tre oggetti uguali scompaiono.</li><li data-t="how3">Svuota la pila prima di occupare tutti gli spazi: sette nei livelli 1–23, sei nei livelli 24–30.</li></ol></article>
         <article class="game-info-section"><h3 data-t="chaptersTitle">Scaffali che cambiano</h3><p data-t="chaptersText">Gli scaffali successivi aggiungono rampicanti, gusci di cristallo, tesori nascosti e pile mobili. Leggi la regola prima di scegliere un trio.</p></article>
         <article class="game-info-section"><h3 data-t="strategyTitle">Pianifica prima di toccare</h3><p data-t="strategyText">Cerca coppie e conserva uno spazio libero.</p></article>
         <article class="game-info-section"><h3 data-t="trustTitle">Progressi e privacy</h3><p data-t="trustText">I progressi restano nel browser; nessun accesso richiesto.</p></article>
@@ -90,7 +90,7 @@
         <button id="stageBack" class="back-btn" type="button" aria-label="Indietro" data-t-aria="back" data-wp-return="stage">&larr;</button>
         <strong data-t="chooseStage">Scegli uno scaffale</strong>
       </header>
-      <div class="chapter-strip"><span data-t="chapter">Capitolo</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
+      <div class="chapter-strip"><span data-t="chapterLabel" data-runtime-localize="off">Capitolo</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
       <div id="stageRail" class="stage-rail" aria-label="Selettore livelli" data-t-aria="stageRailLabel" data-wp-stage-rail></div>
       <p class="rail-hint" data-t="stageHint">Trascina e scegli un livello sbloccato.</p>
       <nav class="stage-tabs" aria-label="Livelli" data-t-aria="stages">
@@ -123,7 +123,7 @@
 
       <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <h2 id="tutorialTitle" data-t="tutorialTitle">Fai spazio con i trii</h2>
-        <ol><li data-t="tutorial1">I tesori luminosi sono liberi.</li><li data-t="tutorial2">Tre uguali scompaiono dal vassoio.</li><li data-t="tutorial3">Tocca rampicanti e cristalli una volta per aprirli.</li></ol>
+        <ol><li data-t="tutorial1">I tesori luminosi sono liberi.</li><li data-t="tutorial2">Tre tesori uguali scompaiono automaticamente. Il vassoio ha sette spazi nei livelli 1–23 e sei nei livelli 24–30.</li><li data-t="tutorial3">Tocca rampicanti e cristalli una volta per aprirli.</li></ol>
         <button id="tutorialClose" class="primary" type="button" data-t="continue">Continua</button>
       </div></section>
 
@@ -159,7 +159,7 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
   <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
   <script src="frame.js?v=20260919-triple-match-v24-landscape-reachability"></script>
-  <script src="game.js?v=20260927-triple-match-v27-tray-art&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261010-triple-text-growth-140-v5&wp-audio=1.0.0"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
 </body>
 </html>

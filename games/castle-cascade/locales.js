@@ -204,22 +204,244 @@ for (const [locale, strings] of Object.entries(CC_GUIDE_I18N)) {
 }
 
 const CC_SIEGE_I18N = {
-  en: ["Castle siege", "Defeat every target in every wave.", "Wave {wave}/{total}", "Blocked", "Citadel liberated!", "Match to attack. Armor needs powers; matching target colors doubles damage. Defeat guards first.", ["Tower", "Armored tower", "Stone guardian", "Keep"], "Every fifth stage is a siege. Cleared gems fire at the battlefield. Powers hit harder; armored towers only take power hits. Color-marked targets take double damage from that color. Guardians protect the keep, and delivered keys fire a strong volley. Defeat all waves before moves run out."],
-  "zh-Hant": ["王城攻防", "擊破所有波次的城堡與守衛。", "第 {wave}/{total} 波", "格擋", "王城解放！", "消除發動攻擊；裝甲需特殊符號，同色弱點傷害加倍。先擊破守衛。", ["城塔", "裝甲塔", "石像守衛", "主堡"], "每五關穿插一場攻城戰。消除方塊會向上發射攻擊，特殊符號威力更強；裝甲塔只接受特殊攻擊。目標下方的顏色是弱點，消除同色傷害加倍。先擊破守衛才能攻擊主堡，鑰匙送達出口也會發出強力攻擊。步數用完前擊破所有波次即可過關。"],
-  "zh-Hans": ["王城攻防", "击破所有波次的城堡与守卫。", "第 {wave}/{total} 波", "格挡", "王城解放！", "消除发动攻击；装甲需特殊符号，同色弱点伤害加倍。先击破守卫。", ["城塔", "装甲塔", "石像守卫", "主堡"], "每五关穿插一场攻城战。消除方块会向上发射攻击，特殊符号威力更强；装甲塔只接受特殊攻击。目标下方的颜色是弱点，消除同色伤害加倍。先击破守卫才能攻击主堡，钥匙送达出口也会发出强力攻击。步数用完前击破所有波次即可过关。"],
-  ja: ["城の攻防", "すべてのウェーブの目標を倒そう。", "ウェーブ {wave}/{total}", "防御", "城を解放！", "マッチで攻撃。装甲には特殊ピース、同色の弱点にはダメージ2倍。守護者を先に倒そう。", ["塔", "装甲塔", "石の守護者", "本丸"], "5ステージごとに攻城戦があります。消したピースが戦場へ飛び、特殊ピースはより強く攻撃します。装甲塔には特殊攻撃のみが有効。目標の色と同じ色はダメージ2倍です。守護者を倒して本丸を攻撃し、鍵を出口へ届けると強い攻撃が発生します。手数が尽きる前に全ウェーブを倒しましょう。"],
-  ko: ["왕성 공방", "모든 웨이브의 목표를 격파하세요.", "웨이브 {wave}/{total}", "방어", "왕성 해방!", "매치하면 공격합니다. 장갑에는 특수 공격, 같은 색 약점에는 2배 피해. 수호자를 먼저 격파하세요.", ["탑", "장갑 탑", "돌 수호자", "성채"], "매 다섯 번째 스테이지는 공성전입니다. 제거한 보석이 전장으로 날아가며 특수 조각은 더 강하게 공격합니다. 장갑 탑에는 특수 공격만 통합니다. 목표에 표시된 색과 같으면 피해가 두 배입니다. 수호자를 먼저 쓰러뜨려 성채를 공격하고, 열쇠를 출구로 보내 강력한 공격을 발사하세요. 이동 횟수가 끝나기 전에 모든 웨이브를 격파하세요."],
-  es: ["Asedio al castillo", "Derrota todos los objetivos de cada oleada.", "Oleada {wave}/{total}", "Bloqueado", "¡Ciudadela liberada!", "Combina para atacar. La armadura requiere poderes; el color débil duplica el daño. Vence a los guardianes primero.", ["Torre", "Torre blindada", "Guardián de piedra", "Fortaleza"], "Cada quinta fase es un asedio. Las gemas eliminadas atacan el campo de batalla. Los poderes golpean más fuerte y son necesarios contra torres blindadas. El color indicado duplica el daño. Los guardianes protegen la fortaleza y las llaves entregadas lanzan un ataque fuerte. Vence todas las oleadas antes de agotar los movimientos."],
-  "pt-BR": ["Cerco ao castelo", "Derrote todos os alvos de todas as ondas.", "Onda {wave}/{total}", "Bloqueado", "Cidadela libertada!", "Combine para atacar. Armadura exige poderes; a cor fraca dobra o dano. Derrote os guardiões primeiro.", ["Torre", "Torre blindada", "Guardião de pedra", "Fortaleza"], "A cada cinco fases há um cerco. Gemas eliminadas atacam o campo de batalha. Poderes causam mais dano e são necessários contra torres blindadas. A cor indicada dobra o dano. Guardiões protegem a fortaleza, e chaves entregues lançam um ataque forte. Derrote todas as ondas antes de acabar os movimentos."],
-  fr: ["Siège du château", "Vainquez toutes les cibles de chaque vague.", "Vague {wave}/{total}", "Bloqué", "Citadelle libérée !", "Alignez pour attaquer. Pouvoirs contre armure, couleur faible pour doubler les dégâts. Battez les gardiens d’abord.", ["Tour", "Tour blindée", "Gardien de pierre", "Donjon"], "Tous les cinq niveaux, un siège vous attend. Les gemmes éliminées attaquent le champ de bataille. Les pouvoirs frappent plus fort et sont indispensables contre les tours blindées. La couleur indiquée double les dégâts. Les gardiens protègent le donjon et les clés livrées déclenchent une puissante attaque. Battez toutes les vagues avant d’épuiser vos coups."],
-  de: ["Burgbelagerung", "Besiege alle Ziele in jeder Welle.", "Welle {wave}/{total}", "Geblockt", "Zitadelle befreit!", "Kombiniere zum Angriff. Panzerung braucht Kräfte; die Schwachstellenfarbe verdoppelt Schaden. Erst die Wächter!", ["Turm", "Panzerturm", "Steinwächter", "Bergfried"], "Jede fünfte Stufe ist eine Belagerung. Entfernte Edelsteine greifen das Schlachtfeld an. Kräfte treffen härter und sind gegen Panzertürme nötig. Die angezeigte Farbe verdoppelt den Schaden. Wächter schützen den Bergfried; abgelieferte Schlüssel lösen einen starken Angriff aus. Besiege alle Wellen, bevor die Züge ausgehen."],
-  it: ["Assedio al castello", "Sconfiggi tutti i bersagli di ogni ondata.", "Ondata {wave}/{total}", "Bloccato", "Cittadella liberata!", "Abbina per attaccare. L’armatura richiede poteri; il colore debole raddoppia i danni. Sconfiggi prima i guardiani.", ["Torre", "Torre corazzata", "Guardiano di pietra", "Fortezza"], "Ogni quinto livello è un assedio. Le gemme eliminate attaccano il campo di battaglia. I poteri colpiscono più forte e sono necessari contro le torri corazzate. Il colore indicato raddoppia i danni. I guardiani proteggono la fortezza e le chiavi consegnate lanciano un attacco potente. Sconfiggi tutte le ondate prima di esaurire le mosse."],
-  ru: ["Осада замка", "Уничтожьте все цели во всех волнах.", "Волна {wave}/{total}", "Блок", "Цитадель освобождена!", "Собирайте ряды для атаки. Броня требует усилителей, цвет слабости удваивает урон. Сначала стражи!", ["Башня", "Бронированная башня", "Каменный страж", "Цитадель"], "Каждый пятый уровень — осада. Убранные камни атакуют поле боя. Усилители бьют сильнее и необходимы против бронированных башен. Указанный цвет удваивает урон. Стражи защищают цитадель, а доставленные ключи запускают мощную атаку. Победите все волны до окончания ходов."],
-  hi: ["महल की घेराबंदी", "हर लहर के सभी लक्ष्यों को हराएँ।", "लहर {wave}/{total}", "रोका गया", "गढ़ आज़ाद!", "मिलान करके हमला करें। कवच के लिए विशेष शक्ति; कमज़ोर रंग से दोगुना नुकसान। पहले रक्षकों को हराएँ।", ["मीनार", "बख्तरबंद मीनार", "पत्थर का रक्षक", "गढ़"], "हर पाँचवाँ चरण घेराबंदी है। हटाए गए रत्न युद्धभूमि पर हमला करते हैं। विशेष शक्तियाँ अधिक नुकसान करती हैं और बख्तरबंद मीनारों के लिए ज़रूरी हैं। दिखाए गए रंग से दोगुना नुकसान होता है। रक्षक गढ़ को बचाते हैं और निकास तक पहुँचाई गई चाबियाँ शक्तिशाली हमला करती हैं। चालें खत्म होने से पहले सभी लहरों को हराएँ।"],
-  ar: ["حصار القلعة", "اهزم جميع أهداف كل موجة.", "الموجة {wave}/{total}", "صدّ", "تحررت القلعة!", "طابق للهجوم. الدرع يحتاج قوى؛ لون الضعف يضاعف الضرر. اهزم الحراس أولاً.", ["برج", "برج مدرع", "حارس حجري", "حصن"], "كل مرحلة خامسة هي حصار. تطلق الأحجار المزالة هجمات على ساحة المعركة. القوى تضرب بقوة أكبر وهي ضرورية للأبراج المدرعة. اللون الموضح يضاعف الضرر. يحمي الحراس الحصن، وتطلق المفاتيح الواصلة إلى المخرج هجوماً قوياً. اهزم جميع الموجات قبل نفاد الحركات."],
+  "en": [
+    "Castle siege",
+    "Defeat all castles and monsters in every wave.",
+    "Wave {wave}/{total}",
+    "Blocked",
+    "Citadel liberated!",
+    "Shots fly straight up their column. Empty lanes miss. Stop approaching monsters!",
+    [
+      "Castle",
+      "Moss boar",
+      "Stone ram"
+    ],
+    "Every fifth stage is a siege with an obstacle-free starting board. Each cleared gem fires up its own lane at the first enemy in that lane. Powers hit harder. Boars advance one step per turn; rams charge for a turn, then advance two. At the board edge they cover a row with grass and retreat. An adjacent match or power hit removes grass in one hit, preserving the piece underneath. Defeat every wave before moves run out.",
+    "Grass · 1 hit",
+    "Monsters advance.",
+    "Ram charging: two steps next turn!",
+    "A row is covered in grass! Clear beside it or use a power."
+  ],
+  "zh-Hant": [
+    "王城攻防",
+    "擊破所有波次的城堡與怪物。",
+    "第 {wave}/{total} 波",
+    "格擋",
+    "王城解放！",
+    "消除沿原本直行向上攻擊；空路線會打空。阻止怪物靠近！",
+    [
+      "城堡",
+      "苔草野豬",
+      "石角山羊"
+    ],
+    "每五關穿插攻城戰，初始棋盤沒有箱子等障礙。每顆消除方塊沿自己的直行向上飛，擊中同路線最前方的敵人；特殊消除威力更強。苔草野豬每回合前進一格；石角山羊先蓄力一回合，再衝兩格。抵達棋盤時會讓整排長出草堆，然後後退。草堆旁消除或特殊攻擊打一下即可清除草堆，保留底下的方塊。步數用完前擊破所有波次即可過關。",
+    "草堆・受擊一次清除",
+    "怪物向前推進！",
+    "石角山羊蓄力：下回合衝刺兩格！",
+    "整排長出草堆！在旁邊消除或用特殊攻擊清除。"
+  ],
+  "zh-Hans": [
+    "王城攻防",
+    "击破所有波次的城堡与怪物。",
+    "第 {wave}/{total} 波",
+    "格挡",
+    "王城解放！",
+    "消除沿原本直行向上攻击；空路线会打空。阻止怪物靠近！",
+    [
+      "城堡",
+      "苔草野猪",
+      "石角山羊"
+    ],
+    "每五关穿插攻城战，初始棋盘没有箱子等障碍。每颗消除方块沿自己的直行向上飞，击中同路线最前方的敌人；特殊消除威力更强。苔草野猪每回合前进一格；石角山羊先蓄力一回合，再冲两格。抵达棋盘时会让整排长出草堆，然后后退。草堆旁消除或特殊攻击打一下即可清除草堆，保留底下的方块。步数用完前击破所有波次即可过关。",
+    "草堆・受击一次清除",
+    "怪物向前推进！",
+    "石角山羊蓄力：下回合冲刺两格！",
+    "整排长出草堆！在旁边消除或用特殊攻击清除。"
+  ],
+  "ja": [
+    "城の攻防",
+    "全ウェーブの城とモンスターを倒そう。",
+    "ウェーブ {wave}/{total}",
+    "防御",
+    "城を解放！",
+    "消した列を真上に攻撃。敵のいない列は空振り。近づく敵を止めよう！",
+    [
+      "城",
+      "苔イノシシ",
+      "石の雄羊"
+    ],
+    "5ステージごとに攻城戦。最初の盤面に障害物はありません。消したピースは同じ列の一番手前の敵に当たり、特殊攻撃は威力が上がります。イノシシは毎ターン1歩、雄羊は1ターン溜めて2歩進みます。盤面に着くと横一列を草で覆って後退します。隣でのマッチか特殊攻撃1回で草だけを除去できます。手数が尽きる前に全ウェーブを倒しましょう。",
+    "草・1回で除去",
+    "敵が前進！",
+    "雄羊が溜め中：次は2歩！",
+    "一列が草に覆われた！隣でマッチしよう。"
+  ],
+  "ko": [
+    "왕성 공방",
+    "모든 웨이브의 성과 몬스터를 격파하세요.",
+    "웨이브 {wave}/{total}",
+    "방어",
+    "왕성 해방!",
+    "제거한 열을 따라 위로 발사합니다. 적이 없는 열은 빗나갑니다!",
+    [
+      "성",
+      "이끼 멧돼지",
+      "돌 숫양"
+    ],
+    "다섯 스테이지마다 공성전입니다. 처음 보드에는 장애물이 없습니다. 제거한 조각은 같은 열의 가장 앞선 적을 공격하며 특수 공격은 더 강합니다. 멧돼지는 턴마다 한 칸, 숫양은 한 턴 충전 후 두 칸 전진합니다. 보드에 닿으면 한 줄에 풀을 만들고 물러납니다. 인접 매치나 특수 공격 한 번으로 풀만 제거하며 아래 조각은 남습니다. 이동 횟수 안에 모든 웨이브를 격파하세요.",
+    "풀 · 1회 타격",
+    "몬스터 전진!",
+    "숫양 충전: 다음 턴 두 칸!",
+    "한 줄에 풀이 자랐습니다! 옆에서 매치하세요."
+  ],
+  "es": [
+    "Asedio al castillo",
+    "Derrota los castillos y monstruos de todas las oleadas.",
+    "Oleada {wave}/{total}",
+    "Bloqueado",
+    "¡Ciudadela liberada!",
+    "Dispara hacia arriba por la misma columna. ¡Las columnas vacías fallan!",
+    [
+      "Castillo",
+      "Jabalí de musgo",
+      "Carnero de piedra"
+    ],
+    "Cada quinto nivel es un asedio sin obstáculos iniciales. Cada gema eliminada golpea al primer enemigo de su columna; los poderes hacen más daño. El jabalí avanza un paso por turno; el carnero carga un turno y avanza dos. Al llegar al tablero cubren una fila de hierba y retroceden. Una combinación adyacente o un poder quita la hierba de un golpe y conserva la pieza debajo. Vence todas las oleadas antes de agotar los movimientos.",
+    "Hierba · 1 golpe",
+    "¡Los monstruos avanzan!",
+    "¡Carnero cargando: dos pasos después!",
+    "¡Hierba en una fila! Combina a su lado."
+  ],
+  "pt-BR": [
+    "Cerco ao castelo",
+    "Derrote castelos e monstros de todas as ondas.",
+    "Onda {wave}/{total}",
+    "Bloqueado",
+    "Cidadela libertada!",
+    "Os disparos sobem pela mesma coluna. Colunas sem inimigos erram!",
+    [
+      "Castelo",
+      "Javali de musgo",
+      "Carneiro de pedra"
+    ],
+    "A cada cinco fases há um cerco sem obstáculos iniciais. Cada gema removida atinge o primeiro inimigo da sua coluna; poderes causam mais dano. O javali avança um passo por turno; o carneiro carrega por um turno e avança dois. Ao chegar ao tabuleiro, cobrem uma linha com grama e recuam. Uma combinação adjacente ou um poder remove a grama com um golpe, preservando a peça embaixo. Vença todas as ondas antes de acabar as jogadas.",
+    "Grama · 1 golpe",
+    "Monstros avançando!",
+    "Carneiro carregando: dois passos depois!",
+    "Uma linha ganhou grama! Combine ao lado."
+  ],
+  "fr": [
+    "Siège du château",
+    "Vainquez les châteaux et monstres de chaque vague.",
+    "Vague {wave}/{total}",
+    "Bloqué",
+    "Citadelle libérée !",
+    "Les tirs montent dans leur colonne. Une colonne vide ne touche rien !",
+    [
+      "Château",
+      "Sanglier moussu",
+      "Bélier de pierre"
+    ],
+    "Tous les cinq niveaux, un siège commence sans obstacles sur le plateau. Chaque gemme retirée touche le premier ennemi de sa colonne ; les pouvoirs frappent plus fort. Le sanglier avance d’un pas par tour ; le bélier charge un tour puis avance de deux pas. Au bord du plateau, ils couvrent une rangée d’herbe puis reculent. Une combinaison voisine ou un pouvoir enlève l’herbe en un coup et conserve la pièce dessous. Vainquez toutes les vagues avant de manquer de coups.",
+    "Herbe · 1 coup",
+    "Les monstres avancent !",
+    "Bélier en charge : deux pas ensuite !",
+    "Une rangée d’herbe ! Combinez à côté."
+  ],
+  "de": [
+    "Burgbelagerung",
+    "Besiege alle Burgen und Monster jeder Welle.",
+    "Welle {wave}/{total}",
+    "Geblockt",
+    "Zitadelle befreit!",
+    "Schüsse steigen in ihrer Spalte auf. Leere Bahnen verfehlen ihr Ziel!",
+    [
+      "Burg",
+      "Mooskeiler",
+      "Steinwidder"
+    ],
+    "Jede fünfte Stufe ist eine Belagerung ohne anfängliche Hindernisse. Entfernte Steine treffen den vordersten Gegner ihrer Spalte; Kräfte sind stärker. Keiler gehen pro Zug einen Schritt. Widder laden einen Zug auf und gehen dann zwei Schritte. Am Spielfeld bedecken sie eine Reihe mit Gras und ziehen sich zurück. Eine benachbarte Kombination oder Kraft entfernt das Gras mit einem Treffer; der Stein darunter bleibt. Besiege alle Wellen innerhalb der Züge.",
+    "Gras · 1 Treffer",
+    "Monster rücken vor!",
+    "Widder lädt auf: danach zwei Schritte!",
+    "Eine Reihe voller Gras! Kombiniere daneben."
+  ],
+  "it": [
+    "Assedio al castello",
+    "Sconfiggi castelli e mostri di ogni ondata.",
+    "Ondata {wave}/{total}",
+    "Bloccato",
+    "Cittadella liberata!",
+    "I colpi salgono nella stessa colonna. Le corsie vuote non colpiscono!",
+    [
+      "Castello",
+      "Cinghiale muschioso",
+      "Ariete di pietra"
+    ],
+    "Ogni quinto livello è un assedio senza ostacoli iniziali. Le gemme eliminate colpiscono il primo nemico della propria colonna; i poteri sono più forti. Il cinghiale avanza di un passo a turno; l’ariete carica un turno e avanza di due. Al tabellone coprono una riga d’erba e arretrano. Un abbinamento adiacente o un potere elimina l’erba con un colpo, conservando la tessera sotto. Sconfiggi tutte le ondate prima di finire le mosse.",
+    "Erba · 1 colpo",
+    "I mostri avanzano!",
+    "Ariete in carica: poi due passi!",
+    "Una riga d’erba! Abbina accanto."
+  ],
+  "ru": [
+    "Осада замка",
+    "Победите замки и монстров всех волн.",
+    "Волна {wave}/{total}",
+    "Блок",
+    "Цитадель освобождена!",
+    "Выстрелы летят вверх по своему столбцу. Пустые линии дают промах!",
+    [
+      "Замок",
+      "Мшистый кабан",
+      "Каменный баран"
+    ],
+    "Каждый пятый уровень — осада без начальных препятствий. Убранный камень бьёт первого врага в своём столбце; усилители наносят больше урона. Кабан идёт на шаг за ход, баран готовится ход и идёт на два. Дойдя до поля, они покрывают ряд травой и отступают. Соседняя комбинация или усилитель убирает траву одним ударом, сохраняя камень под ней. Победите все волны до конца ходов.",
+    "Трава · 1 удар",
+    "Монстры наступают!",
+    "Баран готовится: затем два шага!",
+    "Ряд зарос травой! Соберите ряд рядом."
+  ],
+  "hi": [
+    "महल की घेराबंदी",
+    "हर लहर के महल और राक्षस हराएँ।",
+    "लहर {wave}/{total}",
+    "रोका गया",
+    "गढ़ आज़ाद!",
+    "हमले उसी कॉलम में ऊपर जाते हैं। खाली रास्ते पर निशाना चूकता है!",
+    [
+      "महल",
+      "काई वाला सूअर",
+      "पत्थर का मेढ़ा"
+    ],
+    "हर पाँचवाँ चरण बिना शुरुआती बाधाओं की घेराबंदी है। हटाया गया रत्न अपने कॉलम के पहले दुश्मन को मारता है; शक्तियाँ अधिक नुकसान करती हैं। सूअर हर चाल में एक कदम चलता है। मेढ़ा एक चाल तैयारी करके दो कदम चलता है। बोर्ड पर पहुँचकर वे एक पंक्ति पर घास उगाते हैं और पीछे हटते हैं। पास का मिलान या शक्ति एक वार में घास हटाती है, नीचे का रत्न बचता है। चालें खत्म होने से पहले सभी लहरें हराएँ।",
+    "घास · 1 वार",
+    "राक्षस आगे बढ़े!",
+    "मेढ़ा तैयारी में: अगली बार दो कदम!",
+    "एक पंक्ति पर घास! पास में मिलान करें।"
+  ],
+  "ar": [
+    "حصار القلعة",
+    "اهزم قلاع ووحوش كل الموجات.",
+    "الموجة {wave}/{total}",
+    "صدّ",
+    "تحررت القلعة!",
+    "تنطلق الضربات لأعلى في العمود نفسه. المسارات الفارغة لا تصيب!",
+    [
+      "قلعة",
+      "خنزير طحلبي",
+      "كبش حجري"
+    ],
+    "كل مرحلة خامسة حصار يبدأ بلا عوائق على اللوحة. تصيب الجوهرة المزالة أقرب عدو في عمودها، والقوى أشد ضرراً. يتقدم الخنزير خطوة كل دور؛ يستعد الكبش دوراً ثم يتقدم خطوتين. عند اللوحة يغطون صفاً بالعشب ثم يتراجعون. تطابق مجاور أو قوة يزيل العشب بضربة واحدة ويحفظ القطعة تحته. اهزم كل الموجات قبل نفاد الحركات.",
+    "عشب · ضربة واحدة",
+    "الوحوش تتقدم!",
+    "الكبش يستعد: خطوتان بعدها!",
+    "العشب يغطي صفاً! طابق بجانبه."
+  ]
 };
-for (const [locale, [siegeTitle, siegeGoal, siegeWave, siegeBlocked, siegeWin, siegeInstructions, kinds, siegeBody]] of Object.entries(CC_SIEGE_I18N)) {
-  Object.assign(window.CC_I18N[locale], { siegeTitle, siegeGoal, siegeWave, siegeBlocked, siegeWin, siegeInstructions, siegeBody,
-    siegeKinds: Object.fromEntries(["tower", "armor", "sentinel", "keep"].map((kind, index) => [kind, kinds[index]])) });
+
+for (const [locale, [siegeTitle, siegeGoal, siegeWave, siegeBlocked, siegeWin, siegeInstructions, kinds, siegeBody, grassName, enemyAdvance, enemyCharge, grassSpread]] of Object.entries(CC_SIEGE_I18N)) {
+  Object.assign(window.CC_I18N[locale], { siegeTitle, siegeGoal, siegeWave, siegeBlocked, siegeWin, siegeInstructions, siegeBody, grassName, enemyAdvance, enemyCharge, grassSpread,
+    siegeKinds: Object.fromEntries(["castle", "bramble", "ram"].map((kind, index) => [kind, kinds[index]])) });
   window.CC_I18N[locale].campaignBody += ` ${siegeBody}`;
 }

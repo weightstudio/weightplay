@@ -1309,6 +1309,7 @@
     gameActive: false,
     gameLoopId: null,
     pulseCooldownTicks: 0,
+    pulseCooldownTotalTicks: PULSE_COOLDOWN_TICKS,
     pulseEffectUntil: 0,
 
     // Stats
@@ -2831,6 +2832,7 @@
     state.pickups = [];
     state.particleSystems = [];
     state.pulseCooldownTicks = 0;
+    state.pulseCooldownTotalTicks = PULSE_COOLDOWN_TICKS;
     state.pulseEffectUntil = 0;
     state.dodgeTicks = state.dodgeCooldownTicks = state.hurtCooldownTicks = 0;
     state.combo = state.comboTicks = state.surgeTicks = 0;
@@ -2861,6 +2863,7 @@
 
     renderStatsPanel();
     renderEquippedGear();
+    updateBattleControls();
 
     // Measure the visible scene before placing its opening ring. A hidden
     // Stage-to-Battle canvas still has the previous screen's aspect ratio.
@@ -3831,6 +3834,8 @@
     const now = performance.now();
     const stats = getStats();
     state.pulseCooldownTicks = Math.max(PULSE_MIN_COOLDOWN_TICKS, PULSE_COOLDOWN_TICKS - state.relicRateCount * 60);
+    state.pulseCooldownTotalTicks = state.pulseCooldownTicks;
+    updateBattleControls();
     syncPulseAriaLabel();
     state.pulseEffectUntil = now + PULSE_EFFECT_MS;
     window.WeightPlayAudio?.play("magic.cast");
@@ -4708,7 +4713,11 @@
 
   function updateBattleControls() {
     if (!nodes.pulseButton) return;
-    for (const [button, ticks, label] of [[nodes.pulseButton, state.pulseCooldownTicks, 'pulseLabel'], [nodes.dodgeButton, state.dodgeCooldownTicks, 'dodgeLabel']]) {
+    for (const [button, ticks, total, label] of [[nodes.pulseButton, state.pulseCooldownTicks, state.pulseCooldownTotalTicks, 'pulseLabel'], [nodes.dodgeButton, state.dodgeCooldownTicks, 180, 'dodgeLabel']]) {
+      // Simulation time owns the arc: pause, cooldown reductions and relic
+      // modifiers stay truthful without a separate wall-clock animation.
+      const remaining = Math.max(0, Math.min(1, ticks / total));
+      button.querySelector('.cooldown-progress').setAttribute('stroke-dashoffset', String(remaining * 100));
       const value = ticks > 0 ? `${(ticks / 60).toFixed(1)}s` : t(label);
       if (button.lastElementChild.textContent !== value) button.lastElementChild.textContent = value;
       button.classList.toggle('is-ready', ticks <= 0);
@@ -4800,6 +4809,7 @@
     nodes.chainMeter = make('div', 'chainMeter', 'chain-meter');
     layout.append(nodes.chainMeter);
     for (const [button, action] of [[nodes.pulseButton, activateRelicPulse], [nodes.dodgeButton, activateDodge]]) {
+      button.insertAdjacentHTML('afterbegin', '<svg class="cooldown-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="cooldown-track" cx="50" cy="50" r="46"/><circle class="cooldown-progress" cx="50" cy="50" r="46" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0"/></svg>');
       button.addEventListener('pointerdown', event => {
         if (event.button !== 0) return;
         event.preventDefault(); action();
@@ -5564,6 +5574,7 @@
             movingEnemies: state.enemies.filter(enemy => (enemy.gait?.weight || 0) > .1).length,
             moveVector: { ...moveVector },
             pulseCooldownTicks: state.pulseCooldownTicks,
+            pulseCooldownTotalTicks: state.pulseCooldownTotalTicks,
             dodgeTicks: state.dodgeTicks,
             dodgeCooldownTicks: state.dodgeCooldownTicks,
             combo: state.combo,

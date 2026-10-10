@@ -1,4 +1,4 @@
-import { createSiege, resolveSiegeBatch } from "./siege-core.js?v=20261010-siege";
+import { createSiege, resolveSiegeBatch, advanceSiegeTurn } from "./siege-core.js?v=20261011-lanes-v19";
 export const BOARD_WIDTH = 9;
 export const BOARD_HEIGHT = 9;
 export const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
@@ -41,7 +41,7 @@ const OBJECTIVE_KEYS = ["crate", "chain", "key", "gate", "stone", "seal"];
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 function cell(color = null) {
-  return { c: color, p: null, box: 0, chain: 0, key: 0, exit: 0, gate: 0, gateColor: 0, stone: 0, seal: 0 };
+  return { c: color, p: null, box: 0, chain: 0, key: 0, exit: 0, gate: 0, gateColor: 0, stone: 0, seal: 0, grass: 0 };
 }
 
 export function cloneBoard(board) {
@@ -56,7 +56,7 @@ function nextRandom(state) {
 function isMatchable(tile) {
   // A stored power awaits player activation or a hit from an active power.
   // Its underlying color must not restart it when gravity makes a match.
-  return tile.c !== null && !tile.p && !tile.box && !tile.stone && !tile.gate;
+  return tile.c !== null && !tile.p && !tile.box && !tile.stone && !tile.gate && !tile.grass;
 }
 
 export function matchGroups(board) {
@@ -153,7 +153,7 @@ export function createState(stageIndex = 0, unlocked = 1) {
   // Fill with the state-owned seeded generator, then remove only opening matches.
   state.board = Array.from({ length: CELL_COUNT }, () => cell(Math.floor(nextRandom(state) * level.colors)));
   clearOpeningMatches(state.board, level.colors);
-  const obstacles = level.obstacles;
+  const obstacles = state.siege ? {} : level.obstacles;
   (obstacles.crate || []).forEach((index) => { state.board[index].box = 1; });
   (obstacles.chain || []).forEach((index) => { state.board[index].chain = 1; });
   (obstacles.key || []).forEach((index) => { state.board[index].key = 1; });
@@ -189,7 +189,7 @@ export function isComplete(board) {
 
 export function canSwap(board, index) {
   const tile = board[index];
-  return Boolean(tile && !tile.box && !tile.chain && !tile.gate && !tile.stone);
+  return Boolean(tile && !tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.grass);
 }
 
 function adjacent(a, b) {
@@ -295,6 +295,7 @@ export function specialsFromMatches(board, matched, movedIndex = -1) {
 
 function targetScore(tile) {
   let score = 0;
+  if (tile.grass) score += 65;
   if (tile.stone) score += 70;
   if (tile.gate) score += tile.c === tile.gateColor ? 68 : -30;
   if (tile.seal) score += 62;
@@ -416,7 +417,7 @@ function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set(), 
     if (activated.has(index) || suppressed.has(index)) continue;
     activated.add(index);
     const power = board[index]?.p;
-    if (!power) continue;
+    if (!power || board[index].grass) continue;
     const before = new Set(direct);
     addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects);
     for (const hit of direct) {
@@ -441,6 +442,7 @@ function addAdjacentHitCells(direct) {
 }
 
 function damageDirect(tile, powerHit, matchingColors, forceGate) {
+  if (tile.grass) { tile.grass = 0; return { grass: true }; }
   const opened = { crate: Boolean(tile.box), chain: Boolean(tile.chain), seal: Boolean(tile.seal), gate: false, stone: false };
   tile.box = 0;
   tile.chain = 0;
@@ -457,6 +459,7 @@ function damageDirect(tile, powerHit, matchingColors, forceGate) {
 }
 
 function damageAdjacent(tile) {
+  if (tile.grass) { tile.grass = 0; return { grass: true }; }
   const opened = { crate: Boolean(tile.box), chain: Boolean(tile.chain) };
   tile.box = 0;
   tile.chain = 0;
@@ -474,7 +477,7 @@ function resolveOneBatch(state, direct, powerSet, specials = [], forceGate = fal
   const directHits = [...direct].sort((a, b) => a - b);
   const adjacentHits = [...addAdjacentHitCells(direct)].sort((a, b) => a - b);
   const matchingColors = new Set(directHits.map((index) => board[index].c).filter((color) => color !== null));
-  const stats = { crate: 0, chain: 0, key: 0, gate: 0, stone: 0, seal: 0, special: specials[0]?.power || null, specials: specials.map(special => special.power) };
+  const stats = { crate: 0, chain: 0, key: 0, gate: 0, stone: 0, seal: 0, grass: 0, special: specials[0]?.power || null, specials: specials.map(special => special.power) };
   const openedGates = new Set();
 
   directHits.forEach((index) => {
@@ -505,6 +508,7 @@ function resolveOneBatch(state, direct, powerSet, specials = [], forceGate = fal
 
   for (const index of directHits) {
     const tile = board[index];
+    if (before[index].grass) continue; // This hit removes only the cover.
     const special = specialByCell.get(index);
     if (special) {
       tile.p = special.power;
@@ -550,12 +554,12 @@ function dropAndRefill(state) {
   for (let col = 0; col < BOARD_WIDTH; col += 1) {
     let bottom = BOARD_HEIGHT - 1;
     while (bottom >= 0) {
-      if (board[bottom * BOARD_WIDTH + col].box || board[bottom * BOARD_WIDTH + col].gate || board[bottom * BOARD_WIDTH + col].stone) {
+      if (board[bottom * BOARD_WIDTH + col].box || board[bottom * BOARD_WIDTH + col].gate || board[bottom * BOARD_WIDTH + col].stone || board[bottom * BOARD_WIDTH + col].grass) {
         bottom -= 1;
         continue;
       }
       const segmentBottom = bottom;
-      while (bottom >= 0 && !board[bottom * BOARD_WIDTH + col].box && !board[bottom * BOARD_WIDTH + col].gate && !board[bottom * BOARD_WIDTH + col].stone) bottom -= 1;
+      while (bottom >= 0 && !board[bottom * BOARD_WIDTH + col].box && !board[bottom * BOARD_WIDTH + col].gate && !board[bottom * BOARD_WIDTH + col].stone && !board[bottom * BOARD_WIDTH + col].grass) bottom -= 1;
       const segmentTop = bottom + 1;
       const payloads = [];
       for (let row = segmentBottom; row >= segmentTop; row -= 1) {
@@ -637,7 +641,7 @@ function colorPowerCombo(state, prismIndex, otherIndex, direct, powerSet, suppre
     if (tile.c !== color) return;
     direct.add(index);
     powerSet.add(index);
-    if (otherPower) tile.p = otherPower;
+    if (otherPower && !tile.grass) tile.p = otherPower;
   });
   return { forceGate: false };
 }
@@ -752,7 +756,7 @@ function finishState(state) {
 export function reshuffle(state) {
   const level = LEVELS[state.stage];
   const movable = state.board.map((tile, index) => ({ tile, index }))
-    .filter(({ tile }) => !tile.box && !tile.chain && !tile.gate && !tile.stone);
+    .filter(({ tile }) => !tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.grass);
   const original = movable.map(({ tile }) => tile.c);
   for (let attempt = 0; attempt < 64; attempt += 1) {
     const colors = [...original];
@@ -848,9 +852,11 @@ function resolveDeferredPower(state, deferredPower) {
 }
 
 function actionResult(state, accepted, reason, batches = [], reshufflesBefore = state.reshuffles) {
+  const enemyTurn = accepted && state.moves > 0
+    ? advanceSiegeTurn(state.siege, state.board, batches.some(batch => batch.siege?.nextWave)) : null;
   if (accepted) finishState(state);
   const reshuffled = state.reshuffles > reshufflesBefore;
-  return { accepted, reason, status: state.status, batches, objectives: objectiveCounts(state.board), moves: state.moves, reshuffles: state.reshuffles, reshuffled };
+  return { accepted, reason, status: state.status, batches, enemyTurn, objectives: objectiveCounts(state.board), moves: state.moves, reshuffles: state.reshuffles, reshuffled };
 }
 
 export function activatePower(state, index) {

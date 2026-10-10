@@ -1,12 +1,12 @@
-// Authored checkpoint encounters. Positions are normalized within the battlefield.
-const target = (kind, hp, x, y = .55, color = null) => ({ kind, hp, maxHp: hp, x, y, color });
+// Integer footprints are shared with rendering: shots never change columns.
+const target = (kind, hp, lane, row = 1, span = 2) => ({ kind, hp, maxHp: hp, lane, row, span, charging: false });
 export const SIEGE_LEVELS = {
-  4: [[target("tower", 14, .22), target("tower", 18, .5, .35), target("tower", 14, .78)]],
-  9: [[target("tower", 18, .28), target("tower", 18, .72)], [target("armor", 12, .3), target("tower", 22, .7)]],
-  14: [[target("tower", 22, .25), target("keep", 28, .7, .42)], [target("armor", 15, .24), target("keep", 32, .7)]],
-  19: [[target("tower", 28, .25, .5, 0), target("tower", 28, .75, .5, 2)], [target("armor", 18, .24), target("keep", 42, .7, .4, 3)]],
-  24: [[target("sentinel", 26, .25, .65), target("keep", 34, .7, .35)], [target("sentinel", 26, .2, .65), target("armor", 18, .52, .55), target("keep", 42, .8, .28)]],
-  29: [[target("tower", 26, .25, .5, 0), target("tower", 26, .75, .5, 2)], [target("sentinel", 30, .23, .65), target("armor", 21, .53), target("keep", 38, .8, .3)], [target("sentinel", 32, .22, .65), target("armor", 24, .53), target("keep", 55, .8, .3, 4)]],
+  4: [[target("castle", 12, 0), target("castle", 16, 3, 0, 3), target("castle", 12, 7)]],
+  9: [[target("bramble", 12, 1, 1), target("castle", 18, 5, 0, 3)]],
+  14: [[target("ram", 15, 1, 0), target("castle", 18, 5)], [target("bramble", 15, 5), target("castle", 20, 0, 0, 3)]],
+  19: [[target("bramble", 15, 0), target("ram", 15, 6, 0)], [target("castle", 22, 0, 0, 3), target("castle", 22, 6, 0, 3)]],
+  24: [[target("castle", 22, 0, 0, 3), target("bramble", 16, 1, 2), target("ram", 16, 6)], [target("bramble", 18, 0), target("castle", 26, 4, 0, 3)]],
+  29: [[target("bramble", 16, 1), target("ram", 16, 6)], [target("castle", 24, 0, 0, 3), target("bramble", 18, 1, 2), target("ram", 18, 6)], [target("castle", 30, 3, 0, 3), target("bramble", 18, 0), target("ram", 18, 7)]],
 };
 
 function waveTargets(stage, wave) {
@@ -30,44 +30,21 @@ export function resolveSiegeBatch(siege, batch) {
   const before = siegeSnapshot(siege);
   const powers = new Set(batch.powerHits);
   const combo = batch.visualEffects.some(effect => effect.type === "combo-burst");
-  const sources = batch.directHits.filter(index => batch.before[index].c !== null && batch.cleared[index].c === null)
-    .map(index => ({ index, color: batch.before[index].c, power: powers.has(index), damage: powers.has(index) ? (combo ? 5 : 3) : 1 }));
-  for (const index of batch.deliveredKeys) sources.push({ index, color: 2, power: true, damage: 8, delivery: true });
-  // At most one packet per target/power tier. Each carries its real total,
-  // even when a board-wide combination clears dozens of gems.
-  const packets = new Map();
-  for (const source of sources) {
-    let alive = siege.targets.filter(item => item.hp > 0);
-    if (!alive.length) break;
-    const guards = alive.filter(item => item.kind === "sentinel");
-    if (guards.length) alive = alive.filter(item => item.kind !== "keep");
-    const eligible = alive.filter(item => source.power || item.kind !== "armor");
-    const candidates = eligible.length ? eligible : alive;
-    candidates.sort((a, b) => {
-      if (source.power && (a.kind === "armor") !== (b.kind === "armor")) return a.kind === "armor" ? -1 : 1;
-      return Math.abs(a.x - (source.index % 9 + .5) / 9) - Math.abs(b.x - (source.index % 9 + .5) / 9);
-    });
-    const victim = candidates[0];
-    const blocked = victim.kind === "armor" && !source.power;
-    const damage = blocked ? 0 : Math.min(victim.hp, source.damage * (victim.color === source.color ? 2 : 1));
-    const key = `${victim.id}:${source.power}:${Boolean(source.delivery)}`;
-    const packet = packets.get(key) || { index: source.index, targetId: victim.id, color: source.color,
-      power: source.power, delivery: Boolean(source.delivery), combo, blocked, damage: 0, hpBefore: victim.hp, hpAfter: victim.hp };
-    victim.hp -= damage;
-    packet.damage += damage;
-    packet.hpAfter = victim.hp;
-    packets.set(key, packet);
-    if (victim.hp === 0) siege.defeated += 1;
+  const attacks = [];
+  for (const index of batch.directHits) {
+    if (batch.before[index].c === null || batch.cleared[index].c !== null) continue;
+    const lane = index % 9, power = powers.has(index);
+    const victim = siege.targets.filter(item => item.hp > 0 && lane >= item.lane && lane < item.lane + item.span)
+      .sort((a, b) => b.row - a.row)[0];
+    const hpBefore = victim?.hp ?? 0;
+    const damage = victim ? Math.min(victim.hp, power ? (combo ? 5 : 3) : 1) : 0;
+    if (victim) {
+      victim.hp -= damage;
+      if (!victim.hp) siege.defeated += 1;
+    }
+    attacks.push({ index, lane, color: batch.before[index].c, power, combo, targetId: victim?.id ?? null,
+      miss: !victim, damage, hpBefore, hpAfter: victim?.hp ?? 0 });
   }
-  // Packet aggregation can interleave targets/colors. Record monotonic displayed
-  // health in playback order rather than replaying intermediate core HP values.
-  const shownHp = new Map(before.targets.map(item => [item.id, item.hp]));
-  const attacks = [...packets.values()].map(packet => {
-    packet.hpBefore = shownHp.get(packet.targetId);
-    packet.hpAfter = Math.max(0, packet.hpBefore - packet.damage);
-    shownHp.set(packet.targetId, packet.hpAfter);
-    return packet;
-  });
   const impacted = siegeSnapshot(siege);
   let nextWave = false;
   if (siege.targets.every(item => item.hp === 0)) {
@@ -78,4 +55,36 @@ export function resolveSiegeBatch(siege, batch) {
     } else siege.complete = true;
   }
   return { before, attacks, impacted, after: siegeSnapshot(siege), nextWave };
+}
+
+// One enemy turn per accepted action, after all match-first/power cascades.
+export function advanceSiegeTurn(siege, board, freshWave = false) {
+  if (!siege || siege.complete || freshWave) return null;
+  const before = siegeSnapshot(siege), boardBefore = board.map(tile => ({ ...tile }));
+  const movements = [], infestations = [];
+  for (const enemy of siege.targets) {
+    if (!enemy.hp || enemy.kind === "castle") continue;
+    const fromRow = enemy.row;
+    if (enemy.kind === "ram" && !enemy.charging) {
+      enemy.charging = true;
+      movements.push({ id: enemy.id, fromRow, toRow: fromRow, charging: true });
+      continue;
+    }
+    enemy.charging = false;
+    const toRow = Math.min(4, fromRow + (enemy.kind === "ram" ? 2 : 1));
+    movements.push({ id: enemy.id, fromRow, toRow, charging: false });
+    enemy.row = toRow;
+    if (toRow === 4) {
+      // Preserve a playable bottom area. Never refill a partly-cleared grass row.
+      const row = Array.from({ length: 6 }, (_, i) => i).find(r => board.slice(r * 9, r * 9 + 9).every(tile => !tile.grass));
+      if (row !== undefined) {
+        const cells = Array.from({ length: 9 }, (_, col) => row * 9 + col);
+        cells.forEach(index => { board[index].grass = 1; });
+        infestations.push({ id: enemy.id, row, cells });
+      }
+      enemy.row = 2;
+    }
+  }
+  return movements.length ? { before, after: siegeSnapshot(siege), boardBefore,
+    boardAfter: board.map(tile => ({ ...tile })), movements, infestations } : null;
 }

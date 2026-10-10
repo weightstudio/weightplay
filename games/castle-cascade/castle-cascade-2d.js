@@ -1,6 +1,6 @@
-import { BOARD_HEIGHT, BOARD_WIDTH } from "./cascade-core.js";
-import { siegeSnapshot } from "./siege-core.js?v=20261010-siege";
-import { siegeLayout, drawSiegeField, drawSiegeVolley, prepareVolley, applySiegeContacts } from "./siege-renderer.js?v=20261010-siege";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "./cascade-core.js?v=20261011-lanes-v19";
+import { siegeSnapshot } from "./siege-core.js?v=20261011-lanes-v19";
+import { siegeLayout, drawSiegeField, drawSiegeVolley, prepareVolley, applySiegeContacts, applyEnemyContact, drawGrassSpread } from "./siege-renderer.js?v=20261011-lanes-v19";
 
 const COLS = 5;
 const ROWS = 4;
@@ -120,7 +120,15 @@ export class CastleCascade2D {
     this.handleMotionPreference = (event) => {
       if (this.pausedAt !== null) return;
       this.reducedMotion = event.matches;
-      if (event.matches) { this.cancelMotion(); this.highlightUntil = 0; }
+      if (event.matches) {
+        const motion = this.motion;
+        if (motion) {
+          this.board = motion.finalBoard || this.board;
+          applySiegeContacts(this, motion, Infinity);
+          applyEnemyContact(this, motion, Infinity);
+        }
+        this.cancelMotion(); this.highlightUntil = 0;
+      }
       if (event.matches) this.releasePose = null;
       this.invalidate();
     };
@@ -338,9 +346,9 @@ export class CastleCascade2D {
   setSiege(siege, labels = this.siegeLabels) {
     this.siege = siegeSnapshot(siege);
     this.siegeLabels = labels;
-    if (siege && !this.assets.tower) {
-      for (const kind of ["tower", "keep", "sentinel"]) {
-        this.assets[kind] = this.loadImage(new URL(`./assets/siege-${kind}.svg`, import.meta.url).href);
+    if (siege && !this.assets.castle) {
+      for (const kind of ["castle", "bramble", "ram", "grass"]) {
+        this.assets[kind] = this.loadImage(new URL(`./assets/siege-${kind}-v2.png`, import.meta.url).href);
       }
     }
     this.invalidate();
@@ -348,6 +356,13 @@ export class CastleCascade2D {
 
   animateSiegeWave() {
     return this.runMotion({ kind: "siege-wave", duration: 340, finalBoard: this.board });
+  }
+
+  animateEnemyTurn(enemyTurn, onEnemyContact) {
+    this.setSiege(enemyTurn.before);
+    this.board = enemyTurn.boardBefore;
+    return this.runMotion({ kind: "enemy-turn", enemyTurn, onEnemyContact,
+      finalBoard: enemyTurn.boardAfter, duration: enemyTurn.infestations.length ? 940 : 620 });
   }
 
   invalidate() {
@@ -380,6 +395,7 @@ export class CastleCascade2D {
       }
     }
     applySiegeContacts(this, this.motion, this.motion ? time - this.motion.started : 0);
+    applyEnemyContact(this, this.motion, this.motion ? time - this.motion.started : 0);
     this.draw(time);
     if (this.motion && time >= this.motion.started + this.motion.duration) {
       const finished = this.motion;
@@ -398,6 +414,7 @@ export class CastleCascade2D {
 
   draw(time = performance.now()) {
     if (this.pausedAt !== null) time = this.pausedAt;
+    this.drawTime = time;
     const ctx = this.context;
     const w = this.width;
     const h = this.height;
@@ -437,6 +454,7 @@ export class CastleCascade2D {
     }
     ctx.restore();
     if (layout) drawSiegeVolley(this, bounds, layout.field, motion, time);
+    if (layout) drawGrassSpread(this, bounds, layout.field, motion, time);
     if (!motion) this.drawFocus(bounds);
     this.canvas.dataset.renderer = "canvas-2d";
     this.canvas.dataset.imageAssetCount = String(Object.values(this.assets).filter((img) => img?.complete && img.naturalWidth).length);
@@ -474,7 +492,7 @@ export class CastleCascade2D {
       const y = bounds.y + Math.floor(index / BOARD_WIDTH) * cell;
       const cx = x + cell / 2;
       const cy = y + cell / 2;
-      const movable = !tile.box && !tile.stone && !tile.gate && !tile.chain;
+      const movable = !tile.box && !tile.stone && !tile.gate && !tile.chain && !tile.grass;
       const pressed = index === this.pressedIndex && movable;
       const released = movable && this.releasePose?.index === index ? this.releasePose : null;
       const p = released ? clamp((time - released.started) / 300, 0, 1) : 0;
@@ -496,6 +514,19 @@ export class CastleCascade2D {
     const ctx = this.context;
     ctx.save();
     ctx.globalAlpha *= alpha;
+    if (tile.grass) {
+      const image = this.assets.grass;
+      let growth = 1;
+      if (this.motion?.enemyTurn?.infestations.some(spread => spread.cells.includes(index))) {
+        const p = clamp(((this.drawTime - this.motion.started) / this.motion.duration - .65 - index % 9 * .008) / .22, 0, 1);
+        growth = p * p * (3 - 2 * p) + Math.sin(p * Math.PI) * .12;
+        if (p < 1 && tile.c !== null) this.drawGem(tile.c, cx, cy, cell * scale);
+      }
+      const size = cell * scale * growth;
+      if (image?.complete && image.naturalWidth && size > 0) ctx.drawImage(image, cx - size / 2, cy - size / 2, size, size);
+      ctx.restore();
+      return;
+    }
     if (tile.exit) this.drawSprite(SPRITE.exit, cx, cy, cell * scale, 0.78, 0.68);
     if (!tile.box && !tile.stone && !tile.gate && !tile.p && tile.c !== null && tile.c >= 0 && tile.c < GEM_COLORS.length)
       this.drawGem(tile.c, cx, cy, cell * scale);
@@ -528,6 +559,24 @@ export class CastleCascade2D {
     if (tile.seal) this.drawSprite(SPRITE.seal, cx, cy, cell * scale, 0.82);
     if (tile.key) this.drawSprite(SPRITE.key, cx, cy, cell * scale, 0.70);
     if (tile.p) this.drawPower(tile.p, cx, cy, cell * scale);
+    ctx.restore();
+  }
+
+  drawGrassFragments(cx, cy, cell, progress, seed) {
+    const image = this.assets.grass, ctx = this.context;
+    if (!image?.complete || !image.naturalWidth || progress >= 1) return;
+    ctx.save();
+    ctx.globalAlpha *= 1 - progress;
+    for (let i = 0; i < 6; i += 1) {
+      const angle = i * 2.399 + seed * .3;
+      const distance = cell * progress * (.3 + i * .07);
+      ctx.save();
+      ctx.translate(cx + Math.cos(angle) * distance, cy + Math.sin(angle) * distance - cell * .3 * Math.sin(progress * Math.PI));
+      ctx.rotate(angle * progress);
+      ctx.drawImage(image, (i % 3) * image.naturalWidth / 3, Math.floor(i / 3) * image.naturalHeight / 2,
+        image.naturalWidth / 3, image.naturalHeight / 2, -cell / 6, -cell / 4, cell / 3, cell / 2);
+      ctx.restore();
+    }
     ctx.restore();
   }
 
@@ -613,6 +662,7 @@ export class CastleCascade2D {
     if (this.reducedMotion) {
       this.board = motion.finalBoard || this.board;
       applySiegeContacts(this, motion, Infinity);
+      applyEnemyContact(this, motion, Infinity);
       motion.onImpact?.();
       for (const contact of motion.objectiveContacts || []) motion.onObjectiveImpact?.(contact.key);
       this.invalidate();
@@ -868,13 +918,14 @@ export class CastleCascade2D {
         continue;
       }
       // Blocked/key pieces persist. Only actual removed layers or payload break.
-      const survives = after && (after.key || after.stone || after.gate);
+      const survives = after && (after.key || after.stone || after.gate || tile.grass);
       if (survives) this.drawTile(after, index, cx + Math.sin(hit * 26) * (1-hit) * cell * .035, cy, cell);
       else if (hit < .22) this.drawTile(tile, index, cx, cy, cell, 1 - hit / .22, 1.12 + hit * .6);
       if (hit > 0 && hit < 1) {
         const material = tile.box ? SPRITE.crate : tile.stone ? SPRITE.stone : tile.chain ? SPRITE.chain : tile.gate ? SPRITE.gate : tile.p ? (tile.p.startsWith("arrow") ? SPRITE.arrow : SPRITE[tile.p]) : tile.c;
         // A remaining gate/stone gets recoil only, not a false destruction.
         const removed = !survives || tile.stone > (after.stone || 0) || tile.chain && !after.chain;
+        if (tile.grass && !after.grass) this.drawGrassFragments(cx, cy, cell, hit, index);
         if (removed && Number.isInteger(material)) this.drawFragments(material, cx, cy, cell, hit, batch.directHits.length > 24 ? 3 : tile.box ? 6 : 4, index);
         this.drawBlockImpact(cx, cy, cell, hit, GEM_COLORS[tile.c] || "#ffd074", .62);
       }
@@ -883,8 +934,8 @@ export class CastleCascade2D {
       const tile = batch.before[index], after = batch.cleared[index];
       if (!tile || !after) continue;
       const { x: cx, y: cy } = center(index);
-      const boxRemoved = tile.box && !after.box, chainRemoved = tile.chain && !after.chain;
-      if (!boxRemoved && !chainRemoved) { this.drawTile(tile, index, cx, cy, cell); continue; }
+      const boxRemoved = tile.box && !after.box, chainRemoved = tile.chain && !after.chain, grassRemoved = tile.grass && !after.grass;
+      if (!boxRemoved && !chainRemoved && !grassRemoved) { this.drawTile(tile, index, cx, cy, cell); continue; }
       const neighbors = batch.directHits.filter(hit => Math.abs(Math.floor(hit / BOARD_WIDTH) - Math.floor(index / BOARD_WIDTH)) + Math.abs(hit % BOARD_WIDTH - index % BOARD_WIDTH) === 1);
       const start = neighbors.length ? Math.min(...neighbors.map(hit => this.hitStart(batch, hit))) : .22;
       const hit = clamp((progress - start) / .30, 0, 1);
@@ -897,6 +948,7 @@ export class CastleCascade2D {
       }
       if (boxRemoved) this.drawFragments(SPRITE.crate, cx, cy, cell, hit, 8, index);
       if (chainRemoved) this.drawFragments(SPRITE.chain, cx, cy, cell, hit, 6, index);
+      if (grassRemoved) this.drawGrassFragments(cx, cy, cell, hit, index);
       this.drawSprite(SPRITE.spark, cx, cy, cell, .7, Math.max(0, 1-hit*5));
     }
     this.drawSpecialEffects(bounds, batch.visualEffects || [], progress, cell);

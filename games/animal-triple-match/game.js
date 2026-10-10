@@ -28,7 +28,7 @@
   const K = [
     "loading","title","language","posterAlt","eyebrow","pitch","start","guideLabel","guideKicker","guideTitle","guideIntro",
     "howTitle","how1","how2","how3","chaptersTitle","chaptersText","strategyTitle","strategyText","trustTitle","trustText",
-    "back","chooseStage","chapter","stageRailLabel","stageHint","left","stars","sound","help","objective","boardLabel","tray","trayLabel",
+    "back","chooseStage","chapterLabel","stageRailLabel","stageHint","left","stars","sound","help","objective","boardLabel","tray","trayLabel",
     "undo","magnet","shuffle","tutorialTitle","tutorial1","tutorial2","tutorial3","continue","leaveTitle","leaveText","returnStages",
     "nextPlan","retry","next","stages","stage","locked","cleared","best","pieces","openShelf","vineGallery","crystalRoom","mysteryLoft",
     "shiftingHall","grandFinale","tangled","cracked","revealed","matched","trayDanger","noUndo","noPair","shuffled","winKicker","winTitle",
@@ -118,6 +118,49 @@
     for (const [key, value] of Object.entries(copy)) L[code][K.indexOf(key)] = value;
   }
 
+  const TEXT_COPY_OVERRIDES = {
+    en: { guideIntro: "Mimi's greenhouse shelves hold enchanted keepsakes. Only accessible, uncovered treasures can enter the tray. A trio clears automatically; the tray is full when all available slots are occupied without a trio. Stages 1–23 have seven slots; stages 24–30 have six.", how3: "Clear the complete pile before all available tray slots are occupied.", tutorial2: "Three matching treasures disappear from the tray; its capacity is seven slots in stages 1–23 and six in stages 24–30.", tutorial3: "Each tap removes one vine, crystal shell, or mystery wrapping layer. Collect the treasure only after every blocker is cleared and it is accessible.", tangled: "One vine layer cleared; clear any remaining blockers before collecting.", cracked: "One crystal layer cleared; clear any remaining blockers before collecting.", revealed: "One mystery wrapping layer cleared; clear any remaining blockers before collecting." },
+    "zh-Hant": { guideIntro: "咪咪的溫室堆滿魔法收藏。只有可觸及且未被遮住的寶物能放入托盤；三個同款會自動消除。可用格位全部占滿且仍未湊成三個同款時，挑戰就會結束。第 1–23 關有七格，第 24–30 關有六格。", how3: "在所有可用托盤格位占滿前清空整堆物件。", tutorial2: "三個同款寶物會從托盤自動消除；第 1–23 關有七格，第 24–30 關有六格。", tutorial3: "每次點擊只會移除一層藤蔓、晶殼或神秘包裝。清除所有障礙且寶物可觸及後，才能收集。", tangled: "已清除一層藤蔓；若還有其他障礙，需先清除才能收集。", cracked: "已清除一層晶殼；若還有其他障礙，需先清除才能收集。", revealed: "已清除一層神秘包裝；若還有其他障礙，需先清除才能收集。" },
+    "zh-Hans": { guideIntro: "咪咪的温室堆满了魔法收藏。只有可触及且未被遮挡的宝物才能放入托盘；三个同款会自动消除。所有可用格位都被占满且仍未凑成三个同款时，挑战就会结束。第 1–23 关有七格，第 24–30 关有六格。", how3: "在所有可用托盘格位占满前清空整堆物件。", tutorial2: "三个同款宝物会从托盘自动消除；第 1–23 关有七格，第 24–30 关有六格。", tutorial3: "每次点击只会移除一层藤蔓、晶壳或神秘包装。清除所有障碍且宝物可触及时，才能收集。", tangled: "已清除一层藤蔓；若还有其他障碍，需先清除才能收集。", cracked: "已清除一层晶壳；若还有其他障碍，需先清除才能收集。", revealed: "已清除一层神秘包装；若还有其他障碍，需先清除才能收集。" },
+    es: { guideIntro: "Las estanterías del invernadero de Mimi guardan tesoros encantados. Solo los tesoros accesibles y sin cubrir pueden entrar en la bandeja. Un trío se elimina automáticamente; la partida termina si se ocupan todas las casillas disponibles sin formar un trío. Las fases 1–23 tienen siete casillas y las 24–30 tienen seis." },
+    "pt-BR": { guideIntro: "As prateleiras da estufa de Mimi guardam tesouros encantados. Só tesouros acessíveis e descobertos podem ir para a bandeja. Um trio é removido automaticamente; a partida termina se todas as vagas disponíveis forem ocupadas sem formar um trio. As fases 1–23 têm sete vagas e as fases 24–30 têm seis." },
+    ru: { guideIntro: "На полках теплицы Мими хранятся волшебные сокровища. В лоток можно поместить только доступный и не закрытый предмет. Три одинаковых сокровища исчезают автоматически; попытка заканчивается, если все ячейки заняты, а тройка не собрана. На этапах 1–23 семь ячеек, на этапах 24–30 — шесть." },
+    hi: { guideIntro: "मिमी के ग्रीनहाउस की अलमारियों पर जादुई ख़ज़ाने हैं। केवल सुलभ और खुले ख़ज़ाने ही ट्रे में रखे जा सकते हैं। तीन समान वस्तुएँ अपने-आप हट जाती हैं; सभी उपलब्ध खाने भर जाएँ और तिकड़ी न बने, तो प्रयास समाप्त होता है। चरण 1–23 में सात और 24–30 में छह खाने हैं।" },
+    de: { objective: "Bilde Dreiergruppen, bis alle Schätze entfernt sind, ohne die Ablage zu füllen." }
+  };
+  for (const [code, values] of Object.entries(TEXT_COPY_OVERRIDES)) for (const [key, value] of Object.entries(values)) L[code][K.indexOf(key)] = value;
+  const STAGE_CAPACITY_COPY = {
+    en: { how3: "Clear the pile before all available slots are occupied: seven in stages 1–23, six in stages 24–30.", tutorial2: "Three matching treasures clear automatically. The tray has seven slots in stages 1–23 and six in stages 24–30." },
+    "zh-Hant": { how3: "在所有可用格位占滿前清空整堆物件：第 1–23 關有七格，第 24–30 關有六格。", tutorial2: "三個同款寶物會自動消除；第 1–23 關有七格，第 24–30 關有六格。" },
+    "zh-Hans": { how3: "在所有可用格位占满前清空整堆物件：第 1–23 关有七格，第 24–30 关有六格。", tutorial2: "三个同款宝物会自动消除；第 1–23 关有七格，第 24–30 关有六格。" },
+    ja: { guideIntro: "ミミの温室には魔法の宝物が並びます。選択でき、上に隠れていない宝物だけをトレイに移せます。同じ宝物が3つ揃うと自動で消えます。トリオを作れないまま全枠が埋まると失敗です。ステージ1～23は7枠、24～30は6枠です。", how3: "全枠が埋まる前に山を片付けましょう。ステージ1～23は7枠、24～30は6枠です。", tutorial2: "同じ宝物が3つ揃うと消えます。トレイはステージ1～23で7枠、24～30で6枠です。" },
+    ko: { guideIntro: "미미의 온실에는 마법 보물이 놓여 있습니다. 선택할 수 있고 가려지지 않은 보물만 트레이에 담을 수 있습니다. 같은 보물 세 개는 자동으로 사라집니다. 세트를 만들지 못한 채 모든 칸이 차면 도전이 끝납니다. 1~23단계는 7칸, 24~30단계는 6칸입니다.", how3: "모든 칸이 차기 전에 더미를 비우세요. 1~23단계는 7칸, 24~30단계는 6칸입니다.", tutorial2: "같은 보물 세 개는 자동으로 사라집니다. 트레이는 1~23단계에서 7칸, 24~30단계에서 6칸입니다." },
+    es: { how3: "Vacía la pila antes de ocupar todas las casillas: siete en las fases 1–23 y seis en las fases 24–30.", tutorial2: "Tres iguales se eliminan automáticamente. La bandeja tiene siete casillas en las fases 1–23 y seis en las 24–30." },
+    "pt-BR": { how3: "Esvazie a pilha antes de ocupar todas as vagas: sete nas fases 1–23 e seis nas fases 24–30.", tutorial2: "Três iguais são removidos automaticamente. A bandeja tem sete vagas nas fases 1–23 e seis nas 24–30." },
+    fr: { guideIntro: "La serre de Mimi abrite des trésors enchantés. Seuls les trésors accessibles et dégagés rejoignent le plateau. Trois trésors identiques disparaissent automatiquement. La tentative se termine si toutes les cases sont occupées sans trio. Les niveaux 1 à 23 ont sept cases et les niveaux 24 à 30 en ont six.", how3: "Videz la pile avant d’occuper toutes les cases : sept aux niveaux 1 à 23, six aux niveaux 24 à 30.", tutorial2: "Trois trésors identiques disparaissent. Le plateau a sept cases aux niveaux 1 à 23 et six aux niveaux 24 à 30." },
+    de: { guideIntro: "In Mimis Gewächshaus liegen verzauberte Schätze. Nur zugängliche, nicht verdeckte Schätze kommen in die Ablage. Drei gleiche verschwinden automatisch. Der Versuch endet, wenn alle Plätze belegt sind, ohne dass ein Trio entsteht. Stufen 1–23 haben sieben Plätze, Stufen 24–30 sechs.", how3: "Räume den Stapel, bevor alle Plätze belegt sind: sieben in Stufen 1–23, sechs in Stufen 24–30.", tutorial2: "Drei gleiche Schätze verschwinden automatisch. Die Ablage hat sieben Plätze in Stufen 1–23 und sechs in Stufen 24–30." },
+    it: { guideIntro: "La serra di Mimi custodisce tesori incantati. Solo i tesori accessibili e scoperti entrano nel vassoio. Tre tesori uguali scompaiono automaticamente. Il tentativo termina se tutti gli spazi sono occupati senza formare un trio. I livelli 1–23 hanno sette spazi, i livelli 24–30 ne hanno sei.", how3: "Svuota la pila prima di occupare tutti gli spazi: sette nei livelli 1–23, sei nei livelli 24–30.", tutorial2: "Tre tesori uguali scompaiono automaticamente. Il vassoio ha sette spazi nei livelli 1–23 e sei nei livelli 24–30." },
+    ru: { how3: "Очистите стопку до заполнения всех ячеек: семь на этапах 1–23 и шесть на этапах 24–30.", tutorial2: "Три одинаковых сокровища исчезают. В лотке семь ячеек на этапах 1–23 и шесть на этапах 24–30." },
+    hi: { how3: "सभी खाने भरने से पहले ढेर साफ़ करें: चरण 1–23 में सात और 24–30 में छह खाने।", tutorial2: "तीन समान ख़ज़ाने अपने-आप हटते हैं। चरण 1–23 में ट्रे में सात और 24–30 में छह खाने हैं।" },
+    ar: { guideIntro: "تضم دفيئة ميمي كنوزًا مسحورة. لا يدخل الصينية إلا الكنز المتاح وغير المحجوب. تختفي ثلاثة كنوز متطابقة تلقائيًا. تنتهي المحاولة إذا امتلأت الخانات من دون تكوين ثلاثية. في المراحل 1–23 سبع خانات، وفي 24–30 ست خانات.", how3: "أفرغ الكومة قبل امتلاء الخانات: سبع في المراحل 1–23 وست في المراحل 24–30.", tutorial2: "تختفي ثلاثة كنوز متطابقة تلقائيًا. للصينية سبع خانات في المراحل 1–23 وست في 24–30." }
+  };
+  for (const [code, copy] of Object.entries(STAGE_CAPACITY_COPY)) for (const [key, value] of Object.entries(copy)) L[code][K.indexOf(key)] = value;
+  const STAGE_CAPACITY_PITCH = {
+    en: "Match three uncovered treasures; the tray has seven slots in stages 1–23 and six in stages 24–30.",
+    "zh-Hant": "點擊未被遮住的寶物湊成三個同款；第 1–23 關有七格，第 24–30 關有六格。",
+    "zh-Hans": "点击未被遮住的宝物凑成三个同款；第 1–23 关有七格，第 24–30 关有六格。",
+    ja: "覆われていない宝物を3つ揃えましょう。トレイはステージ1～23で7枠、24～30で6枠です。",
+    ko: "가려지지 않은 보물 세 개를 맞추세요. 트레이는 1~23단계에서 7칸, 24~30단계에서 6칸입니다.",
+    es: "Forma tríos con tesoros libres. La bandeja tiene siete casillas en las fases 1–23 y seis en las fases 24–30.",
+    "pt-BR": "Forme trios com tesouros livres. A bandeja tem sete vagas nas fases 1–23 e seis nas fases 24–30.",
+    fr: "Formez des trios avec les trésors accessibles. Le plateau a sept cases aux niveaux 1 à 23 et six aux niveaux 24 à 30.",
+    de: "Bilde Dreiergruppen aus zugänglichen Schätzen. Die Ablage hat sieben Plätze in Stufen 1–23 und sechs in Stufen 24–30.",
+    it: "Forma trii con i tesori accessibili. Il vassoio ha sette spazi nei livelli 1–23 e sei nei livelli 24–30.",
+    ru: "Собирайте тройки из доступных сокровищ. В лотке семь ячеек на этапах 1–23 и шесть на этапах 24–30.",
+    hi: "सुलभ ख़ज़ानों की तिकड़ी बनाएँ। चरण 1–23 में ट्रे में सात और 24–30 में छह खाने हैं।",
+    ar: "كوّن ثلاثيات من الكنوز المتاحة. للصينية سبع خانات في المراحل 1–23 وست في المراحل 24–30."
+  };
+  for (const [code, value] of Object.entries(STAGE_CAPACITY_PITCH)) L[code][K.indexOf("pitch")] = value;
   const firstPlanCopy = {
     en: { firstPlanTitle: "A safe first plan", firstPlanText: "Begin with an exposed pair or trio, then keep one tray slot open. You choose the order—nothing is selected for you.", firstPlanClose: "Got it" },
     "zh-Hant": { firstPlanTitle: "第一組配對小計畫", firstPlanText: "先從已露出的成對或三連物件開始，再保留一格托盤空間。順序由你決定，系統不會代你選擇。", firstPlanClose: "知道了" },
@@ -141,14 +184,14 @@
     "pt-BR": {
       kicker: "Guia original do WeightPlay",
       guideTitle: "Jogo Triplo Animal — Guia do jogo",
-      guideIntro: "Mova tesouros descobertos de uma pilha em camadas para uma bandeja de sete vagas e forme trios antes que objetos isolados ocupem todos os espaços.",
+      guideIntro: "Mova tesouros descobertos para a bandeja e forme trios. Nas fases 1–23, ela tem sete vagas; nas fases 24–30, tem seis.",
       facts: ["Princípio de jogo", "Puzzle de trios em camadas", "Gênero", "Quebra-cabeça", "Tema", "Animais", "Dificuldade", "Fácil no início, exigente depois", "Tempo estimado", "2–8 minutos por fase", "Habilidades", "Lógica", "Planejamento", "Resolução de problemas"],
       storyTitle: "Mundo e missão",
       story: ["Trinta pilhas de tesouros na estufa escondem objetos mágicos sob camadas sobrepostas. Um tesouro só pode ser movido quando nenhum objeto ativo cobre sua área de seleção.", "A bandeja é espaço de trabalho e medidor de perigo: cada jogada revela mais da pilha, mas pode consumir o espaço necessário para um trio posterior."],
       systemsTitle: "Como os sistemas funcionam",
-      systems: ["Toque um tesouro descoberto para colocá-lo na próxima vaga da bandeja.", "Três tesouros iguais desaparecem automaticamente; os restantes se aproximam e liberam espaço.", "Tesouros cobertos continuam visíveis, mas só podem ser escolhidos depois que os objetos acima forem removidos.", "Os capítulos seguintes adicionam cipós, cascas de cristal, embalagens misteriosas, prateleiras móveis, bandejas menores e pilhas finais combinadas."],
+      systems: ["Toque um tesouro descoberto para colocá-lo na próxima vaga da bandeja.", "Três tesouros iguais desaparecem automaticamente; os restantes se aproximam e liberam espaço.", "Tesouros cobertos continuam visíveis, mas só podem ser escolhidos depois que os objetos acima forem removidos.", "Os capítulos seguintes adicionam cipós, cascas de cristal, embalagens misteriosas, prateleiras móveis, bandejas que passam de sete para seis vagas e pilhas finais combinadas."],
       howTitle: "Como jogar",
-      how: ["Escolha uma fase desbloqueada.", "Observe a camada superior e procure um par ou trio acessível.", "Mova os tesouros para a bandeja, mantendo pelo menos uma vaga de recuperação quando possível.", "Esvazie toda a pilha antes que as vagas disponíveis fiquem ocupadas por tesouros sem trio."],
+      how: ["Escolha uma fase desbloqueada.", "Observe a camada superior e procure um par ou trio acessível.", "Mova os tesouros para a bandeja, mantendo pelo menos uma vaga de recuperação quando possível.", "Esvazie a pilha antes que todas as vagas sejam ocupadas: são sete nas fases 1–23 e seis nas fases 24–30."],
       strategyTitle: "Dicas de estratégia",
       strategy: ["Prefira um tesouro cuja remoção revele vários objetos cobertos.", "Acompanhe os pares já na bandeja antes de adicionar um novo tipo isolado.", "Adie tesouros misteriosos quando um trio conhecido já estiver acessível.", "Use Encontrar par para localizar uma jogada válida e depois confirme se a bandeja comporta essa escolha."],
       campaignTitle: "Campanha e crescimento de dificuldade",
@@ -243,14 +286,14 @@
     "zh-Hant": "配對提示標出「{name}」，現在可以選取。",
     "zh-Hans": "配对提示标出“{name}”，现在可以选择。",
     ja: "ペア探しが「{name}」を示しました。選択できます。",
-    ko: "짝 찾기가 {name}을(를) 표시했습니다. 선택할 수 있습니다.",
+    ko: "짝 찾기가 보물을 표시했습니다: {name}. 선택할 수 있습니다.",
     es: "Buscar pareja señaló «{name}»; puedes seleccionarlo.",
     "pt-BR": "Encontrar par destacou {name}; você pode escolhê-lo.",
     fr: "Trouver une paire a signalé « {name} » ; vous pouvez le choisir.",
-    de: "Der Paarfinder markiert {name}; du kannst ihn auswählen.",
-    it: "Trova coppia ha indicato {name}: puoi selezionarlo.",
+    de: "Der Paarfinder markiert den Schatz {name}; du kannst ihn auswählen.",
+    it: "Trova coppia ha indicato questo tesoro: {name}. Puoi selezionarlo.",
     ru: "«Найти пару» подсветил объект «{name}» — его можно выбрать.",
-    hi: "जोड़ी खोजक ने {name} को दिखाया है; इसे चुना जा सकता है।",
+    hi: "जोड़ी खोजक ने यह ख़ज़ाना दिखाया है: {name}. इसे चुना जा सकता है।",
     ar: "حدّد «{name}» بواسطة أداة البحث عن زوج؛ يمكنك اختياره.",
   };
   const RUNTIME_LOCALE_SEGMENTS = { "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
@@ -944,10 +987,22 @@
       "coral-music-box", "bee-bell", "mushroom-lamp", "crystal-feather"];
     return `background-image:url("../../assets/animal-triple-match-${sprites[type]}-block-v22.webp");background-position:center;background-size:contain;background-repeat:no-repeat;`;
   }
+  const ITEM_NAMES_GAME_LOCALE = {
+    "zh-Hans": ["橡果灯笼","月亮杯","贝壳罗盘","浆果胸针","云朵罐","棱镜花","星星望远镜","叶片吊坠","珊瑚音乐盒","蜜蜂铃铛","蘑菇灯"],
+    ja: ["どんぐりランタン","月のカップ","貝殻のコンパス","ベリーのブローチ","雲のびん","プリズムの花","星の望遠鏡","葉っぱのロケット","サンゴのオルゴール","ミツバチのベル","キノコのランプ"],
+    ko: ["도토리 랜턴","달 컵","조개 나침반","베리 브로치","구름 항아리","프리즘 꽃","별 망원경","잎사귀 로켓","산호 오르골","벌 종","버섯 램프"],
+    es: ["Farol de bellota","Taza lunar","Brújula de concha","Broche de bayas","Frasco de nube","Flor de prisma","Telescopio estelar","Guardapelo de hoja","Caja musical de coral","Campana de abeja","Lámpara de seta"],
+    fr: ["Lanterne gland","Tasse lunaire","Boussole coquillage","Broche aux baies","Bocal nuage","Fleur prismatique","Télescope étoilé","Médaillon feuille","Boîte à musique corail","Clochette abeille","Lampe champignon"],
+    de: ["Eichel-Laterne","Mondbecher","Muschelkompass","Beerenbrosche","Wolkenglas","Prismenblume","Sternenteleskop","Blattmedaillon","Korallen-Spieldose","Bienenglocke","Pilzlampe"],
+    it: ["Lanterna a ghianda","Coppa lunare","Bussola a conchiglia","Spilla di bacche","Barattolo nuvola","Fiore prismatico","Telescopio stellare","Medaglione a foglia","Carillon di corallo","Campanella d’ape","Lampada a fungo"],
+    ru: ["Жёлудевый фонарь","Лунная чашка","Ракушка-компас","Ягодная брошь","Банка-облако","Призматический цветок","Звёздный телескоп","Листок-медальон","Коралловая музыкальная шкатулка","Пчелиный колокольчик","Грибной фонарь"],
+    hi: ["बलूत का लालटेन","चाँद का प्याला","सीप का दिशासूचक","बेरी का ब्रोच","बादल का जार","प्रिज़्म का फूल","तारों की दूरबीन","पत्ती का लॉकेट","मूँगे का संगीत डिब्बा","मधुमक्खी की घंटी","मशरूम का दीपक"]
+  };
   function itemName(type) {
     if (locale === "zh-Hant") return ITEM_NAMES_ZH_HANT[type];
     if (locale === "pt-BR") return ITEM_NAMES_PT_BR[type];
     if (locale === "ar") return ITEM_NAMES_AR[type];
+    if (ITEM_NAMES_GAME_LOCALE[locale]?.[type]) return ITEM_NAMES_GAME_LOCALE[locale][type];
     return runtimeCatalog(locale)?.[ITEM_NAMES[type]] || ITEM_NAMES[type];
   }
   function mysteryItemName() {
@@ -1053,6 +1108,10 @@
   }
   function renderTray() {
     const cap = run.config.trayCap;
+    const trayLabel = {
+      en: `${cap}-slot tray`, "zh-Hant": `${cap} 格托盤`, "zh-Hans": `${cap} 格托盘`, ja: `${cap}枠のトレイ`, ko: `${cap}칸 트레이`, es: `Bandeja de ${cap} casillas`, "pt-BR": `Bandeja com ${cap} vagas`, fr: `Plateau de ${cap} cases`, de: `Ablage mit ${cap} Plätzen`, it: `Vassoio da ${cap} spazi`, ru: `Лоток на ${cap} ячеек`, hi: `${cap} खाने वाली ट्रे`, ar: `صينية من ${cap} خانات`
+    }[locale];
+    els.tray.setAttribute("aria-label", trayLabel);
     const pendingIds = pendingPieceIds();
     const slots = Array.from({ length: 7 }, (_, i) => {
       if (i >= cap) {

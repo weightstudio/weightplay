@@ -6,9 +6,9 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js?v=20261010-castle-cascade-siege";
-import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261010-castle-cascade-siege";
-import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261010-siege";
+} from "./cascade-core.js?v=20261011-lanes-v19";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261011-lanes-v19";
+import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261011-lanes-v19";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
@@ -268,7 +268,7 @@ function makeObjectiveIndicators(counts, className = "objective-icons", keys = O
     chip.dataset.complete = String(!count);
     const icon = document.createElement("img");
     icon.className = "objective-icon";
-    icon.src = new URL(key === "siege" ? "./assets/siege-keep.svg" : `./assets/objective-${key}-v3.webp`, import.meta.url).href;
+    icon.src = new URL(key === "siege" ? "./assets/siege-castle-v2.png" : `./assets/objective-${key}-v3.webp`, import.meta.url).href;
     icon.alt = "";
     icon.width = icon.height = 40;
     const amount = document.createElement("span");
@@ -306,7 +306,7 @@ function renderStageList() {
     const title = document.createElement("strong");
     title.textContent = stageText;
     const art = document.createElement("img");
-    art.src = SIEGE_LEVELS[index] ? new URL("./assets/siege-keep.svg", import.meta.url).href : LION_POSTER_URL;
+    art.src = SIEGE_LEVELS[index] ? new URL("./assets/siege-castle-v2.png", import.meta.url).href : LION_POSTER_URL;
     art.alt = "";
     art.setAttribute("aria-hidden", "true");
     const chapter = document.createElement("span");
@@ -385,6 +385,7 @@ function swappedBoard(board, a, b) {
 
 function tileDescription(tile, index) {
   const content = [];
+  if (tile.grass) content.push(text("grassName"));
   if (tile.c !== null && tile.c >= 0 && copy?.gemNames?.[tile.c]) content.push(copy.gemNames[tile.c]);
   if (tile.p) content.push(copy?.powerNames?.[tile.p] || tile.p);
   for (const [key, present] of [["crate", tile.box], ["chain", tile.chain], ["key", tile.key], ["gate", tile.gate], ["stone", tile.stone], ["seal", tile.seal], ["exit", tile.exit]]) {
@@ -517,6 +518,7 @@ function objectiveCue(key) {
 
 async function animateTurn(result, turnToken, visual = null) {
   const motionReduced = renderer?.reducedMotion;
+  let lastSiegeSoundAt = -Infinity;
   if (visual?.swap && renderer) {
     await renderer.animateSwap(visual.before, visual.after, visual.swap.a, visual.swap.b, true);
     if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
@@ -529,6 +531,7 @@ async function animateTurn(result, turnToken, visual = null) {
     const contact = () => {
       if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
       playSound(batch.visualEffects?.length ? "puzzle.clear" : "puzzle.match");
+      if (batch.stats.grass) playSound("impact.soft");
     };
     const objectiveContact = (key) => {
       if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
@@ -539,8 +542,12 @@ async function animateTurn(result, turnToken, visual = null) {
     if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
     renderBattleHud(batch.cleared);
     const siegeContact = (shot) => {
-      if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
-      playSound(shot.blocked ? "combat.block" : shot.hpAfter === 0 ? "enemy.defeat" : shot.combo ? "combat.critical" : "magic.hit");
+      if (turnToken !== screenEpoch || !renderer || !boardAvailable || shot.miss) return;
+      const now = performance.now();
+      if (shot.hpAfter === 0 || now - lastSiegeSoundAt > 75) {
+        playSound(shot.hpAfter === 0 ? "enemy.defeat" : shot.combo ? "combat.critical" : "magic.hit");
+        lastSiegeSoundAt = now;
+      }
       renderBattleHud(batch.after);
     };
     if (batch.siege?.attacks.length) playSound("magic.cast");
@@ -558,6 +565,20 @@ async function animateTurn(result, turnToken, visual = null) {
     renderBattleHud(batch.after);
   }
   if (turnToken !== screenEpoch || !gameState) return;
+  if (result.enemyTurn && renderer && boardAvailable) {
+    const charging = result.enemyTurn.movements.some(move => move.charging);
+    document.querySelector("#status").textContent = text(charging ? "enemyCharge" : "enemyAdvance");
+    if (charging) playSound("alert.warning");
+    await renderer.animateEnemyTurn(result.enemyTurn, turn => {
+      if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
+      if (turn.infestations.length) {
+        playSound("impact.soft");
+        document.querySelector("#status").textContent = text("grassSpread");
+      }
+    });
+    if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
+  }
+  renderer?.setSiege(gameState.siege);
   renderer?.setBoard(gameState.board, -1, focusCell);
   busy = false;
   renderBattleHud();

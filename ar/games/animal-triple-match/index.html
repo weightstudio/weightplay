@@ -31,7 +31,7 @@
   <meta name="description" content="اقرأ طبقات الكنوز، وابنِ أزواجاً آمنة، وأكمل كل ثلاثية في 30 مرحلة قبل امتلاء خانات ميمي السبع." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260919-triple-match-v24-landscape-reachability">
+  <link rel="stylesheet" href="style.css?v=20261010-triple-text-growth-140-v5">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مطابقة الثلاثية | WeightPlay" />
@@ -62,7 +62,7 @@
         <div class="main-copy">
           <small data-t="eyebrow">لغز ترتيب الكنوز</small>
           <h1 data-t="title" data-wp-game-title data-runtime-localize="off">مطابقة الثلاثية</h1>
-          <p data-t="pitch">المس الكنوز المكشوفة واجمع ثلاثة متطابقة قبل امتلاء الخانات السبع.</p>
+          <p data-t="pitch">كوّن ثلاثيات من الكنوز المتاحة. للصينية سبع خانات في المراحل 1–23 وست في المراحل 24–30.</p>
           <span id="mainProgress">0 / 30</span>
           <button id="startBtn" class="primary" type="button" data-t="start" data-wp-main-start data-runtime-localize="off">ابدأ اللعبة</button>
           <a class="guide-jump" href="#publicGuide" data-t="guideLabel">دليل اللعبة</a>
@@ -73,10 +73,10 @@
       <div class="game-info-hero"><div class="game-info-title">
       <small class="game-info-kicker" data-t="guideLabel">دليل اللعبة</small>
       <h2 data-wp-game-title data-runtime-localize="off">مطابقة الثلاثية</h2>
-      <p data-t="guideIntro">تمتلئ دفيئة ميمي بالتذكارات المسحورة. لا ينتقل إلا العنصر المكشوف. تختفي ثلاثة عناصر متطابقة، لكن سبعة عناصر غير متطابقة تنهي المحاولة.</p>
+      <p data-t="guideIntro">تضم دفيئة ميمي كنوزًا مسحورة. لا يدخل الصينية إلا الكنز المتاح وغير المحجوب. تختفي ثلاثة كنوز متطابقة تلقائيًا. تنتهي المحاولة إذا امتلأت الخانات من دون تكوين ثلاثية. في المراحل 1–23 سبع خانات، وفي 24–30 ست خانات.</p>
       </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>ألغاز</span><span>استراتيجية</span><span>حيوانات</span></div></div>
       <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-t="howTitle">طريقة اللعب</h3><ol><li data-t="how1">المس عنصراً مكشوفاً لنقله.</li><li data-t="how2">تختفي ثلاثة عناصر متطابقة.</li><li data-t="how3">أفرغ الكومة قبل امتلاء الخانات السبع.</li></ol></article>
+        <article class="game-info-section"><h3 data-t="howTitle">طريقة اللعب</h3><ol><li data-t="how1">المس عنصراً مكشوفاً لنقله.</li><li data-t="how2">تختفي ثلاثة عناصر متطابقة.</li><li data-t="how3">أفرغ الكومة قبل امتلاء الخانات: سبع في المراحل 1–23 وست في المراحل 24–30.</li></ol></article>
         <article class="game-info-section"><h3 data-t="chaptersTitle">رفوف متغيرة</h3><p data-t="chaptersText">تضيف الرفوف اللاحقة كرومًا وأغلفة بلورية وكنوزًا مخفية وأكوامًا متحركة. اقرأ قاعدة الرف قبل اختيار مجموعة من ثلاثة.</p></article>
         <article class="game-info-section"><h3 data-t="strategyTitle">خطط قبل اللمس</h3><p data-t="strategyText">ابحث عن الأزواج واترك خانة للطوارئ.</p></article>
         <article class="game-info-section"><h3 data-t="trustTitle">التقدم والخصوصية</h3><p data-t="trustText">يبقى التقدم في هذا المتصفح ولا يلزم تسجيل الدخول.</p></article>
@@ -90,7 +90,7 @@
         <button id="stageBack" class="back-btn" type="button" aria-label="رجوع" data-t-aria="back" data-wp-return="stage">&larr;</button>
         <strong data-t="chooseStage">اختر رفاً</strong>
       </header>
-      <div class="chapter-strip"><span data-t="chapter">الفصل</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
+      <div class="chapter-strip"><span data-t="chapterLabel" data-runtime-localize="off">الفصل</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
       <div id="stageRail" class="stage-rail" aria-label="اختيار المراحل" data-t-aria="stageRailLabel" data-wp-stage-rail></div>
       <p class="rail-hint" data-t="stageHint">اسحب واختر مرحلة مفتوحة.</p>
       <nav class="stage-tabs" aria-label="المراحل" data-t-aria="stages">
@@ -123,7 +123,7 @@
 
       <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <h2 id="tutorialTitle" data-t="tutorialTitle">وفر مساحة بالثلاثيات</h2>
-        <ol><li data-t="tutorial1">الكنوز المضيئة مكشوفة.</li><li data-t="tutorial2">تختفي ثلاثة متطابقة من الصينية.</li><li data-t="tutorial3">المس الكروم والبلور مرة لفتحهما.</li></ol>
+        <ol><li data-t="tutorial1">الكنوز المضيئة مكشوفة.</li><li data-t="tutorial2">تختفي ثلاثة كنوز متطابقة تلقائيًا. للصينية سبع خانات في المراحل 1–23 وست في 24–30.</li><li data-t="tutorial3">المس الكروم والبلور مرة لفتحهما.</li></ol>
         <button id="tutorialClose" class="primary" type="button" data-t="continue">متابعة</button>
       </div></section>
 
@@ -159,7 +159,7 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
   <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
   <script src="frame.js?v=20260919-triple-match-v24-landscape-reachability"></script>
-  <script src="game.js?v=20260927-triple-match-v27-tray-art&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261010-triple-text-growth-140-v5&wp-audio=1.0.0"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
 </body>
 </html>

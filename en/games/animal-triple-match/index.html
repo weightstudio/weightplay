@@ -31,7 +31,7 @@
   <meta name="description" content="Read layered treasure piles, build safe pairs, and complete every trio before Mimi&#39;s seven-slot tray fills across 30 crafted stages." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260919-triple-match-v24-landscape-reachability">
+  <link rel="stylesheet" href="style.css?v=20261010-triple-text-growth-140-v5">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Triple Match | WeightPlay" />
@@ -62,7 +62,7 @@
         <div class="main-copy">
           <small data-t="eyebrow">Treasure sorting puzzle</small>
           <h1 data-t="title" data-wp-game-title data-runtime-localize="off">Triple Match</h1>
-          <p data-t="pitch">Tap uncovered treasures and collect three of a kind before the seven-slot tray fills.</p>
+          <p data-t="pitch">Match three uncovered treasures; the tray has seven slots in stages 1–23 and six in stages 24–30.</p>
           <span id="mainProgress">0 / 30</span>
           <button id="startBtn" class="primary" type="button" data-t="start" data-wp-main-start data-runtime-localize="off">Start Game</button>
           <a class="guide-jump" href="#publicGuide" data-t="guideLabel">Game guide</a>
@@ -73,10 +73,10 @@
       <div class="game-info-hero"><div class="game-info-title">
       <small class="game-info-kicker" data-t="guideLabel">Game guide</small>
       <h2 data-wp-game-title data-runtime-localize="off">Triple Match</h2>
-      <p data-t="guideIntro">Mimi&#39;s greenhouse shelves are overflowing with enchanted keepsakes. Only uncovered objects can move into the tray. Three matching objects vanish, but seven unmatched objects end the attempt.</p>
+      <p data-t="guideIntro">Mimi&#39;s greenhouse shelves hold enchanted keepsakes. Only accessible, uncovered treasures can enter the tray. A trio clears automatically; the tray is full when all available slots are occupied without a trio. Stages 1–23 have seven slots; stages 24–30 have six.</p>
       </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Puzzle</span><span>Strategy</span><span>Animal</span></div></div>
       <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Tap an uncovered object to move it into the tray.</li><li data-t="how2">Collect three matching objects to clear them automatically.</li><li data-t="how3">Clear the complete pile before all seven tray slots are occupied.</li></ol></article>
+        <article class="game-info-section"><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Tap an uncovered object to move it into the tray.</li><li data-t="how2">Collect three matching objects to clear them automatically.</li><li data-t="how3">Clear the pile before all available slots are occupied: seven in stages 1–23, six in stages 24–30.</li></ol></article>
         <article class="game-info-section"><h3 data-t="chaptersTitle">Changing shelves</h3><p data-t="chaptersText">Later shelves add vines, crystal shells, hidden treasures and shifting piles. Read the shelf rule before choosing a trio.</p></article>
         <article class="game-info-section"><h3 data-t="strategyTitle">Plan before tapping</h3><p data-t="strategyText">A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.</p></article>
         <article class="game-info-section"><h3 data-t="trustTitle">Progress and privacy</h3><p data-t="trustText">Cleared stages, stars, and best tray space stay in this browser. No login or personal information is needed.</p></article>
@@ -90,7 +90,7 @@
         <button id="stageBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">&larr;</button>
         <strong data-t="chooseStage">Choose a shelf</strong>
       </header>
-      <div class="chapter-strip"><span data-t="chapter">Chapter</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
+      <div class="chapter-strip"><span data-t="chapterLabel" data-runtime-localize="off">Chapter</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
       <div id="stageRail" class="stage-rail" aria-label="Stage selector" data-t-aria="stageRailLabel" data-wp-stage-rail></div>
       <p class="rail-hint" data-t="stageHint">Drag the shelf and choose an unlocked stage.</p>
       <nav class="stage-tabs" aria-label="Stages" data-t-aria="stages">
@@ -123,7 +123,7 @@
 
       <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <h2 id="tutorialTitle" data-t="tutorialTitle">Make room with trios</h2>
-        <ol><li data-t="tutorial1">Bright treasures are uncovered and ready to tap.</li><li data-t="tutorial2">Three matching treasures disappear from the seven-slot tray.</li><li data-t="tutorial3">Vines and crystal shells need one tap before the treasure can move.</li></ol>
+        <ol><li data-t="tutorial1">Bright treasures are uncovered and ready to tap.</li><li data-t="tutorial2">Three matching treasures clear automatically. The tray has seven slots in stages 1–23 and six in stages 24–30.</li><li data-t="tutorial3">Each tap removes one vine, crystal shell, or mystery wrapping layer. Collect the treasure only after every blocker is cleared and it is accessible.</li></ol>
         <button id="tutorialClose" class="primary" type="button" data-t="continue">Continue</button>
       </div></section>
 
@@ -158,7 +158,7 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
   <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
   <script src="frame.js?v=20260919-triple-match-v24-landscape-reachability"></script>
-  <script src="game.js?v=20260927-triple-match-v27-tray-art&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261010-triple-text-growth-140-v5&wp-audio=1.0.0"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
 </body>
 </html>

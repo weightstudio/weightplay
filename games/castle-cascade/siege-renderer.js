@@ -1,45 +1,34 @@
 const COLORS = ["#ff6276", "#55baff", "#ffdf62", "#6fec9b", "#d89aff"];
 const clamp = value => Math.max(0, Math.min(1, value));
+const ease = value => { const p = clamp(value); return p * p * (3 - 2 * p); };
 
 export function siegeLayout(w, h) {
-  const landscape = w > h * 1.25;
-  const size = Math.min(landscape ? w * .56 : w, landscape ? h : h / 1.58) * .946;
-  const board = { x: landscape ? w - size - w * .014 : (w - size) / 2,
-    y: landscape ? (h - size) / 2 : h - size - size * .014, size };
-  const field = landscape
-    ? { x: 3, y: 4, w: board.x - 12, h: h - 8 }
-    : { x: board.x, y: 4, w: size, h: board.y - 14 };
-  return { board, field };
+  const size = Math.min(w, h / 1.58) * .946;
+  const board = { x: (w - size) / 2, y: h - size - size * .014, size };
+  return { board, field: { x: board.x, y: 4, w: size, h: board.y - 10 } };
 }
-
+function targetSize(field, target) { return field.w / 9 * target.span * .98; }
 export function siegeTargetPoint(field, target) {
-  const size = siegeTargetSize(field, target);
-  return { x: field.x + target.x * field.w,
-    y: field.y + 32 + size * .62 + target.y * Math.max(0, field.h - 40 - size * 1.12) };
+  const size = targetSize(field, target);
+  return { x: field.x + (target.lane + target.span / 2) * field.w / 9,
+    y: field.y + 30 + size * .46 + target.row / 4 * Math.max(0, field.h - 38 - size) };
 }
-
-function siegeTargetSize(field, target) {
-  return Math.min(field.w * (target.kind === "keep" ? .33 : .27), Math.max(24, field.h - 38) * .86);
-}
-
-function rounded(ctx, x, y, w, h, radius) {
-  ctx.beginPath(); ctx.roundRect(x, y, w, h, radius);
-}
+function rounded(ctx, x, y, w, h, radius) { ctx.beginPath(); ctx.roundRect(x, y, w, h, radius); }
 
 export function drawSiegeField(renderer, field, time) {
   const ctx = renderer.context, siege = renderer.siege;
   if (!siege || field.w <= 0 || field.h <= 0) return;
   ctx.save();
-  rounded(ctx, field.x, field.y, field.w, field.h, 14);
+  rounded(ctx, field.x, field.y, field.w, field.h, 12);
   const bg = ctx.createLinearGradient(0, field.y, 0, field.y + field.h);
-  bg.addColorStop(0, "#254f55"); bg.addColorStop(.4, "#578968"); bg.addColorStop(1, "#98ad73");
+  bg.addColorStop(0, "#234b48"); bg.addColorStop(.35, "#749c55"); bg.addColorStop(1, "#b8c779");
   ctx.fillStyle = bg; ctx.fill(); ctx.clip();
-  // Quiet perspective paving keeps the attack/target silhouettes dominant.
-  for (let row = 0; row < 5; row += 1) for (let col = 0; col < 7; col += 1) {
-    ctx.fillStyle = (row + col) % 2 ? "#dddb9630" : "#1d58451a";
-    ctx.fillRect(field.x + col * field.w / 7, field.y + field.h * (.24 + row * .16), field.w / 7 - 1, field.h * .16 - 1);
+  const cell = field.w / 9;
+  for (let row = 0; row < 5; row += 1) for (let col = 0; col < 9; col += 1) {
+    ctx.fillStyle = (row + col) % 2 ? "#f6eeb326" : "#24583b18";
+    ctx.fillRect(field.x + col * cell, field.y + 27 + row * (field.h - 27) / 5, cell - 1, (field.h - 27) / 5 - 1);
   }
-  ctx.fillStyle = "#173e48cc"; ctx.fillRect(field.x, field.y, field.w, 25);
+  ctx.fillStyle = "#193e43df"; ctx.fillRect(field.x, field.y, field.w, 25);
   ctx.textAlign = "left"; ctx.textBaseline = "middle";
   ctx.font = "700 12px system-ui"; ctx.fillStyle = "#fff1c9";
   ctx.fillText(renderer.siegeLabels?.wave?.(siege.wave + 1, siege.totalWaves) || `${siege.wave + 1} / ${siege.totalWaves}`, field.x + 10, field.y + 13);
@@ -47,120 +36,158 @@ export function drawSiegeField(renderer, field, time) {
     ctx.beginPath(); ctx.arc(field.x + field.w - 12 - (siege.totalWaves - i - 1) * 13, field.y + 13, 3.5, 0, Math.PI * 2);
     ctx.fillStyle = i <= siege.wave ? "#ffe3a3" : "#8fb2ad"; ctx.fill();
   }
-  const motion = renderer.motion;
-  const elapsed = motion ? time - motion.started : 0;
+  const motion = renderer.motion, elapsed = motion ? time - motion.started : 0;
   const entrance = ["entrance", "siege-wave"].includes(motion?.kind) ? clamp(elapsed / 340) : 1;
-  for (const target of [...siege.targets].sort((a, b) => a.y - b.y)) {
+  for (const source of [...siege.targets].sort((a, b) => a.row - b.row)) {
+    const target = { ...source };
+    const move = motion?.enemyTurn?.movements.find(item => item.id === target.id);
+    const turnP = motion?.enemyTurn ? clamp(elapsed / motion.duration) : 0;
+    if (move) {
+      const final = motion.enemyTurn.after.targets.find(item => item.id === target.id);
+      target.row = turnP < .65 ? move.fromRow + (move.toRow - move.fromRow) * ease(turnP / .55)
+        : move.toRow + (final.row - move.toRow) * ease((turnP - .72) / .28);
+      target.charging = final.charging;
+    }
     const hits = motion?.siege?.attacks.filter(shot => shot.targetId === target.id && shot.played) || [];
-    const last = hits.at(-1);
-    const hitTime = last ? elapsed - last.arrival : Infinity;
+    const last = hits.at(-1), hitTime = last ? elapsed - last.arrival : Infinity;
     const recoil = hitTime < 220 ? Math.sin(clamp(hitTime / 220) * Math.PI) : 0;
     const dying = target.hp === 0;
     if (dying && (!last || hitTime > 300)) continue;
-    const point = siegeTargetPoint(field, target);
-    const size = siegeTargetSize(field, target);
-    const lift = (1 - entrance) * 16;
+    const point = siegeTargetPoint(field, target), size = targetSize(field, target);
     ctx.save();
     ctx.globalAlpha = entrance * (dying ? 1 - clamp(hitTime / 300) : 1);
-    ctx.translate(point.x, point.y + lift);
-    ctx.rotate(recoil * (dying ? .12 : .04));
-    const sy = 1 - recoil * .065;
-    ctx.scale(1 + recoil * .06, sy);
-    const asset = renderer.assets[target.kind === "sentinel" ? "sentinel" : target.kind === "keep" ? "keep" : "tower"];
-    if (asset?.complete && asset.naturalWidth) ctx.drawImage(asset, -size / 2, -size * .56, size, size);
+    ctx.fillStyle = "#17362d50";
+    ctx.beginPath(); ctx.ellipse(point.x, point.y + size * .34, size * .39, size * .09, 0, 0, Math.PI * 2); ctx.fill();
+    // The footprint occupies exactly the lanes that accept hits.
+    ctx.fillStyle = target.charging ? "#ffaf4255" : "#fff0b524";
+    rounded(ctx, field.x + target.lane * cell + 2, point.y + size * .30, target.span * cell - 4, 5, 2); ctx.fill();
+    const step = move && !move.charging ? Math.sin(turnP * Math.PI * 4) * (1 - turnP) : 0;
+    ctx.translate(point.x, point.y + (1 - entrance) * 16 - Math.abs(step) * size * .045);
+    ctx.rotate(recoil * .055 + step * .045);
+    const charge = target.charging ? (move ? Math.sin(turnP * Math.PI / 2) : 1) : 0;
+    ctx.scale(1 + recoil * .06 + charge * .035, 1 - recoil * .06 - charge * .035);
+    const asset = renderer.assets[target.kind];
+    if (asset?.complete && asset.naturalWidth) ctx.drawImage(asset, -size / 2, -size / 2, size, size);
     if (recoil > .05) {
       ctx.globalCompositeOperation = "screen"; ctx.globalAlpha *= recoil * .7;
-      ctx.fillStyle = last.blocked ? "#7fd3ff" : "#ffe3ac";
-      rounded(ctx, -size * .28, -size * .2, size * .56, size * .48, 8); ctx.fill();
+      ctx.fillStyle = "#ffe3ac"; rounded(ctx, -size * .2, -size * .1, size * .4, size * .4, 8); ctx.fill();
     }
     ctx.restore();
     if (!dying) {
-      const barW = size * .87, barH = Math.max(14, Math.min(18, field.h * .1));
-      const bx = point.x - barW / 2, by = point.y - size * .61;
-      ctx.fillStyle = "#162e41"; rounded(ctx, bx - 2, by - 2, barW + 4, barH + 4, 5); ctx.fill();
-      ctx.fillStyle = "#e7c580"; rounded(ctx, bx - 1, by - 1, barW + 2, barH + 2, 4); ctx.fill();
+      const barW = size * .8, barH = Math.max(12, Math.min(17, field.h * .09));
+      const bx = point.x - barW / 2, by = point.y - size * .48;
+      ctx.fillStyle = "#e7c580"; rounded(ctx, bx - 2, by - 2, barW + 4, barH + 4, 5); ctx.fill();
       ctx.fillStyle = "#273f4a"; rounded(ctx, bx, by, barW, barH, 3); ctx.fill();
-      ctx.fillStyle = target.kind === "armor" ? "#73b8e7" : target.hp / target.maxHp < .3 ? "#ef7952" : "#8cdb7d";
+      ctx.fillStyle = target.hp / target.maxHp < .3 ? "#ef7952" : "#91dc6f";
       rounded(ctx, bx + 1, by + 1, Math.max(0, (barW - 2) * target.hp / target.maxHp), barH - 2, 2); ctx.fill();
       ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = `900 ${barH - 1}px system-ui`;
       ctx.lineWidth = 3; ctx.strokeStyle = "#163745"; ctx.strokeText(String(target.hp), point.x, by + barH / 2);
       ctx.fillStyle = "#fff9e5"; ctx.fillText(String(target.hp), point.x, by + barH / 2);
-      if (target.color !== null) renderer.drawSprite(target.color, point.x, point.y + size * .38, size * .25);
-      const protectedKeep = target.kind === "keep" && siege.targets.some(item => item.kind === "sentinel" && item.hp > 0);
-      if (target.kind === "armor" || protectedKeep) {
-        ctx.save(); ctx.translate(point.x + size * .3, point.y + size * .12);
-        ctx.fillStyle = protectedKeep ? "#ffe0a0" : "#b5eeff"; ctx.strokeStyle = "#254d67"; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(-10, -12); ctx.lineTo(10, -12); ctx.lineTo(9, 2); ctx.lineTo(0, 10); ctx.lineTo(-9, 2); ctx.closePath(); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = "#365a7a"; ctx.beginPath(); ctx.moveTo(2, -9); ctx.lineTo(-5, 0); ctx.lineTo(0, 0); ctx.lineTo(-2, 6); ctx.lineTo(6, -3); ctx.lineTo(1, -3); ctx.closePath(); ctx.fill(); ctx.restore();
+      if (target.kind !== "castle") {
+        // Arrows preview the next advance: one step for boars, two for a primed ram.
+        const arrows = target.kind === "ram" ? (target.charging ? 2 : 0) : 1;
+        ctx.fillStyle = target.charging ? "#ffb741" : "#fff4ba";
+        ctx.strokeStyle = "#465630"; ctx.lineWidth = 1.5;
+        if (!arrows) {
+          ctx.font = "900 15px system-ui"; ctx.fillText("…", point.x + size * .42, point.y + size * .1);
+        }
+        for (let i = 0; i < arrows; i += 1) {
+          const y = point.y + size * .12 + i * 9, x = point.x + size * .42;
+          ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.lineTo(x, y + 6); ctx.closePath(); ctx.fill(); ctx.stroke();
+        }
       }
     }
   }
   ctx.restore();
 }
 
-export function prepareVolley(siege, onContact, deliveryDelay = 0) {
+export function prepareVolley(siege, onContact) {
   if (!siege?.attacks.length) return {};
-  const attacks = siege.attacks.map((shot, index) => {
-    const delay = index * 35 + (shot.delivery ? deliveryDelay : 0);
-    return { ...shot, delay, arrival: 380 + delay, played: false };
-  });
-  return { siege: { ...siege, attacks }, onSiegeContact: onContact, siegeDuration: Math.max(...attacks.map(shot => shot.arrival)) + 300 };
+  const attacks = siege.attacks.map((shot, index) => ({ ...shot, delay: index * 7, arrival: 440 + index * 7, played: false }));
+  return { siege: { ...siege, attacks }, onSiegeContact: onContact, siegeDuration: attacks.at(-1).arrival + 300 };
 }
-
 export function applySiegeContacts(renderer, motion, elapsed) {
   for (const shot of motion?.siege?.attacks || []) {
     if (shot.played || elapsed < shot.arrival) continue;
     shot.played = true;
+    if (shot.miss) continue;
     const target = renderer.siege?.targets.find(item => item.id === shot.targetId);
     if (target) target.hp = shot.hpAfter;
     if (renderer.siege) renderer.siege.defeated = motion.siege.before.defeated + renderer.siege.targets.filter(item => item.hp === 0 && motion.siege.before.targets.find(before => before.id === item.id)?.hp > 0).length;
     motion.onSiegeContact?.(shot);
   }
 }
+export function applyEnemyContact(renderer, motion, elapsed) {
+  if (!motion?.enemyTurn) return;
+  if (!motion.enemyContactPlayed && elapsed >= motion.duration * .65) {
+    motion.enemyContactPlayed = true;
+    renderer.board = motion.enemyTurn.boardAfter;
+    motion.onEnemyContact?.(motion.enemyTurn);
+  }
+  if (elapsed >= motion.duration) renderer.siege = motion.enemyTurn.after;
+}
 
 export function drawSiegeVolley(renderer, bounds, field, motion, time) {
   if (!motion?.siege) return;
-  const ctx = renderer.context, elapsed = time - motion.started;
-  const cell = bounds.size / 9;
+  const ctx = renderer.context, elapsed = time - motion.started, cell = bounds.size / 9;
   ctx.save();
   for (const shot of motion.siege.attacks) {
     const target = motion.siege.before.targets.find(item => item.id === shot.targetId);
-    const end = siegeTargetPoint(field, target);
-    const start = { x: bounds.x + (shot.index % 9 + .5) * cell, y: bounds.y + (Math.floor(shot.index / 9) + .5) * cell };
-    const p = clamp((elapsed - shot.delay) / 380);
-    const color = COLORS[shot.color] || COLORS[2];
+    const start = { x: bounds.x + (shot.lane + .5) * cell, y: bounds.y + (Math.floor(shot.index / 9) + .5) * cell };
+    const end = { x: start.x, y: target ? siegeTargetPoint(field, target).y + targetSize(field, target) * .22 : field.y - 5 };
+    const p = clamp((elapsed - shot.delay) / 440), color = COLORS[shot.color] || COLORS[2];
     if (elapsed < shot.delay) continue;
     if (p < 1) {
-      const at = t => ({ x: start.x + (end.x - start.x) * t + Math.sin(t * Math.PI) * (shot.power ? 30 : -18),
-        y: start.y + (end.y - start.y) * t - Math.sin(t * Math.PI) * 35 });
-      const eased = p * p * (3 - 2 * p), point = at(eased);
+      const y = start.y + (end.y - start.y) * p;
+      const tail = start.y + (end.y - start.y) * Math.max(0, p - .17);
       ctx.lineCap = "round";
       for (let layer = 0; layer < 3; layer += 1) {
-        ctx.beginPath();
-        for (let i = 0; i <= 12; i += 1) { const v = at(Math.max(0, eased - .2 + i / 12 * .2)); i ? ctx.lineTo(v.x, v.y) : ctx.moveTo(v.x, v.y); }
-        ctx.strokeStyle = layer === 2 ? "#fff9dc" : color;
-        ctx.globalAlpha = layer === 0 ? .2 : .9;
-        ctx.lineWidth = (shot.power ? 12 : 7) * (1 - layer * .34); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(start.x, tail); ctx.lineTo(start.x, y);
+        ctx.strokeStyle = layer === 2 ? "#fffbe5" : color;
+        ctx.globalAlpha = (layer === 0 ? .2 : .9) * (shot.miss ? Math.min(1, (1 - p) * 7) : 1);
+        ctx.lineWidth = cell * (shot.power ? .3 : .18) * (1 - layer * .34); ctx.stroke();
       }
-      ctx.globalAlpha = 1; ctx.fillStyle = "#fffbe0"; ctx.shadowColor = color; ctx.shadowBlur = 14;
-      ctx.beginPath(); ctx.arc(point.x, point.y, shot.power ? 5.5 : 3.5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
-    } else {
+      ctx.fillStyle = "#fffbe0"; ctx.shadowColor = color; ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(start.x, y, cell * (shot.power ? .12 : .075), 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+    } else if (!shot.miss) {
       const age = clamp((elapsed - shot.arrival) / 300);
       if (age >= 1) continue;
-      ctx.globalAlpha = 1 - age; ctx.strokeStyle = shot.blocked ? "#b3e7ff" : color;
-      ctx.lineWidth = shot.combo ? 5 : 2.5;
-      ctx.beginPath(); ctx.arc(end.x, end.y, 5 + age * (shot.combo ? 40 : 25), 0, Math.PI * 2); ctx.stroke();
-      if (!shot.blocked) for (let i = 0; i < (shot.hpAfter === 0 ? 12 : 6); i += 1) {
-        const angle = i * 2.399, distance = age * (shot.combo ? 45 : 30);
+      ctx.globalAlpha = 1 - age; ctx.strokeStyle = color; ctx.lineWidth = shot.combo ? 4 : 2;
+      ctx.beginPath(); ctx.arc(end.x, end.y, cell * (.1 + age * (shot.combo ? .9 : .5)), 0, Math.PI * 2); ctx.stroke();
+      for (let i = 0; i < (shot.hpAfter === 0 ? 12 : 5); i += 1) {
+        const angle = i * 2.399, distance = age * cell * (shot.combo ? 1 : .65), s = cell * .09 * (1 - age * .5);
         ctx.fillStyle = i % 2 ? color : "#fff0bd";
-        const s = (shot.hpAfter === 0 ? 6 : 3) * (1 - age * .5);
         ctx.fillRect(end.x + Math.cos(angle) * distance - s / 2, end.y + Math.sin(angle) * distance + age * age * 20, s, s);
       }
-      ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = `900 ${shot.combo ? 23 : 18}px system-ui`;
-      const label = shot.blocked ? renderer.siegeLabels?.blocked || "0" : `−${shot.damage}`;
-      ctx.lineWidth = 3; ctx.strokeStyle = "#23394b"; ctx.strokeText(label, end.x, end.y - 12 - age * 23);
-      ctx.fillStyle = shot.blocked ? "#b3e7ff" : "#fff0b8"; ctx.fillText(label, end.x, end.y - 12 - age * 23);
+      // Damage numbers belong to this real lane contact, including its actual damage.
+      ctx.textAlign = "center"; ctx.font = `900 ${Math.max(12, cell * .35)}px system-ui`;
+      ctx.lineWidth = 3; ctx.strokeStyle = "#23394b"; ctx.strokeText(`−${shot.damage}`, end.x, end.y - 12 - age * 20);
+      ctx.fillStyle = "#fff0b8"; ctx.fillText(`−${shot.damage}`, end.x, end.y - 12 - age * 20);
     }
   }
   ctx.restore();
+}
+
+export function drawGrassSpread(renderer, bounds, field, motion, time) {
+  if (!motion?.enemyTurn?.infestations.length) return;
+  const p = clamp((time - motion.started) / motion.duration), ctx = renderer.context, cell = bounds.size / 9;
+  for (const spread of motion.enemyTurn.infestations) {
+    const source = motion.enemyTurn.before.targets.find(target => target.id === spread.id);
+    const start = siegeTargetPoint(field, { ...source, row: 4 });
+    const y = bounds.y + (spread.row + .5) * cell;
+    if (p >= .45 && p < .7) {
+      const travel = ease((p - .45) / .2);
+      ctx.save(); ctx.globalAlpha = 1 - clamp((p - .65) / .05); ctx.strokeStyle = "#c6f968"; ctx.lineWidth = cell * .16;
+      ctx.beginPath(); ctx.moveTo(start.x, start.y); ctx.lineTo(start.x, start.y + (y - start.y) * travel); ctx.stroke(); ctx.restore();
+    }
+    if (p >= .65) {
+      const age = (p - .65) / .35;
+      ctx.save(); ctx.globalAlpha = 1 - age; ctx.strokeStyle = "#f2ffc1"; ctx.lineWidth = cell * .07;
+      for (const index of spread.cells) {
+        const x = bounds.x + (index % 9 + .5) * cell;
+        ctx.beginPath(); ctx.arc(x, y, cell * (.18 + age * .35), 0, Math.PI * 2); ctx.stroke();
+      }
+      ctx.restore();
+    }
+  }
 }
