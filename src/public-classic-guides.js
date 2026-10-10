@@ -193,11 +193,11 @@
       "The centre of your paddle returns straight shots. Hit near the edges to angle the ball past the opponent. Space serves or pauses."
     ],
     "progression": [
-      "Wins for each opponent are stored on this device. Practice, Club and Expert are match difficulties, not a stage campaign."
+      "Practice, Club and Expert change the computer's match difficulty; they are not campaign stages."
     ],
     "designNote": "Follow the ball. Move left or right to return it.",
     "noteTitle": "Guide",
-    "parent": "Wins for each opponent are stored on this device. Practice, Club and Expert are match difficulties, not a stage campaign.",
+    "parent": "Wins are counted separately by match difficulty. Your selected difficulty and sound preference stay in this browser. No account, purchase, or online match is required.",
     "faq": [
       [
         "Guide",
@@ -232,11 +232,11 @@
       "用球拍中央接球，回球較直；用邊緣接球，球會斜飛，讓對手來不及接。空白鍵可發球或暫停。"
     ],
     "progression": [
-      "各對手的勝場儲存在本機。練習、俱樂部、高手是對戰難度，不是關卡戰役。"
+      "練習、俱樂部與高手會改變電腦對手的難度；它們是對戰難度，不是關卡戰役。"
     ],
     "designNote": "看球的落點，左右移動接回去。",
     "noteTitle": "指南",
-    "parent": "各對手的勝場儲存在本機。練習、俱樂部、高手是對戰難度，不是關卡戰役。",
+    "parent": "勝場會依對戰難度分開記錄；目前選擇的難度與音效偏好會保存在這個瀏覽器。不需要帳號、購買或線上對戰。",
     "faq": [
       [
         "指南",
@@ -271,11 +271,11 @@
       "用球拍中央接球，回球较直；用边缘接球，球会斜飞，让对手来不及接。空格键可发球或暂停。"
     ],
     "progression": [
-      "各对手的胜场保存在本机。练习、俱乐部、高手是对战难度，不是关卡战役。"
+      "练习、俱乐部和高手会改变电脑对手的难度；它们是对战难度，不是关卡战役。"
     ],
     "designNote": "看球的落点，左右移动接回去。",
     "noteTitle": "指南",
-    "parent": "各对手的胜场保存在本机。练习、俱乐部、高手是对战难度，不是关卡战役。",
+    "parent": "胜场会按对战难度分别记录；当前选择的难度和音效偏好会保存在此浏览器。不需要账号、购买或在线对战。",
     "faq": [
       [
         "指南",
@@ -310,11 +310,11 @@
       "中央で受けるとまっすぐ、端で受けると斜めに返ります。スペースでサーブまたは一時停止。"
     ],
     "progression": [
-      "相手ごとの勝利数を端末に保存します。3種類は対戦難度で、ステージ制ではありません。"
+      "練習・クラブ・エキスパートはコンピューターとの対戦難度を変える設定で、ステージ制ではありません。"
     ],
     "designNote": "ボールの落下位置に合わせて左右に動きましょう。",
     "noteTitle": "ガイド",
-    "parent": "相手ごとの勝利数を端末に保存します。3種類は対戦難度で、ステージ制ではありません。",
+    "parent": "勝利数は対戦難度ごとに記録され、選択中の難度とサウンド設定はこのブラウザに保存されます。アカウントや購入は不要です。",
     "faq": [
       [
         "ガイド",
@@ -349,11 +349,11 @@
       "패들 중앙은 곧은 공, 가장자리는 비스듬한 공을 만듭니다. 스페이스로 서브하거나 일시 정지하세요."
     ],
     "progression": [
-      "상대별 승리 수는 이 기기에 저장됩니다. 세 가지 대전 난도이며 스테이지 캠페인이 아닙니다."
+      "연습, 클럽, 고수는 컴퓨터 상대의 대전 난도를 바꾸며 스테이지 캠페인이 아닙니다."
     ],
     "designNote": "공이 올 위치로 좌우로 움직이세요.",
     "noteTitle": "가이드",
-    "parent": "상대별 승리 수는 이 기기에 저장됩니다. 세 가지 대전 난도이며 스테이지 캠페인이 아닙니다.",
+    "parent": "승리 수는 대전 난도별로 기록되고 선택한 난도와 소리 설정은 이 브라우저에 저장됩니다. 계정이나 구매는 필요하지 않습니다.",
     "faq": [
       [
         "가이드",
@@ -388,11 +388,11 @@
       "El centro devuelve recto; los bordes cambian el ángulo. Espacio sirve o pausa."
     ],
     "progression": [
-      "Las victorias por rival se guardan en este dispositivo. Son tres dificultades de partido, no una campaña de niveles."
+      "Práctica, Club y Experto cambian la dificultad del rival de ordenador; no son niveles de una campaña."
     ],
     "designNote": "Muévete hacia donde llegará la pelota.",
     "noteTitle": "Guía",
-    "parent": "Las victorias por rival se guardan en este dispositivo. Son tres dificultades de partido, no una campaña de niveles.",
+    "parent": "Las victorias se cuentan por separado según la dificultad. La dificultad elegida y el sonido se guardan en este navegador. No hacen falta cuenta, compras ni partidas en línea.",
     "faq": [
       [
         "Guía",
@@ -427,11 +427,11 @@
       "O centro devolve reto; as bordas mudam o ângulo. Espaço saca ou pausa."
     ],
     "progression": [
-      "As vitórias por rival ficam neste dispositivo. São três dificuldades de partida, não uma campanha de fases."
+      "Treino, Clube e Especialista mudam a dificuldade do rival controlado pelo computador; não são fases de uma campanha."
     ],
     "designNote": "Mova-se para onde a bola vai chegar.",
     "noteTitle": "Guia",
-    "parent": "As vitórias por rival ficam neste dispositivo. São três dificuldades de partida, não uma campanha de fases.",
+    "parent": "As vitórias são registradas separadamente por dificuldade. A dificuldade escolhida e o som ficam salvos neste navegador. Não é preciso conta, compra ou partida online.",
     "faq": [
       [
         "Guia",
@@ -466,11 +466,11 @@
       "Le centre renvoie droit ; les bords donnent un angle. Espace sert ou met en pause."
     ],
     "progression": [
-      "Les victoires par adversaire sont enregistrées sur cet appareil. Ce sont trois difficultés, pas une campagne de niveaux."
+      "Entraînement, Club et Expert changent la difficulté de l’adversaire contrôlé par l’ordinateur ; ce ne sont pas des niveaux de campagne."
     ],
     "designNote": "Placez-vous là où la balle va arriver.",
     "noteTitle": "Guide",
-    "parent": "Les victoires par adversaire sont enregistrées sur cet appareil. Ce sont trois difficultés, pas une campagne de niveaux.",
+    "parent": "Les victoires sont comptées séparément pour chaque difficulté. La difficulté choisie et le son restent dans ce navigateur. Aucun compte, achat ou match en ligne n’est nécessaire.",
     "faq": [
       [
         "Guide",
@@ -505,11 +505,11 @@
       "Die Mitte spielt gerade zurück, die Kanten erzeugen Winkel. Leertaste schlägt auf oder pausiert."
     ],
     "progression": [
-      "Siege je Gegner werden auf diesem Gerät gespeichert. Es gibt drei Spielstärken, keine Levelkampagne."
+      "Übung, Club und Experte ändern die Spielstärke des Computergegners; sie sind keine Levelkampagne."
     ],
     "designNote": "Bewege dich dorthin, wo der Ball ankommt.",
     "noteTitle": "Anleitung",
-    "parent": "Siege je Gegner werden auf diesem Gerät gespeichert. Es gibt drei Spielstärken, keine Levelkampagne.",
+    "parent": "Siege werden je Spielstärke getrennt gezählt. Die gewählte Spielstärke und der Sound bleiben in diesem Browser. Konto, Kauf und Online-Partie sind nicht nötig.",
     "faq": [
       [
         "Anleitung",
@@ -544,11 +544,11 @@
       "Il centro rimanda dritto; i bordi cambiano angolo. Spazio serve o mette in pausa."
     ],
     "progression": [
-      "Le vittorie per avversario restano su questo dispositivo. Sono tre difficoltà, non una campagna a livelli."
+      "Pratica, Club ed Esperto cambiano la difficoltà dell’avversario controllato dal computer; non sono livelli di una campagna."
     ],
     "designNote": "Spostati dove arriverà la pallina.",
     "noteTitle": "Guida",
-    "parent": "Le vittorie per avversario restano su questo dispositivo. Sono tre difficoltà, non una campagna a livelli.",
+    "parent": "Le vittorie sono conteggiate separatamente per difficoltà. La difficoltà scelta e l’audio restano in questo browser. Non servono account, acquisti o partite online.",
     "faq": [
       [
         "Guida",
@@ -583,11 +583,11 @@
       "Центр ракетки возвращает прямо, края меняют угол. Пробел — подача или пауза."
     ],
     "progression": [
-      "Победы по соперникам сохраняются на этом устройстве. Это три сложности матчей, не кампания уровней."
+      "Тренировка, Клуб и Эксперт меняют сложность матча с компьютером; это не кампания уровней."
     ],
     "designNote": "Перемещайтесь туда, куда прилетит мяч.",
     "noteTitle": "Правила",
-    "parent": "Победы по соперникам сохраняются на этом устройстве. Это три сложности матчей, не кампания уровней.",
+    "parent": "Победы учитываются отдельно для каждой сложности. Выбранная сложность и звук сохраняются в этом браузере. Аккаунт, покупка и онлайн-матч не нужны.",
     "faq": [
       [
         "Правила",
@@ -622,11 +622,11 @@
       "पैडल के बीच से सीधी और किनारे से तिरछी वापसी होती है। स्पेस से सर्व या विराम करें।"
     ],
     "progression": [
-      "हर प्रतिद्वंद्वी के विरुद्ध जीत इस उपकरण पर सहेजी जाती है। ये तीन मैच कठिनाइयाँ हैं, स्तर अभियान नहीं।"
+      "अभ्यास, क्लब और विशेषज्ञ कंप्यूटर प्रतिद्वंद्वी की मैच कठिनाई बदलते हैं; ये स्तरों वाला अभियान नहीं हैं।"
     ],
     "designNote": "जहाँ गेंद आएगी, वहाँ बाएँ या दाएँ जाएँ।",
     "noteTitle": "निर्देश",
-    "parent": "हर प्रतिद्वंद्वी के विरुद्ध जीत इस उपकरण पर सहेजी जाती है। ये तीन मैच कठिनाइयाँ हैं, स्तर अभियान नहीं।",
+    "parent": "हर मैच कठिनाई की जीत अलग से गिनी जाती है। चुनी हुई कठिनाई और ध्वनि इसी ब्राउज़र में रहती है। खाते, खरीद या ऑनलाइन मैच की जरूरत नहीं है।",
     "faq": [
       [
         "निर्देश",
@@ -661,11 +661,11 @@
       "وسط المضرب يعيد الكرة مستقيمة، وحوافه تغيّر الزاوية. مفتاح المسافة للإرسال أو الإيقاف المؤقت."
     ],
     "progression": [
-      "تُحفظ الانتصارات لكل خصم على هذا الجهاز. هذه ثلاث صعوبات للمباراة وليست حملة مراحل."
+      "تغيّر مستويات التدريب والنادي والخبير صعوبة المباراة مع الخصم الحاسوبي؛ وليست حملة مراحل."
     ],
     "designNote": "تحرك يمينًا أو يسارًا إلى مكان وصول الكرة.",
     "noteTitle": "الدليل",
-    "parent": "تُحفظ الانتصارات لكل خصم على هذا الجهاز. هذه ثلاث صعوبات للمباراة وليست حملة مراحل.",
+    "parent": "تُحسب الانتصارات منفصلة لكل مستوى صعوبة. يبقى مستوى الصعوبة المختار والصوت في هذا المتصفح. لا يلزم حساب أو شراء أو مباراة عبر الإنترنت.",
     "faq": [
       [
         "الدليل",

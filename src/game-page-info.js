@@ -10770,7 +10770,7 @@
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
       const spanishResourceVersion = currentGameId() === "beast-tactician"
-        ? "20261011-beast-guide-facts-v1"
+        ? "20261011-beast-guide-facts-v2"
         : currentGameId() === "animal-gearpack-expedition"
           ? "20261003-gearpack-text140-v5"
           : "20261001-fruit-garden-text140-v1";
@@ -21325,7 +21325,8 @@
     guide.genre = copy.genre;
     guide.progression = [beastProgressionTruth140[localeCode]];
     guide.story = [...(guide.story || []).slice(0, 1), copy.story];
-    guide.systems = [...(guide.systems || []).slice(0, 1), copy.systems];
+    const rallySystemPattern = /rally|集結|集结|ralliement|raduno|сбор|रैली|التجمّع|랠리|ラリー/i;
+    guide.systems = [...(guide.systems || []).filter((item) => !rallySystemPattern.test(item)), copy.systems];
     if (copy.how) guide.how = Array.isArray(copy.how) ? copy.how : [copy.how];
     if (localeCode === "ar" && copy.faqs) {
       guide.faq = copy.faqs;
