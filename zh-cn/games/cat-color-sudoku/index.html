@@ -77,70 +77,70 @@
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-owned-guide data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">Cat Color Sudoku</strong><span data-t="loading">Opening Orla's moonlit atlas…</span><div class="loading-track"><i></i></div></div>
+    <div class="loading-card"><strong data-t="title">猫咪彩域数独</strong><span data-t="loading">正在打开奥拉的月光图册…</span><div class="loading-track"><i></i></div></div>
   </section>
 
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header">
-      <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-      <strong data-t="shortTitle">CAT SUDOKU</strong>
+      <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+      <strong data-t="shortTitle">猫咪彩域</strong>
       <div class="main-tools">
-        <button id="audio" type="button" data-t-aria="audio" aria-label="Audio" aria-pressed="true"><span aria-hidden="true">♪</span><small data-t="audioOn">On</small></button>
-        <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+        <button id="audio" type="button" data-t-aria="audio" aria-pressed="true" aria-label="音效"><span aria-hidden="true">♪</span><small data-t="audioOn">开启</small></button>
+        <label class="locale"><span data-t="language">语言</span><select id="locale"></select></label>
       </div>
     </header>
     <section class="hero" aria-labelledby="mainTitle">
-      <img src="../../assets/cat-color-sudoku-cover-v1.png" data-t-alt="summary" alt="《猫咪彩域数独》游戏图片">
+      <img src="../../assets/cat-color-sudoku-cover-v1.png" alt="在每一行、每一列和每个彩色图纹区域各找出一只月须猫，而且猫咪不能互相碰到。" data-t-alt="summary">
       <div class="hero-copy">
-        <p class="eyebrow" data-t="mainKicker">Moon Cap Orla's color atlas</p>
+        <p class="eyebrow" data-t="mainKicker">月帽奥拉的彩域图册</p>
         <h1 id="mainTitle" data-t="title" data-runtime-localize="off">猫咪彩域数独</h1>
-        <p class="summary" data-t="summary">Find one Moonwhisker cat in every row, column, and patterned color territory—without letting any cats touch.</p>
+        <p class="summary" data-t="summary">在每一行、每一列和每个彩色图纹区域各找出一只月须猫，而且猫咪不能互相碰到。</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 30 maps solved</p>
-        <button id="start" class="primary" type="button" data-wp-main-start data-t="start">Start game</button>
+        <button id="start" class="primary" type="button" data-wp-main-start data-t="start">开始游戏</button>
       </div>
     </section>
   </main>
-  <section id="guide" class="game-guide guide" data-wp-game-guide aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>彩色区域推理</span><span>Classic</span><span>Puzzle</span><span>Strategy</span></div>
-      <p class="eyebrow" data-t="guideTitle">Game guide</p>
-      <h2 id="guideTitle" data-t="guideIntro">Read colors, patterns, rows, and columns together.</h2>
+  <section id="guide" class="game-guide guide" data-wp-game-guide aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tag1">彩域推理</span><span data-t="tag2">猫咪摆放益智</span><span data-t="tag3">不相邻棋盘推理</span></div>
+      <p class="eyebrow" data-t="guideTitle">游戏指南</p>
+      <h2 id="guideTitle" data-t="guideIntro">把颜色、图纹、行与列一起判断。每张地图只有一个逻辑解，而且没有计时。</h2>
       <div class="guide-grid">
-        <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li><li data-t="how4"></li></ol></article>
-        <article><h3 data-t="winGuideTitle">Complete the atlas</h3><p data-t="winGuide"></p><h3 data-t="tipsTitle">Practical tips</h3><p data-t="tips"></p></article>
-        <article><h3 data-t="progressTitle">30 moonlit maps</h3><p data-t="progressGuide"></p><h3 data-t="saveTitle">Save and privacy</h3><p data-t="saveText"></p></article>
+        <article><h3 data-t="howTitle">游玩方式</h3><ol><li data-t="how1">每一行恰好有一只猫。</li><li data-t="how2">每一列和每个彩色区域也恰好有一只猫。</li><li data-t="how3">猫咪不能相邻，连对角线也不行。</li><li data-t="how4">选择“放猫”或“标记 X”，再点击格子；撤销与重来永远免费。</li></ol></article>
+        <article><h3 data-t="winGuideTitle">完成月光图册</h3><p data-t="winGuide">正确放好全部猫咪即可解开地图。直接冲突会立刻被阻止，暂时的推测则可以撤销。</p><h3 data-t="tipsTitle">实用技巧</h3><p data-t="tips">先找只剩一个合法格的区域。放下一只猫后，标记同行、同列和周围八格。</p></article>
+        <article><h3 data-t="progressTitle">30 张月光地图</h3><p data-t="progressGuide">六个章节从引导式 4×4 逐步成长到 7×7 大师题；完成一关只会解锁下一关。</p><h3 data-t="saveTitle">存档与隐私</h3><p data-t="saveText">完成进度和最佳标记数只保存在此浏览器，不需账号，也不会上传。</p></article>
       </div>
-      <div class="guide-faq"><h3 data-t="faqTitle">FAQ</h3><details><summary data-t="faq1Q"></summary><p data-t="faq1A"></p></details><details><summary data-t="faq2Q"></summary><p data-t="faq2A"></p></details></div>
-      <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">More logic games</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">Numeric Sudoku</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">Minefield Logic</a></nav>
+      <div class="guide-faq"><h3 data-t="faqTitle">常见问题</h3><details><summary data-t="faq1Q">只能靠颜色判断吗？</summary><p data-t="faq1A">不是。每个区域还有图纹、符号与无障碍名称。</p></details><details><summary data-t="faq2Q">这是数字数独吗？</summary><p data-t="faq2A">不是。这是使用行、列、区域和不相邻规则的猫咪配置推理。</p></details><details><summary data-t="faq3Q">提示会显示什么？</summary><p data-t="faq3A">提示会标出可以放置下一只正确猫咪的格子，不会直接填完整个棋盘。</p></details><details><summary data-t="faq4Q">违反规则的操作会怎样？</summary><p data-t="faq4A">如果放置位置违反行、列、图纹区域或不相邻规则，这一步会被拒绝；撤销可以恢复上一步。</p></details><details><summary data-t="faq5Q">怎样才算解开地图？</summary><p data-t="faq5A">放好所有猫咪，让每行、每列和每个图纹区域各有一只，而且猫咪不能接触，包括斜向。解开后会开放下一张地图。</p></details></div>
+      <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">更多逻辑游戏</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">数字数独</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">雷区逻辑</a></nav>
   </section>
 
   <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
     <header class="scene-header">
-      <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="Back">←</button>
-      <div><small data-t="choose">Choose a moon map</small><h2 data-t="shortTitle">CAT SUDOKU</h2></div>
+      <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="返回 WeightPlay">←</button>
+      <div><small data-t="choose">选择月光地图</small><h2 data-t="shortTitle">猫咪彩域</h2></div>
       <span id="stageProgress">0/30</span>
     </header>
-    <section id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageRailLabel" aria-label="Moon map selection"></section>
-    <nav class="stage-tabs" data-t-aria="stageRailLabel" aria-label="Moon map selection"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-t="stages">Stages</button><span aria-hidden="true"></span></nav>
+    <section id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageRailLabel" aria-label="月光地图选择"></section>
+    <nav class="stage-tabs" data-t-aria="stageRailLabel" aria-label="月光地图选择"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-t="stages">关卡</button><span aria-hidden="true"></span></nav>
   </main>
 
   <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header">
-      <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="Back">←</button>
+      <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="返回地图列表">←</button>
       <div><small id="battleChapter"></small><h2 id="battleStage"></h2></div>
-      <div class="battle-header-tools"><span id="objective"></span><button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility aria-label="Audio" data-t-aria="audio"><span aria-hidden="true">♪</span></button></div>
+      <div class="battle-header-tools"><span id="objective"></span><button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility data-t-aria="audio" aria-label="音效"><span aria-hidden="true">♪</span></button></div>
     </header>
     <section class="battle-content">
       <div class="board-wrap">
-        <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="Cat Color Sudoku board"></div>
+        <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="猫咪彩域数独棋盘"></div>
         <p id="status" class="status" aria-live="polite"></p>
       </div>
-      <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="Puzzle tools">
-        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action>Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">Mark X</button></div>
-        <div class="action-row"><button id="undo" type="button" data-t="undo">Undo</button><button id="hint" type="button" data-t="hint">Hint</button><button id="restart" type="button" data-t="restart">Restart</button></div>
+      <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="谜题工具">
+        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="放置模式"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action>放置猫咪</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">标记 X</button></div>
+        <div class="action-row"><button id="undo" type="button" data-t="undo">撤销</button><button id="hint" type="button" data-t="hint">提示</button><button id="restart" type="button" data-t="restart">重新开始</button></div>
         <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
       </aside>
     </section>
-    <dialog id="leaveDialog" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-t="leaveTitle">Leave this map?</h2><p data-t="leaveText"></p><div class="dialog-actions"><button id="leaveContinue" class="primary" data-t="continue">Continue</button><button id="leaveStages" data-t="returnStages">Stage list</button></div></dialog>
-    <dialog id="resultDialog" aria-labelledby="resultTitle"><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">Atlas restored</p><h2 id="resultTitle" data-t="resultTitle">Moon map solved!</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" data-t="stages">Stages</button><button id="resultNext" class="primary" data-t="next">Next map</button><button id="resultReplay" data-t="replay">Play again</button></div></dialog>
+    <dialog id="leaveDialog" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-t="leaveTitle">要离开这张地图吗？</h2><p data-t="leaveText">继续会保留目前推理；返回关卡会结束本次尝试。</p><div class="dialog-actions"><button id="leaveContinue" class="primary" data-t="continue">继续</button><button id="leaveStages" data-t="returnStages">返回关卡</button></div></dialog>
+    <dialog id="resultDialog" aria-labelledby="resultTitle"><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">图册已修复</p><h2 id="resultTitle" data-t="resultTitle">月光地图解开了！</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" data-t="stages">关卡</button><button id="resultNext" class="primary" data-t="next">下一张地图</button><button id="resultReplay" data-t="replay">再玩一次</button></div></dialog>
   </main>
 
   <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
@@ -150,7 +150,8 @@
   <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js?v=20260819-cat-color-sudoku-v1"></script>
-  <script src="locales.js?v=20260829-cat-color-sudoku-v5-result-mastery"></script>
+  <script src="locales.js?v=20261010-cat-color-text-growth-140"></script>
+  <script src="text-growth-140.js?v=20261010-cat-color-text-growth-140"></script>
   <script src="game.js?v=20260903-cat-color-sudoku-v7-audio&wp-audio=1.0.0"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260819-cat-color-sudoku-v1" data-wp-battle-standard></script>

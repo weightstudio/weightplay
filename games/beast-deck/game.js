@@ -28,7 +28,7 @@
   (__wpNotifyMeasurement(), resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock"));
 
   const GAME_ID = "beast-deck";
-  document.body.dataset.gameVersion = 'v22';
+  document.body.dataset.gameVersion = 'v24';
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();
@@ -47,6 +47,9 @@
   };
   const amuletCost = 15;
   const packCost = 80;
+  const cardRules = window.BeastDeckCards;
+  let diamondPackConfirmation = null;
+  let lastDiamondPackAt = -Infinity;
   const maxGearRank = 3;
   const maxEquippedCards = 6;
   const maxMission = 30;
@@ -276,6 +279,24 @@
     nodes.startBtn.remove();
     deckView.append(progressPanel, profilePanel, controlChips, collectionPanel);
     shopView.append(diamondShop);
+    const draw = document.createElement("button");
+    draw.type = "button";
+    draw.id = "diamondPackBtn";
+    draw.className = "diamond-btn";
+    draw.innerHTML = `<span><strong></strong><small></small></span><b><img src="${asset("weightplay-diamond.svg")}" alt=""><span>5</span></b>`;
+    const notice = document.createElement("div");
+    notice.id = "diamondPackStatus";
+    notice.className = "pack-status diamond-pack-status";
+    notice.setAttribute("role", "status");
+    const odds = document.createElement("p");
+    odds.className = "diamond-pack-odds";
+    diamondShop.append(draw, notice, odds);
+    Object.assign(nodes, { diamondPackBtn: draw, diamondPackStatus: notice, diamondPackOdds: odds });
+    const growth = document.createElement("p");
+    growth.id = "cardGrowthHint";
+    growth.className = "deck-analysis";
+    nodes.collectionGrid.before(growth);
+    nodes.cardGrowthHint = growth;
     Object.assign(nodes, {
       stagePanel,
       mainStartBtn: mainStart,
@@ -287,6 +308,7 @@
 
   let screenFrame;
   function syncScene(next) {
+    clearDiamondPackConfirmation();
     const owners = { main: nodes.menuPanel, stage: nodes.stagePanel, battle: nodes.gamePanel };
     for (const [name, owner] of Object.entries(owners)) {
       const active = name === next;
@@ -313,6 +335,8 @@
 }
 
   function selectStageTab(tabName) {
+    clearDiamondPackConfirmation();
+    updateDiamondPackUI();
     cancelStageSettlement();
     if (tabName !== "shop" && amuletConfirmPending) {
       clearAmuletConfirmation();
@@ -821,6 +845,10 @@
     "iron-tortoise": { cost: 2, type: "defense", image: "beast-deck-redrawn/iron-tortoise-v1.png", nameKey: "card_iron_tortoise", descKey: "card_iron_tortoise_desc" },
     "mist-curse": { cost: 1, type: "curse", image: "beast-deck-redrawn/mist-crown-monarch-v1.png", nameKey: "card_mist_curse", descKey: "card_mist_curse_desc", draftable: false, temporary: true },
   };
+
+  Object.entries(cardRules.cards).forEach(([id, card]) => {
+    cardDb[id] = { ...card, image: `beast-deck-redrawn/${card.image}`, nameKey: `card_${id}`, descKey: `effect_${id}` };
+  });
 
   text.es = {
     title: "Beast Deck: El Bosque de Niebla",
@@ -1509,7 +1537,7 @@
   }
 
   function saveLocalState() {
-    writeStorage(saveKey, JSON.stringify(profile));
+    return writeStorage(saveKey, JSON.stringify(profile));
   }
 
   function getLocale() {
@@ -1540,6 +1568,9 @@
 
   function t(key, params = {}) {
     const locale = getLocale();
+    if (key === "draftPermanentHint") return cardRules.format(locale, "draftHint");
+    const newCard = Object.keys(cardRules.cards).find((id) => key === `card_${id}`);
+    if (newCard) return (cardRules.copy[locale] || cardRules.copy.en).names[Object.keys(cardRules.cards).indexOf(newCard)];
     const zhRuntimeFallback = {};
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const raw = key === "hudHp"
@@ -1832,6 +1863,7 @@
   }
 
   function translateUI() {
+    clearDiamondPackConfirmation();
     clearAmuletConfirmation();
     const locale = getLocale();
     document.documentElement.lang = locale;
@@ -1864,6 +1896,7 @@
   }
 
   function updateDiamondShopUI() {
+    updateDiamondPackUI();
     const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
     const resultingBalance = Math.max(0, wallet.diamonds - amuletCost);
     nodes.diamondBalance.textContent = wallet.diamonds;
@@ -1888,6 +1921,100 @@
       nodes.amuletBtn.querySelector("b").style.display = "flex";
       nodes.amuletBtn.querySelector("b span").textContent = amuletCost;
     }
+  }
+
+  function growthText(key, params = {}) {
+    return cardRules.format(getLocale(), key, params);
+  }
+
+  function cardRank(cardId) {
+    return cardRules.rank(profile.collection[cardId] || 0);
+  }
+
+  function cardProgress(cardId) {
+    const rank = cardRank(cardId);
+    return `${growthText("rank", { rank })} · ${rank === 5 ? growthText("max") : growthText("next", { owned: profile.collection[cardId] || 0, next: cardRules.thresholds[rank] })}`;
+  }
+
+  function cardDescription(cardId) {
+    const card = cardDb[cardId];
+    const bonus = cardRank(cardId) - 1;
+    const spec = cardRules.cards[cardId];
+    if (spec) {
+      const parts = [];
+      if (spec.disarm) parts.push(growthText("disarm"));
+      for (const key of ["armor", "shield", "damage", "finisher", "heal", "cleanse", "block", "poison", "purge", "draw"]) {
+        if (!spec[key]) continue;
+        const added = ["damage", "heal", "poison"].includes(key) ? bonus : key === "block" ? bonus * 2 : 0;
+        parts.push(growthText(key, { n: spec[key] + added }));
+      }
+      if (spec.purge && bonus) parts.push(growthText("block", { n: bonus }));
+      return parts.join(" · ");
+    }
+    const replacements = {
+      "wolf-pack": { 6: 6 + bonus, 12: 12 + bonus },
+      "guard-bear": { 6: 6 + bonus * 2 },
+      "sky-hawk": { 14: 14 + bonus },
+      "viper-venom": { 3: 3 + bonus },
+      "iron-tortoise": { 15: 15 + bonus * 2 },
+    }[cardId] || {};
+    let description = t(card.descKey).replace(/\d+/g, (n) => replacements[n] ?? n);
+    if (bonus && ["owl-wisdom", "cheetah-sprint"].includes(cardId)) description += ` · ${growthText("block", { n: bonus })}`;
+    return description;
+  }
+
+  function clearDiamondPackConfirmation() {
+    diamondPackConfirmation = null;
+    nodes.diamondPackBtn?.classList.remove("is-confirming");
+  }
+
+  function updateDiamondPackUI() {
+    if (!nodes.diamondPackBtn) return;
+    const balance = window.WeightPlayWallet?.read().diamonds || 0;
+    const confirming = diamondPackConfirmation?.balance === balance && performance.now() < diamondPackConfirmation.expires;
+    if (!confirming) diamondPackConfirmation = null;
+    const label = confirming ? growthText("confirm", { balance, result: balance - cardRules.diamondCost }) : growthText("diamond");
+    nodes.diamondPackBtn.querySelector("strong").textContent = label;
+    nodes.diamondPackBtn.querySelector("small").textContent = growthText("need", { balance });
+    nodes.diamondPackOdds.textContent = growthText("odds");
+    nodes.diamondPackBtn.disabled = balance < cardRules.diamondCost;
+    nodes.diamondPackBtn.classList.toggle("is-confirming", confirming);
+    nodes.diamondPackBtn.setAttribute("aria-label", `${label}. ${growthText("odds")}. ${growthText("need", { balance })}`);
+  }
+
+  function drawDiamondPack(event) {
+    if (event?.detail > 1 || performance.now() - lastDiamondPackAt < 450) return;
+    const wallet = window.WeightPlayWallet;
+    const balance = wallet?.read().diamonds || 0;
+    if (balance < cardRules.diamondCost) return updateDiamondShopUI();
+    if (!diamondPackConfirmation || diamondPackConfirmation.balance !== balance || performance.now() >= diamondPackConfirmation.expires) {
+      diamondPackConfirmation = { balance, expires: performance.now() + 8000 };
+      updateDiamondPackUI();
+      return;
+    }
+    clearDiamondPackConfirmation();
+    const before = normalizeProfile(profile);
+    const cardId = permanentCardIds[Math.floor(Math.random() * permanentCardIds.length)];
+    const message = awardPackCard(cardId, false);
+    let purchased = false;
+    try {
+      // A denied save never consumes Diamonds. A rejected wallet write rolls
+      // back the staged reward, including the restricted-storage session copy.
+      if (saveLocalState()) purchased = wallet.spendDiamonds(cardRules.diamondCost);
+    } catch { purchased = false; }
+    if (!purchased) {
+      profile = before;
+      saveLocalState();
+      nodes.diamondPackStatus.textContent = growthText("storage");
+      window.WeightPlayAudio?.play("feedback.error");
+    } else {
+      lastDiamondPackAt = performance.now();
+      showPackReward(cardDb[cardId].image, t("packRewardCardType"), message, nodes.diamondPackStatus);
+      window.WeightPlayAudio?.play("shop.purchase");
+    }
+    renderCollectionUI();
+    updateDiamondShopUI();
+    if (event?.detail === 0 && nodes.diamondPackBtn.disabled) nodes.stagePanel.querySelector('[data-stage-tab="shop"]')?.focus({ preventScroll: true });
   }
 
   function cardName(cardId) {
@@ -1951,6 +2078,7 @@
 
   function renderCollectionUI() {
     if (!nodes.collectionGrid) return;
+    nodes.cardGrowthHint.textContent = `${growthText("growth")} ${growthText("armorRule")}`;
     nodes.profileCoinText.textContent = String(profile.coins);
     nodes.packCost.textContent = String(packCost);
     nodes.packBtn.disabled = profile.coins < packCost;
@@ -2013,11 +2141,13 @@
       button.className = `collection-card ${card.type}`;
       button.dataset.cardId = cardId;
       button.disabled = !canEquip;
-      button.setAttribute("aria-label", `${cardName(cardId)} · ${t(card.descKey)} · ${t("ownedCount", { count: owned })} · ${t("equippedCount", { count: equipped, max: owned })} · ${cardStatus}`);
+      button.setAttribute("aria-label", `${cardName(cardId)} · ${cardDescription(cardId)} · ${cardProgress(cardId)} · ${t("ownedCount", { count: owned })} · ${t("equippedCount", { count: equipped, max: owned })} · ${cardStatus}`);
       button.innerHTML = `
         <img src="${asset(card.image)}" alt="">
         <strong>${cardName(cardId)}</strong>
+        <small>${cardProgress(cardId)}</small>
         <small>${t("ownedCount", { count: owned })} / ${t("equippedCount", { count: equipped, max: owned })}</small>
+        <span class="collection-effect">${cardDescription(cardId)}</span>
         <span>${cardStatus}</span>
       `;
       button.addEventListener("click", (event) => {
@@ -2098,10 +2228,10 @@
     window.WeightPlayAudio?.play("feedback.success");
   }
 
-  function showPackReward(image, typeLabel, message) {
-    if (!nodes.packStatus) return;
-    nodes.packStatus.classList.remove("is-reveal");
-    nodes.packStatus.replaceChildren();
+  function showPackReward(image, typeLabel, message, target = nodes.packStatus) {
+    if (!target) return;
+    target.classList.remove("is-reveal");
+    target.replaceChildren();
 
     const art = document.createElement("span");
     art.className = "pack-reward-art";
@@ -2117,14 +2247,15 @@
     const detail = document.createElement("strong");
     detail.textContent = message;
     copy.append(label, detail);
-    nodes.packStatus.append(art, copy);
+    target.append(art, copy);
 
     // Restart the short reveal motion even when two packs award the same item.
-    void nodes.packStatus.offsetWidth;
-    nodes.packStatus.classList.add("is-reveal");
+    void target.offsetWidth;
+    target.classList.add("is-reveal");
   }
 
-  function awardPackCard(cardId) {
+  function awardPackCard(cardId, reveal = true) {
+    const previous = profile.collection[cardId] || 0;
     profile.collection[cardId] = (profile.collection[cardId] || 0) + 1;
     let message;
     if (canEquipCard(cardId)) {
@@ -2133,7 +2264,10 @@
     } else {
       message = t("packResultCard", { card: cardName(cardId) });
     }
-    showPackReward(cardDb[cardId].image, t("packRewardCardType"), message);
+    if (previous > 0) message = growthText("duplicate", { name: cardName(cardId), progress: cardProgress(cardId) });
+    else message += ` ${growthText("rank", { rank: cardRank(cardId) })}`;
+    if (reveal) showPackReward(cardDb[cardId].image, t("packRewardCardType"), message);
+    return message;
   }
 
   function awardPackGear(gearId) {
@@ -2686,7 +2820,7 @@
     while (state.bossPhase < nextPhase) {
       state.bossPhase += 1;
       const phase = state.bossPhase;
-      if (mechanic === "armor") state.enemyArmor += phase;
+      if (mechanic === "armor") state.enemyArmor = Math.min(cardRules.maxArmor, state.enemyArmor + phase);
       if (mechanic === "riposte") state.enemyRiposteBonus += 2;
       if (mechanic === "haste") state.enemyHasteStep = Math.min(3, state.enemyHasteStep + 1);
       if (mechanic === "regen") state.enemyRegen += 2;
@@ -2725,6 +2859,7 @@
     const armorBlocked = Math.min(state.enemyArmor, damage);
     if (armorBlocked > 0) {
       damage -= armorBlocked;
+      state.enemyArmor = Math.max(0, state.enemyArmor - 1);
       log(t("log_armor_absorb", { enemy: enemyName(state.enemy), blocked: armorBlocked }), "system");
     }
     const blocked = Math.min(state.enemyShield, damage);
@@ -2792,7 +2927,7 @@
       log(t("log_weak", { amount: state.playerWeak }), "system");
       state.playerWeak = 0;
     }
-    applyEnemyDamage(damage);
+    const dealt = applyEnemyDamage(damage);
     if (state.enemyHp > 0 && state.enemyRiposte > 0) {
       const riposte = state.enemyRiposte;
       state.enemyRiposte = 0;
@@ -2800,6 +2935,13 @@
       log(t("log_riposte", { enemy: enemyName(state.enemy), damage: result.damage }), "enemy");
       showCombatFeedback(t("combatRiposte", { amount: result.damage }), "poison");
     }
+    return dealt;
+  }
+
+  function gainBlock(amount) {
+    state.playerShield += amount;
+    log(t("log_player_block", { amount }), "system");
+    showCombatFeedback(t("combatGainBlock", { amount }), "block");
   }
 
   function playCard(index) {
@@ -2829,43 +2971,72 @@
     log(t("log_play_card", { card: cardName, cost }), "player");
     showCombatFeedback(cardName, "card");
 
+    const bonus = cardRank(cardId) - 1;
     if (cardId === "wolf-pack") {
-      const damage = state.attacksPlayedThisTurn > 0 ? 12 : 6;
-      if (damage === 12) log(t("log_combo", { card: cardName, damage }), "player-synergy");
-      resolvePlayerAttack(damage);
+      const damage = (state.attacksPlayedThisTurn > 0 ? 12 : 6) + bonus;
+      if (state.attacksPlayedThisTurn > 0) log(t("log_combo", { card: cardName, damage }), "player-synergy");
+      const dealt = resolvePlayerAttack(damage);
       state.attacksPlayedThisTurn++;
-      window.WeightPlayAudio?.play("combat.strike");
+      window.WeightPlayAudio?.play(dealt > 0 ? "combat.strike" : "combat.block");
     } else if (cardId === "guard-bear") {
-      state.playerShield += 6;
-      log(t("log_player_block", { amount: 6 }), "system");
-      showCombatFeedback(t("combatGainBlock", { amount: 6 }), "block");
+      gainBlock(6 + bonus * 2);
       window.WeightPlayAudio?.play("reward.upgrade");
     } else if (cardId === "sky-hawk") {
-      resolvePlayerAttack(14);
+      const dealt = resolvePlayerAttack(14 + bonus);
       state.attacksPlayedThisTurn++;
       drawCards(1);
-      window.WeightPlayAudio?.play("combat.strike");
+      window.WeightPlayAudio?.play(dealt > 0 ? "combat.strike" : "combat.block");
     } else if (cardId === "cheetah-sprint") {
       drawCards(2);
       state.energy += 1;
       window.WeightPlayAudio?.play("reward.upgrade");
     } else if (cardId === "viper-venom") {
-      state.enemyPoison += 3;
-      showCombatFeedback(t("combatApplyPoison", { amount: 3 }), "poison");
+      state.enemyPoison += 3 + bonus;
+      showCombatFeedback(t("combatApplyPoison", { amount: 3 + bonus }), "poison");
       window.WeightPlayAudio?.play("magic.cast");
     } else if (cardId === "owl-wisdom") {
       drawCards(1);
       window.WeightPlayAudio?.play("ui.click");
     } else if (cardId === "iron-tortoise") {
-      state.playerShield += 15;
-      log(t("log_player_block", { amount: 15 }), "system");
-      showCombatFeedback(t("combatGainBlock", { amount: 15 }), "block");
+      gainBlock(15 + bonus * 2);
       window.WeightPlayAudio?.play("reward.upgrade");
+    } else if (cardRules.cards[cardId]) {
+      const effect = cardRules.cards[cardId];
+      if (effect.disarm) state.enemyRiposte = 0;
+      if (effect.armor) state.enemyArmor = Math.max(0, state.enemyArmor - effect.armor);
+      if (effect.shield) state.enemyShield = Math.max(0, state.enemyShield - effect.shield);
+      if (effect.damage) {
+        const finisher = effect.finisher && state.enemyHp <= state.enemyMaxHp / 2 ? effect.finisher : 0;
+        const dealt = resolvePlayerAttack(effect.damage + bonus + finisher);
+        state.attacksPlayedThisTurn++;
+        window.WeightPlayAudio?.play(dealt > 0 ? (finisher ? "combat.critical" : "combat.strike") : "combat.block");
+      }
+      if (effect.heal) {
+        const healed = Math.min(state.playerMaxHp - state.playerHp, effect.heal + bonus);
+        state.playerHp += healed;
+        showCombatFeedback(growthText("heal", { n: healed }), "block");
+        if (healed) window.WeightPlayAudio?.play("magic.heal");
+      }
+      if (effect.cleanse) state.playerPoison = Math.max(0, state.playerPoison - effect.cleanse);
+      if (effect.block) gainBlock(effect.block + bonus * 2);
+      if (effect.poison) {
+        state.enemyPoison += effect.poison + bonus;
+        showCombatFeedback(t("combatApplyPoison", { amount: effect.poison + bonus }), "poison");
+        window.WeightPlayAudio?.play("magic.cast");
+      }
+      if (effect.purge) {
+        for (const pile of ["hand", "deck", "drawPile", "discardPile"]) state[pile] = state[pile].filter((id) => id !== "mist-curse");
+        if (state.markedCardId === "mist-curse") { state.markedCardId = null; state.markDamage = 0; }
+        log(growthText("purge"), "player-synergy");
+        window.WeightPlayAudio?.play("magic.cast");
+      }
+      if (effect.draw) drawCards(effect.draw);
     } else if (cardId === "mist-curse") {
       log(t("log_curse_clear"), "player-synergy");
       window.WeightPlayAudio?.play("ui.click");
     }
 
+    if (bonus && ["owl-wisdom", "cheetah-sprint", "owl-purge"].includes(cardId)) gainBlock(bonus);
     const playerDefeated = state.playerHp <= 0;
     const enemyDefeated = state.enemyHp <= 0;
     if (playerDefeated || enemyDefeated) state.isPlayerTurn = false;
@@ -2937,8 +3108,9 @@
       if (nextAttack) nextAttack.val += 2;
       window.WeightPlayAudio?.play("alert.boss");
     } else if (intent.type === "armor") {
-      state.enemyArmor += intent.val;
-      actionText = t("intent_armor", { amount: intent.val });
+      const gained = Math.min(intent.val, Math.max(0, cardRules.maxArmor - state.enemyArmor));
+      state.enemyArmor += gained;
+      actionText = t("intent_armor", { amount: gained });
       window.WeightPlayAudio?.play("reward.upgrade");
     } else if (intent.type === "riposte") {
       state.enemyRiposte = intent.val + state.enemyRiposteBonus;
@@ -3120,7 +3292,7 @@
     nodes.draftCards.innerHTML = "";
     updateDraftNextBattlePreview();
     let draftLocked = false;
-    const draftPool = ["sky-hawk", "cheetah-sprint", "viper-venom", "owl-wisdom", "iron-tortoise"];
+    const draftPool = [...permanentCardIds];
     shuffle(draftPool);
     draftPool.slice(0, 3).forEach((cardId) => {
       const card = cardDb[cardId];
@@ -3130,7 +3302,7 @@
       cardEl.innerHTML = cardMarkup(card);
       cardEl.setAttribute("aria-label", t("cardActionLabel", {
         card: t(card.nameKey),
-        effect: t(card.descKey),
+        effect: cardDescription(cardId),
         status: t("chooseCardDesc"),
       }));
       cardEl.addEventListener("click", (event) => {
@@ -3159,18 +3331,20 @@
   }
 
   function cardMarkup(card, cost = card.cost) {
+    const cardId = Object.keys(cardDb).find((id) => cardDb[id] === card);
     return `
       <div class="card-header">
         <span class="card-cost">${cost}</span>
+        ${card.temporary ? "" : `<small class="card-rank">${growthText("rank", { rank: cardRank(cardId) })}</small>`}
       </div>
       <div class="card-icon"><img src="${asset(card.image)}" alt=""></div>
       <strong class="card-name">${t(card.nameKey)}</strong>
-      <p class="card-desc">${t(card.descKey)}</p>
+      <p class="card-desc">${cardDescription(cardId)}</p>
     `;
   }
 
   function initializeEnemyMechanics(enemy) {
-    state.enemyArmor = Math.max(0, enemy.armor || 0);
+    state.enemyArmor = clamp(enemy.armor || 0, 0, cardRules.maxArmor);
     state.enemyRiposte = 0;
     state.enemyRiposteBonus = Math.max(0, enemy.riposteBonus || 0);
     state.enemyRegen = Math.max(0, enemy.regen || 0);
@@ -3277,7 +3451,7 @@
       cardEl.classList.toggle("disabled", !canPlay);
       cardEl.setAttribute("aria-label", t("cardActionLabel", {
         card: t(card.nameKey),
-        effect: t(card.descKey),
+        effect: cardDescription(cardId),
         status,
       }));
       cardEl.addEventListener("click", (event) => {
@@ -3510,6 +3684,8 @@
     if (!new URLSearchParams(window.location.search).has("smoke")) return;
     window.__beastDeckSmoke = {
       getState: () => ({
+        playerPoison: state.playerPoison || 0,
+        enemyPoison: state.enemyPoison || 0,
         mission: state.mission,
         battle: state.battle,
         deck: [...(state.deck || [])],
@@ -3737,6 +3913,22 @@
         renderStats();
         renderHand();
         return window.__beastDeckSmoke.getState();
+      },
+      setUpgradeScenario: ({ cardId, copies = 1, enemyHp = 100, armor = 0, shield = 0, riposte = 0, hp = 20, poison = 0, curses = false } = {}) => {
+        cancelBattleTransitions();
+        profile.collection[cardId] = copies;
+        Object.assign(state, { hand: [cardId], deck: [cardId], drawPile: ["guard-bear"], discardPile: [], energy: 3, maxEnergy: 3,
+          enemyHp, enemyMaxHp: 100, enemyArmor: armor, enemyShield: shield, enemyRiposte: riposte, enemyWard: 0, enemyPoison: 0,
+          playerHp: hp, playerMaxHp: 30, playerPoison: poison, playerShield: 0, playerWeak: 0,
+          attacksPlayedThisTurn: 0, exhaustCardId: null, markedCardId: null, enemySeal: null, isPlayerTurn: true });
+        if (curses) for (const pile of ["hand", "deck", "drawPile", "discardPile"]) state[pile].push("mist-curse");
+        renderStats(); renderHand();
+        return { rank: cardRank(cardId), description: cardDescription(cardId) };
+      },
+      reinforceArmor: (amount = 3) => {
+        resolveEnemyIntent({ type: "armor", val: amount });
+        renderStats();
+        return state.enemyArmor;
       },
       setCardSequenceState: ({ energy = state.energy, enemyHp = state.enemyHp, hand = state.hand } = {}) => {
         cancelBattleTransitions();
@@ -4104,6 +4296,10 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.packBtn?.addEventListener("click", drawPack);
+    nodes.diamondPackBtn.addEventListener("keydown", rejectRepeatedLoadoutActivation);
+    nodes.diamondPackBtn.addEventListener("click", drawDiamondPack);
+    window.addEventListener("blur", () => { clearDiamondPackConfirmation(); updateDiamondPackUI(); });
+    window.addEventListener("storage", () => { clearDiamondPackConfirmation(); updateDiamondShopUI(); });
     nodes.amuletBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
@@ -4113,7 +4309,11 @@
     exposeSmokeHooks();
     window.addEventListener("wonder:locale-change", translateUI);
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) suspendBackgroundBattle();
+      if (document.hidden) {
+        clearDiamondPackConfirmation();
+        updateDiamondPackUI();
+        suspendBackgroundBattle();
+      }
       else resumeBackgroundBattle();
     });
     window.addEventListener("blur", suspendBackgroundBattle);

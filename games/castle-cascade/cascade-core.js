@@ -1,3 +1,4 @@
+import { createSiege, resolveSiegeBatch } from "./siege-core.js?v=20261010-siege";
 export const BOARD_WIDTH = 9;
 export const BOARD_HEIGHT = 9;
 export const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
@@ -146,6 +147,7 @@ export function createState(stageIndex = 0, unlocked = 1) {
     board: [],
     status: "playing",
     reshuffles: 0,
+    siege: createSiege(stage),
   };
 
   // Fill with the state-owned seeded generator, then remove only opening matches.
@@ -523,7 +525,7 @@ function resolveOneBatch(state, direct, powerSet, specials = [], forceGate = fal
   const movements = dropAndRefill(state);
   const deliveredKeys = deliverKeys(board);
   stats.key += deliveredKeys.length;
-  return {
+  const batch = {
     before,
     cleared,
     after: cloneBoard(board),
@@ -537,6 +539,8 @@ function resolveOneBatch(state, direct, powerSet, specials = [], forceGate = fal
     deliveredKeys,
     stats,
   };
+  batch.siege = resolveSiegeBatch(state.siege, batch);
+  return batch;
 }
 
 function dropAndRefill(state) {
@@ -733,7 +737,7 @@ function comboEffect(state, a, b) {
 }
 
 function finishState(state) {
-  if (isComplete(state.board)) {
+  if (state.siege ? state.siege.complete : isComplete(state.board)) {
     state.status = "won";
     state.unlocked = Math.max(state.unlocked, Math.min(LEVELS.length, state.stage + 2));
     return;

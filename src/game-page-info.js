@@ -11810,6 +11810,15 @@
     const isFreeCell = id === "freecell-solitaire";
     const publicFaq = isGeneralGuardYard ? game.faq.slice(0, -1) : game.faq;
     syncLocalizedMetadata(game, identity);
+    // One Line owns fully authored, locale-specific static Guides in each
+    // route shell. Preserve that reviewed copy after metadata is synchronized.
+    if (id === "animal-one-line" && document.querySelector("section.game-page-info-static")) {
+      const guide = document.querySelector("section.game-page-info-static");
+      guide.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
+      document.documentElement.classList.add("has-game-page-info");
+      document.body.classList.add("has-game-page-info");
+      return;
+    }
     const gameSkills = game.skills || [];
     const showSkills = audience === "kids" && game.showSkills !== false;
     const showRecommendedAge = audience === "kids" && Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);

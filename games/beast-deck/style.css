@@ -459,6 +459,22 @@ body {
   animation: pack-reward-reveal 320ms ease-out;
 }
 
+/* Reward text and confirmation occupy reserved space; buying never moves a target. */
+#collectionPanel .pack-status,
+#diamondShop .diamond-pack-status {
+  box-sizing: border-box;
+  height: 108px;
+  min-height: 108px;
+  overflow: auto;
+}
+#diamondPackBtn { min-height: 96px; transform: none; }
+#diamondPackBtn.is-confirming { outline: 2px solid #fbbf24; outline-offset: -2px; }
+#diamondShop .diamond-pack-odds { font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+#collectionGrid .collection-card { min-height: 254px; justify-content: flex-start; }
+#collectionGrid .collection-card small { min-height: 34px; }
+#collectionGrid .collection-effect { color: var(--text-secondary); font-weight: 400; margin-top: 0; min-height: 64px; }
+.card .card-rank { position: absolute; top: 7px; inset-inline-end: 7px; font-size: 10px; color: #fde68a; }
+
 .pack-reward-art {
   width: 48px;
   height: 48px;

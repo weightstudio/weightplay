@@ -1,4 +1,6 @@
 import { BOARD_HEIGHT, BOARD_WIDTH } from "./cascade-core.js";
+import { siegeSnapshot } from "./siege-core.js?v=20261010-siege";
+import { siegeLayout, drawSiegeField, drawSiegeVolley, prepareVolley, applySiegeContacts } from "./siege-renderer.js?v=20261010-siege";
 
 const COLS = 5;
 const ROWS = 4;
@@ -97,6 +99,7 @@ export class CastleCascade2D {
     this.lost = false;
     this.failed = false;
     this.board = null;
+    this.siege = null;
     this.selectedIndex = -1;
     this.focusIndex = -1;
     this.highlightCells = new Set();
@@ -106,7 +109,10 @@ export class CastleCascade2D {
     this.pixelRatio = 1;
     this.raf = 0;
     this.motion = null;
-    this.pausedAt = null;
+    this.pausedAt = document.hidden ? performance.now() : null;
+    this.externallyPaused = false;
+    this.handleVisibility = () => this.setPaused(this.externallyPaused, true);
+    document.addEventListener("visibilitychange", this.handleVisibility);
     this.lastFrame = 0;
     this.frameTimes = [];
     this.motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
@@ -329,6 +335,21 @@ export class CastleCascade2D {
     this.invalidate();
   }
 
+  setSiege(siege, labels = this.siegeLabels) {
+    this.siege = siegeSnapshot(siege);
+    this.siegeLabels = labels;
+    if (siege && !this.assets.tower) {
+      for (const kind of ["tower", "keep", "sentinel"]) {
+        this.assets[kind] = this.loadImage(new URL(`./assets/siege-${kind}.svg`, import.meta.url).href);
+      }
+    }
+    this.invalidate();
+  }
+
+  animateSiegeWave() {
+    return this.runMotion({ kind: "siege-wave", duration: 340, finalBoard: this.board });
+  }
+
   invalidate() {
     if (this.disposed || this.lost || this.raf) return;
     this.raf = requestAnimationFrame((time) => this.frame(time));
@@ -358,6 +379,7 @@ export class CastleCascade2D {
         this.motion.onObjectiveImpact?.(contact.key);
       }
     }
+    applySiegeContacts(this, this.motion, this.motion ? time - this.motion.started : 0);
     this.draw(time);
     if (this.motion && time >= this.motion.started + this.motion.duration) {
       const finished = this.motion;
@@ -383,8 +405,10 @@ export class CastleCascade2D {
     ctx.clearRect(0, 0, w, h);
     const unit = Math.min(w, h);
     const size = unit * 0.946;
-    const bounds = { x: (w - size) / 2, y: (h - size) / 2, size };
+    const layout = this.siege ? siegeLayout(w, h) : null;
+    const bounds = layout?.board || { x: (w - size) / 2, y: (h - size) / 2, size };
     this.boardBounds = bounds;
+    if (layout) drawSiegeField(this, layout.field, time);
     this.drawFrame(bounds);
     ctx.save();
     // Impact impulse affects only artwork. HUD and input rectangles never move.
@@ -412,6 +436,7 @@ export class CastleCascade2D {
       else if (motion?.kind === "victory") this.drawVictory(bounds, motion, time);
     }
     ctx.restore();
+    if (layout) drawSiegeVolley(this, bounds, layout.field, motion, time);
     if (!motion) this.drawFocus(bounds);
     this.canvas.dataset.renderer = "canvas-2d";
     this.canvas.dataset.imageAssetCount = String(Object.values(this.assets).filter((img) => img?.complete && img.naturalWidth).length);
@@ -587,13 +612,14 @@ export class CastleCascade2D {
     if (this.disposed || this.lost || this.failed) return Promise.resolve(false);
     if (this.reducedMotion) {
       this.board = motion.finalBoard || this.board;
+      applySiegeContacts(this, motion, Infinity);
       motion.onImpact?.();
       for (const contact of motion.objectiveContacts || []) motion.onObjectiveImpact?.(contact.key);
       this.invalidate();
       return Promise.resolve(false);
     }
     return new Promise((resolve) => {
-      motion.started = performance.now();
+      motion.started = this.pausedAt ?? performance.now();
       this.lastFrame = 0;
       motion.resolve = resolve;
       this.motion = motion;
@@ -602,7 +628,9 @@ export class CastleCascade2D {
     });
   }
 
-  setPaused(paused) {
+  setPaused(paused, fromVisibility = false) {
+    if (!fromVisibility) this.externallyPaused = paused;
+    paused = this.externallyPaused || document.hidden;
     if (this.disposed || paused === (this.pausedAt !== null)) return;
     if (paused) {
       this.pausedAt = performance.now();
@@ -716,8 +744,10 @@ export class CastleCascade2D {
     return this.runMotion({ kind: "clear", batch, onImpact, onObjectiveImpact, objectiveContacts:this.objectiveContacts(batch), impactAt, chainDepth, finalBoard: batch.cleared, duration: duration * cascadeTempo(chainDepth) });
   }
 
-  animateGravity(cleared, after, movements = [], deliveredKeys = [], chainDepth = 0) {
+  animateGravity(cleared, after, movements = [], deliveredKeys = [], chainDepth = 0, siege = null, onSiegeContact = null) {
     this.board = cleared;
+    let volley = prepareVolley(siege, onSiegeContact);
+    if (siege) this.setSiege(siege.before);
     const moving = movements.filter((item) => item.fromIndex !== item.toIndex || item.isNew || item.isDelivery);
     for (const index of deliveredKeys) {
       if (moving.some((item) => item.toIndex === index && item.payload?.key)) continue;
@@ -736,7 +766,7 @@ export class CastleCascade2D {
     if (!moving.length) {
       this.board = after;
       this.invalidate();
-      return Promise.resolve(true);
+      return volley.siege ? this.runMotion({ kind: "siege-volley", finalBoard: after, ...volley, duration: volley.siegeDuration }) : Promise.resolve(true);
     }
     const hidden = new Set();
     moving.forEach((item) => {
@@ -747,6 +777,7 @@ export class CastleCascade2D {
     const stagger = (item) => (Math.abs(item.col - 4) * 12 + (item.spawnOrder || 0) * 18) * tempo;
     const travel = (item) => (230 + Math.min(9, Math.abs(item.toRow - item.fromRow)) * 26) * tempo;
     const duration = Math.max(...moving.map((item) => stagger(item) + travel(item)));
+    volley = prepareVolley(siege, onSiegeContact, duration);
     return this.runMotion({
       kind: "gravity",
       cleared,
@@ -757,7 +788,8 @@ export class CastleCascade2D {
       hidden,
       stagger,
       travel,
-      duration,
+      ...volley,
+      duration: Math.max(duration, volley.siegeDuration || 0),
     });
   }
 
@@ -1330,6 +1362,7 @@ export class CastleCascade2D {
     this.resizeObserver?.disconnect();
     this.motionPreference?.removeEventListener?.("change", this.handleMotionPreference);
     document.removeEventListener("keydown", this.handleKeyboardFocus);
+    document.removeEventListener("visibilitychange", this.handleVisibility);
     document.removeEventListener("focusin", this.handleGridFocus);
     window.removeEventListener("blur", this.handleInputBlur);
     this.releasePose = this.gesturePose = null;

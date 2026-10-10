@@ -36,8 +36,31 @@
     const battleTitle = document.createElement('span');
     battleTitle.setAttribute('data-wp-frame-title', '');
     battleHeader.append(document.getElementById('backToStageBtn'), battleTitle);
+    // Use the shared header's information slot; never add a second HUD row.
+    const hud = document.createElement('div');
+    hud.setAttribute('data-wp-frame-info', '');
+    hud.style.setProperty('--wp-frame-stat-count', '4');
+    const stat = (label, value) => {
+      const cell = document.createElement('div');
+      cell.setAttribute('data-wp-frame-stat', '');
+      cell.append(label, value);
+      hud.append(cell);
+      return cell;
+    };
+    const hpLabel = document.querySelector('[data-ui="hudHp"]');
+    stat(hpLabel, document.getElementById('hpText')).append(document.getElementById('hpFill').parentElement);
+    const levelLabel = document.createElement('span');
+    levelLabel.textContent = 'Lv.';
+    stat(levelLabel, document.getElementById('levelVal')).append(document.getElementById('expFill').parentElement);
+    stat(document.querySelector('[data-ui="roomLabel"]'), document.getElementById('roomText'));
+    stat(document.getElementById('keyText'), document.getElementById('goldText'));
+    battleTitle.hidden = true;
+    const arena = battle.querySelector('.arena-viewport');
+    arena.append(document.getElementById('roomObjective'));
+    battle.querySelector('.arena-hud').hidden = true;
     const battleContent = battle.querySelector('.game-layout');
     battleContent.classList.add('relic-battle-content');
+    battleContent.append(hud);
     battle.prepend(battleHeader);
     for (const id of ['draftPanel', 'lootPanel', 'resultPanel']) battleContent.append(document.getElementById(id));
     document.getElementById('resultPanel').setAttribute('data-wp-frame-logical-actions', 'battle');
@@ -46,7 +69,7 @@
     frame = core.mount({root, localeSelect, scenes: {
       main: {root:main, header, content:mainContent},
       stage: {root:stage, header:stageHeader, content:stageContent},
-      battle: {root:battle, header:battleHeader, content:battleContent},
+      battle: {root:battle, header:battleHeader, content:battleContent, headerInfo:hud},
     }});
     window.addEventListener('pagehide', event => { if (!event.persisted) { frame?.destroy(); frame = null; } });
     return frame;

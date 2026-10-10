@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v26" />
+    <meta name="weightplay-game-version" content="v28" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
     <meta name="description" content="Führe Löwe, Eule und Schildkröte durch 30 Rundenmissionen: Bretter von 4×5 bis 6×6 Feldern, Gelände, sechs Bosse und dauerhafte Verbesserungen." />
@@ -44,8 +44,8 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260924-v26-7fbc699c" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <link rel="stylesheet" href="style.css?v=20261010-v28-ff09fed96a66" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261010-v27-5d40839f5f45"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
@@ -166,20 +166,20 @@
         <div class="overlay-card">
           <h2 id="resultTitle">Mission geschafft</h2>
           <p id="resultText"></p>
-          <div class="result-progress" aria-live="polite">
+          <div class="result-progress" tabindex="0" aria-live="polite">
             <strong data-ui="resultProgressTitle">Gespeicherter Fortschritt</strong>
             <span id="resultRewardText"></span>
             <span id="resultProgressText"></span>
             <em id="resultNextText"></em>
           </div>
-          <div class="result-plan">
+          <div class="result-plan" tabindex="0">
             <strong data-ui="resultPlan">Plan für die nächste Mission</strong>
             <span id="resultPlanText"></span>
           </div>
           <div class="result-actions">
+            <button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Zu den Missionen</button>
             <button id="nextBtn" class="primary-btn" type="button" data-ui="nextMission">Nächste Mission</button>
             <button id="retryBtn" class="secondary-btn" type="button" data-ui="retry">Wiederholen</button>
-            <button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Zu den Missionen</button>
           </div>
         </div>
       </section>
@@ -200,7 +200,9 @@
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
 <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
-<script src="game.js?v=20260923-v25-a6894ed75c1d"></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v28-a7df7e2bb551"></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v28-cc8b72674240"></script>
+<script src="game.js?v=20261010-v28-24a66f19704a"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
     <script>
       (() => {

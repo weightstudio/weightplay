@@ -6,8 +6,9 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js?v=20261007-castle-cascade-v17-i8";
-import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261003-castle-cascade-v16-i8";
+} from "./cascade-core.js?v=20261010-castle-cascade-siege";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261010-castle-cascade-siege";
+import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261010-siege";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
@@ -214,6 +215,10 @@ function mountRenderer() {
   canvas = document.querySelector("#sceneCanvas");
   try {
     renderer = new CastleCascade2D(canvas, handleCell, handleRendererFailure, handleSwipe);
+    renderer.setSiege(gameState.siege, {
+      wave: (wave, total) => text("siegeWave", { wave: number(wave), total: number(total) }),
+      blocked: text("siegeBlocked"),
+    });
     renderer.setBoard(gameState.board, selectedCell, focusCell);
     boardAvailable = true;
     document.querySelector("#result").hidden = true;
@@ -235,6 +240,8 @@ function handleRendererFailure(reason) {
 }
 
 function objectiveSummary(level) {
+  const siege = SIEGE_LEVELS[LEVELS.indexOf(level)];
+  if (siege) return `${text("siegeTitle")} · ${text("siegeGoal")} · ${text("siegeWave", { wave: 1, total: siege.length })}`;
   const obstacles = level.obstacles || {};
   const parts = [];
   for (const key of OBJECTIVE_ORDER) {
@@ -261,7 +268,7 @@ function makeObjectiveIndicators(counts, className = "objective-icons", keys = O
     chip.dataset.complete = String(!count);
     const icon = document.createElement("img");
     icon.className = "objective-icon";
-    icon.src = new URL(`./assets/objective-${key}-v3.webp`, import.meta.url).href;
+    icon.src = new URL(key === "siege" ? "./assets/siege-keep.svg" : `./assets/objective-${key}-v3.webp`, import.meta.url).href;
     icon.alt = "";
     icon.width = icon.height = 40;
     const amount = document.createElement("span");
@@ -290,6 +297,7 @@ function renderStageList() {
     card.type = "button";
     card.className = `stage-card${index === selectedStage ? " selected" : ""}`;
     card.dataset.stageIndex = String(index);
+    card.dataset.mode = SIEGE_LEVELS[index] ? "siege" : "puzzle";
     card.disabled = index >= unlocked;
     if (index === selectedStage && !card.disabled) card.dataset.wpStageRecommended = "true";
     card.setAttribute("aria-label", text("stageAria", { stage: stageText, objective, moves: moveText }));
@@ -298,16 +306,18 @@ function renderStageList() {
     const title = document.createElement("strong");
     title.textContent = stageText;
     const art = document.createElement("img");
-    art.src = LION_POSTER_URL;
+    art.src = SIEGE_LEVELS[index] ? new URL("./assets/siege-keep.svg", import.meta.url).href : LION_POSTER_URL;
     art.alt = "";
     art.setAttribute("aria-hidden", "true");
     const chapter = document.createElement("span");
     chapter.className = "stage-arc";
-    chapter.textContent = `${text("arc")} ${number(arcIndex + 1)} · ${copy?.arcNames?.[arcIndex] || ""}`;
+    chapter.textContent = SIEGE_LEVELS[index] ? text("siegeTitle") : `${text("arc")} ${number(arcIndex + 1)} · ${copy?.arcNames?.[arcIndex] || ""}`;
     const goal = document.createElement("span");
     goal.className = "stage-objective";
     const stageCounts = Object.fromEntries(OBJECTIVE_ORDER.map((key) => [key, level.obstacles?.[key]?.length || 0]));
-    goal.append(makeObjectiveIndicators(stageCounts, "objective-icons stage-objective-icons"));
+    if (SIEGE_LEVELS[index]) {
+      goal.append(makeObjectiveIndicators({ siege: SIEGE_LEVELS[index].reduce((sum, wave) => sum + wave.length, 0) }, "objective-icons stage-objective-icons", ["siege"]));
+    } else goal.append(makeObjectiveIndicators(stageCounts, "objective-icons stage-objective-icons"));
     const moves = document.createElement("span");
     moves.className = "stage-moves";
     moves.textContent = moveText;
@@ -319,13 +329,14 @@ function renderStageList() {
   if (activeCardHadFocus) rail.querySelector(`[data-stage-index="${selectedStage}"]`)?.focus({ preventScroll: true });
 }
 
-function renderBattleHud(board = gameState?.board) {
+function renderBattleHud(board = gameState?.board, siege = renderer?.siege ?? gameState?.siege) {
   if (!gameState) return;
   const stageText = `${text("stage")} ${number(gameState.stage + 1)}`;
-  const counts = objectiveCounts(board || gameState.board);
+  const counts = siege ? { siege: siegeRemaining(siege) } : objectiveCounts(board || gameState.board);
   const goals = OBJECTIVE_ORDER.filter((key) => counts[key] > 0)
     .map((key) => `${number(counts[key])} ${objectiveName(key, counts[key])}`);
-  document.querySelector("#stageLabel").textContent = stageText;
+  document.querySelector("#stageLabel").textContent = siege ? `${stageText} · ${text("siegeTitle")}` : stageText;
+  document.querySelector("#instructions").textContent = siege ? text("siegeInstructions") : text("instructions");
   const indicators = document.querySelector("#goalIndicators");
   if (!indicators.firstElementChild) {
     indicators.append(makeObjectiveIndicators(counts, "objective-icons", initialObjectiveKeys));
@@ -342,6 +353,11 @@ function renderBattleHud(board = gameState?.board) {
     chip.dataset.complete = String(!count);
   }
   document.querySelector("#goalLabel").textContent = `${text("goal")}: ${goals.length ? goals.join(copy?.objectiveJoin || " · ") : text("objectiveEmpty")}`;
+  if (siege) {
+    const health = siege.targets.filter(target => target.hp > 0)
+      .map(target => `${copy.siegeKinds?.[target.kind] || target.kind} ${number(target.hp)}/${number(target.maxHp)}`);
+    document.querySelector("#goalLabel").textContent = `${text("siegeGoal")}. ${text("siegeWave", { wave: number(siege.wave + 1), total: number(siege.totalWaves) })}. ${health.join(" · ")}`;
+  }
   const moves = document.querySelector("#movesLabel");
   if (!moves.firstElementChild) {
     const value = document.createElement("b"), caption = document.createElement("span");
@@ -426,7 +442,7 @@ function showResult(status) {
   const next = document.querySelector("#next");
   layer.hidden = false;
   if (status === "won") {
-    title.textContent = text("win");
+    title.textContent = text(gameState?.siege ? "siegeWin" : "win");
     body.textContent = text("resultWinBody", { moves: number(gameState?.moves || 0) });
     next.disabled = gameState?.stage >= LEVELS.length - 1;
     playSound("result.win");
@@ -456,8 +472,9 @@ function startStage(index) {
   selectedStage = index;
   if (renderer) disposeRenderer();
   gameState = createState(index, unlocked);
+  document.querySelector("#battle").dataset.mode = gameState.siege ? "siege" : "puzzle";
   const initialCounts = objectiveCounts(gameState.board);
-  initialObjectiveKeys = OBJECTIVE_ORDER.filter(key => initialCounts[key] > 0);
+  initialObjectiveKeys = gameState.siege ? ["siege"] : OBJECTIVE_ORDER.filter(key => initialCounts[key] > 0);
   document.querySelector("#goalIndicators").replaceChildren();
   selectedCell = -1;
   focusCell = 40;
@@ -467,7 +484,7 @@ function startStage(index) {
   document.querySelector("#leaveConfirm").hidden = true;
   pendingResultStatus = null;
   leaveReturnFocus = null;
-  document.querySelector("#status").textContent = "";
+  document.querySelector("#status").textContent = gameState.siege ? text("siegeGoal") : "";
   if (document.querySelector("#battle").hidden) {
     screen("battle");
   } else {
@@ -507,6 +524,7 @@ async function animateTurn(result, turnToken, visual = null) {
   for (const [chainDepth, batch] of (result.batches || []).entries()) {
     if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
     renderer.setBoard(batch.before, -1, focusCell);
+    if (batch.siege) renderer.setSiege(batch.siege.before);
     renderBattleHud(batch.before);
     const contact = () => {
       if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
@@ -520,8 +538,23 @@ async function animateTurn(result, turnToken, visual = null) {
     else { contact(); objectivesCue([batch]); }
     if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
     renderBattleHud(batch.cleared);
-    if (!motionReduced) await renderer.animateGravity(batch.cleared, batch.after, batch.movements, batch.deliveredKeys, chainDepth);
-    else renderer.setBoard(batch.after, -1, focusCell);
+    const siegeContact = (shot) => {
+      if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
+      playSound(shot.blocked ? "combat.block" : shot.hpAfter === 0 ? "enemy.defeat" : shot.combo ? "combat.critical" : "magic.hit");
+      renderBattleHud(batch.after);
+    };
+    if (batch.siege?.attacks.length) playSound("magic.cast");
+    await renderer.animateGravity(batch.cleared, batch.after, batch.movements, batch.deliveredKeys, chainDepth, batch.siege, siegeContact);
+    if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
+    if (batch.siege) {
+      renderer.setSiege(batch.siege.after);
+      if (batch.siege.nextWave) {
+        playSound("game.checkpoint");
+        document.querySelector("#status").textContent = text("siegeWave", { wave: number(batch.siege.after.wave + 1), total: number(batch.siege.after.totalWaves) });
+        await renderer.animateSiegeWave();
+        if (turnToken !== screenEpoch || !renderer || !boardAvailable) return;
+      }
+    }
     renderBattleHud(batch.after);
   }
   if (turnToken !== screenEpoch || !gameState) return;
@@ -756,6 +789,7 @@ window.__CASTLE_CASCADE_DIAGNOSTICS__ = Object.freeze({
       unlocked,
       objectives: gameState ? objectiveCounts(gameState.board) : null,
       board: gameState ? gameState.board.map((tile) => ({ ...tile })) : null,
+      siege: siegeSnapshot(gameState?.siege),
       renderer: renderer?.stats?.() || lastRendererStats || { renderer: "inactive" },
     });
   },

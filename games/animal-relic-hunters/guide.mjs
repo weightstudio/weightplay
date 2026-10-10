@@ -1,3 +1,4 @@
+import { battleCopy } from "./battle-copy.mjs";
 import { applyRelicTextGrowth } from "./search-guide.mjs";
 // Game-owned instructions; presentation belongs to the shared guide/frame CSS.
 // Keep campaign totals out of prose: the live Stage screen owns that number.
@@ -67,7 +68,7 @@ export function replaceRelicGuide(html, locale = 'en') {
  if (!copy) throw new Error(`Missing Relic guide locale: ${locale}`);
  const summaryCopy = reworkSummary[locale];
  const separator = ['zh-Hant', 'zh-Hans', 'ja'].includes(locale) ? '' : ' ';
- const moveCopy = `${copy[2]}${separator}${pulseGuideCopy[locale]}`;
+ const moveCopy = `${battleCopy[locale].controlsGuide}${separator}${pulseGuideCopy[locale]}`;
  const summary = /<p\b[^>]*data-ui="menuHint"[^>]*>[\s\S]*?<\/p>/;
  if (!summary.test(html)) throw new Error('Relic Main summary missing');
  html = html.replace(summary, () => `<p class="menu-hint main-summary" data-ui="menuHint" data-relic-authored-summary="true" data-runtime-localize="off">${escape(summaryCopy)}</p>`);

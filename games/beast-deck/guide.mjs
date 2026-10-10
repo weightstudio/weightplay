@@ -706,6 +706,82 @@ export const marketComparison = {
   }
 };
 
+// v24 collection and economy copy, mirrored from cards.js.
+const collectionUpgradeCopy = {
+  "en": [
+    "Duplicates improve every copy, including starter and drafted cards. Ranks at 1 / 2 / 4 / 7 / 11 copies. Armor: maximum 6; each attack wears it down by 1.",
+    "5 Diamonds: 1 permanent card, equal odds (1/13 each). All cards also appear in Coin packs and mission drafts."
+  ],
+  "zh-Hant": [
+    "重複卡會強化同名卡，包含起始牌與任務選牌。累積 1／2／4／7／11 張升階。 護甲上限 6；每次攻擊會削薄 1 點。",
+    "5 鑽石必得 1 張永久卡，各卡等機率（1/13）。所有卡也可從金幣卡包及任務選牌取得。"
+  ],
+  "zh-Hans": [
+    "重复卡会强化同名卡，包含起始牌与任务选牌。累计 1／2／4／7／11 张升阶。 护甲上限 6；每次攻击会削薄 1 点。",
+    "5 钻石必得 1 张永久卡，各卡等概率（1/13）。所有卡也可从金币卡包及任务选牌取得。"
+  ],
+  "ja": [
+    "重複は初期・選択カードも強化。1 / 2 / 4 / 7 / 11 枚でランクアップ。 装甲上限6。攻撃ごとに1減少。",
+    "5 ダイヤで永続カード1枚。各カード同確率（1/13）。コインパックと任務の選択でも入手可能。"
+  ],
+  "ko": [
+    "중복은 시작 및 임무 카드도 강화합니다. 1 / 2 / 4 / 7 / 11장에서 등급 상승. 방어구 최대 6. 공격마다 1 감소.",
+    "다이아 5개로 영구 카드 1장. 각 카드 확률 1/13. 코인 팩과 임무 선택에서도 획득 가능."
+  ],
+  "es": [
+    "Las duplicadas mejoran también las cartas iniciales y de misión. Rangos con 1 / 2 / 4 / 7 / 11 copias. Armadura máxima 6; cada ataque la reduce en 1.",
+    "5 Diamantes: 1 carta permanente, igual probabilidad (1/13 cada una). También disponibles con monedas y en elecciones de misión."
+  ],
+  "pt-BR": [
+    "Repetidas melhoram também cartas iniciais e de missão. Graus com 1 / 2 / 4 / 7 / 11 cópias. Armadura máxima 6; cada ataque reduz 1.",
+    "5 Diamantes: 1 carta permanente, chances iguais (1/13 cada). Todas também disponíveis por moedas e escolhas de missão."
+  ],
+  "fr": [
+    "Les doublons améliorent aussi les cartes initiales et de mission. Rangs à 1 / 2 / 4 / 7 / 11 exemplaires. Armure maximale 6 ; chaque attaque en retire 1.",
+    "5 Diamants : 1 carte permanente, chances égales (1/13 chacune). Aussi disponibles avec des pièces et lors des choix de mission."
+  ],
+  "de": [
+    "Duplikate stärken auch Start- und Missionskarten. Ränge bei 1 / 2 / 4 / 7 / 11 Exemplaren. Rüstung maximal 6; jeder Angriff baut 1 ab.",
+    "5 Diamanten: 1 dauerhafte Karte, gleiche Chancen (je 1/13). Alle auch durch Münzen und Missionsauswahl erhältlich."
+  ],
+  "it": [
+    "Le duplicate potenziano anche le carte iniziali e di missione. Gradi a 1 / 2 / 4 / 7 / 11 copie. Armatura massima 6; ogni attacco ne rimuove 1.",
+    "5 Diamanti: 1 carta permanente, probabilità uguali (1/13 ciascuna). Tutte disponibili anche con monete e nelle scelte di missione."
+  ],
+  "ru": [
+    "Повторы усиливают также начальные карты и карты миссий. Ранги за 1 / 2 / 4 / 7 / 11 копий. Максимум брони 6; каждая атака снимает 1.",
+    "5 алмазов: 1 постоянная карта, равные шансы (1/13). Все карты доступны также за монеты и при выборе в миссии."
+  ],
+  "hi": [
+    "दोहराई गई प्रतियाँ शुरुआती और मिशन कार्ड भी मजबूत करती हैं। 1 / 2 / 4 / 7 / 11 प्रतियों पर रैंक बढ़ती है। कवच अधिकतम 6; हर हमले से 1 घटता है।",
+    "5 हीरे: 1 स्थायी कार्ड, समान संभावना (प्रत्येक 1/13)। सभी कार्ड सिक्कों और मिशन चयन से भी मिलते हैं।"
+  ],
+  "ar": [
+    "النسخ المكررة تقوي بطاقات البداية والمهمات أيضًا. ترتفع الرتبة عند 1 / 2 / 4 / 7 / 11 نسخة. الحد الأقصى للتدريع 6؛ كل هجوم يزيل 1.",
+    "5 ماسات: بطاقة دائمة واحدة، بفرص متساوية (1/13 لكل بطاقة). تتوفر كلها أيضًا بالعملات واختيارات المهمات."
+  ]
+};
+const missionAccessCopy = {
+  en: 'No Diamonds are required to unlock missions. The Mist Amulet and Diamond packs are optional.',
+  'zh-Hant': '解鎖任務不需要鑽石；迷霧護符與鑽石抽卡都是可選項目。',
+  'zh-Hans': '解锁任务不需要钻石；迷雾护符与钻石抽卡都是可选项目。',
+  ja: '任務の解放にダイヤは不要です。霧のお守りとダイヤパックは任意です。',
+  ko: '임무 해제에는 다이아가 필요 없습니다. 안개 부적과 다이아 팩은 선택 사항입니다.',
+  es: 'No se necesitan diamantes para desbloquear misiones. El amuleto y los sobres de diamantes son opcionales.',
+  'pt-BR': 'Não é preciso usar diamantes para liberar missões. O amuleto e os pacotes de diamantes são opcionais.',
+  fr: 'Les missions ne nécessitent pas de diamants. L’amulette et les paquets de diamants sont facultatifs.',
+  de: 'Missionen benötigen keine Diamanten. Das Nebelamulett und Diamantenpakete sind optional.',
+  it: 'Le missioni non richiedono diamanti. L’amuleto e i pacchetti di diamanti sono facoltativi.',
+  ru: 'Для открытия миссий алмазы не нужны. Амулет и наборы за алмазы необязательны.',
+  hi: 'मिशन खोलने के लिए हीरे जरूरी नहीं हैं। ताबीज और हीरों के पैक वैकल्पिक हैं।',
+  ar: 'لا تحتاج إلى الماس لفتح المهمات. التميمة وحزم الماس اختيارية.',
+};
+for (const [locale, [growth, economy]] of Object.entries(collectionUpgradeCopy)) {
+  guideCopy[locale][6] += ' ' + growth;
+  guideCopy[locale][8] = faqCopy[locale][3][1] + ' ' + missionAccessCopy[locale] + ' ' + economy;
+  faqCopy[locale][4][1] = missionAccessCopy[locale] + ' ' + economy;
+}
+
 export const MARKET_SOURCE = "https://store.steampowered.com/app/646570/Slay_the_Spire/";
 
 const RELATED = Object.freeze([

@@ -4,7 +4,7 @@
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
-    paused: Boolean(state?.paused || state?.suspended), node: document.body,
+    paused: Boolean(manualPauseActive || equipmentOpen || settingsOpen || backgroundSuspendedAt), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
   function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
@@ -22,12 +22,25 @@
   });
   document.getElementById("stagePanel")?.setAttribute("data-wp-stage-landscape-width", "760");
   document.getElementById("stagePanel")?.setAttribute("data-wp-stage-landscape-height", "334");
+  // The renderer is responsive now: use a native-size logical envelope so the
+  // shared frame's 48px controls and text retain their physical size too.
+  const syncBattleEnvelope = () => {
+    const root = document.getElementById('gamePanel');
+    const width = Math.min(920, document.documentElement.clientWidth || innerWidth);
+    const height = (document.documentElement.clientHeight || window.visualViewport?.height || innerHeight) - (window.WeightPlayLayout?.reserveHeight ?? 0);
+    root.dataset.wpBattleMinWidth = String(width);
+    root.dataset.wpBattleMinHeight = String(height);
+    root.dataset.wpBattleLandscapeWidth = String(width);
+    root.dataset.wpBattleLandscapeHeight = String(height);
+  };
+  syncBattleEnvelope();
+  window.addEventListener('resize', syncBattleEnvelope, { passive: true });
+  window.visualViewport?.addEventListener('resize', syncBattleEnvelope, { passive: true });
 
   const ARENA_WIDTH = 800;
   const ARENA_HEIGHT = 1000;
-  const BATTLE_CAMERA_ZOOM = 1.6;
-  const BATTLE_CAMERA_VIEW_WIDTH = ARENA_WIDTH / BATTLE_CAMERA_ZOOM;
-  const BATTLE_CAMERA_VIEW_HEIGHT = ARENA_HEIGHT / BATTLE_CAMERA_ZOOM;
+  let battleViewHeight = ARENA_HEIGHT;
+  let battleZoom = 1.12;
   const BATTLE_CAMERA_FOLLOW_SPEED = 8;
   const SIMULATION_STEP_MS = 1000 / 60;
   const MAX_CATCH_UP_STEPS = 8;
@@ -35,13 +48,12 @@
   const PULSE_COOLDOWN_TICKS = 60 * 12;
   const PULSE_MIN_COOLDOWN_TICKS = 60 * 7;
   const PULSE_EFFECT_MS = 420;
-  const PULSE_BUTTON = { x: 704, y: 914, radius: 68 };
   const ROOM_ENTRY_GRACE_MS = 1500;
   const EXPEDITION_COUNT = 30;
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 30;
+  const GAME_VERSION = 31;
   const INTERFACE_VERSION = 7;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -1286,7 +1298,7 @@
     playerHp: 30,
     playerX: 400,
     playerY: ARENA_HEIGHT / 2,
-    playerSpeed: 3.0,
+    playerSpeed: 3.5,
     level: 1,
     exp: 0,
     expNeed: 100,
@@ -1300,7 +1312,7 @@
 
     // Stats
     baseDamage: 10,
-    baseRate: 1.2, // seconds
+    baseRate: 0.65, // seconds; decisions should happen between volleys, not long waits
     baseMagnet: 80, // pixels
     gold: 0,
     runGold: 0,
@@ -1329,6 +1341,14 @@
     lastHitSoundAt: 0,
     playerHitUntil: 0,
     roomGraceUntil: 0,
+    dodgeTicks: 0,
+    dodgeCooldownTicks: 0,
+    hurtCooldownTicks: 0,
+    facing: { x: 0, y: -1 },
+    dodgeDirection: { x: 0, y: -1 },
+    combo: 0,
+    comboTicks: 0,
+    surgeTicks: 0,
   };
 
   let battleCamera = { x: ARENA_WIDTH / 2, y: ARENA_HEIGHT / 2 };
@@ -1336,8 +1356,8 @@
   let battleCameraInitialized = false;
 
   function getBattleCameraTarget() {
-    const halfWidth = BATTLE_CAMERA_VIEW_WIDTH / 2;
-    const halfHeight = BATTLE_CAMERA_VIEW_HEIGHT / 2;
+    const halfWidth = ARENA_WIDTH / battleZoom / 2;
+    const halfHeight = battleViewHeight / battleZoom / 2;
     return {
       x: Math.max(halfWidth, Math.min(ARENA_WIDTH - halfWidth, state.playerX)),
       y: Math.max(halfHeight, Math.min(ARENA_HEIGHT - halfHeight, state.playerY)),
@@ -1365,14 +1385,6 @@
     return battleCamera;
   }
 
-  function battleCanvasPointToWorld(x, y) {
-    const camera = battleCameraInitialized ? battleCamera : getBattleCameraTarget();
-    return {
-      x: Math.max(20, Math.min(ARENA_WIDTH - 20, camera.x + (x - ARENA_WIDTH / 2) / BATTLE_CAMERA_ZOOM)),
-      y: Math.max(20, Math.min(ARENA_HEIGHT - 20, camera.y + (y - ARENA_HEIGHT / 2) / BATTLE_CAMERA_ZOOM)),
-    };
-  }
-
   let profile = createDefaultProfile();
   let selectedExpedition = 1;
   let browsedExpedition = 1;
@@ -1395,6 +1407,8 @@
   let backgroundSuspendedAt = 0;
   let backgroundBattleSuspended = false;
   let manualPauseActive = false;
+  let equipmentOpen = false;
+  let settingsOpen = false;
   let pauseDialogMode = "pause";
   let windowFocused = document.hasFocus();
   let lastSimulationFrame = 0;
@@ -1448,12 +1462,13 @@
   function resumeBackgroundBattle() {
     resumeAmuletConfirmation();
     resumeDraftRerollConfirmation();
-    if (!backgroundSuspendedAt || document.hidden || !windowFocused) return;
+    if (!backgroundSuspendedAt || document.hidden || !windowFocused || manualPauseActive || equipmentOpen || settingsOpen) return;
     const elapsed = Math.max(0, performance.now() - backgroundSuspendedAt);
     backgroundSuspendedAt = 0;
-    ["roomGraceUntil", "slowUntil", "silencedUntil", "bossWarningUntil", "lastHitSoundAt", "playerHitUntil"].forEach((key) => {
+    ["roomGraceUntil", "slowUntil", "silencedUntil", "bossWarningUntil", "lastHitSoundAt", "playerHitUntil", "pulseEffectUntil"].forEach((key) => {
       if (state[key] > 0) state[key] += elapsed;
     });
+    if (combatFeedbackUntil > 0) combatFeedbackUntil += elapsed;
     state.enemies.forEach((enemy) => {
       if (enemy.lastHitAt > 0) enemy.lastHitAt += elapsed;
       if (enemy.hitFlashUntil > 0) enemy.hitFlashUntil += elapsed;
@@ -1578,7 +1593,6 @@
   let keysPressed = {};
   let moveVector = { x: 0, y: 0 };
   let movePointerId = null;
-  let moveTarget = null;
   let shootTimer = 0;
 
   // Safe read/write LocalStorage
@@ -1608,7 +1622,7 @@
   }
 
   function inferredInputType(fallback = "unknown") {
-    if (movePointerId !== null || moveTarget) return "pointer";
+    if (movePointerId !== null) return "pointer";
     if (Object.values(keysPressed).some(Boolean)) return "keyboard";
     return fallback;
   }
@@ -1665,6 +1679,13 @@
     if (!enemy) return;
     enemy.hitFlashUntil = performance.now() + 260;
     enemy.hitVisualKey = visualKey;
+    if (!blocked) {
+      const angle = Math.atan2(enemy.y - state.playerY, enemy.x - state.playerX);
+      const recoil = enemy.isBoss ? 3 : 13;
+      enemy.x += Math.cos(angle) * recoil;
+      enemy.y += Math.sin(angle) * recoil;
+      enemy.pulseStaggerUntil = Math.max(enemy.pulseStaggerUntil || 0, performance.now() + 90);
+    }
     if (showFeedback) showCombatFeedback(blocked ? "combatWard" : "combatHit", blocked ? {} : { damage: Math.max(1, Math.round(Number(damage) || 0)) });
   }
 
@@ -1960,7 +1981,7 @@
 
   function setResultModalActive(active) {
     syncFrameCover('result', active);
-    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > #battleControls, .game-layout > #equipmentBtn, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
@@ -1978,7 +1999,7 @@
   function setDraftModalActive(active, restoreBattleFocus = true) {
     syncFrameCover('draft', active);
     if (!active) clearDraftRerollConfirmation(false);
-    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > #battleControls, .game-layout > #equipmentBtn, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
@@ -1989,7 +2010,7 @@
 
   function setLootModalActive(active, restoreBattleFocus = true) {
     syncFrameCover('loot', active);
-    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > #battleControls, .game-layout > #equipmentBtn, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
@@ -2009,7 +2030,7 @@
   function setPauseModalActive(active, restoreBattleFocus = true, mode = "pause") {
     const closingMode = pauseDialogMode;
     if (active) {
-      if (manualPauseActive || !state.gameActive || !nodes.draftPanel.classList.contains("hidden") || !nodes.lootPanel.classList.contains("hidden") || document.body.classList.contains("relic-result")) return;
+      if (manualPauseActive || equipmentOpen || settingsOpen || !state.gameActive || !nodes.draftPanel.classList.contains("hidden") || !nodes.lootPanel.classList.contains("hidden") || document.body.classList.contains("relic-result")) return;
       pauseDialogMode = mode;
       manualPauseActive = true;
       clearMovementInput();
@@ -2026,7 +2047,7 @@
       pauseDialogMode = "pause";
     }
     syncFrameCover('pause', active);
-    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > #battleControls, .game-layout > #equipmentBtn, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
@@ -2165,6 +2186,7 @@
     clearEliteSpawnTimer();
     clearAmuletConfirmation();
     state.gameActive = false;
+    setEquipmentOpen(false, false);
     setPauseModalActive(false, false);
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
@@ -2362,6 +2384,7 @@
   function showStage() {
     clearEliteSpawnTimer();
     state.gameActive = false;
+    setEquipmentOpen(false, false);
     setPauseModalActive(false, false);
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
@@ -2403,6 +2426,8 @@
     (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-label", pauseCopy.action));
     (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("title", pauseCopy.action));
     updatePauseDialogCopy();
+    if (nodes.moveStick) nodes.moveStick.setAttribute("aria-label", t("controlsGuide"));
+    updateBattleControls();
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
@@ -2762,6 +2787,7 @@
     cancelExpeditionStageMotion();
     clearEliteSpawnTimer();
     state.gameActive = false;
+    setEquipmentOpen(false, false);
     setPauseModalActive(false, false);
     clearAmuletConfirmation();
     clearMovementInput();
@@ -2794,7 +2820,10 @@
     state.particleSystems = [];
     state.pulseCooldownTicks = 0;
     state.pulseEffectUntil = 0;
-    shootTimer = 0;
+    state.dodgeTicks = state.dodgeCooldownTicks = state.hurtCooldownTicks = 0;
+    state.combo = state.comboTicks = state.surgeTicks = 0;
+    state.facing = { x: 0, y: -1 };
+    shootTimer = state.baseRate;
     particleSparksList = [];
     state.slowUntil = 0;
     state.silencedUntil = 0;
@@ -2858,12 +2887,8 @@
   // Each named expedition owns three authored rooms. The visible mission rule
   // now changes threat order and entry geometry instead of only changing count.
   const encounterProfiles = {
-    // Expedition 1 Room 3 is the first guardian/key decision, not a hidden
-    // damage check. Keep the same authored threats and reduced stats, but
-    // give the player a longer protected setup to read the room and let
-    // auto-fire thin the opening pressure before contact begins. The Room 3
-    // guardian waits until that authored five-threat opening has had time to
-    // resolve instead of stacking on top of it during first-time routing.
+    // The first expedition retains forgiving enemy stats; v31 caps the shared
+    // entry/elite delays below so these historical timings no longer stall combat.
     chase: encounter(["north", "sides", "corners"], ["chaser chaser chaser", "chaser chaser chaser rusher", "chaser chaser rusher chaser splitter"], { grace:[3500,2800,7200], eliteDelay:[12000,11500,16000], hpMultiplier:.62, speedMultiplier:.72, eliteHp:[1.8,2.1,2.4], eliteSpeed:.78 }),
     rush: encounter(["sides", "pincer", "columns"], ["chaser rusher chaser rusher", "rusher chaser rusher chaser rusher", "rusher rusher chaser splitter rusher chaser"], { grace:[2800,2400,2100], eliteDelay:[10500,10000,9500], hpMultiplier:.76, speedMultiplier:.84, eliteHp:[2.2,2.5,2.8], eliteSpeed:.86 }),
     swarm: encounter(["corners", "surround", "north"], ["chaser chaser splitter chaser", "chaser splitter chaser splitter chaser", "splitter chaser chaser splitter rusher chaser"], { hpMultiplier:.84, speedMultiplier:.9, eliteDelay:[9500,9000,8500] }),
@@ -3045,7 +3070,7 @@
     const roomIndex = Math.max(0, Math.min(ROOMS_PER_EXPEDITION - 1, room - 1));
     const roomThreats = encounterProfile?.rooms[roomIndex] || regionThreatPools[mission.region];
     const formation = encounterProfile?.formations[roomIndex] || "surround";
-    state.roomGraceUntil = performance.now() + (encounterProfile?.grace[roomIndex] || ROOM_ENTRY_GRACE_MS);
+    state.roomGraceUntil = performance.now() + Math.min(1800, encounterProfile?.grace[roomIndex] || ROOM_ENTRY_GRACE_MS);
     for (let i = 0; i < roomThreats.length; i += 1) {
       const point = formationSpawnPoint(formation, i, roomThreats.length);
       state.enemies.push(createThreat(roomThreats[i], point.x, point.y, {
@@ -3067,13 +3092,15 @@
         hpMultiplier: encounterProfile?.eliteHp[roomIndex],
         speedMultiplier: encounterProfile?.eliteSpeed,
       }));
-    }, encounterProfile?.eliteDelay[roomIndex] || 6800);
+    }, Math.min(5200, encounterProfile?.eliteDelay[roomIndex] || 5200));
   }
 
   function updateHUDText() {
     nodes.roomText.textContent = `${state.room}/${ROOMS_PER_EXPEDITION}`;
-    nodes.keyText.textContent = state.keys;
-    if (nodes.goldText) nodes.goldText.textContent = state.runGold;
+    nodes.keyText.textContent = `◆ ${state.keys}`;
+    nodes.keyText.setAttribute("aria-label", `${t("keysLabel")}: ${state.keys}`);
+    if (nodes.goldText) nodes.goldText.textContent = `◈ ${state.runGold}`;
+    nodes.goldText?.setAttribute("aria-label", `${t("goldLabel")}: ${state.runGold}`);
     nodes.levelVal.textContent = state.level;
     nodes.expText.textContent = `${state.exp}/${state.expNeed}`;
     nodes.expFill.style.width = `${(state.exp / state.expNeed) * 100}%`;
@@ -3490,6 +3517,7 @@
     });
     clearEliteSpawnTimer();
     state.gameActive = false;
+    setEquipmentOpen(false, false);
     setPauseModalActive(false, false);
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
@@ -3648,7 +3676,13 @@
     let speed = enemy.speed;
     if (enemy.behavior === "rusher" || enemy.behavior === "moss" || enemy.behavior === "crown") {
       const cycle = enemy.abilityTimer % 210;
-      speed *= cycle > 145 && cycle < 190 ? 2.15 : 0.82;
+      // A committed, aimed charge creates a dodge window rather than homing damage.
+      if (cycle < 115 || cycle >= 180) enemy.chargeAngle = Math.atan2(dy, dx);
+      if (cycle >= 115 && cycle < 145) speed = 0;
+      else if (cycle >= 145 && cycle < 180) {
+        moveAngle = enemy.chargeAngle ?? moveAngle;
+        speed *= 2.8;
+      } else speed *= 0.9;
     }
     if (enemy.behavior === "orbiter" || enemy.behavior === "moon") {
       moveAngle += dist > 210 ? 0.45 : Math.PI / 2;
@@ -3672,13 +3706,10 @@
       const dx = state.playerX - shot.x;
       const dy = state.playerY - shot.y;
       if (Math.hypot(dx, dy) < shot.size + 15) {
-        state.playerHp = Math.max(0, state.playerHp - shot.damage);
-        markPlayerImpact();
-        if (shot.kind === "silence") state.silencedUntil = performance.now() + 1500;
-        if (shot.kind === "pulse") state.slowUntil = performance.now() + 1200;
+        const damaged = hurtPlayer(shot.damage);
+        if (damaged && shot.kind === "silence") state.silencedUntil = performance.now() + 1500;
+        if (damaged && shot.kind === "pulse") state.slowUntil = performance.now() + 1200;
         state.enemyShots.splice(index, 1);
-        window.WeightPlayAudio?.play("player.hurt");
-        renderStatsPanel();
         if (state.playerHp <= 0) {
           endGame(false);
           return;
@@ -3693,6 +3724,15 @@
     const enemyIndex = state.enemies.indexOf(enemy);
     if (enemyIndex < 0) return;
     state.enemies.splice(enemyIndex, 1);
+    state.combo += 1;
+    state.comboTicks = 360;
+    if (state.combo % 5 === 0) {
+      state.surgeTicks = 300;
+      state.pulseCooldownTicks = Math.max(0, state.pulseCooldownTicks - 120);
+      showCombatFeedback('surgeLabel', {}, 1400);
+      window.WeightPlayAudio?.play('reward.upgrade');
+    }
+    createDamageSparks(enemy.x, enemy.y);
     if (enemy.behavior === "splitter") summonThreats(enemy, "rusher", 2);
     window.WeightPlayAudio?.play("enemy.defeat");
 
@@ -3725,7 +3765,7 @@
   }
 
   function activateRelicPulse() {
-    if (!state.gameActive || manualPauseActive || !nodes.draftPanel.classList.contains("hidden") || !nodes.lootPanel.classList.contains("hidden")) return false;
+    if (!battleInputReady()) return false;
     if (state.pulseCooldownTicks > 0) {
       showCombatFeedback("pulseWait", { seconds: Math.ceil(state.pulseCooldownTicks / 60) });
       return false;
@@ -3791,7 +3831,7 @@
   // Rendering may follow the display refresh rate; simulation always advances
   // in the same 60 Hz steps so movement and combat do not speed up on 120 Hz screens.
   function updateGameEngine(timestamp = performance.now()) {
-    if (!state.gameActive) return;
+    if (!state.gameActive || manualPauseActive || equipmentOpen || settingsOpen || backgroundSuspendedAt) return;
     if (document.hidden) {
       suspendBackgroundBattle();
       return;
@@ -3813,9 +3853,14 @@
   }
 
   function simulateGameTick() {
-    if (!state.gameActive) return;
+    if (!battleInputReady()) return;
     const roomInGrace = performance.now() < state.roomGraceUntil;
     if (state.pulseCooldownTicks > 0) state.pulseCooldownTicks -= 1;
+    for (const timer of ['dodgeCooldownTicks', 'dodgeTicks', 'hurtCooldownTicks', 'comboTicks', 'surgeTicks']) {
+      if (state[timer] > 0) state[timer] -= 1;
+    }
+    if (state.comboTicks === 0) state.combo = 0;
+    updateBattleControls();
 
     // 1. Move Player
     const stats = getStats();
@@ -3828,28 +3873,20 @@
     if (keysPressed["d"] || keysPressed["ArrowRight"]) moveX = 1;
 
     const keyboardMoving = moveX !== 0 || moveY !== 0;
-    if (keyboardMoving) {
-      moveTarget = null;
-    } else if (moveTarget) {
-      const targetDx = moveTarget.x - state.playerX;
-      const targetDy = moveTarget.y - state.playerY;
-      const targetDistance = Math.hypot(targetDx, targetDy);
-      if (targetDistance <= 8) {
-        moveTarget = null;
-        moveVector = { x: 0, y: 0 };
-      } else {
-        moveVector = { x: targetDx / targetDistance, y: targetDy / targetDistance };
-      }
-    }
-
     if (!keyboardMoving && (moveVector.x !== 0 || moveVector.y !== 0)) {
       moveX = moveVector.x;
       moveY = moveVector.y;
     }
 
+    if (state.dodgeTicks > 0) {
+      moveX = state.dodgeDirection.x;
+      moveY = state.dodgeDirection.y;
+    }
     if (moveX !== 0 || moveY !== 0) {
       const angle = Math.atan2(moveY, moveX);
-      const movementSpeed = stats.speed * (performance.now() < state.slowUntil ? 0.58 : 1);
+      state.facing = { x: Math.cos(angle), y: Math.sin(angle) };
+      const strength = keyboardMoving || state.dodgeTicks > 0 ? 1 : Math.min(1, Math.hypot(moveX, moveY));
+      const movementSpeed = stats.speed * strength * (state.dodgeTicks > 0 ? 3.2 : performance.now() < state.slowUntil ? 0.58 : 1);
       state.playerX += Math.cos(angle) * movementSpeed;
       state.playerY += Math.sin(angle) * movementSpeed;
 
@@ -3860,7 +3897,7 @@
 
     // 2. Automated Weapon Firing Timer
     shootTimer += 1 / 60;
-    if (shootTimer >= stats.rate && performance.now() >= state.silencedUntil) {
+    if (shootTimer >= stats.rate * (state.surgeTicks > 0 ? 0.5 : 1) && performance.now() >= state.silencedUntil) {
       shootTimer = 0;
       fireBullet();
     }
@@ -3891,16 +3928,8 @@
 
       // Check player contact damage
       if (!roomInGrace && performance.now() >= (enemy.pulseStaggerUntil || 0) && dist < enemy.size + 15) {
-        const contactDamage = enemy.isBoss ? 0.24 : enemy.behavior === "rusher" ? 0.2 : 0.15;
-        state.playerHp = Math.max(0, state.playerHp - contactDamage);
-        markPlayerImpact();
-        if (["slower", "mire"].includes(enemy.behavior)) state.slowUntil = performance.now() + 800;
-        const now = performance.now();
-        if (now - state.lastHitSoundAt > 520) {
-          state.lastHitSoundAt = now;
-          window.WeightPlayAudio?.play("player.hurt");
-        }
-        renderStatsPanel();
+        const damaged = hurtPlayer(enemy.isBoss ? 6 : enemy.behavior === 'rusher' ? 4 : 3);
+        if (damaged && ["slower", "mire"].includes(enemy.behavior)) state.slowUntil = performance.now() + 800;
         if (state.playerHp <= 0) {
           endGame(false);
           return;
@@ -4015,17 +4044,24 @@
   // Draw Arena textures
   function drawCanvasFrame() {
     const ctx = nodes.gameCanvas.getContext("2d");
-    ctx.clearRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
+    const box = nodes.gameCanvas.getBoundingClientRect();
+    if (box.width > 0 && box.height > 0) {
+      const nextHeight = Math.round(ARENA_WIDTH * box.height / box.width);
+      if (nodes.gameCanvas.height !== nextHeight) nodes.gameCanvas.height = nextHeight;
+      battleViewHeight = nextHeight;
+      battleZoom = Math.max(1, battleViewHeight / ARENA_HEIGHT) * 1.12;
+    }
+    ctx.clearRect(0, 0, ARENA_WIDTH, battleViewHeight);
     const camera = updateBattleCamera();
     ctx.save();
     ctx.beginPath();
-    ctx.rect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
+    ctx.rect(0, 0, ARENA_WIDTH, battleViewHeight);
     ctx.clip();
     ctx.translate(
-      ARENA_WIDTH / 2 - camera.x * BATTLE_CAMERA_ZOOM,
-      ARENA_HEIGHT / 2 - camera.y * BATTLE_CAMERA_ZOOM,
+      ARENA_WIDTH / 2 - camera.x * battleZoom,
+      battleViewHeight / 2 - camera.y * battleZoom,
     );
-    ctx.scale(BATTLE_CAMERA_ZOOM, BATTLE_CAMERA_ZOOM);
+    ctx.scale(battleZoom, battleZoom);
 
     // 1. Ruin Room background
     if (assets.bg.complete && assets.bg.naturalWidth > 0) {
@@ -4228,6 +4264,17 @@
     state.enemies.forEach((enemy) => {
       ctx.save();
       ctx.translate(enemy.x, enemy.y);
+      const chargeCycle = enemy.abilityTimer % 210;
+      if (['rusher', 'moss', 'crown'].includes(enemy.behavior) && chargeCycle >= 115 && chargeCycle < 145) {
+        ctx.save();
+        ctx.rotate(enemy.chargeAngle || 0);
+        ctx.fillStyle = 'rgba(255, 70, 85, .25)';
+        ctx.strokeStyle = '#ffdadb';
+        ctx.lineWidth = 3;
+        ctx.fillRect(0, -enemy.size * .7, 240, enemy.size * 1.4);
+        ctx.strokeRect(0, -enemy.size * .7, 240, enemy.size * 1.4);
+        ctx.restore();
+      }
 
       const threatColors = {
         rusher: "#fb7185",
@@ -4341,7 +4388,7 @@
       ctx.globalAlpha = 1;
     }
     if (assets.hero.complete && assets.hero.naturalWidth > 0) {
-      ctx.drawImage(assets.hero, -22, -22, 44, 44);
+      ctx.drawImage(assets.hero, -30, -30, 60, 60);
     } else {
       ctx.fillStyle = "#fbbf24";
       ctx.beginPath();
@@ -4361,7 +4408,13 @@
     drawDamageSparks(ctx);
     ctx.restore();
     drawBossWarning(ctx);
-    drawRelicPulseControl(ctx);
+    if (state.dodgeTicks > 0 || state.surgeTicks > 0) {
+      ctx.save();
+      ctx.strokeStyle = state.dodgeTicks > 0 ? '#fef3c7' : '#5eead4';
+      ctx.lineWidth = 5;
+      ctx.strokeRect(3, 3, ARENA_WIDTH - 6, battleViewHeight - 6);
+      ctx.restore();
+    }
   }
 
   function drawBossWarning(ctx) {
@@ -4399,52 +4452,6 @@
       ctx.stroke();
       ctx.restore();
     }
-  }
-
-  function drawRelicPulseControl(ctx) {
-    const { x, y, radius } = PULSE_BUTTON;
-    const ready = state.pulseCooldownTicks <= 0;
-    const cooldownTicks = Math.max(PULSE_MIN_COOLDOWN_TICKS, PULSE_COOLDOWN_TICKS - state.relicRateCount * 60);
-    const cooldownProgress = ready ? 1 : 1 - Math.min(1, state.pulseCooldownTicks / cooldownTicks);
-    ctx.save();
-    ctx.shadowColor = ready ? "rgba(45, 212, 191, 0.65)" : "rgba(15, 23, 42, 0.45)";
-    ctx.shadowBlur = ready ? 18 : 8;
-    ctx.fillStyle = ready ? "rgba(8, 54, 58, 0.94)" : "rgba(15, 23, 42, 0.92)";
-    ctx.strokeStyle = ready ? "#5eead4" : "#94a3b8";
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    if (!ready) {
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = "#fbbf24";
-      ctx.lineWidth = 6;
-      ctx.beginPath();
-      ctx.arc(x, y, radius - 5, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * cooldownProgress);
-      ctx.stroke();
-    }
-
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = ready ? "#ccfbf1" : "#cbd5e1";
-    ctx.beginPath();
-    ctx.moveTo(x, y - 24);
-    ctx.lineTo(x + 14, y - 10);
-    ctx.lineTo(x, y + 4);
-    ctx.lineTo(x - 14, y - 10);
-    ctx.closePath();
-    ctx.fill();
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.direction = document.documentElement.dir === "rtl" ? "rtl" : "ltr";
-    ctx.fillStyle = "#f8fafc";
-    ctx.font = "bold 14px Outfit, sans-serif";
-    ctx.fillText(t("pulseLabel"), x, y + 20, radius * 1.72);
-    ctx.fillStyle = ready ? "#99f6e4" : "#fde68a";
-    ctx.font = "bold 12px Outfit, sans-serif";
-    const status = ready ? t("pulseReady") : t("pulseCooldown", { seconds: Math.ceil(state.pulseCooldownTicks / 60) });
-    ctx.fillText(status, x, y + 42, radius * 1.72);
-    ctx.restore();
   }
 
   function drawImageCover(ctx, image, width, height) {
@@ -4515,20 +4522,141 @@
     }
   }
 
-  // Keyboard Event registers
+  function battleInputReady() {
+    return state.gameActive && !manualPauseActive && !equipmentOpen && !settingsOpen && !backgroundSuspendedAt
+      && nodes.draftPanel.classList.contains('hidden') && nodes.lootPanel.classList.contains('hidden');
+  }
+
+  function hurtPlayer(damage) {
+    if (state.dodgeTicks > 0 || state.hurtCooldownTicks > 0) return false;
+    state.playerHp = Math.max(0, state.playerHp - damage);
+    state.hurtCooldownTicks = 42;
+    state.combo = state.comboTicks = 0;
+    markPlayerImpact();
+    window.WeightPlayAudio?.play('player.hurt');
+    renderStatsPanel();
+    return true;
+  }
+
+  function activateDodge() {
+    if (!battleInputReady() || state.dodgeCooldownTicks > 0) return false;
+    state.dodgeDirection = { ...state.facing };
+    state.dodgeTicks = 14;
+    state.dodgeCooldownTicks = 180;
+    updateBattleControls();
+    window.WeightPlayAudio?.play('movement.dash');
+    return true;
+  }
+
+  function updateBattleControls() {
+    if (!nodes.pulseButton) return;
+    for (const [button, ticks, label] of [[nodes.pulseButton, state.pulseCooldownTicks, 'pulseLabel'], [nodes.dodgeButton, state.dodgeCooldownTicks, 'dodgeLabel']]) {
+      const value = ticks > 0 ? `${(ticks / 60).toFixed(1)}s` : t(label);
+      if (button.lastElementChild.textContent !== value) button.lastElementChild.textContent = value;
+      button.classList.toggle('is-ready', ticks <= 0);
+      const ariaLabel = `${t(label)} · ${ticks > 0 ? t('pulseCooldown', { seconds: Math.ceil(ticks / 60) }) : t('pulseReady')}`;
+      if (button.getAttribute('aria-label') !== ariaLabel) button.setAttribute('aria-label', ariaLabel);
+      const disabled = String(ticks > 0);
+      if (button.getAttribute('aria-disabled') !== disabled) button.setAttribute('aria-disabled', disabled);
+    }
+    const combo = state.surgeTicks > 0 ? `${t('surgeLabel')} ${(state.surgeTicks / 60).toFixed(1)}s` : state.combo > 1 ? `${t('chainLabel')} ×${state.combo}` : '';
+    if (nodes.chainMeter.textContent !== combo) nodes.chainMeter.textContent = combo;
+    nodes.chainMeter.classList.toggle('is-active', Boolean(combo));
+  }
+
+  function setEquipmentOpen(active, restoreFocus = true) {
+    if (!nodes.equipmentDialog) return;
+    if (active && !battleInputReady()) return;
+    if (equipmentOpen === active) return;
+    equipmentOpen = active;
+    if (active) {
+      suspendBackgroundBattle();
+      renderEquippedGear();
+      renderStatsPanel();
+    }
+    nodes.equipmentDialog.classList.toggle('hidden', !active);
+    nodes.equipmentBtn.setAttribute('aria-expanded', String(active));
+    syncFrameCover('equipment', active);
+    for (const layer of [nodes.gamePanel.querySelector('.arena-viewport'), nodes.battleControls, nodes.pauseBtn, nodes.equipmentBtn]) layer.inert = active;
+    if (active) nodes.equipmentClose.focus({ preventScroll: true });
+    else {
+      resumeBackgroundBattle();
+      if (restoreFocus && state.gameActive) nodes.equipmentBtn.focus({ preventScroll: true });
+    }
+  }
+
+  function mountBattleControls() {
+    const layout = nodes.gamePanel.querySelector('.game-layout');
+    const make = (tag, id, className) => {
+      const node = document.createElement(tag);
+      node.id = id; node.className = className;
+      return node;
+    };
+    nodes.equipmentBtn = make('button', 'equipmentBtn', 'battle-equipment-button');
+    nodes.equipmentBtn.type = 'button';
+    nodes.equipmentBtn.dataset.ui = 'equipmentLabel';
+    nodes.equipmentBtn.setAttribute('aria-haspopup', 'dialog');
+    nodes.equipmentBtn.setAttribute('aria-expanded', 'false');
+    nodes.equipmentBtn.setAttribute('aria-keyshortcuts', 'E');
+    layout.append(nodes.equipmentBtn);
+    nodes.equipmentDialog = make('section', 'equipmentDialog', 'equipment-dialog hidden');
+    nodes.equipmentDialog.tabIndex = -1;
+    nodes.equipmentDialog.setAttribute('role', 'dialog');
+    nodes.equipmentDialog.setAttribute('aria-modal', 'true');
+    nodes.equipmentDialog.setAttribute('aria-labelledby', 'equipmentTitle');
+    nodes.equipmentDialog.innerHTML = '<header class="equipment-head"><div><h2 id="equipmentTitle" data-ui="equipmentLabel"></h2><p data-ui="equipmentPaused"></p></div><button type="button" id="equipmentClose" data-ui="equipmentClose"></button></header>';
+    nodes.equipmentDialog.append($('inventoryPanel'));
+    layout.append(nodes.equipmentDialog);
+    nodes.equipmentClose = $('equipmentClose');
+    nodes.equipmentBtn.addEventListener('click', () => setEquipmentOpen(true));
+    nodes.equipmentClose.addEventListener('click', () => setEquipmentOpen(false));
+    nodes.equipmentDialog.addEventListener('keydown', event => {
+      if (event.key === 'Escape' || event.key.toLowerCase() === 'e') {
+        event.preventDefault(); event.stopPropagation(); setEquipmentOpen(false); return;
+      }
+      if (event.key !== 'Tab') return;
+      const buttons = [...nodes.equipmentDialog.querySelectorAll('button:not(:disabled)')].filter(node => node.getClientRects().length);
+      const first = buttons[0], last = buttons.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+    nodes.battleControls = make('div', 'battleControls', 'battle-controls');
+    nodes.battleControls.innerHTML = '<div id="moveStick" class="move-stick" role="group"><span class="stick-cross" aria-hidden="true">＋</span><span id="stickKnob" class="stick-knob" aria-hidden="true"></span><span class="stick-caption" data-ui="moveLabel"></span></div><div class="battle-skills"><button type="button" id="dodgeButton" aria-keyshortcuts="Shift"><b aria-hidden="true">➤</b><span></span></button><button type="button" id="pulseButton" aria-keyshortcuts="Space"><b aria-hidden="true">◆</b><span></span></button></div>';
+    layout.append(nodes.battleControls);
+    nodes.moveStick = $('moveStick'); nodes.stickKnob = $('stickKnob');
+    nodes.pulseButton = $('pulseButton'); nodes.dodgeButton = $('dodgeButton');
+    nodes.chainMeter = make('div', 'chainMeter', 'chain-meter');
+    layout.append(nodes.chainMeter);
+    for (const [button, action] of [[nodes.pulseButton, activateRelicPulse], [nodes.dodgeButton, activateDodge]]) {
+      button.addEventListener('pointerdown', event => {
+        if (event.button !== 0) return;
+        event.preventDefault(); action();
+      });
+      button.addEventListener('click', event => { if (event.detail === 0) action(); });
+    }
+    // Settings shares the same suspension clock; closing it cannot resume a different modal.
+    window.addEventListener('weightplay:interaction-state', () => {
+      const open = document.body.dataset.screen === 'battle' && Boolean(nodes.gamePanel.querySelector('[data-wp-settings][aria-expanded="true"]'));
+      if (settingsOpen === open) return;
+      settingsOpen = open;
+      if (open) suspendBackgroundBattle(); else resumeBackgroundBattle();
+    });
+  }
+
+  // Keyboard and fixed-origin analog joystick share a direction vector.
   function clearMovementInput() {
     keysPressed = {};
     moveVector = { x: 0, y: 0 };
-    moveTarget = null;
-    if (movePointerId !== null && nodes.gameCanvas.hasPointerCapture?.(movePointerId)) {
-      nodes.gameCanvas.releasePointerCapture(movePointerId);
-    }
+    const pointer = movePointerId;
     movePointerId = null;
+    if (pointer !== null && nodes.moveStick?.hasPointerCapture?.(pointer)) nodes.moveStick.releasePointerCapture(pointer);
+    nodes.stickKnob?.style.removeProperty('transform');
+    nodes.moveStick?.classList.remove('is-active');
   }
 
   function setupInputs() {
     window.addEventListener("keydown", (e) => {
-      if (manualPauseActive) return;
+      if (manualPauseActive || equipmentOpen || settingsOpen) return;
       if (!nodes.draftPanel.classList.contains("hidden")) {
         if (e.ctrlKey || e.metaKey || e.altKey) return;
         const choiceIndex = ["1", "2", "3"].indexOf(e.key);
@@ -4542,7 +4670,11 @@
         }
         return;
       }
-      if (!state.gameActive) return;
+      if (!battleInputReady()) return;
+      if (e.ctrlKey || e.metaKey || e.altKey || e.target?.closest?.('input, select, textarea')) return;
+      if (e.key.toLowerCase() === 'e') { e.preventDefault(); if (!e.repeat) setEquipmentOpen(true); return; }
+      if (e.key === 'Shift') { e.preventDefault(); if (!e.repeat) activateDodge(); return; }
+      if (e.key === 'Escape') { e.preventDefault(); setPauseModalActive(true); return; }
       if (e.code === "Space" || e.key === " ") {
         if (e.ctrlKey || e.metaKey || e.altKey) return;
         const interactiveTarget = e.target?.closest?.("button, a, input, select, textarea, [contenteditable='true']");
@@ -4551,17 +4683,18 @@
         if (!e.repeat) activateRelicPulse();
         return;
       }
-      keysPressed[e.key] = true;
-      if (["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) e.preventDefault();
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      keysPressed[key] = true;
+      if (["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) e.preventDefault();
     });
     window.addEventListener("keyup", (e) => {
-      keysPressed[e.key] = false;
+      keysPressed[e.key.length === 1 ? e.key.toLowerCase() : e.key] = false;
     });
     window.addEventListener("blur", () => {
       windowFocused = false;
       clearMovementInput();
       suspendBackgroundBattle();
-      if (state.gameActive && !manualPauseActive) setPauseModalActive(true);
+      if (state.gameActive && !manualPauseActive && !equipmentOpen && !settingsOpen) setPauseModalActive(true);
     });
     window.addEventListener("focus", () => {
       windowFocused = true;
@@ -4576,62 +4709,45 @@
       if (!manualPauseActive) resumeBackgroundBattle();
     });
 
-    function updateMoveTarget(event) {
-      const rect = nodes.gameCanvas.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      const screenX = ((event.clientX - rect.left) / rect.width) * nodes.gameCanvas.width;
-      const screenY = ((event.clientY - rect.top) / rect.height) * nodes.gameCanvas.height;
-      moveTarget = battleCanvasPointToWorld(screenX, screenY);
+    const stick = nodes.moveStick;
+    function updateStick(event) {
+      const rect = stick.getBoundingClientRect();
+      const radius = rect.width * 0.32;
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
+      const distance = Math.hypot(dx, dy);
+      const magnitude = Math.min(1, distance / radius);
+      const strength = magnitude < 0.12 ? 0 : (magnitude - 0.12) / 0.88;
+      moveVector = distance ? { x: dx / distance * strength, y: dy / distance * strength } : { x: 0, y: 0 };
+      nodes.stickKnob.style.transform = `translate(${distance ? dx / distance * magnitude * 64 : 0}%, ${distance ? dy / distance * magnitude * 64 : 0}%)`;
     }
-
-    // Tap a destination or drag to continuously update movement; keyboard
-    // input remains an equivalent override.
-    nodes.gameCanvas.addEventListener("pointerdown", (event) => {
-      if (!state.gameActive || event.isPrimary === false || movePointerId !== null || (event.button !== undefined && event.button !== 0)) return;
-      const rect = nodes.gameCanvas.getBoundingClientRect();
-      const point = {
-        x: ((event.clientX - rect.left) / rect.width) * ARENA_WIDTH,
-        y: ((event.clientY - rect.top) / rect.height) * ARENA_HEIGHT,
-      };
-      if (Math.hypot(point.x - PULSE_BUTTON.x, point.y - PULSE_BUTTON.y) <= PULSE_BUTTON.radius + 10) {
-        activateRelicPulse();
-        event.preventDefault();
-        return;
-      }
+    stick.addEventListener('pointerdown', event => {
+      if (!battleInputReady() || movePointerId !== null || event.button !== 0) return;
       movePointerId = event.pointerId;
-      nodes.gameCanvas.setPointerCapture?.(event.pointerId);
-      updateMoveTarget(event);
+      stick.setPointerCapture(event.pointerId);
+      stick.classList.add('is-active');
+      updateStick(event);
       event.preventDefault();
     });
-    nodes.gameCanvas.addEventListener("pointermove", (event) => {
+    stick.addEventListener('pointermove', event => {
       if (movePointerId !== event.pointerId) return;
-      updateMoveTarget(event);
-      event.preventDefault();
+      updateStick(event); event.preventDefault();
     });
-    const releaseMovePointer = (event) => {
-      if (event.pointerId !== movePointerId) return;
-      movePointerId = null;
-      if (nodes.gameCanvas.hasPointerCapture?.(event.pointerId)) nodes.gameCanvas.releasePointerCapture(event.pointerId);
-    };
-    const cancelMovePointer = (event) => {
-      if (event.pointerId !== movePointerId) return;
-      movePointerId = null;
-      moveTarget = null;
-      moveVector = { x: 0, y: 0 };
-      if (nodes.gameCanvas.hasPointerCapture?.(event.pointerId)) nodes.gameCanvas.releasePointerCapture(event.pointerId);
-    };
-    nodes.gameCanvas.addEventListener("pointerup", releaseMovePointer);
-    nodes.gameCanvas.addEventListener("pointercancel", cancelMovePointer);
-    nodes.gameCanvas.addEventListener("lostpointercapture", (event) => {
-      if (event.pointerId !== movePointerId) return;
-      movePointerId = null;
-      moveTarget = null;
-      moveVector = { x: 0, y: 0 };
-    });
+    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+      stick.addEventListener(type, event => {
+        if (event.pointerId === movePointerId) clearMovementInput();
+      });
+    }
   }
 
   // Init handler
-  function init() {
+  async function init() {
+    const { battleCopy } = await import('./battle-copy.mjs?v=31');
+    for (const [locale, copy] of Object.entries(battleCopy)) {
+      Object.assign(text[locale], copy);
+      ariaText[locale].arena = copy.controlsGuide;
+    }
+    mountBattleControls();
     loadLocalState();
     const menuShop = document.querySelector(".menu-shop");
     const trainingPanel = menuShop.querySelector(".training-panel");
@@ -4900,6 +5016,46 @@
 
     if (new URLSearchParams(location.search).has("smoke")) {
       window.__animalRelicHuntersSmoke = {
+        verifyCombatRules() {
+          const saved = { ...state };
+          const sparks = particleSparksList;
+          const feedback = [combatFeedbackText, combatFeedbackUntil, lastCombatFeedbackAt];
+          try {
+            particleSparksList = [];
+            for (const key of ['enemies', 'orbs', 'pickups', 'particleSystems']) state[key] = [];
+            state.playerHp = 30;
+            state.dodgeTicks = 14;
+            state.hurtCooldownTicks = 0;
+            const dodgeProtected = !hurtPlayer(6) && state.playerHp === 30;
+            state.dodgeTicks = 0;
+            state.combo = 4;
+            const hitApplied = hurtPlayer(4) && state.playerHp === 26 && state.combo === 0;
+            const repeatProtected = !hurtPlayer(4) && state.playerHp === 26;
+            state.pulseCooldownTicks = 240;
+            for (let i = 0; i < 5; i++) {
+              const enemy = createThreat('chaser', 400, 300);
+              state.enemies.push(enemy);
+              defeatThreat(enemy);
+            }
+            const fifthKillSurge = state.combo === 5 && state.comboTicks === 360
+              && state.surgeTicks === 300 && state.pulseCooldownTicks === 120;
+            const charger = createThreat('rusher', 200, 200);
+            charger.abilityTimer = 113;
+            moveEnemyByBehavior(charger, 200, 0, 200);
+            const beforeWarning = { x: charger.x, y: charger.y };
+            moveEnemyByBehavior(charger, 0, 200, 200);
+            const warningStops = charger.x === beforeWarning.x && charger.y === beforeWarning.y;
+            charger.abilityTimer = 144;
+            moveEnemyByBehavior(charger, 0, 200, 200);
+            const chargeCommits = charger.x > beforeWarning.x && charger.y === beforeWarning.y;
+            return { dodgeProtected, hitApplied, repeatProtected, fifthKillSurge, warningStops, chargeCommits };
+          } finally {
+            Object.assign(state, saved);
+            particleSparksList = sparks;
+            [combatFeedbackText, combatFeedbackUntil, lastCombatFeedbackAt] = feedback;
+            renderStatsPanel(); updateHUDText(); updateBattleControls();
+          }
+        },
         forceResult({ won = false, room = 2, keys = 1 } = {}) {
           loadLocalState();
           syncStateFromProfile();
@@ -5198,7 +5354,16 @@
             eliteCount: state.enemies.filter((enemy) => enemy.isElite).length,
             eliteSpawnPending: Boolean(eliteSpawnTimer || eliteSpawnCallback),
             player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },
-            moveTarget: moveTarget ? { ...moveTarget } : null,
+            moveVector: { ...moveVector },
+            pulseCooldownTicks: state.pulseCooldownTicks,
+            dodgeTicks: state.dodgeTicks,
+            dodgeCooldownTicks: state.dodgeCooldownTicks,
+            combo: state.combo,
+            surgeTicks: state.surgeTicks,
+            equipmentOpen,
+            settingsOpen,
+            enemies: state.enemies.map(({x,y,hp,behavior,isElite}) => ({x,y,hp,behavior,isElite})),
+            pickups: state.pickups.map(({x,y,type}) => ({x,y,type})),
             roomGraceRemaining: Math.max(0, state.roomGraceUntil - (backgroundSuspendedAt || performance.now())),
             combatFeedback: {
               text: nodes.roomObjective?.textContent || "",

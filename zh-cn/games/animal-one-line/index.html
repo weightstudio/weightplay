@@ -90,11 +90,11 @@
     </section>
   </main>
 
-  <section class="game-page-info game-page-info-static" aria-label="One Line 一笔到底 游戏信息">
+  <section class="game-page-info game-page-info-static" data-runtime-localize="off" aria-label="One Line 一笔到底 游戏信息">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>One Line 一笔到底</h2><p>One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。从发光脚印开始，只能走到上下左右相邻的空格；每格只能走一次，必须用同一条路线填满全部空格。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>一笔填满格子</strong></div><div class="game-info-fact"><span>类型</span><strong>逻辑 · 路线规划 · 益智 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关约 1 至 4 分钟</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>One Line 一笔到底</h2><p>One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。从发光脚印开始，只能走到上下左右相邻的空格；每格只能走一次，必须用同一条路线填满全部空格。</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>网格路线规划</span><span>一笔路径解谜</span><span>空间推理</span></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>一笔网格路径</strong></div><div class="game-info-fact"><span>类型</span><strong>逻辑 · 路线规划 · 解谜 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>由浅入深，逐步增加挑战</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每道约 1–4 分钟</strong></div></div>
     </div>
 
     <div class="game-info-sections">
@@ -104,13 +104,13 @@
 <p>途中可以放手思考，已完成的路线会保留；滑回上一格可撤销，路线走不下去时可修正或重新开始，而且不会消耗资源。</p>
 <p>提示会标出其中一种解法的下一格；重新开始与提示都不消耗资源。</p>
 <p>解锁、星级、完成记录与最佳时间只保存在当前浏览器。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡列选择已解锁棋盘。</li><li>按住发光脚印格开始。</li><li>拖曳到上下左右相邻的空格。</li><li>避开所有已经上色的格子。</li><li>填满全部空格后完成关卡。</li></ol></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡列选择已解锁棋盘。</li><li>按住发光脚印格开始。</li><li>拖曳到上下左右相邻的空格。</li><li>避开所有已经上色的格子。</li><li>走入最后一个空格时，关卡会立即完成。在此之前，可以松开手指或鼠标；未完成的路线会保留在棋盘上。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>开始前先观察角落与只有一个出口的区域。</li><li>不要过早封住尚未完成区域的入口。</li><li>卡住时可用提示查看其中一种完整解法的下一步。</li><li>游戏不要求速度，可以停在当前格子思考。</li></ul></div>
       <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–5 关教学相邻移动与不可重复；第 6–10 关练习转角规划；第 11–15 关加入石块切割棋盘。</p>
 <p>第 16–20 关延长路线；第 21–25 关增加容易误判的分岔；第 26–30 关综合大型棋盘、石块与窄出口。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>One Line 与 Starlink 的核心不同：Starlink 是每条连线只能使用一次的图形逻辑题；One Line 是填满每个开放格的路线规划益智游戏。触控、鼠标与键盘共用相同的相邻移动规则；响应式逻辑 Canvas 会填满 Stage 与 Battle 安全区域，并保留单一缩放比例、稳定锚点与独立 56px 预留区。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>One Line 与 Starlink 的核心不同：Starlink 是每条连线只能使用一次的图形逻辑题；One Line 是填满每个开放格的路线规划益智游戏。触控、鼠标与键盘共用相同的相邻移动规则；响应式逻辑 Canvas 会以单一缩放比例与稳定锚点填满 Stage 和 Battle 的完整安全高度；本游戏没有底部预留区。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>One Line 是适合家庭玩家的路线规划益智游戏，不需账号，进度只保存在当前浏览器。星等与结算摘要是游戏鼓励，不是正式能力、医疗或学校评量。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>可以重复走同一格吗？</dt><dd>不行，重新进入已上色格会结束本次尝试。</dd></div><div><dt>可以斜着走吗？</dt><dd>不行，只能走到共享边线的上下左右相邻格。</dd></div><div><dt>中途可以放开手指吗？</dt><dd>可以，已完成的路线会保留；回到游戏后可以继续规划。</dd></div><div><dt>怎样才算过关？</dt><dd>所有可走空格都必须被同一条路线填满。</dd></div><div><dt>需要快速拖动吗？</dt><dd>不需要，可以停在当前格子思考。</dd></div><div><dt>进度会保存吗？</dt><dd>会，数据只保存在当前浏览器。</dd></div><div><dt>共有几关？</dt><dd>共有 30 个原创格子棋盘。</dd></div></dl></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>可以再次走进走过的格子吗？</dt><dd>走回紧邻的上一格会撤销一步，尝试会继续。其他走过的格子会被拒绝，但不会结束本次尝试。</dd></div><div><dt>可以走对角线吗？</dt><dd>不可以。每一步只能进入与当前格子共边的开放格。</dd></div><div><dt>棋盘完成前可以松开手指吗？</dt><dd>可以。松开手指或鼠标会暂停路线，已走的部分会保留。走入最后一个空格时就会立即完成，不必等到松开。</dd></div><div><dt>一定要很快移动吗？</dt><dd>不用。规划路线时可以停在当前格子上。</dd></div><div><dt>显示提示有什么用？</dt><dd>它会标出某条完整路线的下一格；使用提示后，本次最高可得两颗星。</dd></div><div><dt>进度会保存吗？</dt><dd>会。解锁、完成记录、星级和最佳用时只保存在当前浏览器。</dd></div><div><dt>一共有多少关？</dt><dd>共有 30 道原创网格谜题，分为六章，每章五关。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬运队</strong><span>在 30 座手工设计的天空方舟仓库中行走、推动与拉回符文货箱。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-sunbeam-garden/"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>阳光花园：镜面导光</strong><span>旋转镜子，逐格追踪真正的阳光，在 30 座花园唤醒植物。</span></span></a></div></div>
     </div>
   </section>
@@ -147,7 +147,7 @@
 
 <script src="../../src/site-config.js"></script><script src="../../src/i18n-es.js?v=20260719-one-line1"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-<script src="grid-game.js?v=20261005-one-line-combined-v23"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+<script src="grid-game.js?v=20261010-one-line-runtime-copy-r1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20261010-one-line-static-guide-r1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 </body>

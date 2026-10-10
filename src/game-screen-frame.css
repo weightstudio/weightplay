@@ -1,4 +1,15 @@
 @import url('./game-ui-theme.css?v=20260923-play-header48');
+/* Explicit frames inside a scaled Battle may opt into the existing physical
+   control track. Keep scaling compensation in the shared owner, not game CSS. */
+@layer wp-frame-contract {
+  html body [data-wp-frame="2"] [data-wp-frame-logical-header="battle"],
+  html body [data-wp-frame="2"] [data-wp-frame-logical-header="battle"] .wp-frame-header {
+    --wp-frame-play-header-height:var(--wp-frame-physical-control-size,48px) !important;
+    --wp-frame-header-height:var(--wp-frame-physical-control-size,48px) !important;
+    --wp-frame-control-size:var(--wp-frame-physical-control-size,48px) !important;
+    --wp-frame-lobby-return-width:var(--wp-frame-physical-control-size,48px) !important;
+  }
+}
 @layer wp-frame-contract {
 /* Main is normal document flow. Only Stage/Battle may own the fixed browser
    edge; explicit frame consumers no longer depend on game-local lock classes. */

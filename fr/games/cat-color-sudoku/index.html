@@ -77,70 +77,70 @@
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-owned-guide data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">Cat Color Sudoku</strong><span data-t="loading">Opening Orla's moonlit atlas…</span><div class="loading-track"><i></i></div></div>
+    <div class="loading-card"><strong data-t="title">Sudoku félin des couleurs</strong><span data-t="loading">Ouverture de l’atlas lunaire d’Orla…</span><div class="loading-track"><i></i></div></div>
   </section>
 
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header">
-      <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-      <strong data-t="shortTitle">CAT SUDOKU</strong>
+      <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="Retour à WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+      <strong data-t="shortTitle">SUDOKU FÉLIN</strong>
       <div class="main-tools">
-        <button id="audio" type="button" data-t-aria="audio" aria-label="Audio" aria-pressed="true"><span aria-hidden="true">♪</span><small data-t="audioOn">On</small></button>
-        <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+        <button id="audio" type="button" data-t-aria="audio" aria-pressed="true" aria-label="Son"><span aria-hidden="true">♪</span><small data-t="audioOn">Activé</small></button>
+        <label class="locale"><span data-t="language">Langue</span><select id="locale"></select></label>
       </div>
     </header>
     <section class="hero" aria-labelledby="mainTitle">
-      <img src="../../assets/cat-color-sudoku-cover-v1.png" data-t-alt="summary" alt="Illustration du jeu Sudoku félin des couleurs">
+      <img src="../../assets/cat-color-sudoku-cover-v1.png" alt="Trouvez un chat lunaire dans chaque ligne, colonne et zone colorée à motif, sans que deux chats se touchent." data-t-alt="summary">
       <div class="hero-copy">
-        <p class="eyebrow" data-t="mainKicker">Moon Cap Orla's color atlas</p>
+        <p class="eyebrow" data-t="mainKicker">L’atlas coloré d’Orla</p>
         <h1 id="mainTitle" data-t="title" data-runtime-localize="off">Sudoku félin des couleurs</h1>
-        <p class="summary" data-t="summary">Find one Moonwhisker cat in every row, column, and patterned color territory—without letting any cats touch.</p>
+        <p class="summary" data-t="summary">Trouvez un chat lunaire dans chaque ligne, colonne et zone colorée à motif, sans que deux chats se touchent.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 30 maps solved</p>
-        <button id="start" class="primary" type="button" data-wp-main-start data-t="start">Start game</button>
+        <button id="start" class="primary" type="button" data-wp-main-start data-t="start">Commencer</button>
       </div>
     </section>
   </main>
-  <section id="guide" class="game-guide guide" data-wp-game-guide aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Logique des zones colorées</span><span>Classic</span><span>Puzzle</span><span>Strategy</span></div>
-      <p class="eyebrow" data-t="guideTitle">Game guide</p>
-      <h2 id="guideTitle" data-t="guideIntro">Read colors, patterns, rows, and columns together.</h2>
+  <section id="guide" class="game-guide guide" data-wp-game-guide aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tag1">Logique des territoires colorés</span><span data-t="tag2">Puzzle de placement de chats</span><span data-t="tag3">Déduction sans contact</span></div>
+      <p class="eyebrow" data-t="guideTitle">Guide du jeu</p>
+      <h2 id="guideTitle" data-t="guideIntro">Combinez couleurs, motifs, lignes et colonnes. Chaque carte a une solution logique et aucun chrono.</h2>
       <div class="guide-grid">
-        <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li><li data-t="how4"></li></ol></article>
-        <article><h3 data-t="winGuideTitle">Complete the atlas</h3><p data-t="winGuide"></p><h3 data-t="tipsTitle">Practical tips</h3><p data-t="tips"></p></article>
-        <article><h3 data-t="progressTitle">30 moonlit maps</h3><p data-t="progressGuide"></p><h3 data-t="saveTitle">Save and privacy</h3><p data-t="saveText"></p></article>
+        <article><h3 data-t="howTitle">Comment jouer</h3><ol><li data-t="how1">Chaque ligne contient exactement un chat.</li><li data-t="how2">Chaque colonne et chaque zone colorée contient exactement un chat.</li><li data-t="how3">Les chats ne peuvent pas se toucher, même en diagonale.</li><li data-t="how4">Choisissez Chat ou X, puis touchez une case. Annuler et recommencer sont gratuits.</li></ol></article>
+        <article><h3 data-t="winGuideTitle">Complétez l’atlas</h3><p data-t="winGuide">Placez tous les chats correctement. Les conflits directs sont refusés et une hypothèse peut être annulée.</p><h3 data-t="tipsTitle">Conseils</h3><p data-t="tips">Commencez par une zone avec une seule case légale. Après un chat, marquez sa ligne, sa colonne et ses huit voisines.</p></article>
+        <article><h3 data-t="progressTitle">30 cartes lunaires</h3><p data-t="progressGuide">Six chapitres vont du 4×4 guidé au 7×7 expert. Une carte résolue débloque uniquement la suivante.</p><h3 data-t="saveTitle">Sauvegarde et confidentialité</h3><p data-t="saveText">La progression et les records restent dans ce navigateur. Aucun compte ni envoi n’est requis.</p></article>
       </div>
-      <div class="guide-faq"><h3 data-t="faqTitle">FAQ</h3><details><summary data-t="faq1Q"></summary><p data-t="faq1A"></p></details><details><summary data-t="faq2Q"></summary><p data-t="faq2A"></p></details></div>
-      <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">More logic games</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">Numeric Sudoku</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">Minefield Logic</a></nav>
+      <div class="guide-faq"><h3 data-t="faqTitle">Questions fréquentes</h3><details><summary data-t="faq1Q">La couleur est-elle le seul indice ?</summary><p data-t="faq1A">Non. Chaque zone possède aussi un motif, un symbole et un nom accessible.</p></details><details><summary data-t="faq2Q">Est-ce un Sudoku numérique ?</summary><p data-t="faq2A">Non. C’est un puzzle de placement avec lignes, colonnes, zones et interdiction de contact.</p></details><details><summary data-t="faq3Q">Que montre l’indice ?</summary><p data-t="faq3A">Il met en évidence une case pouvant accueillir le prochain chat correct ; il ne résout pas toute la grille.</p></details><details><summary data-t="faq4Q">Que se passe-t-il si un coup enfreint une règle ?</summary><p data-t="faq4A">Un placement contraire à une ligne, une colonne, un territoire à motif ou à la règle de non-contact est refusé. Annuler restaure le coup précédent.</p></details><details><summary data-t="faq5Q">Comment terminer une carte ?</summary><p data-t="faq5A">Placez tous les chats afin que chaque ligne, colonne et territoire à motif en contienne un, sans qu’ils se touchent, même en diagonale. La carte suivante se débloque ensuite.</p></details></div>
+      <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">Autres jeux de logique</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">Sudoku numérique</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">Logique du champ miné</a></nav>
   </section>
 
   <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
     <header class="scene-header">
-      <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="Back">←</button>
-      <div><small data-t="choose">Choose a moon map</small><h2 data-t="shortTitle">CAT SUDOKU</h2></div>
+      <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="Retour à WeightPlay">←</button>
+      <div><small data-t="choose">Choisissez une carte lunaire</small><h2 data-t="shortTitle">SUDOKU FÉLIN</h2></div>
       <span id="stageProgress">0/30</span>
     </header>
-    <section id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageRailLabel" aria-label="Moon map selection"></section>
-    <nav class="stage-tabs" data-t-aria="stageRailLabel" aria-label="Moon map selection"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-t="stages">Stages</button><span aria-hidden="true"></span></nav>
+    <section id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageRailLabel" aria-label="Sélection des cartes lunaires"></section>
+    <nav class="stage-tabs" data-t-aria="stageRailLabel" aria-label="Sélection des cartes lunaires"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-t="stages">Niveaux</button><span aria-hidden="true"></span></nav>
   </main>
 
   <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header">
-      <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="Back">←</button>
+      <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="Retour à la liste des cartes">←</button>
       <div><small id="battleChapter"></small><h2 id="battleStage"></h2></div>
-      <div class="battle-header-tools"><span id="objective"></span><button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility aria-label="Audio" data-t-aria="audio"><span aria-hidden="true">♪</span></button></div>
+      <div class="battle-header-tools"><span id="objective"></span><button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility data-t-aria="audio" aria-label="Son"><span aria-hidden="true">♪</span></button></div>
     </header>
     <section class="battle-content">
       <div class="board-wrap">
-        <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="Cat Color Sudoku board"></div>
+        <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="Grille du Sudoku félin des couleurs"></div>
         <p id="status" class="status" aria-live="polite"></p>
       </div>
-      <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="Puzzle tools">
-        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action>Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">Mark X</button></div>
-        <div class="action-row"><button id="undo" type="button" data-t="undo">Undo</button><button id="hint" type="button" data-t="hint">Hint</button><button id="restart" type="button" data-t="restart">Restart</button></div>
+      <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="Outils du puzzle">
+        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Mode de placement"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action>Placer un chat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">Marquer X</button></div>
+        <div class="action-row"><button id="undo" type="button" data-t="undo">Annuler</button><button id="hint" type="button" data-t="hint">Indice</button><button id="restart" type="button" data-t="restart">Recommencer</button></div>
         <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
       </aside>
     </section>
-    <dialog id="leaveDialog" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-t="leaveTitle">Leave this map?</h2><p data-t="leaveText"></p><div class="dialog-actions"><button id="leaveContinue" class="primary" data-t="continue">Continue</button><button id="leaveStages" data-t="returnStages">Stage list</button></div></dialog>
-    <dialog id="resultDialog" aria-labelledby="resultTitle"><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">Atlas restored</p><h2 id="resultTitle" data-t="resultTitle">Moon map solved!</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" data-t="stages">Stages</button><button id="resultNext" class="primary" data-t="next">Next map</button><button id="resultReplay" data-t="replay">Play again</button></div></dialog>
+    <dialog id="leaveDialog" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-t="leaveTitle">Quitter cette carte ?</h2><p data-t="leaveText">Continuer garde cette déduction. Revenir aux niveaux termine l’essai.</p><div class="dialog-actions"><button id="leaveContinue" class="primary" data-t="continue">Continuer</button><button id="leaveStages" data-t="returnStages">Liste des niveaux</button></div></dialog>
+    <dialog id="resultDialog" aria-labelledby="resultTitle"><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">Atlas restauré</p><h2 id="resultTitle" data-t="resultTitle">Carte lunaire résolue !</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" data-t="stages">Niveaux</button><button id="resultNext" class="primary" data-t="next">Carte suivante</button><button id="resultReplay" data-t="replay">Rejouer</button></div></dialog>
   </main>
 
   <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
@@ -150,7 +150,8 @@
   <script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js?v=20260819-cat-color-sudoku-v1"></script>
-  <script src="locales.js?v=20260829-cat-color-sudoku-v5-result-mastery"></script>
+  <script src="locales.js?v=20261010-cat-color-text-growth-140"></script>
+  <script src="text-growth-140.js?v=20261010-cat-color-text-growth-140"></script>
   <script src="game.js?v=20260903-cat-color-sudoku-v7-audio&wp-audio=1.0.0"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260819-cat-color-sudoku-v1" data-wp-battle-standard></script>
