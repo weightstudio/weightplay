@@ -31,7 +31,7 @@ const progression={
  de:['Fortschritt','Löse ein Rätsel, um das nächste freizuschalten. Passe den Weg an Gefahren und Bossregeln an. Wiederhole es für Abzeichen ohne Hinweise oder mit Zugziel. Rückgängig stellt die letzte Aktion wieder her.'],
  it:['Progressione','Risolvi un enigma per aprire il successivo. Adatta il percorso ai pericoli e al boss. Rigioca per i distintivi senza indizi e con obiettivo di mosse; annulla ripristina l’ultima azione.'],
  ru:['Прохождение','Решите головоломку, чтобы открыть следующую. Учитывайте ловушки и условия босса. Повторяйте ради значков без подсказок и за число ходов. Отмена восстанавливает последнее действие.'],
- hi:['चुनौती की प्रगति','पहेली पूरी करने पर अगला स्तर खुलता है। खतरों और मुखिया की शर्तों के अनुसार रास्ता चुनें। बिना संकेत और लक्ष्य चालों के पदक पाने के लिए फिर खेलें। वापसी आखिरी कार्रवाई बहाल करती है।'],
+ hi:['चुनौती की प्रगति','पहेली पूरी करने पर अगला स्तर खुलता है। खतरों और मुखिया की शर्तों के अनुसार रास्ता चुनें। बिना संकेत और लक्ष्य चालों के पदक पाने के लिए फिर खेलें। पिछली चाल वापस लेने से पिछली स्थिति बहाल होती है।'],
  ar:['التقدم','حل اللغز لفتح التالي واختر طريقًا يناسب المخاطر وشروط الزعيم. أعد اللعب لشارات بلا تلميحات وهدف الحركات. التراجع يعيد الإجراء الأخير.'],
 };
 export const DETAILS=Object.fromEntries(Object.entries(rules).map(([locale,parts])=>{
