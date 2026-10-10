@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import vm from "node:vm";
 
 const root = process.cwd();
@@ -64,7 +65,7 @@ async function createAccessToken() {
   return data.access_token;
 }
 
-async function runReport(accessToken, startDate, { eventName = "page_view", gamePagesOnly = true } = {}) {
+export function reportRequestBody(startDate, { eventName = "page_view", gamePagesOnly = true, sitePathPrefix = "" } = {}) {
   const filters = [
     {
       filter: {
@@ -89,6 +90,17 @@ async function runReport(accessToken, startDate, { eventName = "page_view", game
       },
     });
   }
+  return {
+    dateRanges: [{ startDate, endDate: "today" }],
+    ...(gamePagesOnly ? { dimensions: [{ name: "pagePath" }] } : {}),
+    metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+    dimensionFilter: { andGroup: { expressions: filters } },
+    limit: 100000,
+    offset: 0,
+  };
+}
+
+async function runReport(accessToken, startDate, { eventName = "page_view", gamePagesOnly = true } = {}) {
   const pageSize = 100000;
   const rows = [];
   let offset = 0;
@@ -102,12 +114,7 @@ async function runReport(accessToken, startDate, { eventName = "page_view", game
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        dateRanges: [{ startDate, endDate: "today" }],
-        ...(gamePagesOnly ? { dimensions: [{ name: "pagePath" }] } : {}),
-        metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
-        dimensionFilter: {
-          andGroup: { expressions: filters },
-        },
+        ...reportRequestBody(startDate, { eventName, gamePagesOnly, sitePathPrefix }),
         limit: pageSize,
         offset,
       }),
@@ -125,16 +132,18 @@ async function runReport(accessToken, startDate, { eventName = "page_view", game
   return mergedReport || { rows: [], rowCount: 0 };
 }
 
-function emptyStats(games, source = "pending") {
+export function emptyStats(games, source = "pending", { updatedAt = new Date().toISOString(), windowDays = lookbackDays } = {}) {
   return {
-    updatedAt: new Date().toISOString(),
+    updatedAt,
     source,
-    metric: "game_page_view",
-    windowDays: lookbackDays,
+    metric: "game_start",
+    windowDays,
     totals: {
       plays7d: 0,
       playsTotal: 0,
       users7d: 0,
+      pageViews7d: 0,
+      pageViewsTotal: 0,
       lobbyVisits7d: 0,
       lobbyVisitsTotal: 0,
       lobbyUsers7d: 0,
@@ -146,6 +155,8 @@ function emptyStats(games, source = "pending") {
           plays7d: 0,
           playsTotal: 0,
           users7d: 0,
+          pageViews7d: 0,
+          pageViewsTotal: 0,
           rank7d: null,
           rankTotal: null,
         },
@@ -154,7 +165,7 @@ function emptyStats(games, source = "pending") {
   };
 }
 
-function addRows(stats, games, rows = [], field, userField) {
+export function addRows(stats, games, rows = [], field, userField) {
   for (const row of rows) {
     const pagePath = row.dimensionValues?.[0]?.value || "";
     const game = findGameByPath(games, pagePath);
@@ -166,7 +177,7 @@ function addRows(stats, games, rows = [], field, userField) {
   }
 }
 
-function rankStats(stats) {
+export function rankStats(stats) {
   const ranked = Object.entries(stats.games)
     .sort((a, b) => b[1].plays7d - a[1].plays7d || b[1].playsTotal - a[1].playsTotal || a[0].localeCompare(b[0]));
   ranked.forEach(([id, value], index) => {
@@ -184,6 +195,33 @@ function rankStats(stats) {
   stats.totals.users7d = ranked.reduce((sum, [, value]) => sum + value.users7d, 0);
 }
 
+export function buildStats(games, {
+  source = "ga4",
+  updatedAt = new Date().toISOString(),
+  windowDays = lookbackDays,
+  recentStarts = [],
+  totalStarts = [],
+  recentPageViews = [],
+  totalPageViews = [],
+  recentLobby = { rows: [] },
+  totalLobby = { rows: [] },
+} = {}) {
+  const stats = emptyStats(games, source, { updatedAt, windowDays });
+  addRows(stats, games, recentStarts, "plays7d", "users7d");
+  addRows(stats, games, totalStarts, "playsTotal");
+  addRows(stats, games, recentPageViews, "pageViews7d");
+  addRows(stats, games, totalPageViews, "pageViewsTotal");
+  rankStats(stats);
+  const lobby7d = aggregateMetrics(recentLobby);
+  const lobbyTotal = aggregateMetrics(totalLobby);
+  stats.totals.pageViews7d = Object.values(stats.games).reduce((sum, game) => sum + game.pageViews7d, 0);
+  stats.totals.pageViewsTotal = Object.values(stats.games).reduce((sum, game) => sum + game.pageViewsTotal, 0);
+  stats.totals.lobbyVisits7d = lobby7d.count;
+  stats.totals.lobbyVisitsTotal = lobbyTotal.count;
+  stats.totals.lobbyUsers7d = lobby7d.users;
+  return stats;
+}
+
 function aggregateMetrics(report = {}) {
   const row = report.rows?.[0];
   return {
@@ -198,6 +236,13 @@ async function writeReport(stats, games, note = "") {
   } catch {
     return;
   }
+  await fs.writeFile(reportPath, buildAnalyticsReport(stats, games, note), "utf8");
+}
+
+export function buildAnalyticsReport(stats, games, note = "") {
+  const startsArePrimary = stats.metric === "game_start";
+  const pageViews7d = Number(stats.totals?.pageViews7d ?? (!startsArePrimary ? stats.totals?.plays7d : 0)) || 0;
+  const pageViewsTotal = Number(stats.totals?.pageViewsTotal ?? (!startsArePrimary ? stats.totals?.playsTotal : 0)) || 0;
   const lines = [
     "# Analytics Latest Report",
     "",
@@ -205,6 +250,7 @@ async function writeReport(stats, games, note = "") {
     `Source: ${stats.source}`,
     `Metric: ${stats.metric || "game_page_view"}`,
     `Window: Last ${stats.windowDays} days`,
+    `Page views: ${pageViews7d} in 7d, ${pageViewsTotal} total`,
     `Lobby visits: ${stats.totals?.lobbyVisits7d || 0} in 7d, ${stats.totals?.lobbyVisitsTotal || 0} total`,
     "",
     "## Top Games",
@@ -213,16 +259,21 @@ async function writeReport(stats, games, note = "") {
   const ranked = [...games].sort((a, b) => {
     const aStats = stats.games[a.id] || {};
     const bStats = stats.games[b.id] || {};
-    return (bStats.plays7d || 0) - (aStats.plays7d || 0);
+    return startsArePrimary ? (bStats.plays7d || 0) - (aStats.plays7d || 0)
+      : (Number(bStats.pageViews7d ?? bStats.plays7d) || 0) - (Number(aStats.pageViews7d ?? aStats.plays7d) || 0);
   });
   for (const game of ranked.slice(0, 10)) {
     const gameStats = stats.games[game.id] || {};
-    lines.push(`- ${game.id}: ${gameStats.plays7d || 0} game entries in 7d, ${gameStats.playsTotal || 0} total game entries`);
+    const starts7d = startsArePrimary ? Number(gameStats.plays7d || 0) : 0;
+    const startsTotal = startsArePrimary ? Number(gameStats.playsTotal || 0) : 0;
+    const views7d = Number(gameStats.pageViews7d ?? (!startsArePrimary ? gameStats.plays7d : 0)) || 0;
+    const viewsTotal = Number(gameStats.pageViewsTotal ?? (!startsArePrimary ? gameStats.playsTotal : 0)) || 0;
+    lines.push(`- ${game.id}: ${starts7d} game starts in 7d, ${startsTotal} total game starts; ${views7d} page views in 7d, ${viewsTotal} total page views`);
   }
   if (note) {
     lines.push("", "## Note", "", note);
   }
-  await fs.writeFile(reportPath, `${lines.join("\n")}\n`, "utf8");
+  return `${lines.join("\n")}\n`;
 }
 
 async function main() {
@@ -248,19 +299,22 @@ async function main() {
 
   try {
     const accessToken = await createAccessToken();
-    const recent = await runReport(accessToken, `${lookbackDays}daysAgo`);
-    const total = await runReport(accessToken, "2020-01-01");
+    const recentStarts = await runReport(accessToken, `${lookbackDays}daysAgo`, { eventName: "game_start" });
+    const totalStarts = await runReport(accessToken, "2020-01-01", { eventName: "game_start" });
+    const recentPageViews = await runReport(accessToken, `${lookbackDays}daysAgo`, { eventName: "page_view" });
+    const totalPageViews = await runReport(accessToken, "2020-01-01", { eventName: "page_view" });
     const recentLobby = await runReport(accessToken, `${lookbackDays}daysAgo`, { eventName: "lobby_ready", gamePagesOnly: false });
     const totalLobby = await runReport(accessToken, "2020-01-01", { eventName: "lobby_ready", gamePagesOnly: false });
-    const stats = emptyStats(games, "ga4");
-    addRows(stats, games, recent.rows, "plays7d", "users7d");
-    addRows(stats, games, total.rows, "playsTotal");
-    rankStats(stats);
-    const lobby7d = aggregateMetrics(recentLobby);
-    const lobbyTotal = aggregateMetrics(totalLobby);
-    stats.totals.lobbyVisits7d = lobby7d.count;
-    stats.totals.lobbyVisitsTotal = lobbyTotal.count;
-    stats.totals.lobbyUsers7d = lobby7d.users;
+    const stats = buildStats(games, {
+      source: "ga4",
+      windowDays: lookbackDays,
+      recentStarts: recentStarts.rows,
+      totalStarts: totalStarts.rows,
+      recentPageViews: recentPageViews.rows,
+      totalPageViews: totalPageViews.rows,
+      recentLobby,
+      totalLobby,
+    });
     await fs.writeFile(statsPath, `${JSON.stringify(stats, null, 2)}\n`, "utf8");
     await writeReport(stats, games);
     // Reuse the authenticated token. Detailed reports never enter public assets.
@@ -300,7 +354,9 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

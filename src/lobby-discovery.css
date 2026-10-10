@@ -873,6 +873,7 @@ body.general-lobby-page .explore-type-filters {
   padding: 4px 2px 8px;
   scrollbar-width: thin;
 }
+body.general-lobby-page .explore-type-filters[hidden] { display: none; }
 body.general-lobby-page .explore-type-filters button {
   flex: 0 0 auto;
   min-height: 44px;
@@ -888,6 +889,34 @@ body.general-lobby-page .explore-type-filters button[aria-pressed="true"] {
   background: var(--lobby-gold, #edc164);
   color: #17373c;
 }
+body.general-lobby-page .explore-type-shelves { order: 9; display: grid; width: 100%; gap: 18px; margin: 0 0 12px; }
+body.general-lobby-page .explore-type-shelves[hidden] { display: none; }
+body.general-lobby-page .explore-type-shelf { min-width: 0; margin: 0; }
+body.general-lobby-page .explore-type-shelf .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 8px; }
+body.general-lobby-page .explore-type-shelf .section-heading h2 { min-width: 0; margin: 0; color: var(--lobby-ink); font-size: 17px; font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; }
+body.general-lobby-page .explore-type-shelf .explore-type-more { flex: 0 0 auto; min-height: 44px; padding: 6px 2px 6px 8px; border: 0; background: transparent; color: var(--lobby-accent, #67e3ac); font-size: 11px; font-weight: 750; white-space: normal; text-align: end; cursor: pointer; }
+body.general-lobby-page .explore-type-shelf .explore-type-more:hover { color: #f3ce7e; text-decoration: underline; }
+body.general-lobby-page .explore-type-games { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; width: 100%; min-width: 0; }
+body.general-lobby-page .explore-type-games .hero-game-card { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: auto 48px; min-width: 0; height: auto; min-height: 0; border: 1px solid var(--lobby-arcade-line, #597775); border-radius: 3px; background: var(--lobby-arcade-surface, #14323d); color: var(--lobby-ink); box-shadow: 0 3px 0 var(--lobby-arcade-shadow, #061820); text-decoration: none; }
+body.general-lobby-page .explore-type-games .hero-game-art { position: relative; width: 100%; min-width: 0; aspect-ratio: 1; overflow: hidden; background: var(--lobby-paper); }
+body.general-lobby-page .explore-type-games .hero-game-image { position: absolute; inset: 0; width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; transform: none; }
+body.general-lobby-page .explore-type-games .hero-game-copy { position: relative; display: grid; min-width: 0; min-height: 48px; align-content: center; padding: 8px; background: var(--lobby-arcade-surface, #14323d); color: var(--lobby-ink); }
+body.general-lobby-page .explore-type-games .hero-game-copy strong { display: -webkit-box; min-width: 0; overflow: hidden; color: var(--lobby-ink); font-size: 12px; line-height: 1.25; text-align: start; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+body.general-lobby-page .explore-type-games .hero-game-copy :is(small,em) { display: none; }
+body.general-lobby-page .explore-type-games .hero-game-rank { position: static; transform: none; order: -1; padding: 0; background: transparent; color: #f1c86f; font-size: 10px; line-height: 1.15; }
+body.general-lobby-page .explore-type-games .hero-game-card:is(:hover,:focus-visible) { border-color: var(--lobby-arcade-gold, #edb74e); box-shadow: 0 4px 0 var(--lobby-arcade-shadow, #061820); transform: translateY(-1px); }
+body.general-lobby-page .explore-type-games .hero-game-card:focus-visible { outline: 3px solid var(--lobby-arcade-gold, #edb74e); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
-  body.general-lobby-page .explore-type-filters button { transition: none; }
+  body.general-lobby-page .explore-type-filters button,
+  body.general-lobby-page .explore-type-games .hero-game-card { transition: none; scroll-behavior: auto; }
+}
+@media (max-width: 720px) {
+  body.general-lobby-page .explore-type-shelves { gap: 13px; margin-bottom: 8px; }
+  body.general-lobby-page .explore-type-shelf .section-heading { gap: 6px; margin-bottom: 6px; }
+  body.general-lobby-page .explore-type-shelf .section-heading h2 { font-size: 15px; }
+  body.general-lobby-page .explore-type-shelf .explore-type-more { max-width: 48%; padding-inline: 4px; font-size: 10px; }
+  body.general-lobby-page .explore-type-games { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(35vw,138px); gap: 9px; overflow-x: auto; overflow-y: hidden; padding: 0 0 7px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #c6d5c5 transparent; }
+  body.general-lobby-page .explore-type-games .hero-game-card { width: auto; min-width: 0; flex: none; scroll-snap-align: start; }
+  body.general-lobby-page .explore-type-games .hero-game-copy { min-height: 42px; padding: 6px; }
+  body.general-lobby-page .explore-type-games .hero-game-copy strong { font-size: 11px; }
 }

@@ -339,6 +339,71 @@ const exploreTypeRules = [
 function exploreTypesFor(game) {
   return exploreTypeRules.filter((rule) => rule.matches(game)).map((rule) => rule.id);
 }
+function exploreableGeneralGames() {
+  return lobby.games.filter((game) => generalGameIds.has(game.id) && game.status === "playable"
+    && !game.internalOnly && !tabletopGameIds.has(game.id) && !topicGameIds.has(game.id));
+}
+function ensureExploreTypeShelves() {
+  let container = document.querySelector("#exploreTypeShelves");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "exploreTypeShelves";
+    container.className = "explore-type-shelves";
+    container.dataset.runtimeLocalize = "off";
+  }
+  const rail = document.querySelector("#exploreTypeFilters");
+  const heading = document.querySelector("#catalogHeading");
+  if (rail) rail.after(container);
+  else heading?.before(container);
+  return container;
+}
+function selectExploreType(type) {
+  activeExploreType = activeExploreType === type ? "all" : type;
+  document.querySelectorAll("#exploreTypeFilters [data-explore-type]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.exploreType === activeExploreType));
+  });
+  applyFilter({ historyMode: "push" });
+  if (activeExploreType !== "all") {
+    const heading = document.querySelector("#catalogHeading");
+    heading?.focus({ preventScroll: true });
+    heading?.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+  }
+}
+function renderExploreTypeShelves(isFiltered = false) {
+  if (isKidsLobby) return;
+  const container = ensureExploreTypeShelves();
+  container.hidden = activeHall !== "games" || isFiltered;
+  if (container.hidden) return;
+  const eligible = exploreableGeneralGames();
+  const sections = exploreTypeRules.map((rule) => {
+    const matching = eligible.filter(rule.matches);
+    if (!matching.length) return null;
+    // Only call a category Popular when every card in that category has
+    // positive observed game_start data. Portfolio totals alone do not prove
+    // category popularity, and zero-count games must not receive fallback ranks.
+    const popular = hasRealStats() && matching.every((game) => Number(statFor(game).playsTotal) > 0);
+    if (popular) matching.sort((a, b) => (statFor(b).playsTotal || 0) - (statFor(a).playsTotal || 0)
+      || (statFor(b).plays7d || 0) - (statFor(a).plays7d || 0) || a.id.localeCompare(b.id, "en"));
+    const games = matching.slice(0, 5);
+    const title = `${i18n.t(popular ? "section.hero_games" : "site.featured")} · ${rule.label()}`;
+    const section = document.createElement("section");
+    section.className = "explore-type-shelf";
+    section.dataset.exploreTypeShelf = rule.id;
+    section.dataset.total = String(matching.length);
+    section.dataset.rendered = String(games.length);
+    section.setAttribute("aria-label", title);
+    const allLabel = `${rule.label()} · ${i18n.t("library.all_games")} →`;
+    section.innerHTML = `<div class="section-heading"><h2></h2><button class="catalog-jump explore-type-more" type="button"></button></div><div class="hero-games explore-type-games"></div>`;
+    section.querySelector("h2").textContent = title;
+    const more = section.querySelector(".explore-type-more");
+    more.textContent = allLabel;
+    more.setAttribute("aria-label", allLabel);
+    more.addEventListener("click", () => selectExploreType(rule.id));
+    section.querySelector(".explore-type-games").replaceChildren(...discoveryCards(games, { popular, priority: false }));
+    return section;
+  }).filter(Boolean);
+  container.replaceChildren(...sections);
+}
 function renderExploreTypes() {
   if (isKidsLobby) return;
   const existingRail = document.querySelector("#exploreTypeFilters");
@@ -371,9 +436,7 @@ function renderExploreTypes() {
     button.setAttribute("aria-pressed", String(activeExploreType === rule.id));
     button.textContent = `${rule.label()} · ${rule.count}`;
     button.addEventListener("click", () => {
-      activeExploreType = activeExploreType === rule.id ? "all" : rule.id;
-      rail.querySelectorAll("button").forEach((node) => node.setAttribute("aria-pressed", String(node.dataset.exploreType === activeExploreType)));
-      applyFilter({ historyMode: "push" });
+      selectExploreType(rule.id);
     });
     rail.append(button);
   }
@@ -906,8 +969,9 @@ function statFor(game) {
 
 function hasRealStats() {
   const updated = Date.parse(gameStats.updatedAt || "");
+  const age = Date.now() - updated;
   return gameStats.source === "ga4" && gameStats.metric === "game_start"
-    && Number.isFinite(updated) && Date.now() - updated < 30 * 86400000
+    && Number.isFinite(updated) && age >= 0 && age < 30 * 86400000
     && Number(gameStats.totals?.playsTotal || 0) > 0;
 }
 
@@ -932,6 +996,24 @@ function rankLabel(game, fallbackRank) {
   return i18n.t("stats.rank_label", { rank });
 }
 
+function rankedPopularGames(limit = 5) {
+  if (!hasRealStats()) return [];
+  return playableGames()
+    .filter((game) => Number(statFor(game).playsTotal) > 0)
+    .sort((a, b) => (statFor(b).playsTotal || 0) - (statFor(a).playsTotal || 0)
+      || (statFor(b).plays7d || 0) - (statFor(a).plays7d || 0) || a.id.localeCompare(b.id, "en"))
+    .slice(0, limit);
+}
+
+function hasRankedPopularGames() {
+  return activeHall !== "topics" && rankedPopularGames(1).length > 0;
+}
+
+function heroGamesTitleKey() {
+  return activeHall === "topics" ? "hall.topics_games_title"
+    : hasRankedPopularGames() ? "section.hero_games" : "site.featured";
+}
+
 function popularGames(limit = 3) {
   if (!isKidsLobby && activeHall === "topics") {
     // The Topics shelf is a preview, not a popularity ranking. Its planned
@@ -939,19 +1021,12 @@ function popularGames(limit = 3) {
     const topicGames = gamesInHall().filter((game) => topicHeroGameIds.includes(game.id));
     return topicGames.slice(0, limit);
   }
-  const playableGames = gamesInHall().filter((game) => game.status === "playable");
-  if (!hasRealStats()) {
-    const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds
-      : !isKidsLobby && activeHall === "topics" ? topicHeroGameIds : lobby.heroGameIds;
-    return heroIds.map((id) => playableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
-  }
-  return [...playableGames]
-    .sort((a, b) => {
-      const aStats = statFor(a);
-      const bStats = statFor(b);
-      return (bStats.playsTotal || 0) - (aStats.playsTotal || 0) || (bStats.plays7d || 0) - (aStats.plays7d || 0);
-    })
-    .slice(0, limit);
+  const ranked = rankedPopularGames(limit);
+  if (ranked.length) return ranked;
+  const availableGames = gamesInHall().filter((game) => game.status === "playable");
+  const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds
+    : !isKidsLobby && activeHall === "topics" ? topicHeroGameIds : lobby.heroGameIds;
+  return heroIds.map((id) => availableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
 }
 
 function playableGames() {
@@ -988,14 +1063,14 @@ function upcomingPreviewGames(limit = Number.POSITIVE_INFINITY) {
 }
 
 function challengeSpotlightGames(limit = 4) {
-  return playableGames()
+  const games = playableGames()
     .filter((game) => (game.ages || []).includes("13"))
-    .sort((a, b) => {
+  if (hasRealStats()) games.sort((a, b) => {
       const aStats = statFor(a);
       const bStats = statFor(b);
       return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
-    })
-    .slice(0, limit);
+  });
+  return games.slice(0, limit);
 }
 
 function mobileFriendlyGames(limit = 4) {
@@ -1003,13 +1078,12 @@ function mobileFriendlyGames(limit = 4) {
     .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable" && gameMatchesHall(game)))
     .filter(Boolean);
   const pinnedIds = new Set(pinned.map((game) => game.id));
-  const extras = playableGames()
-    .filter((game) => !pinnedIds.has(game.id))
-    .sort((a, b) => {
+  const extras = playableGames().filter((game) => !pinnedIds.has(game.id));
+  if (hasRealStats()) extras.sort((a, b) => {
       const aStats = statFor(a);
       const bStats = statFor(b);
       return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
-    });
+  });
   return [...pinned, ...extras].slice(0, limit);
 }
 
@@ -1025,6 +1099,7 @@ function recommendationAgeCompatible(game, seeds) {
 
 function scoreRecommendation(game, seeds) {
   if (!seeds.length) {
+    if (!hasRealStats()) return 0;
     const stats = statFor(game);
     return (stats.plays7d || 0) * 10 + (stats.playsTotal || 0);
   }
@@ -1034,6 +1109,7 @@ function scoreRecommendation(game, seeds) {
     const sharedAges = (game.ages || []).filter((age) => (seed.ages || []).includes(age)).length;
     return score + sharedSkills * 5 + sharedCategories * 3 + sharedAges * 4;
   }, 0);
+  if (!hasRealStats()) return affinity * 10;
   const stats = statFor(game);
   const plays7d = Number(stats.plays7d) || 0;
   const users7d = Number(stats.users7d) || 0;
@@ -1060,7 +1136,7 @@ function recommendedGames(limit = 3) {
   const ageCompatible = candidates.filter((game) => recommendationAgeCompatible(game, seeds));
   const ranked = (ageCompatible.length ? ageCompatible : candidates)
     .map((game) => ({ game, score: scoreRecommendation(game, seeds), stats: statFor(game) }))
-    .sort((a, b) => b.score - a.score || (b.stats.plays7d || 0) - (a.stats.plays7d || 0) || (b.stats.playsTotal || 0) - (a.stats.playsTotal || 0))
+    .sort((a, b) => b.score - a.score || (hasRealStats() ? (b.stats.plays7d || 0) - (a.stats.plays7d || 0) || (b.stats.playsTotal || 0) - (a.stats.playsTotal || 0) : 0))
   if (!ranked.length) return popularGames(limit);
   const selected = [];
   const selectedIds = new Set();
@@ -1099,7 +1175,7 @@ function recommendationNote(game, seeds) {
     }
     return i18n.t("recommend.based_on_activity");
   }
-  return hasStatsFeed() ? i18n.t("recommend.popular_reason") : i18n.t("recommend.start_here");
+  return hasRealStats() ? i18n.t("recommend.popular_reason") : i18n.t("recommend.start_here");
 }
 
 async function loadGameStats() {
@@ -1324,7 +1400,7 @@ function createGameCard(game) {
       : i18n.t("action.coming_soon");
   const ageOverlay = isKidsLobby && showAgeLabels ? `<span class="game-card-age-overlay">${ageLabel}</span>` : "";
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("recent_play.action")}</span>` : "";
-  const lifetimeRank = isPlayable && hasRealStats()
+  const lifetimeRank = isPlayable && hasRankedPopularGames()
     ? popularGames(5).findIndex((popularGame) => popularGame.id === game.id) + 1
     : 0;
   const popularBadge = lifetimeRank > 0 ? `<span class="popular-card-badge">${rankLabel(game, lifetimeRank)}</span>` : "";
@@ -1780,7 +1856,7 @@ function renderContinuePlaying() {
   continuePlaying.replaceChildren(...cards);
 }
 
-function discoveryCards(games, { popular = false, visualIdentity = false } = {}) {
+function discoveryCards(games, { popular = false, visualIdentity = false, priority = popular } = {}) {
   return games
     .map((game, index) => {
       const isPlayable = game.status === "playable";
@@ -1806,7 +1882,7 @@ function discoveryCards(games, { popular = false, visualIdentity = false } = {})
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png", { priority: popular })} alt="" />
+          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png", { priority })} alt="" />
           ${hasVisualIdentity ? `<span class="hero-game-art-identity" aria-hidden="true"><strong>${title}</strong><small>${type}</small></span>` : ""}
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
         </div>
@@ -1823,7 +1899,8 @@ function discoveryCards(games, { popular = false, visualIdentity = false } = {})
 }
 
 function renderHeroGames() {
-  heroGames.replaceChildren(...discoveryCards(popularGames(5), { popular: activeHall !== "topics" }));
+  const popular = hasRankedPopularGames();
+  heroGames.replaceChildren(...discoveryCards(popularGames(5), { popular }));
 }
 
 function latestPublicGames() {
@@ -2090,14 +2167,13 @@ function renderChallengeSpotlight() {
 }
 
 function gamesForSkillPath(skill, limit = 2) {
-  return playableGames()
-    .filter((game) => (game.skills || []).includes(skill))
-    .sort((a, b) => {
+  const games = playableGames().filter((game) => (game.skills || []).includes(skill));
+  if (hasRealStats()) games.sort((a, b) => {
       const aStats = statFor(a);
       const bStats = statFor(b);
       return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
-    })
-    .slice(0, limit);
+  });
+  return games.slice(0, limit);
 }
 
 function renderSkillPaths() {
@@ -2183,6 +2259,7 @@ function clearDiscoverySelections({ present = true } = {}) {
   activeSkill = "all";
   activeLibrary = "all";
   activeAvailability = "all";
+  activeExploreType = "all";
   activeSearch = "";
   if (!present) { hallSearchDisplay = ''; return; }
   if (gameSearch) gameSearch.value = "";
@@ -2191,6 +2268,9 @@ function clearDiscoverySelections({ present = true } = {}) {
   setActiveButtons(skillButtons, "skillFilter", "all");
   setActiveButtons(libraryButtons, "libraryTab", "all");
   setActiveButtons(availabilityButtons, "availabilityFilter", "all");
+  document.querySelectorAll("#exploreTypeFilters [data-explore-type]").forEach((button) => {
+    button.setAttribute("aria-pressed", "false");
+  });
 }
 
 function resetDiscoveryFilters() {
@@ -2297,6 +2377,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     activeAvailability !== "all" ||
     activeExploreType !== "all" ||
     Boolean(activeSearch);
+  renderExploreTypeShelves(isFiltered);
   let visibleCount = renderCatalog(isFiltered);
   document.querySelectorAll("#upcomingGames [data-age]").forEach((card) => {
     const ages = card.dataset.age.split(" ");
@@ -2403,8 +2484,8 @@ function applyStaticTranslations() {
   featuredLabel.textContent = i18n.t("site.featured");
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
-  heroGamesTitle.textContent = i18n.t(activeHall === "topics" ? "hall.topics_games_title" : hasRealStats() ? "section.hero_games" : "site.featured");
-  heroRankLabel.hidden = activeHall === "topics" || !hasRealStats();
+  heroGamesTitle.textContent = i18n.t(heroGamesTitleKey());
+  heroRankLabel.hidden = !hasRankedPopularGames();
   if (mobilePicksTitle) mobilePicksTitle.textContent = i18n.t("mobile_picks.title");
   if (mobilePicksReason) mobilePicksReason.textContent = i18n.t("mobile_picks.reason");
   if (upcomingGamesTitle) upcomingGamesTitle.textContent = i18n.t("upcoming.title");
@@ -2459,7 +2540,7 @@ function applyStaticTranslations() {
   });
   gameGrid?.setAttribute("aria-label", i18n.t("aria.game_list"));
   const regionLabels = [
-    [heroGamesSection, activeHall === "topics" ? "hall.topics_games_title" : hasRealStats() ? "section.hero_games" : "site.featured"],
+    [heroGamesSection, heroGamesTitleKey()],
     [mobilePicksSection, "mobile_picks.title"],
     [upcomingGamesSection, "availability_hint.preview"],
     [characterShowcaseSection, "character_showcase.title"],
