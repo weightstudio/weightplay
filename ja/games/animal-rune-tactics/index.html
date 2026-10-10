@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v31" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
     <meta name="description" content="ライオン、フクロウ、カメを指揮して全30ミッションへ。6×6の盤面で地形とスキルを使い、6体のボスに挑んで仲間を育てよう。" />
@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20261010-v29-c890a23a56be" />
+    <link rel="stylesheet" href="style.css?v=20261010-v31-2d599f8738c2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -191,7 +191,7 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v29-489c39dd48ea"></script>
+    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v31-4708c3ed51d2"></script>
     <script src="/games/animal-rune-tactics/native-locales.js?v=20260923-v25-77a554397a27"></script>
     <script src="/games/animal-rune-tactics/mission-locales.js?v=20260923-v25-65eb24d7962e"></script>
     <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
@@ -201,9 +201,9 @@
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
 <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
-<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v29-7cced709a5c7"></script>
-<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v29-6fb993c828ab"></script>
-<script src="game.js?v=20261010-v29-aa0f208f7646"></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v31-7cced709a5c7"></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v31-cc7e48cd210c"></script>
+<script src="game.js?v=20261010-v31-cab51aa946f5"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
     <script>
       (() => {
@@ -243,16 +243,19 @@
 <p>敵を反対側から挟む配置で挟撃が成立します。装甲、盾、封印、飛行中の無効化はダメージ予測に反映されます。潮流、炎、外周の回転で、ターン終了後に安全な場所が変わることもあります。</p>
 <p>各ミッションの星は、勝利、3体全員の生存、表示された目標ターン数の達成です。新しい星1個につきルーン4個を一度だけ獲得します。星を逃しても勝利は有効で、取得済みの星の報酬は繰り返し受け取れません。</p>
 <p>MAPはエネルギー3。撃破で1回復（1行動で最大1）、通常攻撃・防御・各ターンで1回復。</p>
-<p>各任務は敵6体と、各6体の増援2〜4波。2ターンごと、または敵全滅直後に到着。全波撃破で勝利。</p>
+<p>各波6体が2ターンごと、または敵一掃後に登場。掃討任務は全波撃破。増援阻止任務は両中継点を確保し、残る敵を倒しても勝利。</p>
 <p>生き残った敵は射程内で毎ターン1回反撃。ライオンの中断や盾で防ごう。</p>
 <p>◎ 遠距離照準は英雄を追跡。射程外へ逃げるか、敵を中断するか、盾で受けよう。</p>
-<p>永久ルーンを選べるのは各任務の初勝利時だけです。</p></div>
+<p>永久ルーンを選べるのは各任務の初勝利時だけです。</p>
+<p>金色の中継点に入ると、その仲間のエネルギーを一度だけ全回復。</p>
+<p>「増援を止める」任務では：金色の中継点を2つ確保すると増援停止。残る敵を倒そう。各地点でエネルギーを一度だけ全回復。遮断すると最後の守備隊が出現。 ★ 守備隊長：HP+12、攻撃+1。刻印して仲間で追撃。</p>
+<p>異なる仲間が続けて行動すると共鳴が増加。3で次のMAPがダメージ+2になり、共鳴を消費。</p></div>
       <div class="game-info-section"><h3>遊び方</h3><ol><li>ゲームを開始し、ミッションカードを選びます。解放済みのカードを押すと戦闘に入るので、先に地形と敵の情報を確認しましょう。</li><li>タッチかマウスでヒーローを選び、光るマスへ移動してから攻撃・ガード・スキルを選びます。矢印キーで盤面のフォーカスを動かし、Enterまたはスペースでマスを選択できます。</li><li>移動→MAP攻撃の範囲確認→照準→発射。敵の群れを一掃！ MAPはエネルギー3。撃破で1回復（1行動で最大1）、通常攻撃・防御・各ターンで1回復。</li><li>永久ルーンを選べるのは各任務の初勝利時だけです。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>移動→MAP攻撃の範囲確認→照準→発射。敵の群れを一掃！</li><li>近接攻撃に反撃する敵にはフクロウの射程を利用し、遠距離攻撃が無効な飛行中の敵には別のヒーローを使います。</li><li>全員生存の星を守るにはガードも有効です。無理にターン数を縮めず、次の再挑戦で目標の星を狙う方法もあります。</li></ul></div>
       <div class="game-info-section"><h3>進行と難易度</h3><p>ミッション1〜10は配置、塞がれた経路、隣接する敵の支援、反撃、根の罠を紹介します。5と10がボス戦です。</p>
 <p>11〜20は潮流、押し出し、再生、炎、冷却マスが加わります。15と20のボスで新しい判断を試します。</p>
 <p>21〜30は沈黙、外周回転、分身、エネルギー吸収、封印が登場します。25のボスと最後のキマイラには、反射神経より攻撃順が重要です。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>各任務は敵6体と、各6体の増援2〜4波。2ターンごと、または敵全滅直後に到着。全波撃破で勝利。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>各波6体が2ターンごと、または敵一掃後に登場。掃討任務は全波撃破。増援阻止任務は両中継点を確保し、残る敵を倒しても勝利。</p></div>
       <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>解放状況、星、ルーン、部隊の成長、仲間の強化はこのブラウザーに保存されます。サイトデータの削除やブラウザー変更で、保存が消えたり別の記録になったりします。全ミッションはダイヤなしで遊べます。報酬の引き直しは3ダイヤ、訓練枠は18ダイヤの任意機能です。端末間のクラウド同期は保証していません。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>移動したターンに攻撃できますか？</dt><dd>はい。先に移動し、その後に攻撃・ガード・スキルを1回使えます。戦闘行動を終えたヒーローは行動終了です。</dd></div><div><dt>スキルが使えないのはなぜですか？</dt><dd>エネルギー不足、戦闘行動の使用済み、沈黙を確認してください。通常攻撃やガードは使える場合があります。</dd></div><div><dt>予測ダメージが0なら不具合ですか？</dt><dd>必ずしもそうではありません。飛行中の無効化、盾、装甲の影響があります。位置やヒーローを変えて予測を確認してください。</dd></div><div><dt>先へ進むには星3個が必要ですか？</dt><dd>いいえ。生存や目標ターン数の星を逃しても勝利すれば進めます。再挑戦で未取得の報酬だけを獲得できます。</dd></div><div><dt>再挑戦すると強化も消えますか？</dt><dd>その戦闘だけがリセットされ、保存済みの強化は残ります。ブラウザーの保存データを消すと記録を失う場合があります。</dd></div><div><dt>ミッション30の後は？</dt><dd>キャンペーンは30で終了します。解放済みミッションの星を改善できますが、存在しないミッション31は作られません。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>オート分隊</strong><span>動物の陣形を決めてから、部隊の自動戦闘を見守ります。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>レリックハンター</strong><span>部屋を探索し、遺物を集めながら30の遠征に挑みます。</span></span></a></div></div>

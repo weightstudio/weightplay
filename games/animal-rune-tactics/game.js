@@ -1883,8 +1883,8 @@
     Object.assign(text[code], copy);
     text[code].skillEnergyChange = text[code].skillEnergyChange?.replace(/\b1\b/g, "2");
     text[code].skillEnergyNeed = text[code].skillEnergyNeed?.replace(/\b1\b/g, "2");
-    text[code].planWin = `${copy.planHint} ${copy.markHint}`;
-    text[code].planLose = `${copy.planHint} ${copy.guardHelp}`;
+    text[code].planWin = copy.planWin || `${copy.planHint} ${copy.markHint}`;
+    text[code].planLose = copy.planLose || `${copy.planHint} ${copy.guardHelp}`;
   }
   Object.assign(text["zh-Hant"], {resultPlan: "下一步戰術", nextMission: "下一個任務", retry: "再試一次"});
 
@@ -1999,7 +1999,16 @@
     Promise.all(animations.map(animation => ownAnimation(animation, node, "fx").done)).then(() => node.remove());
   }
 
-  reducedMotion.addEventListener("change", () => { if (reducedMotion.matches) clearMotion(); });
+  reducedMotion.addEventListener("change", () => {
+    if(!reducedMotion.matches)return;
+    clearMotion();
+    if(specialAction){
+      const action=specialAction;
+      action.root?.remove();action.root=null;
+      // Changing accessibility preferences must not advance a paused battle.
+      scheduleTurnTransition(()=>settleReducedSpecial(action),0);
+    }
+  });
 
   function unitRenderKey(unit) {
     return `${unit.team}:${unit.uid || unit.id}`;
@@ -2096,7 +2105,7 @@
   }
 
   function armTurnTransition() {
-    if (!turnTransitionTask || turnTransitionTimer || lifecycleSuspended || document.hidden) return;
+    if (!turnTransitionTask || turnTransitionTimer || battlePaused || lifecycleSuspended || document.hidden) return;
     const task = turnTransitionTask;
     turnTransitionDueAt = performance.now() + task.delay;
     turnTransitionTimer = window.setTimeout(() => {
@@ -2512,8 +2521,7 @@
     const active = selectedMission === mission.id;
     const centered = centeredMission === mission.id;
     const { name, tactic } = missionLocaleCopy(mission);
-    const enemies = mission.enemies.map((id) => t(enemyDefs.find((enemy) => enemy.id === id)?.name || id)).join(" / ");
-    const traits = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))].map((key) => t(key)).join(" / ");
+    const enemies = [...new Set(mission.enemies)].map((id) => `${t(enemyDefs.find((enemy) => enemy.id === id)?.name || id)} ×${mission.enemies.filter(item=>item===id).length}`).join(" / ");
     btn.dataset.missionId = String(mission.id);
     btn.dataset.stageIndex = String(index);
     btn.dataset.wpStageCentered = String(centered);
@@ -2526,7 +2534,7 @@
     btn.tabIndex = centered ? 0 : -1;
     if (centered) btn.setAttribute("aria-current", "true"); else btn.removeAttribute("aria-current");
     btn.setAttribute("aria-label", `${t("missionCard", { n: mission.id })}. ${name}. ${locked ? t("locked") : t("missionGoal", { enemies })}. ${t("missionPlan", { plan: tactic })}`);
-    btn.innerHTML = `<span class="mission-card__top"><strong>${t("missionCard", { n: mission.id })} · ${name}</strong><b>${locked ? t("locked") : active ? t("missionStatusCurrent") : t("missionStatusUnlocked")}</b></span><small>${mission.cols} × ${mission.rows} · ${"★".repeat(profile.stars?.[mission.id] || 0)}${"☆".repeat(3-(profile.stars?.[mission.id] || 0))} · ${t("missionRewardLabel")}: ${locked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small><span>${t("missionGoal", { enemies })}</span><em>${t("missionPlan", { plan: tactic })}<b class="mission-card__traits">${t("enemyTraits", { traits })}</b></em>`;
+    btn.innerHTML = `<span class="mission-card__top"><strong>${t("missionCard", { n: mission.id })} · ${name}</strong><b>${locked ? '🔒' : active ? '▶' : '✓'}</b></span><small>${"★".repeat(profile.stars?.[mission.id] || 0)}${"☆".repeat(3-(profile.stars?.[mission.id] || 0))} · ${t("missionReward", { xp: mission.xp, runes: mission.runes })}</small><span>${t('missionForces',{n:mission.enemies.length,waves:mission.waves.length+1})}</span><em>${t(mission.id%2===0&&mission.id%5!==0?'objectiveCut':'objectiveSweep',{n:0})}</em>`;
   }
 
   function createMissionCard() {
@@ -2681,16 +2689,18 @@
     if (!nodes.missionBriefing) return;
     const mission = missionDefs.find((item) => item.id === centeredMission) || missionDefs[0];
     const {name: missionName, tactic: missionTactic} = missionLocaleCopy(mission);
-    const enemies = mission.enemies.map((id) => {
+    const enemies = [...new Set(mission.enemies)].map((id) => {
       const enemy = enemyDefs.find((item) => item.id === id) || enemyDefs[0];
-      return `<span class="mission-briefing__enemy"><img src="${asset(enemy.img)}" alt="" /><b>${t(enemy.name)}</b><small>${t(`${enemy.trait}Short`)}</small></span>`;
+      return `<span class="mission-briefing__enemy"><img src="${asset(enemy.img)}" alt="" /><b>${t(enemy.name)} ×${mission.enemies.filter(item=>item===id).length}</b><small>${t(`${enemy.trait}Short`)}</small></span>`;
     }).join("");
     nodes.missionBriefing.innerHTML = `
       <div class="mission-briefing__head"><strong>${t("battlePreview")}</strong><em>${t("missionCard", { n: mission.id })} · ${missionName}</em></div>
       <div class="mission-briefing__enemies">${enemies}</div>
-      <p><b>${t("squadRule")}</b>${t("arenaMovement")} ${t("runeChainReady")}</p>
-      <p><b>${mission.cols} × ${mission.rows} · ${"★".repeat(profile.stars?.[mission.id] || 0)}${"☆".repeat(3-(profile.stars?.[mission.id] || 0))}</b> ${t("arenaMastery", {turns:mission.par})}<br>${missionTactic}</p>
-      ${mission.waves.map(wave=>`<p>${t("waveNotice",{n:wave.enemies.length,turn:wave.turn})}</p>`).join("")}`;
+      <p>${missionTactic}</p><p>${t('missionStars',{turns:mission.par})}</p>
+      <details class="mission-rules"><summary>${t('commandRules')}</summary>
+      <p>${t(mission.id%2===0&&mission.id%5!==0?'relayCutHelp':'relayHelp')}</p><p>${t('resonanceHelp')}</p>
+      <p>${t("arenaMovement")} ${t("runeChainReady")}</p>
+      ${mission.waves.map(wave=>`<p>${t("waveNotice",{n:wave.enemies.length,turn:wave.turn})}</p>`).join("")}</details>`;
   }
 
   function focusSelectedMission() {
@@ -2909,6 +2919,29 @@
   }
 
   let sceneGeneration = 0;
+  let battlefield = null;
+  let battlefieldLoading = false;
+  let battlefieldUnavailable = false;
+  function syncBattlefield() {
+    if (!state || document.body.dataset.screen !== "battle") return;
+    if (battlefield) {
+      battlefield.sync({terrain:state.terrain,relays:state.relays,hero:state.selected});
+      return;
+    }
+    if (battlefieldLoading || battlefieldUnavailable) return;
+    const generation=sceneGeneration;
+    battlefieldLoading=true;
+    import('/games/animal-rune-tactics/battlefield-3d.mjs?v=31').then(({RuneBattlefield})=>{
+      if(generation!==sceneGeneration || document.body.dataset.screen!=="battle")return;
+      battlefield=new RuneBattlefield(document.querySelector('.battle-shell'),nodes.grid,lost=>{
+        battlefieldUnavailable=lost;renderCommand();
+      });
+      syncBattlefield();
+    }).catch(()=>{battlefieldUnavailable=true;renderCommand();}).finally(()=>{
+      battlefieldLoading=false;
+      if(generation!==sceneGeneration)syncBattlefield();
+    });
+  }
   const battleShellStyleProperties = [
     "position", "inset", "top", "right", "bottom", "left", "width", "min-width", "max-width",
     "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin",
@@ -2960,6 +2993,8 @@
   }
 
   function setScene(scene) {
+    battlefield?.dispose(); battlefield=null; battlefieldUnavailable=false;
+    cancelSpecial();
     clearMotion();
     resetMovementAnimationTracking();
     pauseMotion("pause", false);
@@ -3031,6 +3066,7 @@
   function energyCapacity() { return 3 + combat.deployment(profile, state?.mission || selectedMission).energy; }
 
   function startMission(mission = selectedMission) {
+    window.WeightPlayAudio?.preload?.(["magic.cast","weapon.laser.fire","explosion.large","combat.critical"]);
     window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID);
     resetTrainingIntent();
     clearTurnTransition();
@@ -3064,7 +3100,12 @@
       kills: 0,
       mapShots: 0,
       bestSweep: 0,
+      resonance: 0,
+      lastActor: null,
+      relays: [{x:2,y:1,captured:false},{x:3,y:4,captured:false}],
+      cutSupply: mission % 2 === 0 && mission % 5 !== 0,
       waveNumber: 1,
+      waveTotal:missionDef.waves.length+1,
       phase: "player",
       rerolled: false,
       terrain: missionDef.terrain.map((item) => ({ ...item })),
@@ -3089,6 +3130,7 @@
       }),
       enemies: makeEnemies(mission),
     };
+    state.terrain=state.terrain.filter(tile=>!state.relays.some(r=>r.x===tile.x&&r.y===tile.y));
     planEnemyTurn();
     setScene("battle");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
@@ -3098,7 +3140,7 @@
     battlePaused = false;
     setPauseActionAvailable(true);
     setBattleCovered(false);
-    log("mapIntro");
+    log("commandOpening");
     render();
     focusPanel(nodes.gamePanel);
     focusBattleGrid();
@@ -3147,6 +3189,10 @@
       if (livingEnemies().length >= 12) break;
       const cell = candidates.shift(); if (!cell) break;
       Object.assign(enemy, cell);
+      if(wave.finalGuard&&!wave.captainDeployed) {
+        enemy.hp+=12;enemy.maxHp+=12;enemy.atk+=1;enemy.guardCaptain=true;
+        wave.captainDeployed=true;
+      }
       enemy.intent = combat.plan(enemy, state.heroes, [...state.enemies, enemy], canOccupy);
       state.enemies.push(enemy); deployed++;
     }
@@ -3207,7 +3253,7 @@
     nodes.missionText.textContent = state.mission;
     nodes.turnText.textContent = `${state.turn} / ${state.missionDef.par} ★`;
     const reserveCount = state.waves.reduce((sum,w)=>sum+w.enemies.length,0);
-    nodes.enemyCountText.textContent = t("waveHud",{wave:state.waveNumber,total:state.missionDef.waves.length+1,n:livingEnemies().length});
+    nodes.enemyCountText.textContent = t("waveHud",{wave:state.waveNumber,total:state.waveTotal,n:livingEnemies().length});
     nodes.enemyCountText.title = `${t("sweepStats",{kills:state.kills,best:state.bestSweep})} ${reserveCount ? t("waveNotice", {turn:state.waves[0].turn,n:state.waves[0].enemies.length}) : ""}`;
     clearMotion("feedback");
     nodes.grid.innerHTML = "";
@@ -3239,6 +3285,12 @@
           onTile(x, y);
         });
         const unit = unitAt(x, y);
+        const relay=state.relays.find(r=>r.x===x&&r.y===y);
+        if(relay) {
+          tile.classList.add('relay-tile');tile.classList.toggle('relay-captured',relay.captured);
+          const mark=document.createElement('span');mark.className='relay-marker';
+          mark.textContent=relay.captured?'✓':'◆';mark.setAttribute('aria-hidden','true');tile.append(mark);
+        }
         if (unit) {
           if (unit.team === "hero" && state.acted.has(unit.id)) tile.classList.add("is-acted");
           if (unit.team === "hero" && state.moved.has(unit.id) && !state.acted.has(unit.id)) tile.classList.add("is-positioned");
@@ -3293,10 +3345,14 @@
           tile.setAttribute("aria-label", `${tile.getAttribute("aria-label")} ${entry.title}`);
         }
         nodes.grid.appendChild(tile);
+        if(relay)tile.setAttribute('aria-label',`${tile.getAttribute('aria-label')}. ${t(relay.captured?'relayClaimed':'relayHelp')}`);
+        if(unit?.guardCaptain)tile.setAttribute('aria-label',`${tile.getAttribute('aria-label')}. ${t('guardCaptain')}`);
       }
     }
     renderedMovementMission = state?.mission ?? null;
+    syncBattlefield();
     animateMovedUnits(previousRects);
+    renderCommand();
     renderSelected();
     renderTurnRoster();
     updateActionButtons();
@@ -3330,6 +3386,10 @@
     wrap.dataset.hp = String(unit.hp);
     wrap.dataset.maxHp = String(unit.maxHp);
     if (unit.bossKit) wrap.classList.add("is-boss");
+    if(unit.guardCaptain) {
+      wrap.classList.add('is-guard-captain');
+      const rank=document.createElement('span');rank.className='captain-badge';rank.textContent='★';rank.title=t('guardCaptain');wrap.append(rank);
+    }
     if (unit.runeMark) wrap.classList.add("is-rune-marked");
     if (unit.disrupted) wrap.classList.add("is-disrupted");
     if (unit.guard) wrap.classList.add("is-warded");
@@ -3364,6 +3424,38 @@
     return wrap;
   }
 
+  function captureRelay(hero) {
+    const relay=state.relays.find(r=>!r.captured&&r.x===hero.x&&r.y===hero.y);
+    if(!relay)return;
+    relay.captured=true;hero.energy=energyCapacity();
+    if(state.cutSupply&&state.relays.every(r=>r.captured)) {
+      // Cutting supply removes later reserves but never erases the immediate
+      // guard response. Preserve a partially queued wave when entries are full.
+      state.waves=state.waves.slice(0,1);
+      state.waveTotal=state.waveNumber+state.waves.length;
+      if(state.waves.length){state.waves[0].turn=state.turn;state.waves[0].finalGuard=true;deployReinforcements(true);}
+    }
+    playFx('healing-swirl',hero.x,hero.y);playCue('magic.shield');
+    log(state.cutSupply&&state.relays.every(r=>r.captured)?'supplyCut':'relayClaimed');
+  }
+
+  function renderCommand() {
+    if(!state)return;
+    let strip=nodes.gamePanel.querySelector('.command-strip');
+    if(!strip){strip=document.createElement('div');strip.className='command-strip';nodes.gamePanel.querySelector('.hud').prepend(strip);}
+    const captured=state.relays.filter(r=>r.captured).length;
+    strip.innerHTML='<strong></strong><span class="command-resonance"><i></i><b></b></span>';
+    strip.querySelector('strong').textContent=t(state.cutSupply?'objectiveCut':'objectiveSweep',{n:captured});
+    strip.querySelector('strong').title=t(state.cutSupply?'relayCutHelp':'relayHelp');
+    strip.querySelector('b').textContent=t(state.resonance>=3?'resonanceReady':'resonanceMeter',{n:state.resonance});
+    strip.querySelector('i').style.setProperty('--charge',`${state.resonance/3*100}%`);
+    strip.querySelector('.command-resonance').classList.toggle('is-full',state.resonance>=3);
+    strip.querySelector('.command-resonance').title=t('resonanceHelp');
+    let fallback=nodes.gamePanel.querySelector('.world-fallback');
+    if(!fallback){fallback=document.createElement('span');fallback.className='world-fallback';nodes.gamePanel.querySelector('.battle-shell').append(fallback);}
+    fallback.hidden=!battlefieldUnavailable;fallback.textContent=t('worldFallback');
+  }
+
   function renderSelected() {
     const hero = selectedHero();
     if (!hero) {
@@ -3375,13 +3467,17 @@
     const enemyTraitKeys = [...new Set(livingEnemies().map((enemy) => enemy.trait).filter(Boolean))];
     const enemyTraitGuideText = enemyTraitKeys
       .map((traitKey) => `${t(traitKey)}: ${t(`${traitKey}Desc`)}`)
-      .join(" · ");
-    nodes.selectedCard.innerHTML = `
-      <strong>${t(hero.name)} ${t("heroLevel", { level: hero.level })} · ${status}</strong>
-      <span>${t("chooseTarget", { hero: t(hero.name), hp: hero.hp, maxHp: hero.maxHp, energy: hero.energy })}</span>
-      <div class="enemy-trait-guide" role="note"><b></b><span></span></div>
-      <small>${t("arenaMovement")}</small>`;
-    nodes.selectedCard.querySelector("strong").textContent = `${t(hero.name)} ${t("heroLevel", { level: hero.level })} / ${status}`;
+      .concat(livingEnemies().some(enemy=>enemy.guardCaptain)?[t('guardCaptain')]:[]).join(" · ");
+    const priorDetails=nodes.selectedCard.querySelector('details');
+    const wasOpen=priorDetails ? priorDetails.open : false;
+    const hits=state.aim==='skill'?skillTargets():[];
+    const kills=hits.filter(enemy=>damagePreview(hero,enemy,true).damage>=enemy.hp).length;
+    nodes.selectedCard.innerHTML = `<div class="command-selected"><strong></strong><span></span></div><p class="command-preview"></p><details class="command-rules"><summary></summary><div class="enemy-trait-guide" role="note"><b></b><span></span></div><small></small></details>`;
+    nodes.selectedCard.querySelector("strong").textContent = t(hero.skillName);
+    nodes.selectedCard.querySelector('.command-selected span').textContent=status;
+    nodes.selectedCard.querySelector('.command-preview').textContent=state.aim==='skill'?t('commandForecast',{hits:hits.length,kills}):t(`${hero.id}Brief`);
+    nodes.selectedCard.querySelector('summary').textContent=t('commandRules');
+    nodes.selectedCard.querySelector('details').open=wasOpen;
     const traitGuideNode = nodes.selectedCard.querySelector(".enemy-trait-guide");
     traitGuideNode.hidden = !enemyTraitGuideText;
     nodes.selectedCard.querySelector("strong").title = t("arenaMovement");
@@ -3390,12 +3486,12 @@
     traitGuideNode.querySelector("span").textContent = enemyTraitGuideText;
     const skillHelp = nodes.selectedCard.querySelector("small");
     skillHelp.className = "skill-help";
-    skillHelp.innerHTML = `<b>${t(hero.skillName)} · ${t("mapCharge",{n:hero.energy})}</b><span>${t(hero.skillDesc)}</span><i>${state.aim === "skill" ? t("mapAim",{n:skillTargets().length}) : t("mapIntro")}</i>`;
+    skillHelp.innerHTML = `<span>${t(hero.skillDesc)}</span>`;
     const campaignHelp = document.createElement("p"); campaignHelp.className = "campaign-help";
     const limits = combat.deployment({bonusAtk:999,bonusHp:999,bonusEnergy:999,training:profile.training},state.mission);
     campaignHelp.textContent = `${t("mapRecharge")} ${t("trackingHelp")} ${t("deploymentHelp",{level:limits.levelCap,atk:limits.attack,hp:limits.health,energy:limits.energy})} ${state.waves.length ? t("waveNotice",{turn:state.waves[0].turn,n:state.waves[0].enemies.length}) : ""}`;
     skillHelp.append(campaignHelp);
-    nodes.selectedCard.appendChild(traitGuideNode);
+    const relayHelp=document.createElement('p');relayHelp.textContent=`${t(state.cutSupply?'relayCutHelp':'relayHelp')} ${t('resonanceHelp')}`;skillHelp.append(relayHelp);
     nodes.skillBtn.title = t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
   }
 
@@ -3409,11 +3505,13 @@
       const status = isFallen ? t("fallen") : isDone ? t("acted") : isPositioned ? t("positioned") : t("ready");
       const className = ["turn-roster-item", isSelected ? "is-selected" : "", isDone ? "is-done" : "", isPositioned ? "is-positioned" : "", isFallen ? "is-fallen" : ""].filter(Boolean).join(" ");
       return `
-        <button class="${className}" type="button" data-roster-hero="${hero.id}" aria-pressed="${isSelected}" ${isFallen ? "disabled" : ""}>
+        <button class="${className}" type="button" data-roster-hero="${hero.id}" aria-label="${t(hero.name)} · ${status} · ${t('health')} ${Math.max(0,hero.hp)}/${hero.maxHp} · ${t('mapCharge',{n:hero.energy})}" aria-pressed="${isSelected}" ${isFallen || state.phase!=="player" ? "disabled" : ""}>
           <img src="${asset(hero.img)}" alt="" aria-hidden="true" />
           <span>
-            <strong>${t(hero.name)}</strong>
-            <small>${status} / ${t("health")} ${Math.max(0, hero.hp)}/${hero.maxHp}</small>
+            <strong title="${t(hero.name)}">${t(`${hero.id}Short`)}</strong>
+            <small>${Math.max(0, hero.hp)} / ${hero.maxHp} ♥</small>
+            <i class="roster-health"><i style="width:${Math.max(0,hero.hp)/hero.maxHp*100}%"></i></i>
+            <i class="roster-energy" aria-hidden="true">${Array.from({length:energyCapacity()},(_,i)=>`<i class="${i<hero.energy?'charged':''}"></i>`).join('')}</i>
           </span>
         </button>`;
     }).join("");
@@ -3438,6 +3536,7 @@
     nodes.guardBtn.textContent = hero ? t("guardValue") : t("guard");
     nodes.skillBtn.textContent = state.aim === "skill" ? t("mapFire",{n:skillTargets().length}) : t("mapCharge",{n:hero?.energy || 0});
     nodes.skillBtn.classList.toggle("map-ready",Boolean(canAct && hero.energy>=3));
+    nodes.skillBtn.classList.toggle("is-overdrive",Boolean(canAct && state.resonance>=3 && hero.energy>=3));
     nodes.skillBtn.setAttribute("aria-pressed", String(state.aim === "skill"));
     nodes.attackBtn.setAttribute("aria-label", attackTarget
       ? t("actionTarget", { action: t("attack"), value: damagePreview(hero, attackTarget).damage, target: t(attackTarget.name) })
@@ -3533,6 +3632,7 @@
   }
 
   function bestMapAim(hero) {
+    if(hero.id==='turtle')return {x:hero.x,y:hero.y};
     let best={x:cols-1,y:hero.y}, score=-1;
     for(let y=0;y<rows;y++) for(let x=0;x<cols;x++) {
       const area=mapArea(hero,{x,y});
@@ -3554,7 +3654,8 @@
     if (!state || state.phase !== "player" || movementAnimationActive || battlePaused || lifecycleSuspended) return;
     const unit = unitAt(x, y);
     if (state.aim === "skill") {
-      state.aimCell={x,y};
+      const caster=selectedHero();
+      state.aimCell=caster?.id==='turtle'?{x:caster.x,y:caster.y}:{x,y};
       render();
       log("mapAim",{n:skillTargets().length});
       return;
@@ -3580,6 +3681,7 @@
       playFx("dust-burst", x, y);
       playCue("ui.click");
       log("moveReady", { hero: t(hero.name) });
+      captureRelay(hero);
       render();
       checkEnd();
     }
@@ -3596,7 +3698,7 @@
     const blockedByAllyGuard = Boolean(enemy.allyGuard);
     const blockedByFlight = enemy.id === "griffinBoss" && enemy.flying && (hero.range || 1) > 1;
     const runeBonus = combat.runeBonus(hero, enemy);
-    let damage = hero.atk + (isSkill ? 5 : 0) + (isSkill ? 0 : chainBonus + flankBonusFor(hero, enemy)) + runeBonus;
+    let damage = hero.atk + (isSkill ? 5 + (state.resonance>=3?2:0) : 0) + (isSkill ? 0 : chainBonus + flankBonusFor(hero, enemy)) + runeBonus;
     if (blockedByStoneHide) damage = Math.max(1, damage - 1);
     if (blockedByAllyGuard) damage = Math.max(0, damage - 2);
     if (sealWardActive() && damage > 0) damage = Math.max(1, damage - 1);
@@ -3607,6 +3709,13 @@
   }
 
   function attack(hero, enemy, isSkill) {
+    if(!state || state.phase!=="player" || state.acted.has(hero.id))return;
+    if(reducedMotion.matches){resolveAttack(hero,enemy,isSkill);return;}
+    const owner=state;state.phase="attacking";render();animateAttack(hero,enemy,isSkill);
+    scheduleTurnTransition(()=>{if(state!==owner)return;state.phase="player";resolveAttack(hero,enemy,isSkill);},80);
+  }
+
+  function resolveAttack(hero, enemy, isSkill) {
     const beforeKills=state.enemies.filter(e=>e.hp<=0).length;
     const { damage, chainBonus, runeBonus, blockedByStoneHide } = damagePreview(hero, enemy, isSkill);
     const impact = {x: enemy.x, y: enemy.y};
@@ -3678,11 +3787,12 @@
     state.bestSweep=Math.max(state.bestSweep,kills);
     hero.energy=Math.min(energyCapacity(),hero.energy+1+Math.min(1,kills));
     render();
-    animateAttack(hero, enemy, isSkill);
     checkEnd();
   }
 
   function markActed(hero) {
+    if(state.lastActor!==hero.id)state.resonance=Math.min(3,state.resonance+1);
+    state.lastActor=hero.id;
     state.acted.add(hero.id);
     state.aim = null;
     if (hero.snared) hero.snared = false;
@@ -3702,58 +3812,169 @@
     checkEnd();
   }
 
-  function skill() {
-    const hero = selectedHero();
-    if (!hero || hero.energy < 3 || hero.silenced || state.acted.has(hero.id) || state.phase !== "player" || battlePaused || movementAnimationActive || lifecycleSuspended) return;
-    if (state.aim !== "skill") {
-      state.aim = "skill";
-      state.aimCell = bestMapAim(hero);
-      render();
-      log("mapAim",{n:skillTargets().length});
-      return;
+  let specialAction = null;
+
+  function cancelSpecial() {
+    if (specialAction) clearTurnTransition();
+    specialAction?.root?.remove();
+    specialAction = null;
+    clearMotion("cinematic");
+    pauseMotion("impact", false);
+  }
+
+  function specialCell(cell) {
+    const tile=nodes.grid.querySelector(`.tile[data-x="${cell.x}"][data-y="${cell.y}"]`);
+    return tile ? {x:nodes.grid.offsetLeft+tile.offsetLeft,y:nodes.grid.offsetTop+tile.offsetTop,w:tile.offsetWidth,h:tile.offsetHeight} : null;
+  }
+
+  function specialNode(action, className, styles={}, text="") {
+    const node=document.createElement("div");node.className=className;node.textContent=text;
+    Object.assign(node.style,styles);action.root.append(node);return node;
+  }
+
+  function specialCharge(action) {
+    const root=document.createElement("div");root.className=`special-sequence special-${action.hero.id}${action.overdrive?' is-overdrive':''}`;
+    action.root=root;nodes.fxLayer.append(root);
+    const cut=specialNode(action,"special-cut-in");
+    const portrait=document.createElement("img");portrait.className="special-portrait";portrait.src=asset(action.hero.img);portrait.alt="";cut.append(portrait);
+    const words=document.createElement("div");words.className="special-cut-copy";
+    for(const [tag,value] of [["small",t(action.hero.name)],["strong",t(action.hero.skillName)],["span",t(action.overdrive?'resonanceReady':'specialCharge')]]){const line=document.createElement(tag);line.textContent=value;words.append(line);}
+    cut.append(words);
+    tween(cut,[{opacity:0,transform:"translateX(-12%)"},{opacity:1,transform:"translateX(0)"}],{duration:160},"cinematic");
+    tween(portrait,[{transform:"translateX(-12%) scale(1.12)"},{transform:"translateX(0) scale(1)"}],{duration:400},"cinematic");
+    const box=specialCell(action.hero);
+    const flare=document.createElement("img");flare.src=asset("animal-rune-tactics-fx-rune-burst.webp");flare.alt="";flare.className="special-charge-flare";
+    Object.assign(flare.style,{left:`${box.x-box.w*.35}px`,top:`${box.y-box.h*.35}px`,width:`${box.w*1.7}px`,height:`${box.h*1.7}px`});root.append(flare);
+    tween(flare,[{opacity:0,transform:"scale(.3) rotate(-30deg)"},{opacity:.8,transform:"scale(1) rotate(25deg)"}],{duration:400},"cinematic");
+    for(let i=0;i<8;i++){
+      const angle=i*Math.PI/4,dx=Math.cos(angle)*box.w,dy=Math.sin(angle)*box.h;
+      const spark=specialNode(action,"special-charge-spark",{left:`${box.x+box.w/2}px`,top:`${box.y+box.h/2}px`});
+      tween(spark,[{opacity:0,transform:`translate(${dx}px,${dy}px) scale(1)`},{opacity:1,offset:.25},{opacity:0,transform:"translate(0,0) scale(.3)"}],{duration:380,delay:i*2},"cinematic",true);
     }
-    const targets=skillTargets();
-    if (!targets.length && hero.id !== "turtle") return;
-    const area=mapArea(), aim={...state.aimCell};
-    const impacts=targets.map(enemy=>({enemy,damage:damagePreview(hero,enemy,true).damage,x:enemy.x,y:enemy.y}));
-    hero.energy-=3;
-    let kills=0;
-    for(const {enemy,damage} of impacts) {
-      enemy.hp=Math.max(0,enemy.hp-damage);
-      enemy.armorReady=false; enemy.allyGuard=false;
-      enemy.hitsThisTurn=(enemy.hitsThisTurn||0)+1;
-      if(damage>0) {
-        if(hero.id==='owl')enemy.runeMark=enemy.hp>0;
-        else enemy.runeMark=false;
-        if(hero.id==='lion')enemy.disrupted=true;
+    log("specialCharge");playCue("magic.cast");
+  }
+
+  function specialLaunch(action) {
+    if(specialAction!==action || state!==action.owner)return;
+    state.cinematic.stage="launch";action.root.dataset.stage="launch";
+    const cut=action.root.querySelector(".special-cut-in");
+    tween(cut,[{opacity:1,transform:"translateX(0)"},{opacity:0,transform:"translateX(12%)"}],{duration:150},"cinematic",true);
+    action.root.querySelector(".special-charge-flare")?.remove();
+    const {hero,aim,area}=action;
+    if(hero.id==="lion"){
+      const horizontal=Math.abs(aim.x-hero.x)>=Math.abs(aim.y-hero.y);
+      const forward=horizontal?aim.x>=hero.x:aim.y>=hero.y;
+      const groups=new Map();
+      area.forEach(cell=>{const key=horizontal?cell.y:cell.x;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(cell);});
+      for(const cells of groups.values()){
+        const boxes=cells.map(specialCell).filter(Boolean),x=Math.min(...boxes.map(b=>b.x)),y=Math.min(...boxes.map(b=>b.y));
+        const w=Math.max(...boxes.map(b=>b.x+b.w))-x,h=Math.max(...boxes.map(b=>b.y+b.h))-y;
+        const beam=specialNode(action,`special-beam ${horizontal?"":"is-vertical"}`,{left:`${x+(horizontal?0:w*.32)}px`,top:`${y+(horizontal?h*.32:0)}px`,width:`${horizontal?w:w*.36}px`,height:`${horizontal?h*.36:h}px`,transformOrigin:horizontal?(forward?"left center":"right center"):(forward?"center top":"center bottom")});
+        tween(beam,[{opacity:.5,transform:horizontal?"scaleX(.01)":"scaleY(.01)"},{opacity:1,transform:horizontal?"scaleX(1)":"scaleY(1)"}],{duration:220,easing:"cubic-bezier(.3,0,.1,1)"},"cinematic");
       }
+      playCue("weapon.laser.fire");
+    }else if(hero.id==="owl"){
+      area.forEach((cell,i)=>{
+        const box=specialCell(cell),height=box.h*1.3;
+        const meteor=specialNode(action,"special-meteor",{left:`${box.x+box.w*.5-6}px`,top:`${box.y+box.h*.5-height}px`,height:`${height}px`});
+        tween(meteor,[{opacity:0,transform:`translate(-${box.w*1.2}px,-${box.h*3}px) rotate(-18deg) scale(.4)`},{opacity:1,offset:.25},{opacity:1,transform:"translate(0,0) rotate(-18deg) scale(1)"}],{duration:220-i*8,delay:i*8,easing:"cubic-bezier(.55,0,1,.7)"},"cinematic");
+      });
+    }else{
+      const box=specialCell(hero);
+      const ring=specialNode(action,"special-shockwave",{left:`${box.x-box.w*2}px`,top:`${box.y-box.h*2}px`,width:`${box.w*5}px`,height:`${box.h*5}px`});
+      tween(ring,[{opacity:.9,transform:"scale(.08)"},{opacity:.6,transform:"scale(1)"}],{duration:220,easing:"ease-out"},"cinematic");
+    }
+    log("specialLaunch",{skill:t(hero.skillName)});
+    scheduleTurnTransition(()=>{
+      applyMapAction(action);
+      if(specialAction!==action)return;
+      pauseMotion("impact",true);
+      scheduleTurnTransition(()=>{
+        pauseMotion("impact",false);
+        if(specialAction!==action)return;
+        if(action.impacts.some(hit=>hit.damage>0))tween(nodes.grid,[{transform:"translate(0,0)"},{transform:"translate(3px,-2px)",offset:.2},{transform:"translate(-2px,1px)",offset:.5},{transform:"translate(0,0)"}],{duration:200},"cinematic");
+        tween(action.root,[{opacity:1},{opacity:1,offset:.6},{opacity:0}],{duration:280},"cinematic");
+        scheduleTurnTransition(()=>finishMapAction(action),280);
+      },80);
+    },220);
+  }
+
+  function sweepVerdict(action, reduced=false) {
+    const {hero,kills,impacts}=action;
+    const hitCount=impacts.filter(hit=>hit.damage>0).length;
+    const banner=document.createElement("div");banner.className=`special-verdict special-${hero.id}${kills>=3?" is-multi":""}`;
+    const headline=document.createElement("strong");headline.textContent=kills?t("specialSweep",{n:kills}):hero.id==='turtle'?t("specialWard"):hitCount?t("specialHits",{n:hitCount}):t("specialBlocked");
+    const detail=document.createElement("small");detail.textContent=t(hero.skillName);banner.append(headline,detail);
+    (action.root||nodes.fxLayer).append(banner);
+    if(reduced)ownAnimation(banner.animate([{opacity:1},{opacity:0}],{duration:260}),banner,"fx",true,true);
+    else tween(banner,[{opacity:1,transform:"translateY(4px) scale(.94)"},{opacity:1,transform:"translateY(0) scale(1)"}],{duration:140},"cinematic");
+  }
+
+  function applyMapAction(action) {
+    if(specialAction!==action || state!==action.owner || action.applied)return;
+    action.applied=true;state.cinematic.stage="impact";
+    const {hero,impacts,area}=action;
+    let kills=0;
+    for(const {enemy,damage} of impacts){
+      enemy.hp=Math.max(0,enemy.hp-damage);enemy.armorReady=false;enemy.allyGuard=false;
+      enemy.hitsThisTurn=(enemy.hitsThisTurn||0)+1;
+      if(damage>0){enemy.runeMark=hero.id==='owl'&&enemy.hp>0;if(hero.id==='lion')enemy.disrupted=true;}
       if(!enemy.hp)kills++;
     }
     const healed=[];
-    if (hero.id === "turtle") {
-      livingHeroes().forEach((h) => {
-        h.guard = true;
-        const before=h.hp;
-        h.hp = Math.min(h.maxHp, h.hp + 2);
-        healed.push({x:h.x,y:h.y,value:h.hp-before});
-      });
-    }
+    if(hero.id==='turtle')livingHeroes().forEach(h=>{const before=h.hp;h.guard=true;h.hp=Math.min(h.maxHp,h.hp+2);healed.push({x:h.x,y:h.y,value:h.hp-before});});
     hero.energy=Math.min(energyCapacity(),hero.energy+Math.min(1,kills));
-    state.kills+=kills; state.mapShots++; state.bestSweep=Math.max(state.bestSweep,kills);
-    state.chainTarget=null; state.chainCount=0;
-    markActed(hero);
+    state.kills+=kills;state.mapShots++;state.bestSweep=Math.max(state.bestSweep,kills);
+    state.chainTarget=null;state.chainCount=0;markActed(hero);action.kills=kills;
     impacts.forEach(({enemy})=>resolveBossPhases(enemy));
-    render();
-    animateAttack(hero,aim,true);
-    playMapPulse(hero,area);
+    render();playMapPulse(hero,area);
     healed.forEach(({x,y,value})=>playFx(value>0?"healing-swirl":"guard-shield",x,y,value>0?{value}:{}));
     impacts.forEach(({x,y,damage})=>playFx(damage>0?"rune-burst":"guard-shield",x,y,{value:-damage,chain:true}));
-    playCue("magic.cast");
-    if(impacts.some(hit=>hit.damage>0))playCue("magic.hit");
-    if(kills)playCue(kills>=3?"combat.critical":"enemy.defeat");
+    const landed=impacts.some(hit=>hit.damage>0);
+    if(landed)playCue(kills>=3?"combat.critical":hero.id==='owl'?"explosion.large":"magic.hit");
+    else if(impacts.length)playCue("combat.block");
     if(hero.id==='turtle')playCue("magic.shield");
-    log("mapResult",{skill:t(hero.skillName),n:targets.length,kills,charge:Math.min(1,kills)});
-    checkEnd();
+    if(action.root){
+      action.root.dataset.stage="impact";
+      action.root.querySelectorAll('.special-meteor').forEach(n=>n.remove());
+      for(const hit of impacts.filter(hit=>hit.damage>0)){
+        const b=specialCell(hit);
+        for(let i=0;i<3;i++){
+          const shard=specialNode(action,"special-shard",{left:`${b.x+b.w/2}px`,top:`${b.y+b.h/2}px`});
+          const dx=(i-1)*b.w*.55,dy=(i===1?-.6:.4)*b.h;
+          tween(shard,[{opacity:1,transform:"translate(0,0) rotate(0) scale(1)"},{opacity:0,transform:`translate(${dx}px,${dy}px) rotate(${(i+1)*70}deg) scale(.3)`}],{duration:300},"cinematic",true);
+        }
+      }
+      sweepVerdict(action);
+    }
+    log("mapResult",{skill:t(hero.skillName),n:impacts.length,kills,charge:Math.min(1,kills)});
+  }
+
+  function finishMapAction(action) {
+    if(specialAction!==action || state!==action.owner)return;
+    action.root?.remove();clearMotion("cinematic");pauseMotion("impact",false);
+    specialAction=null;state.cinematic=null;state.phase="player";
+    renderTurnRoster();updateActionButtons();checkEnd();
+  }
+
+  function settleReducedSpecial(action) {
+    if(specialAction!==action || state!==action.owner)return;
+    applyMapAction(action);finishMapAction(action);sweepVerdict(action,true);
+  }
+
+  function skill() {
+    const hero=selectedHero();
+    if(!hero || hero.energy<3 || hero.silenced || state.acted.has(hero.id) || state.phase!=="player" || battlePaused || movementAnimationActive || lifecycleSuspended)return;
+    if(state.aim!=="skill"){state.aim="skill";state.aimCell=bestMapAim(hero);render();log("mapAim",{n:skillTargets().length});return;}
+    const targets=skillTargets();if(!targets.length&&hero.id!=="turtle")return;
+    clearTurnTransition();
+    const action={owner:state,hero,aim:{...state.aimCell},area:mapArea(),impacts:targets.map(enemy=>({enemy,damage:damagePreview(hero,enemy,true).damage,x:enemy.x,y:enemy.y})),applied:false,kills:0};
+    action.overdrive=state.resonance>=3;
+    if(action.overdrive)state.resonance=0;
+    specialAction=action;hero.energy-=3;state.aim=null;state.phase="casting";state.cinematic={hero:hero.id,stage:"charge",overdrive:action.overdrive};render();
+    if(reducedMotion.matches){settleReducedSpecial(action);return;}
+    specialCharge(action);
+    scheduleTurnTransition(()=>specialLaunch(action),400);
   }
 
   function playMapPulse(hero,area) {
@@ -4329,6 +4550,7 @@
         if (!state) return null;
         return {
           turn: state.turn,
+          resonance:state.resonance, relays:state.relays.map(r=>({...r})),cutSupply:state.cutSupply,waveTotal:state.waveTotal,
           cols, rows,
           phase: state.phase,
           moved: [...state.moved],
@@ -4336,15 +4558,19 @@
           chainTarget: state.chainTarget,
           chainCount: state.chainCount,
           aim: state.aim,
+          cinematic: state.cinematic ? {...state.cinematic} : null,
           aimCell: state.aimCell ? {...state.aimCell} : null,
           kills: state.kills, mapShots: state.mapShots, bestSweep: state.bestSweep, waveNumber: state.waveNumber,
           waves: state.waves.map(w=>({...w,enemies:[...w.enemies]})),
           heroes: state.heroes.map(({ id, hp, maxHp, atk, range, x, y, energy, guard, snared, silenced, marked }) => ({ id, hp, maxHp, atk, range, x, y, energy, guard, snared, silenced, marked })),
-          enemies: state.enemies.map(({ id, uid, hp, maxHp, atk, range, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn, runeMark, disrupted, counterUsed, intent }) => ({ id, uid, hp, maxHp, atk, range, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn, runeMark, disrupted, counterUsed, intent })),
+          enemies: state.enemies.map(({ id, uid, hp, maxHp, atk, range, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn, runeMark, disrupted, counterUsed, intent, guardCaptain }) => ({ id, uid, hp, maxHp, atk, range, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn, runeMark, disrupted, counterUsed, intent, guardCaptain })),
           terrain: state.terrain.map((item) => ({ ...item })),
           phaseEvents: state.phaseEvents.map((item) => ({ ...item })),
         };
       },
+      battlefieldStats() { return battlefield?.stats() || {active:false}; },
+      loseWebGL() { if(battlefield){battlefield.contextControl=battlefield.renderer.getContext().getExtension('WEBGL_lose_context');battlefield.contextControl?.loseContext();} },
+      restoreWebGL() { battlefield?.contextControl?.restoreContext(); },
       movementEvidence() {
         return {
           active: movementAnimationActive,

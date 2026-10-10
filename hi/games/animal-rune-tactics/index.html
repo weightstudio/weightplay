@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v31" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
     <meta name="description" content="शेर, उल्लू और कछुए के साथ 30 बारी-आधारित मिशन खेलें। 6×6 के बोर्ड, भूभाग, छह बॉस और स्थायी सुधारों की रणनीति बनाएँ।" />
@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20261010-v29-c890a23a56be" />
+    <link rel="stylesheet" href="style.css?v=20261010-v31-2d599f8738c2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -191,7 +191,7 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v29-489c39dd48ea"></script>
+    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v31-4708c3ed51d2"></script>
     <script src="/games/animal-rune-tactics/native-locales.js?v=20260923-v25-77a554397a27"></script>
     <script src="/games/animal-rune-tactics/mission-locales.js?v=20260923-v25-65eb24d7962e"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
@@ -200,9 +200,9 @@
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
 <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
-<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v29-7cced709a5c7"></script>
-<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v29-6fb993c828ab"></script>
-<script src="game.js?v=20261010-v29-aa0f208f7646"></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v31-7cced709a5c7"></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v31-cc7e48cd210c"></script>
+<script src="game.js?v=20261010-v31-cab51aa946f5"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
     <script>
       (() => {
@@ -242,16 +242,19 @@
 <p>दुश्मन के विपरीत किनारों पर साथी रखकर घेराव किया जा सकता है। कवच, ढाल, मुहर और उड़ान की प्रतिरक्षा नुकसान का पूर्वानुमान बदलते हैं। ज्वार, आग और बाहरी घेरे का घूमना बारी समाप्त होने पर सुरक्षित स्थान बदल सकते हैं।</p>
 <p>हर मिशन के तीन सितारे हैं: जीत, तीनों नायकों का जीवित रहना और दिखाया गया बारी का लक्ष्य। हर नया सितारा केवल एक बार चार रूण देता है। सितारा छूटने से जीत रद्द नहीं होती और पहले मिले सितारे का पुरस्कार दोबारा नहीं मिलता।</p>
 <p>MAP में 3 ऊर्जा लगती है। हर हार पर 1 वापस (प्रति चाल अधिकतम 1); हमला, बचाव और हर दौर पर 1 वापस।</p>
-<p>हर मिशन में पहले 6 दुश्मन, फिर 6 की 2–4 लहरें आती हैं। वे हर दो दौर या मैदान खाली होते ही आती हैं। सभी लहरों को हराकर जीतें।</p>
+<p>हर दो दौर या मैदान साफ होने पर 6 शत्रुओं की लहर आती है। सफाई मिशन में सभी लहरें हराएँ। आपूर्ति रोकने वाले मिशन में दोनों केंद्र लेकर बचे शत्रुओं को हराकर भी जीत सकते हैं।</p>
 <p>बचा हुआ शत्रु अपनी सीमा में हर दौर एक पलटवार करता है। सिंह रोकता है और ढाल नुकसान सोखती है।</p>
 <p>◎ दूर का निशाना नायक का पीछा करता है। सीमा से बाहर जाएँ, शत्रु को रोकें या ढाल से वार सहें।</p>
-<p>स्थायी रून हर मिशन की पहली जीत पर ही चुने जाते हैं।</p></div>
+<p>स्थायी रून हर मिशन की पहली जीत पर ही चुने जाते हैं।</p>
+<p>सुनहरे केंद्र पर पहुँचने से उस नायक की ऊर्जा एक बार पूरी भरती है।</p>
+<p>आपूर्ति रोकने वाले मिशन में: दोनों केंद्र लेकर नई लहरें रोकें, फिर बचे शत्रुओं को हराएँ। हर केंद्र ऊर्जा एक बार भरता है। आपूर्ति कटते ही अंतिम रक्षक लहर आती है। ★ कप्तान: +12 जीवन, +1 हमला। चिह्न लगाएँ, फिर दूसरे नायक से मारें।</p>
+<p>अलग नायकों की लगातार चालों से अनुनाद बढ़ता है। 3 पर अगला MAP +2 क्षति करता है और चार्ज खर्च होता है।</p></div>
       <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>खेल शुरू करें, मिशन कार्ड देखें और खुले कार्ड को चुनकर युद्ध में जाएँ। पहले भूभाग और दुश्मनों की जानकारी पढ़ें।</li><li>टच या माउस से नायक चुनें, उसे चमकते खाने तक चलाएँ और फिर हमला, रक्षा या कौशल चुनें। तीर कुंजियाँ बोर्ड का फ़ोकस बदलती हैं; Enter या स्पेस से खाना चुना जाता है।</li><li>चलें, MAP का क्षेत्र देखें, निशाना लगाएँ और चलाएँ। पूरे झुंड हराएँ! MAP में 3 ऊर्जा लगती है। हर हार पर 1 वापस (प्रति चाल अधिकतम 1); हमला, बचाव और हर दौर पर 1 वापस।</li><li>स्थायी रून हर मिशन की पहली जीत पर ही चुने जाते हैं।</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>चलें, MAP का क्षेत्र देखें, निशाना लगाएँ और चलाएँ। पूरे झुंड हराएँ!</li><li>नजदीकी पलटवार वाले दुश्मनों के विरुद्ध उल्लू की दूरी का लाभ लें। दूर के हमलों से सुरक्षित उड़ते लक्ष्य पर ऐसा हमला व्यर्थ न करें।</li><li>रक्षा से सभी के जीवित रहने वाला सितारा बच सकता है। लगभग जीता मिशन हारने के बजाय अगली कोशिश में बारी का लक्ष्य पूरा करें।</li></ul></div>
       <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>मिशन 1–10 में स्थिति, बंद रास्ते, पास के दुश्मनों का सहयोग, पलटवार और जड़ों के खतरे आते हैं। मिशन 5 और 10 में बॉस हैं।</p>
 <p>मिशन 11–20 में ज्वार, धक्का, पुनर्जीवन, आग और ठंडे खाने जुड़ते हैं। मिशन 15 और 20 के बॉस इन फैसलों की परीक्षा लेते हैं।</p>
 <p>मिशन 21–30 में मौन, बाहरी घेरे का घूमना, प्रतिरूप, ऊर्जा सोखना और मुहरें जुड़ती हैं। मिशन 25 का बॉस और अंतिम काइमेरा तेज प्रतिक्रिया के बजाय सही लक्ष्य-क्रम माँगते हैं।</p></div>
-      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>हर मिशन में पहले 6 दुश्मन, फिर 6 की 2–4 लहरें आती हैं। वे हर दो दौर या मैदान खाली होते ही आती हैं। सभी लहरों को हराकर जीतें।</p></div>
+      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>हर दो दौर या मैदान साफ होने पर 6 शत्रुओं की लहर आती है। सफाई मिशन में सभी लहरें हराएँ। आपूर्ति रोकने वाले मिशन में दोनों केंद्र लेकर बचे शत्रुओं को हराकर भी जीत सकते हैं।</p></div>
       <div class="game-info-section game-info-parent"><h3>खिलाड़ी और सेव जानकारी</h3><p>खुले मिशन, सितारे, रूण, प्रगति और सुधार इस ब्राउज़र में सहेजे जाते हैं। साइट डेटा मिटाने या ब्राउज़र बदलने पर प्रगति हट सकती है या अलग हो सकती है। सभी मिशन डायमंड के बिना खेले जा सकते हैं। तीन डायमंड में पुरस्कार फिर चुनना और अठारह में प्रशिक्षण वैकल्पिक हैं। क्लाउड समन्वय का वादा नहीं है।</p></div>
       <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या एक बारी में चलकर हमला कर सकते हैं?</dt><dd>हाँ। पहले नायक को चलाएँ और उसके बाद एक हमला, रक्षा या कौशल करें। युद्ध कार्रवाई से उसकी बारी खत्म हो जाती है।</dd></div><div><dt>कौशल क्यों उपलब्ध नहीं है?</dt><dd>बची ऊर्जा, युद्ध कार्रवाई पहले उपयोग हुई या नहीं, और मौन जाँचें। सामान्य हमला या रक्षा संभव हो सकते हैं।</dd></div><div><dt>नुकसान का पूर्वानुमान शून्य हो तो क्या त्रुटि है?</dt><dd>जरूरी नहीं। उड़ान की प्रतिरक्षा, ढाल या कवच नुकसान रोक सकते हैं। स्थान या नायक बदलकर पूर्वानुमान देखें।</dd></div><div><dt>आगे बढ़ने के लिए तीनों सितारे चाहिए?</dt><dd>नहीं। जीवित रहने या बारी वाले सितारे के बिना भी जीत से आगे बढ़ सकते हैं। केवल छूटे पुरस्कारों के लिए दोबारा खेलें।</dd></div><div><dt>दोबारा शुरू करने पर सुधार मिटेंगे?</dt><dd>केवल वही लड़ाई रीसेट होती है, सहेजे सुधार नहीं। ब्राउज़र का भंडारण मिटाने से प्रगति हट सकती है।</dd></div><div><dt>मिशन 30 के बाद क्या होता है?</dt><dd>अभियान वहीं समाप्त होता है। खुले मिशन फिर खेलकर सितारे सुधार सकते हैं; कोई काल्पनिक मिशन 31 नहीं बनता।</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ऑटो दस्ता</strong><span>दस्ते की स्वचालित लड़ाइयों से पहले पशुओं की संरचना तय करें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Animal Relic Hunters</strong><span>30 अभियानों में कमरे खोजें और अवशेष इकट्ठा करें।</span></span></a></div></div>

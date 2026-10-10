@@ -737,6 +737,22 @@
     ),
   };
 
+  const towerPreview = L(
+    "Owner preview · Not public",
+    "所有者預覽 · 尚未公開",
+    "所有者预览 · 尚未公开",
+    "オーナー向けプレビュー · 未公開",
+    "소유자 미리보기 · 비공개",
+    "Vista previa del propietario · No publicada",
+    "Prévia do proprietário · Não publicada",
+    "Aperçu propriétaire · Non publiée",
+    "Vorschau für Eigentümer · Nicht veröffentlicht",
+    "Anteprima del proprietario · Non pubblicata",
+    "Предпросмотр владельца · Не опубликовано",
+    "मालिक का पूर्वावलोकन · प्रकाशित नहीं",
+    "معاينة المالك · غير منشورة"
+  );
+
   const CONFIG = {
     "minefield-logic": { accent: "#73d5ff", blurb: blurbs["minefield-logic"], type: types["minefield-logic"], build: buildMines },
     sudoku: { accent: "#a997ff", blurb: blurbs.sudoku, type: types.sudoku, build: buildSudoku },
@@ -836,7 +852,7 @@
       ko: "공개 플레이", es: "Juego público", "pt-BR": "Jogo público", fr: "Jeu public",
       de: "Öffentlich spielbar", it: "Gioco pubblico", ru: "Открытая игра", hi: "सार्वजनिक खेल", ar: "لعب عام",
     };
-    const preview = id === "sudoku" || id === "peg-solitaire" || id === "sliding-15" || id === "lights-out" || id === "four-in-a-row" || id === "chess"
+    const preview = id === "tower-of-hanoi" ? text(towerPreview) : id === "sudoku" || id === "peg-solitaire" || id === "sliding-15" || id === "lights-out" || id === "four-in-a-row" || id === "chess"
       ? (publicPreview[locale] || publicPreview.en)
       : id === "four-in-a-row" ? text(fourPreview) : t("preview");
     app.root.innerHTML = `

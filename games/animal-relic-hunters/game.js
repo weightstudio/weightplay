@@ -1689,6 +1689,10 @@
       enemy.pulseStaggerUntil = Math.max(enemy.pulseStaggerUntil || 0, performance.now() + (visualKey === 'sword-rare' ? 70 : 20));
     }
     if (showFeedback) showCombatFeedback(blocked ? "combatWard" : "combatHit", blocked ? {} : { damage: Math.max(1, Math.round(Number(damage) || 0)) });
+    if (showFeedback && performance.now() - state.lastHitSoundAt > 90) {
+      window.WeightPlayAudio?.play(blocked ? 'combat.block' : 'magic.hit');
+      state.lastHitSoundAt = performance.now();
+    }
   }
 
   function markPlayerImpact() {
@@ -3174,12 +3178,14 @@
   function reinforceRoom() {
     state.waveNumber += 1;
     const roster = combatRules.reinforcementRoster(missionDefinition().region, state.waveNumber);
-    for (let i = 0; i < roster.length && state.enemies.length < combatRules.MAX_THREATS; i++) {
+    // Reserve a slot for the key carrier even if nobody has died yet.
+    const limit = combatRules.MAX_THREATS - (state.enemies.some(enemy => enemy.isElite) ? 0 : 1);
+    for (let i = 0; i < roster.length && state.enemies.length < limit; i++) {
       const point = pursuitSpawnPoint(i, roster.length);
       state.enemies.push(createThreat(roster[i], point.x, point.y, { hpMultiplier: .72 }));
     }
     showCombatFeedback('waveWarning', {}, 1300);
-    window.WeightPlayAudio?.play('alert.boss');
+    window.WeightPlayAudio?.play('game.start');
   }
 
   function enemyInView(enemy) {
@@ -3647,7 +3653,8 @@
   }
 
   function summonThreats(enemy, behavior, count = 2) {
-    for (let index = 0; index < count && state.enemies.length < combatRules.MAX_THREATS; index += 1) {
+    const limit = combatRules.MAX_THREATS - (state.enemies.some(threat => threat.isElite) ? 0 : 1);
+    for (let index = 0; index < count && state.enemies.length < limit; index += 1) {
       const angle = (Math.PI * 2 * index) / count;
       state.enemies.push(createThreat(
         behavior,
@@ -4446,6 +4453,11 @@
         ctx.fillStyle = '#e879f9';
         for (let i=0;i<enemy.bleedStacks;i++) ctx.fillRect(-8+i*7,enemy.size+8,4,7);
       }
+      // Make the wave-ending target readable inside a crowded chase.
+      if (enemy.isElite && assets.key.complete && assets.key.naturalWidth > 0) {
+        ctx.globalAlpha = 1;
+        ctx.drawImage(assets.key, -14, -enemy.size - 46, 28, 28);
+      }
       if (enemy.shieldHits > 0) {
         ctx.strokeStyle = "#7dd3fc";
         ctx.lineWidth = 4;
@@ -4782,7 +4794,11 @@
       }
       const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
       keysPressed[key] = true;
-      if (["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) e.preventDefault();
+      if (["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
+        e.preventDefault();
+        // Resuming movement returns keyboard skill shortcuts to the battlefield.
+        nodes.gameCanvas.focus({ preventScroll: true });
+      }
     });
     window.addEventListener("keyup", (e) => {
       keysPressed[e.key.length === 1 ? e.key.toLowerCase() : e.key] = false;

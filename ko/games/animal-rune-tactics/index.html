@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v31" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
     <meta name="description" content="사자, 부엉이, 거북이와 턴제 임무 30개에 도전하세요. 6×6 보드에서 지형과 스킬을 활용하고 보스 6명과 싸우며 영웅을 성장시키세요." />
@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20261010-v29-c890a23a56be" />
+    <link rel="stylesheet" href="style.css?v=20261010-v31-2d599f8738c2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -191,7 +191,7 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v29-489c39dd48ea"></script>
+    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v31-4708c3ed51d2"></script>
     <script src="/games/animal-rune-tactics/native-locales.js?v=20260923-v25-77a554397a27"></script>
     <script src="/games/animal-rune-tactics/mission-locales.js?v=20260923-v25-65eb24d7962e"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
@@ -200,9 +200,9 @@
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
 <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
-<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v29-7cced709a5c7"></script>
-<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v29-6fb993c828ab"></script>
-<script src="game.js?v=20261010-v29-aa0f208f7646"></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v31-7cced709a5c7"></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v31-cc7e48cd210c"></script>
+<script src="game.js?v=20261010-v31-cab51aa946f5"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
     <script>
       (() => {
@@ -242,16 +242,19 @@
 <p>적의 양쪽에 아군을 배치하면 협공이 가능합니다. 장갑, 보호막, 봉인, 비행 면역은 피해 미리보기에 반영됩니다. 밀물, 불, 바깥 고리 회전은 턴이 끝난 뒤 안전한 위치를 바꿀 수 있습니다.</p>
 <p>별 조건은 승리, 영웅 세 명 모두 생존, 표시된 목표 턴 수 달성입니다. 새로 얻은 별마다 룬 네 개를 한 번만 받습니다. 별을 놓쳐도 승리는 유효하며 이미 받은 별 보상은 반복 지급되지 않습니다.</p>
 <p>MAP은 에너지 3 소모. 처치당 1 회복(행동당 최대 1), 일반 공격·방어·매 턴 1 회복.</p>
-<p>각 임무는 적 6명과 6명씩 2~4차 증원으로 구성됩니다. 2턴마다 또는 적 전멸 직후 도착하며 모든 증원을 격파하면 승리합니다.</p>
+<p>각 웨이브는 적 6명이며 두 턴마다 또는 전멸 후 등장합니다. 소탕 임무는 모든 웨이브를 격파해야 합니다. 증원 차단 임무는 두 거점을 확보하고 남은 적을 처치해도 승리합니다.</p>
 <p>생존한 적은 사거리 안에서 턴당 한 번 반격합니다. 사자의 방해나 방패로 막으세요.</p>
 <p>◎ 원거리 조준은 영웅을 추적합니다. 사거리 밖으로 이동하거나 적을 방해하거나 방패로 막으세요.</p>
-<p>영구 룬 선택은 각 임무의 첫 승리에서만 받습니다.</p></div>
+<p>영구 룬 선택은 각 임무의 첫 승리에서만 받습니다.</p>
+<p>황금 거점에 들어가면 해당 영웅의 에너지가 한 번 완충됩니다.</p>
+<p>증원 차단 임무에서는: 황금 거점 두 곳을 확보해 증원을 막고 남은 적을 처치하세요. 각 거점은 에너지를 한 번 완충합니다.차단하면 마지막 수비대가 등장합니다. ★ 수비대장: 체력 +12, 공격 +1. 표식 후 다른 영웅으로 마무리하세요.</p>
+<p>서로 다른 영웅이 연속 행동하면 공명이 쌓입니다. 3이면 다음 MAP 피해 +2 후 공명을 소모합니다.</p></div>
       <div class="game-info-section"><h3>게임 방법</h3><ol><li>게임을 시작하고 임무 카드를 살펴보세요. 해금한 카드를 누르면 전투에 들어가므로 지형과 적 정보를 먼저 확인하세요.</li><li>터치나 마우스로 영웅을 선택하고 표시된 칸으로 이동한 뒤 공격, 방어 또는 스킬을 고르세요. 방향키로 보드 초점을 옮기고 Enter나 스페이스로 칸을 선택할 수도 있습니다.</li><li>이동→MAP 범위 확인→조준→발사! 적 무리를 쓸어버리세요. MAP은 에너지 3 소모. 처치당 1 회복(행동당 최대 1), 일반 공격·방어·매 턴 1 회복.</li><li>영구 룬 선택은 각 임무의 첫 승리에서만 받습니다.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>이동→MAP 범위 확인→조준→발사! 적 무리를 쓸어버리세요.</li><li>근접 반격이 있는 적은 부엉이의 사거리로 상대하세요. 원거리 공격에 면역인 비행 대상에는 다른 영웅을 쓰세요.</li><li>안전한 방어로 전원 생존 별을 지킬 수 있습니다. 거의 이긴 임무를 잃기보다는 다음 재도전에서 목표 턴 수를 노리세요.</li></ul></div>
       <div class="game-info-section"><h3>진행과 난이도</h3><p>임무 1~10은 위치 선정, 막힌 길, 인접한 적의 지원, 반격과 속박 지형을 소개합니다. 5번과 10번은 보스 임무입니다.</p>
 <p>11~20에는 밀물 이동, 밀치기, 재생, 불과 냉각 칸이 추가됩니다. 15번과 20번 보스에서 새로운 판단을 시험합니다.</p>
 <p>21~30에는 침묵, 바깥 고리 회전, 분신, 에너지 흡수와 봉인이 등장합니다. 25번 보스와 마지막 키메라는 반사 신경보다 대상 순서를 중요하게 만듭니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>각 임무는 적 6명과 6명씩 2~4차 증원으로 구성됩니다. 2턴마다 또는 적 전멸 직후 도착하며 모든 증원을 격파하면 승리합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>각 웨이브는 적 6명이며 두 턴마다 또는 전멸 후 등장합니다. 소탕 임무는 모든 웨이브를 격파해야 합니다. 증원 차단 임무는 두 거점을 확보하고 남은 적을 처치해도 승리합니다.</p></div>
       <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>해금, 별, 룬, 분대 성장, 영웅 강화는 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 다른 브라우저를 쓰면 기록이 없어지거나 분리될 수 있습니다. 모든 임무는 다이아몬드 없이 플레이할 수 있습니다. 보상 다시 뽑기 3다이아몬드와 훈련 슬롯 18다이아몬드는 선택 사항이며 클라우드 동기화는 보장하지 않습니다.</p></div>
       <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>한 턴에 이동하고 공격할 수 있나요?</dt><dd>네. 먼저 이동한 뒤 공격, 방어 또는 스킬을 한 번 사용하세요. 전투 행동을 마치면 해당 영웅의 턴이 끝납니다.</dd></div><div><dt>스킬을 쓸 수 없는 이유는 무엇인가요?</dt><dd>남은 에너지, 전투 행동 사용 여부, 침묵 상태를 확인하세요. 일반 공격이나 방어는 가능할 수 있습니다.</dd></div><div><dt>예상 피해가 0이면 오류인가요?</dt><dd>반드시 그렇지는 않습니다. 비행 면역, 보호막, 장갑이 피해를 줄이거나 막습니다. 위치나 영웅을 바꿔 미리보기를 확인하세요.</dd></div><div><dt>별 세 개가 있어야 진행할 수 있나요?</dt><dd>아니요. 생존이나 목표 턴 별이 없어도 승리로 진행할 수 있습니다. 다시 도전하면 아직 얻지 못한 별 보상만 받습니다.</dd></div><div><dt>다시 시작하면 강화가 사라지나요?</dt><dd>그 전투만 초기화되고 저장된 강화는 남습니다. 브라우저 저장소를 지우면 진행을 잃을 수 있습니다.</dd></div><div><dt>임무 30 다음에는 무엇이 있나요?</dt><dd>캠페인은 임무 30에서 끝납니다. 해금한 임무를 다시 해 별을 개선할 수 있으며 존재하지 않는 임무 31은 생성되지 않습니다.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>자동 전투 부대</strong><span>동물 진형을 계획한 뒤 분대의 자동 전투를 지켜보세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Animal Relic Hunters</strong><span>방을 탐험하고 유물을 모으며 원정 30개에 도전하세요.</span></span></a></div></div>

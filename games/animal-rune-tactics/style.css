@@ -2900,7 +2900,7 @@ html body .rune-app #runeBattleScene .turn-roster-item {
 }
 html body .rune-app #runeBattleScene .turn-roster-item span { min-width: 0; }
 html body .rune-app #runeBattleScene .turn-roster-item strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-html body #runeBattleScene .damage-preview { inset: auto 4px 4px auto; }
+html body #runeBattleScene .damage-preview { inset: 4px auto auto 4px; z-index: 7; }
 html body .rune-app #runeBattleScene #resultPanel .result-actions {
   display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 8px; width: 100%;
@@ -2928,3 +2928,136 @@ html body .rune-app #runeBattleScene #resultPanel .result-actions button {
 }
 
 #battleLog.is-sweep { color: #fff0a0; text-shadow: 0 1px 6px #945c13; }
+
+/* Board-owned special-attack theatre. Fixed HUD/actions never enter this layer. */
+.special-sequence { position:absolute; inset:0; z-index:12; overflow:hidden; pointer-events:none; isolation:isolate; --special-color:#ffcc5f; }
+.special-lion { --special-color:#ffcc5f; }
+.special-owl { --special-color:#7fe9ff; }
+.special-turtle { --special-color:#9effb2; }
+.special-cut-in { position:absolute; z-index:5; inset:5% 3% auto; height:29%; min-height:84px; max-height:160px; overflow:hidden; border-block:2px solid var(--special-color); border-radius:5px; background:linear-gradient(108deg,#091c29 5%,#19313be8 62%,#10272dd9); box-shadow:0 8px 28px #0009,inset 0 0 30px #ffffff0a; }
+.special-cut-in::after { content:""; position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(-24deg,transparent 0 32px,#ffffff08 33px 35px,transparent 36px 60px); }
+.special-portrait { position:absolute; inset-inline-start:-4%; top:-24%; width:48%; height:162%; object-fit:contain; filter:drop-shadow(0 0 12px var(--special-color)); }
+.special-cut-copy { position:absolute; inset:0 4% 0 43%; display:flex; flex-direction:column; justify-content:center; gap:4px; color:#fff9df; text-align:start; z-index:1; min-width:0; }
+.special-cut-copy small { font:700 clamp(10px,1.8vw,15px)/1.2 system-ui; color:var(--special-color); }
+.special-cut-copy strong { font:900 clamp(17px,3.4vw,30px)/1.12 system-ui; overflow-wrap:anywhere; text-shadow:0 3px 0 #081419,0 0 14px var(--special-color); }
+.special-cut-copy span { font:700 clamp(10px,1.9vw,14px)/1.2 system-ui; color:#d5e8e9; letter-spacing:.04em; }
+.special-charge-flare { position:absolute; object-fit:contain; opacity:.8; mix-blend-mode:screen; }
+.special-charge-spark,.special-shard { position:absolute; width:7px; height:7px; border:1px solid #fff7; background:var(--special-color); box-shadow:0 0 7px var(--special-color); }
+.special-beam { position:absolute; border-radius:50%; background:linear-gradient(to bottom,transparent,var(--special-color) 18%,#fffbe8 47%,#fff 50%,#fffbe8 53%,var(--special-color) 82%,transparent); box-shadow:0 0 16px var(--special-color); opacity:.84; }
+.special-beam.is-vertical { background:linear-gradient(to right,transparent,var(--special-color) 18%,#fffbe8 47%,#fff 50%,#fffbe8 53%,var(--special-color) 82%,transparent); }
+.special-meteor { position:absolute; width:12px; border-radius:70% 70% 40% 40%; background:linear-gradient(transparent 2%,#7fe9ff88 38%,#e4ffff 82%,#fff 100%); box-shadow:0 4px 9px #51dbf9; transform-origin:50% 100%; }
+.special-shockwave { position:absolute; border:5px double var(--special-color); border-radius:50%; box-shadow:inset 0 0 25px #81ffa544,0 0 18px #81ffa588; background:radial-gradient(transparent 52%,#9effb21a 64%,transparent 70%); }
+.special-verdict { position:absolute; z-index:14; left:16%; right:16%; bottom:8%; display:grid; justify-items:center; gap:2px; padding:8px 12px; border-block:1px solid var(--special-color,#ffcc5f); border-radius:5px; background:#0b242cf0; color:var(--special-color,#ffcc5f); box-shadow:0 5px 18px #0008; text-align:center; pointer-events:none; }
+.special-verdict strong { font:900 clamp(18px,3.8vw,30px)/1.15 system-ui; text-shadow:0 2px 0 #05161a; }
+.special-verdict small { font:600 clamp(10px,1.6vw,14px)/1.15 system-ui; color:#fff2d2; }
+.special-verdict.is-multi { border-block-width:2px; background:linear-gradient(90deg,#102d36f5,#324030f5,#102d36f5); }
+@media (prefers-reduced-motion:reduce) {
+  .special-verdict { text-shadow:none; box-shadow:none; }
+}
+/* v31: game-owned command deck; the platform frame remains authoritative. */
+html body .rune-app #runeBattleScene > #gamePanel.game-panel {background:radial-gradient(ellipse at 35% 30%,#243e55,#101c30 70%)!important;grid-template-rows:58px 30px minmax(0,1fr) 222px!important;gap:6px!important;padding:8px!important;border:0!important;border-radius:0!important;}
+html body .rune-app #runeBattleScene .battle-shell {width:min(100%,calc(100cqh - 336px))!important;aspect-ratio:1!important;background:radial-gradient(ellipse at 50% 70%,#46859b35,transparent 68%)!important;border:0!important;box-shadow:none!important;border-radius:14px!important;overflow:visible!important;}
+html body .rune-app #runeBattleScene .arena-bg {opacity:.12!important;mix-blend-mode:screen;}
+.rune-world {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+html body .rune-app #runeBattleScene .has-rune-world .arena-bg {display:none!important;}
+html body .rune-app #runeBattleScene .has-rune-world #grid {display:block!important;inset:0!important;padding:0!important;gap:0!important;}
+html body .rune-app #runeBattleScene .has-rune-world .tile {position:absolute!important;min-width:0!important;min-height:0!important;aspect-ratio:auto!important;margin:0!important;padding:0!important;border:1px solid transparent!important;background:transparent!important;border-radius:3px!important;box-shadow:none!important;overflow:visible!important;}
+html body .rune-app #runeBattleScene .has-rune-world .tile.is-move {border-color:#94d0da70!important;background:#83d7e10b!important;}
+html body .rune-app #runeBattleScene .has-rune-world .tile.is-selected {border-color:#bdfff0!important;box-shadow:inset 0 0 12px #5cd9e15c!important;}
+html body .rune-app #runeBattleScene .has-rune-world .tile.is-map-area {border-color:#ffe5a1!important;background:#ffca5629!important;box-shadow:inset 0 0 12px #ffc44c4a!important;}
+html body .rune-app #runeBattleScene .has-rune-world .tile.is-threatened {border-color:#ff8d86!important;}
+html body .rune-app #runeBattleScene .has-rune-world .tile.is-tracked {border-color:#ffd57d!important;}
+html body .rune-app #runeBattleScene .has-rune-world .tile:focus-visible {outline:3px solid #fff!important;outline-offset:1px!important;}
+html body .rune-app #runeBattleScene .has-rune-world .unit {width:112%!important;height:134%!important;max-width:none!important;left:-6%!important;top:-35%!important;object-fit:contain!important;filter:drop-shadow(0 5px 3px #0009);}
+html body .rune-app #runeBattleScene .has-rune-world .hero,html body .rune-app #runeBattleScene .has-rune-world .enemy {overflow:visible!important;}
+html body .rune-app #runeBattleScene .has-rune-world .hpbar {height:4px!important;bottom:1px!important;left:12%!important;width:76%!important;border:1px solid #0a172a!important;}
+html body .rune-app #runeBattleScene .terrain-mark {font-size:9px!important;line-height:11px!important;bottom:0!important;color:#d2e8ee!important;background:#102032c9!important;}
+.relay-marker {position:absolute;inset:3px auto auto 3px;color:#ffcf69;font:900 16px/1 system-ui;pointer-events:none;}
+.relay-captured .relay-marker {color:#80f5ca;}
+.captain-badge {position:absolute;left:2px;top:-6px;z-index:7;border:1px solid #ffdc8d;border-radius:4px;background:#50382a;color:#ffdb77;font:900 14px/18px system-ui;padding:0 3px;pointer-events:none;}
+#gamePanel .is-guard-captain .unit {filter:drop-shadow(0 0 5px #ffd076)!important;}
+.world-fallback {position:absolute;bottom:0;left:0;right:0;text-align:center;color:#e2eaf4;background:#132338;font:11px/20px system-ui;}
+.world-fallback[hidden] {display:none;}
+html body .rune-app #runeBattleScene .game-panel > .hud {display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important;padding:6px 10px!important;border:1px solid #60778b59!important;background:#0c1b2cbf!important;border-radius:10px!important;}
+html body .rune-app #runeBattleScene .hud > div {background:none!important;border:0!important;padding:0!important;min-width:0!important;height:auto!important;min-height:0!important;max-height:none!important;grid-template-columns:minmax(0,1fr)!important;justify-content:start!important;gap:2px!important;}
+html body .rune-app #runeBattleScene .hud > div:not(.command-strip) {text-align:end;max-width:140px;}
+html body .rune-app #runeBattleScene .hud b {font-size:12px!important;line-height:15px!important;color:#dceaf7!important;}
+html body .rune-app #runeBattleScene .hud span {font-size:10px!important;line-height:13px!important;}
+html body .rune-app #runeBattleScene .command-strip {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:5px!important;text-align:start!important;}
+.command-strip > strong {font:700 12px/15px system-ui;color:#eaf4ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+html body .rune-app #runeBattleScene .command-resonance {display:flex;align-items:center;gap:6px;}
+.command-resonance > i {width:42px;flex-shrink:0;height:5px;border-radius:4px;background:linear-gradient(90deg,#a997ff var(--charge),#3a3d55 var(--charge));}
+html body .rune-app #runeBattleScene .command-resonance b {font-size:10px!important;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#c5b7ff!important;}
+html body .rune-app #runeBattleScene .command-resonance.is-full b {color:#ffe19a!important;}
+html body .rune-app #runeBattleScene .battle-status-row {padding:0 4px!important;color:#c1d7e9!important;overflow:auto!important;}
+html body .rune-app #runeBattleScene #battleLog {font:12px/15px system-ui!important;color:#c1d7e9!important;max-height:30px!important;overflow:auto!important;}
+html body .rune-app #runeBattleScene .battle-info {height:222px!important;grid-template-rows:70px minmax(0,1fr) 54px!important;gap:6px!important;padding:0!important;background:none!important;border:0!important;}
+html body .rune-app #runeBattleScene .turn-roster,html body .rune-app #runeBattleScene .turn-roster > div {height:70px!important;max-height:70px!important;gap:5px!important;}
+html body .rune-app #runeBattleScene .turn-roster-item {display:grid!important;grid-template-columns:36px minmax(0,1fr)!important;gap:4px!important;padding:6px 4px!important;border:1px solid #536880!important;border-radius:9px!important;background:linear-gradient(145deg,#2a3c52,#17263a)!important;color:#e9f4ff!important;}
+html body .rune-app #runeBattleScene .turn-roster-item.is-selected {border-color:#8af0e0!important;background:linear-gradient(145deg,#2b555b,#193748)!important;box-shadow:inset 0 -2px #7cf4dd!important;}
+html body .rune-app #runeBattleScene .turn-roster-item.is-done {opacity:.55!important;}
+html body .rune-app #runeBattleScene .turn-roster-item img {width:36px!important;height:48px!important;object-fit:contain!important;}
+html body .rune-app #runeBattleScene .turn-roster-item strong {font-size:11px!important;line-height:14px!important;}
+html body .rune-app #runeBattleScene .turn-roster-item small {font-size:11px!important;line-height:14px!important;color:#d9ebee!important;}
+.roster-health {display:block;height:3px;margin:3px 0;background:#091b2b;border-radius:3px;}
+.roster-health > i {display:block;height:100%;background:#7fe3bd;border-radius:3px;}
+.roster-energy {display:flex;gap:2px;height:4px;margin-top:4px;}
+.roster-energy > i {flex:1;background:#475160;border-radius:1px;}
+.roster-energy > i.charged {background:#ffd980;box-shadow:0 0 3px #edbf6766;}
+html body .rune-app #runeBattleScene .selected-card {display:block!important;padding:8px 10px!important;border:1px solid #516b824d!important;border-radius:9px!important;background:#101f32bd!important;overflow:auto!important;color:#c7d9e8!important;}
+html body .rune-app #runeBattleScene .selected-card :is(strong,span,b,i,small,p,summary) {font:12px/16px system-ui!important;letter-spacing:0!important;}
+.command-selected {display:flex;justify-content:space-between;gap:10px;}
+html body .rune-app #runeBattleScene .command-selected strong {font-weight:750!important;color:#ffe4a6!important;}
+.command-selected > span {white-space:nowrap;color:#98d9cf!important;}
+.command-preview {margin:5px 0!important;color:#ecf3ff!important;}
+.rune-app :is(button,h1,h2,h3,p,small,strong,span,em,summary) {overflow-wrap:anywhere;}
+/* Keep official names intact; allow two lines within the shared header. */
+html body .rune-app #menuPanel [data-wp-frame-title] {white-space:normal!important;overflow:visible!important;text-overflow:clip!important;font-size:clamp(16px,4.1vw,20px)!important;line-height:1.15!important;}
+html body #stagePanel .mission-briefing__head {flex-wrap:wrap;}
+html body #stagePanel .mission-briefing__head em {white-space:normal;overflow:visible;text-overflow:clip;min-width:0;}
+html body #stagePanel .mission-card {align-content:center!important;gap:7px!important;padding:12px!important;}
+html body #stagePanel .mission-card :is(strong,span,small,em) {white-space:normal!important;overflow:visible!important;text-overflow:clip!important;-webkit-line-clamp:unset!important;max-height:none!important;}
+html body #stagePanel .mission-card__top {align-items:center;}
+html body #stagePanel .mission-card__top strong {font-size:15px!important;line-height:19px!important;}
+html body #stagePanel .mission-card__top b {flex-shrink:0;}
+html body #stagePanel .mission-briefing {grid-template-rows:none!important;grid-auto-rows:max-content;align-content:start;pointer-events:auto;}
+html body #stagePanel .mission-briefing__enemies {display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:8px;overflow:visible;}
+html body #stagePanel .mission-briefing__enemy {min-width:0;width:100%;max-width:100%;height:auto;grid-template-rows:48px auto auto;align-content:start;}
+html body #stagePanel .mission-briefing__enemy img {height:48px;}
+html body #stagePanel .mission-briefing__enemy :is(b,small) {white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35;}
+html body #stagePanel .mission-rules summary {cursor:pointer;min-height:32px;color:#9debd1;}
+html body .rune-app #runeBattleScene .turn-roster-item {grid-template-columns:28px minmax(0,1fr)!important;}
+html body .rune-app #runeBattleScene .turn-roster-item img {width:28px!important;}
+html body .rune-app #runeBattleScene .turn-roster-item strong {white-space:normal!important;text-overflow:clip!important;overflow:visible!important;}
+html body .rune-app #runeBattleScene .command-selected {flex-wrap:wrap;gap:2px 8px;}
+html body .rune-app #runeBattleScene .command-strip > strong,
+html body .rune-app #runeBattleScene .command-resonance b {white-space:normal!important;overflow:visible!important;text-overflow:clip!important;}
+html body .rune-app #runeBattleScene .command-resonance > i {width:24px;}
+.command-rules summary {cursor:pointer;color:#91bed1!important;min-height:24px;}
+.command-rules .enemy-trait-guide {margin-top:8px;}
+.command-rules .skill-help {display:block!important;margin-top:8px!important;}
+html body .rune-app #runeBattleScene .actions button {border:1px solid #69849a!important;border-radius:9px!important;background:linear-gradient(#30465d,#1e3047)!important;color:#eaf6ff!important;box-shadow:0 2px 0 #081423!important;font-weight:750!important;}
+html body .rune-app #runeBattleScene .actions button:disabled {opacity:.38!important;}
+html body .rune-app #runeBattleScene .actions .map-ready {border-color:#edc97a!important;background:linear-gradient(#826738,#4b4233)!important;color:#fff0c0!important;}
+html body .rune-app #runeBattleScene .actions .is-overdrive {border-color:#cfb8ff!important;background:linear-gradient(#73558d,#453b62)!important;box-shadow:inset 0 0 12px #ccacff33,0 0 8px #b28be633!important;}
+.special-sequence.is-overdrive .special-cut-in {border-color:#e9bfff;box-shadow:0 0 28px #ce9bff66;}
+@media(min-width:700px) {
+ html body .rune-app #runeBattleScene > #gamePanel.game-panel {grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr)!important;grid-template-rows:64px 36px minmax(0,1fr)!important;padding:12px!important;gap:10px!important;}
+ html body .rune-app #runeBattleScene .battle-shell {grid-row:1/4!important;width:min(100%,calc(100cqh - 24px))!important;}
+ html body .rune-app #runeBattleScene .battle-info {height:100%!important;grid-template-rows:80px minmax(0,1fr) 116px!important;}
+ html body .rune-app #runeBattleScene .turn-roster,html body .rune-app #runeBattleScene .turn-roster > div {height:80px!important;max-height:80px!important;}
+ html body .rune-app #runeBattleScene .turn-roster-item {grid-template-columns:1fr!important;grid-template-rows:32px 1fr!important;gap:0!important;padding:4px 6px!important;}
+ html body .rune-app #runeBattleScene .turn-roster-item img {width:36px!important;height:32px!important;justify-self:center;}
+ html body .rune-app #runeBattleScene .turn-roster-item strong {display:none!important;}
+ html body .rune-app #runeBattleScene .turn-roster-item small {text-align:center;}
+}
+@media(max-height:560px) and (orientation:landscape) {
+ html body .rune-app #runeBattleScene > #gamePanel.game-panel {grid-template-rows:50px 24px minmax(0,1fr)!important;padding:4px!important;gap:4px!important;grid-template-columns:minmax(0,1fr) minmax(300px,1.1fr)!important;}
+ html body .rune-app #runeBattleScene .battle-info {grid-template-rows:58px minmax(0,1fr) 98px!important;gap:4px!important;}
+ html body .rune-app #runeBattleScene .turn-roster,html body .rune-app #runeBattleScene .turn-roster > div {height:58px!important;max-height:58px!important;}
+ html body .rune-app #runeBattleScene .turn-roster-item {grid-template-columns:28px minmax(0,1fr)!important;grid-template-rows:1fr!important;gap:3px!important;}
+ html body .rune-app #runeBattleScene .turn-roster-item img {width:28px!important;height:36px!important;}
+ html body .rune-app #runeBattleScene .turn-roster-item strong {display:block!important;}
+ html body .rune-app #runeBattleScene .selected-card {padding:4px 8px!important;}
+ html body .rune-app #runeBattleScene .command-rules summary {min-height:20px;}
+}

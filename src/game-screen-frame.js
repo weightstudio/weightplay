@@ -621,6 +621,7 @@
           : gameId === "animal-footprint-folio" ? "20260913-footprint-folio-interface7-guide-v1"
           : gameId === "casino" ? "20260901-casino-locale-v18d"
           : gameId === "freecell-solitaire" ? "20260905-freecell-es-guide-v30"
+          : gameId === "sliding-15" ? "20261010-sliding15-static-guide-r1"
           : "20260817-bus-jam-guide-v12";
       script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=${gameInfoCacheTag}`;
       document.body.append(script);

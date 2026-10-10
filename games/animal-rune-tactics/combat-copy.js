@@ -1,4 +1,20 @@
 (() => {
+  const commandKeys=['relayHelp','relayCutHelp','relayClaimed','supplyCut','objectiveCut','objectiveSweep','resonanceHelp','resonanceReady','resonanceMeter','commandForecast','commandRules','worldFallback'];
+  const commandRows={
+    en:['Enter a gold relay once to refill that hero’s Energy.','Seize both gold relays to stop future waves; defeat the remaining enemies. Each relay refills Energy once. Cutting supply calls in the final guard wave.','Relay secured · Energy full','Supply cut · final guards','Cut supply · {n}/2 relays','Sweep all waves · {n}/2 relays','Different heroes acting in succession charge Resonance. At 3, the next MAP gains +2 damage and spends the charge.','Resonance ready · MAP +2','Resonance {n}/3','{hits} targets · {kills} predicted defeats','Tactical details','Standard board · 3D unavailable'],
+    'zh-Hant':['踏上金色節點，即可一次補滿該英雄的能量。','占領兩個金色節點可切斷後續援軍，再清除場上敵人。每個節點可補滿一次能量。切斷時會引出最後一波守軍。','節點占領 · 能量補滿','補給切斷 · 最後守軍','切斷援軍 · 節點 {n}/2','掃蕩全波次 · 節點 {n}/2','不同英雄接力出手可累積共鳴；滿 3 格後，下一發地圖炮傷害 +2 並消耗共鳴。','共鳴就緒 · 地圖炮 +2','小隊共鳴 {n}/3','命中 {hits} 體 · 預計擊破 {kills} 體','戰術詳情','標準棋盤 · 3D 暫不可用'],
+    'zh-Hans':['踏上金色节点，即可一次补满该英雄的能量。','占领两个金色节点可切断后续援军，再清除场上敌人。每个节点可补满一次能量。切断时会引出最后一波守军。','节点占领 · 能量补满','补给切断 · 最后守军','切断援军 · 节点 {n}/2','扫荡全波次 · 节点 {n}/2','不同英雄接力出手可累积共鸣；满 3 格后，下一发地图炮伤害 +2 并消耗共鸣。','共鸣就绪 · 地图炮 +2','小队共鸣 {n}/3','命中 {hits} 体 · 预计击破 {kills} 体','战术详情','标准棋盘 · 3D 暂不可用'],
+    ja:['金色の中継点に入ると、その仲間のエネルギーを一度だけ全回復。','金色の中継点を2つ確保すると増援停止。残る敵を倒そう。各地点でエネルギーを一度だけ全回復。遮断すると最後の守備隊が出現。','中継点確保 · エネルギー全回復','補給遮断 · 最後の守備隊','増援を止める · {n}/2','全波を撃破 · 中継点 {n}/2','異なる仲間が続けて行動すると共鳴が増加。3で次のMAPがダメージ+2になり、共鳴を消費。','共鳴完了 · MAP +2','部隊共鳴 {n}/3','命中 {hits} · 撃破予測 {kills}','戦術の詳細','標準盤面 · 3D利用不可'],
+    ko:['황금 거점에 들어가면 해당 영웅의 에너지가 한 번 완충됩니다.','황금 거점 두 곳을 확보해 증원을 막고 남은 적을 처치하세요. 각 거점은 에너지를 한 번 완충합니다.차단하면 마지막 수비대가 등장합니다.','거점 확보 · 에너지 완충','보급 차단 · 마지막 수비대','증원 차단 · 거점 {n}/2','모든 웨이브 격파 · {n}/2','서로 다른 영웅이 연속 행동하면 공명이 쌓입니다. 3이면 다음 MAP 피해 +2 후 공명을 소모합니다.','공명 준비 · MAP +2','분대 공명 {n}/3','명중 {hits} · 예상 처치 {kills}','전술 상세','기본 보드 · 3D 사용 불가'],
+    es:['Entra en un nodo dorado para recargar una vez la energía del héroe.','Captura ambos nodos para detener los refuerzos y vence a los enemigos restantes. Cada nodo recarga energía una vez. Al cortar, llega una última oleada de guardias.','Nodo capturado · energía llena','Suministro cortado · guardia final','Corta refuerzos · nodos {n}/2','Vence todas las oleadas · {n}/2','Alternar héroes al actuar carga Resonancia. Con 3, el siguiente MAP gana +2 de daño y consume la carga.','Resonancia lista · MAP +2','Resonancia {n}/3','{hits} objetivos · {kills} bajas previstas','Detalles tácticos','Tablero estándar · 3D no disponible'],
+    'pt-BR':['Entre num núcleo dourado para recarregar a energia do herói uma vez.','Capture os dois núcleos para cortar reforços e derrote os inimigos restantes. Cada núcleo recarrega energia uma vez. O corte traz uma última onda de guardas.','Núcleo capturado · energia cheia','Suprimento cortado · guarda final','Corte reforços · núcleos {n}/2','Vença todas as ondas · {n}/2','Alternar heróis nas ações carrega Ressonância. Com 3, o próximo MAP ganha +2 de dano e consome a carga.','Ressonância pronta · MAP +2','Ressonância {n}/3','{hits} alvos · {kills} derrotas previstas','Detalhes táticos','Tabuleiro padrão · 3D indisponível'],
+    fr:['Entrez sur un relais doré pour recharger une fois l’énergie du héros.','Capturez les deux relais pour arrêter les renforts, puis battez les ennemis restants. Chaque relais recharge une fois l’énergie. La coupure déclenche une dernière vague de gardes.','Relais capturé · énergie pleine','Ravitaillement coupé · derniers gardes','Coupez les renforts · {n}/2','Éliminez toutes les vagues · {n}/2','Alterner les héros en action charge la Résonance. À 3, le prochain MAP gagne +2 dégâts et consomme la charge.','Résonance prête · MAP +2','Résonance {n}/3','{hits} cibles · {kills} éliminations prévues','Détails tactiques','Plateau standard · 3D indisponible'],
+    de:['Betritt einen goldenen Knoten, um die Energie des Helden einmal aufzufüllen.','Besetze beide Knoten, um Verstärkung zu stoppen, und besiege die übrigen Feinde. Jeder Knoten füllt Energie einmal auf. Das Abschneiden ruft eine letzte Welle Wachen.','Knoten gesichert · Energie voll','Nachschub gestoppt · letzte Wachen','Verstärkung stoppen · {n}/2','Alle Wellen besiegen · {n}/2','Wechselnde Heldenaktionen laden Resonanz. Bei 3 erhält der nächste MAP +2 Schaden und verbraucht die Ladung.','Resonanz bereit · MAP +2','Resonanz {n}/3','{hits} Ziele · {kills} erwartete Siege','Taktikdetails','Standardbrett · 3D nicht verfügbar'],
+    it:['Entra in un nodo dorato per ricaricare una volta l’energia dell’eroe.','Conquista entrambi i nodi per fermare i rinforzi e sconfiggi i nemici rimasti. Ogni nodo ricarica energia una volta. Il blocco richiama un’ultima ondata di guardie.','Nodo conquistato · energia piena','Rifornimenti bloccati · ultime guardie','Ferma i rinforzi · nodi {n}/2','Sconfiggi tutte le ondate · {n}/2','Alternare gli eroi nelle azioni carica Risonanza. A 3, il prossimo MAP ottiene +2 danni e consuma la carica.','Risonanza pronta · MAP +2','Risonanza {n}/3','{hits} bersagli · {kills} sconfitte previste','Dettagli tattici','Scacchiera standard · 3D non disponibile'],
+    ru:['Встаньте на золотой узел, чтобы один раз полностью зарядить энергию героя.','Займите оба узла, чтобы остановить подкрепления, затем победите оставшихся врагов. Каждый узел заряжает энергию один раз. Прерывание вызывает последнюю волну стражей.','Узел захвачен · энергия полная','Снабжение прервано · последние стражи','Остановите подкрепления · {n}/2','Победите все волны · {n}/2','Действия разных героев подряд заряжают Резонанс. При 3 следующий MAP получает +2 урона и тратит заряд.','Резонанс готов · MAP +2','Резонанс {n}/3','Целей: {hits} · прогноз побед: {kills}','Тактические сведения','Обычное поле · 3D недоступно'],
+    hi:['सुनहरे केंद्र पर पहुँचने से उस नायक की ऊर्जा एक बार पूरी भरती है।','दोनों केंद्र लेकर नई लहरें रोकें, फिर बचे शत्रुओं को हराएँ। हर केंद्र ऊर्जा एक बार भरता है। आपूर्ति कटते ही अंतिम रक्षक लहर आती है।','केंद्र लिया · ऊर्जा पूरी','आपूर्ति बंद · अंतिम रक्षक','आपूर्ति रोकें · केंद्र {n}/2','सभी लहरें हराएँ · केंद्र {n}/2','अलग नायकों की लगातार चालों से अनुनाद बढ़ता है। 3 पर अगला MAP +2 क्षति करता है और चार्ज खर्च होता है।','अनुनाद तैयार · MAP +2','अनुनाद {n}/3','{hits} लक्ष्य · अनुमानित हार {kills}','रणनीति विवरण','सामान्य बोर्ड · 3D अनुपलब्ध'],
+    ar:['ادخل عقدة ذهبية لملء طاقة البطل مرة واحدة.','استولِ على العقدتين لإيقاف التعزيزات ثم اهزم الأعداء الباقين. كل عقدة تملأ الطاقة مرة واحدة. قطع الإمداد يستدعي موجة الحرس الأخيرة.','تم تأمين العقدة · الطاقة كاملة','قُطعت الإمدادات · الحرس الأخير','اقطع التعزيزات · {n}/2','اهزم كل الموجات · {n}/2','تناوب الأبطال في الأفعال يشحن الرنين. عند 3 يضيف هجوم MAP التالي ضررين ويستهلك الشحنة.','الرنين جاهز · MAP +2','رنين الفريق {n}/3','{hits} أهداف · {kills} هزائم متوقعة','تفاصيل تكتيكية','لوحة عادية · العرض ثلاثي الأبعاد غير متاح']
+  };
   const keys = ['aimSkill','planHint','markHint','skillLionDesc','skillOwlDesc','skillTurtleDesc','guardHelp','disrupted','evaded','detonated','guardValue','skillSquadResult'];
   const rows = {
     en: ['Choose target','Red cells: locked attacks. Move away or push the attacker to interrupt.','Rune mark: another hero’s next hit gains +2 damage and 1 Energy.','Choose a foe within 3 cells. Splash 2, push 1 cell and interrupt; blocked push deals 2 more.','Choose a foe within 3 cells. Chain 2 damage to two nearby foes and mark every target.','Heal the squad by 1 and shield each hero’s next hit for 2. Acting keeps the shield.','Block 2 on the next hit and gain 1 Energy.','Interrupted','Dodged','Rune burst +2','Guard −2','{skill}: heal each hero by 1 and block 2 on their next hit.'],
@@ -16,6 +32,7 @@
     ar: ['اختر هدفًا','الخانات الحمراء لهجمات محددة. ابتعد عنها أو ادفع المهاجم لإيقافه.','علامة الرون: إصابة بطل آخر التالية تضيف ضررين وطاقة واحدة.','اختر عدوًا ضمن 3 خانات. ضرران حوله ودفع خانة وإيقاف فعله. عند انسداد الدفع: ضرران إضافيان.','اختر ضمن 3 خانات. سلسلة بضررين لعدوين قريبين وعلامة على جميع الأهداف.','يعالج الجميع بمقدار 1 ويخفض الضربة التالية بمقدار 2. الفعل لا يزيل الدرع.','يخفض الضربة التالية بمقدار 2 ويمنح طاقة واحدة.','تم الإيقاف','تم التفادي','انفجار الرون +2','دفاع −2','{skill}: يعالج كل بطل بمقدار 1 ويخفض ضربته التالية بمقدار 2.']
   };
   window.WeightPlayRuneTacticsCombatCopy = Object.fromEntries(Object.entries(rows).map(([locale, row]) => [locale, Object.fromEntries(keys.map((key, i) => [key, row[i]]))]));
+  for(const [code,row] of Object.entries(commandRows))Object.assign(window.WeightPlayRuneTacticsCombatCopy[code],Object.fromEntries(commandKeys.map((key,i)=>[key,row[i]])));
 })();
 
 (() => {
@@ -269,3 +286,156 @@
 };
  for(const [locale,row] of Object.entries(rows))Object.assign(window.WeightPlayRuneTacticsCombatCopy[locale],Object.fromEntries(keys.map((key,i)=>[key,row[i]])));
 })();
+
+// v30: concise, localized cinematic labels.
+(()=>{const keys=["specialCharge","specialLaunch","specialSweep","specialHits","specialBlocked","specialWard"];const rows={
+  "zh-Hant": [
+    "符文蓄力",
+    "{skill}，解放！",
+    "一擊掃蕩 {n} 名",
+    "命中 {n} 名",
+    "攻擊受阻",
+    "全隊護盾展開"
+  ],
+  "zh-Hans": [
+    "符文蓄力",
+    "{skill}，解放！",
+    "一击扫荡 {n} 名",
+    "命中 {n} 名",
+    "攻击受阻",
+    "全队护盾展开"
+  ],
+  "en": [
+    "Rune charge",
+    "{skill} unleashed!",
+    "{n} foes swept",
+    "{n} targets hit",
+    "Attack blocked",
+    "Squad shielded"
+  ],
+  "ja": [
+    "ルーン充填",
+    "{skill}、解放！",
+    "一撃で{n}体撃破",
+    "{n}体に命中",
+    "攻撃を防がれた",
+    "全員にシールド"
+  ],
+  "ko": [
+    "룬 충전",
+    "{skill} 발동!",
+    "한 번에 {n}명 격파",
+    "{n}명 명중",
+    "공격 차단",
+    "전원 보호막"
+  ],
+  "es": [
+    "Carga rúnica",
+    "¡{skill} desatado!",
+    "{n} enemigos barridos",
+    "{n} objetivos alcanzados",
+    "Ataque bloqueado",
+    "Escudos de equipo"
+  ],
+  "pt-BR": [
+    "Carga rúnica",
+    "{skill} liberado!",
+    "{n} inimigos varridos",
+    "{n} alvos atingidos",
+    "Ataque bloqueado",
+    "Equipe protegida"
+  ],
+  "fr": [
+    "Charge runique",
+    "{skill} déchaîné !",
+    "{n} ennemis balayés",
+    "{n} cibles touchées",
+    "Attaque bloquée",
+    "Équipe protégée"
+  ],
+  "de": [
+    "Runenladung",
+    "{skill} entfesselt!",
+    "{n} Gegner besiegt",
+    "{n} Ziele getroffen",
+    "Angriff geblockt",
+    "Team geschützt"
+  ],
+  "it": [
+    "Carica runica",
+    "{skill} scatenato!",
+    "{n} nemici spazzati via",
+    "{n} bersagli colpiti",
+    "Attacco bloccato",
+    "Squadra protetta"
+  ],
+  "ru": [
+    "Заряд рун",
+    "{skill}: разряд!",
+    "Врагов сметено: {n}",
+    "Попаданий: {n}",
+    "Атака отражена",
+    "Отряд под щитом"
+  ],
+  "hi": [
+    "रून चार्ज",
+    "{skill} जारी!",
+    "एक वार में {n} पराजित",
+    "{n} को निशाना लगा",
+    "हमला रोका गया",
+    "दल को ढाल मिली"
+  ],
+  "ar": [
+    "شحن الرون",
+    "إطلاق {skill}!",
+    "اكتساح {n} أعداء",
+    "إصابة {n} أهداف",
+    "صُد الهجوم",
+    "دروع للفريق"
+  ]
+};for(const [code,row] of Object.entries(rows))Object.assign(window.WeightPlayRuneTacticsCombatCopy[code],Object.fromEntries(keys.map((key,i)=>[key,row[i]])));})();
+(() => {
+  const opening={en:'Seize gold relays. Alternate heroes to charge Resonance.','zh-Hant':'搶占金色節點補能，接力出手蓄滿共鳴。','zh-Hans':'抢占金色节点补能，接力出手蓄满共鸣。',ja:'金色の中継点で補充。仲間を交代して共鳴をためよう。',ko:'황금 거점에서 충전! 영웅을 번갈아 써 공명을 모으세요.',es:'Toma nodos dorados. Alterna héroes para cargar Resonancia.','pt-BR':'Tome núcleos dourados. Alterne heróis para Ressonância.',fr:'Prenez les relais dorés. Alternez pour la Résonance.',de:'Goldene Knoten besetzen. Helden für Resonanz abwechseln.',it:'Prendi i nodi dorati. Alterna eroi per la Risonanza.',ru:'Займите золотые узлы. Чередуйте героев для Резонанса.',hi:'सुनहरे केंद्र लें। नायक बदलकर अनुनाद भरें।',ar:'خذ العقد الذهبية. ناوب الأبطال لشحن الرنين.'};
+  for(const [code,value] of Object.entries(opening))window.WeightPlayRuneTacticsCombatCopy[code].commandOpening=value;
+})();
+
+(() => {
+ const rows={en:['Wave {wave}/{total} · {n}','+{xp} XP · +{runes} Runes','Mission {mission} failed.','No new rune','Move, mark, then sweep.','Guard the weak. Focus one target.'],
+ 'zh-Hant':['波次 {wave}/{total} · {n}','+{xp} 經驗 · +{runes} 符文','任務 {mission} 挑戰失敗。','未獲得新符文','先刻印，再接力掃蕩。','保護弱點，集中擊破。'],
+ 'zh-Hans':['波次 {wave}/{total} · {n}','+{xp} 经验 · +{runes} 符文','任务 {mission} 挑战失败。','未获得新符文','先刻印，再接力扫荡。','保护弱点，集中击破。'],
+ ja:['第{wave}/{total}波 · {n}','経験 +{xp} · ルーン +{runes}','任務{mission}で敗北。','新ルーンなし','刻印して、仲間と一掃。','弱い仲間を守り、集中攻撃。'],
+ ko:['웨이브 {wave}/{total} · {n}','경험치 +{xp} · 룬 +{runes}','임무 {mission} 실패.','새 룬 없음','표식 후 연계 포격!','약한 아군을 지키고 집중 공격하세요.'],
+ es:['Oleada {wave}/{total} · {n}','+{xp} EXP · +{runes} runas','Misión {mission} fallida.','Sin runa nueva','Marca y combina ataques.','Protege al débil. Concentra ataques.'],
+ 'pt-BR':['Onda {wave}/{total} · {n}','+{xp} EXP · +{runes} runas','Missão {mission} falhou.','Sem nova runa','Marque e combine ataques.','Proteja os fracos. Foque um alvo.'],
+ fr:['Vague {wave}/{total} · {n}','+{xp} EXP · +{runes} runes','Mission {mission} échouée.','Aucune nouvelle rune','Marquez, puis balayez en équipe.','Protégez les faibles. Visez une cible.'],
+ de:['Welle {wave}/{total} · {n}','+{xp} EP · +{runes} Runen','Mission {mission} verloren.','Keine neue Rune','Markieren, dann gemeinsam angreifen.','Schwache schützen. Ein Ziel angreifen.'],
+ it:['Ondata {wave}/{total} · {n}','+{xp} ESP · +{runes} rune','Missione {mission} fallita.','Nessuna nuova runa','Marchia e combina gli attacchi.','Proteggi i deboli. Concentrati su un bersaglio.'],
+ ru:['Волна {wave}/{total} · {n}','+{xp} опыта · +{runes} рун','Поражение в задании {mission}.','Нет новой руны','Поставьте метку и атакуйте вместе.','Защитите слабых. Бейте одну цель.'],
+ hi:['लहर {wave}/{total} · {n}','+{xp} अनुभव · +{runes} रूण','मिशन {mission} असफल।','नया रूण नहीं','चिह्न लगाएँ, फिर मिलकर वार करें।','कमज़ोर को बचाएँ। एक लक्ष्य पर वार करें।'],
+ ar:['موجة {wave}/{total} · {n}','+{xp} خبرة · +{runes} رون','فشلت المهمة {mission}.','لا رون جديد','ضع علامة ثم هاجم بالفريق.','احمِ الضعيف وركّز على هدف واحد.']};
+ const keys=['waveHud','resultWin','resultLose','resultRewardNone','planWin','planLose'];
+ for(const [code,row] of Object.entries(rows))Object.assign(window.WeightPlayRuneTacticsCombatCopy[code],Object.fromEntries(keys.map((key,i)=>[key,row[i]])));
+})();
+
+// Compact surface copy. Full skill/rule descriptions stay in the disclosure.
+(() => {
+ const keys=['menuHint','lionShort','owlShort','turtleShort','lionBrief','owlBrief','turtleBrief','objectiveCut','objectiveSweep','resonanceReady','resonanceMeter','commandForecast','missionForces','missionStars','pauseHint'];
+ const rows={
+  en:['Move smart. Chain heroes. Sweep enemy waves.','Lion','Owl','Turtle','3-wide beam · interrupts survivors','3×3 blast · marks survivors','Radius 2 · team heal +2, shield 2','Cut supply · {n}/2','Clear waves · {n}/2','MAP +2 ready','Resonance {n}/3','Hit {hits} · defeat {kills}','{n} enemies · {waves} waves','★ Win · ★ All survive · ★ ≤{turns} turns','Battle frozen. Resume when ready.'],
+  'zh-Hant':['走位、接力、地圖炮，一次掃蕩整群敵人。','獅子','貓頭鷹','烏龜','3 格寬貫穿炮 · 打斷敵人','3×3 轟炸 · 刻印敵人','周圍 2 格震擊 · 全隊回血 2、護盾 2','切斷援軍 · {n}/2','掃蕩全波次 · {n}/2','共鳴就緒 · 炮擊 +2','共鳴 {n}/3','命中 {hits} · 擊破 {kills}','{n} 名敵人 · {waves} 波','★ 勝利 · ★ 全員存活 · ★ {turns} 回合內','戰鬥已暫停，繼續即可出戰。'],
+  'zh-Hans':['走位、接力、地图炮，一次扫荡整群敌人。','狮子','猫头鹰','乌龟','3 格宽贯穿炮 · 打断敌人','3×3 轰炸 · 刻印敌人','周围 2 格震击 · 全队回血 2、护盾 2','切断援军 · {n}/2','扫荡全波次 · {n}/2','共鸣就绪 · 炮击 +2','共鸣 {n}/3','命中 {hits} · 击破 {kills}','{n} 名敌人 · {waves} 波','★ 胜利 · ★ 全员存活 · ★ {turns} 回合内','战斗已暂停，继续即可出战。'],
+  ja:['移動、連携、範囲攻撃。敵の大群を一掃！','ライオン','フクロウ','カメ','幅3マスの砲撃 · 敵を中断','3×3爆撃 · 敵に刻印','周囲2マス · 全員回復2・盾2','増援停止 · {n}/2','全波撃破 · {n}/2','共鳴砲撃 +2','共鳴 {n}/3','命中 {hits} · 撃破 {kills}','敵{n}体 · {waves}波','★ 勝利 · ★ 全員生存 · ★ {turns}ターン以内','戦闘停止中。再開で続行。'],
+  ko:['이동과 연계, 광역 포격으로 적을 쓸어버리세요.','사자','부엉이','거북','폭 3칸 포격 · 적 행동 방해','3×3 폭격 · 적에게 표식','반경 2칸 · 전원 회복 2, 방패 2','증원 차단 · {n}/2','모든 웨이브 · {n}/2','공명 포격 +2','공명 {n}/3','명중 {hits} · 처치 {kills}','적 {n}명 · {waves}웨이브','★ 승리 · ★ 전원 생존 · ★ {turns}턴 이내','전투가 멈췄습니다. 준비되면 계속하세요.'],
+  es:['Muévete, combina héroes y arrasa oleadas.','León','Búho','Tortuga','Rayo de 3 casillas · interrumpe','Explosión 3×3 · marca enemigos','Radio 2 · cura +2, escudo 2 al equipo','Corta apoyo · {n}/2','Limpia oleadas · {n}/2','MAP +2 listo','Resonancia {n}/3','{hits} impactos · {kills} bajas','{n} enemigos · {waves} oleadas','★ Victoria · ★ Todos vivos · ★ ≤{turns} turnos','Batalla pausada. Continúa cuando quieras.'],
+  'pt-BR':['Mova, combine heróis e varra as ondas.','Leão','Coruja','Tartaruga','Raio de 3 casas · interrompe','Explosão 3×3 · marca inimigos','Raio 2 · cura +2, escudo 2 na equipe','Corte apoio · {n}/2','Limpe ondas · {n}/2','MAP +2 pronto','Ressonância {n}/3','{hits} acertos · {kills} baixas','{n} inimigos · {waves} ondas','★ Vitória · ★ Todos vivos · ★ ≤{turns} turnos','Batalha pausada. Continue quando quiser.'],
+  fr:['Déplacez, combinez, balayez les vagues ennemies.','Lion','Hibou','Tortue','Rayon large de 3 cases · interrompt','Explosion 3×3 · marque les ennemis','Rayon 2 · soin +2, bouclier 2 à tous','Coupez l’aide · {n}/2','Balayez les vagues · {n}/2','MAP +2 prêt','Résonance {n}/3','{hits} touchés · {kills} éliminés','{n} ennemis · {waves} vagues','★ Victoire · ★ Tous vivants · ★ ≤{turns} tours','Combat en pause. Reprenez à votre rythme.'],
+  de:['Klug ziehen, Helden verbinden, Wellen besiegen.','Löwe','Eule','Schildkröte','3 Felder breiter Strahl · unterbricht','3×3 Explosion · markiert Gegner','Radius 2 · Team: Heilung +2, Schild 2','Nachschub aus · {n}/2','Wellen besiegen · {n}/2','MAP +2 bereit','Resonanz {n}/3','{hits} Treffer · {kills} besiegt','{n} Gegner · {waves} Wellen','★ Sieg · ★ Alle leben · ★ ≤{turns} Runden','Kampf pausiert. Fortsetzen, sobald du bereit bist.'],
+  it:['Muovi, combina gli eroi e spazza via le ondate.','Leone','Gufo','Tartaruga','Raggio largo 3 caselle · interrompe','Esplosione 3×3 · marchia i nemici','Raggio 2 · squadra: cura +2, scudo 2','Taglia aiuti · {n}/2','Elimina ondate · {n}/2','MAP +2 pronto','Risonanza {n}/3','{hits} colpiti · {kills} eliminati','{n} nemici · {waves} ondate','★ Vittoria · ★ Tutti vivi · ★ ≤{turns} turni','Battaglia in pausa. Riprendi quando vuoi.'],
+  ru:['Маневрируйте, чередуйте героев, сметайте волны.','Лев','Сова','Черепаха','Луч шириной 3 клетки · прерывает','Взрыв 3×3 · ставит метки','Радиус 2 · всем: лечение +2, щит 2','Стоп подкреплениям · {n}/2','Разбейте волны · {n}/2','MAP +2 готов','Резонанс {n}/3','Попаданий {hits} · побед {kills}','Врагов: {n} · волн: {waves}','★ Победа · ★ Все живы · ★ ≤{turns} ходов','Бой на паузе. Продолжите, когда будете готовы.'],
+  hi:['चाल चलें, नायक बदलें और शत्रु लहरें मिटाएँ।','शेर','उल्लू','कछुआ','3 खाने चौड़ी किरण · शत्रु रोकें','3×3 विस्फोट · शत्रु चिह्नित','दायरा 2 · दल को उपचार +2, ढाल 2','आपूर्ति रोकें · {n}/2','लहरें हराएँ · {n}/2','MAP +2 तैयार','अनुनाद {n}/3','वार {hits} · परास्त {kills}','{n} शत्रु · {waves} लहरें','★ जीत · ★ सब जीवित · ★ ≤{turns} चालें','युद्ध रुका है। तैयार हों तो जारी रखें।'],
+  ar:['تحرّك، ناوب أبطالك، واسحق موجات الأعداء.','أسد','بومة','سلحفاة','شعاع بعرض 3 خانات · يوقف العدو','انفجار 3×3 · يضع علامات','مدى 2 · للفريق: شفاء +2 ودرع 2','اقطع الدعم · {n}/2','اهزم الموجات · {n}/2','MAP +2 جاهز','الرنين {n}/3','إصابة {hits} · هزيمة {kills}','{n} أعداء · {waves} موجات','★ فوز · ★ الجميع أحياء · ★ ≤{turns} جولات','المعركة متوقفة. تابع عندما تكون مستعدًا.']
+ };
+ for(const [code,row] of Object.entries(rows))Object.assign(window.WeightPlayRuneTacticsCombatCopy[code],Object.fromEntries(keys.map((key,i)=>[key,row[i]])));
+})();
+
+(()=>{const rows={"en":"★ Guard captain: +12 HP, +1 attack. Mark it, then finish with another hero.","zh-Hant":"★ 守軍隊長：生命 +12、攻擊 +1；先刻印，再由隊友接力擊破。","zh-Hans":"★ 守军队长：生命 +12、攻击 +1；先刻印，再由队友接力击破。","ja":"★ 守備隊長：HP+12、攻撃+1。刻印して仲間で追撃。","ko":"★ 수비대장: 체력 +12, 공격 +1. 표식 후 다른 영웅으로 마무리하세요.","es":"★ Capitán: +12 PV, +1 ataque. Márcalo y remata con otro héroe.","pt-BR":"★ Capitão: +12 PV, +1 ataque. Marque e finalize com outro herói.","fr":"★ Capitaine : +12 PV, +1 attaque. Marquez-le puis frappez avec un allié.","de":"★ Hauptmann: +12 LP, +1 Angriff. Markieren, dann mit anderem Helden treffen.","it":"★ Capitano: +12 PV, +1 attacco. Marchialo e finiscilo con un altro eroe.","ru":"★ Капитан: +12 здоровья, +1 атака. Поставьте метку и добейте другим героем.","hi":"★ कप्तान: +12 जीवन, +1 हमला। चिह्न लगाएँ, फिर दूसरे नायक से मारें।","ar":"★ قائد الحرس: +12 صحة و+1 هجوم. ضع علامة ثم أتبعه ببطل آخر."};for(const [code,value] of Object.entries(rows))window.WeightPlayRuneTacticsCombatCopy[code].guardCaptain=value;})();

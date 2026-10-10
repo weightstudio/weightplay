@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v31" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
     <meta name="description" content="帶領獅子、貓頭鷹與烏龜挑戰 30 關回合制任務，在 6×6 棋盤運用地形、夾擊與技能，擊敗六位首領並累積永久成長。" />
@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20261010-v29-c890a23a56be" />
+    <link rel="stylesheet" href="style.css?v=20261010-v31-2d599f8738c2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -191,7 +191,7 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v29-489c39dd48ea"></script>
+    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v31-4708c3ed51d2"></script>
     <script src="/games/animal-rune-tactics/native-locales.js?v=20260923-v25-77a554397a27"></script>
     <script src="/games/animal-rune-tactics/mission-locales.js?v=20260923-v25-65eb24d7962e"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
@@ -200,9 +200,9 @@
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
 <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
-<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v29-7cced709a5c7"></script>
-<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v29-6fb993c828ab"></script>
-<script src="game.js?v=20261010-v29-aa0f208f7646"></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v31-7cced709a5c7"></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v31-cc7e48cd210c"></script>
+<script src="game.js?v=20261010-v31-cab51aa946f5"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
     <script>
       (() => {
@@ -242,16 +242,19 @@
 <p>走位和攻擊力同樣重要。敵人兩側的隊友可形成夾擊；護甲、護盾、封印與飛行免疫會影響傷害預覽。潮汐、火焰和外圈旋轉也可能在回合結束後改變安全位置。</p>
 <p>每關保留三項星星紀錄：獲勝、三位英雄全員存活，以及達成畫面顯示的回合目標。每顆新獲得的星星只會發放一次四枚符文；少拿星星不會取消勝利，重複拿同一顆也不會再次領獎。</p>
 <p>地圖炮耗 3 能量；擊殺回充 1（每次最多 1），普攻／防守／每回合各回充 1。</p>
-<p>每關先有 6 名敵人，再增援 2–4 波、每波 6 名；每兩回合抵達，清空戰場會提前出現。消滅所有波次才算獲勝。</p>
+<p>每波 6 名敵人，每兩回合或清場後抵達。掃蕩任務須消滅全部波次；切斷援軍任務也可占領兩個節點，再清除場上敵人獲勝。</p>
 <p>存活敵人在射程內每回合反擊一次；獅子打斷、護盾可擋反擊。</p>
 <p>◎ 遠程瞄準會追蹤英雄；必須離開射程、打斷射手，或用護盾承受。</p>
-<p>每關首次勝利才能選擇永久符文；重玩不會重複疊加。</p></div>
+<p>每關首次勝利才能選擇永久符文；重玩不會重複疊加。</p>
+<p>踏上金色節點，即可一次補滿該英雄的能量。</p>
+<p>在「切斷援軍」任務中：占領兩個金色節點可切斷後續援軍，再清除場上敵人。每個節點可補滿一次能量。切斷時會引出最後一波守軍。 ★ 守軍隊長：生命 +12、攻擊 +1；先刻印，再由隊友接力擊破。</p>
+<p>不同英雄接力出手可累積共鳴；滿 3 格後，下一發地圖炮傷害 +2 並消耗共鳴。</p></div>
       <div class="game-info-section"><h3>玩法說明</h3><ol><li>開始遊戲後瀏覽任務卡，點選已解鎖卡片即可進入戰鬥。先看清該關地形與敵人資訊。</li><li>使用觸控或滑鼠選擇英雄，先點亮起的格子移動，再攻擊、防守或使用技能。鍵盤方向鍵移動棋盤焦點，Enter 或空白鍵啟動格子。</li><li>移動 → 地圖炮預覽 → 調整範圍 → 發射，一次掃蕩整群敵人！ 地圖炮耗 3 能量；擊殺回充 1（每次最多 1），普攻／防守／每回合各回充 1。</li><li>每關首次勝利才能選擇永久符文；重玩不會重複疊加。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>移動 → 地圖炮預覽 → 調整範圍 → 發射，一次掃蕩整群敵人！</li><li>能遠攻時，讓貓頭鷹避開近戰反擊敵人；遇到飛行免疫，改用適合的英雄，不要浪費遠程攻擊。</li><li>安全防守有助於保住全員存活星星。可以下次重玩再挑戰回合目標，不必為了趕回合而輸掉快完成的任務。</li></ul></div>
       <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1–10 關介紹小隊走位、阻擋路線、敵人鄰接支援、反擊與束縛地形，第 5、10 關是首領檢定。</p>
 <p>第 11–20 關加入潮汐位移、推移、再生、火焰與冷卻格，第 15、20 關檢驗新的戰術選擇。</p>
 <p>第 21–30 關加入沉默、外圈轉動、分身、吸能與封印。第 25 關首領與最終奇美拉考驗目標順序，而不是反應速度。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>每關先有 6 名敵人，再增援 2–4 波、每波 6 名；每兩回合抵達，清空戰場會提前出現。消滅所有波次才算獲勝。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>每波 6 名敵人，每兩回合或清場後抵達。掃蕩任務須消滅全部波次；切斷援軍任務也可占領兩個節點，再清除場上敵人獲勝。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>解鎖進度、星星、符文、小隊成長與英雄升級會保存在此瀏覽器。清除網站資料或改用其他瀏覽器可能移除或分開存檔。所有任務均不需要鑽石；三鑽重選獎勵與十八鑽訓練欄位都是選用項目，沒有跨裝置雲端同步保證。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>同一回合可以移動再攻擊嗎？</dt><dd>可以。先移動選中的英雄，再使用一次攻擊、防守或技能；戰鬥行動完成後，該英雄本回合便結束。</dd></div><div><dt>為什麼不能用技能？</dt><dd>請檢查剩餘能量、是否已用完戰鬥行動，以及是否處於沉默狀態；普通攻擊或防守可能仍可使用。</dd></div><div><dt>傷害預覽是零，代表攻擊壞掉了嗎？</dt><dd>不一定。飛行免疫、護盾或護甲可能減少或阻擋傷害；換位置或換英雄後再看一次預覽。</dd></div><div><dt>必須拿滿三顆星才能繼續嗎？</dt><dd>不用。沒有全員存活或回合目標星星，獲勝仍可推進戰役；之後重玩只會補發尚未取得的星星獎勵。</dd></div><div><dt>重試會刪掉升級嗎？</dt><dd>重試只重置該場戰鬥，不會刪除已保存的戰役升級；清除瀏覽器儲存資料則可能移除存檔。</dd></div><div><dt>第 30 關之後還有什麼？</dt><dd>戰役在第 30 關結束，可重玩已解鎖任務並改善星星紀錄，不會出現不存在的第 31 關。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>自走小隊</strong><span>先安排動物陣形，再觀看小隊自動戰鬥。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>遺跡獵人</strong><span>探索房間、蒐集遺物，挑戰 30 次遠征。</span></span></a></div></div>

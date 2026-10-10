@@ -249,82 +249,150 @@
     "Move, preview a MAP attack, aim and fire. Sweep whole groups!",
     "MAP costs 3 Energy. Each kill refunds 1 (max 1 per action); attack, Guard and each round restore 1.",
     "Fire a three-cell-wide corridor in the chosen direction. Interrupt survivors; no friendly fire. Bombard a 3×3 area around any cell. Mark survivors; no friendly fire. Hit every foe within 2 cells of Turtle. Heal all allies by 2 and shield their next hit for 2.",
-    "Every mission has 6 opening enemies and 2–4 waves of 6. Reinforcements arrive every two rounds, or immediately after a clear field. Defeat every wave to win."
+    "Waves contain 6 enemies and arrive every two rounds or after a cleared field. Sweep missions require every wave; supply-cut missions also let you seize both relays and defeat the remaining enemies."
   ],
   "zh-Hant": [
     "移動 → 地圖炮預覽 → 調整範圍 → 發射，一次掃蕩整群敵人！",
     "地圖炮耗 3 能量；擊殺回充 1（每次最多 1），普攻／防守／每回合各回充 1。",
     "朝指定方向轟出 3 格寬的貫穿炮，打斷存活敵人；不傷隊友。 指定任意格，轟炸周圍 3×3 區域；為存活敵人刻印，不傷隊友。 震擊自身 2 格內所有敵人；全隊恢復 2 生命並獲得減傷 2 護盾。",
-    "每關先有 6 名敵人，再增援 2–4 波、每波 6 名；每兩回合抵達，清空戰場會提前出現。消滅所有波次才算獲勝。"
+    "每波 6 名敵人，每兩回合或清場後抵達。掃蕩任務須消滅全部波次；切斷援軍任務也可占領兩個節點，再清除場上敵人獲勝。"
   ],
   "zh-Hans": [
     "移动 → 地图炮预览 → 调整范围 → 发射，一次扫荡整群敌人！",
     "地图炮耗 3 能量；击杀回充 1（每次最多 1），普攻／防守／每回合各回充 1。",
     "朝指定方向轰出 3 格宽的贯穿炮，打断存活敌人；不伤队友。 指定任意格，轰炸周围 3×3 区域；为存活敌人刻印，不伤队友。 震击自身 2 格内所有敌人；全队恢复 2 生命并获得减伤 2 护盾。",
-    "每关先有 6 名敌人，再增援 2–4 波、每波 6 名；每两回合抵达，清空战场会提前出现。消灭所有波次才算获胜。"
+    "每波 6 名敌人，每两回合或清场后抵达。扫荡任务须消灭全部波次；切断援军任务也可占领两个节点，再清除场上敌人获胜。"
   ],
   "ja": [
     "移動→MAP攻撃の範囲確認→照準→発射。敵の群れを一掃！",
     "MAPはエネルギー3。撃破で1回復（1行動で最大1）、通常攻撃・防御・各ターンで1回復。",
     "指定方向に幅3マスの砲撃。生存した敵の行動を中断。味方には無効。 任意のマスの周囲3×3を爆撃。生存した敵に刻印。味方には無効。 亀から2マス以内の敵を攻撃。味方全員を2回復し、次の被弾を2軽減。",
-    "各任務は敵6体と、各6体の増援2〜4波。2ターンごと、または敵全滅直後に到着。全波撃破で勝利。"
+    "各波6体が2ターンごと、または敵一掃後に登場。掃討任務は全波撃破。増援阻止任務は両中継点を確保し、残る敵を倒しても勝利。"
   ],
   "ko": [
     "이동→MAP 범위 확인→조준→발사! 적 무리를 쓸어버리세요.",
     "MAP은 에너지 3 소모. 처치당 1 회복(행동당 최대 1), 일반 공격·방어·매 턴 1 회복.",
     "선택 방향으로 폭 3칸 포격. 생존한 적의 행동을 방해하며 아군은 안전합니다. 아무 칸을 골라 주변 3×3을 폭격. 생존 적에게 표식을 남기며 아군은 안전합니다. 거북이의 2칸 내 모든 적 공격. 아군 전원 체력 2 회복, 다음 피해 2 감소.",
-    "각 임무는 적 6명과 6명씩 2~4차 증원으로 구성됩니다. 2턴마다 또는 적 전멸 직후 도착하며 모든 증원을 격파하면 승리합니다."
+    "각 웨이브는 적 6명이며 두 턴마다 또는 전멸 후 등장합니다. 소탕 임무는 모든 웨이브를 격파해야 합니다. 증원 차단 임무는 두 거점을 확보하고 남은 적을 처치해도 승리합니다."
   ],
   "es": [
     "Muévete, apunta el ataque MAP y dispara. ¡Barre grupos enteros!",
     "MAP cuesta 3 de Energía. Cada baja devuelve 1 (máx. 1 por acción); atacar, defender y cada ronda dan 1.",
     "Dispara una franja de 3 casillas de ancho en la dirección elegida. Interrumpe a los supervivientes; no daña aliados. Bombardea un área de 3×3 alrededor de cualquier casilla. Marca supervivientes; no daña aliados. Golpea a todos los enemigos a 2 casillas de Tortuga. Cura 2 a cada aliado y bloquea 2 del siguiente golpe.",
-    "Cada misión empieza con 6 enemigos y añade 2–4 oleadas de 6. Llegan cada dos rondas o al despejar el campo. Vence a todas para ganar."
+    "Llegan 6 enemigos cada dos rondas o al despejar el campo. En barrido debes vencer todas las oleadas; en corte de refuerzos también puedes capturar ambos nodos y vencer a los enemigos restantes."
   ],
   "pt-BR": [
     "Mova, mire o ataque MAP e dispare. Varra grupos inteiros!",
     "MAP custa 3 de Energia. Cada baixa devolve 1 (máx. 1 por ação); atacar, defender e cada rodada dão 1.",
     "Dispara uma faixa de 3 casas na direção escolhida. Interrompe sobreviventes; não atinge aliados. Bombardeia 3×3 casas ao redor de qualquer casa. Marca sobreviventes; não atinge aliados. Atinge todo inimigo a 2 casas da Tartaruga. Cura 2 de cada aliado e bloqueia 2 do próximo golpe.",
-    "Cada missão começa com 6 inimigos e recebe 2–4 ondas de 6. Chegam a cada duas rodadas ou ao limpar o campo. Derrote todas para vencer."
+    "Chegam 6 inimigos a cada duas rodadas ou após limpar o campo. Varredura exige todas as ondas; cortar reforços também permite capturar os dois núcleos e derrotar os inimigos restantes."
   ],
   "fr": [
     "Déplacez-vous, visez avec MAP et tirez. Balayez des groupes entiers !",
     "MAP coûte 3 Énergie. Chaque élimination rend 1 (max. 1 par action) ; attaque, garde et chaque tour rendent 1.",
     "Tire un couloir large de 3 cases dans la direction choisie. Interrompt les survivants ; alliés épargnés. Bombarde une zone de 3×3 autour de toute case. Marque les survivants ; alliés épargnés. Frappe tous les ennemis à 2 cases de Tortue. Soigne chaque allié de 2 et bloque 2 du prochain coup.",
-    "Chaque mission débute avec 6 ennemis et ajoute 2 à 4 vagues de 6. Elles arrivent tous les deux tours ou dès que le terrain est vide. Éliminez toutes les vagues."
+    "Les vagues de 6 arrivent tous les deux tours ou après nettoyage du terrain. Le balayage exige toutes les vagues ; la coupure des renforts permet aussi de capturer les deux relais puis de vaincre les ennemis restants."
   ],
   "de": [
     "Bewegen, MAP-Zielbereich prüfen und feuern. Ganze Gruppen besiegen!",
     "MAP kostet 3 Energie. Pro Abschuss +1 (max. 1 je Aktion); Angriff, Abwehr und jede Runde geben +1.",
     "Feuert einen 3 Felder breiten Streifen in die gewählte Richtung. Unterbricht Überlebende; keine Verbündetentreffer. Bombardiert 3×3 Felder um ein beliebiges Feld. Markiert Überlebende; keine Verbündetentreffer. Trifft alle Gegner im Abstand 2 von Schildkröte. Heilt alle Verbündeten um 2 und blockt 2 des nächsten Treffers.",
-    "Jede Mission beginnt mit 6 Gegnern und 2–4 Verstärkungswellen mit je 6. Sie kommen alle zwei Runden oder sofort nach Räumung des Feldes. Besiege alle Wellen."
+    "Je 6 Gegner erscheinen alle zwei Runden oder nach dem Räumen des Feldes. Säuberung erfordert alle Wellen. Bei Nachschubmissionen kannst du stattdessen beide Knoten besetzen und die übrigen Feinde besiegen."
   ],
   "it": [
     "Muovi, mira con MAP e spara. Spazza via interi gruppi!",
     "MAP costa 3 Energia. Ogni sconfitta restituisce 1 (max 1 per azione); attacco, guardia e ogni turno danno 1.",
     "Spara una fascia larga 3 caselle nella direzione scelta. Interrompe i superstiti; nessun danno agli alleati. Bombarda 3×3 caselle attorno a qualsiasi casella. Marca i superstiti; nessun danno agli alleati. Colpisce tutti i nemici entro 2 caselle da Tartaruga. Cura 2 a ogni alleato e blocca 2 del prossimo colpo.",
-    "Ogni missione inizia con 6 nemici e aggiunge 2–4 ondate da 6. Arrivano ogni due turni o appena il campo è libero. Sconfiggi tutte le ondate."
+    "Arrivano 6 nemici ogni due turni o quando il campo è libero. Le missioni di eliminazione richiedono tutte le ondate; quelle di blocco permettono anche di conquistare entrambi i nodi e battere i nemici rimasti."
   ],
   "ru": [
     "Переместитесь, наведите MAP-атаку и стреляйте. Сметайте целые группы!",
     "MAP стоит 3 энергии. За убийство +1 (макс. 1 за действие); атака, защита и каждый раунд дают 1.",
     "Залп полосой шириной 3 клетки в выбранную сторону. Прерывает выживших; союзники не страдают. Обстрел области 3×3 вокруг любой клетки. Помечает выживших; союзники не страдают. Бьёт всех врагов в 2 клетках от Черепахи. Лечит союзников на 2 и снижает следующий урон на 2.",
-    "В миссии 6 первых врагов и 2–4 волны по 6. Подкрепления приходят каждые два раунда или сразу после зачистки. Для победы уничтожьте все волны."
+    "По 6 врагов появляются каждые два хода или после зачистки поля. Зачистка требует победить все волны. При остановке подкреплений можно занять оба узла и победить оставшихся врагов."
   ],
   "hi": [
     "चलें, MAP का क्षेत्र देखें, निशाना लगाएँ और चलाएँ। पूरे झुंड हराएँ!",
     "MAP में 3 ऊर्जा लगती है। हर हार पर 1 वापस (प्रति चाल अधिकतम 1); हमला, बचाव और हर दौर पर 1 वापस।",
     "चुनी दिशा में 3 खाने चौड़ी पट्टी पर वार। बचे शत्रुओं को रोकता है; साथियों को चोट नहीं। किसी भी खाने के आसपास 3×3 क्षेत्र पर वार। बचे शत्रुओं पर निशान; साथी सुरक्षित। कछुए से 2 खाने तक के सभी शत्रुओं पर वार। हर साथी को 2 स्वास्थ्य और अगले वार में 2 की सुरक्षा।",
-    "हर मिशन में पहले 6 दुश्मन, फिर 6 की 2–4 लहरें आती हैं। वे हर दो दौर या मैदान खाली होते ही आती हैं। सभी लहरों को हराकर जीतें।"
+    "हर दो दौर या मैदान साफ होने पर 6 शत्रुओं की लहर आती है। सफाई मिशन में सभी लहरें हराएँ। आपूर्ति रोकने वाले मिशन में दोनों केंद्र लेकर बचे शत्रुओं को हराकर भी जीत सकते हैं।"
   ],
   "ar": [
     "تحرك وحدد نطاق MAP ثم أطلق. اقضِ على مجموعات كاملة!",
     "يكلف MAP ثلاث طاقات. كل هزيمة تعيد 1 (بحد أقصى 1 للفعل)، والهجوم والحراسة وكل جولة تعيد 1.",
     "يقصف ممراً بعرض 3 خانات في الاتجاه المختار. يوقف الناجين ولا يصيب الحلفاء. يقصف مساحة 3×3 حول أي خانة. يضع علامة على الناجين ولا يصيب الحلفاء. يضرب كل عدو ضمن خانتين من السلحفاة. يشفي الحلفاء بمقدار 2 ويحجب 2 من الضربة التالية.",
-    "تبدأ كل مهمة بستة أعداء ثم 2–4 موجات من ستة. تصل كل جولتين أو فور إخلاء الساحة. اهزم جميع الموجات للفوز."
+    "تصل موجات من 6 أعداء كل جولتين أو بعد إخلاء الميدان. مهام الاجتياح تتطلب هزيمة كل الموجات؛ وفي مهام قطع التعزيزات يمكنك أيضًا أخذ العقدتين وهزيمة الأعداء الباقين."
+  ]
+};
+  const commandGuide = {
+  "en": [
+    "Enter a gold relay once to refill that hero’s Energy.",
+    "On supply-cut missions: Seize both gold relays to stop future waves; defeat the remaining enemies. Each relay refills Energy once. Cutting supply calls in the final guard wave. ★ Guard captain: +12 HP, +1 attack. Mark it, then finish with another hero.",
+    "Different heroes acting in succession charge Resonance. At 3, the next MAP gains +2 damage and spends the charge."
+  ],
+  "zh-Hant": [
+    "踏上金色節點，即可一次補滿該英雄的能量。",
+    "在「切斷援軍」任務中：占領兩個金色節點可切斷後續援軍，再清除場上敵人。每個節點可補滿一次能量。切斷時會引出最後一波守軍。 ★ 守軍隊長：生命 +12、攻擊 +1；先刻印，再由隊友接力擊破。",
+    "不同英雄接力出手可累積共鳴；滿 3 格後，下一發地圖炮傷害 +2 並消耗共鳴。"
+  ],
+  "zh-Hans": [
+    "踏上金色节点，即可一次补满该英雄的能量。",
+    "在“切断援军”任务中：占领两个金色节点可切断后续援军，再清除场上敌人。每个节点可补满一次能量。切断时会引出最后一波守军。 ★ 守军队长：生命 +12、攻击 +1；先刻印，再由队友接力击破。",
+    "不同英雄接力出手可累积共鸣；满 3 格后，下一发地图炮伤害 +2 并消耗共鸣。"
+  ],
+  "ja": [
+    "金色の中継点に入ると、その仲間のエネルギーを一度だけ全回復。",
+    "「増援を止める」任務では：金色の中継点を2つ確保すると増援停止。残る敵を倒そう。各地点でエネルギーを一度だけ全回復。遮断すると最後の守備隊が出現。 ★ 守備隊長：HP+12、攻撃+1。刻印して仲間で追撃。",
+    "異なる仲間が続けて行動すると共鳴が増加。3で次のMAPがダメージ+2になり、共鳴を消費。"
+  ],
+  "ko": [
+    "황금 거점에 들어가면 해당 영웅의 에너지가 한 번 완충됩니다.",
+    "증원 차단 임무에서는: 황금 거점 두 곳을 확보해 증원을 막고 남은 적을 처치하세요. 각 거점은 에너지를 한 번 완충합니다.차단하면 마지막 수비대가 등장합니다. ★ 수비대장: 체력 +12, 공격 +1. 표식 후 다른 영웅으로 마무리하세요.",
+    "서로 다른 영웅이 연속 행동하면 공명이 쌓입니다. 3이면 다음 MAP 피해 +2 후 공명을 소모합니다."
+  ],
+  "es": [
+    "Entra en un nodo dorado para recargar una vez la energía del héroe.",
+    "En misiones de cortar refuerzos: Captura ambos nodos para detener los refuerzos y vence a los enemigos restantes. Cada nodo recarga energía una vez. Al cortar, llega una última oleada de guardias. ★ Capitán: +12 PV, +1 ataque. Márcalo y remata con otro héroe.",
+    "Alternar héroes al actuar carga Resonancia. Con 3, el siguiente MAP gana +2 de daño y consume la carga."
+  ],
+  "pt-BR": [
+    "Entre num núcleo dourado para recarregar a energia do herói uma vez.",
+    "Nas missões de cortar reforços: Capture os dois núcleos para cortar reforços e derrote os inimigos restantes. Cada núcleo recarrega energia uma vez. O corte traz uma última onda de guardas. ★ Capitão: +12 PV, +1 ataque. Marque e finalize com outro herói.",
+    "Alternar heróis nas ações carrega Ressonância. Com 3, o próximo MAP ganha +2 de dano e consome a carga."
+  ],
+  "fr": [
+    "Entrez sur un relais doré pour recharger une fois l’énergie du héros.",
+    "Dans les missions de coupure des renforts : Capturez les deux relais pour arrêter les renforts, puis battez les ennemis restants. Chaque relais recharge une fois l’énergie. La coupure déclenche une dernière vague de gardes. ★ Capitaine : +12 PV, +1 attaque. Marquez-le puis frappez avec un allié.",
+    "Alterner les héros en action charge la Résonance. À 3, le prochain MAP gagne +2 dégâts et consomme la charge."
+  ],
+  "de": [
+    "Betritt einen goldenen Knoten, um die Energie des Helden einmal aufzufüllen.",
+    "In Missionen zum Stoppen der Verstärkung: Besetze beide Knoten, um Verstärkung zu stoppen, und besiege die übrigen Feinde. Jeder Knoten füllt Energie einmal auf. Das Abschneiden ruft eine letzte Welle Wachen. ★ Hauptmann: +12 LP, +1 Angriff. Markieren, dann mit anderem Helden treffen.",
+    "Wechselnde Heldenaktionen laden Resonanz. Bei 3 erhält der nächste MAP +2 Schaden und verbraucht die Ladung."
+  ],
+  "it": [
+    "Entra in un nodo dorato per ricaricare una volta l’energia dell’eroe.",
+    "Nelle missioni per fermare i rinforzi: Conquista entrambi i nodi per fermare i rinforzi e sconfiggi i nemici rimasti. Ogni nodo ricarica energia una volta. Il blocco richiama un’ultima ondata di guardie. ★ Capitano: +12 PV, +1 attacco. Marchialo e finiscilo con un altro eroe.",
+    "Alternare gli eroi nelle azioni carica Risonanza. A 3, il prossimo MAP ottiene +2 danni e consuma la carica."
+  ],
+  "ru": [
+    "Встаньте на золотой узел, чтобы один раз полностью зарядить энергию героя.",
+    "В заданиях на остановку подкреплений: Займите оба узла, чтобы остановить подкрепления, затем победите оставшихся врагов. Каждый узел заряжает энергию один раз. Прерывание вызывает последнюю волну стражей. ★ Капитан: +12 здоровья, +1 атака. Поставьте метку и добейте другим героем.",
+    "Действия разных героев подряд заряжают Резонанс. При 3 следующий MAP получает +2 урона и тратит заряд."
+  ],
+  "hi": [
+    "सुनहरे केंद्र पर पहुँचने से उस नायक की ऊर्जा एक बार पूरी भरती है।",
+    "आपूर्ति रोकने वाले मिशन में: दोनों केंद्र लेकर नई लहरें रोकें, फिर बचे शत्रुओं को हराएँ। हर केंद्र ऊर्जा एक बार भरता है। आपूर्ति कटते ही अंतिम रक्षक लहर आती है। ★ कप्तान: +12 जीवन, +1 हमला। चिह्न लगाएँ, फिर दूसरे नायक से मारें।",
+    "अलग नायकों की लगातार चालों से अनुनाद बढ़ता है। 3 पर अगला MAP +2 क्षति करता है और चार्ज खर्च होता है।"
+  ],
+  "ar": [
+    "ادخل عقدة ذهبية لملء طاقة البطل مرة واحدة.",
+    "في مهام قطع التعزيزات: استولِ على العقدتين لإيقاف التعزيزات ثم اهزم الأعداء الباقين. كل عقدة تملأ الطاقة مرة واحدة. قطع الإمداد يستدعي موجة الحرس الأخيرة. ★ قائد الحرس: +12 صحة و+1 هجوم. ضع علامة ثم أتبعه ببطل آخر.",
+    "تناوب الأبطال في الأفعال يشحن الرنين. عند 3 يضيف هجوم MAP التالي ضررين ويستهلك الشحنة."
   ]
 };
   for (const [code, copy] of Object.entries(data)) {
+    copy.systems.push(...commandGuide[code]);
     copy.systems[1] = mapGuide[code][2];
     copy.systems.push(mapGuide[code][1],mapGuide[code][3]);
     copy.how[2] = mapGuide[code][0]+" "+mapGuide[code][1];

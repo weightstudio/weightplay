@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v31" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
     <meta name="description" content="Comande leão, coruja e tartaruga em 30 missões por turnos. Tabuleiros de 6×6, terrenos, seis chefes e melhorias permanentes." />
@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20261010-v29-c890a23a56be" />
+    <link rel="stylesheet" href="style.css?v=20261010-v31-2d599f8738c2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -191,7 +191,7 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v29-489c39dd48ea"></script>
+    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261010-v31-4708c3ed51d2"></script>
     <script src="/games/animal-rune-tactics/native-locales.js?v=20260923-v25-77a554397a27"></script>
     <script src="/games/animal-rune-tactics/mission-locales.js?v=20260923-v25-65eb24d7962e"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
@@ -200,9 +200,9 @@
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
 <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
-<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v29-7cced709a5c7"></script>
-<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v29-6fb993c828ab"></script>
-<script src="game.js?v=20261010-v29-aa0f208f7646"></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=20261010-v31-7cced709a5c7"></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=20261010-v31-cc7e48cd210c"></script>
+<script src="game.js?v=20261010-v31-cab51aa946f5"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
     <script>
       (() => {
@@ -242,16 +242,19 @@
 <p>Aliados em lados opostos permitem flanquear. Armadura, escudos, selos e imunidade durante o voo afetam a previsão de dano. Marés, fogo e rotação da borda podem mudar as posições seguras ao fim do turno.</p>
 <p>Cada missão registra três estrelas: vitória, sobrevivência dos três heróis e meta de turnos indicada. Cada estrela nova concede quatro Runas uma única vez. Perder uma estrela não anula a vitória, e repetir uma já obtida não paga novamente.</p>
 <p>MAP custa 3 de Energia. Cada baixa devolve 1 (máx. 1 por ação); atacar, defender e cada rodada dão 1.</p>
-<p>Cada missão começa com 6 inimigos e recebe 2–4 ondas de 6. Chegam a cada duas rodadas ou ao limpar o campo. Derrote todas para vencer.</p>
+<p>Chegam 6 inimigos a cada duas rodadas ou após limpar o campo. Varredura exige todas as ondas; cortar reforços também permite capturar os dois núcleos e derrotar os inimigos restantes.</p>
 <p>O inimigo sobrevivente contra-ataca uma vez por rodada dentro do alcance. Interrompa com Leão ou use escudos.</p>
 <p>◎ A mira acompanha o herói. Saia do alcance, interrompa o atirador ou absorva o golpe com um escudo.</p>
-<p>Runas permanentes são escolhidas apenas na primeira vitória de cada missão.</p></div>
+<p>Runas permanentes são escolhidas apenas na primeira vitória de cada missão.</p>
+<p>Entre num núcleo dourado para recarregar a energia do herói uma vez.</p>
+<p>Nas missões de cortar reforços: Capture os dois núcleos para cortar reforços e derrote os inimigos restantes. Cada núcleo recarrega energia uma vez. O corte traz uma última onda de guardas. ★ Capitão: +12 PV, +1 ataque. Marque e finalize com outro herói.</p>
+<p>Alternar heróis nas ações carrega Ressonância. Com 3, o próximo MAP ganha +2 de dano e consome a carga.</p></div>
       <div class="game-info-section"><h3>Como jogar</h3><ol><li>Comece, percorra as cartas e ative uma missão desbloqueada. Leia primeiro o terreno e os inimigos.</li><li>Selecione um herói pelo toque ou mouse, mova-o até uma casa destacada e escolha ataque, defesa ou habilidade. As setas movem o foco; Enter ou Espaço ativa a casa.</li><li>Mova, mire o ataque MAP e dispare. Varra grupos inteiros! MAP custa 3 de Energia. Cada baixa devolve 1 (máx. 1 por ação); atacar, defender e cada rodada dão 1.</li><li>Runas permanentes são escolhidas apenas na primeira vitória de cada missão.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Mova, mire o ataque MAP e dispare. Varra grupos inteiros!</li><li>Use a distância da coruja contra inimigos com contra-ataque corpo a corpo. Não desperdice um ataque à distância contra um alvo voador imune.</li><li>Defender pode preservar a estrela de sobrevivência. Busque a meta de turnos em outra tentativa em vez de arriscar uma vitória quase garantida.</li></ul></div>
       <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>As missões 1–10 ensinam posicionamento, rotas bloqueadas, apoio entre inimigos, contra-ataques e raízes. As missões 5 e 10 são confrontos com chefes.</p>
 <p>As missões 11–20 acrescentam marés, empurrões, regeneração, fogo e resfriamento. Os chefes das missões 15 e 20 testam essas escolhas.</p>
 <p>As missões 21–30 acrescentam silêncio, rotação externa, clones, drenagem de energia e selos. O chefe 25 e a quimera final valorizam a ordem dos alvos, não reflexos rápidos.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>Cada missão começa com 6 inimigos e recebe 2–4 ondas de 6. Chegam a cada duas rodadas ou ao limpar o campo. Derrote todas para vencer.</p></div>
+      <div class="game-info-section"><h3>Nota de design</h3><p>Chegam 6 inimigos a cada duas rodadas ou após limpar o campo. Varredura exige todas as ondas; cortar reforços também permite capturar os dois núcleos e derrotar os inimigos restantes.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informações do jogador e salvamento</h3><p>Missões liberadas, estrelas, Runas, crescimento e melhorias ficam neste navegador. Apagar dados do site ou mudar de navegador pode remover ou separar o progresso. Nenhuma missão exige Diamantes: a nova escolha de recompensas por três e o treinamento por dezoito são opcionais. Não há promessa de sincronização em nuvem.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Posso me mover e atacar no mesmo turno?</dt><dd>Sim. Mova o herói primeiro e depois use um ataque, defesa ou habilidade. A ação de combate encerra o turno dele.</dd></div><div><dt>Por que a habilidade não está disponível?</dt><dd>Confira energia, ação de combate já usada e silêncio. Ataque normal ou defesa podem continuar disponíveis.</dd></div><div><dt>Dano previsto igual a zero significa um erro?</dt><dd>Não necessariamente. Imunidade de voo, escudos ou armadura podem impedir dano. Mude de posição ou herói e confira a previsão.</dd></div><div><dt>Preciso de três estrelas para avançar?</dt><dd>Não. A vitória permite avançar mesmo sem as estrelas de sobrevivência ou turnos. Rejogue para receber apenas as recompensas que faltam.</dd></div><div><dt>Ao repetir, perco as melhorias?</dt><dd>Reinicia somente o combate, não as melhorias salvas. Apagar o armazenamento do navegador pode excluir o progresso.</dd></div><div><dt>O que vem depois da missão 30?</dt><dd>A campanha termina ali. Você pode repetir missões e melhorar estrelas; não surge uma missão 31 inexistente.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Esquadrão Automático</strong><span>Planeje a formação dos animais antes das batalhas automáticas.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Relic Hunters</strong><span>Explore salas e reúna relíquias em 30 expedições.</span></span></a></div></div>

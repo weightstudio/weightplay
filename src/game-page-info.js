@@ -11819,6 +11819,15 @@
       document.body.classList.add("has-game-page-info");
       return;
     }
+    // Sliding 15 owns complete, locale-specific static Guides in its route
+    // shells. Keep that reviewed copy after metadata synchronization.
+    if (id === "sliding-15" && document.querySelector("section.game-page-info-static")) {
+      const guide = document.querySelector("section.game-page-info-static");
+      guide.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
+      document.documentElement.classList.add("has-game-page-info");
+      document.body.classList.add("has-game-page-info");
+      return;
+    }
     const gameSkills = game.skills || [];
     const showSkills = audience === "kids" && game.showSkills !== false;
     const showRecommendedAge = audience === "kids" && Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
@@ -15284,6 +15293,194 @@
       genre: profile.genre,
     };
   });
+
+  // Golf Solitaire Text Growth 1.4.0 owns complete copy for every public locale.
+  const golfGuideText140 = {
+    en: {
+      title: "Golf Solitaire", gameplay: "One-Rank Card Chain", genre: ["Card Solitaire", "Sequence Puzzle", "Planning"], text140Tags: ["One-Rank Chain", "Card Solitaire", "Planning"], difficulty: "Easy to Challenging", time: "3–10 minutes",
+      metaDescription: "Clear seven Golf columns by building a one-rank-up or one-rank-down waste chain, with Stock, Hint, and Undo.",
+      intro: "Clear seven columns of face-up cards by extending the Waste chain one rank at a time. Plan around the Stock, Hint, and Undo as you look for the longest useful run.",
+      story: ["Every card in the seven-column tableau is visible, but only the exposed card at the bottom of a column can join the Waste. Each removal changes which route opens next.", "A long chain clears space and builds Combo. The Stock offers another Waste card when the exposed tableau has no useful continuation, so timing each draw matters."],
+      systems: ["The tableau starts with seven columns of five face-up cards: 35 cards in all. Only the exposed bottom card of each column can be played.", "Play a card exactly one rank above or below the Waste. Suits and colors do not matter; Ace connects to 2 and King to Queen, with no Ace–King wrap.", "Consecutive tableau plays build a chain. Drawing from the Stock ends that chain and moves a new card to Waste.", "Hint marks a legal exposed card. Undo restores the previous board and chain; Restart repeats the same deal, while New Game deals a fresh layout."],
+      how: ["Start with the Waste card and scan all seven exposed column cards.", "Choose an exposed card exactly one rank above or below Waste.", "After a play reveals another card, check the newly exposed column end before choosing again.", "When no useful exposed card continues the chain, draw from Stock to change the Waste card.", "Clear all 35 tableau cards before the Stock and legal moves run out."],
+      strategyTips: ["Compare every exposed card before taking the first legal move; it may reveal a better chain.", "Prefer a play that uncovers a new column end with ranks you can use next.", "Keep the no-wrap rule in mind: Ace and King are opposite ends, not neighbors.", "Save Stock draws for when no useful tableau continuation remains.", "Use Undo to compare routes, then keep the line that opens more playable cards."],
+      progression: ["Each deal uses the same seven-column, 35-card tableau structure and a supporting Stock.", "Early turns teach the one-rank chain; longer runs reward checking several exposed column ends ahead.", "There is no timer. Practice can focus on clearing more cards or beating your best chain."],
+      designNote: "Golf Solitaire pairs a clear seven-column tableau with a short, readable chain rule. The shared card interface keeps Waste, Stock, Hint, Undo, Restart, and New Game in consistent places.",
+      parent: "Golf Solitaire is a casual card puzzle for general audiences. No account or purchase is needed; each deal can be replayed or replaced with a new one.",
+      faq: [["How many cards start on the tableau?", "Seven columns hold five face-up cards each, for 35 tableau cards."], ["Can any card in a column be played?", "No. Only the exposed bottom card of a column is available."], ["Does Ace connect to King?", "No. Ace connects only to 2, and King only to Queen."], ["When should I draw from Stock?", "Draw when no useful exposed tableau card can continue the Waste chain."], ["What does Undo restore?", "Undo restores the previous board and chain. Restart repeats the same deal; New Game creates a fresh layout."]],
+    },
+    "zh-Hant": {
+      title: "高爾夫接龍", gameplay: "單點數連鎖紙牌", genre: ["紙牌接龍", "順序益智", "策略"], text140Tags: ["高一或低一連牌", "紙牌接龍", "路線規劃"], difficulty: "由簡單到具挑戰性", time: "約 3–10 分鐘",
+      metaDescription: "以高一或低一的牌連成棄牌堆，清除七列高爾夫牌面，支援牌堆、提示與還原。",
+      intro: "從棄牌開始，每次接上點數高一或低一的牌，逐步清空七列明牌。留意牌庫時機，並善用提示與還原找出更長的連鎖。",
+      story: ["七列牌面全部可見，但每列只有最下方露出的牌能接到棄牌上。移走一張牌，就會改變下一段可走的路線。", "連續出牌可清出空間並累積連鎖；當明牌沒有合適接法時，牌庫會提供新的棄牌，因此何時翻牌很重要。"],
+      systems: ["牌面由七列、每列五張明牌組成，共 35 張。每列只有最下方露出的牌可以出。", "所出牌的點數必須比棄牌高一級或低一級；花色與顏色不限。A 只接 2、K 只接 Q，A 與 K 不相接。", "連續出牌會延長連鎖；從牌庫翻牌會中斷連鎖，並以新牌替換棄牌。", "提示會標出可出的露牌。還原會回復前一個牌面與連鎖；重新開始重玩同一牌局，新遊戲則另發一局。"],
+      how: ["先看棄牌，再掃視七列最下方露出的牌。", "選擇點數比棄牌高一級或低一級的露牌。", "出牌露出新牌後，重新檢查該列最下方的牌再決定下一步。", "沒有合適的明牌可接時，再從牌庫翻牌更換棄牌。", "在牌庫與合法走法用盡前清空 35 張牌面。"],
+      strategyTips: ["先比較所有露牌，不要急著出第一張合法牌；其他牌可能打開更長連鎖。", "優先考慮能露出新牌、且新點數容易接續的走法。", "記住 A 和 K 不相接，不能把點數兩端繞回來。", "等牌面沒有合適接法時再翻牌庫。", "用還原比較路線，保留能露出更多可用牌的走法。"],
+      progression: ["每局都以七列、35 張明牌和牌庫開始。", "前幾步熟悉單點數連牌；想連得更長，就要提前觀察多列露牌。", "遊戲沒有計時；可以練習清除更多牌，或挑戰自己的最佳連鎖。"],
+      designNote: "高爾夫接龍以清楚的七列牌面搭配簡單易懂的連牌規則。共用紙牌介面讓棄牌、牌庫、提示、還原、重新開始與新遊戲保持一致。",
+      parent: "高爾夫接龍是適合一般玩家的休閒紙牌益智遊戲。不需要帳號或購買；每局都能重玩，也能另開新局。",
+      faq: [["牌面一開始有幾張？", "七列各有五張明牌，牌面共 35 張。"], ["每列任何一張牌都能出嗎？", "不能。只有每列最下方露出的牌可以出。"], ["A 可以接 K 嗎？", "不可以。A 只接 2，K 只接 Q。"], ["什麼時候該翻牌庫？", "當沒有合適的露牌能接續棄牌連鎖時再翻。"], ["還原會恢復什麼？", "還原會回復前一個牌面與連鎖。重新開始重玩同一局；新遊戲會另發牌局。"]],
+    },
+    "zh-Hans": {
+      title: "高尔夫接龙", gameplay: "单点数连锁纸牌", genre: ["纸牌接龙", "顺序益智", "策略"], text140Tags: ["高一或低一接牌", "纸牌接龙", "路线规划"], difficulty: "由简单到有挑战性", time: "约 3–10 分钟",
+      metaDescription: "以高一或低一的牌连成弃牌堆，清除七列高尔夫牌面，支持牌堆、提示与撤销。",
+      intro: "从弃牌开始，每次接上点数高一或低一的牌，逐步清空七列明牌。留意牌库时机，并善用提示与撤销寻找更长的连锁。",
+      story: ["七列牌面全部可见，但每列只有最下方露出的牌能接到弃牌上。移走一张牌，就会改变下一段可走的路线。", "连续出牌可以清出空间并累积连锁；明牌没有合适接法时，牌库会提供新的弃牌，因此何时翻牌很重要。"],
+      systems: ["牌面由七列、每列五张明牌组成，共 35 张。每列只有最下方露出的牌可以出。", "所出牌的点数必须比弃牌高一级或低一级；花色与颜色不限。A 只接 2、K 只接 Q，A 与 K 不相接。", "连续出牌会延长连锁；从牌库翻牌会中断连锁，并以新牌替换弃牌。", "提示会标出可出的露牌。撤销会恢复前一个牌面与连锁；重新开始重玩同一牌局，新游戏则另发一局。"],
+      how: ["先看弃牌，再扫视七列最下方露出的牌。", "选择点数比弃牌高一级或低一级的露牌。", "出牌露出新牌后，重新检查该列最下方的牌再决定下一步。", "没有合适的明牌可接时，再从牌库翻牌更换弃牌。", "在牌库与合法走法用尽前清空 35 张牌面。"],
+      strategyTips: ["先比较所有露牌，不要急着出第一张合法牌；其他牌可能打开更长连锁。", "优先考虑能露出新牌、且新点数容易接续的走法。", "记住 A 和 K 不相接，不能把点数两端绕回来。", "等牌面没有合适接法时再翻牌库。", "用撤销比较路线，保留能露出更多可用牌的走法。"],
+      progression: ["每局都以七列、35 张明牌和牌库开始。", "前几步熟悉单点数连牌；想连得更长，就要提前观察多列露牌。", "游戏没有计时；可以练习清除更多牌，或挑战自己的最佳连锁。"],
+      designNote: "高尔夫接龙以清晰的七列牌面搭配简单易懂的连牌规则。共用纸牌界面让弃牌、牌库、提示、撤销、重新开始与新游戏保持一致。",
+      parent: "高尔夫接龙是适合普通玩家的休闲纸牌益智游戏。不需要账号或购买；每局都能重玩，也能另开新局。",
+      faq: [["牌面一开始有多少张？", "七列各有五张明牌，牌面共 35 张。"], ["每列任何一张牌都能出吗？", "不能。只有每列最下方露出的牌可以出。"], ["A 可以接 K 吗？", "不可以。A 只接 2，K 只接 Q。"], ["什么时候该翻牌库？", "当没有合适的露牌能接续弃牌连锁时再翻。"], ["撤销会恢复什么？", "撤销会恢复前一个牌面与连锁。重新开始重玩同一局；新游戏会另发牌局。"]],
+    },
+    ja: {
+      title: "ゴルフ・ソリティア", gameplay: "1ランク連鎖カードパズル", genre: ["カードソリティア", "順序パズル", "計画"], text140Tags: ["1つ上・下の連鎖", "カードソリティア", "ルート計画"], difficulty: "初めてでも遊べ、先読みで手応えが増します", time: "約3～10分",
+      metaDescription: "捨て札の1つ上または下をつなぎ、7列のゴルフを消します。山札、ヒント、元に戻すに対応。",
+      intro: "捨て札にランクが1つ上か下のカードを重ね、表向きの7列を空にしましょう。山札を引くタイミングを考え、ヒントと元に戻すを使って長く続く連鎖を探します。",
+      story: ["7列のカードはすべて表向きですが、各列の一番下にあるカードだけが捨て札につながります。1枚取るたびに、次に開くルートが変わります。", "連続して出すと列が空き、コンボも伸びます。場札に続けられるカードがないとき、山札から新しい捨て札を補うため、引くタイミングが大切です。"],
+      systems: ["場札は7列、それぞれ表向き5枚で、合計35枚です。出せるのは各列の一番下にあるカードだけです。", "捨て札よりランクがちょうど1つ上か下のカードを出します。スートと色は問いません。Aは2と、KはQとのみつながり、AとKはつながりません。", "場札を続けて出すと連鎖が伸びます。山札を引くと連鎖は終わり、新しいカードが捨て札になります。", "ヒントは出せる表向きカードを示します。元に戻すは直前の盤面と連鎖を復元します。リスタートは同じ配り、新しいゲームは別の配りです。"],
+      how: ["捨て札を確認し、7列の一番下にあるカードを見比べます。", "捨て札よりランクが1つ上か下のカードを選びます。", "カードを取って新しいカードが見えたら、その列の一番下を見直します。", "続けられる場札がなければ、山札を引いて捨て札を変えます。", "山札と合法手が尽きる前に、場札35枚をすべて取りましょう。"],
+      strategyTips: ["最初の合法手をすぐ出さず、すべての列を見比べて長い連鎖を探します。", "次のカードが見え、続けやすいランクにつながる手を優先します。", "AとKは端同士で、折り返してつながらないことを忘れずに。", "役立つ場札の続きがなくなるまで、山札を温存します。", "元に戻すでルートを比べ、出せるカードが多く残る方を選びます。"],
+      progression: ["どの配りも、7列の場札35枚と山札から始まります。", "最初は1ランク差の連鎖に慣れ、長くつなぐには複数列の一番下を先読みします。", "時間制限はありません。より多くのカードを取ったり、自己ベストの連鎖に挑戦したりできます。"],
+      designNote: "ゴルフ・ソリティアは、7列の見やすい場札と短い連鎖ルールを組み合わせています。共通のカード画面では、捨て札、山札、ヒント、元に戻す、リスタート、新しいゲームを一貫した位置に表示します。",
+      parent: "ゴルフ・ソリティアは幅広い人が気軽に遊べるカードパズルです。アカウントや購入は不要で、同じ配りを再挑戦したり、新しい配りを始めたりできます。",
+      faq: [["場札は何枚ありますか？", "7列に表向きのカードが5枚ずつ、合計35枚あります。"], ["列のどのカードでも出せますか？", "いいえ。各列の一番下にある表向きカードだけ出せます。"], ["AとKはつながりますか？", "つながりません。Aは2と、KはQとのみつながります。"], ["いつ山札を引けばいいですか？", "捨て札につなげる場札が残っていないときに引きます。"], ["元に戻すと何が復元されますか？", "直前の盤面と連鎖が復元されます。リスタートは同じ配り、新しいゲームは別の配りです。"]],
+    },
+    ko: {
+      title: "골프 솔리테어", gameplay: "한 단계 카드 연속 퍼즐", genre: ["카드 솔리테어", "순서 퍼즐", "전략"], text140Tags: ["한 단계 위·아래 연속", "카드 솔리테어", "경로 계획"], difficulty: "쉽게 시작해 점점 도전적으로", time: "약 3~10분",
+      metaDescription: "버린 카드보다 한 단계 높거나 낮은 카드를 이어 7개 골프 열을 지웁니다. 덱, 힌트, 실행 취소를 지원합니다.",
+      intro: "버린 카드보다 한 단계 높거나 낮은 카드를 이어 붙여 앞면이 보이는 일곱 열을 비우세요. 덱에서 뽑을 때를 계획하고 힌트와 되돌리기로 더 긴 연속 수를 찾아보세요.",
+      story: ["일곱 열의 카드는 모두 앞면이지만 각 열의 맨 아래 드러난 카드만 버린 카드에 이을 수 있습니다. 한 장을 없앨 때마다 다음 경로가 달라집니다.", "연속으로 내면 열이 비고 콤보가 쌓입니다. 이어 낼 만한 카드가 없을 때 덱에서 새 버린 카드를 받으므로 뽑는 시점이 중요합니다."],
+      systems: ["테이블은 앞면 카드 다섯 장씩 놓인 일곱 열, 모두 35장으로 시작합니다. 각 열의 맨 아래 드러난 카드만 낼 수 있습니다.", "버린 카드보다 숫자가 정확히 하나 높거나 낮은 카드를 냅니다. 무늬와 색은 상관없습니다. A는 2와, K는 Q와만 이어지고 A와 K는 연결되지 않습니다.", "테이블 카드를 연속으로 내면 연속 수가 길어집니다. 덱에서 뽑으면 연속 수가 끝나고 새 카드가 버린 카드가 됩니다.", "힌트는 낼 수 있는 공개 카드를 표시합니다. 되돌리기는 이전 보드와 연속 수를 복원합니다. 다시 시작은 같은 배치, 새 게임은 다른 배치입니다."],
+      how: ["버린 카드를 확인하고 일곱 열의 맨 아래 공개 카드를 살펴보세요.", "버린 카드보다 한 숫자 높거나 낮은 카드를 선택하세요.", "카드를 내어 새 카드가 드러나면 해당 열의 맨 아래를 다시 확인하세요.", "이어 낼 공개 카드가 없으면 덱에서 뽑아 버린 카드를 바꾸세요.", "덱과 가능한 수가 모두 끝나기 전에 테이블 35장을 비우세요."],
+      strategyTips: ["첫 번째 가능한 수를 바로 내지 말고 모든 열을 비교해 더 긴 연속 수를 찾아보세요.", "새 카드를 열어 주고 다음에 이어 붙이기 좋은 숫자를 만드는 수를 우선하세요.", "A와 K는 서로 반대쪽 끝이며 이어지지 않습니다.", "쓸 만한 테이블 연속 수가 남아 있지 않을 때까지 덱을 아껴 두세요.", "되돌리기로 경로를 비교한 뒤 더 많은 낼 수를 열어 주는 쪽을 선택하세요."],
+      progression: ["모든 배치는 일곱 열의 테이블 35장과 덱으로 시작합니다.", "초반에는 한 단계 연속 규칙을 익히고, 긴 연속 수를 만들려면 여러 열의 맨 아래를 미리 살펴야 합니다.", "시간 제한은 없습니다. 더 많은 카드를 비우거나 자신의 최고 연속 수에 도전해 보세요."],
+      designNote: "골프 솔리테어는 한눈에 보이는 일곱 열과 짧고 명확한 연속 규칙을 결합합니다. 공용 카드 화면에서 버린 카드, 덱, 힌트, 되돌리기, 다시 시작, 새 게임을 일관된 위치에 제공합니다.",
+      parent: "골프 솔리테어는 누구나 가볍게 즐길 수 있는 카드 퍼즐입니다. 계정이나 구매가 필요 없으며 같은 배치를 다시 하거나 새 배치를 시작할 수 있습니다.",
+      faq: [["테이블에는 카드가 몇 장 있나요?", "일곱 열에 앞면 카드가 다섯 장씩, 모두 35장 있습니다."], ["열의 아무 카드나 낼 수 있나요?", "아니요. 각 열의 맨 아래 드러난 카드만 낼 수 있습니다."], ["A와 K는 이어지나요?", "아니요. A는 2와, K는 Q와만 이어집니다."], ["언제 덱에서 뽑아야 하나요?", "버린 카드에 이어 낼 만한 공개 카드가 없을 때 뽑으세요."], ["되돌리기는 무엇을 복원하나요?", "이전 보드와 연속 수를 복원합니다. 다시 시작은 같은 배치, 새 게임은 다른 배치입니다."]],
+    },
+    es: {
+      title: "Solitario Golf", gameplay: "Cadena de cartas por rango", genre: ["Solitario de cartas", "Puzle de secuencias", "Estrategia"], text140Tags: ["Cadena de un rango", "Solitario de cartas", "Planificación"], difficulty: "De fácil a desafiante", time: "Unos 3–10 minutos",
+      metaDescription: "Despeja siete columnas Golf construyendo una cadena de descarte un rango arriba o abajo.",
+      intro: "Vacía siete columnas de cartas visibles enlazando cada carta con un rango más o menos que el descarte. Planifica cuándo robar y usa Pista y Deshacer para encontrar una cadena útil más larga.",
+      story: ["Todas las cartas de las siete columnas están boca arriba, pero solo se puede jugar la carta descubierta del extremo inferior de cada columna. Cada retirada abre una ruta distinta.", "Las jugadas consecutivas despejan espacio y aumentan el combo. Cuando no hay una continuación útil en la mesa, el mazo aporta un nuevo descarte; importa elegir cuándo robar."],
+      systems: ["La mesa empieza con siete columnas de cinco cartas boca arriba: 35 cartas en total. Solo se puede jugar la carta expuesta del fondo de cada columna.", "Juega una carta exactamente un rango por encima o por debajo del descarte. El palo y el color no importan; el As conecta con el 2 y el Rey con la Reina, sin salto entre As y Rey.", "Las jugadas consecutivas de mesa alargan la cadena. Robar del mazo la termina y coloca una carta nueva en el descarte.", "Pista marca una carta expuesta legal. Deshacer recupera la mesa y la cadena anterior; Reiniciar repite el mismo reparto y Nueva partida crea otro."],
+      how: ["Mira el descarte y compara las cartas expuestas de las siete columnas.", "Elige una carta expuesta un rango por encima o por debajo del descarte.", "Si la jugada descubre otra carta, revisa el nuevo extremo de esa columna antes de seguir.", "Cuando no haya una continuación útil en la mesa, roba para cambiar el descarte.", "Retira las 35 cartas de la mesa antes de agotar el mazo y las jugadas legales."],
+      strategyTips: ["Compara todas las cartas expuestas antes de jugar la primera opción legal; otra puede abrir una cadena mejor.", "Prioriza una jugada que descubra un extremo nuevo con rangos fáciles de enlazar.", "Recuerda que As y Rey no se conectan: son extremos separados.", "Reserva los robos para cuando no quede una continuación útil en la mesa.", "Usa Deshacer para comparar rutas y conserva la que deje más cartas jugables."],
+      progression: ["Cada reparto usa la misma estructura: siete columnas con 35 cartas boca arriba y un mazo de apoyo.", "Las primeras jugadas enseñan la cadena de un rango; las más largas recompensan mirar varios extremos por adelantado.", "No hay temporizador. Puedes practicar para retirar más cartas o superar tu mejor cadena."],
+      designNote: "Solitario Golf combina una mesa clara de siete columnas con una regla breve de secuencias. La interfaz compartida mantiene el descarte, el mazo, Pista, Deshacer, Reiniciar y Nueva partida en lugares coherentes.",
+      parent: "Solitario Golf es un puzle de cartas informal para público general. No requiere cuenta ni compra; puedes repetir el reparto o iniciar uno nuevo.",
+      faq: [["¿Cuántas cartas hay al empezar?", "Hay siete columnas de cinco cartas boca arriba: 35 en total."], ["¿Se puede jugar cualquier carta de una columna?", "No. Solo está disponible la carta expuesta del fondo de cada columna."], ["¿El As conecta con el Rey?", "No. El As conecta solo con el 2 y el Rey solo con la Reina."], ["¿Cuándo conviene robar?", "Cuando ninguna carta expuesta útil pueda continuar la cadena del descarte."], ["¿Qué recupera Deshacer?", "Restaura la mesa y la cadena anteriores. Reiniciar repite el reparto; Nueva partida crea otro."]],
+    },
+    "pt-BR": {
+      title: "Paciência Golf", gameplay: "Sequência de cartas por valor", genre: ["Paciência de cartas", "Quebra-cabeça de sequência", "Estratégia"], text140Tags: ["Sequência de um valor", "Paciência de cartas", "Planejamento"], difficulty: "De fácil a desafiador", time: "Cerca de 3–10 minutos",
+      metaDescription: "Limpe sete colunas Golf formando uma sequência de descarte um valor acima ou abaixo.",
+      intro: "Esvazie sete colunas de cartas abertas ligando cada carta ao descarte por um valor acima ou abaixo. Planeje quando comprar e use Dica e Desfazer para encontrar uma sequência útil mais longa.",
+      story: ["Todas as cartas das sete colunas ficam abertas, mas só a carta exposta na base de cada coluna pode seguir o descarte. Cada remoção abre uma rota diferente.", "Jogadas consecutivas limpam espaço e aumentam o combo. Quando não há uma continuação útil na mesa, o monte oferece um novo descarte; escolher a hora de comprar faz diferença."],
+      systems: ["A mesa começa com sete colunas de cinco cartas abertas: 35 cartas ao todo. Só é possível jogar a carta exposta no fundo de cada coluna.", "Jogue uma carta exatamente um valor acima ou abaixo do descarte. Naipe e cor não importam; o Ás liga ao 2 e o Rei à Dama, sem ligação entre Ás e Rei.", "Jogadas consecutivas na mesa aumentam a sequência. Comprar do monte encerra o combo e coloca uma nova carta no descarte.", "Dica marca uma carta aberta válida. Desfazer restaura a mesa e a sequência anteriores; Reiniciar repete a mesma distribuição e Novo jogo cria outra."],
+      how: ["Confira o descarte e compare as cartas expostas nas sete colunas.", "Escolha uma carta exposta um valor acima ou abaixo do descarte.", "Quando uma jogada revelar outra carta, confira a nova base da coluna antes de continuar.", "Sem uma continuação útil na mesa, compre do monte para trocar o descarte.", "Retire as 35 cartas da mesa antes que o monte e as jogadas válidas acabem."],
+      strategyTips: ["Compare todas as cartas expostas antes da primeira jogada válida; outra escolha pode abrir uma sequência melhor.", "Prefira uma jogada que revele uma nova carta com valores fáceis de conectar.", "Lembre-se: Ás e Rei ficam em pontas opostas e não se conectam.", "Guarde compras para quando não restar uma continuação útil na mesa.", "Use Desfazer para comparar rotas e mantenha a que deixa mais cartas jogáveis."],
+      progression: ["Cada distribuição usa a mesma estrutura: sete colunas com 35 cartas abertas e um monte de apoio.", "As primeiras jogadas ensinam a sequência por um valor; cadeias longas recompensam observar várias colunas à frente.", "Não há cronômetro. Pratique para remover mais cartas ou superar sua melhor sequência."],
+      designNote: "Paciência Golf combina uma mesa clara de sete colunas com uma regra simples de sequência. A interface compartilhada mantém descarte, monte, Dica, Desfazer, Reiniciar e Novo jogo em posições consistentes.",
+      parent: "Paciência Golf é um quebra-cabeça de cartas casual para o público geral. Não exige conta nem compra; você pode repetir a distribuição ou iniciar outra.",
+      faq: [["Quantas cartas começam na mesa?", "São sete colunas com cinco cartas abertas cada, 35 ao todo."], ["Posso jogar qualquer carta da coluna?", "Não. Só vale a carta exposta no fundo de cada coluna."], ["O Ás se conecta ao Rei?", "Não. O Ás liga apenas ao 2 e o Rei apenas à Dama."], ["Quando devo comprar do monte?", "Quando nenhuma carta exposta útil puder continuar a sequência do descarte."], ["O que Desfazer recupera?", "Restaura a mesa e a sequência anteriores. Reiniciar repete a distribuição; Novo jogo cria outra."]],
+    },
+    fr: {
+      title: "Solitaire Golf", gameplay: "Suite de cartes par rang", genre: ["Solitaire de cartes", "Puzzle de séquence", "Stratégie"], text140Tags: ["Suite d’un rang", "Solitaire de cartes", "Planification"], difficulty: "Du facile au stimulant", time: "Environ 3 à 10 minutes",
+      metaDescription: "Videz sept colonnes Golf en construisant une chaîne de défausse d'un rang au-dessus ou au-dessous.",
+      intro: "Videz sept colonnes de cartes visibles en enchaînant des cartes d’un rang au-dessus ou au-dessous de la défausse. Choisissez le bon moment pour piocher et utilisez Indice et Annuler pour chercher une suite plus longue.",
+      story: ["Les cartes des sept colonnes sont toutes visibles, mais seule la carte libre au bas de chaque colonne peut suivre la défausse. Chaque retrait ouvre une nouvelle route.", "Les coups consécutifs libèrent de l’espace et prolongent le combo. Quand aucune carte de la table ne peut utilement suivre, la pioche fournit une nouvelle défausse : le moment du tirage compte."],
+      systems: ["Le tableau commence par sept colonnes de cinq cartes visibles, soit 35 cartes. Seule la carte libre au bas de chaque colonne peut être jouée.", "Jouez une carte exactement un rang au-dessus ou au-dessous de la défausse. Couleur et symbole ne comptent pas ; l’As rejoint le 2 et le Roi la Dame, sans liaison entre As et Roi.", "Les cartes du tableau jouées à la suite allongent la chaîne. Piocher met fin au combo et place une nouvelle carte sur la défausse.", "Indice signale une carte libre jouable. Annuler restaure le tableau et la chaîne précédente ; Recommencer garde la même donne, Nouvelle partie en crée une autre."],
+      how: ["Regardez la défausse et comparez les cartes libres des sept colonnes.", "Choisissez une carte libre d’un rang au-dessus ou au-dessous de la défausse.", "Après avoir révélé une carte, vérifiez le nouvel emplacement libre de cette colonne.", "S’il n’y a plus de suite utile sur le tableau, piochez pour changer la défausse.", "Retirez les 35 cartes du tableau avant d’épuiser la pioche et les coups possibles."],
+      strategyTips: ["Comparez toutes les cartes libres avant de jouer le premier coup légal ; une autre peut ouvrir une meilleure chaîne.", "Préférez un coup qui révèle une carte facile à relier ensuite.", "N’oubliez pas que l’As et le Roi sont aux deux extrémités et ne se rejoignent pas.", "Gardez la pioche pour le moment où aucune suite utile ne reste sur le tableau.", "Utilisez Annuler pour comparer les routes et gardez celle qui laisse le plus de cartes jouables."],
+      progression: ["Chaque donne reprend la même structure : sept colonnes de 35 cartes visibles et une pioche.", "Les premiers coups apprennent la suite par rang ; les longues chaînes récompensent l’observation de plusieurs colonnes à l’avance.", "Il n’y a pas de chronomètre. Entraînez-vous à retirer davantage de cartes ou à battre votre meilleure chaîne."],
+      designNote: "Solitaire Golf associe un tableau lisible de sept colonnes à une règle de suite simple. L’interface commune garde la défausse, la pioche, Indice, Annuler, Recommencer et Nouvelle partie à des emplacements cohérents.",
+      parent: "Solitaire Golf est un puzzle de cartes décontracté pour le grand public. Aucun compte ni achat n’est requis ; vous pouvez rejouer la même donne ou en commencer une autre.",
+      faq: [["Combien de cartes sont sur le tableau ?", "Sept colonnes de cinq cartes visibles, soit 35 cartes."], ["Peut-on jouer n’importe quelle carte d’une colonne ?", "Non. Seule la carte libre du bas de chaque colonne est disponible."], ["L’As rejoint-il le Roi ?", "Non. L’As rejoint seulement le 2 et le Roi seulement la Dame."], ["Quand faut-il piocher ?", "Quand aucune carte libre utile ne peut poursuivre la chaîne de défausse."], ["Que restaure Annuler ?", "Le tableau et la chaîne précédents. Recommencer garde la donne ; Nouvelle partie en crée une autre."]],
+    },
+    de: {
+      title: "Golf-Solitär", gameplay: "Kartenkette nach Rang", genre: ["Kartensolitär", "Reihenfolge-Rätsel", "Planung"], text140Tags: ["Kette: ein Rang höher/tiefer", "Kartensolitär", "Planung"], difficulty: "Leicht bis anspruchsvoll", time: "Etwa 3–10 Minuten",
+      metaDescription: "Räumen Sie sieben Golf-Spalten mit einer Ablagekette eine Rangstufe höher oder tiefer ab.",
+      intro: "Räume sieben offene Spalten ab, indem du Karten genau einen Rang über oder unter der Ablage anlegst. Plane den richtigen Moment zum Ziehen und nutze Tipp und Rückgängig für längere Ketten.",
+      story: ["Alle Karten der sieben Spalten liegen offen, doch nur die freie unterste Karte jeder Spalte darf an die Ablage angelegt werden. Jede entfernte Karte öffnet einen neuen Weg.", "Aufeinanderfolgende Züge räumen Platz frei und verlängern die Kombo. Wenn keine offene Karte sinnvoll passt, liefert der Stapel eine neue Ablagekarte – der Zeitpunkt des Ziehens zählt."],
+      systems: ["Das Tableau beginnt mit sieben Spalten zu je fünf offenen Karten, insgesamt 35. Nur die freie unterste Karte einer Spalte darf gespielt werden.", "Spiele eine Karte genau einen Rang über oder unter der Ablage. Farbe und Symbol sind egal; Ass passt nur zur 2 und König nur zur Dame, ohne Verbindung zwischen Ass und König.", "Aufeinanderfolgende Tableau-Züge verlängern die Kette. Ein Zug vom Stapel beendet die Kombo und legt eine neue Karte auf die Ablage.", "Tipp markiert eine spielbare offene Karte. Rückgängig stellt Tableau und Kette wieder her; Neustart wiederholt dieselbe Verteilung, Neues Spiel mischt neu."],
+      how: ["Sieh dir die Ablage an und vergleiche die offenen Karten aller sieben Spalten.", "Wähle eine offene Karte genau einen Rang über oder unter der Ablage.", "Wird durch einen Zug eine Karte frei, prüfe das neue Spaltenende erneut.", "Wenn keine sinnvolle Tableau-Karte passt, ziehe vom Stapel und ändere die Ablage.", "Räume alle 35 Tableau-Karten ab, bevor Stapel und mögliche Züge ausgehen."],
+      strategyTips: ["Vergleiche alle offenen Karten, bevor du den ersten legalen Zug nimmst; eine andere Karte kann eine längere Kette öffnen.", "Bevorzuge einen Zug, der eine neue Spaltenkarte freilegt, die gut anschließt.", "Ass und König liegen an getrennten Enden und passen nicht zusammen.", "Hebe Stapelzüge auf, bis keine sinnvolle Tableau-Fortsetzung bleibt.", "Vergleiche mit Rückgängig die Wege und behalte den mit mehr spielbaren Karten."],
+      progression: ["Jede Verteilung nutzt dieselbe Struktur aus sieben Spalten mit 35 offenen Karten und einem Stapel.", "Die ersten Züge machen mit der Ein-Rang-Kette vertraut; längere Folgen belohnen den Blick auf mehrere Spaltenenden.", "Es gibt kein Zeitlimit. Übe, mehr Karten abzuräumen oder deine beste Kette zu übertreffen."],
+      designNote: "Golf-Solitär verbindet ein übersichtliches Tableau aus sieben Spalten mit einer kurzen Kettenregel. Die gemeinsame Kartenoberfläche hält Ablage, Stapel, Tipp, Rückgängig, Neustart und Neues Spiel an einheitlichen Stellen.",
+      parent: "Golf-Solitär ist ein entspanntes Kartenspiel für ein allgemeines Publikum. Konto und Kauf sind nicht nötig; dieselbe Verteilung lässt sich wiederholen oder durch ein neues Spiel ersetzen.",
+      faq: [["Wie viele Karten liegen auf dem Tableau?", "Sieben Spalten mit je fünf offenen Karten, insgesamt 35."], ["Kann ich jede Karte einer Spalte spielen?", "Nein. Nur die freie unterste Karte jeder Spalte ist verfügbar."], ["Passt das Ass zum König?", "Nein. Ass passt nur zur 2 und König nur zur Dame."], ["Wann sollte ich vom Stapel ziehen?", "Wenn keine sinnvolle offene Karte die Ablagekette fortsetzen kann."], ["Was stellt Rückgängig wieder her?", "Das vorherige Tableau und die Kette. Neustart behält die Verteilung; Neues Spiel erstellt eine andere."]],
+    },
+    it: {
+      title: "Solitario Golf", gameplay: "Catena di carte per valore", genre: ["Solitario di carte", "Puzzle di sequenze", "Strategia"], text140Tags: ["Catena di un valore", "Solitario di carte", "Pianificazione"], difficulty: "Da facile a impegnativo", time: "Circa 3–10 minuti",
+      metaDescription: "Libera sette colonne Golf creando una catena di scarti di un valore sopra o sotto.",
+      intro: "Svuota sette colonne di carte scoperte collegando ogni carta allo scarto con un valore sopra o sotto. Pianifica quando pescare e usa Suggerimento e Annulla per cercare una catena utile più lunga.",
+      story: ["Tutte le carte delle sette colonne sono scoperte, ma solo la carta libera in fondo a ciascuna colonna può seguire lo scarto. Ogni rimozione apre un percorso diverso.", "Le giocate consecutive liberano spazio e allungano la combo. Quando sul tavolo non c’è una continuazione utile, il mazzo offre un nuovo scarto: scegliere quando pescare è importante."],
+      systems: ["Il tavolo inizia con sette colonne di cinque carte scoperte, 35 in tutto. Si può giocare solo la carta libera in fondo a ogni colonna.", "Gioca una carta esattamente un valore sopra o sotto lo scarto. Seme e colore non contano; l’Asso si collega al 2 e il Re alla Donna, senza collegamento tra Asso e Re.", "Le giocate consecutive sul tavolo allungano la catena. Pescare dal mazzo termina la combo e mette una nuova carta sullo scarto.", "Suggerimento indica una carta scoperta giocabile. Annulla ripristina tavolo e catena precedenti; Ricomincia ripete la stessa distribuzione, Nuova partita ne crea un’altra."],
+      how: ["Guarda lo scarto e confronta le carte scoperte delle sette colonne.", "Scegli una carta scoperta di un valore sopra o sotto lo scarto.", "Dopo aver liberato una carta nuova, ricontrolla il fondo della colonna.", "Quando non c’è una continuazione utile sul tavolo, pesca per cambiare lo scarto.", "Rimuovi tutte le 35 carte del tavolo prima che finiscano mazzo e mosse legali."],
+      strategyTips: ["Confronta tutte le carte scoperte prima della prima mossa valida; un’altra può aprire una catena migliore.", "Preferisci una mossa che libera una carta con valori facili da collegare.", "Ricorda che Asso e Re sono alle estremità opposte e non si collegano.", "Conserva le pescate finché resta una continuazione utile sul tavolo.", "Usa Annulla per confrontare i percorsi e tieni quello che lascia più carte giocabili."],
+      progression: ["Ogni distribuzione usa la stessa struttura: sette colonne con 35 carte scoperte e un mazzo di supporto.", "Le prime mosse insegnano la catena di un valore; le sequenze lunghe premiano chi osserva in anticipo più colonne.", "Non c’è un timer. Puoi allenarti a rimuovere più carte o superare la tua catena migliore."],
+      designNote: "Solitario Golf abbina un tavolo chiaro a sette colonne a una semplice regola di sequenza. L’interfaccia comune mantiene scarto, mazzo, Suggerimento, Annulla, Ricomincia e Nuova partita in posizioni coerenti.",
+      parent: "Solitario Golf è un puzzle di carte rilassato per tutti. Non servono account o acquisti; puoi ripetere la stessa distribuzione o iniziarne una nuova.",
+      faq: [["Quante carte ci sono sul tavolo?", "Sette colonne di cinque carte scoperte, 35 in tutto."], ["Si può giocare qualsiasi carta di una colonna?", "No. È disponibile solo la carta libera in fondo a ogni colonna."], ["L’Asso si collega al Re?", "No. L’Asso si collega solo al 2 e il Re solo alla Donna."], ["Quando conviene pescare?", "Quando nessuna carta scoperta utile può continuare la catena dello scarto."], ["Che cosa ripristina Annulla?", "Ripristina tavolo e catena precedenti. Ricomincia conserva la distribuzione; Nuova partita ne crea un’altra."]],
+    },
+    ru: {
+      title: "Пасьянс Гольф", gameplay: "Карточная цепочка по рангу", genre: ["Карточный пасьянс", "Головоломка на последовательность", "Планирование"], text140Tags: ["Цепочка на один ранг", "Карточный пасьянс", "Планирование"], difficulty: "От простого до сложного", time: "Около 3–10 минут",
+      metaDescription: "Очищайте семь колонок Гольфа, выкладывая карты на ранг выше или ниже сброса.",
+      intro: "Очистите семь открытых колонок, выкладывая на сброс карты на ранг выше или ниже. Планируйте добор и используйте подсказку и отмену, чтобы найти более длинную полезную цепочку.",
+      story: ["Все карты семи колонок открыты, но на сброс можно положить только доступную нижнюю карту каждой колонки. После каждого снятия открывается новый путь.", "Последовательные ходы освобождают место и удлиняют комбо. Когда на столе нет подходящего продолжения, колода даёт новую карту сброса — важно выбрать момент добора."],
+      systems: ["На столе семь колонок по пять открытых карт, всего 35. Играть можно только доступную нижнюю карту каждой колонки.", "Карта должна быть ровно на ранг выше или ниже сброса. Масть и цвет не важны; туз соединяется только с 2, король — только с дамой, без перехода между тузом и королём.", "Последовательные ходы со стола удлиняют цепочку. Добор из колоды прерывает комбо и кладёт новую карту на сброс.", "Подсказка отмечает доступную карту. Отмена восстанавливает прежний стол и цепочку; перезапуск повторяет раздачу, новая игра создаёт другую раскладку."],
+      how: ["Посмотрите на сброс и сравните открытые карты всех семи колонок.", "Выберите карту ровно на ранг выше или ниже сброса.", "После снятия карты проверьте, какая новая карта открылась в колонке.", "Если полезного продолжения на столе нет, доберите карту и смените сброс.", "Уберите все 35 карт со стола до исчерпания колоды и возможных ходов."],
+      strategyTips: ["Сравните все открытые карты до первого допустимого хода: другая может открыть более длинную цепочку.", "Выбирайте ход, который открывает новую карту с удобным для продолжения рангом.", "Туз и король находятся на разных концах и не соединяются.", "Берегите добор, пока на столе остаётся полезное продолжение.", "Сравнивайте варианты с помощью отмены и оставляйте тот, где больше доступных карт."],
+      progression: ["В каждой раздаче одинаковая основа: семь колонок с 35 открытыми картами и колода.", "Первые ходы знакомят с разницей в один ранг; длинные цепочки требуют заранее смотреть на несколько колонок.", "Таймера нет. Можно учиться убирать больше карт или побить собственную рекордную цепочку."],
+      designNote: "Пасьянс Гольф сочетает наглядные семь колонок с простым правилом цепочки. Общий карточный интерфейс одинаково размещает сброс, колоду, подсказку, отмену, перезапуск и новую игру.",
+      parent: "Пасьянс Гольф — спокойная карточная головоломка для широкой аудитории. Аккаунт и покупка не нужны; раздачу можно повторить или начать новую.",
+      faq: [["Сколько карт лежит на столе?", "Семь колонок по пять открытых карт, всего 35."], ["Можно сыграть любую карту колонки?", "Нет. Доступна только открытая нижняя карта каждой колонки."], ["Туз соединяется с королём?", "Нет. Туз соединяется только с 2, король — только с дамой."], ["Когда добирать карту?", "Когда ни одна полезная открытая карта не продолжает цепочку сброса."], ["Что восстанавливает отмена?", "Прежний стол и цепочку. Перезапуск повторяет раздачу, новая игра создаёт другую."]],
+    },
+    hi: {
+      title: "गोल्फ सॉलिटेयर", gameplay: "एक रैंक की कार्ड चेन", genre: ["कार्ड सॉलिटेयर", "क्रम पहेली", "योजना"], text140Tags: ["एक रैंक ऊपर-नीचे चेन", "कार्ड सॉलिटेयर", "योजना"], difficulty: "आसान से चुनौतीपूर्ण", time: "लगभग 3–10 मिनट",
+      metaDescription: "डिस्कार्ड से एक रैंक ऊपर या नीचे चलकर सात गोल्फ कॉलम साफ करें।",
+      intro: "डिस्कार्ड से एक रैंक ऊपर या नीचे का कार्ड जोड़ते हुए सात खुले कॉलम साफ करें। डेक से कार्ड लेने का समय सोचें और लंबी उपयोगी चेन खोजने के लिए संकेत व वापस करें का इस्तेमाल करें।",
+      story: ["सातों कॉलम के कार्ड खुले हैं, पर हर कॉलम का सबसे नीचे खुला कार्ड ही डिस्कार्ड पर जा सकता है। एक कार्ड हटाने से अगला रास्ता बदल जाता है।", "लगातार कार्ड खेलने से जगह बनती है और कॉम्बो बढ़ता है। जब मेज़ पर आगे बढ़ने वाला उपयोगी कार्ड न हो, तब डेक नया डिस्कार्ड देता है—इसलिए सही समय पर लेना जरूरी है।"],
+      systems: ["मेज़ पर सात कॉलम हैं, हर एक में पाँच खुले कार्ड—कुल 35। हर कॉलम का केवल सबसे नीचे खुला कार्ड खेला जा सकता है।", "डिस्कार्ड से ठीक एक रैंक ऊपर या नीचे का कार्ड चलाएं। सूट और रंग मायने नहीं रखते; इक्का केवल 2 से और बादशाह केवल बेगम से जुड़ता है, इक्का-बादशाह का चक्र नहीं है।", "मेज़ के लगातार चालों से चेन बढ़ती है। डेक से लेने पर कॉम्बो टूटता है और नया कार्ड डिस्कार्ड बनता है।", "संकेत एक मान्य खुले कार्ड को दिखाता है। वापस करें पिछली मेज़ और चेन लौटाता है; फिर शुरू करें वही बाँट रखता है, नया खेल नई व्यवस्था देता है।"],
+      how: ["डिस्कार्ड देखें और सातों कॉलम के नीचे खुले कार्डों की तुलना करें।", "डिस्कार्ड से एक रैंक ऊपर या नीचे का खुला कार्ड चुनें।", "कार्ड हटने पर कॉलम में खुला नया कार्ड देखें।", "मेज़ पर उपयोगी अगला कार्ड न हो, तभी डेक से लेकर डिस्कार्ड बदलें।", "डेक और मान्य चालें खत्म होने से पहले मेज़ के सभी 35 कार्ड हटाएं।"],
+      strategyTips: ["पहली मान्य चाल खेलने से पहले सभी खुले कार्ड देखें; दूसरी पसंद लंबी चेन खोल सकती है।", "ऐसी चाल चुनें जो नया कार्ड खोले और अगले रैंक से जुड़ना आसान बनाए।", "इक्का और बादशाह अलग छोर पर हैं; वे एक-दूसरे से नहीं जुड़ते।", "जब तक मेज़ पर उपयोगी चाल हो, डेक बचाकर रखें।", "वापस करें से रास्ते तुलना करें और वह चुनें जिससे अधिक कार्ड खेलने योग्य हों।"],
+      progression: ["हर बाँट में सात कॉलम के 35 खुले कार्ड और सहायक डेक होता है।", "शुरुआती चालें एक रैंक के नियम से परिचित कराती हैं; लंबी चेन के लिए कई कॉलम पहले से देखने पड़ते हैं।", "कोई टाइमर नहीं है। अधिक कार्ड साफ करने या अपनी सर्वश्रेष्ठ चेन से बेहतर करने का अभ्यास करें।"],
+      designNote: "गोल्फ सॉलिटेयर सात साफ कॉलम और सरल चेन नियम को जोड़ता है। साझा कार्ड इंटरफ़ेस डिस्कार्ड, डेक, संकेत, वापस करें, फिर शुरू करें और नया खेल को एक-जैसी जगहों पर रखता है।",
+      parent: "गोल्फ सॉलिटेयर सामान्य खिलाड़ियों के लिए आराम से खेली जाने वाली कार्ड पहेली है। खाते या खरीद की जरूरत नहीं; वही बाँट दोहराएं या नया खेल शुरू करें।",
+      faq: [["मेज़ पर शुरू में कितने कार्ड होते हैं?", "सात कॉलम में पाँच-पाँच खुले कार्ड, कुल 35।"], ["क्या कॉलम का कोई भी कार्ड खेल सकते हैं?", "नहीं। केवल सबसे नीचे खुला कार्ड उपलब्ध है।"], ["क्या इक्का बादशाह से जुड़ता है?", "नहीं। इक्का केवल 2 से और बादशाह केवल बेगम से जुड़ता है।"], ["डेक से कब लेना चाहिए?", "जब कोई उपयोगी खुला कार्ड डिस्कार्ड चेन जारी न रख सके।"], ["वापस करें क्या लौटाता है?", "पिछली मेज़ और चेन। फिर शुरू करें वही बाँट रखता है; नया खेल दूसरी व्यवस्था देता है।"]],
+    },
+    ar: {
+      title: "سوليتير الغولف", gameplay: "سلسلة بطاقات بفارق رتبة واحدة", genre: ["سوليتير الورق", "لغز تسلسلي", "تخطيط"], text140Tags: ["سلسلة رتبة أعلى أو أدنى", "سوليتير الورق", "تخطيط المسار"], difficulty: "من السهل إلى التحدي", time: "نحو 3–10 دقائق",
+      metaDescription: "نظّف أعمدة الغولف السبعة ببناء سلسلة رمي أعلى أو أسفل بطاقة الرمي برتبة واحدة.",
+      intro: "أفرغ الأعمدة السبعة المكشوفة بوصل كل بطاقة ببطاقة المهملات الأعلى أو الأدنى برتبة واحدة. خطط لموعد السحب واستخدم التلميح والتراجع للعثور على سلسلة أطول مفيدة.",
+      story: ["كل بطاقات الأعمدة السبعة مكشوفة، لكن البطاقة المتاحة أسفل كل عمود وحدها تتصل بالمهملات. إزالة بطاقة تفتح مسارًا جديدًا.", "النقلات المتتابعة تفرغ مساحة وتزيد السلسلة. عندما لا توجد متابعة مفيدة على الطاولة، تمنح الرزمة بطاقة مهملات جديدة؛ لذلك توقيت السحب مهم."],
+      systems: ["تبدأ الطاولة بسبعة أعمدة، في كل منها خمس بطاقات مكشوفة، أي 35 بطاقة. لا تلعب إلا البطاقة المتاحة أسفل العمود.", "العب بطاقة أعلى أو أدنى من المهملات برتبة واحدة بالضبط. النوع واللون لا يهمان؛ الآس يتصل بالاثنين فقط والملك بالملكة فقط، ولا اتصال بين الآس والملك.", "النقلات المتتابعة من الطاولة تطيل السلسلة. السحب من الرزمة ينهيها ويضع بطاقة جديدة على المهملات.", "يحدد التلميح بطاقة مكشوفة صالحة. يعيد التراجع الطاولة والسلسلة السابقتين؛ إعادة البدء تكرر التوزيعة، واللعبة الجديدة تنشئ ترتيبًا آخر."],
+      how: ["انظر إلى المهملات وقارن البطاقات المكشوفة أسفل الأعمدة السبعة.", "اختر بطاقة مكشوفة أعلى أو أدنى من المهملات برتبة واحدة.", "بعد إزالة بطاقة وظهور أخرى، افحص أسفل العمود من جديد.", "إذا لم تبق متابعة مفيدة على الطاولة، اسحب لتغيير بطاقة المهملات.", "أزل بطاقات الطاولة الـ35 قبل نفاد الرزمة والنقلات المتاحة."],
+      strategyTips: ["قارن البطاقات المكشوفة كلها قبل اختيار أول نقلة صالحة؛ فقد تفتح بطاقة أخرى سلسلة أطول.", "فضّل نقلة تكشف بطاقة جديدة يسهل وصل رتبتها التالية.", "تذكر أن الآس والملك عند طرفين منفصلين ولا يتصلان.", "احتفظ بالسحب ما دامت هناك متابعة مفيدة على الطاولة.", "استخدم التراجع لمقارنة المسارات واختر ما يبقي بطاقات قابلة للعب أكثر."],
+      progression: ["تستخدم كل توزيعة البنية نفسها: سبعة أعمدة فيها 35 بطاقة مكشوفة ورزمة مساعدة.", "تعلم النقلات الأولى قاعدة الرتبة الواحدة؛ وتتطلب السلاسل الأطول النظر مسبقًا إلى عدة أعمدة.", "لا يوجد مؤقت. تدرب على إزالة بطاقات أكثر أو تجاوز أفضل سلسلة لك."],
+      designNote: "يجمع سوليتير الغولف بين طاولة واضحة من سبعة أعمدة وقاعدة سلسلة بسيطة. تحافظ واجهة الورق المشتركة على مواضع ثابتة للمهملات والرزمة والتلميح والتراجع وإعادة البدء واللعبة الجديدة.",
+      parent: "سوليتير الغولف لغز ورق هادئ للجمهور العام. لا يحتاج إلى حساب أو شراء؛ يمكنك تكرار التوزيعة أو بدء لعبة جديدة.",
+      faq: [["كم بطاقة تبدأ على الطاولة؟", "سبعة أعمدة، في كل منها خمس بطاقات مكشوفة، أي 35 بطاقة."], ["هل يمكن لعب أي بطاقة في العمود؟", "لا. المتاحة هي البطاقة المكشوفة أسفل كل عمود فقط."], ["هل يتصل الآس بالملك؟", "لا. الآس يتصل بالاثنين فقط والملك بالملكة فقط."], ["متى أسحب من الرزمة؟", "عندما لا تستطيع بطاقة مكشوفة مفيدة متابعة سلسلة المهملات."], ["ماذا يعيد التراجع؟", "يعيد الطاولة والسلسلة السابقتين. إعادة البدء تكرر التوزيعة، واللعبة الجديدة تنشئ ترتيبًا آخر."]],
+    },
+  };
+  for (const [localeKey, copy] of Object.entries(golfGuideText140)) {
+    localizedGames[localeKey] ||= {};
+    localizedGames[localeKey]["golf-solitaire"] = {
+      ...(localizedGames[localeKey]["golf-solitaire"] || {}),
+      ...copy,
+      genre: [...copy.text140Tags],
+      hideSkillsFact: true,
+      showRelatedSkill: false,
+    };
+    localizedGameplayProfiles[localeKey] ||= {};
+    localizedGameplayProfiles[localeKey]["golf-solitaire"] = {
+      gameplay: copy.gameplay,
+      genre: [...copy.text140Tags],
+    };
+  }
 
   window.WeightPlayGameInfo = {
     render,
