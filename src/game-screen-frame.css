@@ -4,7 +4,7 @@
 @layer wp-frame-contract {
   html body [data-wp-frame="2"] [data-wp-frame-logical-header="stage"],
   html body [data-wp-frame="2"] [data-wp-frame-logical-header="stage"] .wp-frame-header {
-    --wp-frame-physical-control-size:calc(48px / var(--wp-stage-canvas-scale,1)) !important;
+    --wp-frame-physical-control-size:var(--wp-frame-control-size-physical,48px) !important;
     --wp-frame-play-header-height:var(--wp-frame-physical-control-size) !important;
     --wp-frame-header-height:var(--wp-frame-physical-control-size) !important;
     --wp-frame-control-size:var(--wp-frame-physical-control-size) !important;
@@ -179,11 +179,11 @@ html body [data-wp-frame="2"] [data-wp-frame-action="primary"] {width:100%!impor
 /* Explicit logical-Canvas content opt-in; preserve physical action readability.
    The canonical Battle scaler owns the factor. Unmarked consumers are unchanged. */
 html body [data-wp-frame="2"] [data-wp-frame-logical-actions="battle"] [data-wp-frame-action] {
-  height:calc(44px / var(--wp-battle-canvas-scale, 1))!important;
-  min-height:calc(44px / var(--wp-battle-canvas-scale, 1))!important;
+  height:calc(44px * var(--wp-battle-canvas-inverse-scale, 1))!important;
+  min-height:calc(44px * var(--wp-battle-canvas-inverse-scale, 1))!important;
   max-height:none!important;
-  font-size:calc(14px / var(--wp-battle-canvas-scale, 1))!important;
-  padding-inline:calc(10px / var(--wp-battle-canvas-scale, 1))!important;
+  font-size:calc(14px * var(--wp-battle-canvas-inverse-scale, 1))!important;
+  padding-inline:calc(10px * var(--wp-battle-canvas-inverse-scale, 1))!important;
 }
 html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-pressed="true"] {background:var(--wp-ui-active)!important}
 html body [data-wp-frame="2"] [data-wp-frame-scene="stage"],html body [data-wp-frame="2"] [data-wp-frame-scene="battle"] {--wp-frame-header-height:var(--wp-frame-play-header-height);--wp-frame-header-padding:0px;--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr);display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:var(--wp-frame-rows)!important;gap:8px!important;padding:0 8px 8px!important}
@@ -1448,7 +1448,7 @@ html[data-wp-shared-interface="7"] body .wp-battle-shell-header:not(.wp-generate
    the same physical track without moving or replacing the game's Back node. */
 html[data-wp-shared-interface="7"] body.wp-stage-select-active
   [data-wp-logical-stage-canvas] .wp-stage-shell-header {
-  --wp-frame-physical-control-size:calc(48px / var(--wp-stage-canvas-scale,1));
+  --wp-frame-physical-control-size:var(--wp-frame-control-size-physical,48px);
   --wp-frame-play-header-height:var(--wp-frame-physical-control-size);
   grid-template-columns:var(--wp-frame-physical-control-size) minmax(0,1fr) var(--wp-frame-physical-control-size)!important;
 }
@@ -1495,12 +1495,12 @@ html[data-wp-shared-interface="7"] body.wp-stage-select-active
 html[data-wp-shared-interface="7"] body.wp-stage-select-active
   [data-wp-logical-stage-canvas] :is(button,a)[data-wp-return="stage"] {
   box-sizing:border-box!important;
-  width:calc(48px / var(--wp-stage-canvas-scale,1))!important;
-  min-width:calc(48px / var(--wp-stage-canvas-scale,1))!important;
-  max-width:calc(48px / var(--wp-stage-canvas-scale,1))!important;
-  height:calc(48px / var(--wp-stage-canvas-scale,1))!important;
-  min-height:calc(48px / var(--wp-stage-canvas-scale,1))!important;
-  max-height:calc(48px / var(--wp-stage-canvas-scale,1))!important;
+  width:var(--wp-frame-control-size-physical,48px)!important;
+  min-width:var(--wp-frame-control-size-physical,48px)!important;
+  max-width:var(--wp-frame-control-size-physical,48px)!important;
+  height:var(--wp-frame-control-size-physical,48px)!important;
+  min-height:var(--wp-frame-control-size-physical,48px)!important;
+  max-height:var(--wp-frame-control-size-physical,48px)!important;
 }
 html[data-wp-shared-interface="7"] body.wp-stage-select-active
   [data-wp-logical-stage-canvas] :is(button,a)[data-wp-return="stage"]:hover {
@@ -1509,7 +1509,7 @@ html[data-wp-shared-interface="7"] body.wp-stage-select-active
 
 html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   [data-wp-logical-battle-canvas] {
-  --wp-frame-physical-control-size:calc(48px / var(--wp-battle-canvas-scale,1));
+  --wp-frame-physical-control-size:var(--wp-frame-control-size-physical,48px);
   --wp-frame-play-header-height:var(--wp-frame-physical-control-size);
 }
 html[data-wp-shared-interface="7"] body.wp-logical-battle-active
@@ -1542,7 +1542,7 @@ html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   height:var(--wp-frame-physical-control-size)!important;
   min-height:var(--wp-frame-physical-control-size)!important;
   max-height:var(--wp-frame-physical-control-size)!important;
-  font-size:calc(20px / var(--wp-battle-canvas-scale,1))!important;
+  font-size:calc(20px * var(--wp-battle-canvas-inverse-scale,1))!important;
 }
 html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   [data-wp-logical-battle-canvas] .wp-battle-shell-header > [data-wp-return="battle"]:hover {
@@ -1551,12 +1551,12 @@ html[data-wp-shared-interface="7"] body.wp-logical-battle-active
 html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   [data-wp-logical-battle-canvas] :is(button,a)[data-wp-return="battle"] {
   box-sizing:border-box!important;
-  width:calc(48px / var(--wp-battle-canvas-scale,1))!important;
-  min-width:calc(48px / var(--wp-battle-canvas-scale,1))!important;
-  max-width:calc(48px / var(--wp-battle-canvas-scale,1))!important;
-  height:calc(48px / var(--wp-battle-canvas-scale,1))!important;
-  min-height:calc(48px / var(--wp-battle-canvas-scale,1))!important;
-  max-height:calc(48px / var(--wp-battle-canvas-scale,1))!important;
+  width:var(--wp-frame-control-size-physical,48px)!important;
+  min-width:var(--wp-frame-control-size-physical,48px)!important;
+  max-width:var(--wp-frame-control-size-physical,48px)!important;
+  height:var(--wp-frame-control-size-physical,48px)!important;
+  min-height:var(--wp-frame-control-size-physical,48px)!important;
+  max-height:var(--wp-frame-control-size-physical,48px)!important;
 }
 html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   [data-wp-logical-battle-canvas] :is(button,a)[data-wp-return="battle"]:hover {
@@ -1564,20 +1564,20 @@ html[data-wp-shared-interface="7"] body.wp-logical-battle-active
 }
 html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   [data-wp-logical-battle-canvas] .wp-generated-battle-header {
-  inset:calc(8px / var(--wp-battle-canvas-scale,1)) auto auto calc(8px / var(--wp-battle-canvas-scale,1))!important;
-  width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  min-width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  max-width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  min-height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  max-height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  inset:var(--wp-battle-header-inset-physical,8px) auto auto var(--wp-battle-header-inset-physical,8px)!important;
+  width:var(--wp-frame-control-size-physical,48px)!important;
+  min-width:var(--wp-frame-control-size-physical,48px)!important;
+  max-width:var(--wp-frame-control-size-physical,48px)!important;
+  height:var(--wp-frame-control-size-physical,48px)!important;
+  min-height:var(--wp-frame-control-size-physical,48px)!important;
+  max-height:var(--wp-frame-control-size-physical,48px)!important;
 }
 html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   [data-wp-logical-battle-canvas] .wp-generated-battle-header > [data-wp-return="battle"] {
-  width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  min-width:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
-  min-height:var(--wp-frame-physical-control-size,calc(48px / var(--wp-battle-canvas-scale,1)))!important;
+  width:var(--wp-frame-control-size-physical,48px)!important;
+  min-width:var(--wp-frame-control-size-physical,48px)!important;
+  height:var(--wp-frame-control-size-physical,48px)!important;
+  min-height:var(--wp-frame-control-size-physical,48px)!important;
 }
 
 .wp-stage-shell-header > [data-wp-shell-info] {

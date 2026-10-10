@@ -311,6 +311,9 @@
       "--wp-battle-logical-width",
       "--wp-battle-logical-height",
       "--wp-battle-canvas-scale",
+      "--wp-battle-canvas-inverse-scale",
+      "--wp-frame-control-size-physical",
+      "--wp-battle-header-inset-physical",
       "--wp-battle-canvas-rendered-width",
       "--wp-battle-canvas-rendered-height",
       "--wp-battle-canvas-top",
@@ -397,6 +400,9 @@
     style.setProperty("--wp-battle-logical-width", `${logicalWidth}px`);
     style.setProperty("--wp-battle-logical-height", `${logicalHeight}px`);
     style.setProperty("--wp-battle-canvas-scale", String(scale));
+    style.setProperty("--wp-battle-canvas-inverse-scale", String(1 / scale));
+    style.setProperty("--wp-frame-control-size-physical", `${48 / scale}px`);
+    style.setProperty("--wp-battle-header-inset-physical", `${8 / scale}px`);
     style.setProperty("--wp-battle-canvas-rendered-width", `${renderedWidth}px`);
     style.setProperty("--wp-battle-canvas-rendered-height", `${renderedHeight}px`);
     style.setProperty("--wp-battle-canvas-top", `${top}px`);

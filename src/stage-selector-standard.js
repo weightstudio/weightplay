@@ -222,6 +222,7 @@
       "--wp-stage-logical-height",
       "--wp-stage-canvas-scale",
       "--wp-stage-canvas-inverse-scale",
+      "--wp-frame-control-size-physical",
       "--wp-stage-canvas-left",
       "--wp-stage-canvas-top",
       "--wp-stage-canvas-rendered-width",
@@ -296,6 +297,7 @@
     style.setProperty("--wp-stage-logical-height", `${logicalHeight}px`);
     style.setProperty("--wp-stage-canvas-scale", String(scale));
     style.setProperty("--wp-stage-canvas-inverse-scale", String(1 / scale));
+    style.setProperty("--wp-frame-control-size-physical", `${48 / scale}px`);
     style.setProperty("--wp-stage-canvas-left", `${left}px`);
     style.setProperty("--wp-stage-canvas-top", `${top}px`);
     style.setProperty("--wp-stage-canvas-rendered-width", `${renderedWidth}px`);
