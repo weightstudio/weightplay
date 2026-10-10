@@ -1782,7 +1782,7 @@ window.WeightPlayGameInfoLocales.es = {
     },
     "animal-relic-hunters": {
       "title": "Cazadores de reliquias animales",
-      "difficulty": "duro",
+      "difficulty": "Difícil",
       "time": "6-12 minutos por expedición",
       "gameplay": "Roguelite de acción en la habitación",
       "genre": [
@@ -2164,14 +2164,14 @@ window.WeightPlayGameInfoLocales.es = {
       "guideTitleSuffix": "Guía del juego",
       "noteTitle": "Información del jugador y guardado",
       "hideScoreBands": true,
-      "intro": "Beast Guardian es una campaña de defensa de torres de héroes de 30 etapas construida alrededor de la construcción de rutas en lugar de plataformas de torres fijas. Coloca cuatro roles de soldados animales ordinarios y siete héroes de WeightPlay en una cuadrícula forestal, mantén al menos una ruta abierta y protege el núcleo de cristal a través de seis regiones de cinco etapas. Los lobos, los jabalíes acorazados, los murciélagos voladores, las manadas en regeneración, los velocistas heridos y las formaciones de eclipses exigen defensas diferentes. Las etapas 5, 10, 15, 20, 25 y 30 terminan con jefes que cambian las reglas en lugar de enemigos comunes con barras de salud más grandes.",
+      "intro": "Beast Guardian es una campaña de defensa de torres basada en construir rutas. Puedes desplegar ocho defensores seleccionables: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux. Protege el cristal a lo largo de seis regiones de cinco etapas.",
       "story": [
         "Las rutas de cristal conectan seis partes del Bosque Guardián: los primeros senderos de raíces, las vías de aire de cristal, las obras de Corteza de Hierro, el bosque de niebla que vuelve a crecer, las murallas de tormentas y el camino del eclipse hacia el trono de Voidroot. Las manadas enemigas intentan llegar al núcleo al otro lado de cada campo de batalla. Un tramo despejado significa que la ruta es segura el tiempo suficiente para que los guardianes avancen al siguiente sector.",
-        "Tú diriges la defensa antes y durante cada ola. Los Acorn Guards y Moss Shell Taro mantienen las curvas, los Scout Archers y Moon Cap Orla cubren ángulos largos, los Rune Sappers ralentizan a los atacantes agrupados, los Medic Cubs reparan a los bloqueadores heridos y los héroes como Spark Paw Fia brindan daño concentrado. El tablero no es una decoración: cada defensor colocado cambia la ruta a menos que la unidad esté sirviendo como apoyo a distancia lejos del camino."
+        "Tú diriges la defensa antes y durante cada oleada. Hay tres soldados seleccionables —Acorn Guard, Scout Archer y Rune Sapper— y cinco héroes seleccionables: Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux. El tablero no es una decoración: cada defensor colocado cambia la ruta, salvo cuando una unidad presta apoyo a distancia desde fuera del camino."
       ],
       "systems": [
         "Construcción de rutas: los defensores ocupan celdas terrestres normales. Los enemigos recalculan un camino a su alrededor, pero una ruta completamente sellada hace que los enemigos terrestres ataquen al bloqueador más cercano hasta que se abre nuevamente una ruta. Los murciélagos voladores ignoran el laberinto terrestre, por lo que una ruta larga por sí sola no puede resolver todas las olas.",
-        "Roles de combate: los bloqueadores ganan tiempo, los arqueros y Orla cubren la distancia, los zapadores aplican daño por dispersión y ralentización, los médicos curan a los defensores dañados, Fia concentra la presión del jefe y Gear Horn Rux fortalece a los aliados cercanos. Al seleccionar una unidad colocada se muestra su costo de actualización y su reembolso por venta.",
+        "Roles de combate: los bloqueadores ganan tiempo, los arqueros y Orla cubren la distancia, los zapadores aplican daño de área y ralentización, Fia concentra la presión contra jefes y Gear Horn Rux fortalece a los aliados cercanos. Rally puede usarse una vez por oleada para potenciar durante seis segundos a un defensor vivo: aumenta su daño un 32% y acorta el intervalo entre sus ataques.",
         "Información de oleada: antes de cada oleada, el HUD nombra a los lobos, jabalíes, murciélagos, escoltas o jefes entrantes. Las oleadas no finales continúan después de una cuenta regresiva de cinco segundos, por lo que el jugador puede leer la siguiente composición y usar las monedas ganadas antes de que se reanude la presión.",
         "Enemigos especiales: las etapas de Corteza de Hierro dan a los enemigos una armadura protectora rompible; los enemigos de Mistwood recuperan salud mientras se mueven; los enemigos de la tormenta se aceleran después de caer por debajo de la mitad de su salud; Las etapas del eclipse combinan armadura, recuperación, comportamiento repentino, rutas de vuelo y efectividad lenta reducida.",
         "Progreso permanente: las victorias otorgan estrellas, puntos de mejora y diamantes. Los puntos de mejora mejoran el poder del héroe, la salud de los defensores o la economía inicial. Los diamantes son opcionales y pueden confirmar la reactivación de un núcleo, volver a obtener una recompensa de resultado o desbloquear un marco cosmético de defensor dorado; Los desbloqueos de etapas normales no los requieren."
@@ -2194,7 +2194,7 @@ window.WeightPlayGameInfoLocales.es = {
       "progression": [
         "Las etapas 1 a 5 enseñan curvas de ruta, carriles divididos, cobertura temprana a distancia, presión de los jabalíes y las consecuencias de sellar el camino. Shadow Brute ataca a los bloqueadores más rápido que los jefes normales, por lo que el primer final prueba si la ruta tiene un ancla duradera en lugar de solo dañar unidades.",
         "Las etapas 6 a 10 presentan murciélagos que vuelan a través de la cuadrícula y ondas mixtas de aire y tierra. Forest Behemoth convoca el apoyo de lobos y murciélagos después de perder parte de su salud. Las etapas 11 a 15 agregan una armadura Ironbark rompible y terminan con Ironbark Colossus, que reconstruye una gran capa de guardia a mitad de la pelea.",
-        "Las etapas 16 a 20 hacen que los enemigos inacabados se regeneren mientras se mueven; Verdant Ancient restaura una parte de su propia salud y pide apoyo. Las etapas 21-25 agregan aumentos de velocidad heridos, terminando con Tempest Ravager acelerando a sus escoltas. Las etapas 26 a 30 combinan todas las reglas anteriores con una efectividad lenta reducida. Voidroot Emperor tiene dos cambios de fase, por lo que la etapa 30 requiere ruta terrestre, cobertura aérea, ruptura de armadura, daño final, curación y concentración del jefe salvado en una sola defensa."
+        "Las etapas 16 a 20 incluyen enemigos que se regeneran mientras avanzan; Verdant Ancient restaura parte de su propia salud y pide apoyo. Las etapas 21–25 añaden acelerones al resultar heridos, y Tempest Ravager acelera a sus escoltas. Las etapas 26–30 combinan esas reglas con una menor eficacia de ralentización. Voidroot Emperor cambia de fase dos veces; la etapa 30 combina rutas terrestres, cobertura aérea, armadura rompible, oleadas de apoyo y concentración contra el jefe."
       ],
       "designNote": "Beast Guardian utiliza la colocación gratuita porque la decisión central no es simplemente qué torre comprar; así es como cada cuerpo cambia el tiempo de viaje, los ángulos de disparo y el riesgo de bloqueo. La transición de cinco segundos entre oleadas preserva la sensación de una defensa continua y deja un breve margen de planificación. Treinta etapas están organizadas como seis arcos mecánicos, por lo que la dificultad aumenta a través de nuevos contadores y combinaciones antes de las estadísticas en bruto. Los jugadores táctiles usan las mismas tarjetas de construcción grandes y celdas de cuadrícula que los jugadores con mouse, mientras que los controles del teclado pueden mover el cursor de un mosaico, construir, seleccionar, actualizar, vender, ciclo de unidades e iniciar oleadas. Esto distingue al juego de Animal Auto Squad: ambos recompensan la preparación, pero Beast Guardian permite al jugador remodelar el campo de batalla y reaccionar durante las oleadas en vivo.",
       "parent": "El navegador almacena la etapa desbloqueada más alta, los niveles superados, las mejores calificaciones de estrellas, los niveles de tecnología permanentes, los puntos de actualización, el saldo de Diamantes y la propiedad cosmética en este dispositivo. No es necesario iniciar sesión para jugar de forma básica y borrar el almacenamiento del navegador de este sitio puede eliminar ese progreso. Las acciones de diamantes son opcionales y no son necesarias para desbloquear las 30 etapas de la campaña.",
@@ -2226,6 +2226,14 @@ window.WeightPlayGameInfoLocales.es = {
         [
           "¿Qué pueden hacer los diamantes?",
           "Opcionalmente, los diamantes confirman una reactivación del núcleo, vuelven a lanzar una recompensa de resultado o desbloquean el marco dorado. No son necesarios para el progreso normal de la campaña."
+        ],
+        [
+          "¿Qué defensores puedo colocar?",
+          "Hay ocho: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux."
+        ],
+        [
+          "¿Qué hace Rally?",
+          "Consume una carga para potenciar durante seis segundos a un defensor vivo elegido: su daño aumenta un 32% y el intervalo entre ataques se acorta. Se recupera una carga al inicio de cada oleada; Rally no cura unidades."
         ]
       ]
     },

@@ -10750,7 +10750,7 @@
         text140Tags: current.text140Tags,
         ...(current.gameplay ? { gameplay: current.gameplay } : {}),
         ...(current.genre ? { genre: current.genre } : {}),
-        ...(current.difficulty ? { difficulty: current.difficulty } : {}),
+        ...(current.difficulty && id !== "beast-tactician" ? { difficulty: current.difficulty } : {}),
       };
     }
     if (authoredRootvault && resource.games?.["animal-rootvault-pins"]) {
@@ -10769,9 +10769,11 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      const spanishResourceVersion = currentGameId() === "animal-gearpack-expedition"
-        ? "20261003-gearpack-text140-v5"
-        : "20261001-fruit-garden-text140-v1";
+      const spanishResourceVersion = currentGameId() === "beast-tactician"
+        ? "20261011-beast-guide-facts-v1"
+        : currentGameId() === "animal-gearpack-expedition"
+          ? "20261003-gearpack-text140-v5"
+          : "20261001-fruit-garden-text140-v1";
       script.src = new URL(`game-page-info-es.js?v=${spanishResourceVersion}`, sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
@@ -15502,8 +15504,13 @@
     localizedGames[localeKey] ||= {};
     localizedGames[localeKey]["animal-skyport-dispatch"] ||= { ...games["animal-skyport-dispatch"] };
     localizedGames[localeKey]["animal-skyport-dispatch"].text140Tags = tags.skyport;
-    localizedGames[localeKey]["beast-tactician"] ||= { ...games["beast-tactician"] };
-    localizedGames[localeKey]["beast-tactician"].text140Tags = tags.beast;
+    if (localeKey === "en") {
+      games["beast-tactician"].text140Tags = tags.beast;
+      delete localizedGames.en["beast-tactician"];
+    } else {
+      localizedGames[localeKey]["beast-tactician"] ||= { ...games["beast-tactician"] };
+      localizedGames[localeKey]["beast-tactician"].text140Tags = tags.beast;
+    }
   }
 
   window.WeightPlayGameInfo = {
@@ -20927,6 +20934,11 @@
     }
   }
   const beastGuardianDesignNoteLocaleCopy = {
+    ja: {
+      "beast-tactician": {
+        designNote: "このゲームでは自由配置を採用しています。重要なのはタワーを選ぶことだけでなく、各ユニットの配置が移動時間、射撃角度、進路を塞ぐ危険をどう変えるかです。ウェーブ間の5秒間は短い準備時間を設けながら、連続した防衛の流れを保ちます。全30ステージは6つの仕組み別エリアで構成され、数値を上げるだけでなく、新しい対策や組み合わせで難度が高まります。タッチ操作でもマウスと同じ大きな建設カードとマス目を使えます。キーボードではマス目の移動、配置、選択、強化、売却、ユニット切替、ウェーブ開始ができます。Animal Auto Squadと同じく準備が大切ですが、本作では進行中のウェーブでも戦場を組み替えて対応できます。",
+      },
+    },
     ko: {
       "beast-tactician": {
         designNote: "이 게임은 자유 배치를 사용합니다. 핵심 결정은 어떤 타워를 살지뿐 아니라 각 유닛의 배치가 이동 시간, 공격 각도와 차단 위험을 어떻게 바꾸는지에 있습니다. 웨이브 사이의 5초 전환은 짧은 계획 시간을 남기면서 하나의 연속된 방어를 이어가는 느낌을 줍니다. 여러 스테이지는 6개의 기계적 구간으로 구성되어, 단순히 수치만 올리기보다 새로운 대응법과 조합으로 난도가 높아집니다. 터치 플레이어는 마우스 플레이어와 같은 큰 건설 카드와 격자 칸을 사용하고, 키보드로 타일 커서를 이동하고 건설, 선택, 업그레이드, 판매, 유닛 전환, 웨이브 시작을 할 수 있습니다. Animal Auto Squad와 달리 두 게임 모두 준비를 보상하지만, 이 게임은 실시간 웨이브 중 전장을 다시 만들고 대응할 수 있습니다.",
@@ -21170,10 +21182,18 @@
       faq: ["Rally क्या करता है?", "Rally एक चार्ज खर्च करके चुने हुए जीवित रक्षक को छह सेकंड तक मजबूत करता है: डैमेज, हमले की गति और मिलने वाला उपचार बढ़ता है। हर वेव की शुरुआत में एक चार्ज लौटता है।"]
     },
     ar: {
-      systems: "التجمّع: تمنح كل موجة شحنة تجمّع واحدة. اختر مدافعًا حيًا أثناء موجة نشطة ثم اضغط «تجمّع» أو R لتحصل لست ثوانٍ على ضرر أعلى بنسبة 32% وهجمات أسرع وعلاج أقوى. تبقى الشحنة حتى تستخدمها، فاحتفظ بها لنقطة اختناق أو لزعيم.",
-      how: "أثناء موجة نشطة اختر مدافعًا حيًا واضغط «تجمّع» عندما يصبح الزر الذهبي جاهزًا؛ ويمكنك استخدام R أيضًا. وجّه التعزيز الذي يدوم ست ثوانٍ إلى منعطف مهم أو إلى زعيم.",
+      systems: "التجمّع: تمنح كل موجة شحنة واحدة. أثناء موجة نشطة، اختر مدافعًا حيًا واضغط زر «التجمّع» أو R لتعزيزه ست ثوانٍ؛ يزداد الضرر بنسبة 32% ويقصر الفاصل بين هجماته. لا يضيف التجمّع علاجًا.",
+      how: "١. اختر مرحلة مفتوحة واقرأ التهديد والخطة والمكافأة. ٢. اختر من الجنود الثلاثة Acorn Guard وScout Archer وRune Sapper أو الأبطال الخمسة Boom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux. ٣. ضع المدافعين على خلايا الأرض واترك طريقًا مفتوحًا للعدو. ٤. اقرأ معلومات الموجة وابدأها، ثم عدّل مواقع الوحدات أو طوّرها حسب الحاجة. ٥. أثناء موجة نشطة اختر مدافعًا حيًا واستخدم شحنة التجمّع مرة واحدة؛ تمنح ست ثوانٍ من الضرر الأعلى بنسبة 32% والهجمات الأسرع. ٦. احمِ النواة في كل موجات المرحلة لتحصل على النجوم وتفتح المرحلة التالية.",
       strategyTips: "تعامل مع التجمّع كأداة توقيت لا كضريبة في بداية كل موجة: انتظر الزعيم أو منعطفًا مزدحمًا أو مدافعًا مصابًا، وحوّل ست ثوانٍ من الضغط إلى استعادة آمنة.",
-      faq: ["ماذا يفعل التجمّع؟", "يستهلك التجمّع شحنة واحدة ويقوّي المدافع الحي المحدد لست ثوانٍ، فيزيد الضرر وسرعة الهجوم والعلاج المستلم. تعود شحنة واحدة مع بداية كل موجة."]
+      faq: ["ماذا يفعل التجمّع؟", "يستهلك شحنة واحدة لتعزيز مدافع حي مختار ست ثوانٍ؛ يزداد الضرر بنسبة 32% ويقصر الفاصل بين الهجمات. تعود شحنة واحدة في بداية كل موجة، ولا يمنح التجمّع علاجًا."],
+      faqs: [
+        ["من المدافعون الذين يمكنني نشرهم؟", "ثمانية: Acorn Guard وScout Archer وRune Sapper وBoom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux."],
+        ["ماذا يفعل التجمّع؟", "يستهلك شحنة واحدة لتعزيز مدافع حي مختار ست ثوانٍ: يزداد الضرر بنسبة 32% ويقصر الفاصل بين الهجمات. تعود شحنة واحدة في بداية كل موجة، ولا يمنح التجمّع علاجًا."],
+        ["لماذا يهاجم العدو أحد المدافعين؟", "إذا أُغلقت كل الطرق القانونية إلى النواة، يهاجم العدو الأرضي أقرب مدافع حتى يُفتح الطريق من جديد."],
+        ["كيف تختلف المناطق؟", "تضيف المراحل خفافيش طائرة ودروعًا قابلة للكسر وأعداءً يتجددون أو يتسارعون عند الإصابة، ثم تجمع هذه القواعد مع ضعف الإبطاء."],
+        ["ماذا تقيس النجوم؟", "تعكس النجوم صحة النواة المتبقية بعد الفوز؛ ويظل فتح المرحلة التالية ممكنًا عند اجتيازها."],
+        ["هل يُحفظ التقدم؟", "نعم. تُحفظ المراحل المفتوحة والنجوم والترقيات في هذا المتصفح على هذا الجهاز."]
+      ]
     },
   };
   for (const [localeCode, copy] of Object.entries(beastGuardianRallyGuideLocaleCopy)) {
@@ -21225,7 +21245,10 @@
       intro: "Beast Guardian es una campaña de defensa de torres con rutas. Puedes desplegar ocho defensores: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux. Protege el cristal en seis regiones de cinco fases.",
       story: "Los tres soldados disponibles son Acorn Guard, Scout Archer y Rune Sapper; los cinco héroes son Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux.",
       systems: "Rally: puedes usarlo una vez por oleada para potenciar durante seis segundos a un defensor vivo seleccionado. Aumenta su daño un 32% y reduce su tiempo entre ataques.",
-      faq: ["¿Qué defensores puedo colocar?", "Hay ocho: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux."]
+      faqs: [
+        ["¿Qué defensores puedo colocar?", "Hay ocho: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia y Gear Horn Rux."],
+        ["¿Qué hace Rally?", "Consume una carga para potenciar durante seis segundos a un defensor vivo elegido: su daño aumenta un 32% y el intervalo entre ataques se acorta. Se recupera una carga al inicio de cada oleada; Rally no cura unidades."]
+      ]
     },
     "pt-BR": {
       gameplay: "Defesa de torres com rotas", genre: ["Defesa de torres", "Estratégia", "Animais"],
@@ -21274,6 +21297,8 @@
       intro: "Beast Guardian حملة دفاع أبراج ببناء المسارات. يمكنك نشر ثمانية مدافعين: Acorn Guard وScout Archer وRune Sapper وBoom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux. احمِ البلورة في ست مناطق من خمس مراحل لكل منها.",
       story: "الجنود الثلاثة المتاحون هم Acorn Guard وScout Archer وRune Sapper؛ والأبطال الخمسة هم Boom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux.",
       systems: "التجمّع: مرة واحدة في كل موجة، اختر مدافعاً حياً لتعزيزه لمدة ست ثوانٍ. يزداد ضرره بنسبة 32% ويقصر الفاصل بين هجماته.",
+      how: ["اختر مرحلة مفتوحة واقرأ معلومات التهديد والخطة والمكافأة.", "اختر من الجنود الثلاثة Acorn Guard وScout Archer وRune Sapper أو الأبطال الخمسة Boom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux.", "ضع المدافعين على خلايا الأرض واترك طريقًا مفتوحًا للعدو.", "اقرأ معلومات الموجة وابدأها، ثم عدّل مواقع الوحدات أو طوّرها حسب الحاجة.", "أثناء موجة نشطة اختر مدافعًا حيًا واستخدم شحنة التجمّع مرة واحدة؛ تمنح ست ثوانٍ من الضرر الأعلى بنسبة 32% والهجمات الأسرع.", "احمِ النواة خلال كل موجات المرحلة لتحصل على النجوم وتفتح المرحلة التالية."],
+      faqs: beastGuardianRallyGuideLocaleCopy.ar.faqs,
       faq: ["ما المدافعون الذين يمكنني نشرهم؟", "هناك ثمانية: Acorn Guard وScout Archer وRune Sapper وBoom Mane Leo وMoss Shell Taro وMoon Cap Orla وSpark Paw Fia وGear Horn Rux."]
     }
   };
@@ -21301,8 +21326,20 @@
     guide.progression = [beastProgressionTruth140[localeCode]];
     guide.story = [...(guide.story || []).slice(0, 1), copy.story];
     guide.systems = [...(guide.systems || []).slice(0, 1), copy.systems];
-    guide.faq = [...(guide.faq || []).filter(([question]) => !/rally|集結|集结|ralliement|raduno|сбор|रैली|تجمّع|랠리|ラリー|which defenders|defenders can i|qué defensores|quais defensores|quels défenseurs|welche verteidiger|quali difensori|каких защитников|कौन से रक्षक|ما المدافعون|어떤 방어자|配置できる防衛者|可以部署哪些防御者|可以部署哪些角色|目前可以部署哪些角色/i.test(question)), copy.faq];
+    if (copy.how) guide.how = Array.isArray(copy.how) ? copy.how : [copy.how];
+    if (localeCode === "ar" && copy.faqs) {
+      guide.faq = copy.faqs;
+    } else {
+      const factFaqs = copy.faqs || [copy.faq];
+      const retainedFaqs = (guide.faq || []).filter(([question]) => !/rally|集結|集结|ralliement|raduno|сбор|रैली|تجمّع|랠리|ラリー|which defenders|defenders can i|qué defensores|quais defensores|quels défenseurs|welche verteidiger|quali difensori|каких защитников|ما المدافعون|من المدافعين|어떤 방어자|配置できる防衛者|可以部署哪些防御者|可以部署哪些角色|目前可以部署哪些角色/i.test(question));
+      guide.faq = [...retainedFaqs, ...factFaqs];
+    }
     guide.text140Tags = localizedText140Tags[localeCode]?.beast || guide.text140Tags;
+  }
+  // The versioned-tag pass creates an English locale clone before the truth
+  // maps above run. Keep the clone aligned with the now-final canonical guide.
+  if (localizedGames.en?.["beast-tactician"]) {
+    Object.assign(localizedGames.en["beast-tactician"], games["beast-tactician"]);
   }
   if (window.__routeExport) window.__routeExport.beastSelectableRosterTruth = beastSelectableRosterTruth;
   localizedRelatedCardCopy = {
