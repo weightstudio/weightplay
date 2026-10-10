@@ -71,7 +71,10 @@
     }});
     const abort = new AbortController();
     const syncSound = () => {
-      view.audio.setEnabled(!window.WeightPlayAudio.isMuted());
+      // This is a one-way mirror. setEnabled() writes back to WeightPlayAudio,
+      // which emits this event synchronously and would re-enter this listener.
+      const enabled = !window.WeightPlayAudio.isMuted();
+      if (view.audio.enabled !== enabled) view.audio.enabled = enabled;
       view.refreshSound?.();
     };
     window.addEventListener('weightplay:audio-volume-change',syncSound,{signal:abort.signal});

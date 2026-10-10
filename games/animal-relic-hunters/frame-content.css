@@ -40,6 +40,31 @@ html body.relic-playing #gamePanel.game-panel [data-wp-frame-info] .bar-bg {
   background:#102329; overflow:hidden;
 }
 html body.relic-playing #gamePanel.game-panel [data-wp-frame-info] .bar-fill { height:100%; transition:width 140ms ease-out; }
+/* World-following health: a stable plate above the hero, outside sprite motion. */
+.relic-battle-content .player-health {
+  position:absolute; z-index:6; pointer-events:none;
+  left:clamp(calc(42 * var(--relic-unit)),var(--health-x,50%),calc(100% - 42 * var(--relic-unit)));
+  top:clamp(calc(34 * var(--relic-unit)),var(--health-y,50%),calc(100% - 8 * var(--relic-unit)));
+  transform:translate(-50%,-100%); width:calc(72 * var(--relic-unit));
+  padding:calc(3 * var(--relic-unit)) calc(5 * var(--relic-unit));
+  border:calc(1 * var(--relic-unit)) solid #c6ffe4; border-radius:calc(5 * var(--relic-unit));
+  background:rgba(6,23,27,.94); box-shadow:0 2px 4px #0008;
+  text-align:center; direction:ltr;
+}
+.relic-battle-content .player-health [data-ui="hudHp"] {
+  position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%);
+}
+.relic-battle-content .player-health #hpText {
+  display:block; margin:0; color:#fff; font:800 calc(12 * var(--relic-unit))/1.15 system-ui;
+  font-variant-numeric:tabular-nums;
+}
+.relic-battle-content .player-health .bar-bg {
+  width:100%; height:calc(6 * var(--relic-unit)); min-height:0; margin:calc(3 * var(--relic-unit)) 0 0;
+  background:#442b30; border-radius:calc(2 * var(--relic-unit)); overflow:hidden;
+}
+.relic-battle-content .player-health #hpFill { height:100%; background:#54efb4; transition:width 140ms ease-out; }
+.relic-battle-content .player-health.is-low { border-color:#ff8f91; }
+.relic-battle-content .player-health.is-low #hpFill { background:#ff6575; }
 html body.relic-playing #gamePanel.game-panel .relic-battle-content #roomObjective {
   position:absolute; inset:calc(62 * var(--relic-unit)) calc(12 * var(--relic-unit)) auto;
   min-height:0; max-width:none; width:auto; margin:0; padding:calc(6 * var(--relic-unit)) calc(10 * var(--relic-unit));
@@ -124,6 +149,7 @@ html body.relic-playing #gamePanel.game-panel .equipment-dialog :is(.stat-row,.b
   .chain-meter { top:calc(56 * var(--relic-unit)); }
 }
 @media (prefers-reduced-motion:reduce) {
+  .relic-battle-content .player-health #hpFill { transition:none; }
   .equipment-dialog { animation:none!important; }
   .battle-skills button,.chain-meter,html body.relic-playing #gamePanel.game-panel [data-wp-frame-info] .bar-fill { transition:none; }
 }

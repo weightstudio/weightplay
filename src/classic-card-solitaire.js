@@ -156,19 +156,19 @@
   });
 
   const GOLF_SINGLE_CLEAR_COPY = {
-    en: "Clear! Score +1. Keep the chain going.",
-    "zh-Hant": "清除！分數 +1，繼續連鎖。",
-    "zh-Hans": "清除！分数 +1，继续连锁。",
-    ja: "クリア！スコア+1。連鎖を続けよう。",
-    ko: "클리어! 점수 +1. 콤보를 이어가세요.",
-    es: "¡Limpia! Puntuación +1. Mantén la cadena.",
-    "pt-BR": "Limpo! Pontos +1. Mantenha a sequência.",
-    fr: "Carte retirée ! Score +1. Gardez la chaîne.",
-    de: "Geräumt! Punktestand +1. Halte die Serie.",
-    it: "Pulita! Punteggio +1. Mantieni la serie.",
-    ru: "Карта убрана! Очки +1. Продолжайте серию.",
-    hi: "साफ़! स्कोर +1। चेन जारी रखें।",
-    ar: "تم التنظيف! النقاط +1. واصل السلسلة.",
+    en: "One card cleared. A new chain begins.",
+    "zh-Hant": "清除一張牌，新連鎖開始。",
+    "zh-Hans": "清除一张牌，新连锁开始。",
+    ja: "カードを1枚クリア。新しい連鎖が始まります。",
+    ko: "카드 한 장을 제거했습니다. 새로운 연속 플레이가 시작됩니다.",
+    es: "Una carta retirada. Empieza una nueva cadena.",
+    "pt-BR": "Uma carta removida. Uma nova sequência começa.",
+    fr: "Une carte retirée. Une nouvelle suite commence.",
+    de: "Eine Karte entfernt. Eine neue Serie beginnt.",
+    it: "Una carta rimossa. Inizia una nuova serie.",
+    ru: "Убрана одна карта. Начинается новая серия.",
+    hi: "एक पत्ता हटाया गया। नई श्रृंखला शुरू होती है।",
+    ar: "أُزيلت بطاقة واحدة. تبدأ سلسلة جديدة.",
   };
   Object.entries(GOLF_SINGLE_CLEAR_COPY).forEach(([locale, message]) => {
     if (COMMON[locale]) COMMON[locale].golfSingleClear = message;

@@ -1509,7 +1509,7 @@
     mission(27, "Sealfeather Court", "封印羽庭", ["sealRaven", "mirrorWolf"], "Protect Energy while controlling the clone's free cell.", "保護能量，同時控制分身可用空格。"),
     mission(28, "Six-Rune Locks", "六符封鎖", ["sealRaven", "archiveOwl", "mirrorWolf"], "Occupy three linked Seal cells to remove the enemy ward.", "讓三名英雄站上相連封印格，解除敵方護罩。", [tile(0,3,"seal"),tile(1,0,"seal"),tile(1,1,"seal"),tile(1,2,"seal"),tile(1,3,"seal"),tile(2,3,"seal")]),
     mission(29, "Crown Gauntlet", "王冠連戰", ["boar", "heron", "ram", "moth", "mirrorWolf"], "Answer five earlier mechanics without losing formation control.", "在不失去陣形控制下處理五種先前機制。"),
-    mission(30, "Rune Crown Chimera", "符冠奇美拉", ["chimeraBoss", "sealRaven", "mirrorWolf"], "Adapt as every visible Boss phase changes the board rule.", "每個可見首領階段改變棋盤規則時立即調整。", [tile(1,0,"seal"),tile(1,3,"cooling")], "chimera"),
+    mission(30, "Rune Crown Chimera", "符冠奇美拉", ["chimeraBoss", "sealRaven", "mirrorWolf"], "Adapt as every visible Boss phase changes the board rule.", "每個可見首領階段改變棋盤規則時立即調整。", [tile(1,3,"cooling")], "chimera"),
   ];
   // Authored arena envelopes: room to flank, bounded at 36 cells.
   const arenaSizes = [[4,5],[4,5],[5,5],[5,5],[5,5], [5,5],[4,6],[5,6],[5,5],[6,6], [5,6],[5,5],[4,6],[5,6],[6,6], [5,5],[6,5],[5,6],[6,5],[6,6], [5,6],[6,5],[6,6],[5,6],[6,6], [5,5],[5,6],[6,6],[6,6],[6,6]];
@@ -2004,9 +2004,10 @@
     clearMotion();
     if(specialAction){
       const action=specialAction;
-      action.root?.remove();action.root=null;
-      // Changing accessibility preferences must not advance a paused battle.
-      scheduleTurnTransition(()=>settleReducedSpecial(action),0);
+      // Keep the readable, static title and the existing foreground hold.
+      // Later phases can settle without travel; pause still owns the timer.
+      action.root?.querySelectorAll('.special-charge-flare,.special-charge-spark').forEach(node=>node.remove());
+      if(state.cinematic.stage!=="charge") scheduleTurnTransition(()=>settleReducedSpecial(action),0);
     }
   });
 
@@ -2260,6 +2261,7 @@
 
   function openPause(focusOwner = nodes.pauseBtn) {
     if (!state || state.phase === "reward" || battlePaused || !nodes.rewardPanel.classList.contains("is-hidden") || !nodes.resultPanel.classList.contains("is-hidden")) return;
+    closeGroundInfo();
     pauseFocusOwner = focusOwner?.isConnected ? focusOwner : nodes.pauseBtn;
     battlePaused = true;
     pauseMotion("pause", true);
@@ -2919,29 +2921,6 @@
   }
 
   let sceneGeneration = 0;
-  let battlefield = null;
-  let battlefieldLoading = false;
-  let battlefieldUnavailable = false;
-  function syncBattlefield() {
-    if (!state || document.body.dataset.screen !== "battle") return;
-    if (battlefield) {
-      battlefield.sync({terrain:state.terrain,relays:state.relays,hero:state.selected});
-      return;
-    }
-    if (battlefieldLoading || battlefieldUnavailable) return;
-    const generation=sceneGeneration;
-    battlefieldLoading=true;
-    import('/games/animal-rune-tactics/battlefield-3d.mjs?v=31').then(({RuneBattlefield})=>{
-      if(generation!==sceneGeneration || document.body.dataset.screen!=="battle")return;
-      battlefield=new RuneBattlefield(document.querySelector('.battle-shell'),nodes.grid,lost=>{
-        battlefieldUnavailable=lost;renderCommand();
-      });
-      syncBattlefield();
-    }).catch(()=>{battlefieldUnavailable=true;renderCommand();}).finally(()=>{
-      battlefieldLoading=false;
-      if(generation!==sceneGeneration)syncBattlefield();
-    });
-  }
   const battleShellStyleProperties = [
     "position", "inset", "top", "right", "bottom", "left", "width", "min-width", "max-width",
     "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin",
@@ -2993,7 +2972,7 @@
   }
 
   function setScene(scene) {
-    battlefield?.dispose(); battlefield=null; battlefieldUnavailable=false;
+    closeGroundInfo();
     cancelSpecial();
     clearMotion();
     resetMovementAnimationTracking();
@@ -3211,6 +3190,54 @@
     return key ? t(key) : type;
   }
 
+  let groundDialog = null;
+  function closeGroundInfo() {
+    if(groundDialog?.open) groundDialog.close();
+  }
+
+  function groundDescription(terrain) {
+    if(!terrain)return '';
+    const used=terrain.type==='cooling'&&state.coolingUsed.has(`${terrain.x},${terrain.y}`);
+    const direction=terrain.dx>0?'→':terrain.dx<0?'←':terrain.dy>0?'↓':'↑';
+    return used?t('groundUsed'):t(`${terrain.type}Help`,{direction});
+  }
+
+  function showGroundInfo(x,y) {
+    const terrain=terrainAt(x,y),relay=state.relays.find(r=>r.x===x&&r.y===y);
+    if(!terrain&&!relay)return;
+    if(!groundDialog){
+      groundDialog=document.createElement('dialog');groundDialog.className='ground-dialog';
+      groundDialog.setAttribute('aria-labelledby','groundTitle');
+      groundDialog.setAttribute('aria-describedby','groundEffects');
+      nodes.battleScene.append(groundDialog);
+      groundDialog.addEventListener('close',()=>{
+        if(document.body.dataset.screen==='battle'&&!battlePaused)
+          nodes.grid.querySelector(`.tile[data-x="${gridCursor.x}"][data-y="${gridCursor.y}"]`)?.focus({preventScroll:true});
+      });
+    }
+    groundDialog.replaceChildren();
+    const heading=document.createElement('h2');heading.id='groundTitle';heading.textContent=t('groundTitle');
+    const effects=document.createElement('div');effects.id='groundEffects';effects.className='ground-effects';
+    const add=(type,title,description,used=false)=>{
+      const row=document.createElement('section');row.className='ground-effect';
+      const icon=document.createElement('span');icon.className=`ground-art ground-${type}${used?' is-used':''}`;icon.setAttribute('aria-hidden','true');
+      const words=document.createElement('div'),name=document.createElement('h3'),help=document.createElement('p');
+      name.textContent=title;help.textContent=description;words.append(name,help);row.append(icon,words);effects.append(row);
+    };
+    if(terrain)add(terrain.type,terrainName(terrain.type),groundDescription(terrain),terrain.type==='cooling'&&state.coolingUsed.has(`${x},${y}`));
+    if(relay)add('relay',t('relayName'),relay.captured?t('groundUsed'):t(state.cutSupply?'relayCutHelp':'relayHelp'),relay.captured);
+    const actions=document.createElement('div');actions.className='ground-actions';
+    const dismiss=document.createElement('button');dismiss.type='button';dismiss.textContent=t('groundClose');dismiss.autofocus=true;
+    dismiss.addEventListener('click',closeGroundInfo);actions.append(dismiss);
+    const unit=unitAt(x,y),canMove=validMoves().some(p=>p.x===x&&p.y===y),canAttack=unit?.team==='enemy'&&validTargets().includes(unit);
+    if(canMove||canAttack){
+      const go=document.createElement('button');go.type='button';go.className='ground-confirm';go.textContent=t(canMove?'groundMove':'attack');
+      const owner=state;
+      go.addEventListener('click',()=>{closeGroundInfo();if(state===owner)onTile(x,y,true);});actions.append(go);
+    }
+    groundDialog.append(heading,effects,actions);groundDialog.showModal();
+  }
+
   function insideBoard(x, y) {
     return x >= 0 && x < cols && y >= 0 && y < rows;
   }
@@ -3274,6 +3301,9 @@
         if (terrain) {
           tile.classList.add(`has-terrain-${terrain.type}`);
           tile.dataset.terrain = terrain.type;
+          const art=document.createElement('span');art.className=`ground-art ground-${terrain.type}`;art.setAttribute('aria-hidden','true');tile.append(art);
+          if(terrain.type==='cooling'&&state.coolingUsed.has(`${x},${y}`))tile.classList.add('ground-spent');
+          if(terrain.type==='tide')art.style.setProperty('--flow-angle',`${terrain.dx>0?0:terrain.dx<0?180:terrain.dy>0?90:-90}deg`);
         }
         if (movable.some((p) => p.x === x && p.y === y)) tile.classList.add("is-move");
         if (attackable.some((p) => p.x === x && p.y === y)) tile.classList.add("is-attack");
@@ -3288,9 +3318,12 @@
         const relay=state.relays.find(r=>r.x===x&&r.y===y);
         if(relay) {
           tile.classList.add('relay-tile');tile.classList.toggle('relay-captured',relay.captured);
+          if(!terrain){const art=document.createElement('span');art.className='ground-art ground-relay';art.setAttribute('aria-hidden','true');tile.append(art);}
           const mark=document.createElement('span');mark.className='relay-marker';
           mark.textContent=relay.captured?'✓':'◆';mark.setAttribute('aria-hidden','true');tile.append(mark);
+          if(!terrain){const info=document.createElement('i');info.className='terrain-mark';info.textContent='ⓘ';info.setAttribute('aria-hidden','true');tile.append(info);}
         }
+        if(terrain||relay)tile.title=t('groundTitle');
         if (unit) {
           if (unit.team === "hero" && state.acted.has(unit.id)) tile.classList.add("is-acted");
           if (unit.team === "hero" && state.moved.has(unit.id) && !state.acted.has(unit.id)) tile.classList.add("is-positioned");
@@ -3321,7 +3354,7 @@
           tile.setAttribute("aria-label", t("tileTerrainLabel", { terrain: terrainName(terrain.type), tile: baseLabel }));
           const terrainMark = document.createElement("i");
           terrainMark.className = "terrain-mark";
-          terrainMark.textContent = terrainName(terrain.type);
+          terrainMark.textContent = 'ⓘ';
           terrainMark.setAttribute("aria-hidden", "true");
           tile.appendChild(terrainMark);
         }
@@ -3350,7 +3383,6 @@
       }
     }
     renderedMovementMission = state?.mission ?? null;
-    syncBattlefield();
     animateMovedUnits(previousRects);
     renderCommand();
     renderSelected();
@@ -3451,9 +3483,6 @@
     strip.querySelector('i').style.setProperty('--charge',`${state.resonance/3*100}%`);
     strip.querySelector('.command-resonance').classList.toggle('is-full',state.resonance>=3);
     strip.querySelector('.command-resonance').title=t('resonanceHelp');
-    let fallback=nodes.gamePanel.querySelector('.world-fallback');
-    if(!fallback){fallback=document.createElement('span');fallback.className='world-fallback';nodes.gamePanel.querySelector('.battle-shell').append(fallback);}
-    fallback.hidden=!battlefieldUnavailable;fallback.textContent=t('worldFallback');
   }
 
   function renderSelected() {
@@ -3476,6 +3505,10 @@
     nodes.selectedCard.querySelector("strong").textContent = t(hero.skillName);
     nodes.selectedCard.querySelector('.command-selected span').textContent=status;
     nodes.selectedCard.querySelector('.command-preview').textContent=state.aim==='skill'?t('commandForecast',{hits:hits.length,kills}):t(`${hero.id}Brief`);
+    if(state.aim==='skill'&&state.aimCell){
+      const ground=terrainAt(state.aimCell.x,state.aimCell.y);
+      if(ground){const hint=document.createElement('p');hint.className='aim-ground-help';hint.textContent=`${terrainName(ground.type)} · ${groundDescription(ground)}`;nodes.selectedCard.querySelector('.command-preview').after(hint);}
+    }
     nodes.selectedCard.querySelector('summary').textContent=t('commandRules');
     nodes.selectedCard.querySelector('details').open=wasOpen;
     const traitGuideNode = nodes.selectedCard.querySelector(".enemy-trait-guide");
@@ -3489,9 +3522,11 @@
     skillHelp.innerHTML = `<span>${t(hero.skillDesc)}</span>`;
     const campaignHelp = document.createElement("p"); campaignHelp.className = "campaign-help";
     const limits = combat.deployment({bonusAtk:999,bonusHp:999,bonusEnergy:999,training:profile.training},state.mission);
-    campaignHelp.textContent = `${t("mapRecharge")} ${t("trackingHelp")} ${t("deploymentHelp",{level:limits.levelCap,atk:limits.attack,hp:limits.health,energy:limits.energy})} ${state.waves.length ? t("waveNotice",{turn:state.waves[0].turn,n:state.waves[0].enemies.length}) : ""}`;
+    campaignHelp.textContent = t("mapRecharge");
     skillHelp.append(campaignHelp);
-    const relayHelp=document.createElement('p');relayHelp.textContent=`${t(state.cutSupply?'relayCutHelp':'relayHelp')} ${t('resonanceHelp')}`;skillHelp.append(relayHelp);
+    const rules=[t("trackingHelp"),t(state.cutSupply?'relayCutHelp':'relayHelp'),t('resonanceHelp'),t("deploymentHelp",{level:limits.levelCap,atk:limits.attack,hp:limits.health,energy:limits.energy})];
+    if(state.waves.length)rules.push(t("waveNotice",{turn:state.waves[0].turn,n:state.waves[0].enemies.length}));
+    for(const rule of rules){const paragraph=document.createElement('p');paragraph.textContent=rule;skillHelp.append(paragraph);}
     nodes.skillBtn.title = t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
   }
 
@@ -3650,7 +3685,7 @@
     return livingEnemies().filter((enemy) => distance(hero, enemy) <= range);
   }
 
-  function onTile(x, y) {
+  function onTile(x, y, confirmed = false) {
     if (!state || state.phase !== "player" || movementAnimationActive || battlePaused || lifecycleSuspended) return;
     const unit = unitAt(x, y);
     if (state.aim === "skill") {
@@ -3658,6 +3693,11 @@
       state.aimCell=caster?.id==='turtle'?{x:caster.x,y:caster.y}:{x,y};
       render();
       log("mapAim",{n:skillTargets().length});
+      return;
+    }
+    if (!confirmed && (terrainAt(x,y) || state.relays.some(r=>r.x===x&&r.y===y))) {
+      if(unit?.team==='hero') {state.selected=unit.id;render();}
+      showGroundInfo(x,y);
       return;
     }
     if (unit?.team === "hero" && state.phase === "player") {
@@ -3840,6 +3880,7 @@
     const words=document.createElement("div");words.className="special-cut-copy";
     for(const [tag,value] of [["small",t(action.hero.name)],["strong",t(action.hero.skillName)],["span",t(action.overdrive?'resonanceReady':'specialCharge')]]){const line=document.createElement(tag);line.textContent=value;words.append(line);}
     cut.append(words);
+    if(reducedMotion.matches){log("specialCharge");playCue("magic.cast");return;}
     tween(cut,[{opacity:0,transform:"translateX(-12%)"},{opacity:1,transform:"translateX(0)"}],{duration:160},"cinematic");
     tween(portrait,[{transform:"translateX(-12%) scale(1.12)"},{transform:"translateX(0) scale(1)"}],{duration:400},"cinematic");
     const box=specialCell(action.hero);
@@ -3856,6 +3897,7 @@
 
   function specialLaunch(action) {
     if(specialAction!==action || state!==action.owner)return;
+    if(reducedMotion.matches){settleReducedSpecial(action);return;}
     state.cinematic.stage="launch";action.root.dataset.stage="launch";
     const cut=action.root.querySelector(".special-cut-in");
     tween(cut,[{opacity:1,transform:"translateX(0)"},{opacity:0,transform:"translateX(12%)"}],{duration:150},"cinematic",true);
@@ -3972,9 +4014,8 @@
     action.overdrive=state.resonance>=3;
     if(action.overdrive)state.resonance=0;
     specialAction=action;hero.energy-=3;state.aim=null;state.phase="casting";state.cinematic={hero:hero.id,stage:"charge",overdrive:action.overdrive};render();
-    if(reducedMotion.matches){settleReducedSpecial(action);return;}
     specialCharge(action);
-    scheduleTurnTransition(()=>specialLaunch(action),400);
+    scheduleTurnTransition(()=>specialLaunch(action),1800);
   }
 
   function playMapPulse(hero,area) {
@@ -4407,7 +4448,8 @@
         hero: t(previewHero.name),
       })
       : "";
-    nodes.resultPlanText.textContent = [t(win ? "planWin" : "planLose"), nextThreatPreview]
+    nodes.resultPlanText.title = nextThreatPreview;
+    nodes.resultPlanText.textContent = [t(win ? "planWin" : "planLose"), win&&previewEnemy ? `${t(previewEnemy.name)} · ${t(`${previewEnemy.trait}Short`)}` : ""]
       .filter(Boolean)
       .join(" ");
     const hasNextMission = win && state.mission < missionDefs.length;
@@ -4568,9 +4610,7 @@
           phaseEvents: state.phaseEvents.map((item) => ({ ...item })),
         };
       },
-      battlefieldStats() { return battlefield?.stats() || {active:false}; },
-      loseWebGL() { if(battlefield){battlefield.contextControl=battlefield.renderer.getContext().getExtension('WEBGL_lose_context');battlefield.contextControl?.loseContext();} },
-      restoreWebGL() { battlefield?.contextControl?.restoreContext(); },
+      battlefieldStats() { return {active:document.body.dataset.screen==='battle',renderer:'2d',cells:nodes.grid.children.length}; },
       movementEvidence() {
         return {
           active: movementAnimationActive,
@@ -4632,7 +4672,7 @@
         if (!state) return false;
         const allowed = validMoves().some((cell) => cell.x === Number(x) && cell.y === Number(y));
         if (!allowed) return false;
-        onTile(Number(x), Number(y));
+        onTile(Number(x), Number(y), true);
         return true;
       },
       damageEnemy(index = 0, amount = 1) {

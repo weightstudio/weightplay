@@ -1346,6 +1346,7 @@
     dodgeCooldownTicks: 0,
     hurtCooldownTicks: 0,
     facing: { x: 0, y: -1 },
+    playerGait: { phase: 0, weight: 0, facing: 1, lean: 0 },
     dodgeDirection: { x: 0, y: -1 },
     combo: 0,
     comboTicks: 0,
@@ -2171,6 +2172,7 @@
 
   function setScreenOwner(screen) {
     window.mountRelicHuntersFrame().activate(screen);
+    mountPlayerHealth();
     document.body.dataset.screen = screen;
     if (screen !== 'battle') frameCovers.clear();
     for (const candidate of ["main", "stage", "battle"]) {
@@ -2630,6 +2632,7 @@
     const maxHp = Math.ceil(stats.maxHp);
     nodes.hpText.textContent = `${hp}/${maxHp}`;
     nodes.hpFill.style.width = `${Math.max(0, Math.min(100, (state.playerHp / stats.maxHp) * 100))}%`;
+    nodes.playerHealth?.classList.toggle('is-low', state.playerHp <= stats.maxHp * .3);
   }
 
   function renderEquippedGear() {
@@ -2832,6 +2835,7 @@
     state.dodgeTicks = state.dodgeCooldownTicks = state.hurtCooldownTicks = 0;
     state.combo = state.comboTicks = state.surgeTicks = 0;
     state.facing = { x: 0, y: -1 };
+    state.playerGait = { phase: 0, weight: 0, facing: 1, lean: 0 };
     shootTimer = state.baseRate;
     particleSparksList = [];
     state.slowUntil = 0;
@@ -3926,6 +3930,7 @@
     if (keysPressed["d"] || keysPressed["ArrowRight"]) moveX = 1;
 
     const keyboardMoving = moveX !== 0 || moveY !== 0;
+    const previousPlayerX = state.playerX, previousPlayerY = state.playerY;
     if (!keyboardMoving && (moveVector.x !== 0 || moveVector.y !== 0)) {
       moveX = moveVector.x;
       moveY = moveVector.y;
@@ -3947,6 +3952,7 @@
       state.playerX = Math.max(20, Math.min(780, state.playerX));
       state.playerY = Math.max(20, Math.min(ARENA_HEIGHT - 20, state.playerY));
     }
+    updateWalkingGait(state.playerGait, state.playerX - previousPlayerX, state.playerY - previousPlayerY, 30, state.dodgeTicks > 0);
 
     // 2. Automated Weapon Firing Timer
     state.roomTicks = (state.roomTicks || 0) + 1;
@@ -3997,7 +4003,10 @@
       const dx = state.playerX - enemy.x;
       const dy = state.playerY - enemy.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
+      const previousEnemyX = enemy.x, previousEnemyY = enemy.y;
       if (!roomInGrace) moveEnemyByBehavior(enemy, dx, dy, dist);
+      enemy.gait ||= { phase: (enemy.abilityTimer || 0) / 10, weight: 0, facing: 1, lean: 0 };
+      updateWalkingGait(enemy.gait, enemy.x - previousEnemyX, enemy.y - previousEnemyY, enemy.size);
 
       // Check player contact damage
       if (!roomInGrace && performance.now() >= (enemy.pulseStaggerUntil || 0) && dist < enemy.size + 15) {
@@ -4118,6 +4127,39 @@
       }
     }
 
+  }
+
+  // Distance-driven steps keep animation in sync with actual movement. The
+  // simulation owns these values, so every pause also freezes the gait.
+  function updateWalkingGait(gait, dx, dy, size, dashing = false) {
+    const distance = Math.hypot(dx, dy);
+    const moving = distance > .05;
+    gait.weight += ((moving ? 1 : 0) - gait.weight) * .3;
+    if (gait.weight < .01) gait.weight = 0;
+    if (moving) {
+      gait.phase = (gait.phase + Math.min(.4, distance / (size * 1.4) * Math.PI)) % (Math.PI * 2);
+      if (Math.abs(dx) > .15) gait.facing = dx < 0 ? -1 : 1;
+    }
+    const targetLean = moving ? dx / distance * (dashing ? .18 : .07) : 0;
+    gait.lean += (targetLean - gait.lean) * .25;
+  }
+
+  function drawWalkingSprite(ctx, sprite, x, y, width, height, gait, reducedMotion) {
+    const weight = reducedMotion ? 0 : (gait?.weight || 0);
+    const step = Math.sin(gait?.phase || 0) * weight;
+    const lift = Math.abs(step) * height * .055;
+    const floor = y + height * .88;
+    // The shadow stays on the floor while the body steps above it.
+    ctx.save();
+    ctx.fillStyle = 'rgba(9, 20, 20, .26)';
+    ctx.beginPath();
+    ctx.ellipse(x + width / 2, floor, width * (.29 - Math.abs(step) * .025), height * .075, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.translate(x + width / 2, floor);
+    ctx.rotate(reducedMotion ? 0 : (gait?.lean || 0) + step * .065);
+    ctx.scale(gait?.facing || 1, 1 - Math.abs(step) * .035);
+    ctx.drawImage(sprite, -width / 2, y - floor - lift, width, height);
+    ctx.restore();
   }
 
   // Draw Arena textures
@@ -4414,7 +4456,7 @@
         ctx.fill();
         ctx.shadowBlur = 0;
         if (sprite.complete && sprite.naturalWidth > 0) {
-          ctx.drawImage(sprite, -enemy.size * 1.25, -enemy.size * 1.2, enemy.size * 2.5, enemy.size * 2.5);
+          drawWalkingSprite(ctx, sprite, -enemy.size * 1.25, -enemy.size * 1.2, enemy.size * 2.5, enemy.size * 2.5, enemy.gait, reducedMotion);
         } else {
           ctx.fillStyle = "#4b5563";
           ctx.fillRect(-enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
@@ -4425,7 +4467,7 @@
         ctx.fillText(enemy.label || "GUARDIAN", 0, -enemy.size - 14);
         ctx.textAlign = "left";
       } else if (sprite.complete && sprite.naturalWidth > 0) {
-        ctx.drawImage(sprite, -enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
+        drawWalkingSprite(ctx, sprite, -enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2, enemy.gait, reducedMotion);
       } else {
         ctx.fillStyle = enemy.type === "boar" ? "#4b5563" : "#7c3aed";
         ctx.fillRect(-enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
@@ -4493,7 +4535,7 @@
       ctx.globalAlpha = 1;
     }
     if (assets.hero.complete && assets.hero.naturalWidth > 0) {
-      ctx.drawImage(assets.hero, -30, -30, 60, 60);
+      drawWalkingSprite(ctx, assets.hero, -30, -30, 60, 60, state.playerGait, reducedMotion);
     } else {
       ctx.fillStyle = "#fbbf24";
       ctx.beginPath();
@@ -4513,6 +4555,13 @@
     drawDamageSparks(ctx);
     ctx.restore();
     drawBossWarning(ctx);
+    if (nodes.playerHealth) {
+      // The HUD follows the ground position, never the sprite's bob/tilt.
+      const healthX = ARENA_WIDTH / 2 + (state.playerX - camera.x) * battleZoom;
+      const healthY = battleViewHeight / 2 + (state.playerY - camera.y - 37) * battleZoom;
+      nodes.playerHealth.style.setProperty('--health-x', `${healthX / ARENA_WIDTH * 100}%`);
+      nodes.playerHealth.style.setProperty('--health-y', `${healthY / battleViewHeight * 100}%`);
+    }
     if (state.dodgeTicks > 0 || state.surgeTicks > 0) {
       ctx.save();
       ctx.strokeStyle = state.dodgeTicks > 0 ? '#fef3c7' : '#5eead4';
@@ -4691,6 +4740,20 @@
     else {
       resumeBackgroundBattle();
       if (restoreFocus && state.gameActive) nodes.equipmentBtn.focus({ preventScroll: true });
+    }
+  }
+
+  function mountPlayerHealth() {
+    if (nodes.playerHealth) return;
+    // Reuse the existing, localized health nodes rather than displaying a
+    // second value that could drift from the authoritative HP update.
+    nodes.playerHealth = nodes.hpText.closest('[data-wp-frame-stat]');
+    if (nodes.playerHealth) {
+      nodes.playerHealth.parentElement.style.setProperty('--wp-frame-stat-count', '3');
+      nodes.playerHealth.removeAttribute('data-wp-frame-stat');
+      nodes.playerHealth.id = 'playerHealth';
+      nodes.playerHealth.className = 'player-health';
+      nodes.gamePanel.querySelector('.canvas-container').append(nodes.playerHealth);
     }
   }
 
@@ -5496,6 +5559,9 @@
             eliteCount: state.enemies.filter((enemy) => enemy.isElite).length,
             eliteSpawnPending: Boolean(eliteSpawnTimer || eliteSpawnCallback),
             player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },
+            walking: { ...state.playerGait },
+            camera: { ...battleCamera, zoom: battleZoom, height: battleViewHeight },
+            movingEnemies: state.enemies.filter(enemy => (enemy.gait?.weight || 0) > .1).length,
             moveVector: { ...moveVector },
             pulseCooldownTicks: state.pulseCooldownTicks,
             dodgeTicks: state.dodgeTicks,
