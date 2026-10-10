@@ -51,6 +51,11 @@ test('all 13 locales own every string, 30 names, seven rules and four static FAQ
   if(locale==='ar')assert.ok(html.includes('dir="rtl"'));
  }
 });
+test('result assistance labels describe help use without claiming a loss was a clear',()=>{
+ assert.equal(COPY.en.assist,'Help used');assert.equal(COPY.en.noAssist,'No help used');
+ assert.equal(COPY['zh-Hant'].assist,'使用輔助');assert.equal(COPY['zh-Hant'].noAssist,'未使用輔助');
+ assert.equal(COPY['zh-Hans'].assist,'使用辅助');assert.equal(COPY['zh-Hans'].noAssist,'未使用辅助');
+});
 test('two tabs merge permanent records without losing the newer unlock',()=>{
  const memory=new Map(),storage={getItem:k=>memory.get(k),setItem:(k,v)=>memory.set(k,v)};
  const a=createStore(storage),b=createStore(storage);a.write({...a.value,unlocked:9,stars:[3,...Array(29).fill(0)]});
