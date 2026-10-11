@@ -51,3 +51,15 @@ body[data-wp-game-id="traffic-jam-diner"] #result-panel[hidden]{display:none!imp
 /* Keep route actions physically tappable after Battle Canvas scaling. */
 .route-actions button{min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
 .route-actions button:hover:not(:disabled),.route-actions button:active:not(:disabled){transform:none}
+/* Board selectors live over the scaled playfield too; keep their physical
+   touch size independent of the Battle canvas scale. */
+.board-controls button{min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
+.board-controls button:hover:not(:disabled),.board-controls button:active:not(:disabled){transform:none}
+/* Keep the persistent Stage tab row reserved in physical space as the
+   logical Stage canvas scales down on small and short-landscape screens. */
+#stage-screen.stage-screen{--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr) var(--wp-frame-physical-control-size,56px)!important}
+#stage-screen .stage-tabs{height:var(--wp-frame-physical-control-size,56px)!important;min-height:var(--wp-frame-physical-control-size,56px)!important}
+#stage-screen .stage-tabs [data-wp-frame-stage-slot="stages"]{min-height:var(--wp-frame-physical-control-size,46px)!important}
+/* Result buttons share the scaled Battle canvas with the route-action rail. */
+.result-actions button{min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
+.result-actions button:hover:not(:disabled),.result-actions button:active:not(:disabled){transform:none}

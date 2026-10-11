@@ -293,5 +293,5 @@
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   },true);
   applyLocale();show("main");
-  window.__COLOR_LINK_TEST__={levels,buildLevel,interfaceCopy,marketComparisonCopy};
+  window.__COLOR_LINK_TEST__={levels,buildLevel,interfaceCopy};
 })();

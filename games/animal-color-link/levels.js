@@ -60,7 +60,7 @@
       let script=document.querySelector("script[data-wp-color-link-interface7]");
       if(script){script.addEventListener("error",failOpen,{once:true});return}
       script=document.createElement("script");
-      script.src="interface-7-compat.js?v=20260923-color-link-i7-cleanup2";
+      script.src="interface-7-compat.js?v=20261011-colorlink-i7-dom-insert-v1";
       script.dataset.wpColorLinkInterface7="";
       script.addEventListener("error",failOpen,{once:true});
       document.body.append(script);

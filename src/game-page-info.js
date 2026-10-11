@@ -11831,6 +11831,15 @@
       document.body.classList.add("has-game-page-info");
       return;
     }
+    // Color Link owns complete, locale-specific static Guides in its route
+    // shells. Preserve the reviewed locale copy after metadata synchronization.
+    if (id === "animal-color-link" && document.querySelector("section.game-page-info-static")) {
+      const guide = document.querySelector("section.game-page-info-static");
+      guide.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
+      document.documentElement.classList.add("has-game-page-info");
+      document.body.classList.add("has-game-page-info");
+      return;
+    }
     // Sliding 15 owns complete, locale-specific static Guides in its route
     // shells. Keep that reviewed copy after metadata synchronization.
     if (id === "sliding-15" && document.querySelector("section.game-page-info-static")) {

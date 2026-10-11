@@ -179,7 +179,7 @@
       mainProgress = document.createElement("p");
       mainProgress.className = "wp-color-link-main-progress";
       mainProgress.setAttribute("aria-live", "polite");
-      heroCopy.insertBefore(mainProgress, start);
+      start.parentNode.insertBefore(mainProgress, start);
     }
     const syncMainProgress = () => {
       if (!mainProgress) return;
