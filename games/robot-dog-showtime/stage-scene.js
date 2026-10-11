@@ -28,9 +28,14 @@ export class ShowtimeScene {
     };
     this.sceneObjects=new THREE.Group(); this.scene.add(this.sceneObjects);
     this.buildStage();
-    this.dog=this.buildDog(); this.fox=this.buildFox(); this.sceneObjects.add(this.dog,this.fox);
+    this.dog=this.buildDog(); this.fox=this.buildFox();
+    this.waveArms=[
+      this.makeWaveArms(this.dog,this.mats.dogDark,this.mats.dogTeal),
+      this.makeWaveArms(this.fox,this.mats.foxDark,this.mats.foxLight),
+    ];
+    this.sceneObjects.add(this.dog,this.fox);
     this.targets=[this.makeTarget(0),this.makeTarget(1)]; this.sceneObjects.add(...this.targets);
-    this.positions=[0,11]; this.goals=[0,11]; this.activeActor=0; this.tick=0; this.frame=0;
+    this.positions=[0,11]; this.goals=[0,11]; this.activeActor=0; this.gestures=[]; this.tick=0; this.frame=0;
     this.onResize=()=>this.resize(); this.resizeObserver=null; this.active=false;
     this.activate();
     canvas.dataset.renderer='three-webgl';
@@ -44,6 +49,14 @@ export class ShowtimeScene {
   basic(color){return this.own(new THREE.MeshBasicMaterial({color}))}
   mesh(geometry,material,parent,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);m.scale.set(sx,sy,sz);parent.add(m);return m}
   cube(parent,material,x,y,z,sx,sy,sz){const m=this.mesh(this.box,material,parent,x,y,z,sx,sy,sz);m.castShadow=true;m.receiveShadow=true;return m}
+  makeWaveArms(root,armMaterial,pawMaterial){
+    return [-1,1].map(side=>{
+      const pivot=new THREE.Group();pivot.position.set(side*.53,1.02,.08);root.add(pivot);
+      this.cube(pivot,armMaterial,0,-.13,.01,.18,.3,.18);
+      this.cube(pivot,pawMaterial,0,-.31,.04,.25,.17,.25);
+      return pivot;
+    });
+  }
   buildStage(){
     this.cube(this.sceneObjects,this.mats.edge,0,-.38,0,9.15,.34,7.2);
     this.cube(this.sceneObjects,this.mats.deck,0,-.16,0,8.9,.16,6.96);
@@ -95,9 +108,9 @@ export class ShowtimeScene {
     return root;
   }
   cellToWorld(cell){const p=cellPoint(cell);return new THREE.Vector3(p.x,.12,p.z)}
-  setState({positions=this.positions,goals=this.goals,activeActor=this.activeActor,walls=[]}={}){
+  setState({positions=this.positions,goals=this.goals,activeActor=this.activeActor,walls=[],gestures=[]}={}){
     if(this.disposed)return;
-    this.positions=[...positions];this.goals=[...goals];this.activeActor=activeActor;
+    this.positions=[...positions];this.goals=[...goals];this.activeActor=activeActor;this.gestures=[...gestures];
     [this.dog,this.fox].forEach((actor,i)=>{const p=this.cellToWorld(this.positions[i]);actor.position.x=p.x;actor.position.z=p.z;actor.rotation.y=actor.userData.facing||0;});
     this.targets.forEach((marker,i)=>{const p=this.cellToWorld(this.goals[i]);marker.position.set(p.x,.035,p.z);});
     this.tiles.forEach((tile,index)=>{tile.material=walls.includes(index)?this.mats.wall:(index%2?this.mats.tile:this.mats.tileAlt);tile.scale.y=walls.includes(index)?.15:.055;tile.position.y=walls.includes(index)?.05:-.055;});
@@ -111,6 +124,12 @@ export class ShowtimeScene {
   }
   drawLoop(){if(this.disposed||!this.active)return;this.frame=requestAnimationFrame(()=>this.drawLoop());
     if(document.hidden)return;this.tick+=.016;
+    [this.dog,this.fox].forEach((actor,i)=>{
+      const gesture=this.gestures[i],arm=this.waveArms[i];
+      arm[0].rotation.z=gesture==='WAVE'?(this.reduced?1.9:1.86+Math.sin(this.tick*10)*.24):0;
+      arm[1].rotation.z=0;
+      actor.rotation.x=gesture==='BOW'?(this.reduced ? .24 : .28+Math.sin(this.tick*7)*.035):0;
+    });
     if(!this.reduced){this.dog.position.y=.025+Math.sin(this.tick*1.55)*.025;this.fox.position.y=.02+Math.sin(this.tick*1.55+1)*.022;}
     this.renderer.render(this.scene,this.camera);
   }

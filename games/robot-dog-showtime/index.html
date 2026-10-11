@@ -23,20 +23,22 @@
       <a class="lobby-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay">← W</a>
       <strong data-wp-game-title>Robot Dog Showtime</strong>
     </header>
-    <section class="hero">
-      <img class="poster" src="../../assets/robot-dog-showtime-cover-v3.webp" alt="A little robot pup under warm stage lights">
-      <div class="hero-copy">
+    <section class="hero main-hero">
+      <img class="poster main-poster" src="../../assets/robot-dog-showtime-cover-v3.webp" alt="A little robot pup under warm stage lights">
+      <div class="hero-copy main-copy">
         <small>ORIGINAL STAGE PUZZLE</small>
         <h1>Robot Dog Showtime</h1>
         <p>Plan two performers' cues. Rehearse the formation. Adjust the steps until both partners reach their marks.</p>
-        <div class="progress-line"><span id="mainProgress">Stage 1 · ready</span><button id="startButton" class="primary">Start Game</button></div>
+        <div class="progress-line main-progress" data-wp-main-progress><span id="mainProgress">Stage 1 · ready</span></div>
+        <button id="startButton" data-wp-main-start class="primary">Start Game</button>
       </div>
     </section>
-    <section class="public-guide game-page-info game-page-info-static" aria-label="Game guide">
+  </main>
+  <section class="public-guide game-page-info game-page-info-static" aria-label="Game guide">
       <div class="game-info-tags"><span>Spatial planning</span><span>Choreography puzzle</span><span>30 stages</span></div>
       <small>HOT TOPIC · ORIGINAL GAMEPLAY</small>
       <h2>Plan both dancers' moves, then rehearse the formation.</h2>
-      <p>At the 48th WorldSkills opening in Shanghai, dancers shared the stage with humanoid robots that walked and shifted formation; one made a brief finger-dance gesture while others waltzed with human partners. This puzzle turns that stage coordination into cue planning for a fictional robot pup and fox.</p>
+      <p>At Shanghai’s 2026 WorldSkills opening, dancers shared the finale with human-shaped robots. This original puzzle reimagines that teamwork with a block-built robot pup and fox.</p>
       <div class="guide-grid">
         <article><h3>How to play</h3><p>Choose a performer and beat, select a move or cue, then rehearse both routes together. Some finales need both performers to Bow on the last beat.</p></article>
         <article><h3>Rules</h3><p>Stay on the stage, avoid blocked marks, and never place both performers on the same mark. A wrong beat keeps your plan so you can edit it.</p></article>
@@ -48,22 +50,26 @@
         <div><dt>Does a rehearsal error lose progress?</dt><dd>No. The first invalid beat is shown and the cue plan remains editable.</dd></div>
         <div><dt>Does progress move between browsers?</dt><dd>No. Current progress is stored locally in this browser.</dd></div>
       </dl></div>
-    </section>
-  </main>
+  </section>
 
   <section id="stageScreen" class="screen stage-screen" hidden>
     <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
-      <header class="stage-header"><button id="stageBack" aria-label="Back to Main">←</button><div><strong>Choose a stage</strong><span id="stageSummary"></span></div><span class="stage-hero-mark" aria-hidden="true">✦</span></header>
-      <nav id="stageRail" class="stage-rail" aria-label="Stage selector"></nav>
+      <header class="stage-header"><button id="stageBack" data-wp-return="stage" aria-label="Back to Main">←</button><div><strong>Choose a stage</strong><span id="stageSummary"></span></div><span class="stage-hero-mark" aria-hidden="true">✦</span></header>
+      <nav class="stage-tabs" role="tablist" aria-label="Stage sets">
+        <button type="button" role="tab" id="stages-1-10" aria-controls="stageRail" aria-selected="true" data-stage-range="0">1–10</button>
+        <button type="button" role="tab" id="stages-11-20" aria-controls="stageRail" aria-selected="false" data-stage-range="1">11–20</button>
+        <button type="button" role="tab" id="stages-21-30" aria-controls="stageRail" aria-selected="false" data-stage-range="2">21–30</button>
+      </nav>
+      <nav id="stageRail" class="stage-rail" aria-label="Stage selector" data-wp-stage-rail></nav>
     </div>
   </section>
 
   <section id="battleScreen" class="screen battle-screen" data-wp-canvas-max-width="920" data-wp-battle-min-height="620" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-height="620" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
       <header class="battle-hud">
-        <button id="battleBack" aria-label="Back to Stage">←</button>
+        <button id="battleBack" data-wp-return="battle" aria-label="Back to Stage">←</button>
         <span id="battleLabel">Stage 1 · First Marks</span>
-        <button id="helpButton" aria-label="Show guide">?</button>
+        <button id="helpButton" data-wp-battle-utility aria-label="Show guide">?</button>
       </header>
       <div class="battle-workspace">
         <div id="arenaWrap" class="arena-wrap"><canvas id="stage3d" aria-label="Three-dimensional dance stage" tabindex="0"></canvas><div id="renderFallback" hidden role="alert"><strong>The 3D stage could not load.</strong><button id="retryRender">Retry</button></div></div>

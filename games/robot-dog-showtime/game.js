@@ -6,7 +6,7 @@ const byCue=Object.freeze({N:'↑',E:'→',S:'↓',W:'←',WAIT:'Wait',BOW:'Bow'
 const STEP=Object.freeze({N:[0,-1],E:[1,0],S:[0,1],W:[-1,0]});
 const saveKey='wp-robot-dog-showtime-v2';
 const stages=STAGES;
-let save=readSave(),screen='main',stageIndex=0,selectedActor=0,selectedBeat=0,plan=[],scene=null,renderEpoch=0,rehearsing=false,focusBeforeDialog=null;
+let save=readSave(),screen='main',stageIndex=0,activeStageRange=0,selectedActor=0,selectedBeat=0,plan=[],scene=null,renderEpoch=0,rehearsing=false,focusBeforeDialog=null;
 const els={main:$('mainScreen'),stage:$('stageScreen'),battle:$('battleScreen'),rail:$('stageRail'),summary:$('stageSummary'),label:$('battleLabel'),status:$('cueStatus'),beatRail:$('beatRail'),dogPlan:$('dogPlan'),foxPlan:$('foxPlan'),dogGoal:$('dogGoal'),foxGoal:$('foxGoal'),canvas:$('stage3d'),fallback:$('renderFallback'),help:$('helpDialog'),leave:$('leaveDialog'),result:$('resultDialog')};
 
 function readSave(){try{const raw=JSON.parse(localStorage.getItem(saveKey)||'{}');return{unlocked:Math.max(1,Math.min(30,Number(raw.unlocked)||1)),cleared:Array.isArray(raw.cleared)?raw.cleared.filter(n=>Number.isInteger(n)&&n>=1&&n<=30):[],drafts:raw.drafts&&typeof raw.drafts==='object'?raw.drafts:{}}}catch{return{unlocked:1,cleared:[],drafts:{}}}}
@@ -15,8 +15,12 @@ function setStatus(text,bad=false){els.status.textContent=text;els.status.datase
 function syncScreen(next){screen=next;document.body.dataset.screen=next;els.main.hidden=next!=='main';els.stage.hidden=next!=='stage';els.battle.hidden=next!=='battle';}
 function stageName(stage){return `Stage ${stage.id} · ${stage.arc}`}
 function renderMain(){const cleared=save.cleared.length;$('mainProgress').textContent=cleared?`${cleared} / 30 cleared · Stage ${save.unlocked} ready`:'Stage 1 · ready'}
-function renderMap(){els.summary.textContent=`${save.cleared.length} cleared · ${save.unlocked} unlocked`;els.rail.replaceChildren();
-  for(const stage of stages){const b=document.createElement('button');b.type='button';b.className='stage-card';b.disabled=stage.id>save.unlocked;b.setAttribute('aria-label',`${stageName(stage)}${b.disabled?', locked':''}`);if(stage.id===stageIndex+1)b.setAttribute('aria-current','true');b.innerHTML=`<span class="num">${String(stage.id).padStart(2,'0')}</span><span class="arc">${stage.arc}</span><span class="state">${save.cleared.includes(stage.id)?'Cleared':b.disabled?'Locked':'Play'}</span>`;b.addEventListener('click',()=>startBattle(stage.id-1));els.rail.append(b)}
+function setStageRange(range){activeStageRange=Math.max(0,Math.min(2,Number(range)||0));const first=activeStageRange*10+1,last=first+9;
+  for(const tab of document.querySelectorAll('[data-stage-range]')){const selected=Number(tab.dataset.stageRange)===activeStageRange;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1}
+  for(const card of els.rail.querySelectorAll('.stage-card')){const id=Number(card.dataset.stageId);card.hidden=id<first||id>last}
+}
+function renderMap(){els.summary.textContent=`${save.cleared.length} cleared · ${save.unlocked} unlocked`;els.rail.replaceChildren();activeStageRange=Math.floor((save.unlocked-1)/10);
+  for(const stage of stages){const b=document.createElement('button');b.type='button';b.className='stage-card';b.dataset.stageId=String(stage.id);b.disabled=stage.id>save.unlocked;b.setAttribute('aria-label',`${stageName(stage)}${b.disabled?', locked':''}`);if(stage.id===stageIndex+1)b.setAttribute('aria-current','true');b.innerHTML=`<span class="num">${String(stage.id).padStart(2,'0')}</span><span class="arc">${stage.arc}</span><span class="state">${save.cleared.includes(stage.id)?'Cleared':b.disabled?'Locked':'Play'}</span>`;b.addEventListener('click',()=>startBattle(stage.id-1));els.rail.append(b)}setStageRange(activeStageRange);
 }
 function draftFor(stage){const source=save.drafts[String(stage.id)];return Array.from({length:stage.beats},(_,i)=>Array.from({length:2},(_,actor)=>ACTIONS_SAFE(source?.[i]?.[actor])))}
 function ACTIONS_SAFE(value){return Object.hasOwn(byCue,value)?value:null}
@@ -45,17 +49,18 @@ function nextCell(cell,cue,stage){if(!STEP[cue])return{cell,reason:null};const x
   if(nx<0||nx>3||ny<0||ny>2)return{cell,reason:'would leave the stage'};const next=ny*4+nx;if(stage.walls.includes(next))return{cell,reason:'mark is blocked'};return{cell:next,reason:null}}
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function rehearse(){if(rehearsing||!scene)return;rehearsing=true;renderPlan();const stage=currentStage(),positions=[...stage.starts];let failure=null;
+  scene.setState({positions,goals:stage.goals,walls:stage.walls,gestures:[]});setStatus('Rehearsal starting.');
   try{for(let i=0;i<stage.beats;i++){if(screen!=='battle')return;const cues=plan[i].map(c=>c||'WAIT'),moves=cues.map((cue,actor)=>nextCell(positions[actor],cue,stage));
       const invalid=moves.findIndex(result=>result.reason);if(invalid>=0){failure={beat:i,actor:invalid,reason:moves[invalid].reason};break}
       const next=moves.map(result=>result.cell);if(next[0]===next[1]){failure={beat:i,actor:1,reason:'both performers would share a mark'};break}
       if(next[0]===positions[1]&&next[1]===positions[0]&&next[0]!==next[1]){failure={beat:i,actor:1,reason:'the two routes cross at once'};break}
-      positions.splice(0,2,...next);scene.setState({positions,goals:stage.goals,walls:stage.walls,activeActor:selectedActor});setStatus(`Beat ${i+1} · ${cueName(cues[0])} / ${cueName(cues[1])}`);await wait(matchMedia('(prefers-reduced-motion: reduce)').matches?25:360);
+      positions.splice(0,2,...next);scene.setState({positions,goals:stage.goals,walls:stage.walls,activeActor:selectedActor,gestures:cues});setStatus(`Beat ${i+1} · ${cueName(cues[0])} / ${cueName(cues[1])}`);await wait(matchMedia('(prefers-reduced-motion: reduce)').matches?25:360);
     }
     if(failure){const name=failure.actor===0?'Robot Pup':'Fox Partner';setStatus(`Beat ${failure.beat+1}: ${name} ${failure.reason}. Your plan is ready to edit.`,true);window.WeightPlayAudio?.play('feedback.error');return}
     const inFormation=positions[0]===stage.goals[0]&&positions[1]===stage.goals[1];
     const syncOk=!stage.bow||(plan.at(-1)?.[0]==='BOW'&&plan.at(-1)?.[1]==='BOW');
     if(!inFormation||!syncOk){setStatus(!inFormation?'The final formation is off its marks. Edit the routes and rehearse again.':'Both partners need a Bow cue on the closing beat.',true);window.WeightPlayAudio?.play('feedback.error');return}
-    clearStage(stage);scene.setState({positions,goals:stage.goals,walls:stage.walls});window.WeightPlayAudio?.play('result.win');openResult(stage);
+    clearStage(stage);scene.setState({positions,goals:stage.goals,walls:stage.walls,gestures:stage.bow?['BOW','BOW']:[]});window.WeightPlayAudio?.play('result.win');openResult(stage);
   }finally{rehearsing=false;renderPlan()}}
 function clearStage(stage){if(!save.cleared.includes(stage.id))save.cleared.push(stage.id);save.unlocked=Math.max(save.unlocked,Math.min(30,stage.id+1));persist();renderMain()}
 function openResult(stage){$('resultKicker').textContent=stage.id%5===0?'CHECKPOINT CLEARED':'SHOW COMPLETE';$('resultTitle').textContent=stage.id===30?'Opening Night!':'Great formation!';$('resultText').textContent=`The pup and fox reached their marks on Stage ${stage.id}. Progress is saved.`;$('nextStage').disabled=stage.id===30;els.result.hidden=false;focusBeforeDialog=document.activeElement;$('nextStage').focus()}
@@ -65,6 +70,8 @@ function goMap(){if(rehearsing)return;closeDialog(els.leave);closeDialog(els.res
 function closeToMap(){if(rehearsing)return;scene?.suspend();closeDialog(els.leave);closeDialog(els.help);syncScreen('stage');renderMap();$('stageBack').focus()}
 
 $('startButton').addEventListener('click',()=>{syncScreen('stage');renderMap();$('stageBack').focus()});
+$('stageScreen').querySelector('.stage-tabs').addEventListener('click',event=>{const tab=event.target.closest('[data-stage-range]');if(tab)setStageRange(tab.dataset.stageRange)});
+$('stageScreen').querySelector('.stage-tabs').addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();const next=Math.max(0,Math.min(2,activeStageRange+(event.key==='ArrowRight'?1:-1)));setStageRange(next);document.querySelector(`[data-stage-range="${next}"]`).focus()});
 $('stageBack').addEventListener('click',()=>{syncScreen('main');renderMain();$('startButton').focus()});
 $('selectDog').addEventListener('click',()=>chooseActor(0));$('selectFox').addEventListener('click',()=>chooseActor(1));
 for(const b of document.querySelectorAll('[data-cue]'))b.addEventListener('click',()=>setCue(b.dataset.cue));
@@ -80,4 +87,4 @@ window.addEventListener('pagehide',destroyScene,{once:true});
 
 renderMain();
 const authoringIssues=validateStages();if(authoringIssues.length)console.error('Stage data authoring issues',authoringIssues);
-window.__robotDogShowtime={stages:()=>stages.map(s=>({id:s.id,arc:s.arc,beats:s.beats,solution:s.solution})),snapshot:()=>({screen,stage:stageIndex+1,plan:plan.map(x=>[...x]),selectedActor,selectedBeat,save:{...save},renderer:scene?.stats()||null}),start:index=>startBattle(index),setCue,clearStage,solveIssues:authoringIssues};
+window.__robotDogShowtime={stages:()=>stages.map(s=>({id:s.id,arc:s.arc,beats:s.beats,solution:s.solution})),snapshot:()=>({screen,stage:stageIndex+1,plan:plan.map(x=>[...x]),selectedActor,selectedBeat,save:{...save},gestures:[...(scene?.gestures||[])],renderer:scene?.stats()||null}),start:index=>startBattle(index),setCue,clearStage,solveIssues:authoringIssues};

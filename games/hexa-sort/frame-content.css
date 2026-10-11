@@ -6,6 +6,24 @@
 .hexa-battle-content {display:flex;flex-direction:column;min-height:0;gap:6px}
 .hexa-battle-content .hexa-play {flex:1;min-height:0}
 .hexa-battle-content #battleHelp {align-self:flex-end}
+/* Reserve the live feedback lane even when it is empty. Long messages scroll
+   inside this fixed box so they stay readable without resizing the board. */
+.hexa-battle-content > .feedback {
+  box-sizing:border-box;
+  flex:0 0 3.75em;
+  block-size:3.75em;
+  min-block-size:3.75em;
+  max-block-size:3.75em;
+  margin:0;
+  line-height:1.25;
+  overflow-x:hidden;
+  overflow-y:auto;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
+.hexa-battle-content > .feedback:empty {visibility:hidden}
 /* Native alpha sprite shared by the board, tray and moving chip clones.
    Preserve the existing layer offsets and hit targets; never square the hex. */
 .chip[data-chip] {
@@ -61,7 +79,7 @@
   .hexa-battle-content .hexa-coach {height:auto;min-height:56px;padding:4px 7px}
   .hexa-battle-content .hexa-coach small {display:none}
   .hexa-battle-content .stack-tray {height:100%;min-height:0;padding:5px}
-  .hexa-battle-content .feedback:empty {display:none}
-  .hexa-battle-content .feedback {position:absolute;bottom:0;left:0;max-width:60%;pointer-events:none}
+  .hexa-battle-content > .feedback:empty {display:block;visibility:hidden}
+  .hexa-battle-content > .feedback {position:absolute;bottom:0;left:0;inline-size:60%;max-width:60%;flex:none;block-size:2.25em;min-block-size:2.25em;max-block-size:2.25em;pointer-events:auto}
   .hexa-battle-content #battleHelp {grid-column:2;grid-row:1;justify-self:end;align-self:center}
 }

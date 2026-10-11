@@ -163,12 +163,9 @@
         let speed=a.speed*(a.slow>0?.55:1);
         if(b.level.rule==='mud'&&a.x>35&&a.x<65)speed*=.6;
         if(a.bossKind==='weaver'&&a.age%60<18)speed*=2;
-        const front=foes.filter(f=>f.hp>0&&(f.x-a.x)*direction>=0).sort((l,r)=>Math.abs(l.x-a.x)-Math.abs(r.x-a.x))[0];
-        // Never cross an opposing foot anchor, even during fast movement.
-        const leader=friends.filter(friend=>friend.id!==a.id&&friend.hp>0&&(friend.x-a.x)*direction>=0&&(friend.x!==a.x||friend.id<a.id)).sort((l,r)=>Math.abs(l.x-a.x)-Math.abs(r.x-a.x))[0];
-        const formation=a.type==='horse'||a.kind==='raider'?speed:leader?Math.max(0,Math.abs(leader.x-a.x)-2.6):speed;
-        const travel=Math.min(speed,formation,front?Math.max(0,Math.abs(front.x-a.x)-3):speed);
-        a.x=Math.min(93,Math.max(7,a.x+direction*travel));a.moving=travel>0;
+        // Soldiers share the road without body collision; attack range still
+        // decides when they stop to fight, rather than a queue behind allies.
+        a.x=Math.min(93,Math.max(7,a.x+direction*speed));a.moving=speed>0;
       }
     }
     b.units=b.units.filter(a=>a.hp>0||a.defeatedTicks>0);b.enemies=b.enemies.filter(a=>a.hp>0||a.defeatedTicks>0);
