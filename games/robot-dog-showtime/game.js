@@ -12,7 +12,7 @@ const els={main:$('mainScreen'),stage:$('stageScreen'),battle:$('battleScreen'),
 function readSave(){try{const raw=JSON.parse(localStorage.getItem(saveKey)||'{}');return{unlocked:Math.max(1,Math.min(30,Number(raw.unlocked)||1)),cleared:Array.isArray(raw.cleared)?raw.cleared.filter(n=>Number.isInteger(n)&&n>=1&&n<=30):[],drafts:raw.drafts&&typeof raw.drafts==='object'?raw.drafts:{}}}catch{return{unlocked:1,cleared:[],drafts:{}}}}
 function persist(){try{localStorage.setItem(saveKey,JSON.stringify(save))}catch{setStatus('Progress could not be saved in this browser. You can keep playing this stage.')}}
 function setStatus(text,bad=false){els.status.textContent=text;els.status.dataset.kind=bad?'error':'info'}
-function syncScreen(next){screen=next;document.body.dataset.screen=next;els.main.hidden=next!=='main';els.stage.hidden=next!=='stage';els.battle.hidden=next!=='battle';}
+function syncScreen(next){screen=next;document.body.dataset.screen=next;els.main.hidden=next!=='main';els.stage.hidden=next!=='stage';els.battle.hidden=next!=='battle';if(next==='battle')els.battle.querySelector('.battle-canvas')?.setAttribute('data-wp-logical-battle-canvas','')}
 function stageName(stage){return `Stage ${stage.id} · ${stage.arc}`}
 function renderMain(){const cleared=save.cleared.length;$('mainProgress').textContent=cleared?`${cleared} / 30 cleared · Stage ${save.unlocked} ready`:'Stage 1 · ready'}
 function setStageRange(range){activeStageRange=Math.max(0,Math.min(2,Number(range)||0));const first=activeStageRange*10+1,last=first+9;

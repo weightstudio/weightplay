@@ -83,17 +83,6 @@ html body.relic-playing #gamePanel.game-panel .relic-battle-content > :is(#pause
 html body.relic-playing #gamePanel.game-panel .relic-battle-content > #equipmentBtn { left:calc(12 * var(--relic-unit)); right:auto; width:auto!important; max-width:calc(180 * var(--relic-unit)); }
 html body.relic-playing #gamePanel.game-panel .relic-battle-content > #pauseBtn { right:calc(12 * var(--relic-unit)); left:auto; width:calc(44 * var(--relic-unit))!important; }
 .battle-controls { position:absolute; inset:0; pointer-events:none; z-index:7; direction:ltr; }
-.move-stick {
-  position:absolute; left:calc(22 * var(--relic-unit)); bottom:calc(22 * var(--relic-unit));
-  width:calc(118 * var(--relic-unit)); height:calc(118 * var(--relic-unit));
-  border:2px solid #c6d9ba; border-radius:50%; background:rgba(10,35,38,.62);
-  box-shadow:inset 0 0 0 9px #b5d8c414,0 4px 20px #001c2480;
-  pointer-events:auto; touch-action:none; user-select:none;
-}
-.stick-cross { position:absolute; inset:0; display:grid; place-items:center; font-size:calc(90 * var(--relic-unit)); color:#d5e9c545; }
-.stick-knob { position:absolute; width:48%; height:48%; left:26%; top:26%; border:2px solid #e6e8b6; border-radius:50%; background:linear-gradient(145deg,#609d8c,#164e50); box-shadow:0 4px 10px #0006; }
-.stick-caption { position:absolute; width:100%; text-align:center; bottom:calc(6 * var(--relic-unit)); color:#e8f6df; font:700 calc(10 * var(--relic-unit))/1 system-ui; pointer-events:none; }
-.move-stick.is-active { border-color:#62ffe2; background:rgba(12,70,65,.8); }
 .battle-skills { position:absolute; right:calc(16 * var(--relic-unit)); bottom:calc(24 * var(--relic-unit)); display:flex; gap:calc(10 * var(--relic-unit)); align-items:flex-end; }
 .battle-skills button {
   position:relative; overflow:visible;
@@ -152,7 +141,6 @@ html body.relic-playing #gamePanel.game-panel .equipment-dialog .backpack-action
 html body.relic-playing #gamePanel.game-panel .equipment-dialog :is(.stat-row,.backpack-empty) { font-size:calc(13 * var(--relic-unit)); line-height:1.6; }
 @keyframes relic-panel-enter { from { opacity:.2; transform:translateY(8px); } to { opacity:1; transform:none; } }
 @media (max-height:560px) and (orientation:landscape) {
-  .move-stick { width:calc(100 * var(--relic-unit)); height:calc(100 * var(--relic-unit)); bottom:calc(12 * var(--relic-unit)); }
   .battle-skills { bottom:calc(12 * var(--relic-unit)); }
   html body.relic-playing #gamePanel.game-panel .relic-battle-content #roomObjective { top:calc(12 * var(--relic-unit)); left:calc(150 * var(--relic-unit)); right:calc(70 * var(--relic-unit)); }
   .chain-meter { top:calc(56 * var(--relic-unit)); }

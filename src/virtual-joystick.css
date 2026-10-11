@@ -1,0 +1,38 @@
+/* WeightPlayJoystick 1.0.0 — one design for every game; dimensions are logical px. */
+.wp-virtual-joystick {
+  position: absolute;
+  box-sizing: border-box;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(207, 240, 255, .8);
+  border-radius: 50%;
+  background: rgba(17, 31, 46, .38);
+  box-shadow: inset 0 0 0 10px rgba(207, 240, 255, .08);
+  pointer-events: none;
+  user-select: none;
+  opacity: .55;
+  transition: opacity 100ms ease-out;
+  z-index: 5;
+}
+.wp-virtual-joystick[hidden] { display: none; }
+.wp-virtual-joystick.is-held { opacity: 1; }
+.wp-virtual-joystick > .wp-virtual-joystick-thumb {
+  box-sizing: border-box;
+  display: block;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0;
+  border: 2px solid #e5f8ff;
+  border-radius: 50%;
+  background: rgba(93, 193, 221, .8);
+  box-shadow: 0 2px 8px #10203180;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-virtual-joystick { transition: none; }
+}

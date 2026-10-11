@@ -53,7 +53,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 32;
+  const GAME_VERSION = 33;
   let combatRules;
   const INTERFACE_VERSION = 7;
   const saveKey = "weightplay_relic_hunters_v1";
@@ -1426,6 +1426,7 @@
   }
 
   function startGameLoop() {
+    syncJoystickAvailability();
     cancelAnimationFrame(state.gameLoopId);
     simulationAccumulator = 0;
     lastSimulationFrame = 0;
@@ -1448,6 +1449,7 @@
   }
 
   function suspendBackgroundBattle() {
+    joystick?.setEnabled(false);
     clearMovementInput();
     suspendAmuletConfirmation();
     suspendDraftRerollConfirmation();
@@ -1595,8 +1597,8 @@
 
   // Keyboard Movement Vector
   let keysPressed = {};
-  let moveVector = { x: 0, y: 0 };
-  let movePointerId = null;
+  let joystick = null;
+  let joystickViewport = '';
   let shootTimer = 0;
 
   // Safe read/write LocalStorage
@@ -1987,6 +1989,7 @@
   function syncFrameCover(name, active) {
     if (active) frameCovers.add(name); else frameCovers.delete(name);
     if (document.body.dataset.screen === 'battle') window.mountRelicHuntersFrame().activate('battle', {covered: frameCovers.size > 0});
+    syncJoystickAvailability();
   }
 
   function setResultModalActive(active) {
@@ -2176,6 +2179,7 @@
     mountPlayerHealth();
     document.body.dataset.screen = screen;
     if (screen !== 'battle') frameCovers.clear();
+    syncJoystickAvailability();
     for (const candidate of ["main", "stage", "battle"]) {
       document.body.classList.toggle(`wp-shell-${candidate}-active`, candidate === screen);
     }
@@ -2437,7 +2441,6 @@
     (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-label", pauseCopy.action));
     (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("title", pauseCopy.action));
     updatePauseDialogCopy();
-    if (nodes.moveStick) nodes.moveStick.setAttribute("aria-label", t("controlsGuide"));
     updateBattleControls();
     updateDiamondShopUI();
     renderTrainingPanel();
@@ -3936,6 +3939,7 @@
 
     const keyboardMoving = moveX !== 0 || moveY !== 0;
     const previousPlayerX = state.playerX, previousPlayerY = state.playerY;
+    const moveVector = joystick.getVector();
     if (!keyboardMoving && (moveVector.x !== 0 || moveVector.y !== 0)) {
       moveX = moveVector.x;
       moveY = moveVector.y;
@@ -4172,6 +4176,13 @@
     const ctx = nodes.gameCanvas.getContext("2d");
     const box = nodes.gameCanvas.getBoundingClientRect();
     if (box.width > 0 && box.height > 0) {
+      // The shared frame can settle its logical envelope after scene entry.
+      // Refresh the idle dock only on a real viewport geometry change.
+      const viewport = `${box.width}:${box.height}`;
+      if (joystickViewport !== viewport) {
+        joystickViewport = viewport;
+        joystick?.refresh();
+      }
       const nextHeight = Math.round(ARENA_WIDTH * box.height / box.width);
       if (nodes.gameCanvas.height !== nextHeight) nodes.gameCanvas.height = nextHeight;
       battleViewHeight = nextHeight;
@@ -4701,7 +4712,7 @@
     if (!battleInputReady() || state.dodgeCooldownTicks > 0) return false;
     const x = Number(Boolean(keysPressed.d || keysPressed.ArrowRight)) - Number(Boolean(keysPressed.a || keysPressed.ArrowLeft));
     const y = Number(Boolean(keysPressed.s || keysPressed.ArrowDown)) - Number(Boolean(keysPressed.w || keysPressed.ArrowUp));
-    const input = x || y ? {x,y} : moveVector;
+    const input = x || y ? {x,y} : joystick.getVector();
     const magnitude = Math.hypot(input.x,input.y);
     state.dodgeDirection = magnitude > .01 ? {x:input.x/magnitude,y:input.y/magnitude} : {...state.facing};
     state.dodgeTicks = 14;
@@ -4802,9 +4813,16 @@
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     });
     nodes.battleControls = make('div', 'battleControls', 'battle-controls');
-    nodes.battleControls.innerHTML = '<div id="moveStick" class="move-stick" role="group"><span class="stick-cross" aria-hidden="true">＋</span><span id="stickKnob" class="stick-knob" aria-hidden="true"></span><span class="stick-caption" data-ui="moveLabel"></span></div><div class="battle-skills"><button type="button" id="dodgeButton" aria-keyshortcuts="Shift"><b aria-hidden="true">➤</b><span></span></button><button type="button" id="pulseButton" aria-keyshortcuts="Space"><b aria-hidden="true">◆</b><span></span></button></div>';
+    nodes.battleControls.innerHTML = '<div class="battle-skills"><button type="button" id="dodgeButton" aria-keyshortcuts="Shift"><b aria-hidden="true">➤</b><span></span></button><button type="button" id="pulseButton" aria-keyshortcuts="Space"><b aria-hidden="true">◆</b><span></span></button></div>';
     layout.append(nodes.battleControls);
-    nodes.moveStick = $('moveStick'); nodes.stickKnob = $('stickKnob');
+    joystick = window.WeightPlayJoystick.create({
+      surface: nodes.gameCanvas,
+      container: nodes.gameCanvas.parentElement,
+      mode: 'fixed',
+      anchor: { left: 88, bottom: 88 },
+      enabled: false,
+      isEnabled: battleInputReady,
+    });
     nodes.pulseButton = $('pulseButton'); nodes.dodgeButton = $('dodgeButton');
     nodes.chainMeter = make('div', 'chainMeter', 'chain-meter');
     layout.append(nodes.chainMeter);
@@ -4825,15 +4843,15 @@
     });
   }
 
-  // Keyboard and fixed-origin analog joystick share a direction vector.
+  function syncJoystickAvailability() {
+    joystick?.setEnabled(document.body.dataset.screen === 'battle' && battleInputReady()
+      && frameCovers.size === 0 && windowFocused && !document.hidden);
+  }
+
+  // Pointer ownership, dead zone and visuals belong to WeightPlayJoystick.
   function clearMovementInput() {
     keysPressed = {};
-    moveVector = { x: 0, y: 0 };
-    const pointer = movePointerId;
-    movePointerId = null;
-    if (pointer !== null && nodes.moveStick?.hasPointerCapture?.(pointer)) nodes.moveStick.releasePointerCapture(pointer);
-    nodes.stickKnob?.style.removeProperty('transform');
-    nodes.moveStick?.classList.remove('is-active');
+    joystick?.reset();
   }
 
   function setupInputs() {
@@ -4890,40 +4908,14 @@
       if (document.hidden) suspendBackgroundBattle();
       else if (!manualPauseActive) resumeBackgroundBattle();
     });
-    window.addEventListener("pagehide", suspendBackgroundBattle);
+    window.addEventListener("pagehide", event => {
+      suspendBackgroundBattle();
+      if (!event.persisted) joystick?.destroy();
+    });
     window.addEventListener("pageshow", () => {
       if (!manualPauseActive) resumeBackgroundBattle();
     });
 
-    const stick = nodes.moveStick;
-    function updateStick(event) {
-      const rect = stick.getBoundingClientRect();
-      const radius = rect.width * 0.32;
-      const dx = event.clientX - (rect.left + rect.width / 2);
-      const dy = event.clientY - (rect.top + rect.height / 2);
-      const distance = Math.hypot(dx, dy);
-      const magnitude = Math.min(1, distance / radius);
-      const strength = magnitude < 0.12 ? 0 : (magnitude - 0.12) / 0.88;
-      moveVector = distance ? { x: dx / distance * strength, y: dy / distance * strength } : { x: 0, y: 0 };
-      nodes.stickKnob.style.transform = `translate(${distance ? dx / distance * magnitude * 64 : 0}%, ${distance ? dy / distance * magnitude * 64 : 0}%)`;
-    }
-    stick.addEventListener('pointerdown', event => {
-      if (!battleInputReady() || movePointerId !== null || event.button !== 0) return;
-      movePointerId = event.pointerId;
-      stick.setPointerCapture(event.pointerId);
-      stick.classList.add('is-active');
-      updateStick(event);
-      event.preventDefault();
-    });
-    stick.addEventListener('pointermove', event => {
-      if (movePointerId !== event.pointerId) return;
-      updateStick(event); event.preventDefault();
-    });
-    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
-      stick.addEventListener(type, event => {
-        if (event.pointerId === movePointerId) clearMovementInput();
-      });
-    }
   }
 
   // Init handler
@@ -5572,7 +5564,7 @@
             walking: { ...state.playerGait },
             camera: { ...battleCamera, zoom: battleZoom, height: battleViewHeight },
             movingEnemies: state.enemies.filter(enemy => (enemy.gait?.weight || 0) > .1).length,
-            moveVector: { ...moveVector },
+            moveVector: { ...joystick.getVector() },
             pulseCooldownTicks: state.pulseCooldownTicks,
             pulseCooldownTotalTicks: state.pulseCooldownTotalTicks,
             dodgeTicks: state.dodgeTicks,

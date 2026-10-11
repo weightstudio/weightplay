@@ -47,3 +47,6 @@ body[data-wp-game-id="traffic-jam-diner"] #result-panel[hidden]{display:none!imp
 #app[data-game="traffic-jam-diner"] .shop-card .primary{color:#552f15!important}
 
 @layer wp-frame-contract{html body[data-wp-game-id="traffic-jam-diner"] [data-wp-frame="2"] [data-wp-frame-logical-header="battle"] .wp-frame-header.wp-frame-header{--wp-frame-physical-control-size:max(48px,calc(48px / min(var(--wp-battle-canvas-scale,1),1)))!important;--wp-frame-play-header-height:var(--wp-frame-physical-control-size)!important;--wp-frame-header-height:var(--wp-frame-physical-control-size)!important;--wp-frame-control-size:var(--wp-frame-physical-control-size)!important}}
+
+/* Keep route actions physically tappable after Battle Canvas scaling. */
+.route-actions button{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1))}

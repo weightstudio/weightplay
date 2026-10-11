@@ -20,7 +20,7 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src);
-defenseModuleUrl.search = '?v=26-passive';
+defenseModuleUrl.search = '?v=29-combat-motion';
 const defenseModule = import(defenseModuleUrl.href).catch(() => null);
 let Defense3D, defense3D = null, animationFrame = 0;
 const movementKeys = new Set();
@@ -967,6 +967,7 @@ function makeState(levelIndex) {
     talentPointsEarned: 0,
     specialization: profile.specialization,
     shootPulse: 0, impactPulse: 0, fireWallTimer: 0, elementalTick: 0,
+    lastShotTime: -10, shotSequence: 0,
     stormCharge: 0, bastionTimer: 0,
     hero: {
       x: W / 2,
@@ -1520,6 +1521,9 @@ function fireProjectile(entry, xOffset, yOffset, vx, options = {}) {
   const weapon = entry.weapon;
   const damageRoll = rollWeaponDamage(entry);
   state.shootPulse = .13;
+  // One gesture per firing instant, including multishot/volley bursts.
+  if (state.lastShotTime !== state.time) state.shotSequence += 1;
+  state.lastShotTime = state.time;
   state.projectiles.push({
     x: state.hero.x + xOffset,
     y: state.hero.y - 72 + yOffset,
@@ -2074,7 +2078,7 @@ function triggerChainReaction(projectile, primaryEnemy) {
   const chainDamage = getDamageToEnemy(target, Math.max(1, Math.ceil(projectile.damage * Math.max(state.chainDamage || 0, rank * .4) + state.stormCharge * 2)));
   damageEnemy(target, chainDamage, false, target.x, target.y);
   if (getTalentLevel('shock')) {target.slowTimer=1.5;target.slowMultiplier=1-getTalentLevel('shock')*.2;}
-  state.hits.push({x:previous.x,y:previous.y,toX:target.x,toY:target.y,lightning:true,life:.28,maxLife:.28});
+  state.hits.push({x:previous.x,y:previous.y,toX:target.x,toY:target.y,lightning:true,life:.42,maxLife:.42});
   previous=target;
   }
   state.stormCharge=0;

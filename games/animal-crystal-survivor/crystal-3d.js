@@ -958,6 +958,12 @@ export class Crystal3D {
     return { x: (this.vector.x + 1) / 2, y: (1 - this.vector.y) / 2 };
   }
 
+  playerHeadPosition() {
+    // Anchor above the ranger's head; its world matrix includes scale and finales.
+    this.vector.set(0, 1.85, 0).applyMatrix4(this.hero.matrixWorld).project(this.camera);
+    return { x: (this.vector.x + 1) / 2, y: (1 - this.vector.y) / 2 };
+  }
+
   metrics() {
     return { disposed: this.disposed, contextLost: this.contextLost,
       geometries: this.renderer?.info.memory.geometries || 0,

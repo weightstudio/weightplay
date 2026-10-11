@@ -26,8 +26,8 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v43";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
+  const GAME_VERSION = "v48";
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20261011-crystal-head-health-v45", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -89,6 +89,7 @@
     const [explanation, continueLabel] = leaveText[locale] || leaveText.en;
     clearInput();
     state.mode = "paused";
+    joystick.setEnabled(false);
     runToken += 1;
     const dialog = document.createElement("dialog");
     dialog.className = "crystal-render-error crystal-leave-dialog";
@@ -118,6 +119,7 @@
   function showRendererFailure() {
     clearInput();
     state.mode = "render-error";
+    joystick.setEnabled(false);
     runToken += 1;
     (__wpNotifyMeasurement(), rendererDialog?.remove());
     const dialog = document.createElement("dialog");
@@ -1119,8 +1121,14 @@
   let charmConfirmTimer = 0;
   let lastFrame = 0;
   let battlePanelMetrics = null;
-  let activePointerId = null;
-  const joystick = { x: 0, y: 0, originX: 0, originY: 0, radius: 48, node: null };
+  const joystick = window.WeightPlayJoystick.create({
+    surface: canvas,
+    container: canvas.parentElement,
+    mode: "fixed",
+    anchor: { left: 76, bottom: 76 },
+    enabled: false,
+    isEnabled: () => state.mode === "running",
+  });
   let runToken = 0;
   let battleSuspended = false;
   let resultActionClaimed = false;
@@ -1779,6 +1787,7 @@
       if (!force && canvas.width === width && canvas.height === height) return false;
       canvas.width = renderCanvas.width = width;
       canvas.height = renderCanvas.height = height;
+      joystick.refresh();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       backingScale = ratio;
       if (["upgrade", "paused", "result"].includes(state.mode)) {
@@ -1838,10 +1847,7 @@
 
   function clearInput() {
     keys.clear();
-    resetJoystick();
-    const pointerId = activePointerId;
-    activePointerId = null;
-    if (pointerId !== null && canvas.hasPointerCapture?.(pointerId)) canvas.releasePointerCapture(pointerId);
+    joystick.reset();
   }
 
   function resetFrameClock() {
@@ -2395,7 +2401,7 @@
     if (keys.has("arrowup") || keys.has("w")) dy -= 1;
     if (keys.has("arrowdown") || keys.has("s")) dy += 1;
     const keyboardMoving = Boolean(dx || dy);
-    if (!keyboardMoving) { dx = joystick.x; dy = joystick.y; }
+    if (!keyboardMoving) ({ x: dx, y: dy } = joystick.getVector());
     const strength = keyboardMoving ? 1 : Math.min(1, Math.hypot(dx, dy));
     if (crystal3D?.movementVector) ({ x: dx, y: dy } = crystal3D.movementVector(dx, dy));
     if (dx || dy) {
@@ -3331,7 +3337,7 @@
   }
 
   function renderHud(force = false) {
-    ensureJoystick().hidden = state.mode !== "running";
+    joystick.setEnabled(state.mode === "running");
     const hpRatio = Math.max(0, state.player.hp / state.player.maxHp);
     const hpMeter = document.getElementById("healthMeter");
     if (hpMeter && hpMeter.dataset.value !== `${locale}|${state.player.hp}|${state.player.maxHp}`) {
@@ -3474,6 +3480,7 @@
       syncCanvasBackingStore();
       if (!crystal3D.render(state, renderCanvas.width, renderCanvas.height, performance.now())) return;
       displayCtx.drawImage(crystal3D.canvas, 0, 0);
+      positionPlayerHealth();
       draw3DAnnotations();
       return;
     }
@@ -3512,6 +3519,17 @@
     state.floaters.forEach(drawFloater);
     ctx.restore();
     displayCtx.drawImage(renderCanvas, 0, 0);
+  }
+
+  function positionPlayerHealth() {
+    const meter = document.getElementById("healthMeter");
+    if (!meter) return;
+    const head = crystal3D.playerHeadPosition();
+    meter.hidden = !Number.isFinite(head.x) || !Number.isFinite(head.y);
+    if (meter.hidden) return;
+    // The HUD shares the arena's logical coordinate space, not the backing pixels.
+    meter.style.left = `${canvas.offsetLeft + head.x * canvas.clientWidth}px`;
+    meter.style.top = `${canvas.offsetTop + head.y * canvas.clientHeight}px`;
   }
 
   function draw3DAnnotations(ctx = displayCtx) {
@@ -3688,80 +3706,6 @@
     ctx.restore();
   }
 
-  function ensureJoystick() {
-    const host = canvas.parentElement;
-    if (!joystick.node) {
-      joystick.node = document.createElement("div");
-      joystick.node.className = "crystal-joystick";
-      joystick.node.setAttribute("aria-hidden", "true");
-      joystick.node.appendChild(document.createElement("span"));
-      host.appendChild(joystick.node);
-    }
-    return joystick.node;
-  }
-
-  function resetJoystick() {
-    joystick.x = joystick.y = 0;
-    if (joystick.node) {
-      joystick.node.hidden = true;
-      joystick.node.classList.remove("is-held");
-      joystick.node.style.removeProperty("left");
-      joystick.node.style.removeProperty("top");
-      joystick.node.firstElementChild.style.transform = "translate(0, 0)";
-    }
-    if (state.player) { state.player.tx = state.player.x; state.player.ty = state.player.y; }
-  }
-
-  function updateJoystick(event) {
-    if (state.mode !== "running") { clearInput(); return; }
-    if (event.cancelable) event.preventDefault();
-    const dx = event.clientX - joystick.originX;
-    const dy = event.clientY - joystick.originY;
-    const distance = Math.hypot(dx, dy);
-    const fraction = Math.min(1, distance / joystick.radius);
-    const strength = Math.max(0, (fraction - 0.12) / 0.88);
-    joystick.x = distance ? dx / distance * strength : 0;
-    joystick.y = distance ? dy / distance * strength : 0;
-    const scale = Math.min(1, joystick.radius / (distance || 1));
-    joystick.node.firstElementChild.style.transform = `translate(${dx * scale / joystick.scale}px, ${dy * scale / joystick.scale}px)`;
-  }
-
-  canvas.addEventListener("pointerdown", (event) => {
-    if (state.mode !== "running" || event.isPrimary === false || (event.button ?? 0) !== 0 || activePointerId !== null) return;
-    const host = canvas.parentElement;
-    ensureJoystick();
-    const rect = host.getBoundingClientRect();
-    joystick.scale = rect.width / host.offsetWidth || 1;
-    joystick.radius = 48 * joystick.scale;
-    joystick.originX = event.clientX;
-    joystick.originY = event.clientY;
-    // Keep the complete base and thumb inside the arena, even near an edge.
-    const inset = 72;
-    const width = rect.width / joystick.scale, height = rect.height / joystick.scale;
-    const clampCenter = (value, extent) => Math.max(Math.min(inset, extent / 2), Math.min(extent - inset, value));
-    joystick.node.style.left = `${clampCenter((event.clientX - rect.left) / joystick.scale, width)}px`;
-    joystick.node.style.top = `${clampCenter((event.clientY - rect.top) / joystick.scale, height)}px`;
-    joystick.node.classList.add("is-held");
-    joystick.node.hidden = false;
-    activePointerId = event.pointerId;
-    canvas.setPointerCapture?.(event.pointerId);
-    updateJoystick(event);
-  });
-  canvas.addEventListener("pointermove", (event) => {
-    if (activePointerId === event.pointerId) updateJoystick(event);
-  });
-  const releasePointer = (event) => {
-    if (activePointerId !== event.pointerId) return;
-    const pointerId = activePointerId;
-    activePointerId = null;
-    resetJoystick();
-    if (canvas.hasPointerCapture?.(pointerId)) canvas.releasePointerCapture(pointerId);
-  };
-  window.addEventListener("pointerup", releasePointer);
-  window.addEventListener("pointercancel", releasePointer);
-  canvas.addEventListener("lostpointercapture", releasePointer);
-  window.addEventListener("resize", clearInput, { passive: true });
-  window.addEventListener("orientationchange", clearInput, { passive: true });
   window.addEventListener("keydown", (event) => {
     if ((state.presentation || state.mode === "result") && event.repeat && ["Enter", " "].includes(event.key)) {
       event.preventDefault();return;
@@ -3776,6 +3720,8 @@
     keys.delete(event.key.toLowerCase());
   });
   window.addEventListener("blur", clearInput);
+  window.addEventListener("resize", clearInput, { passive: true });
+  window.addEventListener("orientationchange", clearInput, { passive: true });
   window.addEventListener("pagehide", () => {
     clearInput();
     battleSuspended = true;

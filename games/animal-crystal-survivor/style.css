@@ -3,36 +3,23 @@
 @import url("./style-v31-base.css?v=20260924-interface7-base");
 @import url("./interface-7-cleanup.css?v=20260929-crystal-interface8-v38");
 
-/* Floating movement stick: contained by the existing uniformly scaled arena. */
-.crystal-joystick {
+/* Player health follows the projected head; no bottom-corner health panel. */
+#gamePanel .player-health {
+  --health: 100%;
   position: absolute;
-  left: 76px;
-  top: calc(100% - 146px);
-  box-sizing: border-box;
-  opacity: .55;
-  transition: opacity 100ms ease-out;
-  width: 120px;
-  height: 120px;
-  margin: -60px 0 0 -60px;
-  border: 2px solid rgba(207, 240, 255, .8);
-  border-radius: 50%;
-  background: rgba(17, 31, 46, .38);
-  box-shadow: inset 0 0 0 10px rgba(207, 240, 255, .08);
+  z-index: 3;
+  width: 62px;
+  height: 10px;
+  padding: 0;
+  border: 1px solid #f3d7af;
+  border-radius: 3px;
+  background: #101e25ed;
+  box-shadow: 0 2px 6px #0008;
+  transform: translate(-50%, calc(-100% - 7px));
   pointer-events: none;
-  z-index: 5;
-  display: grid;
-  place-items: center;
 }
-.crystal-joystick[hidden] { display: none; }
-.crystal-joystick span {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid #e5f8ff;
-  background: rgba(93, 193, 221, .8);
-  box-shadow: 0 2px 8px #10203180;
-}
-
-#gamePanel .canvas-wrap { position: relative; }
-.crystal-joystick.is-held { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .crystal-joystick { transition: none; } }
+#gamePanel .player-health[hidden] { display: none; }
+#gamePanel .player-health .health-track { height: 8px; }
+#gamePanel .player-health #hpText { font-size: 8px; line-height: 8px; }
+#gamePanel .player-health.critical { border-color: #ff7669; }
+#gamePanel .player-health.critical .health-track i { background: #ff504d; }
