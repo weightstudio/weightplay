@@ -66,7 +66,7 @@
 
   <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
-      <a class="return" href="/kids/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay Kids">&#8592;</a>
+      <a class="return" href="/kids/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay">&#8592;</a>
       <strong data-t="title">Panko's Tangram Trail</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
@@ -82,7 +82,7 @@
     </section>
     <!-- GUIDE-START -->
     <section class="game-page-info game-page-info-static" aria-label="Panko's Tangram Trail game guide">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Panko's Tangram Trail</h2><p>Fit all seven classic pieces into each animal silhouette.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Puzzle</span><span>Spatial</span><span>Animal</span></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Panko's Tangram Trail</h2><p>Fit all seven classic pieces into each animal silhouette.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Tangram</span><span>Spatial Puzzle</span><span>Animal Silhouettes</span></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked animal shape from the Stage rail.</li><li>Drag a colored piece onto the matching faint outline.</li><li>Tap a piece to rotate it in 45-degree steps.</li><li>Place all seven pieces correctly to complete the shape.</li><li>Finish a shape to unlock the next of 30 puzzles.</li></ol></div>
         <div class="game-info-section"><h3>Controls and Rules</h3><p>Use touch or a mouse to drag pieces. Tap or keyboard-activate a piece to rotate it. A piece snaps only when both its center and angle match the target, so every completed animal uses the real seven-piece tangram arrangement.</p></div>
@@ -90,6 +90,7 @@
         <div class="game-info-section"><h3>Campaign</h3><p>Thirty authored silhouettes introduce turtles, cats, birds, foxes, fish, rabbits, and increasingly compact arrangements. Progress is saved in this browser.</p></div>
         <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Recommended for ages 9+ and family puzzle play. The Kids game contains no advertising, account requirement, score report, or formal assessment.</p></div>
         <div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>Must every piece be used?</dt><dd>Yes. Every puzzle is completed with all seven tangram pieces.</dd></div><div><dt>Why did a piece not snap?</dt><dd>Its center or rotation does not yet match the faint target.</dd></div><div><dt>Are hints limited?</dt><dd>No. Hint places one unresolved piece correctly.</dd></div><div><dt>Can I replay a shape?</dt><dd>Yes. Every unlocked shape remains available from Stages.</dd></div></dl></div>
+              <div class="game-info-section game-info-related-section"><h3>Related Games</h3><p>Practice spatial planning in another way with these games:</p><div class="game-info-related"><a class="game-info-related-card" href="/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Color Link Garden</strong><span>Connect matching flower seeds across 30 garden puzzles without crossing paths.</span></span></a><a class="game-info-related-card" href="/games/animal-block-grove/"><img src="/assets/interface7-redrawn/animal-block-grove.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Animal Block Grove</strong><span>Place woodland blocks across 30 missions with Moss Shell Taro and Rainbow Hop Mimi.</span></span></a></div></div>
       </div>
     </section>
     <!-- GUIDE-END -->
@@ -121,10 +122,10 @@
   <script src="levels.js"></script>
   <script src="locales.js"></script>
   <script src="game.js?v=20260729-public1"></script>
-  <script src="../../src/game-page-info.js?v=20260923-tangram-seo130"></script>
+  <script src="../../src/game-page-info.js?v=20261011-tangram-static-guide-140-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-  <script data-wp-kids-return-owner>const kidsReturn=document.querySelector(".main-header .return");if(kidsReturn){kidsReturn.href="/kids/";kidsReturn.dataset.wpReturn="main";kidsReturn.setAttribute("aria-label","Return to WeightPlay Kids");}</script>
+  <script data-wp-kids-return-owner>const kidsReturn=document.querySelector(".main-header .return");if(kidsReturn){kidsReturn.href="/kids/";kidsReturn.dataset.wpReturn="main";kidsReturn.setAttribute("aria-label",window.TANGRAM_LOCALES?.[document.documentElement.lang]?.returnLobby||"Return to WeightPlay");}</script>
   <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-tangram"});},{once:true});</script>
 </body>
 </html>
