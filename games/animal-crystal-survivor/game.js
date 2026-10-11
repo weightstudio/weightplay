@@ -1,4 +1,4 @@
-/* Dungeon Venture v42 Interface 8 stable Stage cube markers on the retained v31 core + Interface 7 runtime.
+/* Dungeon Venture v43 Interface 8 virtual joystick on the retained v31 core + Interface 7 runtime.
    Parser-order loading keeps the game bootstrap ahead of later shared runtimes. */
-document.write('<script src="game-v31-base.js?v=20260930-crystal-interface8-v42-stage-badge"><\/script>');
+document.write('<script src="game-v31-base.js?v=20261011-crystal-joystick-v43"><\/script>');
 document.write('<script src="interface-7-compat.js?v=20260924-interface7-cleanup"><\/script>');

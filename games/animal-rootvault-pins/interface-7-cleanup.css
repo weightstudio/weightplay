@@ -256,3 +256,109 @@ body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="9
   width: 20px;
   height: 20px;
 }
+
+/* 2026-10-11: Rootvault content tracks. No shared header/control override. */
+body[data-wp-game-id="animal-rootvault-pins"] .battle-live {
+  grid-template-rows: 48px 40px minmax(0, 1fr) 44px 64px;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .battle-live > .objective-row { grid-row: 2; }
+body[data-wp-game-id="animal-rootvault-pins"] .battle-live > .chamber-board { grid-row: 3; }
+body[data-wp-game-id="animal-rootvault-pins"] .battle-live > .feedback {
+  grid-row: 4; position: relative; inset: auto; z-index: 1;
+  height: 44px; margin: 0; padding: 4px 12px; border-radius: 0;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 12px; line-height: 1.35; overflow: hidden;
+  background: #082b26; border-block: 1px solid #365e4f;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .battle-live > .battle-actions {
+  grid-row: 5; padding: 6px 10px; background: #081f1e;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .rv-world {
+  position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .chamber-board {
+  background-image: linear-gradient(#08292260,#051c17a0),url("../../assets/animal-rootvault-pins/animal-rootvault-pins-vault-bg.webp");
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room {
+  width: 78px; height: 76px; border-radius: 8px;
+  background: linear-gradient(135deg,#49745b,#153a30);
+  border: 2px solid #b6aa76; box-shadow: 0 5px 0 #102e27,0 8px 16px #0008;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room.sanctuary {
+  border-color: #82f3cc; box-shadow: 0 5px 0 #164c40,0 0 18px #4de7bc66;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room.void {
+  border-color: #9877ba; background: #251e39;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room > .room-label {
+  top: auto; bottom: -1px; left: 0; right: 0; text-align: center;
+  font-size: 11px; line-height: 16px; height: 16px;
+  color: #f5ecc7; background: #0b211cd9; font-weight: 800; border-radius: 0 0 5px 5px;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces { inset: 0 3px 14px; }
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="1"] { grid-template-columns: 46px; grid-auto-rows: 46px; }
+body[data-wp-game-id="animal-rootvault-pins"] .room > .pieces[data-item-count="1"] > .piece { width: 46px; height: 46px; }
+body[data-wp-game-id="animal-rootvault-pins"] .chamber-board[data-rv3d="ready"] .room {
+  background: transparent; border-color: transparent; box-shadow: none;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .chamber-board[data-rv3d="ready"] .room > .pieces,
+body[data-wp-game-id="animal-rootvault-pins"] .chamber-board[data-rv3d="ready"] > .channel { visibility: hidden; }
+body[data-wp-game-id="animal-rootvault-pins"] .pin {
+  width: 76px; height: 44px; min-height: 44px; display: grid; place-items: end center;
+  border: 0; border-radius: 7px; background: transparent;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .pin-art {
+  display: grid; place-items: center; width: 72px; height: 28px;
+  border: 1px solid #ffe8a6; border-radius: 5px;
+  color: #2e2514; font-size: 11px; font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg,#ffdf83,#c28c3e);
+  filter: none; box-shadow: 0 3px 0 #765c32,0 4px 9px #0009;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .pin.selected .pin-art {
+  color: #032922; background: #a3ffe0; border-color: white;
+  box-shadow: 0 3px 0 #25876d,0 0 15px #79ffd399;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .pin.locked .pin-art {
+  color: #efe8ff; background: #614a7c; border-color: #c4a6dc;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .pin.pulled { opacity: .35; }
+body[data-wp-game-id="animal-rootvault-pins"] .pin.pulled .pin-art {
+  color: #bcdbcd; background: #26473e; border-color: #4d6b60; box-shadow: none;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .pin[data-safe-hint="true"]:not(.selected) .pin-art {
+  outline: 2px solid #fbefb4; outline-offset: 3px;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card {
+  background: linear-gradient(120deg,#123e35f0,#081f1de8),url("../../assets/animal-rootvault-pins/animal-rootvault-pins-vault-bg.webp") center/cover;
+  border-color: #659d83;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card[data-chapter="1"] { border-bottom: 5px solid #59c7db; }
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card[data-chapter="2"] { border-bottom: 5px solid #b092d8; }
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card[data-chapter="3"] { border-bottom: 5px solid #edac65; }
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card[data-chapter="4"] { border-bottom: 5px solid #e3ce82; }
+body[data-wp-game-id="animal-rootvault-pins"] .stage-card[data-chapter="5"] { border-bottom: 5px solid #89d5a7; }
+body[data-wp-game-id="animal-rootvault-pins"] .upgrade-list { grid-template-columns: minmax(0,1fr); gap: 12px; }
+body[data-wp-game-id="animal-rootvault-pins"] .upgrade {
+  position: relative; min-height: 132px; padding: 16px 16px 16px 82px;
+  background: linear-gradient(115deg,#1d4b3c,#102f28); border-color: #587d60;
+  gap: 6px; border-radius: 12px;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .upgrade > .piece {
+  position: absolute; left: 18px; top: 24px; width: 52px; height: 52px; margin: 0;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .upgrade small { font-size: 13px; line-height: 1.35; }
+body[data-wp-game-id="animal-rootvault-pins"] .upgrade strong { font-size: 17px; }
+body[data-wp-game-id="animal-rootvault-pins"] .rv-mastery {
+  display: block; color: #ffd977; letter-spacing: 8px; font-size: 28px; line-height: 36px; margin: 6px 0;
+}
+body[data-wp-game-id="animal-rootvault-pins"] .result-card.fail .rv-mastery { color: #92a69d; }
+body[data-wp-game-id="animal-rootvault-pins"] .result-card { border-color: #b6a26a; background: linear-gradient(140deg,#174a3e,#0a2420); }
+@media (max-height: 500px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-rootvault-pins"] .battle-live { grid-template-rows: 48px 32px minmax(0,1fr) 44px 64px; }
+  body[data-wp-game-id="animal-rootvault-pins"] .result-card { overflow-y: auto; align-content: start; }
+  body[data-wp-game-id="animal-rootvault-pins"] .rv-mastery { grid-column: 2; grid-row: 3; margin: 0; font-size: 20px; line-height: 24px; }
+  body[data-wp-game-id="animal-rootvault-pins"] .result-card > p { grid-row: 4; }
+  body[data-wp-game-id="animal-rootvault-pins"] .result-card > .result-stats { grid-row: 5; }
+  body[data-wp-game-id="animal-rootvault-pins"] .result-card > .modal-actions { grid-row: 6; }
+  body[data-wp-game-id="animal-rootvault-pins"] .result-card { grid-template-rows: 18px 34px 24px auto 54px 48px; }
+}

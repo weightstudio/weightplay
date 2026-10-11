@@ -41,7 +41,7 @@ button {
   min-height: 100vh;
   background:
     linear-gradient(#07305da8, #061a36df),
-    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover fixed;
+    url("../../assets/animal-skybridge-rivals/cover-v26.webp") center/cover fixed;
 }
 .main-screen {
   width: min(100%, 920px);
@@ -915,3 +915,29 @@ button {
     align-self: start;
   }
 }
+
+/* v26: game-owned live content; shared frame/control geometry stays canonical. */
+.arena-wrap { background: #b9dfe8; border-color: #98d8df; }
+.race-ribbon { position: absolute; pointer-events: none; top: 12px; inset-inline: 18px; height: 7px; border-radius: 5px; background: #17374866; box-shadow: 0 1px 0 #ffffff85; }
+.race-ribbon::after { content: '⚑'; position: absolute; inset-inline-end: -4px; top: -7px; color: #fff; font-size: 21px; text-shadow: 0 1px 3px #173748; }
+.rank-runner { position: absolute; left: var(--progress, 0%); top: -4px; width: 15px; height: 15px; border: 2px solid #fff; border-radius: 50%; background: #20d9eb; box-shadow: 0 2px 4px #23445a77; transition: left .12s linear; }
+.rank-runner[data-racer="1"] { background: #ffbe46; top: -2px; }
+.rank-runner[data-racer="2"] { background: #63df98; top: 0; }
+.rank-runner[data-racer="3"] { background: #b992ff; top: 2px; }
+.rank-runner[data-racer="0"] { z-index: 2; width: 18px; height: 18px; }
+.rank-runner b { display: none; }
+.race-cue { position: absolute; left: 50%; top: 25%; transform: translate(-50%,8px); opacity: 0; pointer-events: none; max-width: 88%; padding: 8px 14px; border: 1px solid #e9fcff; border-radius: 9px; background: #153f50e8; color: #fff4b7; font-size: 17px; font-weight: 850; text-align: center; transition: opacity .16s, transform .16s; }
+.race-cue.visible { opacity: 1; transform: translate(-50%,0); }
+.arena-wrap .control-cue { left: 10px; bottom: 12px; transform: none; max-width: calc(100% - 154px); border-radius: 7px; padding: 5px 7px; font-size: 11px; line-height: 1.35; }
+.arena-wrap > #dash { overflow: hidden; isolation: isolate; }
+.arena-wrap > #dash::before { content: ''; position: absolute; z-index: -1; inset: 0; width: var(--charge,0%); background: #29b6c54d; transition: width .15s; }
+.arena-wrap > #dash.ready { background: #775016ed; }
+.stack-pop { animation: stack-pop .16s ease-out; }
+@keyframes stack-pop { from { color: #fff1a0; transform: scale(1.15); } to { transform: scale(1); } }
+.render-recovery { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 28px; color: white; background: #13283bec; text-align: center; }
+.render-recovery button { min-width: 150px; min-height: 48px; }
+.result-racer,.orla-portrait,.panko-portrait { background-size: contain !important; background-position: center !important; background-repeat: no-repeat; }
+.result-racer { background-image: url('../../assets/weightplay-character-spark-paw-fox-block-v1.webp'); }
+.orla-portrait { background-image: url('../../assets/weightplay-character-moon-cap-owl-block-v1.webp'); }
+.panko-portrait { background-image: url('../../assets/weightplay-character-drum-belly-panda-block-v1.webp'); }
+@media (prefers-reduced-motion:reduce) { .race-cue,.rank-runner { transition: none; } .stack-pop { animation: none; } }

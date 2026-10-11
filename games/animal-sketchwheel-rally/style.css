@@ -37,3 +37,33 @@
 @media(max-width:650px){
   .main-header.wp-main-shell-header > .wp-shell-main-title{font-size:13px!important;line-height:1.05!important}
 }
+
+/* v18: game-owned instrument panel and live 3D race surface. */
+.race-scene{border-color:#4b777d;background:#87bdb3;isolation:isolate}
+#raceRibbon{position:absolute;top:16px;left:18px;right:18px;height:5px;background:#193d4e55;border-radius:5px;direction:ltr;pointer-events:none}
+#raceRibbon i{position:absolute;width:11px;height:11px;border:2px solid #fff7d4;top:-3px;border-radius:3px;box-shadow:0 2px 5px #173b4b66;transition:left .1s linear}
+.player-marker{left:calc(var(--player,0%) * .97);background:#31a497;z-index:2}.rival-marker{left:calc(var(--rival,0%) * .97);background:#e4876b;transform:translateY(7px)}
+#coursePreview{position:absolute;top:35px;inset-inline:12px;display:flex;justify-content:center;gap:5px;pointer-events:none;flex-wrap:wrap}
+#coursePreview span{padding:4px 7px;border:1px solid #ffffff55;background:#163a49cf;color:#ecf8ee;border-radius:5px;font-size:11px;font-weight:700;transition:background .18s,opacity .18s}
+#coursePreview .current{background:#f7d27f;color:#203847;border-color:#fff0c2}#coursePreview .passed{opacity:.4}
+#momentum{position:absolute;bottom:48px;inset-inline-end:14px;font-size:11px;letter-spacing:.06em;font-weight:800;padding:5px 8px;border-radius:5px;background:#163b4ee8;color:#e2f8ed;pointer-events:none}
+#momentum.boosting{background:#ffe2a0;color:#2a4145}
+.feedback{bottom:12px;max-width:94%;font-size:12px;border:1px solid #bfe1d233;border-radius:8px;background:#122e3bed;min-height:30px}
+.draw-controls{background:linear-gradient(130deg,#172f3c,#10232f);border-color:#486775}
+.draw-copy strong{color:#ffdf94}.draw-copy span{line-height:1.5;color:#a8c7ce;font-variant-numeric:tabular-nums}
+#wheelPad{border:1px solid #82988c;border-radius:9px;background:#102b38;cursor:crosshair}
+.blueprints button{background:#213f4e;border-color:#4f6f79;transition:background .16s,border-color .16s,box-shadow .16s}
+.blueprints button[aria-pressed="true"]{border-color:#ffe29c;background:#3e524f;box-shadow:inset 0 0 0 2px #ffe29c}
+.blueprints button.recommended{border-color:#83f5da}.blueprints button:active{filter:brightness(1.25)}
+.blueprints span{border-color:#ffdf94}.shape.spike{background:#ffdf94}
+button:focus-visible,canvas:focus-visible{outline:3px solid #fff0b4;outline-offset:3px}
+.dialog-card,.result-card{background:linear-gradient(140deg,#234650,#122d3a);border-color:#c9d3ad}
+.modal-layer:not([hidden]){animation:rally-enter .18s ease-out}
+#renderRecovery[hidden]{display:none!important}
+@keyframes rally-enter{from{opacity:0}to{opacity:1}}
+@media(max-height:500px) and (orientation:landscape){#coursePreview{top:27px}#coursePreview span{font-size:10px;padding:2px 5px}#raceRibbon{top:10px}.feedback{bottom:5px;font-size:11px;padding:4px 8px;min-height:24px}#momentum{bottom:35px;padding:3px 6px}}
+@media(prefers-reduced-motion:reduce){.modal-layer:not([hidden]){animation:none}#raceRibbon i,.blueprints button,#coursePreview span{transition:none}}
+.battle-header>div:has(#battleChapter){display:none!important}
+.battle-live{grid-template-rows:48px 40px minmax(0,1fr) 176px}
+@media(max-width:650px){.battle-live{grid-template-rows:48px 38px minmax(0,1fr) 170px}}
+@media(max-height:500px) and (orientation:landscape){.battle-live{grid-template-rows:48px 28px minmax(0,1fr) 90px}}

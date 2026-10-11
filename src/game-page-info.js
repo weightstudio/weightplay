@@ -10882,11 +10882,11 @@
     "story": [],
     "systems": [
       "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
-      "Move with touch, mouse, WASD or arrow keys. One point per adventure level. Max each parent to continue. New element paths open at levels 11 and 21. Equip one pet. Adventure XP is awarded after battle; this level persists between runs. Free reset returns all talent points."
+      "Drag the virtual joystick to move; release to stop. WASD / arrow keys also work. One point per adventure level. Max each parent to continue. New element paths open at levels 11 and 21. Equip one pet. Adventure XP is awarded after battle; this level persists between runs. Free reset returns all talent points."
     ],
     "how": [
       "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
-      "Move with touch, mouse, WASD or arrow keys. One point per adventure level. Max each parent to continue. New element paths open at levels 11 and 21. Equip one pet. Adventure XP is awarded after battle; this level persists between runs. Free reset returns all talent points."
+      "Drag the virtual joystick to move; release to stop. WASD / arrow keys also work. One point per adventure level. Max each parent to continue. New element paths open at levels 11 and 21. Equip one pet. Adventure XP is awarded after battle; this level persists between runs. Free reset returns all talent points."
     ],
     "tips": [
       "Root prison: leave the three green circles.",
@@ -10907,11 +10907,11 @@
     "story": [],
     "systems": [
       "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
-      "觸控、滑鼠、WASD 或方向鍵移動。 冒險每升一級獲得 1 點；前置升滿才能繼續。11、21 級開放更多元素路線，可混搭能力。最多攜帶一隻寵物。 冒險經驗於戰鬥結算時取得；冒險等級會永久保留，與局內升級分開。 免費重置，全額退還天賦點。"
+      "拖曳虛擬搖桿移動，放手停止；也可使用 WASD／方向鍵。 冒險每升一級獲得 1 點；前置升滿才能繼續。11、21 級開放更多元素路線，可混搭能力。最多攜帶一隻寵物。 冒險經驗於戰鬥結算時取得；冒險等級會永久保留，與局內升級分開。 免費重置，全額退還天賦點。"
     ],
     "how": [
       "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
-      "觸控、滑鼠、WASD 或方向鍵移動。 冒險每升一級獲得 1 點；前置升滿才能繼續。11、21 級開放更多元素路線，可混搭能力。最多攜帶一隻寵物。 冒險經驗於戰鬥結算時取得；冒險等級會永久保留，與局內升級分開。 免費重置，全額退還天賦點。"
+      "拖曳虛擬搖桿移動，放手停止；也可使用 WASD／方向鍵。 冒險每升一級獲得 1 點；前置升滿才能繼續。11、21 級開放更多元素路線，可混搭能力。最多攜帶一隻寵物。 冒險經驗於戰鬥結算時取得；冒險等級會永久保留，與局內升級分開。 免費重置，全額退還天賦點。"
     ],
     "tips": [
       "根牢：離開三個綠色根圈。",
@@ -10932,11 +10932,11 @@
     "story": [],
     "systems": [
       "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
-      "触控、鼠标、WASD 或方向键移动。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。"
+      "拖动虚拟摇杆移动，松手停止；也可使用 WASD／方向键。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。"
     ],
     "how": [
       "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
-      "触控、鼠标、WASD 或方向键移动。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。"
+      "拖动虚拟摇杆移动，松手停止；也可使用 WASD／方向键。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。"
     ],
     "tips": [
       "根牢：离开三个绿色根圈。",
@@ -10957,11 +10957,11 @@
     "story": [],
     "systems": [
       "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
-      "タッチ、マウス、WASD、矢印キーで移動。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。"
+      "仮想スティックをドラッグして移動し、離すと停止します。WASD／矢印キーも使えます。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。"
     ],
     "how": [
       "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
-      "タッチ、マウス、WASD、矢印キーで移動。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。"
+      "仮想スティックをドラッグして移動し、離すと停止します。WASD／矢印キーも使えます。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。"
     ],
     "tips": [
       "根の牢：3つの緑の円から離れる。",
@@ -10982,11 +10982,11 @@
     "story": [],
     "systems": [
       "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
-      "터치, 마우스, WASD나 방향키로 이동하세요. 모험 레벨마다 1포인트. 이전 능력을 최대로 올려 진행하세요. 11, 21레벨에 새 원소 경로가 열립니다. 펫은 1마리. 모험 경험치는 전투 정산 때 받으며 모험 레벨은 다음 전투에도 유지됩니다. 무료 초기화로 모든 포인트 반환."
+      "가상 조이스틱을 드래그해 이동하고 놓으면 멈춥니다. WASD / 방향키도 사용할 수 있습니다. 모험 레벨마다 1포인트. 이전 능력을 최대로 올려 진행하세요. 11, 21레벨에 새 원소 경로가 열립니다. 펫은 1마리. 모험 경험치는 전투 정산 때 받으며 모험 레벨은 다음 전투에도 유지됩니다. 무료 초기화로 모든 포인트 반환."
     ],
     "how": [
       "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
-      "터치, 마우스, WASD나 방향키로 이동하세요. 모험 레벨마다 1포인트. 이전 능력을 최대로 올려 진행하세요. 11, 21레벨에 새 원소 경로가 열립니다. 펫은 1마리. 모험 경험치는 전투 정산 때 받으며 모험 레벨은 다음 전투에도 유지됩니다. 무료 초기화로 모든 포인트 반환."
+      "가상 조이스틱을 드래그해 이동하고 놓으면 멈춥니다. WASD / 방향키도 사용할 수 있습니다. 모험 레벨마다 1포인트. 이전 능력을 최대로 올려 진행하세요. 11, 21레벨에 새 원소 경로가 열립니다. 펫은 1마리. 모험 경험치는 전투 정산 때 받으며 모험 레벨은 다음 전투에도 유지됩니다. 무료 초기화로 모든 포인트 반환."
     ],
     "tips": [
       "뿌리 감옥: 초록 원 세 개에서 벗어나세요.",
@@ -11007,11 +11007,11 @@
     "story": [],
     "systems": [
       "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
-      "Muévete con toque, ratón, WASD o flechas. Un punto por nivel de aventura. Completa cada requisito. Nuevas rutas elementales en los niveles 11 y 21. Una mascota equipada. La experiencia de aventura se obtiene al terminar y su nivel se conserva entre partidas. Reinicio gratis: se devuelven todos los puntos."
+      "Arrastra el joystick virtual para moverte; suelta para parar. También puedes usar WASD o las flechas. Un punto por nivel de aventura. Completa cada requisito. Nuevas rutas elementales en los niveles 11 y 21. Una mascota equipada. La experiencia de aventura se obtiene al terminar y su nivel se conserva entre partidas. Reinicio gratis: se devuelven todos los puntos."
     ],
     "how": [
       "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
-      "Muévete con toque, ratón, WASD o flechas. Un punto por nivel de aventura. Completa cada requisito. Nuevas rutas elementales en los niveles 11 y 21. Una mascota equipada. La experiencia de aventura se obtiene al terminar y su nivel se conserva entre partidas. Reinicio gratis: se devuelven todos los puntos."
+      "Arrastra el joystick virtual para moverte; suelta para parar. También puedes usar WASD o las flechas. Un punto por nivel de aventura. Completa cada requisito. Nuevas rutas elementales en los niveles 11 y 21. Una mascota equipada. La experiencia de aventura se obtiene al terminar y su nivel se conserva entre partidas. Reinicio gratis: se devuelven todos los puntos."
     ],
     "tips": [
       "Prisión de raíces: sal de los tres círculos verdes.",
@@ -11032,11 +11032,11 @@
     "story": [],
     "systems": [
       "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
-      "Mova-se por toque, mouse, WASD ou setas. Um ponto por nível de aventura. Maximize os requisitos. Novas rotas nos níveis 11 e 21. Equipe um pet. A experiência de aventura é recebida ao concluir a batalha e seu nível persiste entre partidas. Redefinição grátis devolve todos os pontos."
+      "Arraste o joystick virtual para mover; solte para parar. Também pode usar WASD ou as setas. Um ponto por nível de aventura. Maximize os requisitos. Novas rotas nos níveis 11 e 21. Equipe um pet. A experiência de aventura é recebida ao concluir a batalha e seu nível persiste entre partidas. Redefinição grátis devolve todos os pontos."
     ],
     "how": [
       "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
-      "Mova-se por toque, mouse, WASD ou setas. Um ponto por nível de aventura. Maximize os requisitos. Novas rotas nos níveis 11 e 21. Equipe um pet. A experiência de aventura é recebida ao concluir a batalha e seu nível persiste entre partidas. Redefinição grátis devolve todos os pontos."
+      "Arraste o joystick virtual para mover; solte para parar. Também pode usar WASD ou as setas. Um ponto por nível de aventura. Maximize os requisitos. Novas rotas nos níveis 11 e 21. Equipe um pet. A experiência de aventura é recebida ao concluir a batalha e seu nível persiste entre partidas. Redefinição grátis devolve todos os pontos."
     ],
     "tips": [
       "Prisão de raízes: saia dos três círculos verdes.",
@@ -11057,11 +11057,11 @@
     "story": [],
     "systems": [
       "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
-      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Un point par niveau d’aventure. Maximisez les prérequis. Nouvelles voies aux niveaux 11 et 21. Un seul compagnon équipé. L’expérience d’aventure est gagnée en fin de combat ; ce niveau persiste entre les parties. La réinitialisation gratuite rend tous les points."
+      "Déplacez le joystick virtuel pour avancer ; relâchez pour arrêter. WASD ou les flèches fonctionnent aussi. Un point par niveau d’aventure. Maximisez les prérequis. Nouvelles voies aux niveaux 11 et 21. Un seul compagnon équipé. L’expérience d’aventure est gagnée en fin de combat ; ce niveau persiste entre les parties. La réinitialisation gratuite rend tous les points."
     ],
     "how": [
       "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
-      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Un point par niveau d’aventure. Maximisez les prérequis. Nouvelles voies aux niveaux 11 et 21. Un seul compagnon équipé. L’expérience d’aventure est gagnée en fin de combat ; ce niveau persiste entre les parties. La réinitialisation gratuite rend tous les points."
+      "Déplacez le joystick virtuel pour avancer ; relâchez pour arrêter. WASD ou les flèches fonctionnent aussi. Un point par niveau d’aventure. Maximisez les prérequis. Nouvelles voies aux niveaux 11 et 21. Un seul compagnon équipé. L’expérience d’aventure est gagnée en fin de combat ; ce niveau persiste entre les parties. La réinitialisation gratuite rend tous les points."
     ],
     "tips": [
       "Prison de racines : sortez des trois cercles verts.",
@@ -11082,11 +11082,11 @@
     "story": [],
     "systems": [
       "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
-      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Ein Punkt je Abenteuerstufe. Voraussetzungen maximieren. Neue Elementpfade auf Stufe 11 und 21. Ein Begleiter ausrüstbar. Abenteuer-EP gibt es am Kampfende. Diese Stufe bleibt zwischen Runden erhalten. Kostenloses Zurücksetzen erstattet alle Punkte."
+      "Ziehe den virtuellen Joystick zum Bewegen; lass los zum Anhalten. WASD oder Pfeiltasten funktionieren ebenfalls. Ein Punkt je Abenteuerstufe. Voraussetzungen maximieren. Neue Elementpfade auf Stufe 11 und 21. Ein Begleiter ausrüstbar. Abenteuer-EP gibt es am Kampfende. Diese Stufe bleibt zwischen Runden erhalten. Kostenloses Zurücksetzen erstattet alle Punkte."
     ],
     "how": [
       "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
-      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Ein Punkt je Abenteuerstufe. Voraussetzungen maximieren. Neue Elementpfade auf Stufe 11 und 21. Ein Begleiter ausrüstbar. Abenteuer-EP gibt es am Kampfende. Diese Stufe bleibt zwischen Runden erhalten. Kostenloses Zurücksetzen erstattet alle Punkte."
+      "Ziehe den virtuellen Joystick zum Bewegen; lass los zum Anhalten. WASD oder Pfeiltasten funktionieren ebenfalls. Ein Punkt je Abenteuerstufe. Voraussetzungen maximieren. Neue Elementpfade auf Stufe 11 und 21. Ein Begleiter ausrüstbar. Abenteuer-EP gibt es am Kampfende. Diese Stufe bleibt zwischen Runden erhalten. Kostenloses Zurücksetzen erstattet alle Punkte."
     ],
     "tips": [
       "Wurzelgefängnis: Verlasse die drei grünen Kreise.",
@@ -11107,11 +11107,11 @@
     "story": [],
     "systems": [
       "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
-      "Muoviti con tocco, mouse, WASD o frecce. Un punto per livello avventura. Massimizza i requisiti. Nuovi percorsi ai livelli 11 e 21. Un solo compagno equipaggiato. L’esperienza avventura si ottiene a fine battaglia; questo livello resta tra le partite. Il ripristino gratuito restituisce tutti i punti."
+      "Trascina il joystick virtuale per muoverti; rilascia per fermarti. Puoi usare anche WASD o le frecce. Un punto per livello avventura. Massimizza i requisiti. Nuovi percorsi ai livelli 11 e 21. Un solo compagno equipaggiato. L’esperienza avventura si ottiene a fine battaglia; questo livello resta tra le partite. Il ripristino gratuito restituisce tutti i punti."
     ],
     "how": [
       "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
-      "Muoviti con tocco, mouse, WASD o frecce. Un punto per livello avventura. Massimizza i requisiti. Nuovi percorsi ai livelli 11 e 21. Un solo compagno equipaggiato. L’esperienza avventura si ottiene a fine battaglia; questo livello resta tra le partite. Il ripristino gratuito restituisce tutti i punti."
+      "Trascina il joystick virtuale per muoverti; rilascia per fermarti. Puoi usare anche WASD o le frecce. Un punto per livello avventura. Massimizza i requisiti. Nuovi percorsi ai livelli 11 e 21. Un solo compagno equipaggiato. L’esperienza avventura si ottiene a fine battaglia; questo livello resta tra le partite. Il ripristino gratuito restituisce tutti i punti."
     ],
     "tips": [
       "Prigione di radici: esci dai tre cerchi verdi.",
@@ -11132,11 +11132,11 @@
     "story": [],
     "systems": [
       "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
-      "Двигайтесь касанием, мышью, WASD или стрелками. Одно очко за уровень приключения. Улучшайте предыдущий узел до предела. Новые пути на уровнях 11 и 21. Один спутник. Опыт приключения начисляется после боя. Этот уровень сохраняется между боями. Бесплатный сброс возвращает все очки."
+      "Перетаскивайте виртуальный джойстик для движения, отпустите для остановки. Также доступны WASD и стрелки. Одно очко за уровень приключения. Улучшайте предыдущий узел до предела. Новые пути на уровнях 11 и 21. Один спутник. Опыт приключения начисляется после боя. Этот уровень сохраняется между боями. Бесплатный сброс возвращает все очки."
     ],
     "how": [
       "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
-      "Двигайтесь касанием, мышью, WASD или стрелками. Одно очко за уровень приключения. Улучшайте предыдущий узел до предела. Новые пути на уровнях 11 и 21. Один спутник. Опыт приключения начисляется после боя. Этот уровень сохраняется между боями. Бесплатный сброс возвращает все очки."
+      "Перетаскивайте виртуальный джойстик для движения, отпустите для остановки. Также доступны WASD и стрелки. Одно очко за уровень приключения. Улучшайте предыдущий узел до предела. Новые пути на уровнях 11 и 21. Один спутник. Опыт приключения начисляется после боя. Этот уровень сохраняется между боями. Бесплатный сброс возвращает все очки."
     ],
     "tips": [
       "Корневая тюрьма: выйдите из трёх зелёных кругов.",
@@ -11157,11 +11157,11 @@
     "story": [],
     "systems": [
       "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
-      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।"
+      "चलने के लिए वर्चुअल जॉयस्टिक खींचें और रुकने के लिए छोड़ें। WASD या तीर कुंजियाँ भी इस्तेमाल कर सकते हैं। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।"
     ],
     "how": [
       "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
-      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।"
+      "चलने के लिए वर्चुअल जॉयस्टिक खींचें और रुकने के लिए छोड़ें। WASD या तीर कुंजियाँ भी इस्तेमाल कर सकते हैं। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।"
     ],
     "tips": [
       "जड़ कैद: तीन हरे घेरों से निकलें।",
@@ -11182,11 +11182,11 @@
     "story": [],
     "systems": [
       "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
-      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. نقطة لكل مستوى مغامرة. أكمل رتبة المتطلب السابق. مسارات جديدة في المستويين 11 و21. رفيق واحد فقط. تُمنح خبرة المغامرة بعد المعركة ويُحفظ هذا المستوى بين الجولات. إعادة الضبط المجانية تعيد كل النقاط."
+      "اسحب عصا التحكم الافتراضية للحركة، واتركها للتوقف. يمكنك أيضًا استخدام WASD أو الأسهم. نقطة لكل مستوى مغامرة. أكمل رتبة المتطلب السابق. مسارات جديدة في المستويين 11 و21. رفيق واحد فقط. تُمنح خبرة المغامرة بعد المعركة ويُحفظ هذا المستوى بين الجولات. إعادة الضبط المجانية تعيد كل النقاط."
     ],
     "how": [
       "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
-      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. نقطة لكل مستوى مغامرة. أكمل رتبة المتطلب السابق. مسارات جديدة في المستويين 11 و21. رفيق واحد فقط. تُمنح خبرة المغامرة بعد المعركة ويُحفظ هذا المستوى بين الجولات. إعادة الضبط المجانية تعيد كل النقاط."
+      "اسحب عصا التحكم الافتراضية للحركة، واتركها للتوقف. يمكنك أيضًا استخدام WASD أو الأسهم. نقطة لكل مستوى مغامرة. أكمل رتبة المتطلب السابق. مسارات جديدة في المستويين 11 و21. رفيق واحد فقط. تُمنح خبرة المغامرة بعد المعركة ويُحفظ هذا المستوى بين الجولات. إعادة الضبط المجانية تعيد كل النقاط."
     ],
     "tips": [
       "سجن الجذور: اخرج من الدوائر الخضراء الثلاث.",

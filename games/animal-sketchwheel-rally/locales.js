@@ -70,3 +70,23 @@ const profileReadyCopy={en:"Wheel forged. Keep adapting.","zh-Hant":"車輪已�
 for(const [code,copy] of Object.entries(handsOnCopy))Object.assign(packs[code],copy,{profileReady:profileReadyCopy[code]});
 window.SKETCHWHEEL_LOCALES=packs;
 })();
+// v18 additions are owned in all thirteen locales.
+(function(){
+const rows={
+ en:['FINISH','MOMENTUM','Custom wheel','Best','Draw a larger closed shape.','3D rendering is unavailable. Retry or return to the race map.'],
+ 'zh-Hant':['終點','連續加速','自繪輪型','最佳','請畫大一點的封閉輪廓。','3D 畫面暫時無法使用，請重試或返回競速地圖。'],
+ 'zh-Hans':['终点','连续加速','自绘轮型','最佳','请画大一点的封闭轮廓。','3D 画面暂时无法使用，请重试或返回竞速地图。'],
+ ja:['ゴール','連続加速','手描きの車輪','ベスト','大きめの閉じた形を描いてください。','3D を表示できません。再試行するかマップへ戻ってください。'],
+ ko:['결승선','연속 가속','직접 그린 바퀴','최고 기록','더 큰 닫힌 모양을 그려 주세요.','3D 화면을 사용할 수 없습니다. 다시 시도하거나 지도로 돌아가세요.'],
+ es:['META','IMPULSO','Rueda dibujada','Mejor','Dibuja una forma cerrada más grande.','No se puede mostrar la escena 3D. Reintenta o vuelve al mapa.'],
+ 'pt-BR':['CHEGADA','IMPULSO','Roda desenhada','Melhor','Desenhe uma forma fechada maior.','Não foi possível exibir a cena 3D. Tente de novo ou volte ao mapa.'],
+ fr:['ARRIVÉE','ÉLAN','Roue dessinée','Record','Dessinez une forme fermée plus grande.','La scène 3D est indisponible. Réessayez ou revenez à la carte.'],
+ de:['ZIEL','SCHWUNG','Gezeichnetes Rad','Bestzeit','Zeichne eine größere geschlossene Form.','Die 3D-Ansicht ist nicht verfügbar. Versuche es erneut oder gehe zur Karte.'],
+ it:['TRAGUARDO','SLANCIO','Ruota disegnata','Record','Disegna una forma chiusa più grande.','La scena 3D non è disponibile. Riprova o torna alla mappa.'],
+ ru:['ФИНИШ','УСКОРЕНИЕ','Нарисованное колесо','Рекорд','Нарисуйте замкнутую фигуру побольше.','3D-сцена недоступна. Повторите попытку или вернитесь на карту.'],
+ hi:['समापन','लगातार बढ़त','बनाया गया पहिया','सर्वश्रेष्ठ','थोड़ा बड़ा बंद आकार बनाएं।','3D दृश्य उपलब्ध नहीं है। फिर कोशिश करें या नक्शे पर लौटें।'],
+ ar:['النهاية','اندفاع متتابع','عجلة مرسومة','الأفضل','ارسم شكلاً مغلقًا أكبر.','العرض ثلاثي الأبعاد غير متاح. أعد المحاولة أو عد إلى الخريطة.']
+};
+const keys=['finishLine','momentum','customWheel','bestTime','invalidWheel','rendererError'];
+for(const [locale,values] of Object.entries(rows))Object.assign(window.SKETCHWHEEL_LOCALES[locale],Object.fromEntries(keys.map((k,i)=>[k,values[i]])));
+})();

@@ -37,7 +37,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-crystal-survivor/" />
-    <link rel="stylesheet" href="style.css?v=20260930-crystal-interface8-v42-stage-badge" />
+    <link rel="stylesheet" href="style.css?v=20261011-crystal-joystick-v43" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -203,7 +203,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="talent-data.js?v=20260909-dungeon-levels-v26"></script>
     <script src="/src/game-screen-frame.js?v=20260930-stage-get-state-v3"></script>
-<script src="game.js?v=20260930-crystal-interface8-v42-stage-badge&wp-audio=1.0.0"></script>
+<script src="game.js?v=20261011-crystal-joystick-v43&wp-audio=1.0.0"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
     <script src="/src/stage-selector-standard.js?v=20260910-stage-workspace1"></script>
 
@@ -213,7 +213,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260930-crystal-text140-faq";
+          script.src = "../../src/game-page-info.js?v=20261011-crystal-joystick-v43";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -248,8 +248,8 @@
     <div class="game-info-sections">
 
       <div class="game-info-section"><h3>गेम सिस्टम</h3><p>30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।</p>
-<p>स्पर्श, माउस, WASD या तीर कुंजियों से चलें। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।</li><li>स्पर्श, माउस, WASD या तीर कुंजियों से चलें। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।</li></ol></div>
+<p>चलने के लिए वर्चुअल जॉयस्टिक खींचें और रुकने के लिए छोड़ें। WASD या तीर कुंजियाँ भी इस्तेमाल कर सकते हैं। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।</li><li>चलने के लिए वर्चुअल जॉयस्टिक खींचें और रुकने के लिए छोड़ें। WASD या तीर कुंजियाँ भी इस्तेमाल कर सकते हैं। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>जड़ कैद: तीन हरे घेरों से निकलें।</li><li>प्रिज्म पंखा: पाँच गोलों से बचें, ढाल हटने पर प्रहार करें।</li><li>काँटेदार धावा: तय रेखा से बगल में हटें।</li><li>उल्का वर्षा: अलग समय पर गिरती तीन आगों से बचें।</li><li>बिजली क्रॉस: दोनों नीली रेखाओं से तिरछे निकलें।</li><li>ग्रहण लहर: फैलते बैंगनी घेरे से बचें।</li></ul></div>
 
 

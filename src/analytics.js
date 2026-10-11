@@ -546,7 +546,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     if (!/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname) || window.WeightPlayCastle || document.querySelector("[data-weightplay-castle-runtime]")) return;
     try {
       const script = document.createElement("script");
-      script.src = "/src/weightplay-castle.js?v=20261002-block-world-button-states-v7";
+      script.src = "/src/weightplay-castle.js?v=20261011-reward-toast-safe-inset-v2";
       script.async = true;
       script.dataset.weightplayCastleRuntime = "true";
       document.head.append(script);

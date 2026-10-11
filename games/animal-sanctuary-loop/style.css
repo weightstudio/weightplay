@@ -178,3 +178,41 @@ body[data-wp-game-id="animal-sanctuary-loop"] #feedback[data-kind="hurt"]{color:
 body[data-wp-game-id="animal-sanctuary-loop"] #feedback[data-kind="capture"]{color:#ffe58e}
 body[data-wp-game-id="animal-sanctuary-loop"] #feedback[data-kind="trail"]{color:#c2eeff}
 @media(prefers-reduced-motion:reduce){body[data-wp-game-id="animal-sanctuary-loop"] :is(#arenaWrap,#feedback,.sanctuary-progress)::after,body[data-wp-game-id="animal-sanctuary-loop"] :is(#arenaWrap,#feedback){transition:none}}
+
+/* Mobile expedition view: the world uses the entire flexible rectangle.
+   Camera scale is uniform; the control dock never covers a playable cell. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #battleLive{padding:4px;gap:4px;grid-template-rows:44px minmax(0,1fr) 24px;background:#081c27}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] .objective-row{padding-inline:8px 0;border:0;background:linear-gradient(90deg,#153d40,#0a2530);border-radius:9px;min-height:44px}
+body[data-wp-game-id="animal-sanctuary-loop"] #objective{font-size:14px;font-weight:850;color:#edfff4}
+body[data-wp-game-id="animal-sanctuary-loop"] #missionTwist{font-size:11px;color:#a7cfc7}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #arenaWrap{padding:0;gap:0;border:1px solid #38635f;border-radius:12px;overflow:hidden;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 114px;background:#081f2b}
+body[data-wp-game-id="animal-sanctuary-loop"] #arenaBoard{overflow:hidden;background:#071e2b}
+body[data-wp-game-id="animal-sanctuary-loop"] #arenaBoard :is(#arena,.sanctuary-block-layer){position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;aspect-ratio:auto;border:0;touch-action:none}
+body[data-wp-game-id="animal-sanctuary-loop"] #battleDock{grid-row:2;grid-column:1;display:grid;grid-template-columns:88px minmax(80px,1fr) 140px;align-items:center;justify-items:center;gap:6px;padding:5px 9px;border-top:1px solid #4b8071;background:radial-gradient(ellipse at 50% 0,#20534a65,transparent 75%),linear-gradient(#102d33,#091c28);box-shadow:0 -6px 22px #02121980;direction:ltr;z-index:2}
+body[data-wp-game-id="animal-sanctuary-loop"] #mapToggle{position:relative;width:88px;height:98px;padding:3px;border:1px solid #578f80;border-radius:7px;background:#071d28;color:#b9f3dc;cursor:zoom-out;box-shadow:0 2px 7px #0005}
+body[data-wp-game-id="animal-sanctuary-loop"] #mapToggle[aria-pressed="true"]{border-color:#ffe399;box-shadow:0 0 0 2px #ffe39950;cursor:zoom-in}
+body[data-wp-game-id="animal-sanctuary-loop"] #tacticalMap{display:block;width:80px;height:80px;image-rendering:pixelated}
+body[data-wp-game-id="animal-sanctuary-loop"] #mapToggle>span{display:block;font-size:10px;font-weight:800;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body[data-wp-game-id="animal-sanctuary-loop"] #steerStick{position:relative;width:100px;height:100px;border-radius:50%;border:1px solid #4d897d;background:radial-gradient(circle,#0b242d 33%,#225349 34%,#173c3c 38%,#0b252d 39%,#0b252d 65%,#498873 66%,#17382f 68%);box-shadow:inset 0 0 16px #020e18,0 3px 0 #020e18;touch-action:none;user-select:none;cursor:grab}
+body[data-wp-game-id="animal-sanctuary-loop"] .stick-orbit{position:absolute;inset:13px;border:1px dashed #6da28a66;border-radius:50%;pointer-events:none}
+body[data-wp-game-id="animal-sanctuary-loop"] #stickKnob{position:absolute;left:26px;top:26px;width:48px;height:48px;display:grid;place-items:center;border:1px solid #91d3b2;border-radius:50%;background:linear-gradient(150deg,#3c7967,#173e40);box-shadow:0 4px 0 #041c26,0 6px 14px #0007;color:#cdffe8;pointer-events:none;will-change:transform}
+body[data-wp-game-id="animal-sanctuary-loop"] #stickKnob svg{width:32px;height:32px}
+body[data-wp-game-id="animal-sanctuary-loop"] #steerStick[data-active="true"] #stickKnob{background:linear-gradient(145deg,#70ac7d,#347263);box-shadow:0 0 16px #92ffd74d,0 3px 0 #041c26;color:#fff8c9}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #touchPad{grid-column:3;grid-row:1;width:140px;height:92px;align-self:center}
+body[data-wp-game-id="animal-sanctuary-loop"] #touchPad button{background:linear-gradient(#244d49,#123139);border:1px solid #568b7f;border-radius:12px;color:#d8ffe5;box-shadow:0 3px 0 #031621;font-size:23px}
+body[data-wp-game-id="animal-sanctuary-loop"] #touchPad button[data-active="true"]{background:linear-gradient(#659568,#2d5b4e);color:#fff8c4;border-color:#f2d28d;box-shadow:0 0 13px #a4ef9340,inset 0 0 0 1px #f5e3a43d}
+body[data-wp-game-id="animal-sanctuary-loop"] #feedback{margin:0;padding:3px 6px;min-height:24px;font-size:12px;line-height:18px;border-radius:5px}
+@media(max-width:359px){
+ body[data-wp-game-id="animal-sanctuary-loop"] #battleDock{grid-template-columns:68px minmax(64px,1fr) 140px;gap:2px;padding-inline:4px}
+ body[data-wp-game-id="animal-sanctuary-loop"] #mapToggle{width:68px;height:78px}
+ body[data-wp-game-id="animal-sanctuary-loop"] #tacticalMap{width:60px;height:60px}
+ body[data-wp-game-id="animal-sanctuary-loop"] #steerStick{width:76px;height:76px}
+ body[data-wp-game-id="animal-sanctuary-loop"] #stickKnob{left:14px;top:14px}
+}
+@media(min-aspect-ratio:6/5){
+ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #arenaWrap{grid-template-columns:minmax(0,1fr) 154px;grid-template-rows:minmax(0,1fr)}
+ body[data-wp-game-id="animal-sanctuary-loop"] #battleDock{grid-column:2;grid-row:1;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(90px,1fr) 96px;gap:3px;padding:6px;border-top:0;border-inline-start:1px solid #4b8071}
+ body[data-wp-game-id="animal-sanctuary-loop"] #steerStick{display:none}
+ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-sanctuary-loop"] #touchPad{grid-column:1;grid-row:2}
+ body[data-wp-game-id="animal-sanctuary-loop"] #mapToggle{grid-column:1;grid-row:1}
+}

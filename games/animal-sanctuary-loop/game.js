@@ -22,6 +22,12 @@
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
   const GAME_VERSION = "v23";
+  // Mount in the shared game module so every existing locale route uses the same dock.
+  const battleDock = document.createElement("div");
+  battleDock.id = "battleDock";
+  battleDock.innerHTML = '<button id="mapToggle" type="button" aria-pressed="false" data-ta="overviewControl"><canvas id="tacticalMap" width="192" height="192" aria-hidden="true"></canvas><span data-t="mapLabel"></span></button><div id="steerStick" role="group" data-ta="stickControl"><span class="stick-orbit" aria-hidden="true"></span><span id="stickKnob" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4 20 11H12ZM28 16 21 20V12ZM16 28 12 21H20ZM4 16 11 12V20Z" fill="currentColor"/></svg></span></div>';
+  $("arenaWrap").append(battleDock);
+  battleDock.append($("touchPad"));
   const motion = window.SanctuaryLoopMotion.create();
   const screenFrame = window.WeightPlayScreenFrame.mount({
     root: $("frameRoot"),
@@ -903,6 +909,8 @@
     $("feedback").textContent = "";
     $("feedback").dataset.kind = "safe";
     $("arenaWrap").dataset.danger = "false";
+    $("mapToggle").setAttribute("aria-pressed", "false");
+    document.querySelectorAll("#touchPad [data-dir]").forEach(button => { button.dataset.active = "false"; });
     track("mission_start", { mission: stage.n, entry: "stage" });
     lastTime = performance.now();
     stopLoop();
@@ -917,6 +925,7 @@
 }
 
   function stopLoop() {
+    resetStick();
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
     if (visibleTick) clearInterval(visibleTick);
@@ -1133,8 +1142,7 @@
     run.trail.clear();
     run.player.x = run.anchor.x;
     run.player.y = run.anchor.y;
-    run.player.dx = 0;
-    run.player.dy = 0;
+    setDirection(0, 0);
     battleFeedback("trailCut", {}, "hurt");
     track("hunter_cut", { mission: run.stage.n, hearts: run.hearts });
     track("hearts_loss", { mission: run.stage.n, hearts: run.hearts });
@@ -1314,6 +1322,12 @@
   function draw() {
     if (run) blockView.draw(run, images, styleData[save.selectedStyle].colors, motion.reduced);
   }
+  const battleResize = new ResizeObserver(() => {
+    if (run && currentScreen === "battle" && !run.finished && !document.hidden) draw();
+  });
+  battleResize.observe($("arenaBoard"));
+  window.addEventListener("pagehide", () => battleResize.disconnect());
+  window.addEventListener("pageshow", () => battleResize.observe($("arenaBoard")));
 
   function frame(now) {
     raf = 0;
@@ -1334,24 +1348,31 @@
     const length = Math.hypot(dx, dy) || 1;
     run.player.dx = dx / length;
     run.player.dy = dy / length;
+    document.querySelectorAll("#touchPad [data-dir]").forEach((button) => {
+      const [x, y] = dirs[button.dataset.dir];
+      button.dataset.active = String(x ? x * run.player.dx > .5 : y * run.player.dy > .5);
+    });
   }
 
   function pointDirection(event) {
     if (!run) return;
-    const rect = canvas.getBoundingClientRect();
     const { x, y } = blockView.point(event);
     setDirection(x - run.player.x, y - run.player.y);
   }
 
+  let arenaPointer = null;
   canvas.addEventListener("pointerdown", (event) => {
+    if (!run || run.paused || run.finished || arenaPointer !== null) return;
     event.preventDefault();
+    arenaPointer = event.pointerId;
     canvas.focus({ preventScroll: true });
     canvas.setPointerCapture?.(event.pointerId);
     pointDirection(event);
   });
   canvas.addEventListener("pointermove", (event) => {
-    if (event.buttons || event.pointerType === "touch") pointDirection(event);
+    if (event.pointerId === arenaPointer) pointDirection(event);
   });
+  for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) canvas.addEventListener(type, (event) => { if (event.pointerId === arenaPointer) arenaPointer = null; });
   const keyDirections = {
     ArrowUp: [0, -1], w: [0, -1], W: [0, -1],
     ArrowDown: [0, 1], s: [0, 1], S: [0, 1],
@@ -1372,6 +1393,37 @@
       setDirection(...dirs[button.dataset.dir]);
     });
     button.addEventListener("click", () => setDirection(...dirs[button.dataset.dir]));
+  });
+  // Drag relative to a fixed thumb origin; releasing recenters the stick while
+  // the arcade's existing continuous movement stays consistent with the D-pad.
+  let stickPointer = null;
+  const stick = $("steerStick"), knob = $("stickKnob");
+  function resetStick() {
+    stickPointer = null;
+    arenaPointer = null;
+    knob.style.transform = "translate(0px,0px)";
+    stick.dataset.active = "false";
+  }
+  function steer(event) {
+    if (event.pointerId !== stickPointer || !run || run.paused || run.finished) return;
+    const r = stick.getBoundingClientRect(), dx = event.clientX - r.left - r.width / 2, dy = event.clientY - r.top - r.height / 2;
+    const length = Math.hypot(dx, dy), limit = r.width * .28, scale = Math.min(1, limit / (length || 1));
+    const logicalScale = stick.clientWidth / r.width;
+    knob.style.transform = `translate(${dx * scale * logicalScale}px,${dy * scale * logicalScale}px)`;
+    if (length > r.width * .09) setDirection(dx, dy / window.SanctuaryBlockWorld.C);
+  }
+  stick.addEventListener("pointerdown", (event) => {
+    if (!run || run.paused || run.finished || stickPointer !== null) return;
+    event.preventDefault();stickPointer = event.pointerId;stick.setPointerCapture?.(event.pointerId);stick.dataset.active = "true";steer(event);
+  });
+  stick.addEventListener("pointermove", steer);
+  for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) stick.addEventListener(type, (event) => { if (event.pointerId === stickPointer) resetStick(); });
+  window.addEventListener("blur", resetStick);
+  document.addEventListener("visibilitychange", resetStick);
+  $("mapToggle").addEventListener("click", () => {
+    if (!run || run.paused || run.finished) return;
+    $("mapToggle").setAttribute("aria-pressed", String(blockView.toggleOverview()));
+    draw();
   });
 
   let modalReturnFocus = null;

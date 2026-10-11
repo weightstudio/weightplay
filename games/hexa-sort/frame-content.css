@@ -71,7 +71,7 @@
   pointer-events:none;
 }
 @media (max-height:500px) and (orientation:landscape) {
-  .hexa-battle-content {display:grid;grid-template-columns:minmax(0,1fr) 210px;grid-template-rows:auto minmax(0,1fr);gap:4px}
+  .hexa-battle-content {display:grid;grid-template-columns:minmax(0,1fr) 210px;grid-template-rows:auto minmax(0,1fr) 2.25em;gap:4px}
   #battleLive > .hexa-battle-content > .objective-row {grid-column:1!important;grid-row:1!important;min-height:0;padding:5px 10px;align-self:stretch}
   .hexa-battle-content .hexa-play {grid-column:1/-1;grid-row:2;grid-template-columns:minmax(0,1fr) 210px;grid-template-rows:minmax(56px,auto) minmax(0,1fr);min-height:0}
   .hexa-battle-content .hexa-board-track {width:100%;height:100%;min-height:0;grid-column:1;grid-row:1/3}
@@ -79,7 +79,23 @@
   .hexa-battle-content .hexa-coach {height:auto;min-height:56px;padding:4px 7px}
   .hexa-battle-content .hexa-coach small {display:none}
   .hexa-battle-content .stack-tray {height:100%;min-height:0;padding:5px}
-  .hexa-battle-content > .feedback:empty {display:block;visibility:hidden}
-  .hexa-battle-content > .feedback {position:absolute;bottom:0;left:0;inline-size:60%;max-width:60%;flex:none;block-size:2.25em;min-block-size:2.25em;max-block-size:2.25em;pointer-events:auto}
+  .hexa-battle-content > .feedback {grid-column:1/-1;grid-row:3;position:static;inline-size:auto;max-inline-size:none;flex:none;block-size:2.25em;min-block-size:2.25em;max-block-size:2.25em;pointer-events:auto}
   .hexa-battle-content #battleHelp {grid-column:2;grid-row:1;justify-self:end;align-self:center}
+}
+
+/* The logical scene is scaled as a whole. Keep Hexa Sort's Stage and Battle
+   return targets and header tracks at a physical 48px after that scale. */
+body[data-wp-game-id="hexa-sort"] [data-wp-frame-active="stage"],
+body[data-wp-game-id="hexa-sort"] [data-wp-frame-active="stage"] .wp-frame-header {
+  --wp-frame-physical-control-size:calc(48px * var(--wp-stage-canvas-inverse-scale,1))!important;
+  --wp-frame-control-size:calc(48px * var(--wp-stage-canvas-inverse-scale,1))!important;
+  --wp-frame-header-height:calc(48px * var(--wp-stage-canvas-inverse-scale,1))!important;
+  --wp-frame-lobby-return-width:calc(48px * var(--wp-stage-canvas-inverse-scale,1))!important;
+}
+body[data-wp-game-id="hexa-sort"] [data-wp-frame-active="battle"],
+body[data-wp-game-id="hexa-sort"] [data-wp-frame-active="battle"] .wp-frame-header {
+  --wp-frame-physical-control-size:calc(48px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-control-size:calc(48px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-header-height:calc(48px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-lobby-return-width:calc(48px * var(--wp-battle-canvas-inverse-scale,1))!important;
 }

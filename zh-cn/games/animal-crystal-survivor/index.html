@@ -37,7 +37,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-crystal-survivor/" />
-    <link rel="stylesheet" href="style.css?v=20260930-crystal-interface8-v42-stage-badge" />
+    <link rel="stylesheet" href="style.css?v=20261011-crystal-joystick-v43" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -203,7 +203,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="talent-data.js?v=20260909-dungeon-levels-v26"></script>
     <script src="/src/game-screen-frame.js?v=20260930-stage-get-state-v3"></script>
-<script src="game.js?v=20260930-crystal-interface8-v42-stage-badge&wp-audio=1.0.0"></script>
+<script src="game.js?v=20261011-crystal-joystick-v43&wp-audio=1.0.0"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
     <script src="/src/stage-selector-standard.js?v=20260910-stage-workspace1"></script>
 
@@ -213,7 +213,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260930-crystal-text140-faq";
+          script.src = "../../src/game-page-info.js?v=20261011-crystal-joystick-v43";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -248,8 +248,8 @@
     <div class="game-info-sections">
 
       <div class="game-info-section"><h3>游戏系统</h3><p>共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。</p>
-<p>触控、鼠标、WASD 或方向键移动。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。</li><li>触控、鼠标、WASD 或方向键移动。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。</li></ol></div>
+<p>拖动虚拟摇杆移动，松手停止；也可使用 WASD／方向键。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。</li><li>拖动虚拟摇杆移动，松手停止；也可使用 WASD／方向键。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>根牢：离开三个绿色根圈。</li><li>棱镜扇射：闪开五发定向魔弹，护盾消失后反击。</li><li>荆棘冲锋：看准固定冲刺线，向左右闪开。</li><li>陨火连轰：闪避三次错开时间的落火。</li><li>雷霆十字：斜向离开两条蓝色雷击线。</li><li>日蚀震波：避开向外扩散的紫色环形震波。</li></ul></div>
 
 

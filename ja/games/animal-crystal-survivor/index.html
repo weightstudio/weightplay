@@ -37,7 +37,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-crystal-survivor/" />
-    <link rel="stylesheet" href="style.css?v=20260930-crystal-interface8-v42-stage-badge" />
+    <link rel="stylesheet" href="style.css?v=20261011-crystal-joystick-v43" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -204,7 +204,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="talent-data.js?v=20260909-dungeon-levels-v26"></script>
     <script src="/src/game-screen-frame.js?v=20260930-stage-get-state-v3"></script>
-<script src="game.js?v=20260930-crystal-interface8-v42-stage-badge&wp-audio=1.0.0"></script>
+<script src="game.js?v=20261011-crystal-joystick-v43&wp-audio=1.0.0"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
     <script src="/src/stage-selector-standard.js?v=20260910-stage-workspace1"></script>
 
@@ -214,7 +214,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260930-crystal-text140-faq";
+          script.src = "../../src/game-page-info.js?v=20261011-crystal-joystick-v43";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -249,8 +249,8 @@
     <div class="game-info-sections">
 
       <div class="game-info-section"><h3>ゲームの仕組み</h3><p>全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。</p>
-<p>タッチ、マウス、WASD、矢印キーで移動。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。</li><li>タッチ、マウス、WASD、矢印キーで移動。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。</li></ol></div>
+<p>仮想スティックをドラッグして移動し、離すと停止します。WASD／矢印キーも使えます。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。</li><li>仮想スティックをドラッグして移動し、離すと停止します。WASD／矢印キーも使えます。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>根の牢：3つの緑の円から離れる。</li><li>プリズム扇射：5発を横に回避し、盾が消えたら攻撃。</li><li>茨の突進：固定された突進線から横に回避。</li><li>流星連撃：時間差で落ちる3つの炎を回避。</li><li>雷の十字：2本の青い線から斜めに離れる。</li><li>日食波：広がる紫の輪を避ける。</li></ul></div>
 
 

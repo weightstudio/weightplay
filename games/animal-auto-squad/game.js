@@ -31,7 +31,7 @@
   gamePanel?.setAttribute("data-wp-logical-battle-canvas", "true");
 
   const GAME_ID = "animal-auto-squad";
-const GAME_VERSION = "v36";
+  const GAME_VERSION = "v39";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -793,7 +793,14 @@ const GAME_VERSION = "v36";
     return Boolean(window.WeightPlayAudio?.isMuted?.());
   }
 
-  function initAudio() { return window.WeightPlayAudio?.unlock(); }
+  let commanderAudioPrepared = false;
+  function initAudio() {
+    if (!commanderAudioPrepared && window.WeightPlayAudio) {
+      commanderAudioPrepared = true;
+      window.WeightPlayAudio.preload(["card.place", "combat.block", "combat.shield.break", "combat.critical", "player.hurt"]);
+    }
+    return window.WeightPlayAudio?.unlock();
+  }
 
   function playSynth(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
@@ -2269,9 +2276,112 @@ const GAME_VERSION = "v36";
     writeStorage(saveKey, JSON.stringify(save));
   }
 
+  // Commander tools use the existing owned roster and save transaction. They
+  // never buy, upgrade, unlock or discard a character on the player's behalf.
+  const commanderCopy = {
+    en: ["Quick formation", "Undo formation", "Frontline", "Backline", "Squad ready", "Deploy your squad", "Damage dealt", "Healing", "Damage blocked", "Enemies defeated", "Expedition report"],
+    "zh-Hant": ["快速編隊", "復原編隊", "前排承傷", "後排支援", "小隊就緒", "配置你的作戰小隊", "造成傷害", "有效治療", "護盾抵擋", "擊敗敵人", "遠征戰報"],
+    "zh-Hans": ["快速编队", "还原编队", "前排承伤", "后排支援", "小队就绪", "配置你的作战小队", "造成伤害", "有效治疗", "护盾抵挡", "击败敌人", "远征战报"],
+    ja: ["おまかせ編成", "編成を戻す", "前衛", "後衛", "部隊準備完了", "部隊を編成", "与ダメージ", "回復量", "防いだダメージ", "撃破数", "遠征レポート"],
+    ko: ["빠른 편성", "편성 되돌리기", "전열", "후열", "분대 준비 완료", "분대를 배치하세요", "가한 피해", "회복량", "막은 피해", "처치한 적", "원정 보고서"],
+    es: ["Formación rápida", "Deshacer formación", "Vanguardia", "Retaguardia", "Escuadrón listo", "Despliega tu escuadrón", "Daño infligido", "Curación", "Daño bloqueado", "Enemigos derrotados", "Informe de expedición"],
+    "pt-BR": ["Formação rápida", "Desfazer formação", "Linha de frente", "Retaguarda", "Esquadrão pronto", "Posicione o esquadrão", "Dano causado", "Cura", "Dano bloqueado", "Inimigos derrotados", "Relatório da expedição"],
+    fr: ["Formation rapide", "Annuler la formation", "Avant-garde", "Arrière-garde", "Escouade prête", "Déployez votre escouade", "Dégâts infligés", "Soins", "Dégâts bloqués", "Ennemis vaincus", "Rapport d’expédition"],
+    de: ["Schnellaufstellung", "Aufstellung zurück", "Vorderreihe", "Hinterreihe", "Trupp bereit", "Stelle deinen Trupp auf", "Verursachter Schaden", "Heilung", "Geblockter Schaden", "Besiegte Gegner", "Expeditionsbericht"],
+    it: ["Formazione rapida", "Annulla formazione", "Prima linea", "Retrovie", "Squadra pronta", "Schiera la squadra", "Danni inflitti", "Cure", "Danni bloccati", "Nemici sconfitti", "Rapporto spedizione"],
+    ru: ["Быстрый строй", "Отменить строй", "Передний ряд", "Задний ряд", "Отряд готов", "Расставьте отряд", "Нанесённый урон", "Лечение", "Блок урона", "Побеждено врагов", "Отчёт экспедиции"],
+    hi: ["त्वरित गठन", "गठन वापस करें", "अगली पंक्ति", "पिछली पंक्ति", "दल तैयार", "अपना दल तैनात करें", "दी गई क्षति", "उपचार", "रोकी गई क्षति", "हराए गए शत्रु", "अभियान रिपोर्ट"],
+    ar: ["تشكيل سريع", "تراجع عن التشكيل", "الصف الأمامي", "الصف الخلفي", "الفريق جاهز", "انشر فريقك", "الضرر المسبب", "العلاج", "الضرر المحجوب", "الأعداء المهزومون", "تقرير الحملة"]
+  };
+  function commanderText(index) { return (commanderCopy[actualGameLocale()] || commanderCopy.en)[index]; }
+  function reduceCombatMotion() { return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true; }
+
+  function quickFormation() {
+    if (!state.activeRun || state.combat.animating || state.combat.ending) return;
+    const roster = [...new Map([...state.backpack, ...state.squad, ...state.bench].filter(Boolean).map(card => [card.id, card])).values()];
+    if (!roster.length) return;
+    state.formationUndo = { squad: [...state.squad], bench: [...state.bench] };
+    // Keep the selected six where possible. Add owned reserves only to fill
+    // vacancies; order durable units first, with healers and ranged behind.
+    const chosen = [...state.squad.filter(Boolean)];
+    roster.forEach(card => { if (chosen.length < 6 && !chosen.some(unit => unit.id === card.id)) chosen.push(card); });
+    const durable = card => (ANIMAL_ROLE_TAGS[card.id] === "guardian" ? 100 : 0) + card.currentHp - (ANIMAL_ROLE_TAGS[card.id] === "support" || card.id === 3 ? 50 : 0);
+    chosen.sort((a, b) => durable(b) - durable(a) || a.id - b.id);
+    state.squad = Array(6).fill(null);
+    const frontCount = Math.max(1, chosen.length - 3);
+    chosen.forEach((card, index) => { state.squad[index < frontCount ? index : 3 + index - frontCount] = card; });
+    state.bench = state.bench.map(card => chosen.some(unit => unit.id === card?.id) ? null : card);
+    selectedSlot = null;
+    saveActiveFormation();
+    renderPrepScreen();
+    showActionNotice(nodes.prepNotice, commanderText(4));
+    playSynth("card.place");
+  }
+
+  function undoFormation() {
+    if (!state.formationUndo || state.combat.animating || !state.activeRun) return;
+    state.squad = state.formationUndo.squad;
+    state.bench = state.formationUndo.bench;
+    state.formationUndo = null;
+    selectedSlot = null;
+    saveActiveFormation();
+    renderPrepScreen();
+    playSynth("card.place");
+  }
+
+  function renderCommander() {
+    let panel = document.getElementById("squadCommander");
+    if (!panel) {
+      panel = document.createElement("div");
+      panel.id = "squadCommander";
+      panel.className = "squad-commander";
+      panel.setAttribute("data-runtime-localize", "off");
+      panel.innerHTML = '<div class="commander-heading"><strong></strong><span></span></div><div class="commander-resources"></div><div class="commander-actions"><button type="button" data-command="form"></button><button type="button" data-command="undo"></button></div><div class="commander-links"></div>';
+      nodes.squadGrid.before(panel);
+      panel.querySelector('[data-command="form"]').addEventListener("click", quickFormation);
+      panel.querySelector('[data-command="undo"]').addEventListener("click", undoFormation);
+    }
+    const cards = state.squad.filter(Boolean);
+    const synergy = squadSynergy(cards);
+    panel.querySelector("strong").textContent = commanderText(cards.length ? 4 : 5);
+    panel.querySelector(".commander-heading span").textContent = `${cards.length} / 6`;
+    panel.querySelector(".commander-resources").textContent = `${t("stage")} ${state.stage} · ${t("round")} ${state.round}/5 · ${t("supplies")} ${state.gold} · ♥ ${state.hearts}/4`;
+    panel.querySelector('[data-command="form"]').textContent = `✦ ${commanderText(0)}`;
+    const undo = panel.querySelector('[data-command="undo"]');
+    undo.textContent = `↶ ${commanderText(1)}`;
+    undo.disabled = !state.formationUndo;
+    panel.querySelector(".commander-links").innerHTML = ["guardian", "striker", "support"].map((role, index) => `<span class="commander-link ${synergy.counts[role] >= 2 ? "is-linked" : ""}"><b>${["⬡", "⚔", "✚"][index]}</b> ${t(`synergy${role[0].toUpperCase()}${role.slice(1)}`)} <strong>${synergy.counts[role]}/2</strong></span>`).join("");
+    nodes.squadGrid.dataset.frontLabel = commanderText(2);
+    nodes.squadGrid.dataset.backLabel = commanderText(3);
+  }
+
+  function renderExpeditionReport() {
+    const report = document.createElement("div");
+    report.className = "expedition-report";
+    report.setAttribute("data-runtime-localize", "off");
+    const title = document.createElement("strong");
+    title.textContent = commanderText(10);
+    report.append(title);
+    const grid = document.createElement("div");
+    grid.className = "report-metrics";
+    ["damage", "healing", "blocked", "defeats"].forEach((key, index) => {
+      const cell = document.createElement("div");
+      const value = document.createElement("b");
+      value.textContent = String(state.metrics[key]);
+      const label = document.createElement("span");
+      label.textContent = commanderText(6 + index);
+      cell.append(value, label);
+      grid.append(cell);
+    });
+    report.append(grid);
+    nodes.skillReportText.replaceChildren(report);
+  }
+
   function makeState() {
     return {
       activeRun: false,
+      formationUndo: null,
+      metrics: { damage: 0, healing: 0, blocked: 0, defeats: 0 },
       stage: Math.max(1, Math.min(STAGE_COUNT, Number(save?.selectedStage) || 1)),
       round: 1,
       gold: 12,
@@ -3986,6 +4096,7 @@ const GAME_VERSION = "v36";
   }
 
   function renderPrepScreen(focusTarget = null) {
+    renderCommander();
     renderFoodGuide();
     renderSquad();
     renderBench();
@@ -4035,6 +4146,9 @@ const GAME_VERSION = "v36";
       el.className = "card-item empty-slot";
       el.dataset.slot = String(index);
       el.dataset.area = sourceArea;
+      if (sourceArea === "squad") {
+        el.innerHTML = `<span class="formation-slot-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><span class="formation-slot-plus" aria-hidden="true">+</span>`;
+      }
       const emptyArea = sourceArea === "squad"
         ? `${t("emptyFormationSlot")}, ${formationActionPosition(index)}`
         : `${t("emptySlot")} ${index + 1}`;
@@ -4052,6 +4166,7 @@ const GAME_VERSION = "v36";
     el.dataset.slot = String(index);
     el.dataset.area = sourceArea;
     el.dataset.cardId = String(card.id);
+    el.dataset.role = ANIMAL_ROLE_TAGS[card.id] || "striker";
     const cardName = localizedField(card, "name");
     const placement = sourceArea === "backpack" ? findPlacedCard(card.id) : null;
     let actionPosition = t("slotPosition", { index: index + 1 });
@@ -4567,8 +4682,13 @@ const GAME_VERSION = "v36";
     if (selectedCard && selectedCard.atk !== undefined) {
       nodes.sellCardBtn.classList.remove("is-hidden");
       nodes.sellCardBtn.textContent = t("upgradeRun", { cost: runUpgradeCost(selectedCard) });
+      nodes.sellCardBtn.disabled = state.gold < runUpgradeCost(selectedCard);
+      nodes.sellCardBtn.title = nodes.sellCardBtn.disabled ? t("noSupplies") : nodes.sellCardBtn.textContent;
     } else {
-      nodes.sellCardBtn.classList.add("is-hidden");
+      nodes.sellCardBtn.classList.remove("is-hidden");
+      nodes.sellCardBtn.textContent = t("currencyUpgrade");
+      nodes.sellCardBtn.disabled = true;
+      nodes.sellCardBtn.title = t("selectCharacterHint");
     }
     renderSelectedAbility(selectedCard);
   }
@@ -4611,7 +4731,8 @@ const GAME_VERSION = "v36";
     const column = safeSlot % 3;
     const row = Math.floor(safeSlot / 3);
     const canvasCenter = (nodes.gameCanvas?.width || 720) / 2;
-    const x = [145, 360, 575][column] + canvasCenter - 360;
+    const spacing = Math.min(340, Math.max(215, ((nodes.gameCanvas?.width || 720) - 270) / 3));
+    const x = canvasCenter + (column - 1) * spacing;
     const y = team === "player"
       ? [800, 1040][row]
       : [440, 200][row];
@@ -4620,7 +4741,9 @@ const GAME_VERSION = "v36";
 
   function addCombatEffect(type, x, y, text = "", textColor = "white") {
     const maxLife = type === "starfall" ? 28 : type === "combo" ? 34 : type === "block-break" ? 28 : type === "buff" ? 24 : 18;
-    state.combat.effects.push({ type, x, y, life: maxLife, maxLife, text, textColor });
+    const actor = state.combat.activeActor;
+    const origin = actor?.unit ? formationPosition(actor.team, actor.unit.formationSlot) : null;
+    state.combat.effects.push({ type, x, y, life: maxLife, maxLife, text, textColor, origin });
     if (state.combat.effects.length > COMBAT_EFFECT_LIMIT) {
       state.combat.effects.splice(0, state.combat.effects.length - COMBAT_EFFECT_LIMIT);
     }
@@ -4630,7 +4753,8 @@ const GAME_VERSION = "v36";
   }
 
   function markActing(team, index, style = "attack") {
-    const actor = { team, index, style, life: 26, maxLife: 26 };
+    const unit = (team === "player" ? state.combat.playerSquad : state.combat.enemySquad)[index];
+    const actor = { team, index, unit, style, life: 26, maxLife: 26 };
     state.combat.activeActor = actor;
     state.combat.activeActors = (state.combat.activeActors || []).filter((item) => !(item.team === team && item.index === index));
     state.combat.activeActors.push(actor);
@@ -4640,6 +4764,10 @@ const GAME_VERSION = "v36";
     for (let i = squad.length - 1; i >= 0; i--) {
       if (squad[i].hp <= 0) {
         const fallen = squad.splice(i, 1)[0];
+        if (team === "enemy") state.metrics.defeats++;
+        const point = formationPosition(team, fallen.formationSlot ?? i);
+        state.combat.effects.push({ type: "depart", x: point.x, y: point.y, imageKey: fallen.imageKey, life: 28, maxLife: 28, text: "" });
+        if (state.combat.effects.length > COMBAT_EFFECT_LIMIT) state.combat.effects.shift();
         if (team === "player") {
           state.combat.lastDefeatEvent = {
             name: combatUnitName(fallen),
@@ -4734,14 +4862,16 @@ const GAME_VERSION = "v36";
     if (!target) return;
     const synergyBoost = team === "player" ? Number(state.combat.synergy?.healBoost) || 0 : 0;
     const total = Math.max(1, Math.round(amount) + synergyBoost);
+    const restored = Math.min(total, Math.max(0, target.maxHp - target.hp));
     target.hp = Math.min(target.maxHp, target.hp + total);
     const idx = Math.max(0, squad.indexOf(target));
     const point = combatPoint(team, idx);
-    addCombatEffect("heal", point.x, point.y, `+${total}`, "#82ffd1");
+    if (team === "player") state.metrics.healing += restored;
+    if (restored > 0) addCombatEffect("heal", point.x, point.y, `+${restored}`, "#82ffd1");
   }
 
   function addUnitShield(unit, amount, team = "player", index = 0) {
-    if (!unit || amount <= 0) return;
+    if (!unit || unit.hp <= 0 || amount <= 0) return;
     unit.shieldHp = Math.max(0, Math.round(unit.shieldHp || 0)) + Math.max(1, Math.round(amount));
     unit.shield = unit.shieldHp > 0;
     const point = combatPoint(team, index);
@@ -4763,13 +4893,20 @@ const GAME_VERSION = "v36";
       unit.shieldHp = shieldHp - absorbed;
       unit.shield = unit.shieldHp > 0;
       damage -= absorbed;
+      if (isPlayerTarget) state.metrics.blocked += absorbed;
       state.combat.lastActionShort = t("blockedShort");
       addCombatEffect("shield", x, y, damage > 0 ? "" : t("blockedShort"), "#8fb7ff");
+      if (unit.shieldHp === 0) {
+        addCombatEffect("block-break", x, y, "", "#9fcfff");
+        playSynth("combat.shield.break");
+      } else playSynth("combat.block");
     } else if (unit.shield) {
       unit.shield = false;
+      if (isPlayerTarget) state.metrics.blocked += damage;
       damage = 0;
       state.combat.lastActionShort = t("blockedShort");
       addCombatEffect("shield", x, y, t("blockedShort"), "#8fb7ff");
+      playSynth("combat.block");
     }
     if (damage > 0) {
       const nextCombo = Math.min(99, (state.combat.combo || 0) + 1);
@@ -4778,6 +4915,9 @@ const GAME_VERSION = "v36";
       // bonus bounded so low-level teams still have time to recover.
       const criticalBonus = linked ? Math.max(1, Math.round(damage * 0.25)) : 0;
       damage += criticalBonus;
+      const appliedDamage = Math.min(Math.max(0, unit.hp), damage);
+      if (!isPlayerTarget) state.metrics.damage += appliedDamage;
+      unit.visualHit = linked ? 20 : 12;
       unit.hp -= damage;
       state.combat.combo = nextCombo;
       state.combat.comboBest = Math.max(state.combat.comboBest || 0, state.combat.combo);
@@ -4786,10 +4926,8 @@ const GAME_VERSION = "v36";
       state.combat.hitStopFrames = Math.max(Number(state.combat.hitStopFrames) || 0, linked ? COMBAT_HIT_STOP_FRAMES + 2 : COMBAT_HIT_STOP_FRAMES);
       state.combat.shakeFrames = Math.max(state.combat.shakeFrames, linked ? 18 : 6);
       state.combat.shakeTarget = state.combat.enemySquad.includes(unit) ? "enemy" : "player";
-      addCombatEffect(linked ? "combo" : "hit", x, y, linked ? t("actionCritical") : "", linked ? "#ffe477" : "#fff6a6");
-      if (linked) {
-        addCombatEffect("block-break", x, y, t("breakShort"), "#ffe477");
-      }
+      addCombatEffect(linked ? "combo" : "hit", x, y, `−${appliedDamage}`, linked ? "#ffe477" : "#ffffff");
+      playSynth(linked ? "combat.critical" : isPlayerTarget ? "player.hurt" : "combat.strike");
       if (unit.hp <= 0) {
         state.combat.lastActionShort = t("koShort");
         addCombatEffect("ko", x, y, t("koShort"), "#ffffff");
@@ -4852,6 +4990,7 @@ const GAME_VERSION = "v36";
     showBattlePreparationView();
     clearScheduledCombatTimers();
     const runId = ++combatRunSequence;
+    state.formationUndo = null;
     nodes.startBattleBtn.disabled = true;
 
     // Prepare combatants (deep clone to not alter permanent state)
@@ -5024,10 +5163,33 @@ const GAME_VERSION = "v36";
   function renderCombatTactic() {
     if (!nodes.combatTacticBtn) return;
     const tactic = state.combat.tactic || "balanced";
-    nodes.combatTacticBtn.textContent = tacticLabel(tactic);
-    nodes.combatTacticBtn.setAttribute("aria-label", t("tacticAria"));
-    nodes.combatTacticBtn.setAttribute("aria-pressed", String(tactic !== "balanced"));
-    nodes.combatTacticBtn.dataset.tactic = tactic;
+    const group = nodes.combatTacticBtn.parentElement;
+    group.classList.add("command-tactics");
+    for (const choice of COMBAT_TACTIC_ORDER) {
+      let button = choice === "balanced" ? nodes.combatTacticBtn : group.querySelector(`[data-command-tactic="${choice}"]`);
+      if (!button) {
+        button = document.createElement("button");
+        button.type = "button";
+        button.className = "secondary-btn combat-tactic-btn";
+        button.dataset.commandTactic = choice;
+        button.addEventListener("click", () => setCombatTactic(choice));
+        nodes.combatPaceHint.before(button);
+      }
+      button.textContent = tacticLabel(choice);
+      button.setAttribute("aria-label", tacticLabel(choice));
+      button.setAttribute("aria-pressed", String(tactic === choice));
+      button.dataset.tactic = choice;
+    }
+  }
+
+  function setCombatTactic(tactic) {
+    if (!COMBAT_TACTIC_ORDER.includes(tactic) || !state.combat.animating || state.combat.ending || state.combat.resolved) return;
+    state.combat.tactic = tactic;
+    state.combat.lastActionShort = tacticLabel();
+    renderCombatTactic();
+    combatLog(t("tacticNotice", { tactic: tacticLabel() }));
+    updateCombatSummary();
+    playSynth("ui.click");
   }
 
   function resetCombatPace() {
@@ -5218,33 +5380,7 @@ const GAME_VERSION = "v36";
       canvasCtx.fillRect(0, 0, canvasWidth, 1280);
     }
 
-    // A readable voxel grid keeps the arena lively even when the background
-    // art is dark, while the pulse makes connected hits land with weight.
-    canvasCtx.save();
-    canvasCtx.globalAlpha = 0.2;
-    canvasCtx.strokeStyle = "#84dfff";
-    canvasCtx.lineWidth = 2;
-    const tile = 48;
-    for (let x = 0; x <= canvasWidth; x += tile) {
-      canvasCtx.beginPath();
-      canvasCtx.moveTo(x, 112);
-      canvasCtx.lineTo(x, 1170);
-      canvasCtx.stroke();
-    }
-    for (let y = 112; y <= 1170; y += tile) {
-      canvasCtx.beginPath();
-      canvasCtx.moveTo(0, y);
-      canvasCtx.lineTo(canvasWidth, y);
-      canvasCtx.stroke();
-    }
-    canvasCtx.restore();
-    if (state.combat.impactPulse > 0) {
-      canvasCtx.save();
-      canvasCtx.globalAlpha = Math.min(0.16, state.combat.impactPulse / 70);
-      canvasCtx.fillStyle = state.combat.impactPulse > 8 ? "#ffe477" : "#8ff7ff";
-      canvasCtx.fillRect(0, 112, canvasWidth, 1058);
-      canvasCtx.restore();
-    }
+    drawTacticalField(canvasWidth);
 
     if (state.combat.bossWarningUntil > performance.now()) {
       const remaining = Math.max(0, Math.min(1, (state.combat.bossWarningUntil - performance.now()) / 1600));
@@ -5297,7 +5433,10 @@ const GAME_VERSION = "v36";
     drawSquadLine(state.combat.enemySquad, "enemy");
     window.__ANIMAL_AUTO_SQUAD_COMBAT_LAYOUT__ = state.combat.layout;
 
-    // Draw active particle effects
+    // Age actors once per rendered frame, never once per team. Retain unit
+    // identity across removals so a defeated neighbour cannot steal a cue.
+    state.combat.activeActors = (state.combat.activeActors || []).filter(actor => --actor.life > 0);
+    state.combat.activeActor = state.combat.activeActors.at(-1) || null;
     drawEffects();
   }
 
@@ -5332,118 +5471,116 @@ const GAME_VERSION = "v36";
     canvasCtx.restore();
   }
 
+  function drawTacticalField(width) {
+    const palettes = ["#4ee1bd", "#8cb7ff", "#68dcea", "#ffb47b", "#c8a0ff", "#eaa4d7"];
+    const accent = palettes[Math.min(5, Math.floor((state.stage - 1) / 5))];
+    canvasCtx.save();
+    const atmosphere = canvasCtx.createLinearGradient(0, 0, 0, 1280);
+    atmosphere.addColorStop(0, "rgba(10,18,33,.8)");
+    atmosphere.addColorStop(.5, "rgba(10,22,31,.44)");
+    atmosphere.addColorStop(1, "rgba(5,19,27,.84)");
+    canvasCtx.fillStyle = atmosphere;
+    canvasCtx.fillRect(0, 0, width, 1280);
+    for (const team of ["enemy", "player"]) {
+      for (let slot = 0; slot < 6; slot++) {
+        const pos = formationPosition(team, slot);
+        canvasCtx.beginPath();
+        canvasCtx.moveTo(pos.x, pos.y + 35);
+        canvasCtx.lineTo(pos.x + 102, pos.y + 73);
+        canvasCtx.lineTo(pos.x, pos.y + 111);
+        canvasCtx.lineTo(pos.x - 102, pos.y + 73);
+        canvasCtx.closePath();
+        canvasCtx.fillStyle = team === "player" ? "rgba(65,154,145,.11)" : "rgba(199,94,115,.1)";
+        canvasCtx.strokeStyle = team === "player" ? "rgba(124,239,207,.22)" : "rgba(248,155,155,.18)";
+        canvasCtx.lineWidth = 2;
+        canvasCtx.fill();
+        canvasCtx.stroke();
+      }
+    }
+    // Fixed five-wave track leaves the combat board and all hit targets stable.
+    const trackWidth = 250;
+    const trackX = (width - trackWidth) / 2;
+    for (let wave = 1; wave <= WAVES_PER_STAGE; wave++) {
+      const x = trackX + (wave - 1) * 54;
+      canvasCtx.fillStyle = wave <= state.round ? accent : "rgba(255,255,255,.15)";
+      canvasCtx.fillRect(x, 15, 34, 5);
+    }
+    canvasCtx.restore();
+  }
+
   function drawSquadLine(squad, team) {
     const isPlayer = team === "player";
     const metrics = combatLayoutMetrics(team);
-
+    const reduced = reduceCombatMotion();
     squad.forEach((unit, idx) => {
       const formation = formationPosition(team, unit.formationSlot ?? idx);
-
-      // Draw card frame
+      const actor = (state.combat.activeActors || []).find(item => item.unit === unit && item.life > 0);
+      const progress = actor ? 1 - actor.life / actor.maxLife : 0;
+      const impulse = actor && !reduced ? Math.sin(progress * Math.PI) : 0;
+      const recoil = !reduced && unit.visualHit > 0 ? Math.sin(unit.visualHit * 1.4) * Math.min(6, unit.visualHit) : 0;
+      const w = metrics.width, h = metrics.height;
+      const centerY = formation.y + (isPlayer ? -1 : 1) * impulse * 28;
+      const x = formation.x - w / 2 + recoil;
+      const y = centerY - h / 2;
+      const imageBox = { x: x - 4, y: y + 25 - impulse * 7, w: w + 8, h: h - 42 };
+      state.combat.layout?.push({ team, index: idx, formationSlot: formation.slot, formationRow: formation.row, enemyId: isPlayer ? null : unit.id, imageKey: unit.imageKey || "", isBoss: Boolean(unit.isBoss), x, y, w, h, imageBox });
+      const color = isPlayer ? "#83edcb" : unit.isBoss ? "#ffce79" : "#f293a6";
       canvasCtx.save();
-      canvasCtx.shadowColor = "black";
-      canvasCtx.shadowBlur = 7;
-
-      // Apply shake frame offsets if shaking
-      let shakeX = 0;
-      if (state.combat.shakeFrames > 0 && state.combat.shakeTarget === team && idx === 0) {
-        shakeX = Math.sin(state.combat.shakeFrames) * 8;
-        state.combat.shakeFrames--;
-      }
-
-      const w = metrics.width;
-      const h = metrics.height;
-      const actor = (state.combat.activeActors || []).find((item) => item.team === team && item.index === idx && item.life > 0);
-      const isActing = actor?.team === team && actor.index === idx && actor.life > 0;
-      const actorProgress = isActing ? 1 - actor.life / Math.max(1, actor.maxLife || 26) : 0;
-      const bounce = isActing ? Math.sin(actorProgress * Math.PI) : 0;
-      const actorOffset = bounce * (isActing && actor.style === "cast" ? 18 : 12);
-      const scale = isActing ? 1 + bounce * 0.08 : 1;
-      const centerY = formation.y + (isPlayer ? -actorOffset : actorOffset);
-      const x = formation.x + shakeX - (w * scale) / 2;
-      const y = centerY - (h * scale) / 2;
-      const drawW = w * scale;
-      const drawH = h * scale;
-      const imageBox = { x: x + 6, y: y + 38, w: w - 12, h: h - 66 };
-      state.combat.layout?.push({ team, index: idx, formationSlot: formation.slot, formationRow: formation.row, enemyId: isPlayer ? null : unit.id, imageKey: unit.imageKey || "", isBoss: Boolean(unit.isBoss), x, y, w: drawW, h: drawH, imageBox });
-
-      // Draw backdrop
-      canvasCtx.fillStyle = isPlayer ? "rgba(10, 38, 51, 0.94)" : unit.isBoss ? "rgba(62, 34, 10, 0.96)" : "rgba(44, 17, 38, 0.94)";
-      canvasCtx.strokeStyle = isPlayer ? "#7cf6d3" : unit.isBoss ? "#ffd666" : "#ff7180";
-      canvasCtx.lineWidth = unit.isBoss ? 4 : 2;
-
-      // Square card edges and corner pixels reinforce the voxel read.
+      // A grounded plinth, rather than another opaque card, gives each
+      // existing authored block-animal portrait a readable battlefield space.
+      canvasCtx.fillStyle = "rgba(0,8,16,.5)";
       canvasCtx.beginPath();
-      canvasCtx.rect(x, y, drawW, drawH);
+      canvasCtx.ellipse(formation.x, formation.y + 76, 69, 18, 0, 0, Math.PI * 2);
+      canvasCtx.fill();
+      canvasCtx.fillStyle = isPlayer ? "#183e43" : "#422936";
+      canvasCtx.strokeStyle = color;
+      canvasCtx.lineWidth = actor ? 4 : 2;
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(x + 10, y + h - 34);
+      canvasCtx.lineTo(x + w - 10, y + h - 34);
+      canvasCtx.lineTo(x + w + 3, y + h - 16);
+      canvasCtx.lineTo(x + w - 10, y + h - 5);
+      canvasCtx.lineTo(x + 10, y + h - 5);
+      canvasCtx.lineTo(x - 3, y + h - 16);
+      canvasCtx.closePath();
       canvasCtx.fill();
       canvasCtx.stroke();
-      canvasCtx.fillStyle = isPlayer ? "rgba(117, 241, 210, .88)" : unit.isBoss ? "rgba(255, 224, 119, .92)" : "rgba(255, 113, 128, .86)";
-      const corner = unit.isBoss ? 14 : 10;
-      canvasCtx.fillRect(x + 3, y + 3, corner, 4);
-      canvasCtx.fillRect(x + 3, y + 3, 4, corner);
-      canvasCtx.fillRect(x + drawW - corner - 3, y + drawH - 7, corner, 4);
-      canvasCtx.fillRect(x + drawW - 7, y + drawH - corner - 3, 4, corner);
-      if (isActing) {
-        canvasCtx.strokeStyle = actor.style === "cast" ? "#8ff7ff" : "#ffd666";
-        canvasCtx.lineWidth = 4;
-        canvasCtx.globalAlpha = 0.82;
-        canvasCtx.beginPath();
-        canvasCtx.rect(x - 3, y - 3, drawW + 6, drawH + 6);
-        canvasCtx.stroke();
-        canvasCtx.globalAlpha = 1;
+      if (actor || unit.visualHit > 0) {
+        canvasCtx.shadowColor = unit.visualHit > 0 ? "#ffd3ad" : color;
+        canvasCtx.shadowBlur = unit.visualHit > 0 ? 20 : 12;
       }
-
-      // Draw character sprite
-      if (isPlayer) {
-        const portrait = imageCache[unit.imageKey] || imageCache.boomLion;
-        drawContainImage(portrait, imageBox.x, imageBox.y, imageBox.w, imageBox.h);
-      } else if (unit.imageKey && imageCache[unit.imageKey]) {
-        drawContainImage(imageCache[unit.imageKey], imageBox.x, imageBox.y, imageBox.w, imageBox.h);
-      } else {
+      const portrait = imageCache[unit.imageKey];
+      if (portrait) drawContainImage(portrait, imageBox.x, imageBox.y, imageBox.w, imageBox.h);
+      else if (!isPlayer && imageCache.enemies) {
         const sheet = imageCache.enemies;
-        if (sheet) {
-          const sw = unit.sw || 682;
-          const sh = unit.sh || 768;
-          const cropRatio = sw / sh;
-          const targetRatio = imageBox.w / imageBox.h;
-          let drawW = imageBox.w;
-          let drawH = imageBox.h;
-          if (cropRatio > targetRatio) {
-            drawH = imageBox.w / cropRatio;
-          } else {
-            drawW = imageBox.h * cropRatio;
-          }
-          canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, imageBox.x + (imageBox.w - drawW) / 2, imageBox.y + (imageBox.h - drawH) / 2, drawW, drawH);
-        }
+        const sw = unit.sw || 682, sh = unit.sh || 768;
+        const ratio = Math.min(imageBox.w / sw, imageBox.h / sh);
+        canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, imageBox.x + (imageBox.w - sw * ratio) / 2, imageBox.y + (imageBox.h - sh * ratio) / 2, sw * ratio, sh * ratio);
       }
-
-      drawUnitHealthBar(unit, x + 8, y + 8, w - 16, isPlayer);
-
-      // Draw Melon shield overlay
+      canvasCtx.shadowBlur = 0;
+      // Names, attack and health remain legible when no effect is active.
+      canvasCtx.fillStyle = "rgba(5,17,29,.95)";
+      canvasCtx.beginPath();
+      canvasCtx.roundRect(x - 4, y + h - 20, w + 8, 27, 5);
+      canvasCtx.fill();
+      canvasCtx.font = "700 17px Outfit, system-ui";
+      canvasCtx.textAlign = "center";
+      canvasCtx.textBaseline = "middle";
+      canvasCtx.fillStyle = "#f0f6f4";
+      canvasCtx.fillText(combatUnitName(unit), formation.x + recoil, y + h - 6, w - 10);
+      drawUnitHealthBar(unit, x + 5, y + 3, w - 10, isPlayer);
+      drawStatPill(`⚔ ${Math.round(unit.atk || 0)}`, x + w - 43, y + 36, "#ffe1a4");
       if (unit.shield || unit.shieldHp > 0) {
-        canvasCtx.strokeStyle = "#5e8cf2";
+        canvasCtx.strokeStyle = "rgba(140,205,255,.82)";
         canvasCtx.lineWidth = 3;
         canvasCtx.beginPath();
-        canvasCtx.arc(x + drawW/2, y + drawH/2 - 10, drawW/2 - 2, 0, Math.PI * 2);
+        canvasCtx.roundRect(x - 5, y + 32, w + 10, h - 46, 18);
         canvasCtx.stroke();
-        if (unit.shieldHp > 0) {
-          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + drawW / 2 - 23, y + drawH - 30, "#9cc8ff");
-        }
+        if (unit.shieldHp > 0) drawStatPill(`⬡ ${Math.round(unit.shieldHp)}`, x - 3, y + 36, "#b0ddff");
       }
-
-      // Level star indicator for player units
-      if (false && isPlayer && unit.level > 1) {
-        canvasCtx.fillStyle = "var(--gold)";
-        canvasCtx.fillText(`★${unit.level}`, x + w/2 - 8, y + 16);
-      }
-
+      unit.visualHit = Math.max(0, (unit.visualHit || 0) - 1);
       canvasCtx.restore();
     });
-    state.combat.activeActors = (state.combat.activeActors || []).filter((actor) => {
-      actor.life--;
-      return actor.life > 0;
-    });
-    state.combat.activeActor = state.combat.activeActors[state.combat.activeActors.length - 1] || null;
   }
 
   function drawUnitHealthBar(unit, x, y, width, isPlayer) {
@@ -5461,9 +5598,13 @@ const GAME_VERSION = "v36";
     canvasCtx.fill();
     canvasCtx.stroke();
 
+    const oldHp = Number.isFinite(unit.visualHp) ? unit.visualHp : maxHp;
+    unit.visualHp = reduceCombatMotion() ? hp : oldHp + (hp - oldHp) * 0.16;
+    canvasCtx.fillStyle = "#f4c8a0";
+    canvasCtx.fillRect(x + 2, y + 2, (width - 4) * Math.max(0, Math.min(1, unit.visualHp / maxHp)), barHeight - 4);
     canvasCtx.fillStyle = pct > 0.45 ? "#53f29d" : pct > 0.22 ? "#ffd666" : "#ff5266";
     canvasCtx.beginPath();
-    canvasCtx.roundRect(x + 2, y + 2, Math.max(4, (width - 4) * pct), barHeight - 4, 5);
+    canvasCtx.roundRect(x + 2, y + 2, Math.max(0, (width - 4) * pct), barHeight - 4, 5);
     canvasCtx.fill();
 
     canvasCtx.font = `900 ${COMBAT_HEALTH_FONT_SIZE}px Outfit, system-ui`;
@@ -5564,16 +5705,32 @@ const GAME_VERSION = "v36";
 
       canvasCtx.save();
       canvasCtx.globalAlpha = alpha;
-      drawEffectSprite(fx, progress, radius);
-      drawImpactShape(fx, progress, alpha, radius);
+      const reduced = reduceCombatMotion();
+      if (fx.type === "depart") {
+        const portrait = imageCache[fx.imageKey];
+        if (portrait) drawContainImage(portrait, fx.x - 65, fx.y - 72 - (reduced ? 0 : progress * 30), 130, 144);
+      } else {
+        // The brief contact trace joins the actual acting unit and target.
+        // It is not a delayed projectile that contradicts applied damage.
+        if (!reduced && fx.origin && ["hit", "combo", "heal", "shield"].includes(fx.type) && progress < .45) {
+          canvasCtx.strokeStyle = fx.type === "heal" ? "#83eac4" : fx.type === "shield" ? "#91caff" : fx.textColor;
+          canvasCtx.lineWidth = fx.type === "combo" ? 5 : 3;
+          canvasCtx.globalAlpha = alpha * .7;
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(fx.origin.x, fx.origin.y);
+          canvasCtx.lineTo(fx.x, fx.y);
+          canvasCtx.stroke();
+        }
+        if (!reduced) { drawEffectSprite(fx, progress, radius); drawImpactShape(fx, progress, alpha, radius); }
+      }
 
       // Floating text overlays (e.g. Damage numbers)
       if (fx.text) {
         const maxX = Math.max(16, (nodes.gameCanvas.width || 720) - 16);
         const textX = Math.max(16, Math.min(maxX, Number(fx.x) || 0));
-        const textY = Math.max(120, Math.min(1160, (Number(fx.y) || 0) - 20 - progress * 18));
+        const textY = Math.max(120, Math.min(1160, (Number(fx.y) || 0) - 38 - (reduced ? 0 : progress * 40)));
         canvasCtx.globalAlpha = 1;
-        canvasCtx.font = fx.type === "combo" || fx.type === "block-break" || fx.type === "ko" ? "900 24px Outfit, system-ui" : "900 17px Outfit, system-ui";
+        canvasCtx.font = fx.type === "combo" || fx.type === "block-break" || fx.type === "ko" ? "900 34px Outfit, system-ui" : "900 28px Outfit, system-ui";
         canvasCtx.fillStyle = fx.textColor || "white";
         canvasCtx.strokeStyle = "black";
         canvasCtx.lineWidth = fx.type === "combo" || fx.type === "block-break" || fx.type === "ko" ? 4 : 3;
@@ -5714,7 +5871,6 @@ const GAME_VERSION = "v36";
   function resolveOrderedCombatStep(playerSquad, enemySquad) {
     const slot = state.combat.step % 6;
     state.combat.step++;
-    playSynth("combat.strike");
     state.combat.lastActionShort = "";
 
     const actions = [];
@@ -5722,7 +5878,7 @@ const GAME_VERSION = "v36";
     const enemyUnit = unitAtFormationSlot(enemySquad, slot);
     if (playerUnit) actions.push(resolveUnitAbility(playerUnit, "player", Math.max(0, playerSquad.indexOf(playerUnit))));
     const playerHpBeforeEnemyAction = new Map(playerSquad.map((unit) => [unit, Number(unit.hp) || 0]));
-    const enemyAction = enemyUnit ? resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))) : "";
+    const enemyAction = enemyUnit?.hp > 0 ? resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))) : "";
     if (enemyAction) {
       recordEnemyDefeatEvents(playerSquad, playerHpBeforeEnemyAction, enemyAction);
       actions.push(enemyAction);
@@ -6340,6 +6496,7 @@ const GAME_VERSION = "v36";
       button.classList.toggle("secondary-btn", button !== primaryAction);
     });
     nodes.skillReportText.innerHTML = `<strong>${t("skillReport")}</strong><br/>${t("skillsLearned")}`;
+    renderExpeditionReport();
     nodes.resultPanel.scrollTop = 0;
     const resultCopy = nodes.resultPanel.querySelector(".result-copy");
     if (resultCopy) resultCopy.scrollTop = 0;
@@ -6442,7 +6599,7 @@ const GAME_VERSION = "v36";
     });
     nodes.startBattleBtn.addEventListener("click", startBattle);
     nodes.combatPaceBtn?.addEventListener("click", toggleCombatPace);
-    nodes.combatTacticBtn?.addEventListener("click", toggleCombatTactic);
+    nodes.combatTacticBtn?.addEventListener("click", () => setCombatTactic("balanced"));
     nodes.gamePanel.addEventListener("pointerdown", reclaimVisibleForeground, true);
     nodes.gamePanel.addEventListener("keydown", reclaimVisibleForeground, true);
     nodes.quitRunBtn.addEventListener("click", openQuitDecision);
