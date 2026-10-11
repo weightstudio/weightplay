@@ -27,6 +27,11 @@ button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 0 rgba(2
 body[data-screen="stage"] .game-page-info,body[data-screen="battle"] .game-page-info{display:none!important}
 body[data-wp-game-id="traffic-jam-diner"] #result-panel[hidden]{display:none!important}
 @layer wp-frame-contract{html body[data-wp-game-id="traffic-jam-diner"] [data-wp-frame-logical-header="stage"] .wp-frame-header{--wp-frame-control-size-physical:max(44px,calc(48px / min(var(--wp-stage-canvas-scale,1),1)))!important}}
+/* The Stage scene is scaled as one logical canvas. Preserve the dedicated
+   bottom action track in physical pixels so the Stages tab stays tappable. */
+@layer wp-frame-contract{html body[data-wp-game-id="traffic-jam-diner"] [data-wp-frame="2"][data-wp-frame-adapted] [data-wp-frame-scene="stage"]{--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr) calc(56px * var(--wp-stage-canvas-inverse-scale,1))!important}}
+@layer wp-frame-contract{html body[data-wp-game-id="traffic-jam-diner"] [data-wp-frame="2"] [data-wp-frame-stage-nav]{height:calc(56px * var(--wp-stage-canvas-inverse-scale,1))!important;min-height:calc(56px * var(--wp-stage-canvas-inverse-scale,1))!important;max-height:calc(56px * var(--wp-stage-canvas-inverse-scale,1))!important;box-sizing:border-box!important}}
+@layer wp-frame-contract{html body[data-wp-game-id="traffic-jam-diner"] [data-wp-frame="2"] [data-wp-frame-stage-nav] [data-wp-frame-action="tab"]{height:calc(44px * var(--wp-stage-canvas-inverse-scale,1))!important;min-height:calc(44px * var(--wp-stage-canvas-inverse-scale,1))!important;max-height:calc(44px * var(--wp-stage-canvas-inverse-scale,1))!important;box-sizing:border-box!important;transform:none!important}}
 .result-stars{color:#dc8430!important;text-shadow:0 1px 0 rgba(106,63,26,.14)}
 .board-controls{position:absolute;z-index:3;inset:8px 8px auto;display:flex;flex-wrap:wrap;gap:5px;align-items:flex-start;pointer-events:none}.board-controls:empty{display:none}.board-controls button{pointer-events:auto;min-height:44px;max-width:min(100%,220px);padding:7px 11px;border-radius:12px;background:rgba(255,250,239,.96);color:var(--diner-ink);font-size:.78rem;line-height:1.15;box-shadow:0 2px 6px rgba(14,45,55,.2)}
 /* Gate controls share the fixed order dock row instead of floating over the
@@ -55,11 +60,6 @@ body[data-wp-game-id="traffic-jam-diner"] #result-panel[hidden]{display:none!imp
    touch size independent of the Battle canvas scale. */
 .board-controls button{min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
 .board-controls button:hover:not(:disabled),.board-controls button:active:not(:disabled){transform:none}
-/* Keep the persistent Stage tab row reserved in physical space as the
-   logical Stage canvas scales down on small and short-landscape screens. */
-#stage-screen.stage-screen{--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr) var(--wp-frame-physical-control-size,56px)!important}
-#stage-screen .stage-tabs{height:var(--wp-frame-physical-control-size,56px)!important;min-height:var(--wp-frame-physical-control-size,56px)!important}
-#stage-screen .stage-tabs [data-wp-frame-stage-slot="stages"]{min-height:var(--wp-frame-physical-control-size,46px)!important}
 /* Result buttons share the scaled Battle canvas with the route-action rail. */
-.result-actions button{min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
-.result-actions button:hover:not(:disabled),.result-actions button:active:not(:disabled){transform:none}
+.result-actions button,.help-card button{min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
+.result-actions button:hover:not(:disabled),.result-actions button:active:not(:disabled),.help-card button:hover:not(:disabled),.help-card button:active:not(:disabled){transform:none}
