@@ -10,7 +10,7 @@ export const STAGES = Array.from({length: 30}, (_, i) => {
   const chapter = Math.floor(i / 5), sectors = i < 5 ? 1 : i < 20 ? 2 : 3;
   return {index:i, number:i+1, chapter, sectors, steps:6+chapter+(i%5),
     goal:(6+chapter+(i%5))*sectors, time:65+sectors*30,
-    aiSpeed:2.65+i*.043, wind:chapter===2||chapter===4,
+    aiSpeed:i<5?1.4+i*.07:1.85+(i-5)*.053, wind:chapter===2||chapter===4,
     hazard:chapter===1||chapter>=3, moving:chapter>=4,
     layout:['dawn','grove','wind','sunset','aurora','champion'][chapter],
     mode:'sky-race', champion:chapter===5};
@@ -45,6 +45,7 @@ export class SkyRace {
       speed:id===0?4.5+this.upgrades.speed*.16:this.stage.aiSpeed+[.1,-.15,.2][id-1],
       progress:0,dash:id===0?30:0,dashTime:0,stun:0,invulnerable:0,combo:0,lastPickup:-10,
       lane:id,sector:0,brain:'gather',built:0,facing:0,moving:false,waitCue:0}));
+    for(const p of this.pickups)p.baseX=p.x;
     this.player=this.actors[0]; this.rivals=this.actors.slice(1);
     this.hazards=this.stage.hazard?this.platforms.slice(0,-1).map((p,i)=>({
       x:0,y:p.start+5.8,phase:i*1.8,radius:1.12,active:false})):[];
@@ -151,6 +152,7 @@ export class SkyRace {
   step(dt,input={}) {
     if(this.ended||this.paused)return;
     dt=clamp(dt,0,.04);this.elapsed+=dt;this.timeLeft=Math.max(0,this.stage.time-this.elapsed);
+    if(this.stage.moving)for(const p of this.pickups)p.x=p.baseX+Math.sin(this.elapsed*.8+p.phase)*.34;
     for(const h of this.hazards){h.x=Math.sin(this.elapsed*.65+h.phase)*5.6;h.active=(this.elapsed+h.phase)%5>2;}
     for(const a of this.actors){
       if(this.ended)break;

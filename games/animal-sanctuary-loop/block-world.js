@@ -12,8 +12,9 @@ function unproject(x,y,w){return {x:24+(x-w/2)*VIEW/w,y:24+(y-w/2)*VIEW/w/C};}
 // One uniform world scale, shared by GPU, Canvas, picking and the tactical map.
 function cameraFor(w,h,player,overview=false){
  const u=overview?Math.min(w/56,h/50):Math.min(Math.max(w/48,h/(48*C)),w/28,h/(28*C));
- const clamp=(v,half)=>half>=25?24:Math.max(half-1,Math.min(49-half,v));
- return {w,h,u,x:overview?24:clamp(player.x,w/u/2),z:overview?24:clamp(player.y,h/u/C/2)};
+ // Reserve enough room for the upright hero, including its head at the north rim.
+ const clamp=(v,half,before,after)=>half>=(48+before+after)/2?(48+after-before)/2:Math.max(half-before,Math.min(48+after-half,v));
+ return {w,h,u,x:overview?24:clamp(player.x,w/u/2,3,3),z:overview?24:clamp(player.y,h/u/C/2,5,3)};
 }
 function cameraProject(x,z,y,c){return {x:c.w/2+(x-c.x)*c.u,y:c.h/2+(z-c.z)*C*c.u-y*S*c.u};}
 function cameraUnproject(x,y,c){return {x:c.x+(x-c.w/2)/c.u,y:c.z+(y-c.h/2)/c.u/C};}

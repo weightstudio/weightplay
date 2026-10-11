@@ -90,3 +90,5 @@ const rows={
 const keys=['finishLine','momentum','customWheel','bestTime','invalidWheel','rendererError'];
 for(const [locale,values] of Object.entries(rows))Object.assign(window.SKETCHWHEEL_LOCALES[locale],Object.fromEntries(keys.map((k,i)=>[k,values[i]])));
 })();
+
+(function(){const tips={en:'Use a cornered wheel for grip on ice.','zh-Hant':'尖角輪能抓住冰面。','zh-Hans':'尖角轮能抓住冰面。',ja:'角のある車輪で氷をグリップ。',ko:'각진 바퀴로 얼음에서 접지력을 확보하세요.',es:'Usa una rueda con esquinas para agarrar el hielo.','pt-BR':'Use uma roda com pontas para aderir ao gelo.',fr:'Utilisez une roue anguleuse pour adhérer sur la glace.',de:'Ein kantiges Rad gibt Halt auf Eis.',it:'Usa una ruota spigolosa per aderire sul ghiaccio.',ru:'Угловатое колесо лучше цепляется за лёд.',hi:'बर्फ पर पकड़ के लिए कोनों वाला पहिया बनाएं।',ar:'استخدم عجلة ذات زوايا للتماسك على الجليد.'};for(const [l,tip] of Object.entries(tips))window.SKETCHWHEEL_LOCALES[l].terrainTips={...window.SKETCHWHEEL_LOCALES[l].terrainTips,ice:tip};})();

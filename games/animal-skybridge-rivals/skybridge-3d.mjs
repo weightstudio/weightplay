@@ -19,6 +19,7 @@ export class SkybridgeView {
     this.ray=new THREE.Raycaster();this.ground=new THREE.Plane(new THREE.Vector3(0,1,0),0);this.hit=new THREE.Vector3();
     this.box=this.own(new THREE.BoxGeometry(1,1,1));
     this.ringGeo=this.own(new THREE.TorusGeometry(1,.045,5,36));
+    this.cloudGeo=this.own(new THREE.IcosahedronGeometry(1,2));
     this.scene.add(new THREE.HemisphereLight(0xe9faff,0x486377,1.65));
     const sun=new THREE.DirectionalLight(0xffedc4,3.4);sun.position.set(-12,30,10);
     sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
@@ -28,7 +29,7 @@ export class SkybridgeView {
     const rim=new THREE.DirectionalLight(0x8dcfff,1.2);rim.position.set(15,8,-20);this.scene.add(rim);
     this.world=new THREE.Group();this.world.scale.z=1.65;this.scene.add(this.world);
     this.ghostMaterial=this.own(new THREE.MeshStandardMaterial({color:0x51819a,transparent:true,opacity:.22,roughness:.8,depthWrite:false}));
-    this.actorModels=[];this.pickupInstances=[];this.bridgeInstances=[];
+    this.actorModels=[];this.pickupInstances=[];this.bridgeInstances=[];this.labels=[];
     this.dummy=new THREE.Object3D();this.tempColor=new THREE.Color();
     this.marker=new THREE.Mesh(this.ringGeo,this.mat(0xffffff,true));this.marker.rotation.x=-Math.PI/2;this.marker.position.y=.06;this.marker.visible=false;this.scene.add(this.marker);
     this.markerLife=0;this.lastNow=0;this.cameraCenter=9;
@@ -136,6 +137,11 @@ export class SkybridgeView {
         for(const sign of [-1,1]){this.cube(gate,0xb8995d,sign*.88,.47,0,.13,.85,.13);this.cube(gate,COLORS[l],sign*.88,.94,0,.24,.16,.24,true);}
         // Arrow in the actual surface plane, pointing toward the bridge.
         for(let k=0;k<3;k++)this.cube(gate,0xffebad,(k-1)*.23,.17,.1+Math.abs(k-1)*.22,.2,.045,.2,true);
+        const c=document.createElement('canvas');c.width=128;c.height=56;
+        const texture=new THREE.CanvasTexture(c);texture.colorSpace=THREE.SRGBColorSpace;
+        const material=new THREE.SpriteMaterial({map:texture,depthTest:false});
+        const label=new THREE.Sprite(material);label.position.set(x,.75,-b.start+.85);label.scale.set(1.7,.75,1);this.world.add(label);
+        this.labels.push({canvas:c,texture,material,b,l,label,last:-1});
       });this.bridgeInstances.push(instances);
     }
     // The finish has a physical chequered line and an illuminated arch.
@@ -161,11 +167,14 @@ export class SkybridgeView {
       const x=(rng()-.5)*45,y=-4-rng()*5,z=10-rng()*(race.finishY+25);
       clouds.push([x,y,z,3+rng()*7,.6+rng()*1.2,2+rng()*4]);
     }
-    this.instance(this.world,0xeaf1e8,clouds.length,clouds);
+    const cloudMesh=new THREE.InstancedMesh(this.cloudGeo,this.mat(0xf3eee7),clouds.length);
+    clouds.forEach((p,i)=>{this.dummy.position.set(p[0],p[1],p[2]);this.dummy.scale.set(p[3],p[4],p[5]);this.dummy.rotation.set(0,0,0);this.dummy.updateMatrix();cloudMesh.setMatrixAt(i,this.dummy.matrix);});
+    this.world.add(cloudMesh);
     this.particleMesh=new THREE.InstancedMesh(this.box,this.mat(0xffffff,true),96);this.particleMesh.count=0;this.particleMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.world.add(this.particleMesh);
     this.resize();
   }
   clearWorld(){
+    for(const l of this.labels){l.texture.dispose();l.material.dispose();}this.labels=[];
     this.world.traverse(o=>{if(o.isInstancedMesh)o.dispose();});this.world.clear();
     this.effects.length=0;this.actorModels=[];this.bridgeInstances=[];this.pickupInstances=[];
   }
@@ -181,12 +190,12 @@ export class SkybridgeView {
     const platform=this.race.platforms[sector];
     const span=b.end-platform.start+6;
     // Same sector and all four routes at every ratio; extra area is decorative sky.
-    const pitch=aspect>1.8?.48:.85;
+    const pitch=aspect>1.8?.48:.68;
     const projectedSpan=span*1.65*Math.sin(pitch)+3;
     const halfH=Math.max(projectedSpan/2,18.8/(2*aspect));
     Object.assign(this.camera,{left:-halfH*aspect,right:halfH*aspect,top:halfH,bottom:-halfH});
     this.camera.updateProjectionMatrix();this.pitch=pitch;
-    this.desiredCenter=(platform.start+b.end+1)/2*1.65;
+    this.desiredCenter=(platform.start+b.end+4)/2*1.65;
   }
   point(clientX,clientY){
     const r=this.canvas.getBoundingClientRect();
@@ -244,6 +253,14 @@ export class SkybridgeView {
         m.setColorAt(j,this.tempColor.setHex(neutral?0xf5d995:COLORS[owner]||COLORS[0]));
       }m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;
     }));
+    for(const label of this.labels){
+      const n=label.b.tiles[label.l].filter((owner,j)=>owner!==0&&!label.b.bonuses[label.l].includes(j)).length;
+      if(n!==label.last){
+        label.last=n;const c=label.canvas.getContext('2d');c.clearRect(0,0,128,56);
+        c.fillStyle='#143b4ce8';c.beginPath();c.roundRect(2,2,124,52,10);c.fill();
+        c.strokeStyle='#8ae9ed';c.lineWidth=2;c.stroke();c.fillStyle='#32e5ef';c.fillRect(20,18,23,14);c.fillStyle='#fff4ca';c.font='bold 30px system-ui';c.textAlign='left';c.fillText(String(n),57,39);label.texture.needsUpdate=true;
+      }
+    }
     race.hazards.forEach((h,i)=>{const m=this.hazardModels[i];m.g.position.set(h.x,0,-h.y);m.ring.material=this.mat(h.active?0xfa6e4e:0xffd36b,true);m.ring.scale.setScalar(h.radius*(h.active?1:.65));});
     this.markerLife=Math.max(0,this.markerLife-dt);this.marker.visible=this.markerLife>0;this.marker.scale.setScalar(.35+(1-this.markerLife/.6)*.35);
     this.effects=this.effects.filter(p=>{p.life-=dt;return p.life>0;});this.particleMesh.count=this.effects.length;

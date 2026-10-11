@@ -13,19 +13,19 @@ export class RallyScene {
       this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
       this.scene=new THREE.Scene();const colors=palettes[level.chapter];this.scene.background=new THREE.Color(colors[0]);this.scene.fog=new THREE.Fog(colors[0],38,115);
       this.camera=new THREE.OrthographicCamera(-10,10,10,-10,.1,160);
-      this.box=this.own(new THREE.BoxGeometry(1,1,1));this.materials=new Map();
+      this.box=this.own(new THREE.BoxGeometry(1,1,1));const bevel=new THREE.Shape();bevel.moveTo(-.46,-.46);bevel.lineTo(.46,-.46);bevel.lineTo(.46,.46);bevel.lineTo(-.46,.46);bevel.closePath();this.detailBox=this.own(new THREE.ExtrudeGeometry(bevel,{depth:.92,bevelEnabled:true,bevelThickness:.04,bevelSize:.04,bevelSegments:1,steps:1}));this.detailBox.translate(0,0,-.46);this.materials=new Map();
       this.scene.add(new THREE.HemisphereLight('#dcfffc','#284238',2.4));
       this.sun=new THREE.DirectionalLight('#ffe4b4',3.5);this.sun.position.set(10,25,15);this.sun.castShadow=true;this.sun.shadow.mapSize.set(1024,1024);Object.assign(this.sun.shadow.camera,{left:-14,right:14,top:14,bottom:-14,near:.1,far:65});this.sun.shadow.bias=-.0005;this.sun.shadow.normalBias=.05;this.scene.add(this.sun,this.sun.target);
       const rim=new THREE.DirectionalLight('#b9f8ff',1.2);rim.position.set(-15,5,-12);this.scene.add(rim);
       this.world=new THREE.Group();this.scene.add(this.world);this.buildTrack();this.buildScenery(colors);
       this.player=this.kart(false);this.rival=this.kart(true);this.scene.add(this.player.root,this.rival.root);
       this.sparkGeometry=this.own(new THREE.BoxGeometry(.08,.08,.08));this.sparks=Array.from({length:24},()=>{const m=new THREE.Mesh(this.sparkGeometry,this.mat('#ffe4a0',.2,.5,true));m.visible=false;this.scene.add(m);return m});
-      this.cameraX=0;this.lastPass=0;this.burstAt=-9;this.resize();canvas.dataset.renderer='three-webgl2';
+      this.cameraX=0;this.lastPass=0;this.burstAt=-9;this.resize();canvas.dataset.renderer='three-webgl2';canvas.dataset.activeRenderers='1';
     }catch(e){this.dispose();throw e;}
   }
   own(r){this.resources.add(r);return r;}
   mat(color,metal=.1,rough=.72,glow=false){const key=[color,metal,rough,glow].join();if(!this.materials.has(key))this.materials.set(key,this.own(new THREE.MeshStandardMaterial({color,metalness:metal,roughness:rough,emissive:glow?color:0,emissiveIntensity:glow?.5:0})));return this.materials.get(key);}
-  block(parent,x,y,z,w,h,d,color,metal=.1){const m=new THREE.Mesh(this.box,this.mat(color,metal));m.position.set(x,y,z);m.scale.set(w,h,d);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
+  block(parent,x,y,z,w,h,d,color,metal=.1){const m=new THREE.Mesh(this.modeling?this.detailBox:this.box,this.mat(color,metal));m.position.set(x,y,z);m.scale.set(w,h,d);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
   buildTrack(){
     const colors=palettes[this.level.chapter];
     for(const z of [1.9,-2.3]){
@@ -65,7 +65,7 @@ export class RallyScene {
     for(let i=0;i<7;i++){const x=i*19;this.block(this.world,x,5,-28,1.4,16,2,'#71908a');this.block(this.world,x+8,5,-28,1.4,16,2,'#71908a');this.block(this.world,x+4,13,-28,9.4,1.5,2,'#aac4a5');}
   }
   kart(fox){
-    const root=new THREE.Group(),body=new THREE.Group();root.add(body);const color=fox?'#d56851':'#268e87',fur=fox?'#d98c45':'#8c9c9e';
+    this.modeling=true;const root=new THREE.Group(),body=new THREE.Group();root.add(body);const color=fox?'#d56851':'#268e87',fur=fox?'#d98c45':'#8c9c9e';
     this.block(body,0,.75,0,2.8,.65,1.9,color,.4);this.block(body,1.3,.78,0,.38,.65,2.08,'#d8b368',.7);this.block(body,-1.4,.65,0,.25,.5,2.1,'#3d5058',.5);
     this.block(body,.9,1.15,0,1.15,.45,1.8,color,.5);
     for(const z of [-.72,.72]){this.block(body,1.52,1,z,.08,.22,.27,'#fff2b6',.5);this.block(body,-.95,1.25,z,.5,.12,.25,'#d0ad68',.6);}
@@ -81,7 +81,7 @@ export class RallyScene {
     for(const z of [-.67,.67])this.block(body,.1,1.45,z,.7,.32,.3,fur);
     const wheels=[];for(const x of [-1.02,1.05])for(const z of [-1.06,1.06]){const pivot=new THREE.Group();pivot.position.set(x,0,z);root.add(pivot);wheels.push(pivot);}
     const dust=this.block(root,-1.7,.12,0,.18,.18,.18,'#f7d197');dust.visible=false;
-    const kart={root,body,head,wheels,dust,fox,geometries:[]};this.setWheels(kart,{kind:'circle',width:.62,height:.56});return kart;
+    const kart={root,body,head,wheels,dust,fox,geometries:[]};this.setWheels(kart,{kind:'circle',width:.62,height:.56});this.modeling=false;return kart;
   }
   setWheels(kart,p){
     kart.wheels.forEach(w=>w.clear());kart.geometries.forEach(g=>{g.dispose();this.resources.delete(g)});kart.geometries=[];
@@ -91,7 +91,7 @@ export class RallyScene {
     const edgeMaterial=this.own(new THREE.LineBasicMaterial({color:kart.fox?'#ffe2b0':'#ffe087'}));kart.edgeMaterial?.dispose();if(kart.edgeMaterial)this.resources.delete(kart.edgeMaterial);kart.edgeMaterial=edgeMaterial;
     for(const pivot of kart.wheels){const mesh=new THREE.Mesh(geometry,this.mat(kart.fox?'#825445':'#346463',.55,.44));mesh.castShadow=true;pivot.add(mesh,new THREE.LineSegments(rim,edgeMaterial));this.block(pivot,0,0,.18,.24,.24,.17,'#ffd37a',.7);for(let i=0;i<4;i++){const spoke=this.block(pivot,0,0,.15,.9,.065,.07,'#dcb96d',.7);spoke.rotation.z=i*Math.PI/4;}}
   }
-  resize(){if(this.disposed)return;const r=this.canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;this.renderer.setSize(r.width,r.height,false);const h=20*r.height/r.width;Object.assign(this.camera,{left:-10,right:10,top:h/2,bottom:-h/2});this.camera.updateProjectionMatrix();}
+  resize(){if(this.disposed)return;const r=this.canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;this.renderer.setSize(r.width,r.height,false);const viewWidth=Math.min(r.width,r.height*2),h=16*r.height/viewWidth;this.renderer.setViewport((r.width-viewWidth)/2,0,viewWidth,r.height);Object.assign(this.camera,{left:-8,right:8,top:h/2,bottom:-h/2});this.camera.updateProjectionMatrix();}
   updateKart(kart,distance,profile,speed,time,impact){
     const x=distance/10,angle=distance/(10.5+profile.height*3.8+profile.width*1.6);const outline=wheelOutline(profile);
     let support=.25;for(const p of outline)support=Math.max(support,(p.x*Math.sin(-angle)+p.y*Math.cos(-angle))*.69);
@@ -107,7 +107,7 @@ export class RallyScene {
     if(this.disposed)return;const key=JSON.stringify(run.profile);if(key!==this.wheelKey){this.setWheels(this.player,run.profile);this.wheelKey=key;}
     this.updateKart(this.player,run.player,run.profile,run.speed,run.elapsed,run.impact);
     this.updateKart(this.rival,run.rival,{kind:'circle',width:.62,height:.56},this.level.rival,run.elapsed,0);
-    const x=run.player/10+3;this.camera.position.set(x-3,10,21);this.camera.lookAt(x,1,0);
+    const x=run.player/10+3;this.camera.position.set(x-4,16,22);this.camera.lookAt(x,1.3,0);
     this.sun.position.set(x+6,20,12);this.sun.target.position.set(x,0,0);
     if(run.passed.length!==this.lastPass){this.lastPass=run.passed.length;this.burstAt=run.elapsed;}
     const age=run.elapsed-this.burstAt;
@@ -115,5 +115,5 @@ export class RallyScene {
     this.renderer.render(this.scene,this.camera);
     const info=this.renderer.info;this.canvas.dataset.drawCalls=String(info.render.calls);this.canvas.dataset.triangles=String(info.render.triangles);this.canvas.dataset.geometries=String(info.memory.geometries);this.canvas.dataset.textures=String(info.memory.textures);
   }
-  dispose(){if(this.disposed)return;this.disposed=true;this.scene?.clear();for(const r of this.resources)r.dispose?.();this.resources.clear();this.renderer?.renderLists.dispose();this.renderer?.dispose();this.renderer?.forceContextLoss();}
+  dispose(){if(this.disposed)return;this.disposed=true;this.scene?.clear();for(const r of this.resources)r.dispose?.();this.resources.clear();this.renderer?.renderLists.dispose();this.renderer?.dispose();this.renderer?.forceContextLoss();this.canvas.dataset.activeRenderers='0';this.canvas.dataset.geometries='0';this.canvas.dataset.textures='0';}
 }

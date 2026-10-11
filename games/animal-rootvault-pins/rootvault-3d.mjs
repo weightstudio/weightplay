@@ -131,13 +131,15 @@ export class Rootvault3D {
       arrow.rotation.z = Math.atan2(dy,dx)-Math.PI/2;
       if (!pin.pulled) {
         const p = pins[pin.id], locked = pin.lock && !state.unlocked.has(pin.lock);
-        this.box(this.world, locked ? 0x9275b0 : 0xd6a047, p.x, -p.y+8, 18, 62, 5, 5, true, active);
-        const head = this.mesh(this.world, 'ring', locked ? 0xc7a4ec : 0xffd779, p.x-27, -p.y+8, 20, 8, 8, 4, true, active);
+        const handleWidth = Math.min(62, (layout.pinWidth || 76)-10);
+        this.box(this.world, locked ? 0x9275b0 : 0xd6a047, p.x, -p.y+8, 18, handleWidth, 5, 5, true, active);
+        const head = this.mesh(this.world, 'ring', locked ? 0xc7a4ec : 0xffd779, p.x-handleWidth/2+4, -p.y+8, 20, 8, 8, 4, true, active);
         head.rotation.x = .25;
       }
     }
     for (const room of Object.values(state.rooms)) {
       const p = rooms[room.id], g = new T.Group(); g.position.set(p.x,-p.y,0); this.world.add(g);
+      g.scale.setScalar(layout.roomScale || 1);
       const target = state.pins[selected]?.to === room.id, source = state.pins[selected]?.from === room.id;
       const sanctuary = room.type === 'sanctuary', danger = room.type === 'void';
       const border = target ? 0xffd573 : source ? 0x7cfbe0 : sanctuary ? 0x4bd9b7 : danger ? 0x8066a4 : 0x747854;

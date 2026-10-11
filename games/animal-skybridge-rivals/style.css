@@ -206,7 +206,7 @@ button {
   grid-template-rows: minmax(0, 1fr) 56px;
   background:
     linear-gradient(#03162c9c, #05152edb),
-    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover;
+    url("../../assets/animal-skybridge-rivals/cover-v26.webp") center/cover;
 }
 .stage-canvas,
 .battle-canvas {
@@ -234,7 +234,7 @@ button {
   padding: 8px;
   background:
     linear-gradient(#06264ad0, #06182eed),
-    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover;
+    url("../../assets/animal-skybridge-rivals/cover-v26.webp") center/cover;
 }
 .stage-header,
 .battle-header {
@@ -365,7 +365,7 @@ button {
   gap: 5px;
   background:
     linear-gradient(#06224638, #06172eea),
-    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover;
+    url("../../assets/animal-skybridge-rivals/cover-v26.webp") center/cover;
   box-shadow: 0 10px 24px #0007;
 }
 .stage-card strong {
@@ -941,3 +941,10 @@ button {
 .orla-portrait { background-image: url('../../assets/weightplay-character-moon-cap-owl-block-v1.webp'); }
 .panko-portrait { background-image: url('../../assets/weightplay-character-drum-belly-panda-block-v1.webp'); }
 @media (prefers-reduced-motion:reduce) { .race-cue,.rank-runner { transition: none; } .stack-pop { animation: none; } }
+
+.fia-portrait {background-image:url('../../assets/weightplay-character-spark-paw-fox-block-v1.webp');background-position:center;background-size:contain;}
+.upgrade-icon { display: block; width: 64px; height: 64px; margin: auto; font-size: 0 !important; background: url('../../assets/animal-skybridge-rivals/workshop-v26.webp') no-repeat; background-size: 200% 200%; }
+[data-upgrade="capacity"] .upgrade-icon { background-position: 0 0; }
+[data-upgrade="speed"] .upgrade-icon { background-position: 100% 0; }
+[data-upgrade="grip"] .upgrade-icon { background-position: 0 100%; }
+#shardCount::before { content: ''; display: inline-block; width: 30px; height: 30px; vertical-align: middle; background: url('../../assets/animal-skybridge-rivals/workshop-v26.webp') 100% 100%/200% 200%; }

@@ -18,7 +18,7 @@
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 
-const $=id=>document.getElementById(id),GAME_VERSION=25,INTERFACE_VERSION=7,INTERFACE_TARGET_VERSION=7,LOCALES=window.ROOTVAULT_PIN_LOCALES||{},DYNAMIC_LOCALES=window.ROOTVAULT_PIN_DYNAMIC_LOCALES||{},CODES=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],LABELS={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"},STORE="weightplay:animal-rootvault-pins:v1",memory=new Map();
+const $=id=>document.getElementById(id),GAME_VERSION=26,INTERFACE_VERSION=7,INTERFACE_TARGET_VERSION=7,LOCALES=window.ROOTVAULT_PIN_LOCALES||{},DYNAMIC_LOCALES=window.ROOTVAULT_PIN_DYNAMIC_LOCALES||{},CODES=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],LABELS={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"},STORE="weightplay:animal-rootvault-pins:v1",memory=new Map();
 const els={loading:$("loadingPanel"),mainGroup:$("mainGroup"),stageScreen:$("stageScreen"),battleScreen:$("battleScreen"),localeSelect:$("localeSelect"),mainProgress:$("mainProgress"),start:$("start"),stageBack:$("stageBack"),stageRail:$("stageRail"),stageSummary:$("stageSummary"),briefTab:$("briefTab"),workshopTab:$("workshopTab"),briefPanel:$("briefPanel"),workshopPanel:$("workshopPanel"),selectedNumber:$("selectedNumber"),selectedName:$("selectedName"),selectedRule:$("selectedRule"),enterStage:$("enterStage"),seedCount:$("seedCount"),workshopHint:$("workshopHint"),upgradeList:$("upgradeList"),battleLive:$("battleLive"),battleBack:$("battleBack"),battleChapter:$("battleChapter"),battleStage:$("battleStage"),pullCount:$("pullCount"),battleHelp:$("battleHelp"),ruleCue:$("ruleCue"),board:$("chamberBoard"),feedback:$("feedback"),restart:$("restart"),pullPin:$("pullPin"),helpModal:$("helpModal"),helpClose:$("helpClose"),leaveModal:$("leaveModal"),leaveContinue:$("leaveContinue"),leaveStage:$("leaveStage"),resultModal:$("resultModal"),resultCard:document.querySelector(".result-card"),resultKicker:$("resultKicker"),resultTitle:$("resultTitle"),resultText:$("resultText"),resultPulls:$("resultPulls"),resultBest:$("resultBest"),resultReward:$("resultReward"),retry:$("retry"),resultStages:$("resultStages"),next:$("next")};
 const storage={get(key){try{return localStorage.getItem(key)}catch{return memory.get(key)||null}},set(key,value){try{localStorage.setItem(key,value)}catch{memory.set(key,value)}}};
 const defaultSave=()=>({unlocked:1,completed:{},best:{},seeds:0,upgrades:[0,0,0],tutorial:false});
@@ -104,7 +104,7 @@ const INTERFACE7_STAGE_LABELS=Object.freeze({en:"Stages","zh-Hant":"關卡","zh-
 function syncInterface7StageTabs(){if(els.briefTab){const label=INTERFACE7_STAGE_LABELS[locale]||INTERFACE7_STAGE_LABELS.en;els.briefTab.textContent=label;els.briefTab.setAttribute("aria-label",label);els.briefTab.dataset.wpStageSlot="center";els.briefTab.dataset.wpStageRole="stages"}if(els.workshopTab){els.workshopTab.dataset.wpStageSlot="right";els.workshopTab.dataset.wpStageRole="equipment"}}
 function installInterface7Compat(){
   document.querySelector(".public-guide")?.classList.add("guide");
-  if(!document.querySelector('link[href*="interface-7-cleanup.css"]')){const link=document.createElement("link");link.rel="stylesheet";link.href=new URL("interface-7-cleanup.css?v=20260928-rootvault-guide-contrast-v25",document.baseURI).href;document.head.append(link)}
+  if(!document.querySelector('link[href*="interface-7-cleanup.css"]')){const link=document.createElement("link");link.rel="stylesheet";link.href=new URL("interface-7-cleanup.css?v=20261011-rootvault-upgrade-v26",document.baseURI).href;document.head.append(link)}
   const stageCanvas=document.querySelector("#stageScreen .stage-canvas"),stageTabs=document.querySelector("#stageScreen .stage-tabs");
   if(els.stageRail){els.stageRail.dataset.wpStageDragOwner="game";els.stageRail.dataset.wpRootvaultLegacyDragSuppressed="true";els.stageRail.addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(!Number.isInteger(index)||index<0)return;els.stageRail.querySelector(`[data-stage-index="${index}"]`)?.focus({preventScroll:true})})}
   if(stageCanvas&&stageTabs&&els.stageRail&&els.briefPanel&&els.workshopPanel){let workspace=stageCanvas.querySelector(":scope > .wp-rootvault-stage-workspace");if(!workspace){workspace=document.createElement("div");workspace.className="wp-rootvault-stage-workspace";workspace.dataset.wpStageWorkspace="";stageCanvas.insertBefore(workspace,stageTabs);workspace.append(els.stageRail,els.briefPanel,els.workshopPanel)}stageTabs.dataset.wpStageTabs="three-slot"}
@@ -114,7 +114,7 @@ function installInterface7Compat(){
   const reserve=document.querySelector("#battleScreen .ad-reserve");if(reserve){reserve.dataset.wpBattlePhysicalReserve="";reserve.setAttribute("aria-hidden","true")}
 }
 installInterface7Compat();
-const motionStyle=document.createElement("link");motionStyle.rel="stylesheet";motionStyle.href=new URL("motion.css?v=20260925-rootvault-v22",document.baseURI).href;document.head.append(motionStyle);
+const motionStyle=document.createElement("link");motionStyle.rel="stylesheet";motionStyle.href=new URL("motion.css?v=20261011-rootvault-upgrade-v26",document.baseURI).href;document.head.append(motionStyle);
 motionPreference?.addEventListener?.("change",()=>{
   if(reducedMotion()){
     suspendPullCompletion();cancelMotion();
@@ -201,6 +201,15 @@ function computeBoardLayout(){
     rooms[room.id]={x:pad+x*Math.max(0,width-pad*2),y:pad+y*Math.max(0,height-pad*2)};
   }
   const values=Object.values(rooms);
+  if(height<260&&width>700){
+    const sorted=Object.entries(rooms).sort((a,b)=>a[1].y-b[1].y||a[1].x-b[1].x),split=Math.ceil(sorted.length/2);
+    for(const [row,items] of [sorted.slice(0,split),sorted.slice(split)].entries()){
+      items.sort((a,b)=>a[1].x-b[1].x).forEach(([id],i)=>{rooms[id]={x:52+(i+.5)*(width-104)/items.length,y:row?height-31:31}});
+    }
+    const pitch=Math.min(72,(width-24)/run.level.pins.length),pinWidth=pitch-4;
+    run.level.pins.forEach((pin,i)=>{pins[pin.id]={x:width/2+(i-(run.level.pins.length-1)/2)*pitch,y:height/2}});
+    return boardLayout={key,width,height,rooms,pins,roomScale:.76,compact:true,pinWidth};
+  }
   // Spread dense authored junctions; pin/room placement remains fixed for a run.
   for(let pass=0;pass<80;pass++){
     for(let i=0;i<values.length;i++)for(let j=i+1;j<values.length;j++){
@@ -212,17 +221,21 @@ function computeBoardLayout(){
   const used=[];
   for(const pin of run.level.pins){
     const a=rooms[pin.from],b=rooms[pin.to],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy)||1;
-    let best=null;
+    let best=null;const candidates=[];
     for(const f of [.5,.38,.62,.27,.73])for(const side of [0,28,-28,48,-48]){
-      const candidate={x:Math.max(40,Math.min(width-40,a.x+dx*f-dy/length*side)),y:Math.max(26,Math.min(height-26,a.y+dy*f+dx/length*side))};
-      const roomGap=Math.min(...values.map(p=>Math.hypot((p.x-candidate.x)/1.12,p.y-candidate.y)))-62;
-      const pinGap=used.length?Math.min(...used.map(p=>Math.max(Math.abs(p.x-candidate.x)/1.75,Math.abs(p.y-candidate.y))))-45:100;
-      const score=Math.min(roomGap,pinGap)-Math.abs(side)*.06-Math.abs(f-.5)*10;
+      candidates.push({x:Math.max(40,Math.min(width-40,a.x+dx*f-dy/length*side)),y:Math.max(26,Math.min(height-26,a.y+dy*f+dx/length*side))});
+    }
+    for(let y=26;y<=height-26;y+=10)for(let x=40;x<=width-40;x+=10)candidates.push({x,y});
+    for(const candidate of candidates){
+      const roomGap=Math.min(...values.map(p=>Math.max(Math.abs(p.x-candidate.x)/80,Math.abs(p.y-candidate.y)/62)));
+      const pinGap=used.length?Math.min(...used.map(p=>Math.max(Math.abs(p.x-candidate.x)/80,Math.abs(p.y-candidate.y)/48))):2;
+      const clearance=Math.min(roomGap,pinGap),distance=Math.hypot(candidate.x-(a.x+b.x)/2,candidate.y-(a.y+b.y)/2);
+      const score=Math.min(1,clearance)*10000-distance;
       if(!best||score>best.score)best={...candidate,score};
     }
     pins[pin.id]=best;used.push(best);
   }
-  return boardLayout={key,width,height,rooms,pins};
+  return boardLayout={key,width,height,rooms,pins,roomScale:1,compact:false};
 }
 function roomCenter(room){return computeBoardLayout().rooms[room.id]||{x:0,y:0}}
 function disposeBoardView(){++boardViewEpoch;boardView?.dispose();boardView=null;delete els.board.dataset.rv3d}
@@ -254,6 +267,8 @@ function materialNames(contents){return contents.map(type=>(t("materialNames")||
 function renderBoard(){
   if(!run)return;
   const layout=computeBoardLayout(),canvas=boardView?.canvas;
+  els.board.dataset.compact=String(Boolean(layout.compact));
+  els.board.style.setProperty("--rv-pin-width",(layout.pinWidth||76)+"px");
   cancelMotion(els.board);els.board.replaceChildren(...(canvas?[canvas]:[]));
   els.board.dataset.chapter=String(run.level.chapter);
   for(const pin of Object.values(run.pins)){

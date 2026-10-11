@@ -29,7 +29,7 @@ export function measureWheel(input,w=240,h=116){
     points:points.map(p=>({x:.5+(p.x-cx)/scale*.88,y:.5+(p.y-cy)/scale*.88}))};
 }
 export function wheelOutline(p){
-  if(p.points?.length>3)return p.points.map(q=>({x:(q.x-.5)*2,y:-(q.y-.5)*2}));
+  if(p.points?.length>3){const rx=Math.max(...p.points.map(q=>Math.abs(q.x-.5))),ry=Math.max(...p.points.map(q=>Math.abs(q.y-.5)));return p.points.map(q=>({x:(q.x-.5)/(rx||1)*p.width/.62,y:-(q.y-.5)/(ry||1)*p.height/.56}));}
   return Array.from({length:p.kind==='spike'?16:48},(_,i)=>{const a=i*Math.PI*2/(p.kind==='spike'?16:48),r=p.kind==='spike'?(i%2?.58:1):1;return{x:Math.cos(a)*r*p.width/.62,y:Math.sin(a)*r*p.height/.56}});
 }
 export function stepRace(run,level,dt,{pass,performance,axle=0,drawing=false}={}){
