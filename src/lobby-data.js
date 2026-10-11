@@ -7285,6 +7285,9 @@ const trafficJamDinerDescription = {
 };
 window.WONDER_LOBBY.games.push({
   id: "traffic-jam-diner", audience: "general", status: "planned", internalOnly: true,
+  // Owned-game-only route generation needs an explicit internal candidate;
+  // Topics lobby controls still block direct trial activation for this ID.
+  internalTrial: "index.html?preview=1",
   title: trafficJamDinerTitle, statusText: trafficJamDinerStatusText, type: trafficJamDinerType,
   categories: ["Puzzle", "Casual", "Animal Games"],
   skills: ["Route Planning", "Order Sequencing", "Capacity Strategy"],

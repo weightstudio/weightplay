@@ -360,4 +360,8 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] 
     width: 52px !important; min-width: 52px !important; max-width: 52px !important;
     height: 52px !important; min-height: 52px !important; max-height: 52px !important;
   }
+  body[data-wp-game-id="animal-orbit-orchard"] #battleBackBtn {
+    position: relative !important;
+    top: 2px !important;
+  }
 }
