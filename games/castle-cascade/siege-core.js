@@ -30,19 +30,35 @@ export function resolveSiegeBatch(siege, batch) {
   const before = siegeSnapshot(siege);
   const powers = new Set(batch.powerHits);
   const combo = batch.visualEffects.some(effect => effect.type === "combo-burst");
-  const attacks = [];
+  const birds = batch.visualEffects.filter(effect => effect.type === "siege-bird");
+  const flyingCells = new Set(birds.flatMap(bird => [bird.index, bird.carriedIndex]).filter(Number.isInteger));
+  const laneCounts = Array(9).fill(0), sources = [];
   for (const index of batch.directHits) {
-    if (batch.before[index].c === null || batch.cleared[index].c !== null) continue;
-    const lane = index % 9, power = powers.has(index);
-    const victim = siege.targets.filter(item => item.hp > 0 && lane >= item.lane && lane < item.lane + item.span)
-      .sort((a, b) => b.row - a.row)[0];
+    if (flyingCells.has(index) || batch.before[index].c === null || batch.cleared[index].c !== null) continue;
+    const lane = index % 9;
+    sources.push({ index, lane, delay: laneCounts[lane]++ * 90, flight: 440 });
+  }
+  // Separate columns launch together; repeated cells in one column form a train.
+  sources.sort((a, b) => a.delay - b.delay || a.index - b.index);
+  const birdDelay = sources.length ? sources.at(-1).delay + 100 : 0;
+  birds.forEach((bird, order) => sources.push({ index: bird.index, lane: bird.index % 9,
+    bird: true, payload: bird.payload || null, delay: birdDelay + order * 90, flight: 660 }));
+  const attacks = [];
+  for (const source of sources) {
+    const { index, lane } = source, power = source.bird || powers.has(index);
+    const alive = siege.targets.filter(item => item.hp > 0);
+    const victim = source.bird
+      ? alive.sort((a, b) => Number(b.kind === "castle") - Number(a.kind === "castle")
+        || Math.abs(a.lane + a.span / 2 - lane - .5) - Math.abs(b.lane + b.span / 2 - lane - .5))[0]
+      : alive.filter(item => lane >= item.lane && lane < item.lane + item.span).sort((a, b) => b.row - a.row)[0];
     const hpBefore = victim?.hp ?? 0;
-    const damage = victim ? Math.min(victim.hp, power ? (combo ? 5 : 3) : 1) : 0;
+    const damage = victim ? Math.min(victim.hp, source.payload ? 8 : power ? (combo ? 5 : 3) : 1) : 0;
     if (victim) {
       victim.hp -= damage;
       if (!victim.hp) siege.defeated += 1;
     }
-    attacks.push({ index, lane, color: batch.before[index].c, power, combo, targetId: victim?.id ?? null,
+    attacks.push({ ...source, arrival: source.delay + source.flight,
+      color: batch.before[index].c, power, combo, targetId: victim?.id ?? null,
       miss: !victim, damage, hpBefore, hpAfter: victim?.hp ?? 0 });
   }
   const impacted = siegeSnapshot(siege);

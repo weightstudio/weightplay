@@ -1,4 +1,4 @@
-import { createSiege, resolveSiegeBatch, advanceSiegeTurn } from "./siege-core.js?v=20261011-lanes-v19";
+import { createSiege, resolveSiegeBatch, advanceSiegeTurn } from "./siege-core.js?v=20261011-birds-v20";
 export const BOARD_WIDTH = 9;
 export const BOARD_HEIGHT = 9;
 export const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
@@ -374,7 +374,7 @@ function addArea(set, index, radius, powerSet) {
   }
 }
 
-function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects = []) {
+function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects = [], siege = null) {
   direct.add(index);
   powerSet.add(index);
   if (power === "arrowH") {
@@ -387,6 +387,10 @@ function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTarge
     addArea(direct, index, 2, powerSet);
     visualEffects.push({ type: "bomb", index, radius: 2 });
   } else if (power === "bird") {
+    if (siege) {
+      visualEffects.push({ type: "siege-bird", index });
+      return;
+    }
     const target = bestTarget(board, excludedBirdTargets);
     if (target >= 0) {
       direct.add(target);
@@ -408,7 +412,7 @@ function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTarge
   }
 }
 
-function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set(), visualEffects = []) {
+function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set(), visualEffects = [], siege = null) {
   const queue = [...direct].filter((index) => board[index]?.p && !suppressed.has(index));
   const activated = new Set();
   const excludedBirdTargets = new Set(direct);
@@ -419,7 +423,7 @@ function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set(), 
     const power = board[index]?.p;
     if (!power || board[index].grass) continue;
     const before = new Set(direct);
-    addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects);
+    addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects, siege);
     for (const hit of direct) {
       if (!before.has(hit) && board[hit]?.p && !activated.has(hit) && !suppressed.has(hit)) queue.push(hit);
     }
@@ -692,6 +696,16 @@ function comboEffect(state, a, b) {
     suppressed.add(a);
     suppressed.add(b);
     visualEffects.push({ type: "cross", index: b });
+  } else if (state.siege && (powerA === "bird" || powerB === "bird")) {
+    for (const index of [a, b]) {
+      if (board[index].p !== "bird") continue;
+      const partner = index === a ? b : a;
+      const payload = board[partner].p === "bird" ? null : board[partner].p;
+      visualEffects.push({ type: "siege-bird", index, payload,
+        carriedIndex: payload ? partner : null });
+    }
+    suppressed.add(a);
+    suppressed.add(b);
   } else if (powerA === "bird" && powerB === "bird") {
     const excluded = new Set([a, b]);
     const targets = [];
@@ -727,7 +741,7 @@ function comboEffect(state, a, b) {
 
   // Unpaired Arrow/Bomb sources are expanded here once, together with any
   // powers hit by their footprint. Pair/carry sources are suppressed above.
-  expandTriggeredPowers(board, direct, powerSet, suppressed, visualEffects);
+  expandTriggeredPowers(board, direct, powerSet, suppressed, visualEffects, state.siege);
   if (powerA && powerB) {
     visualEffects.push({
       type: "combo-burst",
@@ -804,7 +818,7 @@ function resolveCascade(state, initialDirect, initialPower, specials = [], force
     specialsToPlace = nextSpecials;
     forceGateNow = false;
     const suppressed = deferredPower && !deferredPower.consumed ? new Set([deferredPower.index]) : new Set();
-    visualEffects = expandTriggeredPowers(state.board, direct, powerSet, suppressed);
+    visualEffects = expandTriggeredPowers(state.board, direct, powerSet, suppressed, [], state.siege);
   }
   return batches;
 }
@@ -837,17 +851,19 @@ function resolveDeferredPower(state, deferredPower) {
     direct.add(index);
     powerSet.add(index);
   } else {
-    addPowerEffect(state.board, index, power, direct, powerSet, new Set([index]), visualEffects);
+    addPowerEffect(state.board, index, power, direct, powerSet, new Set([index]), visualEffects, state.siege);
     direct.delete(index);
     powerSet.delete(index);
   }
 
-  if (!direct.size) return [];
+  // A deferred siege bird can already have been consumed by the preceding
+  // match cascade. Its queued flight still happens without clearing a new tile.
+  if (!direct.size && !visualEffects.some(effect => effect.type === "siege-bird")) return [];
   const effects = power === "prism"
-    ? expandTriggeredPowers(state.board, direct, powerSet, suppressed, visualEffects)
+    ? expandTriggeredPowers(state.board, direct, powerSet, suppressed, visualEffects, state.siege)
     : live
-      ? expandTriggeredPowers(state.board, direct, powerSet, new Set(), visualEffects)
-      : expandTriggeredPowers(state.board, direct, powerSet, suppressed, visualEffects);
+      ? expandTriggeredPowers(state.board, direct, powerSet, new Set(), visualEffects, state.siege)
+      : expandTriggeredPowers(state.board, direct, powerSet, suppressed, visualEffects, state.siege);
   return resolveCascade(state, direct, powerSet, null, false, effects);
 }
 
@@ -868,7 +884,7 @@ export function activatePower(state, index) {
   state.moves -= 1;
   const direct = new Set([index]);
   const powerSet = new Set([index]);
-  const visualEffects = expandTriggeredPowers(state.board, direct, powerSet);
+  const visualEffects = expandTriggeredPowers(state.board, direct, powerSet, new Set(), [], state.siege);
   const batches = resolveCascade(state, direct, powerSet, null, false, visualEffects);
   return actionResult(state, true, "power", batches, reshufflesBefore);
 }
@@ -902,7 +918,7 @@ export function playSwap(state, a, b) {
         const direct = new Set(match.cells);
         const powerSet = new Set();
         for (const special of specials) direct.delete(special.at);
-        const visualEffects = expandTriggeredPowers(state.board, direct, powerSet, new Set([powerIndex]));
+        const visualEffects = expandTriggeredPowers(state.board, direct, powerSet, new Set([powerIndex]), [], state.siege);
         for (const special of specials) direct.add(special.at);
         const matchBatches = resolveCascade(state, direct, powerSet, specials, false, visualEffects, deferredPower);
         const powerBatches = resolveDeferredPower(state, deferredPower);
@@ -927,7 +943,7 @@ export function playSwap(state, a, b) {
   const direct = new Set(match.cells);
   const powerSet = new Set();
   for (const special of specials) direct.delete(special.at);
-  const visualEffects = expandTriggeredPowers(state.board, direct, powerSet);
+  const visualEffects = expandTriggeredPowers(state.board, direct, powerSet, new Set(), [], state.siege);
   for (const special of specials) direct.add(special.at);
   const batches = resolveCascade(state, direct, powerSet, specials, false, visualEffects);
   return actionResult(state, true, "match", batches, reshufflesBefore);

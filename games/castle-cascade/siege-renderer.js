@@ -103,7 +103,7 @@ export function drawSiegeField(renderer, field, time) {
 
 export function prepareVolley(siege, onContact) {
   if (!siege?.attacks.length) return {};
-  const attacks = siege.attacks.map((shot, index) => ({ ...shot, delay: index * 7, arrival: 440 + index * 7, played: false }));
+  const attacks = siege.attacks.map(shot => ({ ...shot, played: false }));
   return { siege: { ...siege, attacks }, onSiegeContact: onContact, siegeDuration: attacks.at(-1).arrival + 300 };
 }
 export function applySiegeContacts(renderer, motion, elapsed) {
@@ -134,10 +134,37 @@ export function drawSiegeVolley(renderer, bounds, field, motion, time) {
   for (const shot of motion.siege.attacks) {
     const target = motion.siege.before.targets.find(item => item.id === shot.targetId);
     const start = { x: bounds.x + (shot.lane + .5) * cell, y: bounds.y + (Math.floor(shot.index / 9) + .5) * cell };
-    const end = { x: start.x, y: target ? siegeTargetPoint(field, target).y + targetSize(field, target) * .22 : field.y - 5 };
-    const p = clamp((elapsed - shot.delay) / 440), color = COLORS[shot.color] || COLORS[2];
-    if (elapsed < shot.delay) continue;
-    if (p < 1) {
+    const end = { x: shot.bird && target ? siegeTargetPoint(field, target).x : start.x,
+      y: target ? siegeTargetPoint(field, target).y + targetSize(field, target) * .22 : field.y - 5 };
+    const p = clamp((elapsed - shot.delay) / shot.flight), color = COLORS[shot.color] || COLORS[2];
+    if (elapsed < shot.delay) {
+      if (shot.bird) {
+        ctx.save(); ctx.globalAlpha = 1;
+        const lift = Math.sin(elapsed / 120) * cell * .035;
+        renderer.drawPower("bird", start.x, start.y - lift, cell * .9);
+        if (shot.payload) renderer.drawPower(shot.payload, start.x, start.y + cell * .3 - lift, cell * .5);
+        ctx.restore();
+      }
+      continue;
+    }
+    if (p < 1 && shot.bird) {
+      const glide = ease(p);
+      const at = t => ({ x: start.x + (end.x - start.x) * t + Math.sin(t * Math.PI) * cell * .6,
+        y: start.y + (end.y - start.y) * t - Math.sin(t * Math.PI) * cell * .8 });
+      const point = at(glide);
+      ctx.save(); ctx.globalAlpha = shot.miss ? Math.min(1, (1 - p) * 6) : 1;
+      ctx.strokeStyle = "#b4f0ff99"; ctx.lineWidth = cell * .13; ctx.lineCap = "round";
+      ctx.beginPath();
+      for (let i = 0; i <= 8; i += 1) {
+        const tail = at(Math.max(0, glide - .18 + i * .0225));
+        i ? ctx.lineTo(tail.x, tail.y) : ctx.moveTo(tail.x, tail.y);
+      }
+      ctx.stroke();
+      ctx.translate(point.x, point.y); ctx.rotate(Math.sin(p * Math.PI * 4) * .12);
+      renderer.drawPower("bird", 0, 0, cell * (.88 + Math.sin(p * Math.PI) * .15));
+      if (shot.payload) renderer.drawPower(shot.payload, 0, cell * .3, cell * .5);
+      ctx.restore();
+    } else if (p < 1) {
       const y = start.y + (end.y - start.y) * p;
       const tail = start.y + (end.y - start.y) * Math.max(0, p - .17);
       ctx.lineCap = "round";

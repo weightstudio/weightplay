@@ -6,9 +6,9 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js?v=20261011-lanes-v19";
-import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261011-lanes-v19";
-import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261011-lanes-v19";
+} from "./cascade-core.js?v=20261011-birds-v20";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261011-birds-v20";
+import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261011-birds-v20";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";

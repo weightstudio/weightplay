@@ -1,6 +1,6 @@
-import { BOARD_HEIGHT, BOARD_WIDTH } from "./cascade-core.js?v=20261011-lanes-v19";
-import { siegeSnapshot } from "./siege-core.js?v=20261011-lanes-v19";
-import { siegeLayout, drawSiegeField, drawSiegeVolley, prepareVolley, applySiegeContacts, applyEnemyContact, drawGrassSpread } from "./siege-renderer.js?v=20261011-lanes-v19";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "./cascade-core.js?v=20261011-birds-v20";
+import { siegeSnapshot } from "./siege-core.js?v=20261011-birds-v20";
+import { siegeLayout, drawSiegeField, drawSiegeVolley, prepareVolley, applySiegeContacts, applyEnemyContact, drawGrassSpread } from "./siege-renderer.js?v=20261011-birds-v20";
 
 const COLS = 5;
 const ROWS = 4;
@@ -911,6 +911,13 @@ export class CastleCascade2D {
       const { x: cx, y: cy } = center(index);
       const start = this.hitStart(batch, index);
       const hit = clamp((progress - start) / (batch.visualEffects.length ? .34 : .50), 0, 1);
+      const flying = batch.siege?.attacks.find(shot => shot.bird && shot.index === index);
+      if (flying) {
+        // Anticipate departure without breaking the bird into gem fragments.
+        this.drawPower("bird", cx, cy - Math.sin(progress * Math.PI) * cell * .09, cell);
+        if (flying.payload) this.drawPower(flying.payload, cx, cy + cell * .28, cell * .5);
+        continue;
+      }
       if (progress < start) {
         const prepare = clamp(progress / start, 0, 1);
         this.drawTile(tile, index, cx, cy, cell, 1, 1 + Math.sin(prepare * Math.PI) * .085);
