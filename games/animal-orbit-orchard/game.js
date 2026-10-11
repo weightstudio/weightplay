@@ -500,6 +500,9 @@
     $("battleStatus").className = `battle-status ${state.statusClass}`.trim();
   }
   function resetBattleStatus() { setBattleStatus("ready"); }
+  function clearStaleAttemptFeedback() {
+    if (state.statusClass === "is-miss" && state.statusKey !== "clampUsed") resetBattleStatus();
+  }
   function canPlay() {
     return !document.hidden && !$("battleScreen").hidden && $("resultScreen").hidden &&
       $("orbitLeaveDialog")?.hidden !== false && $("patternDialog")?.hidden !== false;
@@ -798,9 +801,26 @@
     $("battleBackBtn").addEventListener("click", openLeave);
     $("releaseBtn").addEventListener("click", release);
     $("clearBtn").addEventListener("click", () => { if (state.locked) return; state.angle = 0; resetBattleStatus(); renderBattle(); });
-    $("angleInput").addEventListener("input", (event) => { if (state.locked) return; state.angle = Number(event.target.value); renderBattle(); });
-    $("targetChoice").addEventListener("change", (event) => { if (!state.locked && canPlay()) state.selectedBeacon = event.target.value; });
-    $("laneChoice").addEventListener("change", (event) => { if (state.locked || !canPlay()) return; state.lane = event.target.value; renderChoices(rounds[state.round]); });
+    $("angleInput").addEventListener("input", (event) => {
+      if (state.locked) return;
+      state.angle = Number(event.target.value);
+      // Once the player changes their aim, the previous miss distance no
+      // longer describes the current dial position. Keep the one-use Clamp
+      // confirmation visible because it reports consumed stage state.
+      clearStaleAttemptFeedback();
+      renderBattle();
+    });
+    $("targetChoice").addEventListener("change", (event) => {
+      if (state.locked || !canPlay()) return;
+      state.selectedBeacon = event.target.value;
+      clearStaleAttemptFeedback();
+    });
+    $("laneChoice").addEventListener("change", (event) => {
+      if (state.locked || !canPlay()) return;
+      state.lane = event.target.value;
+      clearStaleAttemptFeedback();
+      renderChoices(rounds[state.round]);
+    });
     $("clampBtn").addEventListener("click", () => {
       if (state.locked || !canPlay() || state.clampUsed || !campaign.clampUnlocked || rounds[state.round].id < 6) return;
       state.clampArmed = !state.clampArmed; renderChoices(rounds[state.round]);
