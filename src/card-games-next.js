@@ -119,41 +119,29 @@
     ar: { label: "تقدم الجولة", copy: "مرّر ثلاث بطاقات، واتبع النوع، وتجنب بطاقات الجزاء." },
   };
 
-  // Hearts owns the Arabic shell because the generic route catalog does not
-  // know the card game's guide facts, named opponents, or first-trick cue.
-  // Keep this bounded to the reviewed locale so other card-game routes retain
-  // their existing shared ownership until they receive their own repair.
+  // Hearts owns only its Main-card summary, first-lead cue, and opponent names.
+  // Guide, FAQ, and SEO metadata remain owned by the locale route and
+  // game-page-info source; shell sync must never replace those fields.
   const HEARTS_SHELL_COPY = {
-    ar: {
-      title: "القلوب",
-      summary: "تجنب بطاقات الجزاء، واتبع النوع، وقرر متى تخاطر بجمع كل الجزاء.",
-      guideKicker: "دليل ألعاب WeightPlay الأصلية",
-      guideSummary: "اتبع النوع خلال ثلاث عشرة خدعة، وتجنب القلوب وملكة البستوني، وقرر إن كنت ستخاطر بجمع كل بطاقات الجزاء.",
-      gameplayLabel: "طريقة اللعب",
-      gameplay: "لعبة خدع التهرب الكلاسيكية",
-      genreLabel: "النوع",
-      genre: "بطاقات · عائلية · استراتيجية",
-      difficultyLabel: "الصعوبة",
-      difficulty: "من السهل إلى التحدي",
-      timeLabel: "الوقت التقريبي",
-      time: "5–15 دقيقة",
-      skillsLabel: "المهارات المتدرَّبة",
-      skills: "التخطيط · التركيز · التعرّف على الأنماط",
-      howTo: "كيفية اللعب",
-      howToCopy: "اختر ثلاث بطاقات لتمريرها، ثم العب بطاقة قانونية من يدك. تبدأ أول خدعة ببطاقة 2♣؛ والفائز يقود الخدعة التالية.",
-      preview: "لعب متاح للعامة",
-      previewCopy: "العب القلوب مجاناً في المتصفح من دون حساب أو شراء. مرّر ثلاث بطاقات، واتبع النوع، وتجنب بطاقات الجزاء خلال جولة خدع كاملة.",
-      faq: "الأسئلة الشائعة",
-      faqQuestion: "هل يُحفظ التقدم؟",
-      faqAnswer: "نعم، في هذا المتصفح فقط.",
-      opponents: ["أنت", "أوركيد", "مانجو", "نوفا"],
-      lead: "تبدأ أول خدعة ببطاقة 2♣",
-      leadBy: "{name} يقود الخدعة التالية",
-      metaDescription: "العب القلوب مجاناً في المتصفح: مرّر ثلاث بطاقات واتبع النوع وتجنب بطاقات الجزاء في جولة خدع كاملة.",
-    },
+    en: { summary: "Pass three cards, follow suit, and keep penalty points low across 13 tricks. Collect all 26 to Shoot the Moon.", category: "Classic Card Game", tags: ["Trick-taking", "Penalty-card avoidance", "Card strategy"], back: "Back to WeightPlay", lead: "2♣ leads the first trick", leadBy: "{name} leads the next trick", opponents: ["You", "Orchid", "Mango", "Nova"] },
+    "zh-Hant": { summary: "傳出三張牌並跟牌，在十三墩中壓低罰分；收齊 26 分可射月。", category: "經典紙牌遊戲", tags: ["避吃墩牌", "避開罰分牌", "紙牌策略"], back: "返回 WeightPlay", lead: "第一墩由梅花 2 領牌", leadBy: "{name} 領下一墩", opponents: ["你", "蘭花", "芒果", "諾娃"] },
+    "zh-Hans": { summary: "传出三张牌并跟牌，在十三墩中压低罚分；收齐 26 分可射月。", category: "经典纸牌游戏", tags: ["避吃墩牌", "避开罚分牌", "纸牌策略"], back: "返回 WeightPlay", lead: "第一墩由梅花 2 领牌", leadBy: "{name} 领下一墩", opponents: ["你", "兰花", "芒果", "诺娃"] },
+    ja: { summary: "3枚をパスしてスートに従い、13トリックの罰点を抑えます。罰点26点をすべて取るとシューティング・ザ・ムーンです。", category: "クラシックカードゲーム", tags: ["トリックテイキング", "罰点カード回避", "カード戦略"], back: "WeightPlay に戻る", lead: "最初のトリックは2♣から", leadBy: "{name}が次をリード", opponents: ["あなた", "オーキッド", "マンゴー", "ノヴァ"] },
+    ko: { summary: "카드 세 장을 넘기고 무늬를 따라 13트릭의 벌점을 줄이세요. 벌점 26점을 모두 모으면 문샷입니다.", category: "클래식 카드 게임", tags: ["트릭 테이킹", "벌점 카드 피하기", "카드 전략"], back: "WeightPlay로 돌아가기", lead: "첫 트릭은 클럽 2로 시작", leadBy: "{name}이(가) 다음 트릭을 리드", opponents: ["나", "오키드", "망고", "노바"] },
+    es: { summary: "Pasa tres cartas, sigue el palo y reduce los puntos de penalización durante 13 bazas. Toma los 26 para disparar a la Luna.", category: "Juego de cartas clásico", tags: ["Bazas", "Evitar penalizaciones", "Estrategia con cartas"], back: "Volver a WeightPlay", lead: "La primera baza empieza con el 2♣", leadBy: "{name} abre la siguiente baza", opponents: ["Tú", "Orquídea", "Mango", "Nova"] },
+    "pt-BR": { summary: "Passe três cartas, siga o naipe e reduza os pontos de penalidade em 13 vazas. Pegue os 26 para Atirar na Lua.", category: "Jogo clássico de cartas", tags: ["Jogo de vazas", "Evitar penalidades", "Estratégia com cartas"], back: "Voltar ao WeightPlay", lead: "A primeira vaza começa com o 2♣", leadBy: "{name} abre a próxima vaza", opponents: ["Você", "Orquídea", "Manga", "Nova"] },
+    fr: { summary: "Passez trois cartes, fournissez la couleur et limitez les pénalités sur treize plis. Prenez les 26 points pour faire la Lune.", category: "Jeu de cartes classique", tags: ["Jeu de plis", "Éviter les pénalités", "Stratégie aux cartes"], back: "Retour à WeightPlay", lead: "Le premier pli commence par le 2♣", leadBy: "{name} entame le pli suivant", opponents: ["Vous", "Orchidée", "Mangue", "Nova"] },
+    de: { summary: "Gib drei Karten weiter, bediene die Farbe und halte Strafpunkte über 13 Stiche niedrig. Mit allen 26 Punkten gelingt dir Shooting the Moon.", category: "Klassisches Kartenspiel", tags: ["Stichspiel", "Strafkarten vermeiden", "Kartenspielstrategie"], back: "Zurück zu WeightPlay", lead: "Der erste Stich beginnt mit der Kreuz 2", leadBy: "{name} spielt den nächsten Stich aus", opponents: ["Du", "Orchidee", "Mango", "Nova"] },
+    it: { summary: "Passa tre carte, segui il seme e limita i punti penalità in tredici prese. Prendili tutti e 26 per fare Shoot the Moon.", category: "Gioco di carte classico", tags: ["Gioco di prese", "Evitare penalità", "Strategia con le carte"], back: "Torna a WeightPlay", lead: "La prima presa inizia con il 2♣", leadBy: "{name} apre la presa successiva", opponents: ["Tu", "Orchidea", "Mango", "Nova"] },
+    ru: { summary: "Передайте три карты, следуйте масти и снижайте штрафы в тринадцати взятках. Соберите все 26 очков штрафа, чтобы «Застрелить Луну».", category: "Классическая карточная игра", tags: ["Взятки", "Избегание штрафных карт", "Карточная стратегия"], back: "Вернуться в WeightPlay", lead: "Первую взятку начинает 2♣", leadBy: "{name} начинает следующую взятку", opponents: ["Вы", "Орхидея", "Манго", "Нова"] },
+    hi: { summary: "तीन पत्ते पास करें, सूट का पालन करें और 13 बाज़ियों में दंड अंक कम रखें। सभी 26 दंड अंक लेकर शूटिंग द मून करें।", category: "क्लासिक ताश का खेल", tags: ["ट्रिक-टेकिंग", "दंड वाले पत्तों से बचें", "ताश की रणनीति"], back: "WeightPlay पर लौटें", lead: "पहली बाज़ी ♣2 से शुरू होती है", leadBy: "{name} अगली बाज़ी शुरू करता है", opponents: ["आप", "ऑर्किड", "मैंगो", "नोवा"] },
+    ar: { summary: "مرّر ثلاث بطاقات واتبع النوع وقلّل نقاط الجزاء خلال 13 خدعة. اجمع نقاط الجزاء الـ26 كلها لتطلق النار على القمر.", category: "لعبة ورق كلاسيكية", tags: ["لعبة خدع", "تجنب بطاقات الجزاء", "استراتيجية الورق"], back: "العودة إلى WeightPlay", lead: "تبدأ الخدعة الأولى ببطاقة 2♣", leadBy: "{name} يقود الخدعة التالية", opponents: ["أنت", "أوركيد", "مانجو", "نوفا"] },
   };
 
-  const heartsShellCopy = () => HEARTS_SHELL_COPY[currentLocale()] || null;
+  const heartsShellCopy = () => {
+    const locale = currentLocale();
+    return { ...(HEARTS_SHELL_COPY[locale] || HEARTS_SHELL_COPY.en), title: window.WEIGHTPLAY_GAME_TITLES?.hearts?.[locale] || TITLES.hearts[locale] || TITLES.hearts.en };
+  };
 
   const HEARTS_SOUND_COPY = {
     en: { on: "On", off: "Off" },
@@ -607,59 +595,43 @@
     if (!copy) return;
     heartsShellSyncing = true;
     try {
-      const guideRoot = document.querySelector(".game-page-info");
-      if (guideRoot) {
-        if (guideRoot.getAttribute("aria-label") !== `${copy.title} game information`) guideRoot.setAttribute("aria-label", `${copy.title} game information`);
-        guideRoot.setAttribute("data-runtime-localize", "off");
-      }
-      const pageTitle = `${copy.title} | WeightPlay`;
-      if (document.title !== pageTitle) document.title = pageTitle;
-      const summary = document.querySelector('meta[name="description"]');
-      if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;
-      document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { if (node.content !== pageTitle) node.content = pageTitle; });
-      document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { if (node.content !== copy.metaDescription) node.content = copy.metaDescription; });
-      const jsonLd = document.querySelector('script[type="application/ld+json"]');
-      if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); jsonLd.textContent = JSON.stringify(data); } catch (_error) {} }
-      document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
-      document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
-      ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
-      ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
-      ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
-      const facts = [...document.querySelectorAll(".game-info-fact")];
-      [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => {
-        const fact = facts[index];
-        if (!fact) return;
-        ownLocalizedText(fact.querySelector("span"), label);
-        ownLocalizedText(fact.querySelector("strong"), value);
-      });
-      const sections = [...document.querySelectorAll(".game-info-section")];
-      const guide = sections.find((section) => section.querySelector("ol"));
-      ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
-      ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
-      const preview = sections.find((section) => section.classList.contains("game-info-parent"));
-      ownLocalizedText(preview?.querySelector("h3"), copy.preview);
-      ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
-      const faq = sections.find((section) => section.querySelector("dl"));
-      ownLocalizedText(faq?.querySelector("h3"), copy.faq);
-      ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
-      ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
-      ownLocalizedText(document.querySelector("#startBtn"), t("start"));
-      ownLocalizedText(document.querySelector("#restartBtn"), t("restart"));
-      ownLocalizedText(document.querySelector("#newGameBtn"), t("newGame"));
-      ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${t("back")}`);
-      const battleBack = document.querySelector("#battleBackBtn");
-      if (battleBack) battleBack.setAttribute("aria-label", t("back"));
-      ownLocalizedText(document.querySelector(".settings-title"), copy.preview === "حالة المعاينة" ? "الإعدادات" : t("settings"));
-      ownLocalizedText(document.querySelector("#soundBtn"), `${t("sound")}: On`);
-      const settings = document.querySelector("#audioMenuBtn");
-      if (settings) settings.setAttribute("aria-label", t("settings"));
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const progress = HEARTS_PROGRESS_COPY[currentLocale()] || HEARTS_PROGRESS_COPY.en;
+      ownLocalizedText(document.querySelector(".main-copy .eyebrow"), copy.category);
+      ownLocalizedText(document.querySelector(".main-copy [data-card-summary]"), copy.summary);
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progress.label);
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progress.copy);
+      ["#startBtn", "#restartBtn", "#newGameBtn"].forEach((selector, index) => ownLocalizedText(
+        document.querySelector(selector), [labels.start, labels.restart, labels.newGame][index]));
+      ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
+      ownLocalizedText(document.querySelector("#soundBtn"), heartsSoundLabel(true));
       const language = document.querySelector("#localeSelect");
-      if (language) language.setAttribute("aria-label", t("language"));
-      ownLocalizedText(document.querySelector(".card-game-player-header strong"), t("hand"));
-      ownLocalizedText(document.querySelector("#resultTitle"), t("roundOver"));
-      ownLocalizedText(document.querySelector("#resultNewGame"), t("newGame"));
-      ownLocalizedText(document.querySelector("#resultRestart"), t("restart"));
-      ownLocalizedText(document.querySelector("#resultClose"), t("close"));
+      if (language) language.setAttribute("aria-label", labels.language);
+      const mainReturn = document.querySelector(".main-return");
+      if (mainReturn) mainReturn.setAttribute("aria-label", copy.back);
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack) battleBack.setAttribute("aria-label", labels.back);
+      ownLocalizedText(document.querySelector("#resultTitle"), labels.roundOver);
+      ownLocalizedText(document.querySelector("#resultNewGame"), labels.newGame);
+      ownLocalizedText(document.querySelector("#resultRestart"), labels.restart);
+      ownLocalizedText(document.querySelector("#resultClose"), labels.close);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", labels.settings);
+      const utility = document.querySelector("[data-wp-battle-utility]");
+      if (utility) {
+        utility.setAttribute("aria-label", labels.settings);
+        utility.title = labels.settings;
+      }
+      const gameInfoTitle = document.querySelector(".game-info-title");
+      const existingTags = gameInfoTitle?.querySelector(".game-info-tags");
+      if (existingTags) existingTags.dataset.wpGameplayTags = "1.4.0";
+      if (gameInfoTitle && !existingTags) {
+        const tags = document.createElement("div");
+        tags.className = "game-info-tags";
+        tags.dataset.wpGameplayTags = "1.4.0";
+        tags.innerHTML = copy.tags.map((tag) => `<span>${tag}</span>`).join("");
+        gameInfoTitle.append(tags);
+      }
     } finally {
       heartsShellSyncing = false;
     }
@@ -688,67 +660,74 @@
   };
 
   const OLD_MAID_RISK = {
-    en: { held: "Old Maid in hand — clear pairs and pass it on.", hidden: "The Old Maid is still hidden." },
-    "zh-Hant": { held: "鬼牌在你手上——消除配對並設法傳出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
-    "zh-Hans": { held: "鬼牌在你手上——消除配对并设法传出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
-    ja: { held: "ババが手札にあります。ペアを消して相手に渡しましょう。", hidden: "ババはまだ誰かの手札に隠れています。" },
-    ko: { held: "조커가 내 손에 있습니다. 짝을 없애고 넘겨보세요.", hidden: "조커는 아직 누군가의 손에 숨어 있습니다." },
-    es: { held: "Tienes la Solterona: forma parejas e intenta pasarla.", hidden: "La Solterona sigue oculta." },
-    "pt-BR": { held: "O Mico está na sua mão: forme pares e tente passá-lo.", hidden: "O Mico continua escondido." },
-    fr: { held: "Le Pouilleux est dans votre main : formez des paires et passez-le.", hidden: "Le Pouilleux est encore caché." },
-    de: { held: "Der Schwarze Peter ist auf deiner Hand: bilde Paare und gib ihn weiter.", hidden: "Der Schwarze Peter ist noch verborgen." },
-    it: { held: "L'Asino è nella tua mano: crea coppie e prova a passarlo.", hidden: "L'Asino è ancora nascosto." },
-    ru: { held: "Старая дева у вас: собирайте пары и постарайтесь передать её.", hidden: "Старая дева всё ещё скрыта." },
-    hi: { held: "ओल्ड मेड आपके हाथ में है—जोड़े हटाएँ और इसे आगे दें।", hidden: "ओल्ड मेड अभी भी छिपी हुई है।" },
-    ar: { held: "العانس في يدك—كوّن الأزواج وحاول تمريرها.", hidden: "بطاقة العانس ما زالت مخفية." },
+    en: { held: "The Old Maid is in your hand. Pairs clear automatically; only a blind draw can move it.", hidden: "The Old Maid is still hidden." },
+    "zh-Hant": { held: "鬼牌在你手上。配對會自動消除；只有盲抽可能讓鬼牌換手。", hidden: "鬼牌仍藏在某位玩家手中。" },
+    "zh-Hans": { held: "鬼牌在你手上。配对会自动消除；只有盲抽可能让鬼牌换手。", hidden: "鬼牌仍藏在某位玩家手中。" },
+    ja: { held: "ババが手札にあります。ペアは自動で消え、ババが移るのは伏せ札を引いたときだけです。", hidden: "ババはまだ誰かの手札に隠れています。" },
+    ko: { held: "버바가 내 패에 있습니다. 짝은 자동으로 사라지며, 버바는 뒷면 카드를 뽑을 때만 이동합니다.", hidden: "버바는 아직 누군가의 손에 숨겨져 있습니다." },
+    es: { held: "Tienes la Solterona. Las parejas se eliminan solas; solo un robo a ciegas puede moverla.", hidden: "La Solterona sigue oculta." },
+    "pt-BR": { held: "O Mico está na sua mão. Os pares somem automaticamente; só uma compra às cegas pode movê-lo.", hidden: "O Mico continua escondido." },
+    fr: { held: "Le Pouilleux est dans votre main. Les paires s’éliminent seules ; seule une pioche à l’aveugle peut le déplacer.", hidden: "Le Pouilleux est encore caché." },
+    de: { held: "Der Schwarze Peter ist auf deiner Hand. Paare verschwinden automatisch; nur ein Blindzug kann ihn weitergeben.", hidden: "Der Schwarze Peter ist noch verborgen." },
+    it: { held: "L'Asino è nella tua mano. Le coppie spariscono da sole; solo una pesca alla cieca può spostarlo.", hidden: "L'Asino è ancora nascosto." },
+    ru: { held: "Старая дева у вас. Пары исчезают автоматически; передать её может только слепой добор.", hidden: "Старая дева всё ещё скрыта." },
+    hi: { held: "ओल्ड मेड आपके हाथ में है। जोड़े अपने-आप हटते हैं; इसे केवल छिपा पत्ता खींचना ही आगे पहुँचा सकता है।", hidden: "ओल्ड मेड अभी भी छिपी हुई है।" },
+    ar: { held: "بطاقة العانس في يدك. تختفي الأزواج تلقائياً؛ ولا تنتقل هذه البطاقة إلا بسحب أعمى.", hidden: "بطاقة العانس ما زالت مخفية." },
   };
 
   const OLD_MAID_COPY = {
-    en: { help: "Draw one hidden card from {name}. Pairs disappear automatically.", pair: "A pair disappeared. Your next blind draw is ready.", risk: "The Old Maid stays in your hand. Try to clear it.", none: "No pair disappeared. Watch the next blind draw.", hiddenCard: "Hidden card {position} of {total}" },
-    "zh-Hant": { help: "從 {name} 抽一張背面牌。配對會自動消除。", pair: "成功消除一對牌。準備迎接下一次盲抽。", risk: "鬼牌仍在你手上。想辦法把它清掉。", none: "沒有消除配對。留意下一次盲抽。", hiddenCard: "背面牌 {position}／共 {total} 張" },
-    "zh-Hans": { help: "从 {name} 抽一张背面牌。配对会自动消除。", pair: "成功消除一对牌。准备迎接下一次盲抽。", risk: "鬼牌仍在你手上。想办法把它清掉。", none: "没有消除配对。留意下一次盲抽。", hiddenCard: "背面牌 {position}／共 {total} 张" },
-    ja: { help: "{name} から裏向きのカードを1枚引きます。ペアは自動で消えます。", pair: "ペアが1組消えました。次の裏引きに備えましょう。", risk: "ババが手札に残っています。手放す方法を考えましょう。", none: "ペアは消えませんでした。次の裏引きに注意しましょう。", hiddenCard: "裏向きカード {position}／{total}枚中" },
-    ko: { help: "{name}에게서 뒷면 카드 한 장을 뽑습니다. 짝은 자동으로 사라집니다.", pair: "짝 하나가 사라졌습니다. 다음 뒷면 카드 뽑기를 준비하세요.", risk: "버바가 내 패에 남아 있습니다. 넘길 방법을 찾아보세요.", none: "사라진 짝이 없습니다. 다음 뒷면 카드 뽑기를 주의하세요.", hiddenCard: "뒷면 카드 {position} / {total}장" },
-    es: { help: "Roba una carta oculta de {name}. Las parejas desaparecen automáticamente.", pair: "Una pareja desapareció. Prepárate para el próximo robo a ciegas.", risk: "La Solterona sigue en tu mano. Intenta deshacerte de ella.", none: "No desapareció ninguna pareja. Cuidado con el próximo robo.", hiddenCard: "Carta oculta {position} de {total}" },
-    "pt-BR": { help: "Compre uma carta virada de {name}. Os pares desaparecem automaticamente.", pair: "Um par desapareceu. Prepare-se para a próxima compra às cegas.", risk: "O Mico continua na sua mão. Tente passá-lo.", none: "Nenhum par desapareceu. Atenção à próxima compra às cegas.", hiddenCard: "Carta virada {position} de {total}" },
-    fr: { help: "Piochez une carte cachée chez {name}. Les paires disparaissent automatiquement.", pair: "Une paire a disparu. Préparez-vous pour la prochaine pioche à l’aveugle.", risk: "Le Pouilleux reste dans votre main. Essayez de vous en défaire.", none: "Aucune paire n’a disparu. Attention à la prochaine pioche.", hiddenCard: "Carte cachée {position} sur {total}" },
-    de: { help: "Ziehe eine verdeckte Karte von {name}. Paare verschwinden automatisch.", pair: "Ein Paar ist verschwunden. Bereite dich auf den nächsten Blindzug vor.", risk: "Der Schwarze Peter bleibt auf deiner Hand. Versuche, ihn loszuwerden.", none: "Kein Paar ist verschwunden. Achte auf den nächsten Blindzug.", hiddenCard: "Verdeckte Karte {position} von {total}" },
-    it: { help: "Pesca una carta coperta da {name}. Le coppie spariscono automaticamente.", pair: "Una coppia è sparita. Preparati alla prossima pesca alla cieca.", risk: "L'Asino è ancora nella tua mano. Prova a passarlo.", none: "Nessuna coppia è sparita. Attenzione alla prossima pesca.", hiddenCard: "Carta coperta {position} di {total}" },
-    ru: { help: "Возьмите закрытую карту у {name}. Пары исчезают автоматически.", pair: "Пара исчезла. Приготовьтесь к следующему слепому добору.", risk: "Старая дева осталась у вас в руке. Постарайтесь передать её.", none: "Пара не исчезла. Следующий слепой добор всё ещё рискован.", hiddenCard: "Закрытая карта {position} из {total}" },
-    hi: { help: "{name} से एक छिपा हुआ पत्ता लें। जोड़े अपने-आप हटते हैं।", pair: "एक जोड़ा हट गया। अगली छिपी हुई चाल के लिए तैयार रहें।", risk: "ओल्ड मेड आपके हाथ में बनी हुई है। इसे आगे देने का रास्ता खोजें।", none: "कोई जोड़ा नहीं हटा। अगली छिपी हुई चाल पर ध्यान दें।", hiddenCard: "छिपा हुआ पत्ता {position} / {total}" },
-    ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج تلقائياً.", pair: "اختفى زوج واحد. استعد للسحب الأعمى التالي.", risk: "ما زالت بطاقة العانس في يدك. حاول تمريرها.", none: "لم يختفِ أي زوج. انتبه إلى السحب الأعمى التالي.", hiddenCard: "البطاقة المخفية {position} من {total}" },
+    en: { help: "Draw one hidden card from {name}. Pairs disappear automatically.", pair: "A pair disappeared. The turn moves on; wait until your next turn to draw again.", risk: "The Old Maid stays in your hand. Only a blind draw can move it.", none: "No pair disappeared. The turn moves on to the next player.", hiddenCard: "Hidden card {position} of {total}" },
+    "zh-Hant": { help: "從 {name} 抽一張背面牌。同點數配對會自動消除。", pair: "成功消除一對牌。回合會繼續傳下去，等輪到你時才能再抽。", risk: "鬼牌仍在你手上；只有盲抽可能讓它換手。", none: "沒有消除配對，回合會繼續交給下一位玩家。", hiddenCard: "背面牌 {position}／共 {total} 張" },
+    "zh-Hans": { help: "从 {name} 抽一张背面牌。同点数配对会自动消除。", pair: "成功消除一对牌。回合会继续传下去，等轮到你时才能再抽。", risk: "鬼牌仍在你手上；只有盲抽可能让它换手。", none: "没有消除配对，回合会继续交给下一位玩家。", hiddenCard: "背面牌 {position}／共 {total} 张" },
+    ja: { help: "{name} から裏向きのカードを1枚引きます。同じランクのペアは自動で消えます。", pair: "ペアが1組消えました。手番は次の人へ進み、次に引けるのは自分の番です。", risk: "ババは手札に残っています。移動するのは伏せ札を引いたときだけです。", none: "ペアはできませんでした。手番は次の人へ進みます。", hiddenCard: "裏向きカード {position}／{total}枚中" },
+    ko: { help: "{name}에게서 뒷면 카드 한 장을 뽑습니다. 같은 숫자 짝은 자동으로 사라집니다.", pair: "짝 하나가 사라졌습니다. 차례는 다음 사람에게 넘어가며 다시 뽑으려면 내 차례를 기다려야 합니다.", risk: "버바가 내 패에 남아 있습니다. 뒷면 카드를 뽑을 때만 이동합니다.", none: "짝이 생기지 않았습니다. 차례는 다음 사람에게 넘어갑니다.", hiddenCard: "뒷면 카드 {position} / {total}장" },
+    es: { help: "Roba una carta oculta de {name}. Las parejas del mismo valor desaparecen automáticamente.", pair: "Una pareja desapareció. El turno pasa al siguiente jugador; espera a que vuelva el tuyo para robar.", risk: "La Solterona sigue en tu mano. Solo un robo a ciegas puede moverla.", none: "No desapareció ninguna pareja. El turno pasa al siguiente jugador.", hiddenCard: "Carta oculta {position} de {total}" },
+    "pt-BR": { help: "Compre uma carta virada de {name}. Pares do mesmo valor desaparecem automaticamente.", pair: "Um par desapareceu. A vez passa ao próximo jogador; aguarde sua próxima vez para comprar de novo.", risk: "O Mico continua na sua mão. Só uma compra às cegas pode movê-lo.", none: "Nenhum par desapareceu. A vez passa ao próximo jogador.", hiddenCard: "Carta virada {position} de {total}" },
+    fr: { help: "Piochez une carte cachée chez {name}. Les paires de même valeur disparaissent automatiquement.", pair: "Une paire a disparu. Le tour passe au joueur suivant ; attendez votre prochain tour pour repiocher.", risk: "Le Pouilleux reste dans votre main. Seule une pioche à l’aveugle peut le déplacer.", none: "Aucune paire n’a disparu. Le tour passe au joueur suivant.", hiddenCard: "Carte cachée {position} sur {total}" },
+    de: { help: "Ziehe eine verdeckte Karte von {name}. Paare gleichen Rangs verschwinden automatisch.", pair: "Ein Paar ist verschwunden. Der Zug geht weiter; ziehe erst wieder, wenn du erneut an der Reihe bist.", risk: "Der Schwarze Peter bleibt auf deiner Hand. Nur ein Blindzug kann ihn bewegen.", none: "Kein Paar ist verschwunden. Der Zug geht an den nächsten Spieler.", hiddenCard: "Verdeckte Karte {position} von {total}" },
+    it: { help: "Pesca una carta coperta da {name}. Le coppie dello stesso valore spariscono automaticamente.", pair: "Una coppia è sparita. Il turno passa al giocatore successivo; aspetta il tuo prossimo turno per pescare di nuovo.", risk: "L'Asino è ancora nella tua mano. Solo una pesca alla cieca può spostarlo.", none: "Nessuna coppia è sparita. Il turno passa al giocatore successivo.", hiddenCard: "Carta coperta {position} di {total}" },
+    ru: { help: "Возьмите закрытую карту у {name}. Пары одного ранга исчезают автоматически.", pair: "Пара исчезла. Ход переходит дальше; чтобы взять карту снова, дождитесь своего хода.", risk: "Старая дева осталась у вас. Переместить её может только слепой добор.", none: "Пара не исчезла. Ход переходит следующему игроку.", hiddenCard: "Закрытая карта {position} из {total}" },
+    hi: { help: "{name} से एक छिपा हुआ पत्ता लें। एक ही रैंक के जोड़े अपने-आप हटते हैं।", pair: "एक जोड़ा हट गया। बारी अगले खिलाड़ी की है; फिर से पत्ता लेने के लिए अपनी बारी का इंतज़ार करें।", risk: "ओल्ड मेड आपके हाथ में है। इसे केवल छिपा पत्ता खींचना ही आगे पहुँचा सकता है।", none: "कोई जोड़ा नहीं हटा। अब अगले खिलाड़ी की बारी है।", hiddenCard: "छिपा हुआ पत्ता {position} / {total}" },
+    ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج من الرتبة نفسها تلقائياً.", pair: "اختفى زوج. ينتقل الدور إلى اللاعب التالي؛ انتظر دورك القادم لتسحب مجدداً.", risk: "ما زالت بطاقة العانس في يدك. لا ينقلها إلا السحب الأعمى.", none: "لم يختفِ أي زوج. ينتقل الدور إلى اللاعب التالي.", hiddenCard: "البطاقة المخفية {position} من {total}" },
   };
 
   const OLD_MAID_BATTLE_COPY = {
-    en: { quickGuide: "How to play", quickGuideCopy: "Draw one hidden card from the next hand. Pairs disappear automatically; avoid ending with the Old Maid." },
-    "zh-Hant": { quickGuide: "玩法說明", quickGuideCopy: "從下一位玩家的手牌抽一張背面牌。配對會自動消除，別讓鬼牌留在手上。" },
-    "zh-Hans": { quickGuide: "玩法说明", quickGuideCopy: "从下一位玩家的手牌抽一张背面牌。配对会自动消除，别让鬼牌留在手上。" },
-    ja: { quickGuide: "遊び方", quickGuideCopy: "次のプレイヤーの手札から裏向きのカードを1枚引きます。ペアは自動で消え、ババを残さないようにします。" },
-    ko: { quickGuide: "플레이 방법", quickGuideCopy: "다음 플레이어의 뒷면 패에서 한 장을 뽑습니다. 짝은 자동으로 사라지며 버바를 남기지 마세요." },
-    es: { quickGuide: "Cómo jugar", quickGuideCopy: "Roba una carta oculta de la siguiente mano. Las parejas desaparecen automáticamente; evita quedarte con la Solterona." },
-    "pt-BR": { quickGuide: "Como jogar", quickGuideCopy: "Compre uma carta virada da próxima mão. Os pares desaparecem automaticamente; não fique com o Mico." },
-    fr: { quickGuide: "Comment jouer", quickGuideCopy: "Piochez une carte cachée dans la main suivante. Les paires disparaissent automatiquement ; évitez de garder le Pouilleux." },
-    de: { quickGuide: "So wird gespielt", quickGuideCopy: "Ziehe eine verdeckte Karte aus der nächsten Hand. Paare verschwinden automatisch; behalte nicht den Schwarzen Peter." },
-    it: { quickGuide: "Come si gioca", quickGuideCopy: "Pesca una carta coperta dalla mano successiva. Le coppie spariscono automaticamente; non restare con l’Asino." },
-    ru: { quickGuide: "Как играть", quickGuideCopy: "Возьмите закрытую карту из следующей руки. Пары исчезают автоматически; не оставайтесь со Старой девой." },
-    hi: { quickGuide: "कैसे खेलें", quickGuideCopy: "अगली बाज़ी से एक छिपा हुआ पत्ता लें। जोड़े अपने-आप हटते हैं; ओल्ड मेड अपने पास न रखें।" },
-    ar: { quickGuide: "طريقة اللعب", quickGuideCopy: "اسحب بطاقة مقلوبة من يد اللاعب التالي. تختفي الأزواج تلقائياً؛ وتجنب إنهاء الجولة وبطاقة العانس في يدك." },
+    en: { quickGuide: "How to play", quickGuideCopy: "Remove matching-rank pairs automatically. Draw only one hidden card from the next active hand; the 51-card deck's Old Maid cannot be discarded or passed, only moved by a blind draw." },
+    "zh-Hant": { quickGuide: "玩法說明", quickGuideCopy: "同點數配對會自動消除。每回合只從下一位仍在場玩家的手牌盲抽一張；移除黑桃 Q 後共 51 張，鬼牌不能棄掉或傳出，只能透過盲抽換手。" },
+    "zh-Hans": { quickGuide: "玩法说明", quickGuideCopy: "同点数配对会自动消除。每回合只从下一位仍在场玩家的手牌盲抽一张；移除黑桃 Q 后共 51 张，鬼牌不能弃掉或传出，只能通过盲抽换手。" },
+    ja: { quickGuide: "遊び方", quickGuideCopy: "同じランクのペアは自動で消えます。スペードのQを除いた51枚で始め、次の現役プレイヤーから伏せ札を1枚引きます。ババは捨てたり渡したりできず、盲引きでのみ移ります。" },
+    ko: { quickGuide: "플레이 방법", quickGuideCopy: "같은 숫자 짝은 자동으로 사라집니다. 스페이드 Q를 뺀 51장으로 시작하며 다음 차례인 플레이어의 패에서 한 장을 뽑습니다. 버바는 버리거나 건넬 수 없고 뒷면 카드 뽑기로만 이동합니다." },
+    es: { quickGuide: "Cómo jugar", quickGuideCopy: "Las parejas del mismo valor se eliminan solas. Empieza con 51 cartas tras retirar la Q♠ y roba una carta oculta de la siguiente mano activa. No puedes descartar ni pasar la Solterona: solo se mueve al robar a ciegas." },
+    "pt-BR": { quickGuide: "Como jogar", quickGuideCopy: "Pares do mesmo valor são removidos automaticamente. Comece com 51 cartas após retirar a Q♠ e compre uma carta virada da próxima mão ativa. Não descarte nem passe o Mico: ele só muda de mão numa compra às cegas." },
+    fr: { quickGuide: "Comment jouer", quickGuideCopy: "Les paires de même valeur s’éliminent automatiquement. Le jeu commence avec 51 cartes après retrait de la Q♠ ; piochez une carte cachée dans la prochaine main active. Le Pouilleux ne se défausse pas et ne se passe pas : seule une pioche à l’aveugle le déplace." },
+    de: { quickGuide: "So wird gespielt", quickGuideCopy: "Paare gleichen Rangs verschwinden automatisch. Nach Entfernen der Pik-Dame bleiben 51 Karten; ziehe eine verdeckte Karte aus der nächsten aktiven Hand. Den Schwarzen Peter kannst du nicht abwerfen oder weitergeben, nur ein Blindzug bewegt ihn." },
+    it: { quickGuide: "Come si gioca", quickGuideCopy: "Le coppie dello stesso valore spariscono automaticamente. Dopo aver tolto la Q♠ restano 51 carte; pesca una carta coperta dalla prossima mano attiva. Non puoi scartare né passare l’Asino: solo una pesca alla cieca lo sposta." },
+    ru: { quickGuide: "Как играть", quickGuideCopy: "Пары одного ранга исчезают автоматически. После удаления Q♠ остаётся 51 карта; возьмите закрытую карту из следующей активной руки. Старую деву нельзя сбросить или передать — её перемещает только слепой добор." },
+    hi: { quickGuide: "कैसे खेलें", quickGuideCopy: "एक ही रैंक के जोड़े अपने-आप हटते हैं। Q♠ हटाने के बाद 51 पत्ते रहते हैं; अगली सक्रिय हाथ से एक छिपा पत्ता लें। ओल्ड मेड को फेंकना या पास करना नहीं; वह केवल छिपा पत्ता खींचने पर आगे जाती है।" },
+    ar: { quickGuide: "طريقة اللعب", quickGuideCopy: "تُزال الأزواج من الرتبة نفسها تلقائياً. تبدأ اللعبة بـ51 بطاقة بعد إزالة Q♠؛ اسحب بطاقة مخفية من اليد النشطة التالية. لا يمكن رمي بطاقة العانس أو تمريرها؛ ولا تنتقل إلا بالسحب الأعمى." },
   };
 
   const OLD_MAID_PROGRESS_COPY = {
-    en: { label: "Blind-draw pairs", copy: "Clear pairs and avoid the Old Maid." },
-    "zh-Hant": { label: "盲抽配對", copy: "消除配對，別讓鬼牌留在手上。" },
-    "zh-Hans": { label: "盲抽配对", copy: "消除配对，别让鬼牌留在手上。" },
-    ja: { label: "裏引きのペア", copy: "ペアを消し、ババを残さない。" },
-    ko: { label: "뒷면 뽑기 짝", copy: "짝을 없애고 버바를 남기지 마세요." },
-    es: { label: "Parejas a ciegas", copy: "Forma parejas y evita quedarte con la Solterona." },
-    "pt-BR": { label: "Pares às cegas", copy: "Elimine pares e não fique com o Mico." },
-    fr: { label: "Paires à l’aveugle", copy: "Éliminez les paires et évitez de garder le Pouilleux." },
-    de: { label: "Blind gezogene Paare", copy: "Bilde Paare und behalte nicht den Schwarzen Peter." },
-    it: { label: "Coppie alla cieca", copy: "Elimina le coppie e non restare con l’Asino." },
-    ru: { label: "Слепые пары", copy: "Убирайте пары и не оставайтесь со Старой девой." },
-    hi: { label: "छिपे जोड़े", copy: "जोड़े हटाएँ और ओल्ड मेड अपने पास न रखें।" },
-    ar: { label: "أزواج السحب الأعمى", copy: "أزل الأزواج وتجنب الاحتفاظ بالعانس." },
+    en: { label: "Blind-draw pairs", copy: "Pairs clear automatically. Draw only from the next active hand; the Old Maid cannot be discarded or passed." , summary: "Remove rank pairs automatically, then draw one hidden card from the next active hand. The 51-card deck leaves one Old Maid; a blind draw is the only way it can move." },
+    "zh-Hant": { label: "盲抽配對", copy: "同點數牌會自動配對消除；每回合只從下一位仍在場玩家的手牌盲抽一張，不能棄掉或傳出鬼牌。", summary: "同點數牌會自動配對消除，再從下一位仍在場玩家的手牌盲抽一張。移除黑桃 Q 後共 51 張，留下唯一鬼牌；只有盲抽會讓它換手。" },
+    "zh-Hans": { label: "盲抽配对", copy: "同点数牌会自动配对消除；每回合只从下一位仍在场玩家的手牌盲抽一张，不能弃掉或传出鬼牌。", summary: "同点数牌会自动配对消除，再从下一位仍在场玩家的手牌盲抽一张。移除黑桃 Q 后共 51 张，留下唯一鬼牌；只有盲抽会让它换手。" },
+    ja: { label: "伏せ札を引いてペア作り", copy: "同じランクのペアは自動で消えます。次の現役プレイヤーから伏せ札を1枚引き、ババを捨てたり渡したりはできません。", summary: "同じランクのペアは自動で消えます。スペードのQを除いた51枚から始め、次の現役プレイヤーから伏せ札を1枚引きます。ババを動かせるのはこの盲引きだけです。" },
+    ko: { label: "뒷면 카드 뽑기와 짝", copy: "같은 숫자 짝은 자동으로 사라집니다. 다음 차례인 플레이어의 패에서 한 장만 뽑으며 버바를 버리거나 건넬 수 없습니다.", summary: "같은 숫자 짝은 자동으로 사라집니다. 스페이드 Q를 뺀 51장으로 시작해 다음 차례인 플레이어의 뒷면 패에서 한 장을 뽑습니다. 버바는 이 뒷면 카드 뽑기로만 이동합니다." },
+    es: { label: "Parejas y robo a ciegas", copy: "Las parejas del mismo valor se eliminan solas. Roba una carta oculta de la siguiente mano activa; no puedes descartar ni pasar la Solterona.", summary: "Las parejas del mismo valor se eliminan solas; después robas una carta oculta de la siguiente mano activa. Se juega con 51 cartas tras retirar la Q♠: el robo a ciegas es la única forma de mover la Solterona." },
+    "pt-BR": { label: "Pares e compra às cegas", copy: "Pares do mesmo valor são removidos automaticamente. Compre uma carta virada da próxima mão ativa; não é possível descartar nem passar o Mico.", summary: "Pares do mesmo valor são removidos automaticamente; depois você compra uma carta virada da próxima mão ativa. São 51 cartas após retirar a Q♠; só a compra às cegas pode mover o Mico." },
+    fr: { label: "Paires et pioche à l’aveugle", copy: "Les paires de même valeur s’éliminent automatiquement. Piochez une carte cachée dans la prochaine main active ; le Pouilleux ne peut être ni défaussé ni passé.", summary: "Les paires de même valeur s’éliminent automatiquement, puis vous piochez une carte cachée dans la prochaine main active. Le jeu compte 51 cartes après retrait de la Q♠ ; seule une pioche à l’aveugle peut déplacer le Pouilleux." },
+    de: { label: "Paare und Blindzug", copy: "Paare gleichen Rangs verschwinden automatisch. Ziehe eine verdeckte Karte aus der nächsten aktiven Hand; den Schwarzen Peter kannst du weder abwerfen noch weitergeben.", summary: "Paare gleichen Rangs verschwinden automatisch; danach ziehst du eine verdeckte Karte aus der nächsten aktiven Hand. Nach Entfernen der Pik-Dame bleiben 51 Karten; nur ein Blindzug kann den Schwarzen Peter bewegen." },
+    it: { label: "Coppie e pesca alla cieca", copy: "Le coppie dello stesso valore spariscono automaticamente. Pesca una carta coperta dalla prossima mano attiva; non puoi scartare né passare l’Asino.", summary: "Le coppie dello stesso valore spariscono automaticamente; poi peschi una carta coperta dalla prossima mano attiva. Si gioca con 51 carte dopo aver tolto la Q♠; solo una pesca alla cieca può spostare l’Asino." },
+    ru: { label: "Пары и слепой добор", copy: "Пары одного ранга исчезают автоматически. Возьмите одну закрытую карту из следующей активной руки; Старую деву нельзя сбросить или передать.", summary: "Пары одного ранга исчезают автоматически, затем вы берёте одну закрытую карту из следующей активной руки. После удаления Q♠ остаётся 51 карта; переместить Старую деву может только слепой добор." },
+    hi: { label: "छिपा पत्ता और जोड़े", copy: "एक ही रैंक के जोड़े अपने-आप हटते हैं। अगली सक्रिय हाथ से एक छिपा पत्ता लें; ओल्ड मेड को फेंकना या पास करना संभव नहीं है।", summary: "एक ही रैंक के जोड़े अपने-आप हटते हैं, फिर अगली सक्रिय हाथ से एक छिपा पत्ता लें। Q♠ हटाने के बाद 51 पत्ते रहते हैं; ओल्ड मेड केवल छिपा पत्ता खींचने पर ही आगे जा सकती है।" },
+    ar: { label: "الأزواج والسحب الأعمى", copy: "تُزال الأزواج من الرتبة نفسها تلقائياً. اسحب بطاقة مخفية واحدة من اليد النشطة التالية؛ لا يمكن رمي بطاقة العانس أو تمريرها.", summary: "تُزال الأزواج من الرتبة نفسها تلقائياً، ثم اسحب بطاقة مخفية من اليد النشطة التالية. بعد إزالة Q♠ تبقى 51 بطاقة؛ والسحب الأعمى وحده ينقل بطاقة العانس." },
+  };
+  const OLD_MAID_CATEGORY_COPY = {
+    en: "Classic Pairing Card Game", "zh-Hant": "經典配對紙牌遊戲", "zh-Hans": "经典配对纸牌游戏",
+    ja: "クラシックなペア作りカードゲーム", ko: "클래식 짝맞추기 카드 게임", es: "Juego clásico de parejas con cartas",
+    "pt-BR": "Jogo clássico de pares com cartas", fr: "Jeu classique de paires", de: "Klassisches Karten-Paarspiel",
+    it: "Classico gioco di coppie con le carte", ru: "Классическая карточная игра на пары", hi: "क्लासिक ताश का जोड़ी खेल",
+    ar: "لعبة ورق كلاسيكية لتكوين الأزواج",
   };
 
   const OLD_MAID_NAMES = {
@@ -779,6 +758,9 @@
     try {
       const labels = TEXT[currentLocale()] || TEXT.en;
       const progressCopy = OLD_MAID_PROGRESS_COPY[currentLocale()] || OLD_MAID_PROGRESS_COPY.en;
+      ownLocalizedText(document.querySelector(".main-copy .eyebrow"), OLD_MAID_CATEGORY_COPY[currentLocale()] || OLD_MAID_CATEGORY_COPY.en);
+      ownLocalizedText(document.querySelector(".main-copy [data-card-summary]"), progressCopy.summary);
+      ownLocalizedText(document.querySelector("#resultTitle"), labels.roundOver);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
       ["#startBtn", "#restartBtn", "#newGameBtn"].forEach((selector, index) => ownLocalizedText(document.querySelector(selector), [labels.start, labels.restart, labels.newGame][index]));
@@ -2330,6 +2312,7 @@
     });
     document.querySelectorAll("[data-card-title]").forEach((node) => { node.textContent = title; node.setAttribute("data-runtime-localize", "off"); });
     document.querySelectorAll("[data-card-summary]").forEach((node) => { node.textContent = gameSummary(id); });
+    if (id === "old-maid") syncOldMaidShell();
     if (id === "spades") {
       syncSpadesShell();
       window.addEventListener("weightplay:shell-sync", syncSpadesShell);
