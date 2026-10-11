@@ -917,6 +917,7 @@ button {
 }
 
 /* v26: game-owned live content; shared frame/control geometry stays canonical. */
+.battle-header .race-block { display: none; }
 .arena-wrap { background: #b9dfe8; border-color: #98d8df; }
 .race-ribbon { position: absolute; pointer-events: none; top: 12px; inset-inline: 18px; height: 7px; border-radius: 5px; background: #17374866; box-shadow: 0 1px 0 #ffffff85; }
 .race-ribbon::after { content: '⚑'; position: absolute; inset-inline-end: -4px; top: -7px; color: #fff; font-size: 21px; text-shadow: 0 1px 3px #173748; }

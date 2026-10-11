@@ -133,7 +133,7 @@
   els.arena.addEventListener('webglcontextlost',e=>{e.preventDefault();loadingFailure();});
   function startRace(index,opts={}){
     currentStage=Math.max(0,Math.min(29,index));lastInputType=normalizeInputType(opts.inputType||lastInputType);
-    stopPointer();run=new SkyRace(currentStage,save.upgrades);previousStack=0;cueEnd=0;raceCue.textContent='';
+    stopPointer();run=new SkyRace(currentStage,save.upgrades);run.championAura=save.championAura;previousStack=0;cueEnd=0;raceCue.textContent='';
     lifecyclePaused=!(windowFocused&&documentVisible&&!pageCached);
     els.result.hidden=true;els.leave.hidden=true;els.tutorial.hidden=save.tutorial||opts.skipTutorial;
     els.battleLive.inert=!els.tutorial.hidden;els.battleLive.removeAttribute('aria-hidden');
@@ -207,6 +207,17 @@
   function releasePointer(pointerId,{cancelled=false}={}){if(activePointerId!==pointerId)return;if(cancelled&&run&&!run.ended){run.player.targetX=run.player.x;run.player.targetY=run.player.y}activePointerId=null;try{els.arena.releasePointerCapture(pointerId)}catch{}}
   els.arena.addEventListener("pointerdown",ev=>{if(activePointerId!==null||!ev.isPrimary)return;els.arena.focus({preventScroll:true});activePointerId=ev.pointerId;els.arena.setPointerCapture(ev.pointerId);setTarget(ev)});els.arena.addEventListener("pointermove",ev=>{if(activePointerId===ev.pointerId)setTarget(ev)});els.arena.addEventListener("pointerup",ev=>releasePointer(ev.pointerId));els.arena.addEventListener("pointercancel",ev=>releasePointer(ev.pointerId,{cancelled:true}));
   function stopPointer(){if(activePointerId!==null)releasePointer(activePointerId,{cancelled:true});keys.clear()}
+  document.addEventListener('keydown',event=>{
+    if(document.body.dataset.screen!=='battle')return;
+    const modal=[els.leave,els.tutorial,els.result].find(el=>!el.hidden);if(!modal)return;
+    if(event.key==='Escape'&&modal!==els.result){event.preventDefault();event.stopImmediatePropagation();(modal===els.leave?els.continueBattle:els.tutorialDone).click();return;}
+    if(event.key==='Tab'){
+      const buttons=[...modal.querySelectorAll('button:not(:disabled)')].filter(b=>b.getClientRects().length);
+      const index=buttons.indexOf(document.activeElement),next=event.shiftKey?(index<=0?buttons.length-1:index-1):(index+1)%buttons.length;
+      if(buttons.length){event.preventDefault();buttons[next].focus();}
+    }
+    if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(event.key))event.stopImmediatePropagation();
+  },true);
   function suspendLifecycle(){stopPointer();if(run&&!run.ended&&document.body.dataset.screen==="battle"){run.player.targetX=run.player.x;run.player.targetY=run.player.y;(__wpNotifyMeasurement(), lifecyclePaused=true)}}
   function reconcileLifecycle(){if(windowFocused&&documentVisible&&!pageCached){(__wpNotifyMeasurement(), lifecyclePaused=false);lastFrame=performance.now()}else suspendLifecycle()}
   function reclaimVisibleForeground(event){const internalStageActivation=event?.target?.closest?.("[data-wp-stage-source-store]")&&document.body.dataset.screen==="stage";if((!event?.isTrusted&&!internalStageActivation)||document.hidden||pageCached)return false;if(windowFocused)return true;windowFocused=true;reconcileLifecycle();return true}

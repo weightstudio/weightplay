@@ -267,7 +267,7 @@ body[data-wp-game-id="animal-rootvault-pins"] .battle-live > .feedback {
   grid-row: 4; position: relative; inset: auto; z-index: 1;
   height: 44px; margin: 0; padding: 4px 12px; border-radius: 0;
   display: flex; justify-content: center; align-items: center;
-  font-size: 12px; line-height: 1.35; overflow: hidden;
+  font-size: 12px; line-height: 1.35; overflow: hidden; white-space: normal; overflow-wrap: anywhere;
   background: #082b26; border-block: 1px solid #365e4f;
 }
 body[data-wp-game-id="animal-rootvault-pins"] .battle-live > .battle-actions {

@@ -103,7 +103,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "animal-screw-workshop": "/assets/interface7-redrawn/animal-screw-workshop.webp",
   "animal-signal-scout": "/assets/interface7-redrawn/animal-signal-scout.webp",
   "animal-silhouette-scout": "/assets/interface7-redrawn/animal-silhouette-scout.webp",
-  "animal-sketchwheel-rally": "/assets/interface7-redrawn/animal-sketchwheel-rally.webp",
+  "animal-sketchwheel-rally": "/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp",
   "animal-skybridge-rivals": "/assets/interface7-redrawn/animal-skybridge-rivals.webp",
   "animal-skyport-dispatch": "/assets/interface7-redrawn/animal-skyport-dispatch.webp",
   "animal-skyspire-drop": "/assets/interface7-redrawn/animal-skyspire-drop.webp",

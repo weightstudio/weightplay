@@ -163,15 +163,15 @@ export class SkybridgeView {
       return {g,ring};
     });
     const rng=seeded(82),clouds=[];
-    for(let i=0;i<55;i++){
+    for(let i=0;i<36;i++){
       const x=(rng()-.5)*45,y=-4-rng()*5,z=10-rng()*(race.finishY+25);
-      clouds.push([x,y,z,3+rng()*7,.6+rng()*1.2,2+rng()*4]);
+      clouds.push([x,y,z,1.8+rng()*3.2,.8+rng()*1.1,1.2+rng()*2]);
     }
     const cloudMesh=new THREE.InstancedMesh(this.cloudGeo,this.mat(0xf3eee7),clouds.length);
     clouds.forEach((p,i)=>{this.dummy.position.set(p[0],p[1],p[2]);this.dummy.scale.set(p[3],p[4],p[5]);this.dummy.rotation.set(0,0,0);this.dummy.updateMatrix();cloudMesh.setMatrixAt(i,this.dummy.matrix);});
     this.world.add(cloudMesh);
     this.particleMesh=new THREE.InstancedMesh(this.box,this.mat(0xffffff,true),96);this.particleMesh.count=0;this.particleMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.world.add(this.particleMesh);
-    this.resize();
+    this.resize();this.cameraCenter=this.desiredCenter;
   }
   clearWorld(){
     for(const l of this.labels){l.texture.dispose();l.material.dispose();}this.labels=[];
@@ -190,12 +190,13 @@ export class SkybridgeView {
     const platform=this.race.platforms[sector];
     const span=b.end-platform.start+6;
     // Same sector and all four routes at every ratio; extra area is decorative sky.
-    const pitch=aspect>1.8?.48:.68;
-    const projectedSpan=span*1.65*Math.sin(pitch)+3;
-    const halfH=Math.max(projectedSpan/2,18.8/(2*aspect));
+    const pitch=aspect>1.8?.28:.68;
+    const projectedSpan=span*1.65*Math.sin(pitch)+4.5;
+    const halfH=Math.max(projectedSpan/2,18.8/(2*aspect))+1.3;
     Object.assign(this.camera,{left:-halfH*aspect,right:halfH*aspect,top:halfH,bottom:-halfH});
     this.camera.updateProjectionMatrix();this.pitch=pitch;
-    this.desiredCenter=(platform.start+b.end+4)/2*1.65;
+    // Centre the visible height of the finish arch as well as the ground span.
+    this.desiredCenter=(platform.start+b.end+4)/2*1.65+1.7/Math.sin(pitch);
   }
   point(clientX,clientY){
     const r=this.canvas.getBoundingClientRect();
@@ -235,11 +236,12 @@ export class SkybridgeView {
       m.body.rotation.z=!this.reduced&&a.stun>0?Math.sin(race.elapsed*45)*.13:0;
       m.tiles.forEach((t,k)=>{t.visible=k<a.stack;t.position.x=Math.sin(race.elapsed*8-k*.15)*(a.moving&&!this.reduced?.025:0);});
       m.ring.scale.setScalar((i===0?.75:.58)*(a.dashTime>0?1.22:1));
+      if(i===0)m.ring.material=this.mat(race.championAura?0xffd269:COLORS[0],true);
       m.ring.visible=a.invulnerable<=0||Math.floor(race.elapsed*10)%2===0;
     });
     for(const {mesh,list} of this.pickupInstances){
       list.forEach((p,i)=>{
-        const active=p.readyAt<=race.elapsed,scale=active?clamp((race.elapsed-p.readyAt)*5,0,1):0;
+        const active=p.readyAt<=race.elapsed,scale=active?(p.readyAt===0?1:clamp((race.elapsed-p.readyAt)*5,0,1)):0;
         this.dummy.position.set(p.x,.20+(this.reduced?0:Math.sin(race.elapsed*2+p.phase)*.035),-p.y);
         this.dummy.scale.set(.68*scale,.19*scale,.47*scale);this.dummy.rotation.set(0,0,0);this.dummy.updateMatrix();mesh.setMatrixAt(i,this.dummy.matrix);
       });mesh.instanceMatrix.needsUpdate=true;

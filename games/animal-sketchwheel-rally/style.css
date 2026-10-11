@@ -64,6 +64,9 @@ button:focus-visible,canvas:focus-visible{outline:3px solid #fff0b4;outline-offs
 @media(max-height:500px) and (orientation:landscape){#coursePreview{top:27px}#coursePreview span{font-size:10px;padding:2px 5px}#raceRibbon{top:10px}.feedback{bottom:5px;font-size:11px;padding:4px 8px;min-height:24px}#momentum{bottom:35px;padding:3px 6px}}
 @media(prefers-reduced-motion:reduce){.modal-layer:not([hidden]){animation:none}#raceRibbon i,.blueprints button,#coursePreview span{transition:none}}
 .battle-header>div:has(#battleChapter){display:none!important}
+.stage-header .rux-chip{display:none!important}
 .battle-live{grid-template-rows:48px 40px minmax(0,1fr) 176px}
 @media(max-width:650px){.battle-live{grid-template-rows:48px 38px minmax(0,1fr) 170px}}
 @media(max-height:500px) and (orientation:landscape){.battle-live{grid-template-rows:48px 28px minmax(0,1fr) 90px}}
+
+.result-rux{width:112px;height:84px;border-radius:12px;background:url("../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp") center 48%/cover;box-shadow:0 4px 18px #071f3270}

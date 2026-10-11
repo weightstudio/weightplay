@@ -288,7 +288,21 @@
     catch (_) { return normalizeCampaign({}); }
   }
   let campaign = readCampaign();
-  function saveCampaign() { campaign = normalizeCampaign(campaign); storage.set(CAMPAIGN_STORAGE_KEY, JSON.stringify(campaign)); }
+  function renderCampaignProgress() {
+    const copy = t("facts", { cleared: campaign.cleared.length, total: rounds.length });
+    document.querySelectorAll("#mainScreen [data-wp-main-progress], #campaignProgress").forEach((node) => {
+      if (node.dataset.wpMainProgress === "generated") node.dataset.wpMainProgress = "";
+      if (node.textContent !== copy) node.textContent = copy;
+    });
+  }
+  function installCampaignProgressOwner() {
+    const main = $("mainScreen");
+    if (!main || !window.MutationObserver) { renderCampaignProgress(); return; }
+    const observer = new MutationObserver(() => renderCampaignProgress());
+    observer.observe(main, { childList: true, subtree: true, characterData: true });
+    renderCampaignProgress();
+  }
+  function saveCampaign() { campaign = normalizeCampaign(campaign); storage.set(CAMPAIGN_STORAGE_KEY, JSON.stringify(campaign)); renderCampaignProgress(); }
   function targetOptions(stage, targetIndex = 0, currentAngle = null) {
     const target = stage?.targets?.[targetIndex];
     if (!target) return [];
@@ -389,7 +403,7 @@
     $("orbitDial").setAttribute("aria-label", t("dial"));
     $("targetChoice").setAttribute("aria-label", t("targetChoice"));
     $("laneChoice").setAttribute("aria-label", t("laneChoice"));
-    applyLeaveCopy(); renderStage(); refreshBattleStatus();
+    applyLeaveCopy(); renderCampaignProgress(); renderStage(); refreshBattleStatus();
     if (!$("battleScreen").hidden) renderBattle();
     if (!$("resultScreen").hidden) renderResult();
     if (!$("patternDialog").hidden) openPattern();
@@ -470,8 +484,7 @@
     const list = $("orbitList");
     if (!list) return;
     const unlocked = campaign.highestUnlocked;
-    const progress = $("campaignProgress");
-    if (progress) progress.textContent = t("facts", { cleared: campaign.cleared.length, total: rounds.length });
+    renderCampaignProgress();
     list.replaceChildren(...rounds.map((stage, index) => {
       const button = document.createElement("button");
       const isCleared = campaign.cleared.includes(stage.id);
@@ -786,9 +799,11 @@
     syncBattleControls(); resumeTransition(); $("angleInput")?.focus();
   }
 
+  window.addEventListener("weightplay:shell-sync", renderCampaignProgress);
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => {
     installBattleSubstates();
+    installCampaignProgressOwner();
     populateLocales();
     applyLocale();
     window.setTimeout(() => { $("loadingPanel").hidden = true; $("app").hidden = false; }, 260);
