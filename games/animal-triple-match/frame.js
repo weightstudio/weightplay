@@ -13,6 +13,19 @@
     const battleHeader = battle.querySelector(".battle-header");
     const mainContent = main.querySelector(".main-hero");
     const battleContent = document.getElementById("battleLive");
+    const feedback = document.getElementById("feedback");
+    feedback.classList.add("battle-feedback");
+    feedback.setAttribute("role", "status");
+    feedback.setAttribute("aria-atomic", "true");
+    feedback.tabIndex = 0;
+    const trayCounter = document.createElement("b");
+    trayCounter.id = "trayCounter";
+    trayCounter.className = "tray-counter";
+    trayCounter.setAttribute("aria-hidden", "true");
+    document.querySelector(".tray-wrap").append(trayCounter);
+    document.querySelector("#magnetBtn .tool-icon").textContent = "⌕";
+    document.querySelector("#shuffleBtn .tool-icon").textContent = "⇄";
+    battleContent.querySelectorAll(".tool-icon").forEach(icon => icon.setAttribute("aria-hidden", "true"));
     const localeSelect = document.getElementById("localeSelect");
     if (!window.WeightPlayScreenFrame || !mainHeader || !stageHeader || !battleHeader) {
       throw new Error("TRIPLE_MATCH_SHARED_FRAME_REQUIRED");

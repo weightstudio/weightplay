@@ -142,5 +142,25 @@
     ar:{relatedTitle:"ألعاب ذات صلة",relatedIntro:"إذا كنت تستمتع بتخطيط المسارات في المساحات الضيقة، فواصل مع ألعاب WeightPlay هذه:",relatedBambooTitle:"مجرى بانكو الخيزراني",relatedBambooDescription:"أدر أنابيب الخيزران الكاملة لتوصل الماء من النبع المنحوت إلى حوض الزهور دون انقطاع في المسار.",relatedCrateTitle:"مستودع الحيوانات",relatedCrateDescription:"ادفع واسحب حمولة الرون في مستودعات الفلك السماوي، مع إبقاء مساحة لكل منعطف.",relatedRiftTitle:"فريق إنقاذ الصدع",relatedRiftDescription:"قد الحلقة المتنامية لجمع الحطام عبر الأخطار والمنافسين والمسارات النجمية ذات الأهداف."}
   };
   for(const [code,copy] of Object.entries(relatedGuideCopy))Object.assign({en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar}[code],copy);
-  root.PRISM_GARDEN_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
+  const polishCopy={
+    en:["Best: {n} moves","Pair {n}: {state}","connected","not connected","Gate {n}","Drawing pair {n} · reach the matching number.","Pair {n} connected · keep filling the garden.","Arrow keys move. Enter or Space starts and finishes a route. Escape cancels the current route."],
+    "zh-Hant":["最佳：{n} 步","配對 {n}：{state}","已連接","未連接","閘門 {n}","正在連接第 {n} 組 · 尋找相同編號。","第 {n} 組已連接 · 繼續填滿庭園。","方向鍵移動。Enter 或空白鍵開始與結束路線，Escape 取消本次路線。"],
+    "zh-Hans":["最佳：{n} 步","配对 {n}：{state}","已连接","未连接","闸门 {n}","正在连接第 {n} 组 · 寻找相同编号。","第 {n} 组已连接 · 继续填满庭园。","方向键移动。Enter 或空格键开始与结束路线，Escape 取消本次路线。"],
+    ja:["ベスト：{n} 手","ペア {n}：{state}","接続済み","未接続","ゲート {n}","ペア {n} を接続中 · 同じ番号を目指そう。","ペア {n} が接続 · 庭園を埋めよう。","矢印キーで移動。Enter またはスペースで経路を開始・終了。Escape で今の経路を取り消します。"],
+    ko:["최고: {n}회","짝 {n}: {state}","연결됨","연결 안 됨","관문 {n}","{n}번 연결 중 · 같은 번호를 찾으세요.","{n}번 연결 완료 · 정원을 계속 채우세요.","방향키로 이동하세요. Enter 또는 스페이스로 경로를 시작하고 끝냅니다. Escape로 현재 경로를 취소합니다."],
+    es:["Mejor: {n} movimientos","Pareja {n}: {state}","conectada","sin conectar","Portal {n}","Uniendo pareja {n} · busca el mismo número.","Pareja {n} conectada · sigue llenando el jardín.","Usa las flechas para moverte. Enter o espacio inicia y termina una ruta. Escape cancela la ruta actual."],
+    "pt-BR":["Melhor: {n} movimentos","Par {n}: {state}","conectado","não conectado","Portal {n}","Ligando par {n} · encontre o mesmo número.","Par {n} conectado · continue preenchendo o jardim.","Use as setas para mover. Enter ou espaço inicia e termina a rota. Escape cancela a rota atual."],
+    fr:["Record : {n} coups","Paire {n} : {state}","reliée","non reliée","Porte {n}","Liaison de la paire {n} · rejoignez le même numéro.","Paire {n} reliée · continuez à remplir le jardin.","Les flèches déplacent le curseur. Entrée ou espace commence et termine un chemin. Échap annule le chemin actuel."],
+    de:["Bestwert: {n} Züge","Paar {n}: {state}","verbunden","nicht verbunden","Tor {n}","Verbinde Paar {n} · finde dieselbe Zahl.","Paar {n} verbunden · fülle den Garten weiter.","Mit Pfeiltasten bewegen. Eingabe oder Leertaste beginnt und beendet einen Weg. Escape bricht den aktuellen Weg ab."],
+    it:["Record: {n} mosse","Coppia {n}: {state}","collegata","non collegata","Portale {n}","Collega la coppia {n} · cerca lo stesso numero.","Coppia {n} collegata · continua a riempire il giardino.","Usa le frecce per muoverti. Invio o spazio inizia e termina un percorso. Escape annulla il percorso attuale."],
+    ru:["Рекорд: {n} ходов","Пара {n}: {state}","соединена","не соединена","Ворота {n}","Соединяем пару {n} · найдите тот же номер.","Пара {n} соединена · заполняйте сад дальше.","Стрелки перемещают курсор. Enter или пробел начинает и завершает путь. Escape отменяет текущий путь."],
+    hi:["सर्वश्रेष्ठ: {n} चालें","जोड़ी {n}: {state}","जुड़ी हुई","नहीं जुड़ी","द्वार {n}","जोड़ी {n} जोड़ें · समान संख्या ढूँढ़ें।","जोड़ी {n} जुड़ गई · बगीचा भरते रहें।","तीर कुंजियों से चलें। Enter या स्पेस से मार्ग शुरू और समाप्त करें। Escape से वर्तमान मार्ग रद्द करें।"],
+    ar:["الأفضل: {n} حركات","الزوج {n}: {state}","متصل","غير متصل","البوابة {n}","توصيل الزوج {n} · ابحث عن الرقم نفسه.","تم توصيل الزوج {n} · واصل ملء الحديقة.","تحرك بمفاتيح الأسهم. يبدأ Enter أو المسافة المسار وينهيه. يلغي Escape المسار الحالي."]
+  };
+  const polishKeys=["bestMoves","pairState","linked","unlinked","gateNumber","drawingPair","pairLinked","keyboardHelp"];
+  const catalogs={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
+  for(const [code,values] of Object.entries(polishCopy))polishKeys.forEach((key,index)=>{catalogs[code][key]=values[index]});
+  const nextLabels={en:"Next","zh-Hant":"下一關","zh-Hans":"下一关",ja:"次の庭園",ko:"다음 정원",es:"Siguiente","pt-BR":"Próximo",fr:"Suivant",de:"Weiter",it:"Avanti",ru:"Далее",hi:"अगला",ar:"التالي"};
+  for(const [code,label] of Object.entries(nextLabels))catalogs[code].next=label;
+  root.PRISM_GARDEN_LOCALES=catalogs;
 })(window);

@@ -24,7 +24,7 @@
   const localeLang={en:"en","zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const localeByRoute={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
-  const GAME_VERSION="v17";
+  const GAME_VERSION="v18";
   const STAGE_CARD_POOL_SIZE=9;
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
@@ -35,7 +35,25 @@
   let selected=unlocked-1;
   let level=null,paths={},history=[],activeColor=null,pointerId=null,moves=0,resultClaimed=false,audioContext=null;
   let stageCardPool=[],stageWindowStart=0,stageSettleRaf=0,cancelStageRailInteraction=()=>{};
-  let lastPointerPoint=null;
+  let lastPointerPoint=null,boardCells=[],boardLevel=null,keyboardIndex=0,settleTimer=0,roundGeneration=0;
+  const recordsKey="wp-animal-prism-garden-records-v1";
+  let records={};
+  try{const saved=JSON.parse(read(recordsKey)||"{}");if(saved&&typeof saved==="object"&&!Array.isArray(saved))records=saved}catch{}
+  const reducedMotion=matchMedia("(prefers-reduced-motion: reduce)");
+  window.WeightPlayAudio?.preload?.(["puzzle.match","board.undo"]);
+  function animate(node,keyframes,duration=260){
+    if(!node?.animate)return;
+    node.getAnimations().forEach(animation=>animation.cancel());
+    node.animate(reducedMotion.matches?[{opacity:.7},{opacity:1}]:keyframes,{duration:reducedMotion.matches?90:duration,easing:"cubic-bezier(.2,.8,.2,1)"});
+  }
+  function stopGesture(){
+    const grid=$("#grid");
+    if(Number.isInteger(pointerId)&&grid.hasPointerCapture?.(pointerId))grid.releasePointerCapture(pointerId);
+    activeColor=null;pointerId=null;lastPointerPoint=null;
+  }
+  function cancelSettlement(){clearTimeout(settleTimer);settleTimer=0;roundGeneration++}
+  function canPlay(){return level&&document.body.dataset.screen==="battle"&&!document.body.classList.contains("modal-open")&&!resultClaimed}
+  function status(key,values){$("#status").textContent=t(key,values);animate($("#status"),[{opacity:.4},{opacity:1}],180)}
 
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,String(value))}catch{}}
@@ -49,9 +67,14 @@
     $$("#battle > *").forEach(node=>{if(node!==owner)node.inert=covered});
     document.body.classList.toggle("modal-open",covered);
     window.dispatchEvent(new Event("weightplay:prism-covered"));
+    // The shared frame reparents the content once; keep the live content inert too.
+    $("#battle .battle-content").inert=covered;
   }
   function openModal(panel,focus){
-    panel.hidden=false;setCovered(true,panel);requestAnimationFrame(()=>focus?.focus?.({preventScroll:true}));
+    if(activeColor!==null){moves++;stopGesture();renderBoard();checkComplete();if(resultClaimed&&panel.id==="leavePanel")return}
+    stopGesture();renderBoard();
+    panel.hidden=false;setCovered(true,panel);requestAnimationFrame(()=>{if(!panel.hidden&&document.body.dataset.screen==="battle")focus?.focus?.({preventScroll:true})});
+    animate(panel.querySelector(".modal-card"),[{opacity:0,transform:"translateY(12px)"},{opacity:1,transform:"translateY(0)"}],320);
   }
   function closeModal(panel,focus){
     panel.hidden=true;setCovered(false,panel);focus?.focus?.({preventScroll:true});
@@ -65,6 +88,8 @@
     button.hidden=screen!=="battle";
   }
   function show(id){
+    cancelSettlement();stopGesture();
+    $("#battle").getAnimations({subtree:true}).forEach(animation=>animation.cancel());
     if(id!=="stage")cancelStageRailInteraction();
     (__wpNotifyMeasurement(), $("#leavePanel").hidden=true);(__wpNotifyMeasurement(), $("#result").hidden=true);setCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
@@ -77,6 +102,7 @@
     $("#generalReserve").hidden=id==="main";
     syncBattleHelp(id);
     if(id==="stage")renderStages();
+    animate($(id==="stage"?"#stage .stage-workspace":id==="battle"?"#grid":"#main .prism-main-content"),[{opacity:0},{opacity:1}],300);
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -116,13 +142,13 @@
   function createStageCard(poolIndex){
     const button=document.createElement("button");
     button.type="button";button.className="stage-card";button.dataset.wpStagePoolNode=String(poolIndex+1);
-    button.innerHTML='<small class="stage-chapter"></small><strong></strong><span class="stage-size"></span><span class="stage-detail"></span>';
+    button.innerHTML='<small class="stage-chapter"></small><strong></strong><span class="stage-size"></span><span class="stage-detail"></span><span class="prism-preview" aria-hidden="true"></span><span class="prism-record"></span>';
     return button;
   }
   function bindStageCard(button,index){
     const item=levels[index],locked=index>=unlocked;
     button.dataset.index=String(index);button.hidden=false;
-    button.className=`stage-card${locked?" locked":""}`;
+    button.className=`stage-card${locked?" locked":""}${records[index]?" cleared":""}`;
     button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));
     button.setAttribute("aria-disabled",String(locked));button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
     const chapterName=chapterCopy("chapterNames",item.chapter),pairs=t("pairs",{n:item.count}),gateCount=t("gates",{n:Object.keys(item.gates).length});
@@ -131,6 +157,15 @@
     button.querySelector("strong").textContent=t("garden",{n:index+1});
     button.querySelector(".stage-size").textContent=`${item.size}×${item.size}`;
     button.querySelector(".stage-detail").textContent=`${pairs} · ${gateCount}${locked?` · ${t("locked")}`:""}`;
+    const preview=button.querySelector(".prism-preview");
+    if(preview.dataset.level!==String(index)){
+      preview.dataset.level=String(index);preview.style.setProperty("--size",item.size);preview.replaceChildren();
+      for(let cell=0;cell<item.size*item.size;cell++){
+        const dot=document.createElement("i"),color=Array.from({length:item.count},(_,i)=>i).findIndex(i=>item.ends[i].includes(cell));
+        if(color>=0)dot.style.background=palette[color];preview.append(dot);
+      }
+    }
+    button.querySelector(".prism-record").textContent=records[index]?t("bestMoves",{n:records[index].moves}):"";
   }
   function syncStageCards(){
     stageCardPool.forEach(button=>{
@@ -180,7 +215,7 @@
   function renderStages(){
     const rail=$("#stageGrid");
     if(!rail)return;
-    const progress=t("progress",{done:Math.max(0,unlocked-1)});
+    const progress=t("progress",{done:records[levels.length-1]?levels.length:Math.max(0,unlocked-1)});
     $("#progressBadge").textContent=progress;
     $("#mainProgress").textContent=progress;
     if(!stageCardPool.length)buildStageCardPool();else{moveStageWindow(desiredStageWindow(selected));syncStageCards()}
@@ -188,6 +223,7 @@
     if(document.body.dataset.screen==="stage")requestAnimationFrame(()=>{if(document.body.dataset.screen==="stage")positionStageRail(selected)});
   }
   function startLevel(index){
+    cancelSettlement();stopGesture();keyboardIndex=levels[index].ends[0][0];
     selected=index;level=levels[index];paths={};history=[];activeColor=null;pointerId=null;moves=0;resultClaimed=false;
     $("#stageName").textContent=t("garden",{n:index+1});
     $("#chapter").textContent=`${t("chapter",{n:level.chapter})} · ${chapterCopy("chapterNames",level.chapter)}`;
@@ -219,22 +255,58 @@
       const node=$("#"+id);node.textContent=value;node.setAttribute("aria-label",`${t(key)} ${value}`);
       const label=node.parentElement.querySelector("[data-t]");if(label)label.textContent=t(key);
     }
+    $("#grid").style.setProperty("--fill",`${occupied/(level.size*level.size)*100}%`);
+    $("#undo").disabled=history.length===0||resultClaimed;
+    $("#reset").disabled=Object.keys(paths).length===0||resultClaimed;
+    $("#hint").disabled=resultClaimed;
+    const pairs=$("#prismPairs");
+    if(pairs){
+      pairs.replaceChildren(...Array.from({length:level.count},(_,color)=>{
+        const mark=document.createElement("span");mark.style.setProperty("--pair",palette[color]);
+        mark.className=`prism-pair${connected(color)?" complete":""}${activeColor===color?" drawing":""}`;
+        mark.textContent=connected(color)?"✓":String(color+1);
+        mark.setAttribute("aria-label",t("pairState",{n:color+1,state:t(connected(color)?"linked":"unlinked")}));return mark;
+      }));
+    }
   }
   function renderBoard(){
     if(!level)return;
-    const grid=$("#grid");grid.innerHTML="";grid.style.setProperty("--size",level.size);
-    for(let index=0;index<level.size*level.size;index++){
-      const cell=document.createElement("div");
-      cell.className="cell";cell.dataset.index=String(index);cell.setAttribute("role","gridcell");
+    const grid=$("#grid");grid.style.setProperty("--size",level.size);
+    if(boardLevel!==level){
+      boardLevel=level;grid.replaceChildren();boardCells=[];
+      for(let index=0;index<level.size*level.size;index++){
+        const cell=document.createElement("div");cell.dataset.index=String(index);cell.id=`prism-cell-${index}`;cell.setAttribute("role","gridcell");
+        cell.innerHTML='<span class="route-arm north"></span><span class="route-arm east"></span><span class="route-arm south"></span><span class="route-arm west"></span><span class="route-core"></span>'+(Number.isInteger(level.gates[index])?'<span class="gate-mark"></span>':'')+'<span class="seed-number"></span>';
+        grid.append(cell);boardCells.push(cell);
+      }
+    }
+    grid.setAttribute("aria-activedescendant",`prism-cell-${keyboardIndex}`);
+    grid.setAttribute("aria-rowcount",String(level.size));grid.setAttribute("aria-colcount",String(level.size));
+    for(let index=0;index<boardCells.length;index++){
+      const cell=boardCells[index],wasConnected=cell.classList.contains("connected");
+      cell.className="cell";
       const seed=seedColorAt(index),owner=ownerAt(index),gate=Number.isInteger(level.gates[index])?level.gates[index]:-1;
-      if(owner>=0){cell.classList.add("path");cell.style.setProperty("--path",palette[owner])}
+      cell.style.removeProperty("--path");
+      if(owner>=0){
+        cell.classList.add("path");cell.style.setProperty("--path",palette[owner]);
+        const path=paths[owner],at=path.indexOf(index);
+        for(const neighbor of [path[at-1],path[at+1]]){
+          const delta=neighbor-index;
+          if(Number.isInteger(neighbor))cell.classList.add(delta===1?"to-east":delta===-1?"to-west":delta===level.size?"to-south":"to-north");
+        }
+        if(owner===activeColor){cell.classList.add("active-path");if(index===path.at(-1))cell.classList.add("route-tip")}
+        if(connected(owner))cell.classList.add("connected");
+      }
       if(seed>=0&&connected(seed))cell.classList.add("connected");
       if(seed>=0){cell.classList.add("seed");cell.style.setProperty("--seed",palette[seed]);cell.dataset.seed=String(seed)}
       if(gate>=0){
         cell.classList.add("gate");cell.style.setProperty("--gate",palette[gate]);
-        const mark=document.createElement("span");mark.className="gate-mark";cell.append(mark);
       }
-      grid.append(cell);
+      cell.querySelector(".seed-number").textContent=seed>=0?String(seed+1):gate>=0?String(gate+1):"";
+      cell.setAttribute("aria-label",`${Math.floor(index/level.size)+1}, ${index%level.size+1}${seed>=0?` · ${t("pairState",{n:seed+1,state:t(connected(seed)?"linked":"unlinked")})}`:gate>=0?` · ${t("gateNumber",{n:gate+1})}`:""}`);
+      cell.setAttribute("aria-selected",String(index===keyboardIndex));
+      if(index===keyboardIndex)cell.classList.add("keyboard-cell");
+      if(!wasConnected&&cell.classList.contains("connected"))animate(cell,[{filter:"brightness(1.8)"},{filter:"brightness(1)"}],420);
     }
     renderHud();
   }
@@ -243,15 +315,17 @@
     return Math.abs(ar-br)+Math.abs(ac-bc)===1;
   }
   function begin(index,event){
-    if(activeColor!==null||event.isPrimary===false||event.button>0)return;
+    if(!canPlay()||activeColor!==null||event.isPrimary===false||event.button>0)return;
     const color=seedColorAt(index);
     if(color<0)return;
     event.preventDefault();
     history.push(copyPaths());
     delete paths[color];
     paths[color]=[index];activeColor=color;pointerId=event.pointerId;
+    keyboardIndex=index;
     lastPointerPoint={x:event.clientX,y:event.clientY};
-    $("#grid").setPointerCapture?.(pointerId);
+    if(Number.isInteger(pointerId))$("#grid").setPointerCapture?.(pointerId);
+    status("drawingPair",{n:color+1});
     renderBoard();tone("board.move",.035);
   }
   function extend(index){
@@ -264,18 +338,21 @@
     if(!adjacent(last,index)||path.includes(index)){blocked(index);return}
     const seed=seedColorAt(index),owner=ownerAt(index),gate=Number.isInteger(level.gates[index])?level.gates[index]:-1;
     if((seed>=0&&seed!==activeColor)||(owner>=0&&owner!==activeColor)||(gate>=0&&gate!==activeColor)){blocked(index);return}
-    path.push(index);renderBoard();tone("board.move",.018);
+    path.push(index);keyboardIndex=index;renderBoard();
+    if(connected(activeColor)){status("pairLinked",{n:activeColor+1});tone("puzzle.match")}else tone("board.move",.018);
   }
   function blocked(index){
-    const cell=$(`.cell[data-index="${index}"]`);cell?.classList.add("blocked");
-    setTimeout(()=>cell?.classList.remove("blocked"),240);
-    $("#status").textContent=t("blocked");
+    const cell=$(`.cell[data-index="${index}"]`);
+    animate(cell,[{boxShadow:"inset 0 0 0 2px #ff9cab",filter:"brightness(1.5)"},{boxShadow:"inset 0 0 0 0px transparent",filter:"brightness(1)"}],240);
+    status("blocked");
   }
   function end(event){
     if(activeColor===null||event.pointerId!==pointerId)return;
-    if(event.type!=="pointercancel")tracePointer(event);
-    moves++;activeColor=null;pointerId=null;
-    lastPointerPoint=null;
+    if(event.type==="pointercancel"){
+      paths=history.pop()||{};stopGesture();renderBoard();status("undone");return;
+    }
+    if(pointerId!=="keyboard")tracePointer(event);
+    moves++;stopGesture();
     renderBoard();checkComplete();
   }
   function checkComplete(){
@@ -283,17 +360,23 @@
     const filled=new Set(Object.values(paths).flat()).size===level.size*level.size;
     if(!allLinked||!filled||resultClaimed)return;
     resultClaimed=true;
+    const old=records[selected];
+    if(!old||!Number.isFinite(old.moves)||moves<old.moves){records[selected]={moves};write(recordsKey,JSON.stringify(records))}
     const nextUnlocked=Math.min(30,Math.max(unlocked,selected+2));
     if(nextUnlocked!==unlocked){unlocked=nextUnlocked;write(saveKey,unlocked)}
-    $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});
+    $("#resultBody").textContent=`${t("resultBody",{n:selected+1,moves})} ${t("bestMoves",{n:records[selected].moves})}`;
+    const mosaic=$("#prismResultGarden");
+    if(mosaic){mosaic.replaceChildren();mosaic.style.setProperty("--size",level.size);for(let index=0;index<level.size*level.size;index++){const tile=document.createElement("i");tile.style.background=palette[ownerAt(index)];mosaic.append(tile)}}
+    renderHud();
     $("#next").disabled=selected>=29;
-    setTimeout(()=>{openModal($("#result"),$("#next").disabled?$("#retry"):$("#next"));successTone()},280);
+    const generation=roundGeneration;
+    settleTimer=setTimeout(()=>{if(generation!==roundGeneration||document.body.dataset.screen!=="battle")return;settleTimer=0;openModal($("#result"),$("#next").disabled?$("#retry"):$("#next"));successTone()},reducedMotion.matches?90:420);
     window.WonderAnalytics?.track?.("game_complete",{game_id:"animal-prism-garden",game_version:GAME_VERSION,stage:selected+1,moves});
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function hint(){
-    if(!level)return;
+    if(!canPlay()||activeColor!==null)return;
     const color=Array.from({length:level.count},(_,i)=>i).find(i=>{
       if(connected(i))return false;
       const candidate=new Set(level.solution[i]||[]);
@@ -304,20 +387,37 @@
     $("#status").textContent=t("hinted");renderBoard();tone("feedback.hint",.08);checkComplete();
   }
   function undo(){
+    if(!canPlay())return;stopGesture();
     const previous=history.pop();
     if(!previous)return;
     paths=previous;activeColor=null;moves++;
-    $("#status").textContent=t("undone");renderBoard();
+    status("undone");renderBoard();tone("board.undo");
   }
   function reset(){
+    if(!canPlay())return;stopGesture();
     if(Object.keys(paths).length)history.push(copyPaths());
     paths={};activeColor=null;moves++;
-    $("#status").textContent=t("fresh");renderBoard();
+    status("fresh");renderBoard();animate($("#grid"),[{opacity:.5},{opacity:1}],220);
   }
   function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function successTone() { return window.WeightPlayAudio?.play("puzzle.clear"); }
 
   $("#grid").addEventListener("pointerdown",event=>begin(Number(event.target.closest(".cell")?.dataset.index),event));
+  $("#grid").addEventListener("keydown",event=>{
+    if(!canPlay())return;
+    const delta={ArrowUp:-level.size,ArrowDown:level.size,ArrowLeft:-1,ArrowRight:1}[event.key];
+    if(delta!==undefined){
+      event.preventDefault();const next=keyboardIndex+delta;
+      if(next<0||next>=level.size*level.size||!adjacent(keyboardIndex,next))return;
+      keyboardIndex=next;if(pointerId==="keyboard")extend(next);renderBoard();
+    }else if(event.key===" "||event.key==="Enter"){
+      event.preventDefault();
+      if(pointerId==="keyboard")end({pointerId:"keyboard",type:"keyup"});
+      else begin(keyboardIndex,{isPrimary:true,button:0,pointerId:"keyboard",preventDefault(){}});
+    }else if(event.key==="Escape"&&pointerId==="keyboard"){
+      event.preventDefault();paths=history.pop()||{};stopGesture();renderBoard();status("undone");
+    }
+  });
   function tracePointer(event){
     if(activeColor===null||event.pointerId!==pointerId)return;
     const grid=$("#grid"),rect=grid.getBoundingClientRect();
@@ -337,16 +437,35 @@
   $("#grid").addEventListener("pointercancel",end);
   $("#start").addEventListener("click",()=>show("stage"));
   $("#stage [data-back]").addEventListener("click",()=>show("main"));
-  $("#battle [data-back]").addEventListener("click",()=>openModal($("#leavePanel"),$("#leaveContinue")));
+  $("#battle [data-back]").addEventListener("click",()=>{if(resultClaimed)return;openModal($("#leavePanel"),$("#leaveContinue"))});
   $("#leaveContinue").addEventListener("click",()=>closeModal($("#leavePanel"),$("#battle [data-back]")));
   $("#leaveStages").addEventListener("click",()=>show("stage"));
   $("#undo").addEventListener("click",undo);$("#hint").addEventListener("click",hint);$("#reset").addEventListener("click",reset);
-  $("#resultStages").addEventListener("click",()=>show("stage"));
+  $("#resultStages").addEventListener("click",()=>{selected=unlocked-1;show("stage")});
   $("#retry").addEventListener("click",()=>__wpReplayStart(() => startLevel(selected)));
   $("#next").addEventListener("click",()=>startLevel(Math.min(29,selected+1)));
   $("#stageGrid").addEventListener("click",event=>{const card=event.target.closest(".stage-card");if(!card)return;const index=Number(card.dataset.index);selectStage(index);if(index<unlocked)startLevel(index)});
   $("#stageGrid").addEventListener("keydown",event=>{const card=event.target.closest(".stage-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();event.stopImmediatePropagation();const current=Number(card.dataset.index),rtl=document.documentElement.dir==="rtl",step=event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1),next=event.key==="Home"?0:event.key==="End"?levels.length-1:Math.max(0,Math.min(levels.length-1,current+step));selectStage(next,true)},true);
   $("#stageTab").addEventListener("click",()=>selectStage(selected,true));
+
+  // Permanent content nodes are mounted once; the shared frame retains control ownership.
+  const pairs=document.createElement("div");pairs.id="prismPairs";pairs.className="prism-pairs";
+  $("#objective").after(pairs);
+  const mosaic=document.createElement("div");mosaic.id="prismResultGarden";mosaic.className="prism-result-garden";mosaic.setAttribute("aria-hidden","true");
+  $("#result .result-mark").replaceWith(mosaic);
+  const keyboardHelp=document.createElement("p");keyboardHelp.id="prismKeyboardHelp";keyboardHelp.className="prism-sr-only";keyboardHelp.dataset.t="keyboardHelp";
+  $("#grid").after(keyboardHelp);$("#grid").setAttribute("aria-describedby","prismKeyboardHelp");
+  document.addEventListener("keydown",event=>{
+    const panel=!$("#result").hidden?$("#result"):!$("#leavePanel").hidden?$("#leavePanel"):null;
+    if(!panel)return;
+    if(event.key==="Escape"&&panel.id==="leavePanel"){event.preventDefault();closeModal(panel,$("#battle [data-back]"));return}
+    if(event.key==="Tab"){
+      const buttons=[...panel.querySelectorAll("button:not(:disabled)")],first=buttons[0],last=buttons.at(-1);
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+    }
+  });
+  window.addEventListener("pagehide",()=>{cancelSettlement();stopGesture()});
 
   initLocale();renderStages();show("main");
   document.addEventListener("DOMContentLoaded",()=>syncBattleHelp(document.body.dataset.screen),{once:true});

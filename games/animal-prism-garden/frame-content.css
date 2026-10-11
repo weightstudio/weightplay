@@ -22,3 +22,60 @@
 #battle .cell.gate .gate-mark{inset:7%;aspect-ratio:auto;border:0;border-radius:0;background:url('../../assets/animal-prism-garden-gate-block-v15.webp') center/contain no-repeat;box-shadow:none;transform:none;filter:drop-shadow(0 0 2px var(--gate))}
 #battle .cell.gate .gate-mark::before,#battle .cell.gate .gate-mark::after{content:none}
 #battle .modal-card{background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
+
+/* Luminous irrigation: the route, its numbered flower and its gate share one identity. */
+#battle .battle-content{grid-template-rows:40px 28px minmax(0,1fr) 44px 44px;row-gap:8px;background:linear-gradient(180deg,#06152150,#0615219c),url('../../assets/animal-prism-garden-scenery-block-v15.webp') center/cover no-repeat}
+#battle .battle-objective{width:100%;height:40px;display:grid;place-items:center;margin:0;padding:4px 36px 4px 8px;font-size:12px;line-height:16px;overflow:hidden;background:#071c29de;border:1px solid #9ae7ef20}
+#battle .status{width:100%;height:44px;min-height:44px;display:grid;place-items:center;margin:0;padding:4px 8px;overflow:hidden;line-height:17px;font-size:12px;background:#071c29ed;color:#c8f8f0;border-inline-start:2px solid #82ecd2}
+#battle .prism-pairs{display:flex;justify-content:center;align-items:center;gap:8px;height:28px;direction:ltr}
+#battle .prism-pair{width:24px;height:24px;display:grid;place-items:center;border:1px solid var(--pair);background:#091b29;color:var(--pair);font-size:12px;font-weight:800;border-radius:4px;transition:background .2s,color .2s,box-shadow .2s}
+#battle .prism-pair.complete{background:var(--pair);color:#061723;box-shadow:0 0 10px color-mix(in srgb,var(--pair) 30%,transparent)}
+#battle .prism-pair.drawing{outline:2px solid #fff;outline-offset:2px}
+#battle .prism-board-slot{grid-row:3;position:relative}
+#battle .grid{--route-gap:4px;position:relative;isolation:isolate;gap:var(--route-gap);padding:8px;border-radius:8px;background:linear-gradient(145deg,#102d3c,#071823);border:1px solid #8adcdf80;box-shadow:0 0 0 3px #04131bbb,0 18px 48px #0008,inset 0 1px #d6ffff38;direction:ltr}
+#battle .grid::after{content:"";position:absolute;bottom:0;left:0;width:var(--fill,0%);height:3px;background:#a2ffe4;box-shadow:0 0 8px #63eac2;transition:width .22s ease;pointer-events:none}
+#battle .cell{border:1px solid #afd8df20;border-radius:3px;overflow:visible;background:linear-gradient(#0a233a65,#06132380),url('../../assets/animal-prism-garden-tile-block-v15.webp') center/cover;transition:border-color .15s,box-shadow .15s}
+#battle .cell::before{content:none}
+#battle .cell.path{background:linear-gradient(color-mix(in srgb,var(--path) 11%,#091c2b),#081e2c);border-color:color-mix(in srgb,var(--path) 28%,#122d3a)}
+#battle .route-arm,#battle .route-core{position:absolute;background:var(--path);pointer-events:none;opacity:0;z-index:1;box-shadow:0 0 8px color-mix(in srgb,var(--path,transparent) 35%,transparent)}
+#battle .route-core{width:24%;height:24%;left:38%;top:38%;border-radius:25%}
+#battle .route-arm.east,#battle .route-arm.west{height:24%;width:calc(50% + var(--route-gap) + 2px);top:38%}
+#battle .route-arm.north,#battle .route-arm.south{width:24%;height:calc(50% + var(--route-gap) + 2px);left:38%}
+#battle .route-arm.east{left:50%}#battle .route-arm.west{right:50%}
+#battle .route-arm.south{top:50%}#battle .route-arm.north{bottom:50%}
+#battle .path .route-core,#battle .to-east .east,#battle .to-west .west,#battle .to-north .north,#battle .to-south .south{opacity:.9}
+#battle .cell.active-path .route-arm,#battle .cell.active-path .route-core{filter:brightness(1.2)}
+#battle .cell.route-tip{box-shadow:inset 0 0 0 2px #fff9}
+#battle .cell.seed{border:1px solid color-mix(in srgb,var(--seed) 70%,#fff);background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--seed) 38%,#132b39),#0a1b2b 75%);box-shadow:inset 0 0 15px color-mix(in srgb,var(--seed) 20%,transparent),0 0 8px color-mix(in srgb,var(--seed) 14%,transparent)}
+#battle .cell.seed::after,#battle .cell.seed:not(.connected)::after{inset:5% 5% 16%;filter:drop-shadow(0 0 4px var(--seed));opacity:1;z-index:2;pointer-events:none}
+#battle .cell.seed.connected{outline:0;border-color:#e6fff2;box-shadow:inset 0 0 18px color-mix(in srgb,var(--seed) 35%,transparent),0 0 10px color-mix(in srgb,var(--seed) 30%,transparent)}
+#battle .seed-number{position:absolute;right:2px;bottom:1px;z-index:4;min-width:14px;line-height:14px;text-align:center;font-size:10px;font-weight:900;background:#071421f0;border:1px solid var(--seed,var(--gate,#9cdecf));color:#fff;border-radius:2px;pointer-events:none}
+#battle .cell:not(.seed):not(.gate) .seed-number,#battle .cell:not(.gate) .gate-mark{display:none}
+#battle .cell.gate{border-width:2px;background:linear-gradient(#09233666,#06162080),url('../../assets/animal-prism-garden-tile-block-v15.webp') center/cover}
+#battle .cell.gate .gate-mark{z-index:3;opacity:.85;pointer-events:none}
+#battle .grid:focus-visible{outline:2px solid #c6fff2;outline-offset:4px}
+#battle .grid:focus-visible .keyboard-cell{outline:2px solid #fff;outline-offset:-3px;z-index:5}
+#battle .prism-result-garden{--size:7;width:104px;height:104px;margin:0 auto 16px;display:grid;grid-template-columns:repeat(var(--size),1fr);gap:2px;padding:6px;border:1px solid #a6f3d766;background:#071922;transform:rotate(-5deg);box-shadow:0 10px 32px #0005}
+#battle .prism-result-garden i{border-radius:1px;box-shadow:inset 0 1px #ffffff55}
+#battle .result-card{width:min(calc(100% - 8px),620px);padding:24px 12px;border-top:3px solid #8aeccf;background:linear-gradient(145deg,#163847,#101e32)}
+#battle .result-actions{gap:8px}
+#battle .result-actions button{white-space:nowrap}
+#stage .stage-card{position:relative;overflow:hidden;text-align:start}
+#stage .stage-size{justify-self:start;align-self:center}
+#stage .prism-preview{position:absolute;right:18px;top:64px;width:68px;height:68px;display:grid;grid-template-columns:repeat(var(--size),1fr);gap:2px;opacity:.9;pointer-events:none;direction:ltr}
+#stage .prism-preview i{background:#ffffff0e;border-radius:1px}
+#stage .prism-record{font-size:11px;color:#a9f5d9;position:absolute;inset-inline:18px;bottom:34px;white-space:nowrap}
+#stage .stage-card.cleared{border-color:#97e9c9}
+#stage .stage-card.cleared .stage-size{color:#9be4ca}
+#stage .stage-detail{line-height:16px;min-height:32px;align-self:end}
+.prism-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap!important;pointer-events:none}
+@media(max-height:500px) and (orientation:landscape){
+ #battle .battle-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:32px 28px minmax(0,1fr) 44px;gap:8px}
+ #battle .prism-board-slot{grid-column:1;grid-row:1/5}
+ #battle .battle-objective{grid-column:2;grid-row:1;display:grid;height:32px;padding:0 24px 0 0;font-size:11px;line-height:15px}
+ #battle .prism-pairs{grid-column:2;grid-row:2;gap:4px}
+ #battle .tools{grid-column:2;grid-row:3}
+ #battle .status{grid-column:2;grid-row:4}
+ #battle .prism-result-garden{width:64px;height:64px;margin-bottom:6px}
+}
+@media(prefers-reduced-motion:reduce){#battle .cell,#battle .prism-pair,#battle .grid::after{transition:none}#battle .cell.blocked{animation:none;border-color:#ff96aa}}

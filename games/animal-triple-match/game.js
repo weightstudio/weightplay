@@ -229,7 +229,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 27;
+  const GAME_VERSION = 28;
   const INTERFACE_VERSION = 7;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -804,6 +804,7 @@
     if (run) layoutPieces();
   }
   function setScreen(next) {
+    clearCollectionEffects();
     const previous = screen;
     screen = next;
     document.body.dataset.screen = next;
@@ -953,6 +954,7 @@
     });
   }
   function startBattle(index, skipTutorial = false) {
+    clearCollectionEffects();
     cancelPendingMatch();
     clearRewardBeat();
     stageIndex = Math.max(0, Math.min(29, index));
@@ -1063,6 +1065,8 @@
   function renderRun() {
     if (!run) return;
     const remaining = run.pieces.filter(p => p.active && !p.tray);
+    els.objective.style.setProperty("--sorted-progress", `${100 * run.pieces.filter(p => !p.active).length / run.pieces.length}%`);
+    els.board.dataset.chapter = String(run.config.chapter);
     els.stageLabel.textContent = t("stage", { n: stageIndex + 1 });
     els.stageName.textContent = t(CHAPTERS[run.config.chapter]);
     els.leftValue.textContent = remaining.length;
@@ -1108,6 +1112,12 @@
   }
   function renderTray() {
     const cap = run.config.trayCap;
+    const occupied = run.tray.length;
+    els.tray.dataset.pressure = occupied >= cap - 1 ? "danger" : occupied >= cap - 2 ? "caution" : "calm";
+    const counter = document.getElementById("trayCounter");
+    if (counter) counter.textContent = `${occupied} / ${cap}`;
+    const counts = new Map();
+    run.tray.forEach(piece => counts.set(piece.type, (counts.get(piece.type) || 0) + 1));
     const trayLabel = {
       en: `${cap}-slot tray`, "zh-Hant": `${cap} 格托盤`, "zh-Hans": `${cap} 格托盘`, ja: `${cap}枠のトレイ`, ko: `${cap}칸 트레이`, es: `Bandeja de ${cap} casillas`, "pt-BR": `Bandeja com ${cap} vagas`, fr: `Plateau de ${cap} cases`, de: `Ablage mit ${cap} Plätzen`, it: `Vassoio da ${cap} spazi`, ru: `Лоток на ${cap} ячеек`, hi: `${cap} खाने वाली ट्रे`, ar: `صينية من ${cap} خانات`
     }[locale];
@@ -1130,6 +1140,7 @@
       }
       const node = document.createElement("div");
       node.className = "tray-piece"
+        + (counts.get(piece.type) === 2 ? " tray-pair" : "")
         + (pendingIds.has(piece.id) ? " matching" : "")
         + (run.lastTrayId === piece.id ? " tray-new" : "");
       node.dataset.tray = String(piece.id);
@@ -1160,8 +1171,40 @@
     if (piece.crystal) { piece.crystal = false; els.feedback.textContent = t("cracked"); sound("impact.wood"); renderRun(); return; }
     if (piece.mystery) { piece.mystery = false; els.feedback.textContent = t("revealed"); sound("card.flip"); renderRun(); return; }
     run.history.push(snapshot()); if (run.history.length > 12) run.history.shift();
+    const sourceNode = els.board.querySelector(`[data-piece="${piece.id}"]`);
+    const sourceRect = sourceNode?.getBoundingClientRect();
     piece.tray = true; run.tray.push(piece); run.peakTray = Math.max(run.peakTray, run.tray.length); run.lastTrayId = piece.id; run.moves++;
     sound("board.move"); resolveMatch(piece.type);
+    if (sourceRect && !run.ended) animateCollection(piece, sourceRect);
+  }
+
+  // Visual proxies never own matching, inventory or input. All coordinates
+  // use the existing uniformly scaled Battle canvas, including RTL layouts.
+  const collectionEffects = new Set();
+  function clearCollectionEffects() {
+    for (const effect of collectionEffects) { effect.animation.cancel(); effect.node.remove(); }
+    collectionEffects.clear();
+  }
+  function animateCollection(piece, from) {
+    const destination = els.tray.querySelector(`[data-tray="${piece.id}"]`);
+    const canvas = els.battleLive.closest(".battle-canvas");
+    if (!destination || !canvas || collectionEffects.size >= 7) return;
+    const to = destination.getBoundingClientRect(), owner = canvas.getBoundingClientRect();
+    const scale = owner.width / canvas.offsetWidth;
+    if (!scale || !from.width) return;
+    const node = document.createElement("div");
+    node.className = "collection-flight";
+    node.setAttribute("aria-hidden", "true");
+    node.style.cssText = `${spriteStyle(piece.type)}left:${(from.left-owner.left)/scale}px;top:${(from.top-owner.top)/scale}px;width:${from.width/scale}px;height:${from.height/scale}px;`;
+    canvas.append(node);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const animation = node.animate(reduced ? [{opacity:.65},{opacity:0}] : [
+      {transform:"translate(0,0) scale(1)",opacity:1},
+      {transform:`translate(${(to.left-from.left)/scale}px,${(to.top-from.top)/scale}px) scale(${to.width/from.width})`,opacity:.2}
+    ], {duration: reduced ? 90 : 220,easing:"cubic-bezier(.2,.7,.25,1)",fill:"forwards"});
+    const effect = {node,animation};
+    collectionEffects.add(effect);
+    animation.onfinish = () => { node.remove(); collectionEffects.delete(effect); };
   }
   function resolveMatch(type) {
     const pendingIds = pendingPieceIds();
@@ -1172,7 +1215,7 @@
       renderRun();
       return;
     }
-    if (run.tray.length - pendingIds.size >= run.config.trayCap) { finish(false); return; }
+    if (run.tray.length - pendingIds.size >= run.config.trayCap) { renderRun(); finish(false); return; }
     if (run.tray.length === run.config.trayCap - 1) {
       els.feedback.textContent = t("trayDanger");
       track("tray_warning", { stage: stageIndex + 1, remaining_slots: 1, outcome: "one_slot_left" });
@@ -1193,6 +1236,7 @@
     return true;
   }
   function finish(win) {
+    clearCollectionEffects();
     if (run.ended) return;
     cancelPendingMatch();
     clearRewardBeat();
@@ -1256,7 +1300,7 @@
     value ? els.battleLive.setAttribute("aria-hidden", "true") : els.battleLive.removeAttribute("aria-hidden");
     if (screen === "battle") sharedFrame?.activate("battle", { covered: value });
   }
-  function openModal(modal, focus) { (__wpNotifyMeasurement(), modal.hidden = false); suspendPendingMatch(); isolateBattle(true); requestAnimationFrame(() => focus?.focus()); }
+  function openModal(modal, focus) { clearCollectionEffects(); (__wpNotifyMeasurement(), modal.hidden = false); suspendPendingMatch(); isolateBattle(true); requestAnimationFrame(() => focus?.focus()); }
   function closeModal(modal, focus) {
     (__wpNotifyMeasurement(), modal.hidden = true);
     isolateBattle(false);
@@ -1334,9 +1378,9 @@
     fitCanvas();
     requestAnimationFrame(() => requestAnimationFrame(() => { if (run) layoutPieces(); }));
   }, { passive: true });
-  window.addEventListener("blur", () => { windowFocused = false; suspendPendingMatch(); });
+  window.addEventListener("blur", () => { clearCollectionEffects(); windowFocused = false; suspendPendingMatch(); });
   window.addEventListener("focus", () => { windowFocused = true; armPendingMatch(); });
-  window.addEventListener("pagehide", () => { windowFocused = false; suspendPendingMatch(); });
+  window.addEventListener("pagehide", () => { clearCollectionEffects(); windowFocused = false; suspendPendingMatch(); });
   window.addEventListener("pageshow", () => {
     windowFocused = document.hasFocus();
     if (windowFocused) armPendingMatch();
@@ -1359,5 +1403,5 @@
   initLocale();
   if (window.mountTripleMatchFrame) sharedFrame = window.mountTripleMatchFrame();
   installLocaleOwnerObservers(); applyLocale(); renderMainProgress(); renderStages();
-  Promise.all([...document.images].map(img => img.complete ? Promise.resolve() : new Promise(resolve => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); }))).then(() => { els.loading.hidden = true; });
+  Promise.all([...document.images].map(img => img.complete ? Promise.resolve() : new Promise(resolve => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); }))).then(() => { els.loadingPanel.hidden = true; els.loadingPanel.setAttribute("aria-busy", "false"); });
 })();

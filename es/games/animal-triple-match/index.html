@@ -25,13 +25,14 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-triple-match/" />
     <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v27">
+  <meta name="weightplay-game-version" content="v28">
   <meta name="weightplay-interface-version" content="7">
   <title>Triple Match | WeightPlay</title>
   <meta name="description" content="Lee pilas de tesoros, forma parejas seguras y completa cada trío antes de llenar las siete casillas de Mimi en 30 niveles." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20261010-triple-text-growth-140-v5">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="style.css?v=20261011-triple-v28-stable-display">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Triple Match | WeightPlay" />
@@ -46,9 +47,9 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v27" data-wp-interface-version="7" data-wp-combined-sound="true" data-sound-toggle="off">
+  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v28" data-wp-interface-version="7" data-wp-combined-sound="true" data-sound-toggle="off">
   <div id="gameFrame" data-wp-frame-root>
-  <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Abriendo el invernadero…</strong></div>
+  <div id="loadingPanel" class="loading-panel" role="status" aria-busy="true"><div class="loading-card"><strong data-t="loading">Abriendo el invernadero…</strong></div></div>
 
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
@@ -121,7 +122,7 @@
         </nav>
       </div>
 
-      <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
+      <section id="tutorialModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
         <h2 id="tutorialTitle" data-t="tutorialTitle">Haz espacio con tríos</h2>
         <ol><li data-t="tutorial1">Los tesoros brillantes están libres.</li><li data-t="tutorial2">Tres iguales se eliminan automáticamente. La bandeja tiene siete casillas en las fases 1–23 y seis en las 24–30.</li><li data-t="tutorial3">Toca una vez las lianas y el cristal para abrirlos.</li></ol>
         <button id="tutorialClose" class="primary" type="button" data-t="continue">Continuar</button>
@@ -157,9 +158,10 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
-  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
-  <script src="frame.js?v=20260919-triple-match-v24-landscape-reachability"></script>
-  <script src="game.js?v=20261010-triple-text-growth-140-v5&wp-audio=1.0.0"></script>
+  <script src="../../src/game-screen-frame.js?v=20261011-triple-v28-stable-display"></script>
+  <script src="frame.js?v=20261011-triple-v28-stable-display"></script>
+  <script src="game.js?v=20261011-triple-v28-stable-display&wp-audio=1.0.0"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+<script src="/src/edge-guard.js"></script>
 </body>
 </html>
