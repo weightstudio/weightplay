@@ -2679,10 +2679,10 @@ function reviewerTopicsPreviewAllowed(game) {
     && grant?.reviewMode === "MANUAL_STRUCTURED" && grant?.gameId === game.id
     && grant?.workerId === `reviewer-manual-${taskId}`
     && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(taskId)
-    && /^CLM-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$/i.test(grant?.claimId || "")
+    && /^RCLM-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$/i.test(grant?.claimId || "")
     && /^v?\d+(?:\.\d+)*$/i.test(String(grant?.gameVersion || ""))
     && /^\d+(?:\.\d+)*$/.test(String(grant?.interfaceVersion || ""))
-    && /^sha256:[0-9a-f]{64}$/i.test(sourceFingerprint)
+    && /^sha256:[0-9a-f]{20,64}$/i.test(sourceFingerprint)
     && typeof grant?.sessionId === "string" && grant.sessionId.length >= 16);
 }
 
