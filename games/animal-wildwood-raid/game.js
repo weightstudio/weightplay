@@ -1,6 +1,6 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js';
-import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js';
+import {Simulation,mission} from './simulation.js?v=20261012-wildwood-feedback-v13a';
+import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261012-wildwood-feedback-v13a';
 import {load,store,award,KEY} from './save.js';
 import {placeLabel} from './label-layout.js';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];

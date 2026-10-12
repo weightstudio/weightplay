@@ -83,15 +83,15 @@
     <header class="main-header">
       <a class="return" href="/kids/" data-wp-return="main" data-t-aria="returnLobby" aria-label="العودة إلى WeightPlay">&#8592;</a>
       <strong data-t="title">Panko's Tangram Trail</strong>
-      <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+      <label class="locale"><span data-t="language">اللغة</span><select id="locale"></select></label>
     </header>
     <section class="hero">
-      <img src="/assets/animal-tangram/cover-block-v1.png" data-t-alt="coverAlt" alt="شعار WeightPlay">
+      <img src="/assets/animal-tangram/cover-block-v1.png" data-t-alt="ظل حيوان ملون من قطع تانغرام" alt="شعار WeightPlay">
       <div>
-        <p class="eyebrow" data-t="kicker">PANKO'S SHAPE TRAIL</p>
+        <p class="eyebrow" data-t="kicker">مسار الأشكال مع بانكو</p>
         <h1 data-t="title">Panko's Tangram Trail</h1>
-        <p class="main-summary" data-t="summary">Move and rotate seven pieces until every shape rests in its animal outline.</p>
-        <button id="start" class="primary" data-t="start">Start game</button>
+        <p class="main-summary" data-t="summary">حرّك القطع السبع وأدرها حتى تكتمل هيئة الحيوان.</p>
+        <button id="start" class="primary" data-t="start">ابدأ اللعب</button>
       </div>
     </section>
     <!-- GUIDE-START -->
@@ -116,19 +116,19 @@
   </main>
 
   <main id="stage" class="screen canvas stage" hidden>
-    <header class="scene-header"><button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">&#8592;</button><div><small data-t="choose">CHOOSE A SHAPE</small><h2 data-t="title">Panko's Tangram Trail</h2></div><span id="progress"></span></header>
-    <section id="stageGrid" class="stage-grid" data-t-aria="stageList" aria-label="Stage list"></section>
+    <header class="scene-header"><button data-back data-wp-return="stage" data-t-aria="back" aria-label="رجوع">&#8592;</button><div><small data-t="choose">اختر شكلًا</small><h2 data-t="title">Panko's Tangram Trail</h2></div><span id="progress"></span></header>
+    <section id="stageGrid" class="stage-grid" data-t-aria="stageList" aria-label="قائمة المراحل"></section>
     <nav class="stage-tabs" aria-label="Stages"><span aria-hidden="true"></span><button id="stageTab" type="button" aria-current="page">Stages</button><span aria-hidden="true"></span></nav>
   </main>
 
   <main id="battle" class="screen canvas battle" hidden>
-    <header class="scene-header"><button data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">&#8592;</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="placedCount"></span></header>
-    <section class="battle-content"><div class="goal-strip"><strong id="animalGoal"></strong><span id="status" aria-live="polite"></span></div><div id="board" class="board" role="application" data-t-aria="boardLabel" aria-label="Tangram board"><div id="targets"></div><div id="pieces"></div></div><div class="tools"><button id="hint" data-t="hint">Hint</button><button id="reset" data-t="reset">Reset</button></div></section>
+    <header class="scene-header"><button data-back data-wp-return="battle" data-t-aria="back" aria-label="رجوع">&#8592;</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="placedCount"></span></header>
+    <section class="battle-content"><div class="goal-strip"><strong id="animalGoal"></strong><span id="status" aria-live="polite"></span></div><div id="board" class="board" role="application" data-t-aria="boardLabel" aria-label="لوحة تانغرام"><div id="targets"></div><div id="pieces"></div></div><div class="tools"><button id="hint" data-t="hint">تلميح</button><button id="reset" data-t="reset">إعادة الضبط</button></div></section>
   </main>
 
   <dialog id="result">
-    <div class="result-mark" aria-hidden="true"></div><p class="eyebrow" data-t="complete">SHAPE COMPLETE</p><h2 id="resultTitle" data-t="resultTitle">A new animal appears!</h2><p id="resultBody"></p>
-    <div><button id="retry" data-t="retry">Play again</button><button id="next" class="primary" data-t="next">Next shape</button></div>
+    <div class="result-mark" aria-hidden="true"></div><p class="eyebrow" data-t="complete">اكتمل الشكل</p><h2 id="resultTitle" data-t="resultTitle">ظهر حيوان جديد!</h2><p id="resultBody"></p>
+    <div><button id="retry" data-t="retry">العب مجددًا</button><button id="next" class="primary" data-t="next">الشكل التالي</button></div>
   </dialog>
 
   <script src="../../src/site-config.js"></script>

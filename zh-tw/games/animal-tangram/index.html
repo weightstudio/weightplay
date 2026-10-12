@@ -77,22 +77,22 @@
 </head>
 <body data-screen="main" data-audience="kids" data-wp-game-id="animal-tangram" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">Panko's Tangram Trail</strong><span>Preparing the pieces…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+    <div class="loading-card"><strong data-t="title">潘可的七巧板小徑</strong><span>Preparing the pieces…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
   <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/kids/" data-wp-return="main" data-t-aria="returnLobby" aria-label="返回 WeightPlay">&#8592;</a>
-      <strong data-t="title">Panko's Tangram Trail</strong>
-      <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+      <strong data-t="title">潘可的七巧板小徑</strong>
+      <label class="locale"><span data-t="language">語言</span><select id="locale"></select></label>
     </header>
     <section class="hero">
-      <img src="/assets/animal-tangram/cover-block-v1.png" data-t-alt="coverAlt" alt="《潘可的七巧板小徑》遊戲圖片">
+      <img src="/assets/animal-tangram/cover-block-v1.png" data-t-alt="彩色七巧板動物輪廓" alt="《潘可的七巧板小徑》遊戲圖片">
       <div>
-        <p class="eyebrow" data-t="kicker">PANKO'S SHAPE TRAIL</p>
+        <p class="eyebrow" data-t="kicker">胖達的形狀旅程</p>
         <h1 data-t="title">潘可的七巧板小徑</h1>
-        <p class="main-summary" data-t="summary">Move and rotate seven pieces until every shape rests in its animal outline.</p>
-        <button id="start" class="primary" data-t="start">Start game</button>
+        <p class="main-summary" data-t="summary">移動並旋轉七片形狀，讓每一片都放進動物輪廓。</p>
+        <button id="start" class="primary" data-t="start">開始遊戲</button>
       </div>
     </section>
     <!-- GUIDE-START -->
@@ -120,19 +120,19 @@
   </main>
 
   <main id="stage" class="screen canvas stage" hidden>
-    <header class="scene-header"><button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">&#8592;</button><div><small data-t="choose">CHOOSE A SHAPE</small><h2 data-t="title">Panko's Tangram Trail</h2></div><span id="progress"></span></header>
-    <section id="stageGrid" class="stage-grid" data-t-aria="stageList" aria-label="Stage list"></section>
+    <header class="scene-header"><button data-back data-wp-return="stage" data-t-aria="back" aria-label="返回">&#8592;</button><div><small data-t="choose">選擇形狀</small><h2 data-t="title">潘可的七巧板小徑</h2></div><span id="progress"></span></header>
+    <section id="stageGrid" class="stage-grid" data-t-aria="stageList" aria-label="關卡列表"></section>
     <nav class="stage-tabs" aria-label="Stages"><span aria-hidden="true"></span><button id="stageTab" type="button" aria-current="page">Stages</button><span aria-hidden="true"></span></nav>
   </main>
 
   <main id="battle" class="screen canvas battle" hidden>
-    <header class="scene-header"><button data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">&#8592;</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="placedCount"></span></header>
-    <section class="battle-content"><div class="goal-strip"><strong id="animalGoal"></strong><span id="status" aria-live="polite"></span></div><div id="board" class="board" role="application" data-t-aria="boardLabel" aria-label="Tangram board"><div id="targets"></div><div id="pieces"></div></div><div class="tools"><button id="hint" data-t="hint">Hint</button><button id="reset" data-t="reset">Reset</button></div></section>
+    <header class="scene-header"><button data-back data-wp-return="battle" data-t-aria="back" aria-label="返回">&#8592;</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="placedCount"></span></header>
+    <section class="battle-content"><div class="goal-strip"><strong id="animalGoal"></strong><span id="status" aria-live="polite"></span></div><div id="board" class="board" role="application" data-t-aria="boardLabel" aria-label="七巧板棋盤"><div id="targets"></div><div id="pieces"></div></div><div class="tools"><button id="hint" data-t="hint">提示</button><button id="reset" data-t="reset">重置</button></div></section>
   </main>
 
   <dialog id="result">
-    <div class="result-mark" aria-hidden="true"></div><p class="eyebrow" data-t="complete">SHAPE COMPLETE</p><h2 id="resultTitle" data-t="resultTitle">A new animal appears!</h2><p id="resultBody"></p>
-    <div><button id="retry" data-t="retry">Play again</button><button id="next" class="primary" data-t="next">Next shape</button></div>
+    <div class="result-mark" aria-hidden="true"></div><p class="eyebrow" data-t="complete">拼圖完成</p><h2 id="resultTitle" data-t="resultTitle">新的動物出現了！</h2><p id="resultBody"></p>
+    <div><button id="retry" data-t="retry">再玩一次</button><button id="next" class="primary" data-t="next">下一個拼圖</button></div>
   </dialog>
 
   <script src="../../src/site-config.js"></script>
