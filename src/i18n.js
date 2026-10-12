@@ -33,6 +33,7 @@
       "filter.age_3": "3+",
       "filter.age_6": "6+",
       "filter.age_9": "9+",
+      "kids.age.minimum": "Minimum suitable age: {age}",
       "filter.age_13": "13+",
       "filter.age_family": "Family",
       "filter.family": "Family",
@@ -1111,6 +1112,7 @@
     "kids.site.kicker": "选一款游戏，马上开始！",
     "kids.site.subtitle": "选择年龄，和动物英雄一起玩。无需登录，也没有广告。",
     "kids.play.kicker": "选择年龄",
+    "kids.age.minimum": "最低适宜年龄：{age}",
     "kids.play.title": "适合你的游戏",
     "kids.challenge.title": "进阶挑战",
     "kids.promise.kicker": "WeightPlay Kids 承诺",
@@ -2203,6 +2205,7 @@ const essentialLobbyCopy = {
     "kids.portal.body": "進入獨立的 Kids 大廳，依 3+、6+、9+ 年齡挑選無廣告遊戲。",
     "kids.portal.action": "查看 Kids 遊戲",
     "kids.play.kicker": "先選年齡",
+    "kids.age.minimum": "最低適齡年齡：{age}",
     "kids.play.title": "挑一款喜歡的遊戲",
     "kids.search.placeholder": "搜尋遊戲名稱或玩法……",
     "kids.promise.kicker": "WeightPlay Kids 遊玩說明",
@@ -2231,6 +2234,25 @@ const essentialLobbyCopy = {
     "hall.tabletop": "紙牌棋盤",
     "hall.tabletop_note": "接龍、紙牌、麻將與棋類遊戲",
     "hall.tabletop_title": "挑一款紙牌或棋盤遊戲",
+  });
+
+  const kidsAgeCopy = {
+    en: ["Minimum suitable age: {age}", "Recommended age group: {age}", "Min {age}", "Group", "Independent play from {age}; younger children may play with adult help.", "Solo {age}"],
+    "zh-Hant": ["最低適齡年齡：{age}", "推薦年齡組：{age}", "最低 {age}", "推薦", "建議 {age} 以上獨立遊玩；年幼孩子可由成人讀題陪玩。", "獨立 {age}"],
+    "zh-Hans": ["最低适宜年龄：{age}", "推荐年龄组：{age}", "最低 {age}", "推荐", "建议 {age} 以上独立游玩；年幼孩子可由成人读题陪玩。", "独立 {age}"],
+    ja: ["対象年齢の目安：{age}", "おすすめ年齢グループ：{age}", "最小 {age}", "おすすめ", "一人で遊ぶ場合は{age}以上。小さな子は大人がヒントを読み上げて一緒に遊べます。", "一人 {age}"],
+    ko: ["최소 권장 연령: {age}", "추천 연령대: {age}", "최소 {age}", "추천", "혼자 플레이는 {age} 이상 권장합니다. 어린이는 어른이 단서를 읽어 주며 함께 할 수 있습니다.", "혼자 {age}"],
+    es: ["Edad mínima adecuada: {age}", "Grupo de edad recomendado: {age}", "Mín. {age}", "Grupo", "Juego independiente desde {age}; los más pequeños pueden jugar con ayuda adulta.", "Solo {age}"],
+    "pt-BR": ["Idade mínima adequada: {age}", "Faixa etária recomendada: {age}", "Mín. {age}", "Grupo", "Jogo independente a partir de {age}; crianças menores podem jogar com ajuda de um adulto.", "Sozinho {age}"],
+    fr: ["Âge minimum conseillé : {age}", "Groupe d’âge recommandé : {age}", "Min. {age}", "Groupe", "Jeu autonome dès {age} ; les plus jeunes peuvent jouer avec l’aide d’un adulte.", "Seul {age}"],
+    de: ["Mindestalter: {age}", "Empfohlene Altersgruppe: {age}", "Min. {age}", "Gruppe", "Allein spielen ab {age}; jüngere Kinder können mit Hilfe eines Erwachsenen mitspielen.", "Allein {age}"],
+    it: ["Età minima consigliata: {age}", "Fascia d’età consigliata: {age}", "Min. {age}", "Gruppo", "Gioco autonomo dai {age}; i più piccoli possono giocare con l’aiuto di un adulto.", "Da soli {age}"],
+    ru: ["Минимальный подходящий возраст: {age}", "Рекомендуемая возрастная группа: {age}", "Мин. {age}", "Группа", "Самостоятельная игра с {age}; младшим детям может помочь взрослый.", "Самостоятельно {age}"],
+    hi: ["न्यूनतम उपयुक्त आयु: {age}", "सुझाया गया आयु समूह: {age}", "न्यूनतम {age}", "समूह", "अकेले खेलने के लिए {age}+; छोटे बच्चे वयस्क की मदद से खेल सकते हैं।", "अकेले {age}"],
+    ar: ["الحد الأدنى للعمر المناسب: {age}", "الفئة العمرية المقترحة: {age}", "الحد الأدنى {age}", "مقترحة", "اللعب المستقل من عمر {age}؛ ويمكن للأطفال الأصغر اللعب بمساعدة شخص بالغ.", "مستقل {age}"],
+  };
+  Object.entries(kidsAgeCopy).forEach(([locale, [minimum, recommended, minimumShort, group, independent, independentShort]]) => {
+    dictionaries[locale] = { ...(dictionaries[locale] || {}), "kids.age.minimum": minimum, "kids.age.recommended": recommended, "kids.age.minimumShort": minimumShort, "kids.age.group": group, "kids.age.independent": independent, "kids.age.independentShort": independentShort };
   });
 
   function simplifyChineseText(value) {

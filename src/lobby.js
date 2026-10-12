@@ -880,6 +880,7 @@ function filterButtonLabel(button, type, value) {
 }
 
 function filterButtonHint(type, value) {
+  if (type === "age" && isKidsLobby && value !== "all") return i18n.t("kids.age.group");
   if (type !== "availability") return "";
   const key = `availability_hint.${value}`;
   const hint = i18n.t(key);
@@ -904,6 +905,7 @@ function setFilterCount(button, type, value) {
     </span>
     <b class="filter-count">${count}</b>`;
   button.setAttribute("aria-label", hint ? `${label}, ${hint}, ${count}` : `${label}, ${count}`);
+  if (type === "age" && isKidsLobby && value !== "all") button.title = i18n.t("kids.age.recommended", { age: label });
 }
 
 function renderFilterCounts() {
@@ -1306,6 +1308,16 @@ function createGameCard(game) {
   const title = text(game.title);
   const type = text(game.type);
   const ageLabel = text(game.ageLabel);
+  const numericAge = /^\d+\+$/.test(ageLabel);
+  const isIndependentAgeGame = game.id === "animal-quiz";
+  const cardAgeLabel = isKidsLobby && numericAge
+    ? i18n.t(isIndependentAgeGame ? "kids.age.independentShort" : "kids.age.minimumShort", { age: ageLabel })
+    : ageLabel;
+  const cardAgeTitle = isIndependentAgeGame
+    ? i18n.t("kids.age.independent", { age: ageLabel })
+    : numericAge
+      ? i18n.t("kids.age.minimum", { age: ageLabel })
+      : i18n.t("kids.age.recommended", { age: ageLabel });
   const card = document.createElement("article");
   const favorite = isFavorite(game.id);
   const recent = isRecent(game.id);
@@ -1373,7 +1385,7 @@ function createGameCard(game) {
       title,
       type,
       stateCopy("playableLabel"),
-      ageLabel,
+      isKidsLobby ? cardAgeTitle : ageLabel,
       text(game.description),
       ...(game.categories || []).slice(0, 3).map(categoryText),
       ...(game.skills || []).slice(0, 3).map(discoverySkillText),
@@ -1390,7 +1402,7 @@ function createGameCard(game) {
   const art =
     cardArt.kind === "image"
       ? `<div class="game-card-art image-art"><img class="game-card-fg" ${lobbyImageAttributes(cardArt.background)} alt="" width="480" height="480" />${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
-      : `<div class="game-card-art ${cardArt.className || ""}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
+      : `<div class="game-card-art ${cardArt.className || ""}">${showAgeLabels ? `<span>${isKidsLobby ? cardAgeLabel : ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable
@@ -1398,7 +1410,9 @@ function createGameCard(game) {
     : ownerPreviewMode && internalTrialPath(game)
       ? `${stateCopy("previewLabel")} · ${i18n.t("action.play")}`
       : i18n.t("action.coming_soon");
-  const ageOverlay = isKidsLobby && showAgeLabels ? `<span class="game-card-age-overlay">${ageLabel}</span>` : "";
+  const ageOverlay = isKidsLobby && showAgeLabels
+    ? `<span class="game-card-age-overlay" title="${cardAgeTitle}">${cardAgeLabel}</span>${isIndependentAgeGame ? `<span class="game-card-age-note">${cardAgeTitle}</span>` : ""}`
+    : "";
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("recent_play.action")}</span>` : "";
   const lifetimeRank = isPlayable && hasRankedPopularGames()
     ? popularGames(5).findIndex((popularGame) => popularGame.id === game.id) + 1
@@ -1417,7 +1431,7 @@ function createGameCard(game) {
     </button>
     <div class="game-card-body">
       <div class="game-card-topline">
-        ${showAgeLabels ? `<span class="age-pill">${ageLabel}</span>` : ""}
+        ${showAgeLabels ? `<span class="age-pill" ${isKidsLobby ? `title="${cardAgeTitle}"` : ""}>${cardAgeLabel}</span>` : ""}
         <span class="game-card-badges">
           ${updatedBadge}
           ${popularBadge}

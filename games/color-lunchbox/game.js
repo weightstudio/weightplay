@@ -82,12 +82,13 @@
   (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("role", "dialog"));
   (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-modal", "true"));
   (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle"));
-  leaveConfirmPanel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div><button id="keepSortingBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
+  leaveConfirmPanel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div><button id="keepSortingBtn" type="button"></button><button id="leaveKidsLobbyBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
   lunchGame.append(leaveConfirmPanel);
   const leaveConfirmTitle = leaveConfirmPanel.querySelector("#leaveConfirmTitle");
   const leaveConfirmText = leaveConfirmPanel.querySelector("#leaveConfirmText");
   const keepSortingBtn = leaveConfirmPanel.querySelector("#keepSortingBtn");
   const leaveLevelBtn = leaveConfirmPanel.querySelector("#leaveLevelBtn");
+  const leaveKidsLobbyBtn = leaveConfirmPanel.querySelector("#leaveKidsLobbyBtn");
   const helpPanel = document.createElement("section");
   helpPanel.className = "game-help-panel hidden";
   helpPanel.setAttribute("role", "dialog");
@@ -459,6 +460,16 @@
     guardianCelebration: "\u00a1{guardian} celebra contigo!",
   });
 
+  const kidsLobbyLabels = {
+    en: "Kids Lobby", "zh-Hant": "兒童大廳", "zh-Hans": "儿童大厅", ja: "キッズロビー",
+    ko: "키즈 로비", es: "Vestíbulo infantil", "pt-BR": "Lobby infantil", fr: "Lobby enfants",
+    de: "Kids-Lobby", it: "Lobby bambini", ru: "Детское лобби", hi: "बच्चों की लॉबी", ar: "ردهة الأطفال",
+  };
+  Object.entries(kidsLobbyLabels).forEach(([language, label]) => {
+    dictionary[language] ||= {};
+    Object.assign(dictionary[language], { kidsLobby: label });
+  });
+
   const pageMetadata = {
     en: {
       title: "Animal Color Lunchbox - WeightPlay",
@@ -813,6 +824,8 @@
     leaveConfirmTitle.textContent = t("leaveTitle");
     leaveConfirmText.textContent = t("leaveText");
     keepSortingBtn.textContent = t("keepSorting");
+    leaveKidsLobbyBtn.textContent = t("kidsLobby");
+    leaveKidsLobbyBtn.setAttribute("aria-label", t("kidsLobby"));
     leaveLevelBtn.textContent = t("leaveLevel");
     stageHelpBtn.setAttribute("aria-label", t("helpAria"));
     battleHelpBtn.setAttribute("aria-label", t("helpAria"));
@@ -1656,6 +1669,11 @@
     setLeaveConfirmOpen(true);
   });
   keepSortingBtn.addEventListener("click", () => setLeaveConfirmOpen(false));
+  leaveKidsLobbyBtn.addEventListener("click", () => {
+    if (!leaveConfirmOpen) return;
+    setLeaveConfirmOpen(false, false);
+    window.location.assign(homeLink.href);
+  });
   leaveLevelBtn.addEventListener("click", () => showStageSelect(true));
   leaveConfirmPanel.addEventListener("keydown", (event) => {
     rejectRepeatedActivation(event);
