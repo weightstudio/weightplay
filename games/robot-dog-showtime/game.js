@@ -18,6 +18,8 @@ function renderMain(){const cleared=save.cleared.length;$('mainProgress').textCo
 function setStageRange(range){activeStageRange=Math.max(0,Math.min(2,Number(range)||0));const first=activeStageRange*10+1,last=first+9;
   for(const tab of document.querySelectorAll('[data-stage-range]')){const selected=Number(tab.dataset.stageRange)===activeStageRange;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1}
   for(const card of els.rail.querySelectorAll('.stage-card')){const id=Number(card.dataset.stageId);card.hidden=id<first||id>last}
+  const resetRail=()=>els.rail.scrollTo({left:0,top:0,behavior:'instant'});
+  resetRail();requestAnimationFrame(()=>requestAnimationFrame(resetRail))
 }
 function renderMap(){els.summary.textContent=`${save.cleared.length} cleared · ${save.unlocked} unlocked`;els.rail.replaceChildren();activeStageRange=Math.floor((save.unlocked-1)/10);
   for(const stage of stages){const b=document.createElement('button');b.type='button';b.className='stage-card';b.dataset.stageId=String(stage.id);b.disabled=stage.id>save.unlocked;b.setAttribute('aria-label',`${stageName(stage)}${b.disabled?', locked':''}`);if(stage.id===stageIndex+1)b.setAttribute('aria-current','true');b.innerHTML=`<span class="num">${String(stage.id).padStart(2,'0')}</span><span class="arc">${stage.arc}</span><span class="state">${save.cleared.includes(stage.id)?'Cleared':b.disabled?'Locked':'Play'}</span>`;b.addEventListener('click',()=>startBattle(stage.id-1));els.rail.append(b)}setStageRange(activeStageRange);
