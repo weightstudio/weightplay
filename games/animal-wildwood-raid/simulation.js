@@ -29,9 +29,9 @@ export class Simulation {
  grant(e){if(!e.reward)return;const {stat,amount}=e.reward;this.syncGrowth({...this.growth,[stat]:Math.round((this.growth[stat]+amount)*10)/10});this.log('growth',{uid:e.uid,stat,amount,x:e.x,z:e.z});}
  respawns(dt){for(const e of this.ents){if(e.hp>0||!e.spawn||e.respawn==null)continue;e.respawn-=dt;
    if(e.kind==='enemy'&&e.respawn<=2&&!e.spawnWarning){let spot=null;for(let i=0;i<16;i++){const a=i*2.4,p={x:clamp(e.spawn.x+Math.cos(a)*Math.floor(i/4),-6.3,6.3),z:clamp(e.spawn.z+Math.sin(a)*Math.floor(i/4),-7,7)};if(dist(p,this.hero)>3&&!this.obstacles.some(o=>o.hp>0&&Math.abs(p.x-o.x)<o.w+.6&&Math.abs(p.z-o.z)<o.h+.6)){spot=p;break;}}if(!spot){e.respawn=2.1;continue;}Object.assign(e,spot);e.spawnWarning=true;e.respawn=2;}
-   if(e.respawn<=0){e.hp=e.maxHp;e.wind=null;e.charge=null;e.stun=0;e.exposed=0;e.recoil=0;e.cd=1.3;e.hidden=false;e.spawnWarning=false;e.respawn=null;this.log('respawn',{uid:e.uid});}
+   if(e.respawn<=0){e.hp=e.maxHp;e.wind=null;e.charge=null;e.stun=0;e.exposed=0;e.recoil=0;e.cd=1.3;e.hidden=false;e.spawnWarning=false;e.respawn=null;this.log('respawn',{uid:e.uid,kind:e.kind,x:e.x,z:e.z});}
   }}
- enemy(type,x,z,extra={}){const base=ENEMIES[type],scale=(1+this.stage.id*.2+this.stage.id**2*.015)*pressure(this.stage.id),d={...base,hp:Math.round(base.hp*scale),damage:Math.round(base.damage*(1+this.stage.id*.18)*pressure(this.stage.id)),speed:base.speed*1.15};return this.entity('enemy',x,z,{...d,type,maxHp:d.hp,cd:1+this.random(),wind:null,slow:0,stun:0,hidden:type==='sneak',...extra});}
+ enemy(type,x,z,extra={}){const base=ENEMIES[type],scale=(1+this.stage.id*.2+this.stage.id**2*.015)*pressure(this.stage.id),d={...base,hp:Math.round(base.hp*scale),damage:Math.round(base.damage*(1+this.stage.id*.18)*pressure(this.stage.id)),speed:base.speed*1.15},enemy=this.entity('enemy',x,z,{...d,type,maxHp:d.hp,cd:1+this.random(),wind:null,slow:0,stun:0,hidden:type==='sneak',...extra});this.log('spawn',{uid:enemy.uid,kind:enemy.kind,x:enemy.x,z:enemy.z,summon:Boolean(extra.summon)});return enemy;}
  build(){
   const q=this.stage;
   const treePos=[[-4,5],[3.7,4.6],[-5.2,1.5],[5.1,1.1],[-4.8,-3.4],[4.5,-4.8],[-2.8,-6.5],[2.8,-6.4],[-6,4],[6,4],[-6,-1],[6,-2]];
@@ -63,7 +63,7 @@ export class Simulation {
  clearLine(a,b){return !this.obstacles.some(o=>o.hp>0&&Array.from({length:12},(_,i)=>{const t=(i+1)/13;return Math.abs(a.x+(b.x-a.x)*t-o.x)<o.w&&Math.abs(a.z+(b.z-a.z)*t-o.z)<o.h;}).some(Boolean));}
  use(id){
   if(this.won||this.lost||this.cool[id]>0)return false;
-  if(id==='dash'){this.cool.dash=3;this.hero.dash=.2;this.hero.invulnerable=.25;this.log('dash');return true;}
+  if(id==='dash'){this.cool.dash=3;this.hero.dash=.2;this.hero.invulnerable=.25;this.log('dash',{x:this.hero.x,z:this.hero.z});return true;}
   if(!this.loadout.includes(id))return false;const tool=TOOLS.find(t=>t.id===id);if(!tool)return false;
   const h=this.hero;
   if(id==='bow'){const target=this.target(5.8,'bow');if(!target)return false;this.projectile(h,target,h.power*1.5,false,10);}
@@ -175,7 +175,7 @@ export class Simulation {
   this.drops=this.drops.filter(d=>{if(dist(d,h)>1)return true;if(d.kind==='heart'&&h.hp>0)h.hp=Math.min(h.maxHp,h.hp+Math.max(25,Math.round(h.maxHp*.22)));if(d.kind==='ward')h.ward=1;if(d.kind==='boots')h.boots=8;this.log('pickup',{kind:d.kind,x:d.x,z:d.z});return false;});
   if(this.stage.protect&&this.time>=this.nextWave&&!this.ready()){this.nextWave+=8;const n=this.stage.id===28?3:2;for(let i=0;i<n&&this.alive().filter(hostile).length<10;i++)this.enemy(this.stage.enemies[(Math.floor(this.time/8)+i)%this.stage.enemies.length],i%2?6:-6,-5+i*3,{summon:true});}
   if(h.hp<=0||this.protectedHp<=0){this.lost=true;this.log('loss');return;}
-  this.regenClock+=dt;if(this.regenClock>=3-1e-9){this.regenClock=Math.max(0,this.regenClock-3);const healed=Math.min(h.regen,h.maxHp-h.hp);h.hp=Math.min(h.maxHp,Math.round((h.hp+healed)*1000)/1000);this.regenHealed+=healed;if(healed>0)this.log('regen',{amount:healed});}
+  this.regenClock+=dt;if(this.regenClock>=3-1e-9){this.regenClock=Math.max(0,this.regenClock-3);const healed=Math.min(h.regen,h.maxHp-h.hp);h.hp=Math.min(h.maxHp,Math.round((h.hp+healed)*1000)/1000);this.regenHealed+=healed;if(healed>0)this.log('regen',{amount:healed,x:h.x,z:h.z});}
   if(this.ready()&&dist(h,this.exit)<1.25){this.won=true;this.log('win');}
  }
  snapshot(){return {stage:this.stage.id,time:this.time,hp:this.hero.hp,maxHp:this.hero.maxHp,power:this.hero.power,regen:this.hero.regen,regenIn:3-this.regenClock,regenHealed:this.regenHealed,growth:{...this.growth},protectedHp:this.protectedHp,tally:{...this.tally},req:{...this.stage.req},won:this.won,lost:this.lost,ready:this.ready(),hero:{x:this.hero.x,z:this.hero.z},enemies:this.alive().filter(hostile).length,objects:this.alive().map(e=>({uid:e.uid,kind:e.kind,type:e.type,x:e.x,z:e.z,hp:e.hp,maxHp:e.maxHp,reward:e.reward,wind:e.wind?.kind})),cooldowns:{...this.cool}};}

@@ -94,7 +94,7 @@ export class WildwoodWorld {
  }
  batch(color){if(this.batches.has(color))return this.batches.get(color);const steel=color==='steel',edge=color==='edge',atlas=color!=='ground'&&!edge?this.materialAtlas:null;const material=new THREE.MeshStandardMaterial({color:edge?0xe6edf2:0xffffff,map:color==='ground'?this.ground:atlas,roughness:steel?.38:edge?.24:.72,metalness:steel?.58:edge?.68:['gold','white'].includes(color)?.28:.03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24});if(atlas){const [column,row]=materialCells[color]||[3,3],inset=.0035,scale=.243,u=column*.25+inset,v=(3-row)*.25+inset;material.onBeforeCompile=shader=>{shader.vertexShader=shader.vertexShader.replace('#include <uv_vertex>',`#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = vMapUv * vec2(${scale}, ${scale}) + vec2(${u}, ${v});\n#endif`);};material.customProgramCacheKey=()=>`wildwood-material-atlas-${color}`;}const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;}
  resize(){const r=this.canvas.getBoundingClientRect();this.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);const aspect=r.width/Math.max(1,r.height);const halfH=Math.max(4.8,4.8/aspect),halfW=halfH*aspect;Object.assign(this.camera,{left:-halfW,right:halfW,top:halfH,bottom:-halfH});this.camera.updateProjectionMatrix();}
- consume(events){for(const e of events)if(['hit','hurt','defeat','wardBlock','pulse','mastery','pickup'].includes(e.type)){
+ consume(events){for(const e of events)if(['hit','hurt','defeat','blocked','immune','wardBlock','pulse','mastery','pickup','dash','spawn','respawn'].includes(e.type)){
    if(e.type==='defeat'&&['enemy','boss'].includes(e.kind)){
     const actor=this.sim.ents.find(a=>a.uid===e.uid),colors=['moss','wood','cream','dark'];
     if(['caster','shaman','mosswitch'].includes(actor?.type))colors[0]='purple';
@@ -106,7 +106,8 @@ export class WildwoodWorld {
     for(let i=0;i<count;i++){const g=new THREE.Group();this.root.add(g);const size=(e.kind==='boss'?.4:.3)*(i%3===0?1.3:1);this.box(g,colors[i%colors.length],[0,0,0],[size,size,size]);this.effects.push({g,x:e.x,z:e.z,angle:i*2.4,life:.7,total:.7,shatter:true,height:.45+(i%3)*.4,spread:this.reduced?.3:1.1+(i%3)*.25});}
     continue;
    }
-   for(let i=0;i<(this.reduced?2:e.type==='defeat'?6:3)&&this.effects.length<24;i++){const g=new THREE.Group();this.root.add(g);this.box(g,e.type==='hurt'?'red':e.type==='pickup'?'cyan':'gold',[0,0,0],[.13,.13,.13]);this.effects.push({g,x:e.x??this.sim.hero.x,z:e.z??this.sim.hero.z,angle:i*2.4,life:.35,total:.35});}
+   const arrival=['spawn','respawn'].includes(e.type),count=this.reduced?2:arrival?4:e.type==='defeat'?6:3,color=e.type==='hurt'?'red':['pickup','blocked','immune','dash','spawn','respawn'].includes(e.type)?'cyan':'gold';
+   for(let i=0;i<count&&this.effects.length<24;i++){const g=new THREE.Group();this.root.add(g);this.box(g,color,[0,0,0],[arrival?0.16:0.13,arrival?0.16:0.13,arrival?0.16:0.13]);this.effects.push({g,x:e.x??this.sim.hero.x,z:e.z??this.sim.hero.z,angle:i*2.4,life:arrival?0.42:0.35,total:arrival?0.42:0.35});}
   }}
  render(dt=0){
   const sim=this.sim,h=sim.hero;this.heroModel.position.set(h.x,Math.sin(sim.time*10)*(h.attack?.015:0),h.z);this.heroModel.rotation.y=h.angle;

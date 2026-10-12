@@ -30,11 +30,7 @@ export function buildAxe(renderer) {
   for(const y of [.35,.46]){const rivet=renderer.box(axe,.036,.036,.028,0xc69643,0,y,.105);rivet.material=brass;}
   // Fia's comet-lightning inlay is cut into the steel face, with a brass socket.
   plate([[-.31,.49],[-.43,.33],[-.35,.34],[-.40,.19],[-.24,.38],[-.33,.37]],.009,brass,.108,.002);
-  // Compact fox paw and cuff keep the grip readable behind the shaft.
-  renderer.box(axe,.18,.19,.17,0xd97932,.025,-.20,-.03);
-  for(let i=0;i<3;i++)renderer.box(axe,.055,.065,.065,0xf1b067,-.053+i*.057,-.16,.08);
-  renderer.box(axe,.22,.11,.20,0x354f4d,.025,-.32,-.025);
-  renderer.box(axe,.09,.035,.012,0xf5bd51,.025,-.31,.083);
+  // The renderer supplies the same articulated paw design as the left hand.
   axe.userData.tip=new THREE.Vector3(-.565,.32,0);
   axe.scale.setScalar(.85);
   return axe;

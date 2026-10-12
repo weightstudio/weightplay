@@ -65,13 +65,16 @@ const palettes={
   'boss-stag':[0x7fafaa,0x3f746d,0xd1ebba],
   'boss-loom':[0x9ca968,0x4d684b,0xdddfa7],
   'boss-conductor':[0xb29bcf,0x655986,0xe3ceff],
-  'boss-heart':[0x84baa5,0x3f7267,0xc3edc8]
+  'boss-heart':[0x84baa5,0x3f7267,0xc3edc8],
+  anchor:[0x8ca575,0x4c6d55,0xe6c882],
+  'root-drain':[0x80ad9c,0x3d6b60,0x8aebcf],
+  'root-crack':[0xb38b67,0x6e5040,0xf4ab75]
 };
 
 export function buildEnemy(r,e){
   const g=new THREE.Group();g.userData.uid=e.uid;
   const family=e.id.startsWith('mirror')?'mirror':e.id;
-  const [fur,cloth,accent]=palettes[family]||palettes.scout,b=sculpt(r,g);
+  const [fur,cloth,accent]=e.id==='mirror-right'?[0xbab0dc,0x73699e,0xe3d5f5]:palettes[family]||palettes.scout,b=sculpt(r,g);
   const object=['anchor','root-drain','root-crack'].includes(e.id);
   const stag=['charger','boss-stag'].includes(e.id);
   const turtle=e.id==='shield';
@@ -85,6 +88,12 @@ export function buildEnemy(r,e){
     b(.62,.12,.60,accent,0,1.03);badge(r,g,0x79ddc0,0,.68,.27,.28);
     const core=b(.32,.32,.32,accent,0,1.34,0,true,Math.PI/4);g.userData.core=core;
     for(const s of [-1,1])b(.44,.13,.20,cloth,s*.38,.14,.10,false,s*.22);
+    if(e.id==='root-drain')for(const s of [-1,1])b(.13,.52,.18,accent,s*.34,.83,0,true,-s*.35);
+    if(e.id==='root-crack'){
+      b(.055,.39,.04,cloth,-.08,.65,.275,false,-.25);
+      b(.055,.25,.04,cloth,.02,.37,.275,false,.40);
+      b(.18,.35,.24,fur,.32,.37,0,false,-.65);
+    }
   }else if(stag||turtle||low){
     if(turtle)shell(r,g,cloth,accent);
     else{
@@ -208,6 +217,27 @@ export function buildEnemy(r,e){
   g.userData.authoredScale=g.scale.clone();g.userData.baseScale=g.scale.clone();g.userData.recoil=0;
   g.updateMatrixWorld(true);
   g.userData.hudTopLocal=new THREE.Box3().setFromObject(g).max.y/scale+.10;
+  return g;
+}
+
+// One mirrored paw design: the grip changes articulation, never costume/anatomy.
+export function buildPaw(r,{side=1,grip=false}={}){
+  const g=new THREE.Group(),b=sculpt(r,g);
+  b(.27,.42,.25,0xda813d,0,-.36,-.035);
+  b(.19,.32,.018,0xf2a45d,0,-.34,.10);
+  b(.32,.15,.30,0x246faa,0,-.10,0);
+  b(.34,.035,.32,0x65d4e2,0,-.025,0);
+  b(.34,.035,.32,0x163e68,0,-.175,0);
+  b(.12,.11,.024,0xe7b653,0,-.095,.163);
+  b(.05,.06,.026,0xffe6a1,0,-.09,.178,false,-.35);
+  b(.31,.16,.28,0xe89950,0,.07,0);
+  b(.25,.04,.21,0xffd5a0,0,.16,.005);
+  for(const x of [-.105,-.035,.035,.105]){
+    b(.061,grip?.11:.075,.13,0xffdfb2,x,grip?.095:.065,.17);
+    b(.042,.025,.027,0xe9b77e,x,grip?.11:.06,.247);
+  }
+  b(.105,.12,.16,0xffd5a0,side*.175,.07,.05,false,-side*.3);
+  g.userData.pawDesign='fia-blue-cuff';
   return g;
 }
 

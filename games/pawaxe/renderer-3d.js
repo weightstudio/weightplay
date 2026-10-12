@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import { buildAxe } from './axe-model.js?v=5';
-import { buildEnemy, buildCompanion } from './actor-models.js';
+import { buildEnemy, buildCompanion, buildPaw } from './actor-models.js';
 
 // One renderer per run. Geometry/material caches are bounded and disposed together.
 export class PawRenderer {
@@ -203,25 +203,9 @@ export class PawRenderer {
   }
   buildHands() {
     this.axe=buildAxe(this);this.view.add(this.axe);
-    this.axeArm=new THREE.Group();this.axe.add(this.axeArm);
-    this.box(this.axeArm,.25,.40,.23,0xe18a39,0,-.51,-.11);
-    this.box(this.axeArm,.28,.10,.26,0x216eae,0,-.33,-.01);
-    this.box(this.axeArm,.29,.035,.27,0x59cfde,0,-.285,0);
-    this.hand=new THREE.Group();this.view.add(this.hand);
-    this.box(this.hand,.34,.14,.35,0xe89950,0,.025,0);
-    this.box(this.hand,.29,.05,.27,0xffdfb2,0,.115,.02);
-    this.box(this.hand,.31,.18,.29,0x246faa,0,-.13,-.025);
-    this.box(this.hand,.34,.045,.32,0x65d4e2,0,-.055,-.015);
-    this.box(this.hand,.26,.39,.25,0xda7d38,0,-.39,-.045);
-    this.box(this.hand,.16,.24,.025,0xf0a350,0,-.38,.09);
-    for(const x of [-.12,-.04,.04,.12]){
-      this.box(this.hand,.068,.085,.12,0xffe4bc,x,.035,.20);
-      this.box(this.hand,.027,.027,.03,0x684a34,x,.025,.272);
-    }
-    this.box(this.hand,.10,.11,.16,0xffdfb2,.20,.05,.07).rotation.z=-.34;
-    for(const [x,y,w,h,angle] of [[-.02,-.16,.13,.045,-.28],[.012,-.21,.045,.10,.32],[.01,-.27,.13,.04,-.28]]){
-      this.box(this.hand,w,h,.025,0xffd16b,x,y,.135,true).rotation.z=angle;
-    }
+    this.axeArm=buildPaw(this,{side:-1,grip:true});this.axe.add(this.axeArm);
+    this.axeArm.position.set(.015,-.22,-.11);
+    this.hand=buildPaw(this,{side:1});this.view.add(this.hand);
     this.setCompanion('nibs');
   }
   setCompanion(id){
@@ -239,12 +223,15 @@ export class PawRenderer {
       }
       this.hand.remove(previous);
     }
-    this.nibs=buildCompanion(this,id);this.hand.add(this.nibs);
+    this.nibs=buildCompanion(this,id);
+    // Ally faces into the adventure; the player remains first-person paws only.
+    this.nibs.scale.setScalar(.48);this.nibs.rotation.y=Math.PI*.57;
+    this.hand.add(this.nibs);
     this.rebuildCompanionBatches();
   }
   rebuildCompanionBatches(){
     // setCompanion replaces meshes after the constructor's first batch pass.
-    // Rebuild so the selected ally keeps its authored instance colors in view.
+    // Retire the previous ally's sources and keep the selected ally's colors.
     if(this.viewBatches?.length)this.rebuildBoxBatches(this.view,[this.hand,this.nibs,this.axe],'viewBatches');
   }
   enemyModel(e) {
@@ -259,18 +246,18 @@ export class PawRenderer {
       // preserving their distinct, fixed formation positions.
       g.scale.multiplyScalar(e.boss?.86:rear?.78:.94);
     }else if(!e.boss){g.scale.x*=rear?.84:.94;g.scale.y*=rear?.92:1;g.scale.z*=rear?.84:.94;}
-    const portraitBoss=e.id==='boss-loom'&&this.canvas.clientWidth>=440&&this.canvas.clientWidth<700&&this.canvas.clientWidth/Math.max(1,this.canvas.clientHeight)<1.05;
-    if(portraitBoss)g.scale.x*=.70;
+    else if(this.canvas.clientWidth<700&&this.canvas.clientWidth/Math.max(1,this.canvas.clientHeight)<1.2)g.scale.multiplyScalar(.94);
+    const viewport=this.canvas.getBoundingClientRect();
+    if(e.boss&&viewport.width/Math.max(1,viewport.height)>2.5&&viewport.height<260)g.scale.multiplyScalar(.80);
     g.userData.baseScale.copy(g.scale);
   }
   enemyLaneX(e,slots){
     const base=slots[e.slot],narrow=this.canvas.clientWidth<440&&this.canvas.clientWidth/Math.max(1,this.canvas.clientHeight)<1.2;
-    if(e.id==='boss-loom'&&this.canvas.clientWidth>=440&&this.canvas.clientWidth<700&&this.canvas.clientWidth/Math.max(1,this.canvas.clientHeight)<1.05)return base+(e.slot===0 ? .28 : 0);
     if(!narrow||!e.boss)return base;
     // Large Boss silhouettes can extend past the phone canvas when an outer
     // lane also recoils into its attack frame. Inset only Boss anchors; normal
     // enemy and survivor lanes remain fixed.
-    return base+([1.10,0,-1.10,.46,-.46][e.slot]||0);
+    return base+([.30,0,-.30,.16,-.16][e.slot]||0);
   }
   setRegion(index){
     const p=[[0x8bcac1,0x3e6850],[0xadc9ab,0x4d6744],[0x91b7c5,0x426162],[0x7baf9c,0x375548],[0x92b6ce,0x496170],[0x7fa999,0x365b48]][index]||[0x8bcac1,0x3e6850];
@@ -339,18 +326,19 @@ export class PawRenderer {
   }
   resize(){
     const b=this.canvas.getBoundingClientRect(),w=Math.max(1,b.width),h=Math.max(1,b.height);
-    this.r.setSize(w,h,false);const aspect=w/h;this.c.aspect=aspect;
-    this.c.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(48/2))/Math.min(1,aspect/.78)));
-    this.c.updateProjectionMatrix();this.vc.aspect=aspect;this.vc.updateProjectionMatrix();
-    const halfW=Math.tan(THREE.MathUtils.degToRad(24))*2*aspect;
+    this.r.setSize(w,h,false);const aspect=w/h,shortWide=aspect>2.5&&h<260;this.c.aspect=aspect;
+    this.c.fov=shortWide?28:THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(48/2))/Math.min(1,aspect/.78)));
+    this.c.updateProjectionMatrix();this.vc.aspect=aspect;this.vc.fov=shortWide?30:48;this.vc.updateProjectionMatrix();
+    const halfW=Math.tan(THREE.MathUtils.degToRad(this.vc.fov/2))*2*aspect;
     this.axe.scale.setScalar(Math.min(.58,aspect*.52));
-    this.axe.position.set(halfW*.58,-.60,-2);
+    this.axe.position.set(halfW*.58,shortWide?-.30:-.60,-2);
     this.axeRest=this.axe.position.clone();
     // Keep the companion palm visible while bringing both hands into one
     // coherent first-person action silhouette at phone and desktop sizes.
-    this.hand.position.set(-halfW*.50,-.68,-2);
+    this.hand.position.set(-halfW*(shortWide?.55:.50),shortWide?-.38:-.68,-2);
     this.hand.scale.setScalar(Math.min(.69,aspect*.79));
-    this.c.lookAt(0,aspect>1.45?1.62:1.4,-3);
+    this.axeArm.scale.setScalar(this.hand.scale.x/this.axe.scale.x);
+    this.c.lookAt(0,shortWide?1.90:aspect>1.45?1.62:1.4,-3);
     this.fitBackdrop();
     const wide=w/h>1.45,slots=wide?[-2.4,0,2.4,-1.52,1.52]:[-2.0,0,2.0,-1.3,1.3];
     for(const g of this.models.values())if(g.userData.enemy){const enemy=g.userData.enemy,slot=enemy.slot;g.userData.baseX=this.enemyLaneX(enemy,slots);g.position.x=g.userData.baseX;this.scaleEnemy(g,enemy);}
@@ -402,7 +390,7 @@ export class PawRenderer {
       this.hand.rotation.x=-Math.sin(p*Math.PI)*.10;
       this.hand.rotation.z=Math.sin(p*Math.PI)*.045;
       if(this.swingPoint){
-        const projection=this.swingPoint.clone().project(this.c),halfH=Math.tan(THREE.MathUtils.degToRad(24))*2;
+        const projection=this.swingPoint.clone().project(this.c),halfH=Math.tan(THREE.MathUtils.degToRad(this.vc.fov/2))*2;
         const contact=this.swingContact/this.swingDuration,reach=p<contact?Math.sin(p/contact*Math.PI/2):Math.cos((p-contact)/(1-contact)*Math.PI/2);
         const tip=this.axe.userData.tip.clone().multiplyScalar(this.axe.scale.x).applyEuler(this.axe.rotation);
         const aim=new THREE.Vector3(projection.x*halfH*this.vc.aspect-tip.x,projection.y*halfH-tip.y,-2-tip.z);
@@ -410,8 +398,8 @@ export class PawRenderer {
       }
     }else{this.axe.position.copy(this.axeRest);this.axe.rotation.z=combat?.guard?-.95:-.18;this.axe.rotation.x=0;}
     if(combat?.guard&&combat.pending===null&&this.swingTime>0)this.swingTime=0;
-    this.allyPulse=Math.max(0,(this.allyPulse||0)-dt);this.nibs.rotation.y=Math.sin(this.clock*1.2)*.08;
-    this.nibs.position.y=.135+(this.allyPulse>0&&!this.reduced?Math.sin(this.allyPulse*8)*.06:0);
+    this.allyPulse=Math.max(0,(this.allyPulse||0)-dt);this.nibs.rotation.y=Math.PI*.57+Math.sin(this.clock*1.2)*.08;
+    this.nibs.position.y=.18+(this.allyPulse>0&&!this.reduced?Math.sin(this.allyPulse*8)*.06:0);
     this.updateBoxBatches(this.view,this.viewBatches);
     for(const f of this.effects){f.life-=dt;if(!this.reduced){f.x+=f.vx*dt;f.y+=f.vy*dt;if(!f.burst){f.vy-=7*dt;f.rx+=dt*6;}}}
     this.effects=this.effects.filter(f=>f.life>0);
@@ -447,7 +435,7 @@ export class PawRenderer {
       return{x:rect.left+(point.x+1)*rect.width/2,y:rect.top+(1-point.y)*rect.height/2,
         visible:point.z>-1&&point.z<1&&point.x>-1.08&&point.x<1.08&&point.y>-1.08&&point.y<1.08};
     };
-    const player=project(new THREE.Vector3(0,.82,.10).applyMatrix4(this.hand.matrixWorld),this.vc);
+    const player=project(new THREE.Vector3(0,.78,.10).applyMatrix4(this.hand.matrixWorld),this.vc);
     const enemies=[...this.models].map(([uid,g])=>({uid,...project(
       new THREE.Vector3(0,g.userData.hudTopLocal||3,0).applyMatrix4(g.matrixWorld),this.c
     )}));
