@@ -2640,7 +2640,9 @@ function showPlannedGame(game) {
         // The explicit preview route can still open when storage is unavailable.
       }
     }
-    window.location.href = hiddenTrialUrl(game, trialPath);
+    window.location.href = reviewerTopicsPreview
+      ? new URL(`/games/${encodeURIComponent(game.id)}/index.html?preview=1`, window.location.origin).href
+      : hiddenTrialUrl(game, trialPath);
     return;
   }
   if (handleHiddenTrialGate(game)) return;
