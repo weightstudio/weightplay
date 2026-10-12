@@ -8,7 +8,7 @@ export function buildAxe(renderer) {
     const m=new THREE.MeshStandardMaterial({color,roughness,metalness});
     renderer.materials.set(`axe:${name}`,m);return m;
   };
-  const steel=metal('steel',0x628a95,.34,.55),edge=metal('edge',0xf1fff2,.28,.28),brass=metal('brass',0xc69643,.4,.65);
+  const steel=metal('steel',0x638eaa,.29,.62),edge=metal('edge',0xe2f7ff,.22,.46),brass=metal('brass',0xe3b65e,.34,.58);
   const plate=(points,depth,material,z=0,bevel=.012)=>{
     const shape=new THREE.Shape();points.forEach(([x,y],i)=>i?shape.lineTo(x,y):shape.moveTo(x,y));shape.closePath();
     const geometry=new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSize:bevel,bevelThickness:bevel,bevelSegments:1,steps:1});
@@ -22,15 +22,14 @@ export function buildAxe(renderer) {
   }
   const pommel=renderer.box(axe,.14,.085,.14,0xc69643,-.008,-.5,0);pommel.material=brass;
   const socket=renderer.box(axe,.16,.30,.18,0x557a86,0,.39,0);socket.material=steel;
-  plate([[-.04,.51],[-.27,.58],[-.52,.72],[-.64,.49],[-.65,.25],[-.57,.04],[-.40,-.025],[-.26,.19],[-.04,.25]],.125,steel);
-  plate([[-.52,.72],[-.64,.49],[-.65,.25],[-.57,.04],[-.40,-.025],[-.44,.09],[-.56,.27],[-.56,.45],[-.45,.62]],.018,edge,.080,.005);
-  plate([[-.10,.44],[-.28,.48],[-.39,.55],[-.43,.41],[-.42,.27],[-.32,.17],[-.27,.28],[-.10,.32]],.018,renderer.material(0x294d5b),.08,.004);
+  plate([[-.04,.51],[-.25,.57],[-.51,.71],[-.66,.51],[-.72,.29],[-.66,.08],[-.48,-.07],[-.32,.13],[-.04,.25]],.145,steel);
+  plate([[-.51,.71],[-.66,.51],[-.72,.29],[-.66,.08],[-.48,-.07],[-.47,.07],[-.57,.20],[-.61,.32],[-.56,.49],[-.43,.63]],.020,edge,.092,.006);
+  plate([[-.10,.44],[-.28,.49],[-.40,.54],[-.50,.36],[-.45,.18],[-.34,.15],[-.26,.29],[-.10,.32]],.018,renderer.material(0x315b75),.09,.004);
   const collar=renderer.box(axe,.21,.065,.21,0xc69643,0,.25,0);collar.material=brass;
   const cap=renderer.box(axe,.18,.055,.20,0xc69643,0,.55,0);cap.material=brass;
   for(const y of [.35,.46]){const rivet=renderer.box(axe,.036,.036,.028,0xc69643,0,y,.105);rivet.material=brass;}
-  // Small engraved evergreen motif, not an emissive block obscuring the blade.
-  for(let i=0;i<3;i++)renderer.box(axe,.12-i*.024,.02,.008,0xefd68a,-.31,.31+i*.046,.095).rotation.z=-.20;
-  renderer.box(axe,.02,.16,.009,0xefd68a,-.31,.355,.095).rotation.z=-.20;
+  // Fia's comet-lightning inlay is cut into the steel face, with a brass socket.
+  plate([[-.31,.49],[-.43,.33],[-.35,.34],[-.40,.19],[-.24,.38],[-.33,.37]],.009,brass,.108,.002);
   // Compact fox paw and cuff keep the grip readable behind the shaft.
   renderer.box(axe,.18,.19,.17,0xd97932,.025,-.20,-.03);
   for(let i=0;i<3;i++)renderer.box(axe,.055,.065,.065,0xf1b067,-.053+i*.057,-.16,.08);
